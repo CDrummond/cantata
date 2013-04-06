@@ -317,6 +317,7 @@ if (NOT WIN32)
         SET( CANTATA_SRCS ${CANTATA_SRCS} dbus/notify.cpp)
         SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} dbus/notify.h)
     endif (NOT ENABLE_KDE_SUPPORT)
+    add_subdirectory(streams/icons)
 endif(NOT WIN32)
 
 SET( CANTATA_RCS cantata.qrc )

@@ -28,15 +28,11 @@
 #include "settings.h"
 #include "streamsmodel.h"
 #include "localize.h"
-#include "icons.h"
 #include "buddylabel.h"
-//#ifdef ENABLE_KDE_SUPPORT
-//#include <KDE/KIconDialog>
-//#include <QPushButton>
-//#endif
 
 StreamCategoryDialog::StreamCategoryDialog(const QStringList &categories, QWidget *parent)
     : Dialog(parent)
+    , iconCombo(0)
 {
     existingCategories=categories.toSet();
     QWidget *wid = new QWidget(this);
@@ -50,67 +46,57 @@ StreamCategoryDialog::StreamCategoryDialog(const QStringList &categories, QWidge
 
     layout->setWidget(row, QFormLayout::LabelRole, new BuddyLabel(i18n("Name:"), wid, nameEntry));
     layout->setWidget(row++, QFormLayout::FieldRole, nameEntry);
-//    #ifdef ENABLE_KDE_SUPPORT
-//    iconButton=new QPushButton(this);
-//    iconButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-//    setIcon(QString());
-//    layout->setWidget(row, QFormLayout::LabelRole, new BuddyLabel(i18n("Icon:"), wid, iconButton));
-//    layout->setWidget(row++, QFormLayout::FieldRole, iconButton);
-//    #endif
+
+    QMap<QString, QIcon> icons=StreamsModel::self()->icons();
+    if (!icons.isEmpty()) {
+        iconCombo=new QComboBox(this);
+        iconCombo->addItem(i18n("No Icon"), QString());
+        QMap<QString, QIcon>::ConstIterator it=icons.constBegin();
+        QMap<QString, QIcon>::ConstIterator end=icons.constEnd();
+
+        for (; it!=end; ++it) {
+            iconCombo->addItem(it.value(), QString(), it.key());
+        }
+
+        layout->setWidget(row, QFormLayout::LabelRole, new BuddyLabel(i18n("Icon:"), wid, iconCombo));
+        layout->setWidget(row++, QFormLayout::FieldRole, iconCombo);
+        connect(iconCombo, SIGNAL(currentIndexChanged(int)), SLOT(changed()));
+    }
     setCaption(i18n("Add Category"));
     setMainWidget(wid);
     setButtons(Ok|Cancel);
     enableButton(Ok, false);
 
     connect(nameEntry, SIGNAL(textChanged(const QString &)), SLOT(changed()));
-//    #ifdef ENABLE_KDE_SUPPORT
-//    connect(iconButton, SIGNAL(clicked()), SLOT(setIcon()));
-//    #endif
     nameEntry->setFocus();
     resize(400, 100);
 }
 
 void StreamCategoryDialog::setEdit(const QString &editName, const QString &editIconName)
 {
-//    #ifdef ENABLE_KDE_SUPPORT
-//    prevIconName=iconName=editIconName;
-//    setIcon(prevIconName);
-//    #else
-    Q_UNUSED(editIconName)
-//    #endif
+    prevIconName=editIconName;
+    if (iconCombo) {
+        iconCombo->blockSignals(true);
+        iconCombo->setCurrentIndex(0);
+        for (int i=0; i<iconCombo->count(); ++i) {
+            if (iconCombo->itemData(i)==editIconName) {
+                iconCombo->setCurrentIndex(i);
+                break;
+            }
+        }
+        iconCombo->blockSignals(false);
+    }
     setCaption(i18n("Edit Category"));
     enableButton(Ok, false);
     prevName=editName;
+    nameEntry->blockSignals(true);
     nameEntry->setText(editName);
+    nameEntry->blockSignals(false);
 }
 
 void StreamCategoryDialog::changed()
 {
     QString n=name();
-    bool enableOk=!n.isEmpty() && (n!=prevName) && !existingCategories.contains(n);
-
-//    #ifdef ENABLE_KDE_SUPPORT
-//    enableOk=enableOk || icon()!=prevIconName;
-//    #endif
+    bool enableOk=!n.isEmpty() && (n!=prevName || (iconCombo && icon()!=prevIconName) || !existingCategories.contains(n));
     enableButton(Ok, enableOk);
 }
-
-//#ifdef ENABLE_KDE_SUPPORT
-//void StreamCategoryDialog::setIcon(const QString &icn)
-//{
-//    iconButton->setIcon(icn.isEmpty() ? Icons::streamIcon
-//                                      : icn.startsWith('/')
-//                                            ? QIcon(icn)
-//                                            : QIcon::fromTheme(icn));
-//}
-
-//void StreamCategoryDialog::setIcon()
-//{
-//    QString icon=KIconDialog::getIcon(KIconLoader::MainToolbar, KIconLoader::Any, false, 22, false, this);
-//    if (!icon.isEmpty()) {
-//        iconName=icon;
-//        setIcon(icon);
-//        changed();
-//    }
-//}
-//#endif

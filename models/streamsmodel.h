@@ -27,6 +27,7 @@
 #include <QUrl>
 #include <QHash>
 #include <QSet>
+#include <QMap>
 #include <QStringList>
 #include "actionmodel.h"
 
@@ -116,6 +117,7 @@ public:
     bool isWritable() const { return writable; }
     void setWritable(bool w) { writable=w; }
     Action * getAction(const QModelIndex &idx, int num);
+    const QMap<QString, QIcon> &icons();
 
 Q_SIGNALS:
     void downloading(bool);
@@ -139,6 +141,7 @@ private Q_SLOTS:
 
 private:
     QList<CategoryItem *> items;
+    QMap<QString, QIcon> iconMap;
     bool writable;
     bool modified;
     QTimer *timer;

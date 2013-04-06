@@ -27,10 +27,8 @@
 #include "dialog.h"
 #include "lineedit.h"
 #include <QSet>
+#include <QComboBox>
 
-//#ifdef ENABLE_KDE_SUPPORT
-//class QPushButton;
-//#endif
 class StreamCategoryDialog : public Dialog
 {
     Q_OBJECT
@@ -39,32 +37,16 @@ public:
     StreamCategoryDialog(const QStringList &categories, QWidget *parent);
 
     void setEdit(const QString &editName, const QString &editIconName);
-
     QString name() const { return nameEntry->text().trimmed(); }
-    //#ifdef ENABLE_KDE_SUPPORT
-    //QString icon() const { return iconName; }
-    //#else
-    QString icon() const { return QString(); }
-    //#endif
+    QString icon() const { return iconCombo ? iconCombo->itemData(iconCombo->currentIndex()).toString() : prevIconName; }
 
 private Q_SLOTS:
     void changed();
-//    #ifdef ENABLE_KDE_SUPPORT
-//    void setIcon();
-//    #endif
-
-//#ifdef ENABLE_KDE_SUPPORT
-//private:
-//    void setIcon(const QString &icn);
-//#endif
 
 private:
     QString prevName;
-//    #ifdef ENABLE_KDE_SUPPORT
-//    QString prevIconName;
-//    QString iconName;
-//    QPushButton *iconButton;
-//    #endif
+    QString prevIconName;
+    QComboBox *iconCombo;
     LineEdit *nameEntry;
     QSet<QString> existingCategories;
 };

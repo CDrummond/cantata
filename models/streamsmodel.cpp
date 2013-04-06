@@ -30,6 +30,7 @@
 #include <QDir>
 #include <QFile>
 #include <qglobal.h>
+#include <QCoreApplication>
 #include <QXmlStreamReader>
 #include <QXmlStreamWriter>
 #include <QNetworkReply>
@@ -105,11 +106,6 @@ static DndStream decodeStreamItem(const QString &s)
         i.category=parts.at(4);
     }
     return i;
-}
-
-static bool iconIsValid(const QString &icon)
-{
-    return icon.startsWith('/') ? QFile::exists(icon) : QIcon::hasThemeIcon(icon);
 }
 
 static const QLatin1String constStreamsCompressedFileName("streams.xml.gz");
@@ -250,8 +246,9 @@ QVariant StreamsModel::data(const QModelIndex &index, int role) const
                     #else
                     QTP_STREAMS_STR(cat->streams.count());
                     #endif
-        case Qt::DecorationRole: return cat->icon.isEmpty() ? Icon(constDefaultCategoryIcon)
-                                                            : cat->icon.startsWith('/') ? QIcon(cat->icon) : Icon(cat->icon);
+        case Qt::DecorationRole: return cat->icon.isEmpty() || !iconMap.contains(cat->icon)
+                                    ? Icon(constDefaultCategoryIcon)
+                                    : iconMap[cat->icon];
         case ItemView::Role_SubText:
             #ifdef ENABLE_KDE_SUPPORT
             return i18np("1 Stream", "%1 Streams", cat->streams.count());
@@ -271,8 +268,9 @@ QVariant StreamsModel::data(const QModelIndex &index, int role) const
         case Qt::DisplayRole:    return stream->name;
         case ItemView::Role_SubText:
         case Qt::ToolTipRole:    return stream->url;
-        case Qt::DecorationRole: return stream->icon.isEmpty() ? Icons::radioStreamIcon
-                                                               : stream->icon.startsWith('/') ? QIcon(stream->icon) : Icon(stream->icon);
+        case Qt::DecorationRole: return stream->icon.isEmpty() || !iconMap.contains(stream->icon)
+                                            ? Icons::radioStreamIcon
+                                            : iconMap[stream->icon];
         case ItemView::Role_Actions: {
             QVariant v;
             v.setValue<QList<Action *> >(QList<Action *>() << StdActions::self()->replacePlayQueueAction);
@@ -317,6 +315,7 @@ void StreamsModel::save(bool force)
 
 bool StreamsModel::load(const QString &filename, bool isInternal)
 {
+    icons();
     if (isInternal) {
         if (filename.startsWith("http:/")) {
             if (job) {
@@ -394,7 +393,7 @@ bool StreamsModel::load(QIODevice *dev, bool isInternal)
                 QString catName=doc.attributes().value("name").toString();
                 QString catIcon=doc.attributes().value("icon").toString();
                 cat=getCategory(catName, true, !isInternal);
-                if (cat && cat->icon.isEmpty() && !catIcon.isEmpty() && iconIsValid(catIcon)) {
+                if (cat && cat->icon.isEmpty() && !catIcon.isEmpty()) {
                     cat->icon=catIcon;
                 }
             } else if (cat && 3==level && QLatin1String("stream")==doc.name()) {
@@ -417,7 +416,7 @@ bool StreamsModel::load(QIODevice *dev, bool isInternal)
                         if (!isInternal) {
                             beginInsertRows(createIndex(items.indexOf(cat), 0, cat), cat->streams.count(), cat->streams.count());
                         }
-                        StreamItem *stream=new StreamItem(name, genre.isEmpty() ? unknown : genre, iconIsValid(icon) ? icon : QString(), url, cat);
+                        StreamItem *stream=new StreamItem(name, genre.isEmpty() ? unknown : genre, icon, url, cat);
                         cat->itemMap.insert(url.toString(), stream);
                         cat->streams.append(stream);
                         if (!isInternal) {
@@ -943,3 +942,23 @@ void StreamsModel::CategoryItem::clearStreams()
     qDeleteAll(streams);
     streams.clear();
 }
+
+const QMap<QString, QIcon> & StreamsModel::icons()
+{
+    if (iconMap.isEmpty()) {
+        #ifdef Q_OS_WIN
+        QString dir; // TODO!!! (QString(INSTALL_PREFIX"/share/")+QCoreApplication::applicationName()+"/streamicons/");
+        #else
+        QString dir(QString(INSTALL_PREFIX"/share/")+QCoreApplication::applicationName()+"/streamicons/");
+        #endif
+        QStringList names=QDir(dir).entryList(QStringList() << "*.svg");
+        foreach (const QString &name, names) {
+            QIcon icon(dir+name);
+            if (!icon.isNull()) {
+                iconMap.insert(name, icon);
+            }
+        }
+    }
+    return iconMap;
+}
+

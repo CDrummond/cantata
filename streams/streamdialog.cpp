@@ -23,6 +23,7 @@
 
 #include <QFormLayout>
 #include <QIcon>
+#include <QValidator>
 #include "streamdialog.h"
 #include "mainwindow.h"
 #include "settings.h"
@@ -35,6 +36,18 @@
 #include <KDE/KIconDialog>
 #include <QPushButton>
 #endif
+
+class NameValidator : public QValidator
+{
+    public:
+
+    NameValidator(QObject *parent) : QValidator(parent) { }
+
+    State validate(QString &input, int &) const
+    {
+        return input.contains("#") ? Invalid : Acceptable;
+    }
+};
 
 StreamDialog::StreamDialog(const QStringList &categories, const QStringList &genres, QWidget *parent, bool addToPlayQueue)
     : Dialog(parent)
@@ -53,6 +66,7 @@ StreamDialog::StreamDialog(const QStringList &categories, const QStringList &gen
         nameEntry = new LineEdit(wid);
         urlEntry = new LineEdit(wid);
     }
+    nameEntry->setValidator(new NameValidator(this));
     catCombo = new CompletionCombo(wid);
     catCombo->setEditable(true);
     genreCombo = new CompletionCombo(wid);

@@ -123,7 +123,7 @@ PlayQueueModel::PlayQueueModel(QObject *parent)
             MPDConnection::self(), SLOT(add(const QStringList, quint32, quint32, bool, quint8)));
     connect(this, SIGNAL(move(const QList<quint32> &, quint32, quint32)),
             MPDConnection::self(), SLOT(move(const QList<quint32> &, quint32, quint32)));
-    connect(MPDConnection::self(), SIGNAL(prioritySet(const QList<quint32> &, quint8)), SLOT(prioritySet(const QList<quint32> &, quint8)));
+    connect(MPDConnection::self(), SIGNAL(prioritySet(const QList<qint32> &, quint8)), SLOT(prioritySet(const QList<qint32> &, quint8)));
     connect(MPDConnection::self(), SIGNAL(stopAfterCurrentChanged(bool)), SLOT(stopAfterCurrentChanged(bool)));
     connect(this, SIGNAL(stop(bool)), MPDConnection::self(), SLOT(stopPlaying(bool)));
     connect(this, SIGNAL(clearStopAfter()), MPDConnection::self(), SLOT(clearStopAfter()));
@@ -578,9 +578,9 @@ void PlayQueueModel::addFiles(const QStringList &filenames, int row, bool replac
     }
 }
 
-void PlayQueueModel::prioritySet(const QList<quint32> &ids, quint8 priority)
+void PlayQueueModel::prioritySet(const QList<qint32> &ids, quint8 priority)
 {
-    QSet<quint32> i=ids.toSet();
+    QSet<qint32> i=ids.toSet();
     int row=0;
 
     foreach (const Song &s, songs) {

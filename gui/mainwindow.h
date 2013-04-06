@@ -174,11 +174,11 @@ Q_SIGNALS:
     void playListInfo();
     void currentSong();
     void setSeekId(qint32, quint32);
-    void startPlayingSongId(quint32);
+    void startPlayingSongId(qint32);
     void setVolume(int);
     void outputs();
     void enableOutput(int id, bool);
-    void setPriority(const QList<quint32> &ids, quint8 priority);
+    void setPriority(const QList<qint32> &ids, quint8 priority);
     void addSongsToPlaylist(const QString &name, const QStringList &files);
 
 public Q_SLOTS:

@@ -652,9 +652,9 @@ MainWindow::MainWindow(QWidget *parent)
     connect(this, SIGNAL(playListInfo()), MPDConnection::self(), SLOT(playListInfo()));
     connect(this, SIGNAL(currentSong()), MPDConnection::self(), SLOT(currentSong()));
     connect(this, SIGNAL(setSeekId(qint32, quint32)), MPDConnection::self(), SLOT(setSeekId(qint32, quint32)));
-    connect(this, SIGNAL(startPlayingSongId(quint32)), MPDConnection::self(), SLOT(startPlayingSongId(quint32)));
+    connect(this, SIGNAL(startPlayingSongId(qint32)), MPDConnection::self(), SLOT(startPlayingSongId(qint32)));
     connect(this, SIGNAL(setDetails(const MPDConnectionDetails &)), MPDConnection::self(), SLOT(setDetails(const MPDConnectionDetails &)));
-    connect(this, SIGNAL(setPriority(const QList<quint32> &, quint8 )), MPDConnection::self(), SLOT(setPriority(const QList<quint32> &, quint8)));
+    connect(this, SIGNAL(setPriority(const QList<qint32> &, quint8 )), MPDConnection::self(), SLOT(setPriority(const QList<qint32> &, quint8)));
     connect(this, SIGNAL(addSongsToPlaylist(const QString &, const QStringList &)), MPDConnection::self(), SLOT(addToPlaylist(const QString &, const QStringList &)));
     connect(&playQueueModel, SIGNAL(statsUpdated(int, quint32)), this, SLOT(updatePlayQueueStats(int, quint32)));
     connect(playQueue, SIGNAL(itemsSelected(bool)), SLOT(playQueueItemsSelected(bool)));
@@ -2082,7 +2082,7 @@ void MainWindow::addWithPriority()
 
     if (prio>=0 && prio<=255) {
         if (isPlayQueue) {
-            QList<quint32> ids;
+            QList<qint32> ids;
             foreach (const QModelIndex &idx, pqItems) {
                 ids.append(playQueueModel.getIdByRow(usingProxy ? playQueueProxyModel.mapToSource(idx).row() : idx.row()));
             }

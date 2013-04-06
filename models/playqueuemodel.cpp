@@ -645,7 +645,11 @@ void PlayQueueModel::updateCurrentSong(quint32 id)
 void PlayQueueModel::clear()
 {
     beginResetModel();
-    songs=QList<Song>();
+    songs.clear();
+    ids.clear();
+    currentSongId=-1;
+    currentSongRowNum=0;
+    stopAfterTrackId=-1;
     endResetModel();
 }
 

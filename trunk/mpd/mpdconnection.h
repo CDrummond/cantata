@@ -211,7 +211,7 @@ public Q_SLOTS:
     void setRepeat(bool toggle);
     void setSingle(bool toggle);
     void setSeek(quint32 song, quint32 time);
-    void setSeekId(quint32 songId, quint32 time);
+    void setSeekId(qint32 songId, quint32 time);
     void setVolume(int vol);
     void toggleMute();
     void stopPlaying(bool afterCurrent=false);

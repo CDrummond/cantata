@@ -358,13 +358,13 @@ void MPDConnection::setDetails(const MPDConnectionDetails &det)
     bool diffDetails=det!=details;
     bool diffDynamicPort=det.dynamizerPort!=details.dynamizerPort;
 
-    stopAfterCurrent=false;
     details=det;
     if (diffDetails || State_Connected!=state) {
         DBUG << "setDetails" << details.hostname << details.port << (details.password.isEmpty() ? false : true);
         disconnectFromMPD();
         DBUG << "call connectToMPD";
         unmuteVol=-1;
+        toggleStopAfterCurrent(false);
         switch (connectToMPD()) {
         case Success:
             getStatus();
@@ -486,7 +486,7 @@ void MPDConnection::add(const QStringList &files, bool replace, quint8 priority)
 
 void MPDConnection::add(const QStringList &files, quint32 pos, quint32 size, bool replace, quint8 priority)
 {
-    stopAfterCurrent=false;
+    toggleStopAfterCurrent(false);
     if (replace) {
         clear();
         getStatus();
@@ -531,7 +531,7 @@ void MPDConnection::add(const QStringList &files, quint32 pos, quint32 size, boo
 
 void MPDConnection::clear()
 {
-    stopAfterCurrent=false;
+    toggleStopAfterCurrent(false);
     if (sendCommand("clear").ok) {
         lastUpdatePlayQueueVersion=0;
         playQueueIds.clear();
@@ -540,7 +540,7 @@ void MPDConnection::clear()
 
 void MPDConnection::removeSongs(const QList<qint32> &items)
 {
-    stopAfterCurrent=false;
+    toggleStopAfterCurrent(false);
     QByteArray send = "command_list_begin\n";
     foreach (qint32 i, items) {
         send += "deleteid ";
@@ -554,7 +554,7 @@ void MPDConnection::removeSongs(const QList<qint32> &items)
 
 void MPDConnection::move(quint32 from, quint32 to)
 {
-    stopAfterCurrent=false;
+    toggleStopAfterCurrent(false);
     sendCommand("move "+QByteArray::number(from)+' '+QByteArray::number(to));
 }
 
@@ -598,13 +598,13 @@ void MPDConnection::move(const QList<quint32> &items, quint32 pos, quint32 size)
 
 void MPDConnection::shuffle()
 {
-    stopAfterCurrent=false;
+    toggleStopAfterCurrent(false);
     sendCommand("shuffle");
 }
 
 void MPDConnection::shuffle(quint32 from, quint32 to)
 {
-    stopAfterCurrent=false;
+    toggleStopAfterCurrent(false);
     sendCommand("shuffle "+QByteArray::number(from)+':'+QByteArray::number(to+1));
 }
 
@@ -817,9 +817,11 @@ void MPDConnection::setSeek(quint32 song, quint32 time)
     sendCommand("seek "+QByteArray::number(song)+' '+QByteArray::number(time));
 }
 
-void MPDConnection::setSeekId(quint32 songId, quint32 time)
+void MPDConnection::setSeekId(qint32 songId, quint32 time)
 {
-    toggleStopAfterCurrent(false);
+    if (songId!=currentSongId) {
+        toggleStopAfterCurrent(false);
+    }
     sendCommand("seekid "+QByteArray::number(songId)+' '+QByteArray::number(time));
 }
 

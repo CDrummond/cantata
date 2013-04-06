@@ -787,7 +787,7 @@ void PlayQueueModel::stopAfterCurrentChanged(bool afterCurrent)
     }
 }
 
-QSet<qint32>  PlayQueueModel::getSongIdSet()
+QSet<qint32> PlayQueueModel::getSongIdSet()
 {
     QSet<qint32> ids;
 
@@ -796,4 +796,13 @@ QSet<qint32>  PlayQueueModel::getSongIdSet()
     }
 
     return ids;
+}
+
+QStringList PlayQueueModel::filenames()
+{
+    QStringList names;
+    foreach(const Song &song, songs) {
+        names << song.file;
+    }
+    return names;
 }

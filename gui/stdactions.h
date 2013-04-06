@@ -35,6 +35,7 @@ public:
 
     StdActions();
 
+    Action *savePlayQueueAction;
     Action *addToPlayQueueAction;
     Action *replacePlayQueueAction;
     Action *addWithPriorityAction;

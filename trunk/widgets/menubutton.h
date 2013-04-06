@@ -24,18 +24,13 @@
 #ifndef MENUBUTTON_H
 #define MENUBUTTON_H
 
-#include <QToolButton>
+#include "toolbutton.h"
 
-class MenuButton : public QToolButton
+class MenuButton : public ToolButton
 {
 public:
     explicit MenuButton(QWidget *parent = 0);
     void controlState();
-    void paintEvent(QPaintEvent *ev);
-    QSize sizeHint() const;
-
-private:
-    mutable QSize sh;
 };
 
 #endif // MENUBUTTON_H

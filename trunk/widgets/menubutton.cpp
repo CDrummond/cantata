@@ -27,18 +27,13 @@
 #include "localize.h"
 #include <QAction>
 #include <QMenu>
-#include <QStylePainter>
-#include <QStyleOptionToolButton>
-#include <QApplication>
 
 MenuButton::MenuButton(QWidget *parent)
-    : QToolButton(parent)
+    : ToolButton(parent)
 {
-    Icon::init(this);
     setPopupMode(QToolButton::InstantPopup);
     setIcon(Icons::menuIcon);
     setToolTip(i18n("Other Actions"));
-    setAutoRaise(true);
 }
 
 void MenuButton::controlState()
@@ -53,31 +48,4 @@ void MenuButton::controlState()
         }
     }
     setEnabled(false);
-}
-
-void MenuButton::paintEvent(QPaintEvent *)
-{
-    QStylePainter p(this);
-    QStyleOptionToolButton opt;
-    initStyleOption(&opt);
-    opt.features=QStyleOptionToolButton::None;
-    p.drawComplexControl(QStyle::CC_ToolButton, opt);
-}
-
-QSize MenuButton::sizeHint() const
-{
-    if (sh.isValid()) {
-        return sh;
-    }
-
-    ensurePolished();
-
-    QStyleOptionToolButton opt;
-    initStyleOption(&opt);
-    opt.features=QStyleOptionToolButton::None;
-
-    QSize icon = opt.iconSize;
-    sh = style()->sizeFromContents(QStyle::CT_ToolButton, &opt, QSize(icon.width(), icon.height()), this).expandedTo(QApplication::globalStrut());
-    sh=QSize(qMax(sh.width(), sh.height()), qMax(sh.width(), sh.height()));
-    return sh;
 }

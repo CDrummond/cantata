@@ -24,6 +24,9 @@
 #include "toolbutton.h"
 #include "icon.h"
 #include "gtkstyle.h"
+#include <QMenu>
+#include <QStylePainter>
+#include <QStyleOptionToolButton>
 #include <QApplication>
 
 ToolButton::ToolButton(QWidget *parent)
@@ -33,18 +36,36 @@ ToolButton::ToolButton(QWidget *parent)
     setAutoRaise(true);
 }
 
+void ToolButton::paintEvent(QPaintEvent *e)
+{
+    if (menu()) {
+        QStylePainter p(this);
+        QStyleOptionToolButton opt;
+        initStyleOption(&opt);
+        opt.features=QStyleOptionToolButton::None;
+        p.drawComplexControl(QStyle::CC_ToolButton, opt);
+    } else {
+        QToolButton::paintEvent(e);
+    }
+}
+
 QSize ToolButton::sizeHint() const
 {
     if (sh.isValid()) {
         return sh;
     }
 
-    sh=QToolButton::sizeHint();
-    if (!menu()) {
-        sh=QSize(qMax(sh.width(), sh.height()), qMax(sh.width(), sh.height()));
-    } else if (GtkStyle::isActive()) {
-        sh=QSize(sh.width()*1.2, sh.height());
+    ensurePolished();
+
+    if (menu()) {
+        QStyleOptionToolButton opt;
+        initStyleOption(&opt);
+        opt.features=QStyleOptionToolButton::None;
+        sh = style()->sizeFromContents(QStyle::CT_ToolButton, &opt, opt.iconSize, this).expandedTo(QApplication::globalStrut());
+    } else {
+        sh=QToolButton::sizeHint();
     }
+    sh=QSize(qMax(sh.width(), sh.height()), qMax(sh.width(), sh.height()));
     return sh;
 }
 

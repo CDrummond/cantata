@@ -204,7 +204,7 @@ public Q_SLOTS:
     void goToNext();
     void setPause(bool toggle);
     void startPlayingSong(quint32 song = 0);
-    void startPlayingSongId(quint32 songId = 0);
+    void startPlayingSongId(qint32 songId = 0);
     void goToPrevious();
     void setConsume(bool toggle);
     void setRandom(bool toggle);
@@ -246,7 +246,7 @@ public Q_SLOTS:
     void removeFromPlaylist(const QString &name, const QList<quint32> &positions);
     void moveInPlaylist(const QString &name, const QList<quint32> &items, quint32 row, quint32 size);
 
-    void setPriority(const QList<quint32> &ids, quint8 priority);
+    void setPriority(const QList<qint32> &ids, quint8 priority);
 
 Q_SIGNALS:
     void stateChanged(bool connected);
@@ -275,7 +275,7 @@ Q_SIGNALS:
     void error(const QString &err, bool showActions=false);
     void info(const QString &msg);
     void dirChanged();
-    void prioritySet(const QList<quint32> &ids, quint8 priority);
+    void prioritySet(const QList<qint32> &ids, quint8 priority);
 
     void dynamicUrl(const QString &url);
     void stopAfterCurrentChanged(bool afterCurrent);

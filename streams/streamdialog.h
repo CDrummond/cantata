@@ -25,15 +25,13 @@
 #define STREAMDIALOG_H
 
 #include <QSet>
+#include <QComboBox>
 #include "dialog.h"
 #include "lineedit.h"
 #include "completioncombo.h"
 
 class QLabel;
 class BuddyLabel;
-//#ifdef ENABLE_KDE_SUPPORT
-//class QPushButton;
-//#endif
 
 class StreamDialog : public Dialog
 {
@@ -43,38 +41,28 @@ public:
     StreamDialog(const QStringList &categories, const QStringList &genres, QWidget *parent, bool addToPlayQueue=false);
 
     void setEdit(const QString &cat, const QString &editName, const QString &editGenre, const QString &editIconName, const QString &editUrl);
-
     QString name() const { return nameEntry->text().trimmed(); }
     QString url() const { return urlEntry->text().trimmed(); }
     QString category() const { return catCombo->currentText().trimmed(); }
     QString genre() const { return genreCombo->currentText().trimmed(); }
-    QString icon() const { return iconName; }
+    QString icon() const { return iconCombo ? iconCombo->itemData(iconCombo->currentIndex()).toString() : prevIconName; }
     bool save() const { return !saveCombo || 1==saveCombo->currentIndex(); }
 
 private Q_SLOTS:
     void saveComboChanged();
     void changed();
-//    #ifdef ENABLE_KDE_SUPPORT
-//    void setIcon();
-//    #endif
 
 private:
     void setWidgetVisiblity();
-//    #ifdef ENABLE_KDE_SUPPORT
-//    void setIcon(const QString &icn);
-//    #endif
 
 private:
     QString prevName;
     QString prevUrl;
     QString prevCat;
     QString prevGenre;
-    QString iconName;
-//    #ifdef ENABLE_KDE_SUPPORT
-//    QString prevIconName;
-//    QPushButton *iconButton;
-//    #endif
+    QString prevIconName;
     QComboBox *saveCombo;
+    QComboBox *iconCombo;
     LineEdit *nameEntry;
     LineEdit *urlEntry;
     CompletionCombo *catCombo;
@@ -82,6 +70,7 @@ private:
     BuddyLabel *nameLabel;
     BuddyLabel *catLabel;
     BuddyLabel *genreLabel;
+    BuddyLabel *iconLabel;
     QLabel *multipleGenresText;
     QLabel *statusText;
     QSet<QString> urlHandlers;

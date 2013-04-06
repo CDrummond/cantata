@@ -779,7 +779,7 @@ void MPDConnection::startPlayingSong(quint32 song)
     sendCommand("play "+QByteArray::number(song));
 }
 
-void MPDConnection::startPlayingSongId(quint32 songId)
+void MPDConnection::startPlayingSongId(qint32 songId)
 {
     toggleStopAfterCurrent(false);
     sendCommand("playid "+QByteArray::number(songId));
@@ -1161,7 +1161,7 @@ void MPDConnection::removeFromPlaylist(const QString &name, const QList<quint32>
 //     playlistInfo(name);
 }
 
-void MPDConnection::setPriority(const QList<quint32> &ids, quint8 priority)
+void MPDConnection::setPriority(const QList<qint32> &ids, quint8 priority)
 {
     if (canUsePriority()) {
         QByteArray send = "command_list_begin\n";

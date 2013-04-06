@@ -49,7 +49,7 @@ public:
 
     struct Item
     {
-        Item(const QString &n, const QString &i) : name(n), icon(i) { }
+        Item(const QString &n, const QString &i) : name(n), icon(i) { name.replace("#", ""); }
         virtual bool isCategory() = 0;
         virtual ~Item() { }
         QString name;

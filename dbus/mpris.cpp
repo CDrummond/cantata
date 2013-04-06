@@ -25,14 +25,17 @@
 #include "mpdconnection.h"
 #include "playeradaptor.h"
 #include "rootadaptor.h"
+#include "config.h"
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KWindowSystem>
 #endif
 
-static inline int convertTime(int t)
+static inline qlonglong convertTime(int t)
 {
     return t*1000000;
 }
+
+static QString mprisPath;
 
 Mpris::Mpris(MainWindow *p)
     : QObject(p)
@@ -41,23 +44,22 @@ Mpris::Mpris(MainWindow *p)
 {
     QDBusConnection::sessionBus().registerService("org.mpris.MediaPlayer2.cantata");
 
-    // Comes from playeradaptor.h which is auto-generated
-    // in the top-level CMakeLists.txt with qt4_add_dbus_adaptor.
     new PlayerAdaptor(this);
-
-    // Comes from rootadaptor.h which is auto-generated
-    // in the top-level CMakeLists.txt with qt4_add_dbus_adaptor.
     new MediaPlayer2Adaptor(this);
 
     QDBusConnection::sessionBus().registerObject("/org/mpris/MediaPlayer2", this, QDBusConnection::ExportAdaptors);
     connect(this, SIGNAL(setRandom(bool)), MPDConnection::self(), SLOT(setRandom(bool)));
     connect(this, SIGNAL(setRepeat(bool)), MPDConnection::self(), SLOT(setRepeat(bool)));
-    connect(this, SIGNAL(setSeek(quint32, quint32)), MPDConnection::self(), SLOT(setSeek(quint32, quint32)));
-    connect(this, SIGNAL(setSeekId(quint32, quint32)), MPDConnection::self(), SLOT(setSeekId(quint32, quint32)));
+    connect(this, SIGNAL(setSeekId(qint32, quint32)), MPDConnection::self(), SLOT(setSeekId(qint32, quint32)));
     connect(this, SIGNAL(setVolume(int)), MPDConnection::self(), SLOT(setVolume(int)));
 
 //    connect(MPDConnection::self(), SIGNAL(currentSongUpdated(const Song &)), this, SLOT(updateCurrentSong(const Song &)));
     connect(MPDStatus::self(), SIGNAL(updated()), this, SLOT(updateStatus()));
+    if (mprisPath.isEmpty()) {
+        mprisPath=QLatin1String(CANTATA_REV_URL);
+        mprisPath.replace(".", "/");
+        mprisPath="/"+mprisPath+"/Track/%1";
+    }
 }
 
 qlonglong Mpris::Position() const
@@ -88,6 +90,7 @@ void Mpris::updateStatus()
         map.insert("PlaybackStatus", PlaybackStatus());
         map.insert("CanPlay", CanPlay());
         map.insert("CanPause", CanPause());
+        map.insert("CanSeek", CanSeek());
     }
     if (MPDStatus::self()->timeElapsed()!=status.timeElapsed) {
         map.insert("Position", convertTime(MPDStatus::self()->timeElapsed()));
@@ -123,7 +126,7 @@ QVariantMap Mpris::Metadata() const {
     QVariantMap metadataMap;
     if (!currentSong.title.isEmpty() && !currentSong.artist.isEmpty() &&
             (!currentSong.album.isEmpty() || (currentSong.isStream() && !currentSong.name.isEmpty()))) {
-        metadataMap.insert("mpris:trackid", currentSong.id);
+        metadataMap.insert("mpris:trackid", QVariant::fromValue<QDBusObjectPath>(QDBusObjectPath(mprisPath.arg(currentSong.id))));
         if (currentSong.time>0) {
             metadataMap.insert("mpris:length", convertTime(currentSong.time));
         }

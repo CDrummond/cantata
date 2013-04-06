@@ -78,7 +78,7 @@ static QByteArray readFromSocket(MpdSocket &socket)
                 break;
             }
             if (++attempt>=constMaxReadAttempts) {
-                qWarning() << "ERROR: Timedout waiting for response";
+                DBUG << "ERROR: Timedout waiting for response";
                 socket.close();
                 return QByteArray();
             }
@@ -440,7 +440,6 @@ MPDConnection::Response MPDConnection::sendCommand(const QByteArray &command, bo
             // Try one more time...
             // This scenario, where socket seems to be closed during/after 'write' seems to occiu more often
             // when dynamizer is running. However, simply reconnecting seems to resolve the issue.
-            qWarning() << "Socket is not connected, so try reconnecting and re-send command";
             return sendCommand(command, emitErrors, false);
         }
         if (emitErrors) {
@@ -819,6 +818,12 @@ void MPDConnection::setSeek(quint32 song, quint32 time)
 
 void MPDConnection::setSeekId(qint32 songId, quint32 time)
 {
+    if (-1==songId) {
+        songId=currentSongId;
+    }
+    if (-1==songId) {
+        return;
+    }
     if (songId!=currentSongId) {
         toggleStopAfterCurrent(false);
     }

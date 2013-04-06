@@ -456,16 +456,12 @@ void StreamsPage::edit()
 
     if (QDialog::Accepted==dlg.exec()) {
         QString newName=dlg.name();
-        #ifdef ENABLE_KDE_SUPPORT
         QString newIcon=dlg.icon();
-        #else
-        QString newIcon;
-        #endif
         QString newUrl=dlg.url();
         QString newCat=dlg.category();
         QString newGenre=dlg.genre();
         QString existingNameForUrl=newUrl!=url ? StreamsModel::self()->name(newCat, newUrl) : QString();
-//
+
         if (!existingNameForUrl.isEmpty()) {
             MessageBox::error(this, i18n("Stream already exists!<br/><b>%1 (%2)</b>").arg(existingNameForUrl).arg(newCat));
         } else if (newName!=name && StreamsModel::self()->entryExists(newCat, newName)) {

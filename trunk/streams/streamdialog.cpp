@@ -32,10 +32,6 @@
 #include "icons.h"
 #include "mpdconnection.h"
 #include "buddylabel.h"
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KIconDialog>
-#include <QPushButton>
-#endif
 
 class NameValidator : public QValidator
 {
@@ -52,25 +48,45 @@ class NameValidator : public QValidator
 StreamDialog::StreamDialog(const QStringList &categories, const QStringList &genres, QWidget *parent, bool addToPlayQueue)
     : Dialog(parent)
     , saveCombo(0)
+    , iconCombo(0)
+    , iconLabel(0)
     , urlHandlers(MPDConnection::self()->urlHandlers())
 {
     QWidget *wid = new QWidget(this);
     QFormLayout *layout = new QFormLayout(wid);
+    QMap<QString, QIcon> icons=StreamsModel::self()->icons();
 
     layout->setMargin(0);
     if (addToPlayQueue) {
         urlEntry = new LineEdit(wid);
         saveCombo=new QComboBox(wid);
         nameEntry = new LineEdit(wid);
+        if (!icons.isEmpty()) {
+            iconCombo=new QComboBox(wid);
+        }
     } else {
         nameEntry = new LineEdit(wid);
         urlEntry = new LineEdit(wid);
+        if (!icons.isEmpty()) {
+            iconCombo=new QComboBox(wid);
+        }
     }
     nameEntry->setValidator(new NameValidator(this));
     catCombo = new CompletionCombo(wid);
     catCombo->setEditable(true);
     genreCombo = new CompletionCombo(wid);
     statusText = new QLabel(this);
+
+    if (iconCombo) {
+        iconCombo->addItem(i18n("No Icon"), QString());
+        QMap<QString, QIcon>::ConstIterator it=icons.constBegin();
+        QMap<QString, QIcon>::ConstIterator end=icons.constEnd();
+
+        for (; it!=end; ++it) {
+            iconCombo->addItem(it.value(), QString(), it.key());
+        }
+        connect(iconCombo, SIGNAL(currentIndexChanged(int)), SLOT(changed()));
+    }
 
     QSizePolicy sizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
     sizePolicy.setHorizontalStretch(0);
@@ -83,13 +99,11 @@ StreamDialog::StreamDialog(const QStringList &categories, const QStringList &gen
     nameLabel=new BuddyLabel(i18n("Name:"), wid, nameEntry);
     catLabel=new BuddyLabel(i18n("Category:"), wid, catCombo);
     genreLabel=new BuddyLabel(i18n("Genre:"), wid, genreCombo);
+    if (iconCombo) {
+        iconLabel=new BuddyLabel(i18n("Icon:"), wid, iconCombo);
+    }
     BuddyLabel *urlLabel=new BuddyLabel(i18n("URL:"), wid, urlEntry);
 
-//    #ifdef ENABLE_KDE_SUPPORT
-//    iconButton=new QPushButton(this);
-//    iconButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-//    setIcon(QString());
-//    #endif
     int row=0;
 
     if (addToPlayQueue) {
@@ -102,20 +116,16 @@ StreamDialog::StreamDialog(const QStringList &categories, const QStringList &gen
         layout->setWidget(row++, QFormLayout::FieldRole, saveCombo);
         connect(saveCombo, SIGNAL(activated(int)), SLOT(saveComboChanged()));
         setWidgetVisiblity();
-//        #ifdef ENABLE_KDE_SUPPORT
-//        connect(saveButton, SIGNAL(toggled(bool)), iconButton, SLOT(setEnabled(bool)));
-//        iconButton->setEnabled(false);
-//        #endif
     }
     layout->setWidget(row, QFormLayout::LabelRole, nameLabel);
     layout->setWidget(row++, QFormLayout::FieldRole, nameEntry);
-//    #ifdef ENABLE_KDE_SUPPORT
-//    layout->setWidget(row, QFormLayout::LabelRole, new BuddyLabel(i18n("Icon:"), wid, iconButton));
-//    layout->setWidget(row++, QFormLayout::FieldRole, iconButton);
-//    #endif
     if (!addToPlayQueue) {
         layout->setWidget(row, QFormLayout::LabelRole, urlLabel);
         layout->setWidget(row++, QFormLayout::FieldRole, urlEntry);
+    }
+    if (iconCombo) {
+        layout->setWidget(row, QFormLayout::LabelRole, iconLabel);
+        layout->setWidget(row++, QFormLayout::FieldRole, iconCombo);
     }
     layout->setWidget(row, QFormLayout::LabelRole, catLabel);
     layout->setWidget(row++, QFormLayout::FieldRole, catCombo);
@@ -135,9 +145,6 @@ StreamDialog::StreamDialog(const QStringList &categories, const QStringList &gen
     connect(urlEntry, SIGNAL(textChanged(const QString &)), SLOT(changed()));
     connect(catCombo, SIGNAL(editTextChanged(const QString &)), SLOT(changed()));
     connect(genreCombo, SIGNAL(editTextChanged(const QString &)), SLOT(changed()));
-//    #ifdef ENABLE_KDE_SUPPORT
-//    connect(iconButton, SIGNAL(clicked()), SLOT(setIcon()));
-//    #endif
     if (addToPlayQueue) {
         urlEntry->setFocus();
     } else {
@@ -148,22 +155,30 @@ StreamDialog::StreamDialog(const QStringList &categories, const QStringList &gen
 
 void StreamDialog::setEdit(const QString &cat, const QString &editName, const QString &editGenre, const QString &editIconName, const QString &editUrl)
 {
-//    #ifdef ENABLE_KDE_SUPPORT
-//    prevIconName=iconName=editIconName;
-//    setIcon(prevIconName);
-//    #else
     Q_UNUSED(editIconName)
-//    #endif
     setCaption(i18n("Edit Stream"));
     enableButton(Ok, false);
     prevName=editName;
     prevUrl=editUrl;
     prevCat=cat;
     prevGenre=editGenre;
+    prevIconName=editIconName;
     nameEntry->setText(editName);
     urlEntry->setText(editUrl);
     catCombo->setEditText(cat);
     genreCombo->setEditText(editGenre);
+
+    if (iconCombo) {
+        iconCombo->blockSignals(true);
+        iconCombo->setCurrentIndex(0);
+        for (int i=0; i<iconCombo->count(); ++i) {
+            if (iconCombo->itemData(i)==editIconName) {
+                iconCombo->setCurrentIndex(i);
+                break;
+            }
+        }
+        iconCombo->blockSignals(false);
+    }
 }
 
 void StreamDialog::saveComboChanged()
@@ -182,6 +197,10 @@ void StreamDialog::setWidgetVisiblity()
     catLabel->setVisible(s);
     genreLabel->setVisible(s);
     multipleGenresText->setVisible(s);
+    if (iconCombo) {
+        iconCombo->setVisible(s);
+        iconLabel->setVisible(s);
+    }
     QApplication::processEvents();
     adjustSize();
 }
@@ -198,34 +217,11 @@ void StreamDialog::changed()
         QString n=name();
         QString c=category();
         QString g=genre();
-        enableOk=!n.isEmpty() && !u.isEmpty() && !c.isEmpty() && (n!=prevName || u!=prevUrl || c!=prevCat || g!=prevGenre
-//                                                                      #ifdef ENABLE_KDE_SUPPORT
-//                                                                      || icon()!=prevIconName
-//                                                                      #endif
-                                                                      );
+        enableOk=!n.isEmpty() && !u.isEmpty() && !c.isEmpty() &&
+                    (n!=prevName || u!=prevUrl || c!=prevCat || g!=prevGenre || (iconCombo && icon()!=prevIconName));
 
         statusText->setText(validProtocol ? QString() : i18n("<i><b>ERROR:</b> Invalid protocol</i>"));
     }
     enableOk=enableOk && validProtocol;
     enableButton(Ok, enableOk);
 }
-
-//#ifdef ENABLE_KDE_SUPPORT
-//void StreamDialog::setIcon(const QString &icn)
-//{
-//    iconButton->setIcon(icn.isEmpty() ? Icons::streamIcon
-//                                      : icn.startsWith('/')
-//                                            ? QIcon(icn)
-//                                            : QIcon::fromTheme(icn));
-//}
-
-//void StreamDialog::setIcon()
-//{
-//    QString icon=KIconDialog::getIcon(KIconLoader::MainToolbar, KIconLoader::Any, false, 22, false, this);
-//    if (!icon.isEmpty()) {
-//        iconName=icon;
-//        setIcon(icon);
-//        changed();
-//    }
-//}
-//#endif

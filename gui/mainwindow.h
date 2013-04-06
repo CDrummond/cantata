@@ -173,7 +173,7 @@ Q_SIGNALS:
     void clear();
     void playListInfo();
     void currentSong();
-    void setSeekId(quint32, quint32);
+    void setSeekId(qint32, quint32);
     void startPlayingSongId(quint32);
     void setVolume(int);
     void outputs();

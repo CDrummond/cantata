@@ -2154,6 +2154,12 @@ void MainWindow::addToExistingStoredPlaylist(const QString &name, bool pq)
 
 void MainWindow::addStreamToPlayQueue()
 {
+    // Need to load streams, if not already loaded - so that we can get list of categories/genres...
+    if (!(loaded&TAB_STREAMS)) {
+        loaded|=TAB_STREAMS;
+        streamsPage->refresh();
+    }
+
     StreamDialog dlg(streamsPage->getCategories(), streamsPage->getGenres(), this, true);
 
     if (QDialog::Accepted==dlg.exec()) {

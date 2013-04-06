@@ -266,7 +266,7 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
                 case MPDState_Playing: return (int)(stopAfterCurrent ? GroupedView::State_StopAfter : GroupedView::State_Playing);
                 case MPDState_Paused:  return (int)GroupedView::State_Paused;
                 }
-            }  else if (s.id==stopAfterTrackId) {
+            }  else if (-1!=s.id && s.id==stopAfterTrackId) {
                 return GroupedView::State_StopAfterTrack;
             }
         }
@@ -281,7 +281,7 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
             case MPDState_Playing: return (int)(stopAfterCurrent ? GroupedView::State_StopAfter : GroupedView::State_Playing);
             case MPDState_Paused:  return (int)GroupedView::State_Paused;
             }
-        } else if (id==stopAfterTrackId) {
+        } else if (-1!=id && id==stopAfterTrackId) {
             return GroupedView::State_StopAfterTrack;
         }
         return (int)GroupedView::State_Default;
@@ -383,7 +383,7 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
                 case MPDState_Playing: return Icon(stopAfterCurrent ? "media-playback-stop" : "media-playback-start");
                 case MPDState_Paused:  return Icon("media-playback-pause");
                 }
-            } else if (id==stopAfterTrackId) {
+            } else if (-1!=id && id==stopAfterTrackId) {
                 return Icon("media-playback-stop");
             }
         }
@@ -636,7 +636,7 @@ void PlayQueueModel::updateCurrentSong(quint32 id)
     currentSongRowNum=getRowById(currentSongId);
     emit dataChanged(index(currentSongRowNum, 0), index(currentSongRowNum, columnCount(QModelIndex())-1));
 
-    if (stopAfterTrackId==currentSongId) {
+    if (-1!=currentSongId && stopAfterTrackId==currentSongId) {
         stopAfterTrackId=-1;
         emit stop(true);
     }

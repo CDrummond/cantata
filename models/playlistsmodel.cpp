@@ -74,6 +74,9 @@ PlaylistsModel::PlaylistsModel(QObject *parent)
     connect(this, SIGNAL(playlistInfo(const QString &)), MPDConnection::self(), SLOT(playlistInfo(const QString &)));
     connect(this, SIGNAL(addToPlaylist(const QString &, const QStringList, quint32, quint32)), MPDConnection::self(), SLOT(addToPlaylist(const QString &, const QStringList, quint32, quint32)));
     connect(this, SIGNAL(moveInPlaylist(const QString &, const QList<quint32> &, quint32, quint32)), MPDConnection::self(), SLOT(moveInPlaylist(const QString &, const QList<quint32> &, quint32, quint32)));
+    newAction=new QAction(Icon("document-new"), i18n("New Playlist..."), this);
+    connect(newAction, SIGNAL(triggered(bool)), this, SIGNAL(addToNew()));
+    Action::initIcon(newAction);
     updateItemMenu();
 }
 
@@ -719,9 +722,7 @@ void PlaylistsModel::updateItemMenu()
     }
 
     itemMenu->clear();
-    QAction *act=itemMenu->addAction(Icon("document-new"), i18n("New Playlist..."), this, SIGNAL(addToNew()));
-    Action::initIcon(act);
-
+    itemMenu->addAction(newAction);
     QStringList names;
     foreach (const PlaylistItem *p, items) {
         names << p->name;

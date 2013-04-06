@@ -28,7 +28,6 @@
 #include <QStringList>
 #include <QVariantMap>
 #include <QApplication>
-
 #include "song.h"
 #include "mpdstatus.h"
 #include "mainwindow.h"
@@ -47,6 +46,7 @@ class Mpris : public QObject
     Q_PROPERTY( bool CanControl READ CanControl )
     Q_PROPERTY( bool CanPlay READ CanPlay )
     Q_PROPERTY( bool CanPause READ CanPause )
+    Q_PROPERTY( bool CanSeek READ CanSeek )
     Q_PROPERTY( bool CanGoNext READ CanGoNext )
     Q_PROPERTY( bool CanGoPrevious READ CanGoPrevious )
     Q_PROPERTY( QString PlaybackStatus READ PlaybackStatus )
@@ -66,7 +66,6 @@ class Mpris : public QObject
 
 public:
     Mpris(MainWindow *p);
-
     virtual ~Mpris() { }
 
     // org.mpris.MediaPlayer2.Player
@@ -78,8 +77,8 @@ public:
         }
     }
 
-    void PlayPause() {  mw->playPauseTrack(); }
-    void Stop() {  mw->stopPlayback(); }
+    void PlayPause() { mw->playPauseTrack(); }
+    void Stop() { mw->stopPlayback(); }
 
     void Play() {
         MPDStatus * const status = MPDStatus::self();
@@ -89,8 +88,8 @@ public:
         }
     }
 
-    void Seek(qlonglong) { }
-    void SetPosition(const QDBusObjectPath &, qlonglong) { }
+    void Seek(qlonglong pos) { emit setSeekId(-1, pos/1000000); }
+    void SetPosition(const QDBusObjectPath &, qlonglong pos) {emit setSeekId(-1, pos/1000000); }
     void OpenUri(const QString &) { }
 
     QString PlaybackStatus() {
@@ -117,6 +116,7 @@ public:
     bool CanControl() const { return true; }
     bool CanPlay() const { return MPDState_Playing!=MPDStatus::self()->state() && MPDStatus::self()->playlistLength()>0; }
     bool CanPause() const { return MPDState_Playing==MPDStatus::self()->state(); }
+    bool CanSeek() const { return -1!=MPDStatus::self()->songId(); }
     bool CanGoNext() const { return MPDState_Stopped!=MPDStatus::self()->state() && MPDStatus::self()->playlistLength()>1; }
     bool CanGoPrevious() const { return MPDState_Stopped!=MPDStatus::self()->state() && MPDStatus::self()->playlistLength()>1; }
 
@@ -151,8 +151,7 @@ Q_SIGNALS:
     // org.mpris.MediaPlayer2.Player
     void setRandom(bool toggle);
     void setRepeat(bool toggle);
-    void setSeek(quint32 song, quint32 time);
-    void setSeekId(quint32 songId, quint32 time);
+    void setSeekId(qint32 songId, quint32 time);
     void setVolume(int vol);
 
 public Q_SLOTS:

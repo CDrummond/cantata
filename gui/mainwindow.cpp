@@ -345,7 +345,6 @@ MainWindow::MainWindow(QWidget *parent)
     addPlayQueueToStoredPlaylistAction->setMenu(PlaylistsModel::self()->menu());
 
     menuButton->setMenu(mainMenu);
-    menuButton->setPopupMode(QToolButton::InstantPopup);
     volumeButton->setIcon(Icons::toolbarVolumeHighIcon);
 
     playPauseTrackButton->setDefaultAction(playPauseTrackAction);
@@ -383,9 +382,9 @@ MainWindow::MainWindow(QWidget *parent)
 
     clearPlayQueueAction->setEnabled(false);
     addStreamToPlayQueueAction->setEnabled(false);
-    savePlayQueueButton->setIcon(Icon("document-save-as"));
     savePlayQueueButton->setMenu(PlaylistsModel::self()->menu());
-    savePlayQueueButton->setToolTip(addPlayQueueToStoredPlaylistAction->toolTip());
+    savePlayQueueButton->setIcon(Icon("document-save-as"));
+    savePlayQueueButton->setToolTip(i18n("Save Play Queue"));
     clearPlayQueueButton->setDefaultAction(clearPlayQueueAction);
     randomButton->setDefaultAction(randomPlayQueueAction);
     repeatButton->setDefaultAction(repeatPlayQueueAction);

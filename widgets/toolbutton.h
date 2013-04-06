@@ -33,6 +33,7 @@ public:
     explicit ToolButton(QWidget *parent = 0);
     QSize sizeHint() const;
     void setMenu(QMenu *m);
+    void paintEvent(QPaintEvent *e);
 
 private:
     mutable QSize sh;

@@ -29,6 +29,7 @@
 #include "streamsmodel.h"
 #include "localize.h"
 #include "buddylabel.h"
+#include "icon.h"
 
 StreamCategoryDialog::StreamCategoryDialog(const QStringList &categories, QWidget *parent)
     : Dialog(parent)
@@ -51,6 +52,8 @@ StreamCategoryDialog::StreamCategoryDialog(const QStringList &categories, QWidge
     if (!icons.isEmpty()) {
         iconCombo=new QComboBox(this);
         iconCombo->addItem(i18n("No Icon"), QString());
+        int size=Icon::stdSize(fontMetrics().height()*1.5);
+        iconCombo->setIconSize(QSize(size,size));
         QMap<QString, QIcon>::ConstIterator it=icons.constBegin();
         QMap<QString, QIcon>::ConstIterator end=icons.constEnd();
 

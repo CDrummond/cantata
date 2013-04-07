@@ -85,7 +85,9 @@ StreamDialog::StreamDialog(const QStringList &categories, const QStringList &gen
         QMap<QString, QIcon>::ConstIterator end=icons.constEnd();
 
         for (; it!=end; ++it) {
-            iconCombo->addItem(it.value(), QString(), it.key());
+            if (!it.value().isNull()) {
+                iconCombo->addItem(it.value(), QString(), it.key());
+            }
         }
         connect(iconCombo, SIGNAL(currentIndexChanged(int)), SLOT(changed()));
     }

@@ -966,8 +966,9 @@ const QMap<QString, QIcon> & StreamsModel::icons()
         #endif
         QStringList names=QDir(dir).entryList(QStringList() << "*.svg");
         foreach (const QString &name, names) {
-            if (!iconMap.contains(name)) {
-                iconMap.insert(name, QIcon(dir+name));
+            QString n=QString(name).remove(".svg");
+            if (!iconMap.contains(n)) {
+                iconMap.insert(n, QIcon(dir+name));
             }
         }
     }
@@ -986,7 +987,7 @@ QIcon StreamsModel::icon(const QString &name) const
         #else
         QString dir(QString(INSTALL_PREFIX"/share/")+QCoreApplication::applicationName()+"/streamicons/");
         #endif
-        iconMap.insert(name, QFile::exists(dir+name) ? QIcon(dir+name) : QIcon());
+        iconMap.insert(name, QFile::exists(dir+name+".svg") ? QIcon(dir+name) : QIcon());
     }
 
     return iconMap[name];

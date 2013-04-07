@@ -79,6 +79,8 @@ StreamDialog::StreamDialog(const QStringList &categories, const QStringList &gen
 
     if (iconCombo) {
         iconCombo->addItem(i18n("No Icon"), QString());
+        int size=Icon::stdSize(fontMetrics().height()*1.5);
+        iconCombo->setIconSize(QSize(size,size));
         QMap<QString, QIcon>::ConstIterator it=icons.constBegin();
         QMap<QString, QIcon>::ConstIterator end=icons.constEnd();
 

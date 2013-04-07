@@ -374,7 +374,7 @@ int Settings::streamsView()
 {
     int v=version();
     QString def=ItemView::modeStr(v>=CANTATA_MAKE_VERSION(0, 5, 0)
-                                    ? ItemView::Mode_SimpleTree
+                                    ? (v<CANTATA_MAKE_VERSION(0, 9, 50) ? ItemView::Mode_SimpleTree : ItemView::Mode_DetailedTree)
                                     : ItemView::Mode_List);
     return ItemView::toMode(GET_STRING("streamsView", def));
 }

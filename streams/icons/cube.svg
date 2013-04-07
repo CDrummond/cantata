@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.1"
+   width="210"
+   height="210"
+   viewBox="0 0 210 210"
+   id="svg2"
+   inkscape:version="0.48.3.1 r9886"
+   sodipodi:docname="Nuvola apps package.svg">
+  <metadata
+     id="metadata47">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs45" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="640"
+     inkscape:window-height="480"
+     id="namedview43"
+     showgrid="false"
+     inkscape:zoom="1.1238095"
+     inkscape:cx="105"
+     inkscape:cy="105"
+     inkscape:window-x="49"
+     inkscape:window-y="24"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg2" />
+  <title
+     id="title4">Nuvola apps package</title>
+  <linearGradient
+     id="SVGID_1_"
+     gradientUnits="userSpaceOnUse"
+     x1="420.9902"
+     y1="-28.9683"
+     x2="420.9902"
+     y2="-96.5991"
+     gradientTransform="matrix(1 0 0 -1 -315.9902 -16.5996)">
+    <stop
+       offset="0"
+       stop-color="#CCF8FF"
+       id="stop7" />
+    <stop
+       offset="1"
+       stop-color="#67D4FF"
+       id="stop9" />
+  </linearGradient>
+  <path
+     fill="url(#SVGID_1_)"
+     d="M105,12.369L14.907,45.46L105,80l90.093-34.54L105,12.369z"
+     id="path11" />
+  <linearGradient
+     id="SVGID_2_"
+     gradientUnits="userSpaceOnUse"
+     x1="348.3721"
+     y1="-165.4727"
+     x2="419.7986"
+     y2="-94.6755"
+     gradientTransform="matrix(1 0 0 -1 -315.9902 -16.5996)">
+    <stop
+       offset="0"
+       stop-color="#EBFFFF"
+       id="stop14" />
+    <stop
+       offset="1"
+       stop-color="#0AB2FF"
+       id="stop16" />
+  </linearGradient>
+  <path
+     fill="url(#SVGID_2_)"
+     d="M14.907,45.46v119.32L105,197.63V80L14.907,45.46z"
+     id="path18" />
+  <linearGradient
+     id="SVGID_3_"
+     gradientUnits="userSpaceOnUse"
+     x1="478.9404"
+     y1="-166.6392"
+     x2="451.2592"
+     y2="-105.5098"
+     gradientTransform="matrix(1 0 0 -1 -315.9902 -16.5996)">
+    <stop
+       offset="0"
+       stop-color="#A2FFFF"
+       id="stop21" />
+    <stop
+       offset="1"
+       stop-color="#32C8FF"
+       id="stop23" />
+  </linearGradient>
+  <path
+     fill="url(#SVGID_3_)"
+     d="M195.093,45.46L105,80v117.63l90.093-32.85V45.46z"
+     id="path25" />
+  <linearGradient
+     id="SVGID_4_"
+     gradientUnits="userSpaceOnUse"
+     x1="421.7109"
+     y1="-64.8408"
+     x2="421.7109"
+     y2="-53.6386"
+     gradientTransform="matrix(1 0 0 -1 -315.9902 -16.5996)">
+    <stop
+       offset="0"
+       stop-color="#0673FF"
+       id="stop28" />
+    <stop
+       offset="1"
+       stop-color="#164485"
+       id="stop30" />
+  </linearGradient>
+  <path
+     fill="none"
+     stroke="#FFFFFF"
+     stroke-width="2.4"
+     stroke-linejoin="round"
+     d="M14.907,45.46L105,80l90.093-34.54 M105,80v117.63"
+     id="path34" />
+  <linearGradient
+     id="SVGID_5_"
+     gradientUnits="userSpaceOnUse"
+     x1="420.9902"
+     y1="-221.5996"
+     x2="420.9902"
+     y2="-21.5996"
+     gradientTransform="matrix(1 0 0 -1 -315.9902 -16.5996)">
+    <stop
+       offset="0"
+       stop-color="#244D80"
+       id="stop37" />
+    <stop
+       offset="1"
+       stop-color="#0176C5"
+       id="stop39" />
+  </linearGradient>
+  <path
+     fill="url(#SVGID_5_)"
+     d="M197.479,38.966L107.382,5.875L104.998,5l-2.385,0.875L12.521,38.966l-4.533,1.665v4.831v119.321v4.843l4.549,1.658l90.089,32.851l2.372,0.865l2.37-0.865l90.094-32.851l4.55-1.658v-4.843V45.462v-4.831L197.479,38.966z M195.092,164.783l-90.094,32.851l-90.093-32.851V45.462l90.093-33.092l90.094,33.092V164.783z"
+     id="path41" />
+</svg>

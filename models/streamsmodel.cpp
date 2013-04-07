@@ -960,7 +960,7 @@ const QMap<QString, QIcon> & StreamsModel::icons()
     if (!loaded) {
         loaded=true;
         #ifdef Q_OS_WIN
-        QString dir; // TODO!!! (QString(INSTALL_PREFIX"/share/")+QCoreApplication::applicationName()+"/streamicons/");
+        QString dir(QCoreApplication::applicationDirPath()+"/streamicons/");
         #else
         QString dir(QString(INSTALL_PREFIX"/share/")+QCoreApplication::applicationName()+"/streamicons/");
         #endif
@@ -983,7 +983,7 @@ QIcon StreamsModel::icon(const QString &name) const
 
     if (!iconMap.contains(name)) {
         #ifdef Q_OS_WIN
-        QString dir; // TODO!!! (QString(INSTALL_PREFIX"/share/")+QCoreApplication::applicationName()+"/streamicons/");
+        QString dir(QCoreApplication::applicationDirPath()+"/streamicons/");
         #else
         QString dir(QString(INSTALL_PREFIX"/share/")+QCoreApplication::applicationName()+"/streamicons/");
         #endif

@@ -58,7 +58,9 @@ StreamCategoryDialog::StreamCategoryDialog(const QStringList &categories, QWidge
         QMap<QString, QIcon>::ConstIterator end=icons.constEnd();
 
         for (; it!=end; ++it) {
-            iconCombo->addItem(it.value(), QString(), it.key());
+            if (!it.value().isNull()) {
+                iconCombo->addItem(it.value(), QString(), it.key());
+            }
         }
 
         layout->setWidget(row, QFormLayout::LabelRole, new BuddyLabel(i18n("Icon:"), wid, iconCombo));

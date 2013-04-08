@@ -16,7 +16,7 @@
    width="800"
    height="800"
    inkscape:version="0.48.3.1 r9886"
-   sodipodi:docname="Smiley.svg">
+   sodipodi:docname="smiley.svg">
   <metadata
      id="metadata34">
     <rdf:RDF>
@@ -44,8 +44,8 @@
      inkscape:zoom="0.295"
      inkscape:cx="400"
      inkscape:cy="400"
-     inkscape:window-x="49"
-     inkscape:window-y="24"
+     inkscape:window-x="144"
+     inkscape:window-y="456"
      inkscape:window-maximized="0"
      inkscape:current-layer="Test File" />
   <defs
@@ -70,9 +70,12 @@
     </radialGradient>
     <radialGradient
        id="grad"
-       cx=".5"
-       cy=".5"
-       r=".5">
+       cx="0"
+       cy="0"
+       r="20.075"
+       fx="0"
+       fy="0"
+       gradientUnits="userSpaceOnUse">
       <stop
          offset="0"
          stop-color="yellow"
@@ -93,36 +96,47 @@
   </defs>
   <circle
      r="20"
-     stroke="black"
-     stroke-width=".15"
-     fill="url(#grad)"
-     id="circle19" />
+     id="circle19"
+     style="fill:url(#grad);stroke:#000000;stroke-width:0.15000001"
+     cx="0"
+     cy="0"
+     sodipodi:cx="0"
+     sodipodi:cy="0"
+     sodipodi:rx="20"
+     sodipodi:ry="20"
+     transform="matrix(1.0511771,0,0,1.0476188,0.07374704,-0.02594988)" />
   <g
-     id="right">
+     id="right"
+     transform="matrix(1.0511771,0,0,1.0476188,0.07374704,-0.02594988)">
     <ellipse
        rx="2.5"
        ry="4"
        cx="-6"
        cy="-7"
-       fill="black"
        id="ellipse24"
-       d="m -3.5,-7 c 0,2.209139 -1.1192881,4 -2.5,4 -1.3807119,0 -2.5,-1.790861 -2.5,-4 0,-2.209139 1.1192881,-4 2.5,-4 1.3807119,0 2.5,1.790861 2.5,4 z" />
+       d="m -3.5,-7 c 0,2.209139 -1.1192881,4 -2.5,4 -1.3807119,0 -2.5,-1.790861 -2.5,-4 0,-2.209139 1.1192881,-4 2.5,-4 1.3807119,0 2.5,1.790861 2.5,4 z"
+       sodipodi:cx="-6"
+       sodipodi:cy="-7"
+       sodipodi:rx="2.5"
+       sodipodi:ry="4"
+       style="fill:#000000" />
     <path
-       fill="none"
-       stroke="black"
-       stroke-width=".5"
-       stroke-linecap="round"
-       d="M 10.6,2.7 a 4,4,0 0,0 4,3"
-       id="path26" />
+       d="m 10.6,2.7 a 4,4 0 0 0 4,3"
+       id="path26"
+       inkscape:connector-curvature="0"
+       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:round" />
   </g>
   <use
      xlink:href="#right"
-     transform="scale(-1,1)"
-     id="use28" />
+     transform="matrix(-1,0,0,1,0.14749408,0)"
+     id="use28"
+     x="0"
+     y="0"
+     width="42"
+     height="42" />
   <path
-     fill="none"
-     stroke="black"
-     stroke-width=".75"
-     d="M -12,5 A 13.5,13.5,0 0,0 12,5 A 13,13,0 0,1 -12,5"
-     id="path30" />
+     d="m -12.540377,5.2121443 a 14.190891,14.142854 0 0 0 25.228249,0 13.665302,13.619045 0 0 1 -25.228249,0"
+     id="path30"
+     inkscape:connector-curvature="0"
+     style="fill:none;stroke:#000000;stroke-width:0.78704739" />
 </svg>

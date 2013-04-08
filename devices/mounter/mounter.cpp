@@ -131,7 +131,8 @@ void Mounter::mount(const QString &url, const QString &mountPoint, int uid, int 
         connect(proc, SIGNAL(finished(int)), SLOT(mountResult(int)));
         proc->setProperty("mp", mountPoint);
         proc->setProperty("pid", pid);
-        proc->start(INSTALL_PREFIX"/share/cantata/mount.cifs.wrapper", QStringList() << path << mountPoint
+        proc->start(QLatin1String(INSTALL_PREFIX"/share/cantata/scripts/mount.cifs.wrapper"),
+                    QStringList() << path << mountPoint
                     << "-o" <<
                     (temp ? ("credentials="+temp->fileName()+",") : QString())+
                     "uid="+QString::number(uid)+",gid="+QString::number(gid)+

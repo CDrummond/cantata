@@ -27,7 +27,7 @@ if (NOT WIN32)
         SET( SUPPORT_SRCS ${SUPPORT_SRCS} osthumb.cpp)
         SET( SUPPORT_MOC_HDRS ${SUPPORT_MOC_HDRS} osthumb.h)
     endif (ENABLE_OVERLAYSCROLLBARS)
-    install(FILES ambiance.css radiance.css DESTINATION ${CMAKE_INSTALL_PREFIX}/share/${CMAKE_PROJECT_NAME}/)
+    install(FILES ambiance.css radiance.css DESTINATION ${CMAKE_INSTALL_PREFIX}/share/${CMAKE_PROJECT_NAME}/themes)
 endif (NOT WIN32)
 
 if (ENABLE_KDE_SUPPORT )

@@ -180,7 +180,7 @@ void GtkStyle::applyTheme(QWidget *widget)
         QString theme=GtkStyle::themeName().toLower();
         GtkProxyStyle::ScrollbarType sbType=GtkProxyStyle::SB_Standard;
         if (!theme.isEmpty()) {
-            QFile cssFile(QLatin1String(INSTALL_PREFIX"/share/")+QCoreApplication::applicationName()+"/"+theme+QLatin1String(".css"));
+            QFile cssFile(QLatin1String(INSTALL_PREFIX"/share/")+QCoreApplication::applicationName()+QLatin1String("/themes/")+theme+QLatin1String(".css"));
             if (cssFile.open(QFile::ReadOnly)) {
                 QString css=QLatin1String(cssFile.readAll());
                 QString header=css.left(100);

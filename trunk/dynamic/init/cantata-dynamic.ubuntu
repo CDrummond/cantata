@@ -17,7 +17,7 @@
 PATH=/sbin:/bin:/usr/sbin:/usr/bin
 NAME=cantata-dynamic
 DESC="Cantata MPD Dynamizer"
-DAEMON=/usr/share/cantata/cantata-dynamic
+DAEMON=/usr/share/cantata/scripts/cantata-dynamic
 CANTATA_DYNAMIC_CONF=/etc/cantata-dynamic.conf
 START_CANTATA_DYNAMIC=true
 

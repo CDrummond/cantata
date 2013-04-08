@@ -405,7 +405,7 @@ int Dynamic::getPid() const
 
 bool Dynamic::controlApp(bool isStart)
 {
-    QString cmd=QLatin1String(INSTALL_PREFIX"/share/cantata/cantata-dynamic");
+    QString cmd=QLatin1String(INSTALL_PREFIX"/share/cantata/scripts/cantata-dynamic");
     QProcess process;
 
     if (isStart) {

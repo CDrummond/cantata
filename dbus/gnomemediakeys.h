@@ -30,6 +30,7 @@ class OrgGnomeSettingsDaemonInterface;
 class OrgGnomeSettingsDaemonMediaKeysInterface;
 class QDBusPendingCallWatcher;
 class MainWindow;
+class QDBusServiceWatcher;
 
 class GnomeMediaKeys : public QObject
 {
@@ -41,10 +42,13 @@ public:
     void setEnabled(bool en);
 
 private:
+    bool daemonIsRunning();
+    void releaseKeys();
     void grabKeys();
     void disconnectDaemon();
 
 private Q_SLOTS:
+    void serviceOwnerChanged(const QString &name, const QString &oldOwner, const QString &newOwner);
     void registerFinished(QDBusPendingCallWatcher *watcher);
     void keyPressed(const QString &app, const QString &key);
     void pluginActivated(const QString &name);
@@ -53,6 +57,7 @@ private:
     MainWindow *mw;
     OrgGnomeSettingsDaemonInterface *daemon;
     OrgGnomeSettingsDaemonMediaKeysInterface *mk;
+    QDBusServiceWatcher *watcher;
 };
 
 #endif

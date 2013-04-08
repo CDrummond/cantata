@@ -767,7 +767,7 @@ bool Covers::downloadViaHttp(Job &job, JobType type)
     #if QT_VERSION < 0x050000
     u.setEncodedUrl(MPDConnection::self()->getDetails().dir.toLatin1()+QUrl::toPercentEncoding(dir, "/")+coverName.toLatin1());
     #else
-    u=QUrl(MPDConnection::self()->getDetails().dir.toLatin1()+QUrl::toPercentEncoding(Utils::getDir(dir, "/")+coverName.toLatin1());
+    u=QUrl(MPDConnection::self()->getDetails().dir.toLatin1()+QUrl::toPercentEncoding(dir, "/")+coverName.toLatin1());
     #endif
 
     job.type=type;

@@ -303,6 +303,11 @@ MainWindow::MainWindow(QWidget *parent)
     expandAllAction = ActionCollection::get()->createAction("expandall", i18n("Expand All"));
     collapseAllAction = ActionCollection::get()->createAction("collapseall", i18n("Collapse All"));
 
+    playPauseTrackAction->setEnabled(false);
+    nextTrackAction->setEnabled(false);
+    prevTrackAction->setEnabled(false);
+    enableStopActions(false);
+
     #if defined ENABLE_KDE_SUPPORT
     prevTrackAction->setGlobalShortcut(KShortcut(Qt::META + Qt::Key_Left));
     nextTrackAction->setGlobalShortcut(KShortcut(Qt::META + Qt::Key_Right));

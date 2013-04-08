@@ -368,12 +368,20 @@ public:
                 painter->fillRect(ir, border);
                 painter->fillRect(ir.adjusted(1, 1, -1, -1), inside);
                 break;
-            case GroupedView::State_StopAfter:
-                painter->fillRect(ir, border);
+            case GroupedView::State_StopAfter: {
+                ir.adjust(2, 0, -2, 0);
+                QPoint p1[5]={ QPoint(ir.x()-2, ir.y()-1), QPoint(ir.x(), ir.y()-1), QPoint(ir.x()+(size-hSize), ir.y()+hSize), QPoint(ir.x(), ir.y()+(ir.height())), QPoint(ir.x()-2, ir.y()+(ir.height())) };
+                QPoint p2[5]={ QPoint(ir.x()-1, ir.y()), QPoint(ir.x(), ir.y()), QPoint(ir.x()+(size-hSize)-1, ir.y()+hSize), QPoint(ir.x(), ir.y()+ir.height()-1), QPoint(ir.x()-1, ir.y()+ir.height()-1) };
+                QPoint p3[3]={ QPoint(ir.x(), ir.y()+1), QPoint(ir.x()+(size-hSize)-2, ir.y()+hSize), QPoint(ir.x(), ir.y()+ir.height()-2) };
+                painter->save();
+                painter->setPen(border);
+                painter->drawPolygon(p1, 5);
+                painter->drawPolygon(p3, 3);
                 painter->setPen(inside);
-                painter->drawRect(ir.adjusted(1, 1, -2, -2));
-                painter->fillRect(ir.adjusted(3, 3, -3, -3), inside);
+                painter->drawPolygon(p2, 5);
+                painter->restore();
                 break;
+            }
             case GroupedView::State_StopAfterTrack:
                 painter->setPen(border);
                 painter->drawRect(ir.adjusted(0, 0, -1, -1));
@@ -388,17 +396,15 @@ public:
                 painter->fillRect(ir.x()+size-blockSize-1, ir.y()+1, blockSize, size-2, inside);
                 break;
             }
-//            case GroupedView::State_StopAfter:
             case GroupedView::State_Playing: {
-//                bool invert=GroupedView::State_StopAfter==state;
                 ir.adjust(2, 0, -2, 0);
                 QPoint p1[5]={ QPoint(ir.x()-2, ir.y()-1), QPoint(ir.x(), ir.y()-1), QPoint(ir.x()+(size-hSize), ir.y()+hSize), QPoint(ir.x(), ir.y()+(ir.height()-1)), QPoint(ir.x()-2, ir.y()+(ir.height()-1)) };
                 QPoint p2[5]={ QPoint(ir.x()-2, ir.y()-1), QPoint(ir.x(), ir.y()-1), QPoint(ir.x()+(size-hSize), ir.y()+hSize), QPoint(ir.x(), ir.y()+ir.height()), QPoint(ir.x()-2, ir.y()+ir.height()) };
                 painter->save();
-                painter->setBrush(/*invert ? inside : */border);
-                painter->setPen(/*invert ? inside : */border);
+                painter->setBrush(border);
+                painter->setPen(border);
                 painter->drawPolygon(p1, 5);
-                painter->setBrush(/*invert ? border : */inside);
+                painter->setBrush(inside);
                 painter->drawPolygon(p2, 5);
                 painter->restore();
                 break;

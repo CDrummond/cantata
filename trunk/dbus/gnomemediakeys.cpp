@@ -29,6 +29,7 @@
 #include <QDBusConnectionInterface>
 #include <QDBusPendingReply>
 #include <QDBusPendingCallWatcher>
+#include <QDBusServiceWatcher>
 #include <QCoreApplication>
 
 static const char * constService = "org.gnome.SettingsDaemon";
@@ -40,6 +41,7 @@ GnomeMediaKeys::GnomeMediaKeys(MainWindow *parent)
     , mw(parent)
     , daemon(0)
     , mk(0)
+    , watcher(0)
 {
 }
 
@@ -55,24 +57,42 @@ static bool runningUnderKde()
 void GnomeMediaKeys::setEnabled(bool en)
 {
     if (en && !mk) {
-        // Check if the service is available
-        if (!QDBusConnection::sessionBus().interface()->isServiceRegistered(constService) && !runningUnderKde()) {
-            //...not already started, so attempt to start!
-            QDBusConnection::sessionBus().interface()->startService(constService);
-            if (!daemon) {
-                daemon = new OrgGnomeSettingsDaemonInterface(constService, constDaemonPath, QDBusConnection::sessionBus(), this);
-                connect(daemon, SIGNAL(PluginActivated(QString)), this, SLOT(pluginActivated(QString)));
-                daemon->Start();
-                return;
-            }
+        if (daemonIsRunning()) {
+            grabKeys();
         }
-        grabKeys();
     } else if (!en && mk) {
+        releaseKeys();
+        disconnectDaemon();
+        if (watcher) {
+            watcher->deleteLater();
+            watcher=0;
+        }
+    }
+}
+
+bool GnomeMediaKeys::daemonIsRunning()
+{
+    // Check if the service is available
+    if (!QDBusConnection::sessionBus().interface()->isServiceRegistered(constService) && !runningUnderKde()) {
+        //...not already started, so attempt to start!
+        QDBusConnection::sessionBus().interface()->startService(constService);
+        if (!daemon) {
+            daemon = new OrgGnomeSettingsDaemonInterface(constService, constDaemonPath, QDBusConnection::sessionBus(), this);
+            connect(daemon, SIGNAL(PluginActivated(QString)), this, SLOT(pluginActivated(QString)));
+            daemon->Start();
+            return false;
+        }
+    }
+    return true;
+}
+
+void GnomeMediaKeys::releaseKeys()
+{
+    if (mk) {
         mk->ReleaseMediaPlayerKeys(QCoreApplication::applicationName());
         disconnect(mk, SIGNAL(MediaPlayerKeyPressed(QString,QString)), this, SLOT(keyPressed(QString,QString)));
         mk->deleteLater();
         mk=0;
-        disconnectDaemon();
     }
 }
 
@@ -84,8 +104,15 @@ void GnomeMediaKeys::grabKeys()
         }
 
         QDBusPendingReply<> reply = mk->GrabMediaPlayerKeys(QCoreApplication::applicationName(), QDateTime::currentDateTime().toTime_t());
-        QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(reply, this);
-        connect(watcher, SIGNAL(finished(QDBusPendingCallWatcher *)), this, SLOT(registerFinished(QDBusPendingCallWatcher*)));
+        QDBusPendingCallWatcher *callWatcher = new QDBusPendingCallWatcher(reply, this);
+        connect(callWatcher, SIGNAL(finished(QDBusPendingCallWatcher *)), this, SLOT(registerFinished(QDBusPendingCallWatcher*)));
+
+        if (!watcher) {
+            watcher = new QDBusServiceWatcher(this);
+            watcher->setConnection(QDBusConnection::sessionBus());
+            watcher->setWatchMode(QDBusServiceWatcher::WatchForOwnerChange);
+            connect(watcher, SIGNAL(serviceOwnerChanged(QString, QString, QString)), this, SLOT(serviceOwnerChanged(QString, QString, QString)));
+        }
     }
 }
 
@@ -95,6 +122,17 @@ void GnomeMediaKeys::disconnectDaemon()
         disconnect(daemon, SIGNAL(PluginActivated(QString)), this, SLOT(pluginActivated(QString)));
         daemon->deleteLater();
         daemon=0;
+    }
+}
+
+void GnomeMediaKeys::serviceOwnerChanged(const QString &name, const QString &, const QString &)
+{
+    if (name==constService) {
+        releaseKeys();
+        disconnectDaemon();
+        if (daemonIsRunning()) {
+            grabKeys();
+        }
     }
 }
 

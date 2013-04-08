@@ -149,7 +149,9 @@ QVariantMap Mpris::Metadata() const {
         if (currentSong.disc>0) {
             metadataMap.insert("xesam:discNumber", currentSong.disc);
         }
-
+        if (currentSong.year>0) {
+            metadataMap.insert("xesam:contentCreated", QString("%04d").arg(currentSong.year));
+        }
         if (!currentSong.file.isEmpty()) {
             if (currentSong.isStream()) {
                 metadataMap.insert("xesam:url", currentSong.file);

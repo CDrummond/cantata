@@ -161,6 +161,7 @@ static inline void setResizeMode(QHeaderView *hdr, int idx, QHeaderView::ResizeM
 
 CacheTree::CacheTree(QWidget *parent)
     : QTreeWidget(parent)
+    , calculated(false)
 {
     setHeaderLabels(QStringList() << i18n("Name") << i18n("Item Count") << i18n("Space Used"));
     setAlternatingRowColors(true);

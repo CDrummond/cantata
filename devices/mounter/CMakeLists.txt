@@ -24,4 +24,4 @@ include_directories( ${QTINCLUDES} ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_B
 
 install(FILES ${_qmFile} DESTINATION ${CMAKE_INSTALL_PREFIX}/share/cantata/)
 
-install(PROGRAMS mount.cifs.wrapper DESTINATION ${CMAKE_INSTALL_PREFIX}/share/cantata/ )
+install(PROGRAMS mount.cifs.wrapper DESTINATION ${CMAKE_INSTALL_PREFIX}/share/cantata/scripts/ )

@@ -8,12 +8,12 @@
 case "$1" in
         start)
                 stat_busy 'Starting Cantata MPD Dynamizer'
-                /usr/share/cantata/cantata-dynamic server /etc/cantata-dynamic.conf &> /dev/null &&
+                /usr/share/cantata/scripts/cantata-dynamic server /etc/cantata-dynamic.conf &> /dev/null &&
                 { add_daemon cantata-dynamic; stat_done; } || stat_fail
                 ;;
         stop)
                 stat_busy 'Stopping Cantata MPD Dynamizer'
-                /usr/share/cantata/cantata-dynamic stopserver /etc/cantata-dynamic.conf &> /dev/null &&
+                /usr/share/cantata/scripts/cantata-dynamic stopserver /etc/cantata-dynamic.conf &> /dev/null &&
                 { rm_daemon cantata-dynamic; stat_done; } || stat_fail
                 ;;
         restart)

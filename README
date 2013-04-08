@@ -202,8 +202,9 @@ The list of dynamic playlists may be obtained by looking in
 
 To 'load' a dynamic playlist, all you need to do is symlink the desired one in
 ~/.config/cantata/dynamic to ~/.cache/cantata/dynamic/rules. Then you can start
-the helper by calling '/usr/bin/cantata-dynamic start'  (or first call
-'/usr/bin/cantata-dynamic stop' to stop any current playlist).
+the helper by calling '/usr/share/cantata/scripts/cantata-dynamic start'  (or 
+first call '/usr/share/cantata/scripts/cantata-dynamic stop' to stop any current
+playlist).
 
 To pass connection details, cantata-dynamic reads the same environment variables
 as mpc - namely MPD_HOST and MPD_PORT
@@ -213,7 +214,7 @@ playlist, load the 'MyPlaylist' playlist, and start this on the mpd at
 'hostname:1234' with password 'pass'
 
     # Stop current dynamic playlist
-    /usr/share/cantata/cantata-dynamic stop
+    /usr/share/cantata/scripts/cantata-dynamic stop
     # Clear the playqueue (this requires mpc)
     MPD_HOST=pass@hostname MPD_PORT=1234 mpc clear
     # 'Load' new playlist
@@ -222,7 +223,7 @@ playlist, load the 'MyPlaylist' playlist, and start this on the mpd at
     fi
     ln -s "$HOME/.config/cantata/dynamic/MyPlaylist.rules" "$HOME/.cache/cantata/dynamic/rules"
     # Restart dynamic script
-    MPD_HOST=pass@hostname MPD_PORT=1234 /usr/share/cantata/cantata-dynamic start
+    MPD_HOST=pass@hostname MPD_PORT=1234 /usr/share/cantata/scripts/cantata-dynamic start
 
 
 Dynamic Helper - Server Mode
@@ -235,7 +236,7 @@ started. e.g. The script should be started as:
 
     <prefix>/share/cantata/cantata-dynamic server <location of config file>
 
-    e.g.:  /usr/share/cantata/cantata-dynamic server /etc/cantata-dynamic.conf
+    e.g.:  /usr/share/cantata/scripts/cantata-dynamic server /etc/cantata-dynamic.conf
 
 When run as described above, the script will automatically daemonize itself.
 
@@ -290,8 +291,8 @@ one of the example init scripts (or create a new one) to
 /etc/init.d/cantata.dynamic - and create the appropriate links in /etc/rc?.d
 
 NOTE: These example script assume cantata has been installed to /usr, and that
-cantata-dynamic is in /usr/share/cantata/. If this is not the case, then these
-will need to be edited.
+cantata-dynamic is in /usr/share/cantata/scripts. If this is not the case, then
+these will need to be edited.
 
 Copy dynamic/init/cantata-dynamic.conf to /etc, and edit as appropriate.
 

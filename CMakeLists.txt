@@ -598,7 +598,7 @@ ELSE( ENABLE_KDE_SUPPORT )
 ENDIF( ENABLE_KDE_SUPPORT )
 
 if (NOT WIN32)
-    install(PROGRAMS dynamic/cantata-dynamic DESTINATION ${CMAKE_INSTALL_PREFIX}/share/${CMAKE_PROJECT_NAME}/)
+    install(PROGRAMS dynamic/cantata-dynamic DESTINATION ${CMAKE_INSTALL_PREFIX}/share/${CMAKE_PROJECT_NAME}/scripts)
     if (MTP_FOUND)
         TARGET_LINK_LIBRARIES(cantata ${MTP_LIBRARIES})
         include_directories(${MTP_INCLUDE_DIR})

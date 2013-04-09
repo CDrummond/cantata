@@ -527,7 +527,7 @@ bool StreamsModel::add(const QString &cat, const QString &name, const QString &g
     return true;
 }
 
-void StreamsModel::add(const QString &cat, const QList<StreamsModel::StreamItem *> &streams)
+void StreamsModel::add(const QString &cat, const QString &icon, const QList<StreamsModel::StreamItem *> &streams)
 {
     if (streams.isEmpty()) {
         return;
@@ -537,6 +537,7 @@ void StreamsModel::add(const QString &cat, const QList<StreamsModel::StreamItem 
         removeCategory(ci);
     }
     ci=getCategory(cat, true, true);
+    ci->icon=icon;
     beginInsertRows(createIndex(items.indexOf(ci), 0, ci), 0, streams.count()-1);
     foreach (StreamsModel::StreamItem *s, streams) {
         s->parent=ci;

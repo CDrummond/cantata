@@ -70,7 +70,6 @@ StreamsModel * StreamsModel::self()
 }
 
 const QString StreamsModel::constPrefix("cantata-");
-const QLatin1String StreamsModel::constDefaultCategoryIcon("inode-directory");
 static const QString constStreamCategoryMimeType("cantata/streams-category");
 static const QString constStreamMimeType("cantata/stream");
 static const QLatin1String constSeparator("##Cantata##");
@@ -253,7 +252,7 @@ QVariant StreamsModel::data(const QModelIndex &index, int role) const
                     return i;
                 }
             }
-            return Icon(constDefaultCategoryIcon);
+            return Icons::streamCategoryIcon;
         }
         case ItemView::Role_SubText:
             #ifdef ENABLE_KDE_SUPPORT
@@ -481,7 +480,7 @@ bool StreamsModel::save(const QString &filename, const QSet<StreamsModel::Item *
         if (selection.isEmpty() || selection.contains(c)) {
             doc.writeStartElement("category");
             doc.writeAttribute("name", c->name);
-            if (!c->icon.isEmpty() && c->icon!=constDefaultCategoryIcon) {
+            if (!c->icon.isEmpty()) {
                 doc.writeAttribute("icon", c->icon);
             }
             foreach (StreamItem *s, c->streams) {

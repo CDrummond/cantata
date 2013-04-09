@@ -37,13 +37,14 @@ public:
     static QList<WebStream *> getAll();
     static WebStream * get(const QUrl &url);
 
-    WebStream(const QString &n, const QString &r, const QUrl &u)
-        : name(n), region(r), url(u), job(0) { }
+    WebStream(const QString &n, const QString &i, const QString &r, const QUrl &u)
+        : name(n),icon(i),  region(r), url(u), job(0) { }
     virtual ~WebStream() { }
 
     virtual QList<StreamsModel::StreamItem *> parse(QIODevice *dev)=0;
 
     const QString & getName() const { return name; }
+    const QString & getIcon() const { return icon; }
     const QString & getRegion() const { return region; }
     const QUrl & getUrl() const { return url; }
     bool isDownloading() const { return 0!=job; }
@@ -59,6 +60,7 @@ private Q_SLOTS:
 
 protected:
     QString name;
+    QString icon;
     QString region;
     QUrl url;
     QNetworkReply *job;
@@ -67,24 +69,24 @@ protected:
 class IceCastWebStream : public WebStream
 {
 public:
-    IceCastWebStream(const QString &n, const QString &r, const QUrl &u)
-        : WebStream(n, r, u) { }
+    IceCastWebStream(const QString &n, const QString &i, const QString &r, const QUrl &u)
+        : WebStream(n, i, r, u) { }
     QList<StreamsModel::StreamItem *> parse(QIODevice *dev);
 };
 
 class SomaFmWebStream : public WebStream
 {
 public:
-    SomaFmWebStream(const QString &n, const QString &r, const QUrl &u)
-        : WebStream(n, r, u) { }
+    SomaFmWebStream(const QString &n, const QString &i, const QString &r, const QUrl &u)
+        : WebStream(n, i, r, u) { }
     QList<StreamsModel::StreamItem *> parse(QIODevice *dev);
 };
 
 class RadioWebStream : public WebStream
 {
 public:
-    RadioWebStream(const QString &n, const QString &r, const QUrl &u)
-        : WebStream(n, r, u) { }
+    RadioWebStream(const QString &n, const QString &i, const QString &r, const QUrl &u)
+        : WebStream(n, i, r, u) { }
     QList<StreamsModel::StreamItem *> parse(QIODevice *dev);
 };
 

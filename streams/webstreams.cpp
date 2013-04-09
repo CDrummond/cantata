@@ -50,12 +50,14 @@ QList<WebStream *> WebStream::getAll()
 
                 if (doc.isStartElement() && QLatin1String("stream")==doc.name()) {
                     QString name=doc.attributes().value("name").toString();
+                    QString icon=doc.attributes().value("icon").toString();
+                    QString region=doc.attributes().value("region").toString();
                     unsigned int type=doc.attributes().value("type").toString().toUInt();
                     QUrl url=QUrl(doc.attributes().value("url").toString());
                     switch (type) {
-                    case WS_IceCast: providers.append(new IceCastWebStream(name, doc.attributes().value("region").toString(), url)); break;
-                    case WS_SomaFm:  providers.append(new SomaFmWebStream(name, doc.attributes().value("region").toString(), url)); break;
-                    case WS_Radio:   providers.append(new RadioWebStream(name, doc.attributes().value("region").toString(), url)); break;
+                    case WS_IceCast: providers.append(new IceCastWebStream(name, icon, region, url)); break;
+                    case WS_SomaFm:  providers.append(new SomaFmWebStream(name, icon, region, url)); break;
+                    case WS_Radio:   providers.append(new RadioWebStream(name, icon, region, url)); break;
                     default: break;
                     }
                 }
@@ -107,7 +109,7 @@ void WebStream::downloadFinished()
         if (streams.isEmpty()) {
             emit error(i18nc("message \n url", "No streams downloaded from %1\n(%2)").arg(name).arg(url.toString()));
         } else {
-            StreamsModel::self()->add(name, streams);
+            StreamsModel::self()->add(name, icon, streams);
         }
     } else {
         emit error(i18nc("message \n url", "Failed to download streams from %1\n(%2)").arg(name).arg(url.toString()));

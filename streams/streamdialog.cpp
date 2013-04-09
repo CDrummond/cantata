@@ -78,7 +78,7 @@ StreamDialog::StreamDialog(const QStringList &categories, const QStringList &gen
     statusText = new QLabel(this);
 
     if (iconCombo) {
-        iconCombo->addItem(i18n("No Icon"), QString());
+        iconCombo->addItem(Icons::radioStreamIcon, QString(), QString());
         int size=Icon::stdSize(fontMetrics().height()*1.5);
         iconCombo->setIconSize(QSize(size,size));
         QMap<QString, QIcon>::ConstIterator it=icons.constBegin();

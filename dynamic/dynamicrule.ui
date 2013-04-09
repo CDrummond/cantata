@@ -157,12 +157,12 @@
       <widget class="QComboBox" name="typeCombo">
        <item>
         <property name="text">
-         <string>Include songs the match the following:</string>
+         <string>Include songs that match the following:</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Exclude songs the match the following:</string>
+         <string>Exclude songs that match the following:</string>
         </property>
        </item>
       </widget>

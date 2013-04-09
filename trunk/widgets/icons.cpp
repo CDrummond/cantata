@@ -264,6 +264,7 @@ Icon Icons::consumeIcon;
 Icon Icons::repeatIcon;
 Icon Icons::shuffleIcon;
 Icon Icons::libraryIcon;
+Icon Icons::streamCategoryIcon;
 Icon Icons::radioStreamIcon;
 Icon Icons::addRadioStreamIcon;
 Icon Icons::infoIcon;
@@ -310,6 +311,7 @@ void Icons::init()
     consumeIcon=createConsumeIcon(stdColor, highlightColor);
     menuIcon=createMenuIcon(stdColor, highlightColor);
     libraryIcon=Icon("cantata-view-media-library");
+    streamCategoryIcon=Icon(QLatin1String("oxygen")==QIcon::themeName() ? "inode-directory" : "folder-music");
     radioStreamIcon=Icon("cantata-view-radiostream");
     addRadioStreamIcon=Icon("cantata-radiostream-add");
     infoIcon=Icon("dialog-information");
@@ -411,6 +413,10 @@ void Icons::init()
     }
     #endif // Q_OS_WIN
     #endif // ENABLE_KDE_SUPPORT
+
+    if (streamCategoryIcon.isNull()) {
+        streamCategoryIcon=libraryIcon;
+    }
 }
 
 #if !defined ENABLE_KDE_SUPPORT && !defined Q_OS_WIN

@@ -45,6 +45,40 @@ class NameValidator : public QValidator
     }
 };
 
+void IconCombo::load()
+{
+    if (0==count()) {
+        addItem(Icons::radioStreamIcon, QString(), QString());
+        QMap<QString, QIcon> icons=StreamsModel::self()->icons();
+        QMap<QString, QIcon>::ConstIterator it=icons.constBegin();
+        QMap<QString, QIcon>::ConstIterator end=icons.constEnd();
+
+        for (; it!=end; ++it) {
+            if (!it.value().isNull() && !it.key().startsWith(QLatin1String("flag_"))) {
+                addItem(it.value(), QString(), it.key());
+            }
+        }
+        bool firstFlag=true;
+        for (it=icons.constBegin(); it!=end; ++it) {
+            if (!it.value().isNull() && it.key().startsWith(QLatin1String("flag_"))) {
+                if (firstFlag) {
+                    if (count()) {
+                        insertSeparator(count());
+                    }
+                    firstFlag=false;
+                }
+                addItem(it.value(), QString(), it.key());
+            }
+        }
+    }
+}
+
+void IconCombo::showEvent(QShowEvent *e)
+{
+    load();
+    ComboBox::showEvent(e);
+}
+
 StreamDialog::StreamDialog(const QStringList &categories, const QStringList &genres, QWidget *parent, bool addToPlayQueue)
     : Dialog(parent)
     , saveCombo(0)
@@ -54,21 +88,20 @@ StreamDialog::StreamDialog(const QStringList &categories, const QStringList &gen
 {
     QWidget *wid = new QWidget(this);
     QFormLayout *layout = new QFormLayout(wid);
-    QMap<QString, QIcon> icons=StreamsModel::self()->icons();
 
     layout->setMargin(0);
     if (addToPlayQueue) {
         urlEntry = new LineEdit(wid);
         saveCombo=new QComboBox(wid);
         nameEntry = new LineEdit(wid);
-        if (!icons.isEmpty()) {
-            iconCombo=new QComboBox(wid);
+        if (!StreamsModel::self()->icons().isEmpty()) {
+            iconCombo=new IconCombo(wid);
         }
     } else {
         nameEntry = new LineEdit(wid);
         urlEntry = new LineEdit(wid);
-        if (!icons.isEmpty()) {
-            iconCombo=new QComboBox(wid);
+        if (!StreamsModel::self()->icons().isEmpty()) {
+            iconCombo=new IconCombo(wid);
         }
     }
     nameEntry->setValidator(new NameValidator(this));
@@ -78,17 +111,8 @@ StreamDialog::StreamDialog(const QStringList &categories, const QStringList &gen
     statusText = new QLabel(this);
 
     if (iconCombo) {
-        iconCombo->addItem(Icons::radioStreamIcon, QString(), QString());
         int size=Icon::stdSize(fontMetrics().height()*1.5);
         iconCombo->setIconSize(QSize(size,size));
-        QMap<QString, QIcon>::ConstIterator it=icons.constBegin();
-        QMap<QString, QIcon>::ConstIterator end=icons.constEnd();
-
-        for (; it!=end; ++it) {
-            if (!it.value().isNull()) {
-                iconCombo->addItem(it.value(), QString(), it.key());
-            }
-        }
         connect(iconCombo, SIGNAL(currentIndexChanged(int)), SLOT(changed()));
     }
 
@@ -174,6 +198,7 @@ void StreamDialog::setEdit(const QString &cat, const QString &editName, const QS
 
     if (iconCombo) {
         iconCombo->blockSignals(true);
+        iconCombo->load();
         iconCombo->setCurrentIndex(0);
         for (int i=0; i<iconCombo->count(); ++i) {
             if (iconCombo->itemData(i)==editIconName) {

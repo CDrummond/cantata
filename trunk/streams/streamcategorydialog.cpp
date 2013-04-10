@@ -50,7 +50,7 @@ StreamCategoryDialog::StreamCategoryDialog(const QStringList &categories, QWidge
 
     QMap<QString, QIcon> icons=StreamsModel::self()->icons();
     if (!icons.isEmpty()) {
-        iconCombo=new QComboBox(this);
+        iconCombo=new ComboBox(this);
         iconCombo->addItem(Icons::streamCategoryIcon, QString(), QString());
         int size=Icon::stdSize(fontMetrics().height()*1.5);
         iconCombo->setIconSize(QSize(size,size));
@@ -58,11 +58,22 @@ StreamCategoryDialog::StreamCategoryDialog(const QStringList &categories, QWidge
         QMap<QString, QIcon>::ConstIterator end=icons.constEnd();
 
         for (; it!=end; ++it) {
-            if (!it.value().isNull()) {
+            if (!it.value().isNull() && !it.key().startsWith(QLatin1String("flag_"))) {
                 iconCombo->addItem(it.value(), QString(), it.key());
             }
         }
-
+        bool firstFlag=true;
+        for (it=icons.constBegin(); it!=end; ++it) {
+            if (!it.value().isNull() && it.key().startsWith(QLatin1String("flag_"))) {
+                if (firstFlag) {
+                    if (iconCombo->count()) {
+                        iconCombo->insertSeparator(iconCombo->count());
+                    }
+                    firstFlag=false;
+                }
+                iconCombo->addItem(it.value(), QString(), it.key());
+            }
+        }
         layout->setWidget(row, QFormLayout::LabelRole, new BuddyLabel(i18n("Icon:"), wid, iconCombo));
         layout->setWidget(row++, QFormLayout::FieldRole, iconCombo);
         connect(iconCombo, SIGNAL(currentIndexChanged(int)), SLOT(changed()));

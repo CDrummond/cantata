@@ -54,14 +54,14 @@
     exit is enabled.
 32. Add a new view style - 'Detailed Tree'. This uses the list-style appearance
     for treeviews - e.g. The album count appears under each artist, etc.
-33. Install cantata-dynamic to $prefix/share/cantata - as this script is not
-    intended to be run by users.
+33. Install cantata-dynamic to $prefix/share/cantata/scripts - as this script
+    is not intended to be run by users.
 34. Use com.googlecode.cantata instead of org.kde.cantata for DBUS service, etc.
 35. Add action icons to grouped-albums style playlists at the top level.
 36. Scale image in lyrics view if it is less than 300x300px
 37. Allow to move streams to different categories via drag-n-drop.
 38. Read/write device cache files in non-gui thread.
-39. Add option to save streams in mpd folder.
+39. Add option to save streams in MPD folder.
 40. GZip compress streams files.
 41. When reading cache (either MPD, or device), and the grouping (single
     tracks, or multiple artists) has changed - then dont do a rescan, just
@@ -77,7 +77,7 @@
     and font size.
 46. Initial support for Qt5.
 47. When disabling system-tray icon, first set this to not visible, and then
-    delete the item. This helps remobing the entry from the Unity menubar.
+    delete the item. This helps removing the entry from the Unity menubar.
 48. If all streams (and categories) have been removed, then remove streams xml
     file as well.
 49. Allow streams to have multiple genres.
@@ -98,55 +98,54 @@
     used, so Cantata's spin box attempts to work-around this.
 58. Improve look of Gtk3 style spinbox.
 59. Use xdg-open for "Open In File Manager" action of folder page.
-60. When searching for album information, use the album-artist of the track.
-61. Overlay-ish looking scrollbars for ambiance theme.
-62. If 'Album Artist' is empty, then store this as empty in the cache files.
+60. Overlay-ish looking scrollbars for ambiance theme.
+61. If 'Album Artist' is empty, then store this as empty in the cache files.
     This is so that when these are read back, the tag-editor has the actual
     values.
-63. If we change a genre, or year, in the tag-editor, then update views.
-64. Disable connections menu when preferences dialog is open.
-65. Allow wildcard genres. e.g. 'Rock*' for 'Hard Rock' and 'RockNRoll' in
+62. If we change a genre, or year, in the tag-editor, then update views.
+63. Disable connections menu when preferences dialog is open.
+64. Allow wildcard genres. e.g. 'Rock*' for 'Hard Rock' and 'RockNRoll' in
     dynamic rules.
-66. Handle multiple storage locations on MTP devices.
-67. Fix creation of music folder on MTP devices.
-68. Attempt to work-around lack of AlbumArtist support in libmtp. For each
+65. Handle multiple storage locations on MTP devices.
+66. Fix creation of music folder on MTP devices.
+67. Attempt to work-around lack of AlbumArtist support in libmtp. For each
     album that has tracks by different artists, set the AlbumArtist to
     'Various Artists' (This *only* works if there are no duplicate track
     numbers)
-69. Send cover files to MTP devices.
-70. If MTP track number is 0, then attempt to ascertain this from the filename.
-71. Respect ID3v2.3 / ID3v2.4 setting of tags - i.e. when save, ensure we use
+68. Send cover files to MTP devices.
+69. If MTP track number is 0, then attempt to ascertain this from the filename.
+70. Respect ID3v2.3 / ID3v2.4 setting of tags - i.e. when save, ensure we use
     the same version.
-72. Optionally start track organizer after tag editor, if changing the tags
+71. Optionally start track organizer after tag editor, if changing the tags
     indicates that the files should be renamed.
-73. Add extra option to filescheme dialog - "Track Artist (+Title)". This is
+72. Add extra option to filescheme dialog - "Track Artist (+Title)". This is
     intended to be used with Various Artist albums - so that the filename can
     also contain the track arist, if this is different to the album artist.
-74. Expand device when connected.
-75. Basic support for extracting music from audio CDs
-76. Update copy of Solid to KDE4.10.1 - adds Udisks2 support.
-77. Reduce memory usage - by having only Device/OnlineService derive from
+73. Expand device when connected.
+74. Basic support for extracting music from audio CDs
+75. Update copy of Solid to KDE4.10.1 - adds Udisks2 support.
+76. Reduce memory usage - by having only Device/OnlineService derive from
     QObject, as opposed to every artist/album/song!
-78. Fix HTTP server listening on non-loopback address.
-79. Rename 'Library' tab to 'Artists'
-80. Save, and restore, sizes of (most) dialogs.
-81. Add stream name to fragment part of URL sent to MPD. This way, when the
+77. Fix HTTP server listening on non-loopback address.
+78. Rename 'Library' tab to 'Artists'
+79. Save, and restore, sizes of (most) dialogs.
+80. Add stream name to fragment part of URL sent to MPD. This way, when the
     playqueue listing is received back from MPD, the name can be determined.
-82. Improve MPRIS interface - fix CanPlay/CanPause status update, and use micro
+81. Improve MPRIS interface - fix CanPlay/CanPause status update, and use micro
     seconds for times.
-83. Use EchoNest to retrieve artist information.
-84. Add ability to specify extra options for sshfs.
-85. Press F11 to make Cantata fullscreen.
-86. If configured to use GNOME MediaKeys, then start dbus service if it is not
+82. Use EchoNest to retrieve artist information.
+83. Add ability to specify extra options for sshfs.
+84. Press F11 to make Cantata fullscreen.
+85. If configured to use GNOME MediaKeys, then start dbus service if it is not
     already started.
-87. Implement 'Stop after current track'
-88. Add 'Stop after track' to playqueue context menu.
-89. If cropping an artist image (because it is not square), always crop from
+86. Implement 'Stop after current track'
+87. Add 'Stop after track' to playqueue context menu.
+88. If cropping an artist image (because it is not square), always crop from
     the top. This is because if we have a portrait picture (where the height
     needs adjusting), then the artist's face is likely to be nearer the top
     than the middle.
-90. Middle click volume button to mute/unmute.
-91. Stream/category icons.
+89. Middle click volume button to mute/unmute.
+90. Stream/category icons.
 
 0.9.2
 -----
@@ -277,7 +276,7 @@
     supported.)
 55. Show track listing progress when loading MTP devices.
 56. For Qt-only Linux builds, check if current icon theme has the
-    "document-save-as" icon. If not, then if the user has ether oxugen or gnome
+    "document-save-as" icon. If not, then if the user has ether oxygen or gnome
     icon theme installed - set the icon theme name to this.
 57. For Qt-only builds, allow to configure the icon theme name via Cantata's
     config file (~/.config/cantata/cantata.conf on Linux). Edit file and add
@@ -289,7 +288,7 @@
     managers.
 58. If group single tracks, or multiple artists, settings are changed, then
     rebuild library and device models from existing set of songs - as opposed
-    to re-reading all songs from mpd/device.
+    to re-reading all songs from MPD/device.
 59. If window is minimized to system tray when Cantata is terminated, then
     restore to this state when restarted.
 60. Add search line-edits, and expand/collapse all, to sync dialog.
@@ -409,8 +408,8 @@
  4. Display version number in Qt-only about dialog.
  5. When expanding interface, set max size to INT_MAX. Otherwise, on windows at
     least, the maximise button can get disabled.
- 6. If 'Music folder' in settings dialog is a http folder (path starts with
-    http://), then attempt to download cover-art from the http server.
+ 6. If 'Music folder' in settings dialog is a HTTP folder (path starts with
+    http://), then attempt to download cover-art from the HTTP server.
  7. Don't update MPD volume just after we receive a status update - as MPD
     already has that setting! Fixes an issue with pulseaudio setups - where MPD
     disconnects from pulse audio, tells cantata that volume is -1, and cantata
@@ -476,7 +475,7 @@
 33. Only ignore closeEvent if this is a 'spontaneous' event and we have a tray
     icon.
 34. Drastically reduce replay-gain calculation memory usage.
-35. Make more columns italic in replaygain dialog to make entries that will be
+35. Make more columns italic in replaygain dialog to mark entries that will be
     modified.
 36. Make TagLib optional.
 37. Adjust size of covers in grouped view, icons in views, and main cover
@@ -571,7 +570,7 @@
 23. Fix detection of some UMS devices that are already mounted at startup.
 24. Load library view covers in separate thread, as per albums view.
 25. Add expandAll (Ctrl +) / collpseAll (Ctrl -) actions to expand/collapse all
-    items of currently    focused treeview.
+    items of currently focused treeview.
 26. Emit dataChanged() for all album header items that match the album
     currently being expanded/collpased in the groupedview.
 27. Add a basic 'sync' dialog. Shows two lists; left has songs that are only in
@@ -596,7 +595,7 @@
     are rescanned).
 36. When creating/editing a SSHFS remote device, allow user to use
     KDirRequester to select music folder. (KDirRequester is passed an sftp://
-    url to obtin folder listing).
+    url to obtain folder listing).
 37. When refreshing lyrics, instead of starting at first provider and iterating
     them all again (which will result in the same hit again), start at the next
     provider. This allows all providers to be checked. Thanks to Martin
@@ -692,7 +691,7 @@
 0.5.0
 -----
  1. Add ability to calculate replaygain tags. (KDE only)
- 2. Add a VERY basic http server so that local files can be played even when
+ 2. Add a VERY basic HTTP server so that local files can be played even when
     connected to MPD from a non-local socket.
  3. Add grouped playqueue style - where album entries are grouped.
  4. Add option (in sidebar's context menu) to auto-hide the library, etc,
@@ -702,7 +701,7 @@
     folder as a device. Currently NOT in main build, to use pass
     -DENABLE_REMOTE_DEVICES=1 to cmake
  6. Add "Open File Manager" action to folder page context menu. (KDE only)
- 7. Open local files passed on commandline - if using local socket, or http
+ 7. Open local files passed on commandline - if using local socket, or HTTP
     server. (KDE only)
  8. When MPD connection is lost, indicate via message widget.
  9. Don't show base dir when editing tags of tracks on a UMS device.
@@ -789,8 +788,8 @@
     and further attempts to restart start a new startup-info, which stays until
     the timeout. This fix prevents this.
 36. Fix toolbutton icon size - helps with cleanlooks.
-37. When copying files to library, and user is a member of "audio" group - then
-    set files/dirs as writable and owned by "audio" group.
+37. When copying files to library, and user is a member of 'audio' group - then
+    set files/dirs as writable and owned by 'audio' group.
 
 0.3.0
 -----
@@ -805,7 +804,7 @@
     artist - song'
  7. German translation - thanks to Lutz Lüttke
  8. Rename 'Update Database' action to 'Refresh', as the current view is now
-    also refreshed. This cation will also completely refresh the model.
+    also refreshed. This action will also completely refresh the model.
  9. When determining cache filename, replace slashes with underscores.
 10. Improve playqueue handling when we have 1000s of entries.
 11. Fix sidebar painting for Qt styles (cleanlooks, plastique, etc.)
@@ -842,7 +841,7 @@
     tooltips.
 12. Use 'play' icon for 'replace play queue', and 'add' icon for 'add to play
     queue'
-13. In list/icon view, show actions of not selected/highlighted items at 20%
+13. In list/icon view, show actions of non selected/highlighted items at 20%
     opacity.
 14. Disable position slider when playing a stream.
 15. Basic elided-text class for Qt-only build.
@@ -968,7 +967,7 @@ SVN:Sat Oct  2 01:12:24 CEST 2010
 * caseinsensitive and locale aware sorting for library and dir view
 * searchable dirview
 * enabled autoplay on drag&drop
-* start playing again when replacing playlist and mpd has been playing before
+* start playing again when replacing playlist and MPD has been playing before
 * fixed moving around songs in playlist which are not in sequential order (Ctrl+Click -> Move)
   (all songs are moved together in sequential order onto the destination position, spaces between them disappear)
 * preserve playlist selections over refreshs (primary usefull when moving around songs in playlist)

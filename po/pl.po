@@ -2884,114 +2884,6 @@ msgstr "Czy na pewno usunąć <b>%1</b>?"
 msgid "%1 service already created!"
 msgstr ""
 
-#. i18n: file: devices/actiondialog.ui:14
-#. i18n: ectx: property (windowTitle), widget (QWidget, ActionDialog)
-#. i18n: file: devices/audiocdsettings.ui:14
-#. i18n: ectx: property (windowTitle), widget (QWidget, AudioCdSettings)
-#. i18n: file: devices/devicespage.ui:14
-#. i18n: ectx: property (windowTitle), widget (QWidget, DevicesPage)
-#. i18n: file: dynamic/dynamicpage.ui:14
-#. i18n: ectx: property (windowTitle), widget (QWidget, DynamicPage)
-#. i18n: file: dynamic/dynamicrules.ui:14
-#. i18n: ectx: property (windowTitle), widget (QWidget, DynamicRules)
-#. i18n: file: dynamic/dynamicrule.ui:14
-#. i18n: ectx: property (windowTitle), widget (QWidget, DynamicRule)
-#. i18n: file: gui/albumspage.ui:14
-#. i18n: ectx: property (windowTitle), widget (QWidget, AlbumsPage)
-#. i18n: file: gui/coverdialog.ui:14
-#. i18n: ectx: property (windowTitle), widget (QWidget, CoverDialog)
-#. i18n: file: gui/filesettings.ui:14
-#. i18n: ectx: property (windowTitle), widget (QWidget, FileSettings)
-#. i18n: file: gui/folderpage.ui:14
-#. i18n: ectx: property (windowTitle), widget (QWidget, FolderPage)
-#. i18n: file: gui/interfacesettings.ui:14
-#. i18n: ectx: property (windowTitle), widget (QWidget, InterfaceSettings)
-#. i18n: file: gui/librarypage.ui:14
-#. i18n: ectx: property (windowTitle), widget (QWidget, LibraryPage)
-#. i18n: file: gui/mainwindow.ui:14
-#. i18n: ectx: property (windowTitle), widget (QWidget, MainWindow)
-#. i18n: file: gui/playbacksettings.ui:14
-#. i18n: ectx: property (windowTitle), widget (QWidget, PlaybackSettings)
-#. i18n: file: gui/playlistspage.ui:14
-#. i18n: ectx: property (windowTitle), widget (QWidget, PlaylistsPage)
-#. i18n: file: gui/serverplaybacksettings.ui:14
-#. i18n: ectx: property (windowTitle), widget (QWidget, ServerPlaybackSettings)
-#. i18n: file: gui/serversettings.ui:14
-#. i18n: ectx: property (windowTitle), widget (QWidget, ServerSettings)
-#. i18n: file: lyrics/lyricsettings.ui:14
-#. i18n: ectx: property (windowTitle), widget (QWidget, LyricSettings)
-#. i18n: file: lyrics/lyricspage.ui:14
-#. i18n: ectx: property (windowTitle), widget (QWidget, LyricsPage)
-#. i18n: file: network/proxysettings.ui:14
-#. i18n: ectx: property (windowTitle), widget (QWidget, ProxySettings)
-#. i18n: file: online/onlineservicespage.ui:14
-#. i18n: ectx: property (windowTitle), widget (QWidget, OnlineServicesPage)
-#. i18n: file: streams/streamspage.ui:14
-#. i18n: ectx: property (windowTitle), widget (QWidget, StreamsPage)
-#. i18n: file: support/shortcutssettingspage.ui:14
-#. i18n: ectx: property (windowTitle), widget (QWidget, ShortcutsSettingsPage)
-#. i18n: file: widgets/itemview.ui:14
-#. i18n: ectx: property (windowTitle), widget (QWidget, ItemView)
-#. i18n: file: devices/actiondialog.ui:14
-#. i18n: ectx: property (windowTitle), widget (QWidget, ActionDialog)
-#. i18n: file: devices/audiocdsettings.ui:14
-#. i18n: ectx: property (windowTitle), widget (QWidget, AudioCdSettings)
-#. i18n: file: devices/devicespage.ui:14
-#. i18n: ectx: property (windowTitle), widget (QWidget, DevicesPage)
-#. i18n: file: dynamic/dynamicpage.ui:14
-#. i18n: ectx: property (windowTitle), widget (QWidget, DynamicPage)
-#. i18n: file: dynamic/dynamicrules.ui:14
-#. i18n: ectx: property (windowTitle), widget (QWidget, DynamicRules)
-#. i18n: file: dynamic/dynamicrule.ui:14
-#. i18n: ectx: property (windowTitle), widget (QWidget, DynamicRule)
-#. i18n: file: gui/albumspage.ui:14
-#. i18n: ectx: property (windowTitle), widget (QWidget, AlbumsPage)
-#. i18n: file: gui/coverdialog.ui:14
-#. i18n: ectx: property (windowTitle), widget (QWidget, CoverDialog)
-#. i18n: file: gui/filesettings.ui:14
-#. i18n: ectx: property (windowTitle), widget (QWidget, FileSettings)
-#. i18n: file: gui/folderpage.ui:14
-#. i18n: ectx: property (windowTitle), widget (QWidget, FolderPage)
-#. i18n: file: gui/interfacesettings.ui:14
-#. i18n: ectx: property (windowTitle), widget (QWidget, InterfaceSettings)
-#. i18n: file: gui/librarypage.ui:14
-#. i18n: ectx: property (windowTitle), widget (QWidget, LibraryPage)
-#. i18n: file: gui/mainwindow.ui:14
-#. i18n: ectx: property (windowTitle), widget (QWidget, MainWindow)
-#. i18n: file: gui/playbacksettings.ui:14
-#. i18n: ectx: property (windowTitle), widget (QWidget, PlaybackSettings)
-#. i18n: file: gui/playlistspage.ui:14
-#. i18n: ectx: property (windowTitle), widget (QWidget, PlaylistsPage)
-#. i18n: file: gui/serverplaybacksettings.ui:14
-#. i18n: ectx: property (windowTitle), widget (QWidget, ServerPlaybackSettings)
-#. i18n: file: gui/serversettings.ui:14
-#. i18n: ectx: property (windowTitle), widget (QWidget, ServerSettings)
-#. i18n: file: lyrics/lyricsettings.ui:14
-#. i18n: ectx: property (windowTitle), widget (QWidget, LyricSettings)
-#. i18n: file: lyrics/lyricspage.ui:14
-#. i18n: ectx: property (windowTitle), widget (QWidget, LyricsPage)
-#. i18n: file: network/proxysettings.ui:14
-#. i18n: ectx: property (windowTitle), widget (QWidget, ProxySettings)
-#. i18n: file: online/onlineservicespage.ui:14
-#. i18n: ectx: property (windowTitle), widget (QWidget, OnlineServicesPage)
-#. i18n: file: streams/streamspage.ui:14
-#. i18n: ectx: property (windowTitle), widget (QWidget, StreamsPage)
-#. i18n: file: support/shortcutssettingspage.ui:14
-#. i18n: ectx: property (windowTitle), widget (QWidget, ShortcutsSettingsPage)
-#. i18n: file: widgets/itemview.ui:14
-#. i18n: ectx: property (windowTitle), widget (QWidget, ItemView)
-#: po/rc.cpp:3 po/rc.cpp:66 po/rc.cpp:155 po/rc.cpp:266 po/rc.cpp:272
-#: po/rc.cpp:290 po/rc.cpp:341 po/rc.cpp:344 po/rc.cpp:356 po/rc.cpp:374
-#: po/rc.cpp:443 po/rc.cpp:567 po/rc.cpp:570 po/rc.cpp:576 po/rc.cpp:594
-#: po/rc.cpp:597 po/rc.cpp:621 po/rc.cpp:679 po/rc.cpp:691 po/rc.cpp:694
-#: po/rc.cpp:724 po/rc.cpp:727 po/rc.cpp:730 po/rc.cpp:799 rc.cpp:3 rc.cpp:66
-#: rc.cpp:155 rc.cpp:266 rc.cpp:272 rc.cpp:290 rc.cpp:341 rc.cpp:344
-#: rc.cpp:356 rc.cpp:374 rc.cpp:443 rc.cpp:567 rc.cpp:570 rc.cpp:576
-#: rc.cpp:594 rc.cpp:597 rc.cpp:621 rc.cpp:679 rc.cpp:691 rc.cpp:694
-#: rc.cpp:724 rc.cpp:727 rc.cpp:730 rc.cpp:799
-msgid "Form"
-msgstr "Formularz"
-
 #. i18n: file: devices/actiondialog.ui:33
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: po/rc.cpp:6 rc.cpp:6
@@ -3619,13 +3511,13 @@ msgstr "Dokładne dopasowanie:"
 #. i18n: file: dynamic/dynamicrule.ui:163
 #. i18n: ectx: property (text), item, widget (QComboBox, typeCombo)
 #: po/rc.cpp:326 rc.cpp:326
-msgid "Include songs the match the following:"
+msgid "Include songs that match the following:"
 msgstr "Zawieraj utwory posiadające w tagach:"
 
 #. i18n: file: dynamic/dynamicrule.ui:168
 #. i18n: ectx: property (text), item, widget (QComboBox, typeCombo)
 #: po/rc.cpp:329 rc.cpp:329
-msgid "Exclude songs the match the following:"
+msgid "Exclude songs that match the following:"
 msgstr "Nie zawieraj utworów posiadających w tagach:"
 
 #. i18n: file: dynamic/dynamicrule.ui:176

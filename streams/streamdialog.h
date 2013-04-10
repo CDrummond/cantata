@@ -25,13 +25,21 @@
 #define STREAMDIALOG_H
 
 #include <QSet>
-#include <QComboBox>
+#include "combobox.h"
 #include "dialog.h"
 #include "lineedit.h"
 #include "completioncombo.h"
 
 class QLabel;
 class BuddyLabel;
+
+class IconCombo : public ComboBox
+{
+public:
+    IconCombo(QWidget *p) : ComboBox(p) { }
+    void load();
+    void showEvent(QShowEvent *e);
+};
 
 class StreamDialog : public Dialog
 {
@@ -62,7 +70,7 @@ private:
     QString prevGenre;
     QString prevIconName;
     QComboBox *saveCombo;
-    QComboBox *iconCombo;
+    IconCombo *iconCombo;
     LineEdit *nameEntry;
     LineEdit *urlEntry;
     CompletionCombo *catCombo;

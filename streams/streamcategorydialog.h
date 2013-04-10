@@ -26,8 +26,8 @@
 
 #include "dialog.h"
 #include "lineedit.h"
+#include "combobox.h"
 #include <QSet>
-#include <QComboBox>
 
 class StreamCategoryDialog : public Dialog
 {
@@ -46,7 +46,7 @@ private Q_SLOTS:
 private:
     QString prevName;
     QString prevIconName;
-    QComboBox *iconCombo;
+    ComboBox *iconCombo;
     LineEdit *nameEntry;
     QSet<QString> existingCategories;
 };

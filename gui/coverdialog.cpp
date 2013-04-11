@@ -73,6 +73,12 @@ int CoverDialog::instanceCount()
     return iCount;
 }
 
+// Only really want square-ish covers!
+bool canUse(int w, int h)
+{
+    return w>90 && h>90 && (w==h || (h<=(w*1.1) && w<=(h*1.1)));
+}
+
 class CoverItem : public QListWidgetItem
 {
 public:
@@ -81,8 +87,8 @@ public:
         Type_Local,
         Type_LastFm,
         Type_Google,
-//        Type_Yahoo
-        Type_Discogs
+        Type_Discogs,
+        Type_CoverArtArchive
     };
 
     CoverItem(const QString &u, const QString &tu, QListWidget *parent)
@@ -175,19 +181,6 @@ private:
     int height;
 };
 
-//class YahooCover : public CoverItem
-//{
-//public:
-//    YahooCover(const QString &u, const QString &tu, const QImage &img, QListWidget *parent)
-//        : CoverItem(u, tu, parent) {
-//        setImage(img);
-//        setText(i18n("Yahoo!"));
-//    }
-
-//    quint32 key() const { return 0xFFFFFFFE; }
-//    Type type()  const { return Type_Yahoo; }
-//};
-
 class DiscogsCover : public CoverItem
 {
 public:
@@ -204,6 +197,19 @@ public:
 private:
     int width;
     int height;
+};
+
+class CoverArtArchiveCover : public CoverItem
+{
+public:
+    CoverArtArchiveCover(const QString &u, const QString &tu, const QImage &img, QListWidget *parent)
+        : CoverItem(u, tu, parent)  {
+        setImage(img);
+        setText("coverartarchive.org");
+    }
+
+    quint32 key() const { return 0xFFFFFFFC; }
+    Type type()  const { return Type_CoverArtArchive; }
 };
 
 class ExistingCover : public CoverItem
@@ -430,11 +436,13 @@ static const char * constWidthProperty="w";
 static const char * constHeightProperty="h";
 static const char * constSizeProperty="sz";
 static const char * constTypeProperty="type";
+static const char * constRedirectsProperty="redirects";
 static const char * constLastFmHost="ws.audioscrobbler.com";
 static const char * constGoogleHost="images.google.com";
-//static const char * constYahooHost="boss.yahooapis.com";
 static const char * constDiscogsHost="api.discogs.com";
-//static const char * constYahooApiKey=0;
+static const char * constCoverArtArchiveHost="coverartarchive.org";
+
+static const int constMaxRedirects=5;
 
 void CoverDialog::queryJobFinished()
 {
@@ -445,18 +453,25 @@ void CoverDialog::queryJobFinished()
 
     currentQuery.remove(reply);
     if(QNetworkReply::NoError==reply->error()) {
-        QByteArray resp=reply->readAll();
         QString host=reply->property(constHostProperty).toString();
-        if (constLastFmHost==host) {
-            parseLstFmQueryResponse(resp);
-        } else if (constGoogleHost==host) {
-            parseGoogleQueryResponse(resp);
-        } else if (constDiscogsHost==host) {
-            parseDiscogsQueryResponse(resp);
+        QVariant redirect = reply->header(QNetworkRequest::LocationHeader);
+        if (redirect.isValid()) {
+            int rd=reply->property(constRedirectsProperty).toInt();
+            if (rd<constMaxRedirects) {
+                sendQueryRequest(redirect.toUrl(), rd+1, host);
+            }
+        } else {
+            QByteArray resp=reply->readAll();
+            if (constLastFmHost==host) {
+                parseLstFmQueryResponse(resp);
+            } else if (constGoogleHost==host) {
+                parseGoogleQueryResponse(resp);
+            } else if (constDiscogsHost==host) {
+                parseDiscogsQueryResponse(resp);
+            } else if (constCoverArtArchiveHost==host) {
+                parseCoverArtArchiveQueryResponse(resp);
+            }
         }
-//        else if (constYahooHost==host) {
-//            parseYahooQueryResponse(resp);
-//        }
     }
     reply->deleteLater();
     if (spinner && currentQuery.isEmpty()) {
@@ -518,63 +533,93 @@ void CoverDialog::downloadJobFinished()
 
     currentQuery.remove(reply);
     if(QNetworkReply::NoError==reply->error()) {
-        QString url=reply->url().toString();
-        QByteArray data=reply->readAll();
-        FileType fileType=url.endsWith(".jpg") || url.endsWith(".jpeg") ? FT_Jpg : (url.endsWith(".png") ? FT_Png : FT_Other);
-        QImage img=QImage::fromData(data, FT_Jpg==fileType ? "JPG" : (FT_Png==fileType ? "PNG" : 0));
-        if (!img.isNull()) {
-            QString host=reply->property(constHostProperty).toString();
-            bool isLarge=reply->property(constThumbProperty).toString().isEmpty();
-            QTemporaryFile *temp=0;
-
-            if (isLarge || (reply->property(constThumbProperty).toString()==reply->property(constLargeProperty).toString())) {
-                temp=new QTemporaryFile(QDir::tempPath()+"/cantata_XXXXXX."+(FT_Jpg==fileType ? "jpg" : "png"));
-
-                if (temp->open()) {
-                    if (FT_Other==fileType) {
-                        img.save(temp, "PNG");
-                    } else {
-                        temp->write(data);
+        QString host=reply->property(constHostProperty).toString();
+        QVariant redirect = reply->header(QNetworkRequest::LocationHeader);
+        if (redirect.isValid()) {
+            int rd=reply->property(constRedirectsProperty).toInt();
+            if (rd<constMaxRedirects) {
+                QNetworkReply *j=downloadImage(redirect.toString(), dlType);
+                if (j) {
+                    j->setProperty(constRedirectsProperty, rd+1);
+                    QStringList stringProps=QStringList() << constHostProperty << constLargeProperty << constThumbProperty;
+                    QStringList intProps=QStringList() << constWidthProperty << constHeightProperty << constSizeProperty;
+                    foreach (const QString &prop, stringProps) {
+                        QVariant p=reply->property(prop.toLatin1().constData());
+                        if (p.isValid()) {
+                            j->setProperty(prop.toLatin1().constData(), p.toString());
+                        }
                     }
-                    if (tempFiles.size()>=constMaxTempFiles) {
-                        QTemporaryFile *last=tempFiles.takeLast();
-                        last->remove();
-                        delete last;
+                    foreach (const QString &prop, intProps) {
+                        QVariant p=reply->property(prop.toLatin1().constData());
+                        if (p.isValid()) {
+                            j->setProperty(prop.toLatin1().constData(), p.toInt());
+                        }
                     }
-                    temp->setProperty(constLargeProperty, reply->property(constLargeProperty));
-                    tempFiles.prepend(temp);
-                } else {
-                    delete temp;
-                    temp=0;
                 }
             }
-            if (isLarge) {
-                if (DL_LargePreview==dlType) {
-                    previewDialog()->showImage(img, reply->property(constLargeProperty).toString());
-                } else if (DL_LargeSave==dlType) {
-                    if (!temp) {
-                        MessageBox::error(this, i18n("Failed to set cover!\nCould not download to temporary file!"));
-                    } else if (saveCover(temp->fileName(), img)) {
-                        accept();
+        } else {
+            QString url=reply->url().toString();
+            QByteArray data=reply->readAll();
+            FileType fileType=url.endsWith(".jpg") || url.endsWith(".jpeg") ? FT_Jpg : (url.endsWith(".png") ? FT_Png : FT_Other);
+            QImage img=QImage::fromData(data, FT_Jpg==fileType ? "JPG" : (FT_Png==fileType ? "PNG" : 0));
+            if (!img.isNull()) {
+                bool isLarge=reply->property(constThumbProperty).toString().isEmpty();
+                QTemporaryFile *temp=0;
+
+                if (isLarge || (reply->property(constThumbProperty).toString()==reply->property(constLargeProperty).toString())) {
+                    temp=new QTemporaryFile(QDir::tempPath()+"/cantata_XXXXXX."+(FT_Jpg==fileType ? "jpg" : "png"));
+
+                    if (temp->open()) {
+                        if (FT_Other==fileType) {
+                            img.save(temp, "PNG");
+                        } else {
+                            temp->write(data);
+                        }
+                        if (tempFiles.size()>=constMaxTempFiles) {
+                            QTemporaryFile *last=tempFiles.takeLast();
+                            last->remove();
+                            delete last;
+                        }
+                        temp->setProperty(constLargeProperty, reply->property(constLargeProperty));
+                        tempFiles.prepend(temp);
+                    } else {
+                        delete temp;
+                        temp=0;
                     }
                 }
-            } else {
-                CoverItem *item=0;
-                if (constLastFmHost==host) {
-                    item=new LastFmCover(reply->property(constLargeProperty).toString(), url, img, list);
-                } else if (constGoogleHost==host) {
-                    item=new GoogleCover(reply->property(constLargeProperty).toString(), url, img,
-                                         reply->property(constWidthProperty).toInt(), reply->property(constHeightProperty).toInt(),
-                                         reply->property(constSizeProperty).toInt(), list);
-                } else if (constDiscogsHost==host) {
-                    item=new DiscogsCover(reply->property(constLargeProperty).toString(), url, img,
-                                          reply->property(constWidthProperty).toInt(), reply->property(constHeightProperty).toInt(), list);
-                }
-//                else if (constYahooHost==host) {
-//                    item=new YahooCover(reply->property(constLargeProperty).toString(), url, img, list);
-//                }
-                if (item) {
-                    insertItem(item);
+                if (isLarge) {
+                    if (DL_LargePreview==dlType) {
+                        previewDialog()->showImage(img, reply->property(constLargeProperty).toString());
+                    } else if (DL_LargeSave==dlType) {
+                        if (!temp) {
+                            MessageBox::error(this, i18n("Failed to set cover!\nCould not download to temporary file!"));
+                        } else if (saveCover(temp->fileName(), img)) {
+                            accept();
+                        }
+                    }
+                } else {
+                    CoverItem *item=0;
+                    if (constLastFmHost==host) {
+                        item=new LastFmCover(reply->property(constLargeProperty).toString(), url, img, list);
+                    } else if (constGoogleHost==host) {
+                        int w=reply->property(constWidthProperty).toInt();
+                        int h=reply->property(constHeightProperty).toInt();
+                        if (canUse(w, h)) {
+                            item=new GoogleCover(reply->property(constLargeProperty).toString(), url, img, w, h,
+                                                 reply->property(constSizeProperty).toInt(), list);
+                        }
+                    } else if (constDiscogsHost==host) {
+                        int w=reply->property(constWidthProperty).toInt();
+                        int h=reply->property(constHeightProperty).toInt();
+                        if (canUse(w, h)) {
+                            item=new DiscogsCover(reply->property(constLargeProperty).toString(), url, img, w, h, list);
+                        }
+                    } else if (constCoverArtArchiveHost==host) {
+                        item=new CoverArtArchiveCover(reply->property(constLargeProperty).toString(), url, img, list);
+                    }
+                    if (item) {
+                        insertItem(item);
+                    }
                 }
             }
         }
@@ -708,16 +753,6 @@ void CoverDialog::sendQuery()
     #endif
     sendQueryRequest(googleUrl);
 
-//    QUrl yahoo;
-//    yahoo.setScheme("http");
-//    yahoo.setHost(constYahooHost);
-//    yahoo.setPath("/ysearch/images/v1/" + fixedQuery);
-//    yahoo.addQueryItem("appid", constYahooApiKey);
-//    yahoo.addQueryItem("count", QString::number(20));
-//    yahoo.addQueryItem("start", QString::number(20 * page));
-//    yahoo.addQueryItem("format", "xml");
-//    sendQueryRequest(yahoo);
-
     QUrl discogsUrl;
     #if QT_VERSION < 0x050000
     QUrl &discogsQuery=discogsUrl;
@@ -834,11 +869,12 @@ void CoverDialog::clearTempFiles()
     }
 }
 
-void CoverDialog::sendQueryRequest(const QUrl &url)
+void CoverDialog::sendQueryRequest(const QUrl &url, int redirects, const QString &host)
 {
     QNetworkReply *j=NetworkAccessManager::self()->get(QNetworkRequest(url));
-    j->setProperty(constHostProperty, url.host());
+    j->setProperty(constHostProperty, host.isEmpty() ? url.host() : host);
     j->setProperty(constTypeProperty, (int)DL_Query);
+    j->setProperty(constRedirectsProperty, redirects);
     connect(j, SIGNAL(finished()), this, SLOT(queryJobFinished()));
     currentQuery.insert(j);
 }
@@ -881,6 +917,7 @@ QNetworkReply * CoverDialog::downloadImage(const QString &url, DownloadType dlTy
     connect(j, SIGNAL(finished()), this, SLOT(downloadJobFinished()));
     currentQuery.insert(j);
     j->setProperty(constTypeProperty, (int)dlType);
+    j->setProperty(constRedirectsProperty, 0);
     if (saving) {
         previewDialog()->downloading(url);
         connect(j, SIGNAL(downloadProgress(qint64, qint64)), preview, SLOT(progress(qint64, qint64)));
@@ -895,6 +932,7 @@ void CoverDialog::parseLstFmQueryResponse(const QByteArray &resp)
     QXmlStreamReader doc(resp);
     SizeMap urls;
     QList<SizeMap> entries;
+    QStringList musibBrainzIds;
 
     while (!doc.atEnd()) {
         doc.readNext();
@@ -908,6 +946,11 @@ void CoverDialog::parseLstFmQueryResponse(const QByteArray &resp)
                 QString url=doc.readElementText();
                 if (!size.isEmpty() && !url.isEmpty()) {
                     urls.insert(size, url);
+                }
+            } else if (inSection && QLatin1String("mbid")==doc.name()) {
+                QString id=doc.readElementText();
+                if (id.length()>4) {
+                    musibBrainzIds.append(id);
                 }
             }
         } else if (doc.isEndElement() && inSection && QLatin1String("album")==doc.name()) {
@@ -949,6 +992,14 @@ void CoverDialog::parseLstFmQueryResponse(const QByteArray &resp)
             }
         }
     }
+
+    foreach (const QString &id, musibBrainzIds) {
+        QUrl coverartUrl;
+        coverartUrl.setScheme("http");
+        coverartUrl.setHost(constCoverArtArchiveHost);
+        coverartUrl.setPath("/release/"+id);
+        sendQueryRequest(coverartUrl);
+    }
 }
 
 void CoverDialog::parseGoogleQueryResponse(const QByteArray &resp)
@@ -989,61 +1040,6 @@ void CoverDialog::parseGoogleQueryResponse(const QByteArray &resp)
         pos += rx.matchedLength();
     }
 }
-
-//void CoverDialog::parseYahooQueryResponse(const QString &resp)
-//{
-//    QXmlStreamReader xml(resp);
-
-//    while (!xml.atEnd() && !xml.hasError()) {
-//        xml.readNext();
-//        if (!xml.isStartElement() || "resultset_images"!=xml.name()) {
-//            continue;
-//        }
-
-//        while (!xml.atEnd() && !xml.hasError()) {
-//            xml.readNext();
-//            if (xml.isEndElement() && "resultset_images"==xml.name()) {
-//                break;
-//            }
-//            if (!xml.isStartElement()) {
-//                continue;
-//            }
-
-//            if ("result"==xml.name()) {
-//                QString thumbUrl;
-//                QString largeUrl;
-//                while (!xml.atEnd() && !xml.hasError()) {
-//                    xml.readNext();
-//                    const QStringRef &n = xml.name();
-//                    if (xml.isEndElement() && "result"==n) {
-//                        break;
-//                    }
-
-//                    if (!xml.isStartElement()) {
-//                        continue;
-//                    }
-
-//                    if ("thumbnail_url"==n) {
-//                        thumbUrl=xml.readElementText();
-//                    } else if ("url"==n) {
-//                        largeUrl=xml.readElementText();
-//                    }
-//                }
-
-//                if (!thumbUrl.isEmpty() && !largeUrl.isEmpty()) {
-//                    QNetworkReply *j=downloadImage(thumbUrl, DL_Thumbnail);
-//                    if (j) {
-//                        j->setProperty(constHostProperty, constYahooHost);
-//                        j->setProperty(constLargeProperty, largeUrl);
-//                        j->setProperty(constThumbProperty, thumbUrl);
-//                    }
-//                }
-//            } else {
-//                xml.skipCurrentElement();
-//            }
-//        }
-//    }
-//}
 
 void CoverDialog::parseDiscogsQueryResponse(const QByteArray &resp)
 {
@@ -1113,6 +1109,37 @@ void CoverDialog::parseDiscogsQueryResponse(const QByteArray &resp)
                                 j->setProperty(constHeightProperty, im["height"].toString().toInt());
                             }
                         }
+                    }
+                }
+            }
+        }
+    }
+}
+
+void CoverDialog::parseCoverArtArchiveQueryResponse(const QByteArray &resp)
+{
+    QJson::Parser parser;
+    bool ok=false;
+    QVariantMap parsed=parser.parse(resp, &ok).toMap();
+    if (ok && parsed.contains("images")) {
+        QVariantList images=parsed["images"].toList();
+        foreach (const QVariant &i, images) {
+            QVariantMap im=i.toMap();
+            if (im.contains("front") && im["front"].toBool() && im.contains("image") && im.contains("thumbnails")) {
+                QVariantMap thumb=im["thumbnails"].toMap();
+                QString largeUrl=im["image"].toString();
+                QString thumbUrl;
+                if (thumb.contains("small")) {
+                    thumbUrl=thumb["small"].toString();
+                } else if (thumb.contains("large")) {
+                    thumbUrl=thumb["large"].toString();
+                }
+                if (!thumbUrl.isEmpty() && !largeUrl.isEmpty()) {
+                    QNetworkReply *j=downloadImage(thumbUrl, DL_Thumbnail);
+                    if (j) {
+                        j->setProperty(constHostProperty, constCoverArtArchiveHost);
+                        j->setProperty(constLargeProperty, largeUrl);
+                        j->setProperty(constThumbProperty, thumbUrl);
                     }
                 }
             }

@@ -121,11 +121,11 @@ private:
     void insertItem(CoverItem *item);
     QNetworkReply * downloadImage(const QString &url, DownloadType dlType);
     void clearTempFiles();
-    void sendQueryRequest(const QUrl &url);
+    void sendQueryRequest(const QUrl &url, int redirects=0, const QString &host=QString());
     void parseLstFmQueryResponse(const QByteArray &resp);
     void parseGoogleQueryResponse(const QByteArray &resp);
-//    void parseYahooQueryResponse(const QByteArray &resp);
     void parseDiscogsQueryResponse(const QByteArray &resp);
+    void parseCoverArtArchiveQueryResponse(const QByteArray &resp);
     void slotButtonClicked(int button);
     bool saveCover(const QString &src, const QImage &img);
     void dragEnterEvent(QDragEnterEvent *event);

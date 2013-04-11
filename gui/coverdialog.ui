@@ -15,7 +15,7 @@
     <number>0</number>
    </property>
    <item row="0" column="0">
-    <widget class="QLineEdit" name="query"/>
+    <widget class="LineEdit" name="query"/>
    </item>
    <item row="0" column="1">
     <widget class="QToolButton" name="cancelButton">
@@ -43,6 +43,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>LineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>lineedit.h</header>
+  </customwidget>
+  </customwidgets>
  <tabstops>
   <tabstop>query</tabstop>
   <tabstop>search</tabstop>

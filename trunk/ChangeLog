@@ -25,7 +25,7 @@
     and cache items deleted.
 13. Move group warning to last stage of intial settings wizard.
 14. Basic cover fetching dialog, allowing to change downloaded cover. Currently
-    only Last.fm and Google are used to find images.
+    Last.fm, Google, and Discogs are used to find images.
 15. Use cache by default for devices.
 16. GZip compress cache files.
 17. Save remote device library settings on remote device.

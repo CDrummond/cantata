@@ -122,10 +122,10 @@ private:
     QNetworkReply * downloadImage(const QString &url, DownloadType dlType);
     void clearTempFiles();
     void sendQueryRequest(const QUrl &url);
-    void parseLstFmQueryResponse(const QString &resp);
-    void parseGoogleQueryResponse(const QString &resp);
-//    void parseYahooQueryResponse(const QString &resp);
-//    void parseDiscogsQueryResponse(const QString &resp);
+    void parseLstFmQueryResponse(const QByteArray &resp);
+    void parseGoogleQueryResponse(const QByteArray &resp);
+//    void parseYahooQueryResponse(const QByteArray &resp);
+    void parseDiscogsQueryResponse(const QByteArray &resp);
     void slotButtonClicked(int button);
     bool saveCover(const QString &src, const QImage &img);
     void dragEnterEvent(QDragEnterEvent *event);

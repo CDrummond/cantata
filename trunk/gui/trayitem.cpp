@@ -24,9 +24,9 @@
 #include "trayitem.h"
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KMenu>
-#include <KDE/KNotification>
 #include <QPixmap>
-#else
+#endif
+#ifndef Q_OS_WIN
 #include "notify.h"
 #endif
 #include "localize.h"
@@ -41,7 +41,9 @@ TrayItem::TrayItem(MainWindow *p)
     , mw(p)
     , trayItem(0)
     , trayItemMenu(0)
+    #ifndef Q_OS_WIN
     , notification(0)
+    #endif
 {
 }
 
@@ -127,13 +129,6 @@ void TrayItem::trayItemScrollRequested(int delta, Qt::Orientation orientation)
         }
     }
 }
-
-void TrayItem::notificationClosed()
-{
-    if (sender() == notification) {
-        notification=0;
-    }
-}
 #else
 void TrayItem::trayItemClicked(QSystemTrayIcon::ActivationReason reason)
 {
@@ -165,46 +160,28 @@ void TrayItem::songChanged(const Song &song, bool isPlaying)
                                 .arg(song.title).arg(song.artist).arg(album)
                             : i18nc("Song by Artist on Album (track duration)", "%1 by %2 on %3 (%4)")
                                 .arg(song.title).arg(song.artist).arg(album).arg(Song::formattedTime(song.time));
-            #ifdef ENABLE_KDE_SUPPORT
-            QPixmap *coverPixmap = 0;
-            if (mw->coverWidget->isValid()) {
-                coverPixmap = const_cast<QPixmap*>(mw->coverWidget->pixmap());
-            }
-
-            if (Settings::self()->showPopups() && isPlaying) {
-                if (notification) {
-                    notification->close();
-                }
-                notification = new KNotification("CurrentTrackChanged", mw);
-                connect(notification, SIGNAL(closed()), this, SLOT(notificationClosed()));
-                notification->setTitle(i18n("Now playing"));
-                notification->setText(text);
-                if (coverPixmap) {
-                    notification->setPixmap(*coverPixmap);
-                }
-                notification->sendEvent();
-            }
-
             if (trayItem) {
+                #ifdef ENABLE_KDE_SUPPORT
                 trayItem->setToolTip("cantata", i18n("Cantata"), text);
 
                 // Use the cover as icon pixmap.
-                if (coverPixmap) {
-                    trayItem->setToolTipIconByPixmap(*coverPixmap);
+                if (mw->coverWidget->isValid()) {
+                    QPixmap *coverPixmap = const_cast<QPixmap*>(mw->coverWidget->pixmap());
+                    if (coverPixmap) {
+                        trayItem->setToolTipIconByPixmap(*coverPixmap);
+                    }
                 }
-            }
-            #elif defined Q_OS_WIN
-            // The pure Qt implementation needs both, the tray icon and the setting checked.
-            if (trayItem) {
+                #elif defined Q_OS_WIN
+                trayItem->setToolTip(i18n("Cantata")+"\n\n"+text);
+                // The pure Qt implementation needs both, the tray icon and the setting checked.
                 if (Settings::self()->showPopups() && isPlaying) {
                     trayItem->showMessage(i18n("Cantata"), text, QSystemTrayIcon::Information, 5000);
                 }
+                #else
                 trayItem->setToolTip(i18n("Cantata")+"\n\n"+text);
+                #endif // ENABLE_KDE_SUPPORT
             }
-            #else
-            if (trayItem) {
-                trayItem->setToolTip(i18n("Cantata")+"\n\n"+text);
-            }
+            #ifndef Q_OS_WIN
             if (Settings::self()->showPopups() && isPlaying) {
                 if (!notification) {
                     notification=new Notify(this);

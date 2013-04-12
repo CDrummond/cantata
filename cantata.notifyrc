@@ -1,8 +1,0 @@
-[Global]
-IconName=cantata
-Comment=Cantata - MPD Client
-
-[Event/CurrentTrackChanged]
-Name=Current track changed
-Comment=The track that is currently playing has changed
-Action=Popup

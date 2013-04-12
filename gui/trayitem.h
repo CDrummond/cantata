@@ -29,11 +29,12 @@
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KStatusNotifierItem>
 class KMenu;
-class KNotification;
 #else
 #include <QSystemTrayIcon>
 #include "icon.h"
 class QMenu;
+#endif
+#ifndef Q_OS_WIN
 class Notify;
 #endif
 class MainWindow;
@@ -78,7 +79,6 @@ private Q_SLOTS:
     #ifdef ENABLE_KDE_SUPPORT
     void clicked();
     void trayItemScrollRequested(int delta, Qt::Orientation orientation);
-    void notificationClosed();
     #else
     void trayItemClicked(QSystemTrayIcon::ActivationReason reason);
     #endif
@@ -88,10 +88,11 @@ private:
     #ifdef ENABLE_KDE_SUPPORT
     KStatusNotifierItem *trayItem;
     KMenu *trayItemMenu;
-    KNotification *notification;
     #else
     QSystemTrayIcon *trayItem;
     QMenu *trayItemMenu;
+    #endif
+    #ifndef Q_OS_WIN
     Notify *notification;
     #endif
 };

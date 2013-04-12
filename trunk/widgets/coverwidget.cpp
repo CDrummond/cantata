@@ -177,7 +177,7 @@ void CoverWidget::update(const QPixmap &p)
 {
     QSize pixSize=size()-QSize(constBorder*2, constBorder*2);
     setPixmap(p.size()==pixSize ? p : p.scaled(pixSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
-    img=QImage();
+    img=p.toImage();
     empty=true;
 }
 
@@ -186,13 +186,17 @@ void CoverWidget::update(const Song &s)
     if (s.albumArtist()!=current.albumArtist() || s.album!=current.album || s.isStream()!=current.isStream()) {
         current=s;
         if (!s.albumArtist().isEmpty() && !s.album.isEmpty()) {
-            Covers::Image img=Covers::self()->get(s);
-            valid=!img.img.isNull();
+            Covers::Image cImg=Covers::self()->get(s);
+            valid=!cImg.img.isNull();
             if (valid) {
-                update(img.img);
-                coverFileName=img.fileName;
-                emit coverImage(img.img);
-                emit coverFile(img.fileName);
+                update(cImg.img);
+                coverFileName=cImg.fileName;
+                emit coverImage(cImg.img);
+                emit coverFile(cImg.fileName);
+            } else {
+                // We ned to set the image here, so that TrayItem gets the correct 'noCover' image
+                // ...but if Covers does eventually download a cover, we dont want valid->noCover->valid
+                img=stdPixmap(current.isStream() && !current.isCdda()).toImage();
             }
         } else {
             valid=false;
@@ -275,17 +279,6 @@ void CoverWidget::resizeEvent(QResizeEvent *e)
 {
     int sz=qMax(e->size().width(), e->size().height());
     resize(sz, sz);
-}
-
-const QImage & CoverWidget::image() const
-{
-    if (img.isNull()) {
-        const QPixmap *pix = pixmap();
-        if (pix && !pix->isNull()) {
-            img=pix->toImage();
-        }
-    }
-    return img;
 }
 
 // This commented out section draws a rounded cover - but all other covers are square, so not

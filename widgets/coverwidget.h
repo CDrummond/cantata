@@ -45,7 +45,7 @@ public:
     bool isEmpty() const { return empty; }
     bool isValid() const { return !empty && valid; }
     const QString & fileName() const { return coverFileName; }
-    const QImage &image() const;
+    const QImage &image() const { return img; }
 
 Q_SIGNALS:
     void coverImage(const QImage &img);

@@ -455,8 +455,16 @@ QList<StreamsModel::StreamItem *> RadioWebStream::parse(QIODevice *dev)
             } else if ("</tr>"==line) {
                 if (entry.streams.count()) {
                     qSort(entry.streams);
-                    QString name=QLatin1String("National")==entry.location ? entry.name : (entry.name+" ("+entry.location+")");
+                    QString name;
                     QUrl url=entry.streams.at(0).url;
+
+                    if (QLatin1String("National")==entry.location || entry.name.endsWith("("+entry.location+")")) {
+                        name=entry.name;
+                    } else if (entry.name.endsWith(")")) {
+                        name=entry.name.left(entry.name.length()-1)+", "+entry.location+")";
+                    } else {
+                        name=entry.name+" ("+entry.location+")";
+                    }
 
                     if (!names.contains(name) && !name.isEmpty() && url.isValid()) {
                         QString genre=fixGenres(entry.comment);

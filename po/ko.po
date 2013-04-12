@@ -2700,7 +2700,7 @@ msgstr "Ogg"
 
 #: online/jamendosettingsdialog.cpp:39
 msgid "Streaming format:"
-msgstr "스트팀 형식:"
+msgstr "스트림 형식:"
 
 #: online/magnatuneservice.cpp:161
 #, fuzzy
@@ -3591,8 +3591,8 @@ msgid ""
 "your existing streams. You can then re-import these to the new location "
 "(after you have toggled the setting).</i>"
 msgstr ""
-"<i><b>참고:</b> 스트림을 저장할 위치를 바꾼다면, (즉, '스트림 목록을 음악 폴더에"
-" 저장' 옵션을 바꾸어서) 해당 폴더에 저장된 스트림만 보여줍니다. 따라서 이 설정을 "
+"<i><b>참고:</b> 스트림을 저장할 위치를 바꾼다면, (즉, '음악 폴더에 스트림 항목 "
+"저장' 옵션을 바꾸어서) 해당 폴더에 저장된 스트림만 보여줍니다. 따라서 이 설정을 "
 "바꾸기 전에 현재 스트림을 내보내기를 추천합니다. 설정을 바꾼 다음 스트림을 새로운"
 " 위치로 다시 불러올 수 있습니다.</i>"
 
@@ -3600,14 +3600,14 @@ msgstr ""
 #. i18n: ectx: property (windowTitle), widget (QWizard, InitialSettingsWizard)
 #: po/rc.cpp:377 rc.cpp:377
 msgid "Cantata First Run"
-msgstr "칸타타 처음 실행"
+msgstr "처음으로 칸타타 실행"
 
 #. i18n: file: gui/initialsettingswizard.ui:27
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: po/rc.cpp:380 rc.cpp:380
 #, fuzzy
 msgid "Welcome to Cantata"
-msgstr "칸타타에 오신걸 환영합니다"
+msgstr "칸타타로 맞이합니다"
 
 #. i18n: file: gui/initialsettingswizard.ui:50
 #. i18n: ectx: property (text), widget (QLabel, label_2)
@@ -3646,7 +3646,7 @@ msgid ""
 "the relevant details, and use the 'Connect' button to test the connection."
 msgstr ""
 "아래 설정은 칸타타에서 기본적으로 필요한 정보입니다. 관련 상세정보를 입력해 "
-"주시고,연결해 보려면 '연결' 단추를 누릅니다."
+"주시고, 연결해 보려면 '연결' 단추를 누릅니다."
 
 #. i18n: file: gui/initialsettingswizard.ui:132
 #. i18n: ectx: property (text), widget (BuddyLabel, hostLabel)
@@ -3792,13 +3792,13 @@ msgstr "표지:"
 #. i18n: ectx: property (text), widget (BuddyLabel, libraryArtistImageLabel)
 #: po/rc.cpp:455 rc.cpp:455
 msgid "Show artist images:"
-msgstr "연주자 이미지 표시:"
+msgstr "연주자 이미지 보기:"
 
 #. i18n: file: gui/interfacesettings.ui:84
 #. i18n: ectx: property (text), widget (BuddyLabel, label_6)
 #: po/rc.cpp:458 rc.cpp:458
 msgid "Show album year:"
-msgstr "앨범연도 표시:"
+msgstr "앨범연도 보기:"
 
 #. i18n: file: gui/interfacesettings.ui:126
 #. i18n: ectx: property (text), widget (QLabel, label_8)
@@ -4062,7 +4062,7 @@ msgstr "상세"
 #. i18n: ectx: property (text), widget (BuddyLabel, dynamizerPortLabel)
 #: po/rc.cpp:639 rc.cpp:639
 msgid "Dynamizer port:"
-msgstr "활동 포트"
+msgstr "활동 포트:"
 
 #. i18n: file: gui/serversettings.ui:126
 #. i18n: ectx: property (text), widget (BuddyLabel, coverNameLabel)
@@ -4268,7 +4268,7 @@ msgstr "이름"
 #: po/rc.cpp:801 rc.cpp:801
 msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
-msgstr "사용자 이메일"
+msgstr "이메일"
 
 #: replaygain/rgdialog.cpp:129
 msgid "Album Gain"

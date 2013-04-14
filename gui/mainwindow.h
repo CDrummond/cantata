@@ -291,6 +291,7 @@ public Q_SLOTS:
     void outputsUpdated(const QList<Output> &outputs);
     void updateConnectionsMenu();
     void controlConnectionsMenu(bool enable=true);
+    void controlDynamicButton();
 
 private:
     void enableStopActions(bool enable);

@@ -139,7 +139,7 @@ VolumeSliderEventHandler::VolumeSliderEventHandler(MainWindow *w)
 
 bool VolumeSliderEventHandler::eventFilter(QObject *obj, QEvent *event)
 {
-    if (QEvent::Wheel==event->type()) {
+    if (QEvent::Wheel==event->type() && (!MPDConnection::self()->isMuted() || !qstrcmp("VolumeControl", obj->metaObject()->className()))) {
         int numDegrees = static_cast<QWheelEvent *>(event)->delta() / 8;
         int numSteps = numDegrees / 15;
         if (numSteps > 0) {
@@ -340,6 +340,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     volumeSliderEventHandler = new VolumeSliderEventHandler(this);
     volumeControl = new VolumeControl(volumeButton);
+    volumeControl->installEventFilter(volumeSliderEventHandler);
     volumeControl->installSliderEventFilter(volumeSliderEventHandler);
     volumeButton->installEventFilter(new VolumeButtonEventHandler(this));
 

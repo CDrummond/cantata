@@ -31,7 +31,7 @@
 #include <QTextStream>
 #include <QFile>
 #include <qglobal.h>
-#ifndef Q_OS_WIN
+#if !defined Q_OS_WIN && !defined QT_NO_STYLE_GTK
 #include "gtkproxystyle.h"
 #include "windowmanager.h"
 #if QT_VERSION < 0x050000
@@ -44,7 +44,7 @@ static bool useFullGtkStyle=false;
 
 static inline void setup()
 {
-    #if !defined Q_OS_WIN
+    #if !defined Q_OS_WIN && !defined QT_NO_STYLE_GTK
     static bool init=false;
     if (!init) {
         init=true;
@@ -111,7 +111,7 @@ void GtkStyle::drawSelection(const QStyleOptionViewItemV4 &opt, QPainter *painte
 // Copied from musique
 QString GtkStyle::themeName()
 {
-    #ifdef Q_OS_WIN
+    #if defined Q_OS_WIN || defined QT_NO_STYLE_GTK
     return QString();
     #else
     static QString name;
@@ -154,7 +154,7 @@ QString GtkStyle::themeName()
             }
         }
 
-         #if QT_VERSION < 0x050000
+        #if QT_VERSION < 0x050000
         // Fall back to gconf
         if (name.isEmpty()) {
             name = QGtkStyle::getGConfString(QLatin1String("/desktop/gnome/interface/gtk_theme"));
@@ -165,7 +165,7 @@ QString GtkStyle::themeName()
     #endif
 }
 
-#ifndef Q_OS_WIN
+#if !defined Q_OS_WIN && !defined QT_NO_STYLE_GTK
 static GtkProxyStyle *style=0;
 #endif
 static bool symbolicIcons=false;
@@ -173,7 +173,7 @@ static bool lightIcons=false;
 
 void GtkStyle::applyTheme(QWidget *widget)
 {
-    #if defined Q_OS_WIN
+    #if defined Q_OS_WIN || defined QT_NO_STYLE_GTK
     Q_UNUSED(widget)
     #else
     if (widget && isActive()) {
@@ -215,7 +215,7 @@ void GtkStyle::applyTheme(QWidget *widget)
 
 void GtkStyle::cleanup()
 {
-    #if !defined Q_OS_WIN && defined ENABLE_OVERLAYSCROLLBARS
+    #if !defined Q_OS_WIN && !defined QT_NO_STYLE_GTK && defined ENABLE_OVERLAYSCROLLBARS
     if (style) {
         style->destroySliderThumb();
     }

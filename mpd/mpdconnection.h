@@ -179,6 +179,7 @@ public:
     long version() const { return ver; }
     static bool isPlaylist(const QString &file);
     int unmuteVolume() { return unmuteVol; }
+    bool isMuted() { return -1!=unmuteVol; }
 
 public Q_SLOTS:
     void reconnect();

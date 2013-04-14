@@ -956,7 +956,8 @@ void FancyTabWidget::contextMenuEvent(QContextMenuEvent* e) {
     iconOnlyAct->setCheckable(true);
     iconOnlyAct->setChecked(Mode_IconOnlyLargeSidebar==mode_ || Mode_IconOnlySmallSidebar==mode_ ||
                             Mode_IconOnlySideTabs==mode_ || Mode_IconOnlyTopTabs==mode_ ||
-                            Mode_IconOnlyBotTabs==mode_ || Mode_IconOnlyTopBar==mode_);
+                            Mode_IconOnlyBotTabs==mode_ || Mode_IconOnlyTopBar==mode_ ||
+                            Mode_IconOnlyBottomBar==mode_);
     iconOnlyAct->setData(0);
     connect(iconOnlyAct, SIGNAL(triggered()), this, SLOT(SetMode()));
     modeMenu->addSeparator();
@@ -1018,7 +1019,8 @@ void FancyTabWidget::SetMode()
         } else {
             bool iconOnly=Mode_IconOnlyLargeSidebar==mode_ || Mode_IconOnlySmallSidebar==mode_ ||
                           Mode_IconOnlySideTabs==mode_ || Mode_IconOnlyTopTabs==mode_ ||
-                          Mode_IconOnlyBotTabs==mode_ || Mode_IconOnlyBottomBar==mode_;
+                          Mode_IconOnlyBotTabs==mode_ || Mode_IconOnlyBottomBar==mode_ ||
+                          Mode_IconOnlyTopBar==mode_;
             switch (data) {
             case Mode_LargeSidebar: SetMode(iconOnly ? Mode_IconOnlyLargeSidebar : Mode_LargeSidebar); break;
             case Mode_SmallSidebar: SetMode(iconOnly ? Mode_IconOnlySmallSidebar : Mode_SmallSidebar); break;

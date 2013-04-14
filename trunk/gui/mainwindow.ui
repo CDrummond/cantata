@@ -185,7 +185,10 @@
          <property name="spacing">
           <number>0</number>
          </property>
-         <item>    
+         <item>
+          <widget class="ToolButton" name="stopDynamicButton" />
+         </item>
+         <item>
           <widget class="QLabel" name="dynamicLabel">
            <property name="font">
             <font>

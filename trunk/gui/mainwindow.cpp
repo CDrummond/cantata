@@ -600,6 +600,8 @@ MainWindow::MainWindow(QWidget *parent)
     #endif
 
     dynamicLabel->setVisible(false);
+    stopDynamicButton->setVisible(false);
+    stopDynamicButton->setDefaultAction(Dynamic::self()->stopAct());
     StdActions::self()->addWithPriorityAction->setVisible(false);
     setPriorityAction->setVisible(false);
     setPriorityAction->setMenu(StdActions::self()->addWithPriorityAction->menu());
@@ -677,6 +679,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(MPDConnection::self(), SIGNAL(dirChanged()), SLOT(checkMpdDir()));
     connect(Dynamic::self(), SIGNAL(error(const QString &)), SLOT(showError(const QString &)));
     connect(Dynamic::self(), SIGNAL(running(bool)), dynamicLabel, SLOT(setVisible(bool)));
+    connect(Dynamic::self(), SIGNAL(running(bool)), this, SLOT(controlDynamicButton()));
     connect(StdActions::self()->refreshAction, SIGNAL(triggered(bool)), this, SLOT(refresh()));
     connect(StdActions::self()->refreshAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(update()));
     connect(connectAction, SIGNAL(triggered(bool)), this, SLOT(connectToMpd()));
@@ -1273,6 +1276,11 @@ void MainWindow::controlConnectionsMenu(bool enable)
     foreach(QAction *act, connectionsAction->menu()->actions()) {
         act->setEnabled(enable);
     }
+}
+
+void MainWindow::controlDynamicButton()
+{
+    stopDynamicButton->setVisible(dynamicLabel->isVisible() && PAGE_DYNAMIC!=tabWidget->current_index());
 }
 
 void MainWindow::readSettings()
@@ -2365,6 +2373,7 @@ void MainWindow::cropPlayQueue()
 
 void MainWindow::currentTabChanged(int index)
 {
+    controlDynamicButton();
     switch(index) {
     #ifdef ENABLE_DEVICES_SUPPORT
     case PAGE_DEVICES: // Need library to be loaded to check if song exists...

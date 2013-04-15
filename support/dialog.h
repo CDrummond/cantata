@@ -29,7 +29,7 @@
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KDialog>
 struct Dialog : public KDialog {
-    Dialog(QWidget *parent, const QString &name=QString());
+    Dialog(QWidget *parent, const QString &name=QString(), const QSize &defSize=QSize());
     virtual ~Dialog();
     #ifdef ENABLE_OVERLAYSCROLLBARS
     int exec();
@@ -90,7 +90,7 @@ public:
       DelayedPopup = 1
     };
 
-    Dialog(QWidget *parent, const QString &name=QString());
+    Dialog(QWidget *parent, const QString &name=QString(), const QSize &defSize=QSize());
     virtual ~Dialog();
 
     void setCaption(const QString &cap) { setWindowTitle(cap); }

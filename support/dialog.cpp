@@ -44,7 +44,7 @@ int Dialog::exec()
 #include <KDE/KConfig>
 #include <KDE/KConfigGroup>
 
-Dialog::Dialog(QWidget *parent, const QString &name)
+Dialog::Dialog(QWidget *parent, const QString &name, const QSize &defSize)
     : KDialog(parent)
 {
     if (!name.isEmpty()) {
@@ -53,6 +53,8 @@ Dialog::Dialog(QWidget *parent, const QString &name)
         cfgSize=cfg.readEntry("size", QSize());
         if (!cfgSize.isEmpty()) {
             KDialog::resize(cfgSize);
+        } else if (!defSize.isEmpty()) {
+            KDialog::resize(defSize);
         }
     }
 }
@@ -95,7 +97,7 @@ static QDialogButtonBox::StandardButton mapType(int btn) {
     }
 }
 
-Dialog::Dialog(QWidget *parent, const QString &name)
+Dialog::Dialog(QWidget *parent, const QString &name, const QSize &defSize)
     : QDialog(parent)
     , buttonTypes(0)
     , mw(0)
@@ -108,6 +110,8 @@ Dialog::Dialog(QWidget *parent, const QString &name)
         cfgSize=cfg.contains("size") ? cfg.value("size").toSize() : QSize();
         if (!cfgSize.isEmpty()) {
             QDialog::resize(cfgSize);
+        } else if (!defSize.isEmpty()) {
+            QDialog::resize(defSize);
         }
     }
 }

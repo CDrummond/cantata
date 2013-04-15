@@ -35,6 +35,7 @@ ServerPlaybackSettings::ServerPlaybackSettings(QWidget *p)
     replayGain->addItem(i18n("None"), QVariant("off"));
     replayGain->addItem(i18n("Track"), QVariant("track"));
     replayGain->addItem(i18n("Album"), QVariant("album"));
+    replayGain->addItem(i18n("Auto"), QVariant("auto"));
     connect(MPDConnection::self(), SIGNAL(replayGain(const QString &)), this, SLOT(replayGainSetting(const QString &)));
     connect(MPDConnection::self(), SIGNAL(outputsUpdated(const QList<Output> &)), this, SLOT(updateOutpus(const QList<Output> &)));
     connect(MPDConnection::self(), SIGNAL(stateChanged(bool)), this, SLOT(mpdConnectionStateChanged(bool)));

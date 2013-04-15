@@ -984,8 +984,9 @@ void MPDConnection::parseIdleReturn(const QByteArray &data)
             if (!playListUpdated) {
                 playListChanges();
             }
-        } else if (!statusUpdated && (line == "changed: player" || line == "changed: mixer" || line == "changed: options" )) {
+        } else if (!statusUpdated && (line == "changed: player" || line == "changed: mixer" || line == "changed: options")) {
             getStatus();
+            getReplayGain();
             statusUpdated=true;
         } else if (line == "changed: output") {
             outputs();

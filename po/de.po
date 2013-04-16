@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-04-15 19:38+0100\n"
-"PO-Revision-Date: 2013-04-08 08:28+0100\n"
+"PO-Revision-Date: 2013-04-15 23:27+0200\n"
 "Last-Translator: Lutz Lüttke <lumpilou@gmail.com>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.5.5\n"
+"X-Generator: Lokalize 1.5\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
 #: devices/actiondialog.cpp:102
@@ -1422,6 +1422,8 @@ msgid ""
 "Discogs\n"
 "%1 x %2"
 msgstr ""
+"Discogs\n"
+"%1 x %2"
 
 #: gui/coverdialog.cpp:225
 msgctxt ""
@@ -2173,9 +2175,8 @@ msgid "Track"
 msgstr "Stück"
 
 #: gui/serverplaybacksettings.cpp:38
-#, fuzzy
 msgid "Auto"
-msgstr "Automatisches Überspringen"
+msgstr "Automatisch"
 
 #: gui/serverplaybacksettings.cpp:120
 msgid ""

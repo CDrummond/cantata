@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-04-15 19:38+0100\n"
-"PO-Revision-Date: 2013-04-11 19:51+0200\n"
+"PO-Revision-Date: 2013-04-15 21:56+0200\n"
 "Last-Translator: Pavel Fric <pavelfric@seznam.cz>\n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
 "Language: cs\n"
@@ -1423,6 +1423,8 @@ msgid ""
 "Discogs\n"
 "%1 x %2"
 msgstr ""
+"Discogs\n"
+"%1 x %2"
 
 #: gui/coverdialog.cpp:225
 msgctxt ""
@@ -2172,9 +2174,8 @@ msgid "Track"
 msgstr "Skladba"
 
 #: gui/serverplaybacksettings.cpp:38
-#, fuzzy
 msgid "Auto"
-msgstr "Automaticky přeskočit"
+msgstr "Automaticky"
 
 #: gui/serverplaybacksettings.cpp:120
 msgid ""

@@ -36,7 +36,6 @@ msgstr "로컬 음악 라이브러리"
 
 #: devices/actiondialog.cpp:183 devices/albumdetailsdialog.cpp:100
 #: gui/preferencesdialog.cpp:91 widgets/groupedview.cpp:253
-#, fuzzy
 msgid "Audio CD"
 msgstr "오디오 CD"
 
@@ -2180,7 +2179,7 @@ msgstr "곡"
 #: gui/serverplaybacksettings.cpp:38
 #, fuzzy
 msgid "Auto"
-msgstr "자동 건너뜀"
+msgstr "자동"
 
 #: gui/serverplaybacksettings.cpp:120
 msgid ""

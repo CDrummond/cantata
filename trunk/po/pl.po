@@ -2192,9 +2192,8 @@ msgid "Track"
 msgstr "Utwór"
 
 #: gui/serverplaybacksettings.cpp:38
-#, fuzzy
 msgid "Auto"
-msgstr "Automatycznie pomiń"
+msgstr "Automatycznie"
 
 #: gui/serverplaybacksettings.cpp:120
 msgid ""

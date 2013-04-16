@@ -454,7 +454,6 @@ quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime 
 
     MusicLibraryItemArtist *artistItem = 0;
     MusicLibraryItemAlbum *albumItem = 0;
-    MusicLibraryItemSong *songItem = 0;
     Song song;
     quint32 xmlDate=0;
     QString unknown=i18n("Unknown");
@@ -520,8 +519,7 @@ quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime 
                 song.file=attributes.value("file").toString();
                 if (QLatin1String("true")==attributes.value("playlist").toString()) {
                     song.type=Song::Playlist;
-                    songItem = new MusicLibraryItemSong(song, albumItem);
-                    albumItem->append(songItem);
+                    albumItem->append(new MusicLibraryItemSong(song, albumItem));
                     song.type=Song::Standard;
                 } else {
                     if (!baseFolder.isEmpty() && song.file.startsWith(baseFolder)) {
@@ -575,8 +573,7 @@ quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime 
                     }
 
                     song.fillEmptyFields();
-                    songItem = new MusicLibraryItemSong(song, albumItem);
-                    albumItem->append(songItem);
+                    albumItem->append(new MusicLibraryItemSong(song, albumItem));
                     albumItem->addGenre(song.genre);
                     artistItem->addGenre(song.genre);
                     addGenre(song.genre);
@@ -627,8 +624,7 @@ void MusicLibraryItemRoot::add(const QSet<Song> &songs)
             albumItem = artistItem->album(s);
         }
 
-        MusicLibraryItemSong *songItem = new MusicLibraryItemSong(s, albumItem);
-        albumItem->append(songItem);
+        albumItem->append(new MusicLibraryItemSong(s, albumItem));
         albumItem->addGenre(s.genre);
         artistItem->addGenre(s.genre);
         addGenre(s.genre);
@@ -646,7 +642,6 @@ void MusicLibraryItemRoot::toggleGrouping()
     clearItems();
     MusicLibraryItemArtist *artistItem = 0;
     MusicLibraryItemAlbum *albumItem = 0;
-    MusicLibraryItemSong *songItem = 0;
 
     foreach (Song currentSong, songs) {
         if (Song::Standard!=currentSong.type && Song::Playlist!=currentSong.type) {
@@ -660,8 +655,7 @@ void MusicLibraryItemRoot::toggleGrouping()
             albumItem = artistItem->album(currentSong);
         }
 
-        songItem = new MusicLibraryItemSong(currentSong, albumItem);
-        albumItem->append(songItem);
+        albumItem->append(new MusicLibraryItemSong(currentSong, albumItem));
         albumItem->addGenre(currentSong.genre);
         artistItem->addGenre(currentSong.genre);
         addGenre(currentSong.genre);

@@ -33,14 +33,33 @@ static const int constMaxActive=8;
 Job::Job()
     : abortRequested(false)
     , finished(false)
+    , thread(0)
 {
-    moveToThread(this);
+}
+
+Job::~Job()
+{
+    stop();
+}
+
+void Job::start()
+{
+    if (!thread) {
+        thread=new QThread();
+        moveToThread(thread);
+        thread->start();
+        connect(this, SIGNAL(exec()), this, SLOT(run()), Qt::QueuedConnection);
+        emit exec();
+    }
 }
 
 void Job::stop()
 {
     abortRequested=true;
-    Utils::stopThread(this);
+    if (thread) {
+        Utils::stopThread(thread);
+        thread=0;
+    }
     deleteLater();
 }
 

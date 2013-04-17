@@ -31,20 +31,27 @@ class Job : public QThread
     Q_OBJECT
 public:
     Job();
-    virtual ~Job() { }
+    virtual ~Job();
 
     void requestAbort() { abortRequested=true; }
+    void start();
     void stop();
     void setFinished(bool f);
     bool success() { return finished; }
 
+private Q_SLOTS:
+    virtual void run() =0;
+
 Q_SIGNALS:
+    void exec();
     void progress(int);
     void done();
 
 protected:
     bool abortRequested;
     bool finished;
+private:
+    QThread *thread;
 };
 
 class JobController : public QObject

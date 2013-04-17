@@ -627,7 +627,7 @@ void RgDialog::tagReaderDone()
         return;
     }
 
-    t->stop();
+    JobController::self()->finishedWith(t);
     tagReader=0;
 
     state=State_Idle;

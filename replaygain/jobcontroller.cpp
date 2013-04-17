@@ -55,7 +55,7 @@ void Job::start()
 
 void Job::stop()
 {
-    abortRequested=true;
+    requestAbort();
     if (thread) {
         Utils::stopThread(thread);
         thread=0;

@@ -33,7 +33,7 @@ public:
     Job();
     virtual ~Job();
 
-    void requestAbort() { abortRequested=true; }
+    virtual void requestAbort() { abortRequested=true; }
     void start();
     void stop();
     void setFinished(bool f);

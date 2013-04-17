@@ -151,6 +151,8 @@
 92. Add support for 'Auto' replaygain setting.
 93. When opening ffmpeg codec (for replaygain), try to open for 'float'
     version.
+94. If compiled with both ffmpeg and mpg123, then prefer mpg123 for mp3 files
+    if ffmpeg does not have mp3float codec.
 
 0.9.2
 -----

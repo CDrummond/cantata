@@ -462,3 +462,8 @@ size_t FfmpegInput::readOnePacket()
         handle->needNewFrame = TRUE;
     }
 }
+
+bool FfmpegInput::isFloatCodec() const
+{
+    return handle && handle->codec && QString(QLatin1String(handle->codec->name)).endsWith(QLatin1String("float"));
+}

@@ -30,6 +30,7 @@ public:
     float * buffer() const;
     bool setChannelMap(int *st) const;
     size_t readFrames();
+    bool isFloatCodec() const;
 
 private:
     size_t readOnePacket();

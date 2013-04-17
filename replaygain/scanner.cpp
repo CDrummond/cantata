@@ -102,24 +102,30 @@ void Scanner::setFile(const QString &fileName)
 
 void Scanner::run()
 {
-    #if MPG123_FOUND
-    if (file.endsWith(".mp3", Qt::CaseInsensitive)) {
-        Mpg123Input *mpg123=new Mpg123Input(file);
-        if (*mpg123) {
-            input=mpg123;
-        } else {
-            delete mpg123;
-        }
+    bool ffmpegIsFloat=false;
+    #ifdef FFMPEG_FOUND
+    FfmpegInput *ffmpeg=new FfmpegInput(file);
+    if (*ffmpeg) {
+        input=ffmpeg;
+        ffmpegIsFloat=ffmpeg->isFloatCodec();
+    } else {
+        delete ffmpeg;
+        ffmpeg=0;
     }
     #endif
 
-    #ifdef FFMPEG_FOUND
-    if (!input) {
-        FfmpegInput *ffmpeg=new FfmpegInput(file);
-        if (*ffmpeg) {
-            input=ffmpeg;
+    #if MPG123_FOUND
+    if (file.endsWith(".mp3", Qt::CaseInsensitive) && (!input || !ffmpegIsFloat)) {
+        Mpg123Input *mpg123=new Mpg123Input(file);
+        if (*mpg123) {
+            input=mpg123;
+            #ifdef FFMPEG_FOUND
+            if (ffmpeg) {
+                delete ffmpeg;
+            }
+            #endif
         } else {
-            delete ffmpeg;
+            delete mpg123;
         }
     }
     #endif

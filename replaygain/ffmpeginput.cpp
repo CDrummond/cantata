@@ -141,6 +141,13 @@ FfmpegInput::FfmpegInput(const QString &fileName)
         #endif
         // Find the decoder for the video stream, and open codec...
         handle->codec = avcodec_find_decoder(handle->codecContext->codec_id);
+
+        QString floatCodec=QLatin1String(handle->codec->name)+QLatin1String("float");
+        AVCodec *possibleFloatCodec = avcodec_find_decoder_by_name(floatCodec.toLatin1().constData());
+        if (possibleFloatCodec) {
+            handle->codec = possibleFloatCodec;
+        }
+
         if (!handle->codec ||
             #if LIBAVCODEC_VERSION_MAJOR >= 53
             avcodec_open2(handle->codecContext, handle->codec, NULL) < 0)

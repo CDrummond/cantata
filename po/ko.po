@@ -155,22 +155,18 @@ msgid ""
 msgstr "임시 파일을 만들 수 없음.<br/>(MTP 장치로 변환에 필요)<hr/>%1"
 
 #: devices/actiondialog.cpp:523
-#, fuzzy
 msgid "Failed to read source file.<br/><br/<hr/>%1"
 msgstr "원본 파일을 읽을 수 없음.<br/><br/<hr/>%1"
 
 #: devices/actiondialog.cpp:526
-#, fuzzy
 msgid "Failed to write to destination file.<br/><br/<hr/>%1"
 msgstr "대상 파일을 쓸 수 없음.<br/>%1"
 
 #: devices/actiondialog.cpp:529
-#, fuzzy
 msgid "No space left on device.<br/><br/<hr/>%1"
 msgstr "장치에 여유 공간이 없음.<br/><br/<hr/>%1"
 
 #: devices/actiondialog.cpp:532
-#, fuzzy
 msgid "Failed to update metadata.<br/><br/<hr/>%1"
 msgstr "메타데이터를 업데이트할 수 없음.<hr/>%1"
 
@@ -180,12 +176,10 @@ msgid ""
 msgstr "곡을 내려받을 수 없음 - 너무 많은 전송"
 
 #: devices/actiondialog.cpp:538
-#, fuzzy
 msgid "Failed to download track.<br/><br/<hr/>%1"
 msgstr "곡을 내려받을 수 없음.<hr/>%1"
 
 #: devices/actiondialog.cpp:541
-#, fuzzy
 msgid "Failed to lock device.<hr/>%1"
 msgstr "장치를 잠글 수 없음.<hr/>%1"
 
@@ -211,7 +205,6 @@ msgid "Retry"
 msgstr "다시 시도"
 
 #: devices/actiondialog.cpp:650
-#, fuzzy
 msgid ""
 "<tr><td align=\"right\">Artist:</td><td>%1</td></tr><tr><td align=\"right"
 "\">Album:</td><td>%2</td></tr><tr><td align=\"right\">Track:</td><td>%3</"
@@ -222,7 +215,6 @@ msgstr ""
 "td></tr></table>"
 
 #: devices/actiondialog.cpp:659
-#, fuzzy
 msgid ""
 "<tr><td align=\"right\">Source file:</td><td>%1</td></tr><tr><td align="
 "\"right\">Destination file:</td><td>%2</td></tr>"
@@ -260,7 +252,6 @@ msgstr ""
 
 #: devices/actiondialog.cpp:701 devices/fsdevice.cpp:765
 #: online/onlineservice.cpp:134 online/onlineservice.cpp:161
-#, fuzzy
 msgid "Saving cache"
 msgstr "캐시 저장"
 
@@ -321,7 +312,6 @@ msgid ""
 msgstr "'제목', '연주자', '음반연주자', '음반'의 첫 글자를 대문자로 만듭니다."
 
 #: devices/albumdetailsdialog.cpp:288 tags/tageditor.cpp:488
-#, fuzzy
 msgid "Adjust track number by:"
 msgstr "곡 번호 조정:"
 
@@ -349,22 +339,18 @@ msgid "MusicBrainz"
 msgstr "MusicBrainz"
 
 #: devices/cddb.cpp:53
-#, fuzzy
 msgid "Data Track"
 msgstr "자료 수록"
 
 #: devices/cddb.cpp:137 devices/musicbrainz.cpp:154
-#, fuzzy
 msgid "Failed to open CD device"
 msgstr "CD 장치를 읽을 수 없음"
 
 #: devices/cddb.cpp:286
-#, fuzzy
 msgid "Failed to create CDDB connection"
 msgstr "CDDB 연결 안됨"
 
 #: devices/cddb.cpp:292 devices/cddb.cpp:319
-#, fuzzy
 msgid "No matches found in CDDB"
 msgstr "CDDB에 자료 없음"
 
@@ -393,12 +379,10 @@ msgid "Title"
 msgstr "제목"
 
 #: devices/cddbselectiondialog.cpp:55
-#, fuzzy
 msgid "Disc Selection"
 msgstr "디스크 선택"
 
 #: devices/cddbselectiondialog.cpp:67
-#, fuzzy
 msgid "Disc %1"
 msgstr "디스크 %1"
 
@@ -493,12 +477,10 @@ msgid "Encoder"
 msgstr "인코더"
 
 #: devices/devicepropertieswidget.cpp:228
-#, fuzzy
 msgid "Transcode to %1"
 msgstr "%1로 변환"
 
 #: devices/devicepropertieswidget.cpp:259
-#, fuzzy
 msgctxt "name (size free)"
 msgid "%1 (%2 free)"
 msgstr "%1 (%2 남음)"
@@ -567,17 +549,14 @@ msgstr ""
 "돌이킬 수 없습니다."
 
 #: devices/devicespage.cpp:514
-#, fuzzy
 msgid "Are you sure you wish to forget '%1'?"
 msgstr "'%1'을 무시할까요?"
 
 #: devices/devicespage.cpp:534
-#, fuzzy
 msgid "Are you sure you wish to eject Audio CD '%1 - %2'?"
 msgstr "오디오 CD '%1 - %2'을 뺄까요?"
 
 #: devices/devicespage.cpp:535
-#, fuzzy
 msgid "Are you sure you wish to disconnect '%1'?"
 msgstr "'%1'을 끊을까요?"
 
@@ -586,7 +565,6 @@ msgid "Please close other dialogs first."
 msgstr "다른 대화창을 먼저 닫으시기 바랍니다."
 
 #: devices/encoders.cpp:78
-#, fuzzy
 msgctxt ""
 "Feel free to redirect the english Wikipedia link to a local version, if it "
 "exists."
@@ -878,7 +856,6 @@ msgid "Dance"
 msgstr "Ballad"
 
 #: devices/filenameschemedialog.cpp:94
-#, fuzzy
 msgid ""
 "<p>The following variables will be replaced with their corresponding meaning "
 "for each track name.</p><p><table border=\"1\"><tr><th><em>Button</em></"
@@ -915,7 +892,6 @@ msgstr "업데이트 중..."
 
 #: devices/fsdevice.cpp:760 online/onlineservice.cpp:88
 #: online/onlineservice.cpp:156
-#, fuzzy
 msgid "Reading cache"
 msgstr "캐시 읽음"
 
@@ -945,7 +921,6 @@ msgid "Updating folders..."
 msgstr "폴더 업데이트 중..."
 
 #: devices/mtpdevice.cpp:254
-#, fuzzy
 msgid "Updating files..."
 msgstr "파일 업데이트 중..."
 
@@ -961,7 +936,6 @@ msgid "Not Connected"
 msgstr "연결 안됨"
 
 #: devices/musicbrainz.cpp:320
-#, fuzzy
 msgid "%1 (Disc %2)"
 msgstr "%1 (디스크 %2)"
 
@@ -1011,7 +985,6 @@ msgid "Not Available"
 msgstr "사용 불가"
 
 #: devices/remotefsdevice.cpp:313
-#, fuzzy
 msgid "Failed to resolve connection details for %1"
 msgstr "%1의 상세정보에 연결 안됨"
 
@@ -1098,7 +1071,6 @@ msgid " (recommended)"
 msgstr " (추천)"
 
 #: dynamic/dynamic.cpp:101
-#, fuzzy
 msgid "Start Dynamic Playlist"
 msgstr "동적 연주목록 시작"
 
@@ -1255,7 +1227,6 @@ msgid "Dynamic Rules"
 msgstr "동적 규정"
 
 #: dynamic/dynamicrulesdialog.cpp:264
-#, fuzzy
 msgid ""
 "<p>Cantata will query your library using all of the rules listed. The list "
 "of <i>Include</i> rules will be used to build a set of songs that can be "
@@ -1307,7 +1278,6 @@ msgid "Albums"
 msgstr "음반"
 
 #: gui/cachesettings.cpp:166
-#, fuzzy
 msgid "Name"
 msgstr "이름"
 
@@ -1316,7 +1286,6 @@ msgid "Item Count"
 msgstr "항목 수"
 
 #: gui/cachesettings.cpp:166
-#, fuzzy
 msgid "Space Used"
 msgstr "사용 공간"
 
@@ -1334,7 +1303,6 @@ msgstr ""
 "하지 않도록 설정한 경우입니다). 아래는 캐시를 사용한 내역입니다."
 
 #: gui/cachesettings.cpp:219
-#, fuzzy
 msgid "Covers"
 msgstr "음반표지"
 
@@ -1357,17 +1325,14 @@ msgid "Magnatune"
 msgstr "매그나튠(Magnatune)"
 
 #: gui/cachesettings.cpp:225
-#, fuzzy
 msgid "Delete All"
 msgstr "모두 지우기"
 
 #: gui/cachesettings.cpp:263
-#, fuzzy
 msgid "Delete all '%1' items?"
 msgstr "'%1' 항목을 모두 지울까요?"
 
 #: gui/cachesettings.cpp:263 gui/cachesettings.cpp:271
-#, fuzzy
 msgid "Delete Cache Items"
 msgstr "캐시 항목을 지웁니다"
 
@@ -1380,7 +1345,6 @@ msgid "Last.fm"
 msgstr "Last.fm"
 
 #: gui/coverdialog.cpp:154
-#, fuzzy
 msgctxt ""
 "name\n"
 "width x height (file size)"
@@ -1410,6 +1374,8 @@ msgid ""
 "Discogs\n"
 "%1 x %2"
 msgstr ""
+"Discogs\n"
+"%1 x %2"
 
 #: gui/coverdialog.cpp:225
 msgctxt ""
@@ -1427,7 +1393,6 @@ msgid "Image"
 msgstr "이미지"
 
 #: gui/coverdialog.cpp:246
-#, fuzzy
 msgid "Downloading..."
 msgstr "내려받는 중..."
 
@@ -1444,13 +1409,11 @@ msgstr ""
 "<p>이 음반의 표지가 이미 있는데, 쓰기가 되지 않습니다.<p></p><i>%1</i></p>"
 
 #: gui/coverdialog.cpp:422
-#, fuzzy
 msgctxt "Album by Artist"
 msgid "%1 by %2"
 msgstr "%2의 %1"
 
 #: gui/coverdialog.cpp:595
-#, fuzzy
 msgid ""
 "Failed to set cover!\n"
 "Could not download to temporary file!"
@@ -1475,7 +1438,6 @@ msgid "File is already in list!"
 msgstr "파일이 이미 목록에 있음!"
 
 #: gui/coverdialog.cpp:815
-#, fuzzy
 msgid "Failed to read image!"
 msgstr "이미지를 읽을 수 없음!"
 
@@ -1497,7 +1459,6 @@ msgid "Remove"
 msgstr "지우기"
 
 #: gui/coverdialog.cpp:1194
-#, fuzzy
 msgid ""
 "Failed to set cover!\n"
 "Could not make copy!"
@@ -1514,7 +1475,6 @@ msgstr ""
 "원본을 백업할 수 없음!"
 
 #: gui/coverdialog.cpp:1234
-#, fuzzy
 msgid ""
 "Failed to set cover!\n"
 "Could not copy file to '%1'!"
@@ -1523,7 +1483,6 @@ msgstr ""
 "'%1'에 복사할 수 없음!"
 
 #: gui/folderpage.cpp:44
-#, fuzzy
 msgid "Open In File Manager"
 msgstr "파일 관리자 열기"
 
@@ -1548,17 +1507,14 @@ msgid "Source: %1"
 msgstr "출처: %1"
 
 #: gui/infopage.cpp:503
-#, fuzzy
 msgid "Similar Artists"
 msgstr "비슷한 연주자"
 
 #: gui/initialsettingswizard.cpp:103
-#, fuzzy
 msgid "Connection Established"
 msgstr "연결됨"
 
 #: gui/initialsettingswizard.cpp:103
-#, fuzzy
 msgid "Connection Failed"
 msgstr "연결 안됨"
 
@@ -1590,7 +1546,6 @@ msgid "Simple Tree"
 msgstr "단순 나무 모양"
 
 #: gui/interfacesettings.cpp:45
-#, fuzzy
 msgid "Detailed Tree"
 msgstr "상세 나무 모양"
 
@@ -1619,7 +1574,6 @@ msgstr "'여러 연주자'로 묶음"
 #. i18n: file: gui/interfacesettings.ui:27
 #. i18n: ectx: attribute (title), widget (QWidget, tab)
 #: gui/librarypage.cpp:83 gui/mainwindow.cpp:290 po/rc.cpp:413 rc.cpp:413
-#, fuzzy
 msgid "Artists"
 msgstr "연주자"
 
@@ -1724,7 +1678,6 @@ msgid "Stop Immediately"
 msgstr "바로 정지"
 
 #: gui/mainwindow.cpp:262
-#, fuzzy
 msgid "Stop After Current Track"
 msgstr "지금 곡 다음 정지"
 
@@ -1765,7 +1718,6 @@ msgid "Shuffle"
 msgstr "뒤섞기"
 
 #: gui/mainwindow.cpp:272
-#, fuzzy
 msgid "Add Stream URL"
 msgstr "스트림 URL 추가"
 
@@ -1873,7 +1825,6 @@ msgid "Search Play Queue..."
 msgstr "연주순서 찾기..."
 
 #: gui/mainwindow.cpp:549
-#, fuzzy
 msgid "Server information..."
 msgstr "서버 정보..."
 
@@ -1917,7 +1868,6 @@ msgid "About Cantata"
 msgstr "칸타타에 대하여"
 
 #: gui/mainwindow.cpp:1440
-#, fuzzy
 msgctxt "Qt-only"
 msgid ""
 "<b>Cantata %1</b><br/><br/>MPD client.<br/><br/>(c) Craig Drummond 2011-2013."
@@ -1951,7 +1901,6 @@ msgstr ""
 "tr></table></p>"
 
 #: gui/mainwindow.cpp:1471
-#, fuzzy
 msgid "Server Information"
 msgstr "서버 정보"
 
@@ -1980,12 +1929,10 @@ msgid "%1 - %2 :: Cantata"
 msgstr "%1 - %2 :: 칸타타"
 
 #: gui/mainwindow.cpp:1795
-#, fuzzy
 msgid "(Stream)"
 msgstr "(스트림)"
 
 #: gui/mainwindow.cpp:1797
-#, fuzzy
 msgctxt "title - artist"
 msgid "%1 - %2"
 msgstr "%1 - %2"
@@ -2040,7 +1987,6 @@ msgid "Stop immediately (or after fadout)"
 msgstr "바로 정지 (또는 페이드아웃 다음)"
 
 #: gui/playbacksettings.cpp:37
-#, fuzzy
 msgid "Stop after current track"
 msgstr "지금 곡 다음 정지"
 
@@ -2049,7 +1995,6 @@ msgid "Rename"
 msgstr "이름 바꾸기"
 
 #: gui/playlistspage.cpp:183
-#, fuzzy
 msgid ""
 "Are you sure you wish to remove the selected playlists?\n"
 "This cannot be undone."
@@ -2058,7 +2003,6 @@ msgstr ""
 "돌이킬 수 없습니다."
 
 #: gui/playlistspage.cpp:183
-#, fuzzy
 msgid "Remove Playlists?"
 msgstr "연주목록 지웁니까?"
 
@@ -2103,12 +2047,10 @@ msgid "Playback Settings"
 msgstr "연주 설정"
 
 #: gui/preferencesdialog.cpp:80
-#, fuzzy
 msgid "Files"
 msgstr "파일"
 
 #: gui/preferencesdialog.cpp:80
-#, fuzzy
 msgid "File Settings"
 msgstr "파일 설정"
 
@@ -2133,7 +2075,6 @@ msgid "Lyrics Settings"
 msgstr "가사 설정"
 
 #: gui/preferencesdialog.cpp:91
-#, fuzzy
 msgid "Audio CD Settings"
 msgstr "오디오 CD 설정"
 
@@ -2177,7 +2118,6 @@ msgid "Track"
 msgstr "곡"
 
 #: gui/serverplaybacksettings.cpp:38
-#, fuzzy
 msgid "Auto"
 msgstr "자동"
 
@@ -2338,7 +2278,6 @@ msgid "ReplayGain"
 msgstr "리플레이게인"
 
 #: gui/stdactions.cpp:78
-#, fuzzy
 msgid "Set Cover"
 msgstr "표지 설정"
 
@@ -2351,7 +2290,6 @@ msgid "Back"
 msgstr "돌아가기"
 
 #: gui/trayitem.cpp:159
-#, fuzzy
 msgctxt "Song by Artist on Album"
 msgid "%1 by %2 on %3"
 msgstr "%3에서 %2의 %1"
@@ -2504,17 +2442,14 @@ msgid "Refresh Device"
 msgstr "장치 새로 읽기"
 
 #: models/devicesmodel.cpp:108
-#, fuzzy
 msgid "Connect Device"
 msgstr "장치 연결"
 
 #: models/devicesmodel.cpp:109
-#, fuzzy
 msgid "Disconnect Device"
 msgstr "장치 분리"
 
 #: models/devicesmodel.cpp:111
-#, fuzzy
 msgid "Edit CD Details"
 msgstr "CD 상세정보 수정"
 
@@ -2556,28 +2491,23 @@ msgid "Audio File"
 msgstr "음악 파일"
 
 #: models/onlineservicesmodel.cpp:75
-#, fuzzy
 msgid "Configure Online Service"
 msgstr "온라인 서비스 설정"
 
 #: models/onlineservicesmodel.cpp:76
-#, fuzzy
 msgid "Refresh Online Service"
 msgstr "온라인 서비스 새로 읽기"
 
 #: models/onlineservicesmodel.cpp:77
-#, fuzzy
 msgid "Connect Online Service"
 msgstr "온라인 서비스 연결"
 
 #: models/onlineservicesmodel.cpp:78
-#, fuzzy
 msgid "Disconnect Online Service"
 msgstr "온라인 서비스 연결 닫기"
 
 #: models/onlineservicesmodel.cpp:227 online/onlineservice.cpp:235
 #: online/onlineservice.h:96
-#, fuzzy
 msgid "Not Loaded"
 msgstr "읽지 않음"
 
@@ -2615,17 +2545,14 @@ msgstr[0] "한 스트림"
 msgstr[1] "%1 스트림"
 
 #: models/streamsmodel.cpp:375
-#, fuzzy
 msgid "Failed to parse downloaded stream list."
 msgstr "내려받은 스트림 항목을 분석할 수 없음."
 
 #: models/streamsmodel.cpp:379
-#, fuzzy
 msgid "Failed to read downloaded stream list."
 msgstr "내려받은 스트림 항목을 읽을 수 없음."
 
 #: models/streamsmodel.cpp:382
-#, fuzzy
 msgid "Failed to download stream list."
 msgstr "스트림 항목을 내려받을 수 없음."
 
@@ -2703,7 +2630,6 @@ msgstr ""
 "%3"
 
 #: online/jamendosettingsdialog.cpp:33
-#, fuzzy
 msgid "Jamendo Settings"
 msgstr "Jamendo 설정"
 
@@ -2720,7 +2646,6 @@ msgid "Streaming format:"
 msgstr "스트림 형식:"
 
 #: online/magnatuneservice.cpp:161
-#, fuzzy
 msgid "Streaming"
 msgstr "스트림"
 
@@ -2737,7 +2662,6 @@ msgid "WAV"
 msgstr "WAV"
 
 #: online/magnatunesettingsdialog.cpp:34
-#, fuzzy
 msgid "Magnatune Settings"
 msgstr "Magnatune 설정"
 
@@ -2778,22 +2702,18 @@ msgid "Password:"
 msgstr "비밀번호:"
 
 #: online/magnatunesettingsdialog.cpp:55
-#, fuzzy
 msgid "Downloads:"
 msgstr "내려받기:"
 
 #: online/onlineservice.cpp:58 online/onlineservice.cpp:151
-#, fuzzy
 msgid "Dowloading"
 msgstr "내려받는 중..."
 
 #: online/onlineservice.cpp:92
-#, fuzzy
 msgid "Updating display"
 msgstr "화면 업데이트"
 
 #: online/onlineservice.cpp:103
-#, fuzzy
 msgid "Grouping tracks"
 msgstr "곡 묶음"
 
@@ -2802,12 +2722,10 @@ msgid "Parsing response"
 msgstr "응답 분석"
 
 #: online/onlineservice.cpp:138 online/onlineservice.cpp:141
-#, fuzzy
 msgid "Failed to parse"
 msgstr "분석 안됨"
 
 #: online/onlineservice.cpp:144
-#, fuzzy
 msgid "Failed to download"
 msgstr "내려받을 수 없음"
 
@@ -2816,7 +2734,6 @@ msgid "Loaded"
 msgstr "읽음"
 
 #: online/onlineservicespage.cpp:55
-#, fuzzy
 msgid "Add Online Service"
 msgstr "온라인 서비스 추가"
 
@@ -2825,7 +2742,6 @@ msgid "Remove Online Service"
 msgstr "온라인 서비스 제거"
 
 #: online/onlineservicespage.cpp:57
-#, fuzzy
 msgid "Download To Library"
 msgstr "라이브러리로 복사"
 
@@ -2838,12 +2754,10 @@ msgid "Re-download music listing for %1?"
 msgstr "%1의 음악항목을 다시 내려받습니까?"
 
 #: online/onlineservicespage.cpp:326
-#, fuzzy
 msgid "Are you sure you wish to remove '%1'?"
 msgstr "'%1'을 지웁니까?"
 
 #: online/onlineservicespage.cpp:348
-#, fuzzy
 msgid "Are you sure you wish to unload '%1'?"
 msgstr "'%1'을 읽지 않습니까?"
 
@@ -2906,7 +2820,6 @@ msgstr "대상 형식:"
 #. i18n: file: devices/albumdetails.ui:26
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox)
 #: po/rc.cpp:30 rc.cpp:30
-#, fuzzy
 msgid "Album Details"
 msgstr "음반 상세정보"
 
@@ -2938,56 +2851,48 @@ msgstr "연도:"
 #. i18n: file: devices/albumdetails.ui:83
 #. i18n: ectx: property (text), widget (BuddyLabel, label_5)
 #: po/rc.cpp:45 rc.cpp:45
-#, fuzzy
 msgid "Single artist:"
 msgstr "한 연주자:"
 
 #. i18n: file: devices/albumdetails.ui:103
 #. i18n: ectx: property (text), widget (BuddyLabel, label_6)
 #: po/rc.cpp:48 rc.cpp:48
-#, fuzzy
 msgid "Disc:"
 msgstr "디스크"
 
 #. i18n: file: devices/albumdetails.ui:130
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox_2)
 #: po/rc.cpp:51 rc.cpp:51
-#, fuzzy
 msgid "Tracks"
 msgstr "곡"
 
 #. i18n: file: devices/audiocdsettings.ui:20
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox)
 #: po/rc.cpp:63 rc.cpp:63
-#, fuzzy
 msgid "Album and Track Information Retrieval"
 msgstr "음반과 곡 정보 검색"
 
 #. i18n: file: devices/audiocdsettings.ui:26
 #. i18n: ectx: property (text), widget (BuddyLabel, label_3)
 #: po/rc.cpp:66 rc.cpp:66
-#, fuzzy
 msgid "Automatically lookup:"
 msgstr "자동 찾기:"
 
 #. i18n: file: devices/audiocdsettings.ui:39
 #. i18n: ectx: property (text), widget (BuddyLabel, cdLookupLabel)
 #: po/rc.cpp:69 rc.cpp:69
-#, fuzzy
 msgid "Initially look up via:"
 msgstr "처음 찾기:"
 
 #. i18n: file: devices/audiocdsettings.ui:52
 #. i18n: ectx: property (text), widget (BuddyLabel, cddbHostLabel)
 #: po/rc.cpp:72 rc.cpp:72
-#, fuzzy
 msgid "CDDB Host:"
 msgstr "CDDB 호스트:"
 
 #. i18n: file: devices/audiocdsettings.ui:65
 #. i18n: ectx: property (text), widget (BuddyLabel, cddbPortLabel)
 #: po/rc.cpp:75 rc.cpp:75
-#, fuzzy
 msgid "CDDB Port:"
 msgstr "CDDB 포트:"
 
@@ -3074,7 +2979,6 @@ msgstr "음반표지 저장하기:"
 #. i18n: file: devices/devicepropertieswidget.ui:65
 #. i18n: ectx: property (text), widget (BuddyLabel, coverMaxSizeLabel)
 #: po/rc.cpp:110 rc.cpp:110
-#, fuzzy
 msgid "Maximum cover size:"
 msgstr "최대 표지 크기:"
 
@@ -3099,7 +3003,6 @@ msgstr "캐시 사용:"
 #. i18n: file: devices/devicepropertieswidget.ui:121
 #. i18n: ectx: property (text), widget (QLabel, defaultVolumeLabel)
 #: po/rc.cpp:122 rc.cpp:122
-#, fuzzy
 msgid "Default volume:"
 msgstr "기본 음량:"
 
@@ -3226,7 +3129,6 @@ msgstr "곡 제목"
 #. i18n: file: devices/filenameschemedialog.ui:158
 #. i18n: ectx: property (text), widget (QPushButton, trackArtistAndTitle)
 #: po/rc.cpp:167 rc.cpp:167
-#, fuzzy
 msgid "Track Title (+Artist)"
 msgstr "곡 제목 (+연주자)"
 
@@ -3363,7 +3265,6 @@ msgstr ""
 #. i18n: file: devices/remotedevicepropertieswidget.ui:188
 #. i18n: ectx: property (text), widget (BuddyLabel, hostLabel_2x)
 #: po/rc.cpp:215 rc.cpp:215
-#, fuzzy
 msgid "Service name:"
 msgstr "서비스 이름:"
 
@@ -3382,7 +3283,6 @@ msgstr "폴더:"
 #. i18n: file: devices/remotedevicepropertieswidget.ui:340
 #. i18n: ectx: property (text), widget (BuddyLabel, sshExtraLabel)
 #: po/rc.cpp:245 rc.cpp:245
-#, fuzzy
 msgid "Extra Options:"
 msgstr "기타 옵션"
 
@@ -3400,7 +3300,6 @@ msgstr ""
 #. i18n: file: devices/remotedevicepropertieswidget.ui:408
 #. i18n: ectx: property (text), widget (QLabel, infoLabel)
 #: po/rc.cpp:254 rc.cpp:254
-#, fuzzy
 msgid ""
 "<i><b>NOTE:</b> This dialog is only used to add remote devices (e.g. via "
 "Samba), or to access locally mounted folders. For normal media players, "
@@ -3414,7 +3313,6 @@ msgstr ""
 #. i18n: file: dynamic/dynamicpage.ui:34
 #. i18n: ectx: property (text), widget (SqueezedTextLabel, infoLabel)
 #: po/rc.cpp:257 rc.cpp:257
-#, fuzzy
 msgid "No dynamizer port defined in server settings."
 msgstr "서버 설정에 활동 포트가 없습니다."
 
@@ -3570,7 +3468,6 @@ msgstr "음악 폴더에 내려받은 가사 저장:"
 #. i18n: file: gui/initialsettingswizard.ui:392
 #. i18n: ectx: property (text), widget (QLabel, storeStreamsInMpdDirLabel)
 #: po/rc.cpp:338 po/rc.cpp:395 rc.cpp:338 rc.cpp:395
-#, fuzzy
 msgid "Save list of streams in music folder:"
 msgstr "음악 폴더에 스트림 항목 저장:"
 
@@ -3624,14 +3521,12 @@ msgstr "처음으로 칸타타 실행"
 #. i18n: file: gui/initialsettingswizard.ui:27
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: po/rc.cpp:350 rc.cpp:350
-#, fuzzy
 msgid "Welcome to Cantata"
 msgstr "칸타타로 맞이합니다"
 
 #. i18n: file: gui/initialsettingswizard.ui:50
 #. i18n: ectx: property (text), widget (QLabel, label_2)
 #: po/rc.cpp:353 rc.cpp:353
-#, fuzzy
 msgid ""
 "<html><head/><body><p>Cantata is a client for Music Player Daemon (MPD). In "
 "order for Cantata to function you must already have MPD setup, configured, "
@@ -3652,14 +3547,12 @@ msgstr ""
 #. i18n: file: gui/initialsettingswizard.ui:83
 #. i18n: ectx: property (text), widget (QLabel, label_3)
 #: po/rc.cpp:356 rc.cpp:356
-#, fuzzy
 msgid "Connection details"
 msgstr "연결 상세정보"
 
 #. i18n: file: gui/initialsettingswizard.ui:106
 #. i18n: ectx: property (text), widget (QLabel, label_4)
 #: po/rc.cpp:359 rc.cpp:359
-#, fuzzy
 msgid ""
 "The settings below are the basic settings required by Cantata. Please enter "
 "the relevant details, and use the 'Connect' button to test the connection."
@@ -3757,7 +3650,6 @@ msgstr ""
 #. i18n: file: gui/initialsettingswizard.ui:544
 #. i18n: ectx: property (text), widget (QLabel, groupWarningLabel)
 #: po/rc.cpp:410 rc.cpp:410
-#, fuzzy
 msgid ""
 "<b>Warning:</b> You are not currently a member of the 'users' group. Cantata "
 "will function better (saving of album covers, lyrics, etc. with the correct "
@@ -3817,7 +3709,6 @@ msgstr "앨범연도 보기:"
 #. i18n: file: gui/interfacesettings.ui:123
 #. i18n: ectx: property (text), widget (QLabel, label_8)
 #: po/rc.cpp:428 rc.cpp:428
-#, fuzzy
 msgid ""
 "<i><b>NOTE:</b> When looking for artist images, Cantata will look for either "
 "artist.jpg, artist.png, 'Artist'.jpg, or 'Artist'.png,\n"
@@ -3888,7 +3779,6 @@ msgstr "스트림 보기:"
 #. i18n: file: gui/interfacesettings.ui:277
 #. i18n: ectx: property (text), widget (BuddyLabel, label_xx)
 #: po/rc.cpp:471 rc.cpp:471
-#, fuzzy
 msgid "Online view style:"
 msgstr "온라인 보기:"
 
@@ -3985,7 +3875,6 @@ msgstr "한 번 클릭 사용:"
 #. i18n: file: gui/interfacesettings.ui:578
 #. i18n: ectx: property (text), widget (QLabel, label_9)
 #: po/rc.cpp:531 rc.cpp:531
-#, fuzzy
 msgid ""
 "<i><b>NOTE:</b> Changing the 'Enforce single-click activation of items' "
 "setting will require a re-start of Cantata.</i>"
@@ -4125,7 +4014,6 @@ msgstr "현재 URL:"
 #. i18n: file: http/httpserversettings.ui:127
 #. i18n: ectx: property (text), widget (QLabel, label_4)
 #: po/rc.cpp:624 rc.cpp:624
-#, fuzzy
 msgid ""
 "<i><b>NOTE:</b> MPD usually only plays songs that are stored within its "
 "folders. If you have connected via a local socket, then MPD can also play "
@@ -4411,7 +4299,6 @@ msgid "Edit Stream"
 msgstr "스트림 수정"
 
 #: streams/streamdialog.cpp:252
-#, fuzzy
 msgid "<i><b>ERROR:</b> Invalid protocol</i>"
 msgstr "<i><b>오류:</b> 무효 프로토콜</i>"
 
@@ -4434,12 +4321,10 @@ msgid "From %1"
 msgstr "%1"
 
 #: streams/streamspage.cpp:171
-#, fuzzy
 msgid "Streams from HTTP server"
 msgstr "HTTP 서버의 스트림"
 
 #: streams/streamspage.cpp:171
-#, fuzzy
 msgid "Music folder not writeable."
 msgstr "음악 폴더에 쓸 수 없습니다."
 
@@ -4469,7 +4354,6 @@ msgid "A stream named <b>%1</b> already exists!"
 msgstr "스트림 <b>%1</b>은 이미 있습니다!"
 
 #: streams/streamspage.cpp:373
-#, fuzzy
 msgid "Are you sure you wish to remove the selected categories &streams?"
 msgstr "선택된 카테고리와 스트림을 지울까요?"
 
@@ -4478,7 +4362,6 @@ msgid "Are you sure you wish to remove the %1 selected streams?"
 msgstr "선택된 %1 스트림을 지울까요?"
 
 #: streams/streamspage.cpp:377
-#, fuzzy
 msgid ""
 "Are you sure you wish to remove the %1 selected categories (and their "
 "streams)?"
@@ -4489,13 +4372,11 @@ msgid "Are you sure you wish to remove <b>%1</b>?"
 msgstr "<b>%1</b>을 지울까요?"
 
 #: streams/streamspage.cpp:382
-#, fuzzy
 msgid ""
 "Are you sure you wish to remove the <b>%1</b> category (and its streams)?"
 msgstr "선택된 %1 카테고리와 스트림을 지울까요?"
 
 #: streams/streamspage.cpp:385
-#, fuzzy
 msgid "Remove?"
 msgstr "지울까요?"
 
@@ -4520,7 +4401,6 @@ msgstr ""
 "(이 카테고리의 지금 스트림을 바꿉니다)"
 
 #: streams/streamspage.cpp:550
-#, fuzzy
 msgid "Update %1"
 msgstr "%1 업데이트"
 
@@ -4529,7 +4409,6 @@ msgid "Download streams from %1?"
 msgstr "%1에서 스트림을 내려받을까요?"
 
 #: streams/streamspage.cpp:554
-#, fuzzy
 msgid "Download %1"
 msgstr "%1 내려받기"
 
@@ -4545,7 +4424,6 @@ msgstr ""
 "(%2)"
 
 #: streams/webstreams.cpp:115
-#, fuzzy
 msgctxt ""
 "message \n"
 " url"
@@ -4593,7 +4471,6 @@ msgid "Tabs On Bottom"
 msgstr "아래 꼬리표"
 
 #: support/inputdialog.h:47
-#, fuzzy
 msgid "Password"
 msgstr "비밀번호"
 
@@ -4626,7 +4503,6 @@ msgid "Select Folder"
 msgstr "폴더 선택"
 
 #: support/pathrequester.cpp:51
-#, fuzzy
 msgid "Select File"
 msgstr "파일 선택"
 
@@ -4639,12 +4515,10 @@ msgid "%1 kB"
 msgstr "%1 kB"
 
 #: support/utils.cpp:277
-#, fuzzy
 msgid "%1 MB"
 msgstr "%1 MB"
 
 #: support/utils.cpp:279
-#, fuzzy
 msgid "%1 GB"
 msgstr "%1 GB"
 
@@ -4693,7 +4567,6 @@ msgid "Revert \"Various Artists\" workaround on <b>all</b> tracks?"
 msgstr "\"여러 연주자\" 해결을 <b>전</b>곡에 되돌릴까요?"
 
 #: tags/tageditor.cpp:421
-#, fuzzy
 msgid ""
 "Set 'Album Artist' from 'Artist' (if 'Album Artist' is empty) for <b>all</b> "
 "tracks?"
@@ -4702,7 +4575,6 @@ msgstr ""
 "</b>곡에 적용할까요?"
 
 #: tags/tageditor.cpp:422
-#, fuzzy
 msgid "Set 'Album Artist' from 'Artist' (if 'Album Artist' is empty)?"
 msgstr "만약 음반연주자가 비어있다면, '연주자'에서 '음반연주자'를 설정할까요?"
 
@@ -4715,7 +4587,6 @@ msgstr ""
 "까요?"
 
 #: tags/tageditor.cpp:487
-#, fuzzy
 msgid "Adjust the value of each track number by:"
 msgstr "각 곡 순서를 값대로 늘여갑니다:"
 
@@ -4733,7 +4604,6 @@ msgid ""
 msgstr "태그에 맞추기 위해서, 곡들의 이름을 바꾸겠습니까?"
 
 #: tags/tageditor.cpp:760
-#, fuzzy
 msgid "Rename Files?"
 msgstr "파일의 이름을 바꿉니까?"
 

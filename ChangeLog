@@ -25,7 +25,13 @@
     and cache items deleted.
 13. Move group warning to last stage of intial settings wizard.
 14. Basic cover fetching dialog, allowing to change downloaded cover. Currently
-    Last.fm, Google, Discogs, and CoverArtArchive are used to find images.
+    Last.fm, Google, Discogs, and CoverArtArchive are used to find images. To
+    enable searching via Amazon, you need to obtain an 'access key' and a
+    'secret access key' Cantata currently does not contain these, but you may
+    supply these in Cantata's config file. To do this, simply add the following
+    to the "[General]"  section:
+        amazonAccessKey=xxxx
+        amazonSecretAccessKey=xxxx
 15. Use cache by default for devices.
 16. GZip compress cache files.
 17. Save remote device library settings on remote device.

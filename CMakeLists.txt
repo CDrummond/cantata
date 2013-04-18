@@ -331,6 +331,7 @@ include_directories( ${CMAKE_SOURCE_DIR}/gui
                      ${CMAKE_SOURCE_DIR}/devices
                      ${CMAKE_SOURCE_DIR}/dynamic
                      ${CMAKE_SOURCE_DIR}/support
+                     ${CMAKE_SOURCE_DIR}/sha2
                      ${CMAKE_SOURCE_DIR}/streams
                      ${CMAKE_SOURCE_DIR}/tags
                      ${CMAKE_BINARY_DIR}/support
@@ -534,6 +535,7 @@ endif (MSVC)
 
 add_subdirectory(po)
 add_subdirectory(support)
+add_subdirectory(sha2)
 
 IF( ENABLE_KDE_SUPPORT )
     include_directories( ${KDE4_INCLUDES})
@@ -625,7 +627,7 @@ include_directories(${CMAKE_BINARY_DIR}/qtiocompressor)
 
 ADD_SUBDIRECTORY( icons )
 
-target_link_libraries(cantata support ${QTLIBS} ${ZLIB_LIBRARIES})
+target_link_libraries(cantata support sha2 ${QTLIBS} ${ZLIB_LIBRARIES})
 include_directories(${QTINCLUDES} ${ZLIB_INCLUDE_DIRS})
 
 if (TAGLIB_FOUND)

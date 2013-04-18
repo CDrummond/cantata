@@ -31,6 +31,7 @@
 #include "utils.h"
 #include "spinner.h"
 #include "icon.h"
+#include "sha2.h"
 #include "qjson/parser.h"
 #include <QVBoxLayout>
 #include <QLabel>
@@ -68,6 +69,33 @@
 static int iCount=0;
 static const int constMaxTempFiles=20;
 
+static QByteArray sha256(const QByteArray &data)
+{
+    SHA256_CTX context;
+    SHA256_Init(&context);
+    SHA256_Update(&context, reinterpret_cast<const u_int8_t*>(data.constData()),
+                  data.length());
+
+    QByteArray ret(SHA256_DIGEST_LENGTH, '\0');
+    SHA256_Final(reinterpret_cast<u_int8_t*>(ret.data()), &context);
+    return ret;
+}
+
+static QByteArray hmacSha256(const QByteArray &key, const QByteArray &data)
+{
+    static const int constBlockSize = 64; // bytes
+    Q_ASSERT(key.length() <= constBlockSize);
+
+    QByteArray innerPadding(constBlockSize, char(0x36));
+    QByteArray outerPadding(constBlockSize, char(0x5c));
+
+    for (int i=0 ; i<key.length() ; ++i) {
+        innerPadding[i] = innerPadding[i] ^ key[i];
+        outerPadding[i] = outerPadding[i] ^ key[i];
+    }
+    return sha256(outerPadding + sha256(innerPadding + data));
+}
+
 int CoverDialog::instanceCount()
 {
     return iCount;
@@ -88,6 +116,7 @@ public:
         Type_LastFm,
         Type_Google,
         Type_Discogs,
+        Type_Amazon,
         Type_CoverArtArchive
     };
 
@@ -194,6 +223,25 @@ public:
 
     quint32 key() const { return width*height; }
     Type type()  const { return Type_Discogs; }
+private:
+    int width;
+    int height;
+};
+
+class AmazonCover : public CoverItem
+{
+public:
+    AmazonCover(const QString &u, const QString &tu, const QImage &img, int w, int h, QListWidget *parent)
+        : CoverItem(u, tu, parent)
+        , width(w)
+        , height(h) {
+        setImage(img);
+        setText(i18nc("Amazon\nwidth x height", "Amazon\n%1 x %2").arg(width).arg(height));
+    }
+
+    quint32 key() const { return width*height; }
+    Type type()  const { return Type_Amazon; }
+
 private:
     int width;
     int height;
@@ -400,6 +448,8 @@ CoverDialog::CoverDialog(QWidget *parent)
     cancelButton->setAutoRaise(true);
     addFileButton->setAutoRaise(true);
     setAcceptDrops(true);
+    amazonAccessKey=Settings::self()->amazonAccessKey();
+    amazonSecretAccessKey=Settings::self()->amazonSecretAccessKey();
 }
 
 CoverDialog::~CoverDialog()
@@ -441,6 +491,9 @@ static const char * constLastFmHost="ws.audioscrobbler.com";
 static const char * constGoogleHost="images.google.com";
 static const char * constDiscogsHost="api.discogs.com";
 static const char * constCoverArtArchiveHost="coverartarchive.org";
+static const char * constAmazonHost="ecs.amazonaws.com";
+static const char * constAmazonUrl="http://ecs.amazonaws.com/onca/xml";
+static const char * constAmazonAssociateTag="cantata";
 
 static const int constMaxRedirects=5;
 
@@ -470,6 +523,8 @@ void CoverDialog::queryJobFinished()
                 parseDiscogsQueryResponse(resp);
             } else if (constCoverArtArchiveHost==host) {
                 parseCoverArtArchiveQueryResponse(resp);
+            } else if (constAmazonHost==host) {
+                parseAmazonQueryResponse(resp);
             }
         }
     }
@@ -616,6 +671,9 @@ void CoverDialog::downloadJobFinished()
                         }
                     } else if (constCoverArtArchiveHost==host) {
                         item=new CoverArtArchiveCover(reply->property(constLargeProperty).toString(), url, img, list);
+                    } else if (constAmazonHost==host) {
+                        item=new AmazonCover(reply->property(constLargeProperty).toString(), url, img,
+                                             reply->property(constWidthProperty).toInt(), reply->property(constHeightProperty).toInt(), list);
                     }
                     if (item) {
                         insertItem(item);
@@ -715,62 +773,127 @@ void CoverDialog::sendQuery()
     spinner->start();
     cancelButton->setEnabled(true);
     currentQueryString=fixedQuery;
+    sendLastFmQuery(fixedQuery, page);
+    sendGoogleQuery(fixedQuery, page);
+    sendDiscoGsQuery(fixedQuery, page);
+    sendAmazonQuery(fixedQuery, page);
+}
 
-    QUrl lastFmUrl;
+void CoverDialog::sendLastFmQuery(const QString &fixedQuery, int page)
+{
+    QUrl url;
     #if QT_VERSION < 0x050000
-    QUrl &lastFmQuery=lastFmUrl;
+    QUrl &query=url;
     #else
-    QUrlQuery lastFmQuery;
+    QUrlQuery query;
     #endif
-    lastFmUrl.setScheme("http");
-    lastFmUrl.setHost(constLastFmHost);
-    lastFmUrl.setPath("/2.0/");
-    lastFmQuery.addQueryItem("api_key", Covers::constLastFmApiKey);
-    lastFmQuery.addQueryItem("limit", QString::number(20));
-    lastFmQuery.addQueryItem("page", QString::number(page));
-    lastFmQuery.addQueryItem("album", fixedQuery);
-    lastFmQuery.addQueryItem("method", "album.search");
+    url.setScheme("http");
+    url.setHost(constLastFmHost);
+    url.setPath("/2.0/");
+    query.addQueryItem("api_key", Covers::constLastFmApiKey);
+    query.addQueryItem("limit", QString::number(20));
+    query.addQueryItem("page", QString::number(page));
+    query.addQueryItem("album", fixedQuery);
+    query.addQueryItem("method", "album.search");
     #if QT_VERSION >= 0x050000
-    lastFmUrl.setQuery(lastFmQuery);
+    url.setQuery(query);
     #endif
-    sendQueryRequest(lastFmUrl);
+    sendQueryRequest(url);
+}
 
-    QUrl googleUrl;
+void CoverDialog::sendGoogleQuery(const QString &fixedQuery, int page)
+{
+    QUrl url;
     #if QT_VERSION < 0x050000
-    QUrl &googleQuery=googleUrl;
+    QUrl &query=url;
     #else
-    QUrlQuery googleQuery;
+    QUrlQuery query;
     #endif
-    googleUrl.setScheme("http");
-    googleUrl.setHost(constGoogleHost);
-    googleUrl.setPath("/images");
-    googleQuery.addQueryItem("q", fixedQuery);
-    googleQuery.addQueryItem("gbv", QChar('1'));
-    googleQuery.addQueryItem("filter", QChar('1'));
-    googleQuery.addQueryItem("start", QString::number(20 * page));
+    url.setScheme("http");
+    url.setHost(constGoogleHost);
+    url.setPath("/images");
+    query.addQueryItem("q", fixedQuery);
+    query.addQueryItem("gbv", QChar('1'));
+    query.addQueryItem("filter", QChar('1'));
+    query.addQueryItem("start", QString::number(20 * page));
     #if QT_VERSION >= 0x050000
-    googleUrl.setQuery(googleQuery);
+    url.setQuery(query);
     #endif
-    sendQueryRequest(googleUrl);
+    sendQueryRequest(url);
+}
 
-    QUrl discogsUrl;
+void CoverDialog::sendDiscoGsQuery(const QString &fixedQuery, int page)
+{
+    QUrl url;
     #if QT_VERSION < 0x050000
-    QUrl &discogsQuery=discogsUrl;
+    QUrl &query=url;
     #else
-    QUrlQuery discogsQuery;
+    QUrlQuery query;
     #endif
-    discogsUrl.setScheme("http");
-    discogsUrl.setHost(constDiscogsHost);
-    discogsUrl.setPath("/search");
-    discogsQuery.addQueryItem("page", QString::number(page + 1));
-    discogsQuery.addQueryItem("per_page", QString::number(20));
-    discogsQuery.addQueryItem("type", "release");
-    discogsQuery.addQueryItem("q", fixedQuery);
-    discogsQuery.addQueryItem("f", "json");
+    url.setScheme("http");
+    url.setHost(constDiscogsHost);
+    url.setPath("/search");
+    query.addQueryItem("page", QString::number(page + 1));
+    query.addQueryItem("per_page", QString::number(20));
+    query.addQueryItem("type", "release");
+    query.addQueryItem("q", fixedQuery);
+    query.addQueryItem("f", "json");
     #if QT_VERSION >= 0x050000
-    discogsUrl.setQuery(discogsQuery);
+    url.setQuery(query);
     #endif
-    sendQueryRequest(discogsUrl);
+    sendQueryRequest(url);
+}
+
+void CoverDialog::sendAmazonQuery(const QString &fixedQuery, int page)
+{
+    if (0!=page || amazonAccessKey.isEmpty()) {
+        return;
+    }
+
+    // Taken from Clementine!!!
+    typedef QPair<QString, QString> Arg;
+    typedef QList<Arg> ArgList;
+    typedef QPair<QByteArray, QByteArray> EncodedArg;
+    typedef QList<EncodedArg> EncodedArgList;
+
+    ArgList args = ArgList()
+            << Arg("AWSAccessKeyId", amazonAccessKey)
+            << Arg("AssociateTag", constAmazonAssociateTag)
+            << Arg("Keywords", fixedQuery)
+            << Arg("Operation", "ItemSearch")
+            << Arg("ResponseGroup", "Images")
+            << Arg("SearchIndex", "All")
+            << Arg("Service", "AWSECommerceService")
+            << Arg("Timestamp", QDateTime::currentDateTime().toString("yyyy-MM-ddThh:mm:ss.zzzZ"))
+            << Arg("Version", "2009-11-01");
+    EncodedArgList encodedArgs;
+    QStringList queryItems;
+
+    // Encode the arguments
+    foreach (const Arg& arg, args) {
+        EncodedArg encodedArg(QUrl::toPercentEncoding(arg.first), QUrl::toPercentEncoding(arg.second));
+        encodedArgs << encodedArg;
+        queryItems << encodedArg.first+"="+encodedArg.second;
+    }
+
+    // Sign the request
+    QUrl url(constAmazonUrl);
+    #if QT_VERSION < 0x050000
+    QUrl &query=url;
+    #else
+    QUrlQuery query;
+    #endif
+
+    const QByteArray dataToSign = QString("GET\n%1\n%2\n%3").arg(url.host()).arg(url.path()).arg(queryItems.join("&")).toAscii();
+    const QByteArray signature(hmacSha256(amazonSecretAccessKey.toLatin1(), dataToSign));
+
+    // Add the signature to the request
+    encodedArgs << EncodedArg("Signature", QUrl::toPercentEncoding(signature.toBase64()));
+    query.setEncodedQueryItems(encodedArgs);
+    #if QT_VERSION >= 0x050000
+    url.setQuery(query);
+    #endif
+    sendQueryRequest(url);
 }
 
 void CoverDialog::checkStatus()
@@ -1140,6 +1263,93 @@ void CoverDialog::parseCoverArtArchiveQueryResponse(const QByteArray &resp)
                         j->setProperty(constHostProperty, constCoverArtArchiveHost);
                         j->setProperty(constLargeProperty, largeUrl);
                         j->setProperty(constThumbProperty, thumbUrl);
+                    }
+                }
+            }
+        }
+    }
+}
+
+struct AmazonImage
+{
+    AmazonImage() : w(-1), h(-1) { }
+    bool isNull() { return w<0 || h<0 || url.isEmpty(); }
+    QString url;
+    int w;
+    int h;
+};
+
+struct AmazonEntry
+{
+    AmazonImage small;
+    AmazonImage large;
+};
+
+static AmazonImage readImage(QXmlStreamReader &doc)
+{
+    AmazonImage image;
+    QString tag=doc.name().toString();
+
+    while (!doc.atEnd()) {
+        doc.readNext();
+        if (QXmlStreamReader::StartElement==doc.tokenType()) {
+            if (QLatin1String("URL")==doc.name()) {
+                image.url= doc.readElementText();
+            } else if (QLatin1String("Width")==doc.name()) {
+                image.w=doc.readElementText().toInt();
+            } else if (QLatin1String("Height")==doc.name()) {
+                image.h=doc.readElementText().toInt();
+            } else {
+                doc.skipCurrentElement();
+            }
+        } else if (QXmlStreamReader::EndElement==doc.tokenType() && tag==doc.name()) {
+            break;
+        }
+    }
+    return image;
+}
+
+static AmazonEntry readItem(QXmlStreamReader &doc)
+{
+    AmazonEntry entry;
+    QString tag=doc.name().toString();
+    while (!doc.atEnd()) {
+        doc.readNext();
+        if (QXmlStreamReader::StartElement==doc.tokenType()) {
+            if (QLatin1String("LargeImage")==doc.name()) {
+                entry.large=readImage(doc);
+            } else if (QLatin1String("SmallImage")==doc.name()) {
+                entry.small=readImage(doc);
+            } else if (entry.small.h<0 && QLatin1String("MediumImage")==doc.name()) {
+                entry.small=readImage(doc);
+            } else {
+                doc.skipCurrentElement();
+            }
+        } else if (QXmlStreamReader::EndElement==doc.tokenType() && tag==doc.name()) {
+            break;
+        }
+    }
+    return entry;
+}
+
+void CoverDialog::parseAmazonQueryResponse(const QByteArray &resp)
+{
+    QXmlStreamReader doc(resp);
+
+    while (!doc.atEnd()) {
+      doc.readNext();
+        if (QXmlStreamReader::StartElement==doc.tokenType()) {
+            if (QLatin1String("Item")==doc.name()) {
+                AmazonEntry entry=readItem(doc);
+
+                if (!entry.small.isNull() && !entry.large.isNull()) {
+                    QNetworkReply *j=downloadImage(entry.small.url, DL_Thumbnail);
+                    if (j) {
+                        j->setProperty(constHostProperty, constAmazonHost);
+                        j->setProperty(constLargeProperty, entry.large.url);
+                        j->setProperty(constThumbProperty, entry.small.url);
+                        j->setProperty(constWidthProperty, entry.large.w);
+                        j->setProperty(constHeightProperty, entry.large.h);
                     }
                 }
             }

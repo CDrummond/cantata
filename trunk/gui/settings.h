@@ -170,6 +170,8 @@ public:
     #endif
     bool forceSingleClick();
     bool startHidden();
+    QString amazonAccessKey();
+    QString amazonSecretAccessKey();
 
     void removeConnectionDetails(const QString &v);
     void saveConnectionDetails(const MPDConnectionDetails &v);

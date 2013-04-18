@@ -117,6 +117,10 @@ private Q_SLOTS:
     void removeImages();
 
 private:
+    void sendLastFmQuery(const QString &fixedQuery, int page);
+    void sendGoogleQuery(const QString &fixedQuery, int page);
+    void sendDiscoGsQuery(const QString &fixedQuery, int page);
+    void sendAmazonQuery(const QString &fixedQuery, int page);
     CoverPreview *previewDialog();
     void insertItem(CoverItem *item);
     QNetworkReply * downloadImage(const QString &url, DownloadType dlType);
@@ -126,6 +130,7 @@ private:
     void parseGoogleQueryResponse(const QByteArray &resp);
     void parseDiscogsQueryResponse(const QByteArray &resp);
     void parseCoverArtArchiveQueryResponse(const QByteArray &resp);
+    void parseAmazonQueryResponse(const QByteArray &resp);
     void slotButtonClicked(int button);
     bool saveCover(const QString &src, const QImage &img);
     void dragEnterEvent(QDragEnterEvent *event);
@@ -147,6 +152,8 @@ private:
     QMenu *menu;
     QAction *showAction;
     QAction *removeAction;
+    QString amazonAccessKey;
+    QString amazonSecretAccessKey;
 };
 
 #endif

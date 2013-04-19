@@ -156,6 +156,12 @@ DynamicRulesDialog::DynamicRulesDialog(QWidget *parent)
 
     controlButtons();
     resize(500, 240);
+
+    static bool registered=false;
+    if (!registered) {
+        qRegisterMetaType<Dynamic::Rule>("Dynamic::Rule");
+        registered=true;
+    }
 }
 
 DynamicRulesDialog::~DynamicRulesDialog()
@@ -214,16 +220,20 @@ void DynamicRulesDialog::add()
 {
     if (!dlg) {
         dlg=new DynamicRuleDialog(this);
+        connect(dlg, SIGNAL(addRule(const Dynamic::Rule&)), SLOT(addRule(const Dynamic::Rule&)));
     }
-    if (dlg->edit(Dynamic::Rule())) {
-        QStandardItem *item = new QStandardItem();
-        ::update(item, dlg->rule());
-        int index=indexOf(item);
-        if (-1!=index) {
-            delete item;
-        } else {
-            model->setItem(model->rowCount(), 0, item);
-        }
+    dlg->createNew();
+}
+
+void DynamicRulesDialog::addRule(const Dynamic::Rule &rule)
+{
+    QStandardItem *item = new QStandardItem();
+    ::update(item, rule);
+    int index=indexOf(item);
+    if (-1!=index) {
+        delete item;
+    } else {
+        model->setItem(model->rowCount(), 0, item);
     }
 }
 
@@ -236,6 +246,7 @@ void DynamicRulesDialog::edit()
     }
     if (!dlg) {
         dlg=new DynamicRuleDialog(this);
+        connect(dlg, SIGNAL(addRule(Dynamic::Rule&)), SLOT(addRule(Dynamic::Rule&)));
     }
     QModelIndex index=proxy->mapToSource(items.at(0));
     QStandardItem *item=model->itemFromIndex(index);

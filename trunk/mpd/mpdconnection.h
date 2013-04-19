@@ -331,6 +331,7 @@ private:
 
     bool stopAfterCurrent;
     qint32 currentSongId;
+    quint32 songPos; // USe for stop-after-current when we only have 1 songin playqueue!
     int unmuteVol;
 };
 

@@ -824,10 +824,14 @@ void MPDConnection::setSeekId(qint32 songId, quint32 time)
     if (-1==songId) {
         return;
     }
-    if (songId!=currentSongId) {
+    if (songId!=currentSongId || 0==time) {
         toggleStopAfterCurrent(false);
     }
-    sendCommand("seekid "+QByteArray::number(songId)+' '+QByteArray::number(time));
+    if (sendCommand("seekid "+QByteArray::number(songId)+' '+QByteArray::number(time)).ok) {
+        if (stopAfterCurrent && songId==currentSongId && songPos>time) {
+            songPos=time;
+        }
+    }
 }
 
 void MPDConnection::setVolume(int vol)
@@ -884,7 +888,7 @@ void MPDConnection::getStatus()
     if (response.ok) {
         MPDStatusValues sv=MPDParseUtils::parseStatus(response.data);
         lastStatusPlayQueueVersion=sv.playlist;
-        if (stopAfterCurrent && currentSongId!=sv.songId) {
+        if (stopAfterCurrent && (currentSongId!=sv.songId || (songPos>0 && sv.timeElapsed<(qint32)songPos))) {
             if (sendCommand("stop").ok) {
                 sv.state=MPDState_Stopped;
             }
@@ -1234,6 +1238,14 @@ void MPDConnection::toggleStopAfterCurrent(bool afterCurrent)
 {
     if (afterCurrent!=stopAfterCurrent) {
         stopAfterCurrent=afterCurrent;
+        songPos=0;
+        if (stopAfterCurrent && 1==playQueueIds.count()) {
+            Response response=sendCommand("status");
+            if (response.ok) {
+                MPDStatusValues sv=MPDParseUtils::parseStatus(response.data);
+                songPos=sv.timeElapsed;
+            }
+        }
         emit stopAfterCurrentChanged(stopAfterCurrent);
     }
 }

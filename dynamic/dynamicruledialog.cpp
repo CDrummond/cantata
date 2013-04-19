@@ -31,6 +31,7 @@ static const QChar constDateSep('-');
 
 DynamicRuleDialog::DynamicRuleDialog(QWidget *parent)
     : Dialog(parent, "DynamicRuleDialog")
+    , addingRules(false)
 {
     QWidget *mainWidet = new QWidget(this);
     setupUi(mainWidet);
@@ -88,8 +89,9 @@ DynamicRuleDialog::~DynamicRuleDialog()
 {
 }
 
-bool DynamicRuleDialog::edit(const Dynamic::Rule &rule)
+bool DynamicRuleDialog::edit(const Dynamic::Rule &rule, bool isAdd)
 {
+    addingRules=isAdd;
     typeCombo->setCurrentIndex(QLatin1String("true")==rule[Dynamic::constExcludeKey] ? 1 : 0);
     artistText->setText(rule[Dynamic::constArtistKey]);
     similarArtistsText->setText(rule[Dynamic::constSimilarArtistsKey]);
@@ -121,6 +123,9 @@ bool DynamicRuleDialog::edit(const Dynamic::Rule &rule)
     dateToSpin->setValue(dateTo);
     exactCheck->setChecked(QLatin1String("false")!=rule[Dynamic::constExactKey]);
     errorLabel->setVisible(false);
+
+    setButtons(isAdd ? User1|Ok|Close : Ok|Cancel);
+    setButtonText(User1, i18n("Add"));
     enableOkButton();
     return QDialog::Accepted==exec();
 }
@@ -191,4 +196,16 @@ void DynamicRuleDialog::enableOkButton()
         }
     }
     enableButton(Ok, enable);
+    if (addingRules) {
+        enableButton(User1, enable);
+    }
+}
+
+void DynamicRuleDialog::slotButtonClicked(int button)
+{
+    if (addingRules && (User1==button || Ok==button)) {
+        emit addRule(rule());
+    }
+
+    Dialog::slotButtonClicked(button);
 }

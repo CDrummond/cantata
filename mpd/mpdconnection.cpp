@@ -885,7 +885,9 @@ void MPDConnection::getStatus()
         MPDStatusValues sv=MPDParseUtils::parseStatus(response.data);
         lastStatusPlayQueueVersion=sv.playlist;
         if (stopAfterCurrent && currentSongId!=sv.songId) {
-            sendCommand("stop");
+            if (sendCommand("stop").ok) {
+                sv.state=MPDState_Stopped;
+            }
             toggleStopAfterCurrent(false);
         }
         currentSongId=sv.songId;

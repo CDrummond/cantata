@@ -218,7 +218,12 @@ void DynamicRulesDialog::add()
     if (dlg->edit(Dynamic::Rule())) {
         QStandardItem *item = new QStandardItem();
         ::update(item, dlg->rule());
-        model->setItem(model->rowCount(), 0, item);
+        int index=indexOf(item);
+        if (-1!=index) {
+            delete item;
+        } else {
+            model->setItem(model->rowCount(), 0, item);
+        }
     }
 }
 
@@ -232,7 +237,8 @@ void DynamicRulesDialog::edit()
     if (!dlg) {
         dlg=new DynamicRuleDialog(this);
     }
-    QStandardItem *item=model->itemFromIndex(proxy->mapToSource(items.at(0)));
+    QModelIndex index=proxy->mapToSource(items.at(0));
+    QStandardItem *item=model->itemFromIndex(index);
     Dynamic::Rule rule;
     QMap<QString, QVariant> v=item->data().toMap();
     QMap<QString, QVariant>::ConstIterator it(v.constBegin());
@@ -242,6 +248,10 @@ void DynamicRulesDialog::edit()
     }
     if (dlg->edit(rule)) {
         ::update(item, dlg->rule());
+        int idx=indexOf(item, true);
+        if (-1!=idx && idx!=index.row()) {
+            model->removeRow(index.row());
+        }
     }
 }
 
@@ -335,4 +345,19 @@ bool DynamicRulesDialog::save()
         }
         return saved;
     }
+}
+
+int DynamicRulesDialog::indexOf(QStandardItem *item, bool diff)
+{
+    QMap<QString, QVariant> v=item->data().toMap();
+
+    for (int i=0; i<model->rowCount(); ++i) {
+        QStandardItem *itm=model->item(i);
+        if (itm) {
+            if (itm->data().toMap()==v && (!diff || itm!=item)) {
+                return i;
+            }
+        }
+    }
+    return -1;
 }

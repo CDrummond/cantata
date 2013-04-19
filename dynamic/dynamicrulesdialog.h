@@ -27,6 +27,7 @@
 #include "config.h"
 #include "dialog.h"
 #include "ui_dynamicrules.h"
+#include "dynamic.h"
 
 class DynamicRuleDialog;
 class QStandardItemModel;
@@ -53,6 +54,7 @@ private Q_SLOTS:
     void enableOkButton();
     void controlButtons();
     void add();
+    void addRule(const Dynamic::Rule &rule);
     void edit();
     void remove();
     void showAbout();

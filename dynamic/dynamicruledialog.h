@@ -37,7 +37,8 @@ public:
     DynamicRuleDialog(QWidget *parent);
     virtual ~DynamicRuleDialog();
 
-    bool edit(const Dynamic::Rule &rule);
+    void createNew() { edit(Dynamic::Rule(), true); }
+    bool edit(const Dynamic::Rule &rule, bool isAdd=false);
     Dynamic::Rule rule() const;
 
     QString artist() const { return artistText->text().trimmed(); }
@@ -47,8 +48,17 @@ public:
     QString title() const { return titleText->text().trimmed(); }
     QString genre() const { return genreText->text().trimmed(); }
 
+Q_SIGNALS:
+    void addRule(const Dynamic::Rule &r);
+
 private Q_SLOTS:
     void enableOkButton();
+
+private:
+    void slotButtonClicked(int button);
+
+private:
+    bool addingRules;
 };
 
 #endif

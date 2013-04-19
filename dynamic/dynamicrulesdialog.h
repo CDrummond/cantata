@@ -30,6 +30,7 @@
 
 class DynamicRuleDialog;
 class QStandardItemModel;
+class QStandardItem;
 class RulesSort;
 
 class DynamicRulesDialog : public Dialog, Ui::DynamicRules
@@ -45,6 +46,7 @@ public:
 private:
     void slotButtonClicked(int button);
     bool save();
+    int indexOf(QStandardItem *item, bool diff=false);
 
 private Q_SLOTS:
     void saved(bool s);

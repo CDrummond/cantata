@@ -331,13 +331,13 @@ include_directories( ${CMAKE_SOURCE_DIR}/gui
                      ${CMAKE_SOURCE_DIR}/devices
                      ${CMAKE_SOURCE_DIR}/dynamic
                      ${CMAKE_SOURCE_DIR}/support
-                     ${CMAKE_SOURCE_DIR}/sha2
                      ${CMAKE_SOURCE_DIR}/streams
                      ${CMAKE_SOURCE_DIR}/tags
-                     ${CMAKE_BINARY_DIR}/support
                      ${CMAKE_SOURCE_DIR}/online
+                     ${CMAKE_SOURCE_DIR}/3rdparty
                      ${CMAKE_SOURCE_DIR}
                      ${CMAKE_BINARY_DIR}
+                     ${CMAKE_BINARY_DIR}/support
 )
 
 if (ENABLE_QT5)
@@ -468,7 +468,7 @@ if (TAGLIB_FOUND)
     else (WIN32)
         set (ENABLE_DEVICES_SUPPORT 1)
         if (NOT ENABLE_KDE_SUPPORT)
-            add_subdirectory(solid-lite)
+            add_subdirectory(3rdparty/solid-lite)
         endif (NOT ENABLE_KDE_SUPPORT)
         if (ENABLE_MTP)
             find_package(Mtp)
@@ -535,7 +535,7 @@ endif (MSVC)
 
 add_subdirectory(po)
 add_subdirectory(support)
-add_subdirectory(sha2)
+add_subdirectory(3rdparty/sha2)
 
 IF( ENABLE_KDE_SUPPORT )
     include_directories( ${KDE4_INCLUDES})
@@ -589,9 +589,8 @@ ELSE( ENABLE_KDE_SUPPORT )
     SET( XDG_APPS_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}/share/applications" )
 
     if (WIN32)
-        add_subdirectory(qtsingleapplication)
+        add_subdirectory(3rdparty/qtsingleapplication)
         TARGET_LINK_LIBRARIES(cantata qtsingleapplication)
-        include_directories(${CMAKE_BINARY_DIR}/qtsingleapplication)
     endif (WIN32)
 ENDIF( ENABLE_KDE_SUPPORT )
 
@@ -620,10 +619,9 @@ if (NOT WIN32)
     endif (CDDB_FOUND OR MUSICBRAINZ5_FOUND)
 endif (NOT WIN32)
 
-add_subdirectory(qtiocompressor)
-add_subdirectory(qjson)
+add_subdirectory(3rdparty/qtiocompressor)
+add_subdirectory(3rdparty/qjson)
 TARGET_LINK_LIBRARIES(cantata qtiocompressor qjson)
-include_directories(${CMAKE_BINARY_DIR}/qtiocompressor)
 
 ADD_SUBDIRECTORY( icons )
 

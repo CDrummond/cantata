@@ -38,6 +38,7 @@ JamendoSettingsDialog::JamendoSettingsDialog(QWidget *parent)
     fmt->insertItem(1, i18n("Ogg"));
     layout->setWidget(0, QFormLayout::LabelRole, new BuddyLabel(i18n("Streaming format:"), mw, fmt));
     layout->setWidget(0, QFormLayout::FieldRole, fmt);
+    layout->setMargin(0);
     setMainWidget(mw);
 }
 

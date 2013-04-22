@@ -55,6 +55,7 @@ MagnatuneSettingsDialog::MagnatuneSettingsDialog(QWidget *parent)
     BuddyLabel *dlLabel=new BuddyLabel(i18n("Downloads:"), mw, dl);
     layout->setWidget(3, QFormLayout::LabelRole, dlLabel);
     layout->setWidget(3, QFormLayout::FieldRole, dl);
+    layout->setMargin(0);
     dlLabel->setVisible(false); // TODO: Magnatune downloads!
     dl->setVisible(false); // TODO: Magnatune downloads!
 

@@ -141,6 +141,10 @@ MPDStatusValues MPDParseUtils::parseStatus(const QByteArray &data)
             v.song=tokens.at(1).toInt();
         } else if (tokens.at(0) == "songid") {
             v.songId=tokens.at(1).toInt();
+        } else if (tokens.at(0) == "nextsong") {
+            v.nextSong=tokens.at(1).toInt();
+        } else if (tokens.at(0) == "nextsongid") {
+            v.nextSongId=tokens.at(1).toInt();
         } else if (tokens.at(0) == "time") {
             v.timeElapsed=tokens.at(1).toInt();
             v.timeTotal=tokens.at(2).toInt();

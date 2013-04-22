@@ -162,6 +162,8 @@
 95. Remove duplicates from dynamic rules.
 96. Add an 'Add' button to dynamic rule dialog, so that multiple rules may be
     created without closing dialog.
+97. Show next track in tooltip of next track button. (Only valid whilst
+    playing)
 
 0.9.2
 -----

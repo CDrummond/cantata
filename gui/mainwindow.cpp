@@ -305,6 +305,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     playPauseTrackAction->setEnabled(false);
     nextTrackAction->setEnabled(false);
+    updateNextTrack(-1);
     prevTrackAction->setEnabled(false);
     enableStopActions(false);
 
@@ -1720,6 +1721,7 @@ void MainWindow::updatePlayQueue(const QList<Song> &songs)
         }
     }
     playQueueItemsSelected(playQueue->haveSelectedItems());
+    updateNextTrack(MPDStatus::self()->nextSongId());
 }
 
 bool MainWindow::currentIsStream() const
@@ -1914,6 +1916,7 @@ void MainWindow::updateStatus(MPDStatus * const status)
     repeatPlayQueueAction->setChecked(status->repeat());
     singlePlayQueueAction->setChecked(status->single());
     consumePlayQueueAction->setChecked(status->consume());
+    updateNextTrack(status->nextSongId());
 
     if (status->timeElapsed()<172800 && (!currentIsStream() || (status->timeTotal()>0 && status->timeElapsed()<=status->timeTotal()))) {
         if (status->state() == MPDState_Stopped || status->state() == MPDState_Inactive) {
@@ -2917,6 +2920,29 @@ int MainWindow::currentTrackPosition() const
 QString MainWindow::coverFile() const
 {
     return coverWidget->fileName();
+}
+
+void MainWindow::updateNextTrack(int nextTrackId)
+{
+    if (-1!=nextTrackId && MPDState_Stopped==MPDStatus::self()->state()) {
+        nextTrackId=-1; // nextSongId is not accurate if we are stopped.
+    }
+    QString tt=nextTrackAction->property("tooltip").toString();
+    if (-1==nextTrackId && tt.isEmpty()) {
+        nextTrackAction->setProperty("tooltip", nextTrackAction->toolTip());
+    } else if (-1==nextTrackId) {
+        nextTrackAction->setToolTip(tt);
+        nextTrackAction->setProperty("trackid", nextTrackId);
+    } else if (nextTrackId!=nextTrackAction->property("trackid").toInt()) {
+        Song s=playQueueModel.getSongByRow(playQueueModel.getRowById(nextTrackId));
+        if (!s.artist.isEmpty() && !s.title.isEmpty()) {
+            tt+=QLatin1String("<br/><i><small>")+s.artistSong()+QLatin1String("<small></i>");
+        } else {
+            nextTrackId=-1;
+        }
+        nextTrackAction->setToolTip(tt);
+        nextTrackAction->setProperty("trackid", nextTrackId);
+    }
 }
 
 #ifndef Q_OS_WIN

@@ -282,7 +282,7 @@ msgid ""
 "<i>This will set 'Album artist' and 'Artist' to \"Various Artists\", and set "
 "'Title' to \"TrackArtist - TrackTitle\"</i>"
 msgstr ""
-"<i>'专辑艺人' 和 '艺术家'将被设置成 \'多个艺术家\'，'标题'将被设置为'音轨艺人 - "
+"<i>'专辑艺人' 和 '艺术家'将被设置成 '多个艺术家'，'标题'将被设置为'音轨艺人 - "
 "音轨标题'。</i>"
 
 #: devices/albumdetailsdialog.cpp:248 tags/tageditor.cpp:373
@@ -557,8 +557,8 @@ msgid ""
 "a reasonable choice for the iPod and some other portable music players."
 msgstr ""
 "<a href=http://en.wikipedia.org/wiki/Advanced_Audio_Coding>高级音频编码 AAC </a>"
-"是一种有专利授权的无损压缩数字音频格式.<br> 它的音质比同比特率的 MP3 更好.
-它是 iPod 或者其他移动播放设备上的一个较好选择.限于非商业合同使用"
+"是一种有专利授权的无损压缩数字音频格式.<br> 它的音质比同比特率的 MP3 更好."
+"它是 iPod 或者其他移动播放设备上的一个较好选择.限于非商业合同使用"
 
 #: devices/encoders.cpp:83
 msgid ""

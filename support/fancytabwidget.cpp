@@ -691,22 +691,22 @@ static void drawFadedLine(QPainter *p, const QRect &r, const QColor &col)
 
 void FancyTabWidget::paintEvent(QPaintEvent*e) {
     QWidget::paintEvent(e);
-    bool onTop=Mode_TopBar==mode_ || Mode_IconOnlyTopBar==mode_;
-    bool onBottom=Mode_BottomBar==mode_ || Mode_IconOnlyBottomBar==mode_;
-    if (!drawBorder_ && !onBottom && !onTop) {
+//    bool onTop=Mode_TopBar==mode_ || Mode_IconOnlyTopBar==mode_;
+//    bool onBottom=Mode_BottomBar==mode_ || Mode_IconOnlyBottomBar==mode_;
+    if (!drawBorder_/* && !onBottom && !onTop*/) {
         return;
     }
 
     QPainter painter(this);
 
-    if (onBottom) {
+    /*if (onBottom) {
         QRect r(rect().x(), side_widget_->rect().y()+(side_widget_->height()-tab_bar_->height()),
                 width(), 1);
         drawFadedLine(&painter, r, palette().foreground().color());
     } else if (onTop) {
         QRect r(rect().x(), tab_bar_->height(), width(), 1);
         drawFadedLine(&painter, r, palette().foreground().color());
-    } else {
+    } else*/ {
         QRect rect = side_widget_->rect().adjusted(0, 0, 1, 0);
         rect = style()->visualRect(layoutDirection(), geometry(), rect);
         drawFadedLine(&painter, QRect(rect.x(), rect.y(), 1, rect.height()), palette().foreground().color());

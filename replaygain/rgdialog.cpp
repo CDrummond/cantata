@@ -112,8 +112,8 @@ RgDialog::RgDialog(QWidget *parent)
     setButtons(User1|Ok|Cancel);
     setCaption(i18n("ReplayGain"));
     setAttribute(Qt::WA_DeleteOnClose);
-    QWidget *mainWidet = new QWidget(this);
-    QBoxLayout *layout=new QBoxLayout(QBoxLayout::TopToBottom, mainWidet);
+    QWidget *mainWidget = new QWidget(this);
+    QBoxLayout *layout=new QBoxLayout(QBoxLayout::TopToBottom, mainWidget);
     view = new QTreeWidget(this);
     statusLabel = new QLabel(this);
     statusLabel->setVisible(false);
@@ -145,7 +145,7 @@ RgDialog::RgDialog(QWidget *parent)
     layout->addWidget(view);
     layout->addWidget(statusLabel);
     layout->addWidget(progress);
-    setMainWidget(mainWidet);
+    setMainWidget(mainWidget);
     #ifdef ENABLE_KDE_SUPPORT
     setButtonGuiItem(Ok, KStandardGuiItem::save());
     setButtonGuiItem(Cancel, KStandardGuiItem::close());

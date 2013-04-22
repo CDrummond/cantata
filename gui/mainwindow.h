@@ -309,6 +309,7 @@ private:
     void stopVolumeFade();
     void showTab(int page);
     bool fadeWhenStop() const;
+    void updateNextTrack(int nextTrackId);
 
 private:
     int loaded;

@@ -620,7 +620,7 @@ qint32 PlayQueueModel::getRowById(qint32 id) const
 
 Song PlayQueueModel::getSongByRow(const qint32 row) const
 {
-    return row>=songs.size() ? Song() : songs.at(row);
+    return row<0 || row>=songs.size() ? Song() : songs.at(row);
 }
 
 void PlayQueueModel::updateCurrentSong(quint32 id)

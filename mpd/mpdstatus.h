@@ -49,6 +49,8 @@ struct MPDStatusValues {
         , state(MPDState_Inactive)
         , song(-1)
         , songId(-1)
+        , nextSong(-1)
+        , nextSongId(-1)
         , timeElapsed(-1)
         , timeTotal(-1)
         , bitrate(0)
@@ -68,6 +70,8 @@ struct MPDStatusValues {
     MPDState state;
     qint32 song;
     qint32 songId;
+    qint32 nextSong;
+    qint32 nextSongId;
     qint32 timeElapsed;
     qint32 timeTotal;
     quint16 bitrate;
@@ -100,6 +104,8 @@ public:
     MPDState state() const { return values.state; }
     qint32 song() const { return values.song; }
     qint32 songId() const { return values.songId; }
+    qint32 nextSong() const { return values.nextSong; }
+    qint32 nextSongId() const { return values.nextSongId; }
     qint32 timeElapsed() const { return values.timeElapsed; }
     qint32 timeTotal() const { return values.timeTotal; }
     quint16 bitrate() const { return values.bitrate; }

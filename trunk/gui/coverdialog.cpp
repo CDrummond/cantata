@@ -31,7 +31,7 @@
 #include "utils.h"
 #include "spinner.h"
 #include "icon.h"
-#include "sha2.h"
+#include "sha2/sha2.h"
 #include "qjson/parser.h"
 #include <QVBoxLayout>
 #include <QLabel>

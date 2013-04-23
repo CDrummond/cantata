@@ -364,10 +364,6 @@ endif (ENABLE_QT5)
 
 find_package(ZLIB REQUIRED)
 
-if (ENABLE_PHONON)
-    FIND_PACKAGE( Phonon )
-endif (ENABLE_PHONON)
-
 if(NOT WIN32)
     SET_SOURCE_FILES_PROPERTIES(dbus/org.gnome.SettingsDaemon.xml dbus/org.gnome.SettingsDaemon.MediaKeys.xml PROPERTIES NO_NAMESPACE TRUE)
 
@@ -399,6 +395,12 @@ IF( ENABLE_KDE )
         SET( ENABLE_KDE_SUPPORT TRUE )
     ENDIF( KDE4_FOUND )
 ENDIF( ENABLE_KDE )
+
+if (ENABLE_PHONON)
+    FIND_PACKAGE( Phonon )
+else (ENABLE_PHONON)
+    set(PHONON_FOUND 0)
+endif (ENABLE_PHONON)
 
 if (TAGLIB_FOUND)
     set(ENABLE_TAGEDITOR_SUPPORT 1)

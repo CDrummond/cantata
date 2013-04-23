@@ -846,6 +846,7 @@ void CoverDialog::sendDiscoGsQuery(const QString &fixedQuery, int page)
 
 void CoverDialog::sendAmazonQuery(const QString &fixedQuery, int page)
 {
+    #if QT_VERSION < 0x050000
     if (0!=page || amazonAccessKey.isEmpty()) {
         return;
     }
@@ -894,6 +895,12 @@ void CoverDialog::sendAmazonQuery(const QString &fixedQuery, int page)
     url.setQuery(query);
     #endif
     sendQueryRequest(url);
+
+    #else
+    // Qt has no non-deprecated version of 'setEncodedQueryItems', so for the moment Amazon searches are disabled for Qt5 builds...
+    Q_UNUSED(fixedQuery)
+    Q_UNUSED(page)
+    #endif
 }
 
 void CoverDialog::checkStatus()

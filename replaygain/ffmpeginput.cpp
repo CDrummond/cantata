@@ -353,7 +353,7 @@ size_t FfmpegInput::readOnePacket()
         if (handle->needNewFrame && av_read_frame(handle->formatContext, &handle->packet) < 0) {
             return 0;
         }
-        handle->needNewFrame = FALSE;
+        handle->needNewFrame = false;
         if (handle->packet.stream_index == handle->audioStream) {
             if (!handle->oldData) {
                 handle->oldData = handle->packet.data;
@@ -459,7 +459,7 @@ size_t FfmpegInput::readOnePacket()
             handle->oldData = NULL;
         }
         av_free_packet(&handle->packet);
-        handle->needNewFrame = TRUE;
+        handle->needNewFrame = true;
     }
 }
 

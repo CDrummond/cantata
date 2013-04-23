@@ -36,22 +36,21 @@ HeaderLabel::HeaderLabel(QWidget *p)
     setFont(f);
     setMinimumHeight(LineEdit().minimumHeight());
     setAlignment(Qt::AlignVCenter | (Qt::RightToLeft==layoutDirection() ? Qt::AlignRight : Qt::AlignLeft));
-    int padding=fontMetrics().height()*0.25;
-    setStyleSheet(QString("padding-left: %1px ; padding-right: %1px").arg(padding));
 }
 
 void HeaderLabel::paintEvent(QPaintEvent *ev)
 {
     QPainter p(this);
     QRect r(rect());
-    QLinearGradient grad(r.topLeft(), r.topRight());
+    QLinearGradient grad(r.bottomLeft(), r.bottomRight());
     QColor col(palette().color(QPalette::Highlight));
     bool rtl=Qt::RightToLeft==layoutDirection();
     col.setAlphaF(0.85);
     grad.setColorAt(rtl ? 1 : 0, col);
     col.setAlphaF(0.0);
     grad.setColorAt(rtl ? 0 : 1, col);
-    p.fillRect(r, grad);
+    p.setPen(QPen(grad, r.height()>32 ? 3 : 2));
+    p.drawLine(r.bottomLeft(), r.bottomRight());
     p.end();
     SqueezedTextLabel::paintEvent(ev);
 }

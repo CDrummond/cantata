@@ -158,6 +158,7 @@ bool Song::isEmpty() const
 void Song::guessTags()
 {
     if (isEmpty() && !isStream()) {
+        guessed=true;
         QStringList parts = file.split("/");
         if (3==parts.length()) {
             title=parts.at(2);
@@ -168,7 +169,6 @@ void Song::guessTags()
         }
 
         if (!title.isEmpty()) {
-            guessed=true;
             int dot=title.lastIndexOf('.');
             if (dot==title.length()-4) {
                 title=title.left(dot);

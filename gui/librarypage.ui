@@ -19,10 +19,10 @@
    </item>
    <item>
     <layout class="QHBoxLayout" name="hlayout">
-     <property name="margin">
+     <property name="spacing">
       <number>0</number>
      </property>
-     <property name="spacing">
+     <property name="margin">
       <number>0</number>
      </property>
      <item>

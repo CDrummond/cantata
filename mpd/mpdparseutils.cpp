@@ -234,23 +234,23 @@ Song MPDParseUtils::parseSong(const QByteArray &data, bool isPlayQueue)
         song.type=Song::Stream;
     }
 
-    if (isPlayQueue) {
-        if (!song.file.isEmpty()) {
-            if (song.isStream()) {
-                if (!song.isCantataStream()) {
-                    QString name=getName(song.file);
-                    if (!name.isEmpty()) {
-                        song.name=name;
-                    }
-                    if (song.title.isEmpty() && song.name.isEmpty()) {
-                        song.title=Utils::getFile(QUrl(song.file).path());
-                    }
+    if (!song.file.isEmpty()) {
+        if (song.isStream()) {
+            if (!song.isCantataStream()) {
+                QString name=getName(song.file);
+                if (!name.isEmpty()) {
+                    song.name=name;
                 }
-            } else {
-                song.guessTags();
-                song.fillEmptyFields();
+                if (song.title.isEmpty() && song.name.isEmpty()) {
+                    song.title=Utils::getFile(QUrl(song.file).path());
+                }
             }
+        } else {
+            song.guessTags();
+            song.fillEmptyFields();
         }
+    }
+    if (isPlayQueue) {
         song.setKey();
     }
     return song;
@@ -389,9 +389,9 @@ MusicLibraryItemRoot * MPDParseUtils::parseLibraryItems(const QByteArray &data)
                 }
                 continue;
             }
-            if (currentSong.isEmpty()) {
-                continue;
-            }
+//            if (currentSong.isEmpty()) {
+//                continue;
+//            }
 
             currentSong.fillEmptyFields();
             if (!artistItem || currentSong.albumArtist()!=artistItem->data()) {

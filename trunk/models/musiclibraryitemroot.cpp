@@ -413,6 +413,9 @@ void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, const QDateTime &date
                 if (track->song().year != album->year()) {
                     writer.writeAttribute("year", QString::number(track->song().year));
                 }
+                if (track->song().guessed) {
+                    writer.writeAttribute("guessed", "true");
+                }
                 if (prog && !prog->wasStopped() && total>0) {
                     count++;
                     prog->writeProgress((count*100.0)/(total*1.0));
@@ -573,6 +576,9 @@ quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime 
                     }
 
                     song.fillEmptyFields();
+                    if (QLatin1String("true")==attributes.value("guessed").toString()) {
+                        song.guessed=true;
+                    }
                     albumItem->append(new MusicLibraryItemSong(song, albumItem));
                     albumItem->addGenre(song.genre);
                     artistItem->addGenre(song.genre);

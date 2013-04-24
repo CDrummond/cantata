@@ -41,32 +41,9 @@ class QMutex;
 #ifdef ENABLE_KDE_SUPPORT
 class KUrl;
 #endif
+class NetworkAccessManager;
 
-class CoverQueue : public QObject
-{
-    Q_OBJECT
-
-public:
-    CoverQueue();
-    ~CoverQueue() { }
-
-    void getCover(const Song &s, bool urgent);
-
-private Q_SLOTS:
-    void getNextCover();
-
-Q_SIGNALS:
-    void getNext();
-    void cover(const Song &song, const QImage &img, const QString &file);
-    void artistImage(const Song &song, const QImage &img, const QString &file);
-    void download(const Song &song);
-
-private:
-    QMutex *mutex;
-    QList<Song> songs;
-};
-
-class Covers : public QObject
+class CoverDownloader : public QObject
 {
     Q_OBJECT
 
@@ -90,6 +67,44 @@ public:
         int level;
     };
 
+    CoverDownloader();
+    ~CoverDownloader() { }
+
+    void stop();
+
+public Q_SLOTS:
+    void download(const Song &s);
+
+Q_SIGNALS:
+    void cover(const Song &song, const QImage &img, const QString &file);
+    void artistImage(const Song &song, const QImage &img, const QString &file);
+
+private:
+    void downloadOnlineImage(Job &job);
+    bool downloadViaHttp(Job &job, JobType type);
+    void downloadViaLastFm(Job &job);
+
+private Q_SLOTS:
+    void lastFmCallFinished();
+    void jobFinished();
+
+private:
+    QString saveImg(const Job &job, const QImage &img, const QByteArray &raw);
+    QHash<QNetworkReply *, Job>::Iterator findJob(const Job &job);
+
+private:
+    QHash<QNetworkReply *, Job> jobs;
+
+private:
+    QThread *thread;
+    NetworkAccessManager *manager;
+};
+
+class Covers : public QObject
+{
+    Q_OBJECT
+
+public:
     struct Image
     {
         Image(const QImage &i=QImage(), const QString &f=QString())
@@ -121,7 +136,6 @@ public:
     QPixmap * get(const Song &song, int size);
     Image getImage(const Song &song);
     Image get(const Song &song);
-    void requestCover(const Song &song, bool urgent=false);
     void setSaveInMpdDir(bool s);
     void emitCoverUpdated(const Song &song, const QImage &img, const QString &file);
 
@@ -129,39 +143,28 @@ public:
     void cleanCdda();
     #endif
 
-public Q_SLOTS:
-    void download(const Song &song);
-
 Q_SIGNALS:
+    void download(const Song &s);
     void cover(const Song &song, const QImage &img, const QString &file);
     void coverUpdated(const Song &song, const QImage &img, const QString &file);
     void artistImage(const Song &song, const QImage &img, const QString &file);
     void coverRetrieved(const Song &song);
 
-private:
-    void donwloadOnlineImage(Job &job);
-    bool downloadViaHttp(Job &job, JobType type);
-    void downloadViaLastFm(Job &job);
-
 private Q_SLOTS:
-    void lastFmCallFinished();
-    void jobFinished();
+    void coverDownloaded(const Song &song, const QImage &img, const QString &file);
+    void artistImageDownloaded(const Song &song, const QImage &img, const QString &file);
 
 private:
-    QString saveImg(const Job &job, const QImage &img, const QByteArray &raw);
-    QHash<QNetworkReply *, Job>::Iterator findJob(const Job &job);
     void clearCache(const Song &song, const QImage &img, bool dummyEntriesOnly);
-    void gotAlbumCover(const Song &song, const Image &img, bool emitResult=true);
-    void gotArtistImage(const Song &song, const Image &img, bool emitResult=true);
+    void gotAlbumCover(const Song &song, const QImage &img, const QString &fileName, bool emitResult=true);
+    void gotArtistImage(const Song &song, const QImage &img, const QString &fileName, bool emitResult=true);
     QString getFilename(const Song &s, bool isArtist);
 
 private:
-    QHash<QNetworkReply *, Job> jobs;
     QSet<int> cacheSizes;
     QCache<quint32, QPixmap> cache;
     QMap<QString, QString> filenames;
-    CoverQueue *queue;
-    QThread *queueThread;
+    CoverDownloader *downloader;
 };
 
 #endif

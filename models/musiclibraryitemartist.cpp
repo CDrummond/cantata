@@ -109,6 +109,7 @@ const QPixmap & MusicLibraryItemArtist::cover()
                                             .scaled(QSize(cSize, cSize), Qt::KeepAspectRatio, Qt::SmoothTransformation));
             }
             m_coverIsDefault = true;
+            Covers::Image img;
             Song song;
             song.albumartist=m_itemData;
 
@@ -131,11 +132,17 @@ const QPixmap & MusicLibraryItemArtist::cover()
                 // ONLINE: Image URL is encoded in song.name...
                 song.name=m_imageUrl;
                 song.title=parentItem()->parentItem()->data().toLower();
-                Covers::self()->requestCover(song, true);
+                img=Covers::self()->get(song);
             } else if (parentItem() && parentItem()->parentItem() && !static_cast<MusicLibraryItemRoot *>(parentItem()->parentItem())->useArtistImages()) {
                 // Not showing artist images in this model, so dont request any!
             } else {
-                Covers::self()->requestCover(song, true);
+                img=Covers::self()->get(song);
+            }
+
+            if (!img.img.isNull()) {
+                setCover(img.img);
+                m_coverIsDefault=false;
+                return *m_cover;
             }
             return *theDefaultIcon;
         }

@@ -56,7 +56,7 @@ public:
     void updateIndexes();
     Type itemType() const { return Type_Artist; }
     static void clearDefaultCover();
-    bool setCover(const QImage &img) const;
+    bool setCover(const QImage &img, bool update=false) const;
     const QPixmap & cover();
     bool hasRealCover() const { return !m_coverIsDefault; }
     const QString & imageUrl() const { return m_imageUrl; }

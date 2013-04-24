@@ -141,6 +141,19 @@ QList<Song> AlbumsPage::selectedSongs(bool allowPlaylists) const
     return AlbumsModel::self()->songs(mapped, allowPlaylists);
 }
 
+Song AlbumsPage::coverRequest() const
+{
+    QModelIndexList selected = view->selectedIndexes();
+
+    if (1==selected.count()) {
+        QList<Song> songs=AlbumsModel::self()->songs(QModelIndexList() << proxy.mapToSource(selected.at(0)), false);
+        if (!songs.isEmpty()) {
+            return songs.at(0);
+        }
+    }
+    return Song();
+}
+
 void AlbumsPage::addSelectionToPlaylist(const QString &name, bool replace, quint8 priorty)
 {
     QStringList files=selectedFiles(true);

@@ -69,6 +69,15 @@
 static int iCount=0;
 static const int constMaxTempFiles=20;
 
+static QImage cropImage(QImage img, bool isArtist)
+{
+    if (isArtist && img.width()!=img.height()) {
+        int size=qMin(img.width(), img.height());
+        return img.copy((img.width()-size)/2, 0, size, size);
+    }
+    return img;
+}
+
 static QByteArray sha256(const QByteArray &data)
 {
     SHA256_CTX context;
@@ -396,6 +405,7 @@ CoverDialog::CoverDialog(QWidget *parent)
     , existing(0)
     , preview(0)
     , saving(false)
+    , isArtist(false)
     , spinner(0)
     , page(0)
     , menu(0)
@@ -462,6 +472,10 @@ CoverDialog::~CoverDialog()
 void CoverDialog::show(const Song &s, const Covers::Image &current)
 {
     song=s;
+
+    // If we are requesting artist image, then Song should ONLY have albumartist and file set
+    // ...so check that some other fields are empty/default.
+    isArtist=song.album.isEmpty() && song.artist.isEmpty() && !song.albumartist.isEmpty() && 0==song.size && 0==song.track;
     Covers::Image img=current.img.isNull() ? Covers::self()->getImage(song) : current;
 
     if (!img.fileName.isEmpty() && !QFileInfo(img.fileName).isWritable()) {
@@ -469,12 +483,16 @@ void CoverDialog::show(const Song &s, const Covers::Image &current)
         deleteLater();
         return;
     }
-    setCaption(i18nc("Album by Artist", "%1 by %2").arg(song.album).arg(song.albumArtist()));
+    if (isArtist) {
+        setCaption(song.artist);
+    } else {
+        setCaption(i18nc("Album by Artist", "%1 by %2").arg(song.album).arg(song.albumArtist()));
+    }
     if (!img.img.isNull()) {
-        existing=new ExistingCover(img, list);
+        existing=new ExistingCover(isArtist ? Covers::Image(cropImage(img.img, true), img.fileName) : img, list);
         list->addItem(existing);
     }
-    query->setText(song.album+" "+song.albumArtist());
+    query->setText(isArtist ? song.albumartist : QString(song.album+" "+song.albumArtist()));
     sendQuery();
     Dialog::show();
 }
@@ -644,7 +662,7 @@ void CoverDialog::downloadJobFinished()
                 }
                 if (isLarge) {
                     if (DL_LargePreview==dlType) {
-                        previewDialog()->showImage(img, reply->property(constLargeProperty).toString());
+                        previewDialog()->showImage(cropImage(img, isArtist), reply->property(constLargeProperty).toString());
                     } else if (DL_LargeSave==dlType) {
                         if (!temp) {
                             MessageBox::error(this, i18n("Failed to set cover!\nCould not download to temporary file!"));
@@ -654,6 +672,7 @@ void CoverDialog::downloadJobFinished()
                     }
                 } else {
                     CoverItem *item=0;
+                    img=cropImage(img, isArtist);
                     if (constLastFmHost==host) {
                         item=new LastFmCover(reply->property(constLargeProperty).toString(), url, img, list);
                     } else if (constGoogleHost==host) {
@@ -775,8 +794,10 @@ void CoverDialog::sendQuery()
     currentQueryString=fixedQuery;
     sendLastFmQuery(fixedQuery, page);
     sendGoogleQuery(fixedQuery, page);
-    sendDiscoGsQuery(fixedQuery, page);
-    sendAmazonQuery(fixedQuery, page);
+    if (!isArtist) {
+        sendDiscoGsQuery(fixedQuery, page);
+        sendAmazonQuery(fixedQuery, page);
+    }
 }
 
 void CoverDialog::sendLastFmQuery(const QString &fixedQuery, int page)
@@ -793,8 +814,8 @@ void CoverDialog::sendLastFmQuery(const QString &fixedQuery, int page)
     query.addQueryItem("api_key", Covers::constLastFmApiKey);
     query.addQueryItem("limit", QString::number(20));
     query.addQueryItem("page", QString::number(page));
-    query.addQueryItem("album", fixedQuery);
-    query.addQueryItem("method", "album.search");
+    query.addQueryItem(isArtist ? "artist" : "album", fixedQuery);
+    query.addQueryItem("method", isArtist ? "artist.search" : "album.search");
     #if QT_VERSION >= 0x050000
     url.setQuery(query);
     #endif
@@ -1068,7 +1089,7 @@ void CoverDialog::parseLstFmQueryResponse(const QByteArray &resp)
         doc.readNext();
 
         if (doc.isStartElement()) {
-            if (!inSection && QLatin1String("album")==doc.name()) {
+            if (!inSection && QLatin1String(isArtist ? "artist" : "album")==doc.name()) {
                 inSection=true;
                 urls.clear();
             } else if (inSection && QLatin1String("image")==doc.name()) {
@@ -1083,7 +1104,7 @@ void CoverDialog::parseLstFmQueryResponse(const QByteArray &resp)
                     musibBrainzIds.append(id);
                 }
             }
-        } else if (doc.isEndElement() && inSection && QLatin1String("album")==doc.name()) {
+        } else if (doc.isEndElement() && inSection && QLatin1String(isArtist ? "artist" : "album")==doc.name()) {
             if (!urls.isEmpty()) {
                 entries.append(urls);
                 urls.clear();
@@ -1423,21 +1444,44 @@ bool CoverDialog::saveCover(const QString &src, const QImage &img)
     }
 
     QString destName;
-    if (Settings::self()->storeCoversInMpdDir()) {
-        QString coverName=MPDConnection::self()->getDetails().coverName;
-        if (coverName.isEmpty()) {
-            coverName=Covers::constFileName;
-        }
+    QString mpdDir;
+    QString dirName;
+    bool saveInMpd=Settings::self()->storeCoversInMpdDir();
+
+    if (saveInMpd) {
         bool haveAbsPath=song.file.startsWith('/');
-        QString dirName=song.file.endsWith('/') ? (haveAbsPath ? QString() : MPDConnection::self()->getDetails().dir)+song.file
-                                                : Utils::getDir((haveAbsPath ? QString() : MPDConnection::self()->getDetails().dir)+song.file);
-        destName=dirName+coverName+src.mid(src.length()-4);
-    } else { // Save to cache dir...
-        QString dir(Utils::cacheDir(Covers::constCoverDir+Covers::encodeName(song.albumArtist()), true));
-        destName=dir+Covers::encodeName(song.album)+src.mid(src.length()-4);
+        mpdDir=MPDConnection::self()->getDetails().dir;
+        if (haveAbsPath || !mpdDir.isEmpty()) {
+            dirName=song.file.endsWith('/') ? (haveAbsPath ? QString() : mpdDir)+song.file
+                                            : Utils::getDir((haveAbsPath ? QString() : mpdDir)+song.file);
+        }
     }
 
-    if (QFile::copy(src, destName)) {
+    if (isArtist) {
+        QString coverName=Covers::constArtistImage;
+        if (saveInMpd) {
+            if (!mpdDir.isEmpty() && dirName.startsWith(mpdDir) && 2==dirName.mid(mpdDir.length()).split('/', QString::SkipEmptyParts).count()) {
+                QDir d(dirName);
+                d.cdUp();
+                destName=d.absolutePath()+'/'+Covers::constArtistImage+src.mid(src.length()-4);
+            }
+        } else {
+            destName=Utils::cacheDir(Covers::constCoverDir)+Covers::encodeName(song.albumartist)+src.mid(src.length()-4);
+        }
+    } else {
+        if (saveInMpd) {
+            QString coverName=MPDConnection::self()->getDetails().coverName;
+            if (coverName.isEmpty()) {
+                coverName=Covers::constFileName;
+            }
+            destName=dirName+coverName+src.mid(src.length()-4);
+        } else { // Save to cache dir...
+            QString dir(Utils::cacheDir(Covers::constCoverDir+Covers::encodeName(song.albumArtist()), true));
+            destName=dir+Covers::encodeName(song.album)+src.mid(src.length()-4);
+        }
+    }
+
+    if (!destName.startsWith("http://") && QFile::copy(src, destName)) {
         Utils::setFilePerms(destName);
         if (!existingBackup.isEmpty() && QFile::exists(existingBackup)) {
             QFile::remove(existingBackup);

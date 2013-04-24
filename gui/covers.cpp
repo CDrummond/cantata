@@ -154,8 +154,9 @@ QString Covers::albumFileName(const Song &song)
     if (coverName.isEmpty()) {
         coverName=Covers::constFileName;
     } else if (coverName.contains("%")) {
+        int len=coverName.length();
         coverName.replace(DeviceOptions::constAlbumArtist, encodeName(song.albumArtist()));
-        coverName.replace(DeviceOptions::constTrackArtist, encodeName(song.artist));
+        coverName.replace(DeviceOptions::constTrackArtist, encodeName(song.albumArtist()));
         coverName.replace(DeviceOptions::constAlbumTitle, encodeName(song.album));
         coverName.replace("%", "");
     }

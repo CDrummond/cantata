@@ -359,16 +359,20 @@ QStringList Covers::standardNames()
 
 CoverDownloader::CoverDownloader()
 {
-    thread=new QThread();
     manager=new NetworkAccessManager(this);
+    #ifndef ENABLE_KDE_SUPPORT // KIO is not thread safe!!!
+    thread=new QThread();
     moveToThread(thread);
     thread->start();
+    #endif
 }
 
 void CoverDownloader::stop()
 {
+    #ifndef ENABLE_KDE_SUPPORT
     Utils::stopThread(thread);
     thread=0;
+    #endif
 }
 
 void CoverDownloader::download(const Song &song)

@@ -67,17 +67,35 @@ void ItemView::setup()
     }
 }
 
-ListViewEventHandler::ListViewEventHandler(QAbstractItemView *v, QAction *a)
+ViewEventHandler::ViewEventHandler(ActionItemDelegate *d, QAbstractItemView *v)
     : QObject(v)
+    , delegate(d)
     , view(v)
-    , act(a)
 {
 }
 
 // HACK time. For some reason, IconView is not always re-drawn when mouse leaves the view.
 // We sometimes get an item that is left in the mouse-over state. So, work-around this by
 // keeping track of when mouse is over listview.
-static QWidget *mouseWidget=0;
+bool ViewEventHandler::eventFilter(QObject *obj, QEvent *event)
+{
+    if (delegate) {
+        if (QEvent::Enter==event->type()) {
+            delegate->setUnderMouse(true);
+            view->viewport()->update();
+        } else if (QEvent::Leave==event->type()) {
+            delegate->setUnderMouse(false);
+            view->viewport()->update();
+        }
+    }
+    return QObject::eventFilter(obj, event);
+}
+
+ListViewEventHandler::ListViewEventHandler(ActionItemDelegate *d, QAbstractItemView *v, QAction *a)
+    : ViewEventHandler(d, v)
+    , act(a)
+{
+}
 
 bool ListViewEventHandler::eventFilter(QObject *obj, QEvent *event)
 {
@@ -87,14 +105,7 @@ bool ListViewEventHandler::eventFilter(QObject *obj, QEvent *event)
         }
         return true;
     }
-    if (QEvent::Enter==event->type()) {
-        mouseWidget=view;
-        view->viewport()->update();
-    } else if (QEvent::Leave==event->type()) {
-        mouseWidget=0;
-        view->viewport()->update();
-    }
-    return QObject::eventFilter(obj, event);
+    return ViewEventHandler::eventFilter(obj, event);
 }
 
 static const int constImageSize=22;
@@ -156,12 +167,13 @@ public:
         QStyleOptionViewItemV4 opt(option);
         opt.showDecorationSelected=true;
 
-        if (isList() && view!=mouseWidget) {
+        if (!underMouse) {
             if (mouseOver && !selected) {
                 drawBgnd=false;
             }
             mouseOver=false;
         }
+
         if (drawBgnd) {
             if (mouseOver && gtk) {
                 GtkStyle::drawSelection(opt, painter, selected ? 0.75 : 0.25);
@@ -319,8 +331,6 @@ public:
         painter->restore();
     }
 
-    virtual bool isList() const { return true; }
-
 protected:
     ListView *view;
 };
@@ -430,7 +440,6 @@ public:
     }
 
     void setSimple(bool s) { simpleStyle=s; }
-    virtual bool isList() const { return false; }
 
     bool simpleStyle;
 };
@@ -498,10 +507,15 @@ ItemView::ItemView(QWidget *p)
     listView->addAction(sep);
     Icon::init(backButton);
     treeView->setPageDefaults();
+    // Some styles, eg Cleanlooks/Plastique require that we explicitly set mouse tracking on the treeview.
+    treeView->setAttribute(Qt::WA_MouseTracking);
     iconGridSize=listGridSize=listView->gridSize();
-    listView->installEventFilter(new ListViewEventHandler(listView, backAction));
-    listView->setItemDelegate(new ListDelegate(listView, listView));
-    treeView->setItemDelegate(new TreeDelegate(treeView));
+    ListDelegate *ld=new ListDelegate(listView, listView);
+    TreeDelegate *td=new TreeDelegate(treeView);
+    listView->setItemDelegate(ld);
+    treeView->setItemDelegate(td);
+    listView->installEventFilter(new ListViewEventHandler(ld, listView, backAction));
+    treeView->installEventFilter(new ViewEventHandler(td, treeView));
     connect(treeSearch, SIGNAL(returnPressed()), this, SLOT(delaySearchItems()));
     connect(treeSearch, SIGNAL(textChanged(const QString)), this, SLOT(delaySearchItems()));
     connect(listSearch, SIGNAL(returnPressed()), this, SLOT(delaySearchItems()));
@@ -527,6 +541,9 @@ void ItemView::allowGroupedView()
 {
     if (!groupedView) {
         groupedView=new GroupedView(stackedWidget);
+        // Some styles, eg Cleanlooks/Plastique require that we explicitly set mouse tracking on the treeview.
+        groupedView->setAttribute(Qt::WA_MouseTracking, true);
+        groupedView->installEventFilter(new ViewEventHandler(qobject_cast<ActionItemDelegate *>(groupedView->itemDelegate()), groupedView));
         groupedView->setAutoExpand(false);
         groupedView->setMultiLevel(true);
         treeLayout->addWidget(groupedView);

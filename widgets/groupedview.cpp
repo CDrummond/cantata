@@ -189,7 +189,7 @@ public:
         int state=index.data(GroupedView::Role_Status).toInt();
         quint32 collection=index.data(GroupedView::Role_CollectionId).toUInt();
         bool selected=option.state&QStyle::State_Selected;
-        bool mouseOver=option.state&QStyle::State_MouseOver;
+        bool mouseOver=underMouse && option.state&QStyle::State_MouseOver;
         bool gtk=mouseOver && GtkStyle::isActive();
 
         if (!isCollection && AlbumHeader==type) {
@@ -421,7 +421,7 @@ public:
             painter->drawText(duratioRect, duration, QTextOption(Qt::AlignVCenter|Qt::AlignRight));
         }
 
-        if ((option.state & QStyle::State_MouseOver)) {
+        if (mouseOver) {
             drawIcons(painter, option.rect, true, rtl, AlbumHeader==type || isCollection ? AP_HBottom : AP_HMiddle, index);
         }
         painter->restore();
@@ -431,8 +431,8 @@ private:
     GroupedView *view;
 };
 
-GroupedView::GroupedView(QWidget *parent, bool menuAlwaysAllowed)
-    : TreeView(parent, menuAlwaysAllowed)
+GroupedView::GroupedView(QWidget *parent, bool isPlayQueue)
+    : TreeView(parent, isPlayQueue)
     , startClosed(true)
     , autoExpand(true)
     , filterActive(false)
@@ -450,7 +450,13 @@ GroupedView::GroupedView(QWidget *parent, bool menuAlwaysAllowed)
     setSelectionBehavior(SelectRows);
     connect(this, SIGNAL(clicked(const QModelIndex &)), this, SLOT(itemClicked(const QModelIndex &)));
     setStyleSheet("QTreeView::branch { border: 0px; }");
-    setItemDelegate(new GroupedViewDelegate(this));
+    GroupedViewDelegate *delegate=new GroupedViewDelegate(this);
+    setItemDelegate(delegate);
+    if (isPlayQueue) {
+        // 'underMouse' is used to work-around mouse over issues with some styles.
+        // PlayQueue does not have mouse over - so we never need to check this.
+        delegate->setUnderMouse(true);
+    }
 }
 
 GroupedView::~GroupedView()

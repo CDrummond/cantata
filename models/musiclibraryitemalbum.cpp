@@ -167,12 +167,17 @@ MusicLibraryItemAlbum::~MusicLibraryItemAlbum()
     delete m_cover;
 }
 
+void MusicLibraryItemAlbum::setCoverImage(const QImage &img) const
+{
+    int size=iconSize(largeImages());
+    m_cover = new QPixmap(QPixmap::fromImage(img).scaled(QSize(size, size), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    m_coverIsDefault=false;
+}
+
 bool MusicLibraryItemAlbum::setCover(const QImage &img, bool update) const
 {
     if ((update || m_coverIsDefault) && !img.isNull()) {
-        int size=iconSize(largeImages());
-        m_cover = new QPixmap(QPixmap::fromImage(img).scaled(QSize(size, size), Qt::KeepAspectRatio, Qt::SmoothTransformation));
-        m_coverIsDefault=false;
+        setCoverImage(img);
         return true;
     }
 
@@ -221,6 +226,7 @@ const QPixmap & MusicLibraryItemAlbum::cover()
             song.album=m_itemData;
             song.year=m_year;
             song.file=firstSong->file();
+            Covers::Image img;
             #ifdef ENABLE_DEVICES_SUPPORT
             if (parentItem() && parentItem()->parentItem() && dynamic_cast<Device *>(parentItem()->parentItem()) &&
                 static_cast<MusicLibraryItemRoot *>(parentItem()->parentItem())->useAlbumImages()) {
@@ -234,11 +240,16 @@ const QPixmap & MusicLibraryItemAlbum::cover()
                 // ONLINE: Image URL is encoded in song.name...
                 song.name=m_imageUrl;
                 song.title=parentItem()->parentItem()->data().toLower();
-                Covers::self()->requestCover(song, true);
+                img=Covers::self()->get(song);
             } else if (parentItem() && parentItem()->parentItem() && !static_cast<MusicLibraryItemRoot *>(parentItem()->parentItem())->useAlbumImages()) {
                 // Not showing album images in this model, so dont request any!
             } else {
-                Covers::self()->requestCover(song, true);
+                img=Covers::self()->get(song);
+            }
+
+            if (!img.img.isNull()) {
+                setCoverImage(img.img);
+                return *m_cover;
             }
         }
         return useLarge ? *theDefaultLargeIcon : *theDefaultIcon;

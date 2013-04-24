@@ -167,7 +167,10 @@ void InfoPage::update(const Song &s, bool force)
             Song s;
             s.albumartist=currentSong.artist;
             s.file=currentSong.file;
-            Covers::self()->requestCover(s, true);
+            Covers::Image img=Covers::self()->get(s);
+            if (!img.img.isNull()) {
+                artistImage(s, img.img, img.fileName);
+            }
             loadBio();
         }
     }

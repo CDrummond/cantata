@@ -84,7 +84,7 @@ public:
         void setSongs(MusicLibraryItemAlbum *ai);
         void setName();
         quint32 totalTime();
-        void getCover(bool urgent);
+        void getCover();
         bool isSingleTracks() const { return Song::SingleTracks==type; }
         const SongItem *getCueFile() const;
         QString artist;

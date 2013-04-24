@@ -226,7 +226,10 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
                                             .scaled(QSize(cSize, cSize), Qt::KeepAspectRatio, Qt::SmoothTransformation));
             }
             if (!al->coverRequested && iSize && Song::SingleTracks!=al->type) {
-                al->getCover(true);
+                al->getCover();
+                if (al->cover) {
+                    return *(al->cover);
+                }
                 al->coverRequested=true;
             }
             return *theDefaultIcon;
@@ -576,7 +579,7 @@ quint32 AlbumsModel::AlbumItem::totalTime()
     return time;
 }
 
-void AlbumsModel::AlbumItem::getCover(bool urgent)
+void AlbumsModel::AlbumItem::getCover()
 {
     if (Song::SingleTracks!=type && songs.count()) {
         SongItem *firstSong=songs.first();
@@ -589,7 +592,10 @@ void AlbumsModel::AlbumItem::getCover(bool urgent)
         s.album=album;
         s.year=year;
         s.file=firstSong->file;
-        Covers::self()->requestCover(s, urgent);
+        Covers::Image img=Covers::self()->get(s);
+        if (!img.img.isNull()) {
+            cover=new QPixmap(QPixmap::fromImage(img.img.scaled(QSize(iconSize(), iconSize()), Qt::KeepAspectRatio, Qt::SmoothTransformation)));
+        }
     }
 }
 

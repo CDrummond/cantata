@@ -1411,9 +1411,9 @@ void MainWindow::updateSettings()
     if (Settings::self()->lyricsBgnd()!=lyricsPage->bgndImageEnabled()) {
         lyricsPage->setBgndImageEnabled(Settings::self()->lyricsBgnd());
         if (lyricsPage->bgndImageEnabled() && !coverWidget->isEmpty()) {
-            Covers::Image img=Covers::self()->get(coverWidget->song());
-            if (!img.img.isNull()) {
-                lyricsPage->setImage(img.img);
+            QImage img=coverWidget->image();
+            if (!img.isNull()) {
+                lyricsPage->setImage(img);
             }
         }
     }

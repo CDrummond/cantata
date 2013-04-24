@@ -123,7 +123,8 @@ public:
 //     void getCovers();
 
 public Q_SLOTS:
-    void setCover(const Song &song, const QImage &img, const QString &file);
+    void setCover(const Song &song, const QImage &img, const QString &file, bool update=false);
+    void updateCover(const Song &song, const QImage &img, const QString &file);
     void update(const MusicLibraryItemRoot *root);
 
 private:

@@ -294,7 +294,7 @@ MainWindow::MainWindow(QWidget *parent)
     dynamicTabAction = ActionCollection::get()->createAction("showdynamictab", i18n("Dynamic"), Icons::dynamicIcon);
     lyricsTabAction = ActionCollection::get()->createAction("showlyricstab", i18n("Lyrics"), Icons::lyricsIcon);
     streamsTabAction = ActionCollection::get()->createAction("showstreamstab", i18n("Streams"), Icons::radioStreamIcon);
-    onlineTabAction = ActionCollection::get()->createAction("showonlinetab", i18n("Online"), Icons::streamIcon);
+    onlineTabAction = ActionCollection::get()->createAction("showonlinetab", i18n("Online"), "applications-internet");
     infoTabAction = ActionCollection::get()->createAction("showinfotab", i18n("Info"), Icons::infoIcon);
     #ifdef ENABLE_DEVICES_SUPPORT
     devicesTabAction = ActionCollection::get()->createAction("showdevicestab", i18n("Devices"), "multimedia-player");

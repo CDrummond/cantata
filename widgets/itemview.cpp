@@ -156,7 +156,7 @@ public:
         QStyleOptionViewItemV4 opt(option);
         opt.showDecorationSelected=true;
 
-        if (view!=mouseWidget) {
+        if (isList() && view!=mouseWidget) {
             if (mouseOver && !selected) {
                 drawBgnd=false;
             }
@@ -319,6 +319,8 @@ public:
         painter->restore();
     }
 
+    virtual bool isList() const { return true; }
+
 protected:
     ListView *view;
 };
@@ -428,6 +430,7 @@ public:
     }
 
     void setSimple(bool s) { simpleStyle=s; }
+    virtual bool isList() const { return false; }
 
     bool simpleStyle;
 };

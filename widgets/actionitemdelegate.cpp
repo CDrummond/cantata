@@ -120,6 +120,7 @@ static void drawBgnd(QPainter *painter, const QRect &rx)
 
 ActionItemDelegate::ActionItemDelegate(QObject *p)
     : QStyledItemDelegate(p)
+    , underMouse(false)
 {
 }
 

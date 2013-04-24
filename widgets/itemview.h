@@ -32,19 +32,30 @@ class Spinner;
 class QAction;
 class QTimer;
 class GroupedView;
+class ActionItemDelegate;
 
-class ListViewEventHandler : public QObject
+class ViewEventHandler : public QObject
 {
-    Q_OBJECT
-
 public:
-    ListViewEventHandler(QAbstractItemView *v, QAction *a);
+    ViewEventHandler(ActionItemDelegate *d, QAbstractItemView *v);
+
+protected:
+    bool eventFilter(QObject *obj, QEvent *event);
+
+protected:
+    ActionItemDelegate *delegate;
+    QAbstractItemView *view;
+};
+
+class ListViewEventHandler : public ViewEventHandler
+{
+public:
+    ListViewEventHandler(ActionItemDelegate *d, QAbstractItemView *v, QAction *a);
 
 protected:
     bool eventFilter(QObject *obj, QEvent *event);
 
 private:
-    QAbstractItemView *view;
     QAction *act;
 };
 

@@ -453,7 +453,7 @@ void AlbumsModel::update(const MusicLibraryItemRoot *root)
 void AlbumsModel::setCover(const Song &song, const QImage &img, const QString &file, bool update)
 {
     Q_UNUSED(file)
-    if (img.isNull()) {
+    if (img.isNull() || song.isArtistImageRequest()) {
         return;
     }
 

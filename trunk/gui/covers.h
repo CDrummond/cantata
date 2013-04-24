@@ -96,7 +96,9 @@ private:
     QHash<QNetworkReply *, Job> jobs;
 
 private:
+    #ifndef ENABLE_KDE_SUPPORT
     QThread *thread;
+    #endif
     NetworkAccessManager *manager;
 };
 

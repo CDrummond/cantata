@@ -86,6 +86,7 @@ public:
     bool updateYear();
 
 private:
+    void setCoverImage(const QImage &img) const;
     void setYear(const MusicLibraryItemSong *song);
     bool largeImages() const;
 

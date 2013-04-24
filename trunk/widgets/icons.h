@@ -48,6 +48,7 @@ namespace Icons
     extern Icon infoIcon;
     extern Icon albumIcon;
     extern Icon streamIcon;
+    extern Icon onlineIcon;
     extern Icon configureIcon;
     extern Icon connectIcon;
     extern Icon disconnectIcon;

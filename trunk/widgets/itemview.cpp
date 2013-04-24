@@ -228,6 +228,9 @@ public:
                         painter->drawPoint(xpos+pix.width(), r.y()+pix.height());
                     }
                 }
+                color.setAlphaF(0.4);
+                painter->setPen(color);
+                painter->drawRect(xpos, r.y(), pix.width(), pix.height());
                 r.adjust(0, adjust+3, 0, -3);
             } else {
                 if (rtl) {

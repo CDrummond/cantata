@@ -450,7 +450,7 @@ void AlbumsModel::update(const MusicLibraryItemRoot *root)
     }
 }
 
-void AlbumsModel::setCover(const Song &song, const QImage &img, const QString &file)
+void AlbumsModel::setCover(const Song &song, const QImage &img, const QString &file, bool update)
 {
     Q_UNUSED(file)
     if (img.isNull()) {
@@ -462,12 +462,19 @@ void AlbumsModel::setCover(const Song &song, const QImage &img, const QString &f
 
     for (int row=0; it!=end; ++it, ++row) {
         if ((*it)->artist==song.albumArtist() && (*it)->album==song.album) {
-            (*it)->cover=new QPixmap(QPixmap::fromImage(img.scaled(QSize(iconSize(), iconSize()), Qt::KeepAspectRatio, Qt::SmoothTransformation)));
-            QModelIndex idx=index(row, 0, QModelIndex());
-            emit dataChanged(idx, idx);
+            if (!(*it)->cover || update) {
+                (*it)->cover=new QPixmap(QPixmap::fromImage(img.scaled(QSize(iconSize(), iconSize()), Qt::KeepAspectRatio, Qt::SmoothTransformation)));
+                QModelIndex idx=index(row, 0, QModelIndex());
+                emit dataChanged(idx, idx);
+            }
             return;
         }
     }
+}
+
+void AlbumsModel::updateCover(const Song &song, const QImage &img, const QString &file)
+{
+    setCover(song, img, file, true);
 }
 
 void AlbumsModel::clear()
@@ -489,12 +496,16 @@ void AlbumsModel::setEnabled(bool e)
     if (enabled) {
         connect(Covers::self(), SIGNAL(cover(const Song &, const QImage &, const QString &)),
                 this, SLOT(setCover(const Song &, const QImage &, const QString &)));
+        connect(Covers::self(), SIGNAL(coverUpdated(const Song &, const QImage &, const QString &)),
+                this, SLOT(updateCover(const Song &, const QImage &, const QString &)));
 //         connect(MusicLibraryModel::self(), SIGNAL(updated(const MusicLibraryItemRoot *)), AlbumsModel::self(), SLOT(update(const MusicLibraryItemRoot *)));
         update(MusicLibraryModel::self()->root());
     } else {
         clear();
         disconnect(Covers::self(), SIGNAL(cover(const Song &, const QImage &, const QString &)),
                     this, SLOT(setCover(const Song&, const QImage &, const QString &)));
+        disconnect(Covers::self(), SIGNAL(coverUpdated(const Song &, const QImage &, const QString &)),
+                   this, SLOT(updateCover(const Song &, const QImage &, const QString &)));
 //         disconnect(MusicLibraryModel::self(), SIGNAL(updated(const MusicLibraryItemRoot *)), AlbumsModel::self(), SLOT(update(const MusicLibraryItemRoot *)));
     }
 }

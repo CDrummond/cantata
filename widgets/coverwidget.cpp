@@ -185,7 +185,8 @@ void CoverWidget::update(const Song &s)
 {
     if (s.albumArtist()!=current.albumArtist() || s.album!=current.album || s.isStream()!=current.isStream()) {
         current=s;
-        if (!s.albumArtist().isEmpty() && !s.album.isEmpty()) {
+        bool isStream=current.isStream() && !current.isCantataStream() && !current.isCdda();
+        if (!s.albumArtist().isEmpty() && !s.album.isEmpty() && !isStream) {
             Covers::Image cImg=Covers::self()->get(s);
             valid=!cImg.img.isNull();
             if (valid) {
@@ -196,13 +197,12 @@ void CoverWidget::update(const Song &s)
             } else {
                 // We ned to set the image here, so that TrayItem gets the correct 'noCover' image
                 // ...but if Covers does eventually download a cover, we dont want valid->noCover->valid
-                img=stdPixmap(current.isStream() && !current.isCdda()).toImage();
+                img=stdPixmap(!current.isCdda()).toImage();
             }
         } else {
             valid=false;
-            bool stream=current.isStream() && !current.isCdda();
-            update(stdPixmap(stream));
-            coverFileName=stream ? noStreamCoverFileName : noCoverFileName;
+            update(stdPixmap(isStream));
+            coverFileName=isStream ? noStreamCoverFileName : noCoverFileName;
             emit coverImage(QImage());
             emit coverFile(coverFileName);
         }

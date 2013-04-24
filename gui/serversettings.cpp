@@ -42,7 +42,7 @@ class CoverNameValidator : public QValidator
     State validate(QString &input, int &) const
     {
         for (int i=0; i<input.length(); ++i) {
-            if (!input[i].isLetterOrNumber() || input[i].isSpace()) {
+            if (!input[i].isLetterOrNumber() && '%'!=input[i] && ' '!=input[i] && '-'!=input[i]) {
                 return Invalid;
             }
         }

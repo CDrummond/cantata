@@ -472,10 +472,7 @@ CoverDialog::~CoverDialog()
 void CoverDialog::show(const Song &s, const Covers::Image &current)
 {
     song=s;
-
-    // If we are requesting artist image, then Song should ONLY have albumartist and file set
-    // ...so check that some other fields are empty/default.
-    isArtist=song.album.isEmpty() && song.artist.isEmpty() && !song.albumartist.isEmpty() && 0==song.size && 0==song.track;
+    isArtist=song.isArtistImageRequest();
     Covers::Image img=current.img.isNull() ? Covers::self()->getImage(song) : current;
 
     if (!img.fileName.isEmpty() && !QFileInfo(img.fileName).isWritable()) {

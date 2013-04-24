@@ -218,14 +218,23 @@ public:
                 int xpos=r.x()+((r.width()-pix.width())/2);
                 painter->drawPixmap(xpos, r.y(), pix.width(), pix.height(), pix);
                 QColor color(option.palette.color(active ? QPalette::Active : QPalette::Inactive, QPalette::Text));
-                double alphas[]={0.3, 0.15, 0.075};
+                double alphas[]={0.25, 0.125, 0.061};
                 for (int i=0; i<3; ++i) {
                     color.setAlphaF(alphas[i]);
                     painter->setPen(color);
-                    painter->drawLine(xpos+1+(i*2), r.y()+pix.height()+i, xpos+pix.width()-(i ? i*2 : 1), r.y()+pix.height()+i);
-                    painter->drawLine(xpos+pix.width()+i, r.y()+1+(i*2), xpos+pix.width()+i, r.y()+pix.height()-(i ? (i*2) : 1));
+                    painter->drawLine(xpos+1+(i*2), r.y()+pix.height()+1+i, xpos+pix.width()-(i ? i : 1), r.y()+pix.height()+1+i);
+                    painter->drawLine(xpos+pix.width()+1+i, r.y()+1+(i*2), xpos+pix.width()+1+i, r.y()+pix.height()-(i ? i : 1));
                     if (1==i) {
-                        painter->drawPoint(xpos+pix.width(), r.y()+pix.height());
+                        painter->drawPoint(xpos+pix.width()+1, r.y()+pix.height());
+                        painter->drawPoint(xpos+pix.width(), r.y()+pix.height()+1);
+                        color.setAlphaF(alphas[i+1]);
+                        painter->setPen(color);
+                        painter->drawPoint(xpos+pix.width()+1, r.y()+pix.height()+1);
+                        painter->drawPoint(xpos+(i*2), r.y()+pix.height()+1+i);
+                        painter->drawPoint(xpos+pix.width()+1+i, r.y()+(i*2));
+                    } else if (2==i) {
+                        painter->drawPoint(xpos+pix.width()+2, r.y()+pix.height());
+                        painter->drawPoint(xpos+pix.width(), r.y()+pix.height()+2);
                     }
                 }
                 color.setAlphaF(0.4);

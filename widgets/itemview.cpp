@@ -191,7 +191,8 @@ public:
                                                                               Qt::KeepAspectRatio, Qt::SmoothTransformation))
                             : image.value<QIcon>().pixmap(listDecorationSize, listDecorationSize);
         bool oneLine = childText.isEmpty();
-        ActionPos actionPos = view && QListView::IconMode==view->viewMode() ? AP_VTop : AP_HMiddle;
+        bool iconMode = view && QListView::IconMode==view->viewMode();
+        ActionPos actionPos = iconMode ? AP_VTop : AP_HMiddle;
         bool rtl = Qt::RightToLeft==QApplication::layoutDirection();
 
         painter->save();
@@ -214,7 +215,19 @@ public:
         if (!pix.isNull()) {
             int adjust=qMax(pix.width(), pix.height());
             if (AP_VTop==actionPos) {
-                painter->drawPixmap(r.x()+((r.width()-pix.width())/2), r.y(), pix.width(), pix.height(), pix);
+                int xpos=r.x()+((r.width()-pix.width())/2);
+                painter->drawPixmap(xpos, r.y(), pix.width(), pix.height(), pix);
+                QColor color(option.palette.color(active ? QPalette::Active : QPalette::Inactive, QPalette::Text));
+                double alphas[]={0.3, 0.15, 0.075};
+                for (int i=0; i<3; ++i) {
+                    color.setAlphaF(alphas[i]);
+                    painter->setPen(color);
+                    painter->drawLine(xpos+1+(i*2), r.y()+pix.height()+i, xpos+pix.width()-(i ? i*2 : 1), r.y()+pix.height()+i);
+                    painter->drawLine(xpos+pix.width()+i, r.y()+1+(i*2), xpos+pix.width()+i, r.y()+pix.height()-(i ? (i*2) : 1));
+                    if (1==i) {
+                        painter->drawPoint(xpos+pix.width(), r.y()+pix.height());
+                    }
+                }
                 r.adjust(0, adjust+3, 0, -3);
             } else {
                 if (rtl) {

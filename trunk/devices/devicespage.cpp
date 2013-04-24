@@ -539,8 +539,6 @@ void DevicesPage::toggleDevice()
     }
 }
 
-#define DIALOG_ERROR MessageBox::error(this, i18n("Please close other dialogs first.")); return
-
 void DevicesPage::sync()
 {
     if (0!=SyncDialog::instanceCount()) {
@@ -553,7 +551,8 @@ void DevicesPage::sync()
         || 0!=RgDialog::instanceCount()
         #endif
         ) {
-        DIALOG_ERROR;
+        MessageBox::error(this, i18n("Please close other dialogs first."));
+        return;
     }
 
     const QModelIndexList selected = view->selectedIndexes();

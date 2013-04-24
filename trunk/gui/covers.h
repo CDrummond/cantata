@@ -129,6 +129,8 @@ public:
     static bool copyCover(const Song &song, const QString &sourceDir, const QString &destDir, const QString &name=QString(), unsigned short maxSize=0);
     static QStringList standardNames();
     static QString encodeName(QString name);
+    static QString albumFileName(const Song &song);
+    static QString artistFileName(const Song &song);
 
     Covers();
     void stop();

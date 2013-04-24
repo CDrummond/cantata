@@ -1455,23 +1455,18 @@ bool CoverDialog::saveCover(const QString &src, const QImage &img)
     }
 
     if (isArtist) {
-        QString coverName=Covers::constArtistImage;
         if (saveInMpd) {
             if (!mpdDir.isEmpty() && dirName.startsWith(mpdDir) && 2==dirName.mid(mpdDir.length()).split('/', QString::SkipEmptyParts).count()) {
                 QDir d(dirName);
                 d.cdUp();
-                destName=d.absolutePath()+'/'+Covers::constArtistImage+src.mid(src.length()-4);
+                destName=d.absolutePath()+'/'+Covers::artistFileName(song)+src.mid(src.length()-4);
             }
         } else {
             destName=Utils::cacheDir(Covers::constCoverDir)+Covers::encodeName(song.albumartist)+src.mid(src.length()-4);
         }
     } else {
         if (saveInMpd) {
-            QString coverName=MPDConnection::self()->getDetails().coverName;
-            if (coverName.isEmpty()) {
-                coverName=Covers::constFileName;
-            }
-            destName=dirName+coverName+src.mid(src.length()-4);
+            destName=dirName+Covers::albumFileName(song)+src.mid(src.length()-4);
         } else { // Save to cache dir...
             QString dir(Utils::cacheDir(Covers::constCoverDir+Covers::encodeName(song.albumArtist()), true));
             destName=dir+Covers::encodeName(song.album)+src.mid(src.length()-4);

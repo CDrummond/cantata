@@ -49,6 +49,7 @@ public:
     static int constActionIconSize;
 
     void drawIcons(QPainter *painter, const QRect &r, bool mouseOver, bool rtl, ActionPos actionPos, const QModelIndex &index) const;
+    void setUnderMouse(bool um) { underMouse=um; }
 
 public Q_SLOTS:
     bool helpEvent(QHelpEvent *e, QAbstractItemView *view, const QStyleOptionViewItem &option, const QModelIndex &index);
@@ -59,6 +60,9 @@ public:
 private:
     QRect calcActionRect(bool rtl, ActionPos actionPos, const QRect &rect) const;
     static void adjustActionRect(bool rtl, ActionPos actionPos, QRect &rect);
+
+protected:
+    bool underMouse;
 };
 
 #endif

@@ -113,6 +113,7 @@ StreamDialog::StreamDialog(const QStringList &categories, const QStringList &gen
     if (iconCombo) {
         int size=Icon::stdSize(fontMetrics().height()*1.5);
         iconCombo->setIconSize(QSize(size,size));
+        iconCombo->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Preferred);
         connect(iconCombo, SIGNAL(currentIndexChanged(int)), SLOT(changed()));
     }
 

@@ -488,7 +488,7 @@ bool StreamsModel::save(const QString &filename, const QSet<StreamsModel::Item *
                     doc.writeStartElement("stream");
                     doc.writeAttribute("name", s->name);
                     doc.writeAttribute("url", s->url.toString());
-                    if (!s->icon.isEmpty() && s->icon!=Icons::streamIcon.name()) {
+                    if (!s->icon.isEmpty()) {
                         doc.writeAttribute("icon", s->icon);
                     }
                     QSet<QString> genres=s->genres;
@@ -516,7 +516,7 @@ bool StreamsModel::add(const QString &cat, const QString &name, const QString &g
     }
 
     beginInsertRows(createIndex(items.indexOf(c), 0, c), c->streams.count(), c->streams.count());
-    StreamItem *stream=new StreamItem(name, genreSet(genre), icon.isEmpty() || icon==Icons::streamIcon.name() ? QString() : icon, QUrl(url), c);
+    StreamItem *stream=new StreamItem(name, genreSet(genre), icon, QUrl(url), c);
     c->itemMap.insert(url, stream);
     c->streams.append(stream);
     endInsertRows();
@@ -559,7 +559,7 @@ void StreamsModel::editCategory(const QModelIndex &index, const QString &name, c
 
     if (item->isCategory() && (item->name!=name || item->icon!=icon)) {
         item->name=name;
-        item->icon=icon.isEmpty() || icon==Icons::streamIcon.name() ? QString() : icon;
+        item->icon=icon;
         emit dataChanged(index, index);
         modified=true;
         save();
@@ -579,7 +579,7 @@ void StreamsModel::editStream(const QModelIndex &index, const QString &oldCat, c
     }
 
     if (!newCat.isEmpty() && oldCat!=newCat) {
-        if(add(newCat, name, genre, icon.isEmpty() || icon==Icons::streamIcon.name() ? QString() : icon, url)) {
+        if(add(newCat, name, genre, icon, url)) {
             updateGenres();
             remove(index);
         }

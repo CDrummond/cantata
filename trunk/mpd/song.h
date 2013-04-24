@@ -105,6 +105,16 @@ struct Song
     bool isCantataStream() const { return CantataStream==type; }
     bool isCdda() const { return Cdda==type; }
     QString albumKey() const { return albumArtist()+QChar(':')+album; }
+
+    // We pass 'Song' around to cover requester. When we want the artist image, and not album image,
+    // then we blank certain fields to indicate this!
+    void setArtistImageRequest() {
+        albumartist=albumArtist();
+        album=artist=QString();
+        size=track=0;
+    }
+
+    bool isArtistImageRequest() const { return album.isEmpty() && artist.isEmpty() && !albumartist.isEmpty() && 0==size && 0==track; }
 };
 
 Q_DECLARE_METATYPE(Song)

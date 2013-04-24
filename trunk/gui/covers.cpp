@@ -66,7 +66,7 @@ const QLatin1String Covers::constCoverDir("covers/");
 const QLatin1String Covers::constCddaCoverDir("cdda/");
 const QLatin1String Covers::constFileName("cover");
 static const QStringList   constExtensions=QStringList() << ".jpg" << ".png";
-static const QLatin1String constArtistImage("artist");
+const QLatin1String Covers::constArtistImage("artist");
 
 static QStringList coverFileNames;
 static bool saveInMpdDir=true;
@@ -82,13 +82,6 @@ void initCoverNames()
             }
         }
     }
-}
-
-static inline bool isRequestingArtistImage(const Song &song)
-{
-    // If we are requesting artist image, then Song should ONLY have albumartist and file set
-    // ...so check that some other fields are empty/default.
-    return song.album.isEmpty() && song.artist.isEmpty() && !song.albumartist.isEmpty() && 0==song.size && 0==song.track;
 }
 
 static bool canSaveTo(const QString &dir)
@@ -434,7 +427,7 @@ void Covers::clearCache(const Song &song, const QImage &img, bool dummyEntriesOn
 
 Covers::Image Covers::getImage(const Song &song)
 {
-    bool isArtistImage=isRequestingArtistImage(song);
+    bool isArtistImage=song.isArtistImageRequest();
     QString prevFileName=getFilename(song, isArtistImage);
     if (!prevFileName.isEmpty()) {
         QImage img(prevFileName);
@@ -684,7 +677,7 @@ void Covers::emitCoverUpdated(const Song &song, const QImage &img, const QString
 
 void Covers::download(const Song &song)
 {
-    bool isArtistImage=isRequestingArtistImage(song);
+    bool isArtistImage=song.isArtistImageRequest();
 
     if (jobs.end()!=findJob(Job(song, QString(), isArtistImage))) {
         return;
@@ -744,7 +737,7 @@ void Covers::donwloadOnlineImage(Job &job)
 bool Covers::downloadViaHttp(Job &job, JobType type)
 {
     QUrl u;
-    bool isArtistImage=isRequestingArtistImage(job.song);
+    bool isArtistImage=job.song.isArtistImageRequest();
     QString coverName=isArtistImage ? constArtistImage : MPDConnection::self()->getDetails().coverName;
     if (coverName.isEmpty()) {
         coverName=constFileName;

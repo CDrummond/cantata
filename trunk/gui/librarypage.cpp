@@ -159,6 +159,25 @@ QList<Song> LibraryPage::selectedSongs(bool allowPlaylists) const
     return MusicLibraryModel::self()->songs(mapped, allowPlaylists);
 }
 
+Song LibraryPage::coverRequest() const
+{
+    QModelIndexList selected = view->selectedIndexes();
+
+    if (1==selected.count()) {
+        QModelIndex idx=proxy.mapToSource(selected.at(0));
+        QList<Song> songs=MusicLibraryModel::self()->songs(QModelIndexList() << idx, false);
+        if (!songs.isEmpty()) {
+            Song s=songs.at(0);
+
+            if (MusicLibraryItem::Type_Artist==static_cast<MusicLibraryItem *>(idx.internalPointer())->itemType()) {
+                s.setArtistImageRequest();
+            }
+            return s;
+        }
+    }
+    return Song();
+}
+
 void LibraryPage::addSelectionToPlaylist(const QString &name, bool replace, quint8 priorty)
 {
     QStringList files=selectedFiles(true);
@@ -308,5 +327,10 @@ void LibraryPage::controlActions()
     #endif
     #endif // TAGLIB_FOUND
 
-    StdActions::self()->setCoverAction->setEnabled(1==selected.count() && MusicLibraryItem::Type_Album==static_cast<MusicLibraryItem *>(proxy.mapToSource(selected.at(0)).internalPointer())->itemType());
+    if (1==selected.count()) {
+        MusicLibraryItem::Type type=static_cast<MusicLibraryItem *>(proxy.mapToSource(selected.at(0)).internalPointer())->itemType();
+        StdActions::self()->setCoverAction->setEnabled(MusicLibraryItem::Type_Artist==type || MusicLibraryItem::Type_Album==type);
+    } else {
+        StdActions::self()->setCoverAction->setEnabled(false);
+    }
 }

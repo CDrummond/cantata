@@ -665,7 +665,7 @@ void MusicLibraryModel::toggleGrouping()
     endResetModel();
 }
 
-void MusicLibraryModel::setArtistImage(const Song &song, const QImage &img)
+void MusicLibraryModel::setArtistImage(const Song &song, const QImage &img, bool update)
 {
     if (!rootItem->useArtistImages() || img.isNull() || MusicLibraryItemAlbum::CoverNone==MusicLibraryItemAlbum::currentCoverSize() ||
         song.file.startsWith("http://") || song.name.startsWith("http://")) {
@@ -673,7 +673,7 @@ void MusicLibraryModel::setArtistImage(const Song &song, const QImage &img)
     }
 
     MusicLibraryItemArtist *artistItem = rootItem->artist(song, false);
-    if (artistItem && artistItem->setCover(img)) {
+    if (artistItem && artistItem->setCover(img, update)) {
         QModelIndex idx=index(rootItem->childItems().indexOf(artistItem), 0, QModelIndex());
         emit dataChanged(idx, idx);
     }
@@ -686,7 +686,11 @@ void MusicLibraryModel::setCover(const Song &song, const QImage &img, const QStr
 
 void MusicLibraryModel::updateCover(const Song &song, const QImage &img, const QString &file)
 {
-    setCover(song, img, file, true);
+    if (song.isArtistImageRequest()) {
+        setArtistImage(song, img, true);
+    } else {
+        setCover(song, img, file, true);
+    }
 }
 
 void MusicLibraryModel::setCover(const Song &song, const QImage &img, const QString &file, bool update)

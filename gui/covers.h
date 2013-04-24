@@ -106,6 +106,7 @@ public:
     static const QLatin1String constCoverDir;
     static const QLatin1String constFileName;
     static const QLatin1String constCddaCoverDir;
+    static const QLatin1String constArtistImage;
 
     static Covers * self();
     static bool isCoverFile(const QString &file);

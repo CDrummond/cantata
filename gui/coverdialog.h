@@ -146,6 +146,7 @@ private:
     QList<QTemporaryFile *> tempFiles;
     CoverPreview *preview;
     bool saving;
+    bool isArtist;
     int iSize;
     Spinner *spinner;
     int page;

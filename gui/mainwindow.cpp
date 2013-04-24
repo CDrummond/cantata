@@ -2899,16 +2899,16 @@ void MainWindow::setCover()
         DIALOG_ERROR;
     }
 
-    QList<Song> songs;
+    Song song;
     if (libraryPage->isVisible()) {
-        songs=libraryPage->selectedSongs();
+        song=libraryPage->coverRequest();
     } else if (albumsPage->isVisible()) {
-        songs=albumsPage->selectedSongs();
+        song=albumsPage->coverRequest();
     }
 
-    if (!songs.isEmpty()) {
+    if (!song.isEmpty()) {
         CoverDialog *dlg=new CoverDialog(this);
-        dlg->show(songs.at(0));
+        dlg->show(song);
     }
 }
 

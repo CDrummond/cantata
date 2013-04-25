@@ -101,12 +101,12 @@ const QPixmap & MusicLibraryItemArtist::cover()
         }
 
         if (m_various) {
-            m_cover = new QPixmap(Icons::variousArtistsIcon.pixmap(cSize, cSize).scaled(QSize(cSize, cSize), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+            m_cover = new QPixmap(Icons::variousArtistsIcon.pixmap(cSize, cSize).scaled(QSize(cSize, cSize), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
             m_coverIsDefault=false;
         } else {
             if (!theDefaultIcon) {
                 theDefaultIcon = new QPixmap(Icons::artistIcon.pixmap(cSize, cSize)
-                                            .scaled(QSize(cSize, cSize), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+                                            .scaled(QSize(cSize, cSize), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
             }
             m_coverIsDefault = true;
             Covers::Image img;

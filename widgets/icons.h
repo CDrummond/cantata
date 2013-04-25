@@ -37,6 +37,10 @@ namespace Icons
     extern Icon appIcon;
     extern Icon shortcutsIcon;
     #endif
+    extern Icon artistIcon;
+    extern Icon albumIcon;
+    extern Icon playlistIcon;
+    extern Icon dynamicRuleIcon;
     extern Icon singleIcon;
     extern Icon consumeIcon;
     extern Icon repeatIcon;
@@ -45,19 +49,12 @@ namespace Icons
     extern Icon streamCategoryIcon;
     extern Icon radioStreamIcon;
     extern Icon addRadioStreamIcon;
-    extern Icon infoIcon;
-    extern Icon albumIcon;
     extern Icon streamIcon;
-    extern Icon onlineIcon;
     extern Icon configureIcon;
     extern Icon connectIcon;
     extern Icon disconnectIcon;
     extern Icon speakerIcon;
-    extern Icon lyricsIcon;
-    extern Icon dynamicIcon;
-    extern Icon playlistIcon;
     extern Icon variousArtistsIcon;
-    extern Icon artistIcon;
     extern Icon editIcon;
     extern Icon clearListIcon;
     extern Icon menuIcon;
@@ -66,6 +63,20 @@ namespace Icons
     extern Icon filesIcon;
     extern Icon cancelIcon;
     extern Icon importIcon;
+
+    extern Icon playqueueIcon;
+    extern Icon artistsIcon;
+    extern Icon albumsIcon;
+    extern Icon foldersIcon;
+    extern Icon playlistsIcon;
+    extern Icon dynamicIcon;
+    extern Icon streamsIcon;
+    extern Icon onlineIcon;
+    extern Icon lyricsIcon;
+    extern Icon infoIcon;
+    #ifdef ENABLE_DEVICES_SUPPORT
+    extern Icon devicesIcon;
+    #endif
 
     extern Icon toolbarMenuIcon;
     extern Icon toolbarPrevIcon;

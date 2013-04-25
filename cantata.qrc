@@ -11,5 +11,28 @@
 <file alias="shuffle22.png">icons/view-media-shuffle22.png</file>
 <file alias="shuffle32.png">icons/view-media-shuffle32.png</file>
 <file alias="shuffle48.png">icons/view-media-shuffle48.png</file>
+<file alias="sidebar-albums">icons/sidebar-albums.svg</file>
+<file alias="sidebar-artists">icons/sidebar-artists.svg</file>
+<file alias="sidebar-devices">icons/sidebar-devices.svg</file>
+<file alias="sidebar-dynamic">icons/sidebar-dynamic.svg</file>
+<file alias="sidebar-folders">icons/sidebar-folders.svg</file>
+<file alias="sidebar-info">icons/sidebar-info.svg</file>
+<file alias="sidebar-lyrics">icons/sidebar-lyrics.svg</file>
+<file alias="sidebar-online">icons/sidebar-online.svg</file>
+<file alias="sidebar-playlists">icons/sidebar-playlists.svg</file>
+<file alias="sidebar-playqueue">icons/sidebar-playqueue.svg</file>
+<file alias="sidebar-streams">icons/sidebar-streams.svg</file>
+
+<file alias="sidebar-albums-white">icons/sidebar-albums-white.svg</file>
+<file alias="sidebar-artists-white">icons/sidebar-artists-white.svg</file>
+<file alias="sidebar-devices-white">icons/sidebar-devices-white.svg</file>
+<file alias="sidebar-dynamic-white">icons/sidebar-dynamic-white.svg</file>
+<file alias="sidebar-folders-white">icons/sidebar-folders-white.svg</file>
+<file alias="sidebar-info-white">icons/sidebar-info-white.svg</file>
+<file alias="sidebar-lyrics-white">icons/sidebar-lyrics-white.svg</file>
+<file alias="sidebar-online-white">icons/sidebar-online-white.svg</file>
+<file alias="sidebar-playlists-white">icons/sidebar-playlists-white.svg</file>
+<file alias="sidebar-playqueue-white">icons/sidebar-playqueue-white.svg</file>
+<file alias="sidebar-streams-white">icons/sidebar-streams-white.svg</file>
 </qresource>
 </RCC>

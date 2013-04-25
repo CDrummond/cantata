@@ -167,6 +167,7 @@
 98. List untagged files in main 'artists'/'albums' views. Attempt to guess the
     tags based upon the filename/folder. e.g.
         $artist/$album/$trackNo - $trackTitle
+99. Monochrome sidebar icons.
 
 0.9.2
 -----

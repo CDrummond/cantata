@@ -144,7 +144,7 @@ QVariant Dynamic::data(const QModelIndex &index, int role) const
     case Qt::ToolTipRole:
         return entryList.at(index.row()).name;
     case Qt::DecorationRole:
-        return IS_ACTIVE(entryList.at(index.row()).name) ? QIcon::fromTheme("media-playback-start") : Icons::dynamicIcon;
+        return IS_ACTIVE(entryList.at(index.row()).name) ? QIcon::fromTheme("media-playback-start") : Icons::dynamicRuleIcon;
     case ItemView::Role_SubText: {
         #ifdef ENABLE_KDE_SUPPORT
         return i18np("1 Rule", "%1 Rules", entryList.at(index.row()).rules.count());

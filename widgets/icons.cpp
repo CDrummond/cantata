@@ -261,6 +261,10 @@ static Icon createRecolourableIcon(const QString &name, const QColor &stdColor, 
 Icon Icons::appIcon;
 Icon Icons::shortcutsIcon;
 #endif
+Icon Icons::artistIcon;
+Icon Icons::albumIcon;
+Icon Icons::playlistIcon;
+Icon Icons::dynamicRuleIcon;
 Icon Icons::singleIcon;
 Icon Icons::consumeIcon;
 Icon Icons::repeatIcon;
@@ -269,18 +273,12 @@ Icon Icons::libraryIcon;
 Icon Icons::streamCategoryIcon;
 Icon Icons::radioStreamIcon;
 Icon Icons::addRadioStreamIcon;
-Icon Icons::infoIcon;
-Icon Icons::albumIcon;
 Icon Icons::streamIcon;
 Icon Icons::configureIcon;
 Icon Icons::connectIcon;
 Icon Icons::disconnectIcon;
 Icon Icons::speakerIcon;
-Icon Icons::lyricsIcon;
-Icon Icons::dynamicIcon;
-Icon Icons::playlistIcon;
 Icon Icons::variousArtistsIcon;
-Icon Icons::artistIcon;
 Icon Icons::editIcon;
 Icon Icons::clearListIcon;
 Icon Icons::menuIcon;
@@ -289,6 +287,21 @@ Icon Icons::magnatuneIcon;
 Icon Icons::filesIcon;
 Icon Icons::cancelIcon;
 Icon Icons::importIcon;
+
+Icon Icons::playqueueIcon;
+Icon Icons::artistsIcon;
+Icon Icons::albumsIcon;
+Icon Icons::foldersIcon;
+Icon Icons::playlistsIcon;
+Icon Icons::dynamicIcon;
+Icon Icons::streamsIcon;
+Icon Icons::onlineIcon;
+Icon Icons::lyricsIcon;
+Icon Icons::infoIcon;
+#ifdef ENABLE_DEVICES_SUPPORT
+Icon Icons::devicesIcon;
+#endif
+
 Icon Icons::toolbarMenuIcon;
 Icon Icons::toolbarPrevIcon;
 Icon Icons::toolbarPlayIcon;
@@ -306,6 +319,16 @@ Icon Icons::toolbarStreamIcon;
 static QColor stdColor;
 static QColor highlightColor;
 
+Icon loadSidebarIcon(const QString &name, const QString &normal, const QString &selected)
+{
+    Icon i;
+    i.addFile(":sidebar-"+name+normal);
+    if (normal!=selected) {
+        i.addFile(":sidebar-"+name+selected,QSize(), QIcon::Selected);
+    }
+    return i;
+}
+
 void Icons::init()
 {
     calcIconColors(stdColor, highlightColor);
@@ -316,8 +339,6 @@ void Icons::init()
     streamCategoryIcon=Icon(QLatin1String("oxygen")==QIcon::themeName() ? "inode-directory" : "folder-music");
     radioStreamIcon=Icon("cantata-view-radiostream");
     addRadioStreamIcon=Icon("cantata-radiostream-add");
-    infoIcon=Icon("dialog-information");
-    albumIcon=Icon("media-optical");
     QString iconFile=QString(INSTALL_PREFIX"/share/")+QCoreApplication::applicationName()+"/streamicons/stream.png";
     if (QFile::exists(iconFile)) {
         streamIcon.addFile(iconFile);
@@ -325,16 +346,15 @@ void Icons::init()
     if (streamIcon.isNull()) {
         streamIcon=Icon("applications-internet");
     }
-
+    artistIcon=Icon("view-media-artist");
+    albumIcon=Icon("media-optical");
+    playlistIcon=Icon("view-media-playlist");
+    dynamicRuleIcon=Icon("media-playlist-shuffle");
     configureIcon=Icon("configure");
     connectIcon=Icon("dialog-ok");
     disconnectIcon=Icon("media-eject");
     speakerIcon=Icon("speaker");
-    lyricsIcon=Icon("view-media-lyrics");
-    dynamicIcon=Icon("media-playlist-shuffle");
-    playlistIcon=Icon("view-media-playlist");
     variousArtistsIcon=Icon("cantata-view-media-artist-various");
-    artistIcon=Icon("view-media-artist");
     editIcon=Icon("document-edit");
     clearListIcon=Icon("edit-clear-list");
     repeatIcon=createRecolourableIcon("repeat", stdColor, highlightColor);
@@ -396,11 +416,8 @@ void Icons::init()
             speakerIcon=Icon("gnome-volume-control");
         }
     }
-    if (lyricsIcon.isNull()) {
-        lyricsIcon=Icon("text-x-generic");
-    }
-    if (dynamicIcon.isNull()) {
-        dynamicIcon=Icon("text-x-generic");
+    if (dynamicRuleIcon.isNull()) {
+        dynamicRuleIcon=Icon("text-x-generic");
     }
     if (playlistIcon.isNull()) {
         playlistIcon=Icon("audio-x-mp3-playlist");
@@ -426,6 +443,39 @@ void Icons::init()
     if (streamCategoryIcon.isNull()) {
         streamCategoryIcon=libraryIcon;
     }
+
+
+    // Load sidebar icons...
+    QString sidebarNormal=QColor(Qt::white)==stdColor ? "-white" : QString();
+    QString sidebarSelected=isLight(QApplication::palette().color(QPalette::Active, QPalette::HighlightedText)) ? "-white" : QString();
+    playqueueIcon=loadSidebarIcon("playqueue", sidebarNormal, sidebarSelected);
+    artistsIcon=loadSidebarIcon("artists", sidebarNormal, sidebarSelected);
+    albumsIcon=loadSidebarIcon("albums", sidebarNormal, sidebarSelected);
+    foldersIcon=loadSidebarIcon("folders", sidebarNormal, sidebarSelected);
+    playlistsIcon=loadSidebarIcon("playlists", sidebarNormal, sidebarSelected);
+    dynamicIcon=loadSidebarIcon("dynamic", sidebarNormal, sidebarSelected);
+    streamsIcon=loadSidebarIcon("streams", sidebarNormal, sidebarSelected);
+    onlineIcon=loadSidebarIcon("online", sidebarNormal, sidebarSelected);
+    lyricsIcon=loadSidebarIcon("lyrics", sidebarNormal, sidebarSelected);
+    infoIcon=loadSidebarIcon("info", sidebarNormal, sidebarSelected);
+    #ifdef ENABLE_DEVICES_SUPPORT
+    devicesIcon=loadSidebarIcon("devices", sidebarNormal, sidebarSelected);
+    #endif
+    /*
+    playqueueIcon=Icon("media-playback-start");
+    artistsIcon=artistIcon;
+    albumsIcon=albumIcon;
+    foldersIcon=Icon("inode-directory");
+    playlistsIcon=Icon("view-media-playlist");
+    dynamicIcon=dynamicRuleIcon;
+    streamsIcon=radioStreamIcon;
+    onlineIcon=Icon("applications-internet");
+    lyricsIcon=Icon("view-media-lyrics");
+    infoIcon=Icon("dialog-information");
+    #ifdef ENABLE_DEVICES_SUPPORT
+    devicesIcon=Icon("multimedia-player");
+    #endif
+    */
 }
 
 #if !defined ENABLE_KDE_SUPPORT && !defined Q_OS_WIN

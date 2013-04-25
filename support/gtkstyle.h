@@ -36,6 +36,7 @@ namespace GtkStyle
     extern bool mimicWidgets();
     extern void drawSelection(const QStyleOptionViewItemV4 &opt, QPainter *painter, double opacity);
     extern QString themeName();
+    extern QString iconTheme();
     extern void applyTheme(QWidget *widget);
     extern void cleanup();
     extern bool useSymbolicIcons();

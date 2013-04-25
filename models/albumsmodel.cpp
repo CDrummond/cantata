@@ -223,7 +223,7 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
                     cSize=stdSize=22;
                 }
                 theDefaultIcon = new QPixmap(Icons::albumIcon.pixmap(stdSize, stdSize)
-                                            .scaled(QSize(cSize, cSize), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+                                            .scaled(QSize(cSize, cSize), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
             }
             if (!al->coverRequested && iSize && Song::SingleTracks!=al->type) {
                 al->getCover();
@@ -463,7 +463,7 @@ void AlbumsModel::setCover(const Song &song, const QImage &img, const QString &f
     for (int row=0; it!=end; ++it, ++row) {
         if ((*it)->artist==song.albumArtist() && (*it)->album==song.album) {
             if (!(*it)->cover || update) {
-                (*it)->cover=new QPixmap(QPixmap::fromImage(img.scaled(QSize(iconSize(), iconSize()), Qt::KeepAspectRatio, Qt::SmoothTransformation)));
+                (*it)->cover=new QPixmap(QPixmap::fromImage(img.scaled(QSize(iconSize(), iconSize()), Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
                 QModelIndex idx=index(row, 0, QModelIndex());
                 emit dataChanged(idx, idx);
             }
@@ -605,7 +605,7 @@ void AlbumsModel::AlbumItem::getCover()
         s.file=firstSong->file;
         Covers::Image img=Covers::self()->get(s);
         if (!img.img.isNull()) {
-            cover=new QPixmap(QPixmap::fromImage(img.img.scaled(QSize(iconSize(), iconSize()), Qt::KeepAspectRatio, Qt::SmoothTransformation)));
+            cover=new QPixmap(QPixmap::fromImage(img.img.scaled(QSize(iconSize(), iconSize()), Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
         }
     }
 }

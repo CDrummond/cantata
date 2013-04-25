@@ -170,7 +170,7 @@ MusicLibraryItemAlbum::~MusicLibraryItemAlbum()
 void MusicLibraryItemAlbum::setCoverImage(const QImage &img) const
 {
     int size=iconSize(largeImages());
-    m_cover = new QPixmap(QPixmap::fromImage(img).scaled(QSize(size, size), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    m_cover = new QPixmap(QPixmap::fromImage(img).scaled(QSize(size, size), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
     m_coverIsDefault=false;
 }
 
@@ -207,10 +207,10 @@ const QPixmap & MusicLibraryItemAlbum::cover()
             }
             if (useLarge) {
                 theDefaultLargeIcon = new QPixmap(Icons::albumIcon.pixmap(cSize, cSize)
-                                                 .scaled(QSize(cSize, cSize), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+                                                 .scaled(QSize(cSize, cSize), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
             } else {
                 theDefaultIcon = new QPixmap(Icons::albumIcon.pixmap(cSize, cSize)
-                                            .scaled(QSize(cSize, cSize), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+                                            .scaled(QSize(cSize, cSize), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
             }
         }
         m_coverIsDefault = true;

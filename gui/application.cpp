@@ -41,6 +41,7 @@
 #include "config.h"
 #include "mainwindow.h"
 #include "mpdconnection.h"
+#include "gtkstyle.h"
 
 #ifdef ENABLE_KDE_SUPPORT
 #ifdef Q_WS_X11
@@ -244,6 +245,9 @@ bool Application::start()
 void Application::setupIconTheme()
 {
     QString cfgTheme=Settings::self()->iconTheme();
+    if (cfgTheme.isEmpty() && GtkStyle::isActive()) {
+        cfgTheme=GtkStyle::iconTheme();
+    }
     if (!cfgTheme.isEmpty()) {
         QIcon::setThemeName(cfgTheme);
     }

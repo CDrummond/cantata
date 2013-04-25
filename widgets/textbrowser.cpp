@@ -30,51 +30,6 @@ static int border=-1;
 static int minSize=-1;
 static int maxSize=-1;
 
-static void fadeEdges(QImage &img, int edgeSize)
-{
-    unsigned char *data=img.bits();
-    int width=img.width()*4;
-    int height=img.height();
-
-    for (int i=0; i<edgeSize; ++i) {
-        int alpha=((i+1.0)/(edgeSize*1.0))*255;
-        int offset=i*img.bytesPerLine();
-        for(int column=i*4; column<width; column+=4) {
-            #if Q_BYTE_ORDER == Q_BIG_ENDIAN
-            // ARGB
-            data[offset+column] = alpha;
-            #else
-            // BGRA
-            data[offset+column+3] = alpha;
-            #endif
-        }
-        offset=img.bytesPerLine()*(height-1);
-        for(int column=i*4; column<width; column+=4) {
-            #if Q_BYTE_ORDER == Q_BIG_ENDIAN
-            // ARGB
-            data[offset+column] = alpha;
-            #else
-            // BGRA
-            data[offset+column+3] = alpha;
-            #endif
-        }
-        for (int j=i; j<height; ++j) {
-            offset=img.bytesPerLine()*j;
-            #if Q_BYTE_ORDER == Q_BIG_ENDIAN
-            // ARGB
-            data[offset+(i*4)] = alpha;
-            data[offset+(width-4)] = alpha;
-            #else
-            // BGRA
-            data[offset+3+(i*4)] = alpha;
-            data[offset+3+(width-4)] = alpha;
-            #endif
-        }
-        width-=4;
-        height--;
-    }
-}
-
 static int toGray(int r, int g, int b)
 {
     return (r+g+b)/3; // QColor(r, g, b).value();
@@ -140,7 +95,6 @@ void TextBrowser::setImage(const QImage &img)
             }
 
             image=image.convertToFormat(QImage::Format_ARGB32);
-            fadeEdges(image, border);
             toGray(image);
         }
         viewport()->update();

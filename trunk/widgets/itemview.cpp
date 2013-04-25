@@ -231,27 +231,32 @@ public:
                 painter->drawPixmap(xpos, r.y(), pix.width(), pix.height(), pix);
                 QColor color(option.palette.color(active ? QPalette::Active : QPalette::Inactive, QPalette::Text));
                 double alphas[]={0.25, 0.125, 0.061};
+                QRect border(xpos, r.y(), pix.width(), pix.height());
+                QRect shadow(border);
                 for (int i=0; i<3; ++i) {
+                    shadow.adjust(1, 1, 1, 1);
                     color.setAlphaF(alphas[i]);
                     painter->setPen(color);
-                    painter->drawLine(xpos+1+(i*2), r.y()+pix.height()+1+i, xpos+pix.width()-(i ? i : 1), r.y()+pix.height()+1+i);
-                    painter->drawLine(xpos+pix.width()+1+i, r.y()+1+(i*2), xpos+pix.width()+1+i, r.y()+pix.height()-(i ? i : 1));
+                    painter->drawLine(shadow.bottomLeft()+QPoint(i+1, 0),
+                                      shadow.bottomRight()+QPoint(-((i*2)+2), 0));
+                    painter->drawLine(shadow.bottomRight()+QPoint(0, -((i*2)+2)),
+                                      shadow.topRight()+QPoint(0, i+1));
                     if (1==i) {
-                        painter->drawPoint(xpos+pix.width()+1, r.y()+pix.height());
-                        painter->drawPoint(xpos+pix.width(), r.y()+pix.height()+1);
-                        color.setAlphaF(alphas[i+1]);
-                        painter->setPen(color);
-                        painter->drawPoint(xpos+pix.width()+1, r.y()+pix.height()+1);
-                        painter->drawPoint(xpos+(i*2), r.y()+pix.height()+1+i);
-                        painter->drawPoint(xpos+pix.width()+1+i, r.y()+(i*2));
+                        painter->drawPoint(shadow.bottomRight()-QPoint(2, 1));
+                        painter->drawPoint(shadow.bottomRight()-QPoint(1, 2));
+                        painter->drawPoint(shadow.bottomLeft()-QPoint(1, 1));
+                        painter->drawPoint(shadow.topRight()-QPoint(1, 1));
                     } else if (2==i) {
-                        painter->drawPoint(xpos+pix.width()+2, r.y()+pix.height());
-                        painter->drawPoint(xpos+pix.width(), r.y()+pix.height()+2);
+                        painter->drawPoint(shadow.bottomRight()-QPoint(4, 1));
+                        painter->drawPoint(shadow.bottomRight()-QPoint(1, 4));
+                        painter->drawPoint(shadow.bottomLeft()-QPoint(0, 1));
+                        painter->drawPoint(shadow.topRight()-QPoint(1, 0));
+                        painter->drawPoint(shadow.bottomRight()-QPoint(2, 2));
                     }
                 }
                 color.setAlphaF(0.4);
                 painter->setPen(color);
-                painter->drawRect(xpos, r.y(), pix.width(), pix.height());
+                painter->drawRect(border.adjusted(0, 0, -1, -1));
                 r.adjust(0, adjust+3, 0, -3);
             } else {
                 if (rtl) {

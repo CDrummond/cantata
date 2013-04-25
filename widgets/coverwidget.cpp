@@ -34,6 +34,8 @@
 #include <QFile>
 #include <QTimer>
 #include <QVariant>
+#include <QCoreApplication>
+#include <QFile>
 
 static QString encode(const QImage &img)
 {
@@ -158,6 +160,12 @@ const QPixmap & CoverWidget::stdPixmap(bool stream)
 
         #ifndef Q_OS_WIN
         QString &file=stream ? noStreamCoverFileName : noCoverFileName;
+        if (stream &file.isEmpty()) {
+            QString iconFile=QString(INSTALL_PREFIX"/share/")+QCoreApplication::applicationName()+"/streamicons/stream.png";
+            if (QFile::exists(iconFile)) {
+                file=iconFile;
+            }
+        }
         if (file.isEmpty()) {
             file=findIcon(stream ? QStringList() << "applications-internet" : QStringList() << "media-optical" << "media-optical-audio");
         }
@@ -200,10 +208,11 @@ void CoverWidget::update(const Song &s)
                 img=stdPixmap(!current.isCdda()).toImage();
             }
         } else {
-            valid=false;
+            valid=true;
             update(stdPixmap(isStream));
             coverFileName=isStream ? noStreamCoverFileName : noCoverFileName;
-            emit coverImage(QImage());
+            img=isStream ? noStreamCover.toImage() : noCover.toImage();
+            emit coverImage(img);
             emit coverFile(coverFileName);
         }
     }

@@ -165,6 +165,29 @@ QString GtkStyle::themeName()
     #endif
 }
 
+QString GtkStyle::iconTheme()
+{
+    #if defined Q_OS_WIN || defined QT_NO_STYLE_GTK
+    return QString();
+    #else
+    static QString name;
+
+    if (name.isEmpty()) {
+        QProcess process;
+        process.start("dconf",  QStringList() << "read" << "/org/gnome/desktop/interface/icon-theme");
+        if (process.waitForFinished()) {
+            name = process.readAllStandardOutput();
+            name = name.trimmed();
+            name.remove('\'');
+            if (!name.isEmpty()) {
+                return name;
+            }
+        }
+    }
+    return name;
+    #endif
+}
+
 #if !defined Q_OS_WIN && !defined QT_NO_STYLE_GTK
 static GtkProxyStyle *style=0;
 #endif

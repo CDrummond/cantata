@@ -514,60 +514,35 @@ void CoverDownloader::lastFmCallFinished()
         QString url;
 
         if(QNetworkReply::NoError==reply->error()) {
-            QString resp;
-            QXmlStreamReader doc(QString::fromUtf8(reply->readAll()));
-            int level=0;
+            QXmlStreamReader doc(reply->readAll());
+            QString largeUrl;
+            bool inSection=false;
+            bool isArtistImage=job.isArtist;
 
-            while (!doc.atEnd() && url.isEmpty()) {
+            while (!doc.atEnd()) {
                 doc.readNext();
 
                 if (doc.isStartElement()) {
-                    ++level;
-                    if ( (1==level && QLatin1String("methodResponse")!=doc.name()) ||
-                         (2==level && QLatin1String("params")!=doc.name()) ||
-                         (3==level && QLatin1String("param")!=doc.name()) ||
-                         (4==level && QLatin1String("value")!=doc.name()) ||
-                         (5==level && QLatin1String("string")!=doc.name()) ) {
-                        break;
-                    } else if (5==level) {
-                        resp = doc.readElementText();
-                        break;
+                    if (!inSection && QLatin1String(isArtistImage ? "artist" : "album")==doc.name()) {
+                        inSection=true;
+                    } else if (inSection && QLatin1String("image")==doc.name()) {
+                        QString size=doc.attributes().value("size").toString();
+                        if (QLatin1String("extralarge")==size) {
+                            url = doc.readElementText();
+                        } else if (QLatin1String("large")==size) {
+                            largeUrl = doc.readElementText();
+                        }
+                        if (!url.isEmpty() && !largeUrl.isEmpty()) {
+                            break;
+                        }
                     }
-                } else if (doc.isEndElement()) {
+                } else if (doc.isEndElement() && inSection && QLatin1String(isArtistImage ? "artist" : "album")==doc.name()) {
                     break;
                 }
             }
 
-            if (!resp.isEmpty()) {
-                bool inSection=false;
-                bool isArtistImage=job.isArtist;
-                QXmlStreamReader doc(resp.replace("\\\"", "\""));
-                QString largeUrl;
-
-                while (!doc.atEnd() && url.isEmpty()) {
-                    doc.readNext();
-
-                    if (doc.isStartElement()) {
-                        if (!inSection && QLatin1String(isArtistImage ? "artist" : "album")==doc.name()) {
-                            inSection=true;
-                        } else if (inSection && QLatin1String("image")==doc.name()) {
-                            QString size=doc.attributes().value("size").toString();
-
-                            if (QLatin1String("extralarge")==size) {
-                                url = doc.readElementText();
-                            } else if (QLatin1String("large")==size) {
-                                largeUrl = doc.readElementText();
-                            }
-                        } else if (QLatin1String("similar")==doc.name()) {
-                            break;
-                        }
-                    } else if (doc.isEndElement() && inSection && QLatin1String(isArtistImage ? "artist" : "album")==doc.name()) {
-                        inSection=false;
-                    }
-                }
-                if (url.isEmpty() && !largeUrl.isEmpty()) {
-                    url=largeUrl;
-                }
+            if (url.isEmpty() && !largeUrl.isEmpty()) {
+                url=largeUrl;
             }
         }
 

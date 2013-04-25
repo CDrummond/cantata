@@ -22,12 +22,14 @@
  */
 
 #include "icons.h"
+#include "config.h"
 #include <QApplication>
 #include <QPixmap>
 #include <QFont>
 #include <QPainter>
 #include <QPalette>
 #include <QDir>
+#include <QFile>
 #include <math.h>
 #if !defined ENABLE_KDE_SUPPORT && !defined Q_OS_WIN
 #include "gtkstyle.h"
@@ -316,7 +318,14 @@ void Icons::init()
     addRadioStreamIcon=Icon("cantata-radiostream-add");
     infoIcon=Icon("dialog-information");
     albumIcon=Icon("media-optical");
-    streamIcon=Icon("applications-internet");
+    QString iconFile=QString(INSTALL_PREFIX"/share/")+QCoreApplication::applicationName()+"/streamicons/stream.png";
+    if (QFile::exists(iconFile)) {
+        streamIcon.addFile(iconFile);
+    }
+    if (streamIcon.isNull()) {
+        streamIcon=Icon("applications-internet");
+    }
+
     configureIcon=Icon("configure");
     connectIcon=Icon("dialog-ok");
     disconnectIcon=Icon("media-eject");

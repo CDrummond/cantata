@@ -88,7 +88,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
     #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
     audiocd = new AudioCdSettings(widget);
     audiocd->load();
-    widget->addPage(audiocd, i18n("Audio CD"), Icons::albumIcon, i18n("Audio CD Settings"));
+    widget->addPage(audiocd, i18n("Audio CD"), Icon("media-optical"), i18n("Audio CD Settings"));
     #endif
     #ifndef ENABLE_KDE_SUPPORT
     proxy = new ProxySettings(widget);

@@ -121,9 +121,9 @@ static void drawRoundedRect(QPainter *p, const QRect &r, double radius, const QC
 }
 #endif
 
-static void drawIcon(const QIcon &icon, const QRect &r, QPainter *p, const QSize &iconSize)
+static void drawIcon(const QIcon &icon, const QRect &r, QPainter *p, const QSize &iconSize, bool selected)
 {
-    QPixmap px = icon.pixmap(iconSize);
+    QPixmap px = icon.pixmap(iconSize, selected ? QIcon::Selected : QIcon::Normal);
     p->drawPixmap(r.x()+(r.width()-px.width())/2.0, r.y()+(r.height()-px.height())/2.0, px.width(), px.height(), px);
 }
 
@@ -235,9 +235,11 @@ void FancyTabProxyStyle::drawControl(
   int textFlags = Qt::AlignTop | Qt::AlignVCenter;
 //   p->drawText(text_rect, textFlags, text);
 //   p->setPen(selected ? QColor(60, 60, 60) : Utils::StyleHelper::panelTextColor());
-    p->setPen(selected ? QApplication::palette().highlightedText().color() : QApplication::palette().foreground().color());
+    p->setPen(selected && option->state&State_Active
+              ? QApplication::palette().highlightedText().color() : QApplication::palette().foreground().color());
 
-  drawIcon(v_opt->icon, icon_rect, p, v_opt->iconSize);
+  drawIcon(v_opt->icon, icon_rect, p, v_opt->iconSize,
+           selected && option->state&State_Active);
 
   QString txt=text;
   txt.replace("&", "");
@@ -541,9 +543,11 @@ void FancyTabBar::paintTab(QPainter *painter, int tabIndex, bool gtkStyle) const
         const int textHeight = painter->fontMetrics().height();
         tabIconRect.adjust(0, 4, 0, -textHeight);
 //         Utils::StyleHelper::drawIconWithShadow(tabIcon(tabIndex), tabIconRect, painter, QIcon::Normal);
-        drawIcon(tabIcon(tabIndex), tabIconRect, painter, QSize(m_iconSize, m_iconSize));
+        drawIcon(tabIcon(tabIndex), tabIconRect, painter, QSize(m_iconSize, m_iconSize),
+                 selected && palette().currentColorGroup()==QPalette::Active);
     } else {
-        drawIcon(tabIcon(tabIndex), rect, painter, QSize(m_iconSize, m_iconSize));
+        drawIcon(tabIcon(tabIndex), rect, painter, QSize(m_iconSize, m_iconSize),
+                 selected && palette().currentColorGroup()==QPalette::Active);
     }
 
 

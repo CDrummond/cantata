@@ -286,18 +286,18 @@ MainWindow::MainWindow(QWidget *parent)
     #ifdef TAGLIB_FOUND
     editPlayQueueTagsAction = ActionCollection::get()->createAction("editpqtags", i18n("Edit Song Tags"), "document-edit");
     #endif
-    showPlayQueueAction = ActionCollection::get()->createAction("showplayqueue", i18n("Play Queue"), "media-playback-start");
-    libraryTabAction = ActionCollection::get()->createAction("showlibrarytab", i18n("Artists"), Icons::artistIcon);
-    albumsTabAction = ActionCollection::get()->createAction("showalbumstab", i18n("Albums"), Icons::albumIcon);
-    foldersTabAction = ActionCollection::get()->createAction("showfolderstab", i18n("Folders"), "inode-directory");
-    playlistsTabAction = ActionCollection::get()->createAction("showplayliststab", i18n("Playlists"), Icons::playlistIcon);
+    showPlayQueueAction = ActionCollection::get()->createAction("showplayqueue", i18n("Play Queue"), Icons::playqueueIcon);
+    libraryTabAction = ActionCollection::get()->createAction("showlibrarytab", i18n("Artists"), Icons::artistsIcon);
+    albumsTabAction = ActionCollection::get()->createAction("showalbumstab", i18n("Albums"), Icons::albumsIcon);
+    foldersTabAction = ActionCollection::get()->createAction("showfolderstab", i18n("Folders"), Icons::foldersIcon);
+    playlistsTabAction = ActionCollection::get()->createAction("showplayliststab", i18n("Playlists"), Icons::playlistsIcon);
     dynamicTabAction = ActionCollection::get()->createAction("showdynamictab", i18n("Dynamic"), Icons::dynamicIcon);
     lyricsTabAction = ActionCollection::get()->createAction("showlyricstab", i18n("Lyrics"), Icons::lyricsIcon);
-    streamsTabAction = ActionCollection::get()->createAction("showstreamstab", i18n("Streams"), Icons::radioStreamIcon);
-    onlineTabAction = ActionCollection::get()->createAction("showonlinetab", i18n("Online"), "applications-internet");
+    streamsTabAction = ActionCollection::get()->createAction("showstreamstab", i18n("Streams"), Icons::streamsIcon);
+    onlineTabAction = ActionCollection::get()->createAction("showonlinetab", i18n("Online"), Icons::onlineIcon);
     infoTabAction = ActionCollection::get()->createAction("showinfotab", i18n("Info"), Icons::infoIcon);
     #ifdef ENABLE_DEVICES_SUPPORT
-    devicesTabAction = ActionCollection::get()->createAction("showdevicestab", i18n("Devices"), "multimedia-player");
+    devicesTabAction = ActionCollection::get()->createAction("showdevicestab", i18n("Devices"), Icons::devicesIcon);
     #endif
     searchAction = ActionCollection::get()->createAction("search", i18n("Search"), "edit-find");
     expandAllAction = ActionCollection::get()->createAction("expandall", i18n("Expand All"));

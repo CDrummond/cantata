@@ -203,6 +203,7 @@ void GtkStyle::applyTheme(QWidget *widget)
                 #endif
                 symbolicIcons=header.contains("symbolic-icons:true");
                 lightIcons=header.contains("light-icons:true");
+                QCoreApplication::setAttribute(Qt::AA_DontShowIconsInMenus);
             }
         }
         if (!style) {

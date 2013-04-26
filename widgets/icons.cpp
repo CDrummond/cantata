@@ -45,22 +45,27 @@ static bool inline isLight(const QColor &col)
     return col.red()>100 && col.blue()>100 && col.green()>100;
 }
 
-static bool inline isVeryLight(const QColor &col)
-{
-    return col.red()>=224 && col.blue()>=224 && col.green()>=224;
-}
-
 static bool inline isDark(const QColor &col)
 {
-    return col.red()<36 && col.blue()<36 && col.green()<36;
+    return col.red()<80 && col.blue()<80 && col.green()<80;
+}
+
+static bool inline isVeryLight(const QColor &col)
+{
+    return col.red()>=240 && col.blue()>=240 && col.green()>=240;
+}
+
+static bool inline isVeryDark(const QColor &col)
+{
+    return col.red()<40 && col.blue()<40 && col.green()<40;
 }
 
 static QColor clampColor(const QColor &color)
 {
     return isVeryLight(color)
             ? QColor(240, 240, 240)
-            : isDark(color)
-                ? QColor(48, 48, 48)
+            : isVeryDark(color)
+                ? QColor(40, 40, 40)
                 : color;
 }
 
@@ -143,8 +148,8 @@ static QPixmap createMenuIconPixmap(int size, QColor col, double opacity=1.0)
 
     p.setOpacity(opacity);
     p.setRenderHint(QPainter::Antialiasing, true);
-    bool isLight=col.red()>100 && col.blue()>100 && col.green()>100;
-    if (isLight) {
+    bool light=isLight(col);
+    if (light) {
         col=col.darker(constShadeFactor);
     } else {
         col=col.lighter(constShadeFactor);
@@ -153,9 +158,9 @@ static QPixmap createMenuIconPixmap(int size, QColor col, double opacity=1.0)
         int offset=i*(space+lineWidth);
         QRectF rect(borderX+0.5, borderY+offset, size-(2*borderX), lineWidth);
         QLinearGradient grad(rect.topLeft(), rect.bottomLeft());
-        col.setAlphaF(isLight ? 0.5 : 1.0);
+        col.setAlphaF(light ? 0.5 : 1.0);
         grad.setColorAt(0, col);
-        col.setAlphaF(isLight ? 1.0 : 0.5);
+        col.setAlphaF(light ? 1.0 : 0.5);
         grad.setColorAt(1, col);
         p.fillPath(buildPath(rect, lineWidth/2.0), grad);
     }
@@ -165,8 +170,8 @@ static QPixmap createMenuIconPixmap(int size, QColor col, double opacity=1.0)
 
 static void calcIconColors(QColor &stdColor, QColor &highlightColor)
 {
-    stdColor=QColor(QApplication::palette().color(QPalette::Active, QPalette::ButtonText));
-    if (isVeryLight(stdColor)) {
+    stdColor=QApplication::palette().color(QPalette::Active, QPalette::ButtonText);
+    if (isLight(stdColor)) {
         stdColor=QColor(200, 200, 200);
     } else if (isDark(stdColor)) {
         stdColor=Qt::black;
@@ -228,8 +233,8 @@ static void adjustPix(QImage &img, const QColor &col, double opacity)
     int r=col.red();
     int g=col.green();
     int b=col.blue();
-    int width=w*numChannels,
-        offset=0;
+    int width=w*numChannels;
+    int offset=0;
 
     for(int row=0; row<h; ++row) {
         for(int column=0; column<width; column+=numChannels) {
@@ -247,6 +252,37 @@ static void adjustPix(QImage &img, const QColor &col, double opacity)
             data[offset+column+1] = checkBounds(g-source);
             data[offset+column+2] = checkBounds(r-source);
             data[offset+column+3]*=opacity;
+            #endif
+        }
+        offset+=stride;
+    }
+}
+
+static void recolourPix(QImage &img, const QColor &col)
+{
+    unsigned char *data=img.bits();
+    int numChannels=4;
+    int w=img.width();
+    int h=img.height();
+    int stride=img.bytesPerLine();
+    int r=col.red();
+    int g=col.green();
+    int b=col.blue();
+    int width=w*numChannels;
+    int offset=0;
+
+    for(int row=0; row<h; ++row) {
+        for(int column=0; column<width; column+=numChannels) {
+            #if Q_BYTE_ORDER == Q_BIG_ENDIAN
+            /* ARGB */
+            data[offset+column+1] = r;
+            data[offset+column+2] = g;
+            data[offset+column+3] = b;
+            #else
+            /* BGRA */
+            data[offset+column] = b;
+            data[offset+column+1] = g;
+            data[offset+column+2] = r;
             #endif
         }
         offset+=stride;
@@ -348,18 +384,18 @@ static QColor highlightColor;
 
 static void updateSidebarIcon(Icon &i, const QString &name, const QColor &color, QIcon::Mode mode)
 {
-    if (isDark(color)) {
+    if (isVeryDark(color)) {
         i.addFile(":sidebar-"+name, QSize(), mode);
     } else if (isVeryLight(color)) {
         i.addFile(":sidebar-"+name+"-white", QSize(), mode);
     } else { // Neither black nor white, so we need to rcolour...
         i.addFile(":sidebar-"+name, QSize(), mode);
-
         // Now recolour the icon!
         QList<int> sizes=QList<int>() << 16 << 22 << 32 << 48 << 64;
+        QColor col=clampColor(color);
         foreach (int s, sizes) {
             QImage img=i.pixmap(s, s, mode).toImage().convertToFormat(QImage::Format_ARGB32);
-            adjustPix(img, color, 1.0);
+            recolourPix(img, col);
             i.addPixmap(QPixmap::fromImage(img), mode);
         }
     }
@@ -495,8 +531,8 @@ void Icons::init()
 void Icons::initSidebarIcons()
 {
     if (Settings::self()->monoSidebarIcons()) {
-        QColor textCol=clampColor(QApplication::palette().color(QPalette::Active, QPalette::ButtonText));
-        QColor highlightedTexCol=clampColor(QApplication::palette().color(QPalette::Active, QPalette::HighlightedText));
+        QColor textCol=QApplication::palette().color(QPalette::Active, QPalette::ButtonText);
+        QColor highlightedTexCol=QApplication::palette().color(QPalette::Active, QPalette::HighlightedText);
         playqueueIcon=loadSidebarIcon("playqueue", textCol, highlightedTexCol);
         artistsIcon=loadSidebarIcon("artists", textCol, highlightedTexCol);
         albumsIcon=loadSidebarIcon("albums", textCol, highlightedTexCol);

@@ -406,7 +406,7 @@ void Icons::init()
         importIcon=Icon("down");
     }
     #ifndef ENABLE_KDE_SUPPORT
-    appIcon=Icon::create("cantata", QList<int>() << 16 << 22 << 32 << 48 << 64);
+    appIcon.addFile(":cantata.svg");
     shortcutsIcon=Icon("preferences-desktop-keyboard");
     if (libraryIcon.isNull()) {
         libraryIcon=Icon::create("lib", constStdSizes);

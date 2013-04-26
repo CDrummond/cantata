@@ -544,12 +544,13 @@ void FancyTabBar::paintTab(QPainter *painter, int tabIndex, bool gtkStyle) const
         tabIconRect.adjust(0, 4, 0, -textHeight);
 //         Utils::StyleHelper::drawIconWithShadow(tabIcon(tabIndex), tabIconRect, painter, QIcon::Normal);
         drawIcon(tabIcon(tabIndex), tabIconRect, painter, QSize(m_iconSize, m_iconSize),
-                 selected && palette().currentColorGroup()==QPalette::Active);
+                 selected && (palette().currentColorGroup()==QPalette::Active ||
+                             (palette().highlightedText().color()==palette().brush(QPalette::Active, QPalette::HighlightedText).color())));
     } else {
         drawIcon(tabIcon(tabIndex), rect, painter, QSize(m_iconSize, m_iconSize),
-                 selected && palette().currentColorGroup()==QPalette::Active);
+                 selected && (palette().currentColorGroup()==QPalette::Active ||
+                             (palette().highlightedText().color()==palette().brush(QPalette::Active, QPalette::HighlightedText).color())));
     }
-
 
 //     painter->translate(0, -1);
 //     painter->drawText(tabTextRect, textFlags, tabText);

@@ -167,7 +167,10 @@
 98. List untagged files in main 'artists'/'albums' views. Attempt to guess the
     tags based upon the filename/folder. e.g.
         $artist/$album/$trackNo - $trackTitle
-99. Monochrome sidebar icons.
+99. Monochrome sidebar icons. Enabled by default for Linux builds, disabled by
+    default for Windows builds. To alter setting edit Cantata's config file and
+    set the following in the "[General]" section to either true or false:
+        monoSidebarIcons=false
 
 0.9.2
 -----

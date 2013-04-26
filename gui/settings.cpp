@@ -257,6 +257,15 @@ QString Settings::iconTheme()
 }
 #endif
 
+bool Settings::monoSidebarIcons()
+{
+    #ifdef Q_OS_WIN
+    return GET_BOOL("monoSidebarIcons", false);
+    #else
+    return GET_BOOL("monoSidebarIcons", true);
+    #endif
+}
+
 bool Settings::showPlaylist()
 {
     return GET_BOOL("showPlaylist", true);

@@ -257,6 +257,7 @@ public:
     #else
     QString iconTheme();
     #endif
+    bool monoSidebarIcons();
     int id3v2Version();
 
     bool firstRun() const { return isFirstRun; }

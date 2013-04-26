@@ -45,7 +45,7 @@ static bool inline isLight(const QColor &col)
     return col.red()>100 && col.blue()>100 && col.green()>100;
 }
 
-static bool inline isVeryLight(const QColor &col, int limit=240)
+static bool inline isVeryLight(const QColor &col, int limit=200)
 {
     return col.red()>=limit && col.blue()>=limit && col.green()>=limit;
 }
@@ -55,7 +55,13 @@ static bool inline isVeryDark(const QColor &col, int limit=80)
     return col.red()<limit && col.blue()<limit && col.green()<limit;
 }
 
-static QColor clampColor(const QColor &color, int darkLimit=80, int darkValue=64, int lightLimit=240, int lightValue=240)
+static const int constDarkLimit=80;
+static const int constDarkValue=64;
+static const int constLightLimit=240;
+static const int constLightValue=240;
+
+static QColor clampColor(const QColor &color, int darkLimit=constDarkLimit, int darkValue=constDarkValue,
+                         int lightLimit=constLightLimit, int lightValue=constLightValue)
 {
     return isVeryLight(color, lightLimit)
             ? QColor(lightValue, lightValue, lightValue)
@@ -165,7 +171,9 @@ static QPixmap createMenuIconPixmap(int size, QColor col, double opacity=1.0)
 
 static void calcIconColors(QColor &stdColor, QColor &highlightColor)
 {
-    stdColor=clampColor(QApplication::palette().color(QPalette::Active, QPalette::ButtonText), 80, 48);
+    QColor bgnd=QApplication::palette().color(QPalette::Active, QPalette::Background);
+    QColor text=QApplication::palette().color(QPalette::Active, QPalette::ButtonText);
+    stdColor=clampColor(text, constDarkLimit, bgnd.value()<224 ? 32 : 48);
     highlightColor=isLight(stdColor) ? stdColor.lighter(constShadeFactor) : stdColor.darker(constShadeFactor);
 }
 
@@ -336,16 +344,32 @@ static QColor highlightColor;
 
 static void updateSidebarIcon(Icon &i, const QString &name, const QColor &color, QIcon::Mode mode)
 {
-    if (isVeryDark(color)) {
+    QColor adjusted=color;
+    int darkValue=constDarkValue;
+    int lightValue=constLightValue;
+
+    if (isVeryDark(adjusted)) {
+        QColor bgnd=QApplication::palette().color(QPalette::Active, QPalette::Background);
+        if (bgnd.value()<224) {
+            darkValue=48;
+        }
+    } else if (isVeryLight(adjusted)) {
+        QColor bgnd=QApplication::palette().color(QPalette::Active, QPalette::Background);
+        if (bgnd.value()<224) {
+            lightValue=232;
+        }
+    }
+
+    if (darkValue==constDarkValue && isVeryDark(adjusted)) {
         i.addFile(":sidebar-"+name, QSize(), mode);
-    } else if (isVeryLight(color)) {
+    } else if (lightValue==constLightValue && isVeryLight(adjusted)) {
         i.addFile(":sidebar-"+name+"-white", QSize(), mode);
-    } else { // Neither black nor white, so we need to rcolour...
+    } else { // Neither black nor white, so we need to recolour...
         Icon std;
         std.addFile(":sidebar-"+name, QSize(), mode);
         // Now recolour the icon!
         QList<int> sizes=QList<int>() << 16 << 22 << 32 << 48 << 64;
-        QColor col=clampColor(color);
+        QColor col=clampColor(adjusted, constDarkLimit, darkValue, constLightLimit, lightValue);
         foreach (int s, sizes) {
             QImage img=std.pixmap(s, s, mode).toImage().convertToFormat(QImage::Format_ARGB32);
             recolourPix(img, col);

@@ -44,6 +44,16 @@ static bool inline isLight(const QColor &col)
     return col.red()>100 && col.blue()>100 && col.green()>100;
 }
 
+static bool inline isVeryLight(const QColor &col)
+{
+    return col.red()>248 && col.blue()>248 && col.green()>248;
+}
+
+static bool inline isDark(const QColor &col)
+{
+    return col.red()<8 && col.blue()<8 && col.green()<8;
+}
+
 static QPixmap createSingleIconPixmap(int size, const QColor &col, double opacity=1.0)
 {
     QPixmap pix(size, size);
@@ -199,8 +209,16 @@ static unsigned char checkBounds(int num)
     return num < 0 ? 0 : (num > 255 ? 255 : num);
 }
 
-static void adjustPix(unsigned char *data, int numChannels, int w, int h, int stride, int r, int g, int b, double opacity)
+static void adjustPix(QImage &img, const QColor &col, double opacity)
 {
+    unsigned char *data=img.bits();
+    int numChannels=4;
+    int w=img.width();
+    int h=img.height();
+    int stride=img.bytesPerLine();
+    int r=col.red();
+    int g=col.green();
+    int b=col.blue();
     int width=w*numChannels,
         offset=0;
 
@@ -233,7 +251,7 @@ static QPixmap recolour(const QImage &img, const QColor &col, double opacity=1.0
         i=i.convertToFormat(QImage::Format_ARGB32);
     }
 
-    adjustPix(i.bits(), 4, i.width(), i.height(), i.bytesPerLine(), col.red(), col.green(), col.blue(), opacity);
+    adjustPix(i, col, opacity);
     return QPixmap::fromImage(i);
 }
 
@@ -319,12 +337,31 @@ Icon Icons::toolbarStreamIcon;
 static QColor stdColor;
 static QColor highlightColor;
 
-Icon loadSidebarIcon(const QString &name, const QString &normal, const QString &selected)
+static void updateSidebarIcon(Icon &i, const QString &name, const QColor &color, QIcon::Mode mode)
+{
+    if (isDark(color)) {
+        i.addFile(":sidebar-"+name, QSize(), mode);
+    } else if (isVeryLight(color)) {
+        i.addFile(":sidebar-"+name+"-white", QSize(), mode);
+    } else { // Neither black nor white, so we need to rcolour...
+        i.addFile(":sidebar-"+name, QSize(), mode);
+
+        // Now recolour the icon!
+        QList<int> sizes=QList<int>() << 16 << 22 << 32 << 48 << 64;
+        foreach (int s, sizes) {
+            QImage img=i.pixmap(s, s, mode).toImage().convertToFormat(QImage::Format_ARGB32);
+            adjustPix(img, color, 1.0);
+            i.addPixmap(QPixmap::fromImage(img), mode);
+        }
+    }
+}
+
+static Icon loadSidebarIcon(const QString &name, const QColor &normal, const QColor &selected)
 {
     Icon i;
-    i.addFile(":sidebar-"+name+normal);
+    updateSidebarIcon(i, name, normal, QIcon::Normal);
     if (normal!=selected) {
-        i.addFile(":sidebar-"+name+selected,QSize(), QIcon::Selected);
+        updateSidebarIcon(i, name, selected, QIcon::Selected);
     }
     return i;
 }
@@ -446,20 +483,20 @@ void Icons::init()
 
 
     // Load sidebar icons...
-    QString sidebarNormal=QColor(Qt::white)==stdColor ? "-white" : QString();
-    QString sidebarSelected=isLight(QApplication::palette().color(QPalette::Active, QPalette::HighlightedText)) ? "-white" : QString();
-    playqueueIcon=loadSidebarIcon("playqueue", sidebarNormal, sidebarSelected);
-    artistsIcon=loadSidebarIcon("artists", sidebarNormal, sidebarSelected);
-    albumsIcon=loadSidebarIcon("albums", sidebarNormal, sidebarSelected);
-    foldersIcon=loadSidebarIcon("folders", sidebarNormal, sidebarSelected);
-    playlistsIcon=loadSidebarIcon("playlists", sidebarNormal, sidebarSelected);
-    dynamicIcon=loadSidebarIcon("dynamic", sidebarNormal, sidebarSelected);
-    streamsIcon=loadSidebarIcon("streams", sidebarNormal, sidebarSelected);
-    onlineIcon=loadSidebarIcon("online", sidebarNormal, sidebarSelected);
-    lyricsIcon=loadSidebarIcon("lyrics", sidebarNormal, sidebarSelected);
-    infoIcon=loadSidebarIcon("info", sidebarNormal, sidebarSelected);
+    QColor textCol=QApplication::palette().color(QPalette::Active, QPalette::ButtonText);
+    QColor highlightedTexCol=QApplication::palette().color(QPalette::Active, QPalette::HighlightedText);
+    playqueueIcon=loadSidebarIcon("playqueue", textCol, highlightedTexCol);
+    artistsIcon=loadSidebarIcon("artists", textCol, highlightedTexCol);
+    albumsIcon=loadSidebarIcon("albums", textCol, highlightedTexCol);
+    foldersIcon=loadSidebarIcon("folders", textCol, highlightedTexCol);
+    playlistsIcon=loadSidebarIcon("playlists", textCol, highlightedTexCol);
+    dynamicIcon=loadSidebarIcon("dynamic", textCol, highlightedTexCol);
+    streamsIcon=loadSidebarIcon("streams", textCol, highlightedTexCol);
+    onlineIcon=loadSidebarIcon("online", textCol, highlightedTexCol);
+    lyricsIcon=loadSidebarIcon("lyrics", textCol, highlightedTexCol);
+    infoIcon=loadSidebarIcon("info", textCol, highlightedTexCol);
     #ifdef ENABLE_DEVICES_SUPPORT
-    devicesIcon=loadSidebarIcon("devices", sidebarNormal, sidebarSelected);
+    devicesIcon=loadSidebarIcon("devices", textCol, highlightedTexCol);
     #endif
     /*
     playqueueIcon=Icon("media-playback-start");

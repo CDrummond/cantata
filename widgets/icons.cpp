@@ -47,12 +47,21 @@ static bool inline isLight(const QColor &col)
 
 static bool inline isVeryLight(const QColor &col)
 {
-    return col.red()>248 && col.blue()>248 && col.green()>248;
+    return col.red()>=224 && col.blue()>=224 && col.green()>=224;
 }
 
 static bool inline isDark(const QColor &col)
 {
-    return col.red()<8 && col.blue()<8 && col.green()<8;
+    return col.red()<36 && col.blue()<36 && col.green()<36;
+}
+
+static QColor clampColor(const QColor &color)
+{
+    return isVeryLight(color)
+            ? QColor(240, 240, 240)
+            : isDark(color)
+                ? QColor(48, 48, 48)
+                : color;
 }
 
 static QPixmap createSingleIconPixmap(int size, const QColor &col, double opacity=1.0)
@@ -486,8 +495,8 @@ void Icons::init()
 void Icons::initSidebarIcons()
 {
     if (Settings::self()->monoSidebarIcons()) {
-        QColor textCol=QApplication::palette().color(QPalette::Active, QPalette::ButtonText);
-        QColor highlightedTexCol=QApplication::palette().color(QPalette::Active, QPalette::HighlightedText);
+        QColor textCol=clampColor(QApplication::palette().color(QPalette::Active, QPalette::ButtonText));
+        QColor highlightedTexCol=clampColor(QApplication::palette().color(QPalette::Active, QPalette::HighlightedText));
         playqueueIcon=loadSidebarIcon("playqueue", textCol, highlightedTexCol);
         artistsIcon=loadSidebarIcon("artists", textCol, highlightedTexCol);
         albumsIcon=loadSidebarIcon("albums", textCol, highlightedTexCol);

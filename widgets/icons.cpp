@@ -156,10 +156,9 @@ static QPixmap createMenuIconPixmap(int size, QColor col, double opacity=1.0)
 static void calcIconColors(QColor &stdColor, QColor &highlightColor)
 {
     stdColor=QColor(QApplication::palette().color(QPalette::Active, QPalette::ButtonText));
-    if (stdColor==Qt::white) {
+    if (isVeryLight(stdColor)) {
         stdColor=QColor(200, 200, 200);
-    } else if (stdColor.red()<128 && stdColor.green()<128 && stdColor.blue()<128 &&
-               stdColor.red()==stdColor.green() && stdColor.green()==stdColor.blue()) {
+    } else if (isDark(stdColor)) {
         stdColor=Qt::black;
     }
     highlightColor=isLight(stdColor) ? stdColor.lighter(constShadeFactor) : stdColor.darker(constShadeFactor);

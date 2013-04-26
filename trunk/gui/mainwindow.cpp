@@ -235,6 +235,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     GtkStyle::applyTheme(toolbar);
     Icons::initToolbarIcons(artistLabel->palette().color(QPalette::Foreground), GtkStyle::useLightIcons());
+    Icons::initSidebarIcons();
     menuButton->setIcon(Icons::toolbarMenuIcon);
 
     #ifdef ENABLE_KDE_SUPPORT

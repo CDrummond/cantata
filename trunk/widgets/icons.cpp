@@ -23,6 +23,7 @@
 
 #include "icons.h"
 #include "config.h"
+#include "settings.h"
 #include <QApplication>
 #include <QPixmap>
 #include <QFont>
@@ -480,38 +481,44 @@ void Icons::init()
         streamCategoryIcon=libraryIcon;
     }
 
+}
 
-    // Load sidebar icons...
-    QColor textCol=QApplication::palette().color(QPalette::Active, QPalette::ButtonText);
-    QColor highlightedTexCol=QApplication::palette().color(QPalette::Active, QPalette::HighlightedText);
-    playqueueIcon=loadSidebarIcon("playqueue", textCol, highlightedTexCol);
-    artistsIcon=loadSidebarIcon("artists", textCol, highlightedTexCol);
-    albumsIcon=loadSidebarIcon("albums", textCol, highlightedTexCol);
-    foldersIcon=loadSidebarIcon("folders", textCol, highlightedTexCol);
-    playlistsIcon=loadSidebarIcon("playlists", textCol, highlightedTexCol);
-    dynamicIcon=loadSidebarIcon("dynamic", textCol, highlightedTexCol);
-    streamsIcon=loadSidebarIcon("streams", textCol, highlightedTexCol);
-    onlineIcon=loadSidebarIcon("online", textCol, highlightedTexCol);
-    lyricsIcon=loadSidebarIcon("lyrics", textCol, highlightedTexCol);
-    infoIcon=loadSidebarIcon("info", textCol, highlightedTexCol);
-    #ifdef ENABLE_DEVICES_SUPPORT
-    devicesIcon=loadSidebarIcon("devices", textCol, highlightedTexCol);
-    #endif
-    /*
-    playqueueIcon=Icon("media-playback-start");
-    artistsIcon=artistIcon;
-    albumsIcon=albumIcon;
-    foldersIcon=Icon("inode-directory");
-    playlistsIcon=Icon("view-media-playlist");
-    dynamicIcon=dynamicRuleIcon;
-    streamsIcon=radioStreamIcon;
-    onlineIcon=Icon("applications-internet");
-    lyricsIcon=Icon("view-media-lyrics");
-    infoIcon=Icon("dialog-information");
-    #ifdef ENABLE_DEVICES_SUPPORT
-    devicesIcon=Icon("multimedia-player");
-    #endif
-    */
+void Icons::initSidebarIcons()
+{
+    if (Settings::self()->monoSidebarIcons()) {
+        QColor textCol=QApplication::palette().color(QPalette::Active, QPalette::ButtonText);
+        QColor highlightedTexCol=QApplication::palette().color(QPalette::Active, QPalette::HighlightedText);
+        playqueueIcon=loadSidebarIcon("playqueue", textCol, highlightedTexCol);
+        artistsIcon=loadSidebarIcon("artists", textCol, highlightedTexCol);
+        albumsIcon=loadSidebarIcon("albums", textCol, highlightedTexCol);
+        foldersIcon=loadSidebarIcon("folders", textCol, highlightedTexCol);
+        playlistsIcon=loadSidebarIcon("playlists", textCol, highlightedTexCol);
+        dynamicIcon=loadSidebarIcon("dynamic", textCol, highlightedTexCol);
+        streamsIcon=loadSidebarIcon("streams", textCol, highlightedTexCol);
+        onlineIcon=loadSidebarIcon("online", textCol, highlightedTexCol);
+        lyricsIcon=loadSidebarIcon("lyrics", textCol, highlightedTexCol);
+        infoIcon=loadSidebarIcon("info", textCol, highlightedTexCol);
+        #ifdef ENABLE_DEVICES_SUPPORT
+        devicesIcon=loadSidebarIcon("devices", textCol, highlightedTexCol);
+        #endif
+    } else {
+        playqueueIcon=Icon("media-playback-start");
+        artistsIcon=artistIcon;
+        albumsIcon=albumIcon;
+        foldersIcon=Icon("inode-directory");
+        playlistsIcon=playlistIcon;
+        dynamicIcon=dynamicRuleIcon;
+        streamsIcon=radioStreamIcon;
+        onlineIcon=Icon("applications-internet");
+        lyricsIcon=Icon("view-media-lyrics");
+        infoIcon=Icon("dialog-information");
+        #ifdef ENABLE_DEVICES_SUPPORT
+        devicesIcon=Icon("multimedia-player");
+        #endif
+        if (lyricsIcon.isNull()) {
+            lyricsIcon=Icon("text-x-generic");
+        }
+    }
 }
 
 #if !defined ENABLE_KDE_SUPPORT && !defined Q_OS_WIN

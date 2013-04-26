@@ -45,27 +45,22 @@ static bool inline isLight(const QColor &col)
     return col.red()>100 && col.blue()>100 && col.green()>100;
 }
 
-static bool inline isDark(const QColor &col)
+static bool inline isVeryLight(const QColor &col, int limit=240)
 {
-    return col.red()<80 && col.blue()<80 && col.green()<80;
+    return col.red()>=limit && col.blue()>=limit && col.green()>=limit;
 }
 
-static bool inline isVeryLight(const QColor &col)
+static bool inline isVeryDark(const QColor &col, int limit=80)
 {
-    return col.red()>=240 && col.blue()>=240 && col.green()>=240;
+    return col.red()<limit && col.blue()<limit && col.green()<limit;
 }
 
-static bool inline isVeryDark(const QColor &col)
+static QColor clampColor(const QColor &color, int darkLimit=80, int darkValue=64, int lightLimit=240, int lightValue=240)
 {
-    return col.red()<40 && col.blue()<40 && col.green()<40;
-}
-
-static QColor clampColor(const QColor &color)
-{
-    return isVeryLight(color)
-            ? QColor(240, 240, 240)
-            : isVeryDark(color)
-                ? QColor(40, 40, 40)
+    return isVeryLight(color, lightLimit)
+            ? QColor(lightValue, lightValue, lightValue)
+            : isVeryDark(color, darkLimit)
+                ? QColor(darkValue, darkValue, darkValue)
                 : color;
 }
 
@@ -170,12 +165,7 @@ static QPixmap createMenuIconPixmap(int size, QColor col, double opacity=1.0)
 
 static void calcIconColors(QColor &stdColor, QColor &highlightColor)
 {
-    stdColor=QApplication::palette().color(QPalette::Active, QPalette::ButtonText);
-    if (isLight(stdColor)) {
-        stdColor=QColor(200, 200, 200);
-    } else if (isDark(stdColor)) {
-        stdColor=Qt::black;
-    }
+    stdColor=clampColor(QApplication::palette().color(QPalette::Active, QPalette::ButtonText), 80, 48);
     highlightColor=isLight(stdColor) ? stdColor.lighter(constShadeFactor) : stdColor.darker(constShadeFactor);
 }
 
@@ -218,12 +208,7 @@ static Icon createMenuIcon(const QColor &stdColor, const QColor &highlightColor)
     return icon;
 }
 
-static unsigned char checkBounds(int num)
-{
-    return num < 0 ? 0 : (num > 255 ? 255 : num);
-}
-
-static void adjustPix(QImage &img, const QColor &col, double opacity)
+static void recolourPix(QImage &img, const QColor &col, double opacity=1.0)
 {
     unsigned char *data=img.bits();
     int numChannels=4;
@@ -238,43 +223,9 @@ static void adjustPix(QImage &img, const QColor &col, double opacity)
 
     for(int row=0; row<h; ++row) {
         for(int column=0; column<width; column+=numChannels) {
-            unsigned char source=data[offset+column+1];
-
             #if Q_BYTE_ORDER == Q_BIG_ENDIAN
             /* ARGB */
             data[offset+column]*=opacity;
-            data[offset+column+1] = checkBounds(r-source);
-            data[offset+column+2] = checkBounds(g-source);
-            data[offset+column+3] = checkBounds(b-source);
-            #else
-            /* BGRA */
-            data[offset+column] = checkBounds(b-source);
-            data[offset+column+1] = checkBounds(g-source);
-            data[offset+column+2] = checkBounds(r-source);
-            data[offset+column+3]*=opacity;
-            #endif
-        }
-        offset+=stride;
-    }
-}
-
-static void recolourPix(QImage &img, const QColor &col)
-{
-    unsigned char *data=img.bits();
-    int numChannels=4;
-    int w=img.width();
-    int h=img.height();
-    int stride=img.bytesPerLine();
-    int r=col.red();
-    int g=col.green();
-    int b=col.blue();
-    int width=w*numChannels;
-    int offset=0;
-
-    for(int row=0; row<h; ++row) {
-        for(int column=0; column<width; column+=numChannels) {
-            #if Q_BYTE_ORDER == Q_BIG_ENDIAN
-            /* ARGB */
             data[offset+column+1] = r;
             data[offset+column+2] = g;
             data[offset+column+3] = b;
@@ -283,6 +234,7 @@ static void recolourPix(QImage &img, const QColor &col)
             data[offset+column] = b;
             data[offset+column+1] = g;
             data[offset+column+2] = r;
+            data[offset+column+3]*=opacity;
             #endif
         }
         offset+=stride;
@@ -296,7 +248,7 @@ static QPixmap recolour(const QImage &img, const QColor &col, double opacity=1.0
         i=i.convertToFormat(QImage::Format_ARGB32);
     }
 
-    adjustPix(i, col, opacity);
+    recolourPix(i, col, opacity);
     return QPixmap::fromImage(i);
 }
 
@@ -389,12 +341,13 @@ static void updateSidebarIcon(Icon &i, const QString &name, const QColor &color,
     } else if (isVeryLight(color)) {
         i.addFile(":sidebar-"+name+"-white", QSize(), mode);
     } else { // Neither black nor white, so we need to rcolour...
-        i.addFile(":sidebar-"+name, QSize(), mode);
+        Icon std;
+        std.addFile(":sidebar-"+name, QSize(), mode);
         // Now recolour the icon!
         QList<int> sizes=QList<int>() << 16 << 22 << 32 << 48 << 64;
         QColor col=clampColor(color);
         foreach (int s, sizes) {
-            QImage img=i.pixmap(s, s, mode).toImage().convertToFormat(QImage::Format_ARGB32);
+            QImage img=std.pixmap(s, s, mode).toImage().convertToFormat(QImage::Format_ARGB32);
             recolourPix(img, col);
             i.addPixmap(QPixmap::fromImage(img), mode);
         }

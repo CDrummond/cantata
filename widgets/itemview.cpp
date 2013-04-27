@@ -277,6 +277,7 @@ public:
         QColor color(option.palette.color(active ? QPalette::Active : QPalette::Inactive, selected ? QPalette::HighlightedText : QPalette::Text));
         QTextOption textOpt(AP_VTop==actionPos ? Qt::AlignHCenter|Qt::AlignVCenter : Qt::AlignVCenter);
 
+        textOpt.setWrapMode(QTextOption::NoWrap);
         if (oneLine) {
             textRect=QRect(r.x(), r.y()+((r.height()-textHeight)/2), r.width(), textHeight);
             text = textMetrics.elidedText(text, Qt::ElideRight, textRect.width(), QPalette::WindowText);

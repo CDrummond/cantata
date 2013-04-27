@@ -237,7 +237,7 @@ Song MPDParseUtils::parseSong(const QByteArray &data, bool isPlayQueue)
     if (!song.file.isEmpty()) {
         if (song.isStream()) {
             if (!song.isCantataStream()) {
-                QString name=getName(song.file);
+                QString name=getAndRemoveStreamName(song.file);
                 if (!name.isEmpty()) {
                     song.name=name;
                 }
@@ -509,13 +509,24 @@ QString MPDParseUtils::formatDuration(const quint32 totalseconds)
     #endif
 }
 
-QString MPDParseUtils::addName(const QString &url, const QString &name)
+QString MPDParseUtils::addStreamName(const QString &url, const QString &name)
 {
     return name.isEmpty() ? url : (url+"#"+name);
 }
 
-QString MPDParseUtils::getName(const QString &url)
+QString MPDParseUtils::getStreamName(const QString &url)
 {
     int idx=url.lastIndexOf('#');
     return -1==idx ? QString() : url.mid(idx+1);
+}
+
+QString MPDParseUtils::getAndRemoveStreamName(QString &url)
+{
+    int idx=url.lastIndexOf('#');
+    if (-1==idx) {
+        return QString();
+    }
+    QString name=url.mid(idx+1);
+    url=url.left(idx);
+    return name;
 }

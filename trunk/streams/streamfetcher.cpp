@@ -172,7 +172,7 @@ void StreamFetcher::doNext()
     while (todo.count()) {
         current=todo.takeFirst();
         QUrl u(current);
-        currentName=MPDParseUtils::getName(current);
+        currentName=MPDParseUtils::getStreamName(current);
         if (!currentName.isEmpty()) {
             current=current.left(current.length()-(currentName.length()+1));
         }
@@ -184,7 +184,7 @@ void StreamFetcher::doNext()
             connect(job, SIGNAL(finished()), this, SLOT(jobFinished()));
             return;
         } else {
-            done.append(MPDParseUtils::addName(current, currentName));
+            done.append(MPDParseUtils::addStreamName(current, currentName));
         }
     }
 
@@ -250,7 +250,7 @@ void StreamFetcher::jobFinished(QNetworkReply *reply)
                 QString u=parse(data);
 
                 if (u.isEmpty() || u==current) {
-                    done.append(MPDParseUtils::addName(current.startsWith(StreamsModel::constPrefix) ? current.mid(StreamsModel::constPrefix.length()) : current, currentName));
+                    done.append(MPDParseUtils::addStreamName(current.startsWith(StreamsModel::constPrefix) ? current.mid(StreamsModel::constPrefix.length()) : current, currentName));
                 } else if (u.startsWith(QLatin1String("http://")) && ++redirects<constMaxRedirects) {
                     // Redirect...
                     current=u;
@@ -260,11 +260,11 @@ void StreamFetcher::jobFinished(QNetworkReply *reply)
                     connect(job, SIGNAL(finished()), this, SLOT(jobFinished()));
                     redirected=true;
                 } else {
-                    done.append(MPDParseUtils::addName(u, currentName));
+                    done.append(MPDParseUtils::addStreamName(u, currentName));
                 }
             }
         } else {
-            done.append(MPDParseUtils::addName(current.startsWith(StreamsModel::constPrefix) ? current.mid(StreamsModel::constPrefix.length()) : current, currentName));
+            done.append(MPDParseUtils::addStreamName(current.startsWith(StreamsModel::constPrefix) ? current.mid(StreamsModel::constPrefix.length()) : current, currentName));
         }
 
         if (!redirected) {

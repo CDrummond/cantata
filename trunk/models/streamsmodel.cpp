@@ -787,10 +787,7 @@ bool StreamsModel::validProtocol(const QString &file) const
 
 QString StreamsModel::modifyUrl(const QString &u, bool addPrefix, const QString &name)
 {
-    if (!addPrefix || !u.startsWith("http:")) {
-        return MPDParseUtils::addName(u, name);
-    }
-    return MPDParseUtils::addName(constPrefix+u, name);
+    return MPDParseUtils::addStreamName(!addPrefix || !u.startsWith("http:") ? u : (constPrefix+u), name);
 }
 
 QStringList StreamsModel::filenames(const QModelIndexList &indexes, bool addPrefix) const

@@ -63,8 +63,9 @@ public:
     static DirViewItemRoot * parseDirViewItems(const QByteArray &data);
     static QList<Output> parseOuputs(const QByteArray &data);
     static QString formatDuration(const quint32 totalseconds);
-    static QString addName(const QString &url, const QString &name);
-    static QString getName(const QString &url);
+    static QString addStreamName(const QString &url, const QString &name);
+    static QString getStreamName(const QString &url);
+    static QString getAndRemoveStreamName(QString &url);
 };
 
 #endif

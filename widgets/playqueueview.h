@@ -37,6 +37,7 @@ class QItemSelectionModel;
 class QHeaderView;
 class QModelIndex;
 class QMenu;
+class Spinner;
 
 class PlayQueueTreeView : public TreeView
 {
@@ -76,22 +77,27 @@ public:
     void setFilterActive(bool f);
     void updateRows(qint32 row, quint16 curAlbum, bool scroll);
     void scrollTo(const QModelIndex &index, QAbstractItemView::ScrollHint hint);
-    void setModel(QAbstractItemModel *m);
+    void setModel(QAbstractItemModel *m) { view()->setModel(m); }
     void addAction(QAction *a);
     void setFocus();
     bool hasFocus();
-    QAbstractItemModel * model();
+    QAbstractItemModel * model() { return view()->model(); }
     void setContextMenuPolicy(Qt::ContextMenuPolicy policy);
     bool haveSelectedItems();
     bool haveUnSelectedItems();
-    QItemSelectionModel * selectionModel() const;
-    void setCurrentIndex(const QModelIndex &index);
+    QItemSelectionModel * selectionModel() const { return view()->selectionModel(); }
+    void setCurrentIndex(const QModelIndex &idx) { view()->setCurrentIndex(idx); }
     QHeaderView * header();
-    QAbstractItemView * tree();
-    QAbstractItemView * list();
+    QAbstractItemView * tree() const;
+    QAbstractItemView * list() const;
+    QAbstractItemView * view() const;
     bool hasFocus() const;
     QModelIndexList selectedIndexes() const;
     QList<Song> selectedSongs() const;
+
+public Q_SLOTS:
+    void showSpinner();
+    void hideSpinner();
 
 Q_SIGNALS:
     void itemsSelected(bool);
@@ -100,6 +106,7 @@ Q_SIGNALS:
 private:
     GroupedView *groupedView;
     PlayQueueTreeView *treeView;
+    Spinner *spinner;
 };
 
 #endif

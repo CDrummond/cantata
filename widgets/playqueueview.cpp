@@ -29,6 +29,7 @@
 #include "settings.h"
 #include "mpdstatus.h"
 #include "localize.h"
+#include "spinner.h"
 #include <QHeaderView>
 #include <QMenu>
 #include <QAction>
@@ -174,6 +175,7 @@ void PlayQueueTreeView::toggleHeaderItem(bool visible)
 
 PlayQueueView::PlayQueueView(QWidget *parent)
     : QStackedWidget(parent)
+    , spinner(0)
 {
     groupedView=new GroupedView(this, true);
     groupedView->setIndentation(0);
@@ -217,6 +219,12 @@ void PlayQueueView::setGrouped(bool g)
         }
         grouped=g;
         setCurrentWidget(grouped ? static_cast<QWidget *>(groupedView) : static_cast<QWidget *>(treeView));
+        if (spinner) {
+            spinner->setWidget(view()->viewport());
+            if (spinner->isActive()) {
+                spinner->start();
+            }
+        }
     }
 }
 
@@ -265,15 +273,6 @@ void PlayQueueView::scrollTo(const QModelIndex &index, QAbstractItemView::Scroll
     }
 }
 
-void PlayQueueView::setModel(QAbstractItemModel *m)
-{
-    if (isGrouped()) {
-        groupedView->setModel(m);
-    } else {
-        treeView->setModel(m);
-    }
-}
-
 void PlayQueueView::addAction(QAction *a)
 {
     groupedView->addAction(a);
@@ -288,11 +287,6 @@ void PlayQueueView::setFocus()
 bool PlayQueueView::hasFocus()
 {
     return currentWidget()->hasFocus();
-}
-
-QAbstractItemModel * PlayQueueView::model()
-{
-    return isGrouped() ? groupedView->model() : treeView->model();
 }
 
 void PlayQueueView::setContextMenuPolicy(Qt::ContextMenuPolicy policy)
@@ -311,33 +305,24 @@ bool PlayQueueView::haveUnSelectedItems()
     return isGrouped() ? groupedView->haveUnSelectedItems() : treeView->haveUnSelectedItems();
 }
 
-QItemSelectionModel * PlayQueueView::selectionModel() const
-{
-    return isGrouped() ? groupedView->selectionModel() : treeView->selectionModel();
-}
-
-void PlayQueueView::setCurrentIndex(const QModelIndex &index)
-{
-    if (isGrouped()) {
-        groupedView->setCurrentIndex(index);
-    } else {
-        treeView->setCurrentIndex(index);
-    }
-}
-
 QHeaderView * PlayQueueView::header()
 {
     return treeView->header();
 }
 
-QAbstractItemView * PlayQueueView::tree()
+QAbstractItemView * PlayQueueView::tree() const
 {
     return treeView;
 }
 
-QAbstractItemView * PlayQueueView::list()
+QAbstractItemView * PlayQueueView::list() const
 {
     return groupedView;
+}
+
+QAbstractItemView * PlayQueueView::view() const
+{
+    return isGrouped() ? (QAbstractItemView *)groupedView : (QAbstractItemView *)treeView;
 }
 
 bool PlayQueueView::hasFocus() const
@@ -363,4 +348,20 @@ QList<Song> PlayQueueView::selectedSongs() const
     }
 
     return songs;
+}
+
+void PlayQueueView::showSpinner()
+{
+    if (!spinner) {
+        spinner=new Spinner(this);
+    }
+    spinner->setWidget(view()->viewport());
+    spinner->start();
+}
+
+void PlayQueueView::hideSpinner()
+{
+    if (spinner) {
+        spinner->stop();
+    }
 }

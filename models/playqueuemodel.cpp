@@ -119,6 +119,7 @@ PlayQueueModel::PlayQueueModel(QObject *parent)
     fetcher=new StreamFetcher(this);
     connect(this, SIGNAL(modelReset()), this, SLOT(stats()));
     connect(fetcher, SIGNAL(result(const QStringList &, int, bool, quint8)), SLOT(addFiles(const QStringList &, int, bool, quint8)));
+    connect(fetcher, SIGNAL(result(const QStringList &, int, bool, quint8)), SIGNAL(streamsFetched()));
     connect(this, SIGNAL(filesAdded(const QStringList, quint32, quint32, bool, quint8)),
             MPDConnection::self(), SLOT(add(const QStringList, quint32, quint32, bool, quint8)));
     connect(this, SIGNAL(move(const QList<quint32> &, quint32, quint32)),
@@ -558,6 +559,7 @@ void PlayQueueModel::addItems(const QStringList &items, int row, bool replace, q
     }
 
     if (haveRadioStream) {
+        emit fetchingStreams();
         fetcher->get(items, row, replace, priority);
     } else {
         addFiles(items, row, replace, priority);

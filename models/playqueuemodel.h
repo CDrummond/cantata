@@ -30,14 +30,14 @@
 #include <QList>
 #include <QStringList>
 #include <QSet>
+#include <QAbstractItemModel>
 #include "song.h"
 #include "mpdstatus.h"
 #include "config.h"
-#include "actionmodel.h"
 
 class StreamFetcher;
 
-class PlayQueueModel : public ActionModel
+class PlayQueueModel : public QAbstractItemModel
 {
     Q_OBJECT
 
@@ -95,7 +95,6 @@ public:
     bool isGrouped() const { return grouped; }
     void setGrouped(bool g);
     void update(const QList<Song> &songList);
-    Action * getAction(const QModelIndex &, int) { return 0; }
     void setStopAfterTrack(qint32 track);
     void clearStopAfterTrack() { setStopAfterTrack(-1); }
 

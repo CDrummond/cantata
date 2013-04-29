@@ -1055,6 +1055,7 @@ void Covers::setSaveInMpdDir(bool s)
 void Covers::emitCoverUpdated(const Song &song, const QImage &img, const QString &file)
 {
     clearCache(song, img, false);
+    filenames[song.isArtistImageRequest() ? artistKey(song) : albumKey(song)]=file;
     emit coverUpdated(song, img, file);
 }
 

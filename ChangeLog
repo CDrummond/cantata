@@ -43,7 +43,7 @@
     that they always match consume and single icons.
 21. Re-enable animation when showing messagewidget, for Qt-only builds and
     for non 4.9.4 KDE builds.
-22. Slightly speed up playqueue searches.
+22. Speed up playqueue searches.
 23. Add prompt before removing playlists.
 24. When dropping files onto playqueue, check that they have a recognized
     extension (mp3, ogg, flac, wma, m4a, m4b, mp4, m4p, wav, wv, wvp, aiff,

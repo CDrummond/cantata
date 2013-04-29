@@ -107,7 +107,7 @@ QString PlayQueueModel::headerText(int col)
 }
 
 PlayQueueModel::PlayQueueModel(QObject *parent)
-    : ActionModel(parent)
+    : QAbstractItemModel(parent)
     , currentSongId(-1)
     , currentSongRowNum(-1)
     , mpdState(MPDState_Inactive)

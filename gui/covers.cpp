@@ -735,11 +735,13 @@ QHash<QNetworkReply *, CoverDownloader::Job>::Iterator CoverDownloader::findJob(
 }
 
 Covers::Covers()
-    : cache(300000)
+    : retrieved(0)
+    , cache(300000)
 {
     saveInMpdDir=Settings::self()->storeCoversInMpdDir();
     downloader=new CoverDownloader();
     connect(this, SIGNAL(download(Song)), downloader, SLOT(download(Song)), Qt::QueuedConnection);
+    connect(this, SIGNAL(imagesOnQueue()), this, SLOT(getImagesFromQueue()), Qt::QueuedConnection);
     connect(downloader, SIGNAL(artistImage(Song,QImage,QString)), this, SLOT(artistImageDownloaded(Song,QImage,QString)), Qt::QueuedConnection);
     connect(downloader, SIGNAL(cover(Song,QImage,QString)), this, SLOT(coverDownloaded(Song,QImage,QString)), Qt::QueuedConnection);
 }
@@ -769,7 +771,7 @@ QPixmap * Covers::get(const Song &song, int size)
     QPixmap *pix(cache.object(key));
 
     if (!pix) {
-        Covers::Image img=getImage(song);
+        Covers::Image img=findImage(song, false);
 
         cacheSizes.insert(size);
         if (!img.img.isNull()) {
@@ -830,7 +832,7 @@ void Covers::clearCache(const Song &song, const QImage &img, bool dummyEntriesOn
     }
 }
 
-Covers::Image Covers::getImage(const Song &song)
+Covers::Image Covers::findImage(const Song &song, bool emitResult)
 {
     bool isArtistImage=song.isArtistImageRequest();
     QString prevFileName=getFilename(song, isArtistImage);
@@ -838,6 +840,13 @@ Covers::Image Covers::getImage(const Song &song)
         QImage img(prevFileName);
 
         if (!img.isNull()) {
+            if (emitResult) {
+                if (isArtistImage) {
+                    emit artistImage(song, img, prevFileName);
+                } else {
+                    emit cover(song, img, prevFileName);
+                }
+            }
             return Image(img, prevFileName);
         }
     }
@@ -854,9 +863,9 @@ Covers::Image Covers::getImage(const Song &song)
                 if (!img.isNull()) {
                     Image i(img, baseName+ext);
                     if (isArtistImage) {
-                        gotArtistImage(song, i.img, i.fileName, false);
+                        gotArtistImage(song, i.img, i.fileName, emitResult);
                     } else {
-                        gotAlbumCover(song, i.img, i.fileName, false);
+                        gotAlbumCover(song, i.img, i.fileName, emitResult);
                     }
                     return i;
                 }
@@ -892,7 +901,7 @@ Covers::Image Covers::getImage(const Song &song)
 
                         if (!img.isNull()) {
                             Image i(img, dirName+fileName);
-                            gotArtistImage(song, i.img, i.fileName, false);
+                            gotArtistImage(song, i.img, i.fileName, emitResult);
                             return i;
                         }
                     }
@@ -926,7 +935,7 @@ Covers::Image Covers::getImage(const Song &song)
 
                     if (!img.isNull()) {
                         Image i(img, dirName+fileName);
-                        gotAlbumCover(song, i.img, i.fileName, false);
+                        gotAlbumCover(song, i.img, i.fileName, emitResult);
                         return i;
                     }
                 }
@@ -948,7 +957,7 @@ Covers::Image Covers::getImage(const Song &song)
 
                 if (!img.isNull()) {
                     Image i(img, dirName+fileName);
-                    gotAlbumCover(song, i.img, i.fileName, false);
+                    gotAlbumCover(song, i.img, i.fileName, emitResult);
                     return i;
                 }
             }
@@ -964,7 +973,7 @@ Covers::Image Covers::getImage(const Song &song)
                 QImage img(dir+artist+ext);
                 if (!img.isNull()) {
                     Image i(img, dir+artist+ext);
-                    gotArtistImage(song, i.img, i.fileName, false);
+                    gotArtistImage(song, i.img, i.fileName, emitResult);
                     return i;
                 }
             }
@@ -978,7 +987,7 @@ Covers::Image Covers::getImage(const Song &song)
                 QImage img(dir+album+ext);
                 if (!img.isNull()) {
                     Image i(img, dir+album+ext);
-                    gotAlbumCover(song, i.img, i.fileName, false);
+                    gotAlbumCover(song, i.img, i.fileName, emitResult);
                     return i;
                 }
             }
@@ -990,7 +999,7 @@ Covers::Image Covers::getImage(const Song &song)
         // See if amarok, or clementine, has it...
         Image app=otherAppCover(job);
         if (!app.img.isNull()) {
-            gotAlbumCover(song, app.img, app.fileName, false);
+            gotAlbumCover(song, app.img, app.fileName, emitResult);
             return app;
         }
         #endif
@@ -999,13 +1008,41 @@ Covers::Image Covers::getImage(const Song &song)
     return Image(QImage(), QString());
 }
 
-Covers::Image Covers::get(const Song &song)
+// To improve responsiveness of views, we only process a max of 5 images per even loop iteration.
+// If more images are asked for, we place these into a list, and get them on the next iteration
+// of the loop. This way things appear smoother.
+static const int constMaxPerLoopIteration=5;
+
+Covers::Image Covers::requestImage(const Song &song)
 {
-    Image img=getImage(song);
+    if (retrieved>constMaxPerLoopIteration) {
+        if (queue.isEmpty()) {
+            emit imagesOnQueue();
+        }
+        queue.append(song);
+        return Covers::Image();
+    }
+
+    retrieved++;
+    Image img=findImage(song, false);
     if (img.img.isNull()) {
         emit download(song);
     }
     return img;
+}
+
+void Covers::getImagesFromQueue()
+{
+    for(int removed=0; removed<constMaxPerLoopIteration && !queue.isEmpty(); ++removed) {
+        Song song=queue.takeFirst();
+        if (findImage(song, true).img.isNull()) {
+            emit download(song);
+        }
+    }
+    retrieved=0;
+    if (!queue.isEmpty()) {
+        emit imagesOnQueue();
+    }
 }
 
 void Covers::setSaveInMpdDir(bool s)

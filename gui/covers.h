@@ -137,9 +137,17 @@ public:
     Covers();
     void stop();
 
+    // Get cover image of specified size. If this is not found 0 will be returned, and the cover
+    // will be downloaded.
     QPixmap * get(const Song &song, int size);
-    Image getImage(const Song &song);
-    Image get(const Song &song);
+    // Get QImage and filename associated with Song request. If this is not found, then the cover
+    // will NOT be downloaded. 'emitResult' controls whether 'cover()/artistImage()' is emitted if
+    // a cover is found.
+    Image getImage(const Song &song) { return findImage(song, false); }
+    // Get QImage and filename associated with Song request. If this is not found, then the cover
+    // will be downloaded. If more than 5 covers have been requested in an event-loop iteration, then
+    // the cover requests are placed on a queue.
+    Image requestImage(const Song &song);
     void setSaveInMpdDir(bool s);
     void emitCoverUpdated(const Song &song, const QImage &img, const QString &file);
 
@@ -153,18 +161,23 @@ Q_SIGNALS:
     void coverUpdated(const Song &song, const QImage &img, const QString &file);
     void artistImage(const Song &song, const QImage &img, const QString &file);
     void coverRetrieved(const Song &song);
+    void imagesOnQueue();
 
 private Q_SLOTS:
+    void getImagesFromQueue();
     void coverDownloaded(const Song &song, const QImage &img, const QString &file);
     void artistImageDownloaded(const Song &song, const QImage &img, const QString &file);
 
 private:
+    Image findImage(const Song &song, bool emitResult=false);
     void clearCache(const Song &song, const QImage &img, bool dummyEntriesOnly);
     void gotAlbumCover(const Song &song, const QImage &img, const QString &fileName, bool emitResult=true);
     void gotArtistImage(const Song &song, const QImage &img, const QString &fileName, bool emitResult=true);
     QString getFilename(const Song &s, bool isArtist);
 
 private:
+    int retrieved;
+    QList<Song> queue;
     QSet<int> cacheSizes;
     QCache<quint32, QPixmap> cache;
     QMap<QString, QString> filenames;

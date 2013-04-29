@@ -289,7 +289,7 @@ void AudioCdDevice::setDetails(const CdAlbum &a)
         s.artist=artist;
         s.album=album;
         s.file=AudioCdDevice::coverUrl(udi());
-        Covers::Image img=Covers::self()->get(s);
+        Covers::Image img=Covers::self()->requestImage(s);
         if (!img.img.isNull()) {
             setCover(s, img.img, img.fileName);
         }

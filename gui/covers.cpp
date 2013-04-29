@@ -791,7 +791,9 @@ QPixmap * Covers::get(const Song &song, int size)
 
 void Covers::coverDownloaded(const Song &song, const QImage &img, const QString &file)
 {
-    clearCache(song, img, true);
+    if (!img.isNull()) {
+        clearCache(song, img, true);
+    }
     gotAlbumCover(song, img, file);
 }
 

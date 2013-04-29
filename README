@@ -375,6 +375,32 @@ UPDATE_REQUIRED if the client should update its list of playlists (by calling
 the 'ListPlaylists' API)
 
 
+Source Code
+===========
+
+The Cantata source folder contains the following structure:
+    3rdparty   - Third party libraries
+    cmake      - CMake scripts
+    dbus       - DBUS related classes and XML files
+    devices    - Device related classes
+    dynamic    - Dynamic playlists
+    gui        - General GUI classes, e.g. MainWindow, AlbumsPage, etc.
+    http       - HTTP server
+    icons      - Icons
+    lyrics     - Lyrics 
+    models     - Most models, apart from dynamic playlist and shortcut models
+    mpd        - MPD related classes; connection, status, song, etc.
+    network    - Generic Network classes (and proxy support for Qt builds)
+    online     - Jamendo and Magantune
+    po         - Translations
+    replaygain - ReplayGain calculation
+    streams    - Internet radio streams
+    support    - Generic classes that /may/ be usefull to other projects.
+                 Mainly used for Qt/KDE and Gtk support.
+    tags       - Tag reading, editing, etc.
+    widgets    - Widgets that are probably Cantata specific.
+
+
 Credits
 =======
 

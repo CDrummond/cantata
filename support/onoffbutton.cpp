@@ -50,7 +50,7 @@ OnOffButton::OnOffButton(QWidget *p)
             int onWidth=fm.width(onText);
             int offWidth=fm.width(offText);
             int fontHeight=fm.height();
-            fixedSize=QSize((qMax(onWidth, offWidth)+(constBorderSize*4))*2, fontHeight+(2*constBorderSize));
+            fixedSize=QSize((qMax(onWidth, offWidth)+(constBorderSize*4))*2, fontHeight+(2.5*constBorderSize));
         }
         setCheckable(true);
         setFixedSize(fixedSize);

@@ -1127,7 +1127,9 @@ void Covers::cleanCdda()
 void Covers::gotAlbumCover(const Song &song, const QImage &img, const QString &fileName, bool emitResult)
 {
     if (!img.isNull() && !fileName.isEmpty() && !fileName.startsWith("http:/")) {
+        mutex.lock();
         filenames.insert(albumKey(song), fileName);
+        mutex.unlock();
     }
     if (emitResult) {
         emit cover(song, img, fileName);
@@ -1137,7 +1139,9 @@ void Covers::gotAlbumCover(const Song &song, const QImage &img, const QString &f
 void Covers::gotArtistImage(const Song &song, const QImage &img, const QString &fileName, bool emitResult)
 {
     if (!img.isNull() && !fileName.isEmpty() && !fileName.startsWith("http:/")) {
+        mutex.lock();
         filenames.insert(artistKey(song), fileName);
+        mutex.unlock();
     }
     if (emitResult) {
         emit artistImage(song, img, fileName);

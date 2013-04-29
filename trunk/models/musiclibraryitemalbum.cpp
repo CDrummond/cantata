@@ -240,11 +240,11 @@ const QPixmap & MusicLibraryItemAlbum::cover()
                 // ONLINE: Image URL is encoded in song.name...
                 song.name=m_imageUrl;
                 song.title=parentItem()->parentItem()->data().toLower();
-                img=Covers::self()->get(song);
+                img=Covers::self()->requestImage(song);
             } else if (parentItem() && parentItem()->parentItem() && !static_cast<MusicLibraryItemRoot *>(parentItem()->parentItem())->useAlbumImages()) {
                 // Not showing album images in this model, so dont request any!
             } else {
-                img=Covers::self()->get(song);
+                img=Covers::self()->requestImage(song);
             }
 
             if (!img.img.isNull()) {

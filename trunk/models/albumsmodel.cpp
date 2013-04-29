@@ -603,7 +603,7 @@ void AlbumsModel::AlbumItem::getCover()
         s.album=album;
         s.year=year;
         s.file=firstSong->file;
-        Covers::Image img=Covers::self()->get(s);
+        Covers::Image img=Covers::self()->requestImage(s);
         if (!img.img.isNull()) {
             cover=new QPixmap(QPixmap::fromImage(img.img.scaled(QSize(iconSize(), iconSize()), Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
         }

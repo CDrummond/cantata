@@ -361,12 +361,12 @@ static void updateSidebarIcon(Icon &i, const QString &name, const QColor &color,
     }
 
     if (darkValue==constDarkValue && isVeryDark(adjusted)) {
-        i.addFile(":sidebar-"+name, QSize(), mode);
+        i.addFile(":sidebar-"+name+"-dark", QSize(), mode);
     } else if (lightValue==constLightValue && isVeryLight(adjusted)) {
-        i.addFile(":sidebar-"+name+"-white", QSize(), mode);
+        i.addFile(":sidebar-"+name+"-light", QSize(), mode);
     } else { // Neither black nor white, so we need to recolour...
         Icon std;
-        std.addFile(":sidebar-"+name, QSize(), mode);
+        std.addFile(":sidebar-"+name+"-dark", QSize(), mode);
         // Now recolour the icon!
         QList<int> sizes=QList<int>() << 16 << 22 << 32 << 48 << 64;
         QColor col=clampColor(adjusted, constDarkLimit, darkValue, constLightLimit, lightValue);

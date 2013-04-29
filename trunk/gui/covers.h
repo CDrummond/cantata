@@ -31,6 +31,7 @@
 #include <QCache>
 #include <QImage>
 #include <QPixmap>
+#include <QMutex>
 #include "song.h"
 #include "config.h"
 
@@ -38,6 +39,7 @@ class QString;
 class QThread;
 class QNetworkReply;
 class QMutex;
+class QTimer;
 #ifdef ENABLE_KDE_SUPPORT
 class KUrl;
 #endif
@@ -102,6 +104,38 @@ private:
     NetworkAccessManager *manager;
 };
 
+struct LocatedCover
+{
+    LocatedCover(const Song &s=Song(), const QImage &i=QImage(), const QString &f=QString())
+        : song(s), img(i), fileName(f) { }
+    Song song;
+    QImage img;
+    QString fileName;
+};
+
+class CoverLocator : public QObject
+{
+    Q_OBJECT
+public:
+    CoverLocator();
+    ~CoverLocator() { }
+
+    void stop();
+    void locate(const Song &s);
+
+Q_SIGNALS:
+    void located(const QList<LocatedCover> &covers);
+
+public Q_SLOTS:
+    void locate();
+
+private:
+    QThread *thread;
+    QTimer *timer;
+    QMutex mutex;
+    QList<Song> queue;
+};
+
 class Covers : public QObject
 {
     Q_OBJECT
@@ -155,21 +189,22 @@ public:
     void cleanCdda();
     #endif
 
+    static Image locateImage(const Song &song);
+
 Q_SIGNALS:
     void download(const Song &s);
     void cover(const Song &song, const QImage &img, const QString &file);
     void coverUpdated(const Song &song, const QImage &img, const QString &file);
     void artistImage(const Song &song, const QImage &img, const QString &file);
     void coverRetrieved(const Song &song);
-    void imagesOnQueue();
 
 private Q_SLOTS:
-    void getImagesFromQueue();
+    void located(const QList<LocatedCover> &covers);
     void coverDownloaded(const Song &song, const QImage &img, const QString &file);
     void artistImageDownloaded(const Song &song, const QImage &img, const QString &file);
 
 private:
-    Image findImage(const Song &song, bool emitResult=false);
+    Image findImage(const Song &song, bool emitResult);
     void clearCache(const Song &song, const QImage &img, bool dummyEntriesOnly);
     void gotAlbumCover(const Song &song, const QImage &img, const QString &fileName, bool emitResult=true);
     void gotArtistImage(const Song &song, const QImage &img, const QString &fileName, bool emitResult=true);
@@ -182,6 +217,8 @@ private:
     QCache<quint32, QPixmap> cache;
     QMap<QString, QString> filenames;
     CoverDownloader *downloader;
+    CoverLocator *locator;
+    QMutex mutex;
 };
 
 #endif

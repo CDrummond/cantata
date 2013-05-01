@@ -172,6 +172,7 @@
          monoSidebarIcons=false
 100. If HTTP is set to a dynamically allocated port, then attempt to re-open
      the same port number the next time Cantata is started.
+101. Enable HTTP server, and use, by default.
 
 0.9.2
 -----

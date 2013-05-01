@@ -1,176 +1,177 @@
 ﻿X.X.X
 -----
- 1. Give tooltips to view actions.
- 2. Add 'Set Album Artist from Artist' action to tag editor.
- 3. Add option to specify max cover size when transfering to device.
- 4. Remove 'Small Control Buttons' and 'Small Playback Buttons' options.
- 5. Prompt before disconnecting a device.
- 6. For playqueue items, if we only have a filename, and no artist, etc, then
-    attempt to ascertain artist, album, title, and track number from the
-    filename. These will be extracted if the filename has the following pattern:
-        "%artist%/%album%/%track% %title%"
-    Otherwise, if we cannot extract all of these, just set the title to the
-    filename without path.
- 7. Allow editing of tags, and replaygain calculation, of files from folder view
-    which do not contain tags.
- 8. Merge 'External Settings' into 'Interface Settings'
- 9. Add option to embed covers when copying songs to devices. (ID3v2, mp4,
-    and vorbis comment tag types only) 
-10. Add a simple system dbus helper to allow user mounts of samba shares. This
-    is intended to allow Cantata to connect to an Android device via Droid NAS.
-    Requires cantata be built with remote device support.
-11. Add first-run wizard to enable basic configuration before Cantata is
-    started for the first time.
-12. Add a 'Cache' page to settings dialog, allowing cache usage to be displayed
-    and cache items deleted.
-13. Move group warning to last stage of intial settings wizard.
-14. Basic cover fetching dialog, allowing to change downloaded cover. Currently
-    Last.fm, Google, Discogs, and CoverArtArchive are used to find images. To
-    enable searching via Amazon, you need to obtain an 'access key' and a
-    'secret access key' Cantata currently does not contain these, but you may
-    supply these in Cantata's config file. To do this, simply add the following
-    to the "[General]"  section:
-        amazonAccessKey=xxxx
-        amazonSecretAccessKey=xxxx
-15. Use cache by default for devices.
-16. GZip compress cache files.
-17. Save remote device library settings on remote device.
-18. When using list or icon view, only show genres that are relevant to the
-    current level.
-19. (Qt-Only) When displaying filesizes, use KiB (1024 bytes) for KDE and
-    Windows, and kB (1000 bytes) for others.
-20. Recolour repeat and shuffle icons to use button text colour - this is so
-    that they always match consume and single icons.
-21. Re-enable animation when showing messagewidget, for Qt-only builds and
-    for non 4.9.4 KDE builds.
-22. Speed up playqueue searches.
-23. Add prompt before removing playlists.
-24. When dropping files onto playqueue, check that they have a recognized
-    extension (mp3, ogg, flac, wma, m4a, m4b, mp4, m4p, wav, wv, wvp, aiff,
-    aif, aifc, ape, spx, tta, mpc, mpp, mp+, dff, dsf)
-25. Add import of IceCast and SomaFM streams.
-26. Move server info into a dialog.
-27. Add support for Jamendo and Magnatune streams.
-28. Add 'Add Stream' action to play queue menu - so that streams can be quickly
-    added without needing to store in streams page.
-29. For streams, use filename part of path as track title.
-30. Fix setting of buttons in song copy dialog (Qt-only builds, KDE already
-    working).
-31. Only stop dynamizer on exit if option enabled, not if just stop playback on
-    exit is enabled.
-32. Add a new view style - 'Detailed Tree'. This uses the list-style appearance
-    for treeviews - e.g. The album count appears under each artist, etc.
-33. Install cantata-dynamic to $prefix/share/cantata/scripts - as this script
-    is not intended to be run by users.
-34. Use com.googlecode.cantata instead of org.kde.cantata for DBUS service, etc.
-35. Add action icons to grouped-albums style playlists at the top level.
-36. Scale image in lyrics view if it is less than 300x300px
-37. Allow to move streams to different categories via drag-n-drop.
-38. Read/write device cache files in non-gui thread.
-39. Add option to save streams in MPD folder.
-40. GZip compress streams files.
-41. When reading cache (either MPD, or device), and the grouping (single
-    tracks, or multiple artists) has changed - then dont do a rescan, just
-    re-do the grouping.
-42. If we are using QGtkStyle and this is set to Ambiance or Radiance, then
-    apply a corresponding stylesheet to the toolbar - and allow window to be
-    dragged by toolbar.
-43. If fetching artist images for a song, and the song-folder heirarchy is 2
-    levels (artist/album/), then save image as artist.jpg/png within the artist
-    folder. (Only if 'save downloaded covers in music folder' is enabled)
-44. Work-around QGtkStyle issues with large entries in comboboxes.
-45. Remove 'Auto' cover size setting. Now cover sizes are based upon setting
-    and font size.
-46. Initial support for Qt5.
-47. When disabling system-tray icon, first set this to not visible, and then
-    delete the item. This helps removing the entry from the Unity menubar.
-48. If all streams (and categories) have been removed, then remove streams xml
-    file as well.
-49. Allow streams to have multiple genres.
-50. Custom menu icon - more like the one used in chrome.
-51. Use "-symbolic" icons for Qt-only linux builds with ambiance theme.
-52. If replacing playqueue with a stream, then start playing when added.
-53. Fix restoring of alternate size. e.g. fix restore of collapsed size if
-    started expanded - and vice versa.
-54. Recreate menubar for KDE4 build when run under unity. (Qt builds already
-    had this)
-55. Hack-around size of QComboBox in page classes so that height is same as
-    buttons. (QGtkStyle only)
-56. Support reading of lyrics from HTTP server - specify a HTTP url as MPD
-    music path.
-57. Hack-around QGtkStyle focus issues if a spin-box is set to have no buttons.
-    Cantata's Gtk3 style spin boxes are mimiced using a spin-box with no
-    buttons, and 2 toolbuttons. QGtkStyle messes up the widget focus if this is
-    used, so Cantata's spin box attempts to work-around this.
-58. Improve look of Gtk3 style spinbox.
-59. Use xdg-open for "Open In File Manager" action of folder page.
-60. Overlay-ish looking scrollbars for ambiance theme.
-61. If 'Album Artist' is empty, then store this as empty in the cache files.
-    This is so that when these are read back, the tag-editor has the actual
-    values.
-62. If we change a genre, or year, in the tag-editor, then update views.
-63. Disable connections menu when preferences dialog is open.
-64. Allow wildcard genres. e.g. 'Rock*' for 'Hard Rock' and 'RockNRoll' in
-    dynamic rules.
-65. Handle multiple storage locations on MTP devices.
-66. Fix creation of music folder on MTP devices.
-67. Attempt to work-around lack of AlbumArtist support in libmtp. For each
-    album that has tracks by different artists, set the AlbumArtist to
-    'Various Artists' (This *only* works if there are no duplicate track
-    numbers)
-68. Send cover files to MTP devices.
-69. If MTP track number is 0, then attempt to ascertain this from the filename.
-70. Respect ID3v2.3 / ID3v2.4 setting of tags - i.e. when save, ensure we use
-    the same version.
-71. Optionally start track organizer after tag editor, if changing the tags
-    indicates that the files should be renamed.
-72. Add extra option to filescheme dialog - "Track Artist (+Title)". This is
-    intended to be used with Various Artist albums - so that the filename can
-    also contain the track arist, if this is different to the album artist.
-73. Expand device when connected.
-74. Basic support for extracting music from audio CDs
-75. Update copy of Solid to KDE4.10.1 - adds Udisks2 support.
-76. Reduce memory usage - by having only Device/OnlineService derive from
-    QObject, as opposed to every artist/album/song!
-77. Fix HTTP server listening on non-loopback address.
-78. Rename 'Library' tab to 'Artists'
-79. Save, and restore, sizes of (most) dialogs.
-80. Add stream name to fragment part of URL sent to MPD. This way, when the
-    playqueue listing is received back from MPD, the name can be determined.
-81. Improve MPRIS interface - fix CanPlay/CanPause status update, and use micro
-    seconds for times.
-82. Use EchoNest to retrieve artist information.
-83. Add ability to specify extra options for sshfs.
-84. Press F11 to make Cantata fullscreen.
-85. If configured to use GNOME MediaKeys, then start dbus service if it is not
-    already started.
-86. Implement 'Stop after current track'
-87. Add 'Stop after track' to playqueue context menu.
-88. If cropping an artist image (because it is not square), always crop from
-    the top. This is because if we have a portrait picture (where the height
-    needs adjusting), then the artist's face is likely to be nearer the top
-    than the middle.
-89. Middle click volume button to mute/unmute.
-90. Stream/category icons.
-91. When dynamic mod is active, and dynamic tab is not shown, show stop dymamic
-    button.
-92. Add support for 'Auto' replaygain setting.
-93. When opening ffmpeg codec (for replaygain), try to open for 'float'
-    version.
-94. If compiled with both ffmpeg and mpg123, then prefer mpg123 for mp3 files
-    if ffmpeg does not have mp3float codec.
-95. Remove duplicates from dynamic rules.
-96. Add an 'Add' button to dynamic rule dialog, so that multiple rules may be
-    created without closing dialog.
-97. Show next track in tooltip of next track button. (Only valid whilst
-    playing)
-98. List untagged files in main 'artists'/'albums' views. Attempt to guess the
-    tags based upon the filename/folder. e.g.
-        $artist/$album/$trackNo - $trackTitle
-99. Monochrome sidebar icons. Enabled by default for Linux builds, disabled by
-    default for Windows builds. To alter setting edit Cantata's config file and
-    set the following in the "[General]" section to either true or false:
-        monoSidebarIcons=false
+  1. Give tooltips to view actions.
+  2. Add 'Set Album Artist from Artist' action to tag editor.
+  3. Add option to specify max cover size when transfering to device.
+  4. Remove 'Small Control Buttons' and 'Small Playback Buttons' options.
+  5. Prompt before disconnecting a device.
+  6. For playqueue items, if we only have a filename, and no artist, etc, then
+     attempt to ascertain artist, album, title, and track number from the
+     filename. These will be extracted if the filename has the following
+     pattern; "%artist%/%album%/%track% %title%" Otherwise, if we cannot extract
+     all of these, just set the title to the filename without path.
+  7. Allow editing of tags, and replaygain calculation, of files from folder
+     view which do not contain tags.
+  8. Merge 'External Settings' into 'Interface Settings'
+  9. Add option to embed covers when copying songs to devices. (ID3v2, mp4,
+     and vorbis comment tag types only) 
+ 10. Add a simple system dbus helper to allow user mounts of samba shares. This
+     is intended to allow Cantata to connect to an Android device via Droid NAS.
+     Requires cantata be built with remote device support.
+ 11. Add first-run wizard to enable basic configuration before Cantata is
+     started for the first time.
+ 12. Add a 'Cache' page to settings dialog, allowing cache usage to be displayed
+     and cache items deleted.
+ 13. Move group warning to last stage of intial settings wizard.
+ 14. Basic cover fetching dialog, allowing to change downloaded cover. Currently
+     Last.fm, Google, Discogs, and CoverArtArchive are used to find images. To
+     enable searching via Amazon, you need to obtain an 'access key' and a
+     'secret access key' Cantata currently does not contain these, but you may
+     supply these in Cantata's config file. To do this, simply add the following
+     to the "[General]"  section:
+         amazonAccessKey=xxxx
+         amazonSecretAccessKey=xxxx
+ 15. Use cache by default for devices.
+ 16. GZip compress cache files.
+ 17. Save remote device library settings on remote device.
+ 18. When using list or icon view, only show genres that are relevant to the
+     current level.
+ 19. (Qt-Only) When displaying filesizes, use KiB (1024 bytes) for KDE and
+     Windows, and kB (1000 bytes) for others.
+ 20. Recolour repeat and shuffle icons to use button text colour - this is so
+     that they always match consume and single icons.
+ 21. Re-enable animation when showing messagewidget, for Qt-only builds and
+     for non 4.9.4 KDE builds.
+ 22. Speed up playqueue searches.
+ 23. Add prompt before removing playlists.
+ 24. When dropping files onto playqueue, check that they have a recognized
+     extension (mp3, ogg, flac, wma, m4a, m4b, mp4, m4p, wav, wv, wvp, aiff,
+     aif, aifc, ape, spx, tta, mpc, mpp, mp+, dff, dsf)
+ 25. Add import of IceCast and SomaFM streams.
+ 26. Move server info into a dialog.
+ 27. Add support for Jamendo and Magnatune streams.
+ 28. Add 'Add Stream' action to play queue menu - so that streams can be quickly
+     added without needing to store in streams page.
+ 29. For streams, use filename part of path as track title.
+ 30. Fix setting of buttons in song copy dialog (Qt-only builds, KDE already
+     working).
+ 31. Only stop dynamizer on exit if option enabled, not if just stop playback on
+     exit is enabled.
+ 32. Add a new view style - 'Detailed Tree'. This uses the list-style appearance
+     for treeviews - e.g. The album count appears under each artist, etc.
+ 33. Install cantata-dynamic to $prefix/share/cantata/scripts - as this script
+     is not intended to be run by users.
+ 34. Use com.googlecode.cantata instead of org.kde.cantata for DBUS service, etc.
+ 35. Add action icons to grouped-albums style playlists at the top level.
+ 36. Scale image in lyrics view if it is less than 300x300px
+ 37. Allow to move streams to different categories via drag-n-drop.
+ 38. Read/write device cache files in non-gui thread.
+ 39. Add option to save streams in MPD folder.
+ 40. GZip compress streams files.
+ 41. When reading cache (either MPD, or device), and the grouping (single
+     tracks, or multiple artists) has changed - then dont do a rescan, just
+     re-do the grouping.
+ 42. If we are using QGtkStyle and this is set to Ambiance or Radiance, then
+     apply a corresponding stylesheet to the toolbar - and allow window to be
+     dragged by toolbar.
+ 43. If fetching artist images for a song, and the song-folder heirarchy is 2
+     levels (artist/album/), then save image as artist.jpg/png within the artist
+     folder. (Only if 'save downloaded covers in music folder' is enabled)
+ 44. Work-around QGtkStyle issues with large entries in comboboxes.
+ 45. Remove 'Auto' cover size setting. Now cover sizes are based upon setting
+     and font size.
+ 46. Initial support for Qt5.
+ 47. When disabling system-tray icon, first set this to not visible, and then
+     delete the item. This helps removing the entry from the Unity menubar.
+ 48. If all streams (and categories) have been removed, then remove streams xml
+     file as well.
+ 49. Allow streams to have multiple genres.
+ 50. Custom menu icon - more like the one used in chrome.
+ 51. Use "-symbolic" icons for Qt-only linux builds with ambiance theme.
+ 52. If replacing playqueue with a stream, then start playing when added.
+ 53. Fix restoring of alternate size. e.g. fix restore of collapsed size if
+     started expanded - and vice versa.
+ 54. Recreate menubar for KDE4 build when run under unity. (Qt builds already
+     had this)
+ 55. Hack-around size of QComboBox in page classes so that height is same as
+     buttons. (QGtkStyle only)
+ 56. Support reading of lyrics from HTTP server - specify a HTTP url as MPD
+     music path.
+ 57. Hack-around QGtkStyle focus issues if a spin-box is set to have no buttons.
+     Cantata's Gtk3 style spin boxes are mimiced using a spin-box with no
+     buttons, and 2 toolbuttons. QGtkStyle messes up the widget focus if this is
+     used, so Cantata's spin box attempts to work-around this.
+ 58. Improve look of Gtk3 style spinbox.
+ 59. Use xdg-open for "Open In File Manager" action of folder page.
+ 60. Overlay-ish looking scrollbars for ambiance theme.
+ 61. If 'Album Artist' is empty, then store this as empty in the cache files.
+     This is so that when these are read back, the tag-editor has the actual
+     values.
+ 62. If we change a genre, or year, in the tag-editor, then update views.
+ 63. Disable connections menu when preferences dialog is open.
+ 64. Allow wildcard genres. e.g. 'Rock*' for 'Hard Rock' and 'RockNRoll' in
+     dynamic rules.
+ 65. Handle multiple storage locations on MTP devices.
+ 66. Fix creation of music folder on MTP devices.
+ 67. Attempt to work-around lack of AlbumArtist support in libmtp. For each
+     album that has tracks by different artists, set the AlbumArtist to
+     'Various Artists' (This *only* works if there are no duplicate track
+     numbers)
+ 68. Send cover files to MTP devices.
+ 69. If MTP track number is 0, then attempt to ascertain this from the filename.
+ 70. Respect ID3v2.3 / ID3v2.4 setting of tags - i.e. when save, ensure we use
+     the same version.
+ 71. Optionally start track organizer after tag editor, if changing the tags
+     indicates that the files should be renamed.
+ 72. Add extra option to filescheme dialog - "Track Artist (+Title)". This is
+     intended to be used with Various Artist albums - so that the filename can
+     also contain the track arist, if this is different to the album artist.
+ 73. Expand device when connected.
+ 74. Basic support for extracting music from audio CDs
+ 75. Update copy of Solid to KDE4.10.1 - adds Udisks2 support.
+ 76. Reduce memory usage - by having only Device/OnlineService derive from
+     QObject, as opposed to every artist/album/song!
+ 77. Fix HTTP server listening on non-loopback address.
+ 78. Rename 'Library' tab to 'Artists'
+ 79. Save, and restore, sizes of (most) dialogs.
+ 80. Add stream name to fragment part of URL sent to MPD. This way, when the
+     playqueue listing is received back from MPD, the name can be determined.
+ 81. Improve MPRIS interface - fix CanPlay/CanPause status update, and use micro
+     seconds for times.
+ 82. Use EchoNest to retrieve artist information.
+ 83. Add ability to specify extra options for sshfs.
+ 84. Press F11 to make Cantata fullscreen.
+ 85. If configured to use GNOME MediaKeys, then start dbus service if it is not
+     already started.
+ 86. Implement 'Stop after current track'
+ 87. Add 'Stop after track' to playqueue context menu.
+ 88. If cropping an artist image (because it is not square), always crop from
+     the top. This is because if we have a portrait picture (where the height
+     needs adjusting), then the artist's face is likely to be nearer the top
+     than the middle.
+ 89. Middle click volume button to mute/unmute.
+ 90. Stream/category icons.
+ 91. When dynamic mod is active, and dynamic tab is not shown, show stop dymamic
+     button.
+ 92. Add support for 'Auto' replaygain setting.
+ 93. When opening ffmpeg codec (for replaygain), try to open for 'float'
+     version.
+ 94. If compiled with both ffmpeg and mpg123, then prefer mpg123 for mp3 files
+     if ffmpeg does not have mp3float codec.
+ 95. Remove duplicates from dynamic rules.
+ 96. Add an 'Add' button to dynamic rule dialog, so that multiple rules may be
+     created without closing dialog.
+ 97. Show next track in tooltip of next track button. (Only valid whilst
+     playing)
+ 98. List untagged files in main 'artists'/'albums' views. Attempt to guess the
+     tags based upon the filename/folder. e.g.
+         $artist/$album/$trackNo - $trackTitle
+ 99. Monochrome sidebar icons. Enabled by default for Linux builds, disabled by
+     default for Windows builds. To alter setting edit Cantata's config file and
+     set the following in the "[General]" section to either true or false:
+         monoSidebarIcons=false
+100. If HTTP is set to a dynamically allocated port, then attempt to re-open
+     the same port number the next time Cantata is started.
 
 0.9.2
 -----

@@ -548,6 +548,11 @@ int Settings::httpPort()
     return GET_INT("httpPort", 1023);
 }
 
+int Settings::httpAllocatedPort()
+{
+    return GET_INT("httpAllocatedPort", 0);
+}
+
 QString Settings::httpAddress()
 {
     return GET_STRING("httpAddress", QString());
@@ -943,6 +948,11 @@ void Settings::saveStopFadeDuration(int v)
 void Settings::saveHttpPort(int v)
 {
     SET_VALUE_MOD(httpPort)
+}
+
+void Settings::saveHttpAllocatedPort(int v)
+{
+    SET_VALUE_MOD(httpAllocatedPort)
 }
 
 void Settings::saveHttpAddress(const QString &v)

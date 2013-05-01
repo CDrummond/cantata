@@ -31,6 +31,8 @@
 #cmakedefine USE_SPEEX_RESAMPLER 1
 #cmakedefine ENABLE_REPLAYGAIN_SUPPORT 1
 #cmakedefine ENABLE_REMOTE_DEVICES 1
+#cmakedefine ENABLE_ONLINE_SERVICES 1
+
 /*
  This is done via CMake add_defintions - as it controls SLOT generation in GtkProxyStyle
  - hence adding _XXX

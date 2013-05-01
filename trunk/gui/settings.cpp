@@ -545,7 +545,7 @@ int Settings::stopFadeDuration()
 #ifdef TAGLIB_FOUND
 int Settings::httpPort()
 {
-    return GET_INT("httpPort", 1023);
+    return GET_INT("httpPort", 0);
 }
 
 int Settings::httpAllocatedPort()

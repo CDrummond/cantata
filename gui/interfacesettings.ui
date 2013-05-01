@@ -567,7 +567,7 @@ within the folder of the current track, or within its parent folder. If no image
         </spacer>
        </item>
        <item>
-        <widget class="QLabel" name="label_9">
+        <widget class="StateLabel" name="singleClickLabel">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
            <horstretch>0</horstretch>
@@ -596,6 +596,11 @@ within the folder of the current track, or within its parent folder. If no image
    <class>BuddyLabel</class>
    <extends>QLabel</extends>
    <header>buddylabel.h</header>
+  </customwidget>
+  <customwidget>
+   <class>StateLabel</class>
+   <extends>QLabel</extends>
+   <header>statelabel.h</header>
   </customwidget>
   <customwidget>
    <class>OnOffButton</class>

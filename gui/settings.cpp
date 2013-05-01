@@ -560,12 +560,14 @@ QString Settings::httpAddress()
 
 bool Settings::enableHttp()
 {
-    return GET_BOOL("enableHttp", false);
+    bool def=version()>CANTATA_MAKE_VERSION(0, 9, 50);
+    return GET_BOOL("enableHttp", def);
 }
 
 bool Settings::alwaysUseHttp()
 {
-    return GET_BOOL("alwaysUseHttp", false);
+    bool def=version()>CANTATA_MAKE_VERSION(0, 9, 50);
+    return GET_BOOL("alwaysUseHttp", def);
 }
 #endif
 

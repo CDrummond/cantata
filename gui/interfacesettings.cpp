@@ -102,6 +102,7 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     #endif
     connect(systemTrayCheckBox, SIGNAL(toggled(bool)), minimiseOnClose, SLOT(setEnabled(bool)));
     connect(systemTrayCheckBox, SIGNAL(toggled(bool)), minimiseOnCloseLabel, SLOT(setEnabled(bool)));
+    connect(forceSingleClick, SIGNAL(toggled(bool)), SLOT(forceSingleClickChanged()));
 }
 
 void InterfaceSettings::load()
@@ -230,4 +231,9 @@ void InterfaceSettings::playListsStyleChanged()
     bool grouped=getViewType(playlistsView)==ItemView::Mode_GroupedTree;
     playListsStartClosed->setEnabled(grouped);
     playListsStartClosedLabel->setEnabled(grouped);
+}
+
+void InterfaceSettings::forceSingleClickChanged()
+{
+    singleClickLabel->setOn(forceSingleClick->isChecked()!=Settings::self()->forceSingleClick());
 }

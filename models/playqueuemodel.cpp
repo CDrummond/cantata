@@ -172,9 +172,9 @@ QVariant PlayQueueModel::headerData(int section, Qt::Orientation orientation, in
     return QVariant();
 }
 
-int PlayQueueModel::rowCount(const QModelIndex &) const
+int PlayQueueModel::rowCount(const QModelIndex &idx) const
 {
-    return songs.size();
+    return idx.isValid() ? 0 : songs.size();
 }
 
 int PlayQueueModel::columnCount(const QModelIndex &) const

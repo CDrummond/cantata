@@ -41,7 +41,6 @@ bool PlayQueueProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sou
         return true;
     }
 
-    // Why is this sometimes called with a parent row???
     if (-1!=sourceParent.row()) {
         return false;
     }

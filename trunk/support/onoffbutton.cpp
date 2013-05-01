@@ -100,15 +100,15 @@ void OnOffButton::paintEvent(QPaintEvent *e)
     QRectF offRect=QRectF(borderRect.x()+(borderRect.width()/2), borderRect.y(), borderRect.width()/2, borderRect.height());
     QPainterPath border=buildPath(borderRect, 3.0);
     //QPainterPath inner=buildPath(borderInnder, 2.0);
-    QPainterPath slider=buildPath(isOn ? offRect : onRect, 3.0);
+    QPainterPath slider=buildPath(isOn ? offRect.adjusted(-0.5, 0, 0, 0) : onRect.adjusted(0, 0, 0.5, 0), 3.0);
     QPainterPath sliderInner=buildPath((isOn ? offRect : onRect).adjusted(1, 1, -1, -1), 2.0);
     QLinearGradient grad(borderRect.topLeft(), borderRect.bottomLeft());
     bool active=isOn && isActive;
-    QColor bgndCol=active ? pal.highlight().color() : pal.mid().color();
-    grad.setColorAt(0, active ? bgndCol.darker(110) : bgndCol.lighter(110));
-    grad.setColorAt(1, active ? bgndCol.darker(102) : bgndCol.lighter(120));
+    QColor bgndCol=active ? pal.highlight().color() : pal.button().color();
+    grad.setColorAt(0, active ? bgndCol.darker(110) : bgndCol.darker(120));
+    grad.setColorAt(1, active ? bgndCol.darker(102) : bgndCol.darker(108));
     p.fillPath(border, grad);
-    QColor borderCol(bgndCol.darker(active ? 145 : 110));
+    QColor borderCol(bgndCol.darker(145));
     p.setPen(borderCol);
     p.drawPath(border);
     //p.setPen(pal.light().color());
@@ -129,11 +129,12 @@ void OnOffButton::paintEvent(QPaintEvent *e)
     p.setPen(textcol);
     p.drawText(isOn ? onRect : offRect, isOn ? onText : offText, QTextOption(Qt::AlignHCenter|Qt::AlignVCenter));
 
-    grad.setColorAt(0, pal.mid().color().lighter(150));
-    grad.setColorAt(1, pal.mid().color().darker(82));
+    grad.setColorAt(0, pal.button().color().lighter(105));
+    grad.setColorAt(0.5, pal.button().color().lighter(102));
+    grad.setColorAt(1, pal.button().color().darker(108));
     p.fillPath(slider, grad);
-    QColor sliderCol(pal.mid().color().lighter(170));
-    sliderCol.setAlphaF(0.2);
+    QColor sliderCol(pal.button().color().lighter(170));
+    sliderCol.setAlphaF(0.4);
     p.setPen(sliderCol);
     p.drawPath(sliderInner);
     p.setPen(borderCol);

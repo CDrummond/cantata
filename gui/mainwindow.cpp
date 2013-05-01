@@ -197,7 +197,6 @@ MainWindow::MainWindow(QWidget *parent)
     , gnomeMediaKeys(0)
     #endif
     , playQueueSearchTimer(0)
-    , usingProxy(false)
     #ifdef Q_OS_LINUX
     , mpdAccessibilityTimer(0)
     #endif
@@ -613,7 +612,7 @@ MainWindow::MainWindow(QWidget *parent)
     MPDStats::self();
 
     playQueueProxyModel.setSourceModel(&playQueueModel);
-    playQueue->setModel(&playQueueModel);
+    playQueue->setModel(&playQueueProxyModel);
     playQueue->addAction(removeFromPlayQueueAction);
     playQueue->addAction(clearPlayQueueAction);
     playQueue->addAction(StdActions::self()->savePlayQueueAction);
@@ -1401,8 +1400,8 @@ void MainWindow::updateSettings()
         (playQueueModel.isGrouped() && (wasAutoExpand!=playQueue->isAutoExpand() || wasStartClosed!=playQueue->isStartClosed())) ) {
         playQueueModel.setGrouped(Settings::self()->playQueueGrouped());
         playQueue->setGrouped(Settings::self()->playQueueGrouped());
-        playQueue->updateRows(usingProxy ? playQueueModel.rowCount()+10 : playQueueModel.currentSongRow(),
-                              current.key, !usingProxy && autoScrollPlayQueue && MPDState_Playing==MPDStatus::self()->state());
+        QModelIndex idx=playQueueProxyModel.mapFromSource(playQueueModel.index(playQueueModel.currentSongRow(), 0));
+        playQueue->updateRows(idx.row(), current.key, autoScrollPlayQueue && MPDState_Playing==MPDStatus::self()->state());
     }
 
     wasStartClosed=playlistsPage->isStartClosed();
@@ -1548,7 +1547,7 @@ void MainWindow::stopAfterTrack()
     QModelIndexList selected=playQueue->selectedIndexes();
 
     if (1==selected.count()) {
-        QModelIndex idx=usingProxy ? playQueueProxyModel.mapToSource(selected.first()) : selected.first();
+        QModelIndex idx=playQueueProxyModel.mapToSource(selected.first());
         playQueueModel.setStopAfterTrack(playQueueModel.getIdByRow(idx.row()));
     }
 }
@@ -1658,48 +1657,21 @@ void MainWindow::searchPlayQueue()
 
 void MainWindow::realSearchPlayQueue()
 {
-    QList<qint32> selectedSongIds;
     if (playQueueSearchTimer) {
         playQueueSearchTimer->stop();
     }
     QString filter=searchPlayQueueLineEdit->text().trimmed();
     if (filter.length()<2) {
-        if (usingProxy) {
-            if (playQueue->selectionModel()->hasSelection()) {
-                QModelIndexList items = playQueue->selectionModel()->selectedRows();
-                foreach (const QModelIndex &index, items) {
-                    selectedSongIds.append(playQueueModel.getIdByRow(playQueueProxyModel.mapToSource(index).row()));
-                }
-            }
-
-            playQueue->setModel(&playQueueModel);
-            usingProxy=false;
-            playQueue->setFilterActive(false);
-            playQueue->updateRows(playQueueModel.currentSongRow(), current.key, autoScrollPlayQueue && MPDState_Playing==MPDStatus::self()->state());
-            scrollPlayQueue();
-        }
-    } else if (filter!=playQueueProxyModel.filterRegExp().pattern()) {
-        if (!usingProxy) {
-            if (playQueue->selectionModel()->hasSelection()) {
-                QModelIndexList items = playQueue->selectionModel()->selectedRows();
-                foreach (const QModelIndex &index, items) {
-                    selectedSongIds.append(playQueueModel.getIdByRow(index.row()));
-                }
-            }
-            playQueue->setModel(&playQueueProxyModel);
-            usingProxy=true;
-            playQueue->updateRows(playQueueModel.rowCount()+10, current.key, false);
-            playQueue->setFilterActive(true);
-        }
+        filter=QString();
     }
-    playQueueProxyModel.update(filter);
 
-    if (selectedSongIds.size() > 0) {
-        foreach (qint32 i, selectedSongIds) {
-            qint32 row = playQueueModel.getRowById(i);
-            playQueue->selectionModel()->select(usingProxy ? playQueueProxyModel.mapFromSource(playQueueModel.index(row, 0))
-                                                           : playQueueModel.index(row, 0), QItemSelectionModel::Select | QItemSelectionModel::Rows);
-        }
+    if (filter!=playQueueProxyModel.filterRegExp().pattern()) {
+        playQueue->setFilterActive(!filter.isEmpty());
+        playQueue->selectionModel()->clear();
+        playQueueProxyModel.update(filter);
+        QModelIndex idx=playQueueProxyModel.mapFromSource(playQueueModel.index(playQueueModel.currentSongRow(), 0));
+        playQueue->updateRows(idx.row(), current.key, autoScrollPlayQueue && MPDState_Playing==MPDStatus::self()->state());
+        scrollPlayQueue();
     }
 }
 
@@ -1711,8 +1683,10 @@ void MainWindow::updatePlayQueue(const QList<Song> &songs)
     StdActions::self()->savePlayQueueAction->setEnabled(!songs.isEmpty());
     clearPlayQueueAction->setEnabled(!songs.isEmpty());
 
+    bool wasEmpty=0==playQueueModel.rowCount();
     playQueueModel.update(songs);
-    playQueue->updateRows(usingProxy ? playQueueModel.rowCount()+10 : playQueueModel.currentSongRow(), current.key, false);
+    QModelIndex idx=playQueueProxyModel.mapFromSource(playQueueModel.index(playQueueModel.currentSongRow(), 0));
+    playQueue->updateRows(idx.row(), current.key, autoScrollPlayQueue && wasEmpty && MPDState_Playing==MPDStatus::self()->state());
 
     /*if (1==songs.count() && MPDState_Playing==MPDStatus::self()->state()) {
         updateCurrentSong(songs.at(0));
@@ -1775,7 +1749,6 @@ void MainWindow::updateCurrentSong(const Song &song)
     }
 
     current=song;
-
     if (current.isCdda()) {
         emit getStatus();
     }
@@ -1825,10 +1798,9 @@ void MainWindow::updateCurrentSong(const Song &song)
 
     bool isPlaying=MPDState_Playing==MPDStatus::self()->state();
     playQueueModel.updateCurrentSong(current.id);
-    playQueue->updateRows(usingProxy ? playQueueModel.rowCount()+10 : playQueueModel.getRowById(current.id),
-                          current.key, !usingProxy && autoScrollPlayQueue && isPlaying);
+    QModelIndex idx=playQueueProxyModel.mapFromSource(playQueueModel.index(playQueueModel.currentSongRow(), 0));
+    playQueue->updateRows(idx.row(), current.key, autoScrollPlayQueue && isPlaying);
     scrollPlayQueue();
-
     updateWindowTitle();
     lyricsPage->update(song);
     infoPage->update(song);
@@ -1840,8 +1812,7 @@ void MainWindow::scrollPlayQueue()
     if (autoScrollPlayQueue && MPDState_Playing==MPDStatus::self()->state() && !playQueueModel.isGrouped()) {
         qint32 row=playQueueModel.currentSongRow();
         if (row>=0) {
-            QModelIndex idx=usingProxy ? playQueueProxyModel.mapFromSource(playQueueModel.index(row, 0)) : playQueueModel.index(row, 0);
-            playQueue->scrollTo(idx, QAbstractItemView::PositionAtCenter);
+            playQueue->scrollTo(playQueueProxyModel.mapFromSource(playQueueModel.index(row, 0)), QAbstractItemView::PositionAtCenter);
         }
     }
 }
@@ -2021,7 +1992,7 @@ void MainWindow::updateStatus(MPDStatus * const status)
 
 void MainWindow::playQueueItemActivated(const QModelIndex &index)
 {
-    emit startPlayingSongId(playQueueModel.getIdByRow(usingProxy ? playQueueProxyModel.mapToSource(index).row() : index.row()));
+    emit startPlayingSongId(playQueueModel.getIdByRow(playQueueProxyModel.mapToSource(index).row()));
 }
 
 void MainWindow::removeFromPlayQueue()
@@ -2035,7 +2006,7 @@ void MainWindow::removeFromPlayQueue()
     }
 
     foreach (const QModelIndex &idx, items) {
-        toBeRemoved.append(playQueueModel.getIdByRow(usingProxy ? playQueueProxyModel.mapToSource(idx).row() : idx.row()));
+        toBeRemoved.append(playQueueModel.getIdByRow(playQueueProxyModel.mapToSource(idx).row()));
     }
 
     emit removeSongs(toBeRemoved);
@@ -2106,7 +2077,7 @@ void MainWindow::addWithPriority()
         if (isPlayQueue) {
             QList<qint32> ids;
             foreach (const QModelIndex &idx, pqItems) {
-                ids.append(playQueueModel.getIdByRow(usingProxy ? playQueueProxyModel.mapToSource(idx).row() : idx.row()));
+                ids.append(playQueueModel.getIdByRow(playQueueProxyModel.mapToSource(idx).row()));
             }
             emit setPriority(ids, prio);
         } else {
@@ -2156,7 +2127,7 @@ void MainWindow::addToExistingStoredPlaylist(const QString &name, bool pq)
         } else {
             qSort(items);
             foreach (const QModelIndex &idx, items) {
-                Song s = playQueueModel.getSongByRow(usingProxy ? playQueueProxyModel.mapToSource(idx).row() : idx.row());
+                Song s = playQueueModel.getSongByRow(playQueueProxyModel.mapToSource(idx).row());
                 if (!s.file.isEmpty()) {
                     files.append(s.file);
                 }
@@ -2246,7 +2217,7 @@ void MainWindow::copyTrackInfo()
     QTextStream str(&txt);
 
     foreach (const QModelIndex &idx, items) {
-        Song s = playQueueModel.getSongByRow(usingProxy ? playQueueProxyModel.mapToSource(idx).row() : idx.row());
+        Song s = playQueueModel.getSongByRow(playQueueProxyModel.mapToSource(idx).row());
         if (!s.isEmpty()) {
             if (!txt.isEmpty()) {
                 str << QChar('\n');
@@ -2373,7 +2344,7 @@ void MainWindow::cropPlayQueue()
     QSet<qint32> selected;
 
     foreach (const QModelIndex &idx, items) {
-        selected << playQueueModel.getIdByRow(usingProxy ? playQueueProxyModel.mapToSource(idx).row() : idx.row());
+        selected << playQueueModel.getIdByRow(playQueueProxyModel.mapToSource(idx).row());
     }
 
     emit removeSongs((songs - selected).toList());

@@ -44,6 +44,7 @@ private Q_SLOTS:
     void albumsCoverSizeChanged();
     void playListsStyleChanged();
     void playQueueGroupedChanged();
+    void forceSingleClickChanged();
 };
 
 #endif

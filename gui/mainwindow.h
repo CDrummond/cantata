@@ -404,7 +404,6 @@ private:
     GtkProxyStyle *gtkStyle;
     #endif // Q_OS_WIN
     QTimer *playQueueSearchTimer;
-    bool usingProxy;
     #ifdef Q_OS_LINUX
     QTimer *mpdAccessibilityTimer;
     #endif

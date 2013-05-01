@@ -39,7 +39,10 @@
 #include "filejob.h"
 #include "freespaceinfo.h"
 #include "icons.h"
+#include "config.h"
+#ifdef ENABLE_ONLINE_SERVICES
 #include "onlineservicesmodel.h"
+#endif
 #include <QFile>
 
 static int iCount=0;
@@ -361,9 +364,11 @@ void ActionDialog::slotButtonClicked(int button)
 
 Device * ActionDialog::getDevice(const QString &udi, bool logErrors)
 {
+    #ifdef ENABLE_ONLINE_SERVICES
     if (udi.startsWith(OnlineServicesModel::constUdiPrefix)) {
         return OnlineServicesModel::self()->device(udi);
     }
+    #endif
     Device *dev=DevicesModel::self()->device(udi);
 
     if (!logErrors) {

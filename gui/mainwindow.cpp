@@ -1401,7 +1401,7 @@ void MainWindow::updateSettings()
         playQueueModel.setGrouped(Settings::self()->playQueueGrouped());
         playQueue->setGrouped(Settings::self()->playQueueGrouped());
         QModelIndex idx=playQueueProxyModel.mapFromSource(playQueueModel.index(playQueueModel.currentSongRow(), 0));
-        playQueue->updateRows(idx.row(), current.key, autoScrollPlayQueue && MPDState_Playing==MPDStatus::self()->state());
+        playQueue->updateRows(idx.row(), current.key, autoScrollPlayQueue && playQueueProxyModel.isEmpty() && MPDState_Playing==MPDStatus::self()->state());
     }
 
     wasStartClosed=playlistsPage->isStartClosed();
@@ -1670,7 +1670,7 @@ void MainWindow::realSearchPlayQueue()
         playQueue->selectionModel()->clear();
         playQueueProxyModel.update(filter);
         QModelIndex idx=playQueueProxyModel.mapFromSource(playQueueModel.index(playQueueModel.currentSongRow(), 0));
-        playQueue->updateRows(idx.row(), current.key, autoScrollPlayQueue && MPDState_Playing==MPDStatus::self()->state());
+        playQueue->updateRows(idx.row(), current.key, autoScrollPlayQueue && playQueueProxyModel.isEmpty() && MPDState_Playing==MPDStatus::self()->state());
         scrollPlayQueue();
     }
 }
@@ -1686,7 +1686,7 @@ void MainWindow::updatePlayQueue(const QList<Song> &songs)
     bool wasEmpty=0==playQueueModel.rowCount();
     playQueueModel.update(songs);
     QModelIndex idx=playQueueProxyModel.mapFromSource(playQueueModel.index(playQueueModel.currentSongRow(), 0));
-    playQueue->updateRows(idx.row(), current.key, autoScrollPlayQueue && wasEmpty && MPDState_Playing==MPDStatus::self()->state());
+    playQueue->updateRows(idx.row(), current.key, autoScrollPlayQueue && playQueueProxyModel.isEmpty() && wasEmpty && MPDState_Playing==MPDStatus::self()->state());
 
     /*if (1==songs.count() && MPDState_Playing==MPDStatus::self()->state()) {
         updateCurrentSong(songs.at(0));
@@ -1799,7 +1799,7 @@ void MainWindow::updateCurrentSong(const Song &song)
     bool isPlaying=MPDState_Playing==MPDStatus::self()->state();
     playQueueModel.updateCurrentSong(current.id);
     QModelIndex idx=playQueueProxyModel.mapFromSource(playQueueModel.index(playQueueModel.currentSongRow(), 0));
-    playQueue->updateRows(idx.row(), current.key, autoScrollPlayQueue && isPlaying);
+    playQueue->updateRows(idx.row(), current.key, autoScrollPlayQueue && playQueueProxyModel.isEmpty() && isPlaying);
     scrollPlayQueue();
     updateWindowTitle();
     lyricsPage->update(song);

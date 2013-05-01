@@ -205,7 +205,7 @@ void CoverWidget::update(const Song &s)
             } else {
                 // We ned to set the image here, so that TrayItem gets the correct 'noCover' image
                 // ...but if Covers does eventually download a cover, we dont want valid->noCover->valid
-                img=stdPixmap(!current.isCdda()).toImage();
+                img=stdPixmap(false).toImage();
             }
         } else {
             valid=true;

@@ -915,7 +915,7 @@ void CoverDialog::sendAmazonQuery(const QString &fixedQuery, int page)
     sendQueryRequest(url);
 
     #else
-    // Qt has no non-deprecated version of 'setEncodedQueryItems', so for the moment Amazon searches are disabled for Qt5 builds...
+    // Qt5 has no non-deprecated version of 'setEncodedQueryItems', so for the moment Amazon searches are disabled for Qt5 builds...
     Q_UNUSED(fixedQuery)
     Q_UNUSED(page)
     #endif

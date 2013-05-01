@@ -1,14 +1,9 @@
 - Qt5 port
   - Only tested with Qt5.0.1
   - Segmentation fault on exit due to QIcon destructor?
-  - QUrl.setEncodedUrl
-    - covers.cpp
-    - magnatuneservice.cpp
-    - infopage.cpp
   - Fix raising of mainwindow via dbus.
     - Qt5 no longer has QX11Info
   - Toolbar buttons sometimes keep borders
-  - QGtkStyle seems to be using gnome icons, this causes some conflicts
 
 - Windows port
   - CMake scripts not working
@@ -40,7 +35,6 @@
   - Add copy to device to context menu?
     - Will need to be careful that songs are not from device
     - Also, check that songs are not streams!
-  - Amarok style search (with next/prev)
 
 - General
   - Ratings (use KRatingWidget?)

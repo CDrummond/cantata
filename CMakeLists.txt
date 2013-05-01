@@ -30,7 +30,15 @@ OPTION(ENABLE_FFMPEG "Enable ffmpeg/libav libraries (required for replaygain cal
 OPTION(ENABLE_MPG123 "Enable mpg123 libraries (required for replaygain calculation)" ON)
 OPTION(ENABLE_SPEEXDSP "Enable SpeexDSP libraries (used to speed-up replaygain calculation)" ON)
 OPTION(ENABLE_UDISKS2 "Build UDisks2 backend, and NOT UDisks, for Qt builds" OFF)
-OPTION(ENABLE_OVERLAYSCROLLBARS "Wnable support for overlay style scrollbars when using QGtkStyle (Linux only)" OFF)
+OPTION(ENABLE_OVERLAYSCROLLBARS "Enable support for overlay style scrollbars when using QGtkStyle (Linux only)" OFF)
+
+if (WIN32)
+    OPTION(ENABLE_ONLINE_SERVICES "Enable support for online services (Jamendo and Magantune)" OFF)
+else (WIN32)
+    OPTION(ENABLE_ONLINE_SERVICES "Enable support for online services (Jamendo and Magantune)" ON)
+endif (WIN32)
+
+#ifdef ENABLE_ONLINE_SERVICES
 
 if (ENABLE_QT5)
     set(ENABLE_PHONON FALSE)
@@ -82,188 +90,56 @@ macro(cantata_check_for_sse)
     endif(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
 endmacro(cantata_check_for_sse)
 
-SET( CANTATA_SRCS
-    gui/application.cpp
-    gui/main.cpp
-    gui/initialsettingswizard.cpp
-    gui/mainwindow.cpp
-    gui/preferencesdialog.cpp
-    gui/settings.cpp
-    gui/covers.cpp
-    gui/filesettings.cpp
-    gui/interfacesettings.cpp
-    gui/playbacksettings.cpp
-    gui/serverplaybacksettings.cpp
-    gui/serversettings.cpp
-    gui/librarypage.cpp
-    gui/albumspage.cpp
-    gui/folderpage.cpp
-    gui/playlistspage.cpp
-    gui/infopage.cpp
-    gui/trayitem.cpp
-    gui/cachesettings.cpp
-    gui/coverdialog.cpp
-    gui/stdactions.cpp
-    streams/streamspage.cpp
-    streams/streamdialog.cpp
-    streams/streamcategorydialog.cpp
-    streams/streamfetcher.cpp
-    streams/webstreams.cpp
-    models/musiclibraryitemroot.cpp
-    models/musiclibraryitemartist.cpp
-    models/musiclibraryitemalbum.cpp
-    models/musiclibrarymodel.cpp
-    models/musiclibraryproxymodel.cpp
-    models/playlistsmodel.cpp
-    models/playlistsproxymodel.cpp
-    models/playqueuemodel.cpp
-    models/playqueueproxymodel.cpp
-    models/dirviewmodel.cpp
-    models/dirviewproxymodel.cpp
-    models/dirviewitem.cpp
-    models/dirviewitemdir.cpp
-    models/streamsmodel.cpp
-    models/streamsproxymodel.cpp
-    models/albumsmodel.cpp
-    models/albumsproxymodel.cpp
-    models/proxymodel.cpp
-    models/onlineservicesmodel.cpp
+SET( CANTATA_SRCS gui/application.cpp gui/main.cpp gui/initialsettingswizard.cpp gui/mainwindow.cpp gui/preferencesdialog.cpp
+    gui/settings.cpp gui/covers.cpp gui/filesettings.cpp gui/interfacesettings.cpp gui/playbacksettings.cpp gui/serverplaybacksettings.cpp
+    gui/serversettings.cpp gui/librarypage.cpp gui/albumspage.cpp gui/folderpage.cpp gui/playlistspage.cpp gui/infopage.cpp gui/trayitem.cpp
+    gui/cachesettings.cpp gui/coverdialog.cpp gui/stdactions.cpp
+    streams/streamspage.cpp streams/streamdialog.cpp streams/streamcategorydialog.cpp streams/streamfetcher.cpp streams/webstreams.cpp
+    models/musiclibraryitemroot.cpp models/musiclibraryitemartist.cpp models/musiclibraryitemalbum.cpp models/musiclibrarymodel.cpp
+    models/musiclibraryproxymodel.cpp models/playlistsmodel.cpp models/playlistsproxymodel.cpp models/playqueuemodel.cpp
+    models/playqueueproxymodel.cpp models/dirviewmodel.cpp models/dirviewproxymodel.cpp models/dirviewitem.cpp models/dirviewitemdir.cpp
+    models/streamsmodel.cpp models/streamsproxymodel.cpp models/albumsmodel.cpp models/albumsproxymodel.cpp models/proxymodel.cpp
     models/actionmodel.cpp
-    mpd/mpdconnection.cpp
-    mpd/mpdparseutils.cpp
-    mpd/mpdstats.cpp
-    mpd/mpdstatus.cpp
-    mpd/song.cpp
-    dynamic/dynamic.cpp
-    dynamic/dynamicpage.cpp
-    dynamic/dynamicproxymodel.cpp
-    dynamic/dynamicruledialog.cpp
-    dynamic/dynamicrulesdialog.cpp
-    widgets/treeview.cpp
-    widgets/listview.cpp
-    widgets/itemview.cpp
-    widgets/autohidingsplitter.cpp
-    widgets/timeslider.cpp
-    widgets/actionlabel.cpp
-    widgets/playqueueview.cpp
-    widgets/groupedview.cpp
-    widgets/actionitemdelegate.cpp
-    widgets/textbrowser.cpp
-    widgets/coverwidget.cpp
-    widgets/volumecontrol.cpp
-    widgets/icons.cpp
-    widgets/genrecombo.cpp
-    widgets/toolbar.cpp
-    widgets/menubutton.cpp
-    widgets/toolbutton.cpp
-    widgets/wizardpage.cpp
-    widgets/headerlabel.cpp
-    lyrics/lyricspage.cpp
-    lyrics/lyricsettings.cpp
-    lyrics/ultimatelyricsprovider.cpp
-    lyrics/ultimatelyrics.cpp
-    lyrics/lyricsdialog.cpp
-    network/networkaccessmanager.cpp
-    online/onlineservicespage.cpp
-    online/onlineservice.cpp
-    online/jamendoservice.cpp
-    online/jamendosettingsdialog.cpp
-    online/magnatuneservice.cpp
-    online/magnatunesettingsdialog.cpp
-    online/onlinedevice.cpp
-)
-
+    mpd/mpdconnection.cpp mpd/mpdparseutils.cpp mpd/mpdstats.cpp mpd/mpdstatus.cpp mpd/song.cpp
+    dynamic/dynamic.cpp dynamic/dynamicpage.cpp dynamic/dynamicproxymodel.cpp dynamic/dynamicruledialog.cpp dynamic/dynamicrulesdialog.cpp
+    widgets/treeview.cpp widgets/listview.cpp widgets/itemview.cpp widgets/autohidingsplitter.cpp widgets/timeslider.cpp
+    widgets/actionlabel.cpp widgets/playqueueview.cpp widgets/groupedview.cpp widgets/actionitemdelegate.cpp widgets/textbrowser.cpp
+    widgets/coverwidget.cpp widgets/volumecontrol.cpp widgets/icons.cpp widgets/genrecombo.cpp widgets/toolbar.cpp widgets/menubutton.cpp
+    widgets/toolbutton.cpp widgets/wizardpage.cpp widgets/headerlabel.cpp
+    lyrics/lyricspage.cpp lyrics/lyricsettings.cpp lyrics/ultimatelyricsprovider.cpp lyrics/ultimatelyrics.cpp lyrics/lyricsdialog.cpp
+    network/networkaccessmanager.cpp)
 SET( CANTATA_MOC_HDRS
-    gui/initialsettingswizard.h
-    gui/mainwindow.h
-    gui/settings.h
-    gui/covers.h
-    gui/folderpage.h
-    gui/librarypage.h
-    gui/albumspage.h
-    gui/playlistspage.h
-    gui/infopage.h
-    gui/serverplaybacksettings.h
-    gui/serversettings.h
-    gui/preferencesdialog.h
-    gui/filesettings.h
-    gui/interfacesettings.h
-    gui/cachesettings.h
-    gui/trayitem.h
-    gui/coverdialog.h
-    streams/streamspage.h
-    streams/streamdialog.h
-    streams/streamcategorydialog.h
-    streams/streamfetcher.h
-    streams/webstreams.h
-    models/musiclibrarymodel.h
-    models/musiclibraryproxymodel.h
-    models/playlistsmodel.h
-    models/playlistsproxymodel.h
-    models/playqueuemodel.h
-    models/playqueueproxymodel.h
-    models/dirviewmodel.h
-    models/dirviewproxymodel.h
-    models/albumsmodel.h
-    models/streamsmodel.h
-    models/onlineservicesmodel.h
+    gui/initialsettingswizard.h gui/mainwindow.h gui/settings.h gui/covers.h gui/folderpage.h gui/librarypage.h gui/albumspage.h
+    gui/playlistspage.h gui/infopage.h gui/serverplaybacksettings.h gui/serversettings.h gui/preferencesdialog.h gui/filesettings.h
+    gui/interfacesettings.h gui/cachesettings.h gui/trayitem.h gui/coverdialog.h
+    streams/streamspage.h streams/streamdialog.h streams/streamcategorydialog.h streams/streamfetcher.h streams/webstreams.h
+    models/musiclibrarymodel.h models/musiclibraryproxymodel.h models/playlistsmodel.h models/playlistsproxymodel.h models/playqueuemodel.h
+    models/playqueueproxymodel.h models/dirviewmodel.h models/dirviewproxymodel.h models/albumsmodel.h models/streamsmodel.h
     models/actionmodel.h
-    mpd/mpdconnection.h
-    mpd/mpdstats.h
-    mpd/mpdstatus.h
-    dynamic/dynamic.h
-    dynamic/dynamicpage.h
-    dynamic/dynamicruledialog.h
-    dynamic/dynamicrulesdialog.h
-    widgets/treeview.h
-    widgets/listview.h
-    widgets/itemview.h
-    widgets/autohidingsplitter.h
-    widgets/timeslider.h
-    widgets/actionlabel.h
-    widgets/playqueueview.h
-    widgets/groupedview.h
-    widgets/actionitemdelegate.h
-    widgets/coverwidget.h
-    widgets/volumecontrol.h
-    widgets/genrecombo.h
-    widgets/toolbar.h
-    lyrics/lyricspage.h
-    lyrics/lyricsettings.h
-    lyrics/ultimatelyrics.h
-    lyrics/ultimatelyricsprovider.h
-    lyrics/lyricsdialog.h
-    network/networkaccessmanager.h
-    online/onlineservice.h
-    online/onlineservicespage.h
-    online/jamendoservice.h
-    online/magnatuneservice.h
-    online/magnatunesettingsdialog.h
-    online/onlinedevice.h
-)
-
+    mpd/mpdconnection.h mpd/mpdstats.h mpd/mpdstatus.h
+    dynamic/dynamic.h dynamic/dynamicpage.h dynamic/dynamicruledialog.h dynamic/dynamicrulesdialog.h
+    widgets/treeview.h widgets/listview.h widgets/itemview.h widgets/autohidingsplitter.h widgets/timeslider.h widgets/actionlabel.h
+    widgets/playqueueview.h widgets/groupedview.h widgets/actionitemdelegate.h widgets/coverwidget.h widgets/volumecontrol.h
+    widgets/genrecombo.h widgets/toolbar.h
+    lyrics/lyricspage.h lyrics/lyricsettings.h lyrics/ultimatelyrics.h lyrics/ultimatelyricsprovider.h lyrics/lyricsdialog.h
+    network/networkaccessmanager.h)
 SET( CANTATA_UIS
-    gui/initialsettingswizard.ui
-    gui/mainwindow.ui
-    gui/folderpage.ui
-    gui/librarypage.ui
-    gui/albumspage.ui
-    gui/playlistspage.ui
-    gui/filesettings.ui
-    gui/interfacesettings.ui
-    gui/playbacksettings.ui
-    gui/serverplaybacksettings.ui
-    gui/serversettings.ui
+    gui/initialsettingswizard.ui gui/mainwindow.ui gui/folderpage.ui gui/librarypage.ui gui/albumspage.ui gui/playlistspage.ui
+    gui/filesettings.ui gui/interfacesettings.ui gui/playbacksettings.ui gui/serverplaybacksettings.ui gui/serversettings.ui
     gui/coverdialog.ui
     streams/streamspage.ui
-    dynamic/dynamicpage.ui
-    dynamic/dynamicrule.ui
-    dynamic/dynamicrules.ui
-    lyrics/lyricspage.ui
-    lyrics/lyricsettings.ui
-    widgets/itemview.ui
-    online/onlineservicespage.ui
-)
+    dynamic/dynamicpage.ui dynamic/dynamicrule.ui dynamic/dynamicrules.ui
+    lyrics/lyricspage.ui lyrics/lyricsettings.ui
+    widgets/itemview.ui)
+
+if (ENABLE_ONLINE_SERVICES)
+    SET( CANTATA_SRCS ${CANTATA_SRCS} online/onlineservicespage.cpp online/onlineservice.cpp online/jamendoservice.cpp
+        online/jamendosettingsdialog.cpp online/magnatuneservice.cpp online/magnatunesettingsdialog.cpp online/onlinedevice.cpp
+        models/onlineservicesmodel.cpp)
+    SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} online/onlineservice.h online/onlineservicespage.h online/jamendoservice.h
+        online/magnatuneservice.h online/magnatunesettingsdialog.h online/onlinedevice.h models/onlineservicesmodel.h)
+    SET( CANTATA_UIS ${CANTATA_UIS} online/onlineservicespage.ui)
+endif (ENABLE_ONLINE_SERVICES)
 
 find_package( Cdparanoia )
 if (CDPARANOIA_FOUND) 
@@ -283,31 +159,17 @@ endif (ENABLE_OVERLAYSCROLLBARS)
 
 if (TAGLIB_FOUND)
     SET( CANTATA_SRCS ${CANTATA_SRCS}
-        tags/tageditor.cpp
-        tags/trackorganiser.cpp
-        tags/tags.cpp
-        devices/deviceoptions.cpp
-        devices/filenameschemedialog.cpp
-        http/httpserversettings.cpp
-        http/httpserver.cpp
-        http/httpsocket.cpp
-    )
-
+        tags/tageditor.cpp tags/trackorganiser.cpp tags/tags.cpp
+        devices/deviceoptions.cpp devices/filenameschemedialog.cpp
+        http/httpserversettings.cpp http/httpserver.cpp http/httpsocket.cpp)
     SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS}
-        tags/tageditor.h
-        tags/trackorganiser.h
-        http/httpserversettings.h
-        http/httpsocket.h
-        devices/filenameschemedialog.h
-        devices/device.h
-    )
-
+        tags/tageditor.h tags/trackorganiser.h
+        http/httpserversettings.h http/httpsocket.h
+        devices/filenameschemedialog.h devices/device.h)
     SET( CANTATA_UIS ${CANTATA_UIS}
         http/httpserversettings.ui
-        tags/tageditor.ui
-        tags/trackorganiser.ui
-        devices/filenameschemedialog.ui
-    )
+        tags/tageditor.ui tags/trackorganiser.ui
+        devices/filenameschemedialog.ui)
 endif (TAGLIB_FOUND)
 
 if (NOT WIN32)
@@ -320,25 +182,11 @@ endif(NOT WIN32)
 
 SET( CANTATA_RCS cantata.qrc )
 
-include_directories( ${CMAKE_SOURCE_DIR}/gui
-                     ${CMAKE_SOURCE_DIR}/mpd
-                     ${CMAKE_SOURCE_DIR}/models
-                     ${CMAKE_SOURCE_DIR}/widgets
-                     ${CMAKE_SOURCE_DIR}/lyrics
-                     ${CMAKE_SOURCE_DIR}/network
-                     ${CMAKE_SOURCE_DIR}/dbus
-                     ${CMAKE_SOURCE_DIR}/http
-                     ${CMAKE_SOURCE_DIR}/devices
-                     ${CMAKE_SOURCE_DIR}/dynamic
-                     ${CMAKE_SOURCE_DIR}/support
-                     ${CMAKE_SOURCE_DIR}/streams
-                     ${CMAKE_SOURCE_DIR}/tags
-                     ${CMAKE_SOURCE_DIR}/online
-                     ${CMAKE_SOURCE_DIR}/3rdparty
-                     ${CMAKE_SOURCE_DIR}
-                     ${CMAKE_BINARY_DIR}
-                     ${CMAKE_BINARY_DIR}/support
-)
+include_directories( ${CMAKE_SOURCE_DIR}/gui ${CMAKE_SOURCE_DIR}/mpd ${CMAKE_SOURCE_DIR}/models ${CMAKE_SOURCE_DIR}/widgets
+                     ${CMAKE_SOURCE_DIR}/lyrics ${CMAKE_SOURCE_DIR}/network ${CMAKE_SOURCE_DIR}/dbus ${CMAKE_SOURCE_DIR}/http
+                     ${CMAKE_SOURCE_DIR}/devices ${CMAKE_SOURCE_DIR}/dynamic ${CMAKE_SOURCE_DIR}/support ${CMAKE_SOURCE_DIR}/streams
+                     ${CMAKE_SOURCE_DIR}/tags ${CMAKE_SOURCE_DIR}/online ${CMAKE_SOURCE_DIR}/3rdparty ${CMAKE_SOURCE_DIR}
+                     ${CMAKE_BINARY_DIR} ${CMAKE_BINARY_DIR}/support)
 
 if (ENABLE_QT5)
     find_package(Qt5Widgets REQUIRED)
@@ -697,8 +545,11 @@ if (TAGLIB_FOUND)
             message("        - MPD HTTP stream playback")
         endif (PHONON_FOUND)
     endif (ENABLE_REMOTE_DEVICES OR PHONON_FOUND)
-    if (NOT TAGLIB_FOUND OR NOT MTP_FOUND OR (NOT CDDB_FOUND AND NOT MUSICBRAINZ5_FOUND) OR (NOT FFMPEG_FOUND AND NOT MPG123_FOUND) OR NOT PHONON_FOUND OR NOT ENABLE_REMOTE_DEVICES)
+    if (NOT TAGLIB_FOUND OR NOT MTP_FOUND OR (NOT CDDB_FOUND AND NOT MUSICBRAINZ5_FOUND) OR (NOT FFMPEG_FOUND AND NOT MPG123_FOUND) OR NOT PHONON_FOUND OR NOT ENABLE_REMOTE_DEVICES OR NOT ENABLE_ONLINE_SERVICES)
         message("      Disabled features:")
+        if (NOT ENABLE_ONLINE_SERVICES)
+            message("        - Online services (Jamendo and Magnatune)")
+        endif (NOT ENABLE_ONLINE_SERVICES)
         if (NOT PHONON_FOUND)
             message("        - MPD HTTP stream playback (phonon required)")
         endif (NOT PHONON_FOUND)
@@ -723,7 +574,7 @@ if (TAGLIB_FOUND)
         if(NOT FFMPEG_FOUND AND NOT MPG123_FOUND)
             message("        - ReplayGain calculation (taglib, and ffmpeg and/or mpg123 required)")
         endif(NOT FFMPEG_FOUND AND NOT MPG123_FOUND)
-    endif (NOT TAGLIB_FOUND OR NOT MTP_FOUND OR (NOT CDDB_FOUND AND NOT MUSICBRAINZ5_FOUND) OR (NOT FFMPEG_FOUND AND NOT MPG123_FOUND) OR NOT PHONON_FOUND OR NOT ENABLE_REMOTE_DEVICES)
+    endif (NOT TAGLIB_FOUND OR NOT MTP_FOUND OR (NOT CDDB_FOUND AND NOT MUSICBRAINZ5_FOUND) OR (NOT FFMPEG_FOUND AND NOT MPG123_FOUND) OR NOT PHONON_FOUND OR NOT ENABLE_REMOTE_DEVICES OR NOT ENABLE_ONLINE_SERVICES)
 endif (TAGLIB_FOUND)
 
 if (NOT CMAKE_SYSTEM_NAME MATCHES Linux)

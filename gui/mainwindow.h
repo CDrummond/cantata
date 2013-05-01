@@ -60,7 +60,9 @@ class PlaylistsPage;
 class DynamicPage;
 class LyricsPage;
 class StreamsPage;
+#ifdef ENABLE_ONLINE_SERVICES
 class OnlineServicesPage;
+#endif
 class InfoPage;
 #ifdef ENABLE_DEVICES_SUPPORT
 class DevicesPage;
@@ -135,7 +137,9 @@ public:
         PAGE_PLAYLISTS,
         PAGE_DYNAMIC,
         PAGE_STREAMS,
+        #ifdef ENABLE_ONLINE_SERVICES
         PAGE_ONLINE,
+        #endif
         PAGE_LYRICS,
         PAGE_INFO
         #ifdef ENABLE_DEVICES_SUPPORT
@@ -257,7 +261,11 @@ public Q_SLOTS:
     void showPlaylistsTab() { showTab(PAGE_PLAYLISTS); }
     void showDynamicTab() { showTab(PAGE_DYNAMIC); }
     void showStreamsTab() { showTab(PAGE_STREAMS); }
-    void showOnlineTab() { showTab(PAGE_ONLINE); }
+    void showOnlineTab() {
+        #ifdef ENABLE_ONLINE_SERVICES
+        showTab(PAGE_ONLINE);
+        #endif
+    }
     void showLyricsTab() { showTab(PAGE_LYRICS); }
     void showInfoTab() { showTab(PAGE_INFO); }
     void showDevicesTab() {
@@ -367,7 +375,9 @@ private:
     Action *dynamicTabAction;
     Action *lyricsTabAction;
     Action *streamsTabAction;
+    #ifdef ENABLE_ONLINE_SERVICES
     Action *onlineTabAction;
+    #endif
     #ifdef TAGLIB_FOUND
     Action *editPlayQueueTagsAction;
     #endif
@@ -393,7 +403,9 @@ private:
     DynamicPage *dynamicPage;
     LyricsPage *lyricsPage;
     StreamsPage *streamsPage;
+    #ifdef ENABLE_ONLINE_SERVICES
     OnlineServicesPage *onlinePage;
+    #endif
     InfoPage *infoPage;
     #ifdef ENABLE_DEVICES_SUPPORT
     DevicesPage *devicesPage;

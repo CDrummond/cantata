@@ -305,8 +305,10 @@ Icon Icons::variousArtistsIcon;
 Icon Icons::editIcon;
 Icon Icons::clearListIcon;
 Icon Icons::menuIcon;
+#ifdef ENABLE_ONLINE_SERVICES
 Icon Icons::jamendoIcon;
 Icon Icons::magnatuneIcon;
+#endif
 Icon Icons::filesIcon;
 Icon Icons::cancelIcon;
 Icon Icons::importIcon;
@@ -318,7 +320,9 @@ Icon Icons::foldersIcon;
 Icon Icons::playlistsIcon;
 Icon Icons::dynamicIcon;
 Icon Icons::streamsIcon;
+#ifdef ENABLE_ONLINE_SERVICES
 Icon Icons::onlineIcon;
+#endif
 Icon Icons::lyricsIcon;
 Icon Icons::infoIcon;
 #ifdef ENABLE_DEVICES_SUPPORT
@@ -418,8 +422,10 @@ void Icons::init()
     clearListIcon=Icon("edit-clear-list");
     repeatIcon=createRecolourableIcon("repeat", stdColor, highlightColor);
     shuffleIcon=createRecolourableIcon("shuffle", stdColor, highlightColor);
+    #ifdef ENABLE_ONLINE_SERVICES
     jamendoIcon=Icon("cantata-view-services-jamendo");
     magnatuneIcon=Icon("cantata-view-services-jamendo");
+    #endif
     filesIcon=Icon("document-multiple");
     cancelIcon=Icon("dialog-cancel");
     importIcon=Icon("document-import");
@@ -447,12 +453,14 @@ void Icons::init()
     if (artistIcon.isNull()) {
         artistIcon=Icon::create("artist", QList<int>() << 16 << 22 << 32 << 48 << 64 << 128);
     }
+    #ifdef ENABLE_ONLINE_SERVICES
     if (jamendoIcon.isNull()) {
         jamendoIcon=Icon::create("jamendo", constStdSizes);
     }
     if (magnatuneIcon.isNull()) {
         magnatuneIcon=Icon::create("magnatune", constStdSizes);
     }
+    #endif
     #ifndef Q_OS_WIN
     if (shortcutsIcon.isNull()) {
         shortcutsIcon=Icon("keyboard");
@@ -517,7 +525,9 @@ void Icons::initSidebarIcons()
         playlistsIcon=loadSidebarIcon("playlists", textCol, highlightedTexCol);
         dynamicIcon=loadSidebarIcon("dynamic", textCol, highlightedTexCol);
         streamsIcon=loadSidebarIcon("streams", textCol, highlightedTexCol);
+        #ifdef ENABLE_ONLINE_SERVICES
         onlineIcon=loadSidebarIcon("online", textCol, highlightedTexCol);
+        #endif
         lyricsIcon=loadSidebarIcon("lyrics", textCol, highlightedTexCol);
         infoIcon=loadSidebarIcon("info", textCol, highlightedTexCol);
         #ifdef ENABLE_DEVICES_SUPPORT
@@ -531,7 +541,9 @@ void Icons::initSidebarIcons()
         playlistsIcon=playlistIcon;
         dynamicIcon=dynamicRuleIcon;
         streamsIcon=radioStreamIcon;
+        #ifdef ENABLE_ONLINE_SERVICES
         onlineIcon=Icon("applications-internet");
+        #endif
         lyricsIcon=Icon("view-media-lyrics");
         infoIcon=Icon("dialog-information");
         #ifdef ENABLE_DEVICES_SUPPORT

@@ -59,8 +59,10 @@ namespace Icons
     extern Icon editIcon;
     extern Icon clearListIcon;
     extern Icon menuIcon;
+    #ifdef ENABLE_ONLINE_SERVICES
     extern Icon jamendoIcon;
     extern Icon magnatuneIcon;
+    #endif
     extern Icon filesIcon;
     extern Icon cancelIcon;
     extern Icon importIcon;
@@ -72,7 +74,9 @@ namespace Icons
     extern Icon playlistsIcon;
     extern Icon dynamicIcon;
     extern Icon streamsIcon;
+    #ifdef ENABLE_ONLINE_SERVICES
     extern Icon onlineIcon;
+    #endif
     extern Icon lyricsIcon;
     extern Icon infoIcon;
     #ifdef ENABLE_DEVICES_SUPPORT

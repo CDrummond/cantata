@@ -38,7 +38,9 @@
 #include "device.h"
 #include "utils.h"
 #endif
+#ifdef ENABLE_ONLINE_SERVICES
 #include "onlineservice.h"
+#endif
 
 bool MusicLibraryItemArtist::lessThan(const MusicLibraryItem *a, const MusicLibraryItem *b)
 {
@@ -127,13 +129,16 @@ const QPixmap & MusicLibraryItemArtist::cover()
             //    static_cast<Device *>(parentItem()->parentItem())->requestArtistImage(song);
             //} else
             //#endif
+            #ifdef ENABLE_ONLINE_SERVICES
             if (parentItem() && parentItem()->parentItem() && dynamic_cast<OnlineService *>(parentItem()->parentItem()) &&
                 static_cast<MusicLibraryItemRoot *>(parentItem()->parentItem())->useArtistImages()) {
                 // ONLINE: Image URL is encoded in song.name...
                 song.name=m_imageUrl;
                 song.title=parentItem()->parentItem()->data().toLower();
                 img=Covers::self()->requestImage(song);
-            } else if (parentItem() && parentItem()->parentItem() && !static_cast<MusicLibraryItemRoot *>(parentItem()->parentItem())->useArtistImages()) {
+            } else
+            #endif
+            if (parentItem() && parentItem()->parentItem() && !static_cast<MusicLibraryItemRoot *>(parentItem()->parentItem())->useArtistImages()) {
                 // Not showing artist images in this model, so dont request any!
             } else {
                 img=Covers::self()->requestImage(song);

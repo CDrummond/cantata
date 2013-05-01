@@ -47,7 +47,7 @@ bool PlayQueueProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sou
     }
 
     const QModelIndex index = sourceModel()->index(sourceRow, 0, sourceParent);
-    return matchesFilter(*static_cast<Song *>(index.internalPointer()));
+    return index.isValid() && matchesFilter(*static_cast<Song *>(index.internalPointer()));
 }
 
 QMimeData *PlayQueueProxyModel::mimeData(const QModelIndexList &indexes) const

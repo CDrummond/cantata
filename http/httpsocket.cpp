@@ -150,7 +150,7 @@ static QHostAddress getAddress(const QNetworkInterface &iface)
     return QHostAddress();
 }
 
-HttpSocket::HttpSocket(const QString &addr, quint16 p)
+HttpSocket::HttpSocket(const QString &addr, quint16 p, quint16 prevPort)
     : QTcpServer(0)
     , cfgAddress(addr)
     , terminated(false)
@@ -180,24 +180,38 @@ HttpSocket::HttpSocket(const QString &addr, quint16 p)
         }
     }
 
+    bool openedPrev=false;
+    if (0==p && 0!=prevPort) {
+        openedPrev=openPort(a, addr, prevPort);
+    }
+
+    if (!openedPrev) {
+        openPort(a, addr, p);
+    }
+    if (isListening() && ifaceAddress.isEmpty()) {
+        ifaceAddress=QLatin1String("127.0.0.1");
+    }
+}
+
+bool HttpSocket::openPort(const QHostAddress &a, const QString &addr, quint16 p)
+{
     if (listen(QHostAddress::Any, p)) {
         ifaceAddress=a.isNull() ? serverAddress().toString() : a.toString();
+        return true;
     } else {
+        bool rv=false;
         // Failed to liston on 'Any' address
         if (addr.isEmpty()) {
             // No specific address was set, so fallback to loopback address...
-            listen(QHostAddress::LocalHost, p);
+            rv=listen(QHostAddress::LocalHost, p);
             ifaceAddress=QLatin1String("127.0.0.1");
         } else {
             // Listen probably failed due to proxy, so unset and try again!
             setProxy(QNetworkProxy::NoProxy);
-            listen(QHostAddress::Any, p);
+            rv=listen(QHostAddress::Any, p);
             ifaceAddress=a.isNull() ? serverAddress().toString() : a.toString();
         }
-    }
-
-    if (isListening() && ifaceAddress.isEmpty()) {
-        ifaceAddress=QLatin1String("127.0.0.1");
+        return rv;
     }
 }
 

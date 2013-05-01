@@ -140,6 +140,7 @@ public:
     int stopFadeDuration();
     #ifdef TAGLIB_FOUND
     int httpPort();
+    int httpAllocatedPort();
     QString httpAddress();
     bool enableHttp();
     bool alwaysUseHttp();
@@ -221,6 +222,7 @@ public:
     void saveStopFadeDuration(int v);
     #ifdef TAGLIB_FOUND
     void saveHttpPort(int v);
+    void saveHttpAllocatedPort(int v);
     void saveHttpAddress(const QString &v);
     void saveEnableHttp(bool v);
     void saveAlwaysUseHttp(bool v);

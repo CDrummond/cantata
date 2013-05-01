@@ -26,18 +26,23 @@
 
 #include <QTcpServer>
 
+class QHostAddress;
+
 class HttpSocket : public QTcpServer
 {
     Q_OBJECT
 
 public:
-     HttpSocket(const QString &addr, quint16 p);
+     HttpSocket(const QString &addr, quint16 p, quint16 prevPort);
      virtual ~HttpSocket() { }
 
      void terminate();
      void incomingConnection(int socket);
      QString address() const { return ifaceAddress; }
      QString configuredAddress() { return cfgAddress; }
+
+private:
+     bool openPort(const QHostAddress &a, const QString &addr, quint16 p);
 
 private Q_SLOTS:
      void readClient();

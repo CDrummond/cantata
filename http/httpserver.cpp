@@ -66,6 +66,7 @@ bool HttpServer::readConfig()
 {
     QString addr=Settings::self()->httpAddress();
     quint16 port=Settings::self()->httpPort();
+    quint16 prevPort=Settings::self()->httpAllocatedPort();
 
     if (socket && socket->isListening() && port==socket->serverPort() && addr==socket->configuredAddress() && Settings::self()->enableHttp()) {
         return true;
@@ -84,7 +85,10 @@ bool HttpServer::readConfig()
 
     if (Settings::self()->enableHttp()) {
         thread=new QThread(0);
-        socket=new HttpSocket(addr, port);
+        socket=new HttpSocket(addr, port, prevPort);
+        if (socket->serverPort()!=port) {
+            Settings::self()->saveHttpAllocatedPort(socket->serverPort());
+        }
         socket->moveToThread(thread);
         thread->start();
         return socket->isListening();

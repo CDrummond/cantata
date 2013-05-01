@@ -73,7 +73,7 @@ public:
     QModelIndex parent(const QModelIndex &idx) const;
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
-    int columnCount(const QModelIndex &) const;
+    int columnCount(const QModelIndex &) const { return COL_COUNT; }
     QVariant data(const QModelIndex &, int) const;
     bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
     void updateCurrentSong(quint32 id);
@@ -92,8 +92,6 @@ public:
     qint32 currentSong() const { return currentSongId; }
     qint32 currentSongRow() const;
     void setState(MPDState st);
-    bool isGrouped() const { return grouped; }
-    void setGrouped(bool g);
     void update(const QList<Song> &songList);
     void setStopAfterTrack(qint32 track);
     void clearStopAfterTrack() { setStopAfterTrack(-1); }
@@ -124,7 +122,6 @@ private:
     mutable qint32 currentSongRowNum;
     StreamFetcher *fetcher;
     MPDState mpdState;
-    bool grouped;
     quint32 dropAdjust;
     bool stopAfterCurrent;
     qint32 stopAfterTrackId;

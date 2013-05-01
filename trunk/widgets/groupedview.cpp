@@ -468,6 +468,11 @@ void GroupedView::setModel(QAbstractItemModel *model)
     QTreeView::setModel(model);
     if (model) {
         connect(Covers::self(), SIGNAL(coverRetrieved(const Song &)), this, SLOT(coverRetrieved(const Song &)));
+        int columnCount=model->columnCount();
+        QHeaderView *hdr=header();
+        for (int i=1; i<columnCount; ++i) {
+            hdr->setSectionHidden(i, true);
+        }
     } else {
         disconnect(Covers::self(), SIGNAL(coverRetrieved(const Song &)), this, SLOT(coverRetrieved(const Song &)));
     }

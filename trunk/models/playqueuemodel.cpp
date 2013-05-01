@@ -111,7 +111,6 @@ PlayQueueModel::PlayQueueModel(QObject *parent)
     , currentSongId(-1)
     , currentSongRowNum(-1)
     , mpdState(MPDState_Inactive)
-    , grouped(false)
     , dropAdjust(0)
     , stopAfterCurrent(false)
     , stopAfterTrackId(-1)
@@ -175,11 +174,6 @@ QVariant PlayQueueModel::headerData(int section, Qt::Orientation orientation, in
 int PlayQueueModel::rowCount(const QModelIndex &idx) const
 {
     return idx.isValid() ? 0 : songs.size();
-}
-
-int PlayQueueModel::columnCount(const QModelIndex &) const
-{
-    return grouped ? 1 : COL_COUNT;
 }
 
 QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
@@ -674,11 +668,6 @@ void PlayQueueModel::setState(MPDState st)
             emit dataChanged(index(currentSongRowNum, 0), index(currentSongRowNum, 2));
         }
     }
-}
-
-void PlayQueueModel::setGrouped(bool g)
-{
-    grouped=g;
 }
 
 // Update playqueue with contents returned from MPD.

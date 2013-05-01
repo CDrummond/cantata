@@ -633,7 +633,6 @@ MainWindow::MainWindow(QWidget *parent)
     playQueue->tree()->installEventFilter(new DeleteKeyEventHandler(playQueue->tree(), removeFromPlayQueueAction));
     playQueue->list()->installEventFilter(new DeleteKeyEventHandler(playQueue->list(), removeFromPlayQueueAction));
 
-    playQueueModel.setGrouped(Settings::self()->playQueueGrouped());
     playQueue->setGrouped(Settings::self()->playQueueGrouped());
     playQueue->setAutoExpand(Settings::self()->playQueueAutoExpand());
     playQueue->setStartClosed(Settings::self()->playQueueStartClosed());
@@ -1396,9 +1395,8 @@ void MainWindow::updateSettings()
     playQueue->setAutoExpand(Settings::self()->playQueueAutoExpand());
     playQueue->setStartClosed(Settings::self()->playQueueStartClosed());
 
-    if (Settings::self()->playQueueGrouped()!=playQueueModel.isGrouped() ||
-        (playQueueModel.isGrouped() && (wasAutoExpand!=playQueue->isAutoExpand() || wasStartClosed!=playQueue->isStartClosed())) ) {
-        playQueueModel.setGrouped(Settings::self()->playQueueGrouped());
+    if (Settings::self()->playQueueGrouped()!=playQueue->isGrouped() ||
+        (playQueue->isGrouped() && (wasAutoExpand!=playQueue->isAutoExpand() || wasStartClosed!=playQueue->isStartClosed())) ) {
         playQueue->setGrouped(Settings::self()->playQueueGrouped());
         QModelIndex idx=playQueueProxyModel.mapFromSource(playQueueModel.index(playQueueModel.currentSongRow(), 0));
         playQueue->updateRows(idx.row(), current.key, autoScrollPlayQueue && playQueueProxyModel.isEmpty() && MPDState_Playing==MPDStatus::self()->state());
@@ -1809,7 +1807,7 @@ void MainWindow::updateCurrentSong(const Song &song)
 
 void MainWindow::scrollPlayQueue()
 {
-    if (autoScrollPlayQueue && MPDState_Playing==MPDStatus::self()->state() && !playQueueModel.isGrouped()) {
+    if (autoScrollPlayQueue && MPDState_Playing==MPDStatus::self()->state() && !playQueue->isGrouped()) {
         qint32 row=playQueueModel.currentSongRow();
         if (row>=0) {
             playQueue->scrollTo(playQueueProxyModel.mapFromSource(playQueueModel.index(row, 0)), QAbstractItemView::PositionAtCenter);

@@ -134,7 +134,7 @@ Song MagnatuneService::fixPath(const Song &orig) const
     #if QT_VERSION < 0x050000
     url.setEncodedUrl(orig.file.toLocal8Bit());
     #else
-    url=QUrl(orig.file.toLocal8Bit());
+    url=QUrl(orig.file);
     #endif
     url.setScheme("http");
     url.setHost(MB_Streaming==membership ? constStreamingHostname : constDownloadHostname);

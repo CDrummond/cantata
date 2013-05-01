@@ -439,7 +439,7 @@ bool CoverDownloader::downloadViaHttp(Job &job, JobType type)
     #if QT_VERSION < 0x050000
     u.setEncodedUrl(MPDConnection::self()->getDetails().dir.toLatin1()+QUrl::toPercentEncoding(dir, "/")+coverName.toLatin1());
     #else
-    u=QUrl(MPDConnection::self()->getDetails().dir.toLatin1()+QUrl::toPercentEncoding(dir, "/")+coverName.toLatin1());
+    u=QUrl(MPDConnection::self()->getDetails().dir+dir+coverName.toLatin1());
     #endif
 
     job.type=type;
@@ -577,7 +577,7 @@ void CoverDownloader::lastFmCallFinished()
             #if QT_VERSION < 0x050000
             u.setEncodedUrl(url.toLatin1());
             #else
-            u=QUrl(url.toLatin1());
+            u=QUrl(url);
             #endif
             QNetworkReply *j=manager->get(QNetworkRequest(u));
             connect(j, SIGNAL(finished()), this, SLOT(jobFinished()));

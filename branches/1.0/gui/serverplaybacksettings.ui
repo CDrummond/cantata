@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ServerPlaybackSettings</class>
+ <widget class="QWidget" name="ServerPlaybackSettings">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>431</width>
+    <height>311</height>
+   </rect>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <property name="margin">
+    <number>0</number>
+   </property>
+   <item row="0" column="0">
+    <widget class="BuddyLabel" name="messageIcon">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QLabel" name="messageLabel">
+     <property name="text">
+      <string>&lt;i&gt;&lt;b&gt;Not Connected.&lt;/b&gt;&lt;br/&gt;The entries below cannot be modified, as Cantata is not connected to MPD.&lt;/i&gt;</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0" colspan="2">
+    <layout class="QFormLayout" name="formLayout_2">
+     <property name="fieldGrowthPolicy">
+      <enum>QFormLayout::ExpandingFieldsGrow</enum>
+     </property>
+     <item row="0" column="0">
+      <widget class="BuddyLabel" name="crossfadingLabel">
+       <property name="text">
+        <string>Crossfading:</string>
+       </property>
+       <property name="buddy">
+        <cstring>crossfading</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="SpinBox" name="crossfading">
+       <property name="suffix">
+        <string> seconds</string>
+       </property>
+       <property name="maximum">
+        <number>20</number>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="BuddyLabel" name="replayGainLabel">
+       <property name="text">
+        <string>Replay gain:</string>
+       </property>
+       <property name="buddy">
+        <cstring>replayGain</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QComboBox" name="replayGain"/>
+     </item>
+     <item row="2" column="0">
+      <widget class="BuddyLabel" name="streamUrlLabel">
+       <property name="text">
+        <string>Output HTTP stream:</string>
+       </property>
+       <property name="buddy">
+        <cstring>streamUrl</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QLineEdit" name="streamUrl"/>
+     </item>
+    </layout>
+   </item>
+   <item row="2" column="0" colspan="2">
+    <widget class="QLabel" name="streamUrlInfoLabel">
+     <property name="text">
+      <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; Output HTTP stream is only of use if you have MPD configured to output to a HTTP stream, and you wish Cantata to be able to play that stream.&lt;/i&gt;</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0" colspan="2">
+    <widget class="QGroupBox" name="outputFrame">
+     <property name="title">
+      <string>Output</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QListWidget" name="view">
+        <property name="alternatingRowColors">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>BuddyLabel</class>
+   <extends>QLabel</extends>
+   <header>buddylabel.h</header>
+  </customwidget>
+  <customwidget>
+   <class>SpinBox</class>
+   <extends>QSpinBox</extends>
+   <header>spinbox.h</header>
+  </customwidget>
+ </customwidgets>
+ <tabstops>
+  <tabstop>crossfading</tabstop>
+  <tabstop>replayGain</tabstop>
+  <tabstop>view</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>

@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>FilenameSchemeDialog</class>
+ <widget class="QWidget" name="FilenameSchemeDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>378</width>
+    <height>155</height>
+   </rect>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <property name="margin">
+    <number>0</number>
+   </property>
+   <item row="0" column="0" colspan="5">
+    <widget class="LineEdit" name="pattern"/>
+   </item>
+   <item row="1" column="0">
+    <widget class="QLabel" name="label_album_example">
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>21</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>Example:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0" colspan="5">
+    <widget class="LineEdit" name="example">
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0" colspan="5">
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="UrlLabel" name="help">
+       <property name="text">
+        <string>About filename schemes</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="4" column="0">
+    <widget class="QPushButton" name="albumArtist">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>Album Artist</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="1">
+    <widget class="QPushButton" name="albumTitle">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>Album Title</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="2">
+    <widget class="QPushButton" name="trackArtist">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>Track Artist</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="3">
+    <widget class="QPushButton" name="trackTitle">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>Track Title</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="4">
+    <widget class="QPushButton" name="trackArtistAndTitle">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>Track Title (+Artist)</string>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="0">
+    <widget class="QPushButton" name="trackNo">
+     <property name="text">
+      <string>Track #</string>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="1">
+    <widget class="QPushButton" name="cdNo">
+     <property name="text">
+      <string>CD #</string>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="3">
+    <widget class="QPushButton" name="genre">
+     <property name="text">
+      <string>Genre</string>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="1" colspan="2">
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>0</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="5" column="2">
+    <widget class="QPushButton" name="year">
+     <property name="text">
+      <string>Year</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>UrlLabel</class>
+   <extends>QLabel</extends>
+   <header>urllabel.h</header>
+  </customwidget>
+  <customwidget>
+   <class>LineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>lineedit.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

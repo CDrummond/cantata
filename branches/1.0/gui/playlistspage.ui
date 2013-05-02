@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>PlaylistsPage</class>
+ <widget class="QWidget" name="PlaylistsPage">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>253</width>
+    <height>152</height>
+   </rect>
+  </property>
+  <layout class="QVBoxLayout" name="vlayout">
+   <property name="margin">
+    <number>0</number>
+   </property>
+   <item>
+    <widget class="ItemView" name="view"/>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="hlayout">
+     <property name="margin">
+      <number>0</number>
+     </property>
+     <property name="spacing">
+      <number>0</number>
+     </property>
+     <item>
+      <widget class="ToolButton" name="libraryUpdate"/>
+     </item>
+     <item>
+      <widget class="GenreCombo" name="genreCombo"/>
+     </item>
+     <item>
+      <widget class="MenuButton" name="menuButton"/>
+     </item>
+     <item>
+      <widget class="ToolButton" name="replacePlayQueue"/>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>ItemView</class>
+   <extends>QTreeView</extends>
+   <header>itemview.h</header>
+  </customwidget>
+  <customwidget>
+   <class>LineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>lineedit.h</header>
+  </customwidget>
+  <customwidget>
+   <class>GenreCombo</class>
+   <extends>QComboBox</extends>
+   <header>genrecombo.h</header>
+  </customwidget>
+  <customwidget>
+   <class>MenuButton</class>
+   <extends>QToolButton</extends>
+   <header>menubutton.h</header>
+  </customwidget>
+  <customwidget>
+   <class>ToolButton</class>
+   <extends>QToolButton</extends>
+   <header>toolbutton.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

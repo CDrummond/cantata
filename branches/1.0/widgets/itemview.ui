@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ItemView</class>
+ <widget class="QWidget" name="ItemView">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>262</width>
+    <height>146</height>
+   </rect>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <property name="margin">
+    <number>0</number>
+   </property>
+   <item row="0" column="0">
+    <widget class="QStackedWidget" name="stackedWidget">
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+     <widget class="QWidget" name="page">
+      <layout class="QVBoxLayout" name="treeLayout">
+       <property name="margin">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="LineEdit" name="treeSearch">
+         <property name="toolTip">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="TreeView" name="treeView"/>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="page_2">
+      <layout class="QGridLayout" name="listLayout">
+       <property name="margin">
+        <number>0</number>
+       </property>
+       <item row="0" column="0">
+        <widget class="ToolButton" name="backButton"/>
+       </item>
+       <item row="0" column="1">
+        <widget class="LineEdit" name="listSearch">
+         <property name="toolTip">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0" colspan="2">
+        <widget class="ListView" name="listView"/>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>ToolButton</class>
+   <extends>QToolButton</extends>
+   <header>toolbutton.h</header>
+  </customwidget>
+  <customwidget>
+   <class>LineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>lineedit.h</header>
+  </customwidget>
+  <customwidget>
+   <class>TreeView</class>
+   <extends>QTreeView</extends>
+   <header>treeview.h</header>
+  </customwidget>
+  <customwidget>
+   <class>ListView</class>
+   <extends>QListView</extends>
+   <header>listview.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

@@ -1,0 +1,17 @@
+<svg height="800" preserveAspectRatio="xMidYMid meet" viewBox="-21 -21 42 42" width="800" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" zoomAndPan="magnify">
+<defs>
+<radialGradient cx="0" cy="0" fx="0" fy="0" gradientUnits="userSpaceOnUse" id="grad" r="20.075">
+<stop offset="0" stop-color="#ff0"/>
+<stop offset=".75" stop-color="#ff0"/>
+<stop offset=".95" stop-color="#ee0"/>
+<stop offset="1" stop-color="#e8e800"/>
+</radialGradient>
+</defs>
+<path d="m20,0a20,20 0 1,0 -40,0 20,20 0 1,0 40,0" fill="url(#grad)" stroke="#000" stroke-width=".15" transform="matrix(1.05118,0,0,1.04762,.07375,-.02595)"/>
+<g id="right" transform="matrix(1.05118,0,0,1.04762,.07375,-.02595)">
+<path d="m-3.5-7a2.5,4 0 1,0 -5,0 2.5,4 0 1,0 5,0"/>
+<path d="m10.6,2.7a4,4 0 0,0 4,3" fill="none" stroke="#000" stroke-linecap="round" stroke-width=".5"/>
+</g>
+<use height="42" transform="matrix(-1,0,0,1,.14749,0)" width="42" xlink:href="#right"/>
+<path d="m-12.5404,5.2121a14.1909,14.1429 0 0,0 25.2282,0 13.6653,13.619 0 0,1 -25.2282,0" fill="none" stroke="#000" stroke-width=".787"/>
+</svg>

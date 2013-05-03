@@ -1891,15 +1891,16 @@ void MainWindow::updateStatus(MPDStatus * const status)
             volumeControl->setToolTip(i18n("Volume Disabled"));
             volumeControl->setValue(0);
         } else {
+            int unmuteVolume=-1;
             if (0==volume) {
-                int unmuteVolume=MPDConnection::self()->unmuteVolume();
+                unmuteVolume=MPDConnection::self()->unmuteVolume();
                 if (unmuteVolume>0) {
                     volume=unmuteVolume;
                 }
             }
             volumeButton->setEnabled(true);
-            volumeButton->setToolTip(i18n("Volume %1%").arg(volume));
-            volumeControl->setToolTip(i18n("Volume %1%").arg(volume));
+            volumeButton->setToolTip(unmuteVolume>0 ? i18n("Volume %1% (Muted)").arg(volume) : i18n("Volume %1%").arg(volume));
+            volumeControl->setToolTip(volumeButton->toolTip());
             volumeControl->setValue(volume);
         }
         muteAction->setEnabled(volumeButton->isEnabled());

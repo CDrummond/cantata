@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>TagEditor</class>
+ <widget class="QWidget" name="TagEditor">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>327</width>
+    <height>252</height>
+   </rect>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="margin">
+    <number>0</number>
+   </property>
+   <item>
+  <layout class="QFormLayout" name="formLayout">
+   <item row="0" column="0">
+    <widget class="StateLabel" name="trackNameLabel">
+     <property name="text">
+      <string>Track:</string>
+     </property>
+     <property name="buddy">
+      <cstring>trackName</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="ComboBox" name="trackName"/>
+   </item>
+   <item row="1" column="0">
+    <widget class="StateLabel" name="titleLabel">
+     <property name="text">
+      <string>Title:</string>
+     </property>
+     <property name="buddy">
+      <cstring>title</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="LineEdit" name="title"/>
+   </item>
+   <item row="2" column="0">
+    <widget class="StateLabel" name="artistLabel">
+     <property name="text">
+      <string>Artist:</string>
+     </property>
+     <property name="buddy">
+      <cstring>artist</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="CompletionCombo" name="artist"/>
+   </item>
+   <item row="3" column="0">
+    <widget class="StateLabel" name="albumArtistLabel">
+     <property name="text">
+      <string>Album artist:</string>
+     </property>
+     <property name="buddy">
+      <cstring>albumArtist</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="1">
+    <widget class="CompletionCombo" name="albumArtist"/>
+   </item>
+   <item row="4" column="0">
+    <widget class="StateLabel" name="albumLabel">
+     <property name="text">
+      <string>Album:</string>
+     </property>
+     <property name="buddy">
+      <cstring>album</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="1">
+    <widget class="CompletionCombo" name="album"/>
+   </item>
+   <item row="5" column="0">
+    <widget class="StateLabel" name="trackLabel">
+     <property name="text">
+      <string>Track number:</string>
+     </property>
+     <property name="buddy">
+      <cstring>track</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="1">
+    <widget class="SpinBox" name="track"/>
+   </item>
+   <item row="6" column="0">
+    <widget class="StateLabel" name="discLabel">
+     <property name="text">
+      <string>Disc number:</string>
+     </property>
+     <property name="buddy">
+      <cstring>disc</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="1">
+    <widget class="SpinBox" name="disc"/>
+   </item>
+   <item row="7" column="0">
+    <widget class="StateLabel" name="genreLabel">
+     <property name="text">
+      <string>Genre:</string>
+     </property>
+     <property name="buddy">
+      <cstring>genre</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="7" column="1">
+    <widget class="CompletionCombo" name="genre"/>
+   </item>
+   <item row="8" column="0">
+    <widget class="StateLabel" name="yearLabel">
+     <property name="text">
+      <string>Year:</string>
+     </property>
+     <property name="buddy">
+      <cstring>year</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="8" column="1">
+    <widget class="SpinBox" name="year"/>
+   </item>
+  </layout>
+  </item>
+  <item>
+   <widget class="QProgressBar" name="progress"/>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>LineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>lineedit.h</header>
+  </customwidget>
+  <customwidget>
+   <class>CompletionCombo</class>
+   <extends>QComboBox</extends>
+   <header>completioncombo.h</header>
+  </customwidget>
+  <customwidget>
+   <class>ComboBox</class>
+   <extends>QComboBox</extends>
+   <header>combobox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>SpinBox</class>
+   <extends>SpinBox</extends>
+   <header>spinbox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>StateLabel</class>
+   <extends>QLabel</extends>
+   <header>statelabel.h</header>
+  </customwidget>
+ </customwidgets>
+ <tabstops>
+  <tabstop>trackName</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>

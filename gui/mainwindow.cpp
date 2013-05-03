@@ -1075,7 +1075,9 @@ void MainWindow::playQueueItemsSelected(bool s)
     copyTrackInfoAction->setEnabled(s && haveItems);
     cropPlayQueueAction->setEnabled(playQueue->haveUnSelectedItems() && haveItems);
     shufflePlayQueueAction->setEnabled(haveItems);
+    #ifdef TAGLIB_FOUND
     editPlayQueueTagsAction->setEnabled(s && haveItems);
+    #endif
     addPlayQueueToStoredPlaylistAction->setEnabled(haveItems);
     stopAfterTrackAction->setEnabled(singleSelection);
 }

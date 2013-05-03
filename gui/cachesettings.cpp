@@ -263,8 +263,10 @@ void CacheSettings::deleteAll()
     }
 
     if (!toDelete.isEmpty()) {
-        if (1==toDelete.count() && MessageBox::No==MessageBox::warningYesNo(this, i18n("Delete all '%1' items?").arg(toDelete.at(0)->name()), i18n("Delete Cache Items"))) {
-            return;
+        if (1==toDelete.count()) {
+            if (MessageBox::Yes==MessageBox::warningYesNo(this, i18n("Delete all '%1' items?").arg(toDelete.at(0)->name()), i18n("Delete Cache Items"))) {
+                toDelete.first()->clean();
+            }
         } else if (toDelete.count()>1) {
             QString items;
             foreach (CacheItem *i, toDelete) {

@@ -4,6 +4,7 @@
 2. Connect 'Set Cover' signal for windows builds.
 3. Fix usage of timers in threads.
 4. Fix non-taglib build.
+5. Fix loading of SVGs in windows build.
 
 1.0.1
 -----

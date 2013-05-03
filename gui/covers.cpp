@@ -736,11 +736,9 @@ QHash<QNetworkReply *, CoverDownloader::Job>::Iterator CoverDownloader::findJob(
 }
 
 CoverLocator::CoverLocator()
+    : timer(0)
 {
     thread=new QThread();
-    timer=new QTimer(this);
-    timer->setSingleShot(true);
-    connect(timer, SIGNAL(timeout()), this, SLOT(locate()), Qt::QueuedConnection);
     moveToThread(thread);
     thread->start();
 }
@@ -751,10 +749,20 @@ void CoverLocator::stop()
     thread=0;
 }
 
+void CoverLocator::startTimer(int interval)
+{
+    if (!timer) {
+        timer=new QTimer(this);
+        timer->setSingleShot(true);
+        connect(timer, SIGNAL(timeout()), this, SLOT(locate()), Qt::QueuedConnection);
+    }
+    timer->start(interval);
+}
+
 void CoverLocator::locate(const Song &s)
 {
     queue.append(s);
-    timer->start(0);
+    startTimer(0);
 }
 
 // To improve responsiveness of views, we only process a max of 5 images per even loop iteration.
@@ -781,7 +789,7 @@ void CoverLocator::locate()
     }
 
     if (!queue.isEmpty()) {
-        timer->start(0);
+        startTimer(0);
     }
 }
 
@@ -1080,6 +1088,8 @@ void Covers::located(const QList<LocatedCover> &covers)
             } else {
                 gotAlbumCover(cvr.song, cvr.img, cvr.fileName);
             }
+        } else {
+            emit download(cvr.song);
         }
     }
     retrieved-=covers.size();

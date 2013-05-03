@@ -633,9 +633,7 @@ void FancyTabWidget::InsertTab(QWidget* tab, const QIcon& icon, const QString& l
   stack_->insertWidget(0, tab);
   items_.prepend(Item(icon, label, tt, enabled));
   setMinimumWidth(128);
-  Mode m=mode_;
-  mode_=Mode_None;
-  SetMode(m);
+  Recreate();
 }
 
 void FancyTabWidget::RemoveTab(QWidget *tab)
@@ -644,9 +642,7 @@ void FancyTabWidget::RemoveTab(QWidget *tab)
   if (idx>-1 && idx<items_.count()) {
     stack_->removeWidget(tab);
     items_.takeAt(idx);
-    Mode m=mode_;
-    mode_=Mode_None;
-    SetMode(m);
+    Recreate();
   }
 }
 
@@ -887,9 +883,7 @@ void FancyTabWidget::SetMode(Mode mode) {
 void FancyTabWidget::ToggleTab(int tab, bool show) {
     if (tab>=0 && tab<items_.count()) {
         items_[tab].enabled_=show;
-        Mode m=mode_;
-        mode_=Mode_None;
-        SetMode(m);
+        Recreate();
         emit TabToggled(tab);
     }
 }
@@ -967,6 +961,9 @@ void FancyTabWidget::contextMenuEvent(QContextMenuEvent* e) {
     connect(iconOnlyAct, SIGNAL(triggered()), this, SLOT(SetMode()));
     modeMenu->addSeparator();
     modeMenu->addAction(iconOnlyAct);
+    foreach (QAction *a, otherStyleActions) {
+      modeMenu->addAction(a);
+    }
     modeAct->setMenu(modeMenu);
     modeAct->setData(-1);
     menu_->addAction(modeAct);
@@ -1105,4 +1102,18 @@ int FancyTabWidget::TabToIndex(int tab) const
     }
 
     return 0;
+}
+
+void FancyTabWidget::SetIcon(int index, const QIcon &icon)
+{
+    if (index>0 && index<items_.count()) {
+        items_[index].tab_icon_=icon;
+    }
+}
+
+void FancyTabWidget::Recreate()
+{
+    Mode m=mode_;
+    mode_=Mode_None;
+    SetMode(m);
 }

@@ -5,6 +5,7 @@
 2. Add "(Muted)" to volume button tooltip if volume is currently muted.
 3. If cover name contains %artist%, then replace with the album artist of the
    current song. Likewise for %album%
+4. Add option (to sidebar context menu) to toggle usage of monochrome icons.
 
 1.0.2
 -----

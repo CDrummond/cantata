@@ -257,15 +257,6 @@ QString Settings::iconTheme()
 }
 #endif
 
-bool Settings::monoSidebarIcons()
-{
-    #ifdef Q_OS_WIN
-    return GET_BOOL("monoSidebarIcons", false);
-    #else
-    return GET_BOOL("monoSidebarIcons", true);
-    #endif
-}
-
 bool Settings::showPlaylist()
 {
     return GET_BOOL("showPlaylist", true);
@@ -658,6 +649,15 @@ bool Settings::forceSingleClick()
 bool Settings::startHidden()
 {
     return GET_BOOL("startHidden", false);
+}
+
+bool Settings::monoSidebarIcons()
+{
+    #ifdef Q_OS_WIN
+    return GET_BOOL("monoSidebarIcons", false);
+    #else
+    return GET_BOOL("monoSidebarIcons", true);
+    #endif
 }
 
 QString Settings::amazonAccessKey()
@@ -1060,6 +1060,11 @@ void Settings::saveForceSingleClick(bool v)
 void Settings::saveStartHidden(bool v)
 {
     SET_VALUE_MOD(startHidden);
+}
+
+void Settings::saveMonoSidebarIcons(bool v)
+{
+    SET_VALUE_MOD(monoSidebarIcons);
 }
 
 void Settings::save(bool force)

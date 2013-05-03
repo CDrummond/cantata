@@ -43,7 +43,7 @@ static const int constMaxRecurseLevel=4;
 
 static void calculate(const QString &d, const QStringList &types, int &items, int &space, int level=0)
 {
-    if (level<constMaxRecurseLevel) {
+    if (!d.isEmpty() && level<constMaxRecurseLevel) {
         QDir dir(d);
         if (dir.exists()) {
             QFileInfoList files=dir.entryInfoList(types, QDir::Files|QDir::NoDotAndDotDot);
@@ -62,7 +62,7 @@ static void calculate(const QString &d, const QStringList &types, int &items, in
 
 static void deleteAll(const QString &d, const QStringList &types, int level=0)
 {
-    if (level<constMaxRecurseLevel) {
+    if (!d.isEmpty() && level<constMaxRecurseLevel) {
         QDir dir(d);
         if (dir.exists()) {
             QFileInfoList dirs=dir.entryInfoList(QDir::Dirs|QDir::NoDotAndDotDot);

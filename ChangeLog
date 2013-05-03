@@ -7,6 +7,7 @@
    current song. Likewise for %album%
 4. Add option (to sidebar context menu) to toggle usage of monochrome icons.
 5. Fix loading of SVGs in windows build.
+6. Fix cover downloading.
 
 1.0.2
 -----

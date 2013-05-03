@@ -1,4 +1,9 @@
-﻿1.0.0
+﻿1.0.1
+-----
+1. Dont display Jamendo and Magnatune cache settings in config dialog if these
+   have been disabled at build time.
+
+1.0.0
 -----
   1. Give tooltips to view actions.
   2. Add 'Set Album Artist from Artist' action to tag editor.

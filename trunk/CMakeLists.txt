@@ -107,7 +107,8 @@ SET( CANTATA_SRCS gui/application.cpp gui/main.cpp gui/initialsettingswizard.cpp
     widgets/coverwidget.cpp widgets/volumecontrol.cpp widgets/icons.cpp widgets/genrecombo.cpp widgets/toolbar.cpp widgets/menubutton.cpp
     widgets/toolbutton.cpp widgets/wizardpage.cpp widgets/headerlabel.cpp
     lyrics/lyricspage.cpp lyrics/lyricsettings.cpp lyrics/ultimatelyricsprovider.cpp lyrics/ultimatelyrics.cpp lyrics/lyricsdialog.cpp
-    network/networkaccessmanager.cpp)
+    network/networkaccessmanager.cpp
+    devices/deviceoptions.cpp)
 SET( CANTATA_MOC_HDRS
     gui/initialsettingswizard.h gui/mainwindow.h gui/settings.h gui/covers.h gui/folderpage.h gui/librarypage.h gui/albumspage.h
     gui/playlistspage.h gui/infopage.h gui/serverplaybacksettings.h gui/serversettings.h gui/preferencesdialog.h gui/filesettings.h
@@ -160,7 +161,7 @@ endif (ENABLE_OVERLAYSCROLLBARS)
 if (TAGLIB_FOUND)
     SET( CANTATA_SRCS ${CANTATA_SRCS}
         tags/tageditor.cpp tags/trackorganiser.cpp tags/tags.cpp
-        devices/deviceoptions.cpp devices/filenameschemedialog.cpp
+        devices/filenameschemedialog.cpp
         http/httpserversettings.cpp http/httpserver.cpp http/httpsocket.cpp)
     SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS}
         tags/tageditor.h tags/trackorganiser.h

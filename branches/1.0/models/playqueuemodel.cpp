@@ -52,6 +52,7 @@ const QLatin1String PlayQueueModel::constMoveMimeType("cantata/move");
 const QLatin1String PlayQueueModel::constFileNameMimeType("cantata/filename");
 const QLatin1String PlayQueueModel::constUriMimeType("text/uri-list");
 
+#ifdef TAGLIB_FOUND
 static bool checkExtension(const QString &file)
 {
     static QSet<QString> constExtensions=QSet<QString>()
@@ -64,6 +65,7 @@ static bool checkExtension(const QString &file)
     int pos=file.lastIndexOf('.');
     return pos>1 ? constExtensions.contains(file.mid(pos+1).toLower()) : false;
 }
+#endif
 
 void PlayQueueModel::encode(QMimeData &mimeData, const QString &mime, const QStringList &values)
 {

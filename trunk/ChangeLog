@@ -12,6 +12,7 @@
 1. Show artist name as caption for cover dialog when setting artist images.
 2. Connect 'Set Cover' signal for windows builds.
 3. Fix usage of timers in threads.
+4. Fix non-taglib build.
 
 1.0.1
 -----

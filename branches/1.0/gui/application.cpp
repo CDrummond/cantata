@@ -183,6 +183,8 @@ void Application::message(const QString &msg)
     if (!msg.isEmpty()) {
         load(msg.split("\n"));
     }
+    #else
+    Q_UNUSED(msg)
     #endif
     MainWindow *mw=qobject_cast<MainWindow *>(activationWindow());
     if (mw) {

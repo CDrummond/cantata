@@ -1498,9 +1498,9 @@ void MainWindow::showServerInfo()
                             i18n("Server Information"));
 }
 
-#ifdef PHONON_FOUND
 void MainWindow::toggleStream(bool s)
 {
+    #ifdef PHONON_FOUND
     MPDStatus * const status = MPDStatus::self();
     phononStreamEnabled = s;
     if (!s){
@@ -1528,8 +1528,10 @@ void MainWindow::toggleStream(bool s)
             phononStream->setCurrentSource(Settings::self()->streamUrl());
         }
     }
+    #else
+    Q_UNUSED(s)
+    #endif
 }
-#endif
 
 void MainWindow::enableStopActions(bool enable)
 {
@@ -2655,9 +2657,9 @@ void MainWindow::collapseAll()
     }
 }
 
-#ifdef TAGLIB_FOUND
 void MainWindow::editTags()
 {
+    #ifdef TAGLIB_FOUND
     QList<Song> songs;
     if (libraryPage->isVisible()) {
         songs=libraryPage->selectedSongs();
@@ -2672,19 +2674,22 @@ void MainWindow::editTags()
     }
     #endif
     editTags(songs, false);
+    #endif
 }
 
 void MainWindow::editPlayQueueTags()
 {
+    #ifdef TAGLIB_FOUND
     editTags(playQueue->selectedSongs(), true);
+    #endif
 }
 
 void MainWindow::editTags(const QList<Song> &songs, bool isPlayQueue)
 {
+    #ifdef TAGLIB_FOUND
     if (songs.isEmpty() || TagEditor::instanceCount() || !canShowDialog()) {
         return;
     }
-
     QSet<QString> artists;
     QSet<QString> albumArtists;
     QSet<QString> albums;
@@ -2708,10 +2713,15 @@ void MainWindow::editTags(const QList<Song> &songs, bool isPlayQueue)
                                 #endif
                                 );
     dlg->show();
+    #else
+    Q_UNUSED(songs)
+    Q_UNUSED(isPlayQueue)
+    #endif
 }
 
 void MainWindow::organiseFiles()
 {
+    #ifdef TAGLIB_FOUND
     if (TrackOrganiser::instanceCount() || !canShowDialog()) {
         return;
     }
@@ -2744,12 +2754,12 @@ void MainWindow::organiseFiles()
         TrackOrganiser *dlg=new TrackOrganiser(this);
         dlg->show(songs, udi);
     }
+    #endif
 }
-#endif
 
-#ifdef ENABLE_DEVICES_SUPPORT
 void MainWindow::addToDevice(const QString &udi)
 {
+    #ifdef ENABLE_DEVICES_SUPPORT
     if (libraryPage->isVisible()) {
         libraryPage->addSelectionToDevice(udi);
     } else if (albumsPage->isVisible()) {
@@ -2757,10 +2767,14 @@ void MainWindow::addToDevice(const QString &udi)
     } else if (folderPage->isVisible()) {
         folderPage->addSelectionToDevice(udi);
     }
+    #else
+    Q_UNUSED(udi)
+    #endif
 }
 
 void MainWindow::deleteSongs()
 {
+    #ifdef ENABLE_DEVICES_SUPPORT
     if (!StdActions::self()->deleteSongsAction->isVisible()) {
         return;
     }
@@ -2773,31 +2787,41 @@ void MainWindow::deleteSongs()
     } else if (devicesPage->isVisible()) {
         devicesPage->deleteSongs();
     }
+    #endif
 }
 
 void MainWindow::copyToDevice(const QString &from, const QString &to, const QList<Song> &songs)
 {
+    #ifdef ENABLE_DEVICES_SUPPORT
     if (songs.isEmpty() || ActionDialog::instanceCount() || !canShowDialog()) {
         return;
     }
     ActionDialog *dlg=new ActionDialog(this);
     dlg->copy(from, to, songs);
+    #else
+    Q_UNUSED(from)
+    Q_UNUSED(to)
+    Q_UNUSED(songs)
+    #endif
 }
 
 void MainWindow::deleteSongs(const QString &from, const QList<Song> &songs)
 {
+    #ifdef ENABLE_DEVICES_SUPPORT
     if (songs.isEmpty() || ActionDialog::instanceCount() || !canShowDialog()) {
         return;
     }
-
     ActionDialog *dlg=new ActionDialog(this);
     dlg->remove(from, songs);
+    #else
+    Q_UNUSED(from)
+    Q_UNUSED(songs)
+    #endif
 }
-#endif
 
-#ifdef ENABLE_REPLAYGAIN_SUPPORT
 void MainWindow::replayGain()
 {
+    #ifdef ENABLE_REPLAYGAIN_SUPPORT
     if (RgDialog::instanceCount() || !canShowDialog()) {
         return;
     }
@@ -2830,8 +2854,8 @@ void MainWindow::replayGain()
         RgDialog *dlg=new RgDialog(this);
         dlg->show(songs, udi);
     }
+    #endif
 }
-#endif
 
 void MainWindow::setCover()
 {

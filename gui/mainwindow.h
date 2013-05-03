@@ -274,6 +274,7 @@ public Q_SLOTS:
         #endif
     }
     void toggleSplitterAutoHide();
+    void toggleMonoIcons();
     void locateTrack();
     void locateArtist(const QString &artist);
     #ifdef TAGLIB_FOUND
@@ -390,6 +391,7 @@ private:
     Action *collapseAllAction;
     Action *serverInfoAction;
     QAction *autoHideSplitterAction;
+    QAction *monoIconsAction;
     TrayItem *trayItem;
     QPoint lastPos;
     QSize expandedSize;

@@ -222,6 +222,10 @@ public:
     void addMenuAction(QAction *a) { removeMenuAction(a); otherActions.append(a); }
     void removeMenuAction(QAction *a) { otherActions.removeAll(a); }
     QSize tabSize() const;
+    void addStyleAction(QAction *a) { removeMenuAction(a); otherStyleActions.append(a); }
+    void removeStyleAction(QAction *a) { otherStyleActions.removeAll(a); }
+    void SetIcon(int index, const QIcon &icon);
+    void Recreate();
 
 public slots:
     void SetCurrentIndex(int index);
@@ -269,6 +273,7 @@ private:
     bool drawBorder_;
 
     QList<QAction *> otherActions;
+    QList<QAction *> otherStyleActions;
 };
 
 } // namespace Internal

@@ -171,6 +171,7 @@ public:
     #endif
     bool forceSingleClick();
     bool startHidden();
+    bool monoSidebarIcons();
     QString amazonAccessKey();
     QString amazonSecretAccessKey();
 
@@ -253,13 +254,13 @@ public:
     #endif
     void saveForceSingleClick(bool v);
     void saveStartHidden(bool v);
+    void saveMonoSidebarIcons(bool v);
     void save(bool force=false);
     #ifdef ENABLE_KDE_SUPPORT
     bool openWallet();
     #else
     QString iconTheme();
     #endif
-    bool monoSidebarIcons();
     int id3v2Version();
 
     bool firstRun() const { return isFirstRun; }

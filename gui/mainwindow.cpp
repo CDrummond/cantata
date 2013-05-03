@@ -449,6 +449,12 @@ MainWindow::MainWindow(QWidget *parent)
     tabWidget->addMenuAction(autoHideSplitterAction);
     connect(autoHideSplitterAction, SIGNAL(toggled(bool)), this, SLOT(toggleSplitterAutoHide()));
 
+    monoIconsAction=new QAction(i18n("Monochrome Icons"), this);
+    monoIconsAction->setCheckable(true);
+    monoIconsAction->setChecked(Settings::self()->monoSidebarIcons());
+    tabWidget->addStyleAction(monoIconsAction);
+    connect(monoIconsAction, SIGNAL(toggled(bool)), this, SLOT(toggleMonoIcons()));
+
     if (playQueueInSidebar) {
         tabToggled(PAGE_PLAYQUEUE);
     } else {
@@ -2484,6 +2490,42 @@ void MainWindow::toggleSplitterAutoHide()
     bool ah=autoHideSplitterAction->isChecked() && !tabWidget->isEnabled(PAGE_PLAYQUEUE);
     splitter->setAutoHideEnabled(ah);
     splitter->setAutohidable(0, ah);
+}
+
+void MainWindow::toggleMonoIcons()
+{
+    bool mono=monoIconsAction->isChecked();
+    if (mono!=Settings::self()->monoSidebarIcons()) {
+        Settings::self()->saveMonoSidebarIcons(mono);
+        Icons::initSidebarIcons();
+        showPlayQueueAction->setIcon(Icons::playqueueIcon);
+        tabWidget->SetIcon(PAGE_PLAYQUEUE, showPlayQueueAction->icon());
+        libraryTabAction->setIcon(Icons::artistsIcon);
+        tabWidget->SetIcon(PAGE_LIBRARY, libraryTabAction->icon());
+        albumsTabAction->setIcon(Icons::albumsIcon);
+        tabWidget->SetIcon(PAGE_ALBUMS, albumsTabAction->icon());
+        foldersTabAction->setIcon(Icons::foldersIcon);
+        tabWidget->SetIcon(PAGE_FOLDERS, foldersTabAction->icon());
+        playlistsTabAction->setIcon(Icons::playlistsIcon);
+        tabWidget->SetIcon(PAGE_PLAYLISTS, playlistsTabAction->icon());
+        dynamicTabAction->setIcon(Icons::dynamicIcon);
+        tabWidget->SetIcon(PAGE_DYNAMIC, dynamicTabAction->icon());
+        streamsTabAction->setIcon(Icons::streamsIcon);
+        tabWidget->SetIcon(PAGE_STREAMS, streamsTabAction->icon());
+        #ifdef ENABLE_ONLINE_SERVICES
+        onlineTabAction->setIcon(Icons::onlineIcon);
+        tabWidget->SetIcon(PAGE_ONLINE, onlineTabAction->icon());
+        #endif
+        lyricsTabAction->setIcon(Icons::lyricsIcon);
+        tabWidget->SetIcon(PAGE_LYRICS, lyricsTabAction->icon());
+        infoTabAction->setIcon(Icons::infoIcon);
+        tabWidget->SetIcon(PAGE_INFO, infoTabAction->icon());
+        #ifdef ENABLE_DEVICES_SUPPORT
+        devicesTabAction->setIcon(Icons::devicesIcon);
+        tabWidget->SetIcon(PAGE_DEVICES, devicesTabAction->icon());
+        #endif
+        tabWidget->Recreate();
+    }
 }
 
 void MainWindow::locateTrack()

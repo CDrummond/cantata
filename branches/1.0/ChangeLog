@@ -3,6 +3,7 @@
 1. Dont display Jamendo and Magnatune cache settings in config dialog if these
    have been disabled at build time.
 2. Correctly calculate size of cache folders when folder does not exist.
+3. Fix deletion of cache when single item selected.
 
 1.0.0
 -----

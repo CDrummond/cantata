@@ -75,6 +75,9 @@ private Q_SLOTS:
     void update(int itemCount, int space);
 
 private:
+    void setStatus(const QString &str=QString());
+
+private:
     CacheItemCounter *counter;
     bool empty;
 };

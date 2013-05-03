@@ -3,6 +3,10 @@
 1. Display 'Calculating...', and 'Deleting...' in cache settings page if
    relevant.
 
+1.0.2
+-----
+1. Show artist name as caption for cover dialog when setting artist images.
+
 1.0.1
 -----
 1. Dont display Jamendo and Magnatune cache settings in config dialog if these

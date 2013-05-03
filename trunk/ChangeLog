@@ -1,5 +1,7 @@
 ﻿1.1.0
 -----
+1. Display 'Calculating...', and 'Deleting...' in cache settings page if
+   relevant.
 
 1.0.1
 -----

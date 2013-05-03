@@ -135,16 +135,32 @@ void CacheItem::update(int itemCount, int space)
     setText(1, QString::number(itemCount));
     setText(2, Utils::formatByteSize(space));
     empty=0==itemCount;
+    setStatus();
     emit updated();
+}
+
+void CacheItem::setStatus(const QString &str)
+{
+    QFont f(font(0));
+
+    if (!str.isEmpty()) {
+        f.setItalic(true);
+        setText(1, str);
+        setText(2, str);
+    }
+    setFont(1, f);
+    setFont(2, f);
 }
 
 void CacheItem::clean()
 {
+    setStatus(i18n("Deleting..."));
     emit deleteAll();
 }
 
 void CacheItem::calculate()
 {
+    setStatus(i18n("Calculating..."));
     emit getCount();
 }
 

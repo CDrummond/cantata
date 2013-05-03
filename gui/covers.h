@@ -121,18 +121,17 @@ public:
     ~CoverLocator() { }
 
     void stop();
-    void locate(const Song &s);
 
 Q_SIGNALS:
     void located(const QList<LocatedCover> &covers);
 
 public Q_SLOTS:
+    void locate(const Song &s);
     void locate();
 
 private:
     QThread *thread;
     QTimer *timer;
-    QMutex mutex;
     QList<Song> queue;
 };
 
@@ -193,6 +192,7 @@ public:
 
 Q_SIGNALS:
     void download(const Song &s);
+    void locate(const Song &s);
     void cover(const Song &song, const QImage &img, const QString &file);
     void coverUpdated(const Song &song, const QImage &img, const QString &file);
     void artistImage(const Song &song, const QImage &img, const QString &file);

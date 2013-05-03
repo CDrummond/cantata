@@ -738,10 +738,10 @@ QHash<QNetworkReply *, CoverDownloader::Job>::Iterator CoverDownloader::findJob(
 CoverLocator::CoverLocator()
 {
     thread=new QThread();
-    timer=new QTimer(thread);
+    timer=new QTimer(this);
     timer->setSingleShot(true);
-    moveToThread(thread);
     connect(timer, SIGNAL(timeout()), this, SLOT(locate()), Qt::QueuedConnection);
+    moveToThread(thread);
     thread->start();
 }
 
@@ -753,10 +753,8 @@ void CoverLocator::stop()
 
 void CoverLocator::locate(const Song &s)
 {
-    mutex.lock();
     queue.append(s);
-    timer->start(5);
-    mutex.unlock();
+    timer->start(0);
 }
 
 // To improve responsiveness of views, we only process a max of 5 images per even loop iteration.
@@ -767,11 +765,9 @@ static const int constMaxPerLoopIteration=5;
 void CoverLocator::locate()
 {
     QList<Song> toDo;
-    mutex.lock();
     for (int i=0; i<constMaxPerLoopIteration && !queue.isEmpty(); ++i) {
         toDo.append(queue.takeFirst());
     }
-    mutex.unlock();
     if (toDo.isEmpty()) {
         return;
     }
@@ -784,11 +780,9 @@ void CoverLocator::locate()
         emit located(covers);
     }
 
-    mutex.lock();
     if (!queue.isEmpty()) {
         timer->start(0);
     }
-    mutex.unlock();
 }
 
 Covers::Covers()
@@ -804,6 +798,7 @@ Covers::Covers()
     connect(downloader, SIGNAL(artistImage(Song,QImage,QString)), this, SLOT(artistImageDownloaded(Song,QImage,QString)), Qt::QueuedConnection);
     connect(downloader, SIGNAL(cover(Song,QImage,QString)), this, SLOT(coverDownloaded(Song,QImage,QString)), Qt::QueuedConnection);
     connect(locator, SIGNAL(located(QList<LocatedCover>)), this, SLOT(located(QList<LocatedCover>)), Qt::QueuedConnection);
+    connect(this, SIGNAL(locate(Song)), locator, SLOT(locate(Song)), Qt::QueuedConnection);
 }
 
 void Covers::stop()
@@ -1064,7 +1059,7 @@ Covers::Image Covers::locateImage(const Song &song)
 Covers::Image Covers::requestImage(const Song &song)
 {
     if (retrieved>=constMaxPerLoopIteration) {
-        locator->locate(song);
+        emit locate(song);
         return Covers::Image();
     }
 

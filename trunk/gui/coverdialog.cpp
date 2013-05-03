@@ -484,7 +484,7 @@ void CoverDialog::show(const Song &s, const Covers::Image &current)
         return;
     }
     if (isArtist) {
-        setCaption(song.artist);
+        setCaption(song.albumartist);
     } else {
         setCaption(i18nc("Album by Artist", "%1 by %2").arg(song.album).arg(song.albumArtist()));
     }

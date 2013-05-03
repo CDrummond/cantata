@@ -1,4 +1,8 @@
-﻿1.0.1
+﻿1.0.2
+-----
+1. Show artist name as caption for cover dialog when setting artist images.
+
+1.0.1
 -----
 1. Dont display Jamendo and Magnatune cache settings in config dialog if these
    have been disabled at build time.

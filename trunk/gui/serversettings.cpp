@@ -88,7 +88,8 @@ ServerSettings::ServerSettings(QWidget *p)
                                      "use a per-user instance of the dynamzier to facilitate dynamic playlists.</i>"));
     #endif
 
-    coverName->setToolTip(i18n("Filename (without extension) to save downloaded covers as.\nIf left blank 'cover' will be used."));
+    coverName->setToolTip(i18n("<p>Filename (without extension) to save downloaded covers as.<br/>If left blank 'cover' will be used.<br/><br/>"
+                               "<i>%artist% will be replaced with album artist of the current song, and %album% will be replaced with the album name.</i></p>"));
     coverNameLabel->setToolTip(coverName->toolTip());
     coverName->setValidator(new CoverNameValidator(this));
 }

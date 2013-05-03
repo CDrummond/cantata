@@ -3,6 +3,8 @@
 1. Display 'Calculating...', and 'Deleting...' in cache settings page if
    relevant.
 2. Add "(Muted)" to volume button tooltip if volume is currently muted.
+3. If cover name contains %artist%, then replace with the album artist of the
+   current song. Likewise for %album%
 
 1.0.2
 -----

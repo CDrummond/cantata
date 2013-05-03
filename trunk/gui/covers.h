@@ -130,6 +130,9 @@ public Q_SLOTS:
     void locate();
 
 private:
+    void startTimer(int interval);
+
+private:
     QThread *thread;
     QTimer *timer;
     QList<Song> queue;

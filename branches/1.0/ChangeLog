@@ -5,6 +5,7 @@
 3. Fix usage of timers in threads.
 4. Fix non-taglib build.
 5. Fix loading of SVGs in windows build.
+6. Fix cover downloading.
 
 1.0.1
 -----

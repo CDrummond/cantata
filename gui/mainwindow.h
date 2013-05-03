@@ -215,9 +215,7 @@ public Q_SLOTS:
     void showAboutDialog();
     #endif
     void showServerInfo();
-    #ifdef PHONON_FOUND
     void toggleStream(bool s);
-    #endif
     void stopPlayback();
     void stopImmediately();
     void stopAfterCurrentTrack();
@@ -277,20 +275,14 @@ public Q_SLOTS:
     void toggleMonoIcons();
     void locateTrack();
     void locateArtist(const QString &artist);
-    #ifdef TAGLIB_FOUND
     void editTags();
     void editPlayQueueTags();
     void organiseFiles();
-    #endif
-    #ifdef ENABLE_DEVICES_SUPPORT
     void addToDevice(const QString &udi);
     void deleteSongs();
     void copyToDevice(const QString &from, const QString &to, const QList<Song> &songs);
     void deleteSongs(const QString &from, const QList<Song> &songs);
-    #endif
-    #ifdef ENABLE_REPLAYGAIN_SUPPORT
     void replayGain();
-    #endif
     void setCover();
     void goBack();
     void focusSearch();

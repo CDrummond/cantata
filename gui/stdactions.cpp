@@ -75,7 +75,7 @@ StdActions::StdActions()
     copyToDeviceAction->setMenu(DevicesModel::self()->menu());
     deleteSongsAction = ActionCollection::get()->createAction("deletesongs", i18n("Delete Songs"), "edit-delete");
     #endif
-    setCoverAction = ActionCollection::get()->createAction("setcover", i18n("Set Cover"));
+    setCoverAction = ActionCollection::get()->createAction("setcover", i18n("Set Image"));
     refreshAction = ActionCollection::get()->createAction("refresh", i18n("Refresh Database"), "view-refresh");
     backAction = ActionCollection::get()->createAction("back", i18n("Back"), "go-previous");
     removeAction = ActionCollection::get()->createAction("removeitems", i18n("Remove"), "list-remove");

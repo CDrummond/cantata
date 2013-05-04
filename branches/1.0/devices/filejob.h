@@ -30,7 +30,7 @@
 #include "deviceoptions.h"
 
 class QTemporaryFile;
-class QThread;
+class Thread;
 class FileJob;
 
 class FileScheduler : public QObject
@@ -43,7 +43,7 @@ public:
     void addJob(FileJob *job);
     void stop();
 private:
-    QThread *thread;
+    Thread *thread;
 };
 
 class FileJob : public QObject

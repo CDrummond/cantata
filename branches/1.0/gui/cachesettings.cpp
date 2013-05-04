@@ -30,11 +30,11 @@
 #include "utils.h"
 #include "messagebox.h"
 #include "config.h"
+#include "thread.h"
 #include <QLabel>
 #include <QPushButton>
 #include <QStyle>
 #include <QGridLayout>
-#include <QThread>
 #include <QFileInfo>
 #include <QDir>
 #include <QList>
@@ -85,11 +85,11 @@ static void deleteAll(const QString &d, const QStringList &types, int level=0)
     }
 }
 
-CacheItemCounter::CacheItemCounter(const QString &d, const QStringList &t)
+CacheItemCounter::CacheItemCounter(const QString &name, const QString &d, const QStringList &t)
     : dir(d)
     , types(t)
 {
-    thread=new QThread();
+    thread=new Thread(name+" CacheCleaner");
     moveToThread(thread);
     thread->start();
 }
@@ -97,7 +97,7 @@ CacheItemCounter::CacheItemCounter(const QString &d, const QStringList &t)
 CacheItemCounter::~CacheItemCounter()
 {
     if (thread) {
-        Utils::stopThread(thread);
+        thread->stop();
     }
 }
 
@@ -117,7 +117,7 @@ void CacheItemCounter::deleteAll()
 
 CacheItem::CacheItem(const QString &title, const QString &d, const QStringList &t, QTreeWidget *p)
     : QTreeWidgetItem(p, QStringList() << title)
-    , counter(new CacheItemCounter(d, t))
+    , counter(new CacheItemCounter(title, d, t))
     , empty(true)
 {
     connect(this, SIGNAL(getCount()), counter, SLOT(getCount()), Qt::QueuedConnection);

@@ -39,7 +39,7 @@
 #include "localize.h"
 #include "filejob.h"
 #include "settings.h"
-#include <QThread>
+#include "thread.h"
 #include <QTimer>
 #include <QDir>
 #include <QTemporaryFile>
@@ -87,7 +87,7 @@ MtpConnection::MtpConnection(MtpDevice *p)
     size=0;
     used=0;
     LIBMTP_Init();
-    thread=new QThread();
+    thread=new Thread(metaObject()->className());
     moveToThread(thread);
     thread->start();
 }
@@ -95,7 +95,7 @@ MtpConnection::MtpConnection(MtpDevice *p)
 MtpConnection::~MtpConnection()
 {
     disconnectFromDevice(false);
-    Utils::stopThread(thread);
+    thread->stop();
 }
 
 MusicLibraryItemRoot * MtpConnection::takeLibrary()

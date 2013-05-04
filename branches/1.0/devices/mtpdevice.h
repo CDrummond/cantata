@@ -34,7 +34,7 @@
 #include <libmtp.h>
 
 class MusicLibraryItemRoot;
-class QThread;
+class Thread;
 class MtpDevice;
 class QTemporaryFile;
 
@@ -123,7 +123,7 @@ private:
     void destroyData();
 
 private:
-    QThread *thread;
+    Thread *thread;
     LIBMTP_mtpdevice_t *device;
     QMap<uint32_t, Folder> folderMap;
     MusicLibraryItemRoot *library;

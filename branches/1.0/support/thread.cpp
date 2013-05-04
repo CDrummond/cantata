@@ -21,59 +21,42 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef JOB_CONTROLLER
-#define JOB_CONTROLLER
-
-#include <QObject>
-
-class Thread;
-
-class Job : public QObject
-{
-    Q_OBJECT
-public:
-    Job();
-    virtual ~Job();
-
-    virtual void requestAbort() { abortRequested=true; }
-    void start();
-    void stop();
-    void setFinished(bool f);
-    bool success() { return finished; }
-
-private Q_SLOTS:
-    virtual void run() =0;
-
-Q_SIGNALS:
-    void exec();
-    void progress(int);
-    void done();
-
-protected:
-    bool abortRequested;
-    bool finished;
-private:
-    Thread *thread;
-};
-
-class JobController : public QObject
-{
-    Q_OBJECT
-public:
-    static JobController * self();
-    JobController() { }
-
-    void add(Job *job);
-    void finishedWith(Job *job);
-    void startJobs();
-    void cancel();
-
-private Q_SLOTS:
-    void jobDone();
-
-private:
-    QList<Job *> active;
-    QList<Job *> jobs;
-};
-
+#include "thread.h"
+//#include <QDebug>
+#ifdef ENABLE_KDE_SUPPORT
+#include <KDE/KGlobal>
+K_GLOBAL_STATIC(ThreadCleaner, instance)
 #endif
+
+ThreadCleaner * ThreadCleaner::self()
+{
+    #ifdef ENABLE_KDE_SUPPORT
+    return instance;
+    #else
+    static ThreadCleaner *instance=0;
+    if(!instance) {
+        instance=new ThreadCleaner;
+    }
+    return instance;
+    #endif
+}
+
+void ThreadCleaner::threadFinished()
+{
+    QThread *thread=qobject_cast<QThread *>(sender());
+    if (thread) {
+        thread->deleteLater();
+    }
+}
+
+Thread::Thread(const QString &name, QObject *p)
+    : QThread(p)
+{
+    setObjectName(name);
+    connect(this, SIGNAL(finished()), ThreadCleaner::self(), SLOT(threadFinished()));
+}
+
+Thread::~Thread()
+{
+//    qWarning() << objectName() << "destroyed";
+}

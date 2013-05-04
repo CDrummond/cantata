@@ -29,6 +29,7 @@
 #include "settings.h"
 #include "config.h"
 #include "deviceoptions.h"
+#include "thread.h"
 #ifdef TAGLIB_FOUND
 #include "tags.h"
 #endif
@@ -50,7 +51,6 @@
 #include <QXmlStreamReader>
 #include <QDomDocument>
 #include <QDomElement>
-#include <QThread>
 #include <QTimer>
 
 #ifdef ENABLE_KDE_SUPPORT
@@ -362,7 +362,7 @@ CoverDownloader::CoverDownloader()
 {
     manager=new NetworkAccessManager(this);
     #ifndef ENABLE_KDE_SUPPORT // KIO is not thread safe!!!
-    thread=new QThread();
+    thread=new Thread(metaObject()->className());
     moveToThread(thread);
     thread->start();
     #endif
@@ -371,8 +371,7 @@ CoverDownloader::CoverDownloader()
 void CoverDownloader::stop()
 {
     #ifndef ENABLE_KDE_SUPPORT
-    Utils::stopThread(thread);
-    thread=0;
+    thread->stop();
     #endif
 }
 
@@ -738,15 +737,14 @@ QHash<QNetworkReply *, CoverDownloader::Job>::Iterator CoverDownloader::findJob(
 CoverLocator::CoverLocator()
     : timer(0)
 {
-    thread=new QThread();
+    thread=new Thread(metaObject()->className());
     moveToThread(thread);
     thread->start();
 }
 
 void CoverLocator::stop()
 {
-    Utils::stopThread(thread);
-    thread=0;
+    thread->stop();
 }
 
 void CoverLocator::startTimer(int interval)

@@ -6,6 +6,8 @@
 4. Fix non-taglib build.
 5. Fix loading of SVGs in windows build.
 6. Fix cover downloading.
+7. Fix deletion of threads.
+8. Enable online services for windows builds.
 
 1.0.1
 -----

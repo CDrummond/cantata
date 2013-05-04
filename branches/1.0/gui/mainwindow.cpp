@@ -27,7 +27,6 @@
 #include <QSet>
 #include <QString>
 #include <QTimer>
-#include <QThread>
 #include <QClipboard>
 #include <cstdlib>
 #ifdef ENABLE_KDE_SUPPORT

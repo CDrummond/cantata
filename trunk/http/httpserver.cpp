@@ -23,14 +23,13 @@
 
 #include "httpserver.h"
 #include "httpsocket.h"
-#include "utils.h"
 #include "tags.h"
 #include "settings.h"
+#include "thread.h"
 #include <QUrl>
 #if QT_VERSION >= 0x050000
 #include <QUrlQuery>
 #endif
-#include <QThread>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KGlobal>
 K_GLOBAL_STATIC(HttpServer, instance)
@@ -57,7 +56,7 @@ void HttpServer::stop()
     }
 
     if (thread) {
-        Utils::stopThread(thread);
+        thread->stop();
         thread=0;
     }
 }
@@ -78,13 +77,12 @@ bool HttpServer::readConfig()
     }
 
     if (thread) {
-        thread->quit();
-        thread->deleteLater();
+        thread->stop();
         thread=0;
     }
 
     if (Settings::self()->enableHttp()) {
-        thread=new QThread(0);
+        thread=new Thread("HttpServer");
         socket=new HttpSocket(addr, port, prevPort);
         if (socket->serverPort()!=port) {
             Settings::self()->saveHttpAllocatedPort(socket->serverPort());

@@ -31,7 +31,7 @@
 #include "musiclibraryitemroot.h"
 #include <QStringList>
 
-class QThread;
+class Thread;
 
 struct FileOnlySong : public Song
 {
@@ -74,7 +74,7 @@ private:
     void scanFolder(MusicLibraryItemRoot *library, const QString &topLevel, const QString &f, QSet<FileOnlySong> &existing, int level);
 
 private:
-    QThread *thread;
+    Thread *thread;
     bool stopRequested;
     int count;
     int lastUpdate;

@@ -26,8 +26,8 @@
 #include "device.h"
 #include "lyricspage.h"
 #include "covers.h"
+#include "thread.h"
 #include <QFile>
-#include <QThread>
 #include <QTimer>
 #include <QTemporaryFile>
 
@@ -57,7 +57,7 @@ FileScheduler::FileScheduler()
 void FileScheduler::addJob(FileJob *job)
 {
     if (!thread) {
-        thread=new QThread();
+        thread=new Thread(metaObject()->className());
         moveToThread(thread);
         thread->start();
     }
@@ -67,8 +67,7 @@ void FileScheduler::addJob(FileJob *job)
 void FileScheduler::stop()
 {
     if (thread) {
-        Utils::stopThread(thread);
-        thread=0;
+        thread->stop();
     }
 }
 

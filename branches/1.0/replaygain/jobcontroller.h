@@ -24,9 +24,11 @@
 #ifndef JOB_CONTROLLER
 #define JOB_CONTROLLER
 
-#include <QThread>
+#include <QObject>
 
-class Job : public QThread
+class Thread;
+
+class Job : public QObject
 {
     Q_OBJECT
 public:
@@ -51,7 +53,7 @@ protected:
     bool abortRequested;
     bool finished;
 private:
-    QThread *thread;
+    Thread *thread;
 };
 
 class JobController : public QObject

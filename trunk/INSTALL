@@ -59,5 +59,5 @@ The following options may be passed to CMake:
 
     -DENABLE_ONLINE_SERVICES=ON
         Enable support for Jamendo and Magnatune online services.
-        Default: ON (Linux) OFF (Windows)
+        Default: ON
 

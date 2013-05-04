@@ -38,12 +38,12 @@
 #include "actiondialog.h"
 #include "localize.h"
 #include "covers.h"
+#include "thread.h"
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
 #include <QTextStream>
 #include <QTimer>
-#include <QThread>
 #include <time.h>
 
 const QLatin1String FsDevice::constCantataCacheFile("/.cache");
@@ -67,7 +67,7 @@ MusicScanner::MusicScanner()
     , count(0)
     , lastUpdate(0)
 {
-    thread=new QThread();
+    thread=new Thread(metaObject()->className());
     moveToThread(thread);
     thread->start();
 }
@@ -140,7 +140,7 @@ void MusicScanner::saveCache(const QString &cache, MusicLibraryItemRoot *lib)
 void MusicScanner::stop()
 {
     stopRequested=true;
-    Utils::stopThread(thread);
+    thread->stop();
     thread=0;
 }
 

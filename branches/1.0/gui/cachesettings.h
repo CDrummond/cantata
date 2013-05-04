@@ -30,14 +30,14 @@
 #include <QTreeWidget>
 
 class QPushButton;
-class QThread;
+class Thread;
 
 class CacheItemCounter : public QObject
 {
     Q_OBJECT
 
 public:
-    CacheItemCounter(const QString &d, const QStringList &t);
+    CacheItemCounter(const QString &name, const QString &d, const QStringList &t);
     ~CacheItemCounter();
 
 Q_SIGNALS:
@@ -50,7 +50,7 @@ public Q_SLOTS:
 private:
     QString dir;
     QStringList types;
-    QThread *thread;
+    Thread *thread;
 };
 
 class CacheItem : public QObject, public QTreeWidgetItem

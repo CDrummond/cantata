@@ -29,7 +29,7 @@
 #include "song.h"
 
 class HttpSocket;
-class QThread;
+class Thread;
 class QUrl;
 
 class HttpServer
@@ -51,7 +51,7 @@ public:
     Song decodeUrl(const QString &file) const;
 
 private:
-    QThread *thread;
+    Thread *thread;
     HttpSocket *socket;
 };
 

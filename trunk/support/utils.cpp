@@ -238,12 +238,6 @@ void Utils::msleep(int msecs)
     Thread::msleep(msecs);
 }
 
-void Utils::stopThread(QThread *thread)
-{
-    thread->quit();
-    thread->connect(thread, SIGNAL(finished()), thread, SLOT(deleteLater()));
-}
-
 #ifndef ENABLE_KDE_SUPPORT
 // Copied from KDE... START
 #include <QLocale>

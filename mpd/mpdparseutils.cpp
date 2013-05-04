@@ -379,6 +379,9 @@ MusicLibraryItemRoot * MPDParseUtils::parseLibraryItems(const QByteArray &data)
         if (i == lines.size() - 1 || lines.at(i + 1).startsWith("file:") || lines.at(i + 1).startsWith("playlist:")) {
             Song currentSong = parseSong(currentItem, false);
             currentItem.clear();
+            if (currentSong.file.isEmpty()) {
+                continue;
+            }
 
             if (Song::Playlist==currentSong.type) {
                 if (songItem && Utils::getDir(songItem->file())==Utils::getDir(currentSong.file)) {

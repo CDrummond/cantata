@@ -22,7 +22,7 @@
  */
 
 #include "jobcontroller.h"
-#include "utils.h"
+#include "thread.h"
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KGlobal>
 K_GLOBAL_STATIC(JobController, instance)
@@ -45,7 +45,7 @@ Job::~Job()
 void Job::start()
 {
     if (!thread) {
-        thread=new QThread();
+        thread=new Thread(metaObject()->className());
         moveToThread(thread);
         thread->start();
         connect(this, SIGNAL(exec()), this, SLOT(run()), Qt::QueuedConnection);
@@ -57,7 +57,7 @@ void Job::stop()
 {
     requestAbort();
     if (thread) {
-        Utils::stopThread(thread);
+        thread->stop();
         thread=0;
     }
     deleteLater();

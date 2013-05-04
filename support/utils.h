@@ -35,7 +35,6 @@
 #endif
 
 class QString;
-class QThread;
 
 namespace Utils
 {
@@ -56,7 +55,6 @@ namespace Utils
     extern bool createDir(const QString &dir, const QString &base, const char *groupName="users");
     extern void msleep(int msecs);
     inline void sleep() { msleep(100); }
-    extern void stopThread(QThread *thread);
 
     #ifdef ENABLE_KDE_SUPPORT
     inline QString findExe(const QString &appname, const QString &pathstr=QString()) { return KStandardDirs::findExe(appname, pathstr); }

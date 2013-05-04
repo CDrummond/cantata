@@ -44,11 +44,10 @@
 #include <musicbrainz5/ArtistCredit.h>
 #include <musicbrainz5/Artist.h>
 #include <musicbrainz5/NameCredit.h>
-#include <QThread>
 #include <QList>
 #include <QRegExp>
 #include "config.h"
-#include "utils.h"
+#include "thread.h"
 #include "localize.h"
 #include <fcntl.h>
 #include <unistd.h>
@@ -137,14 +136,14 @@ static QString artistFromCreditList(MusicBrainz5::CArtistCredit *artistCredit )
 MusicBrainz::MusicBrainz(const QString &device)
     : dev(device)
 {
-    thread=new QThread();
+    thread=new Thread(metaObject()->className());
     moveToThread(thread);
     thread->start();
 }
 
 MusicBrainz::~MusicBrainz()
 {
-    Utils::stopThread(thread);
+    thread->stop();
 }
 
 void MusicBrainz::readDisc()

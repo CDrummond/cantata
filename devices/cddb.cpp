@@ -29,10 +29,9 @@
 #include "networkproxyfactory.h"
 #endif
 #include "localize.h"
-#include "utils.h"
+#include "thread.h"
 #include <QNetworkProxy>
 #include <QSet>
-#include <QThread>
 #include <cddb/cddb.h>
 #include <fcntl.h>
 #include <unistd.h>
@@ -57,14 +56,14 @@ Cddb::Cddb(const QString &device)
     : dev(device)
     , disc(0)
 {
-    thread=new QThread();
+    thread=new Thread(metaObject()->className());
     moveToThread(thread);
     thread->start();
 }
 
 Cddb::~Cddb()
 {
-    Utils::stopThread(thread);
+    thread->stop();
     if (disc) {
         cddb_disc_destroy(disc);
     }

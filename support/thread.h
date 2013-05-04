@@ -21,59 +21,35 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef JOB_CONTROLLER
-#define JOB_CONTROLLER
+#ifndef THREAD_H
+#define THREAD_H
 
-#include <QObject>
+#include <QThread>
 
-class Thread;
-
-class Job : public QObject
+// ThreadCleaner *needs* to resde in the GUI thread. When a 'Thread' is created it will connect
+// its finished signal to threadFinished(), this then calls deleteLater() to ensure that the
+// thread is finished before it is deleted - and is deleted in the gui thread.
+class ThreadCleaner : public QObject
 {
     Q_OBJECT
 public:
-    Job();
-    virtual ~Job();
-
-    virtual void requestAbort() { abortRequested=true; }
-    void start();
-    void stop();
-    void setFinished(bool f);
-    bool success() { return finished; }
-
-private Q_SLOTS:
-    virtual void run() =0;
-
-Q_SIGNALS:
-    void exec();
-    void progress(int);
-    void done();
-
-protected:
-    bool abortRequested;
-    bool finished;
-private:
-    Thread *thread;
+    static ThreadCleaner * self();
+    ThreadCleaner() { }
+    ~ThreadCleaner() { }
+public Q_SLOTS:
+    void threadFinished();
 };
 
-class JobController : public QObject
+class Thread : public QThread
 {
     Q_OBJECT
 public:
-    static JobController * self();
-    JobController() { }
+    Thread(const QString &name, QObject *p=0);
+    virtual ~Thread();
 
-    void add(Job *job);
-    void finishedWith(Job *job);
-    void startJobs();
-    void cancel();
-
-private Q_SLOTS:
-    void jobDone();
-
-private:
-    QList<Job *> active;
-    QList<Job *> jobs;
+public Q_SLOTS:
+    void stop() { quit(); }
 };
 
 #endif
+

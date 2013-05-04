@@ -29,6 +29,7 @@
 #include "mpdparseutils.h"
 #include "covers.h"
 #include "qtiocompressor/qtiocompressor.h"
+#include "thread.h"
 #include <QFile>
 #include <QXmlStreamReader>
 
@@ -45,10 +46,18 @@ OnlineMusicLoader::OnlineMusicLoader(const QUrl &src)
     , stopRequested(false)
     , lastProg(-1)
 {
-    moveToThread(this);
+    connect(this, SIGNAL(load()), this, SLOT(doLoad()));
+    thread=new Thread(metaObject()->className());
+    moveToThread(thread);
+    thread->start();
 }
 
-void OnlineMusicLoader::run()
+void OnlineMusicLoader::start()
+{
+    emit load();
+}
+
+void OnlineMusicLoader::doLoad()
 {
     if (library) {
         delete library;
@@ -62,17 +71,13 @@ void OnlineMusicLoader::run()
         downloadJob=network->get(source);
         connect(downloadJob, SIGNAL(finished()), SLOT(downloadFinished()));
         connect(downloadJob, SIGNAL(downloadProgress(qint64,qint64)), SLOT(downloadProgress(qint64,qint64)));
-        exec();
     }
 }
 
 void OnlineMusicLoader::stop()
 {
-    if (downloadJob) {
-        quit();
-    }
     stopRequested=true;
-    Utils::stopThread(this);
+    thread->stop();
 }
 
 MusicLibraryItemRoot * OnlineMusicLoader::takeLibrary()
@@ -143,7 +148,6 @@ void OnlineMusicLoader::downloadFinished()
     } else {
         emit error(i18n("Failed to download"));
     }
-    quit();
 }
 
 void OnlineMusicLoader::downloadProgress(qint64 bytesReceived, qint64 bytesTotal)
@@ -287,6 +291,7 @@ void OnlineService::loaderError(const QString &msg)
 {
     lProgress=0;
     setStatusMessage(msg);
+    stopLoader();
 }
 
 void OnlineService::loaderstatus(const QString &msg, int prog)

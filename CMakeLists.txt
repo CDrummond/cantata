@@ -31,14 +31,7 @@ OPTION(ENABLE_MPG123 "Enable mpg123 libraries (required for replaygain calculati
 OPTION(ENABLE_SPEEXDSP "Enable SpeexDSP libraries (used to speed-up replaygain calculation)" ON)
 OPTION(ENABLE_UDISKS2 "Build UDisks2 backend, and NOT UDisks, for Qt builds" OFF)
 OPTION(ENABLE_OVERLAYSCROLLBARS "Enable support for overlay style scrollbars when using QGtkStyle (Linux only)" OFF)
-
-if (WIN32)
-    OPTION(ENABLE_ONLINE_SERVICES "Enable support for online services (Jamendo and Magantune)" OFF)
-else (WIN32)
-    OPTION(ENABLE_ONLINE_SERVICES "Enable support for online services (Jamendo and Magantune)" ON)
-endif (WIN32)
-
-#ifdef ENABLE_ONLINE_SERVICES
+OPTION(ENABLE_ONLINE_SERVICES "Enable support for online services (Jamendo and Magantune)" ON)
 
 if (ENABLE_QT5)
     set(ENABLE_PHONON FALSE)

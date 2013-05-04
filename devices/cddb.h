@@ -42,7 +42,7 @@ struct CdAlbum {
 };
 
 #ifdef CDDB_FOUND
-class QThread;
+class Thread;
 typedef struct cddb_disc_s cddb_disc_t;
 
 class Cddb : public QObject
@@ -67,7 +67,7 @@ private:
     void readDisc();
 
 private:
-    QThread *thread;
+    Thread *thread;
     QString dev;
     cddb_disc_t *disc;
     CdAlbum initial;

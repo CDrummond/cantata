@@ -30,21 +30,21 @@
 #include "localize.h"
 #include <QObject>
 #include <QUrl>
-#include <QThread>
 
+class Thread;
 class NetworkAccessManager;
 class OnlineServicesModel;
 class QNetworkReply;
 class QXmlStreamReader;
 
-class OnlineMusicLoader : public QThread, public MusicLibraryProgressMonitor
+class OnlineMusicLoader : public QObject, public MusicLibraryProgressMonitor
 {
     Q_OBJECT
 
 public:
     OnlineMusicLoader(const QUrl &src);
 
-    void run();
+    void start();
     void stop();
     bool wasStopped() const { return stopRequested; }
     MusicLibraryItemRoot * takeLibrary();
@@ -52,11 +52,13 @@ public:
     void setCacheFileName(const QString &c) { cache=c; }
 
 Q_SIGNALS:
+    void load();
     void status(const QString &msg, int prog);
     void error(const QString &msg);
     void loaded();
 
 private Q_SLOTS:
+    void doLoad();
     void downloadFinished();
     void downloadProgress(qint64 bytesReceived, qint64 bytesTotal);
 
@@ -68,6 +70,7 @@ private:
     void progressReport(const QString &str, int pc);
 
 protected:
+    Thread *thread;
     QUrl source;
     QString cache;
     MusicLibraryItemRoot *library;

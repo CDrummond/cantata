@@ -42,7 +42,7 @@ class MusicLibraryItemArtist;
 class DirViewItemRoot;
 class MusicLibraryItemRoot;
 class QTimer;
-class QThread;
+class Thread;
 
 class MpdSocket : public QObject
 {
@@ -303,7 +303,7 @@ private:
     void toggleStopAfterCurrent(bool afterCurrent);
 
 private:
-    QThread *thread;
+    Thread *thread;
     long ver;
     QSet<QString> handlers;
     MPDConnectionDetails details;

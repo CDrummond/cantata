@@ -33,9 +33,9 @@
 #endif
 #include <QApplication>
 #include <QDebug>
-#include <QThread>
 #include <QStringList>
 #include <QTimer>
+#include "thread.h"
 #include "settings.h"
 
 // #define DBUG qWarning() << "MPDConnection" << QThread::currentThreadId()
@@ -183,7 +183,7 @@ MPDConnection::~MPDConnection()
 void MPDConnection::start()
 {
     if (!thread) {
-        thread=new QThread();
+        thread=new Thread(metaObject()->className());
         moveToThread(thread);
         thread->start();
     }
@@ -192,7 +192,7 @@ void MPDConnection::start()
 void MPDConnection::stop()
 {
     if (thread) {
-        Utils::stopThread(thread);
+        thread->stop();
         thread=0;
     }
 }

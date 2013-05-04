@@ -10,6 +10,7 @@ SET( SUPPORT_SRCS
     spinner.cpp
     messagebox.cpp
     inputdialog.cpp
+    thread.cpp
 )
 
 SET( SUPPORT_MOC_HDRS
@@ -17,6 +18,7 @@ SET( SUPPORT_MOC_HDRS
     actioncollection.h
     fancytabwidget.h
     messagewidget.h
+    thread.h
 )
 
 if (NOT WIN32)

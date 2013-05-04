@@ -29,7 +29,7 @@
 #include "cddb.h"
 #include <QString>
 
-class QThread;
+class Thread;
 
 class MusicBrainz : public QObject
 {
@@ -50,7 +50,7 @@ private:
     void readDisc();
 
 private:
-    QThread *thread;
+    Thread *thread;
     QString dev;
     QString discId;
     CdAlbum initial;

@@ -36,7 +36,7 @@
 #include "config.h"
 
 class QString;
-class QThread;
+class Thread;
 class QNetworkReply;
 class QMutex;
 class QTimer;
@@ -99,7 +99,7 @@ private:
 
 private:
     #ifndef ENABLE_KDE_SUPPORT
-    QThread *thread;
+    Thread *thread;
     #endif
     NetworkAccessManager *manager;
 };
@@ -133,7 +133,7 @@ private:
     void startTimer(int interval);
 
 private:
-    QThread *thread;
+    Thread *thread;
     QTimer *timer;
     QList<Song> queue;
 };

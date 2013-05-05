@@ -2021,7 +2021,6 @@ void MainWindow::playQueueItemActivated(const QModelIndex &index)
 void MainWindow::removeFromPlayQueue()
 {
     const QModelIndexList items = playQueue->selectedIndexes();
-    QModelIndex sourceIndex;
     QList<qint32> toBeRemoved;
 
     if (items.isEmpty()) {

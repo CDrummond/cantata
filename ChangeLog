@@ -17,6 +17,7 @@
 6. Fix cover downloading.
 7. Fix deletion of threads.
 8. Enable online services for windows builds.
+9. Fix 'No such song' warning when removing songs from playqueue.
 
 1.0.1
 -----

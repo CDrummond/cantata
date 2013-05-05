@@ -613,7 +613,7 @@ void GroupedView::toggle(const QModelIndex &idx)
 // are selected.
 QModelIndexList GroupedView::selectedIndexes() const
 {
-    QModelIndexList indexes = TreeView::selectedIndexes();
+    QModelIndexList indexes = selectionModel()->selectedRows();
     QSet<QModelIndex> allIndexes;
 
     foreach (const QModelIndex &idx, indexes) {
@@ -754,7 +754,7 @@ void GroupedView::itemClicked(const QModelIndex &idx)
             QModelIndexList list;
             unsigned int key=idx.data(GroupedView::Role_Key).toUInt();
             QModelIndex i=idx.sibling(idx.row()+1, 0);
-            QModelIndexList sel=selectedIndexes();
+//            QModelIndexList sel=selectedIndexes();
             QItemSelectionModel *selModel=selectionModel();
             QModelIndexList unsel;
 

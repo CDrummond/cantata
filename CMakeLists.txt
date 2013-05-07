@@ -159,7 +159,7 @@ if (TAGLIB_FOUND)
     SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS}
         tags/tageditor.h tags/trackorganiser.h
         http/httpserversettings.h http/httpsocket.h
-        devices/filenameschemedialog)
+        devices/filenameschemedialog.h)
     SET( CANTATA_UIS ${CANTATA_UIS}
         http/httpserversettings.ui
         tags/tageditor.ui tags/trackorganiser.ui
@@ -175,7 +175,6 @@ if (NOT WIN32)
     SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} dbus/mpris.h dbus/gnomemediakeys.h devices/mountpoints.h )
     SET( CANTATA_SRCS ${CANTATA_SRCS} dbus/notify.cpp)
     SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} dbus/notify.h)
-    add_subdirectory(streams/icons)
 endif(NOT WIN32)
 
 SET( CANTATA_RCS cantata.qrc )
@@ -384,7 +383,8 @@ endif (MSVC)
 add_subdirectory(po)
 add_subdirectory(support)
 add_subdirectory(3rdparty/sha2)
-
+add_subdirectory(streams/icons)
+    
 IF( ENABLE_KDE_SUPPORT )
     include_directories( ${KDE4_INCLUDES})
     add_definitions( ${KDE4_DEFINITIONS} )
@@ -398,7 +398,11 @@ IF( ENABLE_KDE_SUPPORT )
     install( TARGETS cantata ${INSTALL_TARGETS_DEFAULT_ARGS} )
 ELSE( ENABLE_KDE_SUPPORT )
     if (WIN32)
+        add_subdirectory(windows)
         SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} gui/application.h )
+        if ( NOT CANTATA_WINDOWS_INSTALLER_DEST)
+            set( CANTATA_WINDOWS_INSTALLER_DEST z:\ )
+        endif ( NOT CANTATA_WINDOWS_INSTALLER_DEST)
         IF( MINGW )
             # resource compilation for MinGW
             ADD_CUSTOM_COMMAND( OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/cantataico.o
@@ -428,12 +432,13 @@ ELSE( ENABLE_KDE_SUPPORT )
     if (WIN32)
         SET(CMAKE_BUILD_TYPE "Release")
         ADD_EXECUTABLE( cantata WIN32 ${CANTATA_SRCS} ${CANTATA_MOC_SRCS} ${CANTATA_RC_SRCS} ${CANTATA_UI_HDRS} ${CANTATA_PO})
+        install( TARGETS cantata DESTINATION ${CMAKE_INSTALL_PREFIX} )
     else (WIN32)
         ADD_EXECUTABLE( cantata ${CANTATA_SRCS} ${CANTATA_MOC_SRCS} ${CANTATA_RC_SRCS} ${CANTATA_UI_HDRS})
         TARGET_LINK_LIBRARIES(cantata X11)
+        install( TARGETS cantata RUNTIME DESTINATION bin LIBRARY DESTINATION lib ARCHIVE DESTINATION lib )
     endif (WIN32)
 
-    install( TARGETS cantata RUNTIME DESTINATION bin LIBRARY DESTINATION lib ARCHIVE DESTINATION lib )
     SET( XDG_APPS_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}/share/applications" )
 
     if (WIN32)

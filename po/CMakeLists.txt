@@ -57,7 +57,11 @@ else (ENABLE_KDE_SUPPORT)
                 add_custom_command(TARGET translations
                     COMMAND ${LRELEASE_EXECUTABLE} ARGS ${_tsFile} -qm ${_qmFile}
                     DEPENDS ${_tsFile})
-                install(FILES ${_qmFile} DESTINATION ${CMAKE_INSTALL_PREFIX}/share/cantata/translations/)
+                if (WIN32)
+                    install(FILES ${_qmFile} DESTINATION ${CMAKE_INSTALL_PREFIX}/translations/)
+                else (WIN32)
+                    install(FILES ${_qmFile} DESTINATION ${CMAKE_INSTALL_PREFIX}/share/cantata/translations/)
+                endif (WIN32)
             endif (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${_lang}.po)
         endforeach(_lang ${CANTATA_LANGUAGES})
     endif(NOT LCONVERT_EXECUTABLE OR NOT LRELEASE_EXECUTABLE)

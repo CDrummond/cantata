@@ -159,12 +159,16 @@ if (TAGLIB_FOUND)
     SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS}
         tags/tageditor.h tags/trackorganiser.h
         http/httpserversettings.h http/httpsocket.h
-        devices/filenameschemedialog.h devices/device.h)
+        devices/filenameschemedialog)
     SET( CANTATA_UIS ${CANTATA_UIS}
         http/httpserversettings.ui
         tags/tageditor.ui tags/trackorganiser.ui
         devices/filenameschemedialog.ui)
 endif (TAGLIB_FOUND)
+
+if (TAGLIB_FOUND OR ENABLE_ONLINE_SERVICES)
+    SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} devices/device.h)
+endif (TAGLIB_FOUND OR ENABLE_ONLINE_SERVICES)
 
 if (NOT WIN32)
     SET( CANTATA_SRCS ${CANTATA_SRCS} dbus/mpris.cpp dbus/gnomemediakeys.cpp devices/mountpoints.cpp )

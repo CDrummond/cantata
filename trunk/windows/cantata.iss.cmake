@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Cantata"
-#define MyAppVersion "1.0.2"
+#define MyAppVersion "@CANTATA_VERSION_FULL@"
 #define MyAppPublisher "CraigD"
 #define MyAppURL "cantata.googlecode.com"
 #define MyAppExeName "cantata.exe"
@@ -22,10 +22,10 @@ AppUpdatesURL={#MyAppURL}
 DefaultDirName={pf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
 AllowNoIcons=yes
-LicenseFile=Z:\Cantata\src\LICENSE
-OutputDir=Z:\Cantata
+LicenseFile=@CMAKE_SOURCE_DIR@/LICENSE
+OutputDir=@CANTATA_WINDOWS_INSTALLER_DEST@
 OutputBaseFilename={#MyAppName}-{#MyAppVersion}-Setup
-SetupIconFile=Z:\Cantata\src\icons\cantata.ico
+SetupIconFile=@CMAKE_SOURCE_DIR@/icons/cantata.ico
 Compression=lzma
 SolidCompression=yes
 
@@ -59,8 +59,8 @@ Name: "ukrainian"; MessagesFile: "compiler:Languages\Ukrainian.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "Z:\Cantata\install\cantata.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "Z:\Cantata\install\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "@CMAKE_INSTALL_PREFIX@/cantata.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "@CMAKE_INSTALL_PREFIX@/*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]

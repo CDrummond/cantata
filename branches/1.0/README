@@ -426,22 +426,39 @@ Cantata contains code/icons from:
 Windows
 =======
 
-To compile for windows:
+The following steps are used to compile Cantata, and create the windows
+installer.
 
-1. Install Qt, MinGW, cmake, TagLib. TagLib will probably need compiling.
+This assumes the following folder structure:
+    z:\cantata\src
+    z:\cantata\build
+    z:\cantata\install
+    z:\cantata\oxygen
+    z:\dev\MingGW
+    z:\dev\Qt\4.8.4
+    z:\dev\taglib
+    z:\dev\zlib
+
+1. Install Qt, MinGW, cmake, TagLib and zlib. TagLib and zlib will probably
+   need compiling.
+
 2. Call cmake (e.g.):
-     cmake ../src -G "MinGW Makefiles" -DTAGLIB_INCLUDES=z:\taglib\include -DTAGLIB_LIBRARIES=z:\taglib\lib\libtag.dll.a -DTAGLIB_MP4_FOUND=1 -DTAGLIB_ASF_FOUND=1 -DCMAKE_PREFIX_PATH=z:\zlib
-3. make! :-)
+     cmake ../src -G "MinGW Makefiles" -DTAGLIB_FOUND=1 -DTAGLIB_INCLUDES=z:/dev/taglib/include -DTAGLIB_LIBRARIES=z:/dev/taglib/lib/libtag.dll.a -DTAGLIB_MP4_FOUND=1 -DTAGLIB_ASF_FOUND=1 -DZLIB_INCLUDE_DIR=z:/dev/zlib/include -DZLIB_LIBRARY=z:/dev/zlib/libz.dll.a -DCMAKE_INSTALL_PREFIX=z:/cantata/install -DCANTATA_WINDOWS_INSTALLER_DEST=z:/cantata -DCANTATA_MINGW_LIBS=z:/dev/MinGW/bin/mingwm10.dll;z:/dev/MinGW/bin/libgcc_s_dw2-1.dll -DCANTATA_OXYGEN_DIR=z:/cantata/oxygen
+
+3. make
+
+4. make install
+
+5. Run Inno Setup Compiler, and use the windows-installer.iss that has been
+   generated in the build folder. This will place the setup exe in z:\cantata
 
 This build is as per Qt-only, but does not have support for dbus, local dynamic
 playlists, device support, or replaygain calculation.
-
-To run you will also need Oxygen icons.
 
 
 TagLib
 ------
 
 Windows version of taglib was build from TagLib 1.8, using the following cmake command:
-    cmake .. -G "MinGW Makefiles" -DWITH_ASF=1 -DWITH_MP4=1 -DCMAKE_INSTALL_PRFIX=z:\taglib
+    cmake .. -G "MinGW Makefiles" -DWITH_ASF=1 -DWITH_MP4=1 -DCMAKE_INSTALL_PRFIX=z:\dev\taglib
 

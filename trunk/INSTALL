@@ -61,3 +61,16 @@ The following options may be passed to CMake:
         Enable support for Jamendo and Magnatune online services.
         Default: ON
 
+    ...windows specific...
+
+    -DCANTATA_WINDOWS_INSTALLER_DEST=<folder>
+        Path where Inno Setpup Compiler should place the catata setup exe.
+        Default: z:\
+        
+    -DCANTATA_MINGW_LIBS=<path>\mingwm10.dll;<path>libgcc_s_dw2-1.dll
+        Extra MinGW libraries required for install stage
+        Default: <empty>
+        
+    -DCANTATA_OXYGEN_DIR=<path>
+        Path to Oxygen icons, required for install stage
+        Default: <empty>

@@ -68,7 +68,7 @@ DynamicPage::DynamicPage(QWidget *p)
 
     #ifdef Q_OS_WIN
     int iconSize=Icon::stdSize(QApplication::fontMetrics().height());
-    infoIcon->setPixmap(Icon("error").pixmap(iconSize, iconSize));
+    infoIcon->setPixmap(Icon("dialog-error").pixmap(iconSize, iconSize));
     setEnabled(false);
     #else
     infoLabel->setVisible(false);

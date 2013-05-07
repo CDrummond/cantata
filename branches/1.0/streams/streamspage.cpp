@@ -134,7 +134,7 @@ StreamsPage::StreamsPage(QWidget *p)
     infoLabel->hide();
     infoIcon->hide();
     int iconSize=Icon::stdSize(QApplication::fontMetrics().height());
-    infoIcon->setPixmap(Icon("locked").pixmap(iconSize, iconSize));
+    infoIcon->setPixmap(Icon("object-locked").pixmap(iconSize, iconSize));
 }
 
 StreamsPage::~StreamsPage()

@@ -55,6 +55,7 @@ set(OXYGEN_ICONS
 32x32/status/dialog-warning.png
 32x32/status/audio-volume-medium.png
 32x32/status/dialog-information.png
+32x32/status/object-locked.png
 32x32/mimetypes/inode-directory.png
 32x32/mimetypes/audio-x-generic.png
 32x32/categories/preferences-system-network.png
@@ -133,6 +134,7 @@ set(OXYGEN_ICONS
 22x22/status/dialog-warning.png
 22x22/status/audio-volume-medium.png
 22x22/status/dialog-information.png
+22x22/status/object-locked.png
 22x22/mimetypes/inode-directory.png
 22x22/mimetypes/audio-x-generic.png
 22x22/categories/preferences-system-network.png
@@ -201,6 +203,7 @@ set(OXYGEN_ICONS
 16x16/status/dialog-warning.png
 16x16/status/audio-volume-medium.png
 16x16/status/dialog-information.png
+16x16/status/object-locked.png
 16x16/mimetypes/inode-directory.png
 16x16/mimetypes/audio-x-generic.png
 16x16/categories/preferences-system-network.png
@@ -222,6 +225,7 @@ set(OXYGEN_ICONS
 48x48/status/dialog-warning.png
 48x48/status/audio-volume-medium.png
 48x48/status/dialog-information.png
+48x48/status/object-locked.png
 48x48/categories/preferences-system-network.png
 48x48/categories/preferences-other.png
 48x48/categories/applications-internet.png

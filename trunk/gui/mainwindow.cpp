@@ -2725,9 +2725,9 @@ void MainWindow::editPlayQueueTags()
     #endif
 }
 
+#ifdef TAGLIB_FOUND
 void MainWindow::editTags(const QList<Song> &songs, bool isPlayQueue)
 {
-    #ifdef TAGLIB_FOUND
     if (songs.isEmpty() || TagEditor::instanceCount() || !canShowDialog()) {
         return;
     }
@@ -2754,11 +2754,8 @@ void MainWindow::editTags(const QList<Song> &songs, bool isPlayQueue)
                                 #endif
                                 );
     dlg->show();
-    #else
-    Q_UNUSED(songs)
-    Q_UNUSED(isPlayQueue)
-    #endif
 }
+#endif
 
 void MainWindow::organiseFiles()
 {

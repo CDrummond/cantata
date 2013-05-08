@@ -1,0 +1,38 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource>
+<file alias="lyrics.xml">lyrics/ultimate_providers.xml</file>
+<file alias="streams.xml">streams/providers.xml</file>
+<file alias="weblinks.xml">gui/weblinks.xml</file>
+<file alias="repeat16.png">icons/view-media-repeat16.png</file>
+<file alias="repeat22.png">icons/view-media-repeat22.png</file>
+<file alias="repeat32.png">icons/view-media-repeat32.png</file>
+<file alias="repeat48.png">icons/view-media-repeat48.png</file>
+<file alias="shuffle16.png">icons/view-media-shuffle16.png</file>
+<file alias="shuffle22.png">icons/view-media-shuffle22.png</file>
+<file alias="shuffle32.png">icons/view-media-shuffle32.png</file>
+<file alias="shuffle48.png">icons/view-media-shuffle48.png</file>
+
+<file alias="sidebar-albums-dark">icons/sidebar-albums-dark.svg</file>
+<file alias="sidebar-artists-dark">icons/sidebar-artists-dark.svg</file>
+<file alias="sidebar-devices-dark">icons/sidebar-devices-dark.svg</file>
+<file alias="sidebar-dynamic-dark">icons/sidebar-dynamic-dark.svg</file>
+<file alias="sidebar-folders-dark">icons/sidebar-folders-dark.svg</file>
+<file alias="sidebar-info-dark">icons/sidebar-info-dark.svg</file>
+<file alias="sidebar-lyrics-dark">icons/sidebar-lyrics-dark.svg</file>
+<file alias="sidebar-online-dark">icons/sidebar-online-dark.svg</file>
+<file alias="sidebar-playlists-dark">icons/sidebar-playlists-dark.svg</file>
+<file alias="sidebar-playqueue-dark">icons/sidebar-playqueue-dark.svg</file>
+<file alias="sidebar-streams-dark">icons/sidebar-streams-dark.svg</file>
+<file alias="sidebar-albums-light">icons/sidebar-albums-light.svg</file>
+<file alias="sidebar-artists-light">icons/sidebar-artists-light.svg</file>
+<file alias="sidebar-devices-light">icons/sidebar-devices-light.svg</file>
+<file alias="sidebar-dynamic-light">icons/sidebar-dynamic-light.svg</file>
+<file alias="sidebar-folders-light">icons/sidebar-folders-light.svg</file>
+<file alias="sidebar-info-light">icons/sidebar-info-light.svg</file>
+<file alias="sidebar-lyrics-light">icons/sidebar-lyrics-light.svg</file>
+<file alias="sidebar-online-light">icons/sidebar-online-light.svg</file>
+<file alias="sidebar-playlists-light">icons/sidebar-playlists-light.svg</file>
+<file alias="sidebar-playqueue-light">icons/sidebar-playqueue-light.svg</file>
+<file alias="sidebar-streams-light">icons/sidebar-streams-light.svg</file>
+</qresource>
+</RCC>

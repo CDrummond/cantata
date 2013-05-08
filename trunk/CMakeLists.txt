@@ -406,11 +406,11 @@ ELSE( ENABLE_KDE_SUPPORT )
         IF( MINGW )
             # resource compilation for MinGW
             ADD_CUSTOM_COMMAND( OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/cantataico.o
-                                COMMAND windres.exe -I${CMAKE_CURRENT_SOURCE_DIR} -i${CMAKE_SOURCE_DIR}/icons/cantataico.rc
+                                COMMAND windres.exe -I${CMAKE_CURRENT_SOURCE_DIR} -i${CMAKE_SOURCE_DIR}/windows/cantataico.rc
                                     -o ${CMAKE_CURRENT_BINARY_DIR}/cantataico.o )
             SET(CANTATA_SRCS ${CANTATA_SRCS} ${CMAKE_CURRENT_BINARY_DIR}/cantataico.o)
         ELSE( MINGW )
-            SET(CANTATA_SRCS ${CANTATA_SRCS} icons/cantataico.rc)
+            SET(CANTATA_SRCS ${CANTATA_SRCS} windows/cantataico.rc)
         ENDIF( MINGW )
     endif (WIN32)
 

@@ -25,7 +25,7 @@ AllowNoIcons=yes
 LicenseFile=@CMAKE_SOURCE_DIR@/LICENSE
 OutputDir=@CANTATA_WINDOWS_INSTALLER_DEST@
 OutputBaseFilename={#MyAppName}-{#MyAppVersion}-Setup
-SetupIconFile=@CMAKE_SOURCE_DIR@/icons/cantata.ico
+SetupIconFile=@CMAKE_SOURCE_DIR@/windows/cantata.ico
 Compression=lzma
 SolidCompression=yes
 

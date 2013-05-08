@@ -29,6 +29,7 @@
 #include "action.h"
 #include "actioncollection.h"
 #include "mpdconnection.h"
+#include "statuslabel.h"
 
 DynamicPage::DynamicPage(QWidget *p)
     : QWidget(p)
@@ -67,12 +68,10 @@ DynamicPage::DynamicPage(QWidget *p)
     connect(Dynamic::self(), SIGNAL(loadedList()), view, SLOT(hideSpinner()));
 
     #ifdef Q_OS_WIN
-    int iconSize=Icon::stdSize(QApplication::fontMetrics().height());
-    infoIcon->setPixmap(Icon("dialog-error").pixmap(iconSize, iconSize));
+    infoLabel->setType(StatusLabel::Error);
     setEnabled(false);
     #else
     infoLabel->setVisible(false);
-    infoIcon->setVisible(false);
     refreshBtn->setVisible(false);
     #endif
     Dynamic::self()->stopAct()->setEnabled(false);
@@ -111,7 +110,6 @@ void DynamicPage::dynamicUrlChanged(const QString &url)
 {
     #ifdef Q_OS_WIN
     infoLabel->setVisible(url.isEmpty());
-    infoIcon->setVisible(url.isEmpty());
     setEnabled(!url.isEmpty());
     #else
     refreshBtn->setVisible(!url.isEmpty());

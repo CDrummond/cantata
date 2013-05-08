@@ -98,7 +98,7 @@ SET( CANTATA_SRCS gui/application.cpp gui/main.cpp gui/initialsettingswizard.cpp
     widgets/treeview.cpp widgets/listview.cpp widgets/itemview.cpp widgets/autohidingsplitter.cpp widgets/timeslider.cpp
     widgets/actionlabel.cpp widgets/playqueueview.cpp widgets/groupedview.cpp widgets/actionitemdelegate.cpp widgets/textbrowser.cpp
     widgets/coverwidget.cpp widgets/volumecontrol.cpp widgets/icons.cpp widgets/genrecombo.cpp widgets/toolbar.cpp widgets/menubutton.cpp
-    widgets/toolbutton.cpp widgets/wizardpage.cpp widgets/headerlabel.cpp
+    widgets/toolbutton.cpp widgets/wizardpage.cpp widgets/headerlabel.cpp widgets/statuslabel.cpp
     lyrics/lyricspage.cpp lyrics/lyricsettings.cpp lyrics/ultimatelyricsprovider.cpp lyrics/ultimatelyrics.cpp lyrics/lyricsdialog.cpp
     network/networkaccessmanager.cpp
     devices/deviceoptions.cpp)

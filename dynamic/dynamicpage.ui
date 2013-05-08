@@ -18,24 +18,11 @@
     <widget class="ItemView" name="view"/>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="hlayoutA">
-     <item>
-      <widget class="QLabel" name="infoIcon"/>
-     </item>
-     <item>
-      <widget class="SqueezedTextLabel" name="infoLabel">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="text">
-        <string>No dynamizer port defined in server settings.</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
+    <widget class="StatusLabel" name="infoLabel">
+     <property name="text">
+      <string>No dynamizer port defined in server settings.</string>
+     </property>
+    </widget>
    </item>
    <item>
     <layout class="QHBoxLayout" name="hlayout">
@@ -87,9 +74,9 @@
    <header>itemview.h</header>
   </customwidget>
   <customwidget>
-   <class>SqueezedTextLabel</class>
+   <class>StatusLabel</class>
    <extends>QLabel</extends>
-   <header>squeezedtextlabel.h</header>
+   <header>statuslabel.h</header>
   </customwidget>
   <customwidget>
    <class>ToolButton</class>

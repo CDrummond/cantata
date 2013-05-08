@@ -167,7 +167,7 @@ void StreamsPage::checkWritable()
         infoLabel->hide();
     } else {
         infoLabel->setVisible(true);
-        infoLabel->setText(StreamsModel::dir().startsWith("http:/") ? i18n("Streams from HTTP server") : i18n("Music folder not writeable."));
+        infoLabel->setText(StreamsModel::dir().startsWith("http:/") ? i18n("Streams from HTTP server") : i18n("Read only."));
     }
     if (wasWriteable!=nowWriteable) {
         controlActions();

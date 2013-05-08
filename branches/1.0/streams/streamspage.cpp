@@ -159,20 +159,20 @@ void StreamsPage::mpdDirChanged()
     }
 }
 
-void StreamsPage::checkWriteable()
+void StreamsPage::checkWritable()
 {
-    bool isHttp=StreamsModel::dir().startsWith("http:/");
-    bool dirWritable=!isHttp && QFileInfo(StreamsModel::dir()).isWritable();
-    if (dirWritable) {
+    bool wasWriteable=StreamsModel::self()->isWritable();
+    bool nowWriteable=StreamsModel::self()->checkWritable();
+
+    if (nowWriteable) {
         infoLabel->hide();
         infoIcon->hide();
     } else {
         infoLabel->setVisible(true);
-        infoLabel->setText(isHttp ? i18n("Streams from HTTP server") : i18n("Music folder not writeable."));
+        infoLabel->setText(StreamsModel::dir().startsWith("http:/") ? i18n("Streams from HTTP server") : i18n("Music folder not writeable."));
         infoIcon->setVisible(true);
     }
-    if (dirWritable!=StreamsModel::self()->isWritable()) {
-        StreamsModel::self()->setWritable(dirWritable);
+    if (wasWriteable!=nowWriteable) {
         controlActions();
     }
 }
@@ -180,7 +180,7 @@ void StreamsPage::checkWriteable()
 void StreamsPage::refresh()
 {
     if (enabled) {
-        checkWriteable();
+        checkWritable();
         view->setLevel(0);
         StreamsModel::self()->reload();
         exportAction->setEnabled(StreamsModel::self()->rowCount()>0);

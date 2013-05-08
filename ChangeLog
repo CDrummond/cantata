@@ -9,15 +9,16 @@
 
 1.0.2
 -----
-1. Show artist name as caption for cover dialog when setting artist images.
-2. Connect 'Set Cover' signal for windows builds.
-3. Fix usage of timers in threads.
-4. Fix non-taglib build.
-5. Fix loading of SVGs in windows build.
-6. Fix cover downloading.
-7. Fix deletion of threads.
-8. Enable online services for windows builds.
-9. Fix 'No such song' warning when removing songs from playqueue.
+ 1. Show artist name as caption for cover dialog when setting artist images.
+ 2. Connect 'Set Cover' signal for windows builds.
+ 3. Fix usage of timers in threads.
+ 4. Fix non-taglib build.
+ 5. Fix loading of SVGs in windows build.
+ 6. Fix cover downloading.
+ 7. Fix deletion of threads.
+ 8. Enable online services for windows builds.
+ 9. Fix 'No such song' warning when removing songs from playqueue.
+10. Indicate when streams file is read-only.
 
 1.0.1
 -----

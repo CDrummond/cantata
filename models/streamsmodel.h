@@ -114,7 +114,7 @@ public:
     void mark(const QList<int> &rows, bool f);
     void updateGenres();
     bool isWritable() const { return writable; }
-    void setWritable(bool w) { writable=w; }
+    bool checkWritable();
     Action * getAction(const QModelIndex &idx, int num);
     const QMap<QString, QIcon> & icons();
     QIcon icon(const QString &name) const;

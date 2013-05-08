@@ -19,6 +19,7 @@
  8. Enable online services for windows builds.
  9. Fix 'No such song' warning when removing songs from playqueue.
 10. Indicate when streams file is read-only.
+11. Better status labels for streams and dynamic pages.
 
 1.0.1
 -----

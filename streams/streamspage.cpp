@@ -34,6 +34,7 @@
 #include "settings.h"
 #include "streamsmodel.h"
 #include "webstreams.h"
+#include "statuslabel.h"
 #include <QToolButton>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KFileDialog>
@@ -132,9 +133,7 @@ StreamsPage::StreamsPage(QWidget *p)
     view->setDeleteAction(StdActions::self()->removeAction);
 
     infoLabel->hide();
-    infoIcon->hide();
-    int iconSize=Icon::stdSize(QApplication::fontMetrics().height());
-    infoIcon->setPixmap(Icon("object-locked").pixmap(iconSize, iconSize));
+    infoLabel->setType(StatusLabel::Locked);
 }
 
 StreamsPage::~StreamsPage()
@@ -166,11 +165,9 @@ void StreamsPage::checkWritable()
 
     if (nowWriteable) {
         infoLabel->hide();
-        infoIcon->hide();
     } else {
         infoLabel->setVisible(true);
         infoLabel->setText(StreamsModel::dir().startsWith("http:/") ? i18n("Streams from HTTP server") : i18n("Music folder not writeable."));
-        infoIcon->setVisible(true);
     }
     if (wasWriteable!=nowWriteable) {
         controlActions();

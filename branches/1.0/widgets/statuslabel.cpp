@@ -29,7 +29,7 @@
 #include <QStyle>
 
 static int iconSize=-1;
-#include <QDebug>
+
 StatusLabel::StatusLabel(QWidget *p)
     : QFrame(p)
     , type(None)
@@ -48,7 +48,6 @@ StatusLabel::StatusLabel(QWidget *p)
     
     if (-1==iconSize) {
         iconSize=Icon::stdSize(QApplication::fontMetrics().height());
-        qWarning() << iconSize;
     }
     icon->setVisible(false);
     layout->setMargin(layout->margin()/2);

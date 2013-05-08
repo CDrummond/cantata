@@ -932,6 +932,20 @@ void StreamsModel::updateGenres()
     emit updateGenres(genres);
 }
 
+bool StreamsModel::checkWritable()
+{
+    QString dirName=dir();
+    bool isHttp=dirName.startsWith("http:/");
+    writable=!isHttp && QFileInfo(dirName).isWritable();
+    if (writable) {
+        QString fileName=getInternalFile(false);
+        if (QFile::exists(fileName) && !QFile(fileName).isWritable()) {
+            writable=false;
+        }
+    }
+    return writable;
+}
+
 Action * StreamsModel::getAction(const QModelIndex &idx, int num)
 {
     Q_UNUSED(idx)

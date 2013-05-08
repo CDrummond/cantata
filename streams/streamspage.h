@@ -56,7 +56,7 @@ Q_SIGNALS:
 
 public Q_SLOTS:
     void mpdDirChanged();
-    void checkWriteable();
+    void checkWritable();
     void refresh();
     void removeItems();
     void controlActions();

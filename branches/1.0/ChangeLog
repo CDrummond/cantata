@@ -1,8 +1,13 @@
+1.0.3
+-----
+1. Dont display codec settings in copy dialog unless we are copying to a
+   device, or from an AudioCD.
+
 1.0.2.1
 -------
 1. Re-spin to add Qt SVG iconengine to windows installer.
 
-﻿1.0.2
+1.0.2
 -----
  1. Show artist name as caption for cover dialog when setting artist images.
  2. Connect 'Set Cover' signal for windows builds.

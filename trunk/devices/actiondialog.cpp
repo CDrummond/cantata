@@ -90,7 +90,7 @@ void ActionDialog::controlInfoLabel(Device *dev)
     DeviceOptions opts;
     if (Device::AudioCd==dev->devType()) {
         opts.load(MPDConnectionDetails::configGroupName(MPDConnection::self()->getDetails().name), true);
-    } else {
+    } else if (sourceUdi.isEmpty()) {
         opts=dev->options();
     }
 

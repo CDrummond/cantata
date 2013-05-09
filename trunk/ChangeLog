@@ -7,6 +7,11 @@
    current song. Likewise for %album%
 4. Add option (to sidebar context menu) to toggle usage of monochrome icons.
 
+1.0.3
+-----
+1. Dont display codec settings in copy dialog unless we are copying to a
+   device, or from an AudioCD.
+
 1.0.2.1
 -------
 1. Re-spin to add Qt SVG iconengine to windows installer.

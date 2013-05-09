@@ -1,3 +1,7 @@
+1.0.2.1
+-------
+1. Re-spin to add Qt SVG iconengine to windows installer.
+
 ﻿1.0.2
 -----
  1. Show artist name as caption for cover dialog when setting artist images.

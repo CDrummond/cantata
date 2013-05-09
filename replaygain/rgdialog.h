@@ -48,7 +48,7 @@ public:
     RgDialog(QWidget *parent);
     virtual ~RgDialog();
 
-    void show(const QList<Song> &songs, const QString &basePath);
+    void show(const QList<Song> &songs, const QString &udi);
 
 Q_SIGNALS:
     // These are for communicating with MPD object (which is in its own thread, so need to talk via signal/slots)

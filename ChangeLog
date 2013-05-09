@@ -11,6 +11,7 @@
 -----
 1. Dont display codec settings in copy dialog unless we are copying to a
    device, or from an AudioCD.
+2. Save size of Track Organiser, Tag Editor, and ReplayGain dialogs.
 
 1.0.2.1
 -------

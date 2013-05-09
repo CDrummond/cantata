@@ -48,7 +48,7 @@ int TrackOrganiser::instanceCount()
 }
 
 TrackOrganiser::TrackOrganiser(QWidget *parent)
-    : Dialog(parent)
+    : Dialog(parent, "TrackOrganiser",  QSize(800, 500))
     , schemeDlg(0)
 {
     iCount++;
@@ -106,7 +106,6 @@ void TrackOrganiser::show(const QList<Song> &songs, const QString &udi)
     connect(asciiOnly, SIGNAL(stateChanged(int)), this, SLOT(updateView()));
     connect(ignoreThe, SIGNAL(stateChanged(int)), this, SLOT(updateView()));
 
-    resize(800, 500);
     Dialog::show();
     enableButtonOk(false);
     updateView();

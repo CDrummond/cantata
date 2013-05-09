@@ -103,7 +103,7 @@ static inline void setResizeMode(QHeaderView *hdr, QHeaderView::ResizeMode mode)
 #endif
 
 RgDialog::RgDialog(QWidget *parent)
-    : Dialog(parent, "RgDialog")
+    : Dialog(parent, "RgDialog", QSize(800, 400))
     , state(State_Idle)
     , totalToScan(0)
     , tagReader(0)
@@ -156,7 +156,6 @@ RgDialog::RgDialog(QWidget *parent)
     setButtonGuiItem(User1, GuiItem(i18n("Scan"), "edit-find"));
     enableButton(Ok, false);
     enableButton(User1, false);
-    resize(800, 400);
     qRegisterMetaType<Tags::ReplayGain>("Tags::ReplayGain");
 }
 

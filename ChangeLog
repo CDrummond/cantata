@@ -7,6 +7,10 @@
    current song. Likewise for %album%
 4. Add option (to sidebar context menu) to toggle usage of monochrome icons.
 
+1.0.2.1
+-------
+1. Re-spin to add Qt SVG iconengine to windows installer.
+
 1.0.2
 -----
  1. Show artist name as caption for cover dialog when setting artist images.

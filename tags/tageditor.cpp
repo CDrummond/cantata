@@ -70,7 +70,7 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
                      , const QString &udi
                      #endif
                      )
-    : Dialog(parent, "TagEditor")
+    : Dialog(parent, "TagEditor", QSize(500, 200))
     #ifdef ENABLE_DEVICES_SUPPORT
     , deviceUdi(udi)
     #endif
@@ -179,7 +179,7 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
     trackName->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
     trackName->setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLength);
     trackName->view()->setTextElideMode(Qt::ElideLeft);
-    resize(500, 200);
+
     if (original.count()>1) {
         QSet<QString> songArtists;
         QSet<QString> songAlbumArtists;

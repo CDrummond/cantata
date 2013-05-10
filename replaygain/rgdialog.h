@@ -48,7 +48,7 @@ public:
     RgDialog(QWidget *parent);
     virtual ~RgDialog();
 
-    void show(const QList<Song> &songs, const QString &udi);
+    void show(const QList<Song> &songs, const QString &udi, bool autoScan=false);
 
 Q_SIGNALS:
     // These are for communicating with MPD object (which is in its own thread, so need to talk via signal/slots)
@@ -114,6 +114,8 @@ private:
     QMap<int, Tags::ReplayGain> origTags;
     QSet<int> needToSave;
     TagReader *tagReader;
+
+    bool autoScanTags;
 };
 
 #endif

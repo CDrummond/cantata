@@ -33,7 +33,7 @@ PlaybackSettings::PlaybackSettings(QWidget *p)
     stopFadeDuration->setSuffix(i18n(" ms"));
     stopFadeDuration->setRange(Settings::MinFade, Settings::MaxFade);
     stopFadeDuration->setSingleStep(100);
-    stopAction->addItem(i18n("Stop immediately (or after fadout)"));
+    stopAction->addItem(i18n("Stop immediately (or after fadeout)"));
     stopAction->addItem(i18n("Stop after current track"));
 }
 

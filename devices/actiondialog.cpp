@@ -40,8 +40,12 @@
 #include "freespaceinfo.h"
 #include "icons.h"
 #include "config.h"
+#include "tags.h"
 #ifdef ENABLE_ONLINE_SERVICES
 #include "onlineservicesmodel.h"
+#endif
+#ifdef ENABLE_REPLAYGAIN_SUPPORT
+#include "rgdialog.h"
 #endif
 #include <QFile>
 
@@ -88,7 +92,7 @@ ActionDialog::~ActionDialog()
 void ActionDialog::controlInfoLabel(Device *dev)
 {
     DeviceOptions opts;
-    if (Device::AudioCd==dev->devType()) {
+    if (sourceIsAudioCd) {
         opts.load(MPDConnectionDetails::configGroupName(MPDConnection::self()->getDetails().name), true);
     } else if (sourceUdi.isEmpty()) {
         opts=dev->options();
@@ -116,10 +120,10 @@ void ActionDialog::controlInfoLabel(Device *dev)
                 index++;
             }
             codec->setText(QString("%1 (%2)").arg(encoder.name).arg(encoder.values.at(settingIndex).descr)+
-                           (Device::AudioCd!=dev->devType() && opts.transcoderWhenDifferent ? QLatin1String("")+i18n("<i>(When different)</i>") : QString()));
+                           (sourceIsAudioCd && opts.transcoderWhenDifferent ? QLatin1String("")+i18n("<i>(When different)</i>") : QString()));
         } else {
             codec->setText(encoder.name+
-                           (Device::AudioCd!=dev->devType() && opts.transcoderWhenDifferent ? QLatin1String("")+i18n("<i>(When different)</i>") : QString()));
+                           (sourceIsAudioCd && opts.transcoderWhenDifferent ? QLatin1String("")+i18n("<i>(When different)</i>") : QString()));
         }
     }
 }
@@ -139,6 +143,7 @@ void ActionDialog::copy(const QString &srcUdi, const QString &dstUdi, const QLis
         return;
     }
 
+    sourceIsAudioCd=Device::AudioCd==dev->devType();
     controlInfoLabel(dev);
 
     // check space...
@@ -182,7 +187,7 @@ void ActionDialog::copy(const QString &srcUdi, const QString &dstUdi, const QLis
         overwrite->setChecked(Settings::self()->overwriteSongs());
         sourceLabel->setText(QLatin1String("<b>")+(sourceUdi.isEmpty()
                                 ? i18n("Local Music Library")
-                                : Device::AudioCd==dev->devType()
+                                : sourceIsAudioCd
                                     ? i18n("Audio CD")
                                     : dev->data())+QLatin1String("</b>"));
         destinationLabel->setText(QLatin1String("<b>")+(destUdi.isEmpty() ? i18n("Local Music Library") : dev->data())+QLatin1String("</b>"));
@@ -249,6 +254,7 @@ void ActionDialog::init(const QString &srcUdi, const QString &dstUdi, const QLis
     resize(500, 160);
     sourceUdi=srcUdi;
     destUdi=dstUdi;
+    sourceIsAudioCd=false;
     songsToAction=songs;
     mode=m;
     setCaption(Copy==mode ? i18n("Copy Songs") : i18n("Delete Songs"));
@@ -266,6 +272,9 @@ void ActionDialog::init(const QString &srcUdi, const QString &dstUdi, const QLis
     currentPercent=0;
     currentDev=0;
     count=0;
+    #ifdef ENABLE_REPLAYGAIN_SUPPORT
+    albumsWithoutRgTags.clear();
+    #endif
 }
 
 void ActionDialog::slotButtonClicked(int button)
@@ -462,6 +471,24 @@ void ActionDialog::doNext()
         if (!refreshLibrary()) {
             emit completed();
             accept();
+            #ifdef ENABLE_REPLAYGAIN_SUPPORT
+            if (Copy==mode && !albumsWithoutRgTags.isEmpty() && sourceIsAudioCd) {
+                QWidget *pw=parentWidget();
+                if (MessageBox::Yes==MessageBox::questionYesNo(pw, i18n("Calculate ReplayGain for ripped tracks?"))) {
+                    RgDialog *dlg=new RgDialog(pw);
+                    QList<Song> songs;
+
+                    foreach (const Song &s, actionedSongs) {
+                        if (albumsWithoutRgTags.contains(s.album)) {
+                            Song song=s;
+                            song.file=namingOptions.createFilename(s);
+                            songs.append(song);
+                        }
+                    }
+                    dlg->show(songs, QString(), true);
+                }
+            }
+            #endif
         }
     }
 }
@@ -483,6 +510,11 @@ void ActionDialog::actionStatus(int status, bool copiedCover)
             if (!wasSkip) {
                 actionedSongs.append(currentSong);
                 actionedTime+=currentSong.time;
+                #ifdef ENABLE_REPLAYGAIN_SUPPORT
+                if (Copy==mode && sourceIsAudioCd && !albumsWithoutRgTags.contains(currentSong.album) && Tags::readReplaygain(destFile).isEmpty()) {
+                    albumsWithoutRgTags.insert(currentSong.album);
+                }
+                #endif
             }
             if (copiedCover) {
                 copiedCovers.insert(Utils::getDir(destFile));
@@ -567,18 +599,13 @@ void ActionDialog::configureSource()
 void ActionDialog::configure(const QString &udi)
 {
     if (udi.isEmpty()) {
-        Device *dev=DevicesModel::self()->device(sourceUdi);
-        bool isCd=false;
-        if (dev) {
-            isCd=Device::AudioCd==dev->devType();
-        }
         DevicePropertiesDialog *dlg=new DevicePropertiesDialog(this);
         connect(dlg, SIGNAL(updatedSettings(const QString &, const DeviceOptions &)), SLOT(saveProperties(const QString &, const DeviceOptions &)));
         if (!mpdConfigured) {
             connect(dlg, SIGNAL(cancelled()), SLOT(saveProperties()));
         }
         dlg->setCaption(i18n("Local Music Library Properties"));
-        dlg->show(MPDConnection::self()->getDetails().dir, namingOptions, DevicePropertiesWidget::Prop_Basic|(isCd ? DevicePropertiesWidget::Prop_Encoder : 0));
+        dlg->show(MPDConnection::self()->getDetails().dir, namingOptions, DevicePropertiesWidget::Prop_Basic|(sourceIsAudioCd ? DevicePropertiesWidget::Prop_Encoder : 0));
         connect(dlg, SIGNAL(destroyed()), SLOT(controlInfoLabel()));
     } else {
         Device *dev=DevicesModel::self()->device(udi);
@@ -592,24 +619,14 @@ void ActionDialog::configure(const QString &udi)
 void ActionDialog::saveProperties(const QString &path, const DeviceOptions &opts)
 {
     Q_UNUSED(path)
-    Device *dev=DevicesModel::self()->device(sourceUdi);
-    bool isCd=false;
-    if (dev) {
-        isCd=Device::AudioCd==dev->devType();
-    }
     namingOptions=opts;
-    namingOptions.save(MPDConnectionDetails::configGroupName(MPDConnection::self()->getDetails().name), true, isCd);
+    namingOptions.save(MPDConnectionDetails::configGroupName(MPDConnection::self()->getDetails().name), true, sourceIsAudioCd);
     mpdConfigured=true;
 }
 
 void ActionDialog::saveProperties()
 {
-    Device *dev=DevicesModel::self()->device(sourceUdi);
-    bool isCd=false;
-    if (dev) {
-        isCd=Device::AudioCd==dev->devType();
-    }
-    namingOptions.save(MPDConnectionDetails::configGroupName(MPDConnection::self()->getDetails().name), true, isCd);
+    namingOptions.save(MPDConnectionDetails::configGroupName(MPDConnection::self()->getDetails().name), true, sourceIsAudioCd);
     mpdConfigured=true;
 }
 

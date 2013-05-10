@@ -107,6 +107,7 @@ RgDialog::RgDialog(QWidget *parent)
     , state(State_Idle)
     , totalToScan(0)
     , tagReader(0)
+    , autoScanTags(false)
 {
     iCount++;
     setButtons(User1|Ok|Cancel);
@@ -165,13 +166,14 @@ RgDialog::~RgDialog()
     iCount--;
 }
 
-void RgDialog::show(const QList<Song> &songs, const QString &udi)
+void RgDialog::show(const QList<Song> &songs, const QString &udi, bool autoScan)
 {
     if (songs.count()<1) {
         deleteLater();
         return;
     }
 
+    autoScanTags=autoScan;
     origSongs=songs;
     qSort(origSongs);
     #ifdef ENABLE_DEVICES_SUPPORT
@@ -369,6 +371,7 @@ void RgDialog::stopReadingTags()
     disconnect(tagReader, SIGNAL(done()), this, SLOT(tagReaderDone()));
     tagReader->requestAbort();
     tagReader=0;
+    autoScanTags=false;
 }
 
 void RgDialog::saveTags()
@@ -634,6 +637,11 @@ void RgDialog::tagReaderDone()
     enableButton(User1, true);
     progress->setVisible(false);
     statusLabel->setVisible(false);
+
+    if (autoScanTags) {
+        autoScanTags=false;
+        startScanning();
+    }
 }
 
 void RgDialog::closeEvent(QCloseEvent *event)

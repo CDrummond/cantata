@@ -83,6 +83,7 @@ private:
 
 private:
     Mode mode;
+    bool sourceIsAudioCd;
     QString sourceUdi;
     QString destUdi;
     QList<Song> songsToAction;
@@ -106,6 +107,9 @@ private:
     Device *currentDev;
     QString destFile;
     DeviceOptions namingOptions;
+    #ifdef ENABLE_REPLAYGAIN_SUPPORT
+    QSet<QString> albumsWithoutRgTags;
+    #endif
 };
 
 #endif

@@ -48,15 +48,17 @@ MessageBox::ButtonCode MessageBox::questionYesNoCancel(QWidget *parent, const QS
     if (yesText.text.isEmpty() && noText.text.isEmpty()) {
         return map(isWarning
                 ? QMessageBox::warning(parent, title.isEmpty() ? i18n("Warning") : title, message,
-                                       QMessageBox::Yes|QMessageBox::No|(showCancel ? QMessageBox::Cancel : QMessageBox::NoButton))
+                                       QMessageBox::Yes|QMessageBox::No|(showCancel ? QMessageBox::Cancel : QMessageBox::NoButton),
+                                       showCancel ? QMessageBox::Yes : QMessageBox::No)
                 : QMessageBox::question(parent, title.isEmpty() ? i18n("Question") : title, message,
-                                        QMessageBox::Yes|QMessageBox::No|(showCancel ? QMessageBox::Cancel : QMessageBox::NoButton))
+                                        QMessageBox::Yes|QMessageBox::No|(showCancel ? QMessageBox::Cancel : QMessageBox::NoButton),
+                                        QMessageBox::Yes)
                );
     } else {
         QMessageBox box(isWarning ? QMessageBox::Warning : QMessageBox::Question, title.isEmpty() ? (isWarning ? i18n("Warning") : i18n("Question")) : title,
                         message, QMessageBox::Yes|QMessageBox::No|(showCancel ? QMessageBox::Cancel : QMessageBox::NoButton), parent);
 
-        box.setDefaultButton(QMessageBox::Yes);
+        box.setDefaultButton(isWarning && !showCancel ? QMessageBox::No : QMessageBox::Yes);
         if (!yesText.text.isEmpty()) {
             QAbstractButton *btn=box.button(QMessageBox::Yes);
             btn->setText(yesText.text);

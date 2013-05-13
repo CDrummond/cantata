@@ -269,9 +269,9 @@ public:
             }
         }
 
-        if (!mouseOver) {
-            drawIcons(painter, AP_VTop==actionPos ? r2 : r, false, rtl, actionPos, index);
-        }
+//        if (!mouseOver) {
+//            drawIcons(painter, AP_VTop==actionPos ? r2 : r, false, rtl, actionPos, index);
+//        }
 
         QRect textRect;
         QColor color(option.palette.color(active ? QPalette::Active : QPalette::Inactive, selected ? QPalette::HighlightedText : QPalette::Text));

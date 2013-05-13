@@ -37,6 +37,7 @@
 int ActionItemDelegate::constBorder = 1;
 int ActionItemDelegate::constActionBorder = 4;
 int ActionItemDelegate::constActionIconSize = 16;
+int ActionItemDelegate::constLargeActionIconSize = 22;
 
 void ActionItemDelegate::setup()
 {
@@ -44,48 +45,52 @@ void ActionItemDelegate::setup()
 
     if (height>17) {
         constActionIconSize=Icon::stdSize(((int)(height/4))*4);
+        constLargeActionIconSize=Icon::stdSize(((int)(height/3))*3);
         constBorder=constActionIconSize>22 ? 2 : 1;
         constActionBorder=constActionIconSize>32 ? 6 : 4;
     } else {
         constActionBorder=4;
         constActionIconSize=16;
+        constLargeActionIconSize=22;
         constBorder=1;
     }
 }
 
 QRect ActionItemDelegate::calcActionRect(bool rtl, ActionPos actionPos, const QRect &o) const
 {
+    int iconSize=largeIcons ? constLargeActionIconSize : constActionIconSize;
+
     QRect rect=AP_HBottom==actionPos ? QRect(o.x(), o.y()+(o.height()/2), o.width(), o.height()/2) : o;
     return rtl
                 ? AP_VTop==actionPos
                     ? QRect(rect.x()+constActionBorder+3,
                             rect.y()+constActionBorder,
-                            constActionIconSize, constActionIconSize)
+                            iconSize, iconSize)
                     : QRect(rect.x()+constActionBorder,
-                            rect.y()+((rect.height()-constActionIconSize)/2),
-                            constActionIconSize, constActionIconSize)
+                            rect.y()+((rect.height()-iconSize)/2),
+                            iconSize, iconSize)
                 : AP_VTop==actionPos
-                    ? QRect(rect.x()+rect.width()-(constActionIconSize+constActionBorder+3),
+                    ? QRect(rect.x()+rect.width()-(iconSize+constActionBorder+3),
                             rect.y()+constActionBorder,
-                            constActionIconSize, constActionIconSize)
-                    : QRect(rect.x()+rect.width()-(constActionIconSize+constActionBorder),
-                            rect.y()+((rect.height()-constActionIconSize)/2),
-                            constActionIconSize, constActionIconSize);
+                            iconSize, iconSize)
+                    : QRect(rect.x()+rect.width()-(iconSize+constActionBorder),
+                            rect.y()+((rect.height()-iconSize)/2),
+                            iconSize, iconSize);
 }
 
-void ActionItemDelegate::adjustActionRect(bool rtl, ActionPos actionPos, QRect &rect)
+void ActionItemDelegate::adjustActionRect(bool rtl, ActionPos actionPos, QRect &rect, int iconSize)
 {
     if (rtl) {
         if (AP_VTop==actionPos) {
-            rect.adjust(0, constActionIconSize+constActionBorder, 0, constActionIconSize+constActionBorder);
+            rect.adjust(0, iconSize+constActionBorder, 0, iconSize+constActionBorder);
         } else {
-            rect.adjust(constActionIconSize+constActionBorder, 0, constActionIconSize+constActionBorder, 0);
+            rect.adjust(iconSize+constActionBorder, 0, iconSize+constActionBorder, 0);
         }
     } else {
         if (AP_VTop==actionPos) {
-            rect.adjust(0, constActionIconSize+constActionBorder, 0, constActionIconSize+constActionBorder);
+            rect.adjust(0, iconSize+constActionBorder, 0, iconSize+constActionBorder);
         } else {
-            rect.adjust(-(constActionIconSize+constActionBorder), 0, -(constActionIconSize+constActionBorder), 0);
+            rect.adjust(-(iconSize+constActionBorder), 0, -(iconSize+constActionBorder), 0);
         }
     }
 }
@@ -120,12 +125,14 @@ static void drawBgnd(QPainter *painter, const QRect &rx)
 
 ActionItemDelegate::ActionItemDelegate(QObject *p)
     : QStyledItemDelegate(p)
+    , largeIcons(false)
     , underMouse(false)
 {
 }
 
 void ActionItemDelegate::drawIcons(QPainter *painter, const QRect &r, bool mouseOver, bool rtl, ActionPos actionPos, const QModelIndex &index) const
 {
+    int iconSize=largeIcons ? constLargeActionIconSize : constActionIconSize;
     double opacity=painter->opacity();
     if (!mouseOver) {
         painter->setOpacity(opacity*0.2);
@@ -135,13 +142,13 @@ void ActionItemDelegate::drawIcons(QPainter *painter, const QRect &r, bool mouse
     QList<Action *> actions=index.data(ItemView::Role_Actions).value<QList<Action *> >();
 
     foreach (const QPointer<Action> &a, actions) {
-        QPixmap pix=a->icon().pixmap(QSize(constActionIconSize, constActionIconSize));
+        QPixmap pix=a->icon().pixmap(QSize(iconSize, iconSize));
         if (!pix.isNull() && actionRect.width()>=pix.width()/* && r.x()>=0 && r.y()>=0*/) {
             drawBgnd(painter, actionRect);
             painter->drawPixmap(actionRect.x()+(actionRect.width()-pix.width())/2,
                                 actionRect.y()+(actionRect.height()-pix.height())/2, pix);
         }
-        adjustActionRect(rtl, actionPos, actionRect);
+        adjustActionRect(rtl, actionPos, actionRect, iconSize);
     }
 
     if (!mouseOver) {
@@ -184,9 +191,10 @@ QAction * ActionItemDelegate::getAction(const QModelIndex &index) const
         rect.adjust(0, 0, 0, -(textHeight+8));
     }
 
+    int iconSize=largeIcons ? constLargeActionIconSize : constActionIconSize;
     QRect actionRect=calcActionRect(rtl, actionPos, rect);
     QRect actionRect2(actionRect);
-    ActionItemDelegate::adjustActionRect(rtl, actionPos, actionRect2);
+    ActionItemDelegate::adjustActionRect(rtl, actionPos, actionRect2, iconSize);
     QList<Action *> actions=index.data(ItemView::Role_Actions).value<QList<Action *> >();
 
     foreach (const QPointer<Action> &a, actions) {
@@ -195,7 +203,7 @@ QAction * ActionItemDelegate::getAction(const QModelIndex &index) const
             return a;
         }
 
-        ActionItemDelegate::adjustActionRect(rtl, actionPos, actionRect);
+        ActionItemDelegate::adjustActionRect(rtl, actionPos, actionRect, iconSize);
     }
 
     return 0;

@@ -12,6 +12,7 @@
    connection (e.g. lo is the only interface), then the HTTP server settings
    page is hidden.
 7. Only show actions on moue-over.
+8. Use larger action icons in icon view when we have larger previews.
 
 1.0.3
 -----

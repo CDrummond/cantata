@@ -47,9 +47,11 @@ public:
     static int constBorder;
     static int constActionBorder;
     static int constActionIconSize;
+    static int constLargeActionIconSize;
 
     void drawIcons(QPainter *painter, const QRect &r, bool mouseOver, bool rtl, ActionPos actionPos, const QModelIndex &index) const;
     void setUnderMouse(bool um) { underMouse=um; }
+    void setLargeIcons(bool l) { largeIcons=l; }
 
 public Q_SLOTS:
     bool helpEvent(QHelpEvent *e, QAbstractItemView *view, const QStyleOptionViewItem &option, const QModelIndex &index);
@@ -59,9 +61,10 @@ public:
 
 private:
     QRect calcActionRect(bool rtl, ActionPos actionPos, const QRect &rect) const;
-    static void adjustActionRect(bool rtl, ActionPos actionPos, QRect &rect);
+    static void adjustActionRect(bool rtl, ActionPos actionPos, QRect &rect, int iconSize);
 
 protected:
+    bool largeIcons;
     bool underMouse;
 };
 

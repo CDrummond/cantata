@@ -534,31 +534,14 @@ int Settings::stopFadeDuration()
 }
 
 #ifdef TAGLIB_FOUND
-int Settings::httpPort()
-{
-    return GET_INT("httpPort", 0);
-}
-
 int Settings::httpAllocatedPort()
 {
     return GET_INT("httpAllocatedPort", 0);
 }
 
-QString Settings::httpAddress()
+QString Settings::httpInterface()
 {
-    return GET_STRING("httpAddress", QString());
-}
-
-bool Settings::enableHttp()
-{
-    bool def=version()>CANTATA_MAKE_VERSION(0, 9, 50);
-    return GET_BOOL("enableHttp", def);
-}
-
-bool Settings::alwaysUseHttp()
-{
-    bool def=version()>CANTATA_MAKE_VERSION(0, 9, 50);
-    return GET_BOOL("alwaysUseHttp", def);
+    return GET_STRING("httpInterface", QString());
 }
 #endif
 
@@ -947,29 +930,14 @@ void Settings::saveStopFadeDuration(int v)
 }
 
 #ifdef TAGLIB_FOUND
-void Settings::saveHttpPort(int v)
-{
-    SET_VALUE_MOD(httpPort)
-}
-
 void Settings::saveHttpAllocatedPort(int v)
 {
     SET_VALUE_MOD(httpAllocatedPort)
 }
 
-void Settings::saveHttpAddress(const QString &v)
+void Settings::saveHttpInterface(const QString &v)
 {
-    SET_VALUE_MOD(httpAddress)
-}
-
-void Settings::saveEnableHttp(bool v)
-{
-    SET_VALUE_MOD(enableHttp)
-}
-
-void Settings::saveAlwaysUseHttp(bool v)
-{
-    SET_VALUE_MOD(alwaysUseHttp)
+    SET_VALUE_MOD(httpInterface)
 }
 #endif
 

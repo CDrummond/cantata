@@ -25,31 +25,67 @@
 #include "settings.h"
 #include "localize.h"
 #include "httpserver.h"
+#include <QComboBox>
 #include <QTimer>
+#include <QNetworkInterface>
+
+static int isIfaceType(const QNetworkInterface &iface, const QString &prefix)
+{
+    return iface.name().length()>prefix.length() && iface.name().startsWith(prefix) && iface.name()[prefix.length()].isDigit();
+}
+
+static QString displayName(const QNetworkInterface &iface)
+{
+    if (iface.name()=="lo") {
+        return i18n("Local loopback (%1)").arg(iface.name());
+    }
+    if (isIfaceType(iface, "eth")) {
+        return i18n("Wired (%1)").arg(iface.name());
+    }
+    if (isIfaceType(iface, "wlan")) {
+        return i18n("Wireless (%1)").arg(iface.name());
+    }
+    return iface.name();
+}
+
+static void initInterfaces(QComboBox *combo)
+{
+    combo->addItem(i18n("First active interface"), QString());
+    QList<QNetworkInterface> ifaces=QNetworkInterface::allInterfaces();
+    foreach (const QNetworkInterface &iface, ifaces) {
+        if (iface.flags()&QNetworkInterface::IsUp && !isIfaceType(iface, "vboxnet") && !isIfaceType(iface, "vmnet")) {
+            combo->addItem(displayName(iface), iface.name());
+        }
+    }
+}
 
 HttpServerSettings::HttpServerSettings(QWidget *p)
     : QWidget(p)
 {
     setupUi(this);
-    httpPort->setSpecialValueText(i18n("Dynamic"));
+    initInterfaces(httpInterface);
     updateStatus();
 }
 
 void HttpServerSettings::load()
 {
-    int port=Settings::self()->httpPort();
-    enableHttp->setChecked(Settings::self()->enableHttp());
-    alwaysUseHttp->setChecked(Settings::self()->alwaysUseHttp());
-    httpPort->setValue(port);
-    httpAddress->setText(Settings::self()->httpAddress());
+    QString iface=Settings::self()->httpInterface();
+    for (int i=0; i<httpInterface->count(); ++i) {
+        if (httpInterface->itemData(i)==iface) {
+            httpInterface->setCurrentIndex(i);
+            break;
+        }
+    }
+}
+
+bool HttpServerSettings::haveMultipleInterfaces() const
+{
+    return httpInterface->count()>2;
 }
 
 void HttpServerSettings::save()
 {
-    Settings::self()->saveEnableHttp(enableHttp->isChecked());
-    Settings::self()->saveAlwaysUseHttp(alwaysUseHttp->isChecked());
-    Settings::self()->saveHttpPort(httpPort->value());
-    Settings::self()->saveHttpAddress(httpAddress->text());
+    Settings::self()->saveHttpInterface(httpInterface->itemData(httpInterface->currentIndex()).toString());
     HttpServer::self()->readConfig();
     QTimer::singleShot(250, this, SLOT(updateStatus()));
 }

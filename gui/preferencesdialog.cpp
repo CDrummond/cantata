@@ -81,8 +81,13 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
     widget->addPage(interface, i18n("Interface"), Icon("preferences-other"), i18n("Interface Settings"));
     #ifdef TAGLIB_FOUND
     http = new HttpServerSettings(widget);
-    http->load();
-    widget->addPage(http, i18n("HTTP Server"), Icon("network-server"), i18n("HTTP Server Settings"));
+    if (http->haveMultipleInterfaces()) {
+        http->load();
+        widget->addPage(http, i18n("HTTP Server"), Icon("network-server"), i18n("HTTP Server Settings"));
+    } else {
+        http->deleteLater();
+        http=0;
+    }
     #endif
     widget->addPage(lyrics, i18n("Lyrics"), Icons::lyricsIcon, i18n("Lyrics Settings"));
     #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
@@ -124,7 +129,9 @@ void PreferencesDialog::writeSettings()
     files->save();
     interface->save();
     #ifdef TAGLIB_FOUND
-    http->save();
+    if (http) {
+        http->save();
+    }
     #endif
     #ifndef ENABLE_KDE_SUPPORT
     proxy->save();

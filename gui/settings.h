@@ -139,11 +139,8 @@ public:
     int version();
     int stopFadeDuration();
     #ifdef TAGLIB_FOUND
-    int httpPort();
     int httpAllocatedPort();
-    QString httpAddress();
-    bool enableHttp();
-    bool alwaysUseHttp();
+    QString httpInterface();
     #endif
     bool playQueueGrouped();
     bool playQueueAutoExpand();
@@ -222,11 +219,8 @@ public:
     #endif
     void saveStopFadeDuration(int v);
     #ifdef TAGLIB_FOUND
-    void saveHttpPort(int v);
     void saveHttpAllocatedPort(int v);
-    void saveHttpAddress(const QString &v);
-    void saveEnableHttp(bool v);
-    void saveAlwaysUseHttp(bool v);
+    void saveHttpInterface(const QString &v);
     #endif
     void savePlayQueueGrouped(bool v);
     void savePlayQueueAutoExpand(bool v);

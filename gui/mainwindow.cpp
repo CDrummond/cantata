@@ -926,20 +926,13 @@ void MainWindow::load(const QStringList &urls)
     #ifdef TAGLIB_FOUND
     QStringList useable;
     bool haveHttp=HttpServer::self()->isAlive();
-    bool alwaysUseHttp=haveHttp && Settings::self()->alwaysUseHttp();
-    bool mpdLocal=MPDConnection::self()->getDetails().isLocal();
-    bool allowLocal=haveHttp || mpdLocal;
 
     foreach (const QString &path, urls) {
         QUrl u(path);
         if (QLatin1String("http")==u.scheme()) {
             useable.append(u.toString());
-        } else if (allowLocal && (u.scheme().isEmpty() || QLatin1String("file")==u.scheme())) {
-            if (alwaysUseHttp || !mpdLocal) {
-                useable.append(HttpServer::self()->encodeUrl(u.path()));
-            } else {
-                useable.append(u.toString());
-            }
+        } else if (haveHttp && (u.scheme().isEmpty() || QLatin1String("file")==u.scheme())) {
+            useable.append(HttpServer::self()->encodeUrl(u.path()));
         }
     }
     if (useable.count()) {

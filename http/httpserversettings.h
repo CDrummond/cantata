@@ -35,6 +35,7 @@ public:
 
     void load();
     void save();
+    bool haveMultipleInterfaces() const;
 
 private Q_SLOTS:
     void updateStatus();

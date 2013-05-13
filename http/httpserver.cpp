@@ -63,11 +63,9 @@ void HttpServer::stop()
 
 bool HttpServer::readConfig()
 {
-    QString addr=Settings::self()->httpAddress();
-    quint16 port=Settings::self()->httpPort();
-    quint16 prevPort=Settings::self()->httpAllocatedPort();
+    QString iface=Settings::self()->httpInterface();
 
-    if (socket && socket->isListening() && port==socket->serverPort() && addr==socket->configuredAddress() && Settings::self()->enableHttp()) {
+    if (socket && socket->isListening() && iface==socket->configuredInterface()) {
         return true;
     }
 
@@ -81,18 +79,15 @@ bool HttpServer::readConfig()
         thread=0;
     }
 
-    if (Settings::self()->enableHttp()) {
-        thread=new Thread("HttpServer");
-        socket=new HttpSocket(addr, port, prevPort);
-        if (socket->serverPort()!=port) {
-            Settings::self()->saveHttpAllocatedPort(socket->serverPort());
-        }
-        socket->moveToThread(thread);
-        thread->start();
-        return socket->isListening();
-    } else {
-        return true;
+    quint16 prevPort=Settings::self()->httpAllocatedPort();
+    thread=new Thread("HttpServer");
+    socket=new HttpSocket(iface, prevPort);
+    if (socket->serverPort()!=prevPort) {
+        Settings::self()->saveHttpAllocatedPort(socket->serverPort());
     }
+    socket->moveToThread(thread);
+    thread->start();
+    return socket->isListening();
 }
 
 bool HttpServer::isAlive() const
@@ -103,7 +98,7 @@ bool HttpServer::isAlive() const
 QString HttpServer::address() const
 {
     return socket ? QLatin1String("http://")+socket->address()+QChar(':')+QString::number(socket->serverPort())
-                  : QLatin1String("http://127.0.0.1:")+QString::number(Settings::self()->httpPort());
+                  : QLatin1String("http://127.0.0.1:*");
 }
 
 bool HttpServer::isOurs(const QString &url) const

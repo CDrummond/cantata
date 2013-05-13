@@ -19,81 +19,27 @@
      <property name="fieldGrowthPolicy">
       <enum>QFormLayout::ExpandingFieldsGrow</enum>
      </property>
-     <item row="0" column="0">
-      <widget class="BuddyLabel" name="label">
-       <property name="text">
-        <string>Enable HTTP server:</string>
-       </property>
-       <property name="buddy">
-        <cstring>enableHttp</cstring>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="OnOffButton" name="enableHttp">
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-     </item>
      <item row="1" column="0">
-      <widget class="BuddyLabel" name="label_2">
+      <widget class="BuddyLabel" name="label_5">
        <property name="text">
-        <string>Always use server:</string>
+        <string>Network interface:</string>
        </property>
        <property name="buddy">
-        <cstring>alwaysUseHttp</cstring>
+        <cstring>httpInterface</cstring>
        </property>
       </widget>
      </item>
      <item row="1" column="1">
-      <widget class="OnOffButton" name="alwaysUseHttp">
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
+      <widget class="QComboBox" name="httpInterface"/>
      </item>
      <item row="2" column="0">
-      <widget class="BuddyLabel" name="label_5">
-       <property name="text">
-        <string>Address/interface:</string>
-       </property>
-       <property name="buddy">
-        <cstring>httpAddress</cstring>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="1">
-      <widget class="LineEdit" name="httpAddress"/>
-     </item>
-     <item row="3" column="0">
-      <widget class="BuddyLabel" name="label_3">
-       <property name="text">
-        <string>Port:</string>
-       </property>
-       <property name="buddy">
-        <cstring>httpPort</cstring>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="1">
-      <widget class="SpinBox" name="httpPort">
-       <property name="minimum">
-        <number>0</number>
-       </property>
-       <property name="maximum">
-        <number>65535</number>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="0">
       <widget class="QLabel" name="label_3b">
        <property name="text">
         <string>Current URL:</string>
        </property>
       </widget>
      </item>
-     <item row="4" column="1">
+     <item row="2" column="1">
       <widget class="QLabel" name="status">
        <property name="font">
         <font>
@@ -123,8 +69,8 @@
    <item>
     <widget class="QLabel" name="label_4">
      <property name="text">
-      <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; MPD usually only plays songs that are stored within its folders. If you have connected via a local socket, then MPD can also play files located on your filesystem. If you are using a non local socket (e.g. you have entered a hostname or IP address in the 'Host' field of the 'Connection' settings page), then Cantata contains a minimal HTTP server that can be used to serve files to MPD. This, however, will only work whilst Cantata is running.  If you enable 'Always use server', then Cantata will always pass server URLs to MPD for files, even when you have  connected via a local socket.&lt;br/&gt;&lt;br/&gt;
-&lt;b&gt;NOTE:&lt;/b&gt; 'Address/interface' may contain either the IP address, or interface (e.g. eth0), that you wish to listen for connections on. If you leave this blank, then Cantata will choose the IP address of the first active interface.&lt;br/&gt;&lt;br/&gt;&lt;b&gt;NOTE:&lt;/b&gt; Leave port set to 'Dynamic' to have Cantata choose a random port number.&lt;/i&gt;</string>
+      <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; MPD usually only plays songs that are stored within its folders. Cantata contains a minimal HTTP server that can be used to serve other files to MPD. This, however, will only work whilst Cantata is running.&lt;br/&gt;&lt;br/&gt;
+&lt;b&gt;NOTE:&lt;/b&gt; If you choose 'Local loopback' for 'Network interface', then MPD &lt;b&gt;must&lt;/b&gt; also be on this computer.&lt;/i&gt;</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
@@ -148,81 +94,12 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>OnOffButton</class>
-   <extends>QCheckBox</extends>
-   <header>onoffbutton.h</header>
-  </customwidget>
-  <customwidget>
-   <class>LineEdit</class>
-   <extends>QLineEdit</extends>
-   <header>lineedit.h</header>
-  </customwidget>
-  <customwidget>
    <class>BuddyLabel</class>
    <extends>QLabel</extends>
    <header>buddylabel.h</header>
   </customwidget>
-  <customwidget>
-   <class>SpinBox</class>
-   <extends>QSpinBox</extends>
-   <header>spinbox.h</header>
-  </customwidget>
  </customwidgets>
- <tabstops>
-  <tabstop>enableHttp</tabstop>
-  <tabstop>alwaysUseHttp</tabstop>
-  <tabstop>httpAddress</tabstop>
-  <tabstop>httpPort</tabstop>
- </tabstops>
+ <tabstops/>
  <resources/>
- <connections>
-  <connection>
-   <sender>enableHttp</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>httpPort</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>146</x>
-     <y>8</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>189</x>
-     <y>112</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>enableHttp</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>alwaysUseHttp</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>146</x>
-     <y>20</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>128</x>
-     <y>44</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>enableHttp</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>httpAddress</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>141</x>
-     <y>15</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>240</x>
-     <y>74</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>

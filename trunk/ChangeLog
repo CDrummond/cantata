@@ -7,6 +7,10 @@
    current song. Likewise for %album%
 4. Add option (to sidebar context menu) to toggle usage of monochrome icons.
 5. After ripping a CD, prompt as to whether to calculate ReplyGain.
+6. Simplify HTTP server settings. Now only the interface can be chosen. HTTP
+   server is used for all non-MPD files. If computer has no active network
+   connection (e.g. lo is the only interface), then the HTTP server settings
+   page is hidden.
 
 1.0.3
 -----

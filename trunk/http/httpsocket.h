@@ -33,23 +33,23 @@ class HttpSocket : public QTcpServer
     Q_OBJECT
 
 public:
-     HttpSocket(const QString &addr, quint16 p, quint16 prevPort);
+     HttpSocket(const QString &iface, quint16 port);
      virtual ~HttpSocket() { }
 
      void terminate();
      void incomingConnection(int socket);
      QString address() const { return ifaceAddress; }
-     QString configuredAddress() { return cfgAddress; }
+     QString configuredInterface() { return cfgInterface; }
 
 private:
-     bool openPort(const QHostAddress &a, const QString &addr, quint16 p);
+     bool openPort(const QHostAddress &a, quint16 p);
 
 private Q_SLOTS:
      void readClient();
      void discardClient();
 
 private:
-    QString cfgAddress;
+    QString cfgInterface;
     QString ifaceAddress;
     bool terminated;
 };

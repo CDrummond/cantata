@@ -144,75 +144,81 @@ static QHostAddress getAddress(const QNetworkInterface &iface)
         QHostAddress hostAddress=addr.ip();
         if (QAbstractSocket::IPv4Protocol==hostAddress.protocol()) {
             return hostAddress;
-            break;
         }
     }
     return QHostAddress();
 }
 
-HttpSocket::HttpSocket(const QString &addr, quint16 p, quint16 prevPort)
+HttpSocket::HttpSocket(const QString &iface, quint16 port)
     : QTcpServer(0)
-    , cfgAddress(addr)
+    , cfgInterface(iface)
     , terminated(false)
 {
+    // Get network address...
     QHostAddress a;
-    if (!addr.isEmpty()) {
-        a=QHostAddress(addr);
-
-        if (a.isNull()) {
-            QNetworkInterface iface=QNetworkInterface::interfaceFromName(addr);
-            if (iface.isValid()) {
-                a=getAddress(iface);
-            }
+    if (!iface.isEmpty()) {
+        // Try rquested interface...
+        QNetworkInterface netIface=QNetworkInterface::interfaceFromName(iface);
+        if (netIface.isValid()) {
+            a=getAddress(netIface);
         }
     }
 
     if (a.isNull()) {
+        // Hmm... try first active interface...
+        QNetworkInterface loIface;
         QList<QNetworkInterface> ifaces=QNetworkInterface::allInterfaces();
         foreach (const QNetworkInterface &iface, ifaces) {
-            if (QLatin1String("lo")==iface.name()) {
-                continue;
+            if (iface.flags()&QNetworkInterface::IsUp) {
+                if (QLatin1String("lo")==iface.name()) {
+                    loIface=iface;
+                } else {
+                    a=getAddress(iface);
+                    if (!a.isNull()) {
+                        break;
+                    }
+                }
             }
-            a=getAddress(iface);
-            if (!a.isNull()) {
-                break;
-            }
+        }
+        if (a.isNull() && !loIface.isValid()) {
+            // Get address of 'loopback' interface...
+            a=getAddress(loIface);
         }
     }
 
-    bool openedPrev=false;
-    if (0==p && 0!=prevPort) {
-        openedPrev=openPort(a, addr, prevPort);
+    if (!openPort(a, port)) {
+        openPort(a, 0);
     }
 
-    if (!openedPrev) {
-        openPort(a, addr, p);
-    }
     if (isListening() && ifaceAddress.isEmpty()) {
         ifaceAddress=QLatin1String("127.0.0.1");
     }
 }
 
-bool HttpSocket::openPort(const QHostAddress &a, const QString &addr, quint16 p)
+bool HttpSocket::openPort(const QHostAddress &a, quint16 p)
 {
-    if (listen(QHostAddress::Any, p)) {
-        ifaceAddress=a.isNull() ? serverAddress().toString() : a.toString();
+    if (!a.isNull() && listen(a, p)) {
+        ifaceAddress=a.toString();
         return true;
-    } else {
-        bool rv=false;
-        // Failed to liston on 'Any' address
-        if (addr.isEmpty()) {
-            // No specific address was set, so fallback to loopback address...
-            rv=listen(QHostAddress::LocalHost, p);
-            ifaceAddress=QLatin1String("127.0.0.1");
-        } else {
-            // Listen probably failed due to proxy, so unset and try again!
-            setProxy(QNetworkProxy::NoProxy);
-            rv=listen(QHostAddress::Any, p);
-            ifaceAddress=a.isNull() ? serverAddress().toString() : a.toString();
-        }
-        return rv;
     }
+    // Listen probably failed due to proxy, so unset and try again!
+    setProxy(QNetworkProxy::NoProxy);
+    if (!a.isNull() && listen(a, p)) {
+        ifaceAddress=a.toString();
+        return true;
+    }
+
+    if (listen(QHostAddress::Any, p)) {
+        ifaceAddress=serverAddress().toString();
+        return true;
+    }
+
+    if (listen(QHostAddress::LocalHost, p)) {
+        ifaceAddress=QLatin1String("127.0.0.1");
+        return true;
+    }
+
+    return false;
 }
 
 void HttpSocket::terminate()
@@ -296,23 +302,20 @@ void HttpSocket::readClient()
                             cdparanoia.seek(firstSector, SEEK_SET);
                             ok=true;
                             #ifdef LAME_FOUND
-                            lame_global_flags *lame=0;
                             static const int constMp3BufferSize=CD_FRAMESIZE_RAW*2*sizeof(short int);
                             static const int constPcmSize=CD_FRAMESIZE_RAW/(2*sizeof(short int));
                             unsigned char mp3Buffer[constMp3BufferSize];
-                            if (Settings::self()->cdEncode()) {
-                                lame = lame_init();
-                                lame_set_num_channels(lame, 2);
-                                lame_set_in_samplerate(lame, 44100);
-                                lame_set_brate(lame, 128);
-                                lame_set_quality(lame, 5);
-                                lame_set_VBR(lame, vbr_off);
-                                if (-1!=lame_init_params(lame)) {
-                                    writeMimeType(QLatin1String("audio/mpeg"), socket);
-                                } else {
-                                    lame_close(lame);
-                                    lame=0;
-                                }
+                            lame_global_flags *lame = lame_init();
+                            lame_set_num_channels(lame, 2);
+                            lame_set_in_samplerate(lame, 44100);
+                            lame_set_brate(lame, 128);
+                            lame_set_quality(lame, 5);
+                            lame_set_VBR(lame, vbr_off);
+                            if (-1!=lame_init_params(lame)) {
+                                writeMimeType(QLatin1String("audio/mpeg"), socket);
+                            } else {
+                                lame_close(lame);
+                                lame=0;
                             }
                             if (!lame) {
                             #endif

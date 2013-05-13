@@ -427,7 +427,7 @@ QStringList PlayQueueModel::mimeTypes() const
     types << constMoveMimeType;
     types << constFileNameMimeType;
     #ifdef TAGLIB_FOUND
-    if (MPDConnection::self()->getDetails().isLocal() || HttpServer::self()->isAlive()) {
+    if (HttpServer::self()->isAlive()) {
         types << constUriMimeType;
     }
     #endif
@@ -512,23 +512,16 @@ bool PlayQueueModel::dropMimeData(const QMimeData *data,
         QStringList orig=decode(*data, constUriMimeType);
         QStringList useable;
         bool haveHttp=HttpServer::self()->isAlive();
-        bool alwaysUseHttp=haveHttp && Settings::self()->alwaysUseHttp();
-        bool mpdLocal=MPDConnection::self()->getDetails().isLocal();
-        bool allowLocal=haveHttp || mpdLocal;
 
         foreach (QString u, orig) {
             if (u.startsWith(QLatin1String("http://"))) {
                 useable.append(u);
-            } else if (allowLocal && (u.startsWith('/') || u.startsWith(QLatin1String("file://")))) {
+            } else if (haveHttp && (u.startsWith('/') || u.startsWith(QLatin1String("file://")))) {
                 if (u.startsWith(QLatin1String("file://"))) {
                     u=u.mid(7);
                 }
                 if (checkExtension(u)) {
-                    if (alwaysUseHttp || !mpdLocal) {
-                        useable.append(HttpServer::self()->encodeUrl(QUrl::fromPercentEncoding(u.toUtf8())));
-                    } else {
-                        useable.append(QLatin1String("file://")+QUrl::fromPercentEncoding(u.toUtf8()));
-                    }
+                    useable.append(HttpServer::self()->encodeUrl(QUrl::fromPercentEncoding(u.toUtf8())));
                 }
             }
         }

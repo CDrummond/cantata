@@ -14,6 +14,8 @@
    device, or from an AudioCD.
 2. Save size of Track Organiser, Tag Editor, and ReplayGain dialogs.
 3. Fix consistency of default button in messageboxes between Qt and KDE builds.
+4. Unless using a dark toolbar, use same colour for toolbar menu icon as per
+   menu icon in views.
 
 1.0.2.1
 -------

@@ -594,10 +594,10 @@ static void setDisabledOpacity(Icon &icon)
 void Icons::initToolbarIcons(const QColor &color, bool forceLight)
 {
     bool light=forceLight || isLight(color);
-    QColor col(light ? Qt::white : Qt::black);
-    QColor highlight(light ? col.darker(constShadeFactor) : col.lighter(constShadeFactor));
 
-    if (stdColor!=col) {
+    if (light) {
+        QColor col(Qt::white);
+        QColor highlight(col.darker(constShadeFactor));
         toolbarMenuIcon=createMenuIcon(col, highlight);
     } else {
         toolbarMenuIcon=menuIcon;

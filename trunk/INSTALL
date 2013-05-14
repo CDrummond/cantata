@@ -2,7 +2,7 @@ With KDE Support
 ================
 1. mkdir build
 2. cd build
-3. cmake .. -DCMAKE_INSTALL_PREFIX=`kde4-config --prefix`
+3. cmake .. -DCMAKE_INSTALL_PREFIX=`kde4-config --prefix` -DCMAKE_BUILD_TYPE=Release
 4. make
 5. sudo make install
 
@@ -11,7 +11,7 @@ Qt4
 ===
 1. mkdir build
 2. cd build
-3. cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DENABLE_KDE=OFF
+3. cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Release -DENABLE_KDE=OFF
 4. make
 5. sudo make install
 
@@ -20,7 +20,7 @@ Qt5
 ===
 1. mkdir build
 2. cd build
-3. cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DENABLE_KDE=OFF -DENABLE_QT5=ON
+3. cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Release -DENABLE_KDE=OFF -DENABLE_QT5=ON
 4. make
 5. sudo make install
 
@@ -29,6 +29,13 @@ CMake Options
 =============
 
 The following options may be passed to CMake:
+
+    -DCMAKE_INSTALL_PREFIX=/usr
+        Specify install location prefix.
+
+    -DCMAKE_BUILD_TYPE=Release|Debug
+        Specify which type of build. Debug builds will be *much* larger, as
+        they will contain extra debugging information.
 
     -DCANTATA_TRANSLATIONS=<list of translations to install>
         Builds and installs the selected translations. Supported values are

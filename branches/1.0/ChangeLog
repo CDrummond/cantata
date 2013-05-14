@@ -7,6 +7,9 @@
 4. Unless using a dark toolbar, use same colour for toolbar menu icon as per
    menu icon in views.
 5. Document how to make a release build.
+6. When searchinbg for artist information, if song's album artist contains
+   artist, then use album artist. This si for track that have an artist such
+   as "abc featuring 123", and album artist is "abc"
 
 1.0.2.1
 -------

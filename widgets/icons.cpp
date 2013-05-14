@@ -95,15 +95,23 @@ static QPixmap createConsumeIconPixmap(int size, const QColor &col, double opaci
     QPixmap pix(size, size);
     pix.fill(Qt::transparent);
     QPainter p(&pix);
+    int border=2;
+    if (22==size) {
+        border=3;
+    } else if (32==size) {
+        border=4;
+    } else if (48==size) {
+        border=5;
+    }
     p.setPen(QPen(col, size/10.0));
     p.setOpacity(opacity);
     p.setRenderHint(QPainter::Antialiasing, true);
-    QRectF rect(2.5, 2.5, size-4, size-4);
+    QRectF rect(border+0.5, border+0.5, size-(2*border), size-(2*border));
     double distanceX=fabs(cos(35.0))*(rect.width()/2);
     double distanceY=fabs(sin(35.0))*(rect.height()/2);
     double midX=rect.x()+(rect.width()/2);
     double midY=rect.y()+(rect.height()/2);
-    p.drawArc(rect, 40*16, 280*16);
+    p.drawArc(rect, 40*16, 290*16);
     p.drawLine(midX, midY, midX+distanceX, midY-distanceY);
     p.drawLine(midX, midY, midX+distanceX, midY+distanceY);
     p.drawPoint(midX, rect.y()+rect.height()/4);

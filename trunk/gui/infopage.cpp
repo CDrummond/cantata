@@ -421,6 +421,8 @@ struct Bio
         if (QLatin1String("last.fm")==site) {
             text.replace("  ", "<br/><br/>");
         } else {
+            text.replace(" \n\" \n\n", "\"<br/><br/>");
+            text.replace(" \n\n\" \n", "<br/><br/>\"");
             text.replace("\n", "<br/><br/>");
         }
         text.replace("<br/><br/><br/>", "<br/>");

@@ -1109,6 +1109,10 @@ void FancyTabWidget::SetIcon(int index, const QIcon &icon)
     if (index>0 && index<items_.count()) {
         items_[index].tab_icon_=icon;
     }
+    if (menu_) {
+        menu_->deleteLater();
+        menu_=0;
+    }
 }
 
 void FancyTabWidget::Recreate()

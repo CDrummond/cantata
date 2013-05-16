@@ -117,11 +117,15 @@ InfoPage::InfoPage(QWidget *parent)
         imageHeight=fontMetrics().height()*12;
         imageWidth=imageHeight*1.5;
     }
+    provider=Settings::self()->infoProvider();
 }
 
 void InfoPage::saveSettings()
 {
     Settings::self()->saveInfoZoom(text->zoom());
+    if (!provider.isEmpty()) {
+        Settings::self()->saveInfoProvider(provider);
+    }
 }
 
 void InfoPage::showEvent(QShowEvent *e)
@@ -193,6 +197,19 @@ void InfoPage::artistImage(const Song &song, const QImage &i, const QString &f)
     }
 }
 
+void InfoPage::setProvider()
+{
+    if (!provider.isEmpty() && combo->itemData(combo->currentIndex()).toString()!=provider) {
+        for (int i=0; i<combo->count(); ++i) {
+            if (combo->itemData(i).toString()==provider) {
+                combo->setCurrentIndex(i);
+                break;
+            }
+        }
+        provider=combo->itemData(combo->currentIndex()).toString();
+    }
+}
+
 void InfoPage::loadBio()
 {
     QString cachedFile=cacheFileName(currentSong.artist, false, false);
@@ -204,6 +221,7 @@ void InfoPage::loadBio()
             QByteArray data=compressor.readAll();
 
             if (!data.isEmpty() && parseBioResponse(data)) {
+                setProvider();
                 setBio();
                 Utils::touchFile(cachedFile);
                 return;
@@ -246,6 +264,7 @@ void InfoPage::handleBioReply()
         if (QNetworkReply::NoError==reply->error()) {
             QByteArray data=reply->readAll();
             if (parseBioResponse(data)) {
+                setProvider();
                 setBio();
                 ok=true;
                 QFile f(cacheFileName(reply->property(constNameKey).toString(), false, true));
@@ -483,7 +502,7 @@ bool InfoPage::parseBioResponse(const QByteArray &resp)
             }
         }
         biographies[combo->count()]="<p><b>"+i18n("Biography")+"</b></p><p>"+it.value().text;
-        combo->insertItem(combo->count(), i18n("Source: %1").arg(it.value().site));
+        combo->insertItem(combo->count(), i18n("Source: %1").arg(it.value().site), it.value().site);
     }
 
     if (!biogs.isEmpty()) {

@@ -473,6 +473,12 @@ int Settings::infoZoom()
     return zoom;
 }
 
+QString Settings::infoProvider()
+{
+    return GET_STRING("infoProvider", QString());
+}
+
+
 QString Settings::page()
 {
     return GET_STRING("page", QString());
@@ -885,6 +891,11 @@ void Settings::saveLyricsBgnd(bool v)
 void Settings::saveInfoZoom(int v)
 {
     SET_VALUE_MOD(infoZoom)
+}
+
+void Settings::saveInfoProvider(const QString &v)
+{
+    SET_VALUE_MOD(infoProvider)
 }
 
 void Settings::savePage(const QString &v)

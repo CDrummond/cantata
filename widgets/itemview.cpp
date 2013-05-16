@@ -333,7 +333,7 @@ public:
         if (drawBgnd && mouseOver) {
             drawIcons(painter, AP_VTop==actionPos ? r2 : r, true, rtl, actionPos, index);
         }
-
+        drawDivider(painter, option.rect, color);
         painter->restore();
     }
 
@@ -379,12 +379,11 @@ public:
         QStringList text=index.data(Qt::DisplayRole).toString().split("\n");
         bool gtk=GtkStyle::isActive();
         bool rtl = Qt::RightToLeft==QApplication::layoutDirection();
-
+        bool selected=option.state&QStyle::State_Selected;
+        bool active=option.state&QStyle::State_Active;
         if (!gtk && 1==text.count()) {
             QStyledItemDelegate::paint(painter, option, index);
         } else {
-            bool selected=option.state&QStyle::State_Selected;
-            bool active=option.state&QStyle::State_Active;
             if ((option.state&QStyle::State_MouseOver) && gtk) {
                 GtkStyle::drawSelection(option, painter, selected ? 0.75 : 0.25);
             } else {
@@ -443,6 +442,8 @@ public:
         if ((option.state & QStyle::State_MouseOver)) {
             drawIcons(painter, option.rect, true, rtl, AP_HMiddle, index);
         }
+        drawDivider(painter, option.rect, option.palette.color(active ? QPalette::Active : QPalette::Inactive,
+                                                               selected ? QPalette::HighlightedText : QPalette::Text));
     }
 
     void setSimple(bool s) { simpleStyle=s; }
@@ -616,7 +617,7 @@ void ItemView::setMode(Mode m)
             listView->setGridSize(listGridSize);
             listView->setViewMode(QListView::ListMode);
             listView->setResizeMode(QListView::Fixed);
-            listView->setAlternatingRowColors(true);
+//            listView->setAlternatingRowColors(true);
             listView->setWordWrap(false);
         }
     }
@@ -662,7 +663,7 @@ void ItemView::setLevel(int l, bool haveChildren)
                 listView->setGridSize(iconGridSize);
                 listView->setViewMode(QListView::IconMode);
                 listView->setResizeMode(QListView::Adjust);
-                listView->setAlternatingRowColors(false);
+//                listView->setAlternatingRowColors(false);
                 listView->setWordWrap(true);
                 listView->setDragDropMode(QAbstractItemView::DragOnly);
                 ((ActionItemDelegate *)listView->itemDelegate())->setLargeIcons(iconGridSize.width()>(ActionItemDelegate::constLargeActionIconSize*6));
@@ -671,7 +672,7 @@ void ItemView::setLevel(int l, bool haveChildren)
             listView->setGridSize(listGridSize);
             listView->setViewMode(QListView::ListMode);
             listView->setResizeMode(QListView::Fixed);
-            listView->setAlternatingRowColors(true);
+//            listView->setAlternatingRowColors(true);
             listView->setWordWrap(false);
             listView->setDragDropMode(QAbstractItemView::DragOnly);
             ((ActionItemDelegate *)listView->itemDelegate())->setLargeIcons(false);

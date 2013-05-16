@@ -40,7 +40,7 @@ TreeView::TreeView(QWidget *parent, bool menuAlwaysAllowed)
     setContextMenuPolicy(Qt::NoContextMenu);
 //     setRootIsDecorated(false);
     setAllColumnsShowFocus(true);
-    setAlternatingRowColors(true);
+    setAlternatingRowColors(false);
     setSelectionMode(QAbstractItemView::ExtendedSelection);
     setSelectionBehavior(QAbstractItemView::SelectRows);
     // Treeview does not seem to need WA_MouseTracking set, even with QGtkStyle items still

@@ -1,19 +1,21 @@
 ﻿1.1.0
 -----
-1. Display 'Calculating...', and 'Deleting...' in cache settings page if
-   relevant.
-2. Add "(Muted)" to volume button tooltip if volume is currently muted.
-3. If cover name contains %artist%, then replace with the album artist of the
-   current song. Likewise for %album%
-4. Add option (to sidebar context menu) to toggle usage of monochrome icons.
-5. After ripping a CD, prompt as to whether to calculate ReplyGain.
-6. Simplify HTTP server settings. Now only the interface can be chosen. HTTP
-   server is used for all non-MPD files. If computer has no active network
-   connection (e.g. lo is the only interface), then the HTTP server settings
-   page is hidden.
-7. Only show actions on moue-over.
-8. Use larger action icons in icon view when we have larger previews.
-9. Better non-monochrome radio-stream icons. Thanks to Grely
+ 1. Display 'Calculating...', and 'Deleting...' in cache settings page if
+    relevant.
+ 2. Add "(Muted)" to volume button tooltip if volume is currently muted.
+ 3. If cover name contains %artist%, then replace with the album artist of the
+    current song. Likewise for %album%
+ 4. Add option (to sidebar context menu) to toggle usage of monochrome icons.
+ 5. After ripping a CD, prompt as to whether to calculate ReplyGain.
+ 6. Simplify HTTP server settings. Now only the interface can be chosen. HTTP
+    server is used for all non-MPD files. If computer has no active network
+    connection (e.g. lo is the only interface), then the HTTP server settings
+    page is hidden.
+ 7. Only show actions on moue-over.
+ 8. Use larger action icons in icon view when we have larger previews.
+ 9. Better non-monochrome radio-stream icons. Thanks to Grely
+10. Dont use alternating rows in views (does nto look too great with grouped
+    view). Use a fading divider instead.
 
 1.0.3
 -----

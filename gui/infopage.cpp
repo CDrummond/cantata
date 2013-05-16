@@ -123,6 +123,9 @@ InfoPage::InfoPage(QWidget *parent)
 void InfoPage::saveSettings()
 {
     Settings::self()->saveInfoZoom(text->zoom());
+    if (combo->count()) {
+        provider=combo->itemData(combo->currentIndex()).toString();
+    }
     if (!provider.isEmpty()) {
         Settings::self()->saveInfoProvider(provider);
     }
@@ -160,6 +163,9 @@ void InfoPage::update(const Song &s, bool force)
 
     if (artistChanged || force) {
         currentSong=song;
+        if (combo->count()) {
+            provider=combo->itemData(combo->currentIndex()).toString();
+        }
         combo->clear();
         biographies.clear();
         text->setImage(QImage());

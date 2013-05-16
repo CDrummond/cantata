@@ -260,11 +260,15 @@ void GtkProxyStyle::drawComplexControl(ComplexControl control, const QStyleOptio
             #endif
 
             if (usePlain) {
+                #if 0
                 QLinearGradient grad(r.topLeft(), Qt::Horizontal==sb->orientation ? r.bottomLeft() : r.topRight());
                 QColor col=option->palette.base().color();
                 grad.setColorAt(0, col.darker(110));
                 grad.setColorAt(1, col.darker(102));
                 painter->fillRect(r, grad);
+                #else
+                painter->fillRect(r, option->palette.base());
+                #endif
             }
             #ifdef ENABLE_OVERLAYSCROLLBARS
             else {

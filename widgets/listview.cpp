@@ -38,7 +38,7 @@ ListView::ListView(QWidget *parent)
     setContextMenuPolicy(Qt::NoContextMenu);
     setDragDropMode(QAbstractItemView::DragOnly);
     setSelectionMode(QAbstractItemView::ExtendedSelection);
-    setAlternatingRowColors(true);
+    setAlternatingRowColors(false);
     setUniformItemSizes(true);
     setAttribute(Qt::WA_MouseTracking);
     connect(this, SIGNAL(customContextMenuRequested(const QPoint &)), SLOT(showCustomContextMenu(const QPoint &)));

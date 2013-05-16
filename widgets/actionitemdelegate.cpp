@@ -156,6 +156,26 @@ void ActionItemDelegate::drawIcons(QPainter *painter, const QRect &r, bool mouse
     }
 }
 
+void ActionItemDelegate::drawDivider(QPainter *p, const QRect &r, const QColor &color) const
+{
+    QLinearGradient grad(r.bottomLeft(), r.bottomRight());
+    QColor col(color);
+    double fadeSize=64.0;
+    if (r.width()<(2.2*fadeSize)) {
+        fadeSize=r.width()/3.0;
+    }
+    double fadePos=fadeSize/r.width();
+    col.setAlphaF(0.0);
+    grad.setColorAt(0, col);
+    col.setAlphaF(0.1);
+    grad.setColorAt(fadePos, col);
+    grad.setColorAt(1.0-fadePos, col);
+    col.setAlphaF(0.0);
+    grad.setColorAt(1, col);
+    p->setPen(QPen(grad, 1));
+    p->drawLine(r.bottomLeft(), r.bottomRight());
+}
+
 bool ActionItemDelegate::helpEvent(QHelpEvent *e, QAbstractItemView *view, const QStyleOptionViewItem &option, const QModelIndex &index)
 {
     if (QEvent::ToolTip==e->type()) {

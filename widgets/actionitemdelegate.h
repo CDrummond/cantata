@@ -50,6 +50,7 @@ public:
     static int constLargeActionIconSize;
 
     void drawIcons(QPainter *painter, const QRect &r, bool mouseOver, bool rtl, ActionPos actionPos, const QModelIndex &index) const;
+    void drawDivider(QPainter *p, const QRect &r, const QColor &color) const;
     void setUnderMouse(bool um) { underMouse=um; }
     void setLargeIcons(bool l) { largeIcons=l; }
 

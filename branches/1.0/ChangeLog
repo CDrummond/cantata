@@ -11,6 +11,7 @@
    artist, then use album artist. This si for track that have an artist such
    as "abc featuring 123", and album artist is "abc"
 7. Improve comsume icon at larger sizes.
+8. Fix lyrics background when we toggle from shwowing cover to not showing.
 
 1.0.2.1
 -------

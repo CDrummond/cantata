@@ -108,9 +108,7 @@ void TextBrowser::enableImage(bool e)
         if (!drawImage) {
             image=QImage();
         }
-        if (e) {
-            viewport()->setAutoFillBackground(false);
-        }
+        viewport()->setAutoFillBackground(!e);
         viewport()->update();
     }
 }
@@ -125,7 +123,7 @@ void TextBrowser::paintEvent(QPaintEvent *e)
 //        int ypos=r.y()+(r.height()>image.height() ? ((r.height()-image.height())/2) : 0);
 //        p.drawImage(xpos, ypos, image);
         p.fillRect(rect(), QBrush(image));
-    } else if (!viewport()->autoFillBackground()) {
+    } else if (!isReadOnly() && !viewport()->autoFillBackground()) {
         QPainter p(viewport());
         p.fillRect(rect(), viewport()->palette().base());
     }

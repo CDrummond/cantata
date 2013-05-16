@@ -75,6 +75,7 @@ private Q_SLOTS:
     void showArtist(const QUrl &url);
 
 private:
+    void setProvider();
     void loadBio();
     void requestBio();
     bool parseBioResponse(const QByteArray &resp);
@@ -93,6 +94,7 @@ private:
     Song currentSong;
     QNetworkReply *currentBioJob;
     QNetworkReply *currentSimilarJob;
+    QString provider;
     QString image;
     #ifndef Q_OS_WIN
     QString webLinks;

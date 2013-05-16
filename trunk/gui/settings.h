@@ -128,6 +128,7 @@ public:
     int lyricsZoom();
     bool lyricsBgnd();
     int infoZoom();
+    QString infoProvider();
     QString page();
     QStringList hiddenPages();
     bool gnomeMediaKeys();
@@ -209,6 +210,7 @@ public:
     void saveLyricsZoom(int v);
     void saveLyricsBgnd(bool v);
     void saveInfoZoom(int v);
+    void saveInfoProvider(const QString &v);
     void savePage(const QString &v);
     void saveHiddenPages(const QStringList &v);
     void saveGnomeMediaKeys(bool v);

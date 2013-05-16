@@ -17,6 +17,7 @@
 10. Dont use alternating rows in views (does nto look too great with grouped
     view). Use a fading divider instead.
 11. Add QSizeGrip to bottom right of mainwindow.
+12. Save current info provider setting.
 
 1.0.3
 -----

@@ -420,9 +420,11 @@ struct Bio
         : site(s), text(t) {
         if (QLatin1String("last.fm")==site) {
             text.replace("  ", "<br/><br/>");
-        } else {
+        } else if (QLatin1String("wikipedia")==site) {
             text.replace(" \n\" \n\n", "\"<br/><br/>");
             text.replace(" \n\n\" \n", "<br/><br/>\"");
+            text.replace("\n", "<br/><br/>");
+        } else {
             text.replace("\n", "<br/><br/>");
         }
         text.replace("<br/><br/><br/>", "<br/>");

@@ -16,6 +16,7 @@
  9. Better non-monochrome radio-stream icons. Thanks to Grely
 10. Dont use alternating rows in views (does nto look too great with grouped
     view). Use a fading divider instead.
+11. Add QSizeGrip to bottom right of mainwindow.
 
 1.0.3
 -----

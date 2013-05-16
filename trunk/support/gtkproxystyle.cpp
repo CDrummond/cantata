@@ -33,6 +33,7 @@
 #include <QTreeView>
 #include <QHeaderView>
 #include <QScrollBar>
+#include <QComboBox>
 #include <QApplication>
 #include <QHoverEvent>
 #include <QPainter>
@@ -40,6 +41,8 @@
 #include <QLibrary>
 
 const char * GtkProxyStyle::constSlimComboProperty="gtkslim";
+
+static const char * constOnCombo="on-combo";
 
 //static bool revertQGtkStyleOverlayMod()
 //{
@@ -57,6 +60,12 @@ const char * GtkProxyStyle::constSlimComboProperty="gtkslim";
 //    }
 //    return false;
 //}
+
+
+static bool isOnCombo(const QWidget *w)
+{
+    return w && (qobject_cast<const QComboBox *>(w) || isOnCombo(w->parentWidget()));
+}
 
 GtkProxyStyle::GtkProxyStyle(ScrollbarType sb)
     : QProxyStyle()
@@ -267,7 +276,11 @@ void GtkProxyStyle::drawComplexControl(ComplexControl control, const QStyleOptio
                 grad.setColorAt(1, col.darker(102));
                 painter->fillRect(r, grad);
                 #else
-                painter->fillRect(r, option->palette.base());
+                if (widget && widget->property(constOnCombo).toBool()) {
+                    painter->fillRect(r, option->palette.background());
+                } else {
+                    painter->fillRect(r, option->palette.base());
+                }
                 #endif
             }
             #ifdef ENABLE_OVERLAYSCROLLBARS
@@ -371,8 +384,13 @@ void GtkProxyStyle::polish(QWidget *widget)
         widget->setAttribute(Qt::WA_Hover, true);
     }
     #else
-    if (SB_Standard!=sbarType) {
-        widget->setAttribute(Qt::WA_Hover, true);
+
+//    TODO: Why was this here?? Should it not have just been for QScrollBars???
+//    if (SB_Standard!=sbarType) {
+//        widget->setAttribute(Qt::WA_Hover, true);
+//    }
+    if (SB_Standard!=sbarType && qobject_cast<QScrollBar *>(widget) && isOnCombo(widget)) {
+        widget->setProperty(constOnCombo, true);
     }
     #endif
 

@@ -424,6 +424,7 @@ public:
         if (mouseOver) {
             drawIcons(painter, option.rect, true, rtl, AlbumHeader==type || isCollection ? AP_HBottom : AP_HMiddle, index);
         }
+        drawDivider(painter, option.rect, col);
         painter->restore();
     }
 

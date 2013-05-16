@@ -273,6 +273,22 @@
          <item>
           <widget class="ToolButton" name="clearPlayQueueButton"/>
          </item>
+         <item>
+          <layout class="QVBoxLayout" name="sglayout">
+           <property name="margin">
+            <number>0</number>
+           </property>
+           <property name="spacing">
+            <number>0</number>
+           </property>
+           <item>
+           <widget class="QWidget" name="padding"/>
+           </item>
+           <item>
+            <widget class="QSizeGrip" name="sizeGrip"/>
+           </item>
+          </layout>
+         </item>
         </layout>
        </item>
       </layout>

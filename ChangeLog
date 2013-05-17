@@ -11,7 +11,7 @@
     server is used for all non-MPD files. If computer has no active network
     connection (e.g. lo is the only interface), then the HTTP server settings
     page is hidden.
- 7. Only show actions on moue-over.
+ 7. Only show actions on mouse-over.
  8. Use larger action icons in icon view when we have larger previews.
  9. Better non-monochrome radio-stream icons. Thanks to Grely
 10. Dont use alternating rows in views (does not look too great with grouped

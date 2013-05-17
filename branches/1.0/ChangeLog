@@ -12,6 +12,7 @@
    as "abc featuring 123", and album artist is "abc"
 7. Improve comsume icon at larger sizes.
 8. Fix lyrics background when we toggle from showing cover to not showing.
+9. Replace multiple blank lines with single blank line when showing lyrics.
 
 1.0.2.1
 -------

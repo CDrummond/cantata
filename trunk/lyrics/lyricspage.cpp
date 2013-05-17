@@ -61,6 +61,11 @@ static QString cacheFile(QString artist, QString title, bool createDir=false)
     return QDir::toNativeSeparators(Utils::cacheDir(LyricsPage::constLyricsDir+artist+'/', createDir))+title+LyricsPage::constExtension;
 }
 
+static inline QString fixNewLines(const QString &o)
+{
+    return QString(o).replace(QLatin1String("\n\n\n"), QLatin1String("\n\n"));
+}
+
 LyricsPage::LyricsPage(QWidget *p)
     : QWidget(p)
     , needToUpdate(false)
@@ -289,7 +294,7 @@ void LyricsPage::update(const Song &s, bool force)
                 QString tagLyrics=Tags::readLyrics(MPDConnection::self()->getDetails().dir+songFile);
 
                 if (!tagLyrics.isEmpty()) {
-                    text->setText(tagLyrics);
+                    text->setText(fixNewLines(tagLyrics));
                     setMode(Mode_Display);
                     controls->setVisible(false);
                     return;
@@ -334,7 +339,7 @@ void LyricsPage::downloadFinished()
                 QTextStream str(reply);
                 QString lyrics=str.readAll();
                 if (!lyrics.isEmpty()) {
-                    text->setText(lyrics);
+                    text->setText(fixNewLines(lyrics));
                     return;
                 }
             }
@@ -362,7 +367,7 @@ void LyricsPage::lyricsReady(int id, QString lyrics)
             text->setText(before);
             getLyrics();
         } else {
-            text->setText(plain);
+            text->setText(fixNewLines(plain));
             lyricsFile=QString();
             if (! ( Settings::self()->storeLyricsInMpdDir() &&
                     saveFile(Utils::changeExtension(MPDConnection::self()->getDetails().dir+currentSong.file, constExtension))) ) {
@@ -438,7 +443,7 @@ bool LyricsPage::setLyricsFromFile(const QString &filePath) const
         // Read the file using a QTextStream so we get automatic UTF8 detection.
         QTextStream inputStream(&f);
 
-        text->setText(inputStream.readAll());
+        text->setText(fixNewLines(inputStream.readAll()));
         f.close();
 
         return true;

@@ -139,7 +139,6 @@ void AlbumView::getDetails()
             }
         }
     }
-
     QUrl url("http://ws.audioscrobbler.com/2.0/");
     #if QT_VERSION < 0x050000
     QUrl &query=url;
@@ -195,7 +194,6 @@ void AlbumView::infoRetreived()
     if (QNetworkReply::NoError==reply->error()) {
         QByteArray data=reply->readAll();
         if (parseLastFmResponse(data)) {
-            updateDetails();
             QFile f(cacheFileName(Covers::fixArtist(currentSong.albumArtist()), currentSong.album, true));
             QtIOCompressor compressor(&f);
             compressor.setStreamFormat(QtIOCompressor::GzipFormat);
@@ -204,6 +202,7 @@ void AlbumView::infoRetreived()
             }
         }
     }
+    updateDetails();
     reply->deleteLater();
     job=0;
 }

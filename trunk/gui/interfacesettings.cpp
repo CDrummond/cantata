@@ -133,7 +133,6 @@ void InterfaceSettings::load()
     albumsCoverSizeChanged();
     playListsStyleChanged();
     playQueueGroupedChanged();
-    lyricsBgnd->setChecked(Settings::self()->lyricsBgnd());
     forceSingleClick->setChecked(Settings::self()->forceSingleClick());
     systemTrayCheckBox->setChecked(Settings::self()->useSystemTray());
     systemTrayPopup->setChecked(Settings::self()->showPopups());
@@ -169,7 +168,6 @@ void InterfaceSettings::save()
     Settings::self()->savePlayQueueAutoExpand(playQueueAutoExpand->isChecked());
     Settings::self()->savePlayQueueStartClosed(playQueueStartClosed->isChecked());
     Settings::self()->savePlayQueueScroll(playQueueScroll->isChecked());
-    Settings::self()->saveLyricsBgnd(lyricsBgnd->isChecked());
     Settings::self()->saveForceSingleClick(forceSingleClick->isChecked());
     Settings::self()->saveUseSystemTray(systemTrayCheckBox->isChecked());
     Settings::self()->saveShowPopups(systemTrayPopup->isChecked());

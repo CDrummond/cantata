@@ -78,6 +78,7 @@ public:
     bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
     void updateCurrentSong(quint32 id);
     qint32 getIdByRow(qint32 row) const;
+    qint32 getSongId(const QString &file) const;
 //     qint32 getPosByRow(qint32 row) const;
     qint32 getRowById(qint32 id) const;
     Song getSongByRow(const qint32 row) const;

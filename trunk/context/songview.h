@@ -21,21 +21,18 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef LYRICSPAGE_H
-#define LYRICSPAGE_H
+#ifndef SONG_VIEW_H
+#define SONG_VIEW_H
 
 #include <QWidget>
-#include "song.h"
-#include "ui_lyricspage.h"
-#include "textbrowser.h"
+#include "view.h"
 
-class UltimateLyricsProvider;
 class UltimateLyricsProvider;
 class QImage;
 class Action;
 class QNetworkReply;
 
-class LyricsPage : public QWidget, public Ui::LyricsPage
+class SongView : public View
 {
   Q_OBJECT
 
@@ -49,20 +46,13 @@ public:
     static const QLatin1String constLyricsDir;
     static const QLatin1String constExtension;
 
-    LyricsPage(QWidget *p);
-    ~LyricsPage();
+    SongView(QWidget *p);
+    ~SongView();
 
-    void saveSettings();
     void update(const Song &song, bool force=false);
-    void setBgndImageEnabled(bool e) { text->enableImage(e); }
-    bool bgndImageEnabled() { return text->imageEnabled(); }
-    void showEvent(QShowEvent *e);
 
 Q_SIGNALS:
     void providersUpdated();
-
-public Q_SLOTS:
-    void setImage(const QImage &img) { text->setImage(img); }
 
 protected Q_SLOTS:
     void downloadFinished();
@@ -89,13 +79,11 @@ private:
      *
      * @return Returns true if the file could be read; otherwise false.
      */
-    bool setLyricsFromFile(const QString &filePath) const;
+    bool setLyricsFromFile(const QString &filePath);
 
 private:
-    bool needToUpdate;
     int currentProvider;
     int currentRequest;
-    Song currentSong;
     Action *refreshAction;
     Action *searchAction;
     Action *editAction;

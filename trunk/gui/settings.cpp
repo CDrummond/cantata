@@ -452,27 +452,6 @@ QStringList Settings::lyricProviders()
     return GET_STRINGLIST("lyricProviders", def);
 }
 
-int Settings::lyricsZoom()
-{
-    return GET_INT("lyricsZoom", 0);
-}
-
-bool Settings::lyricsBgnd()
-{
-    return GET_BOOL("lyricsBgnd", true);
-}
-
-int Settings::infoZoom()
-{
-    int zoom=GET_INT("infoZoom", 0);
-    if (zoom>0 && version()<CANTATA_MAKE_VERSION(0, 9, 51)) {
-        modified=true;
-        zoom=0;
-        SET_VALUE("infoZoom", zoom);
-    }
-    return zoom;
-}
-
 QString Settings::infoProvider()
 {
     return GET_STRING("infoProvider", QString());
@@ -876,21 +855,6 @@ void Settings::saveGroupMultiple(bool v)
 void Settings::saveLyricProviders(const QStringList &v)
 {
     SET_VALUE_MOD(lyricProviders)
-}
-
-void Settings::saveLyricsZoom(int v)
-{
-    SET_VALUE_MOD(lyricsZoom)
-}
-
-void Settings::saveLyricsBgnd(bool v)
-{
-    SET_VALUE_MOD(lyricsBgnd)
-}
-
-void Settings::saveInfoZoom(int v)
-{
-    SET_VALUE_MOD(infoZoom)
 }
 
 void Settings::saveInfoProvider(const QString &v)

@@ -531,6 +531,20 @@ void MPDConnection::add(const QStringList &files, quint32 pos, quint32 size, boo
     }
 }
 
+void MPDConnection::addAndPlay(const QString &file)
+{
+    toggleStopAfterCurrent(false);
+    Response response=sendCommand("status");
+    if (response.ok) {
+        MPDStatusValues sv=MPDParseUtils::parseStatus(response.data);
+        QByteArray send = "command_list_begin\n";
+        send+="add "+encodeName(file)+"\n";
+        send+="play "+QByteArray::number(sv.playlistLength)+"\n";
+        send+="command_list_end";
+        sendCommand(send);
+    }
+}
+
 void MPDConnection::clear()
 {
     toggleStopAfterCurrent(false);

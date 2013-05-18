@@ -21,31 +21,20 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef INFOPAGE_H
-#define INFOPAGE_H
+#ifndef ARTIST_VIEW_H
+#define ARTIST_VIEW_H
 
-#include <QWidget>
+#include "view.h"
 #include <QMap>
-#include <QImage>
-#include "song.h"
-#include "textbrowser.h"
 
-class Song;
 class ComboBox;
-class HeaderLabel;
+class QLabel;
 class QNetworkReply;
 class QIODevice;
+class QImage;
 class QUrl;
 
-class InfoBrowser : public TextBrowser
-{
-public:
-    InfoBrowser(QWidget *w);
-    virtual ~InfoBrowser() { }
-    QVariant loadResource(int type, const QUrl &name);
-};
-
-class InfoPage : public QWidget
+class ArtistView : public View
 {
     Q_OBJECT
 
@@ -53,14 +42,11 @@ public:
     static const QLatin1String constCacheDir;
     static const QLatin1String constInfoExt;
 
-    InfoPage(QWidget *parent);
-    virtual ~InfoPage() { abort(); }
+    ArtistView(QWidget *parent);
+    virtual ~ArtistView() { abort(); }
 
     void saveSettings();
     void update(const Song &s, bool force=false);
-    void setBgndImageEnabled(bool e) { text->enableImage(e); }
-    bool bgndImageEnabled() { return text->imageEnabled(); }
-    void showEvent(QShowEvent *e);
 
 Q_SIGNALS:
     void findArtist(const QString &artist);
@@ -85,17 +71,12 @@ private:
     void abort();
 
 private:
-    bool needToUpdate;
-    HeaderLabel *header;
-    InfoBrowser *text;
     ComboBox *combo;
     QMap<int, QString> biographies;
     QString similarArtists;
-    Song currentSong;
     QNetworkReply *currentBioJob;
     QNetworkReply *currentSimilarJob;
     QString provider;
-    QString image;
     #ifndef Q_OS_WIN
     QString webLinks;
     #endif

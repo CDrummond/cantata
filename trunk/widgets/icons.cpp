@@ -437,6 +437,10 @@ void Icons::init()
     filesIcon=Icon("document-multiple");
     cancelIcon=Icon("dialog-cancel");
     importIcon=Icon("document-import");
+    lyricsIcon=Icon("view-media-lyrics");
+    if (lyricsIcon.isNull()) {
+        lyricsIcon=Icon("text-x-generic");
+    }
     if (editIcon.isNull()) {
         editIcon=Icon("text-editor");
     }
@@ -518,7 +522,6 @@ void Icons::init()
     if (streamCategoryIcon.isNull()) {
         streamCategoryIcon=libraryIcon;
     }
-
 }
 
 void Icons::initSidebarIcons()
@@ -536,8 +539,6 @@ void Icons::initSidebarIcons()
         #ifdef ENABLE_ONLINE_SERVICES
         onlineIcon=loadSidebarIcon("online", textCol, highlightedTexCol);
         #endif
-        lyricsIcon=loadSidebarIcon("lyrics", textCol, highlightedTexCol);
-        infoIcon=loadSidebarIcon("info", textCol, highlightedTexCol);
         #ifdef ENABLE_DEVICES_SUPPORT
         devicesIcon=loadSidebarIcon("devices", textCol, highlightedTexCol);
         #endif
@@ -552,14 +553,9 @@ void Icons::initSidebarIcons()
         #ifdef ENABLE_ONLINE_SERVICES
         onlineIcon=Icon("applications-internet");
         #endif
-        lyricsIcon=Icon("view-media-lyrics");
-        infoIcon=Icon("dialog-information");
         #ifdef ENABLE_DEVICES_SUPPORT
         devicesIcon=Icon("multimedia-player");
         #endif
-        if (lyricsIcon.isNull()) {
-            lyricsIcon=Icon("text-x-generic");
-        }
     }
 }
 
@@ -622,8 +618,17 @@ void Icons::initToolbarIcons(const QColor &color, bool forceLight)
         toolbarVolumeLowIcon=Icon("audio-volume-low-symbolic");
         toolbarVolumeMediumIcon=Icon("audio-volume-medium-symbolic");
         toolbarVolumeHighIcon=Icon("audio-volume-high-symbolic");
-    }
+        QColor col(196, 196, 196);
+        infoIcon=loadSidebarIcon("info", col, col);
+    } else
     #endif
+        if (QIcon::themeName()==QLatin1String("gnome")) {
+            QColor col=QApplication::palette().color(QPalette::Active, QPalette::ButtonText);
+            infoIcon=loadSidebarIcon("info", col, col);
+        }
+    if (infoIcon.isNull()) {
+        infoIcon=Icon("dialog-information");
+    }
     if (toolbarPrevIcon.isNull()) {
         toolbarPrevIcon=Icon::getMediaIcon("media-skip-backward");
     } else {

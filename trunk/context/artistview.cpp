@@ -1,4 +1,4 @@
-    /*
+/*
  * Cantata
  *
  * Copyright (c) 2011-2013 Craig Drummond <craig.p.drummond@gmail.com>
@@ -21,7 +21,7 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include "infopage.h"
+#include "artistview.h"
 #include "localize.h"
 #include "covers.h"
 #include "utils.h"
@@ -32,97 +32,55 @@
 #include "settings.h"
 #include "qjson/parser.h"
 #include "qtiocompressor/qtiocompressor.h"
-#include <QBoxLayout>
-#include <QComboBox>
 #include <QNetworkReply>
-#include <QFile>
-#include <QBuffer>
 #include <QApplication>
-#include <QTextDocument>
+#include <QTextBrowser>
+#include <QLayout>
 #if QT_VERSION >= 0x050000
 #include <QUrlQuery>
 #endif
 #ifndef Q_OS_WIN
-#include "gtkproxystyle.h"
 #include <QProcess>
 #include <QXmlStreamReader>
 #endif
+#include <QPixmap>
+#include <QFile>
 
 static const QLatin1String constApiKey("N5JHVHNG0UOZZIDVT");
 static const char *constNameKey="name";
 static const int constCacheAge=7;
-static int imageWidth=-1;
-static int imageHeight=-1;
 
-const QLatin1String InfoPage::constCacheDir("artists/");
-const QLatin1String InfoPage::constInfoExt(".json.gz");
+const QLatin1String ArtistView::constCacheDir("artists/");
+const QLatin1String ArtistView::constInfoExt(".json.gz");
 
 static QString cacheFileName(const QString &artist, bool similar, bool createDir)
 {
-    return Utils::cacheDir(InfoPage::constCacheDir, createDir)+Covers::encodeName(artist)+(similar ? "-similar" : "")+InfoPage::constInfoExt;
+    return Utils::cacheDir(ArtistView::constCacheDir, createDir)+Covers::encodeName(artist)+(similar ? "-similar" : "")+ArtistView::constInfoExt;
 }
 
-static QString encode(const QImage &img)
-{
-    QByteArray bytes;
-    QBuffer buffer(&bytes);
-    buffer.open(QIODevice::WriteOnly);
-    img.save(&buffer, "PNG");
-    return QString("<img src=\"data:image/png;base64,%1\">").arg(QString(buffer.data().toBase64()));
-}
-
-InfoBrowser::InfoBrowser(QWidget *p)
-    : TextBrowser(p)
-{
-    setZoom(Settings::self()->infoZoom());
-    setOpenLinks(false);
-}
-
-// QTextEdit/QTextBrowser seems to do FastTransformation when scaling images, and this looks bad.
-QVariant InfoBrowser::loadResource(int type, const QUrl &name)
-{
-    if (QTextDocument::ImageResource==type && (name.scheme().isEmpty() || QLatin1String("file")==name.scheme())) {
-        QImage img;
-        img.load(name.path());
-        if (!img.isNull()) {
-            return img.scaled(imageWidth, imageHeight, Qt::KeepAspectRatio, Qt::SmoothTransformation);
-        }
-    }
-    return TextBrowser::loadResource(type, name);
-}
-
-InfoPage::InfoPage(QWidget *parent)
-    : QWidget(parent)
-    , needToUpdate(false)
+ArtistView::ArtistView(QWidget *parent)
+    : View(parent)
     , currentBioJob(0)
     , currentSimilarJob(0)
 {
-    QVBoxLayout *vlayout=new QVBoxLayout(this);
-    header=new HeaderLabel(this);
-    text=new InfoBrowser(this);
     combo=new ComboBox(this);
-    vlayout->addWidget(header);
-    vlayout->addWidget(text);
-    vlayout->addWidget(combo);
-    vlayout->setMargin(0);
     connect(combo, SIGNAL(currentIndexChanged(int)), SLOT(setBio()));
-    #ifndef Q_OS_WIN
-    combo->setProperty(GtkProxyStyle::constSlimComboProperty, true);
-    #endif
+    layout()->addWidget(combo);
+
     connect(Covers::self(), SIGNAL(artistImage(Song,QImage,QString)), SLOT(artistImage(Song,QImage,QString)));
     connect(text, SIGNAL(anchorClicked(QUrl)), SLOT(showArtist(QUrl)));
     Utils::clearOldCache(constCacheDir, constCacheAge);
-    header->setText(i18n("Information"));
-    if (-1==imageHeight) {
-        imageHeight=fontMetrics().height()*12;
-        imageWidth=imageHeight*1.5;
-    }
+    setStandardHeader(i18n("Artist Information"));
+   
+    int imageHeight=fontMetrics().height()*14;
+    int imageWidth=imageHeight*1.5;
+    setPicSize(QSize(imageWidth, imageHeight));
     provider=Settings::self()->infoProvider();
+    clear();
 }
 
-void InfoPage::saveSettings()
+void ArtistView::saveSettings()
 {
-    Settings::self()->saveInfoZoom(text->zoom());
     if (combo->count()) {
         provider=combo->itemData(combo->currentIndex()).toString();
     }
@@ -131,16 +89,7 @@ void InfoPage::saveSettings()
     }
 }
 
-void InfoPage::showEvent(QShowEvent *e)
-{
-    if (needToUpdate) {
-        update(currentSong, true);
-    }
-    needToUpdate=false;
-    QWidget::showEvent(e);
-}
-
-void InfoPage::update(const Song &s, bool force)
+void ArtistView::update(const Song &s, bool force)
 {
     Song song=s;
     if (song.isVariousArtists()) {
@@ -166,17 +115,14 @@ void InfoPage::update(const Song &s, bool force)
         if (combo->count()) {
             provider=combo->itemData(combo->currentIndex()).toString();
         }
+
+        clear();
         combo->clear();
         biographies.clear();
-        text->setImage(QImage());
-        image=QString();
         similarArtists=QString();
-        if (currentSong.isEmpty()) {
-            text->setText(QString());
-            header->setText(i18n("Information"));
-        } else {
-            text->setHtml("<i>Retrieving...</i>", true);
-            header->setText(currentSong.artist);
+        if (!currentSong.isEmpty()) {
+            text->setText("<i>Retrieving...</i>");
+            setHeader(currentSong.artist);
 
             Song s;
             s.albumartist=currentSong.artist;
@@ -190,20 +136,15 @@ void InfoPage::update(const Song &s, bool force)
     }
 }
 
-void InfoPage::artistImage(const Song &song, const QImage &i, const QString &f)
+void ArtistView::artistImage(const Song &song, const QImage &i, const QString &f)
 {
-    if (song.albumartist==currentSong.artist && image.isEmpty() && !i.isNull()) {
-        if (!f.isEmpty() && QFile::exists(f)) {
-            image=QString("<img src=\"%1\">").arg(f);
-        } else {
-            // No filename given, or file does not exist - therefore scale image.
-            image=encode(i.scaled(imageWidth, imageHeight, Qt::KeepAspectRatio, Qt::SmoothTransformation));
-        }
-        setBio();
+    Q_UNUSED(f)
+    if (song.albumartist==currentSong.artist) {
+        setPic(i);
     }
 }
 
-void InfoPage::setProvider()
+void ArtistView::setProvider()
 {
     if (!provider.isEmpty() && combo->itemData(combo->currentIndex()).toString()!=provider) {
         for (int i=0; i<combo->count(); ++i) {
@@ -216,7 +157,7 @@ void InfoPage::setProvider()
     }
 }
 
-void InfoPage::loadBio()
+void ArtistView::loadBio()
 {
     QString cachedFile=cacheFileName(currentSong.artist, false, false);
     if (QFile::exists(cachedFile)) {
@@ -235,10 +176,11 @@ void InfoPage::loadBio()
         }
     }
 
+    showSpinner();
     requestBio();
 }
 
-void InfoPage::loadSimilar()
+void ArtistView::loadSimilar()
 {
     QString cachedFile=cacheFileName(currentSong.artist, true, false);
     if (QFile::exists(cachedFile)) {
@@ -259,13 +201,14 @@ void InfoPage::loadSimilar()
     requestSimilar();
 }
 
-void InfoPage::handleBioReply()
+void ArtistView::handleBioReply()
 {
     QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
     if (!reply) {
         return;
     }
     if (reply==currentBioJob) {
+        hideSpinner();
         bool ok=false;
         if (QNetworkReply::NoError==reply->error()) {
             QByteArray data=reply->readAll();
@@ -282,14 +225,14 @@ void InfoPage::handleBioReply()
             }
         }
         if (!ok) {
-            text->setHtml(i18n(("<i><Failed to download information!</i>")));
+            text->setText(i18n(("<i><Failed to download information!</i>")));
         }
         reply->deleteLater();
         currentBioJob=0;
     }
 }
 
-void InfoPage::handleSimilarReply()
+void ArtistView::handleSimilarReply()
 {
     QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
     if (!reply) {
@@ -313,16 +256,11 @@ void InfoPage::handleSimilarReply()
     }
 }
 
-void InfoPage::setBio()
+void ArtistView::setBio()
 {
     int bio=combo->currentIndex();
     if (biographies.contains(bio)) {
-        QString html;
-
-        if (!image.isEmpty()) {
-            html=image;
-        }
-        html+="<p>"+biographies[bio]+"</p>";
+        QString html=biographies[bio];
         if (!similarArtists.isEmpty()) {
             html+=similarArtists;
         }
@@ -348,14 +286,14 @@ void InfoPage::setBio()
         }
 
         if (!webLinks.isEmpty()) {
-            html+="<br/><b>"+i18n("Web Links")+"</b><ul>"+QString(webLinks).replace("${artist}", currentSong.artist)+"</ul>";
+            html+="<h3>"+i18n("Web Links")+"</h3><ul>"+QString(webLinks).replace("${artist}", currentSong.artist)+"</ul>";
         }
         #endif
-        text->setHtml(html);
+        text->setText(html);
     }
 }
 
-void InfoPage::requestBio()
+void ArtistView::requestBio()
 {
     abort();
     #if QT_VERSION < 0x050000
@@ -380,7 +318,7 @@ void InfoPage::requestBio()
     connect(currentBioJob, SIGNAL(finished()), this, SLOT(handleBioReply()));
 }
 
-void InfoPage::requestSimilar()
+void ArtistView::requestSimilar()
 {
     abort();
     #if QT_VERSION < 0x050000
@@ -405,7 +343,7 @@ void InfoPage::requestSimilar()
     connect(currentSimilarJob, SIGNAL(finished()), this, SLOT(handleSimilarReply()));
 }
 
-void InfoPage::abort()
+void ArtistView::abort()
 {
     if (currentBioJob) {
         disconnect(currentBioJob, SIGNAL(finished()), this, SLOT(handleBioReply()));
@@ -439,7 +377,7 @@ struct Bio
     QString text;
 };
 
-int value(const QString &site)
+static int value(const QString &site)
 {
     return QLatin1String("last.fm")==site
             ? 0
@@ -452,7 +390,7 @@ static const QString constReferencesLine("This article does not cite any referen
 static const QString constDisambiguationLine("This article is about the band");
 static const QString constDisambiguationLine2("For other uses, see ");
 
-bool InfoPage::parseBioResponse(const QByteArray &resp)
+bool ArtistView::parseBioResponse(const QByteArray &resp)
 {
     QMultiMap<int, Bio> biogs;
     QJson::Parser parser;
@@ -511,7 +449,7 @@ bool InfoPage::parseBioResponse(const QByteArray &resp)
                 continue;
             }
         }
-        biographies[combo->count()]="<p><b>"+i18n("Biography")+"</b></p><p>"+it.value().text;
+        biographies[combo->count()]=it.value().text;
         combo->insertItem(combo->count(), i18n("Source: %1").arg(it.value().site), it.value().site);
     }
 
@@ -521,7 +459,7 @@ bool InfoPage::parseBioResponse(const QByteArray &resp)
     return !biogs.isEmpty();
 }
 
-bool InfoPage::parseSimilarResponse(const QByteArray &resp)
+bool ArtistView::parseSimilarResponse(const QByteArray &resp)
 {
     QSet<QString> mpdArtists=MusicLibraryModel::self()->getAlbumArtists();
     QJson::Parser parser;
@@ -536,7 +474,7 @@ bool InfoPage::parseSimilarResponse(const QByteArray &resp)
                 if (!details.isEmpty() && details.contains("name")) {
                     QString artist=details["name"].toString();
                     if (similarArtists.isEmpty()) {
-                        similarArtists="<br/><b>"+i18n("Similar Artists")+"</b><ul>";
+                        similarArtists="<br/><h3>"+i18n("Similar Artists")+"</h3><ul>";
                     }
                     if (mpdArtists.contains(artist)) {
                         artist=QLatin1String("<a href=\"cantata://?artist=")+artist+"\">"+artist+"</a>";
@@ -561,7 +499,7 @@ bool InfoPage::parseSimilarResponse(const QByteArray &resp)
     return !similarArtists.isEmpty();
 }
 
-void InfoPage::showArtist(const QUrl &url)
+void ArtistView::showArtist(const QUrl &url)
 {
     if (QLatin1String("cantata")==url.scheme()) {
         #if QT_VERSION < 0x050000

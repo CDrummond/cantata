@@ -32,7 +32,7 @@
 #include "settings.h"
 #include "mpdconnection.h"
 #include "utils.h"
-#include "lyricspage.h"
+#include "songview.h"
 #include "localize.h"
 #include "messagebox.h"
 #include "icons.h"
@@ -294,8 +294,8 @@ void TrackOrganiser::renameFile()
 
         // If file was renamed, then also rename any lyrics file...
         if (renamed) {
-            QString lyricsSource=Utils::changeExtension(source, LyricsPage::constExtension);
-            QString lyricsDest=Utils::changeExtension(dest, LyricsPage::constExtension);
+            QString lyricsSource=Utils::changeExtension(source, SongView::constExtension);
+            QString lyricsDest=Utils::changeExtension(dest, SongView::constExtension);
 
             if (QFile::exists(lyricsSource) && !QFile::exists(lyricsDest)) {
                 QFile::rename(lyricsSource, lyricsDest);

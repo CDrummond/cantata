@@ -24,7 +24,7 @@
 #include "filejob.h"
 #include "utils.h"
 #include "device.h"
-#include "lyricspage.h"
+#include "songview.h"
 #include "covers.h"
 #include "thread.h"
 #include <QFile>
@@ -226,7 +226,7 @@ void DeleteJob::run()
 {
     int status=QFile::remove(fileName) ? Device::Ok : Device::Failed;
     if (remLyrics && Device::Ok==status) {
-        QString lyrics=Utils::changeExtension(fileName, LyricsPage::constExtension);
+        QString lyrics=Utils::changeExtension(fileName, SongView::constExtension);
         if (lyrics!=fileName) {
             QFile::remove(lyrics);
         }

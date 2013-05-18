@@ -665,6 +665,22 @@ void MusicLibraryModel::toggleGrouping()
     endResetModel();
 }
 
+QList<Song> MusicLibraryModel::getAlbumTracks(const Song &s) const
+{
+    QList<Song> songs;
+    MusicLibraryItemArtist *artistItem = rootItem->artist(s, false);
+    if (artistItem) {
+        MusicLibraryItemAlbum *albumItem = artistItem->album(s, false);
+        if (albumItem) {
+            foreach (MusicLibraryItem *songItem, albumItem->childItems()) {
+                songs.append(static_cast<MusicLibraryItemSong *>(songItem)->song());
+            }
+            qSort(songs);
+        }
+    }
+    return songs;
+}
+
 void MusicLibraryModel::setArtistImage(const Song &song, const QImage &img, bool update)
 {
     if (!rootItem->useArtistImages() || img.isNull() || MusicLibraryItemAlbum::CoverNone==MusicLibraryItemAlbum::currentCoverSize() ||

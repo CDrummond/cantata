@@ -23,8 +23,9 @@
 
 #include "cachesettings.h"
 #include "localize.h"
-#include "lyricspage.h"
-#include "infopage.h"
+#include "artistview.h"
+#include "albumview.h"
+#include "songview.h"
 #include "covers.h"
 #include "musiclibrarymodel.h"
 #include "utils.h"
@@ -38,6 +39,7 @@
 #include <QFileInfo>
 #include <QDir>
 #include <QList>
+#include <QHeaderView>
 
 static const int constMaxRecurseLevel=4;
 
@@ -234,8 +236,9 @@ CacheSettings::CacheSettings(QWidget *parent)
     new CacheItem(i18n("Music Library"), Utils::cacheDir(MusicLibraryModel::constLibraryCache, false),
                   QStringList() << "*"+MusicLibraryModel::constLibraryExt << "*"+MusicLibraryModel::constLibraryCompressedExt, tree);
     new CacheItem(i18n("Covers"), Utils::cacheDir(Covers::constCoverDir, false), QStringList() << "*.jpg" << "*.png", tree);
-    new CacheItem(i18n("Lyrics"), Utils::cacheDir(LyricsPage::constLyricsDir, false), QStringList() << "*"+LyricsPage::constExtension, tree);
-    new CacheItem(i18n("Artist Information"), Utils::cacheDir(InfoPage::constCacheDir, false), QStringList() << "*"+InfoPage::constInfoExt << "*.jpg" << "*.png", tree);
+    new CacheItem(i18n("Lyrics"), Utils::cacheDir(SongView::constLyricsDir, false), QStringList() << "*"+SongView::constExtension, tree);
+    new CacheItem(i18n("Artist Information"), Utils::cacheDir(ArtistView::constCacheDir, false), QStringList() << "*"+ArtistView::constInfoExt << "*.jpg" << "*.png", tree);
+    new CacheItem(i18n("Album Information"), Utils::cacheDir(AlbumView::constCacheDir, false), QStringList() << "*"+AlbumView::constInfoExt << "*.jpg" << "*.png", tree);
     #ifdef ENABLE_ONLINE_SERVICES
     new CacheItem(i18n("Jamendo"), Utils::cacheDir("jamendo", false), QStringList() << "*"+MusicLibraryModel::constLibraryCompressedExt << "*.jpg" << "*.png", tree);
     new CacheItem(i18n("Magnatune"), Utils::cacheDir("magnatune", false), QStringList() << "*"+MusicLibraryModel::constLibraryCompressedExt<< "*.jpg" << "*.png", tree);

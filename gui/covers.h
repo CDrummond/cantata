@@ -169,6 +169,7 @@ public:
     static QString encodeName(QString name);
     static QString albumFileName(const Song &song);
     static QString artistFileName(const Song &song);
+    static QString fixArtist(const QString &artist);
 
     Covers();
     void stop();

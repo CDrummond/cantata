@@ -71,8 +71,6 @@
 #include "onlineservicespage.h"
 #include "onlineservicesmodel.h"
 #endif
-#include "lyricspage.h"
-#include "infopage.h"
 #include "gtkstyle.h"
 #ifdef ENABLE_DEVICES_SUPPORT
 #include "filejob.h"
@@ -273,6 +271,8 @@ MainWindow::MainWindow(QWidget *parent)
     addStreamToPlayQueueAction = ActionCollection::get()->createAction("addstreamtoplayqueue", i18n("Add Stream URL"), Icons::addRadioStreamIcon);
     clearPlayQueueAction = ActionCollection::get()->createAction("clearplaylist", i18n("Clear"), Icons::clearListIcon);
     expandInterfaceAction = ActionCollection::get()->createAction("expandinterface", i18n("Expanded Interface"), "view-media-playlist");
+    songInfoAction = ActionCollection::get()->createAction("showsonginfo", i18n("Show Current Song Information"), Icons::infoIcon);
+    songInfoAction->setShortcut(Qt::Key_F12);
     fullScreenAction = ActionCollection::get()->createAction("fullScreen", i18n("Full Screen"), "view-fullscreen");
     fullScreenAction->setShortcut(Qt::Key_F11);
     randomPlayQueueAction = ActionCollection::get()->createAction("randomplaylist", i18n("Random"), Icons::shuffleIcon);
@@ -293,12 +293,10 @@ MainWindow::MainWindow(QWidget *parent)
     foldersTabAction = ActionCollection::get()->createAction("showfolderstab", i18n("Folders"), Icons::foldersIcon);
     playlistsTabAction = ActionCollection::get()->createAction("showplayliststab", i18n("Playlists"), Icons::playlistsIcon);
     dynamicTabAction = ActionCollection::get()->createAction("showdynamictab", i18n("Dynamic"), Icons::dynamicIcon);
-    lyricsTabAction = ActionCollection::get()->createAction("showlyricstab", i18n("Lyrics"), Icons::lyricsIcon);
     streamsTabAction = ActionCollection::get()->createAction("showstreamstab", i18n("Streams"), Icons::streamsIcon);
     #ifdef ENABLE_ONLINE_SERVICES
     onlineTabAction = ActionCollection::get()->createAction("showonlinetab", i18n("Online"), Icons::onlineIcon);
     #endif
-    infoTabAction = ActionCollection::get()->createAction("showinfotab", i18n("Info"), Icons::infoIcon);
     #ifdef ENABLE_DEVICES_SUPPORT
     devicesTabAction = ActionCollection::get()->createAction("showdevicestab", i18n("Devices"), Icons::devicesIcon);
     #endif
@@ -338,8 +336,6 @@ MainWindow::MainWindow(QWidget *parent)
     #ifdef ENABLE_ONLINE_SERVICES
     onlineTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
     #endif
-    lyricsTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
-    infoTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
     #ifdef ENABLE_DEVICES_SUPPORT
     devicesTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
     #endif // ENABLE_DEVICES_SUPPORT
@@ -379,8 +375,6 @@ MainWindow::MainWindow(QWidget *parent)
     #ifdef ENABLE_ONLINE_SERVICES
     onlinePage = new OnlineServicesPage(this);
     #endif
-    lyricsPage = new LyricsPage(this);
-    infoPage = new InfoPage(this);
     #ifdef ENABLE_DEVICES_SUPPORT
     devicesPage = new DevicesPage(this);
     #endif
@@ -429,8 +423,6 @@ MainWindow::MainWindow(QWidget *parent)
     #ifdef ENABLE_ONLINE_SERVICES
     tabWidget->AddTab(onlinePage, TAB_ACTION(onlineTabAction), !hiddenPages.contains(onlinePage->metaObject()->className()));
     #endif
-    tabWidget->AddTab(lyricsPage, TAB_ACTION(lyricsTabAction), !hiddenPages.contains(lyricsPage->metaObject()->className()));
-    tabWidget->AddTab(infoPage, TAB_ACTION(infoTabAction), !hiddenPages.contains(infoPage->metaObject()->className()));
     #ifdef ENABLE_DEVICES_SUPPORT
     tabWidget->AddTab(devicesPage, TAB_ACTION(devicesTabAction), !hiddenPages.contains(devicesPage->metaObject()->className()));
     DevicesModel::self()->setEnabled(!hiddenPages.contains(devicesPage->metaObject()->className()));
@@ -463,6 +455,7 @@ MainWindow::MainWindow(QWidget *parent)
     tabWidget->SetMode(FancyTabWidget::Mode_LargeSidebar);
     expandInterfaceAction->setCheckable(true);
     fullScreenAction->setCheckable(true);
+    songInfoAction->setCheckable(true);
     randomPlayQueueAction->setCheckable(true);
     repeatPlayQueueAction->setCheckable(true);
     singlePlayQueueAction->setCheckable(true);
@@ -471,11 +464,12 @@ MainWindow::MainWindow(QWidget *parent)
     streamPlayAction->setCheckable(true);
     #endif
 
+    songInfoButton->setDefaultAction(songInfoAction);
     searchPlayQueueLineEdit->setPlaceholderText(i18n("Search Play Queue..."));
     QList<QToolButton *> playbackBtns;
     QList<QToolButton *> controlBtns;
     playbackBtns << prevTrackButton << stopTrackButton << playPauseTrackButton << nextTrackButton;
-    controlBtns << volumeButton << menuButton << streamButton;
+    controlBtns << volumeButton << menuButton << streamButton << songInfoButton;
 
     int playbackIconSize=28;
     int controlIconSize=22;
@@ -561,6 +555,7 @@ MainWindow::MainWindow(QWidget *parent)
     #endif
 
     mainMenu->addAction(expandInterfaceAction);
+    mainMenu->addAction(songInfoAction);
     mainMenu->addAction(fullScreenAction);
     mainMenu->addAction(connectionsAction);
     mainMenu->addAction(outputsAction);
@@ -594,6 +589,7 @@ MainWindow::MainWindow(QWidget *parent)
         menuBar()->addMenu(menu);
         menu=new QMenu(i18n("&Settings"), this);
         menu->addAction(expandInterfaceAction);
+        menu->addAction(songInfoAction);
         menu->addAction(fullScreenAction);
         menu->addAction(connectionsAction);
         menu->addAction(outputsAction);
@@ -681,6 +677,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(this, SIGNAL(setDetails(const MPDConnectionDetails &)), MPDConnection::self(), SLOT(setDetails(const MPDConnectionDetails &)));
     connect(this, SIGNAL(setPriority(const QList<qint32> &, quint8 )), MPDConnection::self(), SLOT(setPriority(const QList<qint32> &, quint8)));
     connect(this, SIGNAL(addSongsToPlaylist(const QString &, const QStringList &)), MPDConnection::self(), SLOT(addToPlaylist(const QString &, const QStringList &)));
+    connect(this, SIGNAL(addAndPlay(QString)), MPDConnection::self(), SLOT(addAndPlay(QString)));
     connect(&playQueueModel, SIGNAL(statsUpdated(int, quint32)), this, SLOT(updatePlayQueueStats(int, quint32)));
     connect(&playQueueModel, SIGNAL(fetchingStreams()), playQueue, SLOT(showSpinner()));
     connect(&playQueueModel, SIGNAL(streamsFetched()), playQueue, SLOT(hideSpinner()));
@@ -738,6 +735,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(cropPlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(cropPlayQueue()));
     connect(shufflePlayQueueAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(shuffle()));
     connect(expandInterfaceAction, SIGNAL(triggered(bool)), this, SLOT(expandOrCollapse()));
+    connect(songInfoAction, SIGNAL(triggered(bool)), this, SLOT(showSongInfo()));
     connect(fullScreenAction, SIGNAL(triggered(bool)), this, SLOT(fullScreen()));
     connect(volumeButton, SIGNAL(clicked()), SLOT(showVolumeControl()));
     #ifdef TAGLIB_FOUND
@@ -745,7 +743,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(editPlayQueueTagsAction, SIGNAL(triggered(bool)), this, SLOT(editPlayQueueTags()));
     connect(StdActions::self()->organiseFilesAction, SIGNAL(triggered(bool)), SLOT(organiseFiles()));
     #endif
-    connect(infoPage, SIGNAL(findArtist(QString)), this, SLOT(locateArtist(QString)));
+    connect(context, SIGNAL(findArtist(QString)), this, SLOT(locateArtist(QString)));
+    connect(context, SIGNAL(playSong(QString)), this, SLOT(playSong(QString)));
     connect(locateTrackAction, SIGNAL(triggered(bool)), this, SLOT(locateTrack()));
     connect(showPlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(showPlayQueue()));
     connect(libraryTabAction, SIGNAL(triggered(bool)), this, SLOT(showLibraryTab()));
@@ -753,12 +752,10 @@ MainWindow::MainWindow(QWidget *parent)
     connect(foldersTabAction, SIGNAL(triggered(bool)), this, SLOT(showFoldersTab()));
     connect(playlistsTabAction, SIGNAL(triggered(bool)), this, SLOT(showPlaylistsTab()));
     connect(dynamicTabAction, SIGNAL(triggered(bool)), this, SLOT(showDynamicTab()));
-    connect(lyricsTabAction, SIGNAL(triggered(bool)), this, SLOT(showLyricsTab()));
     connect(streamsTabAction, SIGNAL(triggered(bool)), this, SLOT(showStreamsTab()));
     #ifdef ENABLE_ONLINE_SERVICES
     connect(onlineTabAction, SIGNAL(triggered(bool)), this, SLOT(showOnlineTab()));
     #endif
-    connect(infoTabAction, SIGNAL(triggered(bool)), this, SLOT(showInfoTab()));
     connect(searchAction, SIGNAL(triggered(bool)), this, SLOT(focusSearch()));
     connect(expandAllAction, SIGNAL(triggered(bool)), this, SLOT(expandAll()));
     connect(collapseAllAction, SIGNAL(triggered(bool)), this, SLOT(collapseAll()));
@@ -787,7 +784,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(PlaylistsModel::self(), SIGNAL(addToNew()), this, SLOT(addToNewStoredPlaylist()));
     connect(PlaylistsModel::self(), SIGNAL(addToExisting(const QString &)), this, SLOT(addToExistingStoredPlaylist(const QString &)));
     connect(playlistsPage, SIGNAL(add(const QStringList &, bool, quint8)), &playQueueModel, SLOT(addItems(const QStringList &, bool, quint8)));
-    connect(coverWidget, SIGNAL(coverImage(const QImage &)), lyricsPage, SLOT(setImage(const QImage &)));
     connect(coverWidget, SIGNAL(clicked()), expandInterfaceAction, SLOT(trigger()));
     #ifdef Q_OS_LINUX
     connect(MountPoints::self(), SIGNAL(updated()), SLOT(checkMpdAccessibility()));
@@ -876,8 +872,6 @@ MainWindow::~MainWindow()
     }
     Settings::self()->saveHiddenPages(hiddenPages);
     streamsPage->save();
-    lyricsPage->saveSettings();
-    infoPage->saveSettings();
     Settings::self()->saveForceSingleClick(ItemView::getForceSingleClick());
     Settings::self()->saveStartHidden(trayItem->isActive() && isHidden() && Settings::self()->minimiseOnClose());
     Settings::self()->save(true);
@@ -1016,7 +1010,6 @@ void MainWindow::mpdConnectionStateChanged(bool connected)
         folderPage->clear();
         playlistsPage->clear();
         playQueueModel.clear();
-        lyricsPage->text->clear();
         connectedState=CS_Disconnected;
         outputsAction->setVisible(false);
         MPDStatus dummyStatus;
@@ -1084,7 +1077,6 @@ void MainWindow::connectToMpd(const MPDConnectionDetails &details)
         folderPage->clear();
         playlistsPage->clear();
         playQueueModel.clear();
-        lyricsPage->text->clear();
         if (!MPDConnection::self()->getDetails().isEmpty() && details!=MPDConnection::self()->getDetails()) {
             Dynamic::self()->stop();
         }
@@ -1208,8 +1200,6 @@ void MainWindow::checkMpdDir()
     #ifdef ENABLE_ONLINE_SERVICES
     case PAGE_ONLINE:    onlinePage->controlActions();     break;
     #endif
-    case PAGE_LYRICS:                                      break;
-    case PAGE_INFO:                                        break;
     default:                                               break;
     }
 }
@@ -1428,16 +1418,6 @@ void MainWindow::updateSettings()
     playlistsPage->setStartClosed(Settings::self()->playListsStartClosed());
     if (ItemView::Mode_GroupedTree==Settings::self()->playlistsView() && wasStartClosed!=playlistsPage->isStartClosed()) {
         playlistsPage->updateRows();
-    }
-
-    if (Settings::self()->lyricsBgnd()!=lyricsPage->bgndImageEnabled()) {
-        lyricsPage->setBgndImageEnabled(Settings::self()->lyricsBgnd());
-        if (lyricsPage->bgndImageEnabled() && !coverWidget->isEmpty()) {
-            QImage img=coverWidget->image();
-            if (!img.isNull()) {
-                lyricsPage->setImage(img);
-            }
-        }
     }
 }
 
@@ -1824,8 +1804,7 @@ void MainWindow::updateCurrentSong(const Song &song)
     playQueue->updateRows(idx.row(), current.key, autoScrollPlayQueue && playQueueProxyModel.isEmpty() && isPlaying);
     scrollPlayQueue();
     updateWindowTitle();
-    lyricsPage->update(song);
-    infoPage->update(song);
+    context->update(song);
     trayItem->songChanged(song, isPlaying);
 }
 
@@ -2302,7 +2281,7 @@ void MainWindow::expandOrCollapse(bool saveCurrentSize)
         setMaximumHeight(QWIDGETSIZE_MAX);
     }
     int prevWidth=size().width();
-    splitter->setVisible(showing);
+    stack->setVisible(showing);
     if (!showing) {
         setWindowState(windowState()&~Qt::WindowMaximized);
     }
@@ -2324,12 +2303,17 @@ void MainWindow::expandOrCollapse(bool saveCurrentSize)
         resize(collapsedSize);
         setFixedHeight(size().height());
     }
-
+    songInfoButton->setVisible(showing);
     if (!p.isNull()) {
         move(p);
     }
 
     fullScreenAction->setEnabled(showing);
+}
+
+void MainWindow::showSongInfo()
+{
+    stack->setCurrentWidget(songInfoAction->isChecked() ? (QWidget *)context : (QWidget *)splitter);
 }
 
 void MainWindow::fullScreen()
@@ -2422,10 +2406,6 @@ void MainWindow::currentTabChanged(int index)
         onlinePage->controlActions();
         break;
     #endif
-    case PAGE_LYRICS:
-        break;
-    case PAGE_INFO:
-        break;
     default:
         break;
     }
@@ -2511,10 +2491,6 @@ void MainWindow::toggleMonoIcons()
         onlineTabAction->setIcon(Icons::onlineIcon);
         tabWidget->SetIcon(PAGE_ONLINE, onlineTabAction->icon());
         #endif
-        lyricsTabAction->setIcon(Icons::lyricsIcon);
-        tabWidget->SetIcon(PAGE_LYRICS, lyricsTabAction->icon());
-        infoTabAction->setIcon(Icons::infoIcon);
-        tabWidget->SetIcon(PAGE_INFO, infoTabAction->icon());
         #ifdef ENABLE_DEVICES_SUPPORT
         devicesTabAction->setIcon(Icons::devicesIcon);
         tabWidget->SetIcon(PAGE_DEVICES, devicesTabAction->icon());
@@ -2533,10 +2509,22 @@ void MainWindow::locateTrack()
 
 void MainWindow::locateArtist(const QString &artist)
 {
+    songInfoAction->setChecked(false);
+    showSongInfo();
     if (!libraryPage->isVisible()) {
         showLibraryTab();
     }
     libraryPage->showArtist(artist);
+}
+
+void MainWindow::playSong(const QString &song)
+{
+    qint32 id=playQueueModel.getSongId(song);
+    if (-1==id) {
+        addAndPlay(song);
+    } else {
+        emit startPlayingSongId(id);
+    }
 }
 
 void MainWindow::showPage(const QString &page, bool focusSearch)
@@ -2572,10 +2560,6 @@ void MainWindow::showPage(const QString &page, bool focusSearch)
         if (focusSearch) {
             streamsPage->focusSearch();
         }
-    } else if (QLatin1String("lyrics")==p) {
-        showTab(MainWindow::PAGE_LYRICS);
-    } else if (QLatin1String("info")==p) {
-        showTab(MainWindow::PAGE_INFO);
     }
     #ifdef ENABLE_ONLINE_SERVICES
     else if (QLatin1String("online")==p) {

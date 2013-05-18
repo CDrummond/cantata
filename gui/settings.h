@@ -125,9 +125,6 @@ public:
     bool groupSingle();
     bool groupMultiple();
     QStringList lyricProviders();
-    int lyricsZoom();
-    bool lyricsBgnd();
-    int infoZoom();
     QString infoProvider();
     QString page();
     QStringList hiddenPages();
@@ -207,9 +204,6 @@ public:
     void saveGroupSingle(bool v);
     void saveGroupMultiple(bool v);
     void saveLyricProviders(const QStringList &v);
-    void saveLyricsZoom(int v);
-    void saveLyricsBgnd(bool v);
-    void saveInfoZoom(int v);
     void saveInfoProvider(const QString &v);
     void savePage(const QString &v);
     void saveHiddenPages(const QStringList &v);

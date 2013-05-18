@@ -90,6 +90,7 @@ public:
     void setSupportsAlbumArtistTag(bool s) { rootItem->setSupportsAlbumArtistTag(s); }
     void toggleGrouping();
     const QSet<QString> & genres() const { return rootItem->genres(); }
+    QList<Song> getAlbumTracks(const Song &s) const;
 
 public Q_SLOTS:
     void updateMusicLibrary(MusicLibraryItemRoot * root, QDateTime dbUpdate = QDateTime(), bool fromFile = false);

@@ -593,6 +593,17 @@ qint32 PlayQueueModel::getIdByRow(qint32 row) const
     return row>=songs.size() ? -1 : songs.at(row).id;
 }
 
+qint32 PlayQueueModel::getSongId(const QString &file) const
+{
+    foreach (const Song &s, songs) {
+        if (s.file==file) {
+            return s.id;
+        }
+    }
+
+    return -1;
+}
+
 // qint32 PlayQueueModel::getPosByRow(qint32 row) const
 // {
 //     return row>=songs.size() ? -1 : songs.at(row).pos;

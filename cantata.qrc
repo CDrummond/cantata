@@ -18,7 +18,6 @@
 <file alias="sidebar-dynamic-dark">icons/sidebar-dynamic-dark.svg</file>
 <file alias="sidebar-folders-dark">icons/sidebar-folders-dark.svg</file>
 <file alias="sidebar-info-dark">icons/sidebar-info-dark.svg</file>
-<file alias="sidebar-lyrics-dark">icons/sidebar-lyrics-dark.svg</file>
 <file alias="sidebar-online-dark">icons/sidebar-online-dark.svg</file>
 <file alias="sidebar-playlists-dark">icons/sidebar-playlists-dark.svg</file>
 <file alias="sidebar-playqueue-dark">icons/sidebar-playqueue-dark.svg</file>
@@ -29,7 +28,6 @@
 <file alias="sidebar-dynamic-light">icons/sidebar-dynamic-light.svg</file>
 <file alias="sidebar-folders-light">icons/sidebar-folders-light.svg</file>
 <file alias="sidebar-info-light">icons/sidebar-info-light.svg</file>
-<file alias="sidebar-lyrics-light">icons/sidebar-lyrics-light.svg</file>
 <file alias="sidebar-online-light">icons/sidebar-online-light.svg</file>
 <file alias="sidebar-playlists-light">icons/sidebar-playlists-light.svg</file>
 <file alias="sidebar-playqueue-light">icons/sidebar-playqueue-light.svg</file>

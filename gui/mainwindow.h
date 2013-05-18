@@ -58,12 +58,10 @@ class AlbumsPage;
 class FolderPage;
 class PlaylistsPage;
 class DynamicPage;
-class LyricsPage;
 class StreamsPage;
 #ifdef ENABLE_ONLINE_SERVICES
 class OnlineServicesPage;
 #endif
-class InfoPage;
 #ifdef ENABLE_DEVICES_SUPPORT
 class DevicesPage;
 #endif
@@ -136,12 +134,10 @@ public:
         PAGE_FOLDERS,
         PAGE_PLAYLISTS,
         PAGE_DYNAMIC,
-        PAGE_STREAMS,
+        PAGE_STREAMS
         #ifdef ENABLE_ONLINE_SERVICES
-        PAGE_ONLINE,
+        , PAGE_ONLINE
         #endif
-        PAGE_LYRICS,
-        PAGE_INFO
         #ifdef ENABLE_DEVICES_SUPPORT
         , PAGE_DEVICES
         #endif
@@ -184,6 +180,7 @@ Q_SIGNALS:
     void enableOutput(int id, bool);
     void setPriority(const QList<qint32> &ids, quint8 priority);
     void addSongsToPlaylist(const QString &name, const QStringList &files);
+    void addAndPlay(const QString &file);
 
 public Q_SLOTS:
     void showError(const QString &message, bool showActions=false);
@@ -248,6 +245,7 @@ public Q_SLOTS:
     void updatePlayQueueStats(int songs, quint32 time);
     void copyTrackInfo();
     void expandOrCollapse(bool saveCurrentSize=true);
+    void showSongInfo();
     void fullScreen();
     void sidebarModeChanged();
     void currentTabChanged(int index);
@@ -264,8 +262,6 @@ public Q_SLOTS:
         showTab(PAGE_ONLINE);
         #endif
     }
-    void showLyricsTab() { showTab(PAGE_LYRICS); }
-    void showInfoTab() { showTab(PAGE_INFO); }
     void showDevicesTab() {
         #ifdef ENABLE_DEVICES_SUPPORT
         showTab(PAGE_DEVICES);
@@ -275,6 +271,7 @@ public Q_SLOTS:
     void toggleMonoIcons();
     void locateTrack();
     void locateArtist(const QString &artist);
+    void playSong(const QString &song);
     void editTags();
     void editPlayQueueTags();
     void organiseFiles();
@@ -356,6 +353,7 @@ private:
     Action *streamPlayAction;
     #endif
     Action *expandInterfaceAction;
+    Action *songInfoAction;
     Action *fullScreenAction;
     Action *quitAction;
     Action *restoreAction;
@@ -366,7 +364,6 @@ private:
     Action *foldersTabAction;
     Action *playlistsTabAction;
     Action *dynamicTabAction;
-    Action *lyricsTabAction;
     Action *streamsTabAction;
     #ifdef ENABLE_ONLINE_SERVICES
     Action *onlineTabAction;
@@ -374,7 +371,6 @@ private:
     #ifdef TAGLIB_FOUND
     Action *editPlayQueueTagsAction;
     #endif
-    Action *infoTabAction;
     #ifdef ENABLE_DEVICES_SUPPORT
     Action *devicesTabAction;
     #endif
@@ -395,12 +391,10 @@ private:
     FolderPage *folderPage;
     PlaylistsPage *playlistsPage;
     DynamicPage *dynamicPage;
-    LyricsPage *lyricsPage;
     StreamsPage *streamsPage;
     #ifdef ENABLE_ONLINE_SERVICES
     OnlineServicesPage *onlinePage;
     #endif
-    InfoPage *infoPage;
     #ifdef ENABLE_DEVICES_SUPPORT
     DevicesPage *devicesPage;
     #endif

@@ -172,6 +172,14 @@ QString Covers::artistFileName(const Song &song)
     return constArtistImage;
 }
 
+QString Covers::fixArtist(const QString &artist)
+{
+    if (QLatin1String("AC-DC")==artist) {
+        return QLatin1String("AC/DC");
+    }
+    return artist;
+}
+
 #if !defined Q_OS_WIN
 static QString xdgConfig()
 {

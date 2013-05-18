@@ -21,7 +21,7 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include "lyricspage.h"
+#include "songview.h"
 #include "lyricsdialog.h"
 #include "ultimatelyricsprovider.h"
 #include "ultimatelyrics.h"
@@ -38,6 +38,8 @@
 #include "action.h"
 #include "actioncollection.h"
 #include "networkaccessmanager.h"
+#include <QBoxLayout>
+#include <QSpacerItem>
 #include <QFuture>
 #include <QFutureWatcher>
 #include <QSettings>
@@ -51,30 +53,28 @@
 #include <QUrlQuery>
 #endif
 
-const QLatin1String LyricsPage::constLyricsDir("lyrics/");
-const QLatin1String LyricsPage::constExtension(".lyrics");
+const QLatin1String SongView::constLyricsDir("lyrics/");
+const QLatin1String SongView::constExtension(".lyrics");
 
 static QString cacheFile(QString artist, QString title, bool createDir=false)
 {
     title.replace("/", "_");
     artist.replace("/", "_");
-    return QDir::toNativeSeparators(Utils::cacheDir(LyricsPage::constLyricsDir+artist+'/', createDir))+title+LyricsPage::constExtension;
+    return QDir::toNativeSeparators(Utils::cacheDir(SongView::constLyricsDir+artist+'/', createDir))+title+SongView::constExtension;
 }
 
 static inline QString fixNewLines(const QString &o)
 {
-    return QString(o).replace(QLatin1String("\n\n\n"), QLatin1String("\n\n"));
+    return QString(o).replace(QLatin1String("\n\n\n"), QLatin1String("\n\n")).replace("\n", "<br/>");
 }
 
-LyricsPage::LyricsPage(QWidget *p)
-    : QWidget(p)
-    , needToUpdate(false)
+SongView::SongView(QWidget *p)
+    : View(p)
     , currentProvider(-1)
     , currentRequest(0)
     , mode(Mode_Display)
     , job(0)
 {
-    setupUi(this);
     refreshAction = ActionCollection::get()->createAction("refreshlyrics", i18n("Refresh"), "view-refresh");
     searchAction = ActionCollection::get()->createAction("searchlyrics", i18n("Search For Lyrics"), "edit-find");
     editAction = ActionCollection::get()->createAction("editlyrics", i18n("Edit Lyrics"), Icons::editIcon);
@@ -89,6 +89,14 @@ LyricsPage::LyricsPage(QWidget *p)
     connect(cancelAction, SIGNAL(triggered()), SLOT(cancel()));
     connect(delAction, SIGNAL(triggered()), SLOT(del()));
     connect(UltimateLyrics::self(), SIGNAL(lyricsReady(int, QString)), SLOT(lyricsReady(int, QString)));
+
+    QToolButton *refreshBtn=new QToolButton(this);
+    QToolButton *searchBtn=new QToolButton(this);
+    QToolButton *editBtn=new QToolButton(this);
+    QToolButton *saveBtn=new QToolButton(this);
+    QToolButton *cancelBtn=new QToolButton(this);
+    QToolButton *delBtn=new QToolButton(this);
+
     Icon::init(refreshBtn);
     Icon::init(searchBtn);
     Icon::init(editBtn);
@@ -101,23 +109,30 @@ LyricsPage::LyricsPage(QWidget *p)
     saveBtn->setDefaultAction(saveAction);
     cancelBtn->setDefaultAction(cancelAction);
     delBtn->setDefaultAction(delAction);
-    setBgndImageEnabled(Settings::self()->lyricsBgnd());
-    text->setZoom(Settings::self()->lyricsZoom());
+
+    QHBoxLayout *l=new QHBoxLayout();
+    l->setSpacing(0);
+    l->setMargin(0);
+    l->addWidget(refreshBtn);
+    l->addWidget(searchBtn);
+    l->addItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum));
+    l->addWidget(editBtn);
+    l->addWidget(saveBtn);
+    l->addWidget(cancelBtn);
+    l->addWidget(delBtn);
+    layout()->addItem(l);
     setMode(Mode_Blank);
-    header->setText(i18n("Lyrics"));
+    setStandardHeader(i18n("Lyrics"));
+    setPicSize(QSize(-1, -1));
+    clear();
 }
 
-LyricsPage::~LyricsPage()
+SongView::~SongView()
 {
     UltimateLyrics::self()->release();
 }
 
-void LyricsPage::saveSettings()
-{
-    Settings::self()->saveLyricsZoom(text->zoom());
-}
-
-void LyricsPage::update()
+void SongView::update()
 {
     QString mpdName=mpdFileName();
     bool mpdExists=!mpdName.isEmpty() && QFile::exists(mpdName);
@@ -136,7 +151,7 @@ void LyricsPage::update()
     update(currentSong, true);
 }
 
-void LyricsPage::search()
+void SongView::search()
 {
     if (Mode_Edit==mode && MessageBox::No==MessageBox::warningYesNo(this, i18n("Abort editing of lyrics?"))) {
         return;
@@ -162,13 +177,13 @@ void LyricsPage::search()
     }
 }
 
-void LyricsPage::edit()
+void SongView::edit()
 {
     preEdit=text->toPlainText();
     setMode(Mode_Edit);
 }
 
-void LyricsPage::save()
+void SongView::save()
 {
     if (preEdit!=text->toPlainText()) {
         if (MessageBox::No==MessageBox::warningYesNo(this, i18n("Save updated lyrics?"))) {
@@ -191,7 +206,7 @@ void LyricsPage::save()
     setMode(Mode_Display);
 }
 
-void LyricsPage::cancel()
+void SongView::cancel()
 {
     if (preEdit!=text->toPlainText()) {
         if (MessageBox::No==MessageBox::warningYesNo(this, i18n("Abort editing of lyrics?"))) {
@@ -202,7 +217,7 @@ void LyricsPage::cancel()
     setMode(Mode_Display);
 }
 
-void LyricsPage::del()
+void SongView::del()
 {
     if (MessageBox::No==MessageBox::warningYesNo(this, i18n("Delete lyrics file?"))) {
         return;
@@ -218,16 +233,7 @@ void LyricsPage::del()
     }
 }
 
-void LyricsPage::showEvent(QShowEvent *e)
-{
-    if (needToUpdate) {
-        update(currentSong, true);
-    }
-    needToUpdate=false;
-    QWidget::showEvent(e);
-}
-
-void LyricsPage::update(const Song &s, bool force)
+void SongView::update(const Song &s, bool force)
 {
     if (Mode_Edit==mode && !force) {
         return;
@@ -250,17 +256,16 @@ void LyricsPage::update(const Song &s, bool force)
 
     if (force || songChanged) {
         setMode(Mode_Blank);
-        controls->setVisible(true);
+//        controls->setVisible(true);
         currentRequest++;
         currentSong=song;
 
         if (song.title.isEmpty() || song.artist.isEmpty()) {
-            text->setText(QString());
-            header->setText(i18n("Lyrics"));
+            clear();
             return;
         }
 
-        header->setText(song.title);
+        setHeader(song.title);
         // Only reset the provider if the refresh was an automatic one or if the song has
         // changed. Otherwise we'll keep the provider so the user can cycle through the lyrics
         // offered by the various providers.
@@ -295,8 +300,9 @@ void LyricsPage::update(const Song &s, bool force)
 
                 if (!tagLyrics.isEmpty()) {
                     text->setText(fixNewLines(tagLyrics));
+                    hideSpinner();
                     setMode(Mode_Display);
-                    controls->setVisible(false);
+//                    controls->setVisible(false);
                     return;
                 }
                 #endif
@@ -328,7 +334,7 @@ void LyricsPage::update(const Song &s, bool force)
     }
 }
 
-void LyricsPage::downloadFinished()
+void SongView::downloadFinished()
 {
     QNetworkReply *reply=qobject_cast<QNetworkReply *>(sender());
     if (reply) {
@@ -340,6 +346,7 @@ void LyricsPage::downloadFinished()
                 QString lyrics=str.readAll();
                 if (!lyrics.isEmpty()) {
                     text->setText(fixNewLines(lyrics));
+                    hideSpinner();
                     return;
                 }
             }
@@ -348,7 +355,7 @@ void LyricsPage::downloadFinished()
     getLyrics();
 }
 
-void LyricsPage::lyricsReady(int id, QString lyrics)
+void SongView::lyricsReady(int id, QString lyrics)
 {
     if (id != currentRequest) {
         return;
@@ -358,8 +365,9 @@ void LyricsPage::lyricsReady(int id, QString lyrics)
     if (lyrics.isEmpty()) {
         getLyrics();
     } else {
+        hideSpinner();
         QString before=text->toHtml();
-        text->setText(lyrics);
+        text->setText(fixNewLines(lyrics));
         // Remove formatting, as we dont save this anyway...
         QString plain=text->toPlainText().trimmed();
 
@@ -378,7 +386,7 @@ void LyricsPage::lyricsReady(int id, QString lyrics)
     }
 }
 
-bool LyricsPage::saveFile(const QString &fileName)
+bool SongView::saveFile(const QString &fileName)
 {
     QFile f(fileName);
 
@@ -392,27 +400,29 @@ bool LyricsPage::saveFile(const QString &fileName)
     return false;
 }
 
-QString LyricsPage::mpdFileName() const
+QString SongView::mpdFileName() const
 {
     return currentSong.file.isEmpty() || MPDConnection::self()->getDetails().dir.isEmpty() || currentSong.isStream()
             ? QString() : Utils::changeExtension(MPDConnection::self()->getDetails().dir+currentSong.file, constExtension);
 }
 
-QString LyricsPage::cacheFileName() const
+QString SongView::cacheFileName() const
 {
     return currentSong.artist.isEmpty() || currentSong.title.isEmpty() ? QString() : cacheFile(currentSong.artist, currentSong.title);
 }
 
-void LyricsPage::getLyrics()
+void SongView::getLyrics()
 {
     UltimateLyricsProvider *prov=UltimateLyrics::self()->getNext(currentProvider);
     if (prov) {
         text->setText(i18nc("<title> by <artist>\nFetching lyrics via <url>", "%1 by %2\nFetching lyrics via %3")
-                      .arg(currentSong.title).arg(currentSong.artist, prov->getName()), true);
+                      .arg(currentSong.title).arg(currentSong.artist, prov->getName()));
         prov->fetchInfo(currentRequest, currentSong);
+        showSpinner();
     } else {
         text->setText(i18nc("<title> by <artist>\nFailed\n", "%1 by %2\nFailed to fetch lyrics").arg(currentSong.title).arg(currentSong.artist));
         currentProvider=-1;
+        hideSpinner();
         // Set lyrics file anyway - so that editing is enabled!
         lyricsFile=Settings::self()->storeLyricsInMpdDir()
                 ? Utils::changeExtension(MPDConnection::self()->getDetails().dir+currentSong.file, constExtension)
@@ -421,7 +431,7 @@ void LyricsPage::getLyrics()
     }
 }
 
-void LyricsPage::setMode(Mode m)
+void SongView::setMode(Mode m)
 {
     if (mode==m) {
         return;
@@ -432,10 +442,10 @@ void LyricsPage::setMode(Mode m)
     cancelAction->setEnabled(Mode_Edit==m);
     editAction->setEnabled(editable);
     delAction->setEnabled(editable && !MPDConnection::self()->getDetails().dir.isEmpty() && QFile::exists(Utils::changeExtension(MPDConnection::self()->getDetails().dir+currentSong.file, constExtension)));
-    text->setReadOnly(Mode_Edit!=m);
+    setEditable(Mode_Edit==m);
 }
 
-bool LyricsPage::setLyricsFromFile(const QString &filePath) const
+bool SongView::setLyricsFromFile(const QString &filePath)
 {
     QFile f(filePath);
 
@@ -444,6 +454,7 @@ bool LyricsPage::setLyricsFromFile(const QString &filePath) const
         QTextStream inputStream(&f);
 
         text->setText(fixNewLines(inputStream.readAll()));
+        hideSpinner();
         f.close();
 
         return true;

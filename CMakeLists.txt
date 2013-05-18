@@ -86,7 +86,7 @@ endmacro(cantata_check_for_sse)
 
 SET( CANTATA_SRCS gui/application.cpp gui/main.cpp gui/initialsettingswizard.cpp gui/mainwindow.cpp gui/preferencesdialog.cpp
     gui/settings.cpp gui/covers.cpp gui/filesettings.cpp gui/interfacesettings.cpp gui/playbacksettings.cpp gui/serverplaybacksettings.cpp
-    gui/serversettings.cpp gui/librarypage.cpp gui/albumspage.cpp gui/folderpage.cpp gui/playlistspage.cpp gui/infopage.cpp gui/trayitem.cpp
+    gui/serversettings.cpp gui/librarypage.cpp gui/albumspage.cpp gui/folderpage.cpp gui/playlistspage.cpp gui/trayitem.cpp
     gui/cachesettings.cpp gui/coverdialog.cpp gui/stdactions.cpp
     streams/streamspage.cpp streams/streamdialog.cpp streams/streamcategorydialog.cpp streams/streamfetcher.cpp streams/webstreams.cpp
     models/musiclibraryitemroot.cpp models/musiclibraryitemartist.cpp models/musiclibraryitemalbum.cpp models/musiclibrarymodel.cpp
@@ -100,12 +100,13 @@ SET( CANTATA_SRCS gui/application.cpp gui/main.cpp gui/initialsettingswizard.cpp
     widgets/actionlabel.cpp widgets/playqueueview.cpp widgets/groupedview.cpp widgets/actionitemdelegate.cpp widgets/textbrowser.cpp
     widgets/coverwidget.cpp widgets/volumecontrol.cpp widgets/icons.cpp widgets/genrecombo.cpp widgets/toolbar.cpp widgets/menubutton.cpp
     widgets/toolbutton.cpp widgets/wizardpage.cpp widgets/headerlabel.cpp widgets/statuslabel.cpp
-    lyrics/lyricspage.cpp lyrics/lyricsettings.cpp lyrics/ultimatelyricsprovider.cpp lyrics/ultimatelyrics.cpp lyrics/lyricsdialog.cpp
+    lyrics/lyricsettings.cpp lyrics/ultimatelyricsprovider.cpp lyrics/ultimatelyrics.cpp lyrics/lyricsdialog.cpp
     network/networkaccessmanager.cpp
-    devices/deviceoptions.cpp)
+    devices/deviceoptions.cpp
+    context/contextpage.cpp context/view.cpp context/artistview.cpp context/albumview.cpp context/songview.cpp)
 SET( CANTATA_MOC_HDRS
     gui/initialsettingswizard.h gui/mainwindow.h gui/settings.h gui/covers.h gui/folderpage.h gui/librarypage.h gui/albumspage.h
-    gui/playlistspage.h gui/infopage.h gui/serverplaybacksettings.h gui/serversettings.h gui/preferencesdialog.h gui/filesettings.h
+    gui/playlistspage.h gui/serverplaybacksettings.h gui/serversettings.h gui/preferencesdialog.h gui/filesettings.h
     gui/interfacesettings.h gui/cachesettings.h gui/trayitem.h gui/coverdialog.h
     streams/streamspage.h streams/streamdialog.h streams/streamcategorydialog.h streams/streamfetcher.h streams/webstreams.h
     models/musiclibrarymodel.h models/musiclibraryproxymodel.h models/playlistsmodel.h models/playlistsproxymodel.h models/playqueuemodel.h
@@ -116,15 +117,16 @@ SET( CANTATA_MOC_HDRS
     widgets/treeview.h widgets/listview.h widgets/itemview.h widgets/autohidingsplitter.h widgets/timeslider.h widgets/actionlabel.h
     widgets/playqueueview.h widgets/groupedview.h widgets/actionitemdelegate.h widgets/coverwidget.h widgets/volumecontrol.h
     widgets/genrecombo.h widgets/toolbar.h
-    lyrics/lyricspage.h lyrics/lyricsettings.h lyrics/ultimatelyrics.h lyrics/ultimatelyricsprovider.h lyrics/lyricsdialog.h
-    network/networkaccessmanager.h)
+    lyrics/lyricsettings.h lyrics/ultimatelyrics.h lyrics/ultimatelyricsprovider.h lyrics/lyricsdialog.h
+    network/networkaccessmanager.h
+    context/contextpage.h context/artistview.h context/albumview.h context/songview.h)
 SET( CANTATA_UIS
     gui/initialsettingswizard.ui gui/mainwindow.ui gui/folderpage.ui gui/librarypage.ui gui/albumspage.ui gui/playlistspage.ui
     gui/filesettings.ui gui/interfacesettings.ui gui/playbacksettings.ui gui/serverplaybacksettings.ui gui/serversettings.ui
     gui/coverdialog.ui
     streams/streamspage.ui
     dynamic/dynamicpage.ui dynamic/dynamicrule.ui dynamic/dynamicrules.ui
-    lyrics/lyricspage.ui lyrics/lyricsettings.ui
+    lyrics/lyricsettings.ui
     widgets/itemview.ui)
 
 if (ENABLE_ONLINE_SERVICES)
@@ -183,8 +185,8 @@ SET( CANTATA_RCS cantata.qrc )
 include_directories( ${CMAKE_SOURCE_DIR}/gui ${CMAKE_SOURCE_DIR}/mpd ${CMAKE_SOURCE_DIR}/models ${CMAKE_SOURCE_DIR}/widgets
                      ${CMAKE_SOURCE_DIR}/lyrics ${CMAKE_SOURCE_DIR}/network ${CMAKE_SOURCE_DIR}/dbus ${CMAKE_SOURCE_DIR}/http
                      ${CMAKE_SOURCE_DIR}/devices ${CMAKE_SOURCE_DIR}/dynamic ${CMAKE_SOURCE_DIR}/support ${CMAKE_SOURCE_DIR}/streams
-                     ${CMAKE_SOURCE_DIR}/tags ${CMAKE_SOURCE_DIR}/online ${CMAKE_SOURCE_DIR}/3rdparty ${CMAKE_SOURCE_DIR}
-                     ${CMAKE_BINARY_DIR} ${CMAKE_BINARY_DIR}/support)
+                     ${CMAKE_SOURCE_DIR}/tags ${CMAKE_SOURCE_DIR}/online ${CMAKE_SOURCE_DIR}/context
+                     ${CMAKE_SOURCE_DIR}/3rdparty ${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR} ${CMAKE_BINARY_DIR}/support)
 
 if (ENABLE_QT5)
     find_package(Qt5Widgets REQUIRED)

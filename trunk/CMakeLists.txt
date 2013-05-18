@@ -100,9 +100,9 @@ SET( CANTATA_SRCS gui/application.cpp gui/main.cpp gui/initialsettingswizard.cpp
     widgets/actionlabel.cpp widgets/playqueueview.cpp widgets/groupedview.cpp widgets/actionitemdelegate.cpp widgets/textbrowser.cpp
     widgets/coverwidget.cpp widgets/volumecontrol.cpp widgets/icons.cpp widgets/genrecombo.cpp widgets/toolbar.cpp widgets/menubutton.cpp
     widgets/toolbutton.cpp widgets/wizardpage.cpp widgets/headerlabel.cpp widgets/statuslabel.cpp
-    lyrics/lyricsettings.cpp lyrics/ultimatelyricsprovider.cpp lyrics/ultimatelyrics.cpp lyrics/lyricsdialog.cpp
     network/networkaccessmanager.cpp
     devices/deviceoptions.cpp
+    context/lyricsettings.cpp context/ultimatelyricsprovider.cpp context/ultimatelyrics.cpp context/lyricsdialog.cpp
     context/contextpage.cpp context/view.cpp context/artistview.cpp context/albumview.cpp context/songview.cpp)
 SET( CANTATA_MOC_HDRS
     gui/initialsettingswizard.h gui/mainwindow.h gui/settings.h gui/covers.h gui/folderpage.h gui/librarypage.h gui/albumspage.h
@@ -117,8 +117,8 @@ SET( CANTATA_MOC_HDRS
     widgets/treeview.h widgets/listview.h widgets/itemview.h widgets/autohidingsplitter.h widgets/timeslider.h widgets/actionlabel.h
     widgets/playqueueview.h widgets/groupedview.h widgets/actionitemdelegate.h widgets/coverwidget.h widgets/volumecontrol.h
     widgets/genrecombo.h widgets/toolbar.h
-    lyrics/lyricsettings.h lyrics/ultimatelyrics.h lyrics/ultimatelyricsprovider.h lyrics/lyricsdialog.h
     network/networkaccessmanager.h
+    context/lyricsettings.h context/ultimatelyrics.h context/ultimatelyricsprovider.h context/lyricsdialog.h
     context/contextpage.h context/artistview.h context/albumview.h context/songview.h)
 SET( CANTATA_UIS
     gui/initialsettingswizard.ui gui/mainwindow.ui gui/folderpage.ui gui/librarypage.ui gui/albumspage.ui gui/playlistspage.ui
@@ -126,7 +126,7 @@ SET( CANTATA_UIS
     gui/coverdialog.ui
     streams/streamspage.ui
     dynamic/dynamicpage.ui dynamic/dynamicrule.ui dynamic/dynamicrules.ui
-    lyrics/lyricsettings.ui
+    context/lyricsettings.ui
     widgets/itemview.ui)
 
 if (ENABLE_ONLINE_SERVICES)
@@ -183,7 +183,7 @@ endif(NOT WIN32)
 SET( CANTATA_RCS cantata.qrc )
 
 include_directories( ${CMAKE_SOURCE_DIR}/gui ${CMAKE_SOURCE_DIR}/mpd ${CMAKE_SOURCE_DIR}/models ${CMAKE_SOURCE_DIR}/widgets
-                     ${CMAKE_SOURCE_DIR}/lyrics ${CMAKE_SOURCE_DIR}/network ${CMAKE_SOURCE_DIR}/dbus ${CMAKE_SOURCE_DIR}/http
+                     ${CMAKE_SOURCE_DIR}/network ${CMAKE_SOURCE_DIR}/dbus ${CMAKE_SOURCE_DIR}/http
                      ${CMAKE_SOURCE_DIR}/devices ${CMAKE_SOURCE_DIR}/dynamic ${CMAKE_SOURCE_DIR}/support ${CMAKE_SOURCE_DIR}/streams
                      ${CMAKE_SOURCE_DIR}/tags ${CMAKE_SOURCE_DIR}/online ${CMAKE_SOURCE_DIR}/context
                      ${CMAKE_SOURCE_DIR}/3rdparty ${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR} ${CMAKE_BINARY_DIR}/support)

@@ -52,9 +52,7 @@ View::View(QWidget *parent)
     layout->addWidget(header);
     layout->addWidget(pic);
     layout->addWidget(text);
-
-    text->setFrameShape(QFrame::NoFrame);
-    text->viewport()->setAutoFillBackground(false);
+    setEditable(false);
 }
 
 void View::clear()
@@ -123,7 +121,7 @@ void View::hideSpinner()
 
 void View::setEditable(bool e)
 {
-    text->setReadOnly(e);
+    text->setReadOnly(!e);
     text->setFrameShape(e ? QFrame::StyledPanel : QFrame::NoFrame);
     text->viewport()->setAutoFillBackground(e);
 }

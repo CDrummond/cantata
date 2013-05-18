@@ -29,6 +29,7 @@
 #include "qtiocompressor/qtiocompressor.h"
 #include "musiclibrarymodel.h"
 #include <QTextBrowser>
+#include <QScrollBar>
 #include <QFile>
 #include <QUrl>
 #include <QNetworkReply>
@@ -95,7 +96,7 @@ void AlbumView::update(const Song &song, bool force)
     } else if (song.title!=currentSong.title) {
         currentSong=song;
         getTrackListing();
-        updateDetails();
+        updateDetails(true);
     }
 }
 
@@ -254,7 +255,11 @@ bool AlbumView::parseLastFmResponse(const QByteArray &data)
     return !details.isEmpty();
 }
 
-void AlbumView::updateDetails()
+void AlbumView::updateDetails(bool preservePos)
 {
+    int pos=preservePos ? text->verticalScrollBar()->value() : 0;
     text->setText(details+trackList);
+    if (preservePos) {
+        text->verticalScrollBar()->setValue(pos);
+    }
 }

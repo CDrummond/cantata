@@ -54,7 +54,7 @@ private:
     void getTrackListing();
     void getDetails();
     bool parseLastFmResponse(const QByteArray &data);
-    void updateDetails();
+    void updateDetails(bool preservePos=false);
     void abort();
 
 private:

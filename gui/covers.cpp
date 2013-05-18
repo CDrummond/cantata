@@ -49,8 +49,6 @@
 #include <QPainter>
 #include <QFont>
 #include <QXmlStreamReader>
-#include <QDomDocument>
-#include <QDomElement>
 #include <QTimer>
 
 #ifdef ENABLE_KDE_SUPPORT
@@ -456,51 +454,27 @@ bool CoverDownloader::downloadViaHttp(Job &job, JobType type)
     return true;
 }
 
-static QDomElement addArg(QDomDocument &doc, const QString &key, const QString &val)
-{
-    QDomElement member = doc.createElement("member");
-    QDomElement name = doc.createElement("name");
-    QDomElement value = doc.createElement("value");
-    QDomElement str = doc.createElement("string");
-
-    member.appendChild(name);
-    name.appendChild(doc.createTextNode(key));
-    member.appendChild(value);
-    value.appendChild(str);
-    str.appendChild(doc.createTextNode(val));
-    return member;
-}
-
 void CoverDownloader::downloadViaLastFm(Job &job)
 {
-    // Query lastfm...
-    QDomDocument doc;
-    doc.appendChild(doc.createProcessingInstruction("xml", QString("version=\"1.0\" encoding=\"UTF-8\"")));
-    QDomElement methodCall = doc.createElement("methodCall");
-    QDomElement methodName = doc.createElement("methodName");
-    QDomElement params = doc.createElement("params");
-    QDomElement param = doc.createElement("param");
-    QDomElement value = doc.createElement("value");
-    QDomElement str = doc.createElement("struct");
+    QUrl url("http://ws.audioscrobbler.com/2.0/");
+    #if QT_VERSION < 0x050000
+    QUrl &query=url;
+    #else
+    QUrlQuery query;
+    #endif
 
-    doc.appendChild(methodCall);
-    methodCall.appendChild(methodName);
-    methodName.appendChild(doc.createTextNode(job.isArtist ? "artist.getInfo" : "album.getInfo"));
-    methodCall.appendChild(params);
-    params.appendChild(param);
-    param.appendChild(value);
-    value.appendChild(str);
-
-    str.appendChild(addArg(doc, "api_key", Covers::constLastFmApiKey));
-    str.appendChild(addArg(doc, "artist", job.song.albumArtist()));
+    query.addQueryItem("method", job.isArtist ? "artist.getInfo" : "album.getInfo");
+    query.addQueryItem("api_key", Covers::constLastFmApiKey);
+    query.addQueryItem("autocorrect", "1");
+    query.addQueryItem("artist", Covers::fixArtist(job.song.albumArtist()));
     if (!job.isArtist) {
-        str.appendChild(addArg(doc, "album", job.song.album));
+        query.addQueryItem("album", job.song.album);
     }
+    #if QT_VERSION >= 0x050000
+    url.setQuery(query);
+    #endif
 
-    QNetworkRequest request;
-    request.setUrl(QUrl("http://ws.audioscrobbler.com/2.0/"));
-    request.setHeader(QNetworkRequest::ContentTypeHeader, "text/xml");
-    QNetworkReply *j = manager->post(request, doc.toString().toUtf8());
+    QNetworkReply *j = manager->get(url);
     connect(j, SIGNAL(finished()), this, SLOT(lastFmCallFinished()));
     job.type=JobLastFm;
     jobs.insert(j, job);
@@ -522,60 +496,35 @@ void CoverDownloader::lastFmCallFinished()
         QString url;
 
         if(QNetworkReply::NoError==reply->error()) {
-            QString resp;
-            QXmlStreamReader doc(QString::fromUtf8(reply->readAll()));
-            int level=0;
+            QXmlStreamReader doc(reply->readAll());
+            QString largeUrl;
+            bool inSection=false;
+            bool isArtistImage=job.isArtist;
 
-            while (!doc.atEnd() && url.isEmpty()) {
+            while (!doc.atEnd()) {
                 doc.readNext();
 
                 if (doc.isStartElement()) {
-                    ++level;
-                    if ( (1==level && QLatin1String("methodResponse")!=doc.name()) ||
-                         (2==level && QLatin1String("params")!=doc.name()) ||
-                         (3==level && QLatin1String("param")!=doc.name()) ||
-                         (4==level && QLatin1String("value")!=doc.name()) ||
-                         (5==level && QLatin1String("string")!=doc.name()) ) {
-                        break;
-                    } else if (5==level) {
-                        resp = doc.readElementText();
-                        break;
+                    if (!inSection && QLatin1String(isArtistImage ? "artist" : "album")==doc.name()) {
+                        inSection=true;
+                    } else if (inSection && QLatin1String("image")==doc.name()) {
+                        QString size=doc.attributes().value("size").toString();
+                        if (QLatin1String("extralarge")==size) {
+                            url = doc.readElementText();
+                        } else if (QLatin1String("large")==size) {
+                            largeUrl = doc.readElementText();
+                        }
+                        if (!url.isEmpty() && !largeUrl.isEmpty()) {
+                            break;
+                        }
                     }
-                } else if (doc.isEndElement()) {
+                } else if (doc.isEndElement() && inSection && QLatin1String(isArtistImage ? "artist" : "album")==doc.name()) {
                     break;
                 }
             }
 
-            if (!resp.isEmpty()) {
-                QXmlStreamReader subDoc(resp.replace("\\\"", "\""));
-                QString largeUrl;
-                bool inSection=false;
-                bool isArtistImage=job.isArtist;
-                while (!subDoc.atEnd()) {
-                    subDoc.readNext();
-
-                    if (subDoc.isStartElement()) {
-                        if (!inSection && QLatin1String(isArtistImage ? "artist" : "album")==subDoc.name()) {
-                            inSection=true;
-                        } else if (inSection && QLatin1String("image")==subDoc.name()) {
-                            QString size=subDoc.attributes().value("size").toString();
-                            if (QLatin1String("extralarge")==size) {
-                                url = subDoc.readElementText();
-                            } else if (QLatin1String("large")==size) {
-                                largeUrl = subDoc.readElementText();
-                            }
-                            if (!url.isEmpty() && !largeUrl.isEmpty()) {
-                                break;
-                            }
-                        }
-                    } else if (subDoc.isEndElement() && inSection && QLatin1String(isArtistImage ? "artist" : "album")==subDoc.name()) {
-                        break;
-                    }
-                }
-
-                if (url.isEmpty() && !largeUrl.isEmpty()) {
-                    url=largeUrl;
-                }
+            if (url.isEmpty() && !largeUrl.isEmpty()) {
+                url=largeUrl;
             }
         }
 

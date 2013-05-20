@@ -55,6 +55,7 @@ ContextPage::ContextPage(QWidget *parent)
     setLayout(layout);
     connect(artist, SIGNAL(findArtist(QString)), this, SIGNAL(findArtist(QString)));
     connect(album, SIGNAL(playSong(QString)), this, SIGNAL(playSong(QString)));
+    connect(artist, SIGNAL(haveBio(QString,QString)), album, SLOT(artistBio(QString,QString)), Qt::QueuedConnection);
 }
 
 void ContextPage::update(const Song &s)

@@ -120,7 +120,7 @@ SongView::SongView(QWidget *p)
     l->addWidget(saveBtn);
     l->addWidget(cancelBtn);
     l->addWidget(delBtn);
-    layout()->addItem(l);
+    setBottomItem(l);
     setMode(Mode_Blank);
     setStandardHeader(i18n("Lyrics"));
     setPicSize(QSize(-1, -1));
@@ -236,6 +236,13 @@ void SongView::del()
 void SongView::update(const Song &s, bool force)
 {
     if (Mode_Edit==mode && !force) {
+        return;
+    }
+
+    if (s.isEmpty()) {
+        currentSong=s;
+        View::cancel();
+        clear();
         return;
     }
 

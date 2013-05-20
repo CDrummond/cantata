@@ -24,6 +24,7 @@
 #include "view.h"
 #include "spinner.h"
 #include "networkaccessmanager.h"
+#include "settings.h"
 #include <QLabel>
 #include <QTextBrowser>
 #include <QImage>
@@ -59,10 +60,7 @@ View::View(QWidget *parent)
     layout->addItem(new QSpacerItem(1, fontMetrics().height()/4, QSizePolicy::Fixed, QSizePolicy::Fixed));
     text->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setEditable(false);
-    locale=qgetenv("CANTATA_LOCALE");
-    if (locale.isEmpty()) {
-        locale="en";
-    }
+    locale=Settings::self()->wikipediaLocale();
 }
 
 void View::clear()

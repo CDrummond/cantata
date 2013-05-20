@@ -452,9 +452,9 @@ QStringList Settings::lyricProviders()
     return GET_STRINGLIST("lyricProviders", def);
 }
 
-QString Settings::infoProvider()
+QString Settings::wikipediaLocale()
 {
-    return GET_STRING("infoProvider", QString());
+    return GET_STRING("wikipediaLocale", "en");
 }
 
 
@@ -857,9 +857,9 @@ void Settings::saveLyricProviders(const QStringList &v)
     SET_VALUE_MOD(lyricProviders)
 }
 
-void Settings::saveInfoProvider(const QString &v)
+void Settings::saveWikipediaLocale(const QString &v)
 {
-    SET_VALUE_MOD(infoProvider)
+    SET_VALUE_MOD(wikipediaLocale)
 }
 
 void Settings::savePage(const QString &v)

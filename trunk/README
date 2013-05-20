@@ -408,6 +408,7 @@ Cantata contains code/icons from:
     Amarok         - amarok.kde.org (Transcoding, Cover fetching code in cover
                      dialog, Jamendo and Magnatune icons)
     Clementine     - www.clementine-player.org (Lyrics searches)
+    Be::MPC        - Wikipedia parsing code
     Quassel        - quassel-irc.org (Qt-only keyboard short-cut config support)
     Solid          - solid.kde.org (Device detection for Qt-only builds)
     Musique        - Copied code for Gtk theme detection

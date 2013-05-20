@@ -58,6 +58,7 @@ private:
     void abort();
 
 private:
+    bool triedWithFilter;
     int detailsReceived;
     QString details;
     QString trackList;

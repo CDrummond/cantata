@@ -59,7 +59,7 @@ static QString cacheFileName(const QString &artist, const QString &locale, bool 
 
 ArtistView::ArtistView(QWidget *parent)
     : View(parent)
-    , triedWithBand(false)
+    , triedWithFilter(false)
     , currentSimilarJob(0)
 {
     connect(Covers::self(), SIGNAL(artistImage(Song,QImage,QString)), SLOT(artistImage(Song,QImage,QString)));
@@ -106,7 +106,7 @@ void ArtistView::update(const Song &s, bool force)
         clear();
         biography.clear();
         similarArtists=QString();
-        triedWithBand=false;
+        triedWithFilter=false;
         if (!currentSong.isEmpty()) {
             setHeader(currentSong.artist);
 
@@ -138,10 +138,10 @@ void ArtistView::loadBio()
         QtIOCompressor compressor(&f);
         compressor.setStreamFormat(QtIOCompressor::GzipFormat);
         if (compressor.open(QIODevice::ReadOnly)) {
-            QByteArray data=compressor.readAll();
+            QString data=QString::fromUtf8(compressor.readAll());
 
-            if (!data.isEmpty()) {
-                searchResponse(QString::fromUtf8(data));
+            if (!data.isEmpty() && View::constAmbiguous!=data) {
+                searchResponse(data);
                 loadSimilar();
                 setBio();
                 Utils::touchFile(cachedFile);
@@ -276,9 +276,9 @@ void ArtistView::abort()
 
 void ArtistView::searchResponse(const QString &resp)
 {
-    if (View::constAmbiguous==resp && !triedWithBand) {
-        triedWithBand=true;
-        search(currentSong.artist+i18n(" (band)"));
+    if (View::constAmbiguous==resp && !triedWithFilter) {
+        triedWithFilter=true;
+        search(currentSong.artist+" "+i18nc("Search pattern for an artist or band", "(artist|band)"));
         return;
     }
 

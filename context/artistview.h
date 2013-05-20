@@ -41,40 +41,38 @@ class ArtistView : public View
 public:
     static const QLatin1String constCacheDir;
     static const QLatin1String constInfoExt;
+    static const QLatin1String constSimilarInfoExt;
 
     ArtistView(QWidget *parent);
     virtual ~ArtistView() { abort(); }
 
-    void saveSettings();
     void update(const Song &s, bool force=false);
 
 Q_SIGNALS:
     void findArtist(const QString &artist);
+    void haveBio(const QString &artist, const QString &bio);
 
 public Q_SLOTS:
     void artistImage(const Song &song, const QImage &i, const QString &f);
 
 private Q_SLOTS:
-    void handleBioReply();
     void setBio();
     void handleSimilarReply();
     void showArtist(const QUrl &url);
 
 private:
-    void setProvider();
     void loadBio();
-    void requestBio();
-    bool parseBioResponse(const QByteArray &resp);
+    void searchResponse(const QString &resp);
     void loadSimilar();
     void requestSimilar();
-    bool parseSimilarResponse(const QByteArray &resp);
+    QStringList parseSimilarResponse(const QByteArray &resp);
+    void buildSimilar(const QStringList &artists);
     void abort();
 
 private:
-    ComboBox *combo;
-    QMap<int, QString> biographies;
+    bool triedWithBand;
+    QString biography;
     QString similarArtists;
-    QNetworkReply *currentBioJob;
     QNetworkReply *currentSimilarJob;
     QString provider;
     #ifndef Q_OS_WIN

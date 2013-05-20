@@ -16,8 +16,8 @@
  9. Better non-monochrome radio-stream icons. Thanks to Grely
 10. Dont use alternating rows in views (does not look too great with grouped
     view). Use a fading divider instead.
-11. Save current info provider setting.
-12. Remove lyrics and info pages, and place within a new context view.
+11. Remove lyrics and info pages, and place within a new context view.
+12. Remove EchoNest usage, as this only seems to return English results.
 
 1.0.3
 -----

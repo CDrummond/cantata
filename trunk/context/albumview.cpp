@@ -56,6 +56,7 @@ enum Parts {
 
 AlbumView::AlbumView(QWidget *p)
     : View(p)
+    , triedWithFilter(false)
     , detailsReceived(0)
     , job(0)
 {
@@ -86,6 +87,7 @@ void AlbumView::update(const Song &song, bool force)
         details.clear();
         trackList.clear();
         bio.clear();
+        triedWithFilter=false;
         detailsReceived=bioArtist==currentSong.artist ? ArtistBio : 0;
         setHeader(song.album.isEmpty() ? stdHeader : song.album);
         Covers::Image cImg=Covers::self()->requestImage(song);
@@ -177,6 +179,12 @@ void AlbumView::coverRetreived(const Song &s, const QImage &img, const QString &
 
 void AlbumView::searchResponse(const QString &resp)
 {
+    if (View::constAmbiguous==resp && !triedWithFilter) {
+        triedWithFilter=true;
+        search(currentSong.albumArtist()+" "+currentSong.album+" "+i18nc("Search pattern for an album", "(album|score|soundtrack)"));
+        return;
+    }
+
     detailsReceived|=Details;
     if (All==detailsReceived) {
         hideSpinner();

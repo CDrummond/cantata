@@ -71,7 +71,6 @@ ArtistView::ArtistView(QWidget *parent)
     int imageWidth=imageHeight*1.5;
     setPicSize(QSize(imageWidth, imageHeight));
     clear();
-    setBottomItem(0);
 }
 
 void ArtistView::update(const Song &s, bool force)

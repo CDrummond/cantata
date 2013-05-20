@@ -67,7 +67,6 @@ AlbumView::AlbumView(QWidget *p)
     setPicSize(QSize(imageSize, imageSize));
     setStandardHeader(i18n("Album Information"));
     clear();
-    setBottomItem(0);
 }
 
 void AlbumView::update(const Song &song, bool force)

@@ -43,7 +43,6 @@ public:
 
     View(QWidget *p);
     
-    void setBottomItem(QLayoutItem *i);
     void clear();
     void setStandardHeader(const QString &h) { stdHeader=h; }
     void setHeader(const QString &str);

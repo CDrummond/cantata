@@ -63,6 +63,7 @@ protected Q_SLOTS:
     void save();
     void cancel();
     void del();
+    void showContextMenu(const QPoint &pos);
 
 private:
     QString mpdFileName() const;

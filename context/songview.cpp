@@ -38,17 +38,11 @@
 #include "action.h"
 #include "actioncollection.h"
 #include "networkaccessmanager.h"
-#include <QBoxLayout>
-#include <QSpacerItem>
-#include <QFuture>
-#include <QFutureWatcher>
-#include <QSettings>
-#include <QtConcurrentRun>
 #include <QTextBrowser>
 #include <QFile>
 #include <QDir>
 #include <QFileInfo>
-#include <QToolButton>
+#include <QMenu>
 #if QT_VERSION >= 0x050000
 #include <QUrlQuery>
 #endif
@@ -90,37 +84,8 @@ SongView::SongView(QWidget *p)
     connect(delAction, SIGNAL(triggered()), SLOT(del()));
     connect(UltimateLyrics::self(), SIGNAL(lyricsReady(int, QString)), SLOT(lyricsReady(int, QString)));
 
-    QToolButton *refreshBtn=new QToolButton(this);
-    QToolButton *searchBtn=new QToolButton(this);
-    QToolButton *editBtn=new QToolButton(this);
-    QToolButton *saveBtn=new QToolButton(this);
-    QToolButton *cancelBtn=new QToolButton(this);
-    QToolButton *delBtn=new QToolButton(this);
-
-    Icon::init(refreshBtn);
-    Icon::init(searchBtn);
-    Icon::init(editBtn);
-    Icon::init(saveBtn);
-    Icon::init(cancelBtn);
-    Icon::init(delBtn);
-    refreshBtn->setDefaultAction(refreshAction);
-    searchBtn->setDefaultAction(searchAction);
-    editBtn->setDefaultAction(editAction);
-    saveBtn->setDefaultAction(saveAction);
-    cancelBtn->setDefaultAction(cancelAction);
-    delBtn->setDefaultAction(delAction);
-
-    QHBoxLayout *l=new QHBoxLayout();
-    l->setSpacing(0);
-    l->setMargin(0);
-    l->addWidget(refreshBtn);
-    l->addWidget(searchBtn);
-    l->addItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum));
-    l->addWidget(editBtn);
-    l->addWidget(saveBtn);
-    l->addWidget(cancelBtn);
-    l->addWidget(delBtn);
-    setBottomItem(l);
+    text->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(text, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showContextMenu(QPoint)));
     setMode(Mode_Blank);
     setStandardHeader(i18n("Lyrics"));
     setPicSize(QSize(-1, -1));
@@ -231,6 +196,31 @@ void SongView::del()
     if (!mpdName.isEmpty() && QFile::exists(mpdName)) {
         QFile::remove(mpdName);
     }
+}
+
+void SongView::showContextMenu(const QPoint &pos)
+{
+   QMenu *menu = text->createStandardContextMenu();
+   switch (mode) {
+   case Mode_Blank:
+       break;
+   case Mode_Display:
+       menu->addSeparator();
+       menu->addAction(refreshAction);
+       menu->addAction(searchAction);
+       menu->addSeparator();
+       menu->addAction(editAction);
+       menu->addAction(delAction);
+       break;
+   case Mode_Edit:
+       menu->addSeparator();
+       menu->addAction(saveAction);
+       menu->addAction(cancelAction);
+       break;
+   }
+
+   menu->exec(text->mapToGlobal(pos));
+   delete menu;
 }
 
 void SongView::update(const Song &s, bool force)

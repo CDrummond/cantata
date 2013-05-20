@@ -70,7 +70,7 @@ private:
     void abort();
 
 private:
-    bool triedWithBand;
+    bool triedWithFilter;
     QString biography;
     QString similarArtists;
     QNetworkReply *currentSimilarJob;

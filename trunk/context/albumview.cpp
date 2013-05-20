@@ -33,9 +33,6 @@
 #include <QFile>
 #include <QUrl>
 #include <QNetworkReply>
-#if QT_VERSION >= 0x050000
-#include <QUrlQuery>
-#endif
 
 static const int constCheckChars=100; // Num chars to cehck between artist bio and details - as sometimes wikipedia does not know album, so returns artist!
 

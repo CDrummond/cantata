@@ -119,7 +119,7 @@ SET( CANTATA_MOC_HDRS
     widgets/genrecombo.h widgets/toolbar.h
     network/networkaccessmanager.h
     context/lyricsettings.h context/ultimatelyrics.h context/ultimatelyricsprovider.h context/lyricsdialog.h
-    context/contextpage.h context/artistview.h context/albumview.h context/songview.h)
+    context/contextpage.h context/artistview.h context/albumview.h context/songview.h context/view.h)
 SET( CANTATA_UIS
     gui/initialsettingswizard.ui gui/mainwindow.ui gui/folderpage.ui gui/librarypage.ui gui/albumspage.ui gui/playlistspage.ui
     gui/filesettings.ui gui/interfacesettings.ui gui/playbacksettings.ui gui/serverplaybacksettings.ui gui/serversettings.ui

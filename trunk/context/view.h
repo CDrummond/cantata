@@ -32,12 +32,18 @@ class QImage;
 class QLabel;
 class QTextBrowser;
 class Spinner;
+class QNetworkReply;
+class QLayoutItem;
 
 class View : public QWidget
 {
+    Q_OBJECT
 public:
+    static const QLatin1String constAmbiguous;
+
     View(QWidget *p);
     
+    void setBottomItem(QLayoutItem *i);
     void clear();
     void setStandardHeader(const QString &h) { stdHeader=h; }
     void setHeader(const QString &str);
@@ -49,8 +55,18 @@ public:
     void setEditable(bool e);
 
     virtual void update(const Song &s, bool force)=0;
-    
+    virtual void searchResponse(const QString &r);
+    void search(const QString &query);
+
 protected:
+    void cancel();
+
+private Q_SLOTS:
+    void googleAnswer();
+    void wikiAnswer();
+
+protected:
+    QString locale;
     Song currentSong;
     QString stdHeader;
     QLabel *header;
@@ -59,6 +75,7 @@ protected:
     bool needToUpdate;
     QSize picSize;
     Spinner *spinner;
+    QNetworkReply *job;
 };
 
 #endif

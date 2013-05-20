@@ -47,13 +47,13 @@ Q_SIGNALS:
 
 public Q_SLOTS:
     void coverRetreived(const Song &s, const QImage &img, const QString &file);
-    void infoRetreived();
     void playSong(const QUrl &u);
+    void artistBio(const QString &artist, const QString &b);
 
 private:
     void getTrackListing();
     void getDetails();
-    bool parseLastFmResponse(const QByteArray &data);
+    void searchResponse(const QString &resp);
     void updateDetails(bool preservePos=false);
     void abort();
 
@@ -61,6 +61,8 @@ private:
     int detailsReceived;
     QString details;
     QString trackList;
+    QString bioArtist;
+    QString bio;
     QNetworkReply *job;
 };
 

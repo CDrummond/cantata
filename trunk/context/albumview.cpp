@@ -33,24 +33,25 @@
 #include <QFile>
 #include <QUrl>
 #include <QNetworkReply>
-#include <QXmlStreamReader>
 #if QT_VERSION >= 0x050000
 #include <QUrlQuery>
 #endif
-#include <QDebug>
+
+static const int constCheckChars=100; // Num chars to cehck between artist bio and details - as sometimes wikipedia does not know album, so returns artist!
 
 const QLatin1String AlbumView::constCacheDir("albums/");
-const QLatin1String AlbumView::constInfoExt(".xml.gz");
+const QLatin1String AlbumView::constInfoExt(".html.gz");
 
-static QString cacheFileName(const QString &artist, const QString &album, bool createDir)
+static QString cacheFileName(const QString &artist, const QString &locale, const QString &album, bool createDir)
 {
-    return Utils::cacheDir(AlbumView::constCacheDir, createDir)+Covers::encodeName(artist)+QLatin1String(" - ")+Covers::encodeName(album)+AlbumView::constInfoExt;
+    return Utils::cacheDir(AlbumView::constCacheDir, createDir)+Covers::encodeName(artist)+QLatin1String(" - ")+Covers::encodeName(album)+"."+locale+AlbumView::constInfoExt;
 }
 
 enum Parts {
     Cover = 0x01,
     Details = 0x02,
-    All = Cover+Details
+    ArtistBio = 0x04,
+    All = Cover+Details+ArtistBio
 };
 
 AlbumView::AlbumView(QWidget *p)
@@ -66,10 +67,17 @@ AlbumView::AlbumView(QWidget *p)
     setPicSize(QSize(imageSize, imageSize));
     setStandardHeader(i18n("Album Information"));
     clear();
+    setBottomItem(0);
 }
 
 void AlbumView::update(const Song &song, bool force)
 {
+    if (song.isEmpty()) {
+        currentSong=song;
+        cancel();
+        clear();
+        return;
+    }
     if (force || song.albumArtist()!=currentSong.albumArtist() || song.album!=currentSong.album) {
         currentSong=song;
         if (!isVisible()) {
@@ -78,7 +86,8 @@ void AlbumView::update(const Song &song, bool force)
         }
         details.clear();
         trackList.clear();
-        detailsReceived=0;
+        bio.clear();
+        detailsReceived=bioArtist==currentSong.artist ? ArtistBio : 0;
         setHeader(song.album.isEmpty() ? stdHeader : song.album);
         Covers::Image cImg=Covers::self()->requestImage(song);
         if (!cImg.img.isNull()) {
@@ -105,6 +114,19 @@ void AlbumView::playSong(const QUrl &url)
     emit playSong(url.path());
 }
 
+void AlbumView::artistBio(const QString &artist, const QString &b)
+{
+    if (artist==currentSong.artist) {
+        bioArtist=artist;
+        detailsReceived|=ArtistBio;
+        if (All==detailsReceived) {
+            hideSpinner();
+        }
+        bio=b.left(constCheckChars);
+        updateDetails();
+    }
+}
+
 void AlbumView::getTrackListing()
 {
     QList<Song> songs=MusicLibraryModel::self()->getAlbumTracks(currentSong);
@@ -123,8 +145,8 @@ void AlbumView::getTrackListing()
 
 void AlbumView::getDetails()
 {
-    abort();
-    QString cachedFile=cacheFileName(Covers::fixArtist(currentSong.albumArtist()), currentSong.album, false);
+    cancel();
+    QString cachedFile=cacheFileName(Covers::fixArtist(currentSong.albumArtist()), currentSong.album, locale, false);
     if (QFile::exists(cachedFile)) {
         QFile f(cachedFile);
         QtIOCompressor compressor(&f);
@@ -132,41 +154,14 @@ void AlbumView::getDetails()
         if (compressor.open(QIODevice::ReadOnly)) {
             QByteArray data=compressor.readAll();
 
-            if (!data.isEmpty() && parseLastFmResponse(data)) {
-                updateDetails();
+            if (!data.isEmpty()) {
+                searchResponse(QString::fromUtf8(data));
                 Utils::touchFile(cachedFile);
-                detailsReceived|=Details;
                 return;
             }
         }
     }
-    QUrl url("http://ws.audioscrobbler.com/2.0/");
-    #if QT_VERSION < 0x050000
-    QUrl &query=url;
-    #else
-    QUrlQuery query;
-    #endif
-
-    query.addQueryItem("method", "album.getinfo");
-    query.addQueryItem("api_key", Covers::constLastFmApiKey);
-    query.addQueryItem("autocorrect", "1");
-    query.addQueryItem("artist", Covers::fixArtist(currentSong.albumArtist()));
-    query.addQueryItem("album", currentSong.album);
-    #if QT_VERSION >= 0x050000
-    url.setQuery(query);
-    #endif
-
-    job=NetworkAccessManager::self()->get(url);
-    connect(job, SIGNAL(finished()), this, SLOT(infoRetreived()));
-}
-
-void AlbumView::abort()
-{
-    if (job) {
-        disconnect(job, SIGNAL(finished()), this, SLOT(infoRetreived()));
-        job->deleteLater();
-        job=0;
-    }
+    search(currentSong.albumArtist()+" "+currentSong.album);
 }
 
 void AlbumView::coverRetreived(const Song &s, const QImage &img, const QString &file)
@@ -181,84 +176,36 @@ void AlbumView::coverRetreived(const Song &s, const QImage &img, const QString &
     }
 }
 
-void AlbumView::infoRetreived()
+void AlbumView::searchResponse(const QString &resp)
 {
-    QNetworkReply *reply=qobject_cast<QNetworkReply *>(sender());
-    if (!reply || reply!=job) {
-        return;
-    }
-
     detailsReceived|=Details;
     if (All==detailsReceived) {
         hideSpinner();
     }
-    if (QNetworkReply::NoError==reply->error()) {
-        QByteArray data=reply->readAll();
-        if (parseLastFmResponse(data)) {
-            QFile f(cacheFileName(Covers::fixArtist(currentSong.albumArtist()), currentSong.album, true));
-            QtIOCompressor compressor(&f);
-            compressor.setStreamFormat(QtIOCompressor::GzipFormat);
-            if (compressor.open(QIODevice::WriteOnly)) {
-                compressor.write(data);
-            }
+
+    if (!resp.isEmpty() && View::constAmbiguous!=resp) {
+        details=resp;
+        QFile f(cacheFileName(Covers::fixArtist(currentSong.albumArtist()), currentSong.album, locale, true));
+        QtIOCompressor compressor(&f);
+        compressor.setStreamFormat(QtIOCompressor::GzipFormat);
+        if (compressor.open(QIODevice::WriteOnly)) {
+            compressor.write(resp.toUtf8().constData());
         }
+        updateDetails();
     }
-    updateDetails();
-    reply->deleteLater();
-    job=0;
-}
-
-static inline QString escape(const QString &str)
-{
-    return QString(str).replace("/", "%2F");
-}
-
-bool AlbumView::parseLastFmResponse(const QByteArray &data)
-{
-    QXmlStreamReader xml(data);
-    bool finished=false;
-
-    while (xml.readNextStartElement() && !finished) {
-        if (QLatin1String("album")==xml.name()) {
-            while (xml.readNextStartElement() && !finished) {
-                if (QLatin1String("wiki")==xml.name()) {
-                    while (xml.readNextStartElement() && !finished) {
-                        if (QLatin1String("content")==xml.name()) {
-                            details = xml.readElementText();
-                            static const QRegExp re("User-contributed text.*");
-                            details.remove(re);
-                            finished=true;
-                        } else {
-                            xml.skipCurrentElement();
-                        }
-                    }
-                } else {
-                    xml.skipCurrentElement();
-                }
-            }
-        }
-    }
-
-    if (!details.isEmpty()) {
-        int split = details.indexOf('\n', 512);
-        if (-1==split) {
-            split = details.indexOf(". ", 512);
-        }
-
-        details="<p>"+details.left(split);
-        if (-1!=split) {
-            QString url = "http://www.last.fm/music/"+escape(Covers::fixArtist(currentSong.albumArtist()))+"/"+escape(currentSong.album)+"/+wiki";
-            details += QString("<br/><a href='%1'>%2</a>").arg(url, i18n("Read more"));
-        }
-        details+="</p>";
-    }
-    return !details.isEmpty();
 }
 
 void AlbumView::updateDetails(bool preservePos)
 {
+    if (detailsReceived&ArtistBio && detailsReceived&Details && details.left(constCheckChars)==bio) {
+        details.clear();
+    }
     int pos=preservePos ? text->verticalScrollBar()->value() : 0;
-    text->setText(details+trackList);
+    if (detailsReceived&ArtistBio) {
+        text->setText(details+trackList);
+    } else {
+        text->setText(trackList);
+    }
     if (preservePos) {
         text->verticalScrollBar()->setValue(pos);
     }

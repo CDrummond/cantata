@@ -237,7 +237,8 @@ CacheSettings::CacheSettings(QWidget *parent)
                   QStringList() << "*"+MusicLibraryModel::constLibraryExt << "*"+MusicLibraryModel::constLibraryCompressedExt, tree);
     new CacheItem(i18n("Covers"), Utils::cacheDir(Covers::constCoverDir, false), QStringList() << "*.jpg" << "*.png", tree);
     new CacheItem(i18n("Lyrics"), Utils::cacheDir(SongView::constLyricsDir, false), QStringList() << "*"+SongView::constExtension, tree);
-    new CacheItem(i18n("Artist Information"), Utils::cacheDir(ArtistView::constCacheDir, false), QStringList() << "*"+ArtistView::constInfoExt << "*.jpg" << "*.png", tree);
+    new CacheItem(i18n("Artist Information"), Utils::cacheDir(ArtistView::constCacheDir, false), QStringList() << "*"+ArtistView::constInfoExt
+                  << "*"+ArtistView::constSimilarInfoExt << "*.json.gz" << "*.jpg" << "*.png", tree);
     new CacheItem(i18n("Album Information"), Utils::cacheDir(AlbumView::constCacheDir, false), QStringList() << "*"+AlbumView::constInfoExt << "*.jpg" << "*.png", tree);
     #ifdef ENABLE_ONLINE_SERVICES
     new CacheItem(i18n("Jamendo"), Utils::cacheDir("jamendo", false), QStringList() << "*"+MusicLibraryModel::constLibraryCompressedExt << "*.jpg" << "*.png", tree);

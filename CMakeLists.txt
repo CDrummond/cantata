@@ -103,7 +103,8 @@ SET( CANTATA_SRCS gui/application.cpp gui/main.cpp gui/initialsettingswizard.cpp
     network/networkaccessmanager.cpp
     devices/deviceoptions.cpp
     context/lyricsettings.cpp context/ultimatelyricsprovider.cpp context/ultimatelyrics.cpp context/lyricsdialog.cpp
-    context/contextpage.cpp context/view.cpp context/artistview.cpp context/albumview.cpp context/songview.cpp)
+    context/contextpage.cpp context/view.cpp context/artistview.cpp context/albumview.cpp context/songview.cpp context/contextengine.cpp
+    context/wikipediaengine.cpp context/wikipediasettings.cpp)
 SET( CANTATA_MOC_HDRS
     gui/initialsettingswizard.h gui/mainwindow.h gui/settings.h gui/covers.h gui/folderpage.h gui/librarypage.h gui/albumspage.h
     gui/playlistspage.h gui/serverplaybacksettings.h gui/serversettings.h gui/preferencesdialog.h gui/filesettings.h
@@ -119,14 +120,15 @@ SET( CANTATA_MOC_HDRS
     widgets/genrecombo.h widgets/toolbar.h
     network/networkaccessmanager.h
     context/lyricsettings.h context/ultimatelyrics.h context/ultimatelyricsprovider.h context/lyricsdialog.h
-    context/contextpage.h context/artistview.h context/albumview.h context/songview.h context/view.h)
+    context/contextpage.h context/artistview.h context/albumview.h context/songview.h context/view.h context/contextengine.h
+    context/wikipediaengine.h context/wikipediasettings.h)
 SET( CANTATA_UIS
     gui/initialsettingswizard.ui gui/mainwindow.ui gui/folderpage.ui gui/librarypage.ui gui/albumspage.ui gui/playlistspage.ui
     gui/filesettings.ui gui/interfacesettings.ui gui/playbacksettings.ui gui/serverplaybacksettings.ui gui/serversettings.ui
     gui/coverdialog.ui
     streams/streamspage.ui
     dynamic/dynamicpage.ui dynamic/dynamicrule.ui dynamic/dynamicrules.ui
-    context/lyricsettings.ui
+    context/lyricsettings.ui context/wikipediasettings.ui
     widgets/itemview.ui)
 
 if (ENABLE_ONLINE_SERVICES)

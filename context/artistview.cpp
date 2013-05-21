@@ -29,6 +29,7 @@
 #include "musiclibrarymodel.h"
 #include "networkaccessmanager.h"
 #include "qtiocompressor/qtiocompressor.h"
+#include "contextengine.h"
 #include <QNetworkReply>
 #include <QApplication>
 #include <QTextBrowser>
@@ -51,17 +52,18 @@ const QLatin1String ArtistView::constCacheDir("artists/");
 const QLatin1String ArtistView::constInfoExt(".html.gz");
 const QLatin1String ArtistView::constSimilarInfoExt(".txt");
 
-static QString cacheFileName(const QString &artist, const QString &locale, bool similar, bool createDir)
+static QString cacheFileName(const QString &artist, const QString &lang, bool similar, bool createDir)
 {
     return Utils::cacheDir(ArtistView::constCacheDir, createDir)+
-            Covers::encodeName(artist)+(similar ? "-similar" : ("."+locale))+(similar ? ArtistView::constSimilarInfoExt : ArtistView::constInfoExt);
+            Covers::encodeName(artist)+(similar ? "-similar" : ("."+lang))+(similar ? ArtistView::constSimilarInfoExt : ArtistView::constInfoExt);
 }
 
 ArtistView::ArtistView(QWidget *parent)
     : View(parent)
-    , triedWithFilter(false)
     , currentSimilarJob(0)
 {
+    engine=ContextEngine::create(this);
+    connect(engine, SIGNAL(searchResult(QString,QString)), this, SLOT(searchResponse(QString,QString)));
     connect(Covers::self(), SIGNAL(artistImage(Song,QImage,QString)), SLOT(artistImage(Song,QImage,QString)));
     connect(text, SIGNAL(anchorClicked(QUrl)), SLOT(showArtist(QUrl)));
     Utils::clearOldCache(constCacheDir, constCacheAge);
@@ -77,7 +79,7 @@ void ArtistView::update(const Song &s, bool force)
 {
     if (s.isEmpty()) {
         currentSong=s;
-        cancel();
+        engine->cancel();
         clear();
         return;
     }
@@ -106,7 +108,6 @@ void ArtistView::update(const Song &s, bool force)
         clear();
         biography.clear();
         similarArtists=QString();
-        triedWithFilter=false;
         if (!currentSong.isEmpty()) {
             setHeader(currentSong.artist);
 
@@ -132,31 +133,33 @@ void ArtistView::artistImage(const Song &song, const QImage &i, const QString &f
 
 void ArtistView::loadBio()
 {
-    QString cachedFile=cacheFileName(currentSong.artist, locale, false, false);
-    if (QFile::exists(cachedFile)) {
-        QFile f(cachedFile);
-        QtIOCompressor compressor(&f);
-        compressor.setStreamFormat(QtIOCompressor::GzipFormat);
-        if (compressor.open(QIODevice::ReadOnly)) {
-            QString data=QString::fromUtf8(compressor.readAll());
+    foreach (const QString &lang, engine->getLangs()) {
+        QString cachedFile=cacheFileName(currentSong.artist, lang, false, false);
+        if (QFile::exists(cachedFile)) {
+            QFile f(cachedFile);
+            QtIOCompressor compressor(&f);
+            compressor.setStreamFormat(QtIOCompressor::GzipFormat);
+            if (compressor.open(QIODevice::ReadOnly)) {
+                QString data=QString::fromUtf8(compressor.readAll());
 
-            if (!data.isEmpty() && View::constAmbiguous!=data) {
-                searchResponse(data);
-                loadSimilar();
-                setBio();
-                Utils::touchFile(cachedFile);
-                return;
+                if (!data.isEmpty()) {
+                    searchResponse(data, QString());
+                    loadSimilar();
+                    setBio();
+                    Utils::touchFile(cachedFile);
+                    return;
+                }
             }
         }
     }
 
     showSpinner();
-    search(currentSong.artist);
+    engine->search(QStringList() << currentSong.artist, ContextEngine::Artist);
 }
 
 void ArtistView::loadSimilar()
 {
-    QString cachedFile=cacheFileName(currentSong.artist, locale, true, false);
+    QString cachedFile=cacheFileName(currentSong.artist, QString(), true, false);
     if (QFile::exists(cachedFile)) {
         QFile f(cachedFile);
         if (f.open(QIODevice::ReadOnly|QIODevice::Text)) {
@@ -193,7 +196,7 @@ void ArtistView::handleSimilarReply()
             if (!artists.isEmpty()) {
                 buildSimilar(artists);
                 setBio();
-                QFile f(cacheFileName(reply->property(constNameKey).toString(), locale, true, true));
+                QFile f(cacheFileName(reply->property(constNameKey).toString(), QString(), true, true));
                 if (f.open(QIODevice::WriteOnly|QIODevice::Text)) {
                     QTextStream stream(&f);
                     foreach (const QString &artist, artists) {
@@ -266,7 +269,7 @@ void ArtistView::requestSimilar()
 
 void ArtistView::abort()
 {
-    cancel();
+    engine->cancel();
     if (currentSimilarJob) {
         disconnect(currentSimilarJob, SIGNAL(finished()), this, SLOT(handleSimilarArtistsReply()));
         currentSimilarJob->abort();
@@ -274,24 +277,20 @@ void ArtistView::abort()
     }
 }
 
-void ArtistView::searchResponse(const QString &resp)
+void ArtistView::searchResponse(const QString &resp, const QString &lang)
 {
-    if (View::constAmbiguous==resp && !triedWithFilter) {
-        triedWithFilter=true;
-        search(currentSong.artist+" "+i18nc("Search pattern for an artist or band", "(artist|band)"));
-        return;
-    }
-
-    biography=View::constAmbiguous==resp ? QString() : resp;
+    biography=resp;
     emit haveBio(currentSong.artist, resp);
     hideSpinner();
 
     if (!resp.isEmpty()) {
-        QFile f(cacheFileName(currentSong.artist, locale, false, false));
-        QtIOCompressor compressor(&f);
-        compressor.setStreamFormat(QtIOCompressor::GzipFormat);
-        if (compressor.open(QIODevice::WriteOnly)) {
-            compressor.write(resp.toUtf8().constData());
+        if (!lang.isEmpty()) {
+            QFile f(cacheFileName(currentSong.artist, lang, false, false));
+            QtIOCompressor compressor(&f);
+            compressor.setStreamFormat(QtIOCompressor::GzipFormat);
+            if (compressor.open(QIODevice::WriteOnly)) {
+                compressor.write(resp.toUtf8().constData());
+            }
         }
         loadSimilar();
         setBio();

@@ -331,6 +331,7 @@ Icon Icons::streamsIcon;
 #ifdef ENABLE_ONLINE_SERVICES
 Icon Icons::onlineIcon;
 #endif
+Icon Icons::contextIcon;
 Icon Icons::lyricsIcon;
 Icon Icons::infoIcon;
 #ifdef ENABLE_DEVICES_SUPPORT
@@ -626,9 +627,19 @@ void Icons::initToolbarIcons(const QColor &color, bool forceLight)
             QColor col=QApplication::palette().color(QPalette::Active, QPalette::ButtonText);
             infoIcon=loadSidebarIcon("info", col, col);
         }
+
     if (infoIcon.isNull()) {
         infoIcon=Icon("dialog-information");
     }
+
+    #if !defined ENABLE_KDE_SUPPORT && !defined Q_OS_WIN
+    if (QIcon::themeName()==QLatin1String("gnome")) {
+        QColor col=QApplication::palette().color(QPalette::Active, QPalette::ButtonText);
+        contextIcon=loadSidebarIcon("info", col, col);
+    } else
+    #endif
+        contextIcon=Icon("dialog-information");
+
     if (toolbarPrevIcon.isNull()) {
         toolbarPrevIcon=Icon::getMediaIcon("media-skip-backward");
     } else {

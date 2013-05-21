@@ -33,6 +33,7 @@ class QNetworkReply;
 class QIODevice;
 class QImage;
 class QUrl;
+class ContextEngine;
 
 class ArtistView : public View
 {
@@ -62,7 +63,7 @@ private Q_SLOTS:
 
 private:
     void loadBio();
-    void searchResponse(const QString &resp);
+    void searchResponse(const QString &resp, const QString &lang);
     void loadSimilar();
     void requestSimilar();
     QStringList parseSimilarResponse(const QByteArray &resp);
@@ -70,7 +71,7 @@ private:
     void abort();
 
 private:
-    bool triedWithFilter;
+    ContextEngine *engine;
     QString biography;
     QString similarArtists;
     QNetworkReply *currentSimilarJob;

@@ -21,50 +21,46 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef VIEW_H
-#define VIEW_H
+#ifndef WIKIPEDIA_SETTINGS_H
+#define WIKIPEDIA_SETTINGS_H
 
-#include <QWidget>
-#include <QSize>
-#include "song.h"
+#include "contextengine.h"
+#include "ui_wikipediasettings.h"
 
-class QImage;
-class QLabel;
-class QTextBrowser;
-class Spinner;
 class QNetworkReply;
-class QLayoutItem;
+class QShowEvent;
+class Spinner;
 
-class View : public QWidget
+class WikipediaSettings : public ContextSettings, private Ui::WikipediaSettings
 {
     Q_OBJECT
-public:
-    View(QWidget *p);
     
-    void clear();
-    void setStandardHeader(const QString &h) { stdHeader=h; }
-    void setHeader(const QString &str);
-    void setPicSize(const QSize &sz);
-    void setPic(const QImage &img);
+public:
+    WikipediaSettings(QWidget *p);
+    
+    void load();
+    void save();
+    void cancel();
     void showEvent(QShowEvent *e);
-    void showSpinner();
-    void hideSpinner();
-    void setEditable(bool e);
-    virtual void update(const Song &s, bool force)=0;
 
-protected Q_SLOTS:
-    virtual void searchResponse(const QString &r, const QString &l);
+private Q_SLOTS:
+    void getLangs();
+    void parseLangs();
+    void moveUp();
+    void moveDown();
+    void move(int d);
+    void add();
+    void remove();
+    void currentLangChanged(QListWidgetItem *item);
+    void currentPreferredLangChanged(QListWidgetItem *item);
 
-protected:
-    Song currentSong;
-    QString stdHeader;
-    QLabel *header;
-    QLabel *pic;
-    QTextBrowser *text;
+private:
+    void parseLangs(const QByteArray &data);
+
+private:
     bool needToUpdate;
-    QSize picSize;
+    QNetworkReply *job;
     Spinner *spinner;
 };
 
 #endif
-

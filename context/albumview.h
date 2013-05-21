@@ -30,6 +30,7 @@ class QImage;
 class QNetworkReply;
 class QByteArray;
 class QUrl;
+class ContextEngine;
 
 class AlbumView : public View
 {
@@ -53,18 +54,17 @@ public Q_SLOTS:
 private:
     void getTrackListing();
     void getDetails();
-    void searchResponse(const QString &resp);
+    void searchResponse(const QString &resp, const QString &lang);
     void updateDetails(bool preservePos=false);
     void abort();
 
 private:
-    bool triedWithFilter;
+    ContextEngine *engine;
     int detailsReceived;
     QString details;
     QString trackList;
     QString bioArtist;
     QString bio;
-    QNetworkReply *job;
 };
 
 #endif

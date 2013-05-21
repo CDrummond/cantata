@@ -215,9 +215,11 @@ Song HttpServer::decodeUrl(const QUrl &url) const
             s.id=q.queryItemValue("id").toInt();
         }
         s.file=url.path();
+        s.type=Song::CantataStream;
         #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
         if (s.file.startsWith(QChar('/')+Song::constCddaProtocol)) {
             s.file=s.file.mid(1);
+            s.type=Song::Cdda;
         }
         #endif
     }

@@ -22,19 +22,20 @@
 
 1.0.3
 -----
-1. Dont display codec settings in copy dialog unless we are copying to a
-   device, or from an AudioCD.
-2. Save size of Track Organiser, Tag Editor, and ReplayGain dialogs.
-3. Fix consistency of default button in messageboxes between Qt and KDE builds.
-4. Unless using a dark toolbar, use same colour for toolbar menu icon as per
-   menu icon in views.
-5. Document how to make a release build.
-6. When searching for artist information, if song's album artist contains
-   artist, then use album artist. This is for tracks that have an artist such
-   as "abc featuring 123", and album artist is "abc"
-7. Improve comsume icon at larger sizes.
-8. Fix lyrics background when we toggle from showing cover to not showing.
-9. Replace multiple blank lines with single blank line when showing lyrics.
+ 1. Dont display codec settings in copy dialog unless we are copying to a
+    device, or from an AudioCD.
+ 2. Save size of Track Organiser, Tag Editor, and ReplayGain dialogs.
+ 3. Fix consistency of default button in messageboxes between Qt and KDE builds.
+ 4. Unless using a dark toolbar, use same colour for toolbar menu icon as per
+    menu icon in views.
+ 5. Document how to make a release build.
+ 6. When searching for artist information, if song's album artist contains
+    artist, then use album artist. This is for tracks that have an artist such
+    as "abc featuring 123", and album artist is "abc"
+ 7. Improve comsume icon at larger sizes.
+ 8. Fix lyrics background when we toggle from showing cover to not showing.
+ 9. Replace multiple blank lines with single blank line when showing lyrics.
+10. Fix AudioCD playback.
 
 1.0.2.1
 -------

@@ -28,6 +28,7 @@
 #include "utils.h"
 #include "qtiocompressor/qtiocompressor.h"
 #include "musiclibrarymodel.h"
+#include "contextengine.h"
 #include <QTextBrowser>
 #include <QScrollBar>
 #include <QFile>
@@ -53,10 +54,10 @@ enum Parts {
 
 AlbumView::AlbumView(QWidget *p)
     : View(p)
-    , triedWithFilter(false)
     , detailsReceived(0)
-    , job(0)
 {
+    engine=ContextEngine::create(this);
+    connect(engine, SIGNAL(searchResult(QString,QString)), this, SLOT(searchResponse(QString,QString)));
     connect(Covers::self(), SIGNAL(cover(const Song &, const QImage &, const QString &)), SLOT(coverRetreived(const Song &, const QImage &, const QString &)));
     connect(Covers::self(), SIGNAL(coverUpdated(const Song &, const QImage &, const QString &)), SLOT(coverRetreived(const Song &, const QImage &, const QString &)));
     connect(text, SIGNAL(anchorClicked(QUrl)), SLOT(playSong(QUrl)));
@@ -71,7 +72,7 @@ void AlbumView::update(const Song &song, bool force)
 {
     if (song.isEmpty()) {
         currentSong=song;
-        cancel();
+        engine->cancel();
         clear();
         return;
     }
@@ -84,7 +85,7 @@ void AlbumView::update(const Song &song, bool force)
         details.clear();
         trackList.clear();
         bio.clear();
-        triedWithFilter=false;
+        clear();
         detailsReceived=bioArtist==currentSong.artist ? ArtistBio : 0;
         setHeader(song.album.isEmpty() ? stdHeader : song.album);
         Covers::Image cImg=Covers::self()->requestImage(song);
@@ -143,23 +144,25 @@ void AlbumView::getTrackListing()
 
 void AlbumView::getDetails()
 {
-    cancel();
-    QString cachedFile=cacheFileName(Covers::fixArtist(currentSong.albumArtist()), currentSong.album, locale, false);
-    if (QFile::exists(cachedFile)) {
-        QFile f(cachedFile);
-        QtIOCompressor compressor(&f);
-        compressor.setStreamFormat(QtIOCompressor::GzipFormat);
-        if (compressor.open(QIODevice::ReadOnly)) {
-            QByteArray data=compressor.readAll();
+    engine->cancel();
+    foreach (const QString &lang, engine->getLangs()) {
+        QString cachedFile=cacheFileName(Covers::fixArtist(currentSong.albumArtist()), currentSong.album, lang, false);
+        if (QFile::exists(cachedFile)) {
+            QFile f(cachedFile);
+            QtIOCompressor compressor(&f);
+            compressor.setStreamFormat(QtIOCompressor::GzipFormat);
+            if (compressor.open(QIODevice::ReadOnly)) {
+                QByteArray data=compressor.readAll();
 
-            if (!data.isEmpty()) {
-                searchResponse(QString::fromUtf8(data));
-                Utils::touchFile(cachedFile);
-                return;
+                if (!data.isEmpty()) {
+                    searchResponse(QString::fromUtf8(data), QString());
+                    Utils::touchFile(cachedFile);
+                    return;
+                }
             }
         }
     }
-    search(currentSong.albumArtist()+" "+currentSong.album);
+    engine->search(QStringList() << currentSong.albumArtist() << currentSong.album, ContextEngine::Album);
 }
 
 void AlbumView::coverRetreived(const Song &s, const QImage &img, const QString &file)
@@ -174,26 +177,22 @@ void AlbumView::coverRetreived(const Song &s, const QImage &img, const QString &
     }
 }
 
-void AlbumView::searchResponse(const QString &resp)
+void AlbumView::searchResponse(const QString &resp, const QString &lang)
 {
-    if (View::constAmbiguous==resp && !triedWithFilter) {
-        triedWithFilter=true;
-        search(currentSong.albumArtist()+" "+currentSong.album+" "+i18nc("Search pattern for an album", "(album|score|soundtrack)"));
-        return;
-    }
-
     detailsReceived|=Details;
     if (All==detailsReceived) {
         hideSpinner();
     }
 
-    if (!resp.isEmpty() && View::constAmbiguous!=resp) {
+    if (!resp.isEmpty()) {
         details=resp;
-        QFile f(cacheFileName(Covers::fixArtist(currentSong.albumArtist()), currentSong.album, locale, true));
-        QtIOCompressor compressor(&f);
-        compressor.setStreamFormat(QtIOCompressor::GzipFormat);
-        if (compressor.open(QIODevice::WriteOnly)) {
-            compressor.write(resp.toUtf8().constData());
+        if (!lang.isEmpty()) {
+            QFile f(cacheFileName(Covers::fixArtist(currentSong.albumArtist()), currentSong.album, lang, true));
+            QtIOCompressor compressor(&f);
+            compressor.setStreamFormat(QtIOCompressor::GzipFormat);
+            if (compressor.open(QIODevice::WriteOnly)) {
+                compressor.write(resp.toUtf8().constData());
+            }
         }
         updateDetails();
     }

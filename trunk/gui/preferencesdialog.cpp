@@ -33,6 +33,7 @@
 #ifdef TAGLIB_FOUND
 #include "httpserversettings.h"
 #endif
+#include "contextengine.h"
 #include "lyricsettings.h"
 #include "cachesettings.h"
 #include "localize.h"
@@ -66,6 +67,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
     playback = new PlaybackSettings(widget);
     files = new FileSettings(widget);
     interface = new InterfaceSettings(widget);
+    context = ContextEngine::settings(widget);
     lyrics = new LyricSettings(widget);
     cache = new CacheSettings(widget);
     server->load();
@@ -89,6 +91,8 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
         http=0;
     }
     #endif
+    widget->addPage(context, i18n("Context"), Icons::contextIcon, i18n("Context View Settings"));
+    context->load();
     widget->addPage(lyrics, i18n("Lyrics"), Icons::lyricsIcon, i18n("Lyrics Settings"));
     #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
     audiocd = new AudioCdSettings(widget);
@@ -140,6 +144,7 @@ void PreferencesDialog::writeSettings()
     #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
     audiocd->save();
     #endif
+    context->save();
     lyrics->save();
     Settings::self()->save();
     emit settingsSaved();

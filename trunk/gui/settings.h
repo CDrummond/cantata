@@ -125,7 +125,7 @@ public:
     bool groupSingle();
     bool groupMultiple();
     QStringList lyricProviders();
-    QString wikipediaLocale();
+    QStringList wikipediaLangs();
     QString page();
     QStringList hiddenPages();
     bool gnomeMediaKeys();
@@ -204,7 +204,7 @@ public:
     void saveGroupSingle(bool v);
     void saveGroupMultiple(bool v);
     void saveLyricProviders(const QStringList &v);
-    void saveWikipediaLocale(const QString &v);
+    void saveWikipediaLangs(const QStringList &v);
     void savePage(const QString &v);
     void saveHiddenPages(const QStringList &v);
     void saveGnomeMediaKeys(bool v);

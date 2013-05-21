@@ -231,7 +231,6 @@ void SongView::update(const Song &s, bool force)
 
     if (s.isEmpty()) {
         currentSong=s;
-        View::cancel();
         clear();
         return;
     }

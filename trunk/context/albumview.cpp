@@ -116,12 +116,13 @@ void AlbumView::playSong(const QUrl &url)
 {
     if (QLatin1String("cantata")==url.scheme()) {
         emit playSong(url.path());
-    }
-    #ifndef Q_OS_WIN
-    else {
+    } else {
+        #ifdef Q_OS_WIN
+        QProcess::startDetached(QLatin1String("cmd"), QStringList() << QLatin1String("/c") << QLatin1String("start") << url.toString());
+        #else
         QProcess::startDetached(QLatin1String("xdg-open"), QStringList() << url.toString());
+        #endif
     }
-    #endif
 }
 
 void AlbumView::artistBio(const QString &artist, const QString &b)

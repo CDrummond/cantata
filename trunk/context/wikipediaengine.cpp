@@ -102,6 +102,50 @@ static QString strip(const QString &string, QString open, QString close, QString
     return result;
 }
 
+static QString stripEmptySections(QString answer)
+{
+    QStringList headers=QStringList() << "h3" << "h2" << "b";
+    foreach (const QString &h1, headers) {
+        foreach (const QString &h2, headers) {
+            int end=-1;
+            do {
+                end=answer.indexOf("</"+h1+"><"+h2+">");
+                int realEnd=end+3+h1.length();
+                if (-1==end) {
+                    end=answer.indexOf("</"+h1+"><br><br><"+h2+">");
+                    realEnd=end+11+h1.length();
+                }
+                if (-1!=end) {
+                    int start=answer.lastIndexOf("<"+h1+">", end);
+                    if (-1!=start) {
+                        answer=answer.left(start)+answer.mid(realEnd);
+                    }
+                }
+            } while(-1!=end);
+        }
+    }
+    return answer;
+}
+
+static QString stripLastEmptySection(QString answer)
+{
+    QStringList headers=QStringList() << "h3" << "h2" << "b";
+    bool modified=false;
+    do {
+        modified=false;
+        foreach (const QString &h, headers) {
+            if (answer.endsWith("</"+h+">") || answer.endsWith("</"+h+"> ") || answer.endsWith("</"+h+">  ")) {
+                int start=answer.lastIndexOf("<"+h+">", answer.length()-4);
+                if (-1!=start) {
+                    answer=answer.left(start);
+                    modified=true;
+                }
+            }
+        }
+    } while (modified);
+    return answer;
+}
+
 static QString wikiToHtml(QString answer)
 {
     int start = answer.indexOf('>', answer.indexOf("<text"))+1;
@@ -147,6 +191,7 @@ static QString wikiToHtml(QString answer)
     answer.replace(QRegExp("\\[\\[[^\\[\\]]*\\|([^\\[\\]\\|]*)\\]\\]"), "\\1"); // collapse commented links
     answer.replace("[['", "[["); // Fixes '74 (e.g. 1974) causing errors!
     answer.remove("[[").remove("]]"); // remove wiki link "tags"
+    answer = strip(answer, "{| class=&quot;wikitable&quot;", "|}");
 
     answer = answer.trimmed();
 
@@ -159,6 +204,7 @@ static QString wikiToHtml(QString answer)
     answer.replace(QRegExp("\\n\\|[^\\n]*\\n"), "\n");
     answer.replace("\n*", "<br>");
     answer.replace("\n", "");
+    answer.replace("'''s ", "'s");
     answer.replace("'''", "¬").replace(QRegExp("¬([^¬]*)¬"), "<b>\\1</b>");
     answer.replace("''", "¬").replace(QRegExp("¬([^¬]*)¬"), "<i>\\1</i>");
     answer.replace("===", "¬").replace(QRegExp("¬([^¬]*)¬"), "<h3>\\1</h3>");
@@ -172,16 +218,23 @@ static QString wikiToHtml(QString answer)
     answer.replace("br>;", "br>");
     answer.replace("h2>;", "h2>");
     answer.replace("h3>;", "h3>");
+    answer.replace("<br><br><br><br><br>", "<br><br>");
+    answer.replace("<br><br><br><br>", "<br><br>");
+    answer.replace("<br><br><br>", "<br><br>");
 
     // Remove track listings - we take these from MPD...
     QString listingText="<h2>"+i18n("Track listing")+"</h2>";
-    int listingStart=answer.indexOf(listingText, 0, Qt::CaseInsensitive);
-    if (-1!=listingStart) {
-        int listingEnd=answer.indexOf("<h2>", listingStart+listingText.length(), Qt::CaseInsensitive);
-        if (listingStart!=listingEnd) {
-            answer=answer.left(listingStart)+answer.mid(listingEnd);
+    start=answer.indexOf(listingText, 0, Qt::CaseInsensitive);
+    if (-1!=start) {
+        int end=answer.indexOf("<h2>", start+listingText.length(), Qt::CaseInsensitive);
+        if (start!=end) {
+            answer=answer.left(start)+answer.mid(end);
         }
     }
+
+    // Try to remove empty sections (that will have been reated because we removed tables!)
+    answer=stripEmptySections(answer);
+    answer=stripLastEmptySection(answer);
     return answer;
 }
 

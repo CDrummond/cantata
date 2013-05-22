@@ -53,6 +53,7 @@ private Q_SLOTS:
 
 private:
     static QStringList preferredLangs;
+    static bool introOnly;
     QStringList titles;
 };
 

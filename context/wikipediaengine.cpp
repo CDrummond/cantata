@@ -146,7 +146,7 @@ static QString stripLastEmptySection(QString answer)
     return answer;
 }
 
-static QString wikiToHtml(QString answer)
+static QString wikiToHtml(QString answer, bool introOnly, const QUrl &url)
 {
     int start = answer.indexOf('>', answer.indexOf("<text"))+1;
     int end = answer.lastIndexOf(QRegExp("\\n[^\\n]*\\n\\{\\{reflist", Qt::CaseInsensitive));
@@ -207,34 +207,46 @@ static QString wikiToHtml(QString answer)
     answer.replace("'''s ", "'s");
     answer.replace("'''", "¬").replace(QRegExp("¬([^¬]*)¬"), "<b>\\1</b>");
     answer.replace("''", "¬").replace(QRegExp("¬([^¬]*)¬"), "<i>\\1</i>");
-    answer.replace("===", "¬").replace(QRegExp("¬([^¬]*)¬"), "<h3>\\1</h3>");
-    answer.replace("==", "¬").replace(QRegExp("¬([^¬]*)¬"), "<h2>\\1</h2>");
+    if (!introOnly) {
+        answer.replace("===", "¬").replace(QRegExp("¬([^¬]*)¬"), "<h3>\\1</h3>");
+        answer.replace("==", "¬").replace(QRegExp("¬([^¬]*)¬"), "<h2>\\1</h2>");
+    }
     answer.replace("&amp;nbsp;", " ");
     answer.replace("<br><h", "<h");
-    answer.replace("</h2><br>", "</h2>");
-    answer.replace("</h3><br>", "</h3>");
-    answer.replace("<h3>=", "<h4>");
-    answer.replace("</h3>=", "</h4>");
-    answer.replace("br>;", "br>");
-    answer.replace("h2>;", "h2>");
-    answer.replace("h3>;", "h3>");
-    answer.replace("<br><br><br><br><br>", "<br><br>");
-    answer.replace("<br><br><br><br>", "<br><br>");
-    answer.replace("<br><br><br>", "<br><br>");
-
-    // Remove track listings - we take these from MPD...
-    QString listingText="<h2>"+i18n("Track listing")+"</h2>";
-    start=answer.indexOf(listingText, 0, Qt::CaseInsensitive);
-    if (-1!=start) {
-        int end=answer.indexOf("<h2>", start+listingText.length(), Qt::CaseInsensitive);
-        if (start!=end) {
-            answer=answer.left(start)+answer.mid(end);
+    if (introOnly) {
+        end=answer.indexOf("==", 3);
+        if (-1==end) {
+            return QString();
+        } else {
+            answer=answer.left(end);
+            answer+=QString("<br><a href='%1'>%2</a>").arg(url.toString()).arg(i18n("Read more on wikipedia"));
         }
-    }
+    } else {
+        answer.replace("</h2><br>", "</h2>");
+        answer.replace("</h3><br>", "</h3>");
+        answer.replace("<h3>=", "<h4>");
+        answer.replace("</h3>=", "</h4>");
+        answer.replace("br>;", "br>");
+        answer.replace("h2>;", "h2>");
+        answer.replace("h3>;", "h3>");
+        answer.replace("<br><br><br><br><br>", "<br><br>");
+        answer.replace("<br><br><br><br>", "<br><br>");
+        answer.replace("<br><br><br>", "<br><br>");
 
-    // Try to remove empty sections (that will have been reated because we removed tables!)
-    answer=stripEmptySections(answer);
-    answer=stripLastEmptySection(answer);
+        // Remove track listings - we take these from MPD...
+        QString listingText="<h2>"+i18n("Track listing")+"</h2>";
+        start=answer.indexOf(listingText, 0, Qt::CaseInsensitive);
+        if (-1!=start) {
+            int end=answer.indexOf("<h2>", start+listingText.length(), Qt::CaseInsensitive);
+            if (start!=end) {
+                answer=answer.left(start)+answer.mid(end);
+            }
+        }
+
+        // Try to remove empty sections (that will have been reated because we removed tables!)
+        answer=stripEmptySections(answer);
+        answer=stripLastEmptySection(answer);
+    }
     return answer;
 }
 
@@ -244,12 +256,14 @@ static inline QString getLang(const QUrl &url)
 }
 
 QStringList WikipediaEngine::preferredLangs;
+bool WikipediaEngine::introOnly=true;
 
 WikipediaEngine::WikipediaEngine(QObject *p)
     : ContextEngine(p)
 {
     if (preferredLangs.isEmpty()) {
         setPreferedLangs(Settings::self()->wikipediaLangs());
+        introOnly=Settings::self()->wikipediaIntroOnly();
     }
 }
 
@@ -502,5 +516,13 @@ void WikipediaEngine::parsePage()
         return;
     }
 
-    emit searchResult(wikiToHtml(answer), hostLang);
+    if (answer.isEmpty()) {
+        emit searchResult(QString(), QString());
+        return;
+    }
+    QString resp=wikiToHtml(answer, introOnly, reply->url());
+    if (introOnly && resp.isEmpty()) {
+        resp=wikiToHtml(answer, false, reply->url());
+    }
+    emit searchResult(resp, hostLang);
 }

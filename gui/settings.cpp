@@ -458,6 +458,10 @@ QStringList Settings::wikipediaLangs()
     return GET_STRINGLIST("wikipediaLangs", def);
 }
 
+bool Settings::wikipediaIntroOnly()
+{
+    return GET_BOOL("wikipediaIntroOnly", true);
+}
 
 QString Settings::page()
 {

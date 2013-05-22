@@ -18,7 +18,7 @@
     view). Use a fading divider instead.
 11. Remove lyrics and info pages, and place within a new context view.
 12. Remove EchoNest usage, as this only seems to return English results. Use
-    wikipedia (localises) instead.
+    wikipedia instead.
 
 1.0.3
 -----

@@ -40,7 +40,10 @@ class View : public QWidget
     Q_OBJECT
 public:
     View(QWidget *p);
-    
+
+    static QString subHeader(const QString &str) { return "<"+subTag+">"+str+"</"+subTag+">"; }
+    static void initHeaderTags();
+
     void clear();
     void setStandardHeader(const QString &h) { stdHeader=h; }
     void setHeader(const QString &str);
@@ -56,6 +59,7 @@ protected Q_SLOTS:
     virtual void searchResponse(const QString &r, const QString &l);
 
 protected:
+    static QString subTag;
     Song currentSong;
     QString stdHeader;
     QLabel *header;

@@ -239,7 +239,7 @@ void ArtistView::setBio()
     }
 
     if (!webLinks.isEmpty()) {
-        html+="<h2>"+i18n("Web Links")+"</h2><ul>"+QString(webLinks).replace("${artist}", currentSong.artist)+"</ul>";
+        html+=View::subHeader(i18n("Web Links"))+QLatin1String("<ul>")+QString(webLinks).replace("${artist}", currentSong.artist)+QLatin1String("</ul>");
     }
     #endif
     text->setText(html);
@@ -327,7 +327,7 @@ void ArtistView::buildSimilar(const QStringList &artists)
     QSet<QString> mpdArtists=MusicLibraryModel::self()->getAlbumArtists();
     foreach (QString artist, artists) {
         if (similarArtists.isEmpty()) {
-            similarArtists="<br/><h2>"+i18n("Similar Artists")+"</h2><ul>";
+            similarArtists=QLatin1String("<br/>")+View::subHeader(i18n("Similar Artists"))+QLatin1String("<ul>");
         }
         if (mpdArtists.contains(artist)) {
             artist=QLatin1String("<a href=\"cantata://?artist=")+artist+"\">"+artist+"</a>";

@@ -36,6 +36,7 @@
 #include <QNetworkReply>
 
 static const int constCheckChars=100; // Num chars to cehck between artist bio and details - as sometimes wikipedia does not know album, so returns artist!
+static const int constCacheAge=7;
 
 const QLatin1String AlbumView::constCacheDir("albums/");
 const QLatin1String AlbumView::constInfoExt(".html.gz");
@@ -62,9 +63,11 @@ AlbumView::AlbumView(QWidget *p)
     connect(Covers::self(), SIGNAL(coverUpdated(const Song &, const QImage &, const QString &)), SLOT(coverRetreived(const Song &, const QImage &, const QString &)));
     connect(text, SIGNAL(anchorClicked(QUrl)), SLOT(playSong(QUrl)));
 
+    Utils::clearOldCache(constCacheDir, constCacheAge);
+    setStandardHeader(i18n("Album Information"));
+
     int imageSize=fontMetrics().height()*18;
     setPicSize(QSize(imageSize, imageSize));
-    setStandardHeader(i18n("Album Information"));
     clear();
 }
 

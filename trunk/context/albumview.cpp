@@ -134,7 +134,7 @@ void AlbumView::getTrackListing()
     QList<Song> songs=MusicLibraryModel::self()->getAlbumTracks(currentSong);
 
     if (!songs.isEmpty()) {
-        trackList=QLatin1String("<h3>")+i18n("Tracks")+QLatin1String("</h3><p><table>");
+        trackList=View::subHeader(i18n("Tracks"))+QLatin1String("<p><table>");
         foreach (const Song &s, songs) {
             trackList+=QLatin1String("<tr><td>")+QString::number(s.track)+
                        QLatin1String("</td><td><a href=\"")+s.file+"\">"+

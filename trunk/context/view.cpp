@@ -66,6 +66,7 @@ View::View(QWidget *parent)
     layout->addWidget(text);
     layout->addItem(new QSpacerItem(1, fontMetrics().height()/4, QSizePolicy::Fixed, QSizePolicy::Fixed));
     text->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    text->setOpenLinks(false);
     setEditable(false);
     if (headerTag.isEmpty()) {
         initHeaderTags();

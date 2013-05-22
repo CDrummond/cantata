@@ -218,7 +218,10 @@ static QString wikiToHtml(QString answer, bool introOnly, const QUrl &url)
         if (-1==end) {
             return QString();
         } else {
-            answer=answer.left(end);
+            answer=answer.left(end).trimmed();
+            if (!answer.endsWith("<br>")) {
+                answer+="<br>";
+            }
             answer+=QString("<br><a href='%1'>%2</a>").arg(url.toString()).arg(i18n("Read more on wikipedia"));
         }
     } else {

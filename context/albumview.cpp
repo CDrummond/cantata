@@ -34,6 +34,7 @@
 #include <QFile>
 #include <QUrl>
 #include <QNetworkReply>
+#include <QProcess>
 
 static const int constCheckChars=100; // Num chars to cehck between artist bio and details - as sometimes wikipedia does not know album, so returns artist!
 static const int constCacheAge=7;
@@ -113,7 +114,14 @@ void AlbumView::update(const Song &song, bool force)
 
 void AlbumView::playSong(const QUrl &url)
 {
-    emit playSong(url.path());
+    if (QLatin1String("cantata")==url.scheme()) {
+        emit playSong(url.path());
+    }
+    #ifndef Q_OS_WIN
+    else {
+        QProcess::startDetached(QLatin1String("xdg-open"), QStringList() << url.toString());
+    }
+    #endif
 }
 
 void AlbumView::artistBio(const QString &artist, const QString &b)
@@ -137,7 +145,7 @@ void AlbumView::getTrackListing()
         trackList=View::subHeader(i18n("Tracks"))+QLatin1String("<p><table>");
         foreach (const Song &s, songs) {
             trackList+=QLatin1String("<tr><td>")+QString::number(s.track)+
-                       QLatin1String("</td><td><a href=\"")+s.file+"\">"+
+                       QLatin1String("</td><td><a href=\"cantata://")+s.file+"\">"+
                        (s==currentSong ? "<b>"+s.displayTitle()+"</b>" : s.displayTitle())+QLatin1String("</a></td></tr>");
         }
 

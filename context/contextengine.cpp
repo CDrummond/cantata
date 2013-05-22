@@ -23,17 +23,11 @@
 
 #include "contextengine.h"
 #include "wikipediaengine.h"
-#include "wikipediasettings.h"
 #include <QNetworkReply>
 
 ContextEngine * ContextEngine::create(QObject *parent)
 {
     return new WikipediaEngine(parent);
-}
-
-ContextSettings * ContextEngine::settings(QWidget *parent)
-{
-    return new WikipediaSettings(parent);
 }
 
 ContextEngine::ContextEngine(QObject *p)

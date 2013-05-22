@@ -78,7 +78,6 @@ namespace Icons
     extern Icon onlineIcon;
     #endif
     extern Icon contextIcon;
-    extern Icon lyricsIcon;
     extern Icon infoIcon;
     #ifdef ENABLE_DEVICES_SUPPORT
     extern Icon devicesIcon;

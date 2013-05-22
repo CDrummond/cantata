@@ -104,7 +104,7 @@ SET( CANTATA_SRCS gui/application.cpp gui/main.cpp gui/initialsettingswizard.cpp
     devices/deviceoptions.cpp
     context/lyricsettings.cpp context/ultimatelyricsprovider.cpp context/ultimatelyrics.cpp context/lyricsdialog.cpp
     context/contextpage.cpp context/view.cpp context/artistview.cpp context/albumview.cpp context/songview.cpp context/contextengine.cpp
-    context/wikipediaengine.cpp context/wikipediasettings.cpp)
+    context/wikipediaengine.cpp context/wikipediasettings.cpp context/contextsettings.cpp)
 SET( CANTATA_MOC_HDRS
     gui/initialsettingswizard.h gui/mainwindow.h gui/settings.h gui/covers.h gui/folderpage.h gui/librarypage.h gui/albumspage.h
     gui/playlistspage.h gui/serverplaybacksettings.h gui/serversettings.h gui/preferencesdialog.h gui/filesettings.h

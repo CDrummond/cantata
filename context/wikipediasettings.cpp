@@ -42,7 +42,7 @@ static QString localeFile() {
 }
 
 WikipediaSettings::WikipediaSettings(QWidget *p)
-    : ContextSettings(p)
+    : QWidget(p)
     , loaded(false)
     , job(0)
     , spinner(0)

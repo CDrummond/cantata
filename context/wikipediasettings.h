@@ -31,7 +31,7 @@ class QNetworkReply;
 class QShowEvent;
 class Spinner;
 
-class WikipediaSettings : public ContextSettings, private Ui::WikipediaSettings
+class WikipediaSettings : public QWidget, private Ui::WikipediaSettings
 {
     Q_OBJECT
     

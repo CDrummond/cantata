@@ -26,17 +26,8 @@
 
 #include <QObject>
 #include <QStringList>
-#include <QWidget>
 
 class QNetworkReply;
-
-class ContextSettings : public QWidget {
-public:
-    ContextSettings(QWidget *p=0) : QWidget(p) { }
-    virtual ~ContextSettings() { }
-    virtual void load()=0;
-    virtual void save()=0;
-};
 
 class ContextEngine : public QObject
 {
@@ -51,7 +42,6 @@ public:
     static void setPreferedLangs(const QStringList &l);
     static const QStringList & getPreferedLangs() { return preferredLangs; }
     static ContextEngine * create(QObject *parent);
-    static ContextSettings * settings(QWidget *parent);
 
     ContextEngine(QObject *p);
     virtual ~ContextEngine();

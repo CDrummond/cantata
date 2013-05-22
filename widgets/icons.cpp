@@ -332,7 +332,6 @@ Icon Icons::streamsIcon;
 Icon Icons::onlineIcon;
 #endif
 Icon Icons::contextIcon;
-Icon Icons::lyricsIcon;
 Icon Icons::infoIcon;
 #ifdef ENABLE_DEVICES_SUPPORT
 Icon Icons::devicesIcon;
@@ -438,10 +437,6 @@ void Icons::init()
     filesIcon=Icon("document-multiple");
     cancelIcon=Icon("dialog-cancel");
     importIcon=Icon("document-import");
-    lyricsIcon=Icon("view-media-lyrics");
-    if (lyricsIcon.isNull()) {
-        lyricsIcon=Icon("text-x-generic");
-    }
     if (editIcon.isNull()) {
         editIcon=Icon("text-editor");
     }

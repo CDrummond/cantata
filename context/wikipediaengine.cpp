@@ -42,7 +42,7 @@ static QString strip(const QString &string, QString open, QString close, QString
 {
     QString result;
     int next, /*lastLeft, */left = 0;
-    int pos = string.indexOf(open);
+    int pos = string.indexOf(open, 0, Qt::CaseInsensitive);
 
     if (pos < 0) {
         return string;
@@ -134,6 +134,7 @@ static QString wikiToHtml(QString answer)
     }
 
     answer = answer.mid(start, end - start); // strip header/footer
+    answer = strip(answer, "({{", "}})"); // strip wiki internal stuff
     answer = strip(answer, "{{", "}}"); // strip wiki internal stuff
     answer.replace("&lt;", "<").replace("&gt;", ">");
     answer = strip(answer, "<!--", "-->"); // strip comments
@@ -171,6 +172,16 @@ static QString wikiToHtml(QString answer)
     answer.replace("br>;", "br>");
     answer.replace("h2>;", "h2>");
     answer.replace("h3>;", "h3>");
+
+    // Remove track listings - we take these from MPD...
+    QString listingText="<h2>"+i18n("Track listing")+"</h2>";
+    int listingStart=answer.indexOf(listingText, 0, Qt::CaseInsensitive);
+    if (-1!=listingStart) {
+        int listingEnd=answer.indexOf("<h2>", listingStart+listingText.length(), Qt::CaseInsensitive);
+        if (listingStart!=listingEnd) {
+            answer=answer.left(listingStart)+answer.mid(listingEnd);
+        }
+    }
     return answer;
 }
 
@@ -241,13 +252,13 @@ void WikipediaEngine::requestTitles(const QStringList &query, Mode mode, const Q
     job->setProperty(constModeProperty, (int)mode);
     job->setProperty(constRedirectsProperty, 0);
     job->setProperty(constQueryProperty, query);
-    qWarning() << "XXX requestTitles:" << url.toString();
+    qWarning() << __FUNCTION__ << url.toString();
     connect(job, SIGNAL(finished()), this, SLOT(parseTitles()));
 }
 
 void WikipediaEngine::parseTitles()
 {
-    qWarning() << "XXX parse titles";
+    qWarning() << __FUNCTION__;
     QNetworkReply *reply = getReply(sender());
     if (!reply) {
         return;
@@ -257,7 +268,7 @@ void WikipediaEngine::parseTitles()
     QString hostLang=getLang(url);
     QByteArray data=reply->readAll();
     if (QNetworkReply::NoError!=reply->error() || data.isEmpty()) {
-        qWarning() << "XXXX error with " << hostLang;
+        qWarning() << __FUNCTION__ << reply->errorString();
         emit searchResult(QString(), QString());
         return;
     }
@@ -283,15 +294,15 @@ void WikipediaEngine::parseTitles()
     }
 
     if (titles.isEmpty()) {
-        qWarning() << "XXXX No titles recieved for lang:" << hostLang;
+        qWarning() << __FUNCTION__ << "No titles";
         QRegExp regex(QLatin1Char('^') + hostLang + QLatin1String(".*$"));
         int index = preferredLangs.indexOf(regex);
-        qWarning() << "XXXX pref index " << index;
         if (-1!=index && index < preferredLangs.count()-1) {
             // use next preferred language as base for fetching langlinks since
             // the current one did not get any results we want.
             requestTitles(query, mode, getPrefix(preferredLangs.value(index+1)));
         } else {
+            qWarning() << __FUNCTION__ << "No more langs";
             emit searchResult(QString(), QString());
         }
         return;
@@ -303,7 +314,6 @@ void WikipediaEngine::parseTitles()
 static int indexOf(const QStringList &l, const QString &s)
 {
     for (int i=0; i<l.length(); ++i){
-        qWarning() << "COMPARE" << l.at(i) << s << l.at(i).compare(s, Qt::CaseInsensitive);
         if (0==l.at(i).compare(s, Qt::CaseInsensitive)) {
             return i;
         }
@@ -313,7 +323,7 @@ static int indexOf(const QStringList &l, const QString &s)
 
 void WikipediaEngine::getPage(const QStringList &query, Mode mode, const QString &lang)
 {
-    qWarning() << "XXX getpage";
+    qWarning() << __FUNCTION__;
     QStringList queryCopy(query);
     QStringList queries;
 
@@ -333,29 +343,28 @@ void WikipediaEngine::getPage(const QStringList &query, Mode mode, const QString
         break;
     }
 
-    qWarning() << "XXX Titles:" << titles;
+    qWarning() << __FUNCTION__ << "Titles" << titles;
+
     int index=-1;
     foreach (const QString &q, queries) {
-        qWarning() << "XXX Query:" << q;
-        qWarning() << "XXX - patterns";
+        qWarning() << __FUNCTION__ << "Query" << q;
         // First check original query with one of the patterns...
         foreach (const QString &pattern, patterns) {
             index=indexOf(titles, q+" ("+pattern+")");
             if (-1!=index) {
-                qWarning() << "XXX match[a]" << index << q;
+                qWarning() << __FUNCTION__ << "Matched with pattern" << index << q;
                 break;
             }
         }
 
         if (-1==index && q.contains(".")) {
-            qWarning() << "XXX - patterns (no dots)";
             // Now try by removing all dots (A.S.A.P. -> ASAP)
             QString query2=q;
             query2.remove(".");
             foreach (const QString &pattern, patterns) {
                 index=indexOf(titles, query2+" ("+pattern+")");
                 if (-1!=index) {
-                    qWarning() << "XXX match[b]" << index << q;
+                    qWarning() << __FUNCTION__ << "Matched with pattern (no dots)" << index << q;
                     break;
                 }
             }
@@ -363,21 +372,19 @@ void WikipediaEngine::getPage(const QStringList &query, Mode mode, const QString
 
         if (-1==index) {
             // Try without any pattern...
-            qWarning() << "XXX - no pattern";
             index=indexOf(titles, q);
             if (-1!=index) {
-                qWarning() << "XXX match[c]" << index << q;
+                qWarning() << __FUNCTION__ << "Matched without pattern" << index << q;
             }
         }
 
         if (-1==index && q.contains(".")) {
             // Try without any pattern, and no dots..
-            qWarning() << "XXX - no pattern no dots";
             QString query2=q;
             query2.remove(".");
             index=indexOf(titles, query2);
             if (-1!=index) {
-                qWarning() << "XXX match[d]" << index << q;
+                qWarning() << __FUNCTION__ << "Matched without pattern (no dots)" << index << q;
             }
         }
         if (-1!=index) {
@@ -387,6 +394,13 @@ void WikipediaEngine::getPage(const QStringList &query, Mode mode, const QString
 
     // TODO: If we fail to find a match, prompt user???
     const QString title=titles.takeAt(-1==index ? 0 : index);
+
+    if (QLatin1String("List of CJK Unified Ideographs")==title) {
+        qWarning() << __FUNCTION__ << "Unicode list?";
+        emit searchResult(QString(), QString());
+        return;
+    }
+
     QUrl url;
     url.setScheme(QLatin1String("https"));
     url.setHost(lang+".wikipedia.org");
@@ -395,13 +409,13 @@ void WikipediaEngine::getPage(const QStringList &query, Mode mode, const QString
     job->setProperty(constModeProperty, (int)mode);
     job->setProperty(constQueryProperty, query);
     job->setProperty(constRedirectsProperty, 0);
-    qWarning() << "XXX getPage:" << url.toString();
+    qWarning() << __FUNCTION__ << url.toString();
     connect(job, SIGNAL(finished()), this, SLOT(parsePage()));
 }
 
 void WikipediaEngine::parsePage()
 {
-    qWarning() << "XXX parsePage";
+    qWarning() << __FUNCTION__;
     QNetworkReply *reply = getReply(sender());
     if (!reply) {
         return;
@@ -425,10 +439,11 @@ void WikipediaEngine::parsePage()
     }
 
     QString answer(QString::fromUtf8(data));
-    qWarning() << "XXX ANS:" << answer;
+    qWarning() << __FUNCTION__ << "Anser" << answer;
     QUrl url=reply->url();
     QString hostLang=getLang(url);
     if (answer.contains(QLatin1String("{{disambiguation}}")) || answer.contains(QLatin1String("{{disambig}}"))) { // i18n???
+        qWarning() << __FUNCTION__ << "Disambiguation";
         getPage(reply->property(constQueryProperty).toStringList(), (Mode)reply->property(constModeProperty).toInt(),
                 hostLang);
         return;

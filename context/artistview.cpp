@@ -25,7 +25,6 @@
 #include "localize.h"
 #include "covers.h"
 #include "utils.h"
-#include "headerlabel.h"
 #include "musiclibrarymodel.h"
 #include "networkaccessmanager.h"
 #include "qtiocompressor/qtiocompressor.h"

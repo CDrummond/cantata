@@ -213,43 +213,10 @@ void WikipediaEngine::search(const QStringList &query, Mode mode)
         fixedQuery.append(q);
     }
 
-//    requestLangLinks(fixedQuery.join(" "), mode, getPrefix(preferredLangs.first()));
-    requestTitles(fixedQuery.join(" "), mode, getPrefix(preferredLangs.first()));
+    requestTitles(fixedQuery, mode, getPrefix(preferredLangs.first()));
 }
-#if 0
-void WikipediaEngine::requestLangLinks(const QString &query, Mode mode, const QString &lang, const QString &llcontinue)
-{
-    cancel();
-    QUrl url("https://"+lang+".wikipedia.org/w/api.php");
-    #if QT_VERSION < 0x050000
-    QUrl &q=url;
-    #else
-    QUrlQuery q;
-    #endif
 
-    q.addQueryItem(QLatin1String("action"), QLatin1String("query"));
-    q.addQueryItem(QLatin1String("prop"), QLatin1String("langlinks"));
-    q.addQueryItem(QLatin1String("titles"), query);
-    q.addQueryItem(QLatin1String("format"), QLatin1String("xml"));
-    q.addQueryItem(QLatin1String("lllimit"), QString::number(100));
-    q.addQueryItem(QLatin1String("redirects"), QString::number(1));
-    if (!llcontinue.isEmpty()) {
-        q.addQueryItem(QLatin1String("llcontinue"), llcontinue);
-    }
-    #if QT_VERSION >= 0x050000
-    url.setQuery(q);
-    #endif
-
-    job=NetworkAccessManager::self()->get(url);
-    job->setProperty(constModeProperty, (int)mode);
-    job->setProperty(constRedirectsProperty, 0);
-    job->setProperty(constQueryProperty, query);
-    qWarning() << "XXX requestLangLinks:" << url.toString();
-    connect(job, SIGNAL(finished()), this, SLOT(parseLangLinks()));
-}
-#endif
-
-void WikipediaEngine::requestTitles(const QString &query, Mode mode, const QString &lang)
+void WikipediaEngine::requestTitles(const QStringList &query, Mode mode, const QString &lang)
 {
     cancel();
     QUrl url("https://"+lang+".wikipedia.org/w/api.php");
@@ -261,7 +228,7 @@ void WikipediaEngine::requestTitles(const QString &query, Mode mode, const QStri
 
     q.addQueryItem(QLatin1String("action"), QLatin1String("query"));
     q.addQueryItem(QLatin1String("list"), QLatin1String("search"));
-    q.addQueryItem(QLatin1String("srsearch"), query);
+    q.addQueryItem(QLatin1String("srsearch"), query.join(" "));
     q.addQueryItem(QLatin1String("srprop"), QLatin1String("size"));
     q.addQueryItem(QLatin1String("srredirects"), QString::number(1));
     q.addQueryItem(QLatin1String("srlimit"), QString::number(20));
@@ -277,120 +244,6 @@ void WikipediaEngine::requestTitles(const QString &query, Mode mode, const QStri
     qWarning() << "XXX requestTitles:" << url.toString();
     connect(job, SIGNAL(finished()), this, SLOT(parseTitles()));
 }
-
-#if 0
-void WikipediaEngine::parseLangLinks()
-{
-    qWarning() << "XXX parse lang links";
-    QNetworkReply *reply = getReply(sender());
-    if (!reply) {
-        return;
-    }
-
-    QUrl url=reply->url();
-    QString hostLang=getLang(url);
-    QByteArray data=reply->readAll();
-    if (QNetworkReply::NoError!=reply->error() || data.isEmpty()) {
-        qWarning() << "XXXX lang links failed with " << hostLang;
-        emit searchResult(QString(), QString());
-    }
-
-    QString title=reply->property(constQueryProperty).toString();
-    Mode mode=(Mode)reply->property(constModeProperty).toInt();
-    QHash<QString, QString> langTitleMap; // a hash of langlinks and their titles
-    QString llcontinue;
-    QXmlStreamReader xml(data);
-    while (!xml.atEnd() && !xml.hasError()) {
-        xml.readNext();
-        if (xml.isStartElement() && QLatin1String("page")==xml.name()) {
-            if (xml.attributes().hasAttribute(QLatin1String("missing"))) {
-                break;
-            }
-
-            QXmlStreamAttributes a = xml.attributes();
-            if (a.hasAttribute(QLatin1String("pageid")) && a.hasAttribute(QLatin1String("title"))) {
-                const QString &pageTitle = a.value(QLatin1String("title")).toString();
-                if (pageTitle.endsWith(QLatin1String("(disambiguation)"))) {
-                    qWarning() << "XXX ENDS WITH DISAM";
-                    requestTitles(title, mode, hostLang);
-                    return;
-                }
-                langTitleMap[hostLang] = title;
-            }
-
-            while (!xml.atEnd()) {
-                xml.readNext();
-                if (xml.isEndElement() && QLatin1String("page")==xml.name()) {
-                    break;
-                }
-
-                if(xml.isStartElement()) {
-                    if (QLatin1String("ll")==xml.name())
-                    {
-                        QXmlStreamAttributes a = xml.attributes();
-                        if (a.hasAttribute(QLatin1String("lang"))) {
-                            langTitleMap[a.value(QLatin1String("lang")).toString()] = xml.readElementText();
-                        }
-                    }
-                    else if (QLatin1String("query-continue")==xml.name()) {
-                        xml.readNext();
-                        if (xml.isStartElement() && QLatin1String("langlinks")==xml.name()) {
-                            QXmlStreamAttributes a = xml.attributes();
-                            if (a.hasAttribute(QLatin1String("llcontinue"))) {
-                                llcontinue = a.value(QLatin1String("llcontinue")).toString();
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    if (!langTitleMap.isEmpty())
-    {
-        qWarning() << "MAP IS NOT EMPTY";
-        /* When we query langlinks using a particular language, interwiki
-          * results will not contain links for that language. However, it may
-          * appear as part of the "page" element if there's a match or a redirect
-          * has been set. So we need to manually add it here if it's still empty. */
-        if (preferredLangs.contains(hostLang) && !langTitleMap.contains(hostLang)) {
-            langTitleMap[hostLang] = title;
-        }
-
-        QStringListIterator langIter(preferredLangs);
-        while (langIter.hasNext()) {
-            QString prefix = getPrefix(langIter.next());
-            if (langTitleMap.contains(prefix)) {
-                qWarning() << "FOUND MATCH" << langTitleMap.value(prefix) << prefix;
-                requestTitles(langTitleMap.value(prefix), mode, prefix);
-                return;
-            }
-        }
-    }
-
-    if (!llcontinue.isEmpty()) {
-        qWarning() << "LL CONT";
-        requestLangLinks(title, mode, hostLang, llcontinue);
-    } else {
-        QRegExp regex(QLatin1Char('^') + hostLang + QLatin1String(".*$"));
-        int index = preferredLangs.indexOf(regex);
-        qWarning() << "XXXX pref index " << index;
-        if (-1!=index && index < preferredLangs.count()-1) {
-            // use next preferred language as base for fetching langlinks since
-            // the current one did not get any results we want.
-            requestLangLinks(title, mode, getPrefix(preferredLangs.value(index+1)));
-        } else {
-            QStringList refinePossibleLangs = preferredLangs.filter(QRegExp("^(en|fr|de|pl).*$"));
-            if (refinePossibleLangs.isEmpty()) {
-                qWarning() << "XXXX no refined langs " << hostLang;
-                emit searchResult(QString(), QString());
-                return;
-            }
-            requestTitles(title, mode, getPrefix(refinePossibleLangs.first()));
-        }
-    }
-}
-#endif
 
 void WikipediaEngine::parseTitles()
 {
@@ -409,7 +262,7 @@ void WikipediaEngine::parseTitles()
         return;
     }
 
-    QString query = reply->property(constQueryProperty).toString();
+    QStringList query = reply->property(constQueryProperty).toStringList();
     Mode mode=(Mode)reply->property(constModeProperty).toInt();
     QXmlStreamReader xml(data);
 
@@ -431,18 +284,6 @@ void WikipediaEngine::parseTitles()
 
     if (titles.isEmpty()) {
         qWarning() << "XXXX No titles recieved for lang:" << hostLang;
-        #if 0
-        QStringList refinePossibleLangs = preferredLangs.filter(QRegExp("^(en|fr|de|pl).*$"));
-        int index = refinePossibleLangs.indexOf(hostLang);
-
-        if (-1!=index && index<refinePossibleLangs.count()-1) {
-            qWarning() << "XXXX TRYING NEXT LANG" << refinePossibleLangs.value(index+1);
-            // Try next language!
-            requestTitles(query, mode, getPrefix(refinePossibleLangs.value(index+1)));
-        } else {
-            emit searchResult(QString(), QString());
-        }
-        #else
         QRegExp regex(QLatin1Char('^') + hostLang + QLatin1String(".*$"));
         int index = preferredLangs.indexOf(regex);
         qWarning() << "XXXX pref index " << index;
@@ -453,7 +294,6 @@ void WikipediaEngine::parseTitles()
         } else {
             emit searchResult(QString(), QString());
         }
-        #endif
         return;
     }
 
@@ -471,60 +311,26 @@ static int indexOf(const QStringList &l, const QString &s)
     return -1;
 }
 
-void WikipediaEngine::getPage(const QString &query, Mode mode, const QString &lang)
+void WikipediaEngine::getPage(const QStringList &query, Mode mode, const QString &lang)
 {
     qWarning() << "XXX getpage";
-    QStringList queries=QStringList() << query;
+    QStringList queryCopy(query);
+    QStringList queries;
 
-    #if 0
-    // Amarok original - not working for me :-(
-    qWarning() << "XXX Titles:" << titles;
-    QString basePattern;
-    switch (mode)
-    {
-    default:
-    case Artist:
-        basePattern=i18nc("Search pattern for an artist or band", ".*\\(.*(artist|band).*\\))").toLatin1();
-        break;
-    case Album:
-        basePattern=i18nc("Search pattern for an album", ".*\\(.*(album|score|soundtrack).*\\)").toLatin1();
-        break;
+    while(!queryCopy.isEmpty()) {
+        queries.append(queryCopy.join(" "));
+        queryCopy.takeFirst();
     }
 
-    int index=-1;
-    foreach (const QString &q, queries) {
-        QString pattern=q+basePattern;
-        index = titles.indexOf(QRegExp(pattern, Qt::CaseInsensitive));
-        qWarning() << "XXX Query[a]:" << q << pattern << index;
-        if (-1==index) {
-            QString q2=q;
-            q2.remove(".");
-            pattern=q2+basePattern;
-            index = titles.indexOf(QRegExp(pattern, Qt::CaseInsensitive));
-            qWarning() << "XXX Query[b]:" << q2 << pattern << index;
-        }
-        if (-1!=index) {
-            break;
-        }
-    }
-    #else
     QStringList patterns;
-    switch (mode)
-    {
+    switch (mode) {
     default:
     case Artist:
         patterns=i18nc("Search pattern for an artist or band, separated by |", "artist|band").split("|", QString::SkipEmptyParts);
         break;
-    case Album: {
-        QStringList parts=query.split(" ");
-        queries.clear();
-        while (!parts.isEmpty()) {
-            queries.append(parts.join(" "));
-            parts.takeFirst();
-        }
+    case Album:
         patterns=i18nc("Search pattern for an album, separated by |", "album|score|soundtrack").split("|", QString::SkipEmptyParts);
         break;
-    }
     }
 
     qWarning() << "XXX Titles:" << titles;
@@ -578,7 +384,7 @@ void WikipediaEngine::getPage(const QString &query, Mode mode, const QString &la
             break;
         }
     }
-    #endif
+
     // TODO: If we fail to find a match, prompt user???
     const QString title=titles.takeAt(-1==index ? 0 : index);
     QUrl url;
@@ -623,7 +429,7 @@ void WikipediaEngine::parsePage()
     QUrl url=reply->url();
     QString hostLang=getLang(url);
     if (answer.contains(QLatin1String("{{disambiguation}}")) || answer.contains(QLatin1String("{{disambig}}"))) { // i18n???
-        getPage(reply->property(constQueryProperty).toString(), (Mode)reply->property(constModeProperty).toInt(),
+        getPage(reply->property(constQueryProperty).toStringList(), (Mode)reply->property(constModeProperty).toInt(),
                 hostLang);
         return;
     }

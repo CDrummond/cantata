@@ -38,15 +38,18 @@ public:
     static const QStringList & getPreferedLangs() { return preferredLangs; }
 
     const QStringList & getLangs() { return getPreferedLangs(); }
+    QString getPrefix(const QString &key) { return key.split(QLatin1Char(':')).back(); }
 
 public Q_SLOTS:
     void search(const QStringList &query, Mode mode);
     
 private:
-    void requestTitles(const QStringList &query, Mode mode, const QString &lang);
-    void getPage(const QStringList &query, Mode mode, const QString &lang);
+    //void requestLangLinks(const QString &query, Mode mode, const QString &lang, const QString &llcontinue=QString());
+    void requestTitles(const QString &query, Mode mode, const QString &lang);
+    void getPage(const QString &query, Mode mode, const QString &lang);
 
 private Q_SLOTS:
+    //void parseLangLinks();
     void parseTitles();
     void parsePage();
 

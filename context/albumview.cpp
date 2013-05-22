@@ -40,9 +40,9 @@ static const int constCheckChars=100; // Num chars to cehck between artist bio a
 const QLatin1String AlbumView::constCacheDir("albums/");
 const QLatin1String AlbumView::constInfoExt(".html.gz");
 
-static QString cacheFileName(const QString &artist, const QString &locale, const QString &album, bool createDir)
+static QString cacheFileName(const QString &artist, const QString &album, const QString &lang, bool createDir)
 {
-    return Utils::cacheDir(AlbumView::constCacheDir, createDir)+Covers::encodeName(artist)+QLatin1String(" - ")+Covers::encodeName(album)+"."+locale+AlbumView::constInfoExt;
+    return Utils::cacheDir(AlbumView::constCacheDir, createDir)+Covers::encodeName(artist)+QLatin1String(" - ")+Covers::encodeName(album)+"."+lang+AlbumView::constInfoExt;
 }
 
 enum Parts {
@@ -146,7 +146,8 @@ void AlbumView::getDetails()
 {
     engine->cancel();
     foreach (const QString &lang, engine->getLangs()) {
-        QString cachedFile=cacheFileName(Covers::fixArtist(currentSong.albumArtist()), currentSong.album, lang, false);
+        QString prefix=engine->getPrefix(lang);
+        QString cachedFile=cacheFileName(Covers::fixArtist(currentSong.albumArtist()), currentSong.album, prefix, false);
         if (QFile::exists(cachedFile)) {
             QFile f(cachedFile);
             QtIOCompressor compressor(&f);

@@ -24,6 +24,7 @@
 #include "view.h"
 #include "spinner.h"
 #include "networkaccessmanager.h"
+#include "settings.h"
 #include <QLabel>
 #include <QTextBrowser>
 #include <QImage>
@@ -31,6 +32,16 @@
 #include <QBoxLayout>
 #include <QNetworkReply>
 #include <QLocale>
+
+static QString headerTag;
+QString View::subTag;
+
+void View::initHeaderTags()
+{
+    bool small=Settings::self()->wikipediaIntroOnly() ;
+    headerTag=small ? "h2" : "h1";
+    subTag=small ? "h3" : "h2";
+}
 
 View::View(QWidget *parent)
     : QWidget(parent)
@@ -56,6 +67,9 @@ View::View(QWidget *parent)
     layout->addItem(new QSpacerItem(1, fontMetrics().height()/4, QSizePolicy::Fixed, QSizePolicy::Fixed));
     text->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setEditable(false);
+    if (headerTag.isEmpty()) {
+        initHeaderTags();
+    }
 }
 
 void View::clear()
@@ -67,7 +81,7 @@ void View::clear()
 
 void View::setHeader(const QString &str)
 {
-    header->setText("<h1>"+str+"</h1>");
+    header->setText("<"+headerTag+">"+str+"</"+headerTag+">");
 }
 
 void View::setPicSize(const QSize &sz)

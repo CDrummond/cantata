@@ -43,7 +43,7 @@ static QString localeFile() {
 
 WikipediaSettings::WikipediaSettings(QWidget *p)
     : ContextSettings(p)
-    , needToUpdate(true)
+    , loaded(false)
     , job(0)
     , spinner(0)
 {
@@ -68,8 +68,8 @@ WikipediaSettings::WikipediaSettings(QWidget *p)
 
 void WikipediaSettings::showEvent(QShowEvent *e)
 {
-    if (needToUpdate) {
-        needToUpdate=false;
+    if (!loaded) {
+        loaded=true;
         QByteArray data;
         QString fileName=localeFile();
         if (QFile::exists(fileName)) {
@@ -96,14 +96,18 @@ void WikipediaSettings::load()
 
 void WikipediaSettings::save()
 {
+    if (!loaded) {
+        return;
+    }
     QStringList pref;
     for (int i=0; i<preferredLangs->count(); ++i) {
         pref.append(preferredLangs->item(i)->data(Qt::UserRole).toString());
     }
     if (pref.isEmpty()) {
-        pref.append("en");
+        pref.append("en:en");
     }
     Settings::self()->saveWikipediaLangs(pref);
+    WikipediaEngine::setPreferedLangs(pref);
 }
 
 void WikipediaSettings::cancel()
@@ -176,11 +180,13 @@ void WikipediaSettings::parseLangs(const QByteArray &data)
                 // The urlPrefix is the lang code infront of the wikipedia host
                 // url. It is mostly the same as the "prefix" attribute but in
                 // some weird cases they differ, so we can't just use "prefix".
-                QString prefix=QUrl(a.value(QLatin1String("url")).toString()).host().remove(QLatin1String(".wikipedia.org"));
-                int index=preferred.indexOf(prefix);
+                QString urlPrefix=QUrl(a.value(QLatin1String("url")).toString()).host().remove(QLatin1String(".wikipedia.org"));
+                QString prefix=a.value(QLatin1String("prefix")).toString();
+                QString entry=prefix+":"+urlPrefix;
+                int index=preferred.indexOf(entry);
                 QListWidgetItem *item = new QListWidgetItem(-1==index ? langs : preferredLangs);
-                item->setText(QString("[%1] %2").arg(a.value(QLatin1String("prefix")).toString()).arg(a.value(QLatin1String("language")).toString()));
-                item->setData(Qt::UserRole, prefix);
+                item->setText(QString("[%1] %2").arg(prefix).arg(a.value(QLatin1String("language")).toString()));
+                item->setData(Qt::UserRole, entry);
                 if (-1!=index) {
                     prefMap[index]=item;
                 }

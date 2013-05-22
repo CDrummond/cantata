@@ -57,6 +57,8 @@ public:
     virtual ~ContextEngine();
     
     virtual const QStringList & getLangs()=0;
+    virtual QString getPrefix(const QString &key)=0;
+
     void cancel();
 
 public Q_SLOTS:

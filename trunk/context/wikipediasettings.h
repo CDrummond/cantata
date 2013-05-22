@@ -58,7 +58,7 @@ private:
     void parseLangs(const QByteArray &data);
 
 private:
-    bool needToUpdate;
+    bool loaded;
     QNetworkReply *job;
     Spinner *spinner;
 };

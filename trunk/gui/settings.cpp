@@ -454,7 +454,7 @@ QStringList Settings::lyricProviders()
 
 QStringList Settings::wikipediaLangs()
 {
-    QStringList def=QStringList() << "en";
+    QStringList def=QStringList() << "en:en";
     return GET_STRINGLIST("wikipediaLangs", def);
 }
 

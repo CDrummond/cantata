@@ -134,7 +134,8 @@ void ArtistView::artistImage(const Song &song, const QImage &i, const QString &f
 void ArtistView::loadBio()
 {
     foreach (const QString &lang, engine->getLangs()) {
-        QString cachedFile=cacheFileName(currentSong.artist, lang, false, false);
+        QString prefix=engine->getPrefix(lang);
+        QString cachedFile=cacheFileName(currentSong.artist, prefix, false, false);
         if (QFile::exists(cachedFile)) {
             QFile f(cachedFile);
             QtIOCompressor compressor(&f);

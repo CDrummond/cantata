@@ -126,6 +126,7 @@ public:
     bool groupMultiple();
     QStringList lyricProviders();
     QStringList wikipediaLangs();
+    bool wikipediaIntroOnly();
     QString page();
     QStringList hiddenPages();
     bool gnomeMediaKeys();

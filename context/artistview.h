@@ -76,9 +76,7 @@ private:
     QString similarArtists;
     QNetworkReply *currentSimilarJob;
     QString provider;
-    #ifndef Q_OS_WIN
     QString webLinks;
-    #endif
 };
 
 #endif

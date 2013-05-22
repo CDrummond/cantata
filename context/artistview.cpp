@@ -217,7 +217,6 @@ void ArtistView::setBio()
         html+=similarArtists;
     }
 
-    #ifndef Q_OS_WIN
     if (webLinks.isEmpty()) {
         QFile file(":weblinks.xml");
         if (file.open(QIODevice::ReadOnly)) {
@@ -240,7 +239,6 @@ void ArtistView::setBio()
     if (!webLinks.isEmpty()) {
         html+=View::subHeader(i18n("Web Links"))+QLatin1String("<ul>")+QString(webLinks).replace("${artist}", currentSong.artist)+QLatin1String("</ul>");
     }
-    #endif
     text->setText(html);
 }
 
@@ -359,10 +357,11 @@ void ArtistView::showArtist(const QUrl &url)
         if (q.hasQueryItem("artist")) {
             emit findArtist(q.queryItemValue("artist"));
         }
-    }
-    #ifndef Q_OS_WIN
-    else {
+    } else {
+        #ifdef Q_OS_WIN
+        QProcess::startDetached(QLatin1String("cmd"), QStringList() << QLatin1String("/c") << QLatin1String("start") << url.toString());
+        #else
         QProcess::startDetached(QLatin1String("xdg-open"), QStringList() << url.toString());
+        #endif
     }
-    #endif
 }

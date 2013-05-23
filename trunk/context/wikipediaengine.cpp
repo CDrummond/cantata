@@ -227,7 +227,7 @@ static QString wikiToHtml(QString answer, bool introOnly, const QUrl &url)
             }
             QString u=url.toString();
             u.replace("/wiki/Special:Export/", "/wiki/");
-            answer+=QString("<br><a href='%1'>%2</a>").arg(u).arg(i18n("Read more on wikipedia"));
+            answer+=QString("<br><a href=\"%1\">%2</a>").arg(u).arg(i18n("Read more on wikipedia"));
         }
     } else {
         answer.replace("</h2><br>", "</h2>");

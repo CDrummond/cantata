@@ -30,11 +30,13 @@
 #include "musiclibrarymodel.h"
 #include "contextengine.h"
 #include "textbrowser.h"
+#include "actioncollection.h"
 #include <QScrollBar>
 #include <QFile>
 #include <QUrl>
 #include <QNetworkReply>
 #include <QProcess>
+#include <QMenu>
 
 static const int constCheckChars=100; // Num chars to cehck between artist bio and details - as sometimes wikipedia does not know album, so returns artist!
 static const int constCacheAge=7;
@@ -59,10 +61,14 @@ AlbumView::AlbumView(QWidget *p)
     , detailsReceived(0)
 {
     engine=ContextEngine::create(this);
+    refreshAction = ActionCollection::get()->createAction("refreshalbum", i18n("Refresh Album Information"), "view-refresh");
+    connect(refreshAction, SIGNAL(triggered()), SLOT(refresh()));
     connect(engine, SIGNAL(searchResult(QString,QString)), this, SLOT(searchResponse(QString,QString)));
     connect(Covers::self(), SIGNAL(cover(const Song &, const QImage &, const QString &)), SLOT(coverRetreived(const Song &, const QImage &, const QString &)));
     connect(Covers::self(), SIGNAL(coverUpdated(const Song &, const QImage &, const QString &)), SLOT(coverRetreived(const Song &, const QImage &, const QString &)));
     connect(text, SIGNAL(anchorClicked(QUrl)), SLOT(playSong(QUrl)));
+    text->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(text, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showContextMenu(QPoint)));
 
     Utils::clearOldCache(constCacheDir, constCacheAge);
     setStandardHeader(i18n("Album Information"));
@@ -70,6 +76,26 @@ AlbumView::AlbumView(QWidget *p)
     int imageSize=fontMetrics().height()*18;
     setPicSize(QSize(imageSize, imageSize));
     clear();
+}
+
+void AlbumView::showContextMenu(const QPoint &pos)
+{
+   QMenu *menu = text->createStandardContextMenu();
+   menu->addSeparator();
+   menu->addAction(refreshAction);
+   menu->exec(text->mapToGlobal(pos));
+   delete menu;
+}
+
+void AlbumView::refresh()
+{
+    if (currentSong.isEmpty()) {
+        return;
+    }
+    foreach (const QString &lang, engine->getLangs()) {
+        QFile::remove(cacheFileName(Covers::fixArtist(currentSong.albumArtist()), currentSong.album, engine->getPrefix(lang), false));
+    }
+    update(currentSong, true);
 }
 
 void AlbumView::update(const Song &song, bool force)

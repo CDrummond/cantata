@@ -92,11 +92,13 @@ private:
     QSet<QString> dirsToClean;
     QSet<QString> copiedCovers;
     unsigned long count;
+    #ifdef ACTION_DIALOG_SHOW_TIME_REMAINING
     double totalTime; // Time of all songs
     double actionedTime; // Time of songs that have currently been actioned
-    double currentPercent; // Percentage of current song
     quint64 timeTaken; // Amount of time spent copying/deleting
     QElapsedTimer timer;
+    #endif
+    double currentPercent; // Percentage of current song
     Song origCurrentSong;
     Song currentSong;
     bool autoSkip;

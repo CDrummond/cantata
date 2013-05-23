@@ -1347,6 +1347,7 @@ void MainWindow::readSettings()
     }
     #endif
     stopAfterCurrent=Settings::self()->stopAfterCurrent();
+    context->readConfig();
 }
 
 void MainWindow::updateSettings()

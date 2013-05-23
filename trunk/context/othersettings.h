@@ -21,26 +21,24 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef CONTEXTSETTINGS_H
-#define CONTEXTSETTINGS_H
+#ifndef OTHER_SETTINGS_H
+#define OTHER_SETTINGS_H
 
-#include <QTabWidget>
+#include "ui_othersettings.h"
 
-class WikipediaSettings;
-class LyricSettings;
-class OtherSettings;
+class OtherSettings : public QWidget, private Ui::OtherSettings
+{
+    Q_OBJECT
 
-class ContextSettings : public QTabWidget {
 public:
-    ContextSettings(QWidget *p=0);
-    virtual ~ContextSettings() { }
+    OtherSettings(QWidget *p);
+    virtual ~OtherSettings() { }
+
     void load();
     void save();
-    
-private:
-    WikipediaSettings *wiki;
-    LyricSettings *lyrics;
-    OtherSettings *other;
+
+private Q_SLOTS:
+    void toggleWikiNote();
 };
 
 #endif

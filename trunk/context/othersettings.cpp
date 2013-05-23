@@ -21,26 +21,31 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef CONTEXTSETTINGS_H
-#define CONTEXTSETTINGS_H
+#include "othersettings.h"
+#include "settings.h"
+#include "onoffbutton.h"
 
-#include <QTabWidget>
+OtherSettings::OtherSettings(QWidget *p)
+    : QWidget(p)
+{
+    setupUi(this);
+    connect(wikipediaIntroOnly, SIGNAL(toggled(bool)), SLOT(toggleWikiNote()));
+}
 
-class WikipediaSettings;
-class LyricSettings;
-class OtherSettings;
+void OtherSettings::load()
+{
+    wikipediaIntroOnly->setChecked(Settings::self()->wikipediaIntroOnly());
+    contextBackdrop->setChecked(Settings::self()->contextBackdrop());
+    toggleWikiNote();
+}
 
-class ContextSettings : public QTabWidget {
-public:
-    ContextSettings(QWidget *p=0);
-    virtual ~ContextSettings() { }
-    void load();
-    void save();
-    
-private:
-    WikipediaSettings *wiki;
-    LyricSettings *lyrics;
-    OtherSettings *other;
-};
+void OtherSettings::save()
+{
+    Settings::self()->saveWikipediaIntroOnly(wikipediaIntroOnly->isChecked());
+    Settings::self()->saveContextBackdrop(contextBackdrop->isChecked());
+}
 
-#endif
+void OtherSettings::toggleWikiNote()
+{
+    wikipediaIntroOnlyNote->setOn(!wikipediaIntroOnly->isChecked());
+}

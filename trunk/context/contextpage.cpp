@@ -30,6 +30,7 @@
 #include "covers.h"
 #include "networkaccessmanager.h"
 #include "settings.h"
+#include "wikipediaengine.h"
 #include <QHBoxLayout>
 #include <QSpacerItem>
 #include <QPainter>
@@ -74,7 +75,13 @@ ContextPage::ContextPage(QWidget *parent)
     connect(artist, SIGNAL(findArtist(QString)), this, SIGNAL(findArtist(QString)));
     connect(album, SIGNAL(playSong(QString)), this, SIGNAL(playSong(QString)));
     connect(artist, SIGNAL(haveBio(QString,QString)), album, SLOT(artistBio(QString,QString)), Qt::QueuedConnection);
+    readConfig();
+}
+
+void ContextPage::readConfig()
+{
     useBackdrop(Settings::self()->contextBackdrop());
+    WikipediaEngine::setIntroOnly(Settings::self()->wikipediaIntroOnly());
 }
 
 void ContextPage::useBackdrop(bool u)
@@ -82,8 +89,8 @@ void ContextPage::useBackdrop(bool u)
     if (u!=drawBackdrop) {
         drawBackdrop=u;
         if (isVisible() && !currentArtist.isEmpty()) {
-            currentArtist.clear();
             updateArtist=currentArtist;
+            currentArtist.clear();
             updateBackdrop();
             QWidget::update();
         }

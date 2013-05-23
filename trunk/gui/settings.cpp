@@ -465,7 +465,7 @@ bool Settings::wikipediaIntroOnly()
 
 bool Settings::contextBackdrop()
 {
-    return GET_BOOL("contextBackdrop", false);
+    return GET_BOOL("contextBackdrop", true);
 }
 
 QString Settings::page()
@@ -870,6 +870,16 @@ void Settings::saveLyricProviders(const QStringList &v)
 void Settings::saveWikipediaLangs(const QStringList &v)
 {
     SET_VALUE_MOD(wikipediaLangs)
+}
+
+void Settings::saveWikipediaIntroOnly(bool v)
+{
+    SET_VALUE_MOD(wikipediaIntroOnly)
+}
+
+void Settings::saveContextBackdrop(bool v)
+{
+    SET_VALUE_MOD(contextBackdrop)
 }
 
 void Settings::savePage(const QString &v)

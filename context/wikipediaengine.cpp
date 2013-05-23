@@ -33,6 +33,9 @@
 #include <QRegExp>
 #include <QDebug>
 
+// #define DBUG qWarning() << "WikipediaEngine"
+#define DBUG qDebug()
+
 static const char * constModeProperty="mode";
 static const char * constRedirectsProperty="redirects";
 static const char * constQueryProperty="query";
@@ -324,13 +327,13 @@ void WikipediaEngine::requestTitles(const QStringList &query, Mode mode, const Q
     job->setProperty(constModeProperty, (int)mode);
     job->setProperty(constRedirectsProperty, 0);
     job->setProperty(constQueryProperty, query);
-    qWarning() << __FUNCTION__ << url.toString();
+    DBUG << __FUNCTION__ << url.toString();
     connect(job, SIGNAL(finished()), this, SLOT(parseTitles()));
 }
 
 void WikipediaEngine::parseTitles()
 {
-    qWarning() << __FUNCTION__;
+    DBUG << __FUNCTION__;
     QNetworkReply *reply = getReply(sender());
     if (!reply) {
         return;
@@ -340,7 +343,7 @@ void WikipediaEngine::parseTitles()
     QString hostLang=getLang(url);
     QByteArray data=reply->readAll();
     if (QNetworkReply::NoError!=reply->error() || data.isEmpty()) {
-        qWarning() << __FUNCTION__ << reply->errorString();
+        DBUG << __FUNCTION__ << reply->errorString();
         emit searchResult(QString(), QString());
         return;
     }
@@ -366,7 +369,7 @@ void WikipediaEngine::parseTitles()
     }
 
     if (titles.isEmpty()) {
-        qWarning() << __FUNCTION__ << "No titles";
+        DBUG << __FUNCTION__ << "No titles";
         QRegExp regex(QLatin1Char('^') + hostLang + QLatin1String(".*$"));
         int index = preferredLangs.indexOf(regex);
         if (-1!=index && index < preferredLangs.count()-1) {
@@ -374,7 +377,7 @@ void WikipediaEngine::parseTitles()
             // the current one did not get any results we want.
             requestTitles(query, mode, getPrefix(preferredLangs.value(index+1)));
         } else {
-            qWarning() << __FUNCTION__ << "No more langs";
+            DBUG << __FUNCTION__ << "No more langs";
             emit searchResult(QString(), QString());
         }
         return;
@@ -395,7 +398,7 @@ static int indexOf(const QStringList &l, const QString &s)
 
 void WikipediaEngine::getPage(const QStringList &query, Mode mode, const QString &lang)
 {
-    qWarning() << __FUNCTION__;
+    DBUG << __FUNCTION__;
     QStringList queryCopy(query);
     QStringList queries;
 
@@ -415,16 +418,16 @@ void WikipediaEngine::getPage(const QStringList &query, Mode mode, const QString
         break;
     }
 
-    qWarning() << __FUNCTION__ << "Titles" << titles;
+    DBUG << __FUNCTION__ << "Titles" << titles;
 
     int index=-1;
     foreach (const QString &q, queries) {
-        qWarning() << __FUNCTION__ << "Query" << q;
+        DBUG << __FUNCTION__ << "Query" << q;
         // First check original query with one of the patterns...
         foreach (const QString &pattern, patterns) {
             index=indexOf(titles, q+" ("+pattern+")");
             if (-1!=index) {
-                qWarning() << __FUNCTION__ << "Matched with pattern" << index << q;
+                DBUG << __FUNCTION__ << "Matched with pattern" << index << q;
                 break;
             }
         }
@@ -436,7 +439,7 @@ void WikipediaEngine::getPage(const QStringList &query, Mode mode, const QString
             foreach (const QString &pattern, patterns) {
                 index=indexOf(titles, query2+" ("+pattern+")");
                 if (-1!=index) {
-                    qWarning() << __FUNCTION__ << "Matched with pattern (no dots)" << index << q;
+                    DBUG << __FUNCTION__ << "Matched with pattern (no dots)" << index << q;
                     break;
                 }
             }
@@ -446,7 +449,7 @@ void WikipediaEngine::getPage(const QStringList &query, Mode mode, const QString
             // Try without any pattern...
             index=indexOf(titles, q);
             if (-1!=index) {
-                qWarning() << __FUNCTION__ << "Matched without pattern" << index << q;
+                DBUG << __FUNCTION__ << "Matched without pattern" << index << q;
             }
         }
 
@@ -456,7 +459,7 @@ void WikipediaEngine::getPage(const QStringList &query, Mode mode, const QString
             query2.remove(".");
             index=indexOf(titles, query2);
             if (-1!=index) {
-                qWarning() << __FUNCTION__ << "Matched without pattern (no dots)" << index << q;
+                DBUG << __FUNCTION__ << "Matched without pattern (no dots)" << index << q;
             }
         }
         if (-1!=index) {
@@ -468,7 +471,7 @@ void WikipediaEngine::getPage(const QStringList &query, Mode mode, const QString
     const QString title=titles.takeAt(-1==index ? 0 : index);
 
     if (QLatin1String("List of CJK Unified Ideographs")==title) {
-        qWarning() << __FUNCTION__ << "Unicode list?";
+        DBUG << __FUNCTION__ << "Unicode list?";
         emit searchResult(QString(), QString());
         return;
     }
@@ -481,13 +484,13 @@ void WikipediaEngine::getPage(const QStringList &query, Mode mode, const QString
     job->setProperty(constModeProperty, (int)mode);
     job->setProperty(constQueryProperty, query);
     job->setProperty(constRedirectsProperty, 0);
-    qWarning() << __FUNCTION__ << url.toString();
+    DBUG << __FUNCTION__ << url.toString();
     connect(job, SIGNAL(finished()), this, SLOT(parsePage()));
 }
 
 void WikipediaEngine::parsePage()
 {
-    qWarning() << __FUNCTION__;
+    DBUG << __FUNCTION__;
     QNetworkReply *reply = getReply(sender());
     if (!reply) {
         return;
@@ -511,11 +514,11 @@ void WikipediaEngine::parsePage()
     }
 
     QString answer(QString::fromUtf8(data));
-    qWarning() << __FUNCTION__ << "Anser" << answer;
+    DBUG << __FUNCTION__ << "Anser" << answer;
     QUrl url=reply->url();
     QString hostLang=getLang(url);
     if (answer.contains(QLatin1String("{{disambiguation}}")) || answer.contains(QLatin1String("{{disambig}}"))) { // i18n???
-        qWarning() << __FUNCTION__ << "Disambiguation";
+        DBUG << __FUNCTION__ << "Disambiguation";
         getPage(reply->property(constQueryProperty).toStringList(), (Mode)reply->property(constModeProperty).toInt(),
                 hostLang);
         return;

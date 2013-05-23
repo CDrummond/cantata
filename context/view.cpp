@@ -65,7 +65,6 @@ View::View(QWidget *parent)
     text=new TextBrowser(this);
 
     layout->setMargin(0);
-
     header->setWordWrap(true);
     header->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
     text->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);

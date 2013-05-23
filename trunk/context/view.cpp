@@ -70,6 +70,7 @@ View::View(QWidget *parent)
     header->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
     text->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
 
+    layout->addItem(new QSpacerItem(1, layout->spacing(), QSizePolicy::Fixed, QSizePolicy::Fixed));
     layout->addWidget(header);
     layout->addWidget(text);
     layout->addItem(new QSpacerItem(1, fontMetrics().height()/4, QSizePolicy::Fixed, QSizePolicy::Fixed));

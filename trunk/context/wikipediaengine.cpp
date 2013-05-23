@@ -255,6 +255,16 @@ static QString wikiToHtml(QString answer, bool introOnly, const QUrl &url)
         answer=stripEmptySections(answer);
         answer=stripLastEmptySection(answer);
     }
+
+    if (!introOnly) {
+        if (!answer.endsWith("<br>")) {
+            answer+="<br>";
+        }
+        QString u=url.toString();
+        u.replace("/wiki/Special:Export/", "/wiki/");
+        answer+=QString("<br><a href='%1'>%2</a>").arg(u).arg(i18n("Open in browser"));
+    }
+
     return answer;
 }
 

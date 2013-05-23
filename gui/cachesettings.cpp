@@ -26,12 +26,14 @@
 #include "artistview.h"
 #include "albumview.h"
 #include "songview.h"
+#include "contextpage.h"
 #include "covers.h"
 #include "musiclibrarymodel.h"
 #include "utils.h"
 #include "messagebox.h"
 #include "config.h"
 #include "thread.h"
+#include "settings.h"
 #include <QLabel>
 #include <QPushButton>
 #include <QStyle>
@@ -236,6 +238,9 @@ CacheSettings::CacheSettings(QWidget *parent)
     new CacheItem(i18n("Music Library"), Utils::cacheDir(MusicLibraryModel::constLibraryCache, false),
                   QStringList() << "*"+MusicLibraryModel::constLibraryExt << "*"+MusicLibraryModel::constLibraryCompressedExt, tree);
     new CacheItem(i18n("Covers"), Utils::cacheDir(Covers::constCoverDir, false), QStringList() << "*.jpg" << "*.png", tree);
+    if (Settings::self()->contextBackdrop()) {
+        new CacheItem(i18n("Backdrops"), Utils::cacheDir(ContextPage::constCacheDir, false), QStringList() << "*.jpg" << "*.png", tree);
+    }
     new CacheItem(i18n("Lyrics"), Utils::cacheDir(SongView::constLyricsDir, false), QStringList() << "*"+SongView::constExtension, tree);
     new CacheItem(i18n("Artist Information"), Utils::cacheDir(ArtistView::constCacheDir, false), QStringList() << "*"+ArtistView::constInfoExt
                   << "*"+ArtistView::constSimilarInfoExt << "*.json.gz" << "*.jpg" << "*.png", tree);

@@ -463,6 +463,11 @@ bool Settings::wikipediaIntroOnly()
     return GET_BOOL("wikipediaIntroOnly", true);
 }
 
+bool Settings::contextBackdrop()
+{
+    return GET_BOOL("contextBackdrop", false);
+}
+
 QString Settings::page()
 {
     return GET_STRING("page", QString());

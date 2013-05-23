@@ -44,11 +44,7 @@ public:
 
     TagEditor(QWidget *parent, const QList<Song> &songs,
               const QSet<QString> &existingArtists, const QSet<QString> &existingAlbumArtists,
-              const QSet<QString> &existingAlbums, const QSet<QString> &existingGenres
-              #ifdef ENABLE_DEVICES_SUPPORT
-              , const QString &udi
-              #endif
-             );
+              const QSet<QString> &existingAlbums, const QSet<QString> &existingGenres, const QString &udi);
     virtual ~TagEditor();
 
 Q_SIGNALS:

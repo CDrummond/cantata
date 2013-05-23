@@ -100,7 +100,7 @@ private:
 class VolumeSliderEventHandler : public QObject
 {
 public:
-    VolumeSliderEventHandler(MainWindow *w);
+    VolumeSliderEventHandler(MainWindow *w) : QObject((QObject *)w), window(w) { }
 protected:
     bool eventFilter(QObject *obj, QEvent *event);
 protected:

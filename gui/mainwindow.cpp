@@ -131,23 +131,19 @@ bool DeleteKeyEventHandler::eventFilter(QObject *obj, QEvent *event)
     return QObject::eventFilter(obj, event);
 }
 
-VolumeSliderEventHandler::VolumeSliderEventHandler(MainWindow *w)
-    : QObject(w)
-    , window(w)
-{
-}
-
 bool VolumeSliderEventHandler::eventFilter(QObject *obj, QEvent *event)
 {
     if (QEvent::Wheel==event->type() && (!MPDConnection::self()->isMuted() || !qstrcmp("VolumeControl", obj->metaObject()->className()))) {
         int numDegrees = static_cast<QWheelEvent *>(event)->delta() / 8;
         int numSteps = numDegrees / 15;
         if (numSteps > 0) {
-            for (int i = 0; i < numSteps; ++i)
+            for (int i = 0; i < numSteps; ++i) {
                 window->increaseVolumeAction->trigger();
+            }
         } else {
-            for (int i = 0; i > numSteps; --i)
+            for (int i = 0; i > numSteps; --i) {
                 window->decreaseVolumeAction->trigger();
+            }
         }
         return true;
     }
@@ -226,16 +222,6 @@ MainWindow::MainWindow(QWidget *parent)
     setCentralWidget(widget);
     QMenu *mainMenu=new QMenu(this);
 
-    // With ambiance (which has a drak toolbar) we need a gap between the toolbar and the earch fields.
-    // But, in the context view we dont want a gap - as this looks odd with a background. To workaround this,
-    // the tabwidget and playqueue sides of the splitter have a spacer added. The size of this needs to be controllable
-    // by the style - so we do this here...
-    QVBoxLayout tempLayout(0);
-    if (tabWidgetSpacer->minimumSize().height()!=tempLayout.spacing()) {
-        tabWidgetSpacer->changeSize(tempLayout.spacing(), tempLayout.spacing(), QSizePolicy::Fixed, QSizePolicy::Fixed);
-        playQueueSpacer->changeSize(tempLayout.spacing(), tempLayout.spacing(), QSizePolicy::Fixed, QSizePolicy::Fixed);
-    }
-
     messageWidget->hide();
 
     // Need to set these values here, as used in library/device loading...
@@ -246,6 +232,18 @@ MainWindow::MainWindow(QWidget *parent)
     Icons::initToolbarIcons(artistLabel->palette().color(QPalette::Foreground), GtkStyle::useLightIcons());
     Icons::initSidebarIcons();
     menuButton->setIcon(Icons::toolbarMenuIcon);
+
+    // With ambiance (which has a drak toolbar) we need a gap between the toolbar and the earch fields. But, in the context view we dont
+    // want a gap - as this looks odd with a background. To workaround this, the tabwidget and playqueue sides of the splitter have a
+    // spacer added. The size of this needs to be controllable by the style - so we do this here...
+    int spacing=style()->layoutSpacing(QSizePolicy::DefaultType, QSizePolicy::DefaultType, Qt::Vertical);
+    if (spacing<0) {
+        spacing=4;
+    }
+    if (tabWidgetSpacer->minimumSize().height()!=spacing) {
+        tabWidgetSpacer->changeSize(spacing, spacing, QSizePolicy::Fixed, QSizePolicy::Fixed);
+        playQueueSpacer->changeSize(spacing, spacing, QSizePolicy::Fixed, QSizePolicy::Fixed);
+    }
 
     #ifdef ENABLE_KDE_SUPPORT
     prefAction=static_cast<Action *>(KStandardAction::preferences(this, SLOT(showPreferencesDialog()), ActionCollection::get()));
@@ -840,7 +838,7 @@ MainWindow::MainWindow(QWidget *parent)
         move(p.isNull() ? QPoint(96, 96) : p);
     }
 
-    // If this is the first run, then the wizard will have done the MPD connection. But this will not have loaded then model!
+    // If this is the first run, then the wizard will have done the MPD connection. But this will not have loaded the model!
     // So, we need to load this now - which is done in currentTabChanged()
     if (Settings::self()->firstRun() ||
         (PAGE_LIBRARY!=tabWidget->current_index() && PAGE_ALBUMS!=tabWidget->current_index() &&
@@ -1080,8 +1078,6 @@ void MainWindow::playQueueItemsSelected(bool s)
 
 void MainWindow::connectToMpd(const MPDConnectionDetails &details)
 {
-    //messageWidget->hide();
-
     if (!MPDConnection::self()->isConnected() || details!=MPDConnection::self()->getDetails()) {
         libraryPage->clear();
         albumsPage->clear();
@@ -1159,7 +1155,6 @@ void MainWindow::showPreferencesDialog()
     connect(pref, SIGNAL(destroyed()), SLOT(controlConnectionsMenu()));
     pref->show();
 }
-
 
 void MainWindow::quit()
 {
@@ -2723,8 +2718,8 @@ void MainWindow::editTags(const QList<Song> &songs, bool isPlayQueue)
     QSet<QString> albumArtists;
     QSet<QString> albums;
     QSet<QString> genres;
-    #ifdef ENABLE_DEVICES_SUPPORT
     QString udi;
+    #ifdef ENABLE_DEVICES_SUPPORT
     if (!isPlayQueue && devicesPage->isVisible()) {
         DevicesModel::self()->getDetails(artists, albumArtists, albums, genres);
         udi=devicesPage->activeFsDeviceUdi();
@@ -2736,11 +2731,7 @@ void MainWindow::editTags(const QList<Song> &songs, bool isPlayQueue)
     Q_UNUSED(isPlayQueue)
     #endif
     MusicLibraryModel::self()->getDetails(artists, albumArtists, albums, genres);
-    TagEditor *dlg=new TagEditor(this, songs, artists, albumArtists, albums, genres
-                                #ifdef ENABLE_DEVICES_SUPPORT
-                                , udi
-                                #endif
-                                );
+    TagEditor *dlg=new TagEditor(this, songs, artists, albumArtists, albums, genres, udi);
     dlg->show();
 }
 #endif

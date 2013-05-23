@@ -65,11 +65,7 @@ int TagEditor::instanceCount()
 
 TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
                      const QSet<QString> &existingArtists, const QSet<QString> &existingAlbumArtists,
-                     const QSet<QString> &existingAlbums, const QSet<QString> &existingGenres
-                     #ifdef ENABLE_DEVICES_SUPPORT
-                     , const QString &udi
-                     #endif
-                     )
+                     const QSet<QString> &existingAlbums, const QSet<QString> &existingGenres, const QString &udi)
     : Dialog(parent, "TagEditor", QSize(500, 200))
     #ifdef ENABLE_DEVICES_SUPPORT
     , deviceUdi(udi)
@@ -107,6 +103,7 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
         baseDir=dev->path();
     }
     #else
+    Q_UNUSED(udi)
     baseDir=MPDConnection::self()->getDetails().dir;
     #endif
     qSort(original);

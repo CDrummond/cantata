@@ -14,6 +14,8 @@
  8. Fix lyrics background when we toggle from showing cover to not showing.
  9. Replace multiple blank lines with single blank line when showing lyrics.
 10. Fix AudioCD playback.
+11. Remove time remaining from action dialog - its not accurate enough to be
+    meaningful.
 
 1.0.2.1
 -------

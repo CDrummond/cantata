@@ -29,7 +29,7 @@
 #include "qtiocompressor/qtiocompressor.h"
 #include "musiclibrarymodel.h"
 #include "contextengine.h"
-#include <QTextBrowser>
+#include "textbrowser.h"
 #include <QScrollBar>
 #include <QFile>
 #include <QUrl>
@@ -89,13 +89,14 @@ void AlbumView::update(const Song &song, bool force)
         details.clear();
         trackList.clear();
         bio.clear();
+        pic.clear();
         clear();
         detailsReceived=bioArtist==currentSong.artist ? ArtistBio : 0;
         setHeader(song.album.isEmpty() ? stdHeader : song.album);
         Covers::Image cImg=Covers::self()->requestImage(song);
         if (!cImg.img.isNull()) {
             detailsReceived|=Cover;
-            setPic(cImg.img);
+            pic=createPicTag(cImg.img, cImg.fileName);
         }
         getTrackListing();
         getDetails();
@@ -181,12 +182,15 @@ void AlbumView::getDetails()
 void AlbumView::coverRetreived(const Song &s, const QImage &img, const QString &file)
 {
     Q_UNUSED(file)
-    if (s==currentSong) {
+    if (s==currentSong && pic.isEmpty()) {
         detailsReceived|=Cover;
         if (All==detailsReceived) {
             hideSpinner();
         }
-        setPic(img);
+        pic=createPicTag(img, file);
+        if (!pic.isEmpty()) {
+            updateDetails();
+        }
     }
 }
 
@@ -218,9 +222,9 @@ void AlbumView::updateDetails(bool preservePos)
     }
     int pos=preservePos ? text->verticalScrollBar()->value() : 0;
     if (detailsReceived&ArtistBio) {
-        text->setText(details+trackList);
+        text->setText(pic+details+trackList);
     } else {
-        text->setText(trackList);
+        text->setText(pic+trackList);
     }
     if (preservePos) {
         text->verticalScrollBar()->setValue(pos);

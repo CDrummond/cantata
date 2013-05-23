@@ -34,6 +34,7 @@ class QIODevice;
 class QImage;
 class QUrl;
 class ContextEngine;
+class Action;
 
 class ArtistView : public View
 {
@@ -57,6 +58,8 @@ public Q_SLOTS:
     void artistImage(const Song &song, const QImage &i, const QString &f);
 
 private Q_SLOTS:
+    void showContextMenu(const QPoint &pos);
+    void refresh();
     void setBio();
     void handleSimilarReply();
     void showArtist(const QUrl &url);
@@ -71,6 +74,7 @@ private:
     void abort();
 
 private:
+    Action *refreshAction;
     ContextEngine *engine;
     QString pic;
     QString biography;

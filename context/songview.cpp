@@ -69,7 +69,7 @@ SongView::SongView(QWidget *p)
     , mode(Mode_Display)
     , job(0)
 {
-    refreshAction = ActionCollection::get()->createAction("refreshlyrics", i18n("Refresh"), "view-refresh");
+    refreshAction = ActionCollection::get()->createAction("refreshlyrics", i18n("Refresh Lyrics"), "view-refresh");
     searchAction = ActionCollection::get()->createAction("searchlyrics", i18n("Search For Lyrics"), "edit-find");
     editAction = ActionCollection::get()->createAction("editlyrics", i18n("Edit Lyrics"), Icons::editIcon);
     saveAction = ActionCollection::get()->createAction("savelyrics", i18n("Save Lyrics"), "document-save");

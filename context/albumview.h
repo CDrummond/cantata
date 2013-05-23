@@ -31,6 +31,7 @@ class QNetworkReply;
 class QByteArray;
 class QUrl;
 class ContextEngine;
+class Action;
 
 class AlbumView : public View
 {
@@ -51,6 +52,10 @@ public Q_SLOTS:
     void playSong(const QUrl &u);
     void artistBio(const QString &artist, const QString &b);
 
+private Q_SLOTS:
+    void showContextMenu(const QPoint &pos);
+    void refresh();
+
 private:
     void getTrackListing();
     void getDetails();
@@ -59,6 +64,7 @@ private:
     void abort();
 
 private:
+    Action *refreshAction;
     ContextEngine *engine;
     int detailsReceived;
     QString pic;

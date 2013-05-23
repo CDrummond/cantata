@@ -25,16 +25,27 @@
 #include "spinner.h"
 #include "networkaccessmanager.h"
 #include "settings.h"
+#include "textbrowser.h"
 #include <QLabel>
-#include <QTextBrowser>
 #include <QImage>
 #include <QPixmap>
 #include <QBoxLayout>
 #include <QNetworkReply>
 #include <QLocale>
+#include <QBuffer>
+#include <QFile>
 
 static QString headerTag;
 QString View::subTag;
+
+static QString encode(const QImage &img)
+{
+    QByteArray bytes;
+    QBuffer buffer(&bytes);
+    buffer.open(QIODevice::WriteOnly);
+    img.save(&buffer, "PNG");
+    return QString("<img src=\"data:image/png;base64,%1\"><br><br>").arg(QString(buffer.data().toBase64()));
+}
 
 void View::initHeaderTags()
 {
@@ -51,18 +62,15 @@ View::View(QWidget *parent)
     QVBoxLayout *layout=new QVBoxLayout(this);
     layout->setAlignment(Qt::AlignTop | Qt::AlignLeft);
     header=new QLabel(this);
-    pic=new QLabel(this);
-    text=new QTextBrowser(this);
+    text=new TextBrowser(this);
 
     layout->setMargin(0);
 
     header->setWordWrap(true);
     header->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
     text->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
-    pic->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
     layout->addWidget(header);
-    layout->addWidget(pic);
     layout->addWidget(text);
     layout->addItem(new QSpacerItem(1, fontMetrics().height()/4, QSizePolicy::Fixed, QSizePolicy::Fixed));
     text->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -76,7 +84,6 @@ View::View(QWidget *parent)
 void View::clear()
 {
     setHeader(stdHeader);
-    setPic(QImage());
     text->clear();
 }
 
@@ -87,26 +94,19 @@ void View::setHeader(const QString &str)
 
 void View::setPicSize(const QSize &sz)
 {
-    picSize=sz;
-    if (pic && (picSize.width()<1 || picSize.height()<1)) {
-        pic->deleteLater();
-        pic=0;
-    }
+    text->setPicSize(sz);
 }
 
-void View::setPic(const QImage &img)
+QString View::createPicTag(const QImage &img, const QString &file)
 {
-    if (!pic) {
-        return;
-    }
-
     if (img.isNull()) {
-        pic->clear();
-        pic->setVisible(false);
-    } else {
-        pic->setPixmap(QPixmap::fromImage(img.scaled(picSize, Qt::KeepAspectRatio, Qt::SmoothTransformation)));
-        pic->setVisible(true);
+        return QString();
     }
+    if (!file.isEmpty() && QFile::exists(file)) {
+        return QString("<img src=\"%1\"><br><br>").arg(file);
+    }
+    // No filename given, or file does not exist - therefore ecnode & scale image.
+    return encode(img.scaled(text->picSize(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
 }
 
 void View::showEvent(QShowEvent *e)

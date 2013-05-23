@@ -61,6 +61,7 @@ private:
 private:
     ContextEngine *engine;
     int detailsReceived;
+    QString pic;
     QString details;
     QString trackList;
     QString bioArtist;

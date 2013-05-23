@@ -38,7 +38,7 @@
 #include "action.h"
 #include "actioncollection.h"
 #include "networkaccessmanager.h"
-#include <QTextBrowser>
+#include "textbrowser.h"
 #include <QFile>
 #include <QDir>
 #include <QFileInfo>
@@ -88,7 +88,6 @@ SongView::SongView(QWidget *p)
     connect(text, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showContextMenu(QPoint)));
     setMode(Mode_Blank);
     setStandardHeader(i18n("Lyrics"));
-    setPicSize(QSize(-1, -1));
     clear();
 }
 

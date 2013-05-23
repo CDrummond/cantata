@@ -1449,7 +1449,10 @@ void MainWindow::changeConnection()
 void MainWindow::showAboutDialog()
 {
     QMessageBox::about(this, i18nc("Qt-only", "About Cantata"),
-                       i18nc("Qt-only", "<b>Cantata %1</b><br/><br/>MPD client.<br/><br/>(c) Craig Drummond 2011-2013.<br/>Released under the GPLv3<br/><br/><i><small>Based upon QtMPC - (C) 2007-2010 The QtMPC Authors</small></i>").arg(PACKAGE_VERSION_STRING));
+                       i18nc("Qt-only", "<b>Cantata %1</b><br/><br/>MPD client.<br/><br/>(c) Craig Drummond 2011-2013.<br/>Released under the GPLv3<br/><br/>"
+                             "<i><small>Based upon QtMPC - (C) 2007-2010 The QtMPC Authors<br/>"
+                             "Context view backdrops courtesy of <a href=\"http://www.htbackdrops.com\">Home Theater Backdrops</a><br/>"
+                             "Context view metadata courtesy of <a href=\"http://www.wikipedia.org\">Wikipedia</a></small></i>").arg(PACKAGE_VERSION_STRING));
 }
 #endif
 

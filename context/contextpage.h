@@ -25,25 +25,47 @@
 #define CONTEXT_PAGE_H
 
 #include <QWidget>
+#include <QImage>
 
 class Song;
 class ArtistView;
 class AlbumView;
 class SongView;
+class QNetworkReply;
 
 class ContextPage : public QWidget
 {
     Q_OBJECT
 
 public:
+    static const QLatin1String constCacheDir;
+
     ContextPage(QWidget *parent=0);
+    void useBackdrop(bool u);
     void update(const Song &s);
+    void showEvent(QShowEvent *e);
+    void paintEvent(QPaintEvent *e);
 
 Q_SIGNALS:
     void findArtist(const QString &artist);
     void playSong(const QString &file);
 
+private Q_SLOTS:
+    void searchResponse();
+    void downloadResponse();
+
 private:
+    void cancel();
+    void updateBackdrop();
+    void getBackdrop();
+    QNetworkReply * getReply(QObject *obj);
+
+private:
+    QNetworkReply *job;
+    bool drawBackdrop;
+    QImage backdrop;
+    QString currentArtist;
+    QString updateArtist;
     ArtistView *artist;
     AlbumView *album;
     SongView *song;

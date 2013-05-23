@@ -127,6 +127,7 @@ public:
     QStringList lyricProviders();
     QStringList wikipediaLangs();
     bool wikipediaIntroOnly();
+    bool contextBackdrop();
     QString page();
     QStringList hiddenPages();
     bool gnomeMediaKeys();

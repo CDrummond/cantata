@@ -207,6 +207,8 @@ public:
     void saveGroupMultiple(bool v);
     void saveLyricProviders(const QStringList &v);
     void saveWikipediaLangs(const QStringList &v);
+    void saveWikipediaIntroOnly(bool v);
+    void saveContextBackdrop(bool v);
     void savePage(const QString &v);
     void saveHiddenPages(const QStringList &v);
     void saveGnomeMediaKeys(bool v);

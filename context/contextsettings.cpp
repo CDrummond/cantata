@@ -24,6 +24,7 @@
 #include "contextsettings.h"
 #include "wikipediasettings.h"
 #include "lyricsettings.h"
+#include "othersettings.h"
 #include "localize.h"
 
 ContextSettings::ContextSettings(QWidget *p)
@@ -31,18 +32,22 @@ ContextSettings::ContextSettings(QWidget *p)
 {
     wiki=new WikipediaSettings(this);
     lyrics=new LyricSettings(this);
+    other=new OtherSettings(this);
     addTab(wiki, i18n("Wikipedia Languages"));
     addTab(lyrics, i18n("Lyrics Providers"));
+    addTab(other, i18n("Other"));
 }
 
 void ContextSettings::load()
 {
     wiki->load();
     lyrics->load();
+    other->load();
 }
 
 void ContextSettings::save()
 {
     wiki->save();
     lyrics->save();
+    other->save();
 }

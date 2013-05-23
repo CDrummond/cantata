@@ -41,6 +41,8 @@ public:
     static const QLatin1String constCacheDir;
 
     ContextPage(QWidget *parent=0);
+
+    void readConfig();
     void useBackdrop(bool u);
     void update(const Song &s);
     void showEvent(QShowEvent *e);

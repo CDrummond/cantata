@@ -28,10 +28,10 @@
 #include "musiclibrarymodel.h"
 #include "networkaccessmanager.h"
 #include "qtiocompressor/qtiocompressor.h"
+#include "textbrowser.h"
 #include "contextengine.h"
 #include <QNetworkReply>
 #include <QApplication>
-#include <QTextBrowser>
 #include <QTextStream>
 #include <QLayout>
 #if QT_VERSION >= 0x050000
@@ -105,6 +105,7 @@ void ArtistView::update(const Song &s, bool force)
     if (artistChanged || force) {
         currentSong=song;
         clear();
+        pic.clear();
         biography.clear();
         similarArtists=QString();
         if (!currentSong.isEmpty()) {
@@ -115,7 +116,7 @@ void ArtistView::update(const Song &s, bool force)
             s.file=currentSong.file;
             Covers::Image img=Covers::self()->requestImage(s);
             if (!img.img.isNull()) {
-                artistImage(s, img.img, img.fileName);
+                pic=createPicTag(img.img, img.fileName);
             }
             loadBio();
         }
@@ -125,8 +126,9 @@ void ArtistView::update(const Song &s, bool force)
 void ArtistView::artistImage(const Song &song, const QImage &i, const QString &f)
 {
     Q_UNUSED(f)
-    if (song.albumartist==currentSong.artist) {
-        setPic(i);
+    if (song.albumartist==currentSong.artist && pic.isEmpty()) {
+        pic=createPicTag(i, f);
+        setBio();
     }
 }
 
@@ -210,7 +212,7 @@ void ArtistView::handleSimilarReply()
 
 void ArtistView::setBio()
 {
-    QString html=biography;
+    QString html=pic+biography;
     if (!similarArtists.isEmpty()) {
         html+=similarArtists;
     }

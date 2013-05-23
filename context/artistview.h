@@ -72,6 +72,7 @@ private:
 
 private:
     ContextEngine *engine;
+    QString pic;
     QString biography;
     QString similarArtists;
     QNetworkReply *currentSimilarJob;

@@ -26,14 +26,15 @@
 
 #include <QWidget>
 #include <QSize>
+#include <QTextBrowser>
 #include "song.h"
 
 class QImage;
 class QLabel;
-class QTextBrowser;
 class Spinner;
 class QNetworkReply;
 class QLayoutItem;
+class TextBrowser;
 
 class View : public QWidget
 {
@@ -48,7 +49,7 @@ public:
     void setStandardHeader(const QString &h) { stdHeader=h; }
     void setHeader(const QString &str);
     void setPicSize(const QSize &sz);
-    void setPic(const QImage &img);
+    QString createPicTag(const QImage &img, const QString &file);
     void showEvent(QShowEvent *e);
     void showSpinner();
     void hideSpinner();
@@ -63,10 +64,8 @@ protected:
     Song currentSong;
     QString stdHeader;
     QLabel *header;
-    QLabel *pic;
-    QTextBrowser *text;
+    TextBrowser *text;
     bool needToUpdate;
-    QSize picSize;
     Spinner *spinner;
 };
 

@@ -25,33 +25,18 @@
 #define TEXTBROWSER_H
 
 #include <QTextBrowser>
-#include <QImage>
-#include <QDebug>
-class Spinner;
 
 class TextBrowser : public QTextBrowser
 {
 public:
-    TextBrowser(QWidget *p);
-    virtual ~TextBrowser() {  }
+    TextBrowser(QWidget *p) : QTextBrowser(p) { }
+    QVariant loadResource(int type, const QUrl &name);
 
-    void setZoom(int diff) { if (diff) zoomIn(diff);  }
-    int zoom() const { return font().pointSize()-orig; }
-    void setReadOnly(bool ro);
-    void setImage(const QImage &img);
-    void enableImage(bool e);
-    bool imageEnabled() { return drawImage; }
-    void paintEvent(QPaintEvent *e);
-    void setHtml(const QString &txt, bool showSpin=false);
-    void setText(const QString &txt, bool showSpin=false);
-    void showSpiner();
-    void hideSpinner();
+    void setPicSize(const QSize &p) { pSize=p; }
+    QSize picSize() const { return pSize; }
 
 private:
-    int orig;
-    QImage image;
-    bool drawImage;
-    Spinner *spinner;
+    QSize pSize;
 };
 
 #endif

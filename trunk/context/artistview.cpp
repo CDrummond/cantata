@@ -144,8 +144,6 @@ void ArtistView::loadBio()
 
                 if (!data.isEmpty()) {
                     searchResponse(data, QString());
-                    loadSimilar();
-                    setBio();
                     Utils::touchFile(cachedFile);
                     return;
                 }
@@ -167,7 +165,7 @@ void ArtistView::loadSimilar()
             while (!f.atEnd()) {
                 QString artist=QString::fromUtf8(f.readLine());
                 if (!artist.isEmpty()) {
-                    artists.append(artist);
+                    artists.append(artist.trimmed());
                 }
             }
 
@@ -336,7 +334,6 @@ void ArtistView::buildSimilar(const QStringList &artists)
                 artist=QLatin1String("<a href=\"cantata://?artist=")+mod+"\">"+artist+"</a>";
             }
         }
-
         similarArtists+="<li>"+artist+"</li>";
     }
 

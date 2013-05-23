@@ -939,7 +939,7 @@ bool StreamsModel::checkWritable()
     writable=!isHttp && QFileInfo(dirName).isWritable();
     if (writable) {
         QString fileName=getInternalFile(false);
-        if (QFile::exists(fileName) && !QFile(fileName).isWritable()) {
+        if (QFile::exists(fileName) && !QFileInfo(fileName).isWritable()) {
             writable=false;
         }
     }

@@ -410,12 +410,11 @@ void SongView::getLyrics()
 {
     UltimateLyricsProvider *prov=UltimateLyrics::self()->getNext(currentProvider);
     if (prov) {
-        text->setText(i18nc("<title> by <artist>\nFetching lyrics via <url>", "%1 by %2\nFetching lyrics via %3")
-                      .arg(currentSong.title).arg(currentSong.artist, prov->getName()));
+        text->setText(i18n("Fetching lyrics via %1").arg(prov->getName()));
         prov->fetchInfo(currentRequest, currentSong);
         showSpinner();
     } else {
-        text->setText(i18nc("<title> by <artist>\nFailed\n", "%1 by %2\nFailed to fetch lyrics").arg(currentSong.title).arg(currentSong.artist));
+        text->setText(QString());
         currentProvider=-1;
         hideSpinner();
         // Set lyrics file anyway - so that editing is enabled!

@@ -149,7 +149,9 @@ void ActionDialog::copy(const QString &srcUdi, const QString &dstUdi, const QLis
     // check space...
     haveVariousArtists=false;
     qint64 spaceRequired=0;
+    #ifdef ACTION_DIALOG_SHOW_TIME_REMAINING
     totalTime=0;
+    #endif
     foreach (const Song &s, songsToAction) {
         if (s.size>0) {
             spaceRequired+=s.size;
@@ -157,7 +159,9 @@ void ActionDialog::copy(const QString &srcUdi, const QString &dstUdi, const QLis
         if (!haveVariousArtists && s.isVariousArtists()) {
             haveVariousArtists=true;
         }
+        #ifdef ACTION_DIALOG_SHOW_TIME_REMAINING
         totalTime+=s.time;
+        #endif
     }
 
     qint64 spaceAvailable=0;
@@ -267,8 +271,10 @@ void ActionDialog::init(const QString &srcUdi, const QString &dstUdi, const QLis
     paused=false;
     actionedSongs.clear();
     skippedSongs.clear();
+    #ifdef ACTION_DIALOG_SHOW_TIME_REMAINING
     actionedTime=0;
     timeTaken=0;
+    #endif
     currentPercent=0;
     currentDev=0;
     count=0;
@@ -294,7 +300,9 @@ void ActionDialog::slotButtonClicked(int button)
             }
             Settings::self()->saveOverwriteSongs(overwrite->isChecked());
             setPage(PAGE_PROGRESS);
+            #ifdef ACTION_DIALOG_SHOW_TIME_REMAINING
             timer.start();
+            #endif
             doNext();
             break;
         case Cancel:
@@ -309,13 +317,17 @@ void ActionDialog::slotButtonClicked(int button)
         }
         break;
     case PAGE_SKIP:
+        #ifdef ACTION_DIALOG_SHOW_TIME_REMAINING
         timeTaken+=timer.elapsed();
+        #endif
         setPage(PAGE_PROGRESS);
         switch(button) {
         case User1:
             skippedSongs.append(currentSong);
+            #ifdef ACTION_DIALOG_SHOW_TIME_REMAINING
             totalTime-=currentSong.time;
             timer.restart();
+            #endif
             incProgress();
             doNext();
             break;
@@ -499,7 +511,9 @@ void ActionDialog::actionStatus(int status, bool copiedCover)
     bool wasSkip=false;
     if (Device::Ok!=status && Device::NotConnected!=status && autoSkip) {
         skippedSongs.append(currentSong);
+        #ifdef ACTION_DIALOG_SHOW_TIME_REMAINING
         totalTime-=currentSong.time;
+        #endif
         wasSkip=true;
         status=Device::Ok;
     }
@@ -509,7 +523,9 @@ void ActionDialog::actionStatus(int status, bool copiedCover)
         if (Device::Ok==origStatus) {
             if (!wasSkip) {
                 actionedSongs.append(currentSong);
+                #ifdef ACTION_DIALOG_SHOW_TIME_REMAINING
                 actionedTime+=currentSong.time;
+                #endif
                 #ifdef ENABLE_REPLAYGAIN_SUPPORT
                 if (Copy==mode && sourceIsAudioCd && !albumsWithoutRgTags.contains(currentSong.album) && Tags::readReplaygain(destFile).isEmpty()) {
                     albumsWithoutRgTags.insert(currentSong.album);
@@ -689,6 +705,7 @@ QString ActionDialog::formatSong(const Song &s, bool showFiles, bool showTime)
         }
     }
 
+    #ifdef ACTION_DIALOG_SHOW_TIME_REMAINING
     if (showTime) {
         QString estimate=i18n("Unknown");
 
@@ -702,7 +719,10 @@ QString ActionDialog::formatSong(const Song &s, bool showFiles, bool showTime)
         str+=i18n("<tr><i><td align=\"right\"><i>Time remaining:</i></td><td><i>%5</i></td></i></tr>")
                 .arg(estimate);
     }
-
+    #else
+    Q_UNUSED(showTime)
+    #endif
+    
     return str+"</table>";
 }
 

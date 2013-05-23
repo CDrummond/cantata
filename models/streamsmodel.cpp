@@ -271,7 +271,7 @@ QVariant StreamsModel::data(const QModelIndex &index, int role) const
         StreamItem *stream=static_cast<StreamItem *>(item);
         switch(role) {
         case Qt::DisplayRole:    return stream->name;
-        case ItemView::Role_SubText:
+        case ItemView::Role_SubText: return QVariant();
         case Qt::ToolTipRole:    return stream->url;
         case Qt::DecorationRole: {
             if (!stream->icon.isEmpty()) {

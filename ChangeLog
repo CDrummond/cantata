@@ -19,6 +19,8 @@
 11. Remove lyrics and info pages, and place within a new context view.
 12. Remove EchoNest usage, as this only seems to return English results. Use
     wikipedia instead. Only the introduction is displayed by default.
+13. Dont display stream URL as sub-text, it makes the view look messy for no
+    real gain. (URL is still shown in tooltip)
 
 1.0.3
 -----

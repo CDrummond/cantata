@@ -36,6 +36,7 @@ public:
 
     static void setPreferedLangs(const QStringList &l);
     static const QStringList & getPreferedLangs() { return preferredLangs; }
+    static void setIntroOnly(bool v) { introOnly=v; }
 
     const QStringList & getLangs() { return getPreferedLangs(); }
     QString getPrefix(const QString &key) { return key.split(QLatin1Char(':')).back(); }

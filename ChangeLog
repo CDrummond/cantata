@@ -18,14 +18,7 @@
     view). Use a fading divider instead.
 11. Remove lyrics and info pages, and place within a new context view.
 12. Remove EchoNest usage, as this only seems to return English results. Use
-    wikipedia instead. Only the introduction is displayed by default. To have
-    the whole wikipedia page (excluding images, and some other parts), edit
-    Cantata's config file and add the following to the "[General]" section:
-
-      wikipediaIntroOnly=false
-
-    ...any existing Artist/Album entries will have to be removed from the
-    cache.
+    wikipedia instead. Only the introduction is displayed by default.
 
 1.0.3
 -----

@@ -109,7 +109,6 @@ void View::setPic(const QImage &img)
     }
 }
 
-
 void View::showEvent(QShowEvent *e)
 {
     if (needToUpdate) {
@@ -149,4 +148,3 @@ void View::searchResponse(const QString &r, const QString &l)
     Q_UNUSED(l)
     text->setText(r);
 }
-

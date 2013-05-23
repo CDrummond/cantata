@@ -30,6 +30,7 @@
 #include "qtiocompressor/qtiocompressor.h"
 #include "textbrowser.h"
 #include "contextengine.h"
+#include "actioncollection.h"
 #include <QNetworkReply>
 #include <QApplication>
 #include <QTextStream>
@@ -43,6 +44,7 @@
 #endif
 #include <QPixmap>
 #include <QFile>
+#include <QMenu>
 
 static const char *constNameKey="name";
 static const int constCacheAge=7;
@@ -62,9 +64,13 @@ ArtistView::ArtistView(QWidget *parent)
     , currentSimilarJob(0)
 {
     engine=ContextEngine::create(this);
+    refreshAction = ActionCollection::get()->createAction("refreshartist", i18n("Refresh Artist Information"), "view-refresh");
+    connect(refreshAction, SIGNAL(triggered()), SLOT(refresh()));
     connect(engine, SIGNAL(searchResult(QString,QString)), this, SLOT(searchResponse(QString,QString)));
     connect(Covers::self(), SIGNAL(artistImage(Song,QImage,QString)), SLOT(artistImage(Song,QImage,QString)));
     connect(text, SIGNAL(anchorClicked(QUrl)), SLOT(showArtist(QUrl)));
+    text->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(text, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showContextMenu(QPoint)));
     Utils::clearOldCache(constCacheDir, constCacheAge);
     setStandardHeader(i18n("Artist Information"));
    
@@ -72,6 +78,27 @@ ArtistView::ArtistView(QWidget *parent)
     int imageWidth=imageHeight*1.5;
     setPicSize(QSize(imageWidth, imageHeight));
     clear();
+}
+
+void ArtistView::showContextMenu(const QPoint &pos)
+{
+   QMenu *menu = text->createStandardContextMenu();
+   menu->addSeparator();
+   menu->addAction(refreshAction);
+   menu->exec(text->mapToGlobal(pos));
+   delete menu;
+}
+
+void ArtistView::refresh()
+{
+    if (currentSong.isEmpty()) {
+        return;
+    }
+    foreach (const QString &lang, engine->getLangs()) {
+        QFile::remove(cacheFileName(currentSong.artist, engine->getPrefix(lang), false, false));
+    }
+    QFile::remove(cacheFileName(currentSong.artist, QString(), true, false));
+    update(currentSong, true);
 }
 
 void ArtistView::update(const Song &s, bool force)

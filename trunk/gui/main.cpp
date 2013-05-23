@@ -96,10 +96,10 @@ int main(int argc, char *argv[])
 
     aboutData.addAuthor(ki18n("Craig Drummond"), ki18n("Maintainer"), "craig.p.drummond@gmail.com");
     aboutData.addAuthor(ki18n("Piotr Wicijowski"), ki18n("UI Improvements"), "piotr.wicijowski@gmail.com");
-    aboutData.addAuthor(ki18n("Sander Knopper"), ki18n("QtMPC author"));
-    aboutData.addAuthor(ki18n("Roeland Douma"), ki18n("QtMPC author"));
-    aboutData.addAuthor(ki18n("Daniel Selinger"), ki18n("QtMPC author"));
-    aboutData.addAuthor(ki18n("Armin Walland"), ki18n("QtMPC author"));
+    aboutData.addAuthor(ki18n("Sander Knopper"), ki18n("QtMPC author"), QByteArray(), "http://qtmpc.lowblog.nl");
+    aboutData.addAuthor(ki18n("Roeland Douma"), ki18n("QtMPC author"), QByteArray(), "http://qtmpc.lowblog.nl");
+    aboutData.addAuthor(ki18n("Daniel Selinger"), ki18n("QtMPC author"), QByteArray(), "http://qtmpc.lowblog.nl");
+    aboutData.addAuthor(ki18n("Armin Walland"), ki18n("QtMPC author"), QByteArray(), "http://qtmpc.lowblog.nl");
     aboutData.addCredit(ki18n("Home Theater Backdrops"), ki18n("Context view backdrops"), QByteArray(), "www.htbackdrops.com");
     aboutData.addCredit(ki18n("Wikipedia"), ki18n("Context view metadata"), QByteArray(), "www.wikipedia.org");
     KCmdLineArgs::init(argc, argv, &aboutData);

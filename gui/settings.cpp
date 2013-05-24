@@ -473,6 +473,11 @@ bool Settings::contextDarkBackground()
     return GET_BOOL("contextDarkBackground", false);
 }
 
+int Settings::contextZoom()
+{
+    return GET_INT("contextZoom", 0);
+}
+
 QString Settings::page()
 {
     return GET_STRING("page", QString());
@@ -890,6 +895,11 @@ void Settings::saveContextBackdrop(bool v)
 void Settings::saveContextDarkBackground(bool v)
 {
     SET_VALUE_MOD(contextDarkBackground)
+}
+
+void Settings::saveContextZoom(int v)
+{
+    SET_VALUE_MOD(contextZoom)
 }
 
 void Settings::savePage(const QString &v)

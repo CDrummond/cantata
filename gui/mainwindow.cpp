@@ -880,6 +880,7 @@ MainWindow::~MainWindow()
         }
     }
     Settings::self()->saveHiddenPages(hiddenPages);
+    context->saveConfig();
     streamsPage->save();
     Settings::self()->saveForceSingleClick(ItemView::getForceSingleClick());
     Settings::self()->saveStartHidden(trayItem->isActive() && isHidden() && Settings::self()->minimiseOnClose());

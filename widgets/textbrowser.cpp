@@ -25,6 +25,12 @@
 #include <QImage>
 #include <QScrollBar>
 
+TextBrowser::TextBrowser(QWidget *p)
+    : QTextBrowser(p)
+{
+    origZoomValue=font().pointSize();
+}
+
 // QTextEdit/QTextBrowser seems to do FastTransformation when scaling images, and this looks bad.
 QVariant TextBrowser::loadResource(int type, const QUrl &name)
 {

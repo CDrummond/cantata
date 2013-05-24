@@ -149,6 +149,27 @@ void View::setPal(const QPalette &pal)
     header->setPalette(pal);
 }
 
+void View::addEventFilter(QObject *obj)
+{
+    installEventFilter(obj);
+    text->installEventFilter(obj);
+    text->viewport()->installEventFilter(obj);
+    header->installEventFilter(obj);
+}
+
+void View::setZoom(int z)
+{
+    text->setZoom(z);
+    QFont f=header->font();
+    f.setPointSize(f.pointSize()+z);
+    header->setFont(f);
+}
+
+int View::getZoom()
+{
+    return text->zoom();
+}
+
 void View::searchResponse(const QString &r, const QString &l)
 {
     Q_UNUSED(l)

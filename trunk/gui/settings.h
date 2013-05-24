@@ -128,6 +128,7 @@ public:
     QStringList wikipediaLangs();
     bool wikipediaIntroOnly();
     bool contextBackdrop();
+    bool contextDarkBackground();
     QString page();
     QStringList hiddenPages();
     bool gnomeMediaKeys();
@@ -209,6 +210,7 @@ public:
     void saveWikipediaLangs(const QStringList &v);
     void saveWikipediaIntroOnly(bool v);
     void saveContextBackdrop(bool v);
+    void saveContextDarkBackground(bool v);
     void savePage(const QString &v);
     void saveHiddenPages(const QStringList &v);
     void saveGnomeMediaKeys(bool v);

@@ -44,6 +44,7 @@ public:
 
     void readConfig();
     void useBackdrop(bool u);
+    void useDarkBackground(bool u);
     void update(const Song &s);
     void showEvent(QShowEvent *e);
     void paintEvent(QPaintEvent *e);
@@ -65,6 +66,7 @@ private:
 private:
     QNetworkReply *job;
     bool drawBackdrop;
+    bool darkBackground;
     QImage backdrop;
     QString currentArtist;
     QString updateArtist;

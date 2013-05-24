@@ -34,6 +34,7 @@ public:
 
     void setPicSize(const QSize &p) { pSize=p; }
     QSize picSize() const { return pSize; }
+    void setPal(const QPalette &pal);
 
 private:
     QSize pSize;

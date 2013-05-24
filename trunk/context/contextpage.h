@@ -43,6 +43,7 @@ public:
     ContextPage(QWidget *parent=0);
 
     void readConfig();
+    void saveConfig();
     void useBackdrop(bool u);
     void useDarkBackground(bool u);
     void update(const Song &s);
@@ -58,6 +59,7 @@ private Q_SLOTS:
     void downloadResponse();
 
 private:
+    bool eventFilter(QObject *o, QEvent *e);
     void cancel();
     void updateBackdrop();
     void getBackdrop();

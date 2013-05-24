@@ -55,6 +55,9 @@ public:
     void hideSpinner();
     void setEditable(bool e);
     void setPal(const QPalette &pal);
+    void addEventFilter(QObject *obj);
+    void setZoom(int z);
+    int getZoom();
     virtual void update(const Song &s, bool force)=0;
 
 protected Q_SLOTS:

@@ -54,7 +54,7 @@ public:
     void showSpinner();
     void hideSpinner();
     void setEditable(bool e);
-    void setPal(const QPalette &pal);
+    void setPal(const QPalette &pal, const QColor &linkColor, const QColor &prevLinkColor);
     void addEventFilter(QObject *obj);
     void setZoom(int z);
     int getZoom();

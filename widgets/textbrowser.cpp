@@ -23,6 +23,7 @@
 
 #include "textbrowser.h"
 #include <QImage>
+#include <QScrollBar>
 
 // QTextEdit/QTextBrowser seems to do FastTransformation when scaling images, and this looks bad.
 QVariant TextBrowser::loadResource(int type, const QUrl &name)
@@ -35,4 +36,11 @@ QVariant TextBrowser::loadResource(int type, const QUrl &name)
         }
     }
     return QTextBrowser::loadResource(type, name);
+}
+
+void TextBrowser::setPal(const QPalette &pal)
+{
+    setPalette(pal);
+    verticalScrollBar()->setPalette(pal);
+    horizontalScrollBar()->setPalette(pal);
 }

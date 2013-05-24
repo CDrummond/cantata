@@ -40,7 +40,6 @@
 #endif
 #include <QXmlStreamReader>
 #include <QFile>
-#include <QDebug>
 
 static const QLatin1String constApiKey("TEST_KEY"); // TODO: Apply for API key!!!
 const QLatin1String ContextPage::constCacheDir("backdrops/");
@@ -54,6 +53,7 @@ ContextPage::ContextPage(QWidget *parent)
     : QWidget(parent)
     , job(0)
     , drawBackdrop(true)
+    , darkBackground(false)
 {
     QHBoxLayout *layout = new QHBoxLayout(this);
 
@@ -81,6 +81,7 @@ ContextPage::ContextPage(QWidget *parent)
 void ContextPage::readConfig()
 {
     useBackdrop(Settings::self()->contextBackdrop());
+    useDarkBackground(Settings::self()->contextDarkBackground());
     WikipediaEngine::setIntroOnly(Settings::self()->wikipediaIntroOnly());
 }
 
@@ -97,6 +98,32 @@ void ContextPage::useBackdrop(bool u)
     }
 }
 
+void ContextPage::useDarkBackground(bool u)
+{
+    if (u!=darkBackground) {
+        darkBackground=u;
+        QPalette pal=darkBackground ? palette() : parentWidget()->palette();
+
+        if (darkBackground) {
+            QColor dark(32, 32, 32);
+            QColor light(240, 240, 240);
+            QColor linkVisited(164, 164, 164);
+            pal.setColor(QPalette::Window, dark);
+            pal.setColor(QPalette::Base, dark);
+            pal.setColor(QPalette::WindowText, light);
+            pal.setColor(QPalette::ButtonText, light);
+            pal.setColor(QPalette::Text, light);
+            pal.setColor(QPalette::Link, light);
+            pal.setColor(QPalette::LinkVisited, linkVisited);
+        }
+        setPalette(pal);
+        artist->setPal(pal);
+        album->setPal(pal);
+        song->setPal(pal);
+        QWidget::update();
+    }
+}
+
 void ContextPage::showEvent(QShowEvent *e)
 {
     if (drawBackdrop) {
@@ -107,13 +134,17 @@ void ContextPage::showEvent(QShowEvent *e)
 
 void ContextPage::paintEvent(QPaintEvent *e)
 {
+    QPainter p(this);
+    if (darkBackground) {
+        p.fillRect(rect(), palette().background().color());
+    }
     if (drawBackdrop && !backdrop.isNull()) {
-        QPainter p(this);
         p.setOpacity(0.15);
         p.fillRect(rect(), QBrush(backdrop));
     }
-
-    QWidget::paintEvent(e);
+    if (!darkBackground) {
+        QWidget::paintEvent(e);
+    }
 }
 
 void ContextPage::update(const Song &s)

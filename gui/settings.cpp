@@ -468,6 +468,11 @@ bool Settings::contextBackdrop()
     return GET_BOOL("contextBackdrop", true);
 }
 
+bool Settings::contextDarkBackground()
+{
+    return GET_BOOL("contextDarkBackground", false);
+}
+
 QString Settings::page()
 {
     return GET_STRING("page", QString());
@@ -880,6 +885,11 @@ void Settings::saveWikipediaIntroOnly(bool v)
 void Settings::saveContextBackdrop(bool v)
 {
     SET_VALUE_MOD(contextBackdrop)
+}
+
+void Settings::saveContextDarkBackground(bool v)
+{
+    SET_VALUE_MOD(contextDarkBackground)
 }
 
 void Settings::savePage(const QString &v)

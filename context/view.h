@@ -54,6 +54,7 @@ public:
     void showSpinner();
     void hideSpinner();
     void setEditable(bool e);
+    void setPal(const QPalette &pal);
     virtual void update(const Song &s, bool force)=0;
 
 protected Q_SLOTS:

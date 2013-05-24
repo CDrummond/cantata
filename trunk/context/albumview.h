@@ -25,6 +25,7 @@
 #define ALBUM_VIEW_H
 
 #include "view.h"
+#include <QList>
 
 class QImage;
 class QNetworkReply;
@@ -72,6 +73,7 @@ private:
     QString trackList;
     QString bioArtist;
     QString bio;
+    QList<Song> songs;
 };
 
 #endif

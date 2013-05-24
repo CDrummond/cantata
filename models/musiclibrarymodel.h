@@ -29,6 +29,7 @@
 
 #include <QDateTime>
 #include <QSet>
+#include <QMap>
 #include "musiclibraryitemroot.h"
 #include "musiclibraryitemalbum.h"
 #include "song.h"
@@ -69,7 +70,8 @@ public:
     bool fromXML();
     void clear();
     QModelIndex findSongIndex(const Song &s) const;
-    QModelIndex findArtistsIndex(const QString &artist) const;
+    QModelIndex findArtistIndex(const QString &artist) const;
+    QModelIndex findAlbumIndex(const QString &artist, const QString &album) const;
     const MusicLibraryItem * findSong(const Song &s) const;
     bool songExists(const Song &s) const;
     bool updateSong(const Song &orig, const Song &edit);
@@ -91,6 +93,7 @@ public:
     void toggleGrouping();
     const QSet<QString> & genres() const { return rootItem->genres(); }
     QList<Song> getAlbumTracks(const Song &s) const;
+    QMap<QString, QStringList> getAlbums(const Song &song) const;
 
 public Q_SLOTS:
     void updateMusicLibrary(MusicLibraryItemRoot * root, QDateTime dbUpdate = QDateTime(), bool fromFile = false);

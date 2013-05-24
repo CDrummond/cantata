@@ -31,6 +31,7 @@
 #include "textbrowser.h"
 #include "contextengine.h"
 #include "actioncollection.h"
+#include "musiclibrarymodel.h"
 #include <QNetworkReply>
 #include <QApplication>
 #include <QTextStream>
@@ -59,6 +60,25 @@ static QString cacheFileName(const QString &artist, const QString &lang, bool si
             Covers::encodeName(artist)+(similar ? "-similar" : ("."+lang))+(similar ? ArtistView::constSimilarInfoExt : ArtistView::constInfoExt);
 }
 
+static QString buildUrl(const QString &artist, const QString &album=QString())
+{
+    QUrl url("cantata:///");
+    #if QT_VERSION < 0x050000
+    QUrl &query=url;
+    #else
+    QUrlQuery query;
+    #endif
+
+    query.addQueryItem("artist", artist);
+    if (!album.isEmpty()) {
+        query.addQueryItem("album", album);
+    }
+    #if QT_VERSION >= 0x050000
+    url.setQuery(query);
+    #endif
+    return url.toString();
+}
+
 ArtistView::ArtistView(QWidget *parent)
     : View(parent)
     , currentSimilarJob(0)
@@ -68,7 +88,7 @@ ArtistView::ArtistView(QWidget *parent)
     connect(refreshAction, SIGNAL(triggered()), SLOT(refresh()));
     connect(engine, SIGNAL(searchResult(QString,QString)), this, SLOT(searchResponse(QString,QString)));
     connect(Covers::self(), SIGNAL(artistImage(Song,QImage,QString)), SLOT(artistImage(Song,QImage,QString)));
-    connect(text, SIGNAL(anchorClicked(QUrl)), SLOT(showArtist(QUrl)));
+    connect(text, SIGNAL(anchorClicked(QUrl)), SLOT(show(QUrl)));
     text->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(text, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showContextMenu(QPoint)));
     Utils::clearOldCache(constCacheDir, constCacheAge);
@@ -134,6 +154,7 @@ void ArtistView::update(const Song &s, bool force)
         clear();
         pic.clear();
         biography.clear();
+        albums.clear();
         similarArtists=QString();
         if (!currentSong.isEmpty()) {
             setHeader(currentSong.artist);
@@ -244,6 +265,35 @@ void ArtistView::setBio()
         html+=similarArtists;
     }
 
+    if (albums.isEmpty()) {
+        QMap<QString, QStringList> a=MusicLibraryModel::self()->getAlbums(currentSong);
+        QMap<QString, QStringList>::ConstIterator it=a.begin();
+        QMap<QString, QStringList>::ConstIterator c=a.find(currentSong.artist);
+        QMap<QString, QStringList>::ConstIterator end=a.end();
+
+        if (c!=end) {
+            QStringList artistAlbums=c.value();
+            qSort(artistAlbums);
+            foreach (const QString &album, artistAlbums) {
+                albums+=QLatin1String("<li><a href=\"")+buildUrl(currentSong.albumArtist(), album)+"\">"+album+"</a></li>";
+            }
+        }
+        for (; it!=end; ++it) {
+            if (it==c) {
+                continue;
+            }
+            QStringList artistAlbums=it.value();
+            qSort(artistAlbums);
+            foreach (const QString &album, artistAlbums) {
+                albums+=QLatin1String("<li><a href=\"")+buildUrl(it.key(), album)+"\">"+it.key()+" - "+album+"</a></li>";
+            }
+        }
+    }
+
+    if (!albums.isEmpty()) {
+        html+=View::subHeader(i18n("Albums"))+QLatin1String("<ul>")+albums+QLatin1String("</ul>");
+    }
+
     if (webLinks.isEmpty()) {
         QFile file(":weblinks.xml");
         if (file.open(QIODevice::ReadOnly)) {
@@ -266,6 +316,7 @@ void ArtistView::setBio()
     if (!webLinks.isEmpty()) {
         html+=View::subHeader(i18n("Web Links"))+QLatin1String("<ul>")+QString(webLinks).replace("${artist}", currentSong.artist)+QLatin1String("</ul>");
     }
+
     text->setText(html);
 }
 
@@ -355,13 +406,13 @@ void ArtistView::buildSimilar(const QStringList &artists)
             similarArtists=QLatin1String("<br/>")+View::subHeader(i18n("Similar Artists"));
         }
         if (mpdArtists.contains(artist)) {
-            artist=QLatin1String("<a href=\"cantata://?artist=")+artist+"\">"+artist+"</a>";
+            artist=QLatin1String("<a href=\"")+buildUrl(artist)+QLatin1String("\">")+artist+QLatin1String("</a>");
         } else {
             // Check for AC/DC -> AC-DC
             QString mod=artist;
             mod=mod.replace("/", "-");
             if (mod!=artist && mpdArtists.contains(mod)) {
-                artist=QLatin1String("<a href=\"cantata://?artist=")+mod+"\">"+artist+"</a>";
+                artist+=QLatin1String("<a href=\"")+buildUrl(mod)+QLatin1String("\">")+artist+QLatin1String("</a>");
             }
         }
         if (first) {
@@ -377,7 +428,7 @@ void ArtistView::buildSimilar(const QStringList &artists)
     }
 }
 
-void ArtistView::showArtist(const QUrl &url)
+void ArtistView::show(const QUrl &url)
 {
     if (QLatin1String("cantata")==url.scheme()) {
         #if QT_VERSION < 0x050000
@@ -387,7 +438,11 @@ void ArtistView::showArtist(const QUrl &url)
         #endif
 
         if (q.hasQueryItem("artist")) {
-            emit findArtist(q.queryItemValue("artist"));
+            if (q.hasQueryItem("album")) {
+                emit findAlbum(q.queryItemValue("artist"), q.queryItemValue("album"));
+            } else {
+                emit findArtist(q.queryItemValue("artist"));
+            }
         }
     } else {
         #ifdef Q_OS_WIN

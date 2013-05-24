@@ -374,12 +374,22 @@ QModelIndex MusicLibraryModel::findSongIndex(const Song &s) const
     return QModelIndex();
 }
 
-QModelIndex MusicLibraryModel::findArtistsIndex(const QString &artist) const
+QModelIndex MusicLibraryModel::findArtistIndex(const QString &artist) const
 {
     Song s;
     s.artist=artist;
     MusicLibraryItemArtist *artistItem = rootItem->artist(s, false);
     return artistItem ? index(rootItem->childItems().indexOf(artistItem), 0, QModelIndex()) : QModelIndex();
+}
+
+QModelIndex MusicLibraryModel::findAlbumIndex(const QString &artist, const QString &album) const
+{
+    Song s;
+    s.artist=artist;
+    s.album=album;
+    MusicLibraryItemArtist *artistItem = rootItem->artist(s, false);
+    MusicLibraryItemAlbum *albumItem = artistItem ? artistItem->album(s, false) : 0;
+    return artistItem ? index(artistItem->childItems().indexOf(albumItem), 0, index(rootItem->childItems().indexOf(artistItem), 0, QModelIndex())) : QModelIndex();
 }
 
 const MusicLibraryItem * MusicLibraryModel::findSong(const Song &s) const
@@ -679,6 +689,29 @@ QList<Song> MusicLibraryModel::getAlbumTracks(const Song &s) const
         }
     }
     return songs;
+}
+
+QMap<QString, QStringList> MusicLibraryModel::getAlbums(const Song &song) const
+{
+    QMap<QString, QStringList> albums;
+
+    foreach (MusicLibraryItem *ar, rootItem->childItems()) {
+        if (static_cast<MusicLibraryItemArtist *>(ar)->isVarious()) {
+            foreach (MusicLibraryItem *al, static_cast<MusicLibraryItemContainer *>(ar)->childItems()) {
+                foreach (MusicLibraryItem *s, static_cast<MusicLibraryItemContainer *>(al)->childItems()) {
+                    if (static_cast<MusicLibraryItemSong *>(s)->song().artist.contains(song.artist)) {
+                        albums[ar->data()].append(al->data());
+                        break;
+                    }
+                }
+            }
+        } else if (ar->data()==song.albumArtist()) {
+            foreach (MusicLibraryItem *al, static_cast<MusicLibraryItemContainer *>(ar)->childItems()) {
+                albums[song.albumArtist()].append(al->data());
+            }
+        }
+    }
+    return albums;
 }
 
 void MusicLibraryModel::setArtistImage(const Song &song, const QImage &img, bool update)

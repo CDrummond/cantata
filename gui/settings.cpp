@@ -345,9 +345,7 @@ bool Settings::storeStreamsInMpdDir()
 int Settings::libraryView()
 {
     int v=version();
-    QString def=ItemView::modeStr(v>=CANTATA_MAKE_VERSION(0, 5, 0)
-                                    ? (v<CANTATA_MAKE_VERSION(0, 9, 50) ? ItemView::Mode_SimpleTree : ItemView::Mode_DetailedTree)
-                                    : ItemView::Mode_List);
+    QString def=ItemView::modeStr(v<CANTATA_MAKE_VERSION(0, 9, 50) ? ItemView::Mode_SimpleTree : ItemView::Mode_DetailedTree);
     return ItemView::toMode(GET_STRING("libraryView", def));
 }
 
@@ -364,22 +362,18 @@ int Settings::folderView()
 int Settings::playlistsView()
 {
     int v=version();
-    QString def=ItemView::modeStr(v>=CANTATA_MAKE_VERSION(0, 5, 0)
-                                    ? v<CANTATA_MAKE_VERSION(0, 9, 50)
-                                        ? ItemView::Mode_SimpleTree
-                                        : v<CANTATA_MAKE_VERSION(1, 0, 51)
-                                          ? ItemView::Mode_GroupedTree
-                                          : ItemView::Mode_DetailedTree
-                                    : ItemView::Mode_List);
+    QString def=ItemView::modeStr(v<CANTATA_MAKE_VERSION(0, 9, 50)
+                                    ? ItemView::Mode_SimpleTree
+                                    : v<CANTATA_MAKE_VERSION(1, 0, 51)
+                                        ? ItemView::Mode_GroupedTree
+                                        : ItemView::Mode_DetailedTree);
     return ItemView::toMode(GET_STRING("playlistsView", def));
 }
 
 int Settings::streamsView()
 {
     int v=version();
-    QString def=ItemView::modeStr(v>=CANTATA_MAKE_VERSION(0, 5, 0)
-                                    ? (v<CANTATA_MAKE_VERSION(0, 9, 50) ? ItemView::Mode_SimpleTree : ItemView::Mode_DetailedTree)
-                                    : ItemView::Mode_List);
+    QString def=ItemView::modeStr(v<CANTATA_MAKE_VERSION(0, 9, 50) ? ItemView::Mode_SimpleTree : ItemView::Mode_DetailedTree);
     return ItemView::toMode(GET_STRING("streamsView", def));
 }
 
@@ -407,9 +401,6 @@ int Settings::albumsCoverSize()
 
 int Settings::albumSort()
 {
-    if (version()<CANTATA_MAKE_VERSION(0, 6, 0)) {
-        return GET_BOOL("albumFirst", true) ? 0 : 1;
-    }
     return GET_INT("albumSort", 0);
 }
 
@@ -531,7 +522,7 @@ int Settings::version()
         if (3==parts.size()) {
             ver=CANTATA_MAKE_VERSION(parts.at(0).toInt(), parts.at(1).toInt(), parts.at(2).toInt());
         } else {
-            ver=CANTATA_MAKE_VERSION(0, 9, 0);
+            ver=PACKAGE_VERSION;
             SET_VALUE("version", PACKAGE_VERSION);
         }
     }
@@ -540,9 +531,7 @@ int Settings::version()
 
 int Settings::stopFadeDuration()
 {
-    int def=version()<CANTATA_MAKE_VERSION(0, 4, 0) ? MinFade : DefaultFade;
-    int v=GET_INT("stopFadeDuration", def);
-
+    int v=GET_INT("stopFadeDuration", DefaultFade);
     if (0!=v && (v<MinFade || v>MaxFade)) {
         v=DefaultFade;
     }
@@ -573,7 +562,7 @@ bool Settings::playQueueAutoExpand()
 
 bool Settings::playQueueStartClosed()
 {
-    return GET_BOOL("playQueueStartClosed", version()<CANTATA_MAKE_VERSION(0, 6, 1));
+    return GET_BOOL("playQueueStartClosed", false);
 }
 
 bool Settings::playQueueScroll()

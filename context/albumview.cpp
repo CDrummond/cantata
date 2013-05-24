@@ -116,6 +116,7 @@ void AlbumView::update(const Song &song, bool force)
         trackList.clear();
         bio.clear();
         pic.clear();
+        songs.clear();
         clear();
         detailsReceived=bioArtist==currentSong.artist ? ArtistBio : 0;
         setHeader(song.album.isEmpty() ? stdHeader : song.album);
@@ -167,7 +168,9 @@ void AlbumView::artistBio(const QString &artist, const QString &b)
 
 void AlbumView::getTrackListing()
 {
-    QList<Song> songs=MusicLibraryModel::self()->getAlbumTracks(currentSong);
+    if (songs.isEmpty()) {
+        songs=MusicLibraryModel::self()->getAlbumTracks(currentSong);
+    }
 
     if (!songs.isEmpty()) {
         trackList=View::subHeader(i18n("Tracks"))+QLatin1String("<p><table>");

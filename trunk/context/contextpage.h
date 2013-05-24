@@ -26,6 +26,7 @@
 
 #include <QWidget>
 #include <QImage>
+#include <QColor>
 
 class Song;
 class ArtistView;
@@ -76,6 +77,7 @@ private:
     ArtistView *artist;
     AlbumView *album;
     SongView *song;
+    QColor appLinkColor;
 };
 
 #endif

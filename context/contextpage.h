@@ -52,6 +52,7 @@ public:
 
 Q_SIGNALS:
     void findArtist(const QString &artist);
+    void findAlbum(const QString &artist, const QString &album);
     void playSong(const QString &file);
 
 private Q_SLOTS:

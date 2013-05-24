@@ -753,6 +753,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(StdActions::self()->organiseFilesAction, SIGNAL(triggered(bool)), SLOT(organiseFiles()));
     #endif
     connect(context, SIGNAL(findArtist(QString)), this, SLOT(locateArtist(QString)));
+    connect(context, SIGNAL(findAlbum(QString,QString)), this, SLOT(locateAlbum(QString,QString)));
     connect(context, SIGNAL(playSong(QString)), this, SLOT(playSong(QString)));
     connect(locateTrackAction, SIGNAL(triggered(bool)), this, SLOT(locateTrack()));
     connect(showPlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(showPlayQueue()));
@@ -2526,6 +2527,16 @@ void MainWindow::locateArtist(const QString &artist)
         showLibraryTab();
     }
     libraryPage->showArtist(artist);
+}
+
+void MainWindow::locateAlbum(const QString &artist, const QString &album)
+{
+    songInfoAction->setChecked(false);
+    showSongInfo();
+    if (!libraryPage->isVisible()) {
+        showLibraryTab();
+    }
+    libraryPage->showAlbum(artist, album);
 }
 
 void MainWindow::playSong(const QString &song)

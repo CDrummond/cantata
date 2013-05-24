@@ -271,6 +271,7 @@ public Q_SLOTS:
     void toggleMonoIcons();
     void locateTrack();
     void locateArtist(const QString &artist);
+    void locateAlbum(const QString &artist, const QString &album);
     void playSong(const QString &song);
     void editTags();
     void editPlayQueueTags();

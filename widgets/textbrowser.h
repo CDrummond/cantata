@@ -29,14 +29,17 @@
 class TextBrowser : public QTextBrowser
 {
 public:
-    TextBrowser(QWidget *p) : QTextBrowser(p) { }
+    TextBrowser(QWidget *p);
     QVariant loadResource(int type, const QUrl &name);
 
+    void setZoom(int diff) { if (diff) zoomIn(diff);  }
+    int zoom() const { return font().pointSize()-origZoomValue; }
     void setPicSize(const QSize &p) { pSize=p; }
     QSize picSize() const { return pSize; }
     void setPal(const QPalette &pal);
 
 private:
+    int origZoomValue;
     QSize pSize;
 };
 

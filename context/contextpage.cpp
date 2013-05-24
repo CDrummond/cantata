@@ -40,6 +40,7 @@
 #endif
 #include <QXmlStreamReader>
 #include <QFile>
+#include <QWheelEvent>
 
 static const QLatin1String constApiKey("TEST_KEY"); // TODO: Apply for API key!!!
 const QLatin1String ContextPage::constCacheDir("backdrops/");
@@ -60,6 +61,10 @@ ContextPage::ContextPage(QWidget *parent)
     artist = new ArtistView(this);
     album = new AlbumView(this);
     song = new SongView(this);
+
+    artist->addEventFilter(this);
+    album->addEventFilter(this);
+    song->addEventFilter(this);
 
     int m=layout->margin();
     layout->setMargin(0);
@@ -83,6 +88,17 @@ void ContextPage::readConfig()
     useBackdrop(Settings::self()->contextBackdrop());
     useDarkBackground(Settings::self()->contextDarkBackground());
     WikipediaEngine::setIntroOnly(Settings::self()->wikipediaIntroOnly());
+    int zoom=Settings::self()->contextZoom();
+    if (zoom) {
+        artist->setZoom(zoom);
+        album->setZoom(zoom);
+        song->setZoom(zoom);
+    }
+}
+
+void ContextPage::saveConfig()
+{
+    Settings::self()->saveContextZoom(artist->getZoom());
 }
 
 void ContextPage::useBackdrop(bool u)
@@ -168,6 +184,22 @@ void ContextPage::update(const Song &s)
     if (isVisible() && drawBackdrop) {
         updateBackdrop();
     }
+}
+
+bool ContextPage::eventFilter(QObject *o, QEvent *e)
+{
+    if (QEvent::Wheel==e->type()) {
+        QWheelEvent *we=static_cast<QWheelEvent *>(e);
+        if (Qt::ControlModifier==we->modifiers()) {
+            int numDegrees = static_cast<QWheelEvent *>(e)->delta() / 8;
+            int numSteps = numDegrees / 15;
+            artist->setZoom(numSteps);
+            album->setZoom(numSteps);
+            song->setZoom(numSteps);
+            return true;
+        }
+    }
+    return QObject::eventFilter(o, e);
 }
 
 void ContextPage::cancel()

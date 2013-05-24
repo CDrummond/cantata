@@ -52,6 +52,7 @@ public:
 
 Q_SIGNALS:
     void findArtist(const QString &artist);
+    void findAlbum(const QString &artist, const QString &album);
     void haveBio(const QString &artist, const QString &bio);
 
 public Q_SLOTS:
@@ -62,7 +63,7 @@ private Q_SLOTS:
     void refresh();
     void setBio();
     void handleSimilarReply();
-    void showArtist(const QUrl &url);
+    void show(const QUrl &url);
 
 private:
     void loadBio();
@@ -82,6 +83,7 @@ private:
     QNetworkReply *currentSimilarJob;
     QString provider;
     QString webLinks;
+    QString albums;
 };
 
 #endif

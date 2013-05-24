@@ -255,7 +255,7 @@ void LibraryPage::showSongs(const QList<Song> &songs)
 
 void LibraryPage::showArtist(const QString &artist)
 {
-    QModelIndex idx=MusicLibraryModel::self()->findArtistsIndex(artist);
+    QModelIndex idx=MusicLibraryModel::self()->findArtistIndex(artist);
     if (idx.isValid()) {
         idx=proxy.mapFromSource(idx);
         genreCombo->setCurrentIndex(0);
@@ -266,6 +266,22 @@ void LibraryPage::showArtist(const QString &artist)
         }
     }
 }
+
+void LibraryPage::showAlbum(const QString &artist, const QString &album)
+{
+    QModelIndex idx=MusicLibraryModel::self()->findAlbumIndex(artist, album);
+    if (idx.isValid()) {
+        idx=proxy.mapFromSource(idx);
+        genreCombo->setCurrentIndex(0);
+        view->clearSearchText();
+        view->showIndex(idx, true);
+        if (ItemView::Mode_SimpleTree==view->viewMode() || ItemView::Mode_DetailedTree==view->viewMode()) {
+            view->setExpanded(idx.parent());
+            view->setExpanded(idx);
+        }
+    }
+}
+
 
 void LibraryPage::itemDoubleClicked(const QModelIndex &)
 {

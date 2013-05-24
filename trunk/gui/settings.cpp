@@ -508,7 +508,14 @@ bool Settings::showDeleteAction()
 
 int Settings::devicesView()
 {
-    return GET_INT("devicesView", (int)ItemView::Mode_DetailedTree);
+    if (version()<CANTATA_MAKE_VERSION(1, 0, 51)) {
+        int v=GET_INT("devicesView", (int)ItemView::Mode_DetailedTree);
+        modified=true;
+        SET_VALUE("devicesView", ItemView::modeStr((ItemView::Mode)v));
+        return v;
+    } else {
+        return ItemView::toMode(GET_STRING("devicesView", ItemView::modeStr(ItemView::Mode_DetailedTree)));
+    }
 }
 #endif
 
@@ -930,7 +937,7 @@ void Settings::saveShowDeleteAction(bool v)
 
 void Settings::saveDevicesView(int v)
 {
-    SET_VALUE_MOD(devicesView)
+    SET_ITEMVIEW_MODE_VALUE_MOD(devicesView)
 }
 #endif
 

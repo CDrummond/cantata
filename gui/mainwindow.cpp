@@ -1451,10 +1451,12 @@ void MainWindow::changeConnection()
 void MainWindow::showAboutDialog()
 {
     QMessageBox::about(this, i18nc("Qt-only", "About Cantata"),
+                       QLatin1String("<html><head><style type=text/css>a:link {color:")+context->normalLinkColor().name()+QLatin1String("; text-decoration:underline;}</style></head><body>")+
                        i18nc("Qt-only", "<b>Cantata %1</b><br/><br/>MPD client.<br/><br/>(c) Craig Drummond 2011-2013.<br/>Released under the <a href=\"http://www.gnu.org/licenses/gpl.html\">GPLv3</a><br/><br/>"
                              "<i><small>Based upon <a href=\"http://qtmpc.lowblog.nl\">QtMPC</a> - (C) 2007-2010 The QtMPC Authors<br/>"
                              "Context view backdrops courtesy of <a href=\"http://www.htbackdrops.com\">Home Theater Backdrops</a><br/>"
-                             "Context view metadata courtesy of <a href=\"http://www.wikipedia.org\">Wikipedia</a></small></i>").arg(PACKAGE_VERSION_STRING));
+                             "Context view metadata courtesy of <a href=\"http://www.wikipedia.org\">Wikipedia</a></small></i>").arg(PACKAGE_VERSION_STRING)+
+                       QLatin1String("</body></html>"));
 }
 #endif
 

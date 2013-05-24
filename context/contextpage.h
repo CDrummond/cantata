@@ -50,6 +50,7 @@ public:
     void update(const Song &s);
     void showEvent(QShowEvent *e);
     void paintEvent(QPaintEvent *e);
+    const QColor & normalLinkColor() const { return appLinkColor; }
 
 Q_SIGNALS:
     void findArtist(const QString &artist);

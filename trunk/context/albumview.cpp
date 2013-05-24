@@ -143,7 +143,7 @@ void AlbumView::update(const Song &song, bool force)
 void AlbumView::playSong(const QUrl &url)
 {
     if (QLatin1String("cantata")==url.scheme()) {
-        emit playSong(url.path());
+        emit playSong(url.path().mid(1)); // Remove leading /
     } else {
         #ifdef Q_OS_WIN
         QProcess::startDetached(QLatin1String("cmd"), QStringList() << QLatin1String("/c") << QLatin1String("start") << url.toString());
@@ -176,7 +176,7 @@ void AlbumView::getTrackListing()
         trackList=View::subHeader(i18n("Tracks"))+QLatin1String("<p><table>");
         foreach (const Song &s, songs) {
             trackList+=QLatin1String("<tr><td>")+QString::number(s.track)+
-                       QLatin1String("</td><td><a href=\"cantata://")+s.file+"\">"+
+                       QLatin1String("</td><td><a href=\"cantata:///")+s.file+"\">"+
                        (s==currentSong ? "<b>"+s.displayTitle()+"</b>" : s.displayTitle())+QLatin1String("</a></td></tr>");
         }
 

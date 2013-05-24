@@ -157,13 +157,20 @@ void WikipediaSettings::parseLangs()
     if (!reply) {
         return;
     }
-
+    reload->setEnabled(true);
     reply->deleteLater();
     if (reply!=job) {
         return;
     }
     job=0;
-    parseLangs(reply->readAll());
+    QByteArray data=reply->readAll();
+    parseLangs(data);
+    QFile f(localeFile());
+    QtIOCompressor compressor(&f);
+    compressor.setStreamFormat(QtIOCompressor::GzipFormat);
+    if (compressor.open(QIODevice::WriteOnly)) {
+        compressor.write(data);
+    }
 }
 
 void WikipediaSettings::parseLangs(const QByteArray &data)
@@ -202,14 +209,7 @@ void WikipediaSettings::parseLangs(const QByteArray &data)
             preferredLangs->insertItem(it.key(), preferredLangs->takeItem(row));
         }
     }
-    QFile f(localeFile());
-    QtIOCompressor compressor(&f);
-    compressor.setStreamFormat(QtIOCompressor::GzipFormat);
-    if (compressor.open(QIODevice::WriteOnly)) {
-        compressor.write(data);
-    }
 
-    reload->setEnabled(true);
     if (spinner) {
         spinner->stop();
     }

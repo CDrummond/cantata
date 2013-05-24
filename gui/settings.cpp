@@ -365,7 +365,11 @@ int Settings::playlistsView()
 {
     int v=version();
     QString def=ItemView::modeStr(v>=CANTATA_MAKE_VERSION(0, 5, 0)
-                                    ? (v<CANTATA_MAKE_VERSION(0, 9, 50) ? ItemView::Mode_SimpleTree : ItemView::Mode_GroupedTree)
+                                    ? v<CANTATA_MAKE_VERSION(0, 9, 50)
+                                        ? ItemView::Mode_SimpleTree
+                                        : v<CANTATA_MAKE_VERSION(1, 0, 51)
+                                          ? ItemView::Mode_GroupedTree
+                                          : ItemView::Mode_DetailedTree
                                     : ItemView::Mode_List);
     return ItemView::toMode(GET_STRING("playlistsView", def));
 }

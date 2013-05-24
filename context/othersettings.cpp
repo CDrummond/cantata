@@ -36,6 +36,7 @@ void OtherSettings::load()
 {
     wikipediaIntroOnly->setChecked(Settings::self()->wikipediaIntroOnly());
     contextBackdrop->setChecked(Settings::self()->contextBackdrop());
+    contextDarkBackground->setChecked(Settings::self()->contextDarkBackground());
     toggleWikiNote();
 }
 
@@ -43,6 +44,7 @@ void OtherSettings::save()
 {
     Settings::self()->saveWikipediaIntroOnly(wikipediaIntroOnly->isChecked());
     Settings::self()->saveContextBackdrop(contextBackdrop->isChecked());
+    Settings::self()->saveContextDarkBackground(contextDarkBackground->isChecked());
 }
 
 void OtherSettings::toggleWikiNote()

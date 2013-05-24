@@ -143,6 +143,12 @@ void View::setEditable(bool e)
     text->viewport()->setAutoFillBackground(e);
 }
 
+void View::setPal(const QPalette &pal)
+{
+    text->setPal(pal);
+    header->setPalette(pal);
+}
+
 void View::searchResponse(const QString &r, const QString &l)
 {
     Q_UNUSED(l)

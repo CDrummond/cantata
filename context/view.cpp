@@ -143,10 +143,15 @@ void View::setEditable(bool e)
     text->viewport()->setAutoFillBackground(e);
 }
 
-void View::setPal(const QPalette &pal)
+void View::setPal(const QPalette &pal, const QColor &linkColor, const QColor &prevLinkColor)
 {
+    // QTextBrowser seems to save link colour within the HTML, so we need to manually
+    // update this when the palette changes!
+    QString old=text->toHtml();
     text->setPal(pal);
     header->setPalette(pal);
+    old=old.replace("color:"+prevLinkColor.name()+";", "color:"+linkColor.name()+";");
+    text->setHtml(old);
 }
 
 void View::addEventFilter(QObject *obj)

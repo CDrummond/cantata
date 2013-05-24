@@ -41,6 +41,7 @@
 #include <QXmlStreamReader>
 #include <QFile>
 #include <QWheelEvent>
+#include <QApplication>
 
 static const QLatin1String constApiKey("TEST_KEY"); // TODO: Apply for API key!!!
 const QLatin1String ContextPage::constCacheDir("backdrops/");
@@ -56,6 +57,7 @@ ContextPage::ContextPage(QWidget *parent)
     , drawBackdrop(true)
     , darkBackground(false)
 {
+    appLinkColor=QApplication::palette().color(QPalette::Link);
     QHBoxLayout *layout = new QHBoxLayout(this);
 
     artist = new ArtistView(this);
@@ -120,6 +122,9 @@ void ContextPage::useDarkBackground(bool u)
     if (u!=darkBackground) {
         darkBackground=u;
         QPalette pal=darkBackground ? palette() : parentWidget()->palette();
+        QPalette appPal=QApplication::palette();
+        QColor prevLinkColor;
+        QColor linkCol;
 
         if (darkBackground) {
             QColor dark(32, 32, 32);
@@ -132,11 +137,19 @@ void ContextPage::useDarkBackground(bool u)
             pal.setColor(QPalette::Text, light);
             pal.setColor(QPalette::Link, light);
             pal.setColor(QPalette::LinkVisited, linkVisited);
+            appPal.setColor(QPalette::Link, light);
+            prevLinkColor=appLinkColor;
+            linkCol=pal.color(QPalette::Link);
+        } else {
+            appPal.setColor(QPalette::Link, appLinkColor);
+            linkCol=appLinkColor;
+            prevLinkColor=QColor(240, 240, 240);
         }
+        QApplication::setPalette(appPal);
         setPalette(pal);
-        artist->setPal(pal);
-        album->setPal(pal);
-        song->setPal(pal);
+        artist->setPal(pal, linkCol, prevLinkColor);
+        album->setPal(pal, linkCol, prevLinkColor);
+        song->setPal(pal, linkCol, prevLinkColor);
         QWidget::update();
     }
 }

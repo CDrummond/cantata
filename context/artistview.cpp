@@ -349,9 +349,10 @@ QStringList ArtistView::parseSimilarResponse(const QByteArray &resp)
 void ArtistView::buildSimilar(const QStringList &artists)
 {
     QSet<QString> mpdArtists=MusicLibraryModel::self()->getAlbumArtists();
+    bool first=true;
     foreach (QString artist, artists) {
         if (similarArtists.isEmpty()) {
-            similarArtists=QLatin1String("<br/>")+View::subHeader(i18n("Similar Artists"))+QLatin1String("<ul>");
+            similarArtists=QLatin1String("<br/>")+View::subHeader(i18n("Similar Artists"));
         }
         if (mpdArtists.contains(artist)) {
             artist=QLatin1String("<a href=\"cantata://?artist=")+artist+"\">"+artist+"</a>";
@@ -363,11 +364,16 @@ void ArtistView::buildSimilar(const QStringList &artists)
                 artist=QLatin1String("<a href=\"cantata://?artist=")+mod+"\">"+artist+"</a>";
             }
         }
-        similarArtists+="<li>"+artist+"</li>";
+        if (first) {
+            first=false;
+        } else {
+            similarArtists+=", ";
+        }
+        similarArtists+=artist;
     }
 
     if (!similarArtists.isEmpty()) {
-        similarArtists+="</ul></p>";
+        similarArtists+="<br>";
     }
 }
 

@@ -21,40 +21,28 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef WIKIPEDIA_SETTINGS_H
-#define WIKIPEDIA_SETTINGS_H
+#ifndef TOGGLELIST_H
+#define TOGGLELIST_H
 
-#include "togglelist.h"
+#include "ui_togglelist.h"
 
-class QNetworkReply;
-class QShowEvent;
 class Spinner;
-class Action;
 
-class WikipediaSettings : public ToggleList
+class ToggleList : public QWidget, protected Ui::ToggleList
 {
     Q_OBJECT
     
 public:
-    WikipediaSettings(QWidget *p);
-    
-    void load();
-    void save();
-    void cancel();
-    void showEvent(QShowEvent *e);
+    ToggleList(QWidget *p);
 
-private Q_SLOTS:
-    void getLangs();
-    void parseLangs();
-
-private:
-    void parseLangs(const QByteArray &data);
-
-private:
-    bool loaded;
-    QNetworkReply *job;
-    Spinner *spinner;
-    Action *reload;
+protected Q_SLOTS:
+    void moveUp();
+    void moveDown();
+    void move(int d);
+    void add();
+    void remove();
+    void availableChanged(QListWidgetItem *item);
+    void selectedChanged(QListWidgetItem *item);
 };
 
 #endif

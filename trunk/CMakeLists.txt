@@ -104,7 +104,7 @@ SET( CANTATA_SRCS gui/application.cpp gui/main.cpp gui/initialsettingswizard.cpp
     devices/deviceoptions.cpp
     context/lyricsettings.cpp context/ultimatelyricsprovider.cpp context/ultimatelyrics.cpp context/lyricsdialog.cpp
     context/contextpage.cpp context/view.cpp context/artistview.cpp context/albumview.cpp context/songview.cpp context/contextengine.cpp
-    context/wikipediaengine.cpp context/wikipediasettings.cpp context/othersettings.cpp context/contextsettings.cpp)
+    context/wikipediaengine.cpp context/wikipediasettings.cpp context/othersettings.cpp context/contextsettings.cpp context/togglelist.cpp)
 SET( CANTATA_MOC_HDRS
     gui/initialsettingswizard.h gui/mainwindow.h gui/settings.h gui/covers.h gui/folderpage.h gui/librarypage.h gui/albumspage.h
     gui/playlistspage.h gui/serverplaybacksettings.h gui/serversettings.h gui/preferencesdialog.h gui/filesettings.h
@@ -119,7 +119,7 @@ SET( CANTATA_MOC_HDRS
     widgets/playqueueview.h widgets/groupedview.h widgets/actionitemdelegate.h widgets/coverwidget.h widgets/volumecontrol.h
     widgets/genrecombo.h widgets/toolbar.h
     network/networkaccessmanager.h
-    context/lyricsettings.h context/ultimatelyrics.h context/ultimatelyricsprovider.h context/lyricsdialog.h
+    context/togglelist.h context/ultimatelyrics.h context/ultimatelyricsprovider.h context/lyricsdialog.h
     context/contextpage.h context/artistview.h context/albumview.h context/songview.h context/view.h context/contextengine.h
     context/wikipediaengine.h context/wikipediasettings.h context/othersettings.h)
 SET( CANTATA_UIS
@@ -128,7 +128,7 @@ SET( CANTATA_UIS
     gui/coverdialog.ui
     streams/streamspage.ui
     dynamic/dynamicpage.ui dynamic/dynamicrule.ui dynamic/dynamicrules.ui
-    context/lyricsettings.ui context/wikipediasettings.ui context/othersettings.ui
+    context/togglelist.ui context/othersettings.ui
     widgets/itemview.ui)
 
 if (ENABLE_ONLINE_SERVICES)

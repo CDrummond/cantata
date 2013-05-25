@@ -26,76 +26,37 @@
 #include "ultimatelyrics.h"
 #include "ui_lyricsettings.h"
 #include "localize.h"
-#include "icon.h"
 #include "config.h"
 #include "settings.h"
 
 LyricSettings::LyricSettings(QWidget *p)
-    : QWidget(p)
+    : ToggleList(p)
 {
-    setupUi(this);
-    connect(up, SIGNAL(clicked()), SLOT(moveUp()));
-    connect(down, SIGNAL(clicked()), SLOT(moveDown()));
-    connect(providers, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
-            SLOT(currentItemChanged(QListWidgetItem*)));
-    up->setIcon(Icon("arrow-up"));
-    down->setIcon(Icon("arrow-down"));
+    label->setText(i18n("Choose the websites you want to use when searching for lyrics."));
 }
 
 void LyricSettings::load()
 {
     const QList<UltimateLyricsProvider *> &lprov=UltimateLyrics::self()->getProviders();
 
-    providers->clear();
+    available->clear();
+    selected->clear();
     foreach (const UltimateLyricsProvider *provider, lprov) {
-        QListWidgetItem *item = new QListWidgetItem(providers);
+        QListWidgetItem *item = new QListWidgetItem(provider->isEnabled() ? selected : available);
         QString name(provider->getName());
         name.replace("(POLISH)", i18n("(Polish Translations)"));
         name.replace("(PORTUGUESE)", i18n("(Portuguese Translations)"));
         item->setText(name);
         item->setData(Qt::UserRole, provider->getName());
-        item->setCheckState(provider->isEnabled() ? Qt::Checked : Qt::Unchecked);
     }
 }
 
 void LyricSettings::save()
 {
     QStringList enabled;
-    for (int i=0 ; i<providers->count() ; ++i) {
-        const QListWidgetItem* item = providers->item(i);
-        if (Qt::Checked==item->checkState()) {
-            enabled << item->data(Qt::UserRole).toString();
-        }
+    for (int i=0; i<selected->count(); ++i) {
+        enabled.append(selected->item(i)->data(Qt::UserRole).toString());
     }
+
     UltimateLyrics::self()->setEnabled(enabled);
-}
-
-void LyricSettings::currentItemChanged(QListWidgetItem *item)
-{
-    if (!item) {
-        up->setEnabled(false);
-        down->setEnabled(false);
-    } else {
-        const int row = providers->row(item);
-        up->setEnabled(row != 0);
-        down->setEnabled(row != providers->count() - 1);
-    }
-}
-
-void LyricSettings::moveUp()
-{
-    move(-1);
-}
-
-void LyricSettings::moveDown()
-{
-    move(+1);
-}
-
-void LyricSettings::move(int d)
-{
-    const int row = providers->currentRow();
-    QListWidgetItem* item = providers->takeItem(row);
-    providers->insertItem(row + d, item);
-    providers->setCurrentRow(row + d);
 }

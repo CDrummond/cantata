@@ -30,6 +30,7 @@
 #include "settings.h"
 #include "qtiocompressor/qtiocompressor.h"
 #include "utils.h"
+#include "action.h"
 #include <QNetworkReply>
 #if QT_VERSION >= 0x050000
 #include <QUrlQuery>
@@ -38,32 +39,20 @@
 #include <QFile>
 
 static QString localeFile() {
-    return Utils::configDir(QString(), true)+"wikipedia-langs.xml.gz";
+    return Utils::configDir(QString(), true)+"wikipedia-available.xml.gz";
 }
 
 WikipediaSettings::WikipediaSettings(QWidget *p)
-    : QWidget(p)
+    : ToggleList(p)
     , loaded(false)
     , job(0)
     , spinner(0)
 {
-    setupUi(this);
-    connect(upButton, SIGNAL(clicked()), SLOT(moveUp()));
-    connect(downButton, SIGNAL(clicked()), SLOT(moveDown()));
-    connect(reload, SIGNAL(clicked()), SLOT(getLangs()));
-    connect(addButton, SIGNAL(clicked()), SLOT(add()));
-    connect(removeButton, SIGNAL(clicked()), SLOT(remove()));
-    connect(langs, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)), SLOT(currentLangChanged(QListWidgetItem*)));
-    connect(preferredLangs, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)), SLOT(currentPreferredLangChanged(QListWidgetItem*)));
-    upButton->setIcon(Icon("go-up"));
-    downButton->setIcon(Icon("go-down"));
-    addButton->setIcon(Icon("list-add"));
-    removeButton->setIcon(Icon("list-remove"));
-
-    upButton->setEnabled(false);
-    downButton->setEnabled(false);
-    addButton->setEnabled(false);
-    removeButton->setEnabled(false);
+    label->setText(i18n("Choose the wikipedia languages you want to use when searching for artist and album information."));
+    reload=new Action(i18n("Reload"), this);
+    connect(reload, SIGNAL(triggered(bool)), this, SLOT(getLangs()));
+    available->addAction(reload);
+    available->setContextMenuPolicy(Qt::ActionsContextMenu);
 }
 
 void WikipediaSettings::showEvent(QShowEvent *e)
@@ -100,8 +89,8 @@ void WikipediaSettings::save()
         return;
     }
     QStringList pref;
-    for (int i=0; i<preferredLangs->count(); ++i) {
-        pref.append(preferredLangs->item(i)->data(Qt::UserRole).toString());
+    for (int i=0; i<selected->count(); ++i) {
+        pref.append(selected->item(i)->data(Qt::UserRole).toString());
     }
     if (pref.isEmpty()) {
         pref.append("en:en");
@@ -122,12 +111,12 @@ void WikipediaSettings::cancel()
 void WikipediaSettings::getLangs()
 {
     if (!spinner) {
-        spinner=new Spinner(langs);
-        spinner->setWidget(langs);
+        spinner=new Spinner(available);
+        spinner->setWidget(available);
     }
     spinner->start();
-    langs->clear();
-    preferredLangs->clear();
+    available->clear();
+    selected->clear();
     reload->setEnabled(false);
     cancel();
     QUrl url("https://en.wikipedia.org/w/api.php");
@@ -191,7 +180,7 @@ void WikipediaSettings::parseLangs(const QByteArray &data)
                 QString prefix=a.value(QLatin1String("prefix")).toString();
                 QString entry=prefix+":"+urlPrefix;
                 int index=preferred.indexOf(entry);
-                QListWidgetItem *item = new QListWidgetItem(-1==index ? langs : preferredLangs);
+                QListWidgetItem *item = new QListWidgetItem(-1==index ? available : selected);
                 item->setText(QString("[%1] %2").arg(prefix).arg(a.value(QLatin1String("language")).toString()));
                 item->setData(Qt::UserRole, entry);
                 if (-1!=index) {
@@ -204,76 +193,13 @@ void WikipediaSettings::parseLangs(const QByteArray &data)
     QMap<int, QListWidgetItem *>::ConstIterator it(prefMap.constBegin());
     QMap<int, QListWidgetItem *>::ConstIterator end(prefMap.constEnd());
     for (; it!=end; ++it) {
-        int row=preferredLangs->row(it.value());
+        int row=selected->row(it.value());
         if (row!=it.key()) {
-            preferredLangs->insertItem(it.key(), preferredLangs->takeItem(row));
+            selected->insertItem(it.key(), selected->takeItem(row));
         }
     }
 
     if (spinner) {
         spinner->stop();
     }
-}
-
-void WikipediaSettings::currentLangChanged(QListWidgetItem *item)
-{
-    addButton->setEnabled(item);
-}
-
-void WikipediaSettings::currentPreferredLangChanged(QListWidgetItem *item)
-{
-    if (!item) {
-        upButton->setEnabled(false);
-        downButton->setEnabled(false);
-        removeButton->setEnabled(false);
-    } else {
-        const int row = langs->row(item);
-        upButton->setEnabled(row != 0);
-        downButton->setEnabled(row != langs->count() - 1);
-    }
-    removeButton->setEnabled(item);
-}
-
-void WikipediaSettings::moveUp()
-{
-    move(-1);
-}
-
-void WikipediaSettings::moveDown()
-{
-    move(+1);
-}
-
-void WikipediaSettings::add()
-{
-    int index=langs->currentRow();
-    if (index<0 || index>langs->count()) {
-        return;
-    }
-    QListWidgetItem *item = langs->takeItem(index);
-    QListWidgetItem *newItem=new QListWidgetItem(preferredLangs);
-    newItem->setText(item->text());
-    newItem->setData(Qt::UserRole, item->data(Qt::UserRole));
-    delete item;
-}
-
-void WikipediaSettings::remove()
-{
-    int index=preferredLangs->currentRow();
-    if (index<0 || index>preferredLangs->count()) {
-        return;
-    }
-    QListWidgetItem *item = preferredLangs->takeItem(index);
-    QListWidgetItem *newItem=new QListWidgetItem(langs);
-    newItem->setText(item->text());
-    newItem->setData(Qt::UserRole, item->data(Qt::UserRole));
-    delete item;
-}
-
-void WikipediaSettings::move(int d)
-{
-    const int row = preferredLangs->currentRow();
-    QListWidgetItem *item = preferredLangs->takeItem(row);
-    preferredLangs->insertItem(row + d, item);
-    preferredLangs->setCurrentRow(row + d);
 }

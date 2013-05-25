@@ -27,27 +27,19 @@
 #include <QWidget>
 #include <QStringList>
 #include <QList>
-#include "ui_lyricsettings.h"
+#include "togglelist.h"
 
 class QListWidgetItem;
 class UltimateLyricsProvider;
 
-class LyricSettings : public QWidget, private Ui::LyricSettings
+class LyricSettings : public ToggleList
 {
-  Q_OBJECT
-
 public:
     LyricSettings(QWidget *p);
     virtual ~LyricSettings() { }
 
     void load();
     void save();
-
-private Q_SLOTS:
-    void moveUp();
-    void moveDown();
-    void move(int d);
-    void currentItemChanged(QListWidgetItem *item);
 };
 
 #endif // LYRICSETTINGS_H

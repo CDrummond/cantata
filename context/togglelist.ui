@@ -1,26 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>WikipediaSettings</class>
- <widget class="QWidget" name="WikipediaSettings">
+ <class>ToggleList</class>
+ <widget class="QWidget" name="ToggleList">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>437</width>
-    <height>362</height>
+    <width>391</width>
+    <height>296</height>
    </rect>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0" colspan="4">
-    <widget class="QLabel" name="label">
-     <property name="text">
-      <string>Choose the wikipedia languages you want to use when searching for artist and album information.</string>
-     </property>
-     <property name="wordWrap">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
    <item row="1" column="0">
     <widget class="QLabel" name="label_2">
      <property name="text">
@@ -35,8 +25,8 @@
      </property>
     </widget>
    </item>
-   <item row="2" column="0" rowspan="6">
-    <widget class="QListWidget" name="langs">
+   <item row="2" column="0" rowspan="4">
+    <widget class="QListWidget" name="available">
      <property name="alternatingRowColors">
       <bool>true</bool>
      </property>
@@ -58,8 +48,8 @@
      </property>
     </spacer>
    </item>
-   <item row="2" column="2" rowspan="6">
-    <widget class="QListWidget" name="preferredLangs">
+   <item row="2" column="2" rowspan="4">
+    <widget class="QListWidget" name="selected">
      <property name="alternatingRowColors">
       <bool>true</bool>
      </property>
@@ -68,7 +58,7 @@
      </property>
     </widget>
    </item>
-   <item row="2" column="3" rowspan="2">
+   <item row="2" column="3">
     <spacer name="verticalSpacer_3">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -81,48 +71,35 @@
      </property>
     </spacer>
    </item>
-   <item row="3" column="1" rowspan="2">
+   <item row="3" column="1">
     <widget class="QToolButton" name="addButton">
      <property name="autoRaise">
       <bool>true</bool>
      </property>
     </widget>
    </item>
-   <item row="3" column="3" rowspan="2">
+   <item row="3" column="3">
     <widget class="QToolButton" name="upButton">
      <property name="autoRaise">
       <bool>true</bool>
      </property>
     </widget>
    </item>
-   <item row="5" column="1" rowspan="2">
+   <item row="4" column="1">
     <widget class="QToolButton" name="removeButton">
      <property name="autoRaise">
       <bool>true</bool>
      </property>
     </widget>
    </item>
-   <item row="7" column="3">
-    <spacer name="verticalSpacer_4">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>73</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item row="5" column="3">
+   <item row="4" column="3">
     <widget class="QToolButton" name="downButton">
      <property name="autoRaise">
       <bool>true</bool>
      </property>
     </widget>
    </item>
-   <item row="7" column="1">
+   <item row="5" column="1">
     <spacer name="verticalSpacer_2">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -135,26 +112,38 @@
      </property>
     </spacer>
    </item>
-   <item row="8" column="0">
-    <widget class="QPushButton" name="reload">
-     <property name="enabled">
-      <bool>true</bool>
+   <item row="5" column="3">
+    <spacer name="verticalSpacer_4">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
      </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>73</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="0" column="0" colspan="4">
+    <widget class="QLabel" name="label">
      <property name="text">
-      <string>Reload</string>
+      <string/>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
      </property>
     </widget>
    </item>
   </layout>
  </widget>
  <tabstops>
-  <tabstop>langs</tabstop>
+  <tabstop>available</tabstop>
   <tabstop>addButton</tabstop>
   <tabstop>removeButton</tabstop>
-  <tabstop>preferredLangs</tabstop>
+  <tabstop>selected</tabstop>
   <tabstop>upButton</tabstop>
   <tabstop>downButton</tabstop>
-  <tabstop>reload</tabstop>
  </tabstops>
  <resources/>
  <connections/>

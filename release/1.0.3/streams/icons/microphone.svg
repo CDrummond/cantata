@@ -1,0 +1,22 @@
+<svg viewBox="0 0 288.95001 288.95001" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<filter id="filter3870">
+<feGaussianBlur stdDeviation=".826"/>
+</filter>
+<filter id="filter3884">
+<feGaussianBlur stdDeviation="1.095"/>
+</filter>
+<filter height="1.0127" id="filter3858" width="1.2066" x="-.1033" y="-.0064">
+<feGaussianBlur stdDeviation=".215"/>
+</filter>
+<filter height="1.6529" id="filter3862" width="1.0122" x="-.0061" y="-.3264">
+<feGaussianBlur stdDeviation=".68"/>
+</filter>
+</defs>
+<g transform="matrix(6.99043,0,0,4.65131,-2405.7949,-353.64995)">
+<path d="m378.717,350.6352a66.0529,66.0529 0 0,1 66.0529,66.0529v171.4286a66.0529,66.0529 0 0,1 -66.0529,66.0529 66.0529,66.0529 0 0,1 -66.0529-66.0529v-171.4286a66.0529,66.0529 0 0,1 66.0529-66.0529" filter="url(#filter3884)" stroke="#000" stroke-width="5" transform="matrix(.13972,0,0,.14761,311.883,25.0747)"/>
+<path d="m470.1713,534.0991v48.1617c0,49.3848-40.7886,89.1423-91.4543,89.1423s-91.4543-39.7575-91.4543-89.1423v-48.1617" fill="none" filter="url(#filter3870)" stroke="#000" stroke-width="23.6431" transform="matrix(.14834,0,0,.14773,308.619,26.588)"/>
+<path d="m378.717,670.59v76.0744" fill="none" filter="url(#filter3858)" stroke="#000" stroke-width="22.2055" transform="matrix(.16856,0,0,.14739,300.962,26.794)"/>
+<path d="m247.7,746.6644h262.034" fill="none" filter="url(#filter3862)" stroke="#000" stroke-width="32.4151" transform="matrix(.0791,0,0,.14739,334.841,26.794)"/>
+</g>
+</svg>

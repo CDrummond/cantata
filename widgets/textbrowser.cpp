@@ -34,11 +34,22 @@ TextBrowser::TextBrowser(QWidget *p)
 // QTextEdit/QTextBrowser seems to do FastTransformation when scaling images, and this looks bad.
 QVariant TextBrowser::loadResource(int type, const QUrl &name)
 {
-    if (QTextDocument::ImageResource==type && (name.scheme().isEmpty() || QLatin1String("file")==name.scheme())) {
-        QImage img;
-        img.load(name.path());
-        if (!img.isNull()) {
-            return img.scaled(picSize(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    if (QTextDocument::ImageResource==type) {
+        if ((name.scheme().isEmpty() || QLatin1String("file")==name.scheme())) {
+            QImage img;
+            img.load(name.path());
+            if (!img.isNull()) {
+                return img.scaled(picSize(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+            }
+        } else if (QLatin1String("data")==name.scheme()) {
+            QByteArray encoded=name.toEncoded();
+            static const QString constStart("data:image/png;base64,");
+            encoded=QByteArray::fromBase64(encoded.mid(constStart.length()));
+            QImage img;
+            img.loadFromData(encoded);
+            if (!img.isNull()) {
+                return img.scaled(picSize(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+            }
         }
     }
     return QTextBrowser::loadResource(type, name);

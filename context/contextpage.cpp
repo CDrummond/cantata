@@ -68,13 +68,13 @@ ContextPage::ContextPage(QWidget *parent)
     album->addEventFilter(this);
     song->addEventFilter(this);
 
-    int m=layout->margin();
+    int m=layout->margin()/2;
     layout->setMargin(0);
     layout->addItem(new QSpacerItem(m, m, QSizePolicy::Fixed, QSizePolicy::Fixed));
     layout->addWidget(artist);
     layout->addWidget(album);
     layout->addWidget(song);
-    layout->addItem(new QSpacerItem(m, m, QSizePolicy::Fixed, QSizePolicy::Fixed));
+//    layout->addItem(new QSpacerItem(m, m, QSizePolicy::Fixed, QSizePolicy::Fixed));
     layout->setStretch(1, 1);
     layout->setStretch(2, 1);
     layout->setStretch(3, 1);

@@ -33,7 +33,7 @@
 #include <QRegExp>
 #include <QDebug>
 
-// #define DBUG qWarning() << "WikipediaEngine"
+//#define DBUG qWarning() << "WikipediaEngine"
 #define DBUG qDebug()
 
 static const char * constModeProperty="mode";
@@ -398,8 +398,9 @@ void WikipediaEngine::parseTitles()
 
 static int indexOf(const QStringList &l, const QString &s)
 {
+    QString search=s.simplified();
     for (int i=0; i<l.length(); ++i){
-        if (0==l.at(i).compare(s, Qt::CaseInsensitive)) {
+        if (0==l.at(i).compare(search, Qt::CaseInsensitive)) {
             return i;
         }
     }
@@ -411,9 +412,20 @@ void WikipediaEngine::getPage(const QStringList &query, Mode mode, const QString
     DBUG << __FUNCTION__;
     QStringList queryCopy(query);
     QStringList queries;
+    QStringList simplifiedTitles;
+    foreach (QString t, titles) {
+        simplifiedTitles.append(t.simplified());
+    }
 
     while(!queryCopy.isEmpty()) {
-        queries.append(queryCopy.join(" "));
+        QString q=queryCopy.join(" ");
+        QString q2=q;
+        q2.remove(".");
+        queries.append(q);
+        if (q2!=q) {
+            queries.append(q2);
+        }
+
         queryCopy.takeFirst();
     }
 
@@ -431,49 +443,41 @@ void WikipediaEngine::getPage(const QStringList &query, Mode mode, const QString
     DBUG << __FUNCTION__ << "Titles" << titles;
 
     int index=-1;
-    foreach (const QString &q, queries) {
-        DBUG << __FUNCTION__ << "Query" << q;
-        // First check original query with one of the patterns...
+    if (mode==Album && 2==query.count()) {
+        DBUG << __FUNCTION__ << "Check album";
         foreach (const QString &pattern, patterns) {
-            index=indexOf(titles, q+" ("+pattern+")");
+            QString q=query.at(1)+" ("+query.at(0)+" "+pattern+")";
+            DBUG << __FUNCTION__ << "Try" << q;
+            index=indexOf(simplifiedTitles, q);
             if (-1!=index) {
-                DBUG << __FUNCTION__ << "Matched with pattern" << index << q;
+                DBUG << __FUNCTION__ << "Matched with '$album ($artist pattern)" << index << q;
                 break;
             }
         }
-
-        if (-1==index && q.contains(".")) {
-            // Now try by removing all dots (A.S.A.P. -> ASAP)
-            QString query2=q;
-            query2.remove(".");
+    }
+    if (-1==index) {
+        foreach (const QString &q, queries) {
+            DBUG << __FUNCTION__ << "Query" << q;
+            // First check original query with one of the patterns...
             foreach (const QString &pattern, patterns) {
-                index=indexOf(titles, query2+" ("+pattern+")");
+                index=indexOf(simplifiedTitles, q+" ("+pattern+")");
                 if (-1!=index) {
-                    DBUG << __FUNCTION__ << "Matched with pattern (no dots)" << index << q;
+                    DBUG << __FUNCTION__ << "Matched with pattern" << index << QString(q+" ("+pattern+")");
                     break;
                 }
             }
-        }
 
-        if (-1==index) {
-            // Try without any pattern...
-            index=indexOf(titles, q);
-            if (-1!=index) {
-                DBUG << __FUNCTION__ << "Matched without pattern" << index << q;
+            if (-1==index) {
+                // Try without any pattern...
+                index=indexOf(simplifiedTitles, q);
+                if (-1!=index) {
+                    DBUG << __FUNCTION__ << "Matched without pattern" << index << q;
+                }
             }
-        }
 
-        if (-1==index && q.contains(".")) {
-            // Try without any pattern, and no dots..
-            QString query2=q;
-            query2.remove(".");
-            index=indexOf(titles, query2);
             if (-1!=index) {
-                DBUG << __FUNCTION__ << "Matched without pattern (no dots)" << index << q;
+                break;
             }
-        }
-        if (-1!=index) {
-            break;
         }
     }
 
@@ -524,7 +528,7 @@ void WikipediaEngine::parsePage()
     }
 
     QString answer(QString::fromUtf8(data));
-    DBUG << __FUNCTION__ << "Anser" << answer;
+    //DBUG << __FUNCTION__ << "Anser" << answer;
     QUrl url=reply->url();
     QString hostLang=getLang(url);
     if (answer.contains(QLatin1String("{{disambiguation}}")) || answer.contains(QLatin1String("{{disambig}}"))) { // i18n???

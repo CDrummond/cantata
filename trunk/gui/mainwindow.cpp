@@ -2317,12 +2317,13 @@ void MainWindow::expandOrCollapse(bool saveCurrentSize)
         resize(collapsedSize);
         setFixedHeight(size().height());
     }
-    songInfoButton->setVisible(showing);
     if (!p.isNull()) {
         move(p);
     }
 
     fullScreenAction->setEnabled(showing);
+    songInfoButton->setVisible(showing);
+    songInfoAction->setEnabled(showing);
 }
 
 void MainWindow::showSongInfo()

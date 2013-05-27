@@ -151,6 +151,8 @@ static QString stripLastEmptySection(QString answer)
 
 static QString wikiToHtml(QString answer, bool introOnly, const QUrl &url)
 {
+    QString u=url.toString();
+    u.replace("/wiki/Special:Export/", "/wiki/");
     int start = answer.indexOf('>', answer.indexOf("<text"))+1;
     int end = answer.lastIndexOf(QRegExp("\\n[^\\n]*\\n\\{\\{reflist", Qt::CaseInsensitive));
     if (end < start) {
@@ -225,8 +227,6 @@ static QString wikiToHtml(QString answer, bool introOnly, const QUrl &url)
             if (!answer.endsWith("<br>")) {
                 answer+="<br>";
             }
-            QString u=url.toString();
-            u.replace("/wiki/Special:Export/", "/wiki/");
             answer+=QString("<br><a href=\"%1\">%2</a>").arg(u).arg(i18n("Read more on wikipedia"));
         }
     } else {
@@ -260,8 +260,6 @@ static QString wikiToHtml(QString answer, bool introOnly, const QUrl &url)
         if (!answer.endsWith("<br>")) {
             answer+="<br>";
         }
-        QString u=url.toString();
-        u.replace("/wiki/Special:Export/", "/wiki/");
         answer+=QString("<br><a href='%1'>%2</a>").arg(u).arg(i18n("Open in browser"));
     }
 

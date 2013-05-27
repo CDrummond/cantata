@@ -531,7 +531,7 @@ int Settings::version()
 
 int Settings::stopFadeDuration()
 {
-    int v=GET_INT("stopFadeDuration", DefaultFade);
+    int v=GET_INT("stopFadeDuration", (int)DefaultFade);
     if (0!=v && (v<MinFade || v>MaxFade)) {
         v=DefaultFade;
     }

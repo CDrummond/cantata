@@ -34,6 +34,7 @@
 #include <QDebug>
 
 //#define DBUG qWarning() << "WikipediaEngine"
+
 #ifndef DBUG
 #define DBUG qDebug()
 #endif
@@ -420,7 +421,14 @@ void WikipediaEngine::getPage(const QStringList &query, Mode mode, const QString
     while(!queryCopy.isEmpty()) {
         QString q=queryCopy.join(" ");
         QString q2=q;
-        q2.remove(".");
+        q2.remove("."); // A.S.A.P. -> ASAP
+        queries.append(q);
+        if (q2!=q) {
+            queries.append(q2);
+        }
+
+        q2=q;
+        q2.replace("-", "/"); // AC-DC -> AC/DC
         queries.append(q);
         if (q2!=q) {
             queries.append(q2);

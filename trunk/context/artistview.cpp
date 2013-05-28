@@ -46,10 +46,11 @@
 #include <QPixmap>
 #include <QFile>
 #include <QMenu>
+#include <QTimer>
 
 static const char *constNameKey="name";
-static const int constCacheAge=7;
 
+const int ArtistView::constCacheAge=7;
 const QLatin1String ArtistView::constCacheDir("artists/");
 const QLatin1String ArtistView::constInfoExt(".html.gz");
 const QLatin1String ArtistView::constSimilarInfoExt(".txt");
@@ -91,13 +92,18 @@ ArtistView::ArtistView(QWidget *parent)
     connect(text, SIGNAL(anchorClicked(QUrl)), SLOT(show(QUrl)));
     text->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(text, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showContextMenu(QPoint)));
-    Utils::clearOldCache(constCacheDir, constCacheAge);
     setStandardHeader(i18n("Artist Information"));
    
     int imageHeight=fontMetrics().height()*14;
     int imageWidth=imageHeight*1.5;
     setPicSize(QSize(imageWidth, imageHeight));
     clear();
+    if (constCacheAge>0) {
+        clearCache();
+        QTimer *timer=new QTimer(this);
+        connect(timer, SIGNAL(timeout()), this, SLOT(clearCache()));
+        timer->start((int)((constCacheAge/2.0)*1000*24*60*60));
+    }
 }
 
 void ArtistView::showContextMenu(const QPoint &pos)
@@ -451,4 +457,9 @@ void ArtistView::show(const QUrl &url)
         QProcess::startDetached(QLatin1String("xdg-open"), QStringList() << url.toString());
         #endif
     }
+}
+
+void ArtistView::clearCache()
+{
+    Utils::clearOldCache(constCacheDir, constCacheAge);
 }

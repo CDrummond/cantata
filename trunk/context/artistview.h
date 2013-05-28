@@ -41,6 +41,7 @@ class ArtistView : public View
     Q_OBJECT
 
 public:
+    static const int constCacheAge;
     static const QLatin1String constCacheDir;
     static const QLatin1String constInfoExt;
     static const QLatin1String constSimilarInfoExt;
@@ -64,6 +65,7 @@ private Q_SLOTS:
     void setBio();
     void handleSimilarReply();
     void show(const QUrl &url);
+    void clearCache();
 
 private:
     void loadBio();

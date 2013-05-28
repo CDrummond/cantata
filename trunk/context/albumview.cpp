@@ -22,6 +22,7 @@
  */
 
 #include "albumview.h"
+#include "artistview.h"
 #include "localize.h"
 #include "covers.h"
 #include "networkaccessmanager.h"
@@ -37,9 +38,9 @@
 #include <QNetworkReply>
 #include <QProcess>
 #include <QMenu>
+#include <QTimer>
 
-static const int constCheckChars=100; // Num chars to cehck between artist bio and details - as sometimes wikipedia does not know album, so returns artist!
-static const int constCacheAge=7;
+static const int constCheckChars=100; // Num chars to chwck between artist bio and details - as sometimes wikipedia does not know album, so returns artist!
 
 const QLatin1String AlbumView::constCacheDir("albums/");
 const QLatin1String AlbumView::constInfoExt(".html.gz");
@@ -69,13 +70,16 @@ AlbumView::AlbumView(QWidget *p)
     connect(text, SIGNAL(anchorClicked(QUrl)), SLOT(playSong(QUrl)));
     text->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(text, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showContextMenu(QPoint)));
-
-    Utils::clearOldCache(constCacheDir, constCacheAge);
     setStandardHeader(i18n("Album Information"));
-
     int imageSize=fontMetrics().height()*18;
     setPicSize(QSize(imageSize, imageSize));
     clear();
+    if (ArtistView::constCacheAge>0) {
+        clearCache();
+        QTimer *timer=new QTimer(this);
+        connect(timer, SIGNAL(timeout()), this, SLOT(clearCache()));
+        timer->start((int)((ArtistView::constCacheAge/2.0)*1000*24*60*60));
+    }
 }
 
 void AlbumView::showContextMenu(const QPoint &pos)
@@ -258,4 +262,9 @@ void AlbumView::updateDetails(bool preservePos)
     if (preservePos) {
         text->verticalScrollBar()->setValue(pos);
     }
+}
+
+void AlbumView::clearCache()
+{
+    Utils::clearOldCache(constCacheDir, ArtistView::constCacheAge);
 }

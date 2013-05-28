@@ -56,6 +56,7 @@ public Q_SLOTS:
 private Q_SLOTS:
     void showContextMenu(const QPoint &pos);
     void refresh();
+    void clearCache();
 
 private:
     void getTrackListing();

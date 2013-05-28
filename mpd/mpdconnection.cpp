@@ -38,8 +38,10 @@
 #include "thread.h"
 #include "settings.h"
 
-// #define DBUG qWarning() << "MPDConnection" << QThread::currentThreadId()
+//#define DBUG qWarning() << "MPDConnection" << QThread::currentThreadId()
+#ifndef DBUG
 #define DBUG qDebug()
+#endif
 
 static const int constSocketCommsTimeout=2000;
 static const int constMaxReadAttempts=4;

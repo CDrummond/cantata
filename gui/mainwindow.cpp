@@ -324,6 +324,8 @@ MainWindow::MainWindow(QWidget *parent)
     nextTrackAction->setGlobalShortcut(KShortcut(Qt::META + Qt::Key_Right));
     playPauseTrackAction->setGlobalShortcut(KShortcut(Qt::META + Qt::Key_C));
     stopPlaybackAction->setGlobalShortcut(KShortcut(Qt::META + Qt::Key_X));
+    stopImmediatelyAction->setGlobalShortcut(KShortcut());
+    stopAfterCurrentTrackAction->setGlobalShortcut(KShortcut());
     increaseVolumeAction->setGlobalShortcut(KShortcut(Qt::META + Qt::Key_Up));
     decreaseVolumeAction->setGlobalShortcut(KShortcut(Qt::META + Qt::Key_Down));
     muteAction->setGlobalShortcut(KShortcut(Qt::META + Qt::Key_M));

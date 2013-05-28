@@ -235,7 +235,7 @@ void AlbumView::searchResponse(const QString &resp, const QString &lang)
     }
 
     if (!resp.isEmpty()) {
-        details=resp;
+        details=engine->translateLinks(resp);
         if (!lang.isEmpty()) {
             QFile f(cacheFileName(Covers::fixArtist(currentSong.albumArtist()), currentSong.album, lang, true));
             QtIOCompressor compressor(&f);

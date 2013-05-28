@@ -44,8 +44,10 @@ public:
     ContextEngine(QObject *p);
     virtual ~ContextEngine();
     
-    virtual const QStringList & getLangs()=0;
-    virtual QString getPrefix(const QString &key)=0;
+    virtual QString translateLinks(QString text) const =0;
+    virtual QStringList getLangs() const =0;
+    virtual QString getPrefix(const QString &key) const =0;
+    QStringList fixQuery(const QStringList &query) const;
 
     void cancel();
 

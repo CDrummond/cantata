@@ -21,45 +21,35 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef WIKIPEDIA_ENGINE_H
-#define WIKIPEDIA_ENGINE_H
+#ifndef LASTFM_ENGINE_H
+#define LASTFM_ENGINE_H
 
 #include "contextengine.h"
 #include <QStringList>
 
-class WikipediaEngine : public ContextEngine
+class LastFmEngine : public ContextEngine
 {
     Q_OBJECT
     
 public:
-    WikipediaEngine(QObject *p);
+    static const QLatin1String constLang;
+    static const QLatin1String constLinkPlaceholder;
 
-    static const QLatin1String constReadMorePlaceholder;
-    static const QLatin1String constOpenInBrowserPlaceholder;
+    LastFmEngine(QObject *p);
 
-    static void setPreferedLangs(const QStringList &l);
-    static const QStringList & getPreferedLangs() { return preferredLangs; }
-    static void setIntroOnly(bool v) { introOnly=v; }
-
+    QStringList getLangs() const;
+    virtual QString getPrefix(const QString &) const { return constLang; }
     QString translateLinks(QString text) const;
-    QStringList getLangs() const { return getPreferedLangs(); }
-    QString getPrefix(const QString &key) const { return key.split(QLatin1Char(':')).back(); }
 
 public Q_SLOTS:
     void search(const QStringList &query, Mode mode);
-    
-private:
-    void requestTitles(const QStringList &query, Mode mode, const QString &lang);
-    void getPage(const QStringList &query, Mode mode, const QString &lang);
 
 private Q_SLOTS:
-    void parseTitles();
-    void parsePage();
-
+    void parseResponse();
+    
 private:
-    static QStringList preferredLangs;
-    static bool introOnly;
-    QStringList titles;
+    QString parseArtistResponse(const QByteArray &data);
+    QString parseAlbumResponse(const QByteArray &data);
 };
 
 #endif

@@ -39,8 +39,6 @@ public:
         Album
     };
     
-    static void setPreferedLangs(const QStringList &l);
-    static const QStringList & getPreferedLangs() { return preferredLangs; }
     static ContextEngine * create(QObject *parent);
 
     ContextEngine(QObject *p);
@@ -61,7 +59,6 @@ protected:
     QNetworkReply * getReply(QObject *obj);
 
 protected:
-    static QStringList preferredLangs;
     QNetworkReply *job;
 };
 

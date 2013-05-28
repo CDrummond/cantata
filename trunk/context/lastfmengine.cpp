@@ -132,17 +132,24 @@ void LastFmEngine::parseResponse()
     if (!text.isEmpty()) {
         static const QRegExp constLicense("User-contributed text is available.*");
         text.remove(constLicense);
-        DBUG << __FUNCTION__ << "Text:" << text;
-        QString query=reply->property(constQuery).toString();
-        int split = text.indexOf('\n', 512);
-        if (-1==split) {
-            split = text.indexOf(". ", 512);
-        }
+        text.replace("\n", "<br>");
+        text=text.simplified();
+        text.replace(" <br>", "<br>");
 
-        text = text.left(split);
-        if (-1!=split) {
-            text += QLatin1String("<br><br><a href='http://www.last.fm/music/")+query+QLatin1String("/+wiki'>")+constLinkPlaceholder+QLatin1String("</a>");
+        // Remove last.fm read more link (as we add our own!!)
+        int end=text.lastIndexOf(QLatin1String("on Last.fm</a>"));
+        if (-1!=end) {
+            int start=text.lastIndexOf(QLatin1String("<a href=\"http://www.last.fm/music/"), end);
+            if (-1!=start) {
+                if (text.indexOf(QLatin1String("Read more about"), start)<end) {
+                    text=text.left(start);
+                }
+            }
         }
+        text += QLatin1String("<br><br><a href='http://www.last.fm/music/")+reply->property(constQuery).toString()+QLatin1String("/+wiki'>")+constLinkPlaceholder+QLatin1String("</a>");
+        text.replace("<br><br><br><br><br>", "<br><br>");
+        text.replace("<br><br><br><br>", "<br><br>");
+        text.replace("<br><br><br>", "<br><br>");
     }
     emit searchResult(text, text.isEmpty() ? QString() : constLang);
 }

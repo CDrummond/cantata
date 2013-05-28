@@ -24,7 +24,6 @@
 #include "lyricsettings.h"
 #include "ultimatelyricsprovider.h"
 #include "ultimatelyrics.h"
-#include "ui_lyricsettings.h"
 #include "localize.h"
 #include "config.h"
 #include "settings.h"

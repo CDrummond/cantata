@@ -102,6 +102,7 @@ int main(int argc, char *argv[])
     aboutData.addAuthor(ki18n("Armin Walland"), ki18n("QtMPC author"), QByteArray(), "http://qtmpc.lowblog.nl");
     aboutData.addCredit(ki18n("Home Theater Backdrops"), ki18n("Context view backdrops"), QByteArray(), "www.htbackdrops.com");
     aboutData.addCredit(ki18n("Wikipedia"), ki18n("Context view metadata"), QByteArray(), "www.wikipedia.org");
+    aboutData.addCredit(ki18n("Last.fm"), ki18n("Context view metadata"), QByteArray(), "www.last.fm");
     KCmdLineArgs::init(argc, argv, &aboutData);
     #ifdef TAGLIB_FOUND
     KCmdLineOptions options;

@@ -22,12 +22,13 @@
  */
 
 #include "contextengine.h"
+#include "metaengine.h"
 #include "wikipediaengine.h"
 #include <QNetworkReply>
 
 ContextEngine * ContextEngine::create(QObject *parent)
 {
-    return new WikipediaEngine(parent);
+    return new MetaEngine(parent);
 }
 
 ContextEngine::ContextEngine(QObject *p)
@@ -39,6 +40,22 @@ ContextEngine::ContextEngine(QObject *p)
 ContextEngine::~ContextEngine()
 {
     cancel();
+}
+
+QStringList ContextEngine::fixQuery(const QStringList &query) const
+{
+    QStringList fixedQuery;
+    foreach (QString q, query) {
+        if (q.contains(QLatin1String("PREVIEW: buy it at www.magnatune.com"))) {
+            q = q.remove(QLatin1String(" (PREVIEW: buy it at www.magnatune.com)"));
+            int index = q.indexOf(QLatin1Char('-'));
+            if (-1!=index) {
+                q = q.left(index - 1);
+            }
+        }
+        fixedQuery.append(q);
+    }
+    return fixedQuery;
 }
 
 void ContextEngine::cancel()

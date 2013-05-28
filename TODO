@@ -7,7 +7,6 @@
 
 - Windows port
   - CMake scripts not working
-  - Crash when using Jamendo?
 
 - Style
   - Place SpinBox and OnOffButton in style?
@@ -40,6 +39,8 @@
 - General
   - Ratings (use KRatingWidget?)
     - Not sure, would need support in cantata-dynamic
-  - mpdscribble management?
+  - mpdscribble management
+  - mixramp tag calculation
+  - mixramp MPD setting
   - Combine 'Page' classes
 

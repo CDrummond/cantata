@@ -361,7 +361,7 @@ void ArtistView::abort()
 
 void ArtistView::searchResponse(const QString &resp, const QString &lang)
 {
-    biography=resp;
+    biography=engine->translateLinks(resp);
     emit haveBio(currentSong.artist, resp);
     hideSpinner();
 

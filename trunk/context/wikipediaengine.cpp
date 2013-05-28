@@ -230,7 +230,7 @@ static QString wikiToHtml(QString answer, bool introOnly, const QUrl &url)
             if (!answer.endsWith("<br>")) {
                 answer+="<br>";
             }
-            answer+=QString("<br><a href=\"%1\">%2</a>").arg(u).arg(i18n("Read more on wikipedia"));
+            answer+=QString("<br><a href=\"%1\">%2</a>").arg(u).arg(WikipediaEngine::constReadMorePlaceholder);
         }
     } else {
         answer.replace("</h2><br>", "</h2>");
@@ -263,7 +263,7 @@ static QString wikiToHtml(QString answer, bool introOnly, const QUrl &url)
         if (!answer.endsWith("<br>")) {
             answer+="<br>";
         }
-        answer+=QString("<br><a href='%1'>%2</a>").arg(u).arg(i18n("Open in browser"));
+        answer+=QString("<br><a href='%1'>%2</a>").arg(u).arg(WikipediaEngine::constOpenInBrowserPlaceholder);
     }
 
     return answer;
@@ -276,6 +276,8 @@ static inline QString getLang(const QUrl &url)
 
 QStringList WikipediaEngine::preferredLangs;
 bool WikipediaEngine::introOnly=true;
+const QLatin1String WikipediaEngine::constReadMorePlaceholder("XXX_CONTEXT_READ_MORE_ON_WIKIPEDIA_XXX");
+const QLatin1String WikipediaEngine::constOpenInBrowserPlaceholder("XXX_CONTEXT_OPEN_IN_BROWSER_WIKIPEDIA_XXX");
 
 WikipediaEngine::WikipediaEngine(QObject *p)
     : ContextEngine(p)
@@ -294,23 +296,17 @@ void WikipediaEngine::setPreferedLangs(const QStringList &l)
     }
 }
 
+QString WikipediaEngine::translateLinks(QString text) const
+{
+    text=text.replace(constReadMorePlaceholder, i18n("Read more on wikipedia"));
+    text=text.replace(constOpenInBrowserPlaceholder, i18n("Open in browser"));
+    return text;
+}
+
 void WikipediaEngine::search(const QStringList &query, Mode mode)
 {
     titles.clear();
-
-    QStringList fixedQuery;
-    foreach (QString q, query) {
-        if (q.contains(QLatin1String("PREVIEW: buy it at www.magnatune.com"))) {
-            q = q.remove(QLatin1String(" (PREVIEW: buy it at www.magnatune.com)"));
-            int index = q.indexOf(QLatin1Char('-'));
-            if (-1!=index) {
-                q = q.left(index - 1);
-            }
-        }
-        fixedQuery.append(q);
-    }
-
-    requestTitles(fixedQuery, mode, getPrefix(preferredLangs.first()));
+    requestTitles(fixQuery(query), mode, getPrefix(preferredLangs.first()));
 }
 
 void WikipediaEngine::requestTitles(const QStringList &query, Mode mode, const QString &lang)
@@ -530,12 +526,14 @@ void WikipediaEngine::parsePage()
         job->setProperty(constRedirectsProperty, numRirects);
         job->setProperty(constModeProperty, reply->property(constModeProperty));
         job->setProperty(constQueryProperty, reply->property(constQueryProperty));
+        DBUG << __FUNCTION__ << "Redirect" << redirect.toString();
         connect(job, SIGNAL(finished()), this, SLOT(parsePage()));
         return;
     }
 
     QByteArray data=reply->readAll();
     if (QNetworkReply::NoError!=reply->error() || data.isEmpty()) {
+    DBUG << __FUNCTION__ << "Empty/error";
         emit searchResult(QString(), QString());
         return;
     }

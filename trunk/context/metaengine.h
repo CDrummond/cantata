@@ -21,45 +21,49 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef WIKIPEDIA_ENGINE_H
-#define WIKIPEDIA_ENGINE_H
+#ifndef META_ENGINE_H
+#define META_ENGINE_H
 
 #include "contextengine.h"
 #include <QStringList>
+#include <QMap>
 
-class WikipediaEngine : public ContextEngine
+class WikipediaEngine;
+class LastFmEngine;
+
+class MetaEngine : public ContextEngine
 {
     Q_OBJECT
     
+    enum Engines {
+        Wiki   = 0,
+        LastFm = 1
+    };
+
+    struct Response {
+        Response(const QString &h=QString(), const QString &l=QString()) : html(h), lang(l) { }
+        QString html;
+        QString lang;
+    };
+
 public:
-    WikipediaEngine(QObject *p);
+    MetaEngine(QObject *p);
 
-    static const QLatin1String constReadMorePlaceholder;
-    static const QLatin1String constOpenInBrowserPlaceholder;
-
-    static void setPreferedLangs(const QStringList &l);
-    static const QStringList & getPreferedLangs() { return preferredLangs; }
-    static void setIntroOnly(bool v) { introOnly=v; }
-
+    QStringList getLangs() const;
+    QString getPrefix(const QString &key) const;
     QString translateLinks(QString text) const;
-    QStringList getLangs() const { return getPreferedLangs(); }
-    QString getPrefix(const QString &key) const { return key.split(QLatin1Char(':')).back(); }
 
 public Q_SLOTS:
     void search(const QStringList &query, Mode mode);
-    
-private:
-    void requestTitles(const QStringList &query, Mode mode, const QString &lang);
-    void getPage(const QStringList &query, Mode mode, const QString &lang);
 
 private Q_SLOTS:
-    void parseTitles();
-    void parsePage();
-
+    void wikiResponse(const QString &html, const QString &lang);
+    void lastFmResponse(const QString &html, const QString &lang);
+    
 private:
-    static QStringList preferredLangs;
-    static bool introOnly;
-    QStringList titles;
+    QMap<int, Response> responses;
+    WikipediaEngine *wiki;
+    LastFmEngine *lastfm;
 };
 
 #endif

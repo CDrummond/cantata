@@ -23,6 +23,8 @@
     real gain. (URL is still shown in tooltip)
 14. Detailed tree view for playlists by default.
 15. Remove config compatibility with Cantata versions older than 0.7
+16. Make 'stop after current track' and 'stop immediately' assignable to KDE
+    global shortcuts.
 
 1.0.3
 -----

@@ -255,7 +255,7 @@ void AlbumView::updateDetails(bool preservePos)
     }
     int pos=preservePos ? text->verticalScrollBar()->value() : 0;
     if (detailsReceived&ArtistBio) {
-        text->setText(pic+details+trackList);
+        text->setText(pic+details+"<br>"+trackList);
     } else {
         text->setText(pic+trackList);
     }

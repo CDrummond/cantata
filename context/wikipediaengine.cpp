@@ -34,7 +34,9 @@
 #include <QDebug>
 
 //#define DBUG qWarning() << "WikipediaEngine"
+#ifndef DBUG
 #define DBUG qDebug()
+#endif
 
 static const char * constModeProperty="mode";
 static const char * constRedirectsProperty="redirects";
@@ -480,7 +482,12 @@ void WikipediaEngine::getPage(const QStringList &query, Mode mode, const QString
     }
 
     // TODO: If we fail to find a match, prompt user???
-    const QString title=titles.takeAt(-1==index ? 0 : index);
+    if (-1==index) {
+        DBUG << __FUNCTION__ << "Failed to find match";
+        emit searchResult(QString(), QString());
+        return;
+    }
+    const QString title=titles.takeAt(index);
 
     if (QLatin1String("List of CJK Unified Ideographs")==title) {
         DBUG << __FUNCTION__ << "Unicode list?";

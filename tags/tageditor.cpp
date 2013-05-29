@@ -122,25 +122,13 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
     setCaption(i18n("Tags"));
     progress->setVisible(false);
     if (songs.count()>1) {
-        #ifdef ENABLE_KDE_SUPPORT
-        setButtonGuiItem(User2, KStandardGuiItem::back(KStandardGuiItem::UseRTL));
-        setButtonText(User2, i18n("Previous"));
-        setButtonGuiItem(User1, KStandardGuiItem::forward(KStandardGuiItem::UseRTL));
-        setButtonText(User1, i18n("Next"));
-        #else
-        setButtonGuiItem(User2, GuiItem(i18n("Previous"), "go-previous"));
-        setButtonGuiItem(User1, GuiItem(i18n("Next"), "go-next"));
-        #endif
+        setButtonGuiItem(User2, StdGuiItem::back(true));
+        setButtonGuiItem(User1,StdGuiItem::forward(true));
         enableButton(User1, false);
         enableButton(User2, false);
     }
-    #ifdef ENABLE_KDE_SUPPORT
-    setButtonGuiItem(Ok, KStandardGuiItem::save());
+    setButtonGuiItem(Ok, StdGuiItem::save());
     setButtonGuiItem(User3, GuiItem(i18n("Tools"), "tools-wizard"));
-    #else
-    setButtonGuiItem(Ok, GuiItem(i18n("Save"), "document-save"));
-    setButtonGuiItem(User3, GuiItem(i18n("Tools"), "tools-wizard"));
-    #endif
     QMenu *toolsMenu=new QMenu(this);
     toolsMenu->addAction(i18n("Apply \"Various Artists\" Workaround"), this, SLOT(applyVa()));
     toolsMenu->addAction(i18n("Revert \"Various Artists\" Workaround"), this, SLOT(revertVa()));
@@ -330,7 +318,8 @@ void TagEditor::applyVa()
                                                            QLatin1String("<br/><hr/><br/>")+
                                                            i18n("<i>This will set 'Album artist' and 'Artist' to "
                                                                 "\"Various Artists\", and set 'Title' to "
-                                                                "\"TrackArtist - TrackTitle\"</i>"))) {
+                                                                "\"TrackArtist - TrackTitle\"</i>"), i18n("Apply \"Various Artists\" Workaround"),
+                                                  StdGuiItem::apply(), StdGuiItem::cancel())) {
         return;
     }
 
@@ -374,7 +363,8 @@ void TagEditor::revertVa()
                                                                 "'Artist' will be taken from 'Title' and 'Title' itself will be "
                                                                 "set to just the title. e.g. <br/><br/>"
                                                                 "If 'Title' is \"Wibble - Wobble\", then 'Artist' will be set to "
-                                                                "\"Wibble\" and 'Title' will be set to \"Wobble\"</i>"))) {
+                                                                "\"Wibble\" and 'Title' will be set to \"Wobble\"</i>"), i18n("Revert \"Various Artists\" Workaround"),
+                                                  GuiItem(i18n("Revert")), StdGuiItem::cancel())) {
         return;
     }
 
@@ -416,7 +406,8 @@ void TagEditor::setAlbumArtistFromArtist()
     bool isAll=0==currentSongIndex && original.count()>1;
 
     if (MessageBox::No==MessageBox::questionYesNo(this, isAll ? i18n("Set 'Album Artist' from 'Artist' (if 'Album Artist' is empty) for <b>all</b> tracks?")
-                                                              : i18n("Set 'Album Artist' from 'Artist' (if 'Album Artist' is empty)?"))) {
+                                                              : i18n("Set 'Album Artist' from 'Artist' (if 'Album Artist' is empty)?"),
+                                                  i18n("Album Artist from Artist"), StdGuiItem::apply(), StdGuiItem::cancel())) {
         return;
     }
 
@@ -452,7 +443,8 @@ void TagEditor::capitalise()
     if (MessageBox::No==MessageBox::questionYesNo(this, isAll ? i18n("Capitalize the first letter of 'Title', 'Artist', 'Album artist', and "
                                                                      "'Album' of <b>all</b> tracks?")
                                                               : i18n("Capitalize the first letter of 'Title', 'Artist', 'Album artist', and "
-                                                                     "'Album'"))) {
+                                                                     "'Album'"),
+                                                  i18n("Capitalize"), GuiItem(i18n("Capitalize")), StdGuiItem::cancel())) {
         return;
     }
 
@@ -754,7 +746,8 @@ void TagEditor::applyUpdates()
         }
 
         if (renameFiles &&
-            MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Would you also like to rename your song files, so as to match your tags?"), i18n("Rename Files?"))) {
+            MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Would you also like to rename your song files, so as to match your tags?"),
+                                                       i18n("Rename Files"), GuiItem(i18n("Rename")), StdGuiItem::cancel())) {
             TrackOrganiser *dlg=new TrackOrganiser(parentWidget());
             dlg->show(updatedSongs, udi);
         }

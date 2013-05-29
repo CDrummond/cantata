@@ -174,7 +174,8 @@ void ServerSettings::saveAs()
         }
 
         if (found && idx!=currentIndex) {
-            switch (MessageBox::warningYesNoCancel(this, i18n("A setting named %1 already exists!\nOverwrite?").arg(name))) {
+            switch (MessageBox::warningYesNoCancel(this, i18n("A setting named %1 already exists!\nOverwrite?").arg(name),
+                                                   i18n("Overwrite"), StdGuiItem::overwrite())) {
             case MessageBox::No:
                 continue;
             case MessageBox::Cancel:
@@ -212,7 +213,8 @@ void ServerSettings::remove()
 {
     int index=combo->currentIndex();
     QString name=combo->itemData(index).toString();
-    if (combo->count()>1 && MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Delete %1?").arg(name))) {
+    if (combo->count()>1 && MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Delete %1?").arg(name),
+                                                                       i18n("Delete"), StdGuiItem::del(), StdGuiItem::cancel())) {
         bool isLast=index==(combo->count()-1);
         Settings::self()->removeConnectionDetails(combo->itemData(index).toString());
         combo->removeItem(index);

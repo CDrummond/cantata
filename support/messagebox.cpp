@@ -26,6 +26,7 @@
 #include "dialog.h"
 #include "localize.h"
 #include "config.h"
+#include "gtkstyle.h"
 #include <QGridLayout>
 #include <QLabel>
 #include <QListWidget>
@@ -62,14 +63,14 @@ MessageBox::ButtonCode MessageBox::questionYesNoCancel(QWidget *parent, const QS
         if (!yesText.text.isEmpty()) {
             QAbstractButton *btn=box.button(QMessageBox::Yes);
             btn->setText(yesText.text);
-            if (!yesText.icon.isEmpty()) {
+            if (!yesText.icon.isEmpty() && !GtkStyle::isActive()) {
                 btn->setIcon(Icon(yesText.icon));
             }
         }
         if (!noText.text.isEmpty()) {
             QAbstractButton *btn=box.button(QMessageBox::No);
             btn->setText(noText.text);
-            if (!noText.icon.isEmpty()) {
+            if (!noText.icon.isEmpty() && !GtkStyle::isActive()) {
                 btn->setIcon(Icon(noText.icon));
             }
         }

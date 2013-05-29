@@ -320,7 +320,7 @@ bool DynamicRulesDialog::save()
 
     if (name!=origName && Dynamic::self()->exists(name) &&
         MessageBox::No==MessageBox::warningYesNo(this, i18n("A set of rules named \'%1\' already exists!\nOverwrite?").arg(name),
-                                                     i18n("Already Exists"))) {
+                                                  i18n("Overwrite Rules"), StdGuiItem::overwrite(), StdGuiItem::cancel())) {
         return false;
     }
 

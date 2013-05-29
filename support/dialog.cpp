@@ -78,10 +78,31 @@ void Dialog::resize(const QSize &sz)
 
 #else
 #include "icon.h"
+#include "gtkstyle.h"
 #include <QDialogButtonBox>
 #include <QPushButton>
 #include <QBoxLayout>
 #include <QSettings>
+
+namespace StdGuiItem {
+GuiItem ok() { return GuiItem(i18n("Ok"), "dialog-ok"); }
+GuiItem cancel() { return GuiItem(i18n("Cancel"), "dialog-cancel"); }
+GuiItem yes() { return GuiItem(i18n("Yes"), "dialog-ok"); }
+GuiItem no() { return GuiItem(i18n("No"), "process-stop"); }
+GuiItem discard() { return GuiItem(i18n("Discard"), "edit-clear"); }
+GuiItem save() { return GuiItem(i18n("Save"), "document-save"); }
+GuiItem apply() { return GuiItem(i18n("Apply"), "dialog-ok-apply"); }
+GuiItem close() { return GuiItem(i18n("Close"), "window-close"); }
+GuiItem help() { return GuiItem(i18n("Help"), "help-contents"); }
+GuiItem overwrite() { return GuiItem(i18n("Overwrite")); }
+GuiItem reset() { return GuiItem(i18n("Reset"), "edit-undo"); }
+GuiItem cont() { return GuiItem(i18n("Continue"), "arrow-right"); }
+GuiItem del() { return GuiItem(i18n("Delete"), "edit-delete"); }
+GuiItem stop() { return GuiItem(i18n("Stop"), "process-stop"); }
+GuiItem remove() { return   GuiItem(i18n("Remove"), "list-remove"); }
+GuiItem back(bool useRtl) { return GuiItem(i18n("Previous"), useRtl && Qt::RightToLeft==QApplication::layoutDirection() ? "go-next" : "go-previous"); }
+GuiItem forward(bool useRtl) { return GuiItem(i18n("Next"), useRtl && Qt::RightToLeft==QApplication::layoutDirection() ? "go-previous" : "go-next"); }
+};
 
 static QDialogButtonBox::StandardButton mapType(int btn) {
     switch (btn) {
@@ -176,6 +197,31 @@ void Dialog::setButtons(ButtonCodes buttons)
         buttonBox = new QDialogButtonBox(btns, Qt::Horizontal, this);
     }
 
+    if (buttons&Help) {
+        setButtonGuiItem(QDialogButtonBox::Help, StdGuiItem::help());
+    }
+    if (buttons&Ok) {
+        setButtonGuiItem(QDialogButtonBox::Ok, StdGuiItem::ok());
+    }
+    if (buttons&Apply) {
+        setButtonGuiItem(QDialogButtonBox::Apply, StdGuiItem::apply());
+    }
+    if (buttons&Cancel) {
+        setButtonGuiItem(QDialogButtonBox::Cancel, StdGuiItem::cancel());
+    }
+    if (buttons&Close) {
+        setButtonGuiItem(QDialogButtonBox::Close, StdGuiItem::close());
+    }
+    if (buttons&No) {
+        setButtonGuiItem(QDialogButtonBox::No, StdGuiItem::no());
+    }
+    if (buttons&Yes) {
+        setButtonGuiItem(QDialogButtonBox::Yes, StdGuiItem::yes());
+    }
+    if (buttons&Reset) {
+        setButtonGuiItem(QDialogButtonBox::Reset, StdGuiItem::reset());
+    }
+
     if (buttons&User3) {
         QPushButton *button=new QPushButton(buttonBox);
         userButtons.insert(User3, button);
@@ -210,7 +256,18 @@ void Dialog::setButtonGuiItem(ButtonCode button, const GuiItem &item)
     QAbstractButton *b=getButton(button);
     if (b) {
         b->setText(item.text);
-        if (!item.icon.isEmpty()) {
+        if (!item.icon.isEmpty() && !GtkStyle::isActive()) {
+            b->setIcon(Icon(item.icon));
+        }
+    }
+}
+
+void Dialog::setButtonGuiItem(QDialogButtonBox::StandardButton button, const GuiItem &item)
+{
+    QAbstractButton *b=buttonBox->button(button);
+    if (b) {
+        b->setText(item.text);
+        if (!item.icon.isEmpty() && !GtkStyle::isActive()) {
             b->setIcon(Icon(item.icon));
         }
     }

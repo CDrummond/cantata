@@ -379,7 +379,7 @@ void StreamsPage::removeItems()
         message=i18n("Are you sure you wish to remove the <b>%1</b> category (and its streams)?").arg(firstName);
     }
 
-    if (MessageBox::No==MessageBox::warningYesNo(this, message, i18n("Remove?"))) {
+    if (MessageBox::No==MessageBox::warningYesNo(this, message, i18n("Remove"), StdGuiItem::remove(), StdGuiItem::cancel())) {
         return;
     }
 
@@ -544,11 +544,12 @@ void StreamsPage::importWebStreams()
 
     if (getCategories().contains(ws->getName())) {
         if (MessageBox::No==MessageBox::warningYesNo(this, i18n("Update streams from %1?\n(This will replace any existing streams in this category)").arg(ws->getName()),
-                                                     i18n("Update %1").arg(ws->getName()))) {
+                                                     i18n("Update %1").arg(ws->getName()), GuiItem(i18n("Update")), StdGuiItem::cancel())) {
             return;
         }
     } else {
-        if (MessageBox::No==MessageBox::questionYesNo(this, i18n("Download streams from %1?").arg(ws->getName()), i18n("Download %1").arg(ws->getName()))) {
+        if (MessageBox::No==MessageBox::questionYesNo(this, i18n("Download streams from %1?").arg(ws->getName()), i18n("Download %1").arg(ws->getName()),
+                                                      GuiItem(i18n("Download")), StdGuiItem::cancel())) {
             return;
         }
     }

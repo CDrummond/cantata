@@ -428,7 +428,8 @@ void DevicesPage::refreshDevice()
                 return;
             }
             #else
-            if (MessageBox::No==MessageBox::questionYesNo(this, i18n("Lookup album and track details?"), i18n("Refresh"))) {
+            if (MessageBox::No==MessageBox::questionYesNo(this, i18n("Lookup album and track details?"),
+                                                          i18n("Refresh"), GuiItem(i18n("Refresh")), StdGuiItem::cancel())) {
                 return;
             }
             #endif
@@ -485,7 +486,8 @@ void DevicesPage::deleteSongs()
     QList<Song> songs=DevicesModel::self()->songs(mapped);
 
     if (!songs.isEmpty()) {
-        if (MessageBox::Yes==MessageBox::warningYesNo(this, i18n("Are you sure you wish to remove the selected songs?\nThis cannot be undone."))) {
+        if (MessageBox::Yes==MessageBox::warningYesNo(this, i18n("Are you sure you wish to delete the selected songs?\nThis cannot be undone."),
+                                                      i18n("Delete Songs"), StdGuiItem::del(), StdGuiItem::cancel())) {
             emit deleteSongs(udi, songs);
         }
         view->clearSelection();
@@ -529,10 +531,11 @@ void DevicesPage::toggleDevice()
     if (MusicLibraryItem::Type_Root==item->itemType()) {
         Device *dev=static_cast<Device *>(item);
         if (dev->isConnected() &&
-            MessageBox::No==MessageBox::warningYesNo(this,
-                                                     Device::AudioCd==dev->devType()
-                                                        ? i18n("Are you sure you wish to eject Audio CD '%1 - %2'?").arg(dev->data()).arg(dev->subText())
-                                                        : i18n("Are you sure you wish to disconnect '%1'?").arg(dev->data()))) {
+            (Device::AudioCd==dev->devType()
+                ? MessageBox::No==MessageBox::warningYesNo(this, i18n("Are you sure you wish to eject Audio CD '%1 - %2'?").arg(dev->data()).arg(dev->subText()),
+                                                           i18n("Eject"), GuiItem(i18n("Eject")), StdGuiItem::cancel())
+                : MessageBox::No==MessageBox::warningYesNo(this, i18n("Are you sure you wish to disconnect '%1'?").arg(dev->data()),
+                                                           i18n("Disconnect"), GuiItem(i18n("Disconnect")), StdGuiItem::cancel()))) {
             return;
         }
         static_cast<Device *>(item)->toggle();

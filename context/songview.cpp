@@ -101,9 +101,11 @@ void SongView::update()
 {
     QString mpdName=mpdFileName();
     bool mpdExists=!mpdName.isEmpty() && QFile::exists(mpdName);
-    if (Mode_Edit==mode && MessageBox::No==MessageBox::warningYesNo(this, i18n("Abort editing of lyrics?"))) {
+    if (Mode_Edit==mode && MessageBox::No==MessageBox::warningYesNo(this, i18n("Abort editing of lyrics?"), i18n("Abort Editing"),
+                                                                    GuiItem(i18n("Abort")), StdGuiItem::cont())) {
         return;
-    } else if(mpdExists && MessageBox::No==MessageBox::warningYesNo(this, i18n("Delete saved copy of lyrics, and re-download?"))) {
+    } else if (mpdExists && MessageBox::No==MessageBox::warningYesNo(this, i18n("Delete saved copy of lyrics, and re-download?"), i18n("Re-download"),
+                                                                     GuiItem(i18n("Re-download")), StdGuiItem::cancel())) {
         return;
     }
     if (mpdExists) {
@@ -118,7 +120,8 @@ void SongView::update()
 
 void SongView::search()
 {
-    if (Mode_Edit==mode && MessageBox::No==MessageBox::warningYesNo(this, i18n("Abort editing of lyrics?"))) {
+    if (Mode_Edit==mode && MessageBox::No==MessageBox::warningYesNo(this, i18n("Abort editing of lyrics?"), i18n("Abort Editing"),
+                                                                    GuiItem(i18n("Abort")), StdGuiItem::cont())) {
         return;
     }
     setMode(Mode_Display);
@@ -127,7 +130,8 @@ void SongView::search()
     LyricsDialog dlg(currentSong, this);
     if (QDialog::Accepted==dlg.exec()) {
         if ((song.artist!=currentSong.artist || song.title!=currentSong.title) &&
-                MessageBox::No==MessageBox::warningYesNo(this, i18n("Current playing song has changed, still perform search?"))) {
+                MessageBox::No==MessageBox::warningYesNo(this, i18n("Current playing song has changed, still perform search?"), i18n("Song Changed"),
+                                                         GuiItem(i18n("Perform Search")), StdGuiItem::cancel())) {
             return;
         }
         QString mpdName=mpdFileName();
@@ -151,7 +155,8 @@ void SongView::edit()
 void SongView::save()
 {
     if (preEdit!=text->toPlainText()) {
-        if (MessageBox::No==MessageBox::warningYesNo(this, i18n("Save updated lyrics?"))) {
+        if (MessageBox::No==MessageBox::warningYesNo(this, i18n("Save updated lyrics?"), i18n("Save"),
+                                                     StdGuiItem::save(), StdGuiItem::discard())) {
             return;
         }
 
@@ -174,7 +179,8 @@ void SongView::save()
 void SongView::cancel()
 {
     if (preEdit!=text->toPlainText()) {
-        if (MessageBox::No==MessageBox::warningYesNo(this, i18n("Abort editing of lyrics?"))) {
+        if (MessageBox::No==MessageBox::warningYesNo(this, i18n("Abort editing of lyrics?"), i18n("Abort Editing"),
+                                                     GuiItem(i18n("Abort")), StdGuiItem::cont())) {
             return;
         }
     }
@@ -184,7 +190,8 @@ void SongView::cancel()
 
 void SongView::del()
 {
-    if (MessageBox::No==MessageBox::warningYesNo(this, i18n("Delete lyrics file?"))) {
+    if (MessageBox::No==MessageBox::warningYesNo(this, i18n("Delete lyrics file?"), i18n("Cancel"),
+                                                 StdGuiItem::del(), StdGuiItem::discard())) {
         return;
     }
 

@@ -229,7 +229,8 @@ void AlbumDetailsDialog::applyVa()
                                                         QLatin1String("<br/><hr/><br/>")+
                                                         i18n("<i>This will set 'Album artist' and 'Artist' to "
                                                              "\"Various Artists\", and set 'Title' to "
-                                                             "\"TrackArtist - TrackTitle\"</i>"))) {
+                                                             "\"TrackArtist - TrackTitle\"</i>"), i18n("Apply \"Various Artists\" Workaround"),
+                                                  StdGuiItem::apply(), StdGuiItem::cancel())) {
         return;
     }
 
@@ -252,7 +253,8 @@ void AlbumDetailsDialog::revertVa()
                                                              "'Artist' will be taken from 'Title' and 'Title' itself will be "
                                                              "set to just the title. e.g. <br/><br/>"
                                                              "If 'Title' is \"Wibble - Wobble\", then 'Artist' will be set to "
-                                                             "\"Wibble\" and 'Title' will be set to \"Wobble\"</i>"))) {
+                                                             "\"Wibble\" and 'Title' will be set to \"Wobble\"</i>"), i18n("Revert \"Various Artists\" Workaround"),
+                                                  GuiItem(i18n("Revert")), StdGuiItem::cancel())) {
         return;
     }
 
@@ -268,7 +270,8 @@ void AlbumDetailsDialog::revertVa()
 
 void AlbumDetailsDialog::capitalise()
 {
-    if (MessageBox::No==MessageBox::questionYesNo(this, i18n("Capitalize the first letter of 'Title', 'Artist', 'Album artist', and 'Album'"))) {
+    if (MessageBox::No==MessageBox::questionYesNo(this, i18n("Capitalize the first letter of 'Title', 'Artist', 'Album artist', and 'Album'"),
+                                                  i18n("Capitalize"), GuiItem(i18n("Capitalize")), StdGuiItem::cancel())) {
         return;
     }
 

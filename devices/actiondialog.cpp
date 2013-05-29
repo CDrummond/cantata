@@ -292,10 +292,12 @@ void ActionDialog::slotButtonClicked(int button)
             if (haveVariousArtists &&
                 ((configureDestLabel->isVisible() && sourceUdi.isEmpty() && // Only warn if copying FROM library
                   MessageBox::No==MessageBox::warningYesNo(this, i18n("<p>You have not configured the destination device.<br/>"
-                                                                      "Continue with the default settings?</p>"))) ||
+                                                                      "Continue with the default settings?</p>"), i18n("Not Configured"),
+                                                           GuiItem(i18n("Use Defaults")), StdGuiItem::cancel())) ||
                  (configureSourceLabel->isVisible() && !sourceUdi.isEmpty() && // Only warn if copying TO library
                   MessageBox::No==MessageBox::warningYesNo(this, i18n("<p>You have not configured the source device.<br/>"
-                                                                      "Continue with the default settings?</p>"))))) {
+                                                                      "Continue with the default settings?</p>"), i18n("Not Configured"),
+                                                           GuiItem(i18n("Use Defaults")), StdGuiItem::cancel())) ) ) {
                 return;
             }
             Settings::self()->saveOverwriteSongs(overwrite->isChecked());
@@ -354,7 +356,8 @@ void ActionDialog::slotButtonClicked(int button)
         break;
     case PAGE_PROGRESS:
         paused=true;
-        if (MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Are you sure you wish to cancel?"))) {
+        if (MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Are you sure you wish to stop?"), i18n("Stop"),
+                                                       StdGuiItem::stop(), StdGuiItem::cont())) {
             Device *dev=0;
             if(Copy==mode) {
                 dev=getDevice(sourceUdi.isEmpty() ? destUdi : sourceUdi, false);
@@ -486,7 +489,8 @@ void ActionDialog::doNext()
             #ifdef ENABLE_REPLAYGAIN_SUPPORT
             if (Copy==mode && !albumsWithoutRgTags.isEmpty() && sourceIsAudioCd) {
                 QWidget *pw=parentWidget();
-                if (MessageBox::Yes==MessageBox::questionYesNo(pw, i18n("Calculate ReplayGain for ripped tracks?"))) {
+                if (MessageBox::Yes==MessageBox::questionYesNo(pw, i18n("Calculate ReplayGain for ripped tracks?"), i18n("ReplyGain"),
+                                                               GuiItem(i18n("Calculate")), StdGuiItem::no())) {
                     RgDialog *dlg=new RgDialog(pw);
                     QList<Song> songs;
 

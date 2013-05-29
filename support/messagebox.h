@@ -42,15 +42,15 @@ namespace MessageBox {
     };
 
     extern ButtonCode questionYesNoCancel(QWidget *parent, const QString &message, const QString &title=QString(),
-                               const GuiItem &yesText=GuiItem(), const GuiItem &noText=GuiItem(), bool showCancel=true, bool isWarning=false);
-    inline ButtonCode questionYesNo(QWidget *parent, const QString &message, const QString &title=QString(), const GuiItem &yesText=GuiItem(), const GuiItem &noText=GuiItem()) {
+                                          const GuiItem &yesText=StdGuiItem::yes(), const GuiItem &noText=StdGuiItem::no(), bool showCancel=true, bool isWarning=false);
+    inline ButtonCode questionYesNo(QWidget *parent, const QString &message, const QString &title=QString(), const GuiItem &yesText=StdGuiItem::yes(), const GuiItem &noText=StdGuiItem::no()) {
         return questionYesNoCancel(parent, message, title, yesText, noText, false);
     }
     inline ButtonCode warningYesNoCancel(QWidget *parent, const QString &message, const QString &title=QString(),
-                               const GuiItem &yesText=GuiItem(), const GuiItem &noText=GuiItem()) {
+                               const GuiItem &yesText=StdGuiItem::yes(), const GuiItem &noText=StdGuiItem::no()) {
         return questionYesNoCancel(parent, message, title, yesText, noText, true, true);
     }
-    inline ButtonCode warningYesNo(QWidget *parent, const QString &message, const QString &title=QString(), const GuiItem &yesText=GuiItem(), const GuiItem &noText=GuiItem()) {
+    inline ButtonCode warningYesNo(QWidget *parent, const QString &message, const QString &title=QString(), const GuiItem &yesText=StdGuiItem::yes(), const GuiItem &noText=StdGuiItem::no()) {
         return questionYesNoCancel(parent, message, title, yesText, noText, false, true);
     }
     inline void error(QWidget *parent, const QString &message, const QString &title=QString()) {

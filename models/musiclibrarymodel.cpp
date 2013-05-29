@@ -783,21 +783,54 @@ bool MusicLibraryModel::update(const QSet<Song> &songs)
         addSongToList(s);
     }
 
-    if (checkable) {
+    if (updatedSongs && checkable) {
+        QSet<Song> chkdSongs;
         foreach (MusicLibraryItem *artist, rootItem->childItems()) {
             MusicLibraryItemArtist *artistItem=static_cast<MusicLibraryItemArtist *>(artist);
-            QModelIndex artistIndex=index(rootItem->childItems().indexOf(artistItem), 0, QModelIndex());
+            QModelIndex artistIndex;
+            int numCheckedAlbums=0;
+            int numUnCheckedAlbums=0;
+            int numPartialAlbums=0;
 
             foreach (MusicLibraryItem *album, artistItem->childItems()) {
                 MusicLibraryItemAlbum *albumItem=static_cast<MusicLibraryItemAlbum *>(album);
-                QModelIndex albumIndex=index(artistItem->childItems().indexOf(albumItem), 0, artistIndex);
-
+                int numCheckedSongs=0;
+                int numUnCheckedSongs=0;
                 foreach (MusicLibraryItem *song, albumItem->childItems()) {
-                    setParentState(albumIndex, Qt::Unchecked!=song->checkState(), albumItem, song);
+                    if (Qt::Unchecked==song->checkState()) {
+                        numUnCheckedSongs++;
+                    } else {
+                        chkdSongs.insert(static_cast<MusicLibraryItemSong *>(song)->song());
+                        numCheckedSongs++;
+                    }
                 }
-                setParentState(artistIndex, Qt::Unchecked!=albumItem->checkState(), artistItem, albumItem);
+                Qt::CheckState albumState=numCheckedAlbums && numUnCheckedAlbums ? Qt::PartiallyChecked : numCheckedAlbums ? Qt::Checked : Qt::Unchecked;
+                if (albumState!=albumItem->checkState()) {
+                    albumItem->setCheckState(albumState);
+                    if (!artistIndex.isValid()) {
+                        artistIndex=index(rootItem->childItems().indexOf(artistItem), 0, QModelIndex());
+                    }
+                    QModelIndex albumIndex=index(artistItem->childItems().indexOf(albumItem), 0, artistIndex);
+                    emit dataChanged(albumIndex, albumIndex);
+                }
+
+                switch (albumState) {
+                case Qt::PartiallyChecked: numPartialAlbums++;   break;
+                case Qt::Checked:          numCheckedAlbums++;   break;
+                case Qt::Unchecked:        numUnCheckedAlbums++; break;
+                }
+            }
+
+            Qt::CheckState artistState=numPartialAlbums ? Qt::PartiallyChecked : numCheckedAlbums ? Qt::Checked : Qt::Unchecked;
+            if (artistState!=artistItem->checkState()) {
+                artistItem->setCheckState(artistState);
+                if (!artistIndex.isValid()) {
+                    artistIndex=index(rootItem->childItems().indexOf(artistItem), 0, QModelIndex());
+                }
+                emit dataChanged(artistIndex, artistIndex);
             }
         }
+        emit checkedSongs(chkdSongs);
     }
 
     return updatedSongs;

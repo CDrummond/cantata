@@ -50,6 +50,7 @@ SyncCollectionWidget::SyncCollectionWidget(QWidget *parent, const QString &title
     search->setText(QString());
     search->setPlaceholderText(i18n("Search"));
     connect(proxy, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(dataChanged(QModelIndex,QModelIndex)));
+    connect(model, SIGNAL(checkedSongs(QSet<Song>)), this, SLOT(songsChecked(QSet<Song>)));
     connect(button, SIGNAL(clicked()), SLOT(copySongs()));
     connect(search, SIGNAL(returnPressed()), this, SLOT(delaySearchItems()));
     connect(search, SIGNAL(textChanged(const QString)), this, SLOT(delaySearchItems()));
@@ -122,6 +123,12 @@ void SyncCollectionWidget::collapseAll()
     if (f && qobject_cast<QTreeView *>(f)) {
         static_cast<QTreeView *>(f)->collapseAll();
     }
+}
+
+void SyncCollectionWidget::songsChecked(const QSet<Song> &songs)
+{
+    checkedSongs=songs;
+    button->setEnabled(!checkedSongs.isEmpty());
 }
 
 void SyncCollectionWidget::dataChanged(const QModelIndex &tl, const QModelIndex &br)

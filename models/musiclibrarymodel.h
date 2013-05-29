@@ -105,6 +105,7 @@ public Q_SLOTS:
 Q_SIGNALS:
 //     void updated(const MusicLibraryItemRoot *root);
     void updateGenres(const QSet<QString> &genres);
+    void checkedSongs(const QSet<Song> &songs);
 
 private:
     void setCover(const Song &song, const QImage &img, const QString &file, bool update);

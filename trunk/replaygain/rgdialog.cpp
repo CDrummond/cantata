@@ -151,8 +151,8 @@ RgDialog::RgDialog(QWidget *parent)
     setButtonGuiItem(Ok, KStandardGuiItem::save());
     setButtonGuiItem(Cancel, KStandardGuiItem::close());
     #else
-    setButtonGuiItem(Ok, GuiItem(i18n("Save"), "document-save"));
-    setButtonGuiItem(Cancel, GuiItem(i18n("Close"), "dialog-close"));
+    setButtonGuiItem(Ok, StdGuiItem::save());
+    setButtonGuiItem(Cancel, StdGuiItem::close());
     #endif
     setButtonGuiItem(User1, GuiItem(i18n("Scan"), "edit-find"));
     enableButton(Ok, false);
@@ -213,7 +213,8 @@ void RgDialog::slotButtonClicked(int button)
 
     switch (button) {
     case Ok:
-        if (MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Update ReplayGain tags in files?"))) {
+        if (MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Update ReplayGain tags in files?"), i18n("Update Tags"),
+                                                       GuiItem(i18n("Update Tags")), StdGuiItem::cancel())) {
             saveTags();
             stopScanning();
             accept();
@@ -225,7 +226,8 @@ void RgDialog::slotButtonClicked(int button)
     case Cancel:
         switch (state) {
         case State_ScanningFiles:
-            if (MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Cancel scanning of files?"))) {
+            if (MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Abort scanning of files?"), i18n("Abort"),
+                                                           GuiItem(i18n("Abort")), StdGuiItem::no())) {
                 stopScanning();
                 // Need to call this - if not, when dialog is closed by window X control, it is not deleted!!!!
                 Dialog::slotButtonClicked(button);
@@ -233,7 +235,8 @@ void RgDialog::slotButtonClicked(int button)
             }
             break;
         case State_ScanningTags:
-            if (MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Cancel reading of existing tags?"))) {
+            if (MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Abort reading of existing tags?"), i18n("Abort"),
+                                                           GuiItem(i18n("Abort")), StdGuiItem::no())) {
                 stopReadingTags();
                 // Need to call this - if not, when dialog is closed by window X control, it is not deleted!!!!
                 Dialog::slotButtonClicked(button);
@@ -265,7 +268,7 @@ void RgDialog::startScanning()
     #ifdef ENABLE_KDE_SUPPORT
     setButtonGuiItem(Cancel, KStandardGuiItem::cancel());
     #else
-    setButtonGuiItem(Cancel, GuiItem(i18n("Cancel"), "dialog-cancel"));
+    setButtonGuiItem(Cancel, StdGuiItem::cancel());
     #endif
     state=State_ScanningFiles;
     enableButton(Ok, false);
@@ -300,7 +303,7 @@ void RgDialog::stopScanning()
     #ifdef ENABLE_KDE_SUPPORT
     setButtonGuiItem(Cancel, KStandardGuiItem::cancel());
     #else
-    setButtonGuiItem(Cancel, GuiItem(i18n("Close"), "dialog-close"));
+    setButtonGuiItem(Cancel, StdGuiItem::close());
     #endif
 }
 
@@ -341,7 +344,7 @@ void RgDialog::startReadingTags()
     #ifdef ENABLE_KDE_SUPPORT
     setButtonGuiItem(Cancel, KStandardGuiItem::cancel());
     #else
-    setButtonGuiItem(Cancel, GuiItem(i18n("Cancel"), "dialog-cancel"));
+    setButtonGuiItem(Cancel, StdGuiItem::cancel());
     #endif
     state=State_ScanningTags;
     enableButton(Ok, false);
@@ -444,7 +447,7 @@ void RgDialog::updateView()
         #ifdef ENABLE_KDE_SUPPORT
         setButtonGuiItem(Cancel, KStandardGuiItem::close());
         #else
-        setButtonGuiItem(Cancel, GuiItem(i18n("Close"), "dialog-close"));
+        setButtonGuiItem(Cancel, StdGuiItem::close());
         #endif
 
         enableButton(Ok, needToSave.count());

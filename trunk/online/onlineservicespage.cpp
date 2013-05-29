@@ -303,7 +303,8 @@ void OnlineServicesPage::refreshService()
         OnlineService *srv=static_cast<OnlineService *>(item);
 
         if (srv->isLoaded() && srv->childCount()>0 &&
-            MessageBox::No==MessageBox::questionYesNo(this, i18n("Re-download music listing for %1?").arg(srv->name()))) {
+                MessageBox::No==MessageBox::questionYesNo(this, i18n("Re-download music listing for %1?").arg(srv->name()), i18n("Re-download"),
+                                                          GuiItem(i18n("Re-download")), StdGuiItem::cancel())) {
             return;
         }
         if (srv) {
@@ -323,7 +324,8 @@ void OnlineServicesPage::removeService()
     MusicLibraryItem *item=static_cast<MusicLibraryItem *>(proxy.mapToSource(selected.first()).internalPointer());
 
     if (MusicLibraryItem::Type_Root==item->itemType()) {
-        if (MessageBox::No==MessageBox::warningYesNo(this, i18n("Are you sure you wish to remove '%1'?").arg(item->data()))) {
+        if (MessageBox::No==MessageBox::warningYesNo(this, i18n("Are you sure you wish to remove '%1'?").arg(item->data()), i18n("Remove Service"),
+                                                     GuiItem(i18n("Remove Service")), StdGuiItem::cancel())) {
             return;
         }
         OnlineServicesModel::self()->removeService(item->data());
@@ -345,7 +347,8 @@ void OnlineServicesPage::toggleService()
 
     if (MusicLibraryItem::Type_Root==item->itemType()) {
         if (static_cast<OnlineService *>(item)->isLoaded() &&
-            MessageBox::No==MessageBox::warningYesNo(this, i18n("Are you sure you wish to unload '%1'?").arg(item->data()))) {
+            MessageBox::No==MessageBox::warningYesNo(this, i18n("Are you sure you wish to unload '%1'?").arg(item->data()), i18n("Unload Service"),
+                                                     GuiItem(i18n("Unload Service")), StdGuiItem::cancel())) {
             return;
         }
         static_cast<OnlineService *>(item)->toggle();

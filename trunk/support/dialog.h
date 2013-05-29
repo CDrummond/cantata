@@ -28,6 +28,7 @@
 
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KDialog>
+#include <KDE/KStandardGuiItem>
 struct Dialog : public KDialog {
     Dialog(QWidget *parent, const QString &name=QString(), const QSize &defSize=QSize());
     virtual ~Dialog();
@@ -43,10 +44,32 @@ private:
     QSize cfgSize;
 };
 typedef KGuiItem GuiItem;
+namespace StdGuiItem {
+    inline KGuiItem ok() { return KStandardGuiItem::ok(); }
+    inline KGuiItem cancel() { return KStandardGuiItem::cancel(); }
+    inline KGuiItem yes() { return KStandardGuiItem::yes(); }
+    inline KGuiItem no() { return KStandardGuiItem::no(); }
+    inline KGuiItem discard() { return KStandardGuiItem::discard(); }
+    inline KGuiItem save() { return KStandardGuiItem::save(); }
+    inline KGuiItem apply() { return KStandardGuiItem::apply(); }
+    inline KGuiItem close() { return KStandardGuiItem::close(); }
+    inline KGuiItem help() { return KStandardGuiItem::help(); }
+    inline KGuiItem overwrite() { return KStandardGuiItem::overwrite(); }
+    inline KGuiItem reset() { return KStandardGuiItem::reset(); }
+    inline KGuiItem cont() { return KStandardGuiItem::cont(); }
+    inline KGuiItem del() { return KStandardGuiItem::del(); }
+    inline KGuiItem stop() { return KStandardGuiItem::stop(); }
+    inline KGuiItem remove() { return KStandardGuiItem::remove(); }
+    inline KGuiItem back(bool useRtl=false) { return KStandardGuiItem::back(useRtl ? KStandardGuiItem::UseRTL : KStandardGuiItem::IgnoreRTL); }
+    inline KGuiItem forward(bool useRtl=false) { return KStandardGuiItem::forward(useRtl ? KStandardGuiItem::UseRTL : KStandardGuiItem::IgnoreRTL); }
+};
+
 #else
 #include <QDialog>
+#include <QDialogButtonBox>
 #include <QMap>
-#include <QDebug>
+#include <QApplication>
+#include "localize.h"
 
 struct GuiItem {
     GuiItem(const QString &t=QString(), const QString &i=QString())
@@ -55,8 +78,28 @@ struct GuiItem {
     QString text;
     QString icon;
 };
+
+namespace StdGuiItem {
+    extern GuiItem ok();
+    extern GuiItem cancel();
+    extern GuiItem yes();
+    extern GuiItem no();
+    extern GuiItem discard();
+    extern GuiItem save();
+    extern GuiItem apply();
+    extern GuiItem close();
+    extern GuiItem help();
+    extern GuiItem overwrite();
+    extern GuiItem reset();
+    extern GuiItem cont();
+    extern GuiItem del();
+    extern GuiItem stop();
+    extern GuiItem remove();
+    extern GuiItem back(bool useRtl=false);
+    extern GuiItem forward(bool useRtl=false);
+};
+
 class QAbstractButton;
-class QDialogButtonBox;
 class QMenu;
 
 class Dialog : public QDialog {
@@ -119,6 +162,7 @@ private Q_SLOTS:
 private:
     void create();
     QAbstractButton *getButton(ButtonCode button);
+    void setButtonGuiItem(QDialogButtonBox::StandardButton button, const GuiItem &item);
 
 private:
     int buttonTypes;

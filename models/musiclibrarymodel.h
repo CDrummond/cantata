@@ -83,6 +83,7 @@ public:
     void getDetails(QSet<QString> &artists, QSet<QString> &albumArtists, QSet<QString> &albums, QSet<QString> &genres);
     QSet<QString> getAlbumArtists();
     bool update(const QSet<Song> &songs);
+    void uncheckAll();
     bool useAlbumImages() const { return rootItem->useAlbumImages(); }
     void setUseAlbumImages(bool a) { rootItem->setUseAlbumImages(a); }
     bool useArtistImages() const { return rootItem->useArtistImages(); }

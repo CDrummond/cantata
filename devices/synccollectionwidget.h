@@ -31,6 +31,7 @@
 
 class QTimer;
 class MusicLibraryProxyModel;
+class Action;
 
 class SyncCollectionWidget : public QWidget, Ui::SyncCollectionWidget
 {
@@ -50,6 +51,7 @@ Q_SIGNALS:
 private Q_SLOTS:
     void songsChecked(const QSet<Song> &songs);
     void dataChanged(const QModelIndex &tl, const QModelIndex &br);
+    void deselectAll();
     void copySongs();
     void delaySearchItems();
     void searchItems();
@@ -64,6 +66,8 @@ private:
     MusicLibraryProxyModel *proxy;
     QTimer *searchTimer;
     QSet<Song> checkedSongs;
+    Action *copyAction;
+    Action *deselectAction;
 };
 
 #endif

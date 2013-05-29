@@ -836,6 +836,40 @@ bool MusicLibraryModel::update(const QSet<Song> &songs)
     return updatedSongs;
 }
 
+void MusicLibraryModel::uncheckAll()
+{
+    if (!checkable) {
+        return;
+    }
+
+    foreach (MusicLibraryItem *artist, rootItem->childItems()) {
+        MusicLibraryItemArtist *artistItem=static_cast<MusicLibraryItemArtist *>(artist);
+        QModelIndex artistIndex=index(rootItem->childItems().indexOf(artistItem), 0, QModelIndex());
+
+        foreach (MusicLibraryItem *album, artistItem->childItems()) {
+            MusicLibraryItemAlbum *albumItem=static_cast<MusicLibraryItemAlbum *>(album);
+            QModelIndex albumIndex=index(artistItem->childItems().indexOf(albumItem), 0, artistIndex);
+
+            foreach (MusicLibraryItem *song, albumItem->childItems()) {
+                if (Qt::Unchecked!=song->checkState()) {
+                    song->setCheckState(Qt::Unchecked);
+                    QModelIndex songIndex=index(albumItem->childItems().indexOf(song), 0, albumIndex);
+                    emit dataChanged(songIndex, songIndex);
+                }
+            }
+            if (Qt::Unchecked!=albumItem->checkState()) {
+                albumItem->setCheckState(Qt::Unchecked);
+                emit dataChanged(albumIndex, albumIndex);
+            }
+        }
+        if (Qt::Unchecked!=artistItem->checkState()) {
+            artistItem->setCheckState(Qt::Unchecked);
+            emit dataChanged(artistIndex, artistIndex);
+        }
+    }
+    emit checkedSongs(QSet<Song>());
+}
+
 void MusicLibraryModel::toggleGrouping()
 {
     beginResetModel();

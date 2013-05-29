@@ -48,6 +48,7 @@ Q_SIGNALS:
     void copy(const QList<Song> &songs);
 
 private Q_SLOTS:
+    void dataChanged(const QModelIndex &tl, const QModelIndex &br);
     void copySongs();
     void delaySearchItems();
     void searchItems();
@@ -58,6 +59,7 @@ private:
     MusicLibraryModel *model;
     MusicLibraryProxyModel *proxy;
     QTimer *searchTimer;
+    QSet<Song> checkedSongs;
 };
 
 #endif

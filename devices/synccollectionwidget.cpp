@@ -24,6 +24,7 @@
 #include "synccollectionwidget.h"
 #include "treeview.h"
 #include "musiclibraryproxymodel.h"
+#include "musiclibraryitemsong.h"
 #include "icon.h"
 #include "localize.h"
 #include "actioncollection.h"
@@ -40,7 +41,7 @@ SyncCollectionWidget::SyncCollectionWidget(QWidget *parent, const QString &title
     button->setText(action);
     button->setEnabled(false);
 
-    model=new MusicLibraryModel(this, false);
+    model=new MusicLibraryModel(this, false, true);
     proxy=new MusicLibraryProxyModel(this);
     model->setUseAlbumImages(showCovers);
     proxy->setSourceModel(model);
@@ -48,7 +49,7 @@ SyncCollectionWidget::SyncCollectionWidget(QWidget *parent, const QString &title
     tree->setPageDefaults();
     search->setText(QString());
     search->setPlaceholderText(i18n("Search"));
-    connect(tree, SIGNAL(itemsSelected(bool)), button, SLOT(setEnabled(bool)));
+    connect(proxy, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(dataChanged(QModelIndex,QModelIndex)));
     connect(button, SIGNAL(clicked()), SLOT(copySongs()));
     connect(search, SIGNAL(returnPressed()), this, SLOT(delaySearchItems()));
     connect(search, SIGNAL(textChanged(const QString)), this, SLOT(delaySearchItems()));
@@ -73,18 +74,12 @@ SyncCollectionWidget::~SyncCollectionWidget()
 
 void SyncCollectionWidget::copySongs()
 {
-    const QModelIndexList selected = tree->selectedIndexes();
-
-    if (0==selected.size()) {
+    if (checkedSongs.isEmpty()) {
         return;
     }
-
-    QModelIndexList mapped;
-    foreach (const QModelIndex &idx, selected) {
-        mapped.append(proxy->mapToSource(idx));
-    }
-
-    emit copy(model->songs(mapped));
+    QList<Song> songs=checkedSongs.toList();
+    qSort(songs);
+    emit copy(songs);
 }
 
 void SyncCollectionWidget::delaySearchItems()
@@ -126,5 +121,21 @@ void SyncCollectionWidget::collapseAll()
     QWidget *f=QApplication::focusWidget();
     if (f && qobject_cast<QTreeView *>(f)) {
         static_cast<QTreeView *>(f)->collapseAll();
+    }
+}
+
+void SyncCollectionWidget::dataChanged(const QModelIndex &tl, const QModelIndex &br)
+{
+    Q_UNUSED(br)
+    QModelIndex index = proxy->mapToSource(tl);
+    MusicLibraryItem *item=static_cast<MusicLibraryItem *>(index.internalPointer());
+    if (MusicLibraryItem::Type_Song==item->itemType()) {
+        Song s=static_cast<MusicLibraryItemSong *>(item)->song();
+        if (Qt::Checked==item->checkState()) {
+            checkedSongs.insert(s);
+        } else {
+            checkedSongs.remove(s);
+        }
+        button->setEnabled(!checkedSongs.isEmpty());
     }
 }

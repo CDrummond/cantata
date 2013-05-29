@@ -214,7 +214,6 @@ public Q_SLOTS:
     void showServerInfo();
     void toggleStream(bool s);
     void stopPlayback();
-    void stopImmediately();
     void stopAfterCurrentTrack();
     void stopAfterTrack();
     void playPauseTrack();
@@ -332,7 +331,6 @@ private:
     Action *nextTrackAction;
     Action *playPauseTrackAction;
     Action *stopPlaybackAction;
-    Action *stopImmediatelyAction;
     Action *stopAfterCurrentTrackAction;
     Action *stopAfterTrackAction;
     Action *increaseVolumeAction;

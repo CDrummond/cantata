@@ -76,6 +76,7 @@ void TrayItem::setup()
     trayItemMenu->addAction(mw->prevTrackAction);
     trayItemMenu->addAction(mw->playPauseTrackAction);
     trayItemMenu->addAction(mw->stopPlaybackAction);
+    trayItemMenu->addAction(mw->stopAfterCurrentTrackAction);
     trayItemMenu->addAction(mw->nextTrackAction);
     trayItem->setContextMenu(trayItemMenu);
     trayItem->setStatus(KStatusNotifierItem::Active);
@@ -96,6 +97,7 @@ void TrayItem::setup()
     trayItemMenu->addAction(mw->prevTrackAction);
     trayItemMenu->addAction(mw->playPauseTrackAction);
     trayItemMenu->addAction(mw->stopPlaybackAction);
+    trayItemMenu->addAction(mw->stopAfterCurrentTrackAction);
     trayItemMenu->addAction(mw->nextTrackAction);
     trayItemMenu->addSeparator();
     trayItemMenu->addAction(mw->restoreAction);

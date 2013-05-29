@@ -60,23 +60,10 @@
      </property>
     </widget>
    </item>
-   <item row="3" column="0">
-    <widget class="QLabel" name="label">
-     <property name="text">
-      <string>Default stop action:</string>
-     </property>
-     <property name="buddy">
-      <cstring>stopAction</cstring>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="1">
-    <widget class="QComboBox" name="stopAction"/>
-   </item>
-   <item row="4" column="0" colspan="2">
+   <item row="3" column="0" colspan="2">
     <widget class="QLabel" name="noteLabel">
      <property name="text">
-      <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; If you press and hold the stop button, then a menu will be shown allowing you to choose the stop action.&lt;/i&gt;</string>
+      <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; If you press and hold the stop button, then a menu will be shown allowing you to choose whether to stop playback now, or after the current track.&lt;/i&gt;</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>

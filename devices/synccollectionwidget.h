@@ -48,6 +48,7 @@ Q_SIGNALS:
     void copy(const QList<Song> &songs);
 
 private Q_SLOTS:
+    void songsChecked(const QSet<Song> &songs);
     void dataChanged(const QModelIndex &tl, const QModelIndex &br);
     void copySongs();
     void delaySearchItems();

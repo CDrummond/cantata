@@ -57,6 +57,9 @@ private Q_SLOTS:
     void collapseAll();
 
 private:
+    void updateStats();
+
+private:
     MusicLibraryModel *model;
     MusicLibraryProxyModel *proxy;
     QTimer *searchTimer;

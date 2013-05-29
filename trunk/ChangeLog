@@ -23,10 +23,10 @@
     real gain. (URL is still shown in tooltip)
 14. Detailed tree view for playlists by default.
 15. Remove config compatibility with Cantata versions older than 0.7
-16. Only require 2 stop actions; stop now, or stop after current. Default stop
+16. Only have 2 stop actions; stop now, or stop after current. Default stop
     action is always 'stop now'
 17. Make 'stop after current track' assignable to KDE global shortcut.
-18. Add 'stop after current' to tray item menu.
+18. Add 'stop after current' to tray item menu, and to Cantata MPRIS interface..
 19. Try to use better text for buttons in dialogs, and not just yes/no.
 20. Dont use icons in buttons when using QGtkStyle - Gtk does not use button
     icons.

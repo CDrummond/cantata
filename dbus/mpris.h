@@ -79,6 +79,7 @@ public:
 
     void PlayPause() { mw->playPauseTrack(); }
     void Stop() { mw->stopPlayback(); }
+    void StopAfterCurrent() { mw->stopAfterCurrentTrack(); }
 
     void Play() {
         MPDStatus * const status = MPDStatus::self();

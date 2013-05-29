@@ -52,7 +52,7 @@ public:
     static void convertCache(const QString &compressedName);
     static void cleanCache();
 
-    MusicLibraryModel(QObject *parent=0, bool isMpdModel=true);
+    MusicLibraryModel(QObject *parent=0, bool isMpdModel=true, bool isCheckable=false);
     ~MusicLibraryModel();
     QModelIndex index(int, int, const QModelIndex & = QModelIndex()) const;
     QModelIndex parent(const QModelIndex &) const;
@@ -60,6 +60,7 @@ public:
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     int columnCount(const QModelIndex &) const;
     QVariant data(const QModelIndex &, int) const;
+    bool setData(const QModelIndex &idx, const QVariant &value, int role = Qt::EditRole);
     Qt::ItemFlags flags(const QModelIndex &index) const;
     QStringList filenames(const QModelIndexList &indexes, bool allowPlaylists=false) const;
     QList<Song> songs(const QModelIndexList &indexes, bool allowPlaylists=false) const;
@@ -103,13 +104,15 @@ public Q_SLOTS:
 
 Q_SIGNALS:
 //     void updated(const MusicLibraryItemRoot *root);
-   void updateGenres(const QSet<QString> &genres);
+    void updateGenres(const QSet<QString> &genres);
 
 private:
-   void setCover(const Song &song, const QImage &img, const QString &file, bool update);
+    void setCover(const Song &song, const QImage &img, const QString &file, bool update);
     void toXML(const MusicLibraryItemRoot *root, const QDateTime &date);
+    void setParentState(const QModelIndex &parent, bool childChecked, MusicLibraryItemContainer *parentItem, MusicLibraryItem *item);
 
 private:
+    bool checkable;
     MusicLibraryItemRoot *rootItem;
     QDateTime databaseTime;
 };

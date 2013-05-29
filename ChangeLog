@@ -31,7 +31,8 @@
 20. Dont use icons in buttons when using QGtkStyle - Gtk does not use button
     icons.
 21. Use checkboxes in sync dialog to mark songs to be copied.
-22. Save sync dialog size.
+22. Show number of selected artists, albums, and songs in sync dialog.
+23. Save sync dialog size.
 
 1.0.3
 -----

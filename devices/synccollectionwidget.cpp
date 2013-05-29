@@ -67,6 +67,7 @@ SyncCollectionWidget::SyncCollectionWidget(QWidget *parent, const QString &title
         connect(expand, SIGNAL(triggered(bool)), this, SLOT(expandAll()));
         connect(collapse, SIGNAL(triggered(bool)), this, SLOT(collapseAll()));
     }
+    updateStats();
 }
 
 SyncCollectionWidget::~SyncCollectionWidget()
@@ -129,6 +130,7 @@ void SyncCollectionWidget::songsChecked(const QSet<Song> &songs)
 {
     checkedSongs=songs;
     button->setEnabled(!checkedSongs.isEmpty());
+    updateStats();
 }
 
 void SyncCollectionWidget::dataChanged(const QModelIndex &tl, const QModelIndex &br)
@@ -144,5 +146,23 @@ void SyncCollectionWidget::dataChanged(const QModelIndex &tl, const QModelIndex 
             checkedSongs.remove(s);
         }
         button->setEnabled(!checkedSongs.isEmpty());
+        updateStats();
+    }
+}
+
+void SyncCollectionWidget::updateStats()
+{
+    QSet<QString> artists;
+    QSet<QString> albums;
+
+    foreach (const Song &s, checkedSongs) {
+        artists.insert(s.albumArtist());
+        albums.insert(s.albumArtist()+"--"+s.album);
+    }
+
+    if (checkedSongs.isEmpty()) {
+        selection->setText(i18n("Nothing selected"));
+    } else {
+        selection->setText(i18n("Artists:%1, Albums:%2, Songs:%3").arg(artists.count()).arg(albums.count()).arg(checkedSongs.count()));
     }
 }

@@ -55,23 +55,38 @@ SyncCollectionWidget::SyncCollectionWidget(QWidget *parent, const QString &title
     connect(search, SIGNAL(returnPressed()), this, SLOT(delaySearchItems()));
     connect(search, SIGNAL(textChanged(const QString)), this, SLOT(delaySearchItems()));
 
-    QAction *act=new QAction(action, this);
-    connect(act, SIGNAL(triggered(bool)), SLOT(copySongs()));
-    tree->addAction(act);
+    copyAction=new Action(action, this);
+    connect(copyAction, SIGNAL(triggered(bool)), SLOT(copySongs()));
+    deselectAction=new Action(i18n("Uncheck All"), this);
+    connect(deselectAction, SIGNAL(triggered(bool)), SLOT(deselectAll()));
+    tree->addAction(copyAction);
+    QAction *sep=new QAction(this);
+    sep->setSeparator(true);
+    tree->addAction(sep);
+    tree->addAction(deselectAction);
+    tree->setContextMenuPolicy(Qt::ActionsContextMenu);
 
     QAction *expand=ActionCollection::get()->action("expandall");
     QAction *collapse=ActionCollection::get()->action("collapseall");
     if (expand && collapse) {
+        tree->addAction(expand);
+        tree->addAction(collapse);
         addAction(expand);
         addAction(collapse);
         connect(expand, SIGNAL(triggered(bool)), this, SLOT(expandAll()));
         connect(collapse, SIGNAL(triggered(bool)), this, SLOT(collapseAll()));
     }
+
     updateStats();
 }
 
 SyncCollectionWidget::~SyncCollectionWidget()
 {
+}
+
+void SyncCollectionWidget::deselectAll()
+{
+    model->uncheckAll();
 }
 
 void SyncCollectionWidget::copySongs()
@@ -165,4 +180,6 @@ void SyncCollectionWidget::updateStats()
     } else {
         selection->setText(i18n("Artists:%1, Albums:%2, Songs:%3").arg(artists.count()).arg(albums.count()).arg(checkedSongs.count()));
     }
+    copyAction->setEnabled(!checkedSongs.isEmpty());
+    deselectAction->setEnabled(!checkedSongs.isEmpty());
 }

@@ -266,7 +266,6 @@ MainWindow::MainWindow(QWidget *parent)
     nextTrackAction = ActionCollection::get()->createAction("nexttrack", i18n("Next Track"), Icons::toolbarNextIcon);
     playPauseTrackAction = ActionCollection::get()->createAction("playpausetrack", i18n("Play/Pause"), Icons::toolbarPlayIcon);
     stopPlaybackAction = ActionCollection::get()->createAction("stopplayback", i18n("Stop"), Icons::toolbarStopIcon);
-    stopImmediatelyAction = ActionCollection::get()->createAction("stoptrack", i18n("Stop Immediately"), Icons::toolbarStopIcon);
     stopAfterCurrentTrackAction = ActionCollection::get()->createAction("stopaftercurrenttrack", i18n("Stop After Current Track"), Icons::toolbarStopIcon);
     stopAfterTrackAction = ActionCollection::get()->createAction("stopaftertrack", i18n("Stop After Track"), Icons::toolbarStopIcon);
     increaseVolumeAction = ActionCollection::get()->createAction("increasevolume", i18n("Increase Volume"));
@@ -324,7 +323,6 @@ MainWindow::MainWindow(QWidget *parent)
     nextTrackAction->setGlobalShortcut(KShortcut(Qt::META + Qt::Key_Right));
     playPauseTrackAction->setGlobalShortcut(KShortcut(Qt::META + Qt::Key_C));
     stopPlaybackAction->setGlobalShortcut(KShortcut(Qt::META + Qt::Key_X));
-    stopImmediatelyAction->setGlobalShortcut(KShortcut());
     stopAfterCurrentTrackAction->setGlobalShortcut(KShortcut());
     increaseVolumeAction->setGlobalShortcut(KShortcut(Qt::META + Qt::Key_Up));
     decreaseVolumeAction->setGlobalShortcut(KShortcut(Qt::META + Qt::Key_Down));
@@ -372,7 +370,7 @@ MainWindow::MainWindow(QWidget *parent)
     prevTrackButton->setDefaultAction(prevTrackAction);
 
     QMenu *stopMenu=new QMenu(this);
-    stopMenu->addAction(stopImmediatelyAction);
+    stopMenu->addAction(stopPlaybackAction);
     stopMenu->addAction(stopAfterCurrentTrackAction);
     stopTrackButton->setMenu(stopMenu);
     stopTrackButton->setPopupMode(QToolButton::DelayedPopup);
@@ -714,7 +712,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(nextTrackAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(goToNext()));
     connect(playPauseTrackAction, SIGNAL(triggered(bool)), this, SLOT(playPauseTrack()));
     connect(stopPlaybackAction, SIGNAL(triggered(bool)), this, SLOT(stopPlayback()));
-    connect(stopImmediatelyAction, SIGNAL(triggered(bool)), this, SLOT(stopImmediately()));
     connect(stopAfterCurrentTrackAction, SIGNAL(triggered(bool)), this, SLOT(stopAfterCurrentTrack()));
     connect(stopAfterTrackAction, SIGNAL(triggered(bool)), this, SLOT(stopAfterTrack()));
     connect(volumeControl, SIGNAL(valueChanged(int)), MPDConnection::self(), SLOT(setVolume(int)));
@@ -1350,7 +1347,6 @@ void MainWindow::readSettings()
         gnomeMediaKeys->setEnabled(Settings::self()->gnomeMediaKeys());
     }
     #endif
-    stopAfterCurrent=Settings::self()->stopAfterCurrent();
     context->readConfig();
 }
 
@@ -1529,21 +1525,11 @@ void MainWindow::toggleStream(bool s)
 
 void MainWindow::enableStopActions(bool enable)
 {
-    stopImmediatelyAction->setEnabled(enable);
     stopAfterCurrentTrackAction->setEnabled(enable);
     stopPlaybackAction->setEnabled(enable);
 }
 
 void MainWindow::stopPlayback()
-{
-    if (stopAfterCurrent) {
-        stopAfterCurrentTrack();
-    } else {
-        stopImmediately();
-    }
-}
-
-void MainWindow::stopImmediately()
 {
     if (!fadeWhenStop() || MPDState_Paused==MPDStatus::self()->state() || 0==volume) {
         emit stop();
@@ -1696,8 +1682,8 @@ void MainWindow::realSearchPlayQueue()
 void MainWindow::updatePlayQueue(const QList<Song> &songs)
 {
     playPauseTrackAction->setEnabled(!songs.isEmpty());
-    nextTrackAction->setEnabled(stopImmediatelyAction->isEnabled() && songs.count()>1);
-    prevTrackAction->setEnabled(stopImmediatelyAction->isEnabled() && songs.count()>1);
+    nextTrackAction->setEnabled(stopPlaybackAction->isEnabled() && songs.count()>1);
+    prevTrackAction->setEnabled(stopPlaybackAction->isEnabled() && songs.count()>1);
     StdActions::self()->savePlayQueueAction->setEnabled(!songs.isEmpty());
     clearPlayQueueAction->setEnabled(!songs.isEmpty());
 

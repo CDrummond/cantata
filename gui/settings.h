@@ -105,7 +105,6 @@ public:
     bool minimiseOnClose();
     bool showPopups();
     bool stopOnExit();
-    bool stopAfterCurrent();
     bool stopDynamizerOnExit();
     bool storeCoversInMpdDir();
     bool storeLyricsInMpdDir();
@@ -181,7 +180,6 @@ public:
     void saveShowFullScreen(bool v);
     void saveStopOnExit(bool v);
     void saveStopDynamizerOnExit(bool v);
-    void saveStopAfterCurrent(bool v);
     void savePlayQueueHeaderState(const QByteArray &v);
     void saveSplitterState(const QByteArray &v);
     void saveSplitterAutoHide(bool v);

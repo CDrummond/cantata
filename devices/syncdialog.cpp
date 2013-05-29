@@ -92,7 +92,7 @@ int SyncDialog::instanceCount()
 }
 
 SyncDialog::SyncDialog(QWidget *parent)
-    : Dialog(parent)
+    : Dialog(parent, "SyncDialog", QSize(680, 680))
     , currentDev(0)
 {
     iCount++;
@@ -117,10 +117,6 @@ void SyncDialog::sync(const QString &udi)
 {
     devUdi=udi;
     if (updateSongs(true)) {
-        int numArtists=qMax(devWidget->numArtists(), libWidget->numArtists());
-        int listSize=QFontMetrics(font()).height()*numArtists;
-        int size=140+listSize;
-        resize(680, size=size<300 ? 300 : (size>680 ? 680 : size));
         show();
     }
 }

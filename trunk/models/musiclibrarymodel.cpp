@@ -124,8 +124,9 @@ void MusicLibraryModel::cleanCache()
     }
 }
 
-MusicLibraryModel::MusicLibraryModel(QObject *parent, bool isMpdModel)
+MusicLibraryModel::MusicLibraryModel(QObject *parent, bool isMpdModel, bool isCheckable)
     : ActionModel(parent)
+    , checkable(isCheckable)
     , rootItem(new MusicLibraryItemRoot)
 {
     if (isMpdModel)
@@ -225,6 +226,11 @@ QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
     MusicLibraryItem *item = static_cast<MusicLibraryItem *>(index.internalPointer());
 
     switch (role) {
+    case Qt::CheckStateRole:
+        if (!checkable) {
+            return QVariant();
+        }
+        return item->checkState();
     case Qt::DecorationRole:
         switch (item->itemType()) {
         case MusicLibraryItem::Type_Artist: {
@@ -338,6 +344,117 @@ QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
         return ActionModel::data(index, role);
     }
     return QVariant();
+}
+
+bool MusicLibraryModel::setData(const QModelIndex &idx, const QVariant &value, int role)
+{
+    if (checkable && Qt::CheckStateRole==role) {
+        if (!idx.isValid()) {
+            return false;
+        }
+
+        MusicLibraryItem *item = static_cast<MusicLibraryItem *>(idx.internalPointer());
+        Qt::CheckState check=value.toBool() ? Qt::Checked : Qt::Unchecked;
+
+        switch (item->itemType()) {
+        case MusicLibraryItem::Type_Artist: {
+            MusicLibraryItemArtist *artistItem=static_cast<MusicLibraryItemArtist *>(item);
+            QModelIndex artistIndex;
+            item->setCheckState(check);
+            foreach (MusicLibraryItem *album, artistItem->childItems()) {
+                if (check!=album->checkState()) {
+                    MusicLibraryItemAlbum *albumItem=static_cast<MusicLibraryItemAlbum *>(album);
+                    if (!artistIndex.isValid()) {
+                        artistIndex=index(rootItem->childItems().indexOf(artistItem), 0, QModelIndex());
+                    }
+                    QModelIndex albumIndex=index(artistItem->childItems().indexOf(album), 0, artistIndex);
+                    album->setCheckState(check);
+                    foreach (MusicLibraryItem *song, albumItem->childItems()) {
+                        if (check!=song->checkState()) {
+                            song->setCheckState(check);
+                            QModelIndex songIndex=index(albumItem->childItems().indexOf(song), 0, albumIndex);
+                            emit dataChanged(songIndex, songIndex);
+                        }
+                    }
+                    emit dataChanged(albumIndex, albumIndex);
+                }
+            }
+            break;
+        }
+        case MusicLibraryItem::Type_Album: {
+            MusicLibraryItemArtist *artistItem=static_cast<MusicLibraryItemArtist *>(item->parentItem());
+            QModelIndex artistIndex=index(rootItem->childItems().indexOf(artistItem), 0, QModelIndex());
+            MusicLibraryItemAlbum *albumItem=static_cast<MusicLibraryItemAlbum *>(item);
+            QModelIndex albumIndex;
+            albumItem->setCheckState(check);
+            foreach (MusicLibraryItem *song, albumItem->childItems()) {
+                if (check!=song->checkState()) {
+                    song->setCheckState(check);
+                    if (!albumIndex.isValid()) {
+                        albumIndex=index(artistItem->childItems().indexOf(item), 0, artistIndex);
+                    }
+                    QModelIndex songIndex=index(albumItem->childItems().indexOf(song), 0, albumIndex);
+                    emit dataChanged(songIndex, songIndex);
+                }
+            }
+
+            setParentState(artistIndex, value.toBool(), artistItem, item);
+            break;
+        }
+        case MusicLibraryItem::Type_Song: {
+            item->setCheckState(check);
+            MusicLibraryItemAlbum *albumItem=static_cast<MusicLibraryItemAlbum *>(item->parentItem());
+            MusicLibraryItemArtist *artistItem=static_cast<MusicLibraryItemArtist *>(albumItem->parentItem());
+            QModelIndex artistIndex=index(rootItem->childItems().indexOf(artistItem), 0, QModelIndex());
+            QModelIndex albumIndex=index(artistItem->childItems().indexOf(albumItem), 0, artistIndex);
+            QModelIndex songIndex=index(albumItem->childItems().indexOf(item), 0, albumIndex);
+            setParentState(albumIndex, value.toBool(), albumItem, item);
+            setParentState(artistIndex, Qt::Unchecked!=albumItem->checkState(), artistItem, albumItem);
+            emit dataChanged(songIndex, songIndex);
+            break;
+        }
+        case MusicLibraryItem::Type_Root:
+            return false;
+        }
+
+        return true;
+    }
+    return ActionModel::setData(idx, value, role);
+}
+
+void MusicLibraryModel::setParentState(const QModelIndex &parent, bool childChecked, MusicLibraryItemContainer *parentItem, MusicLibraryItem *item)
+{
+    Qt::CheckState parentCheck=childChecked ? Qt::PartiallyChecked : Qt::Unchecked;
+    int checkedChildren=childChecked ? 1 : 0;
+    int uncheckedChildren=childChecked ? 0 : 1;
+    bool stop=false;
+    foreach (MusicLibraryItem *child, parentItem->childItems()) {
+        if (child!=item) {
+            switch (child->checkState()) {
+            case Qt::PartiallyChecked:
+                parentCheck=Qt::PartiallyChecked;
+                stop=true;
+                break;
+            case Qt::Unchecked:
+                uncheckedChildren++;
+                parentCheck=checkedChildren ? Qt::PartiallyChecked : Qt::Unchecked;
+                stop=checkedChildren && uncheckedChildren;
+                break;
+            case Qt::Checked:
+                checkedChildren++;
+                parentCheck=uncheckedChildren ? Qt::PartiallyChecked : Qt::Checked;
+                stop=checkedChildren && uncheckedChildren;
+                break;
+            }
+        }
+        if (stop) {
+            break;
+        }
+    }
+    if (parentItem->checkState()!=parentCheck) {
+        parentItem->setCheckState(parentCheck);
+        emit dataChanged(parent, parent);
+    }
 }
 
 void MusicLibraryModel::clear()
@@ -665,6 +782,24 @@ bool MusicLibraryModel::update(const QSet<Song> &songs)
     foreach (const Song &s, added) {
         addSongToList(s);
     }
+
+    if (checkable) {
+        foreach (MusicLibraryItem *artist, rootItem->childItems()) {
+            MusicLibraryItemArtist *artistItem=static_cast<MusicLibraryItemArtist *>(artist);
+            QModelIndex artistIndex=index(rootItem->childItems().indexOf(artistItem), 0, QModelIndex());
+
+            foreach (MusicLibraryItem *album, artistItem->childItems()) {
+                MusicLibraryItemAlbum *albumItem=static_cast<MusicLibraryItemAlbum *>(album);
+                QModelIndex albumIndex=index(artistItem->childItems().indexOf(albumItem), 0, artistIndex);
+
+                foreach (MusicLibraryItem *song, albumItem->childItems()) {
+                    setParentState(albumIndex, Qt::Unchecked!=song->checkState(), albumItem, song);
+                }
+                setParentState(artistIndex, Qt::Unchecked!=albumItem->checkState(), artistItem, albumItem);
+            }
+        }
+    }
+
     return updatedSongs;
 }
 
@@ -799,7 +934,7 @@ bool MusicLibraryModel::fromXML()
 Qt::ItemFlags MusicLibraryModel::flags(const QModelIndex &index) const
 {
     if (index.isValid()) {
-        return Qt::ItemIsSelectable | Qt::ItemIsDragEnabled | Qt::ItemIsEnabled;
+        return Qt::ItemIsSelectable | Qt::ItemIsDragEnabled | Qt::ItemIsEnabled | (checkable ? Qt::ItemIsUserCheckable : Qt::NoItemFlags);
     } else {
         return Qt::ItemIsDropEnabled;
     }

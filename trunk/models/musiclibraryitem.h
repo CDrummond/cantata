@@ -44,32 +44,21 @@ public:
 
     MusicLibraryItem(const QString &data, MusicLibraryItemContainer *parent)
         : m_parentItem(parent)
-        , m_itemData(data) {
-    }
+        , m_itemData(data)
+        , m_checkState(Qt::Unchecked) { }
 
-    virtual ~MusicLibraryItem() {
-    }
+    virtual ~MusicLibraryItem() { }
 
-    MusicLibraryItemContainer * parentItem() const {
-        return m_parentItem;
-    }
-    virtual MusicLibraryItem * childItem(int) const {
-        return 0;
-    }
-    virtual int childCount() const {
-        return 0;
-    }
+    MusicLibraryItemContainer * parentItem() const { return m_parentItem; }
+    virtual MusicLibraryItem * childItem(int) const { return 0; }
+    virtual int childCount() const { return 0; }
     int row() const;
-    int columnCount() const {
-        return 1;
-    }
-    const QString & data() const {
-        return m_itemData;
-    }
-    void setData(const QString &d) {
-        m_itemData=d;
-    }
+    int columnCount() const { return 1; }
+    const QString & data() const { return m_itemData; }
+    void setData(const QString &d) { m_itemData=d; }
     void setParent(MusicLibraryItemContainer *p);
+    Qt::CheckState checkState() const { return m_checkState; }
+    void setCheckState(Qt::CheckState s) { m_checkState=s; }
 
     virtual bool hasGenre(const QString &genre) const=0;
     virtual QSet<QString> allGenres() const=0;
@@ -78,44 +67,25 @@ public:
 protected:
     MusicLibraryItemContainer *m_parentItem;
     QString m_itemData;
+    Qt::CheckState m_checkState;
 };
 
 class MusicLibraryItemContainer : public MusicLibraryItem
 {
 public:
-    MusicLibraryItemContainer(const QString &data, MusicLibraryItemContainer *parent)
-        : MusicLibraryItem(data, parent) {
-    }
+    MusicLibraryItemContainer(const QString &data, MusicLibraryItemContainer *parent) : MusicLibraryItem(data, parent) { }
 
-    virtual ~MusicLibraryItemContainer() {
-        qDeleteAll(m_childItems);
-    }
+    virtual ~MusicLibraryItemContainer() { qDeleteAll(m_childItems); }
 
-    virtual void append(MusicLibraryItem *i) {
-        m_childItems.append(i);
-    }
-    virtual MusicLibraryItem * childItem(int row) const {
-        return m_childItems.value(row);
-    }
+    virtual void append(MusicLibraryItem *i) { m_childItems.append(i); }
+    virtual MusicLibraryItem * childItem(int row) const { return m_childItems.value(row); }
 
-    int childCount() const {
-        return m_childItems.count();
-    }
-    const QList<MusicLibraryItem *> & childItems() const {
-        return m_childItems;
-    }
-    void addGenre(const QString &genre) {
-        m_genres.insert(genre);
-    }
-    bool hasGenre(const QString &genre) const {
-        return m_genres.contains(genre);
-    }
-    const QSet<QString> & genres() const {
-        return m_genres;
-    }
-    QSet<QString> allGenres() const {
-        return genres();
-    }
+    int childCount() const { return m_childItems.count(); }
+    const QList<MusicLibraryItem *> & childItems() const { return m_childItems; }
+    void addGenre(const QString &genre) { m_genres.insert(genre); }
+    bool hasGenre(const QString &genre) const { return m_genres.contains(genre); }
+    const QSet<QString> & genres() const { return m_genres; }
+    QSet<QString> allGenres() const { return genres(); }
     void updateGenres() {
         m_genres.clear();
         foreach (MusicLibraryItem *i, m_childItems) {

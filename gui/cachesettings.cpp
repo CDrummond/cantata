@@ -287,7 +287,8 @@ void CacheSettings::deleteAll()
 
     if (!toDelete.isEmpty()) {
         if (1==toDelete.count()) {
-            if (MessageBox::Yes==MessageBox::warningYesNo(this, i18n("Delete all '%1' items?").arg(toDelete.at(0)->name()), i18n("Delete Cache Items"))) {
+            if (MessageBox::Yes==MessageBox::warningYesNo(this, i18n("Delete all '%1' items?").arg(toDelete.at(0)->name()),
+                                                          i18n("Delete Cache Items"), StdGuiItem::del(), StdGuiItem::cancel())) {
                 toDelete.first()->clean();
             }
         } else if (toDelete.count()>1) {
@@ -296,7 +297,8 @@ void CacheSettings::deleteAll()
                 items+="<li>"+i->name()+"</li>";
             }
 
-            if (MessageBox::No==MessageBox::warningYesNo(this, i18n("<p>Delete all from the following?<ul>%1</ul></p>").arg(items), i18n("Delete Cache Items"))) {
+            if (MessageBox::No==MessageBox::warningYesNo(this, i18n("<p>Delete all from the following?<ul>%1</ul></p>").arg(items),
+                                                         i18n("Delete Cache Items"), StdGuiItem::del(), StdGuiItem::cancel())) {
                 return;
             }
 

@@ -120,7 +120,7 @@ void TrackOrganiser::slotButtonClicked(int button)
     case Cancel:
         if (!optionsBox->isEnabled()) {
             paused=true;
-            if (MessageBox::No==MessageBox::questionYesNo(this, i18n("Cancel renaming of files?"))) {
+            if (MessageBox::No==MessageBox::questionYesNo(this, i18n("Abort renaming of files?"), i18n("Abort"), GuiItem(i18n("Abort")), StdGuiItem::cancel())) {
                 paused=false;
                 QTimer::singleShot(0, this, SLOT(renameFile()));
                 return;
@@ -235,7 +235,7 @@ void TrackOrganiser::renameFile()
                 skip=true;
             } else {
                 switch(MessageBox::questionYesNoCancel(this, i18n("Destination file already exists!<br/>%1").arg(dest),
-                                                       QString(), GuiItem(i18n("Skip")), GuiItem("Auto Skip"))) {
+                                                       QString(), GuiItem(i18n("Skip")), GuiItem(i18n("Auto Skip")))) {
                 case MessageBox::Yes:
                     skip=true;
                     break;
@@ -257,7 +257,7 @@ void TrackOrganiser::renameFile()
                     skip=true;
                 } else {
                     switch(MessageBox::questionYesNoCancel(this, i18n("Failed to create destination folder!<br/>%1").arg(dir.absolutePath()),
-                                                           QString(), GuiItem(i18n("Skip")), GuiItem("Auto Skip"))) {
+                                                           QString(), GuiItem(i18n("Skip")), GuiItem(i18n("Auto Skip")))) {
                     case MessageBox::Yes:
                         skip=true;
                         break;
@@ -278,7 +278,7 @@ void TrackOrganiser::renameFile()
                 skip=true;
             } else {
                 switch(MessageBox::questionYesNoCancel(this, i18n("Failed to rename %1 to %2").arg(source).arg(dest),
-                                                       QString(), GuiItem(i18n("Skip")), GuiItem("Auto Skip"))) {
+                                                       QString(), GuiItem(i18n("Skip")), GuiItem(i18n("Auto Skip")))) {
                 case MessageBox::Yes:
                     skip=true;
                     break;

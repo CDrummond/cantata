@@ -27,6 +27,9 @@
     action is always 'stop now'
 17. Make 'stop after current track' assignable to KDE global shortcut.
 18. Add 'stop after current' to tray item menu.
+19. Try to use better text for buttons in dialogs, and not just yes/no.
+20. Dont use icons in buttons when using QGtkStyle - Gtk does not use button
+    icons.
 
 1.0.3
 -----

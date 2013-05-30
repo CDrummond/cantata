@@ -30,6 +30,8 @@
 #include "ui_actiondialog.h"
 #include <QElapsedTimer>
 
+class SongDialog;
+
 class ActionDialog : public Dialog, Ui::ActionDialog
 {
     Q_OBJECT
@@ -67,8 +69,10 @@ private Q_SLOTS:
     void jobPercent(int percent);
     void cacheSaved();
     void controlInfoLabel();
+    void showSongs();
 
 private:
+    void hideSongs();
     void controlInfoLabel(Device *dev);
     Device * getDevice(const QString &udi, bool logErrors=true);
     void configure(const QString &udi);
@@ -112,6 +116,9 @@ private:
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
     QSet<QString> albumsWithoutRgTags;
     #endif
+
+    SongDialog *songDialog;
+    friend class SongDialog;
 };
 
 #endif

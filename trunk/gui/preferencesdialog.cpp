@@ -42,6 +42,7 @@
 #include "proxysettings.h"
 #include "shortcutssettingspage.h"
 #include "actioncollection.h"
+#include "treeview.h"
 #endif
 #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
 #include "audiocdsettings.h"
@@ -103,6 +104,8 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
     map.insert("Cantata", ActionCollection::get());
     shortcuts = new ShortcutsSettingsPage(map, widget);
     widget->addPage(shortcuts, i18nc("Qt-only", "Shortcuts"), Icons::shortcutsIcon, i18nc("Qt-only", "Keyboard Shortcut Settings"));
+    shortcuts->view()->setAlternatingRowColors(false);
+    shortcuts->view()->setItemDelegate(new SimpleTreeViewDelegate(shortcuts->view()));
     #endif
     widget->addPage(cache, i18n("Cache"), Icon("folder"), i18n("Cached Items"));
     widget->allPagesAdded();

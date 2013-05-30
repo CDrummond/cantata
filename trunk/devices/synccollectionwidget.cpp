@@ -47,6 +47,7 @@ SyncCollectionWidget::SyncCollectionWidget(QWidget *parent, const QString &title
     proxy->setSourceModel(model);
     tree->setModel(proxy);
     tree->setPageDefaults();
+    tree->setUseSimpleDelegate();
     search->setText(QString());
     search->setPlaceholderText(i18n("Search"));
     connect(proxy, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(dataChanged(QModelIndex,QModelIndex)));

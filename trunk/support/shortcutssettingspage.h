@@ -48,6 +48,7 @@ public:
     ShortcutsSettingsPage(const QHash<QString, ActionCollection *> &actionCollections, QWidget *parent = 0);
 
     inline bool hasDefaults() const { return true; }
+    QTreeView * view();
 
 public Q_SLOTS:
     void save();

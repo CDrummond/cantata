@@ -25,6 +25,7 @@
 #include "localize.h"
 #include "icon.h"
 #include "settings.h"
+#include "treeview.h"
 
 ToggleList::ToggleList(QWidget *p)
     : QWidget(p)
@@ -45,6 +46,10 @@ ToggleList::ToggleList(QWidget *p)
     downButton->setEnabled(false);
     addButton->setEnabled(false);
     removeButton->setEnabled(false);
+    available->setAlternatingRowColors(false);
+    available->setItemDelegate(new SimpleTreeViewDelegate(available));
+    selected->setAlternatingRowColors(false);
+    selected->setItemDelegate(new SimpleTreeViewDelegate(selected));
 }
 
 void ToggleList::moveUp()
@@ -90,7 +95,6 @@ void ToggleList::move(int d)
     selected->insertItem(row + d, item);
     selected->setCurrentRow(row + d);
 }
-
 
 void ToggleList::availableChanged(QListWidgetItem *item)
 {

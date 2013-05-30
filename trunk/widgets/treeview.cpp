@@ -32,6 +32,8 @@
 #include <QMimeData>
 #include <QMap>
 #include <QStyle>
+#include <QStyledItemDelegate>
+
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KGlobalSettings>
 #endif
@@ -41,6 +43,78 @@
 #else
 #define SINGLE_CLICK style()->styleHint(QStyle::SH_ItemView_ActivateItemOnSingleClick, 0, this)
 #endif
+
+static void drawLine(QPainter *p, const QRect &r, const QColor &color, bool fadeStart, bool fadeEnd)
+{
+    static const double constAlpha=0.1;
+    QColor col(color);
+    QLinearGradient grad(r.bottomLeft(), r.bottomRight());
+
+    if (fadeStart || fadeEnd) {
+        double fadeSize=(fadeStart && fadeEnd ? 64.0 : 32.0);
+        if (r.width()<(2.2*fadeSize)) {
+            fadeSize=r.width()/3.0;
+        }
+        double fadePos=fadeSize/r.width();
+        col.setAlphaF(fadeStart ? 0.0 : constAlpha);
+        grad.setColorAt(0, col);
+        col.setAlphaF(constAlpha);
+        grad.setColorAt(fadePos, col);
+        grad.setColorAt(1.0-fadePos, col);
+        col.setAlphaF(fadeEnd ? 0.0 : constAlpha);
+        grad.setColorAt(1, col);
+        p->setPen(QPen(grad, 1));
+    } else {
+        col.setAlphaF(0.1);
+        p->setPen(QPen(col, 1));
+    }
+    p->drawLine(r.bottomLeft(), r.bottomRight());
+}
+
+SimpleTreeViewDelegate::SimpleTreeViewDelegate(QObject *p)
+    : QStyledItemDelegate(p)
+{
+}
+
+SimpleTreeViewDelegate::~SimpleTreeViewDelegate()
+{
+}
+
+void SimpleTreeViewDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
+{
+    if (!index.isValid()) {
+        return;
+    }
+
+    bool selected=option.state&QStyle::State_Selected;
+    bool active=option.state&QStyle::State_Active;
+    QStyledItemDelegate::paint(painter, option, index);
+    QColor col(option.palette.color(active ? QPalette::Active : QPalette::Inactive,
+                                    selected ? QPalette::HighlightedText : QPalette::Text));
+
+    col.setAlphaF(0.1);
+    painter->setPen(QPen(col, 1));
+    if (4==option.version) {
+        const QStyleOptionViewItemV4 &v4=(QStyleOptionViewItemV4 &)option;
+
+        switch (v4.viewItemPosition) {
+        case QStyleOptionViewItemV4::Beginning:
+            drawLine(painter, option.rect, col, true, false);
+            break;
+        case QStyleOptionViewItemV4::Middle:
+            drawLine(painter, option.rect, col, false, false);
+            break;
+        case QStyleOptionViewItemV4::End:
+            drawLine(painter, option.rect, col, false, true);
+            break;
+        case QStyleOptionViewItemV4::Invalid:
+        case QStyleOptionViewItemV4::OnlyOne:
+            drawLine(painter, option.rect, col, true, true);
+        }
+    } else {
+        painter->drawLine(option.rect.bottomLeft(), option.rect.bottomRight());
+    }
+}
 
 static bool forceSingleClick=true;
 
@@ -191,6 +265,11 @@ bool TreeView::checkBoxClicked(const QModelIndex &idx) const
     int itemIndentation = rect.x() - visualRect(rootIndex()).x();
     rect = QRect(header()->sectionViewportPosition(0) + itemIndentation, rect.y(), style()->pixelMetric(QStyle::PM_IndicatorWidth), rect.height());
     return rect.contains(QCursor::pos());
+}
+
+void TreeView::setUseSimpleDelegate()
+{
+    setItemDelegate(new SimpleTreeViewDelegate(this));
 }
 
 void TreeView::setModel(QAbstractItemModel *m)

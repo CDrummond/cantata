@@ -33,6 +33,7 @@
 #include "localize.h"
 #include "messagebox.h"
 #include "jobcontroller.h"
+#include "treeview.h"
 #include <QTreeWidget>
 #include <QLabel>
 #include <QProgressBar>
@@ -122,7 +123,8 @@ RgDialog::RgDialog(QWidget *parent)
     progress->setVisible(false);
     view->setRootIsDecorated(false);
     view->setAllColumnsShowFocus(true);
-    view->setAlternatingRowColors(true);
+    view->setItemDelegate(new SimpleTreeViewDelegate(view));
+    view->setAlternatingRowColors(false);
     QTreeWidgetItem *hdr = view->headerItem();
     hdr->setText(COL_ARTIST, i18n("Artist"));
     hdr->setText(COL_ALBUM, i18n("Album"));

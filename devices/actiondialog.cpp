@@ -83,6 +83,7 @@ public:
         view->setPageDefaults();
         view->setExpandOnClick();
         view->setModel(proxy);
+        view->setUseSimpleDelegate();
         model->update(p->songsToAction.toSet());
         setMainWidget(view);
         int size=fontMetrics().height();

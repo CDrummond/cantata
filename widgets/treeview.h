@@ -25,6 +25,15 @@
 #define TREEVIEW_H
 
 #include <QTreeView>
+#include <QStyledItemDelegate>
+
+class SimpleTreeViewDelegate : public QStyledItemDelegate
+{
+public:
+    SimpleTreeViewDelegate(QObject *p);
+    virtual ~SimpleTreeViewDelegate();
+    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
+};
 
 class TreeView : public QTreeView
 {
@@ -49,6 +58,7 @@ public:
     void expand(const QModelIndex &idx);
     virtual void setModel(QAbstractItemModel *m);
     bool checkBoxClicked(const QModelIndex &idx) const;
+    void setUseSimpleDelegate();
 
 private Q_SLOTS:
     void correctSelection();

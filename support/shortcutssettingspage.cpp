@@ -86,6 +86,11 @@ ShortcutsSettingsPage::ShortcutsSettingsPage(const QHash<QString, ActionCollecti
   QTimer::singleShot(0, searchEdit, SLOT(setFocus()));
 }
 
+QTreeView * ShortcutsSettingsPage::view()
+{
+    return shortcutsView;
+}
+
 void ShortcutsSettingsPage::setWidgetStates() {
   if(shortcutsView->currentIndex().isValid() && shortcutsView->currentIndex().parent().isValid()) {
     QKeySequence active = shortcutsView->currentIndex().data(ShortcutsModel::ActiveShortcutRole).value<QKeySequence>();

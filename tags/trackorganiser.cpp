@@ -36,6 +36,7 @@
 #include "localize.h"
 #include "messagebox.h"
 #include "icons.h"
+#include "treeview.h"
 #include <QTimer>
 #include <QFile>
 #include <QDir>
@@ -63,6 +64,8 @@ TrackOrganiser::TrackOrganiser(QWidget *parent)
     setButtonGuiItem(Ok, GuiItem(i18n("Rename"), "edit-rename"));
     connect(this, SIGNAL(update()), MPDConnection::self(), SLOT(update()));
     progress->setVisible(false);
+    files->setItemDelegate(new SimpleTreeViewDelegate(files));
+    files->setAlternatingRowColors(false);
 }
 
 TrackOrganiser::~TrackOrganiser()

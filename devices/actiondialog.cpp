@@ -174,6 +174,19 @@ void ActionDialog::hideSongs()
     }
 }
 
+void ActionDialog::updateSongCountLabel()
+{
+    QSet<QString> artists;
+    QSet<QString> albums;
+
+    foreach (const Song &s, songsToAction) {
+        artists.insert(s.albumArtist());
+        albums.insert(s.albumArtist()+"--"+s.album);
+    }
+
+    songCount->setText(i18n("Artists:%1, Albums:%2, Songs:%3").arg(artists.count()).arg(albums.count()).arg(songsToAction.count()));
+}
+
 void ActionDialog::controlInfoLabel()
 {
     controlInfoLabel(getDevice(sourceUdi.isEmpty() ? destUdi : sourceUdi));
@@ -256,7 +269,9 @@ void ActionDialog::copy(const QString &srcUdi, const QString &dstUdi, const QLis
         configureSourceLabel->setVisible(false);
         songCount->setVisible(!sourceIsAudioCd);
         songCountLabel->setVisible(!sourceIsAudioCd);
-        songCount->setText(QString::number(songs.count()));
+        if (!sourceIsAudioCd) {
+            updateSongCountLabel();
+        }
         show();
         if (!enoughSpace) {
             MessageBox::information(this, i18n("There is insufficient space left on the destination device.\n"

@@ -57,18 +57,24 @@ SyncCollectionWidget::SyncCollectionWidget(QWidget *parent, const QString &title
 
     copyAction=new Action(action, this);
     connect(copyAction, SIGNAL(triggered(bool)), SLOT(copySongs()));
-    deselectAction=new Action(i18n("Uncheck All"), this);
-    connect(deselectAction, SIGNAL(triggered(bool)), SLOT(deselectAll()));
+    checkAction=new Action(i18n("Check Items"), this);
+    connect(checkAction, SIGNAL(triggered(bool)), SLOT(checkItems()));
+    unCheckAction=new Action(i18n("Uncheck Items"), this);
+    connect(unCheckAction, SIGNAL(triggered(bool)), SLOT(unCheckItems()));
     tree->addAction(copyAction);
     QAction *sep=new QAction(this);
     sep->setSeparator(true);
     tree->addAction(sep);
-    tree->addAction(deselectAction);
+    tree->addAction(checkAction);
+    tree->addAction(unCheckAction);
     tree->setContextMenuPolicy(Qt::ActionsContextMenu);
 
     QAction *expand=ActionCollection::get()->action("expandall");
     QAction *collapse=ActionCollection::get()->action("collapseall");
     if (expand && collapse) {
+        sep=new QAction(this);
+        sep->setSeparator(true);
+        tree->addAction(sep);
         tree->addAction(expand);
         tree->addAction(collapse);
         addAction(expand);
@@ -77,6 +83,9 @@ SyncCollectionWidget::SyncCollectionWidget(QWidget *parent, const QString &title
         connect(collapse, SIGNAL(triggered(bool)), this, SLOT(collapseAll()));
     }
 
+    connect(tree, SIGNAL(itemsSelected(bool)), checkAction, SLOT(setEnabled(bool)));
+    connect(tree, SIGNAL(itemsSelected(bool)), unCheckAction, SLOT(setEnabled(bool)));
+
     updateStats();
 }
 
@@ -84,9 +93,27 @@ SyncCollectionWidget::~SyncCollectionWidget()
 {
 }
 
-void SyncCollectionWidget::deselectAll()
+void SyncCollectionWidget::checkItems()
 {
-    model->uncheckAll();
+    checkItems(true);
+}
+
+void SyncCollectionWidget::unCheckItems()
+{
+    checkItems(false);
+}
+
+void SyncCollectionWidget::checkItems(bool c)
+{
+    const QModelIndexList selected = tree->selectedIndexes();
+
+    if (0==selected.size()) {
+        return;
+    }
+
+    foreach (const QModelIndex &idx, selected) {
+        model->setData(proxy->mapToSource(idx), c, Qt::CheckStateRole);
+    }
 }
 
 void SyncCollectionWidget::copySongs()
@@ -181,5 +208,4 @@ void SyncCollectionWidget::updateStats()
         selection->setText(i18n("Artists:%1, Albums:%2, Songs:%3").arg(artists.count()).arg(albums.count()).arg(checkedSongs.count()));
     }
     copyAction->setEnabled(!checkedSongs.isEmpty());
-    deselectAction->setEnabled(!checkedSongs.isEmpty());
 }

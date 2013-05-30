@@ -356,6 +356,10 @@ bool MusicLibraryModel::setData(const QModelIndex &idx, const QVariant &value, i
         MusicLibraryItem *item = static_cast<MusicLibraryItem *>(idx.internalPointer());
         Qt::CheckState check=value.toBool() ? Qt::Checked : Qt::Unchecked;
 
+        if (item->checkState()==check) {
+            return false;
+        }
+
         switch (item->itemType()) {
         case MusicLibraryItem::Type_Artist: {
             MusicLibraryItemArtist *artistItem=static_cast<MusicLibraryItemArtist *>(item);

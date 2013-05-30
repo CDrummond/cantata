@@ -896,7 +896,7 @@ MainWindow::~MainWindow()
     MPDConnection::self()->stop();
     Covers::self()->stop();
     #if defined ENABLE_DEVICES_SUPPORT
-    FileScheduler::self()->stop();
+    FileThread::self()->stop();
     #endif
     #ifdef ENABLE_ONLINE_SERVICES
     OnlineServicesModel::self()->stop();

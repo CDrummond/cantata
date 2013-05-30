@@ -33,13 +33,13 @@ class QTemporaryFile;
 class Thread;
 class FileJob;
 
-class FileScheduler : public QObject
+class FileThread : public QObject
 {
     Q_OBJECT
 public:
-    static FileScheduler * self();
+    static FileThread * self();
 
-    FileScheduler();
+    FileThread();
     void addJob(FileJob *job);
     void stop();
 private:

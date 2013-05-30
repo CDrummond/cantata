@@ -33,28 +33,28 @@
 
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KGlobal>
-K_GLOBAL_STATIC(FileScheduler, instance)
+K_GLOBAL_STATIC(FileThread, instance)
 #endif
 
-FileScheduler * FileScheduler::self()
+FileThread * FileThread::self()
 {
     #ifdef ENABLE_KDE_SUPPORT
     return instance;
     #else
-    static FileScheduler *instance=0;
+    static FileThread *instance=0;
     if(!instance) {
-        instance=new FileScheduler;
+        instance=new FileThread;
     }
     return instance;
     #endif
 }
 
-FileScheduler::FileScheduler()
+FileThread::FileThread()
     : thread(0)
 {
 }
 
-void FileScheduler::addJob(FileJob *job)
+void FileThread::addJob(FileJob *job)
 {
     if (!thread) {
         thread=new Thread(metaObject()->className());
@@ -64,7 +64,7 @@ void FileScheduler::addJob(FileJob *job)
     job->moveToThread(thread);
 }
 
-void FileScheduler::stop()
+void FileThread::stop()
 {
     if (thread) {
         thread->stop();
@@ -75,7 +75,7 @@ FileJob::FileJob()
     : stopRequested(false)
     , progressPercent(0)
 {
-    FileScheduler::self()->addJob(this);
+    FileThread::self()->addJob(this);
     // Cant call deleteLater here, as in the device's xxResult() slots "sender()" returns
     // null. Therefore, xxResult() slots need to call finished()
     //connect(this, SIGNAL(result(int)), SLOT(deleteLater()));

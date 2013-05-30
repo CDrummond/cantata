@@ -34,38 +34,6 @@
 #include <QMenu>
 #include <QAction>
 #include <QFile>
-#include <QStyledItemDelegate>
-#include <QPainter>
-
-class PlayQueueTreeViewDelegate : public QStyledItemDelegate
-{
-public:
-    PlayQueueTreeViewDelegate(QAbstractItemView *p)
-        : QStyledItemDelegate(p)
-    {
-    }
-
-    virtual ~PlayQueueTreeViewDelegate()
-    {
-    }
-
-    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
-    {
-        if (!index.isValid()) {
-            return;
-        }
-
-        bool selected=option.state&QStyle::State_Selected;
-        bool active=option.state&QStyle::State_Active;
-        QStyledItemDelegate::paint(painter, option, index);
-        QColor col(option.palette.color(active ? QPalette::Active : QPalette::Inactive,
-                                        selected ? QPalette::HighlightedText : QPalette::Text));
-
-        col.setAlphaF(0.1);
-        painter->setPen(QPen(col, 1));
-        painter->drawLine(option.rect.bottomLeft(), option.rect.bottomRight());
-    }
-};
 
 PlayQueueTreeView::PlayQueueTreeView(QWidget *parent)
     : TreeView(parent, true)
@@ -82,7 +50,7 @@ PlayQueueTreeView::PlayQueueTreeView(QWidget *parent)
     setDropIndicatorShown(true);
     setRootIsDecorated(false);
     setUniformRowHeights(true);
-    setItemDelegate(new PlayQueueTreeViewDelegate(this));
+    setUseSimpleDelegate();
 }
 
 PlayQueueTreeView::~PlayQueueTreeView()

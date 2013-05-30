@@ -34,6 +34,7 @@
 #include "config.h"
 #include "thread.h"
 #include "settings.h"
+#include "treeview.h"
 #include <QLabel>
 #include <QPushButton>
 #include <QStyle>
@@ -185,7 +186,6 @@ CacheTree::CacheTree(QWidget *parent)
     , calculated(false)
 {
     setHeaderLabels(QStringList() << i18n("Name") << i18n("Item Count") << i18n("Space Used"));
-    setAlternatingRowColors(true);
     setAllColumnsShowFocus(true);
     setSelectionMode(QAbstractItemView::ExtendedSelection);
     setRootIsDecorated(false);
@@ -196,6 +196,8 @@ CacheTree::CacheTree(QWidget *parent)
     setResizeMode(header(), 1, QHeaderView::Stretch);
     setResizeMode(header(), 2, QHeaderView::Stretch);
     header()->setStretchLastSection(true);
+    setAlternatingRowColors(false);
+    setItemDelegate(new SimpleTreeViewDelegate(this));
 }
 
 CacheTree::~CacheTree()

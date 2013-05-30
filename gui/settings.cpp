@@ -351,7 +351,9 @@ int Settings::albumsView()
 
 int Settings::folderView()
 {
-    return ItemView::toMode(GET_STRING("folderView", ItemView::modeStr(ItemView::Mode_SimpleTree)));
+    int v=version();
+    QString def=ItemView::modeStr(v<CANTATA_MAKE_VERSION(1, 0, 51) ? ItemView::Mode_SimpleTree : ItemView::Mode_DetailedTree);
+    return ItemView::toMode(GET_STRING("folderView", def));
 }
 
 int Settings::playlistsView()

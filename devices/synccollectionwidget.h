@@ -58,6 +58,8 @@ private Q_SLOTS:
     void searchItems();
     void expandAll();
     void collapseAll();
+    void itemClicked(const QModelIndex &index);
+    void itemActivated(const QModelIndex &index);
 
 private:
     void checkItems(bool c);

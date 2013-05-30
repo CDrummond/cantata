@@ -81,6 +81,7 @@ public:
         model->setSupportsAlbumArtistTag(true);
         TreeView *view=new TreeView(this);
         view->setPageDefaults();
+        view->setExpandOnClick();
         view->setModel(model);
         model->update(p->songsToAction.toSet());
         setMainWidget(view);

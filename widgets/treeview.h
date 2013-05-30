@@ -31,10 +31,14 @@ class TreeView : public QTreeView
     Q_OBJECT
 
 public:
+    static void setForceSingleClick(bool v);
+    static bool getForceSingleClick();
+
     TreeView(QWidget *parent=0, bool menuAlwaysAllowed=false);
     virtual ~TreeView();
 
     void setPageDefaults();
+    void setExpandOnClick();
     void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
     bool haveSelectedItems() const;
     bool haveUnSelectedItems() const;
@@ -44,12 +48,17 @@ public:
     void expandAll();
     void expand(const QModelIndex &idx);
     virtual void setModel(QAbstractItemModel *m);
+    bool checkBoxClicked(const QModelIndex &idx) const;
 
 private Q_SLOTS:
     void correctSelection();
+    void itemWasActivated(const QModelIndex &index);
+    void itemWasClicked(const QModelIndex &index);
 
 Q_SIGNALS:
-    bool itemsSelected(bool);
+    void itemsSelected(bool);
+    void itemActivated(const QModelIndex &index); // Only emitted if view is set to single-click
+
 private:
     bool alwaysAllowMenu;
 };

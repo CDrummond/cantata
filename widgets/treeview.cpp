@@ -31,6 +31,28 @@
 #include <QDrag>
 #include <QMimeData>
 #include <QMap>
+#include <QStyle>
+#ifdef ENABLE_KDE_SUPPORT
+#include <KDE/KGlobalSettings>
+#endif
+
+#ifdef ENABLE_KDE_SUPPORT
+#define SINGLE_CLICK KGlobalSettings::singleClick()
+#else
+#define SINGLE_CLICK style()->styleHint(QStyle::SH_ItemView_ActivateItemOnSingleClick, 0, this)
+#endif
+
+static bool forceSingleClick=true;
+
+void TreeView::setForceSingleClick(bool v)
+{
+    forceSingleClick=v;
+}
+
+bool TreeView::getForceSingleClick()
+{
+    return forceSingleClick;
+}
 
 TreeView::TreeView(QWidget *parent, bool menuAlwaysAllowed)
         : QTreeView(parent)
@@ -48,6 +70,10 @@ TreeView::TreeView(QWidget *parent, bool menuAlwaysAllowed)
     // errors if an item is dragged onto playqueue whilst playqueue has a selected item!
     // BUG:145
     //setAttribute(Qt::WA_MouseTracking);
+
+    if (SINGLE_CLICK) {
+        connect(this, SIGNAL(activated(const QModelIndex &)), this, SIGNAL(itemActivated(const QModelIndex &)));
+    }
 }
 
 TreeView::~TreeView()
@@ -61,6 +87,11 @@ void TreeView::setPageDefaults()
     setDragDropMode(QAbstractItemView::DragOnly);
     setSortingEnabled(true);
     setAnimated(true);
+}
+
+void TreeView::setExpandOnClick()
+{
+    connect(this, SIGNAL(clicked(const QModelIndex &)), this, SLOT(itemWasClicked(const QModelIndex &)));
 }
 
 void TreeView::selectionChanged(const QItemSelection &selected, const QItemSelection &deselected)
@@ -153,6 +184,15 @@ void TreeView::expand(const QModelIndex &idx)
     }
 }
 
+bool TreeView::checkBoxClicked(const QModelIndex &idx) const
+{
+    QRect rect = visualRect(idx);
+    rect.moveTo(viewport()->mapToGlobal(QPoint(rect.x(), rect.y())));
+    int itemIndentation = rect.x() - visualRect(rootIndex()).x();
+    rect = QRect(header()->sectionViewportPosition(0) + itemIndentation, rect.y(), style()->pixelMetric(QStyle::PM_IndicatorWidth), rect.height());
+    return rect.contains(QCursor::pos());
+}
+
 void TreeView::setModel(QAbstractItemModel *m)
 {
     QAbstractItemModel *old=model();
@@ -173,4 +213,18 @@ void TreeView::correctSelection()
     QItemSelection s = selectionModel()->selection();
     setCurrentIndex(currentIndex());
     selectionModel()->select(s, QItemSelectionModel::SelectCurrent);
+}
+
+void TreeView::itemWasActivated(const QModelIndex &index)
+{
+    if (!forceSingleClick) {
+        setExpanded(index, !isExpanded(index));
+    }
+}
+
+void TreeView::itemWasClicked(const QModelIndex &index)
+{
+    if (forceSingleClick) {
+        setExpanded(index, !isExpanded(index));
+    }
 }

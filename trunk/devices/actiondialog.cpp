@@ -29,6 +29,7 @@
 #include "devicepropertieswidget.h"
 #include "settings.h"
 #include "musiclibrarymodel.h"
+#include "musiclibraryproxymodel.h"
 #include "dirviewmodel.h"
 #include "albumsmodel.h"
 #include "mpdparseutils.h"
@@ -41,6 +42,7 @@
 #include "icons.h"
 #include "config.h"
 #include "tags.h"
+#include "treeview.h"
 #ifdef ENABLE_ONLINE_SERVICES
 #include "onlineservicesmodel.h"
 #endif
@@ -64,10 +66,35 @@ enum Pages
     PAGE_PROGRESS
 };
 
+class SongDialog : public Dialog
+{
+public:
+    SongDialog(ActionDialog *p)
+        : Dialog(p) {
+        setCaption(i18n("Songs To Be Copied"));
+        setButtons(Close);
+        MusicLibraryModel *model=new MusicLibraryModel(this, false);
+        MusicLibraryProxyModel *proxy=new MusicLibraryProxyModel(this);
+        proxy->setSourceModel(model);
+        model->setUseAlbumImages(false);
+        model->setUseArtistImages(false);
+        model->setSupportsAlbumArtistTag(true);
+        TreeView *view=new TreeView(this);
+        view->setPageDefaults();
+        view->setModel(model);
+        model->update(p->songsToAction.toSet());
+        setMainWidget(view);
+        int size=fontMetrics().height();
+        int numArtists=model->rowCount();
+        resize(20*size, qMin(qMax(10, numArtists)+4, 25)*(size*1.25));
+    }
+};
+
 ActionDialog::ActionDialog(QWidget *parent)
     : Dialog(parent)
     , mpdConfigured(false)
     , currentDev(0)
+    , songDialog(0)
 {
     iCount++;
     setButtons(Ok|Cancel);
@@ -82,6 +109,7 @@ ActionDialog::ActionDialog(QWidget *parent)
     connect(configureSourceButton, SIGNAL(clicked()), SLOT(configureSource()));
     connect(configureDestButton, SIGNAL(clicked()), SLOT(configureDest()));
     connect(this, SIGNAL(update()), MPDConnection::self(), SLOT(update()));
+    connect(songCount, SIGNAL(leftClickedUrl()), SLOT(showSongs()));
 }
 
 ActionDialog::~ActionDialog()
@@ -125,6 +153,23 @@ void ActionDialog::controlInfoLabel(Device *dev)
             codec->setText(encoder.name+
                            (sourceIsAudioCd && opts.transcoderWhenDifferent ? QLatin1String("")+i18n("<i>(When different)</i>") : QString()));
         }
+    }
+}
+
+void ActionDialog::showSongs()
+{
+    if (!songDialog) {
+        songDialog=new SongDialog(this);
+    }
+    songDialog->show();
+}
+
+void ActionDialog::hideSongs()
+{
+    if (songDialog) {
+        songDialog->setVisible(false);
+        songDialog->deleteLater();
+        songDialog=0;
     }
 }
 
@@ -208,6 +253,9 @@ void ActionDialog::copy(const QString &srcUdi, const QString &dstUdi, const QLis
         //configureSourceLabel->setVisible(!isFromOnline && ((!destIsDev && !dev->isConfigured()) || (destIsDev && !mpdConfigured)));
         configureSourceButton->setVisible(false);
         configureSourceLabel->setVisible(false);
+        songCount->setVisible(!sourceIsAudioCd);
+        songCountLabel->setVisible(!sourceIsAudioCd);
+        songCount->setText(QString::number(songs.count()));
         show();
         if (!enoughSpace) {
             MessageBox::information(this, i18n("There is insufficient space left on the destination device.\n"
@@ -230,6 +278,8 @@ void ActionDialog::remove(const QString &udi, const QList<Song> &songs)
     init(udi, QString(), songs, Remove);
     codecLabel->setVisible(false);
     codec->setVisible(false);
+    songCountLabel->setVisible(false);
+    songCount->setVisible(false);
     QString baseDir;
 
     if (udi.isEmpty()) {
@@ -302,6 +352,7 @@ void ActionDialog::slotButtonClicked(int button)
             }
             Settings::self()->saveOverwriteSongs(overwrite->isChecked());
             setPage(PAGE_PROGRESS);
+            hideSongs();
             #ifdef ACTION_DIALOG_SHOW_TIME_REMAINING
             timer.start();
             #endif

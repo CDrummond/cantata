@@ -165,6 +165,16 @@
          </property>
         </widget>
        </item>
+       <item row="6" column="0">
+        <widget class="QLabel" name="songCountLabel">
+         <property name="text">
+          <string>Songs to copy:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="1">
+        <widget class="UrlLabel" name="songCount"/>
+       </item>
       </layout>
      </widget>
      <widget class="QWidget" name="page_3">
@@ -355,6 +365,11 @@
    <class>BuddyLabel</class>
    <extends>QLabel</extends>
    <header>buddylabel.h</header>
+  </customwidget>
+  <customwidget>
+   <class>UrlLabel</class>
+   <extends>QLabel</extends>
+   <header>urllabel.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>

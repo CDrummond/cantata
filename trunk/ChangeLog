@@ -33,6 +33,8 @@
 21. Use checkboxes in sync dialog to mark songs to be copied.
 22. Show number of selected artists, albums, and songs in sync dialog.
 23. Save sync dialog size.
+24. Show number of songs to be copied on action dialog. Make number a link,
+    when clicked produce a dialog showing list.
 
 1.0.3
 -----

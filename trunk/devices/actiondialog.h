@@ -73,6 +73,7 @@ private Q_SLOTS:
 
 private:
     void hideSongs();
+    void updateSongCountLabel();
     void controlInfoLabel(Device *dev);
     Device * getDevice(const QString &udi, bool logErrors=true);
     void configure(const QString &udi);

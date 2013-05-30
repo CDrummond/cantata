@@ -51,7 +51,8 @@ Q_SIGNALS:
 private Q_SLOTS:
     void songsChecked(const QSet<Song> &songs);
     void dataChanged(const QModelIndex &tl, const QModelIndex &br);
-    void deselectAll();
+    void checkItems();
+    void unCheckItems();
     void copySongs();
     void delaySearchItems();
     void searchItems();
@@ -59,6 +60,7 @@ private Q_SLOTS:
     void collapseAll();
 
 private:
+    void checkItems(bool c);
     void updateStats();
 
 private:
@@ -67,7 +69,8 @@ private:
     QTimer *searchTimer;
     QSet<Song> checkedSongs;
     Action *copyAction;
-    Action *deselectAction;
+    Action *checkAction;
+    Action *unCheckAction;
 };
 
 #endif

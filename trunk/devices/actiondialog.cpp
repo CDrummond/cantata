@@ -82,7 +82,7 @@ public:
         TreeView *view=new TreeView(this);
         view->setPageDefaults();
         view->setExpandOnClick();
-        view->setModel(model);
+        view->setModel(proxy);
         model->update(p->songsToAction.toSet());
         setMainWidget(view);
         int size=fontMetrics().height();

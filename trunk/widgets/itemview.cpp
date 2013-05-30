@@ -43,14 +43,6 @@
 #include <KDE/KGlobalSettings>
 #endif
 
-static bool forceSingleClick=true;
-
-#ifdef ENABLE_KDE_SUPPORT
-#define SINGLE_CLICK KGlobalSettings::singleClick()
-#else
-#define SINGLE_CLICK style()->styleHint(QStyle::SH_ItemView_ActivateItemOnSingleClick, 0, this)
-#endif
-
 static int listDecorationSize=22;
 static int treeDecorationSize=16;
 
@@ -482,16 +474,6 @@ QString ItemView::modeStr(Mode m)
     }
 }
 
-void ItemView::setForceSingleClick(bool v)
-{
-    forceSingleClick=v;
-}
-
-bool ItemView::getForceSingleClick()
-{
-    return forceSingleClick;
-}
-
 ItemView::ItemView(QWidget *p)
     : QWidget(p)
     , searchTimer(0)
@@ -528,9 +510,7 @@ ItemView::ItemView(QWidget *p)
     connect(listSearch, SIGNAL(returnPressed()), this, SLOT(delaySearchItems()));
     connect(listSearch, SIGNAL(textChanged(const QString)), this, SLOT(delaySearchItems()));
     connect(treeView, SIGNAL(itemsSelected(bool)), this, SIGNAL(itemsSelected(bool)));
-    if (SINGLE_CLICK) {
-        connect(treeView, SIGNAL(activated(const QModelIndex &)), this, SLOT(itemActivated(const QModelIndex &)));
-    }
+    connect(treeView, SIGNAL(itemActivated(const QModelIndex &)), this, SLOT(itemActivated(const QModelIndex &)));
     connect(treeView, SIGNAL(doubleClicked(const QModelIndex &)), this, SIGNAL(doubleClicked(const QModelIndex &)));
     connect(treeView, SIGNAL(clicked(const QModelIndex &)),  this, SLOT(itemClicked(const QModelIndex &)));
     connect(listView, SIGNAL(itemsSelected(bool)), this, SIGNAL(itemsSelected(bool)));
@@ -555,9 +535,7 @@ void ItemView::allowGroupedView()
         groupedView->setMultiLevel(true);
         treeLayout->addWidget(groupedView);
         connect(groupedView, SIGNAL(itemsSelected(bool)), this, SIGNAL(itemsSelected(bool)));
-        if (SINGLE_CLICK) {
-            connect(groupedView, SIGNAL(activated(const QModelIndex &)), this, SLOT(itemActivated(const QModelIndex &)));
-        }
+        connect(groupedView, SIGNAL(itemActivated(const QModelIndex &)), this, SLOT(itemActivated(const QModelIndex &)));
         connect(groupedView, SIGNAL(doubleClicked(const QModelIndex &)), this, SIGNAL(doubleClicked(const QModelIndex &)));
         connect(groupedView, SIGNAL(clicked(const QModelIndex &)), this, SLOT(itemClicked(const QModelIndex &)));
     }
@@ -950,14 +928,14 @@ void ItemView::itemClicked(const QModelIndex &index)
         return;
     }
 
-    if (forceSingleClick) {
+    if (TreeView::getForceSingleClick()) {
         activateItem(index);
     }
 }
 
 void ItemView::itemActivated(const QModelIndex &index)
 {
-    if (!forceSingleClick) {
+    if (!TreeView::getForceSingleClick()) {
         activateItem(index);
     }
 }

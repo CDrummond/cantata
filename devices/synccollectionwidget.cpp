@@ -85,7 +85,8 @@ SyncCollectionWidget::SyncCollectionWidget(QWidget *parent, const QString &title
 
     connect(tree, SIGNAL(itemsSelected(bool)), checkAction, SLOT(setEnabled(bool)));
     connect(tree, SIGNAL(itemsSelected(bool)), unCheckAction, SLOT(setEnabled(bool)));
-
+    connect(tree, SIGNAL(itemActivated(const QModelIndex &)), this, SLOT(itemActivated(const QModelIndex &)));
+    connect(tree, SIGNAL(clicked(const QModelIndex &)),  this, SLOT(itemClicked(const QModelIndex &)));
     updateStats();
 }
 
@@ -165,6 +166,20 @@ void SyncCollectionWidget::collapseAll()
     QWidget *f=QApplication::focusWidget();
     if (f && qobject_cast<QTreeView *>(f)) {
         static_cast<QTreeView *>(f)->collapseAll();
+    }
+}
+
+void SyncCollectionWidget::itemClicked(const QModelIndex &index)
+{
+    if (TreeView::getForceSingleClick() && !tree->checkBoxClicked(index)) {
+        tree->setExpanded(index, !tree->isExpanded(index));
+    }
+}
+
+void SyncCollectionWidget::itemActivated(const QModelIndex &index)
+{
+    if (!TreeView::getForceSingleClick()) {
+        tree->setExpanded(index, !tree->isExpanded(index));
     }
 }
 

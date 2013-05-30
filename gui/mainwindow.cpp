@@ -882,7 +882,7 @@ MainWindow::~MainWindow()
     Settings::self()->saveHiddenPages(hiddenPages);
     context->saveConfig();
     streamsPage->save();
-    Settings::self()->saveForceSingleClick(ItemView::getForceSingleClick());
+    Settings::self()->saveForceSingleClick(TreeView::getForceSingleClick());
     Settings::self()->saveStartHidden(trayItem->isActive() && isHidden() && Settings::self()->minimiseOnClose());
     Settings::self()->save(true);
     disconnect(MPDConnection::self(), 0, 0, 0);
@@ -1338,7 +1338,7 @@ void MainWindow::readSettings()
     trayItem->setup();
     autoScrollPlayQueue=Settings::self()->playQueueScroll();
     updateWindowTitle();
-    ItemView::setForceSingleClick(Settings::self()->forceSingleClick());
+    TreeView::setForceSingleClick(Settings::self()->forceSingleClick());
     #ifndef Q_OS_WIN
     if (!gnomeMediaKeys && Settings::self()->gnomeMediaKeys()) {
         gnomeMediaKeys=new GnomeMediaKeys(this);

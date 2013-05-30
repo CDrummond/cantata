@@ -91,8 +91,6 @@ public:
     static QString modeStr(Mode m);
 
     static void setup();
-    static void setForceSingleClick(bool v);
-    static bool getForceSingleClick();
 
     ItemView(QWidget *p);
     virtual ~ItemView();

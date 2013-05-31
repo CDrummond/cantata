@@ -153,6 +153,10 @@ void FancyTabProxyStyle::drawControl(
 
   const QRect draw_rect(QPoint(0, 0), m.mapRect(rect).size());
 
+  if (!selected && GtkStyle::isActive()) {
+      p->fillRect(option->rect, option->palette.background());
+  }
+
   p->save();
   p->setTransform(m);
 

@@ -1,11 +1,11 @@
-/* drag:toolbar */
+/* drag:toolbar scrollbar:overlay*/
 ToolBar {
   background-color: #dfd7d0;
   border: 0px;
 }
 
 ToolBar:active {
-  background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,  stop: 0 #dfd7d0, stop: 1 #efe7e0);
+  background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,  stop: 0 #d5cdc6, stop: 1 #efe7e0);
   border: 0px;
 }
 

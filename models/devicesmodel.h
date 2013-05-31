@@ -107,6 +107,7 @@ Q_SIGNALS:
     void error(const QString &text);
     void updated(const QModelIndex &idx);
     void matches(const QString &udi, const QList<CdAlbum> &albums);
+    void invalid(const QList<Song> &songs);
 
 private:
     QList<Device *> devices;

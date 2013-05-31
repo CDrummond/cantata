@@ -38,6 +38,7 @@
     when clicked produce a dialog showing list.
 25. Improve radiance CSS theme.
 24. Use 24px playback icons if the icon theme has these.
+25. When AudioCD is ejected, remove tracks from playqueue.
 
 1.0.3
 -----

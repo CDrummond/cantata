@@ -106,6 +106,7 @@ public Q_SLOTS:
 
 private Q_SLOTS:
     void stopAfterCurrentChanged(bool afterCurrent);
+    void remove(const QList<Song> &rem);
 
 Q_SIGNALS:
     void stop(bool afterCurrent);
@@ -115,6 +116,7 @@ Q_SIGNALS:
     void statsUpdated(int songs, quint32 time);
     void fetchingStreams();
     void streamsFetched();
+    void removeSongs(const QList<qint32> &items);
 
 private:
     QList<Song> songs;

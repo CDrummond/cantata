@@ -108,6 +108,26 @@ void GtkStyle::drawSelection(const QStyleOptionViewItemV4 &opt, QPainter *painte
     painter->setOpacity(opacityB4);
 }
 
+// For some reason, dconf does not seem to terminate correclty when run under some desktops (e.g. KDE)
+// Destrying the QProcess seems to block, causing the app to appear to hang before starting.
+// So, create QProcess on the heap - and only wait 100ms for response. Connect finished to deleteLater
+// so that the object is destroyed.
+static QString runProc(const QString &cmd, const QStringList &args)
+{
+    QProcess *process=new QProcess();
+    process->start(cmd, args);
+    QObject::connect(process, SIGNAL(finished(int)), process, SLOT(deleteLater()));
+
+    if (process->waitForFinished(100)) {
+        QString resp = process->readAllStandardOutput();
+        resp = resp.trimmed();
+        resp.remove('\'');
+        return resp;
+    }
+    process->kill();
+    return QString();
+}
+
 // Copied from musique
 QString GtkStyle::themeName()
 {
@@ -115,17 +135,17 @@ QString GtkStyle::themeName()
     return QString();
     #else
     static QString name;
+    static bool read=false;
+
+    if (read) {
+        return name;
+    }
+    read=true;
 
     if (name.isEmpty()) {
-        QProcess process;
-        process.start("dconf",  QStringList() << "read" << "/org/gnome/desktop/interface/gtk-theme");
-        if (process.waitForFinished()) {
-            name = process.readAllStandardOutput();
-            name = name.trimmed();
-            name.remove('\'');
-            if (!name.isEmpty()) {
-                return name;
-            }
+        name=runProc("dconf",  QStringList() << "read" << "/org/gnome/desktop/interface/gtk-theme");
+        if (!name.isEmpty()) {
+            return name;
         }
 
         QString rcPaths = QString::fromLocal8Bit(qgetenv("GTK2_RC_FILES"));
@@ -170,19 +190,12 @@ QString GtkStyle::iconTheme()
     #if defined Q_OS_WIN || defined QT_NO_STYLE_GTK
     return QString();
     #else
+    static bool read=false;
     static QString name;
 
-    if (name.isEmpty()) {
-        QProcess process;
-        process.start("dconf",  QStringList() << "read" << "/org/gnome/desktop/interface/icon-theme");
-        if (process.waitForFinished()) {
-            name = process.readAllStandardOutput();
-            name = name.trimmed();
-            name.remove('\'');
-            if (!name.isEmpty()) {
-                return name;
-            }
-        }
+    if (!read) {
+        read=true;
+        name=runProc("dconf",  QStringList() << "read" << "/org/gnome/desktop/interface/icon-theme");
     }
     return name;
     #endif

@@ -36,6 +36,7 @@
 23. Save sync dialog size.
 24. Show number of songs to be copied on action dialog. Make number a link,
     when clicked produce a dialog showing list.
+25. Improve radiance CSS theme.
 
 1.0.3
 -----

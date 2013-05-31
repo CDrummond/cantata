@@ -31,7 +31,9 @@
 #include "networkaccessmanager.h"
 #include "settings.h"
 #include "wikipediaengine.h"
+#include "localize.h"
 #include <QHBoxLayout>
+#include <QGridLayout>
 #include <QSpacerItem>
 #include <QPainter>
 #include <QNetworkReply>
@@ -42,7 +44,8 @@
 #include <QFile>
 #include <QWheelEvent>
 #include <QApplication>
-#include <QDebug>
+#include <QComboBox>
+#include <QStackedWidget>
 
 static const QLatin1String constApiKey("TEST_KEY"); // TODO: Apply for API key!!!
 const QLatin1String ContextPage::constCacheDir("backdrops/");
@@ -58,37 +61,106 @@ ContextPage::ContextPage(QWidget *parent)
     , drawBackdrop(true)
     , darkBackground(false)
     , fadeValue(0)
+    , isWide(false)
+    , stack(0)
+    , viewCombo(0)
 {
     animator.setPropertyName("fade");
     animator.setTargetObject(this);
 
     appLinkColor=QApplication::palette().color(QPalette::Link);
-    QHBoxLayout *layout = new QHBoxLayout(this);
-
     artist = new ArtistView(this);
     album = new AlbumView(this);
     song = new SongView(this);
+    minWidth=album->picSize().width()*1.9;
 
     artist->addEventFilter(this);
     album->addEventFilter(this);
     song->addEventFilter(this);
 
-    int m=layout->margin()/2;
-    layout->setMargin(0);
-    layout->addItem(new QSpacerItem(m, m, QSizePolicy::Fixed, QSizePolicy::Fixed));
-    layout->addWidget(artist);
-    layout->addWidget(album);
-    layout->addWidget(song);
-//    layout->addItem(new QSpacerItem(m, m, QSizePolicy::Fixed, QSizePolicy::Fixed));
-    layout->setStretch(1, 1);
-    layout->setStretch(2, 1);
-    layout->setStretch(3, 1);
-    setLayout(layout);
     connect(artist, SIGNAL(findArtist(QString)), this, SIGNAL(findArtist(QString)));
     connect(artist, SIGNAL(findAlbum(QString,QString)), this, SIGNAL(findAlbum(QString,QString)));
     connect(album, SIGNAL(playSong(QString)), this, SIGNAL(playSong(QString)));
     connect(artist, SIGNAL(haveBio(QString,QString)), album, SLOT(artistBio(QString,QString)), Qt::QueuedConnection);
     readConfig();
+    setWide(true);
+}
+
+void ContextPage::setWide(bool w)
+{
+    if (w==isWide) {
+        return;
+    }
+
+    isWide=w;
+    if (w) {
+        if (layout()) {
+            delete layout();
+        }
+        QHBoxLayout *l=new QHBoxLayout(this);
+        setLayout(l);
+        int m=l->margin()/2;
+        l->setMargin(0);
+        if (stack) {
+            stack->setVisible(false);
+            viewCombo->setVisible(false);
+            stack->removeWidget(artist);
+            stack->removeWidget(album);
+            stack->removeWidget(song);
+            artist->setVisible(true);
+            album->setVisible(true);
+            song->setVisible(true);
+        }
+        artist->setParent(this);
+        album->setParent(this);
+        song->setParent(this);
+        l->addItem(new QSpacerItem(m, m, QSizePolicy::Fixed, QSizePolicy::Fixed));
+        l->addWidget(artist);
+        l->addWidget(album);
+        l->addWidget(song);
+        //    layout->addItem(new QSpacerItem(m, m, QSizePolicy::Fixed, QSizePolicy::Fixed));
+        l->setStretch(1, 1);
+        l->setStretch(2, 1);
+        l->setStretch(3, 1);
+    } else {
+        if (layout()) {
+            delete layout();
+        }
+        QGridLayout *l=new QGridLayout(this);
+        setLayout(l);
+        int m=l->margin()/2;
+        l->setMargin(0);
+        l->setSpacing(0);
+        if (!stack) {
+            stack=new QStackedWidget(this);
+        }
+        if (!viewCombo) {
+            viewCombo=new QComboBox(this);
+            viewCombo->addItem(i18n("Artist Information"));
+            viewCombo->addItem(i18n("Album Information"));
+            viewCombo->addItem(i18n("Lyrics"));
+            connect(viewCombo, SIGNAL(activated(int)), stack, SLOT(setCurrentIndex(int)));
+        }
+        stack->setVisible(true);
+        viewCombo->setVisible(true);
+        artist->setParent(stack);
+        album->setParent(stack);
+        song->setParent(stack);
+        stack->addWidget(artist);
+        stack->addWidget(album);
+        stack->addWidget(song);
+        l->addItem(new QSpacerItem(m, m, QSizePolicy::Fixed, QSizePolicy::Fixed), 0, 0, 1, 1);
+        l->addWidget(stack, 0, 1, 1, 1);
+        l->addWidget(viewCombo, 1, 0, 1, 2);
+    }
+}
+
+void ContextPage::resizeEvent(QResizeEvent *e)
+{
+    if (isVisible()) {
+        setWide(width()>minWidth);
+    }
+    QWidget::resizeEvent(e);
 }
 
 void ContextPage::readConfig()
@@ -161,6 +233,7 @@ void ContextPage::useDarkBackground(bool u)
 
 void ContextPage::showEvent(QShowEvent *e)
 {
+    setWide(width()>minWidth);
     if (drawBackdrop) {
         updateBackdrop();
     }

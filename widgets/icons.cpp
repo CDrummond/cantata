@@ -481,10 +481,10 @@ void Icons::init()
     }
     if (connectIcon.isNull()) {
         connectIcon=Icon("gtk-stock-ok");
+        if (connectIcon.isNull()) {
+            connectIcon=Icon("go-bottom");
+        }
     }
-    //if (disconnectIcon.isNull()) {
-    //    disconnectIcon=Icon("media-eject");
-    //}
     if (speakerIcon.isNull()) {
         speakerIcon=Icon("audio-speakers");
         if (speakerIcon.isNull()) {

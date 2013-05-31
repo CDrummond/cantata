@@ -483,14 +483,22 @@ MainWindow::MainWindow(QWidget *parent)
     int playbackIconSize=28;
     int controlIconSize=22;
     int buttonSize=32;
+
     if (repeatButton->iconSize().height()>=32) {
         controlIconSize=48;
         playbackIconSize=48;
         buttonSize=54;
+        qWarning() << "C";
     } else if (repeatButton->iconSize().height()>=22) {
         controlIconSize=32;
         playbackIconSize=32;
         buttonSize=36;
+        qWarning() << "B";
+    } else if (QLatin1String("oxygen")!=QIcon::themeName()) {
+        // Oxygen does not have 24x24 icons, and media players eem to use scaled 28x28 icons...
+        // But, if the theme does have media icons at 24x24 use these - as they will be sharper...
+        Icon icon("media-playback-start");
+        playbackIconSize=24==icon.actualSize(QSize(24, 24)).width() ? 24 : 28;
     }
 
     foreach (QToolButton *b, controlBtns) {

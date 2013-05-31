@@ -37,6 +37,7 @@
 24. Show number of songs to be copied on action dialog. Make number a link,
     when clicked produce a dialog showing list.
 25. Improve radiance CSS theme.
+24. Use 24px playback icons if the icon theme has these.
 
 1.0.3
 -----

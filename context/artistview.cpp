@@ -266,7 +266,7 @@ void ArtistView::handleSimilarReply()
 
 void ArtistView::setBio()
 {
-    QString html=pic+biography;
+    QString html=pic+"<br>"+biography;
     if (!similarArtists.isEmpty()) {
         html+=similarArtists;
     }

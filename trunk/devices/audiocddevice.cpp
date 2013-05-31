@@ -86,6 +86,19 @@ AudioCdDevice::AudioCdDevice(DevicesModel *m, Solid::Device &dev)
 
 AudioCdDevice::~AudioCdDevice()
 {
+    QList<Song> tracks;
+    foreach (const MusicLibraryItem *item, childItems()) {
+        if (MusicLibraryItem::Type_Song==item->itemType()) {
+            Song song=static_cast<const MusicLibraryItemSong *>(item)->song();
+            song.file=path()+song.file;
+            tracks.append(song);
+        }
+    }
+
+    if (!tracks.isEmpty()) {
+        emit invalid(tracks);
+    }
+
     #ifdef CDDB_FOUND
     if (cddb) {
         cddb->deleteLater();

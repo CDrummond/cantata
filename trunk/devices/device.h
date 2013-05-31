@@ -208,6 +208,7 @@ Q_SIGNALS:
     void cover(const Song &song, const QImage &img);
     void cacheSaved();
     void configurationChanged();
+    void invalid(const QList<Song> &songs);
 
 protected:
     #ifndef Q_OS_WIN

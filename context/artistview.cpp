@@ -418,7 +418,7 @@ void ArtistView::buildSimilar(const QStringList &artists)
             QString mod=artist;
             mod=mod.replace("/", "-");
             if (mod!=artist && mpdArtists.contains(mod)) {
-                artist+=QLatin1String("<a href=\"")+buildUrl(mod)+QLatin1String("\">")+artist+QLatin1String("</a>");
+                artist=QLatin1String("<a href=\"")+buildUrl(mod)+QLatin1String("\">")+artist+QLatin1String("</a>");
             }
         }
         if (first) {

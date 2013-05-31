@@ -231,10 +231,8 @@ void ContextPage::updateBackdrop()
     }
     currentArtist=updateArtist;
     if (currentArtist.isEmpty()) {
-        if (!backdrop.isNull()) {
-            backdrop=QImage();
-            QWidget::update();
-        }
+        backdrop=QImage();
+        QWidget::update();
         return;
     }
     QString fileName=cacheFileName(currentArtist, false);
@@ -301,7 +299,10 @@ void ContextPage::searchResponse()
         }
     }
 
-    if (!id.isEmpty()) {
+    if (id.isEmpty()) {
+        backdrop=QImage();
+        QWidget::update();
+    } else {
         QUrl url("http://htbackdrops.com/api/"+constApiKey+"/download/"+id+"/fullsize");
         job=NetworkAccessManager::self()->get(url);
         connect(job, SIGNAL(finished()), this, SLOT(downloadResponse()));
@@ -323,8 +324,8 @@ void ContextPage::downloadResponse()
             f.write(data);
             f.close();
         }
-        QWidget::update();
     }
+    QWidget::update();
 }
 
 QNetworkReply * ContextPage::getReply(QObject *obj)

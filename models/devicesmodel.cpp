@@ -703,6 +703,7 @@ void DevicesModel::addLocalDevice(const QString &udi)
         connect(dev, SIGNAL(updating(const QString &, bool)), SLOT(deviceUpdating(const QString &, bool)));
         connect(dev, SIGNAL(error(const QString &)), SIGNAL(error(const QString &)));
         connect(dev, SIGNAL(cover(const Song &, const QImage &)), SLOT(setCover(const Song &, const QImage &)));
+        connect(dev, SIGNAL(invalid(QList<Song>)), SIGNAL(invalid(QList<Song>)));
         #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
         if (Device::AudioCd==dev->devType()) {
             connect(static_cast<AudioCdDevice *>(dev), SIGNAL(matches(const QString &, const QList<CdAlbum> &)),

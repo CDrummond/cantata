@@ -47,6 +47,9 @@
 #include "settings.h"
 #include "icon.h"
 #include "config.h"
+#ifdef ENABLE_DEVICES_SUPPORT
+#include "devicesmodel.h"
+#endif
 
 const QLatin1String PlayQueueModel::constMoveMimeType("cantata/move");
 const QLatin1String PlayQueueModel::constFileNameMimeType("cantata/filename");
@@ -129,6 +132,10 @@ PlayQueueModel::PlayQueueModel(QObject *parent)
     connect(MPDConnection::self(), SIGNAL(stopAfterCurrentChanged(bool)), SLOT(stopAfterCurrentChanged(bool)));
     connect(this, SIGNAL(stop(bool)), MPDConnection::self(), SLOT(stopPlaying(bool)));
     connect(this, SIGNAL(clearStopAfter()), MPDConnection::self(), SLOT(clearStopAfter()));
+    connect(this, SIGNAL(removeSongs(QList<qint32>)), MPDConnection::self(), SLOT(removeSongs(QList<qint32>)));
+    #ifdef ENABLE_DEVICES_SUPPORT
+    connect(DevicesModel::self(), SIGNAL(invalid(QList<Song>)), SLOT(remove(QList<Song>)));
+    #endif
 }
 
 PlayQueueModel::~PlayQueueModel()
@@ -785,6 +792,30 @@ void PlayQueueModel::stopAfterCurrentChanged(bool afterCurrent)
     if (afterCurrent!=stopAfterCurrent) {
         stopAfterCurrent=afterCurrent;
         emit dataChanged(index(currentSongRowNum, 0), index(currentSongRowNum, columnCount(QModelIndex())-1));
+    }
+}
+
+void PlayQueueModel::remove(const QList<Song> &rem)
+{
+    QSet<QString> s;
+    QList<qint32> ids;
+
+    foreach(const Song &song, rem) {
+        s.insert(song.file);
+    }
+
+    foreach(const Song &song, songs) {
+        if (s.contains(song.file)) {
+            ids.append(song.id);
+            s.remove(song.file);
+            if (s.isEmpty()) {
+                break;
+            }
+        }
+    }
+
+    if (!ids.isEmpty()) {
+        emit removeSongs(ids);
     }
 }
 

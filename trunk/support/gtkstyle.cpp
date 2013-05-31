@@ -118,7 +118,7 @@ static QString runProc(const QString &cmd, const QStringList &args)
     process->start(cmd, args);
     QObject::connect(process, SIGNAL(finished(int)), process, SLOT(deleteLater()));
 
-    if (process->waitForFinished(100)) {
+    if (process->waitForFinished(1000)) {
         QString resp = process->readAllStandardOutput();
         resp = resp.trimmed();
         resp.remove('\'');

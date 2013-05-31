@@ -103,7 +103,7 @@ QString View::createPicTag(const QImage &img, const QString &file)
         return QString();
     }
     if (!file.isEmpty() && QFile::exists(file)) {
-        return QString("<img src=\"%1\"><br><br>").arg(file);
+        return QString("<img src=\"%1\"><br>").arg(file);
     }
     // No filename given, or file does not exist - therefore ecnode & scale image.
     return encode(img.scaled(text->picSize(), Qt::KeepAspectRatio, Qt::SmoothTransformation));

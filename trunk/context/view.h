@@ -26,7 +26,6 @@
 
 #include <QWidget>
 #include <QSize>
-#include <QTextBrowser>
 #include "song.h"
 
 class QImage;
@@ -49,6 +48,7 @@ public:
     void setStandardHeader(const QString &h) { stdHeader=h; }
     void setHeader(const QString &str);
     void setPicSize(const QSize &sz);
+    QSize picSize() const;
     QString createPicTag(const QImage &img, const QString &file);
     void showEvent(QShowEvent *e);
     void showSpinner();

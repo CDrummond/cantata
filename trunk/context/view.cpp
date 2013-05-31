@@ -97,6 +97,11 @@ void View::setPicSize(const QSize &sz)
     text->setPicSize(sz);
 }
 
+QSize View::picSize() const
+{
+    return text->picSize();
+}
+
 QString View::createPicTag(const QImage &img, const QString &file)
 {
     if (img.isNull()) {

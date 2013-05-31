@@ -27,6 +27,7 @@
 #include <QWidget>
 #include <QImage>
 #include <QColor>
+#include <QPropertyAnimation>
 
 class Song;
 class ArtistView;
@@ -37,6 +38,7 @@ class QNetworkReply;
 class ContextPage : public QWidget
 {
     Q_OBJECT
+    Q_PROPERTY(float fade READ fade WRITE setFade)
 
 public:
     static const QLatin1String constCacheDir;
@@ -51,6 +53,9 @@ public:
     void showEvent(QShowEvent *e);
     void paintEvent(QPaintEvent *e);
     const QColor & normalLinkColor() const { return appLinkColor; }
+    float fade() { return fadeValue; }
+    void setFade(float value);
+    void updateImage(const QImage &img);
 
 Q_SIGNALS:
     void findArtist(const QString &artist);
@@ -72,13 +77,16 @@ private:
     QNetworkReply *job;
     bool drawBackdrop;
     bool darkBackground;
-    QImage backdrop;
+    QImage oldBackdrop;
+    QImage newBackdrop;
     QString currentArtist;
     QString updateArtist;
     ArtistView *artist;
     AlbumView *album;
     SongView *song;
     QColor appLinkColor;
+    double fadeValue;
+    QPropertyAnimation animator;
 };
 
 #endif

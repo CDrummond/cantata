@@ -42,6 +42,7 @@
 #include <QFile>
 #include <QWheelEvent>
 #include <QApplication>
+#include <QDebug>
 
 static const QLatin1String constApiKey("TEST_KEY"); // TODO: Apply for API key!!!
 const QLatin1String ContextPage::constCacheDir("backdrops/");
@@ -56,7 +57,11 @@ ContextPage::ContextPage(QWidget *parent)
     , job(0)
     , drawBackdrop(true)
     , darkBackground(false)
+    , fadeValue(0)
 {
+    animator.setPropertyName("fade");
+    animator.setTargetObject(this);
+
     appLinkColor=QApplication::palette().color(QPalette::Link);
     QHBoxLayout *layout = new QHBoxLayout(this);
 
@@ -168,13 +173,44 @@ void ContextPage::paintEvent(QPaintEvent *e)
     if (darkBackground) {
         p.fillRect(rect(), palette().background().color());
     }
-    if (drawBackdrop && !backdrop.isNull()) {
-        p.setOpacity(0.15);
-        p.fillRect(rect(), QBrush(backdrop));
+    if (drawBackdrop) {
+        if (!oldBackdrop.isNull()) {
+            p.setOpacity(0.15*((100.0-fadeValue)/100.0));
+            p.fillRect(rect(), QBrush(oldBackdrop));
+        }
+        if (!newBackdrop.isNull()) {
+            p.setOpacity(0.15*(fadeValue/100.0));
+            p.fillRect(rect(), QBrush(newBackdrop));
+        }
     }
     if (!darkBackground) {
         QWidget::paintEvent(e);
     }
+}
+
+void ContextPage::setFade(float value)
+{
+    if (fadeValue!=value) {
+        fadeValue = value;
+        if (fadeValue>99.9999999) {
+            oldBackdrop=QImage();
+        }
+        QWidget::update();
+    }
+}
+
+void ContextPage::updateImage(const QImage &img)
+{
+    oldBackdrop=newBackdrop;
+    newBackdrop=img;
+    animator.stop();
+    if (newBackdrop.isNull() && oldBackdrop.isNull()) {
+        return;
+    }
+    fadeValue=0.0;
+    animator.setDuration(150);
+    animator.setEndValue(100);
+    animator.start();
 }
 
 void ContextPage::update(const Song &s)
@@ -231,13 +267,13 @@ void ContextPage::updateBackdrop()
     }
     currentArtist=updateArtist;
     if (currentArtist.isEmpty()) {
-        backdrop=QImage();
+        updateImage(QImage());
         QWidget::update();
         return;
     }
-    QString fileName=cacheFileName(currentArtist, false);
-    backdrop=QImage(fileName);
-    if (backdrop.isNull()) {
+    QImage img(cacheFileName(currentArtist, false));
+    updateImage(img);
+    if (img.isNull()) {
         getBackdrop();
     } else {
         QWidget::update();
@@ -300,7 +336,7 @@ void ContextPage::searchResponse()
     }
 
     if (id.isEmpty()) {
-        backdrop=QImage();
+        updateImage(QImage());
         QWidget::update();
     } else {
         QUrl url("http://htbackdrops.com/api/"+constApiKey+"/download/"+id+"/fullsize");
@@ -317,8 +353,9 @@ void ContextPage::downloadResponse()
     }
 
     QByteArray data=reply->readAll();
-    backdrop=QImage::fromData(data);
-    if (!backdrop.isNull()) {
+    QImage img=QImage::fromData(data);
+    updateImage(img);
+    if (!img.isNull()) {
         QFile f(cacheFileName(currentArtist, true));
         if (f.open(QIODevice::WriteOnly)) {
             f.write(data);

@@ -34,6 +34,8 @@ class ArtistView;
 class AlbumView;
 class SongView;
 class QNetworkReply;
+class QStackedWidget;
+class QComboBox;
 
 class ContextPage : public QWidget
 {
@@ -67,6 +69,8 @@ private Q_SLOTS:
     void downloadResponse();
 
 private:
+    void setWide(bool w);
+    void resizeEvent(QResizeEvent *e);
     bool eventFilter(QObject *o, QEvent *e);
     void cancel();
     void updateBackdrop();
@@ -87,6 +91,10 @@ private:
     QColor appLinkColor;
     double fadeValue;
     QPropertyAnimation animator;
+    int minWidth;
+    bool isWide;
+    QStackedWidget *stack;
+    QComboBox *viewCombo;
 };
 
 #endif

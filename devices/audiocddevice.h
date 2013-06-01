@@ -82,6 +82,7 @@ public:
     int albumYear() const { return year; }
     const Covers::Image & cover() const { return coverImage; }
     void setCover(const Covers::Image &img);
+    void autoplay();
 
 Q_SIGNALS:
     void lookup(bool full);
@@ -96,6 +97,8 @@ public Q_SLOTS:
 
 private:
     void connectService(bool useCddb);
+    void playTracks();
+    void updateDetails();
 
 private:
     Service srv;
@@ -117,6 +120,7 @@ private:
     quint32 time;
     bool lookupInProcess;
     Covers::Image coverImage;
+    bool autoPlay;
 };
 
 #endif

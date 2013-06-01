@@ -946,6 +946,11 @@ void MainWindow::load(const QStringList &urls)
         } else if (haveHttp && (u.scheme().isEmpty() || QLatin1String("file")==u.scheme())) {
             useable.append(HttpServer::self()->encodeUrl(u.path()));
         }
+        #if defined ENABLE_DEVICES_SUPPORT && (defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND)
+        else if (u.scheme()=="cdda") {
+            DevicesModel::self()->playCd();
+        }
+        #endif
     }
     if (useable.count()) {
         playQueueModel.addItems(useable, playQueueModel.rowCount(), false, 0);

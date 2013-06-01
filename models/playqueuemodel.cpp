@@ -633,6 +633,16 @@ Song PlayQueueModel::getSongByRow(const qint32 row) const
     return row<0 || row>=songs.size() ? Song() : songs.at(row);
 }
 
+Song PlayQueueModel::getSongById(qint32 id) const
+{
+    foreach (const Song &s, songs) {
+        if (s.id==id) {
+            return s;
+        }
+    }
+    return Song();
+}
+
 void PlayQueueModel::updateCurrentSong(quint32 id)
 {
     qint32 oldIndex = currentSongId;
@@ -734,6 +744,7 @@ void PlayQueueModel::update(const QList<Song> &songList)
             } else if (isEmpty) {
                 s=curentSongAtPos;
             } else {
+                s.key=curentSongAtPos.key;
                 songs.replace(i, s);
                 if (s.name!=curentSongAtPos.name || s.title!=curentSongAtPos.title || s.artist!=curentSongAtPos.artist) {
                     emit dataChanged(index(i, 0), index(i, columnCount(QModelIndex())-1));
@@ -824,6 +835,8 @@ void PlayQueueModel::updateDetails(const QList<Song> &updated)
 {
     QMap<QString, Song> songMap;
     QList<int> updatedRows;
+    bool currentUpdated=false;
+    Song currentSong;
 
     foreach (const Song &song, updated) {
         songMap[song.file]=song;
@@ -839,6 +852,10 @@ void PlayQueueModel::updateDetails(const QList<Song> &updated)
             if (updatedSong.name!=current.name || updatedSong.title!=current.title || updatedSong.artist!=current.artist) {
                 songs.replace(i, updatedSong);
                 updatedRows.append(i);
+                if (currentSongId==current.id) {
+                    currentUpdated=true;
+                    currentSong=updatedSong;
+                }
             }
 
             songMap.remove(current.file);
@@ -857,6 +874,10 @@ void PlayQueueModel::updateDetails(const QList<Song> &updated)
                 emit dataChanged(index(row, 0), index(row, columnCount(QModelIndex())-1));
             }
         }
+    }
+
+    if (currentUpdated) {
+        emit updateCurrent(currentSong);
     }
 }
 

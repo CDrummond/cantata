@@ -698,6 +698,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(&playQueueModel, SIGNAL(statsUpdated(int, quint32)), this, SLOT(updatePlayQueueStats(int, quint32)));
     connect(&playQueueModel, SIGNAL(fetchingStreams()), playQueue, SLOT(showSpinner()));
     connect(&playQueueModel, SIGNAL(streamsFetched()), playQueue, SLOT(hideSpinner()));
+    connect(&playQueueModel, SIGNAL(updateCurrent(Song)), SLOT(updateCurrentSong(Song)));
     connect(playQueue, SIGNAL(itemsSelected(bool)), SLOT(playQueueItemsSelected(bool)));
     connect(streamsPage, SIGNAL(add(const QStringList &, bool, quint8)), &playQueueModel, SLOT(addItems(const QStringList &, bool, quint8)));
     connect(streamsPage, SIGNAL(error(QString)), this, SLOT(showError(QString)));
@@ -1768,6 +1769,12 @@ void MainWindow::updateCurrentSong(const Song &song)
     current=song;
     if (current.isCdda()) {
         emit getStatus();
+        if (current.isUnknown()) {
+            Song pqSong=playQueueModel.getSongById(current.id);
+            if (!pqSong.isEmpty()) {
+                current=pqSong;
+            }
+        }
     }
 
     #ifdef TAGLIB_FOUND

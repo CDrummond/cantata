@@ -82,6 +82,7 @@ public:
 //     qint32 getPosByRow(qint32 row) const;
     qint32 getRowById(qint32 id) const;
     Song getSongByRow(const qint32 row) const;
+    Song getSongById(qint32 id) const;
     Qt::DropActions supportedDropActions() const;
     Qt::ItemFlags flags(const QModelIndex &index) const;
     QStringList mimeTypes() const;
@@ -118,6 +119,7 @@ Q_SIGNALS:
     void fetchingStreams();
     void streamsFetched();
     void removeSongs(const QList<qint32> &items);
+    void updateCurrent(const Song &s);
 
 private:
     QList<Song> songs;

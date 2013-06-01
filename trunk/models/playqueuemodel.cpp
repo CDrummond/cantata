@@ -135,6 +135,7 @@ PlayQueueModel::PlayQueueModel(QObject *parent)
     connect(this, SIGNAL(removeSongs(QList<qint32>)), MPDConnection::self(), SLOT(removeSongs(QList<qint32>)));
     #ifdef ENABLE_DEVICES_SUPPORT
     connect(DevicesModel::self(), SIGNAL(invalid(QList<Song>)), SLOT(remove(QList<Song>)));
+    connect(DevicesModel::self(), SIGNAL(updatedDetails(QList<Song>)), SLOT(updateDetails(QList<Song>)));
     #endif
 }
 
@@ -800,11 +801,11 @@ void PlayQueueModel::remove(const QList<Song> &rem)
     QSet<QString> s;
     QList<qint32> ids;
 
-    foreach(const Song &song, rem) {
+    foreach (const Song &song, rem) {
         s.insert(song.file);
     }
 
-    foreach(const Song &song, songs) {
+    foreach (const Song &song, songs) {
         if (s.contains(song.file)) {
             ids.append(song.id);
             s.remove(song.file);
@@ -816,6 +817,46 @@ void PlayQueueModel::remove(const QList<Song> &rem)
 
     if (!ids.isEmpty()) {
         emit removeSongs(ids);
+    }
+}
+
+void PlayQueueModel::updateDetails(const QList<Song> &updated)
+{
+    QMap<QString, Song> songMap;
+    QList<int> updatedRows;
+
+    foreach (const Song &song, updated) {
+        songMap[song.file]=song;
+    }
+
+    for (int i=0; i<songs.count(); ++i) {
+        Song current=songs.at(i);
+        if (songMap.contains(current.file)) {
+            Song updatedSong=songMap[current.file];
+            updatedSong.id=current.id;
+            updatedSong.setKey();
+
+            if (updatedSong.name!=current.name || updatedSong.title!=current.title || updatedSong.artist!=current.artist) {
+                songs.replace(i, updatedSong);
+                updatedRows.append(i);
+            }
+
+            songMap.remove(current.file);
+            if (songMap.isEmpty()) {
+                break;
+            }
+        }
+    }
+
+    if (!updatedRows.isEmpty()) {
+        if (updatedRows.count()==updated.count()) {
+            beginResetModel();
+            endResetModel();
+        } else {
+            foreach (int row, updatedRows) {
+                emit dataChanged(index(row, 0), index(row, columnCount(QModelIndex())-1));
+            }
+        }
     }
 }
 

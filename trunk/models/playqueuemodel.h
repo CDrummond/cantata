@@ -107,6 +107,7 @@ public Q_SLOTS:
 private Q_SLOTS:
     void stopAfterCurrentChanged(bool afterCurrent);
     void remove(const QList<Song> &rem);
+    void updateDetails(const QList<Song> &updated);
 
 Q_SIGNALS:
     void stop(bool afterCurrent);

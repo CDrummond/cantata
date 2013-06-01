@@ -209,6 +209,8 @@ Q_SIGNALS:
     void cacheSaved();
     void configurationChanged();
     void invalid(const QList<Song> &songs);
+    void play(const QList<Song> &songs);
+    void updatedDetails(const QList<Song> &songs);
 
 protected:
     #ifndef Q_OS_WIN

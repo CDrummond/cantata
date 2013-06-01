@@ -59,6 +59,7 @@ AudioCdDevice::AudioCdDevice(DevicesModel *m, Solid::Device &dev)
     , disc(0)
     , time(0xFFFFFFFF)
     , lookupInProcess(false)
+    , autoPlay(false)
 {
     drive=dev.parent().as<Solid::OpticalDrive>();
     block=dev.as<Solid::Block>();
@@ -307,6 +308,13 @@ void AudioCdDevice::setDetails(const CdAlbum &a)
             setCover(s, img.img, img.fileName);
         }
     }
+
+    if (autoPlay) {
+        autoPlay=false;
+        playTracks();
+    } else {
+        updateDetails();
+    }
 }
 
 void AudioCdDevice::cdMatches(const QList<CdAlbum> &albums)
@@ -330,5 +338,46 @@ void AudioCdDevice::setCover(const Song &song, const QImage &img, const QString 
 {
     if (song.isCdda() && song.albumartist==artist && song.album==album) {
         setCover(Covers::Image(img, file));
+    }
+}
+
+void AudioCdDevice::autoplay()
+{
+    if (childCount()) {
+        playTracks();
+    } else {
+        autoPlay=true;
+    }
+}
+
+void AudioCdDevice::playTracks()
+{
+    QList<Song> tracks;
+    foreach (const MusicLibraryItem *item, childItems()) {
+        if (MusicLibraryItem::Type_Song==item->itemType()) {
+            Song song=static_cast<const MusicLibraryItemSong *>(item)->song();
+            song.file=path()+song.file;
+            tracks.append(song);
+        }
+    }
+
+    if (!tracks.isEmpty()) {
+        emit play(tracks);
+    }
+}
+
+void AudioCdDevice::updateDetails()
+{
+    QList<Song> tracks;
+    foreach (const MusicLibraryItem *item, childItems()) {
+        if (MusicLibraryItem::Type_Song==item->itemType()) {
+            Song song=static_cast<const MusicLibraryItemSong *>(item)->song();
+            song.file=path()+song.file;
+            tracks.append(song);
+        }
+    }
+
+    if (!tracks.isEmpty()) {
+        emit updatedDetails(tracks);
     }
 }

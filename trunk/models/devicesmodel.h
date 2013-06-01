@@ -76,6 +76,7 @@ public:
     Action * disconnectAct() const { return disconnectAction; }
     #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
     Action * editAct() const { return editAction; }
+    void playCd();
     #endif
 
 public Q_SLOTS:
@@ -108,6 +109,11 @@ Q_SIGNALS:
     void updated(const QModelIndex &idx);
     void matches(const QString &udi, const QList<CdAlbum> &albums);
     void invalid(const QList<Song> &songs);
+    void updatedDetails(const QList<Song> &songs);
+    void add(const QStringList &files, bool replace, quint8 priorty); // add songs to MPD playqueue
+
+private Q_SLOTS:
+    void play(const QList<Song> &songs);
 
 private:
     QList<Device *> devices;
@@ -121,6 +127,7 @@ private:
     Action *connectAction;
     Action *disconnectAction;
     #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
+    bool autoplayCd;
     Action *editAction;
     #endif
     friend class Device;

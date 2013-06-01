@@ -31,6 +31,7 @@
 #include "settings.h"
 #include "itemview.h"
 #include "mpdparseutils.h"
+#include "mpdconnection.h"
 #include "umsdevice.h"
 #include "httpserver.h"
 #include "localize.h"
@@ -102,6 +103,9 @@ DevicesModel::DevicesModel(QObject *parent)
     , itemMenu(0)
     , enabled(false)
     , inhibitMenuUpdate(false)
+    #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
+    , autoplayCd(false)
+    #endif
 {
     configureAction = ActionCollection::get()->createAction("configuredevice", i18n("Configure Device"), Icons::configureIcon);
     refreshAction = ActionCollection::get()->createAction("refreshdevice", i18n("Refresh Device"), "view-refresh");
@@ -111,6 +115,7 @@ DevicesModel::DevicesModel(QObject *parent)
     editAction = ActionCollection::get()->createAction("editcd", i18n("Edit CD Details"), Icons::editIcon);
     #endif
     updateItemMenu();
+    connect(this, SIGNAL(add(const QStringList &, bool, quint8)), MPDConnection::self(), SLOT(add(const QStringList &, bool, quint8)));
 }
 
 DevicesModel::~DevicesModel()
@@ -704,10 +709,16 @@ void DevicesModel::addLocalDevice(const QString &udi)
         connect(dev, SIGNAL(error(const QString &)), SIGNAL(error(const QString &)));
         connect(dev, SIGNAL(cover(const Song &, const QImage &)), SLOT(setCover(const Song &, const QImage &)));
         connect(dev, SIGNAL(invalid(QList<Song>)), SIGNAL(invalid(QList<Song>)));
+        connect(dev, SIGNAL(updatedDetails(QList<Song>)), SIGNAL(updatedDetails(QList<Song>)));
+        connect(dev, SIGNAL(play(QList<Song>)), SLOT(play(QList<Song>)));
         #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
         if (Device::AudioCd==dev->devType()) {
             connect(static_cast<AudioCdDevice *>(dev), SIGNAL(matches(const QString &, const QList<CdAlbum> &)),
                     SIGNAL(matches(const QString &, const QList<CdAlbum> &)));
+            if (autoplayCd) {
+                autoplayCd=false;
+                static_cast<AudioCdDevice *>(dev)->autoplay();
+            }
         }
         #endif
         updateItemMenu();
@@ -959,6 +970,20 @@ void DevicesModel::toggleGrouping()
     endResetModel();
 }
 
+#if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
+void DevicesModel::playCd()
+{
+    foreach (Device *dev, devices) {
+        if (Device::AudioCd==dev->devType()) {
+            static_cast<AudioCdDevice *>(dev)->autoplay();
+            return;
+        }
+    }
+    autoplayCd=true;
+}
+
+#endif
+
 int DevicesModel::indexOf(const QString &udi)
 {
     int i=0;
@@ -1029,4 +1054,18 @@ QMimeData * DevicesModel::mimeData(const QModelIndexList &indexes) const
         PlayQueueModel::encode(*mimeData, PlayQueueModel::constUriMimeType, paths);
     }
     return mimeData;
+}
+
+void DevicesModel::play(const QList<Song> &songs)
+{
+    QStringList paths;
+    if (HttpServer::self()->isAlive()) {
+        foreach (const Song &s, songs) {
+            paths.append(HttpServer::self()->encodeUrl(s));
+        }
+
+        if (!paths.isEmpty()) {
+            emit add(paths, true, 0);
+        }
+    }
 }

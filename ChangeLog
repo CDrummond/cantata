@@ -41,6 +41,8 @@
 25. When AudioCD is ejected, remove tracks from playqueue.
 26. If Cantata is passed cdda:// then it will load, and start to play, the
     current AudioCD.
+27. Provide KDE4 Solid actions file to play AudioCDs. (Only installed for KDE4
+    builds)
 
 1.0.3
 -----

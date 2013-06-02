@@ -1831,7 +1831,7 @@ void MainWindow::updateCurrentSong(const Song &song)
     playQueue->updateRows(idx.row(), current.key, autoScrollPlayQueue && playQueueProxyModel.isEmpty() && isPlaying);
     scrollPlayQueue();
     updateWindowTitle();
-    context->update(song);
+    context->update(current);
     trayItem->songChanged(song, isPlaying);
 }
 

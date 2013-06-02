@@ -945,10 +945,15 @@ void MainWindow::load(const QStringList &urls)
         if (QLatin1String("http")==u.scheme()) {
             useable.append(u.toString());
         } else if (haveHttp && (u.scheme().isEmpty() || QLatin1String("file")==u.scheme())) {
+            #if defined ENABLE_DEVICES_SUPPORT && (defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND)
+            if (u.path().startsWith("/run/user/") && u.path().contains("/gvfs/cdda:host=")) {
+                DevicesModel::self()->playCd();
+            } else
+            #endif
             useable.append(HttpServer::self()->encodeUrl(u.path()));
         }
         #if defined ENABLE_DEVICES_SUPPORT && (defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND)
-        else if (u.scheme()=="cdda") {
+        else if (haveHttp && u.scheme()=="cdda") {
             DevicesModel::self()->playCd();
         }
         #endif

@@ -40,7 +40,8 @@
 24. Use 24px playback icons if the icon theme has these.
 25. When AudioCD is ejected, remove tracks from playqueue.
 26. If Cantata is passed cdda:// then it will load, and start to play, the
-    current AudioCD.
+    current AudioCD. Use cdda://?dev=$device (e.g. cdda://?dev=/dev/sr0) to
+    specify which drive to use.
 27. Provide KDE4 Solid actions file to play AudioCDs. (Only installed for KDE4
     builds)
 

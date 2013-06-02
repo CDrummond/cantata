@@ -50,11 +50,15 @@ public:
         SrvMusicBrainz
     };
 
+    static const QLatin1String constAnyDev;
+
     static QString coverUrl(QString udi);
+    static QString getDevice(const QUrl &url);
 
     AudioCdDevice(DevicesModel *m, Solid::Device &dev);
     virtual ~AudioCdDevice();
 
+    bool isDevice(const QString &dev);
     bool supportsDisconnect() const { return 0!=drive; }
     bool isConnected() const { return 0!=block; }
     QString icon() const { return "media-optical"; }

@@ -76,7 +76,7 @@ public:
     Action * disconnectAct() const { return disconnectAction; }
     #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
     Action * editAct() const { return editAction; }
-    void playCd();
+    void playCd(const QString &dev);
     #endif
 
 public Q_SLOTS:
@@ -127,7 +127,7 @@ private:
     Action *connectAction;
     Action *disconnectAction;
     #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
-    bool autoplayCd;
+    QString autoplayCd;
     Action *editAction;
     #endif
     friend class Device;

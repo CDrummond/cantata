@@ -36,6 +36,12 @@
 #include "covers.h"
 #include "settings.h"
 #include <QDir>
+#include <QUrl>
+#if QT_VERSION >= 0x050000
+#include <QUrlQuery>
+#endif
+
+const QLatin1String AudioCdDevice::constAnyDev("-");
 
 QString AudioCdDevice::coverUrl(QString udi)
 {
@@ -45,6 +51,31 @@ QString AudioCdDevice::coverUrl(QString udi)
     udi.replace("/", "_");
     udi.replace(":", "_");
     return Song::constCddaProtocol+udi;
+}
+
+QString AudioCdDevice::getDevice(const QUrl &url)
+{
+    if (QLatin1String("cdda")==url.scheme()) {
+        #if QT_VERSION < 0x050000
+        const QUrl &q=url;
+        #else
+        QUrlQuery q(url);
+        #endif
+        if (q.hasQueryItem("dev")) {
+            return q.queryItemValue("dev");
+        }
+        return constAnyDev;
+    }
+
+    QString path=url.path();
+    if (path.startsWith("/run/user/")) {
+        const QString marker=QLatin1String("/gvfs/cdda:host=");
+        int pos=path.lastIndexOf(marker);
+        if (-1!=pos) {
+            return QLatin1String("/dev/")+path.mid(pos+marker.length());
+        }
+    }
+    return QString();
 }
 
 AudioCdDevice::AudioCdDevice(DevicesModel *m, Solid::Device &dev)
@@ -112,6 +143,11 @@ AudioCdDevice::~AudioCdDevice()
         mb=0;
     }
     #endif
+}
+
+bool AudioCdDevice::isDevice(const QString &dev)
+{
+    return constAnyDev==dev || block->device()==dev;
 }
 
 void AudioCdDevice::connectService(bool useCddb)

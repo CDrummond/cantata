@@ -103,9 +103,6 @@ DevicesModel::DevicesModel(QObject *parent)
     , itemMenu(0)
     , enabled(false)
     , inhibitMenuUpdate(false)
-    #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
-    , autoplayCd(false)
-    #endif
 {
     configureAction = ActionCollection::get()->createAction("configuredevice", i18n("Configure Device"), Icons::configureIcon);
     refreshAction = ActionCollection::get()->createAction("refreshdevice", i18n("Refresh Device"), "view-refresh");
@@ -715,8 +712,8 @@ void DevicesModel::addLocalDevice(const QString &udi)
         if (Device::AudioCd==dev->devType()) {
             connect(static_cast<AudioCdDevice *>(dev), SIGNAL(matches(const QString &, const QList<CdAlbum> &)),
                     SIGNAL(matches(const QString &, const QList<CdAlbum> &)));
-            if (autoplayCd) {
-                autoplayCd=false;
+            if (!autoplayCd.isEmpty() && static_cast<AudioCdDevice *>(dev)->isDevice(autoplayCd)) {
+                autoplayCd=QString();
                 static_cast<AudioCdDevice *>(dev)->autoplay();
             }
         }
@@ -971,15 +968,15 @@ void DevicesModel::toggleGrouping()
 }
 
 #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
-void DevicesModel::playCd()
+void DevicesModel::playCd(const QString &dev)
 {
-    foreach (Device *dev, devices) {
-        if (Device::AudioCd==dev->devType()) {
-            static_cast<AudioCdDevice *>(dev)->autoplay();
+    foreach (Device *d, devices) {
+        if (Device::AudioCd==d->devType() && static_cast<AudioCdDevice *>(d)->isDevice(dev)) {
+            static_cast<AudioCdDevice *>(d)->autoplay();
             return;
         }
     }
-    autoplayCd=true;
+    autoplayCd=dev;
 }
 
 #endif

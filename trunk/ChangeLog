@@ -37,14 +37,14 @@
 24. Show number of songs to be copied on action dialog. Make number a link,
     when clicked produce a dialog showing list.
 25. Improve radiance CSS theme.
-24. Use 24px playback icons if the icon theme has these.
-25. When AudioCD is ejected, remove tracks from playqueue.
-26. If Cantata is passed cdda:// then it will load, and start to play, the
+26. Use 24px playback icons if the icon theme has these.
+27. When AudioCD is ejected, remove tracks from playqueue.
+28. If Cantata is passed cdda:// then it will load, and start to play, the
     current AudioCD. Use cdda://?dev=$device (e.g. cdda://?dev=/dev/sr0) to
     specify which drive to use.
-27. Provide KDE4 Solid actions file to play AudioCDs. (Only installed for KDE4
+29. Provide KDE4 Solid actions file to play AudioCDs. (Only installed for KDE4
     builds)
-28. Update ultimate_providers.xml to match Clementine 1.1.1
+30. Update ultimate_providers.xml to match Clementine 1.1.1
 
 1.0.3
 -----

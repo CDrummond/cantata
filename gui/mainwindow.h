@@ -373,7 +373,6 @@ private:
     #ifdef ENABLE_DEVICES_SUPPORT
     Action *devicesTabAction;
     #endif
-    Action *searchAction;
     Action *expandAllAction;
     Action *collapseAllAction;
     Action *serverInfoAction;

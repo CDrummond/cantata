@@ -56,12 +56,12 @@ StdActions::StdActions()
     addToPlayQueueAction = ActionCollection::get()->createAction("addtoplaylist", i18n("Add To Play Queue"), "list-add");
     replacePlayQueueAction = ActionCollection::get()->createAction("replaceplaylist", i18n("Replace Play Queue"), "media-playback-start");
     addWithPriorityAction = ActionCollection::get()->createAction("addwithprio", i18n("Add With Priority"), Icon("favorites"));
-    addPrioHighestAction = ActionCollection::get()->createAction("highestprio", i18n("Highest Priority (255)"));
-    addPrioHighAction = ActionCollection::get()->createAction("highprio", i18n("High Priority (200)"));
-    addPrioMediumAction = ActionCollection::get()->createAction("mediumprio", i18n("Medium Priority (125)"));
-    addPrioLowAction = ActionCollection::get()->createAction("lowprio", i18n("Low Priority (50)"));
-    addPrioDefaultAction = ActionCollection::get()->createAction("defaultprio", i18n("Default Priority (0)"));
-    addPrioCustomAction = ActionCollection::get()->createAction("customprio", i18n("Custom Priority..."));
+    addPrioHighestAction = new Action(i18n("Highest Priority (255)"), 0);
+    addPrioHighAction = new Action(i18n("High Priority (200)"), 0);
+    addPrioMediumAction = new Action(i18n("Medium Priority (125)"), 0);
+    addPrioLowAction = new Action(i18n("Low Priority (50)"), 0);
+    addPrioDefaultAction = new Action(i18n("Default Priority (0)"), 0);
+    addPrioCustomAction = new Action(i18n("Custom Priority..."), 0);
     addToStoredPlaylistAction = ActionCollection::get()->createAction("addtostoredplaylist", i18n("Add To Playlist"), Icons::playlistIcon);
     #ifdef TAGLIB_FOUND
     organiseFilesAction = ActionCollection::get()->createAction("organizefiles", i18n("Organize Files"), "inode-directory");
@@ -78,9 +78,10 @@ StdActions::StdActions()
     setCoverAction = ActionCollection::get()->createAction("setcover", i18n("Set Image"));
     refreshAction = ActionCollection::get()->createAction("refresh", i18n("Refresh Database"), "view-refresh");
     backAction = ActionCollection::get()->createAction("back", i18n("Back"), "go-previous");
-    removeAction = ActionCollection::get()->createAction("removeitems", i18n("Remove"), "list-remove");
-
     backAction->setShortcut(QKeySequence::Back);
+    removeAction = ActionCollection::get()->createAction("removeitems", i18n("Remove"), "list-remove");
+    searchAction = ActionCollection::get()->createAction("search", i18n("Search"), "edit-find");
+    searchAction->setShortcut(Qt::ControlModifier+Qt::Key_F);
 
     addToStoredPlaylistAction->setMenu(PlaylistsModel::self()->menu());
     addPrioHighestAction->setData(255);

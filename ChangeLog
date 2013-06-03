@@ -44,6 +44,7 @@
     specify which drive to use.
 27. Provide KDE4 Solid actions file to play AudioCDs. (Only installed for KDE4
     builds)
+28. Update ultimate_providers.xml to match Clementine 1.1.1
 
 1.0.3
 -----

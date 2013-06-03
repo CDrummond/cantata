@@ -54,7 +54,6 @@ public:
     void update(const Song &s);
     void showEvent(QShowEvent *e);
     void paintEvent(QPaintEvent *e);
-    const QColor & normalLinkColor() const { return appLinkColor; }
     float fade() { return fadeValue; }
     void setFade(float value);
     void updateImage(const QImage &img);

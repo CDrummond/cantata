@@ -214,15 +214,12 @@ void ContextPage::useDarkBackground(bool u)
             pal.setColor(QPalette::Text, light);
             pal.setColor(QPalette::Link, light);
             pal.setColor(QPalette::LinkVisited, linkVisited);
-            appPal.setColor(QPalette::Link, light);
             prevLinkColor=appLinkColor;
             linkCol=pal.color(QPalette::Link);
         } else {
-            appPal.setColor(QPalette::Link, appLinkColor);
             linkCol=appLinkColor;
             prevLinkColor=QColor(240, 240, 240);
         }
-        QApplication::setPalette(appPal);
         setPalette(pal);
         artist->setPal(pal, linkCol, prevLinkColor);
         album->setPal(pal, linkCol, prevLinkColor);

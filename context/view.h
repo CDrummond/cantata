@@ -59,6 +59,7 @@ public:
     void setZoom(int z);
     int getZoom();
     virtual void update(const Song &s, bool force)=0;
+    void setHtml(const QString &h);
 
 protected Q_SLOTS:
     virtual void searchResponse(const QString &r, const QString &l);

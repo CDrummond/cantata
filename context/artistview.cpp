@@ -323,7 +323,7 @@ void ArtistView::setBio()
         html+=View::subHeader(i18n("Web Links"))+QLatin1String("<ul>")+QString(webLinks).replace("${artist}", currentSong.artist)+QLatin1String("</ul>");
     }
 
-    text->setText(html);
+    setHtml(html);
 }
 
 void ArtistView::requestSimilar()

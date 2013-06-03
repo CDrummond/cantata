@@ -180,6 +180,12 @@ int View::getZoom()
     return text->zoom();
 }
 
+void View::setHtml(const QString &h)
+{
+    text->setText(QLatin1String("<html><head><style type=text/css>a:link {color:")+text->palette().link().color().name()+
+                  QLatin1String("; text-decoration:underline;}</style></head><body>")+h+QLatin1String("</body></html>"));
+}
+
 void View::searchResponse(const QString &r, const QString &l)
 {
     Q_UNUSED(l)

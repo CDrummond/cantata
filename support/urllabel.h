@@ -29,36 +29,26 @@
 typedef KUrlLabel UrlLabel;
 #else
 #include <QLabel>
-#include <QFont>
-class QResizeEvent;
 
 class UrlLabel : public QLabel
 {
     Q_OBJECT
 
 public:
-    UrlLabel(QWidget *p)
-        : QLabel(p) {
-        QFont f(font());
-        f.setUnderline(true);
-        setFont(f);
-        QPalette pal(palette());
-        pal.setColor(QPalette::Normal, QPalette::Foreground, pal.color(QPalette::Normal, QPalette::Highlight));
-        pal.setColor(QPalette::Inactive, QPalette::Foreground, pal.color(QPalette::Inactive, QPalette::Highlight));
-        pal.setColor(QPalette::Disabled, QPalette::Foreground, pal.color(QPalette::Disabled, QPalette::Highlight));
-        setPalette(pal);
-    }
+    UrlLabel(QWidget *p) : QLabel(p), pressed(false) { }
+    virtual ~UrlLabel() { }
 
-    virtual ~UrlLabel() {
-    }
+    void setText(const QString &t) { QLabel::setText("<a href=\".\">"+t+"</a>");}
 
 Q_SIGNALS:
     void leftClickedUrl();
 
 protected:
-    void mouseReleaseEvent(QMouseEvent *) {
-        emit leftClickedUrl();
-    }
+    void mousePressEvent(QMouseEvent *) { pressed=true; }
+    void mouseReleaseEvent(QMouseEvent *) { if (pressed) { emit leftClickedUrl(); } pressed=false; }
+
+private:
+    bool pressed;
 };
 #endif
 

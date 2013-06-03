@@ -30,6 +30,7 @@
 #include "actioncollection.h"
 #include "mpdconnection.h"
 #include "statuslabel.h"
+#include "messagebox.h"
 
 DynamicPage::DynamicPage(QWidget *p)
     : QWidget(p)
@@ -138,9 +139,12 @@ void DynamicPage::remove()
 {
     QModelIndexList selected=view->selectedIndexes();
 
-    if (selected.isEmpty()) {
+    if (selected.isEmpty() ||
+        MessageBox::No==MessageBox::warningYesNo(this, i18n("Are you sure you wish to remove the selected rules?\nThis cannot be undone."),
+                                                 i18n("Remove Dynamic Rules"), StdGuiItem::remove(), StdGuiItem::cancel())) {
         return;
     }
+
     QStringList names;
     foreach (const QModelIndex &idx, selected) {
         names.append(idx.data(Qt::DisplayRole).toString());

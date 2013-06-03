@@ -286,6 +286,13 @@ void ContextPage::updateImage(const QImage &img)
     animator.start();
 }
 
+void ContextPage::search()
+{
+    if (song->isVisible()) {
+        song->search();
+    }
+}
+
 void ContextPage::update(const Song &s)
 {
     artist->update(s);

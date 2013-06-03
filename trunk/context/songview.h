@@ -54,7 +54,7 @@ public:
 Q_SIGNALS:
     void providersUpdated();
 
-protected Q_SLOTS:
+public Q_SLOTS:
     void downloadFinished();
     void lyricsReady(int, QString lyrics);
     void update();

@@ -311,7 +311,6 @@ MainWindow::MainWindow(QWidget *parent)
     #ifdef ENABLE_DEVICES_SUPPORT
     devicesTabAction = ActionCollection::get()->createAction("showdevicestab", i18n("Devices"), Icons::devicesIcon);
     #endif
-    searchAction = ActionCollection::get()->createAction("search", i18n("Search"), "edit-find");
     expandAllAction = ActionCollection::get()->createAction("expandall", i18n("Expand All"));
     collapseAllAction = ActionCollection::get()->createAction("collapseall", i18n("Collapse All"));
 
@@ -333,7 +332,6 @@ MainWindow::MainWindow(QWidget *parent)
     #endif
 
     copyTrackInfoAction->setShortcut(QKeySequence::Copy);
-    searchAction->setShortcut(Qt::ControlModifier+Qt::Key_F);
     expandAllAction->setShortcut(Qt::ControlModifier+Qt::Key_Plus);
     collapseAllAction->setShortcut(Qt::ControlModifier+Qt::Key_Minus);
 
@@ -777,7 +775,8 @@ MainWindow::MainWindow(QWidget *parent)
     #ifdef ENABLE_ONLINE_SERVICES
     connect(onlineTabAction, SIGNAL(triggered(bool)), this, SLOT(showOnlineTab()));
     #endif
-    connect(searchAction, SIGNAL(triggered(bool)), this, SLOT(focusSearch()));
+    addAction(StdActions::self()->searchAction); // Weird, but if I dont add thiis action, it does not work!!!!
+    connect(StdActions::self()->searchAction, SIGNAL(triggered(bool)), SLOT(focusSearch()));
     connect(expandAllAction, SIGNAL(triggered(bool)), this, SLOT(expandAll()));
     connect(collapseAllAction, SIGNAL(triggered(bool)), this, SLOT(collapseAll()));
     #ifdef ENABLE_DEVICES_SUPPORT
@@ -2657,10 +2656,11 @@ void MainWindow::goBack()
 
 void MainWindow::focusSearch()
 {
-    if (searchPlayQueueLineEdit->hasFocus()) {
+    if (context->isVisible()) {
+        context->search();
+    } else if (searchPlayQueueLineEdit->hasFocus()) {
         return;
-    }
-    if (playQueue->hasFocus() || repeatButton->hasFocus() || singleButton->hasFocus() || randomButton->hasFocus() ||
+    } else if (playQueue->hasFocus() || repeatButton->hasFocus() || singleButton->hasFocus() || randomButton->hasFocus() ||
         consumeButton->hasFocus() || savePlayQueueButton->hasFocus() || clearPlayQueueButton->hasFocus()) {
         searchPlayQueueLineEdit->setFocus();
     } else if (libraryPage->isVisible()) {

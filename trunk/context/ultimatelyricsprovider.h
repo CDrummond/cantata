@@ -64,7 +64,7 @@ private Q_SLOTS:
     void lyricsFetched();
 
 private:
-    void doUrlReplace(const QString &tag, const QString &value, QString *u) const;
+    void doUrlReplace(const QString &tag, const QString &value, QString &u) const;
 
 private:
     bool enabled;

@@ -51,6 +51,7 @@ private Q_SLOTS:
     void replayGainSetting(const QString &rg);
     void updateOutpus(const QList<Output> &outputs);
     void mpdConnectionStateChanged(bool c);
+    void showAboutReplayGain();
 };
 
 #endif

@@ -27,6 +27,7 @@
 #include "settings.h"
 #include "icon.h"
 #include "treeview.h"
+#include "messagebox.h"
 #include <QListWidget>
 
 ServerPlaybackSettings::ServerPlaybackSettings(QWidget *p)
@@ -46,6 +47,7 @@ ServerPlaybackSettings::ServerPlaybackSettings(QWidget *p)
     connect(this, SIGNAL(setReplayGain(const QString &)), MPDConnection::self(), SLOT(setReplayGain(const QString &)));
     connect(this, SIGNAL(setCrossFade(int)), MPDConnection::self(), SLOT(setCrossFade(int)));
     connect(this, SIGNAL(getReplayGain()), MPDConnection::self(), SLOT(getReplayGain()));
+    connect(aboutReplayGain, SIGNAL(leftClickedUrl()), SLOT(showAboutReplayGain()));
     int iconSize=Icon::dlgIconSize();
     messageIcon->setMinimumSize(iconSize, iconSize);
     messageIcon->setMaximumSize(iconSize, iconSize);
@@ -125,4 +127,17 @@ void ServerPlaybackSettings::mpdConnectionStateChanged(bool c)
         messageLabel->setText(i18n("<i><b>Not Connected.</b><br/>The entries below cannot be modified, as Cantata is not connected to MPD.</i>"));
         view->clear();
     }
+}
+
+void ServerPlaybackSettings::showAboutReplayGain()
+{
+    MessageBox::information(this, i18n("<p>Replay Gain is a proposed standard published in 2001 to normalize the perceived loudness of computer "
+                                       "audio formats such as MP3 and Ogg Vorbis. It works on a track/album basis, and is now supported in a "
+                                       "growing number of players.</p>"
+                                       "<p>The following ReplayGain settings may be used:<ul>"
+                                       "<li><i>None</i> - No ReplayGain is applied.</li>"
+                                       "<li><i>Track</i> - Volume will be adjusted using the track's ReplayGain tags.</li>"
+                                       "<li><i>Album</i> - Volume will be adjusted using the albums's ReplayGain tags.</li>"
+                                       "<li><i>Auto</i> - Volume will be adjusted using the track's ReplayGain tags if random play is actived, otherwise the album's tags will be used.</li>"
+                                       "</ul></p>"));
 }

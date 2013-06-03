@@ -126,7 +126,6 @@ public:
     bool haveUpdate() const { return 0!=update; }
     int newRows() const { return update ? update->childCount() : 0; }
     const QString & statusMessage() const { return statusMsg; }
-    bool isService() const { return true; }
     const MusicLibraryItem * findSong(const Song &s) const;
     bool songExists(const Song &s) const;
     bool isConfigured() { return configured; }

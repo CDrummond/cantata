@@ -173,7 +173,6 @@ public:
     void setOptions(const DeviceOptions &o) { opts=o; saveOptions(); }
     virtual void saveOptions()=0;
     const QString & statusMessage() const { return statusMsg; }
-    bool isDevice() const { return true; }
     const MusicLibraryItem * findSong(const Song &s) const;
     bool songExists(const Song &s) const;
     bool isConfigured() { return configured; }

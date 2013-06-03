@@ -26,12 +26,14 @@
 #include "localize.h"
 #include "settings.h"
 #include "icon.h"
+#include "treeview.h"
 #include <QListWidget>
 
 ServerPlaybackSettings::ServerPlaybackSettings(QWidget *p)
     : QWidget(p)
 {
     setupUi(this);
+    view->setItemDelegate(new SimpleTreeViewDelegate(view));
     replayGain->addItem(i18n("None"), QVariant("off"));
     replayGain->addItem(i18n("Track"), QVariant("track"));
     replayGain->addItem(i18n("Album"), QVariant("album"));

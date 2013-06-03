@@ -381,13 +381,13 @@ Source Code
 The Cantata source folder contains the following structure:
     3rdparty   - Third party libraries
     cmake      - CMake scripts
+    context    - Context view classes
     dbus       - DBUS related classes and XML files
     devices    - Device related classes
     dynamic    - Dynamic playlists
     gui        - General GUI classes, e.g. MainWindow, AlbumsPage, etc.
     http       - HTTP server
     icons      - Icons
-    lyrics     - Lyrics 
     models     - Most models, apart from dynamic playlist and shortcut models
     mpd        - MPD related classes; connection, status, song, etc.
     network    - Generic Network classes (and proxy support for Qt builds)

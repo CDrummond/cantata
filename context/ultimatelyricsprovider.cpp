@@ -102,6 +102,13 @@ static void applyExcludeRule(const UltimateLyricsProvider::Rule &rule, QString *
     }
 }
 
+static QString noSpace(const QString &text)
+{
+    QString ret(text);
+    ret.remove(' ');
+    return ret;
+}
+
 static QString firstChar(const QString &text)
 {
     return text.isEmpty() ? text : text[0].toLower();
@@ -142,22 +149,27 @@ void UltimateLyricsProvider::fetchInfo(int id, const Song &metadata)
     QStringList toStrip;
     toStrip << QLatin1String(" ft. ") << QLatin1String(" feat. ") << QLatin1String(" featuring ");
     foreach (const QString s, toStrip) {
-        int strip = artistFixed.toLower().indexOf( " ft. ");
+        int strip = artistFixed.toLower().indexOf(s);
         if (-1!=strip) {
-            artistFixed = artistFixed.mid( 0, strip );
+            artistFixed = artistFixed.mid(0, strip);
         }
     }
 
     // Fill in fields in the URL
     QString urlText(url);
-    doUrlReplace("{artist}", artistFixed.toLower(),      &urlText);
-    doUrlReplace("{album}",  metadata.album.toLower(),   &urlText);
-    doUrlReplace("{title}",  metadata.title.toLower(),   &urlText);
-    doUrlReplace("{Artist}", artistFixed,                &urlText);
-    doUrlReplace("{Album}",  metadata.album,             &urlText);
-    doUrlReplace("{Title}",  metadata.title,             &urlText);
-    doUrlReplace("{Title2}", titleCase(metadata.title),  &urlText);
-    doUrlReplace("{a}",      firstChar(artistFixed),     &urlText);
+    doUrlReplace("{artist}",  artistFixed.toLower(),             urlText);
+    doUrlReplace("{artist2}", noSpace(artistFixed.toLower()),    urlText);
+    doUrlReplace("{album}",   metadata.album.toLower(),          urlText);
+    doUrlReplace("{album2}",  noSpace(metadata.album.toLower()), urlText);
+    doUrlReplace("{title}",   metadata.title.toLower(),          urlText);
+    doUrlReplace("{Artist}",  artistFixed,                       urlText);
+    doUrlReplace("{Album}",   metadata.album,                    urlText);
+    doUrlReplace("{ARTIST}",  artistFixed.toUpper(),             urlText);
+    doUrlReplace("{year}",    QString::number(metadata.year),    urlText);
+    doUrlReplace("{Title}",   metadata.title,                    urlText);
+    doUrlReplace("{Title2}",  titleCase(metadata.title),         urlText);
+    doUrlReplace("{a}",       firstChar(artistFixed),            urlText);
+    doUrlReplace("{track}",   QString::number(metadata.track),   urlText);
 
     // Fetch the URL, follow redirects
     redirectCount = 0;
@@ -169,8 +181,9 @@ void UltimateLyricsProvider::fetchInfo(int id, const Song &metadata)
 void UltimateLyricsProvider::lyricsFetched()
 {
     QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
-    if (!reply)
+    if (!reply) {
         return;
+    }
 
     int id = requests.take(reply);
     reply->deleteLater();
@@ -241,9 +254,9 @@ void UltimateLyricsProvider::lyricsFetched()
     emit lyricsReady(id, lyrics);
 }
 
-void UltimateLyricsProvider::doUrlReplace(const QString &tag, const QString &value, QString *u) const
+void UltimateLyricsProvider::doUrlReplace(const QString &tag, const QString &value, QString &u) const
 {
-    if (!u->contains(tag)) {
+    if (!u.contains(tag)) {
         return;
     }
 
@@ -254,5 +267,5 @@ void UltimateLyricsProvider::doUrlReplace(const QString &tag, const QString &val
         valueCopy.replace(re, format.second);
     }
 
-    u->replace(tag, valueCopy, Qt::CaseInsensitive);
+    u.replace(tag, valueCopy, Qt::CaseInsensitive);
 }

@@ -73,7 +73,31 @@
       </widget>
      </item>
      <item row="1" column="1">
-      <widget class="QComboBox" name="replayGain"/>
+      <layout class="QHBoxLayout" name="replayGainayout">
+       <property name="margin">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QComboBox" name="replayGain"/>
+       </item>
+       <item>
+        <spacer name="replayGainSpacer">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::MinimumExpanding</enum>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="UrlLabel" name="aboutReplayGain">
+         <property name="text">
+          <string>About replay gain</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
      <item row="2" column="0">
       <widget class="BuddyLabel" name="streamUrlLabel">
@@ -119,6 +143,11 @@
    <class>BuddyLabel</class>
    <extends>QLabel</extends>
    <header>buddylabel.h</header>
+  </customwidget>
+  <customwidget>
+   <class>UrlLabel</class>
+   <extends>QLabel</extends>
+   <header>urllabel.h</header>
   </customwidget>
   <customwidget>
    <class>SpinBox</class>

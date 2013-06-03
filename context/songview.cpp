@@ -39,6 +39,7 @@
 #include "actioncollection.h"
 #include "networkaccessmanager.h"
 #include "textbrowser.h"
+#include "stdactions.h"
 #include <QFile>
 #include <QDir>
 #include <QFileInfo>
@@ -71,14 +72,12 @@ SongView::SongView(QWidget *p)
     , job(0)
 {
     refreshAction = ActionCollection::get()->createAction("refreshlyrics", i18n("Refresh Lyrics"), "view-refresh");
-    searchAction = ActionCollection::get()->createAction("searchlyrics", i18n("Search For Lyrics"), "edit-find");
     editAction = ActionCollection::get()->createAction("editlyrics", i18n("Edit Lyrics"), Icons::editIcon);
     saveAction = ActionCollection::get()->createAction("savelyrics", i18n("Save Lyrics"), "document-save");
     cancelAction = ActionCollection::get()->createAction("canceleditlyrics", i18n("Cancel Editing Lyrics"), Icons::cancelIcon);
     delAction = ActionCollection::get()->createAction("dellyrics", i18n("Delete Lyrics File"), "edit-delete");
 
     connect(refreshAction, SIGNAL(triggered()), SLOT(update()));
-    connect(searchAction, SIGNAL(triggered()), SLOT(search()));
     connect(editAction, SIGNAL(triggered()), SLOT(edit()));
     connect(saveAction, SIGNAL(triggered()), SLOT(save()));
     connect(cancelAction, SIGNAL(triggered()), SLOT(cancel()));
@@ -214,7 +213,7 @@ void SongView::showContextMenu(const QPoint &pos)
    case Mode_Display:
        menu->addSeparator();
        menu->addAction(refreshAction);
-       menu->addAction(searchAction);
+       menu->addAction(StdActions::self()->searchAction);
        menu->addSeparator();
        menu->addAction(editAction);
        menu->addAction(delAction);

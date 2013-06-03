@@ -58,6 +58,7 @@ public:
     float fade() { return fadeValue; }
     void setFade(float value);
     void updateImage(const QImage &img);
+    void search();
 
 Q_SIGNALS:
     void findArtist(const QString &artist);

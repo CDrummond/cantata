@@ -297,6 +297,9 @@ void ContextPage::updateImage(const QImage &img)
     oldBackdrop=newBackdrop;
     newBackdrop=img;
     animator.stop();
+    if (img.isNull()) {
+        backdropAlbums.clear();
+    }
     if (newBackdrop.isNull() && oldBackdrop.isNull()) {
         return;
     }
@@ -368,10 +371,10 @@ void ContextPage::updateBackdrop()
     }
 
     QImage img(cacheFileName(currentArtist, false));
-    updateImage(img);
     if (img.isNull()) {
         getBackdrop();
     } else {
+        updateImage(img);
         QWidget::update();
     }
 }
@@ -441,8 +444,6 @@ void ContextPage::searchResponse()
 
     if (id.isEmpty()) {
         createBackdrop();
-//        updateImage(QImage());
-//        QWidget::update();
     } else {
         QUrl url("http://htbackdrops.com/api/"+constApiKey+"/download/"+id+"/fullsize");
         job=NetworkAccessManager::self()->get(url);
@@ -463,15 +464,19 @@ void ContextPage::downloadResponse()
         createBackdrop();
         return;
     }
-    updateImage(img);
-//    if (!img.isNull()) {
+
+    if (img.isNull()) {
+        createBackdrop();
+    } else {
+        backdropAlbums.clear();
+        updateImage(img);
         QFile f(cacheFileName(currentArtist, true));
         if (f.open(QIODevice::WriteOnly)) {
             f.write(data);
             f.close();
         }
-//    }
-    QWidget::update();
+        QWidget::update();
+    }
 }
 
 void ContextPage::createBackdrop()
@@ -482,7 +487,17 @@ void ContextPage::createBackdrop()
         connect(creator, SIGNAL(created(QString,QImage)), SLOT(backdropCreated(QString,QImage)));
         connect(this, SIGNAL(createBackdrop(QString,QList<Song>)), creator, SLOT(create(QString,QList<Song>)));
     }
-    emit createBackdrop(currentArtist, MusicLibraryModel::self()->getArtistAlbums(currentArtist));
+    QList<Song> artistAlbums=MusicLibraryModel::self()->getArtistAlbums(currentArtist);
+    QSet<QString> albumNames;
+
+    foreach (const Song &s, artistAlbums) {
+        albumNames.insert(s.albumArtist()+" - "+s.album);
+    }
+
+    if (backdropAlbums!=albumNames) {
+        backdropAlbums=albumNames;
+        emit createBackdrop(currentArtist, artistAlbums);
+    }
 }
 
 void ContextPage::backdropCreated(const QString &artist, const QImage &img)

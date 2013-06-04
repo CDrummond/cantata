@@ -53,8 +53,9 @@ private:
 private:
     int imageSize;
     QString requestedArtist;
-    QSet<QString> requested;
+    QSet<Song> requested;
     QList<QImage> images;
+    QList<Song> albums;
     Thread *thread;
 };
 

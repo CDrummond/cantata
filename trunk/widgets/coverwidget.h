@@ -54,7 +54,7 @@ Q_SIGNALS:
 
 private Q_SLOTS:
     void init();
-    void coverRetreived(const Song &s, const QImage &img, const QString &file);
+    void coverRetrieved(const Song &s, const QImage &img, const QString &file);
 
 private:
     const QPixmap & stdPixmap(bool stream);

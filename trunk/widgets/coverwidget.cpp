@@ -138,8 +138,8 @@ CoverWidget::CoverWidget(QWidget *parent)
     , valid(false)
     , pressed(false)
 {
-    connect(Covers::self(), SIGNAL(cover(const Song &, const QImage &, const QString &)), SLOT(coverRetreived(const Song &, const QImage &, const QString &)));
-    connect(Covers::self(), SIGNAL(coverUpdated(const Song &, const QImage &, const QString &)), SLOT(coverRetreived(const Song &, const QImage &, const QString &)));
+    connect(Covers::self(), SIGNAL(cover(const Song &, const QImage &, const QString &)), SLOT(coverRetrieved(const Song &, const QImage &, const QString &)));
+    connect(Covers::self(), SIGNAL(coverUpdated(const Song &, const QImage &, const QString &)), SLOT(coverRetrieved(const Song &, const QImage &, const QString &)));
     installEventFilter(this);
     QTimer::singleShot(0, this, SLOT(init())); // Need to do this after constructed, so that size is set....
     setStyleSheet(QString("QLabel {border: %1px solid transparent} QToolTip {background-color:#111111; color: #DDDDDD}").arg(constBorder));
@@ -223,7 +223,7 @@ void CoverWidget::init()
     update(stdPixmap(false));
 }
 
-void CoverWidget::coverRetreived(const Song &s, const QImage &img, const QString &file)
+void CoverWidget::coverRetrieved(const Song &s, const QImage &img, const QString &file)
 {
     if (!s.isArtistImageRequest() && s.albumArtist()==current.albumArtist() && s.album==current.album) {
         valid=!img.isNull();

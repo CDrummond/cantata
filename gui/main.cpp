@@ -27,6 +27,7 @@
 #include <KDE/KAboutData>
 #include <KDE/KCmdLineArgs>
 #include <KDE/KStartupInfo>
+#include "contextpage.h"
 #else
 #include <QTranslator>
 #include <QTextCodec>
@@ -63,7 +64,7 @@ static void loadTranslation(const QString &prefix, const QString &path, const QS
     // without checking if it's a file first.
     // This was fixed in Qt 4.7
     QFileInfo maybeCantataDirectory(path + "/cantata");
-    if (maybeCantataDirectory.exists() && !maybeCantataDirectory.isFile()) {CK
+    if (maybeCantataDirectory.exists() && !maybeCantataDirectory.isFile()) {
         return;
     }
     #endif
@@ -100,7 +101,9 @@ int main(int argc, char *argv[])
     aboutData.addAuthor(ki18n("Roeland Douma"), ki18n("QtMPC author"), QByteArray(), "http://qtmpc.lowblog.nl");
     aboutData.addAuthor(ki18n("Daniel Selinger"), ki18n("QtMPC author"), QByteArray(), "http://qtmpc.lowblog.nl");
     aboutData.addAuthor(ki18n("Armin Walland"), ki18n("QtMPC author"), QByteArray(), "http://qtmpc.lowblog.nl");
-    aboutData.addCredit(ki18n("Home Theater Backdrops"), ki18n("Context view backdrops"), QByteArray(), "www.htbackdrops.com");
+    if (ContextPage::constApiKey.latin1()) {
+        aboutData.addCredit(ki18n("Home Theater Backdrops"), ki18n("Context view backdrops"), QByteArray(), "www.htbackdrops.com");
+    }
     aboutData.addCredit(ki18n("Wikipedia"), ki18n("Context view metadata"), QByteArray(), "www.wikipedia.org");
     aboutData.addCredit(ki18n("Last.fm"), ki18n("Context view metadata"), QByteArray(), "www.last.fm");
     KCmdLineArgs::init(argc, argv, &aboutData);

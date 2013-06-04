@@ -25,27 +25,53 @@
 #define WIKIPEDIA_SETTINGS_H
 
 #include "togglelist.h"
+#include <QMap>
 
 class QNetworkReply;
 class QShowEvent;
+class QListWidgetItem;
 class Spinner;
 class Action;
+class Thread;
+
+class WikipediaLoader : public QObject
+{
+    Q_OBJECT
+public:
+    WikipediaLoader();
+    virtual ~WikipediaLoader();
+
+public Q_SLOTS:
+    void load(const QByteArray &data);
+
+Q_SIGNALS:
+    void entry(const QString &prefix, const QString &urlPrefix, const QString &lang, int prefIndex);
+    void finished();
+
+private:
+    Thread *thread;
+};
 
 class WikipediaSettings : public ToggleList
 {
     Q_OBJECT
-    
 public:
     WikipediaSettings(QWidget *p);
+    virtual ~WikipediaSettings();
     
     void load();
     void save();
     void cancel();
     void showEvent(QShowEvent *e);
 
+Q_SIGNALS:
+    void load(const QByteArray &data);
+
 private Q_SLOTS:
     void getLangs();
     void parseLangs();
+    void addEntry(const QString &prefix, const QString &urlPrefix, const QString &lang, int prefIndex);
+    void loaderFinished();
 
 private:
     void parseLangs(const QByteArray &data);
@@ -55,6 +81,8 @@ private:
     QNetworkReply *job;
     Spinner *spinner;
     Action *reload;
+    QMap<int, QListWidgetItem *> prefMap;
+    WikipediaLoader *loader;
 };
 
 #endif

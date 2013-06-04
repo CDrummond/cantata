@@ -263,8 +263,6 @@ void ContextPage::paintEvent(QPaintEvent *e)
             p.setOpacity(0.15*(fadeValue/100.0));
             p.fillRect(rect(), QBrush(newBackdrop));
         }
-    }
-    if (darkBackground) {
         if (!backdropText.isEmpty()) {
             int pad=fontMetrics().height()*2;
             QFont f("Sans", font().pointSize()*12);
@@ -275,7 +273,8 @@ void ContextPage::paintEvent(QPaintEvent *e)
             textOpt.setWrapMode(QTextOption::NoWrap);
             p.drawText(QRect(pad, pad, width(), height()-(2*pad)), backdropText, textOpt);
         }
-    } else {
+    }
+    if (!darkBackground) {
         QWidget::paintEvent(e);
     }
 }

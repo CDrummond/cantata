@@ -26,7 +26,14 @@
 #include "thread.h"
 #include <QApplication>
 #include <QPainter>
+#include <QDebug>
 #include <stdlib.h>
+
+//#define DBUG qWarning() << metaObject()->className() << __FUNCTION__
+
+#ifndef DBUG
+#define DBUG qDebug()
+#endif
 
 BackdropCreator::BackdropCreator()
     : QObject(0)
@@ -45,6 +52,7 @@ BackdropCreator::~BackdropCreator()
 
 void BackdropCreator::create(const QString &artist, const QList<Song> &songs)
 {
+    DBUG << artist << songs.count();
     requestedArtist=artist;
     images.clear();
     requested.clear();
@@ -64,6 +72,7 @@ void BackdropCreator::create(const QString &artist, const QList<Song> &songs)
 
 void BackdropCreator::coverRetrieved(const Song &s, const QImage &img, const QString &file)
 {
+    DBUG << requestedArtist << s.albumArtist();
     Q_UNUSED(file)
     if (requested.isEmpty() || s.albumArtist()!=requestedArtist) {
         return;
@@ -81,6 +90,7 @@ void BackdropCreator::coverRetrieved(const Song &s, const QImage &img, const QSt
 
 void BackdropCreator::createImage()
 {
+    DBUG << images.count();
     QImage backdrop;
 
     switch (images.count()) {
@@ -109,10 +119,7 @@ void BackdropCreator::createImage()
 
         for (int y=0; y<constVCount; ++y) {
             for (int x=0; x<constHCount; ++x) {
-                int index=-1;
-                do {
-                    index=random()%toUse.count();
-                } while (!lastLine.isEmpty() && lastLine.at(x)==index);
+                int index=random()%toUse.count();
                 p.drawImage(x*imageSize, y*imageSize, toUse.takeAt(index));
                 if (toUse.isEmpty()) {
                     toUse=images;

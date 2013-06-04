@@ -56,7 +56,7 @@
 #define DBUG qDebug()
 #endif
 
-static const QLatin1String constApiKey(""); // TODO: Apply for API key!!!
+const QLatin1String ContextPage::constApiKey(0); // API key required
 const QLatin1String ContextPage::constCacheDir("backdrops/");
 
 static QString cacheFileName(const QString &artist, bool createDir)
@@ -69,7 +69,7 @@ ContextPage::ContextPage(QWidget *parent)
     , job(0)
     , drawBackdrop(true)
     , darkBackground(false)
-    , useHtBackdrops(!QString(constApiKey).isEmpty())
+    , useHtBackdrops(0!=constApiKey.latin1())
     , fadeValue(0)
     , isWide(false)
     , stack(0)

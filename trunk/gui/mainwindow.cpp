@@ -1467,9 +1467,9 @@ void MainWindow::showAboutDialog()
 {
     QMessageBox::about(this, i18nc("Qt-only", "About Cantata"),
                        i18nc("Qt-only", "<b>Cantata %1</b><br/><br/>MPD client.<br/><br/>(c) Craig Drummond 2011-2013.<br/>Released under the <a href=\"http://www.gnu.org/licenses/gpl.html\">GPLv3</a><br/><br/>"
-                             "<i><small>Based upon <a href=\"http://qtmpc.lowblog.nl\">QtMPC</a> - (C) 2007-2010 The QtMPC Authors<br/>"
-                             "Context view backdrops courtesy of <a href=\"http://www.htbackdrops.com\">Home Theater Backdrops</a><br/>"
-                             "Context view metadata courtesy of <a href=\"http://www.wikipedia.org\">Wikipedia</a> and <a href=\"http://www.last.fm\">Last.fm</a></small></i>").arg(PACKAGE_VERSION_STRING));
+                             "<i><small>Based upon <a href=\"http://qtmpc.lowblog.nl\">QtMPC</a> - (C) 2007-2010 The QtMPC Authors<br/>").arg(PACKAGE_VERSION_STRING)+
+                       (ContextPage::constApiKey.latin1() ? i18nc("Qt-only", "Context view backdrops courtesy of <a href=\"http://www.htbackdrops.com\">Home Theater Backdrops</a><br/>") : "")+
+                       i18nc("Qt-only", "Context view metadata courtesy of <a href=\"http://www.wikipedia.org\">Wikipedia</a> and <a href=\"http://www.last.fm\">Last.fm</a></small></i>"));
 }
 #endif
 

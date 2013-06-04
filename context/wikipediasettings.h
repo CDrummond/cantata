@@ -55,6 +55,13 @@ private:
 class WikipediaSettings : public ToggleList
 {
     Q_OBJECT
+
+    enum State {
+        Initial,
+        Loading,
+        Loaded
+    };
+
 public:
     WikipediaSettings(QWidget *p);
     virtual ~WikipediaSettings();
@@ -77,7 +84,7 @@ private:
     void parseLangs(const QByteArray &data);
 
 private:
-    bool loaded;
+    State state;
     QNetworkReply *job;
     Spinner *spinner;
     Action *reload;

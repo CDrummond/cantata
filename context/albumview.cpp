@@ -65,8 +65,8 @@ AlbumView::AlbumView(QWidget *p)
     refreshAction = ActionCollection::get()->createAction("refreshalbum", i18n("Refresh Album Information"), "view-refresh");
     connect(refreshAction, SIGNAL(triggered()), SLOT(refresh()));
     connect(engine, SIGNAL(searchResult(QString,QString)), this, SLOT(searchResponse(QString,QString)));
-    connect(Covers::self(), SIGNAL(cover(const Song &, const QImage &, const QString &)), SLOT(coverRetreived(const Song &, const QImage &, const QString &)));
-    connect(Covers::self(), SIGNAL(coverUpdated(const Song &, const QImage &, const QString &)), SLOT(coverRetreived(const Song &, const QImage &, const QString &)));
+    connect(Covers::self(), SIGNAL(cover(const Song &, const QImage &, const QString &)), SLOT(coverRetrieved(const Song &, const QImage &, const QString &)));
+    connect(Covers::self(), SIGNAL(coverUpdated(const Song &, const QImage &, const QString &)), SLOT(coverRetrieved(const Song &, const QImage &, const QString &)));
     connect(text, SIGNAL(anchorClicked(QUrl)), SLOT(playSong(QUrl)));
     text->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(text, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showContextMenu(QPoint)));
@@ -212,7 +212,7 @@ void AlbumView::getDetails()
     engine->search(QStringList() << currentSong.albumArtist() << currentSong.album, ContextEngine::Album);
 }
 
-void AlbumView::coverRetreived(const Song &s, const QImage &img, const QString &file)
+void AlbumView::coverRetrieved(const Song &s, const QImage &img, const QString &file)
 {
     Q_UNUSED(file)
     if (s==currentSong && pic.isEmpty()) {

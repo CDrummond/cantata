@@ -33,7 +33,7 @@
 #include <QRegExp>
 #include <QDebug>
 
-//#define DBUG qWarning() << "LastFmEngine"
+//#define DBUG qWarning() << metaObject()->className() << __FUNCTION__
 
 #ifndef DBUG
 #define DBUG qDebug()
@@ -97,7 +97,7 @@ void LastFmEngine::search(const QStringList &query, Mode mode)
         queryString.append(q);
     }
     job->setProperty(constQuery, queryString.join("/"));
-    DBUG << __FUNCTION__ << url.toString();
+    DBUG <<  url.toString();
     connect(job, SIGNAL(finished()), this, SLOT(parseResponse()));
 }
 
@@ -115,14 +115,14 @@ void LastFmEngine::parseResponse()
         job=NetworkAccessManager::self()->get(redirect.toString());
         job->setProperty(constRedirectsProperty, numRirects);
         job->setProperty(constModeProperty, reply->property(constModeProperty));
-        DBUG << __FUNCTION__ << "Redirect" << redirect.toString();
+        DBUG <<  "Redirect" << redirect.toString();
         connect(job, SIGNAL(finished()), this, SLOT(parseResponse()));
         return;
     }
 
     QByteArray data=reply->readAll();
     if (QNetworkReply::NoError!=reply->error() || data.isEmpty()) {
-        DBUG << __FUNCTION__ << "Empty/error";
+        DBUG <<  "Empty/error";
         emit searchResult(QString(), QString());
         return;
     }

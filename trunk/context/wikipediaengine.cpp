@@ -33,7 +33,7 @@
 #include <QRegExp>
 #include <QDebug>
 
-//#define DBUG qWarning() << "WikipediaEngine"
+//#define DBUG qWarning() << metaObject()->className() << __FUNCTION__
 
 #ifndef DBUG
 #define DBUG qDebug()
@@ -334,7 +334,7 @@ void WikipediaEngine::requestTitles(const QStringList &query, Mode mode, const Q
     job->setProperty(constModeProperty, (int)mode);
     job->setProperty(constRedirectsProperty, 0);
     job->setProperty(constQueryProperty, query);
-    DBUG << __FUNCTION__ << url.toString();
+    DBUG <<  url.toString();
     connect(job, SIGNAL(finished()), this, SLOT(parseTitles()));
 }
 
@@ -350,7 +350,7 @@ void WikipediaEngine::parseTitles()
     QString hostLang=getLang(url);
     QByteArray data=reply->readAll();
     if (QNetworkReply::NoError!=reply->error() || data.isEmpty()) {
-        DBUG << __FUNCTION__ << reply->errorString();
+        DBUG <<  reply->errorString();
         emit searchResult(QString(), QString());
         return;
     }
@@ -376,7 +376,7 @@ void WikipediaEngine::parseTitles()
     }
 
     if (titles.isEmpty()) {
-        DBUG << __FUNCTION__ << "No titles";
+        DBUG <<  "No titles";
         QRegExp regex(QLatin1Char('^') + hostLang + QLatin1String(".*$"));
         int index = preferredLangs.indexOf(regex);
         if (-1!=index && index < preferredLangs.count()-1) {
@@ -384,7 +384,7 @@ void WikipediaEngine::parseTitles()
             // the current one did not get any results we want.
             requestTitles(query, mode, getPrefix(preferredLangs.value(index+1)));
         } else {
-            DBUG << __FUNCTION__ << "No more langs";
+            DBUG <<  "No more langs";
             emit searchResult(QString(), QString());
         }
         return;
@@ -444,29 +444,29 @@ void WikipediaEngine::getPage(const QStringList &query, Mode mode, const QString
         break;
     }
 
-    DBUG << __FUNCTION__ << "Titles" << titles;
+    DBUG <<  "Titles" << titles;
 
     int index=-1;
     if (mode==Album && 2==query.count()) {
-        DBUG << __FUNCTION__ << "Check album";
+        DBUG <<  "Check album";
         foreach (const QString &pattern, patterns) {
             QString q=query.at(1)+" ("+query.at(0)+" "+pattern+")";
-            DBUG << __FUNCTION__ << "Try" << q;
+            DBUG <<  "Try" << q;
             index=indexOf(simplifiedTitles, q);
             if (-1!=index) {
-                DBUG << __FUNCTION__ << "Matched with '$album ($artist pattern)" << index << q;
+                DBUG <<  "Matched with '$album ($artist pattern)" << index << q;
                 break;
             }
         }
     }
     if (-1==index) {
         foreach (const QString &q, queries) {
-            DBUG << __FUNCTION__ << "Query" << q;
+            DBUG <<  "Query" << q;
             // First check original query with one of the patterns...
             foreach (const QString &pattern, patterns) {
                 index=indexOf(simplifiedTitles, q+" ("+pattern+")");
                 if (-1!=index) {
-                    DBUG << __FUNCTION__ << "Matched with pattern" << index << QString(q+" ("+pattern+")");
+                    DBUG <<  "Matched with pattern" << index << QString(q+" ("+pattern+")");
                     break;
                 }
             }
@@ -475,7 +475,7 @@ void WikipediaEngine::getPage(const QStringList &query, Mode mode, const QString
                 // Try without any pattern...
                 index=indexOf(simplifiedTitles, q);
                 if (-1!=index) {
-                    DBUG << __FUNCTION__ << "Matched without pattern" << index << q;
+                    DBUG <<  "Matched without pattern" << index << q;
                 }
             }
 
@@ -487,14 +487,14 @@ void WikipediaEngine::getPage(const QStringList &query, Mode mode, const QString
 
     // TODO: If we fail to find a match, prompt user???
     if (-1==index) {
-        DBUG << __FUNCTION__ << "Failed to find match";
+        DBUG <<  "Failed to find match";
         emit searchResult(QString(), QString());
         return;
     }
     const QString title=titles.takeAt(index);
 
     if (QLatin1String("List of CJK Unified Ideographs")==title) {
-        DBUG << __FUNCTION__ << "Unicode list?";
+        DBUG <<  "Unicode list?";
         emit searchResult(QString(), QString());
         return;
     }
@@ -507,7 +507,7 @@ void WikipediaEngine::getPage(const QStringList &query, Mode mode, const QString
     job->setProperty(constModeProperty, (int)mode);
     job->setProperty(constQueryProperty, query);
     job->setProperty(constRedirectsProperty, 0);
-    DBUG << __FUNCTION__ << url.toString();
+    DBUG <<  url.toString();
     connect(job, SIGNAL(finished()), this, SLOT(parsePage()));
 }
 
@@ -526,24 +526,24 @@ void WikipediaEngine::parsePage()
         job->setProperty(constRedirectsProperty, numRirects);
         job->setProperty(constModeProperty, reply->property(constModeProperty));
         job->setProperty(constQueryProperty, reply->property(constQueryProperty));
-        DBUG << __FUNCTION__ << "Redirect" << redirect.toString();
+        DBUG <<  "Redirect" << redirect.toString();
         connect(job, SIGNAL(finished()), this, SLOT(parsePage()));
         return;
     }
 
     QByteArray data=reply->readAll();
     if (QNetworkReply::NoError!=reply->error() || data.isEmpty()) {
-    DBUG << __FUNCTION__ << "Empty/error";
+    DBUG <<  "Empty/error";
         emit searchResult(QString(), QString());
         return;
     }
 
     QString answer(QString::fromUtf8(data));
-    //DBUG << __FUNCTION__ << "Anser" << answer;
+    //DBUG <<  "Anser" << answer;
     QUrl url=reply->url();
     QString hostLang=getLang(url);
     if (answer.contains(QLatin1String("{{disambiguation}}")) || answer.contains(QLatin1String("{{disambig}}"))) { // i18n???
-        DBUG << __FUNCTION__ << "Disambiguation";
+        DBUG <<  "Disambiguation";
         getPage(reply->property(constQueryProperty).toStringList(), (Mode)reply->property(constModeProperty).toInt(),
                 hostLang);
         return;

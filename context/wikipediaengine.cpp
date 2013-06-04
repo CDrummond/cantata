@@ -186,7 +186,7 @@ static QString wikiToHtml(QString answer, bool introOnly, const QUrl &url)
     }
 
     answer = answer.mid(start, end - start); // strip header/footer
-    answer = strip(answer, "({{", "}})"); // strip wiki internal stuff
+//    answer = strip(answer, "({{", "}})"); // strip wiki internal stuff
     answer = strip(answer, "{{", "}}"); // strip wiki internal stuff
     answer.replace("&lt;", "<").replace("&gt;", ">");
     answer = strip(answer, "<!--", "-->"); // strip comments
@@ -206,6 +206,7 @@ static QString wikiToHtml(QString answer, bool introOnly, const QUrl &url)
 //     answer.replace(QRegExp("\\n\\{\\|[^\\n]*wikitable[^\\n]*\\n!"), "\n<table><th>");
 
     answer.replace("\n\n", "<br>");
+    answer.replace("(  ; ", "(");
 //     answer.replace("\n\n", "</p><p align=\"justify\">");
     answer.replace(QRegExp("\\n'''([^\\n]*)'''\\n"), "<hr><b>\\1</b>\n");
     answer.replace(QRegExp("\\n\\{\\|[^\\n]*\\n"), "\n");

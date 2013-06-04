@@ -100,6 +100,7 @@ private:
     QStackedWidget *stack;
     QComboBox *viewCombo;
     BackdropCreator *creator;
+    QString backdropText;
 };
 
 #endif

@@ -160,7 +160,6 @@ void ArtistView::update(const Song &s, bool force)
 
             Song s;
             s.albumartist=currentSong.artist;
-            s.setArtistImageRequest();
             if (!currentSong.isVariousArtists()) {
                 s.file=currentSong.file;
             }

@@ -144,17 +144,7 @@ void UltimateLyricsProvider::fetchInfo(int id, const Song &metadata)
         return;
     }
 
-    // strip "featuring <someone else>" from the song.artist
-    QString artistFixed=metadata.artist;
-    QStringList toStrip;
-    toStrip << QLatin1String(" ft. ") << QLatin1String(" feat. ") << QLatin1String(" featuring ");
-    foreach (const QString s, toStrip) {
-        int strip = artistFixed.toLower().indexOf(s);
-        if (-1!=strip) {
-            artistFixed = artistFixed.mid(0, strip);
-        }
-    }
-
+    QString artistFixed=metadata.basicArtist();
     // Fill in fields in the URL
     QString urlText(url);
     doUrlReplace("{artist}",  artistFixed.toLower(),             urlText);

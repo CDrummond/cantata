@@ -39,6 +39,7 @@
 #include <QProcess>
 #include <QMenu>
 #include <QTimer>
+#include <QDebug>
 
 static const int constCheckChars=100; // Num chars to chwck between artist bio and details - as sometimes wikipedia does not know album, so returns artist!
 
@@ -159,7 +160,7 @@ void AlbumView::playSong(const QUrl &url)
 
 void AlbumView::artistBio(const QString &artist, const QString &b)
 {
-    if (artist==currentSong.artist) {
+    if (artist==currentSong.basicArtist()) {
         bioArtist=artist;
         detailsReceived|=ArtistBio;
         if (All==detailsReceived) {

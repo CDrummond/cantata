@@ -141,10 +141,7 @@ void ArtistView::update(const Song &s, bool force)
         song.revertVariousArtists();
     }
 
-    if (!song.albumartist.isEmpty() && !song.artist.isEmpty() && song.albumartist.length()<song.artist.length() && song.artist.startsWith(song.albumartist)) {
-        song.artist=song.albumartist;
-    }
-
+    song.artist=song.basicArtist();
     bool artistChanged=song.artist!=currentSong.artist;
 
     if (!isVisible()) {

@@ -115,6 +115,8 @@ struct Song
     }
 
     bool isArtistImageRequest() const { return album.isEmpty() && artist.isEmpty() && !albumartist.isEmpty() && 0==size && 0==track; }
+
+    QString basicArtist() const;
 };
 
 Q_DECLARE_METATYPE(Song)

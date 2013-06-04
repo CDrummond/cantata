@@ -305,13 +305,7 @@ void ContextPage::update(const Song &s)
         song.revertVariousArtists();
     }
 
-    if (!song.albumartist.isEmpty() && !song.artist.isEmpty() && song.albumartist.length()<song.artist.length() && song.artist.startsWith(song.albumartist)) {
-        updateArtist=song.albumartist;
-    } else {
-        updateArtist=song.artist;
-    }
-
-    updateArtist=Covers::fixArtist(updateArtist);
+    updateArtist=Covers::fixArtist(song.basicArtist());
     if (isVisible() && drawBackdrop) {
         updateBackdrop();
     }

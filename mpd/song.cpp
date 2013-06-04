@@ -391,3 +391,9 @@ bool Song::capitalise()
 
     return artist!=origArtist || albumartist!=origAlbumArtist || album!=origAlbum || title!=origTitle;
 }
+
+QString Song::basicArtist() const
+{
+    return !albumartist.isEmpty() && !artist.isEmpty() && albumartist.length()<artist.length() && artist.startsWith(albumartist)
+            ? albumartist : artist;
+}

@@ -49,7 +49,7 @@ Q_SIGNALS:
     void playSong(const QString &file);
 
 public Q_SLOTS:
-    void coverRetreived(const Song &s, const QImage &img, const QString &file);
+    void coverRetrieved(const Song &s, const QImage &img, const QString &file);
     void playSong(const QUrl &u);
     void artistBio(const QString &artist, const QString &b);
 

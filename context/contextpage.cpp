@@ -272,6 +272,7 @@ void ContextPage::paintEvent(QPaintEvent *e)
             p.setFont(f);
             p.setOpacity(0.15);
             QTextOption textOpt(Qt::AlignBottom|(Qt::RightToLeft==layoutDirection() ? Qt::AlignRight : Qt::AlignLeft));
+            textOpt.setWrapMode(QTextOption::NoWrap);
             p.drawText(QRect(pad, pad, width(), height()-(2*pad)), backdropText, textOpt);
         }
     } else {

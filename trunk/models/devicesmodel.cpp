@@ -1036,15 +1036,7 @@ void DevicesModel::updateItemMenu()
 QMimeData * DevicesModel::mimeData(const QModelIndexList &indexes) const
 {
     QMimeData *mimeData=0;
-    QStringList paths;
-    if (HttpServer::self()->isAlive()) {
-        QList<Song> songList=songs(indexes, true, true);
-        foreach (const Song &s, songList) {
-            paths.append(HttpServer::self()->encodeUrl(s));
-        }
-    } else {
-        paths=playableUrls(indexes);
-    }
+    QStringList paths=playableUrls(indexes);
 
     if (!paths.isEmpty()) {
         mimeData=new QMimeData();

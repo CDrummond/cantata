@@ -81,7 +81,7 @@ void WikipediaLoader::load(const QByteArray &data)
 
 WikipediaSettings::WikipediaSettings(QWidget *p)
     : ToggleList(p)
-    , loaded(false)
+    , state(Initial)
     , job(0)
     , spinner(0)
     , loader(0)
@@ -100,8 +100,8 @@ WikipediaSettings::~WikipediaSettings()
 
 void WikipediaSettings::showEvent(QShowEvent *e)
 {
-    if (!loaded) {
-        loaded=true;
+    if (Initial==state) {
+        state=Loading;
         QByteArray data;
         QString fileName=localeFile();
         if (QFile::exists(fileName)) {
@@ -128,7 +128,7 @@ void WikipediaSettings::load()
 
 void WikipediaSettings::save()
 {
-    if (!loaded) {
+    if (Loaded!=state) {
         return;
     }
     QStringList pref;
@@ -153,6 +153,7 @@ void WikipediaSettings::cancel()
 
 void WikipediaSettings::getLangs()
 {
+    state=Loading;
     if (!spinner) {
         spinner=new Spinner(available);
         spinner->setWidget(available);
@@ -242,4 +243,5 @@ void WikipediaSettings::loaderFinished()
     if (spinner) {
         spinner->stop();
     }
+    state=Loaded;
 }

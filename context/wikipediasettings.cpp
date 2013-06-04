@@ -31,6 +31,7 @@
 #include "qtiocompressor/qtiocompressor.h"
 #include "utils.h"
 #include "action.h"
+#include "thread.h"
 #include <QNetworkReply>
 #if QT_VERSION >= 0x050000
 #include <QUrlQuery>
@@ -38,8 +39,44 @@
 #include <QXmlStreamReader>
 #include <QFile>
 
-static QString localeFile() {
+static QString localeFile()
+{
     return Utils::configDir(QString(), true)+"wikipedia-available.xml.gz";
+}
+
+WikipediaLoader::WikipediaLoader()
+    : QObject(0)
+{
+    thread=new Thread(metaObject()->className());
+    moveToThread(thread);
+    thread->start();
+}
+
+WikipediaLoader::~WikipediaLoader()
+{
+    thread->stop();
+}
+
+void WikipediaLoader::load(const QByteArray &data)
+{
+    QStringList preferred=WikipediaEngine::getPreferedLangs();
+    QXmlStreamReader xml(data);
+
+    while (!xml.atEnd() && !xml.hasError()) {
+        xml.readNext();
+        if( xml.isStartElement() && QLatin1String("iw")==xml.name()) {
+            const QXmlStreamAttributes &a = xml.attributes();
+            if (a.hasAttribute(QLatin1String("prefix")) && a.hasAttribute(QLatin1String("language")) && a.hasAttribute(QLatin1String("url"))) {
+                // The urlPrefix is the lang code infront of the wikipedia host
+                // url. It is mostly the same as the "prefix" attribute but in
+                // some weird cases they differ, so we can't just use "prefix".
+                QString prefix=a.value(QLatin1String("prefix")).toString();
+                QString urlPrefix=QUrl(a.value(QLatin1String("url")).toString()).host().remove(QLatin1String(".wikipedia.org"));
+                emit entry(prefix, urlPrefix, a.value(QLatin1String("language")).toString(), preferred.indexOf(prefix+":"+urlPrefix));
+            }
+        }
+    }
+    emit finished();
 }
 
 WikipediaSettings::WikipediaSettings(QWidget *p)
@@ -47,12 +84,18 @@ WikipediaSettings::WikipediaSettings(QWidget *p)
     , loaded(false)
     , job(0)
     , spinner(0)
+    , loader(0)
 {
     label->setText(i18n("Choose the wikipedia languages you want to use when searching for artist and album information."));
     reload=new Action(i18n("Reload"), this);
     connect(reload, SIGNAL(triggered(bool)), this, SLOT(getLangs()));
     available->addAction(reload);
     available->setContextMenuPolicy(Qt::ActionsContextMenu);
+}
+
+WikipediaSettings::~WikipediaSettings()
+{
+    loader->deleteLater();
 }
 
 void WikipediaSettings::showEvent(QShowEvent *e)
@@ -164,32 +207,29 @@ void WikipediaSettings::parseLangs()
 
 void WikipediaSettings::parseLangs(const QByteArray &data)
 {
-    QStringList preferred=WikipediaEngine::getPreferedLangs();
-    QXmlStreamReader xml(data);
-    QMap<int, QListWidgetItem *> prefMap;
-
-    while (!xml.atEnd() && !xml.hasError()) {
-        xml.readNext();
-        if( xml.isStartElement() && QLatin1String("iw")==xml.name()) {
-            const QXmlStreamAttributes &a = xml.attributes();
-            if (a.hasAttribute(QLatin1String("prefix")) && a.hasAttribute(QLatin1String("language")) && a.hasAttribute(QLatin1String("url"))) {
-                // The urlPrefix is the lang code infront of the wikipedia host
-                // url. It is mostly the same as the "prefix" attribute but in
-                // some weird cases they differ, so we can't just use "prefix".
-                QString urlPrefix=QUrl(a.value(QLatin1String("url")).toString()).host().remove(QLatin1String(".wikipedia.org"));
-                QString prefix=a.value(QLatin1String("prefix")).toString();
-                QString entry=prefix+":"+urlPrefix;
-                int index=preferred.indexOf(entry);
-                QListWidgetItem *item = new QListWidgetItem(-1==index ? available : selected);
-                item->setText(QString("[%1] %2").arg(prefix).arg(a.value(QLatin1String("language")).toString()));
-                item->setData(Qt::UserRole, entry);
-                if (-1!=index) {
-                    prefMap[index]=item;
-                }
-            }
-        }
+    prefMap.clear();
+    if (!loader) {
+        loader=new WikipediaLoader();
+        connect(loader, SIGNAL(entry(QString,QString,QString,int)), SLOT(addEntry(QString,QString,QString,int)));
+        connect(loader, SIGNAL(finished()), SLOT(loaderFinished()));
+        connect(this, SIGNAL(load(QByteArray)), loader, SLOT(load(QByteArray)));
     }
+    emit load(data);
+}
 
+void WikipediaSettings::addEntry(const QString &prefix, const QString &urlPrefix, const QString &lang, int prefIndex)
+{
+    QString entry=prefix+":"+urlPrefix;
+    QListWidgetItem *item = new QListWidgetItem(-1==prefIndex ? available : selected);
+    item->setText(QString("[%1] %2").arg(prefix).arg(lang));
+    item->setData(Qt::UserRole, entry);
+    if (-1!=prefIndex) {
+        prefMap[prefIndex]=item;
+    }
+}
+
+void WikipediaSettings::loaderFinished()
+{
     QMap<int, QListWidgetItem *>::ConstIterator it(prefMap.constBegin());
     QMap<int, QListWidgetItem *>::ConstIterator end(prefMap.constEnd());
     for (; it!=end; ++it) {

@@ -394,6 +394,20 @@ bool Song::capitalise()
 
 QString Song::basicArtist() const
 {
-    return !albumartist.isEmpty() && !artist.isEmpty() && albumartist.length()<artist.length() && artist.startsWith(albumartist)
-            ? albumartist : artist;
+    if (!albumartist.isEmpty() && !artist.isEmpty() && albumartist.length()<artist.length() && artist.startsWith(albumartist)) {
+        return albumartist;
+    }
+
+    QStringList toStrip=QStringList() << QLatin1String("ft. ") << QLatin1String("feat. ") << QLatin1String("featuring ");
+    QStringList prefixes=QStringList() << QLatin1String(" ") << QLatin1String(" (") << QLatin1String(" [");
+
+    foreach (const QString s, toStrip) {
+        foreach (const QString p, prefixes) {
+            int strip = artist.toLower().indexOf(p+s);
+            if (-1!=strip) {
+                return artist.mid(0, strip);
+            }
+        }
+    }
+    return artist;
 }

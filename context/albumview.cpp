@@ -113,6 +113,7 @@ void AlbumView::update(const Song &song, bool force)
     }
     if (force || song.albumArtist()!=currentSong.albumArtist() || song.album!=currentSong.album) {
         currentSong=song;
+        currentArtist=currentSong.basicArtist();
         if (!isVisible()) {
             needToUpdate=true;
             return;
@@ -160,7 +161,7 @@ void AlbumView::playSong(const QUrl &url)
 
 void AlbumView::artistBio(const QString &artist, const QString &b)
 {
-    if (artist==currentSong.basicArtist()) {
+    if (artist==currentArtist) {
         bioArtist=artist;
         detailsReceived|=ArtistBio;
         if (All==detailsReceived) {

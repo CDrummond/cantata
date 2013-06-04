@@ -48,6 +48,13 @@
 #include <QApplication>
 #include <QComboBox>
 #include <QStackedWidget>
+#include <QDebug>
+
+//#define DBUG qWarning() << metaObject()->className() << __FUNCTION__
+
+#ifndef DBUG
+#define DBUG qDebug()
+#endif
 
 static bool useHtBackdrops=false;
 static const QLatin1String constApiKey("TEST_KEY"); // TODO: Apply for API key!!!
@@ -257,7 +264,17 @@ void ContextPage::paintEvent(QPaintEvent *e)
             p.fillRect(rect(), QBrush(newBackdrop));
         }
     }
-    if (!darkBackground) {
+    if (darkBackground) {
+        if (!backdropText.isEmpty()) {
+            int pad=fontMetrics().height()*2;
+            QFont f("Sans", font().pointSize()*12);
+            f.setBold(true);
+            p.setFont(f);
+            p.setOpacity(0.15);
+            QTextOption textOpt(Qt::AlignBottom|(Qt::RightToLeft==layoutDirection() ? Qt::AlignRight : Qt::AlignLeft));
+            p.drawText(QRect(pad, pad, width(), height()-(2*pad)), backdropText, textOpt);
+        }
+    } else {
         QWidget::paintEvent(e);
     }
 }
@@ -275,6 +292,8 @@ void ContextPage::setFade(float value)
 
 void ContextPage::updateImage(const QImage &img)
 {
+    DBUG << img.isNull() << newBackdrop.isNull();
+    backdropText=currentArtist;
     oldBackdrop=newBackdrop;
     newBackdrop=img;
     animator.stop();
@@ -337,6 +356,7 @@ void ContextPage::cancel()
 
 void ContextPage::updateBackdrop()
 {
+    DBUG << updateArtist << currentArtist;
     if (updateArtist==currentArtist) {
         return;
     }
@@ -453,6 +473,7 @@ void ContextPage::downloadResponse()
 
 void ContextPage::createBackdrop()
 {
+    DBUG << currentArtist;
     if (!creator) {
         creator = new BackdropCreator();
         connect(creator, SIGNAL(created(QString,QImage)), SLOT(backdropCreated(QString,QImage)));
@@ -463,6 +484,7 @@ void ContextPage::createBackdrop()
 
 void ContextPage::backdropCreated(const QString &artist, const QImage &img)
 {
+    DBUG << artist << img.isNull() << currentArtist;
     if (artist==currentArtist) {
         updateImage(img);
         QWidget::update();

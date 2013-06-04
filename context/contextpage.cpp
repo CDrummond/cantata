@@ -56,8 +56,7 @@
 #define DBUG qDebug()
 #endif
 
-static bool useHtBackdrops=false;
-static const QLatin1String constApiKey("TEST_KEY"); // TODO: Apply for API key!!!
+static const QLatin1String constApiKey(""); // TODO: Apply for API key!!!
 const QLatin1String ContextPage::constCacheDir("backdrops/");
 
 static QString cacheFileName(const QString &artist, bool createDir)
@@ -70,6 +69,7 @@ ContextPage::ContextPage(QWidget *parent)
     , job(0)
     , drawBackdrop(true)
     , darkBackground(false)
+    , useHtBackdrops(!QString(constApiKey).isEmpty())
     , fadeValue(0)
     , isWide(false)
     , stack(0)
@@ -366,10 +366,6 @@ void ContextPage::updateBackdrop()
         QWidget::update();
         return;
     }
-    if (!useHtBackdrops) {
-        createBackdrop();
-        return;
-    }
 
     QImage img(cacheFileName(currentArtist, false));
     updateImage(img);
@@ -383,6 +379,10 @@ void ContextPage::updateBackdrop()
 void ContextPage::getBackdrop()
 {
     cancel();
+    if (!useHtBackdrops) {
+        createBackdrop();
+        return;
+    }
     QUrl url("http://htbackdrops.com/api/"+constApiKey+"/searchXML");
     #if QT_VERSION < 0x050000
     QUrl &q=url;
@@ -434,6 +434,9 @@ void ContextPage::searchResponse()
                 }
             }
         }
+    } else if (QNetworkReply::OperationCanceledError==reply->error()) {
+        // We timed out, someting wrong with htbackdrops? Jsut use auto-generated backdrops for now...
+        useHtBackdrops=false;
     }
 
     if (id.isEmpty()) {

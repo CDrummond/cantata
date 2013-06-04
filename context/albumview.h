@@ -66,6 +66,7 @@ private:
     void abort();
 
 private:
+    QString currentArtist;
     Action *refreshAction;
     ContextEngine *engine;
     int detailsReceived;

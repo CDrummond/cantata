@@ -45,6 +45,7 @@ class ContextPage : public QWidget
 
 public:
     static const QLatin1String constCacheDir;
+    static const QLatin1String constApiKey;
 
     ContextPage(QWidget *parent=0);
 

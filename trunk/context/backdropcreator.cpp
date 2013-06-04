@@ -61,7 +61,7 @@ void BackdropCreator::create(const QString &artist, const QList<Song> &songs)
         if (!img.img.isNull()) {
             images.append(img.img.scaled(imageSize, imageSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
         } else {
-            requested.insert(s.album);
+            requested.insert(s);
         }
     }
 
@@ -74,11 +74,8 @@ void BackdropCreator::coverRetrieved(const Song &s, const QImage &img, const QSt
 {
     DBUG << requestedArtist << s.albumArtist();
     Q_UNUSED(file)
-    if (requested.isEmpty() || s.albumArtist()!=requestedArtist) {
-        return;
-    }
-    if (requested.contains(s.album)) {
-        requested.remove(s.album);
+    if (requested.contains(s)) {
+        requested.remove(s);
         if (!img.isNull()) {
             images.append(img.scaled(imageSize, imageSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
         }

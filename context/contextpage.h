@@ -85,6 +85,7 @@ private:
     QNetworkReply *job;
     bool drawBackdrop;
     bool darkBackground;
+    bool useHtBackdrops;
     QImage oldBackdrop;
     QImage newBackdrop;
     QString currentArtist;

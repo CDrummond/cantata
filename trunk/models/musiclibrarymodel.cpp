@@ -897,6 +897,23 @@ QList<Song> MusicLibraryModel::getAlbumTracks(const Song &s) const
     return songs;
 }
 
+QList<Song> MusicLibraryModel::getArtistAlbums(const QString &albumArtist) const
+{
+    QList<Song> tracks;
+    foreach (MusicLibraryItem *ar, rootItem->childItems()) {
+        if (ar->data()==albumArtist) {
+            foreach (MusicLibraryItem *al, static_cast<MusicLibraryItemContainer *>(ar)->childItems()) {
+                MusicLibraryItemContainer *a=static_cast<MusicLibraryItemContainer *>(al);
+                if (!a->childItems().isEmpty()) {
+                    tracks.append(static_cast<MusicLibraryItemSong *>(a->childItems().first())->song());
+                }
+            }
+            break;
+        }
+    }
+    return tracks;
+}
+
 QMap<QString, QStringList> MusicLibraryModel::getAlbums(const Song &song) const
 {
     QMap<QString, QStringList> albums;

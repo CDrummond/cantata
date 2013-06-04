@@ -28,11 +28,12 @@
 #include <QImage>
 #include <QColor>
 #include <QPropertyAnimation>
+#include "song.h"
 
-class Song;
 class ArtistView;
 class AlbumView;
 class SongView;
+class BackdropCreator;
 class QNetworkReply;
 class QStackedWidget;
 class QComboBox;
@@ -63,10 +64,12 @@ Q_SIGNALS:
     void findArtist(const QString &artist);
     void findAlbum(const QString &artist, const QString &album);
     void playSong(const QString &file);
+    void createBackdrop(const QString &artist, const QList<Song> &songs);
 
 private Q_SLOTS:
     void searchResponse();
     void downloadResponse();
+    void backdropCreated(const QString &artist, const QImage &img);
 
 private:
     void setWide(bool w);
@@ -75,6 +78,7 @@ private:
     void cancel();
     void updateBackdrop();
     void getBackdrop();
+    void createBackdrop();
     QNetworkReply * getReply(QObject *obj);
 
 private:
@@ -95,6 +99,7 @@ private:
     bool isWide;
     QStackedWidget *stack;
     QComboBox *viewCombo;
+    BackdropCreator *creator;
 };
 
 #endif

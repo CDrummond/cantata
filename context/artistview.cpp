@@ -350,7 +350,7 @@ void ArtistView::abort()
 {
     engine->cancel();
     if (currentSimilarJob) {
-        disconnect(currentSimilarJob, SIGNAL(finished()), this, SLOT(handleSimilarArtistsReply()));
+        disconnect(currentSimilarJob, SIGNAL(finished()), this, SLOT(handleSimilarReply()));
         currentSimilarJob->abort();
         currentSimilarJob=0;
     }

@@ -103,6 +103,7 @@ private:
     QComboBox *viewCombo;
     BackdropCreator *creator;
     QString backdropText;
+    QSet<QString> backdropAlbums;
 };
 
 #endif

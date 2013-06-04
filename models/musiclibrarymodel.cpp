@@ -897,18 +897,26 @@ QList<Song> MusicLibraryModel::getAlbumTracks(const Song &s) const
     return songs;
 }
 
-QList<Song> MusicLibraryModel::getArtistAlbums(const QString &albumArtist) const
+QList<Song> MusicLibraryModel::getArtistAlbums(const QString &artist) const
 {
     QList<Song> tracks;
     foreach (MusicLibraryItem *ar, rootItem->childItems()) {
-        if (ar->data()==albumArtist) {
+        if (ar->data()==artist) {
             foreach (MusicLibraryItem *al, static_cast<MusicLibraryItemContainer *>(ar)->childItems()) {
                 MusicLibraryItemContainer *a=static_cast<MusicLibraryItemContainer *>(al);
                 if (!a->childItems().isEmpty()) {
                     tracks.append(static_cast<MusicLibraryItemSong *>(a->childItems().first())->song());
                 }
             }
-            break;
+        } else if (static_cast<MusicLibraryItemArtist *>(ar)->isVarious()) {
+            foreach (MusicLibraryItem *al, static_cast<MusicLibraryItemContainer *>(ar)->childItems()) {
+                foreach (MusicLibraryItem *s, static_cast<MusicLibraryItemContainer *>(al)->childItems()) {
+                    if (static_cast<MusicLibraryItemSong *>(s)->song().artist.contains(artist)) {
+                        tracks.append(static_cast<MusicLibraryItemSong *>(s)->song());
+                        break;
+                    }
+                }
+            }
         }
     }
     return tracks;

@@ -97,7 +97,7 @@ public:
     // Get tracks of an album
     QList<Song> getAlbumTracks(const Song &s) const;
     // Get 1 track from each album by artist - used to create context view backdrop!
-    QList<Song> getArtistAlbums(const QString &albumArtist) const;
+    QList<Song> getArtistAlbums(const QString &artist) const;
     // Get list of albums featuring artist
     QMap<QString, QStringList> getAlbums(const Song &song) const;
 

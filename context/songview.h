@@ -49,7 +49,7 @@ public:
     SongView(QWidget *p);
     ~SongView();
 
-    void update(const Song &song, bool force=false);
+    void update(const Song &s, bool force=false);
 
 Q_SIGNALS:
     void providersUpdated();

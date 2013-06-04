@@ -318,16 +318,15 @@ void ContextPage::search()
 
 void ContextPage::update(const Song &s)
 {
-    artist->update(s);
-    album->update(s);
-    song->update(s);
-
-    Song song=s;
-    if (song.isVariousArtists()) {
-        song.revertVariousArtists();
+    Song sng=s;
+    if (sng.isVariousArtists()) {
+        sng.revertVariousArtists();
     }
+    artist->update(sng);
+    album->update(sng);
+    song->update(sng);
 
-    updateArtist=Covers::fixArtist(song.basicArtist());
+    updateArtist=Covers::fixArtist(sng.basicArtist());
     if (isVisible() && drawBackdrop) {
         updateBackdrop();
     }

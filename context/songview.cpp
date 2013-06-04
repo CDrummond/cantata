@@ -242,10 +242,6 @@ void SongView::update(const Song &s, bool force)
     }
 
     Song song(s);
-    if (song.isVariousArtists()) {
-        song.revertVariousArtists();
-    }
-
     bool songChanged = song.artist!=currentSong.artist || song.title!=currentSong.title;
 
     if (!isVisible()) {

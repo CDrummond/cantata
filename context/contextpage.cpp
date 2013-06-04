@@ -32,6 +32,8 @@
 #include "settings.h"
 #include "wikipediaengine.h"
 #include "localize.h"
+#include "backdropcreator.h"
+#include "musiclibrarymodel.h"
 #include <QHBoxLayout>
 #include <QGridLayout>
 #include <QSpacerItem>
@@ -47,6 +49,7 @@
 #include <QComboBox>
 #include <QStackedWidget>
 
+static bool useHtBackdrops=false;
 static const QLatin1String constApiKey("TEST_KEY"); // TODO: Apply for API key!!!
 const QLatin1String ContextPage::constCacheDir("backdrops/");
 
@@ -64,6 +67,7 @@ ContextPage::ContextPage(QWidget *parent)
     , isWide(false)
     , stack(0)
     , viewCombo(0)
+    , creator(0)
 {
     animator.setPropertyName("fade");
     animator.setTargetObject(this);
@@ -348,6 +352,11 @@ void ContextPage::updateBackdrop()
         QWidget::update();
         return;
     }
+    if (!useHtBackdrops) {
+        createBackdrop();
+        return;
+    }
+
     QImage img(cacheFileName(currentArtist, false));
     updateImage(img);
     if (img.isNull()) {
@@ -373,48 +382,50 @@ void ContextPage::getBackdrop()
     #if QT_VERSION >= 0x050000
     url.setQuery(q);
     #endif
-
-    job=NetworkAccessManager::self()->get(url);
+    job=NetworkAccessManager::self()->get(url, 5000);
     connect(job, SIGNAL(finished()), this, SLOT(searchResponse()));
 }
 
 void ContextPage::searchResponse()
 {
     QNetworkReply *reply = getReply(sender());
-    if (!reply || QNetworkReply::NoError!=reply->error()) {
+    if (!reply) {
         return;
     }
 
-    QXmlStreamReader xml(reply);
     QString id;
-    while (!xml.atEnd() && !xml.hasError() && id.isEmpty()) {
-        xml.readNext();
-        if (xml.isStartElement() && QLatin1String("search")==xml.name()) {
-            while (xml.readNextStartElement() && id.isEmpty()) {
-                if (xml.isStartElement() && QLatin1String("images")==xml.name()) {
-                    while (xml.readNextStartElement() && id.isEmpty()) {
-                        if (xml.isStartElement() && QLatin1String("image")==xml.name()) {
-                            while (xml.readNextStartElement() && id.isEmpty()) {
-                                if (xml.isStartElement() && QLatin1String("id")==xml.name()) {
-                                    id=xml.readElementText();
-                                } else {
-                                    xml.skipCurrentElement();
+    if (QNetworkReply::NoError==reply->error()) {
+        QXmlStreamReader xml(reply);
+        while (!xml.atEnd() && !xml.hasError() && id.isEmpty()) {
+            xml.readNext();
+            if (xml.isStartElement() && QLatin1String("search")==xml.name()) {
+                while (xml.readNextStartElement() && id.isEmpty()) {
+                    if (xml.isStartElement() && QLatin1String("images")==xml.name()) {
+                        while (xml.readNextStartElement() && id.isEmpty()) {
+                            if (xml.isStartElement() && QLatin1String("image")==xml.name()) {
+                                while (xml.readNextStartElement() && id.isEmpty()) {
+                                    if (xml.isStartElement() && QLatin1String("id")==xml.name()) {
+                                        id=xml.readElementText();
+                                    } else {
+                                        xml.skipCurrentElement();
+                                    }
                                 }
+                            } else {
+                                xml.skipCurrentElement();
                             }
-                        } else {
-                            xml.skipCurrentElement();
                         }
+                    } else {
+                        xml.skipCurrentElement();
                     }
-                } else {
-                    xml.skipCurrentElement();
                 }
             }
         }
     }
 
     if (id.isEmpty()) {
-        updateImage(QImage());
-        QWidget::update();
+        createBackdrop();
+//        updateImage(QImage());
+//        QWidget::update();
     } else {
         QUrl url("http://htbackdrops.com/api/"+constApiKey+"/download/"+id+"/fullsize");
         job=NetworkAccessManager::self()->get(url);
@@ -431,15 +442,37 @@ void ContextPage::downloadResponse()
 
     QByteArray data=reply->readAll();
     QImage img=QImage::fromData(data);
+    if (img.isNull()) {
+        createBackdrop();
+        return;
+    }
     updateImage(img);
-    if (!img.isNull()) {
+//    if (!img.isNull()) {
         QFile f(cacheFileName(currentArtist, true));
         if (f.open(QIODevice::WriteOnly)) {
             f.write(data);
             f.close();
         }
-    }
+//    }
     QWidget::update();
+}
+
+void ContextPage::createBackdrop()
+{
+    if (!creator) {
+        creator = new BackdropCreator();
+        connect(creator, SIGNAL(created(QString,QImage)), SLOT(backdropCreated(QString,QImage)));
+        connect(this, SIGNAL(createBackdrop(QString,QList<Song>)), creator, SLOT(create(QString,QList<Song>)));
+    }
+    emit createBackdrop(currentArtist, MusicLibraryModel::self()->getArtistAlbums(currentArtist));
+}
+
+void ContextPage::backdropCreated(const QString &artist, const QImage &img)
+{
+    if (artist==currentArtist) {
+        updateImage(img);
+        QWidget::update();
+    }
 }
 
 QNetworkReply * ContextPage::getReply(QObject *obj)

@@ -94,7 +94,11 @@ public:
     void setSupportsAlbumArtistTag(bool s) { rootItem->setSupportsAlbumArtistTag(s); }
     void toggleGrouping();
     const QSet<QString> & genres() const { return rootItem->genres(); }
+    // Get tracks of an album
     QList<Song> getAlbumTracks(const Song &s) const;
+    // Get 1 track from each album by artist - used to create context view backdrop!
+    QList<Song> getArtistAlbums(const QString &albumArtist) const;
+    // Get list of albums featuring artist
     QMap<QString, QStringList> getAlbums(const Song &song) const;
 
 public Q_SLOTS:

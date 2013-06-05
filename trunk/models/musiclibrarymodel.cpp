@@ -897,52 +897,31 @@ QList<Song> MusicLibraryModel::getAlbumTracks(const Song &s) const
     return songs;
 }
 
-QList<Song> MusicLibraryModel::getArtistAlbums(const QString &artist) const
+QList<Song> MusicLibraryModel::getArtistAlbumsFirstTracks(const Song &song) const
 {
+    QString artist=song.isVariousArtists() ? song.artist : song.albumArtist();
     QList<Song> tracks;
     foreach (MusicLibraryItem *ar, rootItem->childItems()) {
-        if (ar->data()==artist) {
+        if (static_cast<MusicLibraryItemArtist *>(ar)->isVarious()) {
+            foreach (MusicLibraryItem *al, static_cast<MusicLibraryItemContainer *>(ar)->childItems()) {
+                foreach (MusicLibraryItem *s, static_cast<MusicLibraryItemContainer *>(al)->childItems()) {
+                    if (static_cast<MusicLibraryItemSong *>(s)->song().artist.contains(song.artist)) {
+                        MusicLibraryItemContainer *a=static_cast<MusicLibraryItemContainer *>(al);
+                        tracks.append(static_cast<MusicLibraryItemSong *>(a->childItems().first())->song());
+                        break;
+                    }
+                }
+            }
+        } else if (ar->data()==artist) {
             foreach (MusicLibraryItem *al, static_cast<MusicLibraryItemContainer *>(ar)->childItems()) {
                 MusicLibraryItemContainer *a=static_cast<MusicLibraryItemContainer *>(al);
                 if (!a->childItems().isEmpty()) {
                     tracks.append(static_cast<MusicLibraryItemSong *>(a->childItems().first())->song());
                 }
             }
-        } else if (static_cast<MusicLibraryItemArtist *>(ar)->isVarious()) {
-            foreach (MusicLibraryItem *al, static_cast<MusicLibraryItemContainer *>(ar)->childItems()) {
-                foreach (MusicLibraryItem *s, static_cast<MusicLibraryItemContainer *>(al)->childItems()) {
-                    if (static_cast<MusicLibraryItemSong *>(s)->song().artist.contains(artist)) {
-                        tracks.append(static_cast<MusicLibraryItemSong *>(s)->song());
-                        break;
-                    }
-                }
-            }
         }
     }
     return tracks;
-}
-
-QMap<QString, QStringList> MusicLibraryModel::getAlbums(const Song &song) const
-{
-    QMap<QString, QStringList> albums;
-
-    foreach (MusicLibraryItem *ar, rootItem->childItems()) {
-        if (static_cast<MusicLibraryItemArtist *>(ar)->isVarious()) {
-            foreach (MusicLibraryItem *al, static_cast<MusicLibraryItemContainer *>(ar)->childItems()) {
-                foreach (MusicLibraryItem *s, static_cast<MusicLibraryItemContainer *>(al)->childItems()) {
-                    if (static_cast<MusicLibraryItemSong *>(s)->song().artist.contains(song.artist)) {
-                        albums[ar->data()].append(al->data());
-                        break;
-                    }
-                }
-            }
-        } else if (ar->data()==song.albumArtist()) {
-            foreach (MusicLibraryItem *al, static_cast<MusicLibraryItemContainer *>(ar)->childItems()) {
-                albums[song.albumArtist()].append(al->data());
-            }
-        }
-    }
-    return albums;
 }
 
 void MusicLibraryModel::setArtistImage(const Song &song, const QImage &img, bool update)

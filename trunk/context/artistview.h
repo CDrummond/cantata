@@ -25,6 +25,7 @@
 #define ARTIST_VIEW_H
 
 #include "view.h"
+#include "song.h"
 #include <QMap>
 
 class ComboBox;
@@ -50,6 +51,7 @@ public:
     virtual ~ArtistView() { abort(); }
 
     void update(const Song &s, bool force=false);
+    const QList<Song> & getArtistAlbumsFirstTracks();
 
 Q_SIGNALS:
     void findArtist(const QString &artist);
@@ -86,6 +88,7 @@ private:
     QString provider;
     QString webLinks;
     QString albums;
+    QList<Song> artistAlbumsFirstTracks;
 };
 
 #endif

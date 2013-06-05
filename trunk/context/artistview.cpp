@@ -140,6 +140,9 @@ void ArtistView::update(const Song &s, bool force)
     song.artist=song.basicArtist();
     bool artistChanged=song.artist!=currentSong.artist;
 
+    if (artistChanged) {
+        artistAlbumsFirstTracks.clear();
+    }
     if (!isVisible()) {
         if (artistChanged) {
             needToUpdate=true;
@@ -170,6 +173,14 @@ void ArtistView::update(const Song &s, bool force)
             loadBio();
         }
     }
+}
+
+const QList<Song> & ArtistView::getArtistAlbumsFirstTracks()
+{
+    if (artistAlbumsFirstTracks.isEmpty() && !currentSong.isEmpty()) {
+        artistAlbumsFirstTracks=MusicLibraryModel::self()->getArtistAlbumsFirstTracks(currentSong);
+    }
+    return artistAlbumsFirstTracks;
 }
 
 void ArtistView::artistImage(const Song &song, const QImage &i, const QString &f)
@@ -267,7 +278,13 @@ void ArtistView::setBio()
     }
 
     if (albums.isEmpty()) {
-        QMap<QString, QStringList> a=MusicLibraryModel::self()->getAlbums(currentSong);
+        getArtistAlbumsFirstTracks();
+        QMap<QString, QStringList> a;
+
+        foreach (const Song &s, artistAlbumsFirstTracks) {
+            a[s.albumArtist()].append(s.album);
+        }
+
         QMap<QString, QStringList>::ConstIterator it=a.begin();
         QMap<QString, QStringList>::ConstIterator c=a.find(currentSong.artist);
         QMap<QString, QStringList>::ConstIterator end=a.end();

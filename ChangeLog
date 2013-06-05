@@ -47,6 +47,7 @@
 30. Update ultimate_providers.xml to match Clementine 1.1.1
 31. Prompt before removing dynamic rules - to be consistent with streams and
     playlists.
+32. Add option to replaygain dialog to show only untagged tracks.
 
 1.0.3
 -----

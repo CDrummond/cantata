@@ -34,6 +34,7 @@
 #include "messagebox.h"
 #include "jobcontroller.h"
 #include "treeview.h"
+#include <QComboBox>
 #include <QTreeWidget>
 #include <QLabel>
 #include <QProgressBar>
@@ -116,11 +117,14 @@ RgDialog::RgDialog(QWidget *parent)
     setAttribute(Qt::WA_DeleteOnClose);
     QWidget *mainWidget = new QWidget(this);
     QBoxLayout *layout=new QBoxLayout(QBoxLayout::TopToBottom, mainWidget);
+    combo = new QComboBox(this);
     view = new QTreeWidget(this);
     statusLabel = new QLabel(this);
     statusLabel->setVisible(false);
     progress = new QProgressBar(this);
     progress->setVisible(false);
+    combo->addItem(i18n("Show All Tracks"), true);
+    combo->addItem(i18n("Show Untagged Tracks"), false);
     view->setRootIsDecorated(false);
     view->setAllColumnsShowFocus(true);
     view->setItemDelegate(new SimpleTreeViewDelegate(view));
@@ -145,6 +149,7 @@ RgDialog::RgDialog(QWidget *parent)
     hv->setStretchLastSection(false);
 
     layout->setMargin(0);
+    layout->addWidget(combo);
     layout->addWidget(view);
     layout->addWidget(statusLabel);
     layout->addWidget(progress);
@@ -160,6 +165,7 @@ RgDialog::RgDialog(QWidget *parent)
     enableButton(Ok, false);
     enableButton(User1, false);
     qRegisterMetaType<Tags::ReplayGain>("Tags::ReplayGain");
+    connect(combo, SIGNAL(currentIndexChanged(int)), SLOT(toggleDisplay()));
 }
 
 RgDialog::~RgDialog()
@@ -646,6 +652,16 @@ void RgDialog::tagReaderDone()
     if (autoScanTags) {
         autoScanTags=false;
         startScanning();
+    }
+}
+
+void RgDialog::toggleDisplay()
+{
+    bool showAll=combo->itemData(combo->currentIndex()).toBool();
+
+    for (int i=0; i<view->topLevelItemCount(); ++i) {
+        QTreeWidgetItem *item=view->topLevelItem(i);
+        view->setItemHidden(item, showAll ? false : origTags.contains(i));
     }
 }
 

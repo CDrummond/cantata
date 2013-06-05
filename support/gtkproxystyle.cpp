@@ -23,6 +23,7 @@
 
 #include "gtkproxystyle.h"
 #include "gtkstyle.h"
+#include "shortcuthandler.h"
 #ifdef ENABLE_OVERLAYSCROLLBARS
 #include "osthumb.h"
 #endif
@@ -78,6 +79,8 @@ GtkProxyStyle::GtkProxyStyle(ScrollbarType sb)
     , sbarThumbTarget(0)
     #endif
 {
+    shortcutHander=new ShortcutHandler(this);
+
     sbarType=sb;
 
     if (SB_Standard!=sbarType) {
@@ -146,6 +149,9 @@ int GtkProxyStyle::styleHint(StyleHint hint, const QStyleOption *option, const Q
 {
     if (SB_Standard!=sbarType && SH_ScrollView_FrameOnlyAroundContents==hint) {
         return false;
+    }
+    if (SH_UnderlineShortcut==hint) {
+        return widget ? shortcutHander->showShortcut(widget) : true;
     }
 
     return baseStyle()->styleHint(hint, option, widget, returnData);
@@ -374,6 +380,12 @@ void GtkProxyStyle::destroySliderThumb()
 }
 #endif
 
+inline void addEventFilter(QObject *object, QObject *filter)
+{
+    object->removeEventFilter(filter);
+    object->installEventFilter(filter);
+}
+
 void GtkProxyStyle::polish(QWidget *widget)
 {
     #ifdef ENABLE_OVERLAYSCROLLBARS
@@ -404,6 +416,7 @@ void GtkProxyStyle::polish(QPalette &pal)
 
 void GtkProxyStyle::polish(QApplication *app)
 {
+    addEventFilter(app, shortcutHander);
     baseStyle()->polish(app);
 }
 
@@ -424,6 +437,7 @@ void GtkProxyStyle::unpolish(QWidget *widget)
 
 void GtkProxyStyle::unpolish(QApplication *app)
 {
+    app->removeEventFilter(shortcutHander);
     baseStyle()->unpolish(app);
 }
 

@@ -32,6 +32,7 @@ class QComboBox;
 class QScrollBar;
 class OsThumb;
 #endif
+class ShortcutHandler;
 
 class GtkProxyStyle : public QProxyStyle
 {
@@ -82,6 +83,7 @@ private:
 #endif
 
 private:
+    ShortcutHandler *shortcutHander;
     QComboBox *toolbarCombo;
 
     ScrollbarType sbarType;

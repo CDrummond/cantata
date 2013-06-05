@@ -112,11 +112,10 @@ void MusicLibraryModel::cleanCache()
     foreach (const MPDConnectionDetails &conn, connections) {
         QString fileName=conn.hostname;
         fileName.replace('/', '_');
-        existing.insert(fileName+constLibraryExt);
+        existing.insert(fileName+constLibraryCompressedExt);
     }
-
     QDir dir(Utils::cacheDir(constLibraryCache));
-    QFileInfoList files=dir.entryInfoList(QStringList() << "*"+constLibraryExt, QDir::Files);
+    QFileInfoList files=dir.entryInfoList(QStringList() << "*"+constLibraryExt << "*"+constLibraryCompressedExt, QDir::Files);
     foreach (const QFileInfo &file, files) {
         if (!existing.contains(file.fileName())) {
             QFile::remove(file.absoluteFilePath());

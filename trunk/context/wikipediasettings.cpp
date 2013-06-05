@@ -116,6 +116,7 @@ void WikipediaSettings::showEvent(QShowEvent *e)
         if (data.isEmpty()) {
             getLangs();
         } else {
+            showSpinner();
             parseLangs(data);
         }
     }
@@ -154,11 +155,7 @@ void WikipediaSettings::cancel()
 void WikipediaSettings::getLangs()
 {
     state=Loading;
-    if (!spinner) {
-        spinner=new Spinner(available);
-        spinner->setWidget(available);
-    }
-    spinner->start();
+    showSpinner();
     available->clear();
     selected->clear();
     reload->setEnabled(false);
@@ -240,8 +237,22 @@ void WikipediaSettings::loaderFinished()
         }
     }
 
+    hideSpinner();
+    state=Loaded;
+}
+
+void WikipediaSettings::showSpinner()
+{
+    if (!spinner) {
+        spinner=new Spinner(available);
+        spinner->setWidget(available);
+    }
+    spinner->start();
+}
+
+void WikipediaSettings::hideSpinner()
+{
     if (spinner) {
         spinner->stop();
     }
-    state=Loaded;
 }

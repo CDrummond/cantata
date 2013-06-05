@@ -82,6 +82,8 @@ private Q_SLOTS:
 
 private:
     void parseLangs(const QByteArray &data);
+    void showSpinner();
+    void hideSpinner();
 
 private:
     State state;

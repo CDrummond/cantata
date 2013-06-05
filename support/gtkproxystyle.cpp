@@ -27,6 +27,9 @@
 #ifdef ENABLE_OVERLAYSCROLLBARS
 #include "osthumb.h"
 #endif
+#ifndef ENABLE_KDE_SUPPORT
+#include "acceleratormanager.h"
+#endif
 #include <QComboBox>
 #include <QToolBar>
 #include <QAbstractScrollArea>
@@ -34,7 +37,7 @@
 #include <QTreeView>
 #include <QHeaderView>
 #include <QScrollBar>
-#include <QComboBox>
+#include <QMenu>
 #include <QApplication>
 #include <QHoverEvent>
 #include <QPainter>
@@ -44,6 +47,9 @@
 const char * GtkProxyStyle::constSlimComboProperty="gtkslim";
 
 static const char * constOnCombo="on-combo";
+#ifndef ENABLE_KDE_SUPPORT
+static const char * constAccelProp="catata-accel";
+#endif
 
 //static bool revertQGtkStyleOverlayMod()
 //{
@@ -406,6 +412,12 @@ void GtkProxyStyle::polish(QWidget *widget)
     }
     #endif
 
+    #ifndef ENABLE_KDE_SUPPORT
+    if (widget && qobject_cast<QMenu *>(widget) && !widget->property(constAccelProp).isValid()) {
+        AcceleratorManager::manage(widget);
+        widget->setProperty(constAccelProp, true);
+    }
+    #endif
     baseStyle()->polish(widget);
 }
 

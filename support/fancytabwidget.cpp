@@ -43,7 +43,7 @@
 #include <QMouseEvent>
 #include <QPainter>
 #include <QSplitter>
-#include <QStackedLayout>
+#include <QStackedWidget>
 #include <QStyleOption>
 #include <QToolButton>
 #include <QToolTip>
@@ -598,7 +598,7 @@ FancyTabWidget::FancyTabWidget(QWidget* parent, bool allowContext, bool drawBord
   : QWidget(parent),
     mode_(Mode_None),
     tab_bar_(NULL),
-    stack_(new QStackedLayout),
+    stack_(new QStackedWidget(this)),
     side_widget_(new QWidget),
     side_layout_(new QVBoxLayout),
     top_layout_(new QVBoxLayout),
@@ -617,7 +617,7 @@ FancyTabWidget::FancyTabWidget(QWidget* parent, bool allowContext, bool drawBord
 
   top_layout_->setMargin(0);
   top_layout_->setSpacing(0);
-  top_layout_->addLayout(stack_);
+  top_layout_->addWidget(stack_);
 
   QHBoxLayout* main_layout = new QHBoxLayout;
   main_layout->setMargin(0);

@@ -50,7 +50,7 @@ class QActionGroup;
 class QMenu;
 class QPainter;
 class QSignalMapper;
-class QStackedLayout;
+class QStackedWidget;
 class QStatusBar;
 class QVBoxLayout;
 
@@ -257,7 +257,7 @@ private:
     QList<Item> items_;
 
     QWidget* tab_bar_;
-    QStackedLayout* stack_;
+    QStackedWidget* stack_;
     QPixmap background_pixmap_;
     QWidget* side_widget_;
     QVBoxLayout* side_layout_;

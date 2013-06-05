@@ -131,12 +131,7 @@ AlbumDetailsDialog::AlbumDetailsDialog(QWidget *parent)
     toolsMenu->addAction(i18n("Capitalize"), this, SLOT(capitalise()));
     toolsMenu->addAction(i18n("Adjust Track Numbers"), this, SLOT(adjustTrackNumbers()));
     setButtonMenu(User1, toolsMenu, InstantPopup);
-
-    #ifdef ENABLE_KDE_SUPPORT
     setButtonGuiItem(User1, GuiItem(i18n("Tools"), "tools-wizard"));
-    #else
-    setButtonGuiItem(User1, GuiItem(i18n("Tools"), "tools-wizard"));
-    #endif
     year->setAllowEmpty();
     disc->setAllowEmpty();
     connect(singleArtist, SIGNAL(toggled(bool)), SLOT(hideArtistColumn(bool)));

@@ -68,6 +68,7 @@ namespace StdGuiItem {
 #include <QDialog>
 #include <QDialogButtonBox>
 #include <QMap>
+#include <QSet>
 #include <QApplication>
 #include "localize.h"
 
@@ -97,6 +98,7 @@ namespace StdGuiItem {
     extern GuiItem remove();
     extern GuiItem back(bool useRtl=false);
     extern GuiItem forward(bool useRtl=false);
+    extern QSet<QString> standardNames();
 };
 
 class QAbstractButton;
@@ -163,6 +165,7 @@ private:
     void create();
     QAbstractButton *getButton(ButtonCode button);
     void setButtonGuiItem(QDialogButtonBox::StandardButton button, const GuiItem &item);
+    void showEvent(QShowEvent *e);
 
 private:
     int buttonTypes;
@@ -170,6 +173,7 @@ private:
     QDialogButtonBox *buttonBox;
     QMap<ButtonCode, QAbstractButton *> userButtons;
     QSize cfgSize;
+    bool managedAccels;
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(Dialog::ButtonCodes)

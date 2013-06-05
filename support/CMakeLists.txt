@@ -22,8 +22,8 @@ SET( SUPPORT_MOC_HDRS
 )
 
 if (NOT WIN32)
-    SET( SUPPORT_SRCS ${SUPPORT_SRCS} onoffbutton.cpp spinbox.cpp windowmanager.cpp gtkproxystyle.cpp combobox.cpp)
-    SET( SUPPORT_MOC_HDRS ${SUPPORT_MOC_HDRS} spinbox.h windowmanager.h gtkproxystyle.h osthumb.h)
+    SET( SUPPORT_SRCS ${SUPPORT_SRCS} onoffbutton.cpp spinbox.cpp windowmanager.cpp gtkproxystyle.cpp combobox.cpp shortcuthandler.cpp)
+    SET( SUPPORT_MOC_HDRS ${SUPPORT_MOC_HDRS} spinbox.h windowmanager.h gtkproxystyle.h osthumb.h shortcuthandler.h)
     if (ENABLE_OVERLAYSCROLLBARS)
         add_definitions(-DENABLE_OVERLAYSCROLLBARS)
         SET( SUPPORT_SRCS ${SUPPORT_SRCS} osthumb.cpp)
@@ -43,9 +43,9 @@ if (ENABLE_KDE_SUPPORT )
 else (ENABLE_KDE_SUPPORT)
     SET( SUPPORT_SRCS ${SUPPORT_SRCS} pathrequester.cpp kmessagewidget.cpp
         dialog.cpp pagewidget.cpp shortcutsmodel.cpp shortcutssettingspage.cpp
-        keysequencewidget.cpp )
+        keysequencewidget.cpp acceleratormanager.cpp)
     SET( SUPPORT_MOC_HDRS ${SUPPORT_MOC_HDRS} pathrequester.h lineedit.h kmessagewidget.h urllabel.h
-         dialog.h shortcutsmodel.h shortcutssettingspage.h keysequencewidget.h spinner.h )
+         dialog.h shortcutsmodel.h shortcutssettingspage.h keysequencewidget.h spinner.h acceleratormanager_private.h)
     SET( SUPPORT_UIS shortcutssettingspage.ui )
     if (ENABLE_QT5)
         QT5_WRAP_UI( SUPPORT_UI_HDRS ${SUPPORT_UIS} )

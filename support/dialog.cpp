@@ -79,30 +79,47 @@ void Dialog::resize(const QSize &sz)
 #else
 #include "icon.h"
 #include "gtkstyle.h"
+#include "acceleratormanager.h"
 #include <QDialogButtonBox>
 #include <QPushButton>
 #include <QBoxLayout>
 #include <QSettings>
 
 namespace StdGuiItem {
-GuiItem ok() { return GuiItem(i18n("Ok"), "dialog-ok"); }
-GuiItem cancel() { return GuiItem(i18n("Cancel"), "dialog-cancel"); }
-GuiItem yes() { return GuiItem(i18n("Yes"), "dialog-ok"); }
-GuiItem no() { return GuiItem(i18n("No"), "process-stop"); }
-GuiItem discard() { return GuiItem(i18n("Discard"), "edit-clear"); }
-GuiItem save() { return GuiItem(i18n("Save"), "document-save"); }
-GuiItem apply() { return GuiItem(i18n("Apply"), "dialog-ok-apply"); }
-GuiItem close() { return GuiItem(i18n("Close"), "window-close"); }
-GuiItem help() { return GuiItem(i18n("Help"), "help-contents"); }
-GuiItem overwrite() { return GuiItem(i18n("Overwrite")); }
-GuiItem reset() { return GuiItem(i18n("Reset"), "edit-undo"); }
-GuiItem cont() { return GuiItem(i18n("Continue"), "arrow-right"); }
-GuiItem del() { return GuiItem(i18n("Delete"), "edit-delete"); }
-GuiItem stop() { return GuiItem(i18n("Stop"), "process-stop"); }
-GuiItem remove() { return   GuiItem(i18n("Remove"), "list-remove"); }
-GuiItem back(bool useRtl) { return GuiItem(i18n("Previous"), useRtl && Qt::RightToLeft==QApplication::layoutDirection() ? "go-next" : "go-previous"); }
-GuiItem forward(bool useRtl) { return GuiItem(i18n("Next"), useRtl && Qt::RightToLeft==QApplication::layoutDirection() ? "go-previous" : "go-next"); }
-};
+GuiItem ok() { return GuiItem(i18n("&Ok"), "dialog-ok"); }
+GuiItem cancel() { return GuiItem(i18n("&Cancel"), "dialog-cancel"); }
+GuiItem yes() { return GuiItem(i18n("&Yes"), "dialog-ok"); }
+GuiItem no() { return GuiItem(i18n("&No"), "process-stop"); }
+GuiItem discard() { return GuiItem(i18n("&Discard"), "edit-clear"); }
+GuiItem save() { return GuiItem(i18n("&Save"), "document-save"); }
+GuiItem apply() { return GuiItem(i18n("&Apply"), "dialog-ok-apply"); }
+GuiItem close() { return GuiItem(i18n("&Close"), "window-close"); }
+GuiItem help() { return GuiItem(i18n("&Help"), "help-contents"); }
+GuiItem overwrite() { return GuiItem(i18n("&Overwrite")); }
+GuiItem reset() { return GuiItem(i18n("&Reset"), "edit-undo"); }
+GuiItem cont() { return GuiItem(i18n("&Continue"), "arrow-right"); }
+GuiItem del() { return GuiItem(i18n("&Delete"), "edit-delete"); }
+GuiItem stop() { return GuiItem(i18n("&Stop"), "process-stop"); }
+GuiItem remove() { return   GuiItem(i18n("&Remove"), "list-remove"); }
+GuiItem back(bool useRtl) { return GuiItem(i18n("&Previous"), useRtl && Qt::RightToLeft==QApplication::layoutDirection() ? "go-next" : "go-previous"); }
+GuiItem forward(bool useRtl) { return GuiItem(i18n("&Next"), useRtl && Qt::RightToLeft==QApplication::layoutDirection() ? "go-previous" : "go-next"); }
+
+QSet<QString> standardNames()
+{
+    static QSet<QString> names;
+    if (names.isEmpty()) {
+        QStringList strings = QStringList() << ok().text << cancel().text << yes().text << no().text << discard().text << save().text << apply().text
+                                            << close().text << help().text << overwrite().text << reset().text << cont().text << del().text
+                                            << stop().text << remove().text << back().text << forward().text;
+
+        foreach (QString s, strings) {
+            names.insert(s.remove("&"));
+        }
+    }
+    return names;
+}
+
+}
 
 static QDialogButtonBox::StandardButton mapType(int btn) {
     switch (btn) {
@@ -123,6 +140,7 @@ Dialog::Dialog(QWidget *parent, const QString &name, const QSize &defSize)
     , buttonTypes(0)
     , mw(0)
     , buttonBox(0)
+    , managedAccels(false)
 {
     if (!name.isEmpty()) {
         setObjectName(name);
@@ -361,5 +379,15 @@ QAbstractButton *Dialog::getButton(ButtonCode button)
     }
     return b;
 }
+
+void Dialog::showEvent(QShowEvent *e)
+{
+    if (!managedAccels) {
+        AcceleratorManager::manage(this);
+        managedAccels=true;
+    }
+    QDialog::showEvent(e);
+}
+
 #endif
 

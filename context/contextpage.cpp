@@ -33,7 +33,6 @@
 #include "wikipediaengine.h"
 #include "localize.h"
 #include "backdropcreator.h"
-#include "musiclibrarymodel.h"
 #include <QHBoxLayout>
 #include <QGridLayout>
 #include <QSpacerItem>
@@ -486,16 +485,16 @@ void ContextPage::createBackdrop()
         connect(creator, SIGNAL(created(QString,QImage)), SLOT(backdropCreated(QString,QImage)));
         connect(this, SIGNAL(createBackdrop(QString,QList<Song>)), creator, SLOT(create(QString,QList<Song>)));
     }
-    QList<Song> artistAlbums=MusicLibraryModel::self()->getArtistAlbums(currentArtist);
+    QList<Song> artistAlbumsFirstTracks=artist->getArtistAlbumsFirstTracks();
     QSet<QString> albumNames;
 
-    foreach (const Song &s, artistAlbums) {
+    foreach (const Song &s, artistAlbumsFirstTracks) {
         albumNames.insert(s.albumArtist()+" - "+s.album);
     }
 
     if (backdropAlbums!=albumNames) {
         backdropAlbums=albumNames;
-        emit createBackdrop(currentArtist, artistAlbums);
+        emit createBackdrop(currentArtist, artistAlbumsFirstTracks);
     }
 }
 

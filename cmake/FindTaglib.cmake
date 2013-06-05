@@ -10,6 +10,8 @@
 # Redistribution and use is allowed according to the terms of the BSD license.
 # For details see the accompanying COPYING-CMAKE-SCRIPTS file.
 
+include(CheckCXXSourceCompiles)
+
 if(NOT TAGLIB_MIN_VERSION)
   set(TAGLIB_MIN_VERSION "1.6")
 endif(NOT TAGLIB_MIN_VERSION)
@@ -127,6 +129,12 @@ if(TAGLIB_FOUND)
   if(NOT Taglib_FIND_QUIETLY AND TAGLIBCONFIG_EXECUTABLE)
     message(STATUS "Taglib found: ${TAGLIB_LIBRARIES}")
   endif(NOT Taglib_FIND_QUIETLY AND TAGLIBCONFIG_EXECUTABLE)
+
+  set(CMAKE_REQUIRED_INCLUDES ${TAGLIB_INCLUDES})
+  set(CMAKE_REQUIRED_LIBRARIES ${TAGLIB_LIBRARIES})
+  check_cxx_source_compiles("#include <taglib/mpegfile.h>
+                            int main() { TagLib::MPEG::File *file; file->save(1, true, 3);  return 0; }"
+                            TAGLIB_CAN_SAVE_ID3VER)
 else(TAGLIB_FOUND)
   if(Taglib_FIND_REQUIRED)
     message(FATAL_ERROR "Could not find Taglib")

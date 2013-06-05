@@ -158,6 +158,7 @@ MusicLibraryItemAlbum::MusicLibraryItemAlbum(const QString &data, quint32 year, 
     , m_year(year)
     , m_yearOfTrack(0xFFFF)
     , m_yearOfDisc(0xFFFF)
+    , m_totalTime(0)
     , m_coverIsDefault(false)
     , m_cover(0)
     , m_type(Song::Standard)
@@ -312,6 +313,7 @@ void MusicLibraryItemAlbum::append(MusicLibraryItem *i)
         song->song().type=Song::MultipleArtists;
     }
     m_totalTime=0;
+    m_artists.clear();
 }
 
 void MusicLibraryItemAlbum::remove(int row)
@@ -326,6 +328,7 @@ void MusicLibraryItemAlbum::remove(int row)
     }
     delete i;
     m_totalTime=0;
+    m_artists.clear();
 }
 
 void MusicLibraryItemAlbum::remove(MusicLibraryItemSong *i)
@@ -383,6 +386,17 @@ bool MusicLibraryItemAlbum::updateYear()
         }
     }
     return true;
+}
+
+bool MusicLibraryItemAlbum::containsArtist(const QString &a)
+{
+    if (m_artists.isEmpty()) {
+        foreach (MusicLibraryItem *itm, m_childItems) {
+            m_artists.insert(static_cast<MusicLibraryItemSong *>(itm)->song().basicArtist());
+        }
+    }
+
+    return m_artists.contains(a);
 }
 
 void MusicLibraryItemAlbum::setYear(const MusicLibraryItemSong *song)

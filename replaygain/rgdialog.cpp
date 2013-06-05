@@ -221,7 +221,7 @@ void RgDialog::slotButtonClicked(int button)
 
     switch (button) {
     case Ok:
-        if (MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Update ReplayGain tags in files?"), i18n("Update Tags"),
+        if (MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Update ReplayGain tags in tracks?"), i18n("Update Tags"),
                                                        GuiItem(i18n("Update Tags")), StdGuiItem::cancel())) {
             saveTags();
             stopScanning();
@@ -234,7 +234,7 @@ void RgDialog::slotButtonClicked(int button)
     case Cancel:
         switch (state) {
         case State_ScanningFiles:
-            if (MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Abort scanning of files?"), i18n("Abort"),
+            if (MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Abort scanning of tracks?"), i18n("Abort"),
                                                            GuiItem(i18n("Abort")), StdGuiItem::no())) {
                 stopScanning();
                 // Need to call this - if not, when dialog is closed by window X control, it is not deleted!!!!
@@ -268,8 +268,11 @@ void RgDialog::slotButtonClicked(int button)
 void RgDialog::startScanning()
 {
     bool all=origTags.isEmpty() ||
-             MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Do you wish to scan all files, or only files without existing tags?"), QString(),
-                                                        GuiItem(i18n("All Tracks")), GuiItem(i18n("Untagged Tracks")));
+             (origTags.count()==origSongs.count()
+                ? MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Scan <b>all</b> tracks?<br><br><i>NOTE: All tracks have existing ReplyGain tags.</i>"), QString(),
+                                                             GuiItem("Scan"), StdGuiItem::cancel())
+                : MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Do you wish to scan all tracks, or only tracks without existing tags?"), QString(),
+                                                             GuiItem(i18n("All Tracks")), GuiItem(i18n("Untagged Tracks"))));
     if (!all && origTags.count()==origSongs.count()) {
         return;
     }
@@ -282,7 +285,7 @@ void RgDialog::startScanning()
     enableButton(Ok, false);
     enableButton(User1, false);
     progress->setVisible(true);
-    statusLabel->setText(i18n("Scanning files..."));
+    statusLabel->setText(i18n("Scanning tracks..."));
     statusLabel->setVisible(true);
     clearScanners();
     totalToScan=0;

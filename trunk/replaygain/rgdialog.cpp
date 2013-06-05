@@ -154,13 +154,8 @@ RgDialog::RgDialog(QWidget *parent)
     layout->addWidget(statusLabel);
     layout->addWidget(progress);
     setMainWidget(mainWidget);
-    #ifdef ENABLE_KDE_SUPPORT
-    setButtonGuiItem(Ok, KStandardGuiItem::save());
-    setButtonGuiItem(Cancel, KStandardGuiItem::close());
-    #else
     setButtonGuiItem(Ok, StdGuiItem::save());
     setButtonGuiItem(Cancel, StdGuiItem::close());
-    #endif
     setButtonGuiItem(User1, GuiItem(i18n("Scan"), "edit-find"));
     enableButton(Ok, false);
     enableButton(User1, false);
@@ -270,7 +265,7 @@ void RgDialog::startScanning()
     bool all=origTags.isEmpty() ||
              (origTags.count()==origSongs.count()
                 ? MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Scan <b>all</b> tracks?<br><br><i>NOTE: All tracks have existing ReplyGain tags.</i>"), QString(),
-                                                             GuiItem("Scan"), StdGuiItem::cancel())
+                                                             GuiItem(i18n("Scan")), StdGuiItem::cancel())
                 : MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Do you wish to scan all tracks, or only tracks without existing tags?"), QString(),
                                                              GuiItem(i18n("All Tracks")), GuiItem(i18n("Untagged Tracks"))));
     if (!all && origTags.count()==origSongs.count()) {

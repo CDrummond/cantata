@@ -30,6 +30,7 @@
 #include "tags.h"
 #include "config.h"
 
+class QComboBox;
 class QTreeWidget;
 class QLabel;
 class QProgressBar;
@@ -74,6 +75,7 @@ private Q_SLOTS:
     void scannerDone();
     void songTags(int index, Tags::ReplayGain tags);
     void tagReaderDone();
+    void toggleDisplay();
 
 private:
     enum State {
@@ -97,6 +99,7 @@ private:
         Scanner::Data data;
     };
 
+    QComboBox *combo;
     QTreeWidget *view;
     QLabel *statusLabel;
     QProgressBar *progress;

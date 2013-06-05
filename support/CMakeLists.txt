@@ -1,25 +1,7 @@
-SET( SUPPORT_SRCS
-    action.cpp
-    actioncollection.cpp
-    fancytabwidget.cpp
-    messagewidget.cpp
-    icon.cpp
-    lineedit.cpp
-    gtkstyle.cpp
-    utils.cpp
-    spinner.cpp
-    messagebox.cpp
-    inputdialog.cpp
-    thread.cpp
-)
+SET( SUPPORT_SRCS action.cpp actioncollection.cpp fancytabwidget.cpp messagewidget.cpp icon.cpp
+    lineedit.cpp gtkstyle.cpp utils.cpp spinner.cpp messagebox.cpp inputdialog.cpp thread.cpp)
 
-SET( SUPPORT_MOC_HDRS
-    action.h
-    actioncollection.h
-    fancytabwidget.h
-    messagewidget.h
-    thread.h
-)
+SET( SUPPORT_MOC_HDRS action.h actioncollection.h fancytabwidget.h messagewidget.h thread.h)
 
 if (NOT WIN32)
     SET( SUPPORT_SRCS ${SUPPORT_SRCS} onoffbutton.cpp spinbox.cpp windowmanager.cpp gtkproxystyle.cpp combobox.cpp shortcuthandler.cpp)
@@ -41,9 +23,8 @@ if (ENABLE_KDE_SUPPORT )
     KDE4_ADD_UI_FILES( SUPPORT_UI_HDRS ${SUPPORT_UIS} )
     SET( SUPPORT_SRCS ${SUPPORT_SRCS} dialog.cpp)
 else (ENABLE_KDE_SUPPORT)
-    SET( SUPPORT_SRCS ${SUPPORT_SRCS} pathrequester.cpp kmessagewidget.cpp
-        dialog.cpp pagewidget.cpp shortcutsmodel.cpp shortcutssettingspage.cpp
-        keysequencewidget.cpp acceleratormanager.cpp)
+    SET( SUPPORT_SRCS ${SUPPORT_SRCS} pathrequester.cpp kmessagewidget.cpp dialog.cpp pagewidget.cpp shortcutsmodel.cpp
+        shortcutssettingspage.cpp keysequencewidget.cpp acceleratormanager.cpp proxystyle.cpp)
     SET( SUPPORT_MOC_HDRS ${SUPPORT_MOC_HDRS} pathrequester.h lineedit.h kmessagewidget.h urllabel.h
          dialog.h shortcutsmodel.h shortcutssettingspage.h keysequencewidget.h spinner.h acceleratormanager_private.h)
     SET( SUPPORT_UIS shortcutssettingspage.ui )

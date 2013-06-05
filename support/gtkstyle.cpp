@@ -31,6 +31,9 @@
 #include <QTextStream>
 #include <QFile>
 #include <qglobal.h>
+#ifndef ENABLE_KDE_SUPPORT
+#include "proxystyle.h"
+#endif
 #if !defined Q_OS_WIN && !defined QT_NO_STYLE_GTK
 #include "gtkproxystyle.h"
 #include "windowmanager.h"
@@ -202,7 +205,10 @@ QString GtkStyle::iconTheme()
 }
 
 #if !defined Q_OS_WIN && !defined QT_NO_STYLE_GTK
-static GtkProxyStyle *style=0;
+static GtkProxyStyle *gtkProxyStyle=0;
+#endif
+#ifndef ENABLE_KDE_SUPPORT
+static ProxyStyle *plainProxyStyle=0;
 #endif
 static bool symbolicIcons=false;
 static bool lightIcons=false;
@@ -211,6 +217,10 @@ void GtkStyle::applyTheme(QWidget *widget)
 {
     #if defined Q_OS_WIN || defined QT_NO_STYLE_GTK
     Q_UNUSED(widget)
+    if (!plainProxyStyle) {
+        plainProxyStyle=new ProxyStyle();
+        qApp->setStyle(plainProxyStyle);
+    }
     #else
     if (widget && isActive()) {
         QString theme=GtkStyle::themeName().toLower();
@@ -242,19 +252,26 @@ void GtkStyle::applyTheme(QWidget *widget)
                 QCoreApplication::setAttribute(Qt::AA_DontShowIconsInMenus);
             }
         }
-        if (!style) {
-            style=new GtkProxyStyle(sbType);
-            qApp->setStyle(style);
+        if (!gtkProxyStyle) {
+            gtkProxyStyle=new GtkProxyStyle(sbType);
+            qApp->setStyle(gtkProxyStyle);
         }
     }
+
+    #ifndef ENABLE_KDE_SUPPORT
+    if (!gtkProxyStyle && !plainProxyStyle) {
+        plainProxyStyle=new ProxyStyle();
+        qApp->setStyle(plainProxyStyle);
+    }
+    #endif
     #endif
 }
 
 void GtkStyle::cleanup()
 {
     #if !defined Q_OS_WIN && !defined QT_NO_STYLE_GTK && defined ENABLE_OVERLAYSCROLLBARS
-    if (style) {
-        style->destroySliderThumb();
+    if (gtkProxyStyle) {
+        gtkProxyStyle->destroySliderThumb();
     }
     #endif
 }

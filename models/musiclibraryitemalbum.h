@@ -84,6 +84,7 @@ public:
     const QString & imageUrl() const { return m_imageUrl; }
     void setImageUrl(const QString &u) { m_imageUrl=u; }
     bool updateYear();
+    bool containsArtist(const QString &a);
 
 private:
     void setCoverImage(const QImage &img) const;
@@ -100,6 +101,10 @@ private:
     Song::Type m_type;
     QSet<QString> m_singleTrackFiles;
     QString m_imageUrl;
+    // m_artists is used to cache the list of artists in a vraious artists albu
+    // this is built when containsArtist() is called, and is mainly used by the
+    // context view
+    QSet<QString> m_artists;
 };
 
 #endif

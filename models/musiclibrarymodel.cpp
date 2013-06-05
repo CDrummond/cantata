@@ -900,16 +900,14 @@ QList<Song> MusicLibraryModel::getAlbumTracks(const Song &s) const
 QList<Song> MusicLibraryModel::getArtistAlbumsFirstTracks(const Song &song) const
 {
     QString artist=song.isVariousArtists() ? song.artist : song.albumArtist();
+    QString basicArtist=song.basicArtist();
     QList<Song> tracks;
     foreach (MusicLibraryItem *ar, rootItem->childItems()) {
         if (static_cast<MusicLibraryItemArtist *>(ar)->isVarious()) {
             foreach (MusicLibraryItem *al, static_cast<MusicLibraryItemContainer *>(ar)->childItems()) {
-                foreach (MusicLibraryItem *s, static_cast<MusicLibraryItemContainer *>(al)->childItems()) {
-                    if (static_cast<MusicLibraryItemSong *>(s)->song().artist.contains(song.artist)) {
-                        MusicLibraryItemContainer *a=static_cast<MusicLibraryItemContainer *>(al);
-                        tracks.append(static_cast<MusicLibraryItemSong *>(a->childItems().first())->song());
-                        break;
-                    }
+                MusicLibraryItemAlbum *a=static_cast<MusicLibraryItemAlbum *>(al);
+                if (a->containsArtist(basicArtist)) {
+                    tracks.append(static_cast<MusicLibraryItemSong *>(a->childItems().first())->song());
                 }
             }
         } else if (ar->data()==artist) {

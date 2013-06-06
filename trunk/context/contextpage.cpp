@@ -218,8 +218,10 @@ void ContextPage::useDarkBackground(bool u)
             QColor linkVisited(164, 164, 164);
             pal.setColor(QPalette::Window, dark);
             pal.setColor(QPalette::Base, dark);
-            pal.setColor(QPalette::WindowText, light);
-            pal.setColor(QPalette::ButtonText, light);
+            // Dont globally change window/button text - else this can mess up scrollbar buttons
+            // with some styles (e.g. plastique)
+//            pal.setColor(QPalette::WindowText, light);
+//            pal.setColor(QPalette::ButtonText, light);
             pal.setColor(QPalette::Text, light);
             pal.setColor(QPalette::Link, light);
             pal.setColor(QPalette::LinkVisited, linkVisited);

@@ -158,7 +158,11 @@ void View::setPal(const QPalette &pal, const QColor &linkColor, const QColor &pr
     // update this when the palette changes!
     QString old=text->toHtml();
     text->setPal(pal);
-    header->setPalette(pal);
+    // header uses window/button text - so need to set these now...
+    QPalette hdrPal=pal;
+    hdrPal.setColor(QPalette::WindowText, pal.color(QPalette::Text));
+    hdrPal.setColor(QPalette::ButtonText, pal.color(QPalette::Text));
+    header->setPalette(hdrPal);
     old=old.replace("color:"+prevLinkColor.name()+";", "color:"+linkColor.name()+";");
     text->setHtml(old);
 }

@@ -95,7 +95,9 @@ WikipediaSettings::WikipediaSettings(QWidget *p)
 
 WikipediaSettings::~WikipediaSettings()
 {
-    loader->deleteLater();
+    if (loader) {
+        loader->deleteLater();
+    }
 }
 
 void WikipediaSettings::showEvent(QShowEvent *e)

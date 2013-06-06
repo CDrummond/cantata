@@ -191,6 +191,7 @@ public:
         bool selected=option.state&QStyle::State_Selected;
         bool mouseOver=underMouse && option.state&QStyle::State_MouseOver;
         bool gtk=mouseOver && GtkStyle::isActive();
+        bool rtl=Qt::RightToLeft==QApplication::layoutDirection();
 
         if (!isCollection && AlbumHeader==type) {
             if (mouseOver && gtk) {
@@ -261,9 +262,14 @@ public:
                 quint16 year=Song::albumYear(song);
 
                 if (year>0) {
-                    album+=QString(" (%1)").arg(year);
+                    if (rtl) {
+                        title=i18nc("RTL languages, artist - album albumYear", "%1 - %2 %3").arg(song.albumArtist()).arg(album).arg(year);
+                    } else {
+                        title=i18nc("artist - album (albumYear)", "%1 - %2 (%3)").arg(song.albumArtist()).arg(album).arg(year);
+                    }
+                } else {
+                    title=i18nc("artist - album", "%1 - %2").arg(song.albumArtist()).arg(album);
                 }
-                title=i18nc("artist - album", "%1 - %2").arg(song.albumArtist()).arg(album);
                 track=formatNumber(song.track)+QChar(' ')+trackTitle;
             }
         } else {
@@ -282,7 +288,6 @@ public:
         QColor col(option.palette.color(option.state&QStyle::State_Selected ? QPalette::HighlightedText : QPalette::Text));
         QTextOption textOpt(Qt::AlignVCenter);
         QRect r(option.rect.adjusted(constBorder+4, constBorder, -(constBorder+4), -constBorder));
-        bool rtl=Qt::RightToLeft==QApplication::layoutDirection();
 
         if (state && GroupedView::State_StopAfterTrack!=state) {
             QRectF border(option.rect.x()+1.5, option.rect.y()+1.5, option.rect.width()-3, option.rect.height()-3);
@@ -327,7 +332,7 @@ public:
             QString totalDuration=td>0 ? Song::formattedTime(td) : QString();
             QRect duratioRect(r.x(), r.y(), r.width(), textHeight);
             int totalDurationWidth=fm.width(totalDuration)+8;
-            QRect textRect(r.x(), r.y(), r.width()-totalDurationWidth, textHeight);
+            QRect textRect(r.x(), r.y(), r.width()-(rtl ? (4*constBorder) : totalDurationWidth), textHeight);
             QFont tf(f);
             tf.setBold(true);
             tf.setItalic(true);
@@ -342,7 +347,7 @@ public:
             r=QRect(r.x(), r.y()+r.height()-(textHeight+1), r.width(), textHeight);
             painter->setFont(f);
             if (rtl) {
-                r.adjust(0, 0, (constCoverSize+constBorder), 0);
+                r.adjust(0, 0, (constCoverSize-(constBorder*3)), 0);
             }
 
             if (isCollection || !view->isExpanded(song.key, collection)) {
@@ -353,7 +358,9 @@ public:
                 track=QTP_TRACKS_STR(index.data(GroupedView::Role_SongCount).toUInt());
                 #endif
             }
-        } else if (!rtl) {
+        } else if (rtl) {
+            r.adjust(0, 0, -(constBorder*4), 0);
+        } else {
             r.adjust(constCoverSize+constBorder, 0, 0, 0);
         }
 
@@ -363,6 +370,9 @@ public:
             QRect ir(r.x()-(size+6), r.y()+(((r.height()-size)/2.0)+0.5), size, size);
             QColor inside(option.palette.color(QPalette::Text));
             QColor border=inside.red()>100 && inside.blue()>100 && inside.green()>100 ? Qt::black : Qt::white;
+            if (rtl) {
+                ir.adjust(r.width()-size, 0, r.width()-size, 0);
+            }
             switch (state) {
             case GroupedView::State_Stopped:
                 painter->fillRect(ir, border);

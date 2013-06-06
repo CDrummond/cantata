@@ -77,7 +77,7 @@ LineEdit::LineEdit(QWidget *parent)
     connect(this, SIGNAL(textChanged(const QString&)), this, SLOT(updateCloseButton(const QString&)));
     int frameWidth = style()->pixelMetric(QStyle::PM_DefaultFrameWidth);
     bool onCombo = parent && qobject_cast<QComboBox *>(parent);
-    QString styleSheet=QLatin1String("QLineEdit { padding-")+QLatin1String(Qt::RightToLeft==layoutDirection() ? "left" : "right")+
+    QString styleSheet=QLatin1String("QLineEdit { padding-right")+
                        QLatin1String(": %1px; ")+QLatin1String(onCombo ? "background: transparent " : "")+QChar('}');
     setStyleSheet(styleSheet.arg(clearButton->sizeHint().width() + frameWidth + 1));
 

@@ -1009,7 +1009,7 @@ static Update update(const TagLib::FileRef fileref, const Song &from, const Song
             TagLib::ID3v2::Tag *v2=mpeg->ID3v2Tag(false);
             bool isID3v24=v2 && isId3V24(v2->header());
             int ver=id3Ver==3 ? 3 : (id3Ver==4 ? 4 : (isID3v24 ? 4 : 3));
-            return mpeg->save((haveV1 && -1==id3Ver ? TagLib::MPEG::File::ID3v1 : 0)|TagLib::MPEG::File::ID3v2, true, ver) ? Update_Modified : Update_Failed;
+            return mpeg->save((haveV1 ? TagLib::MPEG::File::ID3v1 : 0)|TagLib::MPEG::File::ID3v2, true, ver) ? Update_Modified : Update_Failed;
             #else
             Q_UNUSED(id3Ver)
             return mpeg->save((haveV1 ? TagLib::MPEG::File::ID3v1 : 0)|TagLib::MPEG::File::ID3v2, true) ? Update_Modified : Update_Failed;

@@ -296,7 +296,7 @@ void GtkProxyStyle::drawComplexControl(ComplexControl control, const QStyleOptio
                 #else
                 if (widget && widget->property(constOnCombo).toBool()) {
                     painter->fillRect(r, option->palette.background());
-                } else {
+                } else if (!widget || widget->testAttribute(Qt::WA_OpaquePaintEvent)) {
                     painter->fillRect(r, option->palette.base());
                 }
                 #endif

@@ -50,6 +50,7 @@
 32. Add option to replaygain dialog to show only untagged tracks.
 33. Automatic accelator assignment for Qt builds.
 34. Add cmake check to see if TagLib has id3version in MPEG save.
+35. RTL fixes.
 
 1.0.3
 -----

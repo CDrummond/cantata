@@ -78,12 +78,12 @@ void Dialog::resize(const QSize &sz)
 
 #else
 #include "icon.h"
-#include "gtkstyle.h"
 #include "acceleratormanager.h"
 #include <QDialogButtonBox>
 #include <QPushButton>
 #include <QBoxLayout>
 #include <QSettings>
+#include <QStyle>
 
 namespace StdGuiItem {
 GuiItem ok() { return GuiItem(i18n("&Ok"), "dialog-ok"); }
@@ -274,7 +274,7 @@ void Dialog::setButtonGuiItem(ButtonCode button, const GuiItem &item)
     QAbstractButton *b=getButton(button);
     if (b) {
         b->setText(item.text);
-        if (!item.icon.isEmpty() && !GtkStyle::isActive()) {
+        if (!item.icon.isEmpty() && style()->styleHint(QStyle::SH_DialogButtonBox_ButtonsHaveIcons)) {
             b->setIcon(Icon(item.icon));
         }
     }
@@ -285,7 +285,7 @@ void Dialog::setButtonGuiItem(QDialogButtonBox::StandardButton button, const Gui
     QAbstractButton *b=buttonBox->button(button);
     if (b) {
         b->setText(item.text);
-        if (!item.icon.isEmpty() && !GtkStyle::isActive()) {
+        if (!item.icon.isEmpty() && style()->styleHint(QStyle::SH_DialogButtonBox_ButtonsHaveIcons)) {
             b->setIcon(Icon(item.icon));
         }
     }

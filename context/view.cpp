@@ -26,9 +26,10 @@
 #include "networkaccessmanager.h"
 #include "settings.h"
 #include "textbrowser.h"
+#include "gtkstyle.h"
 #include <QLabel>
+#include <QScrollBar>
 #include <QImage>
-#include <QPixmap>
 #include <QBoxLayout>
 #include <QNetworkReply>
 #include <QLocale>
@@ -74,6 +75,9 @@ View::View(QWidget *parent)
     layout->addWidget(text);
     layout->addItem(new QSpacerItem(1, fontMetrics().height()/4, QSizePolicy::Fixed, QSizePolicy::Fixed));
     text->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    if (GtkStyle::isActive()) {
+        text->verticalScrollBar()->setAttribute(Qt::WA_OpaquePaintEvent, false);
+    }
     text->setOpenLinks(false);
     setEditable(false);
     if (headerTag.isEmpty()) {

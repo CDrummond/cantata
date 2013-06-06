@@ -209,7 +209,6 @@ void ContextPage::useDarkBackground(bool u)
     if (u!=darkBackground) {
         darkBackground=u;
         QPalette pal=darkBackground ? palette() : parentWidget()->palette();
-        QPalette appPal=QApplication::palette();
         QColor prevLinkColor;
         QColor linkCol;
 

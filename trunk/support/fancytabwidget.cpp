@@ -713,7 +713,10 @@ void FancyTabWidget::paintEvent(QPaintEvent*e) {
         drawFadedLine(&painter, r, palette().foreground().color());
     } else*/ {
         QRect rect = side_widget_->rect().adjusted(0, 0, 1, 0);
-        rect = style()->visualRect(layoutDirection(), geometry(), rect);
+//        rect = style()->visualRect(layoutDirection(), geometry(), rect);
+        if (Qt::RightToLeft==layoutDirection()) {
+            rect.adjust(geometry().width()-(rect.width()-1), 0, geometry().width()-(rect.width()-1), 0);
+        }
         drawFadedLine(&painter, QRect(rect.x(), rect.y(), 1, rect.height()), palette().foreground().color());
         drawFadedLine(&painter, QRect(rect.x()+rect.width()-2, rect.y(), 1, rect.height()), palette().foreground().color());
     }

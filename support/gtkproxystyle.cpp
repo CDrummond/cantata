@@ -153,11 +153,17 @@ QSize GtkProxyStyle::sizeFromContents(ContentsType type, const QStyleOption *opt
 
 int GtkProxyStyle::styleHint(StyleHint hint, const QStyleOption *option, const QWidget *widget, QStyleHintReturn *returnData) const
 {
-    if (SB_Standard!=sbarType && SH_ScrollView_FrameOnlyAroundContents==hint) {
+    switch (hint) {
+    case SH_DialogButtonBox_ButtonsHaveIcons:
         return false;
-    }
-    if (SH_UnderlineShortcut==hint) {
+    case SH_UnderlineShortcut:
         return widget ? shortcutHander->showShortcut(widget) : true;
+    case SH_ScrollView_FrameOnlyAroundContents:
+        if (SB_Standard!=sbarType) {
+            return false;
+        }
+    default:
+        break;
     }
 
     return baseStyle()->styleHint(hint, option, widget, returnData);

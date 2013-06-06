@@ -32,6 +32,7 @@
 #include <QComboBox>
 #include <QPushButton>
 #include <QValidator>
+#include <QStyle>
 
 class CoverNameValidator : public QValidator
 {
@@ -65,8 +66,10 @@ ServerSettings::ServerSettings(QWidget *p)
     connect(saveButton, SIGNAL(clicked(bool)), SLOT(saveAs()));
     connect(removeButton, SIGNAL(clicked(bool)), SLOT(remove()));
     connect(connectButton, SIGNAL(clicked(bool)), SLOT(toggleConnection()));
-    saveButton->setIcon(Icon("document-save-as"));
-    removeButton->setIcon(Icon("edit-delete"));
+    if (style()->styleHint(QStyle::SH_DialogButtonBox_ButtonsHaveIcons)) {
+        saveButton->setIcon(Icon("document-save-as"));
+        removeButton->setIcon(Icon("edit-delete"));
+    }
 
     dynamizerPort->setSpecialValueText(i18n("Not Used"));
     #if defined Q_OS_WIN
@@ -234,7 +237,9 @@ void ServerSettings::enableWidgets(bool e)
 //     passwordLabel->setEnabled(e);
 //     dirLabel->setEnabled(e);
     connectButton->setText(e ? i18n("Connect") : i18n("Disconnect"));
-    connectButton->setIcon(e ? Icons::connectIcon : Icons::disconnectIcon);
+    if (style()->styleHint(QStyle::SH_DialogButtonBox_ButtonsHaveIcons)) {
+        connectButton->setIcon(e ? Icons::connectIcon : Icons::disconnectIcon);
+    }
     removeButton->setEnabled(e);
 //     saveButton->setEnabled(e);
 }

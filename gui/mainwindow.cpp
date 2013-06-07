@@ -418,13 +418,17 @@ MainWindow::MainWindow(QWidget *parent)
 
     QStringList hiddenPages=Settings::self()->hiddenPages();
     playQueuePage=new PlayQueuePage(this);
+    infoPage=new InfoPage(this);
     QBoxLayout *layout=new QBoxLayout(QBoxLayout::TopToBottom, playQueuePage);
     layout->setContentsMargins(0, 0, 0, 0);
     bool playQueueInSidebar=!hiddenPages.contains(playQueuePage->metaObject()->className());
     if (playQueueInSidebar && (Settings::self()->firstRun() || Settings::self()->version()<CANTATA_MAKE_VERSION(0, 8, 0))) {
         playQueueInSidebar=false;
     }
-    infoPage=new InfoPage(this);
+    bool contextInSidebar=!hiddenPages.contains(infoPage->metaObject()->className());
+    if (contextInSidebar && (Settings::self()->firstRun() || Settings::self()->version()<CANTATA_MAKE_VERSION(1, 0, 52))) {
+        contextInSidebar=false;
+    }
     layout=new QBoxLayout(QBoxLayout::TopToBottom, infoPage);
     layout->setContentsMargins(0, 0, 0, 0);
     tabWidget->AddTab(playQueuePage, TAB_ACTION(showPlayQueueAction), playQueueInSidebar);
@@ -467,6 +471,12 @@ MainWindow::MainWindow(QWidget *parent)
         tabToggled(PAGE_PLAYQUEUE);
     } else {
         tabWidget->SetCurrentIndex(PAGE_LIBRARY);
+    }
+
+    if (contextInSidebar) {
+        tabToggled(PAGE_INFO);
+    } else {
+        tabWidget->ToggleTab(PAGE_INFO, false);
     }
 
     tabWidget->SetMode(FancyTabWidget::Mode_LargeSidebar);
@@ -853,7 +863,6 @@ MainWindow::MainWindow(QWidget *parent)
         move(p.isNull() ? QPoint(96, 96) : p);
     }
 
-    tabToggled(PAGE_INFO);
     // If this is the first run, then the wizard will have done the MPD connection. But this will not have loaded the model!
     // So, we need to load this now - which is done in currentTabChanged()
     if (Settings::self()->firstRun() ||

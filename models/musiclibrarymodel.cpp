@@ -362,25 +362,19 @@ bool MusicLibraryModel::setData(const QModelIndex &idx, const QVariant &value, i
         switch (item->itemType()) {
         case MusicLibraryItem::Type_Artist: {
             MusicLibraryItemArtist *artistItem=static_cast<MusicLibraryItemArtist *>(item);
-            QModelIndex artistIndex;
+            QModelIndex artistIndex=index(rootItem->childItems().indexOf(artistItem), 0, QModelIndex());
             item->setCheckState(check);
             foreach (MusicLibraryItem *album, artistItem->childItems()) {
                 if (check!=album->checkState()) {
-                    MusicLibraryItemAlbum *albumItem=static_cast<MusicLibraryItemAlbum *>(album);
-                    if (!artistIndex.isValid()) {
-                        artistIndex=index(rootItem->childItems().indexOf(artistItem), 0, QModelIndex());
-                    }
                     QModelIndex albumIndex=index(artistItem->childItems().indexOf(album), 0, artistIndex);
                     album->setCheckState(check);
+                    MusicLibraryItemAlbum *albumItem=static_cast<MusicLibraryItemAlbum *>(album);
                     foreach (MusicLibraryItem *song, albumItem->childItems()) {
-                        if (check!=song->checkState()) {
-                            song->setCheckState(check);
-                            QModelIndex songIndex=index(albumItem->childItems().indexOf(song), 0, albumIndex);
-                            emit dataChanged(songIndex, songIndex);
-                        }
+                        song->setCheckState(check);
                     }
-                    emit dataChanged(albumIndex, albumIndex);
+                    emit dataChanged(index(0, 0, albumIndex), index(0, albumItem->childCount(), albumIndex));
                 }
+                emit dataChanged(index(0, 0, artistIndex), index(0, artistItem->childCount(), artistIndex));
             }
             break;
         }
@@ -388,19 +382,13 @@ bool MusicLibraryModel::setData(const QModelIndex &idx, const QVariant &value, i
             MusicLibraryItemArtist *artistItem=static_cast<MusicLibraryItemArtist *>(item->parentItem());
             QModelIndex artistIndex=index(rootItem->childItems().indexOf(artistItem), 0, QModelIndex());
             MusicLibraryItemAlbum *albumItem=static_cast<MusicLibraryItemAlbum *>(item);
-            QModelIndex albumIndex;
             albumItem->setCheckState(check);
+            QModelIndex albumIndex=index(artistItem->childItems().indexOf(item), 0, artistIndex);
+            item->setCheckState(check);
             foreach (MusicLibraryItem *song, albumItem->childItems()) {
-                if (check!=song->checkState()) {
-                    song->setCheckState(check);
-                    if (!albumIndex.isValid()) {
-                        albumIndex=index(artistItem->childItems().indexOf(item), 0, artistIndex);
-                    }
-                    QModelIndex songIndex=index(albumItem->childItems().indexOf(song), 0, albumIndex);
-                    emit dataChanged(songIndex, songIndex);
-                }
+                song->setCheckState(check);
             }
-
+            emit dataChanged(index(0, 0, albumIndex), index(0, albumItem->childCount(), albumIndex));
             setParentState(artistIndex, value.toBool(), artistItem, item);
             break;
         }
@@ -410,10 +398,8 @@ bool MusicLibraryModel::setData(const QModelIndex &idx, const QVariant &value, i
             MusicLibraryItemArtist *artistItem=static_cast<MusicLibraryItemArtist *>(albumItem->parentItem());
             QModelIndex artistIndex=index(rootItem->childItems().indexOf(artistItem), 0, QModelIndex());
             QModelIndex albumIndex=index(artistItem->childItems().indexOf(albumItem), 0, artistIndex);
-            QModelIndex songIndex=index(albumItem->childItems().indexOf(item), 0, albumIndex);
             setParentState(albumIndex, value.toBool(), albumItem, item);
             setParentState(artistIndex, Qt::Unchecked!=albumItem->checkState(), artistItem, albumItem);
-            emit dataChanged(songIndex, songIndex);
             break;
         }
         case MusicLibraryItem::Type_Root:

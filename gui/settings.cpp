@@ -470,6 +470,11 @@ int Settings::contextZoom()
     return GET_INT("contextZoom", 0);
 }
 
+QString Settings::contextSlimPage()
+{
+    return GET_STRING("contextSlimPage", QString());
+}
+
 QString Settings::page()
 {
     return GET_STRING("page", QString());
@@ -892,6 +897,11 @@ void Settings::saveContextDarkBackground(bool v)
 void Settings::saveContextZoom(int v)
 {
     SET_VALUE_MOD(contextZoom)
+}
+
+void Settings::saveContextSlimPage(const QString &v)
+{
+    SET_VALUE_MOD(contextSlimPage)
 }
 
 void Settings::savePage(const QString &v)

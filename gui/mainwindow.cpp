@@ -577,7 +577,7 @@ MainWindow::MainWindow(QWidget *parent)
     #endif
 
     mainMenu->addAction(expandInterfaceAction);
-//    mainMenu->addAction(songInfoAction);
+    mainMenu->addAction(songInfoAction);
     mainMenu->addAction(fullScreenAction);
     mainMenu->addAction(connectionsAction);
     mainMenu->addAction(outputsAction);
@@ -612,7 +612,7 @@ MainWindow::MainWindow(QWidget *parent)
         menu=new QMenu(i18n("&Settings"), this);
         menu->addAction(expandInterfaceAction);
         menu->addAction(songInfoAction);
-//        menu->addAction(fullScreenAction);
+        menu->addAction(fullScreenAction);
         menu->addAction(connectionsAction);
         menu->addAction(outputsAction);
         menu->addSeparator();

@@ -262,11 +262,7 @@ public:
                 quint16 year=Song::albumYear(song);
 
                 if (year>0) {
-                    if (rtl) {
-                        title=i18nc("RTL languages, artist - album albumYear", "%1 - %2 %3").arg(song.albumArtist()).arg(album).arg(year);
-                    } else {
-                        title=i18nc("artist - album (albumYear)", "%1 - %2 (%3)").arg(song.albumArtist()).arg(album).arg(year);
-                    }
+                    title=i18nc("artist - album (albumYear)", "%1 - %2 (%3)").arg(song.albumArtist()).arg(album).arg(year);
                 } else {
                     title=i18nc("artist - album", "%1 - %2").arg(song.albumArtist()).arg(album);
                 }

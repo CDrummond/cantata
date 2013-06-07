@@ -37,6 +37,7 @@ class BackdropCreator;
 class QNetworkReply;
 class QStackedWidget;
 class QComboBox;
+class ThinSplitter;
 
 class ContextPage : public QWidget
 {
@@ -100,6 +101,7 @@ private:
     int minWidth;
     bool isWide;
     QStackedWidget *stack;
+    ThinSplitter *splitter;
     QComboBox *viewCombo;
     BackdropCreator *creator;
     QString backdropText;

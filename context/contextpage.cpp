@@ -112,6 +112,7 @@ public:
             underMouse = true;
             update();
             break;
+        case QEvent::ContextMenu:
         case QEvent::HoverLeave:
             underMouse = false;
             update();

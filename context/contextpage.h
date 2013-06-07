@@ -28,6 +28,7 @@
 #include <QImage>
 #include <QColor>
 #include <QPropertyAnimation>
+#include <QSplitter>
 #include "song.h"
 
 class ArtistView;
@@ -37,7 +38,17 @@ class BackdropCreator;
 class QNetworkReply;
 class QStackedWidget;
 class QComboBox;
-class ThinSplitter;
+
+class ThinSplitter : public QSplitter
+{
+    Q_OBJECT
+public:
+    ThinSplitter(QWidget *parent);
+    QSplitterHandle *createHandle();
+
+public Q_SLOTS:
+    void reset();
+};
 
 class ContextPage : public QWidget
 {

@@ -47,7 +47,7 @@
 #include <QApplication>
 #include <QComboBox>
 #include <QStackedWidget>
-#include <QSplitter>
+#include <QAction>
 #include <QDebug>
 
 //#define DBUG qWarning() << metaObject()->className() << __FUNCTION__
@@ -69,13 +69,17 @@ static QColor splitterColor;
 class ThinSplitterHandle : public QSplitterHandle
 {
 public:
-    ThinSplitterHandle(Qt::Orientation orientation, QSplitter *parent)
+    ThinSplitterHandle(Qt::Orientation orientation, ThinSplitter *parent)
         : QSplitterHandle(orientation, parent)
         , underMouse(false)
     {
         setMask(QRegion(contentsRect()));
         setAttribute(Qt::WA_MouseNoMask, true);
         setAttribute(Qt::WA_OpaquePaintEvent, false);
+        QAction *act=new QAction(i18n("Reset Spacing"), this);
+        addAction(act);
+        connect(act, SIGNAL(triggered(bool)), parent, SLOT(reset()));
+        setContextMenuPolicy(Qt::ActionsContextMenu);
     }
 
     void resizeEvent(QResizeEvent *event)
@@ -122,19 +126,34 @@ public:
     bool underMouse;
 };
 
-class ThinSplitter : public QSplitter
-{
-public:
-    ThinSplitter(QWidget *parent)
-        : QSplitter(parent)
-    {
-        setHandleWidth(3);
-        setChildrenCollapsible(false);
-        setOrientation(Qt::Horizontal);
-    }
 
-    QSplitterHandle *createHandle() {  return new ThinSplitterHandle(orientation(), this); }
-};
+ThinSplitter::ThinSplitter(QWidget *parent)
+    : QSplitter(parent)
+{
+    setHandleWidth(3);
+    setChildrenCollapsible(false);
+    setOrientation(Qt::Horizontal);
+}
+
+QSplitterHandle * ThinSplitter::createHandle()
+{
+    return new ThinSplitterHandle(orientation(), this);
+}
+
+void ThinSplitter::reset()
+{
+    int totalSize=0;
+    foreach (int s, sizes()) {
+        totalSize+=s;
+    }
+    QList<int> newSizes;
+    int size=totalSize/count();
+    for (int i=0; i<count()-1; ++i) {
+        newSizes.append(size);
+    }
+    newSizes.append(totalSize-(size*newSizes.count()));
+    setSizes(newSizes);
+}
 
 ContextPage::ContextPage(QWidget *parent)
     : QWidget(parent)

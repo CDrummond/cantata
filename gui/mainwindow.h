@@ -78,12 +78,18 @@ class VolumeControl;
 class TrayItem;
 class GtkProxyStyle;
 
-// Dummy class so that when class name is saved to the config file, we get a more meaningful name than QWidget!!!
+// Dummy classes so that when class name is saved to the config file, we get a more meaningful name than QWidget!!!
 class PlayQueuePage : public QWidget
 {
     Q_OBJECT
 public:
     PlayQueuePage(QWidget *p) : QWidget(p) { }
+};
+class InfoPage : public QWidget
+{
+    Q_OBJECT
+public:
+    InfoPage(QWidget *p) : QWidget(p) { }
 };
 
 class DeleteKeyEventHandler : public QObject
@@ -134,13 +140,14 @@ public:
         PAGE_FOLDERS,
         PAGE_PLAYLISTS,
         PAGE_DYNAMIC,
-        PAGE_STREAMS
+        PAGE_STREAMS,
         #ifdef ENABLE_ONLINE_SERVICES
-        , PAGE_ONLINE
+        PAGE_ONLINE,
         #endif
         #ifdef ENABLE_DEVICES_SUPPORT
-        , PAGE_DEVICES
+        PAGE_DEVICES,
         #endif
+        PAGE_INFO
     };
 
     Q_PROPERTY(int volume READ mpdVolume WRITE setMpdVolume)
@@ -261,6 +268,7 @@ public Q_SLOTS:
         showTab(PAGE_ONLINE);
         #endif
     }
+    void showInfoTab() { showTab(PAGE_INFO); }
     void showDevicesTab() {
         #ifdef ENABLE_DEVICES_SUPPORT
         showTab(PAGE_DEVICES);
@@ -393,6 +401,7 @@ private:
     #ifdef ENABLE_ONLINE_SERVICES
     OnlineServicesPage *onlinePage;
     #endif
+    QWidget *infoPage;
     #ifdef ENABLE_DEVICES_SUPPORT
     DevicesPage *devicesPage;
     #endif

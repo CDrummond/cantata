@@ -129,6 +129,7 @@ public:
     bool contextBackdrop();
     bool contextDarkBackground();
     int contextZoom();
+    QString contextSlimPage();
     QString page();
     QStringList hiddenPages();
     bool gnomeMediaKeys();
@@ -211,6 +212,7 @@ public:
     void saveContextBackdrop(bool v);
     void saveContextDarkBackground(bool v);
     void saveContextZoom(int v);
+    void saveContextSlimPage(const QString &v);
     void savePage(const QString &v);
     void saveHiddenPages(const QStringList &v);
     void saveGnomeMediaKeys(bool v);

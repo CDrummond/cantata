@@ -146,9 +146,9 @@ void ContextPage::setWide(bool w)
         }
         if (!viewCombo) {
             viewCombo=new QComboBox(this);
-            viewCombo->addItem(i18n("Artist Information"));
-            viewCombo->addItem(i18n("Album Information"));
-            viewCombo->addItem(i18n("Lyrics"));
+            viewCombo->addItem(i18n("Artist Information"), "artist");
+            viewCombo->addItem(i18n("Album Information"), "album");
+            viewCombo->addItem(i18n("Lyrics"), "song");
             connect(viewCombo, SIGNAL(activated(int)), stack, SLOT(setCurrentIndex(int)));
         }
         stack->setVisible(true);
@@ -162,6 +162,16 @@ void ContextPage::setWide(bool w)
         l->addItem(new QSpacerItem(m, m, QSizePolicy::Fixed, QSizePolicy::Fixed), 0, 0, 1, 1);
         l->addWidget(stack, 0, 1, 1, 1);
         l->addWidget(viewCombo, 1, 0, 1, 2);
+        QString lastSaved=Settings::self()->contextSlimPage();
+        if (!lastSaved.isEmpty()) {
+            for (int i=0; i<viewCombo->count(); ++i) {
+                if (viewCombo->itemData(i).toString()==lastSaved) {
+                    viewCombo->setCurrentIndex(i);
+                    stack->setCurrentIndex(i);
+                    break;
+                }
+            }
+        }
     }
 }
 
@@ -189,6 +199,9 @@ void ContextPage::readConfig()
 void ContextPage::saveConfig()
 {
     Settings::self()->saveContextZoom(artist->getZoom());
+    if (viewCombo) {
+        Settings::self()->saveContextSlimPage(viewCombo->itemData(viewCombo->currentIndex()).toString());
+    }
 }
 
 void ContextPage::useBackdrop(bool u)

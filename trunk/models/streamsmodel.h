@@ -92,7 +92,7 @@ public:
     QVariant data(const QModelIndex &, int) const;
     void reload();
     void save(bool force=false);
-    bool save(const QString &filename, const QSet<StreamsModel::Item *> &selection=QSet<StreamsModel::Item *>());
+    bool save(const QString &filename, const QSet<StreamsModel::Item *> &selection=QSet<StreamsModel::Item *>(), bool streamsOnly=false);
     bool import(const QString &filename) { return load(filename, false); }
     bool add(const QString &cat, const QString &name, const QString &genre, const QString &icon, const QString &url);
     void add(const QString &cat, const QString &icon, const QList<StreamsModel::StreamItem *> &streams);
@@ -128,6 +128,7 @@ private Q_SLOTS:
     void downloadFinished();
 
 private:
+    bool save(QIODevice *dev, const QSet<StreamsModel::Item *> &selection, bool streamsOnly, bool format);
     void clearCategories();
     bool load(const QString &filename, bool isInternal);
     bool load(QIODevice *dev, bool isInternal);

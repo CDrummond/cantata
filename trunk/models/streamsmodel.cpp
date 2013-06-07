@@ -390,28 +390,31 @@ bool StreamsModel::load(QIODevice *dev, bool isInternal)
 {
     QXmlStreamReader doc(dev);
     bool haveInserted=false;
-    int level=0;
     CategoryItem *cat=0;
     QString unknown=i18n("Unknown");
+    QString import=i18n("Import");
 
     while (!doc.atEnd()) {
         doc.readNext();
 
         if (doc.isStartElement()) {
-            ++level;
-            if (2==level && QLatin1String("category")==doc.name()) {
+            if (QLatin1String("category")==doc.name()) {
                 QString catName=doc.attributes().value("name").toString();
                 QString catIcon=doc.attributes().value("icon").toString();
                 cat=getCategory(catName, true, !isInternal);
                 if (cat && cat->icon.isEmpty() && !catIcon.isEmpty()) {
                     cat->icon=catIcon;
                 }
-            } else if (cat && 3==level && QLatin1String("stream")==doc.name()) {
+            } else if (QLatin1String("stream")==doc.name()) {
                 QString name=doc.attributes().value("name").toString();
                 QString icon=doc.attributes().value("icon").toString();
                 QString genre=doc.attributes().value("genre").toString();
                 QString origName=name;
                 QUrl url=QUrl(doc.attributes().value("url").toString());
+
+                if (!cat) {
+                    cat=getCategory(isInternal ? unknown : import, true, !isInternal);
+                }
 
                 if (!name.isEmpty() && url.isValid() && (isInternal || !entryExists(cat, QString(), url))) {
                     int i=1;
@@ -436,8 +439,7 @@ bool StreamsModel::load(QIODevice *dev, bool isInternal)
                 }
             }
         } else if (doc.isEndElement()) {
-            --level;
-            if (2==level && QLatin1String("category")==doc.name()) {
+            if (QLatin1String("category")==doc.name()) {
                 cat=0;
             }
         }
@@ -454,41 +456,49 @@ bool StreamsModel::load(QIODevice *dev, bool isInternal)
     return haveInserted;
 }
 
-bool StreamsModel::save(const QString &filename, const QSet<StreamsModel::Item *> &selection)
+bool StreamsModel::save(const QString &filename, const QSet<StreamsModel::Item *> &selection, bool streamsOnly)
 {
     QFile file(filename);
-    QtIOCompressor compressor(&file);
-    compressor.setStreamFormat(QtIOCompressor::GzipFormat);
-    if (!compressor.open(QIODevice::WriteOnly)) {
-        return false;
-    }
 
-    QXmlStreamWriter doc(&compressor);
+    if (streamsOnly) {
+        return file.open(QIODevice::WriteOnly) && save(&file, selection, streamsOnly, true);
+    } else {
+        QtIOCompressor compressor(&file);
+        compressor.setStreamFormat(QtIOCompressor::GzipFormat);
+        return compressor.open(QIODevice::WriteOnly) && save(&compressor, selection, streamsOnly, filename!=getInternalFile(false));
+    }
+}
+
+bool StreamsModel::save(QIODevice *dev, const QSet<StreamsModel::Item *> &selection, bool streamsOnly, bool format)
+{
+    QXmlStreamWriter doc(dev);
     doc.writeStartDocument();
     doc.writeStartElement("streams");
     doc.writeAttribute("version", "1.0");
-    if (filename==getInternalFile(false)) {
-        doc.setAutoFormatting(false);
-    } else {
+    if (format) {
         doc.setAutoFormatting(true);
         doc.setAutoFormattingIndent(1);
+    } else {
+        doc.setAutoFormatting(false);
     }
 
     QString unknown=i18n("Unknown");
 
     foreach (CategoryItem *c, items) {
         if (selection.isEmpty() || selection.contains(c)) {
-            doc.writeStartElement("category");
-            doc.writeAttribute("name", c->name);
-            if (!c->icon.isEmpty()) {
-                doc.writeAttribute("icon", c->icon);
+            if (!streamsOnly) {
+                doc.writeStartElement("category");
+                doc.writeAttribute("name", c->name);
+                if (!c->icon.isEmpty()) {
+                    doc.writeAttribute("icon", c->icon);
+                }
             }
             foreach (StreamItem *s, c->streams) {
                 if (selection.isEmpty() || selection.contains(s)) {
                     doc.writeStartElement("stream");
                     doc.writeAttribute("name", s->name);
                     doc.writeAttribute("url", s->url.toString());
-                    if (!s->icon.isEmpty()) {
+                    if (!streamsOnly && !s->icon.isEmpty()) {
                         doc.writeAttribute("icon", s->icon);
                     }
                     QSet<QString> genres=s->genres;
@@ -499,7 +509,9 @@ bool StreamsModel::save(const QString &filename, const QSet<StreamsModel::Item *
                     doc.writeEndElement();
                 }
             }
-            doc.writeEndElement();
+            if (!streamsOnly) {
+                doc.writeEndElement();
+            }
         }
     }
     doc.writeEndElement();

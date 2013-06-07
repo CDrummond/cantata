@@ -83,7 +83,6 @@ private:
     Action *exportAction;
     Action *addAction;
     Action *editAction;
-    QAction *importFileAction;
     QAction *importIceCastAction;
     QAction *importSomaFmCastAction;
     StreamsProxyModel proxy;

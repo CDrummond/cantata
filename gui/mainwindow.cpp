@@ -284,6 +284,7 @@ MainWindow::MainWindow(QWidget *parent)
     expandInterfaceAction = ActionCollection::get()->createAction("expandinterface", i18n("Expanded Interface"), "view-media-playlist");
     songInfoAction = ActionCollection::get()->createAction("showsonginfo", i18n("Show Current Song Information"), Icons::infoIcon);
     songInfoAction->setShortcut(Qt::Key_F12);
+    songInfoAction->setCheckable(true);
     fullScreenAction = ActionCollection::get()->createAction("fullScreen", i18n("Full Screen"), "view-fullscreen");
     fullScreenAction->setShortcut(Qt::Key_F11);
     randomPlayQueueAction = ActionCollection::get()->createAction("randomplaylist", i18n("Random"), Icons::shuffleIcon);
@@ -423,6 +424,9 @@ MainWindow::MainWindow(QWidget *parent)
     if (playQueueInSidebar && (Settings::self()->firstRun() || Settings::self()->version()<CANTATA_MAKE_VERSION(0, 8, 0))) {
         playQueueInSidebar=false;
     }
+    infoPage=new InfoPage(this);
+    layout=new QBoxLayout(QBoxLayout::TopToBottom, infoPage);
+    layout->setContentsMargins(0, 0, 0, 0);
     tabWidget->AddTab(playQueuePage, TAB_ACTION(showPlayQueueAction), playQueueInSidebar);
     tabWidget->AddTab(libraryPage, TAB_ACTION(libraryTabAction), !hiddenPages.contains(libraryPage->metaObject()->className()));
     tabWidget->AddTab(albumsPage, TAB_ACTION(albumsTabAction), !hiddenPages.contains(albumsPage->metaObject()->className()));
@@ -437,6 +441,9 @@ MainWindow::MainWindow(QWidget *parent)
     tabWidget->AddTab(devicesPage, TAB_ACTION(devicesTabAction), !hiddenPages.contains(devicesPage->metaObject()->className()));
     DevicesModel::self()->setEnabled(!hiddenPages.contains(devicesPage->metaObject()->className()));
     #endif
+    tabWidget->AddTab(infoPage, Icons::infoSidebarIcon, i18n("Info"),
+                      songInfoAction->text()+"<br/><small><i>"+songInfoAction->shortcut().toString()+"</i></small>",
+                      !hiddenPages.contains(infoPage->metaObject()->className()));
     AlbumsModel::self()->setEnabled(!hiddenPages.contains(albumsPage->metaObject()->className()));
     folderPage->setEnabled(!hiddenPages.contains(folderPage->metaObject()->className()));
     streamsPage->setEnabled(!hiddenPages.contains(streamsPage->metaObject()->className()));
@@ -465,7 +472,6 @@ MainWindow::MainWindow(QWidget *parent)
     tabWidget->SetMode(FancyTabWidget::Mode_LargeSidebar);
     expandInterfaceAction->setCheckable(true);
     fullScreenAction->setCheckable(true);
-    songInfoAction->setCheckable(true);
     randomPlayQueueAction->setCheckable(true);
     repeatPlayQueueAction->setCheckable(true);
     singlePlayQueueAction->setCheckable(true);
@@ -489,12 +495,10 @@ MainWindow::MainWindow(QWidget *parent)
         controlIconSize=48;
         playbackIconSize=48;
         buttonSize=54;
-        qWarning() << "C";
     } else if (repeatButton->iconSize().height()>=22) {
         controlIconSize=32;
         playbackIconSize=32;
         buttonSize=36;
-        qWarning() << "B";
     } else if (QLatin1String("oxygen")!=QIcon::themeName()) {
         // Oxygen does not have 24x24 icons, and media players eem to use scaled 28x28 icons...
         // But, if the theme does have media icons at 24x24 use these - as they will be sharper...
@@ -573,7 +577,7 @@ MainWindow::MainWindow(QWidget *parent)
     #endif
 
     mainMenu->addAction(expandInterfaceAction);
-    mainMenu->addAction(songInfoAction);
+//    mainMenu->addAction(songInfoAction);
     mainMenu->addAction(fullScreenAction);
     mainMenu->addAction(connectionsAction);
     mainMenu->addAction(outputsAction);
@@ -608,7 +612,7 @@ MainWindow::MainWindow(QWidget *parent)
         menu=new QMenu(i18n("&Settings"), this);
         menu->addAction(expandInterfaceAction);
         menu->addAction(songInfoAction);
-        menu->addAction(fullScreenAction);
+//        menu->addAction(fullScreenAction);
         menu->addAction(connectionsAction);
         menu->addAction(outputsAction);
         menu->addSeparator();
@@ -849,6 +853,7 @@ MainWindow::MainWindow(QWidget *parent)
         move(p.isNull() ? QPoint(96, 96) : p);
     }
 
+    tabToggled(PAGE_INFO);
     // If this is the first run, then the wizard will have done the MPD connection. But this will not have loaded the model!
     // So, we need to load this now - which is done in currentTabChanged()
     if (Settings::self()->firstRun() ||
@@ -2331,13 +2336,17 @@ void MainWindow::expandOrCollapse(bool saveCurrentSize)
     }
 
     fullScreenAction->setEnabled(showing);
-    songInfoButton->setVisible(showing);
+    songInfoButton->setVisible(songInfoAction->isCheckable() && showing);
     songInfoAction->setEnabled(showing);
 }
 
 void MainWindow::showSongInfo()
 {
-    stack->setCurrentWidget(songInfoAction->isChecked() ? (QWidget *)context : (QWidget *)splitter);
+    if (songInfoAction->isCheckable()) {
+        stack->setCurrentWidget(songInfoAction->isChecked() ? (QWidget *)context : (QWidget *)splitter);
+    } else {
+        showTab(PAGE_INFO);
+    }
 }
 
 void MainWindow::fullScreen()
@@ -2453,6 +2462,21 @@ void MainWindow::tabToggled(int index)
             splitter->setAutohidable(0, autoHideSplitterAction->isChecked() && !tabWidget->isEnabled(PAGE_PLAYQUEUE));
         }
         break;
+    case PAGE_INFO:
+        if (tabWidget->isEnabled(index) && songInfoAction->isCheckable()) {
+            context->setParent(infoPage);
+            infoPage->layout()->addWidget(context);
+            context->setVisible(true);
+            songInfoButton->setVisible(false);
+            songInfoAction->setCheckable(false);
+        } else if (!songInfoAction->isCheckable()) {
+            infoPage->layout()->removeWidget(context);
+            stack->addWidget(context);
+            context->setVisible(false);
+            songInfoButton->setVisible(true);
+            songInfoAction->setCheckable(true);
+        }
+        break;
     case PAGE_LIBRARY:
         locateTrackAction->setVisible(tabWidget->isEnabled(index));
         break;
@@ -2515,6 +2539,7 @@ void MainWindow::toggleMonoIcons()
         onlineTabAction->setIcon(Icons::onlineIcon);
         tabWidget->SetIcon(PAGE_ONLINE, onlineTabAction->icon());
         #endif
+        tabWidget->SetIcon(PAGE_INFO, Icons::infoSidebarIcon);
         #ifdef ENABLE_DEVICES_SUPPORT
         devicesTabAction->setIcon(Icons::devicesIcon);
         tabWidget->SetIcon(PAGE_DEVICES, devicesTabAction->icon());
@@ -2533,8 +2558,10 @@ void MainWindow::locateTrack()
 
 void MainWindow::locateArtist(const QString &artist)
 {
-    songInfoAction->setChecked(false);
-    showSongInfo();
+    if (songInfoAction->isCheckable()) {
+        songInfoAction->setChecked(false);
+        showSongInfo();
+    }
     if (!libraryPage->isVisible()) {
         showLibraryTab();
     }
@@ -2543,8 +2570,10 @@ void MainWindow::locateArtist(const QString &artist)
 
 void MainWindow::locateAlbum(const QString &artist, const QString &album)
 {
-    songInfoAction->setChecked(false);
-    showSongInfo();
+    if (songInfoAction->isCheckable()) {
+        songInfoAction->setChecked(false);
+        showSongInfo();
+    }
     if (!libraryPage->isVisible()) {
         showLibraryTab();
     }
@@ -2594,6 +2623,11 @@ void MainWindow::showPage(const QString &page, bool focusSearch)
         if (focusSearch) {
             streamsPage->focusSearch();
         }
+    } else if (QLatin1String("info")==p) {
+        if (songInfoAction->isCheckable()) {
+            songInfoAction->setChecked(true);
+        }
+        showSongInfo();
     }
     #ifdef ENABLE_ONLINE_SERVICES
     else if (QLatin1String("online")==p) {

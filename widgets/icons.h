@@ -79,6 +79,7 @@ namespace Icons
     #endif
     extern Icon contextIcon;
     extern Icon infoIcon;
+    extern Icon infoSidebarIcon;
     #ifdef ENABLE_DEVICES_SUPPORT
     extern Icon devicesIcon;
     #endif

@@ -16,7 +16,8 @@
  9. Better non-monochrome radio-stream icons. Thanks to Grely
 10. Dont use alternating rows in views (does not look too great with grouped
     view). Use a fading divider instead.
-11. Remove lyrics and info pages, and place within a new context view.
+11. Combine info and lyrics pages into a new context view. By default this is
+    not placed in the sidebar, but has a toggle to show in the main view.
 12. Remove EchoNest usage, as this only seems to return English results. Use
     wikipedia instead. Only the introduction is displayed by default. If no
     entry is found on wikipedia, then last.fm is consulted.

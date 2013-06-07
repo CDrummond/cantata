@@ -333,6 +333,7 @@ Icon Icons::onlineIcon;
 #endif
 Icon Icons::contextIcon;
 Icon Icons::infoIcon;
+Icon Icons::infoSidebarIcon;
 #ifdef ENABLE_DEVICES_SUPPORT
 Icon Icons::devicesIcon;
 #endif
@@ -535,6 +536,7 @@ void Icons::initSidebarIcons()
         #ifdef ENABLE_ONLINE_SERVICES
         onlineIcon=loadSidebarIcon("online", textCol, highlightedTexCol);
         #endif
+        infoSidebarIcon=loadSidebarIcon("info", textCol, highlightedTexCol);
         #ifdef ENABLE_DEVICES_SUPPORT
         devicesIcon=loadSidebarIcon("devices", textCol, highlightedTexCol);
         #endif
@@ -549,6 +551,12 @@ void Icons::initSidebarIcons()
         #ifdef ENABLE_ONLINE_SERVICES
         onlineIcon=Icon("applications-internet");
         #endif
+        if (QIcon::themeName()==QLatin1String("gnome")) {
+            QColor col=QApplication::palette().color(QPalette::Active, QPalette::ButtonText);
+            infoSidebarIcon=loadSidebarIcon("info", col, col);
+        } else {
+            infoSidebarIcon=Icon("dialog-information");
+        }
         #ifdef ENABLE_DEVICES_SUPPORT
         devicesIcon=Icon("multimedia-player");
         #endif

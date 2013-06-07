@@ -5,7 +5,7 @@ SET( SUPPORT_MOC_HDRS action.h actioncollection.h fancytabwidget.h messagewidget
 
 if (NOT WIN32)
     SET( SUPPORT_SRCS ${SUPPORT_SRCS} onoffbutton.cpp spinbox.cpp windowmanager.cpp gtkproxystyle.cpp combobox.cpp shortcuthandler.cpp)
-    SET( SUPPORT_MOC_HDRS ${SUPPORT_MOC_HDRS} spinbox.h windowmanager.h gtkproxystyle.h osthumb.h shortcuthandler.h)
+    SET( SUPPORT_MOC_HDRS ${SUPPORT_MOC_HDRS} spinbox.h windowmanager.h gtkproxystyle.h shortcuthandler.h)
     if (ENABLE_OVERLAYSCROLLBARS)
         add_definitions(-DENABLE_OVERLAYSCROLLBARS)
         SET( SUPPORT_SRCS ${SUPPORT_SRCS} osthumb.cpp)

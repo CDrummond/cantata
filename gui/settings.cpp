@@ -475,6 +475,11 @@ QString Settings::contextSlimPage()
     return GET_STRING("contextSlimPage", QString());
 }
 
+QByteArray Settings::contextSplitterState()
+{
+    return GET_BYTE_ARRAY("contextSplitterState");
+}
+
 QString Settings::page()
 {
     return GET_STRING("page", QString());
@@ -902,6 +907,11 @@ void Settings::saveContextZoom(int v)
 void Settings::saveContextSlimPage(const QString &v)
 {
     SET_VALUE_MOD(contextSlimPage)
+}
+
+void Settings::saveContextSplitterState(const QByteArray &v)
+{
+    SET_VALUE_MOD(contextSplitterState)
 }
 
 void Settings::savePage(const QString &v)

@@ -47,6 +47,7 @@
 #include <QApplication>
 #include <QComboBox>
 #include <QStackedWidget>
+#include <QSplitter>
 #include <QDebug>
 
 //#define DBUG qWarning() << metaObject()->className() << __FUNCTION__
@@ -63,6 +64,78 @@ static QString cacheFileName(const QString &artist, bool createDir)
     return Utils::cacheDir(ContextPage::constCacheDir, createDir)+Covers::encodeName(artist)+".jpg";
 }
 
+static QColor splitterColor;
+
+class ThinSplitterHandle : public QSplitterHandle
+{
+public:
+    ThinSplitterHandle(Qt::Orientation orientation, QSplitter *parent)
+        : QSplitterHandle(orientation, parent)
+        , underMouse(false)
+    {
+        setMask(QRegion(contentsRect()));
+        setAttribute(Qt::WA_MouseNoMask, true);
+        setAttribute(Qt::WA_OpaquePaintEvent, false);
+    }
+
+    void resizeEvent(QResizeEvent *event)
+    {
+        if (Qt::Horizontal==orientation()) {
+            setContentsMargins(2, 0, 2, 0);
+        } else {
+            setContentsMargins(0, 2, 0, 2);
+        }
+        setMask(QRegion(contentsRect()));
+        QSplitterHandle::resizeEvent(event);
+    }
+
+    void paintEvent(QPaintEvent *event)
+    {
+        if (underMouse) {
+            QColor col(splitterColor);
+            QPainter p(this);
+            col.setAlphaF(0.75);
+            p.fillRect(event->rect().adjusted(1, 0, -1, 0), col);
+            col.setAlphaF(0.25);
+            p.fillRect(event->rect(), col);
+        }
+    }
+
+    bool event(QEvent *event)
+    {
+        switch(event->type()) {
+        case QEvent::HoverEnter:
+            underMouse = true;
+            update();
+            break;
+        case QEvent::HoverLeave:
+            underMouse = false;
+            update();
+            break;
+        default:
+            break;
+        }
+
+        return QWidget::event(event);
+    }
+
+    bool underMouse;
+};
+
+class ThinSplitter : public QSplitter
+{
+public:
+    ThinSplitter(QWidget *parent)
+        : QSplitter(parent)
+    {
+        setHandleWidth(3);
+        setChildrenCollapsible(false);
+        setOrientation(Qt::Horizontal);
+    }
+
+    QSplitterHandle *createHandle() {  return new ThinSplitterHandle(orientation(), this); }
+};
+
 ContextPage::ContextPage(QWidget *parent)
     : QWidget(parent)
     , job(0)
@@ -72,6 +145,7 @@ ContextPage::ContextPage(QWidget *parent)
     , fadeValue(0)
     , isWide(false)
     , stack(0)
+    , splitter(0)
     , viewCombo(0)
     , creator(0)
 {
@@ -94,6 +168,7 @@ ContextPage::ContextPage(QWidget *parent)
     connect(artist, SIGNAL(haveBio(QString,QString)), album, SLOT(artistBio(QString,QString)), Qt::QueuedConnection);
     readConfig();
     setWide(true);
+    splitterColor=palette().text().color();
 }
 
 void ContextPage::setWide(bool w)
@@ -125,13 +200,24 @@ void ContextPage::setWide(bool w)
         album->setParent(this);
         song->setParent(this);
         l->addItem(new QSpacerItem(m, m, QSizePolicy::Fixed, QSizePolicy::Fixed));
-        l->addWidget(artist);
-        l->addWidget(album);
-        l->addWidget(song);
+        QByteArray state;
+        if (!splitter) {
+            splitter=new ThinSplitter(this);
+            state=Settings::self()->contextSplitterState();
+        }
+        l->addWidget(splitter);
+        splitter->addWidget(artist);
+        splitter->addWidget(album);
+        splitter->addWidget(song);
+        if (!state.isEmpty()) {
+            splitter->restoreState(state);
+        }
+//        l->addWidget(album);
+//        l->addWidget(song);
         //    layout->addItem(new QSpacerItem(m, m, QSizePolicy::Fixed, QSizePolicy::Fixed));
-        l->setStretch(1, 1);
-        l->setStretch(2, 1);
-        l->setStretch(3, 1);
+//        l->setStretch(1, 1);
+//        l->setStretch(2, 1);
+//        l->setStretch(3, 1);
     } else {
         if (layout()) {
             delete layout();
@@ -150,6 +236,9 @@ void ContextPage::setWide(bool w)
             viewCombo->addItem(i18n("Album Information"), "album");
             viewCombo->addItem(i18n("Lyrics"), "song");
             connect(viewCombo, SIGNAL(activated(int)), stack, SLOT(setCurrentIndex(int)));
+        }
+        if (splitter) {
+            splitter->setVisible(false);
         }
         stack->setVisible(true);
         viewCombo->setVisible(true);
@@ -202,6 +291,9 @@ void ContextPage::saveConfig()
     if (viewCombo) {
         Settings::self()->saveContextSlimPage(viewCombo->itemData(viewCombo->currentIndex()).toString());
     }
+    if (splitter) {
+        Settings::self()->saveContextSplitterState(splitter->saveState());
+    }
 }
 
 void ContextPage::useBackdrop(bool u)
@@ -240,9 +332,11 @@ void ContextPage::useDarkBackground(bool u)
             pal.setColor(QPalette::LinkVisited, linkVisited);
             prevLinkColor=appLinkColor;
             linkCol=pal.color(QPalette::Link);
+            splitterColor=light;
         } else {
             linkCol=appLinkColor;
             prevLinkColor=QColor(240, 240, 240);
+            splitterColor=pal.text().color();
         }
         setPalette(pal);
         artist->setPal(pal, linkCol, prevLinkColor);

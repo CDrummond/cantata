@@ -2472,7 +2472,6 @@ void MainWindow::tabToggled(int index)
         } else if (!songInfoAction->isCheckable()) {
             infoPage->layout()->removeWidget(context);
             stack->addWidget(context);
-            context->setVisible(false);
             songInfoButton->setVisible(true);
             songInfoAction->setCheckable(true);
         }

@@ -196,9 +196,6 @@ void ContextPage::setWide(bool w)
             album->setVisible(true);
             song->setVisible(true);
         }
-        artist->setParent(this);
-        album->setParent(this);
-        song->setParent(this);
         l->addItem(new QSpacerItem(m, m, QSizePolicy::Fixed, QSizePolicy::Fixed));
         QByteArray state;
         if (!splitter) {
@@ -206,8 +203,12 @@ void ContextPage::setWide(bool w)
             state=Settings::self()->contextSplitterState();
         }
         l->addWidget(splitter);
+        artist->setParent(splitter);
+        album->setParent(splitter);
+        song->setParent(splitter);
         splitter->addWidget(artist);
         splitter->addWidget(album);
+        splitter->setVisible(true);
         splitter->addWidget(song);
         if (!state.isEmpty()) {
             splitter->restoreState(state);

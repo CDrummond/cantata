@@ -47,6 +47,7 @@
 #include <QFileInfo>
 
 static const char * constUrlProperty("url");
+static const char * constStreamsOnly("streamsOnly");
 
 StreamsPage::StreamsPage(QWidget *p)
     : QWidget(p)
@@ -60,7 +61,7 @@ StreamsPage::StreamsPage(QWidget *p)
     editAction = ActionCollection::get()->createAction("editstream", i18n("Edit"), Icons::editIcon);
 
     QMenu *importMenu=new QMenu(this);
-    importFileAction=importMenu->addAction("From Cantata File");
+    QAction *importFileAction=importMenu->addAction("From File");
     QList<WebStream *> webStreams=WebStream::getAll();
     QAction *radioAction=0;
     QMenu *radioMenu=0;
@@ -95,6 +96,14 @@ StreamsPage::StreamsPage(QWidget *p)
     }
 
     importAction->setMenu(importMenu);
+
+    QMenu *exportMenu=new QMenu(this);
+    QAction *exportCantataFileAction=exportMenu->addAction("Streams And Categories");
+    exportCantataFileAction->setProperty(constStreamsOnly, false);
+    QAction *exportStreamsFileAction=exportMenu->addAction("Streams Only");
+    exportStreamsFileAction->setProperty(constStreamsOnly, true);
+    exportAction->setMenu(exportMenu);
+
     replacePlayQueue->setDefaultAction(StdActions::self()->replacePlayQueueAction);
 //     connect(view, SIGNAL(itemsSelected(bool)), addToPlaylist, SLOT(setEnabled(bool)));
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
@@ -103,7 +112,8 @@ StreamsPage::StreamsPage(QWidget *p)
     connect(addAction, SIGNAL(triggered(bool)), this, SLOT(add()));
     connect(editAction, SIGNAL(triggered(bool)), this, SLOT(edit()));
     connect(importFileAction, SIGNAL(triggered(bool)), this, SLOT(importXml()));
-    connect(exportAction, SIGNAL(triggered(bool)), this, SLOT(exportXml()));
+    connect(exportCantataFileAction, SIGNAL(triggered(bool)), this, SLOT(exportXml()));
+    connect(exportStreamsFileAction, SIGNAL(triggered(bool)), this, SLOT(exportXml()));
     connect(genreCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(searchItems()));
     connect(StreamsModel::self(), SIGNAL(updateGenres(const QSet<QString> &)), genreCombo, SLOT(update(const QSet<QString> &)));
     connect(StreamsModel::self(), SIGNAL(error(const QString &)), this, SIGNAL(error(const QString &)));
@@ -255,9 +265,10 @@ void StreamsPage::importXml()
         return;
     }
     #ifdef ENABLE_KDE_SUPPORT
-    QString fileName=KFileDialog::getOpenFileName(KUrl(), i18n("*.cantata|Cantata Streams"), this, i18n("Import Streams"));
+    QString fileName=KFileDialog::getOpenFileName(KUrl(), i18n("*.cantata|Cantata Streams\n*.xml|XML Streams"), this, i18n("Import Streams"));
     #else
-    QString fileName=QFileDialog::getOpenFileName(this, i18n("Import Streams"), QDir::homePath(), i18n("Cantata Streams (*.cantata)"));
+    QString fileName=QFileDialog::getOpenFileName(this, i18n("Import Streams"), QDir::homePath(),
+                                                  i18n("Cantata Streams (*.cantata)\nXML Streams (*.xml)"));
     #endif
 
     if (fileName.isEmpty()) {
@@ -271,6 +282,8 @@ void StreamsPage::importXml()
 
 void StreamsPage::exportXml()
 {
+    QAction *act=qobject_cast<QAction *>(sender());
+    bool streamsOnly=act && act->property(constStreamsOnly).toBool();
     QModelIndexList selected=view->selectedIndexes();
     QSet<StreamsModel::Item *> items;
     QSet<StreamsModel::Item *> categories;
@@ -290,22 +303,30 @@ void StreamsPage::exportXml()
         }
     }
 
-    QString name;
+    QLatin1String ext(streamsOnly ? ".xml" : ".cantata");
+    QString name=1==categories.count()
+                    ? static_cast<StreamsModel::StreamItem *>(*(categories.begin()))->name+ext
+                    : QLatin1String("Cantata")+ext;
 
-    if (1==categories.count()) {
-        name=static_cast<StreamsModel::StreamItem *>(*(categories.begin()))->name+QLatin1String(".cantata");
-    }
     #ifdef ENABLE_KDE_SUPPORT
-    QString fileName=KFileDialog::getSaveFileName(name, i18n("*.cantata|Cantata Streams"), this, i18n("Export Streams"));
+    QString fileName=streamsOnly
+                        ? KFileDialog::getSaveFileName(name, i18n("*.xml|XML Streams"), this, i18n("Export Streams"))
+                        : KFileDialog::getSaveFileName(name, i18n("*.cantata|Cantata Streams"), this, i18n("Streams And Categories"));
     #else
-    QString fileName=QFileDialog::getSaveFileName(this, i18n("Export Streams"), name, i18n("Cantata Streams (*.cantata)"));
+    QString fileName=streamsOnly
+                        ? QFileDialog::getSaveFileName(this, i18n("Export Streams"), name, i18n("XML Streams (*.xml)"))
+                        : QFileDialog::getSaveFileName(this, i18n("Streams And Categories"), name, i18n("Cantata Streams (*.cantata)"));
     #endif
 
     if (fileName.isEmpty()) {
         return;
     }
 
-    if (!StreamsModel::self()->save(fileName, categories+items)) {
+    if (!fileName.endsWith(ext)) {
+        fileName+=ext;
+    }
+
+    if (!StreamsModel::self()->save(fileName, categories+items, streamsOnly)) {
         MessageBox::error(this, i18n("Failed to create <b>%1</b>!").arg(fileName));
     }
 }

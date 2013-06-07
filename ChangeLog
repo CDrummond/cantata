@@ -51,6 +51,9 @@
 33. Automatic accelator assignment for Qt builds.
 34. Add cmake check to see if TagLib has id3version in MPEG save.
 35. RTL fixes.
+36. Add import/export of Streams XML files - these contians just streams,
+    without categories. The intention is to be able to import these into
+    MPDroid.
 
 1.0.3
 -----

@@ -21,7 +21,7 @@
  * Boston, MA 02110-1301, USA.
  */
  
-#include "contextpage.h"
+#include "contextwidget.h"
 #include "artistview.h"
 #include "albumview.h"
 #include "songview.h"
@@ -56,12 +56,12 @@
 #define DBUG qDebug()
 #endif
 
-const QLatin1String ContextPage::constApiKey(0); // API key required
-const QLatin1String ContextPage::constCacheDir("backdrops/");
+const QLatin1String ContextWidget::constApiKey(0); // API key required
+const QLatin1String ContextWidget::constCacheDir("backdrops/");
 
 static QString cacheFileName(const QString &artist, bool createDir)
 {
-    return Utils::cacheDir(ContextPage::constCacheDir, createDir)+Covers::encodeName(artist)+".jpg";
+    return Utils::cacheDir(ContextWidget::constCacheDir, createDir)+Covers::encodeName(artist)+".jpg";
 }
 
 static QColor splitterColor;
@@ -156,7 +156,7 @@ void ThinSplitter::reset()
     setSizes(newSizes);
 }
 
-ContextPage::ContextPage(QWidget *parent)
+ContextWidget::ContextWidget(QWidget *parent)
     : QWidget(parent)
     , job(0)
     , drawBackdrop(true)
@@ -191,7 +191,7 @@ ContextPage::ContextPage(QWidget *parent)
     splitterColor=palette().text().color();
 }
 
-void ContextPage::setWide(bool w)
+void ContextWidget::setWide(bool w)
 {
     if (w==isWide) {
         return;
@@ -285,7 +285,7 @@ void ContextPage::setWide(bool w)
     }
 }
 
-void ContextPage::resizeEvent(QResizeEvent *e)
+void ContextWidget::resizeEvent(QResizeEvent *e)
 {
     if (isVisible()) {
         setWide(width()>minWidth);
@@ -293,7 +293,7 @@ void ContextPage::resizeEvent(QResizeEvent *e)
     QWidget::resizeEvent(e);
 }
 
-void ContextPage::readConfig()
+void ContextWidget::readConfig()
 {
     useBackdrop(Settings::self()->contextBackdrop());
     useDarkBackground(Settings::self()->contextDarkBackground());
@@ -306,7 +306,7 @@ void ContextPage::readConfig()
     }
 }
 
-void ContextPage::saveConfig()
+void ContextWidget::saveConfig()
 {
     Settings::self()->saveContextZoom(artist->getZoom());
     if (viewCombo) {
@@ -317,7 +317,7 @@ void ContextPage::saveConfig()
     }
 }
 
-void ContextPage::useBackdrop(bool u)
+void ContextWidget::useBackdrop(bool u)
 {
     if (u!=drawBackdrop) {
         drawBackdrop=u;
@@ -330,7 +330,7 @@ void ContextPage::useBackdrop(bool u)
     }
 }
 
-void ContextPage::useDarkBackground(bool u)
+void ContextWidget::useDarkBackground(bool u)
 {
     if (u!=darkBackground) {
         darkBackground=u;
@@ -367,7 +367,7 @@ void ContextPage::useDarkBackground(bool u)
     }
 }
 
-void ContextPage::showEvent(QShowEvent *e)
+void ContextWidget::showEvent(QShowEvent *e)
 {
     setWide(width()>minWidth);
     if (drawBackdrop) {
@@ -376,7 +376,7 @@ void ContextPage::showEvent(QShowEvent *e)
     QWidget::showEvent(e);
 }
 
-void ContextPage::paintEvent(QPaintEvent *e)
+void ContextWidget::paintEvent(QPaintEvent *e)
 {
     QPainter p(this);
     if (darkBackground) {
@@ -407,7 +407,7 @@ void ContextPage::paintEvent(QPaintEvent *e)
     }
 }
 
-void ContextPage::setFade(float value)
+void ContextWidget::setFade(float value)
 {
     if (fadeValue!=value) {
         fadeValue = value;
@@ -418,7 +418,7 @@ void ContextPage::setFade(float value)
     }
 }
 
-void ContextPage::updateImage(const QImage &img)
+void ContextWidget::updateImage(const QImage &img)
 {
     DBUG << img.isNull() << newBackdrop.isNull();
     backdropText=currentArtist;
@@ -437,14 +437,14 @@ void ContextPage::updateImage(const QImage &img)
     animator.start();
 }
 
-void ContextPage::search()
+void ContextWidget::search()
 {
     if (song->isVisible()) {
         song->search();
     }
 }
 
-void ContextPage::update(const Song &s)
+void ContextWidget::update(const Song &s)
 {
     Song sng=s;
     if (sng.isVariousArtists()) {
@@ -460,7 +460,7 @@ void ContextPage::update(const Song &s)
     }
 }
 
-bool ContextPage::eventFilter(QObject *o, QEvent *e)
+bool ContextWidget::eventFilter(QObject *o, QEvent *e)
 {
     if (QEvent::Wheel==e->type()) {
         QWheelEvent *we=static_cast<QWheelEvent *>(e);
@@ -476,7 +476,7 @@ bool ContextPage::eventFilter(QObject *o, QEvent *e)
     return QObject::eventFilter(o, e);
 }
 
-void ContextPage::cancel()
+void ContextWidget::cancel()
 {
     if (job) {
         job->deleteLater();
@@ -484,7 +484,7 @@ void ContextPage::cancel()
     }
 }
 
-void ContextPage::updateBackdrop()
+void ContextWidget::updateBackdrop()
 {
     DBUG << updateArtist << currentArtist;
     if (updateArtist==currentArtist) {
@@ -506,7 +506,7 @@ void ContextPage::updateBackdrop()
     }
 }
 
-void ContextPage::getBackdrop()
+void ContextWidget::getBackdrop()
 {
     cancel();
     if (!useHtBackdrops) {
@@ -530,7 +530,7 @@ void ContextPage::getBackdrop()
     connect(job, SIGNAL(finished()), this, SLOT(searchResponse()));
 }
 
-void ContextPage::searchResponse()
+void ContextWidget::searchResponse()
 {
     QNetworkReply *reply = getReply(sender());
     if (!reply) {
@@ -578,7 +578,7 @@ void ContextPage::searchResponse()
     }
 }
 
-void ContextPage::downloadResponse()
+void ContextWidget::downloadResponse()
 {
     QNetworkReply *reply = getReply(sender());
     if (!reply || QNetworkReply::NoError!=reply->error()) {
@@ -606,7 +606,7 @@ void ContextPage::downloadResponse()
     }
 }
 
-void ContextPage::createBackdrop()
+void ContextWidget::createBackdrop()
 {
     DBUG << currentArtist;
     if (!creator) {
@@ -627,7 +627,7 @@ void ContextPage::createBackdrop()
     }
 }
 
-void ContextPage::backdropCreated(const QString &artist, const QImage &img)
+void ContextWidget::backdropCreated(const QString &artist, const QImage &img)
 {
     DBUG << artist << img.isNull() << currentArtist;
     if (artist==currentArtist) {
@@ -636,7 +636,7 @@ void ContextPage::backdropCreated(const QString &artist, const QImage &img)
     }
 }
 
-QNetworkReply * ContextPage::getReply(QObject *obj)
+QNetworkReply * ContextWidget::getReply(QObject *obj)
 {
     QNetworkReply *reply = qobject_cast<QNetworkReply*>(obj);
     if (!reply) {

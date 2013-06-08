@@ -80,6 +80,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
     widget->addPage(playback, i18n("Playback"), Icon("media-playback-start"), i18n("Playback Settings"));
     widget->addPage(files, i18n("Files"), Icons::filesIcon, i18n("File Settings"));
     widget->addPage(interface, i18n("Interface"), Icon("preferences-other"), i18n("Interface Settings"));
+    widget->addPage(context, i18n("Context"), Icons::contextIcon, i18n("Context View Settings"));
     #ifdef TAGLIB_FOUND
     http = new HttpServerSettings(widget);
     if (http->haveMultipleInterfaces()) {
@@ -90,7 +91,6 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
         http=0;
     }
     #endif
-    widget->addPage(context, i18n("Context"), Icons::contextIcon, i18n("Context View Settings"));
     #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
     audiocd = new AudioCdSettings(widget);
     audiocd->load();

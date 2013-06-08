@@ -58,6 +58,7 @@ PageWidgetItem::PageWidgetItem(QWidget *p, const QString &header, const Icon &ic
     sizePolicy.setHeightForWidth(cfg->sizePolicy().hasHeightForWidth());
     cfg->setSizePolicy(sizePolicy);
     cfg->setParent(this);
+    adjustSize();
 }
 
 PageWidget::PageWidget(QWidget *p)

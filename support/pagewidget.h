@@ -39,6 +39,7 @@ public:
         PageWidgetItem *item=KPageWidget::addPage(widget, name);
         item->setIcon(icon);
         item->setHeader(header);
+        adjustSize();
         return item;
     }
     void allPagesAdded() { }

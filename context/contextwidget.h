@@ -21,8 +21,8 @@
  * Boston, MA 02110-1301, USA.
  */
  
-#ifndef CONTEXT_PAGE_H
-#define CONTEXT_PAGE_H
+#ifndef CONTEXT_WIDGET_H
+#define CONTEXT_WIDGET_H
 
 #include <QWidget>
 #include <QImage>
@@ -50,7 +50,7 @@ public Q_SLOTS:
     void reset();
 };
 
-class ContextPage : public QWidget
+class ContextWidget : public QWidget
 {
     Q_OBJECT
     Q_PROPERTY(float fade READ fade WRITE setFade)
@@ -59,7 +59,7 @@ public:
     static const QLatin1String constCacheDir;
     static const QLatin1String constApiKey;
 
-    ContextPage(QWidget *parent=0);
+    ContextWidget(QWidget *parent=0);
 
     void readConfig();
     void saveConfig();

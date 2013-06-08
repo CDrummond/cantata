@@ -405,7 +405,6 @@ endif (MSVC)
 
 add_subdirectory(po)
 add_subdirectory(support)
-add_subdirectory(3rdparty/sha2)
 add_subdirectory(streams/icons)
     
 IF( ENABLE_KDE_SUPPORT )
@@ -498,8 +497,6 @@ if (NOT WIN32)
     endif (CDDB_FOUND OR MUSICBRAINZ5_FOUND)
 endif (NOT WIN32)
 
-add_subdirectory(3rdparty/qtiocompressor)
-
 if (QJSON_FOUND)
     include_directories(${QJSON_INCLUDE_DIR})
     TARGET_LINK_LIBRARIES(cantata ${QJSON_LIBRARIES})
@@ -508,11 +505,10 @@ else (QJSON_FOUND)
     TARGET_LINK_LIBRARIES(cantata qjson)
 endif (QJSON_FOUND)
 
-TARGET_LINK_LIBRARIES(cantata qtiocompressor)
+add_subdirectory(3rdparty/qtiocompressor)
+add_subdirectory(icons)
 
-ADD_SUBDIRECTORY( icons )
-
-target_link_libraries(cantata support sha2 ${QTLIBS} ${ZLIB_LIBRARIES})
+target_link_libraries(cantata support qtiocompressor ${QTLIBS} ${ZLIB_LIBRARIES})
 include_directories(${QTINCLUDES} ${ZLIB_INCLUDE_DIRS})
 
 if (TAGLIB_FOUND)

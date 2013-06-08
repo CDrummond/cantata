@@ -55,6 +55,7 @@
 36. Add import/export of Streams XML files - these contians just streams,
     without categories. The intention is to be able to import these into
     MPDroid.
+37. For Qt4 linux builds, use system QJson if found.
 
 1.0.3
 -----

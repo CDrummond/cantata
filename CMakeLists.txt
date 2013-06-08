@@ -166,6 +166,10 @@ if (ENABLE_TAGLIB)
     find_package(Taglib)
 endif (ENABLE_TAGLIB)
 
+if (NOT ENABLE_QT5 AND NOT WIN32)
+    find_package( QJSON )
+endif (NOT ENABLE_QT5 AND NOT WIN32)
+
 if (ENABLE_OVERLAYSCROLLBARS)
     add_definitions(-DENABLE_OVERLAYSCROLLBARS)
 endif (ENABLE_OVERLAYSCROLLBARS)
@@ -201,8 +205,8 @@ SET( CANTATA_RCS cantata.qrc )
 include_directories( ${CMAKE_SOURCE_DIR}/gui ${CMAKE_SOURCE_DIR}/mpd ${CMAKE_SOURCE_DIR}/models ${CMAKE_SOURCE_DIR}/widgets
                      ${CMAKE_SOURCE_DIR}/network ${CMAKE_SOURCE_DIR}/dbus ${CMAKE_SOURCE_DIR}/http
                      ${CMAKE_SOURCE_DIR}/devices ${CMAKE_SOURCE_DIR}/dynamic ${CMAKE_SOURCE_DIR}/support ${CMAKE_SOURCE_DIR}/streams
-                     ${CMAKE_SOURCE_DIR}/tags ${CMAKE_SOURCE_DIR}/online ${CMAKE_SOURCE_DIR}/context
-                     ${CMAKE_SOURCE_DIR}/3rdparty ${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR} ${CMAKE_BINARY_DIR}/support)
+                     ${CMAKE_SOURCE_DIR}/tags ${CMAKE_SOURCE_DIR}/online ${CMAKE_SOURCE_DIR}/context ${CMAKE_BINARY_DIR}/support
+                     ${CMAKE_SOURCE_DIR}/3rdparty ${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR})
 
 if (ENABLE_QT5)
     find_package(Qt5Widgets REQUIRED)
@@ -495,8 +499,16 @@ if (NOT WIN32)
 endif (NOT WIN32)
 
 add_subdirectory(3rdparty/qtiocompressor)
-add_subdirectory(3rdparty/qjson)
-TARGET_LINK_LIBRARIES(cantata qtiocompressor qjson)
+
+if (QJSON_FOUND)
+    include_directories(${QJSON_INCLUDE_DIR})
+    TARGET_LINK_LIBRARIES(cantata ${QJSON_LIBRARIES})
+else (QJSON_FOUND)
+    add_subdirectory(3rdparty/qjson)
+    TARGET_LINK_LIBRARIES(cantata qjson)
+endif (QJSON_FOUND)
+
+TARGET_LINK_LIBRARIES(cantata qtiocompressor)
 
 ADD_SUBDIRECTORY( icons )
 

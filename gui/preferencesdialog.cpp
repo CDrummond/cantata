@@ -109,6 +109,8 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
     #endif
     widget->addPage(cache, i18n("Cache"), Icon("folder"), i18n("Cached Items"));
     widget->allPagesAdded();
+    widget->adjustSize();
+    adjustSize();
     setCaption(i18n("Configure"));
     setMainWidget(widget);
     setAttribute(Qt::WA_DeleteOnClose);

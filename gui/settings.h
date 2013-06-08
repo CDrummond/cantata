@@ -172,8 +172,6 @@ public:
     bool forceSingleClick();
     bool startHidden();
     bool monoSidebarIcons();
-    QString amazonAccessKey();
-    QString amazonSecretAccessKey();
 
     void removeConnectionDetails(const QString &v);
     void saveConnectionDetails(const MPDConnectionDetails &v);

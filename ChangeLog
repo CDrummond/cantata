@@ -56,6 +56,8 @@
     without categories. The intention is to be able to import these into
     MPDroid.
 37. For Qt4 linux builds, use system QJson if found.
+38. Remove amazon cover fetching - required API key that Cantata never really
+    had.
 
 1.0.3
 -----

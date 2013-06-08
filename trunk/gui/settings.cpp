@@ -487,8 +487,7 @@ QString Settings::page()
 
 QStringList Settings::hiddenPages()
 {
-    QStringList def;
-    def << "FolderPage";
+    QStringList def=QStringList() << "PlayQueuePage" << "FolderPage" << "ContextPage";
     return GET_STRINGLIST("hiddenPages", def);
 }
 

@@ -137,15 +137,6 @@ SET( CANTATA_UIS
     context/togglelist.ui context/othersettings.ui
     widgets/itemview.ui)
 
-if (ENABLE_ONLINE_SERVICES)
-    SET( CANTATA_SRCS ${CANTATA_SRCS} online/onlineservicespage.cpp online/onlineservice.cpp online/jamendoservice.cpp
-        online/jamendosettingsdialog.cpp online/magnatuneservice.cpp online/magnatunesettingsdialog.cpp online/onlinedevice.cpp
-        models/onlineservicesmodel.cpp)
-    SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} online/onlineservice.h online/onlineservicespage.h online/jamendoservice.h
-        online/magnatuneservice.h online/magnatunesettingsdialog.h online/onlinedevice.h models/onlineservicesmodel.h)
-    SET( CANTATA_UIS ${CANTATA_UIS} online/onlineservicespage.ui)
-endif (ENABLE_ONLINE_SERVICES)
-
 if (ENABLE_CDPARANOIA)
     find_package(Cdparanoia)
     if (CDPARANOIA_FOUND) 
@@ -182,16 +173,21 @@ if (TAGLIB_FOUND)
     SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS}
         tags/tageditor.h tags/trackorganiser.h
         http/httpserversettings.h http/httpsocket.h
-        devices/filenameschemedialog.h)
+        devices/filenameschemedialog.h devices/device.h)
     SET( CANTATA_UIS ${CANTATA_UIS}
         http/httpserversettings.ui
         tags/tageditor.ui tags/trackorganiser.ui
         devices/filenameschemedialog.ui)
+        
+    if (ENABLE_ONLINE_SERVICES)
+        SET( CANTATA_SRCS ${CANTATA_SRCS} online/onlineservicespage.cpp online/onlineservice.cpp online/jamendoservice.cpp
+            online/jamendosettingsdialog.cpp online/magnatuneservice.cpp online/magnatunesettingsdialog.cpp online/onlinedevice.cpp
+            models/onlineservicesmodel.cpp)
+        SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} online/onlineservice.h online/onlineservicespage.h online/jamendoservice.h
+            online/magnatuneservice.h online/magnatunesettingsdialog.h online/onlinedevice.h models/onlineservicesmodel.h)
+        SET( CANTATA_UIS ${CANTATA_UIS} online/onlineservicespage.ui)
+    endif (ENABLE_ONLINE_SERVICES)
 endif (TAGLIB_FOUND)
-
-if (TAGLIB_FOUND OR ENABLE_ONLINE_SERVICES)
-    SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} devices/device.h)
-endif (TAGLIB_FOUND OR ENABLE_ONLINE_SERVICES)
 
 if (NOT WIN32)
     SET( CANTATA_SRCS ${CANTATA_SRCS} dbus/mpris.cpp dbus/gnomemediakeys.cpp devices/mountpoints.cpp )

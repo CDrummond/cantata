@@ -654,16 +654,6 @@ bool Settings::monoSidebarIcons()
     #endif
 }
 
-QString Settings::amazonAccessKey()
-{
-    return GET_STRING("amazonAccessKey", QString());
-}
-
-QString Settings::amazonSecretAccessKey()
-{
-    return GET_STRING("amazonSecretAccessKey", QString());
-}
-
 void Settings::removeConnectionDetails(const QString &v)
 {
     if (v==currentConnection()) {

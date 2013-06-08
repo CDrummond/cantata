@@ -107,7 +107,7 @@ SET( CANTATA_SRCS gui/application.cpp gui/main.cpp gui/initialsettingswizard.cpp
     network/networkaccessmanager.cpp
     devices/deviceoptions.cpp
     context/lyricsettings.cpp context/ultimatelyricsprovider.cpp context/ultimatelyrics.cpp context/lyricsdialog.cpp
-    context/contextpage.cpp context/view.cpp context/artistview.cpp context/albumview.cpp context/songview.cpp context/contextengine.cpp
+    context/contextwidget.cpp context/view.cpp context/artistview.cpp context/albumview.cpp context/songview.cpp context/contextengine.cpp
     context/wikipediaengine.cpp context/wikipediasettings.cpp context/othersettings.cpp context/contextsettings.cpp context/togglelist.cpp
     context/lastfmengine.cpp context/metaengine.cpp context/backdropcreator.cpp)
 SET( CANTATA_MOC_HDRS
@@ -125,7 +125,7 @@ SET( CANTATA_MOC_HDRS
     widgets/genrecombo.h widgets/toolbar.h
     network/networkaccessmanager.h
     context/togglelist.h context/ultimatelyrics.h context/ultimatelyricsprovider.h context/lyricsdialog.h
-    context/contextpage.h context/artistview.h context/albumview.h context/songview.h context/view.h context/contextengine.h
+    context/contextwidget.h context/artistview.h context/albumview.h context/songview.h context/view.h context/contextengine.h
     context/wikipediaengine.h context/wikipediasettings.h context/othersettings.h context/lastfmengine.h context/metaengine.h
     context/backdropcreator.h)
 SET( CANTATA_UIS

@@ -85,11 +85,11 @@ class PlayQueuePage : public QWidget
 public:
     PlayQueuePage(QWidget *p) : QWidget(p) { }
 };
-class InfoPage : public QWidget
+class ContextPage : public QWidget
 {
     Q_OBJECT
 public:
-    InfoPage(QWidget *p) : QWidget(p) { }
+    ContextPage(QWidget *p) : QWidget(p) { }
 };
 
 class DeleteKeyEventHandler : public QObject
@@ -147,7 +147,7 @@ public:
         #ifdef ENABLE_DEVICES_SUPPORT
         PAGE_DEVICES,
         #endif
-        PAGE_INFO
+        PAGE_CONTEXT
     };
 
     Q_PROPERTY(int volume READ mpdVolume WRITE setMpdVolume)
@@ -268,7 +268,7 @@ public Q_SLOTS:
         showTab(PAGE_ONLINE);
         #endif
     }
-    void showInfoTab() { showTab(PAGE_INFO); }
+    void showContextTab() { showTab(PAGE_CONTEXT); }
     void showDevicesTab() {
         #ifdef ENABLE_DEVICES_SUPPORT
         showTab(PAGE_DEVICES);
@@ -401,7 +401,7 @@ private:
     #ifdef ENABLE_ONLINE_SERVICES
     OnlineServicesPage *onlinePage;
     #endif
-    QWidget *infoPage;
+    QWidget *contextPage;
     #ifdef ENABLE_DEVICES_SUPPORT
     DevicesPage *devicesPage;
     #endif

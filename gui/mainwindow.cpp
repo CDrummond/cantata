@@ -418,18 +418,18 @@ MainWindow::MainWindow(QWidget *parent)
 
     QStringList hiddenPages=Settings::self()->hiddenPages();
     playQueuePage=new PlayQueuePage(this);
-    infoPage=new InfoPage(this);
+    contextPage=new ContextPage(this);
     QBoxLayout *layout=new QBoxLayout(QBoxLayout::TopToBottom, playQueuePage);
     layout->setContentsMargins(0, 0, 0, 0);
     bool playQueueInSidebar=!hiddenPages.contains(playQueuePage->metaObject()->className());
     if (playQueueInSidebar && (Settings::self()->firstRun() || Settings::self()->version()<CANTATA_MAKE_VERSION(0, 8, 0))) {
         playQueueInSidebar=false;
     }
-    bool contextInSidebar=!hiddenPages.contains(infoPage->metaObject()->className());
+    bool contextInSidebar=!hiddenPages.contains(contextPage->metaObject()->className());
     if (contextInSidebar && (Settings::self()->firstRun() || Settings::self()->version()<CANTATA_MAKE_VERSION(1, 0, 52))) {
         contextInSidebar=false;
     }
-    layout=new QBoxLayout(QBoxLayout::TopToBottom, infoPage);
+    layout=new QBoxLayout(QBoxLayout::TopToBottom, contextPage);
     layout->setContentsMargins(0, 0, 0, 0);
     tabWidget->AddTab(playQueuePage, TAB_ACTION(showPlayQueueAction), playQueueInSidebar);
     tabWidget->AddTab(libraryPage, TAB_ACTION(libraryTabAction), !hiddenPages.contains(libraryPage->metaObject()->className()));
@@ -445,9 +445,9 @@ MainWindow::MainWindow(QWidget *parent)
     tabWidget->AddTab(devicesPage, TAB_ACTION(devicesTabAction), !hiddenPages.contains(devicesPage->metaObject()->className()));
     DevicesModel::self()->setEnabled(!hiddenPages.contains(devicesPage->metaObject()->className()));
     #endif
-    tabWidget->AddTab(infoPage, Icons::infoSidebarIcon, i18n("Info"),
+    tabWidget->AddTab(contextPage, Icons::infoSidebarIcon, i18n("Info"),
                       songInfoAction->text()+"<br/><small><i>"+songInfoAction->shortcut().toString()+"</i></small>",
-                      !hiddenPages.contains(infoPage->metaObject()->className()));
+                      !hiddenPages.contains(contextPage->metaObject()->className()));
     AlbumsModel::self()->setEnabled(!hiddenPages.contains(albumsPage->metaObject()->className()));
     folderPage->setEnabled(!hiddenPages.contains(folderPage->metaObject()->className()));
     streamsPage->setEnabled(!hiddenPages.contains(streamsPage->metaObject()->className()));
@@ -474,9 +474,9 @@ MainWindow::MainWindow(QWidget *parent)
     }
 
     if (contextInSidebar) {
-        tabToggled(PAGE_INFO);
+        tabToggled(PAGE_CONTEXT);
     } else {
-        tabWidget->ToggleTab(PAGE_INFO, false);
+        tabWidget->ToggleTab(PAGE_CONTEXT, false);
     }
 
     tabWidget->SetMode(FancyTabWidget::Mode_LargeSidebar);
@@ -1482,7 +1482,7 @@ void MainWindow::showAboutDialog()
     QMessageBox::about(this, i18nc("Qt-only", "About Cantata"),
                        i18nc("Qt-only", "<b>Cantata %1</b><br/><br/>MPD client.<br/><br/>(c) Craig Drummond 2011-2013.<br/>Released under the <a href=\"http://www.gnu.org/licenses/gpl.html\">GPLv3</a><br/><br/>"
                              "<i><small>Based upon <a href=\"http://qtmpc.lowblog.nl\">QtMPC</a> - (C) 2007-2010 The QtMPC Authors<br/>").arg(PACKAGE_VERSION_STRING)+
-                       (ContextPage::constApiKey.latin1() ? i18nc("Qt-only", "Context view backdrops courtesy of <a href=\"http://www.htbackdrops.com\">Home Theater Backdrops</a><br/>") : "")+
+                       (ContextWidget::constApiKey.latin1() ? i18nc("Qt-only", "Context view backdrops courtesy of <a href=\"http://www.htbackdrops.com\">Home Theater Backdrops</a><br/>") : "")+
                        i18nc("Qt-only", "Context view metadata courtesy of <a href=\"http://www.wikipedia.org\">Wikipedia</a> and <a href=\"http://www.last.fm\">Last.fm</a></small></i>"));
 }
 #endif
@@ -2354,7 +2354,7 @@ void MainWindow::showSongInfo()
     if (songInfoAction->isCheckable()) {
         stack->setCurrentWidget(songInfoAction->isChecked() ? (QWidget *)context : (QWidget *)splitter);
     } else {
-        showTab(PAGE_INFO);
+        showTab(PAGE_CONTEXT);
     }
 }
 
@@ -2471,15 +2471,15 @@ void MainWindow::tabToggled(int index)
             splitter->setAutohidable(0, autoHideSplitterAction->isChecked() && !tabWidget->isEnabled(PAGE_PLAYQUEUE));
         }
         break;
-    case PAGE_INFO:
+    case PAGE_CONTEXT:
         if (tabWidget->isEnabled(index) && songInfoAction->isCheckable()) {
-            context->setParent(infoPage);
-            infoPage->layout()->addWidget(context);
+            context->setParent(contextPage);
+            contextPage->layout()->addWidget(context);
             context->setVisible(true);
             songInfoButton->setVisible(false);
             songInfoAction->setCheckable(false);
         } else if (!songInfoAction->isCheckable()) {
-            infoPage->layout()->removeWidget(context);
+            contextPage->layout()->removeWidget(context);
             stack->addWidget(context);
             songInfoButton->setVisible(true);
             songInfoAction->setCheckable(true);
@@ -2547,7 +2547,7 @@ void MainWindow::toggleMonoIcons()
         onlineTabAction->setIcon(Icons::onlineIcon);
         tabWidget->SetIcon(PAGE_ONLINE, onlineTabAction->icon());
         #endif
-        tabWidget->SetIcon(PAGE_INFO, Icons::infoSidebarIcon);
+        tabWidget->SetIcon(PAGE_CONTEXT, Icons::infoSidebarIcon);
         #ifdef ENABLE_DEVICES_SUPPORT
         devicesTabAction->setIcon(Icons::devicesIcon);
         tabWidget->SetIcon(PAGE_DEVICES, devicesTabAction->icon());

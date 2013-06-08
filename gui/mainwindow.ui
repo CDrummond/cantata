@@ -355,7 +355,7 @@
        </layout>
       </widget>
      </widget>
-     <widget class="ContextPage" name="context"/>
+     <widget class="ContextWidget" name="context"/>
     </widget>
    </item>
   </layout>
@@ -425,9 +425,9 @@
    <header>toolbutton.h</header>
   </customwidget>
   <customwidget>
-   <class>ContextPage</class>
+   <class>ContextWidget</class>
    <extends>QWidget</extends>
-   <header>contextpage.h</header>
+   <header>contextwidget.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

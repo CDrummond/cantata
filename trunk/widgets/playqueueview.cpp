@@ -85,9 +85,11 @@ void PlayQueueTreeView::initHeader()
         return;
     }
 
-    QFontMetrics fm(font());
     QHeaderView *hdr=header();
     if (!menu) {
+        QFont f(font());
+        f.setBold(true);
+        QFontMetrics fm(f);
         setResizeMode(hdr, QHeaderView::Interactive);
         hdr->setContextMenuPolicy(Qt::CustomContextMenu);
         hdr->resizeSection(PlayQueueModel::COL_STATUS, 20);

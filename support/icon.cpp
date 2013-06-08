@@ -24,18 +24,18 @@
 #include "icon.h"
 #include <QApplication>
 #include <QToolButton>
-
+#include <QDebug>
 int Icon::stdSize(int v)
 {
     if (v<19) {
         return 16;
-    } else if (v<28) {
+    } else if (v<=28) {
         return 22;
-    } else if (v<40) {
+    } else if (v<=40) {
         return 32;
-    } else if (v<56) {
+    } else if (v<=56) {
         return 48;
-    } else if (v<90) {
+    } else if (v<=90) {
         return 64;
     } else {
         return 128;
@@ -47,7 +47,7 @@ int Icon::dlgIconSize()
     static int size=-1;
 
     if (-1==size) {
-        size=stdSize(QApplication::fontMetrics().height()*3);
+        size=stdSize(QApplication::fontMetrics().height()*3.5);
     }
     return size;
 }

@@ -30,8 +30,6 @@
 #include <QDir>
 #include <QDebug>
 
-static const int constIconSize=48;
-
 enum Pages {
     PAGE_INTRO,
     PAGE_CONNECTION,
@@ -63,7 +61,8 @@ InitialSettingsWizard::InitialSettingsWizard(QWidget *p)
     #endif
     groupWarningLabel->setVisible(showGroupWarning);
     groupWarningIcon->setVisible(showGroupWarning);
-    groupWarningIcon->setPixmap(Icon("dialog-warning").pixmap(constIconSize, constIconSize));
+    int iconSize=Icon::dlgIconSize();
+    groupWarningIcon->setPixmap(Icon("dialog-warning").pixmap(iconSize, iconSize));
     storeCoversInMpdDir->setChecked(Settings::self()->storeCoversInMpdDir());
     storeLyricsInMpdDir->setChecked(Settings::self()->storeLyricsInMpdDir());
     storeStreamsInMpdDir->setChecked(Settings::self()->storeStreamsInMpdDir());

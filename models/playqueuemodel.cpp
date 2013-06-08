@@ -32,6 +32,7 @@
 #include <QSet>
 #include <QUrl>
 #include <QTimer>
+#include <QApplication>
 #include "localize.h"
 #include "playqueuemodel.h"
 #include "groupedview.h"
@@ -393,8 +394,13 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
             }
         }
         break;
-    case Qt::SizeHintRole:
-        return QSize(18, 18);
+    case Qt::SizeHintRole: {
+        static int sz=-1;
+        if (-1==sz) {
+            sz=Icon::stdSize(QApplication::fontMetrics().height()*1.2)*1.125;
+        }
+        return QSize(sz, sz);
+    }
     default:
         break;
     }

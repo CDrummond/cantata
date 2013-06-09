@@ -612,15 +612,9 @@ void AlbumsModel::AlbumItem::getCover()
 
 const AlbumsModel::SongItem *AlbumsModel::AlbumItem::getCueFile() const
 {
-    if (2==songs.count()) {
-        const SongItem *a=songs.at(0);
-        const SongItem *b=songs.at(1);
-
-        if ( ( (Song::Playlist==a->type && Song::Playlist!=b->type) ||
-               (Song::Playlist!=a->type && Song::Playlist==b->type) ) &&
-             ( (Song::Playlist==a->type && a->file.endsWith(".cue", Qt::CaseInsensitive)) ||
-               (Song::Playlist==b->type && b->file.endsWith(".cue", Qt::CaseInsensitive)) ) ) {
-            return Song::Playlist==a->type ? a : b;
+    foreach (SongItem *s, songs) {
+        if (s->type && s->file.endsWith(".cue", Qt::CaseInsensitive)) {
+            return s;
         }
     }
 

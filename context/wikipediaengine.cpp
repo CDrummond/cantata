@@ -31,13 +31,14 @@
 #endif
 #include <QXmlStreamReader>
 #include <QRegExp>
+
 #include <QDebug>
-
-//#define DBUG qWarning() << metaObject()->className() << __FUNCTION__
-
-#ifndef DBUG
-#define DBUG qDebug()
-#endif
+static bool debugEnabled=false;
+#define DBUG if (debugEnabled) qWarning() << metaObject()->className() << __FUNCTION__
+void WikipediaEngine::enableDebug()
+{
+    debugEnabled=true;
+}
 
 static const char * constModeProperty="mode";
 static const char * constRedirectsProperty="redirects";

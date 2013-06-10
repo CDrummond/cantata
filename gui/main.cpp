@@ -40,6 +40,15 @@
 #include "initialsettingswizard.h"
 #include "mainwindow.h"
 
+// To enable debug...
+#include "mpdconnection.h"
+#include "covers.h"
+#include "wikipediaengine.h"
+#include "lastfmengine.h"
+#include "metaengine.h"
+#include "coverwidget.h"
+#include "backdropcreator.h"
+
 #ifndef ENABLE_KDE_SUPPORT
 // Taken from Clementine!
 //
@@ -84,8 +93,44 @@ static void loadTranslation(const QString &prefix, const QString &path, const QS
 }
 #endif
 
+enum Debug {
+    Dbg_Mpd               = 0x0001,
+    Dbg_Covers            = 0x0002,
+    Dbg_Context_Wikipedia = 0x0004,
+    Dbg_Context_LastFm    = 0x0008,
+    Dbg_Context_Meta      = 0x0010,
+    Dbg_Context_Widget    = 0x0020,
+    Dbg_Context_Backdrop  = 0x0040
+};
+
 int main(int argc, char *argv[])
 {
+    QString debug=qgetenv("CANTATA_DEBUG");
+    if (!debug.isEmpty()) {
+        int dbg=debug.toInt();
+        if (dbg&Dbg_Mpd) {
+            MPDConnection::enableDebug();
+        }
+        if (dbg&Dbg_Covers) {
+            Covers::enableDebug();
+        }
+        if (dbg&Dbg_Context_Wikipedia) {
+            WikipediaEngine::enableDebug();
+        }
+        if (dbg&Dbg_Context_LastFm) {
+            LastFmEngine::enableDebug();
+        }
+        if (dbg&Dbg_Context_Meta) {
+            MetaEngine::enableDebug();
+        }
+        if (dbg&Dbg_Context_Widget) {
+            ContextWidget::enableDebug();
+        }
+        if (dbg&Dbg_Context_Backdrop) {
+            BackdropCreator::enableDebug();
+        }
+    }
+
     #ifdef ENABLE_KDE_SUPPORT
     KAboutData aboutData(PACKAGE_NAME, 0,
                          ki18n("Cantata"), PACKAGE_VERSION_STRING,

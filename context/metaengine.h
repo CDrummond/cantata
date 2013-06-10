@@ -47,6 +47,8 @@ class MetaEngine : public ContextEngine
     };
 
 public:
+    static void enableDebug();
+
     MetaEngine(QObject *p);
 
     QStringList getLangs() const;

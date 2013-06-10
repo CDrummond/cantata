@@ -35,6 +35,8 @@ public:
     static const QLatin1String constLang;
     static const QLatin1String constLinkPlaceholder;
 
+    static void enableDebug();
+
     LastFmEngine(QObject *p);
 
     QStringList getLangs() const;

@@ -186,7 +186,6 @@ ContextWidget::ContextWidget(QWidget *parent)
     connect(artist, SIGNAL(findArtist(QString)), this, SIGNAL(findArtist(QString)));
     connect(artist, SIGNAL(findAlbum(QString,QString)), this, SIGNAL(findAlbum(QString,QString)));
     connect(album, SIGNAL(playSong(QString)), this, SIGNAL(playSong(QString)));
-    connect(artist, SIGNAL(haveBio(QString,QString)), album, SLOT(artistBio(QString,QString)), Qt::QueuedConnection);
     readConfig();
     setWide(true);
     splitterColor=palette().text().color();

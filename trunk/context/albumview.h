@@ -51,7 +51,6 @@ Q_SIGNALS:
 public Q_SLOTS:
     void coverRetrieved(const Song &s, const QImage &img, const QString &file);
     void playSong(const QUrl &u);
-    void artistBio(const QString &artist, const QString &b);
 
 private Q_SLOTS:
     void showContextMenu(const QPoint &pos);

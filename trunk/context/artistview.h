@@ -56,7 +56,6 @@ public:
 Q_SIGNALS:
     void findArtist(const QString &artist);
     void findAlbum(const QString &artist, const QString &album);
-    void haveBio(const QString &artist, const QString &bio);
 
 public Q_SLOTS:
     void artistImage(const Song &song, const QImage &i, const QString &f);

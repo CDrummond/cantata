@@ -60,6 +60,15 @@
 K_GLOBAL_STATIC(Covers, instance)
 #endif
 
+#include <QDebug>
+static bool debugEnabled=false;
+#define DBUG_CLASS(CLASS) if (debugEnabled) qWarning() << CLASS << __FUNCTION__
+#define DBUG DBUG_CLASS(metaObject()->className())
+void Covers::enableDebug()
+{
+    debugEnabled=true;
+}
+
 const QLatin1String Covers::constLastFmApiKey("11172d35eb8cc2fd33250a9e45a2d486");
 const QLatin1String Covers::constCoverDir("covers/");
 const QLatin1String Covers::constCddaCoverDir("cdda/");
@@ -383,6 +392,7 @@ void CoverDownloader::stop()
 
 void CoverDownloader::download(const Song &song)
 {
+    DBUG << song.file << song.artist << song.albumartist << song.album;
     bool isArtistImage=song.isArtistImageRequest();
 
     if (jobs.end()!=findJob(Job(song, QString(), isArtistImage))) {
@@ -419,6 +429,7 @@ void CoverDownloader::downloadOnlineImage(Job &job)
     QNetworkReply *j=manager->get(QNetworkRequest(QUrl(job.song.name)));
     connect(j, SIGNAL(finished()), this, SLOT(jobFinished()));
     jobs.insert(j, job);
+    DBUG << job.song.name;
 }
 
 bool CoverDownloader::downloadViaHttp(Job &job, JobType type)
@@ -451,6 +462,7 @@ bool CoverDownloader::downloadViaHttp(Job &job, JobType type)
     QNetworkReply *j=manager->get(QNetworkRequest(u));
     connect(j, SIGNAL(finished()), this, SLOT(jobFinished()));
     jobs.insert(j, job);
+    DBUG << u.toString();
     return true;
 }
 
@@ -478,6 +490,7 @@ void CoverDownloader::downloadViaLastFm(Job &job)
     connect(j, SIGNAL(finished()), this, SLOT(lastFmCallFinished()));
     job.type=JobLastFm;
     jobs.insert(j, job);
+    DBUG << url.toString();
 }
 
 void CoverDownloader::lastFmCallFinished()
@@ -486,6 +499,8 @@ void CoverDownloader::lastFmCallFinished()
     if (!reply) {
         return;
     }
+
+    DBUG << "status" << reply->error() << reply->errorString();
 
     QHash<QNetworkReply *, Job>::Iterator it(jobs.find(reply));
     QHash<QNetworkReply *, Job>::Iterator end(jobs.end());
@@ -537,14 +552,18 @@ void CoverDownloader::lastFmCallFinished()
             #endif
             QNetworkReply *j=manager->get(QNetworkRequest(u));
             connect(j, SIGNAL(finished()), this, SLOT(jobFinished()));
+            DBUG << "download" << u.toString();
             jobs.insert(j, job);
         } else {
             if (job.isArtist) {
+                DBUG << "Failed to download artist image";
                 emit artistImage(job.song, QImage(), QString());
             } else {
                 #if defined Q_OS_WIN
+                DBUG << "Failed to download cover image";
                 emit cover(job.song, QImage(), QString());
                 #else
+                DBUG << "Failed to download cover image - try other app";
                 Covers::Image img=otherAppCover(job);
                 emit cover(job.song, img.img, img.fileName);
                 #endif
@@ -560,6 +579,8 @@ void CoverDownloader::jobFinished()
     if (!reply) {
         return;
     }
+
+    DBUG << "status" << reply->error() << reply->errorString();
 
     QHash<QNetworkReply *, Job>::Iterator it(jobs.find(reply));
     QHash<QNetworkReply *, Job>::Iterator end(jobs.end());
@@ -594,8 +615,10 @@ void CoverDownloader::jobFinished()
             }
 
             if (job.isArtist) {
+                DBUG << "artist image, null?" << img.img.isNull();
                 emit artistImage(job.song, img.img, img.fileName);
             } else if (img.img.isNull()) {
+                DBUG << "failed to download cover image";
                 #if defined Q_OS_WIN
                 emit cover(job.song, QImage(), QString());
                 #else
@@ -603,6 +626,7 @@ void CoverDownloader::jobFinished()
                 emit cover(job.song, img.img, img.fileName);
                 #endif
             } else {
+                DBUG << "got cover image" << img.fileName;
                 emit cover(job.song, img.img, img.fileName);
             }
         }
@@ -622,6 +646,7 @@ QString CoverDownloader::saveImg(const Job &job, const QImage &img, const QByteA
         if (!dir.isEmpty()) {
             savedName=save(mimeType, extension, dir+job.song.file.mid(7), img, raw);
             if (!savedName.isEmpty()) {
+                DBUG << job.song.file << savedName;
                 return savedName;
             }
         }
@@ -632,6 +657,7 @@ QString CoverDownloader::saveImg(const Job &job, const QImage &img, const QByteA
         // ONLINE: Cache dir is saved in Song.title
         savedName=save(mimeType, extension, Utils::cacheDir(job.song.title)+Covers::encodeName(job.isArtist ? job.song.albumartist : (job.song.albumartist+" - "+job.song.album)), img, raw);
         if (!savedName.isEmpty()) {
+            DBUG << job.song.file << savedName;
             return savedName;
         }
     } else if (job.isArtist) {
@@ -642,6 +668,7 @@ QString CoverDownloader::saveImg(const Job &job, const QImage &img, const QByteA
                 d.cdUp();
                 savedName=save(mimeType, extension, d.absolutePath()+'/'+Covers::artistFileName(job.song), img, raw);
                 if (!savedName.isEmpty()) {
+                    DBUG << job.song.file << savedName;
                     return savedName;
                 }
             }
@@ -651,6 +678,7 @@ QString CoverDownloader::saveImg(const Job &job, const QImage &img, const QByteA
         if (!dir.isEmpty()) {
             savedName=save(mimeType, extension, dir+Covers::encodeName(job.song.albumartist), img, raw);
             if (!savedName.isEmpty()) {
+                DBUG << job.song.file << savedName;
                 return savedName;
             }
         }
@@ -660,6 +688,7 @@ QString CoverDownloader::saveImg(const Job &job, const QImage &img, const QByteA
             QString coverName=Covers::albumFileName(job.song);
             savedName=save(mimeType, extension, job.dir+coverName, img, raw);
             if (!savedName.isEmpty()) {
+                DBUG << job.song.file << savedName;
                 return savedName;
             }
         }
@@ -669,6 +698,7 @@ QString CoverDownloader::saveImg(const Job &job, const QImage &img, const QByteA
         if (!dir.isEmpty()) {
             savedName=save(mimeType, extension, dir+Covers::encodeName(job.song.album), img, raw);
             if (!savedName.isEmpty()) {
+                DBUG << job.song.file << savedName;
                 return savedName;
             }
         }
@@ -736,6 +766,7 @@ void CoverLocator::locate()
     }
     QList<LocatedCover> covers;
     foreach (const Song &s, toDo) {
+        DBUG << s.file << s.artist << s.albumartist << s.album;
         Covers::Image img=Covers::locateImage(s);
         covers.append(LocatedCover(s, img.img, img.fileName));
     }
@@ -869,12 +900,14 @@ Covers::Image Covers::findImage(const Song &song, bool emitResult)
 
 Covers::Image Covers::locateImage(const Song &song)
 {
+    DBUG_CLASS("Covers") << song.file << song.artist << song.albumartist << song.album;
     bool isArtistImage=song.isArtistImageRequest();
     QString prevFileName=Covers::self()->getFilename(song, isArtistImage);
     if (!prevFileName.isEmpty()) {
         QImage img(prevFileName);
 
         if (!img.isNull()) {
+            DBUG_CLASS("Covers") << "Found previous" << prevFileName;
             return Image(img, prevFileName);
         }
     }
@@ -889,10 +922,12 @@ Covers::Image Covers::locateImage(const Song &song)
                 QImage img(baseName+ext);
 
                 if (!img.isNull()) {
+                    DBUG_CLASS("Covers") << "Got online from cache" << QString(baseName+ext);
                     return Image(img, baseName+ext);
                 }
             }
         }
+        DBUG_CLASS("Covers") << "Online image not in cache";
         return Image(QImage(), QString());
     }
 
@@ -922,6 +957,7 @@ Covers::Image Covers::locateImage(const Song &song)
                         QImage img(dirName+fileName);
 
                         if (!img.isNull()) {
+                            DBUG_CLASS("Covers") << "Got artist image" << QString(dirName+fileName);
                             return Image(img, dirName+fileName);
                         }
                     }
@@ -954,6 +990,7 @@ Covers::Image Covers::locateImage(const Song &song)
                     QImage img(dirName+fileName);
 
                     if (!img.isNull()) {
+                        DBUG_CLASS("Covers") << "Got cover image" << QString(dirName+fileName);
                         return Image(img, dirName+fileName);
                     }
                 }
@@ -964,6 +1001,7 @@ Covers::Image Covers::locateImage(const Song &song)
             if (QFile::exists(fileName)) {
                 QImage img(Tags::readImage(fileName));
                 if (!img.isNull()) {
+                    DBUG_CLASS("Covers") << "Got cover image from tag";
                     return Image(img, QString());
                 }
             }
@@ -974,6 +1012,7 @@ Covers::Image Covers::locateImage(const Song &song)
                 QImage img(dirName+fileName);
 
                 if (!img.isNull()) {
+                    DBUG_CLASS("Covers") << "Got cover image" << QString(dirName+fileName);
                     return Image(img, dirName+fileName);
                 }
             }
@@ -988,6 +1027,7 @@ Covers::Image Covers::locateImage(const Song &song)
             if (QFile::exists(dir+artist+ext)) {
                 QImage img(dir+artist+ext);
                 if (!img.isNull()) {
+                    DBUG_CLASS("Covers") << "Got artist image" << QString(dir+artist+ext);
                     return Image(img, dir+artist+ext);
                 }
             }
@@ -1000,6 +1040,7 @@ Covers::Image Covers::locateImage(const Song &song)
             if (QFile::exists(dir+album+ext)) {
                 QImage img(dir+album+ext);
                 if (!img.isNull()) {
+                    DBUG_CLASS("Covers") << "Got cover image" << QString(dir+album+ext);
                     return Image(img, dir+album+ext);
                 }
             }
@@ -1011,16 +1052,19 @@ Covers::Image Covers::locateImage(const Song &song)
         // See if amarok, or clementine, has it...
         Image app=otherAppCover(job);
         if (!app.img.isNull()) {
+            DBUG_CLASS("Covers") << "Got cover image (other app)" << app.fileName;
             return app;
         }
         #endif
     }
 
+    DBUG_CLASS("Covers") << "Failed to locate image";
     return Image(QImage(), QString());
 }
 
 Covers::Image Covers::requestImage(const Song &song)
 {
+    DBUG << song.file << song.artist << song.albumartist << song.album;
     if (retrieved>=constMaxPerLoopIteration) {
         emit locate(song);
         return Covers::Image();

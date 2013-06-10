@@ -31,13 +31,14 @@
 #endif
 #include <QXmlStreamReader>
 #include <QRegExp>
+
 #include <QDebug>
-
-//#define DBUG qWarning() << metaObject()->className() << __FUNCTION__
-
-#ifndef DBUG
-#define DBUG qDebug()
-#endif
+static bool debugEnabled=false;
+#define DBUG if (debugEnabled) qWarning() << metaObject()->className() << __FUNCTION__
+void LastFmEngine::enableDebug()
+{
+    debugEnabled=true;
+}
 
 const QLatin1String LastFmEngine::constLang("lastfm");
 const QLatin1String LastFmEngine::constLinkPlaceholder("XXX_CONTEXT_READ_MORE_ON_LASTFM_XXX");

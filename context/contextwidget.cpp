@@ -48,13 +48,14 @@
 #include <QComboBox>
 #include <QStackedWidget>
 #include <QAction>
+
 #include <QDebug>
-
-//#define DBUG qWarning() << metaObject()->className() << __FUNCTION__
-
-#ifndef DBUG
-#define DBUG qDebug()
-#endif
+static bool debugEnabled=false;
+#define DBUG if (debugEnabled) qWarning() << metaObject()->className() << __FUNCTION__
+void ContextWidget::enableDebug()
+{
+    debugEnabled=true;
+}
 
 const QLatin1String ContextWidget::constApiKey(0); // API key required
 const QLatin1String ContextWidget::constCacheDir("backdrops/");
@@ -527,6 +528,7 @@ void ContextWidget::getBackdrop()
     url.setQuery(q);
     #endif
     job=NetworkAccessManager::self()->get(url, 5000);
+    DBUG << url.toString();
     connect(job, SIGNAL(finished()), this, SLOT(searchResponse()));
 }
 
@@ -536,6 +538,8 @@ void ContextWidget::searchResponse()
     if (!reply) {
         return;
     }
+
+    DBUG << "status" << reply->error() << reply->errorString();
 
     QString id;
     if (QNetworkReply::NoError==reply->error()) {
@@ -581,7 +585,13 @@ void ContextWidget::searchResponse()
 void ContextWidget::downloadResponse()
 {
     QNetworkReply *reply = getReply(sender());
-    if (!reply || QNetworkReply::NoError!=reply->error()) {
+    if (!reply) {
+        return;
+    }
+
+    DBUG << "status" << reply->error() << reply->errorString();
+
+    if (QNetworkReply::NoError!=reply->error()) {
         return;
     }
 

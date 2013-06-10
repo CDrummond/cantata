@@ -154,6 +154,8 @@ public:
         QString fileName;
     };
 
+    static void enableDebug();
+
     static const QSize constMaxSize;
     static const QLatin1String constLastFmApiKey;
     static const QLatin1String constCoverDir;

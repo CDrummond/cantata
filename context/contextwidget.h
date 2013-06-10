@@ -56,6 +56,8 @@ class ContextWidget : public QWidget
     Q_PROPERTY(float fade READ fade WRITE setFade)
 
 public:
+    static void enableDebug();
+
     static const QLatin1String constCacheDir;
     static const QLatin1String constApiKey;
 

@@ -24,13 +24,14 @@
 #include "metaengine.h"
 #include "wikipediaengine.h"
 #include "lastfmengine.h"
+
 #include <QDebug>
-
-//#define DBUG qWarning() << metaObject()->className() << __FUNCTION__
-
-#ifndef DBUG
-#define DBUG qDebug()
-#endif
+static bool debugEnabled=false;
+#define DBUG if (debugEnabled) qWarning() << metaObject()->className() << __FUNCTION__
+void MetaEngine::enableDebug()
+{
+    debugEnabled=true;
+}
 
 static const QLatin1String constBlankResp("-");
 

@@ -29,11 +29,13 @@
 #include <QDebug>
 #include <stdlib.h>
 
-//#define DBUG qWarning() << metaObject()->className() << __FUNCTION__
-
-#ifndef DBUG
-#define DBUG qDebug()
-#endif
+#include <QDebug>
+static bool debugEnabled=false;
+#define DBUG if (debugEnabled) qWarning() << metaObject()->className() << __FUNCTION__
+void BackdropCreator::enableDebug()
+{
+    debugEnabled=true;
+}
 
 BackdropCreator::BackdropCreator()
     : QObject(0)

@@ -2,14 +2,6 @@
 <ui version="4.0">
  <class>InitialSettingsWizard</class>
  <widget class="QWizard" name="InitialSettingsWizard">
-  <property name="geometry">
-   <rect>
-    <x>0</x>
-    <y>0</y>
-    <width>595</width>
-    <height>507</height>
-   </rect>
-  </property>
   <property name="windowTitle">
    <string>Cantata First Run</string>
   </property>
@@ -465,7 +457,7 @@
       <property name="sizeHint" stdset="0">
        <size>
         <width>20</width>
-        <height>352</height>
+        <height>8</height>
        </size>
       </property>
      </spacer>
@@ -556,7 +548,7 @@
       <property name="sizeHint" stdset="0">
        <size>
         <width>20</width>
-        <height>352</height>
+        <height>8</height>
        </size>
       </property>
      </spacer>

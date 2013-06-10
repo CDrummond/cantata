@@ -41,8 +41,6 @@
 #include <QTimer>
 #include <QDebug>
 
-static const int constCheckChars=100; // Num chars to chwck between artist bio and details - as sometimes wikipedia does not know album, so returns artist!
-
 const QLatin1String AlbumView::constCacheDir("albums/");
 const QLatin1String AlbumView::constInfoExt(".html.gz");
 
@@ -54,8 +52,7 @@ static QString cacheFileName(const QString &artist, const QString &album, const 
 enum Parts {
     Cover = 0x01,
     Details = 0x02,
-    ArtistBio = 0x04,
-    All = Cover+Details+ArtistBio
+    All = Cover+Details
 };
 
 AlbumView::AlbumView(QWidget *p)
@@ -124,7 +121,7 @@ void AlbumView::update(const Song &song, bool force)
         pic.clear();
         songs.clear();
         clear();
-        detailsReceived=bioArtist==currentSong.artist ? ArtistBio : 0;
+        detailsReceived=0;
         setHeader(song.album.isEmpty() ? stdHeader : song.album);
         Covers::Image cImg=Covers::self()->requestImage(song);
         if (!cImg.img.isNull()) {
@@ -159,19 +156,6 @@ void AlbumView::playSong(const QUrl &url)
     }
 }
 
-void AlbumView::artistBio(const QString &artist, const QString &b)
-{
-    if (artist==currentArtist) {
-        bioArtist=artist;
-        detailsReceived|=ArtistBio;
-        if (All==detailsReceived) {
-            hideSpinner();
-        }
-        bio=b.left(constCheckChars);
-        updateDetails();
-    }
-}
-
 void AlbumView::getTrackListing()
 {
     if (songs.isEmpty()) {
@@ -187,6 +171,7 @@ void AlbumView::getTrackListing()
         }
 
         trackList+=QLatin1String("</table></p>");
+        updateDetails();
     }
 }
 
@@ -252,11 +237,8 @@ void AlbumView::searchResponse(const QString &resp, const QString &lang)
 
 void AlbumView::updateDetails(bool preservePos)
 {
-    if (detailsReceived&ArtistBio && detailsReceived&Details && details.left(constCheckChars)==bio) {
-        details.clear();
-    }
     int pos=preservePos ? text->verticalScrollBar()->value() : 0;
-    if (detailsReceived&ArtistBio && !details.isEmpty()) {
+    if (!details.isEmpty()) {
         setHtml(pic+"<br>"+details+"<br>"+trackList);
     } else {
         setHtml(pic+trackList);

@@ -425,7 +425,7 @@ covers logging:
     
 for just covers logging:
 
-    CANTATA_DEBUG=1 cantata
+    CANTATA_DEBUG=2 cantata
     
 
 Credits

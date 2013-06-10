@@ -32,6 +32,8 @@ class WikipediaEngine : public ContextEngine
     Q_OBJECT
     
 public:
+    static void enableDebug();
+
     WikipediaEngine(QObject *p);
 
     static const QLatin1String constReadMorePlaceholder;

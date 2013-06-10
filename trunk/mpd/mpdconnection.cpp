@@ -32,16 +32,18 @@
 #include <KDE/KGlobal>
 #endif
 #include <QApplication>
-#include <QDebug>
 #include <QStringList>
 #include <QTimer>
 #include "thread.h"
 #include "settings.h"
 
-//#define DBUG qWarning() << "MPDConnection" << QThread::currentThreadId()
-#ifndef DBUG
-#define DBUG qDebug()
-#endif
+#include <QDebug>
+static bool debugEnabled=false;
+#define DBUG if (debugEnabled) qWarning() << "MPDConnection" << QThread::currentThreadId()
+void MPDConnection::enableDebug()
+{
+    debugEnabled=true;
+}
 
 static const int constSocketCommsTimeout=2000;
 static const int constMaxReadAttempts=4;

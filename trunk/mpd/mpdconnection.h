@@ -166,6 +166,8 @@ public:
         QByteArray data;
     };
 
+    static void enableDebug();
+
     MPDConnection();
     ~MPDConnection();
 

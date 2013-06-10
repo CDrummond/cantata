@@ -35,6 +35,8 @@ class BackdropCreator : public QObject
 {
     Q_OBJECT
 public:
+    static void enableDebug();
+
     BackdropCreator();
     virtual ~BackdropCreator();
 

@@ -27,7 +27,6 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QMenuBar>
-#include <qmenudata.h>
 #include <QMetaClassInfo>
 #include <QObject>
 #include <QList>
@@ -70,6 +69,14 @@
 
  *********************************************************************/
 
+static inline QString esc(const QString &orig)
+{
+    #if QT_VERSION < 0x050000
+    return Qt::escape(orig);
+    #else
+    return orig.toHtmlEscaped();
+    #endif
+}
 
 class AcceleratorManagerPrivate
 {
@@ -85,12 +92,12 @@ public:
         if (t1 != t2)
         {
             if (as.accel() == -1)  {
-                removed_string  += "<tr><td>" + Qt::escape(t1) + "</td></tr>";
+                removed_string  += "<tr><td>" + esc(t1) + "</td></tr>";
             } else if (as.originalAccel() == -1) {
-                added_string += "<tr><td>" + Qt::escape(t2) + "</td></tr>";
+                added_string += "<tr><td>" + esc(t2) + "</td></tr>";
             } else {
-                changed_string += "<tr><td>" + Qt::escape(t1) + "</td>";
-                changed_string += "<td>" + Qt::escape(t2) + "</td></tr>";
+                changed_string += "<tr><td>" + esc(t1) + "</td>";
+                changed_string += "<td>" + esc(t2) + "</td></tr>";
             }
             return true;
         }

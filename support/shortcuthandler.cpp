@@ -90,7 +90,7 @@ bool ShortcutHandler::eventFilter(QObject *o, QEvent *e)
                 } else {
                     widget = widget->window();
                     seenAlt.insert(widget);
-                    QList<QWidget *> l = qFindChildren<QWidget *>(widget);
+                    QList<QWidget *> l = widget->findChildren<QWidget*>();
                     for (int pos=0 ; pos < l.size() ; ++pos)  {
                         QWidget *w = l.at(pos);
                         if (!(w->isWindow() || !w->isVisible())) { // || w->style()->styleHint(QStyle::SH_UnderlineShortcut, 0, w))) 
@@ -98,7 +98,7 @@ bool ShortcutHandler::eventFilter(QObject *o, QEvent *e)
                         }
                     }
 
-                    QList<QMenuBar *> m = qFindChildren<QMenuBar *>(widget);
+                    QList<QMenuBar *> m = widget->findChildren<QMenuBar*>();
                     for (int i = 0; i < m.size(); ++i) {
                         updateWidget(m.at(i));
                     }

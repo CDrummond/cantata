@@ -62,7 +62,7 @@ K_GLOBAL_STATIC(Covers, instance)
 
 #include <QDebug>
 static bool debugEnabled=false;
-#define DBUG_CLASS(CLASS) if (debugEnabled) qWarning() << CLASS << __FUNCTION__
+#define DBUG_CLASS(CLASS) if (debugEnabled) qWarning() << CLASS << QThread::currentThread()->objectName() << __FUNCTION__
 #define DBUG DBUG_CLASS(metaObject()->className())
 void Covers::enableDebug()
 {
@@ -78,6 +78,7 @@ const QLatin1String Covers::constArtistImage("artist");
 static const QStringList   constExtensions=QStringList() << ".jpg" << ".png";
 static QStringList coverFileNames;
 static bool saveInMpdDir=true;
+static QString constCoverInTagPrefix=QLatin1String("{tag}");
 
 void initCoverNames()
 {
@@ -771,6 +772,7 @@ void CoverLocator::locate()
         covers.append(LocatedCover(s, img.img, img.fileName));
     }
     if (!covers.isEmpty()) {
+        DBUG << "located" << covers.count();
         emit located(covers);
     }
 
@@ -904,8 +906,13 @@ Covers::Image Covers::locateImage(const Song &song)
     bool isArtistImage=song.isArtistImageRequest();
     QString prevFileName=Covers::self()->getFilename(song, isArtistImage);
     if (!prevFileName.isEmpty()) {
-        QImage img(prevFileName);
-
+        QImage img;
+        if (prevFileName.startsWith(constCoverInTagPrefix)) {
+            prevFileName=prevFileName.mid(constCoverInTagPrefix.length());
+            img=Tags::readImage(prevFileName);
+        } else {
+            img=QImage(prevFileName);
+        }
         if (!img.isNull()) {
             DBUG_CLASS("Covers") << "Found previous" << prevFileName;
             return Image(img, prevFileName);
@@ -1001,8 +1008,8 @@ Covers::Image Covers::locateImage(const Song &song)
             if (QFile::exists(fileName)) {
                 QImage img(Tags::readImage(fileName));
                 if (!img.isNull()) {
-                    DBUG_CLASS("Covers") << "Got cover image from tag";
-                    return Image(img, QString());
+                    DBUG_CLASS("Covers") << "Got cover image from tag" << fileName;
+                    return Image(img, constCoverInTagPrefix+fileName);
                 }
             }
             #endif
@@ -1062,6 +1069,12 @@ Covers::Image Covers::locateImage(const Song &song)
     return Image(QImage(), QString());
 }
 
+// Dont return song files as cover files!
+static Covers::Image fix(const Covers::Image &img)
+{
+    return Covers::Image(img.img, img.fileName.startsWith(constCoverInTagPrefix) ? QString() : img.fileName);
+}
+
 Covers::Image Covers::requestImage(const Song &song)
 {
     DBUG << song.file << song.artist << song.albumartist << song.album;
@@ -1073,9 +1086,10 @@ Covers::Image Covers::requestImage(const Song &song)
     retrieved++;
     Image img=findImage(song, false);
     if (img.img.isNull()) {
+        DBUG << song.file << song.artist << song.albumartist << song.album << "Need to download";
         emit download(song);
     }
-    return img;
+    return fix(img);
 }
 
 void Covers::located(const QList<LocatedCover> &covers)
@@ -1136,7 +1150,8 @@ void Covers::gotAlbumCover(const Song &song, const QImage &img, const QString &f
         mutex.unlock();
     }
     if (emitResult) {
-        emit cover(song, img, fileName);
+        DBUG << "emit cover" << song.file << song.artist << song.albumartist << song.album << img.width() << img.height() << fileName;
+        emit cover(song, img, fileName.startsWith(constCoverInTagPrefix) ? QString() : fileName);
     }
 }
 
@@ -1148,7 +1163,8 @@ void Covers::gotArtistImage(const Song &song, const QImage &img, const QString &
         mutex.unlock();
     }
     if (emitResult) {
-        emit artistImage(song, img, fileName);
+        DBUG << "emit artistImage" << song.file << song.artist << song.albumartist << song.album << img.width() << img.height() << fileName;
+        emit artistImage(song, img, fileName.startsWith(constCoverInTagPrefix) ? QString() : fileName);
     }
 }
 

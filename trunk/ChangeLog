@@ -59,6 +59,9 @@
 38. Remove amazon cover fetching - required API key that Cantata never really
     had.
 39. Add debug logging. Please see README for details.
+40. Enable MPD HTTP stream playback using QtMultiMedia for Qt5 builds. Thanks
+    to Marcel Bosling for the patch. Disabled by default, to enable pass
+    -DENABLE_HTTP_STREAM_PLAYBACK=ON to cmake.
 
 1.0.3
 -----

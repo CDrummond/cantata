@@ -46,8 +46,12 @@
 #include "mpdconnection.h"
 #include "song.h"
 #include "config.h"
-#ifdef PHONON_FOUND
+#ifdef ENABLE_HTTP_STREAM_PLAYBACK
+#if QT_VERSION < 0x050000
 #include <phonon/mediaobject.h>
+#else
+#include <QtMultimedia/QMediaPlayer>
+#endif
 #endif
 
 class Action;
@@ -356,7 +360,7 @@ private:
     Action *singlePlayQueueAction;
     Action *consumePlayQueueAction;
     Action *setPriorityAction;
-    #ifdef PHONON_FOUND
+    #ifdef ENABLE_HTTP_STREAM_PLAYBACK
     Action *streamPlayAction;
     #endif
     Action *expandInterfaceAction;
@@ -436,9 +440,13 @@ private:
     int origVolume;
     int lastVolume;
     StopState stopState;
-    #ifdef PHONON_FOUND
-    bool phononStreamEnabled;
-    Phonon::MediaObject *phononStream;
+    #ifdef ENABLE_HTTP_STREAM_PLAYBACK
+    bool httpStreamEnabled;
+    #if QT_VERSION < 0x050000
+    Phonon::MediaObject *httpStream;
+    #else
+    QMediaPlayer *httpStream;
+    #endif
     #endif
 
     friend class VolumeSliderEventHandler;

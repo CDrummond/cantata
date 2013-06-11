@@ -45,7 +45,7 @@
 #endif
 #include "localize.h"
 #include "mainwindow.h"
-#ifdef PHONON_FOUND
+#if defined ENABLE_HTTP_STREAM_PLAYBACK && QT_VERSION < 0x050000
 #include <phonon/audiooutput.h>
 #endif
 #include "trayitem.h"
@@ -205,9 +205,9 @@ MainWindow::MainWindow(QWidget *parent)
     , origVolume(0)
     , lastVolume(0)
     , stopState(StopState_None)
-    #ifdef PHONON_FOUND
-    , phononStreamEnabled(false)
-    , phononStream(0)
+    #ifdef ENABLE_HTTP_STREAM_PLAYBACK
+    , httpStreamEnabled(false)
+    , httpStream(0)
     #endif
 {
     QPoint p=pos();
@@ -292,7 +292,7 @@ MainWindow::MainWindow(QWidget *parent)
     singlePlayQueueAction = ActionCollection::get()->createAction("singleplaylist", i18n("Single"), Icons::singleIcon, i18n("When 'Single' is activated, playback is stopped after current song, or song is repeated if 'Repeat' is enabled."));
     consumePlayQueueAction = ActionCollection::get()->createAction("consumeplaylist", i18n("Consume"), Icons::consumeIcon, i18n("When consume is activated, a song is removed from the play queue after it has been played."));
     setPriorityAction = ActionCollection::get()->createAction("setprio", i18n("Set Priority"), Icon("favorites"));
-    #ifdef PHONON_FOUND
+    #ifdef ENABLE_HTTP_STREAM_PLAYBACK
     streamPlayAction = ActionCollection::get()->createAction("streamplay", i18n("Play Stream"), Icons::toolbarStreamIcon, i18n("When 'Play Stream' is activated, the enabled stream is played locally."));
     #endif
     locateTrackAction = ActionCollection::get()->createAction("locatetrack", i18n("Locate In Library"), "edit-find");
@@ -408,7 +408,7 @@ MainWindow::MainWindow(QWidget *parent)
     repeatButton->setDefaultAction(repeatPlayQueueAction);
     singleButton->setDefaultAction(singlePlayQueueAction);
     consumeButton->setDefaultAction(consumePlayQueueAction);
-    #ifdef PHONON_FOUND
+    #ifdef ENABLE_HTTP_STREAM_PLAYBACK
     streamButton->setDefaultAction(streamPlayAction);
     #else
     streamButton->setVisible(false);
@@ -486,7 +486,7 @@ MainWindow::MainWindow(QWidget *parent)
     repeatPlayQueueAction->setCheckable(true);
     singlePlayQueueAction->setCheckable(true);
     consumePlayQueueAction->setCheckable(true);
-    #ifdef PHONON_FOUND
+    #ifdef ENABLE_HTTP_STREAM_PLAYBACK
     streamPlayAction->setCheckable(true);
     #endif
 
@@ -543,7 +543,7 @@ MainWindow::MainWindow(QWidget *parent)
     repeatPlayQueueAction->setChecked(false);
     singlePlayQueueAction->setChecked(false);
     consumePlayQueueAction->setChecked(false);
-    #ifdef PHONON_FOUND
+    #ifdef ENABLE_HTTP_STREAM_PLAYBACK
     streamPlayAction->setChecked(false);
     #endif
 
@@ -750,7 +750,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(repeatPlayQueueAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(setRepeat(bool)));
     connect(singlePlayQueueAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(setSingle(bool)));
     connect(consumePlayQueueAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(setConsume(bool)));
-    #ifdef PHONON_FOUND
+    #ifdef ENABLE_HTTP_STREAM_PLAYBACK
     connect(streamPlayAction, SIGNAL(triggered(bool)), this, SLOT(toggleStream(bool)));
     #endif
     connect(StdActions::self()->backAction, SIGNAL(triggered(bool)), this, SLOT(goBack()));
@@ -885,7 +885,7 @@ MainWindow::~MainWindow()
     #if defined ENABLE_REMOTE_DEVICES && defined ENABLE_DEVICES_SUPPORT
     DevicesModel::self()->unmountRemote();
     #endif
-    #ifdef PHONON_FOUND
+    #ifdef ENABLE_HTTP_STREAM_PLAYBACK
     Settings::self()->savePlayStream(streamPlayAction->isChecked());
     #endif
     if (!fullScreenAction->isChecked()) {
@@ -1353,7 +1353,7 @@ void MainWindow::readSettings()
     albumsPage->setView(Settings::self()->albumsView());
     AlbumsModel::self()->setAlbumSort(Settings::self()->albumSort());
 
-    #ifdef PHONON_FOUND
+    #ifdef ENABLE_HTTP_STREAM_PLAYBACK
     streamButton->setVisible(!Settings::self()->streamUrl().isEmpty());
     streamPlayAction->setChecked(streamButton->isVisible() && Settings::self()->playStream());
     toggleStream(streamPlayAction->isChecked());
@@ -1522,32 +1522,37 @@ void MainWindow::showServerInfo()
 
 void MainWindow::toggleStream(bool s)
 {
-    #ifdef PHONON_FOUND
+    #ifdef ENABLE_HTTP_STREAM_PLAYBACK
     MPDStatus * const status = MPDStatus::self();
-    phononStreamEnabled = s;
+    httpStreamEnabled = s;
     if (!s){
-        if (phononStream) {
-            phononStream->stop();
+        if (httpStream) {
+            httpStream->stop();
         }
     } else {
-        if (phononStream) {
+        if (httpStream) {
             switch (status->state()) {
             case MPDState_Playing:
-                phononStream->play();
+                httpStream->play();
                 break;
             case MPDState_Inactive:
             case MPDState_Stopped:
-                phononStream->stop();
+                httpStream->stop();
             break;
             case MPDState_Paused:
-                phononStream->pause();
+                httpStream->pause();
             default:
             break;
             }
         } else {
-            phononStream=new Phonon::MediaObject(this);
-            Phonon::createPath(phononStream, new Phonon::AudioOutput(Phonon::MusicCategory, this));
-            phononStream->setCurrentSource(Settings::self()->streamUrl());
+            #if QT_VERSION < 0x050000
+            httpStream=new Phonon::MediaObject(this);
+            Phonon::createPath(httpStream, new Phonon::AudioOutput(Phonon::MusicCategory, this));
+            httpStream->setCurrentSource(Settings::self()->streamUrl());
+            #else
+            httpStream=new QMediaPlayer(this);
+            httpStream->setMedia(QUrl(Settings::self()->streamUrl()));
+            #endif
         }
     }
     #else
@@ -1947,9 +1952,9 @@ void MainWindow::updateStatus(MPDStatus * const status)
     playQueueModel.setState(status->state());
     switch (status->state()) {
     case MPDState_Playing:
-        #ifdef PHONON_FOUND
-        if (phononStreamEnabled && phononStream) {
-            phononStream->play();
+        #ifdef ENABLE_HTTP_STREAM_PLAYBACK
+        if (httpStreamEnabled && httpStream) {
+            httpStream->play();
         }
         #endif
         playPauseTrackAction->setIcon(Icons::toolbarPauseIcon);
@@ -1970,9 +1975,9 @@ void MainWindow::updateStatus(MPDStatus * const status)
         break;
     case MPDState_Inactive:
     case MPDState_Stopped:
-        #ifdef PHONON_FOUND
-        if (phononStreamEnabled && phononStream) {
-            phononStream->stop();
+        #ifdef ENABLE_HTTP_STREAM_PLAYBACK
+        if (httpStreamEnabled && httpStream) {
+            httpStream->stop();
         }
         #endif
         playPauseTrackAction->setIcon(Icons::toolbarPlayIcon);
@@ -1998,9 +2003,9 @@ void MainWindow::updateStatus(MPDStatus * const status)
         positionSlider->stopTimer();
         break;
     case MPDState_Paused:
-        #ifdef PHONON_FOUND
-        if (phononStreamEnabled && phononStream) {
-            phononStream->pause();
+        #ifdef ENABLE_HTTP_STREAM_PLAYBACK
+        if (httpStreamEnabled && httpStream) {
+            httpStream->pause();
         }
         #endif
         playPauseTrackAction->setIcon(Icons::toolbarPlayIcon);

@@ -293,7 +293,7 @@ MainWindow::MainWindow(QWidget *parent)
     consumePlayQueueAction = ActionCollection::get()->createAction("consumeplaylist", i18n("Consume"), Icons::consumeIcon, i18n("When consume is activated, a song is removed from the play queue after it has been played."));
     setPriorityAction = ActionCollection::get()->createAction("setprio", i18n("Set Priority"), Icon("favorites"));
     #ifdef ENABLE_HTTP_STREAM_PLAYBACK
-    streamPlayAction = ActionCollection::get()->createAction("streamplay", i18n("Play Stream"), Icons::toolbarStreamIcon, i18n("When 'Play Stream' is activated, the enabled stream is played locally."));
+    streamPlayAction = ActionCollection::get()->createAction("streamplay", i18n("Play Stream"));
     #endif
     locateTrackAction = ActionCollection::get()->createAction("locatetrack", i18n("Locate In Library"), "edit-find");
     #ifdef TAGLIB_FOUND
@@ -408,11 +408,6 @@ MainWindow::MainWindow(QWidget *parent)
     repeatButton->setDefaultAction(repeatPlayQueueAction);
     singleButton->setDefaultAction(singlePlayQueueAction);
     consumeButton->setDefaultAction(consumePlayQueueAction);
-    #ifdef ENABLE_HTTP_STREAM_PLAYBACK
-    streamButton->setDefaultAction(streamPlayAction);
-    #else
-    streamButton->setVisible(false);
-    #endif
 
     #define TAB_ACTION(A) A->icon(), A->text(), A->text()+"<br/><small><i>"+A->shortcut().toString()+"</i></small>"
 
@@ -495,7 +490,7 @@ MainWindow::MainWindow(QWidget *parent)
     QList<QToolButton *> playbackBtns;
     QList<QToolButton *> controlBtns;
     playbackBtns << prevTrackButton << stopTrackButton << playPauseTrackButton << nextTrackButton;
-    controlBtns << volumeButton << menuButton << streamButton << songInfoButton;
+    controlBtns << volumeButton << menuButton << songInfoButton;
 
     int playbackIconSize=28;
     int controlIconSize=22;
@@ -591,6 +586,9 @@ MainWindow::MainWindow(QWidget *parent)
     mainMenu->addAction(fullScreenAction);
     mainMenu->addAction(connectionsAction);
     mainMenu->addAction(outputsAction);
+    #ifdef ENABLE_HTTP_STREAM_PLAYBACK
+    mainMenu->addAction(streamPlayAction);
+    #endif
     serverInfoAction=ActionCollection::get()->createAction("mpdinfo", i18n("Server information..."), "network-server");
     connect(serverInfoAction, SIGNAL(triggered(bool)),this, SLOT(showServerInfo()));
     serverInfoAction->setEnabled(Settings::self()->firstRun());
@@ -625,6 +623,9 @@ MainWindow::MainWindow(QWidget *parent)
         menu->addAction(fullScreenAction);
         menu->addAction(connectionsAction);
         menu->addAction(outputsAction);
+        #ifdef ENABLE_HTTP_STREAM_PLAYBACK
+        menu->addAction(streamPlayAction);
+        #endif
         menu->addSeparator();
         #ifdef ENABLE_KDE_SUPPORT
         menu->addAction(shortcutsAction);
@@ -1354,8 +1355,8 @@ void MainWindow::readSettings()
     AlbumsModel::self()->setAlbumSort(Settings::self()->albumSort());
 
     #ifdef ENABLE_HTTP_STREAM_PLAYBACK
-    streamButton->setVisible(!Settings::self()->streamUrl().isEmpty());
-    streamPlayAction->setChecked(streamButton->isVisible() && Settings::self()->playStream());
+    streamPlayAction->setVisible(!Settings::self()->streamUrl().isEmpty());
+    streamPlayAction->setChecked(streamPlayAction->isVisible() && Settings::self()->playStream());
     toggleStream(streamPlayAction->isChecked());
     #endif
     libraryPage->setView(Settings::self()->libraryView());

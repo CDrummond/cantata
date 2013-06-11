@@ -93,7 +93,11 @@ void PlayQueueTreeView::initHeader()
         bool highDpi=fm.height()>22;
         setResizeMode(hdr, QHeaderView::Interactive);
         hdr->setContextMenuPolicy(Qt::CustomContextMenu);
-        hdr->resizeSection(PlayQueueModel::COL_STATUS, 20);
+        int statusSize=model()->data(QModelIndex(), Qt::SizeHintRole).toSize().width();
+        if (statusSize<20) {
+            statusSize=20;
+        }
+        hdr->resizeSection(PlayQueueModel::COL_STATUS, statusSize);
         hdr->resizeSection(PlayQueueModel::COL_TRACK, fm.width("999")*(highDpi ? 1.2 : 1.0));
         hdr->resizeSection(PlayQueueModel::COL_YEAR, fm.width("99999")*(highDpi ? 1.2 : 1.0));
         setResizeMode(hdr, PlayQueueModel::COL_STATUS, QHeaderView::Fixed);

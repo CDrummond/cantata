@@ -870,6 +870,9 @@ MainWindow::MainWindow(QWidget *parent)
          PAGE_FOLDERS!=tabWidget->current_index() && PAGE_PLAYLISTS!=tabWidget->current_index())) {
         currentTabChanged(tabWidget->current_index());
     }
+    if (Settings::self()->firstRun() && MPDConnection::self()->isConnected()) {
+        mpdConnectionStateChanged(true);
+    }
 }
 
 MainWindow::~MainWindow()

@@ -55,8 +55,9 @@ The following options may be passed to CMake:
         Build against Qt5, not Qt4
         Default: OFF
 
-    -DENABLE_PHONON=ON
-        Enable support for playing back MPD HTTP streams via Phonon.
+    -DENABLE_HTTP_STREAM_PLAYBACK=ON
+        Enable support for playing back MPD HTTP streams via Phonon (Qt4) or
+        QtMultiMedia (Qt5).
         Default: OFF
 
     -DENABLE_UDISKS2=ON

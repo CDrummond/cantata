@@ -391,7 +391,7 @@ void ContextWidget::paintEvent(QPaintEvent *e)
             p.setOpacity(0.15*(fadeValue/100.0));
             p.fillRect(rect(), QBrush(newBackdrop));
         }
-        if (!backdropText.isEmpty()) {
+        if (!backdropText.isEmpty() && (!viewCombo || !viewCombo->isVisible())) {
             int pad=fontMetrics().height()*2;
             QFont f("Sans", font().pointSize()*12);
             f.setBold(true);

@@ -52,7 +52,7 @@ ServerPlaybackSettings::ServerPlaybackSettings(QWidget *p)
     messageIcon->setMinimumSize(iconSize, iconSize);
     messageIcon->setMaximumSize(iconSize, iconSize);
     mpdConnectionStateChanged(MPDConnection::self()->isConnected());
-    #if not defined PHONON_FOUND && not defined ENABLE_QT5PLAYER
+    #ifndef ENABLE_HTTP_STREAM_PLAYBACK
     streamUrl->setVisible(false);
     streamUrlLabel->setVisible(false);
     streamUrlInfoLabel->setVisible(false);

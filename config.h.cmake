@@ -22,7 +22,7 @@
 #cmakedefine TAGLIB_ASF_FOUND
 #cmakedefine TAGLIB_MP4_FOUND 1
 #cmakedefine MTP_FOUND 1
-#cmakedefine PHONON_FOUND 1
+#cmakedefine ENABLE_HTTP_STREAM_PLAYBACK 1
 #cmakedefine FFMPEG_FOUND 1
 #cmakedefine MPG123_FOUND 1
 #cmakedefine LAME_FOUND 1

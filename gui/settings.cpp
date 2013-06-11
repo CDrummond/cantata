@@ -584,7 +584,7 @@ bool Settings::playListsStartClosed()
     return GET_BOOL("playListsStartClosed", true);
 }
 
-#ifdef PHONON_FOUND
+#ifdef ENABLE_HTTP_STREAM_PLAYBACK
 bool Settings::playStream()
 {
     return GET_BOOL("playStream", false);
@@ -985,7 +985,7 @@ void Settings::savePlayListsStartClosed(bool v)
     SET_VALUE_MOD(playListsStartClosed)
 }
 
-#ifdef PHONON_FOUND
+#ifdef ENABLE_HTTP_STREAM_PLAYBACK
 void Settings::savePlayStream(bool v)
 {
     SET_VALUE_MOD(playStream)

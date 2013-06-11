@@ -52,7 +52,7 @@ ServerPlaybackSettings::ServerPlaybackSettings(QWidget *p)
     messageIcon->setMinimumSize(iconSize, iconSize);
     messageIcon->setMaximumSize(iconSize, iconSize);
     mpdConnectionStateChanged(MPDConnection::self()->isConnected());
-    #ifndef PHONON_FOUND
+    #if not defined PHONON_FOUND && not defined ENABLE_QT5PLAYER
     streamUrl->setVisible(false);
     streamUrlLabel->setVisible(false);
     streamUrlInfoLabel->setVisible(false);
@@ -66,7 +66,7 @@ void ServerPlaybackSettings::load()
         emit getReplayGain();
         emit outputs();
     }
-    #ifdef PHONON_FOUND
+    #ifdef ENABLE_HTTP_STREAM_PLAYBACK
     streamUrl->setText(Settings::self()->streamUrl());
     #endif
 }
@@ -81,7 +81,7 @@ void ServerPlaybackSettings::save()
             emit enableOutput(item->data(Qt::UserRole).toInt(), Qt::Checked==item->checkState());
         }
     }
-    #ifdef PHONON_FOUND
+    #ifdef ENABLE_HTTP_STREAM_PLAYBACK
     Settings::self()->saveStreamUrl(streamUrl->text().trimmed());
     #endif
 }
@@ -115,7 +115,7 @@ void ServerPlaybackSettings::mpdConnectionStateChanged(bool c)
     replayGain->setEnabled(c);
     crossfadingLabel->setEnabled(c);
     replayGainLabel->setEnabled(c);
-    #ifdef PHONON_FOUND
+    #ifdef ENABLE_HTTP_STREAM_PLAYBACK
     streamUrl->setEnabled(c);
     streamUrlLabel->setEnabled(c);
     #endif

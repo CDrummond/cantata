@@ -150,7 +150,7 @@ public:
     bool playQueueStartClosed();
     bool playQueueScroll();
     bool playListsStartClosed();
-    #ifdef PHONON_FOUND
+    #ifdef ENABLE_HTTP_STREAM_PLAYBACK
     bool playStream();
     QString streamUrl();
     #endif
@@ -231,7 +231,7 @@ public:
     void savePlayQueueStartClosed(bool v);
     void savePlayQueueScroll(bool v);
     void savePlayListsStartClosed(bool v);
-    #ifdef PHONON_FOUND
+    #ifdef ENABLE_HTTP_STREAM_PLAYBACK
     void savePlayStream(bool v);
     void saveStreamUrl(const QString &v);
     #endif

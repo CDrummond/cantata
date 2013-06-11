@@ -348,7 +348,7 @@ Icon Icons::toolbarVolumeMutedIcon;
 Icon Icons::toolbarVolumeLowIcon;
 Icon Icons::toolbarVolumeMediumIcon;
 Icon Icons::toolbarVolumeHighIcon;
-#ifdef PHONON_FOUND
+#ifdef ENABLE_HTTP_STREAM_PLAYBACK
 Icon Icons::toolbarStreamIcon;
 #endif
 
@@ -681,7 +681,7 @@ void Icons::initToolbarIcons(const QColor &color, bool forceLight)
         toolbarVolumeHighIcon=Icon("audio-volume-high");
     }
 
-    #ifdef PHONON_FOUND
+    #ifdef ENABLE_HTTP_STREAM_PLAYBACK
     toolbarStreamIcon=streamIcon;
     #endif
 }

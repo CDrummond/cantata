@@ -111,6 +111,7 @@ void GtkStyle::drawSelection(const QStyleOptionViewItemV4 &opt, QPainter *painte
     painter->setOpacity(opacityB4);
 }
 
+#if !defined Q_OS_WIN && !defined QT_NO_STYLE_GTK
 // For some reason, dconf does not seem to terminate correclty when run under some desktops (e.g. KDE)
 // Destrying the QProcess seems to block, causing the app to appear to hang before starting.
 // So, create QProcess on the heap - and only wait 100ms for response. Connect finished to deleteLater
@@ -130,6 +131,7 @@ static QString runProc(const QString &cmd, const QStringList &args)
     process->kill();
     return QString();
 }
+#endif
 
 // Copied from musique
 QString GtkStyle::themeName()
@@ -217,10 +219,12 @@ void GtkStyle::applyTheme(QWidget *widget)
 {
     #if defined Q_OS_WIN || defined QT_NO_STYLE_GTK
     Q_UNUSED(widget)
+    #ifndef ENABLE_KDE_SUPPORT
     if (!plainProxyStyle) {
         plainProxyStyle=new ProxyStyle();
         qApp->setStyle(plainProxyStyle);
     }
+    #endif
     #else
     if (widget && isActive()) {
         QString theme=GtkStyle::themeName().toLower();

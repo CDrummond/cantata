@@ -379,19 +379,25 @@ void ContextWidget::showEvent(QShowEvent *e)
 void ContextWidget::paintEvent(QPaintEvent *e)
 {
     QPainter p(this);
+    QRect r(rect());
+
+    if (!isWide && viewCombo) {
+        int space=fontMetrics().height()/4;
+        r.adjust(0, 0, 0, -(viewCombo->rect().height()+space));
+    }
     if (darkBackground) {
-        p.fillRect(rect(), palette().background().color());
+        p.fillRect(r, palette().background().color());
     }
     if (drawBackdrop) {
         if (!oldBackdrop.isNull()) {
             p.setOpacity(0.15*((100.0-fadeValue)/100.0));
-            p.fillRect(rect(), QBrush(oldBackdrop));
+            p.fillRect(r, QBrush(oldBackdrop));
         }
         if (!newBackdrop.isNull()) {
             p.setOpacity(0.15*(fadeValue/100.0));
-            p.fillRect(rect(), QBrush(newBackdrop));
+            p.fillRect(r, QBrush(newBackdrop));
         }
-        if (!backdropText.isEmpty() && (!viewCombo || !viewCombo->isVisible())) {
+        if (!backdropText.isEmpty() && isWide) {
             int pad=fontMetrics().height()*2;
             QFont f("Sans", font().pointSize()*12);
             f.setBold(true);

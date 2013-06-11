@@ -90,7 +90,6 @@ void PlayQueueTreeView::initHeader()
         QFont f(font());
         f.setBold(true);
         QFontMetrics fm(f);
-        bool highDpi=fm.height()>22;
         setResizeMode(hdr, QHeaderView::Interactive);
         hdr->setContextMenuPolicy(Qt::CustomContextMenu);
         int statusSize=model()->data(QModelIndex(), Qt::SizeHintRole).toSize().width();
@@ -98,8 +97,8 @@ void PlayQueueTreeView::initHeader()
             statusSize=20;
         }
         hdr->resizeSection(PlayQueueModel::COL_STATUS, statusSize);
-        hdr->resizeSection(PlayQueueModel::COL_TRACK, fm.width("999")*(highDpi ? 1.2 : 1.0));
-        hdr->resizeSection(PlayQueueModel::COL_YEAR, fm.width("99999")*(highDpi ? 1.2 : 1.0));
+        hdr->resizeSection(PlayQueueModel::COL_TRACK, fm.width("999"));
+        hdr->resizeSection(PlayQueueModel::COL_YEAR, fm.width("99999"));
         setResizeMode(hdr, PlayQueueModel::COL_STATUS, QHeaderView::Fixed);
         setResizeMode(hdr, PlayQueueModel::COL_TITLE, QHeaderView::Interactive);
         setResizeMode(hdr, PlayQueueModel::COL_ARTIST, QHeaderView::Interactive);

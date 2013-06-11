@@ -94,9 +94,6 @@ namespace Icons
     extern Icon toolbarVolumeLowIcon;
     extern Icon toolbarVolumeMediumIcon;
     extern Icon toolbarVolumeHighIcon;
-    #ifdef ENABLE_HTTP_STREAM_PLAYBACK
-    extern Icon toolbarStreamIcon;
-    #endif
 }
 
 #endif

@@ -906,6 +906,7 @@ Covers::Image Covers::locateImage(const Song &song)
     bool isArtistImage=song.isArtistImageRequest();
     QString prevFileName=Covers::self()->getFilename(song, isArtistImage);
     if (!prevFileName.isEmpty()) {
+        #ifdef TAGLIB_FOUND
         QImage img;
         if (prevFileName.startsWith(constCoverInTagPrefix)) {
             prevFileName=prevFileName.mid(constCoverInTagPrefix.length());
@@ -913,6 +914,9 @@ Covers::Image Covers::locateImage(const Song &song)
         } else {
             img=QImage(prevFileName);
         }
+        #else
+        QImage img(prevFileName);
+        #endif
         if (!img.isNull()) {
             DBUG_CLASS("Covers") << "Found previous" << prevFileName;
             return Image(img, prevFileName);

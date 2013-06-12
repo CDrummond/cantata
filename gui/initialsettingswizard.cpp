@@ -69,10 +69,10 @@ InitialSettingsWizard::InitialSettingsWizard(QWidget *p)
     #ifdef ENABLE_KDE_SUPPORT
     introPage->setBackground(Icon("cantata"));
     #else
-    introPage->setBackground(Icons::appIcon);
+    introPage->setBackground(Icons::self()->appIcon);
     #endif
-    connectionPage->setBackground(Icons::libraryIcon);
-    filesPage->setBackground(Icons::filesIcon);
+    connectionPage->setBackground(Icons::self()->libraryIcon);
+    filesPage->setBackground(Icons::self()->filesIcon);
     finishedPage->setBackground(Icon("dialog-ok"));
 
     // Adjust size for high-DPI setups...

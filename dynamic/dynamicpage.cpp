@@ -38,7 +38,7 @@ DynamicPage::DynamicPage(QWidget *p)
     setupUi(this);
     refreshAction = ActionCollection::get()->createAction("refreshdynamic", i18n("Refresh Dynamic Rules"), "view-refresh");
     addAction = ActionCollection::get()->createAction("adddynamic", i18n("Add Dynamic Rules"), "document-new");
-    editAction = ActionCollection::get()->createAction("editdynamic", i18n("Edit Dynamic Rules"), Icons::editIcon);
+    editAction = ActionCollection::get()->createAction("editdynamic", i18n("Edit Dynamic Rules"), Icons::self()->editIcon);
     removeAction = ActionCollection::get()->createAction("removedynamic", i18n("Remove Dynamic Rules"), "list-remove");
     toggleAction = new Action(this);
 

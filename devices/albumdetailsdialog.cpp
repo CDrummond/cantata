@@ -354,7 +354,7 @@ void AlbumDetailsDialog::update(QTreeWidgetItem *i, const Song &s)
 void AlbumDetailsDialog::setCover()
 {
     int iconSize=cover->size().width()<=128 ? 128 : 256;
-    cover->setPixmap(Icons::albumIcon.pixmap(iconSize, iconSize).scaled(cover->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+    cover->setPixmap(Icons::self()->albumIcon.pixmap(iconSize, iconSize).scaled(cover->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 }
 
 bool AlbumDetailsDialog::eventFilter(QObject *object, QEvent *event)

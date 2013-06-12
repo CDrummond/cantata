@@ -232,9 +232,9 @@ MainWindow::MainWindow(QWidget *parent)
     MPDParseUtils::setGroupMultiple(Settings::self()->groupMultiple());
 
     GtkStyle::applyTheme(toolbar);
-    Icons::initToolbarIcons(artistLabel->palette().color(QPalette::Foreground), GtkStyle::useLightIcons());
-    Icons::initSidebarIcons();
-    menuButton->setIcon(Icons::toolbarMenuIcon);
+    Icons::self()->self()->initToolbarIcons(artistLabel->palette().color(QPalette::Foreground), GtkStyle::useLightIcons());
+    Icons::self()->initSidebarIcons();
+    menuButton->setIcon(Icons::self()->toolbarMenuIcon);
 
     // With ambiance (which has a drak toolbar) we need a gap between the toolbar and the earch fields. But, in the context view we dont
     // want a gap - as this looks odd with a background. To workaround this, the tabwidget and playqueue sides of the splitter have a
@@ -252,7 +252,7 @@ MainWindow::MainWindow(QWidget *parent)
     prefAction=static_cast<Action *>(KStandardAction::preferences(this, SLOT(showPreferencesDialog()), ActionCollection::get()));
     quitAction=static_cast<Action *>(KStandardAction::quit(this, SLOT(quit()), ActionCollection::get()));
     #else
-    setWindowIcon(Icons::appIcon);
+    setWindowIcon(Icons::self()->appIcon);
     QNetworkProxyFactory::setApplicationProxyFactory(NetworkProxyFactory::self());
 
     quitAction = ActionCollection::get()->createAction("quit", i18n("Quit"), "application-exit");
@@ -262,35 +262,35 @@ MainWindow::MainWindow(QWidget *parent)
     restoreAction = ActionCollection::get()->createAction("showwindow", i18n("Show Window"));
     connect(restoreAction, SIGNAL(triggered(bool)), this, SLOT(restoreWindow()));
 
-    connectAction = ActionCollection::get()->createAction("connect", i18n("Connect"), Icons::connectIcon);
+    connectAction = ActionCollection::get()->createAction("connect", i18n("Connect"), Icons::self()->connectIcon);
     connectionsAction = ActionCollection::get()->createAction("connections", i18n("Connection"), "network-server");
-    outputsAction = ActionCollection::get()->createAction("outputs", i18n("Outputs"), Icons::speakerIcon);
-    prevTrackAction = ActionCollection::get()->createAction("prevtrack", i18n("Previous Track"), Icons::toolbarPrevIcon);
-    nextTrackAction = ActionCollection::get()->createAction("nexttrack", i18n("Next Track"), Icons::toolbarNextIcon);
-    playPauseTrackAction = ActionCollection::get()->createAction("playpausetrack", i18n("Play/Pause"), Icons::toolbarPlayIcon);
-    stopPlaybackAction = ActionCollection::get()->createAction("stopplayback", i18n("Stop"), Icons::toolbarStopIcon);
-    stopAfterCurrentTrackAction = ActionCollection::get()->createAction("stopaftercurrenttrack", i18n("Stop After Current Track"), Icons::toolbarStopIcon);
-    stopAfterTrackAction = ActionCollection::get()->createAction("stopaftertrack", i18n("Stop After Track"), Icons::toolbarStopIcon);
+    outputsAction = ActionCollection::get()->createAction("outputs", i18n("Outputs"), Icons::self()->speakerIcon);
+    prevTrackAction = ActionCollection::get()->createAction("prevtrack", i18n("Previous Track"), Icons::self()->toolbarPrevIcon);
+    nextTrackAction = ActionCollection::get()->createAction("nexttrack", i18n("Next Track"), Icons::self()->toolbarNextIcon);
+    playPauseTrackAction = ActionCollection::get()->createAction("playpausetrack", i18n("Play/Pause"), Icons::self()->toolbarPlayIcon);
+    stopPlaybackAction = ActionCollection::get()->createAction("stopplayback", i18n("Stop"), Icons::self()->toolbarStopIcon);
+    stopAfterCurrentTrackAction = ActionCollection::get()->createAction("stopaftercurrenttrack", i18n("Stop After Current Track"), Icons::self()->toolbarStopIcon);
+    stopAfterTrackAction = ActionCollection::get()->createAction("stopaftertrack", i18n("Stop After Track"), Icons::self()->toolbarStopIcon);
     increaseVolumeAction = ActionCollection::get()->createAction("increasevolume", i18n("Increase Volume"));
     decreaseVolumeAction = ActionCollection::get()->createAction("decreasevolume", i18n("Decrease Volume"));
     muteAction = ActionCollection::get()->createAction("mute", i18n("Mute"));
-    addPlayQueueToStoredPlaylistAction = ActionCollection::get()->createAction("addpqtostoredplaylist", i18n("Add To Stored Playlist"), Icons::playlistIcon);
+    addPlayQueueToStoredPlaylistAction = ActionCollection::get()->createAction("addpqtostoredplaylist", i18n("Add To Stored Playlist"), Icons::self()->playlistIcon);
     removeFromPlayQueueAction = ActionCollection::get()->createAction("removefromplaylist", i18n("Remove From Play Queue"), "list-remove");
     copyTrackInfoAction = ActionCollection::get()->createAction("copytrackinfo", i18n("Copy Track Info"));
     cropPlayQueueAction = ActionCollection::get()->createAction("cropplaylist", i18n("Crop"));
     shufflePlayQueueAction = ActionCollection::get()->createAction("shuffleplaylist", i18n("Shuffle"));
-    addStreamToPlayQueueAction = ActionCollection::get()->createAction("addstreamtoplayqueue", i18n("Add Stream URL"), Icons::addRadioStreamIcon);
-    clearPlayQueueAction = ActionCollection::get()->createAction("clearplaylist", i18n("Clear"), Icons::clearListIcon);
+    addStreamToPlayQueueAction = ActionCollection::get()->createAction("addstreamtoplayqueue", i18n("Add Stream URL"), Icons::self()->addRadioStreamIcon);
+    clearPlayQueueAction = ActionCollection::get()->createAction("clearplaylist", i18n("Clear"), Icons::self()->clearListIcon);
     expandInterfaceAction = ActionCollection::get()->createAction("expandinterface", i18n("Expanded Interface"), "view-media-playlist");
-    songInfoAction = ActionCollection::get()->createAction("showsonginfo", i18n("Show Current Song Information"), Icons::infoIcon);
+    songInfoAction = ActionCollection::get()->createAction("showsonginfo", i18n("Show Current Song Information"), Icons::self()->infoIcon);
     songInfoAction->setShortcut(Qt::Key_F12);
     songInfoAction->setCheckable(true);
     fullScreenAction = ActionCollection::get()->createAction("fullScreen", i18n("Full Screen"), "view-fullscreen");
     fullScreenAction->setShortcut(Qt::Key_F11);
-    randomPlayQueueAction = ActionCollection::get()->createAction("randomplaylist", i18n("Random"), Icons::shuffleIcon);
-    repeatPlayQueueAction = ActionCollection::get()->createAction("repeatplaylist", i18n("Repeat"), Icons::repeatIcon);
-    singlePlayQueueAction = ActionCollection::get()->createAction("singleplaylist", i18n("Single"), Icons::singleIcon, i18n("When 'Single' is activated, playback is stopped after current song, or song is repeated if 'Repeat' is enabled."));
-    consumePlayQueueAction = ActionCollection::get()->createAction("consumeplaylist", i18n("Consume"), Icons::consumeIcon, i18n("When consume is activated, a song is removed from the play queue after it has been played."));
+    randomPlayQueueAction = ActionCollection::get()->createAction("randomplaylist", i18n("Random"), Icons::self()->shuffleIcon);
+    repeatPlayQueueAction = ActionCollection::get()->createAction("repeatplaylist", i18n("Repeat"), Icons::self()->repeatIcon);
+    singlePlayQueueAction = ActionCollection::get()->createAction("singleplaylist", i18n("Single"), Icons::self()->singleIcon, i18n("When 'Single' is activated, playback is stopped after current song, or song is repeated if 'Repeat' is enabled."));
+    consumePlayQueueAction = ActionCollection::get()->createAction("consumeplaylist", i18n("Consume"), Icons::self()->consumeIcon, i18n("When consume is activated, a song is removed from the play queue after it has been played."));
     setPriorityAction = ActionCollection::get()->createAction("setprio", i18n("Set Priority"), Icon("favorites"));
     #ifdef ENABLE_HTTP_STREAM_PLAYBACK
     streamPlayAction = ActionCollection::get()->createAction("streamplay", i18n("Play Stream"));
@@ -299,18 +299,18 @@ MainWindow::MainWindow(QWidget *parent)
     #ifdef TAGLIB_FOUND
     editPlayQueueTagsAction = ActionCollection::get()->createAction("editpqtags", i18n("Edit Song Tags"), "document-edit");
     #endif
-    showPlayQueueAction = ActionCollection::get()->createAction("showplayqueue", i18n("Play Queue"), Icons::playqueueIcon);
-    libraryTabAction = ActionCollection::get()->createAction("showlibrarytab", i18n("Artists"), Icons::artistsIcon);
-    albumsTabAction = ActionCollection::get()->createAction("showalbumstab", i18n("Albums"), Icons::albumsIcon);
-    foldersTabAction = ActionCollection::get()->createAction("showfolderstab", i18n("Folders"), Icons::foldersIcon);
-    playlistsTabAction = ActionCollection::get()->createAction("showplayliststab", i18n("Playlists"), Icons::playlistsIcon);
-    dynamicTabAction = ActionCollection::get()->createAction("showdynamictab", i18n("Dynamic"), Icons::dynamicIcon);
-    streamsTabAction = ActionCollection::get()->createAction("showstreamstab", i18n("Streams"), Icons::streamsIcon);
+    showPlayQueueAction = ActionCollection::get()->createAction("showplayqueue", i18n("Play Queue"), Icons::self()->playqueueIcon);
+    libraryTabAction = ActionCollection::get()->createAction("showlibrarytab", i18n("Artists"), Icons::self()->artistsIcon);
+    albumsTabAction = ActionCollection::get()->createAction("showalbumstab", i18n("Albums"), Icons::self()->albumsIcon);
+    foldersTabAction = ActionCollection::get()->createAction("showfolderstab", i18n("Folders"), Icons::self()->foldersIcon);
+    playlistsTabAction = ActionCollection::get()->createAction("showplayliststab", i18n("Playlists"), Icons::self()->playlistsIcon);
+    dynamicTabAction = ActionCollection::get()->createAction("showdynamictab", i18n("Dynamic"), Icons::self()->dynamicIcon);
+    streamsTabAction = ActionCollection::get()->createAction("showstreamstab", i18n("Streams"), Icons::self()->streamsIcon);
     #ifdef ENABLE_ONLINE_SERVICES
-    onlineTabAction = ActionCollection::get()->createAction("showonlinetab", i18n("Online"), Icons::onlineIcon);
+    onlineTabAction = ActionCollection::get()->createAction("showonlinetab", i18n("Online"), Icons::self()->onlineIcon);
     #endif
     #ifdef ENABLE_DEVICES_SUPPORT
-    devicesTabAction = ActionCollection::get()->createAction("showdevicestab", i18n("Devices"), Icons::devicesIcon);
+    devicesTabAction = ActionCollection::get()->createAction("showdevicestab", i18n("Devices"), Icons::self()->devicesIcon);
     #endif
     expandAllAction = ActionCollection::get()->createAction("expandall", i18n("Expand All"));
     collapseAllAction = ActionCollection::get()->createAction("collapseall", i18n("Collapse All"));
@@ -364,7 +364,7 @@ MainWindow::MainWindow(QWidget *parent)
     addPlayQueueToStoredPlaylistAction->setMenu(PlaylistsModel::self()->menu());
 
     menuButton->setMenu(mainMenu);
-    volumeButton->setIcon(Icons::toolbarVolumeHighIcon);
+    volumeButton->setIcon(Icons::self()->toolbarVolumeHighIcon);
 
     playPauseTrackButton->setDefaultAction(playPauseTrackAction);
     stopTrackButton->setDefaultAction(stopPlaybackAction);
@@ -440,7 +440,7 @@ MainWindow::MainWindow(QWidget *parent)
     tabWidget->AddTab(devicesPage, TAB_ACTION(devicesTabAction), !hiddenPages.contains(devicesPage->metaObject()->className()));
     DevicesModel::self()->setEnabled(!hiddenPages.contains(devicesPage->metaObject()->className()));
     #endif
-    tabWidget->AddTab(contextPage, Icons::infoSidebarIcon, i18n("Info"),
+    tabWidget->AddTab(contextPage, Icons::self()->infoSidebarIcon, i18n("Info"),
                       songInfoAction->text()+"<br/><small><i>"+songInfoAction->shortcut().toString()+"</i></small>",
                       !hiddenPages.contains(contextPage->metaObject()->className()));
     AlbumsModel::self()->setEnabled(!hiddenPages.contains(albumsPage->metaObject()->className()));
@@ -600,11 +600,11 @@ MainWindow::MainWindow(QWidget *parent)
     mainMenu->addAction(serverInfoAction);
     mainMenu->addMenu(helpMenu());
     #else
-    prefAction=ActionCollection::get()->createAction("configure", i18n("Configure Cantata..."), Icons::configureIcon);
+    prefAction=ActionCollection::get()->createAction("configure", i18n("Configure Cantata..."), Icons::self()->configureIcon);
     connect(prefAction, SIGNAL(triggered(bool)),this, SLOT(showPreferencesDialog()));
     mainMenu->addAction(prefAction);
     mainMenu->addSeparator();
-    Action *aboutAction=ActionCollection::get()->createAction("about", i18nc("Qt-only", "About Cantata..."), Icons::appIcon);
+    Action *aboutAction=ActionCollection::get()->createAction("about", i18nc("Qt-only", "About Cantata..."), Icons::self()->appIcon);
     connect(aboutAction, SIGNAL(triggered(bool)),this, SLOT(showAboutDialog()));
     mainMenu->addAction(serverInfoAction);
     mainMenu->addAction(aboutAction);
@@ -1902,13 +1902,13 @@ void MainWindow::updateStatus(MPDStatus * const status)
         volume=status->volume();
 
         if (volume<=0) {
-            volumeButton->setIcon(Icons::toolbarVolumeMutedIcon);
+            volumeButton->setIcon(Icons::self()->toolbarVolumeMutedIcon);
         } else if (volume<=33) {
-            volumeButton->setIcon(Icons::toolbarVolumeLowIcon);
+            volumeButton->setIcon(Icons::self()->toolbarVolumeLowIcon);
         } else if (volume<=67) {
-            volumeButton->setIcon(Icons::toolbarVolumeMediumIcon);
+            volumeButton->setIcon(Icons::self()->toolbarVolumeMediumIcon);
         } else {
-            volumeButton->setIcon(Icons::toolbarVolumeHighIcon);
+            volumeButton->setIcon(Icons::self()->toolbarVolumeHighIcon);
         }
 
         volumeControl->blockSignals(true);
@@ -1958,7 +1958,7 @@ void MainWindow::updateStatus(MPDStatus * const status)
             httpStream->play();
         }
         #endif
-        playPauseTrackAction->setIcon(Icons::toolbarPauseIcon);
+        playPauseTrackAction->setIcon(Icons::self()->toolbarPauseIcon);
         playPauseTrackAction->setEnabled(0!=playQueueModel.rowCount());
         //playPauseTrackButton->setChecked(false);
         if (StopState_Stopping!=stopState) {
@@ -1969,9 +1969,9 @@ void MainWindow::updateStatus(MPDStatus * const status)
         positionSlider->startTimer();
 
         #ifdef ENABLE_KDE_SUPPORT
-        trayItem->setIconByName(Icons::toolbarPlayIcon.name());
+        trayItem->setIconByName(Icons::self()->toolbarPlayIcon.name());
         #else
-        trayItem->setIcon(Icons::toolbarPlayIcon);
+        trayItem->setIcon(Icons::self()->toolbarPlayIcon);
         #endif
         break;
     case MPDState_Inactive:
@@ -1981,7 +1981,7 @@ void MainWindow::updateStatus(MPDStatus * const status)
             httpStream->stop();
         }
         #endif
-        playPauseTrackAction->setIcon(Icons::toolbarPlayIcon);
+        playPauseTrackAction->setIcon(Icons::self()->toolbarPlayIcon);
         playPauseTrackAction->setEnabled(0!=playQueueModel.rowCount());
         enableStopActions(false);
         nextTrackAction->setEnabled(false);
@@ -1998,7 +1998,7 @@ void MainWindow::updateStatus(MPDStatus * const status)
         #ifdef ENABLE_KDE_SUPPORT
         trayItem->setIconByName("cantata");
         #else
-        trayItem->setIcon(Icons::appIcon);
+        trayItem->setIcon(Icons::self()->appIcon);
         #endif
         trayItem->setToolTip("cantata", i18n("Cantata"), "<i>Playback stopped</i>");
         positionSlider->stopTimer();
@@ -2009,15 +2009,15 @@ void MainWindow::updateStatus(MPDStatus * const status)
             httpStream->pause();
         }
         #endif
-        playPauseTrackAction->setIcon(Icons::toolbarPlayIcon);
+        playPauseTrackAction->setIcon(Icons::self()->toolbarPlayIcon);
         playPauseTrackAction->setEnabled(0!=playQueueModel.rowCount());
         enableStopActions(0!=playQueueModel.rowCount());
         nextTrackAction->setEnabled(playQueueModel.rowCount()>1);
         prevTrackAction->setEnabled(playQueueModel.rowCount()>1);
         #ifdef ENABLE_KDE_SUPPORT
-        trayItem->setIconByName(Icons::toolbarPauseIcon.name());
+        trayItem->setIconByName(Icons::self()->toolbarPauseIcon.name());
         #else
-        trayItem->setIcon(Icons::toolbarPauseIcon);
+        trayItem->setIcon(Icons::self()->toolbarPauseIcon);
         #endif
         positionSlider->stopTimer();
         break;
@@ -2537,28 +2537,28 @@ void MainWindow::toggleMonoIcons()
     bool mono=monoIconsAction->isChecked();
     if (mono!=Settings::self()->monoSidebarIcons()) {
         Settings::self()->saveMonoSidebarIcons(mono);
-        Icons::initSidebarIcons();
-        showPlayQueueAction->setIcon(Icons::playqueueIcon);
+        Icons::self()->initSidebarIcons();
+        showPlayQueueAction->setIcon(Icons::self()->playqueueIcon);
         tabWidget->SetIcon(PAGE_PLAYQUEUE, showPlayQueueAction->icon());
-        libraryTabAction->setIcon(Icons::artistsIcon);
+        libraryTabAction->setIcon(Icons::self()->artistsIcon);
         tabWidget->SetIcon(PAGE_LIBRARY, libraryTabAction->icon());
-        albumsTabAction->setIcon(Icons::albumsIcon);
+        albumsTabAction->setIcon(Icons::self()->albumsIcon);
         tabWidget->SetIcon(PAGE_ALBUMS, albumsTabAction->icon());
-        foldersTabAction->setIcon(Icons::foldersIcon);
+        foldersTabAction->setIcon(Icons::self()->foldersIcon);
         tabWidget->SetIcon(PAGE_FOLDERS, foldersTabAction->icon());
-        playlistsTabAction->setIcon(Icons::playlistsIcon);
+        playlistsTabAction->setIcon(Icons::self()->playlistsIcon);
         tabWidget->SetIcon(PAGE_PLAYLISTS, playlistsTabAction->icon());
-        dynamicTabAction->setIcon(Icons::dynamicIcon);
+        dynamicTabAction->setIcon(Icons::self()->dynamicIcon);
         tabWidget->SetIcon(PAGE_DYNAMIC, dynamicTabAction->icon());
-        streamsTabAction->setIcon(Icons::streamsIcon);
+        streamsTabAction->setIcon(Icons::self()->streamsIcon);
         tabWidget->SetIcon(PAGE_STREAMS, streamsTabAction->icon());
         #ifdef ENABLE_ONLINE_SERVICES
-        onlineTabAction->setIcon(Icons::onlineIcon);
+        onlineTabAction->setIcon(Icons::self()->onlineIcon);
         tabWidget->SetIcon(PAGE_ONLINE, onlineTabAction->icon());
         #endif
-        tabWidget->SetIcon(PAGE_CONTEXT, Icons::infoSidebarIcon);
+        tabWidget->SetIcon(PAGE_CONTEXT, Icons::self()->infoSidebarIcon);
         #ifdef ENABLE_DEVICES_SUPPORT
-        devicesTabAction->setIcon(Icons::devicesIcon);
+        devicesTabAction->setIcon(Icons::self()->devicesIcon);
         tabWidget->SetIcon(PAGE_DEVICES, devicesTabAction->icon());
         #endif
         tabWidget->Recreate();

@@ -103,11 +103,11 @@ const QPixmap & MusicLibraryItemArtist::cover()
         }
 
         if (m_various) {
-            m_cover = new QPixmap(Icons::variousArtistsIcon.pixmap(cSize, cSize).scaled(QSize(cSize, cSize), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+            m_cover = new QPixmap(Icons::self()->variousArtistsIcon.pixmap(cSize, cSize).scaled(QSize(cSize, cSize), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
             m_coverIsDefault=false;
         } else {
             if (!theDefaultIcon) {
-                theDefaultIcon = new QPixmap(Icons::artistIcon.pixmap(cSize, cSize)
+                theDefaultIcon = new QPixmap(Icons::self()->artistIcon.pixmap(cSize, cSize)
                                             .scaled(QSize(cSize, cSize), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
             }
             m_coverIsDefault = true;

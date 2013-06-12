@@ -238,7 +238,7 @@ void ServerSettings::enableWidgets(bool e)
 //     dirLabel->setEnabled(e);
     connectButton->setText(e ? i18n("Connect") : i18n("Disconnect"));
     if (style()->styleHint(QStyle::SH_DialogButtonBox_ButtonsHaveIcons)) {
-        connectButton->setIcon(e ? Icons::connectIcon : Icons::disconnectIcon);
+        connectButton->setIcon(e ? Icons::self()->connectIcon : Icons::self()->disconnectIcon);
     }
     removeButton->setEnabled(e);
 //     saveButton->setEnabled(e);

@@ -75,12 +75,12 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
     files->load();
     interface->load();
     context->load();
-    widget->addPage(server, i18n("Connection"), Icons::libraryIcon, i18n("Connection Settings"));
-    widget->addPage(serverplayback, i18n("Output"), Icons::speakerIcon, i18n("Output Settings"));
+    widget->addPage(server, i18n("Connection"), Icons::self()->libraryIcon, i18n("Connection Settings"));
+    widget->addPage(serverplayback, i18n("Output"), Icons::self()->speakerIcon, i18n("Output Settings"));
     widget->addPage(playback, i18n("Playback"), Icon("media-playback-start"), i18n("Playback Settings"));
-    widget->addPage(files, i18n("Files"), Icons::filesIcon, i18n("File Settings"));
+    widget->addPage(files, i18n("Files"), Icons::self()->filesIcon, i18n("File Settings"));
     widget->addPage(interface, i18n("Interface"), Icon("preferences-other"), i18n("Interface Settings"));
-    widget->addPage(context, i18n("Context"), Icons::contextIcon, i18n("Context View Settings"));
+    widget->addPage(context, i18n("Context"), Icons::self()->contextIcon, i18n("Context View Settings"));
     #ifdef TAGLIB_FOUND
     http = new HttpServerSettings(widget);
     if (http->haveMultipleInterfaces()) {
@@ -103,7 +103,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
     QHash<QString, ActionCollection *> map;
     map.insert("Cantata", ActionCollection::get());
     shortcuts = new ShortcutsSettingsPage(map, widget);
-    widget->addPage(shortcuts, i18nc("Qt-only", "Shortcuts"), Icons::shortcutsIcon, i18nc("Qt-only", "Keyboard Shortcut Settings"));
+    widget->addPage(shortcuts, i18nc("Qt-only", "Shortcuts"), Icons::self()->shortcutsIcon, i18nc("Qt-only", "Keyboard Shortcut Settings"));
     shortcuts->view()->setAlternatingRowColors(false);
     shortcuts->view()->setItemDelegate(new SimpleTreeViewDelegate(shortcuts->view()));
     #endif

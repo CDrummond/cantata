@@ -62,6 +62,7 @@
 40. Enable MPD HTTP stream playback using QtMultiMedia for Qt5 builds. Thanks
     to Marcel Bosling for the patch. Disabled by default, to enable pass
     -DENABLE_HTTP_STREAM_PLAYBACK=ON to cmake.
+41. Fix Qt5 segfault on exit, due to static QIcons being destructed.
 
 1.0.3
 -----

@@ -60,7 +60,7 @@ TrackOrganiser::TrackOrganiser(QWidget *parent)
     QWidget *mainWidet = new QWidget(this);
     setupUi(mainWidet);
     setMainWidget(mainWidet);
-    configFilename->setIcon(Icons::configureIcon);
+    configFilename->setIcon(Icons::self()->configureIcon);
     setButtonGuiItem(Ok, GuiItem(i18n("Rename"), "edit-rename"));
     connect(this, SIGNAL(update()), MPDConnection::self(), SLOT(update()));
     progress->setVisible(false);

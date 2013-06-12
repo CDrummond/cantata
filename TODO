@@ -3,7 +3,6 @@
   - Fix raising of mainwindow via dbus.
     - Qt5 no longer has QX11Info
   - Toolbar buttons sometimes keep borders
-  - 2 windows created at startup?
 
 - Windows port
   - CMake scripts not working

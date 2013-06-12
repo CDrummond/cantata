@@ -200,6 +200,9 @@ int main(int argc, char *argv[])
     #ifdef TAGLIB_FOUND
     app.loadFiles();
     #endif // TAGLIB_FOUND
+    if (!Settings::self()->startHidden()) {
+        mw.show();
+    }
     #endif // ENABLE_KDE_SUPPORT
 
     return app.exec();

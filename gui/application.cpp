@@ -95,6 +95,9 @@ int Application::newInstance() {
         }
         w=new MainWindow();
         connect(w, SIGNAL(destroyed(QObject *)), this, SLOT(mwDestroyed(QObject *)));
+        if (!Settings::self()->startHidden()) {
+            w->show();
+        }
     }
 
     #ifdef TAGLIB_FOUND

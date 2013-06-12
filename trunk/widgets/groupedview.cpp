@@ -314,7 +314,7 @@ public:
                 pix=index.data(Qt::DecorationRole).value<QIcon>().pixmap(constCoverSize, constCoverSize);
             } else {
                 QPixmap *cover=stream ? 0 : Covers::self()->get(song, constCoverSize);
-                pix=cover ? *cover : (stream && !audiocd ? Icons::streamIcon : Icons::albumIcon).pixmap(constCoverSize, constCoverSize);
+                pix=cover ? *cover : (stream && !audiocd ? Icons::self()->streamIcon : Icons::self()->albumIcon).pixmap(constCoverSize, constCoverSize);
             }
 
             if (rtl) {

@@ -56,8 +56,8 @@ OnlineServicesPage::OnlineServicesPage(QWidget *p)
     removeAction = ActionCollection::get()->createAction("removeonlineservice", i18n("Remove Online Service"), "list-remove");
     downloadAction = ActionCollection::get()->createAction("downloadtolibrary", i18n("Download To Library"), "go-down");
     QMenu *addMenu=new QMenu(this);
-    jamendoAction=addMenu->addAction(Icons::jamendoIcon, JamendoService::constName);
-    magnatuneAction=addMenu->addAction(Icons::magnatuneIcon, MagnatuneService::constName);
+    jamendoAction=addMenu->addAction(Icons::self()->jamendoIcon, JamendoService::constName);
+    magnatuneAction=addMenu->addAction(Icons::self()->magnatuneIcon, MagnatuneService::constName);
     Action::initIcon(jamendoAction);
     Action::initIcon(magnatuneAction);
     addAction->setMenu(addMenu);

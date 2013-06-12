@@ -104,12 +104,12 @@ DevicesModel::DevicesModel(QObject *parent)
     , enabled(false)
     , inhibitMenuUpdate(false)
 {
-    configureAction = ActionCollection::get()->createAction("configuredevice", i18n("Configure Device"), Icons::configureIcon);
+    configureAction = ActionCollection::get()->createAction("configuredevice", i18n("Configure Device"), Icons::self()->configureIcon);
     refreshAction = ActionCollection::get()->createAction("refreshdevice", i18n("Refresh Device"), "view-refresh");
-    connectAction = ActionCollection::get()->createAction("connectdevice", i18n("Connect Device"), Icons::connectIcon);
-    disconnectAction = ActionCollection::get()->createAction("disconnectdevice", i18n("Disconnect Device"), Icons::disconnectIcon);
+    connectAction = ActionCollection::get()->createAction("connectdevice", i18n("Connect Device"), Icons::self()->connectIcon);
+    disconnectAction = ActionCollection::get()->createAction("disconnectdevice", i18n("Disconnect Device"), Icons::self()->disconnectIcon);
     #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
-    editAction = ActionCollection::get()->createAction("editcd", i18n("Edit CD Details"), Icons::editIcon);
+    editAction = ActionCollection::get()->createAction("editcd", i18n("Edit CD Details"), Icons::self()->editIcon);
     #endif
     updateItemMenu();
     connect(this, SIGNAL(add(const QStringList &, bool, quint8)), MPDConnection::self(), SLOT(add(const QStringList &, bool, quint8)));
@@ -198,11 +198,11 @@ QVariant DevicesModel::data(const QModelIndex &index, int role) const
         }
         case MusicLibraryItem::Type_Artist: {
             MusicLibraryItemArtist *artist = static_cast<MusicLibraryItemArtist *>(item);
-            return artist->isVarious() ? Icons::variousArtistsIcon : Icons::artistIcon;
+            return artist->isVarious() ? Icons::self()->variousArtistsIcon : Icons::self()->artistIcon;
         }
         case MusicLibraryItem::Type_Album:
             if (MusicLibraryItemAlbum::CoverNone==MusicLibraryItemAlbum::currentCoverSize()) {
-                return Icons::albumIcon;
+                return Icons::self()->albumIcon;
             } else {
                 return static_cast<MusicLibraryItemAlbum *>(item)->cover();
             }

@@ -104,7 +104,7 @@ void TrayItem::setup()
     trayItemMenu->addSeparator();
     trayItemMenu->addAction(mw->quitAction);
     trayItem->setContextMenu(trayItemMenu);
-    trayItem->setIcon(Icons::appIcon);
+    trayItem->setIcon(Icons::self()->appIcon);
     trayItem->setToolTip(i18n("Cantata"));
     trayItem->show();
     connect(trayItem, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(trayItemClicked(QSystemTrayIcon::ActivationReason)));

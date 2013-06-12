@@ -67,7 +67,7 @@ public:
 
     MagnatuneService(OnlineServicesModel *m) : OnlineService(m, constName), membership(MB_None) { }
 
-    const Icon & serviceIcon() const { return Icons::magnatuneIcon; }
+    const Icon & serviceIcon() const { return Icons::self()->magnatuneIcon; }
     Song fixPath(const Song &orig) const;
     void createLoader();
     void loadConfig();

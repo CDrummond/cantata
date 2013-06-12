@@ -209,10 +209,10 @@ const QPixmap & MusicLibraryItemAlbum::cover()
                 cSize=22;
             }
             if (useLarge) {
-                theDefaultLargeIcon = new QPixmap(Icons::albumIcon.pixmap(cSize, cSize)
+                theDefaultLargeIcon = new QPixmap(Icons::self()->albumIcon.pixmap(cSize, cSize)
                                                  .scaled(QSize(cSize, cSize), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
             } else {
-                theDefaultIcon = new QPixmap(Icons::albumIcon.pixmap(cSize, cSize)
+                theDefaultIcon = new QPixmap(Icons::self()->albumIcon.pixmap(cSize, cSize)
                                             .scaled(QSize(cSize, cSize), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
             }
         }

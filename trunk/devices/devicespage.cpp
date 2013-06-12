@@ -62,7 +62,7 @@ DevicesPage::DevicesPage(QWidget *p)
     : QWidget(p)
 {
     setupUi(this);
-    copyAction = ActionCollection::get()->createAction("copytolibrary", i18n("Copy To Library"), Icons::importIcon);
+    copyAction = ActionCollection::get()->createAction("copytolibrary", i18n("Copy To Library"), Icons::self()->importIcon);
     copyToLibraryButton->setDefaultAction(copyAction);
     syncAction = ActionCollection::get()->createAction("syncdevice", i18n("Sync"), "folder-sync");
     connect(syncAction, SIGNAL(triggered()), this, SLOT(sync()));

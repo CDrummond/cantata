@@ -72,9 +72,9 @@ SongView::SongView(QWidget *p)
     , job(0)
 {
     refreshAction = ActionCollection::get()->createAction("refreshlyrics", i18n("Refresh Lyrics"), "view-refresh");
-    editAction = ActionCollection::get()->createAction("editlyrics", i18n("Edit Lyrics"), Icons::editIcon);
+    editAction = ActionCollection::get()->createAction("editlyrics", i18n("Edit Lyrics"), Icons::self()->editIcon);
     saveAction = ActionCollection::get()->createAction("savelyrics", i18n("Save Lyrics"), "document-save");
-    cancelAction = ActionCollection::get()->createAction("canceleditlyrics", i18n("Cancel Editing Lyrics"), Icons::cancelIcon);
+    cancelAction = ActionCollection::get()->createAction("canceleditlyrics", i18n("Cancel Editing Lyrics"), Icons::self()->cancelIcon);
     delAction = ActionCollection::get()->createAction("dellyrics", i18n("Delete Lyrics File"), "edit-delete");
 
     connect(refreshAction, SIGNAL(triggered()), SLOT(update()));

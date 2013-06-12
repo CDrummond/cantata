@@ -77,6 +77,7 @@ public:
         setMask(QRegion(contentsRect()));
         setAttribute(Qt::WA_MouseNoMask, true);
         setAttribute(Qt::WA_OpaquePaintEvent, false);
+        setAttribute(Qt::WA_MouseTracking, true);
         QAction *act=new QAction(i18n("Reset Spacing"), this);
         addAction(act);
         connect(act, SIGNAL(triggered(bool)), parent, SLOT(reset()));
@@ -109,11 +110,13 @@ public:
     bool event(QEvent *event)
     {
         switch(event->type()) {
+        case QEvent::Enter:
         case QEvent::HoverEnter:
             underMouse = true;
             update();
             break;
         case QEvent::ContextMenu:
+        case QEvent::Leave:
         case QEvent::HoverLeave:
             underMouse = false;
             update();

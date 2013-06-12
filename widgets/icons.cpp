@@ -32,7 +32,7 @@
 #include <QDir>
 #include <QFile>
 #include <math.h>
-#if !defined ENABLE_KDE_SUPPORT && !defined Q_OS_WIN
+#ifndef Q_OS_WIN
 #include "gtkstyle.h"
 #endif
 
@@ -564,7 +564,7 @@ void Icons::initToolbarIcons(const QColor &color, bool forceLight)
         toolbarMenuIcon=menuIcon;
     }
 
-    #if !defined ENABLE_KDE_SUPPORT && !defined Q_OS_WIN
+    #ifndef Q_OS_WIN
     if (light && GtkStyle::useSymbolicIcons()) {
         toolbarPrevIcon=Icon("media-skip-backward-symbolic");
         toolbarPlayIcon=Icon("media-playback-start-symbolic");

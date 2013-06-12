@@ -51,7 +51,7 @@ StreamCategoryDialog::StreamCategoryDialog(const QStringList &categories, QWidge
     QMap<QString, QIcon> icons=StreamsModel::self()->icons();
     if (!icons.isEmpty()) {
         iconCombo=new ComboBox(this);
-        iconCombo->addItem(Icons::streamCategoryIcon, QString(), QString());
+        iconCombo->addItem(Icons::self()->streamCategoryIcon, QString(), QString());
         int size=Icon::stdSize(fontMetrics().height()*1.5);
         iconCombo->setIconSize(QSize(size,size));
         iconCombo->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Preferred);

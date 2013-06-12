@@ -85,7 +85,7 @@ int Application::newInstance() {
             w->showNormal();
         }
     } else {
-        Icons::init();
+        Icons::self()->init();
         if (Settings::self()->firstRun()) {
             InitialSettingsWizard wz;
             if (QDialog::Rejected==wz.exec()) {
@@ -173,7 +173,7 @@ bool Application::start()
     }
 
     setupIconTheme();
-    Icons::init();
+    Icons::self()->init();
     return true;
 }
 
@@ -237,7 +237,6 @@ bool Application::start()
     if (QDBusConnection::sessionBus().registerService(CANTATA_REV_URL)) {
         connectPowerSignal();
         setupIconTheme();
-        Icons::init();
         return true;
     }
     loadFiles();

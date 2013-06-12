@@ -62,7 +62,7 @@ StdActions::StdActions()
     addPrioLowAction = new Action(i18n("Low Priority (50)"), 0);
     addPrioDefaultAction = new Action(i18n("Default Priority (0)"), 0);
     addPrioCustomAction = new Action(i18n("Custom Priority..."), 0);
-    addToStoredPlaylistAction = ActionCollection::get()->createAction("addtostoredplaylist", i18n("Add To Playlist"), Icons::playlistIcon);
+    addToStoredPlaylistAction = ActionCollection::get()->createAction("addtostoredplaylist", i18n("Add To Playlist"), Icons::self()->playlistIcon);
     #ifdef TAGLIB_FOUND
     organiseFilesAction = ActionCollection::get()->createAction("organizefiles", i18n("Organize Files"), "inode-directory");
     editTagsAction = ActionCollection::get()->createAction("edittags", i18n("Edit Tags"), "document-edit");

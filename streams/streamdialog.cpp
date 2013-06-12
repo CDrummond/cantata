@@ -48,7 +48,7 @@ class NameValidator : public QValidator
 void IconCombo::load()
 {
     if (0==count()) {
-        addItem(Icons::radioStreamIcon, QString(), QString());
+        addItem(Icons::self()->radioStreamIcon, QString(), QString());
         QMap<QString, QIcon> icons=StreamsModel::self()->icons();
         QMap<QString, QIcon>::ConstIterator it=icons.constBegin();
         QMap<QString, QIcon>::ConstIterator end=icons.constEnd();

@@ -156,7 +156,7 @@ const QPixmap & CoverWidget::stdPixmap(bool stream)
     if (pix.isNull()) {
         QSize s=size()-QSize(constBorder*2, constBorder*2);
         int iconSize=s.width()<=128 ? 128 : 256;
-        pix = (stream ? Icons::streamIcon : Icons::albumIcon).pixmap(iconSize, iconSize).scaled(s, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+        pix = (stream ? Icons::self()->streamIcon : Icons::self()->albumIcon).pixmap(iconSize, iconSize).scaled(s, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
 
         #ifndef Q_OS_WIN
         QString &file=stream ? noStreamCoverFileName : noCoverFileName;

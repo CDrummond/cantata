@@ -36,6 +36,23 @@
 #include "gtkstyle.h"
 #endif
 
+#ifdef ENABLE_KDE_SUPPORT
+K_GLOBAL_STATIC(Icons, instance)
+#endif
+
+Icons * Icons::self()
+{
+    #ifdef ENABLE_KDE_SUPPORT
+    return instance;
+    #else
+    static Icons *instance=0;
+    if(!instance) {
+        instance=new Icons;
+    }
+    return instance;
+    #endif
+}
+
 static QList<int> constStdSizes=QList<int>() << 16 << 22 << 32 << 48;
 static const double constDisabledOpacity=0.5;
 static const int constShadeFactor=75;
@@ -288,67 +305,6 @@ static Icon createRecolourableIcon(const QString &name, const QColor &stdColor, 
     return icon;
 }
 
-#ifndef ENABLE_KDE_SUPPORT
-Icon Icons::appIcon;
-Icon Icons::shortcutsIcon;
-#endif
-Icon Icons::artistIcon;
-Icon Icons::albumIcon;
-Icon Icons::playlistIcon;
-Icon Icons::dynamicRuleIcon;
-Icon Icons::singleIcon;
-Icon Icons::consumeIcon;
-Icon Icons::repeatIcon;
-Icon Icons::shuffleIcon;
-Icon Icons::libraryIcon;
-Icon Icons::streamCategoryIcon;
-Icon Icons::radioStreamIcon;
-Icon Icons::addRadioStreamIcon;
-Icon Icons::streamIcon;
-Icon Icons::configureIcon;
-Icon Icons::connectIcon;
-Icon Icons::disconnectIcon;
-Icon Icons::speakerIcon;
-Icon Icons::variousArtistsIcon;
-Icon Icons::editIcon;
-Icon Icons::clearListIcon;
-Icon Icons::menuIcon;
-#ifdef ENABLE_ONLINE_SERVICES
-Icon Icons::jamendoIcon;
-Icon Icons::magnatuneIcon;
-#endif
-Icon Icons::filesIcon;
-Icon Icons::cancelIcon;
-Icon Icons::importIcon;
-
-Icon Icons::playqueueIcon;
-Icon Icons::artistsIcon;
-Icon Icons::albumsIcon;
-Icon Icons::foldersIcon;
-Icon Icons::playlistsIcon;
-Icon Icons::dynamicIcon;
-Icon Icons::streamsIcon;
-#ifdef ENABLE_ONLINE_SERVICES
-Icon Icons::onlineIcon;
-#endif
-Icon Icons::contextIcon;
-Icon Icons::infoIcon;
-Icon Icons::infoSidebarIcon;
-#ifdef ENABLE_DEVICES_SUPPORT
-Icon Icons::devicesIcon;
-#endif
-
-Icon Icons::toolbarMenuIcon;
-Icon Icons::toolbarPrevIcon;
-Icon Icons::toolbarPlayIcon;
-Icon Icons::toolbarPauseIcon;
-Icon Icons::toolbarNextIcon;
-Icon Icons::toolbarStopIcon;
-Icon Icons::toolbarVolumeMutedIcon;
-Icon Icons::toolbarVolumeLowIcon;
-Icon Icons::toolbarVolumeMediumIcon;
-Icon Icons::toolbarVolumeHighIcon;
-
 static QColor stdColor;
 static QColor highlightColor;
 
@@ -398,7 +354,7 @@ static Icon loadSidebarIcon(const QString &name, const QColor &normal, const QCo
     return i;
 }
 
-void Icons::init()
+Icons::Icons()
 {
     calcIconColors(stdColor, highlightColor);
     singleIcon=createSingleIcon(stdColor, highlightColor);

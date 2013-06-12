@@ -90,7 +90,7 @@ void ListView::startDrag(Qt::DropActions supportedActions)
             }
         }
         if (pix.isNull()) {
-            drag->setPixmap(Icons::albumIcon.pixmap(64, 64));
+            drag->setPixmap(Icons::self()->albumIcon.pixmap(64, 64));
         } else {
             drag->setPixmap(pix.width()<64 ? pix : pix.scaled(QSize(64, 64), Qt::KeepAspectRatio, Qt::SmoothTransformation));
         }

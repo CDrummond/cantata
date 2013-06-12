@@ -213,7 +213,7 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
             int iSize=iconSize();
 
             if (Qt::DecorationRole==role && 0==iSize) {
-                return Icons::albumIcon;
+                return Icons::self()->albumIcon;
             }
 
             if (!theDefaultIcon) {
@@ -222,7 +222,7 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
                 if (0==cSize) {
                     cSize=stdSize=22;
                 }
-                theDefaultIcon = new QPixmap(Icons::albumIcon.pixmap(stdSize, stdSize)
+                theDefaultIcon = new QPixmap(Icons::self()->albumIcon.pixmap(stdSize, stdSize)
                                             .scaled(QSize(cSize, cSize), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
             }
             if (!al->coverRequested && iSize && Song::SingleTracks!=al->type) {

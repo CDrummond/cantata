@@ -72,10 +72,10 @@ OnlineServicesModel::OnlineServicesModel(QObject *parent)
     , enabled(false)
     , dev(0)
 {
-    configureAction = ActionCollection::get()->createAction("configureonlineservice", i18n("Configure Online Service"), Icons::configureIcon);
+    configureAction = ActionCollection::get()->createAction("configureonlineservice", i18n("Configure Online Service"), Icons::self()->configureIcon);
     refreshAction = ActionCollection::get()->createAction("refreshonlineservice", i18n("Refresh Online Service"), "view-refresh");
-    connectAction = ActionCollection::get()->createAction("connectonlineservice", i18n("Connect Online Service"), Icons::connectIcon);
-    disconnectAction = ActionCollection::get()->createAction("disconnectonlineservice", i18n("Disconnect Online Service"), Icons::disconnectIcon);
+    connectAction = ActionCollection::get()->createAction("connectonlineservice", i18n("Connect Online Service"), Icons::self()->connectIcon);
+    disconnectAction = ActionCollection::get()->createAction("disconnectonlineservice", i18n("Disconnect Online Service"), Icons::self()->disconnectIcon);
 }
 
 OnlineServicesModel::~OnlineServicesModel()
@@ -154,11 +154,11 @@ QVariant OnlineServicesModel::data(const QModelIndex &index, int role) const
         }
         case MusicLibraryItem::Type_Artist: {
             MusicLibraryItemArtist *artist = static_cast<MusicLibraryItemArtist *>(item);
-            return artist->isVarious() ? Icons::variousArtistsIcon : Icons::artistIcon;
+            return artist->isVarious() ? Icons::self()->variousArtistsIcon : Icons::self()->artistIcon;
         }
         case MusicLibraryItem::Type_Album:
             if (MusicLibraryItemAlbum::CoverNone==MusicLibraryItemAlbum::currentCoverSize()) {
-                return Icons::albumIcon;
+                return Icons::self()->albumIcon;
             } else {
                 return static_cast<MusicLibraryItemAlbum *>(item)->cover();
             }

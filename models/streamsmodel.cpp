@@ -252,7 +252,7 @@ QVariant StreamsModel::data(const QModelIndex &index, int role) const
                     return i;
                 }
             }
-            return Icons::streamCategoryIcon;
+            return Icons::self()->streamCategoryIcon;
         }
         case ItemView::Role_SubText:
             #ifdef ENABLE_KDE_SUPPORT
@@ -280,7 +280,7 @@ QVariant StreamsModel::data(const QModelIndex &index, int role) const
                     return i;
                 }
             }
-            return Icons::radioStreamIcon;
+            return Icons::self()->radioStreamIcon;
         }
         case ItemView::Role_Actions: {
             QVariant v;

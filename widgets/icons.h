@@ -29,71 +29,74 @@
 
 class QColor;
 
-namespace Icons
+class Icons
 {
-    extern void init();
-    extern void initSidebarIcons();
-    extern void initToolbarIcons(const QColor &color, bool forceLight=false);
+public:
+    static Icons *self();
+
+    Icons();
+    void initSidebarIcons();
+    void initToolbarIcons(const QColor &color, bool forceLight=false);
     #ifndef ENABLE_KDE_SUPPORT
-    extern Icon appIcon;
-    extern Icon shortcutsIcon;
+    Icon appIcon;
+    Icon shortcutsIcon;
     #endif
-    extern Icon artistIcon;
-    extern Icon albumIcon;
-    extern Icon playlistIcon;
-    extern Icon dynamicRuleIcon;
-    extern Icon singleIcon;
-    extern Icon consumeIcon;
-    extern Icon repeatIcon;
-    extern Icon shuffleIcon;
-    extern Icon libraryIcon;
-    extern Icon streamCategoryIcon;
-    extern Icon radioStreamIcon;
-    extern Icon addRadioStreamIcon;
-    extern Icon streamIcon;
-    extern Icon configureIcon;
-    extern Icon connectIcon;
-    extern Icon disconnectIcon;
-    extern Icon speakerIcon;
-    extern Icon variousArtistsIcon;
-    extern Icon editIcon;
-    extern Icon clearListIcon;
-    extern Icon menuIcon;
+    Icon artistIcon;
+    Icon albumIcon;
+    Icon playlistIcon;
+    Icon dynamicRuleIcon;
+    Icon singleIcon;
+    Icon consumeIcon;
+    Icon repeatIcon;
+    Icon shuffleIcon;
+    Icon libraryIcon;
+    Icon streamCategoryIcon;
+    Icon radioStreamIcon;
+    Icon addRadioStreamIcon;
+    Icon streamIcon;
+    Icon configureIcon;
+    Icon connectIcon;
+    Icon disconnectIcon;
+    Icon speakerIcon;
+    Icon variousArtistsIcon;
+    Icon editIcon;
+    Icon clearListIcon;
+    Icon menuIcon;
     #ifdef ENABLE_ONLINE_SERVICES
-    extern Icon jamendoIcon;
-    extern Icon magnatuneIcon;
+    Icon jamendoIcon;
+    Icon magnatuneIcon;
     #endif
-    extern Icon filesIcon;
-    extern Icon cancelIcon;
-    extern Icon importIcon;
+    Icon filesIcon;
+    Icon cancelIcon;
+    Icon importIcon;
 
-    extern Icon playqueueIcon;
-    extern Icon artistsIcon;
-    extern Icon albumsIcon;
-    extern Icon foldersIcon;
-    extern Icon playlistsIcon;
-    extern Icon dynamicIcon;
-    extern Icon streamsIcon;
+    Icon playqueueIcon;
+    Icon artistsIcon;
+    Icon albumsIcon;
+    Icon foldersIcon;
+    Icon playlistsIcon;
+    Icon dynamicIcon;
+    Icon streamsIcon;
     #ifdef ENABLE_ONLINE_SERVICES
-    extern Icon onlineIcon;
+    Icon onlineIcon;
     #endif
-    extern Icon contextIcon;
-    extern Icon infoIcon;
-    extern Icon infoSidebarIcon;
+    Icon contextIcon;
+    Icon infoIcon;
+    Icon infoSidebarIcon;
     #ifdef ENABLE_DEVICES_SUPPORT
-    extern Icon devicesIcon;
+    Icon devicesIcon;
     #endif
 
-    extern Icon toolbarMenuIcon;
-    extern Icon toolbarPrevIcon;
-    extern Icon toolbarPlayIcon;
-    extern Icon toolbarPauseIcon;
-    extern Icon toolbarNextIcon;
-    extern Icon toolbarStopIcon;
-    extern Icon toolbarVolumeMutedIcon;
-    extern Icon toolbarVolumeLowIcon;
-    extern Icon toolbarVolumeMediumIcon;
-    extern Icon toolbarVolumeHighIcon;
-}
+    Icon toolbarMenuIcon;
+    Icon toolbarPrevIcon;
+    Icon toolbarPlayIcon;
+    Icon toolbarPauseIcon;
+    Icon toolbarNextIcon;
+    Icon toolbarStopIcon;
+    Icon toolbarVolumeMutedIcon;
+    Icon toolbarVolumeLowIcon;
+    Icon toolbarVolumeMediumIcon;
+    Icon toolbarVolumeHighIcon;
+};
 
 #endif

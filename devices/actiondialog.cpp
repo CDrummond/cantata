@@ -106,8 +106,8 @@ ActionDialog::ActionDialog(QWidget *parent)
     setMainWidget(mainWidet);
     errorIcon->setPixmap(QIcon::fromTheme("dialog-error").pixmap(64, 64));
     skipIcon->setPixmap(QIcon::fromTheme("dialog-warning").pixmap(64, 64));
-    configureSourceButton->setIcon(Icons::configureIcon);
-    configureDestButton->setIcon(Icons::configureIcon);
+    configureSourceButton->setIcon(Icons::self()->configureIcon);
+    configureDestButton->setIcon(Icons::self()->configureIcon);
     connect(configureSourceButton, SIGNAL(clicked()), SLOT(configureSource()));
     connect(configureDestButton, SIGNAL(clicked()), SLOT(configureDest()));
     connect(this, SIGNAL(update()), MPDConnection::self(), SLOT(update()));

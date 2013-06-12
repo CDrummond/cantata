@@ -86,7 +86,7 @@ DevicePropertiesWidget::DevicePropertiesWidget(QWidget *parent)
     , saveable(false)
 {
     setupUi(this);
-    configFilename->setIcon(Icons::configureIcon);
+    configFilename->setIcon(Icons::self()->configureIcon);
     coverMaxSize->insertItems(0, QStringList() << i18n("No maximum size") << i18n("400 pixels") << i18n("300 pixels") << i18n("200 pixels") << i18n("100 pixels"));
     fixVariousArtists->setToolTip(i18n("<p>When copying tracks to a device, and the 'Album Artist' is set to 'Various Artists', "
                                        "then Cantata will set the 'Artist' tag of all tracks to 'Various Artists' and the "

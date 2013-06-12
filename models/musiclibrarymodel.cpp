@@ -237,12 +237,12 @@ QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
             if (rootItem->useArtistImages()) {
                 return artist->cover();
             } else {
-                return artist->isVarious() ? Icons::variousArtistsIcon : Icons::artistIcon;
+                return artist->isVarious() ? Icons::self()->variousArtistsIcon : Icons::self()->artistIcon;
             }
         }
         case MusicLibraryItem::Type_Album:
             if (!rootItem->useAlbumImages() || MusicLibraryItemAlbum::CoverNone==MusicLibraryItemAlbum::currentCoverSize()) {
-                return Icons::albumIcon;
+                return Icons::self()->albumIcon;
             } else {
                 return static_cast<MusicLibraryItemAlbum *>(item)->cover();
             }

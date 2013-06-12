@@ -30,6 +30,11 @@
 #include "messagebox.h"
 #include <QListWidget>
 
+#define REMOVE(w) \
+    w->setVisible(false); \
+    w->deleteLater(); \
+    w=0;
+
 ServerPlaybackSettings::ServerPlaybackSettings(QWidget *p)
     : QWidget(p)
 {
@@ -53,9 +58,9 @@ ServerPlaybackSettings::ServerPlaybackSettings(QWidget *p)
     messageIcon->setMaximumSize(iconSize, iconSize);
     mpdConnectionStateChanged(MPDConnection::self()->isConnected());
     #ifndef ENABLE_HTTP_STREAM_PLAYBACK
-    streamUrl->setVisible(false);
-    streamUrlLabel->setVisible(false);
-    streamUrlInfoLabel->setVisible(false);
+    REMOVE(streamUrl)
+    REMOVE(streamUrlLabel)
+    REMOVE(streamUrlInfoLabel)
     #endif
 };
 

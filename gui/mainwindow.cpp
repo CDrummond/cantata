@@ -1520,6 +1520,12 @@ void MainWindow::toggleStream(bool s)
             httpStream->stop();
         }
     } else {
+        static const char *constUrlProperty="url";
+        if (httpStream && httpStream->property(constUrlProperty).toString()!=Settings::self()->streamUrl()) {
+            httpStream->stop();
+            httpStream->deleteLater();
+            httpStream=0;
+        }
         if (httpStream) {
             switch (status->state()) {
             case MPDState_Playing:
@@ -1543,6 +1549,7 @@ void MainWindow::toggleStream(bool s)
             httpStream=new QMediaPlayer(this);
             httpStream->setMedia(QUrl(Settings::self()->streamUrl()));
             #endif
+            httpStream->setProperty(constUrlProperty, Settings::self()->streamUrl());
         }
     }
     #else

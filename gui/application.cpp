@@ -85,7 +85,6 @@ int Application::newInstance() {
             w->showNormal();
         }
     } else {
-        Icons::self()->init();
         if (Settings::self()->firstRun()) {
             InitialSettingsWizard wz;
             if (QDialog::Rejected==wz.exec()) {

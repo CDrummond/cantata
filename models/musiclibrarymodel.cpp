@@ -75,11 +75,17 @@ const QLatin1String MusicLibraryModel::constLibraryCache("library/");
 const QLatin1String MusicLibraryModel::constLibraryExt(".xml");
 const QLatin1String MusicLibraryModel::constLibraryCompressedExt(".xml.gz");
 
-static const QString cacheFileName()
+static QString cacheFileName(const MPDConnectionDetails &details, bool withPort=true)
 {
-    QString fileName=MPDConnection::self()->getDetails().hostname+MusicLibraryModel::constLibraryCompressedExt;
+    QString fileName=(withPort && !details.isLocal() ? details.hostname+'_'+QString::number(details.port) : details.hostname)
+                     +MusicLibraryModel::constLibraryCompressedExt;
     fileName.replace('/', '_');
     return Utils::cacheDir(MusicLibraryModel::constLibraryCache)+fileName;
+}
+
+static QString cacheFileName(bool withPort=true)
+{
+    return cacheFileName(MPDConnection::self()->getDetails(), withPort);
 }
 
 void MusicLibraryModel::convertCache(const QString &compressedName)
@@ -110,9 +116,12 @@ void MusicLibraryModel::cleanCache()
     QSet<QString> existing;
     QList<MPDConnectionDetails> connections=Settings::self()->allConnections();
     foreach (const MPDConnectionDetails &conn, connections) {
-        QString fileName=conn.hostname;
-        fileName.replace('/', '_');
-        existing.insert(fileName+constLibraryCompressedExt);
+        QString withPort=cacheFileName(conn);
+        QString withoutPort=cacheFileName(conn, false);
+        if (withPort!=withoutPort) {
+            existing.insert(withoutPort);
+        }
+        existing.insert(withPort);
     }
     QDir dir(Utils::cacheDir(constLibraryCache));
     QFileInfoList files=dir.entryInfoList(QStringList() << "*"+constLibraryExt << "*"+constLibraryCompressedExt, QDir::Files);
@@ -689,6 +698,12 @@ void MusicLibraryModel::removeCache()
     }
 
     // Remove old (non-compressed) cache file as well...
+    QString cacheFileWithoutPort(cacheFileName(false));
+    if (cacheFileWithoutPort!=cacheFile && QFile::exists(cacheFileWithoutPort)) {
+        QFile::remove(cacheFileWithoutPort);
+    }
+
+    // Remove old (non-compressed) cache file as well...
     QString oldCache=cacheFile;
     oldCache.replace(constLibraryCompressedExt, constLibraryExt);
     if (oldCache!=cacheFile && QFile::exists(oldCache)) {
@@ -975,6 +990,13 @@ void MusicLibraryModel::toXML(const MusicLibraryItemRoot *root, const QDateTime 
  */
 bool MusicLibraryModel::fromXML()
 {
+    // If socket conneciton used, then check if cahce file has port number...
+    QString withPort=cacheFileName();
+    QString withoutPort=cacheFileName(false);
+    if (withPort!=withoutPort && QFile::exists(withoutPort) && !QFile::exists(withPort)) {
+        QFile::rename(withoutPort, withPort);
+    }
+
     convertCache(cacheFileName());
     MusicLibraryItemRoot *root=new MusicLibraryItemRoot;
     quint32 date=root->fromXML(cacheFileName(), MPDStats::self()->dbUpdate());

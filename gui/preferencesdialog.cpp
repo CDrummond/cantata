@@ -56,19 +56,19 @@ int PreferencesDialog::instanceCount()
 }
 
 PreferencesDialog::PreferencesDialog(QWidget *parent)
-    : Dialog(parent, "PreferencesDialog", QSize(800, 600))
+    : Dialog(parent, "PreferencesDialog")
 {
     iCount++;
     setButtons(Ok|Apply|Cancel);
 
     PageWidget *widget = new PageWidget(this);
-    server = new ServerSettings(widget);
-    serverplayback = new ServerPlaybackSettings(widget);
-    playback = new PlaybackSettings(widget);
-    files = new FileSettings(widget);
-    interface = new InterfaceSettings(widget);
-    context = new ContextSettings(widget);
-    cache = new CacheSettings(widget);
+    server = new ServerSettings(0);
+    serverplayback = new ServerPlaybackSettings(0);
+    playback = new PlaybackSettings(0);
+    files = new FileSettings(0);
+    interface = new InterfaceSettings(0);
+    context = new ContextSettings(0);
+    cache = new CacheSettings(0);
     server->load();
     serverplayback->load();
     playback->load();
@@ -82,7 +82,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
     widget->addPage(interface, i18n("Interface"), Icon("preferences-other"), i18n("Interface Settings"));
     widget->addPage(context, i18n("Context"), Icons::self()->contextIcon, i18n("Context View Settings"));
     #ifdef TAGLIB_FOUND
-    http = new HttpServerSettings(widget);
+    http = new HttpServerSettings(0);
     if (http->haveMultipleInterfaces()) {
         http->load();
         widget->addPage(http, i18n("HTTP Server"), Icon("network-server"), i18n("HTTP Server Settings"));
@@ -92,12 +92,12 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
     }
     #endif
     #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
-    audiocd = new AudioCdSettings(widget);
+    audiocd = new AudioCdSettings(0);
     audiocd->load();
     widget->addPage(audiocd, i18n("Audio CD"), Icon("media-optical"), i18n("Audio CD Settings"));
     #endif
     #ifndef ENABLE_KDE_SUPPORT
-    proxy = new ProxySettings(widget);
+    proxy = new ProxySettings(0);
     proxy->load();
     widget->addPage(proxy, i18nc("Qt-only", "Proxy"), Icon("preferences-system-network"), i18nc("Qt-only", "Proxy Settings"));
     QHash<QString, ActionCollection *> map;
@@ -108,16 +108,18 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
     shortcuts->view()->setItemDelegate(new SimpleTreeViewDelegate(shortcuts->view()));
     #endif
     widget->addPage(cache, i18n("Cache"), Icon("folder"), i18n("Cached Items"));
+//    widget->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Minimum);
     widget->allPagesAdded();
-    widget->adjustSize();
-    adjustSize();
+    #ifndef ENABLE_KDE_SUPPORT
+    setMinimumHeight((widget->minimumHeight()/widget->count())*(widget->count()+1));
+    #endif
     setCaption(i18n("Configure"));
     setMainWidget(widget);
     setAttribute(Qt::WA_DeleteOnClose);
     connect(server, SIGNAL(connectTo(const MPDConnectionDetails &)), SIGNAL(connectTo(const MPDConnectionDetails &)));
     connect(server, SIGNAL(disconnectFromMpd()), MPDConnection::self(), SLOT(disconnectMpd()));
     connect(files, SIGNAL(reloadStreams()), SIGNAL(reloadStreams()));
-    widget->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
+    setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
 }
 
 PreferencesDialog::~PreferencesDialog()

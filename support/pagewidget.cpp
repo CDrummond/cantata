@@ -52,12 +52,8 @@ PageWidgetItem::PageWidgetItem(QWidget *p, const QString &header, const Icon &ic
     layout->addLayout(titleLayout);
     layout->addItem(new QSpacerItem(8, 8, QSizePolicy::Fixed, QSizePolicy::Fixed));
     layout->addWidget(cfg);
-    QSizePolicy sizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
-    sizePolicy.setHorizontalStretch(0);
-    sizePolicy.setVerticalStretch(0);
-    sizePolicy.setHeightForWidth(cfg->sizePolicy().hasHeightForWidth());
-    cfg->setSizePolicy(sizePolicy);
     cfg->setParent(this);
+    cfg->adjustSize();
     adjustSize();
 }
 
@@ -76,4 +72,6 @@ PageWidgetItem * PageWidget::addPage(QWidget *widget, const QString &name, const
 void PageWidget::allPagesAdded()
 {
     SetMode(FancyTabWidget::Mode_LargeSidebar);
+    adjustSize();
+    setMinimumHeight(count()*tabSize().height());
 }

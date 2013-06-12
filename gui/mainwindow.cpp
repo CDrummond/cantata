@@ -390,15 +390,7 @@ MainWindow::MainWindow(QWidget *parent)
     devicesPage = new DevicesPage(this);
     #endif
 
-    // We need to have the window visible inorder for initSizes() to function.
-    // So, if we are supposed to be starting hidden, then set the 'dont show on screen' flag before 'showing'
-    // Set visible, calcualte sizes, hide, and reset 'dont show on screen'...
-    if (Settings::self()->startHidden()) {
-        setAttribute(Qt::WA_DontShowOnScreen, true);
-    }
-    setVisible(true);
     initSizes();
-
     clearPlayQueueAction->setEnabled(false);
     StdActions::self()->savePlayQueueAction->setEnabled(false);
     addStreamToPlayQueueAction->setEnabled(false);
@@ -855,10 +847,7 @@ MainWindow::MainWindow(QWidget *parent)
     #endif
     ActionCollection::get()->readSettings();
 
-    if (Settings::self()->startHidden()) {
-        setVisible(false);
-        setAttribute(Qt::WA_DontShowOnScreen, false);
-    } else if (testAttribute(Qt::WA_TranslucentBackground)) {
+    if (testAttribute(Qt::WA_TranslucentBackground)) {
         // Work-around non-showing main window on start-up with transparent QtCurve windows.
         // BUG: 146
         move(p.isNull() ? QPoint(96, 96) : p);

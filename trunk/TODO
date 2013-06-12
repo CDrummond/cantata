@@ -1,8 +1,6 @@
 - Qt5 port
-  - Only tested with Qt5.0.1
   - Fix raising of mainwindow via dbus.
     - Qt5 no longer has QX11Info
-  - Toolbar buttons sometimes keep borders
 
 - Windows port
   - CMake scripts not working

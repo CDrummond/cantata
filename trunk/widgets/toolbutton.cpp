@@ -38,6 +38,17 @@ ToolButton::ToolButton(QWidget *parent)
 
 void ToolButton::paintEvent(QPaintEvent *e)
 {
+    #if QT_VERSION > 0x050000
+    // Hack to work-around Qt5 sometimes leaving toolbutton in 'raised' state.
+    QStylePainter p(this);
+    QStyleOptionToolButton opt;
+    initStyleOption(&opt);
+    opt.features=QStyleOptionToolButton::None;
+    if (opt.state&QStyle::State_MouseOver && this!=QApplication::widgetAt(QCursor::pos())) {
+        opt.state&=~QStyle::State_MouseOver;
+    }
+    p.drawComplexControl(QStyle::CC_ToolButton, opt);
+    #else
     if (menu()) {
         QStylePainter p(this);
         QStyleOptionToolButton opt;
@@ -47,6 +58,7 @@ void ToolButton::paintEvent(QPaintEvent *e)
     } else {
         QToolButton::paintEvent(e);
     }
+    #endif
 }
 
 QSize ToolButton::sizeHint() const

@@ -66,6 +66,13 @@ TrackOrganiser::TrackOrganiser(QWidget *parent)
     progress->setVisible(false);
     files->setItemDelegate(new SimpleTreeViewDelegate(files));
     files->setAlternatingRowColors(false);
+    files->setContextMenuPolicy(Qt::ActionsContextMenu);
+    files->setSelectionMode(QAbstractItemView::ExtendedSelection);
+    removeAct=new Action(i18n("Remove From List"), files);
+    removeAct->setEnabled(false);
+    files->addAction(removeAct);
+    connect(files, SIGNAL(itemSelectionChanged()), SLOT(controlRemoveAct()));
+    connect(removeAct, SIGNAL(triggered(bool)), SLOT(removeItems()));
 }
 
 TrackOrganiser::~TrackOrganiser()
@@ -346,6 +353,31 @@ void TrackOrganiser::renameFile()
         finish(true);
     } else {
         QTimer::singleShot(100, this, SLOT(renameFile()));
+    }
+}
+
+void TrackOrganiser::controlRemoveAct()
+{
+    removeAct->setEnabled(files->topLevelItemCount()>1 && !files->selectedItems().isEmpty());
+}
+
+void TrackOrganiser::removeItems()
+{
+    if (files->topLevelItemCount()<1) {
+        return;
+    }
+
+    if (MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Remove the selected tracks from the list?"),
+                                                   i18n("Remove Tracks"), StdGuiItem::remove(), StdGuiItem::cancel())) {
+
+        QList<QTreeWidgetItem *> selection=files->selectedItems();
+        foreach (QTreeWidgetItem *item, selection) {
+            int idx=files->indexOfTopLevelItem(item);
+            if (idx>-1 && idx<origSongs.count()) {
+                origSongs.removeAt(idx);
+                delete files->takeTopLevelItem(idx);
+            }
+        }
     }
 }
 

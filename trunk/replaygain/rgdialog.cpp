@@ -34,6 +34,7 @@
 #include "messagebox.h"
 #include "jobcontroller.h"
 #include "treeview.h"
+#include "action.h"
 #include <QComboBox>
 #include <QTreeWidget>
 #include <QLabel>
@@ -129,6 +130,11 @@ RgDialog::RgDialog(QWidget *parent)
     view->setAllColumnsShowFocus(true);
     view->setItemDelegate(new SimpleTreeViewDelegate(view));
     view->setAlternatingRowColors(false);
+    view->setContextMenuPolicy(Qt::ActionsContextMenu);
+    view->setSelectionMode(QAbstractItemView::ExtendedSelection);
+    removeAct=new Action(i18n("Remove From List"), view);
+    removeAct->setEnabled(false);
+    view->addAction(removeAct);
     QTreeWidgetItem *hdr = view->headerItem();
     hdr->setText(COL_ARTIST, i18n("Artist"));
     hdr->setText(COL_ALBUM, i18n("Album"));
@@ -161,6 +167,8 @@ RgDialog::RgDialog(QWidget *parent)
     enableButton(User1, false);
     qRegisterMetaType<Tags::ReplayGain>("Tags::ReplayGain");
     connect(combo, SIGNAL(currentIndexChanged(int)), SLOT(toggleDisplay()));
+    connect(view, SIGNAL(itemSelectionChanged()), SLOT(controlRemoveAct()));
+    connect(removeAct, SIGNAL(triggered(bool)), SLOT(removeItems()));
 }
 
 RgDialog::~RgDialog()
@@ -285,7 +293,7 @@ void RgDialog::startScanning()
     clearScanners();
     totalToScan=0;
     for (int i=0; i<origSongs.count(); ++i) {
-        if (all || !origTags.contains(i)) {
+        if (!removedItems.contains(i) && (all || !origTags.contains(i))) {
             if (scanners.count()<100) {
                 createScanner(i);
             } else {
@@ -659,7 +667,34 @@ void RgDialog::toggleDisplay()
 
     for (int i=0; i<view->topLevelItemCount(); ++i) {
         QTreeWidgetItem *item=view->topLevelItem(i);
-        view->setItemHidden(item, showAll ? false : origTags.contains(i));
+        if (!removedItems.contains(view->indexOfTopLevelItem(item))) {
+            view->setItemHidden(item, showAll ? false : origTags.contains(i));
+        }
+    }
+}
+
+void RgDialog::controlRemoveAct()
+{
+    removeAct->setEnabled(view->topLevelItemCount()>1 && !view->selectedItems().isEmpty());
+}
+
+void RgDialog::removeItems()
+{
+    if (view->topLevelItemCount()<1) {
+        return;
+    }
+
+    if (MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Remove the selected tracks from the list?"),
+                                                   i18n("Remove Tracks"), StdGuiItem::remove(), StdGuiItem::cancel())) {
+        QList<QTreeWidgetItem *> selection=view->selectedItems();
+        foreach (QTreeWidgetItem *item, selection) {
+            int index=view->indexOfTopLevelItem(item);
+            view->setItemHidden(item, true);
+            removedItems.insert(index);
+            if (needToSave.contains(index)) {
+                needToSave.remove(index);
+            }
+        }
     }
 }
 

@@ -30,8 +30,10 @@
 #include <QDir>
 #include <QSet>
 #include <QThread>
-#include <QCoreApplication>
+#include <QApplication>
 #include <QDateTime>
+#include <QWidget>
+#include <QStyle>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KStandardDirs>
 #endif
@@ -528,4 +530,13 @@ void Utils::clearOldCache(const QString &sub, int maxAge)
 void Utils::touchFile(const QString &fileName)
 {
     ::utime(QFile::encodeName(fileName).constData(), 0);
+}
+
+extern int Utils::layoutSpacing(QWidget *w)
+{
+    int spacing=(w ? w->style() : qApp->style())->layoutSpacing(QSizePolicy::DefaultType, QSizePolicy::DefaultType, Qt::Vertical);
+    if (spacing<0) {
+        spacing=QApplication::fontMetrics().height()>20 ? 8 : 4;
+    }
+    return spacing;
 }

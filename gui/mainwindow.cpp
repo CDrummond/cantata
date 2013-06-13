@@ -239,10 +239,7 @@ MainWindow::MainWindow(QWidget *parent)
     // With ambiance (which has a drak toolbar) we need a gap between the toolbar and the earch fields. But, in the context view we dont
     // want a gap - as this looks odd with a background. To workaround this, the tabwidget and playqueue sides of the splitter have a
     // spacer added. The size of this needs to be controllable by the style - so we do this here...
-    int spacing=style()->layoutSpacing(QSizePolicy::DefaultType, QSizePolicy::DefaultType, Qt::Vertical);
-    if (spacing<0) {
-        spacing=4;
-    }
+    int spacing=Utils::layoutSpacing(this);
     if (tabWidgetSpacer->minimumSize().height()!=spacing) {
         tabWidgetSpacer->changeSize(spacing, spacing, QSizePolicy::Fixed, QSizePolicy::Fixed);
         playQueueSpacer->changeSize(spacing, spacing, QSizePolicy::Fixed, QSizePolicy::Fixed);
@@ -933,10 +930,7 @@ void MainWindow::initSizes()
     MusicLibraryItemAlbum::setup();
 
     // Calculate size for cover widget...
-    int spacing=style()->layoutSpacing(QSizePolicy::DefaultType, QSizePolicy::DefaultType, Qt::Vertical);
-    if (spacing<0) {
-        spacing=4;
-    }
+    int spacing=Utils::layoutSpacing(this);
     playPauseTrackButton->adjustSize();
     trackLabel->adjustSize();
     artistLabel->adjustSize();
@@ -2289,10 +2283,7 @@ int MainWindow::calcMinHeight()
 
 int MainWindow::calcCompactHeight()
 {
-    int spacing=style()->layoutSpacing(QSizePolicy::DefaultType, QSizePolicy::DefaultType, Qt::Vertical);
-    if (spacing<0) {
-        spacing=4;
-    }
+    int spacing=Utils::layoutSpacing(this);
     // For some reason height is always larger than it needs to be - so fix this to cover height +4
     return qMax(qMax(playPauseTrackButton->height(),
                          trackLabel->height()+artistLabel->height()+spacing)+

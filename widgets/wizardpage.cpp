@@ -23,6 +23,7 @@
 
 #include "wizardpage.h"
 #include "icon.h"
+#include "utils.h"
 #include <QPainter>
 #include <QStyle>
 
@@ -38,10 +39,7 @@ void WizardPage::setBackground(const Icon &i)
 
 void WizardPage::paintEvent(QPaintEvent *e)
 {
-    int spacing=style()->layoutSpacing(QSizePolicy::DefaultType, QSizePolicy::DefaultType, Qt::Vertical);
-    if (spacing<0) {
-        spacing=4;
-    }
+    int spacing=Utils::layoutSpacing(this);
     spacing*=2;
 
     QWizardPage::paintEvent(e);

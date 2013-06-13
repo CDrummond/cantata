@@ -221,6 +221,7 @@ void ContextWidget::setWide(bool w)
         }
         l->addItem(new QSpacerItem(m, m, QSizePolicy::Fixed, QSizePolicy::Fixed));
         QByteArray state;
+        bool resetSplitter=splitter;
         if (!splitter) {
             splitter=new ThinSplitter(this);
             state=Settings::self()->contextSplitterState();
@@ -233,7 +234,9 @@ void ContextWidget::setWide(bool w)
         splitter->addWidget(album);
         splitter->setVisible(true);
         splitter->addWidget(song);
-        if (!state.isEmpty()) {
+        if (resetSplitter) {
+            splitter->reset();
+        } else if (!state.isEmpty()) {
             splitter->restoreState(state);
         }
 //        l->addWidget(album);

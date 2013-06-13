@@ -35,6 +35,8 @@
 #endif
 
 class FilenameSchemeDialog;
+class Action;
+
 class TrackOrganiser : public Dialog, Ui::TrackOrganiser
 {
     Q_OBJECT
@@ -56,6 +58,8 @@ private Q_SLOTS:
     void updateView();
     void startRename();
     void renameFile();
+    void controlRemoveAct();
+    void removeItems();
 
 private:
     void slotButtonClicked(int button);
@@ -69,6 +73,7 @@ private:
     FilenameSchemeDialog *schemeDlg;
     QList<Song> origSongs;
     QString deviceUdi;
+    Action *removeAct;
     int index;
     bool autoSkip;
     bool paused;

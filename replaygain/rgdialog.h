@@ -38,6 +38,7 @@ class QProgressBar;
 class Device;
 #endif
 class TagReader;
+class Action;
 
 class RgDialog : public Dialog
 {
@@ -76,6 +77,8 @@ private Q_SLOTS:
     void songTags(int index, Tags::ReplayGain tags);
     void tagReaderDone();
     void toggleDisplay();
+    void controlRemoveAct();
+    void removeItems();
 
 private:
     enum State {
@@ -103,6 +106,7 @@ private:
     QTreeWidget *view;
     QLabel *statusLabel;
     QProgressBar *progress;
+    Action *removeAct;
     State state;
     QString base;
     QList<Song> origSongs;
@@ -119,6 +123,8 @@ private:
     TagReader *tagReader;
 
     bool autoScanTags;
+
+    QSet<int> removedItems;
 };
 
 #endif

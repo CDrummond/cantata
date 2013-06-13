@@ -48,17 +48,14 @@
 #include <KDE/KLocale>
 #endif
 
-#ifdef ENABLE_KDE_SUPPORT
-static QString formatNumber(double number, int precision)
+static inline QString formatNumber(double number, int precision)
 {
+    #ifdef ENABLE_KDE_SUPPORT
     return KGlobal::locale()->formatNumber(number, precision);
-}
-#else
-static QString formatNumber(double number, int precision)
-{
+    #else
     return QString::number(number, 'g', precision);
+    #endif
 }
-#endif
 
 enum Columns
 {

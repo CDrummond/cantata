@@ -70,6 +70,8 @@
 44. Fix retrieval of covers in albums view for multiple-artist albums when
     these are configured to be grouped under "Various Artists"
 45. Refresh albums view when multiple-artist grouping is changed.
+46. Add context menu to replygain and file orgainuzer dialogs to remove items
+    from list.
 
 1.0.3
 -----

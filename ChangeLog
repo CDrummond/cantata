@@ -67,6 +67,8 @@
     mouse-over state.
 43. Add port number to library cache filename, to cater for scenarios where
     there is more than 1 server on the same host.
+44. Fix retrieval of covers in albums view for multiple-artist albums when
+    these are configured to be grouped under "Various Artists"
 
 1.0.3
 -----

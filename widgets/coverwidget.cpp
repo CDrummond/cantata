@@ -52,8 +52,7 @@ static QString encode(const QImage &img)
 }
 
 #ifndef Q_OS_WIN
-static QStringList iconThemes;
-static void themes(const QString &theme)
+static void themes(const QString &theme, QStringList &iconThemes)
 {
     if (iconThemes.contains(theme)) {
         return;
@@ -70,7 +69,7 @@ static void themes(const QString &theme)
                 if (line.startsWith(key)) {
                     QStringList inherited=line.mid(key.length()).split(",", QString::SkipEmptyParts);
                     foreach (const QString &i, inherited) {
-                        themes(i);
+                        themes(i, iconThemes);
                     }
                     return;
                 }
@@ -79,14 +78,14 @@ static void themes(const QString &theme)
     }
 }
 
-static void initIconThemes()
+void CoverWidget::initIconThemes()
 {
     if (iconThemes.isEmpty()) {
-        themes(QIcon::themeName());
+        themes(QIcon::themeName(), iconThemes);
     }
 }
 
-static QString findIcon(const QStringList &names)
+QString CoverWidget::findIcon(const QStringList &names)
 {
     initIconThemes();
     QList<int> sizes=QList<int>() << 256 << 128 << 64 << 48 << 32 << 24 << 22;

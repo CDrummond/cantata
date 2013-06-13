@@ -75,23 +75,9 @@ const QLatin1String Covers::constCddaCoverDir("cdda/");
 const QLatin1String Covers::constFileName("cover");
 const QLatin1String Covers::constArtistImage("artist");
 
-static const QStringList   constExtensions=QStringList() << ".jpg" << ".png";
-static QStringList coverFileNames;
+static const char * constExtensions[]={".jpg", ".png", 0};
 static bool saveInMpdDir=true;
 static QString constCoverInTagPrefix=QLatin1String("{tag}");
-
-void initCoverNames()
-{
-    if (coverFileNames.isEmpty()) {
-        QStringList fileNames;
-        fileNames << Covers::constFileName << QLatin1String("AlbumArt") << QLatin1String("folder");
-        foreach (const QString &fileName, fileNames) {
-            foreach (const QString &ext, constExtensions) {
-                coverFileNames << fileName+ext;
-            }
-        }
-    }
-}
 
 static bool canSaveTo(const QString &dir)
 {
@@ -102,9 +88,9 @@ static bool canSaveTo(const QString &dir)
 static const QString typeFromRaw(const QByteArray &raw)
 {
     if (raw.size()>9 && /*raw[0]==0xFF && raw[1]==0xD8 && raw[2]==0xFF*/ raw[6]=='J' && raw[7]=='F' && raw[8]=='I' && raw[9]=='F') {
-        return constExtensions.at(0);
+        return constExtensions[0];
     } else if (raw.size()>4 && /*raw[0]==0x89 &&*/ raw[1]=='P' && raw[2]=='N' && raw[3]=='G') {
-        return constExtensions.at(1);
+        return constExtensions[1];
     }
     return QString();
 }
@@ -248,7 +234,7 @@ static Covers::Image otherAppCover(const CoverDownloader::Job &job)
                 QString mimeType=typeFromRaw(raw);
                 QString savedName;
                 QString coverName=Covers::albumFileName(job.song);
-                savedName=save(mimeType, mimeType.isEmpty() ? constExtensions.at(0) : mimeType, job.dir+coverName, app.img, raw);
+                savedName=save(mimeType, mimeType.isEmpty() ? constExtensions[0] : mimeType, job.dir+coverName, app.img, raw);
                 if (!savedName.isEmpty()) {
                     app.fileName=savedName;
                 }
@@ -277,8 +263,7 @@ Covers * Covers::self()
 
 bool Covers::isCoverFile(const QString &file)
 {
-    initCoverNames();
-    return coverFileNames.contains(file);
+    return standardNames().contains(file);
 }
 
 static bool fExists(const QString &dir, const QString &file)
@@ -310,22 +295,21 @@ bool Covers::copyImage(const QString &sourceDir, const QString &destDir, const Q
 bool Covers::copyCover(const Song &song, const QString &sourceDir, const QString &destDir, const QString &name, unsigned short maxSize)
 {
     // First, check if dir already has a cover file!
-    initCoverNames();
-    QStringList names=coverFileNames;
-    foreach (const QString &ext, constExtensions) {
-        names+=song.album+ext;
+    QStringList names=standardNames();
+    for (int e=0; constExtensions[e]; ++e) {
+        names+=song.album+constExtensions[e];
     }
 
     QString mpdCover=albumFileName(song);
 
-    foreach (const QString &ext, constExtensions) {
-        if (!names.contains(mpdCover+ext)) {
-            names.prepend(mpdCover+ext);
+    for (int e=0; constExtensions[e]; ++e) {
+        if (!names.contains(mpdCover+constExtensions[e])) {
+            names.prepend(mpdCover+constExtensions[e]);
         }
     }
 
-    foreach (const QString &ext, constExtensions) {
-        names+=song.albumArtist()+QLatin1String(" - ")+song.album+ext;
+    for (int e=0; constExtensions[e]; ++e) {
+        names+=song.albumArtist()+QLatin1String(" - ")+song.album+constExtensions[e];
     }
     foreach (const QString &coverFile, names) {
         if (fExists(destDir, coverFile)) {
@@ -338,8 +322,8 @@ bool Covers::copyCover(const Song &song, const QString &sourceDir, const QString
         if (fExists(sourceDir, coverFile)) {
             QString destName(name);
             if (destName.isEmpty()) { // copying into mpd dir, so we want cover.jpg/png...
-                if (coverFileNames.at(0)!=coverFile) { // source is not 'cover.xxx'
-                    QString ext(coverFile.endsWith(constExtensions.at(0)) ? constExtensions.at(0) : constExtensions.at(1));
+                if (standardNames().at(0)!=coverFile) { // source is not 'cover.xxx'
+                    QString ext(coverFile.endsWith(constExtensions[0]) ? constExtensions[0] : constExtensions[1]);
                     destName=mpdCover+ext;
                 } else {
                     destName=coverFile;
@@ -357,9 +341,9 @@ bool Covers::copyCover(const Song &song, const QString &sourceDir, const QString
         QString artist=encodeName(song.albumArtist());
         QString album=encodeName(song.album);
         QString dir(Utils::cacheDir(constCoverDir+artist, false));
-        foreach (const QString &ext, constExtensions) {
-            if (QFile::exists(dir+album+ext)) {
-                copyImage(dir, destDir, album+ext, destName, maxSize);
+        for (int e=0; constExtensions[e]; ++e) {
+            if (QFile::exists(dir+album+constExtensions[e])) {
+                copyImage(dir, destDir, album+constExtensions[e], destName, maxSize);
                 return true;
             }
         }
@@ -368,10 +352,21 @@ bool Covers::copyCover(const Song &song, const QString &sourceDir, const QString
     return false;
 }
 
-QStringList Covers::standardNames()
+const QStringList & Covers::standardNames()
 {
-    initCoverNames();
-    return coverFileNames;
+    static QStringList *coverFileNames;
+    if (!coverFileNames) {
+        coverFileNames=new QStringList();
+        QStringList fileNames;
+        fileNames << Covers::constFileName << QLatin1String("AlbumArt") << QLatin1String("folder");
+        foreach (const QString &fileName, fileNames) {
+            for (int e=0; constExtensions[e]; ++e) {
+                *coverFileNames << fileName+constExtensions[e];
+            }
+        }
+    }
+
+    return *coverFileNames;
 }
 
 CoverDownloader::CoverDownloader()
@@ -438,7 +433,7 @@ bool CoverDownloader::downloadViaHttp(Job &job, JobType type)
     QUrl u;
     bool isArtistImage=job.song.isArtistImageRequest();
     QString coverName=isArtistImage ? Covers::artistFileName(job.song) : Covers::albumFileName(job.song);
-    coverName+=constExtensions.at(JobHttpJpg==type ? 0 : 1);
+    coverName+=constExtensions[JobHttpJpg==type ? 0 : 1];
     QString dir=Utils::getDir(job.song.file);
     if (isArtistImage) {
         if (job.level) {
@@ -639,7 +634,7 @@ void CoverDownloader::jobFinished()
 QString CoverDownloader::saveImg(const Job &job, const QImage &img, const QByteArray &raw)
 {
     QString mimeType=typeFromRaw(raw);
-    QString extension=mimeType.isEmpty() ? constExtensions.at(0) : mimeType;
+    QString extension=mimeType.isEmpty() ? constExtensions[0] : mimeType;
     QString savedName;
 
     if (job.song.isCdda()) {
@@ -928,13 +923,13 @@ Covers::Image Covers::locateImage(const Song &song)
     if (isOnline) {
         // ONLINE: Cache dir is saved in Song.title
         QString baseName=Utils::cacheDir(song.title, false)+encodeName(isArtistImage ? song.albumartist : (song.albumartist+" - "+song.album));
-        foreach (const QString &ext, constExtensions) {
-            if (QFile::exists(baseName+ext)) {
-                QImage img(baseName+ext);
+        for (int e=0; constExtensions[e]; ++e) {
+            if (QFile::exists(baseName+constExtensions[e])) {
+                QImage img(baseName+constExtensions[e]);
 
                 if (!img.isNull()) {
-                    DBUG_CLASS("Covers") << "Got online from cache" << QString(baseName+ext);
-                    return Image(img, baseName+ext);
+                    DBUG_CLASS("Covers") << "Got online from cache" << QString(baseName+constExtensions[e]);
+                    return Image(img, baseName+constExtensions[e]);
                 }
             }
         }
@@ -978,23 +973,22 @@ Covers::Image Covers::locateImage(const Song &song)
                 dirName=Utils::fixPath(d.absolutePath());
             }
         } else {
-            initCoverNames();
             QStringList names;
             QString mpdCover=albumFileName(song);
             if (!mpdCover.isEmpty()) {
-                foreach (const QString &ext, constExtensions) {
-                    names << mpdCover+ext;
+                for (int e=0; constExtensions[e]; ++e) {
+                    names << mpdCover+constExtensions[e];
                 }
             }
-            names << coverFileNames;
-            foreach (const QString &ext, constExtensions) {
-                names+=Utils::changeExtension(Utils::getFile(song.file), ext);
+            names << standardNames();
+            for (int e=0; constExtensions[e]; ++e) {
+                names+=Utils::changeExtension(Utils::getFile(song.file), constExtensions[e]);
             }
-            foreach (const QString &ext, constExtensions) {
-                names+=song.albumArtist()+QLatin1String(" - ")+song.album+ext;
+            for (int e=0; constExtensions[e]; ++e) {
+                names+=song.albumArtist()+QLatin1String(" - ")+song.album+constExtensions[e];
             }
-            foreach (const QString &ext, constExtensions) {
-                names+=song.album+ext;
+            for (int e=0; constExtensions[e]; ++e) {
+                names+=song.album+constExtensions[e];
             }
             foreach (const QString &fileName, names) {
                 if (QFile::exists(dirName+fileName)) {
@@ -1034,12 +1028,12 @@ Covers::Image Covers::locateImage(const Song &song)
 
     if (isArtistImage) {
         QString dir(Utils::cacheDir(constCoverDir, false));
-        foreach (const QString &ext, constExtensions) {
-            if (QFile::exists(dir+artist+ext)) {
-                QImage img(dir+artist+ext);
+        for (int e=0; constExtensions[e]; ++e) {
+            if (QFile::exists(dir+artist+constExtensions[e])) {
+                QImage img(dir+artist+constExtensions[e]);
                 if (!img.isNull()) {
-                    DBUG_CLASS("Covers") << "Got artist image" << QString(dir+artist+ext);
-                    return Image(img, dir+artist+ext);
+                    DBUG_CLASS("Covers") << "Got artist image" << QString(dir+artist+constExtensions[e]);
+                    return Image(img, dir+artist+constExtensions[e]);
                 }
             }
         }
@@ -1047,12 +1041,12 @@ Covers::Image Covers::locateImage(const Song &song)
         QString album=encodeName(song.album);
         // Check if cover is already cached
         QString dir(Utils::cacheDir(constCoverDir+artist, false));
-        foreach (const QString &ext, constExtensions) {
-            if (QFile::exists(dir+album+ext)) {
-                QImage img(dir+album+ext);
+        for (int e=0; constExtensions[e]; ++e) {
+            if (QFile::exists(dir+album+constExtensions[e])) {
+                QImage img(dir+album+constExtensions[e]);
                 if (!img.isNull()) {
-                    DBUG_CLASS("Covers") << "Got cover image" << QString(dir+album+ext);
-                    return Image(img, dir+album+ext);
+                    DBUG_CLASS("Covers") << "Got cover image" << QString(dir+album+constExtensions[e]);
+                    return Image(img, dir+album+constExtensions[e]);
                 }
             }
         }

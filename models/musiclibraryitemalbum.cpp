@@ -229,6 +229,7 @@ const QPixmap & MusicLibraryItemAlbum::cover()
             song.album=m_itemData;
             song.year=m_year;
             song.file=firstSong->file();
+            song.type=m_type;
             Covers::Image img;
             #ifdef ENABLE_DEVICES_SUPPORT
             if (parentItem() && parentItem()->parentItem() && dynamic_cast<Device *>(parentItem()->parentItem()) &&

@@ -459,9 +459,10 @@ void AlbumsModel::setCover(const Song &song, const QImage &img, const QString &f
 
     QList<AlbumItem *>::Iterator it=items.begin();
     QList<AlbumItem *>::Iterator end=items.end();
+    QString artist=Song::MultipleArtists==song.type ? i18n("Various Artists") : song.albumArtist();
 
     for (int row=0; it!=end; ++it, ++row) {
-        if ((*it)->artist==song.albumArtist() && (*it)->album==song.album) {
+        if ((*it)->artist==artist && (*it)->album==song.album) {
             if (!(*it)->cover || update) {
                 (*it)->cover=new QPixmap(QPixmap::fromImage(img.scaled(QSize(iconSize(), iconSize()), Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
                 QModelIndex idx=index(row, 0, QModelIndex());
@@ -603,6 +604,7 @@ void AlbumsModel::AlbumItem::getCover()
         s.album=album;
         s.year=year;
         s.file=firstSong->file;
+        s.type=type;
         Covers::Image img=Covers::self()->requestImage(s);
         if (!img.img.isNull()) {
             cover=new QPixmap(QPixmap::fromImage(img.img.scaled(QSize(iconSize(), iconSize()), Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));

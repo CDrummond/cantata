@@ -879,6 +879,7 @@ void MusicLibraryModel::toggleGrouping()
     beginResetModel();
     rootItem->toggleGrouping();
     endResetModel();
+    AlbumsModel::self()->update(rootItem);
 }
 
 QList<Song> MusicLibraryModel::getAlbumTracks(const Song &s) const

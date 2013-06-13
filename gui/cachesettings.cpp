@@ -218,11 +218,7 @@ void CacheTree::showEvent(QShowEvent *e)
 CacheSettings::CacheSettings(QWidget *parent)
     : QWidget(parent)
 {
-    int spacing=style()->layoutSpacing(QSizePolicy::DefaultType, QSizePolicy::DefaultType, Qt::Vertical);
-    if (spacing<0) {
-        spacing=4;
-    }
-
+    int spacing=Utils::layoutSpacing(this);
     QGridLayout *layout=new QGridLayout(this);
     layout->setMargin(0);
     int row=0;

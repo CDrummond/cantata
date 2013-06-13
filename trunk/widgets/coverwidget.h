@@ -63,6 +63,10 @@ private:
     bool eventFilter(QObject *object, QEvent *event);
     void resizeEvent(QResizeEvent *e);
 //     void paintEvent(QPaintEvent *e);
+    #ifndef Q_OS_WIN
+    void initIconThemes();
+    QString findIcon(const QStringList &names);
+    #endif
 
 private:
     bool empty;
@@ -77,6 +81,9 @@ private:
     QPixmap noCover;
     QString noStreamCoverFileName;
     QString noCoverFileName;
+    #ifndef Q_OS_WIN
+    QStringList iconThemes;
+    #endif
 };
 
 #endif

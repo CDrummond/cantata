@@ -937,6 +937,10 @@ void MainWindow::initSizes()
     if (spacing<0) {
         spacing=4;
     }
+    playPauseTrackButton->adjustSize();
+    trackLabel->adjustSize();
+    artistLabel->adjustSize();
+    positionSlider->adjustSize();
     int cwSize=qMax(playPauseTrackButton->height(), trackLabel->height()+artistLabel->height()+spacing)+positionSlider->height()+spacing;
 
     coverWidget->setMinimumSize(cwSize, cwSize);

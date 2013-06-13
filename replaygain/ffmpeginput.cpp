@@ -310,6 +310,7 @@ static int decodeAudio(AVCodecContext *avctx, int16_t *samples, int *frame_size_
     AVFrame frame;
     int ret, got_frame = 0;
 
+    frame.data[0]=0;
     if (avctx->get_buffer != avcodec_default_get_buffer) {
         avctx->get_buffer = avcodec_default_get_buffer;
         avctx->release_buffer = avcodec_default_release_buffer;

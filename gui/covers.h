@@ -167,7 +167,7 @@ public:
     static bool isCoverFile(const QString &file);
     static bool copyImage(const QString &sourceDir, const QString &destDir, const QString &coverFile, const QString &destName, unsigned short maxSize=0);
     static bool copyCover(const Song &song, const QString &sourceDir, const QString &destDir, const QString &name=QString(), unsigned short maxSize=0);
-    static QStringList standardNames();
+    static const QStringList &standardNames();
     static QString encodeName(QString name);
     static QString albumFileName(const Song &song);
     static QString artistFileName(const Song &song);

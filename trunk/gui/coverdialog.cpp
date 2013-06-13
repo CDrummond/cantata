@@ -310,10 +310,7 @@ void CoverPreview::downloading(const QString &u)
         scrollArea->hide();
         pbar->show();
         pbar->setValue(0);
-        int spacing=style()->layoutSpacing(QSizePolicy::DefaultType, QSizePolicy::DefaultType, Qt::Vertical);
-        if (spacing<0) {
-            spacing=4;
-        }
+        int spacing=Utils::layoutSpacing(this);
         QApplication::processEvents();
         adjustSize();
         resize(qMin(200, loadingLabel->width()+32), loadingLabel->height()+pbar->height()+(3*spacing));

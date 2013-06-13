@@ -35,6 +35,7 @@
 #endif
 
 class QString;
+class QWidget;
 
 namespace Utils
 {
@@ -69,6 +70,8 @@ namespace Utils
     extern QString cacheDir(const QString &sub=QString(), bool create=true);
     extern void clearOldCache(const QString &sub, int maxAge);
     extern void touchFile(const QString &fileName);
+
+    extern int layoutSpacing(QWidget *w);
 };
 
 #endif

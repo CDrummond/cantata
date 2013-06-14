@@ -23,7 +23,7 @@
     entry is found on wikipedia, then last.fm is consulted.
 13. Dont display stream URL as sub-text, it makes the view look messy for no
     real gain. (URL is still shown in tooltip)
-14. Detailed tree view for foldes and playlists by default.
+14. Detailed tree view for folders and playlists by default.
 15. Remove config compatibility with Cantata versions older than 0.7
 16. Only have 2 stop actions; stop now, or stop after current. Default stop
     action is always 'stop now'
@@ -64,13 +64,13 @@
     -DENABLE_HTTP_STREAM_PLAYBACK=ON to cmake.
 41. Fix Qt5 segfault on exit, due to static QIcons being destructed.
 42. Work-around Qt5 bug where toolbuttons (usually with menus) stay in the
-    mouse-over state.
+    raised state.
 43. Add port number to library cache filename, to cater for scenarios where
     there is more than 1 server on the same host.
 44. Fix retrieval of covers in albums view for multiple-artist albums when
     these are configured to be grouped under "Various Artists"
 45. Refresh albums view when multiple-artist grouping is changed.
-46. Add context menu to replygain and file orgainuzer dialogs to remove items
+46. Add context menu to replygain and file organizer dialogs to remove items
     from list.
 47. Also use discogs for artist images in cover dialog.
 48. Fix invalid covers showing for online services.

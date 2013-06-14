@@ -661,8 +661,8 @@ void ContextWidget::discoGsResponse()
                 QVariantMap search=response["search"].toMap();
                 if (search.contains("searchresults")) {
                     QVariantMap searchresults=search["searchresults"].toMap();
-                    if (searchresults.contains("results")) {
-                        QVariantList results=searchresults["results"].toList();
+                    if (searchresults.contains("exactresults")) {
+                        QVariantList results=searchresults["exactresults"].toList();
                         foreach (const QVariant &r, results) {
                             QVariantMap rm=r.toMap();
                             if (rm.contains("thumb")) {

@@ -133,9 +133,11 @@ const QPixmap & MusicLibraryItemArtist::cover()
             if (parentItem() && parentItem()->parentItem() && dynamic_cast<OnlineService *>(parentItem()->parentItem()) &&
                 static_cast<MusicLibraryItemRoot *>(parentItem()->parentItem())->useArtistImages()) {
                 // ONLINE: Image URL is encoded in song.name...
-                song.name=m_imageUrl;
-                song.title=parentItem()->parentItem()->data().toLower();
-                img=Covers::self()->requestImage(song);
+                if (!m_imageUrl.isEmpty()) {
+                    song.name=m_imageUrl;
+                    song.title=parentItem()->parentItem()->data().toLower();
+                    img=Covers::self()->requestImage(song);
+                }
             } else
             #endif
             if (parentItem() && parentItem()->parentItem() && !static_cast<MusicLibraryItemRoot *>(parentItem()->parentItem())->useArtistImages()) {

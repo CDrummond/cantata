@@ -72,6 +72,7 @@
 45. Refresh albums view when multiple-artist grouping is changed.
 46. Add context menu to replygain and file orgainuzer dialogs to remove items
     from list.
+47. Also use discogs for artist images in cover dialog.
 
 1.0.3
 -----

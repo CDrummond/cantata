@@ -120,11 +120,18 @@ private:
     uint32_t checkFolderStructure(const QStringList &dirs, Storage &store);
     void parseFolder(LIBMTP_folder_t *folder);
     void setMusicFolder(Storage &store);
+    #ifdef MTP_CLEAN_ALBUMS
+    void updateAlbums();
+    LIBMTP_album_t * getAlbum(const Song &song);
+    #endif
     void destroyData();
 
 private:
     Thread *thread;
     LIBMTP_mtpdevice_t *device;
+    #ifdef MTP_CLEAN_ALBUMS
+    LIBMTP_album_t *albums;
+    #endif
     QMap<uint32_t, Folder> folderMap;
     MusicLibraryItemRoot *library;
     uint32_t defaultMusicFolder;

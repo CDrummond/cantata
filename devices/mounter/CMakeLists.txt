@@ -1,5 +1,5 @@
-set( CANTATA_MOUNTER_SRCS main.cpp mounter.cpp )
-set( CANTATA_MOUNTER_MOC_HDRS mounter.h )
+set(CANTATA_MOUNTER_SRCS main.cpp mounter.cpp)
+set(CANTATA_MOUNTER_MOC_HDRS mounter.h)
 if (ENABLE_QT5)
     qt5_wrap_cpp( CANTATA_MOUNTER_MOC_SRCS ${CANTATA_MOUNTER_MOC_HDRS} )
     qt5_add_dbus_adaptor(CANTATA_MOUNTER_SRCS com.googlecode.cantata.mounter.xml mounter.h Mounter )
@@ -23,5 +23,4 @@ endif (ENABLE_QT5)
 include_directories( ${QTINCLUDES} ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_BINARY_DIR})
 
 install(FILES ${_qmFile} DESTINATION ${CMAKE_INSTALL_PREFIX}/share/cantata/)
-
 install(PROGRAMS mount.cifs.wrapper DESTINATION ${CMAKE_INSTALL_PREFIX}/share/cantata/scripts/ )

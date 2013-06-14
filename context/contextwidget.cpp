@@ -33,6 +33,7 @@
 #include "wikipediaengine.h"
 #include "localize.h"
 #include "backdropcreator.h"
+#include "qjson/parser.h"
 #include <QHBoxLayout>
 #include <QGridLayout>
 #include <QSpacerItem>
@@ -45,6 +46,7 @@
 #include <QFile>
 #include <QWheelEvent>
 #include <QApplication>
+#include <QDesktopWidget>
 #include <QComboBox>
 #include <QStackedWidget>
 #include <QAction>
@@ -192,6 +194,14 @@ ContextWidget::ContextWidget(QWidget *parent)
     readConfig();
     setWide(true);
     splitterColor=palette().text().color();
+    QDesktopWidget *dw=QApplication::desktop();
+    if (dw) {
+        minBackdropSize=dw->availableGeometry(this).size()-QSize(32, 64);
+        minBackdropSize.setWidth(((int)(minBackdropSize.width()/32))*32);
+        minBackdropSize.setHeight(((int)(minBackdropSize.height()/32))*32);
+    } else {
+        minBackdropSize=QSize(1024, 768);
+    }
 }
 
 void ContextWidget::setWide(bool w)
@@ -430,7 +440,7 @@ void ContextWidget::setFade(float value)
     }
 }
 
-void ContextWidget::updateImage(const QImage &img)
+void ContextWidget::updateImage(const QImage &img, bool created)
 {
     DBUG << img.isNull() << newBackdrop.isNull();
     backdropText=currentArtist;
@@ -442,6 +452,13 @@ void ContextWidget::updateImage(const QImage &img)
     }
     if (newBackdrop.isNull() && oldBackdrop.isNull()) {
         return;
+    }
+    if (!newBackdrop.isNull() && !created && newBackdrop.width()<minBackdropSize.width() && newBackdrop.height()<minBackdropSize.height()) {
+        QSize size(minBackdropSize);
+        if (newBackdrop.width()<minBackdropSize.width()/4 && newBackdrop.height()<minBackdropSize.height()/4) {
+            size=QSize(minBackdropSize.width()/2, minBackdropSize.height()/2);
+        }
+        newBackdrop=newBackdrop.scaled(size, Qt::KeepAspectRatio, Qt::SmoothTransformation);
     }
     fadeValue=0.0;
     animator.setDuration(150);
@@ -511,18 +528,25 @@ void ContextWidget::updateBackdrop()
 
     QImage img(cacheFileName(currentArtist, false));
     if (img.isNull()) {
-        getBackdrop();
+        getHtBackdrop();
     } else {
         updateImage(img);
         QWidget::update();
     }
 }
 
-void ContextWidget::getBackdrop()
+static QString fixArtist(const QString &artist)
+{
+    QString fixed(artist.trimmed());
+    fixed.remove(QChar('?'));
+    return fixed;
+}
+
+void ContextWidget::getHtBackdrop()
 {
     cancel();
     if (!useHtBackdrops) {
-        createBackdrop();
+        getDiscoGsImage();
         return;
     }
     QUrl url("http://htbackdrops.com/api/"+constApiKey+"/searchXML");
@@ -532,7 +556,7 @@ void ContextWidget::getBackdrop()
     QUrlQuery q;
     #endif
 
-    q.addQueryItem(QLatin1String("keywords"), currentArtist);
+    q.addQueryItem(QLatin1String("keywords"), fixArtist(currentArtist));
     q.addQueryItem(QLatin1String("default_operator"), QLatin1String("and"));
     q.addQueryItem(QLatin1String("fields"), QLatin1String("title"));
     #if QT_VERSION >= 0x050000
@@ -540,10 +564,34 @@ void ContextWidget::getBackdrop()
     #endif
     job=NetworkAccessManager::self()->get(url, 5000);
     DBUG << url.toString();
-    connect(job, SIGNAL(finished()), this, SLOT(searchResponse()));
+    connect(job, SIGNAL(finished()), this, SLOT(htBackdropsResponse()));
 }
 
-void ContextWidget::searchResponse()
+void ContextWidget::getDiscoGsImage()
+{
+    cancel();
+    QUrl url;
+    #if QT_VERSION < 0x050000
+    QUrl &query=url;
+    #else
+    QUrlQuery query;
+    #endif
+    url.setScheme("http");
+    url.setHost("api.discogs.com");
+    url.setPath("/search");
+    query.addQueryItem("per_page", QString::number(5));
+    query.addQueryItem("type", "artist");
+    query.addQueryItem("q", fixArtist(currentArtist));
+    query.addQueryItem("f", "json");
+    #if QT_VERSION >= 0x050000
+    url.setQuery(query);
+    #endif
+    job=NetworkAccessManager::self()->get(url, 5000);
+    DBUG << url.toString();
+    connect(job, SIGNAL(finished()), this, SLOT(discoGsResponse()));
+}
+
+void ContextWidget::htBackdropsResponse()
 {
     QNetworkReply *reply = getReply(sender());
     if (!reply) {
@@ -585,10 +633,56 @@ void ContextWidget::searchResponse()
     }
 
     if (id.isEmpty()) {
-        createBackdrop();
+        getDiscoGsImage();
     } else {
         QUrl url("http://htbackdrops.com/api/"+constApiKey+"/download/"+id+"/fullsize");
         job=NetworkAccessManager::self()->get(url);
+        connect(job, SIGNAL(finished()), this, SLOT(downloadResponse()));
+    }
+}
+
+void ContextWidget::discoGsResponse()
+{
+    QNetworkReply *reply = getReply(sender());
+    if (!reply) {
+        return;
+    }
+
+    DBUG << "status" << reply->error() << reply->errorString();
+    QString url;
+
+    if (QNetworkReply::NoError==reply->error()) {
+        QJson::Parser parser;
+        bool ok=false;
+        QVariantMap parsed=parser.parse(reply, &ok).toMap();
+        if (ok && parsed.contains("resp")) {
+            QVariantMap response=parsed["resp"].toMap();
+            if (response.contains("search")) {
+                QVariantMap search=response["search"].toMap();
+                if (search.contains("searchresults")) {
+                    QVariantMap searchresults=search["searchresults"].toMap();
+                    if (searchresults.contains("results")) {
+                        QVariantList results=searchresults["results"].toList();
+                        foreach (const QVariant &r, results) {
+                            QVariantMap rm=r.toMap();
+                            if (rm.contains("thumb")) {
+                                QString thumbUrl=rm["thumb"].toString();
+                                if (thumbUrl.contains("/image/A-150-")) {
+                                    url=thumbUrl.replace("image/A-150-", "/image/A-");
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    if (url.isEmpty()) {
+        createBackdrop();
+    } else {
+        job=NetworkAccessManager::self()->get(QUrl(url));
         connect(job, SIGNAL(finished()), this, SLOT(downloadResponse()));
     }
 }
@@ -608,10 +702,6 @@ void ContextWidget::downloadResponse()
 
     QByteArray data=reply->readAll();
     QImage img=QImage::fromData(data);
-    if (img.isNull()) {
-        createBackdrop();
-        return;
-    }
 
     if (img.isNull()) {
         createBackdrop();
@@ -652,7 +742,7 @@ void ContextWidget::backdropCreated(const QString &artist, const QImage &img)
 {
     DBUG << artist << img.isNull() << currentArtist;
     if (artist==currentArtist) {
-        updateImage(img);
+        updateImage(img, true);
         QWidget::update();
     }
 }

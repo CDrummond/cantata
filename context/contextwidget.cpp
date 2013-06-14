@@ -50,6 +50,7 @@
 #include <QComboBox>
 #include <QStackedWidget>
 #include <QAction>
+#include <QPair>
 
 #include <QDebug>
 static bool debugEnabled=false;
@@ -641,6 +642,45 @@ void ContextWidget::htBackdropsResponse()
     }
 }
 
+static bool matchesArtist(const QString &titleOrig, const QString &artistOrig)
+{
+    QString title=titleOrig.toLower();
+    QString artist=artistOrig.toLower();
+
+    if (title==artist) {
+        return true;
+    }
+
+    if (artist.startsWith(QLatin1String("the ")) && title.endsWith(QLatin1String(", the"))) {
+        QString theArtist=artist.mid(4)+QLatin1String(", the");
+        if (title==theArtist) {
+            return true;
+        }
+    }
+
+    typedef QPair<QChar, QChar> ChPair;
+    QList<ChPair> replacements = QList<ChPair>() << ChPair('-', '/') << ChPair('.', 0)
+                                                 << ChPair(QChar(0x00ff /* ÿ */), 'y');
+
+    foreach (const ChPair &r, replacements) {
+        QString a=artist;
+        QString t=title;
+
+        if (r.second.isNull()) {
+            a=a.replace(QString()+r.first, "");
+            t=t.replace(QString()+r.first, "");
+        } else {
+            a=a.replace(r.first, r.second);
+            t=t.replace(r.first, r.second);
+        }
+        if (t==a) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 void ContextWidget::discoGsResponse()
 {
     QNetworkReply *reply = getReply(sender());
@@ -652,6 +692,7 @@ void ContextWidget::discoGsResponse()
     QString url;
 
     if (QNetworkReply::NoError==reply->error()) {
+        DBUG << "A";
         QJson::Parser parser;
         bool ok=false;
         QVariantMap parsed=parser.parse(reply, &ok).toMap();
@@ -659,18 +700,16 @@ void ContextWidget::discoGsResponse()
             QVariantMap response=parsed["resp"].toMap();
             if (response.contains("search")) {
                 QVariantMap search=response["search"].toMap();
-                if (search.contains("searchresults")) {
-                    QVariantMap searchresults=search["searchresults"].toMap();
-                    if (searchresults.contains("exactresults")) {
-                        QVariantList results=searchresults["exactresults"].toList();
-                        foreach (const QVariant &r, results) {
-                            QVariantMap rm=r.toMap();
-                            if (rm.contains("thumb")) {
-                                QString thumbUrl=rm["thumb"].toString();
-                                if (thumbUrl.contains("/image/A-150-")) {
-                                    url=thumbUrl.replace("image/A-150-", "/image/A-");
-                                    break;
-                                }
+                if (search.contains("exactresults")) {
+                    QVariantList results=search["exactresults"].toList();
+                    foreach (const QVariant &r, results) {
+                        QVariantMap rm=r.toMap();
+                        if (rm.contains("thumb") && rm.contains("title")) {
+                            QString thumbUrl=rm["thumb"].toString();
+                            QString title=rm["title"].toString();
+                            if (thumbUrl.contains("/image/A-150-") && matchesArtist(title, currentArtist)) {
+                                url=thumbUrl.replace("image/A-150-", "/image/A-");
+                                break;
                             }
                         }
                     }

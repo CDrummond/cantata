@@ -15,6 +15,7 @@ Cantata requires the following Qt libraries:
 3. QtNetwork
 4. QtXml
 5. QtDBus (Only for Linux builds)
+6. QtWidgets (Qt5 builds - where widgets are now separated from QtGui)
 
 Cantata may also use the following optional libraries:
 
@@ -418,7 +419,7 @@ The following debug values may be used:
     Context widget          32
     Context backdrop        64
 
-These values may be combined to enble multipe output. e.g. to enable MPD and
+These values may be combined to enable multipe output. e.g. to enable MPD and
 covers logging:
 
     CANTATA_DEBUG=3 cantata
@@ -446,7 +447,7 @@ Cantata contains code/icons from:
     libebur128     - https://github.com/jiixyj/libebur128 (Replay gain
                      calculation)
     QJson          - JSON parser, taken from https://github.com/flavio/qjson
-    Sidebar icons  - Taken frmo IcoMoon - http://icomoon.io/#icons
+    Sidebar icons  - Taken from IcoMoon - http://icomoon.io/#icons
 
 
 Windows
@@ -471,7 +472,7 @@ This assumes the following folder structure:
 2. Call cmake (e.g.):
      cmake ../src -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=Release -DENABLE_TAGLIB=OFF -DTAGLIB_FOUND=1 -DTAGLIB_INCLUDES=z:/dev/taglib/include -DTAGLIB_LIBRARIES=z:/dev/taglib/lib/libtag.dll.a -DTAGLIB_MP4_FOUND=1 -DTAGLIB_ASF_FOUND=1 -DZLIB_INCLUDE_DIR=z:/dev/zlib/include -DZLIB_LIBRARY=z:/dev/zlib/libz.dll.a -DCMAKE_INSTALL_PREFIX=z:/cantata/install -DCANTATA_WINDOWS_INSTALLER_DEST=z:/cantata -DCANTATA_MINGW_LIBS=z:/dev/MinGW/bin/mingwm10.dll;z:/dev/MinGW/bin/libgcc_s_dw2-1.dll -DCANTATA_OXYGEN_DIR=z:/cantata/oxygen
 
-   (Note: -DENABLE_TAGLIB=OFF stops cmake from trynig to find TagLib, as the TagLib setting shave been manually set)
+   (Note: -DENABLE_TAGLIB=OFF stops cmake from trying to find TagLib, as the TagLib settings have been manually set)
 
 3. make
 

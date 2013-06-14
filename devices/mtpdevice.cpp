@@ -80,6 +80,9 @@ static uint16_t fileReceiver(void *params, void *priv, uint32_t sendlen, unsigne
 
 MtpConnection::MtpConnection(MtpDevice *p)
     : device(0)
+    #ifdef MTP_CLEAN_ALBUMS
+    , albums(0)
+    #endif
     , library(0)
     , dev(p)
     , lastUpdate(0)
@@ -253,6 +256,9 @@ void MtpConnection::updateLibrary()
     }
     emit statusMessage(i18n("Updating files..."));
     updateFiles();
+    #ifdef MTP_CLEAN_ALBUMS
+    updateAlbums();
+    #endif
     emit statusMessage(i18n("Updating tracks..."));
     lastUpdate=0;
     LIBMTP_track_t *tracks=LIBMTP_Get_Tracklisting_With_Callback(device, &trackListMonitor, this);
@@ -269,7 +275,7 @@ void MtpConnection::updateLibrary()
     MusicLibraryItemArtist *artistItem = 0;
     MusicLibraryItemAlbum *albumItem = 0;
     #ifdef MTP_FAKE_ALBUMARTIST_SUPPORT
-    QMap<QString, MtpAlbum> albums;
+    QMap<QString, MtpAlbum> albumMap;
     QMap<uint32_t, MtpFolder> folders;
     bool getAlbumArtistFromPath=dev->options().scheme.startsWith(DeviceOptions::constAlbumArtist+QChar('/')+DeviceOptions::constAlbumTitle+QChar('/'));
     QString va=i18n("Various Artists");
@@ -329,7 +335,7 @@ void MtpConnection::updateLibrary()
 
         #ifdef MTP_FAKE_ALBUMARTIST_SUPPORT
         // Store AlbumName->Artists/Songs mapping
-        MtpAlbum &al=albums[s.album];
+        MtpAlbum &al=albumMap[s.album];
         al.artists.insert(s.artist);
         al.songs.append(songItem);
         al.folder=track->parent_id;
@@ -343,8 +349,8 @@ void MtpConnection::updateLibrary()
         #ifdef MTP_FAKE_ALBUMARTIST_SUPPORT
         // Use Album map to determine 'AlbumArtist' tag for various artist albums, and
         // albums that have tracks where artist is set to '${artist} and somebodyelse'
-        QMap<QString, MtpAlbum>::ConstIterator it=albums.constBegin();
-        QMap<QString, MtpAlbum>::ConstIterator end=albums.constEnd();
+        QMap<QString, MtpAlbum>::ConstIterator it=albumMap.constBegin();
+        QMap<QString, MtpAlbum>::ConstIterator end=albumMap.constEnd();
         for (; it!=end; ++it) {
             if ((*it).artists.count()>1) {
                 QSet<quint16> tracks;
@@ -468,8 +474,8 @@ void MtpConnection::updateFiles()
 
 void MtpConnection::updateStorage()
 {
-    size=0;
-    used=0;
+    uint64_t s=0;
+    uint64_t u=0;
     if (device && LIBMTP_ERROR_NONE==LIBMTP_Get_Storage(device, LIBMTP_STORAGE_SORTBY_MAXSPACE)) {
         LIBMTP_devicestorage_struct *s=device->storage;
         while (s) {
@@ -478,6 +484,7 @@ void MtpConnection::updateStorage()
             QList<Storage>::Iterator end=storage.end();
             for ( ;it!=end; ++it) {
                 if ((*it).volumeIdentifier==volumeIdentifier) {
+                    // We know about this storage ID, so update its size...
                     (*it).size=s->MaxCapacity;
                     (*it).used=s->MaxCapacity-s->FreeSpaceInBytes;
                     break;
@@ -485,6 +492,7 @@ void MtpConnection::updateStorage()
             }
 
             if (it==end) {
+                // Unknown storage ID, so add to list!
                 Storage store;
                 store.id=s->id;
                 store.description=QString::fromUtf8(s->StorageDescription);
@@ -498,6 +506,8 @@ void MtpConnection::updateStorage()
             s=s->next;
         }
     }
+    size=s;
+    used=u;
 }
 
 QList<DeviceStorage> MtpConnection::getStorageList() const
@@ -869,6 +879,7 @@ void MtpConnection::putSong(const Song &s, bool fixVa, const DeviceOptions &opts
             }
         }
         folder.files.insert(meta->item_id, File(destName, meta->filesize, meta->item_id));
+        updateStorage();
     }
     emit putSongStatus(status,
                        meta ? encodePath(meta, destName, storage.count()>1 ? store.description : QString()) : QString(),
@@ -936,6 +947,38 @@ void MtpConnection::delSong(const Song &song)
     bool deletedSong=device && path.ok() && 0==LIBMTP_Delete_Object(device, path.id);
     if (deletedSong) {
         folderMap[path.parent].files.remove(path.id);
+        #ifdef MTP_CLEAN_ALBUMS
+        // Remove track from album. Remove album (and cover) if no tracks.
+        LIBMTP_album_t *album=getAlbum(song);
+        if (album) {
+            if (0==album->no_tracks || (1==album->no_tracks && album->tracks[0]==(uint32_t)song.id)) {
+                LIBMTP_Delete_Object(device, album->album_id);
+                updateAlbums();
+            } else if (album->no_tracks>1) {
+                // Remove track from album...
+                uint32_t *tracks = (uint32_t *)malloc((album->no_tracks-1)*sizeof(uint32_t));
+                if (tracks) {
+                    bool found=false;
+                    for (uint32_t i=0, j=0; i<album->no_tracks && j<(album->no_tracks-1); ++i) {
+                        if (album->tracks[i]!=(uint32_t)song.id) {
+                            tracks[j++]=album->tracks[i];
+                        } else {
+                            found=true;
+                        }
+                    }
+                    if (found) {
+                        album->no_tracks--;
+                        free(album->tracks);
+                        album->tracks = tracks;
+                        LIBMTP_Update_Album(device, album);
+                    } else {
+                        free(tracks);
+                    }
+                }
+            }
+        }
+        #endif
+        updateStorage();
     }
     emit delSongStatus(deletedSong);
 }
@@ -988,6 +1031,7 @@ void MtpConnection::cleanDirs(const QSet<QString> &dirs)
         }
     }
 
+    updateStorage();
     emit cleanDirsStatus(true);
 }
 
@@ -1006,6 +1050,44 @@ void MtpConnection::getCover(const Song &song)
     }
 }
 
+#ifdef MTP_CLEAN_ALBUMS
+void MtpConnection::updateAlbums()
+{
+    if (albums) {
+        LIBMTP_destroy_album_t(albums);
+    }
+    albums=LIBMTP_Get_Album_List(device);
+}
+
+LIBMTP_album_t * MtpConnection::getAlbum(const Song &song)
+{
+    LIBMTP_album_t *al=albums;
+    LIBMTP_album_t *possible=0;
+
+    while (al) {
+        if (QString::fromUtf8(al->name)==song.album) {
+            // For some reason, MTP sometimes leaves blank albums behind.
+            // So, when looking for an album if we find one with the same name, but no tracks - then save this as a possibility...
+            if (0==al->no_tracks) {
+                QString aa(QString::fromUtf8(al->artist));
+                if (aa.isEmpty() || aa==song.albumArtist()) {
+                    possible=al;
+                }
+            } else {
+                for (uint32_t i=0; i<al->no_tracks; ++i) {
+                    if (al->tracks[i]==(uint32_t)song.id) {
+                        return al;
+                    }
+                }
+            }
+        }
+        al=al->next;
+    }
+
+    return possible;
+}
+#endif
+
 void MtpConnection::destroyData()
 {
     folderMap.clear();
@@ -1013,6 +1095,13 @@ void MtpConnection::destroyData()
         delete library;
         library=0;
     }
+    
+    #ifdef MTP_CLEAN_ALBUMS
+    if (albums) {
+        LIBMTP_destroy_album_t(albums);
+        albums=0;
+    }
+    #endif
 }
 
 QString cfgKey(Solid::Device &dev, const QString &serial)

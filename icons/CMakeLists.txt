@@ -1,8 +1,8 @@
-IF( ENABLE_KDE_SUPPORT )
-    kde4_install_icons( ${ICON_INSTALL_DIR} )
-else ( ENABLE_KDE_SUPPORT )
-    if( UNIX AND NOT APPLE )
-        macro (UPDATE_ICONCACHE)
+if (ENABLE_KDE_SUPPORT)
+    kde4_install_icons(${ICON_INSTALL_DIR})
+else (ENABLE_KDE_SUPPORT)
+    if (UNIX AND NOT APPLE)
+        macro (update_iconcache)
             # Update mtime of hicolor icon theme dir.
             # We don't always have touch command (e.g. on Windows), so instead create
             #  and delete a temporary file in the theme dir.
@@ -16,7 +16,7 @@ else ( ENABLE_KDE_SUPPORT )
         endmacro (UPDATE_ICONCACHE)
 
         install(FILES cantata.svg DESTINATION ${CMAKE_INSTALL_PREFIX}/share/icons/hicolor/scalable/apps)
-        UPDATE_ICONCACHE()
-    endif( UNIX AND NOT APPLE )
-ENDIF( ENABLE_KDE_SUPPORT )
+        update_iconcache()
+    endif (UNIX AND NOT APPLE)
+endif (ENABLE_KDE_SUPPORT)
 

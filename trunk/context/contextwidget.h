@@ -72,7 +72,7 @@ public:
     void paintEvent(QPaintEvent *e);
     float fade() { return fadeValue; }
     void setFade(float value);
-    void updateImage(const QImage &img);
+    void updateImage(const QImage &img, bool created=false);
     void search();
 
 Q_SIGNALS:
@@ -82,7 +82,8 @@ Q_SIGNALS:
     void createBackdrop(const QString &artist, const QList<Song> &songs);
 
 private Q_SLOTS:
-    void searchResponse();
+    void htBackdropsResponse();
+    void discoGsResponse();
     void downloadResponse();
     void backdropCreated(const QString &artist, const QImage &img);
 
@@ -92,7 +93,8 @@ private:
     bool eventFilter(QObject *o, QEvent *e);
     void cancel();
     void updateBackdrop();
-    void getBackdrop();
+    void getHtBackdrop();
+    void getDiscoGsImage();
     void createBackdrop();
     QNetworkReply * getReply(QObject *obj);
 
@@ -119,6 +121,7 @@ private:
     BackdropCreator *creator;
     QString backdropText;
     QSet<QString> backdropAlbums;
+    QSize minBackdropSize;
 };
 
 #endif

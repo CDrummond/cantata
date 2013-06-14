@@ -13,7 +13,7 @@ else (ENABLE_KDE_SUPPORT)
                 file(REMOVE \"${CMAKE_INSTALL_PREFIX}/share/icons/hicolor/temp.txt\")
             endif (NOT DESTDIR_VALUE)
             ")
-        endmacro (UPDATE_ICONCACHE)
+        endmacro (update_iconcache)
 
         install(FILES cantata.svg DESTINATION ${CMAKE_INSTALL_PREFIX}/share/icons/hicolor/scalable/apps)
         update_iconcache()

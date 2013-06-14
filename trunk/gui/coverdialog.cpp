@@ -64,6 +64,7 @@
 #include <QXmlStreamReader>
 #include <QDomDocument>
 #include <QDomElement>
+#include <QDebug>
 
 static int iCount=0;
 static const int constMaxTempFiles=20;
@@ -198,7 +199,9 @@ public:
         , width(w)
         , height(h) {
         setImage(img);
-        setText(i18nc("Discogs\nwidth x height", "Discogs\n%1 x %2").arg(width).arg(height));
+        setText(width>10 && height>10
+                    ? i18nc("Discogs\nwidth x height", "Discogs\n%1 x %2").arg(width).arg(height)
+                    : QLatin1String("Discogs"));
     }
 
     quint32 key() const { return width*height; }
@@ -618,18 +621,11 @@ void CoverDialog::downloadJobFinished()
                     if (constLastFmHost==host) {
                         item=new LastFmCover(reply->property(constLargeProperty).toString(), url, img, list);
                     } else if (constGoogleHost==host) {
-                        int w=reply->property(constWidthProperty).toInt();
-                        int h=reply->property(constHeightProperty).toInt();
-                        if (canUse(w, h)) {
-                            item=new GoogleCover(reply->property(constLargeProperty).toString(), url, img, w, h,
-                                                 reply->property(constSizeProperty).toInt(), list);
-                        }
+                        item=new GoogleCover(reply->property(constLargeProperty).toString(), url, img, reply->property(constWidthProperty).toInt(),
+                                             reply->property(constHeightProperty).toInt(), reply->property(constSizeProperty).toInt(), list);
                     } else if (constDiscogsHost==host) {
-                        int w=reply->property(constWidthProperty).toInt();
-                        int h=reply->property(constHeightProperty).toInt();
-                        if (canUse(w, h)) {
-                            item=new DiscogsCover(reply->property(constLargeProperty).toString(), url, img, w, h, list);
-                        }
+                        item=new DiscogsCover(reply->property(constLargeProperty).toString(), url, img, reply->property(constWidthProperty).toInt(),
+                                              reply->property(constHeightProperty).toInt(), list);
                     } else if (constCoverArtArchiveHost==host) {
                         item=new CoverArtArchiveCover(reply->property(constLargeProperty).toString(), url, img, list);
                     }
@@ -733,9 +729,7 @@ void CoverDialog::sendQuery()
     currentQueryString=fixedQuery;
     sendLastFmQuery(fixedQuery, page);
     sendGoogleQuery(fixedQuery, page);
-    if (!isArtist) {
-        sendDiscoGsQuery(fixedQuery, page);
-    }
+    sendDiscoGsQuery(fixedQuery, page);
 }
 
 void CoverDialog::sendLastFmQuery(const QString &fixedQuery, int page)
@@ -794,7 +788,7 @@ void CoverDialog::sendDiscoGsQuery(const QString &fixedQuery, int page)
     url.setPath("/search");
     query.addQueryItem("page", QString::number(page + 1));
     query.addQueryItem("per_page", QString::number(20));
-    query.addQueryItem("type", "release");
+    query.addQueryItem("type", isArtist ? "artist" : "release");
     query.addQueryItem("q", fixedQuery);
     query.addQueryItem("f", "json");
     #if QT_VERSION >= 0x050000
@@ -1052,7 +1046,7 @@ void CoverDialog::parseGoogleQueryResponse(const QByteArray &resp)
         #endif
         int width=url.queryItemValue("w").toInt();
         int height=url.queryItemValue("h").toInt();
-        if (width>=100 && height>=100) {
+        if (canUse(width, height)) {
             QString largeUrl=url.queryItemValue("imgurl");
             QString thumbUrl=rx.cap(2);
             if (!thumbUrl.isEmpty() && !largeUrl.isEmpty()) {
@@ -1086,7 +1080,7 @@ void CoverDialog::parseDiscogsQueryResponse(const QByteArray &resp)
                     QVariantList results=searchresults["results"].toList();
                     foreach (const QVariant &r, results) {
                         QVariantMap rm=r.toMap();
-                        if (rm.contains("uri")) {
+                        if (!isArtist && rm.contains("uri")) {
                             QStringList parts=rm["uri"].toString().split("/", QString::SkipEmptyParts);
                             if (!parts.isEmpty()) {
                                 QUrl discogsUrl;
@@ -1104,19 +1098,18 @@ void CoverDialog::parseDiscogsQueryResponse(const QByteArray &resp)
                                 #endif
                                 sendQueryRequest(discogsUrl);
                             }
+                        } else if (isArtist && rm.contains("thumb")) {
+                            QString thumbUrl=rm["thumb"].toString();
+                            if (thumbUrl.contains("/image/A-150-")) {
+                                QString largeUrl=thumbUrl.replace("image/A-150-", "/image/A-");
+                                QNetworkReply *j=downloadImage(thumbUrl, DL_Thumbnail);
+                                if (j) {
+                                    j->setProperty(constHostProperty, constDiscogsHost);
+                                    j->setProperty(constLargeProperty, largeUrl);
+                                    j->setProperty(constThumbProperty, thumbUrl);
+                                }
+                            }
                         }
-//                        if (rm.contains("thumb")) {
-//                            QString thumbUrl=rm["thumb"].toString();
-//                            if (thumbUrl.contains("/image/R-150-")) {
-//                                QString largeUrl=thumbUrl.replace("image/R-150-", "/image/R-");
-//                                QNetworkReply *j=downloadImage(thumbUrl, DL_Thumbnail);
-//                                if (j) {
-//                                    j->setProperty(constHostProperty, constDiscogsHost);
-//                                    j->setProperty(constLargeProperty, largeUrl);
-//                                    j->setProperty(constThumbProperty, thumbUrl);
-//                                }
-//                            }
-//                        }
                     }
                 }
             }
@@ -1126,7 +1119,8 @@ void CoverDialog::parseDiscogsQueryResponse(const QByteArray &resp)
                 QVariantList images=release["images"].toList();
                 foreach (const QVariant &i, images) {
                     QVariantMap im=i.toMap();
-                    if (im.contains("uri") && im.contains("uri150")) {
+                    if (im.contains("uri") && im.contains("uri150") && im.contains("width") && im.contains("height") &&
+                        canUse(im["width"].toString().toInt(), im["height"].toString().toInt())) {
                         QString thumbUrl=im["uri150"].toString();
                         QString largeUrl=im["uri"].toString();
                         if (!thumbUrl.isEmpty() && !largeUrl.isEmpty()) {

@@ -398,7 +398,7 @@ MainWindow::MainWindow(QWidget *parent)
     singleButton->setDefaultAction(singlePlayQueueAction);
     consumeButton->setDefaultAction(consumePlayQueueAction);
 
-    #define TAB_ACTION(A) A->icon(), A->text(), A->text()+"<br/><small><i>"+A->shortcut().toString()+"</i></small>"
+    #define TAB_ACTION(A) A->icon(), A->text(), A->text()
 
     QStringList hiddenPages=Settings::self()->hiddenPages();
     playQueuePage=new PlayQueuePage(this);
@@ -429,8 +429,7 @@ MainWindow::MainWindow(QWidget *parent)
     tabWidget->AddTab(devicesPage, TAB_ACTION(devicesTabAction), !hiddenPages.contains(devicesPage->metaObject()->className()));
     DevicesModel::self()->setEnabled(!hiddenPages.contains(devicesPage->metaObject()->className()));
     #endif
-    tabWidget->AddTab(contextPage, Icons::self()->infoSidebarIcon, i18n("Info"),
-                      songInfoAction->text()+"<br/><small><i>"+songInfoAction->shortcut().toString()+"</i></small>",
+    tabWidget->AddTab(contextPage, Icons::self()->infoSidebarIcon, i18n("Info"), songInfoAction->text(),
                       !hiddenPages.contains(contextPage->metaObject()->className()));
     AlbumsModel::self()->setEnabled(!hiddenPages.contains(albumsPage->metaObject()->className()));
     folderPage->setEnabled(!hiddenPages.contains(folderPage->metaObject()->className()));

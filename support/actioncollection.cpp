@@ -211,8 +211,10 @@ void ActionCollection::writeSettings() const {
       continue;
     if(!action->isShortcutConfigurable())
       continue;
-    if(action->shortcut(Action::ActiveShortcut) == action->shortcut(Action::DefaultShortcut))
+    if(action->shortcut(Action::ActiveShortcut) == action->shortcut(Action::DefaultShortcut)) {
+      s.remove(name);
       continue;
+    }
     s.setValue(name, action->shortcut(Action::ActiveShortcut));
   }
 }

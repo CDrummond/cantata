@@ -74,6 +74,8 @@
     from list.
 47. Also use discogs for artist images in cover dialog.
 48. Fix invalid covers showing for online services.
+49. For Qt builds, if shortcut is set to default then remove entry from config
+    file.
 
 1.0.3
 -----

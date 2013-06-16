@@ -59,7 +59,8 @@ public:
     static void enableDebug();
 
     static const QLatin1String constCacheDir;
-    static const QLatin1String constApiKey;
+//    static const QLatin1String constHtbApiKey;
+    static const QLatin1String constFanArtApiKey;
 
     ContextWidget(QWidget *parent=0);
 
@@ -82,7 +83,9 @@ Q_SIGNALS:
     void createBackdrop(const QString &artist, const QList<Song> &songs);
 
 private Q_SLOTS:
-    void htBackdropsResponse();
+//    void htBackdropsResponse();
+    void musicbrainzResponse();
+    void fanArtResponse();
     void discoGsResponse();
     void downloadResponse();
     void backdropCreated(const QString &artist, const QImage &img);
@@ -93,7 +96,9 @@ private:
     bool eventFilter(QObject *o, QEvent *e);
     void cancel();
     void updateBackdrop();
-    void getHtBackdrop();
+    void getBackdrop();
+//    void getHtBackdrop();
+    void getFanArtBackdrop();
     void getDiscoGsImage();
     void createBackdrop();
     QNetworkReply * getReply(QObject *obj);
@@ -102,7 +107,8 @@ private:
     QNetworkReply *job;
     bool drawBackdrop;
     bool darkBackground;
-    bool useHtBackdrops;
+//    bool useHtBackdrops;
+    bool useFanArt;
     QImage oldBackdrop;
     QImage newBackdrop;
     QString currentArtist;

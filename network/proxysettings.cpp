@@ -23,12 +23,17 @@
 
 #include "proxysettings.h"
 #include "networkproxyfactory.h"
+#include "localize.h"
 #include <QSettings>
 
 ProxySettings::ProxySettings(QWidget *parent)
     : QWidget(parent)
 {
     setupUi(this);
+    proxyMode->addItem(i18n("No proxy"), (int)NetworkProxyFactory::Mode_Direct);
+    proxyMode->addItem(i18n("Use the system proxy settings"), (int)NetworkProxyFactory::Mode_System);
+    proxyMode->addItem(i18n("Manual proxy configuration"), (int)NetworkProxyFactory::Mode_Manual);
+    connect(proxyMode, SIGNAL(currentIndexChanged(int)), SLOT(toggleMode()));
 }
 
 ProxySettings::~ProxySettings()
@@ -41,16 +46,20 @@ void ProxySettings::load()
     s.beginGroup(NetworkProxyFactory::constSettingsGroup);
 
     int mode=s.value("mode", NetworkProxyFactory::Mode_System).toInt();
-    proxySystem->setChecked(NetworkProxyFactory::Mode_System==mode);
-    proxyDirect->setChecked(NetworkProxyFactory::Mode_Direct==mode);
-    proxyManual->setChecked(NetworkProxyFactory::Mode_Manual==mode);
+    for (int i=0; i<proxyMode->count(); ++i) {
+        if (proxyMode->itemData(i).toInt()==mode) {
+            proxyMode->setCurrentIndex(i);
+            break;
+        }
+    }
+
     proxyType->setCurrentIndex(QNetworkProxy::HttpProxy==s.value("type", QNetworkProxy::HttpProxy).toInt() ? 0 : 1);
     proxyHost->setText(s.value("hostname").toString());
     proxyPort->setValue(s.value("port", 8080).toInt());
-    proxyAuth->setChecked(s.value("use_authentication", false).toBool());
     proxyUsername->setText(s.value("username").toString());
     proxyPassword->setText(s.value("password").toString());
     s.endGroup();
+    toggleMode();
 }
 
 void ProxySettings::save()
@@ -58,17 +67,27 @@ void ProxySettings::save()
     QSettings s;
     s.beginGroup(NetworkProxyFactory::constSettingsGroup);
 
-    s.setValue("mode", proxySystem->isChecked()
-                            ? NetworkProxyFactory::Mode_System
-                            : proxyDirect->isChecked()
-                                ? NetworkProxyFactory::Mode_Direct
-                                : NetworkProxyFactory::Mode_Manual);
+    s.setValue("mode", proxyMode->itemData(proxyMode->currentIndex()).toInt());
     s.setValue("type", 0==proxyType->currentIndex() ? QNetworkProxy::HttpProxy : QNetworkProxy::Socks5Proxy);
     s.setValue("hostname", proxyHost->text());
     s.setValue("port", proxyPort->value());
-    s.setValue("use_authentication", proxyAuth->isChecked());
     s.setValue("username", proxyUsername->text());
     s.setValue("password", proxyPassword->text());
     s.endGroup();
     NetworkProxyFactory::self()->reloadSettings();
+}
+
+void ProxySettings::toggleMode()
+{
+    bool showManual=NetworkProxyFactory::Mode_Manual==proxyMode->itemData(proxyMode->currentIndex()).toInt();
+    proxyType->setVisible(showManual);
+    proxyTypeLabel->setVisible(showManual);
+    proxyHost->setVisible(showManual);
+    proxyHostLabel->setVisible(showManual);
+    proxyPort->setVisible(showManual);
+    proxyPortLabel->setVisible(showManual);
+    proxyUsername->setVisible(showManual);
+    proxyUsernameLabel->setVisible(showManual);
+    proxyPassword->setVisible(showManual);
+    proxyPasswordLabel->setVisible(showManual);
 }

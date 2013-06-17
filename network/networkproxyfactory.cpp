@@ -33,7 +33,6 @@ NetworkProxyFactory::NetworkProxyFactory()
     : mode(Mode_System)
     , type(QNetworkProxy::HttpProxy)
     , port(8080)
-    , useAuthentication(false)
 {
     #ifdef Q_OS_LINUX
     // Linux uses environment variables to pass proxy configuration information,
@@ -79,7 +78,6 @@ void NetworkProxyFactory::reloadSettings()
     type = QNetworkProxy::ProxyType(s.value("type", QNetworkProxy::HttpProxy).toInt());
     hostname = s.value("hostname").toString();
     port = s.value("port", 8080).toInt();
-    useAuthentication = s.value("use_authentication", false).toBool();
     username = s.value("username").toString();
     password = s.value("password").toString();
 }
@@ -114,8 +112,10 @@ QList<QNetworkProxy> NetworkProxyFactory::queryProxy(const QNetworkProxyQuery& q
         ret.setType(type);
         ret.setHostName(hostname);
         ret.setPort(port);
-        if (useAuthentication) {
+        if (!username.isEmpty()) {
             ret.setUser(username);
+        }
+        if (!password.isEmpty()) {
             ret.setPassword(password);
         }
         break;

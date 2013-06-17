@@ -385,6 +385,7 @@ bool MusicLibraryModel::setData(const QModelIndex &idx, const QVariant &value, i
                 }
                 emit dataChanged(index(0, 0, artistIndex), index(0, artistItem->childCount(), artistIndex));
             }
+            emit dataChanged(idx, idx);
             break;
         }
         case MusicLibraryItem::Type_Album: {
@@ -399,6 +400,7 @@ bool MusicLibraryModel::setData(const QModelIndex &idx, const QVariant &value, i
             }
             emit dataChanged(index(0, 0, albumIndex), index(0, albumItem->childCount(), albumIndex));
             setParentState(artistIndex, value.toBool(), artistItem, item);
+            emit dataChanged(idx, idx);
             break;
         }
         case MusicLibraryItem::Type_Song: {
@@ -409,6 +411,7 @@ bool MusicLibraryModel::setData(const QModelIndex &idx, const QVariant &value, i
             QModelIndex albumIndex=index(artistItem->childItems().indexOf(albumItem), 0, artistIndex);
             setParentState(albumIndex, value.toBool(), albumItem, item);
             setParentState(artistIndex, Qt::Unchecked!=albumItem->checkState(), artistItem, albumItem);
+            emit dataChanged(idx, idx);
             break;
         }
         case MusicLibraryItem::Type_Root:

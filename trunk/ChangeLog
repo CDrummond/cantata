@@ -78,6 +78,8 @@
     file.
 50. Don't show page shortcuts in tooltips, as tooltip is not updated when
     shortcut is changed.
+51. Check that perl is installed before attempting to start cantata-dynamic in
+    local mode.
 
 1.0.3
 -----

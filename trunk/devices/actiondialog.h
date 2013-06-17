@@ -103,7 +103,7 @@ private:
     quint64 timeTaken; // Amount of time spent copying/deleting
     QElapsedTimer timer;
     #endif
-    double currentPercent; // Percentage of current song
+    int currentPercent; // Percentage of current song
     Song origCurrentSong;
     Song currentSong;
     bool autoSkip;

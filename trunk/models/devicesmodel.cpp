@@ -45,6 +45,7 @@
 #include <QMenu>
 #include <QStringList>
 #include <QMimeData>
+#include <QTimer>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KIcon>
 #include <KDE/KGlobal>
@@ -416,7 +417,8 @@ void DevicesModel::setEnabled(bool e)
         connect(Solid::DeviceNotifier::instance(), SIGNAL(deviceRemoved(const QString &)), this, SLOT(deviceRemoved(const QString &)));
 //        connect(Covers::self(), SIGNAL(cover(const Song &, const QImage &, const QString &)),
 //                this, SLOT(setCover(const Song &, const QImage &, const QString &)));
-        loadLocal();
+        // Call loadLocal via a timer, so that upon Cantata start-up model is loaded into view before we try and expand items!
+        QTimer::singleShot(0, this, SIGNAL(loadLocal()));
         connect(MountPoints::self(), SIGNAL(updated()), this, SLOT(mountsChanged()));
         #ifdef ENABLE_REMOTE_DEVICES
         loadRemote();

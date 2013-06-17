@@ -54,7 +54,6 @@ private:
     QNetworkProxy::ProxyType type;
     QString hostname;
     int port;
-    bool useAuthentication;
     QString username;
     QString password;
     #ifdef Q_OS_LINUX

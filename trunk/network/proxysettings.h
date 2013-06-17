@@ -37,6 +37,9 @@ public:
 
     void load();
     void save();
+
+private Q_SLOTS:
+    void toggleMode();
 };
 
 #endif

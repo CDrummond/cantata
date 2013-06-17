@@ -185,7 +185,6 @@ const QList<Song> & ArtistView::getArtistAlbumsFirstTracks()
 
 void ArtistView::artistImage(const Song &song, const QImage &i, const QString &f)
 {
-    Q_UNUSED(f)
     if (song.albumartist==currentSong.artist && pic.isEmpty()) {
         pic=createPicTag(i, f);
         setBio();

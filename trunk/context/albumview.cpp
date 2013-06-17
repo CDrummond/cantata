@@ -201,7 +201,6 @@ void AlbumView::getDetails()
 
 void AlbumView::coverRetrieved(const Song &s, const QImage &img, const QString &file)
 {
-    Q_UNUSED(file)
     if (s==currentSong && pic.isEmpty()) {
         detailsReceived|=Cover;
         if (All==detailsReceived) {

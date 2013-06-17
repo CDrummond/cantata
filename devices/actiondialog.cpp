@@ -50,6 +50,7 @@
 #include "rgdialog.h"
 #endif
 #include <QFile>
+#include <QDebug>
 
 static int iCount=0;
 
@@ -317,6 +318,9 @@ void ActionDialog::remove(const QString &udi, const QList<Song> &songs)
         dirsToClean.insert(baseDir+Utils::getDir(s.file));
     }
     show();
+    #ifdef ACTION_DIALOG_SHOW_TIME_REMAINING
+    timer.start();
+    #endif
     doNext();
 }
 
@@ -493,6 +497,7 @@ Device * ActionDialog::getDevice(const QString &udi, bool logErrors)
 
 void ActionDialog::doNext()
 {
+    Utils::msleep(1000);
     currentPercent=0;
     if (songsToAction.count()) {
         currentSong=origCurrentSong=songsToAction.takeFirst();
@@ -753,6 +758,7 @@ void ActionDialog::setPage(int page, const QString &msg)
             break;
     }
 }
+#include <QDebug>
 
 QString ActionDialog::formatSong(const Song &s, bool showFiles, bool showTime)
 {
@@ -779,13 +785,17 @@ QString ActionDialog::formatSong(const Song &s, bool showFiles, bool showTime)
 
     #ifdef ACTION_DIALOG_SHOW_TIME_REMAINING
     if (showTime) {
-        QString estimate=i18n("Unknown");
-
+        QString estimate=i18n("Calculating...");
         double taken=timeTaken+timer.elapsed();
         if (taken>5.0) {
-            double percent=(actionedTime+(currentPercent*currentSong.time))/totalTime;
-            quint64 timeRemaining=((taken/percent)-taken)/1000.0;
-            estimate=i18nc("time (EStimated)", "%1 (Estimated)").arg(Song::formattedTime(timeRemaining>0 ? timeRemaining : 0));
+            double pc=(progressBar->value()*1.0)/(progressBar->maximum()*1.0);
+            if (pc>0.05) {
+                double percent=Copy==mode ? (actionedTime+(currentPercent*0.01*currentSong.time))/totalTime : pc;
+                double pco=percent;
+                percent-=percent*((1.0-percent)*0.15);
+                quint64 timeRemaining=((taken/percent)-taken)/1000.0;
+                estimate=i18nc("time (Estimated)", "%1 (Estimated)").arg(Song::formattedTime(timeRemaining>0 ? timeRemaining : 0));
+            }
         }
 
         str+=i18n("<tr><i><td align=\"right\"><i>Time remaining:</i></td><td><i>%5</i></td></i></tr>")
@@ -862,10 +872,12 @@ void ActionDialog::cleanDirsResult(int status)
 
 void ActionDialog::jobPercent(int percent)
 {
-    progressBar->setValue((100*count)+percent);
-    currentPercent=percent/100.00;
-    if (PAGE_PROGRESS==stack->currentIndex()) {
-        progressLabel->setText(formatSong(currentSong, false, true));
+    if (percent!=currentPercent) {
+        progressBar->setValue((100*count)+percent);
+        currentPercent=percent;
+        if (PAGE_PROGRESS==stack->currentIndex()) {
+            progressLabel->setText(formatSong(currentSong, false, true));
+        }
     }
 }
 

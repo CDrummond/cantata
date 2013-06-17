@@ -24,13 +24,14 @@
 #include "synccollectionwidget.h"
 #include "treeview.h"
 #include "musiclibraryproxymodel.h"
+#include "musiclibraryitemartist.h"
+#include "musiclibraryitemalbum.h"
 #include "musiclibraryitemsong.h"
 #include "icon.h"
 #include "localize.h"
 #include "actioncollection.h"
 #include <QTimer>
 #include <QAction>
-#include <QDebug>
 
 SyncCollectionWidget::SyncCollectionWidget(QWidget *parent, const QString &title, const QString &action, bool showCovers)
     : QWidget(parent)
@@ -191,21 +192,59 @@ void SyncCollectionWidget::songsChecked(const QSet<Song> &songs)
     updateStats();
 }
 
+
 void SyncCollectionWidget::dataChanged(const QModelIndex &tl, const QModelIndex &br)
 {
-    Q_UNUSED(br)
-    QModelIndex index = proxy->mapToSource(tl);
-    MusicLibraryItem *item=static_cast<MusicLibraryItem *>(index.internalPointer());
-    if (MusicLibraryItem::Type_Song==item->itemType()) {
-        Song s=static_cast<MusicLibraryItemSong *>(item)->song();
-        if (Qt::Checked==item->checkState()) {
-            checkedSongs.insert(s);
-        } else {
-            checkedSongs.remove(s);
+    QModelIndex firstIndex = proxy->mapToSource(tl);
+    QModelIndex lastIndex = proxy->mapToSource(br);
+    const MusicLibraryItem *item=static_cast<const MusicLibraryItem *>(firstIndex.internalPointer());
+    switch (item->itemType()) {
+    case MusicLibraryItem::Type_Artist:
+        for (int i=firstIndex.row(); i<=lastIndex.row(); ++i) {
+            QModelIndex index=model->index(i, 0, firstIndex.parent());
+            const MusicLibraryItemArtist *artist=static_cast<const MusicLibraryItemArtist *>(index.internalPointer());
+            foreach (const MusicLibraryItem *alItem, artist->childItems()) {
+                foreach (const MusicLibraryItem *sItem, static_cast<const MusicLibraryItemContainer *>(alItem)->childItems()) {
+                    Song s=static_cast<const MusicLibraryItemSong *>(sItem)->song();
+                    if (Qt::Checked==item->checkState()) {
+                        checkedSongs.insert(s);
+                    } else {
+                        checkedSongs.remove(s);
+                    }
+                }
+            }
         }
-        button->setEnabled(!checkedSongs.isEmpty());
-        updateStats();
+        break;
+    case MusicLibraryItem::Type_Album:
+        for (int i=firstIndex.row(); i<=lastIndex.row(); ++i) {
+            QModelIndex index=model->index(i, 0, firstIndex.parent());
+            const MusicLibraryItemAlbum *album=static_cast<const MusicLibraryItemAlbum *>(index.internalPointer());
+            foreach (const MusicLibraryItem *sItem, album->childItems()) {
+                Song s=static_cast<const MusicLibraryItemSong *>(sItem)->song();
+                if (Qt::Checked==item->checkState()) {
+                    checkedSongs.insert(s);
+                } else {
+                    checkedSongs.remove(s);
+                }
+            }
+        }
+        break;
+    case MusicLibraryItem::Type_Song:
+        for (int i=firstIndex.row(); i<=lastIndex.row(); ++i) {
+            QModelIndex index=model->index(i, 0, firstIndex.parent());
+            Song s=static_cast<MusicLibraryItemSong *>(index.internalPointer())->song();
+            if (Qt::Checked==item->checkState()) {
+                checkedSongs.insert(s);
+            } else {
+                checkedSongs.remove(s);
+            }
+        }
+    default:
+        break;
     }
+
+    button->setEnabled(!checkedSongs.isEmpty());
+    updateStats();
 }
 
 void SyncCollectionWidget::updateStats()

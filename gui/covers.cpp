@@ -904,8 +904,7 @@ Covers::Image Covers::locateImage(const Song &song)
         #ifdef TAGLIB_FOUND
         QImage img;
         if (prevFileName.startsWith(constCoverInTagPrefix)) {
-            prevFileName=prevFileName.mid(constCoverInTagPrefix.length());
-            img=Tags::readImage(prevFileName);
+            img=Tags::readImage(prevFileName.mid(constCoverInTagPrefix.length()));
         } else {
             img=QImage(prevFileName);
         }

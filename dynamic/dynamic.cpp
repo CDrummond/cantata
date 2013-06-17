@@ -283,6 +283,11 @@ void Dynamic::start(const QString &name)
         return;
     }
 
+    if (Utils::findExe("perl").isEmpty()) {
+        emit error(i18n("You need to install \"perl\" on your system in order for Cantata's dynamic mode to function."));
+        return;
+    }
+
     QString fName(Utils::configDir(constDir, false)+name+constExtension);
 
     if (!QFile::exists(fName)) {

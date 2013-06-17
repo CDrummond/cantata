@@ -29,13 +29,14 @@
 typedef KUrlLabel UrlLabel;
 #else
 #include <QLabel>
+#include <QCursor>
 
 class UrlLabel : public QLabel
 {
     Q_OBJECT
 
 public:
-    UrlLabel(QWidget *p) : QLabel(p), pressed(false) { }
+    UrlLabel(QWidget *p) : QLabel(p), pressed(false) { setCursor(QCursor(Qt::PointingHandCursor)); }
     virtual ~UrlLabel() { }
 
     void setText(const QString &t) { QLabel::setText("<a href=\".\">"+t+"</a>");}

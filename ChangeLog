@@ -83,6 +83,8 @@
 52. If cantata-dynamic is started in server mode, then have it create any
     missing folders.
 53. Simpler proxy settings.
+54. Delay loading of local devices at atart-up, so that we have time to add
+    device to view before try to expand it.
 
 1.0.3
 -----

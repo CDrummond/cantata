@@ -82,6 +82,7 @@
     local mode.
 52. If cantata-dynamic is started in server mode, then have it create any
     missing folders.
+53. Simpler proxy settings.
 
 1.0.3
 -----

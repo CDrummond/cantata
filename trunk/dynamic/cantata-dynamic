@@ -887,6 +887,16 @@ sub loadConfig() {
             }
         }
     }
+
+    # Create folders, if these do not already exist...
+    my $pidDir=dirname($pidFile);
+    my $activeFileDir=dirname($activeFile);
+    unless (-d $pidDir) {
+        mkdir $pidDir or die;
+    }
+    unless (-d $activeFileDir) {
+        mkdir $activeFileDir or die;
+    }
 }
 
 sub readRuleFile() {

@@ -80,6 +80,8 @@
     shortcut is changed.
 51. Check that perl is installed before attempting to start cantata-dynamic in
     local mode.
+52. If cantata-dynamic is started in server mode, then have it create any
+    missing folders.
 
 1.0.3
 -----

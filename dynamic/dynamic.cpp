@@ -102,9 +102,9 @@ MulticastReceiver::MulticastReceiver(QObject *parent, quint16 port)
     socket = new QUdpSocket(this);
     socket->setProxy(QNetworkProxy(QNetworkProxy::NoProxy));
     #if QT_VERSION < 0x050000
-    socket->bind(port+1, QUdpSocket::ShareAddress);
+    socket->bind(QHostAddress::Any, port+1, QUdpSocket::ShareAddress);
     #else
-    socket->bind(port+1, QAbstractSocket::ShareAddress);
+    socket->bind(QHostAddress::AnyIPv4, port+1, QAbstractSocket::ShareAddress);
     #endif
     socket->joinMulticastGroup(QHostAddress(constMulticastGroup));
     connect(socket, SIGNAL(readyRead()), this, SLOT(processMessages()));

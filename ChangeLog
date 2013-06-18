@@ -85,6 +85,8 @@
 53. Simpler proxy settings.
 54. Delay loading of local devices at atart-up, so that we have time to add
     device to view before try to expand it.
+55. If cantata-dynamic is started in server mode, then communicate status via
+    UDP multicast messages.
 
 1.0.3
 -----

@@ -33,6 +33,23 @@
 
 class QTimer;
 class QNetworkReply;
+class QUdpSocket;
+
+class MulticastReceiver : public QObject
+{
+    Q_OBJECT
+public:
+    MulticastReceiver(QObject *parent, quint16 port);
+
+Q_SIGNALS:
+    void status(const QString &st);
+
+private Q_SLOTS:
+    void processMessages();
+
+private:
+    QUdpSocket *socket;
+};
 
 class Dynamic : public ActionModel
 {
@@ -61,6 +78,7 @@ public:
     static const QString constExcludeKey;
 
     Dynamic();
+    virtual ~Dynamic() { stopReceiver(); }
 
     bool isRemote() const { return !dynamicUrl.isEmpty(); }
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
@@ -105,6 +123,7 @@ private Q_SLOTS:
     void checkRemoteHelper();
     void jobFinished();
     void dynamicUrlChanged(const QString &url);
+    void parseStatus(const QString &response);
 
 private:
     int getPid() const;
@@ -114,9 +133,10 @@ private:
     void loadLocal();
     void loadRemote();
     void parseRemote(const QString &response);
-    void parseStatus(const QString &response);
     void checkResponse(const QString &response);
     void updateEntry(const Entry &e);
+    void stopReceiver();
+    void startReceiver();
 
 private:
     QTimer *timer;
@@ -133,6 +153,7 @@ private:
     QString currentCommand;
     QStringList currentArgs;
     Entry currentSave;
+    MulticastReceiver *receiver;
 };
 
 #endif

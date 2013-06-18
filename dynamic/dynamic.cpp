@@ -42,6 +42,8 @@ K_GLOBAL_STATIC(Dynamic, instance)
 #include <QTimer>
 #include <QIcon>
 #include <QUrl>
+#include <QUdpSocket>
+#include <QNetworkProxy>
 #if QT_VERSION >= 0x050000
 #include <QUrlQuery>
 #endif
@@ -88,10 +90,45 @@ const QString Dynamic::constDateKey=QLatin1String("Date");
 const QString Dynamic::constExactKey=QLatin1String("Exact");
 const QString Dynamic::constExcludeKey=QLatin1String("Exclude");
 
+static QString constMulticastGroup=QLatin1String("239.123.123.123");
+static const char * constMulticastMsgHeader="{CANTATA}";
+const QString constStatusMsg(QLatin1String("STATUS:"));
+
+MulticastReceiver::MulticastReceiver(QObject *parent, quint16 port)
+    : QObject(parent)
+{
+    socket = new QUdpSocket(this);
+    socket->setProxy(QNetworkProxy(QNetworkProxy::NoProxy));
+    #if QT_VERSION < 0x050000
+    socket->bind(port+1, QUdpSocket::ShareAddress);
+    #else
+    socket->bind(port+1, QAbstractSocket::ShareAddress);
+    #endif
+    socket->joinMulticastGroup(QHostAddress(constMulticastGroup));
+    connect(socket, SIGNAL(readyRead()), this, SLOT(processMessages()));
+}
+
+void MulticastReceiver::processMessages()
+{
+    static int headerLen=strlen(constMulticastMsgHeader);
+    while (socket->hasPendingDatagrams()) {
+        QByteArray datagram;
+        datagram.resize(socket->pendingDatagramSize());
+        socket->readDatagram(datagram.data(), datagram.size());
+        if (datagram.length()>headerLen && datagram.startsWith(constMulticastMsgHeader)) {
+            QString message=QString::fromUtf8(&(datagram.constData()[headerLen]));
+            if (message.startsWith(constStatusMsg)) {
+                emit status(message.mid(constStatusMsg.length()));
+            }
+        }
+    }
+}
+
 Dynamic::Dynamic()
     : timer(0)
     , statusTime(1)
     , currentJob(0)
+    , receiver(0)
 {
     loadLocal();
     connect(this, SIGNAL(clear()), MPDConnection::self(), SLOT(clear()));
@@ -586,7 +623,7 @@ void Dynamic::parseStatus(const QString &response)
             }
         } else if (QLatin1String("HAVE_SONGS")==state || QLatin1String("STARTING")==state) {
             emit running(true);
-        } else if (QLatin1String("IDLE")==state) {
+        } else if (QLatin1String("IDLE")==state || QLatin1String("TERMINATED")==state) {
             currentEntry.clear();
             emit running(false);
         }
@@ -857,12 +894,30 @@ void Dynamic::dynamicUrlChanged(const QString &url)
         bool wasRemote=isRemote();
         dynamicUrl=url;
         if (wasRemote && !isRemote()) {
+            stopReceiver();
             loadLocal();
         } else {
             if (timer) {
                 timer->stop();
             }
+            startReceiver();
             loadRemote();
         }
     }
+}
+
+void Dynamic::stopReceiver()
+{
+    if (receiver) {
+        disconnect(receiver, SIGNAL(status(QString)), this, SLOT(parseStatus(QString)));
+        receiver->deleteLater();
+        receiver=0;
+    }
+}
+
+void Dynamic::startReceiver()
+{
+    stopReceiver();
+    receiver=new MulticastReceiver(this, QUrl(dynamicUrl).port());
+    connect(receiver, SIGNAL(status(QString)), this, SLOT(parseStatus(QString)));
 }

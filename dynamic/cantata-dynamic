@@ -35,6 +35,11 @@ use threads::shared;
 use URI::Escape;
 use Encode;
 
+# UDP multicast message sender - used to communicate with Cantata when cantata-dynamic is run in server mode!
+my $serverSender : shared = dirname(__FILE__) . '/message-sender';
+my $MESSAGE_GROUP : shared = '239.123.123.123';
+my $MESSAGE_HEADER : shared = '{CANTATA}';
+
 my $isServerMode : shared =0;
 my $dynamicIsActive : shared =1;
 my $currentStatus : shared ="IDLE";
@@ -477,6 +482,16 @@ sub uniq {
     return keys %{{ map { $_ => 1 } @_ }};
 }
 
+# Send message to Cantata application - ued when run in server mode
+sub sendServerMessage() {
+    my $message=shift;
+    if (length($message)<=0) {
+        $message="STATUS:STATE:${currentStatus}\nRULES:${activeRules}\nTIME:${currentStatusTime}";
+    }
+    my $port=$httpPort+1;
+    system("${serverSender} ${MESSAGE_GROUP}:${port} \"${MESSAGE_HEADER}${message}\"");
+}
+
 # Send message to Cantata application...
 sub sendMessage() {
     my $method=shift;
@@ -560,12 +575,14 @@ sub getSongs() {
         if (scalar(@mpdSongs)<1) {
             if (1==$isServerMode) {
                 $currentStatus="NO_SONGS";
+                &sendServerMessage();
             } else {
                 &sendMessage("showError", "NO_SONGS");
                 exit(0);
             }
         } elsif (1==$isServerMode) {
             $currentStatus="HAVE_SONGS";
+            &sendServerMessage();
         }
 
         if (1==$testMode) {
@@ -961,6 +978,7 @@ sub saveRulesToFile() {
         print $fileHandle $content;
         close($fileHandle);
         $currentStatusTime = time;
+        &sendServerMessage();
         return "OK";
     } else {
         return "ERROR: Failed to create file";
@@ -980,6 +998,7 @@ sub deleteRules() {
     if ($name eq $active) {
         &control("stop");
     }
+    &sendServerMessage();
     return "OK";
 }
 
@@ -989,10 +1008,12 @@ sub control() {
         $dynamicIsActive=1;
         $currentStatus="STARTING";
         &sendCommand("clear");
+        &sendServerMessage();
         return "OK";
     } elsif ($command eq "stop") {
         $dynamicIsActive=0;
         $currentStatus="IDLE";
+        &sendServerMessage();
         return "OK";
     }
     return "ERROR: Invalid command";
@@ -1022,6 +1043,7 @@ sub setActiveRules() {
         if (0!=$?) {
             return "ERROR: Failed to create 'rules' symlink";
         }
+        &sendServerMessage();
         return "OK";
     } else {
         return "ERROR: Could not file ${name}";
@@ -1208,6 +1230,7 @@ sub serverMode() {
     $dynamicIsActive=0;
     threads->create(\&populatePlayQueue, 1);
     &httpServer();
+    &sendServerMessage();
 }
 
 sub stopServer() {
@@ -1217,6 +1240,8 @@ sub stopServer() {
         system("kill", $pid);
         system("pkill", "-P", $pid);
     }
+    $currentStatus="TERMINATED";
+    &sendServerMessage();
 }
 
 if ($ARGV[0] eq "start") {

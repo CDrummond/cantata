@@ -255,7 +255,9 @@ bool Dynamic::save(const Entry &e)
         url.setQuery(query);
         #endif
 
-        currentJob=NetworkAccessManager::self()->post(QNetworkRequest(url), string.toUtf8());
+        QNetworkRequest req(url);
+        req.setHeader(QNetworkRequest::ContentTypeHeader, "text/plain");
+        currentJob=NetworkAccessManager::self()->post(req, string.toUtf8());
         connect(currentJob, SIGNAL(finished()), this, SLOT(jobFinished()));
         currentCommand=constSaveCmd;
         currentArgs.clear();
@@ -741,7 +743,9 @@ void Dynamic::sendCommand(const QString &cmd, const QStringList &args)
         url.setQuery(query);
         #endif
         if (constSetActiveCmd==cmd || constControlCmd==cmd) {
-            currentJob=NetworkAccessManager::self()->post(QNetworkRequest(url), QByteArray());
+            QNetworkRequest req(url);
+            req.setHeader(QNetworkRequest::ContentTypeHeader, "text/plain");
+            currentJob=NetworkAccessManager::self()->post(req, QByteArray());
         } else {
             currentJob=NetworkAccessManager::self()->get(QNetworkRequest(url));
         }

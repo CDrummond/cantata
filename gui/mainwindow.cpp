@@ -353,6 +353,7 @@ MainWindow::MainWindow(QWidget *parent)
     volumeControl->installEventFilter(volumeSliderEventHandler);
     volumeControl->installSliderEventFilter(volumeSliderEventHandler);
     volumeButton->installEventFilter(new VolumeButtonEventHandler(this));
+    volumeButton->setMenu(volumeControl);
 
     connectionsAction->setMenu(new QMenu(this));
     connectionsGroup=new QActionGroup(connectionsAction->menu());
@@ -758,7 +759,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(expandInterfaceAction, SIGNAL(triggered(bool)), this, SLOT(expandOrCollapse()));
     connect(songInfoAction, SIGNAL(triggered(bool)), this, SLOT(showSongInfo()));
     connect(fullScreenAction, SIGNAL(triggered(bool)), this, SLOT(fullScreen()));
-    connect(volumeButton, SIGNAL(clicked()), SLOT(showVolumeControl()));
     #ifdef TAGLIB_FOUND
     connect(StdActions::self()->editTagsAction, SIGNAL(triggered(bool)), this, SLOT(editTags()));
     connect(editPlayQueueTagsAction, SIGNAL(triggered(bool)), this, SLOT(editPlayQueueTags()));
@@ -1075,11 +1075,6 @@ void MainWindow::closeEvent(QCloseEvent *event)
         QMainWindow::closeEvent(event);
         #endif
     }
-}
-
-void MainWindow::showVolumeControl()
-{
-    volumeControl->popup(volumeButton->mapToGlobal(QPoint((volumeButton->width()-volumeControl->width())/2, volumeButton->height())));
 }
 
 void MainWindow::playQueueItemsSelected(bool s)

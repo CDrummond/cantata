@@ -34,11 +34,11 @@ use threads;
 use threads::shared;
 use URI::Escape;
 use Encode;
+use Sys::Hostname;
 
 # UDP multicast message sender - used to communicate with Cantata when cantata-dynamic is run in server mode!
 my $serverSender : shared = dirname(__FILE__) . '/message-sender';
 my $MESSAGE_GROUP : shared = '239.123.123.123';
-my $MESSAGE_HEADER : shared = '{CANTATA}';
 
 my $isServerMode : shared =0;
 my $dynamicIsActive : shared =1;
@@ -51,6 +51,7 @@ $PLAY_QUEUE_CURRENT_POS=5;
 my $mpdHost : shared ="localhost";
 my $mpdPort : shared ="6600";
 my $mpdPasswd : shared ="";
+my $idString : shared = hostname();
 
 my $currentStatusTime = time;
 
@@ -489,7 +490,8 @@ sub sendServerMessage() {
         $message="STATUS:STATE:${currentStatus}\nRULES:${activeRules}\nTIME:${currentStatusTime}";
     }
     my $port=$httpPort+1;
-    system("${serverSender} ${MESSAGE_GROUP}:${port} \"${MESSAGE_HEADER}${message}\"");
+
+    system("${serverSender} ${MESSAGE_GROUP}:${port} \"{CANTATA/${idString}}${message}\"");
 }
 
 # Send message to Cantata application...
@@ -848,6 +850,7 @@ sub stop() {
 # #####################################
 # HTTP SERVER MODE
 #
+#  GetID:            GET     http://host:port/id
 #  GetStatus:        GET     http://host:port/status
 #  ListPlaylists:    GET     http://host:port/list http://host:port/list?withDetails={1/0}
 #  GetPlaylist:      GET     http://host:port/${playlist}
@@ -855,8 +858,6 @@ sub stop() {
 #  SavePlaylist:     POST    http://host:port/save?name=${playlist}                            [BODY:Content]
 #  SetActive:        POST    http://host:port/setActive?name=${playlist}&start={1/0}
 #  ControlDynamizer: POST    http://host:port/control?state={start/stop}
-#  GetCover:         GET     http://host:port/${path}/cover.jpg
-#                    GET     http://host:port/${path}/cover.png
 #
 # #####################################
 $filesDir="/var/lib/mpd/dynamic";
@@ -899,6 +900,8 @@ sub loadConfig() {
                         $httpControlPage=$val;
                     } elsif ($key=~ m/^(pidFile)/) {
                         $pidFile=$val;
+                    } elsif ($key=~ m/^(id)/ && length($val)>0) {
+                        $idString=$val;
                     }
                 }
             }
@@ -1152,6 +1155,8 @@ sub httpServer() {
             if ($request{URL} eq '/status') {
                 local $activeRules=&determineActiveRules();
                 $response="STATE:${currentStatus}\nRULES:${activeRules}\nTIME:${currentStatusTime}\n";
+            } elsif ($request{URL} eq '/id') {
+                $response="${idString}";
             } elsif ($request{URL} eq '/list') {
                 $response = join('', &listRules($queryItems{withDetails}));
             } elsif ($request{URL} eq '/' && 1==$httpControlPage) {

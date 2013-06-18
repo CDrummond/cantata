@@ -48,12 +48,14 @@ K_GLOBAL_STATIC(Dynamic, instance)
 #include <QUrlQuery>
 #endif
 #include <signal.h>
+#include <QDebug>
 
 static const QString constDir=QLatin1String("dynamic");
 static const QString constExtension=QLatin1String(".rules");
 static const QString constActiveRules=QLatin1String("rules");
 static const QString constLockFile=QLatin1String("lock");
 
+static const QString constIdCmd=QLatin1String("id");
 static const QString constListCmd=QLatin1String("list");
 static const QString constStatusCmd=QLatin1String("status");
 static const QString constSaveCmd=QLatin1String("save");
@@ -91,7 +93,7 @@ const QString Dynamic::constExactKey=QLatin1String("Exact");
 const QString Dynamic::constExcludeKey=QLatin1String("Exclude");
 
 static QString constMulticastGroup=QLatin1String("239.123.123.123");
-static const char * constMulticastMsgHeader="{CANTATA}";
+static const char * constMulticastMsgHeader="{CANTATA/";
 const QString constStatusMsg(QLatin1String("STATUS:"));
 
 MulticastReceiver::MulticastReceiver(QObject *parent, quint16 port)
@@ -111,12 +113,14 @@ MulticastReceiver::MulticastReceiver(QObject *parent, quint16 port)
 void MulticastReceiver::processMessages()
 {
     static int headerLen=strlen(constMulticastMsgHeader);
+
     while (socket->hasPendingDatagrams()) {
         QByteArray datagram;
         datagram.resize(socket->pendingDatagramSize());
         socket->readDatagram(datagram.data(), datagram.size());
         if (datagram.length()>headerLen && datagram.startsWith(constMulticastMsgHeader)) {
-            QString message=QString::fromUtf8(&(datagram.constData()[headerLen]));
+            QString header(constMulticastMsgHeader+id+"}");
+            QString message=QString::fromUtf8(&(datagram.constData()[header.length()]));
             if (message.startsWith(constStatusMsg)) {
                 emit status(message.mid(constStatusMsg.length()));
             }
@@ -543,7 +547,7 @@ void Dynamic::loadRemote()
     entryList.clear();
     currentEntry=QString();
     endResetModel();
-    sendCommand(constListCmd, QStringList() << "withDetails" << "1");
+    sendCommand(constIdCmd);
 }
 
 void Dynamic::parseRemote(const QString &response)
@@ -829,6 +833,12 @@ void Dynamic::jobFinished()
         reply->open(QIODevice::ReadOnly | QIODevice::Text);
         response=QString::fromUtf8(reply->readAll());
         reply->close();
+    } else if (constIdCmd==currentCommand) {
+        // Perhaps ID failed because this is an older cantata-dynamic? Try just loading the rules...
+        currentCommand.clear();
+        currentArgs.clear();
+        sendCommand(constListCmd, QStringList() << "withDetails" << "1");
+        return;
     } else {
         response=0==httpResponse ? i18n("Dynamizer is not active") : QString::number(httpResponse);
     }
@@ -882,6 +892,14 @@ void Dynamic::jobFinished()
             emit error(i18n("Failed to set the current dynamic rules. (%1)").arg(response));
         }
         lastState.clear();
+    } else if (constIdCmd==currentCommand) {
+        if (receiver) {
+            receiver->setId(response);
+        }
+        currentCommand.clear();
+        currentArgs.clear();
+        sendCommand(constListCmd, QStringList() << "withDetails" << "1");
+        return;
     }
 
     currentCommand.clear();

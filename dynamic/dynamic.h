@@ -41,6 +41,8 @@ class MulticastReceiver : public QObject
 public:
     MulticastReceiver(QObject *parent, quint16 port);
 
+    void setId(const QString &i) { id=i; }
+
 Q_SIGNALS:
     void status(const QString &st);
 
@@ -49,6 +51,7 @@ private Q_SLOTS:
 
 private:
     QUdpSocket *socket;
+    QString id;
 };
 
 class Dynamic : public ActionModel

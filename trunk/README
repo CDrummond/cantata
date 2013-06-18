@@ -376,6 +376,17 @@ UPDATE_REQUIRED if the client should update its list of playlists (by calling
 the 'ListPlaylists' API)
 
 
+UDP MultiCast Messages
+----------------------
+
+When ren in server mode, the helper script will emit a UDP mutlicast message
+when the status changes. This will be on httpPort+1 and group 239.123.123.123.
+the format of the message is the same as GetStatus response, apart from the
+addition of a header - e.g.
+
+{CANTATA}STATUS:STATE:<current status>\nRULES:<name of currently active rule>\nTIME:<epoch time since started, or last rule modification>
+
+
 Source Code
 ===========
 

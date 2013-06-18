@@ -262,6 +262,7 @@ following parameters (shown here with the default values):
     mpdPassword=
     httpPort=6601
     httpControlPage=0
+    id=${hostname}
 
 'pidFile' When started, the script will store its PID within the file
 configured here. This is then used to detect if the script is running, etc.
@@ -283,6 +284,9 @@ server.
 containing a list of the dynamic rules (which if clicked will become 'active'),
 and a button to stop dynamic mode. Set to '0' to disable this page.
 
+'id' is a unique ID that can be usedby the client to detect that multicast UDP
+messages came from this instance.
+
 
 Installation
 -------------
@@ -303,6 +307,17 @@ API
 
 This is a brief (and probably incomplete) explanation of the HTTP API.
 Currently it is only used by Cantata.
+
+GetId
+    Mode:   HTTP GET
+    URL:    http://host:port/id
+    Params: none
+    Return: String containing current ID (usually just hostname). This ID is
+            also sent in the UDP mutlicast messages.
+
+    This should be the first call that a client makes to the dyanmizer. The
+    ID that is returned should then be used to confirm that UDP mutlicast
+    messages originateed from this instance.
 
 GetStatus
     Mode:   HTTP GET
@@ -384,7 +399,7 @@ when the status changes. This will be on httpPort+1 and group 239.123.123.123.
 the format of the message is the same as GetStatus response, apart from the
 addition of a header - e.g.
 
-{CANTATA}STATUS:STATE:<current status>\nRULES:<name of currently active rule>\nTIME:<epoch time since started, or last rule modification>
+{CANTATA/<id>}STATUS:STATE:<current status>\nRULES:<name of currently active rule>\nTIME:<epoch time since started, or last rule modification>
 
 
 Source Code

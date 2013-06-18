@@ -210,7 +210,6 @@ public Q_SLOTS:
     void messageWidgetVisibility(bool v);
     void mpdConnectionStateChanged(bool connected);
     void playQueueItemsSelected(bool s);
-    void showVolumeControl();
     void showPreferencesDialog();
     void quit();
     void updateSettings();

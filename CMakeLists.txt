@@ -472,7 +472,7 @@ if (ENABLE_HTTP_STREAM_PLAYBACK AND NOT ENABLE_QT5)
 endif (ENABLE_HTTP_STREAM_PLAYBACK AND NOT ENABLE_QT5)
 
 if (NOT WIN32)
-    install(PROGRAMS dynamic/cantata-dynamic DESTINATION ${CMAKE_INSTALL_PREFIX}/share/${CMAKE_PROJECT_NAME}/scripts)
+    install(PROGRAMS dynamic/cantata-dynamic dynamic/message-sender DESTINATION ${CMAKE_INSTALL_PREFIX}/share/${CMAKE_PROJECT_NAME}/scripts)
     if (MTP_FOUND)
         target_link_libraries(cantata ${MTP_LIBRARIES})
         include_directories(${MTP_INCLUDE_DIR})

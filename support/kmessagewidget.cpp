@@ -279,11 +279,7 @@ void KMsgWidget::setMessageType(KMsgWidget::MessageType type)
         // colors of highlighted items instead
         bg1 = palette().highlight().color();
         fg = palette().highlightedText().color();
-        #ifdef ENABLE_KDE_SUPPORT
         border = bg1.darker(150);
-        #else
-        border = Qt::blue;
-        #endif
         break;
     case Warning:
         icon = QIcon::fromTheme("dialog-warning");

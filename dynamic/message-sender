@@ -1,7 +1,0 @@
-#!/usr/bin/env perl
-
-use strict;
-use IO::Socket::Multicast;
-
-my $sock = IO::Socket::Multicast->new(Proto=>'udp', PeerAddr=>$ARGV[0]);
-$sock->send($ARGV[1]) || die "Couldn't send: $!";

@@ -490,8 +490,11 @@ sub sendServerMessage() {
         $message="STATUS:STATE:${currentStatus}\nRULES:${activeRules}\nTIME:${currentStatusTime}";
     }
     my $port=$httpPort+1;
-
-    system("${serverSender} ${MESSAGE_GROUP}:${port} \"{CANTATA/${idString}}${message}\"");
+    my $sock = IO::Socket::INET->new(Proto=>'udp', PeerAddr=>${MESSAGE_GROUP}, PeerPort=>$port);
+    if ($sock && $sock->connected()) {
+        $sock->send("{CANTATA/${idString}}${message}");
+        eval { close $sock; }; undef $sock;
+    }
 }
 
 # Send message to Cantata application...

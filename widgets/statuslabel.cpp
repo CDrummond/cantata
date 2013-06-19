@@ -27,6 +27,9 @@
 #include <QHBoxLayout>
 #include <QApplication>
 #include <QStyle>
+#ifdef ENABLE_KDE_SUPPORT
+#include <kcolorscheme.h>
+#endif
 
 static int iconSize=-1;
 
@@ -91,7 +94,7 @@ void StatusLabel::setType(Type t)
             fg=Qt::black;
             border = Qt::red;
             #endif
-            bg.setAlphaF(0.75);
+            bg.setAlphaF(0.5);
             setStyleSheet(QString(".QFrame {"
                                       "background-color: %1;"
                                       "border-radius: 3px;"

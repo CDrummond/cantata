@@ -241,6 +241,12 @@ started. e.g. The script should be started as:
 
 When run as described above, the script will automatically daemonize itself.
 
+To stop the dynamizer:
+
+     <prefix>/share/cantata/cantata-dynamic stopserver
+
+    e.g.:  /usr/share/cantata/scripts/cantata-dynamic stopserver
+
 Cantata's 'Connection' settings page contains an entry to configure the port
 which the dynamic script is listening on. If Cantata is configured in this
 manner, then it will attempt to talk to the helper via its HTTP API, and will
@@ -342,6 +348,7 @@ GetStatus
         NO_SONGS   - no songs matched current rules
         HAVE_SONGS - dynamic mode running, and songs found
         STARTING   - dynamic mode is starting
+        TERINATED  - dynamizer has been terminated
 
     The client should store the TIME value, and use it to determine whether
     any rules have been changed since it last retrieved the list.

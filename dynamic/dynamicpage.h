@@ -56,6 +56,8 @@ private Q_SLOTS:
 
 private:
     void enableWidgets(bool enable);
+    void showEvent(QShowEvent *e);
+    void hideEvent(QHideEvent *e);
 
 private:
     DynamicProxyModel proxy;

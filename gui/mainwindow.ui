@@ -132,14 +132,7 @@
     </widget>
    </item>
    <item>
-    <widget class="MessageWidget" name="messageWidget">
-     <property name="frameShape">
-      <enum>QFrame::StyledPanel</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
-    </widget>
+    <widget class="MessageWidget" name="messageWidget"/>
    </item>
    <item>
     <widget class="QStackedWidget" name="stack">

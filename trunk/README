@@ -263,6 +263,8 @@ following parameters (shown here with the default values):
     httpPort=6601
     httpControlPage=0
     id=${hostname}
+    msgGroup=239.123.123.123
+    msgPort=6602
 
 'pidFile' When started, the script will store its PID within the file
 configured here. This is then used to detect if the script is running, etc.
@@ -286,6 +288,10 @@ and a button to stop dynamic mode. Set to '0' to disable this page.
 
 'id' is a unique ID that can be usedby the client to detect that multicast UDP
 messages came from this instance.
+
+'msgGroup' is the UDP multicast group used to send status messages.
+
+'msgPort' is the UDP multicast port used to send status messages.
 
 
 Installation
@@ -312,12 +318,15 @@ GetId
     Mode:   HTTP GET
     URL:    http://host:port/id
     Params: none
-    Return: String containing current ID (usually just hostname). This ID is
-            also sent in the UDP mutlicast messages.
+    Return: String containing:
+            ID:<current ID>
+            GROUP:<udp multicast group>
+            PORT:<udp port>
 
     This should be the first call that a client makes to the dyanmizer. The
     ID that is returned should then be used to confirm that UDP mutlicast
-    messages originateed from this instance.
+    messages originateed from this instance. Both GROUP and PORT can then be
+    used to open a socket to listen for messages.
 
 GetStatus
     Mode:   HTTP GET
@@ -391,12 +400,12 @@ UPDATE_REQUIRED if the client should update its list of playlists (by calling
 the 'ListPlaylists' API)
 
 
-UDP MultiCast Messages
+UDP Multicast Messages
 ----------------------
 
-When ren in server mode, the helper script will emit a UDP mutlicast message
-when the status changes. This will be on httpPort+1 and group 239.123.123.123.
-the format of the message is the same as GetStatus response, apart from the
+When run in server mode, the helper script will emit a UDP mutlicast message
+when the status changes. This will be on $msgPort and group $msgGroup. The
+format of the message is the same as GetStatus response, apart from the
 addition of a header - e.g.
 
 {CANTATA/<id>}STATUS:STATE:<current status>\nRULES:<name of currently active rule>\nTIME:<epoch time since started, or last rule modification>

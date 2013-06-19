@@ -25,45 +25,54 @@
     </widget>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="hlayout">
-     <property name="margin">
-      <number>0</number>
+    <widget class="StatusLabel" name="remoteRunningLabel">
+     <property name="text">
+      <string>Remote dynamizer is not running.</string>
      </property>
-     <property name="spacing">
-      <number>0</number>
-     </property>
-     <item>
-      <widget class="ToolButton" name="refreshBtn"/>
-     </item>
-     <item>
-      <spacer name="horizontalSpacer">
-       <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>16</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="ToolButton" name="addBtn"/>
-     </item>
-     <item>
-      <widget class="ToolButton" name="editBtn"/>
-     </item>
-     <item>
-      <widget class="ToolButton" name="removeBtn"/>
-     </item>
-     <item>
-      <widget class="ToolButton" name="startBtn"/>
-     </item>
-     <item>
-      <widget class="ToolButton" name="stopBtn"/>
-     </item>
-    </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QWidget" name="controls">
+     <layout class="QHBoxLayout" name="hlayout">
+      <property name="margin">
+       <number>0</number>
+      </property>
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="ToolButton" name="refreshBtn"/>
+      </item>
+       <item>
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>16</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="ToolButton" name="addBtn"/>
+      </item>
+      <item>
+       <widget class="ToolButton" name="editBtn"/>
+      </item>
+      <item>
+       <widget class="ToolButton" name="removeBtn"/>
+      </item>
+      <item>
+       <widget class="ToolButton" name="startBtn"/>
+      </item>
+      <item>
+       <widget class="ToolButton" name="stopBtn"/>
+      </item>
+     </layout>
+   </widget>
   </item>
  </layout>
  </widget>

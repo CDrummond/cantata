@@ -65,16 +65,19 @@ DynamicPage::DynamicPage(QWidget *p)
     connect(Dynamic::self()->stopAct(), SIGNAL(triggered()), SLOT(stop()));
     connect(toggleAction, SIGNAL(triggered()), SLOT(toggle()));
     connect(Dynamic::self(), SIGNAL(running(bool)), SLOT(running(bool)));
+    connect(Dynamic::self(), SIGNAL(remoteRunning(bool)), SLOT(remoteRunning(bool)));
     connect(Dynamic::self(), SIGNAL(loadingList()), view, SLOT(showSpinner()));
     connect(Dynamic::self(), SIGNAL(loadedList()), view, SLOT(hideSpinner()));
 
     #ifdef Q_OS_WIN
     infoLabel->setType(StatusLabel::Error);
-    setEnabled(false);
+    enableWidgets(false);
     #else
     infoLabel->setVisible(false);
     refreshBtn->setVisible(false);
     #endif
+    remoteRunningLabel->setType(StatusLabel::Error);
+    remoteRunningLabel->setVisible(false);
     Dynamic::self()->stopAct()->setEnabled(false);
     proxy.setSourceModel(Dynamic::self());
     view->setTopText(i18n("Dynamic"));
@@ -111,10 +114,11 @@ void DynamicPage::dynamicUrlChanged(const QString &url)
 {
     #ifdef Q_OS_WIN
     infoLabel->setVisible(url.isEmpty());
-    setEnabled(!url.isEmpty());
+    enableWidgets(!url.isEmpty());
     #else
     refreshBtn->setVisible(!url.isEmpty());
     #endif
+    remoteRunningLabel->setVisible(false);
 }
 
 void DynamicPage::add()
@@ -184,4 +188,16 @@ void DynamicPage::toggle()
 void DynamicPage::running(bool status)
 {
     Dynamic::self()->stopAct()->setEnabled(status);
+}
+
+void DynamicPage::remoteRunning(bool status)
+{
+    remoteRunningLabel->setVisible(!status);
+    enableWidgets(status);
+}
+
+void DynamicPage::enableWidgets(bool enable)
+{
+    controls->setEnabled(enable);
+    view->setEnabled(enable);
 }

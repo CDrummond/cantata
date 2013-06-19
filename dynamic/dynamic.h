@@ -121,6 +121,7 @@ public:
 
 Q_SIGNALS:
     void running(bool status);
+    void remoteRunning(bool status);
     void error(const QString &str);
 
     // These are for communicating with MPD object (which is in its own thread, so need to talk via signal/slots)

@@ -87,6 +87,9 @@
     device to view before try to expand it.
 55. If cantata-dynamic is started in server mode, then communicate status via
     UDP multicast messages.
+56. If using server mode cantata-dynamic and this is not started, then show an
+    error message in dynamic page.
+57. Fix keyboard shortcuts of tab pages.
 
 1.0.3
 -----

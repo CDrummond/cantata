@@ -446,13 +446,14 @@ Cantata. Therefore, its porobably better to start Cantata from the commandline.
 
 The following debug values may be used:
 
-    MPD communications       1
-    Covers                   2 
-    Wikipedia context info   4
-    Last.fm context info     8
-    Combined context info   16
-    Context widget          32
-    Context backdrop        64
+    MPD communications        1
+    Covers                    2
+    Wikipedia context info    4
+    Last.fm context info      8
+    Combined context info    16
+    Context widget           32
+    Context backdrop         64
+    Dynamic                 128
 
 These values may be combined to enable multipe output. e.g. to enable MPD and
 covers logging:

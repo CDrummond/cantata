@@ -57,6 +57,21 @@ class Dynamic : public ActionModel
     Q_OBJECT
 
 public:
+    enum Command {
+        Unknown,
+        Id,
+        List,
+        Status,
+        Save,
+        Del,
+        SetActive,
+        Control
+    };
+
+    static Command toCommand(const QString &cmd);
+    static QString toString(Command cmd);
+    static void enableDebug();
+
     typedef QMap<QString, QString> Rule;
     struct Entry {
         Entry(const QString &n=QString()) : name(n) { }
@@ -121,16 +136,18 @@ public Q_SLOTS:
 
 private Q_SLOTS:
     void checkHelper();
-    void checkRemoteHelper();
-    void jobFinished();
+    void checkIfRemoteIsRunning();
+    void updateRemoteStatus();
+    void remoteJobFinished();
     void dynamicUrlChanged(const QString &url);
     void parseStatus(const QString &response);
 
 private:
+    void pollRemoteHelper();
     int getPid() const;
     bool controlApp(bool isStart);
     QList<Entry>::Iterator find(const QString &e);
-    void sendCommand(const QString &cmd, const QStringList &args=QStringList());
+    void sendCommand(Command cmd, const QStringList &args=QStringList());
     void loadLocal();
     void loadRemote();
     void parseRemote(const QString &response);
@@ -141,18 +158,19 @@ private:
     void startReceiver(const QString &id, const QString &group, quint16 port);
 
 private:
-    QTimer *timer;
+    QTimer *localTimer;
     QList<Entry> entryList;
     QString currentEntry;
     Action *startAction;
     Action *stopAction;
 
     // For remote dynamic servers...
+    QTimer *remoteTimer;
     int statusTime;
     QString lastState;
     QString dynamicUrl;
     QNetworkReply *currentJob;
-    QString currentCommand;
+    Command currentCommand;
     QStringList currentArgs;
     Entry currentSave;
     MulticastReceiver *receiver;

@@ -118,6 +118,7 @@ public:
     void helperMessage(const QString &message) {  Q_UNUSED(message) checkHelper(); }
     Action * startAct() const { return startAction; }
     Action * stopAct() const { return stopAction; }
+    void enableRemotePolling(bool e);
 
 Q_SIGNALS:
     void running(bool status);
@@ -167,6 +168,7 @@ private:
 
     // For remote dynamic servers...
     QTimer *remoteTimer;
+    bool remotePollingEnabled;
     int statusTime;
     QString lastState;
     QString dynamicUrl;

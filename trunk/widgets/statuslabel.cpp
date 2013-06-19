@@ -91,16 +91,15 @@ void StatusLabel::setType(Type t)
             fg=Qt::black;
             border = Qt::red;
             #endif
+            bg.setAlphaF(0.75);
             setStyleSheet(QString(".QFrame {"
-                                      "background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 %1, stop: 0.1 %2, stop: 1.0 %3);"
+                                      "background-color: %1;"
                                       "border-radius: 3px;"
-                                      "border: 1px solid %4;"
-                                      "margin: %5px;"
+                                      "border: 1px solid %2;"
+                                      "margin: %3px;"
                                       "}"
-                                      ".QLabel { color: %6; }")
+                                      ".QLabel { color: %4; }")
                             .arg(toString(bg))
-                            .arg(toString(bg.lighter(110)))
-                            .arg(toString(bg.darker(110)))
                             .arg(toString(border))
                                 // DefaultFrameWidth returns the size of the external margin + border width. We know our border is 1px,
                                 // so we subtract this from the frame normal QStyle FrameWidth to get our margin

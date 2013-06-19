@@ -934,16 +934,15 @@ void Dynamic::jobFinished()
 void Dynamic::dynamicUrlChanged(const QString &url)
 {
     if (url!=dynamicUrl) {
-        bool wasRemote=isRemote();
         dynamicUrl=url;
-        if (wasRemote && !isRemote()) {
-            stopReceiver();
-            loadLocal();
-        } else {
+        stopReceiver();
+        if (isRemote()) {
             if (timer) {
                 timer->stop();
             }
             loadRemote();
+        } else {
+            loadLocal();
         }
     }
 }

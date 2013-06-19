@@ -762,7 +762,6 @@ void Dynamic::checkResponse(const QString &response)
 
 void Dynamic::sendCommand(Command cmd, const QStringList &args)
 {
-    DBUG << toString(cmd) << args;
     if (Status==currentCommand) {
         if (cmd==Status) {
             return;
@@ -793,6 +792,7 @@ void Dynamic::sendCommand(Command cmd, const QStringList &args)
     currentCommand=cmd;
     currentArgs=args;
 
+    DBUG << toString(cmd) << args;
     if (Del==cmd) {
         if (!args.isEmpty()) {
             #if QT_VERSION < 0x050000

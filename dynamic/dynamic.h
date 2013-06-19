@@ -39,9 +39,7 @@ class MulticastReceiver : public QObject
 {
     Q_OBJECT
 public:
-    MulticastReceiver(QObject *parent, quint16 port);
-
-    void setId(const QString &i) { id=i; }
+    MulticastReceiver(QObject *parent, const QString &i, const QString &group, quint16 port);
 
 Q_SIGNALS:
     void status(const QString &st);
@@ -136,10 +134,11 @@ private:
     void loadLocal();
     void loadRemote();
     void parseRemote(const QString &response);
+    void parseId(const QString &response);
     void checkResponse(const QString &response);
     void updateEntry(const Entry &e);
     void stopReceiver();
-    void startReceiver();
+    void startReceiver(const QString &id, const QString &group, quint16 port);
 
 private:
     QTimer *timer;

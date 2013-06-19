@@ -38,7 +38,8 @@ use Sys::Hostname;
 
 # UDP multicast message sender - used to communicate with Cantata when cantata-dynamic is run in server mode!
 my $serverSender : shared = dirname(__FILE__) . '/message-sender';
-my $MESSAGE_GROUP : shared = '239.123.123.123';
+my $mcastGroup : shared = '239.123.123.123';
+my $mcastPort : shared = 6602;
 
 my $isServerMode : shared =0;
 my $dynamicIsActive : shared =1;
@@ -489,8 +490,7 @@ sub sendServerMessage() {
     if (length($message)<=0) {
         $message="STATUS:STATE:${currentStatus}\nRULES:${activeRules}\nTIME:${currentStatusTime}";
     }
-    my $port=$httpPort+1;
-    my $sock = IO::Socket::INET->new(Proto=>'udp', PeerAddr=>${MESSAGE_GROUP}, PeerPort=>$port);
+    my $sock = IO::Socket::INET->new(Proto=>'udp', PeerAddr=>${mcastGroup}, PeerPort=>${mcastPort});
     if ($sock && $sock->connected()) {
         $sock->send("{CANTATA/${idString}}${message}");
         eval { close $sock; }; undef $sock;
@@ -905,6 +905,10 @@ sub loadConfig() {
                         $pidFile=$val;
                     } elsif ($key=~ m/^(id)/ && length($val)>0) {
                         $idString=$val;
+                    } elsif ($key=~ m/^(msgPort)/) {
+                        $mcastPort=$val;
+                    } elsif ($key=~ m/^(msgGroup)/) {
+                        $mcastGroup=$val;
                     }
                 }
             }
@@ -1159,7 +1163,7 @@ sub httpServer() {
                 local $activeRules=&determineActiveRules();
                 $response="STATE:${currentStatus}\nRULES:${activeRules}\nTIME:${currentStatusTime}\n";
             } elsif ($request{URL} eq '/id') {
-                $response="${idString}";
+                $response="ID:${idString}\nGROUP:${mcastGroup}\nPORT:${mcastPort}";
             } elsif ($request{URL} eq '/list') {
                 $response = join('', &listRules($queryItems{withDetails}));
             } elsif ($request{URL} eq '/' && 1==$httpControlPage) {

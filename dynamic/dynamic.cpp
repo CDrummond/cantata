@@ -48,7 +48,6 @@ K_GLOBAL_STATIC(Dynamic, instance)
 #include <QUrlQuery>
 #endif
 #include <signal.h>
-#include <QDebug>
 
 static const QString constDir=QLatin1String("dynamic");
 static const QString constExtension=QLatin1String(".rules");
@@ -92,21 +91,21 @@ const QString Dynamic::constDateKey=QLatin1String("Date");
 const QString Dynamic::constExactKey=QLatin1String("Exact");
 const QString Dynamic::constExcludeKey=QLatin1String("Exclude");
 
-static QString constMulticastGroup=QLatin1String("239.123.123.123");
 static const char * constMulticastMsgHeader="{CANTATA/";
 const QString constStatusMsg(QLatin1String("STATUS:"));
 
-MulticastReceiver::MulticastReceiver(QObject *parent, quint16 port)
+MulticastReceiver::MulticastReceiver(QObject *parent, const QString &i, const QString &group, quint16 port)
     : QObject(parent)
+    , id(i)
 {
     socket = new QUdpSocket(this);
     socket->setProxy(QNetworkProxy(QNetworkProxy::NoProxy));
     #if QT_VERSION < 0x050000
-    socket->bind(QHostAddress::Any, port+1, QUdpSocket::ShareAddress);
+    socket->bind(QHostAddress::Any, port, QUdpSocket::ShareAddress);
     #else
-    socket->bind(QHostAddress::AnyIPv4, port+1, QAbstractSocket::ShareAddress);
+    socket->bind(QHostAddress::AnyIPv4, port, QAbstractSocket::ShareAddress);
     #endif
-    socket->joinMulticastGroup(QHostAddress(constMulticastGroup));
+    socket->joinMulticastGroup(QHostAddress(group));
     connect(socket, SIGNAL(readyRead()), this, SLOT(processMessages()));
 }
 
@@ -662,6 +661,28 @@ void Dynamic::parseStatus(const QString &response)
     }
 }
 
+void Dynamic::parseId(const QString &response)
+{
+    QStringList list=response.split("\n");
+    QString id;
+    quint16 port=0;
+    QString group;
+
+    foreach (const QString &param, list) {
+        if (param.startsWith(QLatin1String("ID:"))) {
+            id=param.mid(3);
+        } else if (param.startsWith(QLatin1String("GROUP:"))) {
+            group=param.mid(6);
+        } else if (param.startsWith(QLatin1String("PORT:"))) {
+            port=param.mid(5).toUInt();
+        }
+    }
+
+    if (!id.isEmpty() && !group.isEmpty() && 0!=port) {
+        startReceiver(id, group, port);
+    }
+}
+
 void Dynamic::checkResponse(const QString &response)
 {
     QStringList list=response.split("\n");
@@ -704,6 +725,8 @@ void Dynamic::sendCommand(const QString &cmd, const QStringList &args)
                 cmdStr=i18n("Setting active rule");
             } else if (constControlCmd==cmd) {
                 cmdStr=i18n("Stopping dynamizer");
+            } else if (constIdCmd==cmd) {
+                cmdStr=i18n("Requesting ID details");
             }
             emit error(i18n("Awaiting response for previous command. (%1)").arg(cmdStr));
         }
@@ -893,9 +916,7 @@ void Dynamic::jobFinished()
         }
         lastState.clear();
     } else if (constIdCmd==currentCommand) {
-        if (receiver) {
-            receiver->setId(response);
-        }
+        parseId(response);
         currentCommand.clear();
         currentArgs.clear();
         sendCommand(constListCmd, QStringList() << "withDetails" << "1");
@@ -922,7 +943,6 @@ void Dynamic::dynamicUrlChanged(const QString &url)
             if (timer) {
                 timer->stop();
             }
-            startReceiver();
             loadRemote();
         }
     }
@@ -937,9 +957,9 @@ void Dynamic::stopReceiver()
     }
 }
 
-void Dynamic::startReceiver()
+void Dynamic::startReceiver(const QString &id, const QString &group, quint16 port)
 {
     stopReceiver();
-    receiver=new MulticastReceiver(this, QUrl(dynamicUrl).port());
+    receiver=new MulticastReceiver(this, id, group, port);
     connect(receiver, SIGNAL(status(QString)), this, SLOT(parseStatus(QString)));
 }

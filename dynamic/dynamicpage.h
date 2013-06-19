@@ -52,6 +52,10 @@ private Q_SLOTS:
     void stop();
     void toggle();
     void running(bool status);
+    void remoteRunning(bool status);
+
+private:
+    void enableWidgets(bool enable);
 
 private:
     DynamicProxyModel proxy;

@@ -899,6 +899,7 @@ void Dynamic::pollRemoteHelper()
     currentEntry=QString();
     endResetModel();
     remoteTimer->start(5000);
+    emit remoteRunning(false);
 }
 
 void Dynamic::checkIfRemoteIsRunning()
@@ -1001,6 +1002,7 @@ void Dynamic::remoteJobFinished()
             currentCommand=Unknown;
             currentArgs.clear();
             sendCommand(List, QStringList() << "withDetails" << "1");
+            emit remoteRunning(true);
             return;
         }
     default:

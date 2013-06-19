@@ -58,6 +58,15 @@ static QString toString(const QColor &col)
     return QString("rgba(%1, %2, %3, %4)").arg(col.red()).arg(col.green()).arg(col.blue()).arg(col.alpha());
 }
 
+#ifdef ENABLE_KDE_SUPPORT
+static void getColorsFromColorScheme(KColorScheme::BackgroundRole bgRole, QColor* bg, QColor* fg)
+{
+    KColorScheme scheme(QPalette::Active, KColorScheme::Window);
+    *bg = scheme.background(bgRole).color();
+    *fg = scheme.foreground().color();
+}
+#endif
+
 void StatusLabel::setType(Type t)
 {
     if (t==type) {
@@ -67,50 +76,57 @@ void StatusLabel::setType(Type t)
     if (None==type) {
         icon->setVisible(false);
         setStyleSheet(QString());
-    } else {
-        static const double constAlpha=0.25;
-        
+    } else {        
         Icon icn;
-        QColor bg0, bg1, bg2, border;
 
         switch (type) {
-        case Error:
+        case Error: {
+            QColor bg, border, fg;
             icn=Icon("dialog-error");
-            bg1=QColor(0xeb, 0xbb, 0xbb);
-            border = bg1.darker(150);
+            #ifdef ENABLE_KDE_SUPPORT
+            getColorsFromColorScheme(KColorScheme::NegativeBackground, &bg, &fg);
+            border = KColorScheme::shade(bg, KColorScheme::DarkShade);
+            #else
+            bg=QColor(0xeb, 0xbb, 0xbb);
+            fg=Qt::black;
+            border = Qt::red;
+            #endif
+            setStyleSheet(QString(".QFrame {"
+                                      "background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 %1, stop: 0.1 %2, stop: 1.0 %3);"
+                                      "border-radius: 3px;"
+                                      "border: 1px solid %4;"
+                                      "margin: %5px;"
+                                      "}"
+                                      ".QLabel { color: %6; }")
+                            .arg(toString(bg))
+                            .arg(toString(bg.lighter(110)))
+                            .arg(toString(bg.darker(110)))
+                            .arg(toString(border))
+                                // DefaultFrameWidth returns the size of the external margin + border width. We know our border is 1px,
+                                // so we subtract this from the frame normal QStyle FrameWidth to get our margin
+                            .arg(style()->pixelMetric(QStyle::PM_DefaultFrameWidth, 0, this) -1)
+                            .arg(toString(fg)));
             break;
+        }
         case Locked:
             icn=Icon("object-locked");
             if (icn.isNull()) {
                 icn=Icon("locked");
             }
-            bg1 = palette().highlight().color();
-            border = bg1.darker(150);
+            setStyleSheet(QString(".QFrame {"
+                                      "border-radius: 3px;"
+                                      "border: 1px solid %1;"
+                                      "margin: %2px;"
+                                      "}")
+                            .arg(toString(palette().highlight().color()))
+                                // DefaultFrameWidth returns the size of the external margin + border width. We know our border is 1px,
+                                // so we subtract this from the frame normal QStyle FrameWidth to get our margin
+                            .arg(style()->pixelMetric(QStyle::PM_DefaultFrameWidth, 0, this) -1));
         default:
             break;
         }
 
-        bg0 = bg1.lighter(110);
-        bg2 = bg1.darker(110);
-        bg0.setAlphaF(constAlpha);
-        bg1.setAlphaF(constAlpha);
-        bg2.setAlphaF(constAlpha);
-        border.setAlphaF(constAlpha*2.5);
-        
         icon->setPixmap(icn.pixmap(iconSize, iconSize));
         icon->setVisible(true);
-        setStyleSheet(QString(".QFrame {"
-                                  "background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 %1, stop: 0.1 %2, stop: 1.0 %3);"
-                                  "border-radius: 3px;"
-                                  "border: 1px solid %4;"
-                                  "margin: %5px;"
-                                  "}")
-                        .arg(toString(bg0))
-                        .arg(toString(bg1))
-                        .arg(toString(bg2))
-                        .arg(toString(border))
-                            // DefaultFrameWidth returns the size of the external margin + border width. We know our border is 1px,
-                            // so we subtract this from the frame normal QStyle FrameWidth to get our margin
-                        .arg(style()->pixelMetric(QStyle::PM_DefaultFrameWidth, 0, this) -1));
     }
 }

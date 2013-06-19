@@ -180,6 +180,7 @@ void MulticastReceiver::processMessages()
 Dynamic::Dynamic()
     : localTimer(0)
     , remoteTimer(0)
+    , remotePollingEnabled(false)
     , statusTime(1)
     , currentJob(0)
     , currentCommand(Unknown)
@@ -486,6 +487,17 @@ bool Dynamic::isRunning()
     int pid=getPid();
     return pid ? 0==::kill(pid, 0) : false;
     #endif
+}
+
+void Dynamic::enableRemotePolling(bool e)
+{
+    remotePollingEnabled=e;
+    if (remoteTimer && remoteTimer->isActive()) {
+        if (remotePollingEnabled) {
+            checkIfRemoteIsRunning();
+        }
+        remoteTimer->start(remotePollingEnabled ? 2000 : 30000);
+    }
 }
 
 int Dynamic::getPid() const
@@ -898,14 +910,16 @@ void Dynamic::pollRemoteHelper()
     entryList.clear();
     currentEntry=QString();
     endResetModel();
-    remoteTimer->start(5000);
+    remoteTimer->start(remotePollingEnabled ? 2000 : 30000);
     emit remoteRunning(false);
 }
 
 void Dynamic::checkIfRemoteIsRunning()
 {
     if (isRemote() && entryList.isEmpty()) {
-        sendCommand(Id);
+        if (remotePollingEnabled) {
+            sendCommand(Id);
+        }
     } else if (remoteTimer) {
         remoteTimer->stop();
     }

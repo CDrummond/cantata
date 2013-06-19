@@ -201,3 +201,15 @@ void DynamicPage::enableWidgets(bool enable)
     controls->setEnabled(enable);
     view->setEnabled(enable);
 }
+
+void DynamicPage::showEvent(QShowEvent *e)
+{
+    Dynamic::self()->enableRemotePolling(true);
+    QWidget::showEvent(e);
+}
+
+void DynamicPage::hideEvent(QHideEvent *e)
+{
+    Dynamic::self()->enableRemotePolling(false);
+    QWidget::hideEvent(e);
+}

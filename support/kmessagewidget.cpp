@@ -96,7 +96,11 @@ void KMsgWidgetPrivate::init(KMsgWidget *q_ptr)
     KAction* closeAction = KStandardAction::close(q, SLOT(animatedHide()), q);
     #else
     QAction* closeAction = new QAction(q);
-    closeAction->setIcon(Icon("dialog-close"));
+    Icon icon=Icon("dialog-close");
+    if (icon.isNull()) {
+        icon=Icon("window-close");
+    }
+    closeAction->setIcon(icon);
     QObject::connect(closeAction, SIGNAL(triggered()), q, SLOT(animatedHide()));
     #endif
 
@@ -256,7 +260,7 @@ static void getColorsFromColorScheme(KColorScheme::BackgroundRole bgRole, QColor
     *fg = scheme.foreground().color();
 }
 #endif
-
+#include <QDebug>
 void KMsgWidget::setMessageType(KMsgWidget::MessageType type)
 {
     d->messageType = type;
@@ -335,7 +339,7 @@ void KMsgWidget::setMessageType(KMsgWidget::MessageType type)
     #ifdef ENABLE_KDE_SUPPORT
     const int size = KIconLoader::global()->currentSize(KIconLoader::MainToolbar);
     #else
-    const int size = 22;
+    const int size = Icon::stdSize(fontMetrics().height()*1.5);
     #endif
     d->iconLabel->setPixmap(icon.pixmap(size));
 }

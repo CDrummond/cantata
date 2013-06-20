@@ -35,11 +35,13 @@ use threads::shared;
 use URI::Escape;
 use Encode;
 use Sys::Hostname;
+use Socket qw(:all);
 
 # UDP multicast message sender - used to communicate with Cantata when cantata-dynamic is run in server mode!
 my $serverSender : shared = dirname(__FILE__) . '/message-sender';
 my $mcastGroup : shared = '239.123.123.123';
 my $mcastPort : shared = 6602;
+my $mcastTtl : shared = 1;
 
 my $isServerMode : shared =0;
 my $dynamicIsActive : shared =1;
@@ -492,6 +494,7 @@ sub sendServerMessage() {
     }
     my $sock = IO::Socket::INET->new(Proto=>'udp', PeerAddr=>${mcastGroup}, PeerPort=>${mcastPort});
     if ($sock && $sock->connected()) {
+        setsockopt($sock, IPPROTO_IP, IP_TTL, $mcastTtl);
         $sock->send("{CANTATA/${idString}}${message}");
         eval { close $sock; }; undef $sock;
     }
@@ -909,6 +912,8 @@ sub loadConfig() {
                         $mcastPort=$val;
                     } elsif ($key=~ m/^(msgGroup)/) {
                         $mcastGroup=$val;
+                    } elsif ($key=~ m/^(msgTtl)/ && length($val)>0 && $val>0 && $val<128) {
+                        $mcastTtl=$val;
                     }
                 }
             }

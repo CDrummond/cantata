@@ -271,6 +271,7 @@ following parameters (shown here with the default values):
     id=${hostname}
     msgGroup=239.123.123.123
     msgPort=6602
+    msgTtl
 
 'pidFile' When started, the script will store its PID within the file
 configured here. This is then used to detect if the script is running, etc.
@@ -298,6 +299,9 @@ messages came from this instance.
 'msgGroup' is the UDP multicast group used to send status messages.
 
 'msgPort' is the UDP multicast port used to send status messages.
+
+'msgTtl' sets the UDP time-to-live parameter. A value of 1 restricts the
+message to the local network.
 
 
 Installation

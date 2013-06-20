@@ -416,16 +416,16 @@ void ContextWidget::paintEvent(QPaintEvent *e)
             p.setOpacity(0.15*(fadeValue/100.0));
             p.fillRect(r, QBrush(newBackdrop));
         }
-        if (!backdropText.isEmpty() && isWide) {
-            int pad=fontMetrics().height()*2;
-            QFont f("Sans", font().pointSize()*12);
-            f.setBold(true);
-            p.setFont(f);
-            p.setOpacity(0.15);
-            QTextOption textOpt(Qt::AlignBottom|(Qt::RightToLeft==layoutDirection() ? Qt::AlignRight : Qt::AlignLeft));
-            textOpt.setWrapMode(QTextOption::NoWrap);
-            p.drawText(QRect(pad, pad, width(), height()-(2*pad)), backdropText, textOpt);
-        }
+//        if (!backdropText.isEmpty() && isWide) {
+//            int pad=fontMetrics().height()*2;
+//            QFont f("Sans", font().pointSize()*12);
+//            f.setBold(true);
+//            p.setFont(f);
+//            p.setOpacity(0.15);
+//            QTextOption textOpt(Qt::AlignBottom|(Qt::RightToLeft==layoutDirection() ? Qt::AlignRight : Qt::AlignLeft));
+//            textOpt.setWrapMode(QTextOption::NoWrap);
+//            p.drawText(QRect(pad, pad, width(), height()-(2*pad)), backdropText, textOpt);
+//        }
     }
     if (!darkBackground) {
         QWidget::paintEvent(e);
@@ -446,7 +446,7 @@ void ContextWidget::setFade(float value)
 void ContextWidget::updateImage(const QImage &img, bool created)
 {
     DBUG << img.isNull() << newBackdrop.isNull();
-    backdropText=currentArtist;
+//    backdropText=currentArtist;
     oldBackdrop=newBackdrop;
     newBackdrop=img;
     animator.stop();

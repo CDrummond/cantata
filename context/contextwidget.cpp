@@ -185,7 +185,7 @@ ContextWidget::ContextWidget(QWidget *parent)
     artist = new ArtistView(this);
     album = new AlbumView(this);
     song = new SongView(this);
-    minWidth=album->picSize().width()*1.9;
+    minWidth=album->picSize().width()*2.5;
 
     artist->addEventFilter(this);
     album->addEventFilter(this);

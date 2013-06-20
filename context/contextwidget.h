@@ -125,7 +125,7 @@ private:
     ThinSplitter *splitter;
     QComboBox *viewCombo;
     BackdropCreator *creator;
-    QString backdropText;
+//    QString backdropText;
     QSet<QString> backdropAlbums;
     QSize minBackdropSize;
 };

@@ -1,3 +1,6 @@
+About
+=====
+
 This folder contains example init scripts, and an example configuration file
 for server mode cantata-dynamic. cantata-dynamic should be started/stopped with
 MPD - as MPD is required for it to function.
@@ -21,3 +24,11 @@ cantata-dynamic.arch
 Is an example init script for ArchLinux distributions. This should be renamed
 cantata-dynamic, and copied to /etc/rc.d. Then edit /etc/rc.conf and add 
 cantata-dynamic to DAEMONS
+
+
+cantata-dynamic.systemd
+-----------------------
+Is an example SystemD script. This should be renamed to cantata-dynamic.service
+and copied to /usr/lib/systemd/system
+
+This script was contributed by Alex Tsitsimpis

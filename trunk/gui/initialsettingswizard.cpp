@@ -75,10 +75,10 @@ InitialSettingsWizard::InitialSettingsWizard(QWidget *p)
     filesPage->setBackground(Icons::self()->filesIcon);
     finishedPage->setBackground(Icon("dialog-ok"));
 
+    QSize sz=size();
     // Adjust size for high-DPI setups...
-    if (fontMetrics().height()>20) {
-        QSize sz=size();
-        qWarning() << sz.width() << sz.height();
+    bool highDpi=fontMetrics().height()>20;
+    if (highDpi) {
         foreach (int id, pageIds()) {
             QWizardPage *p=page(id);
             p->adjustSize();
@@ -90,14 +90,12 @@ InitialSettingsWizard::InitialSettingsWizard(QWidget *p)
                 sz.setHeight(ps.height());
             }
         }
-
-        // For some reason, the above seems to give us very tall dialogs. If this is the case,
-        // then try to make it square-ish again...
-        if (sz.height()>(sz.width()+200)) {
-            sz+=QSize(150, -150);
-        }
-        resize(sz);
     }
+
+    if (sz.height()>(sz.width()*(highDpi ? 1.125 : 1.2))) {
+        sz+=QSize(sz.height()*(highDpi ? 0.4 : 0.25), -(sz.height()*(highDpi ? 0.1 : 0.25)));
+    }
+    resize(sz);
 }
 
 InitialSettingsWizard::~InitialSettingsWizard()

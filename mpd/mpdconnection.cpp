@@ -140,9 +140,9 @@ QString MPDConnectionDetails::description() const
 {
     QString n=name.isEmpty() ? i18n("Default") : name;
     if (hostname.startsWith('/')) {
-        return i18nc("name (host)", "%1 (%2)").arg(n).arg(hostname);
+        return i18nc("name (host)", "\"%1\"").arg(n);
     } else {
-        return i18nc("name (host:port)", "%1 (%2:%3)").arg(n).arg(hostname).arg(port);
+        return i18nc("name (host:port)", "\"%1\" (%2:%3)").arg(n).arg(hostname).arg(port);
     }
 }
 

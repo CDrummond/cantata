@@ -2020,9 +2020,8 @@ void MainWindow::updateStatus(MPDStatus * const status)
 
     // Check if song has changed or we're playing again after being stopped
     // and update song info if needed
-    if ((MPDState_Inactive==lastState && MPDState_Inactive!=status->state())
-            || (MPDState_Stopped==lastState && MPDState_Playing==status->state())
-            || lastSongId != status->songId()) {
+    if (MPDState_Inactive!=status->state() &&
+        (MPDState_Inactive==lastState || (MPDState_Stopped==lastState && MPDState_Playing==status->state()) || lastSongId != status->songId())) {
         emit currentSong();
     }
     // Update status info

@@ -39,7 +39,7 @@
     <item>
      <widget class="QLabel" name="label_2">
       <property name="text">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Cantata is a client for Music Player Daemon (MPD). In order for Cantata to function you must already have MPD setup, configured, and running on either your local machine or a machnie that is accessible to you.&lt;/p&gt;&lt;p&gt;For more information on MPD itself, please refer to the MPD website &lt;a href=&quot;http://mpd.wikia.com&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://mpd.wikia.com&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;br/&gt;&lt;p&gt;This 'wizard' will guide you through the basic settings required for Cantata to function correctly.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Cantata is a client for Music Player Daemon (MPD). In order for Cantata to function you must already have MPD setup, configured, and running on either your local machine or a machine that is accessible to you.&lt;/p&gt;&lt;p&gt;For more information on MPD itself, please refer to the MPD website &lt;a href=&quot;http://mpd.wikia.com&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://mpd.wikia.com&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;br/&gt;&lt;p&gt;This 'wizard' will guide you through the basic settings required for Cantata to function correctly.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="wordWrap">
        <bool>true</bool>

@@ -28,6 +28,7 @@
 #endif
 #include <QCheckBox>
 #include <QComboBox>
+#include <QRadioButton>
 #include <QEvent>
 
 BuddyLabel::BuddyLabel(const QString &text, QWidget *p, QWidget *b)
@@ -77,6 +78,11 @@ void BuddyLabel::mouseReleaseEvent(QMouseEvent *)
         QCheckBox *cb=qobject_cast<QCheckBox*>(buddy());
         if (cb) {
             cb->setChecked(!cb->isChecked());
+            return;
+        }
+        QRadioButton *rb=qobject_cast<QRadioButton*>(buddy());
+        if (rb) {
+            rb->setChecked(!rb->isChecked());
             return;
         }
         QComboBox *combo=qobject_cast<QComboBox*>(buddy());

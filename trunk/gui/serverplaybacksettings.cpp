@@ -111,6 +111,8 @@ void ServerPlaybackSettings::updateOutpus(const QList<Output> &outputs)
         item->setCheckState(output.enabled ? Qt::Checked : Qt::Unchecked);
         item->setData(Qt::UserRole, output.id);
     }
+    outputFrame->setVisible(view->count()>1);
+    padding->setVisible(view->count()<=1);
 }
 
 void ServerPlaybackSettings::mpdConnectionStateChanged(bool c)
@@ -126,7 +128,7 @@ void ServerPlaybackSettings::mpdConnectionStateChanged(bool c)
     #endif
     messageIcon->setPixmap(Icon(c ? "dialog-information" : "dialog-warning").pixmap(messageIcon->minimumSize()));
     if (c) {
-        messageLabel->setText(i18n("<i><b>Connected to %1</b><br/>The entries below apply to the currently connected MPD instance.</i>")
+        messageLabel->setText(i18n("<i><b>Connected to %1</b><br/>The entries below apply to the currently connected MPD collection.</i>")
                               .arg(MPDConnection::self()->getDetails().description()));
     } else {
         messageLabel->setText(i18n("<i><b>Not Connected.</b><br/>The entries below cannot be modified, as Cantata is not connected to MPD.</i>"));

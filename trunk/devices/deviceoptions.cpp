@@ -246,7 +246,7 @@ void DeviceOptions::load(const QString &group, bool isMpd)
     #endif
 }
 
-void DeviceOptions::save(const QString &group, bool isMpd, bool saveTrans)
+void DeviceOptions::save(const QString &group, bool isMpd, bool saveTrans) const
 {
     #ifdef ENABLE_KDE_SUPPORT
     KConfigGroup cfg(KGlobal::config(), !isMpd || group.isEmpty() || KGlobal::config()->hasGroup(group) ? group : constMpdGroup);

@@ -75,7 +75,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
     files->load();
     interface->load();
     context->load();
-    widget->addPage(server, i18n("Connection"), Icons::self()->libraryIcon, i18n("Connection Settings"));
+    widget->addPage(server, i18n("Collection"), Icons::self()->libraryIcon, i18n("Collection Settings"));
     widget->addPage(serverplayback, i18n("Output"), Icons::self()->speakerIcon, i18n("Output Settings"));
     widget->addPage(playback, i18n("Playback"), Icon("media-playback-start"), i18n("Playback Settings"));
     widget->addPage(files, i18n("Files"), Icons::self()->filesIcon, i18n("File Settings"));
@@ -119,7 +119,6 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
     setMainWidget(widget);
     setAttribute(Qt::WA_DeleteOnClose);
     connect(server, SIGNAL(connectTo(const MPDConnectionDetails &)), SIGNAL(connectTo(const MPDConnectionDetails &)));
-    connect(server, SIGNAL(disconnectFromMpd()), MPDConnection::self(), SLOT(disconnectMpd()));
     connect(files, SIGNAL(reloadStreams()), SIGNAL(reloadStreams()));
     setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
 }
@@ -162,6 +161,7 @@ void PreferencesDialog::slotButtonClicked(int button)
         writeSettings();
         break;
     case Cancel:
+        server->cancel();
         reject();
         // Need to call this - if not, when dialog is closed by window X control, it is not deleted!!!!
         Dialog::slotButtonClicked(button);

@@ -26,10 +26,18 @@
 
 #include "ui_serversettings.h"
 #include "mpdconnection.h"
+#include "deviceoptions.h"
 
 class ServerSettings : public QWidget, private Ui::ServerSettings
 {
     Q_OBJECT
+
+    struct Collection {
+        Collection(const MPDConnectionDetails &d=MPDConnectionDetails(), const DeviceOptions &n=DeviceOptions())
+            : details(d), namingOpts(n) { }
+        MPDConnectionDetails details;
+        DeviceOptions namingOpts;
+    };
 
 public:
     ServerSettings(QWidget *p);
@@ -37,25 +45,29 @@ public:
 
     void load();
     void save();
+    void cancel();
 
 Q_SIGNALS:
     void connectTo(const MPDConnectionDetails &details);
-    void disconnectFromMpd();
 
 private Q_SLOTS:
     void showDetails(int index);
-    void mpdConnectionStateChanged(bool c);
-    void toggleConnection();
-    void saveAs();
+    void add();
     void remove();
+    void nameChanged();
+    void basicDirChanged();
 
 private:
     void setDetails(const MPDConnectionDetails &details);
     MPDConnectionDetails getDetails() const;
-    void enableWidgets(bool e);
+    QString generateName(int ignore=-1) const;
 
 private:
+    QList<Collection> collections;
+    bool haveBasicCollection;
+    Collection prevBasic;
     bool isCurrentConnection;
+    int prevIndex;
 };
 
 #endif

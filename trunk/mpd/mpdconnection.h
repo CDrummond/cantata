@@ -132,6 +132,7 @@ private:
 
 struct MPDConnectionDetails {
     MPDConnectionDetails();
+    QString getName() const;
     QString description() const;
     bool isLocal() const { return hostname.startsWith('/'); }
     bool isEmpty() const { return hostname.isEmpty() || (!isLocal() && 0==port); }
@@ -185,7 +186,7 @@ public:
 
 public Q_SLOTS:
     void reconnect();
-    void setDetails(const MPDConnectionDetails &det);
+    void setDetails(const MPDConnectionDetails &d);
     void disconnectMpd();
     // Current Playlist
     void add(const QStringList &files, bool replace, quint8 priority);

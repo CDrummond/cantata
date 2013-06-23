@@ -21,36 +21,42 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef INITIALSETTINGSWIZARD_H
-#define INITIALSETTINGSWIZARD_H
+#ifndef MPD_USER_H
+#define MPD_USER_H
 
-#include "ui_initialsettingswizard.h"
+#include <QString>
 #include "mpdconnection.h"
-#include <QWizard>
 
-class InitialSettingsWizard : public QWizard, public Ui::InitialSettingsWizard
+class MPDUser
 {
-    Q_OBJECT
-
 public:
-    InitialSettingsWizard(QWidget *p=0);
-    virtual ~InitialSettingsWizard();
-    MPDConnectionDetails getDetails();
+    static MPDUser * self();
 
-Q_SIGNALS:
-    // These are for communicating with MPD object (which is in its own thread, so need to talk via signal/slots)
-    void setDetails(const MPDConnectionDetails &det);
+    static const QString constName;
+    static QString translatedName();
 
-private Q_SLOTS:
-    void connectToMpd();
-    void mpdConnectionStateChanged(bool c);
-    void showError(const QString &message, bool showActions);
-    void pageChanged(int p);
-    void accept();
-    void controlNextButton();
+    MPDUser();
+
+    bool isSupported();
+    bool isRunning();
+    void start();
+    void stop();
+    void setMusicFolder(const QString &folder);
+    // Remove all files and folders (apart from Music folder!) associated with use MPD instance...
+    void cleanup();
+
+    const MPDConnectionDetails & details(bool createFiles=false) { init(createFiles); return det; }
+    void setDetails(const MPDConnectionDetails &d) { det=d; }
 
 private:
-    bool singleUserSupported;
+    void init(bool create);
+    int getPid();
+    bool controlMpd(bool stop);
+
+private:
+    QString mpdExe;
+    QString pidFileName;
+    MPDConnectionDetails det;
 };
 
 #endif

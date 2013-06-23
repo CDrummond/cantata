@@ -260,7 +260,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(restoreAction, SIGNAL(triggered(bool)), this, SLOT(restoreWindow()));
 
     connectAction = ActionCollection::get()->createAction("connect", i18n("Connect"), Icons::self()->connectIcon);
-    connectionsAction = ActionCollection::get()->createAction("connections", i18n("Connection"), "network-server");
+    connectionsAction = ActionCollection::get()->createAction("connections", i18n("Collection"), "network-server");
     outputsAction = ActionCollection::get()->createAction("outputs", i18n("Outputs"), Icons::self()->speakerIcon);
     prevTrackAction = ActionCollection::get()->createAction("prevtrack", i18n("Previous Track"), Icons::self()->toolbarPrevIcon);
     nextTrackAction = ActionCollection::get()->createAction("nexttrack", i18n("Next Track"), Icons::self()->toolbarNextIcon);

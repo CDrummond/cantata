@@ -27,6 +27,7 @@
 #include "utils.h"
 #include "icon.h"
 #include "icons.h"
+#include "mpduser.h"
 #include <QDir>
 #include <QDebug>
 
@@ -39,6 +40,7 @@ enum Pages {
 
 InitialSettingsWizard::InitialSettingsWizard(QWidget *p)
     : QWizard(p)
+    , singleUserSupported(MPDUser::self()->isSupported())
 {
     setupUi(this);
     connect(this, SIGNAL(currentIdChanged(int)), SLOT(pageChanged(int)));
@@ -46,6 +48,7 @@ InitialSettingsWizard::InitialSettingsWizard(QWidget *p)
     connect(MPDConnection::self(), SIGNAL(stateChanged(bool)), SLOT(mpdConnectionStateChanged(bool)));
     connect(MPDConnection::self(), SIGNAL(error(const QString &, bool)), SLOT(showError(const QString &, bool)));
     connect(connectButton, SIGNAL(clicked(bool)), SLOT(connectToMpd()));
+    connect(basicDir, SIGNAL(textChanged(QString)), SLOT(controlNextButton()));
     MPDConnection::self()->start();
     statusLabel->setText(i18n("Not Connected"));
 
@@ -75,12 +78,16 @@ InitialSettingsWizard::InitialSettingsWizard(QWidget *p)
     filesPage->setBackground(Icons::self()->filesIcon);
     finishedPage->setBackground(Icon("dialog-ok"));
 
+    introStack->setCurrentIndex(singleUserSupported ? 1 : 0);
+    basic->setChecked(singleUserSupported);
+    advanced->setChecked(!singleUserSupported);
+
     QSize sz=size();
     // Adjust size for high-DPI setups...
     bool highDpi=fontMetrics().height()>20;
     if (highDpi) {
         foreach (int id, pageIds()) {
-            QWizardPage *p=page(id);
+            QWizardPage *p=QWizard::page(id);
             p->adjustSize();
             QSize ps=p->size();
             if (ps.width()>sz.width()) {
@@ -104,6 +111,10 @@ InitialSettingsWizard::~InitialSettingsWizard()
 
 MPDConnectionDetails InitialSettingsWizard::getDetails()
 {
+    if (basic->isChecked()) {
+        MPDUser::self()->setMusicFolder(basicDir->text());
+        return MPDUser::self()->details(true);
+    }
     MPDConnectionDetails det;
     det.hostname=host->text().trimmed();
     det.port=port->value();
@@ -136,6 +147,12 @@ void InitialSettingsWizard::showError(const QString &message, bool showActions)
 void InitialSettingsWizard::pageChanged(int p)
 {
     if (PAGE_CONNECTION==p) {
+        connectionStack->setCurrentIndex(basic->isChecked() ? 1 : 0);
+        if (basic->isChecked() && basicDir->text().isEmpty()) {
+            QString dir=QDir::homePath()+"/Music";
+            dir=dir.replace("//", "/");
+            basicDir->setText(dir);
+        }
         controlNextButton();
         return;
     }
@@ -154,12 +171,22 @@ void InitialSettingsWizard::pageChanged(int p)
 
 void InitialSettingsWizard::controlNextButton()
 {
-    bool isOk=MPDConnection::self()->isConnected();
+    bool isOk=false;
 
-    if (isOk) {
-       MPDConnectionDetails det=getDetails();
-       MPDConnectionDetails mpdDet=MPDConnection::self()->getDetails();
-       isOk=det.hostname==mpdDet.hostname && (det.isLocal() || det.port==mpdDet.port);
+    if (basic->isChecked()) {
+        isOk=!basicDir->text().isEmpty();
+        if (isOk) {
+            QDir d(basicDir->text());
+            isOk=d.exists() && d.isReadable();
+        }
+    } else {
+        MPDConnection::self()->isConnected();
+
+        if (isOk) {
+            MPDConnectionDetails det=getDetails();
+            MPDConnectionDetails mpdDet=MPDConnection::self()->getDetails();
+            isOk=det.hostname==mpdDet.hostname && (det.isLocal() || det.port==mpdDet.port);
+        }
     }
 
     button(NextButton)->setEnabled(isOk);
@@ -171,6 +198,13 @@ void InitialSettingsWizard::accept()
     Settings::self()->saveStoreCoversInMpdDir(storeCoversInMpdDir->isChecked());
     Settings::self()->saveStoreLyricsInMpdDir(storeLyricsInMpdDir->isChecked());
     Settings::self()->saveStoreStreamsInMpdDir(storeStreamsInMpdDir->isChecked());
+
+    if (basic->isChecked()) {
+        Settings::self()->saveCurrentConnection(MPDUser::constName);
+        emit setDetails(MPDUser::self()->details());
+    } else {
+        MPDUser::self()->cleanup();
+    }
     Settings::self()->save(true);
     QDialog::accept();
 }

@@ -1293,7 +1293,7 @@ void MainWindow::updateConnectionsMenu()
             QString current=Settings::self()->currentConnection();
             int i=Qt::Key_1;
             foreach (const MPDConnectionDetails &d, connections) {
-                QAction *act=menu->addAction(d.name.isEmpty() ? i18n("Default") : d.name, this, SLOT(changeConnection()));
+                QAction *act=menu->addAction(d.getName(), this, SLOT(changeConnection()));
                 act->setData(d.name);
                 act->setCheckable(true);
                 act->setChecked(d.name==current);
@@ -1747,11 +1747,8 @@ void MainWindow::updateWindowTitle()
     MPDStatus * const status = MPDStatus::self();
     bool stopped=MPDState_Stopped==status->state() || MPDState_Inactive==status->state();
     bool multipleConnections=connectionsAction->isVisible();
-    QString connection=MPDConnection::self()->getDetails().name;
+    QString connection=MPDConnection::self()->getDetails().getName();
 
-    if (multipleConnections && connection.isEmpty()) {
-        connection=i18n("Default");
-    }
     if (stopped) {
         setWindowTitle(multipleConnections ? i18n("Cantata (%1)").arg(connection) : "Cantata");
     } else if (current.isStream() && !current.isCantataStream() && !current.isCdda()) {

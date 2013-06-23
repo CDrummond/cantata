@@ -26,6 +26,7 @@
 
 #include "mpdconnection.h"
 #include "mpdparseutils.h"
+#include "mpduser.h"
 #include "localize.h"
 #include "utils.h"
 #ifdef ENABLE_KDE_SUPPORT
@@ -132,17 +133,23 @@ QString MPDConnection::Response::getError()
 }
 
 MPDConnectionDetails::MPDConnectionDetails()
-    : dirReadable(false)
+    : port(6600)
+    , dynamizerPort(0)
+    , dirReadable(false)
 {
+}
+
+QString MPDConnectionDetails::getName() const
+{
+    return name.isEmpty() ? i18n("Default") : (name==MPDUser::constName ? MPDUser::translatedName() : name);
 }
 
 QString MPDConnectionDetails::description() const
 {
-    QString n=name.isEmpty() ? i18n("Default") : name;
     if (hostname.startsWith('/')) {
-        return i18nc("name (host)", "\"%1\"").arg(n);
+        return i18nc("name (host)", "\"%1\"").arg(getName());
     } else {
-        return i18nc("name (host:port)", "\"%1\" (%2:%3)").arg(n).arg(hostname).arg(port);
+        return i18nc("name (host:port)", "\"%1\" (%2:%3)").arg(getName()).arg(hostname).arg(port);
     }
 }
 
@@ -195,6 +202,10 @@ void MPDConnection::start()
 
 void MPDConnection::stop()
 {
+    if (details.name==MPDUser::constName && Settings::self()->stopOnExit()) {
+        MPDUser::self()->stop();
+    }
+
     if (thread) {
         thread->stop();
         thread=0;
@@ -358,8 +369,10 @@ void MPDConnection::reconnect()
     }
 }
 
-void MPDConnection::setDetails(const MPDConnectionDetails &det)
+void MPDConnection::setDetails(const MPDConnectionDetails &d)
 {
+    bool isUser=d.name==MPDUser::constName;
+    const MPDConnectionDetails &det=isUser ? MPDUser::self()->details() : d;
     bool changedDir=det.dir!=details.dir;
     bool diffName=det.name!=details.name;
     bool diffDetails=det!=details;
@@ -372,6 +385,9 @@ void MPDConnection::setDetails(const MPDConnectionDetails &det)
         DBUG << "call connectToMPD";
         unmuteVol=-1;
         toggleStopAfterCurrent(false);
+        if (isUser) {
+            MPDUser::self()->start();
+        }
         switch (connectToMPD()) {
         case Success:
             getStatus();

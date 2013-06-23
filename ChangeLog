@@ -90,6 +90,8 @@
 56. If using server mode cantata-dynamic and this is not started, then show an
     error message in dynamic page.
 57. Fix keyboard shortcuts of tab pages.
+58. Add support for a simple profile where MPD is started by cantata, and
+    the only settings are the music folder and cover names.
 
 1.0.3
 -----

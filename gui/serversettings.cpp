@@ -28,6 +28,7 @@
 #include "messagebox.h"
 #include "icons.h"
 #include "musiclibrarymodel.h"
+#include "mpduser.h"
 #include <QDir>
 #include <QComboBox>
 #include <QPushButton>
@@ -52,8 +53,21 @@ class CoverNameValidator : public QValidator
     }
 };
 
+class CollectionNameValidator : public QValidator
+{
+    public:
+
+    CollectionNameValidator(QObject *parent) : QValidator(parent) { }
+
+    State validate(QString &input, int &) const
+    {
+        return input.startsWith(MPDUser::constName) ? Invalid : Acceptable;
+    }
+};
+
 ServerSettings::ServerSettings(QWidget *p)
     : QWidget(p)
+    , haveBasicCollection(false)
 {
     setupUi(this);
     #if defined ENABLE_DEVICES_SUPPORT
@@ -61,15 +75,15 @@ ServerSettings::ServerSettings(QWidget *p)
                                   i18n("<i> This folder will also be used to locate music files "
                                        "for transferring to (and from) devices.</i>"));
     #endif
-    connect(MPDConnection::self(), SIGNAL(stateChanged(bool)), this, SLOT(mpdConnectionStateChanged(bool)));
     connect(combo, SIGNAL(activated(int)), SLOT(showDetails(int)));
-    connect(saveButton, SIGNAL(clicked(bool)), SLOT(saveAs()));
     connect(removeButton, SIGNAL(clicked(bool)), SLOT(remove()));
-    connect(connectButton, SIGNAL(clicked(bool)), SLOT(toggleConnection()));
-    if (style()->styleHint(QStyle::SH_DialogButtonBox_ButtonsHaveIcons)) {
-        saveButton->setIcon(Icon("document-save-as"));
-        removeButton->setIcon(Icon("edit-delete"));
-    }
+    connect(addButton, SIGNAL(clicked(bool)), SLOT(add()));
+    connect(name, SIGNAL(textChanged(QString)), SLOT(nameChanged()));
+    connect(basicDir, SIGNAL(textChanged(QString)), SLOT(basicDirChanged()));
+    addButton->setIcon(Icon("list-add"));
+    removeButton->setIcon(Icon("list-remove"));
+    addButton->setAutoRaise(true);
+    removeButton->setAutoRaise(true);
 
     dynamizerPort->setSpecialValueText(i18n("Not Used"));
     #if defined Q_OS_WIN
@@ -93,177 +107,241 @@ ServerSettings::ServerSettings(QWidget *p)
 
     coverName->setToolTip(i18n("<p>Filename (without extension) to save downloaded covers as.<br/>If left blank 'cover' will be used.<br/><br/>"
                                "<i>%artist% will be replaced with album artist of the current song, and %album% will be replaced with the album name.</i></p>"));
+    basicCoverName->setToolTip(coverName->toolTip());
+    basicCoverNameLabel->setToolTip(coverName->toolTip());
     coverNameLabel->setToolTip(coverName->toolTip());
     coverName->setValidator(new CoverNameValidator(this));
+    basicCoverName->setValidator(new CoverNameValidator(this));
+    name->setValidator(new CollectionNameValidator(this));
 }
 
 void ServerSettings::load()
 {
     QList<MPDConnectionDetails> all=Settings::self()->allConnections();
     QString currentCon=Settings::self()->currentConnection();
-    MPDConnectionDetails current=MPDConnection::self()->getDetails();
 
     qSort(all);
     combo->clear();
     int idx=0;
-    int cur=0;
+    haveBasicCollection=false;
     foreach (const MPDConnectionDetails &d, all) {
-        combo->addItem(d.name.isEmpty() ? i18n("Default") : d.name, d.name);
+        combo->addItem(d.getName(), d.name);
         if (d.name==currentCon) {
-            cur=idx;
+            prevIndex=idx;
         }
         idx++;
+        if (d.name==MPDUser::constName) {
+            haveBasicCollection=true;
+            prevBasic=d;
+        }
+        DeviceOptions opts;
+        opts.load(MPDConnectionDetails::configGroupName(d.name), true);
+        collections.append(Collection(d, opts));
     }
-    combo->setCurrentIndex(cur);
-    showDetails(cur);
+    combo->setCurrentIndex(prevIndex);
+    setDetails(collections.at(prevIndex).details);
+    removeButton->setEnabled(combo->count()>1);
 }
 
 void ServerSettings::save()
 {
-    MPDConnectionDetails details=getDetails();
-    Settings::self()->saveConnectionDetails(details);
-    MusicLibraryModel::cleanCache();
-    Settings::self()->saveCurrentConnection(details.name);
+    if (combo->count()<1) {
+        return;
+    }
+
+    Collection current=collections.at(combo->currentIndex());
+    current.details=getDetails();
+    collections.replace(combo->currentIndex(), current);
+
+    QList<MPDConnectionDetails> existingInConfig=Settings::self()->allConnections();
+    QList<Collection> toAdd;
+
+    foreach (const Collection &c, collections) {
+        bool found=false;
+        for (int i=0; i<existingInConfig.count(); ++i) {
+            MPDConnectionDetails e=existingInConfig.at(i);
+            if (e.name==c.details.name) {
+                existingInConfig.removeAt(i);
+                found=true;
+                if (c.details.hostname!=e.hostname || c.details.port!=e.port || c.details.password!=e.password ||
+                    c.details.dir!=e.dir || c.details.dynamizerPort!=e.dynamizerPort || c.details.coverName!=e.coverName) {
+                    toAdd.append(c);
+                }
+            }
+        }
+        if (!found) {
+            toAdd.append(c);
+        }
+        if (c.details.name==MPDUser::constName) {
+            prevBasic=c;
+        }
+    }
+
+    foreach (const MPDConnectionDetails &c, existingInConfig) {
+        Settings::self()->removeConnectionDetails(c.name);
+    }
+
+    foreach (const Collection &c, toAdd) {
+        Settings::self()->saveConnectionDetails(c.details);
+        c.namingOpts.save(MPDConnectionDetails::configGroupName(c.details.name), true);
+    }
+
+    if (!haveBasicCollection && MPDUser::self()->isSupported()) {
+        MPDUser::self()->cleanup();
+    }
+
+    if (current.details.name==MPDUser::constName) {
+        MPDUser::self()->setDetails(current.details);
+    }
+    Settings::self()->saveCurrentConnection(current.details.name);
+    emit connectTo(current.details);
 }
 
-void ServerSettings::mpdConnectionStateChanged(bool c)
+void ServerSettings::cancel()
 {
-    MPDConnectionDetails mpdDetails=MPDConnection::self()->getDetails();
-    enableWidgets(!c || mpdDetails!=getDetails());
-    if (c) {
-        Settings::self()->saveCurrentConnection(mpdDetails.name);
+    // If we are canceling any changes, then we need to restore user settings...
+    if (prevBasic.details.name==MPDUser::constName) {
+        MPDUser::self()->setDetails(prevBasic.details);
     }
-    connectButton->setEnabled(true);
 }
 
 void ServerSettings::showDetails(int index)
 {
-    MPDConnectionDetails d=Settings::self()->connectionDetails(combo->itemData(index).toString());
-    setDetails(d);
-    enableWidgets(!MPDConnection::self()->isConnected() || MPDConnection::self()->getDetails()!=d);
-}
-
-void ServerSettings::toggleConnection()
-{
-    bool con=removeButton->isEnabled();
-    enableWidgets(!con);
-    if (con) {
-        emit connectTo(getDetails());
-    } else {
-        emit disconnectFromMpd();
-    }
-    connectButton->setEnabled(false);
-}
-
-void ServerSettings::saveAs()
-{
-    bool ok=false;
-    int currentIndex=combo->currentIndex();
-    QString name=combo->itemText(currentIndex);
-
-    for (;;) {
-        name=InputDialog::getText(i18n("Save As"), i18n("Enter name for settings:"), name, &ok, this).trimmed();
-        if (!ok || name.isEmpty()) {
-            return;
-        }
-
-        bool found=false;
-        int idx=0;
-        for (idx=0; idx<combo->count() && !found; ++idx) {
-            if (combo->itemText(idx)==name || combo->itemData(idx).toString()==name) {
-                found=true;
-                break;
-            }
-        }
-
-        if (found && idx!=currentIndex) {
-            switch (MessageBox::warningYesNoCancel(this, i18n("A setting named %1 already exists!\nOverwrite?").arg(name),
-                                                   i18n("Overwrite"), StdGuiItem::overwrite())) {
-            case MessageBox::No:
-                continue;
-            case MessageBox::Cancel:
-                return;
-            case MessageBox::Yes:
-                break;
-            }
-        }
-
+    if (-1!=prevIndex && index!=prevIndex) {
         MPDConnectionDetails details=getDetails();
-        details.name=name==combo->itemText(0) && combo->itemData(0).toString().isEmpty() ? QString() : name;
-        MPDConnectionDetails saved=Settings::self()->connectionDetails(details.name);
-        bool needToReconnect=MPDConnection::self()->isConnected() && MPDConnection::self()->getDetails()==saved && details!=saved;
-
-        Settings::self()->saveConnectionDetails(details);
-        MusicLibraryModel::cleanCache();
-        if (found) {
-            if (idx!=currentIndex) {
-                combo->setCurrentIndex(idx);
-            }
-        } else {
-            combo->addItem(details.name, details.name);
-            combo->setCurrentIndex(combo->count()-1);
+        if (details.name.isEmpty()) {
+            details.name=generateName(prevIndex);
         }
-
-        if (needToReconnect) {
-            emit disconnectFromMpd();
-            emit connectTo(details);
+        collections.replace(prevIndex, details);
+        if (details.name!=MPDUser::constName) {
+            combo->setItemText(prevIndex, details.name);
         }
-        break;
     }
+    setDetails(collections.at(index).details);
+    prevIndex=index;
+}
+
+void ServerSettings::add()
+{
+    bool addStandard=true;
+
+    if (!haveBasicCollection && MPDUser::self()->isSupported()) {
+        addStandard=MessageBox::Yes==MessageBox::questionYesNo(this,
+                                   i18n("Which type of collection do you wish to connect to?<br/><ul>"
+                                   "<li>Standard - music collection may be shared, is on another machine, or is already setup</li>"
+                                   "<li>Basic - music collection is not shared with others, and Cantata will configure and control the MPD instance</li></ul>"),
+                                   i18n("Add Collection"), GuiItem(i18n("Standard")), GuiItem(i18n("Basic")));
+    }
+
+    MPDConnectionDetails details;
+    if (addStandard) {
+        details.name=generateName();
+        details.port=6600;
+        details.hostname=QLatin1String("localhost");
+        details.dir=QLatin1String("/var/lib/mpd/music");
+        details.dynamizerPort=0;
+        combo->addItem(details.name);
+    } else {
+        details=MPDUser::self()->details(true);
+        basicDir->setText(details.dir);
+        combo->addItem(MPDUser::translatedName());
+    }
+    removeButton->setEnabled(combo->count()>1);
+    collections.append(Collection(details));
+    combo->setCurrentIndex(combo->count()-1);
+    prevIndex=combo->currentIndex();
+    setDetails(details);
 }
 
 void ServerSettings::remove()
 {
     int index=combo->currentIndex();
-    QString name=combo->itemData(index).toString();
-    if (combo->count()>1 && MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Delete %1?").arg(name),
+    QString cName=1==stackedWidget->currentIndex() ? MPDUser::translatedName() : name->text();
+    if (combo->count()>1 && MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Delete <b>%1</b>?").arg(cName),
                                                                        i18n("Delete"), StdGuiItem::del(), StdGuiItem::cancel())) {
         bool isLast=index==(combo->count()-1);
-        Settings::self()->removeConnectionDetails(combo->itemData(index).toString());
         combo->removeItem(index);
         combo->setCurrentIndex(isLast ? index-1 : index);
-        showDetails(combo->currentIndex());
+        prevIndex=combo->currentIndex();
+        collections.removeAt(index);
+        if (1==stackedWidget->currentIndex()) {
+            haveBasicCollection=false;
+        }
+        setDetails(collections.at(combo->currentIndex()).details);
+    }
+    removeButton->setEnabled(combo->count()>1);
+}
+
+void ServerSettings::nameChanged()
+{
+    combo->setItemText(combo->currentIndex(), name->text().trimmed());
+}
+
+void ServerSettings::basicDirChanged()
+{
+    if (!prevBasic.details.dir.isEmpty()) {
+        QString d=basicDir->text().trimmed();
+        basicMusicFolderNoteLabel->setOn(d.isEmpty() || d!=prevBasic.details.dir);
     }
 }
 
-void ServerSettings::enableWidgets(bool e)
+QString ServerSettings::generateName(int ignore) const
 {
-//     host->setEnabled(e);
-//     port->setEnabled(e);
-//     password->setEnabled(e);
-//     dir->setEnabled(e);
-//     hostLabel->setEnabled(e);
-//     portLabel->setEnabled(e);
-//     passwordLabel->setEnabled(e);
-//     dirLabel->setEnabled(e);
-    connectButton->setText(e ? i18n("Connect") : i18n("Disconnect"));
-    if (style()->styleHint(QStyle::SH_DialogButtonBox_ButtonsHaveIcons)) {
-        connectButton->setIcon(e ? Icons::self()->connectIcon : Icons::self()->disconnectIcon);
+    QString n;
+    QSet<QString> collectionNames;
+    for (int i=0; i<collections.size(); ++i) {
+        if (i!=ignore) {
+            collectionNames.insert(collections.at(i).details.name);
+        }
     }
-    removeButton->setEnabled(e);
-//     saveButton->setEnabled(e);
+
+    for (int i=1; i<512; ++i) {
+        n=i18n("New Collection %1").arg(i);
+        if (!collectionNames.contains(n)) {
+            break;
+        }
+    }
+
+    return n;
 }
 
 void ServerSettings::setDetails(const MPDConnectionDetails &details)
 {
-    host->setText(details.hostname);
-    port->setValue(details.port);
-    password->setText(details.password);
-    dir->setText(details.dir);
-    dynamizerPort->setValue(details.dynamizerPort);
-    coverName->setText(details.coverName);
+    if (details.name==MPDUser::constName) {
+        basicDir->setText(details.dir);
+        basicCoverName->setText(details.coverName);
+        stackedWidget->setCurrentIndex(1);
+    } else {
+        name->setText(details.name.isEmpty() ? i18n("Default") : details.name);
+        host->setText(details.hostname);
+        port->setValue(details.port);
+        password->setText(details.password);
+        dir->setText(details.dir);
+        dynamizerPort->setValue(details.dynamizerPort);
+        coverName->setText(details.coverName);
+        stackedWidget->setCurrentIndex(0);
+    }
 }
 
 MPDConnectionDetails ServerSettings::getDetails() const
 {
     MPDConnectionDetails details;
-    details.name=combo->itemData(combo->currentIndex()).toString();
-    details.hostname=host->text().trimmed();
-    details.port=port->value();
-    details.password=password->text();
-    details.dir=dir->text().trimmed();
+    if (0==stackedWidget->currentIndex()) {
+        details.name=name->text().trimmed();
+        if (details.name==MPDUser::constName) {
+            details.name=QString();
+        }
+        details.hostname=host->text().trimmed();
+        details.port=port->value();
+        details.password=password->text();
+        details.dir=dir->text().trimmed();
+        details.dynamizerPort=dynamizerPort->value();
+        details.coverName=coverName->text().trimmed();
+    } else {
+        details=MPDUser::self()->details(true);
+        details.dir=basicDir->text().trimmed();
+        details.coverName=basicCoverName->text().trimmed();
+    }
     details.dirReadable=details.dir.isEmpty() ? false : QDir(details.dir).isReadable();
-    details.dynamizerPort=dynamizerPort->value();
-    details.coverName=coverName->text().trimmed();
     return details;
 }

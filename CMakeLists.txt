@@ -97,7 +97,7 @@ set(CANTATA_SRCS gui/application.cpp gui/main.cpp gui/initialsettingswizard.cpp 
     models/playqueueproxymodel.cpp models/dirviewmodel.cpp models/dirviewproxymodel.cpp models/dirviewitem.cpp models/dirviewitemdir.cpp
     models/streamsmodel.cpp models/streamsproxymodel.cpp models/albumsmodel.cpp models/albumsproxymodel.cpp models/proxymodel.cpp
     models/actionmodel.cpp
-    mpd/mpdconnection.cpp mpd/mpdparseutils.cpp mpd/mpdstats.cpp mpd/mpdstatus.cpp mpd/song.cpp
+    mpd/mpdconnection.cpp mpd/mpdparseutils.cpp mpd/mpdstats.cpp mpd/mpdstatus.cpp mpd/song.cpp mpd/mpduser.cpp
     dynamic/dynamic.cpp dynamic/dynamicpage.cpp dynamic/dynamicproxymodel.cpp dynamic/dynamicruledialog.cpp dynamic/dynamicrulesdialog.cpp
     widgets/treeview.cpp widgets/listview.cpp widgets/itemview.cpp widgets/autohidingsplitter.cpp widgets/timeslider.cpp
     widgets/actionlabel.cpp widgets/playqueueview.cpp widgets/groupedview.cpp widgets/actionitemdelegate.cpp widgets/textbrowser.cpp
@@ -471,8 +471,12 @@ if (ENABLE_HTTP_STREAM_PLAYBACK AND NOT ENABLE_QT5)
     include_directories(${PHONON_INCLUDES})
 endif (ENABLE_HTTP_STREAM_PLAYBACK AND NOT ENABLE_QT5)
 
-if (NOT WIN32)
+if (WIN32)
+    install(FILES mpd/mpd.conf.template DESTINATION ${CMAKE_INSTALL_PREFIX}/mpd)
+else (WIN32)
     install(PROGRAMS dynamic/cantata-dynamic DESTINATION ${CMAKE_INSTALL_PREFIX}/share/${CMAKE_PROJECT_NAME}/scripts)
+    install(FILES mpd/mpd.conf.template DESTINATION ${CMAKE_INSTALL_PREFIX}/share/${CMAKE_PROJECT_NAME}/mpd)
+
     if (MTP_FOUND)
         target_link_libraries(cantata ${MTP_LIBRARIES})
         include_directories(${MTP_INCLUDE_DIR})
@@ -497,7 +501,7 @@ if (NOT WIN32)
             endif (ENABLE_KDE_SUPPORT)
         endif (LAME_FOUND)
     endif (CDDB_FOUND OR MUSICBRAINZ5_FOUND)
-endif (NOT WIN32)
+endif (WIN32)
 
 if (QJSON_FOUND)
     include_directories(${QJSON_INCLUDE_DIR})

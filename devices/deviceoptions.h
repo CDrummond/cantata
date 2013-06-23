@@ -61,7 +61,7 @@ struct DeviceOptions {
     #endif
 
     void load(const QString &group, bool isMpd=false);
-    void save(const QString &group, bool isMpd=false, bool saveTrans=true);
+    void save(const QString &group, bool isMpd=false, bool saveTrans=true) const;
 
     bool operator==(const DeviceOptions &o) const {
         return vfatSafe==o.vfatSafe && asciiOnly==o.asciiOnly && ignoreThe==o.ignoreThe &&

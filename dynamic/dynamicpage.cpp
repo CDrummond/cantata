@@ -117,6 +117,9 @@ void DynamicPage::dynamicUrlChanged(const QString &url)
     enableWidgets(!url.isEmpty());
     #else
     refreshBtn->setVisible(!url.isEmpty());
+    if (url.isEmpty()) {
+        enableWidgets(true);
+    }
     #endif
     remoteRunningLabel->setVisible(false);
 }

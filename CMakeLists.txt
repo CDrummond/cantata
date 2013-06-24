@@ -88,7 +88,7 @@ macro(cantata_check_for_sse)
 endmacro(cantata_check_for_sse)
 
 set(CANTATA_SRCS gui/application.cpp gui/main.cpp gui/initialsettingswizard.cpp gui/mainwindow.cpp gui/preferencesdialog.cpp
-    gui/settings.cpp gui/covers.cpp gui/filesettings.cpp gui/interfacesettings.cpp gui/playbacksettings.cpp gui/serverplaybacksettings.cpp
+    gui/settings.cpp gui/covers.cpp gui/filesettings.cpp gui/interfacesettings.cpp gui/playbacksettings.cpp 
     gui/serversettings.cpp gui/librarypage.cpp gui/albumspage.cpp gui/folderpage.cpp gui/playlistspage.cpp gui/trayitem.cpp
     gui/cachesettings.cpp gui/coverdialog.cpp gui/stdactions.cpp
     streams/streamspage.cpp streams/streamdialog.cpp streams/streamcategorydialog.cpp streams/streamfetcher.cpp streams/webstreams.cpp
@@ -111,7 +111,7 @@ set(CANTATA_SRCS gui/application.cpp gui/main.cpp gui/initialsettingswizard.cpp 
     context/lastfmengine.cpp context/metaengine.cpp context/backdropcreator.cpp)
 set(CANTATA_MOC_HDRS
     gui/initialsettingswizard.h gui/mainwindow.h gui/settings.h gui/covers.h gui/folderpage.h gui/librarypage.h gui/albumspage.h
-    gui/playlistspage.h gui/serverplaybacksettings.h gui/serversettings.h gui/preferencesdialog.h gui/filesettings.h
+    gui/playlistspage.h gui/playbacksettings.h gui/serversettings.h gui/preferencesdialog.h gui/filesettings.h
     gui/interfacesettings.h gui/cachesettings.h gui/trayitem.h gui/coverdialog.h
     streams/streamspage.h streams/streamdialog.h streams/streamcategorydialog.h streams/streamfetcher.h streams/webstreams.h
     models/musiclibrarymodel.h models/musiclibraryproxymodel.h models/playlistsmodel.h models/playlistsproxymodel.h models/playqueuemodel.h
@@ -129,8 +129,7 @@ set(CANTATA_MOC_HDRS
     context/backdropcreator.h)
 set(CANTATA_UIS
     gui/initialsettingswizard.ui gui/mainwindow.ui gui/folderpage.ui gui/librarypage.ui gui/albumspage.ui gui/playlistspage.ui
-    gui/filesettings.ui gui/interfacesettings.ui gui/playbacksettings.ui gui/serverplaybacksettings.ui gui/serversettings.ui
-    gui/coverdialog.ui
+    gui/filesettings.ui gui/interfacesettings.ui gui/playbacksettings.ui gui/serversettings.ui gui/coverdialog.ui
     streams/streamspage.ui
     dynamic/dynamicpage.ui dynamic/dynamicrule.ui dynamic/dynamicrules.ui
     context/togglelist.ui context/othersettings.ui

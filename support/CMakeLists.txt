@@ -24,7 +24,7 @@ if (ENABLE_KDE_SUPPORT )
     set(SUPPORT_SRCS ${SUPPORT_SRCS} dialog.cpp)
 else (ENABLE_KDE_SUPPORT)
     set(SUPPORT_SRCS ${SUPPORT_SRCS} pathrequester.cpp kmessagewidget.cpp dialog.cpp pagewidget.cpp shortcutsmodel.cpp
-        shortcutssettingspage.cpp keysequencewidget.cpp acceleratormanager.cpp proxystyle.cpp)
+        shortcutssettingspage.cpp keysequencewidget.cpp acceleratormanager.cpp proxystyle.cpp urllabel.cpp)
     set(SUPPORT_MOC_HDRS ${SUPPORT_MOC_HDRS} pathrequester.h lineedit.h kmessagewidget.h urllabel.h
          dialog.h shortcutsmodel.h shortcutssettingspage.h keysequencewidget.h spinner.h acceleratormanager_private.h)
     set(SUPPORT_UIS shortcutssettingspage.ui )

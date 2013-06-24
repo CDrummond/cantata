@@ -109,7 +109,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
 //    widget->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Minimum);
     widget->allPagesAdded();
     #ifndef ENABLE_KDE_SUPPORT
-    int h=(widget->minimumHeight()/widget->count())*11;
+    int h=(widget->minimumHeight()/widget->count())*(qMax(widget->count(), 10)+0.5);
     setMinimumHeight(h);
     setMinimumWidth(h*1.333);
     #endif

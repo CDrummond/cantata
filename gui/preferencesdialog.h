@@ -32,7 +32,6 @@ class ShortcutsSettingsPage;
 #endif
 
 class ServerSettings;
-class ServerPlaybackSettings;
 class PlaybackSettings;
 class FileSettings;
 class InterfaceSettings;
@@ -69,7 +68,6 @@ Q_SIGNALS:
 
 private:
     ServerSettings *server;
-    ServerPlaybackSettings *serverplayback;
     PlaybackSettings *playback;
     FileSettings *files;
     InterfaceSettings *interface;

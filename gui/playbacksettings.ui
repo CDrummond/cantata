@@ -6,79 +6,232 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>284</width>
-    <height>149</height>
+    <width>698</width>
+    <height>495</height>
    </rect>
   </property>
-  <layout class="QFormLayout" name="formLayout">
-   <property name="fieldGrowthPolicy">
-    <enum>QFormLayout::ExpandingFieldsGrow</enum>
-   </property>
-   <property name="margin">
-    <number>0</number>
-   </property>
-   <item row="0" column="0">
-    <widget class="BuddyLabel" name="label_6b">
-     <property name="text">
-      <string>Fadeout on stop:</string>
+  <layout class="QVBoxLayout" name="mainLayout">
+   <item>
+    <widget class="QGroupBox" name="outputBox">
+     <property name="title">
+      <string>Output</string>
      </property>
-     <property name="buddy">
-      <cstring>stopFadeDuration</cstring>
-     </property>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="1">
+       <widget class="QLabel" name="messageLabel">
+        <property name="text">
+         <string>&lt;i&gt;Not Connected!&lt;br/&gt;The entries below cannot be modified, as Cantata is not connected to MPD.&lt;/i&gt;</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0" colspan="2">
+       <layout class="QFormLayout" name="formLayout_2a">
+        <property name="fieldGrowthPolicy">
+         <enum>QFormLayout::ExpandingFieldsGrow</enum>
+        </property>
+        <item row="0" column="0">
+         <widget class="BuddyLabel" name="crossfadingLabel">
+          <property name="text">
+           <string>Crossfading:</string>
+          </property>
+          <property name="buddy">
+           <cstring>crossfading</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="SpinBox" name="crossfading">
+          <property name="suffix">
+           <string> seconds</string>
+          </property>
+          <property name="maximum">
+           <number>20</number>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="BuddyLabel" name="replayGainLabel">
+          <property name="text">
+           <string>Replay gain:</string>
+          </property>
+          <property name="buddy">
+           <cstring>replayGain</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <layout class="QHBoxLayout" name="replayGainayout">
+          <property name="margin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QComboBox" name="replayGain"/>
+          </item>
+          <item>
+           <spacer name="replayGainSpacer">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::MinimumExpanding</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="UrlLabel" name="aboutReplayGain" native="true">
+            <property name="text" stdset="0">
+             <string>About replay gain</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="outputsViewLabel">
+          <property name="text">
+           <string>Devices:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QListWidget" name="outputsView"/>
+        </item>
+       </layout>
+      </item>
+      <item row="0" column="0">
+       <widget class="BuddyLabel" name="messageIcon">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </widget>
    </item>
-   <item row="0" column="1">
-    <widget class="SpinBox" name="stopFadeDuration"/>
-   </item>
-   <item row="1" column="0">
-    <widget class="BuddyLabel" name="stopOnExitLabel">
-     <property name="text">
-      <string>Stop playback on exit:</string>
+   <item>
+    <widget class="QGroupBox" name="streamBox">
+     <property name="title">
+      <string>HTTP Stream</string>
      </property>
-     <property name="buddy">
-      <cstring>stopOnExit</cstring>
-     </property>
+     <layout class="QFormLayout" name="formLayout_2">
+      <property name="fieldGrowthPolicy">
+       <enum>QFormLayout::ExpandingFieldsGrow</enum>
+      </property>
+      <item row="1" column="0">
+       <widget class="BuddyLabel" name="streamUrlLabel">
+        <property name="text">
+         <string>URL:</string>
+        </property>
+        <property name="buddy">
+         <cstring>streamUrl</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLineEdit" name="streamUrl"/>
+      </item>
+      <item row="2" column="0" colspan="2">
+       <widget class="QLabel" name="streamUrlInfoLabel">
+        <property name="text">
+         <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; This is only of use if you have MPD configured to output to a HTTP stream, and you wish Cantata to be able to play that stream.&lt;/i&gt;</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </widget>
    </item>
-   <item row="1" column="1">
-    <widget class="OnOffButton" name="stopOnExit"/>
-   </item>
-   <item row="2" column="0">
-    <widget class="BuddyLabel" name="stopDynamizerOnExitLabel">
-     <property name="text">
-      <string>Stop dynamizer on exit:</string>
+   <item>
+    <widget class="QGroupBox" name="stopPlaybackBox">
+     <property name="title">
+      <string>Stopping Playback</string>
      </property>
-     <property name="buddy">
-      <cstring>stopDynamizerOnExit</cstring>
-     </property>
+     <layout class="QFormLayout" name="formLayout">
+      <property name="fieldGrowthPolicy">
+       <enum>QFormLayout::ExpandingFieldsGrow</enum>
+      </property>
+      <item row="0" column="0">
+       <widget class="BuddyLabel" name="label_6b">
+        <property name="text">
+         <string>Fadeout on stop:</string>
+        </property>
+        <property name="buddy">
+         <cstring>stopFadeDuration</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="SpinBox" name="stopFadeDuration"/>
+      </item>
+      <item row="1" column="0">
+       <widget class="BuddyLabel" name="stopOnExitLabel">
+        <property name="text">
+         <string>Stop playback on exit:</string>
+        </property>
+        <property name="buddy">
+         <cstring>stopOnExit</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="OnOffButton" name="stopOnExit"/>
+      </item>
+      <item row="2" column="0">
+       <widget class="BuddyLabel" name="stopDynamizerOnExitLabel">
+        <property name="text">
+         <string>Stop dynamizer on exit:</string>
+        </property>
+        <property name="buddy">
+         <cstring>stopDynamizerOnExit</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="OnOffButton" name="stopDynamizerOnExit">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0" colspan="2">
+       <widget class="QLabel" name="noteLabel">
+        <property name="text">
+         <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; If you press and hold the stop button, then a menu will be shown allowing you to choose whether to stop playback now, or after the current track.&lt;/i&gt;</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </widget>
    </item>
-   <item row="2" column="1">
-    <widget class="OnOffButton" name="stopDynamizerOnExit">
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="0" colspan="2">
-    <widget class="QLabel" name="noteLabel">
-     <property name="text">
-      <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; If you press and hold the stop button, then a menu will be shown allowing you to choose whether to stop playback now, or after the current track.&lt;/i&gt;</string>
-     </property>
-     <property name="wordWrap">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
-   <item row="4" column="0">
-    <spacer name="verticalSpacer">
+   <item>
+    <spacer name="paddingSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
      </property>
      <property name="sizeHint" stdset="0">
       <size>
        <width>20</width>
-       <height>4</height>
+       <height>2</height>
       </size>
      </property>
     </spacer>
@@ -101,8 +254,17 @@
    <extends>QCheckBox</extends>
    <header>onoffbutton.h</header>
   </customwidget>
+  <customwidget>
+   <class>UrlLabel</class>
+   <extends>QWidget</extends>
+   <header>urllabel.h</header>
+  </customwidget>
  </customwidgets>
  <tabstops>
+  <tabstop>crossfading</tabstop>
+  <tabstop>replayGain</tabstop>
+  <tabstop>outputsView</tabstop>
+  <tabstop>streamUrl</tabstop>
   <tabstop>stopFadeDuration</tabstop>
   <tabstop>stopOnExit</tabstop>
   <tabstop>stopDynamizerOnExit</tabstop>

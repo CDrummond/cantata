@@ -33,6 +33,7 @@ class PathRequester : public KUrlRequester
 public:
     PathRequester(QWidget *parent) : KUrlRequester(parent) {
         setMode(KFile::Directory|KFile::ExistingOnly|KFile::LocalOnly);
+        button()->setFlat(true);
     }
 
     void setButtonVisible(bool v) { button()->setVisible(v); }

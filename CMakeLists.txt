@@ -471,7 +471,7 @@ if (ENABLE_HTTP_STREAM_PLAYBACK AND NOT ENABLE_QT5)
 endif (ENABLE_HTTP_STREAM_PLAYBACK AND NOT ENABLE_QT5)
 
 if (WIN32)
-    install(FILES mpd/mpd.conf.template DESTINATION ${CMAKE_INSTALL_PREFIX}/mpd)
+    # install(FILES mpd/mpd.conf.template DESTINATION ${CMAKE_INSTALL_PREFIX}/mpd)
 else (WIN32)
     install(PROGRAMS dynamic/cantata-dynamic DESTINATION ${CMAKE_INSTALL_PREFIX}/share/${CMAKE_PROJECT_NAME}/scripts)
     install(FILES mpd/mpd.conf.template DESTINATION ${CMAKE_INSTALL_PREFIX}/share/${CMAKE_PROJECT_NAME}/mpd)

@@ -377,7 +377,7 @@ void ArtistView::searchResponse(const QString &resp, const QString &lang)
 
     if (!resp.isEmpty()) {
         if (!lang.isEmpty()) {
-            QFile f(cacheFileName(currentSong.artist, lang, false, false));
+            QFile f(cacheFileName(currentSong.artist, lang, false, true));
             QtIOCompressor compressor(&f);
             compressor.setStreamFormat(QtIOCompressor::GzipFormat);
             if (compressor.open(QIODevice::WriteOnly)) {

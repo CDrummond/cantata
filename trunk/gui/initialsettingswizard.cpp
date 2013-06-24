@@ -180,7 +180,7 @@ void InitialSettingsWizard::controlNextButton()
             isOk=d.exists() && d.isReadable();
         }
     } else {
-        MPDConnection::self()->isConnected();
+        isOk=MPDConnection::self()->isConnected();
 
         if (isOk) {
             MPDConnectionDetails det=getDetails();

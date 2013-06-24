@@ -63,7 +63,6 @@ private Q_SLOTS:
 
 Q_SIGNALS:
     void settingsSaved();
-    void connectTo(const MPDConnectionDetails &details);
     void reloadStreams();
 
 private:

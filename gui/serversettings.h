@@ -47,9 +47,6 @@ public:
     void save();
     void cancel();
 
-Q_SIGNALS:
-    void connectTo(const MPDConnectionDetails &details);
-
 private Q_SLOTS:
     void showDetails(int index);
     void add();

@@ -194,7 +194,6 @@ void ServerSettings::save()
         MPDUser::self()->setDetails(current.details);
     }
     Settings::self()->saveCurrentConnection(current.details.name);
-    emit connectTo(current.details);
 }
 
 void ServerSettings::cancel()

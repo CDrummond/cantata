@@ -1167,7 +1167,6 @@ void MainWindow::showPreferencesDialog()
     PreferencesDialog *pref=new PreferencesDialog(this);
     controlConnectionsMenu(false);
     connect(pref, SIGNAL(settingsSaved()), this, SLOT(updateSettings()));
-    connect(pref, SIGNAL(connectTo(const MPDConnectionDetails &)), this, SLOT(connectToMpd(const MPDConnectionDetails &)));
     connect(pref, SIGNAL(reloadStreams()), streamsPage, SLOT(refresh()));
     connect(pref, SIGNAL(destroyed()), SLOT(controlConnectionsMenu()));
     pref->show();

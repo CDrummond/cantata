@@ -80,7 +80,7 @@ void HttpServerSettings::load()
 
 bool HttpServerSettings::haveMultipleInterfaces() const
 {
-    return httpInterface->count()>2;
+    return httpInterface->count()>3;
 }
 
 void HttpServerSettings::save()

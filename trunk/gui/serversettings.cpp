@@ -226,11 +226,15 @@ void ServerSettings::add()
     bool addStandard=true;
 
     if (!haveBasicCollection && MPDUser::self()->isSupported()) {
-        addStandard=MessageBox::Yes==MessageBox::questionYesNo(this,
+        switch (MessageBox::questionYesNoCancel(this,
                                    i18n("Which type of collection do you wish to connect to?<br/><ul>"
                                    "<li>Standard - music collection may be shared, is on another machine, or is already setup</li>"
                                    "<li>Basic - music collection is not shared with others, and Cantata will configure and control the MPD instance</li></ul>"),
-                                   i18n("Add Collection"), GuiItem(i18n("Standard")), GuiItem(i18n("Basic")));
+                                   i18n("Add Collection"), GuiItem(i18n("Standard")), GuiItem(i18n("Basic")))) {
+        case MessageBox::Yes: addStandard=true; break;
+        case MessageBox::No: addStandard=false; break;
+        default: return;
+        }
     }
 
     MPDConnectionDetails details;

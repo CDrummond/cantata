@@ -114,7 +114,6 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
     setCaption(i18n("Configure"));
     setMainWidget(widget);
     setAttribute(Qt::WA_DeleteOnClose);
-    connect(server, SIGNAL(connectTo(const MPDConnectionDetails &)), SIGNAL(connectTo(const MPDConnectionDetails &)));
     connect(files, SIGNAL(reloadStreams()), SIGNAL(reloadStreams()));
     setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
 }

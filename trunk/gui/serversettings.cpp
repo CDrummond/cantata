@@ -85,7 +85,8 @@ ServerSettings::ServerSettings(QWidget *p)
     addButton->setAutoRaise(true);
     removeButton->setAutoRaise(true);
 
-    dynamizerPort->setSpecialValueText(i18n("Not Used"));
+    dynamizerPort->setSpecialValueText(i18n("Not used"));
+    dynamizerPort->setRange(0, 65535);
     #if defined Q_OS_WIN
     hostLabel->setText(i18n("Host:"));
     socketNoteLabel->setVisible(false);

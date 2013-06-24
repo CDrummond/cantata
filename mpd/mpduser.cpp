@@ -36,6 +36,10 @@
 #if defined Q_OS_WIN
 #include <QDesktopServices>
 #endif
+#ifdef ENABLE_KDE_SUPPORT
+#include <KDE/KGlobal>
+K_GLOBAL_STATIC(MPDUser, instance)
+#endif
 
 const QString MPDUser::constName=QLatin1String("-");
 

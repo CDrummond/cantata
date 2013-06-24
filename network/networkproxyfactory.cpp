@@ -34,7 +34,7 @@ NetworkProxyFactory::NetworkProxyFactory()
     , type(QNetworkProxy::HttpProxy)
     , port(8080)
 {
-    #ifdef Q_OS_LINUX
+    #if defined Q_OS_LINUX && QT_VERSION < 0x050000
     // Linux uses environment variables to pass proxy configuration information,
     // which systemProxyForQuery doesn't support for some reason.
 
@@ -89,7 +89,7 @@ QList<QNetworkProxy> NetworkProxyFactory::queryProxy(const QNetworkProxyQuery& q
 
     switch (mode) {
     case Mode_System:
-        #ifdef Q_OS_LINUX
+        #if defined Q_OS_LINUX && QT_VERSION < 0x050000
         Q_UNUSED(query);
 
         if (envUrl.isEmpty()) {

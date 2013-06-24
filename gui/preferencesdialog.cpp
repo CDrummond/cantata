@@ -38,7 +38,9 @@
 #include "mpdconnection.h"
 #include "pagewidget.h"
 #ifndef ENABLE_KDE_SUPPORT
+#ifdef ENABLE_PROXY_CONFIG
 #include "proxysettings.h"
+#endif // ENABLE_PROXY_CONFIG
 #include "shortcutssettingspage.h"
 #include "actioncollection.h"
 #include "treeview.h"

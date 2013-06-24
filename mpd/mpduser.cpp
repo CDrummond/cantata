@@ -70,7 +70,11 @@ MPDUser * MPDUser::self()
 
 MPDUser::MPDUser()
 {
+    // For now, per-user MPD support is disabled for windows builds
+    // - asI'm unsure how/if MPD works in windows!!!
+    #ifndef Q_OS_WIN
     mpdExe=Utils::findExe("mpd");
+    #endif
     det.name=constName;
 }
 

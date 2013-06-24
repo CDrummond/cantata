@@ -21,37 +21,37 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef URLLABEL_H
-#define URLLABEL_H
+#include "urllabel.h"
+#include <QVariant>
 
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KUrlLabel>
-typedef KUrlLabel UrlLabel;
-#else
-#include <QLabel>
-#include <QCursor>
-
-class UrlLabel : public QLabel
+UrlLabel::UrlLabel(QWidget *p)
+    : QLabel(p)
+    , pressed(false)
 {
-    Q_OBJECT
+    setCursor(QCursor(Qt::PointingHandCursor));
+}
 
-public:
-    UrlLabel(QWidget *p);
-    virtual ~UrlLabel() { }
+void UrlLabel::setText(const QString &t)
+{
+    QLabel::setText("<a href=\".\">"+t+"</a>");
+}
 
-    void setText(const QString &t);
-    void setProperty(const char *name, const QVariant &value);
+void UrlLabel::setProperty(const char *name, const QVariant &value)
+{
+    if (name && !strcmp(name, "text") && QVariant::String==value.type()) {
+        setText(value.toString());
+    }
+}
 
-Q_SIGNALS:
-    void leftClickedUrl();
+void UrlLabel::mousePressEvent(QMouseEvent *)
+{
+    pressed=true;
+}
 
-protected:
-    void mousePressEvent(QMouseEvent *);
-    void mouseReleaseEvent(QMouseEvent *);
-
-private:
-    bool pressed;
-};
-#endif
-
-#endif // URLLABEL_H
+void UrlLabel::mouseReleaseEvent(QMouseEvent *)
+{
+    if (pressed) {
+        pressed=false;
+        emit leftClickedUrl();
+    }
+}

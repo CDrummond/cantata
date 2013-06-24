@@ -93,6 +93,8 @@
 58. Add support for a simple profile where MPD is started by cantata, and
     the only settings are the music folder and cover names.
 59. Combine Output and Playback config pages.
+60. Remove proxy config from settings, and always use system proxy.
+    To re-enable proxy settings pass -DENABLE_PROXY_CONFIG=ON to cmake.
 
 1.0.3
 -----

@@ -75,7 +75,9 @@ private:
     HttpServerSettings *http;
     #endif
     #ifndef ENABLE_KDE_SUPPORT
+    #ifdef ENABLE_PROXY_CONFIG
     ProxySettings *proxy;
+    #endif // ENABLE_PROXY_CONFIG
     ShortcutsSettingsPage *shortcuts;
     #endif
     CacheSettings *cache;

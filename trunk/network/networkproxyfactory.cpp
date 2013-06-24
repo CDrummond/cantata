@@ -69,6 +69,7 @@ NetworkProxyFactory * NetworkProxyFactory::self()
 
 void NetworkProxyFactory::reloadSettings()
 {
+    #ifdef ENABLE_PROXY_CONFIG
     QMutexLocker l(&mutex);
 
     QSettings s;
@@ -80,10 +81,14 @@ void NetworkProxyFactory::reloadSettings()
     port = s.value("port", 8080).toInt();
     username = s.value("username").toString();
     password = s.value("password").toString();
+    #else
+    mode = Mode_System;
+    #endif
 }
 
 QList<QNetworkProxy> NetworkProxyFactory::queryProxy(const QNetworkProxyQuery& query)
 {
+    #ifdef ENABLE_PROXY_CONFIG
     QMutexLocker l(&mutex);
     QNetworkProxy ret;
 
@@ -122,4 +127,21 @@ QList<QNetworkProxy> NetworkProxyFactory::queryProxy(const QNetworkProxyQuery& q
     }
 
     return QList<QNetworkProxy>() << ret;
+    #elif defined Q_OS_LINUX && QT_VERSION < 0x050000
+    Q_UNUSED(query);
+
+    QNetworkProxy ret;
+    if (envUrl.isEmpty()) {
+        ret.setType(QNetworkProxy::NoProxy);
+    } else {
+        ret.setHostName(envUrl.host());
+        ret.setPort(envUrl.port());
+        ret.setUser(envUrl.userName());
+        ret.setPassword(envUrl.password());
+        ret.setType(envUrl.scheme().startsWith("http") ? QNetworkProxy::HttpProxy : QNetworkProxy::Socks5Proxy);
+    }
+    return QList<QNetworkProxy>() << ret;
+    #else
+    return systemProxyForQuery(query);
+    #endif
 }

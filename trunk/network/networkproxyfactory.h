@@ -27,6 +27,7 @@
 #include <QMutex>
 #include <QNetworkProxyFactory>
 #include <QUrl>
+#include "config.h"
 
 class NetworkProxyFactory : public QNetworkProxyFactory
 {
@@ -49,7 +50,9 @@ private:
     NetworkProxyFactory();
 
 private:
+    #ifdef ENABLE_PROXY_CONFIG
     QMutex mutex;
+    #endif
     Mode mode;
     QNetworkProxy::ProxyType type;
     QString hostname;

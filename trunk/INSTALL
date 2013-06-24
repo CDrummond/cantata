@@ -69,6 +69,11 @@ The following options may be passed to CMake:
         Enable support for Jamendo and Magnatune online services.
         Default: ON
 
+    -DENABLE_PROXY_CONFIG=ON
+        Enable support fpor proxy settings in config dialog. If disabled,i
+        system proxy settings are used.
+        NOTE: Applies to Qt builds only.
+        Default: OFF
     ...windows specific...
 
     -DCANTATA_WINDOWS_INSTALLER_DEST=<folder>

@@ -93,9 +93,11 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
     widget->addPage(audiocd, i18n("Audio CD"), Icon("media-optical"), i18n("Audio CD Settings"));
     #endif
     #ifndef ENABLE_KDE_SUPPORT
+    #ifdef ENABLE_PROXY_CONFIG
     proxy = new ProxySettings(0);
     proxy->load();
     widget->addPage(proxy, i18nc("Qt-only", "Proxy"), Icon("preferences-system-network"), i18nc("Qt-only", "Proxy Settings"));
+    #endif // ENABLE_PROXY_CONFIG
     QHash<QString, ActionCollection *> map;
     map.insert("Cantata", ActionCollection::get());
     shortcuts = new ShortcutsSettingsPage(map, widget);
@@ -107,9 +109,9 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
 //    widget->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Minimum);
     widget->allPagesAdded();
     #ifndef ENABLE_KDE_SUPPORT
-    int h=(widget->minimumHeight()/widget->count())*(widget->count()+1);
+    int h=(widget->minimumHeight()/widget->count())*11;
     setMinimumHeight(h);
-    setMinimumWidth(h*0.8);
+    setMinimumWidth(h*1.333);
     #endif
     setCaption(i18n("Configure"));
     setMainWidget(widget);
@@ -136,7 +138,9 @@ void PreferencesDialog::writeSettings()
     }
     #endif
     #ifndef ENABLE_KDE_SUPPORT
+    #ifdef ENABLE_PROXY_CONFIG
     proxy->save();
+    #endif
     shortcuts->save();
     #endif
     #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND

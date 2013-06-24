@@ -56,7 +56,7 @@ private:
     int port;
     QString username;
     QString password;
-    #ifdef Q_OS_LINUX
+    #if defined Q_OS_LINUX && QT_VERSION < 0x050000
     QUrl envUrl;
     #endif
 };

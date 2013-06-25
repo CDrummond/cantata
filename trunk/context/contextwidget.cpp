@@ -51,6 +51,7 @@
 #include <QStackedWidget>
 #include <QAction>
 #include <QPair>
+#include <qglobal.h>
 
 #include <QDebug>
 static bool debugEnabled=false;
@@ -420,15 +421,13 @@ void ContextWidget::paintEvent(QPaintEvent *e)
     }
     if (drawBackdrop) {
         if (!oldBackdrop.isNull()) {
-            if (fadeValue>0.5) {
-                p.setOpacity((100.0-fadeValue)/100.0);
+            if (!qFuzzyCompare(fadeValue, qreal(0.0))) {
+                p.setOpacity(1.0-fadeValue);
             }
             p.fillRect(r, QBrush(oldBackdrop));
         }
         if (!newBackdrop.isNull()) {
-            if (fadeValue<99.5) {
-                p.setOpacity(fadeValue/100.0);
-            }
+            p.setOpacity(fadeValue);
             p.fillRect(r, QBrush(newBackdrop));
         }
 //        if (!backdropText.isEmpty() && isWide) {
@@ -451,7 +450,7 @@ void ContextWidget::setFade(float value)
 {
     if (fadeValue!=value) {
         fadeValue = value;
-        if (fadeValue>99.9999999) {
+        if (qFuzzyCompare(fadeValue, qreal(1.0))) {
             oldBackdrop=QImage();
         }
         QWidget::update();
@@ -482,8 +481,8 @@ void ContextWidget::updateImage(const QImage &img, bool created)
         newBackdrop=setOpacity(newBackdrop);
     }
     fadeValue=0.0;
-    animator.setDuration(150);
-    animator.setEndValue(100);
+    animator.setDuration(250);
+    animator.setEndValue(1.0);
     animator.start();
 }
 

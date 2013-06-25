@@ -3361,11 +3361,11 @@ msgstr "Extra Optionen:"
 msgid ""
 "<i><b>NOTE:</b> Due to the way sshfs works, a suitable ssh-askpass "
 "application (ksshaskpass, ssh-askpass-gnome, etc.) will be required to enter "
-"the password..</i>"
+"the password.</i>"
 msgstr ""
 "<i><b>HINWEIS:</b> Aufgrund der Art wir  sshfs arbeitet benötigen Sie eine "
 "geeignete ssh-askpass Applikation (ksshaskpass, ssh-askpass-gnome, etc.) um "
-"ein Kennwort eingeben zu können..</i>"
+"ein Kennwort eingeben zu können.</i>"
 
 #. i18n: file: devices/remotedevicepropertieswidget.ui:408
 #. i18n: ectx: property (text), widget (QLabel, infoLabel)

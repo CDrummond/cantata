@@ -3240,7 +3240,7 @@ msgstr "额外选项:"
 msgid ""
 "<i><b>NOTE:</b> Due to the way sshfs works, a suitable ssh-askpass "
 "application (ksshaskpass, ssh-askpass-gnome, etc.) will be required to enter "
-"the password..</i>"
+"the password.</i>"
 msgstr ""
 
 #. i18n: file: devices/remotedevicepropertieswidget.ui:408

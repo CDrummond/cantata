@@ -352,7 +352,7 @@
           <item>
            <widget class="QLabel" name="label_5">
             <property name="text">
-             <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; Due to the way sshfs works, a suitable ssh-askpass application (ksshaskpass, ssh-askpass-gnome, etc.) will be required to enter the password..&lt;/i&gt;</string>
+             <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; Due to the way sshfs works, a suitable ssh-askpass application (ksshaskpass, ssh-askpass-gnome, etc.) will be required to enter the password.&lt;/i&gt;</string>
             </property>
             <property name="wordWrap">
              <bool>true</bool>

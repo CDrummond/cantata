@@ -541,6 +541,7 @@ void ContextWidget::updateBackdrop()
         return;
     }
     currentArtist=updateArtist;
+    backdropAlbums.clear();
     if (currentArtist.isEmpty()) {
         updateImage(QImage());
         QWidget::update();
@@ -868,7 +869,6 @@ void ContextWidget::downloadResponse()
     if (img.isNull()) {
         createBackdrop();
     } else {
-        backdropAlbums.clear();
         updateImage(img);
         QFile f(cacheFileName(currentArtist, true));
         if (f.open(QIODevice::WriteOnly)) {

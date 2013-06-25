@@ -567,7 +567,9 @@ static QString fixArtist(const QString &artist)
 void ContextWidget::getBackdrop()
 {
     cancel();
-    /*if (useHtBackdrops) {
+    if (artistsCreatedBackdropsFor.contains(currentArtist)) {
+        createBackdrop();
+    } else /*if (useHtBackdrops) {
         getHtBackdrop();
     } else*/ if (useFanArt) {
         getFanArtBackdrop();
@@ -904,6 +906,11 @@ void ContextWidget::backdropCreated(const QString &artist, const QImage &img)
 {
     DBUG << artist << img.isNull() << currentArtist;
     if (artist==currentArtist) {
+        artistsCreatedBackdropsFor.removeAll(artist);
+        artistsCreatedBackdropsFor.append(artist);
+        if (artistsCreatedBackdropsFor.count()>20) {
+            artistsCreatedBackdropsFor.removeFirst();
+        }
         updateImage(img, true);
         QWidget::update();
     }

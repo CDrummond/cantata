@@ -388,7 +388,7 @@ void StreamsPage::removeItems()
 
     if (selected.size()>1) {
         if (haveStreams && haveCategories) {
-            message=i18n("Are you sure you wish to remove the selected categories &streams?");
+            message=i18n("Are you sure you wish to remove the selected categories & streams?");
         } else if (haveStreams) {
             message=i18n("Are you sure you wish to remove the %1 selected streams?").arg(selected.size());
         } else {

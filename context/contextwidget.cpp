@@ -51,6 +51,7 @@
 #include <QStackedWidget>
 #include <QAction>
 #include <QPair>
+#include <QImage>
 #include <qglobal.h>
 
 #include <QDebug>
@@ -426,9 +427,9 @@ void ContextWidget::paintEvent(QPaintEvent *e)
             }
             p.fillRect(r, QBrush(oldBackdrop));
         }
-        if (!newBackdrop.isNull()) {
+        if (!currentBackdrop.isNull()) {
             p.setOpacity(fadeValue);
-            p.fillRect(r, QBrush(newBackdrop));
+            p.fillRect(r, QBrush(currentBackdrop));
         }
 //        if (!backdropText.isEmpty() && isWide) {
 //            int pad=fontMetrics().height()*2;
@@ -451,7 +452,7 @@ void ContextWidget::setFade(float value)
     if (fadeValue!=value) {
         fadeValue = value;
         if (qFuzzyCompare(fadeValue, qreal(1.0))) {
-            oldBackdrop=QImage();
+            oldBackdrop=QPixmap();
         }
         QWidget::update();
     }
@@ -459,27 +460,29 @@ void ContextWidget::setFade(float value)
 
 void ContextWidget::updateImage(const QImage &img, bool created)
 {
-    DBUG << img.isNull() << newBackdrop.isNull();
+    DBUG << img.isNull() << currentBackdrop.isNull();
 //    backdropText=currentArtist;
-    oldBackdrop=newBackdrop;
-    newBackdrop=img;
+    oldBackdrop=currentBackdrop;
+    currentBackdrop=QPixmap();
     animator.stop();
     if (img.isNull()) {
         backdropAlbums.clear();
     }
-    if (newBackdrop.isNull() && oldBackdrop.isNull()) {
+    if (img.isNull() && oldBackdrop.isNull()) {
         return;
     }
-    if (!newBackdrop.isNull() && !created && newBackdrop.width()<minBackdropSize.width() && newBackdrop.height()<minBackdropSize.height()) {
+    if (!img.isNull()) {
+        currentBackdrop=QPixmap::fromImage(setOpacity(img));
+    }
+
+    if (!currentBackdrop.isNull() && !created && currentBackdrop.width()<minBackdropSize.width() && currentBackdrop.height()<minBackdropSize.height()) {
         QSize size(minBackdropSize);
-        if (newBackdrop.width()<minBackdropSize.width()/4 && newBackdrop.height()<minBackdropSize.height()/4) {
+        if (currentBackdrop.width()<minBackdropSize.width()/4 && currentBackdrop.height()<minBackdropSize.height()/4) {
             size=QSize(minBackdropSize.width()/2, minBackdropSize.height()/2);
         }
-        newBackdrop=newBackdrop.scaled(size, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        currentBackdrop=currentBackdrop.scaled(size, Qt::KeepAspectRatio, Qt::SmoothTransformation);
     }
-    if (!newBackdrop.isNull()) {
-        newBackdrop=setOpacity(newBackdrop);
-    }
+
     fadeValue=0.0;
     animator.setDuration(250);
     animator.setEndValue(1.0);

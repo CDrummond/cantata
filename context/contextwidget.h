@@ -25,7 +25,7 @@
 #define CONTEXT_WIDGET_H
 
 #include <QWidget>
-#include <QImage>
+#include <QPixmap>
 #include <QColor>
 #include <QPropertyAnimation>
 #include <QSplitter>
@@ -38,6 +38,7 @@ class BackdropCreator;
 class QNetworkReply;
 class QStackedWidget;
 class QComboBox;
+class QImage;
 
 class ThinSplitter : public QSplitter
 {
@@ -109,8 +110,8 @@ private:
     bool darkBackground;
 //    bool useHtBackdrops;
     bool useFanArt;
-    QImage oldBackdrop;
-    QImage newBackdrop;
+    QPixmap oldBackdrop;
+    QPixmap currentBackdrop;
     QString currentArtist;
     QString updateArtist;
     ArtistView *artist;

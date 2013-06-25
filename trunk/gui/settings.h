@@ -149,6 +149,7 @@ public:
     bool playQueueAutoExpand();
     bool playQueueStartClosed();
     bool playQueueScroll();
+    bool playQueueBackground();
     bool playListsStartClosed();
     #ifdef ENABLE_HTTP_STREAM_PLAYBACK
     bool playStream();
@@ -230,6 +231,7 @@ public:
     void savePlayQueueAutoExpand(bool v);
     void savePlayQueueStartClosed(bool v);
     void savePlayQueueScroll(bool v);
+    void savePlayQueueBackground(bool v);
     void savePlayListsStartClosed(bool v);
     #ifdef ENABLE_HTTP_STREAM_PLAYBACK
     void savePlayStream(bool v);

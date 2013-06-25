@@ -48,7 +48,10 @@ public:
     const QImage &image() const { return img; }
 
 Q_SIGNALS:
+    // coverImage /might/ contain the default images, if no cover was found
     void coverImage(const QImage &img);
+    // albumCover will only ever contain a valid cover, or a null image
+    void albumCover(const QImage &img);
     void coverFile(const QString &name);
     void clicked();
 

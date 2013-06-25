@@ -201,6 +201,7 @@ void CoverWidget::update(const Song &s)
                 coverFileName=cImg.fileName;
                 emit coverImage(cImg.img);
                 emit coverFile(cImg.fileName);
+                emit albumCover(cImg.img);
             } else {
                 // We ned to set the image here, so that TrayItem gets the correct 'noCover' image
                 // ...but if Covers does eventually download a cover, we dont want valid->noCover->valid
@@ -213,6 +214,7 @@ void CoverWidget::update(const Song &s)
             img=isStream ? noStreamCover.toImage() : noCover.toImage();
             emit coverImage(img);
             emit coverFile(coverFileName);
+            emit albumCover(QImage());
         }
     }
 }
@@ -231,12 +233,14 @@ void CoverWidget::coverRetrieved(const Song &s, const QImage &img, const QString
             coverFileName=file;
             emit coverImage(img);
             emit coverFile(file);
+            emit albumCover(img);
         } else {
             bool stream=current.isStream() && !current.isCdda();
             update(stdPixmap(stream));
             coverFileName=stream ? noStreamCoverFileName : noCoverFileName;
             emit coverImage(QImage());
             emit coverFile(coverFileName);
+            emit albumCover(QImage());
         }
     }
 }

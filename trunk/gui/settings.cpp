@@ -579,6 +579,11 @@ bool Settings::playQueueScroll()
     return GET_BOOL("playQueueScroll", true);
 }
 
+bool Settings::playQueueBackground()
+{
+    return GET_BOOL("playQueueBackground", false);
+}
+
 bool Settings::playListsStartClosed()
 {
     return GET_BOOL("playListsStartClosed", true);
@@ -978,6 +983,11 @@ void Settings::savePlayQueueStartClosed(bool v)
 void Settings::savePlayQueueScroll(bool v)
 {
     SET_VALUE_MOD(playQueueScroll)
+}
+
+void Settings::savePlayQueueBackground(bool v)
+{
+    SET_VALUE_MOD(playQueueBackground)
 }
 
 void Settings::savePlayListsStartClosed(bool v)

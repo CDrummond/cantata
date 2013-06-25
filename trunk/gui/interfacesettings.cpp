@@ -129,6 +129,7 @@ void InterfaceSettings::load()
     playQueueAutoExpand->setChecked(Settings::self()->playQueueAutoExpand());
     playQueueStartClosed->setChecked(Settings::self()->playQueueStartClosed());
     playQueueScroll->setChecked(Settings::self()->playQueueScroll());
+    playQueueBackground->setChecked(Settings::self()->playQueueBackground());
     albumsViewChanged();
     albumsCoverSizeChanged();
     playListsStyleChanged();
@@ -168,6 +169,7 @@ void InterfaceSettings::save()
     Settings::self()->savePlayQueueAutoExpand(playQueueAutoExpand->isChecked());
     Settings::self()->savePlayQueueStartClosed(playQueueStartClosed->isChecked());
     Settings::self()->savePlayQueueScroll(playQueueScroll->isChecked());
+    Settings::self()->savePlayQueueBackground(playQueueBackground->isChecked());
     Settings::self()->saveForceSingleClick(forceSingleClick->isChecked());
     Settings::self()->saveUseSystemTray(systemTrayCheckBox->isChecked());
     Settings::self()->saveShowPopups(systemTrayPopup->isChecked());

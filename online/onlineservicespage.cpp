@@ -324,7 +324,7 @@ void OnlineServicesPage::removeService()
     MusicLibraryItem *item=static_cast<MusicLibraryItem *>(proxy.mapToSource(selected.first()).internalPointer());
 
     if (MusicLibraryItem::Type_Root==item->itemType()) {
-        if (MessageBox::No==MessageBox::warningYesNo(this, i18n("Are you sure you wish to remove '%1'?").arg(item->data()), i18n("Remove Service"),
+        if (MessageBox::No==MessageBox::warningYesNo(this, i18n("Are you sure you wish to remove <b>%1</b>?").arg(item->data()), i18n("Remove Service"),
                                                      GuiItem(i18n("Remove Service")), StdGuiItem::cancel())) {
             return;
         }
@@ -347,7 +347,7 @@ void OnlineServicesPage::toggleService()
 
     if (MusicLibraryItem::Type_Root==item->itemType()) {
         if (static_cast<OnlineService *>(item)->isLoaded() &&
-            MessageBox::No==MessageBox::warningYesNo(this, i18n("Are you sure you wish to unload '%1'?").arg(item->data()), i18n("Unload Service"),
+            MessageBox::No==MessageBox::warningYesNo(this, i18n("Are you sure you wish to unload <b>%1</b>?").arg(item->data()), i18n("Unload Service"),
                                                      GuiItem(i18n("Unload Service")), StdGuiItem::cancel())) {
             return;
         }

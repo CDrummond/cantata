@@ -63,10 +63,21 @@ void ContextWidget::enableDebug()
 //const QLatin1String ContextWidget::constHtbApiKey(0); // API key required
 const QLatin1String ContextWidget::constFanArtApiKey("ee86404cb429fa27ac32a1a3c117b006");
 const QLatin1String ContextWidget::constCacheDir("backdrops/");
+static const double constBgndOpacity=0.15;
 
 static QString cacheFileName(const QString &artist, bool createDir)
 {
     return Utils::cacheDir(ContextWidget::constCacheDir, createDir)+Covers::encodeName(artist)+".jpg";
+}
+
+static QImage setOpacity(const QImage &orig)
+{
+    QImage img=QImage::Format_ARGB32==orig.format() ? orig : orig.convertToFormat(QImage::Format_ARGB32);
+    uchar *bits = img.bits();
+    for (int i = 0; i < img.height()*img.bytesPerLine(); i+=4) {
+        bits[i+3] = constBgndOpacity*255;
+    }
+    return img;
 }
 
 static QColor splitterColor;
@@ -409,11 +420,15 @@ void ContextWidget::paintEvent(QPaintEvent *e)
     }
     if (drawBackdrop) {
         if (!oldBackdrop.isNull()) {
-            p.setOpacity(0.15*((100.0-fadeValue)/100.0));
+            if (fadeValue>0.5) {
+                p.setOpacity((100.0-fadeValue)/100.0);
+            }
             p.fillRect(r, QBrush(oldBackdrop));
         }
         if (!newBackdrop.isNull()) {
-            p.setOpacity(0.15*(fadeValue/100.0));
+            if (fadeValue<99.5) {
+                p.setOpacity(fadeValue/100.0);
+            }
             p.fillRect(r, QBrush(newBackdrop));
         }
 //        if (!backdropText.isEmpty() && isWide) {
@@ -462,6 +477,9 @@ void ContextWidget::updateImage(const QImage &img, bool created)
             size=QSize(minBackdropSize.width()/2, minBackdropSize.height()/2);
         }
         newBackdrop=newBackdrop.scaled(size, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    }
+    if (!newBackdrop.isNull()) {
+        newBackdrop=setOpacity(newBackdrop);
     }
     fadeValue=0.0;
     animator.setDuration(150);

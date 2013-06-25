@@ -128,6 +128,7 @@ private:
 //    QString backdropText;
     QSet<QString> backdropAlbums;
     QSize minBackdropSize;
+    QList<QString> artistsCreatedBackdropsFor;
 };
 
 #endif

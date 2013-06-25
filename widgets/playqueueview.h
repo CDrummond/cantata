@@ -27,10 +27,13 @@
 #include <QStackedWidget>
 #include <QAbstractItemView>
 #include <QSet>
+#include <QPixmap>
+#include <QImage>
+#include <QPropertyAnimation>
 #include "treeview.h"
+#include "groupedview.h"
 #include "song.h"
 
-class GroupedView;
 class QAbstractItemModel;
 class QAction;
 class QItemSelectionModel;
@@ -38,13 +41,14 @@ class QHeaderView;
 class QModelIndex;
 class QMenu;
 class Spinner;
+class PlayQueueView;
 
 class PlayQueueTreeView : public TreeView
 {
     Q_OBJECT
 
 public:
-    PlayQueueTreeView(QWidget *p);
+    PlayQueueTreeView(PlayQueueView *p);
     virtual ~PlayQueueTreeView();
 
     void initHeader();
@@ -53,14 +57,27 @@ public:
 private Q_SLOTS:
     void showMenu();
     void toggleHeaderItem(bool visible);
+    void paintEvent(QPaintEvent *e);
 
 private:
+    PlayQueueView *view;
     QMenu *menu;
+};
+
+class PlayQueueGroupedView : public GroupedView
+{
+public:
+    PlayQueueGroupedView(PlayQueueView *p);
+    virtual ~PlayQueueGroupedView();
+    void paintEvent(QPaintEvent *e);
+private:
+    PlayQueueView *view;
 };
 
 class PlayQueueView : public QStackedWidget
 {
     Q_OBJECT
+    Q_PROPERTY(float fade READ fade WRITE setFade)
 
 public:
     PlayQueueView(QWidget *parent=0);
@@ -94,19 +111,37 @@ public:
     bool hasFocus() const;
     QModelIndexList selectedIndexes() const;
     QList<Song> selectedSongs() const;
+    float fade() { return fadeValue; }
+    void setFade(float value);
+    void setUseCoverAsBackgrond(bool u);
+    bool useCoverAsBackground() const { return useCoverAsBgnd; }
 
 public Q_SLOTS:
     void showSpinner();
     void hideSpinner();
+    void setImage(const QImage &img);
 
 Q_SIGNALS:
     void itemsSelected(bool);
     void doubleClicked(const QModelIndex &);
 
 private:
-    GroupedView *groupedView;
+    void drawBackdrop(QWidget *widget, const QSize &size);
+
+private:
+    PlayQueueGroupedView *groupedView;
     PlayQueueTreeView *treeView;
     Spinner *spinner;
+
+    bool useCoverAsBgnd;
+    QPropertyAnimation animator;
+    QImage curentCover;
+    QPixmap curentBackground;
+    QPixmap previousBackground;
+    QSize lastBgndSize;
+    double fadeValue;
+    friend class PlayQueueGroupedView;
+    friend class PlayQueueTreeView;
 };
 
 #endif

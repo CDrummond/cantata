@@ -34,9 +34,25 @@
 #include <QMenu>
 #include <QAction>
 #include <QFile>
+#include <QPainter>
+#include <QApplication>
+#include <qglobal.h>
 
-PlayQueueTreeView::PlayQueueTreeView(QWidget *parent)
+static const double constBgndOpacity=0.15;
+
+static QImage setOpacity(const QImage &orig)
+{
+    QImage img=QImage::Format_ARGB32==orig.format() ? orig : orig.convertToFormat(QImage::Format_ARGB32);
+    uchar *bits = img.bits();
+    for (int i = 0; i < img.height()*img.bytesPerLine(); i+=4) {
+        bits[i+3] = constBgndOpacity*255;
+    }
+    return img;
+}
+
+PlayQueueTreeView::PlayQueueTreeView(PlayQueueView *parent)
     : TreeView(parent, true)
+    , view(parent)
     , menu(0)
 {
     setContextMenuPolicy(Qt::CustomContextMenu);
@@ -55,6 +71,28 @@ PlayQueueTreeView::PlayQueueTreeView(QWidget *parent)
 
 PlayQueueTreeView::~PlayQueueTreeView()
 {
+}
+
+void PlayQueueTreeView::paintEvent(QPaintEvent *e)
+{
+    view->drawBackdrop(viewport(), size());
+    TreeView::paintEvent(e);
+}
+
+PlayQueueGroupedView::PlayQueueGroupedView(PlayQueueView *parent)
+    : GroupedView(parent, true)
+    , view(parent)
+{
+}
+
+PlayQueueGroupedView::~PlayQueueGroupedView()
+{
+}
+
+void PlayQueueGroupedView::paintEvent(QPaintEvent *e)
+{
+    view->drawBackdrop(viewport(), size());
+    GroupedView::paintEvent(e);
 }
 
 #if QT_VERSION < 0x050000
@@ -183,8 +221,9 @@ void PlayQueueTreeView::toggleHeaderItem(bool visible)
 PlayQueueView::PlayQueueView(QWidget *parent)
     : QStackedWidget(parent)
     , spinner(0)
+    , useCoverAsBgnd(false)
 {
-    groupedView=new GroupedView(this, true);
+    groupedView=new PlayQueueGroupedView(this);
     groupedView->setIndentation(0);
     groupedView->setItemsExpandable(false);
     groupedView->setExpandsOnDoubleClick(false);
@@ -197,6 +236,9 @@ PlayQueueView::PlayQueueView(QWidget *parent)
     connect(groupedView, SIGNAL(doubleClicked(const QModelIndex &)), SIGNAL(doubleClicked(const QModelIndex &)));
     connect(treeView, SIGNAL(doubleClicked(const QModelIndex &)), SIGNAL(doubleClicked(const QModelIndex &)));
     setContextMenuPolicy(Qt::ActionsContextMenu);
+
+    animator.setPropertyName("fade");
+    animator.setTargetObject(this);
 }
 
 PlayQueueView::~PlayQueueView()
@@ -370,5 +412,87 @@ void PlayQueueView::hideSpinner()
 {
     if (spinner) {
         spinner->stop();
+    }
+}
+
+void PlayQueueView::setFade(float value)
+{
+    if (fadeValue!=value) {
+        fadeValue = value;
+        if (qFuzzyCompare(fadeValue, qreal(1.0))) {
+            previousBackground=QPixmap();
+        }
+        view()->viewport()->update();
+    }
+}
+
+void PlayQueueView::setUseCoverAsBackgrond(bool u)
+{
+    if (u==useCoverAsBgnd) {
+        return;
+    }
+    useCoverAsBgnd=u;
+    QPalette pal=palette();
+
+    if (u) {
+        pal.setColor(QPalette::Base, Qt::transparent);
+    }
+
+    groupedView->setPalette(pal);
+    groupedView->viewport()->setPalette(pal);
+    treeView->setPalette(pal);
+    treeView->viewport()->setPalette(pal);
+
+    if (!u) {
+        previousBackground=QPixmap();
+        curentCover=QImage();
+        curentBackground=QPixmap();
+        view()->viewport()->update();
+    }
+}
+
+void PlayQueueView::setImage(const QImage &img)
+{
+    if (!useCoverAsBgnd) {
+        return;
+    }
+    previousBackground=curentBackground;
+    curentCover=img.isNull() ? QImage() : setOpacity(img);
+    curentBackground=QPixmap();
+    animator.stop();
+    if (isVisible()) {
+        fadeValue=0.0;
+        animator.setDuration(250);
+        animator.setEndValue(1.0);
+        animator.start();
+    }
+}
+
+void PlayQueueView::drawBackdrop(QWidget *widget, const QSize &size)
+{
+    if (!useCoverAsBgnd) {
+        return;
+    }
+
+    QPainter p(widget);
+
+    if (!curentCover.isNull() || !previousBackground.isNull()) {
+        if (!curentCover.isNull() && (size!=lastBgndSize || curentBackground.isNull())) {
+            curentBackground = QPixmap::fromImage(curentCover.scaled(size, Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation));
+            lastBgndSize=size;
+        }
+
+        if (!previousBackground.isNull()) {
+            if (!qFuzzyCompare(fadeValue, qreal(0.0))) {
+                p.setOpacity(1.0-fadeValue);
+            }
+            p.drawPixmap((size.width()-previousBackground.width())/2, (size.height()-previousBackground.height())/2, previousBackground);
+        }
+        if (!curentBackground.isNull()) {
+            p.setOpacity(fadeValue);
+            p.drawPixmap((size.width()-curentBackground.width())/2, (size.height()-curentBackground.height())/2, curentBackground);
+        }
+    } else {
+        p.fillRect(0, 0, size.width(), size.height(), QApplication::palette().color(QPalette::Base));
     }
 }

@@ -671,6 +671,8 @@ MainWindow::MainWindow(QWidget *parent)
     playQueue->setGrouped(Settings::self()->playQueueGrouped());
     playQueue->setAutoExpand(Settings::self()->playQueueAutoExpand());
     playQueue->setStartClosed(Settings::self()->playQueueStartClosed());
+    playQueue->setUseCoverAsBackgrond(Settings::self()->playQueueBackground());
+
     playlistsPage->setStartClosed(Settings::self()->playListsStartClosed());
 
     connect(StdActions::self()->addPrioHighestAction, SIGNAL(triggered(bool)), this, SLOT(addWithPriority()));
@@ -808,6 +810,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(PlaylistsModel::self(), SIGNAL(addToExisting(const QString &)), this, SLOT(addToExistingStoredPlaylist(const QString &)));
     connect(playlistsPage, SIGNAL(add(const QStringList &, bool, quint8)), &playQueueModel, SLOT(addItems(const QStringList &, bool, quint8)));
     connect(coverWidget, SIGNAL(clicked()), expandInterfaceAction, SLOT(trigger()));
+    connect(coverWidget, SIGNAL(albumCover(QImage)), playQueue, SLOT(setImage(QImage)));
     #ifdef Q_OS_LINUX
     connect(MountPoints::self(), SIGNAL(updated()), SLOT(checkMpdAccessibility()));
     #endif // Q_OS_LINUX
@@ -1426,8 +1429,13 @@ void MainWindow::updateSettings()
 
     bool wasAutoExpand=playQueue->isAutoExpand();
     bool wasStartClosed=playQueue->isStartClosed();
+    bool wasShowingCover=playQueue->useCoverAsBackground();
     playQueue->setAutoExpand(Settings::self()->playQueueAutoExpand());
     playQueue->setStartClosed(Settings::self()->playQueueStartClosed());
+    playQueue->setUseCoverAsBackgrond(Settings::self()->playQueueBackground());
+    if (!wasShowingCover && playQueue->useCoverAsBackground() && coverWidget->isValid()) {
+        playQueue->setImage(coverWidget->image());
+    }
 
     if (Settings::self()->playQueueGrouped()!=playQueue->isGrouped() ||
         (playQueue->isGrouped() && (wasAutoExpand!=playQueue->isAutoExpand() || wasStartClosed!=playQueue->isStartClosed())) ) {

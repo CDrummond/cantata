@@ -95,6 +95,7 @@
 60. Remove proxy config from settings, and always use system proxy.
     To re-enable proxy settings pass -DENABLE_PROXY_CONFIG=ON to cmake.
 61. Add option to draw curent album cover as backdrop to play queue.
+62. Add 'Copy Songs To Device' action to playlists page.
 
 1.0.3
 -----

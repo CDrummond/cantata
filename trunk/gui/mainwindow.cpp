@@ -791,6 +791,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(libraryPage, SIGNAL(addToDevice(const QString &, const QString &, const QList<Song> &)), SLOT(copyToDevice(const QString &, const QString &, const QList<Song> &)));
     connect(albumsPage, SIGNAL(addToDevice(const QString &, const QString &, const QList<Song> &)), SLOT(copyToDevice(const QString &, const QString &, const QList<Song> &)));
     connect(folderPage, SIGNAL(addToDevice(const QString &, const QString &, const QList<Song> &)), SLOT(copyToDevice(const QString &, const QString &, const QList<Song> &)));
+    connect(playlistsPage, SIGNAL(addToDevice(const QString &, const QString &, const QList<Song> &)), SLOT(copyToDevice(const QString &, const QString &, const QList<Song> &)));
     connect(devicesPage, SIGNAL(addToDevice(const QString &, const QString &, const QList<Song> &)), SLOT(copyToDevice(const QString &, const QString &, const QList<Song> &)));
     #ifdef ENABLE_ONLINE_SERVICES
     connect(onlinePage, SIGNAL(addToDevice(const QString &, const QString &, const QList<Song> &)), SLOT(copyToDevice(const QString &, const QString &, const QList<Song> &)));
@@ -2855,6 +2856,8 @@ void MainWindow::addToDevice(const QString &udi)
         albumsPage->addSelectionToDevice(udi);
     } else if (folderPage->isVisible()) {
         folderPage->addSelectionToDevice(udi);
+    } else if (playlistsPage->isVisible()) {
+        playlistsPage->addSelectionToDevice(udi);
     }
     #else
     Q_UNUSED(udi)

@@ -51,6 +51,9 @@ PlaylistsPage::PlaylistsPage(QWidget *p)
     view->addAction(StdActions::self()->addToPlayQueueAction);
     view->addAction(StdActions::self()->replacePlayQueueAction);
     view->addAction(StdActions::self()->addWithPriorityAction);
+    #ifdef ENABLE_DEVICES_SUPPORT
+    view->addAction(StdActions::self()->copyToDeviceAction);
+    #endif
     view->addAction(renamePlaylistAction);
     view->addAction(StdActions::self()->removeAction);
     view->setUniformRowHeights(true);
@@ -285,24 +288,55 @@ void PlaylistsPage::addItemsToPlayQueue(const QModelIndexList &indexes, bool rep
     }
 }
 
+#ifdef ENABLE_DEVICES_SUPPORT
+QList<Song> PlaylistsPage::selectedSongs() const
+{
+    QModelIndexList selected = view->selectedIndexes();
+
+    if (0==selected.size()) {
+        return QList<Song>();
+    }
+
+    QModelIndexList mapped;
+    foreach (const QModelIndex &idx, selected) {
+        mapped.append(proxy.mapToSource(idx));
+    }
+
+    return PlaylistsModel::self()->songs(mapped);
+}
+
+void PlaylistsPage::addSelectionToDevice(const QString &udi)
+{
+    QList<Song> songs=selectedSongs();
+    if (!songs.isEmpty()) {
+        emit addToDevice(QString(), udi, songs);
+        view->clearSelection();
+    }
+}
+#endif
+
 void PlaylistsPage::controlActions()
 {
     QModelIndexList selected=view->selectedIndexes();
-    bool enable=false;
+    bool canRename=false;
+    bool enableActions=selected.count()>0;
 
     if (1==selected.count()) {
         QModelIndex index = proxy.mapToSource(selected.first());
         PlaylistsModel::Item *item=static_cast<PlaylistsModel::Item *>(index.internalPointer());
         if (item && item->isPlaylist()) {
-            enable=true;
+            canRename=true;
         }
     }
-    renamePlaylistAction->setEnabled(enable);
-    renamePlaylistAction->setEnabled(enable);
-    StdActions::self()->removeAction->setEnabled(selected.count()>0);
-    StdActions::self()->replacePlayQueueAction->setEnabled(selected.count()>0);
-    StdActions::self()->addToPlayQueueAction->setEnabled(selected.count()>0);
-    StdActions::self()->addWithPriorityAction->setEnabled(selected.count()>0);
+
+    renamePlaylistAction->setEnabled(canRename);
+    StdActions::self()->removeAction->setEnabled(enableActions);
+    StdActions::self()->replacePlayQueueAction->setEnabled(enableActions);
+    StdActions::self()->addToPlayQueueAction->setEnabled(enableActions);
+    StdActions::self()->addWithPriorityAction->setEnabled(enableActions);
+    #ifdef ENABLE_DEVICES_SUPPORT
+    StdActions::self()->copyToDeviceAction->setEnabled(enableActions);
+    #endif
     menuButton->controlState();
 }
 

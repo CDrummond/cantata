@@ -91,6 +91,7 @@ public:
     Qt::ItemFlags flags(const QModelIndex &index) const;
     Qt::DropActions supportedDropActions() const;
     QStringList filenames(const QModelIndexList &indexes, bool filesOnly=false) const;
+    QList<Song> songs(const QModelIndexList &indexes) const;
     QMimeData * mimeData(const QModelIndexList &indexes) const;
     bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int /*col*/, const QModelIndex &parent);
     QStringList mimeTypes() const;

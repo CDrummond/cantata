@@ -66,6 +66,8 @@ StreamsPage::StreamsPage(QWidget *p)
     QAction *radioAction=0;
     QMenu *radioMenu=0;
     QMap<QString, QMenu *> regions;
+    QAction *diAction=0;
+    QMenu *diMenu=0;
 
     foreach (const WebStream *ws, webStreams) {
         if (dynamic_cast<const RadioWebStream *>(ws)) {
@@ -84,6 +86,15 @@ StreamsPage::StreamsPage(QWidget *p)
                 menu=regions[ws->getRegion()];
             }
             QAction *act=menu->addAction(ws->getName());
+            act->setProperty(constUrlProperty, ws->getUrl());
+            connect(act, SIGNAL(triggered(bool)), this, SLOT(importWebStreams()));
+        } else if (dynamic_cast<const DigitallyImportedWebStream *>(ws)) {
+            if (!diAction) {
+                diAction=importMenu->addAction(i18n("Digitally Imported"));
+                diMenu=new QMenu(this);
+                diAction->setMenu(diMenu);
+            }
+            QAction *act=diMenu->addAction(ws->getName());
             act->setProperty(constUrlProperty, ws->getUrl());
             connect(act, SIGNAL(triggered(bool)), this, SLOT(importWebStreams()));
         } else {

@@ -1,6 +1,11 @@
 <!DOCTYPE RCC><RCC version="1.0">
 <qresource>
 <file alias="cantata.svg">icons/cantata.svg</file>
+<file alias="cantata16.png">icons/cantata16.png</file>
+<file alias="cantata22.png">icons/cantata22.png</file>
+<file alias="cantata32.png">icons/cantata32.png</file>
+<file alias="cantata48.png">icons/cantata48.png</file>
+<file alias="cantata64.png">icons/cantata64.png</file>
 <file alias="va16.png">icons/hi16-action-cantata-view-media-artist-various.png</file>
 <file alias="va22.png">icons/hi22-action-cantata-view-media-artist-various.png</file>
 <file alias="va32.png">icons/hi32-action-cantata-view-media-artist-various.png</file>

@@ -26,6 +26,7 @@
 
 #include "ui_playlistspage.h"
 #include "playlistsproxymodel.h"
+#include "config.h"
 
 class Action;
 
@@ -46,6 +47,10 @@ public:
     void setView(int mode);
     void focusSearch() { view->focusSearch(); }
     void goBack() { view->backActivated(); }
+    #ifdef ENABLE_DEVICES_SUPPORT
+    QList<Song> selectedSongs() const;
+    void addSelectionToDevice(const QString &udi);
+    #endif
 
 Q_SIGNALS:
     // These are for communicating with MPD object (which is in its own thread, so need to talk via signal/slots)
@@ -56,6 +61,7 @@ Q_SIGNALS:
     void removeFromPlaylist(const QString &name, const QList<quint32> &positions);
 
     void add(const QStringList &files, bool replace, quint8 priorty);
+    void addToDevice(const QString &from, const QString &to, const QList<Song> &songs);
 
 private:
     void addItemsToPlayQueue(const QModelIndexList &indexes, bool replace, quint8 priorty=0);

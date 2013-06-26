@@ -349,6 +349,34 @@ QStringList PlaylistsModel::filenames(const QModelIndexList &indexes, bool files
     return fnames;
 }
 
+QList<Song> PlaylistsModel::songs(const QModelIndexList &indexes) const
+{
+    QList<Song> songs;
+    QSet<Item *> selectedPlaylists;
+
+    foreach (const QModelIndex &idx, indexes) {
+        Item *item=static_cast<Item *>(idx.internalPointer());
+        if (item->isPlaylist()) {
+            PlaylistItem *playlist=static_cast<PlaylistItem *>(item);
+            foreach (const SongItem *song, playlist->songs) {
+                selectedPlaylists.insert(item);
+                songs.append(*song);
+            }
+        }
+    }
+    foreach (const QModelIndex &idx, indexes) {
+        PlaylistsModel::Item *item=static_cast<PlaylistsModel::Item *>(idx.internalPointer());
+        if (!item->isPlaylist()) {
+            SongItem *song=static_cast<SongItem *>(item);
+            if (!selectedPlaylists.contains(song->parent)) {
+                songs.append(*song);
+            }
+        }
+    }
+    qSort(songs);
+    return songs;
+}
+
 static const QLatin1String constPlaylistNameMimeType("cantata/playlistnames");
 static const QLatin1String constPositionsMimeType("cantata/positions");
 static const char *constPlaylistProp="hasPlaylist";

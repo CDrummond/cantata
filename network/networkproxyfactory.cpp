@@ -27,33 +27,107 @@
 #include <QStringList>
 #include <stdlib.h>
 
-const char* NetworkProxyFactory::constSettingsGroup = "Proxy";
+
+const char * NetworkProxyFactory::constSettingsGroup = "Proxy";
+
+#if defined Q_OS_LINUX && QT_VERSION < 0x050000
+// Taken from Qt5...
+static bool ignoreProxyFor(const QNetworkProxyQuery &query)
+{
+    const QList<QByteArray> noProxyTokens = qgetenv("no_proxy").split(',');
+
+    foreach (const QByteArray &rawToken, noProxyTokens) {
+        QByteArray token = rawToken.trimmed();
+        QString peerHostName = query.peerHostName();
+
+        // Since we use suffix matching, "*" is our 'default' behaviour
+        if (token.startsWith("*")) {
+            token = token.mid(1);
+        }
+
+        // Harmonize trailing dot notation
+        if (token.endsWith('.') && !peerHostName.endsWith('.')) {
+            token = token.left(token.length()-1);
+        }
+
+        // We prepend a dot to both values, so that when we do a suffix match,
+        // we don't match "donotmatch.com" with "match.com"
+        if (!token.startsWith('.')) {
+            token.prepend('.');
+        }
+
+        if (!peerHostName.startsWith('.')) {
+            peerHostName.prepend('.');
+        }
+
+        if (peerHostName.endsWith(QString::fromLatin1(token))) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+// Taken from Qt5...
+static QList<QNetworkProxy> systemProxyForQuery(const QNetworkProxyQuery &query)
+{
+    QList<QNetworkProxy> proxyList;
+
+    if (ignoreProxyFor(query)) {
+        return proxyList << QNetworkProxy::NoProxy;
+    }
+
+    // No need to care about casing here, QUrl lowercases values already
+    const QString queryProtocol = query.protocolTag();
+    QByteArray proxy_env;
+
+    if (queryProtocol == QLatin1String("http")) {
+        proxy_env = qgetenv("http_proxy");
+    } else if (queryProtocol == QLatin1String("https")) {
+        proxy_env = qgetenv("https_proxy");
+    } else if (queryProtocol == QLatin1String("ftp")) {
+        proxy_env = qgetenv("ftp_proxy");
+    } else {
+        proxy_env = qgetenv("all_proxy");
+    }
+
+    // Fallback to http_proxy is no protocol specific proxy was found
+    if (proxy_env.isEmpty()) {
+        proxy_env = qgetenv("http_proxy");
+    }
+
+    if (!proxy_env.isEmpty()) {
+        QUrl url = QUrl(QString::fromLocal8Bit(proxy_env));
+        if (url.scheme() == QLatin1String("socks5")) {
+            QNetworkProxy proxy(QNetworkProxy::Socks5Proxy, url.host(),
+                    url.port() ? url.port() : 1080, url.userName(), url.password());
+            proxyList << proxy;
+        } else if (url.scheme() == QLatin1String("socks5h")) {
+            QNetworkProxy proxy(QNetworkProxy::Socks5Proxy, url.host(),
+                    url.port() ? url.port() : 1080, url.userName(), url.password());
+            proxy.setCapabilities(QNetworkProxy::HostNameLookupCapability);
+            proxyList << proxy;
+        } else if ((url.scheme() == QLatin1String("http") || url.scheme().isEmpty())
+                  && query.queryType() != QNetworkProxyQuery::UdpSocket
+                  && query.queryType() != QNetworkProxyQuery::TcpServer) {
+            QNetworkProxy proxy(QNetworkProxy::HttpProxy, url.host(),
+                    url.port() ? url.port() : 8080, url.userName(), url.password());
+            proxyList << proxy;
+        }
+    }
+    if (proxyList.isEmpty()) {
+        proxyList << QNetworkProxy::NoProxy;
+    }
+
+    return proxyList;
+}
+#endif
 
 NetworkProxyFactory::NetworkProxyFactory()
     : mode(Mode_System)
     , type(QNetworkProxy::HttpProxy)
     , port(8080)
 {
-    #if defined Q_OS_LINUX && QT_VERSION < 0x050000
-    // Linux uses environment variables to pass proxy configuration information,
-    // which systemProxyForQuery doesn't support for some reason.
-
-    QStringList urls;
-    urls << QString::fromLocal8Bit(getenv("HTTP_PROXY"));
-    urls << QString::fromLocal8Bit(getenv("http_proxy"));
-    urls << QString::fromLocal8Bit(getenv("ALL_PROXY"));
-    urls << QString::fromLocal8Bit(getenv("all_proxy"));
-
-    foreach (const QString& urlStr, urls) {
-        if (urlStr.isEmpty()) {
-            continue;
-        }
-
-        envUrl = QUrl(urlStr);
-        break;
-    }
-    #endif
-
     reloadSettings();
 }
 
@@ -128,20 +202,8 @@ QList<QNetworkProxy> NetworkProxyFactory::queryProxy(const QNetworkProxyQuery& q
 
     return QList<QNetworkProxy>() << ret;
     #elif defined Q_OS_LINUX && QT_VERSION < 0x050000
-    Q_UNUSED(query);
-
-    QNetworkProxy ret;
-    if (envUrl.isEmpty()) {
-        ret.setType(QNetworkProxy::NoProxy);
-    } else {
-        ret.setHostName(envUrl.host());
-        ret.setPort(envUrl.port());
-        ret.setUser(envUrl.userName());
-        ret.setPassword(envUrl.password());
-        ret.setType(envUrl.scheme().startsWith("http") ? QNetworkProxy::HttpProxy : QNetworkProxy::Socks5Proxy);
-    }
-    return QList<QNetworkProxy>() << ret;
+    return ::systemProxyForQuery(query);
     #else
-    return systemProxyForQuery(query);
+    return QNetworkProxyFactory::systemProxyForQuery(query);
     #endif
 }

@@ -550,7 +550,11 @@ QUrl DigitallyImportedWebStream::channelListUrl() const
 
 void DigitallyImportedWebStream::addHeaders(QNetworkRequest &r)
 {
+    #if QT_VERSION < 0x050000
     r.setRawHeader("Authorization", "Basic "+QString("%1:%2").arg(constDiApiUsername, constDiApiPassword).toAscii().toBase64());
+    #else
+    r.setRawHeader("Authorization", "Basic "+QString("%1:%2").arg(constDiApiUsername, constDiApiPassword).toLatin1().toBase64());
+    #endif
 }
 
 //QUrl DigitallyImportedWebStream::modifyUrl(const QUrl &u) const

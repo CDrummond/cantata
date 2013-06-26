@@ -99,6 +99,8 @@
 63. Copy Qt5 Linux system proxy code for Qt4 builds.
 64. Embed pre-rendered PNG versions of cantata icon, to help with Qt5 builds
     on systems that do not have the Qt SVG icon engine installed.
+65. Add support for importing Digitally Imported, Jazz Radio, and Sky.fm
+    streams. Only free, ad supported, streams at the moment.
 
 1.0.3
 -----

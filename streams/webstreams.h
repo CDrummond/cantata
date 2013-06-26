@@ -29,6 +29,7 @@
 #include <QObject>
 
 class QNetworkReply;
+class QNetworkRequest;
 
 class WebStream : public QObject
 {
@@ -50,6 +51,7 @@ public:
     bool isDownloading() const { return 0!=job; }
     void download();
     void cancelDownload();
+//    virtual QUrl modifyUrl(const QUrl &u) const { return u; }
 
 Q_SIGNALS:
     void finished();
@@ -57,6 +59,10 @@ Q_SIGNALS:
 
 private Q_SLOTS:
     void downloadFinished();
+
+private:
+    virtual QUrl channelListUrl() const { return url; }
+    virtual void addHeaders(QNetworkRequest &) { }
 
 protected:
     QString name;
@@ -88,6 +94,24 @@ public:
     RadioWebStream(const QString &n, const QString &i, const QString &r, const QUrl &u)
         : WebStream(n, i, r, u) { }
     QList<StreamsModel::StreamItem *> parse(QIODevice *dev);
+};
+
+class DigitallyImportedWebStream: public WebStream
+{
+public:
+    DigitallyImportedWebStream(const QString &n, const QString &i, const QString &r, const QUrl &u);
+    QList<StreamsModel::StreamItem *> parse(QIODevice *dev);
+
+private:
+    QUrl channelListUrl() const;
+    void addHeaders(QNetworkRequest &r);
+//    QUrl modifyUrl(const QUrl &u) const;
+
+private:
+    QString listenHost;
+    QString serviceName;
+//    QString premiumHash;
+//    int premiumStream;
 };
 
 #endif

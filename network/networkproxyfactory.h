@@ -43,7 +43,9 @@ public:
     static const char * constSettingsGroup;
 
     // These methods are thread-safe
+    #ifdef ENABLE_PROXY_CONFIG
     void reloadSettings();
+    #endif
     QList<QNetworkProxy> queryProxy(const QNetworkProxyQuery& query);
 
 private:
@@ -52,13 +54,13 @@ private:
 private:
     #ifdef ENABLE_PROXY_CONFIG
     QMutex mutex;
-    #endif
     Mode mode;
     QNetworkProxy::ProxyType type;
     QString hostname;
     int port;
     QString username;
     QString password;
+    #endif
 };
 
 #endif // NETWORKPROXYFACTORY_H

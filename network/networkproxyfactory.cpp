@@ -123,6 +123,7 @@ static QList<QNetworkProxy> systemProxyForQuery(const QNetworkProxyQuery &query)
 }
 #endif
 
+#ifdef ENABLE_PROXY_CONFIG
 NetworkProxyFactory::NetworkProxyFactory()
     : mode(Mode_System)
     , type(QNetworkProxy::HttpProxy)
@@ -130,6 +131,11 @@ NetworkProxyFactory::NetworkProxyFactory()
 {
     reloadSettings();
 }
+#else
+NetworkProxyFactory::NetworkProxyFactory()
+{
+}
+#endif
 
 NetworkProxyFactory * NetworkProxyFactory::self()
 {
@@ -141,9 +147,9 @@ NetworkProxyFactory * NetworkProxyFactory::self()
     return instance;
 }
 
+#ifdef ENABLE_PROXY_CONFIG
 void NetworkProxyFactory::reloadSettings()
 {
-    #ifdef ENABLE_PROXY_CONFIG
     QMutexLocker l(&mutex);
 
     QSettings s;
@@ -155,10 +161,8 @@ void NetworkProxyFactory::reloadSettings()
     port = s.value("port", 8080).toInt();
     username = s.value("username").toString();
     password = s.value("password").toString();
-    #else
-    mode = Mode_System;
-    #endif
 }
+#endif
 
 QList<QNetworkProxy> NetworkProxyFactory::queryProxy(const QNetworkProxyQuery& query)
 {

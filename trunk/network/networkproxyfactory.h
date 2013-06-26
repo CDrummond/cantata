@@ -59,9 +59,6 @@ private:
     int port;
     QString username;
     QString password;
-    #if defined Q_OS_LINUX && QT_VERSION < 0x050000
-    QUrl envUrl;
-    #endif
 };
 
 #endif // NETWORKPROXYFACTORY_H

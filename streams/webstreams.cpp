@@ -26,13 +26,24 @@
 #include "streamsmodel.h"
 #include "localize.h"
 #include "song.h"
+#include "qjson/parser.h"
 #include <QXmlStreamReader>
 #include <QFile>
+#if QT_VERSION >= 0x050000
+#include <QUrlQuery>
+#endif
+
+static const char * constDiApiUsername="ephemeron";
+static const char * constDiApiPassword="dayeiph0ne@pp";
+//static const QString constDiAuthUrl=QLatin1String("http://api.audioaddict.com/v1/%1/members/authenticate");
+static const QString constDiChannelListUrl=QLatin1String("http://api.v2.audioaddict.com/v1/%1/mobile/batch_update?asset_group_key=mobile_icons&stream_set_key=");
+static const QString constDiStdUrl=QLatin1String("http://%1/public3/%2.pls");
 
 enum Type {
     WS_IceCast,
     WS_SomaFm,
     WS_Radio,
+    WS_DigitallyImported,
 
     WS_Count
 };
@@ -55,9 +66,10 @@ QList<WebStream *> WebStream::getAll()
                     unsigned int type=doc.attributes().value("type").toString().toUInt();
                     QUrl url=QUrl(doc.attributes().value("url").toString());
                     switch (type) {
-                    case WS_IceCast: providers.append(new IceCastWebStream(name, icon, region, url)); break;
-                    case WS_SomaFm:  providers.append(new SomaFmWebStream(name, icon, region, url)); break;
-                    case WS_Radio:   providers.append(new RadioWebStream(name, icon, region, url)); break;
+                    case WS_IceCast:           providers.append(new IceCastWebStream(name, icon, region, url)); break;
+                    case WS_SomaFm:            providers.append(new SomaFmWebStream(name, icon, region, url)); break;
+                    case WS_Radio:             providers.append(new RadioWebStream(name, icon, region, url)); break;
+                    case WS_DigitallyImported: providers.append(new DigitallyImportedWebStream(name, icon, region, url)); break;
                     default: break;
                     }
                 }
@@ -83,7 +95,10 @@ void WebStream::download()
     if (job) {
         return;
     }
-    job=NetworkAccessManager::self()->get(QNetworkRequest(url));
+
+    QNetworkRequest req(channelListUrl());
+    addHeaders(req);
+    job=NetworkAccessManager::self()->get(req);
     connect(job, SIGNAL(finished()), this, SLOT(downloadFinished()));
 }
 
@@ -483,3 +498,84 @@ QList<StreamsModel::StreamItem *> RadioWebStream::parse(QIODevice *dev)
 //    trimGenres(genres);
     return streams;
 }
+
+DigitallyImportedWebStream::DigitallyImportedWebStream(const QString &n, const QString &i, const QString &r, const QUrl &u)
+    : WebStream(n, i, r, u)
+//    , premiumStream(-1)
+{
+    QStringList parts=u.host().split(".");
+    if (3==parts.count()) {
+        serviceName=parts.at(1);
+    }
+    listenHost=QLatin1String("listen.")+u.host().remove("www.");
+}
+
+QList<StreamsModel::StreamItem *> DigitallyImportedWebStream::parse(QIODevice *dev)
+{
+    QList<StreamsModel::StreamItem *> streams;
+    QJson::Parser parser;
+    QVariantMap data = parser.parse(dev).toMap();
+
+    if (data.contains("channel_filters")) {
+        QVariantList filters = data["channel_filters"].toList();
+
+        foreach (const QVariant &filter, filters) {
+            // Find the filter called "All"
+            QVariantMap filterMap = filter.toMap();
+            if (filterMap.value("name", QString()).toString() != "All") {
+                continue;
+            }
+
+            // Add all its stations to the result
+            QVariantList channels = filterMap.value("channels", QVariantList()).toList();
+            foreach (const QVariant &channel, channels) {
+                QVariantMap channelMap = channel.toMap();
+                QString u=constDiStdUrl.arg(listenHost).arg(channelMap.value("key").toString());
+
+                StreamsModel::StreamItem *item=new StreamsModel::StreamItem(channelMap.value("name").toString(), QString(), QString(), QUrl(u));
+                streams.append(item);
+            }
+
+            break;
+        }
+    }
+
+    return streams;
+}
+
+QUrl DigitallyImportedWebStream::channelListUrl() const
+{
+    return QUrl(constDiChannelListUrl.arg(serviceName));
+}
+
+void DigitallyImportedWebStream::addHeaders(QNetworkRequest &r)
+{
+    r.setRawHeader("Authorization", "Basic "+QString("%1:%2").arg(constDiApiUsername, constDiApiPassword).toAscii().toBase64());
+}
+
+//QUrl DigitallyImportedWebStream::modifyUrl(const QUrl &u) const
+//{
+//    if (premiumHash.isEmpty()) {
+//        return u;
+//    }
+//    QUrl modified(u);
+//    #if QT_VERSION < 0x050000
+//    QUrl &query=url;
+//    #else
+//    QUrlQuery query;
+//    #endif
+//    QString host=modified.host();
+//    if (2==premiumStream || premiumStream<0 || premiumStream>2) {
+//        host=host.replace("public3", "premium");
+//    } else if (1==premiumStream) {
+//        host=host.replace("public3", "premium_medium");
+//    } else if (0==premiumStream) {
+//        host=host.replace("public3", "premium_high");
+//    }
+//    modified.setHost(host);
+//    query.addQueryItem("hash", premiumHash);
+//    #if QT_VERSION >= 0x050000
+//    modified.setQuery(query);
+//    #endif
+//    return modified;
+//}

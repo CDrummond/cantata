@@ -2,6 +2,9 @@
 <streams>
  <stream name="IceCast" url="http://dir.xiph.org/yp.xml" type="0" icon="cube"/>
  <stream name="SomaFM" url="http://somafm.com/channels.xml" type="1" icon="trebleclef"/>
+ <stream name="Digitally Imported" url="http://www.di.fm" type="3"/>
+ <stream name="Jazz Radio" url="http://www.jazzradio.com" type="3"/>
+ <stream name="SKY.fm" url="http://www.sky.fm" type="3"/>
  <stream name="Australia" url="http://www.australianliveradio.com/" type="2" icon="flag_au"/>
  <stream name="Albania" url="http://www.listenlive.eu/albania.html" region="Europe" type="2" icon="flag_al"/>
  <stream name="Andorra" url="http://www.listenlive.eu/andorra.html" region="Europe" type="2" icon="flag_ad"/>

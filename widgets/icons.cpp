@@ -399,6 +399,11 @@ Icons::Icons()
     }
     #ifndef ENABLE_KDE_SUPPORT
     appIcon.addFile(":cantata.svg");
+    QList<int> appSizes=QList<int>() << 16 << 22 << 32 << 48 << 64;
+    foreach (int s, appSizes) {
+        appIcon.addFile(QString(":cantata%1.png").arg(s), QSize(s, s));
+    }
+
     shortcutsIcon=Icon("preferences-desktop-keyboard");
     if (libraryIcon.isNull()) {
         libraryIcon=Icon::create("lib", constStdSizes);

@@ -97,6 +97,8 @@
 61. Add option to draw curent album cover as backdrop to play queue.
 62. Add 'Copy Songs To Device' action to playlists page.
 63. Copy Qt5 Linux system proxy code for Qt4 builds.
+64. Embed pre-rendered PNG versions of cantata icon, to help with Qt5 builds
+    on systems that do not have the Qt SVG icon engine installed.
 
 1.0.3
 -----

@@ -88,6 +88,11 @@ void FilenameSchemeDialog::slotButtonClicked(int button)
     Dialog::slotButtonClicked(button);
 }
 
+static QString stripAccelerator(QString str)
+{
+    return str.replace("&&", "____").replace("&", "").replace("____", "&");
+}
+
 void FilenameSchemeDialog::showHelp()
 {
     MessageBox::information(this,
@@ -105,15 +110,15 @@ void FilenameSchemeDialog::showHelp()
                                "<tr><td>%15</td><td>%16</td><td>The year of the album's release.</td></tr>"
                                "<tr><td>%17</td><td>%18</td><td>The genre of the album.</td></tr>"
                                "</table></p>")
-                               .arg(albumArtist->text()).arg(DeviceOptions::constAlbumArtist)
-                               .arg(albumTitle->text()).arg(DeviceOptions::constAlbumTitle)
-                               .arg(trackArtist->text()).arg(DeviceOptions::constTrackArtist)
-                               .arg(trackTitle->text()).arg(DeviceOptions::constTrackTitle)
-                               .arg(trackArtistAndTitle->text()).arg(DeviceOptions::constTrackArtistAndTitle)
-                               .arg(trackNo->text()).arg(DeviceOptions::constTrackNumber)
-                               .arg(cdNo->text()).arg(DeviceOptions::constCdNumber)
-                               .arg(year->text()).arg(DeviceOptions::constYear)
-                               .arg(genre->text()).arg(DeviceOptions::constGenre));
+                               .arg(stripAccelerator(albumArtist->text())).arg(DeviceOptions::constAlbumArtist)
+                               .arg(stripAccelerator(albumTitle->text())).arg(DeviceOptions::constAlbumTitle)
+                               .arg(stripAccelerator(trackArtist->text())).arg(DeviceOptions::constTrackArtist)
+                               .arg(stripAccelerator(trackTitle->text())).arg(DeviceOptions::constTrackTitle)
+                               .arg(stripAccelerator(trackArtistAndTitle->text())).arg(DeviceOptions::constTrackArtistAndTitle)
+                               .arg(stripAccelerator(trackNo->text())).arg(DeviceOptions::constTrackNumber)
+                               .arg(stripAccelerator(cdNo->text())).arg(DeviceOptions::constCdNumber)
+                               .arg(stripAccelerator(year->text())).arg(DeviceOptions::constYear)
+                               .arg(stripAccelerator(genre->text())).arg(DeviceOptions::constGenre));
 }
 
 void FilenameSchemeDialog::enableOkButton()

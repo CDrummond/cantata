@@ -140,6 +140,7 @@ public:
 
     void setCaption(const QString &cap) { setWindowTitle(cap); }
     void setButtons(ButtonCodes buttons);
+    void setDefaultButton(ButtonCode button);
     void setButtonText(ButtonCode button, const QString &text);
     void setButtonGuiItem(ButtonCode button, const GuiItem &item);
     void setButtonMenu(ButtonCode button, QMenu *menu, ButtonPopupMode popupmode=InstantPopup);
@@ -168,6 +169,7 @@ private:
     void showEvent(QShowEvent *e);
 
 private:
+    int defButton;
     int buttonTypes;
     QWidget *mw;
     QDialogButtonBox *buttonBox;

@@ -101,6 +101,7 @@ ActionDialog::ActionDialog(QWidget *parent)
 {
     iCount++;
     setButtons(Ok|Cancel);
+    setDefaultButton(Cancel);
     setAttribute(Qt::WA_DeleteOnClose);
     QWidget *mainWidet = new QWidget(this);
     setupUi(mainWidet);

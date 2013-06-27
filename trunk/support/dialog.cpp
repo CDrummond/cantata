@@ -137,6 +137,7 @@ static QDialogButtonBox::StandardButton mapType(int btn) {
 
 Dialog::Dialog(QWidget *parent, const QString &name, const QSize &defSize)
     : QDialog(parent)
+    , defButton(0)
     , buttonTypes(0)
     , mw(0)
     , buttonBox(0)
@@ -259,6 +260,15 @@ void Dialog::setButtons(ButtonCodes buttons)
     if (needToCreate && mw && buttonBox) {
         create();
     }
+}
+
+void Dialog::setDefaultButton(ButtonCode button)
+{
+    QAbstractButton *b=getButton(button);
+    if (b) {
+        qobject_cast<QPushButton *>(b)->setDefault(true);
+    }
+    defButton=button;
 }
 
 void Dialog::setButtonText(ButtonCode button, const QString &text)
@@ -385,6 +395,9 @@ void Dialog::showEvent(QShowEvent *e)
     if (!managedAccels) {
         AcceleratorManager::manage(this);
         managedAccels=true;
+    }
+    if (defButton) {
+        setDefaultButton((ButtonCode)defButton);
     }
     QDialog::showEvent(e);
 }

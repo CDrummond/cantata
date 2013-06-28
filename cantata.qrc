@@ -1,7 +1,6 @@
 <!DOCTYPE RCC><RCC version="1.0">
 <qresource>
 <file alias="lyrics.xml">context/ultimate_providers.xml</file>
-<file alias="streams.xml">streams/providers.xml</file>
 <file alias="weblinks.xml">context/weblinks.xml</file>
 <file alias="repeat16.png">icons/view-media-repeat16.png</file>
 <file alias="repeat22.png">icons/view-media-repeat22.png</file>
@@ -11,7 +10,6 @@
 <file alias="shuffle22.png">icons/view-media-shuffle22.png</file>
 <file alias="shuffle32.png">icons/view-media-shuffle32.png</file>
 <file alias="shuffle48.png">icons/view-media-shuffle48.png</file>
-
 <file alias="sidebar-albums-dark">icons/sidebar-albums-dark.svg</file>
 <file alias="sidebar-artists-dark">icons/sidebar-artists-dark.svg</file>
 <file alias="sidebar-devices-dark">icons/sidebar-devices-dark.svg</file>
@@ -32,5 +30,13 @@
 <file alias="sidebar-playlists-light">icons/sidebar-playlists-light.svg</file>
 <file alias="sidebar-playqueue-light">icons/sidebar-playqueue-light.svg</file>
 <file alias="sidebar-streams-light">icons/sidebar-streams-light.svg</file>
+<file alias="streams-icecast">icons/streams-icecast.svg</file>
+<file alias="streams-shoutcast">icons/streams-shoutcast.png</file>
+<file alias="streams-favourites">icons/streams-favourites.svg</file>
+<file alias="streams-tunein">icons/streams-tunein.png</file>
+<file alias="streams-digitallyimported">icons/streams-digitallyimported.png</file>
+<file alias="streams-somafm">icons/streams-somafm.png</file>
+<file alias="streams-skyfm">icons/streams-skyfm.png</file>
+<file alias="streams-jazzradio">icons/streams-jazzradio.png</file>
 </qresource>
 </RCC>

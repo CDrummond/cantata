@@ -33,6 +33,26 @@ StreamsProxyModel::StreamsProxyModel(QObject *parent)
     sort(0);
 }
 
+bool StreamsProxyModel::filterAcceptsItem(const void *i, QStringList strings) const
+{
+    const StreamsModel::Item *item=static_cast<const StreamsModel::Item *>(i);
+    strings << item->name;
+    if (matchesFilter(strings)) {
+        return true;
+    }
+
+    if (item->isCategory()) {
+        const StreamsModel::CategoryItem *cat=static_cast<const StreamsModel::CategoryItem *>(item);
+        foreach (const StreamsModel::Item *c, cat->children) {
+            if (filterAcceptsItem(c, strings)) {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
 bool StreamsProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
 {
     if (!filterEnabled) {
@@ -41,33 +61,58 @@ bool StreamsProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourc
     if (!isChildOfRoot(sourceParent)) {
         return true;
     }
+
     const QModelIndex index = sourceModel()->index(sourceRow, 0, sourceParent);
     StreamsModel::Item *item = static_cast<StreamsModel::Item *>(index.internalPointer());
+    QModelIndex idx=index.parent();
+    QStringList strings;
+
+    // Traverse back up tree, so we get parent strings...
+    while (idx.isValid()) {
+        StreamsModel::Item *i = static_cast<StreamsModel::Item *>(idx.internalPointer());
+        if (!i->isCategory()) {
+            break;
+        }
+        strings << i->name;
+        idx=idx.parent();
+    }
 
     if (item->isCategory()) {
-        StreamsModel::CategoryItem *cat = static_cast<StreamsModel::CategoryItem *>(item);
-
-        if (!filterGenre.isEmpty() && !cat->genres.contains(filterGenre)) {
-            return false;
-        }
-
-        if (cat->name.contains(filterRegExp())) {
+        // Check *all* children...
+        if (filterAcceptsItem(item, strings)) {
             return true;
         }
-
-        foreach (StreamsModel::StreamItem *s, cat->streams) {
-            if (matchesFilter(QStringList() << cat->name << s->name)) {
-                return true;
-            }
-        }
     } else {
-        StreamsModel::StreamItem *s = static_cast<StreamsModel::StreamItem *>(item);
-
-        if (!filterGenre.isEmpty() && !s->genres.contains(filterGenre)) {
-            return false;
-        }
-        return matchesFilter(QStringList() << s->name);
+        strings << item->name;
+        return matchesFilter(strings);
     }
 
     return false;
+}
+
+bool StreamsProxyModel::lessThan(const QModelIndex &left, const QModelIndex &right) const
+{
+    const StreamsModel::Item * leftItem = static_cast<const StreamsModel::Item *>(left.internalPointer());
+    const StreamsModel::Item * rightItem = static_cast<const StreamsModel::Item *>(right.internalPointer());
+
+    if (leftItem->isCategory() && !rightItem->isCategory()) {
+        return true;
+    }
+    if (!leftItem->isCategory() && rightItem->isCategory()) {
+        return false;
+    }
+
+    if (leftItem->isCategory() && rightItem->isCategory()) {
+        const StreamsModel::CategoryItem * leftCat = static_cast<const StreamsModel::CategoryItem *>(leftItem);
+        const StreamsModel::CategoryItem * rightCat = static_cast<const StreamsModel::CategoryItem *>(rightItem);
+
+        if (leftCat->isFavourites && !rightCat->isFavourites) {
+            return true;
+        }
+        if (!leftCat->isFavourites && rightCat->isFavourites) {
+            return false;
+        }
+    }
+
+    return QSortFilterProxyModel::lessThan(left, right);
 }

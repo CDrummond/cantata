@@ -51,56 +51,54 @@
 33. Automatic accelator assignment for Qt builds.
 34. Add cmake check to see if TagLib has id3version in MPEG save.
 35. RTL fixes.
-36. Add import/export of Streams XML files - these contians just streams,
-    without categories. The intention is to be able to import these into
-    MPDroid.
-37. For Qt4 linux builds, use system QJson if found.
-38. Remove amazon cover fetching - required API key that Cantata never really
+36. For Qt4 linux builds, use system QJson if found.
+37. Remove amazon cover fetching - required API key that Cantata never really
     had.
-39. Add debug logging. Please see README for details.
-40. Enable MPD HTTP stream playback using QtMultiMedia for Qt5 builds. Thanks
+38. Add debug logging. Please see README for details.
+39. Enable MPD HTTP stream playback using QtMultiMedia for Qt5 builds. Thanks
     to Marcel Bosling for the patch. Disabled by default, to enable pass
     -DENABLE_HTTP_STREAM_PLAYBACK=ON to cmake.
-41. Fix Qt5 segfault on exit, due to static QIcons being destructed.
-42. Work-around Qt5 bug where toolbuttons (usually with menus) stay in the
+40. Fix Qt5 segfault on exit, due to static QIcons being destructed.
+41. Work-around Qt5 bug where toolbuttons (usually with menus) stay in the
     raised state.
-43. Add port number to library cache filename, to cater for scenarios where
+42. Add port number to library cache filename, to cater for scenarios where
     there is more than 1 server on the same host.
-44. Fix retrieval of covers in albums view for multiple-artist albums when
+43. Fix retrieval of covers in albums view for multiple-artist albums when
     these are configured to be grouped under "Various Artists"
-45. Refresh albums view when multiple-artist grouping is changed.
-46. Add context menu to replygain and file organizer dialogs to remove items
+44. Refresh albums view when multiple-artist grouping is changed.
+45. Add context menu to replygain and file organizer dialogs to remove items
     from list.
-47. Also use discogs for artist images in cover dialog.
-48. Fix invalid covers showing for online services.
-49. For Qt builds, if shortcut is set to default then remove entry from config
+46. Also use discogs for artist images in cover dialog.
+47. Fix invalid covers showing for online services.
+48. For Qt builds, if shortcut is set to default then remove entry from config
     file.
-50. Don't show page shortcuts in tooltips, as tooltip is not updated when
+49. Don't show page shortcuts in tooltips, as tooltip is not updated when
     shortcut is changed.
-51. Check that perl is installed before attempting to start cantata-dynamic in
+50. Check that perl is installed before attempting to start cantata-dynamic in
     local mode.
-52. If cantata-dynamic is started in server mode, then have it create any
+51. If cantata-dynamic is started in server mode, then have it create any
     missing folders.
-53. Simpler proxy settings.
-54. Delay loading of local devices at atart-up, so that we have time to add
+52. Simpler proxy settings.
+53. Delay loading of local devices at atart-up, so that we have time to add
     device to view before try to expand it.
-55. If cantata-dynamic is started in server mode, then communicate status via
+54. If cantata-dynamic is started in server mode, then communicate status via
     UDP multicast messages.
-56. If using server mode cantata-dynamic and this is not started, then show an
+55. If using server mode cantata-dynamic and this is not started, then show an
     error message in dynamic page.
-57. Fix keyboard shortcuts of tab pages.
-58. Add support for a simple profile where MPD is started by cantata, and
+56. Fix keyboard shortcuts of tab pages.
+57. Add support for a simple profile where MPD is started by cantata, and
     the only settings are the music folder and cover names.
-59. Combine Output and Playback config pages.
-60. Remove proxy config from settings, and always use system proxy.
+58. Combine Output and Playback config pages.
+59. Remove proxy config from settings, and always use system proxy.
     To re-enable proxy settings pass -DENABLE_PROXY_CONFIG=ON to cmake.
-61. Add option to draw curent album cover as backdrop to play queue.
-62. Add 'Copy Songs To Device' action to playlists page.
-63. Copy Qt5 Linux system proxy code for Qt4 builds.
-64. Embed pre-rendered PNG versions of cantata icon, to help with Qt5 builds
+60. Add option to draw curent album cover as backdrop to play queue.
+61. Add 'Copy Songs To Device' action to playlists page.
+62. Copy Qt5 Linux system proxy code for Qt4 builds.
+63. Embed pre-rendered PNG versions of cantata icon, to help with Qt5 builds
     on systems that do not have the Qt SVG icon engine installed.
-65. Add support for importing Digitally Imported, Jazz Radio, and Sky.fm
-    streams. Only free, ad supported, streams at the moment.
+64. Simplify streams page. Remove user-categories, instead have a set of
+    predefined top-level items; Favourites (user streams), TuneIn, IceCast,
+    SomaFM, Digitially Imported, Jazz Radio, and Sky.fm.
 
 1.0.3
 -----

@@ -46,8 +46,6 @@ public:
     void setView(int v) { view->setMode((ItemView::Mode)v); }
     void focusSearch() { view->focusSearch(); }
     void goBack() { view->backActivated(); }
-    QStringList getCategories();
-    QStringList getGenres();
 
 Q_SIGNALS:
     void add(const QStringList &streams, bool replace, quint8 priorty);
@@ -62,19 +60,16 @@ public Q_SLOTS:
     void controlActions();
 
 private Q_SLOTS:
-    void importWebStreams();
     void importXml();
     void exportXml();
     void add();
+    void addToFavourites();
     void edit();
     void searchItems();
     void itemDoubleClicked(const QModelIndex &index);
-    void downloading(bool dl);
-    void checkIfBusy();
 
 private:
     void addItemsToPlayQueue(const QModelIndexList &indexes, bool replace, quint8 priorty=0);
-    void initWebStreams();
 
 private:
     bool enabled;
@@ -83,8 +78,7 @@ private:
     Action *exportAction;
     Action *addAction;
     Action *editAction;
-    QAction *importIceCastAction;
-    QAction *importSomaFmCastAction;
+    Action *addToFavouritesAction;
     StreamsProxyModel proxy;
 };
 

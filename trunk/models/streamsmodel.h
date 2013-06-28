@@ -20,133 +20,123 @@
  * the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA 02110-1301, USA.
  */
+
 #ifndef STREAMSMODEL_H
 #define STREAMSMODEL_H
 
-#include <QList>
-#include <QUrl>
-#include <QHash>
-#include <QSet>
-#include <QMap>
-#include <QStringList>
 #include "actionmodel.h"
+#include <QList>
+#include <QMap>
+#include <QIcon>
 
-class QTimer;
-class QIODevice;
 class QNetworkReply;
+class QXmlStreamReader;
+class QIODevice;
+class QTimer;
 
 class StreamsModel : public ActionModel
 {
     Q_OBJECT
 
 public:
-    static const QString constPrefix;
-    static QString modifyUrl(const QString &u, bool addPrefix=true, const QString &name=QString());
-    static QString dir();
-    static const QLatin1String constGenreSeparator;
-
-    static QSet<QString> genreSet(const QString &str) { return str.split(constGenreSeparator, QString::SkipEmptyParts).toSet(); }
-
+    struct CategoryItem;
     struct Item
     {
-        Item(const QString &n, const QString &i) : name(n), icon(i) { name.replace("#", ""); }
-        virtual bool isCategory() = 0;
+        Item(const QString &u, const QString &n=QString(), CategoryItem *p=0) : url(u), name(n), parent(p) { }
         virtual ~Item() { }
+        QString url;
         QString name;
-        QString icon;
-    };
-
-    struct CategoryItem;
-    struct StreamItem : public Item
-    {
-        StreamItem(const QString &n, const QString &g, const QString &i, const QUrl &u, CategoryItem *p=0) : Item(n, i), genres(genreSet(g)), url(u), parent(p) { }
-        StreamItem(const QString &n, const QSet<QString> &g, const QString &i, const QUrl &u, CategoryItem *p=0) : Item(n, i), genres(g), url(u), parent(p) { }
-        bool isCategory() { return false; }
-        QString genreString() const { return QStringList(genres.toList()).join(constGenreSeparator); }
-        QSet<QString> genres;
-        QUrl url;
         CategoryItem *parent;
+        virtual bool isCategory() const { return false; }
     };
-
+    
     struct CategoryItem : public Item
     {
-        CategoryItem(const QString &n, const QString &i=QString()) : Item(n, i) { }
-        virtual ~CategoryItem() { clearStreams(); }
-        bool isCategory() { return true; }
-        void clearStreams();
-        QHash<QString, StreamItem *> itemMap;
-        QList<StreamItem *> streams;
-        QSet<QString> genres;
+        enum State
+        {
+            Initial,
+            Fetching,
+            Fetched
+        };
+
+        CategoryItem(const QString &u, const QString &n=QString(), CategoryItem *p=0, const QIcon &i=QIcon())
+            : Item(u, n, p), state(Initial), isFavourites(false), icon(i) { }
+        virtual ~CategoryItem() { qDeleteAll(children); }
+        virtual bool isCategory() const { return true; }
+        State state;
+        bool isFavourites;
+        QList<Item *> children;
+        QIcon icon;
     };
+    
+    static const QString constPrefix;
 
     static StreamsModel * self();
+    static QString favouritesDir();
+    static QString modifyUrl(const QString &u,  bool addPrefix=true, const QString &name=QString());
+    static bool validProtocol(const QString &file);
 
-    StreamsModel();
+    StreamsModel(QObject *parent = 0);
     ~StreamsModel();
+    QModelIndex index(int, int, const QModelIndex & = QModelIndex()) const;
+    QModelIndex parent(const QModelIndex &) const;
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
-    int columnCount(const QModelIndex&) const { return 1; }
-    bool hasChildren(const QModelIndex &parent) const;
-    QModelIndex parent(const QModelIndex &index) const;
-    QModelIndex index(int row, int column, const QModelIndex &parent) const;
+    int columnCount(const QModelIndex &) const;
     QVariant data(const QModelIndex &, int) const;
-    void reload();
-    void save(bool force=false);
-    bool save(const QString &filename, const QSet<StreamsModel::Item *> &selection=QSet<StreamsModel::Item *>(), bool streamsOnly=false);
-    bool import(const QString &filename) { return load(filename, false); }
-    bool add(const QString &cat, const QString &name, const QString &genre, const QString &icon, const QString &url);
-    void add(const QString &cat, const QString &icon, const QList<StreamsModel::StreamItem *> &streams);
-    void editCategory(const QModelIndex &index, const QString &name, const QString &icon);
-    void editStream(const QModelIndex &index, const QString &oldCat, const QString &newCat, const QString &name, const QString &genre, const QString &icon, const QString &url);
-    void remove(const QModelIndex &index);
-    void removeCategory(CategoryItem *cat);
-    void removeStream(StreamItem *stream);
-    void removeStream(const QString &category, const QString &name, const QString &url);
-    QString name(const QString &cat, const QString &url) { return name(getCategory(cat), url); }
-    bool entryExists(const QString &cat, const QString &name, const QUrl &url=QUrl()) { return entryExists(getCategory(cat), name, url); }
     Qt::ItemFlags flags(const QModelIndex &index) const;
-    Qt::DropActions supportedDropActions() const;
-    bool validProtocol(const QString &file) const;
+    bool hasChildren(const QModelIndex &index) const;
+    bool canFetchMore(const QModelIndex &index) const;
+    void fetchMore(const QModelIndex &index);
+
+    void saveFavourites(bool force=false);
+    bool haveFavourites() const { return !favourites->children.isEmpty(); }
+    bool isFavoritesWritable() { return favouritesIsWriteable; }
+    bool checkFavouritesWritable();
+    void reloadFavourites();
+    void removeFromFavourites(const QModelIndex &index);
+    void addToFavourites(const QString &url, const QString &name);
+    QString favouritesNameForUrl(const QString &u);
+    bool nameExistsInFavourites(const QString &n);
+    void updateFavouriteStream(Item *item);
+
+    bool importXml(const QString &fileName);
+    bool saveXml(const QString &fileName, const QList<Item *> &items);
+
     QStringList filenames(const QModelIndexList &indexes, bool addPrefix) const;
     QMimeData * mimeData(const QModelIndexList &indexes) const;
-    bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int col, const QModelIndex &parent);
     QStringList mimeTypes() const;
-    void mark(const QList<int> &rows, bool f);
-    void updateGenres();
-    bool isWritable() const { return writable; }
-    bool checkWritable();
-    Action * getAction(const QModelIndex &idx, int num);
-    const QMap<QString, QIcon> & icons();
-    QIcon icon(const QString &name) const;
 
 Q_SIGNALS:
-    void downloading(bool);
-    void updateGenres(const QSet<QString> &genres);
-    void error(const QString &e);
+    void loading();
+    void loaded();
+    void error(const QString &msg);
 
 private Q_SLOTS:
-    void downloadFinished();
+    void jobFinished();
+    void persistFavourites();
 
 private:
-    bool save(QIODevice *dev, const QSet<StreamsModel::Item *> &selection, bool streamsOnly, bool format);
-    void clearCategories();
-    bool load(const QString &filename, bool isInternal);
-    bool load(QIODevice *dev, bool isInternal);
-    CategoryItem * getCategory(const QString &name, bool create=false, bool signal=false);
-    QString name(CategoryItem *cat, const QString &url);
-    bool entryExists(CategoryItem *cat, const QString &name, const QUrl &url=QUrl()) { return 0!=getStream(cat, name, url); }
-    StreamItem * getStream(CategoryItem *cat, const QString &name, const QUrl &url);
-
-private Q_SLOTS:
-    void persist();
+    Item * toItem(const QModelIndex &index) const { return index.isValid() ? static_cast<Item*>(index.internalPointer()) : root; }
+    QList<Item *> parseRadioTimeResponse(QIODevice *dev, CategoryItem *cat);
+    QList<Item *> parseIceCastResponse(QIODevice *dev, CategoryItem *cat);
+    QList<Item *> parseSomaFmResponse(QIODevice *dev, CategoryItem *cat);
+    QList<Item *> parseDigitallyImportedResponse(QIODevice *dev, CategoryItem *cat, const QString &origUrl);
+    Item * parseRadioTimeEntry(QXmlStreamReader &doc, CategoryItem *parent);
+    Item * parseIceCastEntry(QXmlStreamReader &doc, CategoryItem *parent);
+    Item * parseSomaFmEntry(QXmlStreamReader &doc, CategoryItem *parent);
+    void loadFavourites(const QModelIndex &index);
+    bool loadXml(const QString &fileName, const QModelIndex &index);
+    QList<Item *> loadXml(QIODevice *dev, bool isInternal);
+    bool saveXml(QIODevice *dev, const QList<Item *> &items, bool format) const;
 
 private:
-    QList<CategoryItem *> items;
-    mutable QMap<QString, QIcon> iconMap;
-    bool writable;
-    bool modified;
-    QTimer *timer;
-    QNetworkReply *job;
+    QMap<QNetworkReply *, CategoryItem *> jobs;
+    CategoryItem *root;
+    CategoryItem *favourites;
+    bool favouritesIsWriteable;
+    bool favouritesModified;
+    QTimer *favouritesSaveTimer;
 };
 
 #endif

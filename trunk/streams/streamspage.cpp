@@ -23,7 +23,6 @@
 
 #include "streamspage.h"
 #include "streamdialog.h"
-#include "streamcategorydialog.h"
 #include "mpdconnection.h"
 #include "messagebox.h"
 #include "localize.h"
@@ -33,7 +32,6 @@
 #include "networkaccessmanager.h"
 #include "settings.h"
 #include "streamsmodel.h"
-#include "webstreams.h"
 #include "statuslabel.h"
 #include <QToolButton>
 #ifdef ENABLE_KDE_SUPPORT
@@ -46,74 +44,17 @@
 #include <QMenu>
 #include <QFileInfo>
 
-static const char * constUrlProperty("url");
-static const char * constStreamsOnly("streamsOnly");
-
 StreamsPage::StreamsPage(QWidget *p)
     : QWidget(p)
     , enabled(false)
     , modelIsDownloading(false)
 {
     setupUi(this);
-    importAction = ActionCollection::get()->createAction("importstreams", i18n("Import Streams"), "document-import");
-    exportAction = ActionCollection::get()->createAction("exportstreams", i18n("Export Streams"), "document-export");
-    addAction = ActionCollection::get()->createAction("addstream", i18n("Add Stream"), Icons::self()->addRadioStreamIcon);
+    importAction = ActionCollection::get()->createAction("importstreams", i18n("Import Streams Into Favourites"), "document-import");
+    exportAction = ActionCollection::get()->createAction("exportstreams", i18n("Export Favourite Streams"), "document-export");
+    addAction = ActionCollection::get()->createAction("addstream", i18n("Add New Stream To Favourites"), Icons::self()->addRadioStreamIcon);
+    addToFavouritesAction = ActionCollection::get()->createAction("addtofavourites", i18n("Add Stream To Favourites"), Icons::self()->addRadioStreamIcon);
     editAction = ActionCollection::get()->createAction("editstream", i18n("Edit"), Icons::self()->editIcon);
-
-    QMenu *importMenu=new QMenu(this);
-    QAction *importFileAction=importMenu->addAction("From File");
-    QList<WebStream *> webStreams=WebStream::getAll();
-    QAction *radioAction=0;
-    QMenu *radioMenu=0;
-    QMap<QString, QMenu *> regions;
-    QAction *diAction=0;
-    QMenu *diMenu=0;
-
-    foreach (const WebStream *ws, webStreams) {
-        if (dynamic_cast<const RadioWebStream *>(ws)) {
-            if (!radioAction) {
-                radioAction=importMenu->addAction(i18n("Radio Stations"));
-                radioMenu=new QMenu(this);
-                radioAction->setMenu(radioMenu);
-            }
-            QMenu *menu=radioMenu;
-            if (!ws->getRegion().isEmpty()) {
-                if (!regions.contains(ws->getRegion())) {
-                    QAction *regionAction=radioMenu->addAction(ws->getRegion());
-                    regions.insert(ws->getRegion(), new QMenu(this));
-                    regionAction->setMenu(regions[ws->getRegion()]);
-                }
-                menu=regions[ws->getRegion()];
-            }
-            QAction *act=menu->addAction(ws->getName());
-            act->setProperty(constUrlProperty, ws->getUrl());
-            connect(act, SIGNAL(triggered(bool)), this, SLOT(importWebStreams()));
-        } else if (dynamic_cast<const DigitallyImportedWebStream *>(ws)) {
-            if (!diAction) {
-                diAction=importMenu->addAction(i18n("Digitally Imported"));
-                diMenu=new QMenu(this);
-                diAction->setMenu(diMenu);
-            }
-            QAction *act=diMenu->addAction(ws->getName());
-            act->setProperty(constUrlProperty, ws->getUrl());
-            connect(act, SIGNAL(triggered(bool)), this, SLOT(importWebStreams()));
-        } else {
-            QAction *act=importMenu->addAction(i18n("From %1").arg(ws->getName()));
-            act->setProperty(constUrlProperty, ws->getUrl());
-            connect(act, SIGNAL(triggered(bool)), this, SLOT(importWebStreams()));
-        }
-        connect(ws, SIGNAL(error(const QString &)), this, SIGNAL(error(const QString &)));
-        connect(ws, SIGNAL(finished()), this, SLOT(checkIfBusy()));
-    }
-
-    importAction->setMenu(importMenu);
-
-    QMenu *exportMenu=new QMenu(this);
-    QAction *exportCantataFileAction=exportMenu->addAction("Streams And Categories");
-    exportCantataFileAction->setProperty(constStreamsOnly, false);
-    QAction *exportStreamsFileAction=exportMenu->addAction("Streams Only");
-    exportStreamsFileAction->setProperty(constStreamsOnly, true);
-    exportAction->setMenu(exportMenu);
 
     replacePlayQueue->setDefaultAction(StdActions::self()->replacePlayQueueAction);
 //     connect(view, SIGNAL(itemsSelected(bool)), addToPlaylist, SLOT(setEnabled(bool)));
@@ -121,14 +62,13 @@ StreamsPage::StreamsPage(QWidget *p)
     connect(view, SIGNAL(searchItems()), this, SLOT(searchItems()));
     connect(view, SIGNAL(itemsSelected(bool)), SLOT(controlActions()));
     connect(addAction, SIGNAL(triggered(bool)), this, SLOT(add()));
+    connect(addToFavouritesAction, SIGNAL(triggered(bool)), this, SLOT(addToFavourites()));
     connect(editAction, SIGNAL(triggered(bool)), this, SLOT(edit()));
-    connect(importFileAction, SIGNAL(triggered(bool)), this, SLOT(importXml()));
-    connect(exportCantataFileAction, SIGNAL(triggered(bool)), this, SLOT(exportXml()));
-    connect(exportStreamsFileAction, SIGNAL(triggered(bool)), this, SLOT(exportXml()));
-    connect(genreCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(searchItems()));
-    connect(StreamsModel::self(), SIGNAL(updateGenres(const QSet<QString> &)), genreCombo, SLOT(update(const QSet<QString> &)));
+    connect(importAction, SIGNAL(triggered(bool)), this, SLOT(importXml()));
+    connect(exportAction, SIGNAL(triggered(bool)), this, SLOT(exportXml()));
     connect(StreamsModel::self(), SIGNAL(error(const QString &)), this, SIGNAL(error(const QString &)));
-    connect(StreamsModel::self(), SIGNAL(downloading(bool)), this, SLOT(downloading(bool)));
+    connect(StreamsModel::self(), SIGNAL(loading()), view, SLOT(showSpinner()));
+    connect(StreamsModel::self(), SIGNAL(loaded()), view, SLOT(hideSpinner()));
     connect(MPDConnection::self(), SIGNAL(dirChanged()), SLOT(mpdDirChanged()));
     QMenu *menu=new QMenu(this);
     menu->addAction(addAction);
@@ -147,8 +87,8 @@ StreamsPage::StreamsPage(QWidget *p)
     view->addAction(StdActions::self()->replacePlayQueueAction);
     view->addAction(StdActions::self()->addWithPriorityAction);
     view->addAction(editAction);
-    view->addAction(exportAction);
     view->addAction(StdActions::self()->removeAction);
+    view->addAction(addToFavouritesAction);
     proxy.setSourceModel(StreamsModel::self());
     view->setModel(&proxy);
     view->setDeleteAction(StdActions::self()->removeAction);
@@ -159,9 +99,6 @@ StreamsPage::StreamsPage(QWidget *p)
 
 StreamsPage::~StreamsPage()
 {
-    foreach (WebStream *ws, WebStream::getAll()) {
-        ws->cancelDownload();
-    }
 }
 
 void StreamsPage::setEnabled(bool e)
@@ -181,14 +118,14 @@ void StreamsPage::mpdDirChanged()
 
 void StreamsPage::checkWritable()
 {
-    bool wasWriteable=StreamsModel::self()->isWritable();
-    bool nowWriteable=StreamsModel::self()->checkWritable();
+    bool wasWriteable=StreamsModel::self()->isFavoritesWritable();
+    bool nowWriteable=StreamsModel::self()->checkFavouritesWritable();
 
     if (nowWriteable) {
         infoLabel->hide();
     } else {
         infoLabel->setVisible(true);
-        infoLabel->setText(StreamsModel::dir().startsWith("http:/") ? i18n("Streams from HTTP server") : i18n("Read only."));
+        infoLabel->setText(StreamsModel::favouritesDir().startsWith("http:/") ? i18n("Streams from HTTP server") : i18n("Read only."));
     }
     if (wasWriteable!=nowWriteable) {
         controlActions();
@@ -200,14 +137,14 @@ void StreamsPage::refresh()
     if (enabled) {
         checkWritable();
         view->setLevel(0);
-        StreamsModel::self()->reload();
+        StreamsModel::self()->reloadFavourites();
         exportAction->setEnabled(StreamsModel::self()->rowCount()>0);
     }
 }
 
 void StreamsPage::save()
 {
-    StreamsModel::self()->save(true);
+    StreamsModel::self()->saveFavourites(true);
 }
 
 void StreamsPage::addSelectionToPlaylist(bool replace, quint8 priorty)
@@ -246,33 +183,9 @@ void StreamsPage::itemDoubleClicked(const QModelIndex &index)
     }
 }
 
-void StreamsPage::downloading(bool dl)
-{
-    modelIsDownloading=dl;
-    checkIfBusy();
-}
-
-void StreamsPage::checkIfBusy()
-{
-    bool busy=modelIsDownloading;
-    if (!busy) {
-        foreach (WebStream *ws, WebStream::getAll()) {
-            if (ws->isDownloading()) {
-                busy=true;
-                break;
-            }
-        }
-    }
-    if (busy) {
-        view->showSpinner();
-    } else {
-        view->hideSpinner();
-    }
-}
-
 void StreamsPage::importXml()
 {
-    if (!StreamsModel::self()->isWritable()) {
+    if (!StreamsModel::self()->isFavoritesWritable()) {
         return;
     }
     #ifdef ENABLE_KDE_SUPPORT
@@ -286,47 +199,18 @@ void StreamsPage::importXml()
         return;
     }
 
-    if (!StreamsModel::self()->import(fileName)) {
+    if (!StreamsModel::self()->importXml(fileName)) {
         MessageBox::error(this, i18n("Failed to import <b>%1</b>!<br/>Please check this is of the correct type.").arg(fileName));
     }
 }
 
 void StreamsPage::exportXml()
 {
-    QAction *act=qobject_cast<QAction *>(sender());
-    bool streamsOnly=act && act->property(constStreamsOnly).toBool();
-    QModelIndexList selected=view->selectedIndexes();
-    QSet<StreamsModel::Item *> items;
-    QSet<StreamsModel::Item *> categories;
-    foreach (const QModelIndex &idx, selected) {
-        QModelIndex i=proxy.mapToSource(idx);
-        StreamsModel::Item *itm=static_cast<StreamsModel::Item *>(i.internalPointer());
-        if (itm->isCategory()) {
-            if (!categories.contains(itm)) {
-                categories.insert(itm);
-            }
-            foreach (StreamsModel::StreamItem *s, static_cast<StreamsModel::CategoryItem *>(itm)->streams) {
-                items.insert(s);
-            }
-        } else {
-            items.insert(itm);
-            categories.insert(static_cast<StreamsModel::StreamItem *>(itm)->parent);
-        }
-    }
-
-    QLatin1String ext(streamsOnly ? ".xml" : ".cantata");
-    QString name=1==categories.count()
-                    ? static_cast<StreamsModel::StreamItem *>(*(categories.begin()))->name+ext
-                    : QLatin1String("Cantata")+ext;
-
+    QLatin1String ext(".xml");
     #ifdef ENABLE_KDE_SUPPORT
-    QString fileName=streamsOnly
-                        ? KFileDialog::getSaveFileName(name, i18n("*.xml|XML Streams"), this, i18n("Export Streams"))
-                        : KFileDialog::getSaveFileName(name, i18n("*.cantata|Cantata Streams"), this, i18n("Streams And Categories"));
+    QString fileName=KFileDialog::getSaveFileName(QLatin1String("Cantata")+ext, i18n("*.xml|XML Streams"), this, i18n("Export Streams"));
     #else
-    QString fileName=streamsOnly
-                        ? QFileDialog::getSaveFileName(this, i18n("Export Streams"), name, i18n("XML Streams (*.xml)"))
-                        : QFileDialog::getSaveFileName(this, i18n("Streams And Categories"), name, i18n("Cantata Streams (*.cantata)"));
+    QString fileName=QFileDialog::getSaveFileName(this, i18n("Export Streams"), QLatin1String("Cantata")+ext, i18n("XML Streams (*.xml)"));
     #endif
 
     if (fileName.isEmpty()) {
@@ -337,124 +221,100 @@ void StreamsPage::exportXml()
         fileName+=ext;
     }
 
-    if (!StreamsModel::self()->save(fileName, categories+items, streamsOnly)) {
+    if (!StreamsModel::self()->saveXml(fileName, QList<StreamsModel::Item *>())) {
         MessageBox::error(this, i18n("Failed to create <b>%1</b>!").arg(fileName));
     }
 }
 
 void StreamsPage::add()
 {
-    if (!StreamsModel::self()->isWritable()) {
+    if (!StreamsModel::self()->isFavoritesWritable()) {
         return;
     }
-    StreamDialog dlg(getCategories(), getGenres(), this);
+    StreamDialog dlg(this);
 
     if (QDialog::Accepted==dlg.exec()) {
         QString name=dlg.name();
         QString url=dlg.url();
-        QString cat=dlg.category();
-        QString existing=StreamsModel::self()->name(cat, url);
+        QString existingNameForUrl=StreamsModel::self()->favouritesNameForUrl(url);
 
-        if (!existing.isEmpty()) {
-            MessageBox::error(this, i18n("Stream already exists!<br/><b>%1</b>").arg(existing));
-            return;
-        }
-
-        if (!StreamsModel::self()->add(cat, name, dlg.genre(), dlg.icon(), url)) {
+        if (!existingNameForUrl.isEmpty()) {
+            MessageBox::error(this, i18n("Stream already exists!<br/><b>%1</b>").arg(existingNameForUrl));
+        } else if (StreamsModel::self()->nameExistsInFavourites(name)) {
             MessageBox::error(this, i18n("A stream named <b>%1</b> already exists!").arg(name));
+        } else {
+            StreamsModel::self()->addToFavourites(url, name);
         }
     }
-    exportAction->setEnabled(StreamsModel::self()->rowCount()>0);
+    exportAction->setEnabled(StreamsModel::self()->haveFavourites());
+}
+
+void StreamsPage::addToFavourites()
+{
+    if (!StreamsModel::self()->isFavoritesWritable()) {
+        return;
+    }
+
+    QModelIndexList selected = view->selectedIndexes();
+    QList<const StreamsModel::Item *> items;
+
+    foreach (const QModelIndex &i, selected) {
+        QModelIndex mapped=proxy.mapToSource(i);
+        const StreamsModel::Item *item=static_cast<const StreamsModel::Item *>(mapped.internalPointer());
+        if (!item->isCategory() && item->parent && !item->parent->isFavourites) {
+            items.append(item);
+        }
+    }
+
+    foreach (const StreamsModel::Item *item, items) {
+        StreamsModel::self()->addToFavourites(item->url, item->name);
+    }
 }
 
 void StreamsPage::removeItems()
 {
-    if (!StreamsModel::self()->isWritable()) {
+    if (!StreamsModel::self()->isFavoritesWritable()) {
         return;
     }
-    QStringList streams;
+
     QModelIndexList selected = view->selectedIndexes();
+    QModelIndexList useable;
 
-    if (0==selected.size()) {
+    foreach (const QModelIndex &i, selected) {
+        QModelIndex mapped=proxy.mapToSource(i);
+        const StreamsModel::Item *item=static_cast<const StreamsModel::Item *>(mapped.internalPointer());
+        if (!item->isCategory() && item->parent && item->parent->isFavourites) {
+            useable.append(mapped);
+        }
+    }
+
+    if (useable.isEmpty()) {
         return;
     }
-
-    bool haveStreams=false;
-    bool haveCategories=false;
-    foreach(const QModelIndex &index, selected) {
-        if (static_cast<StreamsModel::Item *>(proxy.mapToSource(index).internalPointer())->isCategory()) {
-            haveCategories=true;
-        } else {
-             haveStreams=true;
+    if (useable.size()>1) {
+        if (MessageBox::No==MessageBox::warningYesNo(this, i18n("Are you sure you wish to remove the %1 selected streams?").arg(useable.size()))) {
+            return;
         }
-
-        if (haveStreams && haveCategories) {
-            break;
-        }
-    }
-
-    QModelIndex firstIndex=proxy.mapToSource(selected.first());
-    QString firstName=StreamsModel::self()->data(firstIndex, Qt::DisplayRole).toString();
-    QString message;
-
-    if (selected.size()>1) {
-        if (haveStreams && haveCategories) {
-            message=i18n("Are you sure you wish to remove the selected categories & streams?");
-        } else if (haveStreams) {
-            message=i18n("Are you sure you wish to remove the %1 selected streams?").arg(selected.size());
-        } else {
-            message=i18n("Are you sure you wish to remove the %1 selected categories (and their streams)?").arg(selected.size());
-        }
-    } else if (haveStreams) {
-        message=i18n("Are you sure you wish to remove <b>%1</b>?").arg(firstName);
     } else {
-        message=i18n("Are you sure you wish to remove the <b>%1</b> category (and its streams)?").arg(firstName);
-    }
-
-    if (MessageBox::No==MessageBox::warningYesNo(this, message, i18n("Remove"), StdGuiItem::remove(), StdGuiItem::cancel())) {
-        return;
-    }
-
-    // Ensure that if we have a category selected, we dont also try to remove one of its children
-    QSet<StreamsModel::CategoryItem *> removeCategories;
-    QList<StreamsModel::StreamItem *> removeStreams;
-    QModelIndexList remove;
-    //..obtain catagories to remove...
-    foreach(QModelIndex index, selected) {
-        QModelIndex idx=proxy.mapToSource(index);
-        StreamsModel::Item *item=static_cast<StreamsModel::Item *>(idx.internalPointer());
-
-        if (item->isCategory()) {
-            removeCategories.insert(static_cast<StreamsModel::CategoryItem *>(item));
-        }
-    }
-    // Obtain streams in non-selected categories...
-    foreach(QModelIndex index, selected) {
-        QModelIndex idx=proxy.mapToSource(index);
-        StreamsModel::Item *item=static_cast<StreamsModel::Item *>(idx.internalPointer());
-
-        if (!item->isCategory()) {
-            removeStreams.append(static_cast<StreamsModel::StreamItem *>(item));
+        if (MessageBox::No==MessageBox::warningYesNo(this, i18n("Are you sure you wish to remove <b>%1</b>?")
+                                                 .arg(StreamsModel::self()->data(useable.first(), Qt::DisplayRole).toString()))) {
+            return;
         }
     }
 
-    foreach (StreamsModel::CategoryItem *i, removeCategories) {
-        StreamsModel::self()->removeCategory(i);
+    foreach (const QModelIndex &i, useable) {
+        StreamsModel::self()->removeFromFavourites(i);
     }
 
-    foreach (StreamsModel::StreamItem *i, removeStreams) {
-        StreamsModel::self()->removeStream(i);
-    }
-    StreamsModel::self()->updateGenres();
-    exportAction->setEnabled(StreamsModel::self()->rowCount()>0);
+    exportAction->setEnabled(StreamsModel::self()->haveFavourites());
 }
 
 void StreamsPage::edit()
 {
-    if (!StreamsModel::self()->isWritable()) {
+    if (!StreamsModel::self()->isFavoritesWritable()) {
         return;
     }
-    QStringList streams;
+
     QModelIndexList selected = view->selectedIndexes();
 
     if (1!=selected.size()) {
@@ -463,128 +323,78 @@ void StreamsPage::edit()
 
     QModelIndex index=proxy.mapToSource(selected.first());
     StreamsModel::Item *item=static_cast<StreamsModel::Item *>(index.internalPointer());
-    QString name=item->name;
-    QString icon=item->icon;
-
-    if (item->isCategory()) {
-        StreamCategoryDialog dlg(getCategories(), this);
-        dlg.setEdit(name, icon);
-        if (QDialog::Accepted==dlg.exec()) {
-            StreamsModel::self()->editCategory(index, dlg.name(), dlg.icon());
-        }
+    if (item->isCategory() || !item->parent || !item->parent->isFavourites) {
         return;
     }
 
-    StreamDialog dlg(getCategories(), getGenres(), this);
-    StreamsModel::StreamItem *stream=static_cast<StreamsModel::StreamItem *>(item);
-    QString url=stream->url.toString();
-    QString cat=stream->parent->name;
-    QString genre=stream->genreString();
+    QString name=item->name;
+    QString url=item->url;
 
-    dlg.setEdit(cat, name, genre, icon, url);
+    StreamDialog dlg(this);
+    dlg.setEdit(name, url);
 
     if (QDialog::Accepted==dlg.exec()) {
         QString newName=dlg.name();
-        QString newIcon=dlg.icon();
         QString newUrl=dlg.url();
-        QString newCat=dlg.category();
-        QString newGenre=dlg.genre();
-        QString existingNameForUrl=newUrl!=url ? StreamsModel::self()->name(newCat, newUrl) : QString();
+        QString existingNameForUrl=newUrl!=url ? StreamsModel::self()->favouritesNameForUrl(newUrl) : QString();
 
         if (!existingNameForUrl.isEmpty()) {
-            MessageBox::error(this, i18n("Stream already exists!<br/><b>%1 (%2)</b>").arg(existingNameForUrl).arg(newCat));
-        } else if (newName!=name && StreamsModel::self()->entryExists(newCat, newName)) {
-            MessageBox::error(this, i18n("A stream named <b>%1 (%2)</b> already exists!").arg(newName).arg(newCat));
+            MessageBox::error(this, i18n("Stream already exists!<br/><b>%1</b>").arg(existingNameForUrl));
+        } else if (newName!=name && StreamsModel::self()->nameExistsInFavourites(newName)) {
+            MessageBox::error(this, i18n("A stream named <b>%1</b> already exists!").arg(newName));
         } else {
-            StreamsModel::self()->editStream(index, cat, newCat, newName, newGenre, newIcon, newUrl);
+            item->name=newName;
+            item->url=newUrl;
+            StreamsModel::self()->updateFavouriteStream(item);
         }
+    }
+}
+
+void StreamsPage::searchItems()
+{
+    QString text=view->searchText().trimmed();
+    proxy.update(text, QString());
+    if (proxy.enabled() && !text.isEmpty()) {
+        view->expandAll();
     }
 }
 
 void StreamsPage::controlActions()
 {
     QModelIndexList selected=view->selectedIndexes();
-    editAction->setEnabled(1==selected.size() && StreamsModel::self()->isWritable());
-    StdActions::self()->removeAction->setEnabled(selected.count() && StreamsModel::self()->isWritable());
-    addAction->setEnabled(StreamsModel::self()->isWritable());
-    exportAction->setEnabled(StreamsModel::self()->rowCount());
-    importAction->setEnabled(StreamsModel::self()->isWritable());
+    editAction->setEnabled(false);
+    addToFavouritesAction->setEnabled(false);
+    if (1==selected.size() && StreamsModel::self()->isFavoritesWritable()) {
+        const StreamsModel::Item *item=static_cast<const StreamsModel::Item *>(proxy.mapToSource(selected.first()).internalPointer());
+        if (!item->isCategory() && item->parent && item->parent->isFavourites) {
+            editAction->setEnabled(true);
+        }
+    }
+    StdActions::self()->removeAction->setEnabled(false);
+    if (!selected.isEmpty() && StreamsModel::self()->isFavoritesWritable()) {
+        bool enableRemove=true;
+        bool enableAddToFav=true;
+        foreach (const QModelIndex &idx, selected) {
+            const StreamsModel::Item *item=static_cast<const StreamsModel::Item *>(proxy.mapToSource(idx).internalPointer());
+            if (item->isCategory() || (item->parent && !item->parent->isFavourites)) {
+                enableRemove=false;
+                break;
+            }
+            if (item->isCategory() || (item->parent && item->parent->isFavourites)) {
+                enableAddToFav=false;
+                break;
+            }
+            if (!enableRemove && !enableAddToFav) {
+                break;
+            }
+        }
+        StdActions::self()->removeAction->setEnabled(enableRemove);
+        addToFavouritesAction->setEnabled(enableAddToFav);
+    }
+    addAction->setEnabled(StreamsModel::self()->isFavoritesWritable());
+    exportAction->setEnabled(StreamsModel::self()->haveFavourites());
+    importAction->setEnabled(StreamsModel::self()->isFavoritesWritable());
     StdActions::self()->replacePlayQueueAction->setEnabled(selected.count());
     StdActions::self()->addWithPriorityAction->setEnabled(selected.count());
     menuButton->controlState();
-}
-
-void StreamsPage::searchItems()
-{
-    QString text=view->searchText().trimmed();
-    proxy.update(text, genreCombo->currentIndex()<=0 ? QString() : genreCombo->currentText());
-    if (proxy.enabled() && !text.isEmpty()) {
-        view->expandAll();
-    }
-}
-
-QStringList StreamsPage::getCategories()
-{
-    QStringList categories;
-    for(int i=0; i<StreamsModel::self()->rowCount(); ++i) {
-        QModelIndex idx=StreamsModel::self()->index(i, 0, QModelIndex());
-        if (idx.isValid()) {
-            categories.append(static_cast<StreamsModel::Item *>(idx.internalPointer())->name);
-        }
-    }
-
-    if (categories.isEmpty()) {
-        categories.append(i18n("General"));
-    }
-
-    qSort(categories);
-    return categories;
-}
-
-QStringList StreamsPage::getGenres()
-{
-    QStringList g=genreCombo->entries().toList();
-    qSort(g);
-    return g;
-}
-
-void StreamsPage::importWebStreams()
-{
-    if (!StreamsModel::self()->isWritable()) {
-        return;
-    }
-
-    QObject *obj=qobject_cast<QObject *>(sender());
-    if (!obj) {
-        return;
-    }
-
-    QUrl url=obj->property(constUrlProperty).toUrl();
-    if (!url.isValid()) {
-        return;
-    }
-
-    WebStream *ws=WebStream::get(url);
-    if (!ws) {
-        return;
-    }
-
-    if (ws->isDownloading()) {
-        MessageBox::error(this, i18n("Download from %1 is already in progress!").arg(ws->getName()));
-        return;
-    }
-
-    if (getCategories().contains(ws->getName())) {
-        if (MessageBox::No==MessageBox::warningYesNo(this, i18n("Update streams from %1?\n(This will replace any existing streams in this category)").arg(ws->getName()),
-                                                     i18n("Update %1").arg(ws->getName()), GuiItem(i18n("Update")), StdGuiItem::cancel())) {
-            return;
-        }
-    } else {
-        if (MessageBox::No==MessageBox::questionYesNo(this, i18n("Download streams from %1?").arg(ws->getName()), i18n("Download %1").arg(ws->getName()),
-                                                      GuiItem(i18n("Download")), StdGuiItem::cancel())) {
-            return;
-        }
-    }
-    ws->download();
-    view->showSpinner();
 }

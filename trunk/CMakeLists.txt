@@ -92,7 +92,7 @@ set(CANTATA_SRCS gui/application.cpp gui/main.cpp gui/initialsettingswizard.cpp 
     gui/settings.cpp gui/covers.cpp gui/filesettings.cpp gui/interfacesettings.cpp gui/playbacksettings.cpp 
     gui/serversettings.cpp gui/librarypage.cpp gui/albumspage.cpp gui/folderpage.cpp gui/playlistspage.cpp gui/trayitem.cpp
     gui/cachesettings.cpp gui/coverdialog.cpp gui/stdactions.cpp
-    streams/streamspage.cpp streams/streamdialog.cpp streams/streamcategorydialog.cpp streams/streamfetcher.cpp streams/webstreams.cpp
+    streams/streamspage.cpp streams/streamdialog.cpp streams/streamfetcher.cpp
     models/musiclibraryitemroot.cpp models/musiclibraryitemartist.cpp models/musiclibraryitemalbum.cpp models/musiclibrarymodel.cpp
     models/musiclibraryproxymodel.cpp models/playlistsmodel.cpp models/playlistsproxymodel.cpp models/playqueuemodel.cpp
     models/playqueueproxymodel.cpp models/dirviewmodel.cpp models/dirviewproxymodel.cpp models/dirviewitem.cpp models/dirviewitemdir.cpp
@@ -114,7 +114,7 @@ set(CANTATA_MOC_HDRS
     gui/initialsettingswizard.h gui/mainwindow.h gui/settings.h gui/covers.h gui/folderpage.h gui/librarypage.h gui/albumspage.h
     gui/playlistspage.h gui/playbacksettings.h gui/serversettings.h gui/preferencesdialog.h gui/filesettings.h
     gui/interfacesettings.h gui/cachesettings.h gui/trayitem.h gui/coverdialog.h
-    streams/streamspage.h streams/streamdialog.h streams/streamcategorydialog.h streams/streamfetcher.h streams/webstreams.h
+    streams/streamspage.h streams/streamdialog.h streams/streamfetcher.h
     models/musiclibrarymodel.h models/musiclibraryproxymodel.h models/playlistsmodel.h models/playlistsproxymodel.h models/playqueuemodel.h
     models/playqueueproxymodel.h models/dirviewmodel.h models/dirviewproxymodel.h models/albumsmodel.h models/streamsmodel.h
     models/actionmodel.h
@@ -402,8 +402,7 @@ endif (MSVC)
 
 add_subdirectory(po)
 add_subdirectory(support)
-add_subdirectory(streams/icons)
-    
+
 if (ENABLE_KDE_SUPPORT)
     include_directories(${KDE4_INCLUDES})
     add_definitions(${KDE4_DEFINITIONS})

@@ -136,6 +136,13 @@ static QString parse(const QByteArray &data)
         return parseExt3Mu(data, handlers);
     }
 
+    if (data.startsWith("http://")) {
+        QStringList lines=QString(data).split(QRegExp(QLatin1String("(\r\n|\n|\r)")), QString::SkipEmptyParts);
+        if (!lines.isEmpty()) {
+            return lines.first();
+        }
+    }
+
     return QString();
 }
 
@@ -248,7 +255,6 @@ void StreamFetcher::jobFinished(QNetworkReply *reply)
                 redirected=true;
             } else {
                 QString u=parse(data);
-
                 if (u.isEmpty() || u==current) {
                     done.append(MPDParseUtils::addStreamName(current.startsWith(StreamsModel::constPrefix) ? current.mid(StreamsModel::constPrefix.length()) : current, currentName));
                 } else if (u.startsWith(QLatin1String("http://")) && ++redirects<constMaxRedirects) {

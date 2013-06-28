@@ -28,32 +28,20 @@
 #include "combobox.h"
 #include "dialog.h"
 #include "lineedit.h"
-#include "completioncombo.h"
 
 class QLabel;
 class BuddyLabel;
-
-class IconCombo : public ComboBox
-{
-public:
-    IconCombo(QWidget *p) : ComboBox(p) { }
-    void load();
-    void showEvent(QShowEvent *e);
-};
 
 class StreamDialog : public Dialog
 {
     Q_OBJECT
 
 public:
-    StreamDialog(const QStringList &categories, const QStringList &genres, QWidget *parent, bool addToPlayQueue=false);
+    StreamDialog(QWidget *parent, bool addToPlayQueue=false);
 
-    void setEdit(const QString &cat, const QString &editName, const QString &editGenre, const QString &editIconName, const QString &editUrl);
+    void setEdit(const QString &editName, const QString &editUrl);
     QString name() const { return nameEntry->text().trimmed(); }
     QString url() const { return urlEntry->text().trimmed(); }
-    QString category() const { return catCombo->currentText().trimmed(); }
-    QString genre() const { return genreCombo->currentText().trimmed(); }
-    QString icon() const { return iconCombo ? iconCombo->itemData(iconCombo->currentIndex()).toString() : prevIconName; }
     bool save() const { return !saveCombo || 1==saveCombo->currentIndex(); }
 
 private Q_SLOTS:
@@ -66,20 +54,10 @@ private:
 private:
     QString prevName;
     QString prevUrl;
-    QString prevCat;
-    QString prevGenre;
-    QString prevIconName;
     QComboBox *saveCombo;
-    IconCombo *iconCombo;
     LineEdit *nameEntry;
     LineEdit *urlEntry;
-    CompletionCombo *catCombo;
-    CompletionCombo *genreCombo;
     BuddyLabel *nameLabel;
-    BuddyLabel *catLabel;
-    BuddyLabel *genreLabel;
-    BuddyLabel *iconLabel;
-    QLabel *multipleGenresText;
     QLabel *statusText;
     QSet<QString> urlHandlers;
 };

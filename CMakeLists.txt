@@ -402,6 +402,7 @@ endif (MSVC)
 
 add_subdirectory(po)
 add_subdirectory(support)
+add_subdirectory(streams/icons)
 
 if (ENABLE_KDE_SUPPORT)
     include_directories(${KDE4_INCLUDES})

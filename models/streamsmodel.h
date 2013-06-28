@@ -123,7 +123,7 @@ private:
     QList<Item *> parseSomaFmResponse(QIODevice *dev, CategoryItem *cat);
     QList<Item *> parseDigitallyImportedResponse(QIODevice *dev, CategoryItem *cat, const QString &origUrl);
     Item * parseRadioTimeEntry(QXmlStreamReader &doc, CategoryItem *parent);
-    Item * parseIceCastEntry(QXmlStreamReader &doc, CategoryItem *parent);
+    Item * parseIceCastEntry(QXmlStreamReader &doc, CategoryItem *parent, QSet<QString> &names);
     Item * parseSomaFmEntry(QXmlStreamReader &doc, CategoryItem *parent);
     void loadFavourites(const QModelIndex &index);
     bool loadXml(const QString &fileName, const QModelIndex &index);

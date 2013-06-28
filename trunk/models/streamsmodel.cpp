@@ -48,7 +48,9 @@
 #if QT_VERSION >= 0x050000
 #include <QUrlQuery>
 #endif
-
+#ifdef Q_OS_WIN
+#include <QDesktopServices>
+#endif
 #ifdef ENABLE_KDE_SUPPORT
 K_GLOBAL_STATIC(StreamsModel, instance)
 #endif
@@ -102,6 +104,21 @@ static QString getInternalFile(bool createDir=false)
     return Utils::configDir(QString(), createDir)+constFavouritesFileName;
 }
 
+static QIcon getIcon(const QString &name)
+{
+    #ifdef Q_OS_WIN
+    QString dir(QCoreApplication::applicationDirPath()+"/streamicons/");
+    #else
+    QString dir(QString(INSTALL_PREFIX"/share/")+QCoreApplication::applicationName()+"/streamicons/");
+    #endif
+    if (QFile::exists(dir+name+".svg")) {
+        return QIcon(dir+name+".svg");
+    } else if (QFile::exists(dir+name+".png")) {
+        return QIcon(dir+name+".png");
+    }
+    return Icons::self()->streamCategoryIcon;
+}
+
 StreamsModel::StreamsModel(QObject *parent)
     : ActionModel(parent)
     , root(new CategoryItem(QString(), "root"))
@@ -109,13 +126,13 @@ StreamsModel::StreamsModel(QObject *parent)
     , favouritesModified(false)
     , favouritesSaveTimer(0)
 {
-    root->children.append(new CategoryItem(constRadioTimeUrl, i18n("TuneIn"), root, QIcon(":streams-tunein")));
-    root->children.append(new CategoryItem(constIceCastUrl, i18n("IceCast"), root, QIcon(":streams-icecast")));
-    root->children.append(new CategoryItem(constSomaFMUrl, i18n("SomaFM"), root, QIcon(":streams-somafm")));
-    root->children.append(new CategoryItem(constDigitiallyImportedUrl, i18n("Digitally Imported"), root, QIcon(":streams-digitallyimported")));
-    root->children.append(new CategoryItem(constJazzRadioUrl, i18n("JazzRadio.com"), root, QIcon(":streams-jazzradio")));
-    root->children.append(new CategoryItem(constSkyFmUrl, i18n("Sky.fm"), root, QIcon(":streams-skyfm")));
-    favourites=new CategoryItem(constFavouritesUrl, i18n("Favourites"), root, QIcon(":streams-favourites"));
+    root->children.append(new CategoryItem(constRadioTimeUrl, i18n("TuneIn"), root, getIcon("tunein")));
+    root->children.append(new CategoryItem(constIceCastUrl, i18n("IceCast"), root, getIcon("icecast")));
+    root->children.append(new CategoryItem(constSomaFMUrl, i18n("SomaFM"), root, getIcon("somafm")));
+    root->children.append(new CategoryItem(constDigitiallyImportedUrl, i18n("Digitally Imported"), root, getIcon("digitallyimported")));
+    root->children.append(new CategoryItem(constJazzRadioUrl, i18n("JazzRadio.com"), root, getIcon("jazzradio")));
+    root->children.append(new CategoryItem(constSkyFmUrl, i18n("Sky.fm"), root, getIcon("skyfm")));
+    favourites=new CategoryItem(constFavouritesUrl, i18n("Favourites"), root, getIcon("favourites"));
     favourites->isFavourites=true;
     root->children.append(favourites);
 }

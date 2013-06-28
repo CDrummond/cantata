@@ -30,13 +30,5 @@
 <file alias="sidebar-playlists-light">icons/sidebar-playlists-light.svg</file>
 <file alias="sidebar-playqueue-light">icons/sidebar-playqueue-light.svg</file>
 <file alias="sidebar-streams-light">icons/sidebar-streams-light.svg</file>
-<file alias="streams-icecast">icons/streams-icecast.svg</file>
-<file alias="streams-shoutcast">icons/streams-shoutcast.png</file>
-<file alias="streams-favourites">icons/streams-favourites.svg</file>
-<file alias="streams-tunein">icons/streams-tunein.png</file>
-<file alias="streams-digitallyimported">icons/streams-digitallyimported.png</file>
-<file alias="streams-somafm">icons/streams-somafm.png</file>
-<file alias="streams-skyfm">icons/streams-skyfm.png</file>
-<file alias="streams-jazzradio">icons/streams-jazzradio.png</file>
 </qresource>
 </RCC>

@@ -559,10 +559,11 @@ QList<StreamsModel::Item *> StreamsModel::parseIceCastResponse(QIODevice *dev, C
 {
     QList<Item *> newItems;
     QXmlStreamReader doc(dev);
+    QSet<QString> names;
     while (!doc.atEnd()) {
         doc.readNext();
         if (doc.isStartElement() && QLatin1String("entry")==doc.name()) {
-            Item *item = parseIceCastEntry(doc, cat);
+            Item *item = parseIceCastEntry(doc, cat, names);
             if (item) {
                 newItems.append(item);
             }
@@ -656,7 +657,7 @@ StreamsModel::Item * StreamsModel::parseRadioTimeEntry(QXmlStreamReader &doc, Ca
     return item;
 }
 
-StreamsModel::Item * StreamsModel::parseIceCastEntry(QXmlStreamReader &doc, CategoryItem *parent)
+StreamsModel::Item * StreamsModel::parseIceCastEntry(QXmlStreamReader &doc, CategoryItem *parent, QSet<QString> &names)
 {
     QString name;
     QString url;
@@ -669,14 +670,18 @@ StreamsModel::Item * StreamsModel::parseIceCastEntry(QXmlStreamReader &doc, Cate
             if (QLatin1String("server_name")==elem) {
                 name=doc.readElementText().trimmed();
             } else if (QLatin1String("listen_url")==elem) {
-                url=doc.readElementText().toFloat();
+                url=doc.readElementText().trimmed();
             }
         } else if (doc.isEndElement() && QLatin1String("entry")==doc.name()) {
             break;
         }
     }
 
-    return name.isEmpty() || url.isEmpty() ? 0 : new Item(url, name, parent);
+    if (!name.isEmpty() && !url.isEmpty() && !names.contains(name)) {
+        names.insert(name);
+        return new Item(url, name, parent);
+    }
+    return 0;
 }
 
 StreamsModel::Item * StreamsModel::parseSomaFmEntry(QXmlStreamReader &doc, CategoryItem *parent)

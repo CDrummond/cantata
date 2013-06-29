@@ -135,6 +135,7 @@ StreamsModel::StreamsModel(QObject *parent)
     favourites=new CategoryItem(constFavouritesUrl, i18n("Favourites"), root, getIcon("favourites"));
     favourites->isFavourites=true;
     root->children.append(favourites);
+    buildListenLive();
 }
 
 StreamsModel::~StreamsModel()
@@ -520,6 +521,8 @@ void StreamsModel::jobFinished()
                     newItems=parseSomaFmResponse(job, cat);
                 } else if (constDiChannelListHost==job->url().host()) {
                     newItems=parseDigitallyImportedResponse(job, cat, job->property(constOrigUrlProperty).toString());
+                } else {
+                    newItems=parseListenLiveResponse(job, cat);
                 }
             }
 
@@ -634,6 +637,141 @@ QList<StreamsModel::Item *> StreamsModel::parseDigitallyImportedResponse(QIODevi
         }
     }
 
+    return newItems;
+}
+
+struct ListenLiveStream {
+    enum Format {
+        Unknown,
+        WMA,
+        OGG,
+        MP3,
+        AAC
+    };
+
+    ListenLiveStream() : format(Unknown), bitrate(0) { }
+    bool operator<(const ListenLiveStream &o) const { return weight()>o.weight(); }
+
+    int weight() const { return ((bitrate&0xff)<<8)+(format&0x0f); }
+
+    void setFormat(const QString &f) {
+        if (QLatin1String("mp3")==f.toLower()) {
+            format=MP3;
+        } else if (QLatin1String("aacplus")==f.toLower()) {
+            format=AAC;
+        } else if (QLatin1String("ogg vorbis")==f.toLower()) {
+            format=OGG;
+        } else if (QLatin1String("windows media")==f.toLower()) {
+            format=WMA;
+        } else {
+            format=Unknown;
+        }
+    }
+
+    QString url;
+    Format format;
+    unsigned int bitrate;
+};
+
+struct ListenLiveStationEntry {
+    ListenLiveStationEntry() { clear(); }
+    void clear() { name=location=QString(); streams.clear(); }
+    QString name;
+    QString location;
+    QList<ListenLiveStream> streams;
+};
+
+static QString getString(QString &str, const QString &start, const QString &end)
+{
+    QString rv;
+    int b=str.indexOf(start);
+    int e=-1==b ? -1 : str.indexOf(end, b+start.length());
+    if (-1!=e) {
+        rv=str.mid(b+start.length(), e-(b+start.length())).trimmed();
+        str=str.mid(e+end.length());
+    }
+    return rv;
+}
+
+QList<StreamsModel::Item *> StreamsModel::parseListenLiveResponse(QIODevice *dev, CategoryItem *cat)
+{
+    QList<Item *> newItems;
+    QSet<QString> names;
+
+    if (dev) {
+        ListenLiveStationEntry entry;
+
+        while (!dev->atEnd()) {
+            QString line=dev->readLine().trimmed().replace("> <", "><").replace("<td><b><a href", "<td><a href")
+                                                  .replace("</b></a></b>", "</b></a>").replace("<br />", "<br/>")
+                                                  .replace("</a> ,", "</a>,");
+            if ("<tr>"==line) {
+                entry.clear();
+            } else if (line.startsWith("<td><a href=")) {
+                if (entry.name.isEmpty()) {
+                    entry.name=getString(line, "<b>", "</b>");
+                    QString extra=getString(line, "</a>", "</td>");
+                    if (!extra.isEmpty()) {
+                        entry.name+=" "+extra;
+                    }
+                } else {
+                    // Station URLs...
+                    QString url;
+                    QString bitrate;
+                    int idx=0;
+                    do {
+                        url=getString(line, "href=\"", "\"");
+                        bitrate=getString(line, ">", " Kbps");
+                        bool sameFormatAsLast=line.startsWith("</a>,");
+                        if (!url.isEmpty() && !bitrate.isEmpty() && !url.startsWith(QLatin1String("javascript")) && idx<entry.streams.count()) {
+                            if (sameFormatAsLast && 0!=idx) {
+                                ListenLiveStream stream;
+                                stream.format=entry.streams[idx-1].format;
+                                entry.streams.insert(idx, stream);
+                            }
+                            entry.streams[idx].url=url;
+                            entry.streams[idx].bitrate=bitrate.toUInt();
+                            idx++;
+                        }
+                    } while (!url.isEmpty() && !bitrate.isEmpty());
+                }
+            } else if (line.startsWith("<td><img src")) {
+                // Station formats...
+                QString format;
+                do {
+                    format=getString(line, "alt=\"", "\"");
+                    if (!format.isEmpty()) {
+                        ListenLiveStream stream;
+                        stream.setFormat(format);
+                        entry.streams.append(stream);
+                    }
+                } while (!format.isEmpty());
+            } else if (line.startsWith("<td>")) {
+                if (entry.location.isEmpty()) {
+                    entry.location=getString(line, "<td>", "</td>");
+                }
+            } else if ("</tr>"==line) {
+                if (entry.streams.count()) {
+                    qSort(entry.streams);
+                    QString name;
+                    QString url=entry.streams.at(0).url;
+
+                    if (QLatin1String("National")==entry.location || entry.name.endsWith("("+entry.location+")")) {
+                        name=entry.name;
+                    } else if (entry.name.endsWith(")")) {
+                        name=entry.name.left(entry.name.length()-1)+", "+entry.location+")";
+                    } else {
+                        name=entry.name+" ("+entry.location+")";
+                    }
+
+                    if (!names.contains(name) && !name.isEmpty() && !url.isEmpty()) {
+                        newItems.append(new Item(url, name, cat));
+                        names.insert(name);
+                    }
+                }
+            }
+        }
+    }
     return newItems;
 }
 
@@ -833,4 +971,34 @@ bool StreamsModel::saveXml(QIODevice *dev, const QList<Item *> &items, bool form
     doc.writeEndElement();
     doc.writeEndDocument();
     return true;
+}
+
+void StreamsModel::buildListenLive()
+{
+    QFile f(":listenlive.xml");
+    if (f.open(QIODevice::ReadOnly)) {
+        CategoryItem *listen=new CategoryItem(QString(), i18n("Listen Live"), root, getIcon("listenlive"));
+        CategoryItem *region=listen;
+        CategoryItem *prevRegion=listen;
+        listen->state=CategoryItem::Fetched;
+        root->children.append(listen);
+        QXmlStreamReader doc(&f);
+        while (!doc.atEnd()) {
+            doc.readNext();
+            if (doc.isStartElement()) {
+                if (QLatin1String("listing")==doc.name()) {
+                    region->children.append(new CategoryItem(doc.attributes().value("url").toString(),
+                                                             doc.attributes().value("name").toString(),
+                                                             region));
+                } else if (QLatin1String("region")==doc.name()) {
+                    prevRegion=region;
+                    region=new CategoryItem(QString(), doc.attributes().value("name").toString(), prevRegion);
+                    region->state=CategoryItem::Fetched;
+                    prevRegion->children.append(region);
+                }
+            } else if (QLatin1String("region")==doc.name()) {
+                region=prevRegion;
+            }
+        }
+    }
 }

@@ -122,6 +122,7 @@ private:
     QList<Item *> parseIceCastResponse(QIODevice *dev, CategoryItem *cat);
     QList<Item *> parseSomaFmResponse(QIODevice *dev, CategoryItem *cat);
     QList<Item *> parseDigitallyImportedResponse(QIODevice *dev, CategoryItem *cat, const QString &origUrl);
+    QList<Item *> parseListenLiveResponse(QIODevice *dev, CategoryItem *cat);
     Item * parseRadioTimeEntry(QXmlStreamReader &doc, CategoryItem *parent);
     Item * parseIceCastEntry(QXmlStreamReader &doc, CategoryItem *parent, QSet<QString> &names);
     Item * parseSomaFmEntry(QXmlStreamReader &doc, CategoryItem *parent);
@@ -129,6 +130,7 @@ private:
     bool loadXml(const QString &fileName, const QModelIndex &index);
     QList<Item *> loadXml(QIODevice *dev, bool isInternal);
     bool saveXml(QIODevice *dev, const QList<Item *> &items, bool format) const;
+    void buildListenLive();
 
 private:
     QMap<QNetworkReply *, CategoryItem *> jobs;

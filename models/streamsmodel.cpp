@@ -201,7 +201,7 @@ QVariant StreamsModel::data(const QModelIndex &index, int role) const
             const CategoryItem *cat=static_cast<const CategoryItem *>(item);
             return cat->icon.isNull() ? Icons::self()->streamCategoryIcon : cat->icon;
         } else {
-            return Icon("audio-x-generic");
+            return Icons::self()->radioStreamIcon;
         }
     case Qt::DisplayRole:
         return item->name;

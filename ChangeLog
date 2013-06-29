@@ -98,7 +98,8 @@
     on systems that do not have the Qt SVG icon engine installed.
 64. Simplify streams page. Remove user-categories, instead have a set of
     predefined top-level items; Favourites (user streams), TuneIn, IceCast,
-    SomaFM, Digitially Imported, Jazz Radio, Sky.fm, and Listen Live.
+    SomaFM, Digitially Imported, Jazz Radio, Rock Radio, Sky.fm, and Listen
+    Live.
 
 1.0.3
 -----

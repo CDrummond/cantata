@@ -80,8 +80,9 @@ static QString constSomaFMUrl=QLatin1String("http://somafm.com/channels.xml");
 
 static QString constDigitiallyImportedUrl=QLatin1String("http://www.di.fm");
 static QString constJazzRadioUrl=QLatin1String("http://www.jazzradio.com");
+static QString constRockRadioUrl=QLatin1String("http://www.rockradio.com");
 static QString constSkyFmUrl=QLatin1String("http://www.sky.fm");
-static QStringList constDiUrls=QStringList() << constDigitiallyImportedUrl << constJazzRadioUrl << constSkyFmUrl;
+static QStringList constDiUrls=QStringList() << constDigitiallyImportedUrl << constJazzRadioUrl << constSkyFmUrl << constRockRadioUrl;
 static const char * constDiApiUsername="ephemeron";
 static const char * constDiApiPassword="dayeiph0ne@pp";
 //static const QString constDiAuthUrl=QLatin1String("http://api.audioaddict.com/v1/%1/members/authenticate");
@@ -131,6 +132,7 @@ StreamsModel::StreamsModel(QObject *parent)
     root->children.append(new CategoryItem(constSomaFMUrl, i18n("SomaFM"), root, getIcon("somafm")));
     root->children.append(new CategoryItem(constDigitiallyImportedUrl, i18n("Digitally Imported"), root, getIcon("digitallyimported")));
     root->children.append(new CategoryItem(constJazzRadioUrl, i18n("JazzRadio.com"), root, getIcon("jazzradio")));
+    root->children.append(new CategoryItem(constRockRadioUrl, i18n("RockRadio.com"), root, getIcon("rockradio")));
     root->children.append(new CategoryItem(constSkyFmUrl, i18n("Sky.fm"), root, getIcon("skyfm")));
     favourites=new CategoryItem(constFavouritesUrl, i18n("Favourites"), root, getIcon("favourites"));
     favourites->isFavourites=true;

@@ -249,7 +249,7 @@ bool CoverWidget::eventFilter(QObject *object, QEvent *event)
 {
     switch(event->type()) {
     case QEvent::ToolTip: {
-        if (current.isEmpty()) {
+        if (current.isEmpty() || (current.isStream() && !current.isCantataStream() && !current.isCdda())) {
             setToolTip(QString());
             break;
         }

@@ -487,7 +487,6 @@ ItemView::ItemView(QWidget *p)
     backAction = new QAction(i18n("Back"), this);
     backAction->setIcon(Icon("go-previous"));
     backButton->setDefaultAction(backAction);
-    //backButton->setMaximumHeight(listSearch->sizeHint().height());
     backAction->setShortcut(Qt::Key_Escape);
     listView->addAction(backAction);
     listView->addDefaultAction(backAction);
@@ -505,10 +504,8 @@ ItemView::ItemView(QWidget *p)
     treeView->setItemDelegate(td);
     listView->installEventFilter(new ListViewEventHandler(ld, listView, backAction));
     treeView->installEventFilter(new ViewEventHandler(td, treeView));
-    connect(treeSearch, SIGNAL(returnPressed()), this, SLOT(delaySearchItems()));
-    connect(treeSearch, SIGNAL(textChanged(const QString)), this, SLOT(delaySearchItems()));
-    connect(listSearch, SIGNAL(returnPressed()), this, SLOT(delaySearchItems()));
-    connect(listSearch, SIGNAL(textChanged(const QString)), this, SLOT(delaySearchItems()));
+    connect(searchWidget, SIGNAL(returnPressed()), this, SLOT(delaySearchItems()));
+    connect(searchWidget, SIGNAL(textChanged(const QString)), this, SLOT(delaySearchItems()));
     connect(treeView, SIGNAL(itemsSelected(bool)), this, SIGNAL(itemsSelected(bool)));
     connect(treeView, SIGNAL(itemActivated(const QModelIndex &)), this, SLOT(itemActivated(const QModelIndex &)));
     connect(treeView, SIGNAL(doubleClicked(const QModelIndex &)), this, SIGNAL(doubleClicked(const QModelIndex &)));
@@ -518,6 +515,7 @@ ItemView::ItemView(QWidget *p)
     connect(listView, SIGNAL(doubleClicked(const QModelIndex &)), this, SIGNAL(doubleClicked(const QModelIndex &)));
     connect(listView, SIGNAL(clicked(const QModelIndex &)),  this, SLOT(itemClicked(const QModelIndex &)));
     connect(backAction, SIGNAL(triggered(bool)), this, SLOT(backActivated()));
+    searchWidget->setVisible(false);
 }
 
 ItemView::~ItemView()
@@ -561,8 +559,7 @@ void ItemView::setMode(Mode m)
     }
 
     mode=m;
-    treeSearch->setText(QString());
-    listSearch->setText(QString());
+    searchWidget->setText(QString());
     if (Mode_SimpleTree==mode || Mode_DetailedTree==mode) {
         treeView->setModel(itemModel);
         listView->setModel(0);
@@ -609,16 +606,6 @@ void ItemView::setMode(Mode m)
     }
 }
 
-void ItemView::hideBackButton()
-{
-    backButton->setVisible(false);
-    listLayout->removeWidget(backButton);
-    listLayout->removeWidget(listSearch);
-    listLayout->removeWidget(listView);
-    listLayout->addWidget(listSearch, 0, 0, 1, 1);
-    listLayout->addWidget(listView, 1, 0, 1, 1);
-}
-
 QModelIndexList ItemView::selectedIndexes() const
 {
     if (Mode_SimpleTree==mode || Mode_DetailedTree==mode) {
@@ -662,11 +649,16 @@ void ItemView::setLevel(int l, bool haveChildren)
     }
 
     if (0==currentLevel) {
-        listSearch->setPlaceholderText(i18n("Search %1...").arg(topText));
-    } else if (prev>currentLevel) {
-        listSearch->setPlaceholderText(prevText[currentLevel]);
+        backButton->setVisible(false);
+        title->setVisible(false);
     } else {
-        prevText.insert(prev, listSearch->placeholderText());
+        backButton->setVisible(true);
+        title->setVisible(true);
+        if (prev>currentLevel) {
+            title->setText(prevText[currentLevel]);
+        } else {
+            prevText.insert(prev, title->text());
+        }
     }
 }
 
@@ -694,21 +686,12 @@ void ItemView::setModel(ProxyModel *m)
 
 QString ItemView::searchText() const
 {
-    return Mode_SimpleTree==mode || Mode_DetailedTree==mode || Mode_GroupedTree==mode ? treeSearch->text() : listSearch->text();
+    return searchWidget->isVisible() ? searchWidget->text() : QString();
 }
 
 void ItemView::clearSearchText()
 {
-    return Mode_SimpleTree==mode || Mode_DetailedTree==mode || Mode_GroupedTree==mode ? treeSearch->setText(QString()) : listSearch->setText(QString());
-}
-
-void ItemView::setTopText(const QString &text)
-{
-    topText=text;
-    if (0==currentLevel) {
-        listSearch->setPlaceholderText(i18n("Search %1...").arg(topText));
-    }
-    treeSearch->setPlaceholderText(i18n("Search %1...").arg(topText));
+    return searchWidget->setText(QString());
 }
 
 void ItemView::setUniformRowHeights(bool v)
@@ -821,10 +804,11 @@ void ItemView::showIndex(const QModelIndex &idx, bool scrollTo)
 
 void ItemView::focusSearch()
 {
-    if (Mode_SimpleTree==mode || Mode_DetailedTree==mode || Mode_GroupedTree==mode) {
-        treeSearch->setFocus();
+    if (searchWidget->isVisible()) {
+        searchWidget->close();
     } else {
-        listSearch->setFocus();
+        searchWidget->setVisible(true);
+        searchWidget->setFocus();
     }
 }
 
@@ -962,7 +946,7 @@ void ItemView::activateItem(const QModelIndex &index, bool emitRootSet)
         if (text.isEmpty()) {
             text=index.data(Qt::DisplayRole).toString();
         }
-        listSearch->setPlaceholderText(i18n("Search %1...").arg(text));
+        title->setText(text);
         listView->setRootIndex(index);
         itemModel->setRootIndex(index);
         if (emitRootSet) {
@@ -974,8 +958,7 @@ void ItemView::activateItem(const QModelIndex &index, bool emitRootSet)
 
 void ItemView::delaySearchItems()
 {
-    bool isTree=Mode_SimpleTree==mode || Mode_DetailedTree==mode || Mode_GroupedTree==mode;
-    if ((isTree && treeSearch->text().isEmpty()) || (!isTree && listSearch->text().isEmpty())) {
+    if (searchWidget->text().isEmpty()) {
         if (searchTimer) {
             searchTimer->stop();
         }

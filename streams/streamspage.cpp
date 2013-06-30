@@ -79,7 +79,6 @@ StreamsPage::StreamsPage(QWidget *p)
     menuButton->setMenu(menu);
     Icon::init(replacePlayQueue);
 
-    view->setTopText(i18n("Streams"));
     view->setUniformRowHeights(true);
     view->setAcceptDrops(true);
     view->setDragDropMode(QAbstractItemView::DragDrop);

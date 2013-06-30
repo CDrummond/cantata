@@ -39,8 +39,8 @@ AlbumsPage::AlbumsPage(QWidget *p)
     addToPlayQueue->setDefaultAction(StdActions::self()->addToPlayQueueAction);
     replacePlayQueue->setDefaultAction(StdActions::self()->replacePlayQueueAction);
     libraryUpdate->setDefaultAction(StdActions::self()->refreshAction);
+    searchButton->setDefaultAction(StdActions::self()->searchAction);
 
-    view->setTopText(i18n("Albums"));
     view->addAction(StdActions::self()->addToPlayQueueAction);
     view->addAction(StdActions::self()->replacePlayQueueAction);
     view->addAction(StdActions::self()->addWithPriorityAction);

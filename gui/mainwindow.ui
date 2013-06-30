@@ -216,10 +216,10 @@
          </spacer>
         </item>
         <item>
-         <widget class="LineEdit" name="searchPlayQueueLineEdit"/>
+         <widget class="PlayQueueView" name="playQueue"/>
         </item>
         <item>
-         <widget class="PlayQueueView" name="playQueue"/>
+         <widget class="SearchWidget" name="playQueueSearchWidget"/>
         </item>
         <item>
          <layout class="QHBoxLayout" name="hlayout">
@@ -310,6 +310,9 @@
              </size>
             </property>
            </spacer>
+          </item>
+          <item>
+           <widget class="ToolButton" name="searchPlayQueueButton"/>
           </item>
           <item>
            <widget class="ToolButton" name="savePlayQueueButton"/>
@@ -411,6 +414,11 @@
    <class>ContextWidget</class>
    <extends>QWidget</extends>
    <header>contextwidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>SearchWidget</class>
+   <extends>QLineEdit</extends>
+   <header>searchwidget.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

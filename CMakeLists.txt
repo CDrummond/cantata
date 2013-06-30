@@ -103,7 +103,7 @@ set(CANTATA_SRCS gui/application.cpp gui/main.cpp gui/initialsettingswizard.cpp 
     widgets/treeview.cpp widgets/listview.cpp widgets/itemview.cpp widgets/autohidingsplitter.cpp widgets/timeslider.cpp
     widgets/actionlabel.cpp widgets/playqueueview.cpp widgets/groupedview.cpp widgets/actionitemdelegate.cpp widgets/textbrowser.cpp
     widgets/coverwidget.cpp widgets/volumecontrol.cpp widgets/icons.cpp widgets/genrecombo.cpp widgets/toolbar.cpp widgets/menubutton.cpp
-    widgets/toolbutton.cpp widgets/wizardpage.cpp widgets/statuslabel.cpp
+    widgets/toolbutton.cpp widgets/wizardpage.cpp widgets/statuslabel.cpp widgets/searchwidget.cpp
     network/networkaccessmanager.cpp
     devices/deviceoptions.cpp
     context/lyricsettings.cpp context/ultimatelyricsprovider.cpp context/ultimatelyrics.cpp context/lyricsdialog.cpp
@@ -122,7 +122,7 @@ set(CANTATA_MOC_HDRS
     dynamic/dynamic.h dynamic/dynamicpage.h dynamic/dynamicruledialog.h dynamic/dynamicrulesdialog.h
     widgets/treeview.h widgets/listview.h widgets/itemview.h widgets/autohidingsplitter.h widgets/timeslider.h widgets/actionlabel.h
     widgets/playqueueview.h widgets/groupedview.h widgets/actionitemdelegate.h widgets/coverwidget.h widgets/volumecontrol.h
-    widgets/genrecombo.h widgets/toolbar.h
+    widgets/genrecombo.h widgets/toolbar.h widgets/searchwidget.h
     network/networkaccessmanager.h
     context/togglelist.h context/ultimatelyrics.h context/ultimatelyricsprovider.h context/lyricsdialog.h
     context/contextwidget.h context/artistview.h context/albumview.h context/songview.h context/view.h context/contextengine.h

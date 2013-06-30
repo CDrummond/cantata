@@ -11,7 +11,16 @@
    </rect>
   </property>
   <layout class="QVBoxLayout" name="vlayout">
-   <property name="margin">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
     <number>0</number>
    </property>
    <item>
@@ -19,14 +28,26 @@
    </item>
    <item>
     <layout class="QHBoxLayout" name="hlayout">
-     <property name="margin">
+     <property name="spacing">
       <number>0</number>
      </property>
-     <property name="spacing">
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
+     <property name="bottomMargin">
       <number>0</number>
      </property>
      <item>
       <widget class="ToolButton" name="libraryUpdate"/>
+     </item>
+     <item>
+      <widget class="ToolButton" name="searchButton"/>
      </item>
      <item>
       <widget class="GenreCombo" name="genreCombo"/>
@@ -48,24 +69,19 @@
    <header>itemview.h</header>
   </customwidget>
   <customwidget>
-   <class>LineEdit</class>
-   <extends>QLineEdit</extends>
-   <header>lineedit.h</header>
-  </customwidget>
-  <customwidget>
    <class>GenreCombo</class>
    <extends>QComboBox</extends>
    <header>genrecombo.h</header>
   </customwidget>
   <customwidget>
-   <class>MenuButton</class>
-   <extends>QToolButton</extends>
-   <header>menubutton.h</header>
-  </customwidget>
-  <customwidget>
    <class>ToolButton</class>
    <extends>QToolButton</extends>
    <header>toolbutton.h</header>
+  </customwidget>
+  <customwidget>
+   <class>MenuButton</class>
+   <extends>QToolButton</extends>
+   <header>menubutton.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

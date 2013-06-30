@@ -11,7 +11,16 @@
    </rect>
   </property>
   <layout class="QVBoxLayout" name="vlayout">
-   <property name="margin">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
     <number>0</number>
    </property>
    <item>
@@ -19,14 +28,26 @@
    </item>
    <item>
     <layout class="QHBoxLayout" name="hlayout">
-     <property name="margin">
+     <property name="spacing">
       <number>0</number>
      </property>
-     <property name="spacing">
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
+     <property name="bottomMargin">
       <number>0</number>
      </property>
      <item>
       <widget class="ToolButton" name="libraryUpdate"/>
+     </item>
+     <item>
+      <widget class="ToolButton" name="searchButton"/>
      </item>
      <item>
       <widget class="GenreCombo" name="genreCombo"/>
@@ -44,7 +65,7 @@
  <customwidgets>
   <customwidget>
    <class>ItemView</class>
-   <extends>QListView</extends>
+   <extends>QTreeView</extends>
    <header>itemview.h</header>
   </customwidget>
   <customwidget>

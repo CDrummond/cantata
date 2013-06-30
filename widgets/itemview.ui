@@ -6,15 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>262</width>
-    <height>146</height>
+    <width>261</width>
+    <height>198</height>
    </rect>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
+  <layout class="QVBoxLayout" name="verticalLayout_2">
    <property name="margin">
     <number>0</number>
    </property>
-   <item row="0" column="0">
+   <item>
     <widget class="QStackedWidget" name="stackedWidget">
      <property name="currentIndex">
       <number>0</number>
@@ -25,31 +25,23 @@
         <number>0</number>
        </property>
        <item>
-        <widget class="LineEdit" name="treeSearch">
-         <property name="toolTip">
-          <string/>
-         </property>
-        </widget>
-       </item>
-       <item>
         <widget class="TreeView" name="treeView"/>
        </item>
       </layout>
      </widget>
      <widget class="QWidget" name="page_2">
-      <layout class="QGridLayout" name="listLayout">
+      <layout class="QGridLayout" name="gridLayout">
        <property name="margin">
+        <number>0</number>
+       </property>
+       <property name="spacing">
         <number>0</number>
        </property>
        <item row="0" column="0">
         <widget class="ToolButton" name="backButton"/>
        </item>
        <item row="0" column="1">
-        <widget class="LineEdit" name="listSearch">
-         <property name="toolTip">
-          <string/>
-         </property>
-        </widget>
+        <widget class="SqueezedTextLabel" name="title"/>
        </item>
        <item row="1" column="0" colspan="2">
         <widget class="ListView" name="listView"/>
@@ -58,18 +50,26 @@
      </widget>
     </widget>
    </item>
+   <item>
+    <widget class="SearchWidget" name="searchWidget"/>
+   </item>
   </layout>
  </widget>
  <customwidgets>
+  <customwidget>
+   <class>PaddedSqueezedTextLabel</class>
+   <extends>QLabel</extends>
+   <header>squeezedtextlabel.h</header>
+  </customwidget>
   <customwidget>
    <class>ToolButton</class>
    <extends>QToolButton</extends>
    <header>toolbutton.h</header>
   </customwidget>
   <customwidget>
-   <class>LineEdit</class>
+   <class>SearchWidget</class>
    <extends>QLineEdit</extends>
-   <header>lineedit.h</header>
+   <header>searchwidget.h</header>
   </customwidget>
   <customwidget>
    <class>TreeView</class>

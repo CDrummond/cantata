@@ -43,11 +43,11 @@ PlaylistsPage::PlaylistsPage(QWidget *p)
     renamePlaylistAction = ActionCollection::get()->createAction("renameplaylist", i18n("Rename"), "edit-rename");
     replacePlayQueue->setDefaultAction(StdActions::self()->replacePlayQueueAction);
     libraryUpdate->setDefaultAction(StdActions::self()->refreshAction);
+    searchButton->setDefaultAction(StdActions::self()->searchAction);
     connect(genreCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(searchItems()));
     connect(PlaylistsModel::self(), SIGNAL(updateGenres(const QSet<QString> &)), genreCombo, SLOT(update(const QSet<QString> &)));
 
     view->allowGroupedView();
-    view->setTopText(i18n("Playlists"));
     view->addAction(StdActions::self()->addToPlayQueueAction);
     view->addAction(StdActions::self()->replacePlayQueueAction);
     view->addAction(StdActions::self()->addWithPriorityAction);

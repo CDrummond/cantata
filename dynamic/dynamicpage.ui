@@ -43,6 +43,9 @@
       <item>
        <widget class="ToolButton" name="refreshBtn"/>
       </item>
+      <item>
+       <widget class="ToolButton" name="searchButton"/>
+      </item>
        <item>
        <spacer name="horizontalSpacer">
         <property name="orientation">

@@ -65,6 +65,7 @@ DevicesPage::DevicesPage(QWidget *p)
     copyAction = ActionCollection::get()->createAction("copytolibrary", i18n("Copy To Library"), Icons::self()->importIcon);
     copyToLibraryButton->setDefaultAction(copyAction);
     syncAction = ActionCollection::get()->createAction("syncdevice", i18n("Sync"), "folder-sync");
+    searchButton->setDefaultAction(StdActions::self()->searchAction);
     connect(syncAction, SIGNAL(triggered()), this, SLOT(sync()));
     #ifdef ENABLE_REMOTE_DEVICES
     forgetDeviceAction=ActionCollection::get()->createAction("forgetdevice", i18n("Forget Device"), "list-remove");
@@ -126,7 +127,6 @@ DevicesPage::DevicesPage(QWidget *p)
     #endif
     menuButton->setMenu(menu);
     proxy.setSourceModel(DevicesModel::self());
-    view->setTopText(i18n("Devices"));
     view->setModel(&proxy);
     view->setRootIsDecorated(false);
 }

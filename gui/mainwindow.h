@@ -196,7 +196,7 @@ Q_SIGNALS:
 public Q_SLOTS:
     void showError(const QString &message, bool showActions=false);
     void showInformation(const QString &message);
-    void showPage(const QString &page, bool focusSearch);
+    void showPage(const QString &page, bool showSearch);
     void dynamicStatus(const QString &message);
     void hideWindow();
     void restoreWindow();
@@ -293,7 +293,7 @@ public Q_SLOTS:
     void replayGain();
     void setCover();
     void goBack();
-    void focusSearch();
+    void showSearch();
     void expandAll();
     void collapseAll();
     void checkMpdDir();
@@ -358,6 +358,7 @@ private:
     Action *repeatPlayQueueAction;
     Action *singlePlayQueueAction;
     Action *consumePlayQueueAction;
+    Action *searchPlayQueueAction;
     Action *setPriorityAction;
     #ifdef ENABLE_HTTP_STREAM_PLAYBACK
     Action *streamPlayAction;

@@ -31,6 +31,7 @@
 #include "mpdconnection.h"
 #include "statuslabel.h"
 #include "messagebox.h"
+#include "stdactions.h"
 
 DynamicPage::DynamicPage(QWidget *p)
     : QWidget(p)
@@ -40,6 +41,7 @@ DynamicPage::DynamicPage(QWidget *p)
     addAction = ActionCollection::get()->createAction("adddynamic", i18n("Add Dynamic Rules"), "document-new");
     editAction = ActionCollection::get()->createAction("editdynamic", i18n("Edit Dynamic Rules"), Icons::self()->editIcon);
     removeAction = ActionCollection::get()->createAction("removedynamic", i18n("Remove Dynamic Rules"), "list-remove");
+    searchButton->setDefaultAction(StdActions::self()->searchAction);
     toggleAction = new Action(this);
 
     refreshBtn->setDefaultAction(refreshAction);
@@ -80,9 +82,7 @@ DynamicPage::DynamicPage(QWidget *p)
     remoteRunningLabel->setVisible(false);
     Dynamic::self()->stopAct()->setEnabled(false);
     proxy.setSourceModel(Dynamic::self());
-    view->setTopText(i18n("Dynamic"));
     view->setModel(&proxy);
-    view->hideBackButton();
     view->setDeleteAction(removeAction);
     view->setMode(ItemView::Mode_List);
     controlActions();

@@ -98,7 +98,6 @@ public:
     void allowGroupedView();
     void addAction(QAction *act);
     void setMode(Mode m);
-    void hideBackButton();
     Mode viewMode() const { return mode; }
     void setLevel(int level, bool haveChildren=true);
     QAbstractItemView * view() const;
@@ -110,7 +109,6 @@ public:
     QModelIndexList selectedIndexes() const;
     QString searchText() const;
     void clearSearchText();
-    void setTopText(const QString &text);
     void setUniformRowHeights(bool v);
     void setAcceptDrops(bool v);
     void setDragDropOverwriteMode(bool v);
@@ -156,7 +154,6 @@ private:
     QAction *backAction;
     int currentLevel;
     Mode mode;
-    QString topText;
     QMap<int, QString> prevText;
     QModelIndex prevTopIndex;
     QSize iconGridSize;

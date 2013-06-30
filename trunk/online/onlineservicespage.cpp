@@ -48,6 +48,7 @@ OnlineServicesPage::OnlineServicesPage(QWidget *p)
     setupUi(this);
     addToPlayQueue->setDefaultAction(StdActions::self()->addToPlayQueueAction);
     replacePlayQueue->setDefaultAction(StdActions::self()->replacePlayQueueAction);
+    searchButton->setDefaultAction(StdActions::self()->searchAction);
     view->addAction(StdActions::self()->addToPlayQueueAction);
     view->addAction(StdActions::self()->replacePlayQueueAction);
     view->addAction(StdActions::self()->addWithPriorityAction);
@@ -91,7 +92,6 @@ OnlineServicesPage::OnlineServicesPage(QWidget *p)
     view->addAction(removeAction);
     menuButton->setMenu(menu);
     proxy.setSourceModel(OnlineServicesModel::self());
-    view->setTopText(i18n("Online Music"));
     view->setModel(&proxy);
     view->setRootIsDecorated(false);
 }

@@ -288,6 +288,8 @@ MainWindow::MainWindow(QWidget *parent)
     repeatPlayQueueAction = ActionCollection::get()->createAction("repeatplaylist", i18n("Repeat"), Icons::self()->repeatIcon);
     singlePlayQueueAction = ActionCollection::get()->createAction("singleplaylist", i18n("Single"), Icons::self()->singleIcon, i18n("When 'Single' is activated, playback is stopped after current song, or song is repeated if 'Repeat' is enabled."));
     consumePlayQueueAction = ActionCollection::get()->createAction("consumeplaylist", i18n("Consume"), Icons::self()->consumeIcon, i18n("When consume is activated, a song is removed from the play queue after it has been played."));
+    searchPlayQueueAction = ActionCollection::get()->createAction("searchplaylist", i18n("Search"), Icons::self()->searchIcon);
+    searchPlayQueueAction->setShortcut(Qt::ControlModifier+Qt::ShiftModifier+Qt::Key_F);
     setPriorityAction = ActionCollection::get()->createAction("setprio", i18n("Set Priority"), Icon("favorites"));
     #ifdef ENABLE_HTTP_STREAM_PLAYBACK
     streamPlayAction = ActionCollection::get()->createAction("streamplay", i18n("Play Stream"));
@@ -394,6 +396,7 @@ MainWindow::MainWindow(QWidget *parent)
     addStreamToPlayQueueAction->setEnabled(false);
     clearPlayQueueButton->setDefaultAction(clearPlayQueueAction);
     savePlayQueueButton->setDefaultAction(StdActions::self()->savePlayQueueAction);
+    searchPlayQueueButton->setDefaultAction(searchPlayQueueAction);
     randomButton->setDefaultAction(randomPlayQueueAction);
     repeatButton->setDefaultAction(repeatPlayQueueAction);
     singleButton->setDefaultAction(singlePlayQueueAction);
@@ -475,7 +478,7 @@ MainWindow::MainWindow(QWidget *parent)
     #endif
 
     songInfoButton->setDefaultAction(songInfoAction);
-    searchPlayQueueLineEdit->setPlaceholderText(i18n("Search Play Queue..."));
+    playQueueSearchWidget->setVisible(false);
     QList<QToolButton *> playbackBtns;
     QList<QToolButton *> controlBtns;
     playbackBtns << prevTrackButton << stopTrackButton << playPauseTrackButton << nextTrackButton;
@@ -746,14 +749,14 @@ MainWindow::MainWindow(QWidget *parent)
     connect(streamPlayAction, SIGNAL(triggered(bool)), this, SLOT(toggleStream(bool)));
     #endif
     connect(StdActions::self()->backAction, SIGNAL(triggered(bool)), this, SLOT(goBack()));
-    connect(searchPlayQueueLineEdit, SIGNAL(returnPressed()), this, SLOT(searchPlayQueue()));
-    connect(searchPlayQueueLineEdit, SIGNAL(textChanged(const QString)), this, SLOT(searchPlayQueue()));
+    connect(playQueueSearchWidget, SIGNAL(returnPressed()), this, SLOT(searchPlayQueue()));
+    connect(playQueueSearchWidget, SIGNAL(textChanged(const QString)), this, SLOT(searchPlayQueue()));
     connect(playQueue, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(playQueueItemActivated(const QModelIndex &)));
     connect(StdActions::self()->removeAction, SIGNAL(triggered(bool)), this, SLOT(removeItems()));
     connect(StdActions::self()->addToPlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(addToPlayQueue()));
     connect(StdActions::self()->replacePlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(replacePlayQueue()));
     connect(removeFromPlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(removeFromPlayQueue()));
-    connect(clearPlayQueueAction, SIGNAL(triggered(bool)), searchPlayQueueLineEdit, SLOT(clear()));
+    connect(clearPlayQueueAction, SIGNAL(triggered(bool)), playQueueSearchWidget, SLOT(clear()));
     connect(clearPlayQueueAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(clear()));
     connect(copyTrackInfoAction, SIGNAL(triggered(bool)), this, SLOT(copyTrackInfo()));
     connect(cropPlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(cropPlayQueue()));
@@ -781,7 +784,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(onlineTabAction, SIGNAL(triggered(bool)), this, SLOT(showOnlineTab()));
     #endif
     addAction(StdActions::self()->searchAction); // Weird, but if I dont add thiis action, it does not work!!!!
-    connect(StdActions::self()->searchAction, SIGNAL(triggered(bool)), SLOT(focusSearch()));
+    connect(StdActions::self()->searchAction, SIGNAL(triggered(bool)), SLOT(showSearch()));
+    connect(searchPlayQueueAction, SIGNAL(triggered(bool)), playQueueSearchWidget, SLOT(toggle()));
     connect(expandAllAction, SIGNAL(triggered(bool)), this, SLOT(expandAll()));
     connect(collapseAllAction, SIGNAL(triggered(bool)), this, SLOT(collapseAll()));
     #ifdef ENABLE_DEVICES_SUPPORT
@@ -1682,7 +1686,7 @@ void MainWindow::decreaseVolume()
 
 void MainWindow::searchPlayQueue()
 {
-    if (searchPlayQueueLineEdit->text().isEmpty()) {
+    if (playQueueSearchWidget->text().isEmpty()) {
         if (playQueueSearchTimer) {
             playQueueSearchTimer->stop();
         }
@@ -1702,7 +1706,7 @@ void MainWindow::realSearchPlayQueue()
     if (playQueueSearchTimer) {
         playQueueSearchTimer->stop();
     }
-    QString filter=searchPlayQueueLineEdit->text().trimmed();
+    QString filter=playQueueSearchWidget->text().trimmed();
     if (filter.length()<2) {
         filter=QString();
     }
@@ -2067,7 +2071,7 @@ void MainWindow::addToPlayQueue()
 
 void MainWindow::addToPlayQueue(bool replace, quint8 priority)
 {
-    searchPlayQueueLineEdit->clear();
+    playQueueSearchWidget->clear();
     if (libraryPage->isVisible()) {
         libraryPage->addSelectionToPlaylist(QString(), replace, priority);
     } else if (albumsPage->isVisible()) {
@@ -2646,7 +2650,7 @@ void MainWindow::showPage(const QString &page, bool focusSearch)
     else if (tabWidget->isEnabled(PAGE_PLAYQUEUE) && QLatin1String("playqueue")==p) {
         showTab(MainWindow::PAGE_PLAYQUEUE);
         if (focusSearch) {
-            searchPlayQueueLineEdit->setFocus();
+            playQueueSearchWidget->setFocus();
         }
     }
 
@@ -2684,15 +2688,10 @@ void MainWindow::goBack()
     }
 }
 
-void MainWindow::focusSearch()
+void MainWindow::showSearch()
 {
     if (context->isVisible()) {
         context->search();
-    } else if (searchPlayQueueLineEdit->hasFocus()) {
-        return;
-    } else if (playQueue->hasFocus() || repeatButton->hasFocus() || singleButton->hasFocus() || randomButton->hasFocus() ||
-        consumeButton->hasFocus() || savePlayQueueButton->hasFocus() || clearPlayQueueButton->hasFocus()) {
-        searchPlayQueueLineEdit->setFocus();
     } else if (libraryPage->isVisible()) {
         libraryPage->focusSearch();
     } else if (albumsPage->isVisible()) {
@@ -2703,9 +2702,9 @@ void MainWindow::focusSearch()
         playlistsPage->focusSearch();
     } else if (dynamicPage->isVisible()) {
         dynamicPage->focusSearch();
-    } else if (streamsPage->isVisible()) {
+    } /*else if (streamsPage->isVisible()) {
         streamsPage->focusSearch();
-    }
+    }*/
     #ifdef ENABLE_ONLINE_SERVICES
     else if (onlinePage->isVisible()) {
         onlinePage->focusSearch();
@@ -2716,9 +2715,6 @@ void MainWindow::focusSearch()
         devicesPage->focusSearch();
     }
     #endif
-    else if (tabWidget->isEnabled(PAGE_PLAYQUEUE) && playQueuePage->isVisible()) {
-        searchPlayQueueLineEdit->setFocus();
-    }
 }
 
 bool MainWindow::fadeWhenStop() const

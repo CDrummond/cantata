@@ -381,6 +381,7 @@ Icons::Icons()
     speakerIcon=Icon("speaker");
     variousArtistsIcon=Icon("cantata-view-media-artist-various");
     editIcon=Icon("document-edit");
+    searchIcon=Icon("edit-find");
     clearListIcon=Icon("edit-clear-list");
     repeatIcon=createRecolourableIcon("repeat", stdColor, highlightColor);
     shuffleIcon=createRecolourableIcon("shuffle", stdColor, highlightColor);

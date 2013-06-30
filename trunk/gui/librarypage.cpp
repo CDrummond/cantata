@@ -45,6 +45,7 @@ LibraryPage::LibraryPage(QWidget *p)
     addToPlayQueue->setDefaultAction(StdActions::self()->addToPlayQueueAction);
     replacePlayQueue->setDefaultAction(StdActions::self()->replacePlayQueueAction);
     libraryUpdate->setDefaultAction(StdActions::self()->refreshAction);
+    searchButton->setDefaultAction(StdActions::self()->searchAction);
 
     view->addAction(StdActions::self()->addToPlayQueueAction);
     view->addAction(StdActions::self()->replacePlayQueueAction);
@@ -80,7 +81,6 @@ LibraryPage::LibraryPage(QWidget *p)
     connect(view, SIGNAL(searchItems()), this, SLOT(searchItems()));
     connect(view, SIGNAL(rootIndexSet(QModelIndex)), this, SLOT(updateGenres(QModelIndex)));
     proxy.setSourceModel(MusicLibraryModel::self());
-    view->setTopText(i18n("Artists"));
     view->setModel(&proxy);
 }
 

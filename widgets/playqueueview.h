@@ -115,6 +115,7 @@ public:
     void setFade(float value);
     void setUseCoverAsBackgrond(bool u);
     bool useCoverAsBackground() const { return useCoverAsBgnd; }
+    void updatePalette();
 
 public Q_SLOTS:
     void showSpinner();

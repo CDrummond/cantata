@@ -432,16 +432,7 @@ void PlayQueueView::setUseCoverAsBackgrond(bool u)
         return;
     }
     useCoverAsBgnd=u;
-    QPalette pal=palette();
-
-    if (u) {
-        pal.setColor(QPalette::Base, Qt::transparent);
-    }
-
-    groupedView->setPalette(pal);
-    groupedView->viewport()->setPalette(pal);
-    treeView->setPalette(pal);
-    treeView->viewport()->setPalette(pal);
+    updatePalette();
 
     if (!u) {
         previousBackground=QPixmap();
@@ -449,6 +440,20 @@ void PlayQueueView::setUseCoverAsBackgrond(bool u)
         curentBackground=QPixmap();
         view()->viewport()->update();
     }
+}
+
+void PlayQueueView::updatePalette()
+{
+    QPalette pal=palette();
+
+    if (useCoverAsBgnd) {
+        pal.setColor(QPalette::Base, Qt::transparent);
+    }
+
+    groupedView->setPalette(pal);
+    groupedView->viewport()->setPalette(pal);
+    treeView->setPalette(pal);
+    treeView->viewport()->setPalette(pal);
 }
 
 void PlayQueueView::setImage(const QImage &img)

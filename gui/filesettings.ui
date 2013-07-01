@@ -125,7 +125,7 @@
       </sizepolicy>
      </property>
      <property name="text">
-      <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; If you change the location where streams are stored (i.e. you toggle the 'Save list of streams in music folder' option), then Cantata will only display streams that are stored in the relevant location. Therefore, before changing this setting, it is recommended that you export your existing streams. You can then re-import these to the new location (after you have toggled the setting).&lt;/i&gt;</string>
+      <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; If you change the location where streams are stored (i.e. you toggle the 'Save list of favourite streams in music folder' option), then Cantata will only display streams that are stored in the relevant location. Therefore, before changing this setting, it is recommended that you export your existing streams. You can then re-import these to the new location (after you have toggled the setting).&lt;/i&gt;</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>

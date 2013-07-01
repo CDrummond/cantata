@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>310</width>
-    <height>387</height>
+    <width>277</width>
+    <height>259</height>
    </rect>
   </property>
   <layout class="QVBoxLayout" name="vlayout">
@@ -29,25 +29,28 @@
    </item>
    <item>
     <layout class="QHBoxLayout" name="hlayout">
-     <property name="margin">
-      <number>0</number>
-     </property>
      <property name="spacing">
       <number>0</number>
      </property>
+     <property name="margin">
+      <number>0</number>
+     </property>
      <item>
-     <spacer name="horizontalSpacer">
-      <property name="orientation">
+      <widget class="SqueezedTextLabel" name="diStatusLabel"/>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
         <enum>Qt::Horizontal</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>16</width>
-        <height>20</height>
-       </size>
-      </property>
-     </spacer>
-    </item>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>16</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
      <item>
       <widget class="MenuButton" name="menuButton"/>
      </item>
@@ -59,6 +62,11 @@
   </layout>
  </widget>
  <customwidgets>
+  <customwidget>
+   <class>SqueezedTextLabel</class>
+   <extends>QLabel</extends>
+   <header>squeezedtextlabel.h</header>
+  </customwidget>
   <customwidget>
    <class>ItemView</class>
    <extends>QTreeView</extends>

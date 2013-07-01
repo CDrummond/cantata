@@ -33,6 +33,8 @@
 #include "settings.h"
 #include "streamsmodel.h"
 #include "statuslabel.h"
+#include "digitallyimported.h"
+#include "digitallyimportedsettings.h"
 #include <QToolButton>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KFileDialog>
@@ -55,7 +57,7 @@ StreamsPage::StreamsPage(QWidget *p)
     addAction = ActionCollection::get()->createAction("addstream", i18n("Add New Stream To Favourites"), Icons::self()->addRadioStreamIcon);
     addToFavouritesAction = ActionCollection::get()->createAction("addtofavourites", i18n("Add Stream To Favourites"), Icons::self()->addRadioStreamIcon);
     editAction = ActionCollection::get()->createAction("editstream", i18n("Edit"), Icons::self()->editIcon);
-
+    Action *settingsAct = new Action(i18n("Digitally Imported Settings"), this);
     replacePlayQueue->setDefaultAction(StdActions::self()->replacePlayQueueAction);
 //     connect(view, SIGNAL(itemsSelected(bool)), addToPlaylist, SLOT(setEnabled(bool)));
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
@@ -66,16 +68,21 @@ StreamsPage::StreamsPage(QWidget *p)
     connect(editAction, SIGNAL(triggered(bool)), this, SLOT(edit()));
     connect(importAction, SIGNAL(triggered(bool)), this, SLOT(importXml()));
     connect(exportAction, SIGNAL(triggered(bool)), this, SLOT(exportXml()));
+    connect(settingsAct, SIGNAL(triggered(bool)), this, SLOT(diSettings()));
     connect(StreamsModel::self(), SIGNAL(error(const QString &)), this, SIGNAL(error(const QString &)));
     connect(StreamsModel::self(), SIGNAL(loading()), view, SLOT(showSpinner()));
     connect(StreamsModel::self(), SIGNAL(loaded()), view, SLOT(hideSpinner()));
     connect(MPDConnection::self(), SIGNAL(dirChanged()), SLOT(mpdDirChanged()));
+    connect(DigitallyImported::self(), SIGNAL(loginStatus(bool,QString)), SLOT(updateDiStatus()));
     QMenu *menu=new QMenu(this);
     menu->addAction(addAction);
     menu->addAction(StdActions::self()->removeAction);
     menu->addAction(editAction);
+    menu->addSeparator();
     menu->addAction(importAction);
     menu->addAction(exportAction);
+    menu->addSeparator();
+    menu->addAction(settingsAct);
     menuButton->setMenu(menu);
     Icon::init(replacePlayQueue);
 
@@ -94,6 +101,7 @@ StreamsPage::StreamsPage(QWidget *p)
 
     infoLabel->hide();
     infoLabel->setType(StatusLabel::Locked);
+    updateDiStatus();
 }
 
 StreamsPage::~StreamsPage()
@@ -180,6 +188,12 @@ void StreamsPage::itemDoubleClicked(const QModelIndex &index)
         indexes.append(index);
         addItemsToPlayQueue(indexes, false);
     }
+}
+
+void StreamsPage::diSettings()
+{
+    DigitallyImportedSettings(this).show();
+    updateDiStatus();
 }
 
 void StreamsPage::importXml()
@@ -396,4 +410,14 @@ void StreamsPage::controlActions()
     StdActions::self()->replacePlayQueueAction->setEnabled(selected.count());
     StdActions::self()->addWithPriorityAction->setEnabled(selected.count());
     menuButton->controlState();
+}
+
+void StreamsPage::updateDiStatus()
+{
+    if (DigitallyImported::self()->user().isEmpty() || DigitallyImported::self()->pass().isEmpty()) {
+        diStatusLabel->setVisible(false);
+    } else {
+        diStatusLabel->setVisible(true);
+        diStatusLabel->setText(DigitallyImported::self()->loggedIn() ? i18n("DI: Logged In") : i18n("DI: Not Logged In"));
+    }
 }

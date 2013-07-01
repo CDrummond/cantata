@@ -586,20 +586,175 @@ QList<StreamsModel::Item *> StreamsModel::parseRadioTimeResponse(QIODevice *dev,
     return newItems;
 }
 
+static QString fixSingleGenre(const QString &g)
+{
+    if (!g.isEmpty()) {
+        QString genre=Song::capitalize(g);
+        genre[0]=genre[0].toUpper();
+        genre=genre.trimmed();
+        genre=genre.replace(QLatin1String("Afrocaribbean"), QLatin1String("Afro-Caribbean"));
+        genre=genre.replace(QLatin1String("Afro Caribbean"), QLatin1String("Afro-Caribbean"));
+        if (genre.length() < 3 ||
+                QLatin1String("The")==genre || QLatin1String("All")==genre ||
+                QLatin1String("Various")==genre || QLatin1String("Unknown")==genre ||
+                QLatin1String("Misc")==genre || QLatin1String("Mix")==genre || QLatin1String("100%")==genre ||
+                genre.contains("ÃÂ") || // Broken unicode.
+                genre.contains(QRegExp("^#x[0-9a-f][0-9a-f]"))) { // Broken XML entities.
+            return QString();
+        }
+
+        if (genre==QLatin1String("R&B") || genre==QLatin1String("R B") || genre==QLatin1String("Rnb") || genre==QLatin1String("RnB")) {
+            return QLatin1String("R&B");
+        }
+        if (genre==QLatin1String("Classic") || genre==QLatin1String("Classical")) {
+            return QLatin1String("Classical");
+        }
+        if (genre==QLatin1String("Christian") || genre.startsWith(QLatin1String("Christian "))) {
+            return QLatin1String("Christian");
+        }
+        if (genre==QLatin1String("Rock") || genre.startsWith(QLatin1String("Rock "))) {
+            return QLatin1String("Rock");
+        }
+        if (genre==QLatin1String("Easy") || genre==QLatin1String("Easy Listening")) {
+            return QLatin1String("Easy Listening");
+        }
+        if (genre==QLatin1String("Hit") || genre==QLatin1String("Hits") || genre==QLatin1String("Easy listening")) {
+            return QLatin1String("Hits");
+        }
+        if (genre==QLatin1String("Hip") || genre==QLatin1String("Hiphop") || genre==QLatin1String("Hip Hop") || genre==QLatin1String("Hop Hip")) {
+            return QLatin1String("Hip Hop");
+        }
+        if (genre==QLatin1String("News") || genre==QLatin1String("News talk")) {
+            return QLatin1String("News");
+        }
+        if (genre==QLatin1String("Top40") || genre==QLatin1String("Top 40") || genre==QLatin1String("40Top") || genre==QLatin1String("40 Top")) {
+            return QLatin1String("Top 40");
+        }
+
+        QStringList small=QStringList() << QLatin1String("Adult Contemporary") << QLatin1String("Alternative")
+                                        << QLatin1String("Community Radio") << QLatin1String("Local Service")
+                                        << QLatin1String("Multiultural") << QLatin1String("News")
+                                        << QLatin1String("Student") << QLatin1String("Urban");
+
+        foreach (const QString &s, small) {
+            if (genre==s || genre.startsWith(s+" ") || genre.endsWith(" "+s)) {
+                return s;
+            }
+        }
+
+        // Convert XX's to XXs
+        if (genre.contains(QRegExp("^[0-9]0's$"))) {
+            genre=genre.remove('\'');
+        }
+        if (genre.length()>25 && (0==genre.indexOf(QRegExp("^[0-9]0s ")) || 0==genre.indexOf(QRegExp("^[0-9]0 ")))) {
+            int pos=genre.indexOf(' ');
+            if (pos>1) {
+                genre=genre.left(pos);
+            }
+        }
+        // Convert 80 -> 80s.
+        return genre.contains(QRegExp("^[0-9]0$")) ? genre + 's' : genre;
+    }
+    return g;
+}
+
+static QStringList fixGenres(const QString &genre)
+{
+    QString g(genre);
+    int pos=g.indexOf("<br");
+    if (pos>3) {
+        g=g.left(pos);
+    }
+    pos=g.indexOf("(");
+    if (pos>3) {
+        g=g.left(pos);
+    }
+
+    g=Song::capitalize(g);
+    QStringList genres=g.split('|', QString::SkipEmptyParts);
+    QStringList allGenres;
+
+    foreach (const QString &genre, genres) {
+        allGenres+=genre.split('/', QString::SkipEmptyParts);
+    }
+
+    QStringList fixed;
+    foreach (const QString &genre, allGenres) {
+        QString g=fixSingleGenre(genre).trimmed();
+        if (!g.isEmpty()) {
+            fixed.append(g);
+        }
+    }
+    return fixed;
+}
+
+static void trimGenres(QMap<QString, QList<StreamsModel::Item *> > &genres)
+{
+    QString other=i18n("Other");
+    QSet<QString> genreSet = genres.keys().toSet();
+    foreach (const QString &genre, genreSet) {
+        if (other!=genre && genres[genre].count() < 2) {
+            genres[other]+=genres[genre];
+            genres.remove(genre);
+        }
+    }
+}
+
 QList<StreamsModel::Item *> StreamsModel::parseIceCastResponse(QIODevice *dev, CategoryItem *cat)
 {
     QList<Item *> newItems;
     QXmlStreamReader doc(dev);
     QSet<QString> names;
+    QMap<QString, QList<Item *> > genres;
     while (!doc.atEnd()) {
         doc.readNext();
         if (doc.isStartElement() && QLatin1String("entry")==doc.name()) {
-            Item *item = parseIceCastEntry(doc, cat, names);
-            if (item) {
-                newItems.append(item);
+            QString name;
+            QString url;
+            QStringList stationGenres;
+            while (!doc.atEnd()) {
+                doc.readNext();
+
+                if (QXmlStreamReader::StartElement==doc.tokenType()) {
+                    QStringRef elem = doc.name();
+
+                    if (QLatin1String("server_name")==elem) {
+                        name=doc.readElementText().trimmed();
+                    } else if (QLatin1String("listen_url")==elem) {
+                        url=doc.readElementText().trimmed();
+                    } else if (QLatin1String("genre")==elem) {
+                        stationGenres=fixGenres(doc.readElementText().trimmed());
+                    }
+                } else if (doc.isEndElement() && QLatin1String("entry")==doc.name()) {
+                    break;
+                }
+            }
+
+            if (!name.isEmpty() && !url.isEmpty() && !names.contains(name)) {
+                names.insert(name);
+                if (stationGenres.isEmpty()) {
+                    stationGenres.append(i18n("Other"));
+                }
+                foreach (const QString &g, stationGenres) {
+                    genres[g].append(new Item(url, name, cat));
+                }
             }
         }
     }
+    trimGenres(genres);
+    QMap<QString, QList<Item *> >::ConstIterator it(genres.constBegin());
+    QMap<QString, QList<Item *> >::ConstIterator end(genres.constEnd());
+
+    for (; it!=end; ++it) {
+        CategoryItem *genre=new CategoryItem(QString(), it.key(), cat);
+        genre->state=CategoryItem::Fetched;
+        foreach (Item *i, it.value()) {
+            i->parent=genre;
+            genre->children.append(i);
+        }
+        newItems.append(genre);
+    }
+
     return newItems;
 }
 
@@ -686,9 +841,10 @@ struct ListenLiveStream {
 
 struct ListenLiveStationEntry {
     ListenLiveStationEntry() { clear(); }
-    void clear() { name=location=QString(); streams.clear(); }
+    void clear() { name=location=comment=QString(); streams.clear(); }
     QString name;
     QString location;
+    QString comment;
     QList<ListenLiveStream> streams;
 };
 
@@ -708,6 +864,7 @@ QList<StreamsModel::Item *> StreamsModel::parseListenLiveResponse(QIODevice *dev
 {
     QList<Item *> newItems;
     QSet<QString> names;
+    QMap<QString, QList<Item *> > genres;
 
     if (dev) {
         ListenLiveStationEntry entry;
@@ -760,6 +917,8 @@ QList<StreamsModel::Item *> StreamsModel::parseListenLiveResponse(QIODevice *dev
             } else if (line.startsWith("<td>")) {
                 if (entry.location.isEmpty()) {
                     entry.location=getString(line, "<td>", "</td>");
+                } else {
+                    entry.comment=getString(line, "<td>", "</td>");
                 }
             } else if ("</tr>"==line) {
                 if (entry.streams.count()) {
@@ -776,13 +935,41 @@ QList<StreamsModel::Item *> StreamsModel::parseListenLiveResponse(QIODevice *dev
                     }
 
                     if (!names.contains(name) && !name.isEmpty() && !url.isEmpty()) {
-                        newItems.append(new Item(url, name, cat));
+                        QStringList stationGenres=fixGenres(entry.comment);
+                        if (stationGenres.isEmpty()) {
+                            stationGenres.append(i18n("Other"));
+                        }
+                        foreach (const QString &g, stationGenres) {
+                            genres[g].append(new Item(url, name, cat));
+                        }
                         names.insert(name);
                     }
                 }
             }
         }
     }
+
+    QMap<QString, QList<Item *> >::ConstIterator it(genres.constBegin());
+    QMap<QString, QList<Item *> >::ConstIterator end(genres.constEnd());
+    CategoryItem *all=0;
+
+    if (!genres.isEmpty()) {
+        all=new CategoryItem(QString(), i18n("All"), cat);
+        all->state=CategoryItem::Fetched;
+        all->isAll=true;
+        newItems.append(all);
+    }
+    for (; it!=end; ++it) {
+        CategoryItem *genre=new CategoryItem(QString(), it.key(), cat);
+        genre->state=CategoryItem::Fetched;
+        foreach (Item *i, it.value()) {
+            i->parent=genre;
+            genre->children.append(i);
+            all->children.append(new Item(i->url, i->name, all));
+        }
+        newItems.append(genre);
+    }
+
     return newItems;
 }
 
@@ -898,33 +1085,6 @@ StreamsModel::Item * StreamsModel::parseRadioTimeEntry(QXmlStreamReader &doc, Ca
     }
 
     return item;
-}
-
-StreamsModel::Item * StreamsModel::parseIceCastEntry(QXmlStreamReader &doc, CategoryItem *parent, QSet<QString> &names)
-{
-    QString name;
-    QString url;
-    while (!doc.atEnd()) {
-        doc.readNext();
-
-        if (QXmlStreamReader::StartElement==doc.tokenType()) {
-            QStringRef elem = doc.name();
-
-            if (QLatin1String("server_name")==elem) {
-                name=doc.readElementText().trimmed();
-            } else if (QLatin1String("listen_url")==elem) {
-                url=doc.readElementText().trimmed();
-            }
-        } else if (doc.isEndElement() && QLatin1String("entry")==doc.name()) {
-            break;
-        }
-    }
-
-    if (!name.isEmpty() && !url.isEmpty() && !names.contains(name)) {
-        names.insert(name);
-        return new Item(url, name, parent);
-    }
-    return 0;
 }
 
 StreamsModel::Item * StreamsModel::parseSomaFmEntry(QXmlStreamReader &doc, CategoryItem *parent)

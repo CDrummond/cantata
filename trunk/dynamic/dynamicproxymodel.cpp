@@ -41,5 +41,19 @@ bool DynamicProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourc
     if (!isChildOfRoot(sourceParent)) {
         return true;
     }
-    return matchesFilter(QStringList() << sourceModel()->data(sourceModel()->index(sourceRow, 0, sourceParent), Qt::DisplayRole).toString());
+    if (matchesFilter(QStringList() << sourceModel()->data(sourceModel()->index(sourceRow, 0, sourceParent), Qt::DisplayRole).toString())) {
+        return true;
+    }
+
+    Dynamic::Entry item = Dynamic::self()->entry(sourceRow);
+    foreach (const Dynamic::Rule & r, item.rules) {
+        Dynamic::Rule::ConstIterator it=r.constBegin();
+        Dynamic::Rule::ConstIterator end=r.constEnd();
+        for (; it!=end; ++it) {
+            if (matchesFilter(QStringList() << it.value())) {
+                return true;
+            }
+        }
+    }
+    return false;
 }

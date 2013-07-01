@@ -55,6 +55,7 @@ void SearchWidget::toggle()
         close();
     } else {
         show();
+        setFocus();
     }
 }
 

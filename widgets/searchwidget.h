@@ -25,6 +25,7 @@
 #define SEARRCHWIDGET_H
 
 #include "lineedit.h"
+#include "toolbutton.h"
 #include <QSet>
 
 class SearchWidget : public QWidget
@@ -37,7 +38,7 @@ public:
     void setText(const QString &t) { edit->setText(t); }
     QString text() const { return edit->text(); }
     void setFocus() { edit->setFocus(); }
-    bool hasFocus() const { return edit->hasFocus(); }
+    bool hasFocus() const { return edit->hasFocus() || closeButton->hasFocus(); }
 
 Q_SIGNALS:
     void textChanged(const QString &);
@@ -51,6 +52,7 @@ public Q_SLOTS:
 
 private:
     LineEdit *edit;
+    ToolButton *closeButton;
 };
 
 #endif

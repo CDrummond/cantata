@@ -60,11 +60,12 @@ public:
         };
 
         CategoryItem(const QString &u, const QString &n=QString(), CategoryItem *p=0, const QIcon &i=QIcon())
-            : Item(u, n, p), state(Initial), isFavourites(false), icon(i) { }
+            : Item(u, n, p), state(Initial), isFavourites(false), isAll(false), icon(i) { }
         virtual ~CategoryItem() { qDeleteAll(children); }
         virtual bool isCategory() const { return true; }
         State state;
-        bool isFavourites;
+        bool isFavourites : 1;
+        bool isAll : 1;
         QList<Item *> children;
         QIcon icon;
     };
@@ -127,7 +128,6 @@ private:
     QList<Item *> parseShoutCastLinks(QXmlStreamReader &doc, CategoryItem *cat);
     QList<Item *> parseShoutCastStations(QXmlStreamReader &doc, CategoryItem *cat);
     Item * parseRadioTimeEntry(QXmlStreamReader &doc, CategoryItem *parent);
-    Item * parseIceCastEntry(QXmlStreamReader &doc, CategoryItem *parent, QSet<QString> &names);
     Item * parseSomaFmEntry(QXmlStreamReader &doc, CategoryItem *parent);
     void loadFavourites(const QModelIndex &index);
     bool loadXml(const QString &fileName, const QModelIndex &index);

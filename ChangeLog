@@ -102,6 +102,7 @@
     Live.
 65. Place search fields on bottom of views, and hide by default. Show when
     Ctrl-F is used for views, and Ctrl-Shift-F for playqueue.
+66. When searching in dynamic page, also search rules themselves.
 
 1.0.3
 -----

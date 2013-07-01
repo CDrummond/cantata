@@ -804,12 +804,7 @@ void ItemView::showIndex(const QModelIndex &idx, bool scrollTo)
 
 void ItemView::focusSearch()
 {
-    if (searchWidget->isVisible()) {
-        searchWidget->close();
-    } else {
-        searchWidget->setVisible(true);
-        searchWidget->setFocus();
-    }
+    searchWidget->toggle();
 }
 
 void ItemView::setStartClosed(bool sc)

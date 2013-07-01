@@ -106,6 +106,7 @@ public:
     QVariant data(const QModelIndex &, int) const;
     Qt::ItemFlags flags(const QModelIndex &index) const;
     Entry entry(const QString &e);
+    Entry entry(int row) const { return row>=0 && row<entryList.count() ? entryList.at(row) : Entry(); }
     bool exists(const QString &e) { return entryList.end()!=find(e); }
     bool save(const Entry &e);
     void del(const QString &name);

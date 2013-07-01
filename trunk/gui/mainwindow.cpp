@@ -2715,6 +2715,9 @@ void MainWindow::showSearch()
         devicesPage->focusSearch();
     }
     #endif
+    else if (playQueuePage->isVisible()) {
+        playQueueSearchWidget->toggle();
+    }
 }
 
 bool MainWindow::fadeWhenStop() const

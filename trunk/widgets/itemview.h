@@ -143,9 +143,9 @@ private Q_SLOTS:
     void itemClicked(const QModelIndex &index);
     void itemActivated(const QModelIndex &index);
     void delaySearchItems();
+    void activateItem(const QModelIndex &index, bool emitRootSet=true);
 
 private:
-    void activateItem(const QModelIndex &index, bool emitRootSet=true);
     QAction * getAction(const QModelIndex &index);
 
 private:

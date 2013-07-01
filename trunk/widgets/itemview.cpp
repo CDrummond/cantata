@@ -83,23 +83,6 @@ bool ViewEventHandler::eventFilter(QObject *obj, QEvent *event)
     return QObject::eventFilter(obj, event);
 }
 
-ListViewEventHandler::ListViewEventHandler(ActionItemDelegate *d, QAbstractItemView *v, QAction *a)
-    : ViewEventHandler(d, v)
-    , act(a)
-{
-}
-
-bool ListViewEventHandler::eventFilter(QObject *obj, QEvent *event)
-{
-    if (view->hasFocus() && QEvent::KeyRelease==event->type() && static_cast<QKeyEvent *>(event)->key()==Qt::Key_Escape) {
-        if (act->isEnabled()) {
-            act->trigger();
-        }
-        return true;
-    }
-    return ViewEventHandler::eventFilter(obj, event);
-}
-
 static const int constImageSize=22;
 static const int constDevImageSize=32;
 
@@ -487,7 +470,7 @@ ItemView::ItemView(QWidget *p)
     backAction = new QAction(i18n("Back"), this);
     backAction->setIcon(Icon("go-previous"));
     backButton->setDefaultAction(backAction);
-    backAction->setShortcut(Qt::Key_Escape);
+    backAction->setShortcut(Qt::AltModifier+(Qt::LeftToRight==layoutDirection() ? Qt::Key_Left : Qt::Key_Right));
     listView->addAction(backAction);
     listView->addDefaultAction(backAction);
     QAction *sep=new QAction(this);
@@ -502,7 +485,7 @@ ItemView::ItemView(QWidget *p)
     TreeDelegate *td=new TreeDelegate(treeView);
     listView->setItemDelegate(ld);
     treeView->setItemDelegate(td);
-    listView->installEventFilter(new ListViewEventHandler(ld, listView, backAction));
+    listView->installEventFilter(new ViewEventHandler(ld, listView));
     treeView->installEventFilter(new ViewEventHandler(td, treeView));
     connect(searchWidget, SIGNAL(returnPressed()), this, SLOT(delaySearchItems()));
     connect(searchWidget, SIGNAL(textChanged(const QString)), this, SLOT(delaySearchItems()));

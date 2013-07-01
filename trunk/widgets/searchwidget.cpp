@@ -26,6 +26,29 @@
 #include "toolbutton.h"
 #include "localize.h"
 #include <QBoxLayout>
+#include <QKeyEvent>
+#include <QKeySequence>
+
+class EscKeyEventHandler : public QObject
+{
+public:
+    EscKeyEventHandler(SearchWidget *v) : QObject(v), view(v) { }
+protected:
+    bool eventFilter(QObject *obj, QEvent *event)
+    {
+        if (view->hasFocus() && QEvent::KeyRelease==event->type()) {
+            QKeyEvent *keyEvent=static_cast<QKeyEvent *>(event);
+            if (Qt::Key_Escape==keyEvent->key() && Qt::NoModifier==keyEvent->modifiers()) {
+                view->close();
+                return true;
+            }
+        }
+        return QObject::eventFilter(obj, event);
+    }
+
+private:
+    SearchWidget *view;
+};
 
 SearchWidget::SearchWidget(QWidget *p)
      : QWidget(p)
@@ -47,6 +70,7 @@ SearchWidget::SearchWidget(QWidget *p)
     connect(closeButton, SIGNAL(clicked()), this, SLOT(close()));
     connect(edit, SIGNAL(textChanged(QString)), SIGNAL(textChanged(QString)));
     connect(edit, SIGNAL(returnPressed()), SIGNAL(returnPressed()));
+    edit->installEventFilter(new EscKeyEventHandler(this));
 }
 
 void SearchWidget::toggle()

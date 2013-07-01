@@ -98,8 +98,8 @@
     on systems that do not have the Qt SVG icon engine installed.
 64. Simplify streams page. Remove user-categories, instead have a set of
     predefined top-level items; Favourites (user streams), TuneIn, IceCast,
-    SomaFM, Digitially Imported, Jazz Radio, Rock Radio, Sky.fm, and Listen
-    Live.
+    ShoutCast, SomaFM, Digitially Imported, Jazz Radio, Rock Radio, Sky.fm, and
+    Listen Live.
 65. Place search fields on bottom of views, and hide by default. Show when
     Ctrl-F is used for views, and Ctrl-Shift-F for playqueue.
 66. When searching in dynamic page, also search rules themselves.

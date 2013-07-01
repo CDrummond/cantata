@@ -123,6 +123,9 @@ private:
     QList<Item *> parseSomaFmResponse(QIODevice *dev, CategoryItem *cat);
     QList<Item *> parseDigitallyImportedResponse(QIODevice *dev, CategoryItem *cat, const QString &origUrl);
     QList<Item *> parseListenLiveResponse(QIODevice *dev, CategoryItem *cat);
+    QList<Item *> parseShoutCastResponse(QIODevice *dev, CategoryItem *cat, const QString &origUrl);
+    QList<Item *> parseShoutCastLinks(QXmlStreamReader &doc, CategoryItem *cat);
+    QList<Item *> parseShoutCastStations(QXmlStreamReader &doc, CategoryItem *cat);
     Item * parseRadioTimeEntry(QXmlStreamReader &doc, CategoryItem *parent);
     Item * parseIceCastEntry(QXmlStreamReader &doc, CategoryItem *parent, QSet<QString> &names);
     Item * parseSomaFmEntry(QXmlStreamReader &doc, CategoryItem *parent);

@@ -44,8 +44,7 @@
 #include <QFile>
 #include <QFileInfo>
 #include <QTimer>
-#include <QDebug>
-#if QT_VERSION >= 0x050000
+    #if QT_VERSION >= 0x050000
 #include <QUrlQuery>
 #endif
 #ifdef Q_OS_WIN
@@ -90,6 +89,10 @@ static const QString constDiChannelListHost=QLatin1String("api.v2.audioaddict.co
 static const QString constDiChannelListUrl=QLatin1String("http://")+constDiChannelListHost+("/v1/%1/mobile/batch_update?asset_group_key=mobile_icons&stream_set_key=");
 static const QString constDiStdUrl=QLatin1String("http://%1/public3/%2.pls");
 
+static QString constShoutCastApiKey=QLatin1String("fa1669MuiRPorUBw");
+static QString constShoutCastHost=QLatin1String("api.shoutcast.com");
+static QString constShoutCastUrl=QLatin1String("http://")+constShoutCastHost+QLatin1String("/genre/primary?f=xml&k=")+constShoutCastApiKey;
+
 static const QLatin1String constFavouritesFileName("streams.xml.gz");
 
 QString StreamsModel::favouritesDir()
@@ -129,6 +132,7 @@ StreamsModel::StreamsModel(QObject *parent)
 {
     root->children.append(new CategoryItem(constRadioTimeUrl, i18n("TuneIn"), root, getIcon("tunein")));
     root->children.append(new CategoryItem(constIceCastUrl, i18n("IceCast"), root, getIcon("icecast")));
+    root->children.append(new CategoryItem(constShoutCastUrl, i18n("ShoutCast"), root, getIcon("shoutcast")));
     root->children.append(new CategoryItem(constSomaFMUrl, i18n("SomaFM"), root, getIcon("somafm")));
     root->children.append(new CategoryItem(constDigitiallyImportedUrl, i18n("Digitally Imported"), root, getIcon("digitallyimported")));
     root->children.append(new CategoryItem(constJazzRadioUrl, i18n("JazzRadio.com"), root, getIcon("jazzradio")));
@@ -284,6 +288,9 @@ void StreamsModel::fetchMore(const QModelIndex &index)
                 #else
                 req.setRawHeader("Authorization", "Basic "+QString("%1:%2").arg(constDiApiUsername, constDiApiPassword).toLatin1().toBase64());
                 #endif
+            } else if (QUrl(item->url).host()==constShoutCastHost) {
+                req=QNetworkRequest(cat->url);
+                req.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
             } else {
                 req=QNetworkRequest(cat->url);
             }
@@ -523,14 +530,16 @@ void StreamsModel::jobFinished()
                     newItems=parseSomaFmResponse(job, cat);
                 } else if (constDiChannelListHost==job->url().host()) {
                     newItems=parseDigitallyImportedResponse(job, cat, job->property(constOrigUrlProperty).toString());
+                } else if (constShoutCastHost==job->url().host()) {
+                    newItems=parseShoutCastResponse(job, cat, job->property(constOrigUrlProperty).toString());
                 } else {
                     newItems=parseListenLiveResponse(job, cat);
                 }
             }
 
             if (!newItems.isEmpty()) {
-                beginInsertRows(index, 0, newItems.count()-1);
-                cat->children=newItems;
+                beginInsertRows(index, cat->children.count(), (cat->children.count()+newItems.count())-1);
+                cat->children+=newItems;
                 endInsertRows();
             }
         }
@@ -774,6 +783,83 @@ QList<StreamsModel::Item *> StreamsModel::parseListenLiveResponse(QIODevice *dev
             }
         }
     }
+    return newItems;
+}
+
+QList<StreamsModel::Item *> StreamsModel::parseShoutCastResponse(QIODevice *dev, CategoryItem *cat, const QString &origUrl)
+{
+    bool isRoot=origUrl==constShoutCastUrl;
+    bool wasLinks=false;
+    QList<Item *> newItems;
+    QXmlStreamReader doc(dev);
+    while (!doc.atEnd()) {
+        doc.readNext();
+        if (doc.isStartElement() && QLatin1String("genrelist")==doc.name()) {
+            wasLinks=true;
+            newItems+=parseShoutCastLinks(doc, cat);
+        } else if (doc.isStartElement() && QLatin1String("stationlist")==doc.name()) {
+            newItems+=parseShoutCastStations(doc, cat);
+        }
+    }
+
+    if (!isRoot && wasLinks) {
+        // Get stations...
+        QUrl url(QLatin1String("http://")+constShoutCastHost+QLatin1String("/legacy/genresearch"));
+        #if QT_VERSION < 0x050000
+        QUrl &query=url;
+        #else
+        QUrlQuery query;
+        #endif
+        query.addQueryItem("k", constShoutCastApiKey);
+        query.addQueryItem("genre", cat->name);
+        #if QT_VERSION >= 0x050000
+        url.setQuery(query);
+        #endif
+
+        QNetworkRequest req(url);
+        req.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
+        QNetworkReply *job=NetworkAccessManager::self()->get(req);
+        job->setProperty(constOrigUrlProperty, url.toString());
+        if (jobs.isEmpty()) {
+            emit loading();
+        }
+        jobs.insert(job, cat);
+        connect(job, SIGNAL(finished()), SLOT(jobFinished()));
+    }
+    return newItems;
+}
+
+QList<StreamsModel::Item *> StreamsModel::parseShoutCastLinks(QXmlStreamReader &doc, CategoryItem *cat)
+{
+    QList<Item *> newItems;
+    while (!doc.atEnd()) {
+        doc.readNext();
+        if (doc.isStartElement() && QLatin1String("genre")==doc.name()) {
+            newItems.append(new CategoryItem(QLatin1String("http://")+constShoutCastHost+QLatin1String("/genre/secondary?parentid=")+
+                                             doc.attributes().value("id").toString()+QLatin1String("&f=xml&k=")+constShoutCastApiKey,
+                                             doc.attributes().value("name").toString(), cat));
+        } else if (doc.isEndElement() && QLatin1String("genrelist")==doc.name()) {
+            return newItems;
+        }
+    }
+
+    return newItems;
+}
+
+QList<StreamsModel::Item *> StreamsModel::parseShoutCastStations(QXmlStreamReader &doc, CategoryItem *cat)
+{
+    QList<Item *> newItems;
+    while (!doc.atEnd()) {
+        doc.readNext();
+        if (doc.isStartElement() && QLatin1String("station")==doc.name()) {
+            newItems.append(new Item(QLatin1String("http://yp.shoutcast.com/sbin/tunein-station.pls?id=")+
+                                        doc.attributes().value("id").toString(),
+                                     doc.attributes().value("name").toString(), cat));
+        } else if (doc.isEndElement() && QLatin1String("stationlist")==doc.name()) {
+            return newItems;
+        }
+    }
+
     return newItems;
 }
 

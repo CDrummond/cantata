@@ -206,7 +206,7 @@ QVariant StreamsModel::data(const QModelIndex &index, int role) const
     case Qt::DisplayRole:
         return item->name;
     case Qt::ToolTipRole:
-        return item->isCategory() ? item->name : item->url;
+        return item->isCategory() ? item->name : (item->name+QLatin1String("<br><small><i>")+item->url+QLatin1String("</i></small>"));
     case ItemView::Role_SubText:
         if (item->isCategory()) {
             const CategoryItem *cat=static_cast<const CategoryItem *>(item);

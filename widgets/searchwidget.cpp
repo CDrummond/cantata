@@ -58,7 +58,7 @@ SearchWidget::SearchWidget(QWidget *p)
     edit=new LineEdit(this);
     edit->setPlaceholderText(i18n("Search..."));
     l->addWidget(edit);
-    ToolButton *closeButton=new ToolButton(this);
+    closeButton=new ToolButton(this);
     closeButton->setToolTip(i18n("Close Search Bar"));
     l->addWidget(closeButton);
     Icon icon=Icon("dialog-close");
@@ -70,7 +70,7 @@ SearchWidget::SearchWidget(QWidget *p)
     connect(closeButton, SIGNAL(clicked()), this, SLOT(close()));
     connect(edit, SIGNAL(textChanged(QString)), SIGNAL(textChanged(QString)));
     connect(edit, SIGNAL(returnPressed()), SIGNAL(returnPressed()));
-    edit->installEventFilter(new EscKeyEventHandler(this));
+    installEventFilter(new EscKeyEventHandler(this));
 }
 
 void SearchWidget::toggle()

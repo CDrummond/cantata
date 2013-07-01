@@ -37,6 +37,7 @@ public:
     void setText(const QString &t) { edit->setText(t); }
     QString text() const { return edit->text(); }
     void setFocus() { edit->setFocus(); }
+    bool hasFocus() const { return edit->hasFocus(); }
 
 Q_SIGNALS:
     void textChanged(const QString &);

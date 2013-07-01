@@ -2464,6 +2464,7 @@ void MainWindow::tabToggled(int index)
             autoHideSplitterAction->setVisible(true);
             splitter->setAutohidable(0, autoHideSplitterAction->isChecked() && !tabWidget->isEnabled(PAGE_PLAYQUEUE));
         }
+        playQueue->updatePalette();
         break;
     case PAGE_CONTEXT:
         if (tabWidget->isEnabled(index) && songInfoAction->isCheckable()) {

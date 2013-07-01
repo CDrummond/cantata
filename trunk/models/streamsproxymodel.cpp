@@ -112,6 +112,12 @@ bool StreamsProxyModel::lessThan(const QModelIndex &left, const QModelIndex &rig
         if (!leftCat->isFavourites && rightCat->isFavourites) {
             return false;
         }
+        if (leftCat->isAll && !rightCat->isAll) {
+            return true;
+        }
+        if (!leftCat->isAll && rightCat->isAll) {
+            return false;
+        }
     }
 
     return QSortFilterProxyModel::lessThan(left, right);

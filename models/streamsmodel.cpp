@@ -34,6 +34,7 @@
 #include "itemview.h"
 #include "action.h"
 #include "stdactions.h"
+#include "digitallyimported.h"
 #include "qjson/parser.h"
 #include "qtiocompressor/qtiocompressor.h"
 #include <QModelIndex>
@@ -44,13 +45,14 @@
 #include <QFile>
 #include <QFileInfo>
 #include <QTimer>
-    #if QT_VERSION >= 0x050000
+#if QT_VERSION >= 0x050000
 #include <QUrlQuery>
 #endif
 #ifdef Q_OS_WIN
 #include <QDesktopServices>
 #endif
 #ifdef ENABLE_KDE_SUPPORT
+#include <KDE/KGlobal>
 K_GLOBAL_STATIC(StreamsModel, instance)
 #endif
 
@@ -82,9 +84,7 @@ static QString constJazzRadioUrl=QLatin1String("http://www.jazzradio.com");
 static QString constRockRadioUrl=QLatin1String("http://www.rockradio.com");
 static QString constSkyFmUrl=QLatin1String("http://www.sky.fm");
 static QStringList constDiUrls=QStringList() << constDigitiallyImportedUrl << constJazzRadioUrl << constSkyFmUrl << constRockRadioUrl;
-static const char * constDiApiUsername="ephemeron";
-static const char * constDiApiPassword="dayeiph0ne@pp";
-//static const QString constDiAuthUrl=QLatin1String("http://api.audioaddict.com/v1/%1/members/authenticate");
+
 static const QString constDiChannelListHost=QLatin1String("api.v2.audioaddict.com");
 static const QString constDiChannelListUrl=QLatin1String("http://")+constDiChannelListHost+("/v1/%1/mobile/batch_update?asset_group_key=mobile_icons&stream_set_key=");
 static const QString constDiStdUrl=QLatin1String("http://%1/public3/%2.pls");
@@ -283,11 +283,7 @@ void StreamsModel::fetchMore(const QModelIndex &index)
             QNetworkRequest req;
             if (constDiUrls.contains(cat->url)) {
                 req=QNetworkRequest(constDiChannelListUrl.arg(cat->url.split(".").at(1)));
-                #if QT_VERSION < 0x050000
-                req.setRawHeader("Authorization", "Basic "+QString("%1:%2").arg(constDiApiUsername, constDiApiPassword).toAscii().toBase64());
-                #else
-                req.setRawHeader("Authorization", "Basic "+QString("%1:%2").arg(constDiApiUsername, constDiApiPassword).toLatin1().toBase64());
-                #endif
+                DigitallyImported::self()->addAuthHeader(req);
             } else if (QUrl(item->url).host()==constShoutCastHost) {
                 req=QNetworkRequest(cat->url);
                 req.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
@@ -459,13 +455,19 @@ QString StreamsModel::modifyUrl(const QString &u, bool addPrefix, const QString 
     return MPDParseUtils::addStreamName(!addPrefix || !u.startsWith("http:") ? u : (constPrefix+u), name);
 }
 
+static QString addDiHash(const StreamsModel::Item *item)
+{
+    return item->parent && constDiUrls.contains(item->parent->url)
+            ? DigitallyImported::self()->modifyUrl(item->url) : item->url;
+}
+
 static void filenames(QStringList &fn, bool addPrefix, const StreamsModel::CategoryItem *cat)
 {
     foreach (const StreamsModel::Item *i, cat->children) {
         if (i->isCategory()) {
-            filenames(fn, addPrefix, static_cast<const StreamsModel::CategoryItem *>(i));
+            ::filenames(fn, addPrefix, static_cast<const StreamsModel::CategoryItem *>(i));
         } else if (!fn.contains(i->url) && StreamsModel::validProtocol(i->url)) {
-            fn << StreamsModel::modifyUrl(i->url, addPrefix, i->name);
+            fn << StreamsModel::modifyUrl(addDiHash(i), addPrefix, i->name);
         }
     }
 }
@@ -479,7 +481,7 @@ QStringList StreamsModel::filenames(const QModelIndexList &indexes, bool addPref
         if (item->isCategory()) {
             ::filenames(fnames, addPrefix, static_cast<const StreamsModel::CategoryItem *>(item));
         } else if (!fnames.contains(item->url) && validProtocol(item->url)) {
-            fnames << modifyUrl(item->url, addPrefix, item->name);
+            fnames << modifyUrl(addDiHash(item), addPrefix, item->name);
         }
     }
 

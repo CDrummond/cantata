@@ -28,6 +28,7 @@
 #include <QList>
 #include <QMap>
 #include <QIcon>
+#include <QDateTime>
 
 class QNetworkReply;
 class QXmlStreamReader;

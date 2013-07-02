@@ -35,6 +35,7 @@
 #include "jobcontroller.h"
 #include "treeview.h"
 #include "action.h"
+#include "cuefile.h"
 #include <QComboBox>
 #include <QTreeWidget>
 #include <QLabel>
@@ -176,13 +177,23 @@ RgDialog::~RgDialog()
 
 void RgDialog::show(const QList<Song> &songs, const QString &udi, bool autoScan)
 {
-    if (songs.count()<1) {
+    if (songs.isEmpty()) {
+        deleteLater();
+        return;
+    }
+
+    foreach (const Song &s, songs) {
+        if (!CueFile::isCue(s.file)) {
+           origSongs.append(s);
+        }
+    }
+
+    if (origSongs.isEmpty()) {
         deleteLater();
         return;
     }
 
     autoScanTags=autoScan;
-    origSongs=songs;
     qSort(origSongs);
     #ifdef ENABLE_DEVICES_SUPPORT
     if (udi.isEmpty()) {

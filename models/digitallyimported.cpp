@@ -78,6 +78,16 @@ void DigitallyImported::login()
     connect(job, SIGNAL(finished()), SLOT(loginResponse()));
 }
 
+void DigitallyImported::logout()
+{
+    if (job) {
+        job->deleteLater();
+        job=0;
+    }
+    listenHash=QString();
+    expires=QDateTime();
+}
+
 void DigitallyImported::addAuthHeader(QNetworkRequest &req) const
 {
     #if QT_VERSION < 0x050000

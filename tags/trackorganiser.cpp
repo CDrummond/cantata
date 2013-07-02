@@ -83,8 +83,6 @@ TrackOrganiser::~TrackOrganiser()
 
 void TrackOrganiser::show(const QList<Song> &songs, const QString &udi)
 {
-    Q_UNUSED(udi)
-
     foreach (const Song &s, songs) {
         if (!CueFile::isCue(s.file)) {
            origSongs.append(s);
@@ -111,6 +109,7 @@ void TrackOrganiser::show(const QList<Song> &songs, const QString &udi)
         opts=dev->options();
     }
     #else
+    Q_UNUSED(udi)
     opts.load(MPDConnectionDetails::configGroupName(MPDConnection::self()->getDetails().name), true);
     #endif
     qSort(origSongs);

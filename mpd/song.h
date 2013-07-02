@@ -85,7 +85,7 @@ struct Song
     void fillEmptyFields();
     void setKey();
     virtual void clear();
-    static QString formattedTime(quint32 seconds);
+    static QString formattedTime(quint32 seconds, bool zeroIsUnknown=false);
     QString format();
     QString entryName() const;
     QString artistSong() const;

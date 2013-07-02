@@ -256,8 +256,12 @@ void Song::clear()
     type = Standard;
 }
 
-QString Song::formattedTime(quint32 seconds)
+QString Song::formattedTime(quint32 seconds, bool zeroIsUnknown)
 {
+    if (0==seconds && zeroIsUnknown) {
+        return i18n("Unknown");
+    }
+
     static const quint32 constHour=60*60;
     if (seconds>constHour) {
         return MPDParseUtils::formatDuration(seconds);

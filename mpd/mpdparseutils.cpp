@@ -28,6 +28,7 @@
 #include <QString>
 #include <QStringList>
 #include <QUrl>
+#include <QFile>
 #include "localize.h"
 #include "dirviewitemroot.h"
 #include "dirviewitemdir.h"
@@ -47,6 +48,8 @@
 #include "httpserver.h"
 #endif
 #include "utils.h"
+#include "cuefile.h"
+#include "mpdconnection.h"
 
 QList<Playlist> MPDParseUtils::parsePlaylists(const QByteArray &data)
 {
@@ -363,8 +366,15 @@ void MPDParseUtils::setGroupMultiple(bool g)
     groupMultipleArtists=g;
 }
 
-MusicLibraryItemRoot * MPDParseUtils::parseLibraryItems(const QByteArray &data)
+struct ParsedCueFile
 {
+    QList<Song> songs;
+    QSet<QString> files;
+};
+
+MusicLibraryItemRoot * MPDParseUtils::parseLibraryItems(const QByteArray &data, const QString &mpdDir, long mpdVersion)
+{
+    bool canSplitCue=mpdVersion>=MPD_MAKE_VERSION(0,17,0);
     MusicLibraryItemRoot * const rootItem = new MusicLibraryItemRoot;
     QByteArray currentItem;
     QList<QByteArray> lines = data.split('\n');
@@ -372,6 +382,7 @@ MusicLibraryItemRoot * MPDParseUtils::parseLibraryItems(const QByteArray &data)
     MusicLibraryItemArtist *artistItem = 0;
     MusicLibraryItemAlbum *albumItem = 0;
     MusicLibraryItemSong *songItem = 0;
+    QList<ParsedCueFile> cueFiles;
 
     for (int i = 0; i < amountOfLines; i++) {
         currentItem += lines.at(i);
@@ -384,7 +395,11 @@ MusicLibraryItemRoot * MPDParseUtils::parseLibraryItems(const QByteArray &data)
             }
 
             if (Song::Playlist==currentSong.type) {
-                if (songItem && Utils::getDir(songItem->file())==Utils::getDir(currentSong.file)) {
+                ParsedCueFile cf;
+                if (canSplitCue && currentSong.file.endsWith(".cue", Qt::CaseInsensitive) && CueFile::parse(currentSong.file, mpdDir, cf.songs, cf.files)) {
+                    currentSong.fillEmptyFields();
+                    cueFiles.append(cf);
+                } else if (songItem && Utils::getDir(songItem->file())==Utils::getDir(currentSong.file)) {
                     currentSong.albumartist=currentSong.artist=artistItem->data();
                     currentSong.album=albumItem->data();
                     songItem = new MusicLibraryItemSong(currentSong, albumItem);
@@ -403,12 +418,37 @@ MusicLibraryItemRoot * MPDParseUtils::parseLibraryItems(const QByteArray &data)
             if (!albumItem || currentSong.year!=albumItem->year() || albumItem->parentItem()!=artistItem || currentSong.album!=albumItem->data()) {
                 albumItem = artistItem->album(currentSong);
             }
-
             songItem = new MusicLibraryItemSong(currentSong, albumItem);
             albumItem->append(songItem);
             albumItem->addGenre(currentSong.genre);
             artistItem->addGenre(currentSong.genre);
             rootItem->addGenre(currentSong.genre);
+        }
+    }
+
+    // Split contents of cue files into tracks...
+    foreach (const ParsedCueFile &cf, cueFiles) {
+        QSet<MusicLibraryItemAlbum *> updatedAlbums;
+
+        foreach (Song s, cf.songs) {
+            s.fillEmptyFields();
+            if (!artistItem || s.albumArtist()!=artistItem->data()) {
+                artistItem = rootItem->artist(s);
+            }
+            if (!albumItem || s.year!=albumItem->year() || albumItem->parentItem()!=artistItem || s.album!=albumItem->data()) {
+                albumItem = artistItem->album(s);
+            }
+            songItem = new MusicLibraryItemSong(s, albumItem);
+            albumItem->append(songItem);
+            albumItem->addGenre(s.genre);
+            updatedAlbums.insert(albumItem);
+            artistItem->addGenre(s.genre);
+            rootItem->addGenre(s.genre);
+        }
+
+        // For each album that was updated/created, remove any source files referenced in cue file...
+        foreach (MusicLibraryItemAlbum *al, updatedAlbums) {
+            al->removeAll(cf.files);
         }
     }
 

@@ -101,6 +101,7 @@ StreamsPage::StreamsPage(QWidget *p)
 
     infoLabel->hide();
     infoLabel->setType(StatusLabel::Locked);
+    diStatusLabel->setText("DI");
     updateDiStatus();
 }
 
@@ -417,7 +418,18 @@ void StreamsPage::updateDiStatus()
     if (DigitallyImported::self()->user().isEmpty() || DigitallyImported::self()->pass().isEmpty()) {
         diStatusLabel->setVisible(false);
     } else {
+        bool loggedIn=DigitallyImported::self()->loggedIn();
         diStatusLabel->setVisible(true);
-        diStatusLabel->setText(DigitallyImported::self()->loggedIn() ? i18n("DI: Logged In") : i18n("DI: Not Logged In"));
+        diStatusLabel->setToolTip(loggedIn ? i18n("Logged into Digitally Imported") : i18n("<b>NOT</b> logged into Digitally Imported"));
+        QString col=loggedIn
+                        ? palette().highlight().color().name()
+                        : palette().color(QPalette::Disabled, QPalette::WindowText).name();
+
+        int margin=style()->pixelMetric(QStyle::PM_DefaultFrameWidth, 0, this);
+        if (margin<2) {
+            margin=2;
+        }
+        diStatusLabel->setStyleSheet(QString("QLabel { color : %1; border-radius: %4px; border: 2px solid %2; margin: %3px}")
+                                     .arg(col).arg(col).arg(margin).arg(margin*2));
     }
 }

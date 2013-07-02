@@ -11,7 +11,16 @@
    </rect>
   </property>
   <layout class="QVBoxLayout" name="vlayout">
-   <property name="margin">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
     <number>0</number>
    </property>
    <item>
@@ -32,11 +41,27 @@
      <property name="spacing">
       <number>0</number>
      </property>
-     <property name="margin">
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
+     <property name="bottomMargin">
       <number>0</number>
      </property>
      <item>
-      <widget class="SqueezedTextLabel" name="diStatusLabel"/>
+      <widget class="QLabel" name="diStatusLabel">
+       <property name="font">
+        <font>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+      </widget>
      </item>
      <item>
       <spacer name="horizontalSpacer">
@@ -62,11 +87,6 @@
   </layout>
  </widget>
  <customwidgets>
-  <customwidget>
-   <class>SqueezedTextLabel</class>
-   <extends>QLabel</extends>
-   <header>squeezedtextlabel.h</header>
-  </customwidget>
   <customwidget>
    <class>ItemView</class>
    <extends>QTreeView</extends>

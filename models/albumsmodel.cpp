@@ -245,8 +245,6 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
                     QTP_TRACKS_DURATION_STR(al->songs.count(), Song::formattedTime(al->totalTime()));
                     #endif
         }
-        case ItemView::Role_Search:
-            return al->album;
         case Qt::DisplayRole:
             return al->name;
         case ItemView::Role_MainText:
@@ -256,6 +254,8 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
         }
         case ItemView::Role_SubText:
             return Sort_AlbumArtist==sortAlbums ? al->artist : al->album;
+        case ItemView::Role_TitleText:
+            return i18nc("Album by Artist", "%1 by %2").arg(al->album).arg(al->artist);
         case Qt::SizeHintRole:
             if (!itemSize.isNull()) {
                 return itemSize;

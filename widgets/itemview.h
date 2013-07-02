@@ -80,10 +80,10 @@ public:
         Role_ImageSize = Qt::UserRole+256,
         Role_MainText,
         Role_SubText,
+        Role_TitleText,
         Role_Image,
         Role_Capacity,
         Role_CapacityText,
-        Role_Search,
         Role_Actions
     };
 

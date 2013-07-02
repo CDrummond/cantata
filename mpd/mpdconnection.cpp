@@ -37,6 +37,7 @@
 #include <QTimer>
 #include "thread.h"
 #include "settings.h"
+#include "cuefile.h"
 
 #include <QDebug>
 static bool debugEnabled=false;
@@ -66,7 +67,7 @@ MPDConnection * MPDConnection::self()
     #endif
 }
 
-static QByteArray encodeName(const QString &name)
+QByteArray MPDConnection::encodeName(const QString &name)
 {
     return '\"'+name.toUtf8().replace("\\", "\\\\").replace("\"", "\\\"")+'\"';
 }
@@ -521,14 +522,18 @@ void MPDConnection::add(const QStringList &files, quint32 pos, quint32 size, boo
     bool havePlaylist=false;
     bool usePrio=priority>0 && canUsePriority();
     for (int i = 0; i < files.size(); i++) {
-        if (isPlaylist(files.at(i))) {
-            send+="load ";
-            havePlaylist=true;
+        if (CueFile::isCue(files.at(i))) {
+            send += "load "+CueFile::getLoadLine(files.at(i))+"\n";
         } else {
-            addedFile=true;
-            send += "add ";
+            if (isPlaylist(files.at(i))) {
+                send+="load ";
+                havePlaylist=true;
+            } else {
+                addedFile=true;
+                send += "add ";
+            }
+            send += encodeName(files.at(i))+"\n";
         }
-        send += encodeName(files.at(i))+"\n";
         if (!havePlaylist) {
             if (0!=size) {
                 send += "move "+QByteArray::number(curSize)+" "+QByteArray::number(curPos)+"\n";
@@ -1075,7 +1080,7 @@ void MPDConnection::loadLibrary()
     emit updatingLibrary();
     Response response=sendCommand("listallinfo");
     if (response.ok) {
-        emit musicLibraryUpdated(MPDParseUtils::parseLibraryItems(response.data), dbUpdate);
+        emit musicLibraryUpdated(MPDParseUtils::parseLibraryItems(response.data, details.dir, ver), dbUpdate);
     }
     emit updatedLibrary();
 }

@@ -240,9 +240,9 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
                 ? al->name
                 : (year>0 ? QString("%1\n%2 (%3)\n").arg(al->artist).arg(al->album).arg(QString::number(year)) : QString("%1\n%2\n").arg(al->artist).arg(al->album))+
                     #ifdef ENABLE_KDE_SUPPORT
-                    i18np("1 Track (%2)", "%1 Tracks (%2)", al->songs.count(), Song::formattedTime(al->totalTime()));
+                    i18np("1 Track (%2)", "%1 Tracks (%2)", al->songs.count(), Song::formattedTime(al->totalTime(), true));
                     #else
-                    QTP_TRACKS_DURATION_STR(al->songs.count(), Song::formattedTime(al->totalTime()));
+                    QTP_TRACKS_DURATION_STR(al->songs.count(), Song::formattedTime(al->totalTime(), true));
                     #endif
         }
         case Qt::DisplayRole:
@@ -274,7 +274,7 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
             return si->parent->artist+QLatin1String("<br/>")+
                    si->parent->album+(year>0 ? (QLatin1String(" (")+QString::number(year)+QChar(')')) : QString())+QLatin1String("<br/>")+
                    data(index, Qt::DisplayRole).toString()+QLatin1String("<br/>")+
-                   (Song::Playlist==si->type ? QString() : Song::formattedTime(si->time)+QLatin1String("<br/>"))+
+                   (Song::Playlist==si->type ? QString() : Song::formattedTime(si->time, true)+QLatin1String("<br/>"))+
                    QLatin1String("<small><i>")+si->file+QLatin1String("</i></small>");
         }
         case Qt::DisplayRole:
@@ -288,7 +288,7 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
                 return si->trackAndTitleStr(Song::isVariousArtists(si->parent->artist) && !Song::isVariousArtists(si->artist));
             }
         case ItemView::Role_SubText: {
-            return Song::formattedTime(si->time);
+            return Song::formattedTime(si->time, true);
         }
         }
     }

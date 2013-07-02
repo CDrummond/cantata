@@ -159,6 +159,7 @@ class MPDConnection : public QObject
 
 public:
     static MPDConnection * self();
+    static QByteArray encodeName(const QString &name);
 
     struct Response {
         Response(bool o=true, const QByteArray &d=QByteArray());

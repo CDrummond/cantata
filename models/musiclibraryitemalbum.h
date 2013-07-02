@@ -30,6 +30,7 @@
 #include <QList>
 #include <QVariant>
 #include <QPixmap>
+#include <QSet>
 #include "musiclibraryitem.h"
 #include "song.h"
 
@@ -75,6 +76,7 @@ public:
     void append(MusicLibraryItem *i);
     void remove(int row);
     void remove(MusicLibraryItemSong *i);
+    void removeAll(const QSet<QString> &fileNames);
     bool detectIfIsMultipleArtists();
     bool isMultipleArtists() const { return Song::MultipleArtists==m_type; }
     Song::Type songType() const { return m_type; }

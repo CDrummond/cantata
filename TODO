@@ -33,6 +33,9 @@
     - Will need to be careful that songs are not from device
     - Also, check that songs are not streams!
 
+- Cue files
+  - How to determine duration of last track?
+
 - General
   - Ratings (use KRatingWidget?)
     - Not sure, would need support in cantata-dynamic

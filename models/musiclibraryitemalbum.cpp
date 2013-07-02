@@ -43,7 +43,6 @@
 #include <QApplication>
 #include <QFontMetrics>
 
-#include <QDebug>
 static MusicLibraryItemAlbum::CoverSize coverSize=MusicLibraryItemAlbum::CoverNone;
 static QPixmap *theDefaultIcon=0;
 static QPixmap *theDefaultLargeIcon=0;
@@ -339,6 +338,22 @@ void MusicLibraryItemAlbum::remove(MusicLibraryItemSong *i)
     int idx=m_childItems.indexOf(i);
     if (-1!=idx) {
         remove(idx);
+    }
+}
+
+void MusicLibraryItemAlbum::removeAll(const QSet<QString> &fileNames)
+{
+    QSet<QString> fn=fileNames;
+    for (int i=0; i<m_childItems.count() && !fn.isEmpty();) {
+        MusicLibraryItemSong *song=static_cast<MusicLibraryItemSong *>(m_childItems.at(i));
+        if (fn.contains(song->song().file)) {
+            fn.remove(song->song().file);
+            delete m_childItems.takeAt(i);
+            m_totalTime=0;
+            m_artists.clear();
+        } else {
+            ++i;
+        }
     }
 }
 

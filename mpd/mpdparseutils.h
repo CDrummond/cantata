@@ -59,7 +59,7 @@ public:
     static void setGroupSingle(bool g);
     static bool groupMultiple();
     static void setGroupMultiple(bool g);
-    static MusicLibraryItemRoot * parseLibraryItems(const QByteArray &data);
+    static MusicLibraryItemRoot * parseLibraryItems(const QByteArray &data, const QString &mpdDir, long mpdVersion);
     static DirViewItemRoot * parseDirViewItems(const QByteArray &data);
     static QList<Output> parseOuputs(const QByteArray &data);
     static QString formatDuration(const quint32 totalseconds);

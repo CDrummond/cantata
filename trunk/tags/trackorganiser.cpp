@@ -37,6 +37,7 @@
 #include "messagebox.h"
 #include "icons.h"
 #include "treeview.h"
+#include "cuefile.h"
 #include <QTimer>
 #include <QFile>
 #include <QDir>
@@ -84,7 +85,17 @@ void TrackOrganiser::show(const QList<Song> &songs, const QString &udi)
 {
     Q_UNUSED(udi)
 
-    origSongs=songs;
+    foreach (const Song &s, songs) {
+        if (!CueFile::isCue(s.file)) {
+           origSongs.append(s);
+        }
+    }
+
+    if (origSongs.isEmpty()) {
+        deleteLater();
+        return;
+    }
+
     #ifdef ENABLE_DEVICES_SUPPORT
     if (udi.isEmpty()) {
         opts.load(MPDConnectionDetails::configGroupName(MPDConnection::self()->getDetails().name), true);

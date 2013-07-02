@@ -103,6 +103,8 @@
 65. Place search fields on bottom of views, and hide by default. Show when
     Ctrl-F is used for views, and Ctrl-Shift-F for playqueue.
 66. When searching in dynamic page, also search rules themselves.
+67. For MPD versions 0.17 and above, if Cantata can read a .cue file then it
+    will list each track as a separate entry in the artists and albums views.
 
 1.0.3
 -----

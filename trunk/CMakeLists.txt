@@ -98,7 +98,7 @@ set(CANTATA_SRCS gui/application.cpp gui/main.cpp gui/initialsettingswizard.cpp 
     models/playqueueproxymodel.cpp models/dirviewmodel.cpp models/dirviewproxymodel.cpp models/dirviewitem.cpp models/dirviewitemdir.cpp
     models/streamsmodel.cpp models/streamsproxymodel.cpp models/albumsmodel.cpp models/albumsproxymodel.cpp models/proxymodel.cpp
     models/actionmodel.cpp models/digitallyimported.cpp
-    mpd/mpdconnection.cpp mpd/mpdparseutils.cpp mpd/mpdstats.cpp mpd/mpdstatus.cpp mpd/song.cpp mpd/mpduser.cpp
+    mpd/mpdconnection.cpp mpd/mpdparseutils.cpp mpd/mpdstats.cpp mpd/mpdstatus.cpp mpd/song.cpp mpd/mpduser.cpp mpd/cuefile.cpp
     dynamic/dynamic.cpp dynamic/dynamicpage.cpp dynamic/dynamicproxymodel.cpp dynamic/dynamicruledialog.cpp dynamic/dynamicrulesdialog.cpp
     widgets/treeview.cpp widgets/listview.cpp widgets/itemview.cpp widgets/autohidingsplitter.cpp widgets/timeslider.cpp
     widgets/actionlabel.cpp widgets/playqueueview.cpp widgets/groupedview.cpp widgets/actionitemdelegate.cpp widgets/textbrowser.cpp

@@ -30,6 +30,7 @@
 #include "inputdialog.h"
 #include "localize.h"
 #include "trackorganiser.h"
+#include "cuefile.h"
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KStandardGuiItem>
 #endif
@@ -80,6 +81,9 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
 {
     iCount++;
     foreach (const Song &s, songs) {
+        if (CueFile::isCue(s.file)) {
+            continue;
+        }
         if (s.guessed) {
             Song song(s);
             song.revertGuessedTags();
@@ -87,6 +91,11 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
         } else {
             original.append(s);
         }
+    }
+
+    if (original.isEmpty()) {
+        deleteLater();
+        return;
     }
 
     #ifdef ENABLE_DEVICES_SUPPORT

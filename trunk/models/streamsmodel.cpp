@@ -79,11 +79,11 @@ static QString constFavouritesUrl=QLatin1String("cantata://internal");
 static QString constIceCastUrl=QLatin1String("http://dir.xiph.org/yp.xml");
 static QString constSomaFMUrl=QLatin1String("http://somafm.com/channels.xml");
 
-static QString constDigitiallyImportedUrl=QLatin1String("http://www.di.fm");
+static QString constDigitallyImportedUrl=QLatin1String("http://www.di.fm");
 static QString constJazzRadioUrl=QLatin1String("http://www.jazzradio.com");
 static QString constRockRadioUrl=QLatin1String("http://www.rockradio.com");
 static QString constSkyFmUrl=QLatin1String("http://www.sky.fm");
-static QStringList constDiUrls=QStringList() << constDigitiallyImportedUrl << constJazzRadioUrl << constSkyFmUrl << constRockRadioUrl;
+static QStringList constDiUrls=QStringList() << constDigitallyImportedUrl << constJazzRadioUrl << constSkyFmUrl << constRockRadioUrl;
 
 static const QString constDiChannelListHost=QLatin1String("api.v2.audioaddict.com");
 static const QString constDiChannelListUrl=QLatin1String("http://")+constDiChannelListHost+("/v1/%1/mobile/batch_update?asset_group_key=mobile_icons&stream_set_key=");
@@ -134,7 +134,7 @@ StreamsModel::StreamsModel(QObject *parent)
     root->children.append(new CategoryItem(constIceCastUrl, i18n("IceCast"), root, getIcon("icecast")));
     root->children.append(new CategoryItem(constShoutCastUrl, i18n("ShoutCast"), root, getIcon("shoutcast")));
     root->children.append(new CategoryItem(constSomaFMUrl, i18n("SomaFM"), root, getIcon("somafm")));
-    root->children.append(new CategoryItem(constDigitiallyImportedUrl, i18n("Digitally Imported"), root, getIcon("digitallyimported")));
+    root->children.append(new CategoryItem(constDigitallyImportedUrl, i18n("Digitally Imported"), root, getIcon("digitallyimported")));
     root->children.append(new CategoryItem(constJazzRadioUrl, i18n("JazzRadio.com"), root, getIcon("jazzradio")));
     root->children.append(new CategoryItem(constRockRadioUrl, i18n("RockRadio.com"), root, getIcon("rockradio")));
     root->children.append(new CategoryItem(constSkyFmUrl, i18n("Sky.fm"), root, getIcon("skyfm")));

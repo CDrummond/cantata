@@ -45,6 +45,9 @@ private Q_SLOTS:
     void loginStatus(bool, const QString &msg);
 
 private:
+    void setState();
+
+private:
     bool wasLoggedIn;
     QString prevUser;
     QString prevPass;

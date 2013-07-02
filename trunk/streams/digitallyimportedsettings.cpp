@@ -47,7 +47,7 @@ DigitallyImportedSettings::DigitallyImportedSettings(QWidget *parent)
 
     adjustSize();
     int h=fontMetrics().height();
-    resize(h*30, height());
+    resize(h*35, height());
 }
 
 void DigitallyImportedSettings::show()
@@ -57,11 +57,7 @@ void DigitallyImportedSettings::show()
     wasLoggedIn=DigitallyImported::self()->loggedIn();
     prevAudioType=DigitallyImported::self()->audioType();
 
-    if (DigitallyImported::self()->sessionExpiry().isValid()) {
-        expiryLabel->setText(DigitallyImported::self()->sessionExpiry().toString(Qt::ISODate));
-    } else {
-        expiryLabel->setText(QString());
-    }
+    setState();
     user->setText(prevUser);
     pass->setText(prevPass);
 
@@ -109,18 +105,33 @@ void DigitallyImportedSettings::show()
 
 void DigitallyImportedSettings::login()
 {
-    loginStatusLabel->setText(i18n("Logging in..."));
-    DigitallyImported::self()->setUser(user->text().trimmed());
-    DigitallyImported::self()->setPass(pass->text().trimmed());
-    DigitallyImported::self()->login();
+    if (DigitallyImported::self()->loggedIn()) {
+        loginStatusLabel->setText(i18n("Logged out"));
+        DigitallyImported::self()->logout();
+    } else {
+        loginStatusLabel->setText(i18n("Logging in..."));
+        DigitallyImported::self()->setUser(user->text().trimmed());
+        DigitallyImported::self()->setPass(pass->text().trimmed());
+        DigitallyImported::self()->login();
+    }
 }
 
 void DigitallyImportedSettings::loginStatus(bool, const QString &msg)
 {
     loginStatusLabel->setText(msg);
+    setState();
+}
+
+void DigitallyImportedSettings::setState()
+{
     if (DigitallyImported::self()->sessionExpiry().isValid()) {
-        expiryLabel->setText(DigitallyImported::self()->sessionExpiry().toString(Qt::ISODate));
+        expiry->setText(DigitallyImported::self()->sessionExpiry().toString(Qt::ISODate));
     } else {
-        expiryLabel->setText(QString());
+        loginButton->setText(i18n("Login"));
+        expiry->setText(QString());
     }
+
+    expiry->setVisible(DigitallyImported::self()->sessionExpiry().isValid());
+    expiryLabel->setVisible(expiry->isVisible());
+    loginButton->setText(DigitallyImported::self()->loggedIn() ? i18n("Logout") : i18n("Login"));
 }

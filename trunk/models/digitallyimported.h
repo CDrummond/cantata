@@ -63,6 +63,7 @@ public:
 
 public Q_SLOTS:
     void login();
+    void logout();
 
 Q_SIGNALS:
     void loginStatus(bool ok, const QString &msg);

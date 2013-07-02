@@ -341,6 +341,13 @@ QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
             v.setValue<QPixmap>(static_cast<MusicLibraryItemArtist *>(item)->cover());
             return v;
         }
+    case ItemView::Role_TitleText:
+        if (MusicLibraryItem::Type_Artist==item->itemType()) {
+            return item->data();
+        } else if (MusicLibraryItem::Type_Album==item->itemType()) {
+            return i18nc("Album by Artist", "%1 by %2").arg(item->data()).arg(item->parentItem()->data());
+        }
+        break;
     case Qt::SizeHintRole:
         if (!rootItem->useArtistImages() && MusicLibraryItem::Type_Artist==item->itemType()) {
             return QVariant();

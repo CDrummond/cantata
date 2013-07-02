@@ -920,7 +920,7 @@ void ItemView::activateItem(const QModelIndex &index, bool emitRootSet)
             prevTopIndex=static_cast<QSortFilterProxyModel *>(listView->model())->mapToSource(prevTopIndex);
         }
         setLevel(currentLevel+1, index.child(0, 0).child(0, 0).isValid());
-        QString text=index.data(Role_Search).toString();
+        QString text=index.data(Role_TitleText).toString();
         if (text.isEmpty()) {
             text=index.data(Qt::DisplayRole).toString();
         }

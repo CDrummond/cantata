@@ -29,7 +29,7 @@
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>To listen to higher quality streams, without advertisments, a premium account is required.&lt;br&gt;&lt;a href=&quot;http://www.di.fm/premium/&quot;&gt;Upgrade to Premium&lt;/a&gt;</string>
+      <string>You can listen for free without an account, but Premium members can listen to higher quality streams without advertisements. Visit &lt;a href=&quot;http://www.di.fm/premium/&quot;&gt;http://www.di.fm/premium/&lt;/a&gt; to upgrade to a premium account.</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>

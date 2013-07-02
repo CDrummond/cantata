@@ -55,6 +55,7 @@ SearchWidget::SearchWidget(QWidget *p)
 {
     QBoxLayout *l=new QBoxLayout(QBoxLayout::LeftToRight, this);
     l->setMargin(0);
+    l->setSpacing(0);
     edit=new LineEdit(this);
     edit->setPlaceholderText(i18n("Search..."));
     l->addWidget(edit);

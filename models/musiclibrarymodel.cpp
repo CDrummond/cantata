@@ -255,7 +255,7 @@ QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
             } else {
                 return static_cast<MusicLibraryItemAlbum *>(item)->cover();
             }
-        case MusicLibraryItem::Type_Song: return Icon(Song::Playlist==static_cast<MusicLibraryItemSong *>(item)->song().type ? "view-media-playlist" : "audio-x-generic");
+        case MusicLibraryItem::Type_Song: return Song::Playlist==static_cast<MusicLibraryItemSong *>(item)->song().type ? Icons::self()->playlistIcon : Icons::self()->audioFileIcon;
         default: return QVariant();
         }
     case Qt::DisplayRole:

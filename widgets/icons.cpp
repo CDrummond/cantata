@@ -373,6 +373,7 @@ Icons::Icons()
     }
     artistIcon=Icon("view-media-artist");
     albumIcon=Icon("media-optical");
+    audioFileIcon=Icon("audio-x-generic");
     playlistIcon=Icon("view-media-playlist");
     dynamicRuleIcon=Icon("media-playlist-shuffle");
     configureIcon=Icon("configure");

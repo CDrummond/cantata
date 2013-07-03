@@ -518,7 +518,7 @@ void MPDConnection::add(const QStringList &files, quint32 pos, quint32 size, boo
     QByteArray send = "command_list_begin\n";
     int curSize = size;
     int curPos = pos;
-    bool addedFile=false;
+//    bool addedFile=false;
     bool havePlaylist=false;
     bool usePrio=priority>0 && canUsePriority();
     for (int i = 0; i < files.size(); i++) {
@@ -529,7 +529,7 @@ void MPDConnection::add(const QStringList &files, quint32 pos, quint32 size, boo
                 send+="load ";
                 havePlaylist=true;
             } else {
-                addedFile=true;
+//                addedFile=true;
                 send += "add ";
             }
             send += encodeName(files.at(i))+"\n";
@@ -549,7 +549,7 @@ void MPDConnection::add(const QStringList &files, quint32 pos, quint32 size, boo
     send += "command_list_end";
 
     if (sendCommand(send).ok) {
-        if (replace && addedFile && !files.isEmpty()) {
+        if (replace /*&& addedFile */&& !files.isEmpty()) {
             startPlayingSong();
         }
         emit added(files);

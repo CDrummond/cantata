@@ -1164,6 +1164,18 @@ void MPDConnection::addToPlaylist(const QString &name, const QStringList &songs,
         return;
     }
 
+    if (!name.isEmpty()) {
+        foreach (const QString &song, songs) {
+            if (CueFile::isCue(song)) {
+                emit error(i18n("You cannot add parts of a cue sheet to a playlist!"));
+                return;
+            } else if (isPlaylist(song)) {
+                emit error(i18n("You cannot add a playlist to another playlist!"));
+                return;
+            }
+        }
+    }
+
     QByteArray encodedName=encodeName(name);
     QByteArray send = "command_list_begin\n";
     foreach (const QString &s, songs) {

@@ -631,7 +631,7 @@ void AlbumsModel::AlbumItem::getCover()
 const AlbumsModel::SongItem *AlbumsModel::AlbumItem::getCueFile() const
 {
     foreach (SongItem *s, songs) {
-        if (s->type && s->file.endsWith(".cue", Qt::CaseInsensitive)) {
+        if (Song::Playlist==s->type && s->file.endsWith(".cue", Qt::CaseInsensitive)) {
             return s;
         }
     }

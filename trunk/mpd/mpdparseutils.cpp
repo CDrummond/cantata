@@ -396,7 +396,8 @@ MusicLibraryItemRoot * MPDParseUtils::parseLibraryItems(const QByteArray &data, 
 
             if (Song::Playlist==currentSong.type) {
                 ParsedCueFile cf;
-                if (canSplitCue && currentSong.file.endsWith(".cue", Qt::CaseInsensitive) && CueFile::parse(currentSong.file, mpdDir, cf.songs, cf.files)) {
+                if (canSplitCue && currentSong.file.endsWith(".cue", Qt::CaseInsensitive) && CueFile::parse(currentSong.file, mpdDir, cf.songs, cf.files) &&
+                    cf.files.count()<cf.songs.count()) {
                     if (albumItem) {
                         QMap<QString, Song> origFiles=albumItem->getSongs(cf.files);
                         if (origFiles.size()==cf.files.size()) {

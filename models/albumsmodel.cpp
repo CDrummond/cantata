@@ -268,7 +268,7 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
         default:
             return ActionModel::data(index, role);
         case Qt::DecorationRole:
-            return Icon(Song::Playlist==si->type ? "view-media-playlist" : "audio-x-generic");
+            return Song::Playlist==si->type ? Icons::self()->playlistIcon : Icons::self()->audioFileIcon;
         case Qt::ToolTipRole: {
             quint32 year=si->parent->songs.count() ? si->parent->songs.at(0)->year : 0;
             return si->parent->artist+QLatin1String("<br/>")+

@@ -428,15 +428,19 @@ MusicLibraryItemRoot * MPDParseUtils::parseLibraryItems(const QByteArray &data, 
                                 s.name=QString(); // CueFile has placed source file name here!
                                 if (s.artist.isEmpty()) {
                                     s.artist=albumSong.artist;
+                                    DBUG << "Get artist from album" << albumSong.artist;
                                 }
                                 if (s.album.isEmpty()) {
                                     s.album=albumSong.album;
+                                    DBUG << "Get album from album" << albumSong.album;
                                 }
                                 if (s.albumartist.isEmpty()) {
                                     s.albumartist=albumSong.albumartist;
+                                    DBUG << "Get albumartist from album" << albumSong.album;
                                 }
                                 if (0==s.year) {
                                     s.year=albumSong.year;
+                                    DBUG << "Get year from album" << albumSong.year;
                                 }
                                 if (0==s.time && setTimeFromSource) {
                                     s.time=albumSong.time;
@@ -482,7 +486,7 @@ MusicLibraryItemRoot * MPDParseUtils::parseLibraryItems(const QByteArray &data, 
                             if (!albumItem || s.year!=albumItem->year() || albumItem->parentItem()!=artistItem || s.album!=albumItem->data()) {
                                 albumItem = artistItem->album(s);
                             }
-                            DBUG << "Create new track from cue" << s.file << s.title << s.albumArtist() << s.album;
+                            DBUG << "Create new track from cue" << s.file << s.title << s.artist << s.albumartist << s.album;
                             songItem = new MusicLibraryItemSong(s, albumItem);
                             albumItem->append(songItem);
                             albumItem->addGenre(s.genre);

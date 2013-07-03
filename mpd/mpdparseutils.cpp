@@ -505,7 +505,6 @@ MusicLibraryItemRoot * MPDParseUtils::parseLibraryItems(const QByteArray &data, 
                 if (!prevSongFile.isEmpty() && Utils::getDir(prevSongFile)==Utils::getDir(currentSong.file)) {
                     currentSong.albumartist=currentSong.artist=artistItem->data();
                     currentSong.album=albumItem->data();
-                    currentSong.time=albumItem->totalTime();
                     songItem = new MusicLibraryItemSong(currentSong, albumItem);
                     albumItem->append(songItem);
                 }

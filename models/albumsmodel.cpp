@@ -26,6 +26,7 @@
 #include <QMimeData>
 #include <QStringList>
 #include <QPainter>
+#include <QFile>
 #include "localize.h"
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KGlobal>
@@ -43,6 +44,14 @@
 #include "itemview.h"
 #include "mpdparseutils.h"
 #include "icons.h"
+#include "utils.h"
+
+#ifdef CACHE_SCALED_COVERS
+static QString cacheCoverName(const QString &artist, const QString &album, int size, bool createDir=false)
+{
+    return Utils::cacheDir(Covers::constCoverDir+QString::number(size)+"/"+Covers::encodeName(artist), createDir)+Covers::encodeName(album)+".png";
+}
+#endif
 
 static int sortAlbums=AlbumsModel::Sort_AlbumArtist;
 
@@ -464,7 +473,7 @@ void AlbumsModel::setCover(const Song &song, const QImage &img, const QString &f
     for (int row=0; it!=end; ++it, ++row) {
         if ((*it)->artist==artist && (*it)->album==song.album) {
             if (!(*it)->cover || update) {
-                (*it)->cover=new QPixmap(QPixmap::fromImage(img.scaled(QSize(iconSize(), iconSize()), Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
+                (*it)->setCover(img);
                 QModelIndex idx=index(row, 0, QModelIndex());
                 emit dataChanged(idx, idx);
             }
@@ -621,11 +630,46 @@ void AlbumsModel::AlbumItem::getCover()
         s.year=year;
         s.file=firstSong->file;
         s.type=type;
+        #ifdef CACHE_SCALED_COVERS
+        int size=iconSize();
+        QString cache=cacheCoverName(s.artist, s.album, size);
+
+        if (QFile::exists(cache)) {
+            QImage img(cache);
+            if (!img.isNull()) {
+                cover=new QPixmap(QPixmap::fromImage(img));
+                return;
+            }
+        }
+        #endif
         Covers::Image img=Covers::self()->requestImage(s);
         if (!img.img.isNull()) {
-            cover=new QPixmap(QPixmap::fromImage(img.img.scaled(QSize(iconSize(), iconSize()), Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
+            setCover(img.img);
         }
     }
+}
+
+void AlbumsModel::AlbumItem::setCover(const QImage &img)
+{
+    #ifdef CACHE_SCALED_COVERS
+    if (Song::SingleTracks!=type && songs.count() && !img.isNull()) {
+        SongItem *firstSong=songs.first();
+        Song s;
+        if (Song::MultipleArtists==type) {  // Then Cantata has placed this album under 'Various Artists' but the actual album as a different AlbumArtist tag
+            s.artist=firstSong->albumArtist();
+        } else {
+            s.artist=artist;
+        }
+        s.album=album;
+        int size=iconSize();
+        QImage scaled=img.scaled(QSize(size, size), Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+        scaled.save(cacheCoverName(s.artist, s.album, size, true));
+        cover=new QPixmap(QPixmap::fromImage(scaled));
+    }
+    #else
+    int size=iconSize();
+    cover=new QPixmap(QPixmap::fromImage(img.scaled(QSize(size, size), Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
+    #endif
 }
 
 const AlbumsModel::SongItem *AlbumsModel::AlbumItem::getCueFile() const

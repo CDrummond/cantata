@@ -51,6 +51,14 @@
 #include "cuefile.h"
 #include "mpdconnection.h"
 
+#include <QDebug>
+static bool debugEnabled=false;
+#define DBUG if (debugEnabled) qWarning() << "MPDParseUtils"
+void MPDParseUtils::enableDebug()
+{
+    debugEnabled=true;
+}
+
 QList<Playlist> MPDParseUtils::parsePlaylists(const QByteArray &data)
 {
     QList<Playlist> playlists;
@@ -398,8 +406,10 @@ MusicLibraryItemRoot * MPDParseUtils::parseLibraryItems(const QByteArray &data, 
                 QString prevSongFile=songItem ? songItem->file() : QString();
                 ParsedCueFile cf;
 
+                DBUG << "Got playlist item" << currentSong.file << "prevFile:" << prevSongFile;
                 if (canSplitCue && currentSong.file.endsWith(".cue", Qt::CaseInsensitive) && CueFile::parse(currentSong.file, mpdDir, cf.songs, cf.files) &&
                     cf.files.count()<cf.songs.count()) {
+                    DBUG << "Parsed file, songs:" << cf.songs.count() << "files:" << cf.files.count();
                     bool canUseCueFileTracks=false;
                     ParsedCueFile fixed;
 
@@ -441,8 +451,8 @@ MusicLibraryItemRoot * MPDParseUtils::parseLibraryItems(const QByteArray &data, 
                                 fixed.songs.append(s);
                             }
                             canUseCueFileTracks=true;
-                        }
-                    }
+                        } else DBUG << "ERROR: file count mismatch" << origFiles.size() << cf.files.size();
+                    } else DBUG << "ERROR: No album???";
 
                     if (!canUseCueFileTracks) {
                         // No revious album, or album had a different number of source files to the CUE file. If so, then we need to ensure
@@ -459,7 +469,7 @@ MusicLibraryItemRoot * MPDParseUtils::parseLibraryItems(const QByteArray &data, 
 
                         if (fixed.songs.count()==cf.songs.count()) {
                             canUseCueFileTracks=true;
-                        }
+                        } else DBUG << "ERROR: Not all cue tracks had meta data";
                     }
 
                     if (canUseCueFileTracks) {
@@ -472,6 +482,7 @@ MusicLibraryItemRoot * MPDParseUtils::parseLibraryItems(const QByteArray &data, 
                             if (!albumItem || s.year!=albumItem->year() || albumItem->parentItem()!=artistItem || s.album!=albumItem->data()) {
                                 albumItem = artistItem->album(s);
                             }
+                            DBUG << "Create new track from cue" << s.file << s.title << s.albumArtist() << s.album;
                             songItem = new MusicLibraryItemSong(s, albumItem);
                             albumItem->append(songItem);
                             albumItem->addGenre(s.genre);
@@ -484,13 +495,15 @@ MusicLibraryItemRoot * MPDParseUtils::parseLibraryItems(const QByteArray &data, 
                         foreach (MusicLibraryItemAlbum *al, updatedAlbums) {
                             al->removeAll(cf.files);
                             if (prevAlbum && al!=prevAlbum) {
+                                DBUG << "Removing" << cf.files.count() << " files from " << prevAlbum->data();
                                 prevAlbum->removeAll(cf.files);
                             }
                         }
 
-                        // Remove alun artist/album that was create and is now empty.
+                        // Remove any artist/album that was created and is now empty.
                         // This will happen if the source file (e.g. the flac file) does not have any metadata...
                         if (prevAlbum && 0==prevAlbum->childCount()) {
+                            DBUG << "Removing empty previous album" << prevAlbum->data();
                             MusicLibraryItemArtist *ar=static_cast<MusicLibraryItemArtist *>(prevAlbum->parentItem());
                             ar->remove(prevAlbum);
                             if (0==ar->childCount()) {
@@ -505,6 +518,7 @@ MusicLibraryItemRoot * MPDParseUtils::parseLibraryItems(const QByteArray &data, 
                 if (!prevSongFile.isEmpty() && Utils::getDir(prevSongFile)==Utils::getDir(currentSong.file)) {
                     currentSong.albumartist=currentSong.artist=artistItem->data();
                     currentSong.album=albumItem->data();
+                    DBUG << "Adding playlist file to" << albumItem->parentItem()->data() << albumItem->data();
                     songItem = new MusicLibraryItemSong(currentSong, albumItem);
                     albumItem->append(songItem);
                 }

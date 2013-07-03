@@ -29,6 +29,7 @@
 
 class QNetworkRequest;
 class QNetworkReply;
+class QTimer;
 
 class DigitallyImported : public QObject
 {
@@ -69,7 +70,11 @@ Q_SIGNALS:
     void loginStatus(bool ok, const QString &msg);
 
 private Q_SLOTS:
+    void timeout();
     void loginResponse();
+
+private:
+    void controlTimer();
 
 private:
     QNetworkReply *job;
@@ -79,6 +84,7 @@ private:
     QString listenHash;
     QDateTime expires;
     int streamType;
+    QTimer *timer;
 };
 
 #endif

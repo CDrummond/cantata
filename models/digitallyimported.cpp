@@ -28,6 +28,7 @@
 #include "localize.h"
 #include <QNetworkRequest>
 #include <QTime>
+#include <QTimer>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KGlobal>
 K_GLOBAL_STATIC(DigitallyImported, instance)
@@ -56,6 +57,7 @@ DigitallyImported * DigitallyImported::self()
 DigitallyImported::DigitallyImported()
     : job(0)
     , streamType(0)
+    , timer(0)
 {
     load();
 }
@@ -86,6 +88,7 @@ void DigitallyImported::logout()
     }
     listenHash=QString();
     expires=QDateTime();
+    controlTimer();
 }
 
 void DigitallyImported::addAuthHeader(QNetworkRequest &req) const
@@ -123,6 +126,7 @@ void DigitallyImported::load()
             status=i18n("Logged in");
         }
     }
+    controlTimer();
 }
 
 void DigitallyImported::save()
@@ -213,5 +217,36 @@ void DigitallyImported::loginResponse()
         save();
     }
     status=i18n("Logged in (expiry:%1)").arg(expires.toString(Qt::ISODate));
+    controlTimer();
     emit loginStatus(true, status);
+}
+
+void DigitallyImported::timeout()
+{
+    listenHash=QString();
+    emit loginStatus(false, i18n("Session expired"));
+}
+
+void DigitallyImported::controlTimer()
+{
+    if (!expires.isValid() || QDateTime::currentDateTime().secsTo(expires)<15) {
+        if (timer && timer->isActive()) {
+            if (!listenHash.isEmpty()) {
+                timeout();
+            }
+            timer->stop();
+        }
+    } else {
+        if (!timer) {
+            timer=new QTimer(this);
+            connect(timer, SIGNAL(timeout()), SLOT(timeout()));
+        }
+        int secsTo=QDateTime::currentDateTime().secsTo(expires);
+
+        if (secsTo>4) {
+            timer->start((secsTo-3)*1000);
+        } else {
+            timeout();
+        }
+    }
 }

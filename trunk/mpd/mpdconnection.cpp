@@ -550,7 +550,8 @@ void MPDConnection::add(const QStringList &files, quint32 pos, quint32 size, boo
 
     if (sendCommand(send).ok) {
         if (replace /*&& addedFile */&& !files.isEmpty()) {
-            startPlayingSong();
+            // Dont emit error if fail plays, might be that playlist was not loaded...
+            sendCommand("play "+QByteArray::number(0), false);
         }
         emit added(files);
     }

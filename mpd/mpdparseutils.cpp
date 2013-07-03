@@ -406,6 +406,8 @@ MusicLibraryItemRoot * MPDParseUtils::parseLibraryItems(const QByteArray &data, 
                             ParsedCueFile fixed;
                             fixed.files=cf.files;
                             bool setTimeFromSource=origFiles.size()==cf.songs.size();
+                            quint32 albumTime=1==cf.files.size() ? albumItem->totalTime() : 0;
+                            quint32 usedAlbumTime=0;
                             foreach (const Song &orig, cf.songs) {
                                 Song s=orig;
                                 Song albumSong=origFiles[s.name];
@@ -424,6 +426,13 @@ MusicLibraryItemRoot * MPDParseUtils::parseLibraryItems(const QByteArray &data, 
                                 }
                                 if (0==s.time && setTimeFromSource) {
                                     s.time=albumSong.time;
+                                } else if (0!=albumTime) {
+                                    // Try to set duraiton of last track by subtracting previous track durations from album duration...
+                                    if (0==s.time) {
+                                        s.time=albumTime-usedAlbumTime;
+                                    } else {
+                                        usedAlbumTime+=s.time;
+                                    }
                                 }
                                 fixed.songs.append(s);
                             }
@@ -451,6 +460,7 @@ MusicLibraryItemRoot * MPDParseUtils::parseLibraryItems(const QByteArray &data, 
                 if (songItem && Utils::getDir(songItem->file())==Utils::getDir(currentSong.file)) {
                     currentSong.albumartist=currentSong.artist=artistItem->data();
                     currentSong.album=albumItem->data();
+                    currentSong.time=albumItem->totalTime();
                     songItem = new MusicLibraryItemSong(currentSong, albumItem);
                     albumItem->append(songItem);
                 }

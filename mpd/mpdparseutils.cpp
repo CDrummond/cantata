@@ -398,6 +398,7 @@ MusicLibraryItemRoot * MPDParseUtils::parseLibraryItems(const QByteArray &data, 
                 ParsedCueFile cf;
                 if (canSplitCue && currentSong.file.endsWith(".cue", Qt::CaseInsensitive) && CueFile::parse(currentSong.file, mpdDir, cf.songs, cf.files) &&
                     cf.files.count()<cf.songs.count()) {
+                    bool used=false;
                     if (albumItem) {
                         QMap<QString, Song> origFiles=albumItem->getSongs(cf.files);
                         if (origFiles.size()==cf.files.size()) {
@@ -437,23 +438,27 @@ MusicLibraryItemRoot * MPDParseUtils::parseLibraryItems(const QByteArray &data, 
                                 fixed.songs.append(s);
                             }
                             cueFiles.append(fixed);
+                            used=true;
                         }
-                    }
-                    // No previous file? Then we need to ensure all tracks have meta data - otherwise just fallback to
-                    // listing file + cue
-                    ParsedCueFile fixed;
-                    fixed.files=cf.files;
-                    foreach (const Song &orig, cf.songs) {
-                        Song s=orig;
-                        s.name=QString(); // CueFile has placed source file name here!
-                        if (s.artist.isEmpty() || s.album.isEmpty()) {
-                            break;
-                        }
-                        fixed.songs.append(s);
                     }
 
-                    if (fixed.songs.count()==cf.songs.count()) {
-                        cueFiles.append(fixed);
+                    if (!used) {
+                        // No previous file? Then we need to ensure all tracks have meta data - otherwise just fallback to
+                        // listing file + cue
+                        ParsedCueFile fixed;
+                        fixed.files=cf.files;
+                        foreach (const Song &orig, cf.songs) {
+                            Song s=orig;
+                            s.name=QString(); // CueFile has placed source file name here!
+                            if (s.artist.isEmpty() || s.album.isEmpty()) {
+                                break;
+                            }
+                            fixed.songs.append(s);
+                        }
+
+                        if (fixed.songs.count()==cf.songs.count()) {
+                            cueFiles.append(fixed);
+                        }
                     }
                 }
 

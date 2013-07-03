@@ -262,7 +262,7 @@ QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
         if (MusicLibraryItem::Type_Song==item->itemType()) {
             MusicLibraryItemSong *song = static_cast<MusicLibraryItemSong *>(item);
             if (Song::Playlist==song->song().type) {
-                return song->song().title;
+                return song->song().file.endsWith(".cue", Qt::CaseInsensitive) ? i18n("Cue Sheet") : i18n("Playlist");
             }
             if (static_cast<MusicLibraryItemAlbum *>(song->parentItem())->isSingleTracks()) {
                 return song->song().artistSong();

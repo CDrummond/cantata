@@ -41,6 +41,14 @@
 #ifdef ENABLE_ONLINE_SERVICES
 #include "onlineservice.h"
 #endif
+#include <QFile>
+
+#ifdef CACHE_SCALED_COVERS
+static QString cacheCoverName(const QString &artist, int size, bool createDir=false)
+{
+    return Utils::cacheDir(Covers::constCoverDir+QString::number(size)+"/", createDir)+Covers::encodeName(artist)+".png";
+}
+#endif
 
 bool MusicLibraryItemArtist::lessThan(const MusicLibraryItem *a, const MusicLibraryItem *b)
 {
@@ -81,8 +89,14 @@ bool MusicLibraryItemArtist::setCover(const QImage &img, bool update) const
     if ((m_coverIsDefault || update) && !img.isNull()) {
         int size=MusicLibraryItemAlbum::iconSize(!MusicLibraryItemAlbum::itemSize().isNull());
         QImage scaled=img.scaled(QSize(size, size), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation);
-        m_cover = new QPixmap(QPixmap::fromImage(scaled.width()>size || scaled.height()>size ? scaled.copy((scaled.width()-size)/2, 0, size, size) : scaled));
+        if (scaled.width()>size || scaled.height()>size) {
+            scaled=scaled.copy((scaled.width()-size)/2, 0, size, size);
+        }
+        m_cover = new QPixmap(QPixmap::fromImage(scaled));
         m_coverIsDefault=false;
+        #ifdef CACHE_SCALED_COVERS
+        scaled.save(cacheCoverName(data(), size, true));
+        #endif
         return true;
     }
 
@@ -106,6 +120,18 @@ const QPixmap & MusicLibraryItemArtist::cover()
             m_cover = new QPixmap(Icons::self()->variousArtistsIcon.pixmap(cSize, cSize).scaled(QSize(cSize, cSize), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
             m_coverIsDefault=false;
         } else {
+            #ifdef CACHE_SCALED_COVERS
+            QString cache=cacheCoverName(data(), iSize);
+
+            if (QFile::exists(cache)) {
+                QImage img(cache);
+                if (!img.isNull()) {
+                    m_cover=new QPixmap(QPixmap::fromImage(img));
+                    m_coverIsDefault=false;
+                    return *m_cover;
+                }
+            }
+            #endif
             if (!theDefaultIcon) {
                 theDefaultIcon = new QPixmap(Icons::self()->artistIcon.pixmap(cSize, cSize)
                                             .scaled(QSize(cSize, cSize), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));

@@ -42,6 +42,7 @@
 #include <QPixmap>
 #include <QApplication>
 #include <QFontMetrics>
+#include <QFile>
 
 static MusicLibraryItemAlbum::CoverSize coverSize=MusicLibraryItemAlbum::CoverNone;
 static QPixmap *theDefaultIcon=0;
@@ -60,6 +61,13 @@ static inline int adjust(int v)
 }
 
 static int fontHeight=16;
+
+#ifdef CACHE_SCALED_COVERS
+static QString cacheCoverName(const QString &artist, const QString &album, int size, bool createDir=false)
+{
+    return Utils::cacheDir(Covers::constCoverDir+QString::number(size)+"/"+Covers::encodeName(artist), createDir)+Covers::encodeName(album)+".png";
+}
+#endif
 
 void MusicLibraryItemAlbum::setup()
 {
@@ -172,8 +180,12 @@ MusicLibraryItemAlbum::~MusicLibraryItemAlbum()
 void MusicLibraryItemAlbum::setCoverImage(const QImage &img) const
 {
     int size=iconSize(largeImages());
-    m_cover = new QPixmap(QPixmap::fromImage(img).scaled(QSize(size, size), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+    QImage scaled=img.scaled(QSize(size, size), Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+    m_cover = new QPixmap(QPixmap::fromImage(scaled));
     m_coverIsDefault=false;
+    #ifdef CACHE_SCALED_COVERS
+    scaled.save(cacheCoverName(parentItem()->data(), data(), size, true));
+    #endif
 }
 
 bool MusicLibraryItemAlbum::setCover(const QImage &img, bool update) const
@@ -217,6 +229,19 @@ const QPixmap & MusicLibraryItemAlbum::cover()
         }
         m_coverIsDefault = true;
         if (Song::SingleTracks!=m_type && parentItem() && iSize && childCount()) {
+            #ifdef CACHE_SCALED_COVERS
+            QString cache=cacheCoverName(parentItem()->data(), data(), iSize);
+
+            if (QFile::exists(cache)) {
+                QImage img(cache);
+                if (!img.isNull()) {
+                    m_cover=new QPixmap(QPixmap::fromImage(img));
+                    m_coverIsDefault=false;
+                    return *m_cover;
+                }
+            }
+            #endif
+
             MusicLibraryItemSong *firstSong=static_cast<MusicLibraryItemSong*>(childItem(0));
             Song song;
             if (Song::MultipleArtists==m_type) { // Then Cantata has placed this album under 'Various Artists' but the actual album as a different AlbumArtist tag

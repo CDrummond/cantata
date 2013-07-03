@@ -77,6 +77,7 @@ public:
     void remove(int row);
     void remove(MusicLibraryItemSong *i);
     void removeAll(const QSet<QString> &fileNames);
+    QMap<QString, Song> getSongs(const QSet<QString> &fileNames) const;
     bool detectIfIsMultipleArtists();
     bool isMultipleArtists() const { return Song::MultipleArtists==m_type; }
     Song::Type songType() const { return m_type; }

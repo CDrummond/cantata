@@ -397,9 +397,59 @@ MusicLibraryItemRoot * MPDParseUtils::parseLibraryItems(const QByteArray &data, 
             if (Song::Playlist==currentSong.type) {
                 ParsedCueFile cf;
                 if (canSplitCue && currentSong.file.endsWith(".cue", Qt::CaseInsensitive) && CueFile::parse(currentSong.file, mpdDir, cf.songs, cf.files)) {
-                    currentSong.fillEmptyFields();
-                    cueFiles.append(cf);
-                } else if (songItem && Utils::getDir(songItem->file())==Utils::getDir(currentSong.file)) {
+                    if (albumItem) {
+                        QMap<QString, Song> origFiles=albumItem->getSongs(cf.files);
+                        if (origFiles.size()==cf.files.size()) {
+                            // We have a previous album, if any of the details of the songs from the cue are empty,
+                            // use those from the album...
+                            ParsedCueFile fixed;
+                            fixed.files=cf.files;
+                            bool setTimeFromSource=origFiles.size()==cf.songs.size();
+                            foreach (const Song &orig, cf.songs) {
+                                Song s=orig;
+                                Song albumSong=origFiles[s.name];
+                                s.name=QString(); // CueFile has placed source file name here!
+                                if (s.artist.isEmpty()) {
+                                    s.artist=albumSong.artist;
+                                }
+                                if (s.album.isEmpty()) {
+                                    s.album=albumSong.album;
+                                }
+                                if (s.albumartist.isEmpty()) {
+                                    s.albumartist=albumSong.albumartist;
+                                }
+                                if (0==s.year) {
+                                    s.year=albumSong.year;
+                                }
+                                if (0==s.time && setTimeFromSource) {
+                                    s.time=albumSong.time;
+                                }
+                                fixed.songs.append(s);
+                            }
+                            cueFiles.append(fixed);
+                            continue;
+                        }
+                    }
+                    // No previous file? Then we need to ensure all tracks have meta data - otherwise just fallback to
+                    // listing file + cue
+                    ParsedCueFile fixed;
+                    fixed.files=cf.files;
+                    foreach (const Song &orig, cf.songs) {
+                        Song s=orig;
+                        s.name=QString(); // CueFile has placed source file name here!
+                        if (s.artist.isEmpty() || s.album.isEmpty()) {
+                            break;
+                        }
+                        fixed.songs.append(s);
+                    }
+
+                    if (fixed.songs.count()==cf.songs.count()) {
+                        cueFiles.append(fixed);
+                        continue;
+                    }
+                }
+
+                if (songItem && Utils::getDir(songItem->file())==Utils::getDir(currentSong.file)) {
                     currentSong.albumartist=currentSong.artist=artistItem->data();
                     currentSong.album=albumItem->data();
                     songItem = new MusicLibraryItemSong(currentSong, albumItem);

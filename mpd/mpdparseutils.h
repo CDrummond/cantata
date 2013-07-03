@@ -37,9 +37,10 @@ class Output;
 class MPDStatsValues;
 class MPDStatusValues;
 
-class MPDParseUtils
+namespace MPDParseUtils
 {
-public:
+    extern void enableDebug();
+
     struct IdPos {
         IdPos(qint32 i, quint32 p)
             : id(i)
@@ -48,24 +49,24 @@ public:
         qint32 id;
         quint32 pos;
     };
-    static QList<Playlist> parsePlaylists(const QByteArray &data);
-    static MPDStatsValues parseStats(const QByteArray &data);
-    static MPDStatusValues parseStatus(const QByteArray &data);
-    static Song parseSong(const QByteArray &data, bool isPlayQueue);
-    static QList<Song> parseSongs(const QByteArray &data);
-    static QList<IdPos> parseChanges(const QByteArray &data);
-    static QStringList parseUrlHandlers(const QByteArray &data);
-    static bool groupSingle();
-    static void setGroupSingle(bool g);
-    static bool groupMultiple();
-    static void setGroupMultiple(bool g);
-    static MusicLibraryItemRoot * parseLibraryItems(const QByteArray &data, const QString &mpdDir, long mpdVersion);
-    static DirViewItemRoot * parseDirViewItems(const QByteArray &data);
-    static QList<Output> parseOuputs(const QByteArray &data);
-    static QString formatDuration(const quint32 totalseconds);
-    static QString addStreamName(const QString &url, const QString &name);
-    static QString getStreamName(const QString &url);
-    static QString getAndRemoveStreamName(QString &url);
+    extern QList<Playlist> parsePlaylists(const QByteArray &data);
+    extern MPDStatsValues parseStats(const QByteArray &data);
+    extern MPDStatusValues parseStatus(const QByteArray &data);
+    extern Song parseSong(const QByteArray &data, bool isPlayQueue);
+    extern QList<Song> parseSongs(const QByteArray &data);
+    extern QList<IdPos> parseChanges(const QByteArray &data);
+    extern QStringList parseUrlHandlers(const QByteArray &data);
+    extern bool groupSingle();
+    extern void setGroupSingle(bool g);
+    extern bool groupMultiple();
+    extern void setGroupMultiple(bool g);
+    extern MusicLibraryItemRoot * parseLibraryItems(const QByteArray &data, const QString &mpdDir, long mpdVersion);
+    extern DirViewItemRoot * parseDirViewItems(const QByteArray &data);
+    extern QList<Output> parseOuputs(const QByteArray &data);
+    extern QString formatDuration(const quint32 totalseconds);
+    extern QString addStreamName(const QString &url, const QString &name);
+    extern QString getStreamName(const QString &url);
+    extern QString getAndRemoveStreamName(QString &url);
 };
 
 #endif

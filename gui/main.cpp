@@ -42,6 +42,7 @@
 
 // To enable debug...
 #include "mpdconnection.h"
+#include "mpdparseutils.h"
 #include "covers.h"
 #include "wikipediaengine.h"
 #include "lastfmengine.h"
@@ -96,13 +97,14 @@ static void loadTranslation(const QString &prefix, const QString &path, const QS
 
 enum Debug {
     Dbg_Mpd               = 0x0001,
-    Dbg_Covers            = 0x0002,
-    Dbg_Context_Wikipedia = 0x0004,
-    Dbg_Context_LastFm    = 0x0008,
-    Dbg_Context_Meta      = 0x0010,
-    Dbg_Context_Widget    = 0x0020,
-    Dbg_Context_Backdrop  = 0x0040,
-    Dbg_Dynamic           = 0x0080
+    Dbg_MpdParse          = 0x0002,
+    Dbg_Covers            = 0x0004,
+    Dbg_Context_Wikipedia = 0x0008,
+    Dbg_Context_LastFm    = 0x0010,
+    Dbg_Context_Meta      = 0x0020,
+    Dbg_Context_Widget    = 0x0040,
+    Dbg_Context_Backdrop  = 0x0080,
+    Dbg_Dynamic           = 0x0100
 };
 
 int main(int argc, char *argv[])
@@ -112,6 +114,9 @@ int main(int argc, char *argv[])
         int dbg=debug.toInt();
         if (dbg&Dbg_Mpd) {
             MPDConnection::enableDebug();
+        }
+        if (dbg&Dbg_MpdParse) {
+            MPDParseUtils::enableDebug();
         }
         if (dbg&Dbg_Covers) {
             Covers::enableDebug();

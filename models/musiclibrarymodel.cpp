@@ -348,6 +348,7 @@ QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
             v.setValue<QPixmap>(static_cast<MusicLibraryItemArtist *>(item)->cover());
             return v;
         }
+        break;
     case ItemView::Role_TitleText:
         if (MusicLibraryItem::Type_Artist==item->itemType()) {
             return item->data();

@@ -240,9 +240,9 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
                 ? al->name
                 : (year>0 ? QString("%1\n%2 (%3)\n").arg(al->artist).arg(al->album).arg(QString::number(year)) : QString("%1\n%2\n").arg(al->artist).arg(al->album))+
                     #ifdef ENABLE_KDE_SUPPORT
-                    i18np("1 Track (%2)", "%1 Tracks (%2)", al->songs.count(), Song::formattedTime(al->totalTime(), true));
+                    i18np("1 Track (%2)", "%1 Tracks (%2)", al->trackCount(), Song::formattedTime(al->totalTime(), true));
                     #else
-                    QTP_TRACKS_DURATION_STR(al->songs.count(), Song::formattedTime(al->totalTime(), true));
+                    QTP_TRACKS_DURATION_STR(al->trackCount(), Song::formattedTime(al->totalTime(), true));
                     #endif
         }
         case Qt::DisplayRole:
@@ -535,6 +535,7 @@ AlbumsModel::AlbumItem::AlbumItem(const QString &ar, const QString &al, quint16 
     , cover(0)
     , updated(false)
     , coverRequested(false)
+    , numTracks(0)
     , time(0)
 {
     setName();
@@ -581,14 +582,29 @@ void AlbumsModel::AlbumItem::setName()
             : (artist+QLatin1String(" - ")+album);
 }
 
+quint32 AlbumsModel::AlbumItem::trackCount()
+{
+    updateStats();
+    return numTracks;
+}
+
 quint32 AlbumsModel::AlbumItem::totalTime()
 {
+    updateStats();
+    return time;
+}
+
+void AlbumsModel::AlbumItem::updateStats()
+{
     if (0==time) {
+        numTracks=0;
         foreach (SongItem *s, songs) {
-            time+=s->time;
+            if (Song::Playlist!=s->type) {
+                time+=s->time;
+                numTracks++;
+            }
         }
     }
-    return time;
 }
 
 void AlbumsModel::AlbumItem::getCover()

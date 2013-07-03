@@ -87,6 +87,7 @@ public:
         quint32 totalTime();
         void updateStats();
         void getCover();
+        void setCover(const QImage &img);
         bool isSingleTracks() const { return Song::SingleTracks==type; }
         const SongItem *getCueFile() const;
         QString artist;

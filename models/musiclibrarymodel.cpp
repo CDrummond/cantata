@@ -291,9 +291,11 @@ QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
                 ? item->data()
                 : item->data()+"<br/>"+
                     #ifdef ENABLE_KDE_SUPPORT
-                    i18np("1 Track (%2)", "%1 Tracks (%2)", item->childCount(), Song::formattedTime(static_cast<MusicLibraryItemAlbum *>(item)->totalTime(), true))
+                    i18np("1 Track (%2)", "%1 Tracks (%2)", static_cast<MusicLibraryItemAlbum *>(item)->trackCount(),
+                          Song::formattedTime(static_cast<MusicLibraryItemAlbum *>(item)->totalTime(), true))
                     #else
-                    QTP_TRACKS_DURATION_STR(item->childCount(), Song::formattedTime(static_cast<MusicLibraryItemAlbum *>(item)->totalTime(), true))
+                    QTP_TRACKS_DURATION_STR(static_cast<MusicLibraryItemAlbum *>(item)->trackCount(),
+                                            Song::formattedTime(static_cast<MusicLibraryItemAlbum *>(item)->totalTime(), true))
                     #endif
                 );
         case MusicLibraryItem::Type_Song: {
@@ -325,9 +327,11 @@ QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
             return Song::formattedTime(static_cast<MusicLibraryItemSong *>(item)->time(), true);
         case MusicLibraryItem::Type_Album:
             #ifdef ENABLE_KDE_SUPPORT
-            return i18np("1 Track (%2)", "%1 Tracks (%2)", item->childCount(), Song::formattedTime(static_cast<MusicLibraryItemAlbum *>(item)->totalTime(), true));
+            return i18np("1 Track (%2)", "%1 Tracks (%2)", static_cast<MusicLibraryItemAlbum *>(item)->trackCount(),
+                         Song::formattedTime(static_cast<MusicLibraryItemAlbum *>(item)->totalTime(), true));
             #else
-            return QTP_TRACKS_DURATION_STR(item->childCount(), Song::formattedTime(static_cast<MusicLibraryItemAlbum *>(item)->totalTime(), true));
+            return QTP_TRACKS_DURATION_STR(static_cast<MusicLibraryItemAlbum *>(item)->trackCount(),
+                                           Song::formattedTime(static_cast<MusicLibraryItemAlbum *>(item)->totalTime(), true));
             #endif
         default: return QVariant();
         }

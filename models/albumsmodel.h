@@ -83,7 +83,9 @@ public:
         void clearSongs();
         void setSongs(MusicLibraryItemAlbum *ai);
         void setName();
+        quint32 trackCount();
         quint32 totalTime();
+        void updateStats();
         void getCover();
         bool isSingleTracks() const { return Song::SingleTracks==type; }
         const SongItem *getCueFile() const;
@@ -97,6 +99,7 @@ public:
         bool updated;
         bool coverRequested;
         Song::Type type;
+        quint32 numTracks;
         quint32 time;
     };
 

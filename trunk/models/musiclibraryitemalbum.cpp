@@ -268,12 +268,28 @@ const QPixmap & MusicLibraryItemAlbum::cover()
 
 quint32 MusicLibraryItemAlbum::totalTime()
 {
+    updateStats();
+    return m_totalTime;
+}
+
+quint32 MusicLibraryItemAlbum::trackCount()
+{
+    updateStats();
+    return m_numTracks;
+}
+
+void MusicLibraryItemAlbum::updateStats()
+{
     if (0==m_totalTime) {
+        m_numTracks=0;
         foreach (MusicLibraryItem *i, m_childItems) {
-            m_totalTime+=static_cast<MusicLibraryItemSong *>(i)->time();
+            MusicLibraryItemSong *song=static_cast<MusicLibraryItemSong *>(i);
+            if (Song::Playlist!=song->song().type) {
+                m_totalTime+=song->time();
+                m_numTracks++;
+            }
         }
     }
-    return m_totalTime;
 }
 
 void MusicLibraryItemAlbum::addTracks(MusicLibraryItemAlbum *other)

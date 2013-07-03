@@ -69,6 +69,7 @@ public:
     bool hasRealCover() const { return !m_coverIsDefault; }
     quint32 year() const { return m_year; }
     quint32 totalTime();
+    quint32 trackCount();
     void addTracks(MusicLibraryItemAlbum *other);
     bool isSingleTracks() const { return Song::SingleTracks==m_type; }
     void setIsSingleTracks();
@@ -93,12 +94,14 @@ private:
     void setCoverImage(const QImage &img) const;
     void setYear(const MusicLibraryItemSong *song);
     bool largeImages() const;
+    void updateStats();
 
 private:
     quint32 m_year;
     quint16 m_yearOfTrack;
     quint16 m_yearOfDisc;
     quint32 m_totalTime;
+    quint32 m_numTracks;
     mutable bool m_coverIsDefault;
     mutable QPixmap *m_cover;
     Song::Type m_type;

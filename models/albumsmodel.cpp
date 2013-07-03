@@ -283,7 +283,7 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
             return si->parent->artist+QLatin1String("<br/>")+
                    si->parent->album+(year>0 ? (QLatin1String(" (")+QString::number(year)+QChar(')')) : QString())+QLatin1String("<br/>")+
                    data(index, Qt::DisplayRole).toString()+QLatin1String("<br/>")+
-                   (Song::Playlist==si->type ? QString() : Song::formattedTime(si->time, true)+QLatin1String("<br/>"))+
+                   Song::formattedTime(Song::Playlist==si->type ? si->parent->totalTime() : si->time, true)+QLatin1String("<br/>")+
                    QLatin1String("<small><i>")+si->file+QLatin1String("</i></small>");
         }
         case Qt::DisplayRole:
@@ -297,7 +297,7 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
                 return si->trackAndTitleStr(Song::isVariousArtists(si->parent->artist) && !Song::isVariousArtists(si->artist));
             }
         case ItemView::Role_SubText: {
-            return Song::formattedTime(si->time, true);
+            return Song::formattedTime(Song::Playlist==si->type ? si->parent->totalTime() : si->time, true);
         }
         }
     }

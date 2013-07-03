@@ -481,6 +481,7 @@ void PlayQueueView::drawBackdrop(QWidget *widget, const QSize &size)
 
     QPainter p(widget);
 
+    p.fillRect(0, 0, size.width(), size.height(), QApplication::palette().color(QPalette::Base));
     if (!curentCover.isNull() || !previousBackground.isNull()) {
         if (!curentCover.isNull() && (size!=lastBgndSize || curentBackground.isNull())) {
             curentBackground = QPixmap::fromImage(curentCover.scaled(size, Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation));
@@ -497,7 +498,5 @@ void PlayQueueView::drawBackdrop(QWidget *widget, const QSize &size)
             p.setOpacity(fadeValue);
             p.drawPixmap((size.width()-curentBackground.width())/2, (size.height()-curentBackground.height())/2, curentBackground);
         }
-    } else {
-        p.fillRect(0, 0, size.width(), size.height(), QApplication::palette().color(QPalette::Base));
     }
 }

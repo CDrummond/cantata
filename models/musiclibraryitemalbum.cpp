@@ -346,8 +346,8 @@ void MusicLibraryItemAlbum::removeAll(const QSet<QString> &fileNames)
     QSet<QString> fn=fileNames;
     for (int i=0; i<m_childItems.count() && !fn.isEmpty();) {
         MusicLibraryItemSong *song=static_cast<MusicLibraryItemSong *>(m_childItems.at(i));
-        if (fn.contains(song->song().file)) {
-            fn.remove(song->song().file);
+        if (fn.contains(song->file())) {
+            fn.remove(song->file());
             delete m_childItems.takeAt(i);
             m_totalTime=0;
             m_artists.clear();
@@ -355,6 +355,22 @@ void MusicLibraryItemAlbum::removeAll(const QSet<QString> &fileNames)
             ++i;
         }
     }
+}
+
+QMap<QString, Song> MusicLibraryItemAlbum::getSongs(const QSet<QString> &fileNames) const
+{
+    QMap<QString, Song> map;
+    foreach (const MusicLibraryItem *i, m_childItems) {
+        const MusicLibraryItemSong *song=static_cast<const MusicLibraryItemSong *>(i);
+        if (fileNames.contains(song->file())) {
+            map.insert(song->file(), song->song());
+            if (map.size()==fileNames.size()) {
+                return map;
+            }
+        }
+    }
+
+    return map;
 }
 
 bool MusicLibraryItemAlbum::detectIfIsMultipleArtists()

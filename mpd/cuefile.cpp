@@ -82,6 +82,7 @@ QByteArray CueFile::getLoadLine(const QString &str)
 struct CueEntry {
     QString file;
     QString index;
+    int trackNo;
     QString title;
     QString artist;
     QString albumArtist;
@@ -91,10 +92,11 @@ struct CueEntry {
     QString genre;
     QString date;
 
-    CueEntry(QString &file, QString &index, QString &title, QString &artist, QString &albumArtist,
+    CueEntry(QString &file, QString &index, int trackNo, QString &title, QString &artist, QString &albumArtist,
              QString &album, /*QString &composer, QString &albumComposer,*/ QString &genre, QString &date) {
         this->file = file;
         this->index = index;
+        this->trackNo = trackNo;
         this->title = title;
         this->artist = artist;
         this->albumArtist = albumArtist;
@@ -189,7 +191,6 @@ bool CueFile::parse(const QString &fileName, const QString &dir, QList<Song> &so
     QString line = textStream.readLine();
     QList<CueEntry> entries;
     QString fileDir=fileName.contains("/") ? Utils::getDir(fileName) : QString();
-    int fileCount=0;
 
     // -- whole file
     while (!textStream.atEnd()) {
@@ -224,9 +225,6 @@ bool CueFile::parse(const QString &fileName, const QString &dir, QList<Song> &so
                 if (splitted.size() > 2) {
                     fileType = splitted[2];
                 }
-                if (!files.contains(fileDir+file)) {
-                    files.insert(fileDir+file);
-                }
             } else if (lineName == constRem) {
                 if (splitted.size() < 3) {
                     break;
@@ -239,7 +237,6 @@ bool CueFile::parse(const QString &fileName, const QString &dir, QList<Song> &so
                 }
                 // end of the header -> go into the track mode
             } else if (lineName == constTrack) {
-                fileCount++;
                 break;
             }
 
@@ -257,6 +254,7 @@ bool CueFile::parse(const QString &fileName, const QString &dir, QList<Song> &so
         QString artist;
 //        QString composer;
         QString title;
+        int trackNo=0;
 
         // TRACK section
         do {
@@ -276,7 +274,7 @@ bool CueFile::parse(const QString &fileName, const QString &dir, QList<Song> &so
                 // for later (if it's valid of course)
                 // please note that the same code is repeated just after this 'do-while' loop
                 if (validFile && !index.isEmpty() && (trackType.isEmpty() || trackType == constAudioTrackType)) {
-                    entries.append(CueEntry(file, index, title, artist, albumArtist, album, /*composer, albumComposer,*/ genre, date));
+                    entries.append(CueEntry(file, index, trackNo, title, artist, albumArtist, album, /*composer, albumComposer,*/ genre, date));
                 }
 
                 // clear the state
@@ -285,6 +283,7 @@ bool CueFile::parse(const QString &fileName, const QString &dir, QList<Song> &so
                 if (!lineAdditional.isEmpty()) {
                     trackType = lineAdditional;
                 }
+                trackNo = lineValue.toInt();
             } else if (lineName == constIndex) {
                 // we need the index's position field
                 if (!lineAdditional.isEmpty()) {
@@ -310,7 +309,7 @@ bool CueFile::parse(const QString &fileName, const QString &dir, QList<Song> &so
 
         // we didn't add the last song yet...
         if (validFile && !index.isEmpty() && (trackType.isEmpty() || trackType == constAudioTrackType)) {
-            entries.append(CueEntry(file, index, title, artist, albumArtist, album, /*composer, albumComposer,*/ genre, date));
+            entries.append(CueEntry(file, index, trackNo, title, artist, albumArtist, album, /*composer, albumComposer,*/ genre, date));
         }
     }
 
@@ -320,12 +319,11 @@ bool CueFile::parse(const QString &fileName, const QString &dir, QList<Song> &so
 
         Song song;
         song.file=constCueProtocol+fileName+"?pos="+QString::number(i);
-
-        // set track number only in single-file mode
-        if (1==fileCount) {
-            song.track=i+1;
+        song.track=entry.trackNo;
+        song.name=fileDir+entry.file; // HACK!!!
+        if (!files.contains(song.name)) {
+            files.insert(song.name);
         }
-
         // the last TRACK for every FILE gets it's 'end' marker from the media file's
         // length
         if (i+1 < entries.size() && entries.at(i).file == entries.at(i+1).file) {

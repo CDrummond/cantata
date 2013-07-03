@@ -382,7 +382,6 @@ MusicLibraryItemRoot * MPDParseUtils::parseLibraryItems(const QByteArray &data, 
     MusicLibraryItemArtist *artistItem = 0;
     MusicLibraryItemAlbum *albumItem = 0;
     MusicLibraryItemSong *songItem = 0;
-    QList<ParsedCueFile> cueFiles;
 
     for (int i = 0; i < amountOfLines; i++) {
         currentItem += lines.at(i);
@@ -395,16 +394,20 @@ MusicLibraryItemRoot * MPDParseUtils::parseLibraryItems(const QByteArray &data, 
             }
 
             if (Song::Playlist==currentSong.type) {
+                MusicLibraryItemAlbum *prevAlbum=albumItem;
+                QString prevSongFile=songItem ? songItem->file() : QString();
                 ParsedCueFile cf;
+
                 if (canSplitCue && currentSong.file.endsWith(".cue", Qt::CaseInsensitive) && CueFile::parse(currentSong.file, mpdDir, cf.songs, cf.files) &&
                     cf.files.count()<cf.songs.count()) {
-                    bool used=false;
+                    bool canUseCueFileTracks=false;
+                    ParsedCueFile fixed;
+
                     if (albumItem) {
                         QMap<QString, Song> origFiles=albumItem->getSongs(cf.files);
                         if (origFiles.size()==cf.files.size()) {
                             // We have a previous album, if any of the details of the songs from the cue are empty,
                             // use those from the album...
-                            ParsedCueFile fixed;
                             fixed.files=cf.files;
                             bool setTimeFromSource=origFiles.size()==cf.songs.size();
                             quint32 albumTime=1==cf.files.size() ? albumItem->totalTime() : 0;
@@ -428,7 +431,7 @@ MusicLibraryItemRoot * MPDParseUtils::parseLibraryItems(const QByteArray &data, 
                                 if (0==s.time && setTimeFromSource) {
                                     s.time=albumSong.time;
                                 } else if (0!=albumTime) {
-                                    // Try to set duraiton of last track by subtracting previous track durations from album duration...
+                                    // Try to set duration of last track by subtracting previous track durations from album duration...
                                     if (0==s.time) {
                                         s.time=albumTime-usedAlbumTime;
                                     } else {
@@ -437,15 +440,13 @@ MusicLibraryItemRoot * MPDParseUtils::parseLibraryItems(const QByteArray &data, 
                                 }
                                 fixed.songs.append(s);
                             }
-                            cueFiles.append(fixed);
-                            used=true;
+                            canUseCueFileTracks=true;
                         }
                     }
 
-                    if (!used) {
-                        // No previous file? Then we need to ensure all tracks have meta data - otherwise just fallback to
-                        // listing file + cue
-                        ParsedCueFile fixed;
+                    if (!canUseCueFileTracks) {
+                        // No revious album, or album had a different number of source files to the CUE file. If so, then we need to ensure
+                        // all tracks have meta data - otherwise just fallback to listing file + cue
                         fixed.files=cf.files;
                         foreach (const Song &orig, cf.songs) {
                             Song s=orig;
@@ -457,12 +458,51 @@ MusicLibraryItemRoot * MPDParseUtils::parseLibraryItems(const QByteArray &data, 
                         }
 
                         if (fixed.songs.count()==cf.songs.count()) {
-                            cueFiles.append(fixed);
+                            canUseCueFileTracks=true;
+                        }
+                    }
+
+                    if (canUseCueFileTracks) {
+                        QSet<MusicLibraryItemAlbum *> updatedAlbums;
+                        foreach (Song s, fixed.songs) {
+                            s.fillEmptyFields();
+                            if (!artistItem || s.albumArtist()!=artistItem->data()) {
+                                artistItem = rootItem->artist(s);
+                            }
+                            if (!albumItem || s.year!=albumItem->year() || albumItem->parentItem()!=artistItem || s.album!=albumItem->data()) {
+                                albumItem = artistItem->album(s);
+                            }
+                            songItem = new MusicLibraryItemSong(s, albumItem);
+                            albumItem->append(songItem);
+                            albumItem->addGenre(s.genre);
+                            updatedAlbums.insert(albumItem);
+                            artistItem->addGenre(s.genre);
+                            rootItem->addGenre(s.genre);
+                        }
+
+                        // For each album that was updated/created, remove any source files referenced in cue file...
+                        foreach (MusicLibraryItemAlbum *al, updatedAlbums) {
+                            al->removeAll(cf.files);
+                            if (prevAlbum && al!=prevAlbum) {
+                                prevAlbum->removeAll(cf.files);
+                            }
+                        }
+
+                        // Remove alun artist/album that was create and is now empty.
+                        // This will happen if the source file (e.g. the flac file) does not have any metadata...
+                        if (prevAlbum && 0==prevAlbum->childCount()) {
+                            MusicLibraryItemArtist *ar=static_cast<MusicLibraryItemArtist *>(prevAlbum->parentItem());
+                            ar->remove(prevAlbum);
+                            if (0==ar->childCount()) {
+                                rootItem->remove(ar);
+                            }
                         }
                     }
                 }
 
-                if (songItem && Utils::getDir(songItem->file())==Utils::getDir(currentSong.file)) {
+                // Add playlist file (or cue file) to current album, if it has the same path!
+                // This assumes that MPD always send playlists as the last file...
+                if (!prevSongFile.isEmpty() && Utils::getDir(prevSongFile)==Utils::getDir(currentSong.file)) {
                     currentSong.albumartist=currentSong.artist=artistItem->data();
                     currentSong.album=albumItem->data();
                     currentSong.time=albumItem->totalTime();
@@ -487,32 +527,6 @@ MusicLibraryItemRoot * MPDParseUtils::parseLibraryItems(const QByteArray &data, 
             albumItem->addGenre(currentSong.genre);
             artistItem->addGenre(currentSong.genre);
             rootItem->addGenre(currentSong.genre);
-        }
-    }
-
-    // Split contents of cue files into tracks...
-    foreach (const ParsedCueFile &cf, cueFiles) {
-        QSet<MusicLibraryItemAlbum *> updatedAlbums;
-
-        foreach (Song s, cf.songs) {
-            s.fillEmptyFields();
-            if (!artistItem || s.albumArtist()!=artistItem->data()) {
-                artistItem = rootItem->artist(s);
-            }
-            if (!albumItem || s.year!=albumItem->year() || albumItem->parentItem()!=artistItem || s.album!=albumItem->data()) {
-                albumItem = artistItem->album(s);
-            }
-            songItem = new MusicLibraryItemSong(s, albumItem);
-            albumItem->append(songItem);
-            albumItem->addGenre(s.genre);
-            updatedAlbums.insert(albumItem);
-            artistItem->addGenre(s.genre);
-            rootItem->addGenre(s.genre);
-        }
-
-        // For each album that was updated/created, remove any source files referenced in cue file...
-        foreach (MusicLibraryItemAlbum *al, updatedAlbums) {
-            al->removeAll(cf.files);
         }
     }
 

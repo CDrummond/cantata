@@ -27,18 +27,29 @@
 #define DIRVIEWITEMFILE_H
 
 #include "dirviewitem.h"
+#include "mpdconnection.h"
 
 class DirViewItemFile : public DirViewItem
 {
 public:
-    DirViewItemFile(const QString &name, DirViewItem *parent)
-        : DirViewItem(name, parent) {
+    enum FileType {
+        Audio,
+        Playlist,
+        CueSheet
+    };
+
+    DirViewItemFile(const QString &name, DirViewItem *parent) : DirViewItem(name, parent) {
+        fType=MPDConnection::isPlaylist(name)
+                ? name.endsWith(".cue", Qt::CaseInsensitive)
+                    ? CueSheet
+                    : Playlist
+                : Audio;
     }
-    virtual ~DirViewItemFile() {
-    }
-    Type type() const {
-        return Type_File;
-    }
+    virtual ~DirViewItemFile() { }
+    Type type() const { return Type_File;  }
+    FileType fileType() const { return fType; }
+private:
+    FileType fType;
 };
 
 #endif

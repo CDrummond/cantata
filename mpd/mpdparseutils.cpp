@@ -428,7 +428,6 @@ MusicLibraryItemRoot * MPDParseUtils::parseLibraryItems(const QByteArray &data, 
                                 fixed.songs.append(s);
                             }
                             cueFiles.append(fixed);
-                            continue;
                         }
                     }
                     // No previous file? Then we need to ensure all tracks have meta data - otherwise just fallback to
@@ -446,7 +445,6 @@ MusicLibraryItemRoot * MPDParseUtils::parseLibraryItems(const QByteArray &data, 
 
                     if (fixed.songs.count()==cf.songs.count()) {
                         cueFiles.append(fixed);
-                        continue;
                     }
                 }
 

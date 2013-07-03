@@ -31,11 +31,13 @@
 #include "localize.h"
 #include "dirviewmodel.h"
 #include "dirviewitem.h"
+#include "dirviewitemfile.h"
 #include "playqueuemodel.h"
 #include "itemview.h"
 #include "settings.h"
 #include "mpdconnection.h"
 #include "icon.h"
+#include "icons.h"
 
 #ifdef ENABLE_KDE_SUPPORT
 K_GLOBAL_STATIC(DirViewModel, instance)
@@ -158,7 +160,7 @@ QVariant DirViewModel::data(const QModelIndex &index, int role) const
         if (item->type() == DirViewItem::Type_Dir) {
             return Icon("inode-directory");
         } else if (item->type() == DirViewItem::Type_File) {
-            return Icon("audio-x-generic");
+            return DirViewItemFile::Audio!=static_cast<DirViewItemFile *>(item)->fileType() ? Icons::self()->playlistIcon : Icons::self()->audioFileIcon;
         }
         break;
     }
@@ -183,13 +185,10 @@ QVariant DirViewModel::data(const QModelIndex &index, int role) const
             #endif
             break;
         case DirViewItem::Type_File:
-            if (item->data().endsWith(".asx", Qt::CaseInsensitive) || item->data().endsWith(".m3u", Qt::CaseInsensitive) ||
-                       item->data().endsWith(".pls", Qt::CaseInsensitive) || item->data().endsWith(".xspf", Qt::CaseInsensitive) ) {
-                return i18n("Playlist");
-            } else if (item->data().endsWith(".cue", Qt::CaseInsensitive)) {
-                return i18n("Cue Sheet");
-            } else {
-                return i18n("Audio File");
+            switch (static_cast<DirViewItemFile *>(item)->fileType()) {
+            case DirViewItemFile::Audio:    return i18n("Audio File");
+            case DirViewItemFile::Playlist: return i18n("Playlist");
+            case DirViewItemFile::CueSheet: return i18n("Cue Sheet");
             }
         default:
             return QVariant();

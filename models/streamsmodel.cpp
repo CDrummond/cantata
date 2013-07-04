@@ -45,6 +45,7 @@
 #include <QFile>
 #include <QFileInfo>
 #include <QTimer>
+#include <QLocale>
 #if QT_VERSION >= 0x050000
 #include <QUrlQuery>
 #endif
@@ -130,7 +131,7 @@ StreamsModel::StreamsModel(QObject *parent)
     , favouritesModified(false)
     , favouritesSaveTimer(0)
 {
-    root->children.append(new CategoryItem(constRadioTimeUrl, i18n("TuneIn"), root, getIcon("tunein")));
+    root->children.append(new CategoryItem(constRadioTimeUrl+QLatin1String("?locale=")+QLocale::system().name(), i18n("TuneIn"), root, getIcon("tunein")));
     root->children.append(new CategoryItem(constIceCastUrl, i18n("IceCast"), root, getIcon("icecast")));
     root->children.append(new CategoryItem(constShoutCastUrl, i18n("ShoutCast"), root, getIcon("shoutcast")));
     root->children.append(new CategoryItem(constSomaFMUrl, i18n("SomaFM"), root, getIcon("somafm")));

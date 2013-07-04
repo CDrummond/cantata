@@ -167,7 +167,7 @@ void AlbumView::getTrackListing()
         foreach (const Song &s, songs) {
             trackList+=QLatin1String("<tr><td>")+QString::number(s.track)+
                        QLatin1String("</td><td><a href=\"cantata:///")+s.file+"\">"+
-                       (s==currentSong ? "<b>"+s.displayTitle()+"</b>" : s.displayTitle())+QLatin1String("</a></td></tr>");
+                       (s.file==currentSong.file ? "<b>"+s.displayTitle()+"</b>" : s.displayTitle())+QLatin1String("</a></td></tr>");
         }
 
         trackList+=QLatin1String("</table></p>");

@@ -70,6 +70,7 @@ private Q_SLOTS:
     void searchItems();
     void itemDoubleClicked(const QModelIndex &index);
     void updateDiStatus();
+    void searchTuneIn();
 
 private:
     void addItemsToPlayQueue(const QModelIndexList &indexes, bool replace, quint8 priorty=0);

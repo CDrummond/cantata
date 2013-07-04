@@ -390,6 +390,7 @@ MusicLibraryItemRoot * MPDParseUtils::parseLibraryItems(const QByteArray &data, 
     MusicLibraryItemArtist *artistItem = 0;
     MusicLibraryItemAlbum *albumItem = 0;
     MusicLibraryItemSong *songItem = 0;
+    QString unknown=i18n("Unknown");
 
     for (int i = 0; i < amountOfLines; i++) {
         currentItem += lines.at(i);
@@ -408,7 +409,7 @@ MusicLibraryItemRoot * MPDParseUtils::parseLibraryItems(const QByteArray &data, 
 
                 DBUG << "Got playlist item" << currentSong.file << "prevFile:" << prevSongFile;
                 if (canSplitCue && currentSong.file.endsWith(".cue", Qt::CaseInsensitive) && CueFile::parse(currentSong.file, mpdDir, cf.songs, cf.files) &&
-                    cf.files.count()<cf.songs.count()) {
+                        (cf.files.count()<cf.songs.count() || (albumItem && albumItem->data()==unknown && albumItem->parentItem()->data()==unknown))) {
                     DBUG << "Parsed file, songs:" << cf.songs.count() << "files:" << cf.files.count();
                     bool canUseCueFileTracks=false;
                     ParsedCueFile fixed;

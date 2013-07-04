@@ -235,7 +235,7 @@ containing MPD, and run in 'server' mode. When run in this mode, it is intended
 that the script be run system-wide and started when the system (or MPD) is
 started. e.g. The script should be started as:
 
-    <prefix>/share/cantata/cantata-dynamic server <location of config file>
+    <prefix>/share/cantata/scripts/cantata-dynamic server <location of config file>
 
     e.g.:  /usr/share/cantata/scripts/cantata-dynamic server /etc/cantata-dynamic.conf
 
@@ -243,7 +243,7 @@ When run as described above, the script will automatically daemonize itself.
 
 To stop the dynamizer:
 
-     <prefix>/share/cantata/cantata-dynamic stopserver
+     <prefix>/share/cantata/scripts/cantata-dynamic stopserver
 
     e.g.:  /usr/share/cantata/scripts/cantata-dynamic stopserver
 
@@ -288,7 +288,7 @@ server.
 
 'httpPort' is the port to be opened by the script to allow it to be controlled.
 
-'httpControlPage' If set to '1' then if you point a browser to
+'httpControlPage' If set to '1' and you point a browser to
 'http://<host>:<httpPort>' then the script will return a simple web-page
 containing a list of the dynamic rules (which if clicked will become 'active'),
 and a button to stop dynamic mode. Set to '0' to disable this page.

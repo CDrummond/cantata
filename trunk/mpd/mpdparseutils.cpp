@@ -374,12 +374,6 @@ void MPDParseUtils::setGroupMultiple(bool g)
     groupMultipleArtists=g;
 }
 
-struct ParsedCueFile
-{
-    QList<Song> songs;
-    QSet<QString> files;
-};
-
 MusicLibraryItemRoot * MPDParseUtils::parseLibraryItems(const QByteArray &data, const QString &mpdDir, long mpdVersion)
 {
     bool canSplitCue=mpdVersion>=MPD_MAKE_VERSION(0,17,0);
@@ -405,25 +399,25 @@ MusicLibraryItemRoot * MPDParseUtils::parseLibraryItems(const QByteArray &data, 
             if (Song::Playlist==currentSong.type) {
                 MusicLibraryItemAlbum *prevAlbum=albumItem;
                 QString prevSongFile=songItem ? songItem->file() : QString();
-                ParsedCueFile cf;
+                QList<Song> cueSongs; // List of songs from cue file
+                QSet<QString> cueFiles; // List of source (flac, mp3, etc) files referenced in cue file
 
                 DBUG << "Got playlist item" << currentSong.file << "prevFile:" << prevSongFile;
-                if (canSplitCue && currentSong.file.endsWith(".cue", Qt::CaseInsensitive) && CueFile::parse(currentSong.file, mpdDir, cf.songs, cf.files) &&
-                        (cf.files.count()<cf.songs.count() || (albumItem && albumItem->data()==unknown && albumItem->parentItem()->data()==unknown))) {
-                    DBUG << "Parsed file, songs:" << cf.songs.count() << "files:" << cf.files.count();
+                if (canSplitCue && currentSong.file.endsWith(".cue", Qt::CaseInsensitive) && CueFile::parse(currentSong.file, mpdDir, cueSongs, cueFiles) &&
+                        (cueFiles.count()<cueSongs.count() || (albumItem && albumItem->data()==unknown && albumItem->parentItem()->data()==unknown))) {
+                    DBUG << "Parsed file, songs:" << cueSongs.count() << "files:" << cueFiles.count();
                     bool canUseCueFileTracks=false;
-                    ParsedCueFile fixed;
+                    QList<Song> fixedCueSongs; // Songs taken from cueSongs that have been updated...
 
                     if (albumItem) {
-                        QMap<QString, Song> origFiles=albumItem->getSongs(cf.files);
-                        if (origFiles.size()==cf.files.size()) {
+                        QMap<QString, Song> origFiles=albumItem->getSongs(cueFiles);
+                        if (origFiles.size()==cueFiles.size()) {
                             // We have a previous album, if any of the details of the songs from the cue are empty,
                             // use those from the album...
-                            fixed.files=cf.files;
-                            bool setTimeFromSource=origFiles.size()==cf.songs.size();
-                            quint32 albumTime=1==cf.files.size() ? albumItem->totalTime() : 0;
+                            bool setTimeFromSource=origFiles.size()==cueSongs.size();
+                            quint32 albumTime=1==cueFiles.size() ? albumItem->totalTime() : 0;
                             quint32 usedAlbumTime=0;
-                            foreach (const Song &orig, cf.songs) {
+                            foreach (const Song &orig, cueSongs) {
                                 Song s=orig;
                                 Song albumSong=origFiles[s.name];
                                 s.name=QString(); // CueFile has placed source file name here!
@@ -453,33 +447,32 @@ MusicLibraryItemRoot * MPDParseUtils::parseLibraryItems(const QByteArray &data, 
                                         usedAlbumTime+=s.time;
                                     }
                                 }
-                                fixed.songs.append(s);
+                                fixedCueSongs.append(s);
                             }
                             canUseCueFileTracks=true;
-                        } else DBUG << "ERROR: file count mismatch" << origFiles.size() << cf.files.size();
+                        } else DBUG << "ERROR: file count mismatch" << origFiles.size() << cueFiles.size();
                     } else DBUG << "ERROR: No album???";
 
                     if (!canUseCueFileTracks) {
                         // No revious album, or album had a different number of source files to the CUE file. If so, then we need to ensure
                         // all tracks have meta data - otherwise just fallback to listing file + cue
-                        fixed.files=cf.files;
-                        foreach (const Song &orig, cf.songs) {
+                        foreach (const Song &orig, cueSongs) {
                             Song s=orig;
                             s.name=QString(); // CueFile has placed source file name here!
                             if (s.artist.isEmpty() || s.album.isEmpty()) {
                                 break;
                             }
-                            fixed.songs.append(s);
+                            fixedCueSongs.append(s);
                         }
 
-                        if (fixed.songs.count()==cf.songs.count()) {
+                        if (fixedCueSongs.count()==cueSongs.count()) {
                             canUseCueFileTracks=true;
                         } else DBUG << "ERROR: Not all cue tracks had meta data";
                     }
 
                     if (canUseCueFileTracks) {
                         QSet<MusicLibraryItemAlbum *> updatedAlbums;
-                        foreach (Song s, fixed.songs) {
+                        foreach (Song s, fixedCueSongs) {
                             s.fillEmptyFields();
                             if (!artistItem || s.albumArtist()!=artistItem->data()) {
                                 artistItem = rootItem->artist(s);
@@ -498,10 +491,10 @@ MusicLibraryItemRoot * MPDParseUtils::parseLibraryItems(const QByteArray &data, 
 
                         // For each album that was updated/created, remove any source files referenced in cue file...
                         foreach (MusicLibraryItemAlbum *al, updatedAlbums) {
-                            al->removeAll(cf.files);
+                            al->removeAll(cueFiles);
                             if (prevAlbum && al!=prevAlbum) {
-                                DBUG << "Removing" << cf.files.count() << " files from " << prevAlbum->data();
-                                prevAlbum->removeAll(cf.files);
+                                DBUG << "Removing" << cueFiles.count() << " files from " << prevAlbum->data();
+                                prevAlbum->removeAll(cueFiles);
                             }
                         }
 

@@ -56,6 +56,7 @@ StreamsPage::StreamsPage(QWidget *p)
     exportAction = ActionCollection::get()->createAction("exportstreams", i18n("Export Favourite Streams"), "document-export");
     addAction = ActionCollection::get()->createAction("addstream", i18n("Add New Stream To Favourites"), Icons::self()->addRadioStreamIcon);
     addToFavouritesAction = ActionCollection::get()->createAction("addtofavourites", i18n("Add Stream To Favourites"), Icons::self()->addRadioStreamIcon);
+    reloadAction = ActionCollection::get()->createAction("reloadstreams", i18n("Reload"), Icon("view-refresh"));
     editAction = ActionCollection::get()->createAction("editstream", i18n("Edit"), Icons::self()->editIcon);
     Action *settingsAct = new Action(i18n("Digitally Imported Settings"), this);
     replacePlayQueue->setDefaultAction(StdActions::self()->replacePlayQueueAction);
@@ -65,6 +66,7 @@ StreamsPage::StreamsPage(QWidget *p)
     connect(view, SIGNAL(itemsSelected(bool)), SLOT(controlActions()));
     connect(addAction, SIGNAL(triggered(bool)), this, SLOT(add()));
     connect(addToFavouritesAction, SIGNAL(triggered(bool)), this, SLOT(addToFavourites()));
+    connect(reloadAction, SIGNAL(triggered(bool)), this, SLOT(reload()));
     connect(editAction, SIGNAL(triggered(bool)), this, SLOT(edit()));
     connect(importAction, SIGNAL(triggered(bool)), this, SLOT(importXml()));
     connect(exportAction, SIGNAL(triggered(bool)), this, SLOT(exportXml()));
@@ -78,6 +80,7 @@ StreamsPage::StreamsPage(QWidget *p)
     menu->addAction(addAction);
     menu->addAction(StdActions::self()->removeAction);
     menu->addAction(editAction);
+    menu->addAction(reloadAction);
     menu->addSeparator();
     menu->addAction(importAction);
     menu->addAction(exportAction);
@@ -95,6 +98,7 @@ StreamsPage::StreamsPage(QWidget *p)
     view->addAction(editAction);
     view->addAction(StdActions::self()->removeAction);
     view->addAction(addToFavouritesAction);
+    view->addAction(reloadAction);
     proxy.setSourceModel(StreamsModel::self());
     view->setModel(&proxy);
     view->setDeleteAction(StdActions::self()->removeAction);
@@ -285,6 +289,27 @@ void StreamsPage::addToFavourites()
     }
 }
 
+void StreamsPage::reload()
+{
+    QModelIndexList selected = view->selectedIndexes();
+    if (1!=selected.count()) {
+        return;
+    }
+
+    QModelIndex mapped=proxy.mapToSource(selected.first());
+    const StreamsModel::Item *item=static_cast<const StreamsModel::Item *>(mapped.internalPointer());
+    if (!item->isCategory()) {
+        return;
+    }
+    const StreamsModel::CategoryItem *cat=static_cast<const StreamsModel::CategoryItem *>(item);
+    if (!StreamsModel::self()->isTopLevel(cat)) {
+        return;
+    }
+    if (cat->children.isEmpty() || MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Reload <b>%1</b> streams?").arg(cat->name))) {
+        StreamsModel::self()->reload(mapped);
+    }
+}
+
 void StreamsPage::removeItems()
 {
     if (!StreamsModel::self()->isFavoritesWritable()) {
@@ -378,11 +403,13 @@ void StreamsPage::controlActions()
     QModelIndexList selected=view->selectedIndexes();
     editAction->setEnabled(false);
     addToFavouritesAction->setEnabled(false);
-    if (1==selected.size() && StreamsModel::self()->isFavoritesWritable()) {
+    reloadAction->setEnabled(false);
+    if (1==selected.size()) {
         const StreamsModel::Item *item=static_cast<const StreamsModel::Item *>(proxy.mapToSource(selected.first()).internalPointer());
-        if (!item->isCategory() && item->parent && item->parent->isFavourites) {
+        if (StreamsModel::self()->isFavoritesWritable() && !item->isCategory() && item->parent && item->parent->isFavourites) {
             editAction->setEnabled(true);
         }
+        reloadAction->setEnabled(item->isCategory() && StreamsModel::self()->isTopLevel(static_cast<const StreamsModel::CategoryItem *>(item)));
     }
     StdActions::self()->removeAction->setEnabled(false);
     if (!selected.isEmpty() && StreamsModel::self()->isFavoritesWritable()) {

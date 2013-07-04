@@ -60,8 +60,8 @@ public:
             Fetched
         };
 
-        CategoryItem(const QString &u, const QString &n=QString(), CategoryItem *p=0, const QIcon &i=QIcon())
-            : Item(u, n, p), state(Initial), isFavourites(false), isAll(false), icon(i) { }
+        CategoryItem(const QString &u, const QString &n=QString(), CategoryItem *p=0, const QIcon &i=QIcon(), const QString &cn=QString())
+            : Item(u, n, p), state(Initial), isFavourites(false), isAll(false), icon(i), cacheName(cn) { }
         virtual ~CategoryItem() { qDeleteAll(children); }
         virtual bool isCategory() const { return true; }
         State state;
@@ -69,9 +69,12 @@ public:
         bool isAll : 1;
         QList<Item *> children;
         QIcon icon;
+        QString cacheName;
     };
-    
+
     static const QString constPrefix;
+    static const QString constCacheDir;
+    static const QString constCacheExt;
 
     static StreamsModel * self();
     static QString favouritesDir();
@@ -96,6 +99,7 @@ public:
     bool isFavoritesWritable() { return favouritesIsWriteable; }
     bool checkFavouritesWritable();
     void reloadFavourites();
+    void reload(const QModelIndex &index);
     void removeFromFavourites(const QModelIndex &index);
     void addToFavourites(const QString &url, const QString &name);
     QString favouritesNameForUrl(const QString &u);
@@ -103,11 +107,13 @@ public:
     void updateFavouriteStream(Item *item);
 
     bool importXml(const QString &fileName);
-    bool saveXml(const QString &fileName, const QList<Item *> &items);
+    bool saveXml(const QString &fileName, const QList<Item *> &items, bool format=true);
 
     QStringList filenames(const QModelIndexList &indexes, bool addPrefix) const;
     QMimeData * mimeData(const QModelIndexList &indexes) const;
     QStringList mimeTypes() const;
+
+    bool isTopLevel(const CategoryItem *cat) const { return cat && root==cat->parent; }
 
 Q_SIGNALS:
     void loading();
@@ -119,11 +125,13 @@ private Q_SLOTS:
     void persistFavourites();
 
 private:
+    bool loadCache(CategoryItem *cat);
+    void saveCache(CategoryItem *cat, const QList<Item *> &items);
     Item * toItem(const QModelIndex &index) const { return index.isValid() ? static_cast<Item*>(index.internalPointer()) : root; }
     QList<Item *> parseRadioTimeResponse(QIODevice *dev, CategoryItem *cat);
     QList<Item *> parseIceCastResponse(QIODevice *dev, CategoryItem *cat);
     QList<Item *> parseSomaFmResponse(QIODevice *dev, CategoryItem *cat);
-    QList<Item *> parseDigitallyImportedResponse(QIODevice *dev, CategoryItem *cat, const QString &origUrl);
+    QList<Item *> parseDigitallyImportedResponse(QIODevice *dev, CategoryItem *cat);
     QList<Item *> parseListenLiveResponse(QIODevice *dev, CategoryItem *cat);
     QList<Item *> parseShoutCastResponse(QIODevice *dev, CategoryItem *cat, const QString &origUrl);
     QList<Item *> parseShoutCastLinks(QXmlStreamReader &doc, CategoryItem *cat);
@@ -132,7 +140,8 @@ private:
     Item * parseSomaFmEntry(QXmlStreamReader &doc, CategoryItem *parent);
     void loadFavourites(const QModelIndex &index);
     bool loadXml(const QString &fileName, const QModelIndex &index);
-    QList<Item *> loadXml(QIODevice *dev, bool isInternal);
+    QList<Item *> loadXml(const QString &fileName, CategoryItem *cat, bool isInternal);
+    QList<Item *> loadXml(QIODevice *dev, CategoryItem *cat, bool isInternal);
     bool saveXml(QIODevice *dev, const QList<Item *> &items, bool format) const;
     void buildListenLive();
 

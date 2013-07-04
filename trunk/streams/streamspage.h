@@ -65,6 +65,7 @@ private Q_SLOTS:
     void exportXml();
     void add();
     void addToFavourites();
+    void reload();
     void edit();
     void searchItems();
     void itemDoubleClicked(const QModelIndex &index);
@@ -81,6 +82,7 @@ private:
     Action *addAction;
     Action *editAction;
     Action *addToFavouritesAction;
+    Action *reloadAction;
     StreamsProxyModel proxy;
 };
 

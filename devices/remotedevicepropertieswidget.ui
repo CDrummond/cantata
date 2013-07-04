@@ -136,7 +136,11 @@
              </widget>
             </item>
             <item row="4" column="1">
-             <widget class="LineEdit" name="smbPassword"/>
+             <widget class="LineEdit" name="smbPassword">
+              <property name="echoMode">
+               <enum>QLineEdit::Password</enum>
+              </property>
+             </widget>
             </item>
             <item row="5" column="0">
              <widget class="BuddyLabel" name="folderLabel_2">
@@ -232,7 +236,11 @@
              </widget>
             </item>
             <item row="3" column="1">
-             <widget class="LineEdit" name="smbAvahiPassword"/>
+             <widget class="LineEdit" name="smbAvahiPassword">
+              <property name="echoMode">
+               <enum>QLineEdit::Password</enum>
+              </property>
+             </widget>
             </item>
             <item row="4" column="0">
              <widget class="BuddyLabel" name="folderLabel_x2">

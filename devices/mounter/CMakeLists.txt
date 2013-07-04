@@ -10,7 +10,7 @@ else (ENABLE_QT5)
 endif (ENABLE_QT5)
 
 add_executable( cantata-mounter ${CANTATA_MOUNTER_SRCS} ${CANTATA_MOUNTER_MOC_SRCS} )
-install( TARGETS cantata-mounter RUNTIME DESTINATION bin LIBRARY DESTINATION lib ARCHIVE DESTINATION lib )
+install(TARGETS cantata-mounter RUNTIME DESTINATION lib/cantata)
 configure_file(com.googlecode.cantata.mounter.service.cmake ${CMAKE_CURRENT_BINARY_DIR}/com.googlecode.cantata.mounter.service)
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/com.googlecode.cantata.mounter.service DESTINATION ${CMAKE_INSTALL_PREFIX}/share/dbus-1/system-services/ )
 install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/com.googlecode.cantata.mounter.conf DESTINATION /etc/dbus-1/system.d/ )

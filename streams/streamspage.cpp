@@ -35,6 +35,7 @@
 #include "statuslabel.h"
 #include "digitallyimported.h"
 #include "digitallyimportedsettings.h"
+#include "searchdialog.h"
 #include <QToolButton>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KFileDialog>
@@ -60,6 +61,7 @@ StreamsPage::StreamsPage(QWidget *p)
     editAction = ActionCollection::get()->createAction("editstream", i18n("Edit"), Icons::self()->editIcon);
     Action *settingsAct = new Action(i18n("Digitally Imported Settings"), this);
     replacePlayQueue->setDefaultAction(StdActions::self()->replacePlayQueueAction);
+    Action *searchAction = ActionCollection::get()->createAction("searchtunein", i18n("Search for Radio Stations via TuneIn"), Icons::self()->searchIcon);
 //     connect(view, SIGNAL(itemsSelected(bool)), addToPlaylist, SLOT(setEnabled(bool)));
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
     connect(view, SIGNAL(searchItems()), this, SLOT(searchItems()));
@@ -71,6 +73,7 @@ StreamsPage::StreamsPage(QWidget *p)
     connect(importAction, SIGNAL(triggered(bool)), this, SLOT(importXml()));
     connect(exportAction, SIGNAL(triggered(bool)), this, SLOT(exportXml()));
     connect(settingsAct, SIGNAL(triggered(bool)), this, SLOT(diSettings()));
+    connect(searchAction, SIGNAL(triggered(bool)), this, SLOT(searchTuneIn()));
     connect(StreamsModel::self(), SIGNAL(error(const QString &)), this, SIGNAL(error(const QString &)));
     connect(StreamsModel::self(), SIGNAL(loading()), view, SLOT(showSpinner()));
     connect(StreamsModel::self(), SIGNAL(loaded()), view, SLOT(hideSpinner()));
@@ -86,6 +89,8 @@ StreamsPage::StreamsPage(QWidget *p)
     menu->addAction(exportAction);
     menu->addSeparator();
     menu->addAction(settingsAct);
+    menu->addSeparator();
+    menu->addAction(searchAction);
     menuButton->setMenu(menu);
     Icon::init(replacePlayQueue);
 
@@ -459,4 +464,14 @@ void StreamsPage::updateDiStatus()
         diStatusLabel->setStyleSheet(QString("QLabel { color : %1; border-radius: %4px; border: 2px solid %2; margin: %3px}")
                                      .arg(col).arg(col).arg(margin).arg(margin*2));
     }
+}
+
+void StreamsPage::searchTuneIn()
+{
+    if (SearchDialog::instanceCount()) {
+        return;
+    }
+
+    SearchDialog *dlg=new SearchDialog(this);
+    dlg->show();
 }

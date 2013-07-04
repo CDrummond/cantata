@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <streams>
- <listing name="Australia" url="http://www.australianliveradio.com/"/>
+ <listing name="Australia" url="http://www.australianliveradio.com/" cache="australia"/>
  <region name="Europe">
   <listing name="Albania" url="http://www.listenlive.eu/albania.html"/>
   <listing name="Andorra" url="http://www.listenlive.eu/andorra.html"/>
@@ -69,6 +69,6 @@
   <listing name="Saskatchewan" url="http://www.canadianwebradio.com/saskatchewan.html"/>
   <listing name="Yukon" url="http://www.canadianwebradio.com/yukon.html"/>
  </region>
- <listing name="New Zealand" url="http://www.nzradioguide.co.nz/"/>
- <listing name="USA" url="http://www.usliveradio.com/"/>
+ <listing name="New Zealand" url="http://www.nzradioguide.co.nz/" cache="newzealand"/>
+ <listing name="USA" url="http://www.usliveradio.com/" cache="usa"/>
 </streams>

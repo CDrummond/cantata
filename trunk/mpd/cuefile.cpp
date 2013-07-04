@@ -107,11 +107,10 @@ struct CueEntry {
         this->date = date;
     }
 };
+static const qint64 constMsecPerSec  = 1000;
 
 static qint64 indexToMarker(const QString& index)
 {
-    static const qint64 constNsecPerSec  = 1000000000ll;
-
     QRegExp indexRegexp(constIndexRegExp);
     if (!indexRegexp.exactMatch(index)) {
         return -1;
@@ -119,7 +118,7 @@ static qint64 indexToMarker(const QString& index)
 
     QStringList splitted = indexRegexp.capturedTexts().mid(1, -1);
     qlonglong frames = splitted.at(0).toLongLong() * 60 * 75 + splitted.at(1).toLongLong() * 75 + splitted.at(2).toLongLong();
-    return (frames * constNsecPerSec) / 75;
+    return (frames * constMsecPerSec) / 75;
 }
 
 // This and the constFileLineRegExp do most of the "dirty" work, namely: splitting the raw .cue
@@ -153,7 +152,7 @@ static bool updateSong(const CueEntry &entry, const QString &nextIndex, Song &so
     song.albumartist=entry.albumArtist;
     song.genre=entry.genre;
     song.year=entry.date.toInt();
-    song.time=(end-beginning)/1000000000ll;
+    song.time=(end-beginning)/constMsecPerSec;
     return true;
 }
 

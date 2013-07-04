@@ -70,7 +70,9 @@ StreamsModel * StreamsModel::self()
     #endif
 }
 
-const QString StreamsModel::constPrefix("cantata-");
+const QString StreamsModel::constPrefix=QLatin1String("cantata-");
+const QString StreamsModel::constCacheDir=QLatin1String("streams");
+const QString StreamsModel::constCacheExt=QLatin1String(".xml.gz");
 
 static const char * constOrigUrlProperty = "orig-url";
 
@@ -124,6 +126,11 @@ static QIcon getIcon(const QString &name)
     return Icons::self()->streamCategoryIcon;
 }
 
+static QString cacheName(const QString &name, bool createDir=false)
+{
+    return Utils::cacheDir(StreamsModel::constCacheDir, createDir)+name+StreamsModel::constCacheExt;
+}
+
 StreamsModel::StreamsModel(QObject *parent)
     : ActionModel(parent)
     , root(new CategoryItem(QString(), "root"))
@@ -132,13 +139,13 @@ StreamsModel::StreamsModel(QObject *parent)
     , favouritesSaveTimer(0)
 {
     root->children.append(new CategoryItem(constRadioTimeUrl+QLatin1String("?locale=")+QLocale::system().name(), i18n("TuneIn"), root, getIcon("tunein")));
-    root->children.append(new CategoryItem(constIceCastUrl, i18n("IceCast"), root, getIcon("icecast")));
+    root->children.append(new CategoryItem(constIceCastUrl, i18n("IceCast"), root, getIcon("icecast"), "icecast"));
     root->children.append(new CategoryItem(constShoutCastUrl, i18n("ShoutCast"), root, getIcon("shoutcast")));
-    root->children.append(new CategoryItem(constSomaFMUrl, i18n("SomaFM"), root, getIcon("somafm")));
-    root->children.append(new CategoryItem(constDigitallyImportedUrl, i18n("Digitally Imported"), root, getIcon("digitallyimported")));
-    root->children.append(new CategoryItem(constJazzRadioUrl, i18n("JazzRadio.com"), root, getIcon("jazzradio")));
-    root->children.append(new CategoryItem(constRockRadioUrl, i18n("RockRadio.com"), root, getIcon("rockradio")));
-    root->children.append(new CategoryItem(constSkyFmUrl, i18n("Sky.fm"), root, getIcon("skyfm")));
+    root->children.append(new CategoryItem(constSomaFMUrl, i18n("SomaFM"), root, getIcon("somafm"), "somafm"));
+    root->children.append(new CategoryItem(constDigitallyImportedUrl, i18n("Digitally Imported"), root, getIcon("digitallyimported"), "di"));
+    root->children.append(new CategoryItem(constJazzRadioUrl, i18n("JazzRadio.com"), root, getIcon("jazzradio"), "jazzradio"));
+    root->children.append(new CategoryItem(constRockRadioUrl, i18n("RockRadio.com"), root, getIcon("rockradio"), "rockradio"));
+    root->children.append(new CategoryItem(constSkyFmUrl, i18n("Sky.fm"), root, getIcon("skyfm"), "skyfm"));
     favourites=new CategoryItem(constFavouritesUrl, i18n("Favourites"), root, getIcon("favourites"));
     favourites->isFavourites=true;
     root->children.append(favourites);
@@ -280,7 +287,7 @@ void StreamsModel::fetchMore(const QModelIndex &index)
             emit dataChanged(index, index);
             loadFavourites(index);
             cat->state=CategoryItem::Fetched;
-        } else {
+        } else if (!loadCache(cat)) {
             QNetworkRequest req;
             if (constDiUrls.contains(cat->url)) {
                 req=QNetworkRequest(constDiChannelListUrl.arg(cat->url.split(".").at(1)));
@@ -290,13 +297,6 @@ void StreamsModel::fetchMore(const QModelIndex &index)
                 req.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
             } else {
                 req=QNetworkRequest(cat->url);
-            }
-
-            if (cat==favourites && !favourites->children.isEmpty()) {
-                beginRemoveRows(index, 0, favourites->children.count()-1);
-                qDeleteAll(favourites->children);
-                favourites->children.clear();
-                endRemoveRows();
             }
 
             QNetworkReply *job=NetworkAccessManager::self()->get(req);
@@ -349,7 +349,30 @@ bool StreamsModel::checkFavouritesWritable()
 
 void StreamsModel::reloadFavourites()
 {
-    fetchMore(createIndex(root->children.indexOf(favourites), 0, favourites));
+    reload(createIndex(root->children.indexOf(favourites), 0, favourites));
+}
+
+void StreamsModel::reload(const QModelIndex &index)
+{
+    Item *item = toItem(index);
+    if (!item->isCategory()) {
+        return;
+    }
+    CategoryItem *cat=static_cast<CategoryItem *>(item);
+    if (!cat->children.isEmpty()) {
+        beginRemoveRows(index, 0, cat->children.count()-1);
+        qDeleteAll(cat->children);
+        cat->children.clear();
+        endRemoveRows();
+        if (!cat->cacheName.isEmpty()) {
+            QString cache=cacheName(cat->cacheName);
+            if (QFile::exists(cache)) {
+                QFile::remove(cache);
+            }
+        }
+    }
+
+    fetchMore(index);
 }
 
 void StreamsModel::removeFromFavourites(const QModelIndex &index)
@@ -432,16 +455,16 @@ bool StreamsModel::importXml(const QString &fileName)
     return loadXml(fileName, createIndex(root->children.indexOf(favourites), 0, favourites));
 }
 
-bool StreamsModel::saveXml(const QString &fileName, const QList<Item *> &items)
+bool StreamsModel::saveXml(const QString &fileName, const QList<Item *> &items, bool format)
 {
     QFile file(fileName);
 
     if (fileName.endsWith(".xml")) {
-        return file.open(QIODevice::WriteOnly) && saveXml(&file, items.isEmpty() ? favourites->children : items, true);
+        return file.open(QIODevice::WriteOnly) && saveXml(&file, items.isEmpty() ? favourites->children : items, format);
     } else {
         QtIOCompressor compressor(&file);
         compressor.setStreamFormat(QtIOCompressor::GzipFormat);
-        return compressor.open(QIODevice::WriteOnly) && saveXml(&compressor, items.isEmpty() ? favourites->children : items, false);
+        return compressor.open(QIODevice::WriteOnly) && saveXml(&compressor, items.isEmpty() ? favourites->children : items, format);
     }
 }
 
@@ -503,6 +526,34 @@ QStringList StreamsModel::mimeTypes() const
     return types;
 }
 
+bool StreamsModel::loadCache(CategoryItem *cat)
+{
+    if (!cat->cacheName.isEmpty()) {
+        QString cache=cacheName(cat->cacheName);
+        if (!cache.isEmpty()) {
+            QList<Item *> newItems=loadXml(cache, cat, false);
+            if (!newItems.isEmpty()) {
+                QModelIndex index=createIndex(cat->parent->children.indexOf(cat), 0, (void *)cat);
+                beginInsertRows(index, cat->children.count(), (cat->children.count()+newItems.count())-1);
+                cat->children+=newItems;
+                endInsertRows();
+                cat->state=CategoryItem::Fetched;
+                emit dataChanged(index, index);
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
+void StreamsModel::saveCache(CategoryItem *cat, const QList<Item *> &items)
+{
+    if (!cat->cacheName.isEmpty()) {
+        saveXml(cacheName(cat->cacheName, true), items, false);
+    }
+}
+
 void StreamsModel::jobFinished()
 {
     QNetworkReply *job=dynamic_cast<QNetworkReply *>(sender());
@@ -522,7 +573,7 @@ void StreamsModel::jobFinished()
         if (QNetworkReply::NoError==job->error()) {
             QList<Item *> newItems;
             if (cat==favourites) {
-                newItems=loadXml(job, true);
+                newItems=loadXml(job, cat, true);
             } else if (QLatin1String("http")==job->url().scheme()) {
                 QString url=job->url().toString();
                 if (constRadioTimeHost==job->url().host()) {
@@ -532,12 +583,13 @@ void StreamsModel::jobFinished()
                 } else if (constSomaFMUrl==url) {
                     newItems=parseSomaFmResponse(job, cat);
                 } else if (constDiChannelListHost==job->url().host()) {
-                    newItems=parseDigitallyImportedResponse(job, cat, job->property(constOrigUrlProperty).toString());
+                    newItems=parseDigitallyImportedResponse(job, cat);
                 } else if (constShoutCastHost==job->url().host()) {
                     newItems=parseShoutCastResponse(job, cat, job->property(constOrigUrlProperty).toString());
                 } else {
                     newItems=parseListenLiveResponse(job, cat);
                 }
+                saveCache(cat, newItems);
             }
 
             if (!newItems.isEmpty()) {
@@ -777,12 +829,12 @@ QList<StreamsModel::Item *> StreamsModel::parseSomaFmResponse(QIODevice *dev, Ca
     return newItems;
 }
 
-QList<StreamsModel::Item *> StreamsModel::parseDigitallyImportedResponse(QIODevice *dev, CategoryItem *cat, const QString &origUrl)
+QList<StreamsModel::Item *> StreamsModel::parseDigitallyImportedResponse(QIODevice *dev, CategoryItem *cat)
 {
     QList<Item *> newItems;
     QJson::Parser parser;
     QVariantMap data = parser.parse(dev).toMap();
-    QString listenHost=QLatin1String("listen.")+QUrl(origUrl).host().remove("www.");
+    QString listenHost=QLatin1String("listen.")+QUrl(cat->url).host().remove("www.");
 
     if (data.contains("channel_filters")) {
         QVariantList filters = data["channel_filters"].toList();
@@ -1131,24 +1183,7 @@ void StreamsModel::loadFavourites(const QModelIndex &index)
 
 bool StreamsModel::loadXml(const QString &fileName, const QModelIndex &index)
 {
-    QFile file(fileName);
-    if (!file.open(QIODevice::ReadOnly)) {
-        return false;
-    }
-    // Check for gzip header...
-    QByteArray header=file.read(2);
-    bool isCompressed=((unsigned char)header[0])==0x1f && ((unsigned char)header[1])==0x8b;
-    file.seek(0);
-
-    QtIOCompressor compressor(&file);
-    if (isCompressed) {
-        compressor.setStreamFormat(QtIOCompressor::GzipFormat);
-        if (!compressor.open(QIODevice::ReadOnly)) {
-            return false;
-        }
-    }
-
-    QList<Item *> newItems=loadXml(isCompressed ? (QIODevice *)&compressor : (QIODevice *)&file, true);
+    QList<Item *> newItems=loadXml(fileName, favourites, true);
 
     if (!newItems.isEmpty()) {
         beginInsertRows(index, favourites->children.count(), (favourites->children.count()+newItems.count())-1);
@@ -1159,45 +1194,118 @@ bool StreamsModel::loadXml(const QString &fileName, const QModelIndex &index)
     return false;
 }
 
-QList<StreamsModel::Item *> StreamsModel::loadXml(QIODevice *dev, bool isInternal)
+QList<StreamsModel::Item *> StreamsModel::loadXml(const QString &fileName, CategoryItem *cat, bool isInternal)
 {
-    QList<Item *> newItems;
-    QXmlStreamReader doc(dev);
-    QSet<QString> existingUrls;
-    QSet<QString> existingNames;
+    QFile file(fileName);
+    if (!file.open(QIODevice::ReadOnly)) {
+        return QList<StreamsModel::Item *>();
+    }
+    // Check for gzip header...
+    QByteArray header=file.read(2);
+    bool isCompressed=((unsigned char)header[0])==0x1f && ((unsigned char)header[1])==0x8b;
+    file.seek(0);
 
-    if (!isInternal) {
-        foreach (Item *i, favourites->children) {
-            existingUrls.insert(i->url);
-            existingNames.insert(i->name);
+    QtIOCompressor compressor(&file);
+    if (isCompressed) {
+        compressor.setStreamFormat(QtIOCompressor::GzipFormat);
+        if (!compressor.open(QIODevice::ReadOnly)) {
+            return QList<StreamsModel::Item *>();
         }
     }
 
-    while (!doc.atEnd()) {
-        doc.readNext();
+    return loadXml(isCompressed ? (QIODevice *)&compressor : (QIODevice *)&file, cat, isInternal);
+}
 
-        if (doc.isStartElement() && QLatin1String("stream")==doc.name()) {
-            QString name=doc.attributes().value("name").toString();
-            QString origName=name;
-            QString url=doc.attributes().value("url").toString();
+QList<StreamsModel::Item *> StreamsModel::loadXml(QIODevice *dev, CategoryItem *cat, bool isInternal)
+{
+    QList<Item *> newItems;
+    QXmlStreamReader doc(dev);
 
-            if (!name.isEmpty() && !name.isEmpty() && (isInternal || !existingUrls.contains(url))) {
-                int i=1;
-                if (!isInternal) {
-                    for (; i<100 && existingNames.contains(name); ++i) {
-                        name=origName+QLatin1String("_")+QString::number(i);
+    if (cat==favourites) {
+        QSet<QString> existingUrls;
+        QSet<QString> existingNames;
+
+        if (!isInternal) {
+            foreach (Item *i, favourites->children) {
+                existingUrls.insert(i->url);
+                existingNames.insert(i->name);
+            }
+        }
+
+        while (!doc.atEnd()) {
+            doc.readNext();
+
+            if (doc.isStartElement() && QLatin1String("stream")==doc.name()) {
+                QString name=doc.attributes().value("name").toString();
+                QString origName=name;
+                QString url=doc.attributes().value("url").toString();
+
+                if (!name.isEmpty() && !name.isEmpty() && (isInternal || !existingUrls.contains(url))) {
+                    int i=1;
+                    if (!isInternal) {
+                        for (; i<100 && existingNames.contains(name); ++i) {
+                            name=origName+QLatin1String("_")+QString::number(i);
+                        }
+                    }
+
+                    if (i<100) {
+                        existingNames.insert(name);
+                        existingUrls.insert(url);
+                        newItems.append(new Item(url, name, cat));
                     }
                 }
+            }
+        }
+    } else {
+        CategoryItem *currentCat=cat;
+        CategoryItem *prevCat=cat;
+        while (!doc.atEnd()) {
+            doc.readNext();
 
-                if (i<100) {
-                    existingNames.insert(name);
-                    existingUrls.insert(url);
-                    newItems.append(new Item(url, name, favourites));
+            if (doc.isStartElement()) {
+                if (QLatin1String("stream")==doc.name()) {
+                    QString name=doc.attributes().value("name").toString();
+                    QString url=doc.attributes().value("url").toString();
+                    if (currentCat==cat) {
+                        newItems.append(new Item(url, name, currentCat));
+                    } else {
+                        currentCat->children.append(new Item(url, name, currentCat));
+                    }
+                } else if (QLatin1String("category")==doc.name()) {
+                    prevCat=currentCat;
+                    QString name=doc.attributes().value("name").toString();
+                    currentCat=new CategoryItem(QString(), name, prevCat);
+                    currentCat->state=CategoryItem::Fetched;
+                    newItems.append(currentCat);
                 }
+            } if (doc.isEndElement() && QLatin1String("category")==doc.name()) {
+                currentCat=prevCat;
             }
         }
     }
     return newItems;
+}
+
+static void saveStream(QXmlStreamWriter &doc, const StreamsModel::Item *item)
+{
+    doc.writeStartElement("stream");
+    doc.writeAttribute("name", item->name);
+    doc.writeAttribute("url", item->url);
+    doc.writeEndElement();
+}
+
+static void saveCategory(QXmlStreamWriter &doc, const StreamsModel::CategoryItem *cat)
+{
+    doc.writeStartElement("category");
+    doc.writeAttribute("name", cat->name);
+    foreach (const StreamsModel::Item *i, cat->children) {
+        if (i->isCategory()) {
+            saveCategory(doc, static_cast<const StreamsModel::CategoryItem *>(i));
+        } else {
+            saveStream(doc, static_cast<const StreamsModel::Item *>(i));
+        }
+    }
+    doc.writeEndElement();
 }
 
 bool StreamsModel::saveXml(QIODevice *dev, const QList<Item *> &items, bool format) const
@@ -1214,10 +1322,11 @@ bool StreamsModel::saveXml(QIODevice *dev, const QList<Item *> &items, bool form
     }
 
     foreach (const Item *i, items) {
-        doc.writeStartElement("stream");
-        doc.writeAttribute("name", i->name);
-        doc.writeAttribute("url", i->url);
-        doc.writeEndElement();
+        if (i->isCategory()) {
+            saveCategory(doc, static_cast<const CategoryItem *>(i));
+        } else {
+            saveStream(doc, i);
+        }
     }
     doc.writeEndElement();
     doc.writeEndDocument();
@@ -1238,9 +1347,20 @@ void StreamsModel::buildListenLive()
             doc.readNext();
             if (doc.isStartElement()) {
                 if (QLatin1String("listing")==doc.name()) {
-                    region->children.append(new CategoryItem(doc.attributes().value("url").toString(),
+                    QString url=doc.attributes().value("url").toString();
+                    QString cache=doc.attributes().value("cache").toString();
+                    if (cache.isEmpty() && url.endsWith(".html")) {
+                        QStringList parts=url.split("/", QString::SkipEmptyParts);
+                        if (!parts.isEmpty()) {
+                            cache=parts.last().remove((".html"));
+                        }
+                    }
+                    if (!cache.isEmpty()) {
+                        cache="ll-"+cache;
+                    }
+                    region->children.append(new CategoryItem(url,
                                                              doc.attributes().value("name").toString(),
-                                                             region));
+                                                             region, QIcon(), cache));
                 } else if (QLatin1String("region")==doc.name()) {
                     prevRegion=region;
                     region=new CategoryItem(QString(), doc.attributes().value("name").toString(), prevRegion);

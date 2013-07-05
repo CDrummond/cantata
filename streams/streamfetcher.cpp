@@ -134,9 +134,7 @@ static QString parse(const QByteArray &data)
     } else if ( (-1==data.indexOf("<html") && -1!=data.indexOf("http:/")) || // flat list?
                 (-1!=data.indexOf("#EXTM3U")) ) { // m3u with comments?
         return parseExt3Mu(data, handlers);
-    }
-
-    if (data.startsWith("http://")) {
+    } else if (data.startsWith("http://")) {
         QStringList lines=QString(data).split(QRegExp(QLatin1String("(\r\n|\n|\r)")), QString::SkipEmptyParts);
         if (!lines.isEmpty()) {
             return lines.first();

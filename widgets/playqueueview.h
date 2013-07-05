@@ -42,6 +42,7 @@ class QModelIndex;
 class QMenu;
 class Spinner;
 class PlayQueueView;
+class MessageOverlay;
 
 class PlayQueueTreeView : public TreeView
 {
@@ -121,10 +122,12 @@ public Q_SLOTS:
     void showSpinner();
     void hideSpinner();
     void setImage(const QImage &img);
+    void streamFetchStatus(const QString &msg);
 
 Q_SIGNALS:
     void itemsSelected(bool);
     void doubleClicked(const QModelIndex &);
+    void cancelStreamFetch();
 
 private:
     void drawBackdrop(QWidget *widget, const QSize &size);
@@ -133,6 +136,7 @@ private:
     PlayQueueGroupedView *groupedView;
     PlayQueueTreeView *treeView;
     Spinner *spinner;
+    MessageOverlay *msgOverlay;
 
     bool useCoverAsBgnd;
     QPropertyAnimation animator;

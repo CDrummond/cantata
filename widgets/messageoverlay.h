@@ -21,54 +21,36 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef STREAMFETCHER_H
-#define STREAMFETCHER_H
+#ifndef MESSAGE_OVERLAY_H
+#define MESSAGE_OVERLAY_H
 
-#include <QObject>
-#include <QList>
-#include <QByteArray>
-#include <QStringList>
+#include <QWidget>
+class ToolButton;
 
-class QNetworkReply;
-
-class StreamFetcher : public QObject
+class MessageOverlay : public QWidget
 {
     Q_OBJECT
 
 public:
-    StreamFetcher(QObject *p);
-    virtual ~StreamFetcher();
+    MessageOverlay(QObject *p);
+    virtual ~MessageOverlay() { }
 
-    void get(const QStringList &items, int insertRow, bool replace, quint8 priority);
-
-private:
-    void doNext();
-
-public Q_SLOTS:
-    void cancel();
+    void setWidget(QWidget *widget);
+    void setText(const QString &txt);
+    void paintEvent(QPaintEvent *);
 
 Q_SIGNALS:
-    void result(const QStringList &items, int insertRow, bool replace, quint8 priority);
-    void status(const QString &msg);
-
-private Q_SLOTS:
-    void dataReady();
-    void jobFinished();
+    void cancel();
 
 private:
-    void jobFinished(QNetworkReply *reply);
+    bool eventFilter(QObject *o, QEvent *e);
+    void setSizeAndPosition();
 
 private:
-    QNetworkReply *job;
-    QString current;
-    QString currentName;
-    QStringList todo;
-    QStringList done;
-    int row;
-    bool replacePlayQueue;
-    quint8 prio;
-    int redirects;
-    QByteArray data;
+    int spacing;
+    QString text;
+    ToolButton *cancelButton;
 };
 
 #endif
+

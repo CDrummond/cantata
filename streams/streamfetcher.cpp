@@ -26,6 +26,7 @@
 #include "mpdconnection.h"
 #include "mpdparseutils.h"
 #include "streamsmodel.h"
+#include "localize.h"
 #include <QRegExp>
 #include <QUrl>
 #include <QXmlStreamReader>
@@ -178,6 +179,7 @@ void StreamFetcher::doNext()
         current=todo.takeFirst();
         QUrl u(current);
         currentName=MPDParseUtils::getStreamName(current);
+        emit status(i18n("Fetching %1").arg(currentName.isEmpty() ? u.toString() : currentName));
         if (!currentName.isEmpty()) {
             current=current.left(current.length()-(currentName.length()+1));
         }
@@ -196,6 +198,7 @@ void StreamFetcher::doNext()
     if (todo.isEmpty() && !done.isEmpty()) {
         job=0;
         emit result(done, row, replacePlayQueue, prio);
+        emit status(QString());
     }
 }
 
@@ -213,6 +216,7 @@ void StreamFetcher::cancel()
         job->deleteLater();
     }
     job=0;
+    emit status(QString());
 }
 
 void StreamFetcher::dataReady()

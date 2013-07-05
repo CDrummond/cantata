@@ -125,6 +125,7 @@ PlayQueueModel::PlayQueueModel(QObject *parent)
     connect(this, SIGNAL(modelReset()), this, SLOT(stats()));
     connect(fetcher, SIGNAL(result(const QStringList &, int, bool, quint8)), SLOT(addFiles(const QStringList &, int, bool, quint8)));
     connect(fetcher, SIGNAL(result(const QStringList &, int, bool, quint8)), SIGNAL(streamsFetched()));
+    connect(fetcher, SIGNAL(status(QString)), SIGNAL(streamFetchStatus(QString)));
     connect(this, SIGNAL(filesAdded(const QStringList, quint32, quint32, bool, quint8)),
             MPDConnection::self(), SLOT(add(const QStringList, quint32, quint32, bool, quint8)));
     connect(this, SIGNAL(move(const QList<quint32> &, quint32, quint32)),
@@ -803,6 +804,11 @@ void PlayQueueModel::stats()
     }
 
     emit statsUpdated(songs.size(), time);
+}
+
+void PlayQueueModel::cancelStreamFetch()
+{
+    fetcher->cancel();
 }
 
 void PlayQueueModel::stopAfterCurrentChanged(bool afterCurrent)

@@ -105,6 +105,8 @@
 66. When searching in dynamic page, also search rules themselves.
 67. For MPD versions 0.17 and above, if Cantata can read a .cue file then it
     will list each track as a separate entry in the artists and albums views.
+68. When loading a stream into the playqueue, show a status message at the
+    bottom - allowing the loading to be cancelled.
 
 1.0.3
 -----

@@ -128,12 +128,19 @@ static QString detectMimeType(const QString &file)
     return QString();
 }
 
-static void writeMimeType(const QString &mimeType, QTcpSocket *socket)
+static void writeMimeType(const QString &mimeType, QTcpSocket *socket, qint64 size=0)
 {
     if (!mimeType.isEmpty()) {
         QTextStream os(socket);
         os.setAutoDetectUnicode(true);
-        os << "HTTP/1.0 200 OK\r\nContent-Type: " << mimeType << "\r\n\r\n";
+        if (size>0) {
+            os << "HTTP/1.0 200 OK"
+               << "\r\nAccept-Ranges: bytes"
+               << "\r\nContent-Length: " << QString::number(size)
+               << "\r\nContent-Type: " << mimeType << "\r\n\r\n";
+        } else {
+            os << "HTTP/1.0 200 OK\r\nContent-Type: " << mimeType << "\r\n\r\n";
+        }
     }
 }
 
@@ -147,6 +154,67 @@ static QHostAddress getAddress(const QNetworkInterface &iface)
         }
     }
     return QHostAddress();
+}
+
+static int getSep(const QByteArray &a, int pos)
+{
+    for (int i=pos+1; i<a.length(); ++i) {
+        if ('\n'==a[i] || '\r'==a[i] || ' '==a[i]) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+static QList<QByteArray> split(const QByteArray &a)
+{
+    QList<QByteArray> rv;
+    int lastPos=-1;
+    for (;;) {
+        int pos=getSep(a, lastPos);
+
+        if (pos==(lastPos+1)) {
+            lastPos++;
+        } else if (pos>-1) {
+            lastPos++;
+            rv.append(a.mid(lastPos, pos-lastPos));
+            lastPos=pos;
+        } else {
+            lastPos++;
+            rv.append(a.mid(lastPos));
+            break;
+        }
+    }
+    return rv;
+}
+
+static bool isFromMpd(const QStringList &params)
+{
+    foreach (const QString &str, params) {
+        if (str.startsWith("User-Agent:") && str.contains("Music Player Daemon")) {
+            return true;
+        }
+    }
+    return false;
+}
+
+static void getRange(const QStringList &params, qint64 &from, qint64 &to)
+{
+    foreach (const QString &str, params) {
+        if (str.startsWith("Range:")) {
+            int start=str.indexOf("bytes=");
+            if (start>0) {
+                QStringList range=str.mid(start+6).split("-", QString::SkipEmptyParts);
+                if (1==range.length()) {
+                    from=range.at(0).toLongLong();
+                } else if (2==range.length()) {
+                    from=range.at(0).toLongLong();
+                    to=range.at(1).toLongLong();
+                }
+            }
+            break;
+        }
+    }
 }
 
 HttpSocket::HttpSocket(const QString &iface, quint16 port)
@@ -235,38 +303,6 @@ void HttpSocket::incomingConnection(int socket)
     s->setSocketDescriptor(socket);
 }
 
-int getSep(const QByteArray &a, int pos)
-{
-    for (int i=pos+1; i<a.length(); ++i) {
-        if ('\n'==a[i] || '\r'==a[i] || ' '==a[i]) {
-            return i;
-        }
-    }
-    return -1;
-}
-
-QList<QByteArray> split(const QByteArray &a)
-{
-    QList<QByteArray> rv;
-    int lastPos=-1;
-    for (;;) {
-        int pos=getSep(a, lastPos);
-
-        if (pos==(lastPos+1)) {
-            lastPos++;
-        } else if (pos>-1) {
-            lastPos++;
-            rv.append(a.mid(lastPos, pos-lastPos));
-            lastPos=pos;
-        } else {
-            lastPos++;
-            rv.append(a.mid(lastPos));
-            break;
-        }
-    }
-    return rv;
-}
-
 void HttpSocket::readClient()
 {
     if (terminated) {
@@ -277,6 +313,12 @@ void HttpSocket::readClient()
     if (socket->canReadLine()) {
         QList<QByteArray> tokens = split(socket->readLine()); // QRegExp("[ \r\n][ \r\n]*"));
         if (tokens.length()>=2 && "GET"==tokens[0]) {
+            QStringList params = QString(socket->readAll()).split(QRegExp("[\r\n][\r\n]*"));
+
+            if (!isFromMpd(params)) {
+                return;
+            }
+
             #if QT_VERSION < 0x050000
             QUrl url(QUrl::fromEncoded(tokens[1]));
             QUrl &q=url;
@@ -365,37 +407,60 @@ void HttpSocket::readClient()
                     QFile f(url.path());
 
                     if (f.open(QIODevice::ReadOnly)) {
-                        writeMimeType(detectMimeType(url.path()), socket);
-                        ok=true;
-                        static const int constChunkSize=8192;
-                        char buffer[constChunkSize];
+                        qint64 from=0;
+                        qint64 to=0;
                         qint64 totalBytes = f.size();
+
+                        getRange(params, from, to);
+                        writeMimeType(detectMimeType(url.path()), socket, totalBytes);
+                        ok=true;
+                        static const int constChunkSize=32768;
+                        char buffer[constChunkSize];
                         qint64 readPos = 0;
                         qint64 bytesRead = 0;
                         bool stop=false;
 
-                        do {
-                            bytesRead = f.read(buffer, constChunkSize);
-                            readPos+=bytesRead;
-                            if (bytesRead<0 || terminated) {
-                                break;
+                        if (0!=from) {
+                            if (!f.seek(from)) {
+                                ok=false;
                             }
+                            bytesRead+=from;
+                        }
 
-                            qint64 writePos=0;
+                        if (0!=to && to>from && to!=totalBytes) {
+                            totalBytes-=(totalBytes-to);
+                        }
+
+                        if (ok) {
                             do {
-                                qint64 bytesWritten = socket->write(&buffer[writePos], bytesRead - writePos);
-                                if (terminated || -1==bytesWritten) {
-                                    stop=true;
+                                bytesRead = f.read(buffer, constChunkSize);
+                                readPos+=bytesRead;
+                                if (bytesRead<0 || terminated) {
                                     break;
                                 }
-                                socket->flush();
-                                writePos+=bytesWritten;
-                            } while (writePos<bytesRead);
 
-                            if (f.atEnd()) {
-                                break;
-                            }
-                        } while ((readPos+bytesRead)<totalBytes && !stop && !terminated);
+                                qint64 writePos=0;
+                                do {
+                                    qint64 bytesWritten = socket->write(&buffer[writePos], bytesRead - writePos);
+                                    if (terminated || -1==bytesWritten) {
+                                        stop=true;
+                                        break;
+                                    }
+                                    socket->flush();
+                                    writePos+=bytesWritten;
+                                } while (writePos<bytesRead);
+
+                                if (f.atEnd()) {
+                                    break;
+                                }
+                                if (QAbstractSocket::ConnectedState==socket->state()) {
+                                    socket->waitForBytesWritten();
+                                }
+                                if (QAbstractSocket::ConnectedState!=socket->state()) {
+                                    break;
+                                }
+                            } while ((readPos+bytesRead)<totalBytes && !stop && !terminated);
+                        }
                     }
                 }
             }

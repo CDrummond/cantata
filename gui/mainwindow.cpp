@@ -1820,7 +1820,7 @@ void MainWindow::updateCurrentSong(const Song &song)
     if (current.time<5 && MPDStatus::self()->songId()==current.id && MPDStatus::self()->timeTotal()>5) {
         current.time=MPDStatus::self()->timeTotal();
     }
-    positionSlider->setEnabled(-1!=current.id && (!currentIsStream() || (!current.isCantataStream() && !current.isCdda() && current.time>5)));
+    positionSlider->setEnabled(-1!=current.id && (!currentIsStream() || (!current.isCdda() && current.time>5)));
     coverWidget->update(current);
 
     if (current.isStream() && !current.isCantataStream() && !current.isCdda()) {

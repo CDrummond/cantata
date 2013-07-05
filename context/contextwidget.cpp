@@ -208,6 +208,7 @@ ContextWidget::ContextWidget(QWidget *parent)
     connect(artist, SIGNAL(findAlbum(QString,QString)), this, SIGNAL(findAlbum(QString,QString)));
     connect(album, SIGNAL(playSong(QString)), this, SIGNAL(playSong(QString)));
     readConfig();
+    setZoom();
     setWide(true);
     splitterColor=palette().text().color();
     QDesktopWidget *dw=QApplication::desktop();
@@ -217,6 +218,16 @@ ContextWidget::ContextWidget(QWidget *parent)
         minBackdropSize.setHeight(((int)(minBackdropSize.height()/32))*32);
     } else {
         minBackdropSize=QSize(1024, 768);
+    }
+}
+
+void ContextWidget::setZoom()
+{
+    int zoom=Settings::self()->contextZoom();
+    if (zoom) {
+        artist->setZoom(zoom);
+        album->setZoom(zoom);
+        song->setZoom(zoom);
     }
 }
 
@@ -330,12 +341,6 @@ void ContextWidget::readConfig()
     useBackdrop(Settings::self()->contextBackdrop());
     useDarkBackground(Settings::self()->contextDarkBackground());
     WikipediaEngine::setIntroOnly(Settings::self()->wikipediaIntroOnly());
-    int zoom=Settings::self()->contextZoom();
-    if (zoom) {
-        artist->setZoom(zoom);
-        album->setZoom(zoom);
-        song->setZoom(zoom);
-    }
 }
 
 void ContextWidget::saveConfig()

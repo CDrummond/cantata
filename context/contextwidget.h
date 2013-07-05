@@ -92,6 +92,7 @@ private Q_SLOTS:
     void backdropCreated(const QString &artist, const QImage &img);
 
 private:
+    void setZoom();
     void setWide(bool w);
     void resizeEvent(QResizeEvent *e);
     bool eventFilter(QObject *o, QEvent *e);

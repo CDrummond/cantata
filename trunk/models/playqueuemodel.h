@@ -104,6 +104,7 @@ public Q_SLOTS:
     void addFiles(const QStringList &filenames, int row, bool replace, quint8 priority);
     void prioritySet(const QList<qint32> &ids, quint8 priority);
     void stats();
+    void cancelStreamFetch();
 
 private Q_SLOTS:
     void stopAfterCurrentChanged(bool afterCurrent);
@@ -120,6 +121,7 @@ Q_SIGNALS:
     void streamsFetched();
     void removeSongs(const QList<qint32> &items);
     void updateCurrent(const Song &s);
+    void streamFetchStatus(const QString &msg);
 
 private:
     QList<Song> songs;

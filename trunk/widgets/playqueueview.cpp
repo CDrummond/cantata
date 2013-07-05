@@ -30,6 +30,7 @@
 #include "mpdstatus.h"
 #include "localize.h"
 #include "spinner.h"
+#include "messageoverlay.h"
 #include <QHeaderView>
 #include <QMenu>
 #include <QAction>
@@ -221,6 +222,7 @@ void PlayQueueTreeView::toggleHeaderItem(bool visible)
 PlayQueueView::PlayQueueView(QWidget *parent)
     : QStackedWidget(parent)
     , spinner(0)
+    , msgOverlay(0)
     , useCoverAsBgnd(false)
 {
     groupedView=new PlayQueueGroupedView(this);
@@ -273,6 +275,9 @@ void PlayQueueView::setGrouped(bool g)
             if (spinner->isActive()) {
                 spinner->start();
             }
+        }
+        if (msgOverlay) {
+            msgOverlay->setWidget(view()->viewport());
         }
     }
 }
@@ -471,6 +476,17 @@ void PlayQueueView::setImage(const QImage &img)
         animator.setEndValue(1.0);
         animator.start();
     }
+}
+
+void PlayQueueView::streamFetchStatus(const QString &msg)
+{
+    if (!msgOverlay) {
+        msgOverlay=new MessageOverlay(this);
+        msgOverlay->setWidget(view()->viewport());
+        connect(msgOverlay, SIGNAL(cancel()), SIGNAL(cancelStreamFetch()));
+        connect(msgOverlay, SIGNAL(cancel()), SLOT(hideSpinner()));
+    }
+    msgOverlay->setText(msg);
 }
 
 void PlayQueueView::drawBackdrop(QWidget *widget, const QSize &size)

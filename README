@@ -466,6 +466,7 @@ The following debug values may be used:
     Context widget           64
     Context backdrop        128
     Dynamic                 256
+    Stream Fetching         512
 
 These values may be combined to enable multipe output. e.g. to enable MPD and
 covers logging:

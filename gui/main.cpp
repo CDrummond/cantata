@@ -50,6 +50,7 @@
 #include "coverwidget.h"
 #include "backdropcreator.h"
 #include "dynamic.h"
+#include "streamfetcher.h"
 
 #ifndef ENABLE_KDE_SUPPORT
 // Taken from Clementine!
@@ -104,7 +105,8 @@ enum Debug {
     Dbg_Context_Meta      = 0x0020,
     Dbg_Context_Widget    = 0x0040,
     Dbg_Context_Backdrop  = 0x0080,
-    Dbg_Dynamic           = 0x0100
+    Dbg_Dynamic           = 0x0100,
+    Dbg_StreamFetching    = 0x0200
 };
 
 int main(int argc, char *argv[])
@@ -138,6 +140,9 @@ int main(int argc, char *argv[])
         }
         if (dbg&Dbg_Dynamic) {
             Dynamic::enableDebug();
+        }
+        if (dbg&Dbg_StreamFetching) {
+            StreamFetcher::enableDebug();
         }
     }
 

@@ -36,6 +36,8 @@ class StreamFetcher : public QObject
     Q_OBJECT
 
 public:
+    static void enableDebug();
+
     StreamFetcher(QObject *p);
     virtual ~StreamFetcher();
 

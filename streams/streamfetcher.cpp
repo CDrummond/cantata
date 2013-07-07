@@ -31,6 +31,14 @@
 #include <QUrl>
 #include <QXmlStreamReader>
 
+#include <QDebug>
+static bool debugEnabled=false;
+#define DBUG if (debugEnabled) qWarning() << "StreamFetcher" << __FUNCTION__
+void StreamFetcher::enableDebug()
+{
+    debugEnabled=true;
+}
+
 static const int constMaxRedirects = 3;
 static const int constMaxData = 1024;
 static const int constTimeout = 3*1000;
@@ -123,21 +131,28 @@ static QString parse(const QByteArray &data)
 {
     QSet<QString> handlers=MPDConnection::self()->urlHandlers();
     if (data.length()>10 && !strncasecmp(data.constData(), "[playlist]", 10)) {
+        DBUG << "playlist";
         return parsePlaylist(data, QLatin1String("File"), handlers);
     } else if (data.length()>7 && (!strncasecmp(data.constData(), "#EXTM3U", 7) || !strncasecmp(data.constData(), "http://", 7))) {
+        DBUG << "ext3mu";
         return parseExt3Mu(data, handlers);
     } else if (data.length()>5 && !strncasecmp(data.constData(), "<asx ", 5)) {
+        DBUG << "asx";
         return parseAsx(data, handlers);
     } else if (data.length()>11 && !strncasecmp(data.constData(), "[reference]", 11)) {
+        DBUG << "playlist/ref";
         return parsePlaylist(data, QLatin1String("Ref"), handlers);
     } else if (data.length()>5 && !strncasecmp(data.constData(), "<?xml", 5)) {
+        DBUG << "xml";
         return parseXml(data, handlers);
     } else if ( (-1==data.indexOf("<html") && -1!=data.indexOf("http:/")) || // flat list?
                 (-1!=data.indexOf("#EXTM3U")) ) { // m3u with comments?
+        DBUG << "ext3mu/2";
         return parseExt3Mu(data, handlers);
     } else if (data.startsWith("http://")) {
         QStringList lines=QString(data).split(QRegExp(QLatin1String("(\r\n|\n|\r)")), QString::SkipEmptyParts);
         if (!lines.isEmpty()) {
+            DBUG << "http";
             return lines.first();
         }
     }
@@ -161,6 +176,7 @@ void StreamFetcher::get(const QStringList &items, int insertRow, bool replace, q
         return;
     }
 
+    DBUG << "get" << items;
     cancel();
     todo=items;
     done.clear();
@@ -187,10 +203,12 @@ void StreamFetcher::doNext()
             data.clear();
             u.setScheme("http");
             job=NetworkAccessManager::self()->get(u, constTimeout);
+            DBUG << "Check" << u.toString();
             connect(job, SIGNAL(readyRead()), this, SLOT(dataReady()));
             connect(job, SIGNAL(finished()), this, SLOT(jobFinished()));
             return;
         } else {
+            DBUG << "use orig" << current;
             done.append(MPDParseUtils::addStreamName(current, currentName));
         }
     }
@@ -250,6 +268,7 @@ void StreamFetcher::jobFinished(QNetworkReply *reply)
             QVariant redirect = reply->header(QNetworkRequest::LocationHeader);
             if (redirect.isValid() && ++redirects<constMaxRedirects) {
                 current=redirect.toString();
+                DBUG << "real redirect" << current;
                 data.clear();
                 job=NetworkAccessManager::self()->get(current, constTimeout);
                 connect(job, SIGNAL(readyRead()), this, SLOT(dataReady()));
@@ -258,20 +277,24 @@ void StreamFetcher::jobFinished(QNetworkReply *reply)
             } else {
                 QString u=parse(data);
                 if (u.isEmpty() || u==current) {
+                    DBUG << "use (empty/current)" << current;
                     done.append(MPDParseUtils::addStreamName(current.startsWith(StreamsModel::constPrefix) ? current.mid(StreamsModel::constPrefix.length()) : current, currentName));
                 } else if (u.startsWith(QLatin1String("http://")) && ++redirects<constMaxRedirects) {
                     // Redirect...
                     current=u;
+                    DBUG << "semi-redirect" << current;
                     data.clear();
                     job=NetworkAccessManager::self()->get(u, constTimeout);
                     connect(job, SIGNAL(readyRead()), this, SLOT(dataReady()));
                     connect(job, SIGNAL(finished()), this, SLOT(jobFinished()));
                     redirected=true;
                 } else {
+                    DBUG << "use" << u;
                     done.append(MPDParseUtils::addStreamName(u, currentName));
                 }
             }
         } else {
+            DBUG << "error " << reply->errorString() << " - use" << current;
             done.append(MPDParseUtils::addStreamName(current.startsWith(StreamsModel::constPrefix) ? current.mid(StreamsModel::constPrefix.length()) : current, currentName));
         }
 

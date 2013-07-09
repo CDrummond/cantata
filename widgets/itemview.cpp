@@ -857,7 +857,7 @@ void ItemView::showMessage(const QString &message, int timeout)
         msgOverlay=new MessageOverlay(this);
         msgOverlay->setWidget(view()->viewport());
     }
-    msgOverlay->setText(message, timeout);
+    msgOverlay->setText(message, timeout, timeout<=0);
 }
 
 void ItemView::showSpinner()

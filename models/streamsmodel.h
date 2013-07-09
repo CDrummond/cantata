@@ -67,10 +67,17 @@ public:
         virtual ~CategoryItem() { qDeleteAll(children); }
         virtual bool isCategory() const { return true; }
         void removeCache();
+        void saveCache() const;
+        QList<Item *> loadCache();
         void removeBookmarks();
         void saveBookmarks();
         QList<Item *> loadBookmarks();
-        CategoryItem *createBookmarksCategory();
+        CategoryItem * createBookmarksCategory();
+        bool saveXml(const QString &fileName, bool format=false) const;
+        bool saveXml(QIODevice *dev, bool format=false) const;
+        QList<Item *> loadXml(const QString &fileName, bool importing=false);
+        QList<Item *> loadXml(QIODevice *dev, bool importing=false);
+
         State state;
         bool isFavourites : 1;
         bool isAll : 1;
@@ -105,13 +112,15 @@ public:
     bool hasChildren(const QModelIndex &index) const;
     bool canFetchMore(const QModelIndex &index) const;
     void fetchMore(const QModelIndex &index);
+    void reload(const QModelIndex &index);
 
     void saveFavourites(bool force=false);
+    bool exportFavourites(const QString &fileName);
+    bool importIntoFavourites(const QString &fileName);
     bool haveFavourites() const { return !favourites->children.isEmpty(); }
     bool isFavoritesWritable() { return favouritesIsWriteable; }
     bool checkFavouritesWritable();
     void reloadFavourites();
-    void reload(const QModelIndex &index);
     void removeFromFavourites(const QModelIndex &index);
     void addToFavourites(const QString &url, const QString &name);
     QString favouritesNameForUrl(const QString &u);
@@ -121,9 +130,6 @@ public:
     void addBookmark(const QModelIndex &index);
     void removeBookmark(const QModelIndex &index);
     void removeAllBookmarks(const QModelIndex &index);
-
-    bool importXml(const QString &fileName);
-    bool saveXml(const QString &fileName, const QList<Item *> &items, bool format=true);
 
     QStringList filenames(const QModelIndexList &indexes, bool addPrefix) const;
     QMimeData * mimeData(const QModelIndexList &indexes) const;
@@ -142,7 +148,6 @@ private Q_SLOTS:
 
 private:
     bool loadCache(CategoryItem *cat);
-    void saveCache(CategoryItem *cat, const QList<Item *> &items);
     Item * toItem(const QModelIndex &index) const { return index.isValid() ? static_cast<Item*>(index.internalPointer()) : root; }
     QList<Item *> parseRadioTimeResponse(QIODevice *dev, CategoryItem *cat);
     QList<Item *> parseIceCastResponse(QIODevice *dev, CategoryItem *cat);
@@ -154,11 +159,7 @@ private:
     QList<Item *> parseShoutCastStations(QXmlStreamReader &doc, CategoryItem *cat);
     Item * parseRadioTimeEntry(QXmlStreamReader &doc, CategoryItem *parent);
     Item * parseSomaFmEntry(QXmlStreamReader &doc, CategoryItem *parent);
-    void loadFavourites(const QModelIndex &index);
-    bool loadXml(const QString &fileName, const QModelIndex &index);
-    QList<Item *> loadXml(const QString &fileName, CategoryItem *cat, bool isInternal);
-    QList<Item *> loadXml(QIODevice *dev, CategoryItem *cat, bool isInternal);
-    bool saveXml(QIODevice *dev, const QList<Item *> &items, bool format) const;
+    bool loadFavourites(const QString &fileName, const QModelIndex &index, bool importing=false);
     void buildListenLive();
 
 private:

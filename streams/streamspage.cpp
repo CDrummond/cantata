@@ -224,7 +224,7 @@ void StreamsPage::importXml()
         return;
     }
 
-    if (!StreamsModel::self()->importXml(fileName)) {
+    if (!StreamsModel::self()->importIntoFavourites(fileName)) {
         MessageBox::error(this, i18n("Failed to import <b>%1</b>!<br/>Please check this is of the correct type.").arg(fileName));
     }
 }
@@ -246,7 +246,7 @@ void StreamsPage::exportXml()
         fileName+=ext;
     }
 
-    if (!StreamsModel::self()->saveXml(fileName, QList<StreamsModel::Item *>())) {
+    if (!StreamsModel::self()->exportFavourites(fileName)) {
         MessageBox::error(this, i18n("Failed to create <b>%1</b>!").arg(fileName));
     }
 }

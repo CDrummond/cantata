@@ -89,7 +89,6 @@ StreamsPage::StreamsPage(QWidget *p)
     menu->addAction(exportAction);
     menu->addSeparator();
     menu->addAction(settingsAct);
-    menu->addSeparator();
     menu->addAction(searchAction);
     menuButton->setMenu(menu);
     Icon::init(replacePlayQueue);

@@ -441,31 +441,34 @@ void StreamsPage::searchItems()
 void StreamsPage::controlActions()
 {
     QModelIndexList selected=view->selectedIndexes();
+    bool haveSelection=!selected.isEmpty();
+    bool favWriteable=StreamsModel::self()->isFavoritesWritable();
     editAction->setEnabled(false);
-    addToFavouritesAction->setEnabled(false);
     addBookmarkAction->setEnabled(false);
     reloadAction->setEnabled(false);
-    StdActions::self()->removeAction->setEnabled(false);
-    if (!selected.isEmpty() && StreamsModel::self()->isFavoritesWritable()) {
-        bool enableRemove=true;
-        bool enableAddToFav=true;
-        foreach (const QModelIndex &idx, selected) {
-            const StreamsModel::Item *item=static_cast<const StreamsModel::Item *>(proxy.mapToSource(idx).internalPointer());
-            if (item->isCategory() || (item->parent && !item->parent->isFavourites)) {
-                enableRemove=false;
-                break;
-            }
-            if (item->isCategory() || (item->parent && item->parent->isFavourites)) {
-                enableAddToFav=false;
-                break;
-            }
-            if (!enableRemove && !enableAddToFav) {
-                break;
-            }
+
+    bool enableRemove=true;
+    bool enableAddToFav=true;
+    bool onlyStreamsSelected=true;
+    foreach (const QModelIndex &idx, selected) {
+        const StreamsModel::Item *item=static_cast<const StreamsModel::Item *>(proxy.mapToSource(idx).internalPointer());
+        if (item->isCategory() || (item->parent && !item->parent->isFavourites)) {
+            enableRemove=false;
         }
-        StdActions::self()->removeAction->setEnabled(enableRemove);
-        addToFavouritesAction->setEnabled(enableAddToFav);
+        if (item->isCategory() || (item->parent && item->parent->isFavourites)) {
+            enableAddToFav=false;
+        }
+        if (item->isCategory()) {
+            onlyStreamsSelected=false;
+        }
+        if (!enableRemove && !enableAddToFav && !onlyStreamsSelected) {
+            break;
+        }
     }
+
+    StdActions::self()->removeAction->setEnabled(favWriteable && haveSelection && enableRemove);
+    addToFavouritesAction->setEnabled(favWriteable && haveSelection && enableAddToFav);
+
     if (1==selected.size()) {
         const StreamsModel::Item *item=static_cast<const StreamsModel::Item *>(proxy.mapToSource(selected.first()).internalPointer());
         if (StreamsModel::self()->isFavoritesWritable() && !item->isCategory() && item->parent && item->parent->isFavourites) {
@@ -482,8 +485,8 @@ void StreamsPage::controlActions()
     addAction->setEnabled(StreamsModel::self()->isFavoritesWritable());
     exportAction->setEnabled(StreamsModel::self()->haveFavourites());
     importAction->setEnabled(StreamsModel::self()->isFavoritesWritable());
-    StdActions::self()->replacePlayQueueAction->setEnabled(selected.count());
-    StdActions::self()->addWithPriorityAction->setEnabled(selected.count());
+    StdActions::self()->replacePlayQueueAction->setEnabled(haveSelection && onlyStreamsSelected);
+    StdActions::self()->addWithPriorityAction->setEnabled(haveSelection && onlyStreamsSelected);
     menuButton->controlState();
 }
 

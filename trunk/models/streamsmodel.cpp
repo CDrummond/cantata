@@ -126,14 +126,31 @@ static QIcon getIcon(const QString &name)
     return Icons::self()->streamCategoryIcon;
 }
 
-static QString cacheName(const QString &name, bool createDir=false)
+static QString categoryCacheName(const QString &name, bool createDir=false)
 {
     return Utils::cacheDir(StreamsModel::constCacheDir, createDir)+name+StreamsModel::constCacheExt;
+}
+
+void StreamsModel::CategoryItem::removeCache()
+{
+    if (childrenHaveCache) {
+        foreach (Item *i, children) {
+            if (i->isCategory()) {
+                static_cast<CategoryItem *>(i)->removeCache();
+            }
+        }
+    } else if (!cacheName.isEmpty()) {
+        QString cache=categoryCacheName(cacheName);
+        if (QFile::exists(cache)) {
+            QFile::remove(cache);
+        }
+    }
 }
 
 StreamsModel::StreamsModel(QObject *parent)
     : ActionModel(parent)
     , root(new CategoryItem(QString(), "root"))
+    , listenLive(0)
     , favouritesIsWriteable(true)
     , favouritesModified(false)
     , favouritesSaveTimer(0)
@@ -360,15 +377,17 @@ void StreamsModel::reload(const QModelIndex &index)
     }
     CategoryItem *cat=static_cast<CategoryItem *>(item);
     if (!cat->children.isEmpty()) {
+        cat->removeCache();
         beginRemoveRows(index, 0, cat->children.count()-1);
         qDeleteAll(cat->children);
         cat->children.clear();
         endRemoveRows();
-        if (!cat->cacheName.isEmpty()) {
-            QString cache=cacheName(cat->cacheName);
-            if (QFile::exists(cache)) {
-                QFile::remove(cache);
-            }
+
+        if (listenLive==cat) {
+            QModelIndex index=createIndex(root->children.indexOf(listenLive), 0, (void *)listenLive);
+            buildListenLive();
+            beginInsertRows(index, 0, listenLive->children.count()-1);
+            endInsertRows();
         }
     }
 
@@ -529,7 +548,7 @@ QStringList StreamsModel::mimeTypes() const
 bool StreamsModel::loadCache(CategoryItem *cat)
 {
     if (!cat->cacheName.isEmpty()) {
-        QString cache=cacheName(cat->cacheName);
+        QString cache=categoryCacheName(cat->cacheName);
         if (!cache.isEmpty()) {
             QList<Item *> newItems=loadXml(cache, cat, false);
             if (!newItems.isEmpty()) {
@@ -550,7 +569,7 @@ bool StreamsModel::loadCache(CategoryItem *cat)
 void StreamsModel::saveCache(CategoryItem *cat, const QList<Item *> &items)
 {
     if (!cat->cacheName.isEmpty()) {
-        saveXml(cacheName(cat->cacheName, true), items, false);
+        saveXml(categoryCacheName(cat->cacheName, true), items, false);
     }
 }
 
@@ -1337,11 +1356,14 @@ void StreamsModel::buildListenLive()
 {
     QFile f(":listenlive.xml");
     if (f.open(QIODevice::ReadOnly)) {
-        CategoryItem *listen=new CategoryItem(QString(), i18n("Listen Live"), root, getIcon("listenlive"));
-        CategoryItem *region=listen;
-        CategoryItem *prevRegion=listen;
-        listen->state=CategoryItem::Fetched;
-        root->children.append(listen);
+        if (!listenLive) {
+            listenLive=new CategoryItem(QString(), i18n("Listen Live"), root, getIcon("listenlive"));
+            root->children.append(listenLive);
+            listenLive->state=CategoryItem::Fetched;
+            listenLive->childrenHaveCache=true;
+        }
+        CategoryItem *region=listenLive;
+        CategoryItem *prevRegion=listenLive;
         QXmlStreamReader doc(&f);
         while (!doc.atEnd()) {
             doc.readNext();
@@ -1365,6 +1387,7 @@ void StreamsModel::buildListenLive()
                     prevRegion=region;
                     region=new CategoryItem(QString(), doc.attributes().value("name").toString(), prevRegion);
                     region->state=CategoryItem::Fetched;
+                    region->childrenHaveCache=true;
                     prevRegion->children.append(region);
                 }
             } else if (QLatin1String("region")==doc.name()) {

@@ -61,12 +61,14 @@ public:
         };
 
         CategoryItem(const QString &u, const QString &n=QString(), CategoryItem *p=0, const QIcon &i=QIcon(), const QString &cn=QString())
-            : Item(u, n, p), state(Initial), isFavourites(false), isAll(false), icon(i), cacheName(cn) { }
+            : Item(u, n, p), state(Initial), isFavourites(false), isAll(false), childrenHaveCache(false), icon(i), cacheName(cn) { }
         virtual ~CategoryItem() { qDeleteAll(children); }
         virtual bool isCategory() const { return true; }
+        void removeCache();
         State state;
         bool isFavourites : 1;
         bool isAll : 1;
+        bool childrenHaveCache : 1;
         QList<Item *> children;
         QIcon icon;
         QString cacheName;
@@ -149,6 +151,7 @@ private:
     QMap<QNetworkReply *, CategoryItem *> jobs;
     CategoryItem *root;
     CategoryItem *favourites;
+    CategoryItem *listenLive;
     bool favouritesIsWriteable;
     bool favouritesModified;
     QTimer *favouritesSaveTimer;

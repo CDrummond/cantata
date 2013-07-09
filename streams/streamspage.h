@@ -64,6 +64,7 @@ private Q_SLOTS:
     void importXml();
     void exportXml();
     void add();
+    void addBookmark();
     void addToFavourites();
     void reload();
     void edit();
@@ -84,6 +85,7 @@ private:
     Action *editAction;
     Action *addToFavouritesAction;
     Action *reloadAction;
+    Action *addBookmarkAction;
     StreamsProxyModel proxy;
 };
 

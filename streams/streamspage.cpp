@@ -59,6 +59,7 @@ StreamsPage::StreamsPage(QWidget *p)
     addToFavouritesAction = ActionCollection::get()->createAction("addtofavourites", i18n("Add Stream To Favourites"), Icons::self()->addRadioStreamIcon);
     reloadAction = ActionCollection::get()->createAction("reloadstreams", i18n("Reload"), Icon("view-refresh"));
     editAction = ActionCollection::get()->createAction("editstream", i18n("Edit"), Icons::self()->editIcon);
+    addBookmarkAction = ActionCollection::get()->createAction("bookmarkcategory", i18n("Bookmark Category"), Icon("bookmark-new"));
     Action *settingsAct = new Action(i18n("Digitally Imported Settings"), this);
     replacePlayQueue->setDefaultAction(StdActions::self()->replacePlayQueueAction);
     Action *searchAction = ActionCollection::get()->createAction("searchtunein", i18n("Search for Radio Stations via TuneIn"), Icons::self()->searchIcon);
@@ -67,6 +68,7 @@ StreamsPage::StreamsPage(QWidget *p)
     connect(view, SIGNAL(searchItems()), this, SLOT(searchItems()));
     connect(view, SIGNAL(itemsSelected(bool)), SLOT(controlActions()));
     connect(addAction, SIGNAL(triggered(bool)), this, SLOT(add()));
+    connect(addBookmarkAction, SIGNAL(triggered(bool)), this, SLOT(addBookmark()));
     connect(addToFavouritesAction, SIGNAL(triggered(bool)), this, SLOT(addToFavourites()));
     connect(reloadAction, SIGNAL(triggered(bool)), this, SLOT(reload()));
     connect(editAction, SIGNAL(triggered(bool)), this, SLOT(edit()));
@@ -102,6 +104,7 @@ StreamsPage::StreamsPage(QWidget *p)
     view->addAction(editAction);
     view->addAction(StdActions::self()->removeAction);
     view->addAction(addToFavouritesAction);
+    view->addAction(addBookmarkAction);
     view->addAction(reloadAction);
     proxy.setSourceModel(StreamsModel::self());
     view->setModel(&proxy);
@@ -271,6 +274,17 @@ void StreamsPage::add()
     exportAction->setEnabled(StreamsModel::self()->haveFavourites());
 }
 
+void StreamsPage::addBookmark()
+{
+    QModelIndexList selected = view->selectedIndexes();
+
+    if (1!=selected.count()) {
+        return;
+    }
+
+    StreamsModel::self()->addBookmark(proxy.mapToSource(selected.first()));
+}
+
 void StreamsPage::addToFavourites()
 {
     if (!StreamsModel::self()->isFavoritesWritable()) {
@@ -316,11 +330,32 @@ void StreamsPage::reload()
 
 void StreamsPage::removeItems()
 {
+    QModelIndexList selected = view->selectedIndexes();
+
+    if (1==selected.count()) {
+        QModelIndex mapped=proxy.mapToSource(selected.first());
+        const StreamsModel::Item *item=static_cast<const StreamsModel::Item *>(mapped.internalPointer());
+        if (item->isCategory() && item->parent) {
+            if (item->parent->isBookmarks) {
+                if (MessageBox::No==MessageBox::warningYesNo(this, i18n("Are you sure you wish to remove bookmark to <b>%1</b>?").arg(item->name))) {
+                    return;
+                }
+                StreamsModel::self()->removeBookmark(mapped);
+                return;
+            } else if (static_cast<const StreamsModel::CategoryItem *>(item)->isBookmarks) {
+                if (MessageBox::No==MessageBox::warningYesNo(this, i18n("Are you sure you wish to remove all <b>%1</b> bookmarks?").arg(item->parent->name))) {
+                    return;
+                }
+                StreamsModel::self()->removeAllBookmarks(mapped);
+                return;
+            }
+        }
+    }
+
     if (!StreamsModel::self()->isFavoritesWritable()) {
         return;
     }
 
-    QModelIndexList selected = view->selectedIndexes();
     QModelIndexList useable;
 
     foreach (const QModelIndex &i, selected) {
@@ -334,6 +369,7 @@ void StreamsPage::removeItems()
     if (useable.isEmpty()) {
         return;
     }
+
     if (useable.size()>1) {
         if (MessageBox::No==MessageBox::warningYesNo(this, i18n("Are you sure you wish to remove the %1 selected streams?").arg(useable.size()))) {
             return;
@@ -407,14 +443,8 @@ void StreamsPage::controlActions()
     QModelIndexList selected=view->selectedIndexes();
     editAction->setEnabled(false);
     addToFavouritesAction->setEnabled(false);
+    addBookmarkAction->setEnabled(false);
     reloadAction->setEnabled(false);
-    if (1==selected.size()) {
-        const StreamsModel::Item *item=static_cast<const StreamsModel::Item *>(proxy.mapToSource(selected.first()).internalPointer());
-        if (StreamsModel::self()->isFavoritesWritable() && !item->isCategory() && item->parent && item->parent->isFavourites) {
-            editAction->setEnabled(true);
-        }
-        reloadAction->setEnabled(item->isCategory() && StreamsModel::self()->isTopLevel(static_cast<const StreamsModel::CategoryItem *>(item)));
-    }
     StdActions::self()->removeAction->setEnabled(false);
     if (!selected.isEmpty() && StreamsModel::self()->isFavoritesWritable()) {
         bool enableRemove=true;
@@ -436,6 +466,19 @@ void StreamsPage::controlActions()
         StdActions::self()->removeAction->setEnabled(enableRemove);
         addToFavouritesAction->setEnabled(enableAddToFav);
     }
+    if (1==selected.size()) {
+        const StreamsModel::Item *item=static_cast<const StreamsModel::Item *>(proxy.mapToSource(selected.first()).internalPointer());
+        if (StreamsModel::self()->isFavoritesWritable() && !item->isCategory() && item->parent && item->parent->isFavourites) {
+            editAction->setEnabled(true);
+        }
+        reloadAction->setEnabled(item->isCategory() && StreamsModel::self()->isTopLevel(static_cast<const StreamsModel::CategoryItem *>(item)));
+        addBookmarkAction->setEnabled(item->isCategory() && static_cast<const StreamsModel::CategoryItem *>(item)->canBookmark);
+        if (!StdActions::self()->removeAction->isEnabled()) {
+            StdActions::self()->removeAction->setEnabled(item->isCategory() && item->parent &&
+                                                         (item->parent->isBookmarks || (static_cast<const StreamsModel::CategoryItem *>(item)->isBookmarks)));
+        }
+    }
+
     addAction->setEnabled(StreamsModel::self()->isFavoritesWritable());
     exportAction->setEnabled(StreamsModel::self()->haveFavourites());
     importAction->setEnabled(StreamsModel::self()->isFavoritesWritable());

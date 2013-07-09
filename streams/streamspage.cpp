@@ -46,6 +46,8 @@
 #include <QMenu>
 #include <QFileInfo>
 
+static const int constMsgDisplayTime=1500;
+
 StreamsPage::StreamsPage(QWidget *p)
     : QWidget(p)
     , enabled(false)
@@ -291,7 +293,11 @@ void StreamsPage::addBookmark()
     const StreamsModel::Item *item=static_cast<const StreamsModel::Item *>(proxy.mapToSource(selected.first()).internalPointer());
 
     // TODO: In future, if other categories support bookmarking, then we will need to calculate parent here!!!
-    StreamsModel::self()->addBookmark(item->url, item->name, 0);
+    if (StreamsModel::self()->addBookmark(item->url, item->name, 0)) {
+        view->showMessage(i18n("Bookmark added"), constMsgDisplayTime);
+    } else {
+        view->showMessage(i18n("Alredy Bookmarked"), constMsgDisplayTime);
+    }
 }
 
 void StreamsPage::addToFavourites()
@@ -312,8 +318,17 @@ void StreamsPage::addToFavourites()
         }
     }
 
+    int added=0;
     foreach (const StreamsModel::Item *item, items) {
-        StreamsModel::self()->addToFavourites(item->url, item->name);
+        if (StreamsModel::self()->addToFavourites(item->url, item->name)) {
+            added++;
+        }
+    }
+
+    if (added) {
+        view->showMessage(i18n("Added to favourites"), constMsgDisplayTime);
+    } else {
+        view->showMessage(i18n("Already in favourites"), constMsgDisplayTime);
     }
 }
 

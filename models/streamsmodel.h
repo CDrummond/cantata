@@ -124,12 +124,12 @@ public:
     bool checkFavouritesWritable();
     void reloadFavourites() { reload(favouritesIndex()); }
     void removeFromFavourites(const QModelIndex &index);
-    void addToFavourites(const QString &url, const QString &name);
+    bool addToFavourites(const QString &url, const QString &name);
     QString favouritesNameForUrl(const QString &u);
     bool nameExistsInFavourites(const QString &n);
     void updateFavouriteStream(Item *item);
     
-    void addBookmark(const QString &url, const QString &name, CategoryItem *bookmarkParentCat);
+    bool addBookmark(const QString &url, const QString &name, CategoryItem *bookmarkParentCat);
     void removeBookmark(const QModelIndex &index);
     void removeAllBookmarks(const QModelIndex &index);
     

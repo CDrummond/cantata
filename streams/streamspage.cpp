@@ -68,6 +68,7 @@ StreamsPage::StreamsPage(QWidget *p)
     connect(view, SIGNAL(searchIsActive(bool)), this, SLOT(controlSearch(bool)));
     connect(view, SIGNAL(itemsSelected(bool)), SLOT(controlActions()));
     connect(addAction, SIGNAL(triggered(bool)), this, SLOT(add()));
+    connect(StdActions::self()->addBookmarkAction, SIGNAL(triggered(bool)), this, SLOT(addBookmark()));
     connect(searchModel.addToFavouritesAct(), SIGNAL(triggered(bool)), this, SLOT(addToFavourites()));
     connect(reloadAction, SIGNAL(triggered(bool)), this, SLOT(reload()));
     connect(editAction, SIGNAL(triggered(bool)), this, SLOT(edit()));
@@ -103,6 +104,7 @@ StreamsPage::StreamsPage(QWidget *p)
     view->addAction(editAction);
     view->addAction(StdActions::self()->removeAction);
     view->addAction(searchModel.addToFavouritesAct());
+    view->addAction(StdActions::self()->addBookmarkAction);
     view->addAction(reloadAction);
     proxy.setSourceModel(StreamsModel::self());
     view->setModel(&proxy);
@@ -278,6 +280,20 @@ void StreamsPage::add()
     exportAction->setEnabled(StreamsModel::self()->haveFavourites());
 }
 
+void StreamsPage::addBookmark()
+{
+    QModelIndexList selected = view->selectedIndexes();
+
+    if (1!=selected.count()) {
+        return;
+    }
+
+    const StreamsModel::Item *item=static_cast<const StreamsModel::Item *>(proxy.mapToSource(selected.first()).internalPointer());
+
+    // TODO: In future, if other categories support bookmarking, then we will need to calculate parent here!!!
+    StreamsModel::self()->addBookmark(item->url, item->name, 0);
+}
+
 void StreamsPage::addToFavourites()
 {
     if (!StreamsModel::self()->isFavoritesWritable()) {
@@ -328,11 +344,36 @@ void StreamsPage::reload()
 
 void StreamsPage::removeItems()
 {
-    if (searching || !StreamsModel::self()->isFavoritesWritable()) {
+    if (searching) {
         return;
     }
 
     QModelIndexList selected = view->selectedIndexes();
+    
+    if (1==selected.count()) {
+        QModelIndex mapped=proxy.mapToSource(selected.first());
+        const StreamsModel::Item *item=static_cast<const StreamsModel::Item *>(mapped.internalPointer());
+        if (item->isCategory() && item->parent) {
+            if (item->parent->isBookmarks) {
+                if (MessageBox::No==MessageBox::warningYesNo(this, i18n("Are you sure you wish to remove bookmark to <b>%1</b>?").arg(item->name))) {
+                    return;
+                }
+                StreamsModel::self()->removeBookmark(mapped);
+                return;
+            } else if (static_cast<const StreamsModel::CategoryItem *>(item)->isBookmarks) {
+                if (MessageBox::No==MessageBox::warningYesNo(this, i18n("Are you sure you wish to remove all <b>%1</b> bookmarks?").arg(item->parent->name))) {
+                    return;
+                }
+                StreamsModel::self()->removeAllBookmarks(mapped);
+                return;
+            }
+        }
+    }
+    
+    if (!StreamsModel::self()->isFavoritesWritable()) {
+        return;
+    }
+        
     QModelIndexList useable;
 
     foreach (const QModelIndex &i, selected) {
@@ -436,7 +477,7 @@ void StreamsPage::controlActions()
     bool enableAddToFav=true;
     bool onlyStreamsSelected=true;
     bool favWriteable=StreamsModel::self()->isFavoritesWritable();
-
+    StdActions::self()->addBookmarkAction->setEnabled(false);
     if (searching) {
         foreach (const QModelIndex &idx, selected) {
             const StreamsModel::Item *item=static_cast<const StreamsModel::Item *>(proxy.mapToSource(idx).internalPointer());
@@ -452,6 +493,10 @@ void StreamsPage::controlActions()
         reloadAction->setEnabled(false);
         StdActions::self()->removeAction->setEnabled(false);
         searchModel.addToFavouritesAct()->setEnabled(favWriteable && haveSelection && enableAddToFav);
+        if (1==selected.size()) {
+            StdActions::self()->addBookmarkAction->setEnabled(static_cast<const StreamsModel::Item *>(proxy.mapToSource(selected.first()).internalPointer())
+                                                                    ->isCategory());
+        }
     } else {
         editAction->setEnabled(false);
         reloadAction->setEnabled(false);
@@ -482,6 +527,11 @@ void StreamsPage::controlActions()
                 editAction->setEnabled(true);
             }
             reloadAction->setEnabled(item->isCategory() && StreamsModel::self()->isTopLevel(static_cast<const StreamsModel::CategoryItem *>(item)));
+            StdActions::self()->addBookmarkAction->setEnabled(item->isCategory() && static_cast<const StreamsModel::CategoryItem *>(item)->canBookmark);
+            if (!StdActions::self()->removeAction->isEnabled()) {
+                StdActions::self()->removeAction->setEnabled(item->isCategory() && item->parent &&
+                                                            (item->parent->isBookmarks || (static_cast<const StreamsModel::CategoryItem *>(item)->isBookmarks)));
+            }
         }
 
         addAction->setEnabled(favWriteable);

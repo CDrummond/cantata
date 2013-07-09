@@ -82,6 +82,7 @@ StdActions::StdActions()
     removeAction = ActionCollection::get()->createAction("removeitems", i18n("Remove"), "list-remove");
     searchAction = ActionCollection::get()->createAction("search", i18n("Search"), "edit-find");
     searchAction->setShortcut(Qt::ControlModifier+Qt::Key_F);
+    addBookmarkAction = ActionCollection::get()->createAction("bookmarkcategory", i18n("Bookmark Category"), Icon("bookmark-new"));
 
     addToStoredPlaylistAction->setMenu(PlaylistsModel::self()->menu());
     addPrioHighestAction->setData(255);

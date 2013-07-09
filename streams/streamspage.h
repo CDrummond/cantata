@@ -65,6 +65,7 @@ private Q_SLOTS:
     void importXml();
     void exportXml();
     void add();
+    void addBookmark();
     void addToFavourites();
     void reload();
     void edit();

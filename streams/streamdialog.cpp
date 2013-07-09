@@ -133,16 +133,17 @@ void StreamDialog::setWidgetVisiblity()
 void StreamDialog::changed()
 {
     QString u=url();
+    bool urlOk=u.length()>5 && u.contains(QLatin1String("://"));
     bool validProtocol=u.isEmpty() || urlHandlers.contains(QUrl(u).scheme()) || urlHandlers.contains(u);
     bool enableOk=false;
 
     if (!save()) {
-        enableOk=!u.isEmpty();
+        enableOk=urlOk;
     } else {
         QString n=name();
-        enableOk=!n.isEmpty() && !u.isEmpty() && (n!=prevName || u!=prevUrl);
-        statusText->setText(validProtocol ? QString() : i18n("<i><b>ERROR:</b> Invalid protocol</i>"));
+        enableOk=!n.isEmpty() && urlOk && (n!=prevName || u!=prevUrl);
     }
+    statusText->setText(validProtocol || !urlOk ? QString() : i18n("<i><b>ERROR:</b> Invalid protocol</i>"));
     enableOk=enableOk && validProtocol;
     enableButton(Ok, enableOk);
 }

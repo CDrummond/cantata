@@ -211,10 +211,10 @@ void StreamsPage::importXml()
         return;
     }
     #ifdef ENABLE_KDE_SUPPORT
-    QString fileName=KFileDialog::getOpenFileName(KUrl(), i18n("*.cantata|Cantata Streams\n*.xml|XML Streams"), this, i18n("Import Streams"));
+    QString fileName=KFileDialog::getOpenFileName(KUrl(), i18n("*.xml *.xml.gz *.cantata|XML Streams"), this, i18n("Import Streams"));
     #else
     QString fileName=QFileDialog::getOpenFileName(this, i18n("Import Streams"), QDir::homePath(),
-                                                  i18n("Cantata Streams (*.cantata)\nXML Streams (*.xml)"));
+                                                  i18n("XML Streams (*.xml *.xml.gz *.cantata)"));
     #endif
 
     if (fileName.isEmpty()) {

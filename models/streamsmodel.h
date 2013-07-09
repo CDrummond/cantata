@@ -116,16 +116,17 @@ public:
 
     void saveFavourites(bool force=false);
     bool exportFavourites(const QString &fileName);
-    bool importIntoFavourites(const QString &fileName);
+    bool importIntoFavourites(const QString &fileName) { return loadFavourites(fileName, favouritesIndex(), true); }
     bool haveFavourites() const { return !favourites->children.isEmpty(); }
     bool isFavoritesWritable() { return favouritesIsWriteable; }
     bool checkFavouritesWritable();
-    void reloadFavourites();
+    void reloadFavourites() { reload(favouritesIndex()); }
     void removeFromFavourites(const QModelIndex &index);
     void addToFavourites(const QString &url, const QString &name);
     QString favouritesNameForUrl(const QString &u);
     bool nameExistsInFavourites(const QString &n);
     void updateFavouriteStream(Item *item);
+    QModelIndex favouritesIndex() const;
 
     void addBookmark(const QModelIndex &index);
     void removeBookmark(const QModelIndex &index);

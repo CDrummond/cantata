@@ -43,10 +43,11 @@ public:
     struct CategoryItem;
     struct Item
     {
-        Item(const QString &u, const QString &n=QString(), CategoryItem *p=0) : url(u), name(n), parent(p) { }
+        Item(const QString &u, const QString &n=QString(), CategoryItem *p=0, const QString &sub=QString()) : url(u), name(n), subText(sub), parent(p) { }
         virtual ~Item() { }
         QString url;
         QString name;
+        QString subText;
         CategoryItem *parent;
         virtual bool isCategory() const { return false; }
     };
@@ -132,7 +133,7 @@ Q_SIGNALS:
     void error(const QString &msg);
 
 public:
-    static QList<Item *> parseRadioTimeResponse(QIODevice *dev, CategoryItem *cat);
+    static QList<Item *> parseRadioTimeResponse(QIODevice *dev, CategoryItem *cat, bool parseSubText=false);
     static QList<Item *> parseIceCastResponse(QIODevice *dev, CategoryItem *cat);
     static QList<Item *> parseSomaFmResponse(QIODevice *dev, CategoryItem *cat);
     static QList<Item *> parseDigitallyImportedResponse(QIODevice *dev, CategoryItem *cat);
@@ -140,7 +141,7 @@ public:
     QList<Item *> parseShoutCastResponse(QIODevice *dev, CategoryItem *cat, const QString &origUrl);
     QList<Item *> parseShoutCastLinks(QXmlStreamReader &doc, CategoryItem *cat);
     QList<Item *> parseShoutCastStations(QXmlStreamReader &doc, CategoryItem *cat);
-    static Item * parseRadioTimeEntry(QXmlStreamReader &doc, CategoryItem *parent);
+    static Item * parseRadioTimeEntry(QXmlStreamReader &doc, CategoryItem *parent, bool parseSubText=false);
     static Item * parseSomaFmEntry(QXmlStreamReader &doc, CategoryItem *parent);
 
 private Q_SLOTS:

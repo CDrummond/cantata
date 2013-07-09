@@ -497,6 +497,7 @@ void StreamsPage::controlSearch(bool on)
             view->setModel(&proxy);
             proxy.setSourceModel(StreamsModel::self());
             searchModel.clear();
+            view->expand(proxy.mapFromSource(StreamsModel::self()->favouritesIndex()));
         } else {
             proxy.setSourceModel(&searchModel);
         }

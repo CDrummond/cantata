@@ -123,6 +123,7 @@ public:
     void setStartClosed(bool sc);
     bool isStartClosed();
     void expandAll();
+    void expand(const QModelIndex &index);
 
 public Q_SLOTS:
     void showSpinner();

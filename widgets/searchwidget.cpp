@@ -25,7 +25,7 @@
 #include "icon.h"
 #include "toolbutton.h"
 #include "localize.h"
-#include <QBoxLayout>
+#include <QGridLayout>
 #include <QKeyEvent>
 #include <QKeySequence>
 
@@ -53,15 +53,17 @@ private:
 SearchWidget::SearchWidget(QWidget *p)
      : QWidget(p)
 {
-    QBoxLayout *l=new QBoxLayout(QBoxLayout::LeftToRight, this);
+    QGridLayout *l=new QGridLayout(this);
     l->setMargin(0);
     l->setSpacing(0);
+    label=new SqueezedTextLabel(this);
     edit=new LineEdit(this);
     edit->setPlaceholderText(i18n("Search..."));
-    l->addWidget(edit);
+    l->addWidget(label, 0, 0, 1, 2);
+    l->addWidget(edit, 1, 0);
     closeButton=new ToolButton(this);
     closeButton->setToolTip(i18n("Close Search Bar"));
-    l->addWidget(closeButton);
+    l->addWidget(closeButton, 1, 1);
     Icon icon=Icon("dialog-close");
     if (icon.isNull()) {
         icon=Icon("window-close");
@@ -72,6 +74,17 @@ SearchWidget::SearchWidget(QWidget *p)
     connect(edit, SIGNAL(textChanged(QString)), SIGNAL(textChanged(QString)));
     connect(edit, SIGNAL(returnPressed()), SIGNAL(returnPressed()));
     installEventFilter(new EscKeyEventHandler(this));
+    label->setVisible(false);
+    label->setAlignment(Qt::AlignTop);
+    QFont f(font());
+    f.setBold(true);
+    label->setFont(f);
+}
+
+void SearchWidget::setLabel(const QString &s)
+{
+    label->setText(s);
+    label->setVisible(!s.isEmpty());
 }
 
 void SearchWidget::toggle()
@@ -81,6 +94,7 @@ void SearchWidget::toggle()
     } else {
         show();
         setFocus();
+        emit active(true);
     }
 }
 
@@ -88,4 +102,5 @@ void SearchWidget::close()
 {
     edit->setText(QString());
     setVisible(false);
+    emit active(false);
 }

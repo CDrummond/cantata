@@ -166,6 +166,9 @@ public:
         QRect r(option.rect);
         QRect r2(r);
         QString childText = index.data(ItemView::Role_SubText).toString();
+        if (childText==QLatin1String("-")) {
+            childText.clear();
+        }
         QVariant image = index.data(ItemView::Role_Image);
         if (image.isNull()) {
             image = index.data(Qt::DecorationRole);
@@ -489,6 +492,7 @@ ItemView::ItemView(QWidget *p)
     treeView->installEventFilter(new ViewEventHandler(td, treeView));
     connect(searchWidget, SIGNAL(returnPressed()), this, SLOT(delaySearchItems()));
     connect(searchWidget, SIGNAL(textChanged(const QString)), this, SLOT(delaySearchItems()));
+    connect(searchWidget, SIGNAL(active(bool)), this, SIGNAL(searchIsActive(bool)));
     connect(treeView, SIGNAL(itemsSelected(bool)), this, SIGNAL(itemsSelected(bool)));
     connect(treeView, SIGNAL(itemActivated(const QModelIndex &)), this, SLOT(itemActivated(const QModelIndex &)));
     connect(treeView, SIGNAL(doubleClicked(const QModelIndex &)), this, SIGNAL(doubleClicked(const QModelIndex &)));
@@ -788,6 +792,11 @@ void ItemView::showIndex(const QModelIndex &idx, bool scrollTo)
 void ItemView::focusSearch()
 {
     searchWidget->toggle();
+}
+
+void ItemView::setSearchLabelText(const QString &text)
+{
+    searchWidget->setLabel(text);
 }
 
 void ItemView::setStartClosed(bool sc)

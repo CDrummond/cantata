@@ -130,7 +130,13 @@ QVariant StreamSearchModel::data(const QModelIndex &index, int role) const
         }
         break;
     case ItemView::Role_Actions:
-        if (!item->isCategory()){
+        if (item->isCategory()){
+            if (static_cast<const StreamsModel::CategoryItem *>(item)->canBookmark) {
+                QVariant v;
+                v.setValue<QList<Action *> >(QList<Action *>() << StdActions::self()->addBookmarkAction);
+                return v;
+            }
+        } else {
             QVariant v;
             v.setValue<QList<Action *> >(QList<Action *>() << StdActions::self()->replacePlayQueueAction << addToFavouritesAction);
             return v;

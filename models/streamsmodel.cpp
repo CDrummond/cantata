@@ -667,11 +667,6 @@ bool StreamsModel::exportFavourites(const QString &fileName)
     return favourites->saveXml(fileName, true);
 }
 
-bool StreamsModel::importIntoFavourites(const QString &fileName)
-{
-    return loadFavourites(fileName, createIndex(root->children.indexOf(favourites), 0, favourites), true);
-}
-
 bool StreamsModel::checkFavouritesWritable()
 {
     QString dirName=favouritesDir();
@@ -686,18 +681,13 @@ bool StreamsModel::checkFavouritesWritable()
     return favouritesIsWriteable;
 }
 
-void StreamsModel::reloadFavourites()
-{
-    reload(createIndex(root->children.indexOf(favourites), 0, favourites));
-}
-
 void StreamsModel::removeFromFavourites(const QModelIndex &index)
 {
     Item *item=static_cast<Item *>(index.internalPointer());
     int pos=favourites->children.indexOf(item);
 
     if (-1!=pos) {
-        QModelIndex index=createIndex(root->children.indexOf(favourites), 0, (void *)favourites);
+        QModelIndex index=favouritesIndex();
         beginRemoveRows(index, pos, pos);
         delete favourites->children.takeAt(pos);
         endRemoveRows();
@@ -724,7 +714,7 @@ void StreamsModel::addToFavourites(const QString &url, const QString &name)
     }
 
     if (i<100) {
-        QModelIndex index=createIndex(root->children.indexOf(favourites), 0, (void *)favourites);
+        QModelIndex index=favouritesIndex();
         beginInsertRows(index, favourites->children.count(), favourites->children.count());
         favourites->children.append(new Item(url, n, favourites));
         endInsertRows();
@@ -764,6 +754,11 @@ void StreamsModel::updateFavouriteStream(Item *item)
     favouritesModified=true;
     saveFavourites();
     emit dataChanged(index, index);
+}
+
+QModelIndex StreamsModel::favouritesIndex() const
+{
+    return createIndex(root->children.indexOf(favourites), 0, (void *)favourites);
 }
 
 void StreamsModel::addBookmark(const QModelIndex &index)

@@ -158,6 +158,7 @@ void StreamsPage::refresh()
         view->setLevel(0);
         StreamsModel::self()->reloadFavourites();
         exportAction->setEnabled(StreamsModel::self()->rowCount()>0);
+        view->expand(proxy.mapFromSource(StreamsModel::self()->favouritesIndex()));
     }
 }
 

@@ -825,6 +825,15 @@ void ItemView::expandAll()
     }
 }
 
+void ItemView::expand(const QModelIndex &index)
+{
+    if (Mode_SimpleTree==mode || Mode_DetailedTree==mode) {
+        treeView->expand(index);
+    } else if (Mode_GroupedTree==mode && groupedView) {
+        groupedView->expand(index);
+    }
+}
+
 void ItemView::showSpinner()
 {
     if (!spinner) {

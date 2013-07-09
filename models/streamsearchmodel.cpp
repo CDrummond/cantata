@@ -34,6 +34,7 @@
 #include <QVariant>
 #include <QXmlStreamReader>
 #include <QMimeData>
+#include <QLocale>
 #include <QUrl>
 #if QT_VERSION >= 0x050000
 #include <QUrlQuery>
@@ -244,6 +245,10 @@ void StreamSearchModel::search(const QString &searchTerm, bool stationsOnly)
         query.addQueryItem("types", "station");
     }
     query.addQueryItem("query", searchTerm);
+    QString locale=QLocale::system().name();
+    if (!locale.isEmpty()) {
+        query.addQueryItem("locale", locale);
+    }
     #if QT_VERSION >= 0x050000
     searchUrl.setQuery(query);
     #endif

@@ -33,6 +33,7 @@ class QAction;
 class QTimer;
 class GroupedView;
 class ActionItemDelegate;
+class MessageOverlay;
 
 class ViewEventHandler : public QObject
 {
@@ -125,6 +126,7 @@ public:
     bool isStartClosed();
     void expandAll();
     void expand(const QModelIndex &index);
+    void showMessage(const QString &message, int timeout);
 
 public Q_SLOTS:
     void showSpinner();
@@ -163,6 +165,7 @@ private:
     QSize listGridSize;
     GroupedView *groupedView;
     Spinner *spinner;
+    MessageOverlay *msgOverlay;
 };
 
 #endif

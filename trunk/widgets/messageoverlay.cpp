@@ -27,9 +27,11 @@
 #include "localize.h"
 #include <QPainter>
 #include <QPaintEvent>
+#include <QTimer>
 
 MessageOverlay::MessageOverlay(QObject *p)
     : QWidget(0)
+    , timer(0)
 {
     Q_UNUSED(p)
     spacing=fontMetrics().height();
@@ -54,17 +56,25 @@ void MessageOverlay::setWidget(QWidget *widget)
     widget->installEventFilter(this);
 }
 
-void MessageOverlay::setText(const QString &txt)
+void MessageOverlay::setText(const QString &txt, int timeout, bool allowCancel)
 {
     if (txt==text) {
         return;
     }
 
     text=txt;
+    cancelButton->setVisible(allowCancel);
     setVisible(!text.isEmpty());
     if (!text.isEmpty()) {
         setSizeAndPosition();
         update();
+        if (-1!=timeout) {
+            if (!timer) {
+                timer=new QTimer(this);
+                connect(timer, SIGNAL(timeout()), this, SLOT(timeout()));
+            }
+            timer->start(timeout);
+        }
     }
 }
 
@@ -91,7 +101,7 @@ void MessageOverlay::paintEvent(QPaintEvent *)
     p.fillPath(buildPath(rf, r.height()/4.0), col);
 
     int pad=r.height()/4;
-    rf.adjust(pad, pad, -((pad*2)+cancelButton->width()), -pad);
+    rf.adjust(pad, pad, cancelButton->isVisible() ? -((pad*2)+cancelButton->width()) : -pad, -pad);
 
     QFont fnt(font());
     fnt.setBold(true);
@@ -103,6 +113,11 @@ void MessageOverlay::paintEvent(QPaintEvent *)
     p.setFont(fnt);
     p.drawText(rf, fm.elidedText(text, Qt::ElideRight, r.width(), QPalette::WindowText), QTextOption(Qt::LeftToRight==layoutDirection() ? Qt::AlignLeft : Qt::AlignRight));
     p.end();
+}
+
+void MessageOverlay::timeout()
+{
+    setVisible(false);
 }
 
 bool MessageOverlay::eventFilter(QObject *o, QEvent *e)

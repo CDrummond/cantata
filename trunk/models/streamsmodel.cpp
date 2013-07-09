@@ -711,13 +711,13 @@ void StreamsModel::removeFromFavourites(const QModelIndex &index)
     }
 }
 
-void StreamsModel::addToFavourites(const QString &url, const QString &name)
+bool StreamsModel::addToFavourites(const QString &url, const QString &name)
 {
     QSet<QString> existingNames;
 
     foreach (Item *i, favourites->children) {
         if (i->url==url) {
-            return;
+            return false;
         }
         existingNames.insert(i->name);
     }
@@ -735,7 +735,9 @@ void StreamsModel::addToFavourites(const QString &url, const QString &name)
         endInsertRows();
         favouritesModified=true;
         saveFavourites();
+        return true;
     }
+    return false;
 }
 
 QString StreamsModel::favouritesNameForUrl(const QString &u)
@@ -771,7 +773,7 @@ void StreamsModel::updateFavouriteStream(Item *item)
     emit dataChanged(index, index);
 }
 
-void StreamsModel::addBookmark(const QString &url, const QString &name, CategoryItem *bookmarkParentCat)
+bool StreamsModel::addBookmark(const QString &url, const QString &name, CategoryItem *bookmarkParentCat)
 {
     if (!bookmarkParentCat) {
         bookmarkParentCat=tuneIn;
@@ -789,7 +791,7 @@ void StreamsModel::addBookmark(const QString &url, const QString &name, Category
 
         foreach (Item *i, bookmarkCat->children) {
             if (i->url==url) {
-                return;
+                return false;
             }
         }
 
@@ -798,7 +800,9 @@ void StreamsModel::addBookmark(const QString &url, const QString &name, Category
         bookmarkCat->children.append(new CategoryItem(url, name, bookmarkCat));
         endInsertRows();
         bookmarkParentCat->saveBookmarks();
+        return true;
     }
+    return false;
 }
 
 void StreamsModel::removeBookmark(const QModelIndex &index)

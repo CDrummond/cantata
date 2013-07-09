@@ -26,6 +26,7 @@
 
 #include "lineedit.h"
 #include "toolbutton.h"
+#include "squeezedtextlabel.h"
 #include <QSet>
 
 class SearchWidget : public QWidget
@@ -35,6 +36,7 @@ public:
     SearchWidget(QWidget *p);
     virtual ~SearchWidget() { }
 
+    void setLabel(const QString &s);
     void setText(const QString &t) { edit->setText(t); }
     QString text() const { return edit->text(); }
     void setFocus() { edit->setFocus(); }
@@ -43,6 +45,7 @@ public:
 Q_SIGNALS:
     void textChanged(const QString &);
     void returnPressed();
+    void active(bool);
 
 public Q_SLOTS:
     void toggle();
@@ -51,6 +54,7 @@ public Q_SLOTS:
     void close();
 
 private:
+    SqueezedTextLabel *label;
     LineEdit *edit;
     ToolButton *closeButton;
 };

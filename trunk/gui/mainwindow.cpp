@@ -2708,9 +2708,9 @@ void MainWindow::showSearch()
         playlistsPage->focusSearch();
     } else if (dynamicPage->isVisible()) {
         dynamicPage->focusSearch();
-    } /*else if (streamsPage->isVisible()) {
+    } else if (streamsPage->isVisible()) {
         streamsPage->focusSearch();
-    }*/
+    }
     #ifdef ENABLE_ONLINE_SERVICES
     else if (onlinePage->isVisible()) {
         onlinePage->focusSearch();

@@ -120,6 +120,7 @@ public:
     void setRootIsDecorated(bool v) { treeView->setRootIsDecorated(v); }
     void showIndex(const QModelIndex &idx, bool scrollTo);
     void focusSearch();
+    void setSearchLabelText(const QString &text);
     void setStartClosed(bool sc);
     bool isStartClosed();
     void expandAll();
@@ -136,6 +137,7 @@ public Q_SLOTS:
 
 Q_SIGNALS:
     void searchItems();
+    void searchIsActive(bool);
     void itemsSelected(bool);
     void doubleClicked(const QModelIndex &);
     void rootIndexSet(const QModelIndex &);

@@ -64,7 +64,7 @@ Action * ActionCollection::createAction(const QString &name, const QString &text
     return act;
 }
 
-Action * ActionCollection::createAction(const QString &name, const QString &text, const Icon &icon, const QString &whatsThis)
+Action * ActionCollection::createAction(const QString &name, const QString &text, const QIcon &icon, const QString &whatsThis)
 {
     Action *act = static_cast<Action *>(addAction(name));
     act->setText(text);

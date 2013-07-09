@@ -22,7 +22,6 @@
  */
 
 #include "streamsmodel.h"
-#include "icon.h"
 #include "icons.h"
 #include "networkaccessmanager.h"
 #include "localize.h"
@@ -131,11 +130,6 @@ static QString categoryCacheName(const QString &name, bool createDir=false)
     return Utils::cacheDir(StreamsModel::constCacheDir, createDir)+name+StreamsModel::constCacheExt;
 }
 
-static QString categoryBookmarksName(const QString &name, bool createDir=false)
-{
-    return Utils::configDir(QLatin1String("bookmarks"), createDir)+name+StreamsModel::constCacheExt;
-}
-
 void StreamsModel::CategoryItem::removeCache()
 {
     if (childrenHaveCache) {
@@ -173,97 +167,6 @@ QList<StreamsModel::Item *> StreamsModel::CategoryItem::loadCache()
     return newItems;
 }
 
-void StreamsModel::CategoryItem::removeBookmarks()
-{
-    if (bookmarksName.isEmpty()) {
-        return;
-    }
-    QString fileName=categoryBookmarksName(bookmarksName);
-    if (QFile::exists(fileName)) {
-        QFile::remove(fileName);
-    }
-}
-
-void StreamsModel::CategoryItem::saveBookmarks()
-{
-    if (bookmarksName.isEmpty() || !supportsBookmarks) {
-        return;
-    }
-
-    foreach (Item *child, children) {
-        if (child->isCategory()) {
-             CategoryItem *cat=static_cast<CategoryItem *>(child);
-             if (cat->isBookmarks) {
-                 if (cat->children.count()) {
-                     QFile file(categoryBookmarksName(bookmarksName, true));
-                     QtIOCompressor compressor(&file);
-                     compressor.setStreamFormat(QtIOCompressor::GzipFormat);
-                     if (compressor.open(QIODevice::WriteOnly)) {
-                         QXmlStreamWriter doc(&compressor);
-                         doc.writeStartDocument();
-                         doc.writeStartElement("bookmarks");
-                         doc.writeAttribute("version", "1.0");
-                         doc.setAutoFormatting(false);
-                         foreach (Item *i, cat->children) {
-                             doc.writeStartElement("bookmark");
-                             doc.writeAttribute("name", i->name);
-                             doc.writeAttribute("url", i->url);
-                             doc.writeEndElement();
-                         }
-                         doc.writeEndElement();
-                         doc.writeEndElement();
-                     }
-                 }
-                 break;
-            }
-        }
-    }
-}
-
-QList<StreamsModel::Item *> StreamsModel::CategoryItem::loadBookmarks()
-{
-    QList<Item *> newItems;
-    if (bookmarksName.isEmpty() || !supportsBookmarks) {
-        return newItems;
-    }
-
-    QString fileName=categoryBookmarksName(bookmarksName);
-    if (!QFile::exists(fileName)) {
-        return newItems;
-    }
-
-    QFile file(fileName);
-    QtIOCompressor compressor(&file);
-    compressor.setStreamFormat(QtIOCompressor::GzipFormat);
-    if (compressor.open(QIODevice::ReadOnly)) {
-        QXmlStreamReader doc(&compressor);
-        while (!doc.atEnd()) {
-            doc.readNext();
-
-            if (doc.isStartElement() && QLatin1String("bookmark")==doc.name()) {
-                QString name=doc.attributes().value("name").toString();
-                QString url=doc.attributes().value("url").toString();
-                if (!name.isEmpty() && !url.isEmpty()) {
-                    newItems.append(new CategoryItem(url, name, this));
-                }
-            }
-        }
-    }
-    return newItems;
-}
-
-StreamsModel::CategoryItem * StreamsModel::CategoryItem::createBookmarksCategory()
-{
-    Icon icon=Icon("bookmarks");
-    if (icon.isNull()) {
-        icon=Icon("user-bookmarks");
-    }
-    CategoryItem *bookmarkCat = new CategoryItem(QString(), i18n("Bookmarks"), this, icon);
-    bookmarkCat->state=CategoryItem::Fetched;
-    bookmarkCat->isBookmarks=true;
-    return bookmarkCat;
-}
-
 bool StreamsModel::CategoryItem::saveXml(const QString &fileName, bool format) const
 {
     if (children.isEmpty()) {
@@ -292,9 +195,6 @@ static void saveStream(QXmlStreamWriter &doc, const StreamsModel::Item *item)
 
 static void saveCategory(QXmlStreamWriter &doc, const StreamsModel::CategoryItem *cat)
 {
-    if (cat->isBookmarks) {
-        return;
-    }
     doc.writeStartElement("category");
     doc.writeAttribute("name", cat->name);
     if (cat->isAll) {
@@ -436,8 +336,7 @@ StreamsModel::StreamsModel(QObject *parent)
     , favouritesModified(false)
     , favouritesSaveTimer(0)
 {
-    CategoryItem *tuneIn=new CategoryItem(constRadioTimeUrl+QLatin1String("?locale=")+QLocale::system().name(), i18n("TuneIn"), root, getIcon("tunein"), QString(), "tunein");
-    tuneIn->supportsBookmarks=true;
+    tuneIn=new CategoryItem(constRadioTimeUrl+QLatin1String("?locale=")+QLocale::system().name(), i18n("TuneIn"), root, getIcon("tunein"));
     root->children.append(tuneIn);
     root->children.append(new CategoryItem(constIceCastUrl, i18n("IceCast"), root, getIcon("icecast"), "icecast"));
     root->children.append(new CategoryItem(constShoutCastUrl, i18n("ShoutCast"), root, getIcon("shoutcast")));
@@ -761,92 +660,6 @@ QModelIndex StreamsModel::favouritesIndex() const
     return createIndex(root->children.indexOf(favourites), 0, (void *)favourites);
 }
 
-void StreamsModel::addBookmark(const QModelIndex &index)
-{
-    Item *item=toItem(index);
-
-    if (item!=root && item->isCategory() && !item->url.isEmpty() && !root->children.contains(item) && static_cast<CategoryItem *>(item)->canBookmark) {
-        CategoryItem *cat=item->parent;
-        CategoryItem *bookmarkParentCat=0;
-        while (cat && !bookmarkParentCat) {
-            if (cat->supportsBookmarks) {
-                bookmarkParentCat=cat;
-            }
-            cat=cat->parent;
-        }
-
-        if (bookmarkParentCat) {
-            CategoryItem *bookmarkCat=0;
-            foreach (Item *i, bookmarkParentCat->children) {
-                if (i->isCategory() && static_cast<CategoryItem *>(i)->isBookmarks) {
-                    bookmarkCat=static_cast<CategoryItem *>(i);
-                    break;
-                }
-            }
-
-            if (!bookmarkCat) {
-                QModelIndex index=createIndex(bookmarkParentCat->parent->children.indexOf(bookmarkParentCat), 0, (void *)bookmarkParentCat);
-                beginInsertRows(index, bookmarkParentCat->children.count(), bookmarkParentCat->children.count());
-                bookmarkCat=bookmarkParentCat->createBookmarksCategory();
-                bookmarkParentCat->children.append(bookmarkCat);
-                endInsertRows();
-            }
-
-            foreach (Item *i, bookmarkCat->children) {
-                if (i->url==item->url) {
-                    return;
-                }
-            }
-
-            QModelIndex index=createIndex(bookmarkCat->parent->children.indexOf(bookmarkCat), 0, (void *)bookmarkCat);
-            beginInsertRows(index, bookmarkCat->children.count(), bookmarkCat->children.count());
-            bookmarkCat->children.append(new CategoryItem(item->url, item->name, bookmarkCat));
-            endInsertRows();
-            bookmarkParentCat->saveBookmarks();
-        }
-    }
-}
-
-void StreamsModel::removeBookmark(const QModelIndex &index)
-{
-    Item *item=toItem(index);
-
-    if (item->isCategory() && item->parent && item->parent->isBookmarks) {
-        CategoryItem *bookmarkCat=item->parent; // 'Bookmarks'
-        CategoryItem *cat=bookmarkCat->parent; // e.g. 'TuneIn'
-        if (1==bookmarkCat->children.count()) { // Only 1 bookark, so remove 'Bookmarks' folder...
-            int pos=cat->children.indexOf(bookmarkCat);
-            QModelIndex index=createIndex(cat->parent->children.indexOf(cat), 0, (void *)cat);
-            beginRemoveRows(index, pos, pos);
-            delete cat->children.takeAt(pos);
-            endRemoveRows();
-            cat->removeBookmarks();
-        } else if (!bookmarkCat->children.isEmpty()) { // More than 1 bookmark...
-            int pos=bookmarkCat->children.indexOf(item);
-            QModelIndex index=createIndex(bookmarkCat->parent->children.indexOf(bookmarkCat), 0, (void *)bookmarkCat);
-            beginRemoveRows(index, pos, pos);
-            delete bookmarkCat->children.takeAt(pos);
-            endRemoveRows();
-            cat->saveBookmarks();
-        }
-    }
-}
-
-void StreamsModel::removeAllBookmarks(const QModelIndex &index)
-{
-    Item *item=toItem(index);
-
-    if (item->isCategory() && static_cast<CategoryItem *>(item)->isBookmarks) {
-        CategoryItem *cat=item->parent; // e.g. 'TuneIn'
-        int pos=cat->children.indexOf(item);
-        QModelIndex index=createIndex(cat->parent->children.indexOf(cat), 0, (void *)cat);
-        beginRemoveRows(index, pos, pos);
-        delete cat->children.takeAt(pos);
-        endRemoveRows();
-        cat->removeBookmarks();
-    }
-}
-
 bool StreamsModel::validProtocol(const QString &file)
 {
     QString scheme=QUrl(file).scheme();
@@ -955,18 +768,6 @@ void StreamsModel::jobFinished()
                     newItems=parseShoutCastResponse(job, cat, job->property(constOrigUrlProperty).toString());
                 } else {
                     newItems=parseListenLiveResponse(job, cat);
-                }
-            }
-
-            if (cat && cat->parent==root && cat->supportsBookmarks) {
-                QList<Item *> bookmarks=cat->loadBookmarks();
-                if (bookmarks.count()) {
-                    CategoryItem *bookmarksCat=cat->createBookmarksCategory();
-                    foreach (Item *i, bookmarks) {
-                        i->parent=bookmarksCat;
-                    }
-                    bookmarksCat->children=bookmarks;
-                    newItems.append(bookmarksCat);
                 }
             }
 
@@ -1495,7 +1296,6 @@ StreamsModel::Item * StreamsModel::parseRadioTimeEntry(QXmlStreamReader &doc, Ca
                     item=new Item(url, text, parent);
                 } else {
                     cat=new CategoryItem(url, text, parent);
-                    cat->canBookmark=!url.isEmpty();
                     item=cat;
                 }
             }

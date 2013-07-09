@@ -100,16 +100,17 @@
     predefined top-level items; Favourites (user streams), TuneIn, IceCast,
     ShoutCast, SomaFM, Digitially Imported, Jazz Radio, Rock Radio, Sky.fm, and
     Listen Live.
-65. Place search fields on bottom of views, and hide by default. Show when
+65. Search for streams on TunIn.
+66. Place search fields on bottom of views, and hide by default. Show when
     Ctrl-F is used for views, and Ctrl-Shift-F for playqueue.
-66. When searching in dynamic page, also search rules themselves.
-67. For MPD versions 0.17 and above, if Cantata can read a .cue file then it
+67. When searching in dynamic page, also search rules themselves.
+68. For MPD versions 0.17 and above, if Cantata can read a .cue file then it
     will list each track as a separate entry in the artists and albums views.
-68. When loading a stream into the playqueue, show a status message at the
+69. When loading a stream into the playqueue, show a status message at the
     bottom - allowing the loading to be cancelled.
-69. If stream is not a audiocd stream, and the total time is known, then enable
+70. If stream is not a audiocd stream, and the total time is known, then enable
     the position slider.
-70. Allow seeking in cantata HTTP streams.
+71. Allow seeking in cantata HTTP streams.
 
 1.0.3
 -----

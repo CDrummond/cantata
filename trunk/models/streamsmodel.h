@@ -25,9 +25,9 @@
 #define STREAMSMODEL_H
 
 #include "actionmodel.h"
+#include <QIcon>
 #include <QList>
 #include <QMap>
-#include <QIcon>
 #include <QDateTime>
 
 class QNetworkReply;
@@ -60,19 +60,13 @@ public:
             Fetched
         };
 
-        CategoryItem(const QString &u, const QString &n=QString(), CategoryItem *p=0, const QIcon &i=QIcon(),
-                     const QString &cn=QString(), const QString &bn=QString())
-            : Item(u, n, p), state(Initial), isFavourites(false), isAll(false), isBookmarks(false),
-              childrenHaveCache(false), supportsBookmarks(false), canBookmark(false), icon(i), cacheName(cn), bookmarksName(bn) { }
+        CategoryItem(const QString &u, const QString &n=QString(), CategoryItem *p=0, const QIcon &i=QIcon(), const QString &cn=QString())
+            : Item(u, n, p), state(Initial), isFavourites(false), isAll(false), childrenHaveCache(false), icon(i), cacheName(cn) { }
         virtual ~CategoryItem() { qDeleteAll(children); }
         virtual bool isCategory() const { return true; }
         void removeCache();
         void saveCache() const;
         QList<Item *> loadCache();
-        void removeBookmarks();
-        void saveBookmarks();
-        QList<Item *> loadBookmarks();
-        CategoryItem * createBookmarksCategory();
         bool saveXml(const QString &fileName, bool format=false) const;
         bool saveXml(QIODevice *dev, bool format=false) const;
         QList<Item *> loadXml(const QString &fileName, bool importing=false);
@@ -81,14 +75,10 @@ public:
         State state;
         bool isFavourites : 1;
         bool isAll : 1;
-        bool isBookmarks : 1; // 'Virtual' bookmarks category...
         bool childrenHaveCache : 1; // Only used for ListenLive - as each sub-category can have the cache
-        bool supportsBookmarks : 1; // Intended for top-level items, indicates if bookmarks can be added
-        bool canBookmark : 1; // Can this category be bookmark'ed in top-level parent?
         QList<Item *> children;
         QIcon icon;
         QString cacheName;
-        QString bookmarksName;
     };
 
     static const QString constPrefix;
@@ -127,10 +117,8 @@ public:
     bool nameExistsInFavourites(const QString &n);
     void updateFavouriteStream(Item *item);
     QModelIndex favouritesIndex() const;
-
-    void addBookmark(const QModelIndex &index);
-    void removeBookmark(const QModelIndex &index);
-    void removeAllBookmarks(const QModelIndex &index);
+    const QIcon & favouritesIcon() const { return favourites->icon; }
+    const QIcon & tuneInIcon() const { return tuneIn->icon; }
 
     QStringList filenames(const QModelIndexList &indexes, bool addPrefix) const;
     QMimeData * mimeData(const QModelIndexList &indexes) const;
@@ -143,6 +131,18 @@ Q_SIGNALS:
     void loaded();
     void error(const QString &msg);
 
+public:
+    static QList<Item *> parseRadioTimeResponse(QIODevice *dev, CategoryItem *cat);
+    static QList<Item *> parseIceCastResponse(QIODevice *dev, CategoryItem *cat);
+    static QList<Item *> parseSomaFmResponse(QIODevice *dev, CategoryItem *cat);
+    static QList<Item *> parseDigitallyImportedResponse(QIODevice *dev, CategoryItem *cat);
+    static QList<Item *> parseListenLiveResponse(QIODevice *dev, CategoryItem *cat);
+    QList<Item *> parseShoutCastResponse(QIODevice *dev, CategoryItem *cat, const QString &origUrl);
+    QList<Item *> parseShoutCastLinks(QXmlStreamReader &doc, CategoryItem *cat);
+    QList<Item *> parseShoutCastStations(QXmlStreamReader &doc, CategoryItem *cat);
+    static Item * parseRadioTimeEntry(QXmlStreamReader &doc, CategoryItem *parent);
+    static Item * parseSomaFmEntry(QXmlStreamReader &doc, CategoryItem *parent);
+
 private Q_SLOTS:
     void jobFinished();
     void persistFavourites();
@@ -150,16 +150,6 @@ private Q_SLOTS:
 private:
     bool loadCache(CategoryItem *cat);
     Item * toItem(const QModelIndex &index) const { return index.isValid() ? static_cast<Item*>(index.internalPointer()) : root; }
-    QList<Item *> parseRadioTimeResponse(QIODevice *dev, CategoryItem *cat);
-    QList<Item *> parseIceCastResponse(QIODevice *dev, CategoryItem *cat);
-    QList<Item *> parseSomaFmResponse(QIODevice *dev, CategoryItem *cat);
-    QList<Item *> parseDigitallyImportedResponse(QIODevice *dev, CategoryItem *cat);
-    QList<Item *> parseListenLiveResponse(QIODevice *dev, CategoryItem *cat);
-    QList<Item *> parseShoutCastResponse(QIODevice *dev, CategoryItem *cat, const QString &origUrl);
-    QList<Item *> parseShoutCastLinks(QXmlStreamReader &doc, CategoryItem *cat);
-    QList<Item *> parseShoutCastStations(QXmlStreamReader &doc, CategoryItem *cat);
-    Item * parseRadioTimeEntry(QXmlStreamReader &doc, CategoryItem *parent);
-    Item * parseSomaFmEntry(QXmlStreamReader &doc, CategoryItem *parent);
     bool loadFavourites(const QString &fileName, const QModelIndex &index, bool importing=false);
     void buildListenLive();
 
@@ -167,6 +157,7 @@ private:
     QMap<QNetworkReply *, CategoryItem *> jobs;
     CategoryItem *root;
     CategoryItem *favourites;
+    CategoryItem *tuneIn;
     CategoryItem *listenLive;
     bool favouritesIsWriteable;
     bool favouritesModified;

@@ -25,7 +25,9 @@
 #define MESSAGE_OVERLAY_H
 
 #include <QWidget>
+
 class ToolButton;
+class QTimer;
 
 class MessageOverlay : public QWidget
 {
@@ -36,11 +38,14 @@ public:
     virtual ~MessageOverlay() { }
 
     void setWidget(QWidget *widget);
-    void setText(const QString &txt);
+    void setText(const QString &txt, int timeout=-1, bool allowCancel=true);
     void paintEvent(QPaintEvent *);
 
 Q_SIGNALS:
     void cancel();
+
+private Q_SLOTS:
+    void timeout();
 
 private:
     bool eventFilter(QObject *o, QEvent *e);
@@ -50,6 +55,7 @@ private:
     int spacing;
     QString text;
     ToolButton *cancelButton;
+    QTimer *timer;
 };
 
 #endif

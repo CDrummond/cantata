@@ -33,6 +33,7 @@
 #include "config.h"
 #include "gtkstyle.h"
 #include "spinner.h"
+#include "messageoverlay.h"
 #include <QToolButton>
 #include <QStyle>
 #include <QStyleOptionViewItem>
@@ -471,6 +472,7 @@ ItemView::ItemView(QWidget *p)
     , mode(Mode_SimpleTree)
     , groupedView(0)
     , spinner(0)
+    , msgOverlay(0)
 {
     setupUi(this);
     backAction = new QAction(i18n("Back"), this);
@@ -593,6 +595,9 @@ void ItemView::setMode(Mode m)
         if (spinner->isActive()) {
             spinner->start();
         }
+    }
+    if (msgOverlay) {
+        msgOverlay->setWidget(view()->viewport());
     }
 }
 
@@ -844,6 +849,15 @@ void ItemView::expand(const QModelIndex &index)
     } else if (Mode_GroupedTree==mode && groupedView) {
         groupedView->expand(index);
     }
+}
+
+void ItemView::showMessage(const QString &message, int timeout)
+{
+    if (!msgOverlay) {
+        msgOverlay=new MessageOverlay(this);
+        msgOverlay->setWidget(view()->viewport());
+    }
+    msgOverlay->setText(message, timeout);
 }
 
 void ItemView::showSpinner()

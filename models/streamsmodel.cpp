@@ -552,7 +552,11 @@ QVariant StreamsModel::data(const QModelIndex &index, int role) const
 Qt::ItemFlags StreamsModel::flags(const QModelIndex &index) const
 {
     if (index.isValid()) {
-        return Qt::ItemIsSelectable | Qt::ItemIsDragEnabled | Qt::ItemIsEnabled;
+        if (toItem(index)->isCategory()) {
+            return Qt::ItemIsSelectable | Qt::ItemIsEnabled;
+        } else {
+            return Qt::ItemIsSelectable | Qt::ItemIsDragEnabled | Qt::ItemIsEnabled;
+        }
     } else {
         return Qt::NoItemFlags;
     }

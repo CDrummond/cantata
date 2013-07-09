@@ -60,18 +60,28 @@ public:
             Fetched
         };
 
-        CategoryItem(const QString &u, const QString &n=QString(), CategoryItem *p=0, const QIcon &i=QIcon(), const QString &cn=QString())
-            : Item(u, n, p), state(Initial), isFavourites(false), isAll(false), childrenHaveCache(false), icon(i), cacheName(cn) { }
+        CategoryItem(const QString &u, const QString &n=QString(), CategoryItem *p=0, const QIcon &i=QIcon(),
+                     const QString &cn=QString(), const QString &bn=QString())
+            : Item(u, n, p), state(Initial), isFavourites(false), isAll(false), isBookmarks(false),
+              childrenHaveCache(false), supportsBookmarks(false), canBookmark(false), icon(i), cacheName(cn), bookmarksName(bn) { }
         virtual ~CategoryItem() { qDeleteAll(children); }
         virtual bool isCategory() const { return true; }
         void removeCache();
+        void removeBookmarks();
+        void saveBookmarks();
+        QList<Item *> loadBookmarks();
+        CategoryItem *createBookmarksCategory();
         State state;
         bool isFavourites : 1;
         bool isAll : 1;
-        bool childrenHaveCache : 1;
+        bool isBookmarks : 1; // 'Virtual' bookmarks category...
+        bool childrenHaveCache : 1; // Only used for ListenLive - as each sub-category can have the cache
+        bool supportsBookmarks : 1; // Intended for top-level items, indicates if bookmarks can be added
+        bool canBookmark : 1; // Can this category be bookmark'ed in top-level parent?
         QList<Item *> children;
         QIcon icon;
         QString cacheName;
+        QString bookmarksName;
     };
 
     static const QString constPrefix;
@@ -107,6 +117,10 @@ public:
     QString favouritesNameForUrl(const QString &u);
     bool nameExistsInFavourites(const QString &n);
     void updateFavouriteStream(Item *item);
+
+    void addBookmark(const QModelIndex &index);
+    void removeBookmark(const QModelIndex &index);
+    void removeAllBookmarks(const QModelIndex &index);
 
     bool importXml(const QString &fileName);
     bool saveXml(const QString &fileName, const QList<Item *> &items, bool format=true);

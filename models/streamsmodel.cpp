@@ -1295,6 +1295,7 @@ QList<StreamsModel::Item *> StreamsModel::loadXml(QIODevice *dev, CategoryItem *
                     QString name=doc.attributes().value("name").toString();
                     currentCat=new CategoryItem(QString(), name, prevCat);
                     currentCat->state=CategoryItem::Fetched;
+                    currentCat->isAll=QLatin1String("true")==doc.attributes().value("isAll").toString();
                     newItems.append(currentCat);
                 }
             } if (doc.isEndElement() && QLatin1String("category")==doc.name()) {
@@ -1317,6 +1318,9 @@ static void saveCategory(QXmlStreamWriter &doc, const StreamsModel::CategoryItem
 {
     doc.writeStartElement("category");
     doc.writeAttribute("name", cat->name);
+    if (cat->isAll) {
+        doc.writeAttribute("isAll", "true");
+    }
     foreach (const StreamsModel::Item *i, cat->children) {
         if (i->isCategory()) {
             saveCategory(doc, static_cast<const StreamsModel::CategoryItem *>(i));

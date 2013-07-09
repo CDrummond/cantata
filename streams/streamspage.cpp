@@ -45,6 +45,9 @@
 #include <QAction>
 #include <QMenu>
 #include <QFileInfo>
+#if QT_VERSION >= 0x050000
+#include <QUrlQuery>
+#endif
 
 static const int constMsgDisplayTime=1500;
 
@@ -320,7 +323,23 @@ void StreamsPage::addToFavourites()
 
     int added=0;
     foreach (const StreamsModel::Item *item, items) {
-        if (StreamsModel::self()->addToFavourites(item->url, item->name)) {
+        QUrl url(item->url);
+        #if QT_VERSION < 0x050000
+        QUrl &query=url;
+        #else
+        QUrlQuery query(url);
+        #endif
+        query.removeQueryItem(QLatin1String("locale"));
+        #if QT_VERSION >= 0x050000
+        if (!query.isEmpty()) {
+            url.setQuery(query);
+        }
+        #endif
+        QString urlStr=url.toString();
+        if (urlStr.endsWith('&')) {
+            urlStr=urlStr.left(urlStr.length()-1);
+        }
+        if (StreamsModel::self()->addToFavourites(urlStr, item->name)) {
             added++;
         }
     }

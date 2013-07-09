@@ -152,6 +152,27 @@ void StreamsModel::CategoryItem::removeCache()
     }
 }
 
+void StreamsModel::CategoryItem::saveCache() const
+{
+    if (!cacheName.isEmpty()) {
+        saveXml(categoryCacheName(cacheName, true));
+    }
+}
+
+QList<StreamsModel::Item *> StreamsModel::CategoryItem::loadCache()
+{
+    QList<Item *> newItems;
+
+    if (!cacheName.isEmpty()) {
+        QString cache=categoryCacheName(cacheName);
+        if (!cache.isEmpty() && QFile::exists(cache)) {
+            return loadXml(cache);
+        }
+    }
+
+    return newItems;
+}
+
 void StreamsModel::CategoryItem::removeBookmarks()
 {
     if (bookmarksName.isEmpty()) {
@@ -243,6 +264,170 @@ StreamsModel::CategoryItem * StreamsModel::CategoryItem::createBookmarksCategory
     return bookmarkCat;
 }
 
+bool StreamsModel::CategoryItem::saveXml(const QString &fileName, bool format) const
+{
+    if (children.isEmpty()) {
+        // No children, so remove XML...
+        return !QFile::exists(fileName) || QFile::remove(fileName);
+    }
+
+    QFile file(fileName);
+
+    if (fileName.endsWith(".xml")) {
+        return file.open(QIODevice::WriteOnly) && saveXml(&file, format);
+    } else {
+        QtIOCompressor compressor(&file);
+        compressor.setStreamFormat(QtIOCompressor::GzipFormat);
+        return compressor.open(QIODevice::WriteOnly) && saveXml(&compressor, format);
+    }
+}
+
+static void saveStream(QXmlStreamWriter &doc, const StreamsModel::Item *item)
+{
+    doc.writeStartElement("stream");
+    doc.writeAttribute("name", item->name);
+    doc.writeAttribute("url", item->url);
+    doc.writeEndElement();
+}
+
+static void saveCategory(QXmlStreamWriter &doc, const StreamsModel::CategoryItem *cat)
+{
+    if (cat->isBookmarks) {
+        return;
+    }
+    doc.writeStartElement("category");
+    doc.writeAttribute("name", cat->name);
+    if (cat->isAll) {
+        doc.writeAttribute("isAll", "true");
+    }
+    foreach (const StreamsModel::Item *i, cat->children) {
+        if (i->isCategory()) {
+            saveCategory(doc, static_cast<const StreamsModel::CategoryItem *>(i));
+        } else {
+            saveStream(doc, static_cast<const StreamsModel::Item *>(i));
+        }
+    }
+    doc.writeEndElement();
+}
+
+bool StreamsModel::CategoryItem::saveXml(QIODevice *dev, bool format) const
+{
+    QXmlStreamWriter doc(dev);
+    doc.writeStartDocument();
+    doc.writeStartElement("streams");
+    doc.writeAttribute("version", "1.0");
+    if (format) {
+        doc.setAutoFormatting(true);
+        doc.setAutoFormattingIndent(1);
+    } else {
+        doc.setAutoFormatting(false);
+    }
+
+    foreach (const Item *i, children) {
+        if (i->isCategory()) {
+            saveCategory(doc, static_cast<const CategoryItem *>(i));
+        } else {
+            saveStream(doc, i);
+        }
+    }
+    doc.writeEndElement();
+    doc.writeEndDocument();
+    return true;
+}
+
+QList<StreamsModel::Item *> StreamsModel::CategoryItem::loadXml(const QString &fileName, bool importing)
+{
+    QFile file(fileName);
+    if (!file.open(QIODevice::ReadOnly)) {
+        return QList<StreamsModel::Item *>();
+    }
+    // Check for gzip header...
+    QByteArray header=file.read(2);
+    bool isCompressed=((unsigned char)header[0])==0x1f && ((unsigned char)header[1])==0x8b;
+    file.seek(0);
+
+    QtIOCompressor compressor(&file);
+    if (isCompressed) {
+        compressor.setStreamFormat(QtIOCompressor::GzipFormat);
+        if (!compressor.open(QIODevice::ReadOnly)) {
+            return QList<StreamsModel::Item *>();
+        }
+    }
+
+    return loadXml(isCompressed ? (QIODevice *)&compressor : (QIODevice *)&file, importing);
+}
+
+QList<StreamsModel::Item *> StreamsModel::CategoryItem::loadXml(QIODevice *dev, bool importing)
+{
+    QList<Item *> newItems;
+    QXmlStreamReader doc(dev);
+
+    if (isFavourites) {
+        QSet<QString> existingUrls;
+        QSet<QString> existingNames;
+
+        if (importing) {
+            foreach (Item *i, children) {
+                existingUrls.insert(i->url);
+                existingNames.insert(i->name);
+            }
+        }
+
+        while (!doc.atEnd()) {
+            doc.readNext();
+
+            if (doc.isStartElement() && QLatin1String("stream")==doc.name()) {
+                QString name=doc.attributes().value("name").toString();
+                QString origName=name;
+                QString url=doc.attributes().value("url").toString();
+
+                if (!name.isEmpty() && !name.isEmpty() && (!importing || !existingUrls.contains(url))) {
+                    int i=1;
+                    if (importing) {
+                        for (; i<100 && existingNames.contains(name); ++i) {
+                            name=origName+QLatin1String("_")+QString::number(i);
+                        }
+                    }
+
+                    if (i<100) {
+                        existingNames.insert(name);
+                        existingUrls.insert(url);
+                        newItems.append(new Item(url, name, this));
+                    }
+                }
+            }
+        }
+    } else {
+        CategoryItem *currentCat=this;
+        CategoryItem *prevCat=this;
+        while (!doc.atEnd()) {
+            doc.readNext();
+
+            if (doc.isStartElement()) {
+                if (QLatin1String("stream")==doc.name()) {
+                    QString name=doc.attributes().value("name").toString();
+                    QString url=doc.attributes().value("url").toString();
+                    if (currentCat==this) {
+                        newItems.append(new Item(url, name, currentCat));
+                    } else {
+                        currentCat->children.append(new Item(url, name, currentCat));
+                    }
+                } else if (QLatin1String("category")==doc.name()) {
+                    prevCat=currentCat;
+                    QString name=doc.attributes().value("name").toString();
+                    currentCat=new CategoryItem(QString(), name, prevCat);
+                    currentCat->state=CategoryItem::Fetched;
+                    currentCat->isAll=QLatin1String("true")==doc.attributes().value("isAll").toString();
+                    newItems.append(currentCat);
+                }
+            } if (doc.isEndElement() && QLatin1String("category")==doc.name()) {
+                currentCat=prevCat;
+            }
+        }
+    }
+    return newItems;
+}
+
 StreamsModel::StreamsModel(QObject *parent)
     : ActionModel(parent)
     , root(new CategoryItem(QString(), "root"))
@@ -295,7 +480,7 @@ QModelIndex StreamsModel::parent(const QModelIndex &index) const
         return QModelIndex();
     }
 
-    return createIndex(static_cast<CategoryItem *>(parent->parent)->children.indexOf(parent), 0, parent);
+    return createIndex(static_cast<const CategoryItem *>(parent->parent)->children.indexOf(parent), 0, parent);
 }
 
 QVariant StreamsModel::headerData(int /*section*/, Qt::Orientation /*orientation*/, int /*role*/) const
@@ -400,7 +585,7 @@ void StreamsModel::fetchMore(const QModelIndex &index)
         if (item->url==constFavouritesUrl && !getInternalFile().startsWith(QLatin1String("http://"))) {
             cat->state=CategoryItem::Fetching;
             emit dataChanged(index, index);
-            loadFavourites(index);
+            loadFavourites(getInternalFile(false), index);
             cat->state=CategoryItem::Fetched;
         } else if (!loadCache(cat)) {
             QNetworkRequest req;
@@ -427,46 +612,6 @@ void StreamsModel::fetchMore(const QModelIndex &index)
     }
 }
 
-void StreamsModel::saveFavourites(bool force)
-{
-    if (force) {
-        if (favouritesSaveTimer) {
-            favouritesSaveTimer->stop();
-        }
-        persistFavourites();
-    } else if (!QFile::exists(getInternalFile(false)) || !QFileInfo(getInternalFile(false)).isWritable()) {
-        if (favouritesSaveTimer) {
-            favouritesSaveTimer->stop();
-        }
-        persistFavourites(); // Call persist now so as to log errors immediately
-    } else {
-        if (!favouritesSaveTimer) {
-            favouritesSaveTimer=new QTimer(this);
-            connect(favouritesSaveTimer, SIGNAL(timeout()), this, SLOT(persistFavourites()));
-        }
-        favouritesSaveTimer->start(10*1000);
-    }
-}
-
-bool StreamsModel::checkFavouritesWritable()
-{
-    QString dirName=favouritesDir();
-    bool isHttp=dirName.startsWith("http:/");
-    favouritesIsWriteable=!isHttp && QFileInfo(dirName).isWritable();
-    if (favouritesIsWriteable) {
-        QString fileName=getInternalFile(false);
-        if (QFile::exists(fileName) && !QFileInfo(fileName).isWritable()) {
-            favouritesIsWriteable=false;
-        }
-    }
-    return favouritesIsWriteable;
-}
-
-void StreamsModel::reloadFavourites()
-{
-    reload(createIndex(root->children.indexOf(favourites), 0, favourites));
-}
-
 void StreamsModel::reload(const QModelIndex &index)
 {
     Item *item = toItem(index);
@@ -490,6 +635,56 @@ void StreamsModel::reload(const QModelIndex &index)
     }
 
     fetchMore(index);
+}
+
+void StreamsModel::saveFavourites(bool force)
+{
+    if (force) {
+        if (favouritesSaveTimer) {
+            favouritesSaveTimer->stop();
+        }
+        persistFavourites();
+    } else if (!QFile::exists(getInternalFile(false)) || !QFileInfo(getInternalFile(false)).isWritable()) {
+        if (favouritesSaveTimer) {
+            favouritesSaveTimer->stop();
+        }
+        persistFavourites(); // Call persist now so as to log errors immediately
+    } else {
+        if (!favouritesSaveTimer) {
+            favouritesSaveTimer=new QTimer(this);
+            connect(favouritesSaveTimer, SIGNAL(timeout()), this, SLOT(persistFavourites()));
+        }
+        favouritesSaveTimer->start(10*1000);
+    }
+}
+
+bool StreamsModel::exportFavourites(const QString &fileName)
+{
+    return favourites->saveXml(fileName, true);
+}
+
+bool StreamsModel::importIntoFavourites(const QString &fileName)
+{
+    return loadFavourites(fileName, createIndex(root->children.indexOf(favourites), 0, favourites), true);
+}
+
+bool StreamsModel::checkFavouritesWritable()
+{
+    QString dirName=favouritesDir();
+    bool isHttp=dirName.startsWith("http:/");
+    favouritesIsWriteable=!isHttp && QFileInfo(dirName).isWritable();
+    if (favouritesIsWriteable) {
+        QString fileName=getInternalFile(false);
+        if (QFile::exists(fileName) && !QFileInfo(fileName).isWritable()) {
+            favouritesIsWriteable=false;
+        }
+    }
+    return favouritesIsWriteable;
+}
+
+void StreamsModel::reloadFavourites()
+{
+    reload(createIndex(root->children.indexOf(favourites), 0, favourites));
 }
 
 void StreamsModel::removeFromFavourites(const QModelIndex &index)
@@ -653,24 +848,6 @@ void StreamsModel::removeAllBookmarks(const QModelIndex &index)
     }
 }
 
-bool StreamsModel::importXml(const QString &fileName)
-{
-    return loadXml(fileName, createIndex(root->children.indexOf(favourites), 0, favourites));
-}
-
-bool StreamsModel::saveXml(const QString &fileName, const QList<Item *> &items, bool format)
-{
-    QFile file(fileName);
-
-    if (fileName.endsWith(".xml")) {
-        return file.open(QIODevice::WriteOnly) && saveXml(&file, items.isEmpty() ? favourites->children : items, format);
-    } else {
-        QtIOCompressor compressor(&file);
-        compressor.setStreamFormat(QtIOCompressor::GzipFormat);
-        return compressor.open(QIODevice::WriteOnly) && saveXml(&compressor, items.isEmpty() ? favourites->children : items, format);
-    }
-}
-
 bool StreamsModel::validProtocol(const QString &file)
 {
     QString scheme=QUrl(file).scheme();
@@ -731,30 +908,18 @@ QStringList StreamsModel::mimeTypes() const
 
 bool StreamsModel::loadCache(CategoryItem *cat)
 {
-    if (!cat->cacheName.isEmpty()) {
-        QString cache=categoryCacheName(cat->cacheName);
-        if (!cache.isEmpty()) {
-            QList<Item *> newItems=loadXml(cache, cat, false);
-            if (!newItems.isEmpty()) {
-                QModelIndex index=createIndex(cat->parent->children.indexOf(cat), 0, (void *)cat);
-                beginInsertRows(index, cat->children.count(), (cat->children.count()+newItems.count())-1);
-                cat->children+=newItems;
-                endInsertRows();
-                cat->state=CategoryItem::Fetched;
-                emit dataChanged(index, index);
-                return true;
-            }
-        }
+    QList<Item *> newItems=cat->loadCache();
+    if (!newItems.isEmpty()) {
+        QModelIndex index=createIndex(cat->parent->children.indexOf(cat), 0, (void *)cat);
+        beginInsertRows(index, cat->children.count(), (cat->children.count()+newItems.count())-1);
+        cat->children+=newItems;
+        endInsertRows();
+        cat->state=CategoryItem::Fetched;
+        emit dataChanged(index, index);
+        return true;
     }
 
     return false;
-}
-
-void StreamsModel::saveCache(CategoryItem *cat, const QList<Item *> &items)
-{
-    if (!cat->cacheName.isEmpty()) {
-        saveXml(categoryCacheName(cat->cacheName, true), items, false);
-    }
 }
 
 void StreamsModel::jobFinished()
@@ -776,7 +941,7 @@ void StreamsModel::jobFinished()
         if (QNetworkReply::NoError==job->error()) {
             QList<Item *> newItems;
             if (cat==favourites) {
-                newItems=loadXml(job, cat, true);
+                newItems=favourites->loadXml(job);
             } else if (QLatin1String("http")==job->url().scheme()) {
                 QString url=job->url().toString();
                 if (constRadioTimeHost==job->url().host()) {
@@ -792,7 +957,6 @@ void StreamsModel::jobFinished()
                 } else {
                     newItems=parseListenLiveResponse(job, cat);
                 }
-                saveCache(cat, newItems);
             }
 
             if (cat && cat->parent==root && cat->supportsBookmarks) {
@@ -811,6 +975,9 @@ void StreamsModel::jobFinished()
                 beginInsertRows(index, cat->children.count(), (cat->children.count()+newItems.count())-1);
                 cat->children+=newItems;
                 endInsertRows();
+                if (cat!=favourites) {
+                    cat->saveCache();
+                }
             }
         }
         emit dataChanged(index, index);
@@ -825,13 +992,7 @@ void StreamsModel::persistFavourites()
     if (favouritesModified) {
         QString fileName=getInternalFile(true);
         favouritesModified=false;
-        if (favourites->children.isEmpty()) {
-            // No entries, so remove file...
-            if (QFile::exists(fileName) && !QFile::remove(fileName)) {
-                emit error(i18n("Failed to save stream list. Please check %1 is writable.").arg(fileName));
-                reloadFavourites();
-            }
-        } else if (saveXml(fileName, favourites->children)) {
+        if (favourites->saveXml(fileName)) {
             Utils::setFilePerms(fileName);
         } else {
             emit error(i18n("Failed to save stream list. Please check %1 is writable.").arg(fileName));
@@ -1388,20 +1549,9 @@ StreamsModel::Item * StreamsModel::parseSomaFmEntry(QXmlStreamReader &doc, Categ
     return name.isEmpty() || url.isEmpty() ? 0 : new Item(url, name, parent);
 }
 
-void StreamsModel::loadFavourites(const QModelIndex &index)
+bool StreamsModel::loadFavourites(const QString &fileName, const QModelIndex &index, bool importing)
 {
-    if (!favourites->children.isEmpty()) {
-        beginRemoveRows(index, 0, favourites->children.count()-1);
-        qDeleteAll(favourites->children);
-        favourites->children.clear();
-        endRemoveRows();
-    }
-    loadXml(getInternalFile(false), index);
-}
-
-bool StreamsModel::loadXml(const QString &fileName, const QModelIndex &index)
-{
-    QList<Item *> newItems=loadXml(fileName, favourites, true);
+    QList<Item *> newItems=favourites->loadXml(fileName, importing);
 
     if (!newItems.isEmpty()) {
         beginInsertRows(index, favourites->children.count(), (favourites->children.count()+newItems.count())-1);
@@ -1410,152 +1560,6 @@ bool StreamsModel::loadXml(const QString &fileName, const QModelIndex &index)
         return true;
     }
     return false;
-}
-
-QList<StreamsModel::Item *> StreamsModel::loadXml(const QString &fileName, CategoryItem *cat, bool isInternal)
-{
-    QFile file(fileName);
-    if (!file.open(QIODevice::ReadOnly)) {
-        return QList<StreamsModel::Item *>();
-    }
-    // Check for gzip header...
-    QByteArray header=file.read(2);
-    bool isCompressed=((unsigned char)header[0])==0x1f && ((unsigned char)header[1])==0x8b;
-    file.seek(0);
-
-    QtIOCompressor compressor(&file);
-    if (isCompressed) {
-        compressor.setStreamFormat(QtIOCompressor::GzipFormat);
-        if (!compressor.open(QIODevice::ReadOnly)) {
-            return QList<StreamsModel::Item *>();
-        }
-    }
-
-    return loadXml(isCompressed ? (QIODevice *)&compressor : (QIODevice *)&file, cat, isInternal);
-}
-
-QList<StreamsModel::Item *> StreamsModel::loadXml(QIODevice *dev, CategoryItem *cat, bool isInternal)
-{
-    QList<Item *> newItems;
-    QXmlStreamReader doc(dev);
-
-    if (cat==favourites) {
-        QSet<QString> existingUrls;
-        QSet<QString> existingNames;
-
-        if (!isInternal) {
-            foreach (Item *i, favourites->children) {
-                existingUrls.insert(i->url);
-                existingNames.insert(i->name);
-            }
-        }
-
-        while (!doc.atEnd()) {
-            doc.readNext();
-
-            if (doc.isStartElement() && QLatin1String("stream")==doc.name()) {
-                QString name=doc.attributes().value("name").toString();
-                QString origName=name;
-                QString url=doc.attributes().value("url").toString();
-
-                if (!name.isEmpty() && !name.isEmpty() && (isInternal || !existingUrls.contains(url))) {
-                    int i=1;
-                    if (!isInternal) {
-                        for (; i<100 && existingNames.contains(name); ++i) {
-                            name=origName+QLatin1String("_")+QString::number(i);
-                        }
-                    }
-
-                    if (i<100) {
-                        existingNames.insert(name);
-                        existingUrls.insert(url);
-                        newItems.append(new Item(url, name, cat));
-                    }
-                }
-            }
-        }
-    } else {
-        CategoryItem *currentCat=cat;
-        CategoryItem *prevCat=cat;
-        while (!doc.atEnd()) {
-            doc.readNext();
-
-            if (doc.isStartElement()) {
-                if (QLatin1String("stream")==doc.name()) {
-                    QString name=doc.attributes().value("name").toString();
-                    QString url=doc.attributes().value("url").toString();
-                    if (currentCat==cat) {
-                        newItems.append(new Item(url, name, currentCat));
-                    } else {
-                        currentCat->children.append(new Item(url, name, currentCat));
-                    }
-                } else if (QLatin1String("category")==doc.name()) {
-                    prevCat=currentCat;
-                    QString name=doc.attributes().value("name").toString();
-                    currentCat=new CategoryItem(QString(), name, prevCat);
-                    currentCat->state=CategoryItem::Fetched;
-                    currentCat->isAll=QLatin1String("true")==doc.attributes().value("isAll").toString();
-                    newItems.append(currentCat);
-                }
-            } if (doc.isEndElement() && QLatin1String("category")==doc.name()) {
-                currentCat=prevCat;
-            }
-        }
-    }
-    return newItems;
-}
-
-static void saveStream(QXmlStreamWriter &doc, const StreamsModel::Item *item)
-{
-    doc.writeStartElement("stream");
-    doc.writeAttribute("name", item->name);
-    doc.writeAttribute("url", item->url);
-    doc.writeEndElement();
-}
-
-static void saveCategory(QXmlStreamWriter &doc, const StreamsModel::CategoryItem *cat)
-{
-    if (cat->isBookmarks) {
-        return;
-    }
-    doc.writeStartElement("category");
-    doc.writeAttribute("name", cat->name);
-    if (cat->isAll) {
-        doc.writeAttribute("isAll", "true");
-    }
-    foreach (const StreamsModel::Item *i, cat->children) {
-        if (i->isCategory()) {
-            saveCategory(doc, static_cast<const StreamsModel::CategoryItem *>(i));
-        } else {
-            saveStream(doc, static_cast<const StreamsModel::Item *>(i));
-        }
-    }
-    doc.writeEndElement();
-}
-
-bool StreamsModel::saveXml(QIODevice *dev, const QList<Item *> &items, bool format) const
-{
-    QXmlStreamWriter doc(dev);
-    doc.writeStartDocument();
-    doc.writeStartElement("streams");
-    doc.writeAttribute("version", "1.0");
-    if (format) {
-        doc.setAutoFormatting(true);
-        doc.setAutoFormattingIndent(1);
-    } else {
-        doc.setAutoFormatting(false);
-    }
-
-    foreach (const Item *i, items) {
-        if (i->isCategory()) {
-            saveCategory(doc, static_cast<const CategoryItem *>(i));
-        } else {
-            saveStream(doc, i);
-        }
-    }
-    doc.writeEndElement();
-    doc.writeEndDocument();
-    return true;
 }
 
 void StreamsModel::buildListenLive()

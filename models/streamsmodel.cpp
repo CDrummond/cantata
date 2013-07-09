@@ -801,14 +801,14 @@ void StreamsModel::persistFavourites()
     }
 }
 
-QList<StreamsModel::Item *> StreamsModel::parseRadioTimeResponse(QIODevice *dev, CategoryItem *cat)
+QList<StreamsModel::Item *> StreamsModel::parseRadioTimeResponse(QIODevice *dev, CategoryItem *cat, bool parseSubText)
 {
     QList<Item *> newItems;
     QXmlStreamReader doc(dev);
     while (!doc.atEnd()) {
         doc.readNext();
         if (doc.isStartElement() && QLatin1String("outline")==doc.name()) {
-            Item *item = parseRadioTimeEntry(doc, cat);
+            Item *item = parseRadioTimeEntry(doc, cat, parseSubText);
             if (item) {
                 newItems.append(item);
             }
@@ -1282,7 +1282,7 @@ QList<StreamsModel::Item *> StreamsModel::parseShoutCastStations(QXmlStreamReade
     return newItems;
 }
 
-StreamsModel::Item * StreamsModel::parseRadioTimeEntry(QXmlStreamReader &doc, CategoryItem *parent)
+StreamsModel::Item * StreamsModel::parseRadioTimeEntry(QXmlStreamReader &doc, CategoryItem *parent, bool parseSubText)
 {
     Item *item=0;
     CategoryItem *cat=0;
@@ -1291,9 +1291,10 @@ StreamsModel::Item * StreamsModel::parseRadioTimeEntry(QXmlStreamReader &doc, Ca
             QString text=doc.attributes().value("text").toString();
             if (!text.isEmpty()) {
                 QString url=doc.attributes().value("URL").toString();
+                QString subText=parseSubText ? doc.attributes().value("subtext").toString() : QString();
                 bool isStation=QLatin1String("audio")==doc.attributes().value("type").toString();
                 if (isStation) {
-                    item=new Item(url, text, parent);
+                    item=new Item(url, text, parent, subText);
                 } else {
                     cat=new CategoryItem(url, text, parent);
                     item=cat;

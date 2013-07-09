@@ -166,9 +166,6 @@ public:
         QRect r(option.rect);
         QRect r2(r);
         QString childText = index.data(ItemView::Role_SubText).toString();
-        if (childText==QLatin1String("-")) {
-            childText.clear();
-        }
         QVariant image = index.data(ItemView::Role_Image);
         if (image.isNull()) {
             image = index.data(Qt::DecorationRole);
@@ -184,6 +181,10 @@ public:
         bool iconMode = view && QListView::IconMode==view->viewMode();
         ActionPos actionPos = iconMode ? AP_VTop : AP_HMiddle;
         bool rtl = Qt::RightToLeft==QApplication::layoutDirection();
+
+        if (childText==QLatin1String("-")) {
+            childText.clear();
+        }
 
         painter->save();
         painter->setClipRect(r);
@@ -278,11 +279,13 @@ public:
             painter->setFont(textFont);
             painter->drawText(textRect, text, textOpt);
 
-            childText = childMetrics.elidedText(childText, Qt::ElideRight, childRect.width(), QPalette::WindowText);
-            color.setAlphaF(subTextAlpha(selected));
-            painter->setPen(color);
-            painter->setFont(childFont);
-            painter->drawText(childRect, childText, textOpt);
+            if (!childText.isEmpty()) {
+                childText = childMetrics.elidedText(childText, Qt::ElideRight, childRect.width(), QPalette::WindowText);
+                color.setAlphaF(subTextAlpha(selected));
+                painter->setPen(color);
+                painter->setFont(childFont);
+                painter->drawText(childRect, childText, textOpt);
+            }
         }
 
         if (showCapacity) {

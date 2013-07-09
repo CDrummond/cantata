@@ -26,6 +26,7 @@
 
 #include "ui_streamspage.h"
 #include "streamsproxymodel.h"
+#include "streamsearchmodel.h"
 
 class Action;
 class QAction;
@@ -64,29 +65,27 @@ private Q_SLOTS:
     void importXml();
     void exportXml();
     void add();
-    void addBookmark();
     void addToFavourites();
     void reload();
     void edit();
     void searchItems();
+    void controlSearch(bool on);
     void itemDoubleClicked(const QModelIndex &index);
     void updateDiStatus();
-    void searchTuneIn();
 
 private:
     void addItemsToPlayQueue(const QModelIndexList &indexes, bool replace, quint8 priorty=0);
 
 private:
     bool enabled;
-    bool modelIsDownloading;
+    bool searching;
     Action *importAction;
     Action *exportAction;
     Action *addAction;
     Action *editAction;
-    Action *addToFavouritesAction;
     Action *reloadAction;
-    Action *addBookmarkAction;
     StreamsProxyModel proxy;
+    StreamSearchModel searchModel;
 };
 
 #endif

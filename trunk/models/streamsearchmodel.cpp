@@ -126,7 +126,7 @@ QVariant StreamSearchModel::data(const QModelIndex &index, int role) const
                 #endif
             }
         } else {
-            return QLatin1String("-");
+            return item->subText.isEmpty() ? QLatin1String("-") : item->subText;
         }
         break;
     case ItemView::Role_Actions:
@@ -291,7 +291,7 @@ void StreamSearchModel::jobFinished()
 
         QModelIndex index=cat==root ? QModelIndex() : createIndex(cat->parent->children.indexOf(cat), 0, (void *)cat);
         if (QNetworkReply::NoError==job->error()) {
-            QList<StreamsModel::Item *> newItems=StreamsModel::parseRadioTimeResponse(job, cat);
+            QList<StreamsModel::Item *> newItems=StreamsModel::parseRadioTimeResponse(job, cat, true);
             if (!newItems.isEmpty()) {
                 beginInsertRows(index, cat->children.count(), (cat->children.count()+newItems.count())-1);
                 cat->children+=newItems;

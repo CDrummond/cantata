@@ -134,7 +134,7 @@ public:
     QString page();
     QStringList hiddenPages();
     bool gnomeMediaKeys();
-    #ifdef ENABLE_DEVICES_SUPPORT
+        #ifdef ENABLE_DEVICES_SUPPORT
     bool overwriteSongs();
     bool showDeleteAction();
     int devicesView();
@@ -157,9 +157,6 @@ public:
     #endif
     #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
     bool cdAuto();
-    #ifdef LAME_FOUND
-    bool cdEncode();
-    #endif
     #endif
     #if defined CDDB_FOUND && defined MUSICBRAINZ5_FOUND
     bool useCddb();
@@ -239,9 +236,6 @@ public:
     #endif
     #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
     void saveCdAuto(bool v);
-    #ifdef LAME_FOUND
-    void saveCdEncode(bool v);
-    #endif
     #endif
     #if defined CDDB_FOUND && defined MUSICBRAINZ5_FOUND
     void saveUseCddb(bool v);

@@ -28,7 +28,6 @@
 #include "playqueuemodel.h"
 #include "networkaccessmanager.h"
 #include "stdactions.h"
-#include "actioncollection.h"
 #include <QNetworkReply>
 #include <QString>
 #include <QVariant>
@@ -46,7 +45,6 @@ StreamSearchModel::StreamSearchModel(QObject *parent)
     : ActionModel(parent)
     , root(new StreamsModel::CategoryItem(QString(), "root"))
 {
-    addToFavouritesAction = ActionCollection::get()->createAction("addtofavourites", i18n("Add Stream To Favourites"), StreamsModel::self()->favouritesIcon());
 }
 
 StreamSearchModel::~StreamSearchModel()
@@ -133,13 +131,13 @@ QVariant StreamSearchModel::data(const QModelIndex &index, int role) const
         if (item->isCategory()){
             if (static_cast<const StreamsModel::CategoryItem *>(item)->canBookmark) {
                 QVariant v;
-                v.setValue<QList<Action *> >(QList<Action *>() << StdActions::self()->addBookmarkAction);
+                v.setValue<QList<Action *> >(QList<Action *>() << StreamsModel::self()->addBookmarkAct());
                 return v;
             }
         } else {
             QVariant v;
             if (StreamsModel::self()->isFavoritesWritable()) {
-                v.setValue<QList<Action *> >(QList<Action *>() << StdActions::self()->replacePlayQueueAction << addToFavouritesAction);
+                v.setValue<QList<Action *> >(QList<Action *>() << StdActions::self()->replacePlayQueueAction << StreamsModel::self()->addToFavouritesAct());
             } else {
                 v.setValue<QList<Action *> >(QList<Action *>() << StdActions::self()->replacePlayQueueAction);
             }

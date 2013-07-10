@@ -33,6 +33,7 @@
 #include "itemview.h"
 #include "action.h"
 #include "stdactions.h"
+#include "actioncollection.h"
 #include "digitallyimported.h"
 #include "qjson/parser.h"
 #include "qtiocompressor/qtiocompressor.h"
@@ -459,6 +460,8 @@ StreamsModel::StreamsModel(QObject *parent)
     favourites->isFavourites=true;
     root->children.append(favourites);
     buildListenLive();
+    addBookmarkAction = ActionCollection::get()->createAction("bookmarkcategory", i18n("Bookmark Category"), Icon("bookmark-new"));
+    addToFavouritesAction = ActionCollection::get()->createAction("addtofavourites", i18n("Add Stream To Favourites"), favouritesIcon());
 }
 
 StreamsModel::~StreamsModel()
@@ -552,12 +555,16 @@ QVariant StreamsModel::data(const QModelIndex &index, int role) const
         if (item->isCategory()){
             if (static_cast<const CategoryItem *>(item)->canBookmark) {
                 QVariant v;
-                v.setValue<QList<Action *> >(QList<Action *>() << StdActions::self()->addBookmarkAction);
+                v.setValue<QList<Action *> >(QList<Action *>() << addBookmarkAction);
                 return v;
             }
         } else {
             QVariant v;
-            v.setValue<QList<Action *> >(QList<Action *>() << StdActions::self()->replacePlayQueueAction);
+            if (favouritesIsWriteable && item->parent!=favourites) {
+                v.setValue<QList<Action *> >(QList<Action *>() << StdActions::self()->replacePlayQueueAction << addToFavouritesAction);
+            } else {
+                v.setValue<QList<Action *> >(QList<Action *>() << StdActions::self()->replacePlayQueueAction);
+            }
             return v;
         }
         break;

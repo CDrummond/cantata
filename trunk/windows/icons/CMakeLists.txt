@@ -237,7 +237,23 @@ set(OXYGEN_ICONS
 128x128/categories/applications-internet.png
 128x128/devices/media-optical.png
 256x256/categories/applications-internet.png
-256x256/devices/media-optical.png)
+256x256/devices/media-optical.png
+16x16/places/bookmarks.png
+16x16/actions/bookmark-new.png
+32x32/places/bookmarks.png
+32x32/actions/bookmark-new.png
+48x48/places/bookmarks.png
+48x48/actions/bookmark-new.png
+22x22/places/bookmarks.png
+22x22/actions/bookmark-new.png
+22x22/actions/bookmarks.png
+64x64/places/bookmarks.png
+64x64/actions/bookmark-new.png
+16x16/actions/go-home.png
+32x32/actions/go-home.png
+48x48/actions/go-home.png
+22x22/actions/go-home.png
+)
 
 foreach(ICON ${OXYGEN_ICONS})
     get_filename_component(ICON_PATH ${ICON} PATH)

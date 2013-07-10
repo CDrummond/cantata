@@ -138,7 +138,11 @@ QVariant StreamSearchModel::data(const QModelIndex &index, int role) const
             }
         } else {
             QVariant v;
-            v.setValue<QList<Action *> >(QList<Action *>() << StdActions::self()->replacePlayQueueAction << addToFavouritesAction);
+            if (StreamsModel::self()->isFavoritesWritable()) {
+                v.setValue<QList<Action *> >(QList<Action *>() << StdActions::self()->replacePlayQueueAction << addToFavouritesAction);
+            } else {
+                v.setValue<QList<Action *> >(QList<Action *>() << StdActions::self()->replacePlayQueueAction);
+            }
             return v;
         }
         break;

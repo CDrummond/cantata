@@ -24,7 +24,13 @@
     <number>0</number>
    </property>
    <item>
-    <widget class="ItemView" name="view"/>
+    <widget class="QStackedWidget" name="viewStack">
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+     <widget class="ItemView" name="view"/>
+     <widget class="ItemView" name="searchView"/>
+    </widget>
    </item>
    <item>
     <layout class="QHBoxLayout" name="hlayout">

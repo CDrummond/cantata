@@ -815,6 +815,11 @@ void ItemView::setSearchLabelText(const QString &text)
     searchWidget->setLabel(text);
 }
 
+void ItemView::setSearchVisible(bool v)
+{
+    searchWidget->setVisible(v);
+}
+
 void ItemView::setStartClosed(bool sc)
 {
     if (groupedView) {

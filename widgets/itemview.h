@@ -93,7 +93,7 @@ public:
 
     static void setup();
 
-    ItemView(QWidget *p);
+    ItemView(QWidget *p=0);
     virtual ~ItemView();
 
     void allowGroupedView();
@@ -122,6 +122,7 @@ public:
     void showIndex(const QModelIndex &idx, bool scrollTo);
     void focusSearch();
     void setSearchLabelText(const QString &text);
+    void setSearchVisible(bool v);
     void setStartClosed(bool sc);
     bool isStartClosed();
     void expandAll();

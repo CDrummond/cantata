@@ -44,9 +44,10 @@ public:
     bool isEnabled() const { return enabled; }
     void save();
     void addSelectionToPlaylist(bool replace, quint8 priorty=0);
-    void setView(int v) { view->setMode((ItemView::Mode)v); }
-    void focusSearch() { view->focusSearch(); }
-    void goBack() { view->backActivated(); }
+    void setView(int v) { view->setMode((ItemView::Mode)v); searchView->setMode((ItemView::Mode)v); }
+    void focusSearch() { view->focusSearch(); searchView->focusSearch(); }
+    void goBack() { itemView()->backActivated(); }
+    ItemView *itemView() { return searching ? searchView : view; }
 
 Q_SIGNALS:
     void add(const QStringList &streams, bool replace, quint8 priorty);
@@ -85,7 +86,9 @@ private:
     Action *addAction;
     Action *editAction;
     Action *reloadAction;
-    StreamsProxyModel proxy;
+    StreamsProxyModel streamsProxy;
+    StreamsProxyModel searchProxy;
+    StreamsProxyModel *proxy;
     StreamSearchModel searchModel;
 };
 

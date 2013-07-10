@@ -115,8 +115,6 @@ StreamsPage::StreamsPage(QWidget *p)
     view->setModel(&proxy);
     view->setDeleteAction(StdActions::self()->removeAction);
 
-    infoLabel->hide();
-    infoLabel->setType(StatusLabel::Locked);
     diStatusLabel->setText("DI");
     updateDiStatus();
     view->setSearchLabelText(i18n("Search TuneIn:"));
@@ -146,12 +144,6 @@ void StreamsPage::checkWritable()
     bool wasWriteable=StreamsModel::self()->isFavoritesWritable();
     bool nowWriteable=StreamsModel::self()->checkFavouritesWritable();
 
-    if (nowWriteable) {
-        infoLabel->hide();
-    } else {
-        infoLabel->setVisible(true);
-        infoLabel->setText(StreamsModel::favouritesDir().startsWith("http:/") ? i18n("Streams from HTTP server") : i18n("Read only."));
-    }
     if (wasWriteable!=nowWriteable) {
         controlActions();
     }

@@ -525,6 +525,9 @@ QVariant StreamsModel::data(const QModelIndex &index, int role) const
             return Icons::self()->radioStreamIcon;
         }
     case Qt::DisplayRole:
+        if (item==favourites && !favouritesIsWriteable) {
+            return i18n("%1 (Read-Only)").arg(item->name);
+        }
         return item->name;
     case Qt::ToolTipRole:
         return item->isCategory() ? item->name : (item->name+QLatin1String("<br><small><i>")+item->url+QLatin1String("</i></small>"));
@@ -684,6 +687,7 @@ bool StreamsModel::exportFavourites(const QString &fileName)
 
 bool StreamsModel::checkFavouritesWritable()
 {
+    bool wasWriteable=favouritesIsWriteable;
     QString dirName=favouritesDir();
     bool isHttp=dirName.startsWith("http:/");
     favouritesIsWriteable=!isHttp && QFileInfo(dirName).isWritable();
@@ -692,6 +696,10 @@ bool StreamsModel::checkFavouritesWritable()
         if (QFile::exists(fileName) && !QFileInfo(fileName).isWritable()) {
             favouritesIsWriteable=false;
         }
+    }
+    if (favouritesIsWriteable!=wasWriteable) {
+        QModelIndex index=favouritesIndex();
+        emit dataChanged(index, index);
     }
     return favouritesIsWriteable;
 }

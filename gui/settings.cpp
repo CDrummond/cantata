@@ -496,7 +496,7 @@ QStringList Settings::hiddenPages()
 
 bool Settings::gnomeMediaKeys()
 {
-    return GET_BOOL("gnomeMediaKeys", false);
+    return GET_BOOL("gnomeMediaKeys", true);
 }
 
 #ifdef ENABLE_DEVICES_SUPPORT

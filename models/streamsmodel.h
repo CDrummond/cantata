@@ -143,6 +143,9 @@ public:
 
     bool isTopLevel(const CategoryItem *cat) const { return cat && root==cat->parent; }
 
+    Action *addBookmarkAct() { return addBookmarkAction; }
+    Action *addToFavouritesAct() { return addToFavouritesAction; }
+
 Q_SIGNALS:
     void loading();
     void loaded();
@@ -179,6 +182,8 @@ private:
     bool favouritesIsWriteable;
     bool favouritesModified;
     QTimer *favouritesSaveTimer;
+    Action *addBookmarkAction;
+    Action *addToFavouritesAction;
 };
 
 #endif

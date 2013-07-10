@@ -63,6 +63,5 @@ public:
     Action *removeAction;
     Action *backAction;
     Action *searchAction;
-    Action *addBookmarkAction;
 };
 #endif

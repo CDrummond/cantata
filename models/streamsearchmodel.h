@@ -33,7 +33,6 @@
 class QNetworkReply;
 class QXmlStreamReader;
 class QIODevice;
-class Action;
 
 class StreamSearchModel : public ActionModel
 {
@@ -61,8 +60,6 @@ public:
     void search(const QString &searchTerm, bool stationsOnly);
     void cancelAll();
  
-    Action * addToFavouritesAct() { return addToFavouritesAction; }
-
 Q_SIGNALS:
     void loading();
     void loaded();
@@ -80,7 +77,6 @@ private:
     QMap<QNetworkReply *, StreamsModel::CategoryItem *> jobs;
     StreamsModel::CategoryItem *root;
     QString currentSearch;
-    Action *addToFavouritesAction;
 };
 
 #endif

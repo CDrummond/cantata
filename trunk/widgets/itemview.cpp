@@ -475,12 +475,18 @@ ItemView::ItemView(QWidget *p)
     , msgOverlay(0)
 {
     setupUi(this);
-    backAction = new QAction(i18n("Back"), this);
+    backAction = new QAction(i18n("Go Back"), this);
     backAction->setIcon(Icon("go-previous"));
     backButton->setDefaultAction(backAction);
     backAction->setShortcut(Qt::AltModifier+(Qt::LeftToRight==layoutDirection() ? Qt::Key_Left : Qt::Key_Right));
+    homeAction = new QAction(i18n("Go Home"), this);
+    homeAction->setIcon(Icon("go-home"));
+    homeButton->setDefaultAction(homeAction);
+    homeAction->setShortcut(Qt::AltModifier+Qt::Key_Up);
     listView->addAction(backAction);
+    listView->addAction(homeAction);
     listView->addDefaultAction(backAction);
+    listView->addDefaultAction(homeAction);
     QAction *sep=new QAction(this);
     sep->setSeparator(true);
     listView->addAction(sep);
@@ -507,6 +513,7 @@ ItemView::ItemView(QWidget *p)
     connect(listView, SIGNAL(doubleClicked(const QModelIndex &)), this, SIGNAL(doubleClicked(const QModelIndex &)));
     connect(listView, SIGNAL(clicked(const QModelIndex &)),  this, SLOT(itemClicked(const QModelIndex &)));
     connect(backAction, SIGNAL(triggered(bool)), this, SLOT(backActivated()));
+    connect(homeAction, SIGNAL(triggered(bool)), this, SLOT(homeActivated()));
     searchWidget->setVisible(false);
 }
 
@@ -616,6 +623,8 @@ void ItemView::setLevel(int l, bool haveChildren)
     int prev=currentLevel;
     currentLevel=l;
     backAction->setEnabled(0!=l);
+    homeAction->setEnabled(l>1);
+    homeAction->setVisible(l>1);
 
     if (Mode_IconTop==mode) {
         if (0==currentLevel || haveChildren) {
@@ -643,12 +652,11 @@ void ItemView::setLevel(int l, bool haveChildren)
         view()->selectionModel()->clearSelection();
     }
 
-    if (0==currentLevel) {
-        backButton->setVisible(false);
-        title->setVisible(false);
-    } else {
-        backButton->setVisible(true);
-        title->setVisible(true);
+    backButton->setVisible(currentLevel>0);
+    title->setVisible(currentLevel>0);
+    homeButton->setVisible(currentLevel>1);
+
+    if (currentLevel>0) {
         if (prev>currentLevel) {
             title->setText(prevText[currentLevel]);
         } else {
@@ -901,6 +909,17 @@ void ItemView::backActivated()
     } else {
         listView->scrollTo(prevTopIndex, QAbstractItemView::PositionAtTop);
     }
+}
+
+void ItemView::homeActivated()
+{
+    if (Mode_SimpleTree==mode || Mode_DetailedTree==mode || Mode_GroupedTree==mode || 0==currentLevel) {
+        return;
+    }
+    setLevel(0);
+    itemModel->setRootIndex(QModelIndex());
+    listView->setRootIndex(QModelIndex());
+    emit rootIndexSet(QModelIndex());
 }
 
 void ItemView::setExpanded(const QModelIndex &idx, bool exp)

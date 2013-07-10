@@ -135,6 +135,7 @@ public Q_SLOTS:
     void updateRows();
     void updateRows(const QModelIndex &idx);
     void backActivated();
+    void homeActivated();
     void setExpanded(const QModelIndex &idx, bool exp=true);
 
 Q_SIGNALS:
@@ -157,6 +158,7 @@ private:
     QTimer *searchTimer;
     ProxyModel *itemModel;
     QAction *backAction;
+    QAction *homeAction;
     int currentLevel;
     Mode mode;
     QMap<int, QString> prevText;

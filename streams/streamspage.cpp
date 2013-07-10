@@ -291,7 +291,7 @@ void StreamsPage::addBookmark()
     if (StreamsModel::self()->addBookmark(item->url, item->name, 0)) {
         view->showMessage(i18n("Bookmark added"), constMsgDisplayTime);
     } else {
-        view->showMessage(i18n("Alredy Bookmarked"), constMsgDisplayTime);
+        view->showMessage(i18n("Already bookmarked"), constMsgDisplayTime);
     }
 }
 

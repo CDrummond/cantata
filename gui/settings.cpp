@@ -606,12 +606,6 @@ bool Settings::cdAuto()
 {
     return GET_BOOL("cdAuto", true);
 }
-#ifdef LAME_FOUND
-bool Settings::cdEncode()
-{
-    return GET_BOOL("cdEncode", true);
-}
-#endif
 #endif
 
 #if defined CDDB_FOUND && defined MUSICBRAINZ5_FOUND
@@ -1012,12 +1006,6 @@ void Settings::saveCdAuto(bool v)
 {
     SET_VALUE_MOD(cdAuto)
 }
-#ifdef LAME_FOUND
-void Settings::saveCdEncode(bool v)
-{
-    SET_VALUE_MOD(cdEncode)
-}
-#endif
 #endif
 
 #if defined CDDB_FOUND && defined MUSICBRAINZ5_FOUND

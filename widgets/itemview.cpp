@@ -949,7 +949,7 @@ void ItemView::activateItem(const QModelIndex &index, bool emitRootSet)
         if (!index.parent().isValid()) {
             groupedView->setExpanded(index, !groupedView->TreeView::isExpanded(index));
         }
-    } else if (index.isValid() && index.child(0, 0).isValid()) {
+    } else if (index.isValid() && index.child(0, 0).isValid() && index!=listView->rootIndex()) {
         prevTopIndex=listView->indexAt(QPoint(8, 8));
         if (qobject_cast<QSortFilterProxyModel *>(listView->model())) {
             prevTopIndex=static_cast<QSortFilterProxyModel *>(listView->model())->mapToSource(prevTopIndex);

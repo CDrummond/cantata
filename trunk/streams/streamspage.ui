@@ -27,16 +27,6 @@
     <widget class="ItemView" name="view"/>
    </item>
    <item>
-    <widget class="StatusLabel" name="infoLabel">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-    </widget>
-   </item>
-   <item>
     <layout class="QHBoxLayout" name="hlayout">
      <property name="spacing">
       <number>0</number>
@@ -94,11 +84,6 @@
    <class>ItemView</class>
    <extends>QTreeView</extends>
    <header>itemview.h</header>
-  </customwidget>
-  <customwidget>
-   <class>StatusLabel</class>
-   <extends>QLabel</extends>
-   <header>statuslabel.h</header>
   </customwidget>
   <customwidget>
    <class>MenuButton</class>

@@ -97,7 +97,7 @@ void MessageOverlay::paintEvent(QPaintEvent *)
     QRect r(rect());
     QRectF rf(r.x()+0.5, r.y()+0.5, r.width()-1, r.height()-1);
     QColor col=palette().color(QPalette::Highlight);
-    col.setAlphaF(0.15);
+    col.setAlphaF(0.85);
     p.fillPath(buildPath(rf, r.height()/4.0), col);
 
     int pad=r.height()/4;
@@ -107,7 +107,6 @@ void MessageOverlay::paintEvent(QPaintEvent *)
     fnt.setBold(true);
     QFontMetrics fm(fnt);
     col=palette().color(QPalette::WindowText);
-    col.setAlphaF(0.75);
 
     p.setPen(col);
     p.setFont(fnt);

@@ -243,10 +243,8 @@ CacheSettings::CacheSettings(QWidget *parent)
                   << "*"+ArtistView::constSimilarInfoExt << "*.json.gz" << "*.jpg" << "*.png", tree);
     new CacheItem(i18n("Album Information"), Utils::cacheDir(AlbumView::constCacheDir, false), QStringList() << "*"+AlbumView::constInfoExt << "*.jpg" << "*.png", tree);
     new CacheItem(i18n("Streams"), Utils::cacheDir(StreamsModel::constCacheDir, false), QStringList() << "*"+StreamsModel::constCacheExt, tree);
-    #ifdef ENABLE_ONLINE_SERVICES
     new CacheItem(i18n("Jamendo"), Utils::cacheDir("jamendo", false), QStringList() << "*"+MusicLibraryModel::constLibraryCompressedExt << "*.jpg" << "*.png", tree);
     new CacheItem(i18n("Magnatune"), Utils::cacheDir("magnatune", false), QStringList() << "*"+MusicLibraryModel::constLibraryCompressedExt<< "*.jpg" << "*.png", tree);
-    #endif
 
     button=new QPushButton(i18n("Delete All"), this);
     layout->addItem(new QSpacerItem(0, 0, QSizePolicy::MinimumExpanding, QSizePolicy::Fixed), row++, 0);

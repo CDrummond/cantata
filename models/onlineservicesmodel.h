@@ -55,7 +55,7 @@ public:
     Qt::ItemFlags flags(const QModelIndex &index) const;
     QStringList filenames(const QModelIndexList &indexes) const;
     QList<Song> songs(const QModelIndexList &indexes) const;
-    void clear(bool clearConfig=true);
+    void clear();
     OnlineService * service(const QString &name);
     bool isEnabled() const { return enabled; }
     void setEnabled(bool e);
@@ -64,9 +64,7 @@ public:
     QMimeData * mimeData(const QModelIndexList &indexes) const;
     void toggleGrouping();
     const QSet<QString> & genres() { return srvGenres; }
-    void createService(const QString &name);
     Device *device(const QString &udi);
-    void removeService(const QString &name, bool fullRemove=true);
     Action * configureAct() const { return configureAction; }
     Action * refreshAct() const { return refreshAction; }
 
@@ -77,6 +75,7 @@ public Q_SLOTS:
 
 private:
     OnlineService * addService(const QString &name);
+    void removeService(const QString &name);
     void updateItemMenu();
     void load();
     int indexOf(const QString &name);

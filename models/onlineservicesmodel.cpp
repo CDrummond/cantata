@@ -74,8 +74,6 @@ OnlineServicesModel::OnlineServicesModel(QObject *parent)
 {
     configureAction = ActionCollection::get()->createAction("configureonlineservice", i18n("Configure Online Service"), Icons::self()->configureIcon);
     refreshAction = ActionCollection::get()->createAction("refreshonlineservice", i18n("Refresh Online Service"), "view-refresh");
-    connectAction = ActionCollection::get()->createAction("connectonlineservice", i18n("Connect Online Service"), Icons::self()->connectIcon);
-    disconnectAction = ActionCollection::get()->createAction("disconnectonlineservice", i18n("Disconnect Online Service"), Icons::self()->disconnectIcon);
 }
 
 OnlineServicesModel::~OnlineServicesModel()
@@ -125,10 +123,6 @@ QVariant OnlineServicesModel::headerData(int /*section*/, Qt::Orientation /*orie
 
 int OnlineServicesModel::rowCount(const QModelIndex &parent) const
 {
-    if (parent.column() > 0) {
-        return 0;
-    }
-
     return parent.isValid() ? static_cast<MusicLibraryItem *>(parent.internalPointer())->childCount() : services.count();
 }
 
@@ -136,6 +130,17 @@ int OnlineServicesModel::columnCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent)
     return 1;
+}
+
+bool OnlineServicesModel::hasChildren(const QModelIndex &index) const
+{
+    return !index.isValid() || MusicLibraryItem::Type_Song!=static_cast<MusicLibraryItem *>(index.internalPointer())->itemType();
+}
+
+bool OnlineServicesModel::canFetchMore(const QModelIndex &index) const
+{
+    return index.isValid() && MusicLibraryItem::Type_Root==static_cast<MusicLibraryItem *>(index.internalPointer())->itemType() &&
+            !static_cast<OnlineService *>(index.internalPointer())->isLoaded();
 }
 
 QVariant OnlineServicesModel::data(const QModelIndex &index, int role) const
@@ -273,8 +278,7 @@ QVariant OnlineServicesModel::data(const QModelIndex &index, int role) const
     case ItemView::Role_Actions: {
         QVariant v;
         if (MusicLibraryItem::Type_Root==item->itemType()) {
-            v.setValue<QList<Action *> >(QList<Action *>() << configureAction << refreshAction
-                                                           << (static_cast<OnlineService *>(item)->isLoaded()  ? disconnectAction : connectAction));
+            v.setValue<QList<Action *> >(QList<Action *>() << configureAction << refreshAction);
         } else {
             v.setValue<QList<Action *> >(QList<Action *>() << StdActions::self()->replacePlayQueueAction << StdActions::self()->addToPlayQueueAction);
         }

@@ -56,7 +56,6 @@ public Q_SLOTS:
     void configureService();
     void refreshService();
     void removeService();
-    void toggleService();
     void updateGenres(const QModelIndex &);
     void updated(const QModelIndex &idx);
     void addJamendo();

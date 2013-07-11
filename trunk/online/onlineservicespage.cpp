@@ -219,11 +219,16 @@ void OnlineServicesPage::controlSearch(bool on)
         }
 
         if (searchService.isEmpty()) {
+            genreCombo->setEnabled(true);
             view->setSearchLabelText(i18n("Seach the music listed above"));
         } else {
+            genreCombo->setCurrentIndex(0);
+            genreCombo->setEnabled(false);
+            proxy.update(QString(), QString());
             view->setSearchLabelText(i18nc("Search ServiceName for music", "Search %1 for music").arg(searchService));
         }
     } else {
+        genreCombo->setEnabled(true);
         searchService=QString();
     }
 }

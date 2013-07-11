@@ -60,8 +60,10 @@ OnlineServicesPage::OnlineServicesPage(QWidget *p)
     connect(genreCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(searchItems()));
     connect(OnlineServicesModel::self(), SIGNAL(updateGenres(const QSet<QString> &)), genreCombo, SLOT(update(const QSet<QString> &)));
     connect(OnlineServicesModel::self(), SIGNAL(updated(QModelIndex)), this, SLOT(updated(QModelIndex)));
+    connect(OnlineServicesModel::self(), SIGNAL(busy(bool)), view, SLOT(showSpinner(bool)));
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
     connect(view, SIGNAL(searchItems()), this, SLOT(searchItems()));
+    connect(view, SIGNAL(searchIsActive(bool)), this, SLOT(controlSearch(bool)));
     connect(view, SIGNAL(itemsSelected(bool)), SLOT(controlActions()));
     connect(view, SIGNAL(rootIndexSet(QModelIndex)), this, SLOT(updateGenres(QModelIndex)));
     connect(OnlineServicesModel::self()->configureAct(), SIGNAL(triggered()), this, SLOT(configureService()));
@@ -201,12 +203,42 @@ void OnlineServicesPage::itemDoubleClicked(const QModelIndex &)
      }
 }
 
+void OnlineServicesPage::controlSearch(bool on)
+{
+    if (on) {
+        searchService=QString();
+        const QModelIndexList selected = view->selectedIndexes();
+        if (1==selected.count()) {
+            MusicLibraryItem *item = static_cast<MusicLibraryItem *>(proxy.mapToSource(selected.at(0)).internalPointer());
+            if (MusicLibraryItem::Type_Root==item->itemType()) {
+                OnlineService *srv=static_cast<OnlineService *>(item);
+                if (srv->canSearch()) {
+                    searchService=srv->name();
+                }
+            }
+        }
+
+        if (searchService.isEmpty()) {
+            view->setSearchLabelText(i18n("Seach the music listed above"));
+        } else {
+            view->setSearchLabelText(i18nc("Search ServiceName for music", "Search %1 for music").arg(searchService));
+        }
+    } else {
+        searchService=QString();
+    }
+}
+
 void OnlineServicesPage::searchItems()
 {
     QString text=view->searchText().trimmed();
-    proxy.update(text, genreCombo->currentIndex()<=0 ? QString() : genreCombo->currentText());
-    if (proxy.enabled() && !text.isEmpty()) {
-        view->expandAll();
+
+    if (searchService.isEmpty()) {
+        proxy.update(text, genreCombo->currentIndex()<=0 ? QString() : genreCombo->currentText());
+        if (proxy.enabled() && !text.isEmpty()) {
+            view->expandAll();
+        }
+    } else if (view->isSearchActive()) {
+        OnlineServicesModel::self()->setSearch(searchService, text);
     }
 }
 

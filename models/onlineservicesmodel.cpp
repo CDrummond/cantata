@@ -32,12 +32,12 @@
 #include "onlinedevice.h"
 #include "jamendoservice.h"
 #include "magnatuneservice.h"
+#include "soundcloudservice.h"
 #include "playqueuemodel.h"
 #include "itemview.h"
 #include "mpdparseutils.h"
 #include "localize.h"
 #include "icons.h"
-#include "settings.h"
 #include "filejob.h"
 #include "utils.h"
 #include "covers.h"
@@ -173,7 +173,9 @@ QVariant OnlineServicesModel::data(const QModelIndex &index, int role) const
     case Qt::DisplayRole:
         if (MusicLibraryItem::Type_Song==item->itemType()) {
             MusicLibraryItemSong *song = static_cast<MusicLibraryItemSong *>(item);
-            if (static_cast<MusicLibraryItemAlbum *>(song->parentItem())->isSingleTracks()) {
+            if (MusicLibraryItem::Type_Root==song->parentItem()->itemType()) {
+                return song->song().artistSong();
+            } else if (static_cast<MusicLibraryItemAlbum *>(song->parentItem())->isSingleTracks()) {
                 return song->song().artistSong();
             } else {
                 return song->song().trackAndTitleStr(static_cast<MusicLibraryItemArtist *>(song->parentItem()->parentItem())->isVarious() &&
@@ -190,11 +192,21 @@ QVariant OnlineServicesModel::data(const QModelIndex &index, int role) const
             return 0==item->childCount()
                 ? item->data()
                 : item->data()+"\n"+
-                    #ifdef ENABLE_KDE_SUPPORT
-                    i18np("1 Artist", "%1 Artists", item->childCount());
-                    #else
-                    QTP_ARTISTS_STR(item->childCount());
-                    #endif
+                  (static_cast<OnlineService *>(item)->isFlat()
+                        #ifdef ENABLE_KDE_SUPPORT
+                        ? i18np("1 Track", "%1 Tracks", item->childCount())
+                        #else
+                        ? QTP_TRACKS_STR(item->childCount())
+                        #endif
+                        #ifdef ENABLE_KDE_SUPPORT
+                        : i18np("1 Artist", "%1 Artists", item->childCount())
+                        #else
+                        : QTP_ARTISTS_STR(item->childCount())
+                        #endif
+                   )+
+                  (static_cast<OnlineService *>(item)->canSearch() && !static_cast<OnlineService *>(item)->currentSearchString().isEmpty()
+                   ? "\n"+static_cast<OnlineService *>(item)->currentSearchString()
+                   : "");
         case MusicLibraryItem::Type_Artist:
             return 0==item->childCount()
                 ? item->data()
@@ -231,8 +243,18 @@ QVariant OnlineServicesModel::data(const QModelIndex &index, int role) const
             if (srv->isLoading()) {
                 return i18n("Loading...");
             }
-            if (!srv->isLoaded()) {
+            if (srv->isSearching())  {
+                return i18n("Searching...");
+            }
+            if (!srv->isLoaded() && !srv->canSearch()) {
                 return i18n("Not Loaded");
+            }
+            if (srv->isFlat()) {
+                #ifdef ENABLE_KDE_SUPPORT
+                return i18np("1 Track", "%1 Tracks", item->childCount());
+                #else
+                return QTP_TRACKS_STR(item->childCount());
+                #endif
             }
             #ifdef ENABLE_KDE_SUPPORT
             return i18np("1 Artist", "%1 Artists", item->childCount());
@@ -276,13 +298,27 @@ QVariant OnlineServicesModel::data(const QModelIndex &index, int role) const
         }
         return QVariant();
     case ItemView::Role_Actions: {
-        QVariant v;
+        QList<Action *> actions;
         if (MusicLibraryItem::Type_Root==item->itemType()) {
-            v.setValue<QList<Action *> >(QList<Action *>() << configureAction << refreshAction);
+            OnlineService *srv=static_cast<OnlineService *>(item);
+            if (srv->canConfigure()) {
+                actions << configureAction;
+            }
+            if (srv->canLoad()) {
+                actions << refreshAction;
+            }
+            if (srv->canSearch()) {
+                actions << StdActions::self()->searchAction;
+            }
         } else {
-            v.setValue<QList<Action *> >(QList<Action *>() << StdActions::self()->replacePlayQueueAction << StdActions::self()->addToPlayQueueAction);
+            actions << StdActions::self()->replacePlayQueueAction << StdActions::self()->addToPlayQueueAction;
         }
-        return v;
+
+        if (!actions.isEmpty()) {
+            QVariant v;
+            v.setValue<QList<Action *> >(actions);
+            return v;
+        }
     }
     default:
         return QVariant();
@@ -396,6 +432,20 @@ void OnlineServicesModel::updateGenres()
     }
 }
 
+void OnlineServicesModel::setBusy(const QString &serviceName, bool b)
+{
+    int before=busyServices.count();
+    if (b) {
+        busyServices.insert(serviceName);
+    } else {
+        busyServices.remove(serviceName);
+    }
+
+    if (before!=busyServices.count()) {
+        emit busy(busyServices.count());
+    }
+}
+
 Qt::ItemFlags OnlineServicesModel::flags(const QModelIndex &index) const
 {
     if (index.isValid()) {
@@ -434,19 +484,27 @@ QList<Song> OnlineServicesModel::songs(const QModelIndexList &indexes) const
 
         switch (item->itemType()) {
         case MusicLibraryItem::Type_Root: {
-            // First, sort all artists as they would appear in UI...
-            QList<MusicLibraryItem *> artists=static_cast<const MusicLibraryItemContainer *>(item)->childItems();
-            qSort(artists.begin(), artists.end(), MusicLibraryItemArtist::lessThan);
-            foreach (MusicLibraryItem *a, artists) {
-                const MusicLibraryItemContainer *artist=static_cast<const MusicLibraryItemContainer *>(a);
-                // Now sort all albums as they would appear in UI...
-                QList<MusicLibraryItem *> artistAlbums=static_cast<const MusicLibraryItemContainer *>(artist)->childItems();
-                qSort(artistAlbums.begin(), artistAlbums.end(), MusicLibraryItemAlbum::lessThan);
-                foreach (MusicLibraryItem *i, artistAlbums) {
-                    const MusicLibraryItemContainer *album=static_cast<const MusicLibraryItemContainer *>(i);
-                    foreach (const MusicLibraryItem *song, static_cast<const MusicLibraryItemContainer *>(album)->childItems()) {
-                        if (MusicLibraryItem::Type_Song==song->itemType() && !srvSongs[parent].contains(static_cast<const MusicLibraryItemSong*>(song)->song())) {
-                            srvSongs[parent] << srv->fixPath(static_cast<const MusicLibraryItemSong*>(song)->song());
+            if (srv->isFlat()) {
+                foreach (const MusicLibraryItem *song, static_cast<const MusicLibraryItemContainer *>(item)->childItems()) {
+                    if (MusicLibraryItem::Type_Song==song->itemType() && !srvSongs[parent].contains(static_cast<const MusicLibraryItemSong*>(song)->song())) {
+                        srvSongs[parent] << srv->fixPath(static_cast<const MusicLibraryItemSong*>(song)->song());
+                    }
+                }
+            } else {
+                // First, sort all artists as they would appear in UI...
+                QList<MusicLibraryItem *> artists=static_cast<const MusicLibraryItemContainer *>(item)->childItems();
+                qSort(artists.begin(), artists.end(), MusicLibraryItemArtist::lessThan);
+                foreach (MusicLibraryItem *a, artists) {
+                    const MusicLibraryItemContainer *artist=static_cast<const MusicLibraryItemContainer *>(a);
+                    // Now sort all albums as they would appear in UI...
+                    QList<MusicLibraryItem *> artistAlbums=static_cast<const MusicLibraryItemContainer *>(artist)->childItems();
+                    qSort(artistAlbums.begin(), artistAlbums.end(), MusicLibraryItemAlbum::lessThan);
+                    foreach (MusicLibraryItem *i, artistAlbums) {
+                        const MusicLibraryItemContainer *album=static_cast<const MusicLibraryItemContainer *>(i);
+                        foreach (const MusicLibraryItem *song, static_cast<const MusicLibraryItemContainer *>(album)->childItems()) {
+                            if (MusicLibraryItem::Type_Song==song->itemType() && !srvSongs[parent].contains(static_cast<const MusicLibraryItemSong*>(song)->song())) {
+                                srvSongs[parent] << srv->fixPath(static_cast<const MusicLibraryItemSong*>(song)->song());
+                            }
                         }
                     }
                 }
@@ -503,18 +561,6 @@ void OnlineServicesModel::getDetails(QSet<QString> &artists, QSet<QString> &albu
     }
 }
 
-static const char * constCfgKey = "onlineServices";
-static inline QString cfgKey(OnlineService *srv)
-{
-    return "OnlineService-"+srv->name();
-}
-
-#ifdef ENABLE_KDE_SUPPORT
-#define CONFIG KConfigGroup cfg(KGlobal::config(), "General");
-#else
-#define CONFIG QSettings cfg;
-#endif
-
 OnlineService * OnlineServicesModel::addService(const QString &name)
 {
     OnlineService *srv=0;
@@ -524,6 +570,8 @@ OnlineService * OnlineServicesModel::addService(const QString &name)
             srv=new JamendoService(this);
         } else if (name==MagnatuneService::constName) {
             srv=new MagnatuneService(this);
+        } else if (name==SoundCloudService::constName) {
+            srv=new SoundCloudService(this);
         }
 
         if (srv) {
@@ -532,13 +580,6 @@ OnlineService * OnlineServicesModel::addService(const QString &name)
             services.append(srv);
             endInsertRows();
             connect(srv, SIGNAL(error(const QString &)), SIGNAL(error(const QString &)));
-
-            CONFIG
-            QStringList names=GET_STRINGLIST(constCfgKey, QStringList());
-            if (!names.contains(name)) {
-                names.append(name);
-            }
-            SET_VALUE(constCfgKey, names);
         }
     }
     return srv;
@@ -576,16 +617,9 @@ void OnlineServicesModel::stateChanged(const QString &name, bool state)
 
 void OnlineServicesModel::load()
 {
-    CONFIG
-    if (!HAS_ENTRY(constCfgKey)) {
-        addService(JamendoService::constName);
-        addService(MagnatuneService::constName);
-    } else {
-        QStringList names=GET_STRINGLIST(constCfgKey, QStringList());
-        foreach (const QString &n, names) {
-            addService(n);
-        }
-    }
+    addService(JamendoService::constName);
+    addService(MagnatuneService::constName);
+    addService(SoundCloudService::constName);
 }
 
 void OnlineServicesModel::toggleGrouping()
@@ -595,6 +629,15 @@ void OnlineServicesModel::toggleGrouping()
         srv->toggleGrouping();
     }
     endResetModel();
+}
+
+void OnlineServicesModel::setSearch(const QString &serviceName, const QString &text)
+{
+    OnlineService *srv=service(serviceName);
+
+    if (srv) {
+        srv->setSearch(text);
+    }
 }
 
 int OnlineServicesModel::indexOf(const QString &name)

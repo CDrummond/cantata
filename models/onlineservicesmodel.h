@@ -63,6 +63,7 @@ public:
     void getDetails(QSet<QString> &artists, QSet<QString> &albumArtists, QSet<QString> &albums, QSet<QString> &genres);
     QMimeData * mimeData(const QModelIndexList &indexes) const;
     void toggleGrouping();
+    void setSearch(const QString &serviceName, const QString &text);
     const QSet<QString> & genres() { return srvGenres; }
     Device *device(const QString &udi);
     Action * configureAct() const { return configureAction; }
@@ -80,11 +81,13 @@ private:
     void load();
     int indexOf(const QString &name);
     void updateGenres();
+    void setBusy(const QString &serviceName, bool b);
 
 Q_SIGNALS:
     void updateGenres(const QSet<QString> &genres);
     void error(const QString &text);
     void updated(const QModelIndex &idx);
+    void busy(bool);
 
 private:
     QList<OnlineService *> services;
@@ -95,6 +98,7 @@ private:
     Action *refreshAction;
     Action *connectAction;
     Action *disconnectAction;
+    QSet<QString> busyServices;
 
     friend class OnlineService;
 };

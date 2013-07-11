@@ -30,13 +30,5 @@
 <file alias="addradio22.png">icons/hi22-action-cantata-radiostream-add.png</file>
 <file alias="addradio32.png">icons/hi32-action-cantata-radiostream-add.png</file>
 <file alias="addradio48.png">icons/hi48-action-cantata-radiostream-add.png</file>
-<file alias="jamendo16.png">icons/hi16-action-cantata-view-services-jamendo.png</file>
-<file alias="jamendo22.png">icons/hi22-action-cantata-view-services-jamendo.png</file>
-<file alias="jamendo32.png">icons/hi32-action-cantata-view-services-jamendo.png</file>
-<file alias="jamendo48.png">icons/hi48-action-cantata-view-services-jamendo.png</file>
-<file alias="magnatune16.png">icons/hi16-action-cantata-view-services-magnatune.png</file>
-<file alias="magnatune22.png">icons/hi22-action-cantata-view-services-magnatune.png</file>
-<file alias="magnatune32.png">icons/hi32-action-cantata-view-services-magnatune.png</file>
-<file alias="magnatune48.png">icons/hi48-action-cantata-view-services-magnatune.png</file>
 </qresource>
 </RCC>

@@ -386,8 +386,9 @@ Icons::Icons()
     clearListIcon=Icon("edit-clear-list");
     repeatIcon=createRecolourableIcon("repeat", stdColor, highlightColor);
     shuffleIcon=createRecolourableIcon("shuffle", stdColor, highlightColor);
-    jamendoIcon=Icon("cantata-view-services-jamendo");
-    magnatuneIcon=Icon("cantata-view-services-jamendo");
+    magnatuneIcon.addFile(":magnatune.svg");
+    soundCloudIcon.addFile(":soundcloud.svg");
+    jamendoIcon.addFile(":jamendo.svg");
     filesIcon=Icon("document-multiple");
     cancelIcon=Icon("dialog-cancel");
     importIcon=Icon("document-import");
@@ -419,12 +420,6 @@ Icons::Icons()
     }
     if (artistIcon.isNull()) {
         artistIcon=Icon::create("artist", QList<int>() << 16 << 22 << 32 << 48 << 64 << 128);
-    }
-    if (jamendoIcon.isNull()) {
-        jamendoIcon=Icon::create("jamendo", constStdSizes);
-    }
-    if (magnatuneIcon.isNull()) {
-        magnatuneIcon=Icon::create("magnatune", constStdSizes);
     }
     #ifndef Q_OS_WIN
     if (shortcutsIcon.isNull()) {

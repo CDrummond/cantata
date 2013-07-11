@@ -30,6 +30,7 @@
 #include "localize.h"
 #include <QObject>
 #include <QUrl>
+#include <QModelIndex>
 
 class Thread;
 class NetworkAccessManager;
@@ -50,6 +51,9 @@ public:
     MusicLibraryItemRoot * takeLibrary();
     virtual bool parse(QXmlStreamReader &xml)=0;
     void setCacheFileName(const QString &c) { cache=c; }
+
+protected:
+    void setBusy(bool b);
 
 Q_SIGNALS:
     void load();
@@ -112,12 +116,19 @@ public:
     virtual void saveConfig()=0;
     virtual void configure(QWidget *) { }
     virtual bool canDownload() const { return false; }
+    virtual bool canConfigure() const { return true; }
+    virtual bool canLoad() const { return true; }
+    virtual bool canSearch() const { return false; }
+    virtual QString currentSearchString() const { return QString(); }
+    virtual void setSearch(const QString &) { }
+    virtual bool isSearching()  const { return false; }
+    virtual bool isFlat() const { return false; }
     const QString name() const { return data(); }
     double loadProgress() { return lProgress; }
     bool isLoaded() const { return loaded; }
     void reload(bool fromCache=true);
     void toggle();
-    void clear();
+    virtual void clear();
     bool isLoading() const { return 0!=loader; }
     bool isIdle() const { return isLoaded() && !isLoading(); }
     void removeCache();
@@ -128,6 +139,11 @@ public:
     const MusicLibraryItem * findSong(const Song &s) const;
     bool songExists(const Song &s) const;
     bool isConfigured() { return configured; }
+
+protected:
+    QModelIndex index();
+    void emitUpdated();
+    void setBusy(bool b);
 
 private Q_SLOTS:
     void loaderError(const QString &msg);

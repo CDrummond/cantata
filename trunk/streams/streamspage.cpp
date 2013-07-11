@@ -63,7 +63,6 @@ StreamsPage::StreamsPage(QWidget *p)
     addAction = ActionCollection::get()->createAction("addstream", i18n("Add New Stream To Favourites"), Icons::self()->addRadioStreamIcon);
     reloadAction = ActionCollection::get()->createAction("reloadstreams", i18n("Reload"), Icon("view-refresh"));
     editAction = ActionCollection::get()->createAction("editstream", i18n("Edit"), Icons::self()->editIcon);
-    Action *settingsAct = new Action(i18n("Digitally Imported Settings"), this);
     replacePlayQueue->setDefaultAction(StdActions::self()->replacePlayQueueAction);
     searchButton->setDefaultAction(StdActions::self()->searchAction);
     searchButton->setToolTip(i18n("Search TuneIn For Streams"));
@@ -79,11 +78,11 @@ StreamsPage::StreamsPage(QWidget *p)
     connect(addAction, SIGNAL(triggered(bool)), this, SLOT(add()));
     connect(StreamsModel::self()->addBookmarkAct(), SIGNAL(triggered(bool)), this, SLOT(addBookmark()));
     connect(StreamsModel::self()->addToFavouritesAct(), SIGNAL(triggered(bool)), this, SLOT(addToFavourites()));
+    connect(StreamsModel::self()->configureAct(), SIGNAL(triggered(bool)), this, SLOT(configureStreams()));
     connect(reloadAction, SIGNAL(triggered(bool)), this, SLOT(reload()));
     connect(editAction, SIGNAL(triggered(bool)), this, SLOT(edit()));
     connect(importAction, SIGNAL(triggered(bool)), this, SLOT(importXml()));
     connect(exportAction, SIGNAL(triggered(bool)), this, SLOT(exportXml()));
-    connect(settingsAct, SIGNAL(triggered(bool)), this, SLOT(diSettings()));
     connect(StreamsModel::self(), SIGNAL(error(const QString &)), this, SIGNAL(error(const QString &)));
     connect(StreamsModel::self(), SIGNAL(loading()), view, SLOT(showSpinner()));
     connect(StreamsModel::self(), SIGNAL(loaded()), view, SLOT(hideSpinner()));
@@ -100,7 +99,6 @@ StreamsPage::StreamsPage(QWidget *p)
     menu->addAction(importAction);
     menu->addAction(exportAction);
     menu->addSeparator();
-    menu->addAction(settingsAct);
     menuButton->setMenu(menu);
     Icon::init(replacePlayQueue);
 
@@ -207,6 +205,25 @@ void StreamsPage::itemDoubleClicked(const QModelIndex &index)
         QModelIndexList indexes;
         indexes.append(index);
         addItemsToPlayQueue(indexes, false);
+    }
+}
+
+void StreamsPage::configureStreams()
+{
+    if (searching) {
+        return;
+    }
+
+    QModelIndexList selected = itemView()->selectedIndexes();
+
+    if (1!=selected.count()) {
+        return;
+    }
+
+    const StreamsModel::Item *item=static_cast<const StreamsModel::Item *>(proxy->mapToSource(selected.first()).internalPointer());
+    if (item->isCategory() && static_cast<const StreamsModel::CategoryItem *>(item)->canConfigure()) {
+        // TODO: In future migh tneed to confirm category type, at the moment only digitially imported can be configured...
+        diSettings();
     }
 }
 
@@ -530,6 +547,7 @@ void StreamsPage::controlActions()
         reloadAction->setEnabled(false);
         StdActions::self()->removeAction->setEnabled(false);
         StreamsModel::self()->addToFavouritesAct()->setEnabled(favWriteable && haveSelection && enableAddToFav);
+        StreamsModel::self()->configureAct()->setEnabled(false);
         if (1==selected.size()) {
             StreamsModel::self()->addBookmarkAct()->setEnabled(static_cast<const StreamsModel::Item *>(proxy->mapToSource(selected.first()).internalPointer())
                                                                     ->isCategory());
@@ -569,6 +587,9 @@ void StreamsPage::controlActions()
                 StdActions::self()->removeAction->setEnabled(item->isCategory() && item->parent &&
                                                             (item->parent->isBookmarks || (static_cast<const StreamsModel::CategoryItem *>(item)->isBookmarks)));
             }
+            StreamsModel::self()->configureAct()->setEnabled(item->isCategory() && static_cast<const StreamsModel::CategoryItem *>(item)->canConfigure());
+        } else {
+            StreamsModel::self()->configureAct()->setEnabled(false);
         }
 
         addAction->setEnabled(favWriteable);

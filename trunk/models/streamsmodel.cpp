@@ -452,16 +452,17 @@ StreamsModel::StreamsModel(QObject *parent)
     root->children.append(new CategoryItem(constIceCastUrl, i18n("IceCast"), root, getIcon("icecast"), "icecast"));
     root->children.append(new CategoryItem(constShoutCastUrl, i18n("ShoutCast"), root, getIcon("shoutcast")));
     root->children.append(new CategoryItem(constSomaFMUrl, i18n("SomaFM"), root, getIcon("somafm"), "somafm"));
-    root->children.append(new CategoryItem(constDigitallyImportedUrl, i18n("Digitally Imported"), root, getIcon("digitallyimported"), "di"));
-    root->children.append(new CategoryItem(constJazzRadioUrl, i18n("JazzRadio.com"), root, getIcon("jazzradio"), "jazzradio"));
-    root->children.append(new CategoryItem(constRockRadioUrl, i18n("RockRadio.com"), root, getIcon("rockradio"), "rockradio"));
-    root->children.append(new CategoryItem(constSkyFmUrl, i18n("Sky.fm"), root, getIcon("skyfm"), "skyfm"));
+    root->children.append(new DiCategoryItem(constDigitallyImportedUrl, i18n("Digitally Imported"), root, getIcon("digitallyimported"), "di"));
+    root->children.append(new DiCategoryItem(constJazzRadioUrl, i18n("JazzRadio.com"), root, getIcon("jazzradio"), "jazzradio"));
+    root->children.append(new DiCategoryItem(constRockRadioUrl, i18n("RockRadio.com"), root, getIcon("rockradio"), "rockradio"));
+    root->children.append(new DiCategoryItem(constSkyFmUrl, i18n("Sky.fm"), root, getIcon("skyfm"), "skyfm"));
     favourites=new CategoryItem(constFavouritesUrl, i18n("Favourites"), root, getIcon("favourites"));
     favourites->isFavourites=true;
     root->children.append(favourites);
     buildListenLive();
     addBookmarkAction = ActionCollection::get()->createAction("bookmarkcategory", i18n("Bookmark Category"), Icon("bookmark-new"));
     addToFavouritesAction = ActionCollection::get()->createAction("addtofavourites", i18n("Add Stream To Favourites"), favouritesIcon());
+    configureAction = ActionCollection::get()->createAction("configurestreams", i18n("Configure Streams"), Icons::self()->configureIcon);
 }
 
 StreamsModel::~StreamsModel()
@@ -551,23 +552,28 @@ QVariant StreamsModel::data(const QModelIndex &index, int role) const
             }
         }
         break;
-    case ItemView::Role_Actions:
+    case ItemView::Role_Actions: {
+        QList<Action *> actions;
         if (item->isCategory()){
             if (static_cast<const CategoryItem *>(item)->canBookmark) {
-                QVariant v;
-                v.setValue<QList<Action *> >(QList<Action *>() << addBookmarkAction);
-                return v;
+                actions << addBookmarkAction;
+            }
+            if (static_cast<const CategoryItem *>(item)->canConfigure()) {
+                actions << configureAction;
             }
         } else {
-            QVariant v;
+            actions << StdActions::self()->replacePlayQueueAction;
             if (favouritesIsWriteable && item->parent!=favourites) {
-                v.setValue<QList<Action *> >(QList<Action *>() << StdActions::self()->replacePlayQueueAction << addToFavouritesAction);
-            } else {
-                v.setValue<QList<Action *> >(QList<Action *>() << StdActions::self()->replacePlayQueueAction);
+                actions << addToFavouritesAction;
             }
+        }
+        if (!actions.isEmpty()) {
+            QVariant v;
+            v.setValue<QList<Action *> >(actions);
             return v;
         }
         break;
+    }
     default:
         break;
     }

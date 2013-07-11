@@ -64,9 +64,11 @@ public:
         CategoryItem(const QString &u, const QString &n=QString(), CategoryItem *p=0, const QIcon &i=QIcon(),
                      const QString &cn=QString(), const QString &bn=QString())
             : Item(u, n, p), state(Initial), isFavourites(false), isAll(false), isBookmarks(false), childrenHaveCache(false), 
-              supportsBookmarks(false), canBookmark(false),icon(i), cacheName(cn), bookmarksName(bn)  { }
+              supportsBookmarks(false), canBookmark(false), icon(i), cacheName(cn), bookmarksName(bn)  { }
+
         virtual ~CategoryItem() { qDeleteAll(children); }
         virtual bool isCategory() const { return true; }
+        virtual bool canConfigure() const { return false; }
         void removeCache();
         void removeBookmarks();
         void saveBookmarks();
@@ -91,6 +93,13 @@ public:
         QIcon icon;
         QString cacheName;
         QString bookmarksName;
+    };
+
+    struct DiCategoryItem : public CategoryItem
+    {
+        DiCategoryItem(const QString &u, const QString &n, CategoryItem *p, const QIcon &i, const QString &cn)
+            : CategoryItem(u, n, p, i, cn) { }
+        bool canConfigure() const { return true; }
     };
 
     static const QString constPrefix;
@@ -145,6 +154,7 @@ public:
 
     Action *addBookmarkAct() { return addBookmarkAction; }
     Action *addToFavouritesAct() { return addToFavouritesAction; }
+    Action *configureAct() { return configureAction; }
 
 Q_SIGNALS:
     void loading();
@@ -184,6 +194,7 @@ private:
     QTimer *favouritesSaveTimer;
     Action *addBookmarkAction;
     Action *addToFavouritesAction;
+    Action *configureAction;
 };
 
 #endif

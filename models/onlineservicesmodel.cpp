@@ -223,6 +223,9 @@ QVariant OnlineServicesModel::data(const QModelIndex &index, int role) const
         case MusicLibraryItem::Type_Root: {
             OnlineService *srv=static_cast<OnlineService *>(item);
 
+            if (srv->isLoading()) {
+                return i18n("Loading...");
+            }
             if (!srv->isLoaded()) {
                 return i18n("Not Loaded");
             }

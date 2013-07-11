@@ -104,6 +104,7 @@ void SoundCloudService::setSearch(const QString &searchTerm)
     currentSearch=searchTerm;
 
     if (currentSearch.isEmpty()) {
+        setBusy(false);
         return;
     }
 

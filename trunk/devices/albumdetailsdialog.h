@@ -31,7 +31,7 @@
 
 class AudioCdDevice;
 class QTreeWidgetItem;
-class CdAlbum;
+struct CdAlbum;
 
 class AlbumDetailsDialog : public Dialog, Ui::AlbumDetails
 {

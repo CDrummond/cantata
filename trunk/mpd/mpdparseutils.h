@@ -29,7 +29,7 @@
 
 #include <QString>
 
-class Song;
+struct Song;
 class Playlist;
 class DirViewItemRoot;
 class MusicLibraryItemRoot;

@@ -37,7 +37,7 @@
 
 class Cddb;
 class MusicBrainz;
-class CdAlbum;
+struct CdAlbum;
 
 class AudioCdDevice : public Device
 {

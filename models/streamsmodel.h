@@ -63,13 +63,15 @@ public:
 
         CategoryItem(const QString &u, const QString &n=QString(), CategoryItem *p=0, const QIcon &i=QIcon(),
                      const QString &cn=QString(), const QString &bn=QString())
-            : Item(u, n, p), state(Initial), isFavourites(false), isAll(false), isBookmarks(false), childrenHaveCache(false), 
+            : Item(u, n, p), state(Initial), isFavourites(false), isAll(false), isBookmarks(false),
               supportsBookmarks(false), canBookmark(false), icon(i), cacheName(cn), bookmarksName(bn)  { }
 
         virtual ~CategoryItem() { qDeleteAll(children); }
         virtual bool isCategory() const { return true; }
         virtual bool canConfigure() const { return false; }
-        void removeCache();
+        virtual void removeCache();
+        bool isTopLevel() const { return parent && 0==parent->parent; }
+        bool canReload() const { return !cacheName.isEmpty() || isTopLevel(); }
         void removeBookmarks();
         void saveBookmarks();
         QList<Item *> loadBookmarks();
@@ -86,13 +88,19 @@ public:
         bool isFavourites : 1;
         bool isAll : 1;
         bool isBookmarks : 1; // 'Virtual' bookmarks category...
-        bool childrenHaveCache : 1; // Only used for ListenLive - as each sub-category can have the cache
         bool supportsBookmarks : 1; // Intended for top-level items, indicates if bookmarks can be added
         bool canBookmark : 1; // Can this category be bookmark'ed in top-level parent? can have the cache
         QList<Item *> children;
         QIcon icon;
         QString cacheName;
         QString bookmarksName;
+    };
+
+    struct ListenLiveCategoryItem : public CategoryItem
+    {
+        ListenLiveCategoryItem(const QString &n, CategoryItem *p, const QIcon &i=QIcon())
+            : CategoryItem(QString(), n, p, i) { }
+        void removeCache();
     };
 
     struct DiCategoryItem : public CategoryItem
@@ -150,11 +158,10 @@ public:
     QMimeData * mimeData(const QModelIndexList &indexes) const;
     QStringList mimeTypes() const;
 
-    bool isTopLevel(const CategoryItem *cat) const { return cat && root==cat->parent; }
-
     Action *addBookmarkAct() { return addBookmarkAction; }
     Action *addToFavouritesAct() { return addToFavouritesAction; }
     Action *configureAct() { return configureAction; }
+    Action *reloadAct() { return reloadAction; }
 
 Q_SIGNALS:
     void loading();
@@ -195,6 +202,7 @@ private:
     Action *addBookmarkAction;
     Action *addToFavouritesAction;
     Action *configureAction;
+    Action *reloadAction;
 };
 
 #endif

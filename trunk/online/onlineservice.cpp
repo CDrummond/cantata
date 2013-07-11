@@ -236,7 +236,7 @@ void OnlineService::clear()
         model->endRemoveRows();
     }
     lProgress=0.0;
-    setStatusMessage(i18n("Not Loaded"));
+    setStatusMessage(QString());
     model->updateGenres();
 }
 
@@ -308,7 +308,7 @@ void OnlineService::loaderFinished()
 {
     lProgress=100;
     loaded=true;
-    setStatusMessage(i18n("Loaded"));
+    setStatusMessage(QString());
     update=loader->takeLibrary();
     stopLoader();
     applyUpdate();

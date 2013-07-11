@@ -62,6 +62,7 @@ public Q_SLOTS:
     void controlActions();
 
 private Q_SLOTS:
+    void configureStreams();
     void diSettings();
     void importXml();
     void exportXml();

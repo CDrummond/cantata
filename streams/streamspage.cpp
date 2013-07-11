@@ -333,7 +333,7 @@ void StreamsPage::addToFavourites()
     foreach (const QModelIndex &i, selected) {
         QModelIndex mapped=proxy->mapToSource(i);
         const StreamsModel::Item *item=static_cast<const StreamsModel::Item *>(mapped.internalPointer());
-        if (!item->isCategory() && item->parent && !item->parent->isFavourites) {
+        if (!item->isCategory() && item->parent && !item->parent->isFavourites()) {
             items.append(item);
         }
     }
@@ -430,7 +430,7 @@ void StreamsPage::removeItems()
     foreach (const QModelIndex &i, selected) {
         QModelIndex mapped=proxy->mapToSource(i);
         const StreamsModel::Item *item=static_cast<const StreamsModel::Item *>(mapped.internalPointer());
-        if (!item->isCategory() && item->parent && item->parent->isFavourites) {
+        if (!item->isCategory() && item->parent && item->parent->isFavourites()) {
             useable.append(mapped);
         }
     }
@@ -471,7 +471,7 @@ void StreamsPage::edit()
 
     QModelIndex index=proxy->mapToSource(selected.first());
     StreamsModel::Item *item=static_cast<StreamsModel::Item *>(index.internalPointer());
-    if (item->isCategory() || !item->parent || !item->parent->isFavourites) {
+    if (item->isCategory() || !item->parent || !item->parent->isFavourites()) {
         return;
     }
 
@@ -558,10 +558,10 @@ void StreamsPage::controlActions()
         bool enableRemove=true;
         foreach (const QModelIndex &idx, selected) {
             const StreamsModel::Item *item=static_cast<const StreamsModel::Item *>(proxy->mapToSource(idx).internalPointer());
-            if (item->isCategory() || (item->parent && !item->parent->isFavourites)) {
+            if (item->isCategory() || (item->parent && !item->parent->isFavourites())) {
                 enableRemove=false;
             }
-            if (item->isCategory() || (item->parent && item->parent->isFavourites)) {
+            if (item->isCategory() || (item->parent && item->parent->isFavourites())) {
                 enableAddToFav=false;
             }
             if (item->isCategory()) {
@@ -577,7 +577,7 @@ void StreamsPage::controlActions()
 
         if (1==selected.size()) {
             const StreamsModel::Item *item=static_cast<const StreamsModel::Item *>(proxy->mapToSource(selected.first()).internalPointer());
-            if (StreamsModel::self()->isFavoritesWritable() && !item->isCategory() && item->parent && item->parent->isFavourites) {
+            if (StreamsModel::self()->isFavoritesWritable() && !item->isCategory() && item->parent && item->parent->isFavourites()) {
                 editAction->setEnabled(true);
             }
             StreamsModel::self()->reloadAct()->setEnabled(item->isCategory() && static_cast<const StreamsModel::CategoryItem *>(item)->canReload());

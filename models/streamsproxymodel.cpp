@@ -106,10 +106,10 @@ bool StreamsProxyModel::lessThan(const QModelIndex &left, const QModelIndex &rig
         const StreamsModel::CategoryItem * leftCat = static_cast<const StreamsModel::CategoryItem *>(leftItem);
         const StreamsModel::CategoryItem * rightCat = static_cast<const StreamsModel::CategoryItem *>(rightItem);
 
-        if (leftCat->isFavourites && !rightCat->isFavourites) {
+        if (leftCat->isFavourites() && !rightCat->isFavourites()) {
             return true;
         }
-        if (!leftCat->isFavourites && rightCat->isFavourites) {
+        if (!leftCat->isFavourites() && rightCat->isFavourites()) {
             return false;
         }
         if (leftCat->isAll && !rightCat->isAll) {

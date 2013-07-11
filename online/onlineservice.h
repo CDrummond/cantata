@@ -96,7 +96,6 @@ public:
         , model(m)
         , configured(false)
         , update(0)
-        , statusMsg(i18n("Not Loaded"))
         , lProgress(0.0)
         , loaded(false)
         , loader(0)    {

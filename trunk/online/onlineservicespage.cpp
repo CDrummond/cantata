@@ -53,15 +53,7 @@ OnlineServicesPage::OnlineServicesPage(QWidget *p)
     view->addAction(StdActions::self()->replacePlayQueueAction);
     view->addAction(StdActions::self()->addWithPriorityAction);
     view->addAction(StdActions::self()->addToStoredPlaylistAction);
-    addAction = ActionCollection::get()->createAction("addonlineservice", i18n("Add Online Service"), "view-add");
-    removeAction = ActionCollection::get()->createAction("removeonlineservice", i18n("Remove Online Service"), "list-remove");
     downloadAction = ActionCollection::get()->createAction("downloadtolibrary", i18n("Download To Library"), "go-down");
-    QMenu *addMenu=new QMenu(this);
-    jamendoAction=addMenu->addAction(Icons::self()->jamendoIcon, JamendoService::constName);
-    magnatuneAction=addMenu->addAction(Icons::self()->magnatuneIcon, MagnatuneService::constName);
-    Action::initIcon(jamendoAction);
-    Action::initIcon(magnatuneAction);
-    addAction->setMenu(addMenu);
 
     connect(this, SIGNAL(add(const QStringList &, bool, quint8)), MPDConnection::self(), SLOT(add(const QStringList &, bool, quint8)));
     connect(this, SIGNAL(addSongsToPlaylist(const QString &, const QStringList &)), MPDConnection::self(), SLOT(addToPlaylist(const QString &, const QStringList &)));
@@ -73,21 +65,13 @@ OnlineServicesPage::OnlineServicesPage(QWidget *p)
     connect(view, SIGNAL(itemsSelected(bool)), SLOT(controlActions()));
     connect(view, SIGNAL(rootIndexSet(QModelIndex)), this, SLOT(updateGenres(QModelIndex)));
     connect(OnlineServicesModel::self()->configureAct(), SIGNAL(triggered()), this, SLOT(configureService()));
-    connect(removeAction, SIGNAL(triggered()), this, SLOT(removeService()));
     connect(OnlineServicesModel::self()->refreshAct(), SIGNAL(triggered()), this, SLOT(refreshService()));
-    connect(jamendoAction, SIGNAL(triggered()), this, SLOT(addJamendo()));
-    connect(magnatuneAction, SIGNAL(triggered()), this, SLOT(addMagnatune()));
     connect(downloadAction, SIGNAL(triggered()), this, SLOT(download()));
 
     QMenu *menu=new QMenu(this);
-    menu->addAction(addAction);
-    menu->addAction(removeAction);
-    menu->addAction(sep);
     menu->addAction(OnlineServicesModel::self()->configureAct());
     menu->addAction(OnlineServicesModel::self()->refreshAct());
     view->addAction(downloadAction);
-    view->addAction(sep);
-    view->addAction(removeAction);
     menuButton->setMenu(menu);
     proxy.setSourceModel(OnlineServicesModel::self());
     view->setModel(&proxy);
@@ -101,8 +85,6 @@ OnlineServicesPage::~OnlineServicesPage()
 void OnlineServicesPage::setEnabled(bool e)
 {
     OnlineServicesModel::self()->setEnabled(e);
-    jamendoAction->setEnabled(0==OnlineServicesModel::self()->service(JamendoService::constName));
-    magnatuneAction->setEnabled(0==OnlineServicesModel::self()->service(MagnatuneService::constName));
     controlActions();
 }
 
@@ -260,8 +242,6 @@ void OnlineServicesPage::controlActions()
         }
     }
 
-    addAction->setEnabled(jamendoAction->isEnabled() || magnatuneAction->isEnabled());
-    removeAction->setEnabled(srvSelected && 1==selected.count() && (!jamendoAction->isEnabled() || !magnatuneAction->isEnabled()));
     OnlineServicesModel::self()->configureAct()->setEnabled(srvSelected && 1==selected.count());
     OnlineServicesModel::self()->refreshAct()->setEnabled(srvSelected && 1==selected.count());
     downloadAction->setEnabled(!srvSelected && canDownload && !selected.isEmpty() && 1==services.count());
@@ -311,28 +291,6 @@ void OnlineServicesPage::refreshService()
     }
 }
 
-void OnlineServicesPage::removeService()
-{
-    const QModelIndexList selected = view->selectedIndexes();
-
-    if (1!=selected.size()) {
-        return;
-    }
-
-    MusicLibraryItem *item=static_cast<MusicLibraryItem *>(proxy.mapToSource(selected.first()).internalPointer());
-
-    if (MusicLibraryItem::Type_Root==item->itemType()) {
-        if (MessageBox::No==MessageBox::warningYesNo(this, i18n("Are you sure you wish to remove <b>%1</b>?").arg(item->data()), i18n("Remove Service"),
-                                                     GuiItem(i18n("Remove Service")), StdGuiItem::cancel())) {
-            return;
-        }
-        OnlineServicesModel::self()->removeService(item->data());
-        jamendoAction->setEnabled(0==OnlineServicesModel::self()->service(JamendoService::constName));
-        magnatuneAction->setEnabled(0==OnlineServicesModel::self()->service(MagnatuneService::constName));
-        controlActions();
-    }
-}
-
 void OnlineServicesPage::updateGenres(const QModelIndex &idx)
 {
     if (idx.isValid()) {
@@ -353,29 +311,6 @@ void OnlineServicesPage::updateGenres(const QModelIndex &idx)
         }
     }
     genreCombo->update(OnlineServicesModel::self()->genres());
-}
-
-void OnlineServicesPage::addJamendo()
-{
-    addService(JamendoService::constName);
-}
-
-void OnlineServicesPage::addMagnatune()
-{
-    addService(MagnatuneService::constName);
-}
-
-void OnlineServicesPage::addService(const QString &name)
-{
-    if (0!=OnlineServicesModel::self()->service(name)) {
-        MessageBox::error(this, i18n("%1 service already created!").arg(name));
-        return;
-    }
-
-    OnlineServicesModel::self()->createService(name);
-    jamendoAction->setEnabled(0==OnlineServicesModel::self()->service(JamendoService::constName));
-    magnatuneAction->setEnabled(0==OnlineServicesModel::self()->service(MagnatuneService::constName));
-    controlActions();
 }
 
 void OnlineServicesPage::download()

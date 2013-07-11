@@ -290,7 +290,7 @@ QVariant OnlineServicesModel::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
-void OnlineServicesModel::clear(bool clearConfig)
+void OnlineServicesModel::clear()
 {
     QSet<QString> names;
     foreach (OnlineService *srv, services) {
@@ -298,7 +298,7 @@ void OnlineServicesModel::clear(bool clearConfig)
     }
 
     foreach (const QString &n, names) {
-        removeService(n, clearConfig);
+        removeService(n);
     }
 
     services.clear();
@@ -322,7 +322,7 @@ void OnlineServicesModel::setEnabled(bool e)
         if (wasEnabled) {
             stop();
         }
-        clear(false);
+        clear();
     }
 }
 
@@ -503,14 +503,6 @@ void OnlineServicesModel::getDetails(QSet<QString> &artists, QSet<QString> &albu
     }
 }
 
-void OnlineServicesModel::createService(const QString &name)
-{
-    OnlineService * srv=addService(name);
-    if (srv) {
-        srv->reload(false);
-    }
-}
-
 static const char * constCfgKey = "onlineServices";
 static inline QString cfgKey(OnlineService *srv)
 {
@@ -552,7 +544,7 @@ OnlineService * OnlineServicesModel::addService(const QString &name)
     return srv;
 }
 
-void OnlineServicesModel::removeService(const QString &name, bool fullRemove)
+void OnlineServicesModel::removeService(const QString &name)
 {
     int idx=indexOf(name);
     if (idx<0) {
@@ -566,19 +558,8 @@ void OnlineServicesModel::removeService(const QString &name, bool fullRemove)
         services.takeAt(idx);
         endRemoveRows();
         updateGenres();
-
-        if (fullRemove) {
-            CONFIG
-            QStringList names=GET_STRINGLIST(constCfgKey, QStringList());
-            if (names.contains(srv->name())) {
-                names.removeAll(srv->name());
-                REMOVE_GROUP(cfgKey(srv));
-                SET_VALUE(constCfgKey, names);
-                CFG_SYNC;
-            }
-        }
         // Destroy will stop service, and delete it (via deleteLater())
-        srv->destroy(fullRemove);
+        srv->destroy();
     }
 }
 

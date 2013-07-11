@@ -55,11 +55,8 @@ public Q_SLOTS:
     void controlActions();
     void configureService();
     void refreshService();
-    void removeService();
     void updateGenres(const QModelIndex &);
     void updated(const QModelIndex &idx);
-    void addJamendo();
-    void addMagnatune();
     void download();
 
 Q_SIGNALS:
@@ -70,16 +67,11 @@ Q_SIGNALS:
     void addToDevice(const QString &from, const QString &to, const QList<Song> &songs);
 
 private:
-    void addService(const QString &name);
     OnlineService * activeSrv() const;
 
 private:
     MusicLibraryProxyModel proxy;
-    Action *addAction;
-    Action *removeAction;
     Action *downloadAction;
-    QAction *jamendoAction;
-    QAction *magnatuneAction;
     QSet<QString> genres;
 };
 

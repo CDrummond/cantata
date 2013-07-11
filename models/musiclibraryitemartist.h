@@ -34,7 +34,7 @@
 
 class MusicLibraryItemRoot;
 class MusicLibraryItemAlbum;
-class Song;
+struct Song;
 
 class MusicLibraryItemArtist : public MusicLibraryItemContainer
 {

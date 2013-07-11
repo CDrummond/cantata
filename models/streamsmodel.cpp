@@ -372,72 +372,80 @@ QList<StreamsModel::Item *> StreamsModel::CategoryItem::loadXml(const QString &f
 
 QList<StreamsModel::Item *> StreamsModel::CategoryItem::loadXml(QIODevice *dev, bool importing)
 {
+    Q_UNUSED(importing)
+
     QList<Item *> newItems;
     QXmlStreamReader doc(dev);
+    CategoryItem *currentCat=this;
+    CategoryItem *prevCat=this;
 
-    if (isFavourites) {
-        QSet<QString> existingUrls;
-        QSet<QString> existingNames;
+    while (!doc.atEnd()) {
+        doc.readNext();
 
-        if (importing) {
-            foreach (Item *i, children) {
-                existingUrls.insert(i->url);
-                existingNames.insert(i->name);
-            }
-        }
-
-        while (!doc.atEnd()) {
-            doc.readNext();
-
-            if (doc.isStartElement() && QLatin1String("stream")==doc.name()) {
+        if (doc.isStartElement()) {
+            if (QLatin1String("stream")==doc.name()) {
                 QString name=doc.attributes().value("name").toString();
-                QString origName=name;
                 QString url=doc.attributes().value("url").toString();
-
-                if (!name.isEmpty() && !name.isEmpty() && (!importing || !existingUrls.contains(url))) {
-                    int i=1;
-                    if (importing) {
-                        for (; i<100 && existingNames.contains(name); ++i) {
-                            name=origName+QLatin1String("_")+QString::number(i);
-                        }
-                    }
-
-                    if (i<100) {
-                        existingNames.insert(name);
-                        existingUrls.insert(url);
-                        newItems.append(new Item(url, name, this));
-                    }
+                if (currentCat==this) {
+                    newItems.append(new Item(url, name, currentCat));
+                } else {
+                    currentCat->children.append(new Item(url, name, currentCat));
                 }
+            } else if (QLatin1String("category")==doc.name()) {
+                prevCat=currentCat;
+                QString name=doc.attributes().value("name").toString();
+                currentCat=new CategoryItem(QString(), name, prevCat);
+                currentCat->state=CategoryItem::Fetched;
+                currentCat->isAll=QLatin1String("true")==doc.attributes().value("isAll").toString();
+                newItems.append(currentCat);
             }
+        } if (doc.isEndElement() && QLatin1String("category")==doc.name()) {
+            currentCat=prevCat;
         }
-    } else {
-        CategoryItem *currentCat=this;
-        CategoryItem *prevCat=this;
-        while (!doc.atEnd()) {
-            doc.readNext();
+    }
 
-            if (doc.isStartElement()) {
-                if (QLatin1String("stream")==doc.name()) {
-                    QString name=doc.attributes().value("name").toString();
-                    QString url=doc.attributes().value("url").toString();
-                    if (currentCat==this) {
-                        newItems.append(new Item(url, name, currentCat));
-                    } else {
-                        currentCat->children.append(new Item(url, name, currentCat));
+    return newItems;
+}
+
+QList<StreamsModel::Item *> StreamsModel::FavouritesCategoryItem::loadXml(QIODevice *dev, bool importing)
+{
+    QList<Item *> newItems;
+    QXmlStreamReader doc(dev);
+    QSet<QString> existingUrls;
+    QSet<QString> existingNames;
+
+    if (importing) {
+        foreach (Item *i, children) {
+            existingUrls.insert(i->url);
+            existingNames.insert(i->name);
+        }
+    }
+
+    while (!doc.atEnd()) {
+        doc.readNext();
+
+        if (doc.isStartElement() && QLatin1String("stream")==doc.name()) {
+            QString name=doc.attributes().value("name").toString();
+            QString origName=name;
+            QString url=doc.attributes().value("url").toString();
+
+            if (!name.isEmpty() && !name.isEmpty() && (!importing || !existingUrls.contains(url))) {
+                int i=1;
+                if (importing) {
+                    for (; i<100 && existingNames.contains(name); ++i) {
+                        name=origName+QLatin1String(" (")+QString::number(i)+QLatin1Char(')');
                     }
-                } else if (QLatin1String("category")==doc.name()) {
-                    prevCat=currentCat;
-                    QString name=doc.attributes().value("name").toString();
-                    currentCat=new CategoryItem(QString(), name, prevCat);
-                    currentCat->state=CategoryItem::Fetched;
-                    currentCat->isAll=QLatin1String("true")==doc.attributes().value("isAll").toString();
-                    newItems.append(currentCat);
                 }
-            } if (doc.isEndElement() && QLatin1String("category")==doc.name()) {
-                currentCat=prevCat;
+
+                if (i<100) {
+                    existingNames.insert(name);
+                    existingUrls.insert(url);
+                    newItems.append(new Item(url, name, this));
+                }
             }
         }
     }
+
     return newItems;
 }
 
@@ -459,8 +467,7 @@ StreamsModel::StreamsModel(QObject *parent)
     root->children.append(new DiCategoryItem(constJazzRadioUrl, i18n("JazzRadio.com"), root, getIcon("jazzradio"), "jazzradio"));
     root->children.append(new DiCategoryItem(constRockRadioUrl, i18n("RockRadio.com"), root, getIcon("rockradio"), "rockradio"));
     root->children.append(new DiCategoryItem(constSkyFmUrl, i18n("Sky.fm"), root, getIcon("skyfm"), "skyfm"));
-    favourites=new CategoryItem(constFavouritesUrl, i18n("Favourites"), root, getIcon("favourites"));
-    favourites->isFavourites=true;
+    favourites=new FavouritesCategoryItem(constFavouritesUrl, i18n("Favourites"), root, getIcon("favourites"));
     root->children.append(favourites);
     buildListenLive();
     addBookmarkAction = ActionCollection::get()->createAction("bookmarkcategory", i18n("Bookmark Category"), Icon("bookmark-new"));

@@ -63,12 +63,13 @@ public:
 
         CategoryItem(const QString &u, const QString &n=QString(), CategoryItem *p=0, const QIcon &i=QIcon(),
                      const QString &cn=QString(), const QString &bn=QString())
-            : Item(u, n, p), state(Initial), isFavourites(false), isAll(false), isBookmarks(false),
-              supportsBookmarks(false), canBookmark(false), icon(i), cacheName(cn), bookmarksName(bn)  { }
+            : Item(u, n, p), state(Initial), isAll(false), isBookmarks(false), supportsBookmarks(false),
+              canBookmark(false), icon(i), cacheName(cn), bookmarksName(bn)  { }
 
         virtual ~CategoryItem() { qDeleteAll(children); }
         virtual bool isCategory() const { return true; }
         virtual bool canConfigure() const { return false; }
+        virtual bool isFavourites() const { return false; }
         virtual void removeCache();
         bool isTopLevel() const { return parent && 0==parent->parent; }
         bool canReload() const { return !cacheName.isEmpty() || isTopLevel(); }
@@ -82,10 +83,9 @@ public:
         bool saveXml(const QString &fileName, bool format=false) const;
         bool saveXml(QIODevice *dev, bool format=false) const;
         QList<Item *> loadXml(const QString &fileName, bool importing=false);
-        QList<Item *> loadXml(QIODevice *dev, bool importing=false);
+        virtual QList<Item *> loadXml(QIODevice *dev, bool importing=false);
 
         State state;
-        bool isFavourites : 1;
         bool isAll : 1;
         bool isBookmarks : 1; // 'Virtual' bookmarks category...
         bool supportsBookmarks : 1; // Intended for top-level items, indicates if bookmarks can be added
@@ -94,6 +94,14 @@ public:
         QIcon icon;
         QString cacheName;
         QString bookmarksName;
+    };
+
+    struct FavouritesCategoryItem : public CategoryItem
+    {
+        FavouritesCategoryItem(const QString &u, const QString &n, CategoryItem *p, const QIcon &i)
+            : CategoryItem(u, n, p, i) { }
+        QList<Item *> loadXml(QIODevice *dev, bool importing=false);
+        bool isFavourites() const { return true; }
     };
 
     struct ListenLiveCategoryItem : public CategoryItem

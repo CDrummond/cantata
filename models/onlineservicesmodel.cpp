@@ -371,7 +371,7 @@ void OnlineServicesModel::setCover(const Song &song, const QImage &img, const QS
 
     for (int i=0; i<services.count() ; ++i) {
         OnlineService *srv=services.at(i);
-        if (srv->useArtistImages()) {
+        if (srv->useAlbumImages()) {
             MusicLibraryItemArtist *artistItem = srv->artist(song, false);
             if (artistItem) {
                 MusicLibraryItemAlbum *albumItem = artistItem->album(song, false);

@@ -169,7 +169,7 @@ if (TAGLIB_FOUND)
         devices/filenameschemedialog.cpp
         http/httpserversettings.cpp http/httpserver.cpp http/httpsocket.cpp
         online/onlineservicespage.cpp online/onlineservice.cpp online/jamendoservice.cpp online/jamendosettingsdialog.cpp
-        online/magnatuneservice.cpp online/magnatunesettingsdialog.cpp online/onlinedevice.cpp
+        online/magnatuneservice.cpp online/magnatunesettingsdialog.cpp online/soundcloudservice.cpp online/onlinedevice.cpp
         models/onlineservicesmodel.cpp)
     set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS}
         tags/tageditor.h tags/trackorganiser.h
@@ -177,7 +177,7 @@ if (TAGLIB_FOUND)
         devices/filenameschemedialog.h devices/device.h
         online/onlineservice.h online/onlineservicespage.h online/jamendoservice.h online/magnatuneservice.h
         online/magnatunesettingsdialog.h online/onlinedevice.h online/magnatuneservice.h online/magnatunesettingsdialog.h
-        online/onlinedevice.h
+        online/onlinedevice.h online/soundcloudservice.h
         models/onlineservicesmodel.h)
     set(CANTATA_UIS ${CANTATA_UIS}
         http/httpserversettings.ui

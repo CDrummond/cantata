@@ -41,6 +41,7 @@ public:
     QString text() const { return edit->text(); }
     void setFocus() { edit->setFocus(); }
     bool hasFocus() const { return edit->hasFocus() || closeButton->hasFocus(); }
+    bool isActive() const { return widgetIsActive; }
 
 Q_SIGNALS:
     void textChanged(const QString &);
@@ -57,6 +58,7 @@ private:
     SqueezedTextLabel *label;
     LineEdit *edit;
     ToolButton *closeButton;
+    bool widgetIsActive;
 };
 
 #endif

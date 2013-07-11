@@ -123,6 +123,7 @@ public:
     void focusSearch();
     void setSearchLabelText(const QString &text);
     void setSearchVisible(bool v);
+    bool isSearchActive() const;
     void setStartClosed(bool sc);
     bool isStartClosed();
     void expandAll();
@@ -130,7 +131,7 @@ public:
     void showMessage(const QString &message, int timeout);
 
 public Q_SLOTS:
-    void showSpinner();
+    void showSpinner(bool v=true);
     void hideSpinner();
     void collectionRemoved(quint32 key);
     void updateRows();

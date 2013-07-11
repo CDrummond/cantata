@@ -207,11 +207,15 @@ void OnlineService::reload(const bool fromCache)
         QFile::remove(cache);
     }
     createLoader();
+    if (!loader) {
+        return;
+    }
     connect(loader, SIGNAL(error(QString)), this, SLOT(loaderError(QString)));
     connect(loader, SIGNAL(status(QString,int)), this, SLOT(loaderstatus(QString,int)));
     connect(loader, SIGNAL(loaded()), this, SLOT(loaderFinished()));
     loader->setCacheFileName(cache);
     loader->start();
+    setBusy(true);
 }
 
 void OnlineService::toggle()
@@ -228,7 +232,7 @@ void OnlineService::clear()
     loaded=false;
     int count=childCount();
     if (count>0) {
-        model->beginRemoveRows(model->createIndex(model->services.indexOf(this), 0, this), 0, count-1);
+        model->beginRemoveRows(index(), 0, count-1);
         clearItems();
         model->endRemoveRows();
     }
@@ -247,41 +251,43 @@ void OnlineService::removeCache()
 
 void OnlineService::applyUpdate()
 {
-    if (!update) {
-        return;
-    }
-    /*if (m_childItems.count() && update && update->childCount()) {
-        QSet<Song> currentSongs=allSongs();
-        QSet<Song> updateSongs=update->allSongs();
-        QSet<Song> removed=currentSongs-updateSongs;
-        QSet<Song> added=updateSongs-currentSongs;
+    if (update) {
+        /*if (m_childItems.count() && update && update->childCount()) {
+            QSet<Song> currentSongs=allSongs();
+            QSet<Song> updateSongs=update->allSongs();
+            QSet<Song> removed=currentSongs-updateSongs;
+            QSet<Song> added=updateSongs-currentSongs;
 
-        foreach (const Song &s, removed) {
-            removeSongFromList(s);
-        }
-        foreach (const Song &s, added) {
-            addSongToList(s);
+            foreach (const Song &s, removed) {
+                removeSongFromList(s);
+            }
+            foreach (const Song &s, added) {
+                addSongToList(s);
+            }
+            delete update;
+        } else*/ {
+            int oldCount=childCount();
+            if (oldCount>0) {
+                model->beginRemoveRows(index(), 0, oldCount-1);
+                clearItems();
+                model->endRemoveRows();
+            }
+            int newCount=newRows();
+            if (newCount>0) {
+                model->beginInsertRows(index(), 0, newCount-1);
+                foreach (MusicLibraryItem *item, update->childItems()) {
+                    item->setParent(this);
+                }
+                refreshIndexes();
+                model->endInsertRows();
+            }
         }
         delete update;
-    } else*/ {
-        int oldCount=childCount();
-        if (oldCount>0) {
-            model->beginRemoveRows(model->createIndex(model->services.indexOf(this), 0, this), 0, oldCount-1);
-            clearItems();
-            model->endRemoveRows();
-        }
-        int newCount=newRows();
-        if (newCount>0) {
-            model->beginInsertRows(model->createIndex(model->services.indexOf(this), 0, this), 0, newCount-1);
-            foreach (MusicLibraryItem *item, update->childItems()) {
-                item->setParent(this);
-            }
-            refreshIndexes();
-            model->endInsertRows();
-        }
+        update=0;
+        model->updateGenres();
+        emitUpdated();
     }
-    delete update;
-    update=0;
+    setBusy(false);
 }
 
 void OnlineService::loaderError(const QString &msg)
@@ -289,6 +295,7 @@ void OnlineService::loaderError(const QString &msg)
     lProgress=0;
     setStatusMessage(msg);
     stopLoader();
+    setBusy(false);
 }
 
 void OnlineService::loaderstatus(const QString &msg, int prog)
@@ -309,13 +316,26 @@ void OnlineService::loaderFinished()
     update=loader->takeLibrary();
     stopLoader();
     applyUpdate();
-    model->updateGenres();
-    emit model->updated(model->createIndex(model->services.indexOf(this), 0, this));
 }
 
 void OnlineService::setStatusMessage(const QString &msg)
 {
     statusMsg=msg;
-    QModelIndex modelIndex=model->createIndex(model->services.indexOf(this), 0, this);
+    QModelIndex modelIndex=index();
     emit model->dataChanged(modelIndex, modelIndex);
+}
+
+QModelIndex OnlineService::index()
+{
+    return model->createIndex(model->services.indexOf(this), 0, this);
+}
+
+void OnlineService::emitUpdated()
+{
+    emit model->updated(index());
+}
+
+void OnlineService::setBusy(bool b)
+{
+    model->setBusy(name(), b);
 }

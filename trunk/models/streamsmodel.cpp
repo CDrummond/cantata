@@ -239,18 +239,21 @@ StreamsModel::CategoryItem * StreamsModel::CategoryItem::createBookmarksCategory
 
 void StreamsModel::CategoryItem::removeCache()
 {
-    if (childrenHaveCache) {
-        foreach (Item *i, children) {
-            if (i->isCategory()) {
-                static_cast<CategoryItem *>(i)->removeCache();
-            }
-        }
-    } else if (!cacheName.isEmpty()) {
+    if (!cacheName.isEmpty()) {
         QString cache=categoryCacheName(cacheName);
         if (QFile::exists(cache)) {
             QFile::remove(cache);
         }
     }
+}
+
+void StreamsModel::ListenLiveCategoryItem::removeCache()
+{foreach (Item *i, children) {
+        if (i->isCategory()) {
+            static_cast<CategoryItem *>(i)->removeCache();
+        }
+    }
+
 }
 
 void StreamsModel::CategoryItem::saveCache() const
@@ -463,6 +466,7 @@ StreamsModel::StreamsModel(QObject *parent)
     addBookmarkAction = ActionCollection::get()->createAction("bookmarkcategory", i18n("Bookmark Category"), Icon("bookmark-new"));
     addToFavouritesAction = ActionCollection::get()->createAction("addtofavourites", i18n("Add Stream To Favourites"), favouritesIcon());
     configureAction = ActionCollection::get()->createAction("configurestreams", i18n("Configure Streams"), Icons::self()->configureIcon);
+    reloadAction = ActionCollection::get()->createAction("reloadstreams", i18n("Reload"), Icon("view-refresh"));
 }
 
 StreamsModel::~StreamsModel()
@@ -555,11 +559,14 @@ QVariant StreamsModel::data(const QModelIndex &index, int role) const
     case ItemView::Role_Actions: {
         QList<Action *> actions;
         if (item->isCategory()){
-            if (static_cast<const CategoryItem *>(item)->canBookmark) {
-                actions << addBookmarkAction;
-            }
             if (static_cast<const CategoryItem *>(item)->canConfigure()) {
                 actions << configureAction;
+            }
+            if (static_cast<const CategoryItem *>(item)->canReload()) {
+                actions << reloadAction;
+            }
+            if (static_cast<const CategoryItem *>(item)->canBookmark) {
+                actions << addBookmarkAction;
             }
         } else {
             actions << StdActions::self()->replacePlayQueueAction;
@@ -1616,10 +1623,9 @@ void StreamsModel::buildListenLive()
     QFile f(":listenlive.xml");
     if (f.open(QIODevice::ReadOnly)) {
         if (!listenLive) {
-            listenLive=new CategoryItem(QString(), i18n("Listen Live"), root, getIcon("listenlive"));
+            listenLive=new ListenLiveCategoryItem(i18n("Listen Live"), root, getIcon("listenlive"));
             root->children.append(listenLive);
             listenLive->state=CategoryItem::Fetched;
-            listenLive->childrenHaveCache=true;
         }
         CategoryItem *region=listenLive;
         CategoryItem *prevRegion=listenLive;
@@ -1644,9 +1650,8 @@ void StreamsModel::buildListenLive()
                                                              region, QIcon(), cache));
                 } else if (QLatin1String("region")==doc.name()) {
                     prevRegion=region;
-                    region=new CategoryItem(QString(), doc.attributes().value("name").toString(), prevRegion);
+                    region=new ListenLiveCategoryItem(doc.attributes().value("name").toString(), prevRegion);
                     region->state=CategoryItem::Fetched;
-                    region->childrenHaveCache=true;
                     prevRegion->children.append(region);
                 }
             } else if (QLatin1String("region")==doc.name()) {

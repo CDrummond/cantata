@@ -33,7 +33,6 @@ option(ENABLE_MPG123 "Enable mpg123 libraries(required for replaygain calculatio
 option(ENABLE_SPEEXDSP "Enable SpeexDSP libraries(used to speed-up replaygain calculation)" ON)
 option(ENABLE_UDISKS2 "Build UDisks2 backend, and NOT UDisks, for Qt builds" OFF)
 option(ENABLE_OVERLAYSCROLLBARS "Enable support for overlay style scrollbars when using QGtkStyle(Linux only)" OFF)
-option(ENABLE_ONLINE_SERVICES "Enable support for online services(Jamendo and Magantune)" ON)
 option(ENABLE_CDPARANOIA "Enable CDParanoia libraries(required for AudioCD support)" ON)
 option(ENABLE_CDDB "Enable CDDB libraries(either this or MusicBrianz required for AudioCD support)" ON)
 option(ENABLE_MUSICBRAINZ "Enable MusicBrianz libraries(either this or CDDB required for AudioCD support)" ON)
@@ -168,24 +167,23 @@ if (TAGLIB_FOUND)
     set(CANTATA_SRCS ${CANTATA_SRCS}
         tags/tageditor.cpp tags/trackorganiser.cpp tags/tags.cpp
         devices/filenameschemedialog.cpp
-        http/httpserversettings.cpp http/httpserver.cpp http/httpsocket.cpp)
+        http/httpserversettings.cpp http/httpserver.cpp http/httpsocket.cpp
+        online/onlineservicespage.cpp online/onlineservice.cpp online/jamendoservice.cpp online/jamendosettingsdialog.cpp
+        online/magnatuneservice.cpp online/magnatunesettingsdialog.cpp online/onlinedevice.cpp
+        models/onlineservicesmodel.cpp)
     set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS}
         tags/tageditor.h tags/trackorganiser.h
         http/httpserversettings.h http/httpsocket.h
-        devices/filenameschemedialog.h devices/device.h)
+        devices/filenameschemedialog.h devices/device.h
+        online/onlineservice.h online/onlineservicespage.h online/jamendoservice.h online/magnatuneservice.h
+        online/magnatunesettingsdialog.h online/onlinedevice.h online/magnatuneservice.h online/magnatunesettingsdialog.h
+        online/onlinedevice.h
+        models/onlineservicesmodel.h)
     set(CANTATA_UIS ${CANTATA_UIS}
         http/httpserversettings.ui
         tags/tageditor.ui tags/trackorganiser.ui
-        devices/filenameschemedialog.ui)
-        
-    if (ENABLE_ONLINE_SERVICES)
-        set(CANTATA_SRCS ${CANTATA_SRCS} online/onlineservicespage.cpp online/onlineservice.cpp online/jamendoservice.cpp
-            online/jamendosettingsdialog.cpp online/magnatuneservice.cpp online/magnatunesettingsdialog.cpp online/onlinedevice.cpp
-            models/onlineservicesmodel.cpp)
-        set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} online/onlineservice.h online/onlineservicespage.h online/jamendoservice.h
-            online/magnatuneservice.h online/magnatunesettingsdialog.h online/onlinedevice.h models/onlineservicesmodel.h)
-        set(CANTATA_UIS ${CANTATA_UIS} online/onlineservicespage.ui)
-    endif (ENABLE_ONLINE_SERVICES)
+        devices/filenameschemedialog.ui
+         online/onlineservicespage.ui)
 endif (TAGLIB_FOUND)
 
 if (NOT WIN32)
@@ -579,11 +577,8 @@ if (TAGLIB_FOUND)
         set(AUDIOCD_SUPPORT 1)
     endif (CDDB_FOUND OR MUSICBRAINZ5_FOUND)
 
-    if (ENABLE_REMOTE_DEVICES OR ENABLE_HTTP_STREAM_PLAYBACK OR AUDIOCD_SUPPORT OR MTP_FOUND OR ENABLE_ONLINE_SERVICES OR ENABLE_PROXY_CONFIG OR ENABLE_REPLAYGAIN_SUPPORT)
+    if (ENABLE_REMOTE_DEVICES OR ENABLE_HTTP_STREAM_PLAYBACK OR AUDIOCD_SUPPORT OR MTP_FOUND OR ENABLE_PROXY_CONFIG OR ENABLE_REPLAYGAIN_SUPPORT)
         message("      Extra enabled features:")
-        if (ENABLE_ONLINE_SERVICES)
-            message("        - Online services (Jamendo and Magnatune)")
-        endif (ENABLE_ONLINE_SERVICES)
         if (MTP_FOUND)
             message("        - MTP device sync")
         endif (MTP_FOUND)
@@ -605,13 +600,10 @@ if (TAGLIB_FOUND)
         if (ENABLE_PROXY_CONFIG)
             message("        - Proxy configuration")
         endif (ENABLE_PROXY_CONFIG)
-    endif (ENABLE_REMOTE_DEVICES OR ENABLE_HTTP_STREAM_PLAYBACK OR AUDIOCD_SUPPORT OR MTP_FOUND OR ENABLE_ONLINE_SERVICES OR ENABLE_PROXY_CONFIG OR ENABLE_REPLAYGAIN_SUPPORT)
+    endif (ENABLE_REMOTE_DEVICES OR ENABLE_HTTP_STREAM_PLAYBACK OR AUDIOCD_SUPPORT OR MTP_FOUND OR ENABLE_PROXY_CONFIG OR ENABLE_REPLAYGAIN_SUPPORT)
     
-    if (NOT TAGLIB_FOUND OR NOT MTP_FOUND OR NOT AUDIOCD_SUPPORT OR NOT ENABLE_REPLAYGAIN_SUPPORT OR NOT ENABLE_HTTP_STREAM_PLAYBACK OR NOT ENABLE_REMOTE_DEVICES OR NOT ENABLE_ONLINE_SERVICES OR (NOT ENABLE_PROXY_CONFIG AND NOT ENABLE_KDE_SUPPORT) OR (AUDIOCD_SUPPORT AND NOT LAME_FOUND))
+    if (NOT TAGLIB_FOUND OR NOT MTP_FOUND OR NOT AUDIOCD_SUPPORT OR NOT ENABLE_REPLAYGAIN_SUPPORT OR NOT ENABLE_HTTP_STREAM_PLAYBACK OR NOT ENABLE_REMOTE_DEVICES OR (NOT ENABLE_PROXY_CONFIG AND NOT ENABLE_KDE_SUPPORT) OR (AUDIOCD_SUPPORT AND NOT LAME_FOUND))
         message("      Disabled features:")
-        if (NOT ENABLE_ONLINE_SERVICES)
-            message("        - Online services (Jamendo and Magnatune)")
-        endif (NOT ENABLE_ONLINE_SERVICES)
         if (NOT ENABLE_HTTP_STREAM_PLAYBACK)
             message("        - MPD HTTP stream playback (Phonon required for Qt4, QtMultiMedia for Qt5)")
         endif (NOT ENABLE_HTTP_STREAM_PLAYBACK)
@@ -633,7 +625,7 @@ if (TAGLIB_FOUND)
         if (NOT ENABLE_PROXY_CONFIG AND NOT ENABLE_KDE_SUPPORT)
             message("        - Proxy configuration")
         endif (NOT ENABLE_PROXY_CONFIG AND NOT ENABLE_KDE_SUPPORT)
-    endif (NOT TAGLIB_FOUND OR NOT MTP_FOUND OR NOT AUDIOCD_SUPPORT OR NOT ENABLE_REPLAYGAIN_SUPPORT OR NOT ENABLE_HTTP_STREAM_PLAYBACK OR NOT ENABLE_REMOTE_DEVICES OR NOT ENABLE_ONLINE_SERVICES OR (NOT ENABLE_PROXY_CONFIG AND NOT ENABLE_KDE_SUPPORT) OR (AUDIOCD_SUPPORT AND NOT LAME_FOUND))
+    endif (NOT TAGLIB_FOUND OR NOT MTP_FOUND OR NOT AUDIOCD_SUPPORT OR NOT ENABLE_REPLAYGAIN_SUPPORT OR NOT ENABLE_HTTP_STREAM_PLAYBACK OR NOT ENABLE_REMOTE_DEVICES OR (NOT ENABLE_PROXY_CONFIG AND NOT ENABLE_KDE_SUPPORT) OR (AUDIOCD_SUPPORT AND NOT LAME_FOUND))
 
 else (TAGLIB_FOUND)
 

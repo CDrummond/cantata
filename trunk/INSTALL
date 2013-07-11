@@ -65,10 +65,6 @@ The following options may be passed to CMake:
         KDE builds use KDE supplied Solid libraries).
         Default: OFF
 
-    -DENABLE_ONLINE_SERVICES=ON
-        Enable support for Jamendo and Magnatune online services.
-        Default: ON
-
     -DENABLE_PROXY_CONFIG=ON
         Enable support fpor proxy settings in config dialog. If disabled,i
         system proxy settings are used.

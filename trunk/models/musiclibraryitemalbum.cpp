@@ -36,9 +36,7 @@
 #include "device.h"
 #include "utils.h"
 #endif
-#ifdef ENABLE_ONLINE_SERVICES
 #include "onlineservice.h"
-#endif
 #include <QPixmap>
 #include <QApplication>
 #include <QFontMetrics>
@@ -263,7 +261,6 @@ const QPixmap & MusicLibraryItemAlbum::cover()
                 static_cast<Device *>(parentItem()->parentItem())->requestCover(song);
             } else
             #endif
-            #ifdef ENABLE_ONLINE_SERVICES
             if (parentItem() && parentItem()->parentItem() && dynamic_cast<OnlineService *>(parentItem()->parentItem()) &&
                 static_cast<MusicLibraryItemRoot *>(parentItem()->parentItem())->useAlbumImages()) {
                 // ONLINE: Image URL is encoded in song.name...
@@ -272,9 +269,7 @@ const QPixmap & MusicLibraryItemAlbum::cover()
                     song.title=parentItem()->parentItem()->data().toLower();
                     img=Covers::self()->requestImage(song);
                 }
-            } else
-            #endif
-            if (parentItem() && parentItem()->parentItem() && !static_cast<MusicLibraryItemRoot *>(parentItem()->parentItem())->useAlbumImages()) {
+            } else if (parentItem() && parentItem()->parentItem() && !static_cast<MusicLibraryItemRoot *>(parentItem()->parentItem())->useAlbumImages()) {
                 // Not showing album images in this model, so dont request any!
             } else {
                 img=Covers::self()->requestImage(song);

@@ -64,10 +64,8 @@ public:
     Icon searchIcon;
     Icon clearListIcon;
     Icon menuIcon;
-    #ifdef ENABLE_ONLINE_SERVICES
     Icon jamendoIcon;
     Icon magnatuneIcon;
-    #endif
     Icon filesIcon;
     Icon cancelIcon;
     Icon importIcon;
@@ -79,9 +77,7 @@ public:
     Icon playlistsIcon;
     Icon dynamicIcon;
     Icon streamsIcon;
-    #ifdef ENABLE_ONLINE_SERVICES
     Icon onlineIcon;
-    #endif
     Icon contextIcon;
     Icon infoIcon;
     Icon infoSidebarIcon;

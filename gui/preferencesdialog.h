@@ -39,7 +39,7 @@ class ContextSettings;
 #ifdef TAGLIB_FOUND
 class HttpServerSettings;
 #endif
-class MPDConnectionDetails;
+struct MPDConnectionDetails;
 class CacheSettings;
 #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
 class AudioCdSettings;

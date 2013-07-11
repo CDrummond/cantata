@@ -29,7 +29,7 @@
 #include <QStringList>
 #include <QHash>
 
-class Song;
+struct Song;
 class QNetworkReply;
 
 class UltimateLyricsProvider : public QObject {

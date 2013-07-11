@@ -38,7 +38,7 @@ class QMenu;
 class Notify;
 #endif
 class MainWindow;
-class Song;
+struct Song;
 
 class TrayItem : public QObject
 {

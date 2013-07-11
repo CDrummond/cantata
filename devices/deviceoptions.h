@@ -30,7 +30,7 @@
 #include "encoders.h"
 #endif
 
-class Song;
+struct Song;
 
 struct DeviceStorage {
     DeviceStorage() : size(0), used(0) { }

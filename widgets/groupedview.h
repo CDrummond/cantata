@@ -27,7 +27,7 @@
 #include <QSet>
 #include "treeview.h"
 
-class Song;
+struct Song;
 
 class GroupedView : public TreeView
 {

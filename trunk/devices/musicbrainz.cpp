@@ -54,6 +54,7 @@
 #include <sys/ioctl.h>
 #if defined(__FreeBSD__) || defined(__FreeBSD_kernel__)
 #include <sys/cdio.h>
+#include <arpa/inet.h>
 #elif defined(__linux__)
 #include <linux/cdrom.h>
 #endif
@@ -170,7 +171,7 @@ void MusicBrainz::readDisc()
         for (int i=th.starting_track; i<=th.ending_track; i++) {
             te.track = i;
             if (0==ioctl(fd, CDIOREADTOCENTRY, &te)) {
-                tracks.append(Track(te.cdte_addr.lba + secondsToFrames(2), te.cdte_ctrl&CDROM_DATA_TRACK));
+                tracks.append(Track(te.entry.addr.lba + secondsToFrames(2), te.entry.control&0x04));
             }
         }
         te.track = 0xAA;

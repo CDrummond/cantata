@@ -38,6 +38,7 @@
 #include <sys/ioctl.h>
 #if defined(__FreeBSD__) || defined(__FreeBSD_kernel__)
 #include <sys/cdio.h>
+#include <arpa/inet.h>
 #elif defined(__linux__)
 #include <linux/cdrom.h>
 #endif
@@ -157,8 +158,8 @@ void Cddb::readDisc()
                 if (0==ioctl(fd, CDIOREADTOCENTRY, &te)) {
                     cddb_track_t *track = cddb_track_new();
                     if (track) {
-                        cddb_track_set_frame_offset(track, te.cdte_addr.lba + SECONDS_TO_FRAMES(2));
-                        cddb_track_set_title(track, te.cdte_ctrl&CDROM_DATA_TRACK ? dataTrack().toUtf8().constData() : unknown.constData());
+                        cddb_track_set_frame_offset(track, te.entry.addr.lba + SECONDS_TO_FRAMES(2));
+                        cddb_track_set_title(track, te.entry.control&0x04 ? dataTrack().toUtf8().constData() : unknown.constData());
                         cddb_track_set_artist(track, unknown.constData());
                         cddb_disc_add_track(disc, track);
                     }

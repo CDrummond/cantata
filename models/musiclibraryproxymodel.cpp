@@ -43,7 +43,9 @@ MusicLibraryProxyModel::MusicLibraryProxyModel(QObject *parent)
 bool MusicLibraryProxyModel::filterAcceptsRoot(const MusicLibraryItem *item) const
 {
     foreach (const MusicLibraryItem *i, static_cast<const MusicLibraryItemContainer *>(item)->childItems()) {
-        if (filterAcceptsArtist(i)) {
+        if (MusicLibraryItem::Type_Artist==i->itemType() && filterAcceptsArtist(i)) {
+            return true;
+        } else if (MusicLibraryItem::Type_Song==i->itemType() && filterAcceptsSong(i)) {
             return true;
         }
     }

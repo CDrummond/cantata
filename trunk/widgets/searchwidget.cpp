@@ -52,6 +52,7 @@ private:
 
 SearchWidget::SearchWidget(QWidget *p)
      : QWidget(p)
+     , widgetIsActive(false)
 {
     QGridLayout *l=new QGridLayout(this);
     l->setMargin(0);
@@ -92,15 +93,17 @@ void SearchWidget::toggle()
     if (isVisible()) {
         close();
     } else {
+        widgetIsActive=true;
         show();
         setFocus();
-        emit active(true);
+        emit active(widgetIsActive);
     }
 }
 
 void SearchWidget::close()
 {
-    edit->setText(QString());
+    widgetIsActive=false;
     setVisible(false);
-    emit active(false);
+    edit->setText(QString());
+    emit active(widgetIsActive);
 }

@@ -820,6 +820,11 @@ void ItemView::setSearchVisible(bool v)
     searchWidget->setVisible(v);
 }
 
+bool ItemView::isSearchActive() const
+{
+    return searchWidget->isActive();
+}
+
 void ItemView::setStartClosed(bool sc)
 {
     if (groupedView) {
@@ -873,13 +878,17 @@ void ItemView::showMessage(const QString &message, int timeout)
     msgOverlay->setText(message, timeout, timeout<=0);
 }
 
-void ItemView::showSpinner()
+void ItemView::showSpinner(bool v)
 {
-    if (!spinner) {
-        spinner=new Spinner(this);
+    if (v) {
+        if (!spinner) {
+            spinner=new Spinner(this);
+        }
+        spinner->setWidget(view()->viewport());
+        spinner->start();
+    } else {
+        hideSpinner();
     }
-    spinner->setWidget(view()->viewport());
-    spinner->start();
 }
 
 void ItemView::hideSpinner()

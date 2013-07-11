@@ -483,7 +483,7 @@ Credits
 
 Cantata contains code/icons from:
     Amarok         - amarok.kde.org (Transcoding, Cover fetching code in cover
-                     dialog, Jamendo and Magnatune icons)
+                     dialog)
     Clementine     - www.clementine-player.org (Lyrics searches, CueFile
                      parsing, and digitally imported support)
     Be::MPC        - Wikipedia parsing code

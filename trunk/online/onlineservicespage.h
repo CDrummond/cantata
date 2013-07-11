@@ -51,6 +51,7 @@ public:
 
 public Q_SLOTS:
     void itemDoubleClicked(const QModelIndex &);
+    void controlSearch(bool on);
     void searchItems();
     void controlActions();
     void configureService();
@@ -73,6 +74,7 @@ private:
     MusicLibraryProxyModel proxy;
     Action *downloadAction;
     QSet<QString> genres;
+    QString searchService;
 };
 
 #endif

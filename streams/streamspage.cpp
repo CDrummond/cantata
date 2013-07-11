@@ -61,7 +61,6 @@ StreamsPage::StreamsPage(QWidget *p)
     importAction = ActionCollection::get()->createAction("importstreams", i18n("Import Streams Into Favourites"), "document-import");
     exportAction = ActionCollection::get()->createAction("exportstreams", i18n("Export Favourite Streams"), "document-export");
     addAction = ActionCollection::get()->createAction("addstream", i18n("Add New Stream To Favourites"), Icons::self()->addRadioStreamIcon);
-    reloadAction = ActionCollection::get()->createAction("reloadstreams", i18n("Reload"), Icon("view-refresh"));
     editAction = ActionCollection::get()->createAction("editstream", i18n("Edit"), Icons::self()->editIcon);
     replacePlayQueue->setDefaultAction(StdActions::self()->replacePlayQueueAction);
     searchButton->setDefaultAction(StdActions::self()->searchAction);
@@ -79,7 +78,7 @@ StreamsPage::StreamsPage(QWidget *p)
     connect(StreamsModel::self()->addBookmarkAct(), SIGNAL(triggered(bool)), this, SLOT(addBookmark()));
     connect(StreamsModel::self()->addToFavouritesAct(), SIGNAL(triggered(bool)), this, SLOT(addToFavourites()));
     connect(StreamsModel::self()->configureAct(), SIGNAL(triggered(bool)), this, SLOT(configureStreams()));
-    connect(reloadAction, SIGNAL(triggered(bool)), this, SLOT(reload()));
+    connect(StreamsModel::self()->reloadAct(), SIGNAL(triggered(bool)), this, SLOT(reload()));
     connect(editAction, SIGNAL(triggered(bool)), this, SLOT(edit()));
     connect(importAction, SIGNAL(triggered(bool)), this, SLOT(importXml()));
     connect(exportAction, SIGNAL(triggered(bool)), this, SLOT(exportXml()));
@@ -94,7 +93,7 @@ StreamsPage::StreamsPage(QWidget *p)
     menu->addAction(addAction);
     menu->addAction(StdActions::self()->removeAction);
     menu->addAction(editAction);
-    menu->addAction(reloadAction);
+    menu->addAction(StreamsModel::self()->reloadAct());
     menu->addSeparator();
     menu->addAction(importAction);
     menu->addAction(exportAction);
@@ -109,7 +108,7 @@ StreamsPage::StreamsPage(QWidget *p)
     view->addAction(StdActions::self()->removeAction);
     view->addAction(StreamsModel::self()->addToFavouritesAct());
     view->addAction(StreamsModel::self()->addBookmarkAct());
-    view->addAction(reloadAction);
+    view->addAction(StreamsModel::self()->reloadAct());
     streamsProxy.setSourceModel(StreamsModel::self());
     view->setModel(&streamsProxy);
     view->setDeleteAction(StdActions::self()->removeAction);
@@ -386,7 +385,7 @@ void StreamsPage::reload()
         return;
     }
     const StreamsModel::CategoryItem *cat=static_cast<const StreamsModel::CategoryItem *>(item);
-    if (!StreamsModel::self()->isTopLevel(cat)) {
+    if (!cat->canReload()) {
         return;
     }
     if (cat->children.isEmpty() || MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Reload <b>%1</b> streams?").arg(cat->name))) {
@@ -544,7 +543,7 @@ void StreamsPage::controlActions()
         addAction->setEnabled(false);
         exportAction->setEnabled(false);
         importAction->setEnabled(false);
-        reloadAction->setEnabled(false);
+        StreamsModel::self()->reloadAct()->setEnabled(false);
         StdActions::self()->removeAction->setEnabled(false);
         StreamsModel::self()->addToFavouritesAct()->setEnabled(favWriteable && haveSelection && enableAddToFav);
         StreamsModel::self()->configureAct()->setEnabled(false);
@@ -554,7 +553,7 @@ void StreamsPage::controlActions()
         }
     } else {
         editAction->setEnabled(false);
-        reloadAction->setEnabled(false);
+        StreamsModel::self()->reloadAct()->setEnabled(false);
 
         bool enableRemove=true;
         foreach (const QModelIndex &idx, selected) {
@@ -581,7 +580,7 @@ void StreamsPage::controlActions()
             if (StreamsModel::self()->isFavoritesWritable() && !item->isCategory() && item->parent && item->parent->isFavourites) {
                 editAction->setEnabled(true);
             }
-            reloadAction->setEnabled(item->isCategory() && StreamsModel::self()->isTopLevel(static_cast<const StreamsModel::CategoryItem *>(item)));
+            StreamsModel::self()->reloadAct()->setEnabled(item->isCategory() && static_cast<const StreamsModel::CategoryItem *>(item)->canReload());
             StreamsModel::self()->addBookmarkAct()->setEnabled(item->isCategory() && static_cast<const StreamsModel::CategoryItem *>(item)->canBookmark);
             if (!StdActions::self()->removeAction->isEnabled()) {
                 StdActions::self()->removeAction->setEnabled(item->isCategory() && item->parent &&

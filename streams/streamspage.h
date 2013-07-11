@@ -86,7 +86,6 @@ private:
     Action *exportAction;
     Action *addAction;
     Action *editAction;
-    Action *reloadAction;
     StreamsProxyModel streamsProxy;
     StreamsProxyModel searchProxy;
     StreamsProxyModel *proxy;

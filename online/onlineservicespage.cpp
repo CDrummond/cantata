@@ -75,8 +75,6 @@ OnlineServicesPage::OnlineServicesPage(QWidget *p)
     connect(OnlineServicesModel::self()->configureAct(), SIGNAL(triggered()), this, SLOT(configureService()));
     connect(removeAction, SIGNAL(triggered()), this, SLOT(removeService()));
     connect(OnlineServicesModel::self()->refreshAct(), SIGNAL(triggered()), this, SLOT(refreshService()));
-    connect(OnlineServicesModel::self()->connectAct(), SIGNAL(triggered()), this, SLOT(toggleService()));
-    connect(OnlineServicesModel::self()->disconnectAct(), SIGNAL(triggered()), this, SLOT(toggleService()));
     connect(jamendoAction, SIGNAL(triggered()), this, SLOT(addJamendo()));
     connect(magnatuneAction, SIGNAL(triggered()), this, SLOT(addMagnatune()));
     connect(downloadAction, SIGNAL(triggered()), this, SLOT(download()));
@@ -93,7 +91,7 @@ OnlineServicesPage::OnlineServicesPage(QWidget *p)
     menuButton->setMenu(menu);
     proxy.setSourceModel(OnlineServicesModel::self());
     view->setModel(&proxy);
-    view->setRootIsDecorated(false);
+    view->setRootIsDecorated(true);
 }
 
 OnlineServicesPage::~OnlineServicesPage()
@@ -332,26 +330,6 @@ void OnlineServicesPage::removeService()
         jamendoAction->setEnabled(0==OnlineServicesModel::self()->service(JamendoService::constName));
         magnatuneAction->setEnabled(0==OnlineServicesModel::self()->service(MagnatuneService::constName));
         controlActions();
-    }
-}
-
-void OnlineServicesPage::toggleService()
-{
-    const QModelIndexList selected = view->selectedIndexes();
-
-    if (1!=selected.size()) {
-        return;
-    }
-
-    MusicLibraryItem *item=static_cast<MusicLibraryItem *>(proxy.mapToSource(selected.first()).internalPointer());
-
-    if (MusicLibraryItem::Type_Root==item->itemType()) {
-        if (static_cast<OnlineService *>(item)->isLoaded() &&
-            MessageBox::No==MessageBox::warningYesNo(this, i18n("Are you sure you wish to unload <b>%1</b>?").arg(item->data()), i18n("Unload Service"),
-                                                     GuiItem(i18n("Unload Service")), StdGuiItem::cancel())) {
-            return;
-        }
-        static_cast<OnlineService *>(item)->toggle();
     }
 }
 

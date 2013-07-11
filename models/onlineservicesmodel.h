@@ -49,6 +49,8 @@ public:
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     int columnCount(const QModelIndex &) const;
+    bool hasChildren(const QModelIndex &index) const;
+    bool canFetchMore(const QModelIndex &index) const;
     QVariant data(const QModelIndex &, int) const;
     Qt::ItemFlags flags(const QModelIndex &index) const;
     QStringList filenames(const QModelIndexList &indexes) const;
@@ -67,8 +69,6 @@ public:
     void removeService(const QString &name, bool fullRemove=true);
     Action * configureAct() const { return configureAction; }
     Action * refreshAct() const { return refreshAction; }
-    Action * connectAct() const { return connectAction; }
-    Action * disconnectAct() const { return disconnectAction; }
 
 public Q_SLOTS:
     void setArtistImage(const Song &song, const QImage &img);

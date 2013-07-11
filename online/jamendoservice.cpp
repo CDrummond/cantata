@@ -113,7 +113,7 @@ static QString id3Genre(int id)
         idMap.insert(75, "Polka");
         idMap.insert(76, "Retro");
         idMap.insert(77, "Musical");
-        idMap.insert(78, "Rock &amp; Roll");
+        idMap.insert(78, "Rock & Roll");
         idMap.insert(79, "Hard Rock");
         idMap.insert(80, "Folk");
         idMap.insert(81, "Folk-Rock");

@@ -386,10 +386,8 @@ Icons::Icons()
     clearListIcon=Icon("edit-clear-list");
     repeatIcon=createRecolourableIcon("repeat", stdColor, highlightColor);
     shuffleIcon=createRecolourableIcon("shuffle", stdColor, highlightColor);
-    #ifdef ENABLE_ONLINE_SERVICES
     jamendoIcon=Icon("cantata-view-services-jamendo");
     magnatuneIcon=Icon("cantata-view-services-jamendo");
-    #endif
     filesIcon=Icon("document-multiple");
     cancelIcon=Icon("dialog-cancel");
     importIcon=Icon("document-import");
@@ -422,14 +420,12 @@ Icons::Icons()
     if (artistIcon.isNull()) {
         artistIcon=Icon::create("artist", QList<int>() << 16 << 22 << 32 << 48 << 64 << 128);
     }
-    #ifdef ENABLE_ONLINE_SERVICES
     if (jamendoIcon.isNull()) {
         jamendoIcon=Icon::create("jamendo", constStdSizes);
     }
     if (magnatuneIcon.isNull()) {
         magnatuneIcon=Icon::create("magnatune", constStdSizes);
     }
-    #endif
     #ifndef Q_OS_WIN
     if (shortcutsIcon.isNull()) {
         shortcutsIcon=Icon("keyboard");
@@ -493,9 +489,7 @@ void Icons::initSidebarIcons()
         playlistsIcon=loadSidebarIcon("playlists", textCol, highlightedTexCol);
         dynamicIcon=loadSidebarIcon("dynamic", textCol, highlightedTexCol);
         streamsIcon=loadSidebarIcon("streams", textCol, highlightedTexCol);
-        #ifdef ENABLE_ONLINE_SERVICES
         onlineIcon=loadSidebarIcon("online", textCol, highlightedTexCol);
-        #endif
         infoSidebarIcon=loadSidebarIcon("info", textCol, highlightedTexCol);
         #ifdef ENABLE_DEVICES_SUPPORT
         devicesIcon=loadSidebarIcon("devices", textCol, highlightedTexCol);
@@ -508,9 +502,7 @@ void Icons::initSidebarIcons()
         playlistsIcon=playlistIcon;
         dynamicIcon=dynamicRuleIcon;
         streamsIcon=radioStreamIcon;
-        #ifdef ENABLE_ONLINE_SERVICES
         onlineIcon=Icon("applications-internet");
-        #endif
         if (QIcon::themeName()==QLatin1String("gnome")) {
             QColor col=QApplication::palette().color(QPalette::Active, QPalette::ButtonText);
             infoSidebarIcon=loadSidebarIcon("info", col, col);

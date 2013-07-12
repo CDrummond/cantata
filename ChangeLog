@@ -113,6 +113,7 @@
 71. Allow seeking in cantata HTTP streams.
 72. Default to enabling use of media keys under GNOME/Unity.
 73. Add SoundCloud to online services.
+74. Drop usage of lame when playing back AudioCDs, its not required.
 
 1.0.3
 -----

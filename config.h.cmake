@@ -25,7 +25,6 @@
 #cmakedefine ENABLE_HTTP_STREAM_PLAYBACK 1
 #cmakedefine FFMPEG_FOUND 1
 #cmakedefine MPG123_FOUND 1
-#cmakedefine LAME_FOUND 1
 #cmakedefine CDDB_FOUND 1
 #cmakedefine MUSICBRAINZ5_FOUND 1
 #cmakedefine USE_SPEEX_RESAMPLER 1

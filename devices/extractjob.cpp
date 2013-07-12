@@ -32,21 +32,36 @@
 #include <QProcess>
 #include <QFile>
 
-void ExtractJob::writeWavHeader(QIODevice &dev)
+const int ExtractJob::constWavHeaderSize=44; // ffmpeg uses 46 byte header?
+
+static void insertSize(unsigned char *data, qint32 size)
 {
-    static const unsigned char riffHeader[] = {
+    data[0]=(size&0x000000ff);
+    data[1]=(size&0x0000ff00)>>8;
+    data[2]=(size&0x00ff0000)>>16;
+    data[3]=(size&0xff000000)>>24;
+}
+
+void ExtractJob::writeWavHeader(QIODevice &dev, qint32 size)
+{
+    unsigned char riffHeader[] = {
         0x52, 0x49, 0x46, 0x46, // 0  "RIFF"
         0x00, 0x00, 0x00, 0x00, // 4  wavSize
         0x57, 0x41, 0x56, 0x45, // 8  "WAVE"
         0x66, 0x6d, 0x74, 0x20, // 12 "fmt "
-        0x10, 0x00, 0x00, 0x00, // 16
-        0x01, 0x00, 0x02, 0x00, // 20
-        0x44, 0xac, 0x00, 0x00, // 24
-        0x10, 0xb1, 0x02, 0x00, // 28
-        0x04, 0x00, 0x10, 0x00, // 32
-        0x64, 0x61, 0x74, 0x61, // 36 "data"
+        0x10, 0x00, 0x00, 0x00, // 16 Size of WAVE section chunk  (ffmpeg has 12 here???)
+        0x01, 0x00, 0x02, 0x00, // 20 WAVE type format / Number of channels
+        0x44, 0xac, 0x00, 0x00, // 24 Samples per second
+        0x10, 0xb1, 0x02, 0x00, // 28 Bytes per second
+        0x04, 0x00, 0x10, 0x00, // 32 Block alignment / Bits per sample
+        0x64, 0x61, 0x74, 0x61, // 36 "data"  (ffmpeg preceeds this with two 0 bytes)
         0x00, 0x00, 0x00, 0x00  // 40 byteCount
     };
+
+    if (0!=size) {
+        insertSize(&riffHeader[4], (size+constWavHeaderSize)-8);
+        insertSize(&riffHeader[40], size);
+    }
 
     dev.write((char*)riffHeader, 44);
 }

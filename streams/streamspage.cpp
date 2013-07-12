@@ -63,9 +63,6 @@ StreamsPage::StreamsPage(QWidget *p)
     addAction = ActionCollection::get()->createAction("addstream", i18n("Add New Stream To Favourites"), Icons::self()->addRadioStreamIcon);
     editAction = ActionCollection::get()->createAction("editstream", i18n("Edit"), Icons::self()->editIcon);
     replacePlayQueue->setDefaultAction(StdActions::self()->replacePlayQueueAction);
-    searchButton->setDefaultAction(StdActions::self()->searchAction);
-    searchButton->setToolTip(i18n("Search TuneIn For Streams"));
-    searchButton->setIcon(StreamsModel::self()->tuneInIcon());
 //     connect(view, SIGNAL(itemsSelected(bool)), addToPlaylist, SLOT(setEnabled(bool)));
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
     connect(view, SIGNAL(searchIsActive(bool)), this, SLOT(controlSearch(bool)));

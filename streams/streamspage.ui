@@ -50,9 +50,6 @@
       <number>0</number>
      </property>
      <item>
-      <widget class="ToolButton" name="searchButton"/>
-     </item>
-     <item>
       <widget class="QLabel" name="diStatusLabel">
        <property name="font">
         <font>

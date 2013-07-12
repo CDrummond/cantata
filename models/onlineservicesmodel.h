@@ -51,6 +51,7 @@ public:
     int columnCount(const QModelIndex &) const;
     bool hasChildren(const QModelIndex &index) const;
     bool canFetchMore(const QModelIndex &index) const;
+    void fetchMore(const QModelIndex &index);
     QVariant data(const QModelIndex &, int) const;
     Qt::ItemFlags flags(const QModelIndex &index) const;
     QStringList filenames(const QModelIndexList &indexes) const;

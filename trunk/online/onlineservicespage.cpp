@@ -264,6 +264,10 @@ void OnlineServicesPage::controlSearch(bool on)
             view->setBackgroundImage(OnlineServicesModel::self()->service(searchService)->serviceIcon());
         }
     } else {
+        OnlineService *srv=OnlineServicesModel::self()->service(searchService);
+        if (srv && srv->canSearch()) {
+            srv->setSearch(QString());
+        }
         genreCombo->setEnabled(true);
         searchService=QString();
         proxy.update(QString(), genreCombo->currentIndex()<=0 ? QString() : genreCombo->currentText(), QString());

@@ -28,9 +28,6 @@
 #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
 #include "cdparanoia.h"
 #include "extractjob.h"
-#ifdef LAME_FOUND
-#include "lame/lame.h"
-#endif
 #endif
 #include <QTcpSocket>
 #include <QNetworkInterface>
@@ -128,18 +125,20 @@ static QString detectMimeType(const QString &file)
     return QString();
 }
 
-static void writeMimeType(const QString &mimeType, QTcpSocket *socket, qint64 size=0)
+static void writeMimeType(const QString &mimeType, QTcpSocket *socket, qint32 size, bool allowSeek)
 {
     if (!mimeType.isEmpty()) {
         QTextStream os(socket);
         os.setAutoDetectUnicode(true);
-        if (size>0) {
+        if (allowSeek) {
             os << "HTTP/1.0 200 OK"
                << "\r\nAccept-Ranges: bytes"
                << "\r\nContent-Length: " << QString::number(size)
                << "\r\nContent-Type: " << mimeType << "\r\n\r\n";
         } else {
-            os << "HTTP/1.0 200 OK\r\nContent-Type: " << mimeType << "\r\n\r\n";
+            os << "HTTP/1.0 200 OK"
+               << "\r\nContent-Length: " << QString::number(size)
+               << "\r\nContent-Type: " << mimeType << "\r\n\r\n";
         }
     }
 }
@@ -198,7 +197,7 @@ static bool isFromMpd(const QStringList &params)
     return false;
 }
 
-static void getRange(const QStringList &params, qint64 &from, qint64 &to)
+static void getRange(const QStringList &params, qint32 &from, qint32 &to)
 {
     foreach (const QString &str, params) {
         if (str.startsWith("Range:")) {
@@ -206,10 +205,10 @@ static void getRange(const QStringList &params, qint64 &from, qint64 &to)
             if (start>0) {
                 QStringList range=str.mid(start+6).split("-", QString::SkipEmptyParts);
                 if (1==range.length()) {
-                    from=range.at(0).toLongLong();
+                    from=range.at(0).toLong();
                 } else if (2==range.length()) {
-                    from=range.at(0).toLongLong();
-                    to=range.at(1).toLongLong();
+                    from=range.at(0).toLong();
+                    to=range.at(1).toLong();
                 }
             }
             break;
@@ -327,6 +326,9 @@ void HttpSocket::readClient()
             QUrlQuery q(url);
             #endif
             bool ok=false;
+            qint32 readBytesFrom=0;
+            qint32 readBytesTo=0;
+            getRange(params, readBytesFrom, readBytesTo);
 
             if (q.hasQueryItem("cantata")) {
                 Song song=HttpServer::self()->decodeUrl(url);
@@ -340,32 +342,21 @@ void HttpSocket::readClient()
                         if (cdparanoia) {
                             int firstSector = cdparanoia.firstSectorOfTrack(song.id);
                             int lastSector = cdparanoia.lastSectorOfTrack(song.id);
+                            qint32 totalSize = ((lastSector-firstSector)+1)*CD_FRAMESIZE_RAW;
                             int count = 0;
+                            //int bytesToDiscard = 0; // Number of bytes to discard in first read sector due to range request in HTTP header
+
+                            //if (readBytesFrom>0) {
+                            //    int sectorsToSeek=readBytesFrom/CD_FRAMESIZE_RAW;
+                            //    firstSector+=sectorsToSeek;
+                            //    bytesToDiscard=readBytesFrom-(sectorsToSeek*CD_FRAMESIZE_RAW);
+                            //}
                             cdparanoia.seek(firstSector, SEEK_SET);
                             ok=true;
-                            #ifdef LAME_FOUND
-                            static const int constMp3BufferSize=CD_FRAMESIZE_RAW*2*sizeof(short int);
-                            static const int constPcmSize=CD_FRAMESIZE_RAW/(2*sizeof(short int));
-                            unsigned char mp3Buffer[constMp3BufferSize];
-                            lame_global_flags *lame = lame_init();
-                            lame_set_num_channels(lame, 2);
-                            lame_set_in_samplerate(lame, 44100);
-                            lame_set_brate(lame, 128);
-                            lame_set_quality(lame, 5);
-                            lame_set_VBR(lame, vbr_off);
-                            if (-1!=lame_init_params(lame)) {
-                                writeMimeType(QLatin1String("audio/mpeg"), socket);
-                            } else {
-                                lame_close(lame);
-                                lame=0;
-                            }
-                            if (!lame) {
-                            #endif
-                                writeMimeType(QLatin1String("audio/x-wav"), socket);
-                                ExtractJob::writeWavHeader(*socket);
-                            #ifdef LAME_FOUND
-                            }
-                            #endif
+                            writeMimeType(QLatin1String("audio/x-wav"), socket, totalSize+ExtractJob::constWavHeaderSize, false);
+                            //if (0==readBytesFrom) { // Only write header if we are no seeking...
+                                ExtractJob::writeWavHeader(*socket, totalSize);
+                            //}
                             bool stop=false;
                             while (!terminated && (firstSector+count) <= lastSector && !stop) {
                                 qint16 *buf = cdparanoia.read();
@@ -373,18 +364,17 @@ void HttpSocket::readClient()
                                     break;
                                 }
                                 char *buffer=(char *)buf;
-                                qint64 writePos=0;
-                                qint64 toWrite=CD_FRAMESIZE_RAW;
+                                qint32 writePos=0;
+                                qint32 toWrite=CD_FRAMESIZE_RAW;
 
-                                #ifdef LAME_FOUND
-                                if (lame) {
-                                    toWrite=lame_encode_buffer_interleaved(lame, (short *)buffer, constPcmSize, mp3Buffer, constMp3BufferSize);
-                                    buffer=(char *)mp3Buffer;
-                                }
-                                #endif
+                                //if (0==count && bytesToDiscard) {
+                                //    writePos=bytesToDiscard;
+                                //    toWrite-=bytesToDiscard;
+                                //    bytesToDiscard=0;
+                                //}
 
                                 do {
-                                    qint64 bytesWritten=socket->write(&buffer[writePos], toWrite - writePos);
+                                    qint32 bytesWritten=socket->write(&buffer[writePos], toWrite - writePos);
                                     if (terminated || -1==bytesWritten) {
                                         stop=true;
                                         break;
@@ -394,41 +384,32 @@ void HttpSocket::readClient()
                                 } while (!terminated && writePos<toWrite);
                                 count++;
                             }
-                            #ifdef LAME_FOUND
-                            if (lame) {
-                                lame_close(lame);
-                                lame=0;
-                            }
-                            #endif
                         }
                     }
                     #endif
                 } else {
                     QFile f(url.path());
 
-                    if (f.open(QIODevice::ReadOnly)) {
-                        qint64 from=0;
-                        qint64 to=0;
-                        qint64 totalBytes = f.size();
+                    if (f.open(QIODevice::ReadOnly)) {                        
+                        qint32 totalBytes = f.size();
 
-                        getRange(params, from, to);
-                        writeMimeType(detectMimeType(url.path()), socket, totalBytes);
+                        writeMimeType(detectMimeType(url.path()), socket, totalBytes, true);
                         ok=true;
                         static const int constChunkSize=32768;
                         char buffer[constChunkSize];
-                        qint64 readPos = 0;
-                        qint64 bytesRead = 0;
+                        qint32 readPos = 0;
+                        qint32 bytesRead = 0;
                         bool stop=false;
 
-                        if (0!=from) {
-                            if (!f.seek(from)) {
+                        if (0!=readBytesFrom) {
+                            if (!f.seek(readBytesFrom)) {
                                 ok=false;
                             }
-                            bytesRead+=from;
+                            bytesRead+=readBytesFrom;
                         }
 
-                        if (0!=to && to>from && to!=totalBytes) {
-                            totalBytes-=(totalBytes-to);
+                        if (0!=readBytesTo && readBytesTo>readBytesFrom && readBytesTo!=totalBytes) {
+                            totalBytes-=(totalBytes-readBytesTo);
                         }
 
                         if (ok) {
@@ -439,9 +420,9 @@ void HttpSocket::readClient()
                                     break;
                                 }
 
-                                qint64 writePos=0;
+                                qint32 writePos=0;
                                 do {
-                                    qint64 bytesWritten = socket->write(&buffer[writePos], bytesRead - writePos);
+                                    qint32 bytesWritten = socket->write(&buffer[writePos], bytesRead - writePos);
                                     if (terminated || -1==bytesWritten) {
                                         stop=true;
                                         break;

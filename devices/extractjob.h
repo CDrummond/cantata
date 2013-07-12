@@ -32,7 +32,8 @@ class ExtractJob : public FileJob
 {
     Q_OBJECT
 public:
-    static void writeWavHeader(QIODevice &dev);
+    static const int constWavHeaderSize;
+    static void writeWavHeader(QIODevice &dev, qint32 size=0);
 
     explicit ExtractJob(const Encoders::Encoder &enc, int val, const QString &src, const QString &dest, const Song &s, const QString &cover);
     virtual ~ExtractJob();

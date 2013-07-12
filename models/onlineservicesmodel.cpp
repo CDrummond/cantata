@@ -260,6 +260,9 @@ QVariant OnlineServicesModel::data(const QModelIndex &index, int role) const
             if (!srv->isLoaded() && !srv->canSearch()) {
                 return i18n("Not Loaded");
             }
+            if (0==item->childCount() && srv->canSearch()) {
+                return i18n("Use search to locate tracks");
+            }
             if (srv->isFlat()) {
                 #ifdef ENABLE_KDE_SUPPORT
                 return i18np("1 Track", "%1 Tracks", item->childCount());

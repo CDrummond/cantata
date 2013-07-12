@@ -557,6 +557,11 @@ void ItemView::setMode(Mode m)
         return;
     }
 
+    QIcon oldBgndIcon=bgndIcon;
+    if (!bgndIcon.isNull()) {
+        setBackgroundImage(QIcon());
+    }
+
     mode=m;
     searchWidget->setText(QString());
     if (Mode_SimpleTree==mode || Mode_DetailedTree==mode) {
@@ -605,6 +610,10 @@ void ItemView::setMode(Mode m)
     }
     if (msgOverlay) {
         msgOverlay->setWidget(view()->viewport());
+    }
+
+    if (!oldBgndIcon.isNull()) {
+        setBackgroundImage(oldBgndIcon);
     }
 }
 
@@ -876,6 +885,18 @@ void ItemView::showMessage(const QString &message, int timeout)
         msgOverlay->setWidget(view()->viewport());
     }
     msgOverlay->setText(message, timeout, timeout<=0);
+}
+
+void ItemView::setBackgroundImage(const QIcon &icon)
+{
+    bgndIcon=icon;
+    if (Mode_SimpleTree==mode || Mode_DetailedTree==mode) {
+        treeView->setBackgroundImage(bgndIcon);
+    } else if (Mode_GroupedTree==mode && groupedView) {
+        groupedView->setBackgroundImage(bgndIcon);
+    } else if (Mode_List==mode || Mode_IconTop==mode) {
+        listView->setBackgroundImage(bgndIcon);
+    }
 }
 
 void ItemView::showSpinner(bool v)

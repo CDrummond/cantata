@@ -253,6 +253,7 @@ void OnlineServicesPage::controlSearch(bool on)
         proxy.update(QString(), genreCombo->currentIndex()<=0 ? QString() : genreCombo->currentText(), searchService);
         if (searchService.isEmpty()) {
             view->setSearchVisible(false);
+            view->setBackgroundImage(QIcon());
         } else {
             if (onlineSearchRequest) {
                 genreCombo->setCurrentIndex(0);
@@ -260,11 +261,13 @@ void OnlineServicesPage::controlSearch(bool on)
                 proxy.update(QString(), QString());
             }
             view->setSearchLabelText(i18nc("Search ServiceName:", "Search %1:").arg(searchService));
+            view->setBackgroundImage(OnlineServicesModel::self()->service(searchService)->serviceIcon());
         }
     } else {
         genreCombo->setEnabled(true);
         searchService=QString();
         proxy.update(QString(), genreCombo->currentIndex()<=0 ? QString() : genreCombo->currentText(), QString());
+        view->setBackgroundImage(QIcon());
     }
 }
 

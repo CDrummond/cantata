@@ -116,6 +116,7 @@ StreamsPage::StreamsPage(QWidget *p)
     searchView->addAction(StreamsModel::self()->addBookmarkAct());
     searchProxy.setSourceModel(&searchModel);
     searchView->setModel(&searchProxy);
+    searchView->setBackgroundImage(StreamsModel::self()->tuneInIcon());
 
     diStatusLabel->setText("DI");
     updateDiStatus();

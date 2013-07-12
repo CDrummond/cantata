@@ -25,6 +25,9 @@
 #define LISTVIEW_H
 
 #include <QListView>
+#include <QPixmap>
+
+class QIcon;
 
 class QMenu;
 class ListView : public QListView
@@ -43,6 +46,8 @@ public:
     QModelIndexList selectedIndexes() const;
     virtual void setModel(QAbstractItemModel *m);
     void addDefaultAction(QAction *act);
+    void setBackgroundImage(const QIcon &icon);
+    void paintEvent(QPaintEvent *e);
 
 private Q_SLOTS:
     void correctSelection();
@@ -53,6 +58,7 @@ Q_SIGNALS:
 
 private:
     QMenu *menu;
+    QPixmap bgnd;
 };
 
 #endif

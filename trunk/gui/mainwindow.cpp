@@ -1799,7 +1799,7 @@ void MainWindow::updateCurrentSong(const Song &song)
     if (current.time<5 && MPDStatus::self()->songId()==current.id && MPDStatus::self()->timeTotal()>5) {
         current.time=MPDStatus::self()->timeTotal();
     }
-    positionSlider->setEnabled(-1!=current.id && (!currentIsStream() || (!current.isCdda() && current.time>5)));
+    positionSlider->setEnabled(-1!=current.id && !current.isCdda() && (!currentIsStream() || current.time>5));
     coverWidget->update(current);
 
     if (current.isStream() && !current.isCantataStream() && !current.isCdda()) {
@@ -1901,7 +1901,7 @@ void MainWindow::updateStatus(MPDStatus * const status)
                 statusTimer->start(250);
             }
         } else if (!positionSlider->isEnabled()) {
-            positionSlider->setEnabled(-1!=current.id && (!currentIsStream() || (!current.isCdda() && status->timeTotal()>5)));
+            positionSlider->setEnabled(-1!=current.id && !current.isCdda() && (!currentIsStream() || status->timeTotal()>5));
         }
     }
 

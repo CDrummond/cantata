@@ -439,7 +439,7 @@ void WikipediaEngine::getPage(const QStringList &query, Mode mode, const QString
     switch (mode) {
     default:
     case Artist:
-        patterns=i18nc("Search pattern for an artist or band, separated by |", "artist|band").split("|", QString::SkipEmptyParts);
+        patterns=i18nc("Search pattern for an artist or band, separated by |", "artist|band|singer|vocalist|musician").split("|", QString::SkipEmptyParts);
         break;
     case Album:
         patterns=i18nc("Search pattern for an album, separated by |", "album|score|soundtrack").split("|", QString::SkipEmptyParts);
@@ -544,8 +544,8 @@ void WikipediaEngine::parsePage()
     //DBUG <<  "Anser" << answer;
     QUrl url=reply->url();
     QString hostLang=getLang(url);
+
     if (answer.contains(QLatin1String("{{disambiguation}}")) || answer.contains(QLatin1String("{{disambig}}"))) { // i18n???
-        DBUG <<  "Disambiguation";
         getPage(reply->property(constQueryProperty).toStringList(), (Mode)reply->property(constModeProperty).toInt(),
                 hostLang);
         return;

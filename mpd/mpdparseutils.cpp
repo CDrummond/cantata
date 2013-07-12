@@ -388,6 +388,7 @@ MusicLibraryItemRoot * MPDParseUtils::parseLibraryItems(const QByteArray &data, 
     MusicLibraryItemAlbum *albumItem = 0;
     MusicLibraryItemSong *songItem = 0;
     QString unknown=i18n("Unknown");
+    QString lastGenre;
 
     for (int i = 0; i < amountOfLines; i++) {
         currentItem += lines.at(i);
@@ -486,10 +487,14 @@ MusicLibraryItemRoot * MPDParseUtils::parseLibraryItems(const QByteArray &data, 
                             DBUG << "Create new track from cue" << s.file << s.title << s.artist << s.albumartist << s.album;
                             songItem = new MusicLibraryItemSong(s, albumItem);
                             albumItem->append(songItem);
-                            albumItem->addGenre(s.genre);
                             updatedAlbums.insert(albumItem);
-                            artistItem->addGenre(s.genre);
-                            rootItem->addGenre(s.genre);
+
+                            if (s.genre!=lastGenre) {
+                                lastGenre=s.genre;
+                                albumItem->addGenre(s.genre);
+                                artistItem->addGenre(s.genre);
+                                rootItem->addGenre(s.genre);
+                            }
                         }
 
                         // For each album that was updated/created, remove any source files referenced in cue file...
@@ -538,9 +543,12 @@ MusicLibraryItemRoot * MPDParseUtils::parseLibraryItems(const QByteArray &data, 
             }
             songItem = new MusicLibraryItemSong(currentSong, albumItem);
             albumItem->append(songItem);
-            albumItem->addGenre(currentSong.genre);
-            artistItem->addGenre(currentSong.genre);
-            rootItem->addGenre(currentSong.genre);
+            if (currentSong.genre!=lastGenre) {
+                lastGenre=currentSong.genre;
+                albumItem->addGenre(currentSong.genre);
+                artistItem->addGenre(currentSong.genre);
+                rootItem->addGenre(currentSong.genre);
+            }
         }
     }
 

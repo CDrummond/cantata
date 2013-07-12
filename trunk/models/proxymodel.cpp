@@ -25,6 +25,10 @@
 
 bool ProxyModel::matchesFilter(const Song &s) const
 {
+    if (filterStrings.isEmpty()) {
+        return true;
+    }
+
     QStringList strings;
 
     strings << s.albumArtist();
@@ -66,7 +70,7 @@ bool ProxyModel::matchesFilter(const QStringList &strings) const
     return false;
 }
 
-bool ProxyModel::update(const QString &text, const QString &genre)
+bool ProxyModel::update(const QString &text, const QString &genre, const QString &root)
 {
     filterStrings = text.split(' ', QString::SkipEmptyParts, Qt::CaseInsensitive);
     unmatchedStrings = 0;
@@ -75,24 +79,27 @@ bool ProxyModel::update(const QString &text, const QString &genre)
         unmatchedStrings |= (1<<i);
     }
 
-    if (text.length()<2 && genre.isEmpty()) {
+    if (text.length()<2 && genre.isEmpty() && root.isEmpty()) {
         if (filterEnabled) {
             bool wasEmpty=isEmpty();
             filterEnabled=false;
             filterGenre=genre;
-            if (!wasEmpty) {
-                invalidate();
-            }
+            rootName=root;
+
             if (!filterRegExp().isEmpty()) {
                 setFilterRegExp(QString());
+            } else if (!wasEmpty) {
+                invalidate();
             }
             return true;
         }
     } else {
         filterEnabled=true;
         filterGenre=genre;
-        if (text!=filterRegExp().pattern()) {
-            setFilterRegExp(text);
+        rootName=root;
+        QString re=text+rootName;
+        if (re!=filterRegExp().pattern()) {
+            setFilterRegExp(re);
         } else {
             invalidate();
         }

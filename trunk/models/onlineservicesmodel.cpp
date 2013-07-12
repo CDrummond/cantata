@@ -307,7 +307,7 @@ QVariant OnlineServicesModel::data(const QModelIndex &index, int role) const
             if (srv->canLoad()) {
                 actions << refreshAction;
             }
-            if (srv->canSearch()) {
+            if (srv->canSearch() || srv->isLoaded()) {
                 actions << StdActions::self()->searchAction;
             }
         } else {

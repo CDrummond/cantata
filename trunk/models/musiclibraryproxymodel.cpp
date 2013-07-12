@@ -31,8 +31,7 @@
 #include "musiclibraryproxymodel.h"
 
 MusicLibraryProxyModel::MusicLibraryProxyModel(QObject *parent)
-    : ProxyModel(parent) // ,
-//       filterField(3)
+    : ProxyModel(parent)
 {
     setDynamicSortFilter(true);
     setFilterCaseSensitivity(Qt::CaseInsensitive);
@@ -42,6 +41,9 @@ MusicLibraryProxyModel::MusicLibraryProxyModel(QObject *parent)
 
 bool MusicLibraryProxyModel::filterAcceptsRoot(const MusicLibraryItem *item) const
 {
+    if (!rootName.isEmpty()) {
+        return item->data()==rootName;
+    }
     foreach (const MusicLibraryItem *i, static_cast<const MusicLibraryItemContainer *>(item)->childItems()) {
         if (MusicLibraryItem::Type_Artist==i->itemType() && filterAcceptsArtist(i)) {
             return true;

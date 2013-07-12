@@ -74,6 +74,7 @@ private:
     MusicLibraryProxyModel proxy;
     Action *downloadAction;
     QSet<QString> genres;
+    bool onlineSearchRequest;
     QString searchService;
 };
 

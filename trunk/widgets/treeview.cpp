@@ -44,6 +44,36 @@
 #define SINGLE_CLICK style()->styleHint(QStyle::SH_ItemView_ActivateItemOnSingleClick, 0, this)
 #endif
 
+
+QImage TreeView::setOpacity(const QImage &orig, double opacity)
+{
+    QImage img=QImage::Format_ARGB32==orig.format() ? orig : orig.convertToFormat(QImage::Format_ARGB32);
+    uchar *bits = img.bits();
+    for (int i = 0; i < img.height()*img.bytesPerLine(); i+=4) {
+        if (0!=bits[i+3]) {
+            bits[i+3] = opacity*255;
+        }
+    }
+    return img;
+}
+
+QPixmap TreeView::createBgndPixmap(const QIcon &icon)
+{
+    if (icon.isNull()) {
+        return QPixmap();
+    }
+    static int bgndSize=0;
+    if (0==bgndSize) {
+        bgndSize=QApplication::fontMetrics().height()*16;
+    }
+
+    QImage img=icon.pixmap(bgndSize, bgndSize).toImage();
+    if (img.width()!=bgndSize && img.height()!=bgndSize) {
+        img=img.scaled(bgndSize, bgndSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    }
+    return QPixmap::fromImage(setOpacity(img, 0.075));
+}
+
 static void drawLine(QPainter *p, const QRect &r, const QColor &color, bool fadeStart, bool fadeEnd)
 {
     static const double constAlpha=0.1;
@@ -270,6 +300,28 @@ bool TreeView::checkBoxClicked(const QModelIndex &idx) const
 void TreeView::setUseSimpleDelegate()
 {
     setItemDelegate(new SimpleTreeViewDelegate(this));
+}
+
+void TreeView::setBackgroundImage(const QIcon &icon)
+{
+    QPalette pal=parentWidget()->palette();
+    if (!icon.isNull()) {
+        pal.setColor(QPalette::Base, Qt::transparent);
+    }
+    setPalette(pal);
+    viewport()->setPalette(pal);
+    bgnd=createBgndPixmap(icon);
+}
+
+void TreeView::paintEvent(QPaintEvent *e)
+{
+    if (!bgnd.isNull()) {
+        QPainter p(viewport());
+        QSize sz=size();
+        p.fillRect(0, 0, sz.width(), sz.height(), QApplication::palette().color(QPalette::Base));
+        p.drawPixmap((sz.width()-bgnd.width())/2, (sz.height()-bgnd.height())/2, bgnd);
+    }
+    QTreeView::paintEvent(e);
 }
 
 void TreeView::setModel(QAbstractItemModel *m)

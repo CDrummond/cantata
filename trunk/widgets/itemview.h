@@ -129,6 +129,7 @@ public:
     void expandAll();
     void expand(const QModelIndex &index);
     void showMessage(const QString &message, int timeout);
+    void setBackgroundImage(const QIcon &icon);
 
 public Q_SLOTS:
     void showSpinner(bool v=true);
@@ -170,6 +171,7 @@ private:
     GroupedView *groupedView;
     Spinner *spinner;
     MessageOverlay *msgOverlay;
+    QIcon bgndIcon;
 };
 
 #endif

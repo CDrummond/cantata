@@ -193,6 +193,7 @@ MainWindow::MainWindow(QWidget *parent)
     , mpris(0)
     , gnomeMediaKeys(0)
     #endif
+    , statusTimer(0)
     , playQueueSearchTimer(0)
     #ifdef Q_OS_LINUX
     , mpdAccessibilityTimer(0)
@@ -1876,10 +1877,32 @@ void MainWindow::updateStatus(MPDStatus * const status)
     if (MPDState_Stopped==status->state() || MPDState_Inactive==status->state()) {
         positionSlider->clearTimes();
         playQueueModel.clearStopAfterTrack();
+        if (statusTimer) {
+            statusTimer->stop();
+            statusTimer->setProperty("count", 0);
+        }
     } else {
         positionSlider->setRange(0, 0==status->timeTotal() && 0!=current.time && (current.isCdda() || current.isCantataStream())
                                     ? current.time : status->timeTotal());
         positionSlider->setValue(status->timeElapsed());
+        if (0==status->timeTotal() && 0==status->timeElapsed()) {
+            if (!statusTimer) {
+                statusTimer=new QTimer(this);
+                statusTimer->setSingleShot(true);
+                connect(statusTimer, SIGNAL(timeout()), SIGNAL(getStatus()));
+            }
+            QVariant id=statusTimer->property("id");
+            if (!id.isValid() || id.toInt()!=current.id) {
+                statusTimer->setProperty("id", current.id);
+                statusTimer->setProperty("count", 0);
+                statusTimer->start(250);
+            } else if (statusTimer->property("count").toInt()<12) {
+                statusTimer->setProperty("count", statusTimer->property("count").toInt()+1);
+                statusTimer->start(250);
+            }
+        } else if (!positionSlider->isEnabled()) {
+            positionSlider->setEnabled(-1!=current.id && (!currentIsStream() || (!current.isCdda() && status->timeTotal()>5)));
+        }
     }
 
     if (!stopState) {

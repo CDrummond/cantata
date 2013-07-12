@@ -26,6 +26,10 @@
 
 #include <QTreeView>
 #include <QStyledItemDelegate>
+#include <QPixmap>
+#include <QImage>
+
+class QIcon;
 
 class SimpleTreeViewDelegate : public QStyledItemDelegate
 {
@@ -40,6 +44,8 @@ class TreeView : public QTreeView
     Q_OBJECT
 
 public:
+    static QImage setOpacity(const QImage &orig, double opacity=0.15);
+    static QPixmap createBgndPixmap(const QIcon &icon);
     static void setForceSingleClick(bool v);
     static bool getForceSingleClick();
 
@@ -59,6 +65,8 @@ public:
     virtual void setModel(QAbstractItemModel *m);
     bool checkBoxClicked(const QModelIndex &idx) const;
     void setUseSimpleDelegate();
+    void setBackgroundImage(const QIcon &icon);
+    void paintEvent(QPaintEvent *e);
 
 private Q_SLOTS:
     void correctSelection();
@@ -71,6 +79,7 @@ Q_SIGNALS:
 
 private:
     bool alwaysAllowMenu;
+    QPixmap bgnd;
 };
 
 #endif

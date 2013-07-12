@@ -39,18 +39,6 @@
 #include <QApplication>
 #include <qglobal.h>
 
-static const double constBgndOpacity=0.15;
-
-static QImage setOpacity(const QImage &orig)
-{
-    QImage img=QImage::Format_ARGB32==orig.format() ? orig : orig.convertToFormat(QImage::Format_ARGB32);
-    uchar *bits = img.bits();
-    for (int i = 0; i < img.height()*img.bytesPerLine(); i+=4) {
-        bits[i+3] = constBgndOpacity*255;
-    }
-    return img;
-}
-
 PlayQueueTreeView::PlayQueueTreeView(PlayQueueView *parent)
     : TreeView(parent, true)
     , view(parent)
@@ -467,7 +455,7 @@ void PlayQueueView::setImage(const QImage &img)
         return;
     }
     previousBackground=curentBackground;
-    curentCover=img.isNull() ? QImage() : setOpacity(img);
+    curentCover=img.isNull() ? QImage() : TreeView::setOpacity(img);
     curentBackground=QPixmap();
     animator.stop();
     if (isVisible()) {

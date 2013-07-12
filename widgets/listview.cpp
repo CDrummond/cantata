@@ -23,12 +23,15 @@
 
 #include "listview.h"
 #include "itemview.h"
+#include "treeview.h"
 #include "config.h"
 #include "icons.h"
 #include <QMimeData>
 #include <QDrag>
 #include <QMouseEvent>
 #include <QMenu>
+#include <QPainter>
+#include <QPaintEvent>
 
 ListView::ListView(QWidget *parent)
         : QListView(parent)
@@ -132,6 +135,28 @@ void ListView::addDefaultAction(QAction *act)
         menu=new QMenu(this);
     }
     menu->addAction(act);
+}
+
+void ListView::setBackgroundImage(const QIcon &icon)
+{
+    QPalette pal=parentWidget()->palette();
+    if (!icon.isNull()) {
+        pal.setColor(QPalette::Base, Qt::transparent);
+    }
+    setPalette(pal);
+    viewport()->setPalette(pal);
+    bgnd=TreeView::createBgndPixmap(icon);
+}
+
+void ListView::paintEvent(QPaintEvent *e)
+{
+    if (!bgnd.isNull()) {
+        QPainter p(viewport());
+        QSize sz=size();
+        p.fillRect(0, 0, sz.width(), sz.height(), QApplication::palette().color(QPalette::Base));
+        p.drawPixmap((sz.width()-bgnd.width())/2, (sz.height()-bgnd.height())/2, bgnd);
+    }
+    QListView::paintEvent(e);
 }
 
 // Workaround for https://bugreports.qt-project.org/browse/QTBUG-18009

@@ -96,6 +96,11 @@ SyncCollectionWidget::~SyncCollectionWidget()
 {
 }
 
+void SyncCollectionWidget::setIcon(const Icon &icon)
+{
+    tree->setBackgroundImage(icon);
+}
+
 void SyncCollectionWidget::checkItems()
 {
     checkItems(true);

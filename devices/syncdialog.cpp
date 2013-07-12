@@ -29,6 +29,7 @@
 #include "devicesmodel.h"
 #include "localize.h"
 #include "messagebox.h"
+#include "icons.h"
 #include <QSplitter>
 
 struct SyncSong : public Song
@@ -106,6 +107,8 @@ SyncDialog::SyncDialog(QWidget *parent)
     setCaption(i18n("Synchronize"));
     connect(libWidget, SIGNAL(copy(const QList<Song> &)), SLOT(copy(const QList<Song> &)));
     connect(devWidget, SIGNAL(copy(const QList<Song> &)), SLOT(copy(const QList<Song> &)));
+
+//    libWidget->setIcon(Icons::self()->libraryIcon);
 }
 
 SyncDialog::~SyncDialog()
@@ -116,6 +119,11 @@ SyncDialog::~SyncDialog()
 void SyncDialog::sync(const QString &udi)
 {
     devUdi=udi;
+//    Device *dev=getDevice();
+//    if (dev) {
+//        devWidget->setIcon(Icon(dev->icon()));
+//    }
+
     if (updateSongs(true)) {
         show();
     }

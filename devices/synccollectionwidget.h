@@ -32,6 +32,7 @@
 class QTimer;
 class MusicLibraryProxyModel;
 class Action;
+class Icon;
 
 class SyncCollectionWidget : public QWidget, Ui::SyncCollectionWidget
 {
@@ -44,6 +45,7 @@ public:
     void update(const QSet<Song> &songs) { model->update(songs); }
     void setSupportsAlbumArtistTag(bool s) { model->setSupportsAlbumArtistTag(s); }
     int numArtists() { return model->rowCount(); }
+    void setIcon(const Icon &icon);
 
 Q_SIGNALS:
     void copy(const QList<Song> &songs);

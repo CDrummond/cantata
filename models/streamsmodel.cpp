@@ -572,6 +572,9 @@ QVariant StreamsModel::data(const QModelIndex &index, int role) const
             if (static_cast<const CategoryItem *>(item)->canReload()) {
                 actions << reloadAction;
             }
+            if (tuneIn==item) {
+                actions << StdActions::self()->searchAction;
+            }
             if (static_cast<const CategoryItem *>(item)->canBookmark) {
                 actions << addBookmarkAction;
             }

@@ -402,6 +402,7 @@ private:
     GnomeMediaKeys *gnomeMediaKeys;
     GtkProxyStyle *gtkStyle;
     #endif // Q_OS_WIN
+    QTimer *statusTimer;
     QTimer *playQueueSearchTimer;
     #ifdef Q_OS_LINUX
     QTimer *mpdAccessibilityTimer;

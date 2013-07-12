@@ -143,6 +143,17 @@ bool OnlineServicesModel::canFetchMore(const QModelIndex &index) const
             !static_cast<OnlineService *>(index.internalPointer())->isLoaded();
 }
 
+void OnlineServicesModel::fetchMore(const QModelIndex &index)
+{
+    if (!index.isValid()) {
+        return;
+    }
+
+    if (canFetchMore(index)) {
+        static_cast<OnlineService *>(index.internalPointer())->reload();
+    }
+}
+
 QVariant OnlineServicesModel::data(const QModelIndex &index, int role) const
 {
     if (!index.isValid()) {

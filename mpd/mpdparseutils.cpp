@@ -409,12 +409,13 @@ MusicLibraryItemRoot * MPDParseUtils::parseLibraryItems(const QByteArray &data, 
                 DBUG << "Got playlist item" << currentSong.file << "prevFile:" << prevSongFile;
                 if (canSplitCue && currentSong.file.endsWith(".cue", Qt::CaseInsensitive) && CueFile::parse(currentSong.file, mpdDir, cueSongs, cueFiles) &&
                         (cueFiles.count()<cueSongs.count() || (albumItem && albumItem->data()==unknown && albumItem->parentItem()->data()==unknown))) {
-                    DBUG << "Parsed file, songs:" << cueSongs.count() << "files:" << cueFiles.count();
+                    DBUG << "Parsed file, songs:" << cueSongs.count() << "files:" << cueFiles;
                     bool canUseCueFileTracks=false;
                     QList<Song> fixedCueSongs; // Songs taken from cueSongs that have been updated...
 
                     if (albumItem) {
                         QMap<QString, Song> origFiles=albumItem->getSongs(cueFiles);
+                        DBUG << "Original files:" << origFiles.keys();
                         if (origFiles.size()==cueFiles.size()) {
                             // We have a previous album, if any of the details of the songs from the cue are empty,
                             // use those from the album...

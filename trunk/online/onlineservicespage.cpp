@@ -213,7 +213,7 @@ void OnlineServicesPage::controlSearch(bool on)
             MusicLibraryItem *item = static_cast<MusicLibraryItem *>(proxy.mapToSource(selected.at(0)).internalPointer());
             if (MusicLibraryItem::Type_Root==item->itemType()) {
                 OnlineService *srv=static_cast<OnlineService *>(item);
-                if (srv->canSearch()) {
+                if (srv->isSearchBased()) {
                     onlineSearchRequest=true;
                     searchService=srv->name();
                 } else if (srv->isLoaded()) {
@@ -231,7 +231,7 @@ void OnlineServicesPage::controlSearch(bool on)
                     item=item->parentItem();
                 }
                 const OnlineService *srv=static_cast<const OnlineService *>(item);
-                if (srv->canSearch()) {
+                if (srv->isSearchBased()) {
                     onlineSearchRequest=true;
                     searchService=srv->name();
                     break;
@@ -265,7 +265,7 @@ void OnlineServicesPage::controlSearch(bool on)
         }
     } else {
         OnlineService *srv=OnlineServicesModel::self()->service(searchService);
-        if (srv && srv->canSearch()) {
+        if (srv && srv->isSearchBased()) {
             srv->setSearch(QString());
         }
         genreCombo->setEnabled(true);

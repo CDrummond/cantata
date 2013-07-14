@@ -140,7 +140,8 @@ bool OnlineServicesModel::hasChildren(const QModelIndex &index) const
 bool OnlineServicesModel::canFetchMore(const QModelIndex &index) const
 {
     return index.isValid() && MusicLibraryItem::Type_Root==static_cast<MusicLibraryItem *>(index.internalPointer())->itemType() &&
-            !static_cast<OnlineService *>(index.internalPointer())->isLoaded();
+            !static_cast<OnlineService *>(index.internalPointer())->isLoaded() &&
+            !static_cast<OnlineService *>(index.internalPointer())->canSearch();
 }
 
 void OnlineServicesModel::fetchMore(const QModelIndex &index)

@@ -118,7 +118,7 @@ public:
     virtual bool canDownload() const { return false; }
     virtual bool canConfigure() const { return true; }
     virtual bool canLoad() const { return true; }
-    virtual bool canSearch() const { return false; }
+    virtual bool isSearchBased() const { return false; }
     virtual QString currentSearchString() const { return QString(); }
     virtual void setSearch(const QString &) { }
     virtual bool isSearching()  const { return false; }

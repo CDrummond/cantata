@@ -141,7 +141,7 @@ bool OnlineServicesModel::canFetchMore(const QModelIndex &index) const
 {
     return index.isValid() && MusicLibraryItem::Type_Root==static_cast<MusicLibraryItem *>(index.internalPointer())->itemType() &&
             !static_cast<OnlineService *>(index.internalPointer())->isLoaded() &&
-            !static_cast<OnlineService *>(index.internalPointer())->canSearch();
+            !static_cast<OnlineService *>(index.internalPointer())->isSearchBased();
 }
 
 void OnlineServicesModel::fetchMore(const QModelIndex &index)
@@ -216,7 +216,7 @@ QVariant OnlineServicesModel::data(const QModelIndex &index, int role) const
                         : QTP_ARTISTS_STR(item->childCount())
                         #endif
                    )+
-                  (static_cast<OnlineService *>(item)->canSearch() && !static_cast<OnlineService *>(item)->currentSearchString().isEmpty()
+                  (static_cast<OnlineService *>(item)->isSearchBased() && !static_cast<OnlineService *>(item)->currentSearchString().isEmpty()
                    ? "\n"+static_cast<OnlineService *>(item)->currentSearchString()
                    : "");
         case MusicLibraryItem::Type_Artist:
@@ -258,10 +258,10 @@ QVariant OnlineServicesModel::data(const QModelIndex &index, int role) const
             if (srv->isSearching())  {
                 return i18n("Searching...");
             }
-            if (!srv->isLoaded() && !srv->canSearch()) {
+            if (!srv->isLoaded() && !srv->isSearchBased()) {
                 return i18n("Not Loaded");
             }
-            if (0==item->childCount() && srv->canSearch()) {
+            if (0==item->childCount() && srv->isSearchBased()) {
                 return i18n("Use search to locate tracks");
             }
             if (srv->isFlat()) {
@@ -322,7 +322,7 @@ QVariant OnlineServicesModel::data(const QModelIndex &index, int role) const
             if (srv->canLoad()) {
                 actions << refreshAction;
             }
-            if (srv->canSearch() || srv->isLoaded()) {
+            if (srv->isSearchBased() || srv->isLoaded()) {
                 actions << StdActions::self()->searchAction;
             }
         } else {

@@ -47,7 +47,7 @@ public:
     void createLoader() { }
     bool canConfigure() const { return false; }
     bool canLoad() const { return false; }
-    bool canSearch() const { return true; }
+    bool isSearchBased() const { return true; }
     QString currentSearchString() const { return currentSearch; }
     void setSearch(const QString &searchTerm);
     void clear();

@@ -77,24 +77,23 @@ bool ProxyModel::update(const QString &text, const QString &genre)
 
     if (text.length()<2 && genre.isEmpty()) {
         if (filterEnabled) {
-//            bool wasEmpty=isEmpty();
+            bool wasEmpty=isEmpty();
             filterEnabled=false;
             filterGenre=genre;
-//            if (!wasEmpty) {
+            if (!wasEmpty || !filterRegExp().isEmpty()) {
                 invalidate();
-//            }
-//            if (!filterRegExp().isEmpty()) {
-//                setFilterRegExp(QString());
-//            }
+            }
+            if (!filterRegExp().isEmpty()) {
+                setFilterRegExp(QString());
+            }
             return true;
         }
     } else {
         filterEnabled=true;
         filterGenre=genre;
+        invalidate();
         if (text!=filterRegExp().pattern()) {
             setFilterRegExp(text);
-        } else {
-            invalidate();
         }
         return true;
     }

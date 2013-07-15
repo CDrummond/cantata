@@ -294,6 +294,7 @@ void OnlineServicesPage::controlSearch(bool on)
         genreCombo->setEnabled(true);
         searchService=QString();
         proxy.setFilterItem(0);
+        proxy.update(QString(), QString());
         view->setBackgroundImage(QIcon());
     }
 }

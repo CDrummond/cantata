@@ -367,6 +367,7 @@ void MusicLibraryItemAlbum::remove(int row)
     delete i;
     m_totalTime=0;
     m_artists.clear();
+    resetRows();
 }
 
 void MusicLibraryItemAlbum::remove(MusicLibraryItemSong *i)
@@ -375,6 +376,7 @@ void MusicLibraryItemAlbum::remove(MusicLibraryItemSong *i)
     if (-1!=idx) {
         remove(idx);
     }
+    resetRows();
 }
 
 void MusicLibraryItemAlbum::removeAll(const QSet<QString> &fileNames)
@@ -391,6 +393,7 @@ void MusicLibraryItemAlbum::removeAll(const QSet<QString> &fileNames)
             ++i;
         }
     }
+    resetRows();
 }
 
 QMap<QString, Song> MusicLibraryItemAlbum::getSongs(const QSet<QString> &fileNames) const

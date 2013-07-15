@@ -42,11 +42,7 @@ public:
         Type_Song
     };
 
-    MusicLibraryItem(const QString &data, MusicLibraryItemContainer *parent)
-        : m_parentItem(parent)
-        , m_itemData(data)
-        , m_checkState(Qt::Unchecked) { }
-
+    MusicLibraryItem(const QString &data, MusicLibraryItemContainer *parent);
     virtual ~MusicLibraryItem() { }
 
     MusicLibraryItemContainer * parentItem() const { return m_parentItem; }
@@ -65,16 +61,17 @@ public:
     virtual Type itemType() const=0;
 
 protected:
+    friend class MusicLibraryItemContainer;
     MusicLibraryItemContainer *m_parentItem;
     QString m_itemData;
     Qt::CheckState m_checkState;
+    mutable quint32 m_row;
 };
 
 class MusicLibraryItemContainer : public MusicLibraryItem
 {
 public:
-    MusicLibraryItemContainer(const QString &data, MusicLibraryItemContainer *parent) : MusicLibraryItem(data, parent) { }
-
+    MusicLibraryItemContainer(const QString &data, MusicLibraryItemContainer *parent) : MusicLibraryItem(data, parent), m_rowsSet(false) { }
     virtual ~MusicLibraryItemContainer() { qDeleteAll(m_childItems); }
 
     virtual void append(MusicLibraryItem *i) { m_childItems.append(i); }
@@ -86,35 +83,14 @@ public:
     bool hasGenre(const QString &genre) const { return m_genres.contains(genre); }
     const QSet<QString> & genres() const { return m_genres; }
     QSet<QString> allGenres() const { return genres(); }
-    void updateGenres() {
-        m_genres.clear();
-        foreach (MusicLibraryItem *i, m_childItems) {
-            m_genres+=i->allGenres();
-        }
-    }
+    void updateGenres();
+    void resetRows();
 
 protected:
     friend class MusicLibraryItem;
     QList<MusicLibraryItem *> m_childItems;
     QSet<QString> m_genres;
+    bool m_rowsSet;
 };
-
-inline int MusicLibraryItem::row() const
-{
-    return m_parentItem ? m_parentItem->m_childItems.indexOf(const_cast<MusicLibraryItem*>(this)) : 0;
-}
-
-inline void MusicLibraryItem::setParent(MusicLibraryItemContainer *p)
-{
-    if (p==m_parentItem) {
-        return;
-    }
-    if (m_parentItem) {
-        m_parentItem->m_childItems.removeAll(this);
-    }
-    m_parentItem=p;
-    m_parentItem->m_childItems.append(this);
-    m_parentItem->m_genres+=allGenres();
-}
 
 #endif

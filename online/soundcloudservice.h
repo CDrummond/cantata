@@ -50,6 +50,7 @@ public:
     bool isSearchBased() const { return true; }
     QString currentSearchString() const { return currentSearch; }
     void setSearch(const QString &searchTerm);
+    void cancelSearch() { cancelAll(); }
     void clear();
     bool isSearching() const { return 0!=job; }
     bool isFlat() const { return true; }

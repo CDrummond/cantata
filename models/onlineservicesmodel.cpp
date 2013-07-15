@@ -100,6 +100,12 @@ QModelIndex OnlineServicesModel::index(int row, int column, const QModelIndex &p
     return QModelIndex();
 }
 
+QModelIndex OnlineServicesModel::index(OnlineService *srv) const
+{
+    int row=services.indexOf(srv);
+    return -1==row ? QModelIndex() : createIndex(row, 0, (void *)srv);
+}
+
 QModelIndex OnlineServicesModel::parent(const QModelIndex &index) const
 {
     if (!index.isValid()) {
@@ -391,7 +397,7 @@ void OnlineServicesModel::stop()
 
 OnlineService * OnlineServicesModel::service(const QString &name)
 {
-    int idx=indexOf(name);
+    int idx=name.isEmpty() ? -1 : indexOf(name);
     return idx<0 ? 0 : services.at(idx);
 }
 

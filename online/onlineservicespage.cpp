@@ -250,7 +250,7 @@ void OnlineServicesPage::controlSearch(bool on)
         }
 
         genreCombo->setEnabled(true);
-        proxy.update(QString(), genreCombo->currentIndex()<=0 ? QString() : genreCombo->currentText(), searchService);
+        OnlineService *srv=OnlineServicesModel::self()->service(searchService);
         if (searchService.isEmpty()) {
             view->setSearchVisible(false);
             view->setBackgroundImage(QIcon());
@@ -258,19 +258,23 @@ void OnlineServicesPage::controlSearch(bool on)
             if (onlineSearchRequest) {
                 genreCombo->setCurrentIndex(0);
                 genreCombo->setEnabled(false);
-                proxy.update(QString(), QString());
             }
             view->setSearchLabelText(i18nc("Search ServiceName:", "Search %1:").arg(searchService));
-            view->setBackgroundImage(OnlineServicesModel::self()->service(searchService)->serviceIcon());
+            view->setBackgroundImage(srv->serviceIcon());
+        }
+        QModelIndex filterIndex=srv ? OnlineServicesModel::self()->index(srv) : QModelIndex();
+        proxy.setFilterIndex(filterIndex);
+        if (filterIndex.isValid()) {
+            view->setExpanded(filterIndex);
         }
     } else {
         OnlineService *srv=OnlineServicesModel::self()->service(searchService);
         if (srv && srv->isSearchBased()) {
-            srv->setSearch(QString());
+            srv->cancelSearch();
         }
         genreCombo->setEnabled(true);
         searchService=QString();
-        proxy.update(QString(), genreCombo->currentIndex()<=0 ? QString() : genreCombo->currentText(), QString());
+        proxy.setFilterIndex(QModelIndex());
         view->setBackgroundImage(QIcon());
     }
 }
@@ -284,7 +288,7 @@ void OnlineServicesPage::searchItems()
             OnlineServicesModel::self()->setSearch(searchService, text);
         }
     } else {
-        proxy.update(text, genreCombo->currentIndex()<=0 ? QString() : genreCombo->currentText(), view->isSearchActive() ? searchService : QString());
+        proxy.update(text, genreCombo->currentIndex()<=0 ? QString() : genreCombo->currentText());
         if (proxy.enabled() && !text.isEmpty()) {
             view->expandAll();
         }

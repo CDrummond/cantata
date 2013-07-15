@@ -126,7 +126,7 @@ public:
     bool isSearchActive() const;
     void setStartClosed(bool sc);
     bool isStartClosed();
-    void expandAll();
+    void expandAll(const QModelIndex &index=QModelIndex());
     void expand(const QModelIndex &index);
     void showMessage(const QString &message, int timeout);
     void setBackgroundImage(const QIcon &icon);

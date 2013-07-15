@@ -134,7 +134,7 @@ public:
     QString page();
     QStringList hiddenPages();
     bool gnomeMediaKeys();
-        #ifdef ENABLE_DEVICES_SUPPORT
+    #ifdef ENABLE_DEVICES_SUPPORT
     bool overwriteSongs();
     bool showDeleteAction();
     int devicesView();
@@ -157,6 +157,8 @@ public:
     #endif
     #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
     bool cdAuto();
+    bool paranoiaFull();
+    bool paranoiaNeverSkip();
     #endif
     #if defined CDDB_FOUND && defined MUSICBRAINZ5_FOUND
     bool useCddb();
@@ -164,8 +166,6 @@ public:
     #ifdef CDDB_FOUND
     QString cddbHost();
     int cddbPort();
-    bool paranoiaFull();
-    bool paranoiaNeverSkip();
     #endif
     bool forceSingleClick();
     bool startHidden();
@@ -236,6 +236,8 @@ public:
     #endif
     #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
     void saveCdAuto(bool v);
+    void saveParanoiaFull(bool v);
+    void saveParanoiaNeverSkip(bool v);
     #endif
     #if defined CDDB_FOUND && defined MUSICBRAINZ5_FOUND
     void saveUseCddb(bool v);
@@ -243,8 +245,6 @@ public:
     #ifdef CDDB_FOUND
     void saveCddbHost(const QString &v);
     void saveCddbPort(int v);
-    void saveParanoiaFull(bool v);
-    void saveParanoiaNeverSkip(bool v);
     #endif
     void saveForceSingleClick(bool v);
     void saveStartHidden(bool v);

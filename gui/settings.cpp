@@ -606,6 +606,16 @@ bool Settings::cdAuto()
 {
     return GET_BOOL("cdAuto", true);
 }
+
+bool Settings::paranoiaFull()
+{
+    return GET_BOOL("paranoiaFull", true);
+}
+
+bool Settings::paranoiaNeverSkip()
+{
+    return GET_BOOL("paranoiaNeverSkip", true);
+}
 #endif
 
 #if defined CDDB_FOUND && defined MUSICBRAINZ5_FOUND
@@ -624,16 +634,6 @@ QString Settings::cddbHost()
 int Settings::cddbPort()
 {
     return GET_INT("cddbPort", 8880);
-}
-
-bool Settings::paranoiaFull()
-{
-    return GET_BOOL("paranoiaFull", true);
-}
-
-bool Settings::paranoiaNeverSkip()
-{
-    return GET_BOOL("paranoiaNeverSkip", true);
 }
 #endif
 
@@ -1006,6 +1006,16 @@ void Settings::saveCdAuto(bool v)
 {
     SET_VALUE_MOD(cdAuto)
 }
+
+void Settings::saveParanoiaFull(bool v)
+{
+    SET_VALUE_MOD(paranoiaFull)
+}
+
+void Settings::saveParanoiaNeverSkip(bool v)
+{
+    SET_VALUE_MOD(paranoiaNeverSkip)
+}
 #endif
 
 #if defined CDDB_FOUND && defined MUSICBRAINZ5_FOUND
@@ -1024,16 +1034,6 @@ void Settings::saveCddbHost(const QString &v)
 void Settings::saveCddbPort(int v)
 {
     SET_VALUE_MOD(cddbPort)
-}
-
-void Settings::saveParanoiaFull(bool v)
-{
-    SET_VALUE_MOD(paranoiaFull)
-}
-
-void Settings::saveParanoiaNeverSkip(bool v)
-{
-    SET_VALUE_MOD(paranoiaNeverSkip)
 }
 #endif
 

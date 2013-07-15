@@ -348,9 +348,9 @@ if (TAGLIB_FOUND)
                 set(CANTATA_SRCS ${CANTATA_SRCS} devices/musicbrainz.cpp)
                 set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} devices/musicbrainz.h)
             endif (MUSICBRAINZ5_FOUND)
-            set(CANTATA_SRCS ${CANTATA_SRCS} devices/audiocddevice.cpp devices/cddb.cpp devices/cddbselectiondialog.cpp
+            set(CANTATA_SRCS ${CANTATA_SRCS} devices/audiocddevice.cpp devices/cddbselectiondialog.cpp
                  devices/cdparanoia.cpp devices/audiocdsettings.cpp devices/extractjob.cpp devices/albumdetailsdialog.cpp)
-            set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} devices/audiocddevice.h devices/cddb.h devices/extractjob.h
+            set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} devices/audiocddevice.h devices/extractjob.h
                  devices/albumdetailsdialog.h devices/cddbselectiondialog.h)
             set(CANTATA_UIS ${CANTATA_UIS} devices/albumdetails.ui devices/audiocdsettings.ui)
         endif (CDDB_FOUND OR MUSICBRAINZ5_FOUND)

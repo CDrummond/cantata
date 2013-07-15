@@ -41,9 +41,6 @@ MusicLibraryProxyModel::MusicLibraryProxyModel(QObject *parent)
 
 bool MusicLibraryProxyModel::filterAcceptsRoot(const MusicLibraryItem *item) const
 {
-    if (!rootName.isEmpty()) {
-        return item->data()==rootName;
-    }
     foreach (const MusicLibraryItem *i, static_cast<const MusicLibraryItemContainer *>(item)->childItems()) {
         if (MusicLibraryItem::Type_Artist==i->itemType() && filterAcceptsArtist(i)) {
             return true;
@@ -84,6 +81,9 @@ bool MusicLibraryProxyModel::filterAcceptsSong(const MusicLibraryItem *item) con
 
 bool MusicLibraryProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
 {
+    if (filterIndex.isValid() && !sourceParent.isValid() && sourceRow!=filterIndex.row()) {
+        return false;
+    }
     if (!filterEnabled) {
         return true;
     }
@@ -128,4 +128,12 @@ bool MusicLibraryProxyModel::lessThan(const QModelIndex &left, const QModelIndex
     }
 
     return QSortFilterProxyModel::lessThan(left, right);
+}
+
+void MusicLibraryProxyModel::setFilterIndex(const QModelIndex &f)
+{
+    if (f!=filterIndex) {
+        filterIndex=f;
+        invalidate();
+    }
 }

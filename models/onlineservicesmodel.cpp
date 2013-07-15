@@ -402,7 +402,7 @@ void OnlineServicesModel::setArtistImage(const Song &song, const QImage &img)
         if (srv->useArtistImages()) {
             MusicLibraryItemArtist *artistItem = srv->artist(song, false);
             if (artistItem && artistItem->setCover(img)) {
-                QModelIndex idx=index(srv->childItems().indexOf(artistItem), 0, index(i, 0, QModelIndex()));
+                QModelIndex idx=index(artistItem->row(), 0, index(i, 0, QModelIndex()));
                 emit dataChanged(idx, idx);
             }
         }
@@ -423,7 +423,7 @@ void OnlineServicesModel::setCover(const Song &song, const QImage &img, const QS
             if (artistItem) {
                 MusicLibraryItemAlbum *albumItem = artistItem->album(song, false);
                 if (albumItem && albumItem->setCover(img)) {
-                    QModelIndex idx=index(artistItem->childItems().indexOf(albumItem), 0, index(srv->childItems().indexOf(artistItem), 0, index(i, 0, QModelIndex())));
+                    QModelIndex idx=index(albumItem->row(), 0, index(artistItem->row(), 0, index(i, 0, QModelIndex())));
                     emit dataChanged(idx, idx);
                 }
             }

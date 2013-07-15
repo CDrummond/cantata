@@ -60,8 +60,8 @@ public:
     void startDrag(Qt::DropActions supportedActions);
     void mouseReleaseEvent(QMouseEvent *event);
     QModelIndexList selectedIndexes() const;
-    void expandAll();
-    void expand(const QModelIndex &idx);
+    void expandAll(const QModelIndex &idx=QModelIndex());
+    virtual void expand(const QModelIndex &idx);
     virtual void setModel(QAbstractItemModel *m);
     bool checkBoxClicked(const QModelIndex &idx) const;
     void setUseSimpleDelegate();

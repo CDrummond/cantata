@@ -100,9 +100,9 @@ QModelIndex OnlineServicesModel::index(int row, int column, const QModelIndex &p
     return QModelIndex();
 }
 
-QModelIndex OnlineServicesModel::index(OnlineService *srv) const
+QModelIndex OnlineServicesModel::index(const OnlineService *srv) const
 {
-    int row=services.indexOf(srv);
+    int row=services.indexOf(const_cast<OnlineService *>(srv));
     return -1==row ? QModelIndex() : createIndex(row, 0, (void *)srv);
 }
 

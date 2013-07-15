@@ -799,14 +799,6 @@ void GroupedView::itemClicked(const QModelIndex &idx)
     }
 }
 
-void GroupedView::expandAll()
-{
-    quint32 count=model()->rowCount();
-    for (quint32 i=0; i<count; ++i) {
-        expand(model()->index(i, 0));
-    }
-}
-
 void GroupedView::expand(const QModelIndex &idx)
 {
     if (idx.isValid()) {

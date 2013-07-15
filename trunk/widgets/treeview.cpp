@@ -269,11 +269,11 @@ QModelIndexList TreeView::selectedIndexes() const
     return sort.values();
 }
 
-void TreeView::expandAll()
+void TreeView::expandAll(const QModelIndex &idx)
 {
-    quint32 count=model()->rowCount();
+    quint32 count=model()->rowCount(idx);
     for (quint32 i=0; i<count; ++i) {
-        expand(model()->index(i, 0));
+        expand(model()->index(i, 0, idx));
     }
 }
 

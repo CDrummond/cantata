@@ -32,6 +32,7 @@
 
 MusicLibraryProxyModel::MusicLibraryProxyModel(QObject *parent)
     : ProxyModel(parent)
+    , filter(0)
 {
     setDynamicSortFilter(true);
     setFilterCaseSensitivity(Qt::CaseInsensitive);
@@ -81,9 +82,6 @@ bool MusicLibraryProxyModel::filterAcceptsSong(const MusicLibraryItem *item) con
 
 bool MusicLibraryProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
 {
-    if (filterIndex.isValid() && !sourceParent.isValid() && sourceRow!=filterIndex.row()) {
-        return false;
-    }
     if (!filterEnabled) {
         return true;
     }
@@ -96,6 +94,22 @@ bool MusicLibraryProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &
 
     if (!filterGenre.isEmpty() && !item->hasGenre(filterGenre)) {
         return false;
+    }
+
+    if (filter) {
+        if (!sourceParent.isValid()) {
+            // All top level items are valid
+            return true;
+        }
+
+        const MusicLibraryItem *p=item->parentItem();
+        while (p->parentItem()) {
+            p=p->parentItem();
+        }
+        if (p!=filter) {
+            // If item is not part of 'filter' tree - then we accept it
+            return true;
+        }
     }
 
     switch (item->itemType()) {
@@ -128,12 +142,4 @@ bool MusicLibraryProxyModel::lessThan(const QModelIndex &left, const QModelIndex
     }
 
     return QSortFilterProxyModel::lessThan(left, right);
-}
-
-void MusicLibraryProxyModel::setFilterIndex(const QModelIndex &f)
-{
-    if (f!=filterIndex) {
-        filterIndex=f;
-        invalidate();
-    }
 }

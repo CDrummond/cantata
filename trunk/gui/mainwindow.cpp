@@ -531,6 +531,10 @@ MainWindow::MainWindow(QWidget *parent)
     expandedSize=Settings::self()->mainWindowSize();
     collapsedSize=Settings::self()->mainWindowCollapsedSize();
 
+    #ifdef ENABLE_KDE_SUPPORT
+    setupGUI(KXmlGuiWindow::Keys);
+    #endif
+
     if (Settings::self()->firstRun()) {
         int width=playPauseTrackButton->width()*25;
         resize(playPauseTrackButton->width()*25, playPauseTrackButton->height()*18);
@@ -557,10 +561,6 @@ MainWindow::MainWindow(QWidget *parent)
             fullScreen();
         }
     }
-
-    #ifdef ENABLE_KDE_SUPPORT
-    setupGUI(KXmlGuiWindow::Keys);
-    #endif
 
     mainMenu->addAction(expandInterfaceAction);
     mainMenu->addAction(songInfoAction);

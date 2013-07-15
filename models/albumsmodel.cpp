@@ -168,10 +168,9 @@ QModelIndex AlbumsModel::parent(const QModelIndex &index) const
 
     Item *item=static_cast<Item *>(index.internalPointer());
 
-    if(item->isAlbum())
+    if (item->isAlbum()) {
         return QModelIndex();
-    else
-    {
+    } else {
         SongItem *song=static_cast<SongItem *>(item);
 
         if (song->parent) {

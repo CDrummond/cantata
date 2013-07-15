@@ -206,49 +206,59 @@ void OnlineServicesPage::itemDoubleClicked(const QModelIndex &)
 
 void OnlineServicesPage::controlSearch(bool on)
 {
+    QString prevSearchService=searchService;
+
+    searchService=QString();
+    const QModelIndexList selected = view->selectedIndexes();
+    if (1==selected.count()) {
+        MusicLibraryItem *item = static_cast<MusicLibraryItem *>(proxy.mapToSource(selected.at(0)).internalPointer());
+        if (MusicLibraryItem::Type_Root==item->itemType()) {
+            OnlineService *srv=static_cast<OnlineService *>(item);
+            if (srv->isSearchBased()) {
+                onlineSearchRequest=true;
+                searchService=srv->name();
+            } else if (srv->isLoaded()) {
+                onlineSearchRequest=false;
+                searchService=srv->name();
+            }
+        }
+    }
+
+    if (searchService.isEmpty() && !selected.isEmpty()) {
+        // Get service of first selected item...
+        foreach (const QModelIndex &idx, selected) {
+            const MusicLibraryItem *item = static_cast<const MusicLibraryItem *>(proxy.mapToSource(idx).internalPointer());
+            while (item->parentItem()) {
+                item=item->parentItem();
+            }
+            const OnlineService *srv=static_cast<const OnlineService *>(item);
+            if (srv->isSearchBased()) {
+                onlineSearchRequest=true;
+                searchService=srv->name();
+                break;
+            } else if (srv->isLoaded()) {
+                onlineSearchRequest=false;
+                searchService=srv->name();
+                break;
+            }
+        }
+    }
+
+    if (on && searchService.isEmpty()) {
+        // No items? Or no searchable service - so default to soundcloud...
+        onlineSearchRequest=true;
+        searchService=SoundCloudService::constName;
+    }
+
+    // Handle the case where search was visible, and user selected other search.
+    // In this case we recieve on=false (which is for the previous), so we fake this
+    // into an on=true for the new service...
+    if (!on && !prevSearchService.isEmpty() && searchService!=prevSearchService) {
+        on=true;
+        view->focusSearch();
+    }
+
     if (on) {
-        searchService=QString();
-        const QModelIndexList selected = view->selectedIndexes();
-        if (1==selected.count()) {
-            MusicLibraryItem *item = static_cast<MusicLibraryItem *>(proxy.mapToSource(selected.at(0)).internalPointer());
-            if (MusicLibraryItem::Type_Root==item->itemType()) {
-                OnlineService *srv=static_cast<OnlineService *>(item);
-                if (srv->isSearchBased()) {
-                    onlineSearchRequest=true;
-                    searchService=srv->name();
-                } else if (srv->isLoaded()) {
-                    onlineSearchRequest=false;
-                    searchService=srv->name();
-                }
-            }
-        }
-
-        if (searchService.isEmpty() && !selected.isEmpty()) {
-            // Get service of first selected item...
-            foreach (const QModelIndex &idx, selected) {
-                const MusicLibraryItem *item = static_cast<const MusicLibraryItem *>(proxy.mapToSource(idx).internalPointer());
-                while (item->parentItem()) {
-                    item=item->parentItem();
-                }
-                const OnlineService *srv=static_cast<const OnlineService *>(item);
-                if (srv->isSearchBased()) {
-                    onlineSearchRequest=true;
-                    searchService=srv->name();
-                    break;
-                } else if (srv->isLoaded()) {
-                    onlineSearchRequest=false;
-                    searchService=srv->name();
-                    break;
-                }
-            }
-        }
-
-        if (searchService.isEmpty()) {
-            // No items? Or no searchable service - so default to soundcloud...
-            onlineSearchRequest=true;
-            searchService=SoundCloudService::constName;
-        }
-
         genreCombo->setEnabled(true);
         OnlineService *srv=OnlineServicesModel::self()->service(searchService);
         if (searchService.isEmpty()) {
@@ -268,7 +278,7 @@ void OnlineServicesPage::controlSearch(bool on)
             view->showIndex(proxy.mapFromSource(filterIndex), true);
         }
     } else {
-        OnlineService *srv=OnlineServicesModel::self()->service(searchService);
+        OnlineService *srv=OnlineServicesModel::self()->service(prevSearchService);
         if (srv) {
             srv->cancelSearch();
         }

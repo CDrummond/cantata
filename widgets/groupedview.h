@@ -81,7 +81,6 @@ public:
     QModelIndexList selectedIndexes() const;
     void dropEvent(QDropEvent *event);
     void collectionRemoved(quint32 key);
-    void expandAll();
     void expand(const QModelIndex &idx);
 
 public Q_SLOTS:

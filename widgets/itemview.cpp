@@ -860,12 +860,12 @@ void ItemView::updateRows(const QModelIndex &idx)
     }
 }
 
-void ItemView::expandAll()
+void ItemView::expandAll(const QModelIndex &index)
 {
     if (Mode_SimpleTree==mode || Mode_DetailedTree==mode) {
-        treeView->expandAll();
+        treeView->expandAll(index);
     } else if (Mode_GroupedTree==mode && groupedView) {
-        groupedView->expandAll();
+        groupedView->expandAll(index);
     }
 }
 

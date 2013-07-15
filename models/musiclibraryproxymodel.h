@@ -39,7 +39,8 @@ public:
     MusicLibraryProxyModel(QObject *parent = 0);
     bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
     bool lessThan(const QModelIndex &left, const QModelIndex &right) const;
-    void setFilterIndex(const QModelIndex &f);
+    void setFilterItem(const MusicLibraryItem *f) { filter=f; }
+    const MusicLibraryItem *filterItem() const { return filter; }
 
 private:
     bool filterAcceptsRoot(const MusicLibraryItem *item) const;
@@ -48,7 +49,7 @@ private:
     bool filterAcceptsSong(const MusicLibraryItem *item) const;
 
 private:
-    QModelIndex filterIndex;
+    const MusicLibraryItem *filter;
 };
 
 #endif

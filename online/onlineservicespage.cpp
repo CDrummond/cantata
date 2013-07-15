@@ -44,6 +44,7 @@
 OnlineServicesPage::OnlineServicesPage(QWidget *p)
     : QWidget(p)
     , onlineSearchRequest(false)
+    , searchable(true)
 {
     QAction *sep=new QAction(this);
     sep->setSeparator(true);
@@ -67,6 +68,7 @@ OnlineServicesPage::OnlineServicesPage(QWidget *p)
     connect(view, SIGNAL(searchIsActive(bool)), this, SLOT(controlSearch(bool)));
     connect(view, SIGNAL(itemsSelected(bool)), SLOT(controlActions()));
     connect(view, SIGNAL(rootIndexSet(QModelIndex)), this, SLOT(updateGenres(QModelIndex)));
+    connect(view, SIGNAL(rootIndexSet(QModelIndex)), this, SLOT(setSearchable(QModelIndex)));
     connect(OnlineServicesModel::self()->configureAct(), SIGNAL(triggered()), this, SLOT(configureService()));
     connect(OnlineServicesModel::self()->refreshAct(), SIGNAL(triggered()), this, SLOT(refreshService()));
     connect(downloadAction, SIGNAL(triggered()), this, SLOT(download()));
@@ -206,6 +208,12 @@ void OnlineServicesPage::itemDoubleClicked(const QModelIndex &)
 
 void OnlineServicesPage::controlSearch(bool on)
 {
+    // Can onyl search when we are at top level...
+    if (on && !searchable) {
+        view->setSearchVisible(false);
+        return;
+    }
+
     QString prevSearchService=searchService;
 
     searchService=QString();
@@ -408,6 +416,14 @@ void OnlineServicesPage::updateGenres(const QModelIndex &idx)
         }
     }
     genreCombo->update(OnlineServicesModel::self()->genres());
+}
+
+void OnlineServicesPage::setSearchable(const QModelIndex &idx)
+{
+    searchable=!idx.isValid();
+    if (!searchable && view->isSearchActive()) {
+        view->setSearchVisible(false);
+    }
 }
 
 void OnlineServicesPage::download()

@@ -116,7 +116,7 @@ QModelIndex OnlineServicesModel::parent(const QModelIndex &index) const
     MusicLibraryItem *parentItem = childItem->parentItem();
 
     if (parentItem) {
-        return createIndex(parentItem->parentItem() ? parentItem->row() : services.indexOf(static_cast<OnlineService *>(parentItem)), 0, parentItem);
+        return createIndex(parentItem->row(), 0, parentItem);
     } else {
         return QModelIndex();
     }
@@ -588,6 +588,7 @@ OnlineService * OnlineServicesModel::addService(const QString &name)
         if (srv) {
             srv->loadConfig();
             beginInsertRows(QModelIndex(), services.count(), services.count());
+            srv->setRow(services.count());
             services.append(srv);
             endInsertRows();
             connect(srv, SIGNAL(error(const QString &)), SIGNAL(error(const QString &)));

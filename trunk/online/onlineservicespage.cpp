@@ -81,6 +81,7 @@ OnlineServicesPage::OnlineServicesPage(QWidget *p)
     proxy.setSourceModel(OnlineServicesModel::self());
     view->setModel(&proxy);
     view->setRootIsDecorated(true);
+    view->setUniformRowHeights(true);
 }
 
 OnlineServicesPage::~OnlineServicesPage()

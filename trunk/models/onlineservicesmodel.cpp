@@ -259,7 +259,7 @@ QVariant OnlineServicesModel::data(const QModelIndex &index, int role) const
             OnlineService *srv=static_cast<OnlineService *>(item);
 
             if (srv->isLoading()) {
-                return i18n("Loading...");
+                return static_cast<OnlineService *>(item)->statusMessage();
             }
             if (srv->isSearching())  {
                 return i18n("Searching...");
@@ -306,16 +306,6 @@ QVariant OnlineServicesModel::data(const QModelIndex &index, int role) const
             QVariant v;
             v.setValue<QPixmap>(static_cast<MusicLibraryItemAlbum *>(item)->cover());
             return v;
-        }
-        return QVariant();
-    case ItemView::Role_Capacity:
-        if (MusicLibraryItem::Type_Root==item->itemType()) {
-            return static_cast<OnlineService *>(item)->loadProgress();
-        }
-        return QVariant();
-    case ItemView::Role_CapacityText:
-        if (MusicLibraryItem::Type_Root==item->itemType()) {
-            return static_cast<OnlineService *>(item)->statusMessage();
         }
         return QVariant();
     case ItemView::Role_Actions: {

@@ -210,6 +210,7 @@ void MusicLibraryItemRoot::remove(MusicLibraryItemArtist *artist)
     }
     m_indexes.remove(artist->data());
     delete m_childItems.takeAt(index);
+    resetRows();
 }
 
 QSet<Song> MusicLibraryItemRoot::allSongs(bool revertVa) const

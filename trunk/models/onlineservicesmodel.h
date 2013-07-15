@@ -44,7 +44,8 @@ public:
 
     OnlineServicesModel(QObject *parent = 0);
     ~OnlineServicesModel();
-    QModelIndex index(int, int, const QModelIndex & = QModelIndex()) const;
+    QModelIndex index(int row, int column, const QModelIndex & = QModelIndex()) const;
+    QModelIndex index(OnlineService *srv) const;
     QModelIndex parent(const QModelIndex &) const;
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
     int rowCount(const QModelIndex &parent = QModelIndex()) const;

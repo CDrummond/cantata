@@ -34,10 +34,10 @@ public:
     ProxyModel(QObject *parent) : QSortFilterProxyModel(parent), filterEnabled(false) { }
     virtual ~ProxyModel() { }
 
-    bool update(const QString &text, const QString &genre=QString(), const QString &root=QString());
+    bool update(const QString &text, const QString &genre=QString());
     void setRootIndex(const QModelIndex &idx) { rootIndex=idx.isValid() ? mapToSource(idx) : idx; }
     bool isChildOfRoot(const QModelIndex &idx) const;
-    bool isEmpty() const { return filterGenre.isEmpty() && filterRegExp().isEmpty() && rootName.isEmpty(); }
+    bool isEmpty() const { return filterGenre.isEmpty() && filterRegExp().isEmpty(); }
     bool enabled() const { return filterEnabled; }
 
 protected:
@@ -50,7 +50,6 @@ protected:
     QModelIndex rootIndex;
     QStringList filterStrings;
     uint unmatchedStrings;
-    QString rootName;
 };
 
 #endif

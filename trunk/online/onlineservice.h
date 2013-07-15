@@ -121,6 +121,7 @@ public:
     virtual bool isSearchBased() const { return false; }
     virtual QString currentSearchString() const { return QString(); }
     virtual void setSearch(const QString &) { }
+    virtual void cancelSearch() { }
     virtual bool isSearching()  const { return false; }
     virtual bool isFlat() const { return false; }
     const QString name() const { return data(); }

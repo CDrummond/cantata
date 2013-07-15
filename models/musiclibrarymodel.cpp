@@ -386,13 +386,13 @@ bool MusicLibraryModel::setData(const QModelIndex &idx, const QVariant &value, i
         switch (item->itemType()) {
         case MusicLibraryItem::Type_Artist: {
             MusicLibraryItemArtist *artistItem=static_cast<MusicLibraryItemArtist *>(item);
-            QModelIndex artistIndex=index(rootItem->childItems().indexOf(artistItem), 0, QModelIndex());
+            QModelIndex artistIndex=index(artistItem->row(), 0, QModelIndex());
             item->setCheckState(check);
             foreach (MusicLibraryItem *album, artistItem->childItems()) {
                 if (check!=album->checkState()) {
-                    QModelIndex albumIndex=index(artistItem->childItems().indexOf(album), 0, artistIndex);
-                    album->setCheckState(check);
                     MusicLibraryItemAlbum *albumItem=static_cast<MusicLibraryItemAlbum *>(album);
+                    QModelIndex albumIndex=index(albumItem->row(), 0, artistIndex);
+                    album->setCheckState(check);
                     foreach (MusicLibraryItem *song, albumItem->childItems()) {
                         song->setCheckState(check);
                     }
@@ -405,10 +405,10 @@ bool MusicLibraryModel::setData(const QModelIndex &idx, const QVariant &value, i
         }
         case MusicLibraryItem::Type_Album: {
             MusicLibraryItemArtist *artistItem=static_cast<MusicLibraryItemArtist *>(item->parentItem());
-            QModelIndex artistIndex=index(rootItem->childItems().indexOf(artistItem), 0, QModelIndex());
+            QModelIndex artistIndex=index(artistItem->row(), 0, QModelIndex());
             MusicLibraryItemAlbum *albumItem=static_cast<MusicLibraryItemAlbum *>(item);
             albumItem->setCheckState(check);
-            QModelIndex albumIndex=index(artistItem->childItems().indexOf(item), 0, artistIndex);
+            QModelIndex albumIndex=index(albumItem->row(), 0, artistIndex);
             item->setCheckState(check);
             foreach (MusicLibraryItem *song, albumItem->childItems()) {
                 song->setCheckState(check);
@@ -422,8 +422,8 @@ bool MusicLibraryModel::setData(const QModelIndex &idx, const QVariant &value, i
             item->setCheckState(check);
             MusicLibraryItemAlbum *albumItem=static_cast<MusicLibraryItemAlbum *>(item->parentItem());
             MusicLibraryItemArtist *artistItem=static_cast<MusicLibraryItemArtist *>(albumItem->parentItem());
-            QModelIndex artistIndex=index(rootItem->childItems().indexOf(artistItem), 0, QModelIndex());
-            QModelIndex albumIndex=index(artistItem->childItems().indexOf(albumItem), 0, artistIndex);
+            QModelIndex artistIndex=index(artistItem->row(), 0, QModelIndex());
+            QModelIndex albumIndex=index(albumItem->row(), 0, artistIndex);
             setParentState(albumIndex, value.toBool(), albumItem, item);
             setParentState(artistIndex, Qt::Unchecked!=albumItem->checkState(), artistItem, albumItem);
             emit dataChanged(idx, idx);
@@ -498,7 +498,7 @@ QModelIndex MusicLibraryModel::findSongIndex(const Song &s) const
         if (albumItem) {
             foreach (MusicLibraryItem *songItem, albumItem->childItems()) {
                 if (songItem->data()==s.displayTitle()) {
-                    return createIndex(albumItem->childItems().indexOf(songItem), 0, songItem);
+                    return createIndex(songItem->row(), 0, songItem);
                 }
             }
         }
@@ -512,7 +512,7 @@ QModelIndex MusicLibraryModel::findArtistIndex(const QString &artist) const
     Song s;
     s.artist=artist;
     MusicLibraryItemArtist *artistItem = rootItem->artist(s, false);
-    return artistItem ? index(rootItem->childItems().indexOf(artistItem), 0, QModelIndex()) : QModelIndex();
+    return artistItem ? index(artistItem->row(), 0, QModelIndex()) : QModelIndex();
 }
 
 QModelIndex MusicLibraryModel::findAlbumIndex(const QString &artist, const QString &album) const
@@ -522,7 +522,7 @@ QModelIndex MusicLibraryModel::findAlbumIndex(const QString &artist, const QStri
     s.album=album;
     MusicLibraryItemArtist *artistItem = rootItem->artist(s, false);
     MusicLibraryItemAlbum *albumItem = artistItem ? artistItem->album(s, false) : 0;
-    return artistItem ? index(artistItem->childItems().indexOf(albumItem), 0, index(rootItem->childItems().indexOf(artistItem), 0, QModelIndex())) : QModelIndex();
+    return artistItem ? index(albumItem->row(), 0, index(artistItem->row(), 0, QModelIndex())) : QModelIndex();
 }
 
 const MusicLibraryItem * MusicLibraryModel::findSong(const Song &s) const
@@ -601,12 +601,12 @@ bool MusicLibraryModel::updateSong(const Song &orig, const Song &edit)
 
                 if (orig.year!=edit.year) {
                     if (albumItem->updateYear()) {
-                        QModelIndex idx=index(artistItem->childItems().indexOf(albumItem), 0, index(rootItem->childItems().indexOf(artistItem), 0, QModelIndex()));
+                        QModelIndex idx=index(albumItem->row(), 0, index(artistItem->row(), 0, QModelIndex()));
                         emit dataChanged(idx, idx);
                     }
                 }
 
-                QModelIndex idx=index(songRow, 0, index(artistItem->childItems().indexOf(albumItem), 0, index(rootItem->childItems().indexOf(artistItem), 0, QModelIndex())));
+                QModelIndex idx=index(songRow, 0, index(albumItem->row(), 0, index(artistItem->row(), 0, QModelIndex())));
                 emit dataChanged(idx, idx);
                 return true;
             }
@@ -627,7 +627,7 @@ void MusicLibraryModel::addSongToList(const Song &s)
     }
     MusicLibraryItemAlbum *albumItem = artistItem->album(s, false);
     if (!albumItem) {
-        beginInsertRows(createIndex(rootItem->childItems().indexOf(artistItem), 0, artistItem), artistItem->childCount(), artistItem->childCount());
+        beginInsertRows(createIndex(artistItem->row(), 0, artistItem), artistItem->childCount(), artistItem->childCount());
         albumItem = artistItem->createAlbum(s);
         endInsertRows();
     }
@@ -639,13 +639,13 @@ void MusicLibraryModel::addSongToList(const Song &s)
         }
     }
 
-    beginInsertRows(createIndex(artistItem->childItems().indexOf(albumItem), 0, albumItem), albumItem->childCount(), albumItem->childCount());
+    beginInsertRows(createIndex(albumItem->row(), 0, albumItem), albumItem->childCount(), albumItem->childCount());
     MusicLibraryItemSong *songItem = new MusicLibraryItemSong(s, albumItem);
     albumItem->append(songItem);
     rootItem->addGenre(s.genre);
     endInsertRows();
     if (year!=albumItem->year()) {
-        QModelIndex idx=index(artistItem->childItems().indexOf(albumItem), 0, index(rootItem->childItems().indexOf(artistItem), 0, QModelIndex()));
+        QModelIndex idx=index(albumItem->row(), 0, index(artistItem->row(), 0, QModelIndex()));
         emit dataChanged(idx, idx);
     }
 }
@@ -676,7 +676,7 @@ void MusicLibraryModel::removeSongFromList(const Song &s)
 //     databaseTime=QDateTime();
     if (1==artistItem->childCount() && 1==albumItem->childCount()) {
         // 1 album with 1 song - so remove whole artist
-        int row=rootItem->childItems().indexOf(artistItem);
+        int row=artistItem->row();
         beginRemoveRows(QModelIndex(), row, row);
         rootItem->remove(artistItem);
         endRemoveRows();
@@ -685,20 +685,20 @@ void MusicLibraryModel::removeSongFromList(const Song &s)
 
     if (1==albumItem->childCount()) {
         // multiple albums, but this album only has 1 song - remove album
-        int row=artistItem->childItems().indexOf(albumItem);
-        beginRemoveRows(createIndex(rootItem->childItems().indexOf(artistItem), 0, artistItem), row, row);
+        int row=albumItem->row();
+        beginRemoveRows(createIndex(artistItem->row(), 0, artistItem), row, row);
         artistItem->remove(albumItem);
         endRemoveRows();
         return;
     }
 
     // Just remove particular song
-    beginRemoveRows(createIndex(artistItem->childItems().indexOf(albumItem), 0, albumItem), songRow, songRow);
+    beginRemoveRows(createIndex(albumItem->row(), 0, albumItem), songRow, songRow);
     quint32 year=albumItem->year();
     albumItem->remove(songRow);
     endRemoveRows();
     if (year!=albumItem->year()) {
-        QModelIndex idx=index(artistItem->childItems().indexOf(albumItem), 0, index(rootItem->childItems().indexOf(artistItem), 0, QModelIndex()));
+        QModelIndex idx=index(albumItem->row(), 0, index(artistItem->row(), 0, QModelIndex()));
         emit dataChanged(idx, idx);
     }
 }
@@ -830,9 +830,9 @@ bool MusicLibraryModel::update(const QSet<Song> &songs)
                 if (albumState!=albumItem->checkState()) {
                     albumItem->setCheckState(albumState);
                     if (!artistIndex.isValid()) {
-                        artistIndex=index(rootItem->childItems().indexOf(artistItem), 0, QModelIndex());
+                        artistIndex=index(artistItem->row(), 0, QModelIndex());
                     }
-                    QModelIndex albumIndex=index(artistItem->childItems().indexOf(albumItem), 0, artistIndex);
+                    QModelIndex albumIndex=index(albumItem->row(), 0, artistIndex);
                     emit dataChanged(albumIndex, albumIndex);
                 }
 
@@ -847,7 +847,7 @@ bool MusicLibraryModel::update(const QSet<Song> &songs)
             if (artistState!=artistItem->checkState()) {
                 artistItem->setCheckState(artistState);
                 if (!artistIndex.isValid()) {
-                    artistIndex=index(rootItem->childItems().indexOf(artistItem), 0, QModelIndex());
+                    artistIndex=index(artistItem->row(), 0, QModelIndex());
                 }
                 emit dataChanged(artistIndex, artistIndex);
             }
@@ -866,16 +866,16 @@ void MusicLibraryModel::uncheckAll()
 
     foreach (MusicLibraryItem *artist, rootItem->childItems()) {
         MusicLibraryItemArtist *artistItem=static_cast<MusicLibraryItemArtist *>(artist);
-        QModelIndex artistIndex=index(rootItem->childItems().indexOf(artistItem), 0, QModelIndex());
+        QModelIndex artistIndex=index(artistItem->row(), 0, QModelIndex());
 
         foreach (MusicLibraryItem *album, artistItem->childItems()) {
             MusicLibraryItemAlbum *albumItem=static_cast<MusicLibraryItemAlbum *>(album);
-            QModelIndex albumIndex=index(artistItem->childItems().indexOf(albumItem), 0, artistIndex);
+            QModelIndex albumIndex=index(albumItem->row(), 0, artistIndex);
 
             foreach (MusicLibraryItem *song, albumItem->childItems()) {
                 if (Qt::Unchecked!=song->checkState()) {
                     song->setCheckState(Qt::Unchecked);
-                    QModelIndex songIndex=index(albumItem->childItems().indexOf(song), 0, albumIndex);
+                    QModelIndex songIndex=index(song->row(), 0, albumIndex);
                     emit dataChanged(songIndex, songIndex);
                 }
             }
@@ -950,7 +950,7 @@ void MusicLibraryModel::setArtistImage(const Song &song, const QImage &img, bool
 
     MusicLibraryItemArtist *artistItem = rootItem->artist(song, false);
     if (artistItem && artistItem->setCover(img, update)) {
-        QModelIndex idx=index(rootItem->childItems().indexOf(artistItem), 0, QModelIndex());
+        QModelIndex idx=index(artistItem->row(), 0, QModelIndex());
         emit dataChanged(idx, idx);
     }
 }
@@ -981,7 +981,7 @@ void MusicLibraryModel::setCover(const Song &song, const QImage &img, const QStr
     if (artistItem) {
         MusicLibraryItemAlbum *albumItem = artistItem->album(song, false);
         if (albumItem && albumItem->setCover(img, update)) {
-            QModelIndex idx=index(artistItem->childItems().indexOf(albumItem), 0, index(rootItem->childItems().indexOf(artistItem), 0, QModelIndex()));
+            QModelIndex idx=index(albumItem->row(), 0, index(artistItem->row(), 0, QModelIndex()));
             emit dataChanged(idx, idx);
         }
     }

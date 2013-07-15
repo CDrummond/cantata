@@ -56,7 +56,8 @@ public Q_SLOTS:
     void controlActions();
     void configureService();
     void refreshService();
-    void updateGenres(const QModelIndex &);
+    void updateGenres(const QModelIndex &idx);
+    void setSearchable(const QModelIndex &idx);
     void updated(const QModelIndex &idx);
     void download();
 
@@ -76,6 +77,7 @@ private:
     QSet<QString> genres;
     bool onlineSearchRequest;
     QString searchService;
+    bool searchable;
 };
 
 #endif

@@ -49,6 +49,7 @@ public:
     virtual MusicLibraryItem * childItem(int) const { return 0; }
     virtual int childCount() const { return 0; }
     int row() const;
+    void setRow(int r) { m_row=r+1; }
     int columnCount() const { return 1; }
     const QString & data() const { return m_itemData; }
     void setData(const QString &d) { m_itemData=d; }

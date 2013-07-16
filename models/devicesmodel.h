@@ -28,7 +28,7 @@
 #include "config.h"
 #include "remotefsdevice.h"
 #include "actionmodel.h"
-#include "cddb.h"
+#include "cdalbum.h"
 #include "musiclibraryproxymodel.h"
 
 class QMimeData;

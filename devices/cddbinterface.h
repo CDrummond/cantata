@@ -21,32 +21,44 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef CDDBSELECTIONDIALOG_H
-#define CDDBSELECTIONDIALOG_H
+#ifndef CANTATA_CDDB_H
+#define CANTATA_CDDB_H
 
-#include "dialog.h"
+#include <QObject>
+#include <QString>
+#include "config.h"
 #include "cdalbum.h"
-#include <QList>
 
-class QComboBox;
-class QTreeWidget;
+class Thread;
+typedef struct cddb_disc_s cddb_disc_t;
 
-class CddbSelectionDialog : public Dialog
+class CddbInterface : public QObject
 {
     Q_OBJECT
 
 public:
-    CddbSelectionDialog(QWidget *parent);
+    static QString dataTrack();
 
-    int select(const QList<CdAlbum> &albums);
+    CddbInterface(const QString &device);
+    ~CddbInterface();
 
-private Q_SLOTS:
-    void updateTracks();
+public Q_SLOTS:
+    void lookup(bool full);
+
+Q_SIGNALS:
+    void error(const QString &error);
+    void initialDetails(const CdAlbum &);
+    void matches(const QList<CdAlbum> &);
 
 private:
-    QComboBox *combo;
-    QTreeWidget *tracks;
-    QList<CdAlbum> albumDetails;
+    void readDisc();
+
+private:
+    Thread *thread;
+    QString dev;
+    cddb_disc_t *disc;
+    CdAlbum initial;
 };
 
 #endif
+

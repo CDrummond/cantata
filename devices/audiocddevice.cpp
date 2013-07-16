@@ -22,7 +22,9 @@
  */
 
 #include "audiocddevice.h"
-#include "cddb.h"
+#ifdef CDDB_FOUND
+#include "cddbinterface.h"
+#endif
 #ifdef MUSICBRAINZ5_FOUND
 #include "musicbrainz.h"
 #endif
@@ -171,7 +173,7 @@ void AudioCdDevice::connectService(bool useCddb)
             && useCddb
             #endif
             ) {
-        cddb=new Cddb(block->device());
+        cddb=new CddbInterface(block->device());
         connect(cddb, SIGNAL(error(QString)), this, SIGNAL(error(QString)));
         connect(cddb, SIGNAL(initialDetails(CdAlbum)), this, SLOT(setDetails(CdAlbum)));
         connect(cddb, SIGNAL(matches(const QList<CdAlbum> &)), SLOT(cdMatches(const QList<CdAlbum> &)));

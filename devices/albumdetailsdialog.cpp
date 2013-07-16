@@ -29,7 +29,7 @@
 #include "messagebox.h"
 #include "inputdialog.h"
 #include "devicesmodel.h"
-#include "cddb.h"
+#include "cdalbum.h"
 #include "icons.h"
 #include "coverdialog.h"
 #include <QMenu>

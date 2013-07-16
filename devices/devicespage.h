@@ -30,7 +30,7 @@
 #ifdef ENABLE_REMOTE_DEVICES
 #include "remotefsdevice.h"
 #endif
-#include "cddb.h"
+#include "cdalbum.h"
 #include "musiclibraryproxymodel.h"
 
 class Action;

@@ -21,13 +21,12 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef CANTATA_CDDB_H
-#define CANTATA_CDDB_H
+#ifndef CDALBUM_H
+#define CDALBUM_H
 
-#include <QObject>
 #include <QString>
+#include <QList>
 #include "song.h"
-#include "config.h"
 
 struct CdAlbum {
     CdAlbum() : isDefault(false), year(0), disc(0)  { }
@@ -41,38 +40,4 @@ struct CdAlbum {
     QList<Song> tracks;
 };
 
-#ifdef CDDB_FOUND
-class Thread;
-typedef struct cddb_disc_s cddb_disc_t;
-
-class Cddb : public QObject
-{
-    Q_OBJECT
-
-public:
-    static QString dataTrack();
-
-    Cddb(const QString &device);
-    ~Cddb();
-
-public Q_SLOTS:
-    void lookup(bool full);
-
-Q_SIGNALS:
-    void error(const QString &error);
-    void initialDetails(const CdAlbum &);
-    void matches(const QList<CdAlbum> &);
-
-private:
-    void readDisc();
-
-private:
-    Thread *thread;
-    QString dev;
-    cddb_disc_t *disc;
-    CdAlbum initial;
-};
 #endif
-
-#endif
-

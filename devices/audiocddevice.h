@@ -35,7 +35,7 @@
 #endif
 #include <QImage>
 
-class Cddb;
+class CddbInterface;
 class MusicBrainz;
 struct CdAlbum;
 
@@ -109,7 +109,7 @@ private:
     Solid::OpticalDrive *drive;
     Solid::Block *block;
     #ifdef CDDB_FOUND
-    Cddb *cddb;
+    CddbInterface *cddb;
     #endif
     #ifdef MUSICBRAINZ5_FOUND
     MusicBrainz *mb;

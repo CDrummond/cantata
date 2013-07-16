@@ -35,42 +35,6 @@ const QLatin1String SoundCloudService::constName("SoundCloud");
 static const QString constApiKey=QLatin1String("0cb23dce473528973ce74815bd36a334");
 static const QString constHost=QLatin1String("api.soundcloud.com");
 static const QString constUrl=QLatin1String("https://")+constHost+QLatin1Char('/');
-static const QString constUrlGuard=QLatin1String("#{SoundCloud}");
-static const QString constDeliminator=QLatin1String("<@>");
-
-bool SoundCloudService::decode(Song &song)
-{
-    if (!song.file.startsWith(QLatin1String("http://")+constHost)) {
-        return false;
-    }
-
-    int pos=song.file.indexOf(constUrlGuard);
-
-    if (pos>0) {
-        QStringList parts=song.file.mid(pos+constUrlGuard.length()+1).split(constDeliminator);
-        if (parts.length()>=5) {
-            song.artist=parts.at(0);
-            song.title=parts.at(1);
-            song.genre=parts.at(2);
-            song.time=parts.at(3).toUInt();
-            song.year=parts.at(4).toUInt();
-            song.fillEmptyFields();
-            song.file=song.file.left(pos);
-            return true;
-        }
-    }
-    return false;
-}
-
-QString SoundCloudService::encode(const Song &song)
-{
-    return song.file+constUrlGuard+
-            song.artist+constDeliminator+
-            song.title+constDeliminator+
-            song.genre+constDeliminator+
-            QString::number(song.time)+constDeliminator+
-            QString::number(song.year);
-}
 
 SoundCloudService::SoundCloudService(OnlineServicesModel *m)
     : OnlineService(m, constName)
@@ -82,9 +46,7 @@ SoundCloudService::SoundCloudService(OnlineServicesModel *m)
 
 Song SoundCloudService::fixPath(const Song &orig) const
 {
-    Song s=orig;
-    s.file=encode(s);
-    return s;
+    return encode(orig);
 }
 
 void SoundCloudService::clear()

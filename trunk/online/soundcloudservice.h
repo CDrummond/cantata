@@ -34,9 +34,6 @@ class SoundCloudService : public OnlineService
 public:
     static const QLatin1String constName;
 
-    static bool decode(Song &song);
-    static QString encode(const Song &song);
-
     SoundCloudService(OnlineServicesModel *m);
     ~SoundCloudService() { cancelAll(); }
 

@@ -72,7 +72,7 @@ public:
         virtual bool isFavourites() const { return false; }
         virtual void removeCache();
         bool isTopLevel() const { return parent && 0==parent->parent; }
-        bool canReload() const { return !cacheName.isEmpty() || isTopLevel(); }
+        bool canReload() const { return !cacheName.isEmpty() || isTopLevel() || !url.isEmpty(); }
         void removeBookmarks();
         void saveBookmarks();
         QList<Item *> loadBookmarks();

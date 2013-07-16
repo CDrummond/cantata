@@ -386,7 +386,8 @@ void StreamsPage::reload()
     if (!cat->canReload()) {
         return;
     }
-    if (cat->children.isEmpty() || MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Reload <b>%1</b> streams?").arg(cat->name))) {
+
+    if (cat->children.isEmpty() || cat->cacheName.isEmpty() || MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Reload <b>%1</b> streams?").arg(cat->name))) {
         StreamsModel::self()->reload(mapped);
     }
 }

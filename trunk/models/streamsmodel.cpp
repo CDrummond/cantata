@@ -1456,13 +1456,17 @@ QList<StreamsModel::Item *> StreamsModel::parseListenLiveResponse(QIODevice *dev
         all->isAll=true;
         newItems.append(all);
     }
+    QSet<QString> allUrls;
     for (; it!=end; ++it) {
         CategoryItem *genre=new CategoryItem(QString(), it.key(), cat);
         genre->state=CategoryItem::Fetched;
         foreach (Item *i, it.value()) {
             i->parent=genre;
             genre->children.append(i);
-            all->children.append(new Item(i->url, i->name, all));
+            if (!allUrls.contains(i->url)) {
+                allUrls.insert(i->url);
+                all->children.append(new Item(i->url, i->name, all));
+            }
         }
         newItems.append(genre);
     }

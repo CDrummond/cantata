@@ -114,6 +114,7 @@
 72. Default to enabling use of media keys under GNOME/Unity.
 73. Add SoundCloud to online services.
 74. Drop usage of lame when playing back AudioCDs, its not required.
+75. Always use QNetworkAccessManager - as KIO is not thread safe :-(
 
 1.0.3
 -----

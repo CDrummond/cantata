@@ -79,6 +79,7 @@ OnlineServicesPage::OnlineServicesPage(QWidget *p)
     view->addAction(downloadAction);
     menuButton->setMenu(menu);
     proxy.setSourceModel(OnlineServicesModel::self());
+    proxy.setDynamicSortFilter(false);
     view->setModel(&proxy);
     view->setRootIsDecorated(true);
     view->setUniformRowHeights(true);
@@ -447,5 +448,10 @@ void OnlineServicesPage::download()
 
 void OnlineServicesPage::updated(const QModelIndex &idx)
 {
+    MusicLibraryItem *item=static_cast<MusicLibraryItem *>(idx.internalPointer());
+    if (MusicLibraryItem::Type_Root==item->itemType() && !static_cast<OnlineService *>(item)->isSearchBased()) {
+        proxy.sort();
+    }
+
     view->setExpanded(proxy.mapFromSource(idx));
 }

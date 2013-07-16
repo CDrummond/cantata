@@ -68,6 +68,7 @@ bool ProxyModel::matchesFilter(const QStringList &strings) const
 
 bool ProxyModel::update(const QString &text, const QString &genre)
 {
+    bool wasEmpty=isEmpty();
     filterStrings = text.split(' ', QString::SkipEmptyParts, Qt::CaseInsensitive);
     unmatchedStrings = 0;
     const int n = qMin(filterStrings.count(), (int)sizeof(uint));
@@ -75,33 +76,28 @@ bool ProxyModel::update(const QString &text, const QString &genre)
         unmatchedStrings |= (1<<i);
     }
 
+    origFilterText=text;
+    filterGenre=genre;
+
     if (text.length()<2 && genre.isEmpty()) {
         if (filterEnabled) {
-            bool wasEmpty=isEmpty();
             filterEnabled=false;
-            filterGenre=genre;
-            if (!wasEmpty || !filterRegExp().isEmpty()) {
+            if (!wasEmpty) {
                 invalidate();
-            }
-            if (!filterRegExp().isEmpty()) {
-                setFilterRegExp(QString());
             }
             return true;
         }
     } else {
         filterEnabled=true;
-        filterGenre=genre;
         invalidate();
-        if (text!=filterRegExp().pattern()) {
-            setFilterRegExp(text);
-        }
         return true;
     }
 
     return false;
 }
 
-bool ProxyModel::isChildOfRoot(const QModelIndex &idx) const {
+bool ProxyModel::isChildOfRoot(const QModelIndex &idx) const
+{
     if (!rootIndex.isValid()) {
         return true;
     }
@@ -114,4 +110,12 @@ bool ProxyModel::isChildOfRoot(const QModelIndex &idx) const {
         i=i.parent();
     }
     return false;
+}
+
+void ProxyModel::sort(int column, Qt::SortOrder order)
+{
+    if (!isSorted || dynamicSortFilter()) {
+        QSortFilterProxyModel::sort(column, order);
+        isSorted=true;
+    }
 }

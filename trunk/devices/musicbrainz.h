@@ -26,8 +26,9 @@
 #ifndef MUSICBRAINZ_H
 #define MUSICBRAINZ_H
 
-#include "cddb.h"
+#include "cdalbum.h"
 #include <QString>
+#include <QObject>
 
 class Thread;
 
@@ -55,4 +56,5 @@ private:
     QString discId;
     CdAlbum initial;
 };
+
 #endif // MUSICBRAINZ_H

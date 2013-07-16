@@ -21,7 +21,7 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include "cddb.h"
+#include "cddbinterface.h"
 #include "settings.h"
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KProtocolManager>
@@ -43,17 +43,17 @@
 #include <linux/cdrom.h>
 #endif
 
-static struct CddbCleanup
+static struct CddbInterfaceCleanup
 {
-    ~CddbCleanup() { libcddb_shutdown(); }
+    ~CddbInterfaceCleanup() { libcddb_shutdown(); }
 } cleanup;
 
-QString Cddb::dataTrack()
+QString CddbInterface::dataTrack()
 {
     return i18n("Data Track");
 }
 
-Cddb::Cddb(const QString &device)
+CddbInterface::CddbInterface(const QString &device)
     : dev(device)
     , disc(0)
 {
@@ -62,7 +62,7 @@ Cddb::Cddb(const QString &device)
     thread->start();
 }
 
-Cddb::~Cddb()
+CddbInterface::~CddbInterface()
 {
     thread->stop();
     if (disc) {
@@ -97,7 +97,7 @@ static CdAlbum toAlbum(cddb_disc_t *disc, const CdAlbum &initial=CdAlbum())
 
             if (initial.isNull()) {
                 track.time=cddb_track_get_length(trk);
-                if (Cddb::dataTrack()==track.title) {
+                if (CddbInterface::dataTrack()==track.title) {
                     // Adjust last track length...
                     if (album.tracks.count()) {
                         Song last=album.tracks.takeLast();
@@ -126,7 +126,7 @@ static CdAlbum toAlbum(cddb_disc_t *disc, const CdAlbum &initial=CdAlbum())
 }
 
 // Copied from asunder v2.2 - GPL v2
-void Cddb::readDisc()
+void CddbInterface::readDisc()
 {
     if (disc) {
         return;
@@ -269,7 +269,7 @@ private:
     cddb_disc_t *disc;
 };
 
-void Cddb::lookup(bool full)
+void CddbInterface::lookup(bool full)
 {
     bool isInitial=!disc;
     if (!disc) {

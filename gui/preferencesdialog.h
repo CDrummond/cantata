@@ -74,10 +74,10 @@ private:
     #ifdef TAGLIB_FOUND
     HttpServerSettings *http;
     #endif
-    #ifndef ENABLE_KDE_SUPPORT
     #ifdef ENABLE_PROXY_CONFIG
     ProxySettings *proxy;
-    #endif // ENABLE_PROXY_CONFIG
+    #endif
+    #ifndef ENABLE_KDE_SUPPORT
     ShortcutsSettingsPage *shortcuts;
     #endif
     CacheSettings *cache;

@@ -55,7 +55,6 @@
 #include <KDE/KStandardDirs>
 #include <KDE/KGlobal>
 #include <KDE/KTemporaryFile>
-#include <KDE/KIO/NetAccess>
 #include <QApplication>
 K_GLOBAL_STATIC(Covers, instance)
 #endif
@@ -372,18 +371,14 @@ const QStringList & Covers::standardNames()
 CoverDownloader::CoverDownloader()
 {
     manager=new NetworkAccessManager(this);
-    #ifndef ENABLE_KDE_SUPPORT // KIO is not thread safe!!!
     thread=new Thread(metaObject()->className());
     moveToThread(thread);
     thread->start();
-    #endif
 }
 
 void CoverDownloader::stop()
 {
-    #ifndef ENABLE_KDE_SUPPORT
     thread->stop();
-    #endif
 }
 
 void CoverDownloader::download(const Song &song)

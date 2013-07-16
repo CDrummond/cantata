@@ -66,7 +66,6 @@ void SoundCloudService::setSearch(const QString &searchTerm)
     currentSearch=searchTerm;
 
     if (currentSearch.isEmpty()) {
-        setBusy(false);
         return;
     }
 
@@ -99,6 +98,7 @@ void SoundCloudService::cancelAll()
         job->deleteLater();
         job=0;
     }
+    setBusy(false);
 }
 
 void SoundCloudService::jobFinished()

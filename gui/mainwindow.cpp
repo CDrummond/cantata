@@ -1692,7 +1692,7 @@ void MainWindow::realSearchPlayQueue()
         filter=QString();
     }
 
-    if (filter!=playQueueProxyModel.filterRegExp().pattern()) {
+    if (filter!=playQueueProxyModel.filterText()) {
         playQueue->setFilterActive(!filter.isEmpty());
         playQueue->selectionModel()->clear();
         playQueueProxyModel.update(filter);

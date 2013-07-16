@@ -55,7 +55,7 @@ bool PlaylistsProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sou
             return false;
         }
 
-        if (pl->name.contains(filterRegExp())) {
+        if (matchesFilter(QStringList() << pl->name)) {
             return true;
         }
 

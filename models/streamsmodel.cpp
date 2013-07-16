@@ -1431,7 +1431,7 @@ QList<StreamsModel::Item *> StreamsModel::parseListenLiveResponse(QIODevice *dev
                         name=entry.name+" ("+entry.location+")";
                     }
 
-                    if (!names.contains(name) && !name.isEmpty() && !url.isEmpty()) {
+                    if (!names.contains(name) && !name.isEmpty() && url.contains("://")) {
                         QStringList stationGenres=fixGenres(entry.comment);
                         if (stationGenres.isEmpty()) {
                             stationGenres.append(i18n("Other"));

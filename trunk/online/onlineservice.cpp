@@ -183,9 +183,9 @@ Song OnlineService::encode(const Song &song)
 {
     Song encoded=song;
     encoded.file=song.file+constUrlGuard+
-                song.artist+constDeliminator+
-                song.title+constDeliminator+
-                song.genre+constDeliminator+
+                encoded.artist.replace(constDeliminator, " ")+constDeliminator+
+                encoded.title.replace(constDeliminator, " ")+constDeliminator+
+                encoded.genre.replace(constDeliminator, " ")+constDeliminator+
                 QString::number(song.time)+constDeliminator+
                 QString::number(song.year)+constDeliminator+
                 QString::number(song.track);

@@ -176,7 +176,7 @@ void OnlineMusicLoader::progressReport(const QString &str, int prog)
     }
 }
 
-static const QString constUrlGuard=QLatin1String("#{Cantata}");
+static const QString constUrlGuard=QLatin1String("#{SONG_DETAILS}");
 static const QString constDeliminator=QLatin1String("<@>");
 
 Song OnlineService::encode(const Song &song)

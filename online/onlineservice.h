@@ -95,6 +95,9 @@ class OnlineService : public MusicLibraryItemRoot, public QObject
     Q_OBJECT
 
 public:
+    static Song encode(const Song &song);
+    static bool decode(Song &song);
+
     OnlineService(OnlineServicesModel *m, const QString &name)
         : MusicLibraryItemRoot(name, false)
         , model(m)

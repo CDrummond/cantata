@@ -50,7 +50,7 @@
 #include "utils.h"
 #include "cuefile.h"
 #include "mpdconnection.h"
-#include "soundcloudservice.h"
+#include "onlineservice.h"
 
 #include <QDebug>
 static bool debugEnabled=false;
@@ -249,7 +249,7 @@ Song MPDParseUtils::parseSong(const QByteArray &data, bool isPlayQueue)
     if (!song.file.isEmpty()) {
         if (song.isStream()) {
             if (!song.isCantataStream()) {
-                if (!SoundCloudService::decode(song)) {
+                if (!OnlineService::decode(song)) {
                     QString name=getAndRemoveStreamName(song.file);
                     if (!name.isEmpty()) {
                         song.name=name;

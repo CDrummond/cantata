@@ -126,7 +126,7 @@ void MagnatuneService::createLoader()
 Song MagnatuneService::fixPath(const Song &orig) const
 {
     if (MB_None==membership) {
-        return orig;
+        return encode(orig);
     }
 
     Song s=orig;
@@ -150,7 +150,7 @@ Song MagnatuneService::fixPath(const Song &orig) const
 //    if (MB_Download==membership) {
 //        s.genre=downloadTypeStr(download);
 //    }
-    return s;
+    return encode(s);
 }
 
 QString MagnatuneService::membershipStr(MemberShip f, bool trans)

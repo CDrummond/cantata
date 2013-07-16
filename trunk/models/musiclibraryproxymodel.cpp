@@ -112,6 +112,10 @@ bool MusicLibraryProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &
         }
     }
 
+    if (filterStrings.isEmpty()) {
+        return true;
+    }
+
     switch (item->itemType()) {
     case MusicLibraryItem::Type_Root:
         return filterAcceptsRoot(item);

@@ -103,7 +103,7 @@ set(CANTATA_SRCS gui/application.cpp gui/main.cpp gui/initialsettingswizard.cpp 
     widgets/actionlabel.cpp widgets/playqueueview.cpp widgets/groupedview.cpp widgets/actionitemdelegate.cpp widgets/textbrowser.cpp
     widgets/coverwidget.cpp widgets/volumecontrol.cpp widgets/icons.cpp widgets/genrecombo.cpp widgets/toolbar.cpp widgets/menubutton.cpp
     widgets/toolbutton.cpp widgets/wizardpage.cpp widgets/statuslabel.cpp widgets/searchwidget.cpp widgets/messageoverlay.cpp
-    network/networkaccessmanager.cpp
+    network/networkaccessmanager.cpp network/networkproxyfactory.cpp
     devices/deviceoptions.cpp
     context/lyricsettings.cpp context/ultimatelyricsprovider.cpp context/ultimatelyrics.cpp context/lyricsdialog.cpp
     context/contextwidget.cpp context/view.cpp context/artistview.cpp context/albumview.cpp context/songview.cpp context/contextengine.cpp
@@ -399,6 +399,12 @@ add_subdirectory(po)
 add_subdirectory(support)
 add_subdirectory(streams/icons)
 
+if (ENABLE_PROXY_CONFIG)
+    set(CANTATA_SRCS ${CANTATA_SRCS} network/proxysettings.cpp)
+    set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} network/proxysettings.h)
+    set(CANTATA_UIS ${CANTATA_UIS} network/proxysettings.ui)
+endif (ENABLE_PROXY_CONFIG)
+
 if (ENABLE_KDE_SUPPORT)
     include_directories(${KDE4_INCLUDES})
     add_definitions(${KDE4_DEFINITIONS})
@@ -428,12 +434,6 @@ else (ENABLE_KDE_SUPPORT)
         endif (MINGW)
     endif (WIN32)
 
-    set(CANTATA_SRCS ${CANTATA_SRCS} network/networkproxyfactory.cpp)
-    if (ENABLE_PROXY_CONFIG)
-        set(CANTATA_SRCS ${CANTATA_SRCS} network/proxysettings.cpp)
-        set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} network/proxysettings.h)
-        set(CANTATA_UIS ${CANTATA_UIS} network/proxysettings.ui)
-    endif (ENABLE_PROXY_CONFIG)
     set(CANTATA_RCS ${CANTATA_RCS} cantata_qt.qrc)
     if (ENABLE_QT5)
         QT5_ADD_RESOURCES(CANTATA_RC_SRCS ${CANTATA_RCS})

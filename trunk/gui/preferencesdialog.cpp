@@ -37,10 +37,10 @@
 #include "localize.h"
 #include "mpdconnection.h"
 #include "pagewidget.h"
-#ifndef ENABLE_KDE_SUPPORT
 #ifdef ENABLE_PROXY_CONFIG
 #include "proxysettings.h"
-#endif // ENABLE_PROXY_CONFIG
+#endif
+#ifndef ENABLE_KDE_SUPPORT
 #include "shortcutssettingspage.h"
 #include "actioncollection.h"
 #include "treeview.h"
@@ -94,12 +94,12 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
     audiocd->load();
     widget->addPage(audiocd, i18n("Audio CD"), Icon("media-optical"), i18n("Audio CD Settings"));
     #endif
-    #ifndef ENABLE_KDE_SUPPORT
     #ifdef ENABLE_PROXY_CONFIG
     proxy = new ProxySettings(0);
     proxy->load();
-    widget->addPage(proxy, i18nc("Qt-only", "Proxy"), Icon("preferences-system-network"), i18nc("Qt-only", "Proxy Settings"));
-    #endif // ENABLE_PROXY_CONFIG
+    widget->addPage(proxy, i18n("Proxy"), Icon("preferences-system-network"), i18nc("Qt-only", "Proxy Settings"));
+    #endif
+    #ifndef ENABLE_KDE_SUPPORT
     QHash<QString, ActionCollection *> map;
     map.insert("Cantata", ActionCollection::get());
     shortcuts = new ShortcutsSettingsPage(map, widget);

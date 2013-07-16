@@ -323,6 +323,8 @@ void OnlineServicesPage::controlActions()
     QModelIndexList selected=view->selectedIndexes();
     bool srvSelected=false;
     bool canDownload=false;
+    bool canConfigure=false;
+    bool canRefresh=false;
     QSet<QString> services;
 
     foreach (const QModelIndex &idx, selected) {
@@ -332,6 +334,8 @@ void OnlineServicesPage::controlActions()
             if (MusicLibraryItem::Type_Root==item->itemType()) {
                 srvSelected=true;
                 services.insert(item->data());
+                canConfigure=static_cast<OnlineService *>(item)->canConfigure();
+                canRefresh=static_cast<OnlineService *>(item)->canLoad();
             } else {
                 while (item->parentItem()) {
                     item=item->parentItem();
@@ -350,8 +354,8 @@ void OnlineServicesPage::controlActions()
         }
     }
 
-    OnlineServicesModel::self()->configureAct()->setEnabled(srvSelected && 1==selected.count());
-    OnlineServicesModel::self()->refreshAct()->setEnabled(srvSelected && 1==selected.count());
+    OnlineServicesModel::self()->configureAct()->setEnabled(canConfigure && 1==selected.count());
+    OnlineServicesModel::self()->refreshAct()->setEnabled(canRefresh && 1==selected.count());
     downloadAction->setEnabled(!srvSelected && canDownload && !selected.isEmpty() && 1==services.count());
     StdActions::self()->addToPlayQueueAction->setEnabled(!srvSelected && !selected.isEmpty());
     StdActions::self()->addWithPriorityAction->setEnabled(!srvSelected && !selected.isEmpty());

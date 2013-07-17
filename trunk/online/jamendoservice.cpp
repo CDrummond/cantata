@@ -291,7 +291,7 @@ void JamendoService::createLoader()
     loader=new JamendoMusicLoader(QUrl("http://img.jamendo.com/data/dbdump_artistalbumtrack.xml.gz"));
 }
 
-Song JamendoService::fixPath(const Song &orig) const
+Song JamendoService::fixPath(const Song &orig, bool) const
 {
     Song s(orig);
     s.file=constStreamUrl;

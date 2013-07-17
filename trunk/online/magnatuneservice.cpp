@@ -123,7 +123,7 @@ void MagnatuneService::createLoader()
     loader=new MagnatuneMusicLoader(QUrl("http://magnatune.com/info/song_info_xml.gz"));
 }
 
-Song MagnatuneService::fixPath(const Song &orig) const
+Song MagnatuneService::fixPath(const Song &orig, bool) const
 {
     if (MB_None==membership) {
         return encode(orig);

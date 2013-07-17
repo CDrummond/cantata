@@ -96,7 +96,8 @@ set(CANTATA_SRCS gui/application.cpp gui/main.cpp gui/initialsettingswizard.cpp 
     models/musiclibraryproxymodel.cpp models/playlistsmodel.cpp models/playlistsproxymodel.cpp models/playqueuemodel.cpp
     models/playqueueproxymodel.cpp models/dirviewmodel.cpp models/dirviewproxymodel.cpp models/dirviewitem.cpp models/dirviewitemdir.cpp
     models/streamsmodel.cpp models/streamsproxymodel.cpp models/albumsmodel.cpp models/albumsproxymodel.cpp models/proxymodel.cpp
-    models/actionmodel.cpp models/digitallyimported.cpp models/streamsearchmodel.cpp models/musiclibraryitem.cpp
+    models/actionmodel.cpp models/digitallyimported.cpp models/streamsearchmodel.cpp models/musiclibraryitem.cpp models/musicmodel.cpp
+    models/multimusicmodel.cpp
     mpd/mpdconnection.cpp mpd/mpdparseutils.cpp mpd/mpdstats.cpp mpd/mpdstatus.cpp mpd/song.cpp mpd/mpduser.cpp mpd/cuefile.cpp
     dynamic/dynamic.cpp dynamic/dynamicpage.cpp dynamic/dynamicproxymodel.cpp dynamic/dynamicruledialog.cpp dynamic/dynamicrulesdialog.cpp
     widgets/treeview.cpp widgets/listview.cpp widgets/itemview.cpp widgets/autohidingsplitter.cpp widgets/timeslider.cpp
@@ -116,7 +117,7 @@ set(CANTATA_MOC_HDRS
     streams/streamspage.h streams/streamdialog.h streams/streamfetcher.h streams/digitallyimportedsettings.h
     models/musiclibrarymodel.h models/musiclibraryproxymodel.h models/playlistsmodel.h models/playlistsproxymodel.h models/playqueuemodel.h
     models/playqueueproxymodel.h models/dirviewmodel.h models/dirviewproxymodel.h models/albumsmodel.h models/streamsmodel.h
-    models/actionmodel.h models/digitallyimported.h models/streamsearchmodel.h
+    models/actionmodel.h models/digitallyimported.h models/streamsearchmodel.h models/multimusicmodel.h
     mpd/mpdconnection.h mpd/mpdstats.h mpd/mpdstatus.h
     dynamic/dynamic.h dynamic/dynamicpage.h dynamic/dynamicruledialog.h dynamic/dynamicrulesdialog.h
     widgets/treeview.h widgets/listview.h widgets/itemview.h widgets/autohidingsplitter.h widgets/timeslider.h widgets/actionlabel.h

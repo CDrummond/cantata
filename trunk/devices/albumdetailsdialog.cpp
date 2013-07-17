@@ -152,7 +152,7 @@ AlbumDetailsDialog::~AlbumDetailsDialog()
 
 void AlbumDetailsDialog::show(AudioCdDevice *dev)
 {
-    udi=dev->udi();
+    udi=dev->id();
     artist->setText(dev->albumArtist());
     title->setText(dev->albumName());
     genre->setText(dev->albumGenre());

@@ -144,7 +144,7 @@ void DevicesPage::clear()
 QString DevicesPage::activeFsDeviceUdi() const
 {
     Device *dev=activeFsDevice();
-    return dev ? dev->udi() : QString();
+    return dev ? dev->id() : QString();
 }
 
 Device * DevicesPage::activeFsDevice() const
@@ -315,8 +315,8 @@ void DevicesPage::controlActions()
             #endif
             canPlay=dev->canPlaySongs();
             if (udi.isEmpty()) {
-                udi=dev->udi();
-            } else if (udi!=dev->udi()) {
+                udi=dev->id();
+            } else if (udi!=dev->id()) {
                 singleUdi=false;
             }
             if (!haveTracks) {
@@ -368,7 +368,7 @@ void DevicesPage::copyToLibrary()
     }
     QString udi;
     if (MusicLibraryItem::Type_Root==item->itemType()) {
-        udi=static_cast<Device *>(item)->udi();
+        udi=static_cast<Device *>(item)->id();
     }
 
     if (udi.isEmpty()) {
@@ -410,7 +410,7 @@ void DevicesPage::refreshDevice()
 
     if (MusicLibraryItem::Type_Root==item->itemType()) {
         Device *dev=static_cast<Device *>(item);
-        QString udi=dev->udi();
+        QString udi=dev->id();
         bool full=true;
 
         if (Device::AudioCd==dev->devType()) {
@@ -476,7 +476,7 @@ void DevicesPage::deleteSongs()
     }
     QString udi;
     if (MusicLibraryItem::Type_Root==item->itemType()) {
-        udi=static_cast<Device *>(item)->udi();
+        udi=static_cast<Device *>(item)->id();
     }
 
     if (udi.isEmpty()) {
@@ -568,7 +568,7 @@ void DevicesPage::sync()
 
     if (MusicLibraryItem::Type_Root==item->itemType()) {
         SyncDialog *dlg=new SyncDialog(this);
-        dlg->sync(static_cast<Device *>(item)->udi());
+        dlg->sync(static_cast<Device *>(item)->id());
     }
 }
 

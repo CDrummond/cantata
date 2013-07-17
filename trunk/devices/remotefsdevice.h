@@ -71,13 +71,13 @@ public:
     static const QLatin1String constServiceNameQuery;
     static const QLatin1String constSambaAvahiProtocol;
 
-    static QList<Device *> loadAll(DevicesModel *m);
-    static Device *create(DevicesModel *m, const DeviceOptions &options, const Details &d);
+    static QList<Device *> loadAll(MusicModel *m);
+    static Device *create(MusicModel *m, const DeviceOptions &options, const Details &d);
     static void renamed(const QString &oldName, const QString &newName);
     static QString createUdi(const QString &n);
 
-    RemoteFsDevice(DevicesModel *m, const DeviceOptions &options, const Details &d);
-    RemoteFsDevice(DevicesModel *m, const Details &d);
+    RemoteFsDevice(MusicModel *m, const DeviceOptions &options, const Details &d);
+    RemoteFsDevice(MusicModel *m, const Details &d);
     virtual ~RemoteFsDevice();
 
     void toggle();
@@ -91,7 +91,6 @@ public:
     void saveOptions();
     void configure(QWidget *parent);
     DevType devType() const { return RemoteFs; }
-    QString icon() const { return QLatin1String(details.isLocalFile() ? "inode-directory" : (constSshfsProtocol==details.url.scheme() ? "utilities-terminal" : "network-server")); }
     bool canPlaySongs() const;
     void destroy(bool removeFromConfig=true);
     const Details & getDetails() const { return details; }
@@ -103,7 +102,7 @@ private Q_SLOTS:
 
 Q_SIGNALS:
     void udiChanged();
-    void connectionStateHasChanged(const QString &udi, bool connected);
+    void connectionStateHasChanged(const QString &id, bool connected);
 
 protected:
     void load();

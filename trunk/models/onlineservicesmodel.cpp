@@ -68,7 +68,7 @@ OnlineServicesModel * OnlineServicesModel::self()
 }
 
 OnlineServicesModel::OnlineServicesModel(QObject *parent)
-    : ActionModel(parent)
+    : MultiMusicModel(parent)
     , enabled(false)
     , dev(0)
 {
@@ -78,64 +78,12 @@ OnlineServicesModel::OnlineServicesModel(QObject *parent)
 
 OnlineServicesModel::~OnlineServicesModel()
 {
-    qDeleteAll(services);
-}
-
-QModelIndex OnlineServicesModel::index(int row, int column, const QModelIndex &parent) const
-{
-    if (!hasIndex(row, column, parent)) {
-        return QModelIndex();
-    }
-
-    if (parent.isValid()) {
-        MusicLibraryItem *p=static_cast<MusicLibraryItem *>(parent.internalPointer());
-
-        if (p) {
-            return row<p->childCount() ? createIndex(row, column, p->childItem(row)) : QModelIndex();
-        }
-    } else {
-        return row<services.count() ? createIndex(row, column, services.at(row)) : QModelIndex();
-    }
-
-    return QModelIndex();
 }
 
 QModelIndex OnlineServicesModel::index(const OnlineService *srv) const
 {
-    int row=services.indexOf(const_cast<OnlineService *>(srv));
+    int row=collections.indexOf(const_cast<OnlineService *>(srv));
     return -1==row ? QModelIndex() : createIndex(row, 0, (void *)srv);
-}
-
-QModelIndex OnlineServicesModel::parent(const QModelIndex &index) const
-{
-    if (!index.isValid()) {
-        return QModelIndex();
-    }
-
-    MusicLibraryItem *childItem = static_cast<MusicLibraryItem *>(index.internalPointer());
-    MusicLibraryItem *parentItem = childItem->parentItem();
-
-    if (parentItem) {
-        return createIndex(parentItem->row(), 0, parentItem);
-    } else {
-        return QModelIndex();
-    }
-}
-
-QVariant OnlineServicesModel::headerData(int /*section*/, Qt::Orientation /*orientation*/, int /*role*/) const
-{
-    return QVariant();
-}
-
-int OnlineServicesModel::rowCount(const QModelIndex &parent) const
-{
-    return parent.isValid() ? static_cast<MusicLibraryItem *>(parent.internalPointer())->childCount() : services.count();
-}
-
-int OnlineServicesModel::columnCount(const QModelIndex &parent) const
-{
-    Q_UNUSED(parent)
-    return 1;
 }
 
 bool OnlineServicesModel::hasChildren(const QModelIndex &index) const
@@ -170,92 +118,14 @@ QVariant OnlineServicesModel::data(const QModelIndex &index, int role) const
     MusicLibraryItem *item = static_cast<MusicLibraryItem *>(index.internalPointer());
 
     switch (role) {
-    case Qt::DecorationRole:
-        switch (item->itemType()) {
-        case MusicLibraryItem::Type_Root: {
-            return static_cast<OnlineService *>(item)->serviceIcon();
-        }
-        case MusicLibraryItem::Type_Artist: {
-            MusicLibraryItemArtist *artist = static_cast<MusicLibraryItemArtist *>(item);
-            return artist->isVarious() ? Icons::self()->variousArtistsIcon : Icons::self()->artistIcon;
-        }
-        case MusicLibraryItem::Type_Album:
-            if (MusicLibraryItemAlbum::CoverNone==MusicLibraryItemAlbum::currentCoverSize()) {
-                return Icons::self()->albumIcon;
-            } else {
-                return static_cast<MusicLibraryItemAlbum *>(item)->cover();
-            }
-        case MusicLibraryItem::Type_Song:   return QIcon::fromTheme("audio-x-generic");
-        default: return QVariant();
-        }
-    case Qt::DisplayRole:
-        if (MusicLibraryItem::Type_Song==item->itemType()) {
-            MusicLibraryItemSong *song = static_cast<MusicLibraryItemSong *>(item);
-            if (MusicLibraryItem::Type_Root==song->parentItem()->itemType()) {
-                return song->song().artistSong();
-            } else if (static_cast<MusicLibraryItemAlbum *>(song->parentItem())->isSingleTracks()) {
-                return song->song().artistSong();
-            } else {
-                return song->song().trackAndTitleStr(static_cast<MusicLibraryItemArtist *>(song->parentItem()->parentItem())->isVarious() &&
-                                                     !Song::isVariousArtists(song->song().artist));
-            }
-        } else if(MusicLibraryItem::Type_Album==item->itemType() && MusicLibraryItemAlbum::showDate() &&
-                  static_cast<MusicLibraryItemAlbum *>(item)->year()>0) {
-            return QString::number(static_cast<MusicLibraryItemAlbum *>(item)->year())+QLatin1String(" - ")+item->data();
-        }
-        return item->data();
     case Qt::ToolTipRole:
-        switch (item->itemType()) {
-        case MusicLibraryItem::Type_Root:
-            return 0==item->childCount()
-                ? item->data()
-                : item->data()+"\n"+
-                  (static_cast<OnlineService *>(item)->isFlat()
-                        #ifdef ENABLE_KDE_SUPPORT
-                        ? i18np("1 Track", "%1 Tracks", item->childCount())
-                        #else
-                        ? QTP_TRACKS_STR(item->childCount())
-                        #endif
-                        #ifdef ENABLE_KDE_SUPPORT
-                        : i18np("1 Artist", "%1 Artists", item->childCount())
-                        #else
-                        : QTP_ARTISTS_STR(item->childCount())
-                        #endif
-                   )+
-                  (static_cast<OnlineService *>(item)->isSearchBased() && !static_cast<OnlineService *>(item)->currentSearchString().isEmpty()
-                   ? "\n"+static_cast<OnlineService *>(item)->currentSearchString()
-                   : "");
-        case MusicLibraryItem::Type_Artist:
-            return 0==item->childCount()
-                ? item->data()
-                : item->data()+"\n"+
-                    #ifdef ENABLE_KDE_SUPPORT
-                    i18np("1 Album", "%1 Albums", item->childCount());
-                    #else
-                    QTP_ALBUMS_STR(item->childCount());
-                    #endif
-        case MusicLibraryItem::Type_Album:
-            return 0==item->childCount()
-                ? item->data()
-                : item->data()+"\n"+
-                    #ifdef ENABLE_KDE_SUPPORT
-                    i18np("1 Track (%2)", "%1 Tracks (%2)",item->childCount(), Song::formattedTime(static_cast<MusicLibraryItemAlbum *>(item)->totalTime()));
-                    #else
-                    QTP_TRACKS_DURATION_STR(item->childCount(), Song::formattedTime(static_cast<MusicLibraryItemAlbum *>(item)->totalTime()));
-                    #endif
-        case MusicLibraryItem::Type_Song:
-            return data(index, Qt::DisplayRole).toString()+QLatin1String("<br/>")+Song::formattedTime(static_cast<MusicLibraryItemSong *>(item)->time())+
-                   QLatin1String("<br/><small><i>")+static_cast<MusicLibraryItemSong *>(item)->song().file+QLatin1String("</i></small>");
-        default: return QVariant();
-        }
-    case ItemView::Role_ImageSize:
-        if (MusicLibraryItem::Type_Album==item->itemType()) {
-            return MusicLibraryItemAlbum::iconSize();
+        if (MusicLibraryItem::Type_Root==item->itemType() && 0!=item->childCount() &&
+                static_cast<OnlineService *>(item)->isSearchBased()  && !static_cast<OnlineService *>(item)->currentSearchString().isEmpty()) {
+            return MusicModel::data(index, role).toString()+"<br/>"+i18n("Last Search:%1").arg(static_cast<OnlineService *>(item)->currentSearchString());
         }
         break;
     case ItemView::Role_SubText:
-        switch (item->itemType()) {
-        case MusicLibraryItem::Type_Root: {
+        if (MusicLibraryItem::Type_Root==item->itemType()) {
             OnlineService *srv=static_cast<OnlineService *>(item);
 
             if (srv->isLoading()) {
@@ -270,44 +140,15 @@ QVariant OnlineServicesModel::data(const QModelIndex &index, int role) const
             if (0==item->childCount() && srv->isSearchBased()) {
                 return i18n("Use search to locate tracks");
             }
-            if (srv->isFlat()) {
+            if (srv->isSearchBased()) {
                 #ifdef ENABLE_KDE_SUPPORT
                 return i18np("1 Track", "%1 Tracks", item->childCount());
                 #else
                 return QTP_TRACKS_STR(item->childCount());
                 #endif
             }
-            #ifdef ENABLE_KDE_SUPPORT
-            return i18np("1 Artist", "%1 Artists", item->childCount());
-            #else
-            return QTP_ARTISTS_STR(item->childCount());
-            #endif
-            break;
         }
-        case MusicLibraryItem::Type_Artist:
-            #ifdef ENABLE_KDE_SUPPORT
-            return i18np("1 Album", "%1 Albums", item->childCount());
-            #else
-            return QTP_ALBUMS_STR(item->childCount());
-            #endif
-            break;
-        case MusicLibraryItem::Type_Song:
-            return Song::formattedTime(static_cast<MusicLibraryItemSong *>(item)->time());
-        case MusicLibraryItem::Type_Album:
-            #ifdef ENABLE_KDE_SUPPORT
-            return i18np("1 Track (%2)", "%1 Tracks (%2)", item->childCount(), Song::formattedTime(static_cast<MusicLibraryItemAlbum *>(item)->totalTime()));
-            #else
-            return QTP_TRACKS_DURATION_STR(item->childCount(), Song::formattedTime(static_cast<MusicLibraryItemAlbum *>(item)->totalTime()));
-            #endif
-        default: return QVariant();
-        }
-    case ItemView::Role_Image:
-        if (MusicLibraryItem::Type_Album==item->itemType()) {
-            QVariant v;
-            v.setValue<QPixmap>(static_cast<MusicLibraryItemAlbum *>(item)->cover());
-            return v;
-        }
-        return QVariant();
+        break;
     case ItemView::Role_Actions: {
         QList<Action *> actions;
         if (MusicLibraryItem::Type_Root==item->itemType()) {
@@ -332,23 +173,23 @@ QVariant OnlineServicesModel::data(const QModelIndex &index, int role) const
         }
     }
     default:
-        return QVariant();
+        break;
     }
-    return QVariant();
+    return MultiMusicModel::data(index, role);
 }
 
 void OnlineServicesModel::clear()
 {
     QSet<QString> names;
-    foreach (OnlineService *srv, services) {
-        names.insert(srv->name());
+    foreach (MusicLibraryItemRoot *col, collections) {
+        names.insert(col->id());
     }
 
     foreach (const QString &n, names) {
         removeService(n);
     }
 
-    services.clear();
+    collections.clear();
 }
 
 void OnlineServicesModel::setEnabled(bool e)
@@ -380,15 +221,15 @@ void OnlineServicesModel::stop()
     disconnect(Covers::self(), SIGNAL(cover(const Song &, const QImage &, const QString &)),
               this, SLOT(setCover(const Song &, const QImage &, const QString &)));
 
-    foreach (OnlineService *srv, services) {
-        srv->stopLoader();
+    foreach (MusicLibraryItemRoot *col, collections) {
+        static_cast<OnlineService *>(col)->stopLoader();
     }
 }
 
 OnlineService * OnlineServicesModel::service(const QString &name)
 {
     int idx=name.isEmpty() ? -1 : indexOf(name);
-    return idx<0 ? 0 : services.at(idx);
+    return idx<0 ? 0 : static_cast<OnlineService *>(collections.at(idx));
 }
 
 void OnlineServicesModel::setArtistImage(const Song &song, const QImage &img)
@@ -397,12 +238,12 @@ void OnlineServicesModel::setArtistImage(const Song &song, const QImage &img)
         return;
     }
 
-    for (int i=0; i<services.count() ; ++i) {
-        OnlineService *srv=services.at(i);
+    for (int i=0; i<collections.count() ; ++i) {
+        OnlineService *srv=static_cast<OnlineService *>(collections.at(i));
         if (srv->useArtistImages()) {
             MusicLibraryItemArtist *artistItem = srv->artist(song, false);
             if (artistItem && artistItem->setCover(img)) {
-                QModelIndex idx=index(artistItem->row(), 0, index(i, 0, QModelIndex()));
+                QModelIndex idx=MultiMusicModel::index(artistItem->row(), 0, MultiMusicModel::index(i, 0, QModelIndex()));
                 emit dataChanged(idx, idx);
             }
         }
@@ -416,30 +257,18 @@ void OnlineServicesModel::setCover(const Song &song, const QImage &img, const QS
         return;
     }
 
-    for (int i=0; i<services.count() ; ++i) {
-        OnlineService *srv=services.at(i);
+    for (int i=0; i<collections.count() ; ++i) {
+        OnlineService *srv=static_cast<OnlineService *>(collections.at(i));
         if (srv->useAlbumImages()) {
             MusicLibraryItemArtist *artistItem = srv->artist(song, false);
             if (artistItem) {
                 MusicLibraryItemAlbum *albumItem = artistItem->album(song, false);
                 if (albumItem && albumItem->setCover(img)) {
-                    QModelIndex idx=index(albumItem->row(), 0, index(artistItem->row(), 0, index(i, 0, QModelIndex())));
+                    QModelIndex idx=MultiMusicModel::index(albumItem->row(), 0, MultiMusicModel::index(artistItem->row(), 0, MultiMusicModel::index(i, 0, QModelIndex())));
                     emit dataChanged(idx, idx);
                 }
             }
         }
-    }
-}
-
-void OnlineServicesModel::updateGenres()
-{
-    QSet<QString> newGenres;
-    foreach (OnlineService *srv, services) {
-        newGenres+=srv->genres();
-    }
-    if (newGenres!=srvGenres) {
-        srvGenres=newGenres;
-        emit updateGenres(srvGenres);
     }
 }
 
@@ -465,113 +294,6 @@ Qt::ItemFlags OnlineServicesModel::flags(const QModelIndex &index) const
     return Qt::ItemIsEnabled;
 }
 
-QStringList OnlineServicesModel::filenames(const QModelIndexList &indexes) const
-{
-    QList<Song> songList=songs(indexes);
-    QStringList fnames;
-    foreach (const Song &s, songList) {
-        fnames.append(s.file);
-    }
-    return fnames;
-}
-
-QList<Song> OnlineServicesModel::songs(const QModelIndexList &indexes) const
-{
-    QMap<MusicLibraryItem *, QList<Song> > srvSongs;
-
-    foreach(QModelIndex index, indexes) {
-        MusicLibraryItem *item = static_cast<MusicLibraryItem *>(index.internalPointer());
-        MusicLibraryItem *parent=item;
-
-        while (parent->parentItem()) {
-            parent=parent->parentItem();
-        }
-
-        if (!parent) {
-            continue;
-        }
-
-        OnlineService *srv=static_cast<OnlineService *>(parent);
-
-        switch (item->itemType()) {
-        case MusicLibraryItem::Type_Root: {
-            if (srv->isFlat()) {
-                foreach (const MusicLibraryItem *song, static_cast<const MusicLibraryItemContainer *>(item)->childItems()) {
-                    if (MusicLibraryItem::Type_Song==song->itemType() && !srvSongs[parent].contains(static_cast<const MusicLibraryItemSong*>(song)->song())) {
-                        srvSongs[parent] << srv->fixPath(static_cast<const MusicLibraryItemSong*>(song)->song());
-                    }
-                }
-            } else {
-                // First, sort all artists as they would appear in UI...
-                QList<MusicLibraryItem *> artists=static_cast<const MusicLibraryItemContainer *>(item)->childItems();
-                qSort(artists.begin(), artists.end(), MusicLibraryItemArtist::lessThan);
-                foreach (MusicLibraryItem *a, artists) {
-                    const MusicLibraryItemContainer *artist=static_cast<const MusicLibraryItemContainer *>(a);
-                    // Now sort all albums as they would appear in UI...
-                    QList<MusicLibraryItem *> artistAlbums=static_cast<const MusicLibraryItemContainer *>(artist)->childItems();
-                    qSort(artistAlbums.begin(), artistAlbums.end(), MusicLibraryItemAlbum::lessThan);
-                    foreach (MusicLibraryItem *i, artistAlbums) {
-                        const MusicLibraryItemContainer *album=static_cast<const MusicLibraryItemContainer *>(i);
-                        foreach (const MusicLibraryItem *song, static_cast<const MusicLibraryItemContainer *>(album)->childItems()) {
-                            if (MusicLibraryItem::Type_Song==song->itemType() && !srvSongs[parent].contains(static_cast<const MusicLibraryItemSong*>(song)->song())) {
-                                srvSongs[parent] << srv->fixPath(static_cast<const MusicLibraryItemSong*>(song)->song());
-                            }
-                        }
-                    }
-                }
-            }
-            break;
-        }
-        case MusicLibraryItem::Type_Artist: {
-            // First, sort all albums as they would appear in UI...
-            QList<MusicLibraryItem *> artistAlbums=static_cast<const MusicLibraryItemContainer *>(item)->childItems();
-            qSort(artistAlbums.begin(), artistAlbums.end(), MusicLibraryItemAlbum::lessThan);
-
-            foreach (MusicLibraryItem *i, artistAlbums) {
-                const MusicLibraryItemContainer *album=static_cast<const MusicLibraryItemContainer *>(i);
-                foreach (const MusicLibraryItem *song, static_cast<const MusicLibraryItemContainer *>(album)->childItems()) {
-                    if (MusicLibraryItem::Type_Song==song->itemType() && !srvSongs[parent].contains(static_cast<const MusicLibraryItemSong*>(song)->song())) {
-                        srvSongs[parent] << srv->fixPath(static_cast<const MusicLibraryItemSong*>(song)->song());
-                    }
-                }
-            }
-            break;
-        }
-        case MusicLibraryItem::Type_Album:
-            foreach (const MusicLibraryItem *song, static_cast<const MusicLibraryItemContainer *>(item)->childItems()) {
-                if (MusicLibraryItem::Type_Song==song->itemType() && !srvSongs[parent].contains(static_cast<const MusicLibraryItemSong*>(song)->song())) {
-                    srvSongs[parent] << srv->fixPath(static_cast<const MusicLibraryItemSong*>(song)->song());
-                }
-            }
-            break;
-        case MusicLibraryItem::Type_Song:
-            if (!srvSongs[parent].contains(static_cast<const MusicLibraryItemSong*>(item)->song())) {
-                srvSongs[parent] << srv->fixPath(static_cast<const MusicLibraryItemSong*>(item)->song());
-            }
-            break;
-        default:
-            break;
-        }
-    }
-
-    QList<Song> songs;
-    QMap<MusicLibraryItem *, QList<Song> >::Iterator it(srvSongs.begin());
-    QMap<MusicLibraryItem *, QList<Song> >::Iterator end(srvSongs.end());
-
-    for (; it!=end; ++it) {
-        songs.append(it.value());
-    }
-
-    return songs;
-}
-
-void OnlineServicesModel::getDetails(QSet<QString> &artists, QSet<QString> &albumArtists, QSet<QString> &albums, QSet<QString> &genres)
-{
-    foreach (OnlineService *srv, services) {
-        srv->getDetails(artists, albumArtists, albums, genres);
-    }
-}
-
 OnlineService * OnlineServicesModel::addService(const QString &name)
 {
     OnlineService *srv=0;
@@ -587,9 +309,9 @@ OnlineService * OnlineServicesModel::addService(const QString &name)
 
         if (srv) {
             srv->loadConfig();
-            beginInsertRows(QModelIndex(), services.count(), services.count());
-            srv->setRow(services.count());
-            services.append(srv);
+            beginInsertRows(QModelIndex(), collections.count(), collections.count());
+            srv->setRow(collections.count());
+            collections.append(srv);
             endInsertRows();
             connect(srv, SIGNAL(error(const QString &)), SIGNAL(error(const QString &)));
         }
@@ -604,13 +326,13 @@ void OnlineServicesModel::removeService(const QString &name)
         return;
     }
 
-    OnlineService *srv=services.at(idx);
+    OnlineService *srv=static_cast<OnlineService *>(collections.at(idx));
 
     if (srv) {
         beginRemoveRows(QModelIndex(), idx, idx);
-        services.takeAt(idx);
+        collections.takeAt(idx);
         endRemoveRows();
-        updateGenres();
+        MultiMusicModel::updateGenres();
         // Destroy will stop service, and delete it (via deleteLater())
         srv->destroy();
     }
@@ -623,7 +345,7 @@ void OnlineServicesModel::stateChanged(const QString &name, bool state)
         if (idx<0) {
             return;
         }
-        updateGenres();
+        MultiMusicModel::updateGenres();
     }
 }
 
@@ -634,15 +356,6 @@ void OnlineServicesModel::load()
     addService(SoundCloudService::constName);
 }
 
-void OnlineServicesModel::toggleGrouping()
-{
-    beginResetModel();
-    foreach (OnlineService *srv, services) {
-        srv->toggleGrouping();
-    }
-    endResetModel();
-}
-
 void OnlineServicesModel::setSearch(const QString &serviceName, const QString &text)
 {
     OnlineService *srv=service(serviceName);
@@ -650,18 +363,6 @@ void OnlineServicesModel::setSearch(const QString &serviceName, const QString &t
     if (srv) {
         srv->setSearch(text);
     }
-}
-
-int OnlineServicesModel::indexOf(const QString &name)
-{
-    int i=0;
-    foreach (OnlineService *srv, services) {
-        if (srv->name()==name) {
-            return i;
-        }
-        i++;
-    }
-    return -1;
 }
 
 QMimeData * OnlineServicesModel::mimeData(const QModelIndexList &indexes) const

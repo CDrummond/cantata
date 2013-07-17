@@ -140,7 +140,7 @@ void SyncDialog::copy(const QList<Song> &songs)
     bool fromDev=sender()==devWidget;
     ActionDialog *dlg=new ActionDialog(this);
     connect(dlg, SIGNAL(completed()), SLOT(updateSongs()));
-    dlg->copy(fromDev ? dev->udi() : QString(), fromDev ? QString() : dev->udi(), songs);
+    dlg->copy(fromDev ? dev->id() : QString(), fromDev ? QString() : dev->id(), songs);
 }
 
 bool SyncDialog::updateSongs(bool firstRun)

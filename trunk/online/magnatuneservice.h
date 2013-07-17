@@ -65,10 +65,10 @@ public:
     static QString membershipStr(MemberShip f, bool trans=false);
     static QString downloadTypeStr(DownloadType f, bool trans=false);
 
-    MagnatuneService(OnlineServicesModel *m) : OnlineService(m, constName), membership(MB_None) { }
+    MagnatuneService(MusicModel *m) : OnlineService(m, constName), membership(MB_None) { }
 
-    const Icon & serviceIcon() const { return Icons::self()->magnatuneIcon; }
-    Song fixPath(const Song &orig) const;
+    Icon icon() const { return Icons::self()->magnatuneIcon; }
+    Song fixPath(const Song &orig, bool) const;
     void createLoader();
     void loadConfig();
     void saveConfig();

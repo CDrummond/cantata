@@ -133,6 +133,18 @@ void Device::cleanDir(const QString &dir, const QString &base, const QString &co
     }
 }
 
+Song Device::fixPath(const Song &orig, bool fullPath) const
+{
+    Song s=orig;
+    if (fullPath) {
+        QString p=path();
+        if (!p.isEmpty()) {
+            s.file=p+s.file;
+        }
+    }
+    return s;
+}
+
 #ifndef Q_OS_WIN
 
 #include <unistd.h>
@@ -140,7 +152,7 @@ void Device::cleanDir(const QString &dir, const QString &base, const QString &co
 const QLatin1String Device::constNoCover("-");
 const QLatin1String Device::constEmbedCover("+");
 
-Device * Device::create(DevicesModel *m, const QString &udi)
+Device * Device::create(MusicModel *m, const QString &udi)
 {
     Solid::Device device=Solid::Device(udi);
 
@@ -286,218 +298,29 @@ void Device::applyUpdate()
     } else*/ {
         int oldCount=childCount();
         if (oldCount>0) {
-            model->beginRemoveRows(model->createIndex(model->devices.indexOf(this), 0, this), 0, oldCount-1);
+            m_model->beginRemoveRows(index(), 0, oldCount-1);
             clearItems();
-            model->endRemoveRows();
+            m_model->endRemoveRows();
         }
         int newCount=newRows();
         if (newCount>0) {
-            model->beginInsertRows(model->createIndex(model->devices.indexOf(this), 0, this), 0, newCount-1);
+            m_model->beginInsertRows(index(), 0, newCount-1);
             foreach (MusicLibraryItem *item, update->childItems()) {
                 item->setParent(this);
             }
             if (AudioCd!=devType()) {
                 refreshIndexes();
             }
-            model->endInsertRows();
+            m_model->endInsertRows();
         }
     }
     delete update;
     update=0;
 }
 
-const MusicLibraryItem * Device::findSong(const Song &s) const
+QModelIndex Device::index() const
 {
-    if (AudioCd==devType()) {
-        foreach (const MusicLibraryItem *songItem, childItems()) {
-            if (songItem->data()==s.displayTitle()) {
-                return songItem;
-            }
-        }
-    } else {
-        MusicLibraryItemArtist *artistItem = ((MusicLibraryItemRoot *)this)->artist(s, false);
-        if (artistItem) {
-            MusicLibraryItemAlbum *albumItem = artistItem->album(s, false);
-            if (albumItem) {
-                foreach (const MusicLibraryItem *songItem, albumItem->childItems()) {
-                    if (songItem->data()==s.displayTitle() && static_cast<const MusicLibraryItemSong *>(songItem)->song().track==s.track) {
-                        return songItem;
-                    }
-                }
-            }
-        }
-    }
-    return 0;
-}
-
-bool Device::songExists(const Song &s) const
-{
-    const MusicLibraryItem *song=findSong(s);
-
-    if (song) {
-        return true;
-    }
-
-    if (!s.isVariousArtists()) {
-        Song mod(s);
-        mod.albumartist=i18n("Various Artists");
-        if (MPDParseUtils::groupMultiple()) {
-            song=findSong(mod);
-            if (song) {
-                Song sng=static_cast<const MusicLibraryItemSong *>(song)->song();
-                if (sng.albumArtist()==s.albumArtist()) {
-                    return true;
-                }
-            }
-        }
-        if (MPDParseUtils::groupSingle()) {
-            mod.album=i18n("Single Tracks");
-            song=findSong(mod);
-            if (song) {
-                Song sng=static_cast<const MusicLibraryItemSong *>(song)->song();
-                if (sng.albumArtist()==s.albumArtist() && sng.album==s.album) {
-                    return true;
-                }
-            }
-        }
-    }
-
-    return false;
-}
-
-bool Device::updateSong(const Song &orig, const Song &edit)
-{
-    if (AudioCd==devType()) {
-        int songRow=0;
-        foreach (MusicLibraryItem *song,childItems()) {
-            if (static_cast<MusicLibraryItemSong *>(song)->song()==orig) {
-                static_cast<MusicLibraryItemSong *>(song)->setSong(edit);
-                if (orig.genre!=edit.genre) {
-                    updateGenres();
-                }
-                QModelIndex idx=model->createIndex(songRow, 0, song);
-                emit model->dataChanged(idx, idx);
-                return true;
-            }
-            songRow++;
-        }
-    } else if ((supportsAlbumArtist ? orig.albumArtist()==edit.albumArtist() : orig.artist==edit.artist) && orig.album==edit.album) {
-        MusicLibraryItemArtist *artistItem = artist(orig, false);
-        if (!artistItem) {
-            return false;
-        }
-        MusicLibraryItemAlbum *albumItem = artistItem->album(orig, false);
-        if (!albumItem) {
-            return false;
-        }
-        int songRow=0;
-        foreach (MusicLibraryItem *song, albumItem->childItems()) {
-            if (static_cast<MusicLibraryItemSong *>(song)->song()==orig) {
-                static_cast<MusicLibraryItemSong *>(song)->setSong(edit);
-                if (orig.genre!=edit.genre) {
-                    albumItem->updateGenres();
-                    artistItem->updateGenres();
-                    updateGenres();
-                }
-                QModelIndex idx=model->createIndex(songRow, 0, song);
-                emit model->dataChanged(idx, idx);
-                return true;
-            }
-            songRow++;
-        }
-    }
-    return false;
-}
-
-void Device::addSongToList(const Song &s)
-{
-    if (AudioCd==devType()) {
-        return;
-    }
-    MusicLibraryItemArtist *artistItem = artist(s, false);
-    if (!artistItem) {
-        model->beginInsertRows(model->createIndex(model->devices.indexOf(this), 0, this), childCount(), childCount());
-        artistItem = createArtist(s);
-        model->endInsertRows();
-    }
-    MusicLibraryItemAlbum *albumItem = artistItem->album(s, false);
-    if (!albumItem) {
-        model->beginInsertRows(model->createIndex(childItems().indexOf(artistItem), 0, artistItem), artistItem->childCount(), artistItem->childCount());
-        albumItem = artistItem->createAlbum(s);
-        model->endInsertRows();
-    }
-    quint32 year=albumItem->year();
-    foreach (const MusicLibraryItem *songItem, albumItem->childItems()) {
-        const MusicLibraryItemSong *song=static_cast<const MusicLibraryItemSong *>(songItem);
-        if (song->track()==s.track && song->disc()==s.disc && song->data()==s.displayTitle()) {
-            return;
-        }
-    }
-
-    model->beginInsertRows(model->createIndex(artistItem->childItems().indexOf(albumItem), 0, albumItem), albumItem->childCount(), albumItem->childCount());
-    MusicLibraryItemSong *songItem = new MusicLibraryItemSong(s, albumItem);
-    albumItem->append(songItem);
-    model->endInsertRows();
-    if (year!=albumItem->year()) {
-        QModelIndex idx=model->createIndex(artistItem->childItems().indexOf(albumItem), 0, albumItem);
-        emit model->dataChanged(idx, idx);
-    }
-}
-
-void Device::removeSongFromList(const Song &s)
-{
-    if (AudioCd==devType()) {
-        return;
-    }
-
-    MusicLibraryItemArtist *artistItem = artist(s, false);
-    if (!artistItem) {
-        return;
-    }
-    MusicLibraryItemAlbum *albumItem = artistItem->album(s, false);
-    if (!albumItem) {
-        return;
-    }
-    MusicLibraryItem *songItem=0;
-    int songRow=0;
-    foreach (MusicLibraryItem *song, albumItem->childItems()) {
-        if (static_cast<MusicLibraryItemSong *>(song)->song().title==s.title) {
-            songItem=song;
-            break;
-        }
-        songRow++;
-    }
-    if (!songItem) {
-        return;
-    }
-
-    if (1==artistItem->childCount() && 1==albumItem->childCount()) {
-        // 1 album with 1 song - so remove whole artist
-        int row=m_childItems.indexOf(artistItem);
-        model->beginRemoveRows(model->createIndex(model->devices.indexOf(this), 0, this), row, row);
-        remove(artistItem);
-        model->endRemoveRows();
-        return;
-    }
-
-    if (1==albumItem->childCount()) {
-        // multiple albums, but this album only has 1 song - remove album
-        int row=artistItem->childItems().indexOf(albumItem);
-        model->beginRemoveRows(model->createIndex(childItems().indexOf(artistItem), 0, artistItem), row, row);
-        artistItem->remove(albumItem);
-        model->endRemoveRows();
-        return;
-    }
-
-    // Just remove particular song
-    model->beginRemoveRows(model->createIndex(artistItem->childItems().indexOf(albumItem), 0, albumItem), songRow, songRow);
-    quint32 year=albumItem->year();
-    albumItem->remove(songRow);
-    model->endRemoveRows();
-    if (year!=albumItem->year()) {
-        QModelIndex idx=model->createIndex(artistItem->childItems().indexOf(albumItem), 0, albumItem);
-        emit model->dataChanged(idx, idx);
-    }
+    return m_model->createIndex(m_model->row((void *)this), 0, (void *)this);
 }
 
 void Device::setStatusMessage(const QString &msg)
@@ -508,8 +331,8 @@ void Device::setStatusMessage(const QString &msg)
 
 void Device::updateStatus()
 {
-    QModelIndex modelIndex=model->createIndex(model->devices.indexOf(this), 0, this);
-    emit model->dataChanged(modelIndex, modelIndex);
+    QModelIndex modelIndex=index();
+    emit m_model->dataChanged(modelIndex, modelIndex);
 }
 
 void Device::songCount(int c)

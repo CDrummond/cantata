@@ -12,6 +12,8 @@
 # Redistribution and use is allowed according to the terms of the BSD license.
 # For details see the accompanying COPYING-CMAKE-SCRIPTS file.
 
+include(CheckCSourceCompiles)
+
 if (CDPARANOIA_INCLUDE_DIR AND CDPARANOIA_LIBRARIES)
   # in cache already
   SET(CDPARANOIA_FOUND TRUE)
@@ -33,4 +35,12 @@ else (CDPARANOIA_INCLUDE_DIR AND CDPARANOIA_LIBRARIES)
 
   MARK_AS_ADVANCED(CDPARANOIA_INCLUDE_DIR CDPARANOIA_LIBRARIES)
 
+  if (CDPARANOIA_FOUND)
+      set(CMAKE_REQUIRED_INCLUDES ${CDPARANOIA_INCLUDE_DIR})
+      set(CMAKE_REQUIRED_LIBRARIES ${CDPARANOIA_LIBRARIES})
+      check_c_source_compiles("#include <cdda_interface.h>
+                               #include <cdda_paranoia.h>
+                              int main() { paranoia_cachemodel_size(0, 0); return 0; }"
+                              CDPARANOIA_HAS_CACHEMODEL_SIZE)
+  endif (CDPARANOIA_FOUND)
 endif (CDPARANOIA_INCLUDE_DIR AND CDPARANOIA_LIBRARIES)

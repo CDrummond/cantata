@@ -34,7 +34,7 @@
 
 class Thread;
 class NetworkAccessManager;
-class OnlineServicesModel;
+class MusicModel;
 class QNetworkReply;
 class QXmlStreamReader;
 
@@ -98,9 +98,8 @@ public:
     static Song encode(const Song &song);
     static bool decode(Song &song);
 
-    OnlineService(OnlineServicesModel *m, const QString &name)
+    OnlineService(MusicModel *m, const QString &name)
         : MusicLibraryItemRoot(name, false)
-        , model(m)
         , configured(false)
         , update(0)
         , lProgress(0.0)
@@ -108,12 +107,11 @@ public:
         , loader(0)    {
         setUseArtistImages(true);
         setUseAlbumImages(true);
+        m_model=m;
     }
     virtual ~OnlineService() { }
     void destroy();
     void stopLoader();
-    virtual const Icon & serviceIcon() const =0;
-    virtual Song fixPath(const Song &orig) const =0;
     virtual void createLoader()=0;
     virtual void loadConfig()=0;
     virtual void saveConfig()=0;
@@ -127,7 +125,6 @@ public:
     virtual void cancelSearch() { }
     virtual bool isSearching()  const { return false; }
     virtual bool isFlat() const { return false; }
-    const QString name() const { return data(); }
     double loadProgress() { return lProgress; }
     bool isLoaded() const { return loaded; }
     void reload(bool fromCache=true);
@@ -162,7 +159,6 @@ Q_SIGNALS:
     void error(const QString &);
 
 protected:
-    OnlineServicesModel *model;
     bool configured;
     MusicLibraryItemRoot *update;
     QString statusMsg;

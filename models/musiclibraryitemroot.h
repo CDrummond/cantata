@@ -32,13 +32,17 @@
 #include <QHash>
 #include <QSet>
 #include <QDateTime>
+#include <QModelIndex>
+#include <QImage>
 #include "musiclibraryitem.h"
 #include "song.h"
+#include "icon.h"
 
 class QDateTime;
 class QXmlStreamReader;
 class QXmlStreamWriter;
 class MusicLibraryItemArtist;
+class MusicModel;
 
 class MusicLibraryProgressMonitor
 {
@@ -52,17 +56,22 @@ public:
 class MusicLibraryItemRoot : public MusicLibraryItemContainer
 {
 public:
-    MusicLibraryItemRoot(const QString &name=QString(), bool albumArtistSupport=true, bool flat=false)
+    MusicLibraryItemRoot(const QString &name=QString(), bool albumArtistSupport=true, bool flatHierarchy=false)
         : MusicLibraryItemContainer(name, 0)
         , supportsAlbumArtist(albumArtistSupport)
         , albumImages(true)
         , artistImages(false)
         , largeImages(false)
-        , isFlat(flat) {
+        , isFlat(flatHierarchy)
+        , m_model(0) {
     }
     virtual ~MusicLibraryItemRoot() { }
 
-    virtual QString icon() const { return QString(); }
+    virtual Icon icon() const { return Icon(); }
+    virtual QImage image() const { return QImage(); }
+    virtual Song fixPath(const Song &orig, bool) const { return orig; }
+    virtual const QString & id() const { return data(); }
+    virtual bool canPlaySongs() const { return true; }
     MusicLibraryItemArtist * artist(const Song &s, bool create=true);
     MusicLibraryItemArtist * createArtist(const Song &s);
     void groupSingleTracks();
@@ -89,19 +98,28 @@ public:
     void setLargeImages(bool a) { largeImages=a; }
     void toggleGrouping();
     void clearItems();
+    void setModel(MusicModel *m) { m_model=m; }
+    bool flat() const { return isFlat; }
+
+    virtual QModelIndex index() const { return QModelIndex(); }
+    bool update(const QSet<Song> &songs);
+    const MusicLibraryItem * findSong(const Song &s) const;
+    bool songExists(const Song &s) const;
+    bool updateSong(const Song &orig, const Song &edit);
+    void addSongToList(const Song &s);
+    void removeSongFromList(const Song &s);
 
 protected:
     QString songArtist(const Song &s) const;
 
 protected:
     bool supportsAlbumArtist; // TODO: ALBUMARTIST: Remove when libMPT supports album artist!
-
-private:
     bool albumImages:1;
     bool artistImages:1;
     bool largeImages:1;
     bool isFlat:1;
     QHash<QString, int> m_indexes;
+    MusicModel *m_model;
 };
 
 #endif

@@ -80,7 +80,7 @@ QString AudioCdDevice::getDevice(const QUrl &url)
     return QString();
 }
 
-AudioCdDevice::AudioCdDevice(DevicesModel *m, Solid::Device &dev)
+AudioCdDevice::AudioCdDevice(MusicModel *m, Solid::Device &dev)
     : Device(m, dev, false, true)
     #ifdef CDDB_FOUND
     , cddb(0)
@@ -94,6 +94,7 @@ AudioCdDevice::AudioCdDevice(DevicesModel *m, Solid::Device &dev)
     , lookupInProcess(false)
     , autoPlay(false)
 {
+    icn=Icon("media-optical");
     drive=dev.parent().as<Solid::OpticalDrive>();
     block=dev.as<Solid::Block>();
     if (block) {
@@ -335,12 +336,12 @@ void AudioCdDevice::setDetails(const CdAlbum &a)
     #else
     detailsString=QTP_TRACKS_DURATION_STR(a.tracks.count(), Song::formattedTime(totalDuration));
     #endif
-    emit updating(udi(), false);
+    emit updating(id(), false);
     if (differentAlbum && !a.isDefault) {
         Song s;
         s.artist=artist;
         s.album=album;
-        s.file=AudioCdDevice::coverUrl(udi());
+        s.file=AudioCdDevice::coverUrl(id());
         Covers::Image img=Covers::self()->requestImage(s);
         if (!img.img.isNull()) {
             setCover(s, img.img, img.fileName);
@@ -362,7 +363,7 @@ void AudioCdDevice::cdMatches(const QList<CdAlbum> &albums)
         setDetails(albums.at(0));
     } else if (albums.count()>1) {
         // More than 1 match, so prompt user!
-        emit matches(udi(), albums);
+        emit matches(id(), albums);
     }
 }
 

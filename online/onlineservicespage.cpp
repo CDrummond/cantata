@@ -104,7 +104,7 @@ void OnlineServicesPage::clear()
 QString OnlineServicesPage::activeService() const
 {
     OnlineService *srv=activeSrv();
-    return srv ? srv->name() : QString();
+    return srv ? srv->id() : QString();
 }
 
 OnlineService * OnlineServicesPage::activeSrv() const
@@ -226,10 +226,10 @@ void OnlineServicesPage::controlSearch(bool on)
             OnlineService *srv=static_cast<OnlineService *>(item);
             if (srv->isSearchBased()) {
                 onlineSearchRequest=true;
-                searchService=srv->name();
+                searchService=srv->id();
             } else if (srv->isLoaded()) {
                 onlineSearchRequest=false;
-                searchService=srv->name();
+                searchService=srv->id();
             }
         }
     }
@@ -244,11 +244,11 @@ void OnlineServicesPage::controlSearch(bool on)
             const OnlineService *srv=static_cast<const OnlineService *>(item);
             if (srv->isSearchBased()) {
                 onlineSearchRequest=true;
-                searchService=srv->name();
+                searchService=srv->id();
                 break;
             } else if (srv->isLoaded()) {
                 onlineSearchRequest=false;
-                searchService=srv->name();
+                searchService=srv->id();
                 break;
             }
         }
@@ -280,7 +280,7 @@ void OnlineServicesPage::controlSearch(bool on)
                 genreCombo->setEnabled(false);
             }
             view->setSearchLabelText(i18nc("Search ServiceName:", "Search %1:").arg(searchService));
-            view->setBackgroundImage(srv->serviceIcon());
+            view->setBackgroundImage(srv->icon());
         }
         QModelIndex filterIndex=srv ? OnlineServicesModel::self()->index(srv) : QModelIndex();
         proxy.setFilterItem(srv);
@@ -393,7 +393,7 @@ void OnlineServicesPage::refreshService()
         OnlineService *srv=static_cast<OnlineService *>(item);
 
         if (srv->isLoaded() && srv->childCount()>0 &&
-                MessageBox::No==MessageBox::questionYesNo(this, i18n("Re-download music listing for %1?").arg(srv->name()), i18n("Re-download"),
+                MessageBox::No==MessageBox::questionYesNo(this, i18n("Re-download music listing for %1?").arg(srv->id()), i18n("Re-download"),
                                                           GuiItem(i18n("Re-download")), StdGuiItem::cancel())) {
             return;
         }

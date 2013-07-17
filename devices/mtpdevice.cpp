@@ -1111,7 +1111,7 @@ QString cfgKey(Solid::Device &dev, const QString &serial)
     return key;
 }
 
-MtpDevice::MtpDevice(DevicesModel *m, Solid::Device &dev)
+MtpDevice::MtpDevice(MusicModel *m, Solid::Device &dev)
     : Device(m, dev,
              #ifdef MTP_FAKE_ALBUMARTIST_SUPPORT
              true
@@ -1492,7 +1492,7 @@ void MtpDevice::libraryUpdated()
     }
     update=connection->takeLibrary();
     setStatusMessage(QString());
-    emit updating(udi(), false);
+    emit updating(id(), false);
     mtpUpdating=false;
 }
 

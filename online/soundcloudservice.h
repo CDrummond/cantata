@@ -34,11 +34,11 @@ class SoundCloudService : public OnlineService
 public:
     static const QLatin1String constName;
 
-    SoundCloudService(OnlineServicesModel *m);
+    SoundCloudService(MusicModel *m);
     ~SoundCloudService() { cancelAll(); }
 
-    const Icon & serviceIcon() const { return Icons::self()->soundCloudIcon; }
-    Song fixPath(const Song &orig) const;
+    Icon icon() const { return Icons::self()->soundCloudIcon; }
+    Song fixPath(const Song &orig, bool) const;
     void loadConfig() { }
     void saveConfig() { }
     void createLoader() { }

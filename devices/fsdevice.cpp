@@ -340,7 +340,7 @@ void FsDevice::writeOpts(const QString &fileName, const DeviceOptions &opts, boo
     }
 }
 
-FsDevice::FsDevice(DevicesModel *m, Solid::Device &dev)
+FsDevice::FsDevice(MusicModel *m, Solid::Device &dev)
     : Device(m, dev)
     , state(Idle)
     , scanned(false)
@@ -349,7 +349,7 @@ FsDevice::FsDevice(DevicesModel *m, Solid::Device &dev)
 {
 }
 
-FsDevice::FsDevice(DevicesModel *m, const QString &name, const QString &id)
+FsDevice::FsDevice(MusicModel *m, const QString &name, const QString &id)
     : Device(m, name, id)
     , state(Idle)
     , scanned(false)
@@ -676,7 +676,7 @@ void FsDevice::startScanner(bool fullScan)
     state=Updating;
     emit scan(audioFolder, opts.useCache ? cacheFileName() : QString(), !scanned, existingSongs);
     setStatusMessage(i18n("Updating..."));
-    emit updating(udi(), true);
+    emit updating(id(), true);
 }
 
 void FsDevice::stopScanner()
@@ -713,7 +713,7 @@ void FsDevice::libraryUpdated(MusicLibraryItemRoot *lib)
     update=lib;
     setStatusMessage(QString());
     state=Idle;
-    emit updating(udi(), false);
+    emit updating(id(), false);
 }
 
 QString FsDevice::cacheFileName() const

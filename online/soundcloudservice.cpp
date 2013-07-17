@@ -36,7 +36,7 @@ static const QString constApiKey=QLatin1String("0cb23dce473528973ce74815bd36a334
 static const QString constHost=QLatin1String("api.soundcloud.com");
 static const QString constUrl=QLatin1String("https://")+constHost+QLatin1Char('/');
 
-SoundCloudService::SoundCloudService(OnlineServicesModel *m)
+SoundCloudService::SoundCloudService(MusicModel *m)
     : OnlineService(m, constName)
     , job(0)
 {
@@ -44,7 +44,7 @@ SoundCloudService::SoundCloudService(OnlineServicesModel *m)
     setUseAlbumImages(false);
 }
 
-Song SoundCloudService::fixPath(const Song &orig) const
+Song SoundCloudService::fixPath(const Song &orig, bool) const
 {
     return encode(orig);
 }

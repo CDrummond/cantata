@@ -33,7 +33,7 @@ MusicLibraryItem::MusicLibraryItem(const QString &data, MusicLibraryItemContaine
 
 int MusicLibraryItem::row() const
 {
-    // Calculate row value of this item. USe 0 to mean not-yet calcualted. Therefore, we
+    // Calculate row value of this item. Use 0 to mean not-yet calcualted. Therefore, we
     // store rows as value+1 - so need to decrement upon return!
     if (m_row>0) {
         return m_row-1;

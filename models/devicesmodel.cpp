@@ -100,7 +100,7 @@ DevicesModel * DevicesModel::self()
 }
 
 DevicesModel::DevicesModel(QObject *parent)
-    : ActionModel(parent)
+    : MultiMusicModel(parent)
     , itemMenu(0)
     , enabled(false)
     , inhibitMenuUpdate(false)
@@ -118,62 +118,6 @@ DevicesModel::DevicesModel(QObject *parent)
 
 DevicesModel::~DevicesModel()
 {
-    qDeleteAll(devices);
-}
-
-QModelIndex DevicesModel::index(int row, int column, const QModelIndex &parent) const
-{
-    if (!hasIndex(row, column, parent)) {
-        return QModelIndex();
-    }
-
-    if (parent.isValid()) {
-        MusicLibraryItem *p=static_cast<MusicLibraryItem *>(parent.internalPointer());
-
-        if (p) {
-            return row<p->childCount() ? createIndex(row, column, p->childItem(row)) : QModelIndex();
-        }
-    } else {
-        return row<devices.count() ? createIndex(row, column, devices.at(row)) : QModelIndex();
-    }
-
-    return QModelIndex();
-}
-
-QModelIndex DevicesModel::parent(const QModelIndex &index) const
-{
-    if (!index.isValid()) {
-        return QModelIndex();
-    }
-
-    MusicLibraryItem *childItem = static_cast<MusicLibraryItem *>(index.internalPointer());
-    MusicLibraryItem *parentItem = childItem->parentItem();
-
-    if (parentItem) {
-        return createIndex(parentItem->parentItem() ? parentItem->row() : devices.indexOf(static_cast<Device *>(parentItem)), 0, parentItem);
-    } else {
-        return QModelIndex();
-    }
-}
-
-QVariant DevicesModel::headerData(int /*section*/, Qt::Orientation /*orientation*/, int /*role*/) const
-{
-    return QVariant();
-}
-
-int DevicesModel::rowCount(const QModelIndex &parent) const
-{
-    if (parent.column() > 0) {
-        return 0;
-    }
-
-    return parent.isValid() ? static_cast<MusicLibraryItem *>(parent.internalPointer())->childCount() : devices.count();
-}
-
-int DevicesModel::columnCount(const QModelIndex &parent) const
-{
-    Q_UNUSED(parent)
-    return 1;
 }
 
 QVariant DevicesModel::data(const QModelIndex &index, int role) const
@@ -185,107 +129,9 @@ QVariant DevicesModel::data(const QModelIndex &index, int role) const
     MusicLibraryItem *item = static_cast<MusicLibraryItem *>(index.internalPointer());
 
     switch (role) {
-    case Qt::DecorationRole:
-        switch (item->itemType()) {
-        case MusicLibraryItem::Type_Root: {
-            #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
-            if (Device::AudioCd==static_cast<Device *>(item)->devType() &&
-                !static_cast<AudioCdDevice *>(item)->cover().img.isNull()) {
-                return static_cast<AudioCdDevice *>(item)->cover().img;
-            }
-            #endif
-            QString iconName = static_cast<MusicLibraryItemRoot *>(item)->icon();
-            return QIcon::fromTheme(iconName.isEmpty() ? QLatin1String("multimedia-player") : iconName);
-        }
-        case MusicLibraryItem::Type_Artist: {
-            MusicLibraryItemArtist *artist = static_cast<MusicLibraryItemArtist *>(item);
-            return artist->isVarious() ? Icons::self()->variousArtistsIcon : Icons::self()->artistIcon;
-        }
-        case MusicLibraryItem::Type_Album:
-            if (MusicLibraryItemAlbum::CoverNone==MusicLibraryItemAlbum::currentCoverSize()) {
-                return Icons::self()->albumIcon;
-            } else {
-                return static_cast<MusicLibraryItemAlbum *>(item)->cover();
-            }
-        case MusicLibraryItem::Type_Song:   return QIcon::fromTheme("audio-x-generic");
-        default: return QVariant();
-        }
-    case Qt::DisplayRole:
-        if (MusicLibraryItem::Type_Song==item->itemType()) {
-            MusicLibraryItemSong *song = static_cast<MusicLibraryItemSong *>(item);
-            if (MusicLibraryItem::Type_Artist==song->parentItem()->itemType()) {
-                if (static_cast<MusicLibraryItemAlbum *>(song->parentItem())->isSingleTracks()) {
-                    return song->song().artistSong();
-                } else {
-                    return song->song().trackAndTitleStr(static_cast<MusicLibraryItemArtist *>(song->parentItem()->parentItem())->isVarious() &&
-                                                         !Song::isVariousArtists(song->song().artist));
-                }
-            } else {
-                return song->song().trackAndTitleStr(Song::isVariousArtists(song->song().artist));
-            }
-        } else if(MusicLibraryItem::Type_Album==item->itemType() && MusicLibraryItemAlbum::showDate() &&
-                  static_cast<MusicLibraryItemAlbum *>(item)->year()>0) {
-            return QString::number(static_cast<MusicLibraryItemAlbum *>(item)->year())+QLatin1String(" - ")+item->data();
-        }
-        return item->data();
-    case Qt::ToolTipRole:
-        switch (item->itemType()) {
-        case MusicLibraryItem::Type_Root:
-            #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
-            if (Device::AudioCd==static_cast<Device *>(item)->devType()) {
-                return 0==item->childCount()
-                    ? item->data()
-                    : item->data()+"\n"+
-                        #ifdef ENABLE_KDE_SUPPORT
-                        i18np("1 Track (%2)", "%1 Tracks (%2)",item->childCount(), Song::formattedTime(static_cast<MusicLibraryItemAlbum *>(item)->totalTime()));
-                        #else
-                        QTP_TRACKS_DURATION_STR(item->childCount(), Song::formattedTime(static_cast<AudioCdDevice *>(item)->totalTime()));
-                        #endif
-            }
-            #endif
-            return 0==item->childCount()
-                ? item->data()
-                : item->data()+"\n"+
-                    #ifdef ENABLE_KDE_SUPPORT
-                    i18np("1 Artist", "%1 Artists", item->childCount());
-                    #else
-                    QTP_ARTISTS_STR(item->childCount());
-                    #endif
-        case MusicLibraryItem::Type_Artist:
-            return 0==item->childCount()
-                ? item->data()
-                : item->data()+"\n"+
-                    #ifdef ENABLE_KDE_SUPPORT
-                    i18np("1 Album", "%1 Albums", item->childCount());
-                    #else
-                    QTP_ALBUMS_STR(item->childCount());
-                    #endif
-        case MusicLibraryItem::Type_Album:
-            return 0==item->childCount()
-                ? item->data()
-                : item->data()+"\n"+
-                    #ifdef ENABLE_KDE_SUPPORT
-                    i18np("1 Track (%2)", "%1 Tracks (%2)",item->childCount(), Song::formattedTime(static_cast<MusicLibraryItemAlbum *>(item)->totalTime()));
-                    #else
-                    QTP_TRACKS_DURATION_STR(item->childCount(), Song::formattedTime(static_cast<MusicLibraryItemAlbum *>(item)->totalTime()));
-                    #endif
-        case MusicLibraryItem::Type_Song:
-            return data(index, Qt::DisplayRole).toString()+QLatin1String("<br/>")+Song::formattedTime(static_cast<MusicLibraryItemSong *>(item)->time())+
-                    (static_cast<MusicLibraryItemSong *>(item)->song().file.isEmpty()
-                     ? QString()
-                     : QLatin1String("<br/><small><i>")+fixDevicePath(static_cast<MusicLibraryItemSong *>(item)->song().file)+QLatin1String("</i></small>"));
-        default: return QVariant();
-        }
-    case ItemView::Role_ImageSize:
-        if (MusicLibraryItem::Type_Album==item->itemType()) {
-            return MusicLibraryItemAlbum::iconSize();
-        }
-        break;
     case ItemView::Role_SubText:
-        switch (item->itemType()) {
-        case MusicLibraryItem::Type_Root: {
+        if (MusicLibraryItem::Type_Root==item->itemType()) {
             Device *dev=static_cast<Device *>(item);
-
             if (!dev->statusMessage().isEmpty()) {
                 return dev->statusMessage();
             }
@@ -296,37 +142,8 @@ QVariant DevicesModel::data(const QModelIndex &index, int role) const
             if (Device::AudioCd==dev->devType()) {
                 return dev->subText();
             }
-            #ifdef ENABLE_KDE_SUPPORT
-            return i18np("1 Artist", "%1 Artists", item->childCount());
-            #else
-            return QTP_ARTISTS_STR(item->childCount());
-            #endif
-            break;
         }
-        case MusicLibraryItem::Type_Artist:
-            #ifdef ENABLE_KDE_SUPPORT
-            return i18np("1 Album", "%1 Albums", item->childCount());
-            #else
-            return QTP_ALBUMS_STR(item->childCount());
-            #endif
-            break;
-        case MusicLibraryItem::Type_Song:
-            return Song::formattedTime(static_cast<MusicLibraryItemSong *>(item)->time());
-        case MusicLibraryItem::Type_Album:
-            #ifdef ENABLE_KDE_SUPPORT
-            return i18np("1 Track (%2)", "%1 Tracks (%2)", item->childCount(), Song::formattedTime(static_cast<MusicLibraryItemAlbum *>(item)->totalTime()));
-            #else
-            return QTP_TRACKS_DURATION_STR(item->childCount(), Song::formattedTime(static_cast<MusicLibraryItemAlbum *>(item)->totalTime()));
-            #endif
-        default: return QVariant();
-        }
-    case ItemView::Role_Image:
-        if (MusicLibraryItem::Type_Album==item->itemType()) {
-            QVariant v;
-            v.setValue<QPixmap>(static_cast<MusicLibraryItemAlbum *>(item)->cover());
-            return v;
-        }
-        return QVariant();
+        break;
     case ItemView::Role_Capacity:
         if (MusicLibraryItem::Type_Root==item->itemType()) {
             return static_cast<Device *>(item)->usedCapacity();
@@ -370,9 +187,9 @@ QVariant DevicesModel::data(const QModelIndex &index, int role) const
         } */
         break;
     default:
-        return QVariant();
+        break;
     }
-    return QVariant();
+    return MultiMusicModel::data(index, role);
 }
 
 void DevicesModel::clear(bool clearConfig)
@@ -380,11 +197,12 @@ void DevicesModel::clear(bool clearConfig)
     inhibitMenuUpdate=true;
     QSet<QString> remoteUdis;
     QSet<QString> udis;
-    foreach (Device *dev, devices) {
+    foreach (MusicLibraryItemRoot *col, collections) {
+        Device *dev=static_cast<Device *>(col);
         if (Device::RemoteFs==dev->devType()) {
-            remoteUdis.insert(dev->udi());
+            remoteUdis.insert(dev->id());
         } else {
-            udis.insert(dev->udi());
+            udis.insert(dev->id());
         }
     }
 
@@ -395,7 +213,7 @@ void DevicesModel::clear(bool clearConfig)
         removeRemoteDevice(u, clearConfig);
     }
 
-    devices.clear();
+    collections.clear();
     volumes.clear();
     inhibitMenuUpdate=false;
     updateItemMenu();
@@ -433,8 +251,8 @@ void DevicesModel::setEnabled(bool e)
 
 void DevicesModel::stop()
 {
-    foreach (Device *dev, devices) {
-        dev->stop();
+    foreach (MusicLibraryItemRoot *col, collections) {
+        static_cast<Device *>(col)->stop();
     }
 
     disconnect(Solid::DeviceNotifier::instance(), SIGNAL(deviceAdded(const QString &)), this, SLOT(deviceAdded(const QString &)));
@@ -447,7 +265,7 @@ void DevicesModel::stop()
 Device * DevicesModel::device(const QString &udi)
 {
     int idx=indexOf(udi);
-    return idx<0 ? 0 : devices.at(idx);
+    return idx<0 ? 0 : static_cast<Device *>(collections.at(idx));
 }
 
 void DevicesModel::setCover(const Song &song, const QImage &img)
@@ -464,7 +282,7 @@ void DevicesModel::setCover(const Song &song, const QImage &img)
     if (!dev) {
         return;
     }
-    int i=devices.indexOf(dev);
+    int i=collections.indexOf(dev);
     if (i<0) {
         return;
     }
@@ -482,7 +300,7 @@ void DevicesModel::deviceUpdating(const QString &udi, bool state)
 {
     int idx=indexOf(udi);
     if (idx>=0) {
-        Device *dev=devices.at(idx);
+        Device *dev=static_cast<Device *>(collections.at(idx));
 
         if (state) {
             QModelIndex modelIndex=createIndex(idx, 0, dev);
@@ -493,21 +311,9 @@ void DevicesModel::deviceUpdating(const QString &udi, bool state)
             }
             QModelIndex modelIndex=createIndex(idx, 0, dev);
             emit dataChanged(modelIndex, modelIndex);
-            updateGenres();
+            MultiMusicModel::updateGenres();
             emit updated(modelIndex);
         }
-    }
-}
-
-void DevicesModel::updateGenres()
-{
-    QSet<QString> newGenres;
-    foreach (Device *dev, devices) {
-        newGenres+=dev->genres();
-    }
-    if (newGenres!=devGenres) {
-        devGenres=newGenres;
-        emit updateGenres(devGenres);
     }
 }
 
@@ -519,16 +325,6 @@ Qt::ItemFlags DevicesModel::flags(const QModelIndex &index) const
     return Qt::ItemIsEnabled;
 }
 
-QStringList DevicesModel::filenames(const QModelIndexList &indexes, bool playableOnly, bool fullPath) const
-{
-    QList<Song> songList=songs(indexes, playableOnly, fullPath);
-    QStringList fnames;
-    foreach (const Song &s, songList) {
-        fnames.append(s.file);
-    }
-    return fnames;
-}
-
 QStringList DevicesModel::playableUrls(const QModelIndexList &indexes) const
 {
     QList<Song> songList=songs(indexes, true, true);
@@ -537,114 +333,6 @@ QStringList DevicesModel::playableUrls(const QModelIndexList &indexes) const
         urls.append(HttpServer::self()->encodeUrl(s));
     }
     return urls;
-}
-
-static Song fixPath(Song s, const QString &path)
-{
-    if (!path.isEmpty()) {
-        s.file=path+s.file;
-    }
-    return s;
-}
-
-QList<Song> DevicesModel::songs(const QModelIndexList &indexes, bool playableOnly, bool fullPath) const
-{
-    QMap<MusicLibraryItem *, QList<Song> > devSongs;
-
-    foreach(QModelIndex index, indexes) {
-        MusicLibraryItem *item = static_cast<MusicLibraryItem *>(index.internalPointer());
-        MusicLibraryItem *parent=item;
-
-        while (parent->parentItem()) {
-            parent=parent->parentItem();
-        }
-
-        if (!parent) {
-            continue;
-        }
-        if (playableOnly && !static_cast<Device *>(parent)->canPlaySongs()) {
-            continue;
-        }
-
-        QString base=fullPath ? static_cast<Device *>(parent)->path() : QString();
-
-        switch (item->itemType()) {
-        case MusicLibraryItem::Type_Root: {
-            if (Device::AudioCd==static_cast<Device *>(parent)->devType()) {
-                foreach (const MusicLibraryItem *song, static_cast<const MusicLibraryItemContainer *>(item)->childItems()) {
-                    if (MusicLibraryItem::Type_Song==song->itemType() && !devSongs[parent].contains(static_cast<const MusicLibraryItemSong*>(song)->song())) {
-                        devSongs[parent] << fixPath(static_cast<const MusicLibraryItemSong*>(song)->song(), base);
-                    }
-                }
-            } else {
-                // First, sort all artists as they would appear in UI...
-                QList<MusicLibraryItem *> artists=static_cast<const MusicLibraryItemContainer *>(item)->childItems();
-                qSort(artists.begin(), artists.end(), MusicLibraryItemArtist::lessThan);
-                foreach (MusicLibraryItem *a, artists) {
-                    const MusicLibraryItemContainer *artist=static_cast<const MusicLibraryItemContainer *>(a);
-                    // Now sort all albums as they would appear in UI...
-                    QList<MusicLibraryItem *> artistAlbums=static_cast<const MusicLibraryItemContainer *>(artist)->childItems();
-                    qSort(artistAlbums.begin(), artistAlbums.end(), MusicLibraryItemAlbum::lessThan);
-                    foreach (MusicLibraryItem *i, artistAlbums) {
-                        const MusicLibraryItemContainer *album=static_cast<const MusicLibraryItemContainer *>(i);
-                        foreach (const MusicLibraryItem *song, static_cast<const MusicLibraryItemContainer *>(album)->childItems()) {
-                            if (MusicLibraryItem::Type_Song==song->itemType() && !devSongs[parent].contains(static_cast<const MusicLibraryItemSong*>(song)->song())) {
-                                devSongs[parent] << fixPath(static_cast<const MusicLibraryItemSong*>(song)->song(), base);
-                            }
-                        }
-                    }
-                }
-            }
-            break;
-        }
-        case MusicLibraryItem::Type_Artist: {
-            // First, sort all albums as they would appear in UI...
-            QList<MusicLibraryItem *> artistAlbums=static_cast<const MusicLibraryItemContainer *>(item)->childItems();
-            qSort(artistAlbums.begin(), artistAlbums.end(), MusicLibraryItemAlbum::lessThan);
-
-            foreach (MusicLibraryItem *i, artistAlbums) {
-                const MusicLibraryItemContainer *album=static_cast<const MusicLibraryItemContainer *>(i);
-                foreach (const MusicLibraryItem *song, static_cast<const MusicLibraryItemContainer *>(album)->childItems()) {
-                    if (MusicLibraryItem::Type_Song==song->itemType() && !devSongs[parent].contains(static_cast<const MusicLibraryItemSong*>(song)->song())) {
-                        devSongs[parent] << fixPath(static_cast<const MusicLibraryItemSong*>(song)->song(), base);
-                    }
-                }
-            }
-            break;
-        }
-        case MusicLibraryItem::Type_Album:
-            foreach (const MusicLibraryItem *song, static_cast<const MusicLibraryItemContainer *>(item)->childItems()) {
-                if (MusicLibraryItem::Type_Song==song->itemType() && !devSongs[parent].contains(static_cast<const MusicLibraryItemSong*>(song)->song())) {
-                    devSongs[parent] << fixPath(static_cast<const MusicLibraryItemSong*>(song)->song(), base);
-                }
-            }
-            break;
-        case MusicLibraryItem::Type_Song:
-            if (!devSongs[parent].contains(static_cast<const MusicLibraryItemSong*>(item)->song())) {
-                devSongs[parent] << fixPath(static_cast<const MusicLibraryItemSong*>(item)->song(), base);
-            }
-            break;
-        default:
-            break;
-        }
-    }
-
-    QList<Song> songs;
-    QMap<MusicLibraryItem *, QList<Song> >::Iterator it(devSongs.begin());
-    QMap<MusicLibraryItem *, QList<Song> >::Iterator end(devSongs.end());
-
-    for (; it!=end; ++it) {
-        songs.append(it.value());
-    }
-
-    return songs;
-}
-
-void DevicesModel::getDetails(QSet<QString> &artists, QSet<QString> &albumArtists, QSet<QString> &albums, QSet<QString> &genres)
-{
-    foreach (Device *dev, devices) {
-        dev->getDetails(artists, albumArtists, albums, genres);
-    }
 }
 
 void DevicesModel::emitAddToDevice()
@@ -701,8 +389,8 @@ void DevicesModel::addLocalDevice(const QString &udi)
     }
     Device *dev=Device::create(this, udi);
     if (dev) {
-        beginInsertRows(QModelIndex(), devices.count(), devices.count());
-        devices.append(dev);
+        beginInsertRows(QModelIndex(), collections.count(), collections.count());
+        collections.append(dev);
         endInsertRows();
         connect(dev, SIGNAL(updating(const QString &, bool)), SLOT(deviceUpdating(const QString &, bool)));
         connect(dev, SIGNAL(error(const QString &)), SIGNAL(error(const QString &)));
@@ -739,10 +427,10 @@ void DevicesModel::deviceRemoved(const QString &udi)
         }
 
         beginRemoveRows(QModelIndex(), idx, idx);
-        devices.takeAt(idx)->deleteLater();
+        static_cast<Device *>(collections.takeAt(idx))->deleteLater();
         endRemoveRows();
         updateItemMenu();
-        updateGenres();
+        MultiMusicModel::updateGenres();
     }
 }
 
@@ -752,7 +440,7 @@ void DevicesModel::accessibilityChanged(bool accessible, const QString &udi)
     int idx=indexOf(udi);
     DBUG << "Solid device accesibility changed udi = " << udi << idx << accessible;
     if (idx>=0) {
-        Device *dev=devices.at(idx);
+        Device *dev=static_cast<Device *>(collections.at(idx));
         if (dev) {
             dev->connectionStateChanged();
             QModelIndex modelIndex=createIndex(idx, 0, dev);
@@ -766,8 +454,8 @@ void DevicesModel::addRemoteDevice(const DeviceOptions &opts, RemoteFsDevice::De
     Device *dev=RemoteFsDevice::create(this, opts, details);
 
     if (dev) {
-        beginInsertRows(QModelIndex(), devices.count(), devices.count());
-        devices.append(dev);
+        beginInsertRows(QModelIndex(), collections.count(), collections.count());
+        collections.append(dev);
         endInsertRows();
         connect(dev, SIGNAL(updating(const QString &, bool)), SLOT(deviceUpdating(const QString &, bool)));
         connect(dev, SIGNAL(error(const QString &)), SIGNAL(error(const QString &)));
@@ -793,15 +481,15 @@ void DevicesModel::removeRemoteDevice(const QString &udi, bool removeFromConfig)
         return;
     }
 
-    Device *dev=devices.at(idx);
+    Device *dev=static_cast<Device *>(collections.at(idx));
 
     if (dev && Device::RemoteFs==dev->devType()) {
         beginRemoveRows(QModelIndex(), idx, idx);
         // Remove device from list, but do NOT delete - it may be scanning!!!!
-        devices.takeAt(idx);
+        collections.takeAt(idx);
         endRemoveRows();
         updateItemMenu();
-        updateGenres();
+        MultiMusicModel::updateGenres();
         RemoteFsDevice *rfs=qobject_cast<RemoteFsDevice *>(dev);
         if (rfs) {
             // Destroy will stop device, and delete it (via deleteLater())
@@ -829,7 +517,7 @@ void DevicesModel::removeDeviceConnectionStateChanged(const QString &udi, bool s
         if (idx<0) {
             return;
         }
-        updateGenres();
+        MultiMusicModel::updateGenres();
     }
     #else
     Q_UNUSED(udi)
@@ -840,7 +528,8 @@ void DevicesModel::removeDeviceConnectionStateChanged(const QString &udi, bool s
 void DevicesModel::mountsChanged()
 {
     #ifdef ENABLE_REMOTE_DEVICES
-    foreach (Device *dev, devices) {
+    foreach (MusicLibraryItemRoot *col, collections) {
+        Device *dev=static_cast<Device *>(col);
         if (Device::RemoteFs==dev->devType() && ((RemoteFsDevice *)dev)->getDetails().isLocalFile()) {
             if (0==dev->childCount()) {
                 ((RemoteFsDevice *)dev)->load();
@@ -852,18 +541,19 @@ void DevicesModel::mountsChanged()
     #endif
 
     // For some reason if a device without a partition (e.g. /dev/sdc) is mounted whilst cantata is running, then we receive no deviceAdded signal
-    // So, as a work-around, each time a device is mounted - check for all local devices. :-)
+    // So, as a work-around, each time a device is mounted - check for all local collections. :-)
     // BUG:127
     loadLocal();
 }
 
 void DevicesModel::loadLocal()
 {
-    // Build set of currently known MTP/UMS devices...
+    // Build set of currently known MTP/UMS collections...
     QSet<QString> existingUdis;
-    foreach (const Device *dev, devices) {
+    foreach (MusicLibraryItemRoot *col, collections) {
+        Device *dev=static_cast<Device *>(col);
         if (Device::Mtp==dev->devType() || Device::Ums==dev->devType()) {
-            existingUdis.insert(dev->udi());
+            existingUdis.insert(dev->id());
         }
     }
 
@@ -933,9 +623,9 @@ void DevicesModel::loadRemote()
 {
     QList<Device *> rem=RemoteFsDevice::loadAll(this);
     if (rem.count()) {
-        beginInsertRows(QModelIndex(), devices.count(), devices.count()+(rem.count()-1));
+        beginInsertRows(QModelIndex(), collections.count(), collections.count()+(rem.count()-1));
         foreach (Device *dev, rem) {
-            devices.append(dev);
+            collections.append(dev);
             connect(dev, SIGNAL(updating(const QString &, bool)), SLOT(deviceUpdating(const QString &, bool)));
             connect(dev, SIGNAL(error(const QString &)), SIGNAL(error(const QString &)));
             connect(dev, SIGNAL(cover(const Song &, const QImage &)), SLOT(setCover(const Song &, const QImage &)));
@@ -952,7 +642,8 @@ void DevicesModel::loadRemote()
 
 void DevicesModel::unmountRemote()
 {
-    foreach (Device *dev, devices) {
+    foreach (MusicLibraryItemRoot *col, collections) {
+        Device *dev=static_cast<Device *>(col);
         if (Device::RemoteFs==dev->devType()) {
             static_cast<RemoteFsDevice *>(dev)->unmount();
         }
@@ -960,19 +651,11 @@ void DevicesModel::unmountRemote()
 }
 #endif
 
-void DevicesModel::toggleGrouping()
-{
-    beginResetModel();
-    foreach (Device *dev, devices) {
-        dev->toggleGrouping();
-    }
-    endResetModel();
-}
-
 #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
 void DevicesModel::playCd(const QString &dev)
 {
-    foreach (Device *d, devices) {
+    foreach (MusicLibraryItemRoot *col, collections) {
+        Device *d=static_cast<Device *>(col);
         if (Device::AudioCd==d->devType() && static_cast<AudioCdDevice *>(d)->isDevice(dev)) {
             static_cast<AudioCdDevice *>(d)->autoplay();
             return;
@@ -982,18 +665,6 @@ void DevicesModel::playCd(const QString &dev)
 }
 
 #endif
-
-int DevicesModel::indexOf(const QString &udi)
-{
-    int i=0;
-    foreach (Device *dev, devices) {
-        if (dev->udi()==udi) {
-            return i;
-        }
-        i++;
-    }
-    return -1;
-}
 
 static bool lessThan(const QString &left, const QString &right)
 {
@@ -1012,13 +683,13 @@ void DevicesModel::updateItemMenu()
 
     itemMenu->clear();
 
-    if (devices.isEmpty()) {
+    if (collections.isEmpty()) {
         itemMenu->addAction(i18n("No Devices Attached"))->setEnabled(false);
     } else {
-        QMap<QString, const Device *> items;
+        QMap<QString, const MusicLibraryItemRoot *> items;
 
-        foreach (const Device *d, devices) {
-            if (Device::AudioCd!=d->devType()) {
+        foreach (const MusicLibraryItemRoot *d, collections) {
+            if (Device::AudioCd!=static_cast<const Device *>(d)->devType()) {
                 items.insert(d->data(), d);
             }
         }
@@ -1027,9 +698,9 @@ void DevicesModel::updateItemMenu()
         qSort(keys.begin(), keys.end(), lessThan);
 
         foreach (const QString &k, keys) {
-            const Device *d=items[k];
-            QAction *act=itemMenu->addAction(QIcon::fromTheme(d->icon()), k, this, SLOT(emitAddToDevice()));
-            act->setData(d->udi());
+            const MusicLibraryItemRoot *d=items[k];
+            QAction *act=itemMenu->addAction(d->icon(), k, this, SLOT(emitAddToDevice()));
+            act->setData(d->id());
             Action::initIcon(act);
         }
     }

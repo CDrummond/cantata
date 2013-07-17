@@ -407,9 +407,24 @@ MusicLibraryItemRoot * MPDParseUtils::parseLibraryItems(const QByteArray &data, 
                 QSet<QString> cueFiles; // List of source (flac, mp3, etc) files referenced in cue file
 
                 DBUG << "Got playlist item" << currentSong.file << "prevFile:" << prevSongFile;
-                if (canSplitCue && currentSong.file.endsWith(".cue", Qt::CaseInsensitive) && CueFile::parse(currentSong.file, mpdDir, cueSongs, cueFiles) &&
+                if (canSplitCue && currentSong.file.endsWith(".cue", Qt::CaseInsensitive) && !mpdDir.startsWith("http://") &&
+                        CueFile::parse(currentSong.file, mpdDir, cueSongs, cueFiles) &&
                         (cueFiles.count()<cueSongs.count() || (albumItem && albumItem->data()==unknown && albumItem->parentItem()->data()==unknown))) {
                     DBUG << "Parsed file, songs:" << cueSongs.count() << "files:" << cueFiles;
+
+                    bool canUseThisCueFile=true;
+                    foreach (const Song &s, cueSongs) {
+                        if (!QFile::exists(mpdDir+s.name)) {
+                            DBUG << QString(mpdDir+s.name) << "is referenced in cue file, but does not exist in MPD folder";
+                            canUseThisCueFile=false;
+                            break;
+                        }
+                    }
+
+                    if (!canUseThisCueFile) {
+                        continue;
+                    }
+
                     bool canUseCueFileTracks=false;
                     QList<Song> fixedCueSongs; // Songs taken from cueSongs that have been updated...
 

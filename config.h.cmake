@@ -32,6 +32,7 @@
 #cmakedefine ENABLE_REMOTE_DEVICES 1
 #cmakedefine TAGLIB_CAN_SAVE_ID3VER 1
 #cmakedefine ENABLE_PROXY_CONFIG 1
+#cmakedefine CDPARANOIA_HAS_CACHEMODEL_SIZE 1
 
 /*
  This is done via CMake add_defintions - as it controls SLOT generation in GtkProxyStyle

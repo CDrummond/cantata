@@ -22,6 +22,7 @@
  */
 
 #include "cdparanoia.h"
+#include "config.h"
 #include <QMutex>
 #include <QMutexLocker>
 #include <QSet>
@@ -52,7 +53,9 @@ CdParanoia::CdParanoia(const QString &device, bool full, bool noSkip, bool playb
         setFullParanoiaMode(full);
         if (playback) {
             maxRetries=1;
+            #ifdef CDPARANOIA_HAS_CACHEMODEL_SIZE
             paranoia_cachemodel_size(paranoia, 24);
+            #endif
         }
     }
 }

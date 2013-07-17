@@ -20,46 +20,31 @@
  * the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA 02110-1301, USA.
  */
+#ifndef MUSIC_MODEL_H
+#define MUSIC_MODEL_H
 
-#ifndef UMSDEVICE_H
-#define UMSDEVICE_H
+#include "actionmodel.h"
 
-#include "fsdevice.h"
-#ifdef ENABLE_KDE_SUPPORT
-#include <solid/storageaccess.h>
-#else
-#include "solid-lite/storageaccess.h"
-#endif
+class MusicLibraryItem;
+class MusicLibraryItemRoot;
 
-class UmsDevice : public FsDevice
+class MusicModel : public ActionModel
 {
-    Q_OBJECT
-
 public:
-    UmsDevice(MusicModel *m, Solid::Device &dev);
-    virtual ~UmsDevice();
+    MusicModel(QObject *parent = 0);
+    ~MusicModel();
+    virtual const MusicLibraryItemRoot * root(const MusicLibraryItem *item) const;
+    QVariant headerData(int, Qt::Orientation, int) const { return QVariant(); }
+    int columnCount(const QModelIndex &) const { return 1; }
+    QVariant data(const QModelIndex &, int) const;
 
-    void connectionStateChanged();
-    void toggle();
-    bool isConnected() const;
-    double usedCapacity();
-    QString capacityString();
-    qint64 freeSpace();
-    DevType devType() const { return Ums; }
-    void saveOptions();
-    void configure(QWidget *parent);
-    bool supportsDisconnect() const { return true; }
+    virtual int row(void *) const { return 0; }
 
-private:
-    void setup();
-
-private Q_SLOTS:
-    void saveProperties();
-    void saveProperties(const QString &newPath, const DeviceOptions &opts);
-
-private:
-    Solid::StorageAccess *access;
-    QStringList unusedParams;
+    // These classes need access to beingInsertRows, etc...
+    friend class MusicLibraryItemRoot;
+    friend class Device;
+    friend class OnlineService;
 };
 
 #endif
+

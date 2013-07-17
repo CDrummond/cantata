@@ -26,7 +26,7 @@
 #include <QSet>
 #include "song.h"
 #include "config.h"
-#include "actionmodel.h"
+#include "multimusicmodel.h"
 #include "musiclibraryproxymodel.h"
 
 class Device;
@@ -34,7 +34,7 @@ class OnlineService;
 class OnlineDevice;
 class MusicLibraryItem;
 
-class OnlineServicesModel : public ActionModel
+class OnlineServicesModel : public MultiMusicModel
 {
     Q_OBJECT
 
@@ -44,29 +44,19 @@ public:
 
     OnlineServicesModel(QObject *parent = 0);
     ~OnlineServicesModel();
-    QModelIndex index(int row, int column, const QModelIndex & = QModelIndex()) const;
     QModelIndex index(const OnlineService *srv) const;
-    QModelIndex parent(const QModelIndex &) const;
-    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
-    int rowCount(const QModelIndex &parent = QModelIndex()) const;
-    int columnCount(const QModelIndex &) const;
     bool hasChildren(const QModelIndex &index) const;
     bool canFetchMore(const QModelIndex &index) const;
     void fetchMore(const QModelIndex &index);
     QVariant data(const QModelIndex &, int) const;
     Qt::ItemFlags flags(const QModelIndex &index) const;
-    QStringList filenames(const QModelIndexList &indexes) const;
-    QList<Song> songs(const QModelIndexList &indexes) const;
     void clear();
     OnlineService * service(const QString &name);
     bool isEnabled() const { return enabled; }
     void setEnabled(bool e);
     void stop();
-    void getDetails(QSet<QString> &artists, QSet<QString> &albumArtists, QSet<QString> &albums, QSet<QString> &genres);
     QMimeData * mimeData(const QModelIndexList &indexes) const;
-    void toggleGrouping();
     void setSearch(const QString &serviceName, const QString &text);
-    const QSet<QString> & genres() { return srvGenres; }
     Device *device(const QString &udi);
     Action * configureAct() const { return configureAction; }
     Action * refreshAct() const { return refreshAction; }
@@ -81,19 +71,14 @@ private:
     void removeService(const QString &name);
     void updateItemMenu();
     void load();
-    int indexOf(const QString &name);
-    void updateGenres();
     void setBusy(const QString &serviceName, bool b);
 
 Q_SIGNALS:
-    void updateGenres(const QSet<QString> &genres);
     void error(const QString &text);
     void updated(const QModelIndex &idx);
     void busy(bool);
 
 private:
-    QList<OnlineService *> services;
-    QSet<QString> srvGenres;
     bool enabled;
     OnlineDevice *dev;
     Action *configureAction;

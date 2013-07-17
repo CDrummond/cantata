@@ -27,7 +27,7 @@
 #include "song.h"
 #include "config.h"
 #include "remotefsdevice.h"
-#include "actionmodel.h"
+#include "multimusicmodel.h"
 #include "cdalbum.h"
 #include "musiclibraryproxymodel.h"
 
@@ -35,7 +35,7 @@ class QMimeData;
 class Device;
 class QMenu;
 
-class DevicesModel : public ActionModel
+class DevicesModel : public MultiMusicModel
 {
     Q_OBJECT
 
@@ -46,29 +46,19 @@ public:
 
     DevicesModel(QObject *parent = 0);
     ~DevicesModel();
-    QModelIndex index(int, int, const QModelIndex & = QModelIndex()) const;
-    QModelIndex parent(const QModelIndex &) const;
-    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
-    int rowCount(const QModelIndex &parent = QModelIndex()) const;
-    int columnCount(const QModelIndex &) const;
     QVariant data(const QModelIndex &, int) const;
     Qt::ItemFlags flags(const QModelIndex &index) const;
-    QStringList filenames(const QModelIndexList &indexes, bool playableOnly=false, bool fullPath=false) const;
     QStringList playableUrls(const QModelIndexList &indexes) const;
-    QList<Song> songs(const QModelIndexList &indexes, bool playableOnly=false, bool fullPath=false) const;
     void clear(bool clearConfig=true);
     QMenu * menu() { return itemMenu; }
     Device * device(const QString &udi);
     bool isEnabled() const { return enabled; }
     void setEnabled(bool e);
     void stop();
-    void getDetails(QSet<QString> &artists, QSet<QString> &albumArtists, QSet<QString> &albums, QSet<QString> &genres);
     QMimeData * mimeData(const QModelIndexList &indexes) const;
     #ifdef ENABLE_REMOTE_DEVICES
     void unmountRemote();
     #endif
-    void toggleGrouping();
-    const QSet<QString> & genres() { return devGenres; }
 
     Action * configureAct() const { return configureAction; }
     Action * refreshAct() const { return refreshAction; }
@@ -98,8 +88,6 @@ private:
     #ifdef ENABLE_REMOTE_DEVICES
     void loadRemote();
     #endif
-    int indexOf(const QString &udi);
-    void updateGenres();
 
 Q_SIGNALS:
     void updateGenres(const QSet<QString> &genres);
@@ -116,9 +104,7 @@ private Q_SLOTS:
     void loadLocal();
 
 private:
-    QList<Device *> devices;
     QSet<QString> volumes;
-    QSet<QString> devGenres;
     QMenu *itemMenu;
     bool enabled;
     bool inhibitMenuUpdate;

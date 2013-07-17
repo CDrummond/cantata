@@ -35,7 +35,7 @@
 
 static QString cacheFileName(OnlineService *srv, bool create=false)
 {
-    return Utils::cacheDir(srv->name().toLower(), create)+QLatin1String("library")+MusicLibraryModel::constLibraryCompressedExt;
+    return Utils::cacheDir(srv->id().toLower(), create)+QLatin1String("library")+MusicLibraryModel::constLibraryCompressedExt;
 }
 
 OnlineMusicLoader::OnlineMusicLoader(const QUrl &src)
@@ -273,13 +273,13 @@ void OnlineService::clear()
     loaded=false;
     int count=childCount();
     if (count>0) {
-        model->beginRemoveRows(index(), 0, count-1);
+        m_model->beginRemoveRows(index(), 0, count-1);
         clearItems();
-        model->endRemoveRows();
+        m_model->endRemoveRows();
     }
     lProgress=0.0;
     setStatusMessage(QString());
-    model->updateGenres();
+    static_cast<OnlineServicesModel *>(m_model)->updateGenres();
 }
 
 void OnlineService::removeCache()
@@ -289,7 +289,7 @@ void OnlineService::removeCache()
         QFile::remove(cn);
     }
 }
-
+#include <QDebug>
 void OnlineService::applyUpdate()
 {
     if (update) {
@@ -309,23 +309,24 @@ void OnlineService::applyUpdate()
         } else*/ {
             int oldCount=childCount();
             if (oldCount>0) {
-                model->beginRemoveRows(index(), 0, oldCount-1);
+                m_model->beginRemoveRows(index(), 0, oldCount-1);
                 clearItems();
-                model->endRemoveRows();
+                m_model->endRemoveRows();
             }
             int newCount=newRows();
+            qWarning() << data() << newRows();
             if (newCount>0) {
-                model->beginInsertRows(index(), 0, newCount-1);
+                m_model->beginInsertRows(index(), 0, newCount-1);
                 foreach (MusicLibraryItem *item, update->childItems()) {
                     item->setParent(this);
                 }
                 refreshIndexes();
-                model->endInsertRows();
+                m_model->endInsertRows();
             }
         }
         delete update;
         update=0;
-        model->updateGenres();
+        static_cast<OnlineServicesModel *>(m_model)->updateGenres();
         emitUpdated();
     }
     setBusy(false);
@@ -363,20 +364,20 @@ void OnlineService::setStatusMessage(const QString &msg)
 {
     statusMsg=msg;
     QModelIndex modelIndex=index();
-    emit model->dataChanged(modelIndex, modelIndex);
+    emit m_model->dataChanged(modelIndex, modelIndex);
 }
 
 QModelIndex OnlineService::index()
 {
-    return model->createIndex(model->services.indexOf(this), 0, this);
+    return m_model->createIndex(m_model->row((void *)this), 0, (void *)this);
 }
 
 void OnlineService::emitUpdated()
 {
-    emit model->updated(index());
+    emit static_cast<OnlineServicesModel *>(m_model)->updated(index());
 }
 
 void OnlineService::setBusy(bool b)
 {
-    model->setBusy(name(), b);
+    static_cast<OnlineServicesModel *>(m_model)->setBusy(id(), b);
 }

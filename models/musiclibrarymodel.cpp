@@ -133,7 +133,7 @@ void MusicLibraryModel::cleanCache()
 }
 
 MusicLibraryModel::MusicLibraryModel(QObject *parent, bool isMpdModel, bool isCheckable)
-    : ActionModel(parent)
+    : MusicModel(parent)
     , checkable(isCheckable)
     , rootItem(new MusicLibraryItemRoot)
 {
@@ -193,12 +193,6 @@ QModelIndex MusicLibraryModel::parent(const QModelIndex &index) const
     return createIndex(parentItem->row(), 0, parentItem);
 }
 
-QVariant MusicLibraryModel::headerData(int section, Qt::Orientation orientation, int role) const
-{
-    Q_UNUSED(section)
-    return Qt::Horizontal==orientation && Qt::DisplayRole==role ? rootItem->data() : QVariant();
-}
-
 int MusicLibraryModel::rowCount(const QModelIndex &parent) const
 {
     if (parent.column() > 0) {
@@ -216,157 +210,16 @@ int MusicLibraryModel::rowCount(const QModelIndex &parent) const
     return parentItem->childCount();
 }
 
-int MusicLibraryModel::columnCount(const QModelIndex &parent) const
-{
-    if (parent.isValid()) {
-        return static_cast<MusicLibraryItem *>(parent.internalPointer())->columnCount();
-    } else {
-        return rootItem->columnCount();
-    }
-}
-
 QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
 {
     if (!index.isValid()) {
         return QVariant();
     }
 
-    MusicLibraryItem *item = static_cast<MusicLibraryItem *>(index.internalPointer());
-
-    switch (role) {
-    case Qt::CheckStateRole:
-        if (!checkable) {
-            return QVariant();
-        }
-        return item->checkState();
-    case Qt::DecorationRole:
-        switch (item->itemType()) {
-        case MusicLibraryItem::Type_Artist: {
-            MusicLibraryItemArtist *artist = static_cast<MusicLibraryItemArtist *>(item);
-            if (rootItem->useArtistImages()) {
-                return artist->cover();
-            } else {
-                return artist->isVarious() ? Icons::self()->variousArtistsIcon : Icons::self()->artistIcon;
-            }
-        }
-        case MusicLibraryItem::Type_Album:
-            if (!rootItem->useAlbumImages() || MusicLibraryItemAlbum::CoverNone==MusicLibraryItemAlbum::currentCoverSize()) {
-                return Icons::self()->albumIcon;
-            } else {
-                return static_cast<MusicLibraryItemAlbum *>(item)->cover();
-            }
-        case MusicLibraryItem::Type_Song: return Song::Playlist==static_cast<MusicLibraryItemSong *>(item)->song().type ? Icons::self()->playlistIcon : Icons::self()->audioFileIcon;
-        default: return QVariant();
-        }
-    case Qt::DisplayRole:
-        if (MusicLibraryItem::Type_Song==item->itemType()) {
-            MusicLibraryItemSong *song = static_cast<MusicLibraryItemSong *>(item);
-            if (Song::Playlist==song->song().type) {
-                return song->song().file.endsWith(".cue", Qt::CaseInsensitive) ? i18n("Cue Sheet") : i18n("Playlist");
-            }
-            if (static_cast<MusicLibraryItemAlbum *>(song->parentItem())->isSingleTracks()) {
-                return song->song().artistSong();
-            } else {
-                return song->song().trackAndTitleStr(static_cast<MusicLibraryItemArtist *>(song->parentItem()->parentItem())->isVarious() &&
-                                                     !Song::isVariousArtists(song->song().artist));
-            }
-        } else if(MusicLibraryItem::Type_Album==item->itemType() && MusicLibraryItemAlbum::showDate() &&
-                  static_cast<MusicLibraryItemAlbum *>(item)->year()>0) {
-            return QString::number(static_cast<MusicLibraryItemAlbum *>(item)->year())+QLatin1String(" - ")+item->data();
-        }
-        return item->data();
-    case Qt::ToolTipRole:
-        switch (item->itemType()) {
-        case MusicLibraryItem::Type_Artist:
-            return 0==item->childCount()
-                ? item->data()
-                : item->data()+"<br/>"+
-                    #ifdef ENABLE_KDE_SUPPORT
-                    i18np("1 Album", "%1 Albums", item->childCount());
-                    #else
-                    QTP_ALBUMS_STR(item->childCount());
-                    #endif
-        case MusicLibraryItem::Type_Album:
-            return item->parentItem()->data()+QLatin1String("<br/>")+(0==item->childCount()
-                ? item->data()
-                : item->data()+"<br/>"+
-                    #ifdef ENABLE_KDE_SUPPORT
-                    i18np("1 Track (%2)", "%1 Tracks (%2)", static_cast<MusicLibraryItemAlbum *>(item)->trackCount(),
-                          Song::formattedTime(static_cast<MusicLibraryItemAlbum *>(item)->totalTime(), true))
-                    #else
-                    QTP_TRACKS_DURATION_STR(static_cast<MusicLibraryItemAlbum *>(item)->trackCount(),
-                                            Song::formattedTime(static_cast<MusicLibraryItemAlbum *>(item)->totalTime(), true))
-                    #endif
-                );
-        case MusicLibraryItem::Type_Song: {
-            return item->parentItem()->parentItem()->data()+QLatin1String("<br/>")+item->parentItem()->data()+QLatin1String("<br/>")+
-                   data(index, Qt::DisplayRole).toString()+QLatin1String("<br/>")+
-                    Song::formattedTime(Song::Playlist==static_cast<MusicLibraryItemSong *>(item)->song().type
-                                            ? static_cast<MusicLibraryItemAlbum *>(item->parentItem())->totalTime()
-                                            : static_cast<MusicLibraryItemSong *>(item)->time(), true)+QLatin1String("<br/>")+
-                   QLatin1String("<small><i>")+static_cast<MusicLibraryItemSong *>(item)->song().file+QLatin1String("</i></small>");
-        }
-        default: return QVariant();
-        }
-    case ItemView::Role_ImageSize:
-        if (MusicLibraryItem::Type_Song!=item->itemType() && !MusicLibraryItemAlbum::itemSize().isNull()) { // icon/list style view...
-            return MusicLibraryItemAlbum::iconSize(rootItem->useLargeImages());
-        } else if (MusicLibraryItem::Type_Album==item->itemType() || (rootItem->useArtistImages() && MusicLibraryItem::Type_Artist==item->itemType())) {
-            return MusicLibraryItemAlbum::iconSize();
-        }
-        break;
-    case ItemView::Role_SubText:
-        switch (item->itemType()) {
-        case MusicLibraryItem::Type_Artist:
-            #ifdef ENABLE_KDE_SUPPORT
-            return i18np("1 Album", "%1 Albums", item->childCount());
-            #else
-            return QTP_ALBUMS_STR(item->childCount());
-            #endif
-            break;
-        case MusicLibraryItem::Type_Song:
-            return Song::formattedTime(Song::Playlist==static_cast<MusicLibraryItemSong *>(item)->song().type
-                                        ? static_cast<MusicLibraryItemAlbum *>(item->parentItem())->totalTime()
-                                        : static_cast<MusicLibraryItemSong *>(item)->time(), true);
-        case MusicLibraryItem::Type_Album:
-            #ifdef ENABLE_KDE_SUPPORT
-            return i18np("1 Track (%2)", "%1 Tracks (%2)", static_cast<MusicLibraryItemAlbum *>(item)->trackCount(),
-                         Song::formattedTime(static_cast<MusicLibraryItemAlbum *>(item)->totalTime(), true));
-            #else
-            return QTP_TRACKS_DURATION_STR(static_cast<MusicLibraryItemAlbum *>(item)->trackCount(),
-                                           Song::formattedTime(static_cast<MusicLibraryItemAlbum *>(item)->totalTime(), true));
-            #endif
-        default: return QVariant();
-        }
-    case ItemView::Role_Image:
-        if (MusicLibraryItem::Type_Album==item->itemType()) {
-            QVariant v;
-            v.setValue<QPixmap>(static_cast<MusicLibraryItemAlbum *>(item)->cover());
-            return v;
-        } else if (MusicLibraryItem::Type_Artist==item->itemType() && rootItem->useArtistImages()) {
-            QVariant v;
-            v.setValue<QPixmap>(static_cast<MusicLibraryItemArtist *>(item)->cover());
-            return v;
-        }
-        break;
-    case ItemView::Role_TitleText:
-        if (MusicLibraryItem::Type_Artist==item->itemType()) {
-            return item->data();
-        } else if (MusicLibraryItem::Type_Album==item->itemType()) {
-            return i18nc("Album by Artist", "%1 by %2").arg(item->data()).arg(item->parentItem()->data());
-        }
-        break;
-    case Qt::SizeHintRole:
-        if (!rootItem->useArtistImages() && MusicLibraryItem::Type_Artist==item->itemType()) {
-            return QVariant();
-        }
-        if (rootItem->useLargeImages() && MusicLibraryItem::Type_Song!=item->itemType() && !MusicLibraryItemAlbum::itemSize().isNull()) {
-            return MusicLibraryItemAlbum::itemSize();
-        }
-    default:
-        return ActionModel::data(index, role);
+    if (checkable && Qt::CheckStateRole==role) {
+        return static_cast<MusicLibraryItem *>(index.internalPointer())->checkState();
     }
-    return QVariant();
+    return MusicModel::data(index, role);
 }
 
 bool MusicLibraryModel::setData(const QModelIndex &idx, const QVariant &value, int role)
@@ -479,6 +332,7 @@ void MusicLibraryModel::clear()
     beginResetModel();
     databaseTime = QDateTime();
     rootItem = new MusicLibraryItemRoot;
+    rootItem->setModel(this);
     rootItem->setLargeImages(oldRoot->useLargeImages());
     rootItem->setUseAlbumImages(oldRoot->useAlbumImages());
     rootItem->setUseArtistImages(oldRoot->useArtistImages());
@@ -525,189 +379,6 @@ QModelIndex MusicLibraryModel::findAlbumIndex(const QString &artist, const QStri
     return artistItem ? index(albumItem->row(), 0, index(artistItem->row(), 0, QModelIndex())) : QModelIndex();
 }
 
-const MusicLibraryItem * MusicLibraryModel::findSong(const Song &s) const
-{
-    MusicLibraryItemArtist *artistItem = rootItem->artist(s, false);
-    if (artistItem) {
-        MusicLibraryItemAlbum *albumItem = artistItem->album(s, false);
-        if (albumItem) {
-            foreach (const MusicLibraryItem *songItem, albumItem->childItems()) {
-                if (songItem->data()==s.displayTitle() && static_cast<const MusicLibraryItemSong *>(songItem)->song().track==s.track) {
-                    return songItem;
-                }
-            }
-        }
-    }
-
-    return 0;
-}
-
-bool MusicLibraryModel::songExists(const Song &s) const
-{
-    const MusicLibraryItem *song=findSong(s);
-
-    if (song) {
-        return true;
-    }
-
-    if (!s.isVariousArtists()) {
-        Song mod(s);
-        mod.albumartist=i18n("Various Artists");
-        if (MPDParseUtils::groupMultiple()) {
-            song=findSong(mod);
-            if (song) {
-                Song sng=static_cast<const MusicLibraryItemSong *>(song)->song();
-                if (sng.albumArtist()==s.albumArtist()) {
-                    return true;
-                }
-            }
-        }
-        if (MPDParseUtils::groupSingle()) {
-            mod.album=i18n("Single Tracks");
-
-            song=findSong(mod);
-            if (song) {
-                Song sng=static_cast<const MusicLibraryItemSong *>(song)->song();
-                if (sng.albumArtist()==s.albumArtist() && sng.album==s.album) {
-                    return true;
-                }
-            }
-        }
-    }
-
-    return false;
-}
-
-bool MusicLibraryModel::updateSong(const Song &orig, const Song &edit)
-{
-    if (orig.albumArtist()==edit.albumArtist() && orig.album==edit.album) {
-        MusicLibraryItemArtist *artistItem = rootItem->artist(orig, false);
-        if (!artistItem) {
-            return false;
-        }
-        MusicLibraryItemAlbum *albumItem = artistItem->album(orig, false);
-        if (!albumItem) {
-            return false;
-        }
-        int songRow=0;
-        foreach (MusicLibraryItem *song, albumItem->childItems()) {
-            if (static_cast<MusicLibraryItemSong *>(song)->song()==orig) {
-                static_cast<MusicLibraryItemSong *>(song)->setSong(edit);
-                if (orig.genre!=edit.genre) {
-                    albumItem->updateGenres();
-                    artistItem->updateGenres();
-                    rootItem->updateGenres();
-                }
-
-                if (orig.year!=edit.year) {
-                    if (albumItem->updateYear()) {
-                        QModelIndex idx=index(albumItem->row(), 0, index(artistItem->row(), 0, QModelIndex()));
-                        emit dataChanged(idx, idx);
-                    }
-                }
-
-                QModelIndex idx=index(songRow, 0, index(albumItem->row(), 0, index(artistItem->row(), 0, QModelIndex())));
-                emit dataChanged(idx, idx);
-                return true;
-            }
-            songRow++;
-        }
-    }
-    return false;
-}
-
-void MusicLibraryModel::addSongToList(const Song &s)
-{
-//     databaseTime=QDateTime();
-    MusicLibraryItemArtist *artistItem = rootItem->artist(s, false);
-    if (!artistItem) {
-        beginInsertRows(QModelIndex(), rootItem->childCount(), rootItem->childCount());
-        artistItem = rootItem->createArtist(s);
-        endInsertRows();
-    }
-    MusicLibraryItemAlbum *albumItem = artistItem->album(s, false);
-    if (!albumItem) {
-        beginInsertRows(createIndex(artistItem->row(), 0, artistItem), artistItem->childCount(), artistItem->childCount());
-        albumItem = artistItem->createAlbum(s);
-        endInsertRows();
-    }
-    quint32 year=albumItem->year();
-    foreach (const MusicLibraryItem *songItem, albumItem->childItems()) {
-        const MusicLibraryItemSong *song=static_cast<const MusicLibraryItemSong *>(songItem);
-        if (song->track()==s.track && song->disc()==s.disc && song->data()==s.displayTitle()) {
-            return;
-        }
-    }
-
-    beginInsertRows(createIndex(albumItem->row(), 0, albumItem), albumItem->childCount(), albumItem->childCount());
-    MusicLibraryItemSong *songItem = new MusicLibraryItemSong(s, albumItem);
-    albumItem->append(songItem);
-    rootItem->addGenre(s.genre);
-    endInsertRows();
-    if (year!=albumItem->year()) {
-        QModelIndex idx=index(albumItem->row(), 0, index(artistItem->row(), 0, QModelIndex()));
-        emit dataChanged(idx, idx);
-    }
-}
-
-void MusicLibraryModel::removeSongFromList(const Song &s)
-{
-    MusicLibraryItemArtist *artistItem = rootItem->artist(s, false);
-    if (!artistItem) {
-        return;
-    }
-    MusicLibraryItemAlbum *albumItem = artistItem->album(s, false);
-    if (!albumItem) {
-        return;
-    }
-    MusicLibraryItem *songItem=0;
-    int songRow=0;
-    foreach (MusicLibraryItem *song, albumItem->childItems()) {
-        if (static_cast<MusicLibraryItemSong *>(song)->song().title==s.title) {
-            songItem=song;
-            break;
-        }
-        songRow++;
-    }
-    if (!songItem) {
-        return;
-    }
-
-//     databaseTime=QDateTime();
-    if (1==artistItem->childCount() && 1==albumItem->childCount()) {
-        // 1 album with 1 song - so remove whole artist
-        int row=artistItem->row();
-        beginRemoveRows(QModelIndex(), row, row);
-        rootItem->remove(artistItem);
-        endRemoveRows();
-        return;
-    }
-
-    if (1==albumItem->childCount()) {
-        // multiple albums, but this album only has 1 song - remove album
-        int row=albumItem->row();
-        beginRemoveRows(createIndex(artistItem->row(), 0, artistItem), row, row);
-        artistItem->remove(albumItem);
-        endRemoveRows();
-        return;
-    }
-
-    // Just remove particular song
-    beginRemoveRows(createIndex(albumItem->row(), 0, albumItem), songRow, songRow);
-    quint32 year=albumItem->year();
-    albumItem->remove(songRow);
-    endRemoveRows();
-    if (year!=albumItem->year()) {
-        QModelIndex idx=index(albumItem->row(), 0, index(artistItem->row(), 0, QModelIndex()));
-        emit dataChanged(idx, idx);
-    }
-}
-
-void MusicLibraryModel::updateSongFile(const Song &from, const Song &to)
-{
-    rootItem->updateSongFile(from, to);
-}
-
 void MusicLibraryModel::removeCache()
 {
     QString cacheFile(cacheFileName());
@@ -729,11 +400,6 @@ void MusicLibraryModel::removeCache()
     }
 
     databaseTime = QDateTime();
-}
-
-void MusicLibraryModel::getDetails(QSet<QString> &artists, QSet<QString> &albumArtists, QSet<QString> &albums, QSet<QString> &genres)
-{
-    rootItem->getDetails(artists, albumArtists, albums, genres);
 }
 
 QSet<QString> MusicLibraryModel::getAlbumArtists()
@@ -772,6 +438,7 @@ void MusicLibraryModel::updateMusicLibrary(MusicLibraryItemRoot *newroot, QDateT
         beginResetModel();
         databaseTime = dbUpdate;
         rootItem = newroot;
+        rootItem->setModel(this);
         rootItem->setLargeImages(oldRoot->useLargeImages());
         rootItem->setUseAlbumImages(oldRoot->useAlbumImages());
         rootItem->setUseArtistImages(oldRoot->useArtistImages());
@@ -780,10 +447,8 @@ void MusicLibraryModel::updateMusicLibrary(MusicLibraryItemRoot *newroot, QDateT
         updatedSongs=true;
     }
 
-    if (updatedSongs || needToUpdate) {
-        if (!fromFile && (needToSave || needToUpdate)) {
-            toXML(rootItem, dbUpdate);
-        }
+    if ((updatedSongs || needToUpdate) && (!fromFile && (needToSave || needToUpdate))) {
+        rootItem->toXML(cacheFileName(), dbUpdate);
     }
 
     AlbumsModel::self()->update(rootItem);
@@ -792,18 +457,7 @@ void MusicLibraryModel::updateMusicLibrary(MusicLibraryItemRoot *newroot, QDateT
 
 bool MusicLibraryModel::update(const QSet<Song> &songs)
 {
-    QSet<Song> currentSongs=rootItem->allSongs();
-    QSet<Song> updateSongs=songs;
-    QSet<Song> removed=currentSongs-updateSongs;
-    QSet<Song> added=updateSongs-currentSongs;
-
-    bool updatedSongs=added.count()||removed.count();
-    foreach (const Song &s, removed) {
-        removeSongFromList(s);
-    }
-    foreach (const Song &s, added) {
-        addSongToList(s);
-    }
+    bool updatedSongs=rootItem->update(songs);
 
     if (updatedSongs && checkable) {
         QSet<Song> chkdSongs;
@@ -988,17 +642,6 @@ void MusicLibraryModel::setCover(const Song &song, const QImage &img, const QStr
 }
 
 /**
- * Writes the musiclibrarymodel to and xml file so we can store it on
- * disk for faster startup the next time
- *
- * @param filename The name of the file to write the xml to
- */
-void MusicLibraryModel::toXML(const MusicLibraryItemRoot *root, const QDateTime &date)
-{
-    root->toXML(cacheFileName(), date);
-}
-
-/**
  * Read an xml file from disk.
  *
  * @param filename The name of the xmlfile to read the db from
@@ -1009,7 +652,7 @@ void MusicLibraryModel::toXML(const MusicLibraryItemRoot *root, const QDateTime 
  */
 bool MusicLibraryModel::fromXML()
 {
-    // If socket conneciton used, then check if cahce file has port number...
+    // If socket connection used, then check if cache file has port number...
     QString withPort=cacheFileName();
     QString withoutPort=cacheFileName(false);
     if (withPort!=withoutPort && QFile::exists(withoutPort) && !QFile::exists(withPort)) {
@@ -1122,7 +765,7 @@ QList<Song> MusicLibraryModel::songs(const QStringList &filenames, bool insertNo
 
     QSet<QString> files=filenames.toSet();
 
-    foreach (const MusicLibraryItem *artist, static_cast<const MusicLibraryItemContainer *>(rootItem)->childItems()) {
+    foreach (const MusicLibraryItem *artist, rootItem->childItems()) {
         foreach (const MusicLibraryItem *album, static_cast<const MusicLibraryItemContainer *>(artist)->childItems()) {
             foreach (const MusicLibraryItem *song, static_cast<const MusicLibraryItemContainer *>(album)->childItems()) {
                 QSet<QString>::Iterator it=files.find(static_cast<const MusicLibraryItemSong*>(song)->file());

@@ -33,6 +33,7 @@
 #include "song.h"
 #include "localize.h"
 #include "qtiocompressor/qtiocompressor.h"
+#include "musicmodel.h"
 #include <QXmlStreamReader>
 #include <QXmlStreamWriter>
 #include <QFile>
@@ -730,6 +731,222 @@ void MusicLibraryItemRoot::clearItems()
     m_childItems.clear();
     m_indexes.clear();
     m_genres.clear();
+}
+
+bool MusicLibraryItemRoot::update(const QSet<Song> &songs)
+{
+    QSet<Song> currentSongs=allSongs();
+    QSet<Song> updateSongs=songs;
+    QSet<Song> removed=currentSongs-updateSongs;
+    QSet<Song> added=updateSongs-currentSongs;
+
+    bool updatedSongs=added.count()||removed.count();
+    foreach (const Song &s, removed) {
+        removeSongFromList(s);
+    }
+    foreach (const Song &s, added) {
+        addSongToList(s);
+    }
+    return updatedSongs;
+}
+
+const MusicLibraryItem * MusicLibraryItemRoot::findSong(const Song &s) const
+{
+    if (isFlat) {
+        foreach (const MusicLibraryItem *songItem, childItems()) {
+            if (songItem->data()==s.displayTitle()) {
+                return songItem;
+            }
+        }
+    } else {
+        MusicLibraryItemArtist *artistItem = ((MusicLibraryItemRoot *)this)->artist(s, false);
+        if (artistItem) {
+            MusicLibraryItemAlbum *albumItem = artistItem->album(s, false);
+            if (albumItem) {
+                foreach (const MusicLibraryItem *songItem, albumItem->childItems()) {
+                    if (songItem->data()==s.displayTitle() && static_cast<const MusicLibraryItemSong *>(songItem)->song().track==s.track) {
+                        return songItem;
+                    }
+                }
+            }
+        }
+    }
+    return 0;
+}
+
+bool MusicLibraryItemRoot::songExists(const Song &s) const
+{
+    const MusicLibraryItem *song=findSong(s);
+
+    if (song) {
+        return true;
+    }
+
+    if (!s.isVariousArtists()) {
+        Song mod(s);
+        mod.albumartist=i18n("Various Artists");
+        if (MPDParseUtils::groupMultiple()) {
+            song=findSong(mod);
+            if (song) {
+                Song sng=static_cast<const MusicLibraryItemSong *>(song)->song();
+                if (sng.albumArtist()==s.albumArtist()) {
+                    return true;
+                }
+            }
+        }
+        if (MPDParseUtils::groupSingle()) {
+            mod.album=i18n("Single Tracks");
+            song=findSong(mod);
+            if (song) {
+                Song sng=static_cast<const MusicLibraryItemSong *>(song)->song();
+                if (sng.albumArtist()==s.albumArtist() && sng.album==s.album) {
+                    return true;
+                }
+            }
+        }
+    }
+
+    return false;
+}
+
+bool MusicLibraryItemRoot::updateSong(const Song &orig, const Song &edit)
+{
+    if (!m_model) {
+        return false;
+    }
+
+    if (isFlat) {
+        int songRow=0;
+        foreach (MusicLibraryItem *song, childItems()) {
+            if (static_cast<MusicLibraryItemSong *>(song)->song()==orig) {
+                static_cast<MusicLibraryItemSong *>(song)->setSong(edit);
+                if (orig.genre!=edit.genre) {
+                    updateGenres();
+                }
+                QModelIndex idx=m_model->createIndex(songRow, 0, song);
+                emit m_model->dataChanged(idx, idx);
+                return true;
+            }
+            songRow++;
+        }
+    } else if ((supportsAlbumArtist ? orig.albumArtist()==edit.albumArtist() : orig.artist==edit.artist) && orig.album==edit.album) {
+        MusicLibraryItemArtist *artistItem = artist(orig, false);
+        if (!artistItem) {
+            return false;
+        }
+        MusicLibraryItemAlbum *albumItem = artistItem->album(orig, false);
+        if (!albumItem) {
+            return false;
+        }
+        int songRow=0;
+        foreach (MusicLibraryItem *song, albumItem->childItems()) {
+            if (static_cast<MusicLibraryItemSong *>(song)->song()==orig) {
+                static_cast<MusicLibraryItemSong *>(song)->setSong(edit);
+                if (orig.genre!=edit.genre) {
+                    albumItem->updateGenres();
+                    artistItem->updateGenres();
+                    updateGenres();
+                }
+                QModelIndex idx=m_model->createIndex(songRow, 0, song);
+                emit m_model->dataChanged(idx, idx);
+                return true;
+            }
+            songRow++;
+        }
+    }
+    return false;
+}
+
+void MusicLibraryItemRoot::addSongToList(const Song &s)
+{
+    if (!m_model || isFlat) {
+        return;
+    }
+
+    MusicLibraryItemArtist *artistItem = artist(s, false);
+    if (!artistItem) {
+        m_model->beginInsertRows(index(), childCount(), childCount());
+        artistItem = createArtist(s);
+        m_model->endInsertRows();
+    }
+    MusicLibraryItemAlbum *albumItem = artistItem->album(s, false);
+    if (!albumItem) {
+        m_model->beginInsertRows(m_model->createIndex(childItems().indexOf(artistItem), 0, artistItem), artistItem->childCount(), artistItem->childCount());
+        albumItem = artistItem->createAlbum(s);
+        m_model->endInsertRows();
+    }
+    quint32 year=albumItem->year();
+    foreach (const MusicLibraryItem *songItem, albumItem->childItems()) {
+        const MusicLibraryItemSong *song=static_cast<const MusicLibraryItemSong *>(songItem);
+        if (song->track()==s.track && song->disc()==s.disc && song->data()==s.displayTitle()) {
+            return;
+        }
+    }
+
+    m_model->beginInsertRows(m_model->createIndex(artistItem->childItems().indexOf(albumItem), 0, albumItem), albumItem->childCount(), albumItem->childCount());
+    MusicLibraryItemSong *songItem = new MusicLibraryItemSong(s, albumItem);
+    albumItem->append(songItem);
+    m_model->endInsertRows();
+    if (year!=albumItem->year()) {
+        QModelIndex idx=m_model->createIndex(artistItem->childItems().indexOf(albumItem), 0, albumItem);
+        emit m_model->dataChanged(idx, idx);
+    }
+}
+
+void MusicLibraryItemRoot::removeSongFromList(const Song &s)
+{
+    if (!m_model || isFlat) {
+        return;
+    }
+
+    MusicLibraryItemArtist *artistItem = artist(s, false);
+    if (!artistItem) {
+        return;
+    }
+    MusicLibraryItemAlbum *albumItem = artistItem->album(s, false);
+    if (!albumItem) {
+        return;
+    }
+    MusicLibraryItem *songItem=0;
+    int songRow=0;
+    foreach (MusicLibraryItem *song, albumItem->childItems()) {
+        if (static_cast<MusicLibraryItemSong *>(song)->song().title==s.title) {
+            songItem=song;
+            break;
+        }
+        songRow++;
+    }
+    if (!songItem) {
+        return;
+    }
+
+    if (1==artistItem->childCount() && 1==albumItem->childCount()) {
+        // 1 album with 1 song - so remove whole artist
+        int row=m_childItems.indexOf(artistItem);
+        m_model->beginRemoveRows(index(), row, row);
+        remove(artistItem);
+        m_model->endRemoveRows();
+        return;
+    }
+
+    if (1==albumItem->childCount()) {
+        // multiple albums, but this album only has 1 song - remove album
+        int row=artistItem->childItems().indexOf(albumItem);
+        m_model->beginRemoveRows(m_model->createIndex(childItems().indexOf(artistItem), 0, artistItem), row, row);
+        artistItem->remove(albumItem);
+        m_model->endRemoveRows();
+        return;
+    }
+
+    // Just remove particular song
+    m_model->beginRemoveRows(m_model->createIndex(artistItem->childItems().indexOf(albumItem), 0, albumItem), songRow, songRow);
+    quint32 year=albumItem->year();
+    albumItem->remove(songRow);
+    m_model->endRemoveRows();
+    if (year!=albumItem->year()) {
+        QModelIndex idx=m_model->createIndex(artistItem->childItems().indexOf(albumItem), 0, albumItem);
+        emit m_model->dataChanged(idx, idx);
+    }
 }
 
 QString MusicLibraryItemRoot::songArtist(const Song &s) const

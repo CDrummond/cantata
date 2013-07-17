@@ -33,12 +33,12 @@
 #include "musiclibraryitemroot.h"
 #include "musiclibraryitemalbum.h"
 #include "song.h"
-#include "actionmodel.h"
+#include "musicmodel.h"
 
 class QMimeData;
 class MusicLibraryItemArtist;
 
-class MusicLibraryModel : public ActionModel
+class MusicLibraryModel : public MusicModel
 {
     Q_OBJECT
 
@@ -56,9 +56,7 @@ public:
     ~MusicLibraryModel();
     QModelIndex index(int, int, const QModelIndex & = QModelIndex()) const;
     QModelIndex parent(const QModelIndex &) const;
-    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
-    int columnCount(const QModelIndex &) const;
     QVariant data(const QModelIndex &, int) const;
     bool setData(const QModelIndex &idx, const QVariant &value, int role = Qt::EditRole);
     Qt::ItemFlags flags(const QModelIndex &index) const;
@@ -67,6 +65,7 @@ public:
     QList<Song> songs(const QStringList &filenames, bool insertNotFound=false) const;
     QMimeData *mimeData(const QModelIndexList &indexes) const;
     const MusicLibraryItemRoot * root() const { return rootItem; }
+    const MusicLibraryItemRoot * root(const MusicLibraryItem *) const { return root(); }
     bool isFromSingleTracks(const Song &s) const { return rootItem->isFromSingleTracks(s); }
     bool fromXML();
     void clear();
@@ -74,13 +73,14 @@ public:
     QModelIndex findArtistIndex(const QString &artist) const;
     QModelIndex findAlbumIndex(const QString &artist, const QString &album) const;
     const MusicLibraryItem * findSong(const Song &s) const;
-    bool songExists(const Song &s) const;
-    bool updateSong(const Song &orig, const Song &edit);
-    void addSongToList(const Song &s);
-    void removeSongFromList(const Song &s);
-    void updateSongFile(const Song &from, const Song &to);
+    bool songExists(const Song &s) const { return rootItem->songExists(s); }
+    bool updateSong(const Song &orig, const Song &edit) { return rootItem->updateSong(orig, edit); }
+    void addSongToList(const Song &s) { rootItem->addSongToList(s); }
+    void removeSongFromList(const Song &s) { rootItem->removeSongFromList(s); }
+    void updateSongFile(const Song &from, const Song &to) { rootItem->updateSongFile(from, to); }
     void removeCache();
-    void getDetails(QSet<QString> &artists, QSet<QString> &albumArtists, QSet<QString> &albums, QSet<QString> &genres);
+    void getDetails(QSet<QString> &artists, QSet<QString> &albumArtists, QSet<QString> &albums, QSet<QString> &genres)
+        { rootItem->getDetails(artists, albumArtists, albums, genres); }
     QSet<QString> getAlbumArtists();
     bool update(const QSet<Song> &songs);
     void uncheckAll();
@@ -112,7 +112,6 @@ Q_SIGNALS:
 
 private:
     void setCover(const Song &song, const QImage &img, const QString &file, bool update);
-    void toXML(const MusicLibraryItemRoot *root, const QDateTime &date);
     void setParentState(const QModelIndex &parent, bool childChecked, MusicLibraryItemContainer *parentItem, MusicLibraryItem *item);
 
 private:

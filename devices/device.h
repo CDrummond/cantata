@@ -38,7 +38,7 @@
 class QWidget;
 class QImage;
 class QTemporaryFile;
-class DevicesModel;
+class MusicModel;
 
 // MOC requires the QObject class to be first. But due to models storing void pointers, and
 // needing to cast these - the model prefers MusicLibraryItemRoot to be first!
@@ -54,7 +54,7 @@ public:
     #ifndef Q_OS_WIN
     static const QLatin1String constNoCover;
     static const QLatin1String constEmbedCover;
-    static Device * create(DevicesModel *m, const QString &udi);
+    static Device * create(MusicModel *m, const QString &id);
     static bool fixVariousArtists(const QString &file, Song &song, bool applyFix);
     static void embedCover(const QString &file, Song &song, unsigned int coverMaxSize);
     static QTemporaryFile * copySongToTemp(Song &song);
@@ -94,7 +94,7 @@ public:
     };
 
     #ifdef Q_OS_WIN
-    Device(DevicesModel *m, const QString &name, const QString &id)
+    Device(ActionModel *m, const QString &name, const QString &id)
         : MusicLibraryItemRoot(name)
         , update(0)
         , needToFixVa(false)
@@ -105,9 +105,8 @@ public:
         Q_UNUSED(id)
     }
     #else
-    Device(DevicesModel *m, Solid::Device &dev, bool albumArtistSupport=true, bool flat=false)
+    Device(MusicModel *m, Solid::Device &dev, bool albumArtistSupport=true, bool flat=false)
         : MusicLibraryItemRoot(dev.product().startsWith(dev.vendor()) ? dev.product() : (dev.vendor()+QChar(' ')+dev.product()), albumArtistSupport, flat)
-        , model(m)
         , configured(false)
         , solidDev(dev)
         , deviceId(dev.udi())
@@ -115,32 +114,30 @@ public:
         , needToFixVa(false)
         , jobAbortRequested(false)
         , transcoding(false) {
+        m_model=m;
         setUseArtistImages(false);
         setUseAlbumImages(true);
+        icn=Icon(solidDev.isValid() ? solidDev.icon() : QLatin1String("folder"));
     }
-    Device(DevicesModel *m, const QString &name, const QString &id)
+    Device(MusicModel *m, const QString &name, const QString &id)
         : MusicLibraryItemRoot(name)
-        , model(m)
         , configured(false)
         , deviceId(id)
         , update(0)
         , needToFixVa(false)
         , jobAbortRequested(false)
         , transcoding(false) {
+        m_model=m;
         setUseArtistImages(false);
         setUseAlbumImages(true);
+        icn=Icon(solidDev.isValid() ? solidDev.icon() : QLatin1String("folder"));
     }
     #endif
 
     virtual ~Device() { }
 
-    virtual QString icon() const {
-        #ifdef Q_OS_WIN
-        return QLatin1String("folder");
-        #else
-        return solidDev.isValid() ? solidDev.icon() : QLatin1String("folder");
-        #endif
-    }
+    Icon icon() const { return icn; }
+    Song fixPath(const Song &orig, bool fullPath) const;
     virtual QString coverFile() const { return QString(); }
     virtual bool isConnected() const=0;
     virtual void rescan(bool full=true)=0;
@@ -160,12 +157,11 @@ public:
     virtual QString capacityString()=0;
     virtual qint64 freeSpace()=0;
     virtual DevType devType() const=0;
-    virtual void removeCache() {
-    }
+    virtual void removeCache() { }
 
     #ifndef Q_OS_WIN
     virtual void saveCache();
-    const QString & udi() const { return deviceId; }
+    const QString & id() const { return deviceId; }
     void applyUpdate();
     bool haveUpdate() const { return 0!=update; }
     int newRows() const { return update ? update->childCount() : 0; }
@@ -173,8 +169,6 @@ public:
     void setOptions(const DeviceOptions &o) { opts=o; saveOptions(); }
     virtual void saveOptions()=0;
     const QString & statusMessage() const { return statusMsg; }
-    const MusicLibraryItem * findSong(const Song &s) const;
-    bool songExists(const Song &s) const;
     bool isConfigured() { return configured; }
     void abortJob() { jobAbortRequested=true; }
     bool abortRequested() const { return jobAbortRequested; }
@@ -182,6 +176,7 @@ public:
     virtual bool supportsDisconnect() const { return false; }
     virtual bool isStdFs() const { return false; }
     virtual QString subText() { return QString(); }
+    virtual QModelIndex index() const;
     #endif
 
 #ifndef Q_OS_WIN
@@ -190,17 +185,12 @@ public:
 public Q_SLOTS:
     void setStatusMessage(const QString &message);
     void songCount(int c);
-
-public:
-    bool updateSong(const Song &orig, const Song &edit);
-    void addSongToList(const Song &s);
-    void removeSongFromList(const Song &s);
 #endif
 
 Q_SIGNALS:
-    void connected(const QString &udi);
-    void disconnected(const QString &udi);
-    void updating(const QString &udi, bool s);
+    void connected(const QString &id);
+    void disconnected(const QString &id);
+    void updating(const QString &id, bool s);
     void actionStatus(int status, bool copiedCover=false);
     void progress(int pc);
     void error(const QString &);
@@ -213,7 +203,6 @@ Q_SIGNALS:
 
 protected:
     #ifndef Q_OS_WIN
-    DevicesModel *model;
     DeviceOptions opts;
     bool configured;
     Solid::Device solidDev;
@@ -226,6 +215,8 @@ protected:
     QString statusMsg;
     bool needToFixVa;
     bool jobAbortRequested;
-    bool transcoding;};
+    bool transcoding;
+    Icon icn;
+};
 
 #endif

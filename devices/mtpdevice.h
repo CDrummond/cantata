@@ -147,7 +147,7 @@ class MtpDevice : public Device
     Q_OBJECT
 
 public:
-    MtpDevice(DevicesModel *m, Solid::Device &dev);
+    MtpDevice(MusicModel *m, Solid::Device &dev);
     virtual ~MtpDevice();
 
     bool isConnected() const;

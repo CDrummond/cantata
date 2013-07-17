@@ -118,7 +118,7 @@ static inline bool isMountable(const RemoteFsDevice::Details &d)
            RemoteFsDevice::constSambaProtocol==d.url.scheme() || RemoteFsDevice::constSambaAvahiProtocol==d.url.scheme();
 }
 
-QList<Device *> RemoteFsDevice::loadAll(DevicesModel *m)
+QList<Device *> RemoteFsDevice::loadAll(MusicModel *m)
 {
     QList<Device *> devices;
     #ifdef ENABLE_KDE_SUPPORT
@@ -142,7 +142,7 @@ QList<Device *> RemoteFsDevice::loadAll(DevicesModel *m)
     return devices;
 }
 
-Device * RemoteFsDevice::create(DevicesModel *m, const DeviceOptions &options, const Details &d)
+Device * RemoteFsDevice::create(MusicModel *m, const DeviceOptions &options, const Details &d)
 {
     if (d.isEmpty()) {
         return 0;
@@ -237,7 +237,7 @@ void RemoteFsDevice::renamed(const QString &oldName, const QString &newName)
     CFG_SYNC;
 }
 
-RemoteFsDevice::RemoteFsDevice(DevicesModel *m, const DeviceOptions &options, const Details &d)
+RemoteFsDevice::RemoteFsDevice(MusicModel *m, const DeviceOptions &options, const Details &d)
     : FsDevice(m, d.name, createUdi(d.name))
     , mountToken(0)
     , currentMountStatus(false)
@@ -250,9 +250,10 @@ RemoteFsDevice::RemoteFsDevice(DevicesModel *m, const DeviceOptions &options, co
 //    details.path=Utils::fixPath(details.path);
     load();
     mount();
+    icn=Icon(details.isLocalFile() ? "inode-directory" : (constSshfsProtocol==details.url.scheme() ? "utilities-terminal" : "network-server"));
 }
 
-RemoteFsDevice::RemoteFsDevice(DevicesModel *m, const Details &d)
+RemoteFsDevice::RemoteFsDevice(MusicModel *m, const Details &d)
     : FsDevice(m, d.name, createUdi(d.name))
     , mountToken(0)
     , currentMountStatus(false)
@@ -263,6 +264,7 @@ RemoteFsDevice::RemoteFsDevice(DevicesModel *m, const Details &d)
 {
 //    details.path=Utils::fixPath(details.path);
     setup();
+    icn=Icon(details.isLocalFile() ? "inode-directory" : (constSshfsProtocol==details.url.scheme() ? "utilities-terminal" : "network-server"));
 }
 
 RemoteFsDevice::~RemoteFsDevice() {

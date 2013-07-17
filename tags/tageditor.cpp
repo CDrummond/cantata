@@ -673,7 +673,7 @@ void TagEditor::applyUpdates()
             return;
         }
         opts=dev->options();
-        udi=dev->udi();
+        udi=dev->id();
     } else
     #endif
     opts.load(MPDConnectionDetails::configGroupName(MPDConnection::self()->getDetails().name), true);

@@ -44,6 +44,7 @@
 #include "networkproxyfactory.h"
 #endif
 #include "localize.h"
+#include "qtplural.h"
 #include "mainwindow.h"
 #if defined ENABLE_HTTP_STREAM_PLAYBACK && QT_VERSION < 0x050000
 #include <phonon/audiooutput.h>

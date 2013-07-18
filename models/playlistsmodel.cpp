@@ -30,6 +30,7 @@
 #include "playlistsmodel.h"
 #include "playlistsproxymodel.h"
 #include "itemview.h"
+#include "qtplural.h"
 #include "groupedview.h"
 #include "localize.h"
 #include "utils.h"

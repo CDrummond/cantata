@@ -30,6 +30,7 @@
 #include "networkaccessmanager.h"
 #include "settings.h"
 #include "localize.h"
+#include "qtplural.h"
 #include "actioncollection.h"
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KGlobal>

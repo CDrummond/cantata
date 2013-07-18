@@ -25,6 +25,7 @@
 #include "icons.h"
 #include "networkaccessmanager.h"
 #include "localize.h"
+#include "qtplural.h"
 #include "utils.h"
 #include "mpdconnection.h"
 #include "mpdparseutils.h"

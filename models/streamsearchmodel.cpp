@@ -25,6 +25,7 @@
 #include "icons.h"
 #include "itemview.h"
 #include "localize.h"
+#include "qtplural.h"
 #include "playqueuemodel.h"
 #include "networkaccessmanager.h"
 #include "stdactions.h"

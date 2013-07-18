@@ -28,6 +28,7 @@
 #include "musicmodel.h"
 #include "itemview.h"
 #include "localize.h"
+#include "qtplural.h"
 #include "icons.h"
 #include "covers.h"
 #include <QStringList>

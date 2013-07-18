@@ -37,6 +37,7 @@
 #include "itemview.h"
 #include "mpdparseutils.h"
 #include "localize.h"
+#include "qtplural.h"
 #include "icons.h"
 #include "filejob.h"
 #include "utils.h"

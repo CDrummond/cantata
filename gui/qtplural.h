@@ -24,6 +24,8 @@
 #ifndef QT_PLURAL_H
 #define QT_PLURAL_H
 
+#ifndef ENABLE_KDE_SUPPORT
+
 #define QTP_TRACKS_STR(C) \
     (1==(C) ? QObject::tr("1 Track", "Singular") : \
      QObject::tr("%1 Tracks", "Plural (N!=1)").arg((C)))
@@ -52,6 +54,7 @@
     (1==(C) ? QObject::tr("1 Rule", "Singular") : \
      QObject::tr("%1 Rules", "Plural (N!=1)").arg((C)))
 
+#endif
 
 #endif
 

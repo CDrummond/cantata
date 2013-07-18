@@ -29,6 +29,7 @@
 #include <QVariant>
 #include <QMimeData>
 #include "localize.h"
+#include "qtplural.h"
 #include "dirviewmodel.h"
 #include "dirviewitem.h"
 #include "dirviewitemfile.h"

@@ -29,6 +29,7 @@
 #include "itemview.h"
 #include "config.h"
 #include "localize.h"
+#include "qtplural.h"
 #include "icons.h"
 #include "gtkstyle.h"
 #include <QStyledItemDelegate>

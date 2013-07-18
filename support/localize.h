@@ -28,7 +28,6 @@
 #include <KDE/KLocalizedString>
 #else
 #include <QObject>
-#include "qtplural.h"
 
 inline QString i18n(const char *text)
 {

@@ -121,7 +121,7 @@ QVariant OnlineServicesModel::data(const QModelIndex &index, int role) const
     case Qt::ToolTipRole:
         if (MusicLibraryItem::Type_Root==item->itemType() && 0!=item->childCount() &&
                 static_cast<OnlineService *>(item)->isSearchBased()  && !static_cast<OnlineService *>(item)->currentSearchString().isEmpty()) {
-            return MusicModel::data(index, role).toString()+"<br/>"+i18n("Last Search:%1").arg(static_cast<OnlineService *>(item)->currentSearchString());
+            return MusicModel::data(index, role).toString()+"<br/>"+i18n("Last Search:%1", static_cast<OnlineService *>(item)->currentSearchString());
         }
         break;
     case ItemView::Role_SubText:

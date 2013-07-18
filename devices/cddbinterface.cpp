@@ -297,7 +297,7 @@ void CddbInterface::lookup(bool full)
     QList<CdAlbum> m;
     for (;;) {
         if (!cddb.read()) {
-            emit error(i18n("CDDB error: %1").arg(cddb.error()));
+            emit error(i18n("CDDB error: %1", cddb.error()));
             return;
         }
         int numTracks=cddb.trackCount();

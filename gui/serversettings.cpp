@@ -261,7 +261,7 @@ void ServerSettings::remove()
 {
     int index=combo->currentIndex();
     QString cName=1==stackedWidget->currentIndex() ? MPDUser::translatedName() : name->text();
-    if (combo->count()>1 && MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Delete <b>%1</b>?").arg(cName),
+    if (combo->count()>1 && MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Delete <b>%1</b>?", cName),
                                                                        i18n("Delete"), StdGuiItem::del(), StdGuiItem::cancel())) {
         bool isLast=index==(combo->count()-1);
         combo->removeItem(index);
@@ -300,7 +300,7 @@ QString ServerSettings::generateName(int ignore) const
     }
 
     for (int i=1; i<512; ++i) {
-        n=i18n("New Collection %1").arg(i);
+        n=i18n("New Collection %1", i);
         if (!collectionNames.contains(n)) {
             break;
         }

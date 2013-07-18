@@ -148,9 +148,9 @@ QString MPDConnectionDetails::getName() const
 QString MPDConnectionDetails::description() const
 {
     if (hostname.startsWith('/')) {
-        return i18nc("name (host)", "\"%1\"").arg(getName());
+        return i18nc("name (host)", "\"%1\"", getName());
     } else {
-        return i18nc("name (host:port)", "\"%1\" (%2:%3)").arg(getName()).arg(hostname).arg(port);
+        return i18nc("name (host:port)", "\"%1\" (%2:%3)", getName(), hostname, port);
     }
 }
 
@@ -353,18 +353,18 @@ void MPDConnection::reconnect()
                 connect(reconnectTimer, SIGNAL(timeout()), this, SLOT(reconnect()), Qt::QueuedConnection);
             }
             if (abs(now-reconnectStart)>1) {
-                emit info(i18n("Connecting to %1").arg(details.description()));
+                emit info(i18n("Connecting to %1", details.description()));
             }
             reconnectTimer->start(500);
         } else {
             emit stateChanged(false);
-            emit error(i18n("Connection to %1 failed").arg(details.description()), true);
+            emit error(i18n("Connection to %1 failed", details.description()), true);
             reconnectStart=0;
         }
         break;
     case IncorrectPassword:
         emit stateChanged(false);
-        emit error(i18n("Connection to %1 failed - incorrect password").arg(details.description()), true);
+        emit error(i18n("Connection to %1 failed - incorrect password", details.description()), true);
         reconnectStart=0;
         break;
     }
@@ -398,11 +398,11 @@ void MPDConnection::setDetails(const MPDConnectionDetails &d)
             break;
         case Failed:
             emit stateChanged(false);
-            emit error(i18n("Connection to %1 failed").arg(details.description()), true);
+            emit error(i18n("Connection to %1 failed", details.description()), true);
             break;
         case IncorrectPassword:
             emit stateChanged(false);
-            emit error(i18n("Connection to %1 failed - incorrect password").arg(details.description()), true);
+            emit error(i18n("Connection to %1 failed - incorrect password", details.description()), true);
             break;
         }
     } else if (diffName) {
@@ -433,7 +433,7 @@ MPDConnection::Response MPDConnection::sendCommand(const QByteArray &command, bo
     DBUG << (void *)(&sock) << "sendCommand:" << command << emitErrors << retry;
 
     if (!isConnected()) {
-        emit error(i18n("Failed to send command to %1 - not connected").arg(details.description()), true);
+        emit error(i18n("Failed to send command to %1 - not connected", details.description()), true);
         return Response(false);
     }
 
@@ -443,7 +443,7 @@ MPDConnection::Response MPDConnection::sendCommand(const QByteArray &command, bo
             // Failed to connect, so close *both* sockets!
             disconnectFromMPD();
             emit stateChanged(false);
-            emit error(i18n("Connection to %1 failed").arg(details.description()), true);
+            emit error(i18n("Connection to %1 failed", details.description()), true);
             return Response(false);
         }
     }
@@ -477,14 +477,14 @@ MPDConnection::Response MPDConnection::sendCommand(const QByteArray &command, bo
                 } else {
                     disconnectFromMPD();
                     emit stateChanged(false);
-                    emit error(i18n("Failed to send command. Disconnected from %1").arg(details.description()), true);
+                    emit error(i18n("Failed to send command. Disconnected from %1", details.description()), true);
                 }
             } else if (!response.getError().isEmpty()) {
                 emit error(response.getError());
             } else {
                 disconnectFromMPD();
                 emit stateChanged(false);
-                emit error(i18n("Failed to send command. Disconnected from %1").arg(details.description()), true);
+                emit error(i18n("Failed to send command. Disconnected from %1", details.description()), true);
             }
         }
     }
@@ -981,7 +981,7 @@ void MPDConnection::onSocketStateChanged(QAbstractSocket::SocketState socketStat
             // Failed to connect idle socket - so close *both*
             disconnectFromMPD();
             emit stateChanged(false);
-            emit error(i18n("Connection to %1 failed").arg(details.description()), true);
+            emit error(i18n("Connection to %1 failed", details.description()), true);
         }
         if (QAbstractSocket::ConnectedState==idleSocket.state()) {
             connect(&idleSocket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(onSocketStateChanged(QAbstractSocket::SocketState)));
@@ -1008,7 +1008,7 @@ void MPDConnection::parseIdleReturn(const QByteArray &data)
             // Failed to connect idle socket - so close *both*
             disconnectFromMPD();
             emit stateChanged(false);
-            emit error(i18n("Connection to %1 failed").arg(details.description()), true);
+            emit error(i18n("Connection to %1 failed", details.description()), true);
         }
         return;
     }
@@ -1143,7 +1143,7 @@ void MPDConnection::renamePlaylist(const QString oldName, const QString newName)
     if (sendCommand("rename "+encodeName(oldName)+' '+encodeName(newName), false).ok) {
         emit playlistRenamed(oldName, newName);
     } else {
-        emit error(i18n("Failed to rename <b>%1</b> to <b>%2</b>").arg(oldName).arg(newName));
+        emit error(i18n("Failed to rename <b>%1</b> to <b>%2</b>", oldName, newName));
     }
 }
 
@@ -1155,7 +1155,7 @@ void MPDConnection::removePlaylist(const QString &name)
 void MPDConnection::savePlaylist(const QString &name)
 {
     if (!sendCommand("save "+encodeName(name), false).ok) {
-        emit error(i18n("Failed to save <b>%1</b>").arg(name));
+        emit error(i18n("Failed to save <b>%1</b>", name));
     }
 }
 

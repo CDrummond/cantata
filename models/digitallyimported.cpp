@@ -216,7 +216,7 @@ void DigitallyImported::loginResponse()
         listenHash=lh;
         save();
     }
-    status=i18n("Logged in (expiry:%1)").arg(expires.toString(Qt::ISODate));
+    status=i18n("Logged in (expiry:%1)", expires.toString(Qt::ISODate));
     controlTimer();
     emit loginStatus(true, status);
 }

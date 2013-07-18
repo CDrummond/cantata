@@ -265,7 +265,7 @@ void SyncCollectionWidget::updateStats()
     if (checkedSongs.isEmpty()) {
         selection->setText(i18n("Nothing selected"));
     } else {
-        selection->setText(i18n("Artists:%1, Albums:%2, Songs:%3").arg(artists.count()).arg(albums.count()).arg(checkedSongs.count()));
+        selection->setText(i18n("Artists:%1, Albums:%2, Songs:%3", artists.count(), albums.count(), checkedSongs.count()));
     }
     copyAction->setEnabled(!checkedSongs.isEmpty());
 }

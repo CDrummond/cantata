@@ -161,8 +161,8 @@ public:
         : CoverItem(u, QString(), parent)
         , img(i) {
         setImage(i);
-        setText(i18nc("name\nwidth x height (file size)", "%1\n%2 x %3 (%4)")
-                .arg(Utils::getFile(u)).arg(img.width()).arg(img.height()).arg(Utils::formatByteSize(QFileInfo(u).size())));
+        setText(i18nc("name\nwidth x height (file size)", "%1\n%2 x %3 (%4)",
+                Utils::getFile(u), img.width(), img.height(), Utils::formatByteSize(QFileInfo(u).size())));
     }
 
     quint32 key() const { return 0xFFFFFFFE; }
@@ -180,7 +180,7 @@ public:
         , width(w)
         , height(h) {
         setImage(img);
-        setText(i18nc("Google\nwidth x height (file size)", "Google\n%1 x %2 (%3)").arg(width).arg(height).arg(Utils::formatByteSize(size*1024)));
+        setText(i18nc("Google\nwidth x height (file size)", "Google\n%1 x %2 (%3)", width, height, Utils::formatByteSize(size*1024)));
     }
 
     quint32 key() const { return width*height; }
@@ -200,7 +200,7 @@ public:
         , height(h) {
         setImage(img);
         setText(width>10 && height>10
-                    ? i18nc("Discogs\nwidth x height", "Discogs\n%1 x %2").arg(width).arg(height)
+                    ? i18nc("Discogs\nwidth x height", "Discogs\n%1 x %2", width, height)
                     : QLatin1String("Discogs"));
     }
 
@@ -234,7 +234,7 @@ public:
         QFont f(font());
         f.setBold((true));
         setFont(f);
-        setText(i18nc("Current Cover\nwidth x height", "Current Cover\n%1 x %2").arg(img.img.width()).arg(img.img.height()));
+        setText(i18nc("Current Cover\nwidth x height", "Current Cover\n%1 x %2", img.img.width(), img.img.height()));
     }
 
     quint32 key() const { return 0xFFFFFFFF; }
@@ -300,7 +300,7 @@ void CoverPreview::showImage(const QImage &img, const QString &u)
         imgW=img.width();
         imgH=img.height();
         resize(lrPad+qMax(100, qMin(maxWidth, imgW+fw)), tbPad+qMax(100, qMin(maxHeight, imgH+fw)));
-        setWindowTitle(i18nc("Image (width x height zoom%)", "Image (%1 x %2 %3%)").arg(imgW).arg(imgH).arg(zoom*100));
+        setWindowTitle(i18nc("Image (width x height zoom%)", "Image (%1 x %2 %3%)", imgW, imgH, zoom*100));
         show();
     }
 }
@@ -335,7 +335,7 @@ void CoverPreview::scaleImage(int adjust)
     }
     zoom=newZoom;
     imageLabel->resize(zoom * imageLabel->pixmap()->size());
-    setWindowTitle(i18nc("Image (width x height zoom%)", "Image (%1 x %2 %3%)").arg(imgW).arg(imgH).arg(zoom*100));
+    setWindowTitle(i18nc("Image (width x height zoom%)", "Image (%1 x %2 %3%)", imgW, imgH, zoom*100));
 }
 
 void CoverPreview::wheelEvent(QWheelEvent *event)
@@ -428,15 +428,15 @@ void CoverDialog::show(const Song &s, const Covers::Image &current)
     if (!img.fileName.isEmpty() && !QFileInfo(img.fileName).isWritable()) {
         MessageBox::error(parentWidget(),
                           isArtist
-                            ? i18n("<p>An image already exists for this artist, and the file is not writeable.<p></p><i>%1</i></p>").arg(img.fileName)
-                            : i18n("<p>A cover already exists for this album, and the file is not writeable.<p></p><i>%1</i></p>").arg(img.fileName));
+                            ? i18n("<p>An image already exists for this artist, and the file is not writeable.<p></p><i>%1</i></p>", img.fileName)
+                            : i18n("<p>A cover already exists for this album, and the file is not writeable.<p></p><i>%1</i></p>", img.fileName));
         deleteLater();
         return;
     }
     if (isArtist) {
         setCaption(song.albumartist);
     } else {
-        setCaption(i18nc("Album by Artist", "%1 by %2").arg(song.album).arg(song.albumArtist()));
+        setCaption(i18nc("Album by Artist", "%1 by %2", song.album, song.albumArtist()));
     }
     if (!img.img.isNull()) {
         existing=new ExistingCover(isArtist ? Covers::Image(cropImage(img.img, true), img.fileName) : img, list);
@@ -1273,7 +1273,7 @@ bool CoverDialog::saveCover(const QString &src, const QImage &img)
         if (existing && !existingBackup.isEmpty()) {
             QFile::rename(existingBackup, existing->url());
         }
-        MessageBox::error(this, i18n("Failed to set cover!\nCould not copy file to '%1'!").arg(destName));
+        MessageBox::error(this, i18n("Failed to set cover!\nCould not copy file to '%1'!", destName));
         return false;
     }
 }

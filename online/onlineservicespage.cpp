@@ -279,7 +279,7 @@ void OnlineServicesPage::controlSearch(bool on)
                 genreCombo->setCurrentIndex(0);
                 genreCombo->setEnabled(false);
             }
-            view->setSearchLabelText(i18nc("Search ServiceName:", "Search %1:").arg(searchService));
+            view->setSearchLabelText(i18nc("Search ServiceName:", "Search %1:", searchService));
             view->setBackgroundImage(srv->icon());
         }
         QModelIndex filterIndex=srv ? OnlineServicesModel::self()->index(srv) : QModelIndex();
@@ -393,7 +393,7 @@ void OnlineServicesPage::refreshService()
         OnlineService *srv=static_cast<OnlineService *>(item);
 
         if (srv->isLoaded() && srv->childCount()>0 &&
-                MessageBox::No==MessageBox::questionYesNo(this, i18n("Re-download music listing for %1?").arg(srv->id()), i18n("Re-download"),
+                MessageBox::No==MessageBox::questionYesNo(this, i18n("Re-download music listing for %1?", srv->id()), i18n("Re-download"),
                                                           GuiItem(i18n("Re-download")), StdGuiItem::cancel())) {
             return;
         }

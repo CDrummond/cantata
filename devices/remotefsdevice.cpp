@@ -312,7 +312,7 @@ void RemoteFsDevice::mount()
         Details det=details;
         AvahiService *srv=Avahi::self()->getService(det.serviceName);
         if (!srv || srv->getHost().isEmpty() || 0==srv->getPort()) {
-            emit error(i18n("Failed to resolve connection details for %1").arg(details.name));
+            emit error(i18n("Failed to resolve connection details for %1", details.name));
             return;
         }
         if (constPromptPassword==det.url.password()) {
@@ -383,7 +383,7 @@ void RemoteFsDevice::mount()
         cmd=Utils::findExe("sshfs");
         if (!cmd.isEmpty()) {
             if (!QDir(mountPoint(details, true)).entryList(QDir::NoDot|QDir::NoDotDot|QDir::AllEntries|QDir::Hidden).isEmpty()) {
-                emit error(i18n("Mount point (\"%1\") is not empty!").arg(mountPoint(details, true)));
+                emit error(i18n("Mount point (\"%1\") is not empty!", mountPoint(details, true)));
                 return;
             }
 
@@ -458,8 +458,8 @@ void RemoteFsDevice::procFinished(int exitCode)
     proc=0;
 
     if (0!=exitCode) {
-        emit error(wasMount ? i18n("Failed to connect to \"%1\"").arg(details.name)
-                            : i18n("Failed to disconnect from \"%1\"").arg(details.name));
+        emit error(wasMount ? i18n("Failed to connect to \"%1\"", details.name)
+                            : i18n("Failed to disconnect from \"%1\"", details.name));
         setStatusMessage(QString());
     } else if (wasMount) {
         setStatusMessage(i18n("Updating tracks..."));
@@ -479,7 +479,7 @@ void RemoteFsDevice::mountStatus(const QString &mp, int pid, int st)
     if (pid==getpid() && mp==mountPoint(details, false)) {
         messageSent=false;
         if (0!=st) {
-            emit error(i18n("Failed to connect to \"%1\"").arg(details.name));
+            emit error(i18n("Failed to connect to \"%1\"", details.name));
             setStatusMessage(QString());
         } else {
             setStatusMessage(i18n("Updating tracks..."));
@@ -494,7 +494,7 @@ void RemoteFsDevice::umountStatus(const QString &mp, int pid, int st)
     if (pid==getpid() && mp==mountPoint(details, false)) {
         messageSent=false;
         if (0!=st) {
-            emit error(i18n("Failed to disconnect from \"%1\"").arg(details.name));
+            emit error(i18n("Failed to disconnect from \"%1\"", details.name));
             setStatusMessage(QString());
         } else {
             setStatusMessage(QString());
@@ -572,7 +572,7 @@ QString RemoteFsDevice::capacityString()
     if (isOldSshfs()) {
         return i18n("Capacity Unknown");
     }
-    return i18n("%1 free").arg(Utils::formatByteSize(spaceInfo.size()-spaceInfo.used()));
+    return i18n("%1 free", Utils::formatByteSize(spaceInfo.size()-spaceInfo.used()));
 }
 
 qint64 RemoteFsDevice::freeSpace()

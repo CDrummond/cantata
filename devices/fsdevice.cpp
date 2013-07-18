@@ -769,6 +769,6 @@ void FsDevice::cacheStatus(const QString &msg, int prog)
 {
     if (prog!=cacheProgress) {
         cacheProgress=prog;
-        setStatusMessage(i18nc("Message percent", "%1 %2%").arg(msg).arg(cacheProgress));
+        setStatusMessage(i18nc("Message percent", "%1 %2%", msg, cacheProgress));
     }
 }

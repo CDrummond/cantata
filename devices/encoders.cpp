@@ -99,17 +99,17 @@ static void init()
                     QLatin1String("libfaac"),
                     QLatin1String("-aq"),
                     i18n("Expected average bitrate for variable bitrate encoding"),
-                    QList<Setting>() << Setting(i18n(vbr).arg(25), 30)
-                    << Setting(i18n(vbr).arg(50), 55)
-                    << Setting(i18n(vbr).arg(70), 80)
-                    << Setting(i18n(vbr).arg(90), 105)
-                    << Setting(i18n(vbr).arg(120), 125)
-                    << Setting(i18n(vbr).arg(150), 155)
-                    << Setting(i18n(vbr).arg(170), 180)
-                    << Setting(i18n(vbr).arg(180), 205)
-                    << Setting(i18n(vbr).arg(190), 230)
-                    << Setting(i18n(vbr).arg(200), 255)
-                    << Setting(i18n(vbr).arg(210), 280),
+                    QList<Setting>() << Setting(i18n(vbr, 25), 30)
+                    << Setting(i18n(vbr, 50), 55)
+                    << Setting(i18n(vbr, 70), 80)
+                    << Setting(i18n(vbr, 90), 105)
+                    << Setting(i18n(vbr, 120), 125)
+                    << Setting(i18n(vbr, 150), 155)
+                    << Setting(i18n(vbr, 170), 180)
+                    << Setting(i18n(vbr, 180), 205)
+                    << Setting(i18n(vbr, 190), 230)
+                    << Setting(i18n(vbr, 200), 255)
+                    << Setting(i18n(vbr, 210), 280),
                     i18n("Smaller file"),
                     i18n("Better sound quality"),
                     5);
@@ -139,16 +139,16 @@ static void init()
                     QLatin1String("libmp3lame"),
                     QLatin1String("-aq"),
                     i18n("Expected average bitrate for variable bitrate encoding"),
-                    QList<Setting>() << Setting(i18n(vbr).arg(80), 9)
-                                     << Setting(i18n(vbr).arg(100), 8)
-                                     << Setting(i18n(vbr).arg(120), 7)
-                                     << Setting(i18n(vbr).arg(140), 6)
-                                     << Setting(i18n(vbr).arg(160), 5)
-                                     << Setting(i18n(vbr).arg(175), 4)
-                                     << Setting(i18n(vbr).arg(190), 3)
-                                     << Setting(i18n(vbr).arg(205), 2)
-                                     << Setting(i18n(vbr).arg(220), 1)
-                                     << Setting(i18n(vbr).arg(240), 0),
+                    QList<Setting>() << Setting(i18n(vbr, 80), 9)
+                                     << Setting(i18n(vbr, 100), 8)
+                                     << Setting(i18n(vbr, 120), 7)
+                                     << Setting(i18n(vbr, 140), 6)
+                                     << Setting(i18n(vbr, 160), 5)
+                                     << Setting(i18n(vbr, 175), 4)
+                                     << Setting(i18n(vbr, 190), 3)
+                                     << Setting(i18n(vbr, 205), 2)
+                                     << Setting(i18n(vbr, 220), 1)
+                                     << Setting(i18n(vbr, 240), 0),
                     i18n("Smaller file"),
                     i18n("Better sound quality"),
                     4);
@@ -182,18 +182,18 @@ static void init()
                    QLatin1String("libvorbis"),
                    QLatin1String("-aq"),
                    i18n("Quality rating"),
-                   QList<Setting>() << Setting(i18n(quality).arg(-1).arg(45), -1)
-                   << Setting(i18n(quality).arg(0).arg(64), 0)
-                   << Setting(i18n(quality).arg(1).arg(80), 1)
-                   << Setting(i18n(quality).arg(2).arg(96), 2)
-                   << Setting(i18n(quality).arg(3).arg(112), 3)
-                   << Setting(i18n(quality).arg(4).arg(128), 4)
-                   << Setting(i18n(quality).arg(5).arg(160), 5)
-                   << Setting(i18n(quality).arg(6).arg(192), 6)
-                   << Setting(i18n(quality).arg(7).arg(224), 7)
-                   << Setting(i18n(quality).arg(8).arg(256), 8)
-                   << Setting(i18n(quality).arg(9).arg(320), 9)
-                   << Setting(i18n(quality).arg(10).arg(500), 10),
+                   QList<Setting>() << Setting(i18n(quality, -1, 45), -1)
+                   << Setting(i18n(quality, 0, 64), 0)
+                   << Setting(i18n(quality, 1, 80), 1)
+                   << Setting(i18n(quality, 2, 96), 2)
+                   << Setting(i18n(quality, 3, 112), 3)
+                   << Setting(i18n(quality, 4, 128), 4)
+                   << Setting(i18n(quality, 5, 160), 5)
+                   << Setting(i18n(quality, 6, 192), 6)
+                   << Setting(i18n(quality, 7, 224), 7)
+                   << Setting(i18n(quality, 8, 256), 8)
+                   << Setting(i18n(quality, 9, 320), 9)
+                   << Setting(i18n(quality, 10, 500), 10),
                    i18n("Smaller file"),
                    i18n("Better sound quality"),
                    6);
@@ -280,14 +280,14 @@ static void init()
                                 QLatin1String("wmav2"),
                                 QLatin1String("-ab"),
                                 i18n("Bitrate"),
-                                QList<Setting>() << Setting(i18n(cbr).arg(64), 65*1000)
-                                << Setting(i18n(cbr).arg(80), 75*1000)
-                                << Setting(i18n(cbr).arg(96), 88*1000)
-                                << Setting(i18n(cbr).arg(112), 106*1000)
-                                << Setting(i18n(cbr).arg(136), 133*1000)
-                                << Setting(i18n(cbr).arg(182), 180*1000)
-                                << Setting(i18n(cbr).arg(275), 271*1000)
-                                << Setting(i18n(cbr).arg(550), 545*1000),
+                                QList<Setting>() << Setting(i18n(cbr, 64), 65*1000)
+                                << Setting(i18n(cbr, 80), 75*1000)
+                                << Setting(i18n(cbr, 96), 88*1000)
+                                << Setting(i18n(cbr, 112), 106*1000)
+                                << Setting(i18n(cbr, 136), 133*1000)
+                                << Setting(i18n(cbr, 182), 180*1000)
+                                << Setting(i18n(cbr, 275), 271*1000)
+                                << Setting(i18n(cbr, 550), 545*1000),
                                 i18n("Smaller file"),
                                 i18n("Better sound quality"),
                                 4));

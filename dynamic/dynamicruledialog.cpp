@@ -191,7 +191,7 @@ void DynamicRuleDialog::enableOkButton()
             errorLabel->setText(i18n("<i><b>ERROR</b>: 'From Year' should be less than 'To Year'</i>"));
             errorLabel->setVisible(true);
         } else if (dateTo-dateFrom>constMaxDateRange) {
-            errorLabel->setText(i18n("<i><b>ERROR:</b> Date range is too large (can only be a maximum of %1 years)</i>").arg(constMaxDateRange));
+            errorLabel->setText(i18n("<i><b>ERROR:</b> Date range is too large (can only be a maximum of %1 years)</i>", constMaxDateRange));
             errorLabel->setVisible(true);
         }
     }

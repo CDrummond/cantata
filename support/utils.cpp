@@ -268,19 +268,19 @@ QString Utils::formatByteSize(double size)
 
     if (useSiUnites) {
         switch(unit) {
-        case 0: return i18n("%1 B").arg(size);
-        case 1: return i18n("%1 kB").arg(locale.toString(size, 'f', 1));
-        case 2: return i18n("%1 MB").arg(locale.toString(size, 'f', 1));
+        case 0: return i18n("%1 B", size);
+        case 1: return i18n("%1 kB", locale.toString(size, 'f', 1));
+        case 2: return i18n("%1 MB", locale.toString(size, 'f', 1));
         default:
-        case 3: return i18n("%1 GB").arg(locale.toString(size, 'f', 1));
+        case 3: return i18n("%1 GB", locale.toString(size, 'f', 1));
         }
     } else {
         switch(unit) {
-        case 0: return i18n("%1 B").arg(size);
-        case 1: return i18n("%1 KiB").arg(locale.toString(size, 'f', 1));
-        case 2: return i18n("%1 MiB").arg(locale.toString(size, 'f', 1));
+        case 0: return i18n("%1 B", size);
+        case 1: return i18n("%1 KiB", locale.toString(size, 'f', 1));
+        case 2: return i18n("%1 MiB", locale.toString(size, 'f', 1));
         default:
-        case 3: return i18n("%1 GiB").arg(locale.toString(size, 'f', 1));
+        case 3: return i18n("%1 GiB", locale.toString(size, 'f', 1));
         }
     }
 }

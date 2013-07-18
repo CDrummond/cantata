@@ -64,9 +64,9 @@ int CddbSelectionDialog::select(const QList<CdAlbum> &albums)
     albumDetails=albums;
     foreach (const CdAlbum &a, albums) {
         if (a.disc>0) {
-            combo->addItem(QString("%1 -%2 %3 (%4)").arg(a.artist).arg(a.name).arg(i18n("Disc %1").arg(a.disc)).arg(a.year));
+            combo->addItem(i18nc("artist - album Disc disc (year)", "%1 -%2 Disc %3 (%4)", a.artist, a.name, a.disc, a.year));
         } else {
-            combo->addItem(QString("%1 - %2 (%3)").arg(a.artist).arg(a.name).arg(a.year));
+            combo->addItem(i18nc("artist - album (year)", "%1 - %2 (%3)", a.artist, a.name, a.year));
         }
     }
 

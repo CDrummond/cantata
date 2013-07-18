@@ -200,7 +200,7 @@ QVariant MusicModel::data(const QModelIndex &index, int role) const
         if (MusicLibraryItem::Type_Artist==item->itemType()) {
             return item->data();
         } else if (MusicLibraryItem::Type_Album==item->itemType()) {
-            return i18nc("Album by Artist", "%1 by %2").arg(item->data()).arg(item->parentItem()->data());
+            return i18nc("Album by Artist", "%1 by %2", item->data(), item->parentItem()->data());
         }
         break;
     case Qt::SizeHintRole: {

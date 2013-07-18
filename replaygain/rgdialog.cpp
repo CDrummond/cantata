@@ -526,7 +526,7 @@ void RgDialog::scannerDone()
         if (s->success()) {
             track.progress=100;
             track.data=s->results();
-            item->setText(COL_TRACKGAIN, i18n("%1 dB").arg(formatNumber(Scanner::reference(track.data.loudness), 2)));
+            item->setText(COL_TRACKGAIN, i18n("%1 dB", formatNumber(Scanner::reference(track.data.loudness), 2)));
             item->setText(COL_TRACKPEAK, formatNumber(track.data.peakValue(), 6));
             QFont f(font());
             f.setItalic(true);
@@ -581,7 +581,7 @@ void RgDialog::scannerDone()
                     (*a).data=Scanner::global(as);
                     foreach (int idx, (*a).tracks) {
                         QTreeWidgetItem *item=view->topLevelItem(idx);
-                        item->setText(COL_ALBUMGAIN, i18n("%1 dB").arg(formatNumber(Scanner::reference((*a).data.loudness), 2)));
+                        item->setText(COL_ALBUMGAIN, i18n("%1 dB", formatNumber(Scanner::reference((*a).data.loudness), 2)));
                         item->setText(COL_ALBUMPEAK, formatNumber((*a).data.peak, 6));
 
                         if (origTags.contains(idx)) {
@@ -640,9 +640,9 @@ void RgDialog::songTags(int index, Tags::ReplayGain tags)
             if (!item) {
                 return;
             }
-            item->setText(COL_TRACKGAIN, i18n("%1 dB").arg(formatNumber(tags.trackGain, 2)));
+            item->setText(COL_TRACKGAIN, i18n("%1 dB", formatNumber(tags.trackGain, 2)));
             item->setText(COL_TRACKPEAK, formatNumber(tags.trackPeak, 6));
-            item->setText(COL_ALBUMGAIN, i18n("%1 dB").arg(formatNumber(tags.albumGain, 2)));
+            item->setText(COL_ALBUMGAIN, i18n("%1 dB", formatNumber(tags.albumGain, 2)));
             item->setText(COL_ALBUMPEAK, formatNumber(tags.albumPeak, 6));
         }
     }

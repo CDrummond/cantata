@@ -140,8 +140,8 @@ void PlaybackSettings::mpdConnectionStateChanged(bool c)
     #endif
     messageIcon->setPixmap(Icon(c ? "dialog-information" : "dialog-warning").pixmap(messageIcon->minimumSize()));
     if (c) {
-        messageLabel->setText(i18n("<i>Connected to %1<br/>The entries below apply to the currently connected MPD collection.</i>")
-                              .arg(MPDConnection::self()->getDetails().description()));
+        messageLabel->setText(i18n("<i>Connected to %1<br/>The entries below apply to the currently connected MPD collection.</i>",
+                                   MPDConnection::self()->getDetails().description()));
     } else {
         messageLabel->setText(i18n("<i>Not Connected!<br/>The entries below cannot be modified, as Cantata is not connected to MPD.</i>"));
         outputsView->clear();

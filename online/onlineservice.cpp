@@ -367,7 +367,7 @@ void OnlineService::setStatusMessage(const QString &msg)
     emit m_model->dataChanged(modelIndex, modelIndex);
 }
 
-QModelIndex OnlineService::index()
+QModelIndex OnlineService::index() const
 {
     return m_model->createIndex(m_model->row((void *)this), 0, (void *)this);
 }

@@ -80,7 +80,7 @@ OnlineServicesModel::~OnlineServicesModel()
 {
 }
 
-QModelIndex OnlineServicesModel::index(const OnlineService *srv) const
+QModelIndex OnlineServicesModel::serviceIndex(const OnlineService *srv) const
 {
     int row=collections.indexOf(const_cast<OnlineService *>(srv));
     return -1==row ? QModelIndex() : createIndex(row, 0, (void *)srv);
@@ -243,7 +243,7 @@ void OnlineServicesModel::setArtistImage(const Song &song, const QImage &img)
         if (srv->useArtistImages()) {
             MusicLibraryItemArtist *artistItem = srv->artist(song, false);
             if (artistItem && artistItem->setCover(img)) {
-                QModelIndex idx=MultiMusicModel::index(artistItem->row(), 0, MultiMusicModel::index(i, 0, QModelIndex()));
+                QModelIndex idx=index(artistItem->row(), 0, index(i, 0, QModelIndex()));
                 emit dataChanged(idx, idx);
             }
         }
@@ -264,7 +264,7 @@ void OnlineServicesModel::setCover(const Song &song, const QImage &img, const QS
             if (artistItem) {
                 MusicLibraryItemAlbum *albumItem = artistItem->album(song, false);
                 if (albumItem && albumItem->setCover(img)) {
-                    QModelIndex idx=MultiMusicModel::index(albumItem->row(), 0, MultiMusicModel::index(artistItem->row(), 0, MultiMusicModel::index(i, 0, QModelIndex())));
+                    QModelIndex idx=index(albumItem->row(), 0, index(artistItem->row(), 0, index(i, 0, QModelIndex())));
                     emit dataChanged(idx, idx);
                 }
             }

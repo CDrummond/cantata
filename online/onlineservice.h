@@ -142,7 +142,7 @@ public:
     bool isConfigured() { return configured; }
 
 protected:
-    QModelIndex index();
+    QModelIndex index() const;
     void emitUpdated();
     void setBusy(bool b);
 

@@ -282,7 +282,7 @@ void OnlineServicesPage::controlSearch(bool on)
             view->setSearchLabelText(i18nc("Search ServiceName:", "Search %1:", searchService));
             view->setBackgroundImage(srv->icon());
         }
-        QModelIndex filterIndex=srv ? OnlineServicesModel::self()->index(srv) : QModelIndex();
+        QModelIndex filterIndex=srv ? OnlineServicesModel::self()->serviceIndex(srv) : QModelIndex();
         proxy.setFilterItem(srv);
         if (filterIndex.isValid()) {
             view->showIndex(proxy.mapFromSource(filterIndex), true);
@@ -312,7 +312,7 @@ void OnlineServicesPage::searchItems()
         proxy.update(text, genreCombo->currentIndex()<=0 ? QString() : genreCombo->currentText());
         if (proxy.enabled() && !text.isEmpty()) {
             view->expandAll(proxy.filterItem()
-                                ? proxy.mapFromSource(OnlineServicesModel::self()->index(static_cast<const OnlineService *>(proxy.filterItem())))
+                                ? proxy.mapFromSource(OnlineServicesModel::self()->serviceIndex(static_cast<const OnlineService *>(proxy.filterItem())))
                                 : QModelIndex());
         }
     }

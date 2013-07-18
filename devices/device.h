@@ -176,7 +176,7 @@ public:
     virtual bool supportsDisconnect() const { return false; }
     virtual bool isStdFs() const { return false; }
     virtual QString subText() { return QString(); }
-    virtual QModelIndex index() const;
+    QModelIndex index() const;
     #endif
 
 #ifndef Q_OS_WIN

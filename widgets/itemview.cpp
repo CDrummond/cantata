@@ -816,7 +816,7 @@ void ItemView::showIndex(const QModelIndex &idx, bool scrollTo)
 
 void ItemView::focusSearch()
 {
-    searchWidget->toggle();
+    searchWidget->activate();
 }
 
 void ItemView::setSearchLabelText(const QString &text)

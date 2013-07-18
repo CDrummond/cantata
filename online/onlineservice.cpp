@@ -289,7 +289,7 @@ void OnlineService::removeCache()
         QFile::remove(cn);
     }
 }
-#include <QDebug>
+
 void OnlineService::applyUpdate()
 {
     if (update) {
@@ -314,7 +314,6 @@ void OnlineService::applyUpdate()
                 m_model->endRemoveRows();
             }
             int newCount=newRows();
-            qWarning() << data() << newRows();
             if (newCount>0) {
                 m_model->beginInsertRows(index(), 0, newCount-1);
                 foreach (MusicLibraryItem *item, update->childItems()) {

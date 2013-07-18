@@ -262,9 +262,9 @@ public:
                 quint16 year=Song::albumYear(song);
 
                 if (year>0) {
-                    title=i18nc("artist - album (albumYear)", "%1 - %2 (%3)").arg(song.albumArtist()).arg(album).arg(year);
+                    title=i18nc("artist - album (albumYear)", "%1 - %2 (%3)", song.albumArtist(), album, year);
                 } else {
-                    title=i18nc("artist - album", "%1 - %2").arg(song.albumArtist()).arg(album);
+                    title=i18nc("artist - album", "%1 - %2", song.albumArtist(), album);
                 }
                 track=formatNumber(song.track)+QChar(' ')+trackTitle;
             }

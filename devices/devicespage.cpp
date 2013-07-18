@@ -513,7 +513,7 @@ void DevicesPage::forgetRemoteDevice()
     }
     QString udi=dev->udi();
     QString devName=dev->data();
-    if (MessageBox::Yes==MessageBox::warningYesNo(this, i18n("Are you sure you wish to forget <b>%1</b>?").arg(devName))) {
+    if (MessageBox::Yes==MessageBox::warningYesNo(this, i18n("Are you sure you wish to forget <b>%1</b>?", devName))) {
         DevicesModel::self()->removeRemoteDevice(udi);
     }
     #endif
@@ -532,9 +532,9 @@ void DevicesPage::toggleDevice()
         Device *dev=static_cast<Device *>(item);
         if (dev->isConnected() &&
             (Device::AudioCd==dev->devType()
-                ? MessageBox::No==MessageBox::warningYesNo(this, i18n("Are you sure you wish to eject Audio CD <b>%1 - %2</b>?").arg(dev->data()).arg(dev->subText()),
+                ? MessageBox::No==MessageBox::warningYesNo(this, i18n("Are you sure you wish to eject Audio CD <b>%1 - %2</b>?", dev->data(), dev->subText()),
                                                            i18n("Eject"), GuiItem(i18n("Eject")), StdGuiItem::cancel())
-                : MessageBox::No==MessageBox::warningYesNo(this, i18n("Are you sure you wish to disconnect <b>%1</b>?").arg(dev->data()),
+                : MessageBox::No==MessageBox::warningYesNo(this, i18n("Are you sure you wish to disconnect <b>%1</b>?", dev->data()),
                                                            i18n("Disconnect"), GuiItem(i18n("Disconnect")), StdGuiItem::cancel()))) {
             return;
         }

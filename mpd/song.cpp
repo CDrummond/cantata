@@ -302,7 +302,7 @@ QString Song::entryName() const
         return file;
     }
 
-    return i18nc("Song\nArtist\nAlbum", "%1\n%2\n%3").arg(title).arg(artist).arg(album);
+    return i18nc("Song\nArtist\nAlbum", "%1\n%2\n%3", title, artist, album);
 }
 
 QString Song::artistSong() const

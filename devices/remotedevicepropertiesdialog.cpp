@@ -88,7 +88,7 @@ void RemoteDevicePropertiesDialog::slotButtonClicked(int button)
     case Ok: {
         RemoteFsDevice::Details d=remoteProp->details();
         if (d.name!=remoteProp->origDetails().name && DevicesModel::self()->device(RemoteFsDevice::createUdi(d.name))) {
-            MessageBox::error(this, i18n("A remote device named \"%1\" already exists!\nPlease choose a different name").arg(d.name));
+            MessageBox::error(this, i18n("A remote device named \"%1\" already exists!\nPlease choose a different name", d.name));
         } else {
             emit updatedSettings(devProp->settings(), remoteProp->details());
             accept();

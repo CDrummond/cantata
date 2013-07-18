@@ -195,7 +195,7 @@ void StreamFetcher::doNext()
         current=todo.takeFirst();
         QUrl u(current);
         currentName=MPDParseUtils::getStreamName(current);
-        emit status(i18n("Fetching %1").arg(currentName.isEmpty() ? u.toString() : currentName));
+        emit status(i18n("Fetching %1", currentName.isEmpty() ? u.toString() : currentName));
         if (!currentName.isEmpty()) {
             current=current.left(current.length()-(currentName.length()+1));
         }

@@ -304,7 +304,7 @@ void DynamicRulesDialog::saved(bool s)
     if (s) {
         accept();
     } else {
-        messageWidget->setError(i18n("Failed to save %1").arg(nameText->text().trimmed()));
+        messageWidget->setError(i18n("Failed to save %1", nameText->text().trimmed()));
         controls->setEnabled(true);
     }
 }
@@ -322,7 +322,7 @@ bool DynamicRulesDialog::save()
     }
 
     if (name!=origName && Dynamic::self()->exists(name) &&
-        MessageBox::No==MessageBox::warningYesNo(this, i18n("A set of rules named \'%1\' already exists!\nOverwrite?").arg(name),
+        MessageBox::No==MessageBox::warningYesNo(this, i18n("A set of rules named \'%1\' already exists!\nOverwrite?", name),
                                                   i18n("Overwrite Rules"), StdGuiItem::overwrite(), StdGuiItem::cancel())) {
         return false;
     }
@@ -348,7 +348,7 @@ bool DynamicRulesDialog::save()
 
     if (Dynamic::self()->isRemote()) {
         if (saved) {
-            messageWidget->setInformation(i18n("Saving %1").arg(name));
+            messageWidget->setInformation(i18n("Saving %1", name));
             controls->setEnabled(false);
             enableButton(Ok, false);
         }

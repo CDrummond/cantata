@@ -317,7 +317,7 @@ void MusicBrainz::lookup(bool full)
                             album.name=QString::fromUtf8(fullRelease->Title().c_str());
 
                             if (fullRelease->MediumList()->NumItems() > 1) {
-                                album.name = i18n("%1 (Disc %2)").arg(album.name).arg(medium->Position());
+                                album.name = i18n("%1 (Disc %2)", album.name, medium->Position());
                                 album.disc=medium->Position();
                             }
                             album.artist=artistFromCreditList(fullRelease->ArtistCredit());

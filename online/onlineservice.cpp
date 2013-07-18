@@ -346,7 +346,7 @@ void OnlineService::loaderstatus(const QString &msg, int prog)
     if (prog<0) {
         setStatusMessage(msg);
     } else {
-        setStatusMessage(i18nc("Message percent", "%1 %2%").arg(msg).arg(prog));
+        setStatusMessage(i18nc("Message percent", "%1 %2%", msg, prog));
     }
 }
 

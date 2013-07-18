@@ -386,7 +386,7 @@ void Dynamic::start(const QString &name)
     QString fName(Utils::configDir(constDir, false)+name+constExtension);
 
     if (!QFile::exists(fName)) {
-        emit error(i18n("Failed to locate rules file - %1").arg(fName));
+        emit error(i18n("Failed to locate rules file - %1", fName));
         return;
     }
 
@@ -394,12 +394,12 @@ void Dynamic::start(const QString &name)
 
     QFile::remove(rules);
     if (QFile::exists(rules)) {
-        emit error(i18n("Failed to remove previous rules file - %1").arg(rules));
+        emit error(i18n("Failed to remove previous rules file - %1", rules));
         return;
     }
 
     if (!QFile::link(fName, rules)) {
-        emit error(i18n("Failed to install rules file - %1 -> %2").arg(fName).arg(rules));
+        emit error(i18n("Failed to install rules file - %1 -> %2", fName, rules));
         return;
     }
 
@@ -796,7 +796,7 @@ void Dynamic::sendCommand(Command cmd, const QStringList &args)
             case Id:        cmdStr=i18n("Requesting ID details"); break;
             default: break;
             }
-            emit error(i18n("Awaiting response for previous command. (%1)").arg(cmdStr));
+            emit error(i18n("Awaiting response for previous command. (%1)", cmdStr));
         }
         return;
     }
@@ -959,7 +959,7 @@ void Dynamic::remoteJobFinished()
         if (cmdOk) {
             parseRemote(response);
         } else {
-            emit error(i18n("Failed to retrieve list of dynamic rules. (%1)").arg(response));
+            emit error(i18n("Failed to retrieve list of dynamic rules. (%1)", response));
         }
         emit loadedList();
         break;
@@ -990,14 +990,14 @@ void Dynamic::remoteJobFinished()
             }
             checkResponse(response);
         } else {
-            emit error(i18n("Failed to delete rules file. (%1)").arg(response));
+            emit error(i18n("Failed to delete rules file. (%1)", response));
         }
         break;
     case Control:
         if (cmdOk) {
             checkResponse(response);
         } else {
-            emit error(i18n("Failed to control dynamizer state. (%1)").arg(response));
+            emit error(i18n("Failed to control dynamizer state. (%1)", response));
         }
         lastState.clear();
         break;
@@ -1006,7 +1006,7 @@ void Dynamic::remoteJobFinished()
             checkResponse(response);
             QTimer::singleShot(1000, this, SLOT(updateRemoteStatus()));
         } else {
-            emit error(i18n("Failed to set the current dynamic rules. (%1)").arg(response));
+            emit error(i18n("Failed to set the current dynamic rules. (%1)", response));
         }
         lastState.clear();
         break;

@@ -37,13 +37,13 @@ static int isIfaceType(const QNetworkInterface &iface, const QString &prefix)
 static QString displayName(const QNetworkInterface &iface)
 {
     if (iface.name()=="lo") {
-        return i18n("Local loopback (%1)").arg(iface.name());
+        return i18n("Local loopback (%1)", iface.name());
     }
     if (isIfaceType(iface, "eth")) {
-        return i18n("Wired (%1)").arg(iface.name());
+        return i18n("Wired (%1)", iface.name());
     }
     if (isIfaceType(iface, "wlan")) {
-        return i18n("Wireless (%1)").arg(iface.name());
+        return i18n("Wireless (%1)", iface.name());
     }
     return iface.name();
 }

@@ -102,7 +102,7 @@ QString UmsDevice::capacityString()
         return i18n("Not Connected");
     }
 
-    return i18n("%1 free").arg(Utils::formatByteSize(spaceInfo.size()-spaceInfo.used()));
+    return i18n("%1 free", Utils::formatByteSize(spaceInfo.size()-spaceInfo.used()));
 }
 
 qint64 UmsDevice::freeSpace()

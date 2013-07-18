@@ -247,7 +247,7 @@ void StreamsPage::importXml()
     }
 
     if (!StreamsModel::self()->importIntoFavourites(fileName)) {
-        MessageBox::error(this, i18n("Failed to import <b>%1</b>!<br/>Please check this is of the correct type.").arg(fileName));
+        MessageBox::error(this, i18n("Failed to import <b>%1</b>!<br/>Please check this is of the correct type.", fileName));
     }
 }
 
@@ -273,7 +273,7 @@ void StreamsPage::exportXml()
     }
 
     if (!StreamsModel::self()->exportFavourites(fileName)) {
-        MessageBox::error(this, i18n("Failed to create <b>%1</b>!").arg(fileName));
+        MessageBox::error(this, i18n("Failed to create <b>%1</b>!", fileName));
     }
 }
 
@@ -290,9 +290,9 @@ void StreamsPage::add()
         QString existingNameForUrl=StreamsModel::self()->favouritesNameForUrl(url);
 
         if (!existingNameForUrl.isEmpty()) {
-            MessageBox::error(this, i18n("Stream already exists!<br/><b>%1</b>").arg(existingNameForUrl));
+            MessageBox::error(this, i18n("Stream already exists!<br/><b>%1</b>", existingNameForUrl));
         } else if (StreamsModel::self()->nameExistsInFavourites(name)) {
-            MessageBox::error(this, i18n("A stream named <b>%1</b> already exists!").arg(name));
+            MessageBox::error(this, i18n("A stream named <b>%1</b> already exists!", name));
         } else {
             StreamsModel::self()->addToFavourites(url, name);
         }
@@ -387,7 +387,7 @@ void StreamsPage::reload()
         return;
     }
 
-    if (cat->children.isEmpty() || cat->cacheName.isEmpty() || MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Reload <b>%1</b> streams?").arg(cat->name))) {
+    if (cat->children.isEmpty() || cat->cacheName.isEmpty() || MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Reload <b>%1</b> streams?", cat->name))) {
         StreamsModel::self()->reload(mapped);
     }
 }
@@ -405,13 +405,13 @@ void StreamsPage::removeItems()
         const StreamsModel::Item *item=static_cast<const StreamsModel::Item *>(mapped.internalPointer());
         if (item->isCategory() && item->parent) {
             if (item->parent->isBookmarks) {
-                if (MessageBox::No==MessageBox::warningYesNo(this, i18n("Are you sure you wish to remove bookmark to <b>%1</b>?").arg(item->name))) {
+                if (MessageBox::No==MessageBox::warningYesNo(this, i18n("Are you sure you wish to remove bookmark to <b>%1</b>?", item->name))) {
                     return;
                 }
                 StreamsModel::self()->removeBookmark(mapped);
                 return;
             } else if (static_cast<const StreamsModel::CategoryItem *>(item)->isBookmarks) {
-                if (MessageBox::No==MessageBox::warningYesNo(this, i18n("Are you sure you wish to remove all <b>%1</b> bookmarks?").arg(item->parent->name))) {
+                if (MessageBox::No==MessageBox::warningYesNo(this, i18n("Are you sure you wish to remove all <b>%1</b> bookmarks?", item->parent->name))) {
                     return;
                 }
                 StreamsModel::self()->removeAllBookmarks(mapped);
@@ -439,12 +439,12 @@ void StreamsPage::removeItems()
     }
 
     if (useable.size()>1) {
-        if (MessageBox::No==MessageBox::warningYesNo(this, i18n("Are you sure you wish to remove the %1 selected streams?").arg(useable.size()))) {
+        if (MessageBox::No==MessageBox::warningYesNo(this, i18n("Are you sure you wish to remove the %1 selected streams?", useable.size()))) {
             return;
         }
     } else {
-        if (MessageBox::No==MessageBox::warningYesNo(this, i18n("Are you sure you wish to remove <b>%1</b>?")
-                                                 .arg(StreamsModel::self()->data(useable.first(), Qt::DisplayRole).toString()))) {
+        if (MessageBox::No==MessageBox::warningYesNo(this, i18n("Are you sure you wish to remove <b>%1</b>?",
+                                                     StreamsModel::self()->data(useable.first(), Qt::DisplayRole).toString()))) {
             return;
         }
     }
@@ -486,9 +486,9 @@ void StreamsPage::edit()
         QString existingNameForUrl=newUrl!=url ? StreamsModel::self()->favouritesNameForUrl(newUrl) : QString();
 
         if (!existingNameForUrl.isEmpty()) {
-            MessageBox::error(this, i18n("Stream already exists!<br/><b>%1</b>").arg(existingNameForUrl));
+            MessageBox::error(this, i18n("Stream already exists!<br/><b>%1</b>", existingNameForUrl));
         } else if (newName!=name && StreamsModel::self()->nameExistsInFavourites(newName)) {
-            MessageBox::error(this, i18n("A stream named <b>%1</b> already exists!").arg(newName));
+            MessageBox::error(this, i18n("A stream named <b>%1</b> already exists!", newName));
         } else {
             item->name=newName;
             item->url=newUrl;

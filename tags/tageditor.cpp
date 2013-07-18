@@ -542,7 +542,7 @@ void TagEditor::updateTrackName(int index, bool edited)
         if (isAll) {
             trackName->setItemText(index, i18n("All tracks [modified]"));
         } else {
-            trackName->setItemText(index, i18n("%1 [modified]").arg(original.at(index).file));
+            trackName->setItemText(index, i18n("%1 [modified]", original.at(index).file));
         }
     } else {
         if (isAll) {

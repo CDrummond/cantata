@@ -360,7 +360,7 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
                    s.album+(s.year>0 ? (QLatin1String(" (")+QString::number(s.year)+QChar(')')) : QString())+QLatin1String("<br/>")+
                    s.trackAndTitleStr(Song::isVariousArtists(s.albumArtist()))+QLatin1String("<br/>")+
                    Song::formattedTime(s.time)+QLatin1String("<br/>")+
-                   (s.priority>0 ? i18n("<b>(Priority: %1)</b>").arg(s.priority)+QLatin1String("<br/>") : QString())+
+                   (s.priority>0 ? i18n("<b>(Priority: %1)</b>", s.priority)+QLatin1String("<br/>") : QString())+
                    QLatin1String("<small><i>")+s.file+QLatin1String("</i></small>");
         }
     }

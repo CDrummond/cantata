@@ -337,7 +337,7 @@ void Device::updateStatus()
 
 void Device::songCount(int c)
 {
-    setStatusMessage(i18n("Updating (%1)...").arg(c));
+    setStatusMessage(i18n("Updating (%1)...", c));
 }
 
 #endif // Q_OS_WIN

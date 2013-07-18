@@ -185,7 +185,7 @@ void ActionDialog::updateSongCountLabel()
         albums.insert(s.albumArtist()+"--"+s.album);
     }
 
-    songCount->setText(i18n("Artists:%1, Albums:%2, Songs:%3").arg(artists.count()).arg(albums.count()).arg(songsToAction.count()));
+    songCount->setText(i18n("Artists:%1, Albums:%2, Songs:%3", artists.count(), albums.count(), songsToAction.count()));
 }
 
 void ActionDialog::controlInfoLabel()
@@ -237,7 +237,7 @@ void ActionDialog::copy(const QString &srcUdi, const QString &dstUdi, const QLis
         FreeSpaceInfo inf=FreeSpaceInfo(MPDConnection::self()->getDetails().dir);
         spaceAvailable=inf.size()-inf.used();
         usedCapacity=(inf.used()*1.0)/(inf.size()*1.0);
-        capacityString=i18n("%1 free").arg(Utils::formatByteSize(inf.size()-inf.used()));
+        capacityString=i18n("%1 free", Utils::formatByteSize(inf.size()-inf.used()));
     }
 
     bool enoughSpace=spaceAvailable>spaceRequired;
@@ -277,15 +277,15 @@ void ActionDialog::copy(const QString &srcUdi, const QString &dstUdi, const QLis
         if (!enoughSpace) {
             MessageBox::information(this, i18n("There is insufficient space left on the destination device.\n"
                                                "The selected songs consume %1, but there is only %2 left.\n"
-                                               "The songs will need to be transcoded to a smaller filesize in order to be successfully copied.")
-                                               .arg(Utils::formatByteSize(spaceRequired))
-                                               .arg(Utils::formatByteSize(spaceAvailable)));
+                                               "The songs will need to be transcoded to a smaller filesize in order to be successfully copied.",
+                                               Utils::formatByteSize(spaceRequired),
+                                               Utils::formatByteSize(spaceAvailable)));
         }
     } else {
         MessageBox::error(parentWidget(), i18n("There is insufficient space left on the destination.\n"
-                                               "The selected songs consume %1, but there is only %2 left.")
-                                               .arg(Utils::formatByteSize(spaceRequired))
-                                               .arg(Utils::formatByteSize(spaceAvailable)));
+                                               "The selected songs consume %1, but there is only %2 left.",
+                                               Utils::formatByteSize(spaceRequired),
+                                               Utils::formatByteSize(spaceAvailable)));
         deleteLater();
     }
 }
@@ -616,56 +616,56 @@ void ActionDialog::actionStatus(int status, bool copiedCover)
         }
         break;
     case Device::FileExists:
-        setPage(PAGE_SKIP, i18n("The destination filename already exists!<hr/>%1").arg(formatSong(currentSong, true)));
+        setPage(PAGE_SKIP, i18n("The destination filename already exists!<hr/>%1", formatSong(currentSong, true)));
         break;
     case Device::SongExists:
-        setPage(PAGE_SKIP, i18n("Song already exists!<hr/>%1").arg(formatSong(currentSong)));
+        setPage(PAGE_SKIP, i18n("Song already exists!<hr/>%1", formatSong(currentSong)));
         break;
     case Device::SongDoesNotExist:
-        setPage(PAGE_SKIP, i18n("Song does not exist!<hr/>%1").arg(formatSong(currentSong)));
+        setPage(PAGE_SKIP, i18n("Song does not exist!<hr/>%1", formatSong(currentSong)));
         break;
     case Device::DirCreationFaild:
-        setPage(PAGE_SKIP, i18n("Failed to create destination folder!<br/>Please check you have sufficient permissions.<hr/>%1").arg(formatSong(currentSong, true)));
+        setPage(PAGE_SKIP, i18n("Failed to create destination folder!<br/>Please check you have sufficient permissions.<hr/>%1", formatSong(currentSong, true)));
         break;
     case Device::SourceFileDoesNotExist:
-        setPage(PAGE_SKIP, i18n("Source file no longer exists?<br/><br/<hr/>%1").arg(formatSong(currentSong, true)));
+        setPage(PAGE_SKIP, i18n("Source file no longer exists?<br/><br/<hr/>%1", formatSong(currentSong, true)));
         break;
     case Device::Failed:
-        setPage(PAGE_SKIP, Copy==mode ? i18n("Failed to copy.<hr/>%1").arg(formatSong(currentSong))
-                                      : i18n("Failed to delete.<hr/>%1").arg(formatSong(currentSong)));
+        setPage(PAGE_SKIP, Copy==mode ? i18n("Failed to copy.<hr/>%1", formatSong(currentSong))
+                                      : i18n("Failed to delete.<hr/>%1", formatSong(currentSong)));
         break;
     case Device::NotConnected:
-        setPage(PAGE_ERROR, i18n("Not connected to device.<hr/>%1").arg(formatSong(currentSong)));
+        setPage(PAGE_ERROR, i18n("Not connected to device.<hr/>%1", formatSong(currentSong)));
         break;
     case Device::CodecNotAvailable:
-        setPage(PAGE_ERROR, i18n("Selected codec is not available.<hr/>%1").arg(formatSong(currentSong)));
+        setPage(PAGE_ERROR, i18n("Selected codec is not available.<hr/>%1", formatSong(currentSong)));
         break;
     case Device::TranscodeFailed:
-        setPage(PAGE_SKIP, i18n("Transcoding failed.<br/><br/<hr/>%1").arg(formatSong(currentSong)));
+        setPage(PAGE_SKIP, i18n("Transcoding failed.<br/><br/<hr/>%1", formatSong(currentSong)));
         break;
     case Device::FailedToCreateTempFile:
-        setPage(PAGE_ERROR, i18n("Failed to create temporary file.<br/>(Required for transcoding to MTP devices.)<hr/>%1").arg(formatSong(currentSong)));
+        setPage(PAGE_ERROR, i18n("Failed to create temporary file.<br/>(Required for transcoding to MTP devices.)<hr/>%1", formatSong(currentSong)));
         break;
     case Device::ReadFailed:
-        setPage(PAGE_SKIP, i18n("Failed to read source file.<br/><br/<hr/>%1").arg(formatSong(currentSong)));
+        setPage(PAGE_SKIP, i18n("Failed to read source file.<br/><br/<hr/>%1", formatSong(currentSong)));
         break;
     case Device::WriteFailed:
-        setPage(PAGE_SKIP, i18n("Failed to write to destination file.<br/><br/<hr/>%1").arg(formatSong(currentSong)));
+        setPage(PAGE_SKIP, i18n("Failed to write to destination file.<br/><br/<hr/>%1", formatSong(currentSong)));
         break;
     case Device::NoSpace:
-        setPage(PAGE_SKIP, i18n("No space left on device.<br/><br/<hr/>%1").arg(formatSong(currentSong)));
+        setPage(PAGE_SKIP, i18n("No space left on device.<br/><br/<hr/>%1", formatSong(currentSong)));
         break;
     case Device::FailedToUpdateTags:
-        setPage(PAGE_SKIP, i18n("Failed to update metadata.<br/><br/<hr/>%1").arg(formatSong(currentSong)));
+        setPage(PAGE_SKIP, i18n("Failed to update metadata.<br/><br/<hr/>%1", formatSong(currentSong)));
         break;
     case Device::TooManyRedirects:
-        setPage(PAGE_SKIP, i18n("Failed to download track - too many redirects encountered.<br/><br/<hr/>%1").arg(formatSong(currentSong)));
+        setPage(PAGE_SKIP, i18n("Failed to download track - too many redirects encountered.<br/><br/<hr/>%1", formatSong(currentSong)));
         break;
     case Device::DownloadFailed:
-        setPage(PAGE_SKIP, i18n("Failed to download track.<br/><br/<hr/>%1").arg(formatSong(currentSong)));
+        setPage(PAGE_SKIP, i18n("Failed to download track.<br/><br/<hr/>%1", formatSong(currentSong)));
         break;
     case Device::FailedToLockDevice:
-        setPage(PAGE_ERROR, i18n("Failed to lock device.<hr/>%1").arg(formatSong(currentSong)));
+        setPage(PAGE_ERROR, i18n("Failed to lock device.<hr/>%1", formatSong(currentSong)));
         break;
     case Device::Cancelled:
         break;
@@ -762,21 +762,17 @@ QString ActionDialog::formatSong(const Song &s, bool showFiles, bool showTime)
     QString str("<table>");
     str+=i18n("<tr><td align=\"right\">Artist:</td><td>%1</td></tr>"
               "<tr><td align=\"right\">Album:</td><td>%2</td></tr>"
-              "<tr><td align=\"right\">Track:</td><td>%3</td></tr>")
-              .arg(s.albumArtist())
-              .arg(s.album)
-              .arg(s.trackAndTitleStr(Song::isVariousArtists(s.albumArtist()) && !Song::isVariousArtists(s.artist)));
+              "<tr><td align=\"right\">Track:</td><td>%3</td></tr>",
+              s.albumArtist(), s.album, s.trackAndTitleStr(Song::isVariousArtists(s.albumArtist()) && !Song::isVariousArtists(s.artist)));
 
     if (showFiles) {
         if (Copy==mode) {
             str+=i18n("<tr><td align=\"right\">Source file:</td><td>%1</td></tr>"
-                      "<tr><td align=\"right\">Destination file:</td><td>%2</td></tr>")
-                      .arg(DevicesModel::fixDevicePath(s.file))
-                      .arg(DevicesModel::fixDevicePath(destFile));
+                      "<tr><td align=\"right\">Destination file:</td><td>%2</td></tr>",
+                      DevicesModel::fixDevicePath(s.file), DevicesModel::fixDevicePath(destFile));
 
         } else {
-            str+=i18n("<tr><td align=\"right\">File:</td><td>%1</td></tr>")
-                      .arg(DevicesModel::fixDevicePath(s.file));
+            str+=i18n("<tr><td align=\"right\">File:</td><td>%1</td></tr>", DevicesModel::fixDevicePath(s.file));
         }
     }
 
@@ -791,12 +787,11 @@ QString ActionDialog::formatSong(const Song &s, bool showFiles, bool showTime)
                 double pco=percent;
                 percent-=percent*((1.0-percent)*0.15);
                 quint64 timeRemaining=((taken/percent)-taken)/1000.0;
-                estimate=i18nc("time (Estimated)", "%1 (Estimated)").arg(Song::formattedTime(timeRemaining>0 ? timeRemaining : 0));
+                estimate=i18nc("time (Estimated)", "%1 (Estimated)", Song::formattedTime(timeRemaining>0 ? timeRemaining : 0));
             }
         }
 
-        str+=i18n("<tr><i><td align=\"right\"><i>Time remaining:</i></td><td><i>%5</i></td></i></tr>")
-                .arg(estimate);
+        str+=i18n("<tr><i><td align=\"right\"><i>Time remaining:</i></td><td><i>%5</i></td></i></tr>", estimate);
     }
     #else
     Q_UNUSED(showTime)

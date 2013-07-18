@@ -254,7 +254,7 @@ void TrackOrganiser::renameFile()
             if (autoSkip) {
                 skip=true;
             } else {
-                switch(MessageBox::questionYesNoCancel(this, i18n("Destination file already exists!<br/>%1").arg(dest),
+                switch(MessageBox::questionYesNoCancel(this, i18n("Destination file already exists!<br/>%1", dest),
                                                        QString(), GuiItem(i18n("Skip")), GuiItem(i18n("Auto Skip")))) {
                 case MessageBox::Yes:
                     skip=true;
@@ -276,7 +276,7 @@ void TrackOrganiser::renameFile()
                 if (autoSkip) {
                     skip=true;
                 } else {
-                    switch(MessageBox::questionYesNoCancel(this, i18n("Failed to create destination folder!<br/>%1").arg(dir.absolutePath()),
+                    switch(MessageBox::questionYesNoCancel(this, i18n("Failed to create destination folder!<br/>%1", dir.absolutePath()),
                                                            QString(), GuiItem(i18n("Skip")), GuiItem(i18n("Auto Skip")))) {
                     case MessageBox::Yes:
                         skip=true;
@@ -297,7 +297,7 @@ void TrackOrganiser::renameFile()
             if (autoSkip) {
                 skip=true;
             } else {
-                switch(MessageBox::questionYesNoCancel(this, i18n("Failed to rename %1 to %2").arg(source).arg(dest),
+                switch(MessageBox::questionYesNoCancel(this, i18n("Failed to rename %1 to %2", source, dest),
                                                        QString(), GuiItem(i18n("Skip")), GuiItem(i18n("Auto Skip")))) {
                 case MessageBox::Yes:
                     skip=true;

@@ -99,26 +99,20 @@ void FilenameSchemeDialog::showHelp()
                           i18n("<p>The following variables will be replaced with their corresponding meaning for each track name.</p>"
                                "<p><table border=\"1\">"
                                "<tr><th><em>Button</em></th><th><em>Variable</em></th><th><em>Description</em></th></tr>"
-                               "<tr><td>%1</td><td>%2</td><td>The artist of the album. For most albums, this will be the same as the <i>Track Artist.</i> "
+                               "<tr><td>%albumartist%</td><td>%1</td><td>The artist of the album. For most albums, this will be the same as the <i>Track Artist.</i> "
                                "For compilations, this will often be <i>Various Artists.</i> </td></tr>"
-                               "<tr><td>%3</td><td>%4</td><td>The name of the album.</td></tr>"
-                               "<tr><td>%5</td><td>%6</td><td>The artist of each track.</td></tr>"
-                               "<tr><td>%7</td><td>%8</td><td>The track title (without <i>Track Artist</i>).</td></tr>"
-                               "<tr><td>%9</td><td>%10</td><td>The track title (with <i>Track Artist</i>, if different to <i>Album Artist</i>).</td></tr>"
-                               "<tr><td>%11</td><td>%12</td><td>The track number.</td></tr>"
-                               "<tr><td>%13</td><td>%14</td><td>The album number of a multi-album album. Often compilations consist of several albums.</td></tr>"
-                               "<tr><td>%15</td><td>%16</td><td>The year of the album's release.</td></tr>"
-                               "<tr><td>%17</td><td>%18</td><td>The genre of the album.</td></tr>"
-                               "</table></p>")
-                               .arg(stripAccelerator(albumArtist->text())).arg(DeviceOptions::constAlbumArtist)
-                               .arg(stripAccelerator(albumTitle->text())).arg(DeviceOptions::constAlbumTitle)
-                               .arg(stripAccelerator(trackArtist->text())).arg(DeviceOptions::constTrackArtist)
-                               .arg(stripAccelerator(trackTitle->text())).arg(DeviceOptions::constTrackTitle)
-                               .arg(stripAccelerator(trackArtistAndTitle->text())).arg(DeviceOptions::constTrackArtistAndTitle)
-                               .arg(stripAccelerator(trackNo->text())).arg(DeviceOptions::constTrackNumber)
-                               .arg(stripAccelerator(cdNo->text())).arg(DeviceOptions::constCdNumber)
-                               .arg(stripAccelerator(year->text())).arg(DeviceOptions::constYear)
-                               .arg(stripAccelerator(genre->text())).arg(DeviceOptions::constGenre));
+                               "<tr><td>%album%</td><td>%2</td><td>The name of the album.</td></tr>"
+                               "<tr><td>%artist%</td><td>%3</td><td>The artist of each track.</td></tr>"
+                               "<tr><td>%title%</td><td>%4</td><td>The track title (without <i>Track Artist</i>).</td></tr>"
+                               "<tr><td>%artistandtitle%</td><td>%5</td><td>The track title (with <i>Track Artist</i>, if different to <i>Album Artist</i>).</td></tr>"
+                               "<tr><td>%track%</td><td>%6</td><td>The track number.</td></tr>"
+                               "<tr><td>%discnumber%</td><td>%7</td><td>The album number of a multi-album album. Often compilations consist of several albums.</td></tr>"
+                               "<tr><td>%year%</td><td>%8</td><td>The year of the album's release.</td></tr>"
+                               "<tr><td>%genre%</td><td>%9</td><td>The genre of the album.</td></tr>"
+                               "</table></p>", stripAccelerator(albumArtist->text()), stripAccelerator(albumTitle->text()),
+                               stripAccelerator(trackArtist->text()), stripAccelerator(trackTitle->text()),
+                               stripAccelerator(trackArtistAndTitle->text()), stripAccelerator(trackNo->text()),
+                               stripAccelerator(cdNo->text()), stripAccelerator(year->text()), stripAccelerator(genre->text())));
 }
 
 void FilenameSchemeDialog::enableOkButton()

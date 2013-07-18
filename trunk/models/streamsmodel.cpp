@@ -541,7 +541,7 @@ QVariant StreamsModel::data(const QModelIndex &index, int role) const
         }
     case Qt::DisplayRole:
         if (item==favourites && !favouritesIsWriteable) {
-            return i18n("%1 (Read-Only)").arg(item->name);
+            return i18n("%1 (Read-Only)", item->name);
         }
         return item->name;
     case Qt::ToolTipRole:
@@ -1060,7 +1060,7 @@ void StreamsModel::persistFavourites()
         if (favourites->saveXml(fileName)) {
             Utils::setFilePerms(fileName);
         } else {
-            emit error(i18n("Failed to save stream list. Please check %1 is writable.").arg(fileName));
+            emit error(i18n("Failed to save stream list. Please check %1 is writable.", fileName));
             reloadFavourites();
         }
     }

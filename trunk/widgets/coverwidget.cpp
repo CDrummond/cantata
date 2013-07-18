@@ -257,7 +257,7 @@ bool CoverWidget::eventFilter(QObject *object, QEvent *event)
 
         toolTip+=i18n("<tr><td align=\"right\"><b>Artist:</b></td><td>%1</td></tr>"
                       "<tr><td align=\"right\"><b>Album:</b></td><td>%2</td></tr>"
-                      "<tr><td align=\"right\"><b>Year:</b></td><td>%3</td></tr>").arg(current.artist).arg(current.album).arg(current.year);
+                      "<tr><td align=\"right\"><b>Year:</b></td><td>%3</td></tr>", current.artist, current.album, current.year);
         toolTip+="</table>";
         if (!img.isNull()) {
             if (img.size().width()>Covers::constMaxSize.width() || img.size().height()>Covers::constMaxSize.height() ||

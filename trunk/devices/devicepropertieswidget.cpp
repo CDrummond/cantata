@@ -225,7 +225,7 @@ void DevicePropertiesWidget::update(const QString &path, const DeviceOptions &op
                     if (transcode && name.endsWith(QLatin1String(" (ffmpeg)"))) {
                         name=name.left(name.length()-9);
                     }
-                    transcoderName->addItem(transcode ? i18n("Transcode to %1").arg(name) : name, e.codec);
+                    transcoderName->addItem(transcode ? i18n("Transcode to %1", name) : name, e.codec);
                 }
             }
 
@@ -256,8 +256,8 @@ void DevicePropertiesWidget::update(const QString &path, const DeviceOptions &op
         REMOVE(defaultVolumeLabel);
     } else {
         foreach (const DeviceStorage &ds, storage) {
-            defaultVolume->addItem(i18nc("name (size free)", "%1 (%2 free)")
-                                   .arg(ds.description).arg(Utils::formatByteSize(ds.size-ds.used)), ds.volumeIdentifier);
+            defaultVolume->addItem(i18nc("name (size free)", "%1 (%2 free)",
+                                   ds.description, Utils::formatByteSize(ds.size-ds.used)), ds.volumeIdentifier);
         }
 
         for (int i=0; i<defaultVolume->count(); ++i) {

@@ -1097,7 +1097,7 @@ void MainWindow::connectToMpd(const MPDConnectionDetails &details)
         if (!MPDConnection::self()->getDetails().isEmpty() && details!=MPDConnection::self()->getDetails()) {
             Dynamic::self()->stop();
         }
-        showInformation(i18n("Connecting to %1").arg(details.description()));
+        showInformation(i18n("Connecting to %1", details.description()));
         outputsAction->setVisible(false);
         if (CS_Init!=connectedState) {
             connectedState=CS_Disconnected;
@@ -1459,7 +1459,7 @@ void MainWindow::showAboutDialog()
 {
     QMessageBox::about(this, i18nc("Qt-only", "About Cantata"),
                        i18nc("Qt-only", "<b>Cantata %1</b><br/><br/>MPD client.<br/><br/>"
-                             "(c) Craig Drummond 2011-2013.<br/>Released under the <a href=\"http://www.gnu.org/licenses/gpl.html\">GPLv3</a>").arg(PACKAGE_VERSION_STRING)+
+                             "(c) Craig Drummond 2011-2013.<br/>Released under the <a href=\"http://www.gnu.org/licenses/gpl.html\">GPLv3</a>", PACKAGE_VERSION_STRING)+
                        QLatin1String("<br/><br/><i><small>")+i18n("Based upon <a href=\"http://qtmpc.lowblog.nl\">QtMPC</a> - (C) 2007-2010 The QtMPC Authors<br/>")+
 //                       (ContextWidget::constHtbApiKey.latin1() ? i18nc("Qt-only", "Context view backdrops courtesy of <a href=\"http://www.htbackdrops.com\">Home Theater Backdrops</a><br/>") : "")+
                        i18nc("Qt-only", "Context view backdrops courtesy of <a href=\"http://www.fanart.tv\">FanArt.tv</a>")+QLatin1String("<br/>")+
@@ -1474,28 +1474,24 @@ void MainWindow::showServerInfo()
     QStringList handlers=MPDConnection::self()->urlHandlers().toList();
     qSort(handlers);
     long version=MPDConnection::self()->version();
-    MessageBox::information(this, i18n("<p><table>"
-                                       "<tr><td colspan=\"2\"><b>Server</b></td></tr>"
+    MessageBox::information(this, QLatin1String("<p><table>")+
+                                  i18n("<tr><td colspan=\"2\"><b>Server</b></td></tr>"
                                        "<tr><td align=\"right\">Version:</td><td>%1.%2.%3</td></tr>"
                                        "<tr><td align=\"right\">Uptime:</td><td>%4</td></tr>"
-                                       "<tr><td align=\"right\">Time playing:</td><td>%5</td></tr>"
-                                       "<tr/>"
-                                       "<tr><td colspan=\"2\"><b>Database</b></td></tr>"
-                                       "<tr><td align=\"right\">Artists:</td><td>%6</td></tr>"
-                                       "<tr><td align=\"right\">Albums:</td><td>%7</td></tr>"
-                                       "<tr><td align=\"right\">Songs:</td><td>%8</td></tr>"
-                                       "<tr><td align=\"right\">URL handlers:</td><td>%9</td></tr>"
-                                       "<tr><td align=\"right\">Total duration:</td><td>%10</td></tr>"
-                                       "<tr><td align=\"right\">Last update:</td><td>%11</td></tr></table></p>")
-                                       .arg((version>>16)&0xFF).arg((version>>8)&0xFF).arg(version&0xFF)
-                                       .arg(MPDParseUtils::formatDuration(MPDStats::self()->uptime()))
-                                       .arg(MPDParseUtils::formatDuration(MPDStats::self()->playtime()))
-                                       .arg(MPDStats::self()->artists())
-                                       .arg(MPDStats::self()->albums())
-                                       .arg(MPDStats::self()->songs())
-                                       .arg(handlers.join(", "))
-                                       .arg(MPDParseUtils::formatDuration(MPDStats::self()->dbPlaytime()))
-                                       .arg(MPDStats::self()->dbUpdate().toString(Qt::SystemLocaleShortDate)),
+                                       "<tr><td align=\"right\">Time playing:</td><td>%5</td></tr>",
+                                       (version>>16)&0xFF, (version>>8)&0xFF, version&0xFF,
+                                       MPDParseUtils::formatDuration(MPDStats::self()->uptime()),
+                                       MPDParseUtils::formatDuration(MPDStats::self()->playtime()))+
+                                  QLatin1String("<tr/>")+
+                                  i18n("<tr><td colspan=\"2\"><b>Database</b></td></tr>"
+                                       "<tr><td align=\"right\">Artists:</td><td>%1</td></tr>"
+                                       "<tr><td align=\"right\">Albums:</td><td>%2</td></tr>"
+                                       "<tr><td align=\"right\">Songs:</td><td>%3</td></tr>"
+                                       "<tr><td align=\"right\">URL handlers:</td><td>%4</td></tr>"
+                                       "<tr><td align=\"right\">Total duration:</td><td>%5</td></tr>"
+                                       "<tr><td align=\"right\">Last update:</td><td>%6</td></tr></table></p>",
+                                       MPDStats::self()->artists(), MPDStats::self()->albums(), MPDStats::self()->songs(), handlers.join(", "),
+                                       MPDParseUtils::formatDuration(MPDStats::self()->dbPlaytime()), MPDStats::self()->dbUpdate().toString(Qt::SystemLocaleShortDate)),
                             i18n("Server Information"));
 }
 
@@ -1743,24 +1739,24 @@ void MainWindow::updateWindowTitle()
     QString connection=MPDConnection::self()->getDetails().getName();
 
     if (stopped) {
-        setWindowTitle(multipleConnections ? i18n("Cantata (%1)").arg(connection) : "Cantata");
+        setWindowTitle(multipleConnections ? i18n("Cantata (%1)", connection) : "Cantata");
     } else if (current.isStream() && !current.isCantataStream() && !current.isCdda()) {
         setWindowTitle(multipleConnections
-                        ? i18nc("track :: Cantata (connection)", "%1 :: Cantata (%2)").arg(trackLabel->text()).arg(connection)
-                        : i18nc("track :: Cantata", "%1 :: Cantata").arg(trackLabel->text()));
+                        ? i18nc("track :: Cantata (connection)", "%1 :: Cantata (%2)", trackLabel->text(), connection)
+                        : i18nc("track :: Cantata", "%1 :: Cantata", trackLabel->text()));
     } else if (current.artist.isEmpty()) {
         if (trackLabel->text().isEmpty()) {
-            setWindowTitle(multipleConnections ? i18n("Cantata (%1)").arg(connection) : "Cantata");
+            setWindowTitle(multipleConnections ? i18n("Cantata (%1)", connection) : "Cantata");
         } else {
             setWindowTitle(multipleConnections
-                            ? i18nc("track :: Cantata (connection)", "%1 :: Cantata (%2)").arg(trackLabel->text()).arg(connection)
-                            : i18nc("track :: Cantata", "%1 :: Cantata").arg(trackLabel->text()));
+                            ? i18nc("track :: Cantata (connection)", "%1 :: Cantata (%2)", trackLabel->text(), connection)
+                            : i18nc("track :: Cantata", "%1 :: Cantata", trackLabel->text()));
         }
     } else {
         setWindowTitle(multipleConnections
-                        ? i18nc("track - artist :: Cantata (connection)", "%1 - %2 :: Cantata (%3)")
-                                .arg(trackLabel->text()).arg(current.artist).arg(connection)
-                        : i18nc("track - artist :: Cantata", "%1 - %2 :: Cantata").arg(trackLabel->text()).arg(current.artist));
+                        ? i18nc("track - artist :: Cantata (connection)", "%1 - %2 :: Cantata (%3)",
+                                trackLabel->text(), current.artist, connection)
+                        : i18nc("track - artist :: Cantata", "%1 - %2 :: Cantata", trackLabel->text(), current.artist));
     }
 }
 
@@ -1807,7 +1803,7 @@ void MainWindow::updateCurrentSong(const Song &song)
         if (current.artist.isEmpty() && current.title.isEmpty() && !current.name.isEmpty()) {
             artistLabel->setText(i18n("(Stream)"));
         } else {
-            artistLabel->setText(current.artist.isEmpty() ? current.title : i18nc("title - artist", "%1 - %2").arg(current.artist).arg(current.title));
+            artistLabel->setText(current.artist.isEmpty() ? current.title : i18nc("title - artist", "%1 - %2", current.artist, current.title));
         }
     } else {
         if (current.title.isEmpty() && current.artist.isEmpty() && (!current.name.isEmpty() || !current.file.isEmpty())) {
@@ -1825,7 +1821,7 @@ void MainWindow::updateCurrentSong(const Song &song)
             if (year>0) {
                 album+=QString(" (%1)").arg(year);
             }
-            artistLabel->setText(i18nc("artist - album", "%1 - %2").arg(current.artist).arg(album));
+            artistLabel->setText(i18nc("artist - album", "%1 - %2", current.artist, album));
         }
     }
 
@@ -1933,7 +1929,7 @@ void MainWindow::updateStatus(MPDStatus * const status)
                 }
             }
             volumeButton->setEnabled(true);
-            volumeButton->setToolTip(unmuteVolume>0 ? i18n("Volume %1% (Muted)").arg(volume) : i18n("Volume %1%").arg(volume));
+            volumeButton->setToolTip(unmuteVolume>0 ? i18n("Volume %1% (Muted)", volume) : i18n("Volume %1%", volume));
             volumeControl->setToolTip(volumeButton->toolTip());
             volumeControl->setValue(volume);
         }
@@ -2145,7 +2141,7 @@ void MainWindow::addToNewStoredPlaylist()
         QString name = InputDialog::getText(i18n("Playlist Name"), i18n("Enter a name for the playlist:"), QString(), 0, this);
 
         if (PlaylistsModel::self()->exists(name)) {
-            switch(MessageBox::warningYesNoCancel(this, i18n("A playlist named <b>%1</b> already exists!<br/>Add to that playlist?").arg(name),
+            switch(MessageBox::warningYesNoCancel(this, i18n("A playlist named <b>%1</b> already exists!<br/>Add to that playlist?", name),
                                                   i18n("Existing Playlist"))) {
             case MessageBox::Cancel:
                 return;

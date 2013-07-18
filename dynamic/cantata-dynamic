@@ -929,6 +929,9 @@ sub loadConfig() {
     unless (-d $activeFileDir) {
         mkdir $activeFileDir or die;
     }
+    unless (-d $filesDir) {
+        mkdir $filesDir or die;
+    }
 }
 
 sub readRuleFile() {

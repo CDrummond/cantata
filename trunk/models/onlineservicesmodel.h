@@ -44,7 +44,7 @@ public:
 
     OnlineServicesModel(QObject *parent = 0);
     ~OnlineServicesModel();
-    QModelIndex index(const OnlineService *srv) const;
+    QModelIndex serviceIndex(const OnlineService *srv) const;
     bool hasChildren(const QModelIndex &index) const;
     bool canFetchMore(const QModelIndex &index) const;
     void fetchMore(const QModelIndex &index);

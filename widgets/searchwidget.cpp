@@ -93,11 +93,16 @@ void SearchWidget::toggle()
     if (isVisible()) {
         close();
     } else {
-        widgetIsActive=true;
-        show();
-        setFocus();
-        emit active(widgetIsActive);
+        activate();
     }
+}
+
+void SearchWidget::activate()
+{
+    widgetIsActive=true;
+    show();
+    setFocus();
+    emit active(widgetIsActive);
 }
 
 void SearchWidget::close()

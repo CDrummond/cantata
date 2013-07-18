@@ -51,6 +51,7 @@ Q_SIGNALS:
 public Q_SLOTS:
     void toggle();
     void clear() { edit->clear(); }
+    void activate();
     void show() { setVisible(true); }
     void close();
 

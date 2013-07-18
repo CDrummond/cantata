@@ -28,6 +28,7 @@
 #include <QPainter>
 #include <QFile>
 #include "localize.h"
+#include "qtplural.h"
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KGlobal>
 #endif

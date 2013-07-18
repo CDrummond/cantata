@@ -29,6 +29,7 @@
 #include "musicbrainz.h"
 #endif
 #include "localize.h"
+#include "qtplural.h"
 #include "musiclibraryitemsong.h"
 #include "musiclibrarymodel.h"
 #include "dirviewmodel.h"

@@ -159,7 +159,7 @@ void CddbInterface::readDisc()
                     cddb_track_t *track = cddb_track_new();
                     if (track) {
                         cddb_track_set_frame_offset(track, te.entry.addr.lba + SECONDS_TO_FRAMES(2));
-                        cddb_track_set_title(track, te.entry.control&0x04 ? dataTrack().toUtf8().constData() : unknown.constData());
+                        cddb_track_set_title(track, te.entry.control&0x04 ? dataTrack().toUtf8().constData() : i18n("Track %1", i).toUtf8().constData());
                         cddb_track_set_artist(track, unknown.constData());
                         cddb_disc_add_track(disc, track);
                     }
@@ -185,7 +185,7 @@ void CddbInterface::readDisc()
                     cddb_track_t *track = cddb_track_new();
                     if (track) {
                         cddb_track_set_frame_offset(track, te.cdte_addr.lba + SECONDS_TO_FRAMES(2));
-                        cddb_track_set_title(track, te.cdte_ctrl&CDROM_DATA_TRACK ? dataTrack().toUtf8().constData() : unknown.constData());
+                        cddb_track_set_title(track, te.cdte_ctrl&CDROM_DATA_TRACK ? dataTrack().toUtf8().constData() : i18n("Track %1", i).toUtf8().constData());
                         cddb_track_set_artist(track, unknown.constData());
                         cddb_disc_add_track(disc, track);
                     }

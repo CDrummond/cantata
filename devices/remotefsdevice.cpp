@@ -176,7 +176,7 @@ void RemoteFsDevice::destroy(bool removeFromConfig)
         QStringList names=GET_STRINGLIST(constCfgKey, QStringList());
         if (names.contains(details.name)) {
             names.removeAll(details.name);
-            REMOVE_GROUP(udi());
+            REMOVE_GROUP(id());
             SET_VALUE(constCfgKey, names);
             CFG_SYNC;
         }
@@ -464,13 +464,13 @@ void RemoteFsDevice::procFinished(int exitCode)
     } else if (wasMount) {
         setStatusMessage(i18n("Updating tracks..."));
         load();
-        emit connectionStateHasChanged(udi(), true);
+        emit connectionStateHasChanged(id(), true);
     } else {
         setStatusMessage(QString());
         update=new MusicLibraryItemRoot;
         scanned=false;
-        emit updating(udi(), false);
-        emit connectionStateHasChanged(udi(), false);
+        emit updating(id(), false);
+        emit connectionStateHasChanged(id(), false);
     }
 }
 
@@ -484,7 +484,7 @@ void RemoteFsDevice::mountStatus(const QString &mp, int pid, int st)
         } else {
             setStatusMessage(i18n("Updating tracks..."));
             load();
-            emit connectionStateHasChanged(udi(), true);
+            emit connectionStateHasChanged(id(), true);
         }
     }
 }
@@ -499,8 +499,8 @@ void RemoteFsDevice::umountStatus(const QString &mp, int pid, int st)
         } else {
             setStatusMessage(QString());
             update=new MusicLibraryItemRoot;
-            emit updating(udi(), false);
-            emit connectionStateHasChanged(udi(), false);
+            emit updating(id(), false);
+            emit connectionStateHasChanged(id(), false);
         }
     }
 }
@@ -667,7 +667,7 @@ static inline QString toString(bool b)
 
 void RemoteFsDevice::saveOptions()
 {
-    opts.save(udi());
+    opts.save(id());
 }
 
 void RemoteFsDevice::saveProperties()

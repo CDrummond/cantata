@@ -755,7 +755,6 @@ void ActionDialog::setPage(int page, const QString &msg)
             break;
     }
 }
-#include <QDebug>
 
 QString ActionDialog::formatSong(const Song &s, bool showFiles, bool showTime)
 {
@@ -872,13 +871,8 @@ void ActionDialog::jobPercent(int percent)
 
 void ActionDialog::incProgress()
 {
-    if (Copy==mode) {
-        count++;
-        progressBar->setValue(100*count);
-    } else {
-        int val=progressBar->value()+100;
-        progressBar->setValue(val<=progressBar->maximum() ? val : progressBar->maximum());
-    }
+    count++;
+    progressBar->setValue(100*count);
 }
 
 void ActionDialog::cacheSaved()

@@ -494,7 +494,6 @@ Device * ActionDialog::getDevice(const QString &udi, bool logErrors)
 
 void ActionDialog::doNext()
 {
-    Utils::msleep(1000);
     currentPercent=0;
     if (songsToAction.count()) {
         currentSong=origCurrentSong=songsToAction.takeFirst();

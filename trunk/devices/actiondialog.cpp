@@ -782,13 +782,10 @@ QString ActionDialog::formatSong(const Song &s, bool showFiles, bool showTime)
         double taken=timeTaken+timer.elapsed();
         if (taken>5.0) {
             double pc=(progressBar->value()*1.0)/(progressBar->maximum()*1.0);
-            if (pc>0.05) {
-                double percent=Copy==mode ? (actionedTime+(currentPercent*0.01*currentSong.time))/totalTime : pc;
-                double pco=percent;
-                percent-=percent*((1.0-percent)*0.15);
-                quint64 timeRemaining=((taken/percent)-taken)/1000.0;
-                estimate=i18nc("time (Estimated)", "%1 (Estimated)", Song::formattedTime(timeRemaining>0 ? timeRemaining : 0));
-            }
+            double percent=Copy==mode ? (actionedTime+(currentPercent*0.01*currentSong.time))/totalTime : pc;
+            percent-=percent*((1.0-percent)*0.15);
+            quint64 timeRemaining=((taken/percent)-taken)/1000.0;
+            estimate=i18nc("time (Estimated)", "%1 (Estimated)", Song::formattedTime(timeRemaining>0 ? timeRemaining : 0));
         }
 
         str+=i18n("<tr><i><td align=\"right\"><i>Time remaining:</i></td><td><i>%5</i></td></i></tr>", estimate);

@@ -30,6 +30,7 @@
 #include <QFile>
 #include <QTimer>
 #include <QTemporaryFile>
+#include <QDebug>
 
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KGlobal>
@@ -58,7 +59,6 @@ void FileThread::addJob(FileJob *job)
 {
     if (!thread) {
         thread=new Thread(metaObject()->className());
-        moveToThread(thread);
         thread->start();
     }
     job->moveToThread(thread);
@@ -68,6 +68,7 @@ void FileThread::stop()
 {
     if (thread) {
         thread->stop();
+        thread=0;
     }
 }
 

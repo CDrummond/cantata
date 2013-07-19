@@ -214,7 +214,7 @@ void MusicBrainz::readDisc()
             const Track &next=tracks.at(i+1);
             Song s;
             s.track=i+1;
-            s.title=unknown;
+            s.title=i18n("Track %1", s.track).toUtf8();
             s.artist=unknown;
             s.albumartist=initial.artist;
             s.album=initial.name;

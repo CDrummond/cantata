@@ -2455,12 +2455,15 @@ void MainWindow::tabToggled(int index)
             playQueueWidget->setParent(playQueuePage);
             playQueuePage->layout()->addWidget(playQueueWidget);
             playQueueWidget->setVisible(true);
+            playQueueSpacer->changeSize(0, 0, QSizePolicy::Fixed, QSizePolicy::Fixed);
         } else {
             playQueuePage->layout()->removeWidget(playQueueWidget);
             playQueueWidget->setParent(splitter);
             playQueueWidget->setVisible(true);
             autoHideSplitterAction->setVisible(true);
             splitter->setAutohidable(0, autoHideSplitterAction->isChecked() && !tabWidget->isEnabled(PAGE_PLAYQUEUE));
+            int spacing=Utils::layoutSpacing(this);
+            playQueueSpacer->changeSize(spacing, spacing, QSizePolicy::Fixed, QSizePolicy::Fixed);
         }
         playQueue->updatePalette();
         break;

@@ -1,5 +1,6 @@
 #!/bin/sh
 
+PATH=/usr/lib/kubuntu-l10n/libexec/:$PATH
 for app in extractrc xgettext msgmerge lupdate lconvert msguniq sed grep ; do
     which $app > /dev/null 2>&1
     if [ $? -ne 0 ] ; then

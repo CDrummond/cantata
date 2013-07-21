@@ -82,7 +82,6 @@ OnlineServicesPage::OnlineServicesPage(QWidget *p)
     proxy.setDynamicSortFilter(false);
     view->setModel(&proxy);
     view->setRootIsDecorated(true);
-    view->setUniformRowHeights(true);
 }
 
 OnlineServicesPage::~OnlineServicesPage()

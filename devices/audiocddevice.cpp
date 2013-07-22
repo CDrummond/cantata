@@ -43,6 +43,12 @@
 #if QT_VERSION >= 0x050000
 #include <QUrlQuery>
 #endif
+#ifdef ENABLE_KDE_SUPPORT
+#include <solid/block.h>
+#else
+#include "solid-lite/block.h"
+#endif
+#include <QDebug>
 
 const QLatin1String AudioCdDevice::constAnyDev("-");
 
@@ -97,15 +103,26 @@ AudioCdDevice::AudioCdDevice(MusicModel *m, Solid::Device &dev)
 {
     icn=Icon("media-optical");
     drive=dev.parent().as<Solid::OpticalDrive>();
-    block=dev.as<Solid::Block>();
+    Solid::Block *block=dev.as<Solid::Block>();
     if (block) {
+        device=block->device();
+    } else { // With UDisks2 we cannot get block from device :-(
+        QStringList parts=dev.udi().split("/", QString::SkipEmptyParts);
+        if (!parts.isEmpty()) {
+            parts=parts.last().split(":");
+            if (!parts.isEmpty()) {
+                device="/dev/"+parts.first();
+            }
+        }
+    }
+    if (!device.isEmpty()) {
         static bool registeredTypes=false;
         if (!registeredTypes) {
             qRegisterMetaType<CdAlbum >("CdAlbum");
             qRegisterMetaType<QList<CdAlbum> >("QList<CdAlbum>");
             registeredTypes=true;
         }
-        devPath=Song::constCddaProtocol+block->device()+QChar('/');
+        devPath=Song::constCddaProtocol+device+QChar('/');
         #if defined CDDB_FOUND && defined MUSICBRAINZ5_FOUND
         connectService(Settings::self()->useCddb());
         #else
@@ -151,7 +168,7 @@ AudioCdDevice::~AudioCdDevice()
 
 bool AudioCdDevice::isDevice(const QString &dev)
 {
-    return constAnyDev==dev || block->device()==dev;
+    return constAnyDev==dev || device==dev;
 }
 
 void AudioCdDevice::connectService(bool useCddb)
@@ -175,7 +192,7 @@ void AudioCdDevice::connectService(bool useCddb)
             && useCddb
             #endif
             ) {
-        cddb=new CddbInterface(block->device());
+        cddb=new CddbInterface(device);
         connect(cddb, SIGNAL(error(QString)), this, SIGNAL(error(QString)));
         connect(cddb, SIGNAL(initialDetails(CdAlbum)), this, SLOT(setDetails(CdAlbum)));
         connect(cddb, SIGNAL(matches(const QList<CdAlbum> &)), SLOT(cdMatches(const QList<CdAlbum> &)));
@@ -189,7 +206,7 @@ void AudioCdDevice::connectService(bool useCddb)
             && !useCddb
             #endif
             ) {
-        mb=new MusicBrainz(block->device());
+        mb=new MusicBrainz(device);
         connect(mb, SIGNAL(error(QString)), this, SIGNAL(error(QString)));
         connect(mb, SIGNAL(initialDetails(CdAlbum)), this, SLOT(setDetails(CdAlbum)));
         connect(mb, SIGNAL(matches(const QList<CdAlbum> &)), SLOT(cdMatches(const QList<CdAlbum> &)));
@@ -200,7 +217,7 @@ void AudioCdDevice::connectService(bool useCddb)
 
 void AudioCdDevice::rescan(bool useCddb)
 {
-    if (block) {
+    if (!device.isEmpty()) {
         connectService(useCddb);
         lookupInProcess=true;
         emit lookup(true);
@@ -250,7 +267,7 @@ void AudioCdDevice::copySongTo(const Song &s, const QString &baseDir, const QStr
         return;
     }
 
-    QString source=block->device();
+    QString source=device;
     currentMpdDir=baseDir;
     currentDestFile=encoder.changeExtension(baseDir+musicPath);
 

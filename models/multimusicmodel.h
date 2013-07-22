@@ -38,9 +38,9 @@ class MultiMusicModel : public MusicModel
 public:
     MultiMusicModel(QObject *parent = 0);
     ~MultiMusicModel();
-    QModelIndex index(int row, int column, const QModelIndex &parent) const;
+    QModelIndex index(int row, int column, const QModelIndex &parent=QModelIndex()) const;
     QModelIndex parent(const QModelIndex &index) const;
-    int rowCount(const QModelIndex &parent) const;
+    int rowCount(const QModelIndex &parent=QModelIndex()) const;
     void getDetails(QSet<QString> &artists, QSet<QString> &albumArtists, QSet<QString> &albums, QSet<QString> &genres);
     void toggleGrouping();
     QList<Song> songs(const QModelIndexList &indexes, bool playableOnly=false, bool fullPath=false) const;

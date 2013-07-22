@@ -34,9 +34,9 @@ public:
     MusicModel(QObject *parent = 0);
     ~MusicModel();
     virtual const MusicLibraryItemRoot * root(const MusicLibraryItem *item) const;
-    QVariant headerData(int, Qt::Orientation, int) const { return QVariant(); }
-    int columnCount(const QModelIndex &) const { return 1; }
-    QVariant data(const QModelIndex &, int) const;
+    QVariant headerData(int, Qt::Orientation, int = Qt::DisplayRole) const { return QVariant(); }
+    int columnCount(const QModelIndex & = QModelIndex()) const { return 1; }
+    QVariant data(const QModelIndex &, int = Qt::DisplayRole) const;
 
     virtual int row(void *) const { return 0; }
 
@@ -47,4 +47,3 @@ public:
 };
 
 #endif
-

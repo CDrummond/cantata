@@ -108,6 +108,7 @@ public:
     bool updateSong(const Song &orig, const Song &edit);
     void addSongToList(const Song &s);
     void removeSongFromList(const Song &s);
+    void clearImages();
 
 protected:
     QString songArtist(const Song &s) const;

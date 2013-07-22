@@ -47,6 +47,7 @@ public:
     QStringList filenames(const QModelIndexList &indexes, bool playableOnly=false, bool fullPath=false) const;
     const QSet<QString> & genres() { return colGenres; }
     int row(void *i) const { return collections.indexOf((MusicLibraryItemRoot *)i); }
+    void clearImages();
 
 Q_SIGNALS:
     void updateGenres(const QSet<QString> &genres);

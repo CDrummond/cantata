@@ -214,7 +214,7 @@ QVariant MusicModel::data(const QModelIndex &index, int role) const
         }
     }
     default:
-        return QVariant();
+        break;
     }
-    return QVariant();
+    return ActionModel::data(index, role);
 }

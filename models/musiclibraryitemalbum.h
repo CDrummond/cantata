@@ -89,6 +89,7 @@ public:
     void setImageUrl(const QString &u) { m_imageUrl=u; }
     bool updateYear();
     bool containsArtist(const QString &a);
+    void clearImage();
 
 private:
     void setCoverImage(const QImage &img) const;

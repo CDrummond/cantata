@@ -467,6 +467,18 @@ bool MusicLibraryItemAlbum::containsArtist(const QString &a)
     return m_artists.contains(a);
 }
 
+void MusicLibraryItemAlbum::clearImage()
+{
+    if (!m_coverIsDefault) {
+        m_coverIsDefault=true;
+        delete m_cover;
+        m_cover=0;
+        if (theDefaultIcon) {
+            m_cover=theDefaultIcon;
+        }
+    }
+}
+
 void MusicLibraryItemAlbum::setYear(const MusicLibraryItemSong *song)
 {
     if (m_childItems.isEmpty() || (m_yearOfDisc>song->disc() || (m_yearOfDisc==song->disc() && m_yearOfTrack>song->track()))) {

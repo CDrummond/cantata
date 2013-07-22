@@ -1413,6 +1413,12 @@ void MainWindow::updateSettings()
         loaded|=TAB_LIBRARY;
         libraryPage->refresh();
     }
+    if (diffLibCovers || diffLibYear || Settings::self()->libraryArtistImage()!=MusicLibraryModel::self()->useArtistImages()) {
+        onlinePage->refresh();
+        #ifdef ENABLE_DEVICES_SUPPORT
+        devicesPage->refresh();
+        #endif
+    }
 
     bool wasAutoExpand=playQueue->isAutoExpand();
     bool wasStartClosed=playQueue->isStartClosed();

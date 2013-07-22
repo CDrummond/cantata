@@ -179,6 +179,23 @@ const QPixmap & MusicLibraryItemArtist::cover()
     return *m_cover;
 }
 
+void MusicLibraryItemArtist::clearImages()
+{
+    if (!m_coverIsDefault) {
+        m_coverIsDefault=true;
+        delete m_cover;
+        m_cover=0;
+        if (theDefaultIcon) {
+            m_cover=theDefaultIcon;
+        }
+    }
+    foreach (MusicLibraryItem *i, m_childItems) {
+        if (MusicLibraryItem::Type_Album==i->itemType()) {
+            static_cast<MusicLibraryItemAlbum *>(i)->clearImage();
+        }
+    }
+}
+
 MusicLibraryItemAlbum * MusicLibraryItemArtist::album(const Song &s, bool create)
 {
     QHash<QString, int>::ConstIterator it=m_indexes.find(s.album);

@@ -139,7 +139,7 @@ static void setupIconTheme()
         QIcon::setThemeName(cfgTheme);
     }
 
-    QString theme=QIcon::themeName();
+    QString theme=Icon::themeName().toLower();
     if (QLatin1String("oxygen")!=theme && !QIcon::hasThemeIcon("document-save-as")) {
         QStringList paths=QIcon::themeSearchPaths();
 

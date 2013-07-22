@@ -198,6 +198,8 @@ void Manager::slotInterfacesAdded(const QDBusObjectPath &object_path, const QVar
 
     qDebug() << udi << "has new interfaces:" << interfaces_and_properties.keys();
 
+    updateBackend(udi);
+
     // new device, we don't know it yet
     if (!m_deviceCache.contains(udi)) {
         m_deviceCache.append(udi);
@@ -220,6 +222,8 @@ void Manager::slotInterfacesRemoved(const QDBusObjectPath &object_path, const QS
 
     qDebug() << udi << "lost interfaces:" << interfaces;
 
+    updateBackend(udi);
+
     Device device(udi);
 
     if (!udi.isEmpty() && (interfaces.isEmpty() || device.interfaces().isEmpty())) {
@@ -237,6 +241,7 @@ void Manager::slotMediaChanged(const QDBusMessage & msg)
         return;
 
     const QString udi = msg.path();
+    updateBackend(udi);
     qulonglong size = properties.value("Size").toULongLong();
     qDebug() << "MEDIA CHANGED in" << udi << "; size is:" << size;
 
@@ -260,3 +265,23 @@ const QStringList & Manager::deviceCache()
     return m_deviceCache;
 }
 
+void Manager::updateBackend(const QString & udi)
+{
+    DeviceBackend *backend = DeviceBackend::backendForUDI(udi);
+    if (!backend)
+        return;
+
+    //This doesn't emit "changed" signals. Signals are emitted later by DeviceBackend's slots
+    backend->allProperties();
+
+    QVariant driveProp = backend->prop("Drive");
+    if (!driveProp.isValid())
+        return;
+
+    QDBusObjectPath drivePath = qdbus_cast<QDBusObjectPath>(driveProp);
+    DeviceBackend *driveBackend = DeviceBackend::backendForUDI(drivePath.path(), false);
+    if (!driveBackend)
+        return;
+
+    driveBackend->invalidateProperties();
+}

@@ -187,10 +187,13 @@ void InterfaceSettings::libraryViewChanged()
     }
 
     bool isIcon=ItemView::Mode_IconTop==vt;
-    libraryArtistImage->setEnabled(!isIcon);
+    bool isSimpleTree=ItemView::Mode_SimpleTree==vt;
+    libraryArtistImage->setEnabled(!isIcon && !isSimpleTree);
     libraryArtistImageLabel->setEnabled(libraryArtistImage->isEnabled());
     if (isIcon) {
         libraryArtistImage->setChecked(true);
+    } else if (isSimpleTree) {
+        libraryArtistImage->setChecked(false);
     }
 }
 

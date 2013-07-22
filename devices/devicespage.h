@@ -51,6 +51,7 @@ public:
     void setView(int v) { view->setMode((ItemView::Mode)v); }
     void focusSearch() { view->focusSearch(); }
     void goBack() { view->backActivated(); }
+    void refresh();
 
 public Q_SLOTS:
     void itemDoubleClicked(const QModelIndex &);

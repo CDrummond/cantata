@@ -949,6 +949,15 @@ void MusicLibraryItemRoot::removeSongFromList(const Song &s)
     }
 }
 
+void MusicLibraryItemRoot::clearImages()
+{
+    foreach (MusicLibraryItem *i, m_childItems) {
+        if (MusicLibraryItem::Type_Artist==i->itemType()) {
+            static_cast<MusicLibraryItemArtist *>(i)->clearImages();
+        }
+    }
+}
+
 QString MusicLibraryItemRoot::songArtist(const Song &s) const
 {
     if (isFlat || !supportsAlbumArtist) {

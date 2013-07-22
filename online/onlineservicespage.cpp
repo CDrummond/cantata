@@ -195,6 +195,12 @@ void OnlineServicesPage::addSelectionToPlaylist(const QString &name, bool replac
     }
 }
 
+void OnlineServicesPage::refresh()
+{
+    view->setLevel(0);
+    OnlineServicesModel::self()->clearImages();
+}
+
 void OnlineServicesPage::itemDoubleClicked(const QModelIndex &)
 {
      const QModelIndexList selected = view->selectedIndexes();

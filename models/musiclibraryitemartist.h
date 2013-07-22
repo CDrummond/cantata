@@ -61,6 +61,7 @@ public:
     bool hasRealCover() const { return !m_coverIsDefault; }
     const QString & imageUrl() const { return m_imageUrl; }
     void setImageUrl(const QString &u) { m_imageUrl=u; }
+    void clearImages();
 
 private:
     mutable bool m_coverIsDefault;

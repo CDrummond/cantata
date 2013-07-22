@@ -57,7 +57,11 @@ static void themes(const QString &theme, QStringList &iconThemes)
     if (iconThemes.contains(theme)) {
         return;
     }
+    QString lower=theme.toLower();
     iconThemes << theme;
+    if (lower!=theme) {
+        iconThemes << lower;
+    }
     QStringList paths=QIcon::themeSearchPaths();
     QString key("Inherits=");
     foreach (const QString &p, paths) {
@@ -81,7 +85,7 @@ static void themes(const QString &theme, QStringList &iconThemes)
 void CoverWidget::initIconThemes()
 {
     if (iconThemes.isEmpty()) {
-        themes(QIcon::themeName(), iconThemes);
+        themes(Icon::currentTheme(), iconThemes);
     }
 }
 

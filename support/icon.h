@@ -26,6 +26,8 @@
 
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KIcon>
+#include <KDE/KIconLoader>
+#include <KDE/KIconTheme>
 #else
 #include <QIcon>
 #endif
@@ -52,8 +54,10 @@ public:
     static void init(QToolButton *btn, bool setFlat=true);
     #ifdef ENABLE_KDE_SUPPORT
     static Icon getMediaIcon(const QString &name) { return Icon(name); }
+    static QString currentTheme() { return KIconLoader::global()->theme()->name(); }
     #else
     static Icon getMediaIcon(const QString &name);
+    static QString currentTheme() { return QIcon::themeName(); }
     #endif
     static Icon create(const QString &name, const QList<int> &sizes);
 };

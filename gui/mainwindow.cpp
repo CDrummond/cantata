@@ -486,11 +486,10 @@ MainWindow::MainWindow(QWidget *parent)
         controlIconSize=32;
         playbackIconSize=32;
         buttonSize=36;
-    } else if (QLatin1String("oxygen")!=QIcon::themeName()) {
+    } else if (QLatin1String("oxygen")!=Icon::currentTheme().toLower()) {
         // Oxygen does not have 24x24 icons, and media players eem to use scaled 28x28 icons...
         // But, if the theme does have media icons at 24x24 use these - as they will be sharper...
-        Icon icon("media-playback-start");
-        playbackIconSize=24==icon.actualSize(QSize(24, 24)).width() ? 24 : 28;
+        playbackIconSize=24==Icons::self()->toolbarPlayIcon.actualSize(QSize(24, 24)).width() ? 24 : 28;
     }
 
     foreach (QToolButton *b, controlBtns) {

@@ -361,7 +361,7 @@ Icons::Icons()
     consumeIcon=createConsumeIcon(stdColor, highlightColor);
     menuIcon=createMenuIcon(stdColor, highlightColor);
     libraryIcon=Icon("cantata-view-media-library");
-    streamCategoryIcon=Icon(QLatin1String("oxygen")==QIcon::themeName() ? "inode-directory" : "folder-music");
+    streamCategoryIcon=Icon(QLatin1String("oxygen")==Icon::currentTheme().toLower() ? "inode-directory" : "folder-music");
     radioStreamIcon=Icon("cantata-view-radiostream");
     addRadioStreamIcon=Icon("cantata-radiostream-add");
     QString iconFile=QString(INSTALL_PREFIX"/share/")+QCoreApplication::applicationName()+"/streamicons/stream.png";
@@ -498,7 +498,7 @@ void Icons::initSidebarIcons()
         dynamicIcon=dynamicRuleIcon;
         streamsIcon=radioStreamIcon;
         onlineIcon=Icon("applications-internet");
-        if (QIcon::themeName()==QLatin1String("gnome")) {
+        if (QLatin1String("gnome")==Icon::currentTheme().toLower()) {
             QColor col=QApplication::palette().color(QPalette::Active, QPalette::ButtonText);
             infoSidebarIcon=loadSidebarIcon("info", col, col);
         } else {
@@ -573,7 +573,7 @@ void Icons::initToolbarIcons(const QColor &color, bool forceLight)
         infoIcon=loadSidebarIcon("info", col, col);
     } else
     #endif
-        if (QIcon::themeName()==QLatin1String("gnome")) {
+        if (QLatin1String("gnome")==Icon::currentTheme().toLower()) {
             QColor col=QApplication::palette().color(QPalette::Active, QPalette::ButtonText);
             infoIcon=loadSidebarIcon("info", col, col);
         }
@@ -583,7 +583,7 @@ void Icons::initToolbarIcons(const QColor &color, bool forceLight)
     }
 
     #if !defined ENABLE_KDE_SUPPORT && !defined Q_OS_WIN
-    if (QIcon::themeName()==QLatin1String("gnome")) {
+    if (QLatin1String("gnome")==Icon::currentTheme().toLower()) {
         QColor col=QApplication::palette().color(QPalette::Active, QPalette::ButtonText);
         contextIcon=loadSidebarIcon("info", col, col);
     } else

@@ -34,7 +34,7 @@ using namespace Solid::Backends::UDisks2;
 /* Static cache for DeviceBackends for all UDIs */
 QMap<QString /* UDI */, DeviceBackend*> DeviceBackend::s_backends;
 
-DeviceBackend* DeviceBackend::backendForUDI(const QString& udi)
+DeviceBackend* DeviceBackend::backendForUDI(const QString& udi, bool create)
 {
     DeviceBackend *backend = 0;
     if (udi.isEmpty()) {
@@ -43,7 +43,7 @@ DeviceBackend* DeviceBackend::backendForUDI(const QString& udi)
 
     if (s_backends.contains(udi)) {
         backend = s_backends.value(udi);
-    } else {
+    } else if (create) {
         backend = new DeviceBackend(udi);
         s_backends.insert(udi, backend);
     }
@@ -152,6 +152,11 @@ QVariantMap DeviceBackend::allProperties() const
     }
 
     return m_propertyCache;
+}
+
+void DeviceBackend::invalidateProperties()
+{
+    m_propertyCache.clear();
 }
 
 QString DeviceBackend::introspect() const

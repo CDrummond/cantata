@@ -27,10 +27,8 @@
 #include "device.h"
 #include "covers.h"
 #ifdef ENABLE_KDE_SUPPORT
-#include <solid/block.h>
 #include <solid/opticaldrive.h>
 #else
-#include "solid-lite/block.h"
 #include "solid-lite/opticaldrive.h"
 #endif
 #include <QImage>
@@ -61,7 +59,7 @@ public:
     QImage image() const { return cover().img; }
     bool isDevice(const QString &dev);
     bool supportsDisconnect() const { return 0!=drive; }
-    bool isConnected() const { return 0!=block; }
+    bool isConnected() const { return !device.isEmpty(); }
     void rescan(bool useCddb);
     bool isRefreshing() const { return lookupInProcess; }
     void toggle();
@@ -107,7 +105,6 @@ private:
 private:
     Service srv;
     Solid::OpticalDrive *drive;
-    Solid::Block *block;
     #ifdef CDDB_FOUND
     CddbInterface *cddb;
     #endif
@@ -118,6 +115,7 @@ private:
     QString album;
     QString artist;
     QString genre;
+    QString device;
     QString devPath;
     int year;
     int disc;

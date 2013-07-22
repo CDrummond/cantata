@@ -40,7 +40,7 @@ class DeviceBackend: public QObject {
     Q_OBJECT
 
   public:
-    static DeviceBackend* backendForUDI(const QString &udi);
+    static DeviceBackend* backendForUDI(const QString &udi, bool create = true);
     static void destroyBackend(const QString &udi);
 
     DeviceBackend(const QString &udi);
@@ -53,6 +53,7 @@ class DeviceBackend: public QObject {
     QStringList interfaces() const;
     const QString & udi() const;
 
+    void invalidateProperties();
   Q_SIGNALS:
     void propertyChanged(const QMap<QString, int> &changeMap);
     void changed();

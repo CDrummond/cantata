@@ -48,7 +48,6 @@
 #else
 #include "solid-lite/block.h"
 #endif
-#include <QDebug>
 
 const QLatin1String AudioCdDevice::constAnyDev("-");
 

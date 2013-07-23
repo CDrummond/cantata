@@ -64,6 +64,9 @@ public:
     void clearImages();
 
 private:
+    bool largeImages() const;
+
+private:
     mutable bool m_coverIsDefault;
     mutable QPixmap *m_cover;
     bool m_various;

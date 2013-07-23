@@ -148,6 +148,7 @@ MusicLibraryModel::MusicLibraryModel(QObject *parent, bool isMpdModel, bool isCh
         connect(MPDConnection::self(), SIGNAL(musicLibraryUpdated(MusicLibraryItemRoot *, QDateTime)),
                 this, SLOT(updateMusicLibrary(MusicLibraryItemRoot *, QDateTime)));
     }
+    rootItem->setModel(this);
 }
 
 MusicLibraryModel::~MusicLibraryModel()

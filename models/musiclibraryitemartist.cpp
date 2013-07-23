@@ -60,12 +60,17 @@ bool MusicLibraryItemArtist::lessThan(const MusicLibraryItem *a, const MusicLibr
 }
 
 static QPixmap *theDefaultIcon=0;
+static QPixmap *theDefaultLargeIcon=0;
 
 void MusicLibraryItemArtist::clearDefaultCover()
 {
     if (theDefaultIcon) {
         delete theDefaultIcon;
         theDefaultIcon=0;
+    }
+    if (theDefaultLargeIcon) {
+        delete theDefaultLargeIcon;
+        theDefaultLargeIcon=0;
     }
 }
 
@@ -85,7 +90,7 @@ MusicLibraryItemArtist::MusicLibraryItemArtist(const QString &data, MusicLibrary
 bool MusicLibraryItemArtist::setCover(const QImage &img, bool update) const
 {
     if ((m_coverIsDefault || update) && !img.isNull()) {
-        int size=MusicLibraryItemAlbum::iconSize(!MusicLibraryItemAlbum::itemSize().isNull());
+        int size=MusicLibraryItemAlbum::iconSize(largeImages());
         QImage scaled=img.scaled(QSize(size, size), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation);
         if (scaled.width()>size || scaled.height()>size) {
             scaled=scaled.copy((scaled.width()-size)/2, 0, size, size);
@@ -104,11 +109,18 @@ bool MusicLibraryItemArtist::setCover(const QImage &img, bool update) const
 const QPixmap & MusicLibraryItemArtist::cover()
 {
     if (m_coverIsDefault && theDefaultIcon) {
-        return *theDefaultIcon;
+        if (largeImages()) {
+            if (theDefaultLargeIcon) {
+                return *theDefaultLargeIcon;
+            }
+        } else if (theDefaultIcon) {
+            return *theDefaultIcon;
+        }
     }
 
     if (!m_cover) {
-        int iSize=MusicLibraryItemAlbum::iconSize(!MusicLibraryItemAlbum::itemSize().isNull());
+        bool useLarge=largeImages();
+        int iSize=MusicLibraryItemAlbum::iconSize(useLarge);
         int cSize=iSize;
         if (0==cSize) {
             cSize=22;
@@ -130,7 +142,10 @@ const QPixmap & MusicLibraryItemArtist::cover()
                 }
             }
             #endif
-            if (!theDefaultIcon) {
+            if (useLarge) {
+                theDefaultLargeIcon = new QPixmap(Icons::self()->artistIcon.pixmap(cSize, cSize)
+                                                 .scaled(QSize(cSize, cSize), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+            } else {
                 theDefaultIcon = new QPixmap(Icons::self()->artistIcon.pixmap(cSize, cSize)
                                             .scaled(QSize(cSize, cSize), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
             }
@@ -172,7 +187,7 @@ const QPixmap & MusicLibraryItemArtist::cover()
                 m_coverIsDefault=false;
                 return *m_cover;
             }
-            return *theDefaultIcon;
+            return useLarge ? *theDefaultLargeIcon : *theDefaultIcon;
         }
     }
 
@@ -299,4 +314,10 @@ void MusicLibraryItemArtist::updateIndexes()
     for (int i=0; it!=end; ++it, ++i) {
         m_indexes.insert((*it)->data(), i);
     }
+}
+
+bool MusicLibraryItemArtist::largeImages() const
+{
+    return m_parentItem && Type_Root==m_parentItem->itemType() &&
+           static_cast<MusicLibraryItemRoot *>(m_parentItem)->useLargeImages();
 }

@@ -115,6 +115,7 @@ private:
     void setParentState(const QModelIndex &parent, bool childChecked, MusicLibraryItemContainer *parentItem, MusicLibraryItem *item);
 
 private:
+    bool mpdModel;
     bool checkable;
     MusicLibraryItemRoot *rootItem;
     QDateTime databaseTime;

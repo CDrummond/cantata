@@ -134,10 +134,11 @@ void MusicLibraryModel::cleanCache()
 
 MusicLibraryModel::MusicLibraryModel(QObject *parent, bool isMpdModel, bool isCheckable)
     : MusicModel(parent)
+    , mpdModel(isMpdModel)
     , checkable(isCheckable)
     , rootItem(new MusicLibraryItemRoot)
 {
-    if (isMpdModel)
+    if (mpdModel)
     {
         connect(Covers::self(), SIGNAL(artistImage(const Song &, const QImage &, const QString &)),
                 this, SLOT(setArtistImage(const Song &, const QImage &)));
@@ -340,9 +341,9 @@ void MusicLibraryModel::clear()
     delete oldRoot;
     endResetModel();
 
-//     emit updated(rootItem);
-    AlbumsModel::self()->update(rootItem);
-    //emit updateGenres(QSet<QString>());
+    if (mpdModel) {
+        AlbumsModel::self()->update(rootItem);
+    }
 }
 
 QModelIndex MusicLibraryModel::findSongIndex(const Song &s) const
@@ -414,7 +415,7 @@ QSet<QString> MusicLibraryModel::getAlbumArtists()
 
 void MusicLibraryModel::updateMusicLibrary(MusicLibraryItemRoot *newroot, QDateTime dbUpdate, bool fromFile)
 {
-    if (databaseTime >= dbUpdate) {
+    if (!mpdModel || databaseTime >= dbUpdate) {
         delete newroot;
         return;
     }
@@ -552,7 +553,9 @@ void MusicLibraryModel::toggleGrouping()
     beginResetModel();
     rootItem->toggleGrouping();
     endResetModel();
-    AlbumsModel::self()->update(rootItem);
+    if (mpdModel) {
+        AlbumsModel::self()->update(rootItem);
+    }
 }
 
 QList<Song> MusicLibraryModel::getAlbumTracks(const Song &s) const

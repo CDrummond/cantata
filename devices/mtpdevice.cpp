@@ -474,8 +474,8 @@ void MtpConnection::updateFiles()
 
 void MtpConnection::updateStorage()
 {
-    uint64_t s=0;
-    uint64_t u=0;
+    uint64_t sizeCalc=0;
+    uint64_t usedCalc=0;
     if (device && LIBMTP_ERROR_NONE==LIBMTP_Get_Storage(device, LIBMTP_STORAGE_SORTBY_MAXSPACE)) {
         LIBMTP_devicestorage_struct *s=device->storage;
         while (s) {
@@ -501,13 +501,13 @@ void MtpConnection::updateStorage()
                 store.used=s->MaxCapacity-s->FreeSpaceInBytes;
                 storage.append(store);
             }
-            size+=s->MaxCapacity;
-            used+=s->MaxCapacity-s->FreeSpaceInBytes;
+            sizeCalc+=s->MaxCapacity;
+            usedCalc+=s->MaxCapacity-s->FreeSpaceInBytes;
             s=s->next;
         }
     }
-    size=s;
-    used=u;
+    size=sizeCalc;
+    used=usedCalc;
 }
 
 QList<DeviceStorage> MtpConnection::getStorageList() const

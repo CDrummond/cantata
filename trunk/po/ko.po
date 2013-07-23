@@ -214,7 +214,7 @@ msgstr "저장"
 
 #: context/songview.cpp:170
 msgid "Failed to save lyrics."
-msgstr "가사 저장할 수 없음"
+msgstr "가사를 저장할 수 없음."
 
 #: context/songview.cpp:192
 msgid "Delete lyrics file?"
@@ -450,11 +450,11 @@ msgstr "메타데이터를 업데이트할 수 없음.<hr/>%1"
 #: devices/actiondialog.cpp:661
 msgid ""
 "Failed to download track - too many redirects encountered.<br/><br/<hr/>%1"
-msgstr "곡을 내려받을 수 없음 - 너무 많은 전송"
+msgstr "곡을 내려받을 수 없음 - 너무 많은 재전송.<br/><br/<hr/>%1"
 
 #: devices/actiondialog.cpp:664
 msgid "Failed to download track.<br/><br/<hr/>%1"
-msgstr "곡을 내려받을 수 없음.<hr/>%1"
+msgstr "곡을 내려받을 수 없음.<br/><br/<hr/>%1"
 
 #: devices/actiondialog.cpp:667
 msgid "Failed to lock device.<hr/>%1"
@@ -488,18 +488,17 @@ msgid ""
 "\">Album:</td><td>%2</td></tr><tr><td align=\"right\">Track:</td><td>%3</"
 "td></tr>"
 msgstr ""
-"<table><tr><td align=\"right\">연주자:</td><td>%1</td></tr><tr><td align="
-"\"right\">음반:</td><td>%2</td></tr><tr><td align=\"right\">곡:</td><td>%3</"
-"td></tr></table>"
+"<tr><td align=\"right\">연주자:</td><td>%1</td></tr><tr><td align=\"right"
+"\">음반:</td><td>%2</td></tr><tr><td align=\"right\">곡:</td><td>%3</"
+"td></tr>"
 
 #: devices/actiondialog.cpp:768
 msgid ""
 "<tr><td align=\"right\">Source file:</td><td>%1</td></tr><tr><td align="
 "\"right\">Destination file:</td><td>%2</td></tr>"
 msgstr ""
-"<table><tr><td align=\"right\">연주자:</td><td>%1</td></tr><tr><td align="
-"\"right\">음반:</td><td>%2</td></tr><tr><td align=\"right\">곡:</td><td>%3</"
-"td></tr></table>"
+"<tr><td align=\"right\">원본 파일:</td><td>%1</td></tr><tr><td align="
+"\"right\">대상 파일:</td><td>%2</td></tr>"
 
 #: devices/actiondialog.cpp:773
 msgid "<tr><td align=\"right\">File:</td><td>%1</td></tr>"
@@ -586,7 +585,7 @@ msgstr "되돌림"
 #: devices/albumdetailsdialog.cpp:268 tags/tageditor.cpp:454
 msgid ""
 "Capitalize the first letter of 'Title', 'Artist', 'Album artist', and 'Album'"
-msgstr "'제목', '연주자', '음반연주자', '음반'의 첫 글자를 대문자로 만듭니다."
+msgstr "'제목', '연주자', '음반연주자', '음반'의 첫 글자를 대문자로 만듬"
 
 #: devices/albumdetailsdialog.cpp:286 tags/tageditor.cpp:486
 msgid "Adjust track number by:"
@@ -1354,7 +1353,7 @@ msgstr "선택 안 됨"
 
 #: devices/syncdialog.cpp:102
 msgid "Songs Only In Library:"
-msgstr "라이브러리에만 있는 음악"
+msgstr "라이브러리에만 있는 곡:"
 
 #: devices/syncdialog.cpp:102
 msgid "Copy To Device"
@@ -1370,7 +1369,7 @@ msgstr "동기화"
 
 #: devices/syncdialog.cpp:164
 msgid "Device and library are in sync."
-msgstr "장치와 라이브러리가 동기화됨"
+msgstr "장치와 라이브러리가 동기화됨."
 
 #: devices/umsdevice.cpp:58 devices/umsdevice.cpp:190
 msgid "Not Scanned"
@@ -1414,7 +1413,7 @@ msgstr "규정 파일을 설치할 수 없음 - %1 -> %2"
 
 #: dynamic/dynamic.cpp:703
 msgid "Dynamizer has been terminated."
-msgstr "활동이 중지됨"
+msgstr "활동이 중지됨."
 
 #: dynamic/dynamic.cpp:790
 msgid "Uknown"
@@ -2316,7 +2315,7 @@ msgstr "우선순위"
 
 #: gui/mainwindow.cpp:2119
 msgid "Enter priority (0..255):"
-msgstr "우선순위 입력 (0..255)"
+msgstr "우선순위 입력 (0..255):"
 
 #: gui/mainwindow.cpp:2142 gui/playlistspage.cpp:203
 msgid "Playlist Name"
@@ -2706,7 +2705,7 @@ msgstr "지금 연주 중"
 
 #: http/httpserversettings.cpp:40
 msgid "Local loopback (%1)"
-msgstr "로컬 루프백"
+msgstr "로컬 루프백 (%1)"
 
 #: http/httpserversettings.cpp:43
 msgid "Wired (%1)"
@@ -3125,7 +3124,7 @@ msgstr "내려받기:"
 
 #: online/onlineservice.cpp:67 online/onlineservice.cpp:155
 msgid "Dowloading"
-msgstr "내려받는 중..."
+msgstr "내려받는 중"
 
 #: online/onlineservice.cpp:97
 msgid "Updating display"
@@ -3310,7 +3309,7 @@ msgstr "한 연주자:"
 #. i18n: ectx: property (text), widget (BuddyLabel, label_6)
 #: po/rc.cpp:70 rc.cpp:70
 msgid "Disc:"
-msgstr "디스크"
+msgstr "디스크:"
 
 #. i18n: file: devices/audiocdsettings.ui:20
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox)
@@ -3358,7 +3357,7 @@ msgstr "전체 Paranoia 모드 (최고 품질):"
 #. i18n: ectx: property (text), widget (BuddyLabel, label_5)
 #: po/rc.cpp:106 rc.cpp:106
 msgid "Never skip on read error:"
-msgstr "읽기 오류 건너뛰지 않음"
+msgstr "읽기 오류 건너뛰지 않음:"
 
 #. i18n: file: devices/devicepropertieswidget.ui:20
 #. i18n: ectx: property (text), widget (QLabel, remoteDeviceNote)
@@ -3489,7 +3488,7 @@ msgstr "연주자 이름에 'The' 무시:"
 #. i18n: ectx: property (text), widget (BuddyLabel, label_6)
 #: po/rc.cpp:145 po/rc.cpp:772 rc.cpp:145 rc.cpp:772
 msgid "Filename scheme:"
-msgstr "파일이름 구성"
+msgstr "파일이름 구성:"
 
 #. i18n: file: devices/devicepropertieswidget.ui:237
 #. i18n: ectx: property (text), widget (BuddyLabel, label_2)
@@ -3719,7 +3718,7 @@ msgstr "폴더:"
 #. i18n: ectx: property (text), widget (BuddyLabel, sshExtraLabel)
 #: po/rc.cpp:253 rc.cpp:253
 msgid "Extra Options:"
-msgstr "기타 옵션"
+msgstr "기타 옵션:"
 
 #. i18n: file: devices/remotedevicepropertieswidget.ui:363
 #. i18n: ectx: property (text), widget (QLabel, label_5)
@@ -3755,7 +3754,7 @@ msgstr "서버 설정에 활동 포트가 없습니다."
 #. i18n: ectx: property (text), widget (StatusLabel, remoteRunningLabel)
 #: po/rc.cpp:268 rc.cpp:268
 msgid "Remote dynamizer is not running."
-msgstr "원격 활성화가 실행 중이 아님"
+msgstr "원격 활성화가 실행 중이 아님."
 
 #. i18n: file: dynamic/dynamicrules.ui:30
 #. i18n: ectx: property (placeholderText), widget (LineEdit, nameText)
@@ -4813,7 +4812,7 @@ msgstr "실패"
 
 #: replaygain/rgdialog.cpp:695 tags/trackorganiser.cpp:380
 msgid "Remove the selected tracks from the list?"
-msgstr "항목의 선택된 곡을 지울까요"
+msgstr "항목의 선택된 곡을 지울까요?"
 
 #: replaygain/rgdialog.cpp:696 tags/trackorganiser.cpp:381
 msgid "Remove Tracks"
@@ -4885,7 +4884,7 @@ msgstr "새로운 스트림을 즐겨찾기에 추가"
 
 #: streams/streamspage.cpp:123
 msgid "Search TuneIn:"
-msgstr "TuneIn 찾기"
+msgstr "TuneIn 찾기:"
 
 #: streams/streamspage.cpp:239
 msgid "*.xml *.xml.gz *.cantata|XML Streams"
@@ -5211,7 +5210,7 @@ msgstr "파일이름 바꾸기"
 
 #: tags/trackorganiser.cpp:143
 msgid "Abort renaming of files?"
-msgstr "이름 바꾸기 취소"
+msgstr "파일 이름 바꾸기를 취소할까요?"
 
 #: tags/trackorganiser.cpp:257
 msgid "Destination file already exists!<br/>%1"

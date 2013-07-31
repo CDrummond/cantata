@@ -19,6 +19,7 @@
 
 - Devices
   - libMTP does not support album artist tag.
+    - Port to MPT DBus service when this is released.
   - Allow to drag songs from albums/library to devices, and vice versa.
   - RemoteFsDevices
     - Cantata hangs if smb service is stopped before its un-mounted

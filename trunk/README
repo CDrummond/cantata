@@ -63,7 +63,7 @@ language you are translating into has more plural forms (i.e. the above two
 strings are not sufficient), then please translate both into the form
 "Tracks: N" - e.g.
 
-    Qt will now have:
+    Qt would now have:
         msgid "1 Track"
         msgstr "Tracks: 1"
 
@@ -78,12 +78,13 @@ To generate a new translation for Cantata, please just copy cantata.pot (in the
 po folder) to whetever letter code your language uses (e.g. es.po for Spanish).
 Then edit this new file to add the translations.
 
-Please DO NOT use any tools to manully generate the translations from Cantata's
-source code, as this will probably not work. This is due to Cantata using the
-KDE framework for translations, and then generating the Qt-only ones from this.
+Please DO NOT use any tools to manually generate the translations from
+Cantata's source code, as this will probably not work. This is due to Cantata
+using the KDE framework for translations, and then generating the Qt-only ones
+from this.
 
 In the po folder there is a script named generate.sh, this is what is used to
-extract translateable strings, and update current translations.
+extract translatable strings, and update current translations.
 
 
 Covers
@@ -102,13 +103,13 @@ When displaying covers, Cantata will load album covers in the following order:
  6. AlbumArt.png
  7. folder.jpg
  8. folder.png
- 9. ${file}.jpg
+ 9. ${file}.jpg - e.g. "01 Wibble.mp3" -> "01 Wibble.jpg"
 10. ${file}.png
 11. ${albumArtist} - ${album}.jpg
 12. ${albumArtist} - ${album}.png
 13. ${album}.jpg
 14. ${album}.png
-15. Image embedded within current songs tags.
+15. Image embedded within current song's tags.
 16. ANY other jpg, or png
 
 ...then Cantata will check its cache folder (~/.cache/cantata/covers), for :
@@ -181,7 +182,8 @@ Cantata may be controlled via the media keys on some keyboards. To enable this,
 the KDE version can be configured to use KDE's global shortcuts. The Qt only
 builds (under Linux) can use the GNOME settings daemon's MediaKeys interface.
 This interface is normally started automatically under GNOME/Unity - and you
-will also need to enable the setting in Cantata's configuration dialog.
+will also need to enable the setting in Cantata's configuration dialog (as of
+v1.1 this option is enabled by default)
 
 If your system does not have this daemon, you could possibly use
 https://code.google.com/p/mediakeys-daemon/ which is a python re-implementation
@@ -278,7 +280,7 @@ configured here. This is then used to detect if the script is running, etc.
 'filesDir' This controls where the dyamic rules are stored. The user the script
 is run as should have read/write permissions to this folder.
 
-'activeFile' When a set of rule is made 'active', all cantata does is create a
+'activeFile' When a set of rules is made 'active', all cantata does is create a
 symbolic link from the rules file to the file specified in 'activeFile'. Again,
 the user the script is run as should have read/write permissions to this file.
 
@@ -292,7 +294,7 @@ server.
 containing a list of the dynamic rules (which if clicked will become 'active'),
 and a button to stop dynamic mode. Set to '0' to disable this page.
 
-'id' is a unique ID that can be usedby the client to detect that multicast UDP
+'id' is a unique ID that can be used by the client to detect that multicast UDP
 messages came from this instance.
 
 'msgGroup' is the UDP multicast group used to send status messages.
@@ -310,7 +312,7 @@ Within the dynamic/init folder are example configuration and init files. Copy
 one of the example init scripts (or create a new one) to
 /etc/init.d/cantata.dynamic - and create the appropriate links in /etc/rc?.d
 
-NOTE: These example script assume cantata has been installed to /usr, and that
+NOTE: These example scripts assume cantata has been installed to /usr, and that
 cantata-dynamic is in /usr/share/cantata/scripts. If this is not the case, then
 these will need to be edited.
 
@@ -341,7 +343,7 @@ GetStatus
     Mode:   HTTP GET
     URL:    http://host:port/status
     Params: statusTime=${clientStatusTime}
-    Return: String containing
+    Return: String containing:
             STATE:<current status>
             RULES:<name of currently active rule>
             TIME:<epoch time since started, or last rule modification>
@@ -360,7 +362,8 @@ ListPlaylists:
     Mode:   HTTP GET
     URL:    http://host:port/list
     Params: statusTime=${clientStatusTime}
-    Return: String containd list of current rules. if 'withDetails' is set to
+            withDetails=1
+    Return: String containg list of current rules. if 'withDetails' is set to
             '1' then the contents of the rules are also returned.
 
     Example return:
@@ -414,7 +417,7 @@ UDP Multicast Messages
 ----------------------
 
 When run in server mode, the helper script will emit a UDP mutlicast message
-when the status changes. This will be on $msgPort and group $msgGroup. The
+when the status changes. This will be on ${msgPort} and group ${msgGroup}. The
 format of the message is the same as GetStatus response, apart from the
 addition of a header - e.g.
 
@@ -437,7 +440,7 @@ The Cantata source folder contains the following structure:
     models     - Most models, apart from dynamic playlist and shortcut models
     mpd        - MPD related classes; connection, status, song, etc.
     network    - Generic Network classes (and proxy support for Qt builds)
-    online     - Jamendo and Magantune
+    online     - Jamendo, Magantune, and SoundCloud
     po         - Translations
     replaygain - ReplayGain calculation
     streams    - Internet radio streams
@@ -450,9 +453,9 @@ The Cantata source folder contains the following structure:
 Debug Logging
 =============
 
-Cantata contains some debug logging, that might help to diagnose certain
-issues. To enable this, you must set an environment variable before starting
-Cantata. Therefore, its porobably better to start Cantata from the commandline.
+Cantata contains some debug logging that might help to diagnose certain issues
+To enable this, you must set an environment variable before starting Cantata.
+Therefore, its probably better to start Cantata from the commandline.
 
 The following debug values may be used:
 
@@ -506,10 +509,10 @@ The following steps are used to compile Cantata, and create the windows
 installer.
 
 This assumes the following folder structure:
-    z:\cantata\src
-    z:\cantata\build
-    z:\cantata\install
-    z:\cantata\oxygen
+    z:\cantata\src          [ Checkout of Cantata's source code ]
+    z:\cantata\build        
+    z:\cantata\install      [ make install will place target files here ]
+    z:\cantata\oxygen       [ Oxygen icons folder ]
     z:\dev\MingGW
     z:\dev\Qt\4.8.4
     z:\dev\taglib
@@ -518,7 +521,7 @@ This assumes the following folder structure:
 1. Install Qt, MinGW, cmake, TagLib and zlib. TagLib and zlib will probably
    need compiling.
 
-2. Call cmake (e.g.):
+2. Call cmake (e.g. from build folder):
      cmake ../src -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=Release -DENABLE_TAGLIB=OFF -DTAGLIB_FOUND=1 -DTAGLIB_INCLUDES=z:/dev/taglib/include -DTAGLIB_LIBRARIES=z:/dev/taglib/lib/libtag.dll.a -DTAGLIB_MP4_FOUND=1 -DTAGLIB_ASF_FOUND=1 -DZLIB_INCLUDE_DIR=z:/dev/zlib/include -DZLIB_LIBRARY=z:/dev/zlib/libz.dll.a -DCMAKE_INSTALL_PREFIX=z:/cantata/install -DCANTATA_WINDOWS_INSTALLER_DEST=z:/cantata -DCANTATA_MINGW_LIBS=z:/dev/MinGW/bin/mingwm10.dll;z:/dev/MinGW/bin/libgcc_s_dw2-1.dll -DCANTATA_OXYGEN_DIR=z:/cantata/oxygen
 
    (Note: -DENABLE_TAGLIB=OFF stops cmake from trying to find TagLib, as the TagLib settings have been manually set)
@@ -537,6 +540,6 @@ playlists, device support, or replaygain calculation.
 TagLib
 ------
 
-Windows version of taglib was build from TagLib 1.8, using the following cmake command:
+Windows version of taglib was built from TagLib 1.8, using the following cmake command:
     cmake .. -G "MinGW Makefiles" -DWITH_ASF=1 -DWITH_MP4=1 -DCMAKE_INSTALL_PRFIX=z:\dev\taglib
 

@@ -27,7 +27,7 @@
 16. Only have 2 stop actions; stop now, or stop after current. Default stop
     action is always 'stop now'
 17. Make 'stop after current track' assignable to KDE global shortcut.
-18. Add 'stop after current' to tray item menu, and to Cantata MPRIS interface..
+18. Add 'stop after current' to tray item menu, and to Cantata MPRIS interface.
 19. Try to use better text for buttons in dialogs, and not just yes/no.
 20. Dont use icons in buttons when using QGtkStyle - Gtk does not use button
     icons.
@@ -35,7 +35,7 @@
 22. Show number of selected artists, albums, and songs in sync dialog.
 23. Save sync dialog size.
 24. Show number of songs to be copied on action dialog. Make number a link,
-    when clicked produce a dialog showing list.
+    when clicked produce a dialog showing list of songs.
 25. Improve radiance CSS theme.
 26. Use 24px playback icons if the icon theme has these.
 27. When AudioCD is ejected, remove tracks from playqueue.
@@ -79,7 +79,7 @@
 51. If cantata-dynamic is started in server mode, then have it create any
     missing folders.
 52. Simpler proxy settings.
-53. Delay loading of local devices at atart-up, so that we have time to add
+53. Delay loading of local devices at start-up, so that we have time to add
     device to view before try to expand it.
 54. If cantata-dynamic is started in server mode, then communicate status via
     UDP multicast messages.
@@ -87,20 +87,20 @@
     error message in dynamic page.
 56. Fix keyboard shortcuts of tab pages.
 57. Add support for a simple profile where MPD is started by cantata, and
-    the only settings are the music folder and cover names.
+    the only settings are the music folder and cover name.
 58. Combine Output and Playback config pages.
 59. Remove proxy config from settings, and always use system proxy.
     To re-enable proxy settings pass -DENABLE_PROXY_CONFIG=ON to cmake.
-60. Add option to draw curent album cover as backdrop to play queue.
-61. Add 'Copy Songs To Device' action to playlists page.
-62. Copy Qt5 Linux system proxy code for Qt4 builds.
+60. Copy Qt5 Linux system proxy code for Qt4 builds.
+61. Add option to draw curent album cover as backdrop to play queue.
+62. Add 'Copy Songs To Device' action to playlists page.
 63. Embed pre-rendered PNG versions of cantata icon, to help with Qt5 builds
     on systems that do not have the Qt SVG icon engine installed.
 64. Simplify streams page. Remove user-categories, instead have a set of
     predefined top-level items; Favourites (user streams), TuneIn, IceCast,
     ShoutCast, SomaFM, Digitially Imported, Jazz Radio, Rock Radio, Sky.fm, and
     Listen Live.
-65. Search for streams on TunIn.
+65. Search for streams via TuneIn.
 66. Place search fields on bottom of views, and hide by default. Show when
     Ctrl-F is used for views, and Ctrl-Shift-F for playqueue.
 67. When searching in dynamic page, also search rules themselves.
@@ -108,7 +108,7 @@
     will list each track as a separate entry in the artists and albums views.
 69. When loading a stream into the playqueue, show a status message at the
     bottom - allowing the loading to be cancelled.
-70. If stream is not a audiocd stream, and the total time is known, then enable
+70. If stream is not an audiocd stream, and the total time is known, then enable
     the position slider.
 71. Allow seeking in cantata HTTP streams.
 72. Default to enabling use of media keys under GNOME/Unity.
@@ -116,6 +116,7 @@
 74. Drop usage of lame when playing back AudioCDs, its not required.
 75. Always use QNetworkAccessManager - as KIO is not thread safe :-(
 76. Update copy of Solid to KDE4.10.5.
+77. Provide Faience CSS theme.
 
 1.0.3
 -----
@@ -129,7 +130,7 @@
  6. When searching for artist information, if song's album artist contains
     artist, then use album artist. This is for tracks that have an artist such
     as "abc featuring 123", and album artist is "abc"
- 7. Improve comsume icon at larger sizes.
+ 7. Improve consume icon at larger sizes.
  8. Fix lyrics background when we toggle from showing cover to not showing.
  9. Replace multiple blank lines with single blank line when showing lyrics.
 10. Fix AudioCD playback.

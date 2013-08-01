@@ -637,6 +637,7 @@ quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime 
                             percent=pc;
                         }
                     }
+                    song=Song();
                 }
             }
         }

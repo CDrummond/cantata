@@ -104,6 +104,9 @@ bool Song::operator<(const Song &o) const
 
 int Song::compareTo(const Song &o) const
 {
+    if (type!=o.type) {
+        return type<o.type ? -1 : 1;
+    }
     if (SingleTracks==type) {
         int compare=artistSong().localeAwareCompare(artistSong());
         if (0!=compare) {
@@ -122,9 +125,6 @@ int Song::compareTo(const Song &o) const
     }
     if (disc!=o.disc) {
         return disc<o.disc ? -1 : 1;
-    }
-    if (type!=o.type) {
-        return type<o.type ? -1 : 1;
     }
     if (track!=o.track) {
         return track<o.track ? -1 : 1;

@@ -288,7 +288,7 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
         }
         case Qt::DisplayRole:
             if (Song::Playlist==si->type) {
-                return si->title;
+                return si->file.endsWith(".cue", Qt::CaseInsensitive) ? i18n("Cue Sheet") : i18n("Playlist");
             }
             if (Song::SingleTracks==si->parent->type) {
                 return si->artistSong();

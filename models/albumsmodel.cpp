@@ -296,9 +296,8 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
             else {
                 return si->trackAndTitleStr(Song::isVariousArtists(si->parent->artist) && !Song::isVariousArtists(si->artist));
             }
-        case ItemView::Role_SubText: {
+        case ItemView::Role_SubText:
             return Song::formattedTime(si->time, true);
-        }
         }
     }
 

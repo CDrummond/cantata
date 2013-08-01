@@ -567,6 +567,9 @@ quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime 
                 song.file=attributes.value(constFileAttribute).toString();
                 if (constTrueValue==attributes.value(constPlaylistAttribute).toString()) {
                     song.type=Song::Playlist;
+                    if (0==song.time) {
+                        song.time=albumItem->totalTime();
+                    }
                     albumItem->append(new MusicLibraryItemSong(song, albumItem));
                     song.type=Song::Standard;
                 } else {
@@ -637,8 +640,8 @@ quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime 
                             percent=pc;
                         }
                     }
-                    song=Song();
                 }
+                song=Song();
             }
         }
     }

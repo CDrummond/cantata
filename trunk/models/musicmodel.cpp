@@ -134,7 +134,8 @@ QVariant MusicModel::data(const QModelIndex &index, int role) const
         return item->data();
     case Qt::ToolTipRole:
         if (MusicLibraryItem::Type_Song==item->itemType()) {
-            return parentData(item)+data(index, Qt::DisplayRole).toString()+QLatin1String("<br/>")+data(index, ItemView::Role_SubText).toString()+
+            return parentData(item)+data(index, Qt::DisplayRole).toString()+QLatin1String("<br/>")+
+                   Song::formattedTime(static_cast<MusicLibraryItemSong *>(item)->time(), true)+
                    QLatin1String("<br/><small><i>")+static_cast<MusicLibraryItemSong *>(item)->song().file+QLatin1String("</i></small>");
         }
         return parentData(item)+
@@ -175,10 +176,7 @@ QVariant MusicModel::data(const QModelIndex &index, int role) const
             #endif
             break;
         case MusicLibraryItem::Type_Song:
-            return Song::formattedTime(Song::Playlist==static_cast<MusicLibraryItemSong *>(item)->song().type &&
-                                       MusicLibraryItem::Type_Album==item->parentItem()->itemType()
-                                        ? static_cast<MusicLibraryItemAlbum *>(item->parentItem())->totalTime()
-                                        : static_cast<MusicLibraryItemSong *>(item)->time(), true);
+            return Song::formattedTime(static_cast<MusicLibraryItemSong *>(item)->time(), true);
         case MusicLibraryItem::Type_Album:
             #ifdef ENABLE_KDE_SUPPORT
             return i18np("1 Track (%2)", "%1 Tracks (%2)", static_cast<MusicLibraryItemAlbum *>(item)->trackCount(),

@@ -119,6 +119,8 @@
 77. Provide Faience CSS theme.
 78. Click on time label to toggle between shwowing current time and time
     remaining.
+79. Use tooltip to display position that will be jumped to if mouse is pressed
+    on time slider.
 
 1.0.3
 -----

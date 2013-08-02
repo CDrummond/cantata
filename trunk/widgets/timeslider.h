@@ -29,6 +29,7 @@
 #include <QTime>
 class QTimer;
 class TimeLabel;
+class PosSlider;
 
 class TimeSlider : public QWidget
 {
@@ -41,8 +42,8 @@ public:
     void setValue(int v);
     void setRange(int min, int max);
     void clearTimes();
-    void setOrientation(Qt::Orientation o) {slider->setOrientation(o); }
-    int value() const { return slider->value(); }
+    void setOrientation(Qt::Orientation o);
+    int value() const;
     void saveConfig();
 
 Q_SIGNALS:
@@ -56,7 +57,7 @@ private Q_SLOTS:
 
 private:
     TimeLabel *label;
-    QSlider *slider;
+    PosSlider *slider;
     QTimer *timer;
     QTime startTime;
     int lastVal;

@@ -117,6 +117,8 @@
 75. Always use QNetworkAccessManager - as KIO is not thread safe :-(
 76. Update copy of Solid to KDE4.10.5.
 77. Provide Faience CSS theme.
+78. Click on time label to toggle between shwowing current time and time
+    remaining.
 
 1.0.3
 -----

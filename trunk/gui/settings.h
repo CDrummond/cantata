@@ -170,6 +170,7 @@ public:
     bool forceSingleClick();
     bool startHidden();
     bool monoSidebarIcons();
+    bool showTimeRemaining();
 
     void removeConnectionDetails(const QString &v);
     void saveConnectionDetails(const MPDConnectionDetails &v);
@@ -249,6 +250,7 @@ public:
     void saveForceSingleClick(bool v);
     void saveStartHidden(bool v);
     void saveMonoSidebarIcons(bool v);
+    void saveShowTimeRemaining(bool v);
     void save(bool force=false);
     #ifdef ENABLE_KDE_SUPPORT
     bool openWallet();

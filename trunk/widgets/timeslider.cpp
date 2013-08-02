@@ -23,11 +23,13 @@
 
 #include "timeslider.h"
 #include "song.h"
+#include "settings.h"
 #include <QLabel>
-#include <QBoxLayout>
+#include <QGridLayout>
 #include <QProxyStyle>
 #include <QTimer>
 #include <QApplication>
+#include <QMouseEvent>
 
 class ProxyStyle : public QProxyStyle
 {
@@ -48,19 +50,89 @@ public:
     }
 };
 
+class TimeLabel : public QLabel
+{
+public:
+    TimeLabel(QWidget *p, QSlider *s)
+        : QLabel(p)
+        , slider(s)
+        , pressed(false)
+        , showRemaining(Settings::self()->showTimeRemaining())
+    {
+        setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Fixed);
+        setAttribute(Qt::WA_Hover, true);
+    }
+
+    void saveConfig()
+    {
+        Settings::self()->saveShowTimeRemaining(showRemaining);
+    }
+
+    void setEnabled(bool e)
+    {
+        if (e!=isEnabled()) {
+            QLabel::setEnabled(e);
+            setStyleSheet(e ? QString() : QLatin1String("QLabel { color : transparent; }"));
+        }
+    }
+
+    bool event(QEvent *e)
+    {
+        switch (e->type()) {
+        case QEvent::MouseButtonPress:
+            if (Qt::NoModifier==static_cast<QMouseEvent *>(e)->modifiers() && Qt::LeftButton==static_cast<QMouseEvent *>(e)->button()) {
+                pressed=true;
+            }
+            break;
+        case QEvent::MouseButtonRelease:
+            if (pressed) {
+                pressed=false;
+                showRemaining=!showRemaining;
+                updateTimes();
+            }
+            break;
+        case QEvent::HoverEnter:
+            if (isEnabled()) {
+                QColor col=palette().highlight().color();
+                setStyleSheet(QString("QLabel { color : rgb(%1, %2, %3); }").arg(col.red()).arg(col.green()).arg(col.blue()));
+            }
+            break;
+        case QEvent::HoverLeave:
+            if (isEnabled()) {
+                setStyleSheet(QString());
+            }
+        default:
+            break;
+        }
+        return QLabel::event(e);
+    }
+
+    void updateTimes()
+    {
+        int value=showRemaining ? slider->maximum()-slider->value() : slider->value();
+        QString prefix=showRemaining && value ? QLatin1String("-") : QString();
+        setText(prefix+Song::formattedTime(value)+" / "+Song::formattedTime(slider->maximum()));
+    }
+
+private:
+    QSlider *slider;
+    bool pressed;
+    bool showRemaining;
+};
+
 TimeSlider::TimeSlider(QWidget *p)
     : QWidget(p)
     , timer(0)
     , lastVal(0)
 {
-    label=new QLabel(this);
     slider=new QSlider(this);
+    label=new TimeLabel(this, slider);
     label->setAlignment((Qt::RightToLeft==layoutDirection() ? Qt::AlignRight : Qt::AlignLeft)|Qt::AlignVCenter);
-    QBoxLayout *layout=new QBoxLayout(QBoxLayout::TopToBottom, this);
+    QGridLayout *layout=new QGridLayout(this);
     layout->setSpacing(0);
     layout->setMargin(0);
-    layout->addWidget(label);
-    layout->addWidget(slider);
+    layout->addWidget(label, 0, 0, 1, 1);
+    layout->addWidget(slider, 1, 0, 1, 2);
     slider->setPageStep(0);
     connect(slider, SIGNAL(sliderPressed()), this, SLOT(pressed()));
     connect(slider, SIGNAL(sliderReleased()), this, SLOT(released()));
@@ -69,7 +141,6 @@ TimeSlider::TimeSlider(QWidget *p)
     // Set minimum height to help with some Gtk themes.
     // BUG:179
     slider->setMinimumHeight(24);
-    label->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
     setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
     slider->setFocusPolicy(Qt::NoFocus);
     slider->setStyle(new ProxyStyle());
@@ -106,7 +177,7 @@ void TimeSlider::setRange(int min, int max)
 {
     slider->setRange(min, max);
     slider->setValue(min);
-    label->setStyleSheet(min==max ? QLatin1String("QLabel { color : transparent; }") : QString());
+    label->setEnabled(min!=max);
     updateTimes();
 }
 
@@ -115,13 +186,19 @@ void TimeSlider::clearTimes()
     stopTimer();
     lastVal=0;
     slider->setValue(0);
-    label->setText(Song::formattedTime(0)+" / "+Song::formattedTime(0));
+    slider->setRange(0, 0);
+    label->updateTimes();
+}
+
+void TimeSlider::saveConfig()
+{
+    label->saveConfig();
 }
 
 void TimeSlider::updateTimes()
 {
     if (slider->value()<172800 && slider->value() != slider->maximum()) {
-        label->setText(Song::formattedTime(slider->value())+" / "+Song::formattedTime(slider->maximum()));
+        label->updateTimes();
     }
 }
 

@@ -891,6 +891,7 @@ MainWindow::~MainWindow()
     Settings::self()->saveHiddenPages(hiddenPages);
     context->saveConfig();
     streamsPage->save();
+    positionSlider->saveConfig();
     Settings::self()->saveForceSingleClick(TreeView::getForceSingleClick());
     Settings::self()->saveStartHidden(trayItem->isActive() && isHidden() && Settings::self()->minimiseOnClose());
     Settings::self()->save(true);

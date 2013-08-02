@@ -63,6 +63,8 @@ public:
         setAttribute(Qt::WA_Hover, true);
     }
 
+    virtual ~TimeLabel() { }
+
     void saveConfig()
     {
         Settings::self()->saveShowTimeRemaining(showRemaining);
@@ -120,12 +122,52 @@ private:
     bool showRemaining;
 };
 
+class PosSlider : public QSlider
+{
+public:
+    PosSlider(QWidget *p)
+        : QSlider(p)
+    {
+        setPageStep(0);
+        setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
+        // Set minimum height to help with some Gtk themes.
+        // BUG:179
+        setMinimumHeight(24);
+        setFocusPolicy(Qt::NoFocus);
+        setStyle(new ProxyStyle());
+    }
+
+    virtual ~PosSlider() { }
+
+    bool event(QEvent *e)
+    {
+        if (QEvent::ToolTip==e->type() && maximum()!=minimum()) {
+            QHelpEvent *he = dynamic_cast<QHelpEvent *>(e);
+            if (he) {
+                qreal pc = (qreal)he->x()/(qreal)width();
+                setToolTip(Song::formattedTime(maximum()*pc));
+            }
+        }
+
+        return QSlider::event(e);
+    }
+
+    void setRange(int min, int max)
+    {
+        QSlider::setRange(min, max);
+        setValue(min);
+        if (min==max) {
+            setToolTip(QString());
+        }
+    }
+};
+
 TimeSlider::TimeSlider(QWidget *p)
     : QWidget(p)
     , timer(0)
     , lastVal(0)
 {
-    slider=new QSlider(this);
+    slider=new PosSlider(this);
     label=new TimeLabel(this, slider);
     label->setAlignment((Qt::RightToLeft==layoutDirection() ? Qt::AlignRight : Qt::AlignLeft)|Qt::AlignVCenter);
     QGridLayout *layout=new QGridLayout(this);
@@ -133,17 +175,10 @@ TimeSlider::TimeSlider(QWidget *p)
     layout->setMargin(0);
     layout->addWidget(label, 0, 0, 1, 1);
     layout->addWidget(slider, 1, 0, 1, 2);
-    slider->setPageStep(0);
     connect(slider, SIGNAL(sliderPressed()), this, SLOT(pressed()));
     connect(slider, SIGNAL(sliderReleased()), this, SLOT(released()));
     connect(slider, SIGNAL(valueChanged(int)), this, SLOT(updateTimes()));
-    slider->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
-    // Set minimum height to help with some Gtk themes.
-    // BUG:179
-    slider->setMinimumHeight(24);
     setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
-    slider->setFocusPolicy(Qt::NoFocus);
-    slider->setStyle(new ProxyStyle());
 }
 
 void TimeSlider::startTimer()
@@ -176,7 +211,6 @@ void TimeSlider::setValue(int v)
 void TimeSlider::setRange(int min, int max)
 {
     slider->setRange(min, max);
-    slider->setValue(min);
     label->setEnabled(min!=max);
     updateTimes();
 }
@@ -185,9 +219,18 @@ void TimeSlider::clearTimes()
 {
     stopTimer();
     lastVal=0;
-    slider->setValue(0);
     slider->setRange(0, 0);
     label->updateTimes();
+}
+
+void TimeSlider::setOrientation(Qt::Orientation o)
+{
+    slider->setOrientation(o);
+}
+
+int TimeSlider::value() const
+{
+    return slider->value();
 }
 
 void TimeSlider::saveConfig()

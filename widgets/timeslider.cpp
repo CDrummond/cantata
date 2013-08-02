@@ -56,6 +56,7 @@ public:
     TimeLabel(QWidget *p, QSlider *s)
         : QLabel(p)
         , slider(s)
+        , visible(true)
         , pressed(false)
         , showRemaining(Settings::self()->showTimeRemaining())
     {
@@ -72,7 +73,8 @@ public:
 
     void setEnabled(bool e)
     {
-        if (e!=isEnabled()) {
+        if (e!=visible) {
+            visible=e;
             QLabel::setEnabled(e);
             setStyleSheet(e ? QString() : QLatin1String("QLabel { color : transparent; }"));
         }
@@ -82,25 +84,25 @@ public:
     {
         switch (e->type()) {
         case QEvent::MouseButtonPress:
-            if (Qt::NoModifier==static_cast<QMouseEvent *>(e)->modifiers() && Qt::LeftButton==static_cast<QMouseEvent *>(e)->button()) {
+            if (visible && Qt::NoModifier==static_cast<QMouseEvent *>(e)->modifiers() && Qt::LeftButton==static_cast<QMouseEvent *>(e)->button()) {
                 pressed=true;
             }
             break;
         case QEvent::MouseButtonRelease:
-            if (pressed) {
-                pressed=false;
+            if (visible && pressed) {
                 showRemaining=!showRemaining;
                 updateTimes();
             }
+            pressed=false;
             break;
         case QEvent::HoverEnter:
-            if (isEnabled()) {
+            if (visible) {
                 QColor col=palette().highlight().color();
                 setStyleSheet(QString("QLabel { color : rgb(%1, %2, %3); }").arg(col.red()).arg(col.green()).arg(col.blue()));
             }
             break;
         case QEvent::HoverLeave:
-            if (isEnabled()) {
+            if (visible) {
                 setStyleSheet(QString());
             }
         default:
@@ -118,6 +120,7 @@ public:
 
 private:
     QSlider *slider;
+    bool visible;
     bool pressed;
     bool showRemaining;
 };
@@ -179,6 +182,7 @@ TimeSlider::TimeSlider(QWidget *p)
     connect(slider, SIGNAL(sliderReleased()), this, SLOT(released()));
     connect(slider, SIGNAL(valueChanged(int)), this, SLOT(updateTimes()));
     setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
+    clearTimes();
 }
 
 void TimeSlider::startTimer()
@@ -220,6 +224,7 @@ void TimeSlider::clearTimes()
     stopTimer();
     lastVal=0;
     slider->setRange(0, 0);
+    label->setEnabled(false);
     label->updateTimes();
 }
 

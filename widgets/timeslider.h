@@ -28,7 +28,7 @@
 #include <QSlider>
 #include <QTime>
 class QTimer;
-class QLabel;
+class TimeLabel;
 
 class TimeSlider : public QWidget
 {
@@ -43,6 +43,7 @@ public:
     void clearTimes();
     void setOrientation(Qt::Orientation o) {slider->setOrientation(o); }
     int value() const { return slider->value(); }
+    void saveConfig();
 
 Q_SIGNALS:
     void sliderReleased();
@@ -54,7 +55,7 @@ private Q_SLOTS:
     void released();
 
 private:
-    QLabel *label;
+    TimeLabel *label;
     QSlider *slider;
     QTimer *timer;
     QTime startTime;

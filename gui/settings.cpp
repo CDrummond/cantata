@@ -673,6 +673,11 @@ bool Settings::monoSidebarIcons()
     #endif
 }
 
+bool Settings::showTimeRemaining()
+{
+    return GET_BOOL("showTimeRemaining", false);
+}
+
 void Settings::removeConnectionDetails(const QString &v)
 {
     if (v==currentConnection()) {
@@ -1067,6 +1072,11 @@ void Settings::saveStartHidden(bool v)
 void Settings::saveMonoSidebarIcons(bool v)
 {
     SET_VALUE_MOD(monoSidebarIcons);
+}
+
+void Settings::saveShowTimeRemaining(bool v)
+{
+    SET_VALUE_MOD(showTimeRemaining);
 }
 
 void Settings::save(bool force)

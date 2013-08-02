@@ -69,37 +69,54 @@ struct MpdDefaults
         return parts.count()>1 ? parts[1] : QString();
     }
 
+    enum Details {
+        DT_DIR    = 0x01,
+        DT_ADDR   = 0x02,
+        DT_PORT   = 0x04,
+        DT_PASSWD = 0x08,
+
+        DT_ALL    = DT_DIR|DT_ADDR|DT_PORT|DT_PASSWD
+    };
+
     void read() {
         QFile f("/etc/mpd.conf");
+        int details=0;
 
         if (f.open(QIODevice::ReadOnly|QIODevice::Text)) {
             while (!f.atEnd()) {
                 QString line = f.readLine().trimmed();
                 if (line.startsWith('#')) {
                     continue;
-                } else if (line.startsWith(QLatin1String("music_directory"))) {
+                } else if (!(details&DT_DIR) && line.startsWith(QLatin1String("music_directory"))) {
                     QString val=getVal(line);
                     if (!val.isEmpty() && QDir(val).exists()) {
                         dir=val;
+                        details|=DT_DIR;
                     }
-                } else if (line.startsWith(QLatin1String("bind_to_address"))) {
+                } else if (!(details&DT_ADDR) && line.startsWith(QLatin1String("bind_to_address"))) {
                     QString val=getVal(line);
                     if (!val.isEmpty() && val!=QLatin1String("any")) {
                         host=val;
+                        details|=DT_ADDR;
                     }
-                } else if (line.startsWith(QLatin1String("port"))) {
+                } else if (!(details&DT_PORT) && line.startsWith(QLatin1String("port"))) {
                     int val=getVal(line).toInt();
                     if (val>0) {
                         port=val;
+                        details|=DT_PORT;
                     }
-                } else if (line.startsWith(QLatin1String("password"))) {
+                } else if (!(details&DT_PASSWD) && line.startsWith(QLatin1String("password"))) {
                     QString val=getVal(line);
                     if (!val.isEmpty()) {
                         QStringList parts=val.split('@');
-                        if (parts.count()) {
+                        if (!parts.isEmpty()) {
                             passwd=parts[0];
+                            details|=DT_PASSWD;
                         }
                     }
+                }
+                if (details==DT_ALL) {
+                    break;
                 }
             }
         }

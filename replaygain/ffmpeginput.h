@@ -14,9 +14,9 @@
 
 class FfmpegInput : public Input
 {
+public:
     struct Handle;
 
-public:
     static void init();
 
     FfmpegInput(const QString &fileName);

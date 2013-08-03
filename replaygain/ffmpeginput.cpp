@@ -396,13 +396,6 @@ size_t FfmpegInput::readOnePacket()
 
     switch (handle->codecContext->sample_fmt) {
     #if LIBAVCODEC_VERSION_MAJOR >= 54
-    case AV_SAMPLE_FMT_U8:
-    #else
-    case SAMPLE_FMT_U8:
-    #endif
-        //                 fprintf(stderr, "8 bit audio not supported by libebur128!\n");
-        return 0;
-    #if LIBAVCODEC_VERSION_MAJOR >= 54
     case AV_SAMPLE_FMT_S16:
     #else
     case SAMPLE_FMT_S16:
@@ -455,9 +448,11 @@ size_t FfmpegInput::readOnePacket()
         break;
     }
     #if LIBAVCODEC_VERSION_MAJOR >= 54
+    case AV_SAMPLE_FMT_U8:
     case AV_SAMPLE_FMT_NONE:
     case AV_SAMPLE_FMT_NB:
     #else
+    case SAMPLE_FMT_U8:
     case SAMPLE_FMT_NONE:
     case SAMPLE_FMT_NB:
     #endif

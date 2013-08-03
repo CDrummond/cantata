@@ -37,6 +37,10 @@ extern "C" {
 
 static QMutex mutex;
 
+#ifndef AVCODEC_MAX_AUDIO_FRAME_SIZE
+#define AVCODEC_MAX_AUDIO_FRAME_SIZE 192000 // 1 second of 48khz 32bit audio
+#endif
+
 #define BUFFER_SIZE ((((AVCODEC_MAX_AUDIO_FRAME_SIZE * 3) / 2) * sizeof(int16_t)) + FF_INPUT_BUFFER_PADDING_SIZE)
 
 struct FfmpegInput::Handle {
@@ -44,9 +48,10 @@ struct FfmpegInput::Handle {
         : formatContext(0)
         , codecContext(0)
         , codec(0)
-        , needNewFrame(true)
+        #if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(53, 35, 0)
+        , frame(0)
+        #endif
         , audioStream(0)
-        , oldData(0)
         , currentBytes(0) {
         av_init_packet(&packet);
         audioBuffer = (int16_t*)av_malloc(BUFFER_SIZE);
@@ -55,14 +60,20 @@ struct FfmpegInput::Handle {
         if (audioBuffer) {
             av_free(audioBuffer);
         }
+        #if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(53, 35, 0)
+        if (frame) {
+            av_free(frame);
+        }
+        #endif
     }
     AVFormatContext *formatContext;
     AVCodecContext *codecContext;
     AVCodec *codec;
     AVPacket packet;
-    bool needNewFrame;
+    #if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(53, 35, 0)
+    AVFrame *frame;
+    #endif
     int audioStream;
-    uint8_t *oldData;
     int16_t *audioBuffer;
     float buffer[BUFFER_SIZE / 2 + 1];
     QList<QByteArray> bufferList;
@@ -303,35 +314,37 @@ size_t FfmpegInput::readFrames()
     return bufferPosition / sizeof(float) / channels();
 }
 
-#if LIBAVFORMAT_VERSION_INT >= AV_VERSION_INT(53, 21, 0)
-// Blindy copied from avcodec.c so as to remove deprecated warning...
-static int decodeAudio(AVCodecContext *avctx, int16_t *samples, int *frame_size_ptr, AVPacket *avpkt)
+#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(53, 35, 0)
+static int decodeAudio(FfmpegInput::Handle *handle, int *frame_size_ptr)
 {
-    AVFrame frame;
     int ret, got_frame = 0;
 
-    frame.data[0]=0;
-    if (avctx->get_buffer != avcodec_default_get_buffer) {
-        avctx->get_buffer = avcodec_default_get_buffer;
-        avctx->release_buffer = avcodec_default_release_buffer;
+    if (!handle->frame) {
+        handle->frame = avcodec_alloc_frame();
+        if (!handle->frame) {
+            return AVERROR(ENOMEM);
+        }
+    } else {
+        avcodec_get_frame_defaults(handle->frame);
     }
 
-    ret = avcodec_decode_audio4(avctx, &frame, &got_frame, avpkt);
+    ret = avcodec_decode_audio4(handle->codecContext, handle->frame, &got_frame, &handle->packet);
 
     if (ret >= 0 && got_frame) {
         int ch, plane_size;
-        int planar = av_sample_fmt_is_planar(avctx->sample_fmt);
-        int data_size = av_samples_get_buffer_size(&plane_size, avctx->channels, frame.nb_samples, avctx->sample_fmt, 1);
+        int planar = av_sample_fmt_is_planar(handle->codecContext->sample_fmt);
+        int data_size = av_samples_get_buffer_size(&plane_size, handle->codecContext->channels,
+                                                   handle->frame->nb_samples, handle->codecContext->sample_fmt, 1);
         if (*frame_size_ptr < data_size) {
             return AVERROR(EINVAL);
         }
 
-        memcpy(samples, frame.extended_data[0], plane_size);
+        memcpy(handle->audioBuffer, handle->frame->extended_data[0], plane_size);
 
-        if (planar && avctx->channels > 1) {
-            uint8_t *out = ((uint8_t *)samples) + plane_size;
-            for (ch = 1; ch < avctx->channels; ch++) {
-                memcpy(out, frame.extended_data[ch], plane_size);
+        if (planar && handle->codecContext->channels > 1) {
+            uint8_t *out = ((uint8_t *)(handle->audioBuffer)) + plane_size;
+            for (ch = 1; ch < handle->codecContext->channels; ch++) {
+                memcpy(out, handle->frame->extended_data[ch], plane_size);
                 out += plane_size;
             }
         }
@@ -341,7 +354,6 @@ static int decodeAudio(AVCodecContext *avctx, int16_t *samples, int *frame_size_
     }
     return ret;
 }
-
 #endif
 
 size_t FfmpegInput::readOnePacket()
@@ -350,118 +362,113 @@ size_t FfmpegInput::readOnePacket()
         return 0;
     }
 
+    next_frame:
     for (;;) {
-        if (handle->needNewFrame && av_read_frame(handle->formatContext, &handle->packet) < 0) {
+        if (av_read_frame(handle->formatContext, &handle->packet) < 0) {
             return 0;
         }
-        handle->needNewFrame = false;
         if (handle->packet.stream_index == handle->audioStream) {
-            if (!handle->oldData) {
-                handle->oldData = handle->packet.data;
-            }
-            while (handle->packet.size > 0) {
-                int dataSize=BUFFER_SIZE;
-                #if LIBAVFORMAT_VERSION_INT >= AV_VERSION_INT(53, 21, 0)
-                int len = decodeAudio(handle->codecContext, handle->audioBuffer, &dataSize, &handle->packet);
-                #elif LIBAVCODEC_VERSION_MAJOR >= 53 || \
-                    (LIBAVCODEC_VERSION_MAJOR == 52 && LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(52, 23, 0))
-                int len = avcodec_decode_audio3(handle->codecContext, handle->audioBuffer, &dataSize, &handle->packet);
-                #else
-                int len = avcodec_decode_audio2(handle->codecContext, handle->audioBuffer, &dataSize, handle->packet.data, handle->packet.size);
-                #endif
-                if (len < 0) {
-                    handle->packet.size = 0;
-                    break;
-                }
-                handle->packet.data += len;
-                handle->packet.size -= len;
-                if (!dataSize) {
-                    continue;
-                }
-                if (handle->packet.size < 0) {
-    //                 fprintf(stderr, "Error in decoder!\n");
-                    return 0;
-                }
-                size_t numberRead, i;
-                switch (handle->codecContext->sample_fmt) {
-                #if LIBAVCODEC_VERSION_MAJOR >= 54
-                case AV_SAMPLE_FMT_U8:
-                #else
-                case SAMPLE_FMT_U8:
-                #endif
-    //                 fprintf(stderr, "8 bit audio not supported by libebur128!\n");
-                    return 0;
-                #if LIBAVCODEC_VERSION_MAJOR >= 54
-                case AV_SAMPLE_FMT_S16:
-                #else
-                case SAMPLE_FMT_S16:
-                #endif
-                {
-                    int16_t *dataShort = (int16_t*) handle->audioBuffer;
-                    numberRead = (size_t) dataSize / sizeof(int16_t) / (size_t) handle->codecContext->channels;
-                    for (i = 0; i < (size_t) dataSize / sizeof(int16_t); ++i) {
-                        handle->buffer[i] = ((float) dataShort[i]) / qMax(-(float) SHRT_MIN, (float) SHRT_MAX);
-                    }
-                    break;
-                }
-                #if LIBAVCODEC_VERSION_MAJOR >= 54
-                case AV_SAMPLE_FMT_S32:
-                #else
-                case SAMPLE_FMT_S32:
-                #endif
-                {
-                    int32_t *dataInt = (int32_t*) handle->audioBuffer;
-                    numberRead = (size_t) dataSize / sizeof(int32_t) / (size_t) handle->codecContext->channels;
-                    for (i = 0; i < (size_t) dataSize / sizeof(int32_t); ++i) {
-                        handle->buffer[i] = ((float) dataInt[i]) / qMax(-(float) INT_MIN, (float) INT_MAX);
-                    }
-                    break;
-                }
-                #if LIBAVCODEC_VERSION_MAJOR >= 54
-                case AV_SAMPLE_FMT_FLT:
-                #else
-                case SAMPLE_FMT_FLT:
-                #endif
-                {
-                    float *dataFloat = (float*) handle->audioBuffer;
-                    numberRead = (size_t) dataSize / sizeof(float) / (size_t) handle->codecContext->channels;
-                    for (i = 0; i < (size_t) dataSize / sizeof(float); ++i) {
-                        handle->buffer[i] = dataFloat[i];
-                    }
-                    break;
-                }
-                #if LIBAVCODEC_VERSION_MAJOR >= 54
-                case AV_SAMPLE_FMT_DBL:
-                #else
-                case SAMPLE_FMT_DBL:
-                #endif
-                {
-                    double *dataDouble = (double*) handle->audioBuffer;
-                    numberRead = (size_t) dataSize / sizeof(double) / (size_t) handle->codecContext->channels;
-                    for (i = 0; i < (size_t) dataSize / sizeof(double); ++i) {
-                        handle->buffer[i] = (float) dataDouble[i];
-                    }
-                    break;
-                }
-                #if LIBAVCODEC_VERSION_MAJOR >= 54
-                case AV_SAMPLE_FMT_NONE:
-                case AV_SAMPLE_FMT_NB:
-                #else
-                case SAMPLE_FMT_NONE:
-                case SAMPLE_FMT_NB:
-                #endif
-                default:
-    //                 fprintf(stderr, "Unknown sample format!\n");
-                    return 0;
-                }
-                return numberRead;
-            }
-            handle->packet.data = handle->oldData;
-            handle->oldData = NULL;
+            break;
         }
         av_free_packet(&handle->packet);
-        handle->needNewFrame = true;
     }
+
+    size_t numberRead=0;
+    int dataSize=BUFFER_SIZE;
+    #if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(53, 35, 0)
+    int len = decodeAudio(handle, &dataSize);
+    #elif LIBAVCODEC_VERSION_MAJOR >= 53 || \
+        (LIBAVCODEC_VERSION_MAJOR == 52 && LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(52, 23, 0))
+    int len = avcodec_decode_audio3(handle->codecContext, handle->audioBuffer, &dataSize, &handle->packet);
+    #else
+    int len = avcodec_decode_audio2(handle->codecContext, handle->audioBuffer, &dataSize, handle->packet.data, handle->packet.size);
+    #endif
+
+    if (len < 0) {
+        goto out;
+    }
+
+    /* No data used, (happens with metadata frames for example) */
+    if (len <= 0) {
+        av_free_packet(&handle->packet);
+        goto next_frame;
+    }
+
+    switch (handle->codecContext->sample_fmt) {
+    #if LIBAVCODEC_VERSION_MAJOR >= 54
+    case AV_SAMPLE_FMT_U8:
+    #else
+    case SAMPLE_FMT_U8:
+    #endif
+        //                 fprintf(stderr, "8 bit audio not supported by libebur128!\n");
+        return 0;
+    #if LIBAVCODEC_VERSION_MAJOR >= 54
+    case AV_SAMPLE_FMT_S16:
+    #else
+    case SAMPLE_FMT_S16:
+    #endif
+    {
+        int16_t *dataShort = (int16_t*) handle->audioBuffer;
+        numberRead = (size_t) dataSize / sizeof(int16_t) / (size_t) handle->codecContext->channels;
+        for (unsigned int i = 0; i < (size_t) dataSize / sizeof(int16_t); ++i) {
+            handle->buffer[i] = ((float) dataShort[i]) / qMax(-(float) SHRT_MIN, (float) SHRT_MAX);
+        }
+        break;
+    }
+    #if LIBAVCODEC_VERSION_MAJOR >= 54
+    case AV_SAMPLE_FMT_S32:
+    #else
+    case SAMPLE_FMT_S32:
+    #endif
+    {
+        int32_t *dataInt = (int32_t*) handle->audioBuffer;
+        numberRead = (size_t) dataSize / sizeof(int32_t) / (size_t) handle->codecContext->channels;
+        for (unsigned int i = 0; i < (size_t) dataSize / sizeof(int32_t); ++i) {
+            handle->buffer[i] = ((float) dataInt[i]) / qMax(-(float) INT_MIN, (float) INT_MAX);
+        }
+        break;
+    }
+    #if LIBAVCODEC_VERSION_MAJOR >= 54
+    case AV_SAMPLE_FMT_FLT:
+    #else
+    case SAMPLE_FMT_FLT:
+    #endif
+    {
+        float *dataFloat = (float*) handle->audioBuffer;
+        numberRead = (size_t) dataSize / sizeof(float) / (size_t) handle->codecContext->channels;
+        for (unsigned int i = 0; i < (size_t) dataSize / sizeof(float); ++i) {
+            handle->buffer[i] = dataFloat[i];
+        }
+        break;
+    }
+    #if LIBAVCODEC_VERSION_MAJOR >= 54
+    case AV_SAMPLE_FMT_DBL:
+    #else
+    case SAMPLE_FMT_DBL:
+    #endif
+    {
+        double *dataDouble = (double*) handle->audioBuffer;
+        numberRead = (size_t) dataSize / sizeof(double) / (size_t) handle->codecContext->channels;
+        for (unsigned int i = 0; i < (size_t) dataSize / sizeof(double); ++i) {
+            handle->buffer[i] = (float) dataDouble[i];
+        }
+        break;
+    }
+    #if LIBAVCODEC_VERSION_MAJOR >= 54
+    case AV_SAMPLE_FMT_NONE:
+    case AV_SAMPLE_FMT_NB:
+    #else
+    case SAMPLE_FMT_NONE:
+    case SAMPLE_FMT_NB:
+    #endif
+    default:
+        numberRead=0;
+        goto out;
+    }
+
+    out:
+    av_free_packet(&handle->packet);
+    return numberRead;
 }
 
 bool FfmpegInput::isFloatCodec() const

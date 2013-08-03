@@ -641,7 +641,7 @@ quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime 
                         }
                     }
                 }
-                song=Song();
+                song.time=song.track=0;
             }
         }
     }

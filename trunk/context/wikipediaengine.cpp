@@ -436,14 +436,24 @@ void WikipediaEngine::getPage(const QStringList &query, Mode mode, const QString
     }
 
     QStringList patterns;
+    QStringList englishPatterns;
+    
     switch (mode) {
     default:
     case Artist:
         patterns=i18nc("Search pattern for an artist or band, separated by |", "artist|band|singer|vocalist|musician").split("|", QString::SkipEmptyParts);
+        englishPatterns=QString(QLatin1String("artist|band|singer|vocalist|musician")).split("|");
         break;
     case Album:
         patterns=i18nc("Search pattern for an album, separated by |", "album|score|soundtrack").split("|", QString::SkipEmptyParts);
+        englishPatterns=QString(QLatin1String("album|score|soundtrack")).split("|");
         break;
+    }
+
+    foreach (const QString &eng, englishPatterns) {
+        if (!patterns.contains(eng)) {
+            patterns.append(eng);
+        }
     }
 
     DBUG <<  "Titles" << titles;

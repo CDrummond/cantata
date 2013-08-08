@@ -134,6 +134,7 @@ CacheItem::CacheItem(const QString &title, const QString &d, const QStringList &
 
 CacheItem::~CacheItem()
 {
+    delete counter;
 }
 
 void CacheItem::update(int itemCount, int space)

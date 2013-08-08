@@ -58,6 +58,7 @@ private Q_SLOTS:
     void clearCache();
 
 private:
+    void clearDetails();
     void getTrackListing();
     void getDetails();
     void searchResponse(const QString &resp, const QString &lang);

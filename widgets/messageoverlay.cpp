@@ -123,6 +123,7 @@ void MessageOverlay::paintEvent(QPaintEvent *)
 void MessageOverlay::timeout()
 {
     setVisible(false);
+    text=QString();
 }
 
 bool MessageOverlay::eventFilter(QObject *o, QEvent *e)

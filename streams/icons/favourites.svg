@@ -12,8 +12,8 @@
 <stop offset="1" stop-color="#f74f4f"/>
 </linearGradient>
 <linearGradient gradientUnits="userSpaceOnUse" id="linearGradient45462" x2="0" y1="23.7595" y2="74.5653">
-<stop offset="0" stop-color="#ffe9e9"/>
-<stop offset="1" stop-color="#fe4242"/>
+<stop offset="0" stop-color="#deb9b9"/>
+<stop offset="1" stop-color="#de1212"/>
 </linearGradient>
 <radialGradient cx="64.5856" cy="64.2051" gradientTransform="matrix(-6.1526273e-7,.77699,-1.03492,0,131.03309,13.73394)" gradientUnits="userSpaceOnUse" id="radialGradient45434" r="47.3281">
 <stop offset="0" stop-color="#f20000"/>

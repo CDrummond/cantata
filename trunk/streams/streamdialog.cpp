@@ -74,7 +74,7 @@ StreamDialog::StreamDialog(QWidget *parent, bool addToPlayQueue)
 
     if (addToPlayQueue) {
         saveCombo->addItem(i18n("Just add to play queue, do not save"));
-        saveCombo->addItem(i18n("Add to play queue, and save to favourites"));
+        saveCombo->addItem(i18n("Add to play queue, and save to favorites"));
         saveCombo->setCurrentIndex(0);
         saveCombo->setEnabled(StreamsModel::self()->isFavoritesWritable());
         layout->setWidget(row, QFormLayout::LabelRole, urlLabel);

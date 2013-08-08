@@ -39,6 +39,7 @@
 #include <QProcess>
 #include <QMenu>
 #include <QTimer>
+#include <QCoreApplication>
 #include <QDebug>
 
 const QLatin1String AlbumView::constCacheDir("albums/");
@@ -102,12 +103,23 @@ void AlbumView::refresh()
 
 void AlbumView::update(const Song &song, bool force)
 {
-    if (song.isEmpty() || song.albumArtist().isEmpty() || song.album.isEmpty()) {
+    if (song.isStream() && !song.isCantataStream() && !song.isCdda() && song.album.isEmpty() && !song.name.isEmpty() && song.name!=currentSong.name) {
         currentSong=song;
-        engine->cancel();
-        clear();
+        clearDetails();
+        setHeader(song.name);
+        needToUpdate=false;
+        detailsReceived=All;
+        pic=createPicTag(QImage(), INSTALL_PREFIX"/share/"+QCoreApplication::applicationName()+"/streamicons/stream.png");
+        updateDetails();
         return;
     }
+
+    if (song.isEmpty() || song.albumArtist().isEmpty() || song.album.isEmpty()) {
+        currentSong=song;
+        clearDetails();
+        return;
+    }
+
     if (force || song.albumArtist()!=currentSong.albumArtist() || song.album!=currentSong.album) {
         currentSong=song;
         currentArtist=currentSong.basicArtist();
@@ -115,13 +127,7 @@ void AlbumView::update(const Song &song, bool force)
             needToUpdate=true;
             return;
         }
-        details.clear();
-        trackList.clear();
-        bio.clear();
-        pic.clear();
-        songs.clear();
-        clear();
-        detailsReceived=0;
+        clearDetails();
         setHeader(song.album.isEmpty() ? stdHeader : song.album);
         Covers::Image cImg=Covers::self()->requestImage(song);
         if (!cImg.img.isNull()) {
@@ -250,4 +256,16 @@ void AlbumView::updateDetails(bool preservePos)
 void AlbumView::clearCache()
 {
     Utils::clearOldCache(constCacheDir, ArtistView::constCacheAge);
+}
+
+void AlbumView::clearDetails()
+{
+    details.clear();
+    trackList.clear();
+    bio.clear();
+    pic.clear();
+    songs.clear();
+    clear();
+    engine->cancel();
+    detailsReceived=0;
 }

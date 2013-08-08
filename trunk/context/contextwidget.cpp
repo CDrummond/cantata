@@ -507,6 +507,15 @@ void ContextWidget::update(const Song &s)
     if (sng.isVariousArtists()) {
         sng.revertVariousArtists();
     }
+
+    if (sng.isStream() && !sng.isCantataStream() && !sng.isCdda() && sng.artist.isEmpty() && sng.albumartist.isEmpty() && sng.album.isEmpty()) {
+        int pos=sng.title.indexOf(QLatin1String(" - "));
+        if (pos>3) {
+            sng.artist=sng.title.left(pos);
+            sng.title=sng.title.mid(pos+3);
+        }
+    }
+
     artist->update(sng);
     album->update(sng);
     song->update(sng);

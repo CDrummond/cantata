@@ -129,7 +129,7 @@ void ArtistView::refresh()
 
 void ArtistView::update(const Song &s, bool force)
 {
-    if (s.isEmpty()) {
+    if (s.isEmpty() || s.artist.isEmpty()) {
         currentSong=s;
         engine->cancel();
         clear();

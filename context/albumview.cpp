@@ -102,7 +102,7 @@ void AlbumView::refresh()
 
 void AlbumView::update(const Song &song, bool force)
 {
-    if (song.isEmpty()) {
+    if (song.isEmpty() || song.albumArtist().isEmpty() || song.album.isEmpty()) {
         currentSong=song;
         engine->cancel();
         clear();

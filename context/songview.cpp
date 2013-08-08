@@ -235,7 +235,7 @@ void SongView::update(const Song &s, bool force)
         return;
     }
 
-    if (s.isEmpty()) {
+    if (s.isEmpty() || s.title.isEmpty() || s.artist.isEmpty()) {
         currentSong=s;
         clear();
         return;

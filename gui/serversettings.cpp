@@ -103,7 +103,7 @@ ServerSettings::ServerSettings(QWidget *p)
                                      "cantata-dynamic</code> application <b>must</b> already have been installed, "
                                      "and started, on the relevant host - Cantata itself cannot control the "
                                      "starting/stopping of this service. If this is not set, then Cantata will "
-                                     "use a per-user instance of the dynamzier to facilitate dynamic playlists.</i>"));
+                                     "use a per-user instance of the dynamizer to facilitate dynamic playlists.</i>"));
     #endif
 
     coverName->setToolTip(i18n("<p>Filename (without extension) to save downloaded covers as.<br/>If left blank 'cover' will be used.<br/><br/>"

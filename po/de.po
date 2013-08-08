@@ -2627,7 +2627,7 @@ msgid ""
 "function, the <code>cantata-dynamic</code> application <b>must</b> already "
 "have been installed, and started, on the relevant host - Cantata itself "
 "cannot control the starting/stopping of this service. If this is not set, "
-"then Cantata will use a per-user instance of the dynamzier to facilitate "
+"then Cantata will use a per-user instance of the dynamizer to facilitate "
 "dynamic playlists.</i>"
 msgstr ""
 "<i><b>NOTE:</b> 'Dynamizer port' ist nur relevant wenn Sie 'dynamische "
@@ -2999,7 +2999,7 @@ msgid "Sky.fm"
 msgstr "Sky.fm"
 
 #: models/streamsmodel.cpp:471
-msgid "Favourites"
+msgid "Favorites"
 msgstr "Favoriten"
 
 #: models/streamsmodel.cpp:474
@@ -3007,7 +3007,7 @@ msgid "Bookmark Category"
 msgstr "Kategorie zu Lesezeichen hinzufügen"
 
 #: models/streamsmodel.cpp:475
-msgid "Add Stream To Favourites"
+msgid "Add Stream To Favorites"
 msgstr "Füge Stream den Favoriten hinzu"
 
 #: models/streamsmodel.cpp:476
@@ -4001,7 +4001,7 @@ msgstr "Speichere heruntergeladene Songtexte ins Musikverzeichnis:"
 #. i18n: file: gui/initialsettingswizard.ui:747
 #. i18n: ectx: property (text), widget (QLabel, storeStreamsInMpdDirLabel)
 #: po/rc.cpp:349 po/rc.cpp:437 rc.cpp:349 rc.cpp:437
-msgid "Save list of favourite streams in music folder:"
+msgid "Save list of favorite streams in music folder:"
 msgstr "Speichere die Liste der favorisierten Streams ins Musikverzeichnis:"
 
 #. i18n: file: gui/filesettings.ui:93
@@ -4037,7 +4037,7 @@ msgstr ""
 #: po/rc.cpp:355 rc.cpp:355
 msgid ""
 "<i><b>NOTE:</b> If you change the location where streams are stored (i.e. "
-"you toggle the 'Save list of favourite streams in music folder' option), "
+"you toggle the 'Save list of favorite streams in music folder' option), "
 "then Cantata will only display streams that are stored in the relevant "
 "location. Therefore, before changing this setting, it is recommended that "
 "you export your existing streams. You can then re-import these to the new "
@@ -4983,7 +4983,7 @@ msgid "Just add to play queue, do not save"
 msgstr "Nur zur Warteschlange hinzufügen und nicht speichern"
 
 #: streams/streamdialog.cpp:77
-msgid "Add to play queue, and save to favourites"
+msgid "Add to play queue, and save to favorites"
 msgstr "Der Warteschlange hinzufügen und zu Favoriten hinzufügen"
 
 #: streams/streamdialog.cpp:94
@@ -5003,15 +5003,15 @@ msgid "Fetching %1"
 msgstr "Hole %1"
 
 #: streams/streamspage.cpp:61
-msgid "Import Streams Into Favourites"
+msgid "Import Streams Into Favorites"
 msgstr "Stream importieren und den Favoriten hinzufügen"
 
 #: streams/streamspage.cpp:62
-msgid "Export Favourite Streams"
+msgid "Export Favorite Streams"
 msgstr "Favorisierte Streams exportieren"
 
 #: streams/streamspage.cpp:63
-msgid "Add New Stream To Favourites"
+msgid "Add New Stream To Favorites"
 msgstr "Füge neuen Stream zu den Favoriten hinzu"
 
 #: streams/streamspage.cpp:123
@@ -5069,11 +5069,11 @@ msgid "Already bookmarked"
 msgstr "Bereits in den Lesezeichen"
 
 #: streams/streamspage.cpp:363
-msgid "Added to favourites"
+msgid "Added to favorites"
 msgstr "Zu Favoriten hinzugefügt"
 
 #: streams/streamspage.cpp:365
-msgid "Already in favourites"
+msgid "Already in favorites"
 msgstr "existiert bereits in Favoriten"
 
 #: streams/streamspage.cpp:390

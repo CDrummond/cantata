@@ -2639,7 +2639,7 @@ msgid ""
 "function, the <code>cantata-dynamic</code> application <b>must</b> already "
 "have been installed, and started, on the relevant host - Cantata itself "
 "cannot control the starting/stopping of this service. If this is not set, "
-"then Cantata will use a per-user instance of the dynamzier to facilitate "
+"then Cantata will use a per-user instance of the dynamizer to facilitate "
 "dynamic playlists.</i>"
 msgstr ""
 "<i><b>POZNÁMKA:</b> Přípojka dynamizátoru je podstatná, jen když chcete "
@@ -3013,7 +3013,7 @@ msgid "Sky.fm"
 msgstr "Sky.fm"
 
 #: models/streamsmodel.cpp:471
-msgid "Favourites"
+msgid "Favorites"
 msgstr "Oblíbené"
 
 #: models/streamsmodel.cpp:474
@@ -3021,7 +3021,7 @@ msgid "Bookmark Category"
 msgstr "Skupina záložky"
 
 #: models/streamsmodel.cpp:475
-msgid "Add Stream To Favourites"
+msgid "Add Stream To Favorites"
 msgstr "Přidat proud do oblíbených"
 
 #: models/streamsmodel.cpp:476
@@ -4015,7 +4015,7 @@ msgstr "Uložit stažená slova písně ve složce s hudbou:"
 #. i18n: file: gui/initialsettingswizard.ui:747
 #. i18n: ectx: property (text), widget (QLabel, storeStreamsInMpdDirLabel)
 #: po/rc.cpp:349 po/rc.cpp:437 rc.cpp:349 rc.cpp:437
-msgid "Save list of favourite streams in music folder:"
+msgid "Save list of favorite streams in music folder:"
 msgstr "Uložit seznam oblíbených proudů ve složce s hudbou:"
 
 #. i18n: file: gui/filesettings.ui:93
@@ -4051,7 +4051,7 @@ msgstr ""
 #: po/rc.cpp:355 rc.cpp:355
 msgid ""
 "<i><b>NOTE:</b> If you change the location where streams are stored (i.e. "
-"you toggle the 'Save list of favourite streams in music folder' option), "
+"you toggle the 'Save list of favorite streams in music folder' option), "
 "then Cantata will only display streams that are stored in the relevant "
 "location. Therefore, before changing this setting, it is recommended that "
 "you export your existing streams. You can then re-import these to the new "
@@ -4994,7 +4994,7 @@ msgid "Just add to play queue, do not save"
 msgstr "Pouze přidat do řady přehrávaných skladeb, neukládat"
 
 #: streams/streamdialog.cpp:77
-msgid "Add to play queue, and save to favourites"
+msgid "Add to play queue, and save to favorites"
 msgstr "Přidat do řady přehrávaných skladeb a uložit do oblíbených"
 
 #: streams/streamdialog.cpp:94
@@ -5014,15 +5014,15 @@ msgid "Fetching %1"
 msgstr "Natahuje se %1"
 
 #: streams/streamspage.cpp:61
-msgid "Import Streams Into Favourites"
+msgid "Import Streams Into Favorites"
 msgstr "Zavést proudy do oblíbených"
 
 #: streams/streamspage.cpp:62
-msgid "Export Favourite Streams"
+msgid "Export Favorite Streams"
 msgstr "Vyvést oblíbené proudy"
 
 #: streams/streamspage.cpp:63
-msgid "Add New Stream To Favourites"
+msgid "Add New Stream To Favorites"
 msgstr "Přidat nový proud do oblíbených"
 
 #: streams/streamspage.cpp:123
@@ -5081,11 +5081,11 @@ msgid "Already bookmarked"
 msgstr "Již opatřeno záložkou"
 
 #: streams/streamspage.cpp:363
-msgid "Added to favourites"
+msgid "Added to favorites"
 msgstr "Přidáno do oblíbených"
 
 #: streams/streamspage.cpp:365
-msgid "Already in favourites"
+msgid "Already in favorites"
 msgstr "Již v oblíbených"
 
 #: streams/streamspage.cpp:390

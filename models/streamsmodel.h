@@ -72,7 +72,7 @@ public:
         virtual bool isFavourites() const { return false; }
         virtual void removeCache();
         bool isTopLevel() const { return parent && 0==parent->parent; }
-        bool canReload() const { return !cacheName.isEmpty() || isTopLevel() || !url.isEmpty(); }
+        virtual bool canReload() const { return !cacheName.isEmpty() || isTopLevel() || !url.isEmpty(); }
         void removeBookmarks();
         void saveBookmarks();
         QList<Item *> loadBookmarks();
@@ -102,6 +102,7 @@ public:
             : CategoryItem(u, n, p, i) { }
         QList<Item *> loadXml(QIODevice *dev, bool importing=false);
         bool isFavourites() const { return true; }
+        bool canReload() const { return false; }
     };
 
     struct ListenLiveCategoryItem : public CategoryItem

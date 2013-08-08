@@ -2550,7 +2550,7 @@ msgid ""
 "function, the <code>cantata-dynamic</code> application <b>must</b> already "
 "have been installed, and started, on the relevant host - Cantata itself "
 "cannot control the starting/stopping of this service. If this is not set, "
-"then Cantata will use a per-user instance of the dynamzier to facilitate "
+"then Cantata will use a per-user instance of the dynamizer to facilitate "
 "dynamic playlists.</i>"
 msgstr ""
 "<i><b>참고:</b> '활동 포트'는 시스템 전반 또는 로컬에서가 아닌 칸타타 활동을 "
@@ -2914,7 +2914,7 @@ msgid "Sky.fm"
 msgstr "Sky.fm"
 
 #: models/streamsmodel.cpp:471
-msgid "Favourites"
+msgid "Favorites"
 msgstr "즐겨찾기"
 
 #: models/streamsmodel.cpp:474
@@ -2922,7 +2922,7 @@ msgid "Bookmark Category"
 msgstr "책갈피 카테고리"
 
 #: models/streamsmodel.cpp:475
-msgid "Add Stream To Favourites"
+msgid "Add Stream To Favorites"
 msgstr "스트림을 즐겨찾기에 추가"
 
 #: models/streamsmodel.cpp:476
@@ -3902,7 +3902,7 @@ msgstr "음악 폴더에 내려받은 가사 저장:"
 #. i18n: file: gui/initialsettingswizard.ui:747
 #. i18n: ectx: property (text), widget (QLabel, storeStreamsInMpdDirLabel)
 #: po/rc.cpp:349 po/rc.cpp:437 rc.cpp:349 rc.cpp:437
-msgid "Save list of favourite streams in music folder:"
+msgid "Save list of favorite streams in music folder:"
 msgstr "음악 폴더에 즐겨찾기 스트림 항목 저장:"
 
 #. i18n: file: gui/filesettings.ui:93
@@ -3935,7 +3935,7 @@ msgstr ""
 #: po/rc.cpp:355 rc.cpp:355
 msgid ""
 "<i><b>NOTE:</b> If you change the location where streams are stored (i.e. "
-"you toggle the 'Save list of favourite streams in music folder' option), "
+"you toggle the 'Save list of favorite streams in music folder' option), "
 "then Cantata will only display streams that are stored in the relevant "
 "location. Therefore, before changing this setting, it is recommended that "
 "you export your existing streams. You can then re-import these to the new "
@@ -4851,7 +4851,7 @@ msgid "Just add to play queue, do not save"
 msgstr "연주순서에 추가하고 저장하지 않음"
 
 #: streams/streamdialog.cpp:77
-msgid "Add to play queue, and save to favourites"
+msgid "Add to play queue, and save to favorites"
 msgstr "연주순서에 추가하고 즐겨찾기에 저장"
 
 #: streams/streamdialog.cpp:94
@@ -4871,15 +4871,15 @@ msgid "Fetching %1"
 msgstr "%1 가져옴"
 
 #: streams/streamspage.cpp:61
-msgid "Import Streams Into Favourites"
+msgid "Import Streams Into Favorites"
 msgstr "스트림을 즐겨찾기로 가져오기"
 
 #: streams/streamspage.cpp:62
-msgid "Export Favourite Streams"
+msgid "Export Favorite Streams"
 msgstr "즐겨찾기 스트림을 내보내기"
 
 #: streams/streamspage.cpp:63
-msgid "Add New Stream To Favourites"
+msgid "Add New Stream To Favorites"
 msgstr "새로운 스트림을 즐겨찾기에 추가"
 
 #: streams/streamspage.cpp:123
@@ -4936,11 +4936,11 @@ msgid "Already bookmarked"
 msgstr "책갈피 있음"
 
 #: streams/streamspage.cpp:363
-msgid "Added to favourites"
+msgid "Added to favorites"
 msgstr "즐겨찾기에 추가"
 
 #: streams/streamspage.cpp:365
-msgid "Already in favourites"
+msgid "Already in favorites"
 msgstr "즐겨찾기에 있음"
 
 #: streams/streamspage.cpp:390

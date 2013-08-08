@@ -58,9 +58,9 @@ StreamsPage::StreamsPage(QWidget *p)
     , proxy(&streamsProxy)
 {
     setupUi(this);
-    importAction = ActionCollection::get()->createAction("importstreams", i18n("Import Streams Into Favourites"), "document-import");
-    exportAction = ActionCollection::get()->createAction("exportstreams", i18n("Export Favourite Streams"), "document-export");
-    addAction = ActionCollection::get()->createAction("addstream", i18n("Add New Stream To Favourites"), Icons::self()->addRadioStreamIcon);
+    importAction = ActionCollection::get()->createAction("importstreams", i18n("Import Streams Into Favorites"), "document-import");
+    exportAction = ActionCollection::get()->createAction("exportstreams", i18n("Export Favorite Streams"), "document-export");
+    addAction = ActionCollection::get()->createAction("addstream", i18n("Add New Stream To Favorites"), Icons::self()->addRadioStreamIcon);
     editAction = ActionCollection::get()->createAction("editstream", i18n("Edit"), Icons::self()->editIcon);
     replacePlayQueue->setDefaultAction(StdActions::self()->replacePlayQueueAction);
 //     connect(view, SIGNAL(itemsSelected(bool)), addToPlaylist, SLOT(setEnabled(bool)));
@@ -360,9 +360,9 @@ void StreamsPage::addToFavourites()
     }
 
     if (added) {
-        itemView()->showMessage(i18n("Added to favourites"), constMsgDisplayTime);
+        itemView()->showMessage(i18n("Added to favorites"), constMsgDisplayTime);
     } else {
-        itemView()->showMessage(i18n("Already in favourites"), constMsgDisplayTime);
+        itemView()->showMessage(i18n("Already in favorites"), constMsgDisplayTime);
     }
 }
 

@@ -2469,7 +2469,7 @@ msgid ""
 "function, the <code>cantata-dynamic</code> application <b>must</b> already "
 "have been installed, and started, on the relevant host - Cantata itself "
 "cannot control the starting/stopping of this service. If this is not set, "
-"then Cantata will use a per-user instance of the dynamzier to facilitate "
+"then Cantata will use a per-user instance of the dynamizer to facilitate "
 "dynamic playlists.</i>"
 msgstr ""
 "<i><b>注意:</b> '动态端口'仅在系统级别和非本地使用的时候可用 <code>cantata-动"
@@ -2839,7 +2839,7 @@ msgid "Sky.fm"
 msgstr ""
 
 #: models/streamsmodel.cpp:471
-msgid "Favourites"
+msgid "Favorites"
 msgstr ""
 
 #: models/streamsmodel.cpp:474
@@ -2848,7 +2848,7 @@ msgid "Bookmark Category"
 msgstr "添加类别"
 
 #: models/streamsmodel.cpp:475
-msgid "Add Stream To Favourites"
+msgid "Add Stream To Favorites"
 msgstr ""
 
 #: models/streamsmodel.cpp:476
@@ -3820,7 +3820,7 @@ msgstr "保存下载的歌词到音乐文件夹:"
 #. i18n: ectx: property (text), widget (QLabel, storeStreamsInMpdDirLabel)
 #: po/rc.cpp:349 po/rc.cpp:437 rc.cpp:349 rc.cpp:437
 #, fuzzy
-msgid "Save list of favourite streams in music folder:"
+msgid "Save list of favorite streams in music folder:"
 msgstr "保存流媒体列表到音乐文件夹:"
 
 #. i18n: file: gui/filesettings.ui:93
@@ -3848,7 +3848,7 @@ msgstr ""
 #: po/rc.cpp:355 rc.cpp:355
 msgid ""
 "<i><b>NOTE:</b> If you change the location where streams are stored (i.e. "
-"you toggle the 'Save list of favourite streams in music folder' option), "
+"you toggle the 'Save list of favorite streams in music folder' option), "
 "then Cantata will only display streams that are stored in the relevant "
 "location. Therefore, before changing this setting, it is recommended that "
 "you export your existing streams. You can then re-import these to the new "
@@ -4726,7 +4726,7 @@ msgid "Just add to play queue, do not save"
 msgstr ""
 
 #: streams/streamdialog.cpp:77
-msgid "Add to play queue, and save to favourites"
+msgid "Add to play queue, and save to favorites"
 msgstr ""
 
 #: streams/streamdialog.cpp:94
@@ -4748,16 +4748,16 @@ msgstr "正在保存 %1"
 
 #: streams/streamspage.cpp:61
 #, fuzzy
-msgid "Import Streams Into Favourites"
+msgid "Import Streams Into Favorites"
 msgstr "导入流媒体"
 
 #: streams/streamspage.cpp:62
 #, fuzzy
-msgid "Export Favourite Streams"
+msgid "Export Favorite Streams"
 msgstr "导出流媒体"
 
 #: streams/streamspage.cpp:63
-msgid "Add New Stream To Favourites"
+msgid "Add New Stream To Favorites"
 msgstr ""
 
 #: streams/streamspage.cpp:123
@@ -4816,12 +4816,12 @@ msgid "Already bookmarked"
 msgstr ""
 
 #: streams/streamspage.cpp:363
-msgid "Added to favourites"
+msgid "Added to favorites"
 msgstr ""
 
 #: streams/streamspage.cpp:365
 #, fuzzy
-msgid "Already in favourites"
+msgid "Already in favorites"
 msgstr "已经存在"
 
 #: streams/streamspage.cpp:390

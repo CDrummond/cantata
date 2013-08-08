@@ -96,9 +96,15 @@ void MessageOverlay::paintEvent(QPaintEvent *)
     QPainter p(this);
     QRect r(rect());
     QRectF rf(r.x()+0.5, r.y()+0.5, r.width()-1, r.height()-1);
-    QColor col=palette().color(QPalette::Highlight);
+    QColor borderCol=palette().color(QPalette::Highlight).darker(120);
+    QColor col=palette().color(QPalette::Window);
+    QPainterPath path=buildPath(rf, r.height()/4.0);
+    borderCol.setAlphaF(0.9);
     col.setAlphaF(0.85);
-    p.fillPath(buildPath(rf, r.height()/4.0), col);
+    p.setRenderHint(QPainter::Antialiasing, true);
+    p.fillPath(path, col);
+    p.setPen(QPen(borderCol, qMax(2, r.height()/16)));
+    p.drawPath(path);
 
     int pad=r.height()/4;
     rf.adjust(pad, pad, cancelButton->isVisible() ? -((pad*2)+cancelButton->width()) : -pad, -pad);

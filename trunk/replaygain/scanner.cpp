@@ -73,17 +73,33 @@ Scanner::Data Scanner::global(const QList<Scanner *> &scanners)
     }
 }
 
-Scanner::Scanner(int i)
-    : idx(i)
-    , state(0)
-    , input(0)
+#ifdef EBUR128_USE_SPEEX_RESAMPLER
+static int constEbur128Mode=EBUR128_MODE_M|EBUR128_MODE_I|EBUR128_MODE_TRUE_PEAK);
+#else
+static int constEbur128Mode=EBUR128_MODE_M|EBUR128_MODE_I|EBUR128_MODE_SAMPLE_PEAK;
+#endif
+
+void Scanner::init()
 {
+    static bool doneInit=false;
+    if (doneInit) {
+        return;
+    }
+    doneInit=true;
     #ifdef MPG123_FOUND
     Mpg123Input::init();
     #endif
     #ifdef FFMPEG_FOUND
     FfmpegInput::init();
     #endif
+    ebur128_init_static(constEbur128Mode);
+}
+
+Scanner::Scanner(int i)
+    : idx(i)
+    , state(0)
+    , input(0)
+{
 }
 
 Scanner::~Scanner()
@@ -134,11 +150,9 @@ void Scanner::run()
         setFinishedStatus(false);
         return;
     }
-//     #ifdef EBUR128_USE_SPEEX_RESAMPLER
-//     state=ebur128_init(input->channels(), input->sampleRate(), EBUR128_MODE_M|EBUR128_MODE_I|EBUR128_MODE_TRUE_PEAK);
-//     #else
-    state=ebur128_init(input->channels(), input->sampleRate(), EBUR128_MODE_M|EBUR128_MODE_I|EBUR128_MODE_SAMPLE_PEAK);
-//     #endif
+
+    state=ebur128_init(input->channels(), input->sampleRate(), constEbur128Mode);
+
     int *channelMap=new int [state->channels];
     if (input->setChannelMap(channelMap)) {
         for (unsigned int i = 0; i < state->channels; ++i) {

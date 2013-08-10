@@ -232,6 +232,23 @@ static void ebur128_destroy_resampler(ebur128_state* st) {
 }
 #endif
 
+void ebur128_init_static(int mode)
+{
+    /* initialize static constants */
+    relative_gate_factor = pow(10.0, relative_gate / 10.0);
+    minus_twenty_decibels = pow(10.0, -20.0 / 10.0);
+    histogram_energy_boundaries[0] = pow(10.0, (-70.0 + 0.691) / 10.0);
+    if (mode & EBUR128_MODE_HISTOGRAM) {
+      unsigned int i;
+      for (i = 0; i < 1000; ++i) {
+        histogram_energies[i] = pow(10.0, ((double) i / 10.0 - 69.95 + 0.691) / 10.0);
+      }
+      for (i = 1; i < 1001; ++i) {
+        histogram_energy_boundaries[i] = pow(10.0, ((double) i / 10.0 - 70.0 + 0.691) / 10.0);
+      }
+    }
+}
+
 ebur128_state* ebur128_init(unsigned int channels,
                             unsigned long samplerate,
                             int mode) {
@@ -307,6 +324,7 @@ ebur128_state* ebur128_init(unsigned int channels,
   /* start at the beginning of the buffer */
   st->d->audio_data_index = 0;
 
+#if 0
   /* initialize static constants */
   relative_gate_factor = pow(10.0, relative_gate / 10.0);
   minus_twenty_decibels = pow(10.0, -20.0 / 10.0);
@@ -319,7 +337,7 @@ ebur128_state* ebur128_init(unsigned int channels,
       histogram_energy_boundaries[i] = pow(10.0, ((double) i / 10.0 - 70.0 + 0.691) / 10.0);
     }
   }
-
+#endif
   return st;
 
 free_short_term_block_energy_histogram:

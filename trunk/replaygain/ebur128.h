@@ -73,6 +73,8 @@ typedef struct {
   struct ebur128_state_internal* d;   /**< Internal state. */
 } ebur128_state;
 
+void ebur128_init_static(int mode);
+
 /** \brief Initialize library state.
  *
  *  @param channels the number of channels.

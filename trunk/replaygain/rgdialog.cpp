@@ -223,6 +223,7 @@ void RgDialog::show(const QList<Song> &songs, const QString &udi, bool autoScan)
         albums[createAlbumName(s)].tracks.append(i++);
         new QTreeWidgetItem(view, QStringList() << s.albumArtist() << s.album << s.title);
     }
+    Scanner::init();
     Dialog::show();
     startReadingTags();
 }

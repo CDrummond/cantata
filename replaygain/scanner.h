@@ -51,6 +51,8 @@ public:
     static double clamp(double v);
     static double reference(double v);
 
+    static void init();
+
     Scanner(int i);
     ~Scanner();
 

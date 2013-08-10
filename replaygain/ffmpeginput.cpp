@@ -328,6 +328,13 @@ static int decodeAudio(FfmpegInput::Handle *handle, int *frame_size_ptr)
         avcodec_get_frame_defaults(handle->frame);
     }
 
+    #if LIBAVFORMAT_VERSION_INT < AV_VERSION_INT(55, 0, 0)
+    if (handle->codecContext->get_buffer != avcodec_default_get_buffer) {
+        handle->codecContext->get_buffer = avcodec_default_get_buffer;
+        handle->codecContext->release_buffer = avcodec_default_release_buffer;
+    }
+    #endif
+
     ret = avcodec_decode_audio4(handle->codecContext, handle->frame, &got_frame, &handle->packet);
 
     if (ret >= 0 && got_frame) {

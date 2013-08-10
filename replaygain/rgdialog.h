@@ -24,6 +24,7 @@
 #ifndef _RGDIALOG_H_
 #define _RGDIALOG_H_
 
+#include <QFont>
 #include "dialog.h"
 #include "scanner.h"
 #include "song.h"
@@ -125,6 +126,8 @@ private:
     bool autoScanTags;
 
     QSet<int> removedItems;
+
+    QFont italic;
 };
 
 #endif

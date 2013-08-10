@@ -167,6 +167,9 @@ RgDialog::RgDialog(QWidget *parent)
     connect(combo, SIGNAL(currentIndexChanged(int)), SLOT(toggleDisplay()));
     connect(view, SIGNAL(itemSelectionChanged()), SLOT(controlRemoveAct()));
     connect(removeAct, SIGNAL(triggered(bool)), SLOT(removeItems()));
+
+    italic=font();
+    italic.setItalic(true);
 }
 
 RgDialog::~RgDialog()
@@ -528,31 +531,30 @@ void RgDialog::scannerDone()
             track.data=s->results();
             item->setText(COL_TRACKGAIN, i18n("%1 dB", formatNumber(Scanner::reference(track.data.loudness), 2)));
             item->setText(COL_TRACKPEAK, formatNumber(track.data.peakValue(), 6));
-            QFont f(font());
-            f.setItalic(true);
+
             if (origTags.contains(s->index())) {
                 Tags::ReplayGain t=origTags[s->index()];
                 bool diff=false;
                 if (!Utils::equal(t.trackGain, Scanner::reference(track.data.loudness), 0.01)) {
-                    item->setFont(COL_TRACKGAIN, f);
+                    item->setFont(COL_TRACKGAIN, italic);
                     diff=true;
                 }
                 if (!Utils::equal(t.trackPeak, track.data.peakValue(), 0.000001)) {
-                    item->setFont(COL_TRACKPEAK, f);
+                    item->setFont(COL_TRACKPEAK, italic);
                     diff=true;
                 }
                 if (diff) {
-                    item->setFont(COL_ARTIST, f);
-                    item->setFont(COL_TITLE, f);
+                    item->setFont(COL_ARTIST, italic);
+                    item->setFont(COL_TITLE, italic);
                     needToSave.insert(s->index());
                 } else {
                     needToSave.remove(s->index());
                 }
             } else {
-                item->setFont(COL_ARTIST, f);
-                item->setFont(COL_TITLE, f);
-                item->setFont(COL_TRACKGAIN, f);
-                item->setFont(COL_TRACKPEAK, f);
+                item->setFont(COL_ARTIST, italic);
+                item->setFont(COL_TITLE, italic);
+                item->setFont(COL_TRACKGAIN, italic);
+                item->setFont(COL_TRACKPEAK, italic);
                 needToSave.insert(s->index());
             }
         } else {
@@ -576,8 +578,6 @@ void RgDialog::scannerDone()
                 }
 
                 if (as.count()) {
-                    QFont f(font());
-                    f.setItalic(true);
                     (*a).data=Scanner::global(as);
                     foreach (int idx, (*a).tracks) {
                         QTreeWidgetItem *item=view->topLevelItem(idx);
@@ -588,25 +588,25 @@ void RgDialog::scannerDone()
                             Tags::ReplayGain t=origTags[idx];
                             bool diff=false;
                             if (!Utils::equal(t.albumGain, Scanner::reference((*a).data.loudness), 0.01)) {
-                                item->setFont(COL_ALBUMGAIN, f);
+                                item->setFont(COL_ALBUMGAIN, italic);
                                 needToSave.insert(idx);
                                 diff=true;
                             }
                             if (!Utils::equal(t.albumPeak, (*a).data.peak, 0.000001)) {
-                                item->setFont(COL_ALBUMPEAK, f);
+                                item->setFont(COL_ALBUMPEAK, italic);
                                 needToSave.insert(idx);
                                 diff=true;
                             }
 
                             if (diff) {
-                                item->setFont(COL_ARTIST, f);
-                                item->setFont(COL_ALBUM, f);
+                                item->setFont(COL_ARTIST, italic);
+                                item->setFont(COL_ALBUM, italic);
                             }
                         } else {
-                            item->setFont(COL_ARTIST, f);
-                            item->setFont(COL_ALBUM, f);
-                            item->setFont(COL_ALBUMGAIN, f);
-                            item->setFont(COL_ALBUMPEAK, f);
+                            item->setFont(COL_ARTIST, italic);
+                            item->setFont(COL_ALBUM, italic);
+                            item->setFont(COL_ALBUMGAIN, italic);
+                            item->setFont(COL_ALBUMPEAK, italic);
                         }
                     }
                 }

@@ -21,32 +21,26 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef _TAGREADER_H_
-#define _TAGREADER_H_
+#include <QCoreApplication>
+#include <QFile>
+#include <QTimer>
+#include <stdio.h>
+#include "replaygain.h"
 
-#include "jobcontroller.h"
-#include "song.h"
-#include "tags.h"
-
-class TagReader : public StandardJob
+int main(int argc, char *argv[])
 {
-    Q_OBJECT
+    if (argc<2) {
+        printf("Usage: %s <file 1..N>\n", argv[0]);
+        return -1;
+    }
 
-public:
-    TagReader() { }
-    virtual ~TagReader() { }
+    QStringList fileNames;
+    for (int i=0; i<argc-1; ++i) {
+        fileNames.append(QFile::decodeName(argv[i+1]));
+    }
 
-    void setDetails(const QList<Song> &s, const QString &dir);
-
-private:
-    void run();
-
-Q_SIGNALS:
-    void progress(int index, Tags::ReplayGain);
-
-private:
-    QList<Song> songs;
-    QString baseDir;
-};
-
-#endif
+    QCoreApplication app(argc, argv);
+    ReplayGain *rg=new ReplayGain(fileNames);
+    QTimer::singleShot(0, rg, SLOT(scan()));
+    return app.exec();
+}

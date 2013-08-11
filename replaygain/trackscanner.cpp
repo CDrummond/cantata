@@ -21,7 +21,7 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include "scanner.h"
+#include "trackscanner.h"
 #include "config.h"
 #ifdef MPG123_FOUND
 #include "mpg123input.h"
@@ -32,7 +32,7 @@
 
 #define RG_REFERENCE_LEVEL -18.0
 
-double Scanner::clamp(double v)
+double TrackScanner::clamp(double v)
 {
     return v < -51.0 ? -51.0
                       : v > 51.0
@@ -40,12 +40,12 @@ double Scanner::clamp(double v)
                         : v;
 }
 
-double Scanner::reference(double v)
+double TrackScanner::reference(double v)
 {
     return clamp(RG_REFERENCE_LEVEL-v);
 }
 
-Scanner::Data Scanner::global(const QList<Scanner *> &scanners)
+TrackScanner::Data TrackScanner::global(const QList<TrackScanner *> &scanners)
 {
     Data d;
     if (scanners.count()<1) {
@@ -55,7 +55,7 @@ Scanner::Data Scanner::global(const QList<Scanner *> &scanners)
     } else {
         ebur128_state **states = new ebur128_state * [scanners.count()];
         for (int i=0; i<scanners.count(); ++i) {
-            Scanner *s=scanners.at(i);
+            TrackScanner *s=scanners.at(i);
             states[i]=s->state;
             if (s->results().peak>d.peak) {
                 d.peak=s->results().peak;
@@ -79,7 +79,7 @@ static int constEbur128Mode=EBUR128_MODE_M|EBUR128_MODE_I|EBUR128_MODE_TRUE_PEAK
 static int constEbur128Mode=EBUR128_MODE_M|EBUR128_MODE_I|EBUR128_MODE_SAMPLE_PEAK;
 #endif
 
-void Scanner::init()
+void TrackScanner::init()
 {
     static bool doneInit=false;
     if (doneInit) {
@@ -95,14 +95,14 @@ void Scanner::init()
     ebur128_init_static(constEbur128Mode);
 }
 
-Scanner::Scanner(int i)
+TrackScanner::TrackScanner(int i)
     : idx(i)
     , state(0)
     , input(0)
 {
 }
 
-Scanner::~Scanner()
+TrackScanner::~TrackScanner()
 {
     delete input;
     if (state) {
@@ -111,12 +111,12 @@ Scanner::~Scanner()
     }
 }
 
-void Scanner::setFile(const QString &fileName)
+void TrackScanner::setFile(const QString &fileName)
 {
     file=fileName;
 }
 
-void Scanner::run()
+void TrackScanner::run()
 {
     bool ffmpegIsFloat=false;
     #ifdef FFMPEG_FOUND
@@ -216,7 +216,7 @@ void Scanner::run()
     setFinishedStatus(true);
 }
 
-void Scanner::setFinishedStatus(bool f)
+void TrackScanner::setFinishedStatus(bool f)
 {
     delete input;
     input=0;

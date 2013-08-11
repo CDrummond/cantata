@@ -121,6 +121,8 @@
     remaining.
 79. Use tooltip to display position that will be jumped to if mouse is pressed
     on time slider.
+80. Place replaygain analysis within a separate app. Saves Cantata itself
+    needing to link to ffmpeg/mpg123
 
 1.0.3
 -----

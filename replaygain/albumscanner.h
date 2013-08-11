@@ -21,74 +21,45 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef JOB_CONTROLLER
-#define JOB_CONTROLLER
+#ifndef _ALBUM_SCANNER_H_
+#define _ALBUM_SCANNER_H_
 
-#include <QObject>
+#include "jobcontroller.h"
+#include <QMap>
+#include <QStringList>
 
-class Thread;
 class QProcess;
 
-class Job : public QObject
+class AlbumScanner : public Job
 {
     Q_OBJECT
+
 public:
-    Job();
-    virtual ~Job() { }
+    struct Values {
+        Values() : ok(false) { }
+        double gain;
+        double peak;
+        bool ok;
+    };
 
-    virtual void requestAbort() { abortRequested=true; }
-    virtual void start()=0;
-    virtual void stop()=0;
-    void setFinished(bool f);
-    bool success() { return finished; }
-
-Q_SIGNALS:
-    void exec();
-    void progress(int);
-    void done();
-
-protected:
-    bool abortRequested;
-    bool finished;
-};
-
-class StandardJob : public Job
-{
-    Q_OBJECT
-public:
-    StandardJob();
-    virtual ~StandardJob() { stop(); }
-
+    AlbumScanner(const QMap<int, QString> &files);
+    ~AlbumScanner();
     virtual void start();
     virtual void stop();
+    const Values & albumValues() const { return album; }
+    const QMap<int, Values> trackValues() const { return tracks; }
 
 private Q_SLOTS:
-    virtual void run() =0;
+    void read();
+    void procFinished();
 
 private:
-    Thread *thread;
-};
-
-class JobController : public QObject
-{
-    Q_OBJECT
-public:
-    static JobController * self();
-    JobController();
-
-    void setMaxActive(int m);
-    void add(Job *job);
-    void finishedWith(Job *job);
-    void startJobs();
-    void cancel();
-
-private Q_SLOTS:
-    void jobDone();
-
-private:
-    int maxActive;
-    QList<Job *> active;
-    QList<Job *> jobs;
+    QProcess *proc;
+    Values album;
+    QMap<int, Values> tracks;
+    QMap<int, int> trackIndexMap;
+    QStringList fileNames;
+    const char *oldLocale;
 };
 
 #endif

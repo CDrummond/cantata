@@ -21,32 +21,55 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef _TAGREADER_H_
-#define _TAGREADER_H_
+#ifndef _SCANNER_H_
+#define _SCANNER_H_
 
 #include "jobcontroller.h"
-#include "song.h"
-#include "tags.h"
+#include "ebur128.h"
 
-class TagReader : public StandardJob
+class Input;
+
+class TrackScanner : public StandardJob
 {
     Q_OBJECT
 
 public:
-    TagReader() { }
-    virtual ~TagReader() { }
+    struct Data
+    {
+        Data()
+            : loudness(0.0)
+            , peak(0.0)
+            , truePeak(0.0) {
+        }
+        double peakValue() const { return truePeak>peak ? truePeak : peak; }
+        double loudness;
+        double peak;
+        double truePeak;
+    };
 
-    void setDetails(const QList<Song> &s, const QString &dir);
+    static Data global(const QList<TrackScanner *> &scanners);
+    static double clamp(double v);
+    static double reference(double v);
+
+    static void init();
+
+    TrackScanner(int i);
+    ~TrackScanner();
+
+    void setFile(const QString &fileName);
+    const Data & results() const { return data; }
+    int index() const { return idx; }
 
 private:
     void run();
-
-Q_SIGNALS:
-    void progress(int index, Tags::ReplayGain);
+    void setFinishedStatus(bool f);
 
 private:
-    QList<Song> songs;
-    QString baseDir;
+    int idx;
+    ebur128_state *state;
+    Data data;
+    QString file;
+    Input *input;
 };
 
 #endif

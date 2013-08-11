@@ -28,21 +28,24 @@
 K_GLOBAL_STATIC(JobController, instance)
 #endif
 
-static const int constMaxActive=8;
-
 Job::Job()
     : abortRequested(false)
     , finished(false)
-    , thread(0)
 {
 }
 
-Job::~Job()
+void Job::setFinished(bool f)
 {
-    stop();
+    finished=f;
+    emit done();
 }
 
-void Job::start()
+StandardJob::StandardJob()
+    : thread(0)
+{
+}
+
+void StandardJob::start()
 {
     if (!thread) {
         thread=new Thread(metaObject()->className());
@@ -53,7 +56,7 @@ void Job::start()
     }
 }
 
-void Job::stop()
+void StandardJob::stop()
 {
     requestAbort();
     if (thread) {
@@ -61,12 +64,6 @@ void Job::stop()
         thread=0;
     }
     deleteLater();
-}
-
-void Job::setFinished(bool f)
-{
-    finished=f;
-    emit done();
 }
 
 JobController * JobController::self()
@@ -80,6 +77,16 @@ JobController * JobController::self()
     }
     return instance;
     #endif
+}
+
+JobController::JobController()
+    : maxActive(1)
+{
+}
+
+void JobController::setMaxActive(int m)
+{
+    maxActive=m;
 }
 
 void JobController::add(Job *job)
@@ -97,7 +104,7 @@ void JobController::finishedWith(Job *job)
 
 void JobController::startJobs()
 {
-    while (active.count()<constMaxActive && !jobs.isEmpty()) {
+    while (active.count()<maxActive && !jobs.isEmpty()) {
         Job *job=jobs.takeAt(0);
         active.append(job);
         connect(job, SIGNAL(done()), this, SLOT(jobDone()), Qt::QueuedConnection);
@@ -126,4 +133,3 @@ void JobController::jobDone()
     }
     startJobs();
 }
-

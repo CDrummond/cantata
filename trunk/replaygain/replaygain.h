@@ -21,55 +21,51 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef _SCANNER_H_
-#define _SCANNER_H_
+#ifndef _REPLAYGAIN_H_
+#define _REPLAYGAIN_H_
 
-#include "jobcontroller.h"
-#include "ebur128.h"
+#include <QObject>
+#include <QList>
+#include <QMap>
+#include <QStringList>
+#include "trackscanner.h"
+#include "config.h"
 
-class Input;
-
-class Scanner : public Job
+class ReplayGain : public QObject
 {
     Q_OBJECT
 
 public:
-    struct Data
-    {
-        Data()
-            : loudness(0.0)
-            , peak(0.0)
-            , truePeak(0.0) {
-        }
-        double peakValue() const { return truePeak>peak ? truePeak : peak; }
-        double loudness;
-        double peak;
-        double truePeak;
+    ReplayGain(const QStringList &fileNames);
+    virtual ~ReplayGain();
+
+public Q_SLOTS:
+    void scan();
+
+private:
+    void createScanner(int index);
+    void clearScanners();
+    void showProgress();
+    void showResults();
+
+private Q_SLOTS:
+    void scannerProgress(int p);
+    void scannerDone();
+
+private:
+    struct Track {
+        Track() : progress(0), finished(false), success(false) { }
+        unsigned char progress;
+        bool finished : 1;
+        bool success : 1;
     };
 
-    static Data global(const QList<Scanner *> &scanners);
-    static double clamp(double v);
-    static double reference(double v);
-
-    static void init();
-
-    Scanner(int i);
-    ~Scanner();
-
-    void setFile(const QString &fileName);
-    const Data & results() const { return data; }
-    int index() const { return idx; }
-
-private:
-    void run();
-    void setFinishedStatus(bool f);
-
-private:
-    int idx;
-    ebur128_state *state;
-    Data data;
-    QString file;
-    Input *input;
+    QStringList files;
+    QMap<int, TrackScanner *> scanners;
+    QList<int> toScan;
+    QMap<int, Track> tracks;
+    int lastProgress;
+    int totalScanned;
 };
 
 #endif

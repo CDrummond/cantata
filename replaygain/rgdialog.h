@@ -26,7 +26,7 @@
 
 #include <QFont>
 #include "dialog.h"
-#include "scanner.h"
+#include "albumscanner.h"
 #include "song.h"
 #include "tags.h"
 #include "config.h"
@@ -61,7 +61,7 @@ private:
     void slotButtonClicked(int button);
     void startScanning();
     void stopScanning();
-    void createScanner(int index);
+    void createScanner(const QList<int> &indexes);
     void clearScanners();
     void startReadingTags();
     void stopReadingTags();
@@ -89,20 +89,6 @@ private:
         State_Saving
     };
 
-    struct Album {
-        QList<int> tracks;
-        QSet<int> scannedTracks;
-        Scanner::Data data;
-    };
-
-    struct Track {
-        Track() : progress(0), finished(false), success(false) { }
-        unsigned char progress;
-        bool finished : 1;
-        bool success : 1;
-        Scanner::Data data;
-    };
-
     QComboBox *combo;
     QTreeWidget *view;
     QLabel *statusLabel;
@@ -112,15 +98,11 @@ private:
     QString base;
     QList<Song> origSongs;
 
-    QMap<int, Scanner *> scanners;
-    QList<int> toScan;
+    QMap<AlbumScanner *, int> scanners;
     int totalToScan;
 
-    QMap<QString, Album> albums;
-    QMap<int, Track> tracks;
-
     QMap<int, Tags::ReplayGain> origTags;
-    QSet<int> needToSave;
+    QMap<int, Tags::ReplayGain> tagsToSave;
     TagReader *tagReader;
 
     bool autoScanTags;

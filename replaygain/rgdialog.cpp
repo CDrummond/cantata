@@ -297,6 +297,7 @@ void RgDialog::startScanning()
     state=State_ScanningFiles;
     enableButton(Ok, false);
     enableButton(User1, false);
+    progress->setValue(0);
     progress->setVisible(true);
     statusLabel->setText(i18n("Scanning tracks..."));
     statusLabel->setVisible(true);

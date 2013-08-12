@@ -64,9 +64,6 @@ public:
     Icon searchIcon;
     Icon clearListIcon;
     Icon menuIcon;
-    Icon jamendoIcon;
-    Icon magnatuneIcon;
-    Icon soundCloudIcon;
     Icon filesIcon;
     Icon cancelIcon;
     Icon importIcon;

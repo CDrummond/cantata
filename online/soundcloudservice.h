@@ -37,7 +37,6 @@ public:
     SoundCloudService(MusicModel *m);
     ~SoundCloudService() { cancelAll(); }
 
-    Icon icon() const { return Icons::self()->soundCloudIcon; }
     Song fixPath(const Song &orig, bool) const;
     void loadConfig() { }
     void saveConfig() { }

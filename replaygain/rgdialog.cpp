@@ -529,6 +529,7 @@ void RgDialog::scannerDone()
             if (it.value().ok && origTags.contains(it.key())) {
                 Tags::ReplayGain t=origTags[it.key()];
                 bool diff=false;
+                bool diffAlbum=false;
                 if (!Utils::equal(t.trackGain, updatedTags.trackGain, 0.01)) {
                     item->setFont(COL_TRACKGAIN, italic);
                     diff=true;
@@ -539,24 +540,32 @@ void RgDialog::scannerDone()
                 }
                 if (!Utils::equal(t.albumGain, updatedTags.albumGain, 0.01)) {
                     item->setFont(COL_ALBUMGAIN, italic);
-                    diff=true;
+                    diffAlbum=true;
                 }
                 if (!Utils::equal(t.albumPeak, updatedTags.albumPeak, 0.000001)) {
                     item->setFont(COL_ALBUMPEAK, italic);
-                    diff=true;
+                    diffAlbum=true;
                 }
-                if (diff) {
-                    item->setFont(COL_ARTIST, italic);
-                    item->setFont(COL_TITLE, italic);
+                if (diff || diffAlbum) {
+                    if (diff) {
+                        item->setFont(COL_ARTIST, italic);
+                        item->setFont(COL_TITLE, italic);
+                    }
+                    if (diffAlbum) {
+                        item->setFont(COL_ALBUM, italic);
+                    }
                     tagsToSave.insert(it.key(), updatedTags);
                 } else {
                     tagsToSave.remove(it.key());
                 }
             } else if (it.value().ok) {
                 item->setFont(COL_ARTIST, italic);
+                item->setFont(COL_ALBUM, italic);
                 item->setFont(COL_TITLE, italic);
                 item->setFont(COL_TRACKGAIN, italic);
                 item->setFont(COL_TRACKPEAK, italic);
+                item->setFont(COL_ALBUMGAIN, italic);
+                item->setFont(COL_ALBUMPEAK, italic);
                 tagsToSave.insert(it.key(), updatedTags);
             } else {
                 tagsToSave.remove(it.key());

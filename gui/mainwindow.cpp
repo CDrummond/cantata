@@ -2640,7 +2640,7 @@ void MainWindow::showPage(const QString &page, bool focusSearch)
             onlinePage->focusSearch();
         }
     }
-    #if defined ENABLE_KDE_SUPPORT && defined TAGLIB_FOUND
+    #ifdef ENABLE_REPLAYGAIN_SUPPORT
     else if (QLatin1String("devices")==p) {
         showTab(MainWindow::PAGE_DEVICES);
         if (focusSearch) {

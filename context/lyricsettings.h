@@ -40,6 +40,11 @@ public:
 
     void load();
     void save();
+
+    void showEvent(QShowEvent *e);
+
+private:
+    bool loadedXml;
 };
 
 #endif // LYRICSETTINGS_H

@@ -30,6 +30,7 @@
 #include "covers.h"
 #include "qtiocompressor/qtiocompressor.h"
 #include "thread.h"
+#include "settings.h"
 #include <QFile>
 #include <QXmlStreamReader>
 
@@ -225,7 +226,7 @@ OnlineService::OnlineService(MusicModel *m, const QString &name)
     , loaded(false)
     , loader(0)
 {
-    setUseArtistImages(true);
+    setUseArtistImages(Settings::self()->libraryArtistImage());
     setUseAlbumImages(true);
     m_model=m;
     icn.addFile(":"+name.toLower());

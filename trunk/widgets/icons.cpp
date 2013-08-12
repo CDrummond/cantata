@@ -360,10 +360,7 @@ Icons::Icons()
     singleIcon=createSingleIcon(stdColor, highlightColor);
     consumeIcon=createConsumeIcon(stdColor, highlightColor);
     menuIcon=createMenuIcon(stdColor, highlightColor);
-    libraryIcon=Icon("cantata-view-media-library");
     streamCategoryIcon=Icon(QLatin1String("oxygen")==Icon::currentTheme().toLower() ? "inode-directory" : "folder-music");
-    radioStreamIcon=Icon("cantata-view-radiostream");
-    addRadioStreamIcon=Icon("cantata-radiostream-add");
     QString iconFile=QString(INSTALL_PREFIX"/share/")+QCoreApplication::applicationName()+"/streamicons/stream.png";
     if (QFile::exists(iconFile)) {
         streamIcon.addFile(iconFile);
@@ -371,7 +368,6 @@ Icons::Icons()
     if (streamIcon.isNull()) {
         streamIcon=Icon("applications-internet");
     }
-    artistIcon=Icon("view-media-artist");
     albumIcon=Icon("media-optical");
     audioFileIcon=Icon("audio-x-generic");
     playlistIcon=Icon("view-media-playlist");
@@ -380,7 +376,6 @@ Icons::Icons()
     connectIcon=Icon("dialog-ok");
     disconnectIcon=Icon("media-eject");
     speakerIcon=Icon("speaker");
-    variousArtistsIcon=Icon("cantata-view-media-artist-various");
     editIcon=Icon("document-edit");
     searchIcon=Icon("edit-find");
     clearListIcon=Icon("edit-clear-list");
@@ -398,6 +393,11 @@ Icons::Icons()
     if (importIcon.isNull()) {
         importIcon=Icon("down");
     }
+    libraryIcon=Icon::create("lib", constStdSizes);
+    radioStreamIcon=Icon::create("radio", constStdSizes);
+    addRadioStreamIcon=Icon::create("addradio", constStdSizes);
+    variousArtistsIcon=Icon::create("va", QList<int>() << 16 << 22 << 32 << 48 << 64 << 128);
+    artistIcon=Icon::create("artist", QList<int>() << 16 << 22 << 32 << 48 << 64 << 128);
     #ifndef ENABLE_KDE_SUPPORT
     QList<int> appSizes=QList<int>() << 16 << 22 << 24 << 32 << 48 << 64;
     foreach (int s, appSizes) {
@@ -406,21 +406,6 @@ Icons::Icons()
     appIcon.addFile(":cantata.svg");
 
     shortcutsIcon=Icon("preferences-desktop-keyboard");
-    if (libraryIcon.isNull()) {
-        libraryIcon=Icon::create("lib", constStdSizes);
-    }
-    if (radioStreamIcon.isNull()) {
-        radioStreamIcon=Icon::create("radio", constStdSizes);
-    }
-    if (addRadioStreamIcon.isNull()) {
-        addRadioStreamIcon=Icon::create("addradio", constStdSizes);
-    }
-    if (variousArtistsIcon.isNull()) {
-        variousArtistsIcon=Icon::create("va", QList<int>() << 16 << 22 << 32 << 48 << 64 << 128);
-    }
-    if (artistIcon.isNull()) {
-        artistIcon=Icon::create("artist", QList<int>() << 16 << 22 << 32 << 48 << 64 << 128);
-    }
     #ifndef Q_OS_WIN
     if (shortcutsIcon.isNull()) {
         shortcutsIcon=Icon("keyboard");

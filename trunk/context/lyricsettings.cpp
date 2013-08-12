@@ -30,32 +30,45 @@
 
 LyricSettings::LyricSettings(QWidget *p)
     : ToggleList(p)
+    , loadedXml(false)
 {
     label->setText(i18n("Choose the websites you want to use when searching for lyrics."));
 }
 
 void LyricSettings::load()
 {
-    const QList<UltimateLyricsProvider *> &lprov=UltimateLyrics::self()->getProviders();
-
-    available->clear();
-    selected->clear();
-    foreach (const UltimateLyricsProvider *provider, lprov) {
-        QListWidgetItem *item = new QListWidgetItem(provider->isEnabled() ? selected : available);
-        QString name(provider->getName());
-        name.replace("(POLISH)", i18n("(Polish Translations)"));
-        name.replace("(PORTUGUESE)", i18n("(Portuguese Translations)"));
-        item->setText(name);
-        item->setData(Qt::UserRole, provider->getName());
-    }
 }
 
 void LyricSettings::save()
 {
+    if (!loadedXml) {
+        return;
+    }
+
     QStringList enabled;
     for (int i=0; i<selected->count(); ++i) {
         enabled.append(selected->item(i)->data(Qt::UserRole).toString());
     }
 
     UltimateLyrics::self()->setEnabled(enabled);
+}
+
+void LyricSettings::showEvent(QShowEvent *e)
+{
+    if (!loadedXml) {
+        const QList<UltimateLyricsProvider *> &lprov=UltimateLyrics::self()->getProviders();
+
+        available->clear();
+        selected->clear();
+        foreach (const UltimateLyricsProvider *provider, lprov) {
+            QListWidgetItem *item = new QListWidgetItem(provider->isEnabled() ? selected : available);
+            QString name(provider->getName());
+            name.replace("(POLISH)", i18n("(Polish Translations)"));
+            name.replace("(PORTUGUESE)", i18n("(Portuguese Translations)"));
+            item->setText(name);
+            item->setData(Qt::UserRole, provider->getName());
+        }
+        loadedXml=true;
+    }
+    QWidget::showEvent(e);
 }

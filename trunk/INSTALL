@@ -39,8 +39,8 @@ The following options may be passed to CMake:
 
     -DCANTATA_TRANSLATIONS=<list of translations to install>
         Builds and installs the selected translations. Supported values are
-        cs, de, en, es, pl, ko, and all. Entries should be separated with a
-        semicolon (";") e.g. -DCANTATA_TRANSLATIONS="es;pl"
+        cs, de, en_GB, es, pl, ko, zh_CN, and all. Entries should be separated
+        with a semicolon (";") e.g. -DCANTATA_TRANSLATIONS="es;pl"
         Default: all
 
     -DENABLE_REMOTE_DEVICES=ON
@@ -83,3 +83,4 @@ The following options may be passed to CMake:
     -DCANTATA_OXYGEN_DIR=<path>
         Path to Oxygen icons, required for install stage
         Default: <empty>
+

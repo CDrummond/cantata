@@ -32,6 +32,7 @@
 #include <QFile>
 #include <QFileInfo>
 #include <QSet>
+#include <QCoreApplication>
 #include <signal.h>
 #if defined Q_OS_WIN
 #include <QDesktopServices>
@@ -71,7 +72,8 @@ MPDUser * MPDUser::self()
 MPDUser::MPDUser()
 {
     // For now, per-user MPD support is disabled for windows builds
-    // - asI'm unsure how/if MPD works in windows!!!
+    // - as I'm unsure how/if MPD works in windows!!!
+    // - If enable, also need to fix isRunning!!
     #ifndef Q_OS_WIN
     mpdExe=Utils::findExe("mpd");
     #endif
@@ -85,8 +87,12 @@ bool MPDUser::isSupported()
 
 bool MPDUser::isRunning()
 {
+    #ifdef Q_OS_WIN
+    return false;
+    #else
     int pid=getPid();
     return pid ? 0==::kill(pid, 0) : false;
+    #endif
 }
 
 static QString readValue(const QString &line, const QString &key)
@@ -242,7 +248,7 @@ void MPDUser::init(bool create)
         if (create && !QFile::exists(cfgName)) {
             // Conf file does not exist, so we need to create one...
             #ifdef Q_OS_WIN
-            QString dir(QCoreApplication::applicationDirPath()+"/mpd/"+constConfigFile+".template");
+            QFile cfgTemplate(QCoreApplication::applicationDirPath()+"/mpd/"+constConfigFile+".template");
             #else
             QFile cfgTemplate(INSTALL_PREFIX"/share/cantata/mpd/"+constConfigFile+".template");
             #endif

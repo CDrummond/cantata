@@ -28,6 +28,9 @@
 #include <QPainter>
 #include <QDebug>
 #include <stdlib.h>
+#ifdef Q_OS_WIN32
+#include <time.h>
+#endif
 
 #include <QDebug>
 static bool debugEnabled=false;
@@ -40,6 +43,9 @@ void BackdropCreator::enableDebug()
 BackdropCreator::BackdropCreator()
     : QObject(0)
 {
+    #ifdef Q_OS_WIN32
+    srand((unsigned int)time(0));
+    #endif
     connect(Covers::self(), SIGNAL(cover(const Song &, const QImage &, const QString &)), SLOT(coverRetrieved(const Song &, const QImage &, const QString &)));
     imageSize=QApplication::fontMetrics().height()*12;
     thread=new Thread(metaObject()->className());
@@ -118,7 +124,11 @@ void BackdropCreator::createImage()
 
         for (int y=0; y<constVCount; ++y) {
             for (int x=0; x<constHCount; ++x) {
+                #ifdef Q_OS_WIN32
+                int index=rand()%toUse.count();
+                #else
                 int index=random()%toUse.count();
+                #endif
                 p.drawImage(x*imageSize, y*imageSize, toUse.takeAt(index));
                 if (toUse.isEmpty()) {
                     toUse=images;

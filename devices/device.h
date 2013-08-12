@@ -94,7 +94,7 @@ public:
     };
 
     #ifdef Q_OS_WIN
-    Device(ActionModel *m, const QString &name, const QString &id)
+    Device(MusicModel *m, const QString &name, const QString &id)
         : MusicLibraryItemRoot(name)
         , update(0)
         , needToFixVa(false)

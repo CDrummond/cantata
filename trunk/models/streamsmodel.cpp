@@ -50,9 +50,6 @@
 #if QT_VERSION >= 0x050000
 #include <QUrlQuery>
 #endif
-#ifdef Q_OS_WIN
-#include <QDesktopServices>
-#endif
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KGlobal>
 K_GLOBAL_STATIC(StreamsModel, instance)
@@ -114,17 +111,9 @@ static QString getInternalFile(bool createDir=false)
 
 static QIcon getIcon(const QString &name)
 {
-    #ifdef Q_OS_WIN
-    QString dir(QCoreApplication::applicationDirPath()+"/streamicons/");
-    #else
-    QString dir(QString(INSTALL_PREFIX"/share/")+QCoreApplication::applicationName()+"/streamicons/");
-    #endif
-    if (QFile::exists(dir+name+".svg")) {
-        return QIcon(dir+name+".svg");
-    } else if (QFile::exists(dir+name+".png")) {
-        return QIcon(dir+name+".png");
-    }
-    return Icons::self()->streamCategoryIcon;
+    QIcon icon;
+    icon.addFile(":"+name);
+    return icon.isNull() ? Icons::self()->streamCategoryIcon : icon;
 }
 
 static QString categoryCacheName(const QString &name, bool createDir=false)

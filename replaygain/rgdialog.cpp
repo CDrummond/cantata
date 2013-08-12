@@ -289,11 +289,7 @@ void RgDialog::startScanning()
     if (!all && origTags.count()==origSongs.count()) {
         return;
     }
-    #ifdef ENABLE_KDE_SUPPORT
-    setButtonGuiItem(Cancel, KStandardGuiItem::cancel());
-    #else
     setButtonGuiItem(Cancel, StdGuiItem::cancel());
-    #endif
     state=State_ScanningFiles;
     enableButton(Ok, false);
     enableButton(User1, false);
@@ -329,11 +325,7 @@ void RgDialog::stopScanning()
 
     JobController::self()->cancel();
     clearScanners();
-    #ifdef ENABLE_KDE_SUPPORT
-    setButtonGuiItem(Cancel, KStandardGuiItem::cancel());
-    #else
     setButtonGuiItem(Cancel, StdGuiItem::close());
-    #endif
 }
 
 void RgDialog::createScanner(const QList<int> &indexes)
@@ -364,11 +356,7 @@ void RgDialog::startReadingTags()
     if (tagReader) {
         return;
     }
-    #ifdef ENABLE_KDE_SUPPORT
-    setButtonGuiItem(Cancel, KStandardGuiItem::cancel());
-    #else
     setButtonGuiItem(Cancel, StdGuiItem::cancel());
-    #endif
     state=State_ScanningTags;
     enableButton(Ok, false);
     enableButton(User1, false);
@@ -450,12 +438,7 @@ void RgDialog::updateView()
         progress->setVisible(false);
         statusLabel->setVisible(false);
         state=State_Idle;
-        #ifdef ENABLE_KDE_SUPPORT
-        setButtonGuiItem(Cancel, KStandardGuiItem::close());
-        #else
         setButtonGuiItem(Cancel, StdGuiItem::close());
-        #endif
-
         enableButton(Ok, !tagsToSave.isEmpty());
     } else {
         progress->setValue(totalProgress);

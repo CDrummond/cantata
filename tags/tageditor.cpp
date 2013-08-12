@@ -31,9 +31,6 @@
 #include "localize.h"
 #include "trackorganiser.h"
 #include "cuefile.h"
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KStandardGuiItem>
-#endif
 #ifdef ENABLE_DEVICES_SUPPORT
 #include "devicesmodel.h"
 #include "device.h"

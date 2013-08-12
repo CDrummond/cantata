@@ -39,10 +39,8 @@
 #if QT_VERSION >= 0x050000
 #include <QUrlQuery>
 #endif
-#ifndef Q_OS_WIN
 #include <QProcess>
 #include <QXmlStreamReader>
-#endif
 #include <QPixmap>
 #include <QFile>
 #include <QMenu>

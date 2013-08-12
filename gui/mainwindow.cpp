@@ -29,6 +29,7 @@
 #include <QTimer>
 #include <QClipboard>
 #include <QVBoxLayout>
+#include <QTextStream>
 #include <cstdlib>
 #ifdef ENABLE_KDE_SUPPORT
 #include <kdeversion.h>

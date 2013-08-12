@@ -26,7 +26,6 @@
 
 #include "musiclibraryitemroot.h"
 #include "song.h"
-#include "icons.h"
 #include "localize.h"
 #include <QObject>
 #include <QUrl>
@@ -98,20 +97,11 @@ public:
     static Song encode(const Song &song);
     static bool decode(Song &song);
 
-    OnlineService(MusicModel *m, const QString &name)
-        : MusicLibraryItemRoot(name, false)
-        , configured(false)
-        , update(0)
-        , lProgress(0.0)
-        , loaded(false)
-        , loader(0)    {
-        setUseArtistImages(true);
-        setUseAlbumImages(true);
-        m_model=m;
-    }
+    OnlineService(MusicModel *m, const QString &name);
     virtual ~OnlineService() { }
     void destroy();
     void stopLoader();
+    Icon icon() const { return icn; }
     virtual void createLoader()=0;
     virtual void loadConfig()=0;
     virtual void saveConfig()=0;
@@ -159,6 +149,7 @@ Q_SIGNALS:
     void error(const QString &);
 
 protected:
+    Icon icn;
     bool configured;
     MusicLibraryItemRoot *update;
     QString statusMsg;

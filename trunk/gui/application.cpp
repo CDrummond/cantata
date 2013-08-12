@@ -175,7 +175,6 @@ bool Application::start()
     }
 
     setupIconTheme();
-    Icons::self()->init();
     return true;
 }
 

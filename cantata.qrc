@@ -3,6 +3,7 @@
 <file alias="lyrics.xml">context/ultimate_providers.xml</file>
 <file alias="weblinks.xml">context/weblinks.xml</file>
 <file alias="listenlive.xml">streams/listenlive.xml</file>
+
 <file alias="repeat16.png">icons/view-media-repeat16.png</file>
 <file alias="repeat22.png">icons/view-media-repeat22.png</file>
 <file alias="repeat32.png">icons/view-media-repeat32.png</file>
@@ -11,6 +12,7 @@
 <file alias="shuffle22.png">icons/view-media-shuffle22.png</file>
 <file alias="shuffle32.png">icons/view-media-shuffle32.png</file>
 <file alias="shuffle48.png">icons/view-media-shuffle48.png</file>
+
 <file alias="sidebar-albums-dark">icons/sidebar-albums-dark.svg</file>
 <file alias="sidebar-artists-dark">icons/sidebar-artists-dark.svg</file>
 <file alias="sidebar-devices-dark">icons/sidebar-devices-dark.svg</file>
@@ -31,9 +33,21 @@
 <file alias="sidebar-playlists-light">icons/sidebar-playlists-light.svg</file>
 <file alias="sidebar-playqueue-light">icons/sidebar-playqueue-light.svg</file>
 <file alias="sidebar-streams-light">icons/sidebar-streams-light.svg</file>
+
 <file alias="soundcloud.svg">online/icons/soundcloud.svg</file>
 <file alias="jamendo.svg">online/icons/jamendo.svg</file>
 <file alias="magnatune.svg">online/icons/magnatune.svg</file>
+
+<file alias="digitallyimported">streams/icons/digitallyimported.png</file>
+<file alias="favourites">streams/icons/favourites.svg</file>
+<file alias="icecast">streams/icons/icecast.svg</file>
+<file alias="jazzradio">streams/icons/jazzradio.png</file>
+<file alias="listenlive">streams/icons/listenlive.svg</file>
+<file alias="rockradio">streams/icons/rockradio.svg</file>
+<file alias="shoutcast">streams/icons/shoutcast.svg</file>
+<file alias="skyfm">streams/icons/skyfm.png</file>
+<file alias="somafm">streams/icons/somafm.png</file>
+<file alias="tunein">streams/icons/tunein.svg</file>
 
 <file alias="va16.png">icons/hi16-action-cantata-view-media-artist-various.png</file>
 <file alias="va22.png">icons/hi22-action-cantata-view-media-artist-various.png</file>

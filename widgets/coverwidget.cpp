@@ -164,7 +164,7 @@ const QPixmap & CoverWidget::stdPixmap(bool stream)
         #ifndef Q_OS_WIN
         QString &file=stream ? noStreamCoverFileName : noCoverFileName;
         if (stream &file.isEmpty()) {
-            QString iconFile=QString(INSTALL_PREFIX"/share/")+QCoreApplication::applicationName()+"/streamicons/stream.png";
+            QString iconFile=QString(INSTALL_PREFIX"/share/")+QCoreApplication::applicationName()+"/icons/stream.png";
             if (QFile::exists(iconFile)) {
                 file=iconFile;
             }

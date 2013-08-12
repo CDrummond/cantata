@@ -2,7 +2,6 @@
 # This file is distributed under the same license as the PACKAGE package.
 # Craig Drummond <craig.p.drummond@gmail.com>, 2013.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"

@@ -381,9 +381,6 @@ Icons::Icons()
     clearListIcon=Icon("edit-clear-list");
     repeatIcon=createRecolourableIcon("repeat", stdColor, highlightColor);
     shuffleIcon=createRecolourableIcon("shuffle", stdColor, highlightColor);
-    magnatuneIcon.addFile(":magnatune.svg");
-    soundCloudIcon.addFile(":soundcloud.svg");
-    jamendoIcon.addFile(":jamendo.svg");
     filesIcon=Icon("document-multiple");
     cancelIcon=Icon("dialog-cancel");
     importIcon=Icon("document-import");

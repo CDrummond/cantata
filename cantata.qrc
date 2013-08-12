@@ -34,9 +34,9 @@
 <file alias="sidebar-playqueue-light">icons/sidebar-playqueue-light.svg</file>
 <file alias="sidebar-streams-light">icons/sidebar-streams-light.svg</file>
 
-<file alias="soundcloud.svg">online/icons/soundcloud.svg</file>
-<file alias="jamendo.svg">online/icons/jamendo.svg</file>
-<file alias="magnatune.svg">online/icons/magnatune.svg</file>
+<file alias="soundcloud">online/icons/soundcloud.svg</file>
+<file alias="jamendo">online/icons/jamendo.svg</file>
+<file alias="magnatune">online/icons/magnatune.svg</file>
 
 <file alias="digitallyimported">streams/icons/digitallyimported.png</file>
 <file alias="favourites">streams/icons/favourites.svg</file>

@@ -217,6 +217,20 @@ bool OnlineService::decode(Song &song)
     return false;
 }
 
+OnlineService::OnlineService(MusicModel *m, const QString &name)
+    : MusicLibraryItemRoot(name, false)
+    , configured(false)
+    , update(0)
+    , lProgress(0.0)
+    , loaded(false)
+    , loader(0)
+{
+    setUseArtistImages(true);
+    setUseAlbumImages(true);
+    m_model=m;
+    icn.addFile(":"+name.toLower());
+}
+
 void OnlineService::destroy()
 {
     stopLoader();

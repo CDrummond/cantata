@@ -522,7 +522,7 @@ This assumes the following folder structure:
    need compiling.
 
 2. Call cmake (e.g. from build folder):
-     cmake ../src -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=Release -DENABLE_TAGLIB=OFF -DTAGLIB_FOUND=1 -DTAGLIB_INCLUDES=z:/dev/taglib/include -DTAGLIB_LIBRARIES=z:/dev/taglib/lib/libtag.dll.a -DTAGLIB_MP4_FOUND=1 -DTAGLIB_ASF_FOUND=1 -DZLIB_INCLUDE_DIR=z:/dev/zlib/include -DZLIB_LIBRARY=z:/dev/zlib/libz.dll.a -DCMAKE_INSTALL_PREFIX=z:/cantata/install -DCANTATA_WINDOWS_INSTALLER_DEST=z:/cantata -DCANTATA_MINGW_LIBS=z:/dev/MinGW/bin/mingwm10.dll;z:/dev/MinGW/bin/libgcc_s_dw2-1.dll -DCANTATA_OXYGEN_DIR=z:/cantata/oxygen
+     cmake ../src -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=Release -DENABLE_TAGLIB=OFF -DTAGLIB_FOUND=1 -DTAGLIB_INCLUDES=z:/dev/taglib/include -DTAGLIB_LIBRARIES=z:/dev/taglib/lib/libtag.dll.a -DTAGLIB_MP4_FOUND=1 -DTAGLIB_ASF_FOUND=1 -DZLIB_INCLUDE_DIR=z:/dev/zlib/include -DZLIB_LIBRARY=z:/dev/zlib/libz.dll.a -DCMAKE_INSTALL_PREFIX=z:/cantata/install -DCANTATA_WINDOWS_INSTALLER_DEST=z:/cantata -DCANTATA_MINGW_LIBS=z:/dev/MinGW/bin/mingwm10.dll;z:/dev/MinGW/bin/libgcc_s_dw2-1.dll -DCANTATA_OXYGEN_DIR=z:/cantata/oxygen -DCMAKE_BUILD_TYPE=Release -DENABLE_KDE=OFF
 
    (Note: -DENABLE_TAGLIB=OFF stops cmake from trying to find TagLib, as the TagLib settings have been manually set)
 

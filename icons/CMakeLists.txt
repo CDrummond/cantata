@@ -1,6 +1,6 @@
-if (ENABLE_KDE_SUPPORT)
-    kde4_install_icons(${ICON_INSTALL_DIR})
-else (ENABLE_KDE_SUPPORT)
+#if (ENABLE_KDE_SUPPORT)
+#    kde4_install_icons( ${DATA_INSTALL_DIR}/cantata/icons)
+#else (ENABLE_KDE_SUPPORT)
     if (UNIX AND NOT APPLE)
         macro (update_iconcache)
             # Update mtime of hicolor icon theme dir.
@@ -24,5 +24,5 @@ else (ENABLE_KDE_SUPPORT)
         install(FILES cantata64.png DESTINATION ${CMAKE_INSTALL_PREFIX}/share/icons/hicolor/64x64/apps RENAME cantata.png)
         update_iconcache()
     endif (UNIX AND NOT APPLE)
-endif (ENABLE_KDE_SUPPORT)
+#endif (ENABLE_KDE_SUPPORT)
 

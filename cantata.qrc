@@ -34,5 +34,31 @@
 <file alias="soundcloud.svg">online/icons/soundcloud.svg</file>
 <file alias="jamendo.svg">online/icons/jamendo.svg</file>
 <file alias="magnatune.svg">online/icons/magnatune.svg</file>
+
+<file alias="va16.png">icons/hi16-action-cantata-view-media-artist-various.png</file>
+<file alias="va22.png">icons/hi22-action-cantata-view-media-artist-various.png</file>
+<file alias="va32.png">icons/hi32-action-cantata-view-media-artist-various.png</file>
+<file alias="va48.png">icons/hi48-action-cantata-view-media-artist-various.png</file>
+<file alias="va64.png">icons/hi64-action-cantata-view-media-artist-various.png</file>
+<file alias="va128.png">icons/hi128-action-cantata-view-media-artist-various.png</file>
+<file alias="artist16.png">icons/view-media-artist16.png</file>
+<file alias="artist22.png">icons/view-media-artist22.png</file>
+<file alias="artist32.png">icons/view-media-artist32.png</file>
+<file alias="artist48.png">icons/view-media-artist64.png</file>
+<file alias="artist64.png">icons/view-media-artist128.png</file>
+<file alias="artist128.png">icons/view-media-artist48.png</file>
+<file alias="lib16.png">icons/hi16-action-cantata-view-media-library.png</file>
+<file alias="lib22.png">icons/hi22-action-cantata-view-media-library.png</file>
+<file alias="lib32.png">icons/hi32-action-cantata-view-media-library.png</file>
+<file alias="lib48.png">icons/hi48-action-cantata-view-media-library.png</file>
+<file alias="radio16.png">icons/hi16-action-cantata-view-radiostream.png</file>
+<file alias="radio22.png">icons/hi22-action-cantata-view-radiostream.png</file>
+<file alias="radio32.png">icons/hi32-action-cantata-view-radiostream.png</file>
+<file alias="radio48.png">icons/hi48-action-cantata-view-radiostream.png</file>
+<file alias="addradio16.png">icons/hi16-action-cantata-radiostream-add.png</file>
+<file alias="addradio22.png">icons/hi22-action-cantata-radiostream-add.png</file>
+<file alias="addradio32.png">icons/hi32-action-cantata-radiostream-add.png</file>
+<file alias="addradio48.png">icons/hi48-action-cantata-radiostream-add.png</file>
+
 </qresource>
 </RCC>

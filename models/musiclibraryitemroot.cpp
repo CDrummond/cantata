@@ -621,9 +621,7 @@ quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime 
                     }
 
                     song.fillEmptyFields();
-                    if (constTrueValue==attributes.value(constGuessedAttribute).toString()) {
-                        song.guessed=true;
-                    }
+                    song.guessed=constTrueValue==attributes.value(constGuessedAttribute).toString();
                     albumItem->append(new MusicLibraryItemSong(song, albumItem));
                     if (song.genre!=lastGenre) {
                         albumItem->addGenre(song.genre);

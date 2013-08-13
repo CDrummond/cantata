@@ -43,7 +43,7 @@
 #ifndef ENABLE_KDE_SUPPORT
 #include "shortcutssettingspage.h"
 #include "actioncollection.h"
-#include "treeview.h"
+#include "basicitemdelegate.h"
 #endif
 #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
 #include "audiocdsettings.h"
@@ -105,7 +105,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
     shortcuts = new ShortcutsSettingsPage(map, widget);
     widget->addPage(shortcuts, i18nc("Qt-only", "Shortcuts"), Icons::self()->shortcutsIcon, i18nc("Qt-only", "Keyboard Shortcut Settings"));
     shortcuts->view()->setAlternatingRowColors(false);
-    shortcuts->view()->setItemDelegate(new SimpleTreeViewDelegate(shortcuts->view()));
+    shortcuts->view()->setItemDelegate(new BasicItemDelegate(shortcuts->view()));
     #endif
     widget->addPage(cache, i18n("Cache"), Icon("folder"), i18n("Cached Items"));
 //    widget->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Minimum);

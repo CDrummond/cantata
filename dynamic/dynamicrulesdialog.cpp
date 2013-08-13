@@ -27,7 +27,7 @@
 #include "messagebox.h"
 #include "localize.h"
 #include "icons.h"
-#include "treeview.h"
+#include "basicitemdelegate.h"
 #include <QIcon>
 #include <QStandardItem>
 #include <QStandardItemModel>
@@ -154,7 +154,7 @@ DynamicRulesDialog::DynamicRulesDialog(QWidget *parent)
     proxy=new RulesSort(this);
     proxy->setSourceModel(model);
     rulesList->setModel(proxy);
-    rulesList->setItemDelegate(new SimpleTreeViewDelegate(rulesList));
+    rulesList->setItemDelegate(new BasicItemDelegate(rulesList));
     rulesList->setAlternatingRowColors(false);
 
     controlButtons();

@@ -34,7 +34,7 @@
 #include "config.h"
 #include "thread.h"
 #include "settings.h"
-#include "treeview.h"
+#include "basicitemdelegate.h"
 #include "streamsmodel.h"
 #include <QLabel>
 #include <QPushButton>
@@ -199,7 +199,7 @@ CacheTree::CacheTree(QWidget *parent)
     setResizeMode(header(), 2, QHeaderView::Stretch);
     header()->setStretchLastSection(true);
     setAlternatingRowColors(false);
-    setItemDelegate(new SimpleTreeViewDelegate(this));
+    setItemDelegate(new BasicItemDelegate(this));
 }
 
 CacheTree::~CacheTree()

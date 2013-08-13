@@ -33,7 +33,7 @@
 #include "localize.h"
 #include "messagebox.h"
 #include "jobcontroller.h"
-#include "treeview.h"
+#include "basicitemdelegate.h"
 #include "action.h"
 #include "cuefile.h"
 #include <QComboBox>
@@ -126,7 +126,7 @@ RgDialog::RgDialog(QWidget *parent)
     combo->addItem(i18n("Show Untagged Tracks"), false);
     view->setRootIsDecorated(false);
     view->setAllColumnsShowFocus(true);
-    view->setItemDelegate(new SimpleTreeViewDelegate(view));
+    view->setItemDelegate(new BasicItemDelegate(view));
     view->setAlternatingRowColors(false);
     view->setContextMenuPolicy(Qt::ActionsContextMenu);
     view->setSelectionMode(QAbstractItemView::ExtendedSelection);

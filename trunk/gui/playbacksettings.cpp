@@ -26,7 +26,7 @@
 #include "localize.h"
 #include "mpdconnection.h"
 #include "icon.h"
-#include "treeview.h"
+#include "basicitemdelegate.h"
 #include "messagebox.h"
 #include <QListWidget>
 
@@ -44,7 +44,7 @@ PlaybackSettings::PlaybackSettings(QWidget *p)
     stopFadeDuration->setRange(Settings::MinFade, Settings::MaxFade);
     stopFadeDuration->setSingleStep(100);
 
-    outputsView->setItemDelegate(new SimpleTreeViewDelegate(outputsView));
+    outputsView->setItemDelegate(new BasicItemDelegate(outputsView));
     replayGain->addItem(i18n("None"), QVariant("off"));
     replayGain->addItem(i18n("Track"), QVariant("track"));
     replayGain->addItem(i18n("Album"), QVariant("album"));

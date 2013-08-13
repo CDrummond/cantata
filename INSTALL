@@ -1,5 +1,5 @@
-With KDE Support
-================
+KDE
+===
 1. mkdir build
 2. cd build
 3. cmake .. -DCMAKE_INSTALL_PREFIX=`kde4-config --prefix` -DCMAKE_BUILD_TYPE=Release
@@ -70,7 +70,9 @@ The following options may be passed to CMake:
         system proxy settings are used.
         NOTE: Applies to Qt builds only.
         Default: OFF
-    ...windows specific...
+
+
+    Windows specific:
 
     -DCANTATA_WINDOWS_INSTALLER_DEST=<folder>
         Path where Inno Setpup Compiler should place the catata setup exe.

@@ -25,19 +25,10 @@
 #define TREEVIEW_H
 
 #include <QTreeView>
-#include <QStyledItemDelegate>
 #include <QPixmap>
 #include <QImage>
 
 class QIcon;
-
-class SimpleTreeViewDelegate : public QStyledItemDelegate
-{
-public:
-    SimpleTreeViewDelegate(QObject *p);
-    virtual ~SimpleTreeViewDelegate();
-    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
-};
 
 class TreeView : public QTreeView
 {

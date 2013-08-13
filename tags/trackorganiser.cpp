@@ -36,7 +36,7 @@
 #include "localize.h"
 #include "messagebox.h"
 #include "icons.h"
-#include "treeview.h"
+#include "basicitemdelegate.h"
 #include "cuefile.h"
 #include <QTimer>
 #include <QFile>
@@ -65,7 +65,7 @@ TrackOrganiser::TrackOrganiser(QWidget *parent)
     setButtonGuiItem(Ok, GuiItem(i18n("Rename"), "edit-rename"));
     connect(this, SIGNAL(update()), MPDConnection::self(), SLOT(update()));
     progress->setVisible(false);
-    files->setItemDelegate(new SimpleTreeViewDelegate(files));
+    files->setItemDelegate(new BasicItemDelegate(files));
     files->setAlternatingRowColors(false);
     files->setContextMenuPolicy(Qt::ActionsContextMenu);
     files->setSelectionMode(QAbstractItemView::ExtendedSelection);

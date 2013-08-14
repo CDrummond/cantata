@@ -1,0 +1,17 @@
+music_directory	"${HOME}/Music"
+playlist_directory "${CONFIG_DIR}/playlists"
+sticker_file "${CONFIG_DIR}/sticker.sql"
+bind_to_address "${CONFIG_DIR}/socket"
+db_file "${CACHE_DIR}/tag_cache"
+pid_file "${CACHE_DIR}/pid"
+state_file "${CACHE_DIR}/state"
+log_file "/dev/null"
+metadata_to_use	"artist,album,title,track,name,genre,date,disc,albumartist"
+audio_output { 
+  type "alsa"
+  name "Output"
+}
+mixer_type "software"
+audio_buffer_size "8192"
+filesystem_charset "UTF-8"
+id3v1_encoding "UTF-8"

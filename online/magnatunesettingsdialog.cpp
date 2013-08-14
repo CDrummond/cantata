@@ -40,6 +40,8 @@ MagnatuneSettingsDialog::MagnatuneSettingsDialog(QWidget *parent)
     }
     user=new LineEdit(mw);
     pass=new LineEdit(mw);
+    userLabel=new BuddyLabel(i18n("Username:"), mw, user);
+    passLabel=new BuddyLabel(i18n("Password:"), mw, pass);
     pass->setEchoMode(QLineEdit::Password);
     dl=new QComboBox(mw);
     for (int i=0; i<=MagnatuneService::DL_Count; ++i) {
@@ -48,9 +50,9 @@ MagnatuneSettingsDialog::MagnatuneSettingsDialog(QWidget *parent)
 
     layout->setWidget(0, QFormLayout::LabelRole, new BuddyLabel(i18n("Membership:"), mw, member));
     layout->setWidget(0, QFormLayout::FieldRole, member);
-    layout->setWidget(1, QFormLayout::LabelRole, new BuddyLabel(i18n("Username:"), mw, user));
+    layout->setWidget(1, QFormLayout::LabelRole, userLabel);
     layout->setWidget(1, QFormLayout::FieldRole, user);
-    layout->setWidget(2, QFormLayout::LabelRole, new BuddyLabel(i18n("Password:"), mw, pass));
+    layout->setWidget(2, QFormLayout::LabelRole, passLabel);
     layout->setWidget(2, QFormLayout::FieldRole, pass);
     BuddyLabel *dlLabel=new BuddyLabel(i18n("Downloads:"), mw, dl);
     layout->setWidget(3, QFormLayout::LabelRole, dlLabel);
@@ -71,6 +73,8 @@ bool MagnatuneSettingsDialog::run(int m, int d, const QString &u, const QString 
     user->setEnabled(m);
     pass->setText(p);
     pass->setEnabled(m);
+    userLabel->setEnabled(m);
+    passLabel->setEnabled(m);
     // dl->setEnabled(MagnatuneService::MB_Download==m); // TODO: Magnatune downloads!
     return QDialog::Accepted==Dialog::exec();
 }
@@ -79,5 +83,7 @@ void MagnatuneSettingsDialog::membershipChanged(int i)
 {
     user->setEnabled(0!=i);
     pass->setEnabled(0!=i);
+    userLabel->setEnabled(0!=i);
+    passLabel->setEnabled(0!=i);
     // dl->setEnabled(MagnatuneService::MB_Download==i); // TODO: Magnatune downloads!
 }

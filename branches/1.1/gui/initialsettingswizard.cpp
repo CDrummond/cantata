@@ -79,8 +79,8 @@ InitialSettingsWizard::InitialSettingsWizard(QWidget *p)
     finishedPage->setBackground(Icon("dialog-ok"));
 
     introStack->setCurrentIndex(singleUserSupported ? 1 : 0);
-    basic->setChecked(singleUserSupported);
-    advanced->setChecked(!singleUserSupported);
+    basic->setChecked(false); //singleUserSupported);
+    advanced->setChecked(true); // !singleUserSupported);
 
     QSize sz=size();
     // Adjust size for high-DPI setups...

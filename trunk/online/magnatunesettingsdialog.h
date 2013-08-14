@@ -28,6 +28,8 @@
 #include "lineedit.h"
 #include <QComboBox>
 
+class BuddyLabel;
+
 class MagnatuneSettingsDialog : public Dialog
 {
     Q_OBJECT
@@ -49,6 +51,8 @@ private:
     QComboBox *dl;
     LineEdit *user;
     LineEdit *pass;
+    BuddyLabel *userLabel;
+    BuddyLabel *passLabel;
 };
 
 #endif

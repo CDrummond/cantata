@@ -1,8 +1,0 @@
-#!/bin/bash
-
-#
-# Calling mount.cifs directly from DBUS service seems to mess things up?
-# ..so call mount.cifs via this wrapper :-)
-#
-mount.cifs $@
-exit $?

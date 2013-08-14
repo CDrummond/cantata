@@ -1,0 +1,472 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>RemoteDevicePropertiesWidget</class>
+ <widget class="QWidget" name="RemoteDevicePropertiesWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>516</width>
+    <height>447</height>
+   </rect>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_2">
+   <item>
+    <widget class="QLabel" name="connectionNote">
+     <property name="text">
+      <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; These settings are only editable when the device is not connected.&lt;/i&gt;</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QFormLayout" name="formLayout">
+     <property name="fieldGrowthPolicy">
+      <enum>QFormLayout::ExpandingFieldsGrow</enum>
+     </property>
+     <item row="0" column="0">
+      <widget class="BuddyLabel" name="typeLabel">
+       <property name="text">
+        <string>Type:</string>
+       </property>
+       <property name="buddy">
+        <cstring>type</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QComboBox" name="type"/>
+     </item>
+     <item row="1" column="0">
+      <widget class="BuddyLabel" name="nameLabel">
+       <property name="text">
+        <string>Name:</string>
+       </property>
+       <property name="buddy">
+        <cstring>name</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="LineEdit" name="name"/>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>Options</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QStackedWidget" name="stackedWidget">
+        <property name="currentIndex">
+         <number>0</number>
+        </property>
+        <widget class="QWidget" name="smbPage">
+         <layout class="QVBoxLayout" name="verticalLayout_3">
+          <item>
+           <layout class="QFormLayout" name="formLayout_4">
+            <item row="0" column="0">
+             <widget class="BuddyLabel" name="hostLabel_2">
+              <property name="text">
+               <string>Host:</string>
+              </property>
+              <property name="buddy">
+               <cstring>smbHost</cstring>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="LineEdit" name="smbHost"/>
+            </item>
+            <item row="1" column="0">
+             <widget class="BuddyLabel" name="portLabel_2">
+              <property name="text">
+               <string>Port:</string>
+              </property>
+              <property name="buddy">
+               <cstring>smbPort</cstring>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="SpinBox" name="smbPort">
+              <property name="maximum">
+               <number>65535</number>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0">
+             <widget class="BuddyLabel" name="userLabel_2">
+              <property name="text">
+               <string>User:</string>
+              </property>
+              <property name="buddy">
+               <cstring>smbUser</cstring>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="LineEdit" name="smbUser"/>
+            </item>
+            <item row="3" column="0">
+             <widget class="BuddyLabel" name="label_2">
+              <property name="text">
+               <string>Domain:</string>
+              </property>
+              <property name="buddy">
+               <cstring>smbDomain</cstring>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="1">
+             <widget class="LineEdit" name="smbDomain"/>
+            </item>
+            <item row="4" column="0">
+             <widget class="BuddyLabel" name="label_3">
+              <property name="text">
+               <string>Password:</string>
+              </property>
+              <property name="buddy">
+               <cstring>smbPassword</cstring>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="1">
+             <widget class="LineEdit" name="smbPassword">
+              <property name="echoMode">
+               <enum>QLineEdit::Password</enum>
+              </property>
+             </widget>
+            </item>
+            <item row="5" column="0">
+             <widget class="BuddyLabel" name="folderLabel_2">
+              <property name="text">
+               <string>Share:</string>
+              </property>
+              <property name="buddy">
+               <cstring>smbShare</cstring>
+              </property>
+             </widget>
+            </item>
+            <item row="5" column="1">
+             <widget class="LineEdit" name="smbShare"/>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_4">
+            <property name="text">
+             <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; If you enter a password here, it will be stored &lt;b&gt;unencrypted&lt;/b&gt; in Cantata's config file. To have Cantata prompt for the password before accessing the share, set the password to '-'&lt;/i&gt;</string>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="verticalSpacer">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>14</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="smbAvahiPage">
+         <layout class="QVBoxLayout" name="verticalLayout_3x">
+          <item>
+           <layout class="QFormLayout" name="formLayout_4x">
+            <item row="0" column="0">
+             <widget class="BuddyLabel" name="hostLabel_2x">
+              <property name="text">
+               <string>Service name:</string>
+              </property>
+              <property name="buddy">
+               <cstring>smbAvahiName</cstring>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="LineEdit" name="smbAvahiName"/>
+            </item>
+            <item row="1" column="0">
+             <widget class="BuddyLabel" name="userLabel_2x">
+              <property name="text">
+               <string>User:</string>
+              </property>
+              <property name="buddy">
+               <cstring>smbAvahiUser</cstring>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="LineEdit" name="smbAvahiUser"/>
+            </item>
+            <item row="2" column="0">
+             <widget class="BuddyLabel" name="label_2x">
+              <property name="text">
+               <string>Domain:</string>
+              </property>
+              <property name="buddy">
+               <cstring>smbAvahiDomain</cstring>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="LineEdit" name="smbAvahiDomain"/>
+            </item>
+            <item row="3" column="0">
+             <widget class="BuddyLabel" name="label_3x">
+              <property name="text">
+               <string>Password:</string>
+              </property>
+              <property name="buddy">
+               <cstring>smbAvahiPassword</cstring>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="1">
+             <widget class="LineEdit" name="smbAvahiPassword">
+              <property name="echoMode">
+               <enum>QLineEdit::Password</enum>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="0">
+             <widget class="BuddyLabel" name="folderLabel_x2">
+              <property name="text">
+               <string>Share:</string>
+              </property>
+              <property name="buddy">
+               <cstring>smbAvahiShare</cstring>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="1">
+             <widget class="LineEdit" name="smbAvahiShare"/>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_4x">
+            <property name="text">
+             <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; If you enter a password here, it will be stored &lt;b&gt;unencrypted&lt;/b&gt; in Cantata's config file. To have Cantata prompt for the password before accessing the share, set the password to '-'&lt;/i&gt;</string>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="verticalSpacerx">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>14</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="sshPage">
+         <layout class="QVBoxLayout" name="verticalLayout_4">
+          <item>
+           <layout class="QFormLayout" name="formLayout_2">
+            <item row="0" column="0">
+             <widget class="BuddyLabel" name="hostLabel">
+              <property name="text">
+               <string>Host:</string>
+              </property>
+              <property name="buddy">
+               <cstring>sshHost</cstring>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="LineEdit" name="sshHost"/>
+            </item>
+            <item row="1" column="0">
+             <widget class="BuddyLabel" name="portLabel">
+              <property name="text">
+               <string>Port:</string>
+              </property>
+              <property name="buddy">
+               <cstring>sshPort</cstring>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="SpinBox" name="sshPort">
+              <property name="maximum">
+               <number>65535</number>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0">
+             <widget class="BuddyLabel" name="userLabel">
+              <property name="text">
+               <string>User:</string>
+              </property>
+              <property name="buddy">
+               <cstring>sshUser</cstring>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="LineEdit" name="sshUser"/>
+            </item>
+            <item row="3" column="0">
+             <widget class="BuddyLabel" name="folderLabel">
+              <property name="text">
+               <string>Folder:</string>
+              </property>
+              <property name="buddy">
+               <cstring>sshFolder</cstring>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="1">
+             <widget class="LineEdit" name="sshFolder"/>
+            </item>
+            <item row="4" column="0">
+             <widget class="BuddyLabel" name="sshExtraLabel">
+              <property name="text">
+               <string>Extra Options:</string>
+              </property>
+              <property name="buddy">
+               <cstring>sshExtra</cstring>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="1">
+             <widget class="LineEdit" name="sshExtra"/>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_5">
+            <property name="text">
+             <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; Due to the way sshfs works, a suitable ssh-askpass application (ksshaskpass, ssh-askpass-gnome, etc.) will be required to enter the password.&lt;/i&gt;</string>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="verticalSpacer_2">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>78</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="filePage">
+         <layout class="QFormLayout" name="formLayout_3">
+          <item row="0" column="0">
+           <widget class="BuddyLabel" name="label">
+            <property name="text">
+             <string>Folder:</string>
+            </property>
+            <property name="buddy">
+             <cstring>fileFolder</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="PathRequester" name="fileFolder"/>
+          </item>
+         </layout>
+        </widget>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="infoLabel">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="text">
+      <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; This dialog is only used to add remote devices (e.g. via Samba), or to access locally mounted folders. For normal media players, attached via USB, Cantata will automatically display the device when it is attached.&lt;/i&gt;</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>PathRequester</class>
+   <extends>QLineEdit</extends>
+   <header>pathrequester.h</header>
+  </customwidget>
+  <customwidget>
+   <class>LineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>lineedit.h</header>
+  </customwidget>
+  <customwidget>
+   <class>BuddyLabel</class>
+   <extends>QLabel</extends>
+   <header>buddylabel.h</header>
+  </customwidget>
+  <customwidget>
+   <class>SpinBox</class>
+   <extends>QSpinBox</extends>
+   <header>spinbox.h</header>
+  </customwidget>
+ </customwidgets>
+ <tabstops>
+  <tabstop>type</tabstop>
+ </tabstops>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>type</sender>
+   <signal>activated(int)</signal>
+   <receiver>stackedWidget</receiver>
+   <slot>setCurrentIndex(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>65</x>
+     <y>22</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>101</x>
+     <y>94</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

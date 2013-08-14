@@ -65,6 +65,7 @@ ShortcutsSettingsPage::ShortcutsSettingsPage(const QHash<QString, ActionCollecti
   shortcutsView->expandAll();
   shortcutsView->resizeColumnToContents(0);
   shortcutsView->sortByColumn(0, Qt::AscendingOrder);
+  shortcutsView->setUniformRowHeights(true);
   if (1==_shortcutsModel->rowCount()) {
       shortcutsView->setIndentation(0);
       shortcutsView->setRootIndex(_shortcutsFilter->index(0, 0));

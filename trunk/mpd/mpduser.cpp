@@ -290,7 +290,7 @@ void MPDUser::init(bool create)
         if (det.dir.isEmpty() || det.hostname.isEmpty() || pidFileName.isEmpty()) {
             QFile cfgFile(cfgName);
             if (cfgFile.open(QIODevice::ReadOnly|QIODevice::Text)) {
-                while (!cfgFile.atEnd() && (det.dir.isEmpty() || det.hostname.isEmpty())) {
+                while (!cfgFile.atEnd() && (det.dir.isEmpty() || det.hostname.isEmpty() || pidFileName.isEmpty())) {
                     QString line = cfgFile.readLine();
                     if (det.dir.isEmpty()) {
                         det.dir=readValue(line, constMusicFolderKey);
@@ -322,18 +322,27 @@ int MPDUser::getPid()
             str >> pid;
         }
     }
-
     return pid;
 }
 
 bool MPDUser::controlMpd(bool stop)
 {
-    QProcess process;
     QStringList args=QStringList() << Utils::configDir(constDir, true)+constConfigFile;
     if (stop) {
         args+="--kill";
     }
 
-    process.start(mpdExe, args, QIODevice::WriteOnly);
-    return process.waitForFinished(1000);
+    qint64 appPid=0;
+    bool started=QProcess::startDetached(mpdExe, args, QString(), &appPid);
+    if (started && !stop && 0!=appPid) {
+        for (int i=0; i<8; ++i) {
+            if (getPid()!=appPid) {
+                Utils::msleep(250);
+            } else {
+                Utils::msleep(250);
+                return true;
+            }
+        }
+    }
+    return started;
 }

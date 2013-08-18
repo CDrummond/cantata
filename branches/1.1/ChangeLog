@@ -2,6 +2,7 @@
 -----
 1. Fix crash in settings dialog if current connection name is removed from
    config file.
+2. Fix starting of per-user MPD instance.
 
 1.1.0
 -----

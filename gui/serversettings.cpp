@@ -68,6 +68,7 @@ class CollectionNameValidator : public QValidator
 ServerSettings::ServerSettings(QWidget *p)
     : QWidget(p)
     , haveBasicCollection(false)
+    , prevIndex(0)
 {
     setupUi(this);
     #if defined ENABLE_DEVICES_SUPPORT

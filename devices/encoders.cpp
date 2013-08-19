@@ -406,7 +406,7 @@ QStringList Encoder::params(int value, const QString &in, const QString &out) co
                 v=s.value;
             }
         }
-        p << param << QString::number(v*ffmpegValueAdjust);
+        p << param << QString::number(v*ffmpegValueMultiplier);
     }
 
     if (transcoder) {

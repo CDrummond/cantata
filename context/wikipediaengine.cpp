@@ -314,7 +314,7 @@ void WikipediaEngine::search(const QStringList &query, Mode mode)
 void WikipediaEngine::requestTitles(const QStringList &query, Mode mode, const QString &lang)
 {
     cancel();
-    QUrl url("https://"+lang+".wikipedia.org/w/api.php");
+    QUrl url("http://"+lang+".wikipedia.org/w/api.php");
     #if QT_VERSION < 0x050000
     QUrl &q=url;
     #else
@@ -512,7 +512,7 @@ void WikipediaEngine::getPage(const QStringList &query, Mode mode, const QString
     }
 
     QUrl url;
-    url.setScheme(QLatin1String("https"));
+    url.setScheme(QLatin1String("http"));
     url.setHost(lang+".wikipedia.org");
     url.setPath("/wiki/Special:Export/"+title);
     job=NetworkAccessManager::self()->get(url);

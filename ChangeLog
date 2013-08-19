@@ -3,6 +3,9 @@
 1. Fix crash in settings dialog if current connection name is removed from
    config file.
 2. Fix starting of per-user MPD instance.
+3. For Qt-only Linux builds, set file permissions of config file so that others
+   cannot read the file - as MPD, Magnatune, or DigitallyImported passwords
+   will be saved here.
 
 1.1.0
 -----

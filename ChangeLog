@@ -2,6 +2,9 @@
 -----
 1. Add support for opus audio format - AudioCD encoding, transcoding, HTTP
    server, etc.
+2. Add support for user-installable stream providers. Need to copy
+   name.xml.gz, and name.svg/name.png to ~/.config/cantata/streams - or
+   PREFIX/share/cantata/streams
 
 1.1.1
 -----

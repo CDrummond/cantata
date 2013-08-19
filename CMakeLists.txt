@@ -354,6 +354,7 @@ endif (MSVC)
 add_subdirectory(po)
 add_subdirectory(support)
 add_subdirectory(streams/icons)
+add_subdirectory(streams/providers)
 
 if (ENABLE_PROXY_CONFIG)
     set(CANTATA_SRCS ${CANTATA_SRCS} network/proxysettings.cpp)

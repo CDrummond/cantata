@@ -79,7 +79,7 @@ public:
         CategoryItem * getBookmarksCategory();
         CategoryItem * createBookmarksCategory();
         void saveCache() const;
-        QList<Item *> loadCache();
+        virtual QList<Item *> loadCache();
         bool saveXml(const QString &fileName, bool format=false) const;
         bool saveXml(QIODevice *dev, bool format=false) const;
         QList<Item *> loadXml(const QString &fileName, bool importing=false);
@@ -117,6 +117,13 @@ public:
         DiCategoryItem(const QString &u, const QString &n, CategoryItem *p, const QIcon &i, const QString &cn)
             : CategoryItem(u, n, p, i, cn) { }
         bool canConfigure() const { return true; }
+    };
+
+    struct XmlCategoryItem : public CategoryItem
+    {
+        XmlCategoryItem(const QString &n, CategoryItem *p, const QIcon &i, const QString &cn)
+            : CategoryItem("-", n, p, i, cn) { }
+        QList<Item *> loadCache();
     };
 
     static const QString constPrefix;
@@ -198,6 +205,7 @@ private:
     Item * toItem(const QModelIndex &index) const { return index.isValid() ? static_cast<Item*>(index.internalPointer()) : root; }
     bool loadFavourites(const QString &fileName, const QModelIndex &index, bool importing=false);
     void buildListenLive();
+    void buildXml();
 
 private:
     QMap<QNetworkReply *, CategoryItem *> jobs;

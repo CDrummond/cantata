@@ -38,12 +38,14 @@
 #include "digitallyimported.h"
 #include "qjson/parser.h"
 #include "qtiocompressor/qtiocompressor.h"
+#include "utils.h"
 #include <QModelIndex>
 #include <QString>
 #include <QVariant>
 #include <QMimeData>
 #include <QXmlStreamReader>
 #include <QFile>
+#include <QDir>
 #include <QFileInfo>
 #include <QTimer>
 #include <QLocale>
@@ -53,6 +55,9 @@
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KGlobal>
 K_GLOBAL_STATIC(StreamsModel, instance)
+#endif
+#if defined Q_OS_WIN
+#include <QDesktopServices>
 #endif
 
 StreamsModel * StreamsModel::self()
@@ -114,6 +119,25 @@ static QIcon getIcon(const QString &name)
     QIcon icon;
     icon.addFile(":"+name);
     return icon.isNull() ? Icons::self()->streamCategoryIcon : icon;
+}
+
+static QIcon getExternalIcon(const QString &xmlFile)
+{
+    QIcon icon;
+    QString iconFile=xmlFile;
+    iconFile.replace(".xml.gz", ".svg");
+
+    if (QFile::exists(iconFile)) {
+        icon.addFile(iconFile);
+    } else {
+        iconFile=xmlFile;
+        iconFile.replace(".xml.gz", ".png");
+        if (QFile::exists(iconFile)) {
+            icon.addFile(iconFile);
+        }
+    }
+
+    return icon;
 }
 
 static QString categoryCacheName(const QString &name, bool createDir=false)
@@ -264,7 +288,16 @@ QList<StreamsModel::Item *> StreamsModel::CategoryItem::loadCache()
         }
     }
 
-    return newItems;
+    return QList<Item *>();
+}
+
+QList<StreamsModel::Item *> StreamsModel::XmlCategoryItem::loadCache()
+{
+    if (QFile::exists(cacheName)) {
+        return loadXml(cacheName);
+    }
+
+    return QList<Item *>();
 }
 
 bool StreamsModel::CategoryItem::saveXml(const QString &fileName, bool format) const
@@ -460,6 +493,7 @@ StreamsModel::StreamsModel(QObject *parent)
     favourites=new FavouritesCategoryItem(constFavouritesUrl, i18n("Favorites"), root, getIcon("favourites"));
     root->children.append(favourites);
     buildListenLive();
+    buildXml();
     addBookmarkAction = ActionCollection::get()->createAction("bookmarkcategory", i18n("Bookmark Category"), Icon("bookmark-new"));
     addToFavouritesAction = ActionCollection::get()->createAction("addtofavourites", i18n("Add Stream To Favorites"), favouritesIcon());
     configureAction = ActionCollection::get()->createAction("configurestreams", i18n("Configure Streams"), Icons::self()->configureIcon);
@@ -1664,6 +1698,32 @@ void StreamsModel::buildListenLive()
                 }
             } else if (QLatin1String("region")==doc.name()) {
                 region=prevRegion;
+            }
+        }
+    }
+}
+
+void StreamsModel::buildXml()
+{
+    #ifdef Q_OS_WIN
+    QStringList dirs=QStringList() << QCoreApplication::applicationDirPath()+"/streams/";
+    #else
+    QStringList dirs=QStringList() << INSTALL_PREFIX "/share/cantata/streams/"
+                                   << Utils::configDir("streams");
+    #endif
+    QSet<QString> added;
+
+    foreach (const QString &dir, dirs) {
+        if (dir.isEmpty()) {
+            continue;
+        }
+        QDir d(dir);
+        QStringList files=d.entryList(QStringList() << "*.xml.gz", QDir::Files|QDir::Readable);
+        foreach (const QString &file, files) {
+            if (!added.contains(file)) {
+                CategoryItem *cat=new XmlCategoryItem(Utils::getFile(file).remove(".xml.gz"), root, getExternalIcon(dir+file), dir+file);
+                added.insert(file);
+                root->children.append(cat);
             }
         }
     }

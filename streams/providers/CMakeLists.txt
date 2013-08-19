@@ -1,0 +1,6 @@
+file(GLOB provider_files *.xml.gz *.png *.svg)
+if (WIN32)
+    install(FILES ${provider_files} DESTINATION ${CMAKE_INSTALL_PREFIX}/streams/)
+else (WIN32)
+    install(FILES ${provider_files} DESTINATION ${CMAKE_INSTALL_PREFIX}/share/${CMAKE_PROJECT_NAME}/streams/)
+endif (WIN32)

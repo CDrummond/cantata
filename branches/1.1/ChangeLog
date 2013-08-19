@@ -10,6 +10,7 @@
 5. Fix updating of genres after DB is refreshed.
 6. Dont use https for context view searches.
 7. Work-around Windows and QJson issue.
+8. Remove cantata prefix when showing status message about fetching streams.
 
 1.1.0
 -----

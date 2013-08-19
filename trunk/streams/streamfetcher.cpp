@@ -195,7 +195,14 @@ void StreamFetcher::doNext()
         current=todo.takeFirst();
         QUrl u(current);
         currentName=MPDParseUtils::getStreamName(current);
-        emit status(i18n("Fetching %1", currentName.isEmpty() ? u.toString() : currentName));
+        QString report=currentName;
+        if (report.isEmpty()) {
+            report=u.toString();
+            if (report.startsWith(StreamsModel::constPrefix)) {
+                report=report.mid(StreamsModel::constPrefix.length());
+            }
+        }
+        emit status(i18n("Fetching %1", report));
         if (!currentName.isEmpty()) {
             current=current.left(current.length()-(currentName.length()+1));
         }

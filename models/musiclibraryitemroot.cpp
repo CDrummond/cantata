@@ -576,9 +576,13 @@ quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime 
                     if (!baseFolder.isEmpty() && song.file.startsWith(baseFolder)) {
                         song.file=song.file.mid(baseFolder.length());
                     }
-                    song.genre=attributes.value(constGenreAttribute).toString();
-                    if (song.genre.isEmpty()) {
-                        song.genre=unknown;
+                    QString genre=attributes.value(constGenreAttribute).toString();
+                    if (genre.isEmpty() ) {
+                        if (song.genre.isEmpty()) {
+                            song.genre=unknown;
+                        }
+                    } else {
+                        song.genre=genre;
                     }
                     song.artist=attributes.value(constArtistAttribute).toString();
                     if (song.artist.isEmpty()) {
@@ -748,6 +752,9 @@ bool MusicLibraryItemRoot::update(const QSet<Song> &songs)
     }
     foreach (const Song &s, added) {
         addSongToList(s);
+    }
+    if (updatedSongs) {
+        updateGenres();
     }
     return updatedSongs;
 }

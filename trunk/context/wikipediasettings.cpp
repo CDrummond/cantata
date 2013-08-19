@@ -162,7 +162,7 @@ void WikipediaSettings::getLangs()
     selected->clear();
     reload->setEnabled(false);
     cancel();
-    QUrl url("https://en.wikipedia.org/w/api.php");
+    QUrl url("http://en.wikipedia.org/w/api.php");
     #if QT_VERSION < 0x050000
     QUrl &q=url;
     #else

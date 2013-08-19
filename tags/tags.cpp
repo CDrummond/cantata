@@ -47,6 +47,9 @@
 #ifdef TAGLIB_MP4_FOUND
 #include <taglib/mp4file.h>
 #endif
+#ifdef TAGLIB_OPUS_FOUND
+#include <taglib/opusfile.h>
+#endif
 #include <taglib/mpcfile.h>
 #include <taglib/mpegfile.h>
 #include <taglib/oggfile.h>
@@ -783,6 +786,12 @@ static void readTags(const TagLib::FileRef fileref, Song *song, ReplayGain *rg, 
         if (file->tag()) {
             readVorbisCommentTags(file->tag(), song, rg, img);
         }
+    #ifdef TAGLIB_OPUS_FOUND
+    } else if (TagLib::Ogg::Opus::File *file = dynamic_cast< TagLib::Ogg::Opus::File * >(fileref.file())) {
+        if (file->tag()) {
+            readVorbisCommentTags(file->tag(), song, rg, img);
+        }
+    #endif
     } else if (TagLib::FLAC::File *file = dynamic_cast< TagLib::FLAC::File * >(fileref.file())) {
         if (file->xiphComment()) {
             readVorbisCommentTags(file->xiphComment(), song, rg, img);
@@ -891,6 +900,12 @@ static bool writeTags(const TagLib::FileRef fileref, const Song &from, const Son
         if (file->tag()) {
             changed=writeVorbisCommentTags(file->tag(), from, to, rg, img) || changed;
         }
+    #ifdef TAGLIB_OPUS_FOUND
+    } else if (TagLib::Ogg::Opus::File *file = dynamic_cast< TagLib::Ogg::Opus::File * >(fileref.file())) {
+        if (file->tag()) {
+            changed=writeVorbisCommentTags(file->tag(), from, to, rg, img) || changed;
+        }
+    #endif
     } else if (TagLib::FLAC::File *file = dynamic_cast< TagLib::FLAC::File * >(fileref.file())) {
         if (file->xiphComment()) {
             changed=writeVorbisCommentTags(file->xiphComment(), from, to, rg, img) || changed;

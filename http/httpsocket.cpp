@@ -93,6 +93,15 @@ static QString detectMimeType(const QString &file)
             }
             delete result;
         }
+        #ifdef TAGLIB_OPUS_FOUND
+        if (mime.isEmpty()) {
+            result = new TagLib::Ogg::Opus::File(encodedName, false, TagLib::AudioProperties::Fast);
+            if (result->isValid()) {
+                mime=QLatin1String("audio/x-opus+ogg");
+            }
+            delete result;
+        }
+        #endif
         return QLatin1String("audio/ogg");
     }
     #endif
@@ -120,6 +129,8 @@ static QString detectMimeType(const QString &file)
         return QLatin1String("application/x-dff");
     } else if (suffix == QLatin1String("dsf")) {
         return QLatin1String("application/x-dsf");
+    } else if (suffix == QLatin1String("opus")) {
+        return QLatin1String("audio/opus");
     }
 
     return QString();

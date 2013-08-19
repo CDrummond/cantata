@@ -11,6 +11,8 @@
 6. Dont use https for context view searches.
 7. Work-around Windows and QJson issue.
 8. Remove cantata prefix when showing status message about fetching streams.
+9. When adding streams that have a name assinged, but no path, then add a
+   trailing slash.
 
 1.1.0
 -----

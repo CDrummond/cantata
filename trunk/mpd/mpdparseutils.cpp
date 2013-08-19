@@ -671,7 +671,15 @@ QString MPDParseUtils::formatDuration(const quint32 totalseconds)
 
 QString MPDParseUtils::addStreamName(const QString &url, const QString &name)
 {
-    return name.isEmpty() ? url : (url+"#"+name);
+    if (name.isEmpty()) {
+        return url;
+    }
+
+    QUrl u(url);
+    if (u.path().isEmpty()) {
+        return url+"/#"+name;
+    }
+    return url+"#"+name;
 }
 
 QString MPDParseUtils::getStreamName(const QString &url)

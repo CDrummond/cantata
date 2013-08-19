@@ -571,5 +571,5 @@ TagLib
 ------
 
 Windows version of taglib was built from TagLib 1.8, using the following cmake command:
-    cmake .. -G "MinGW Makefiles" -DWITH_ASF=1 -DWITH_MP4=1 -DCMAKE_INSTALL_PRFIX=z:\dev\taglib
+    cmake .. -G "MinGW Makefiles" -DWITH_ASF=1 -DWITH_MP4=1 -DCMAKE_INSTALL_PREFIX=z:\dev\taglib
 

@@ -46,6 +46,9 @@
 #include <taglib/vorbisfile.h>
 #include <taglib/wavfile.h>
 #include <taglib/wavpackfile.h>
+#ifdef TAGLIB_OPUS_FOUND
+#include <taglib/opusfile.h>
+#endif
 
 TagLib::File *Meta::Tag::FileTypeResolver::createFile(TagLib::FileName fileName,
         bool readProperties,
@@ -73,6 +76,11 @@ TagLib::File *Meta::Tag::FileTypeResolver::createFile(TagLib::FileName fileName,
     else if (mimetype->is(QLatin1String("audio/vnd.rn-realaudio")) || mimetype->is(QLatin1String("audio/x-pn-realaudioplugin"))
             /*|| mimetype->is(QLatin1String("audio/vnd.rn-realvideo"))*/) {
         result = new TagLibExtras::RealMedia::File(fileName, readProperties, propertiesStyle);
+    }
+    #endif
+    #ifdef TAGLIB_OPUS_FOUND
+    else if (mimetype->is(QLatin1String("audio/opus")) || mimetype->is(QLatin1String("audio/x-opus+ogg"))) {
+        result = new TagLib::Ogg::Opus::File(fileName, readProperties, propertiesStyle);
     }
     #endif
     else if (mimetype->is(QLatin1String("audio/x-vorbis+ogg"))) {
@@ -115,6 +123,12 @@ TagLib::File *Meta::Tag::FileTypeResolver::createFile(TagLib::FileName fileName,
             delete result;
             result = new TagLib::TrueAudio::File(fileName, readProperties, propertiesStyle);
         }
+        #ifdef TAGLIB_OPUS_FOUND
+        if (!result->isValid()) {
+            delete result;
+            result = new TagLib::Ogg::Opus::File(fileName, readProperties, propertiesStyle);
+        }
+        #endif
     }
     #endif //
     else if (suffix == QLatin1String("m4a") || suffix == QLatin1String("m4b")
@@ -138,6 +152,11 @@ TagLib::File *Meta::Tag::FileTypeResolver::createFile(TagLib::FileName fileName,
     } else if (suffix == QLatin1String("mpc") || suffix == QLatin1String("mpp") || suffix == QLatin1String("mp+")) {
         result = new TagLib::MPC::File(fileName, readProperties, propertiesStyle);
     }
+    #ifdef TAGLIB_OPUS_FOUND
+    else if (suffix == QLatin1String("opus")) {
+        result = new TagLib::Ogg::Opus::File(fileName, readProperties, propertiesStyle);
+    }
+    #endif
 
 // #ifndef Q_OS_WIN
 //      if (!result)

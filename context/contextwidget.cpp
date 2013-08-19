@@ -760,7 +760,11 @@ void ContextWidget::fanArtResponse()
     if (QNetworkReply::NoError==reply->error()) {
         QJson::Parser parser;
         bool ok=false;
+            #ifdef Q_OS_WIN
+            QVariantMap parsed=parser.parse(reply->readAll(), &ok).toMap();
+            #else
         QVariantMap parsed=parser.parse(reply, &ok).toMap();
+        #endif
         if (ok && !parsed.isEmpty()) {
             QVariantMap artist=parsed[parsed.keys().first()].toMap();
             if (artist.contains("artistbackground")) {
@@ -836,7 +840,11 @@ void ContextWidget::discoGsResponse()
     if (QNetworkReply::NoError==reply->error()) {
         QJson::Parser parser;
         bool ok=false;
+        #ifdef Q_OS_WIN
+        QVariantMap parsed=parser.parse(reply->readAll(), &ok).toMap();
+        #else
         QVariantMap parsed=parser.parse(reply, &ok).toMap();
+        #endif
         if (ok && parsed.contains("resp")) {
             QVariantMap response=parsed["resp"].toMap();
             if (response.contains("search")) {

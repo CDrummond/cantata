@@ -111,7 +111,11 @@ void SoundCloudService::jobFinished()
     j->deleteLater();
 
     QJson::Parser parser;
+    #ifdef Q_OS_WIN
+    QVariant result = parser.parse(j->readAll());
+    #else
     QVariant result = parser.parse(j);
+    #endif
     if (result.isValid()) {
         QVariantList list = result.toList();
         foreach(const QVariant &item, list) {

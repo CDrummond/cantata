@@ -1265,7 +1265,11 @@ QList<StreamsModel::Item *> StreamsModel::parseDigitallyImportedResponse(QIODevi
 {
     QList<Item *> newItems;
     QJson::Parser parser;
+    #ifdef Q_OS_WIN
+    QVariantMap data = parser.parse(dev->readAll()).toMap();
+    #else
     QVariantMap data = parser.parse(dev).toMap();
+    #endif
     QString listenHost=QLatin1String("listen.")+QUrl(cat->url).host().remove("www.");
 
     if (data.contains("channel_filters")) {

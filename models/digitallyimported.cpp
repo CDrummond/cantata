@@ -187,7 +187,11 @@ void DigitallyImported::loginResponse()
     }
 
     QJson::Parser parser;
+    #ifdef Q_OS_WIN
+    QVariantMap data = parser.parse(reply->readAll()).toMap();
+    #else
     QVariantMap data = parser.parse(reply).toMap();
+    #endif
 
     if (!data.contains("subscriptions")) {
         status=i18n("No subscriptions");

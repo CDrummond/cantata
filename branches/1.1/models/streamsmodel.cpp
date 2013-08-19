@@ -238,12 +238,12 @@ void StreamsModel::CategoryItem::removeCache()
 }
 
 void StreamsModel::ListenLiveCategoryItem::removeCache()
-{foreach (Item *i, children) {
+{
+    foreach (Item *i, children) {
         if (i->isCategory()) {
             static_cast<CategoryItem *>(i)->removeCache();
         }
     }
-
 }
 
 void StreamsModel::CategoryItem::saveCache() const

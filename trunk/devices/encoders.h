@@ -43,7 +43,8 @@ namespace Encoders
         Encoder()
             : defaultValueIndex(0) {
         }
-        Encoder(const QString &n, const QString &d, const QString &t, const QString &e, const QString &a, const QString &c, const QString &f, const QString &v, const QList<Setting> &vs, const QString &l, const QString &h, int def)
+        Encoder(const QString &n, const QString &d, const QString &t, const QString &e, const QString &a, const QString &c,
+                const QString &f, const QString &v, const QList<Setting> &vs, const QString &l, const QString &h, int def, int adj=0)
             : name(n)
             , description(d)
             , tooltip(t)
@@ -56,6 +57,7 @@ namespace Encoders
             , low(l)
             , high(h)
             , defaultValueIndex(def)
+            , ffmpegValueAdjust(adj)
             , transcoder(true) {
         }
         bool isNull() { return name.isEmpty(); }
@@ -76,6 +78,7 @@ namespace Encoders
         QString low;
         QString high;
         int defaultValueIndex;
+        int ffmpegValueAdjust;
         bool transcoder;
     };
 

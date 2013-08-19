@@ -27,7 +27,6 @@
 #include "localize.h"
 #include <QRegExp>
 #include <QProcess>
-#include <QDebug>
 
 namespace Encoders
 {
@@ -100,16 +99,16 @@ static void init()
                     QLatin1String("-aq"),
                     i18n("Expected average bitrate for variable bitrate encoding"),
                     QList<Setting>() << Setting(i18n(vbr, 25), 30)
-                    << Setting(i18n(vbr, 50), 55)
-                    << Setting(i18n(vbr, 70), 80)
-                    << Setting(i18n(vbr, 90), 105)
-                    << Setting(i18n(vbr, 120), 125)
-                    << Setting(i18n(vbr, 150), 155)
-                    << Setting(i18n(vbr, 170), 180)
-                    << Setting(i18n(vbr, 180), 205)
-                    << Setting(i18n(vbr, 190), 230)
-                    << Setting(i18n(vbr, 200), 255)
-                    << Setting(i18n(vbr, 210), 280),
+                                     << Setting(i18n(vbr, 50), 55)
+                                     << Setting(i18n(vbr, 70), 80)
+                                     << Setting(i18n(vbr, 90), 105)
+                                     << Setting(i18n(vbr, 120), 125)
+                                     << Setting(i18n(vbr, 150), 155)
+                                     << Setting(i18n(vbr, 170), 180)
+                                     << Setting(i18n(vbr, 180), 205)
+                                     << Setting(i18n(vbr, 190), 230)
+                                     << Setting(i18n(vbr, 200), 255)
+                                     << Setting(i18n(vbr, 210), 280),
                     i18n("Smaller file"),
                     i18n("Better sound quality"),
                     5);
@@ -183,20 +182,57 @@ static void init()
                    QLatin1String("-aq"),
                    i18n("Quality rating"),
                    QList<Setting>() << Setting(i18n(quality, -1, 45), -1)
-                   << Setting(i18n(quality, 0, 64), 0)
-                   << Setting(i18n(quality, 1, 80), 1)
-                   << Setting(i18n(quality, 2, 96), 2)
-                   << Setting(i18n(quality, 3, 112), 3)
-                   << Setting(i18n(quality, 4, 128), 4)
-                   << Setting(i18n(quality, 5, 160), 5)
-                   << Setting(i18n(quality, 6, 192), 6)
-                   << Setting(i18n(quality, 7, 224), 7)
-                   << Setting(i18n(quality, 8, 256), 8)
-                   << Setting(i18n(quality, 9, 320), 9)
-                   << Setting(i18n(quality, 10, 500), 10),
+                                    << Setting(i18n(quality, 0, 64), 0)
+                                    << Setting(i18n(quality, 1, 80), 1)
+                                    << Setting(i18n(quality, 2, 96), 2)
+                                    << Setting(i18n(quality, 3, 112), 3)
+                                    << Setting(i18n(quality, 4, 128), 4)
+                                    << Setting(i18n(quality, 5, 160), 5)
+                                    << Setting(i18n(quality, 6, 192), 6)
+                                    << Setting(i18n(quality, 7, 224), 7)
+                                    << Setting(i18n(quality, 8, 256), 8)
+                                    << Setting(i18n(quality, 9, 320), 9)
+                                    << Setting(i18n(quality, 10, 500), 10),
                    i18n("Smaller file"),
                    i18n("Better sound quality"),
                    6);
+
+    Encoder opus(i18n("Opus"),
+                   i18nc("Feel free to redirect the english Wikipedia link to a local version, if "
+                         "it exists.",
+                         "<a href=http://en.wikipedia.org/wiki/Opus_(audio_format)>Opus</a> is "
+                         "a patent-free digital audio codec using a form of lossy data compression."),
+                   i18n("The bitrate is a measure of the quantity of data used to represent a "
+                        "second of the audio track.<br>The <b>Opus</b> encoder used by Cantata supports "
+                        "a <a href=http://en.wikipedia.org/wiki/Variable_bitrate>variable bitrate (VBR)</a> "
+                        "setting, which means that the bitrate value fluctuates along the track "
+                        "based on the complexity of the audio content. More complex intervals of "
+                        "data are encoded with a higher bitrate than less complex ones; this "
+                        "approach yields overall better quality and a smaller file than having a "
+                        "constant bitrate throughout the track.<br>"
+                        "For this reason, the bitrate measure in this slider is just an estimate "
+                        "of the average bitrate of the encoded track.<br>"
+                        "<b>128kb/s</b> is a good choice for music listening on a portable player.<br/>"
+                        "Anything below <b>100kb/s</b> might be unsatisfactory for music and anything above "
+                        "<b>256kb/s</b> is probably overkill."),
+                   QLatin1String("opus"),
+                   command,
+                   QLatin1String("libopus"),
+                   QLatin1String("-ab"),
+                   i18n("Bitrate"),
+                   QList<Setting>() << Setting(i18n(vbr, 32), 32)
+                                    << Setting(i18n(vbr, 64), 64)
+                                    << Setting(i18n(vbr, 96), 96)
+                                    << Setting(i18n(vbr, 128), 128)
+                                    << Setting(i18n(vbr, 160), 160)
+                                    << Setting(i18n(vbr, 192), 192)
+                                    << Setting(i18n(vbr, 256), 256)
+                                    << Setting(i18n(vbr, 320), 320)
+                                    << Setting(i18n(vbr, 360), 360),
+                   i18n("Smaller file"),
+                   i18n("Better sound quality"),
+                   4,
+                   1000);
 
         if (!command.isEmpty()) {
             QList<Encoder> initial;
@@ -244,19 +280,20 @@ static void init()
                                 QLatin1String("-compression_level"),
                                 i18n("Compression level"),
                                 QList<Setting>() << Setting(QString::number(0), 0)
-                                << Setting(QString::number(1), 1)
-                                << Setting(QString::number(2), 2)
-                                << Setting(QString::number(3), 3)
-                                << Setting(QString::number(4), 4)
-                                << Setting(QString::number(5), 5)
-                                << Setting(QString::number(6), 6)
-                                << Setting(QString::number(7), 7)
-                                << Setting(QString::number(8), 8),
+                                                 << Setting(QString::number(1), 1)
+                                                 << Setting(QString::number(2), 2)
+                                                 << Setting(QString::number(3), 3)
+                                                 << Setting(QString::number(4), 4)
+                                                 << Setting(QString::number(5), 5)
+                                                 << Setting(QString::number(6), 6)
+                                                 << Setting(QString::number(7), 7)
+                                                 << Setting(QString::number(8), 8),
                                 i18n("Faster compression"),
                                 i18n("Smaller file"),
                                 5));
             initial.append(lame);
             initial.append(ogg);
+            initial.append(opus);
             initial.append(
                         Encoder(i18n("Windows Media Audio"),
                                 i18nc("Feel free to redirect the english Wikipedia link to a local version, if "
@@ -280,17 +317,18 @@ static void init()
                                 QLatin1String("wmav2"),
                                 QLatin1String("-ab"),
                                 i18n("Bitrate"),
-                                QList<Setting>() << Setting(i18n(cbr, 64), 65*1000)
-                                << Setting(i18n(cbr, 80), 75*1000)
-                                << Setting(i18n(cbr, 96), 88*1000)
-                                << Setting(i18n(cbr, 112), 106*1000)
-                                << Setting(i18n(cbr, 136), 133*1000)
-                                << Setting(i18n(cbr, 182), 180*1000)
-                                << Setting(i18n(cbr, 275), 271*1000)
-                                << Setting(i18n(cbr, 550), 545*1000),
+                                QList<Setting>() << Setting(i18n(cbr, 64), 65)
+                                                 << Setting(i18n(cbr, 80), 75)
+                                                 << Setting(i18n(cbr, 96), 88)
+                                                 << Setting(i18n(cbr, 112), 106)
+                                                 << Setting(i18n(cbr, 136), 133)
+                                                 << Setting(i18n(cbr, 182), 180)
+                                                 << Setting(i18n(cbr, 275), 271)
+                                                 << Setting(i18n(cbr, 550), 545),
                                 i18n("Smaller file"),
                                 i18n("Better sound quality"),
-                                4));
+                                4,
+                                1000));
 
             QProcess proc;
             proc.start(command, QStringList() << "-codecs");
@@ -330,6 +368,7 @@ static void init()
         insertCodec(QLatin1String("faac"), QLatin1String("-q"), aac);
         insertCodec(QLatin1String("lame"), QLatin1String("-V"), lame);
         insertCodec(QLatin1String("oggenc"), QLatin1String("-q"), ogg);
+        insertCodec(QLatin1String("opusenc"), QLatin1String("--bitrate"), opus);
         qSort(installedEncoders);
     }
 }
@@ -367,7 +406,7 @@ QStringList Encoder::params(int value, const QString &in, const QString &out) co
                 v=s.value;
             }
         }
-        p << param << QString::number(v);
+        p << param << QString::number(v*ffmpegValueAdjust);
     }
 
     if (transcoder) {

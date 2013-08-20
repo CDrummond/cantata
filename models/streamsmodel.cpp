@@ -472,6 +472,21 @@ QList<StreamsModel::Item *> StreamsModel::FavouritesCategoryItem::loadXml(QIODev
     return newItems;
 }
 
+void StreamsModel::IceCastCategoryItem::addHeaders(QNetworkRequest &req)
+{
+    req.setRawHeader("Accept-Encoding", "gzip");
+}
+
+void StreamsModel::ShoutCastCategoryItem::addHeaders(QNetworkRequest &req)
+{
+    req.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
+}
+
+void StreamsModel::DiCategoryItem::addHeaders(QNetworkRequest &req)
+{
+    DigitallyImported::self()->addAuthHeader(req);
+}
+
 StreamsModel::StreamsModel(QObject *parent)
     : ActionModel(parent)
     , root(new CategoryItem(QString(), "root"))
@@ -483,8 +498,8 @@ StreamsModel::StreamsModel(QObject *parent)
     tuneIn=new CategoryItem(constRadioTimeUrl+QLatin1String("?locale=")+QLocale::system().name(), i18n("TuneIn"), root, getIcon("tunein"), QString(), "tunein");
     tuneIn->supportsBookmarks=true;
     root->children.append(tuneIn);
-    root->children.append(new CategoryItem(constIceCastUrl, i18n("IceCast"), root, getIcon("icecast"), "icecast"));
-    root->children.append(new CategoryItem(constShoutCastUrl, i18n("ShoutCast"), root, getIcon("shoutcast")));
+    root->children.append(new IceCastCategoryItem(constIceCastUrl, i18n("IceCast"), root, getIcon("icecast"), "icecast"));
+    root->children.append(new ShoutCastCategoryItem(constShoutCastUrl, i18n("ShoutCast"), root, getIcon("shoutcast")));
     root->children.append(new CategoryItem(constSomaFMUrl, i18n("SomaFM"), root, getIcon("somafm"), "somafm"));
     root->children.append(new DiCategoryItem(constDigitallyImportedUrl, i18n("Digitally Imported"), root, getIcon("digitallyimported"), "di"));
     root->children.append(new DiCategoryItem(constJazzRadioUrl, i18n("JazzRadio.com"), root, getIcon("jazzradio"), "jazzradio"));
@@ -667,13 +682,10 @@ void StreamsModel::fetchMore(const QModelIndex &index)
             QNetworkRequest req;
             if (constDiUrls.contains(cat->url)) {
                 req=QNetworkRequest(constDiChannelListUrl.arg(cat->url.split(".").at(1)));
-                DigitallyImported::self()->addAuthHeader(req);
-            } else if (QUrl(item->url).host()==constShoutCastHost) {
-                req=QNetworkRequest(cat->url);
-                req.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
             } else {
                 req=QNetworkRequest(cat->url);
             }
+            cat->addHeaders(req);
 
             QNetworkReply *job=NetworkAccessManager::self()->get(req);
             job->setProperty(constOrigUrlProperty, cat->url);
@@ -1224,7 +1236,10 @@ static void trimGenres(QMap<QString, QList<StreamsModel::Item *> > &genres)
 QList<StreamsModel::Item *> StreamsModel::parseIceCastResponse(QIODevice *dev, CategoryItem *cat)
 {
     QList<Item *> newItems;
-    QXmlStreamReader doc(dev);
+    QtIOCompressor compressor(dev);
+    compressor.setStreamFormat(QtIOCompressor::GzipFormat);
+    compressor.open(QIODevice::ReadOnly);
+    QXmlStreamReader doc(&compressor);
     QSet<QString> names;
     QMap<QString, QList<Item *> > genres;
     while (!doc.atEnd()) {
@@ -1533,7 +1548,7 @@ QList<StreamsModel::Item *> StreamsModel::parseShoutCastResponse(QIODevice *dev,
         #endif
 
         QNetworkRequest req(url);
-        req.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
+        cat->addHeaders(req);
         QNetworkReply *job=NetworkAccessManager::self()->get(req);
         job->setProperty(constOrigUrlProperty, url.toString());
         if (jobs.isEmpty()) {
@@ -1551,9 +1566,9 @@ QList<StreamsModel::Item *> StreamsModel::parseShoutCastLinks(QXmlStreamReader &
     while (!doc.atEnd()) {
         doc.readNext();
         if (doc.isStartElement() && QLatin1String("genre")==doc.name()) {
-            newItems.append(new CategoryItem(QLatin1String("http://")+constShoutCastHost+QLatin1String("/genre/secondary?parentid=")+
-                                             doc.attributes().value("id").toString()+QLatin1String("&f=xml&k=")+constShoutCastApiKey,
-                                             doc.attributes().value("name").toString(), cat));
+            newItems.append(new ShoutCastCategoryItem(QLatin1String("http://")+constShoutCastHost+QLatin1String("/genre/secondary?parentid=")+
+                                                      doc.attributes().value("id").toString()+QLatin1String("&f=xml&k=")+constShoutCastApiKey,
+                                                      doc.attributes().value("name").toString(), cat));
         } else if (doc.isEndElement() && QLatin1String("genrelist")==doc.name()) {
             return newItems;
         }

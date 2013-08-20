@@ -31,6 +31,7 @@
 #include <QDateTime>
 
 class QNetworkReply;
+class QNetworkRequest;
 class QXmlStreamReader;
 class QIODevice;
 class QTimer;
@@ -84,6 +85,7 @@ public:
         bool saveXml(QIODevice *dev, bool format=false) const;
         QList<Item *> loadXml(const QString &fileName, bool importing=false);
         virtual QList<Item *> loadXml(QIODevice *dev, bool importing=false);
+        virtual void addHeaders(QNetworkRequest &) { }
 
         State state;
         bool isAll : 1;
@@ -105,6 +107,22 @@ public:
         bool canReload() const { return false; }
     };
 
+    struct IceCastCategoryItem : public CategoryItem
+    {
+        IceCastCategoryItem(const QString &u, const QString &n=QString(), CategoryItem *p=0, const QIcon &i=QIcon(),
+                            const QString &cn=QString(), const QString &bn=QString())
+            : CategoryItem(u, n, p, i, cn, bn) { }
+        void addHeaders(QNetworkRequest &req);
+    };
+
+    struct ShoutCastCategoryItem : public CategoryItem
+    {
+        ShoutCastCategoryItem(const QString &u, const QString &n=QString(), CategoryItem *p=0, const QIcon &i=QIcon(),
+                              const QString &cn=QString(), const QString &bn=QString())
+            : CategoryItem(u, n, p, i, cn, bn) { }
+        void addHeaders(QNetworkRequest &req);
+    };
+
     struct ListenLiveCategoryItem : public CategoryItem
     {
         ListenLiveCategoryItem(const QString &n, CategoryItem *p, const QIcon &i=QIcon())
@@ -117,6 +135,7 @@ public:
         DiCategoryItem(const QString &u, const QString &n, CategoryItem *p, const QIcon &i, const QString &cn)
             : CategoryItem(u, n, p, i, cn) { }
         bool canConfigure() const { return true; }
+        void addHeaders(QNetworkRequest &req);
     };
 
     struct XmlCategoryItem : public CategoryItem

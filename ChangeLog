@@ -5,6 +5,7 @@
 2. Add support for user-installable stream providers. Need to copy
    name.xml.gz, and name.svg/name.png to ~/.config/cantata/streams - or
    PREFIX/share/cantata/streams
+3. Request IceCast stream list in compressed format.
 
 1.1.1
 -----

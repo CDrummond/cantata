@@ -1723,8 +1723,8 @@ void StreamsModel::buildXml()
     #ifdef Q_OS_WIN
     QStringList dirs=QStringList() << QCoreApplication::applicationDirPath()+"/streams/";
     #else
-    QStringList dirs=QStringList() << INSTALL_PREFIX "/share/cantata/streams/"
-                                   << Utils::configDir("streams");
+    QStringList dirs=QStringList() << Utils::configDir("streams")
+                                   << INSTALL_PREFIX "/share/cantata/streams/";
     #endif
     QSet<QString> added;
 

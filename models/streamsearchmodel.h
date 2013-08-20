@@ -39,6 +39,11 @@ class StreamSearchModel : public ActionModel
     Q_OBJECT
 
 public:
+    enum Category {
+        TuneIn,
+        ShoutCast
+    };
+
     StreamSearchModel(QObject *parent = 0);
     ~StreamSearchModel();
     QModelIndex index(int, int, const QModelIndex & = QModelIndex()) const;
@@ -59,6 +64,8 @@ public:
     void clear();
     void search(const QString &searchTerm, bool stationsOnly);
     void cancelAll();
+    Category cat() const { return category; }
+    void setCat(Category c) { category=c; }
  
 Q_SIGNALS:
     void loading();
@@ -74,6 +81,7 @@ private:
     StreamsModel::Item * parseRadioTimeEntry(QXmlStreamReader &doc, StreamsModel::CategoryItem *parent);
 
 private:
+    Category category;
     QMap<QNetworkReply *, StreamsModel::CategoryItem *> jobs;
     StreamsModel::CategoryItem *root;
     QString currentSearch;

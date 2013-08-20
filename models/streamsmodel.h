@@ -124,6 +124,8 @@ public:
         XmlCategoryItem(const QString &n, CategoryItem *p, const QIcon &i, const QString &cn)
             : CategoryItem("-", n, p, i, cn) { }
         QList<Item *> loadCache();
+        bool canReload() const { return false; }
+        void removeCache() { }
     };
 
     static const QString constPrefix;

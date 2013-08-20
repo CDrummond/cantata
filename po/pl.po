@@ -2976,7 +2976,7 @@ msgid "<b>(Priority: %1)</b>"
 msgstr "<b>(Priorytet: %1)</b>"
 
 #: models/streamsearchmodel.cpp:117 models/streamsmodel.cpp:555
-msgid "No Loaded"
+msgid "Not Loaded"
 msgstr "Nie załadowano"
 
 #: models/streamsearchmodel.cpp:119 models/streamsmodel.cpp:557

@@ -603,7 +603,7 @@ QVariant StreamsModel::data(const QModelIndex &index, int role) const
             const CategoryItem *cat=static_cast<const CategoryItem *>(item);
             switch (cat->state) {
             case CategoryItem::Initial:
-                return i18n("No Loaded");
+                return i18n("Not Loaded");
             case CategoryItem::Fetching:
                 return i18n("Loading...");
             default:

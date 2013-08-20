@@ -238,6 +238,28 @@ void StreamSearchModel::clear()
     endRemoveRows();
 }
 
+static int getParam(const QString &key, QString &query)
+{
+    int index=query.indexOf(" "+key+"=");
+    int val=0;
+    if (-1!=index) {
+        int endPos=query.indexOf(" ", index+3);
+        int end=endPos;
+        if (-1==end) {
+            end=query.length()-1;
+        }
+        int start=index+key.length()+2;
+        val=query.mid(start, (end+1)-start).toInt();
+        if (endPos>start) {
+            query=query.left(index)+query.mid(endPos);
+            query=query.trimmed();
+        } else {
+            query=query.left(index);
+        }
+    }
+    return val;
+}
+
 void StreamSearchModel::search(const QString &searchTerm, bool stationsOnly)
 {
     if (searchTerm==currentSearch) {
@@ -263,14 +285,22 @@ void StreamSearchModel::search(const QString &searchTerm, bool stationsOnly)
             query.addQueryItem("locale", locale);
         }
     } else {
+        QString search=searchTerm;
+        int limit=getParam("limit", search);
+        int bitrate=getParam("br", search);
+        if (0==bitrate) {
+            bitrate=getParam("bitrate", search);
+        }
         query.addQueryItem("k", StreamsModel::constShoutCastApiKey);
-        query.addQueryItem("search", searchTerm);
-        query.addQueryItem("limit", "200");
+        query.addQueryItem("search", search);
+        query.addQueryItem("limit", QString::number(limit<1 ? 100 : limit));
+        if (bitrate>=32 && bitrate<=512) {
+            query.addQueryItem("br", QString::number(bitrate));
+        }
     }
     #if QT_VERSION >= 0x050000
     searchUrl.setQuery(query);
     #endif
-
     QNetworkReply *job=NetworkAccessManager::self()->get(searchUrl);
     if (jobs.isEmpty()) {
         emit loading();

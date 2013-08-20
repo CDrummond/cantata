@@ -116,11 +116,9 @@ StreamsPage::StreamsPage(QWidget *p)
     searchView->addAction(StreamsModel::self()->addBookmarkAct());
     searchProxy.setSourceModel(&searchModel);
     searchView->setModel(&searchProxy);
-    searchView->setBackgroundImage(StreamsModel::self()->tuneInIcon());
 
     diStatusLabel->setText("DI");
-    updateDiStatus();
-    searchView->setSearchLabelText(i18n("Search TuneIn:"));
+    updateDiStatus();  
 }
 
 StreamsPage::~StreamsPage()
@@ -505,13 +503,37 @@ void StreamsPage::searchItems()
     searchModel.search(searchView->searchText().trimmed(), false);
 }
 
+StreamSearchModel::Category StreamsPage::getSearchCategory()
+{
+    bool srch=searching;
+    searching=false;
+    QModelIndexList selected = itemView()->selectedIndexes();
+    searching=srch;
+
+    if (1!=selected.size()) {
+        return StreamSearchModel::TuneIn;
+    }
+
+    QModelIndex index=proxy->mapToSource(selected.first());
+    const StreamsModel::Item *item=static_cast<StreamsModel::Item *>(index.internalPointer());
+    if (!item) {
+        return StreamSearchModel::TuneIn;
+    }
+    const StreamsModel::CategoryItem *cat=item->getTopLevelCategory();
+    return !cat || StreamsModel::self()->isTuneIn(cat) ? StreamSearchModel::TuneIn : StreamSearchModel::ShoutCast;
+}
+
 void StreamsPage::controlSearch(bool on)
 {
     if (on!=searching) {
         searching=on;
         if (searching) {
+            StreamSearchModel::Category cat=getSearchCategory();
             proxy=&searchProxy;
             view->clearSelection();
+            searchModel.setCat(cat);
+            searchView->setSearchLabelText(StreamSearchModel::TuneIn==cat ? i18n("Search TuneIn:") : i18n("Search ShoutCast:"));
+            searchView->setBackgroundImage(StreamSearchModel::TuneIn==cat ? StreamsModel::self()->tuneInIcon() : StreamsModel::self()->shoutCastIcon());
         } else {
             proxy=&streamsProxy;
             searchModel.clear();

@@ -2969,7 +2969,7 @@ msgid "<b>(Priority: %1)</b>"
 msgstr "<b>(Přednost: %1)</b>"
 
 #: models/streamsearchmodel.cpp:117 models/streamsmodel.cpp:555
-msgid "No Loaded"
+msgid "Not Loaded"
 msgstr "Nenahráno"
 
 #: models/streamsearchmodel.cpp:119 models/streamsmodel.cpp:557

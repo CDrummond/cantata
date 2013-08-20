@@ -2794,7 +2794,7 @@ msgstr "<b>(属性: %1)</b>"
 
 #: models/streamsearchmodel.cpp:117 models/streamsmodel.cpp:555
 #, fuzzy
-msgid "No Loaded"
+msgid "Not Loaded"
 msgstr "未加载"
 
 #: models/streamsearchmodel.cpp:119 models/streamsmodel.cpp:557

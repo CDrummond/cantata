@@ -41,9 +41,11 @@
 #endif
 
 static QString constRadioTimeSearchUrl=QLatin1String("http://opml.radiotime.com/Search.ashx");
+static QString constShoutCastSearchUrl=QLatin1String("http://")+StreamsModel::constShoutCastHost+QLatin1String("/legacy/genrelist");
 
 StreamSearchModel::StreamSearchModel(QObject *parent)
     : ActionModel(parent)
+    , category(TuneIn)
     , root(new StreamsModel::CategoryItem(QString(), "root"))
 {
 }
@@ -232,6 +234,7 @@ void StreamSearchModel::clear()
     beginRemoveRows(QModelIndex(), 0, root->children.count()-1);
     qDeleteAll(root->children);
     root->children.clear();
+    currentSearch=QString();
     endRemoveRows();
 }
 
@@ -243,20 +246,26 @@ void StreamSearchModel::search(const QString &searchTerm, bool stationsOnly)
 
     clear();
     
-    QUrl searchUrl(constRadioTimeSearchUrl);
+    QUrl searchUrl(TuneIn==category ? constRadioTimeSearchUrl : constShoutCastSearchUrl);
     #if QT_VERSION < 0x050000
     QUrl &query=searchUrl;
     #else
     QUrlQuery query;
     #endif
 
-    if (stationsOnly) {
-        query.addQueryItem("types", "station");
-    }
-    query.addQueryItem("query", searchTerm);
-    QString locale=QLocale::system().name();
-    if (!locale.isEmpty()) {
-        query.addQueryItem("locale", locale);
+    if (TuneIn==category) {
+        if (stationsOnly) {
+            query.addQueryItem("types", "station");
+        }
+        query.addQueryItem("query", searchTerm);
+        QString locale=QLocale::system().name();
+        if (!locale.isEmpty()) {
+            query.addQueryItem("locale", locale);
+        }
+    } else {
+        query.addQueryItem("k", StreamsModel::constShoutCastApiKey);
+        query.addQueryItem("search", searchTerm);
+        query.addQueryItem("limit", "200");
     }
     #if QT_VERSION >= 0x050000
     searchUrl.setQuery(query);
@@ -300,7 +309,9 @@ void StreamSearchModel::jobFinished()
 
         QModelIndex index=cat==root ? QModelIndex() : createIndex(cat->parent->children.indexOf(cat), 0, (void *)cat);
         if (QNetworkReply::NoError==job->error()) {
-            QList<StreamsModel::Item *> newItems=StreamsModel::parseRadioTimeResponse(job, cat, true);
+            QList<StreamsModel::Item *> newItems=TuneIn==category
+                                                    ? StreamsModel::parseRadioTimeResponse(job, cat, true)
+                                                    : StreamsModel::parseShoutCastSearchResponse(job, cat);
             if (!newItems.isEmpty()) {
                 beginInsertRows(index, cat->children.count(), (cat->children.count()+newItems.count())-1);
                 cat->children+=newItems;

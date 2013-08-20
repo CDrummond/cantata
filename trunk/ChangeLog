@@ -6,6 +6,7 @@
    name.xml.gz, and name.svg/name.png to ~/.config/cantata/streams - or
    PREFIX/share/cantata/streams
 3. Request IceCast stream list in compressed format.
+4. Add ShoutCast earch.
 
 1.1.1
 -----

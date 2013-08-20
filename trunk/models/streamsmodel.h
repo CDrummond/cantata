@@ -51,6 +51,7 @@ public:
         QString subText;
         CategoryItem *parent;
         virtual bool isCategory() const { return false; }
+        const CategoryItem *getTopLevelCategory() const;
     };
     
     struct CategoryItem : public Item
@@ -151,6 +152,9 @@ public:
     static const QString constCacheDir;
     static const QString constCacheExt;
 
+    static const QString constShoutCastApiKey;
+    static const QString constShoutCastHost;
+
     static StreamsModel * self();
     static QString favouritesDir();
     static QString modifyUrl(const QString &u,  bool addPrefix=true, const QString &name=QString());
@@ -190,6 +194,8 @@ public:
     QModelIndex favouritesIndex() const;
     const QIcon & favouritesIcon() const { return favourites->icon; }
     const QIcon & tuneInIcon() const { return tuneIn->icon; }
+    const QIcon & shoutCastIcon() const { return shoutCast->icon; }
+    bool isTuneIn(const CategoryItem *cat) const { return tuneIn==cat; }
 
     QStringList filenames(const QModelIndexList &indexes, bool addPrefix) const;
     QMimeData * mimeData(const QModelIndexList &indexes) const;
@@ -211,9 +217,10 @@ public:
     static QList<Item *> parseSomaFmResponse(QIODevice *dev, CategoryItem *cat);
     static QList<Item *> parseDigitallyImportedResponse(QIODevice *dev, CategoryItem *cat);
     static QList<Item *> parseListenLiveResponse(QIODevice *dev, CategoryItem *cat);
+    static QList<Item *> parseShoutCastSearchResponse(QIODevice *dev, CategoryItem *cat);
     QList<Item *> parseShoutCastResponse(QIODevice *dev, CategoryItem *cat, const QString &origUrl);
-    QList<Item *> parseShoutCastLinks(QXmlStreamReader &doc, CategoryItem *cat);
-    QList<Item *> parseShoutCastStations(QXmlStreamReader &doc, CategoryItem *cat);
+    static QList<Item *> parseShoutCastLinks(QXmlStreamReader &doc, CategoryItem *cat);
+    static QList<Item *> parseShoutCastStations(QXmlStreamReader &doc, CategoryItem *cat);
     static Item * parseRadioTimeEntry(QXmlStreamReader &doc, CategoryItem *parent, bool parseSubText=false);
     static Item * parseSomaFmEntry(QXmlStreamReader &doc, CategoryItem *parent);
 
@@ -233,6 +240,7 @@ private:
     CategoryItem *root;
     CategoryItem *favourites;
     CategoryItem *tuneIn;
+    CategoryItem *shoutCast;
     CategoryItem *listenLive;
     bool favouritesIsWriteable;
     bool favouritesModified;

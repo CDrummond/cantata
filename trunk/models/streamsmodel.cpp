@@ -77,6 +77,9 @@ const QString StreamsModel::constPrefix=QLatin1String("cantata-");
 const QString StreamsModel::constCacheDir=QLatin1String("streams");
 const QString StreamsModel::constCacheExt=QLatin1String(".xml.gz");
 
+const QString StreamsModel::constShoutCastApiKey=QLatin1String("fa1669MuiRPorUBw");
+const QString StreamsModel::constShoutCastHost=QLatin1String("api.shoutcast.com");
+
 static const char * constOrigUrlProperty = "orig-url";
 
 static QString constRadioTimeHost=QLatin1String("opml.radiotime.com");
@@ -148,6 +151,15 @@ static QString categoryCacheName(const QString &name, bool createDir=false)
 static QString categoryBookmarksName(const QString &name, bool createDir=false)
 {
     return Utils::configDir(QLatin1String("bookmarks"), createDir)+name+StreamsModel::constCacheExt;
+}
+
+const StreamsModel::CategoryItem * StreamsModel::Item::getTopLevelCategory() const
+{
+    const StreamsModel::Item *item=this;
+    while (item->parent && item->parent->parent) {
+        item=item->parent;
+    }
+    return item && item->isCategory() ? static_cast<const CategoryItem *>(item) : 0;
 }
 
 void StreamsModel::CategoryItem::removeBookmarks()
@@ -499,7 +511,8 @@ StreamsModel::StreamsModel(QObject *parent)
     tuneIn->supportsBookmarks=true;
     root->children.append(tuneIn);
     root->children.append(new IceCastCategoryItem(constIceCastUrl, i18n("IceCast"), root, getIcon("icecast"), "icecast"));
-    root->children.append(new ShoutCastCategoryItem(constShoutCastUrl, i18n("ShoutCast"), root, getIcon("shoutcast")));
+    shoutCast=new ShoutCastCategoryItem(constShoutCastUrl, i18n("ShoutCast"), root, getIcon("shoutcast"));
+    root->children.append(shoutCast);
     root->children.append(new CategoryItem(constSomaFMUrl, i18n("SomaFM"), root, getIcon("somafm"), "somafm"));
     root->children.append(new DiCategoryItem(constDigitallyImportedUrl, i18n("Digitally Imported"), root, getIcon("digitallyimported"), "di"));
     root->children.append(new DiCategoryItem(constJazzRadioUrl, i18n("JazzRadio.com"), root, getIcon("jazzradio"), "jazzradio"));
@@ -611,7 +624,7 @@ QVariant StreamsModel::data(const QModelIndex &index, int role) const
             if (static_cast<const CategoryItem *>(item)->canReload()) {
                 actions << reloadAction;
             }
-            if (tuneIn==item) {
+            if (tuneIn==item || shoutCast==item) {
                 actions << StdActions::self()->searchAction;
             }
             if (static_cast<const CategoryItem *>(item)->canBookmark) {
@@ -1514,6 +1527,19 @@ QList<StreamsModel::Item *> StreamsModel::parseListenLiveResponse(QIODevice *dev
         newItems.append(genre);
     }
 
+    return newItems;
+}
+
+QList<StreamsModel::Item *> StreamsModel::parseShoutCastSearchResponse(QIODevice *dev, CategoryItem *cat)
+{
+    QList<Item *> newItems;
+    QXmlStreamReader doc(dev);
+    while (!doc.atEnd()) {
+        doc.readNext();
+        if (doc.isStartElement() && QLatin1String("stationlist")==doc.name()) {
+            newItems+=parseShoutCastStations(doc, cat);
+        }
+    }
     return newItems;
 }
 

@@ -78,6 +78,7 @@ private Q_SLOTS:
 
 private:
     void addItemsToPlayQueue(const QModelIndexList &indexes, bool replace, quint8 priorty=0);
+    StreamSearchModel::Category getSearchCategory();
 
 private:
     bool enabled;

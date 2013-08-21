@@ -1,18 +1,19 @@
 ﻿1.1.1
 -----
-1. Fix crash in settings dialog if current connection name is removed from
-   config file.
-2. Fix starting of per-user MPD instance.
-3. For Qt-only Linux builds, set file permissions of config file so that others
-   cannot read the file - as MPD, Magnatune, or DigitallyImported passwords
-   will be saved here.
-4. Fix reading of genres from cache file.
-5. Fix updating of genres after DB is refreshed.
-6. Dont use https for context view searches.
-7. Work-around Windows and QJson issue.
-8. Remove cantata prefix when showing status message about fetching streams.
-9. When adding streams that have a name assinged, but no path, then add a
-   trailing slash.
+ 1. Fix crash in settings dialog if current connection name is removed from
+    config file.
+ 2. Fix starting of per-user MPD instance.
+ 3. For Qt-only Linux builds, set file permissions of config file so that
+    others cannot read the file - as MPD, Magnatune, or DigitallyImported
+    passwords will be saved here.
+ 4. Fix reading of genres from cache file.
+ 5. Fix updating of genres after DB is refreshed.
+ 6. Dont use https for context view searches.
+ 7. Work-around Windows and QJson issue.
+ 8. Remove cantata prefix when showing status message about fetching streams.
+ 9. When adding streams that have a name assinged, but no path, then add a
+    trailing slash.
+10. Fix 'Add Stream URL' action in builds where device support is disabled.
 
 1.1.0
 -----

@@ -352,7 +352,7 @@ void StreamsPage::addToFavourites()
         if (urlStr.endsWith('&')) {
             urlStr=urlStr.left(urlStr.length()-1);
         }
-        if (StreamsModel::self()->addToFavourites(urlStr, item->name)) {
+        if (StreamsModel::self()->addToFavourites(urlStr, item->modifiedName())) {
             added++;
         }
     }

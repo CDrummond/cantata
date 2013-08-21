@@ -7,6 +7,9 @@
    PREFIX/share/cantata/streams
 3. Request IceCast stream list in compressed format.
 4. Add ShoutCast earch.
+5. For some stream categories (digitally imported, jazzradio, rockradio, sky,
+   somaFm, and some user categories) add category name to stream name when it
+   is saved in favourites, or added to playqueue.
 
 1.1.1
 -----

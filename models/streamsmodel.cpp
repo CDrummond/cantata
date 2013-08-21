@@ -153,6 +153,18 @@ static QString categoryBookmarksName(const QString &name, bool createDir=false)
     return Utils::configDir(QLatin1String("bookmarks"), createDir)+name+StreamsModel::constCacheExt;
 }
 
+QString StreamsModel::Item::modifiedName() const
+{
+    if (isCategory()) {
+        return name;
+    }
+    const CategoryItem *cat=getTopLevelCategory();
+    if (!cat || !cat->addCatToModifiedName) {
+        return name;
+    }
+    return cat->name+QLatin1String(" - ")+name;
+}
+
 const StreamsModel::CategoryItem * StreamsModel::Item::getTopLevelCategory() const
 {
     const StreamsModel::Item *item=this;
@@ -418,7 +430,11 @@ QList<StreamsModel::Item *> StreamsModel::CategoryItem::loadXml(QIODevice *dev, 
         doc.readNext();
 
         if (doc.isStartElement()) {
-            if (QLatin1String("stream")==doc.name()) {
+            if (QLatin1String("streams")==doc.name()) {
+                if (QLatin1String("true")==doc.attributes().value("addCategoryName").toString()) {
+                    addCatToModifiedName=true;
+                }
+            } else if (QLatin1String("stream")==doc.name()) {
                 QString name=doc.attributes().value("name").toString();
                 QString url=doc.attributes().value("url").toString();
                 if (currentCat==this) {
@@ -434,7 +450,7 @@ QList<StreamsModel::Item *> StreamsModel::CategoryItem::loadXml(QIODevice *dev, 
                 currentCat->isAll=QLatin1String("true")==doc.attributes().value("isAll").toString();
                 newItems.append(currentCat);
             }
-        } if (doc.isEndElement() && QLatin1String("category")==doc.name()) {
+        } else if (doc.isEndElement() && QLatin1String("category")==doc.name()) {
             currentCat=prevCat;
         }
     }
@@ -513,7 +529,7 @@ StreamsModel::StreamsModel(QObject *parent)
     root->children.append(new IceCastCategoryItem(constIceCastUrl, i18n("IceCast"), root, getIcon("icecast"), "icecast"));
     shoutCast=new ShoutCastCategoryItem(constShoutCastUrl, i18n("ShoutCast"), root, getIcon("shoutcast"));
     root->children.append(shoutCast);
-    root->children.append(new CategoryItem(constSomaFMUrl, i18n("SomaFM"), root, getIcon("somafm"), "somafm"));
+    root->children.append(new CategoryItem(constSomaFMUrl, i18n("SomaFM"), root, getIcon("somafm"), "somafm", QString(), true));
     root->children.append(new DiCategoryItem(constDigitallyImportedUrl, i18n("Digitally Imported"), root, getIcon("digitallyimported"), "di"));
     root->children.append(new DiCategoryItem(constJazzRadioUrl, i18n("JazzRadio.com"), root, getIcon("jazzradio"), "jazzradio"));
     root->children.append(new DiCategoryItem(constRockRadioUrl, i18n("RockRadio.com"), root, getIcon("rockradio"), "rockradio"));
@@ -960,7 +976,7 @@ static void filenames(QStringList &fn, bool addPrefix, const StreamsModel::Categ
         if (i->isCategory()) {
             ::filenames(fn, addPrefix, static_cast<const StreamsModel::CategoryItem *>(i));
         } else if (!fn.contains(i->url) && StreamsModel::validProtocol(i->url)) {
-            fn << StreamsModel::modifyUrl(addDiHash(i), addPrefix, i->name);
+            fn << StreamsModel::modifyUrl(addDiHash(i), addPrefix, addPrefix ? i->modifiedName() : i->name);
         }
     }
 }
@@ -974,7 +990,7 @@ QStringList StreamsModel::filenames(const QModelIndexList &indexes, bool addPref
         if (item->isCategory()) {
             ::filenames(fnames, addPrefix, static_cast<const StreamsModel::CategoryItem *>(item));
         } else if (!fnames.contains(item->url) && validProtocol(item->url)) {
-            fnames << modifyUrl(addDiHash(item), addPrefix, item->name);
+            fnames << modifyUrl(addDiHash(item), addPrefix, addPrefix ? item->modifiedName() : item->name);
         }
     }
 

@@ -46,6 +46,7 @@ public:
     {
         Item(const QString &u, const QString &n=QString(), CategoryItem *p=0, const QString &sub=QString()) : url(u), name(n), subText(sub), parent(p) { }
         virtual ~Item() { }
+        QString modifiedName() const;
         QString url;
         QString name;
         QString subText;
@@ -64,9 +65,9 @@ public:
         };
 
         CategoryItem(const QString &u, const QString &n=QString(), CategoryItem *p=0, const QIcon &i=QIcon(),
-                     const QString &cn=QString(), const QString &bn=QString())
+                     const QString &cn=QString(), const QString &bn=QString(), bool modName=false)
             : Item(u, n, p), state(Initial), isAll(false), isBookmarks(false), supportsBookmarks(false),
-              canBookmark(false), icon(i), cacheName(cn), bookmarksName(bn)  { }
+              canBookmark(false), addCatToModifiedName(modName), icon(i), cacheName(cn), bookmarksName(bn) { }
 
         virtual ~CategoryItem() { qDeleteAll(children); }
         virtual bool isCategory() const { return true; }
@@ -93,6 +94,7 @@ public:
         bool isBookmarks : 1; // 'Virtual' bookmarks category...
         bool supportsBookmarks : 1; // Intended for top-level items, indicates if bookmarks can be added
         bool canBookmark : 1; // Can this category be bookmark'ed in top-level parent? can have the cache
+        bool addCatToModifiedName : 1; // When adding to playqueue/favourites, should name contian category?
         QList<Item *> children;
         QIcon icon;
         QString cacheName;
@@ -134,7 +136,7 @@ public:
     struct DiCategoryItem : public CategoryItem
     {
         DiCategoryItem(const QString &u, const QString &n, CategoryItem *p, const QIcon &i, const QString &cn)
-            : CategoryItem(u, n, p, i, cn) { }
+            : CategoryItem(u, n, p, i, cn, QString(), true) { }
         bool canConfigure() const { return true; }
         void addHeaders(QNetworkRequest &req);
     };
@@ -142,7 +144,7 @@ public:
     struct XmlCategoryItem : public CategoryItem
     {
         XmlCategoryItem(const QString &n, CategoryItem *p, const QIcon &i, const QString &cn)
-            : CategoryItem("-", n, p, i, cn) { }
+            : CategoryItem("-", n, p, i, cn, QString(), true) { }
         QList<Item *> loadCache();
         bool canReload() const { return false; }
         void removeCache() { }

@@ -259,13 +259,12 @@ public:
                 title=i18n("Unknown");
                 track=trackTitle;
             } else {
-                QString album=song.album;
                 quint16 year=Song::albumYear(song);
 
                 if (year>0) {
-                    title=i18nc("artist - album (albumYear)", "%1 - %2 (%3)", song.albumArtist(), album, year);
+                    title=i18nc("artist - album (albumYear)", "%1 - %2 (%3)", song.artistOrComposer(), song.albumName(), year);
                 } else {
-                    title=i18nc("artist - album", "%1 - %2", song.albumArtist(), album);
+                    title=i18nc("artist - album", "%1 - %2", song.artistOrComposer(), song.albumName());
                 }
                 track=formatNumber(song.track)+QChar(' ')+trackTitle;
             }

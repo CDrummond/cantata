@@ -4134,10 +4134,10 @@ msgstr "Standardní nastavení pro více uživatelů/server"
 #: po/rc.cpp:379 rc.cpp:379
 msgid ""
 "<i>Select this option if your music collection is not shared with others, "
-"and you wish Cantata to configure and control the MPD instance.</i>\n"
+"and you wish Cantata to configure and control the MPD instance.</i>"
 msgstr ""
 "<i>Tuto volbu vyberte v případě, že vaše sbírka není sdílena s ostatními, "
-"a vy si přejete, aby Cantata nastavila a řídila instanci MPD.</i>\n"
+"a vy si přejete, aby Cantata nastavila a řídila instanci MPD.</i>"
 
 #. i18n: file: gui/initialsettingswizard.ui:225
 #. i18n: ectx: property (text), widget (BuddyLabel, label_10)

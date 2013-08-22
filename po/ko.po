@@ -4012,10 +4012,10 @@ msgstr "표준 다수 사용자/서버 설정"
 #: po/rc.cpp:379 rc.cpp:379
 msgid ""
 "<i>Select this option if your music collection is not shared with others, "
-"and you wish Cantata to configure and control the MPD instance.</i>\n"
+"and you wish Cantata to configure and control the MPD instance.</i>"
 msgstr ""
 "<i>음원을 다른 사용자와 공유하지 않고 칸타타가 MPD를 설정하고 관리하려면, "
-"이 옵션을 선택합니다.</i>\n"
+"이 옵션을 선택합니다.</i>"
 
 #. i18n: file: gui/initialsettingswizard.ui:225
 #. i18n: ectx: property (text), widget (BuddyLabel, label_10)

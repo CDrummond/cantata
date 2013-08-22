@@ -27,7 +27,6 @@
 #include "localize.h"
 #include <QRegExp>
 #include <QProcess>
-#include <QDebug>
 
 namespace Encoders
 {

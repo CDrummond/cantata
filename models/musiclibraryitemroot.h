@@ -97,6 +97,7 @@ public:
     bool useLargeImages() const { return largeImages; }
     void setLargeImages(bool a) { largeImages=a; }
     void toggleGrouping();
+    void applyGrouping();
     void clearItems();
     void setModel(MusicModel *m) { m_model=m; }
     bool flat() const { return isFlat; }

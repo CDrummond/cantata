@@ -85,7 +85,7 @@ void MusicScanner::scan(const QString &folder, const QString &cacheFile, bool re
         MusicLibraryModel::convertCache(cacheFile);
         readProgress(0.0);
         if (lib->fromXML(cacheFile, QDateTime(), folder)) {
-            fixLibrary(lib);
+            lib->applyGrouping();
             if (!stopRequested) {
                 emit libraryUpdated(lib);
             } else {
@@ -108,7 +108,7 @@ void MusicScanner::scan(const QString &folder, const QString &cacheFile, bool re
     scanFolder(library, topLevel, topLevel, existing, 0);
 
     if (!stopRequested) {
-        fixLibrary(library);
+        library->applyGrouping();
         if (!cacheFile.isEmpty()) {
             writeProgress(0.0);
             library->toXML(cacheFile, QDateTime(), this);
@@ -116,16 +116,6 @@ void MusicScanner::scan(const QString &folder, const QString &cacheFile, bool re
         emit libraryUpdated(library);
     } else {
         delete library;
-    }
-}
-
-void MusicScanner::fixLibrary(MusicLibraryItemRoot *lib)
-{
-    if (!stopRequested && MPDParseUtils::groupSingle()) {
-        lib->groupSingleTracks();
-    }
-    if (!stopRequested && MPDParseUtils::groupMultiple()) {
-        lib->groupMultipleArtists();
     }
 }
 

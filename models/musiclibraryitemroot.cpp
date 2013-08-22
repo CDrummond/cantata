@@ -655,6 +655,7 @@ quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime 
             // ...so, just apply grouping!
             groupSingleTracks();
             groupMultipleArtists();
+            updateGenres();
         } else {
             // Mixed grouping, so need to redo from scratch...
             toggleGrouping();
@@ -723,12 +724,18 @@ void MusicLibraryItemRoot::toggleGrouping()
     }
 
     // Library rebuilt, now apply any grouping...
+    applyGrouping();
+}
+
+void MusicLibraryItemRoot::applyGrouping()
+{
     if (MPDParseUtils::groupSingle()) {
         groupSingleTracks();
     }
     if (MPDParseUtils::groupMultiple()) {
         groupMultipleArtists();
     }
+    updateGenres();
 }
 
 void MusicLibraryItemRoot::clearItems()

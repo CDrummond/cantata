@@ -568,14 +568,7 @@ MusicLibraryItemRoot * MPDParseUtils::parseLibraryItems(const QByteArray &data, 
             }
         }
     }
-
-    if (groupSingleTracks) {
-        rootItem->groupSingleTracks();
-    }
-    if (groupMultipleArtists) {
-        rootItem->groupMultipleArtists();
-    }
-
+    rootItem->applyGrouping();
     return rootItem;
 }
 

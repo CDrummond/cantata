@@ -412,13 +412,7 @@ void MtpConnection::updateLibrary()
             }
         }
         #endif
-
-        if (MPDParseUtils::groupSingle()) {
-            library->groupSingleTracks();
-        }
-        if (MPDParseUtils::groupMultiple()) {
-            library->groupMultipleArtists();
-        }
+        library->applyGrouping();
         emit libraryUpdated();
     }
 }

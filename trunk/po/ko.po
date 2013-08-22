@@ -2834,7 +2834,8 @@ msgstr "최근 찾기:%1"
 msgid "Searching..."
 msgstr "찾기..."
 
-#: models/onlineservicesmodel.cpp:139
+#: models/onlineservicesmodel.cpp:139 models/streamsearchmodel.cpp:117
+#: models/streamsmodel.cpp:544
 msgid "Not Loaded"
 msgstr "읽지 않음"
 
@@ -2868,10 +2869,6 @@ msgstr "연도"
 #: models/playqueuemodel.cpp:363
 msgid "<b>(Priority: %1)</b>"
 msgstr "<b>(우선순위: %1)</b>"
-
-#: models/streamsearchmodel.cpp:117 models/streamsmodel.cpp:555
-msgid "Not Loaded"
-msgstr "읽지 않음"
 
 #: models/streamsearchmodel.cpp:119 models/streamsmodel.cpp:557
 msgid "Loading..."

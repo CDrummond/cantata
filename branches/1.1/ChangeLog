@@ -1,4 +1,8 @@
-﻿1.1.1
+﻿1.1.2
+-----
+1. Fix build due to broken translation files.
+
+1.1.1
 -----
  1. Fix crash in settings dialog if current connection name is removed from
     config file.

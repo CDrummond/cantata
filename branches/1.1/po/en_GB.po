@@ -2649,7 +2649,8 @@ msgstr ""
 msgid "Searching..."
 msgstr ""
 
-#: models/onlineservicesmodel.cpp:139
+#: models/onlineservicesmodel.cpp:139 models/streamsearchmodel.cpp:117
+#: models/streamsmodel.cpp:544
 msgid "Not Loaded"
 msgstr ""
 
@@ -2682,10 +2683,6 @@ msgstr ""
 
 #: models/playqueuemodel.cpp:363
 msgid "<b>(Priority: %1)</b>"
-msgstr ""
-
-#: models/streamsearchmodel.cpp:117 models/streamsmodel.cpp:555
-msgid "Not Loaded"
 msgstr ""
 
 #: models/streamsearchmodel.cpp:119 models/streamsmodel.cpp:557

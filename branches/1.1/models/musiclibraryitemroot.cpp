@@ -584,12 +584,14 @@ quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime 
                     } else {
                         song.genre=genre;
                     }
-                    song.artist=attributes.value(constArtistAttribute).toString();
-                    if (song.artist.isEmpty()) {
+                    if (attributes.hasAttribute(constArtistAttribute)) {
+                        song.artist=attributes.value(constArtistAttribute).toString();
+                    } else {
                         song.artist=artistItem->data();
                     }
-                    song.albumartist=attributes.value(constAlbumArtistAttribute).toString();
-                    if (song.albumartist.isEmpty()) {
+                    if (attributes.hasAttribute(constAlbumArtistAttribute)) {
+                        song.albumartist=attributes.value(constAlbumArtistAttribute).toString();
+                    } else {
                         song.albumartist=artistItem->data();
                     }
 

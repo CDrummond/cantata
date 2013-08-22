@@ -160,6 +160,7 @@ public:
     virtual void removeCache() { }
 
     #ifndef Q_OS_WIN
+    void toggleGrouping();
     virtual void saveCache();
     const QString & id() const { return deviceId; }
     void applyUpdate();

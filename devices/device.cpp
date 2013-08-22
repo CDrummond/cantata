@@ -149,6 +149,12 @@ Song Device::fixPath(const Song &orig, bool fullPath) const
 
 #include <unistd.h>
 
+void Device::toggleGrouping()
+{
+    MusicLibraryItemRoot::toggleGrouping();
+    saveCache();
+}
+
 const QLatin1String Device::constNoCover("-");
 const QLatin1String Device::constEmbedCover("+");
 

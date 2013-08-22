@@ -96,7 +96,7 @@ public:
     void setUseArtistImages(bool a) { artistImages=a; }
     bool useLargeImages() const { return largeImages; }
     void setLargeImages(bool a) { largeImages=a; }
-    void toggleGrouping();
+    virtual void toggleGrouping();
     void applyGrouping();
     void clearItems();
     void setModel(MusicModel *m) { m_model=m; }

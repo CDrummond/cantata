@@ -70,7 +70,6 @@ Q_SIGNALS:
     void savingCache(int pc);
 
 private:
-    void fixLibrary(MusicLibraryItemRoot *lib);
     void scanFolder(MusicLibraryItemRoot *library, const QString &topLevel, const QString &f, QSet<FileOnlySong> &existing, int level);
 
 private:

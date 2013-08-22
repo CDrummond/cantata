@@ -14,6 +14,8 @@
 1.1.2
 -----
 1. Fix build due to broken translation files.
+2. After toggling various artists grouping, or group single tracks, update list
+   of genres associated with artists.
 
 1.1.1
 -----

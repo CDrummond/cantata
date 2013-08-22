@@ -60,11 +60,11 @@
 #include <KDE/KGlobalSettings>
 #endif
 
-#ifdef Q_WS_X11
+#if defined Q_WS_X11 && QT_VERSION < 0x050000
 #include <QX11Info>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/NETRootInfo>
-#else
+#elif QT_VERSION < 0x050000
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
 #endif
@@ -110,7 +110,7 @@ bool Pointer::eventFilter(QObject *o, QEvent *e)
 
 WindowManager::WindowManager(QObject *parent):
     QObject(parent),
-    #ifdef Q_WS_X11
+    #if defined Q_WS_X11 && QT_VERSION < 0x050000
     _useWMMoveResize(true),
     #else
     _useWMMoveResize(false),
@@ -571,7 +571,7 @@ void WindowManager::startDrag(QWidget *widget, const QPoint& position)
 
     // ungrab pointer
     if (useWMMoveResize()) {
-        #ifdef Q_WS_X11
+        #if defined Q_WS_X11 && QT_VERSION < 0x050000
         #ifndef ENABLE_KDE_SUPPORT
         static const Atom constNetMoveResize = XInternAtom(QX11Info::display(), "_NET_WM_MOVERESIZE", False);
         //...Taken from bespin...
@@ -610,7 +610,7 @@ void WindowManager::startDrag(QWidget *widget, const QPoint& position)
 
 bool WindowManager::supportWMMoveResize(void) const
 {
-    #ifdef Q_WS_X11
+    #if defined Q_WS_X11 && QT_VERSION < 0x050000
     return true;
     #endif
     return false;

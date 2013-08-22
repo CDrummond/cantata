@@ -74,11 +74,12 @@ void MusicLibraryItemArtist::clearDefaultCover()
     }
 }
 
-MusicLibraryItemArtist::MusicLibraryItemArtist(const QString &data, MusicLibraryItemContainer *parent)
+MusicLibraryItemArtist::MusicLibraryItemArtist(const QString &data, const QString &artistName, MusicLibraryItemContainer *parent)
     : MusicLibraryItemContainer(data, parent)
     , m_coverIsDefault(false)
     , m_cover(0)
     , m_various(false)
+    , m_actualArtist(artistName==data ? QString() : artistName)
 {
     if (m_itemData.startsWith(QLatin1String("The "))) {
         m_nonTheArtist=m_itemData.mid(4);

@@ -123,6 +123,7 @@ public:
     bool libraryYear();
     bool groupSingle();
     bool groupMultiple();
+    bool useComposer();
     QStringList lyricProviders();
     QStringList wikipediaLangs();
     bool wikipediaIntroOnly();
@@ -204,6 +205,7 @@ public:
     void saveLibraryYear(bool v);
     void saveGroupSingle(bool v);
     void saveGroupMultiple(bool v);
+    void saveUseComposer(bool v);
     void saveLyricProviders(const QStringList &v);
     void saveWikipediaLangs(const QStringList &v);
     void saveWikipediaIntroOnly(bool v);

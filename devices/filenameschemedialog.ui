@@ -66,18 +66,6 @@
    </item>
    <item row="4" column="0">
     <widget class="QPushButton" name="albumArtist">
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>0</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>16777215</height>
-      </size>
-     </property>
      <property name="text">
       <string>Album Artist</string>
      </property>
@@ -85,62 +73,33 @@
    </item>
    <item row="4" column="1">
     <widget class="QPushButton" name="albumTitle">
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>0</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>16777215</height>
-      </size>
-     </property>
      <property name="text">
       <string>Album Title</string>
      </property>
     </widget>
    </item>
    <item row="4" column="2">
+    <widget class="QPushButton" name="composer">
+     <property name="text">
+      <string>Composer</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="3">
     <widget class="QPushButton" name="trackArtist">
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>0</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>16777215</height>
-      </size>
-     </property>
      <property name="text">
       <string>Track Artist</string>
      </property>
     </widget>
    </item>
-   <item row="4" column="3">
+   <item row="4" column="4">
     <widget class="QPushButton" name="trackTitle">
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>0</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>16777215</height>
-      </size>
-     </property>
      <property name="text">
       <string>Track Title</string>
      </property>
     </widget>
    </item>
-   <item row="4" column="4">
+   <item row="5" column="0">
     <widget class="QPushButton" name="trackArtistAndTitle">
      <property name="minimumSize">
       <size>
@@ -159,14 +118,14 @@
      </property>
     </widget>
    </item>
-   <item row="5" column="0">
+   <item row="5" column="1">
     <widget class="QPushButton" name="trackNo">
      <property name="text">
       <string>Track #</string>
      </property>
     </widget>
    </item>
-   <item row="5" column="1">
+   <item row="5" column="2">
     <widget class="QPushButton" name="cdNo">
      <property name="text">
       <string>CD #</string>
@@ -174,6 +133,13 @@
     </widget>
    </item>
    <item row="5" column="3">
+    <widget class="QPushButton" name="year">
+     <property name="text">
+      <string>Year</string>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="4">
     <widget class="QPushButton" name="genre">
      <property name="text">
       <string>Genre</string>
@@ -192,13 +158,6 @@
       </size>
      </property>
     </spacer>
-   </item>
-   <item row="5" column="2">
-    <widget class="QPushButton" name="year">
-     <property name="text">
-      <string>Year</string>
-     </property>
-    </widget>
    </item>
   </layout>
  </widget>

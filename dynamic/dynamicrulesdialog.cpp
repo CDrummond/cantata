@@ -68,6 +68,8 @@ static QString translateStr(const QString &key)
         return i18n("SimilarArtists");
     } else if (Dynamic::constAlbumArtistKey==key) {
         return i18n("AlbumArtist");
+    } else if (Dynamic::constComposerKey==key) {
+        return i18n("Composer");
     } else if (Dynamic::constAlbumKey==key) {
         return i18n("Album");
     } else if (Dynamic::constTitleKey==key) {

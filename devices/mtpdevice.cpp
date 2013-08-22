@@ -295,6 +295,7 @@ void MtpConnection::updateLibrary()
         s.album=QString::fromUtf8(track->album);
         s.artist=QString::fromUtf8(track->artist);
         s.albumartist=s.artist; // TODO: ALBUMARTIST: Read from 'track' when libMTP supports album artist!
+        s.composer=QString::fromUtf8(track->composer);
         s.year=QString::fromUtf8(track->date).mid(0, 4).toUInt();
         s.title=QString::fromUtf8(track->title);
         s.genre=QString::fromUtf8(track->genre);
@@ -321,10 +322,10 @@ void MtpConnection::updateLibrary()
             }
         }
         #endif
-        if (!artistItem || (dev->supportsAlbumArtistTag() ? s.albumArtist()!=artistItem->data() : s.album!=artistItem->data())) {
+        if (!artistItem || (dev->supportsAlbumArtistTag() ? s.artistOrComposer()!=artistItem->data() : s.artist!=artistItem->data())) {
             artistItem = library->artist(s);
         }
-        if (!albumItem || albumItem->parentItem()!=artistItem || s.album!=albumItem->data()) {
+        if (!albumItem || albumItem->parentItem()!=artistItem || s.albumName()!=albumItem->data()) {
             albumItem = artistItem->album(s);
         }
         MusicLibraryItemSong *songItem = new MusicLibraryItemSong(s, albumItem);
@@ -790,7 +791,7 @@ void MtpConnection::putSong(const Song &s, bool fixVa, const DeviceOptions &opts
         if (status!=Device::SongExists) {
             meta->title=createString(song.title);
             meta->artist=createString(song.artist);
-            meta->composer=createString(QString());
+            meta->composer=createString(song.composer);
             meta->genre=createString(song.genre);
             meta->album=createString(song.album);
             meta->date=createString(QString().sprintf("%4d0101T0000.0", song.year));

@@ -44,6 +44,7 @@ private Q_SLOTS:
     void showHelp();
     void enableOkButton();
     void insertAlbumArtist();
+    void insertComposer();
     void insertAlbumTitle();
     void insertTrackArtist();
     void insertTrackTitle();

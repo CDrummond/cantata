@@ -244,13 +244,14 @@ QSet<Song> MusicLibraryItemRoot::allSongs(bool revertVa) const
     return songs;
 }
 
-void MusicLibraryItemRoot::getDetails(QSet<QString> &artists, QSet<QString> &albumArtists, QSet<QString> &albums, QSet<QString> &genres)
+void MusicLibraryItemRoot::getDetails(QSet<QString> &artists, QSet<QString> &albumArtists, QSet<QString> &composers, QSet<QString> &albums, QSet<QString> &genres)
 {
     foreach (const MusicLibraryItem *child, m_childItems) {
         if (MusicLibraryItem::Type_Song==child->itemType()) {
             const Song &s=static_cast<const MusicLibraryItemSong *>(child)->song();
             artists.insert(s.artist);
             albumArtists.insert(s.albumArtist());
+            composers.insert(s.composer);
             albums.insert(s.album);
             if (!s.genre.isEmpty()) {
                 genres.insert(s.genre);
@@ -261,6 +262,7 @@ void MusicLibraryItemRoot::getDetails(QSet<QString> &artists, QSet<QString> &alb
                     const Song &s=static_cast<const MusicLibraryItemSong *>(song)->song();
                     artists.insert(s.artist);
                     albumArtists.insert(s.albumArtist());
+                    composers.insert(s.composer);
                     albums.insert(s.album);
                     if (!s.genre.isEmpty()) {
                         genres.insert(s.genre);
@@ -326,7 +328,9 @@ static const QString constTrackElement=QLatin1String("Track");
 static const QString constNameAttribute=QLatin1String("name");
 static const QString constArtistAttribute=QLatin1String("artist");
 static const QString constAlbumArtistAttribute=QLatin1String("albumartist");
+static const QString constComposerAttribute=QLatin1String("composer");
 static const QString constAlbumAttribute=QLatin1String("album");
+static const QString constOriginalAttribute=QLatin1String("original");
 static const QString constTrackAttribute=QLatin1String("track");
 static const QString constGenreAttribute=QLatin1String("genre");
 static const QString constYearAttribute=QLatin1String("year");
@@ -339,6 +343,7 @@ static const QString constDateAttribute=QLatin1String("date");
 static const QString constVersionAttribute=QLatin1String("version");
 static const QString constGroupSingleAttribute=QLatin1String("groupSingle");
 static const QString constGroupMultipleAttribute=QLatin1String("groupMultiple");
+static const QString constUseComposerAttribute=QLatin1String("useComposer");
 static const QString constSingleTracksAttribute=QLatin1String("singleTracks");
 static const QString constMultipleArtistsAttribute=QLatin1String("multipleArtists");
 static const QString constImageAttribute=QLatin1String("img");
@@ -366,7 +371,9 @@ void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, const QDateTime &date
     if (MPDParseUtils::groupMultiple()) {
         writer.writeAttribute(constGroupMultipleAttribute, constTrueValue);
     }
-
+    if (Song::useComposer()) {
+        writer.writeAttribute(constUseComposerAttribute, constTrueValue);
+    }
     foreach (const MusicLibraryItem *a, childItems()) {
         foreach (const MusicLibraryItem *al, static_cast<const MusicLibraryItemArtist *>(a)->childItems()) {
             total+=al->childCount();
@@ -405,6 +412,9 @@ void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, const QDateTime &date
             } else if (album->isMultipleArtists()) {
                 writer.writeAttribute(constMultipleArtistsAttribute, constTrueValue);
             }
+            if (!album->originalName().isEmpty()) {
+                writer.writeAttribute(constOriginalAttribute, album->originalName());
+            }
             if (!album->imageUrl().isEmpty()) {
                 writer.writeAttribute(constImageAttribute, album->imageUrl());
             }
@@ -432,6 +442,9 @@ void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, const QDateTime &date
                 }
                 if (track->song().albumartist!=artist->data()) {
                     writer.writeAttribute(constAlbumArtistAttribute, track->song().albumartist);
+                }
+                if (!track->song().composer.isEmpty() && track->song().composer!=track->song().albumartist) {
+                    writer.writeAttribute(constComposerAttribute, track->song().composer);
                 }
 //                 writer.writeAttribute("id", QString::number(track->song().id));
                 if (!track->song().genre.isEmpty() && track->song().genre!=albumGenre && track->song().genre!=unknown) {
@@ -526,8 +539,9 @@ quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime 
                 xmlDate = attributes.value(constDateAttribute).toString().toUInt();
                 gs = constTrueValue==attributes.value(constGroupSingleAttribute).toString();
                 gm = constTrueValue==attributes.value(constGroupMultipleAttribute).toString();
+                bool uc = constTrueValue==attributes.value(constUseComposerAttribute).toString();
 
-                if ( version < constVersion || (date.isValid() && xmlDate < date.toTime_t())) {
+                if ( version < constVersion || uc!=Song::useComposer() || (date.isValid() && xmlDate < date.toTime_t())) {
                     return 0;
                 }
                 if (prog) {
@@ -562,6 +576,10 @@ quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime 
                 } else {
                     song.type=Song::Standard;
                 }
+                QString orig=attributes.value(constOriginalAttribute).toString();
+                if (!orig.isEmpty()) {
+                    song.album=orig;
+                }
             } else if (constTrackElement==element) {
                 song.title=attributes.value(constNameAttribute).toString();
                 song.file=attributes.value(constFileAttribute).toString();
@@ -592,6 +610,7 @@ quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime 
                     if (song.albumartist.isEmpty()) {
                         song.albumartist=artistItem->data();
                     }
+                    song.composer=attributes.value(constComposerAttribute).toString();
 
                     // Fix cache error - where MusicLibraryItemSong::data() was saved as name instead of song.name!!!!
                     if (!song.albumartist.isEmpty() && !song.artist.isEmpty() && song.albumartist!=song.artist &&
@@ -644,6 +663,7 @@ quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime 
                     }
                 }
                 song.time=song.track=0;
+                song.composer=QString();
             }
         }
     }
@@ -710,10 +730,10 @@ void MusicLibraryItemRoot::toggleGrouping()
             currentSong.type=MPDConnection::isPlaylist(currentSong.file) ? Song::Playlist : Song::Standard;
         }
 
-        if (!artistItem || currentSong.albumArtist()!=artistItem->data()) {
+        if (!artistItem || currentSong.artistOrComposer()!=artistItem->data()) {
             artistItem = artist(currentSong);
         }
-        if (!albumItem || currentSong.year!=albumItem->year() || albumItem->parentItem()!=artistItem || currentSong.album!=albumItem->data()) {
+        if (!albumItem || currentSong.year!=albumItem->year() || albumItem->parentItem()!=artistItem || currentSong.albumName()!=albumItem->data()) {
             albumItem = artistItem->album(currentSong);
         }
 
@@ -729,13 +749,17 @@ void MusicLibraryItemRoot::toggleGrouping()
 
 void MusicLibraryItemRoot::applyGrouping()
 {
-    if (MPDParseUtils::groupSingle()) {
+    bool gs=MPDParseUtils::groupSingle();
+    bool gm=MPDParseUtils::groupMultiple();
+    if (gs) {
         groupSingleTracks();
     }
-    if (MPDParseUtils::groupMultiple()) {
+    if (gm) {
         groupMultipleArtists();
     }
-    updateGenres();
+    if (gs || gm) {
+        updateGenres();
+    }
 }
 
 void MusicLibraryItemRoot::clearItems()
@@ -981,7 +1005,7 @@ QString MusicLibraryItemRoot::songArtist(const Song &s) const
     }
 
     if (Song::Standard==s.type || (Song::Playlist==s.type && !s.albumArtist().isEmpty())) {
-        return s.albumArtist();
+        return s.artistOrComposer();
     }
     return i18n("Various Artists");
 }

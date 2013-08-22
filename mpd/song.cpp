@@ -52,6 +52,18 @@ int Song::albumYear(const Song &s)
     return it==albumYears.end() ? s.year : it.value();
 }
 
+static bool useComposerIfSet=false;
+
+bool Song::useComposer()
+{
+    return useComposerIfSet;
+}
+
+void Song::setUseComposer(bool u)
+{
+    useComposerIfSet=u;
+}
+
 const quint16 Song::constNullKey(0xFFFF);
 
 Song::Song()
@@ -77,6 +89,7 @@ Song & Song::operator=(const Song &s)
     album = s.album;
     artist = s.artist;
     albumartist = s.albumartist;
+    composer = s.composer;
     title = s.title;
     track = s.track;
 //     pos = s.pos;
@@ -303,6 +316,18 @@ QString Song::entryName() const
     }
 
     return i18nc("Song\nArtist\nAlbum", "%1\n%2\n%3", title, artist, album);
+}
+
+QString Song::artistOrComposer() const
+{
+    return useComposerIfSet && !composer.isEmpty() ? composer : albumArtist();
+}
+
+QString Song::albumName() const
+{
+    return useComposerIfSet && !composer.isEmpty() && composer!=albumArtist()
+            ? album+QLatin1String(" (")+albumArtist()+QLatin1Char(')')
+            : album;
 }
 
 QString Song::artistSong() const

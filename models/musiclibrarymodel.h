@@ -79,8 +79,8 @@ public:
     void removeSongFromList(const Song &s) { rootItem->removeSongFromList(s); }
     void updateSongFile(const Song &from, const Song &to) { rootItem->updateSongFile(from, to); }
     void removeCache();
-    void getDetails(QSet<QString> &artists, QSet<QString> &albumArtists, QSet<QString> &albums, QSet<QString> &genres)
-        { rootItem->getDetails(artists, albumArtists, albums, genres); }
+    void getDetails(QSet<QString> &artists, QSet<QString> &albumArtists, QSet<QString> &composers, QSet<QString> &albums, QSet<QString> &genres)
+        { rootItem->getDetails(artists, albumArtists, composers, albums, genres); }
     QSet<QString> getAlbumArtists();
     bool update(const QSet<Song> &songs);
     void uncheckAll();

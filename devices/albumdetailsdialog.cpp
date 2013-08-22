@@ -106,14 +106,20 @@ AlbumDetailsDialog::AlbumDetailsDialog(QWidget *parent)
 
     QSet<QString> artists;
     QSet<QString> albumArtists;
+    QSet<QString> composers;
     QSet<QString> albums;
     QSet<QString> genres;
-    MusicLibraryModel::self()->getDetails(artists, albumArtists, albums, genres);
+    MusicLibraryModel::self()->getDetails(artists, albumArtists, composers, albums, genres);
 
     QStringList strings=albumArtists.toList();
     strings.sort();
     artist->clear();
     artist->insertItems(0, strings);
+
+    strings=composers.toList();
+    strings.sort();
+    composer->clear();
+    composer->insertItems(0, strings);
 
     strings=albums.toList();
     strings.sort();
@@ -154,6 +160,7 @@ void AlbumDetailsDialog::show(AudioCdDevice *dev)
 {
     udi=dev->id();
     artist->setText(dev->albumArtist());
+    composer->setText(dev->albumComposer());
     title->setText(dev->albumName());
     genre->setText(dev->albumGenre());
     disc->setValue(dev->albumDisc());
@@ -313,6 +320,7 @@ Song AlbumDetailsDialog::toSong(QTreeWidgetItem *i, const CdAlbum &album)
     s.year=album.year;
     s.disc=album.disc;
     s.artist=singleArtist->isChecked() ? s.albumartist : i->text(COL_ARTIST);
+    s.composer=album.composer;
     s.title=i->text(COL_TITLE);
     s.track=i->text(COL_TRACK).toInt();
     s.id=i->data(0, Role_Id).toInt();
@@ -328,6 +336,7 @@ CdAlbum AlbumDetailsDialog::getAlbum() const
 
     CdAlbum cdAlbum;
     cdAlbum.artist=artist->text().trimmed();
+    cdAlbum.composer=composer->text().trimmed();
     cdAlbum.name=title->text().trimmed();
     cdAlbum.disc=disc->value();
     cdAlbum.year=year->value();

@@ -10,6 +10,8 @@
 5. For some stream categories (digitally imported, jazzradio, rockradio, sky,
    somaFm, and some user categories) add category name to stream name when it
    is saved in favourites, or added to playqueue.
+6. Support composer tag - group albums via composer, edit tag, rename files
+   using tag, and use field for dyanmic playlists.
 
 1.1.2
 -----

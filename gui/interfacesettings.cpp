@@ -120,6 +120,7 @@ void InterfaceSettings::load()
     selectEntry(streamsView, Settings::self()->streamsView());
     selectEntry(onlineView, Settings::self()->onlineView());
     groupSingle->setChecked(Settings::self()->groupSingle());
+    useComposer->setChecked(Settings::self()->useComposer());
     groupMultiple->setCurrentIndex(Settings::self()->groupMultiple() ? 1 : 0);
     #ifdef ENABLE_DEVICES_SUPPORT
     showDeleteAction->setChecked(Settings::self()->showDeleteAction());
@@ -160,6 +161,7 @@ void InterfaceSettings::save()
     Settings::self()->saveStreamsView(getViewType(streamsView));
     Settings::self()->saveOnlineView(getViewType(onlineView));
     Settings::self()->saveGroupSingle(groupSingle->isChecked());
+    Settings::self()->saveUseComposer(useComposer->isChecked());
     Settings::self()->saveGroupMultiple(1==groupMultiple->currentIndex());
     #ifdef ENABLE_DEVICES_SUPPORT
     Settings::self()->saveShowDeleteAction(showDeleteAction->isChecked());

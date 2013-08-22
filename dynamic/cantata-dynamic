@@ -402,7 +402,7 @@ sub readRules() {
                                     $pos++;
                                 }
                             }
-                        } elsif ($key eq "Artist" || $key eq "Album" || $key eq "AlbumArtist" || $key eq "Title" || $key eq "Genre") {
+                        } elsif ($key eq "Artist" || $key eq "Album" || $key eq "AlbumArtist" || $key eq "Composer" || $key eq "Title" || $key eq "Genre") {
                             $currentRule="${currentRule} ${key} \"${val}\"";
                         } elsif ($key eq "SimilarArtists") {
                             &querySimilarArtists($val); # Perform a last.fm query to find similar artists

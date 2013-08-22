@@ -36,6 +36,9 @@ struct Song
 {
     static const quint16 constNullKey;
 
+    static bool useComposer();
+    static void setUseComposer(bool u);
+
     enum Type {
         Standard        = 0,
         MultipleArtists = 1,
@@ -51,6 +54,7 @@ struct Song
     QString album;
     QString artist;
     QString albumartist;
+    QString composer;
     QString title;
     QString genre;
     QString name;
@@ -88,6 +92,8 @@ struct Song
     static QString formattedTime(quint32 seconds, bool zeroIsUnknown=false);
     QString format();
     QString entryName() const;
+    QString artistOrComposer() const;
+    QString albumName() const;
     QString artistSong() const;
     const QString & albumArtist() const { return albumartist.isEmpty() ? artist : albumartist; }
     QString displayTitle() const { return !albumartist.isEmpty() && albumartist!=artist ? artistSong() : title; }

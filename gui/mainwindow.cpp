@@ -231,6 +231,7 @@ MainWindow::MainWindow(QWidget *parent)
     // Need to set these values here, as used in library/device loading...
     MPDParseUtils::setGroupSingle(Settings::self()->groupSingle());
     MPDParseUtils::setGroupMultiple(Settings::self()->groupMultiple());
+    Song::setUseComposer(Settings::self()->useComposer());
 
     GtkStyle::applyTheme(toolbar);
     Icons::self()->self()->initToolbarIcons(artistLabel->palette().color(QPalette::Foreground), GtkStyle::useLightIcons());
@@ -1324,6 +1325,7 @@ void MainWindow::readSettings()
     #endif
     MPDParseUtils::setGroupSingle(Settings::self()->groupSingle());
     MPDParseUtils::setGroupMultiple(Settings::self()->groupMultiple());
+    Song::setUseComposer(Settings::self()->useComposer());
     albumsPage->setView(Settings::self()->albumsView());
     AlbumsModel::self()->setAlbumSort(Settings::self()->albumSort());
 
@@ -1377,7 +1379,8 @@ void MainWindow::updateSettings()
                       useLibSizeForAl!=AlbumsModel::useLibrarySizes();
     bool diffLibYear=MusicLibraryItemAlbum::showDate()!=Settings::self()->libraryYear();
     bool diffGrouping=MPDParseUtils::groupSingle()!=Settings::self()->groupSingle() ||
-                      MPDParseUtils::groupMultiple()!=Settings::self()->groupMultiple();
+                      MPDParseUtils::groupMultiple()!=Settings::self()->groupMultiple() ||
+                      Song::useComposer()!=Settings::self()->useComposer();
 
     readSettings();
 
@@ -2773,12 +2776,13 @@ void MainWindow::editTags(const QList<Song> &songs, bool isPlayQueue)
     }
     QSet<QString> artists;
     QSet<QString> albumArtists;
+    QSet<QString> composers;
     QSet<QString> albums;
     QSet<QString> genres;
     QString udi;
     #ifdef ENABLE_DEVICES_SUPPORT
     if (!isPlayQueue && devicesPage->isVisible()) {
-        DevicesModel::self()->getDetails(artists, albumArtists, albums, genres);
+        DevicesModel::self()->getDetails(artists, albumArtists, composers, albums, genres);
         udi=devicesPage->activeFsDeviceUdi();
         if (udi.isEmpty()) {
             return;
@@ -2787,8 +2791,8 @@ void MainWindow::editTags(const QList<Song> &songs, bool isPlayQueue)
     #else
     Q_UNUSED(isPlayQueue)
     #endif
-    MusicLibraryModel::self()->getDetails(artists, albumArtists, albums, genres);
-    TagEditor *dlg=new TagEditor(this, songs, artists, albumArtists, albums, genres, udi);
+    MusicLibraryModel::self()->getDetails(artists, albumArtists, composers, albums, genres);
+    TagEditor *dlg=new TagEditor(this, songs, artists, albumArtists, composers, albums, genres, udi);
     dlg->show();
 }
 #endif

@@ -441,6 +441,11 @@ bool Settings::groupMultiple()
     return GET_BOOL("groupMultiple", MPDParseUtils::groupMultiple());
 }
 
+bool Settings::useComposer()
+{
+    return GET_BOOL("useComposer", Song::useComposer());
+}
+
 QStringList Settings::lyricProviders()
 {
     QStringList def;
@@ -885,6 +890,11 @@ void Settings::saveGroupSingle(bool v)
 void Settings::saveGroupMultiple(bool v)
 {
     SET_VALUE_MOD(groupMultiple)
+}
+
+void Settings::saveUseComposer(bool v)
+{
+    SET_VALUE_MOD(useComposer)
 }
 
 void Settings::saveLyricProviders(const QStringList &v)

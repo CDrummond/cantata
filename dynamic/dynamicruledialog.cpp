@@ -41,6 +41,7 @@ DynamicRuleDialog::DynamicRuleDialog(QWidget *parent)
     setCaption(i18n("Dynamic Rule"));
 
     connect(artistText, SIGNAL(textChanged(const QString &)), SLOT(enableOkButton()));
+    connect(composerText, SIGNAL(textChanged(const QString &)), SLOT(enableOkButton()));
     connect(similarArtistsText, SIGNAL(textChanged(const QString &)), SLOT(enableOkButton()));
     connect(albumArtistText, SIGNAL(textChanged(const QString &)), SLOT(enableOkButton()));
     connect(albumText, SIGNAL(textChanged(const QString &)), SLOT(enableOkButton()));
@@ -51,9 +52,10 @@ DynamicRuleDialog::DynamicRuleDialog(QWidget *parent)
 
     QSet<QString> artists;
     QSet<QString> albumArtists;
+    QSet<QString> composers;
     QSet<QString> albums;
     QSet<QString> genres;
-    MusicLibraryModel::self()->getDetails(artists, albumArtists, albums, genres);
+    MusicLibraryModel::self()->getDetails(artists, albumArtists, composers, albums, genres);
 
     QStringList strings=artists.toList();
     strings.sort();
@@ -67,6 +69,11 @@ DynamicRuleDialog::DynamicRuleDialog(QWidget *parent)
     strings.sort();
     albumArtistText->clear();
     albumArtistText->insertItems(0, strings);
+
+    strings=composers.toList();
+    strings.sort();
+    composerText->clear();
+    composerText->insertItems(0, strings);
 
     strings=albums.toList();
     strings.sort();
@@ -96,6 +103,7 @@ bool DynamicRuleDialog::edit(const Dynamic::Rule &rule, bool isAdd)
     artistText->setText(rule[Dynamic::constArtistKey]);
     similarArtistsText->setText(rule[Dynamic::constSimilarArtistsKey]);
     albumArtistText->setText(rule[Dynamic::constAlbumArtistKey]);
+    composerText->setText(rule[Dynamic::constComposerKey]);
     albumText->setText(rule[Dynamic::constAlbumKey]);
     titleText->setText(rule[Dynamic::constTitleKey]);
     genreText->setText(rule[Dynamic::constGenreKey]);
@@ -142,6 +150,9 @@ Dynamic::Rule DynamicRuleDialog::rule() const
     if (!albumArtist().isEmpty()) {
         r.insert(Dynamic::constAlbumArtistKey, albumArtist());
     }
+    if (!composer().isEmpty()) {
+        r.insert(Dynamic::constComposerKey, composer());
+    }
     if (!album().isEmpty()) {
         r.insert(Dynamic::constAlbumKey, album());
     }
@@ -183,7 +194,7 @@ void DynamicRuleDialog::enableOkButton()
     bool haveTo=dateTo>=constMinDate && dateTo<=constMaxDate && dateTo!=dateFrom;
     bool enable=(!haveFrom || !haveTo || (dateTo>=dateFrom && (dateTo-dateFrom)<=constMaxDateRange)) &&
                 (haveFrom || haveTo || !artist().isEmpty() || !similarArtists().isEmpty() || !albumArtist().isEmpty() ||
-                 !album().isEmpty() || !title().isEmpty() || !genre().isEmpty());
+                 !composer().isEmpty() || !album().isEmpty() || !title().isEmpty() || !genre().isEmpty());
 
     errorLabel->setVisible(false);
     if (!enable && haveFrom && haveTo) {

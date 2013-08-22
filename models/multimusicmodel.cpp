@@ -103,10 +103,10 @@ void MultiMusicModel::toggleGrouping()
     endResetModel();
 }
 
-void MultiMusicModel::getDetails(QSet<QString> &artists, QSet<QString> &albumArtists, QSet<QString> &albums, QSet<QString> &genres)
+void MultiMusicModel::getDetails(QSet<QString> &artists, QSet<QString> &albumArtists, QSet<QString> &composers, QSet<QString> &albums, QSet<QString> &genres)
 {
     foreach (MusicLibraryItemRoot *col, collections) {
-        col->getDetails(artists, albumArtists, albums, genres);
+        col->getDetails(artists, albumArtists, composers, albums, genres);
     }
 }
 

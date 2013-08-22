@@ -197,6 +197,8 @@ Song MPDParseUtils::parseSong(const QByteArray &data, bool isPlayQueue)
             song.artist = value;
         } else if (element == QLatin1String("AlbumArtist")) {
             song.albumartist = value;
+        } else if (element == QLatin1String("Composer")) {
+            song.composer = value;
         } else if (element == QLatin1String("Title")) {
             song.title = value;
         } else if (element == QLatin1String("Track")) {
@@ -552,10 +554,10 @@ MusicLibraryItemRoot * MPDParseUtils::parseLibraryItems(const QByteArray &data, 
 //            }
 
             currentSong.fillEmptyFields();
-            if (!artistItem || currentSong.albumArtist()!=artistItem->data()) {
+            if (!artistItem || currentSong.artistOrComposer()!=artistItem->data()) {
                 artistItem = rootItem->artist(currentSong);
             }
-            if (!albumItem || currentSong.year!=albumItem->year() || albumItem->parentItem()!=artistItem || currentSong.album!=albumItem->data()) {
+            if (!albumItem || currentSong.year!=albumItem->year() || albumItem->parentItem()!=artistItem || currentSong.albumName()!=albumItem->data()) {
                 albumItem = artistItem->album(currentSong);
             }
             songItem = new MusicLibraryItemSong(currentSong, albumItem);

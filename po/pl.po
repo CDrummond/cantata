@@ -2940,7 +2940,8 @@ msgstr "Ostatnie wyszukiwanie:%1"
 msgid "Searching..."
 msgstr "Szukanie..."
 
-#: models/onlineservicesmodel.cpp:139
+#: models/onlineservicesmodel.cpp:139 models/streamsearchmodel.cpp:117
+#: models/streamsmodel.cpp:544
 msgid "Not Loaded"
 msgstr "Nie załadowano"
 
@@ -2974,10 +2975,6 @@ msgstr "Rok"
 #: models/playqueuemodel.cpp:363
 msgid "<b>(Priority: %1)</b>"
 msgstr "<b>(Priorytet: %1)</b>"
-
-#: models/streamsearchmodel.cpp:117 models/streamsmodel.cpp:555
-msgid "Not Loaded"
-msgstr "Nie załadowano"
 
 #: models/streamsearchmodel.cpp:119 models/streamsmodel.cpp:557
 msgid "Loading..."

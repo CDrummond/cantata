@@ -213,7 +213,7 @@ void MusicLibraryItemArtist::clearImages()
 
 MusicLibraryItemAlbum * MusicLibraryItemArtist::album(const Song &s, bool create)
 {
-    QHash<QString, int>::ConstIterator it=m_indexes.find(s.album);
+    QHash<QString, int>::ConstIterator it=m_indexes.find(s.albumName());
 
     if (m_indexes.end()==it) {
         return create ? createAlbum(s) : 0;
@@ -223,8 +223,12 @@ MusicLibraryItemAlbum * MusicLibraryItemArtist::album(const Song &s, bool create
 
 MusicLibraryItemAlbum * MusicLibraryItemArtist::createAlbum(const Song &s)
 {
-    MusicLibraryItemAlbum *item=new MusicLibraryItemAlbum(s.album, s.year, this);
-    m_indexes.insert(s.album, m_childItems.count());
+    // If grouping via composer - then album name *might* need to include artist name (if this is different to composer)
+    // So, when creating an album entry we need to use the "Album (Artist)" value for display/sort, and still store just
+    // "Album" (for saving to cache, tag editing, etc.)
+    QString albumName=s.albumName();
+    MusicLibraryItemAlbum *item=new MusicLibraryItemAlbum(albumName, s.album, s.year, this);
+    m_indexes.insert(albumName, m_childItems.count());
     m_childItems.append(item);
     return item;
 }

@@ -43,6 +43,7 @@ struct DeviceStorage {
 
 struct DeviceOptions {
     static const QLatin1String constAlbumArtist;
+    static const QLatin1String constComposer;
     static const QLatin1String constAlbumTitle;
     static const QLatin1String constTrackArtist;
     static const QLatin1String constTrackTitle;

@@ -498,6 +498,23 @@ within the folder of the current track, or within its parent folder. If no image
           </widget>
          </item>
          <item row="1" column="0">
+          <widget class="BuddyLabel" name="useComposerLabel">
+           <property name="text">
+            <string>Group albums by composer:</string>
+           </property>
+           <property name="buddy">
+            <cstring>useComposer</cstring>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="OnOffButton" name="useComposer">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
           <widget class="BuddyLabel" name="groupMultipleLabel">
            <property name="text">
             <string>Multiple artist albums:</string>
@@ -507,10 +524,10 @@ within the folder of the current track, or within its parent folder. If no image
            </property>
           </widget>
          </item>
-         <item row="1" column="1">
+         <item row="2" column="1">
           <widget class="QComboBox" name="groupMultiple"/>
          </item>
-         <item row="2" column="0">
+         <item row="3" column="0">
           <widget class="BuddyLabel" name="showDeleteActionLabel">
            <property name="text">
             <string>Show delete action in context menus:</string>
@@ -520,14 +537,14 @@ within the folder of the current track, or within its parent folder. If no image
            </property>
           </widget>
          </item>
-         <item row="2" column="1">
+         <item row="3" column="1">
           <widget class="OnOffButton" name="showDeleteAction">
            <property name="text">
             <string/>
            </property>
           </widget>
          </item>
-         <item row="3" column="0">
+         <item row="4" column="0">
           <widget class="BuddyLabel" name="forceSingleClick_label">
            <property name="text">
             <string>Enforce single-click activation of items:</string>
@@ -537,7 +554,7 @@ within the folder of the current track, or within its parent folder. If no image
            </property>
           </widget>
          </item>
-         <item row="3" column="1">
+         <item row="4" column="1">
           <widget class="OnOffButton" name="forceSingleClick">
            <property name="text">
             <string/>

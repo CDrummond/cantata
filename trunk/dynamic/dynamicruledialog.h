@@ -44,6 +44,7 @@ public:
     QString artist() const { return artistText->text().trimmed(); }
     QString similarArtists() const { return similarArtistsText->text().trimmed(); }
     QString albumArtist() const { return albumArtistText->text().trimmed(); }
+    QString composer() const { return composerText->text().trimmed(); }
     QString album() const { return albumText->text().trimmed(); }
     QString title() const { return titleText->text().trimmed(); }
     QString genre() const { return genreText->text().trimmed(); }

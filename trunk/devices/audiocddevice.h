@@ -79,6 +79,7 @@ public:
     bool canPlaySongs() const { return true; }
     QString albumName() const { return album; }
     QString albumArtist() const { return artist; }
+    QString albumComposer() const { return composer; }
     QString albumGenre() const { return genre; }
     int albumDisc() const { return disc; }
     int albumYear() const { return year; }
@@ -114,6 +115,7 @@ private:
     QString detailsString;
     QString album;
     QString artist;
+    QString composer;
     QString genre;
     QString device;
     QString devPath;

@@ -61,7 +61,7 @@ public:
 
     static bool lessThan(const MusicLibraryItem *a, const MusicLibraryItem *b);
 
-    MusicLibraryItemAlbum(const QString &data, quint32 year, MusicLibraryItemContainer *parent);
+    MusicLibraryItemAlbum(const QString &data, QString original, quint32 year, MusicLibraryItemContainer *parent);
     virtual ~MusicLibraryItemAlbum();
 
     bool setCover(const QImage &img, bool update=false) const;
@@ -90,6 +90,8 @@ public:
     bool updateYear();
     bool containsArtist(const QString &a);
     void clearImage();
+    // Return orignal album name. If we are grouping by composer, then album will appear as "Album (Artist)"
+    const QString & originalName() const { return m_originalName; }
 
 private:
     void setCoverImage(const QImage &img) const;
@@ -103,6 +105,7 @@ private:
     quint16 m_yearOfDisc;
     quint32 m_totalTime;
     quint32 m_numTracks;
+    QString m_originalName;
     mutable bool m_coverIsDefault;
     mutable QPixmap *m_cover;
     Song::Type m_type;

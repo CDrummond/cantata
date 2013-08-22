@@ -170,6 +170,7 @@ static void manipulateThe(QString &str, bool reverse)
 }
 
 const QLatin1String DeviceOptions::constAlbumArtist("%albumartist%");
+const QLatin1String DeviceOptions::constComposer("%composer%");
 const QLatin1String DeviceOptions::constAlbumTitle("%album%");
 const QLatin1String DeviceOptions::constTrackArtist("%artist%");
 const QLatin1String DeviceOptions::constTrackTitle("%title%");
@@ -329,8 +330,7 @@ QString DeviceOptions::createFilename(const Song &s) const
     static QStringList ignore;
 
     if (ignore.isEmpty()) {
-        ignore << QLatin1String("%composer%")
-               << QLatin1String("%comment%")
+        ignore << QLatin1String("%comment%")
                << QLatin1String("%filetype%")
                << QLatin1String("%ignore%")
                << QLatin1String("%folder%")
@@ -344,6 +344,7 @@ QString DeviceOptions::createFilename(const Song &s) const
     Song copy=clean(s);
 
     path.replace(constAlbumArtist, copy.albumArtist());
+    path.replace(constComposer, copy.composer);
     path.replace(constAlbumTitle, copy.album);
     path.replace(constTrackArtist, copy.artist);
     path.replace(constTrackTitle, copy.title);

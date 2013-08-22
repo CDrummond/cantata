@@ -338,6 +338,7 @@ void AudioCdDevice::setDetails(const CdAlbum &a)
     setData(a.artist);
     album=a.name;
     artist=a.artist;
+    composer=a.composer;
     genre=a.genre;
     year=a.year;
     disc=a.disc;

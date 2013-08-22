@@ -11,6 +11,10 @@
    somaFm, and some user categories) add category name to stream name when it
    is saved in favourites, or added to playqueue.
 
+1.1.2
+-----
+1. Fix build due to broken translation files.
+
 1.1.1
 -----
  1. Fix crash in settings dialog if current connection name is removed from

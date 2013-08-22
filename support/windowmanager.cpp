@@ -600,7 +600,7 @@ void WindowManager::startDrag(QWidget *widget, const QPoint& position)
     }
 
     if (!useWMMoveResize() && !_cursorOverride) {
-        qApp->setOverrideCursor(Qt::SizeAllCursor);
+        qApp->setOverrideCursor(Qt::DragMoveCursor);
         _cursorOverride = true;
     }
 

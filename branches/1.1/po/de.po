@@ -4117,11 +4117,11 @@ msgstr "Standard  Mehrbenutzer/Server Konfiguration"
 #: po/rc.cpp:379 rc.cpp:379
 msgid ""
 "<i>Select this option if your music collection is not shared with others, "
-"and you wish Cantata to configure and control the MPD instance.</i>\n"
+"and you wish Cantata to configure and control the MPD instance.</i>"
 msgstr ""
 "<i>Wählen Sie diese Option, wenn Ihre Musik-Sammlung ist nicht mit anderen "
 "geteilt ist"
-"und Sie möchten Cantata zur Konfiguration und Steuerung der MPD Instanz.</i>\n"
+"und Sie möchten Cantata zur Konfiguration und Steuerung der MPD Instanz.</i>"
 
 #. i18n: file: gui/initialsettingswizard.ui:225
 #. i18n: ectx: property (text), widget (BuddyLabel, label_10)

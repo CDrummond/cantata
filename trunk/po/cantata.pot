@@ -3766,7 +3766,7 @@ msgstr ""
 #: po/rc.cpp:379 rc.cpp:379
 msgid ""
 "<i>Select this option if your music collection is not shared with others, "
-"and you wish Cantata to configure and control the MPD instance.</i>\n"
+"and you wish Cantata to configure and control the MPD instance.</i>"
 msgstr ""
 
 #. i18n: file: gui/initialsettingswizard.ui:225

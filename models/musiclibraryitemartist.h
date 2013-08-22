@@ -41,7 +41,7 @@ class MusicLibraryItemArtist : public MusicLibraryItemContainer
 public:
     static bool lessThan(const MusicLibraryItem *a, const MusicLibraryItem *b);
 
-    MusicLibraryItemArtist(const QString &data, MusicLibraryItemContainer *parent = 0);
+    MusicLibraryItemArtist(const QString &data, const QString &artistName, MusicLibraryItemContainer *parent = 0);
     virtual ~MusicLibraryItemArtist() { }
 
     MusicLibraryItemAlbum * album(const Song &s, bool create=true);
@@ -62,6 +62,8 @@ public:
     const QString & imageUrl() const { return m_imageUrl; }
     void setImageUrl(const QString &u) { m_imageUrl=u; }
     void clearImages();
+    // 'data' could be 'Composer' if we are set to use that, but need to save real artist...
+    const QString & actualArtist() const { return m_actualArtist; }
 
 private:
     bool largeImages() const;
@@ -71,6 +73,7 @@ private:
     mutable QPixmap *m_cover;
     bool m_various;
     QString m_nonTheArtist;
+    QString m_actualArtist;
     QHash<QString, int> m_indexes;
     QString m_imageUrl;
 };

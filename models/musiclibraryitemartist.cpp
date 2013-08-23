@@ -160,6 +160,9 @@ const QPixmap & MusicLibraryItemArtist::cover()
 
             if (firstSong) {
                 song.file=firstSong->file();
+                if (Song::useComposer() && !firstSong->song().composer.isEmpty()) {
+                    song.albumartist=firstSong->song().albumArtist();
+                }
             }
             // NO ARTIST IMAGES FOR DEVICES!
             //#ifdef ENABLE_DEVICES_SUPPORT

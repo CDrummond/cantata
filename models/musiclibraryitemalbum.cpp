@@ -248,9 +248,10 @@ const QPixmap & MusicLibraryItemAlbum::cover()
                 song.artist=firstSong->song().albumArtist();
             } else {
                 song.artist=firstSong->song().artist;
-                song.albumartist=parentItem()->data();
+                song.albumartist=Song::useComposer() && !firstSong->song().composer.isEmpty()
+                                    ? firstSong->song().albumArtist() : parentItem()->data();
             }
-            song.album=song.album;
+            song.album=m_itemData;
             song.year=m_year;
             song.file=firstSong->file();
             song.type=m_type;

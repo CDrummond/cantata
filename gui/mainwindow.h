@@ -213,12 +213,13 @@ public Q_SLOTS:
     void changeConnection();
     void connectToMpd();
     void connectToMpd(const MPDConnectionDetails &details);
+    void streamUrl(const QString &u);
     void refresh();
     #ifndef ENABLE_KDE_SUPPORT
     void showAboutDialog();
     #endif
     void showServerInfo();
-    void toggleStream(bool s);
+    void toggleStream(bool s, const QString &url=QString());
     void stopPlayback();
     void stopAfterCurrentTrack();
     void stopAfterTrack();

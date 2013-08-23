@@ -36,6 +36,7 @@
 #include "song.h"
 #include "output.h"
 #include "playlist.h"
+#include "config.h"
 #include <time.h>
 
 class MusicLibraryItemArtist;
@@ -149,6 +150,9 @@ struct MPDConnectionDetails {
     quint16 dynamizerPort;
     bool dirReadable;
     QString coverName;
+    #ifdef ENABLE_HTTP_STREAM_PLAYBACK
+    QString streamUrl;
+    #endif
 };
 
 #define MPD_MAKE_VERSION(a, b, c) (((a) << 16) | ((b) << 8) | (c))
@@ -285,6 +289,7 @@ Q_SIGNALS:
 
     void dynamicUrl(const QString &url);
     void stopAfterCurrentChanged(bool afterCurrent);
+    void streamUrl(const QString &url);
 
 private Q_SLOTS:
     void idleDataReady();

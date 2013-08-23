@@ -154,7 +154,6 @@ public:
     bool playListsStartClosed();
     #ifdef ENABLE_HTTP_STREAM_PLAYBACK
     bool playStream();
-    QString streamUrl();
     #endif
     #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
     bool cdAuto();
@@ -235,7 +234,6 @@ public:
     void savePlayListsStartClosed(bool v);
     #ifdef ENABLE_HTTP_STREAM_PLAYBACK
     void savePlayStream(bool v);
-    void saveStreamUrl(const QString &v);
     #endif
     #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
     void saveCdAuto(bool v);

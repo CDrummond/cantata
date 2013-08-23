@@ -127,41 +127,6 @@
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="streamBox">
-     <property name="title">
-      <string>HTTP Stream</string>
-     </property>
-     <layout class="QFormLayout" name="formLayout_2">
-      <property name="fieldGrowthPolicy">
-       <enum>QFormLayout::ExpandingFieldsGrow</enum>
-      </property>
-      <item row="1" column="0">
-       <widget class="BuddyLabel" name="streamUrlLabel">
-        <property name="text">
-         <string>URL:</string>
-        </property>
-        <property name="buddy">
-         <cstring>streamUrl</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QLineEdit" name="streamUrl"/>
-      </item>
-      <item row="2" column="0" colspan="2">
-       <widget class="QLabel" name="streamUrlInfoLabel">
-        <property name="text">
-         <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; This is only of use if you have MPD configured to output to a HTTP stream, and you wish Cantata to be able to play that stream.&lt;/i&gt;</string>
-        </property>
-        <property name="wordWrap">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
     <widget class="QGroupBox" name="stopPlaybackBox">
      <property name="title">
       <string>Stopping Playback</string>
@@ -267,7 +232,6 @@
   <tabstop>crossfading</tabstop>
   <tabstop>replayGain</tabstop>
   <tabstop>outputsView</tabstop>
-  <tabstop>streamUrl</tabstop>
   <tabstop>stopFadeDuration</tabstop>
   <tabstop>stopOnExit</tabstop>
   <tabstop>stopDynamizerOnExit</tabstop>

@@ -205,6 +205,9 @@ MPDConnectionDetails Settings::connectionDetails(const QString &name)
             }
             details.dynamizerPort=CFG_GET_INT(grp, "dynamizerPort", 0);
             details.coverName=CFG_GET_STRING(grp, "coverName", QString());
+            #ifdef ENABLE_HTTP_STREAM_PLAYBACK
+            details.streamUrl=CFG_GET_STRING(grp, "streamUrl", QString());
+            #endif
             #else
             cfg.beginGroup(n);
             details.hostname=GET_STRING("host", name.isEmpty() ? mpdDefaults.host : QString());
@@ -213,6 +216,9 @@ MPDConnectionDetails Settings::connectionDetails(const QString &name)
             details.password=GET_STRING("passwd", name.isEmpty() ? mpdDefaults.passwd : QString());
             details.dynamizerPort=GET_INT("dynamizerPort", 0);
             details.coverName=GET_STRING("coverName", QString());
+            #ifdef ENABLE_HTTP_STREAM_PLAYBACK
+            details.streamUrl=GET_STRING("streamUrl", QString());
+            #endif
             cfg.endGroup();
             #endif
         } else {
@@ -222,6 +228,9 @@ MPDConnectionDetails Settings::connectionDetails(const QString &name)
             details.password=mpdDefaults.passwd;
             details.dynamizerPort=0;
             details.coverName=QString();
+            #ifdef ENABLE_HTTP_STREAM_PLAYBACK
+            details.streamUrl=QString();
+            #endif
         }
     }
     details.dirReadable=details.dir.isEmpty() ? false : QDir(details.dir).isReadable();
@@ -616,11 +625,6 @@ bool Settings::playStream()
 {
     return GET_BOOL("playStream", false);
 }
-
-QString Settings::streamUrl()
-{
-    return GET_STRING("streamUrl", QString());
-}
 #endif
 
 #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
@@ -712,6 +716,9 @@ void Settings::saveConnectionDetails(const MPDConnectionDetails &v)
     CFG_SET_VALUE(grp, "dir", v.dir);
     CFG_SET_VALUE(grp, "dynamizerPort", (int)v.dynamizerPort);
     CFG_SET_VALUE(grp, "coverName", v.coverName);
+    #ifdef ENABLE_HTTP_STREAM_PLAYBACK
+    CFG_SET_VALUE(grp, "streamUrl", v.streamUrl);
+    #endif
     if (KWallet::Wallet::isEnabled()) {
         CFG_SET_VALUE(grp, "passwd", !v.password.isEmpty());
         QString walletEntry=v.name.isEmpty() ? "mpd" : v.name;
@@ -734,6 +741,9 @@ void Settings::saveConnectionDetails(const MPDConnectionDetails &v)
     SET_VALUE("passwd", v.password);
     SET_VALUE("dynamizerPort", (int)v.dynamizerPort);
     SET_VALUE("coverName", v.coverName);
+    #ifdef ENABLE_HTTP_STREAM_PLAYBACK
+    SET_VALUE("streamUrl", v.streamUrl);
+    #endif
     cfg.endGroup();
     #endif
     modified=true;
@@ -1025,11 +1035,6 @@ void Settings::savePlayListsStartClosed(bool v)
 void Settings::savePlayStream(bool v)
 {
     SET_VALUE_MOD(playStream)
-}
-
-void Settings::saveStreamUrl(const QString &v)
-{
-    SET_VALUE_MOD(streamUrl)
 }
 #endif
 

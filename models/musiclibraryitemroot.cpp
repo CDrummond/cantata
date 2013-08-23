@@ -405,7 +405,7 @@ void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, const QDateTime &date
             const MusicLibraryItemAlbum *album = static_cast<const MusicLibraryItemAlbum *>(al);
             QString albumGenre=!album->childItems().isEmpty() ? static_cast<const MusicLibraryItemSong *>(album->childItems().at(0))->song().genre : QString();
             writer.writeStartElement(constAlbumElement);
-            writer.writeAttribute(constNameAttribute, album->data());
+            writer.writeAttribute(constNameAttribute, album->originalName().isEmpty() ? album->data() : album->originalName());
             writer.writeAttribute(constYearAttribute, QString::number(album->year()));
             if (!albumGenre.isEmpty() && albumGenre!=unknown) {
                 writer.writeAttribute(constGenreAttribute, albumGenre);
@@ -414,9 +414,6 @@ void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, const QDateTime &date
                 writer.writeAttribute(constSingleTracksAttribute, constTrueValue);
             } else if (album->isMultipleArtists()) {
                 writer.writeAttribute(constMultipleArtistsAttribute, constTrueValue);
-            }
-            if (!album->originalName().isEmpty()) {
-                writer.writeAttribute(constActualAttribute, album->originalName());
             }
             if (!album->imageUrl().isEmpty()) {
                 writer.writeAttribute(constImageAttribute, album->imageUrl());
@@ -586,10 +583,6 @@ quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime 
                     song.type=Song::MultipleArtists;
                 } else {
                     song.type=Song::Standard;
-                }
-                QString actual=attributes.value(constActualAttribute).toString();
-                if (!actual.isEmpty()) {
-                    song.album=actual;
                 }
             } else if (constTrackElement==element) {
                 song.title=attributes.value(constNameAttribute).toString();

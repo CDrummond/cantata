@@ -127,7 +127,7 @@ int Song::compareTo(const Song &o) const
         }
     }
 
-    int compare=albumArtist().localeAwareCompare(o.albumArtist());
+    int compare=artistOrComposer().localeAwareCompare(o.artistOrComposer());
 
     if (0!=compare) {
         return compare;

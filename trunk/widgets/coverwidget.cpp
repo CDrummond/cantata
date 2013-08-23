@@ -259,6 +259,9 @@ bool CoverWidget::eventFilter(QObject *object, QEvent *event)
         }
         QString toolTip=QLatin1String("<table>");
 
+        if (Song::useComposer() && !current.composer.isEmpty() && current.composer!=current.albumArtist()) {
+            toolTip+=i18n("<tr><td align=\"right\"><b>Composer:</b></td><td>%1</td></tr>", current.composer);
+        }
         toolTip+=i18n("<tr><td align=\"right\"><b>Artist:</b></td><td>%1</td></tr>"
                       "<tr><td align=\"right\"><b>Album:</b></td><td>%2</td></tr>"
                       "<tr><td align=\"right\"><b>Year:</b></td><td>%3</td></tr>", current.albumArtist(), current.album, current.year);

@@ -759,17 +759,13 @@ void MusicLibraryItemRoot::toggleGrouping()
 
 void MusicLibraryItemRoot::applyGrouping()
 {
-    bool gs=MPDParseUtils::groupSingle();
-    bool gm=MPDParseUtils::groupMultiple();
-    if (gs) {
+    if (MPDParseUtils::groupSingle()) {
         groupSingleTracks();
     }
-    if (gm) {
+    if (MPDParseUtils::groupMultiple()) {
         groupMultipleArtists();
     }
-    if (gs || gm) {
-        updateGenres();
-    }
+    updateGenres();
 }
 
 void MusicLibraryItemRoot::clearItems()

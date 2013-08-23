@@ -552,6 +552,7 @@ void MusicLibraryModel::toggleGrouping()
 {
     beginResetModel();
     rootItem->toggleGrouping();
+    rootItem->toXML(cacheFileName(), databaseTime);
     endResetModel();
     if (mpdModel) {
         AlbumsModel::self()->update(rootItem);

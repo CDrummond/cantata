@@ -35,6 +35,11 @@
 #include <QValidator>
 #include <QStyle>
 
+#define REMOVE(w) \
+    w->setVisible(false); \
+    w->deleteLater(); \
+    w=0;
+
 class CoverNameValidator : public QValidator
 {
     public:
@@ -115,6 +120,11 @@ ServerSettings::ServerSettings(QWidget *p)
     coverName->setValidator(new CoverNameValidator(this));
     basicCoverName->setValidator(new CoverNameValidator(this));
     name->setValidator(new CollectionNameValidator(this));
+    #ifndef ENABLE_HTTP_STREAM_PLAYBACK
+    REMOVE(streamUrlLabel)
+    REMOVE(streamUrl)
+    REMOVE(streamUrlNoteLabel)
+    #endif
 }
 
 void ServerSettings::load()
@@ -166,7 +176,11 @@ void ServerSettings::save()
                 existingInConfig.removeAt(i);
                 found=true;
                 if (c.details.hostname!=e.hostname || c.details.port!=e.port || c.details.password!=e.password ||
-                    c.details.dir!=e.dir || c.details.dynamizerPort!=e.dynamizerPort || c.details.coverName!=e.coverName) {
+                    c.details.dir!=e.dir || c.details.dynamizerPort!=e.dynamizerPort || c.details.coverName!=e.coverName
+                    #ifdef ENABLE_HTTP_STREAM_PLAYBACK
+                    || c.details.streamUrl!=e.streamUrl
+                    #endif
+                    ) {
                     toAdd.append(c);
                 }
             }
@@ -324,6 +338,9 @@ void ServerSettings::setDetails(const MPDConnectionDetails &details)
         dir->setText(details.dir);
         dynamizerPort->setValue(details.dynamizerPort);
         coverName->setText(details.coverName);
+        #ifdef ENABLE_HTTP_STREAM_PLAYBACK
+        streamUrl->setText(details.streamUrl);
+        #endif
         stackedWidget->setCurrentIndex(0);
     }
 }
@@ -342,6 +359,9 @@ MPDConnectionDetails ServerSettings::getDetails() const
         details.dir=dir->text().trimmed();
         details.dynamizerPort=dynamizerPort->value();
         details.coverName=coverName->text().trimmed();
+        #ifdef ENABLE_HTTP_STREAM_PLAYBACK
+        details.streamUrl=streamUrl->text().trimmed();
+        #endif
     } else {
         details=MPDUser::self()->details(true);
         details.dir=basicDir->text().trimmed();

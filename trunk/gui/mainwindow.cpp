@@ -523,6 +523,7 @@ MainWindow::MainWindow(QWidget *parent)
     consumePlayQueueAction->setChecked(false);
     #ifdef ENABLE_HTTP_STREAM_PLAYBACK
     streamPlayAction->setChecked(false);
+    streamPlayAction->setVisible(false);
     #endif
 
     MusicLibraryItemAlbum::setCoverSize((MusicLibraryItemAlbum::CoverSize)Settings::self()->libraryCoverSize());
@@ -740,6 +741,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(consumePlayQueueAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(setConsume(bool)));
     #ifdef ENABLE_HTTP_STREAM_PLAYBACK
     connect(streamPlayAction, SIGNAL(triggered(bool)), this, SLOT(toggleStream(bool)));
+    connect(MPDConnection::self(), SIGNAL(streamUrl(QString)), SLOT(streamUrl(QString)));
     #endif
     connect(StdActions::self()->backAction, SIGNAL(triggered(bool)), this, SLOT(goBack()));
     connect(playQueueSearchWidget, SIGNAL(returnPressed()), this, SLOT(searchPlayQueue()));
@@ -869,7 +871,7 @@ MainWindow::~MainWindow()
     DevicesModel::self()->unmountRemote();
     #endif
     #ifdef ENABLE_HTTP_STREAM_PLAYBACK
-    Settings::self()->savePlayStream(streamPlayAction->isChecked());
+    Settings::self()->savePlayStream(streamPlayAction->isVisible() && streamPlayAction->isChecked());
     #endif
     if (!fullScreenAction->isChecked()) {
         if (!tabWidget->isEnabled(PAGE_PLAYQUEUE)) {
@@ -1114,6 +1116,17 @@ void MainWindow::connectToMpd()
     connectToMpd(Settings::self()->connectionDetails());
 }
 
+void MainWindow::streamUrl(const QString &u)
+{
+    #ifdef ENABLE_HTTP_STREAM_PLAYBACK
+    streamPlayAction->setVisible(!u.isEmpty());
+    streamPlayAction->setChecked(streamPlayAction->isVisible() && Settings::self()->playStream());
+    toggleStream(streamPlayAction->isChecked(), u);
+    #else
+    Q_UNUSED(u)
+    #endif
+}
+
 void MainWindow::refresh()
 {
     MusicLibraryModel::self()->removeCache();
@@ -1328,12 +1341,6 @@ void MainWindow::readSettings()
     Song::setUseComposer(Settings::self()->useComposer());
     albumsPage->setView(Settings::self()->albumsView());
     AlbumsModel::self()->setAlbumSort(Settings::self()->albumSort());
-
-    #ifdef ENABLE_HTTP_STREAM_PLAYBACK
-    streamPlayAction->setVisible(!Settings::self()->streamUrl().isEmpty());
-    streamPlayAction->setChecked(streamPlayAction->isVisible() && Settings::self()->playStream());
-    toggleStream(streamPlayAction->isChecked());
-    #endif
     libraryPage->setView(Settings::self()->libraryView());
     MusicLibraryModel::self()->setUseArtistImages(Settings::self()->libraryArtistImage());
     playlistsPage->setView(Settings::self()->playlistsView());
@@ -1506,7 +1513,7 @@ void MainWindow::showServerInfo()
                             i18n("Server Information"));
 }
 
-void MainWindow::toggleStream(bool s)
+void MainWindow::toggleStream(bool s, const QString &url)
 {
     #ifdef ENABLE_HTTP_STREAM_PLAYBACK
     MPDStatus * const status = MPDStatus::self();
@@ -1517,7 +1524,7 @@ void MainWindow::toggleStream(bool s)
         }
     } else {
         static const char *constUrlProperty="url";
-        if (httpStream && httpStream->property(constUrlProperty).toString()!=Settings::self()->streamUrl()) {
+        if (httpStream && httpStream->property(constUrlProperty).toString()!=url) {
             httpStream->stop();
             httpStream->deleteLater();
             httpStream=0;
@@ -1540,16 +1547,17 @@ void MainWindow::toggleStream(bool s)
             #if QT_VERSION < 0x050000
             httpStream=new Phonon::MediaObject(this);
             Phonon::createPath(httpStream, new Phonon::AudioOutput(Phonon::MusicCategory, this));
-            httpStream->setCurrentSource(Settings::self()->streamUrl());
+            httpStream->setCurrentSource(url);
             #else
             httpStream=new QMediaPlayer(this);
-            httpStream->setMedia(QUrl(Settings::self()->streamUrl()));
+            httpStream->setMedia(QUrl(url));
             #endif
-            httpStream->setProperty(constUrlProperty, Settings::self()->streamUrl());
+            httpStream->setProperty(constUrlProperty, url);
         }
     }
     #else
     Q_UNUSED(s)
+    Q_UNUSED(url)
     #endif
 }
 

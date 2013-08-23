@@ -30,11 +30,6 @@
 #include "messagebox.h"
 #include <QListWidget>
 
-#define REMOVE(w) \
-    w->setVisible(false); \
-    w->deleteLater(); \
-    w=0;
-
 PlaybackSettings::PlaybackSettings(QWidget *p)
     : QWidget(p)
 {
@@ -62,9 +57,6 @@ PlaybackSettings::PlaybackSettings(QWidget *p)
     messageIcon->setMinimumSize(iconSize, iconSize);
     messageIcon->setMaximumSize(iconSize, iconSize);
     mpdConnectionStateChanged(MPDConnection::self()->isConnected());
-    #ifndef ENABLE_HTTP_STREAM_PLAYBACK
-    REMOVE(streamBox)
-    #endif
 }
 
 void PlaybackSettings::load()
@@ -78,9 +70,6 @@ void PlaybackSettings::load()
         emit getReplayGain();
         emit outputs();
     }
-    #ifdef ENABLE_HTTP_STREAM_PLAYBACK
-    streamUrl->setText(Settings::self()->streamUrl());
-    #endif
 }
 
 void PlaybackSettings::save()
@@ -97,9 +86,6 @@ void PlaybackSettings::save()
             emit enableOutput(item->data(Qt::UserRole).toInt(), Qt::Checked==item->checkState());
         }
     }
-    #ifdef ENABLE_HTTP_STREAM_PLAYBACK
-    Settings::self()->saveStreamUrl(streamUrl->text().trimmed());
-    #endif
 }
 
 void PlaybackSettings::replayGainSetting(const QString &rg)
@@ -134,10 +120,6 @@ void PlaybackSettings::mpdConnectionStateChanged(bool c)
     replayGain->setEnabled(c);
     crossfadingLabel->setEnabled(c);
     replayGainLabel->setEnabled(c);
-    #ifdef ENABLE_HTTP_STREAM_PLAYBACK
-    streamUrl->setEnabled(c);
-    streamUrlLabel->setEnabled(c);
-    #endif
     messageIcon->setPixmap(Icon(c ? "dialog-information" : "dialog-warning").pixmap(messageIcon->minimumSize()));
     if (c) {
         messageLabel->setText(i18n("<i>Connected to %1<br/>The entries below apply to the currently connected MPD collection.</i>",

@@ -378,6 +378,9 @@ void MPDConnection::setDetails(const MPDConnectionDetails &d)
     bool diffName=det.name!=details.name;
     bool diffDetails=det!=details;
     bool diffDynamicPort=det.dynamizerPort!=details.dynamizerPort;
+    #ifdef ENABLE_HTTP_STREAM_PLAYBACK
+    bool diffStreamUrl=det.streamUrl!=details.streamUrl;
+    #endif
 
     details=det;
     if (diffDetails || State_Connected!=state) {
@@ -415,6 +418,11 @@ void MPDConnection::setDetails(const MPDConnectionDetails &d)
             emit dynamicUrl("http://"+(details.isLocal() ? "127.0.0.1" : details.hostname)+":"+QString::number(details.dynamizerPort));
         }
     }
+    #ifdef ENABLE_HTTP_STREAM_PLAYBACK
+    if (diffStreamUrl) {
+        emit streamUrl(details.streamUrl);
+    }
+    #endif
     if (changedDir) {
         emit dirChanged();
     }

@@ -12,6 +12,8 @@
    is saved in favourites, or added to playqueue.
 6. Support composer tag - group albums via composer, edit tag, rename files
    using tag, and use field for dyanmic playlists.
+7. Place HTTP stream URL into connections page, as URL could be different per
+   connection.
 
 1.1.2
 -----

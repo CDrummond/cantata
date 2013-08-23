@@ -164,6 +164,7 @@ MusicLibraryItemAlbum::MusicLibraryItemAlbum(const QString &data, quint32 year, 
     , m_yearOfTrack(0xFFFF)
     , m_yearOfDisc(0xFFFF)
     , m_totalTime(0)
+    , m_numTracks(0)
     , m_coverIsDefault(false)
     , m_cover(0)
     , m_type(Song::Standard)

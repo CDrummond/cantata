@@ -263,6 +263,11 @@ public:
 
                 if (year>0) {
                     title=i18nc("artist - album (albumYear)", "%1 - %2 (%3)", song.artistOrComposer(), song.albumName(), year);
+                    if (Song::useComposer()) {
+                        while (title.contains(") (")) {
+                            title=title.replace(") (", ", ");
+                        }
+                    }
                 } else {
                     title=i18nc("artist - album", "%1 - %2", song.artistOrComposer(), song.albumName());
                 }

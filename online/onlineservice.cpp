@@ -202,7 +202,7 @@ bool OnlineService::decode(Song &song)
     int pos=song.file.indexOf(constUrlGuard);
 
     if (pos>0) {
-        QStringList parts=song.file.mid(pos+constUrlGuard.length()+1).split(constDeliminator);
+        QStringList parts=song.file.mid(pos+constUrlGuard.length()).split(constDeliminator);
         if (parts.length()>=6) {
             song.artist=parts.at(0);
             song.title=parts.at(1);

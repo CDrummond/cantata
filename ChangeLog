@@ -24,6 +24,7 @@
    of genres associated with artists.
 3. Fix decoding of details for Online service URLs sent to MPD, and
    subsequently read back.
+4. Dont allow dragging of stream categories onto playqueue.
 
 1.1.1
 -----

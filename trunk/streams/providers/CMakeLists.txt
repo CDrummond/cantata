@@ -1,6 +1,8 @@
-file(GLOB provider_files *.xml.gz *.png *.svg)
 if (WIN32)
-    install(FILES ${provider_files} DESTINATION ${CMAKE_INSTALL_PREFIX}/streams/)
+    set(STREAM_PROVIDER_PREFIX ${CMAKE_INSTALL_PREFIX}/streams)
 else (WIN32)
-    install(FILES ${provider_files} DESTINATION ${CMAKE_INSTALL_PREFIX}/share/${CMAKE_PROJECT_NAME}/streams/)
+    set(STREAM_PROVIDER_PREFIX ${CMAKE_INSTALL_PREFIX}/share/${CMAKE_PROJECT_NAME}/streams)
 endif (WIN32)
+
+install(FILES 1.fm.png DESTINATION ${STREAM_PROVIDER_PREFIX}/1.fm RENAME icon.png)
+install(FILES 1.fm.xml.gz DESTINATION ${STREAM_PROVIDER_PREFIX}/1.fm RENAME streams.xml.gz)

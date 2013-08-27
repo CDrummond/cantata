@@ -103,6 +103,7 @@ static QString constShoutCastHost=QLatin1String("api.shoutcast.com");
 static QString constShoutCastUrl=QLatin1String("http://")+constShoutCastHost+QLatin1String("/genre/primary?f=xml&k=")+constShoutCastApiKey;
 
 static const QLatin1String constFavouritesFileName("streams.xml.gz");
+static const QStringList constExternalStreamFiles=QStringList() << QLatin1String("/streams.xml") << QLatin1String("/streams.xml.gz");
 
 QString StreamsModel::favouritesDir()
 {
@@ -124,23 +125,21 @@ static QIcon getIcon(const QString &name)
     return icon.isNull() ? Icons::self()->streamCategoryIcon : icon;
 }
 
-static QIcon getExternalIcon(const QString &xmlFile)
+static QIcon getExternalIcon(const QString &path)
 {
-    QIcon icon;
-    QString iconFile=xmlFile;
-    iconFile.replace(".xml.gz", ".svg");
+    static const QString constStreamIcon=QLatin1String("/icon");
+    static const QStringList constIconTypes=QStringList() << QLatin1String(".svg") << QLatin1String(".png");
 
-    if (QFile::exists(iconFile)) {
-        icon.addFile(iconFile);
-    } else {
-        iconFile=xmlFile;
-        iconFile.replace(".xml.gz", ".png");
+    foreach (const QString &type, constIconTypes) {
+        QString iconFile=path+constStreamIcon+type;
         if (QFile::exists(iconFile)) {
+            QIcon icon;
             icon.addFile(iconFile);
+            return icon;
         }
     }
 
-    return icon;
+    return QIcon();
 }
 
 static QString categoryCacheName(const QString &name, bool createDir=false)
@@ -1775,12 +1774,17 @@ void StreamsModel::buildXml()
             continue;
         }
         QDir d(dir);
-        QStringList files=d.entryList(QStringList() << "*.xml.gz", QDir::Files|QDir::Readable);
-        foreach (const QString &file, files) {
-            if (!added.contains(file)) {
-                CategoryItem *cat=new XmlCategoryItem(Utils::getFile(file).remove(".xml.gz"), root, getExternalIcon(dir+file), dir+file);
-                added.insert(file);
-                root->children.append(cat);
+        QStringList subDirs=d.entryList(QStringList() << "*", QDir::Dirs|QDir::Readable|QDir::NoDot|QDir::NoDotDot);
+        foreach (const QString &sub, subDirs) {
+            if (!added.contains(sub)) {
+                foreach (const QString &streamFile, constExternalStreamFiles) {
+                    if (QFile::exists(dir+sub+streamFile)) {
+                        CategoryItem *cat=new XmlCategoryItem(sub, root, getExternalIcon(dir+sub), dir+sub+streamFile);
+                        added.insert(sub);
+                        root->children.append(cat);
+                        break;
+                    }
+                }
             }
         }
     }

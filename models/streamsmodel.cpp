@@ -969,16 +969,19 @@ static QString addDiHash(const StreamsModel::Item *item)
             ? DigitallyImported::self()->modifyUrl(item->url) : item->url;
 }
 
-static void filenames(QStringList &fn, bool addPrefix, const StreamsModel::CategoryItem *cat)
-{
-    foreach (const StreamsModel::Item *i, cat->children) {
-        if (i->isCategory()) {
-            ::filenames(fn, addPrefix, static_cast<const StreamsModel::CategoryItem *>(i));
-        } else if (!fn.contains(i->url) && StreamsModel::validProtocol(i->url)) {
-            fn << StreamsModel::modifyUrl(addDiHash(i), addPrefix, addPrefix ? i->modifiedName() : i->name);
-        }
-    }
-}
+//static void filenames(QStringList &fn, bool addPrefix, const StreamsModel::CategoryItem *cat)
+//{
+//    foreach (const StreamsModel::Item *i, cat->children) {
+//        if (i->isCategory()) {
+//            ::filenames(fn, addPrefix, static_cast<const StreamsModel::CategoryItem *>(i));
+//        } else if (StreamsModel::validProtocol(i->url)) {
+//            QString url=StreamsModel::modifyUrl(addDiHash(i), addPrefix, addPrefix ? i->modifiedName() : i->name);
+//            if (!fn.contains(i->url)) {
+//                fn << url;
+//            }
+//        }
+//    }
+//}
 
 QStringList StreamsModel::filenames(const QModelIndexList &indexes, bool addPrefix) const
 {
@@ -986,9 +989,15 @@ QStringList StreamsModel::filenames(const QModelIndexList &indexes, bool addPref
     foreach(QModelIndex index, indexes) {
         Item *item=static_cast<Item *>(index.internalPointer());
 
-        if (item->isCategory()) {
-            ::filenames(fnames, addPrefix, static_cast<const StreamsModel::CategoryItem *>(item));
-        } else if (!fnames.contains(item->url) && validProtocol(item->url)) {
+//        if (item->isCategory()) {
+//            ::filenames(fnames, addPrefix, static_cast<const StreamsModel::CategoryItem *>(item));
+//        } else if (validProtocol(item->url)) {
+//            QString url=modifyUrl(addDiHash(item), addPrefix, addPrefix ? item->modifiedName() : item->name);
+//            if (!fnames.contains(url)) {
+//                fnames << url;
+//            }
+//        }
+        if (!item->isCategory()) {
             fnames << modifyUrl(addDiHash(item), addPrefix, addPrefix ? item->modifiedName() : item->name);
         }
     }

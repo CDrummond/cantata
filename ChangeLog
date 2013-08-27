@@ -25,6 +25,8 @@
 3. Fix decoding of details for Online service URLs sent to MPD, and
    subsequently read back.
 4. Dont allow dragging of stream categories onto playqueue.
+5. Replace # in stream names with ${hash} when passing to MPD, and revert when
+   URL is displayed.
 
 1.1.1
 -----

@@ -664,6 +664,8 @@ QString MPDParseUtils::formatDuration(const quint32 totalseconds)
     #endif
 }
 
+static const QString constHashReplacement=QLatin1String("${hash}");
+
 QString MPDParseUtils::addStreamName(const QString &url, const QString &name)
 {
     if (name.isEmpty()) {
@@ -671,16 +673,24 @@ QString MPDParseUtils::addStreamName(const QString &url, const QString &name)
     }
 
     QUrl u(url);
-    if (u.path().isEmpty()) {
-        return url+"/#"+name;
+    QString n(name);
+    while (n.contains("#")) {
+        n=n.replace("#", constHashReplacement);
     }
-    return url+"#"+name;
+    if (u.path().isEmpty()) {
+        return url+"/#"+n;
+    }
+    return url+"#"+n;
 }
 
 QString MPDParseUtils::getStreamName(const QString &url)
 {
     int idx=url.lastIndexOf('#');
-    return -1==idx ? QString() : url.mid(idx+1);
+    QString name=-1==idx ? QString() : url.mid(idx+1);
+    while (name.contains(constHashReplacement)) {
+        name.replace(constHashReplacement, "#");
+    }
+    return name;
 }
 
 QString MPDParseUtils::getAndRemoveStreamName(QString &url)
@@ -690,6 +700,9 @@ QString MPDParseUtils::getAndRemoveStreamName(QString &url)
         return QString();
     }
     QString name=url.mid(idx+1);
+    while (name.contains(constHashReplacement)) {
+        name.replace(constHashReplacement, "#");
+    }
     url=url.left(idx);
     return name;
 }

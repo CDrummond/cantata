@@ -1070,10 +1070,10 @@ static Covers::Image fix(const Covers::Image &img)
 Covers::Image Covers::requestImage(const Song &song)
 {
     DBUG << song.file << song.artist << song.albumartist << song.album;
-    if (retrieved>=constMaxPerLoopIteration) {
+//    if (retrieved>=constMaxPerLoopIteration) {
         emit locate(song);
         return Covers::Image();
-    }
+//    }
 
     retrieved++;
     Image img=findImage(song, false);

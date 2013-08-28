@@ -35,6 +35,7 @@ class ServerSettings;
 class PlaybackSettings;
 class FileSettings;
 class InterfaceSettings;
+class StreamsSettings;
 class ContextSettings;
 #ifdef TAGLIB_FOUND
 class HttpServerSettings;
@@ -70,6 +71,7 @@ private:
     PlaybackSettings *playback;
     FileSettings *files;
     InterfaceSettings *interface;
+    StreamsSettings *streams;
     ContextSettings *context;
     #ifdef TAGLIB_FOUND
     HttpServerSettings *http;

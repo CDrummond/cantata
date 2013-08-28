@@ -426,11 +426,7 @@ void AlbumsModel::update(const MusicLibraryItemRoot *root)
                 a->setSongs(albumItem);
                 a->genres=albumItem->genres();
                 a->updated=true;
-                if (Song::SingleTracks!=albumItem->songType() && artistItem->isVarious()) {
-                    a->type=Song::MultipleArtists;
-                } else {
-                    a->type=albumItem->songType();
-                }
+                a->type=albumItem->songType();
                 if (!resettingModel) {
                     beginInsertRows(QModelIndex(), items.count(), items.count());
                 }
@@ -464,13 +460,13 @@ void AlbumsModel::setCover(const Song &song, const QImage &img, const QString &f
     if (img.isNull() || song.isArtistImageRequest()) {
         return;
     }
-
     QList<AlbumItem *>::Iterator it=items.begin();
     QList<AlbumItem *>::Iterator end=items.end();
-    QString artist=Song::MultipleArtists==song.type ? i18n("Various Artists") : song.albumArtist();
+    QString artist=MusicLibraryItemRoot::artistName(song);
+    QString album=song.albumName();
 
     for (int row=0; it!=end; ++it, ++row) {
-        if ((*it)->artist==artist && (*it)->album==song.album) {
+        if ((*it)->artist==artist && (*it)->album==album) {
             if (!(*it)->cover || update) {
                 (*it)->setCover(img);
                 QModelIndex idx=index(row, 0, QModelIndex());
@@ -623,12 +619,15 @@ void AlbumsModel::AlbumItem::getCover()
         if (Song::MultipleArtists==type) {  // Then Cantata has placed this album under 'Various Artists' but the actual album as a different AlbumArtist tag
             s.artist=firstSong->albumArtist();
         } else {
-            s.artist=artist;
+            s.artist=firstSong->artist;
+            s.albumartist=Song::useComposer() && !firstSong->composer.isEmpty()
+                            ? firstSong->albumArtist() : artist;
         }
         s.album=album;
         s.year=year;
         s.file=firstSong->file;
         s.type=type;
+        s.composer=firstSong->composer;
         #ifdef CACHE_SCALED_COVERS
         int size=iconSize();
         QString cache=cacheCoverName(s.artist, s.album, size);

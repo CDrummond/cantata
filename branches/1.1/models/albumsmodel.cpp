@@ -426,11 +426,7 @@ void AlbumsModel::update(const MusicLibraryItemRoot *root)
                 a->setSongs(albumItem);
                 a->genres=albumItem->genres();
                 a->updated=true;
-                if (Song::SingleTracks!=albumItem->songType() && artistItem->isVarious()) {
-                    a->type=Song::MultipleArtists;
-                } else {
-                    a->type=albumItem->songType();
-                }
+                a->type=albumItem->songType();
                 if (!resettingModel) {
                     beginInsertRows(QModelIndex(), items.count(), items.count());
                 }
@@ -464,10 +460,9 @@ void AlbumsModel::setCover(const Song &song, const QImage &img, const QString &f
     if (img.isNull() || song.isArtistImageRequest()) {
         return;
     }
-
     QList<AlbumItem *>::Iterator it=items.begin();
     QList<AlbumItem *>::Iterator end=items.end();
-    QString artist=Song::MultipleArtists==song.type ? i18n("Various Artists") : song.albumArtist();
+    QString artist=MusicLibraryItemRoot::artistName(song);
 
     for (int row=0; it!=end; ++it, ++row) {
         if ((*it)->artist==artist && (*it)->album==song.album) {
@@ -623,7 +618,8 @@ void AlbumsModel::AlbumItem::getCover()
         if (Song::MultipleArtists==type) {  // Then Cantata has placed this album under 'Various Artists' but the actual album as a different AlbumArtist tag
             s.artist=firstSong->albumArtist();
         } else {
-            s.artist=artist;
+            s.artist=firstSong->artist;
+            s.albumartist=artist;
         }
         s.album=album;
         s.year=year;

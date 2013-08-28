@@ -110,6 +110,7 @@ public:
     void addSongToList(const Song &s);
     void removeSongFromList(const Song &s);
     void clearImages();
+    static QString artistName(const Song &s);
 
 protected:
     QString songArtist(const Song &s) const;

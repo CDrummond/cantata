@@ -976,14 +976,19 @@ void MusicLibraryItemRoot::clearImages()
     }
 }
 
+QString MusicLibraryItemRoot::artistName(const Song &s)
+{
+    if (Song::Standard==s.type || (Song::Playlist==s.type && !s.albumArtist().isEmpty())) {
+        return s.albumArtist();
+    }
+    return i18n("Various Artists");
+}
+
 QString MusicLibraryItemRoot::songArtist(const Song &s) const
 {
     if (isFlat || !supportsAlbumArtist) {
         return s.artist;
     }
 
-    if (Song::Standard==s.type || (Song::Playlist==s.type && !s.albumArtist().isEmpty())) {
-        return s.albumArtist();
-    }
-    return i18n("Various Artists");
+    return artistName(s);
 }

@@ -8,6 +8,8 @@
 4. Dont allow dragging of stream categories onto playqueue.
 5. Replace # in stream names with ${hash} when passing to MPD, and revert when
    URL is displayed.
+6. Fix covers when using album artist for multiple artist albums, and album
+   artist name is "Various Artists" - but this has been translated in Cantata.
 
 1.1.1
 -----

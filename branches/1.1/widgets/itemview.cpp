@@ -315,7 +315,9 @@ public:
         if (drawBgnd && mouseOver) {
             drawIcons(painter, AP_VTop==actionPos ? r2 : r, true, rtl, actionPos, index);
         }
-        drawDivider(painter, option.rect, color);
+        if (!iconMode) {
+            drawDivider(painter, option.rect, color);
+        }
         painter->restore();
     }
 

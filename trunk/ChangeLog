@@ -29,6 +29,7 @@
    URL is displayed.
 6. Fix covers when using album artist for multiple artist albums, and album
    artist name is "Various Artists" - but this has been translated in Cantata.
+7. Dont draw item divider in icon views.
 
 1.1.1
 -----

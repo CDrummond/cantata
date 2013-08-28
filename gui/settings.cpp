@@ -687,6 +687,11 @@ bool Settings::showTimeRemaining()
     return GET_BOOL("showTimeRemaining", false);
 }
 
+QStringList Settings::hiddenStreamCategories()
+{
+    return GET_STRINGLIST("hiddenStreamCategories", QStringList());
+}
+
 void Settings::removeConnectionDetails(const QString &v)
 {
     if (v==currentConnection()) {
@@ -1092,6 +1097,11 @@ void Settings::saveMonoSidebarIcons(bool v)
 void Settings::saveShowTimeRemaining(bool v)
 {
     SET_VALUE_MOD(showTimeRemaining);
+}
+
+void Settings::saveHiddenStreamCategories(const QStringList &v)
+{
+    SET_VALUE_MOD(hiddenStreamCategories);
 }
 
 void Settings::save(bool force)

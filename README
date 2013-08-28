@@ -200,6 +200,58 @@ if the folder heirarchy is 2 levels (artist/album/) and the user has write
 permissions. If not, then they will be saved in Cantata's cache folder.
 
 
+Streams
+=======
+
+Cantata contains a list of in-built stream categories, or providers. To import
+new stream categories into Cantata, files need to be GZip compressed tarballs
+of the following format.
+
+  Filename: CATEGORY_NAME.streams  (e.g. German Radio.streams)
+  Contents: Either streams.xml or streams.xml.gz, & either icon.png or icon.svg
+            streams.xml.gz should be gzipped.
+            icon.svg should be non-compressed SVG file.
+
+streams.xml.gz is the same format as Cantata's "Favourites" streams file, and
+the same as stream cache files. The format is as follows:
+
+  <?xml version="1.0" encoding="UTF-8"?>
+  <streams version="1.0" addCategoryName="true">
+    <stream name="Station Name" url="http://station.stream.url"/>
+  </streams>
+
+if "addCategoryName" is set to true, then when Cantata adds a station from this
+category to either favourites or the playqueue, it will prepend the Category
+name to the station name.
+
+e.g. To create a stream category named "Wicked Radio" that has 2
+sub-categeries, and 3 stream URLs you would need:
+
+streams.xml.gz with:
+  <?xml version="1.0" encoding="UTF-8"?>
+  <streams version="1.0" addCategoryName="true">
+    <category name="Rock">
+      <stream name="Hard Rock" url="http://127.0.0.1/hard.ogg"/>
+      <stream name="Soft Rock" url="http://127.0.0.1/soft.ogg"/>
+    </category>
+    <stream name="Blues" url="http://127.0.0.1/blues.ogg"/>
+  </streams>
+
+streams.xml.gz & icon.svg need to be placed into a gzip'ed tarball named
+Wicked Radio.streams
+
+With the above, Cantata would list the following in the streams view:
+
+> Wicked Radio
+   > Rock
+       Hard Rock
+       Soft Rock
+   Blues
+   
+When "Hard Rock" is added to the playqueue, it will be listed as
+"Wicked Radio - Hard Rock"
+
+
 MultiMedia Keys
 ===============
 

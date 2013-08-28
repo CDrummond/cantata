@@ -74,11 +74,16 @@ StreamsModel * StreamsModel::self()
 }
 
 const QString StreamsModel::constPrefix=QLatin1String("cantata-");
-const QString StreamsModel::constCacheDir=QLatin1String("streams");
+const QString StreamsModel::constSubDir=QLatin1String("streams");
 const QString StreamsModel::constCacheExt=QLatin1String(".xml.gz");
 
 const QString StreamsModel::constShoutCastApiKey=QLatin1String("fa1669MuiRPorUBw");
 const QString StreamsModel::constShoutCastHost=QLatin1String("api.shoutcast.com");
+
+const QString StreamsModel::constCompressedXmlFile=QLatin1String("streams.xml.gz");
+const QString StreamsModel::constXmlFile=QLatin1String("streams.xml");
+const QString StreamsModel::constPngIcon=QLatin1String("icon.png");
+const QString StreamsModel::constSvgIcon=QLatin1String("icon.svg");
 
 static const char * constOrigUrlProperty = "orig-url";
 
@@ -102,8 +107,7 @@ static QString constShoutCastApiKey=QLatin1String("fa1669MuiRPorUBw");
 static QString constShoutCastHost=QLatin1String("api.shoutcast.com");
 static QString constShoutCastUrl=QLatin1String("http://")+constShoutCastHost+QLatin1String("/genre/primary?f=xml&k=")+constShoutCastApiKey;
 
-static const QLatin1String constFavouritesFileName("streams.xml.gz");
-static const QStringList constExternalStreamFiles=QStringList() << QLatin1String("/streams.xml") << QLatin1String("/streams.xml.gz");
+static const QLatin1String constFavouritesFileName=QLatin1String("streams.xml.gz");
 
 QString StreamsModel::favouritesDir()
 {
@@ -127,11 +131,10 @@ static QIcon getIcon(const QString &name)
 
 static QIcon getExternalIcon(const QString &path)
 {
-    static const QString constStreamIcon=QLatin1String("/icon");
-    static const QStringList constIconTypes=QStringList() << QLatin1String(".svg") << QLatin1String(".png");
+    static const QStringList constIconFiles=QStringList() << StreamsModel::constSvgIcon <<  StreamsModel::constPngIcon;
 
-    foreach (const QString &type, constIconTypes) {
-        QString iconFile=path+constStreamIcon+type;
+    foreach (const QString &file, constIconFiles) {
+        QString iconFile=path+"/"+file;
         if (QFile::exists(iconFile)) {
             QIcon icon;
             icon.addFile(iconFile);
@@ -144,7 +147,7 @@ static QIcon getExternalIcon(const QString &path)
 
 static QString categoryCacheName(const QString &name, bool createDir=false)
 {
-    return Utils::cacheDir(StreamsModel::constCacheDir, createDir)+name+StreamsModel::constCacheExt;
+    return Utils::cacheDir(StreamsModel::constSubDir, createDir)+name+StreamsModel::constCacheExt;
 }
 
 static QString categoryBookmarksName(const QString &name, bool createDir=false)
@@ -514,6 +517,15 @@ void StreamsModel::DiCategoryItem::addHeaders(QNetworkRequest &req)
     DigitallyImported::self()->addAuthHeader(req);
 }
 
+bool StreamsModel::XmlCategoryItem::isBuiltIn() const
+{
+    #ifdef Q_OS_WIN
+    return true;
+    #else
+    return cacheName.startsWith(INSTALL_PREFIX "/share/cantata/streams/");
+    #endif
+}
+
 StreamsModel::StreamsModel(QObject *parent)
     : ActionModel(parent)
     , root(new CategoryItem(QString(), "root"))
@@ -527,6 +539,7 @@ StreamsModel::StreamsModel(QObject *parent)
     root->children.append(tuneIn);
     root->children.append(new IceCastCategoryItem(constIceCastUrl, i18n("IceCast"), root, getIcon("icecast"), "icecast"));
     shoutCast=new ShoutCastCategoryItem(constShoutCastUrl, i18n("ShoutCast"), root, getIcon("shoutcast"));
+    shoutCast->configName="shoutcast";
     root->children.append(shoutCast);
     root->children.append(new CategoryItem(constSomaFMUrl, i18n("SomaFM"), root, getIcon("somafm"), "somafm", QString(), true));
     root->children.append(new DiCategoryItem(constDigitallyImportedUrl, i18n("Digitally Imported"), root, getIcon("digitallyimported"), "di"));
@@ -541,6 +554,17 @@ StreamsModel::StreamsModel(QObject *parent)
     addToFavouritesAction = ActionCollection::get()->createAction("addtofavourites", i18n("Add Stream To Favorites"), favouritesIcon());
     configureAction = ActionCollection::get()->createAction("configurestreams", i18n("Configure Streams"), Icons::self()->configureIcon);
     reloadAction = ActionCollection::get()->createAction("reloadstreams", i18n("Reload"), Icon("view-refresh"));
+
+    QSet<QString> hidden=Settings::self()->hiddenStreamCategories().toSet();
+    foreach (Item *c, root->children) {
+        if (c!=favourites) {
+            CategoryItem *cat=static_cast<CategoryItem *>(c);
+            if (hidden.contains(cat->configName)) {
+                hiddenCategories.append(c);
+                root->children.removeAll(c);
+            }
+        }
+    }
 }
 
 StreamsModel::~StreamsModel()
@@ -1017,6 +1041,55 @@ QStringList StreamsModel::mimeTypes() const
     QStringList types;
     types << PlayQueueModel::constFileNameMimeType;
     return types;
+}
+
+void StreamsModel::save()
+{
+    QStringList disabled;
+    foreach (Item *i, hiddenCategories) {
+        disabled.append(static_cast<CategoryItem *>(i)->configName);
+    }
+    disabled.sort();
+    Settings::self()->saveHiddenStreamCategories(disabled);
+}
+
+QList<StreamsModel::Category> StreamsModel::getCategories() const
+{
+    QList<StreamsModel::Category> categories;
+    foreach (Item *i, hiddenCategories) {
+        categories.append(Category(i->name, static_cast<CategoryItem *>(i)->icon, static_cast<CategoryItem *>(i)->configName,
+                                   static_cast<CategoryItem *>(i)->isBuiltIn(), true));
+    }
+    foreach (Item *i, root->children) {
+        if (i!=favourites) {
+            categories.append(Category(i->name, static_cast<CategoryItem *>(i)->icon, static_cast<CategoryItem *>(i)->configName,
+                                       static_cast<CategoryItem *>(i)->isBuiltIn(), false));
+        }
+    }
+    return categories;
+}
+
+void StreamsModel::setHiddenCategories(const QSet<QString> &cats)
+{
+    foreach (Item *i, hiddenCategories) {
+        if (!cats.contains(static_cast<CategoryItem *>(i)->configName)) {
+            beginInsertRows(QModelIndex(), root->children.count(), root->children.count());
+            root->children.append(i);
+            hiddenCategories.removeAll(i);
+            endInsertRows();
+        }
+    }
+
+    foreach (Item *i, root->children) {
+        if (cats.contains(static_cast<CategoryItem *>(i)->configName)) {
+            int row=root->children.indexOf(i);
+            if (row>0) {
+                beginRemoveRows(QModelIndex(), row, row);
+                hiddenCategories.append(root->children.takeAt(row));
+                endRemoveRows();
+            }
+        }
+    }
 }
 
 bool StreamsModel::loadCache(CategoryItem *cat)
@@ -1733,6 +1806,7 @@ void StreamsModel::buildListenLive()
             listenLive=new ListenLiveCategoryItem(i18n("Listen Live"), root, getIcon("listenlive"));
             root->children.append(listenLive);
             listenLive->state=CategoryItem::Fetched;
+            listenLive->configName="listenlive";
         }
         CategoryItem *region=listenLive;
         CategoryItem *prevRegion=listenLive;
@@ -1773,11 +1847,11 @@ void StreamsModel::buildXml()
     #ifdef Q_OS_WIN
     QStringList dirs=QStringList() << QCoreApplication::applicationDirPath()+"/streams/";
     #else
-    QStringList dirs=QStringList() << Utils::configDir("streams")
+    QStringList dirs=QStringList() << Utils::configDir(StreamsModel::constSubDir)
                                    << INSTALL_PREFIX "/share/cantata/streams/";
     #endif
     QSet<QString> added;
-
+    QStringList streamFiles=QStringList() << constCompressedXmlFile << constXmlFile;
     foreach (const QString &dir, dirs) {
         if (dir.isEmpty()) {
             continue;
@@ -1786,15 +1860,49 @@ void StreamsModel::buildXml()
         QStringList subDirs=d.entryList(QStringList() << "*", QDir::Dirs|QDir::Readable|QDir::NoDot|QDir::NoDotDot);
         foreach (const QString &sub, subDirs) {
             if (!added.contains(sub)) {
-                foreach (const QString &streamFile, constExternalStreamFiles) {
-                    if (QFile::exists(dir+sub+streamFile)) {
-                        CategoryItem *cat=new XmlCategoryItem(sub, root, getExternalIcon(dir+sub), dir+sub+streamFile);
+                foreach (const QString &streamFile, streamFiles) {
+                    if (QFile::exists(dir+sub+"/"+streamFile)) {
+                        addXmlCategory(sub, getExternalIcon(dir+sub), dir+sub+"/"+streamFile, false);
                         added.insert(sub);
-                        root->children.append(cat);
                         break;
                     }
                 }
             }
+        }
+    }
+}
+
+StreamsModel::CategoryItem * StreamsModel::addXmlCategory(const QString &name, const QIcon &icon, const QString &xmlFileName, bool replace)
+{
+    CategoryItem *cat=new XmlCategoryItem(name, root, icon, xmlFileName);
+    cat->configName="x-"+name;
+
+    if (replace) {
+        // Remove any existing entry...
+        removeXmlCategory(cat->configName);
+    }
+
+    if (replace) {
+        beginInsertRows(QModelIndex(), root->children.count(), root->children.count());
+        root->children.append(cat);
+        endInsertRows();
+    } else {
+        root->children.append(cat);
+    }
+    return cat;
+}
+
+void StreamsModel::removeXmlCategory(const QString &key)
+{
+    foreach (Item *i, root->children) {
+        if (key==static_cast<CategoryItem *>(i)->configName) {
+            int row=root->children.indexOf(i);
+            if (row>0) {
+                beginRemoveRows(QModelIndex(), row, row);
+                delete root->children.takeAt(row);
+                endRemoveRows();
+            }
+            break;
         }
     }
 }

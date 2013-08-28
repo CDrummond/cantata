@@ -896,6 +896,7 @@ MainWindow::~MainWindow()
     context->saveConfig();
     streamsPage->save();
     positionSlider->saveConfig();
+    StreamsModel::self()->save();
     Settings::self()->saveForceSingleClick(TreeView::getForceSingleClick());
     Settings::self()->saveStartHidden(trayItem->isActive() && isHidden() && Settings::self()->minimiseOnClose());
     Settings::self()->save(true);

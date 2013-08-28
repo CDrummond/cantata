@@ -28,6 +28,7 @@
 #include <QIcon>
 #include <QList>
 #include <QMap>
+#include <QSet>
 #include <QDateTime>
 
 class QNetworkReply;
@@ -67,12 +68,14 @@ public:
         CategoryItem(const QString &u, const QString &n=QString(), CategoryItem *p=0, const QIcon &i=QIcon(),
                      const QString &cn=QString(), const QString &bn=QString(), bool modName=false)
             : Item(u, n, p), state(Initial), isAll(false), isBookmarks(false), supportsBookmarks(false),
-              canBookmark(false), addCatToModifiedName(modName), icon(i), cacheName(cn), bookmarksName(bn) { }
+              canBookmark(false), addCatToModifiedName(modName), icon(i), cacheName(cn),
+              bookmarksName(bn), configName(cn.isEmpty() ? bn : cn) { }
 
         virtual ~CategoryItem() { qDeleteAll(children); }
         virtual bool isCategory() const { return true; }
         virtual bool canConfigure() const { return false; }
         virtual bool isFavourites() const { return false; }
+        virtual bool isBuiltIn() const { return true; }
         virtual void removeCache();
         bool isTopLevel() const { return parent && 0==parent->parent; }
         virtual bool canReload() const { return !cacheName.isEmpty() || isTopLevel() || !url.isEmpty(); }
@@ -99,6 +102,7 @@ public:
         QIcon icon;
         QString cacheName;
         QString bookmarksName;
+        QString configName;
     };
 
     struct FavouritesCategoryItem : public CategoryItem
@@ -148,14 +152,30 @@ public:
         QList<Item *> loadCache();
         bool canReload() const { return false; }
         void removeCache() { }
+        bool isBuiltIn() const;
+    };
+
+    struct Category
+    {
+        Category(const QString &n, const QIcon &i, const QString &k, bool b, bool h) : name(n), icon(i), key(k), builtin(b), hidden(h) { }
+        QString name;
+        QIcon icon;
+        QString key;
+        bool builtin;
+        bool hidden;
     };
 
     static const QString constPrefix;
-    static const QString constCacheDir;
+    static const QString constSubDir;
     static const QString constCacheExt;
 
     static const QString constShoutCastApiKey;
     static const QString constShoutCastHost;
+
+    static const QString constCompressedXmlFile;
+    static const QString constXmlFile;
+    static const QString constPngIcon;
+    static const QString constSvgIcon;
 
     static StreamsModel * self();
     static QString favouritesDir();
@@ -208,6 +228,12 @@ public:
     Action *configureAct() { return configureAction; }
     Action *reloadAct() { return reloadAction; }
 
+    void save();
+    QList<Category> getCategories() const;
+    void setHiddenCategories(const QSet<QString> &cats);
+    CategoryItem * addXmlCategory(const QString &name, const QIcon &icon, const QString &xmlFileName, bool replace);
+    void removeXmlCategory(const QString &key);
+
 Q_SIGNALS:
     void loading();
     void loaded();
@@ -251,6 +277,7 @@ private:
     Action *addToFavouritesAction;
     Action *configureAction;
     Action *reloadAction;
+    QList<Item *> hiddenCategories;
 };
 
 #endif

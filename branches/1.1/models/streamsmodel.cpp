@@ -901,7 +901,7 @@ static QString addDiHash(const StreamsModel::Item *item)
 //        if (i->isCategory()) {
 //            ::filenames(fn, addPrefix, static_cast<const StreamsModel::CategoryItem *>(i));
 //        } else if (StreamsModel::validProtocol(i->url)) {
-//            QString url=StreamsModel::modifyUrl(addDiHash(i), addPrefix, addPrefix ? i->modifiedName() : i->name);
+//            QString url=StreamsModel::modifyUrl(addDiHash(i), addPrefix, i->name);
 //            if (!fn.contains(i->url)) {
 //                fn << url;
 //            }
@@ -918,13 +918,13 @@ QStringList StreamsModel::filenames(const QModelIndexList &indexes, bool addPref
 //        if (item->isCategory()) {
 //            ::filenames(fnames, addPrefix, static_cast<const StreamsModel::CategoryItem *>(item));
 //        } else if (validProtocol(item->url)) {
-//            QString url=modifyUrl(addDiHash(item), addPrefix, addPrefix ? item->modifiedName() : item->name);
+//            QString url=modifyUrl(addDiHash(item), addPrefix, item->name);
 //            if (!fnames.contains(url)) {
 //                fnames << url;
 //            }
 //        }
         if (!item->isCategory()) {
-            fnames << modifyUrl(addDiHash(item), addPrefix, addPrefix ? item->modifiedName() : item->name);
+            fnames << modifyUrl(addDiHash(item), addPrefix, item->name);
         }
     }
 

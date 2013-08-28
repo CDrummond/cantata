@@ -29,7 +29,6 @@
 - Streams
   - If radio stream is a playlist, Cantata currently only uses the 1st entry.
     Perhaps Cantata should loop over all entries until we find one that plays?
-  - Make list of providers configurable?
 
 - Online
   - Podcast support.

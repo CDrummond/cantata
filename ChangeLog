@@ -1,26 +1,27 @@
 ﻿1.2.0
 -----
-1. Add support for opus audio format - AudioCD encoding, transcoding, HTTP
-   server, etc.
-2. Add support for user-installable stream providers. Need to copy
-   streams.xml.gz/streams.xml, and icon.svg/icon.png to 
-   ~/.config/cantata/streams/NAME - or PREFIX/share/cantata/streams/NAME
-   e.g. For UK streaams, ~/.config/cantata/streams/UK/streams.xml.gz,
-   ~/.config/cantata/streams/UK/icon.svg
-3. Request IceCast stream list in compressed format.
-4. Add ShoutCast search.
-5. For some stream categories (digitally imported, jazzradio, rockradio, sky,
-   somaFm, and some user categories) add category name to stream name when it
-   is saved in favourites, or added to playqueue.
-6. Support composer tag - group albums via composer, edit tag, rename files
-   using tag, and use field for dyanmic playlists.
-7. Place HTTP stream URL into connections page, as URL could be different per
-   connection.
-8. Add config page to control which stream categories are enabled, to import
-   new categories, and to remove imported categories. See README for import
-   file format.
-9. Use QListWidget in Qt preferences dialog, so that keyboard navigation can be
-   used.
+ 1. Add support for opus audio format - AudioCD encoding, transcoding, HTTP
+    server, etc.
+ 2. Add support for user-installable stream providers. Need to copy
+    streams.xml.gz/streams.xml, and icon.svg/icon.png to 
+    ~/.config/cantata/streams/NAME - or PREFIX/share/cantata/streams/NAME
+    e.g. For UK streaams, ~/.config/cantata/streams/UK/streams.xml.gz,
+    ~/.config/cantata/streams/UK/icon.svg
+ 3. Request IceCast stream list in compressed format.
+ 4. Add ShoutCast search.
+ 5. For some stream categories (digitally imported, jazzradio, rockradio, sky,
+    somaFm, and some user categories) add category name to stream name when it
+    is saved in favourites, or added to playqueue.
+ 6. Support composer tag - group albums via composer, edit tag, rename files
+    using tag, and use field for dyanmic playlists.
+ 7. Place HTTP stream URL into connections page, as URL could be different per
+    connection.
+ 8. Add config page to control which stream categories are enabled, to import
+    new categories, and to remove imported categories. See README for import
+    file format.
+ 9. Use QListWidget in Qt preferences dialog, so that keyboard navigation can be
+    used.
+10. Add ability to 'filter' search stream categories.
 
 1.1.2
 -----

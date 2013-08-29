@@ -42,11 +42,16 @@ public:
         adjustSize();
         return item;
     }
-    void allPagesAdded() { }
 };
 
 #else
-#include "fancytabwidget.h"
+#include <QWidget>
+#include <QMap>
+
+class QListWidget;
+class QListWidgetItem;
+class QStackedWidget;
+
 class PageWidgetItem : public QWidget
 {
 public:
@@ -54,13 +59,18 @@ public:
     virtual ~PageWidgetItem() { }
 };
 
-class PageWidget : public FancyTabWidget
+class PageWidget : public QWidget
 {
 public:
     PageWidget(QWidget *p);
     virtual ~PageWidget() { }
     PageWidgetItem * addPage(QWidget *widget, const QString &name, const Icon &icon, const QString &header);
-    void allPagesAdded();
+    int count();
+
+private:
+    QListWidget *list;
+    QStackedWidget *stack;
+    QMap<QListWidgetItem *, PageWidgetItem*> pages;
 };
 
 #endif

@@ -112,17 +112,15 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
     shortcuts->view()->setItemDelegate(new BasicItemDelegate(shortcuts->view()));
     #endif
     widget->addPage(cache, i18n("Cache"), Icon("folder"), i18n("Cached Items"));
-//    widget->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Minimum);
-    widget->allPagesAdded();
-    #ifndef ENABLE_KDE_SUPPORT
-    int h=(widget->minimumHeight()/widget->count())*(qMax(widget->count(), 10)+0.5);
-    setMinimumHeight(h);
-    setMinimumWidth(h*1.333);
-    #endif
     setCaption(i18n("Configure"));
     setMainWidget(widget);
     setAttribute(Qt::WA_DeleteOnClose);
     connect(files, SIGNAL(reloadStreams()), SIGNAL(reloadStreams()));
+    #ifndef ENABLE_KDE_SUPPORT
+    int h=sizeHint().height();
+    setMinimumHeight(h);
+    setMinimumWidth(h*1.333);
+    #endif
     setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
 }
 

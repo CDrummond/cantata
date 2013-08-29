@@ -1852,7 +1852,8 @@ void StreamsModel::buildListenLive()
 void StreamsModel::buildXml()
 {
     #ifdef Q_OS_WIN
-    QStringList dirs=QStringList() << QCoreApplication::applicationDirPath()+"/streams/";
+    QStringList dirs=QStringList() << Utils::configDir(StreamsModel::constSubDir)
+                                   << QCoreApplication::applicationDirPath()+"/streams/";
     #else
     QStringList dirs=QStringList() << Utils::configDir(StreamsModel::constSubDir)
                                    << INSTALL_PREFIX "/share/cantata/streams/";

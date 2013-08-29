@@ -27,6 +27,7 @@
 #include "ui_streamspage.h"
 #include "streamsproxymodel.h"
 #include "streamsearchmodel.h"
+#include "streamsmodel.h"
 
 class Action;
 class QAction;
@@ -78,7 +79,7 @@ private Q_SLOTS:
 
 private:
     void addItemsToPlayQueue(const QModelIndexList &indexes, bool replace, quint8 priorty=0);
-    StreamSearchModel::Category getSearchCategory();
+    StreamsModel::CategoryItem *getSearchCategory();
 
 private:
     bool enabled;

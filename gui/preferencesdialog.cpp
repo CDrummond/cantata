@@ -119,7 +119,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
     #ifndef ENABLE_KDE_SUPPORT
     int h=sizeHint().height();
     setMinimumHeight(h);
-    setMinimumWidth(h*1.333);
+    setMinimumWidth(h);
     #endif
     setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
 }

@@ -208,9 +208,14 @@ new stream categories into Cantata, files need to be GZip compressed tarballs
 of the following format.
 
   Filename: CATEGORY_NAME.streams  (e.g. German Radio.streams)
+
   Contents: Either streams.xml or streams.xml.gz, & either icon.png or icon.svg
             streams.xml.gz should be gzipped.
             icon.svg should be non-compressed SVG file.
+
+            Icons for sub-categories (first level only) - these should be named
+            the same as the category (with / replaced by _) -
+            e.g. 'Hard_Soft Rock.svg' for 'Hard/Soft Rock')
 
 streams.xml.gz is the same format as Cantata's "Favourites" streams file, and
 the same as stream cache files. The format is as follows:
@@ -247,9 +252,13 @@ With the above, Cantata would list the following in the streams view:
        Hard Rock
        Soft Rock
    Blues
-   
+
 When "Hard Rock" is added to the playqueue, it will be listed as
 "Wicked Radio - Hard Rock"
+
+If Rock.png (or Rock.svg) and/or Blues.png (or Blues.svg) also exist in the
+tarball, then thry will be copied the install location and used as icons for
+the respective category.
 
 
 MultiMedia Keys

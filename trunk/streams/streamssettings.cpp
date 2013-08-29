@@ -156,7 +156,8 @@ void StreamsSettings::install()
     }
 
     QMap<QString, QByteArray> files=tar.extract(QStringList() << StreamsModel::constXmlFile << StreamsModel::constCompressedXmlFile
-                                                              << StreamsModel::constPngIcon << StreamsModel::constSvgIcon);
+                                                              << StreamsModel::constPngIcon << StreamsModel::constSvgIcon
+                                                              << ".png" << ".svg");
     QString streamsName=files.contains(StreamsModel::constCompressedXmlFile) ? StreamsModel::constCompressedXmlFile : StreamsModel::constXmlFile;
     QString iconName=files.contains(StreamsModel::constSvgIcon) ? StreamsModel::constSvgIcon : StreamsModel::constPngIcon;
     QByteArray xml=files[streamsName];
@@ -187,6 +188,18 @@ void StreamsSettings::install()
     }
     QIcon icn;
     icn.addFile(dir+"/"+iconName);
+
+    // Write all other png and svg files...
+    QMap<QString, QByteArray>::ConstIterator it=files.constBegin();
+    QMap<QString, QByteArray>::ConstIterator end=files.constEnd();
+    for (; it!=end; ++it) {
+        if (it.key()!=iconName && (it.key().endsWith(".png") || it.key().endsWith(".svg"))) {
+            QFile f(dir+"/"+it.key());
+            if (f.open(QIODevice::WriteOnly)) {
+                f.write(it.value());
+            }
+        }
+    }
 
     StreamsModel::CategoryItem *cat=StreamsModel::self()->addXmlCategory(name, icn, dir+"/"+streamsName, true);
     if (existing) {

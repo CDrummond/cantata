@@ -129,11 +129,9 @@ static QIcon getIcon(const QString &name)
     return icon.isNull() ? Icons::self()->streamCategoryIcon : icon;
 }
 
-static QIcon getExternalIcon(const QString &path)
+static QIcon getExternalIcon(const QString &path, QStringList files=QStringList() << StreamsModel::constSvgIcon <<  StreamsModel::constPngIcon)
 {
-    static const QStringList constIconFiles=QStringList() << StreamsModel::constSvgIcon <<  StreamsModel::constPngIcon;
-
-    foreach (const QString &file, constIconFiles) {
+    foreach (const QString &file, files) {
         QString iconFile=path+"/"+file;
         if (QFile::exists(iconFile)) {
             QIcon icon;
@@ -317,11 +315,22 @@ QList<StreamsModel::Item *> StreamsModel::CategoryItem::loadCache()
 
 QList<StreamsModel::Item *> StreamsModel::XmlCategoryItem::loadCache()
 {
+    QList<Item *> newItems;
+
     if (QFile::exists(cacheName)) {
-        return loadXml(cacheName);
+        newItems=loadXml(cacheName);
+        QString dir=Utils::getDir(cacheName);
+        foreach (Item *i, newItems) {
+            if (i->isCategory()) {
+                StreamsModel::CategoryItem *cat=static_cast<StreamsModel::CategoryItem *>(i);
+                QString name=cat->name;
+                name=name.replace("/", "_");
+                cat->icon=getExternalIcon(dir, QStringList() << name+".svg" << name+".png");
+            }
+        }
     }
 
-    return QList<Item *>();
+    return newItems;
 }
 
 bool StreamsModel::CategoryItem::saveXml(const QString &fileName, bool format) const

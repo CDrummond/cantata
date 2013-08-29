@@ -305,8 +305,6 @@ void StreamsModel::CategoryItem::saveCache() const
 
 QList<StreamsModel::Item *> StreamsModel::CategoryItem::loadCache()
 {
-    QList<Item *> newItems;
-
     if (!cacheName.isEmpty()) {
         QString cache=categoryCacheName(cacheName);
         if (!cache.isEmpty() && QFile::exists(cache)) {

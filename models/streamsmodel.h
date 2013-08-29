@@ -53,7 +53,7 @@ public:
         QString subText;
         CategoryItem *parent;
         virtual bool isCategory() const { return false; }
-        const CategoryItem *getTopLevelCategory() const;
+        CategoryItem *getTopLevelCategory() const;
     };
     
     struct CategoryItem : public Item
@@ -215,9 +215,9 @@ public:
     
     QModelIndex favouritesIndex() const;
     const QIcon & favouritesIcon() const { return favourites->icon; }
-    const QIcon & tuneInIcon() const { return tuneIn->icon; }
-    const QIcon & shoutCastIcon() const { return shoutCast->icon; }
     bool isTuneIn(const CategoryItem *cat) const { return tuneIn==cat; }
+    bool isShoutCast(const CategoryItem *cat) const { return shoutCast==cat; }
+    CategoryItem * tuneInCat() const { return tuneIn; }
 
     QStringList filenames(const QModelIndexList &indexes, bool addPrefix) const;
     QMimeData * mimeData(const QModelIndexList &indexes) const;

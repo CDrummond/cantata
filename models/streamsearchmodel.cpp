@@ -47,12 +47,14 @@ StreamSearchModel::StreamSearchModel(QObject *parent)
     : ActionModel(parent)
     , category(TuneIn)
     , root(new StreamsModel::CategoryItem(QString(), "root"))
+    , filterRoot(0)
+    , unmatchedStrings(0)
 {
 }
 
 StreamSearchModel::~StreamSearchModel()
 {
-    cancelAll();
+    clear();
     delete root;
 }
 
@@ -232,7 +234,9 @@ void StreamSearchModel::clear()
 {
     cancelAll();
     beginRemoveRows(QModelIndex(), 0, root->children.count()-1);
-    qDeleteAll(root->children);
+    if (Filter!=category) {
+        qDeleteAll(root->children);
+    }
     root->children.clear();
     currentSearch=QString();
     endRemoveRows();
@@ -265,9 +269,24 @@ void StreamSearchModel::search(const QString &searchTerm, bool stationsOnly)
     if (searchTerm==currentSearch) {
         return;
     }
-
     clear();
-    
+    currentSearch=searchTerm;
+
+    if (Filter==category) {
+        unmatchedStrings=0;
+        filterStrings=searchTerm.split(" ", QString::SkipEmptyParts);
+        if (!filterStrings.isEmpty()) {
+            QList<StreamsModel::Item *> newItems=getStreams(filterRoot);
+            if (!newItems.isEmpty()) {
+                beginInsertRows(QModelIndex(), 0, newItems.count()-1);
+                root->children+=newItems;
+                endInsertRows();
+            }
+        }
+        emit loaded();
+        return;
+    }
+
     QUrl searchUrl(TuneIn==category ? constRadioTimeSearchUrl : constShoutCastSearchUrl);
     #if QT_VERSION < 0x050000
     QUrl &query=searchUrl;
@@ -322,7 +341,16 @@ void StreamSearchModel::cancelAll()
         emit loaded();
     }
 }
-    
+
+void StreamSearchModel::setCat(Category c)
+{
+    clear();
+    category=c;
+    if (c!=Filter) {
+        filterRoot=0;
+    }
+}
+
 void StreamSearchModel::jobFinished()
 {
     QNetworkReply *job=dynamic_cast<QNetworkReply *>(sender());
@@ -353,4 +381,40 @@ void StreamSearchModel::jobFinished()
             emit loaded();
         }
     }
+}
+
+bool StreamSearchModel::matchesFilter(const QString &str) const
+{
+    if (filterStrings.isEmpty()) {
+        return true;
+    }
+
+    uint ums = unmatchedStrings;
+    int numStrings = filterStrings.count();
+
+    for (int i = 0; i < numStrings; ++i) {
+        if (str.contains(filterStrings.at(i), Qt::CaseInsensitive)) {
+            ums &= ~(1<<i);
+            if (0==ums) {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
+QList<StreamsModel::Item *> StreamSearchModel::getStreams(StreamsModel::CategoryItem *cat)
+{
+    QList<StreamsModel::Item *> streams;
+    if (cat) {
+        foreach (StreamsModel::Item *i, cat->children) {
+            if (i->isCategory()) {
+                streams+=getStreams(static_cast<StreamsModel::CategoryItem *>(i));
+            } else if (matchesFilter(i->name)) {
+                streams.append(i);
+            }
+        }
+    }
+    return streams;
 }

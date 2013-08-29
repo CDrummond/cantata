@@ -37,11 +37,6 @@
 #include <QFileDialog>
 #endif
 
-#define REMOVE(w) \
-    w->setVisible(false); \
-    w->deleteLater(); \
-    w=0;
-
 enum Roles {
     KeyRole = Qt::UserRole,
     BuiltInRole
@@ -70,15 +65,10 @@ StreamsSettings::StreamsSettings(QWidget *p)
     categories->setSortingEnabled(true);
     int iSize=Icon::stdSize(QApplication::fontMetrics().height()*1.25);
     categories->setIconSize(QSize(iSize, iSize));
-    #ifdef Q_OS_WIN
-    REMOVE(installButton)
-    REMOVE(removeButton)
-    #else
     connect(categories, SIGNAL(currentRowChanged(int)), SLOT(currentCategoryChanged(int)));
     connect(installButton, SIGNAL(clicked()), this, SLOT(install()));
     connect(removeButton, SIGNAL(clicked()), this, SLOT(remove()));
     removeButton->setEnabled(false);
-    #endif
 }
 
 void StreamsSettings::load()
@@ -112,9 +102,6 @@ void StreamsSettings::save()
 
 void StreamsSettings::currentCategoryChanged(int row)
 {
-    #ifdef Q_OS_WIN
-    Q_UNUSED(row)
-    #else
     bool enable=false;
 
     if (row>=0) {
@@ -122,12 +109,10 @@ void StreamsSettings::currentCategoryChanged(int row)
         enable=!item->data(BuiltInRole).toBool();
     }
     removeButton->setEnabled(enable);
-    #endif
 }
 
 void StreamsSettings::install()
 {
-    #ifndef Q_OS_WIN
     #ifdef ENABLE_KDE_SUPPORT
     QString fileName=KFileDialog::getOpenFileName(KUrl(), i18n("*.streams|Cantata Streams"), this, i18n("Install Streams"));
     #else
@@ -211,12 +196,10 @@ void StreamsSettings::install()
     item->setData(KeyRole, cat->configName);
     item->setData(BuiltInRole, false);
     item->setIcon(icn);
-    #endif
 }
 
 void StreamsSettings::remove()
 {
-    #ifndef Q_OS_WIN
     int row=categories->currentRow();
     if (row<0) {
         return;
@@ -235,10 +218,8 @@ void StreamsSettings::remove()
 
     StreamsModel::self()->removeXmlCategory(item->data(KeyRole).toString());
     delete item;
-    #endif
 }
 
-#ifndef Q_OS_WIN
 QListWidgetItem *  StreamsSettings::get(const QString &name)
 {
     for (int i=0; i<categories->count(); ++i) {
@@ -249,4 +230,3 @@ QListWidgetItem *  StreamsSettings::get(const QString &name)
     }
     return 0;
 }
-#endif

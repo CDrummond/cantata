@@ -26,6 +26,8 @@
 
 #include "ui_streamssettings.h"
 
+class QListWidgetItem;
+
 class StreamsSettings : public QWidget, private Ui::StreamsSettings
 {
     Q_OBJECT
@@ -43,9 +45,7 @@ private Q_SLOTS:
     void remove();
 
 private:
-    #ifndef Q_OS_WIN
     QListWidgetItem * get(const QString &name);
-    #endif
 };
 
 #endif

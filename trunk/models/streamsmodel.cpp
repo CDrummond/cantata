@@ -165,13 +165,13 @@ QString StreamsModel::Item::modifiedName() const
     return cat->name+QLatin1String(" - ")+name;
 }
 
-const StreamsModel::CategoryItem * StreamsModel::Item::getTopLevelCategory() const
+StreamsModel::CategoryItem * StreamsModel::Item::getTopLevelCategory() const
 {
-    const StreamsModel::Item *item=this;
+    StreamsModel::Item *item=const_cast<StreamsModel::Item *>(this);
     while (item->parent && item->parent->parent) {
         item=item->parent;
     }
-    return item && item->isCategory() ? static_cast<const CategoryItem *>(item) : 0;
+    return item && item->isCategory() ? static_cast<CategoryItem *>(item) : 0;
 }
 
 void StreamsModel::CategoryItem::removeBookmarks()
@@ -664,16 +664,17 @@ QVariant StreamsModel::data(const QModelIndex &index, int role) const
     case ItemView::Role_Actions: {
         QList<Action *> actions;
         if (item->isCategory()){
-            if (static_cast<const CategoryItem *>(item)->canConfigure()) {
+            const CategoryItem *cat=static_cast<const CategoryItem *>(item);
+            if (cat->canConfigure()) {
                 actions << configureAction;
             }
-            if (static_cast<const CategoryItem *>(item)->canReload()) {
+            if (cat->canReload()) {
                 actions << reloadAction;
             }
-            if (tuneIn==item || shoutCast==item) {
+            if (tuneIn==item || shoutCast==item || (cat->isTopLevel() && !cat->children.isEmpty())) {
                 actions << StdActions::self()->searchAction;
             }
-            if (static_cast<const CategoryItem *>(item)->canBookmark) {
+            if (cat->canBookmark) {
                 actions << addBookmarkAction;
             }
         } else {

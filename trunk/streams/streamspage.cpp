@@ -31,7 +31,6 @@
 #include "actioncollection.h"
 #include "networkaccessmanager.h"
 #include "settings.h"
-#include "streamsmodel.h"
 #include "statuslabel.h"
 #include "digitallyimported.h"
 #include "digitallyimportedsettings.h"
@@ -503,7 +502,7 @@ void StreamsPage::searchItems()
     searchModel.search(searchView->searchText().trimmed(), false);
 }
 
-StreamSearchModel::Category StreamsPage::getSearchCategory()
+StreamsModel::CategoryItem * StreamsPage::getSearchCategory()
 {
     bool srch=searching;
     searching=false;
@@ -511,16 +510,16 @@ StreamSearchModel::Category StreamsPage::getSearchCategory()
     searching=srch;
 
     if (1!=selected.size()) {
-        return StreamSearchModel::TuneIn;
+        return StreamsModel::self()->tuneInCat();
     }
 
     QModelIndex index=proxy->mapToSource(selected.first());
-    const StreamsModel::Item *item=static_cast<StreamsModel::Item *>(index.internalPointer());
+    StreamsModel::Item *item=static_cast<StreamsModel::Item *>(index.internalPointer());
     if (!item) {
-        return StreamSearchModel::TuneIn;
+        return StreamsModel::self()->tuneInCat();
     }
-    const StreamsModel::CategoryItem *cat=item->getTopLevelCategory();
-    return !cat || StreamsModel::self()->isTuneIn(cat) ? StreamSearchModel::TuneIn : StreamSearchModel::ShoutCast;
+    StreamsModel::CategoryItem *cat=item->getTopLevelCategory();
+    return 0==cat ? StreamsModel::self()->tuneInCat() : cat;
 }
 
 void StreamsPage::controlSearch(bool on)
@@ -528,12 +527,21 @@ void StreamsPage::controlSearch(bool on)
     if (on!=searching) {
         searching=on;
         if (searching) {
-            StreamSearchModel::Category cat=getSearchCategory();
+            StreamsModel::CategoryItem *cat=getSearchCategory();
+            StreamSearchModel::Category searchCat=StreamsModel::self()->isTuneIn(cat)
+                                                    ? StreamSearchModel::TuneIn
+                                                    : StreamsModel::self()->isShoutCast(cat)
+                                                        ? StreamSearchModel::ShoutCast
+                                                        : StreamSearchModel::Filter;
+
             proxy=&searchProxy;
             view->clearSelection();
-            searchModel.setCat(cat);
-            searchView->setSearchLabelText(StreamSearchModel::TuneIn==cat ? i18n("Search TuneIn:") : i18n("Search ShoutCast:"));
-            searchView->setBackgroundImage(StreamSearchModel::TuneIn==cat ? StreamsModel::self()->tuneInIcon() : StreamsModel::self()->shoutCastIcon());
+            searchModel.setCat(searchCat);
+            searchView->setSearchLabelText(i18n("Search %1:", cat->name));
+            searchView->setBackgroundImage(cat->icon);
+            if (StreamSearchModel::Filter==searchCat) {
+                searchModel.setFilterRoot(cat);
+            }
         } else {
             proxy=&streamsProxy;
             searchModel.clear();

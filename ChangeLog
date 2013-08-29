@@ -19,6 +19,8 @@
 8. Add config page to control which stream categories are enabled, to import
    new categories, and to remove imported categories. See README for import
    file format.
+9. Use QListWidget in Qt preferences dialog, so that keyboard navigation can be
+   used.
 
 1.1.2
 -----

@@ -47,6 +47,21 @@ enum Roles {
     BuiltInRole
 };
 
+static bool removeDir(const QString &d, const QStringList &types)
+{
+    QDir dir(d);
+    if (dir.exists()) {
+        QFileInfoList files=dir.entryInfoList(types, QDir::Files|QDir::NoDotAndDotDot);
+        foreach (const QFileInfo &file, files) {
+            if (!QFile::remove(file.absoluteFilePath())) {
+                return false;
+            }
+        }
+        return dir.rmdir(d);
+    }
+    return true; // Does not exist...
+}
+
 StreamsSettings::StreamsSettings(QWidget *p)
     : QWidget(p)
 {
@@ -199,18 +214,12 @@ void StreamsSettings::remove()
         return;
     }
 
-    QString dir=Utils::configDir(StreamsModel::constSubDir)+item->text()+"/";
-    QStringList fileNames=QStringList() << StreamsModel::constXmlFile << StreamsModel::constCompressedXmlFile
-                                        << StreamsModel::constPngIcon << StreamsModel::constSvgIcon;
-
-    foreach (const QString &file, fileNames) {
-        if (QFile::exists(dir+file) && !QFile::remove(dir+file)) {
-            MessageBox::error(this, i18n("Failed to delete %1", dir+file));
-            return;
-        }
+    QString dir=Utils::configDir(StreamsModel::constSubDir);
+    if (!dir.isEmpty() && !removeDir(dir+item->text(), QStringList() << "*.xml" << "*.xml.gz" << "*.png" << "*.svg")) {
+        MessageBox::error(this, i18n("Failed to remove streams folder!"));
+        return;
     }
 
-    QDir(dir).rmdir(dir);
     StreamsModel::self()->removeXmlCategory(item->data(KeyRole).toString());
     delete item;
     #endif

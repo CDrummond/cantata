@@ -100,6 +100,12 @@ static TarHeader readHeader(QIODevice *dev)
     return header;
 }
 
+static QString getExt(const QString &fileName)
+{
+    int pos=fileName.lastIndexOf(".");
+    return -1!=pos ? fileName.mid(pos) : fileName;
+}
+
 QMap<QString, QByteArray> Tar::extract(const QStringList &files)
 {
     QMap<QString, QByteArray> data;
@@ -112,7 +118,7 @@ QMap<QString, QByteArray> Tar::extract(const QStringList &files)
         TarHeader header=readHeader(dev);
         if (header.ok()) {
             pos+=constHeaderLen;
-            if (files.contains(header.fileName) && !data.contains(header.fileName)) {
+            if (!data.contains(header.fileName) && (files.contains(header.fileName) || files.contains(getExt(header.fileName)))) {
                 data[header.fileName]=dev->read(header.fileSize);
                 pos+=header.fileSize;
             }

@@ -153,7 +153,7 @@ void StreamsSettings::install()
         return;
     }
 
-    QString streamsDir=Utils::configDir(StreamsModel::constSubDir);
+    QString streamsDir=Utils::configDir(StreamsModel::constSubDir, true);
     QString dir=streamsDir+name;
     if (!QDir(dir).exists() && !Utils::createDir(dir, streamsDir)) {
         MessageBox::error(this, i18n("Failed to create stream category folder!"));

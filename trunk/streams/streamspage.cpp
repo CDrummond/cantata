@@ -258,7 +258,7 @@ void StreamsPage::exportXml()
     #ifdef ENABLE_KDE_SUPPORT
     QString fileName=KFileDialog::getSaveFileName(QLatin1String("Cantata")+ext, i18n("*.xml|XML Streams"), this, i18n("Export Streams"));
     #else
-    QString fileName=QFileDialog::getSaveFileName(this, i18n("Export Streams"), QLatin1String("Cantata")+ext, i18n("XML Streams (*.xml)"));
+    QString fileName=QFileDialog::getSaveFileName(this, i18n("Export Streams"), QDir::homePath()+QLatin1String("/Cantata")+ext, i18n("XML Streams (*.xml)"));
     #endif
 
     if (fileName.isEmpty()) {

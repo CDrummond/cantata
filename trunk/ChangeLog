@@ -23,6 +23,8 @@
     used.
 10. Add ability to 'filter search' stream categories.
 11. Add option to prevent system from suspending whilst playing (Linux only).
+12. If playqueue is cleared when dynamizer is running, then also stop
+    dynamizer.
 
 1.1.2
 -----

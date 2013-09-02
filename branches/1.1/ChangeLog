@@ -1,18 +1,21 @@
 ﻿1.1.2
 -----
-1. Fix build due to broken translation files.
-2. After toggling various artists grouping, or group single tracks, update list
-   of genres associated with artists.
-3. Fix decoding of details for Online service URLs sent to MPD, and
-   subsequently read back.
-4. Dont allow dragging of stream categories onto playqueue.
-5. Replace # in stream names with ${hash} when passing to MPD, and revert when
-   URL is displayed.
-6. Fix covers when using album artist for multiple artist albums, and album
-   artist name is "Various Artists" - but this has been translated in Cantata.
-7. Dont draw item divider in icon views.
-8. For Qt4 less than 4.8.4, then use old dbus Qt type annotations.
-9. Default to exporting favourites streams XML into home folder.
+ 1. Fix build due to broken translation files.
+ 2. After toggling various artists grouping, or group single tracks, update list
+    of genres associated with artists.
+ 3. Fix decoding of details for Online service URLs sent to MPD, and
+    subsequently read back.
+ 4. Dont allow dragging of stream categories onto playqueue.
+ 5. Replace # in stream names with ${hash} when passing to MPD, and revert when
+    URL is displayed.
+ 6. Fix covers when using album artist for multiple artist albums, and album
+    artist name is "Various Artists" - but this has been translated in Cantata.
+ 7. Dont draw item divider in icon views.
+ 8. For Qt4 less than 4.8.4, then use old dbus Qt type annotations.
+ 9. Default to exporting favourites streams XML into home folder.
+10. Reset the covers-requested-per-iteration counter after each event loop
+    iteration. This should fix the case where sometimes the system tray
+    notifications would not have a cover image.
 
 1.1.1
 -----

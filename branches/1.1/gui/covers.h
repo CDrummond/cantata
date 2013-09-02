@@ -203,6 +203,7 @@ Q_SIGNALS:
     void coverRetrieved(const Song &song);
 
 private Q_SLOTS:
+    void clearCount();
     void located(const QList<LocatedCover> &covers);
     void coverDownloaded(const Song &song, const QImage &img, const QString &file);
     void artistImageDownloaded(const Song &song, const QImage &img, const QString &file);
@@ -223,6 +224,7 @@ private:
     CoverDownloader *downloader;
     CoverLocator *locator;
     QMutex mutex;
+    QTimer *countResetTimer;
 };
 
 #endif

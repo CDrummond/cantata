@@ -26,7 +26,6 @@
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KCmdLineArgs>
 #include <KDE/KStartupInfo>
-#include <KDE/Solid/PowerManagement>
 #include "initialsettingswizard.h"
 #else
 #include <QIcon>
@@ -49,9 +48,7 @@ Application::Application(Display *display, Qt::HANDLE visual, Qt::HANDLE colorma
     : KUniqueApplication(display, visual, colormap)
     , w(0)
 {
-    #if KDE_IS_VERSION(4, 7, 0)
-    connect(Solid::PowerManagement::notifier(), SIGNAL(resumingFromSuspend()), MPDConnection::self(), SLOT(reconnect()));
-    #endif
+    connect(PowerManagement::self(), SIGNAL(resuming()), MPDConnection::self(), SLOT(reconnect()));
 }
 #endif
 
@@ -59,9 +56,6 @@ Application::Application()
     : KUniqueApplication()
     , w(0)
 {
-    #if KDE_IS_VERSION(4, 7, 0)
-    connect(Solid::PowerManagement::notifier(), SIGNAL(resumingFromSuspend()), MPDConnection::self(), SLOT(reconnect()));
-    #endif
 }
 
 Application::~Application() {
@@ -226,7 +220,6 @@ void Application::load(const QStringList &files)
 #include <QDBusConnection>
 #include <QDBusMessage>
 #include <QDir>
-#include "upowerinterface.h"
 
 Application::Application(int &argc, char **argv)
     : QApplication(argc, argv)
@@ -236,7 +229,6 @@ Application::Application(int &argc, char **argv)
 bool Application::start()
 {
     if (QDBusConnection::sessionBus().registerService(CANTATA_REV_URL)) {
-        connectPowerSignal();
         setupIconTheme();
         return true;
     }
@@ -282,17 +274,6 @@ void Application::loadFiles()
         QDBusConnection::sessionBus().send(m);
     }
     #endif
-}
-
-void Application::connectPowerSignal()
-{
-    if (!QDBusConnection::systemBus().interface()->isServiceRegistered(OrgFreedesktopUPowerInterface::staticInterfaceName())) {
-        QDBusConnection::systemBus().interface()->startService(OrgFreedesktopUPowerInterface::staticInterfaceName());
-    }
-
-    OrgFreedesktopUPowerInterface *upower=new OrgFreedesktopUPowerInterface(OrgFreedesktopUPowerInterface::staticInterfaceName(),
-                                                                            "/org/freedesktop/UPower", QDBusConnection::systemBus(), this);
-    connect(upower, SIGNAL(Resuming()), MPDConnection::self(), SLOT(reconnect()));
 }
 
 #endif

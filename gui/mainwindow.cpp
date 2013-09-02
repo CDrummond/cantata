@@ -1362,6 +1362,7 @@ void MainWindow::readSettings()
     if (gnomeMediaKeys) {
         gnomeMediaKeys->setEnabled(Settings::self()->gnomeMediaKeys());
     }
+    MPDStatus::setInhibitSuspend(Settings::self()->inhibitSuspend());
     #endif
     context->readConfig();
 }

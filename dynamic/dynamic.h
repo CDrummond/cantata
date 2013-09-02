@@ -112,7 +112,7 @@ public:
     bool save(const Entry &e);
     void del(const QString &name);
     void start(const QString &name);
-    void stop();
+    void stop(bool sendClear=false);
     void toggle(const QString &name);
     bool isRunning();
     QString current() const { return currentEntry; }

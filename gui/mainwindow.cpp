@@ -752,7 +752,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(StdActions::self()->replacePlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(replacePlayQueue()));
     connect(removeFromPlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(removeFromPlayQueue()));
     connect(clearPlayQueueAction, SIGNAL(triggered(bool)), playQueueSearchWidget, SLOT(clear()));
-    connect(clearPlayQueueAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(clear()));
+    connect(clearPlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(clearPlayQueue()));
     connect(copyTrackInfoAction, SIGNAL(triggered(bool)), this, SLOT(copyTrackInfo()));
     connect(cropPlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(cropPlayQueue()));
     connect(shufflePlayQueueAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(shuffle()));
@@ -2064,6 +2064,15 @@ void MainWindow::updateStatus(MPDStatus * const status)
 void MainWindow::playQueueItemActivated(const QModelIndex &index)
 {
     emit startPlayingSongId(playQueueModel.getIdByRow(playQueueProxyModel.mapToSource(index).row()));
+}
+
+void MainWindow::clearPlayQueue()
+{
+    if (dynamicLabel->isVisible()) {
+        Dynamic::self()->stop(true);
+    } else {
+        emit clear();
+    }
 }
 
 void MainWindow::removeFromPlayQueue()

@@ -431,10 +431,14 @@ void Dynamic::start(const QString &name)
     }
 }
 
-void Dynamic::stop()
+void Dynamic::stop(bool sendClear)
 {
     if (isRemote()) {
-        sendCommand(Control, QStringList() << "state" << "stop");
+        if (sendClear) {
+            sendCommand(Control, QStringList() << "state" << "stop" << "clear" << "1");
+        } else {
+            sendCommand(Control, QStringList() << "state" << "stop");
+        }
         return;
     }
 
@@ -444,6 +448,9 @@ void Dynamic::stop()
     int pid=getPid();
 
     if (!pid) {
+        if (sendClear) {
+            emit clear();
+        }
         currentEntry=QString();
         emit running(false);
         if (idx.isValid()) {
@@ -453,6 +460,9 @@ void Dynamic::stop()
     }
 
     if (0!=::kill(pid, 0)) {
+        if (sendClear) {
+            emit clear();
+        }
         currentEntry=QString();
         emit running(false);
         if (idx.isValid()) {
@@ -462,6 +472,9 @@ void Dynamic::stop()
     }
 
     if (controlApp(false)) {
+        if (sendClear) {
+            emit clear();
+        }
         currentEntry=QString();
         emit running(isRunning());
         if (idx.isValid()) {

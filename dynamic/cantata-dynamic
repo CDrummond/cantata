@@ -1029,8 +1029,12 @@ sub control() {
         &sendServerMessage();
         return "OK";
     } elsif ($command eq "stop") {
+        my $doClear=shift;
         $dynamicIsActive=0;
         $currentStatus="IDLE";
+        if ($doClear eq "true" || $doClear eq "1") {
+            &sendCommand("clear");
+        }
         &sendServerMessage();
         return "OK";
     }
@@ -1191,7 +1195,7 @@ sub httpServer() {
             } elsif ($request{URL} eq '/save') {
                 $response=&saveRulesToFile($queryItems{name}, $request{CONTENT});
             } elsif ($request{URL} eq '/control') {
-                $response=&control($queryItems{state});
+                $response=&control($queryItems{state}, $queryItems{clear});
             }
         } elsif ($request{METHOD} eq 'DELETE') {
             $response=&deleteRules($request{URL});

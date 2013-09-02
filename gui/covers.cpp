@@ -774,6 +774,7 @@ void CoverLocator::locate()
 Covers::Covers()
     : retrieved(0)
     , cache(300000)
+    , countResetTimer(0)
 {
     qRegisterMetaType<LocatedCover>("LocatedCover");
     qRegisterMetaType<QList<LocatedCover> >("QList<LocatedCover>");
@@ -1070,10 +1071,10 @@ static Covers::Image fix(const Covers::Image &img)
 Covers::Image Covers::requestImage(const Song &song)
 {
     DBUG << song.file << song.artist << song.albumartist << song.album;
-//    if (retrieved>=constMaxPerLoopIteration) {
+    if (retrieved>=constMaxPerLoopIteration) {
         emit locate(song);
         return Covers::Image();
-//    }
+    }
 
     retrieved++;
     Image img=findImage(song, false);
@@ -1081,7 +1082,23 @@ Covers::Image Covers::requestImage(const Song &song)
         DBUG << song.file << song.artist << song.albumartist << song.album << "Need to download";
         emit download(song);
     }
+
+    // We only want to read X files per QEventLoop iteratation. The above takes care of this, and any
+    // extra requests are handled via the 'emit locate' However, after the QEVentLoop, we want to reset
+    // this count back to 0. To do this, create a QTimer with a timout of 0 seconds. This should fire
+    // immediately after the current QEventLoop event.
+    if (!countResetTimer) {
+        countResetTimer=new QTimer(this);
+        countResetTimer->setSingleShot(true);
+        connect(countResetTimer, SIGNAL(timeout()), SLOT(clearCount()), Qt::QueuedConnection);
+    }
+    countResetTimer->start(0);
     return fix(img);
+}
+
+void Covers::clearCount()
+{
+    retrieved=0;
 }
 
 void Covers::located(const QList<LocatedCover> &covers)

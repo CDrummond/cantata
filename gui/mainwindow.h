@@ -237,6 +237,7 @@ public Q_SLOTS:
     void updateStats();
     void updateStatus();
     void playQueueItemActivated(const QModelIndex &);
+    void clearPlayQueue();
     void removeFromPlayQueue();
     void replacePlayQueue();
     void addToPlayQueue();

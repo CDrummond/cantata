@@ -172,6 +172,9 @@ public:
     bool monoSidebarIcons();
     bool showTimeRemaining();
     QStringList hiddenStreamCategories();
+    #ifndef Q_OS_WIN32
+    bool inhibitSuspend();
+    #endif
 
     void removeConnectionDetails(const QString &v);
     void saveConnectionDetails(const MPDConnectionDetails &v);
@@ -253,6 +256,9 @@ public:
     void saveMonoSidebarIcons(bool v);
     void saveShowTimeRemaining(bool v);
     void saveHiddenStreamCategories(const QStringList &v);
+    #ifndef Q_OS_WIN32
+    void saveInhibitSuspend(bool v);
+    #endif
     void save(bool force=false);
     #ifdef ENABLE_KDE_SUPPORT
     bool openWallet();

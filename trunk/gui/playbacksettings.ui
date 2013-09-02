@@ -129,7 +129,7 @@
    <item>
     <widget class="QGroupBox" name="stopPlaybackBox">
      <property name="title">
-      <string>Stopping Playback</string>
+      <string>Playback</string>
      </property>
      <layout class="QFormLayout" name="formLayout">
       <property name="fieldGrowthPolicy">
@@ -178,7 +178,40 @@
         </property>
        </widget>
       </item>
-      <item row="3" column="0" colspan="2">
+      <item row="3" column="0">
+       <widget class="BuddyLabel" name="inhibitSuspendLabel">
+        <property name="text">
+         <string>Inhibit suspend whilst playing:</string>
+        </property>
+        <property name="buddy">
+         <cstring>inhibitSuspend</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="OnOffButton" name="inhibitSuspend">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <spacer name="verticalSpacer_8">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Fixed</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>13</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="5" column="0" colspan="2">
        <widget class="QLabel" name="noteLabel">
         <property name="text">
          <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; If you press and hold the stop button, then a menu will be shown allowing you to choose whether to stop playback now, or after the current track.&lt;/i&gt;</string>
@@ -235,6 +268,7 @@
   <tabstop>stopFadeDuration</tabstop>
   <tabstop>stopOnExit</tabstop>
   <tabstop>stopDynamizerOnExit</tabstop>
+  <tabstop>inhibitSuspend</tabstop>
  </tabstops>
  <resources/>
  <connections/>

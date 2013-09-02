@@ -38,7 +38,9 @@
 #include "thread.h"
 #include "settings.h"
 #include "cuefile.h"
-
+#ifndef Q_OS_WIN32
+#include "powermanagement.h"
+#endif
 #include <QDebug>
 static bool debugEnabled=false;
 #define DBUG if (debugEnabled) qWarning() << "MPDConnection" << QThread::currentThreadId()
@@ -181,6 +183,9 @@ MPDConnection::MPDConnection()
     qRegisterMetaType<MPDStatsValues>("MPDStatsValues");
     qRegisterMetaType<MPDStatusValues>("MPDStatusValues");
     qRegisterMetaType<MPDConnectionDetails>("MPDConnectionDetails");
+    #ifndef Q_OS_WIN32
+    connect(PowerManagement::self(), SIGNAL(resuming()), this, SLOT(reconnect()));
+    #endif
 }
 
 MPDConnection::~MPDConnection()

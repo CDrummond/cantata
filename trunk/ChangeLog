@@ -21,7 +21,8 @@
     file format.
  9. Use QListWidget in Qt preferences dialog, so that keyboard navigation can be
     used.
-10. Add ability to 'filter' search stream categories.
+10. Add ability to 'filter search' stream categories.
+11. Add option to prevent system from suspending whilst playing (Linux only).
 
 1.1.2
 -----

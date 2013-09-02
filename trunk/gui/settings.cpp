@@ -692,6 +692,13 @@ QStringList Settings::hiddenStreamCategories()
     return GET_STRINGLIST("hiddenStreamCategories", QStringList());
 }
 
+#ifndef Q_OS_WIN32
+bool Settings::inhibitSuspend()
+{
+    return GET_BOOL("inhibitSuspend", false);
+}
+#endif
+
 void Settings::removeConnectionDetails(const QString &v)
 {
     if (v==currentConnection()) {
@@ -1103,6 +1110,13 @@ void Settings::saveHiddenStreamCategories(const QStringList &v)
 {
     SET_VALUE_MOD(hiddenStreamCategories);
 }
+
+#ifndef Q_OS_WIN32
+void Settings::saveInhibitSuspend(bool v)
+{
+    SET_VALUE_MOD(inhibitSuspend);
+}
+#endif
 
 void Settings::save(bool force)
 {

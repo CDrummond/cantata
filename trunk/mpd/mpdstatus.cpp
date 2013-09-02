@@ -26,12 +26,33 @@
 
 #include "mpdstatus.h"
 #include "mpdconnection.h"
+#ifndef Q_OS_WIN32
+#include "powermanagement.h"
+#include "localize.h"
+#endif
 
 MPDStatus * MPDStatus::self()
 {
     static MPDStatus instance;
     return &instance;
 }
+#ifndef Q_OS_WIN32
+static bool inhibitSuspendWhilstPlaying=false;
+bool MPDStatus::inhibitSuspend()
+{
+    return inhibitSuspendWhilstPlaying;
+}
+
+void MPDStatus::setInhibitSuspend(bool i)
+{
+    if (i!=inhibitSuspendWhilstPlaying) {
+        inhibitSuspendWhilstPlaying=i;
+        if (!inhibitSuspendWhilstPlaying) {
+            PowerManagement::self()->stopSuppressingSleep();
+        }
+    }
+}
+#endif
 
 MPDStatus::MPDStatus()
 {
@@ -40,6 +61,15 @@ MPDStatus::MPDStatus()
 
 void MPDStatus::update(const MPDStatusValues &v)
 {
+    #ifndef Q_OS_WIN32
+    if (inhibitSuspendWhilstPlaying) {
+        if (MPDState_Playing==v.state) {
+            PowerManagement::self()->beginSuppressingSleep(i18n("Cantata is playing a track"));
+        } else {
+            PowerManagement::self()->stopSuppressingSleep();
+        }
+    }
+    #endif
     values=v;
     emit updated();
 }

@@ -30,6 +30,11 @@
 #include "messagebox.h"
 #include <QListWidget>
 
+#define REMOVE(w) \
+    w->setVisible(false); \
+    w->deleteLater(); \
+    w=0;
+
 PlaybackSettings::PlaybackSettings(QWidget *p)
     : QWidget(p)
 {
@@ -57,6 +62,10 @@ PlaybackSettings::PlaybackSettings(QWidget *p)
     messageIcon->setMinimumSize(iconSize, iconSize);
     messageIcon->setMaximumSize(iconSize, iconSize);
     mpdConnectionStateChanged(MPDConnection::self()->isConnected());
+    #ifdef Q_OS_WIN
+    REMOVE(inhibitSuspendLabel)
+    REMOVE(inhibitSuspend)
+    #endif
 }
 
 void PlaybackSettings::load()
@@ -64,6 +73,9 @@ void PlaybackSettings::load()
     stopOnExit->setChecked(Settings::self()->stopOnExit());
     stopFadeDuration->setValue(Settings::self()->stopFadeDuration());
     stopDynamizerOnExit->setChecked(Settings::self()->stopDynamizerOnExit());
+    #ifndef Q_OS_WIN
+    inhibitSuspend->setChecked(Settings::self()->inhibitSuspend());
+    #endif
 
     crossfading->setValue(MPDStatus::self()->crossFade());
     if (MPDConnection::self()->isConnected()) {
@@ -77,6 +89,9 @@ void PlaybackSettings::save()
     Settings::self()->saveStopOnExit(stopOnExit->isChecked());
     Settings::self()->saveStopFadeDuration(stopFadeDuration->value());
     Settings::self()->saveStopDynamizerOnExit(stopDynamizerOnExit->isChecked());
+    #ifndef Q_OS_WIN
+    Settings::self()->saveInhibitSuspend(inhibitSuspend->isChecked());
+    #endif
 
     if (MPDConnection::self()->isConnected()) {
         emit setCrossFade(crossfading->value());

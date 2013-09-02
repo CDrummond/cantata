@@ -87,7 +87,6 @@ public:
     void loadFiles();
     void setActivationWindow(QWidget *) { }
     void setupIconTheme();
-    void connectPowerSignal();
 };
 #endif
 

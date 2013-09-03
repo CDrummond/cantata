@@ -619,14 +619,14 @@ void ItemView::setMode(Mode m)
     }
 }
 
-QModelIndexList ItemView::selectedIndexes() const
+QModelIndexList ItemView::selectedIndexes(bool sorted) const
 {
     if (Mode_SimpleTree==mode || Mode_DetailedTree==mode) {
-        return treeView->selectedIndexes();
-    } else if(Mode_GroupedTree==mode) {
-        return groupedView->selectedIndexes();
+        return treeView->selectedIndexes(sorted);
+    } else if (Mode_GroupedTree==mode) {
+        return groupedView->selectedIndexes(sorted);
     }
-    return listView->selectedIndexes();
+    return listView->selectedIndexes(sorted);
 }
 
 void ItemView::setLevel(int l, bool haveChildren)

@@ -108,13 +108,12 @@ QString OnlineServicesPage::activeService() const
 
 OnlineService * OnlineServicesPage::activeSrv() const
 {
-    const QModelIndexList selected = view->selectedIndexes();
+    const QModelIndexList selected = view->selectedIndexes(false); // Dont need sorted selection here...
 
-    if (0==selected.size()) {
+    if (selected.isEmpty()) {
         return 0;
     }
 
-    QString udi;
     OnlineService *activeSrv=0;
     foreach (const QModelIndex &idx, selected) {
         QModelIndex index = proxy.mapToSource(idx);
@@ -141,11 +140,9 @@ OnlineService * OnlineServicesPage::activeSrv() const
 QStringList OnlineServicesPage::selectedFiles() const
 {
     QModelIndexList selected = view->selectedIndexes();
-
-    if (0==selected.size()) {
+    if (selected.isEmpty()) {
         return QStringList();
     }
-    qSort(selected);
 
     QModelIndexList mapped;
     foreach (const QModelIndex &idx, selected) {
@@ -158,11 +155,9 @@ QStringList OnlineServicesPage::selectedFiles() const
 QList<Song> OnlineServicesPage::selectedSongs() const
 {
     QModelIndexList selected = view->selectedIndexes();
-
-    if (0==selected.size()) {
+    if (selected.isEmpty()) {
         return QList<Song>();
     }
-    qSort(selected);
 
     QString name;
     QModelIndexList mapped;
@@ -203,7 +198,7 @@ void OnlineServicesPage::refresh()
 
 void OnlineServicesPage::itemDoubleClicked(const QModelIndex &)
 {
-     const QModelIndexList selected = view->selectedIndexes();
+     const QModelIndexList selected = view->selectedIndexes(false); // Dont need sorted selection here...
      if (1!=selected.size()) {
          return; //doubleclick should only have one selected item
      }
@@ -224,7 +219,7 @@ void OnlineServicesPage::controlSearch(bool on)
     QString prevSearchService=searchService;
 
     searchService=QString();
-    const QModelIndexList selected = view->selectedIndexes();
+    const QModelIndexList selected = view->selectedIndexes(false); // Dont need sorted selection here...
     if (1==selected.count()) {
         MusicLibraryItem *item = static_cast<MusicLibraryItem *>(proxy.mapToSource(selected.at(0)).internalPointer());
         if (MusicLibraryItem::Type_Root==item->itemType()) {
@@ -325,7 +320,7 @@ void OnlineServicesPage::searchItems()
 
 void OnlineServicesPage::controlActions()
 {
-    QModelIndexList selected=view->selectedIndexes();
+    QModelIndexList selected=view->selectedIndexes(false); // Dont need sorted selection here...
     bool srvSelected=false;
     bool canDownload=false;
     bool canConfigure=false;
@@ -371,7 +366,7 @@ void OnlineServicesPage::controlActions()
 
 void OnlineServicesPage::configureService()
 {
-    const QModelIndexList selected = view->selectedIndexes();
+    const QModelIndexList selected = view->selectedIndexes(false); // Dont need sorted selection here...
 
     if (1!=selected.size()) {
         return;
@@ -386,7 +381,7 @@ void OnlineServicesPage::configureService()
 
 void OnlineServicesPage::refreshService()
 {
-    const QModelIndexList selected = view->selectedIndexes();
+    const QModelIndexList selected = view->selectedIndexes(false); // Dont need sorted selection here...
 
     if (1!=selected.size()) {
         return;

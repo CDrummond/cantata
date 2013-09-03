@@ -33,6 +33,7 @@
 #include <QMimeData>
 #include <QMap>
 #include <QStyle>
+#include <QList>
 
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KGlobalSettings>
@@ -129,7 +130,7 @@ void TreeView::setExpandOnClick()
 void TreeView::selectionChanged(const QItemSelection &selected, const QItemSelection &deselected)
 {
     QTreeView::selectionChanged(selected, deselected);
-    bool haveSelection=selectedIndexes().count();
+    bool haveSelection=haveSelectedItems();
 
     if (!alwaysAllowMenu) {
         setContextMenuPolicy(haveSelection ? Qt::ActionsContextMenu : Qt::NoContextMenu);
@@ -139,20 +140,20 @@ void TreeView::selectionChanged(const QItemSelection &selected, const QItemSelec
 
 bool TreeView::haveSelectedItems() const
 {
-    return selectedIndexes().count()>0;
+    // Dont need the sorted type of 'selectedIndexes' here...
+    return selectionModel()->selectedIndexes().count()>0;
 }
 
 bool TreeView::haveUnSelectedItems() const
 {
-    return selectedIndexes().count()!=model()->rowCount();
+    // Dont need the sorted type of 'selectedIndexes' here...
+    return selectionModel()->selectedIndexes().count()!=model()->rowCount();
 }
 
 void TreeView::startDrag(Qt::DropActions supportedActions)
 {
     QModelIndexList indexes = selectedIndexes();
     if (indexes.count() > 0) {
-        qSort(indexes);
-
         QMimeData *data = model()->mimeData(indexes);
         if (!data) {
             return;
@@ -186,15 +187,65 @@ void TreeView::mouseReleaseEvent(QMouseEvent *event)
     }
 }
 
-QModelIndexList TreeView::selectedIndexes() const
+QModelIndexList TreeView::selectedIndexes(bool sorted) const
 {
-    QModelIndexList indexes=selectionModel()->selectedIndexes();
-    QMap<int, QModelIndex> sort;
+    return sorted ? sortIndexes(selectionModel()->selectedIndexes()) : selectionModel()->selectedIndexes();
+}
 
-    foreach (const QModelIndex &idx, indexes) {
-        sort.insertMulti(visualRect(idx).y(), idx);
+struct Index : public QModelIndex
+{
+    Index(const QModelIndex &i)
+        : QModelIndex(i)
+    {
+        QModelIndex idx=i;
+        while (idx.isValid()) {
+            rows.prepend(idx.row());
+            idx=idx.parent();
+        }
+        count=rows.count();
     }
-    return sort.values();
+
+    bool operator<(const Index &rhs) const
+    {
+        int toCompare=qMax(count, rhs.count);
+        for (int i=0; i<toCompare; ++i) {
+            qint32 left=i<count ? rows.at(i) : -1;
+            qint32 right=i<rhs.count ? rhs.rows.at(i) : -1;
+            if (left<right) {
+                return true;
+            } else if (left>right) {
+                return false;
+            }
+        }
+        return false;
+    }
+
+    QList<qint32> rows;
+    int count;
+};
+
+QModelIndexList TreeView::sortIndexes(const QModelIndexList &list)
+{
+    if (list.isEmpty()) {
+        return list;
+    }
+
+    // QModelIndex::operator< sorts on row first - but this messes things up if rows
+    // have different parents. Therefore, we use the sort above - so that the hierarchy is preserved.
+    // First, create the list of 'Index' items to be sorted...
+    QList<Index> toSort;
+    foreach (const QModelIndex &i, list) {
+        toSort.append(Index(i));
+    }
+    // Call qSort on these - this will use operator<
+    qSort(toSort);
+
+    // Now convert the QList<Index> into a QModelIndexList
+    QModelIndexList sorted;
+    foreach (const Index &i, toSort) {
+        sorted.append(i);
+    }
+    return sorted;
 }
 
 void TreeView::expandAll(const QModelIndex &idx)

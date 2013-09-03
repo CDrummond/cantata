@@ -33,6 +33,7 @@ K_GLOBAL_STATIC(PowerManagement, instance)
 #include "policyagentinterface.h"
 #include "upowerinterface.h"
 #endif
+#include "localize.h"
 
 PowerManagement * PowerManagement::self()
 {
@@ -67,11 +68,12 @@ PowerManagement::PowerManagement()
     #endif
 }
 
-void PowerManagement::beginSuppressingSleep(const QString &reason)
+void PowerManagement::beginSuppressingSleep()
 {
     if (-1!=cookie) {
         return;
     }
+    QString reason=i18n("Cantata is playing a track");
     #ifdef ENABLE_KDE_SUPPORT
     cookie=Solid::PowerManagement::beginSuppressingSleep(reason);
     #else

@@ -28,7 +28,6 @@
 #include "mpdconnection.h"
 #ifndef Q_OS_WIN32
 #include "powermanagement.h"
-#include "localize.h"
 #endif
 
 MPDStatus * MPDStatus::self()
@@ -36,8 +35,8 @@ MPDStatus * MPDStatus::self()
     static MPDStatus instance;
     return &instance;
 }
+
 #ifndef Q_OS_WIN32
-static bool inhibitSuspendWhilstPlaying=false;
 bool MPDStatus::inhibitSuspend()
 {
     return inhibitSuspendWhilstPlaying;
@@ -49,12 +48,17 @@ void MPDStatus::setInhibitSuspend(bool i)
         inhibitSuspendWhilstPlaying=i;
         if (!inhibitSuspendWhilstPlaying) {
             PowerManagement::self()->stopSuppressingSleep();
+        } else if (inhibitSuspendWhilstPlaying && (MPDState_Playing==values.state)) {
+            PowerManagement::self()->beginSuppressingSleep();
         }
     }
 }
 #endif
 
 MPDStatus::MPDStatus()
+    #ifndef Q_OS_WIN32
+    : inhibitSuspendWhilstPlaying(false)
+    #endif
 {
     connect(MPDConnection::self(), SIGNAL(statusUpdated(const MPDStatusValues &)), this, SLOT(update(const MPDStatusValues &)), Qt::QueuedConnection);
 }
@@ -64,7 +68,7 @@ void MPDStatus::update(const MPDStatusValues &v)
     #ifndef Q_OS_WIN32
     if (inhibitSuspendWhilstPlaying) {
         if (MPDState_Playing==v.state) {
-            PowerManagement::self()->beginSuppressingSleep(i18n("Cantata is playing a track"));
+            PowerManagement::self()->beginSuppressingSleep();
         } else {
             PowerManagement::self()->stopSuppressingSleep();
         }

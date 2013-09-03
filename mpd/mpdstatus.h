@@ -92,8 +92,8 @@ public:
 
     static MPDStatus * self();
     #ifndef Q_OS_WIN32
-    static bool inhibitSuspend();
-    static void setInhibitSuspend(bool i);
+    bool inhibitSuspend();
+    void setInhibitSuspend(bool i);
     #endif
 
     // NOTE: There are no read/write locks aroud these values as they are read/written only fro the GUI thread...
@@ -132,6 +132,9 @@ private:
 
 private:
     MPDStatusValues values;
+    #ifndef Q_OS_WIN32
+    bool inhibitSuspendWhilstPlaying;
+    #endif
 };
 
 #endif

@@ -173,15 +173,11 @@ void StreamsPage::addSelectionToPlaylist(bool replace, quint8 priorty)
 
 void StreamsPage::addItemsToPlayQueue(const QModelIndexList &indexes, bool replace, quint8 priorty)
 {
-    if (0==indexes.size()) {
+    if (indexes.isEmpty()) {
         return;
     }
-
-    QModelIndexList sorted=indexes;
-    qSort(sorted);
-
     QModelIndexList mapped;
-    foreach (const QModelIndex &idx, sorted) {
+    foreach (const QModelIndex &idx, indexes) {
         mapped.append(proxy->mapToSource(idx));
     }
 
@@ -208,8 +204,7 @@ void StreamsPage::configureStreams()
         return;
     }
 
-    QModelIndexList selected = itemView()->selectedIndexes();
-
+    QModelIndexList selected = itemView()->selectedIndexes(false); // Dont need sorted selection here...
     if (1!=selected.count()) {
         return;
     }
@@ -299,7 +294,7 @@ void StreamsPage::add()
 
 void StreamsPage::addBookmark()
 {
-    QModelIndexList selected = itemView()->selectedIndexes();
+    QModelIndexList selected = itemView()->selectedIndexes(false); // Dont need sorted selection here...
 
     if (1!=selected.count()) {
         return;
@@ -369,7 +364,7 @@ void StreamsPage::reload()
         return;
     }
 
-    QModelIndexList selected = itemView()->selectedIndexes();
+    QModelIndexList selected = itemView()->selectedIndexes(false); // Dont need sorted selection here...
     if (1!=selected.count()) {
         return;
     }
@@ -459,7 +454,7 @@ void StreamsPage::edit()
         return;
     }
 
-    QModelIndexList selected = itemView()->selectedIndexes();
+    QModelIndexList selected = itemView()->selectedIndexes(false); // Dont need sorted selection here...
 
     if (1!=selected.size()) {
         return;
@@ -506,7 +501,7 @@ StreamsModel::CategoryItem * StreamsPage::getSearchCategory()
 {
     bool srch=searching;
     searching=false;
-    QModelIndexList selected = itemView()->selectedIndexes();
+    QModelIndexList selected = itemView()->selectedIndexes(false); // Dont need sorted selection here...
     searching=srch;
 
     if (1!=selected.size()) {
@@ -554,7 +549,7 @@ void StreamsPage::controlSearch(bool on)
 
 void StreamsPage::controlActions()
 {
-    QModelIndexList selected=itemView()->selectedIndexes();
+    QModelIndexList selected=itemView()->selectedIndexes(false); // Dont need sorted selection here...
     bool haveSelection=!selected.isEmpty();
     bool enableAddToFav=true;
     bool onlyStreamsSelected=true;

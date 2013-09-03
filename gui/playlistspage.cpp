@@ -120,11 +120,9 @@ void PlaylistsPage::clear()
 //QStringList PlaylistsPage::selectedFiles() const
 //{
 //    QModelIndexList indexes=view->selectedIndexes();
-//
-//    if (0==indexes.size()) {
+//    if (indexes.isEmpty()) {
 //        return QStringList();
 //    }
-//    qSort(indexes);
 //
 //    QModelIndexList mapped;
 //    foreach (const QModelIndex &idx, indexes) {
@@ -218,9 +216,9 @@ void PlaylistsPage::savePlaylist()
 
 void PlaylistsPage::renamePlaylist()
 {
-    const QModelIndexList items = view->selectedIndexes();
+    const QModelIndexList items = view->selectedIndexes(false); // Dont need sorted selection here...
 
-    if (items.size() == 1) {
+    if (1==items.size()) {
         QModelIndex sourceIndex = proxy.mapToSource(items.first());
         QString name = PlaylistsModel::self()->data(sourceIndex, Qt::DisplayRole).toString();
         QString newName = InputDialog::getText(i18n("Rename Playlist"), i18n("Enter new name for playlist:"), name, 0, this);
@@ -257,7 +255,7 @@ void PlaylistsPage::itemDoubleClicked(const QModelIndex &index)
 
 void PlaylistsPage::addItemsToPlayQueue(const QModelIndexList &indexes, bool replace, quint8 priorty)
 {
-    if (0==indexes.size()) {
+    if (indexes.isEmpty()) {
         return;
     }
 
@@ -272,16 +270,13 @@ void PlaylistsPage::addItemsToPlayQueue(const QModelIndexList &indexes, bool rep
             return;
         }
     }
-    QModelIndexList sorted=indexes;
-    qSort(sorted);
 
     QModelIndexList mapped;
-    foreach (const QModelIndex &idx, sorted) {
-        mapped.prepend(proxy.mapToSource(idx));
+    foreach (const QModelIndex &idx, indexes) {
+        mapped.append(proxy.mapToSource(idx));
     }
 
     QStringList files=PlaylistsModel::self()->filenames(mapped);
-
     if (!files.isEmpty()) {
         emit add(files, replace, priorty);
         view->clearSelection();
@@ -293,7 +288,7 @@ QList<Song> PlaylistsPage::selectedSongs() const
 {
     QModelIndexList selected = view->selectedIndexes();
 
-    if (0==selected.size()) {
+    if (selected.isEmpty()) {
         return QList<Song>();
     }
 
@@ -317,7 +312,7 @@ void PlaylistsPage::addSelectionToDevice(const QString &udi)
 
 void PlaylistsPage::controlActions()
 {
-    QModelIndexList selected=view->selectedIndexes();
+    QModelIndexList selected=view->selectedIndexes(false); // Dont need sorted selection here...
     bool canRename=false;
     bool enableActions=selected.count()>0;
 

@@ -103,14 +103,14 @@ public:
     void setContextMenuPolicy(Qt::ContextMenuPolicy policy);
     bool haveSelectedItems();
     bool haveUnSelectedItems();
-    QItemSelectionModel * selectionModel() const { return view()->selectionModel(); }
     void setCurrentIndex(const QModelIndex &idx) { view()->setCurrentIndex(idx); }
+    void clearSelection();
     QHeaderView * header();
     QAbstractItemView * tree() const;
     QAbstractItemView * list() const;
     QAbstractItemView * view() const;
     bool hasFocus() const;
-    QModelIndexList selectedIndexes() const;
+    QModelIndexList selectedIndexes(bool sorted=true) const;
     QList<Song> selectedSongs() const;
     float fade() { return fadeValue; }
     void setFade(float value);

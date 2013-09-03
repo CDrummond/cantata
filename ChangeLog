@@ -26,6 +26,10 @@
 12. If playqueue is cleared when dynamizer is running, then also stop
     dynamizer.
 
+1.1.3
+-----
+1. (Hopefully) fix selection order of items - and order added to playqueue.
+
 1.1.2
 -----
  1. Fix build due to broken translation files.

@@ -48,7 +48,6 @@ Application::Application(Display *display, Qt::HANDLE visual, Qt::HANDLE colorma
     : KUniqueApplication(display, visual, colormap)
     , w(0)
 {
-    connect(PowerManagement::self(), SIGNAL(resuming()), MPDConnection::self(), SLOT(reconnect()));
 }
 #endif
 

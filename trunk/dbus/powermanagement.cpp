@@ -26,6 +26,7 @@
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/Solid/PowerManagement>
 #include <KDE/KGlobal>
+#include <kdeversion.h>
 K_GLOBAL_STATIC(PowerManagement, instance)
 #else
 #include "inhibitinterface.h"

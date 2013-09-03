@@ -35,12 +35,13 @@ class OrgFreedesktopUPowerInterface;
     
 class PowerManagement : public QObject
 {
-Q_OBJECT
+    Q_OBJECT
+
 public:
     static PowerManagement * self();
     PowerManagement();
 
-    void beginSuppressingSleep(const QString &reason = QString());
+    void beginSuppressingSleep();
     void stopSuppressingSleep();
      
 Q_SIGNALS:

@@ -103,6 +103,7 @@
 #include "gnomemediakeys.h"
 #include "mountpoints.h"
 #include "gtkproxystyle.h"
+#include "powermanagement.h"
 #endif
 #include "dynamicpage.h"
 #include "dynamic.h"
@@ -1362,7 +1363,7 @@ void MainWindow::readSettings()
     if (gnomeMediaKeys) {
         gnomeMediaKeys->setEnabled(Settings::self()->gnomeMediaKeys());
     }
-    MPDStatus::self()->setInhibitSuspend(Settings::self()->inhibitSuspend());
+    PowerManagement::self()->setInhibitSuspend(Settings::self()->inhibitSuspend());
     #endif
     context->readConfig();
 }

@@ -41,13 +41,18 @@ public:
     static PowerManagement * self();
     PowerManagement();
 
+    void setInhibitSuspend(bool i);
     void beginSuppressingSleep();
     void stopSuppressingSleep();
-     
+
 Q_SIGNALS:
     void resuming();
 
+private Q_SLOTS:
+    void mpdStatusUpdated();
+
 private:
+    bool inhibitSuspendWhilstPlaying;
     int cookie;
     #ifndef ENABLE_KDE_SUPPORT
     OrgKdeSolidPowerManagementPolicyAgentInterface *policy;

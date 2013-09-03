@@ -128,7 +128,7 @@ void FolderPage::searchItems()
 
 void FolderPage::controlActions()
 {
-    QModelIndexList selected=view->selectedIndexes();
+    QModelIndexList selected=view->selectedIndexes(false); // Dont need sorted selection here...
     bool enable=selected.count()>0;
 
     StdActions::self()->addToPlayQueueAction->setEnabled(enable);
@@ -158,7 +158,7 @@ void FolderPage::controlActions()
 
 void FolderPage::itemDoubleClicked(const QModelIndex &)
 {
-    const QModelIndexList selected = view->selectedIndexes();
+    const QModelIndexList selected = view->selectedIndexes(false); // Dont need sorted selection here...
     if (1!=selected.size()) {
         return; //doubleclick should only have one selected item
     }
@@ -172,7 +172,7 @@ void FolderPage::itemDoubleClicked(const QModelIndex &)
 void FolderPage::openFileManager()
 {
     #ifndef Q_OS_WIN
-    const QModelIndexList selected = view->selectedIndexes();
+    const QModelIndexList selected = view->selectedIndexes(false); // Dont need sorted selection here...
     if (1!=selected.size()) {
         return;
     }
@@ -208,11 +208,9 @@ QList<Song> FolderPage::selectedSongs(EmptySongMod esMod, bool allowPlaylists) c
 QStringList FolderPage::selectedFiles(bool allowPlaylists) const
 {
     QModelIndexList selected = view->selectedIndexes();
-
-    if (0==selected.size()) {
+    if (selected.isEmpty()) {
         return QStringList();
     }
-    qSort(selected);
 
     QModelIndexList mapped;
     foreach (const QModelIndex &idx, selected) {

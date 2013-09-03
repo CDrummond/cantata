@@ -39,6 +39,7 @@ public:
     static QPixmap createBgndPixmap(const QIcon &icon);
     static void setForceSingleClick(bool v);
     static bool getForceSingleClick();
+    static QModelIndexList sortIndexes(const QModelIndexList &list);
 
     TreeView(QWidget *parent=0, bool menuAlwaysAllowed=false);
     virtual ~TreeView();
@@ -50,7 +51,8 @@ public:
     bool haveUnSelectedItems() const;
     void startDrag(Qt::DropActions supportedActions);
     void mouseReleaseEvent(QMouseEvent *event);
-    QModelIndexList selectedIndexes() const;
+    QModelIndexList selectedIndexes() const { return selectedIndexes(true); }
+    QModelIndexList selectedIndexes(bool sorted) const;
     void expandAll(const QModelIndex &idx=QModelIndex());
     virtual void expand(const QModelIndex &idx);
     virtual void setModel(QAbstractItemModel *m);

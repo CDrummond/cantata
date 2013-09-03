@@ -103,11 +103,10 @@ public:
     void setLevel(int level, bool haveChildren=true);
     QAbstractItemView * view() const;
     void setModel(ProxyModel *m);
-    void clearSelection() { selectionModel()->clearSelection(); }
-    QItemSelectionModel * selectionModel() const { return view()->selectionModel(); }
+    void clearSelection() { view()->selectionModel()->clearSelection(); }
     void setCurrentIndex(const QModelIndex &idx) { view()->setCurrentIndex(idx); }
     void select(const QModelIndex &idx);
-    QModelIndexList selectedIndexes() const;
+    QModelIndexList selectedIndexes(bool sorted=true) const;
     QString searchText() const;
     void clearSearchText();
     void setUniformRowHeights(bool v);

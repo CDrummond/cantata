@@ -103,7 +103,7 @@ void DynamicPage::searchItems()
 
 void DynamicPage::controlActions()
 {
-    QModelIndexList selected=qobject_cast<Dynamic *>(sender()) ? QModelIndexList() : view->selectedIndexes();
+    QModelIndexList selected=qobject_cast<Dynamic *>(sender()) ? QModelIndexList() : view->selectedIndexes(false); // Dont need sorted selection here...
 
     editAction->setEnabled(1==selected.count());
     Dynamic::self()->startAct()->setEnabled(1==selected.count());
@@ -132,7 +132,7 @@ void DynamicPage::add()
 
 void DynamicPage::edit()
 {
-    QModelIndexList selected=view->selectedIndexes();
+    QModelIndexList selected=view->selectedIndexes(false); // Dont need sorted selection here...
 
     if (1!=selected.count()) {
         return;
@@ -164,7 +164,7 @@ void DynamicPage::remove()
 
 void DynamicPage::start()
 {
-    QModelIndexList selected=view->selectedIndexes();
+    QModelIndexList selected=view->selectedIndexes(false); // Dont need sorted selection here...
 
     if (1!=selected.count()) {
         return;
@@ -179,7 +179,7 @@ void DynamicPage::stop()
 
 void DynamicPage::toggle()
 {
-    QModelIndexList selected=view->selectedIndexes();
+    QModelIndexList selected=view->selectedIndexes(false); // Dont need sorted selection here...
 
     if (1!=selected.count()) {
         return;

@@ -623,13 +623,17 @@ void GroupedView::toggle(const QModelIndex &idx)
 
 // Calculate list of selected indexes. If a collapsed album is selected, we also pretend all of its tracks
 // are selected.
-QModelIndexList GroupedView::selectedIndexes() const
+QModelIndexList GroupedView::selectedIndexes(bool sorted) const
 {
-    QModelIndexList indexes = selectionModel()->selectedRows();
-    QSet<QModelIndex> allIndexes;
+    QModelIndexList indexes = TreeView::selectedIndexes(sorted);
+    QSet<QModelIndex> indexSet;
+    QModelIndexList sel;
 
     foreach (const QModelIndex &idx, indexes) {
-        allIndexes.insert(idx);
+        if (!indexSet.contains(idx)) {
+            indexSet.insert(idx);
+            sel.append(idx);
+        }
         if (!idx.data(GroupedView::Role_IsCollection).toBool()) {
             quint16 key=idx.data(GroupedView::Role_Key).toUInt();
             quint32 collection=idx.data(GroupedView::Role_CollectionId).toUInt();
@@ -642,7 +646,10 @@ QModelIndexList GroupedView::selectedIndexes() const
                         quint32 nextCollection=idx.data(GroupedView::Role_CollectionId).toUInt();
 
                         if (nextCollection==collection && nextKey==key) {
-                            allIndexes.insert(next);
+                            if (!indexSet.contains(next)) {
+                                indexSet.insert(next);
+                                sel.append(next);
+                            }
                         } else {
                             break;
                         }
@@ -653,7 +660,7 @@ QModelIndexList GroupedView::selectedIndexes() const
             }
         }
     }
-    return allIndexes.toList();
+    return sel;
 }
 
 // If we are dropping onto a collapsed album, and we are in the bottom 1/2 of the row - then

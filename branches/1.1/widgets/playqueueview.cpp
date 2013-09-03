@@ -347,6 +347,12 @@ bool PlayQueueView::haveUnSelectedItems()
     return isGrouped() ? groupedView->haveUnSelectedItems() : treeView->haveUnSelectedItems();
 }
 
+void PlayQueueView::clearSelection()
+{
+    groupedView->selectionModel()->clear();
+    treeView->selectionModel()->clear();
+}
+
 QHeaderView * PlayQueueView::header()
 {
     return treeView->header();
@@ -372,9 +378,9 @@ bool PlayQueueView::hasFocus() const
     return isGrouped() ? groupedView->hasFocus() : treeView->hasFocus();
 }
 
-QModelIndexList PlayQueueView::selectedIndexes() const
+QModelIndexList PlayQueueView::selectedIndexes(bool sorted) const
 {
-    return groupedView==currentWidget() ? groupedView->selectedIndexes() : selectionModel()->selectedRows();
+    return isGrouped() ? groupedView->selectedIndexes(sorted) : treeView->selectedIndexes(sorted);
 }
 
 QList<Song> PlayQueueView::selectedSongs() const

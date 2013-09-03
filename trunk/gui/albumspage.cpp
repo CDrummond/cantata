@@ -110,11 +110,9 @@ void AlbumsPage::setItemSize(int v)
 QStringList AlbumsPage::selectedFiles(bool allowPlaylists) const
 {
     QModelIndexList selected = view->selectedIndexes();
-
-    if (0==selected.size()) {
+    if (selected.isEmpty()) {
         return QStringList();
     }
-    qSort(selected);
 
     QModelIndexList mapped;
     foreach (const QModelIndex &idx, selected) {
@@ -127,11 +125,9 @@ QStringList AlbumsPage::selectedFiles(bool allowPlaylists) const
 QList<Song> AlbumsPage::selectedSongs(bool allowPlaylists) const
 {
     QModelIndexList selected = view->selectedIndexes();
-
-    if (0==selected.size()) {
+    if (selected.isEmpty()) {
         return QList<Song>();
     }
-    qSort(selected);
 
     QModelIndexList mapped;
     foreach (const QModelIndex &idx, selected) {
@@ -143,7 +139,7 @@ QList<Song> AlbumsPage::selectedSongs(bool allowPlaylists) const
 
 Song AlbumsPage::coverRequest() const
 {
-    QModelIndexList selected = view->selectedIndexes();
+    QModelIndexList selected = view->selectedIndexes(false); // Dont need sorted selection here...
 
     if (1==selected.count()) {
         QList<Song> songs=AlbumsModel::self()->songs(QModelIndexList() << proxy.mapToSource(selected.at(0)), false);
@@ -195,7 +191,7 @@ void AlbumsPage::deleteSongs()
 
 void AlbumsPage::itemActivated(const QModelIndex &)
 {
-    if (1==view->selectedIndexes().size()) {//doubleclick should only have one selected item
+    if (1==view->selectedIndexes(false).size()) {//doubleclick should only have one selected item
         addSelectionToPlaylist();
     }
 }
@@ -223,7 +219,7 @@ void AlbumsPage::updateGenres(const QModelIndex &idx)
 
 void AlbumsPage::controlActions()
 {
-    QModelIndexList selected=view->selectedIndexes();
+    QModelIndexList selected=view->selectedIndexes(false); // Dont need sorted selection here...
     bool enable=selected.count()>0;
 
     StdActions::self()->addToPlayQueueAction->setEnabled(enable);

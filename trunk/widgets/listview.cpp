@@ -54,7 +54,7 @@ ListView::~ListView()
 void ListView::selectionChanged(const QItemSelection &selected, const QItemSelection &deselected)
 {
     QListView::selectionChanged(selected, deselected);
-    bool haveSelection=selectedIndexes().count();
+    bool haveSelection=haveSelectedItems();
 
     setContextMenuPolicy(haveSelection ? Qt::ActionsContextMenu : (menu ? Qt::CustomContextMenu : Qt::NoContextMenu));
     emit itemsSelected(haveSelection);
@@ -62,19 +62,20 @@ void ListView::selectionChanged(const QItemSelection &selected, const QItemSelec
 
 bool ListView::haveSelectedItems() const
 {
-    return selectedIndexes().count()>0;
+    // Dont need the sorted type of 'selectedIndexes' here...
+    return selectionModel()->selectedIndexes().count()>0;
 }
 
 bool ListView::haveUnSelectedItems() const
 {
-    return selectedIndexes().count()!=model()->rowCount();
+    // Dont need the sorted type of 'selectedIndexes' here...
+    return selectionModel()->selectedIndexes().count()!=model()->rowCount();
 }
 
 void ListView::startDrag(Qt::DropActions supportedActions)
 {
     QModelIndexList indexes = selectedIndexes();
     if (indexes.count() > 0) {
-        qSort(indexes);
         QMimeData *data = model()->mimeData(indexes);
         if (!data) {
             return;
@@ -108,10 +109,12 @@ void ListView::mouseReleaseEvent(QMouseEvent *event)
     }
 }
 
-QModelIndexList ListView::selectedIndexes() const
+QModelIndexList ListView::selectedIndexes(bool sorted) const
 {
     QModelIndexList indexes=selectionModel()->selectedIndexes();
-    qSort(indexes);
+    if (sorted) {
+        qSort(indexes);
+    }
     return indexes;
 }
 

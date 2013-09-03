@@ -374,7 +374,6 @@ QList<Song> PlaylistsModel::songs(const QModelIndexList &indexes) const
             }
         }
     }
-    qSort(songs);
     return songs;
 }
 

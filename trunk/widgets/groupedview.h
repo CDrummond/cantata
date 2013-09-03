@@ -78,7 +78,8 @@ public:
                                                 (startClosed && controlledAlbums[collection].contains(key)) ||
                                                 (!startClosed && !controlledAlbums[collection].contains(key)); }
     void toggle(const QModelIndex &idx);
-    QModelIndexList selectedIndexes() const;
+    QModelIndexList selectedIndexes() const { return selectedIndexes(false); }
+    QModelIndexList selectedIndexes(bool sorted) const;
     void dropEvent(QDropEvent *event);
     void collectionRemoved(quint32 key);
     void expand(const QModelIndex &idx);

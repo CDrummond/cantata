@@ -43,7 +43,8 @@ public:
     bool haveUnSelectedItems() const;
     void startDrag(Qt::DropActions supportedActions);
     void mouseReleaseEvent(QMouseEvent *event);
-    QModelIndexList selectedIndexes() const;
+    QModelIndexList selectedIndexes() const { return selectedIndexes(false); }
+    QModelIndexList selectedIndexes(bool sorted) const;
     virtual void setModel(QAbstractItemModel *m);
     void addDefaultAction(QAction *act);
     void setBackgroundImage(const QIcon &icon);

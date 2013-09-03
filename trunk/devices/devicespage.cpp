@@ -149,9 +149,9 @@ QString DevicesPage::activeFsDeviceUdi() const
 
 Device * DevicesPage::activeFsDevice() const
 {
-    const QModelIndexList selected = view->selectedIndexes();
+    const QModelIndexList selected = view->selectedIndexes(false); // Dont need sorted selection here...
 
-    if (0==selected.size()) {
+    if (selected.isEmpty()) {
         return 0;
     }
 
@@ -185,11 +185,9 @@ Device * DevicesPage::activeFsDevice() const
 QStringList DevicesPage::playableUrls() const
 {
     QModelIndexList selected = view->selectedIndexes();
-
-    if (0==selected.size()) {
+    if (selected.isEmpty()) {
         return QStringList();
     }
-    qSort(selected);
 
     QModelIndexList mapped;
     foreach (const QModelIndex &idx, selected) {
@@ -202,11 +200,9 @@ QStringList DevicesPage::playableUrls() const
 QList<Song> DevicesPage::selectedSongs() const
 {
     QModelIndexList selected = view->selectedIndexes();
-
-    if (0==selected.size()) {
+    if (selected.isEmpty()) {
         return QList<Song>();
     }
-    qSort(selected);
 
     // Ensure all songs are from UMS/Remote devices...
     QString udi;
@@ -281,7 +277,7 @@ void DevicesPage::searchItems()
 
 void DevicesPage::controlActions()
 {
-    QModelIndexList selected=view->selectedIndexes();
+    QModelIndexList selected=view->selectedIndexes(false); // Dont need sorted selection here...
     bool haveTracks=false;
     bool onlyFs=true;
     bool singleUdi=true;
@@ -364,7 +360,7 @@ void DevicesPage::copyToLibrary()
 {
     const QModelIndexList selected = view->selectedIndexes();
 
-    if (0==selected.size()) {
+    if (selected.isEmpty()) {
         return;
     }
 
@@ -396,7 +392,7 @@ void DevicesPage::copyToLibrary()
 
 void DevicesPage::configureDevice()
 {
-    const QModelIndexList selected = view->selectedIndexes();
+    const QModelIndexList selected = view->selectedIndexes(false); // Dont need sorted selection here...
 
     if (1!=selected.size()) {
         return;
@@ -411,7 +407,7 @@ void DevicesPage::configureDevice()
 
 void DevicesPage::refreshDevice()
 {
-    const QModelIndexList selected = view->selectedIndexes();
+    const QModelIndexList selected = view->selectedIndexes(false); // Dont need sorted selection here...
 
     if (1!=selected.size()) {
         return;
@@ -472,7 +468,7 @@ void DevicesPage::deleteSongs()
 {
     const QModelIndexList selected = view->selectedIndexes();
 
-    if (0==selected.size()) {
+    if (selected.isEmpty()) {
         return;
     }
 
@@ -532,7 +528,7 @@ void DevicesPage::forgetRemoteDevice()
 
 void DevicesPage::toggleDevice()
 {
-    const QModelIndexList selected = view->selectedIndexes();
+    const QModelIndexList selected = view->selectedIndexes(false); // Dont need sorted selection here...
     if (1!=selected.size()) {
         return;
     }
@@ -644,7 +640,7 @@ void DevicesPage::editDetails()
     if (AlbumDetailsDialog::instanceCount()) {
         return;
     }
-    const QModelIndexList selected = view->selectedIndexes();
+    const QModelIndexList selected = view->selectedIndexes(false); // Dont need sorted selection here...
     if (1!=selected.size()) {
         return;
     }

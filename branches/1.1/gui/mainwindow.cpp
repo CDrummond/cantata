@@ -1045,12 +1045,12 @@ void MainWindow::mpdConnectionStateChanged(bool connected)
 
 void MainWindow::keyPressEvent(QKeyEvent *event)
 {
-    if ((Qt::Key_Enter==event->key() || Qt::Key_Return==event->key()) &&
-        playQueue->hasFocus() && !playQueue->selectionModel()->selectedRows().isEmpty()) {
-        //play the first selected song
-        QModelIndexList selection=playQueue->selectionModel()->selectedRows();
-        qSort(selection);
-        playQueueItemActivated(selection.first());
+    if ((Qt::Key_Enter==event->key() || Qt::Key_Return==event->key()) && playQueue->hasFocus()) {
+        QModelIndexList selection=playQueue->selectedIndexes();
+        if (!selection.isEmpty()) {
+            //play the first selected song
+            playQueueItemActivated(selection.first());
+        }
     }
 }
 
@@ -1075,7 +1075,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
 void MainWindow::playQueueItemsSelected(bool s)
 {
     bool haveItems=playQueue->model()->rowCount()>0;
-    bool singleSelection=1==playQueue->selectedIndexes().count();
+    bool singleSelection=1==playQueue->selectedIndexes(false).count(); // Dont need sorted selection here...
     removeFromPlayQueueAction->setEnabled(s && haveItems);
     locateTrackAction->setEnabled(singleSelection);
     copyTrackInfoAction->setEnabled(s && haveItems);
@@ -1575,7 +1575,7 @@ void MainWindow::stopAfterCurrentTrack()
 
 void MainWindow::stopAfterTrack()
 {
-    QModelIndexList selected=playQueue->selectedIndexes();
+    QModelIndexList selected=playQueue->selectedIndexes(false); // Dont need sorted selection here...
 
     if (1==selected.count()) {
         QModelIndex idx=playQueueProxyModel.mapToSource(selected.first());
@@ -1698,7 +1698,7 @@ void MainWindow::realSearchPlayQueue()
 
     if (filter!=playQueueProxyModel.filterText()) {
         playQueue->setFilterActive(!filter.isEmpty());
-        playQueue->selectionModel()->clear();
+        playQueue->clearSelection();
         playQueueProxyModel.update(filter);
         QModelIndex idx=playQueueProxyModel.mapFromSource(playQueueModel.index(playQueueModel.currentSongRow(), 0));
         playQueue->updateRows(idx.row(), current.key, autoScrollPlayQueue && playQueueProxyModel.isEmpty() && MPDState_Playing==MPDStatus::self()->state());
@@ -2181,7 +2181,6 @@ void MainWindow::addToExistingStoredPlaylist(const QString &name, bool pq)
         if (items.isEmpty()) {
             files = playQueueModel.filenames();
         } else {
-            qSort(items);
             foreach (const QModelIndex &idx, items) {
                 Song s = playQueueModel.getSongByRow(playQueueProxyModel.mapToSource(idx).row());
                 if (!s.file.isEmpty()) {

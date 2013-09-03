@@ -34,6 +34,7 @@ K_GLOBAL_STATIC(PowerManagement, instance)
 #include "upowerinterface.h"
 #endif
 #include "localize.h"
+#include "mpdstatus.h"
 
 PowerManagement * PowerManagement::self()
 {
@@ -49,7 +50,8 @@ PowerManagement * PowerManagement::self()
 }
 
 PowerManagement::PowerManagement()
-    : cookie(-1)
+    : inhibitSuspendWhilstPlaying(false)
+    , cookie(-1)
 {
     #ifdef ENABLE_KDE_SUPPORT
     #if KDE_IS_VERSION(4, 7, 0)
@@ -66,6 +68,24 @@ PowerManagement::PowerManagement()
                                                QLatin1String("/org/freedesktop/UPower"), QDBusConnection::systemBus(), this);
     connect(upower, SIGNAL(Resuming()), this, SIGNAL(resuming()));
     #endif
+}
+
+void PowerManagement::setInhibitSuspend(bool i)
+{
+    if (i==inhibitSuspendWhilstPlaying) {
+        return;
+    }
+    i=inhibitSuspendWhilstPlaying;
+
+    if (inhibitSuspendWhilstPlaying) {
+        connect(MPDStatus::self(), SIGNAL(updated()), this, SLOT(mpdStatusUpdated()));
+        if (MPDState_Playing==MPDStatus::self()->state()) {
+            beginSuppressingSleep();
+        }
+    } else {
+        disconnect(MPDStatus::self(), SIGNAL(updated()), this, SLOT(mpdStatusUpdated()));
+        stopSuppressingSleep();
+    }
 }
 
 void PowerManagement::beginSuppressingSleep()
@@ -105,4 +125,15 @@ void PowerManagement::stopSuppressingSleep()
     }
     #endif
     cookie=-1;
+}
+
+void PowerManagement::mpdStatusUpdated()
+{
+    if (inhibitSuspendWhilstPlaying) {
+        if (MPDState_Playing==MPDStatus::self()->state()) {
+            beginSuppressingSleep();
+        } else {
+            stopSuppressingSleep();
+        }
+    }
 }

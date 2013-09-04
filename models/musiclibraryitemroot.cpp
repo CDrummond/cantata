@@ -445,7 +445,7 @@ void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, const QDateTime &date
                 if (track->song().albumartist!=artistName) {
                     writer.writeAttribute(constAlbumArtistAttribute, track->song().albumartist);
                 }
-                if (!track->song().composer.isEmpty() && track->song().composer!=track->song().albumartist) {
+                if (!track->song().composer.isEmpty()) {
                     writer.writeAttribute(constComposerAttribute, track->song().composer);
                 }
 //                 writer.writeAttribute("id", QString::number(track->song().id));

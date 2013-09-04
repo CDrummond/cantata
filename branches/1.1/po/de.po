@@ -873,7 +873,7 @@ msgstr "Verbindung beenden"
 
 #: devices/devicespage.cpp:557 gui/mainwindow.cpp:1150
 msgid "Please close other dialogs first."
-msgstr "Andere Dialoge bitte zuerst schliessen."
+msgstr "Andere Dialoge bitte zuerst schließen."
 
 #: devices/encoders.cpp:78
 msgctxt ""
@@ -1604,7 +1604,7 @@ msgstr "Einbeziehen"
 
 #: dynamic/dynamicrulesdialog.cpp:97
 msgid "Exclude"
-msgstr "Ausschliessen"
+msgstr "Ausschließen"
 
 #: dynamic/dynamicrulesdialog.cpp:120
 msgid " (Exact)"
@@ -1632,7 +1632,7 @@ msgstr ""
 "<p>Cantata wird die Bibliothek durchsuchen nach allen Regeln die aufgelistet "
 "sind. Die Liste <i>Einbeziehenden</i> Regeln wird benutzt um eine Auswahl an "
 "Stücken zu erstellen welche darin enthalten sind. Die Liste der "
-"<i>Ausschliessenden</i> Regeln wird benutzt um eine Auswahl an Stücken zu "
+"<i>Ausschließenden</i> Regeln wird benutzt um eine Auswahl an Stücken zu "
 "erstellen welche nicht benutzt werden.</p>"
 
 #: dynamic/dynamicrulesdialog.cpp:307
@@ -5131,7 +5131,7 @@ msgstr "&hinzufügen"
 
 #: support/dialog.cpp:96
 msgid "&Close"
-msgstr "&Schliessen"
+msgstr "&Schließen"
 
 #: support/dialog.cpp:98
 msgid "&Overwrite"

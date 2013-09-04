@@ -257,7 +257,7 @@ When "Hard Rock" is added to the playqueue, it will be listed as
 "Wicked Radio - Hard Rock"
 
 If Rock.png (or Rock.svg) and/or Blues.png (or Blues.svg) also exist in the
-tarball, then thry will be copied the install location and used as icons for
+tarball, then they will be copied to the install location and used as icons for
 the respective category.
 
 
@@ -314,8 +314,8 @@ playlist, load the 'MyPlaylist' playlist, and start this on the mpd at
     MPD_HOST=pass@hostname MPD_PORT=1234 /usr/share/cantata/scripts/cantata-dynamic start
 
 
-Dynamic Helper - Server Mode
-============================
+Dynamic Helper Script - Server Mode
+===================================
 
 In addition to the above, the helper script may be installed on the system
 containing MPD, and run in 'server' mode. When run in this mode, it is intended
@@ -363,7 +363,7 @@ following parameters (shown here with the default values):
 'pidFile' When started, the script will store its PID within the file
 configured here. This is then used to detect if the script is running, etc.
 
-'filesDir' This controls where the dyamic rules are stored. The user the script
+'filesDir' This controls where the dynamic rules are stored. The user the script
 is run as should have read/write permissions to this folder.
 
 'activeFile' When a set of rules is made 'active', all cantata does is create a
@@ -517,6 +517,7 @@ Source Code
 ===========
 
 The Cantata source folder contains the following structure:
+
     3rdparty   - Third party libraries
     cmake      - CMake scripts
     context    - Context view classes
@@ -560,7 +561,7 @@ The following debug values may be used:
     Dynamic                 256
     Stream Fetching         512
 
-These values may be combined to enable multipe output. e.g. to enable MPD and
+These values may be combined to enable multiple output. e.g. to enable MPD and
 covers logging:
 
     CANTATA_DEBUG=5 cantata
@@ -577,6 +578,7 @@ Credits
 =======
 
 Cantata contains code/icons from:
+
     Amarok         - amarok.kde.org (Transcoding, Cover fetching code in cover
                      dialog)
     Clementine     - www.clementine-player.org (Lyrics searches, CueFile
@@ -602,6 +604,7 @@ The following steps are used to compile Cantata, and create the windows
 installer.
 
 This assumes the following folder structure:
+
     z:\cantata\src          [ Checkout of Cantata's source code ]
     z:\cantata\build        
     z:\cantata\install      [ make install will place target files here ]
@@ -610,6 +613,7 @@ This assumes the following folder structure:
     z:\dev\Qt\4.8.4
     z:\dev\taglib
     z:\dev\zlib
+
 
 1. Install Qt, MinGW, cmake, TagLib and zlib. TagLib and zlib will probably
    need compiling.

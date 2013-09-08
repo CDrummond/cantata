@@ -2,13 +2,14 @@
 # This file is distributed under the same license as the PACKAGE package.
 # Omar Campagne <ocampagne@gmail.com>, 2012.
 # Lutz Lüttke <lumpilou@gmail.com>, 2013.
+# Markus Slopianka <kamikazow@web.de>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-07-20 19:42+0100\n"
 "PO-Revision-Date: 2013-07-21 14:17+0200\n"
-"Last-Translator: Lutz Lüttke <lumpilou@gmail.com>\n"
+"Last-Translator: Markus Slopianka <kamikazow@web.de>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
@@ -1434,7 +1435,7 @@ msgstr " (benötigt)"
 
 #: dynamic/dynamic.cpp:195
 msgid "Start Dynamic Playlist"
-msgstr "Starte dynamische Playliste"
+msgstr "Starte dynamische Wiedergabeliste"
 
 #: dynamic/dynamic.cpp:196
 msgid "Stop Dynamic Mode"
@@ -2061,7 +2062,7 @@ msgstr "Stumm"
 
 #: gui/mainwindow.cpp:274
 msgid "Add To Stored Playlist"
-msgstr "Hinzufügen zur gespeicherten Playliste"
+msgstr "Hinzufügen zur gespeicherten Wiedergabeliste"
 
 #: gui/mainwindow.cpp:275
 msgid "Remove From Play Queue"
@@ -2233,7 +2234,7 @@ msgstr "&Hilfe"
 #: gui/mainwindow.cpp:980
 msgid "Failed to locate any songs matching the dynamic playlist rules."
 msgstr ""
-"Keine Stücke gefunden welche auf die dynamischen Regeln der Abspielliste "
+"Keine Stücke gefunden, welche auf die dynamischen Regeln der Wiedergabeliste "
 "zutreffen."
 
 #: gui/mainwindow.cpp:1101 mpd/mpdconnection.cpp:356
@@ -2252,7 +2253,7 @@ msgid ""
 "<br/>Released under the <a href=\"http://www.gnu.org/licenses/gpl.html"
 "\">GPLv3</a>"
 msgstr ""
-"<b>Cantata %1</b><br/><br/>MPD client.<br/><br/>(c) Craig Drummond 2011-2013."
+"<b>Cantata %1</b><br/><br/>MPD client.<br/><br/>© Craig Drummond 2011–2013."
 "<br/>Veröffentlicht unter der <a href=\"http://www.gnu.org/licenses/gpl.html"
 "\">GPLv3</a>"
 
@@ -2261,7 +2262,7 @@ msgid ""
 "Based upon <a href=\"http://qtmpc.lowblog.nl\">QtMPC</a> - (C) 2007-2010 The "
 "QtMPC Authors<br/>"
 msgstr ""
-"Basierend auf <a href=\"http://qtmpc.lowblog.nl\">QtMPC</a> - (C) 2007-2010 "
+"Basierend auf <a href=\"http://qtmpc.lowblog.nl\">QtMPC</a> – © 2007–2010 "
 "Die "
 "QtMPC Authoren<br/>"
 
@@ -2341,12 +2342,12 @@ msgstr "%1 :: Cantata"
 #: gui/mainwindow.cpp:1758
 msgctxt "track - artist :: Cantata (connection)"
 msgid "%1 - %2 :: Cantata (%3)"
-msgstr "%1 - %2 :: Cantata (%3)"
+msgstr "%1 – %2 :: Cantata (%3)"
 
 #: gui/mainwindow.cpp:1760
 msgctxt "track - artist :: Cantata"
 msgid "%1 - %2 :: Cantata"
-msgstr "%1 - %2 :: Cantata"
+msgstr "%1 – %2 :: Cantata"
 
 #: gui/mainwindow.cpp:1805
 msgid "(Stream)"
@@ -2360,7 +2361,7 @@ msgstr "%1 - %2"
 #: gui/mainwindow.cpp:1825 widgets/groupedview.cpp:268
 msgctxt "artist - album"
 msgid "%1 - %2"
-msgstr "%1 - %2"
+msgstr "%1 – %2"
 
 #: gui/mainwindow.cpp:1921 gui/mainwindow.cpp:1922
 msgid "Volume Disabled"
@@ -2424,7 +2425,7 @@ msgid ""
 "<i>Connected to %1<br/>The entries below apply to the currently connected "
 "MPD collection.</i>"
 msgstr ""
-"<i>Verbindung zu %1<br/>Die Einträge zur aktuellen MPD Instanz "
+"<i>Verbindung zu %1<br/>Die Einträge zur aktuellen MPD-Instanz "
 "hinzufügen</i>"
 
 #. i18n: file: gui/playbacksettings.ui:26
@@ -2455,11 +2456,11 @@ msgstr ""
 "wie MP3 und Ogg Vorbis. Dies arbeitet auf einem Track / Album Grundlage "
 "und wird nun in einer wachsenden Anzahl von unterstützten"
 "Spieler unterstützt.</p><p>Die folgenden Einstellungen können gewählt werden:"
-"<ul><li><i>Nichts</i> - Kein ReplayGain wird hinzugefügt.</li><li><i>Stück</i>"
+"<ul><li><i>Nichts</i> – Kein ReplayGain wird hinzugefügt.</li><li><i>Stück</i>"
 " - "
 "Volume wird eingestellt auf das Stück.</li><li><i>Album</"
 "i> - Volume wird eingestellt auf das Album.</"
-"li><li><i>Auto</i> -Volume wird eingestellt auf das Stück wenn die zufällige "
+"li><li><i>Auto</i> – Lautstärke wird eingestellt auf das Stück, wenn die zufällige "
 "Wiedergabe "
 "eingestellt ist. Sonst wird auf Album eingestellt</"
 "li></ul></p>"
@@ -2473,7 +2474,7 @@ msgid ""
 "Are you sure you wish to remove the selected playlists?\n"
 "This cannot be undone."
 msgstr ""
-"Sind Sie sicher das Sie die gewählte Playliste entfernen möchten?\n"
+"Sind Sie sicher das Sie die gewählte Wiedergabeliste entfernen möchten?\n"
 "Dies kann nicht rückgängig gemacht werden."
 
 #: gui/playlistspage.cpp:187
@@ -2539,11 +2540,11 @@ msgstr "HTTP Server"
 
 #: gui/preferencesdialog.cpp:86
 msgid "HTTP Server Settings"
-msgstr "HTTP Server Einstellungen"
+msgstr "HTTP-Server-Einstellungen"
 
 #: gui/preferencesdialog.cpp:95
 msgid "Audio CD Settings"
-msgstr "Audio CD Einstellungen"
+msgstr "Audio-CD-Einstellungen"
 
 #: gui/preferencesdialog.cpp:100
 msgid "Proxy"
@@ -2562,7 +2563,7 @@ msgstr "Tastaturkürzel"
 #: gui/preferencesdialog.cpp:106
 msgctxt "Qt-only"
 msgid "Keyboard Shortcut Settings"
-msgstr "Tastaturkürzel Einstellungen"
+msgstr "Tastaturkürzel-Einstellungen"
 
 #: gui/preferencesdialog.cpp:110
 msgid "Cache"
@@ -2616,8 +2617,8 @@ msgid ""
 msgstr ""
 "<i><b>Hinweis:</b> 'Dynamizer port' ist nur relevant wenn Sie 'dynamische "
 "Playlisten' benutzen wollen. Um die  <code>cantata-dynamic</code>  Funktion "
-"zu benutzen <b>muss</b> diese bereits auf der relevanten MPD Instanz "
-"installiert und gestartet sein.Cantata kann diesen Service nicht von sich "
+"zu benutzen <b>muss</b> diese bereits auf der relevanten MPD-Instanz "
+"installiert und gestartet sein. Cantata kann diesen Service nicht von sich "
 "aus starten oder stoppen.</i>"
 
 #: gui/serversettings.cpp:100
@@ -2631,11 +2632,11 @@ msgid ""
 "dynamic playlists.</i>"
 msgstr ""
 "<i><b>NOTE:</b> 'Dynamizer port' ist nur relevant wenn Sie 'dynamische "
-"Playlisten'  systemweit oder nicht lokal benutzen wollen. Um die  "
-"<code>cantata-dynamic</code> Funktion zu benutzen<b>muss</b> diese bereits "
-"auf der relevanten MPD Instanz installiert und gestartet sein.Cantata kann "
+"Wiedergabelisten' systemweit oder nicht lokal benutzen wollen. Um die  "
+"<code>cantata-dynamic</code> Funktion zu benutzen <b>muss</b> diese bereits "
+"auf der relevanten MPD-Instanz installiert und gestartet sein.Cantata kann "
 "diesen Service nicht von sich aus starten oder stoppen. Ist dies nicht "
-"gesetzt ist wird Cantata eine Benutzerinstanz  für den Dynamizer benutzen</i>"
+"gesetzt ist wird Cantata eine Benutzerinstanz für den Dynamizer benutzen</i>"
 
 #: gui/serversettings.cpp:109
 msgid ""
@@ -2659,9 +2660,9 @@ msgid ""
 "configure and control the MPD instance</li></ul>"
 msgstr ""
 "Zu welcher Art von Sammlung möchten Sie sich verbinden?<br/><li> Standard? -"
-"Musiksammlung kann geteilt werden , ist auf einem anderen Rechner, oder ist "
+"Musiksammlung kann geteilt werden, ist auf einem anderen Rechner, oder ist "
 "bereits Setup </"
-"li><li> Basis - Musik-Sammlung ist nicht mit anderen geteilt und Cantata wird"
+"li><li> Basis-Musiksammlung ist nicht mit anderen geteilt und Cantata wird"
 "Konfiguration und Steuerung der MPD-Instanz </ li></ ul>"
 
 #: gui/serversettings.cpp:233
@@ -2826,7 +2827,7 @@ msgstr "Vom Gerät trennen"
 
 #: models/devicesmodel.cpp:113
 msgid "Edit CD Details"
-msgstr "Bearbeite CD Details"
+msgstr "Bearbeite CD-Details"
 
 #: models/devicesmodel.cpp:687
 msgid "No Devices Attached"
@@ -2869,7 +2870,7 @@ msgstr[1] "%1 Einträge"
 
 #: models/dirviewmodel.cpp:190
 msgid "Audio File"
-msgstr "Audio Datei"
+msgstr "Audio-Datei"
 
 #: models/dirviewmodel.cpp:191 models/musicmodel.cpp:120
 msgid "Playlist"
@@ -3121,11 +3122,11 @@ msgstr "Benutze Proxyeinstellung des Systems"
 
 #: network/proxysettings.cpp:35
 msgid "Manual proxy configuration"
-msgstr "Manuelle Proxy Einstellung"
+msgstr "Manuelle Proxy-Einstellung"
 
 #: online/jamendosettingsdialog.cpp:33
 msgid "Jamendo Settings"
-msgstr "Jamendo Einstellungen"
+msgstr "Jamendo-Einstellungen"
 
 #: online/jamendosettingsdialog.cpp:37
 msgid "MP3"
@@ -3157,7 +3158,7 @@ msgstr "WAV"
 
 #: online/magnatunesettingsdialog.cpp:34
 msgid "Magnatune Settings"
-msgstr "Magnatune Einstellungen"
+msgstr "Magnatune-Einstellungen"
 
 #: online/magnatunesettingsdialog.cpp:49
 msgid "Membership:"
@@ -3263,7 +3264,7 @@ msgstr "Dunkler Hintergrund:"
 #. i18n: ectx: property (text), widget (BuddyLabel, wikipediaIntroOnlyLabel)
 #: po/rc.cpp:9 rc.cpp:9
 msgid "Only show basic wikipedia text:"
-msgstr "Zeige nur einfachen Wikipedia Text:"
+msgstr "Zeige nur einfachen Wikipedia-Text:"
 
 #. i18n: file: context/othersettings.ui:86
 #. i18n: ectx: property (text), widget (StateLabel, wikipediaIntroOnlyNote)
@@ -3284,7 +3285,7 @@ msgstr ""
 "Einführung zu jedem Artikel anzeigen. Wenn Sie sich dafür entscheiden, "
 "den ganzen Artikel zeigen, dann"
 "kann es Parsing-Fehler sein. Sie müssen auch keine Zeit zu entfernen"
-"zwischengespeichert Artikel (mit dem \"Cache\"-Seite).<i>"
+"zwischengespeichert Artikel (mit der \"Cache\"-Seite).<i>"
 
 #. i18n: file: context/togglelist.ui:17
 #. i18n: ectx: property (text), widget (QLabel, label_2)
@@ -3401,13 +3402,13 @@ msgstr "Einzelner Künstler:"
 #. i18n: ectx: property (text), widget (BuddyLabel, label_6)
 #: po/rc.cpp:70 rc.cpp:70
 msgid "Disc:"
-msgstr "Disc:"
+msgstr "Disk:"
 
 #. i18n: file: devices/audiocdsettings.ui:20
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox)
 #: po/rc.cpp:85 rc.cpp:85
 msgid "Album and Track Information Retrieval"
-msgstr "Album und Stück Informationen"
+msgstr "Album- und Stück-Informationen"
 
 #. i18n: file: devices/audiocdsettings.ui:26
 #. i18n: ectx: property (text), widget (BuddyLabel, label_3)
@@ -3425,19 +3426,19 @@ msgstr "Zunächst schauen via:"
 #. i18n: ectx: property (text), widget (BuddyLabel, cddbHostLabel)
 #: po/rc.cpp:94 rc.cpp:94
 msgid "CDDB Host:"
-msgstr "CDDB Host:"
+msgstr "CDDB-Host:"
 
 #. i18n: file: devices/audiocdsettings.ui:65
 #. i18n: ectx: property (text), widget (BuddyLabel, cddbPortLabel)
 #: po/rc.cpp:97 rc.cpp:97
 msgid "CDDB Port:"
-msgstr "CDDB Port:"
+msgstr "CDDB-Port:"
 
 #. i18n: file: devices/audiocdsettings.ui:88
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox_2)
 #: po/rc.cpp:100 rc.cpp:100
 msgid "Audio Extraction"
-msgstr "Audio Extraction"
+msgstr "Audio-Extraktion"
 
 #. i18n: file: devices/audiocdsettings.ui:94
 #. i18n: ectx: property (text), widget (BuddyLabel, label_4)
@@ -3544,7 +3545,7 @@ msgstr "Dateinamen"
 #. i18n: ectx: property (text), widget (BuddyLabel, label_3)
 #: po/rc.cpp:136 po/rc.cpp:781 rc.cpp:136 rc.cpp:781
 msgid "Use only ASCII characters:"
-msgstr "Nur ASCII Zeichen verwenden:"
+msgstr "Nur ASCII-Zeichen verwenden:"
 
 #. i18n: file: devices/devicepropertieswidget.ui:159
 #. i18n: ectx: property (text), widget (BuddyLabel, label_4)
@@ -3568,7 +3569,7 @@ msgstr "Ersetze Leerzeichen mit Unterstrichen:"
 #. i18n: ectx: property (text), widget (BuddyLabel, label_5)
 #: po/rc.cpp:142 po/rc.cpp:775 rc.cpp:142 rc.cpp:775
 msgid "Ignore 'The' in artist names:"
-msgstr "ingnoriere 'The' im Künstlernamen"
+msgstr "ingnoriere „The“ im Künstlernamen"
 
 #. i18n: file: devices/devicepropertieswidget.ui:193
 #. i18n: ectx: property (text), widget (BuddyLabel, label_6)
@@ -3785,7 +3786,7 @@ msgid ""
 "password before accessing the share, set the password to '-'</i>"
 msgstr ""
 "<i><b>NOTE:</b> Wenn Sie hier ein Kennwort wird dieses <b>unverschlüsselt</"
-"b> in Cantata's Konfigurationdatei gespeichert. Wenn Sie möchten dass "
+"b> in Cantatas Konfigurationdatei gespeichert. Wenn Sie möchten dass "
 "Cantata sie zur Passworteingabe auffordert, setzen Sie das Kennwort auf '-'</"
 "i>"
 
@@ -3811,7 +3812,7 @@ msgstr "Ordner:"
 #. i18n: ectx: property (text), widget (BuddyLabel, sshExtraLabel)
 #: po/rc.cpp:253 rc.cpp:253
 msgid "Extra Options:"
-msgstr "Extra Optionen:"
+msgstr "Weitere Optionen:"
 
 #. i18n: file: devices/remotedevicepropertieswidget.ui:363
 #. i18n: ectx: property (text), widget (QLabel, label_5)
@@ -3821,7 +3822,7 @@ msgid ""
 "application (ksshaskpass, ssh-askpass-gnome, etc.) will be required to enter "
 "the password.</i>"
 msgstr ""
-"<i><b>HINWEIS:</b> Aufgrund der Art wir  sshfs arbeitet benötigen Sie eine "
+"<i><b>HINWEIS:</b> Aufgrund der Art wie sshfs arbeitet benötigen Sie eine "
 "geeignete ssh-askpass Applikation (ksshaskpass, ssh-askpass-gnome, etc.) um "
 "ein Kennwort eingeben zu können.</i>"
 
@@ -3873,7 +3874,7 @@ msgstr "Über Regeln"
 #. i18n: ectx: property (text), widget (BuddyLabel, label_2)
 #: po/rc.cpp:289 rc.cpp:289
 msgid "Album Artist:"
-msgstr "Album Künstler:"
+msgstr "Album-Künstler:"
 
 #. i18n: file: dynamic/dynamicrule.ui:51
 #. i18n: ectx: property (text), widget (BuddyLabel, label_3)
@@ -3941,7 +3942,7 @@ msgstr "Künstler ähnlich zu:"
 msgid ""
 "<i><b>NOTE</b> Only enter values for the tags you wish to be search on. </i>"
 msgstr ""
-"<i><b>HINWEIS</b> Nur Werte für Tags angeben welche auch gesucht werden. </i>"
+"<i><b>HINWEIS</b> Nur Werte für Tags angeben, welche auch gesucht werden. </i>"
 
 #. i18n: file: dynamic/dynamicrule.ui:249
 #. i18n: ectx: property (text), widget (QLabel, label_7x)
@@ -4121,7 +4122,7 @@ msgid ""
 msgstr ""
 "<i>Wählen Sie diese Option, wenn Ihre Musik-Sammlung ist nicht mit anderen "
 "geteilt ist"
-"und Sie möchten Cantata zur Konfiguration und Steuerung der MPD Instanz.</i>"
+"und Sie möchten Cantata zur Konfiguration und Steuerung der MPD-Instanz.</i>"
 
 #. i18n: file: gui/initialsettingswizard.ui:225
 #. i18n: ectx: property (text), widget (BuddyLabel, label_10)
@@ -4150,11 +4151,10 @@ msgid ""
 "Cantata to function correctly.</p></body></html>"
 msgstr ""
 "<html><head/><body><p>Für weitere Informationen für Cantata konsultieren Sie "
-"bitte die MPD Webseite <a href=\"http://www.musicpd.org\"><span style=\" text-"
+"bitte die MPD-Webseite <a href=\"http://www.musicpd.org\"><span style=\" text-"
 "decoration: underline; color:#0000ff;\">http://www.musicpd.org</span></a></"
 "p><p>Dieser Leitfaden wird Sie durch die Grundeinstellungen für Cantata "
-"führen "
-".</p></body></html>"
+"führen.</p></body></html>"
 
 #. i18n: file: gui/initialsettingswizard.ui:319
 #. i18n: ectx: property (text), widget (QLabel, label_3)
@@ -4192,8 +4192,8 @@ msgid ""
 "<i><b>NOTE:</b> The 'Music folder' setting is used to lookup cover-art, "
 "lyrics, etc.</i>"
 msgstr ""
-"<i><b>HINWEIS:</b> Die 'Musiordner' Einstellungen dienen der Suche nach  "
-"Cover, Liedtexte, etc.</i>"
+"<i><b>HINWEIS:</b> Die Musikverzeichnis-Einstellungen dienen der Suche nach  "
+"Cover, Liedtexte, usw.</i>"
 
 #. i18n: file: gui/initialsettingswizard.ui:521
 #. i18n: ectx: property (text), widget (QLabel, socketNoteLabel)
@@ -4253,7 +4253,7 @@ msgid ""
 "currently cannot upload files to external HTTP servers. Therefore, the above "
 "settings should be left disabled.</i>"
 msgstr ""
-"<i><b>NOTE:</b> Der 'Musik Ordner' ist auf eine  HTTP Adresse gesetzt und "
+"<i><b>NOTE:</b> Das Musikverzeichnis ist auf eine  HTTP-Adresse gesetzt und "
 "Cantata kann aktuell keine Dateien heraufladen. Die obrigen Einstellungen "
 "sollten deaktiviert werden.</i>"
 
@@ -4648,7 +4648,7 @@ msgid ""
 "folders), then Cantata will save any downloaded covers into the respective "
 "album folder.</i>"
 msgstr ""
-"<i><b>HINWEIS:</b> Das 'Musikverzeichnis' wird zur Coversuche benötigt "
+"<i><b>HINWEIS:</b> Das Musikverzeichnis wird zur Coversuche benötigt "
 "(<code>cover.jpg</code>). Wenn Sie die Berechtigung zum Schreiben auf diese "
 "Verzeichnisse (und Unterverzeichnisse) haben, wird Cantata alle "
 "heruntergeladenen Cover in den entsprechenden Albenordner ablegen.</i>"
@@ -5293,7 +5293,7 @@ msgstr ""
 #: tags/tageditor.cpp:367
 msgid "Revert \"Various Artists\" workaround on <b>all</b> tracks?"
 msgstr ""
-"Zurücksetzen \"Verschiedene Künstler\" Workaround bei <b>allen</b> Stücken?"
+"Zurücksetzen „Verschiedene Künstler“-Workaround bei <b>allen</b> Stücken?"
 
 #: tags/tageditor.cpp:417
 msgid ""
@@ -5310,7 +5310,7 @@ msgstr ""
 
 #: tags/tageditor.cpp:419
 msgid "Album Artist from Artist"
-msgstr "Setze Album Künstler von Künstler"
+msgstr "Setze Album-Künstler von Künstler"
 
 #: tags/tageditor.cpp:452
 msgid ""

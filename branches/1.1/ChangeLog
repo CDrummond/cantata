@@ -1,7 +1,7 @@
 ﻿1.1.3
 -----
 1. (Hopefully) fix selection order of items - and order added to playqueue.
-2. Update German translation, use 'ß' instead of 'ss' for certain words.
+2. Updated German translation
 3. Add Russian translation, thanks to Julia Dronova.
 
 1.1.2
@@ -227,7 +227,7 @@
      view which do not contain tags.
   8. Merge 'External Settings' into 'Interface Settings'
   9. Add option to embed covers when copying songs to devices. (ID3v2, mp4,
-     and vorbis comment tag types only) 
+     and vorbis comment tag types only)
  10. Add a simple system dbus helper to allow user mounts of samba shares. This
      is intended to allow Cantata to connect to an Android device via Droid NAS.
      Requires cantata be built with remote device support.

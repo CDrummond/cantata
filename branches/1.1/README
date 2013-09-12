@@ -186,7 +186,7 @@ For artist images:
 
 7. ${url}/${dirFromFile}/artist.jpg
 8. ${url}/${dirFromFile}/artist.png
- 
+
 ... the above will be repeated for each parent folder (until we reach the MPD
     root folder)
 
@@ -229,7 +229,7 @@ The list of dynamic playlists may be obtained by looking in
 
 To 'load' a dynamic playlist, all you need to do is symlink the desired one in
 ~/.config/cantata/dynamic to ~/.cache/cantata/dynamic/rules. Then you can start
-the helper by calling '/usr/share/cantata/scripts/cantata-dynamic start'  (or 
+the helper by calling '/usr/share/cantata/scripts/cantata-dynamic start'  (or
 first call '/usr/share/cantata/scripts/cantata-dynamic stop' to stop any current
 playlist).
 
@@ -501,11 +501,11 @@ These values may be combined to enable multipe output. e.g. to enable MPD and
 covers logging:
 
     CANTATA_DEBUG=5 cantata
-    
+
 for just covers logging:
 
     CANTATA_DEBUG=4 cantata
-    
+
 NOTE: The above will function regardless of whether you have created a Debug or
 Release build.
 
@@ -519,7 +519,7 @@ Cantata contains code/icons from:
     Clementine     - www.clementine-player.org (Lyrics searches, CueFile
                      parsing, and digitally imported support)
     Be::MPC        - Wikipedia parsing code
-    Quassel        - quassel-irc.org (Qt-only keyboard short-cut config support)
+    Quassel        - quassel-irc.org (Qt-only keyboard shortcut config support)
     Solid          - solid.kde.org (Device detection for Qt-only builds)
     Musique        - Copied code for Gtk theme detection
     Ayatana Qt     - Overlay scrollbar code copied/modified from
@@ -540,7 +540,7 @@ installer.
 
 This assumes the following folder structure:
     z:\cantata\src          [ Checkout of Cantata's source code ]
-    z:\cantata\build        
+    z:\cantata\build
     z:\cantata\install      [ make install will place target files here ]
     z:\cantata\oxygen       [ Oxygen icons folder ]
     z:\dev\MingGW

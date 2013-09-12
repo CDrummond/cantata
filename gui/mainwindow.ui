@@ -321,7 +321,7 @@
            <widget class="ToolButton" name="clearPlayQueueButton"/>
           </item>
           <item>
-           <widget class="QSizeGrip" name="sizeGrip"/>
+           <widget class="SizeGrip" name="sizeGrip"/>
           </item>
          </layout>
         </item>
@@ -406,6 +406,11 @@
    <class>SearchWidget</class>
    <extends>QLineEdit</extends>
    <header>searchwidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>SizeGrip</class>
+   <extends>QSizeGrip</extends>
+   <header>sizegrip.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

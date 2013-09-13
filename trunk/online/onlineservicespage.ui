@@ -11,6 +11,9 @@
    </rect>
   </property>
   <layout class="QVBoxLayout" name="vlayout">
+   <property name="spacing">
+    <number>2</number>
+   </property>
    <property name="leftMargin">
     <number>0</number>
    </property>
@@ -44,14 +47,10 @@
       <number>0</number>
      </property>
      <item>
-      <widget class="GenreCombo" name="genreCombo">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-      </widget>
+      <widget class="GenreCombo" name="genreCombo"/>
+     </item>
+     <item>
+      <widget class="SizeWidget" name="sizeWidget"/>
      </item>
      <item>
       <widget class="MenuButton" name="menuButton"/>
@@ -86,6 +85,11 @@
    <class>MenuButton</class>
    <extends>QToolButton</extends>
    <header>menubutton.h</header>
+  </customwidget>
+  <customwidget>
+   <class>SizeWidget</class>
+   <extends>QWidget</extends>
+   <header>sizewidget.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

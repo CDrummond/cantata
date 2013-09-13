@@ -22,10 +22,8 @@
  */
 
 #include "sizegrip.h"
-#include "toolbutton.h"
+#include "sizewidget.h"
 #include <QIcon>
-
-static int tbHeight=-1;
 
 // Some styles, such as MacOSX, do not have a size-grip.
 // However, we still want the same space taken up on the toolbar - so that 'clear playqueue'
@@ -38,21 +36,15 @@ static int tbHeight=-1;
 SizeGrip::SizeGrip(QWidget *parent)
     : QSizeGrip(parent)
 {
-    if (-1==tbHeight) {
-        ToolButton tb(parent);
-        tb.setToolButtonStyle(Qt::ToolButtonIconOnly);
-        tb.setIcon(QIcon::fromTheme("ok"));
-        tb.ensurePolished();
-        tbHeight=tb.sizeHint().height();
-    }
-    setMaximumHeight(tbHeight);
+    setFixedHeight(SizeWidget::standardHeight());
 }
 
 QSize SizeGrip::sizeHint() const
 {
     if (!sh.isValid()) {
+        int itemHeight=SizeWidget::standardHeight();
         sh=QSizeGrip::sizeHint();
-        sh=QSize(sh.width()>2 ? sh.width() : tbHeight, tbHeight);
+        sh=QSize(sh.width()>2 ? sh.width() : itemHeight, itemHeight);
     }
     return sh;
 }

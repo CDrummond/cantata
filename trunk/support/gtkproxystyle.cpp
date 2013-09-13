@@ -44,8 +44,6 @@
 #include <QDesktopWidget>
 #include <QLibrary>
 
-const char * GtkProxyStyle::constSlimComboProperty="gtkslim";
-
 static const char * constOnCombo="on-combo";
 #ifndef ENABLE_KDE_SUPPORT
 static const char * constAccelProp="catata-accel";
@@ -97,7 +95,6 @@ GtkProxyStyle::GtkProxyStyle(ScrollbarType sb)
     }
 
     setBaseStyle(qApp->style());
-    toolbarCombo=new QComboBox(new QToolBar());
     if (SB_Standard!=sbarType) {
         int fh=QApplication::fontMetrics().height();
         sbarPlainViewWidth=fh/1.75;
@@ -129,14 +126,7 @@ QSize GtkProxyStyle::sizeFromContents(ContentsType type, const QStyleOption *opt
 {
     QSize sz=baseStyle()->sizeFromContents(type, option, size, widget);
 
-    if (CT_ComboBox==type && widget && widget->property(constSlimComboProperty).toBool()) {
-        QSize orig=baseStyle()->sizeFromContents(type, option, size, widget);
-        QSize other=baseStyle()->sizeFromContents(type, option, size, toolbarCombo);
-        if (orig.height()>other.height()) {
-            return QSize(orig.width(), other.height());
-        }
-        return orig;
-    } else if (SB_Standard!=sbarType && CT_ScrollBar==type) {
+    if (SB_Standard!=sbarType && CT_ScrollBar==type) {
         if (const QStyleOptionSlider *sb = qstyleoption_cast<const QStyleOptionSlider *>(option)) {
             int extent(pixelMetric(PM_ScrollBarExtent, option, widget)),
                 sliderMin(pixelMetric(PM_ScrollBarSliderMin, option, widget));

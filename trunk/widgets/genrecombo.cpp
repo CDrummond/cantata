@@ -24,31 +24,16 @@
 #include "genrecombo.h"
 #include "toolbutton.h"
 #include "localize.h"
-#ifndef Q_OS_WIN
-#include "gtkproxystyle.h"
-#endif
 
 // Max number of items before we try to force a scrollbar in popup menu...
 static const int constPopupItemCount=32;
-static int tbHeight=-1;
+
 GenreCombo::GenreCombo(QWidget *p)
      : ComboBox(p)
 {
     setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
     update(QSet<QString>());
     setEditable(false);
-    #ifndef Q_OS_WIN
-    setProperty(GtkProxyStyle::constSlimComboProperty, true);
-    #endif
-
-    if (-1==tbHeight) {
-        ToolButton tb(parentWidget());
-        tb.setToolButtonStyle(Qt::ToolButtonIconOnly);
-        tb.setIcon(QIcon::fromTheme("ok"));
-        tb.ensurePolished();
-        tbHeight=tb.sizeHint().height();
-    }
-    setMaximumHeight(tbHeight);
 }
 
 void GenreCombo::update(const QSet<QString> &g)

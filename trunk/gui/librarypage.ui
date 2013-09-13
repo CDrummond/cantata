@@ -11,6 +11,9 @@
    </rect>
   </property>
   <layout class="QVBoxLayout" name="vlayout">
+   <property name="spacing">
+    <number>2</number>
+   </property>
    <property name="leftMargin">
     <number>0</number>
    </property>
@@ -53,6 +56,9 @@
       <widget class="GenreCombo" name="genreCombo"/>
      </item>
      <item>
+      <widget class="SizeWidget" name="sizeWidget"/>
+     </item>
+     <item>
       <widget class="ToolButton" name="addToPlayQueue"/>
      </item>
      <item>
@@ -77,6 +83,11 @@
    <class>ToolButton</class>
    <extends>QToolButton</extends>
    <header>toolbutton.h</header>
+  </customwidget>
+  <customwidget>
+   <class>SizeWidget</class>
+   <extends>QWidget</extends>
+   <header>sizewidget.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

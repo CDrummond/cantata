@@ -779,7 +779,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(onlineTabAction, SIGNAL(triggered(bool)), this, SLOT(showOnlineTab()));
     addAction(StdActions::self()->searchAction); // Weird, but if I dont add thiis action, it does not work!!!!
     connect(StdActions::self()->searchAction, SIGNAL(triggered(bool)), SLOT(showSearch()));
-    connect(searchPlayQueueAction, SIGNAL(triggered(bool)), playQueueSearchWidget, SLOT(toggle()));
+    connect(searchPlayQueueAction, SIGNAL(triggered(bool)), playQueueSearchWidget, SLOT(activate()));
     connect(expandAllAction, SIGNAL(triggered(bool)), this, SLOT(expandAll()));
     connect(collapseAllAction, SIGNAL(triggered(bool)), this, SLOT(collapseAll()));
     #ifdef ENABLE_DEVICES_SUPPORT
@@ -2735,7 +2735,7 @@ void MainWindow::showSearch()
     }
     #endif
     else if (playQueuePage->isVisible()) {
-        playQueueSearchWidget->toggle();
+        playQueueSearchWidget->activate();
     }
 }
 

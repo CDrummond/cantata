@@ -27,7 +27,6 @@
 #include <QProxyStyle>
 #include "config.h"
 
-class QComboBox;
 #ifdef ENABLE_OVERLAYSCROLLBARS
 class QScrollBar;
 class OsThumb;
@@ -39,8 +38,6 @@ class GtkProxyStyle : public QProxyStyle
     Q_OBJECT
 
 public:
-    static const char * constSlimComboProperty;
-
     enum ScrollbarType {
         SB_Standard,
         SB_Thin
@@ -84,7 +81,6 @@ private:
 
 private:
     ShortcutHandler *shortcutHander;
-    QComboBox *toolbarCombo;
 
     ScrollbarType sbarType;
     int sbarPlainViewWidth;

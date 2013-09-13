@@ -21,28 +21,32 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef GENRECOMBO_H
-#define GENRECOMBO_H
+#include "sizewidget.h"
+#include "genrecombo.h"
+#include "toolbutton.h"
+#include <QIcon>
 
-#include "combobox.h"
-#include <QSet>
+static int stdHeight=-1;
 
-class GenreCombo : public ComboBox
+int SizeWidget::standardHeight()
 {
-    Q_OBJECT
-public:
-    static int standardHeight();
+    if (-1==stdHeight)
+    {
+        GenreCombo combo(0);
+        combo.ensurePolished();
+        ToolButton tb(0);
+        tb.setToolButtonStyle(Qt::ToolButtonIconOnly);
+        tb.setIcon(QIcon::fromTheme("ok"));
+        tb.ensurePolished();
+        stdHeight=qMax(tb.sizeHint().height(), combo.sizeHint().height());
+    }
 
-    GenreCombo(QWidget *p);
-    virtual ~GenreCombo() { }
+    return stdHeight;
+}
 
-    const QSet<QString> & entries() const { return genres; }
-
-public Q_SLOTS:
-    void update(const QSet<QString> &g);
-
-private:
-    QSet<QString> genres;
-};
-
-#endif
+SizeWidget::SizeWidget(QWidget *parent)
+    : QWidget(parent)
+{
+    setFixedHeight(stdHeight);
+    setFixedWidth(0);
+}

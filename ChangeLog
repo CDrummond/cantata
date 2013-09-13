@@ -28,7 +28,8 @@
 13. Create a new SizeGrip class, so that we can force the size-grip on the main
     window to have the same height as toolbuttons - this makes it align to the
     bottom.
-14. Set maximum height of genre combo to toolbutton height.
+14. Place a 0-pixel wide 'size widget' at the bottom of each view, to attempt to
+    ensure consisten sizes between views.
 
 1.1.3
 -----

@@ -196,6 +196,9 @@
         </sizepolicy>
        </property>
        <layout class="QVBoxLayout" name="vlayoutx">
+        <property name="spacing">
+         <number>2</number>
+        </property>
         <property name="margin">
          <number>0</number>
         </property>

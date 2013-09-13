@@ -56,7 +56,7 @@ SearchWidget::SearchWidget(QWidget *p)
 {
     QGridLayout *l=new QGridLayout(this);
     l->setMargin(0);
-    l->setSpacing(0);
+    l->setSpacing(1);
     label=new SqueezedTextLabel(this);
     edit=new LineEdit(this);
     edit->setPlaceholderText(i18n("Search..."));

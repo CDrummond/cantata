@@ -30,6 +30,8 @@
     bottom.
 14. Place a 0-pixel wide 'size widget' at the bottom of each view, to attempt to
     ensure consisten sizes between views.
+15. Make playqueue search consisten with view search - ie. only show search on
+    activating 'Search Play Queue', do not toggle.
 
 1.1.3
 -----

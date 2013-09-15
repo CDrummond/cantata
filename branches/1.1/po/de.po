@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-07-20 19:42+0100\n"
-"PO-Revision-Date: 2013-09-13 00:04+0200\n"
+"PO-Revision-Date: 2013-09-15 01:58+0200\n"
 "Last-Translator: Markus Slopianka <kamikazow@web.de>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de\n"
@@ -2372,7 +2372,7 @@ msgstr "%1 – %2"
 
 #: gui/mainwindow.cpp:1921 gui/mainwindow.cpp:1922
 msgid "Volume Disabled"
-msgstr "Laufwerk nicht erreichbar"
+msgstr "Lautstärke nicht einstellbar"
 
 #: gui/mainwindow.cpp:1933
 msgid "Volume %1% (Muted)"
@@ -2460,17 +2460,16 @@ msgid ""
 msgstr ""
 "<p>Replay Gain ist der vorgeschlagene Standard aus dem Jahr 2001 "
 "um die Normalisierung wahrgenommene Lautstärke von Computer-Audio-Formaten "
-"wie MP3 und Ogg Vorbis. Dies arbeitet auf einem Track / Album Grundlage "
+"wie MP3 und Ogg Vorbis. Sie arbeitet auf auf Basis von Track und Album "
 "und wird nun in einer wachsenden Anzahl von unterstützten"
-"Spieler unterstützt.</p><p>Die folgenden Einstellungen können gewählt werden:"
+"Abspieler unterstützt.</p><p>Die folgenden Einstellungen können gewählt "
+"werden:"
 "<ul><li><i>Nichts</i> – Kein ReplayGain wird hinzugefügt.</li><li><i>Stück</i>"
 " - "
-"Volume wird eingestellt auf das Stück.</li><li><i>Album</"
-"i> - Volume wird eingestellt auf das Album.</"
+"Lautstärke wird eingestellt auf das Stück.</li><li><i>Album</"
+"i> - Lautstärke wird eingestellt auf das Album.</"
 "li><li><i>Auto</i> – Lautstärke wird eingestellt auf das Stück, wenn die "
-"zufällige "
-"Wiedergabe "
-"eingestellt ist. Sonst wird auf Album eingestellt</"
+"zufällige Wiedergabe eingestellt ist. Sonst wird auf Album eingestellt.</"
 "li></ul></p>"
 
 #: gui/playlistspage.cpp:43 tags/tageditor.cpp:759 tags/trackorganiser.cpp:65
@@ -3530,7 +3529,7 @@ msgstr "Benutzer Zwischenspeicher:"
 #. i18n: ectx: property (text), widget (QLabel, defaultVolumeLabel)
 #: po/rc.cpp:130 rc.cpp:130
 msgid "Default volume:"
-msgstr "Voreinstellung Lautstärke:"
+msgstr "Voreinstellung der Lautstärke:"
 
 #. i18n: file: devices/devicepropertieswidget.ui:133
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox)

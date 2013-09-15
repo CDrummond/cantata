@@ -1,20 +1,22 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# Craig Drummond <craig.p.drummond@gmail.com>, 2013.
 #
+# Craig Drummond <craig.p.drummond@gmail.com>, 2013.
+# Markus Slopianka <kamikazow@web.de>, 2013.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-07-20 19:42+0100\n"
-"PO-Revision-Date: 2013-07-20 19:42+0100\n"
-"Last-Translator: Craig Drummond <craig.p.drummond@gmail.com>\n"
-"Language-Team: British English <craig.p.drummond@gmail.com>\n"
+"PO-Revision-Date: 2013-09-15 02:01+0200\n"
+"Last-Translator: Markus Slopianka <kamikazow@web.de>\n"
+"Language-Team: British English <kde-i18n-de@kde.org>\n"
 "Language: en_GB\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Lokalize 1.5\n"
 
 #: context/albumview.cpp:63
 msgid "Refresh Album Information"
@@ -2206,7 +2208,7 @@ msgstr ""
 "Volume will be adjusted using the track's ReplayGain tags.</li><li><i>Album</"
 "i> - Volume will be adjusted using the albums's ReplayGain tags.</"
 "li><li><i>Auto</i> - Volume will be adjusted using the track's ReplayGain "
-"tags if random play is actived, otherwise the album's tags will be used.</"
+"tags if random play is activated, otherwise the album's tags will be used.</"
 "li></ul></p>"
 
 #: gui/playlistspage.cpp:43 tags/tageditor.cpp:759 tags/trackorganiser.cpp:65
@@ -4984,7 +4986,6 @@ msgstr ""
 #: widgets/searchwidget.cpp:66
 msgid "Close Search Bar"
 msgstr ""
- 
 
 #: ../gui/qtplural.h:30
 msgctxt "Singular"
@@ -5063,3 +5064,4 @@ msgstr ""
 msgctxt "Plural (N!=1)"
 msgid "%1 Rules"
 msgstr ""
+

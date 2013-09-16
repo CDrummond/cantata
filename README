@@ -490,7 +490,7 @@ ControlDynamizer:
     Mode:   HTTP POST
     URL:    http://host:port/control
     Params: state={start/stop} [Required]
-            clear={1/0}        If set to '1', and statr=stop, then the MPD
+            clear={1/0}        If set to '1', and state=stop, then the MPD
                                playqueue is also cleared.
 
 

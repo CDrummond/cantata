@@ -838,6 +838,7 @@ MainWindow::MainWindow(QWidget *parent)
     #ifdef Q_OS_LINUX
     connect(MountPoints::self(), SIGNAL(updated()), SLOT(checkMpdAccessibility()));
     #endif // Q_OS_LINUX
+    connect(OnlineServicesModel::self(), SIGNAL(error(const QString &)), this, SLOT(showError(const QString &)));
 
     playQueueItemsSelected(false);
     playQueue->setFocus();

@@ -39,7 +39,9 @@ public:
         Type_Root,
         Type_Artist,
         Type_Album,
-        Type_Song
+        Type_Song,
+
+        Type_Podcast
     };
 
     MusicLibraryItem(const QString &data, MusicLibraryItemContainer *parent);
@@ -73,10 +75,11 @@ class MusicLibraryItemContainer : public MusicLibraryItem
 {
 public:
     MusicLibraryItemContainer(const QString &data, MusicLibraryItemContainer *parent) : MusicLibraryItem(data, parent), m_rowsSet(false) { }
-    virtual ~MusicLibraryItemContainer() { qDeleteAll(m_childItems); }
+    virtual ~MusicLibraryItemContainer() { clear(); }
 
     virtual void append(MusicLibraryItem *i) { m_childItems.append(i); }
     virtual MusicLibraryItem * childItem(int row) const { return m_childItems.value(row); }
+    MusicLibraryItem * childItem(const QString &name) const;
 
     int childCount() const { return m_childItems.count(); }
     const QList<MusicLibraryItem *> & childItems() const { return m_childItems; }
@@ -86,6 +89,8 @@ public:
     QSet<QString> allGenres() const { return genres(); }
     void updateGenres();
     void resetRows();
+    void clear();
+    void addAll(MusicLibraryItemContainer *other);
 
 protected:
     friend class MusicLibraryItem;

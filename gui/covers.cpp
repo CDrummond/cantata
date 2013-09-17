@@ -390,37 +390,21 @@ void CoverDownloader::download(const Song &song)
         return;
     }
 
-    bool isOnline=song.file.startsWith("http:/") && song.name.startsWith("http:/");
     QString dirName;
+    bool haveAbsPath=song.file.startsWith('/');
 
-    if (!isOnline) {
-        bool haveAbsPath=song.file.startsWith('/');
-
-        if (haveAbsPath || !MPDConnection::self()->getDetails().dir.isEmpty()) {
-            dirName=song.file.endsWith('/') ? (haveAbsPath ? QString() : MPDConnection::self()->getDetails().dir)+song.file
-                                            : Utils::getDir((haveAbsPath ? QString() : MPDConnection::self()->getDetails().dir)+song.file);
-        }
+    if (haveAbsPath || !MPDConnection::self()->getDetails().dir.isEmpty()) {
+        dirName=song.file.endsWith('/') ? (haveAbsPath ? QString() : MPDConnection::self()->getDetails().dir)+song.file
+                                        : Utils::getDir((haveAbsPath ? QString() : MPDConnection::self()->getDetails().dir)+song.file);
     }
 
     Job job(song, dirName, isArtistImage);
 
-    if (isOnline) {
-        downloadOnlineImage(job);
-    } else if (!MPDConnection::self()->getDetails().dir.isEmpty() && MPDConnection::self()->getDetails().dir.startsWith(QLatin1String("http://"))) {
+    if (!MPDConnection::self()->getDetails().dir.isEmpty() && MPDConnection::self()->getDetails().dir.startsWith(QLatin1String("http://"))) {
         downloadViaHttp(job, JobHttpJpg);
     } else {
         downloadViaLastFm(job);
     }
-}
-
-void CoverDownloader::downloadOnlineImage(Job &job)
-{
-    job.type=JobOnline;
-    // ONLINE: Image URL is encoded in song.name...
-    QNetworkReply *j=manager->get(QNetworkRequest(QUrl(job.song.name)));
-    connect(j, SIGNAL(finished()), this, SLOT(jobFinished()));
-    jobs.insert(j, job);
-    DBUG << job.song.name;
 }
 
 bool CoverDownloader::downloadViaHttp(Job &job, JobType type)
@@ -580,7 +564,8 @@ void CoverDownloader::jobFinished()
         QByteArray data=QNetworkReply::NoError==reply->error() ? reply->readAll() : QByteArray();
         QString url=reply->url().toString();
         Covers::Image img;
-        img.img= data.isEmpty() ? QImage() : QImage::fromData(data, url.endsWith(".jpg") ? "JPG" : (url.endsWith(".png") ? "PNG" : 0));
+        img.img= data.isEmpty() ? QImage() : QImage::fromData(data, url.endsWith(".jpg", Qt::CaseInsensitive) || url.endsWith(".jpeg", Qt::CaseInsensitive)
+                                                              ? "JPG" : (url.endsWith(".png", Qt::CaseInsensitive) ? "PNG" : 0));
         Job job=it.value();
 
         if (!img.img.isNull() && img.img.size().width()<32) {
@@ -588,7 +573,7 @@ void CoverDownloader::jobFinished()
         }
 
         jobs.remove(it.key());
-        if (img.img.isNull() && JobLastFm!=job.type && JobOnline) {
+        if (img.img.isNull() && JobLastFm!=job.type) {
             if (JobHttpJpg==job.type) {
                 if (!job.level || !downloadViaHttp(job, JobHttpJpg)) {
                     job.level=0;
@@ -644,14 +629,7 @@ QString CoverDownloader::saveImg(const Job &job, const QImage &img, const QByteA
         return QString();
     }
 
-    if (JobOnline==job.type) {
-        // ONLINE: Cache dir is saved in Song.title
-        savedName=save(mimeType, extension, Utils::cacheDir(job.song.title)+Covers::encodeName(job.isArtist ? job.song.albumartist : (job.song.albumartist+" - "+job.song.album)), img, raw);
-        if (!savedName.isEmpty()) {
-            DBUG << job.song.file << savedName;
-            return savedName;
-        }
-    } else if (job.isArtist) {
+    if (job.isArtist) {
         if (saveInMpdDir && canSaveTo(job.dir)) {
             QString mpdDir=MPDConnection::self()->getDetails().dir;
             if (!mpdDir.isEmpty() && job.dir.startsWith(mpdDir) && 2==job.dir.mid(mpdDir.length()).split('/', QString::SkipEmptyParts).count()) {
@@ -911,25 +889,6 @@ Covers::Image Covers::locateImage(const Song &song)
             DBUG_CLASS("Covers") << "Found previous" << prevFileName;
             return Image(img, prevFileName);
         }
-    }
-
-    bool isOnline=song.file.startsWith("http:/") && song.name.startsWith("http:/");
-
-    if (isOnline) {
-        // ONLINE: Cache dir is saved in Song.title
-        QString baseName=Utils::cacheDir(song.title, false)+encodeName(isArtistImage ? song.albumartist : (song.albumartist+" - "+song.album));
-        for (int e=0; constExtensions[e]; ++e) {
-            if (QFile::exists(baseName+constExtensions[e])) {
-                QImage img(baseName+constExtensions[e]);
-
-                if (!img.isNull()) {
-                    DBUG_CLASS("Covers") << "Got online from cache" << QString(baseName+constExtensions[e]);
-                    return Image(img, baseName+constExtensions[e]);
-                }
-            }
-        }
-        DBUG_CLASS("Covers") << "Online image not in cache";
-        return Image(QImage(), QString());
     }
 
     QString songFile=song.file;

@@ -37,6 +37,7 @@
 <file alias="soundcloud">online/icons/soundcloud.svg</file>
 <file alias="jamendo">online/icons/jamendo.svg</file>
 <file alias="magnatune">online/icons/magnatune.svg</file>
+<file alias="podcasts">online/icons/podcasts.svg</file>
 
 <file alias="digitallyimported">streams/icons/digitallyimported.png</file>
 <file alias="favourites">streams/icons/favourites.svg</file>

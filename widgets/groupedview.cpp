@@ -242,6 +242,11 @@ public:
         QFontMetrics fm(f);
         int textHeight=fm.height();
 
+        static QString streamsTrans;
+        if (streamsTrans.isEmpty()) {
+            streamsTrans=i18n("Streams");
+        }
+
         if (isCollection) {
             title=index.data(Qt::DisplayRole).toString();
         } else if (AlbumHeader==type) {
@@ -252,7 +257,7 @@ public:
                     title=song.name;
                     track=streamText(song, trackTitle, false);
                 } else {
-                    title=audiocd ? i18n("Audio CD") : i18n("Streams");
+                    title=audiocd ? i18n("Audio CD") : streamsTrans;
                     track=streamText(song, trackTitle);
                 }
             } else if (isEmpty) {
@@ -262,22 +267,30 @@ public:
                 quint16 year=Song::albumYear(song);
 
                 if (year>0) {
-                    title=i18nc("artist - album (albumYear)", "%1 - %2 (%3)", song.artistOrComposer(), song.albumName(), year);
+                    if (0xFF==song.disc && streamsTrans==song.albumartist) {
+                        title=i18nc("album (albumYear)", "%1 (%2)", song.album, year);
+                    } else {
+                        title=i18nc("artist - album (albumYear)", "%1 - %2 (%3)", song.artistOrComposer(), song.albumName(), year);
+                    }
                     if (Song::useComposer()) {
                         while (title.contains(") (")) {
                             title=title.replace(") (", ", ");
                         }
                     }
                 } else {
-                    title=i18nc("artist - album", "%1 - %2", song.artistOrComposer(), song.albumName());
+                    if (0xFF==song.disc && streamsTrans==song.albumartist) {
+                        title=song.album;
+                    } else {
+                        title=i18nc("artist - album", "%1 - %2", song.artistOrComposer(), song.albumName());
+                    }
                 }
-                track=formatNumber(song.track)+QChar(' ')+trackTitle;
+                track=song.track ? formatNumber(song.track)+QChar(' ')+trackTitle : trackTitle;
             }
         } else {
             if (stream) {
                 track=streamText(song, trackTitle);
             } else {
-                track=formatNumber(song.track)+QChar(' ')+trackTitle;
+                track=song.track ? formatNumber(song.track)+QChar(' ')+trackTitle : trackTitle;
             }
         }
 

@@ -29,6 +29,50 @@
 K_GLOBAL_STATIC(NetworkAccessManager, instance)
 #endif
 
+static const int constMaxRedirects=5;
+
+NetworkJob::NetworkJob(QNetworkReply *j)
+    : QObject(j->parent())
+    , numRedirects(0)
+    , job(j)
+{
+    connect(job, SIGNAL(finished()), this, SLOT(jobFinished()));
+}
+
+NetworkJob::~NetworkJob()
+{
+    if (job) {
+        disconnect(job, SIGNAL(finished()), this, SLOT(jobFinished()));
+        job->abort();
+        job->deleteLater();
+    }
+}
+
+void NetworkJob::jobFinished()
+{
+    QNetworkReply *j=dynamic_cast<QNetworkReply *>(sender());
+    if (!j || j!=job) {
+        return;
+    }
+
+    QVariant redirect = j->header(QNetworkRequest::LocationHeader);
+    if (redirect.isValid() && ++numRedirects<constMaxRedirects) {
+        job=static_cast<BASE_NETWORK_ACCESS_MANAGER *>(j->manager())->get(QNetworkRequest(redirect.toUrl()));
+        connect(job, SIGNAL(finished()), this, SLOT(jobFinished()));
+        j->deleteLater();
+        return;
+    }
+
+    emit finished();
+}
+
+void NetworkJob::abort()
+{
+    if (job) {
+        job->abort();
+    }
+}
+
 NetworkAccessManager * NetworkAccessManager::self()
 {
     #ifdef ENABLE_KDE_SUPPORT
@@ -59,11 +103,28 @@ QNetworkReply * NetworkAccessManager::get(const QNetworkRequest &req, int timeou
     return reply;
 }
 
+NetworkJob * NetworkAccessManager::getNew(const QNetworkRequest &req, int timeout)
+{
+    NetworkJob *reply = new NetworkJob(BASE_NETWORK_ACCESS_MANAGER::get(req));
+
+    if (0!=timeout) {
+        connect(reply, SIGNAL(destroyed()), SLOT(replyFinished()));
+        connect(reply, SIGNAL(finished()), SLOT(replyFinished()));
+        newTimers[reply] = startTimer(timeout);
+    }
+    return reply;
+}
+
 void NetworkAccessManager::replyFinished()
 {
-    QNetworkReply *reply = reinterpret_cast<QNetworkReply*>(sender());
+    QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
     if (timers.contains(reply)) {
         killTimer(timers.take(reply));
+    }
+
+    NetworkJob *newReply = qobject_cast<NetworkJob*>(sender());
+    if (newTimers.contains(newReply)) {
+        killTimer(newTimers.take(newReply));
     }
 }
 
@@ -72,5 +133,10 @@ void NetworkAccessManager::timerEvent(QTimerEvent *e)
     QNetworkReply *reply = timers.key(e->timerId());
     if (reply) {
         reply->abort();
+    }
+
+    NetworkJob *newReply = newTimers.key(e->timerId());
+    if (newReply) {
+        newReply->abort();
     }
 }

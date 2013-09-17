@@ -38,9 +38,8 @@
 #include "device.h"
 #include "utils.h"
 #endif
-#ifdef TAGLIB_FOUND
 #include "onlineservice.h"
-#endif
+#include "onlineservicesmodel.h"
 #include <QFile>
 
 #ifdef CACHE_SCALED_COVERS
@@ -168,25 +167,16 @@ const QPixmap & MusicLibraryItemArtist::cover()
             }
             // NO ARTIST IMAGES FOR DEVICES!
             //#ifdef ENABLE_DEVICES_SUPPORT
-            //if (parentItem() && parentItem()->parentItem() && qobject_cast<Device *>(parentItem()->parentItem())) {
+            //if (parentItem() && qobject_cast<Device *>(parentItem())) {
             //    // This item is in the devices model, so get cover from device...
             //    song.id=firstSong->song().id;
-            //    static_cast<Device *>(parentItem()->parentItem())->requestArtistImage(song);
+            //    static_cast<Device *>(parentItem())->requestArtistImage(song);
             //} else
             //#endif
-            #ifdef TAGLIB_FOUND
-            if (parentItem() && parentItem()->parentItem() && dynamic_cast<OnlineService *>(parentItem()->parentItem()) &&
-                static_cast<MusicLibraryItemRoot *>(parentItem()->parentItem())->useArtistImages()) {
-                // ONLINE: Image URL is encoded in song.name...
-                if (!m_imageUrl.isEmpty()) {
-                    song.name=m_imageUrl;
-                    song.title=parentItem()->parentItem()->data().toLower();
-                    img=Covers::self()->requestImage(song);
-                }
-            } else
-            #endif
-            if (parentItem() && parentItem()->parentItem() && !static_cast<MusicLibraryItemRoot *>(parentItem()->parentItem())->useArtistImages()) {
+            if (parentItem() && !static_cast<MusicLibraryItemRoot *>(parentItem())->useArtistImages()) {
                 // Not showing artist images in this model, so dont request any!
+            } else if (parentItem() && dynamic_cast<OnlineService *>(parentItem())) {
+                img.img=OnlineServicesModel::self()->requestImage(static_cast<OnlineService *>(parentItem())->id(), data(), QString(), m_imageUrl);
             } else {
                 img=Covers::self()->requestImage(song);
             }

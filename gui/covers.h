@@ -53,9 +53,7 @@ public:
     enum JobType {
         JobHttpJpg,
         JobHttpPng,
-        JobLastFm,
-
-        JobOnline
+        JobLastFm
     };
 
     struct Job
@@ -82,7 +80,6 @@ Q_SIGNALS:
     void artistImage(const Song &song, const QImage &img, const QString &file);
 
 private:
-    void downloadOnlineImage(Job &job);
     bool downloadViaHttp(Job &job, JobType type);
     void downloadViaLastFm(Job &job);
 

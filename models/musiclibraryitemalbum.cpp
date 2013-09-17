@@ -36,9 +36,8 @@
 #include "device.h"
 #include "utils.h"
 #endif
-#ifdef TAGLIB_FOUND
 #include "onlineservice.h"
-#endif
+#include "onlineservicesmodel.h"
 #include <QPixmap>
 #include <QApplication>
 #include <QFontMetrics>
@@ -259,27 +258,18 @@ const QPixmap & MusicLibraryItemAlbum::cover()
             song.type=m_type;
             song.composer=firstSong->song().composer;
             Covers::Image img;
+            if (parentItem() && parentItem()->parentItem() && !static_cast<MusicLibraryItemRoot *>(parentItem()->parentItem())->useAlbumImages()) {
+                // Not showing album images in this model, so dont request any!
+            }
             #ifdef ENABLE_DEVICES_SUPPORT
-            if (parentItem() && parentItem()->parentItem() && dynamic_cast<Device *>(parentItem()->parentItem()) &&
-                static_cast<MusicLibraryItemRoot *>(parentItem()->parentItem())->useAlbumImages()) {
+            else if (parentItem() && parentItem()->parentItem() && dynamic_cast<Device *>(parentItem()->parentItem())) {
                 // This item is in the devices model, so get cover from device...
                 song.id=firstSong->song().id;
                 static_cast<Device *>(parentItem()->parentItem())->requestCover(song);
-            } else
+            }
             #endif
-            #ifdef TAGLIB_FOUND
-            if (parentItem() && parentItem()->parentItem() && dynamic_cast<OnlineService *>(parentItem()->parentItem()) &&
-                static_cast<MusicLibraryItemRoot *>(parentItem()->parentItem())->useAlbumImages()) {
-                // ONLINE: Image URL is encoded in song.name...
-                if (!m_imageUrl.isEmpty()) {
-                    song.name=m_imageUrl;
-                    song.title=parentItem()->parentItem()->data().toLower();
-                    img=Covers::self()->requestImage(song);
-                }
-            } else
-            #endif
-            if (parentItem() && parentItem()->parentItem() && !static_cast<MusicLibraryItemRoot *>(parentItem()->parentItem())->useAlbumImages()) {
-                // Not showing album images in this model, so dont request any!
+            else if (parentItem() && parentItem()->parentItem() && dynamic_cast<OnlineService *>(parentItem()->parentItem())) {
+                img.img=OnlineServicesModel::self()->requestImage(static_cast<OnlineService *>(parentItem()->parentItem())->id(), parentItem()->data(), data(), m_imageUrl);
             } else {
                 img=Covers::self()->requestImage(song);
             }

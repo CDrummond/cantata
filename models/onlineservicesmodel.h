@@ -62,10 +62,13 @@ public:
     #endif
     Action * configureAct() const { return configureAction; }
     Action * refreshAct() const { return refreshAction; }
+    Action * subscribeAct() const { return subscribeAction; }
+    Action * unSubscribeAct() const { return unSubscribeAction; }
+    Action * refreshSubscriptionAct() const { return refreshSubscriptionAction; }
+
+    QImage requestImage(const QString &id, const QString &artist, const QString &album, const QString &url, const QString cacheName=QString());
 
 public Q_SLOTS:
-    void setArtistImage(const Song &song, const QImage &img);
-    void setCover(const Song &song, const QImage &img, const QString &fileName);
     void stateChanged(const QString &name, bool state);
 
 private:
@@ -74,6 +77,9 @@ private:
     void updateItemMenu();
     void load();
     void setBusy(const QString &serviceName, bool b);
+
+private Q_SLOTS:
+    void imageDownloaded();
 
 Q_SIGNALS:
     void error(const QString &text);
@@ -85,8 +91,9 @@ private:
     OnlineDevice *dev;
     Action *configureAction;
     Action *refreshAction;
-    Action *connectAction;
-    Action *disconnectAction;
+    Action *subscribeAction;
+    Action *unSubscribeAction;
+    Action *refreshSubscriptionAction;
     QSet<QString> busyServices;
 
     friend class OnlineService;

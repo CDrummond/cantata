@@ -106,10 +106,13 @@ public:
     virtual void loadConfig()=0;
     virtual void saveConfig()=0;
     virtual void configure(QWidget *) { }
+    virtual void addSubscription(QWidget *) { }
     virtual bool canDownload() const { return false; }
     virtual bool canConfigure() const { return true; }
+    virtual bool canSubscribe() const { return false; }
     virtual bool canLoad() const { return true; }
     virtual bool isSearchBased() const { return false; }
+    virtual bool isPodcasts() const { return false; }
     virtual QString currentSearchString() const { return QString(); }
     virtual void setSearch(const QString &) { }
     virtual void cancelSearch() { }
@@ -133,8 +136,14 @@ public:
 
 protected:
     QModelIndex index() const;
+    QModelIndex createIndex(MusicLibraryItem *child) const;
     void emitUpdated();
+    void emitError(const QString &msg);
     void setBusy(bool b);
+    void beginInsertRows(const QModelIndex &idx, int from, int to);
+    void endInsertRows();
+    void beginRemoveRows(const QModelIndex &idx, int from, int to);
+    void endRemoveRows();
 
 private Q_SLOTS:
     void loaderError(const QString &msg);

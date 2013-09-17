@@ -89,9 +89,9 @@
 #include "audiocddevice.h"
 #endif
 #endif
-#ifdef TAGLIB_FOUND
 #include "onlineservicespage.h"
 #include "onlineservicesmodel.h"
+#ifdef TAGLIB_FOUND
 #include "httpserver.h"
 #include "trackorganiser.h"
 #include "tageditor.h"
@@ -328,9 +328,7 @@ MainWindow::MainWindow(QWidget *parent)
     addAction(playlistsTabAction = ActionCollection::get()->createAction("showplayliststab", i18n("Playlists"), Icons::self()->playlistsIcon));
     addAction(dynamicTabAction = ActionCollection::get()->createAction("showdynamictab", i18n("Dynamic"), Icons::self()->dynamicIcon));
     addAction(streamsTabAction = ActionCollection::get()->createAction("showstreamstab", i18n("Streams"), Icons::self()->streamsIcon));
-    #ifdef TAGLIB_FOUND
     addAction(onlineTabAction = ActionCollection::get()->createAction("showonlinetab", i18n("Online"), Icons::self()->onlineIcon));
-    #endif
     #ifdef ENABLE_DEVICES_SUPPORT
     addAction(devicesTabAction = ActionCollection::get()->createAction("showdevicestab", i18n("Devices"), Icons::self()->devicesIcon));
     #endif
@@ -366,9 +364,7 @@ MainWindow::MainWindow(QWidget *parent)
     playlistsTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
     dynamicTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
     streamsTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
-    #ifdef TAGLIB_FOUND
     onlineTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
-    #endif
     #ifdef ENABLE_DEVICES_SUPPORT
     devicesTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
     #endif // ENABLE_DEVICES_SUPPORT
@@ -406,9 +402,7 @@ MainWindow::MainWindow(QWidget *parent)
     playlistsPage = new PlaylistsPage(this);
     dynamicPage = new DynamicPage(this);
     streamsPage = new StreamsPage(this);
-    #ifdef TAGLIB_FOUND
     onlinePage = new OnlineServicesPage(this);
-    #endif
     #ifdef ENABLE_DEVICES_SUPPORT
     devicesPage = new DevicesPage(this);
     #endif
@@ -449,9 +443,7 @@ MainWindow::MainWindow(QWidget *parent)
     tabWidget->AddTab(playlistsPage, TAB_ACTION(playlistsTabAction), !hiddenPages.contains(playlistsPage->metaObject()->className()));
     tabWidget->AddTab(dynamicPage, TAB_ACTION(dynamicTabAction), !hiddenPages.contains(dynamicPage->metaObject()->className()));
     tabWidget->AddTab(streamsPage, TAB_ACTION(streamsTabAction), !hiddenPages.contains(streamsPage->metaObject()->className()));
-    #ifdef TAGLIB_FOUND
     tabWidget->AddTab(onlinePage, TAB_ACTION(onlineTabAction), !hiddenPages.contains(onlinePage->metaObject()->className()));
-    #endif
     #ifdef ENABLE_DEVICES_SUPPORT
     tabWidget->AddTab(devicesPage, TAB_ACTION(devicesTabAction), !hiddenPages.contains(devicesPage->metaObject()->className()));
     DevicesModel::self()->setEnabled(!hiddenPages.contains(devicesPage->metaObject()->className()));
@@ -461,9 +453,7 @@ MainWindow::MainWindow(QWidget *parent)
     AlbumsModel::self()->setEnabled(!hiddenPages.contains(albumsPage->metaObject()->className()));
     folderPage->setEnabled(!hiddenPages.contains(folderPage->metaObject()->className()));
     streamsPage->setEnabled(!hiddenPages.contains(streamsPage->metaObject()->className()));
-    #ifdef TAGLIB_FOUND
     onlinePage->setEnabled(!hiddenPages.contains(onlinePage->metaObject()->className()));
-    #endif
 
     autoHideSplitterAction=new QAction(i18n("Auto Hide"), this);
     autoHideSplitterAction->setCheckable(true);
@@ -813,9 +803,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(playlistsTabAction, SIGNAL(triggered(bool)), this, SLOT(showPlaylistsTab()));
     connect(dynamicTabAction, SIGNAL(triggered(bool)), this, SLOT(showDynamicTab()));
     connect(streamsTabAction, SIGNAL(triggered(bool)), this, SLOT(showStreamsTab()));
-    #ifdef TAGLIB_FOUND
     connect(onlineTabAction, SIGNAL(triggered(bool)), this, SLOT(showOnlineTab()));
-    #endif
     addAction(StdActions::self()->searchAction); // Weird, but if I dont add thiis action, it does not work!!!!
     connect(StdActions::self()->searchAction, SIGNAL(triggered(bool)), SLOT(showSearch()));
     connect(searchPlayQueueAction, SIGNAL(triggered(bool)), playQueueSearchWidget, SLOT(activate()));
@@ -830,9 +818,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(folderPage, SIGNAL(addToDevice(const QString &, const QString &, const QList<Song> &)), SLOT(copyToDevice(const QString &, const QString &, const QList<Song> &)));
     connect(playlistsPage, SIGNAL(addToDevice(const QString &, const QString &, const QList<Song> &)), SLOT(copyToDevice(const QString &, const QString &, const QList<Song> &)));
     connect(devicesPage, SIGNAL(addToDevice(const QString &, const QString &, const QList<Song> &)), SLOT(copyToDevice(const QString &, const QString &, const QList<Song> &)));
-    #ifdef TAGLIB_FOUND
     connect(onlinePage, SIGNAL(addToDevice(const QString &, const QString &, const QList<Song> &)), SLOT(copyToDevice(const QString &, const QString &, const QList<Song> &)));
-    #endif
     connect(StdActions::self()->deleteSongsAction, SIGNAL(triggered(bool)), SLOT(deleteSongs()));
     connect(devicesPage, SIGNAL(deleteSongs(const QString &, const QList<Song> &)), SLOT(deleteSongs(const QString &, const QList<Song> &)));
     connect(libraryPage, SIGNAL(deleteSongs(const QString &, const QList<Song> &)), SLOT(deleteSongs(const QString &, const QList<Song> &)));
@@ -955,9 +941,7 @@ MainWindow::~MainWindow()
     #if defined ENABLE_DEVICES_SUPPORT
     FileThread::self()->stop();
     #endif
-    #ifdef TAGLIB_FOUND
     OnlineServicesModel::self()->stop();
-    #endif
     #ifdef ENABLE_DEVICES_SUPPORT
     DevicesModel::self()->stop();
     #endif
@@ -1273,9 +1257,7 @@ void MainWindow::checkMpdDir()
     case PAGE_PLAYLISTS: playlistsPage->controlActions();  break;
     case PAGE_DYNAMIC:   dynamicPage->controlActions();    break;
     case PAGE_STREAMS:   streamsPage->controlActions();    break;
-    #ifdef TAGLIB_FOUND
     case PAGE_ONLINE:    onlinePage->controlActions();     break;
-    #endif
     default:                                               break;
     }
 }
@@ -1392,9 +1374,7 @@ void MainWindow::readSettings()
     MusicLibraryModel::self()->setUseArtistImages(Settings::self()->libraryArtistImage());
     playlistsPage->setView(Settings::self()->playlistsView());
     streamsPage->setView(Settings::self()->streamsView());
-    #ifdef TAGLIB_FOUND
     onlinePage->setView(Settings::self()->onlineView());
-    #endif
     folderPage->setView(Settings::self()->folderView());
     #ifdef ENABLE_DEVICES_SUPPORT
     devicesPage->setView(Settings::self()->devicesView());
@@ -1475,9 +1455,7 @@ void MainWindow::updateSettings()
         libraryPage->refresh();
     }
     if (diffLibCovers || diffLibYear || Settings::self()->libraryArtistImage()!=MusicLibraryModel::self()->useArtistImages()) {
-        #ifdef TAGLIB_FOUND
         onlinePage->refresh();
-        #endif
         #ifdef ENABLE_DEVICES_SUPPORT
         devicesPage->refresh();
         #endif
@@ -2164,12 +2142,9 @@ void MainWindow::addToPlayQueue(bool replace, quint8 priority)
         playlistsPage->addSelectionToPlaylist(replace, priority);
     } else if (streamsPage->isVisible()) {
         streamsPage->addSelectionToPlaylist(replace, priority);
-    }
-    #ifdef TAGLIB_FOUND
-    else if (onlinePage->isVisible()) {
+    } else if (onlinePage->isVisible()) {
         onlinePage->addSelectionToPlaylist(QString(), replace, priority);
     }
-    #endif
     #ifdef ENABLE_DEVICES_SUPPORT
     else if (devicesPage->isVisible()) {
         devicesPage->addSelectionToPlaylist(QString(), replace, priority);
@@ -2518,11 +2493,9 @@ void MainWindow::currentTabChanged(int index)
         }
         streamsPage->controlActions();
         break;
-    #ifdef TAGLIB_FOUND
     case PAGE_ONLINE:
         onlinePage->controlActions();
         break;
-    #endif
     default:
         break;
     }
@@ -2578,11 +2551,9 @@ void MainWindow::tabToggled(int index)
         streamsPage->setEnabled(!streamsPage->isEnabled());
         if (streamsPage->isEnabled() && loaded&TAB_STREAMS) loaded-=TAB_STREAMS;
         break;
-    #ifdef TAGLIB_FOUND
     case PAGE_ONLINE:
         OnlineServicesModel::self()->setEnabled(!OnlineServicesModel::self()->isEnabled());
         break;
-    #endif
     #ifdef ENABLE_DEVICES_SUPPORT
     case PAGE_DEVICES:
         DevicesModel::self()->setEnabled(!DevicesModel::self()->isEnabled());
@@ -2622,10 +2593,8 @@ void MainWindow::toggleMonoIcons()
         tabWidget->SetIcon(PAGE_DYNAMIC, dynamicTabAction->icon());
         streamsTabAction->setIcon(Icons::self()->streamsIcon);
         tabWidget->SetIcon(PAGE_STREAMS, streamsTabAction->icon());
-        #ifdef TAGLIB_FOUND
         onlineTabAction->setIcon(Icons::self()->onlineIcon);
         tabWidget->SetIcon(PAGE_ONLINE, onlineTabAction->icon());
-        #endif
         tabWidget->SetIcon(PAGE_CONTEXT, Icons::self()->infoSidebarIcon);
         #ifdef ENABLE_DEVICES_SUPPORT
         devicesTabAction->setIcon(Icons::self()->devicesIcon);
@@ -2715,15 +2684,12 @@ void MainWindow::showPage(const QString &page, bool focusSearch)
             songInfoAction->setChecked(true);
         }
         showSongInfo();
-    }
-    #ifdef TAGLIB_FOUND
-    else if (QLatin1String("online")==p) {
+    } else if (QLatin1String("online")==p) {
         showTab(MainWindow::PAGE_ONLINE);
         if (focusSearch) {
             onlinePage->focusSearch();
         }
     }
-    #endif
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
     else if (QLatin1String("devices")==p) {
         showTab(MainWindow::PAGE_DEVICES);
@@ -2766,9 +2732,7 @@ void MainWindow::goBack()
     case PAGE_FOLDERS:   folderPage->goBack();     break;
     case PAGE_PLAYLISTS: playlistsPage->goBack();  break;
     case PAGE_STREAMS:   streamsPage->goBack();    break;
-    #ifdef TAGLIB_FOUND
     case PAGE_ONLINE:    onlinePage->goBack();     break;
-    #endif
     default:                                       break;
     }
 }
@@ -2789,12 +2753,9 @@ void MainWindow::showSearch()
         dynamicPage->focusSearch();
     } else if (streamsPage->isVisible()) {
         streamsPage->focusSearch();
-    }
-    #ifdef TAGLIB_FOUND
-    else if (onlinePage->isVisible()) {
+    } else if (onlinePage->isVisible()) {
         onlinePage->focusSearch();
     }
-    #endif
     #ifdef ENABLE_DEVICES_SUPPORT
     else if (devicesPage->isVisible()) {
         devicesPage->focusSearch();

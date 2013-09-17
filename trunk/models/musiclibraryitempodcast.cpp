@@ -258,7 +258,7 @@ const QPixmap & MusicLibraryItemPodcast::cover()
         }
         m_coverIsDefault = true;
         QImage img=OnlineServicesModel::self()->requestImage(static_cast<OnlineService *>(parentItem())->id(), data(), QString(), m_imageUrl.toString(), // ??
-                                                             m_fileName.left(m_fileName.length()-constExt.length()));
+                                                             m_fileName.left(m_fileName.length()-constExt.length()), 300);
 
         if (!img.isNull()) {
             setCoverImage(img);

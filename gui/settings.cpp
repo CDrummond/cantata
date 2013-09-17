@@ -699,6 +699,11 @@ bool Settings::inhibitSuspend()
 }
 #endif
 
+int Settings::rssUpdate()
+{
+    return GET_INT("rssUpdate", 0);
+}
+
 void Settings::removeConnectionDetails(const QString &v)
 {
     if (v==currentConnection()) {
@@ -1117,6 +1122,11 @@ void Settings::saveInhibitSuspend(bool v)
     SET_VALUE_MOD(inhibitSuspend);
 }
 #endif
+
+void Settings::saveRssUpdate(int v)
+{
+    SET_VALUE_MOD(rssUpdate);
+}
 
 void Settings::save(bool force)
 {

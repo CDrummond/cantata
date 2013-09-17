@@ -27,12 +27,67 @@
 #include "musiclibraryitempodcast.h"
 #include "musiclibraryitemsong.h"
 #include "utils.h"
+#include "settings.h"
+#include "dialog.h"
+#include "buddylabel.h"
 #include <QDir>
 #include <QUrl>
 #include <QSet>
-#if QT_VERSION >= 0x050000
-#include <QUrlQuery>
-#endif
+#include <QTimer>
+#include <QComboBox>
+#include <QFormLayout>
+
+class QComboBox;
+
+class PodcastSettingsDialog : public Dialog
+{
+public:
+    PodcastSettingsDialog(QWidget *p)
+        : Dialog(p)
+    {
+        QWidget *mw=new QWidget(this);
+        QFormLayout * lay=new QFormLayout(mw);
+        BuddyLabel *label=new BuddyLabel(i18n("Check for new updates:"), mw);
+        combo = new QComboBox(this);
+        label->setBuddy(combo);
+        lay->setWidget(0, QFormLayout::LabelRole, label);
+        lay->setWidget(0, QFormLayout::FieldRole, combo);
+        setButtons(Ok|Cancel);
+        setMainWidget(mw);
+        setCaption(i18n("Podcast Update"));
+
+        combo->addItem(i18n("Manually"), 0);
+        combo->addItem(i18n("Every 15 minutes"), 15);
+        combo->addItem(i18n("Every 30 minutes"), 30);
+        combo->addItem(i18n("Every hour"), 60);
+        combo->addItem(i18n("Every 2 hours"), 2*60);
+        combo->addItem(i18n("Every 6 hours"), 6*60);
+        combo->addItem(i18n("Every 12 hours"), 12*60);
+
+        int val=Settings::self()->rssUpdate();
+        int possible=0;
+        for (int i=0; i<combo->count(); ++i) {
+            int cval=combo->itemData(i).toInt();
+            if (cval==val) {
+                combo->setCurrentIndex(i);
+                possible=-1;
+                break;
+            }
+            if (cval<val) {
+                possible=i;
+            }
+        }
+
+        if (possible>=0) {
+            combo->setCurrentIndex(possible);
+        }
+    }
+
+    int update() const { return combo->itemData(combo->currentIndex()).toInt(); }
+
+private:
+    QComboBox *combo;
+};
 
 const QString PodcastService::constName=QLatin1String("Podcasts");
 
@@ -40,6 +95,7 @@ static const char * constNewFeedProperty="new-feed";
 
 PodcastService::PodcastService(MusicModel *m)
     : OnlineService(m, i18n("Podcasts"))
+    , updateTimer(0)
 {
     loaded=true;
     setUseArtistImages(false);
@@ -89,6 +145,8 @@ void PodcastService::loadAll()
                 applyUpdate();
             }
         }
+
+        startTimer();
     }
 }
 
@@ -178,7 +236,14 @@ void PodcastService::jobFinished()
 
 void PodcastService::configure(QWidget *p)
 {
-
+    PodcastSettingsDialog dlg(p);
+    if (QDialog::Accepted==dlg.exec()) {
+        int current=Settings::self()->rssUpdate();
+        if (current!=dlg.update()) {
+            Settings::self()->saveRssUpdate(dlg.update());
+            startTimer();
+        }
+    }
 }
 
 MusicLibraryItemPodcast * PodcastService::getPodcast(const QUrl &url) const
@@ -201,6 +266,9 @@ void PodcastService::unSubscribe(MusicLibraryItem *item)
         delete m_childItems.takeAt(row);
         resetRows();
         endRemoveRows();
+        if (m_childItems.isEmpty()) {
+            stopTimer();
+        }
     }
 }
 
@@ -231,4 +299,34 @@ void PodcastService::addUrl(const QUrl &url, bool isNew)
     connect(job, SIGNAL(finished()), this, SLOT(jobFinished()));
     job->setProperty(constNewFeedProperty, isNew);
     jobs.append(job);
+}
+
+void PodcastService::startTimer()
+{
+    if (0==Settings::self()->rssUpdate() || m_childItems.isEmpty()) {
+        stopTimer();
+        return;
+    }
+    if (!updateTimer) {
+        updateTimer=new QTimer(this);
+        connect(updateTimer, SIGNAL(timeout()), this, SLOT(updateRss()));
+    }
+    updateTimer->start(Settings::self()->rssUpdate()*1000);
+}
+
+void PodcastService::stopTimer()
+{
+    if (updateTimer) {
+        updateTimer->stop();
+    }
+}
+
+void PodcastService::updateRss()
+{
+    foreach (MusicLibraryItem *i, m_childItems) {
+        QUrl url=static_cast<MusicLibraryItemPodcast *>(i)->rssUrl();
+        if (!processingUrl(url)) {
+            addUrl(url, false);
+        }
+    }
 }

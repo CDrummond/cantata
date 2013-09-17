@@ -367,8 +367,9 @@ static const char * constIdProperty="id";
 static const char * constArtistProperty="artist";
 static const char * constAlbumProperty="album";
 static const char * constCacheProperty="cacheName";
+static const char * constMaxSizeProperty="maxSize";
 
-QImage OnlineServicesModel::requestImage(const QString &id, const QString &artist, const QString &album, const QString &url, const QString cacheName)
+QImage OnlineServicesModel::requestImage(const QString &id, const QString &artist, const QString &album, const QString &url, const QString cacheName, int maxSize)
 {
     QString baseName=cacheName.isEmpty() ? Utils::cacheDir(id.toLower(), false)+Covers::encodeName(album.isEmpty() ? artist : (artist+" - "+album)) : cacheName;
     for (int e=0; constExtensions[e]; ++e) {
@@ -387,6 +388,7 @@ QImage OnlineServicesModel::requestImage(const QString &id, const QString &artis
         j->setProperty(constArtistProperty, artist);
         j->setProperty(constAlbumProperty, album);
         j->setProperty(constCacheProperty, cacheName);
+        j->setProperty(constMaxSizeProperty, maxSize);
 
         connect(j, SIGNAL(finished()), this, SLOT(imageDownloaded()));
     }
@@ -453,6 +455,17 @@ void OnlineServicesModel::imageDownloaded()
                         ? Utils::cacheDir(id.toLower(), true)+Covers::encodeName(song.album.isEmpty() ? song.artist : (song.artist+" - "+song.album))
                         : cacheName)
                      +(jpeg ? ".jpg" : ".png");
+
+    int maxSize=j->property(constMaxSizeProperty).toInt();
+
+    if (maxSize>16) {
+        QImage img=QImage::fromData(data, jpeg ? "JPG" : "PNG");
+        if (!img.isNull() && (img.width()>maxSize || img.height()>maxSize)) {
+            img=img.scaled(maxSize, maxSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+            img.save(fileName);
+            return;
+        }
+    }
     QFile f(fileName);
     if (f.open(QIODevice::WriteOnly)) {
         f.write(data);

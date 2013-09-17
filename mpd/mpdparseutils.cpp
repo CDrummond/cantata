@@ -50,7 +50,9 @@
 #include "utils.h"
 #include "cuefile.h"
 #include "mpdconnection.h"
+#ifdef TAGLIB_FOUND
 #include "onlineservice.h"
+#endif
 
 #include <QDebug>
 static bool debugEnabled=false;
@@ -251,7 +253,11 @@ Song MPDParseUtils::parseSong(const QByteArray &data, bool isPlayQueue)
     if (!song.file.isEmpty()) {
         if (song.isStream()) {
             if (!song.isCantataStream()) {
+		#ifdef TAGLIB_FOUND
                 if (!OnlineService::decode(song)) {
+		#else
+                if (true) {
+		#endif
                     QString name=getAndRemoveStreamName(song.file);
                     if (!name.isEmpty()) {
                         song.name=name;

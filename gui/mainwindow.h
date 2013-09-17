@@ -63,7 +63,9 @@ class FolderPage;
 class PlaylistsPage;
 class DynamicPage;
 class StreamsPage;
+#ifdef TAGLIB_FOUND
 class OnlineServicesPage;
+#endif
 #ifdef ENABLE_DEVICES_SUPPORT
 class DevicesPage;
 #endif
@@ -264,7 +266,9 @@ public Q_SLOTS:
     void showPlaylistsTab() { showTab(PAGE_PLAYLISTS); }
     void showDynamicTab() { showTab(PAGE_DYNAMIC); }
     void showStreamsTab() { showTab(PAGE_STREAMS); }
+    #ifdef TAGLIB_FOUND
     void showOnlineTab() { showTab(PAGE_ONLINE); }
+    #endif
     void showContextTab() { showTab(PAGE_CONTEXT); }
     void showDevicesTab() {
         #ifdef ENABLE_DEVICES_SUPPORT
@@ -370,8 +374,8 @@ private:
     Action *playlistsTabAction;
     Action *dynamicTabAction;
     Action *streamsTabAction;
-    Action *onlineTabAction;
     #ifdef TAGLIB_FOUND
+    Action *onlineTabAction;
     Action *editPlayQueueTagsAction;
     #endif
     #ifdef ENABLE_DEVICES_SUPPORT
@@ -394,7 +398,9 @@ private:
     PlaylistsPage *playlistsPage;
     DynamicPage *dynamicPage;
     StreamsPage *streamsPage;
+    #ifdef TAGLIB_FOUND
     OnlineServicesPage *onlinePage;
+    #endif
     QWidget *contextPage;
     #ifdef ENABLE_DEVICES_SUPPORT
     DevicesPage *devicesPage;

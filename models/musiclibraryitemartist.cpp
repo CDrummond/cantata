@@ -38,7 +38,9 @@
 #include "device.h"
 #include "utils.h"
 #endif
+#ifdef TAGLIB_FOUND
 #include "onlineservice.h"
+#endif
 #include <QFile>
 
 #ifdef CACHE_SCALED_COVERS
@@ -172,6 +174,7 @@ const QPixmap & MusicLibraryItemArtist::cover()
             //    static_cast<Device *>(parentItem()->parentItem())->requestArtistImage(song);
             //} else
             //#endif
+            #ifdef TAGLIB_FOUND
             if (parentItem() && parentItem()->parentItem() && dynamic_cast<OnlineService *>(parentItem()->parentItem()) &&
                 static_cast<MusicLibraryItemRoot *>(parentItem()->parentItem())->useArtistImages()) {
                 // ONLINE: Image URL is encoded in song.name...
@@ -180,7 +183,9 @@ const QPixmap & MusicLibraryItemArtist::cover()
                     song.title=parentItem()->parentItem()->data().toLower();
                     img=Covers::self()->requestImage(song);
                 }
-            } else if (parentItem() && parentItem()->parentItem() && !static_cast<MusicLibraryItemRoot *>(parentItem()->parentItem())->useArtistImages()) {
+            } else
+            #endif
+            if (parentItem() && parentItem()->parentItem() && !static_cast<MusicLibraryItemRoot *>(parentItem()->parentItem())->useArtistImages()) {
                 // Not showing artist images in this model, so dont request any!
             } else {
                 img=Covers::self()->requestImage(song);

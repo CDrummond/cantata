@@ -32,6 +32,7 @@
     ensure consisten sizes between views.
 15. Make playqueue search consisten with view search - ie. only show search on
     activating 'Search Play Queue', do not toggle.
+16. Initial MacOS port - thanks to Ian Scott
 
 1.1.3
 -----

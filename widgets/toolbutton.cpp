@@ -34,6 +34,9 @@ ToolButton::ToolButton(QWidget *parent)
 {
     Icon::init(this);
     setAutoRaise(true);
+    #ifdef Q_OS_MAC
+    setStyleSheet("QToolButton {border: 0}");
+    #endif
 }
 
 void ToolButton::paintEvent(QPaintEvent *e)

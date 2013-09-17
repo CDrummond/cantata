@@ -33,6 +33,9 @@
 #include <QDir>
 #include <windows.h>
 #endif
+#ifdef Q_OS_MAC
+#include <QDir>
+#endif
 #endif
 #include "icon.h"
 #include "icons.h"
@@ -215,7 +218,59 @@ void Application::load(const QStringList &files)
 }
 #endif // TAGLIB_FOUND
 
-#else // Q_OS_WIN
+#elif defined Q_OS_MAC
+Application::Application(int &argc, char **argv)
+    : QApplication(argc, argv)
+{
+    #if defined TAGLIB_FOUND
+    connect(this, SIGNAL(messageReceived(const QString &)), SLOT(message(const QString &)));
+    #endif
+
+    connect(this, SIGNAL(reconnect()), MPDConnection::self(), SLOT(reconnect()));
+}
+
+void Application::setupIconTheme()
+{
+    //QIcon::setThemeSearchPaths(QStringList(QCoreApplication::applicationDirPath() + "/../Resources/icons"));
+    QIcon::setThemeName(QLatin1String("oxygen"));
+}
+
+bool Application::start()
+{
+    setupIconTheme();
+    return true;
+}
+
+#if defined TAGLIB_FOUND
+void Application::loadFiles()
+{
+    QStringList args(arguments());
+    if (args.count()>1) {
+        args.takeAt(0);
+        load(args);
+    }
+}
+
+void Application::load(const QStringList &files)
+{
+    if (files.isEmpty()) {
+        return;
+    }
+
+    QStringList urls;
+    foreach (const QString &f, files) {
+        urls.append(f);
+    }
+    if (!urls.isEmpty()) {
+        MainWindow *mw=qobject_cast<MainWindow *>(activationWindow());
+        if (mw) {
+            mw->load(urls);
+        }
+    }
+}
+#endif // TAGLIB_FOUND
+
+#else // Q_OS_WIN || Q_OS_MAC
 #include <QDBusConnection>
 #include <QDBusMessage>
 #include <QDir>

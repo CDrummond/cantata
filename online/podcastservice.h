@@ -30,6 +30,7 @@
 #include <QList>
 
 class QUrl;
+class QTimer;
 class MusicLibraryItemPodcast;
 
 class PodcastService : public OnlineService
@@ -63,12 +64,16 @@ private:
     void loadAll();
     void cancelAll();
     MusicLibraryItemPodcast * getPodcast(const QUrl &url) const;
+    void startTimer();
+    void stopTimer();
 
 private Q_SLOTS:
     void jobFinished();
+    void updateRss();
 
 private:
     QList<NetworkJob *> jobs;
+    QTimer *updateTimer;
 };
 
 #endif

@@ -175,6 +175,7 @@ public:
     #ifndef Q_OS_WIN32
     bool inhibitSuspend();
     #endif
+    int rssUpdate();
 
     void removeConnectionDetails(const QString &v);
     void saveConnectionDetails(const MPDConnectionDetails &v);
@@ -259,6 +260,7 @@ public:
     #ifndef Q_OS_WIN32
     void saveInhibitSuspend(bool v);
     #endif
+    void saveRssUpdate(int v);
     void save(bool force=false);
     #ifdef ENABLE_KDE_SUPPORT
     bool openWallet();

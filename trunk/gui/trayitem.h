@@ -34,7 +34,7 @@ class KMenu;
 #include "icon.h"
 class QMenu;
 #endif
-#ifndef Q_OS_WIN
+#if !defined Q_OS_WIN && !defined Q_OS_MAC
 class Notify;
 #endif
 class MainWindow;
@@ -92,7 +92,7 @@ private:
     QSystemTrayIcon *trayItem;
     QMenu *trayItemMenu;
     #endif
-    #ifndef Q_OS_WIN
+    #if !defined Q_OS_WIN && !defined Q_OS_MAC
     Notify *notification;
     #endif
 };

@@ -231,7 +231,9 @@ int main(int argc, char *argv[])
         }
     }
     MainWindow mw;
+    #if !defined Q_OS_MAC
     app.setActivationWindow(&mw);
+    #endif // !defined Q_OS_MAC
     #ifdef TAGLIB_FOUND
     app.loadFiles();
     #endif // TAGLIB_FOUND

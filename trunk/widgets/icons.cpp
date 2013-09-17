@@ -32,7 +32,7 @@
 #include <QDir>
 #include <QFile>
 #include <math.h>
-#ifndef Q_OS_WIN
+#if !defined Q_OS_WIN && !defined Q_OS_MAC
 #include "gtkstyle.h"
 #endif
 
@@ -403,7 +403,7 @@ Icons::Icons()
     appIcon.addFile(":cantata.svg");
 
     shortcutsIcon=Icon("preferences-desktop-keyboard");
-    #ifndef Q_OS_WIN
+    #if !defined Q_OS_WIN && !defined Q_OS_MAC
     if (shortcutsIcon.isNull()) {
         shortcutsIcon=Icon("keyboard");
     }
@@ -446,7 +446,7 @@ Icons::Icons()
     if (cancelIcon.isNull()) {
         cancelIcon=Icon("gtk-cancel");
     }
-    #endif // Q_OS_WIN
+    #endif // Q_OS_WIN && Q_OS_MAC
     #endif // ENABLE_KDE_SUPPORT
 
     if (streamCategoryIcon.isNull()) {
@@ -492,7 +492,7 @@ void Icons::initSidebarIcons()
     }
 }
 
-#if !defined ENABLE_KDE_SUPPORT && !defined Q_OS_WIN
+#if !defined ENABLE_KDE_SUPPORT && !defined Q_OS_WIN && !defined Q_OS_MAC // FIXME -- needed?
 // For some reason, the -symbolic icons on Ubuntu have a lighter colour when disabled!
 // This looks odd to me, so base the disabled icon on the enabled version but with opacity
 // set to default value...
@@ -540,7 +540,7 @@ void Icons::initToolbarIcons(const QColor &color, bool forceLight)
         toolbarMenuIcon=menuIcon;
     }
 
-    #ifndef Q_OS_WIN
+    #if !defined Q_OS_WIN && !defined Q_OS_MAC
     if (light && GtkStyle::useSymbolicIcons()) {
         toolbarPrevIcon=Icon("media-skip-backward-symbolic");
         toolbarPlayIcon=Icon("media-playback-start-symbolic");
@@ -564,7 +564,7 @@ void Icons::initToolbarIcons(const QColor &color, bool forceLight)
         infoIcon=Icon("dialog-information");
     }
 
-    #if !defined ENABLE_KDE_SUPPORT && !defined Q_OS_WIN
+    #if !defined ENABLE_KDE_SUPPORT && !defined Q_OS_WIN && !defined Q_OS_MAC
     if (QLatin1String("gnome")==Icon::currentTheme().toLower()) {
         QColor col=QApplication::palette().color(QPalette::Active, QPalette::ButtonText);
         contextIcon=loadSidebarIcon("info", col, col);

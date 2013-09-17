@@ -183,7 +183,7 @@ MPDConnection::MPDConnection()
     qRegisterMetaType<MPDStatsValues>("MPDStatsValues");
     qRegisterMetaType<MPDStatusValues>("MPDStatusValues");
     qRegisterMetaType<MPDConnectionDetails>("MPDConnectionDetails");
-    #ifndef Q_OS_WIN32
+    #if !defined Q_OS_WIN32 && !defined Q_OS_MAC
     connect(PowerManagement::self(), SIGNAL(resuming()), this, SLOT(reconnect()));
     #endif
 }

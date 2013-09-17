@@ -66,7 +66,8 @@ public:
     Action * unSubscribeAct() const { return unSubscribeAction; }
     Action * refreshSubscriptionAct() const { return refreshSubscriptionAction; }
 
-    QImage requestImage(const QString &id, const QString &artist, const QString &album, const QString &url, const QString cacheName=QString());
+    QImage requestImage(const QString &id, const QString &artist, const QString &album, const QString &url,
+                        const QString cacheName=QString(), int maxSize=-1);
 
 public Q_SLOTS:
     void stateChanged(const QString &name, bool state);

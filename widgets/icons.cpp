@@ -369,6 +369,7 @@ Icons::Icons()
         streamIcon=Icon("applications-internet");
     }
     albumIcon=Icon("media-optical");
+    podcastIcon=albumIcon; // TODO!!!
     audioFileIcon=Icon("audio-x-generic");
     playlistIcon=Icon("view-media-playlist");
     dynamicRuleIcon=Icon("media-playlist-shuffle");

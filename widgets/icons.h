@@ -43,6 +43,7 @@ public:
     #endif
     Icon artistIcon;
     Icon albumIcon;
+    Icon podcastIcon;
     Icon audioFileIcon;
     Icon playlistIcon;
     Icon dynamicRuleIcon;

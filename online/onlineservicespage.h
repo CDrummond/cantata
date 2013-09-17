@@ -61,6 +61,9 @@ public Q_SLOTS:
     void setSearchable(const QModelIndex &idx);
     void updated(const QModelIndex &idx);
     void download();
+    void subscribe();
+    void unSubscribe();
+    void refreshSubscription();
 
 Q_SIGNALS:
     // These are for communicating with MPD object (which is in its own thread, so need to talk via signal/slots)

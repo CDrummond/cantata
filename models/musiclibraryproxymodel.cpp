@@ -28,6 +28,7 @@
 #include "musiclibraryitemartist.h"
 #include "musiclibraryitemalbum.h"
 #include "musiclibraryitemsong.h"
+#include "musiclibraryitempodcast.h"
 #include "musiclibraryproxymodel.h"
 
 MusicLibraryProxyModel::MusicLibraryProxyModel(QObject *parent)
@@ -46,6 +47,8 @@ bool MusicLibraryProxyModel::filterAcceptsRoot(const MusicLibraryItem *item) con
         if (MusicLibraryItem::Type_Artist==i->itemType() && filterAcceptsArtist(i)) {
             return true;
         } else if (MusicLibraryItem::Type_Song==i->itemType() && filterAcceptsSong(i)) {
+            return true;
+        } else if (MusicLibraryItem::Type_Podcast==i->itemType() && filterAcceptsAlbum(i)) {
             return true;
         }
     }
@@ -121,6 +124,7 @@ bool MusicLibraryProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &
         return filterAcceptsRoot(item);
     case MusicLibraryItem::Type_Artist:
         return filterAcceptsArtist(item);
+    case MusicLibraryItem::Type_Podcast:
     case MusicLibraryItem::Type_Album:
         return filterAcceptsAlbum(item);
     case MusicLibraryItem::Type_Song:
@@ -143,6 +147,8 @@ bool MusicLibraryProxyModel::lessThan(const QModelIndex &left, const QModelIndex
         return MusicLibraryItemAlbum::lessThan(static_cast<MusicLibraryItem *>(left.internalPointer()), static_cast<MusicLibraryItem *>(right.internalPointer()));
     } else if (static_cast<MusicLibraryItem *>(left.internalPointer())->itemType() == MusicLibraryItem::Type_Artist) {
         return MusicLibraryItemArtist::lessThan(static_cast<MusicLibraryItem *>(left.internalPointer()), static_cast<MusicLibraryItem *>(right.internalPointer()));
+    } else if (static_cast<MusicLibraryItem *>(left.internalPointer())->itemType() == MusicLibraryItem::Type_Podcast) {
+        return MusicLibraryItemPodcast::lessThan(static_cast<MusicLibraryItem *>(left.internalPointer()), static_cast<MusicLibraryItem *>(right.internalPointer()));
     }
 
     return QSortFilterProxyModel::lessThan(left, right);

@@ -30,6 +30,7 @@
 #include "jamendoservice.h"
 #include "magnatuneservice.h"
 #include "soundcloudservice.h"
+#include "podcastservice.h"
 #include "settings.h"
 #include "messagebox.h"
 #include "localize.h"
@@ -37,6 +38,7 @@
 #include "mainwindow.h"
 #include "stdactions.h"
 #include "actioncollection.h"
+#include "inputdialog.h"
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KGlobalSettings>
 #endif
@@ -46,8 +48,6 @@ OnlineServicesPage::OnlineServicesPage(QWidget *p)
     , onlineSearchRequest(false)
     , searchable(true)
 {
-    QAction *sep=new QAction(this);
-    sep->setSeparator(true);
     setupUi(this);
     addToPlayQueue->setDefaultAction(StdActions::self()->addToPlayQueueAction);
     replacePlayQueue->setDefaultAction(StdActions::self()->replacePlayQueueAction);
@@ -71,12 +71,25 @@ OnlineServicesPage::OnlineServicesPage(QWidget *p)
     connect(view, SIGNAL(rootIndexSet(QModelIndex)), this, SLOT(setSearchable(QModelIndex)));
     connect(OnlineServicesModel::self()->configureAct(), SIGNAL(triggered()), this, SLOT(configureService()));
     connect(OnlineServicesModel::self()->refreshAct(), SIGNAL(triggered()), this, SLOT(refreshService()));
+    connect(OnlineServicesModel::self()->subscribeAct(), SIGNAL(triggered()), this, SLOT(subscribe()));
+    connect(OnlineServicesModel::self()->unSubscribeAct(), SIGNAL(triggered()), this, SLOT(unSubscribe()));
+    connect(OnlineServicesModel::self()->refreshSubscriptionAct(), SIGNAL(triggered()), this, SLOT(refreshSubscription()));
     connect(downloadAction, SIGNAL(triggered()), this, SLOT(download()));
 
     QMenu *menu=new QMenu(this);
     menu->addAction(OnlineServicesModel::self()->configureAct());
     menu->addAction(OnlineServicesModel::self()->refreshAct());
+    QAction *sep=new QAction(this);
+    sep->setSeparator(true);
+    menu->addAction(sep);
+    menu->addAction(OnlineServicesModel::self()->subscribeAct());
+    menu->addAction(OnlineServicesModel::self()->unSubscribeAct());
+    menu->addAction(OnlineServicesModel::self()->refreshSubscriptionAct());
     view->addAction(downloadAction);
+    view->addAction(sep);
+    view->addAction(OnlineServicesModel::self()->subscribeAct());
+    view->addAction(OnlineServicesModel::self()->unSubscribeAct());
+    view->addAction(OnlineServicesModel::self()->refreshSubscriptionAct());
     menuButton->setMenu(menu);
     proxy.setSourceModel(OnlineServicesModel::self());
     proxy.setDynamicSortFilter(false);
@@ -92,6 +105,9 @@ void OnlineServicesPage::setEnabled(bool e)
 {
     OnlineServicesModel::self()->setEnabled(e);
     controlActions();
+    if (e) {
+        proxy.sort();
+    }
 }
 
 void OnlineServicesPage::clear()
@@ -210,7 +226,7 @@ void OnlineServicesPage::itemDoubleClicked(const QModelIndex &)
 
 void OnlineServicesPage::controlSearch(bool on)
 {
-    // Can onyl search when we are at top level...
+    // Can only search when we are at top level...
     if (on && !searchable) {
         view->setSearchVisible(false);
         return;
@@ -324,6 +340,8 @@ void OnlineServicesPage::controlActions()
     bool srvSelected=false;
     bool canDownload=false;
     bool canConfigure=false;
+    bool canSubscribe=false;
+    bool canUnSubscribe=false;
     bool canRefresh=false;
     QSet<QString> services;
 
@@ -336,6 +354,7 @@ void OnlineServicesPage::controlActions()
                 services.insert(item->data());
                 canConfigure=static_cast<OnlineService *>(item)->canConfigure();
                 canRefresh=static_cast<OnlineService *>(item)->canLoad();
+                canSubscribe=static_cast<OnlineService *>(item)->canSubscribe();
             } else {
                 while (item->parentItem()) {
                     item=item->parentItem();
@@ -345,16 +364,22 @@ void OnlineServicesPage::controlActions()
                     if (static_cast<OnlineService *>(item)->canDownload()) {
                         canDownload=true;
                     }
+                    if (static_cast<OnlineService *>(item)->canSubscribe()) {
+                        canUnSubscribe=true;
+                    }
                 }
             }
 
-            if (srvSelected && canDownload && services.count()>1) {
+            if (srvSelected && canDownload && canUnSubscribe && services.count()>1) {
                 break;
             }
         }
     }
 
     OnlineServicesModel::self()->configureAct()->setEnabled(canConfigure && 1==selected.count());
+    OnlineServicesModel::self()->subscribeAct()->setEnabled(canSubscribe && 1==selected.count());
+    OnlineServicesModel::self()->unSubscribeAct()->setEnabled(canUnSubscribe && 1==selected.count());
+    OnlineServicesModel::self()->refreshSubscriptionAct()->setEnabled(canUnSubscribe && 1==selected.count());
     OnlineServicesModel::self()->refreshAct()->setEnabled(canRefresh && 1==selected.count());
     downloadAction->setEnabled(!srvSelected && canDownload && !selected.isEmpty() && 1==services.count());
     StdActions::self()->addToPlayQueueAction->setEnabled(!srvSelected && !selected.isEmpty());
@@ -367,7 +392,6 @@ void OnlineServicesPage::controlActions()
 void OnlineServicesPage::configureService()
 {
     const QModelIndexList selected = view->selectedIndexes(false); // Dont need sorted selection here...
-
     if (1!=selected.size()) {
         return;
     }
@@ -382,7 +406,6 @@ void OnlineServicesPage::configureService()
 void OnlineServicesPage::refreshService()
 {
     const QModelIndexList selected = view->selectedIndexes(false); // Dont need sorted selection here...
-
     if (1!=selected.size()) {
         return;
     }
@@ -448,6 +471,103 @@ void OnlineServicesPage::download()
             emit addToDevice(OnlineServicesModel::constUdiPrefix+item->data(), QString(), songs);
         }
     }
+}
+
+void OnlineServicesPage::subscribe()
+{
+    const QModelIndexList selected = view->selectedIndexes(false); // Dont need sorted selection here...
+    if (1!=selected.size()) {
+        return;
+    }
+
+    MusicLibraryItem *item=static_cast<MusicLibraryItem *>(proxy.mapToSource(selected.first()).internalPointer());
+    if (MusicLibraryItem::Type_Root==item->itemType() && PodcastService::constName==static_cast<MusicLibraryItemRoot *>(item)->id()) {
+        PodcastService *srv=static_cast<PodcastService *>(item);
+        bool ok=false;
+        QString url=InputDialog::getText(i18n("Subscribe to Podcast"), i18n("Enter podcast URL:"), QString(), &ok, this);
+
+        if (url.isEmpty() || !ok) {
+            return;
+        }
+
+        QUrl u(url.trimmed());
+        if (QLatin1String("itpc")==u.scheme() || QLatin1String("pcast")==u.scheme() || QLatin1String("feed")==u.scheme()) {
+            u.setScheme(QLatin1String("http"));
+        }
+
+        if (QLatin1String("http")!=u.scheme() && QLatin1String("https")!=u.scheme()) {
+            MessageBox::error(this, i18n("Invalid URL!"));
+            return;
+        }
+
+        if (srv->subscribedToUrl(u)) {
+            MessageBox::error(this, i18n("You are already subscribed to this URL!"));
+            return;
+        }
+        if (srv->processingUrl(u)) {
+            MessageBox::error(this, i18n("Already downloading this URL!"));
+            return;
+        }
+        srv->addUrl(u);
+    }
+}
+
+void OnlineServicesPage::unSubscribe()
+{
+    const QModelIndexList selected = view->selectedIndexes(false); // Dont need sorted selection here...
+    if (1!=selected.size()) {
+        return;
+    }
+
+    MusicLibraryItem *item=static_cast<MusicLibraryItem *>(proxy.mapToSource(selected.first()).internalPointer());
+    if (MusicLibraryItem::Type_Podcast!=item->itemType()) {
+        return;
+    }
+
+    MusicLibraryItem *p=item->parentItem();
+    if (!p || MusicLibraryItem::Type_Root!=p->itemType()) {
+        return;
+    }
+
+    PodcastService *srv=static_cast<PodcastService *>(p);
+    if (!srv->canSubscribe()) {
+        return;
+    }
+
+    if (MessageBox::No==MessageBox::warningYesNo(this, i18n("Unsibscribe from <b>%1</b>?", item->data()))) {
+        return;
+    }
+
+    srv->unSubscribe(item);
+}
+
+void OnlineServicesPage::refreshSubscription()
+{
+    const QModelIndexList selected = view->selectedIndexes(false); // Dont need sorted selection here...
+    if (1!=selected.size()) {
+        return;
+    }
+
+    MusicLibraryItem *item=static_cast<MusicLibraryItem *>(proxy.mapToSource(selected.first()).internalPointer());
+    if (MusicLibraryItem::Type_Podcast!=item->itemType()) {
+        return;
+    }
+
+    MusicLibraryItem *p=item->parentItem();
+    if (!p || MusicLibraryItem::Type_Root!=p->itemType()) {
+        return;
+    }
+
+    PodcastService *srv=static_cast<PodcastService *>(p);
+    if (!srv->canSubscribe()) {
+        return;
+    }
+
+    if (MessageBox::No==MessageBox::warningYesNo(this, i18n("Refresh episode listing from <b>%1</b>?", item->data()))) {
+        return;
+    }
+
+    srv->refreshSubscription(item);
 }
 
 void OnlineServicesPage::updated(const QModelIndex &idx)

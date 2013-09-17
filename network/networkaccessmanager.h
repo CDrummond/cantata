@@ -38,6 +38,35 @@
 
 class QTimerEvent;
 
+class NetworkJob : public QObject
+{
+    Q_OBJECT
+
+public:
+    NetworkJob(QNetworkReply *j);
+    virtual ~NetworkJob();
+
+    QNetworkReply * actualJob() const { return job; }
+
+    void abort();
+
+    QUrl url() const { return job ? job->url() : QUrl(); }
+    QNetworkReply::NetworkError error() const { return job ? job->error() : QNetworkReply::NoError; }
+    QString errorString() const { return job ? job->errorString() : QString(); }
+    QByteArray readAll() { return job ? job->readAll() : QByteArray(); }
+    bool ok() const { return job && QNetworkReply::NoError==job->error(); }
+
+Q_SIGNALS:
+    void finished();
+
+private Q_SLOTS:
+    void jobFinished();
+
+private:
+    int numRedirects;
+    QNetworkReply *job;
+};
+
 class NetworkAccessManager : public BASE_NETWORK_ACCESS_MANAGER
 {
     Q_OBJECT
@@ -51,6 +80,9 @@ public:
     QNetworkReply * get(const QNetworkRequest &req, int timeout=0);
     QNetworkReply * get(const QUrl &url, int timeout=0) { return get(QNetworkRequest(url), timeout); }
 
+    NetworkJob * getNew(const QNetworkRequest &req, int timeout=0);
+    NetworkJob * getNew(const QUrl &url, int timeout=0) { return getNew(QNetworkRequest(url), timeout); }
+
 protected:
     void timerEvent(QTimerEvent *e);
 
@@ -59,6 +91,8 @@ private Q_SLOTS:
 
 private:
     QMap<QNetworkReply *, int> timers;
+    QMap<NetworkJob *, int> newTimers;
+    friend class NetworkJob;
 };
 
 #endif // NETWORK_ACCESS_MANAGER_H

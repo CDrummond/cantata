@@ -38,46 +38,22 @@ class MusicLibraryItemSong : public MusicLibraryItem
 {
 public:
     MusicLibraryItemSong(const Song &s, MusicLibraryItemContainer *parent)
-        : MusicLibraryItem(s.displayTitle(), parent)
-        , m_song(s) {
-    }
+        : MusicLibraryItem(s.displayTitle(), parent), m_song(s) { }
 
-    virtual ~MusicLibraryItemSong() {
-    }
+    virtual ~MusicLibraryItemSong() { }
 
-    const QString & file() const {
-        return m_song.file;
-    }
-    void setSong(const Song &s) {
-        m_song=s;
-    }
-    void setFile(const QString &f) {
-        m_song.file=f;
-    }
-    quint16 track() const {
-        return m_song.track;
-    }
-    quint16 disc() const {
-        return m_song.disc;
-    }
-    quint32 time() const {
-        return m_song.time;
-    }
-    const QString & genre() const {
-        return m_song.genre;
-    }
-    const Song & song() const {
-        return m_song;
-    }
-    Type itemType() const {
-        return Type_Song;
-    }
-    bool hasGenre(const QString &genre) const {
-        return m_song.genre==genre;
-    }
-    QSet<QString> allGenres() const {
-        return QSet<QString>()<<m_song.genre;
-    }
+    const QString & file() const { return m_song.file; }
+    void setSong(const Song &s) { m_song=s; }
+    void setFile(const QString &f) { m_song.file=f; }
+    quint16 track() const { return m_song.track; }
+    void setTrack(quint16 t) { m_song.track=t; }
+    quint16 disc() const { return m_song.disc; }
+    quint32 time() const { return m_song.time; }
+    const QString & genre() const { return m_song.genre; }
+    const Song & song() const { return m_song; }
+    Type itemType() const { return Type_Song; }
+    bool hasGenre(const QString &genre) const { return m_song.genre==genre; }
+    QSet<QString> allGenres() const { return QSet<QString>()<<m_song.genre; }
 
 private:
     Song m_song;

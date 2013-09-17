@@ -189,7 +189,19 @@ void TreeView::mouseReleaseEvent(QMouseEvent *event)
 
 QModelIndexList TreeView::selectedIndexes(bool sorted) const
 {
-    return sorted ? sortIndexes(selectionModel()->selectedIndexes()) : selectionModel()->selectedIndexes();
+    if (sorted) {
+        return sortIndexes(selectionModel()->selectedIndexes());
+    } else if (model()->columnCount()>1) {
+        QModelIndexList list=selectionModel()->selectedIndexes();
+        QModelIndexList sel;
+        foreach (const QModelIndex &idx, list) {
+            if (0==idx.column()) {
+                sel.append(idx);
+            }
+        }
+        return sel;
+    }
+    return selectionModel()->selectedIndexes();
 }
 
 struct Index : public QModelIndex
@@ -235,7 +247,9 @@ QModelIndexList TreeView::sortIndexes(const QModelIndexList &list)
     // First, create the list of 'Index' items to be sorted...
     QList<Index> toSort;
     foreach (const QModelIndex &i, list) {
-        toSort.append(Index(i));
+        if (0==i.column()) {
+            toSort.append(Index(i));
+        }
     }
     // Call qSort on these - this will use operator<
     qSort(toSort);

@@ -75,6 +75,25 @@ private Q_SLOTS:
 Q_SIGNALS:
     void reconnect();
 };
+#elif defined Q_OS_MAC || defined __APPLE__   // moc does not seem to see Q_OS_MAC, but will see __APPLE__ :-(
+#include <QApplication>
+class Application : public QApplication
+{
+public:
+    Application(int &argc, char **argv);
+    virtual ~Application() { }
+
+    bool start();
+    #if defined TAGLIB_FOUND
+    void loadFiles();
+    #endif // TAGLIB_FOUND
+    void setupIconTheme();
+
+private:
+    #if defined TAGLIB_FOUND
+    void load(const QStringList &files);
+    #endif
+};
 #else
 #include <QApplication>
 class Application : public QApplication

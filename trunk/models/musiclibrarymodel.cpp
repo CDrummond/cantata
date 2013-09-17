@@ -239,6 +239,8 @@ bool MusicLibraryModel::setData(const QModelIndex &idx, const QVariant &value, i
         }
 
         switch (item->itemType()) {
+        case MusicLibraryItem::Type_Podcast:
+            break;
         case MusicLibraryItem::Type_Artist: {
             MusicLibraryItemArtist *artistItem=static_cast<MusicLibraryItemArtist *>(item);
             QModelIndex artistIndex=index(artistItem->row(), 0, QModelIndex());

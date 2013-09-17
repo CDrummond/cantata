@@ -25,6 +25,7 @@
 #include "musiclibraryitemartist.h"
 #include "musiclibraryitemsong.h"
 #include "musiclibraryitemroot.h"
+#include "musiclibraryitempodcast.h"
 #include "musicmodel.h"
 #include "itemview.h"
 #include "localize.h"
@@ -48,7 +49,7 @@ const MusicLibraryItemRoot * MusicModel::root(const MusicLibraryItem *item) cons
         return static_cast<const MusicLibraryItemRoot *>(item);
     }
     
-    if (MusicLibraryItem::Type_Artist==item->itemType()) {
+    if (MusicLibraryItem::Type_Artist==item->itemType() || MusicLibraryItem::Type_Podcast==item->itemType()) {
         return static_cast<const MusicLibraryItemRoot *>(item->parentItem());
     }
     
@@ -104,6 +105,12 @@ QVariant MusicModel::data(const QModelIndex &index, int role) const
             MusicLibraryItemArtist *artist = static_cast<MusicLibraryItemArtist *>(item);
             return artist->isVarious() ? Icons::self()->variousArtistsIcon : Icons::self()->artistIcon;
         }
+        case MusicLibraryItem::Type_Podcast:
+            if (MusicLibraryItemAlbum::CoverNone==MusicLibraryItemAlbum::currentCoverSize()) {
+                return Icons::self()->podcastIcon;
+            } else {
+                return static_cast<MusicLibraryItemPodcast *>(item)->cover();
+            }
         case MusicLibraryItem::Type_Album:
             if (MusicLibraryItemAlbum::CoverNone==MusicLibraryItemAlbum::currentCoverSize()) {
                 return Icons::self()->albumIcon;
@@ -125,6 +132,9 @@ QVariant MusicModel::data(const QModelIndex &index, int role) const
             if (static_cast<MusicLibraryItemAlbum *>(song->parentItem())->isSingleTracks()) {
                 return song->song().artistSong();
             }
+            if (MusicLibraryItem::Type_Podcast==song->parentItem()->itemType()) {
+                return item->data();
+            }
             return song->song().trackAndTitleStr(static_cast<MusicLibraryItemArtist *>(song->parentItem()->parentItem())->isVarious() &&
                                                  !Song::isVariousArtists(song->song().artist));
         } else if (MusicLibraryItem::Type_Album==item->itemType() && MusicLibraryItemAlbum::showDate() &&
@@ -145,7 +155,7 @@ QVariant MusicModel::data(const QModelIndex &index, int role) const
     case ItemView::Role_ImageSize:
         if (MusicLibraryItem::Type_Song!=item->itemType() && !MusicLibraryItemAlbum::itemSize().isNull()) { // icon/list style view...
             return MusicLibraryItemAlbum::iconSize(root(item)->useLargeImages());
-        } else if (MusicLibraryItem::Type_Album==item->itemType() || (root(item)->useArtistImages() && MusicLibraryItem::Type_Artist==item->itemType())) {
+        } else if (MusicLibraryItem::Type_Album==item->itemType() || MusicLibraryItem::Type_Podcast==item->itemType() || (root(item)->useArtistImages() && MusicLibraryItem::Type_Artist==item->itemType())) {
             return MusicLibraryItemAlbum::iconSize();
         }
         break;
@@ -166,7 +176,6 @@ QVariant MusicModel::data(const QModelIndex &index, int role) const
             #else
             return QTP_ARTISTS_STR(item->childCount());
             #endif
-            break;
         }
         case MusicLibraryItem::Type_Artist:
             #ifdef ENABLE_KDE_SUPPORT
@@ -174,7 +183,12 @@ QVariant MusicModel::data(const QModelIndex &index, int role) const
             #else
             return QTP_ALBUMS_STR(item->childCount());
             #endif
-            break;
+        case MusicLibraryItem::Type_Podcast:
+            #ifdef ENABLE_KDE_SUPPORT
+            return i18np("1 Episode", "%1 Episodes", item->childCount());
+            #else
+            return QTP_EPISODES_STR(item->childCount());
+            #endif
         case MusicLibraryItem::Type_Song:
             return Song::formattedTime(static_cast<MusicLibraryItemSong *>(item)->time(), true);
         case MusicLibraryItem::Type_Album:
@@ -187,24 +201,29 @@ QVariant MusicModel::data(const QModelIndex &index, int role) const
             #endif
         default: return QVariant();
         }
-    case ItemView::Role_Image:
-        if (MusicLibraryItem::Type_Album==item->itemType()) {
-            QVariant v;
+    case ItemView::Role_Image: {
+        QVariant v;
+        switch (item->itemType()) {
+        case MusicLibraryItem::Type_Album:
             v.setValue<QPixmap>(static_cast<MusicLibraryItemAlbum *>(item)->cover());
-            return v;
-        } else if (MusicLibraryItem::Type_Artist==item->itemType() && static_cast<MusicLibraryItemRoot *>(item->parentItem())->useArtistImages()) {
-            QVariant v;
-            v.setValue<QPixmap>(static_cast<MusicLibraryItemArtist *>(item)->cover());
-            return v;
+            break;
+        case MusicLibraryItem::Type_Artist:
+            if (static_cast<MusicLibraryItemRoot *>(item->parentItem())->useArtistImages()) {
+                v.setValue<QPixmap>(static_cast<MusicLibraryItemArtist *>(item)->cover());
+            }
+            break;
+        case MusicLibraryItem::Type_Podcast:
+            v.setValue<QPixmap>(static_cast<MusicLibraryItemPodcast *>(item)->cover());
+        default:
+            break;
         }
-        return QVariant();
+        return v;
+    }
     case ItemView::Role_TitleText:
-        if (MusicLibraryItem::Type_Artist==item->itemType()) {
-            return item->data();
-        } else if (MusicLibraryItem::Type_Album==item->itemType()) {
+        if (MusicLibraryItem::Type_Album==item->itemType()) {
             return i18nc("Album by Artist", "%1 by %2", item->data(), item->parentItem()->data());
         }
-        break;
+        return item->data();
     case Qt::SizeHintRole: {
         const MusicLibraryItemRoot *r=root(item);
         if (!r->useArtistImages() && MusicLibraryItem::Type_Artist==item->itemType()) {

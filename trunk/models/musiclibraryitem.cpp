@@ -59,6 +59,17 @@ void MusicLibraryItem::setParent(MusicLibraryItemContainer *p)
     m_parentItem->m_genres+=allGenres();
 }
 
+MusicLibraryItem * MusicLibraryItemContainer::childItem(const QString &name) const
+{
+    foreach (MusicLibraryItem *i, m_childItems) {
+        if (i->data()==name) {
+            return i;
+        }
+    }
+
+    return 0;
+}
+
 void MusicLibraryItemContainer::updateGenres()
 {
     m_genres.clear();
@@ -77,5 +88,21 @@ void MusicLibraryItemContainer::resetRows()
             i->m_row=0;
         }
         m_rowsSet=false;
+    }
+}
+
+void MusicLibraryItemContainer::clear()
+{
+    qDeleteAll(m_childItems);
+    m_childItems.clear();
+    m_genres.clear();
+    m_rowsSet=false;
+}
+
+void MusicLibraryItemContainer::addAll(MusicLibraryItemContainer *other)
+{
+    QList<MusicLibraryItem *> items=other->childItems();
+    foreach (MusicLibraryItem *i, items) {
+        i->setParent(this);
     }
 }

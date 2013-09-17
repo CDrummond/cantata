@@ -54,6 +54,14 @@
     (1==(C) ? QObject::tr("1 Rule", "Singular") : \
      QObject::tr("%1 Rules", "Plural (N!=1)").arg((C)))
 
+#define QTP_PODCASTS_STR(C) \
+    (1==(C) ? QObject::tr("1 Podcast", "Singular") : \
+     QObject::tr("%1 Podcasts", "Plural (N!=1)").arg((C)))
+
+#define QTP_EPISODES_STR(C) \
+    (1==(C) ? QObject::tr("1 Episode", "Singular") : \
+     QObject::tr("%1 Episodes", "Plural (N!=1)").arg((C)))
+
 #endif
 
 #endif

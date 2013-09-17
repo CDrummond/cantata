@@ -34,6 +34,7 @@
     activating 'Search Play Queue', do not toggle.
 16. Initial MacOS port - thanks to Ian Scott
 17. Online services support does not require taglib.
+18. Podcast support.
 
 1.1.3
 -----

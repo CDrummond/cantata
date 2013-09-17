@@ -25,6 +25,7 @@
 #include "musiclibraryitemartist.h"
 #include "musiclibraryitemsong.h"
 #include "musiclibraryitemroot.h"
+#include "musiclibraryitempodcast.h"
 #include "musiclibrarymodel.h"
 #include "dirviewmodel.h"
 #include "onlineservicesmodel.h"
@@ -33,6 +34,7 @@
 #include "jamendoservice.h"
 #include "magnatuneservice.h"
 #include "soundcloudservice.h"
+#include "podcastservice.h"
 #include "playqueuemodel.h"
 #include "itemview.h"
 #include "mpdparseutils.h"
@@ -44,6 +46,7 @@
 #include "covers.h"
 #include "stdactions.h"
 #include "actioncollection.h"
+#include "networkaccessmanager.h"
 #include <QStringList>
 #include <QMimeData>
 #include <QFile>
@@ -73,8 +76,11 @@ OnlineServicesModel::OnlineServicesModel(QObject *parent)
     , enabled(false)
     , dev(0)
 {
-    configureAction = ActionCollection::get()->createAction("configureonlineservice", i18n("Configure Online Service"), Icons::self()->configureIcon);
-    refreshAction = ActionCollection::get()->createAction("refreshonlineservice", i18n("Refresh Online Service"), "view-refresh");
+    configureAction = ActionCollection::get()->createAction("configureonlineservice", i18n("Configure Service"), Icons::self()->configureIcon);
+    refreshAction = ActionCollection::get()->createAction("refreshonlineservice", i18n("Refresh Service"), "view-refresh");
+    subscribeAction = ActionCollection::get()->createAction("subscribeonlineservice", i18n("Add Subscription"), "list-add");
+    unSubscribeAction = ActionCollection::get()->createAction("unsubscribeonlineservice", i18n("Remove Subscription"), "list-remove");
+    refreshSubscriptionAction = ActionCollection::get()->createAction("refreshsubscription", i18n("Refresh Subscription"), "view-refresh");
 }
 
 OnlineServicesModel::~OnlineServicesModel()
@@ -96,7 +102,8 @@ bool OnlineServicesModel::canFetchMore(const QModelIndex &index) const
 {
     return index.isValid() && MusicLibraryItem::Type_Root==static_cast<MusicLibraryItem *>(index.internalPointer())->itemType() &&
             !static_cast<OnlineService *>(index.internalPointer())->isLoaded() &&
-            !static_cast<OnlineService *>(index.internalPointer())->isSearchBased();
+            !static_cast<OnlineService *>(index.internalPointer())->isSearchBased() &&
+            !static_cast<OnlineService *>(index.internalPointer())->isPodcasts();
 }
 
 void OnlineServicesModel::fetchMore(const QModelIndex &index)
@@ -135,7 +142,7 @@ QVariant OnlineServicesModel::data(const QModelIndex &index, int role) const
             if (srv->isSearching())  {
                 return i18n("Searching...");
             }
-            if (!srv->isLoaded() && !srv->isSearchBased()) {
+            if (!srv->isLoaded() && !srv->isSearchBased() && !srv->isPodcasts()) {
                 return i18n("Not Loaded");
             }
             if (0==item->childCount() && srv->isSearchBased()) {
@@ -146,6 +153,13 @@ QVariant OnlineServicesModel::data(const QModelIndex &index, int role) const
                 return i18np("1 Track", "%1 Tracks", item->childCount());
                 #else
                 return QTP_TRACKS_STR(item->childCount());
+                #endif
+            }
+            if (srv->isPodcasts()) {
+                #ifdef ENABLE_KDE_SUPPORT
+                return i18np("1 Podcast", "%1 Podcasts", item->childCount());
+                #else
+                return QTP_PODCASTS_STR(item->childCount());
                 #endif
             }
         }
@@ -163,6 +177,11 @@ QVariant OnlineServicesModel::data(const QModelIndex &index, int role) const
             if (srv->isSearchBased() || srv->isLoaded()) {
                 actions << StdActions::self()->searchAction;
             }
+            if (srv->canSubscribe()) {
+                actions << subscribeAction;
+            }
+        } else if (MusicLibraryItem::Type_Podcast==item->itemType()) {
+            actions << refreshSubscriptionAction;
         } else {
             actions << StdActions::self()->replacePlayQueueAction << StdActions::self()->addToPlayQueueAction;
         }
@@ -202,10 +221,6 @@ void OnlineServicesModel::setEnabled(bool e)
     bool wasEnabled=enabled;
     enabled=e;
     if (enabled) {
-        connect(Covers::self(), SIGNAL(artistImage(const Song &, const QImage &, const QString &)),
-                this, SLOT(setArtistImage(const Song &, const QImage &)));
-        connect(Covers::self(), SIGNAL(cover(const Song &, const QImage &, const QString &)),
-                this, SLOT(setCover(const Song &, const QImage &, const QString &)));
         load();
     } else {
         if (wasEnabled) {
@@ -217,11 +232,6 @@ void OnlineServicesModel::setEnabled(bool e)
 
 void OnlineServicesModel::stop()
 {
-    disconnect(Covers::self(), SIGNAL(artistImage(const Song &, const QImage &, const QString &)),
-              this, SLOT(setArtistImage(const Song &, const QImage &)));
-    disconnect(Covers::self(), SIGNAL(cover(const Song &, const QImage &, const QString &)),
-              this, SLOT(setCover(const Song &, const QImage &, const QString &)));
-
     foreach (MusicLibraryItemRoot *col, collections) {
         static_cast<OnlineService *>(col)->stopLoader();
     }
@@ -231,46 +241,6 @@ OnlineService * OnlineServicesModel::service(const QString &name)
 {
     int idx=name.isEmpty() ? -1 : indexOf(name);
     return idx<0 ? 0 : static_cast<OnlineService *>(collections.at(idx));
-}
-
-void OnlineServicesModel::setArtistImage(const Song &song, const QImage &img)
-{
-    if (img.isNull() || MusicLibraryItemAlbum::CoverNone==MusicLibraryItemAlbum::currentCoverSize() || !(song.file.startsWith("http:/") || song.name.startsWith("http:/"))) {
-        return;
-    }
-
-    for (int i=0; i<collections.count() ; ++i) {
-        OnlineService *srv=static_cast<OnlineService *>(collections.at(i));
-        if (srv->useArtistImages()) {
-            MusicLibraryItemArtist *artistItem = srv->artist(song, false);
-            if (artistItem && artistItem->setCover(img)) {
-                QModelIndex idx=index(artistItem->row(), 0, index(i, 0, QModelIndex()));
-                emit dataChanged(idx, idx);
-            }
-        }
-    }
-}
-
-void OnlineServicesModel::setCover(const Song &song, const QImage &img, const QString &fileName)
-{
-    Q_UNUSED(fileName)
-    if (img.isNull() || MusicLibraryItemAlbum::CoverNone==MusicLibraryItemAlbum::currentCoverSize() || !(song.file.startsWith("http:/") || song.name.startsWith("http:/"))) {
-        return;
-    }
-
-    for (int i=0; i<collections.count() ; ++i) {
-        OnlineService *srv=static_cast<OnlineService *>(collections.at(i));
-        if (srv->useAlbumImages()) {
-            MusicLibraryItemArtist *artistItem = srv->artist(song, false);
-            if (artistItem) {
-                MusicLibraryItemAlbum *albumItem = artistItem->album(song, false);
-                if (albumItem && albumItem->setCover(img)) {
-                    QModelIndex idx=index(albumItem->row(), 0, index(artistItem->row(), 0, index(i, 0, QModelIndex())));
-                    emit dataChanged(idx, idx);
-                }
-            }
-        }
-    }
 }
 
 void OnlineServicesModel::setBusy(const QString &serviceName, bool b)
@@ -306,6 +276,8 @@ OnlineService * OnlineServicesModel::addService(const QString &name)
             srv=new MagnatuneService(this);
         } else if (name==SoundCloudService::constName) {
             srv=new SoundCloudService(this);
+        } else if (name==PodcastService::constName) {
+            srv=new PodcastService(this);
         }
 
         if (srv) {
@@ -355,6 +327,7 @@ void OnlineServicesModel::load()
     addService(JamendoService::constName);
     addService(MagnatuneService::constName);
     addService(SoundCloudService::constName);
+    addService(PodcastService::constName);
 }
 
 void OnlineServicesModel::setSearch(const QString &serviceName, const QString &text)
@@ -389,3 +362,99 @@ Device * OnlineServicesModel::device(const QString &udi)
 }
 #endif
 
+static const char * constExtensions[]={".jpg", ".png", 0};
+static const char * constIdProperty="id";
+static const char * constArtistProperty="artist";
+static const char * constAlbumProperty="album";
+static const char * constCacheProperty="cacheName";
+
+QImage OnlineServicesModel::requestImage(const QString &id, const QString &artist, const QString &album, const QString &url, const QString cacheName)
+{
+    QString baseName=cacheName.isEmpty() ? Utils::cacheDir(id.toLower(), false)+Covers::encodeName(album.isEmpty() ? artist : (artist+" - "+album)) : cacheName;
+    for (int e=0; constExtensions[e]; ++e) {
+        if (QFile::exists(baseName+constExtensions[e])) {
+            QImage img(baseName+constExtensions[e]);
+
+            if (!img.isNull()) {
+                return img;
+            }
+        }
+    }
+    if (url.endsWith(".jpg", Qt::CaseInsensitive) || url.endsWith(".jpeg", Qt::CaseInsensitive) || url.endsWith(".png", Qt::CaseInsensitive)) {
+        // Need to download image...
+        NetworkJob *j=NetworkAccessManager::self()->getNew(QNetworkRequest(QUrl(url)));
+        j->setProperty(constIdProperty, id);
+        j->setProperty(constArtistProperty, artist);
+        j->setProperty(constAlbumProperty, album);
+        j->setProperty(constCacheProperty, cacheName);
+
+        connect(j, SIGNAL(finished()), this, SLOT(imageDownloaded()));
+    }
+
+    return QImage();
+}
+
+void OnlineServicesModel::imageDownloaded()
+{
+    NetworkJob *j=qobject_cast<NetworkJob *>(sender());
+
+    if (!j) {
+        return;
+    }
+
+    j->deleteLater();
+    QByteArray data=QNetworkReply::NoError==j->error() ? j->readAll() : QByteArray();
+    if (data.isEmpty()) {
+        return;
+    }
+
+    QString url=j->url().toString();
+    bool jpeg=url.endsWith(".jpg", Qt::CaseInsensitive) || url.endsWith(".jpeg", Qt::CaseInsensitive);
+    QImage img=QImage::fromData(data, jpeg ? "JPG" : "PNG");
+    if (img.isNull()) {
+        return;
+    }
+
+    QString id=j->property(constIdProperty).toString();
+    Song song;
+    song.albumartist=song.artist=j->property(constArtistProperty).toString();
+    song.album=j->property(constAlbumProperty).toString();
+    OnlineService *srv=service(id);
+    if (id==PodcastService::constName) {
+        MusicLibraryItem *podcast=srv->childItem(song.artist);
+        if (podcast && static_cast<MusicLibraryItemPodcast *>(podcast)->setCover(img)) {
+            QModelIndex idx=index(podcast->row(), 0, index(srv->row(), 0, QModelIndex()));
+            emit dataChanged(idx, idx);
+
+        }
+    } else if (song.album.isEmpty()) {
+        if (srv->useArtistImages() && srv->id()==id) {
+            MusicLibraryItemArtist *artistItem = srv->artist(song, false);
+            if (artistItem && artistItem->setCover(img)) {
+                QModelIndex idx=index(artistItem->row(), 0, index(srv->row(), 0, QModelIndex()));
+                emit dataChanged(idx, idx);
+            }
+        }
+    } else {
+        if (srv->useAlbumImages() && !srv->isPodcasts() && srv->id()==id) {
+            MusicLibraryItemArtist *artistItem = srv->artist(song, false);
+            if (artistItem) {
+                MusicLibraryItemAlbum *albumItem = artistItem->album(song, false);
+                if (albumItem && albumItem->setCover(img)) {
+                    QModelIndex idx=index(albumItem->row(), 0, index(artistItem->row(), 0, index(srv->row(), 0, QModelIndex())));
+                    emit dataChanged(idx, idx);
+                }
+            }
+        }
+    }
+
+    QString cacheName=j->property(constCacheProperty).toString();
+    QString fileName=(cacheName.isEmpty()
+                        ? Utils::cacheDir(id.toLower(), true)+Covers::encodeName(song.album.isEmpty() ? song.artist : (song.artist+" - "+song.album))
+                        : cacheName)
+                     +(jpeg ? ".jpg" : ".png");
+    QFile f(fileName);
+    if (f.open(QIODevice::WriteOnly)) {
+        f.write(data);
+    }
+}

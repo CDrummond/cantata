@@ -378,6 +378,7 @@ QMimeData * OnlineServicesModel::mimeData(const QModelIndexList &indexes) const
     return mimeData;
 }
 
+#ifdef TAGLIB_FOUND
 Device * OnlineServicesModel::device(const QString &udi)
 {
     if (!dev) {
@@ -386,3 +387,5 @@ Device * OnlineServicesModel::device(const QString &udi)
     dev->setData(udi.mid(constUdiPrefix.length()));
     return dev;
 }
+#endif
+

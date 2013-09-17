@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-07-20 19:42+0100\n"
-"PO-Revision-Date: 2013-09-17 14:34+0200\n"
+"PO-Revision-Date: 2013-09-17 23:16+0200\n"
 "Last-Translator: Markus Slopianka <kamikazow@web.de>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de\n"
@@ -363,11 +363,11 @@ msgstr "Stopp"
 #: replaygain/rgdialog.cpp:486 tags/tageditor.cpp:808
 #: tags/trackorganiser.cpp:421
 msgid "Device has been removed!"
-msgstr "Gerät wurde entfernt!"
+msgstr "Gerät wurde entfernt."
 
 #: devices/actiondialog.cpp:475
 msgid "Device is not connected!"
-msgstr "Gerät ist nicht verbunden!"
+msgstr "Gerät ist nicht verbunden."
 
 #: devices/actiondialog.cpp:477 devices/syncdialog.cpp:195
 #: replaygain/rgdialog.cpp:496 tags/tageditor.cpp:818
@@ -397,22 +397,22 @@ msgstr "Berechne"
 
 #: devices/actiondialog.cpp:618
 msgid "The destination filename already exists!<hr/>%1"
-msgstr "Der Dateiname existiert bereits!<hr/>%1"
+msgstr "Der Dateiname existiert bereits.<hr/>%1"
 
 #: devices/actiondialog.cpp:621
 msgid "Song already exists!<hr/>%1"
-msgstr "Lied existiert bereits!<hr/>%1"
+msgstr "Lied existiert bereits.<hr/>%1"
 
 #: devices/actiondialog.cpp:624
 msgid "Song does not exist!<hr/>%1"
-msgstr "Titel existiert nicht!<hr/>%1"
+msgstr "Titel existiert nicht.<hr/>%1"
 
 #: devices/actiondialog.cpp:627
 msgid ""
 "Failed to create destination folder!<br/>Please check you have sufficient "
 "permissions.<hr/>%1"
 msgstr ""
-"Fehler beim Erstellen des Ordners auf Zielgerät!<br/>Bitte überprüfen Sie "
+"Fehler beim Erstellen des Ordners auf Zielgerät.<br/>Bitte überprüfen Sie "
 "auf vorhandene Berechtigung.<hr/>%1"
 
 #: devices/actiondialog.cpp:630
@@ -695,12 +695,12 @@ msgstr "Disc Auswahl"
 #: devices/cddbselectiondialog.cpp:67
 msgctxt "artist - album Disc disc (year)"
 msgid "%1 -%2 Disc %3 (%4)"
-msgstr "%1 -%2 Disc %3 (%4)"
+msgstr "%1 – %2 Disk %3 (%4)"
 
 #: devices/cddbselectiondialog.cpp:69
 msgctxt "artist - album (year)"
 msgid "%1 - %2 (%3)"
-msgstr "%1 - %2(%3)"
+msgstr "%1 – %2 (%3)"
 
 #: devices/device.cpp:340
 msgid "Updating (%1)..."
@@ -771,7 +771,8 @@ msgstr ""
 "<p>Wenn Sie dies aktiviert haben, wird Cantata einen Zwischenspeicher für die "
 "Musikbibliothek des Gerätes erstellen. Dies wird das Auslesen von "
 "nachfolgenden Biblotheksaufrufen beschleunigen (es wird der Zwischenspeicher "
-"verwendet an statt jeden Tag neu zu lesen.)<hr/><b>Beachten Sie:</b> Wenn Sie ein "
+"verwendet an statt jeden Tag neu zu lesen.)<hr/><b>Beachten Sie:</b> Wenn Sie "
+"ein "
 "anderes Programm zum aktualisieren der Musikbibliothek benutzen wird der "
 "Zwischenspeicher ungültig. Um dies zu korrigieren, einfach auf den "
 "\"Aktualisieren\"-Symbol klicken in der Geräteliste. Dadurch wird die "
@@ -861,7 +862,7 @@ msgstr "Wollen Sie wirklich <b>%1</b> entfernen?"
 
 #: devices/devicespage.cpp:535
 msgid "Are you sure you wish to eject Audio CD <b>%1 - %2</b>?"
-msgstr "Wollen Sie wirklich Audio-CD <b>%1 - %2</b> auswerfen?"
+msgstr "Wollen Sie wirklich Audio-CD <b>%1 – %2</b> auswerfen?"
 
 #: devices/devicespage.cpp:536
 msgid "Eject"
@@ -1294,7 +1295,7 @@ msgstr "Nicht verbunden"
 
 #: devices/musicbrainz.cpp:320
 msgid "%1 (Disc %2)"
-msgstr "%1 (Disc %2)"
+msgstr "%1 (Disk %2)"
 
 #: devices/musicbrainz.cpp:408
 msgid "No matches found in MusicBrainz"
@@ -1362,8 +1363,8 @@ msgid ""
 "No suitable ssh-askpass application installed! This is required for entering "
 "passwords."
 msgstr ""
-"Keine brauchbare ssh-askpass installiert. Dies wird benötigt um Passwörter "
-"eingeben zu können"
+"Kein brauchbares ssh-askpass installiert. Dies wird benötigt, um Passwörter "
+"eingeben zu können."
 
 #: devices/remotefsdevice.cpp:386
 msgid "Mount point (\"%1\") is not empty!"
@@ -1371,7 +1372,7 @@ msgstr "Einhängepunkt (\"%1\") ist nicht leer."
 
 #: devices/remotefsdevice.cpp:398
 msgid "\"sshfs\" is not installed!"
-msgstr "\"sshfs\" ist nicht installiert"
+msgstr "\"sshfs\" ist nicht installiert."
 
 #: devices/remotefsdevice.cpp:426 devices/remotefsdevice.cpp:446
 msgid "Disconnecting..."
@@ -1379,7 +1380,7 @@ msgstr "Verbindung beenden..."
 
 #: devices/remotefsdevice.cpp:440
 msgid "\"fusermount\" is not installed!"
-msgstr "\"fusermount\" ist nicht installiert!"
+msgstr "\"fusermount\" ist nicht installiert."
 
 #: devices/remotefsdevice.cpp:461 devices/remotefsdevice.cpp:482
 msgid "Failed to connect to \"%1\""
@@ -1566,14 +1567,14 @@ msgstr "Hinzufügen"
 
 #: dynamic/dynamicruledialog.cpp:191
 msgid "<i><b>ERROR</b>: 'From Year' should be less than 'To Year'</i>"
-msgstr "<i><b>FEHLER</b>: 'Von Jahr' muss weniger an 'Zu Jahr' sein</i>"
+msgstr "<i><b>Fehler:</b> 'Von Jahr' muss weniger an 'Zu Jahr' sein</i>"
 
 #: dynamic/dynamicruledialog.cpp:194
 msgid ""
 "<i><b>ERROR:</b> Date range is too large (can only be a maximum of %1 years)"
 "</i>"
 msgstr ""
-"<i><b>FEHLER:</b> Zeitraum ist zu lang (kann maximal nur %1 Jahre betragen)</"
+"<i><b>Fehler:</b> Zeitraum ist zu lang (kann maximal nur %1 Jahre betragen)</"
 "i>"
 
 #: dynamic/dynamicrulesdialog.cpp:68
@@ -2405,7 +2406,7 @@ msgstr "Bitte einen Namen für die Wiedergabeliste angeben"
 msgid "A playlist named <b>%1</b> already exists!<br/>Add to that playlist?"
 msgstr ""
 "Eine Wiedergabeliste mit Namen <b>%1</b>existiert bereits.<br/> Zur "
-"Abspielliste hinzufügen?"
+"Wiedergabeliste hinzufügen?"
 
 #: gui/mainwindow.cpp:2146
 msgid "Existing Playlist"
@@ -2625,7 +2626,8 @@ msgid ""
 "relevant host - Cantata itself cannot control the starting/stopping of this "
 "service.</i>"
 msgstr ""
-"<i><b>Beachten Sie:</b> 'Dynamizer port' ist nur relevant, wenn Sie 'dynamische "
+"<i><b>Beachten Sie:</b> 'Dynamizer port' ist nur relevant, wenn Sie "
+"'dynamische "
 "Playlisten' benutzen wollen. Um die  <code>cantata-dynamic</code>-Funktion "
 "zu benutzen <b>muss</b> diese bereits auf der relevanten MPD-Instanz "
 "installiert und gestartet sein. Cantata kann diesen Dienst nicht von sich "
@@ -2641,7 +2643,8 @@ msgid ""
 "then Cantata will use a per-user instance of the dynamizer to facilitate "
 "dynamic playlists.</i>"
 msgstr ""
-"<i><b>Beachten Sie:</b> 'Dynamizer port' ist nur relevant, wenn Sie 'dynamische "
+"<i><b>Beachten Sie:</b> 'Dynamizer port' ist nur relevant, wenn Sie "
+"'dynamische "
 "Wiedergabelisten' systemweit oder nicht lokal benutzen wollen. Um die  "
 "<code>cantata-dynamic</code>-Funktion zu benutzen, <b>muss</b> diese bereits "
 "auf der relevanten MPD-Instanz installiert und gestartet sein. Cantata kann "
@@ -2746,7 +2749,7 @@ msgstr "Angepasste Priorität"
 
 #: gui/stdactions.cpp:65
 msgid "Add To Playlist"
-msgstr "Zur Abspielliste hinzufügen"
+msgstr "Zur Wiedergabeliste hinzufügen"
 
 #: gui/stdactions.cpp:67 tags/trackorganiser.cpp:59
 msgid "Organize Files"
@@ -3095,12 +3098,13 @@ msgstr "Fehler beim Speichern von <b>%1</b>"
 #: mpd/mpdconnection.cpp:1171
 msgid "You cannot add parts of a cue sheet to a playlist!"
 msgstr ""
-"Sie können keine Teile eines Cue-Sheets zu einer Abspielliste hinzufügen."
+"Sie können keine Teile eines Cue-Sheets zu einer Wiedergabeliste hinzufügen."
 
 #: mpd/mpdconnection.cpp:1174
 msgid "You cannot add a playlist to another playlist!"
 msgstr ""
-"Sie können eine Abspielliste nicht zu einer anderen Abspielliste hinzufügen."
+"Sie können eine Wiedergabeliste nicht zu einer anderen Wiedergabeliste "
+"hinzufügen."
 
 #: mpd/mpdparseutils.cpp:663
 msgid "1 day %2"
@@ -3683,7 +3687,8 @@ msgid ""
 "<i><b>NOTE:</b> These settings are only editable when the device is not "
 "connected.</i>"
 msgstr ""
-"<i><b>Beachten Sie:</b> Diese Einstellungen sind nur gültig, wenn das Gerät nicht "
+"<i><b>Beachten Sie:</b> Diese Einstellungen sind nur gültig, wenn das Gerät "
+"nicht "
 "verbunden ist.</i>"
 
 #. i18n: file: devices/remotedevicepropertieswidget.ui:32
@@ -3838,7 +3843,8 @@ msgid ""
 "application (ksshaskpass, ssh-askpass-gnome, etc.) will be required to enter "
 "the password.</i>"
 msgstr ""
-"<i><b>Beachten Sie:</b> Aufgrund der Art wie sshfs arbeitet, benötigen Sie eine "
+"<i><b>Beachten Sie:</b> Aufgrund der Art wie sshfs arbeitet, benötigen Sie "
+"eine "
 "geeignete ssh-askpass-Anwendung (ksshaskpass, ssh-askpass-gnome usw.), um "
 "ein Kennwort eingeben zu können.</i>"
 
@@ -3851,7 +3857,8 @@ msgid ""
 "attached via USB, Cantata will automatically display the device when it is "
 "attached.</i>"
 msgstr ""
-"<i><b>Beachten Sie:</b> Dieser Dialog wird nur verwendet, um entfernte (z. B. via "
+"<i><b>Beachten Sie:</b> Dieser Dialog wird nur verwendet, um entfernte (z. B. "
+"via "
 "samba) Geräte hinzuzufügen, oder auf lokal eingehängte Ordner zuzugreifen. "
 "Für normale Medienabspieler, welche über USB eingehängt wurden, wird Cantata "
 "diese automatisch anzeigen</i>"
@@ -3967,7 +3974,8 @@ msgid ""
 "<i><b>NOTE</b> For genre, end string with an asterisk to match various "
 "genres. e.g 'rock*' matches 'Hard Rock' and 'Rock and Roll'. </i>"
 msgstr ""
-"<i><b>Beachten Sie:</b> Für Genre nach dem letzten Buchstaben ein * findet mehrere "
+"<i><b>Beachten Sie:</b> Für Genre nach dem letzten Buchstaben ein * findet "
+"mehrere "
 "Genre. z. B. 'rock*' findet 'Hard Rock' und 'Rock and Roll'.</i>"
 
 #. i18n: file: gui/coverdialog.ui:23
@@ -4058,7 +4066,8 @@ msgid ""
 "you export your existing streams. You can then re-import these to the new "
 "location (after you have toggled the setting).</i>"
 msgstr ""
-"<i><b>Beachten Sie:</b> Wenn Sie den Speicherort der Streams ändern (z. B. ändern "
+"<i><b>Beachten Sie:</b> Wenn Sie den Speicherort der Streams ändern (z. B. "
+"ändern "
 "der 'Speichere die Liste der Streams'-Einstellung wird Cantata nur den "
 "gültigen Speicherort anzeigen. Bevor Sie dies also tun, exportieren Sie die "
 "Liste der Streams. Sie können dann Liste der Stream wieder importieren.</i>"
@@ -4211,7 +4220,8 @@ msgid ""
 "<i><b>NOTE:</b> The 'Music folder' setting is used to lookup cover-art, "
 "lyrics, etc.</i>"
 msgstr ""
-"<i><b>Beachten Sie:</b> Die Musikverzeichnis-Einstellungen dienen der Suche nach "
+"<i><b>Beachten Sie:</b> Die Musikverzeichnis-Einstellungen dienen der Suche "
+"nach "
 "Covern, Liedtexten usw.</i>"
 
 #. i18n: file: gui/initialsettingswizard.ui:521
@@ -4227,7 +4237,8 @@ msgid ""
 "<i><b>NOTE:</b> When using a local socket the full absolute path to the "
 "socket needs to be set. (Port number is not required.)</i>"
 msgstr ""
-"<i><b>Beachten Sie:</b>Wenn Sie einen lokalen Domain-Socket benutzen, müssen Sie "
+"<i><b>Beachten Sie:</b>Wenn Sie einen lokalen Domain-Socket benutzen, müssen "
+"Sie "
 "den absoluten Pfad dorthin angeben. (Portnummer wird dann nicht benötigt.)</i>"
 
 #. i18n: file: gui/initialsettingswizard.ui:554
@@ -4271,7 +4282,8 @@ msgid ""
 "currently cannot upload files to external HTTP servers. Therefore, the above "
 "settings should be left disabled.</i>"
 msgstr ""
-"<i><b>Beachten Sie:</b> Das Musikverzeichnis ist auf eine  HTTP-Adresse gesetzt "
+"<i><b>Beachten Sie:</b> Das Musikverzeichnis ist auf eine  HTTP-Adresse "
+"gesetzt "
 "und "
 "Cantata kann aktuell keine Dateien hochladen. Die obrigen Einstellungen "
 "sollten deaktiviert werden.</i>"
@@ -4290,8 +4302,8 @@ msgid ""
 "extra MPD hosts, etc) then Canta's configuration dialog may be accessed from "
 "the menu triggered by the button in the top-right of Cantata's main window."
 msgstr ""
-"Cantata ist nun mit MPD verbunden. Wenn Sie weitere Konfiguration  "
-"(zusätzliche MPD Hosts, etc) möchten, dann kann über die Schaltfläche in der "
+"Cantata ist nun mit MPD verbunden. Wenn Sie weitere Konfiguration "
+"(zusätzliche MPD-Hosts usw.) möchten, dann kann über die Schaltfläche in der "
 "oberen rechten Ecke im Cantata-Hauptfenster darauf zugegriffen werden."
 
 #. i18n: file: gui/initialsettingswizard.ui:902
@@ -4366,7 +4378,8 @@ msgid ""
 "displayed, it will be cropped (either top/bottom, or left/right) to provide "
 "a square image.</i>"
 msgstr ""
-"<i><b>Beachten Sie:</b> Wenn nach Künstlerbildern gesucht wird, schaut Cantata "
+"<i><b>Beachten Sie:</b> Wenn nach Künstlerbildern gesucht wird, schaut "
+"Cantata "
 "nach 'Artist'.jpg oder 'Artist'.png\n"
 "im Ordner des aktuellen Titels oder im darüber liegenden Ordner. Ist kein "
 "Bild vorhanden, wird Cantata versuchen eines herunterzuladen. Wenn das Bild "
@@ -4531,7 +4544,8 @@ msgid ""
 "<i><b>NOTE:</b> Changing the 'Enforce single-click activation of items' "
 "setting will require a re-start of Cantata.</i>"
 msgstr ""
-"<i><b>Beachten Sie:</b> Änderung von 'Erzwinge Einzelklick'-Einstellung benötigt "
+"<i><b>Beachten Sie:</b> Änderung von 'Erzwinge Einzelklick'-Einstellung "
+"benötigt "
 "einen Neustart von Cantata.</i>"
 
 #. i18n: file: gui/mainwindow.ui:244
@@ -4595,7 +4609,8 @@ msgid ""
 "<i><b>NOTE:</b> This is only of use if you have MPD configured to output to "
 "a HTTP stream, and you wish Cantata to be able to play that stream.</i>"
 msgstr ""
-"<i><b>Beachten Sie:</b> Ausgabe des HTTP-Streams wird nur benutzt, wenn MPD zur "
+"<i><b>Beachten Sie:</b> Ausgabe des HTTP-Streams wird nur benutzt, wenn MPD "
+"zur "
 "Benutzung  von HTTP-Streams konfiguriert wurde und Sie wünschen, dass Cantata "
 "diesen benutzt.</i>"
 
@@ -4631,7 +4646,8 @@ msgid ""
 "shown allowing you to choose whether to stop playback now, or after the "
 "current track.</i>"
 msgstr ""
-"<i><b>Beachten Sie:</b> Wenn Sie die Stopp-Schaltfläche gedrückt halten, öffnet "
+"<i><b>Beachten Sie:</b> Wenn Sie die Stopp-Schaltfläche gedrückt halten, "
+"öffnet "
 "sich ein Menü für verschiedene Aktionen.</i>"
 
 #. i18n: file: gui/serversettings.ui:35
@@ -4682,7 +4698,8 @@ msgid ""
 "to manually update the music database. This can be performed by pressing the "
 "'Refresh Database' button in the 'Artists' or 'Albums' views.</i>"
 msgstr ""
-"<i><b>Beachten Sie:</b> Wenn sie die Einstellung zum Musikverzeichnis ändern, muss "
+"<i><b>Beachten Sie:</b> Wenn sie die Einstellung zum Musikverzeichnis ändern, "
+"muss "
 "die Musikbibliothek manuell aktualisiert werden. Dies kann über die "
 "Schaltfläche 'Aktualisiere Datenbank'  ausgeführt werden.</i>"
 
@@ -4693,7 +4710,8 @@ msgid ""
 "<i><b>NOTE:</b> If no setting is specified for 'Cover filename, then Cantata "
 "will use a default of <code>cover</code> </i>"
 msgstr ""
-"<i><b>Beachten Sie:</b> Wenn keine Einstellung zum Covernamen angegeben sind, wird "
+"<i><b>Beachten Sie:</b> Wenn keine Einstellung zum Covernamen angegeben sind, "
+"wird "
 "Cantata den voreingestellten Namen <code>cover</code> nehmen.</i>"
 
 #. i18n: file: http/httpserversettings.ui:25
@@ -5053,7 +5071,7 @@ msgid ""
 "Failed to import <b>%1</b>!<br/>Please check this is of the correct type."
 msgstr ""
 "Import von <b>%1</b> fehlgeschlagen.<br/>Bitte überprüfen Sie, ob der Typ "
-"korrekt ist,"
+"korrekt ist."
 
 #: streams/streamspage.cpp:262
 msgid "*.xml|XML Streams"

@@ -294,11 +294,15 @@ void PodcastService::unSubscribe(MusicLibraryItem *item)
 
 void PodcastService::refreshSubscription(MusicLibraryItem *item)
 {
-    QUrl url=static_cast<MusicLibraryItemPodcast *>(item)->rssUrl();
-    if (processingUrl(url)) {
-        return;
+    if (item) {
+        QUrl url=static_cast<MusicLibraryItemPodcast *>(item)->rssUrl();
+        if (processingUrl(url)) {
+            return;
+        }
+        addUrl(url, false);
+    } else {
+        updateRss();
     }
-    addUrl(url, false);
 }
 
 bool PodcastService::processingUrl(const QUrl &url)

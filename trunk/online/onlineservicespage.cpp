@@ -379,7 +379,7 @@ void OnlineServicesPage::controlActions()
     OnlineServicesModel::self()->configureAct()->setEnabled(canConfigure && 1==selected.count());
     OnlineServicesModel::self()->subscribeAct()->setEnabled(canSubscribe && 1==selected.count());
     OnlineServicesModel::self()->unSubscribeAct()->setEnabled(canUnSubscribe && 1==selected.count());
-    OnlineServicesModel::self()->refreshSubscriptionAct()->setEnabled(canUnSubscribe && 1==selected.count());
+    OnlineServicesModel::self()->refreshSubscriptionAct()->setEnabled((canUnSubscribe || canSubscribe) && 1==selected.count());
     OnlineServicesModel::self()->refreshAct()->setEnabled(canRefresh && 1==selected.count());
     downloadAction->setEnabled(!srvSelected && canDownload && !selected.isEmpty() && 1==services.count());
     StdActions::self()->addToPlayQueueAction->setEnabled(!srvSelected && !selected.isEmpty());
@@ -549,6 +549,19 @@ void OnlineServicesPage::refreshSubscription()
     }
 
     MusicLibraryItem *item=static_cast<MusicLibraryItem *>(proxy.mapToSource(selected.first()).internalPointer());
+
+    if (MusicLibraryItem::Type_Root==item->itemType()) {
+        PodcastService *srv=static_cast<PodcastService *>(item);
+        if (!srv->canSubscribe()) {
+            return;
+        }
+        if (MessageBox::No==MessageBox::warningYesNo(this, i18n("Refresh all podcast listings?"))) {
+            return;
+        }
+        srv->refreshSubscription(0);
+        return;
+    }
+
     if (MusicLibraryItem::Type_Podcast!=item->itemType()) {
         return;
     }

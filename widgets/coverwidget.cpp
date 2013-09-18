@@ -161,14 +161,18 @@ const QPixmap & CoverWidget::stdPixmap(bool stream)
         int iconSize=s.width()<=128 ? 128 : 256;
         pix = (stream ? Icons::self()->streamIcon : Icons::self()->albumIcon).pixmap(iconSize, iconSize).scaled(s, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
 
-        #ifndef Q_OS_WIN
         QString &file=stream ? noStreamCoverFileName : noCoverFileName;
         if (stream &file.isEmpty()) {
+            #ifdef Q_OS_WIN
+            QString iconFile=QCoreApplication::applicationDirPath()+"/icons/stream.png";
+            #else
             QString iconFile=QString(INSTALL_PREFIX"/share/")+QCoreApplication::applicationName()+"/icons/stream.png";
+            #endif
             if (QFile::exists(iconFile)) {
                 file=iconFile;
             }
         }
+        #ifndef Q_OS_WIN
         if (file.isEmpty()) {
             file=findIcon(stream ? QStringList() << "applications-internet" : QStringList() << "media-optical" << "media-optical-audio");
         }

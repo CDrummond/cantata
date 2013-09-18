@@ -113,12 +113,12 @@ bool MusicLibraryItemPodcast::load()
                     s.file=url;
                     s.track=++track;
                     s.artist=m_itemData;
-                    s.id=constTrue==attributes.value(constPlayedAttribute).toString() ? 1 : 0;
+                    s.setPlayed(constTrue==attributes.value(constPlayedAttribute).toString());
                     QString time=attributes.value(constTimeAttribute).toString();
                     s.time=time.isEmpty() ? 0 : time.toUInt();
                     MusicLibraryItemSong *song=new MusicLibraryItemSong(s, this);
                     m_childItems.append(song);
-                    if (!s.id) {
+                    if (!s.hasbeenPlayed()) {
                         m_unplayedEpisodeCount++;
                     }
                 }
@@ -170,7 +170,7 @@ bool MusicLibraryItemPodcast::loadRss(QIODevice *dev)
         s.track=++track;
         s.artist=m_itemData;
         s.time=ep.duration;
-        s.id=0;
+        s.setPlayed(false);
         MusicLibraryItemSong *song=new MusicLibraryItemSong(s, this);
         m_childItems.append(song);
     }
@@ -204,7 +204,7 @@ bool MusicLibraryItemPodcast::save()
         if (s.time) {
             writer.writeAttribute(constTimeAttribute, QString::number(s.time));
         }
-        if (s.id) {
+        if (s.hasbeenPlayed()) {
             writer.writeAttribute(constPlayedAttribute, constTrue);
         }
         writer.writeEndElement();
@@ -327,7 +327,7 @@ void MusicLibraryItemPodcast::updateTrackNumbers()
     m_unplayedEpisodeCount=0;
     foreach (MusicLibraryItem *i, m_childItems) {
         static_cast<MusicLibraryItemSong *>(i)->setTrack(++track);
-        if (!static_cast<MusicLibraryItemSong *>(i)->song().id) {
+        if (!static_cast<MusicLibraryItemSong *>(i)->song().hasbeenPlayed()) {
             m_unplayedEpisodeCount++;
         }
     }
@@ -335,8 +335,8 @@ void MusicLibraryItemPodcast::updateTrackNumbers()
 
 void MusicLibraryItemPodcast::setPlayed(MusicLibraryItemSong *song)
 {
-    if (!song->song().id) {
-        song->setId(1);
+    if (!song->song().hasbeenPlayed()) {
+        song->setPlayed(true);
         m_unplayedEpisodeCount--;
     }
 }

@@ -196,7 +196,7 @@ QVariant OnlineServicesModel::data(const QModelIndex &index, int role) const
     }
     case Qt::DecorationRole:
         if (MusicLibraryItem::Type_Song==item->itemType() && item->parentItem() && MusicLibraryItem::Type_Podcast==item->parentItem()->itemType()) {
-            if (static_cast<MusicLibraryItemSong *>(item)->song().id) {
+            if (static_cast<MusicLibraryItemSong *>(item)->song().hasbeenPlayed()) {
                 return Icons::self()->playedPodcastEpisodeIcon;
             }
         }

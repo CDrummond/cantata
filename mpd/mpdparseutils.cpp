@@ -253,11 +253,7 @@ Song MPDParseUtils::parseSong(const QByteArray &data, bool isPlayQueue)
     if (!song.file.isEmpty()) {
         if (song.isStream()) {
             if (!song.isCantataStream()) {
-		#ifdef TAGLIB_FOUND
                 if (!OnlineService::decode(song)) {
-		#else
-                if (true) {
-		#endif
                     QString name=getAndRemoveStreamName(song.file);
                     if (!name.isEmpty()) {
                         song.name=name;

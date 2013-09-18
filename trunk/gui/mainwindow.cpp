@@ -1359,8 +1359,8 @@ void MainWindow::controlDynamicButton()
 void MainWindow::readSettings()
 {
     checkMpdDir();
-    #ifdef TAGLIB_FOUND
     Covers::self()->setSaveInMpdDir(Settings::self()->storeCoversInMpdDir());
+    #ifdef TAGLIB_FOUND
     HttpServer::self()->readConfig();
     #endif
     #ifdef ENABLE_DEVICES_SUPPORT

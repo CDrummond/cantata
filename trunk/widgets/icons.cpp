@@ -361,7 +361,12 @@ Icons::Icons()
     consumeIcon=createConsumeIcon(stdColor, highlightColor);
     menuIcon=createMenuIcon(stdColor, highlightColor);
     streamCategoryIcon=Icon(QLatin1String("oxygen")==Icon::currentTheme().toLower() ? "inode-directory" : "folder-music");
+
+    #ifdef Q_OS_WIN
+    QString iconFile=QCoreApplication::applicationDirPath()+"/icons/stream.png";
+    #else
     QString iconFile=QString(INSTALL_PREFIX"/share/")+QCoreApplication::applicationName()+"/icons/stream.png";
+    #endif
     if (QFile::exists(iconFile)) {
         streamIcon.addFile(iconFile);
     }

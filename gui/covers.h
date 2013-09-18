@@ -37,7 +37,7 @@
 
 class QString;
 class Thread;
-class QNetworkReply;
+class NetworkJob;
 class QMutex;
 class QTimer;
 #ifdef ENABLE_KDE_SUPPORT
@@ -89,10 +89,10 @@ private Q_SLOTS:
 
 private:
     QString saveImg(const Job &job, const QImage &img, const QByteArray &raw);
-    QHash<QNetworkReply *, Job>::Iterator findJob(const Job &job);
+    QHash<NetworkJob *, Job>::Iterator findJob(const Job &job);
 
 private:
-    QHash<QNetworkReply *, Job> jobs;
+    QHash<NetworkJob *, Job> jobs;
 
 private:
     Thread *thread;

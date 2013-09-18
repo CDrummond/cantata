@@ -35,7 +35,6 @@
 #include <QScrollBar>
 #include <QFile>
 #include <QUrl>
-#include <QNetworkReply>
 #include <QProcess>
 #include <QMenu>
 #include <QTimer>

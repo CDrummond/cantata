@@ -32,7 +32,7 @@
 #include "actionmodel.h"
 
 class QTimer;
-class QNetworkReply;
+class NetworkJob;
 class QUdpSocket;
 
 class MulticastReceiver : public QObject
@@ -174,7 +174,7 @@ private:
     int statusTime;
     QString lastState;
     QString dynamicUrl;
-    QNetworkReply *currentJob;
+    NetworkJob *currentJob;
     Command currentCommand;
     QStringList currentArgs;
     Entry currentSave;

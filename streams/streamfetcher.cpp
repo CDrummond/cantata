@@ -249,7 +249,7 @@ void StreamFetcher::dataReady()
     data+=job->readAll();
 
     if (data.count()>constMaxData) {
-        QNetworkReply *thisJob=job;
+        NetworkJob *thisJob=job;
         disconnect(thisJob, SIGNAL(readyRead()), this, SLOT(dataReady()));
         disconnect(thisJob, SIGNAL(finished()), this, SLOT(jobFinished()));
         jobFinished(thisJob);
@@ -260,45 +260,34 @@ void StreamFetcher::dataReady()
 
 void StreamFetcher::jobFinished()
 {
-    QNetworkReply *reply=qobject_cast<QNetworkReply *>(sender());
+    NetworkJob *reply=qobject_cast<NetworkJob *>(sender());
     if (reply) {
         jobFinished(reply);
     }
 }
 
-void StreamFetcher::jobFinished(QNetworkReply *reply)
+void StreamFetcher::jobFinished(NetworkJob *reply)
 {
     // We only handle 1 job at a time!
     if (reply==job) {
         bool redirected=false;
         if (!reply->error()) {
-            QVariant redirect = reply->header(QNetworkRequest::LocationHeader);
-            if (redirect.isValid() && ++redirects<constMaxRedirects) {
-                current=redirect.toString();
-                DBUG << "real redirect" << current;
+            QString u=parse(data);
+            if (u.isEmpty() || u==current) {
+                DBUG << "use (empty/current)" << current;
+                done.append(MPDParseUtils::addStreamName(current.startsWith(StreamsModel::constPrefix) ? current.mid(StreamsModel::constPrefix.length()) : current, currentName));
+            } else if (u.startsWith(QLatin1String("http://")) && ++redirects<constMaxRedirects) {
+                // Redirect...
+                current=u;
+                DBUG << "semi-redirect" << current;
                 data.clear();
-                job=NetworkAccessManager::self()->get(current, constTimeout);
+                job=NetworkAccessManager::self()->get(u, constTimeout);
                 connect(job, SIGNAL(readyRead()), this, SLOT(dataReady()));
                 connect(job, SIGNAL(finished()), this, SLOT(jobFinished()));
                 redirected=true;
             } else {
-                QString u=parse(data);
-                if (u.isEmpty() || u==current) {
-                    DBUG << "use (empty/current)" << current;
-                    done.append(MPDParseUtils::addStreamName(current.startsWith(StreamsModel::constPrefix) ? current.mid(StreamsModel::constPrefix.length()) : current, currentName));
-                } else if (u.startsWith(QLatin1String("http://")) && ++redirects<constMaxRedirects) {
-                    // Redirect...
-                    current=u;
-                    DBUG << "semi-redirect" << current;
-                    data.clear();
-                    job=NetworkAccessManager::self()->get(u, constTimeout);
-                    connect(job, SIGNAL(readyRead()), this, SLOT(dataReady()));
-                    connect(job, SIGNAL(finished()), this, SLOT(jobFinished()));
-                    redirected=true;
-                } else {
-                    DBUG << "use" << u;
-                    done.append(MPDParseUtils::addStreamName(u, currentName));
-                }
+                DBUG << "use" << u;
+                done.append(MPDParseUtils::addStreamName(u, currentName));
             }
         } else {
             DBUG << "error " << reply->errorString() << " - use" << current;

@@ -117,7 +117,7 @@ void OnlineMusicLoader::fixLibrary()
 
 void OnlineMusicLoader::downloadFinished()
 {
-    QNetworkReply *reply=qobject_cast<QNetworkReply *>(sender());
+    NetworkJob *reply=qobject_cast<NetworkJob *>(sender());
     if (!reply) {
         return;
     }
@@ -128,9 +128,9 @@ void OnlineMusicLoader::downloadFinished()
         return;
     }
 
-    if(QNetworkReply::NoError==reply->error()) {
+    if (reply->ok()) {
         emit status(i18n("Parsing response"), -100);
-        QtIOCompressor comp(reply);
+        QtIOCompressor comp(reply->actualJob());
         comp.setStreamFormat(QtIOCompressor::GzipFormat);
         if (comp.open(QIODevice::ReadOnly)) {
             QXmlStreamReader reader;

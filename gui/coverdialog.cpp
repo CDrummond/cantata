@@ -454,41 +454,30 @@ static const char * constWidthProperty="w";
 static const char * constHeightProperty="h";
 static const char * constSizeProperty="sz";
 static const char * constTypeProperty="type";
-static const char * constRedirectsProperty="redirects";
 static const char * constLastFmHost="ws.audioscrobbler.com";
 static const char * constGoogleHost="images.google.com";
 static const char * constDiscogsHost="api.discogs.com";
 static const char * constCoverArtArchiveHost="coverartarchive.org";
 
-static const int constMaxRedirects=5;
-
 void CoverDialog::queryJobFinished()
 {
-    QNetworkReply *reply=qobject_cast<QNetworkReply *>(sender());
+    NetworkJob *reply=qobject_cast<NetworkJob *>(sender());
     if (!reply || !currentQuery.contains(reply)) {
         return;
     }
 
     currentQuery.remove(reply);
-    if(QNetworkReply::NoError==reply->error()) {
+    if (reply->ok()) {
         QString host=reply->property(constHostProperty).toString();
-        QVariant redirect = reply->header(QNetworkRequest::LocationHeader);
-        if (redirect.isValid()) {
-            int rd=reply->property(constRedirectsProperty).toInt();
-            if (rd<constMaxRedirects) {
-                sendQueryRequest(redirect.toUrl(), rd+1, host);
-            }
-        } else {
-            QByteArray resp=reply->readAll();
-            if (constLastFmHost==host) {
-                parseLstFmQueryResponse(resp);
-            } else if (constGoogleHost==host) {
-                parseGoogleQueryResponse(resp);
-            } else if (constDiscogsHost==host) {
-                parseDiscogsQueryResponse(resp);
-            } else if (constCoverArtArchiveHost==host) {
-                parseCoverArtArchiveQueryResponse(resp);
-            }
+        QByteArray resp=reply->readAll();
+        if (constLastFmHost==host) {
+            parseLstFmQueryResponse(resp);
+        } else if (constGoogleHost==host) {
+            parseGoogleQueryResponse(resp);
+        } else if (constDiscogsHost==host) {
+            parseDiscogsQueryResponse(resp);
+        } else if (constCoverArtArchiveHost==host) {
+            parseCoverArtArchiveQueryResponse(resp);
         }
     }
     reply->deleteLater();
@@ -538,7 +527,7 @@ void CoverDialog::insertItem(CoverItem *item)
 
 void CoverDialog::downloadJobFinished()
 {
-    QNetworkReply *reply=qobject_cast<QNetworkReply *>(sender());
+    NetworkJob *reply=qobject_cast<NetworkJob *>(sender());
     if (!reply || !currentQuery.contains(reply)) {
         return;
     }
@@ -550,88 +539,63 @@ void CoverDialog::downloadJobFinished()
     }
 
     currentQuery.remove(reply);
-    if(QNetworkReply::NoError==reply->error()) {
+    if (reply->ok()) {
         QString host=reply->property(constHostProperty).toString();
-        QVariant redirect = reply->header(QNetworkRequest::LocationHeader);
-        if (redirect.isValid()) {
-            int rd=reply->property(constRedirectsProperty).toInt();
-            if (rd<constMaxRedirects) {
-                QNetworkReply *j=downloadImage(redirect.toString(), dlType);
-                if (j) {
-                    j->setProperty(constRedirectsProperty, rd+1);
-                    QStringList stringProps=QStringList() << constHostProperty << constLargeProperty << constThumbProperty;
-                    QStringList intProps=QStringList() << constWidthProperty << constHeightProperty << constSizeProperty;
-                    foreach (const QString &prop, stringProps) {
-                        QVariant p=reply->property(prop.toLatin1().constData());
-                        if (p.isValid()) {
-                            j->setProperty(prop.toLatin1().constData(), p.toString());
-                        }
+        QString url=reply->url().toString();
+        QByteArray data=reply->readAll();
+        FileType fileType=url.endsWith(".jpg") || url.endsWith(".jpeg") ? FT_Jpg : (url.endsWith(".png") ? FT_Png : FT_Other);
+        QImage img=QImage::fromData(data, FT_Jpg==fileType ? "JPG" : (FT_Png==fileType ? "PNG" : 0));
+        if (!img.isNull()) {
+            bool isLarge=reply->property(constThumbProperty).toString().isEmpty();
+            QTemporaryFile *temp=0;
+
+            if (isLarge || (reply->property(constThumbProperty).toString()==reply->property(constLargeProperty).toString())) {
+                temp=new QTemporaryFile(QDir::tempPath()+"/cantata_XXXXXX."+(FT_Jpg==fileType ? "jpg" : "png"));
+
+                if (temp->open()) {
+                    if (FT_Other==fileType) {
+                        img.save(temp, "PNG");
+                    } else {
+                        temp->write(data);
                     }
-                    foreach (const QString &prop, intProps) {
-                        QVariant p=reply->property(prop.toLatin1().constData());
-                        if (p.isValid()) {
-                            j->setProperty(prop.toLatin1().constData(), p.toInt());
-                        }
+                    if (tempFiles.size()>=constMaxTempFiles) {
+                        QTemporaryFile *last=tempFiles.takeLast();
+                        last->remove();
+                        delete last;
                     }
+                    temp->setProperty(constLargeProperty, reply->property(constLargeProperty));
+                    tempFiles.prepend(temp);
+                } else {
+                    delete temp;
+                    temp=0;
                 }
             }
-        } else {
-            QString url=reply->url().toString();
-            QByteArray data=reply->readAll();
-            FileType fileType=url.endsWith(".jpg") || url.endsWith(".jpeg") ? FT_Jpg : (url.endsWith(".png") ? FT_Png : FT_Other);
-            QImage img=QImage::fromData(data, FT_Jpg==fileType ? "JPG" : (FT_Png==fileType ? "PNG" : 0));
-            if (!img.isNull()) {
-                bool isLarge=reply->property(constThumbProperty).toString().isEmpty();
-                QTemporaryFile *temp=0;
-
-                if (isLarge || (reply->property(constThumbProperty).toString()==reply->property(constLargeProperty).toString())) {
-                    temp=new QTemporaryFile(QDir::tempPath()+"/cantata_XXXXXX."+(FT_Jpg==fileType ? "jpg" : "png"));
-
-                    if (temp->open()) {
-                        if (FT_Other==fileType) {
-                            img.save(temp, "PNG");
-                        } else {
-                            temp->write(data);
-                        }
-                        if (tempFiles.size()>=constMaxTempFiles) {
-                            QTemporaryFile *last=tempFiles.takeLast();
-                            last->remove();
-                            delete last;
-                        }
-                        temp->setProperty(constLargeProperty, reply->property(constLargeProperty));
-                        tempFiles.prepend(temp);
-                    } else {
-                        delete temp;
-                        temp=0;
+            if (isLarge) {
+                if (DL_LargePreview==dlType) {
+                    previewDialog()->showImage(cropImage(img, isArtist), reply->property(constLargeProperty).toString());
+                } else if (DL_LargeSave==dlType) {
+                    if (!temp) {
+                        MessageBox::error(this, i18n("Failed to set cover!\nCould not download to temporary file!"));
+                    } else if (saveCover(temp->fileName(), img)) {
+                        accept();
                     }
                 }
-                if (isLarge) {
-                    if (DL_LargePreview==dlType) {
-                        previewDialog()->showImage(cropImage(img, isArtist), reply->property(constLargeProperty).toString());
-                    } else if (DL_LargeSave==dlType) {
-                        if (!temp) {
-                            MessageBox::error(this, i18n("Failed to set cover!\nCould not download to temporary file!"));
-                        } else if (saveCover(temp->fileName(), img)) {
-                            accept();
-                        }
-                    }
-                } else {
-                    CoverItem *item=0;
-                    img=cropImage(img, isArtist);
-                    if (constLastFmHost==host) {
-                        item=new LastFmCover(reply->property(constLargeProperty).toString(), url, img, list);
-                    } else if (constGoogleHost==host) {
-                        item=new GoogleCover(reply->property(constLargeProperty).toString(), url, img, reply->property(constWidthProperty).toInt(),
-                                             reply->property(constHeightProperty).toInt(), reply->property(constSizeProperty).toInt(), list);
-                    } else if (constDiscogsHost==host) {
-                        item=new DiscogsCover(reply->property(constLargeProperty).toString(), url, img, reply->property(constWidthProperty).toInt(),
-                                              reply->property(constHeightProperty).toInt(), list);
-                    } else if (constCoverArtArchiveHost==host) {
-                        item=new CoverArtArchiveCover(reply->property(constLargeProperty).toString(), url, img, list);
-                    }
-                    if (item) {
-                        insertItem(item);
-                    }
+            } else {
+                CoverItem *item=0;
+                img=cropImage(img, isArtist);
+                if (constLastFmHost==host) {
+                    item=new LastFmCover(reply->property(constLargeProperty).toString(), url, img, list);
+                } else if (constGoogleHost==host) {
+                    item=new GoogleCover(reply->property(constLargeProperty).toString(), url, img, reply->property(constWidthProperty).toInt(),
+                                         reply->property(constHeightProperty).toInt(), reply->property(constSizeProperty).toInt(), list);
+                } else if (constDiscogsHost==host) {
+                    item=new DiscogsCover(reply->property(constLargeProperty).toString(), url, img, reply->property(constWidthProperty).toInt(),
+                                          reply->property(constHeightProperty).toInt(), list);
+                } else if (constCoverArtArchiveHost==host) {
+                    item=new CoverArtArchiveCover(reply->property(constLargeProperty).toString(), url, img, list);
+                }
+                if (item) {
+                    insertItem(item);
                 }
             }
         }
@@ -664,7 +628,7 @@ void CoverDialog::showImage(QListWidgetItem *item)
         previewDialog()->showImage(((LocalCover *)cover)->image(), cover->url());
     } else {
         previewDialog()->downloading(cover->url());
-        QNetworkReply *j=downloadImage(cover->url(), DL_LargePreview);
+        NetworkJob *j=downloadImage(cover->url(), DL_LargePreview);
         if (j) {
             j->setProperty(constLargeProperty, cover->url());
             connect(j, SIGNAL(downloadProgress(qint64, qint64)), preview, SLOT(progress(qint64, qint64)));
@@ -805,7 +769,7 @@ void CoverDialog::checkStatus()
 
 void CoverDialog::cancelQuery()
 {
-    foreach (QNetworkReply *job, currentQuery) {
+    foreach (NetworkJob *job, currentQuery) {
         if (DL_Query==job->property(constTypeProperty).toInt()) {
             disconnect(job, SIGNAL(finished()), this, SLOT(queryJobFinished()));
         } else {
@@ -893,17 +857,16 @@ void CoverDialog::clearTempFiles()
     }
 }
 
-void CoverDialog::sendQueryRequest(const QUrl &url, int redirects, const QString &host)
+void CoverDialog::sendQueryRequest(const QUrl &url, const QString &host)
 {
-    QNetworkReply *j=NetworkAccessManager::self()->get(QNetworkRequest(url));
+    NetworkJob *j=NetworkAccessManager::self()->get(QNetworkRequest(url));
     j->setProperty(constHostProperty, host.isEmpty() ? url.host() : host);
     j->setProperty(constTypeProperty, (int)DL_Query);
-    j->setProperty(constRedirectsProperty, redirects);
     connect(j, SIGNAL(finished()), this, SLOT(queryJobFinished()));
     currentQuery.insert(j);
 }
 
-QNetworkReply * CoverDialog::downloadImage(const QString &url, DownloadType dlType)
+NetworkJob * CoverDialog::downloadImage(const QString &url, DownloadType dlType)
 {
     if (DL_Thumbnail==dlType) {
         if (currentUrls.contains(url)) {
@@ -937,11 +900,10 @@ QNetworkReply * CoverDialog::downloadImage(const QString &url, DownloadType dlTy
         saving=true;
     }
 
-    QNetworkReply *j=NetworkAccessManager::self()->get(QNetworkRequest(QUrl(url)));
+    NetworkJob *j=NetworkAccessManager::self()->get(QNetworkRequest(QUrl(url)));
     connect(j, SIGNAL(finished()), this, SLOT(downloadJobFinished()));
     currentQuery.insert(j);
     j->setProperty(constTypeProperty, (int)dlType);
-    j->setProperty(constRedirectsProperty, 0);
     if (saving) {
         previewDialog()->downloading(url);
         connect(j, SIGNAL(downloadProgress(qint64, qint64)), preview, SLOT(progress(qint64, qint64)));
@@ -1008,7 +970,7 @@ void CoverDialog::parseLstFmQueryResponse(const QByteArray &resp)
         }
 
         if (!largeUrl.isEmpty() && !thumbUrl.isEmpty()) {
-            QNetworkReply *j=downloadImage(thumbUrl, DL_Thumbnail);
+            NetworkJob *j=downloadImage(thumbUrl, DL_Thumbnail);
             if (j) {
                 j->setProperty(constHostProperty, constLastFmHost);
                 j->setProperty(constLargeProperty, largeUrl);
@@ -1050,7 +1012,7 @@ void CoverDialog::parseGoogleQueryResponse(const QByteArray &resp)
             QString largeUrl=url.queryItemValue("imgurl");
             QString thumbUrl=rx.cap(2);
             if (!thumbUrl.isEmpty() && !largeUrl.isEmpty()) {
-                QNetworkReply *j=downloadImage(thumbUrl, DL_Thumbnail);
+                NetworkJob *j=downloadImage(thumbUrl, DL_Thumbnail);
                 if (j) {
                     j->setProperty(constHostProperty, constGoogleHost);
                     j->setProperty(constLargeProperty, largeUrl);
@@ -1102,7 +1064,7 @@ void CoverDialog::parseDiscogsQueryResponse(const QByteArray &resp)
                             QString thumbUrl=rm["thumb"].toString();
                             if (thumbUrl.contains("/image/A-150-")) {
                                 QString largeUrl=thumbUrl.replace("image/A-150-", "/image/A-");
-                                QNetworkReply *j=downloadImage(thumbUrl, DL_Thumbnail);
+                                NetworkJob *j=downloadImage(thumbUrl, DL_Thumbnail);
                                 if (j) {
                                     j->setProperty(constHostProperty, constDiscogsHost);
                                     j->setProperty(constLargeProperty, largeUrl);
@@ -1124,7 +1086,7 @@ void CoverDialog::parseDiscogsQueryResponse(const QByteArray &resp)
                         QString thumbUrl=im["uri150"].toString();
                         QString largeUrl=im["uri"].toString();
                         if (!thumbUrl.isEmpty() && !largeUrl.isEmpty()) {
-                            QNetworkReply *j=downloadImage(thumbUrl, DL_Thumbnail);
+                            NetworkJob *j=downloadImage(thumbUrl, DL_Thumbnail);
                             if (j) {
                                 j->setProperty(constHostProperty, constDiscogsHost);
                                 j->setProperty(constLargeProperty, largeUrl);
@@ -1159,7 +1121,7 @@ void CoverDialog::parseCoverArtArchiveQueryResponse(const QByteArray &resp)
                     thumbUrl=thumb["large"].toString();
                 }
                 if (!thumbUrl.isEmpty() && !largeUrl.isEmpty()) {
-                    QNetworkReply *j=downloadImage(thumbUrl, DL_Thumbnail);
+                    NetworkJob *j=downloadImage(thumbUrl, DL_Thumbnail);
                     if (j) {
                         j->setProperty(constHostProperty, constCoverArtArchiveHost);
                         j->setProperty(constLargeProperty, largeUrl);
@@ -1183,7 +1145,7 @@ void CoverDialog::slotButtonClicked(int button)
                     accept();
                 }
             } else if (CoverItem::Type_Existing!=cover->type()) {
-                QNetworkReply *j=downloadImage(cover->url(), DL_LargeSave);
+                NetworkJob *j=downloadImage(cover->url(), DL_LargeSave);
                 if (j) {
                     j->setProperty(constLargeProperty, cover->url());
                 }

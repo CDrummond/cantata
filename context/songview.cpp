@@ -334,13 +334,13 @@ void SongView::update(const Song &s, bool force)
 
 void SongView::downloadFinished()
 {
-    QNetworkReply *reply=qobject_cast<QNetworkReply *>(sender());
+    NetworkJob *reply=qobject_cast<NetworkJob *>(sender());
     if (reply) {
         reply->deleteLater();
-        if (QNetworkReply::NoError==reply->error()) {
+        if (reply->ok()) {
             QString file=reply->property("file").toString();
             if (!file.isEmpty() && file==currentSong.file) {
-                QTextStream str(reply);
+                QTextStream str(reply->actualJob());
                 QString lyrics=str.readAll();
                 if (!lyrics.isEmpty()) {
                     text->setText(fixNewLines(lyrics));

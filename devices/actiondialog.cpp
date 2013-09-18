@@ -657,9 +657,6 @@ void ActionDialog::actionStatus(int status, bool copiedCover)
     case Device::FailedToUpdateTags:
         setPage(PAGE_SKIP, i18n("Failed to update metadata.<br/><br/<hr/>%1", formatSong(currentSong)));
         break;
-    case Device::TooManyRedirects:
-        setPage(PAGE_SKIP, i18n("Failed to download track - too many redirects encountered.<br/><br/<hr/>%1", formatSong(currentSong)));
-        break;
     case Device::DownloadFailed:
         setPage(PAGE_SKIP, i18n("Failed to download track.<br/><br/<hr/>%1", formatSong(currentSong)));
         break;

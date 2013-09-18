@@ -32,7 +32,6 @@
 #include "utils.h"
 #include "action.h"
 #include "thread.h"
-#include <QNetworkReply>
 #if QT_VERSION >= 0x050000
 #include <QUrlQuery>
 #endif
@@ -185,7 +184,7 @@ void WikipediaSettings::getLangs()
 
 void WikipediaSettings::parseLangs()
 {
-    QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
+    NetworkJob *reply = qobject_cast<NetworkJob*>(sender());
     if (!reply) {
         return;
     }

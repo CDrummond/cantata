@@ -315,7 +315,7 @@ bool Dynamic::save(const Entry &e)
 
         QNetworkRequest req(url);
         req.setHeader(QNetworkRequest::ContentTypeHeader, "text/plain");
-        currentJob=NetworkAccessManager::self()->post(req, string.toUtf8());
+        currentJob=new NetworkJob(NetworkAccessManager::self()->post(req, string.toUtf8()));
         connect(currentJob, SIGNAL(finished()), this, SLOT(remoteJobFinished()));
         currentCommand=Save;
         currentArgs.clear();
@@ -832,7 +832,7 @@ void Dynamic::sendCommand(Command cmd, const QStringList &args)
             url.setQuery(query);
             #endif
         
-            currentJob=NetworkAccessManager::self()->deleteResource(QNetworkRequest(url));
+            currentJob=new NetworkJob(NetworkAccessManager::self()->deleteResource(QNetworkRequest(url)));
         } else {
             currentCommand=Unknown;
             currentArgs.clear();
@@ -856,9 +856,9 @@ void Dynamic::sendCommand(Command cmd, const QStringList &args)
         if (SetActive==cmd || Control==cmd) {
             QNetworkRequest req(url);
             req.setHeader(QNetworkRequest::ContentTypeHeader, "text/plain");
-            currentJob=NetworkAccessManager::self()->post(req, QByteArray());
+            currentJob=new NetworkJob(NetworkAccessManager::self()->post(req, QByteArray()));
         } else {
-            currentJob=NetworkAccessManager::self()->get(QNetworkRequest(url));
+            currentJob=NetworkAccessManager::self()->get(url);
         }
     }
     if (List==cmd) {
@@ -949,7 +949,7 @@ void Dynamic::updateRemoteStatus()
 
 void Dynamic::remoteJobFinished()
 {
-    QNetworkReply *reply=qobject_cast<QNetworkReply *>(sender());
+    NetworkJob *reply=qobject_cast<NetworkJob *>(sender());
     if (!reply || reply!=currentJob) {
         return;
     }
@@ -958,7 +958,7 @@ void Dynamic::remoteJobFinished()
     reply->deleteLater();
 
     int httpResponse=reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-    bool cmdOk=QNetworkReply::NoError==reply->error() && (200==httpResponse || 201==httpResponse);
+    bool cmdOk=reply->ok() && (200==httpResponse || 201==httpResponse);
     DBUG << toString(currentCommand) << currentArgs << cmdOk;
     QString response;
     if (cmdOk) {

@@ -35,7 +35,7 @@ class ArtistView;
 class AlbumView;
 class SongView;
 class BackdropCreator;
-class QNetworkReply;
+class NetworkJob;
 class QStackedWidget;
 class QComboBox;
 class QImage;
@@ -103,10 +103,10 @@ private:
     void getFanArtBackdrop();
     void getDiscoGsImage();
     void createBackdrop();
-    QNetworkReply * getReply(QObject *obj);
+    NetworkJob * getReply(QObject *obj);
 
 private:
-    QNetworkReply *job;
+    NetworkJob *job;
     bool drawBackdrop;
     bool darkBackground;
 //    bool useHtBackdrops;

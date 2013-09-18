@@ -31,7 +31,7 @@
 #include <QSet>
 #include <QDateTime>
 
-class QNetworkReply;
+class NetworkJob;
 class QNetworkRequest;
 class QXmlStreamReader;
 class QIODevice;
@@ -264,7 +264,7 @@ private:
     void buildXml();
 
 private:
-    QMap<QNetworkReply *, CategoryItem *> jobs;
+    QMap<NetworkJob *, CategoryItem *> jobs;
     CategoryItem *root;
     CategoryItem *favourites;
     CategoryItem *tuneIn;

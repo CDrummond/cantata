@@ -29,7 +29,7 @@
 #include <QByteArray>
 #include <QStringList>
 
-class QNetworkReply;
+class NetworkJob;
 
 class StreamFetcher : public QObject
 {
@@ -58,10 +58,10 @@ private Q_SLOTS:
     void jobFinished();
 
 private:
-    void jobFinished(QNetworkReply *reply);
+    void jobFinished(NetworkJob *reply);
 
 private:
-    QNetworkReply *job;
+    NetworkJob *job;
     QString current;
     QString currentName;
     QStringList todo;

@@ -27,7 +27,7 @@
 #include "togglelist.h"
 #include <QMap>
 
-class QNetworkReply;
+class NetworkJob;
 class QShowEvent;
 class QListWidgetItem;
 class Spinner;
@@ -87,7 +87,7 @@ private:
 
 private:
     State state;
-    QNetworkReply *job;
+    NetworkJob *job;
     Spinner *spinner;
     Action *reload;
     QMap<int, QListWidgetItem *> prefMap;

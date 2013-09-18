@@ -38,7 +38,6 @@
 #include <QGridLayout>
 #include <QSpacerItem>
 #include <QPainter>
-#include <QNetworkReply>
 #if QT_VERSION >= 0x050000
 #include <QUrlQuery>
 #endif
@@ -660,7 +659,7 @@ void ContextWidget::getDiscoGsImage()
 
 //void ContextWidget::htBackdropsResponse()
 //{
-//    QNetworkReply *reply = getReply(sender());
+//    NetworkJob *reply = getReply(sender());
 //    if (!reply) {
 //        return;
 //    }
@@ -668,7 +667,7 @@ void ContextWidget::getDiscoGsImage()
 //    DBUG << "status" << reply->error() << reply->errorString();
 
 //    QString id;
-//    if (QNetworkReply::NoError==reply->error()) {
+//    if (reply->ok()) {
 //        QXmlStreamReader xml(reply);
 //        while (!xml.atEnd() && !xml.hasError() && id.isEmpty()) {
 //            xml.readNext();
@@ -694,7 +693,7 @@ void ContextWidget::getDiscoGsImage()
 //                }
 //            }
 //        }
-//    } else if (QNetworkReply::OperationCanceledError==reply->error()) {
+//    } else if (NetworkJob::OperationCanceledError==reply->error()) {
 //        // We timed out, someting wrong with htbackdrops? Jsut use auto-generated backdrops for now...
 //        useHtBackdrops=false;
 //    }
@@ -711,7 +710,7 @@ void ContextWidget::getDiscoGsImage()
 
 void ContextWidget::musicbrainzResponse()
 {
-    QNetworkReply *reply = getReply(sender());
+    NetworkJob *reply = getReply(sender());
     if (!reply) {
         return;
     }
@@ -719,7 +718,7 @@ void ContextWidget::musicbrainzResponse()
     DBUG << "status" << reply->error() << reply->errorString();
 
     bool inSection=false;
-    QXmlStreamReader doc(reply);
+    QXmlStreamReader doc(reply->actualJob());
     QString id;
 
     while (!doc.atEnd()) {
@@ -749,7 +748,7 @@ void ContextWidget::musicbrainzResponse()
 
 void ContextWidget::fanArtResponse()
 {
-    QNetworkReply *reply = getReply(sender());
+    NetworkJob *reply = getReply(sender());
     if (!reply) {
         return;
     }
@@ -757,13 +756,13 @@ void ContextWidget::fanArtResponse()
     DBUG << "status" << reply->error() << reply->errorString();
     QString url;
 
-    if (QNetworkReply::NoError==reply->error()) {
+    if (reply->ok()) {
         QJson::Parser parser;
         bool ok=false;
-            #ifdef Q_OS_WIN
-            QVariantMap parsed=parser.parse(reply->readAll(), &ok).toMap();
-            #else
-        QVariantMap parsed=parser.parse(reply, &ok).toMap();
+        #ifdef Q_OS_WIN
+        QVariantMap parsed=parser.parse(reply->readAll(), &ok).toMap();
+        #else
+        QVariantMap parsed=parser.parse(reply->actualJob(), &ok).toMap();
         #endif
         if (ok && !parsed.isEmpty()) {
             QVariantMap artist=parsed[parsed.keys().first()].toMap();
@@ -829,7 +828,7 @@ static bool matchesArtist(const QString &titleOrig, const QString &artistOrig)
 
 void ContextWidget::discoGsResponse()
 {
-    QNetworkReply *reply = getReply(sender());
+    NetworkJob *reply = getReply(sender());
     if (!reply) {
         return;
     }
@@ -837,13 +836,13 @@ void ContextWidget::discoGsResponse()
     DBUG << "status" << reply->error() << reply->errorString();
     QString url;
 
-    if (QNetworkReply::NoError==reply->error()) {
+    if (reply->ok()) {
         QJson::Parser parser;
         bool ok=false;
         #ifdef Q_OS_WIN
         QVariantMap parsed=parser.parse(reply->readAll(), &ok).toMap();
         #else
-        QVariantMap parsed=parser.parse(reply, &ok).toMap();
+        QVariantMap parsed=parser.parse(reply->actualJob(), &ok).toMap();
         #endif
         if (ok && parsed.contains("resp")) {
             QVariantMap response=parsed["resp"].toMap();
@@ -878,14 +877,14 @@ void ContextWidget::discoGsResponse()
 
 void ContextWidget::downloadResponse()
 {
-    QNetworkReply *reply = getReply(sender());
+    NetworkJob *reply = getReply(sender());
     if (!reply) {
         return;
     }
 
     DBUG << "status" << reply->error() << reply->errorString();
 
-    if (QNetworkReply::NoError!=reply->error()) {
+    if (!reply->ok()) {
         return;
     }
 
@@ -940,9 +939,9 @@ void ContextWidget::backdropCreated(const QString &artist, const QImage &img)
     }
 }
 
-QNetworkReply * ContextWidget::getReply(QObject *obj)
+NetworkJob * ContextWidget::getReply(QObject *obj)
 {
-    QNetworkReply *reply = qobject_cast<QNetworkReply*>(obj);
+    NetworkJob *reply = qobject_cast<NetworkJob*>(obj);
     if (!reply) {
         return 0;
     }

@@ -27,6 +27,7 @@
 #include "onlineservice.h"
 #include <QLatin1String>
 
+class NetworkJob;
 class SoundCloudService : public OnlineService
 {
     Q_OBJECT
@@ -58,7 +59,7 @@ private Q_SLOTS:
     void jobFinished();
 
 private:
-    QNetworkReply *job;
+    NetworkJob *job;
     QString currentSearch;
 };
 

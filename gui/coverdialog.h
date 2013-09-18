@@ -32,7 +32,7 @@
 #include <QSet>
 #include <QList>
 
-class QNetworkReply;
+class NetworkJob;
 class QUrl;
 class QTemporaryFile;
 class QListWidgetItem;
@@ -122,9 +122,9 @@ private:
     void sendDiscoGsQuery(const QString &fixedQuery, int page);
     CoverPreview *previewDialog();
     void insertItem(CoverItem *item);
-    QNetworkReply * downloadImage(const QString &url, DownloadType dlType);
+    NetworkJob * downloadImage(const QString &url, DownloadType dlType);
     void clearTempFiles();
-    void sendQueryRequest(const QUrl &url, int redirects=0, const QString &host=QString());
+    void sendQueryRequest(const QUrl &url, const QString &host=QString());
     void parseLstFmQueryResponse(const QByteArray &resp);
     void parseGoogleQueryResponse(const QByteArray &resp);
     void parseDiscogsQueryResponse(const QByteArray &resp);
@@ -138,7 +138,7 @@ private:
     Song song;
     ExistingCover *existing;
     QString currentQueryString;
-    QSet<QNetworkReply *> currentQuery;
+    QSet<NetworkJob *> currentQuery;
     QSet<QString> currentUrls;
     QSet<QString> currentLocalCovers;
     QList<QTemporaryFile *> tempFiles;

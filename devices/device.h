@@ -82,7 +82,6 @@ public:
         FailedToLockDevice,
 
         // These are for online services...
-        TooManyRedirects,
         DownloadFailed
     };
 

@@ -30,7 +30,7 @@
 class UltimateLyricsProvider;
 class QImage;
 class Action;
-class QNetworkReply;
+class NetworkJob;
 
 class SongView : public View
 {
@@ -94,7 +94,7 @@ private:
     Mode mode;
     QString lyricsFile;
     QString preEdit;
-    QNetworkReply *job;
+    NetworkJob *job;
 };
 
 #endif

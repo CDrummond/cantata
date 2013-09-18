@@ -25,7 +25,6 @@
 #include "networkaccessmanager.h"
 #include "localize.h"
 #include "settings.h"
-#include <QNetworkReply>
 #if QT_VERSION >= 0x050000
 #include <QUrlQuery>
 #endif
@@ -41,9 +40,7 @@ void WikipediaEngine::enableDebug()
 }
 
 static const char * constModeProperty="mode";
-static const char * constRedirectsProperty="redirects";
 static const char * constQueryProperty="query";
-static const int constMaxRedirects=3;
 
 static QString strip(const QString &string, QString open, QString close, QString inner=QString())
 {
@@ -334,7 +331,6 @@ void WikipediaEngine::requestTitles(const QStringList &query, Mode mode, const Q
 
     job=NetworkAccessManager::self()->get(url);
     job->setProperty(constModeProperty, (int)mode);
-    job->setProperty(constRedirectsProperty, 0);
     job->setProperty(constQueryProperty, query);
     DBUG <<  url.toString();
     connect(job, SIGNAL(finished()), this, SLOT(parseTitles()));
@@ -343,7 +339,7 @@ void WikipediaEngine::requestTitles(const QStringList &query, Mode mode, const Q
 void WikipediaEngine::parseTitles()
 {
     DBUG << __FUNCTION__;
-    QNetworkReply *reply = getReply(sender());
+    NetworkJob *reply = getReply(sender());
     if (!reply) {
         return;
     }
@@ -351,7 +347,7 @@ void WikipediaEngine::parseTitles()
     QUrl url=reply->url();
     QString hostLang=getLang(url);
     QByteArray data=reply->readAll();
-    if (QNetworkReply::NoError!=reply->error() || data.isEmpty()) {
+    if (!reply->ok() || data.isEmpty()) {
         DBUG <<  reply->errorString();
         emit searchResult(QString(), QString());
         return;
@@ -518,7 +514,6 @@ void WikipediaEngine::getPage(const QStringList &query, Mode mode, const QString
     job=NetworkAccessManager::self()->get(url);
     job->setProperty(constModeProperty, (int)mode);
     job->setProperty(constQueryProperty, query);
-    job->setProperty(constRedirectsProperty, 0);
     DBUG <<  url.toString();
     connect(job, SIGNAL(finished()), this, SLOT(parsePage()));
 }
@@ -526,26 +521,14 @@ void WikipediaEngine::getPage(const QStringList &query, Mode mode, const QString
 void WikipediaEngine::parsePage()
 {
     DBUG << __FUNCTION__;
-    QNetworkReply *reply = getReply(sender());
+    NetworkJob *reply = getReply(sender());
     if (!reply) {
         return;
     }
 
-    QVariant redirect = reply->header(QNetworkRequest::LocationHeader);
-    int numRirects=reply->property(constRedirectsProperty).toInt();
-    if (redirect.isValid() && ++numRirects<constMaxRedirects) {
-        job=NetworkAccessManager::self()->get(redirect.toString());
-        job->setProperty(constRedirectsProperty, numRirects);
-        job->setProperty(constModeProperty, reply->property(constModeProperty));
-        job->setProperty(constQueryProperty, reply->property(constQueryProperty));
-        DBUG <<  "Redirect" << redirect.toString();
-        connect(job, SIGNAL(finished()), this, SLOT(parsePage()));
-        return;
-    }
-
     QByteArray data=reply->readAll();
-    if (QNetworkReply::NoError!=reply->error() || data.isEmpty()) {
-    DBUG <<  "Empty/error";
+    if (!reply->ok() || data.isEmpty()) {
+        DBUG <<  "Empty/error";
         emit searchResult(QString(), QString());
         return;
     }

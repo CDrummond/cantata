@@ -103,7 +103,7 @@ void SoundCloudService::cancelAll()
 
 void SoundCloudService::jobFinished()
 {
-    QNetworkReply *j=dynamic_cast<QNetworkReply *>(sender());
+    NetworkJob *j=dynamic_cast<NetworkJob *>(sender());
     if (!j || j!=job) {
         return;
     }
@@ -114,7 +114,7 @@ void SoundCloudService::jobFinished()
     #ifdef Q_OS_WIN
     QVariant result = parser.parse(j->readAll());
     #else
-    QVariant result = parser.parse(j);
+    QVariant result = parser.parse(j->actualJob());
     #endif
     if (result.isValid()) {
         QVariantList list = result.toList();

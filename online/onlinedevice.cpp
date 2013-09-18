@@ -27,8 +27,6 @@
 #include "networkaccessmanager.h"
 #include <QDir>
 
-static const int constMaxRedirects=5;
-
 void OnlineDevice::copySongTo(const Song &s, const QString &baseDir, const QString &musicPath, bool overwrite, bool copyCover)
 {
     Q_UNUSED(copyCover)
@@ -42,7 +40,6 @@ void OnlineDevice::copySongTo(const Song &s, const QString &baseDir, const QStri
 
     overWrite=overWrite;
     lastProg=-1;
-    redirects=0;
     currentMpdDir=baseDir;
     currentDestFile=baseDir+musicPath;
 
@@ -59,7 +56,7 @@ void OnlineDevice::copySongTo(const Song &s, const QString &baseDir, const QStri
 
 void OnlineDevice::downloadFinished()
 {
-    QNetworkReply *reply=qobject_cast<QNetworkReply *>(sender());
+    NetworkJob *reply=qobject_cast<NetworkJob *>(sender());
     if (!reply) {
         return;
     }
@@ -70,29 +67,17 @@ void OnlineDevice::downloadFinished()
         return;
     }
 
-    if (QNetworkReply::NoError==reply->error()) {
-        QVariant redirect = reply->attribute(QNetworkRequest::RedirectionTargetAttribute);
+    if (reply->ok()) {
+        if (overWrite && QFile::exists(currentDestFile)) {
+            QFile::remove(currentDestFile);
+        }
 
-        if (redirect.isValid()) {
-            if (++redirects >= constMaxRedirects) {
-                emit actionStatus(TooManyRedirects);
-            } else {
-                job=NetworkAccessManager::self()->get(QUrl(redirect.toUrl()));
-                connect(job, SIGNAL(finished()), SLOT(downloadFinished()));
-                connect(job, SIGNAL(downloadProgress(qint64,qint64)), SLOT(downloadProgress(qint64,qint64)));
-            }
+        QFile f(currentDestFile);
+        if (f.open(QIODevice::WriteOnly)) {
+            f.write(reply->readAll());
+            emit actionStatus(Ok);
         } else {
-            if (overWrite && QFile::exists(currentDestFile)) {
-                QFile::remove(currentDestFile);
-            }
-
-            QFile f(currentDestFile);
-            if (f.open(QIODevice::WriteOnly)) {
-                f.write(reply->readAll());
-                emit actionStatus(Ok);
-            } else {
-                emit actionStatus(WriteFailed);
-            }
+            emit actionStatus(WriteFailed);
         }
     } else {
         emit actionStatus(DownloadFailed);

@@ -396,7 +396,7 @@ QImage OnlineServicesModel::requestImage(const QString &id, const QString &artis
     }
     if (url.endsWith(".jpg", Qt::CaseInsensitive) || url.endsWith(".jpeg", Qt::CaseInsensitive) || url.endsWith(".png", Qt::CaseInsensitive)) {
         // Need to download image...
-        NetworkJob *j=NetworkAccessManager::self()->getNew(QNetworkRequest(QUrl(url)));
+        NetworkJob *j=NetworkAccessManager::self()->get(QNetworkRequest(QUrl(url)));
         j->setProperty(constIdProperty, id);
         j->setProperty(constArtistProperty, artist);
         j->setProperty(constAlbumProperty, album);

@@ -24,10 +24,7 @@
 #include "ultimatelyricsprovider.h"
 #include "networkaccessmanager.h"
 #include "song.h"
-#include <QNetworkReply>
 #include <QTextCodec>
-
-static const int constRedirectLimit=5;
 
 static QString extract(const QString &source, const QString &begin, const QString &end)
 {
@@ -128,7 +125,6 @@ static QString titleCase(const QString &text)
 UltimateLyricsProvider::UltimateLyricsProvider()
     : enabled(true)
     , relevance(0)
-    , redirectCount(0)
 {
 }
 
@@ -161,16 +157,14 @@ void UltimateLyricsProvider::fetchInfo(int id, const Song &metadata)
     doUrlReplace("{a}",       firstChar(artistFixed),            urlText);
     doUrlReplace("{track}",   QString::number(metadata.track),   urlText);
 
-    // Fetch the URL, follow redirects
-    redirectCount = 0;
-    QNetworkReply *reply = NetworkAccessManager::self()->get(QNetworkRequest(QUrl(urlText)));
+    NetworkJob *reply = NetworkAccessManager::self()->get(QUrl(urlText));
     requests[reply] = id;
     connect(reply, SIGNAL(finished()), SLOT(lyricsFetched()));
 }
 
 void UltimateLyricsProvider::lyricsFetched()
 {
-    QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
+    NetworkJob *reply = qobject_cast<NetworkJob*>(sender());
     if (!reply) {
         return;
     }
@@ -178,32 +172,9 @@ void UltimateLyricsProvider::lyricsFetched()
     int id = requests.take(reply);
     reply->deleteLater();
 
-    if (QNetworkReply::NoError!=reply->error()) {
+    if (!reply->ok()) {
         //emit Finished(id);
         emit lyricsReady(id, QString());
-        return;
-    }
-
-    // Handle redirects
-    QVariant redirect_target = reply->attribute(QNetworkRequest::RedirectionTargetAttribute);
-    if (redirect_target.isValid()) {
-        if (redirectCount >= constRedirectLimit) {
-            //emit Finished(id);
-            emit lyricsReady(id, QString());
-            return;
-        }
-
-        QUrl target = redirect_target.toUrl();
-        if (target.scheme().isEmpty() || target.host().isEmpty()) {
-            QString path = target.path();
-            target = reply->url();
-            target.setPath(path);
-        }
-
-        redirectCount ++;
-        QNetworkReply* reply = NetworkAccessManager::self()->get(QNetworkRequest(target));
-        requests[reply] = id;
-        connect(reply, SIGNAL(finished()), SLOT(lyricsFetched()));
         return;
     }
 
@@ -212,11 +183,11 @@ void UltimateLyricsProvider::lyricsFetched()
     #else
     const QTextCodec *codec = QTextCodec::codecForName(charset.toLatin1().constData());
     #endif
-    const QString original_content = codec->toUnicode(reply->readAll());
+    const QString originalContent = codec->toUnicode(reply->readAll());
 
     // Check for invalid indicators
     foreach (const QString &indicator, invalidIndicators) {
-        if (original_content.contains(indicator)) {
+        if (originalContent.contains(indicator)) {
             //emit Finished(id);
             emit lyricsReady(id, QString());
             return;
@@ -227,7 +198,7 @@ void UltimateLyricsProvider::lyricsFetched()
 
     // Apply extract rules
     foreach (const Rule& rule, extractRules) {
-        QString content = original_content;
+        QString content = originalContent;
         applyExtractRule(rule, &content);
 
         if (!content.isEmpty()) {

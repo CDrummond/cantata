@@ -27,13 +27,13 @@
 #include "device.h"
 #include "song.h"
 
-class QNetworkReply;
+class NetworkJob;
 class OnlineDevice : public Device
 {
     Q_OBJECT
 
 public:
-    OnlineDevice() : Device(0, QString(), QString()), lastProg(-1), redirects(0), job(0) { }
+    OnlineDevice() : Device(0, QString(), QString()), lastProg(-1), job(0) { }
     virtual ~OnlineDevice() { }
 
     bool isConnected() const { return true; }
@@ -57,9 +57,8 @@ private Q_SLOTS:
 
 private:
     int lastProg;
-    int redirects;
     bool overWrite;
-    QNetworkReply *job;
+    NetworkJob *job;
 };
 
 #endif

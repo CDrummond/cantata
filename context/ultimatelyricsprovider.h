@@ -30,7 +30,7 @@
 #include <QHash>
 
 struct Song;
-class QNetworkReply;
+class NetworkJob;
 
 class UltimateLyricsProvider : public QObject {
     Q_OBJECT
@@ -68,7 +68,7 @@ private:
 
 private:
     bool enabled;
-    QHash<QNetworkReply*, int> requests;
+    QHash<NetworkJob *, int> requests;
     QString name;
     QString title;
     QString url;
@@ -78,7 +78,6 @@ private:
     QList<Rule> extractRules;
     QList<Rule> excludeRules;
     QStringList invalidIndicators;
-    int redirectCount;
 };
 
 #endif // ULTIMATELYRICSPROVIDER_H

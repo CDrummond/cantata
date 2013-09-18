@@ -319,7 +319,7 @@ bool PodcastService::processingUrl(const QUrl &url)
 void PodcastService::addUrl(const QUrl &url, bool isNew)
 {
     setBusy(true);
-    NetworkJob *job=NetworkAccessManager::self()->getNew(QUrl(url));
+    NetworkJob *job=NetworkAccessManager::self()->get(QUrl(url));
     connect(job, SIGNAL(finished()), this, SLOT(jobFinished()));
     job->setProperty(constNewFeedProperty, isNew);
     jobs.append(job);

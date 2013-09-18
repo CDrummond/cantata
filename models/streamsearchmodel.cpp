@@ -29,7 +29,6 @@
 #include "playqueuemodel.h"
 #include "networkaccessmanager.h"
 #include "stdactions.h"
-#include <QNetworkReply>
 #include <QString>
 #include <QVariant>
 #include <QXmlStreamReader>
@@ -192,7 +191,7 @@ void StreamSearchModel::fetchMore(const QModelIndex &index)
     StreamsModel::Item *item = toItem(index);
     if (item->isCategory() && !item->url.isEmpty()) {
         StreamsModel::CategoryItem *cat=static_cast<StreamsModel::CategoryItem *>(item);
-        QNetworkReply *job=NetworkAccessManager::self()->get(cat->url);
+        NetworkJob *job=NetworkAccessManager::self()->get(cat->url);
         if (jobs.isEmpty()) {
             emit loading();
         }
@@ -320,7 +319,7 @@ void StreamSearchModel::search(const QString &searchTerm, bool stationsOnly)
     #if QT_VERSION >= 0x050000
     searchUrl.setQuery(query);
     #endif
-    QNetworkReply *job=NetworkAccessManager::self()->get(searchUrl);
+    NetworkJob *job=NetworkAccessManager::self()->get(searchUrl);
     if (jobs.isEmpty()) {
         emit loading();
     }
@@ -331,8 +330,8 @@ void StreamSearchModel::search(const QString &searchTerm, bool stationsOnly)
 void StreamSearchModel::cancelAll()
 {
     if (!jobs.isEmpty()) {
-        QList<QNetworkReply *> jobList=jobs.keys();
-        foreach (QNetworkReply *j, jobList) {
+        QList<NetworkJob *> jobList=jobs.keys();
+        foreach (NetworkJob *j, jobList) {
             j->abort();
             j->deleteLater();
             disconnect(j, SIGNAL(finished()), this, SLOT(jobFinished()));
@@ -353,7 +352,7 @@ void StreamSearchModel::setCat(Category c)
 
 void StreamSearchModel::jobFinished()
 {
-    QNetworkReply *job=dynamic_cast<QNetworkReply *>(sender());
+    NetworkJob *job=dynamic_cast<NetworkJob *>(sender());
 
     if (!job) {
         return;
@@ -366,10 +365,10 @@ void StreamSearchModel::jobFinished()
         jobs.remove(job);
 
         QModelIndex index=cat==root ? QModelIndex() : createIndex(cat->parent->children.indexOf(cat), 0, (void *)cat);
-        if (QNetworkReply::NoError==job->error()) {
+        if (job->ok()) {
             QList<StreamsModel::Item *> newItems=TuneIn==category
-                                                    ? StreamsModel::parseRadioTimeResponse(job, cat, true)
-                                                    : StreamsModel::parseShoutCastSearchResponse(job, cat);
+                                                    ? StreamsModel::parseRadioTimeResponse(job->actualJob(), cat, true)
+                                                    : StreamsModel::parseShoutCastSearchResponse(job->actualJob(), cat);
             if (!newItems.isEmpty()) {
                 beginInsertRows(index, cat->children.count(), (cat->children.count()+newItems.count())-1);
                 cat->children+=newItems;

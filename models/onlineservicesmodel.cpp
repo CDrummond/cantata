@@ -173,6 +173,8 @@ QVariant OnlineServicesModel::data(const QModelIndex &index, int role) const
             }
             if (srv->canLoad()) {
                 actions << refreshAction;
+            } else if (srv->canSubscribe() && !srv->childItems().isEmpty()) {
+                actions << refreshSubscriptionAction;
             }
             if (srv->isSearchBased() || srv->isLoaded()) {
                 actions << StdActions::self()->searchAction;

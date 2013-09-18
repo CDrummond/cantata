@@ -701,7 +701,13 @@ bool Settings::inhibitSuspend()
 
 int Settings::rssUpdate()
 {
-    return GET_INT("rssUpdate", 0);
+    int v=GET_INT("rssUpdate", 0);
+    return v<60 ? 60 : v;
+}
+
+QDateTime Settings::lastRssUpdate()
+{
+    return GET_DATE_TIME("lastRssUpdate");
 }
 
 void Settings::removeConnectionDetails(const QString &v)
@@ -1126,6 +1132,11 @@ void Settings::saveInhibitSuspend(bool v)
 void Settings::saveRssUpdate(int v)
 {
     SET_VALUE_MOD(rssUpdate);
+}
+
+void Settings::saveLastRssUpdate(const QDateTime &v)
+{
+    SET_VALUE_MOD(lastRssUpdate);
 }
 
 void Settings::save(bool force)

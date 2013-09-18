@@ -369,7 +369,8 @@ Icons::Icons()
         streamIcon=Icon("applications-internet");
     }
     albumIcon=Icon("media-optical");
-    podcastIcon=albumIcon; // TODO!!!
+    podcastIcon=Icon("inode-directory");
+    playedPodcastEpisodeIcon=Icon("dialog-ok");
     audioFileIcon=Icon("audio-x-generic");
     playlistIcon=Icon("view-media-playlist");
     dynamicRuleIcon=Icon("media-playlist-shuffle");
@@ -418,6 +419,12 @@ Icons::Icons()
         connectIcon=Icon("gtk-stock-ok");
         if (connectIcon.isNull()) {
             connectIcon=Icon("go-bottom");
+        }
+    }
+    if (playedPodcastEpisodeIcon.isNull()) {
+        playedPodcastEpisodeIcon=Icon("gtk-stock-ok");
+        if (playedPodcastEpisodeIcon.isNull()) {
+            playedPodcastEpisodeIcon=Icon("starred");
         }
     }
     if (speakerIcon.isNull()) {

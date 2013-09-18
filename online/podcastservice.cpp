@@ -30,6 +30,7 @@
 #include "settings.h"
 #include "dialog.h"
 #include "buddylabel.h"
+#include "mpdconnection.h"
 #include <QDir>
 #include <QUrl>
 #include <QSet>
@@ -101,6 +102,7 @@ PodcastService::PodcastService(MusicModel *m)
     setUseArtistImages(false);
     setUseAlbumImages(false);
     loadAll();
+    connect(MPDConnection::self(), SIGNAL(currentSongUpdated(const Song &)), this, SLOT(currentMpdSong(const Song &)));
 }
 
 Song PodcastService::fixPath(const Song &orig, bool) const
@@ -194,9 +196,13 @@ void PodcastService::jobFinished()
             }
             QSet<QString> origSongs;
             QSet<QString> newSongs;
+            QSet<QString> playedSongs;
             foreach (MusicLibraryItem *i, orig->childItems()) {
                 MusicLibraryItemSong *song=static_cast<MusicLibraryItemSong *>(i);
                 origSongs.insert(song->file()+song->data());
+                if (song->song().id) {
+                    playedSongs.insert(song->file());
+                }
             }
             foreach (MusicLibraryItem *i, podcast->childItems()) {
                 MusicLibraryItemSong *song=static_cast<MusicLibraryItemSong *>(i);
@@ -218,6 +224,20 @@ void PodcastService::jobFinished()
                     endInsertRows();
                 }
                 orig->updateTrackNumbers();
+
+                // Restore played status...
+                foreach (MusicLibraryItem *i, orig->childItems()) {
+                    MusicLibraryItemSong *song=static_cast<MusicLibraryItemSong *>(i);
+                    if (playedSongs.contains(song->file())) {
+                        orig->setPlayed(song);
+                        playedSongs.remove(song->file());
+                        if (playedSongs.isEmpty()) {
+                            break;
+                        }
+                    }
+                }
+
+                orig->save();
                 emitUpdated();
             }
 
@@ -311,7 +331,7 @@ void PodcastService::startTimer()
         updateTimer=new QTimer(this);
         connect(updateTimer, SIGNAL(timeout()), this, SLOT(updateRss()));
     }
-    updateTimer->start(Settings::self()->rssUpdate()*1000);
+    updateTimer->start(Settings::self()->rssUpdate()*60*1000);
 }
 
 void PodcastService::stopTimer()
@@ -327,6 +347,27 @@ void PodcastService::updateRss()
         QUrl url=static_cast<MusicLibraryItemPodcast *>(i)->rssUrl();
         if (!processingUrl(url)) {
             addUrl(url, false);
+        }
+    }
+}
+
+void PodcastService::currentMpdSong(const Song &s)
+{
+    if (0xFF==s.disc && s.file.startsWith("http://") && constName==s.album) {
+        foreach (MusicLibraryItem *p, m_childItems) {
+            MusicLibraryItemPodcast *podcast=static_cast<MusicLibraryItemPodcast *>(p);
+            foreach (MusicLibraryItem *i, podcast->childItems()) {
+                MusicLibraryItemSong *song=static_cast<MusicLibraryItemSong *>(i);
+                if (song->file()==s.file) {
+                    if (!song->song().id) {
+                        podcast->setPlayed(song);
+                        emitDataChanged(createIndex(song));
+                        emitDataChanged(createIndex(podcast));
+                        podcast->save();
+                    }
+                    return;
+                }
+            }
         }
     }
 }

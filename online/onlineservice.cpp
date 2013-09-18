@@ -408,6 +408,11 @@ void OnlineService::emitError(const QString &msg)
     emit static_cast<OnlineServicesModel *>(m_model)->error(msg);
 }
 
+void OnlineService::emitDataChanged(const QModelIndex &idx)
+{
+    emit static_cast<OnlineServicesModel *>(m_model)->dataChanged(idx, idx);
+}
+
 void OnlineService::setBusy(bool b)
 {
     static_cast<OnlineServicesModel *>(m_model)->setBusy(id(), b);

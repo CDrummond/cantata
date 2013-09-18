@@ -47,6 +47,7 @@ public:
     void setFile(const QString &f) { m_song.file=f; }
     quint16 track() const { return m_song.track; }
     void setTrack(quint16 t) { m_song.track=t; }
+    void setId(qint32 i) { m_song.id=i; }
     quint16 disc() const { return m_song.disc; }
     quint32 time() const { return m_song.time; }
     const QString & genre() const { return m_song.genre; }

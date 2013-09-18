@@ -49,7 +49,8 @@ public:
         : MusicLibraryItemContainer(QString(), parent)
         , m_coverIsDefault(false)
         , m_cover(0)
-        , m_fileName(fileName) {
+        , m_fileName(fileName)
+        , m_unplayedEpisodeCount(0) {
     }
     virtual ~MusicLibraryItemPodcast() { }
 
@@ -69,6 +70,8 @@ public:
     const QUrl & rssUrl() const { return m_rssUrl; }
     void removeFiles();
     void updateTrackNumbers();
+    quint32 unplayedEpisodes() const { return m_unplayedEpisodeCount; }
+    void setPlayed(MusicLibraryItemSong *song);
 
 private:
     void setCoverImage(const QImage &img) const;
@@ -81,6 +84,7 @@ private:
     QUrl m_imageUrl;
     QUrl m_rssUrl;
     QString m_fileName;
+    quint32 m_unplayedEpisodeCount;
 };
 
 #endif

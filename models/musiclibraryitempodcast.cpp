@@ -51,7 +51,7 @@ static QLatin1String constEpisodeTag("episode");
 static QLatin1String constNameAttribute("name");
 static QLatin1String constUrlAttribute("url");
 static QLatin1String constTimeAttribute("time");
-static QLatin1String constReadAttribute("read");
+static QLatin1String constPlayedAttribute("played");
 static QLatin1String constTrue("true");
 
 const QString MusicLibraryItemPodcast::constExt=QLatin1String(".xml.gz");
@@ -89,6 +89,7 @@ bool MusicLibraryItemPodcast::load()
     }
 
     QXmlStreamReader reader(&compressor);
+    m_unplayedEpisodeCount=0;
     while (!reader.atEnd()) {
         reader.readNext();
         if (!reader.error() && reader.isStartElement()) {
@@ -112,11 +113,14 @@ bool MusicLibraryItemPodcast::load()
                     s.file=url;
                     s.track=++track;
                     s.artist=m_itemData;
-                    s.id=constTrue==attributes.value(constReadAttribute).toString() ? 1 : 0;
+                    s.id=constTrue==attributes.value(constPlayedAttribute).toString() ? 1 : 0;
                     QString time=attributes.value(constTimeAttribute).toString();
                     s.time=time.isEmpty() ? 0 : time.toUInt();
                     MusicLibraryItemSong *song=new MusicLibraryItemSong(s, this);
                     m_childItems.append(song);
+                    if (!s.id) {
+                        m_unplayedEpisodeCount++;
+                    }
                 }
             }
         }
@@ -157,6 +161,7 @@ bool MusicLibraryItemPodcast::loadRss(QIODevice *dev)
     m_imageUrl=ch.image;
     m_itemData=ch.name;
 
+    m_unplayedEpisodeCount=ch.episodes.count();
     int track=0;
     foreach (const RssParser::Episode &ep, ch.episodes) {
         Song s;
@@ -200,7 +205,7 @@ bool MusicLibraryItemPodcast::save()
             writer.writeAttribute(constTimeAttribute, QString::number(s.time));
         }
         if (s.id) {
-            writer.writeAttribute(constReadAttribute, constTrue);
+            writer.writeAttribute(constPlayedAttribute, constTrue);
         }
         writer.writeEndElement();
     }
@@ -319,8 +324,20 @@ void MusicLibraryItemPodcast::updateTrackNumbers()
 {
     quint16 track=0;
     resetRows();
+    m_unplayedEpisodeCount=0;
     foreach (MusicLibraryItem *i, m_childItems) {
         static_cast<MusicLibraryItemSong *>(i)->setTrack(++track);
+        if (!static_cast<MusicLibraryItemSong *>(i)->song().id) {
+            m_unplayedEpisodeCount++;
+        }
+    }
+}
+
+void MusicLibraryItemPodcast::setPlayed(MusicLibraryItemSong *song)
+{
+    if (!song->song().id) {
+        song->setId(1);
+        m_unplayedEpisodeCount--;
     }
 }
 

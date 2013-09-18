@@ -63,9 +63,7 @@ class FolderPage;
 class PlaylistsPage;
 class DynamicPage;
 class StreamsPage;
-#ifdef TAGLIB_FOUND
 class OnlineServicesPage;
-#endif
 #ifdef ENABLE_DEVICES_SUPPORT
 class DevicesPage;
 #endif
@@ -374,8 +372,8 @@ private:
     Action *playlistsTabAction;
     Action *dynamicTabAction;
     Action *streamsTabAction;
-    #ifdef TAGLIB_FOUND
     Action *onlineTabAction;
+    #ifdef TAGLIB_FOUND
     Action *editPlayQueueTagsAction;
     #endif
     #ifdef ENABLE_DEVICES_SUPPORT
@@ -398,9 +396,7 @@ private:
     PlaylistsPage *playlistsPage;
     DynamicPage *dynamicPage;
     StreamsPage *streamsPage;
-    #ifdef TAGLIB_FOUND
     OnlineServicesPage *onlinePage;
-    #endif
     QWidget *contextPage;
     #ifdef ENABLE_DEVICES_SUPPORT
     DevicesPage *devicesPage;

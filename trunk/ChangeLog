@@ -33,14 +33,15 @@
 15. Make playqueue search consisten with view search - ie. only show search on
     activating 'Search Play Queue', do not toggle.
 16. Initial MacOS port - thanks to Ian Scott
-17. Online services support does not require taglib.
-18. Podcast support.
+17. Podcast support.
 
 1.1.3
 -----
 1. (Hopefully) fix selection order of items - and order added to playqueue.
 2. Update German translation, use 'ß' instead of 'ss' for certain words.
 3. Add Russian translation, thanks to Julia Dronova.
+4. Online services support does not require taglib.
+
 
 1.1.2
 -----

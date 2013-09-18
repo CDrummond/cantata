@@ -55,7 +55,9 @@ set(CANTATA_SRCS gui/application.cpp gui/main.cpp gui/initialsettingswizard.cpp 
     models/playqueueproxymodel.cpp models/dirviewmodel.cpp models/dirviewproxymodel.cpp models/dirviewitem.cpp models/dirviewitemdir.cpp
     models/streamsmodel.cpp models/streamsproxymodel.cpp models/albumsmodel.cpp models/albumsproxymodel.cpp models/proxymodel.cpp
     models/actionmodel.cpp models/digitallyimported.cpp models/streamsearchmodel.cpp models/musiclibraryitem.cpp models/musicmodel.cpp
-    models/multimusicmodel.cpp
+    models/multimusicmodel.cpp models/onlineservicesmodel.cpp
+    online/onlineservicespage.cpp online/onlineservice.cpp online/jamendoservice.cpp online/jamendosettingsdialog.cpp
+    online/magnatuneservice.cpp online/magnatunesettingsdialog.cpp online/soundcloudservice.cpp
     mpd/mpdconnection.cpp mpd/mpdparseutils.cpp mpd/mpdstats.cpp mpd/mpdstatus.cpp mpd/song.cpp mpd/mpduser.cpp mpd/cuefile.cpp
     dynamic/dynamic.cpp dynamic/dynamicpage.cpp dynamic/dynamicproxymodel.cpp dynamic/dynamicruledialog.cpp dynamic/dynamicrulesdialog.cpp
     widgets/treeview.cpp widgets/listview.cpp widgets/itemview.cpp widgets/autohidingsplitter.cpp widgets/timeslider.cpp
@@ -76,7 +78,10 @@ set(CANTATA_MOC_HDRS
     streams/streamspage.h streams/streamdialog.h streams/streamfetcher.h streams/digitallyimportedsettings.h
     models/musiclibrarymodel.h models/musiclibraryproxymodel.h models/playlistsmodel.h models/playlistsproxymodel.h models/playqueuemodel.h
     models/playqueueproxymodel.h models/dirviewmodel.h models/dirviewproxymodel.h models/albumsmodel.h models/streamsmodel.h
-    models/actionmodel.h models/digitallyimported.h models/streamsearchmodel.h models/multimusicmodel.h
+    models/actionmodel.h models/digitallyimported.h models/streamsearchmodel.h models/multimusicmodel.h models/onlineservicesmodel.h
+    online/onlineservice.h online/onlineservicespage.h online/jamendoservice.h online/magnatuneservice.h
+    online/magnatunesettingsdialog.h online/magnatuneservice.h online/magnatunesettingsdialog.h
+    online/soundcloudservice.h
     mpd/mpdconnection.h mpd/mpdstats.h mpd/mpdstatus.h
     dynamic/dynamic.h dynamic/dynamicpage.h dynamic/dynamicruledialog.h dynamic/dynamicrulesdialog.h
     widgets/treeview.h widgets/listview.h widgets/itemview.h widgets/autohidingsplitter.h widgets/timeslider.h widgets/actionlabel.h
@@ -93,7 +98,8 @@ set(CANTATA_UIS
     streams/streamspage.ui streams/digitallyimportedsettings.ui
     dynamic/dynamicpage.ui dynamic/dynamicrule.ui dynamic/dynamicrules.ui
     context/togglelist.ui context/othersettings.ui
-    widgets/itemview.ui)
+    widgets/itemview.ui
+    online/onlineservicespage.ui)
 
 if (ENABLE_TAGLIB)
     set(TAGLIB_MIN_VERSION "1.6")
@@ -123,23 +129,15 @@ if (TAGLIB_FOUND)
     set(CANTATA_SRCS ${CANTATA_SRCS}
         tags/tageditor.cpp tags/trackorganiser.cpp tags/tags.cpp
         devices/filenameschemedialog.cpp
-        http/httpserversettings.cpp http/httpserver.cpp http/httpsocket.cpp
-        online/onlineservicespage.cpp online/onlineservice.cpp online/jamendoservice.cpp online/jamendosettingsdialog.cpp
-        online/magnatuneservice.cpp online/magnatunesettingsdialog.cpp online/soundcloudservice.cpp online/onlinedevice.cpp
-        models/onlineservicesmodel.cpp)
+        http/httpserversettings.cpp http/httpserver.cpp http/httpsocket.cpp)
     set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS}
         tags/tageditor.h tags/trackorganiser.h
         http/httpserversettings.h http/httpsocket.h
-        devices/filenameschemedialog.h devices/device.h
-        online/onlineservice.h online/onlineservicespage.h online/jamendoservice.h online/magnatuneservice.h
-        online/magnatunesettingsdialog.h online/onlinedevice.h online/magnatuneservice.h online/magnatunesettingsdialog.h
-        online/onlinedevice.h online/soundcloudservice.h
-        models/onlineservicesmodel.h)
+        devices/filenameschemedialog.h devices/device.h)
     set(CANTATA_UIS ${CANTATA_UIS}
         http/httpserversettings.ui
         tags/tageditor.ui tags/trackorganiser.ui
-        devices/filenameschemedialog.ui
-         online/onlineservicespage.ui)
+        devices/filenameschemedialog.ui)
 endif (TAGLIB_FOUND)
 
 if (NOT WIN32)
@@ -323,11 +321,13 @@ if (TAGLIB_FOUND)
                 devices/device.cpp devices/fsdevice.cpp devices/umsdevice.cpp
                 models/devicesmodel.cpp tags/filetyperesolver.cpp devices/actiondialog.cpp devices/devicepropertieswidget.cpp
                 devices/devicepropertiesdialog.cpp devices/encoders.cpp devices/freespaceinfo.cpp
-                devices/transcodingjob.cpp devices/valueslider.cpp devices/syncdialog.cpp devices/synccollectionwidget.cpp)
+                devices/transcodingjob.cpp devices/valueslider.cpp devices/syncdialog.cpp devices/synccollectionwidget.cpp
+                online/onlinedevice.cpp)
         set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} devices/devicespage.h devices/filejob.h
                 devices/fsdevice.h devices/umsdevice.h models/devicesmodel.h
                 devices/actiondialog.h devices/devicepropertieswidget.h devices/devicepropertiesdialog.h
-                devices/transcodingjob.h devices/valueslider.h devices/syncdialog.h devices/synccollectionwidget.h)
+                devices/transcodingjob.h devices/valueslider.h devices/syncdialog.h devices/synccollectionwidget.h
+                online/onlinedevice.h)
         set(CANTATA_UIS ${CANTATA_UIS} devices/devicespage.ui devices/actiondialog.ui devices/devicepropertieswidget.ui
                 devices/synccollectionwidget.ui)
 
@@ -567,7 +567,6 @@ if (TAGLIB_FOUND)
 else (TAGLIB_FOUND)
 
     message("      Disabled features:")
-    message("        - Online services (Jamendo and Magnatune)(tag lib required)")
     if (NOT PHONON_FOUND)
         message("        - MPD HTTP stream playback (phonon required)")
     endif (NOT PHONON_FOUND)

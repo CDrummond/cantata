@@ -74,6 +74,19 @@ static QString generateFileName(const QUrl &url, bool creatingNew)
     return fileName;
 }
 
+MusicLibraryItemPodcast::MusicLibraryItemPodcast(const QString &fileName, MusicLibraryItemContainer *parent)
+    : MusicLibraryItemContainer(QString(), parent)
+    , m_coverIsDefault(false)
+    , m_cover(0)
+    , m_fileName(fileName)
+    , m_unplayedEpisodeCount(0)
+{
+    if (!m_fileName.isEmpty()) {
+        m_imageFile=m_fileName;
+        m_imageFile=m_imageFile.replace(constExt, ".jpg");
+    }
+}
+
 bool MusicLibraryItemPodcast::load()
 {
     if (m_fileName.isEmpty()) {
@@ -114,6 +127,7 @@ bool MusicLibraryItemPodcast::load()
                     s.track=++track;
                     s.artist=m_itemData;
                     s.setPlayed(constTrue==attributes.value(constPlayedAttribute).toString());
+                    s.setPodcastImage(m_imageFile);
                     QString time=attributes.value(constTimeAttribute).toString();
                     s.time=time.isEmpty() ? 0 : time.toUInt();
                     MusicLibraryItemSong *song=new MusicLibraryItemSong(s, this);
@@ -133,18 +147,12 @@ static const QString constRssTag=QLatin1String("rss");
 
 bool MusicLibraryItemPodcast::loadRss(QNetworkReply *dev)
 {
-    if (!loadRss((QIODevice *)dev)) {
-        return false;
-    }
     m_rssUrl=dev->url();
     if (m_fileName.isEmpty()) {
-        m_fileName=generateFileName(m_rssUrl, true);
+        m_fileName=m_imageFile=generateFileName(m_rssUrl, true);
+        m_imageFile=m_imageFile.replace(constExt, ".jpg");
     }
-    return true;
-}
 
-bool MusicLibraryItemPodcast::loadRss(QIODevice *dev)
-{
     QXmlStreamReader reader(dev);
     RssParser::Channel ch;
     while (!reader.atEnd()) {
@@ -171,6 +179,7 @@ bool MusicLibraryItemPodcast::loadRss(QIODevice *dev)
         s.artist=m_itemData;
         s.time=ep.duration;
         s.setPlayed(false);
+        s.setPodcastImage(m_imageFile);
         MusicLibraryItemSong *song=new MusicLibraryItemSong(s, this);
         m_childItems.append(song);
     }
@@ -263,7 +272,7 @@ const QPixmap & MusicLibraryItemPodcast::cover()
         }
         m_coverIsDefault = true;
         QImage img=OnlineServicesModel::self()->requestImage(static_cast<OnlineService *>(parentItem())->id(), data(), QString(), m_imageUrl.toString(), // ??
-                                                             m_fileName.left(m_fileName.length()-constExt.length()), 300);
+                                                             m_imageFile, 300);
 
         if (!img.isNull()) {
             setCoverImage(img);
@@ -303,20 +312,11 @@ void MusicLibraryItemPodcast::clearImage()
 
 void MusicLibraryItemPodcast::removeFiles()
 {
-    if (m_fileName.isEmpty()) {
-        return;
-    }
-
-    if (QFile::exists(m_fileName)) {
+    if (!m_fileName.isEmpty() && QFile::exists(m_fileName)) {
         QFile::remove(m_fileName);
     }
-
-    QString imgBase=m_fileName.left(m_fileName.length()-constExt.length());
-    QStringList ext=QStringList() << ".jpg" << ".png";
-    foreach (const QString &e, ext) {
-        if (QFile::exists(imgBase+e)) {
-            QFile::remove(imgBase+e);
-        }
+    if (!m_imageFile.isEmpty() && QFile::exists(m_imageFile)) {
+        QFile::remove(m_imageFile);
     }
 }
 

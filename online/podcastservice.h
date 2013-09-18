@@ -59,6 +59,7 @@ public:
     void refreshSubscription(MusicLibraryItem *item);
     bool processingUrl(const QUrl &url);
     void addUrl(const QUrl &url, bool isNew=true);
+    static const QString iconPath() { return iconFile; }
 
 private:
     void loadAll();
@@ -75,6 +76,7 @@ private Q_SLOTS:
 private:
     QList<NetworkJob *> jobs;
     QTimer *updateTimer;
+    static QString iconFile;
 };
 
 #endif

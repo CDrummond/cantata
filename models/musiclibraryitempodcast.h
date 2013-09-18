@@ -45,18 +45,11 @@ public:
         return a->data().localeAwareCompare(b->data())<0;
     }
 
-    MusicLibraryItemPodcast(const QString &fileName, MusicLibraryItemContainer *parent)
-        : MusicLibraryItemContainer(QString(), parent)
-        , m_coverIsDefault(false)
-        , m_cover(0)
-        , m_fileName(fileName)
-        , m_unplayedEpisodeCount(0) {
-    }
+    MusicLibraryItemPodcast(const QString &fileName, MusicLibraryItemContainer *parent);
     virtual ~MusicLibraryItemPodcast() { }
 
     bool load();
     bool loadRss(QNetworkReply *dev);
-    bool loadRss(QIODevice *dev);
     bool save();
     bool setCover(const QImage &img, bool update=false) const;
     const QPixmap & cover();
@@ -72,6 +65,7 @@ public:
     void updateTrackNumbers();
     quint32 unplayedEpisodes() const { return m_unplayedEpisodeCount; }
     void setPlayed(MusicLibraryItemSong *song);
+    bool hasEpisode(const Song &s) const;
 
 private:
     void setCoverImage(const QImage &img) const;
@@ -84,6 +78,7 @@ private:
     QUrl m_imageUrl;
     QUrl m_rssUrl;
     QString m_fileName;
+    QString m_imageFile;
     quint32 m_unplayedEpisodeCount;
 };
 

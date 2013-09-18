@@ -387,7 +387,7 @@ void PodcastService::updateRss()
 
 void PodcastService::currentMpdSong(const Song &s)
 {
-    if (0xFF==s.disc && s.file.startsWith("http://") && constName==s.album) {
+    if (s.isFromOnlineService() && s.album==constName) {
         foreach (MusicLibraryItem *p, m_childItems) {
             MusicLibraryItemPodcast *podcast=static_cast<MusicLibraryItemPodcast *>(p);
             foreach (MusicLibraryItem *i, podcast->childItems()) {

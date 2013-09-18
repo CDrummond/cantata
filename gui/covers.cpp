@@ -30,6 +30,8 @@
 #include "config.h"
 #include "deviceoptions.h"
 #include "thread.h"
+#include "soundcloudservice.h"
+#include "podcastservice.h"
 #ifdef TAGLIB_FOUND
 #include "tags.h"
 #endif
@@ -792,11 +794,22 @@ QPixmap * Covers::get(const Song &song, int size)
     QPixmap *pix(cache.object(key));
 
     if (!pix) {
-        Covers::Image img=findImage(song, false);
+        QImage img;
+        if (song.isFromOnlineService()) {
+            if (SoundCloudService::constName==song.onlineService()) {
+                img=QImage(SoundCloudService::iconPath());
+            } else if (PodcastService::constName==song.onlineService()) {
+                img=QImage(PodcastService::iconPath());
+            }
+        }
+
+        if (img.isNull()) {
+            img=findImage(song, false).img;
+        }
 
         cacheSizes.insert(size);
-        if (!img.img.isNull()) {
-            pix=new QPixmap(QPixmap::fromImage(img.img.scaled(size, size, Qt::KeepAspectRatio, Qt::SmoothTransformation)));
+        if (!img.isNull()) {
+            pix=new QPixmap(QPixmap::fromImage(img.scaled(size, size, Qt::KeepAspectRatio, Qt::SmoothTransformation)));
             cache.insert(key, pix, pix->width()*pix->height()*(pix->depth()/8));
         } else {
             // Attempt to download cover...
@@ -1029,6 +1042,24 @@ static Covers::Image fix(const Covers::Image &img)
 Covers::Image Covers::requestImage(const Song &song)
 {
     DBUG << song.file << song.artist << song.albumartist << song.album;
+
+    if (song.isFromOnlineService()) {
+        Covers::Image i;
+        if (SoundCloudService::constName==song.onlineService()) {
+            i.fileName=SoundCloudService::iconPath();
+        } else if (PodcastService::constName==song.onlineService()) {
+            if (song.podcastImage().isEmpty() || !QFile::exists(song.podcastImage())) {
+                i.fileName=PodcastService::iconPath();
+            } else {
+                i.fileName=song.podcastImage();
+            }
+        }
+        if (!i.fileName.isEmpty()) {
+            i.img=QImage(i.fileName);
+            return i;
+        }
+    }
+
     if (retrieved>=constMaxPerLoopIteration) {
         emit locate(song);
         return Covers::Image();

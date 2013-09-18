@@ -31,6 +31,8 @@
 #include "dialog.h"
 #include "buddylabel.h"
 #include "mpdconnection.h"
+#include "config.h"
+#include <QCoreApplication>
 #include <QDir>
 #include <QUrl>
 #include <QSet>
@@ -91,6 +93,7 @@ private:
 };
 
 const QString PodcastService::constName=QLatin1String("Podcasts");
+QString PodcastService::iconFile;
 
 static const char * constNewFeedProperty="new-feed";
 
@@ -103,6 +106,13 @@ PodcastService::PodcastService(MusicModel *m)
     setUseAlbumImages(false);
     loadAll();
     connect(MPDConnection::self(), SIGNAL(currentSongUpdated(const Song &)), this, SLOT(currentMpdSong(const Song &)));
+    if (iconFile.isEmpty()) {
+        #ifdef Q_OS_WIN
+        iconFile=QCoreApplication::applicationDirPath()+"/icons/podcasts.png";
+        #else
+        iconFile=QString(INSTALL_PREFIX"/share/")+QCoreApplication::applicationName()+"/icons/podcasts.png";
+        #endif
+    }
 }
 
 Song PodcastService::fixPath(const Song &orig, bool) const

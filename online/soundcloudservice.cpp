@@ -26,12 +26,15 @@
 #include "qjson/parser.h"
 #include "onlineservicesmodel.h"
 #include "musiclibraryitemsong.h"
+#include "config.h"
+#include <QCoreApplication>
 #include <QUrl>
 #if QT_VERSION >= 0x050000
 #include <QUrlQuery>
 #endif
 
 const QLatin1String SoundCloudService::constName("SoundCloud");
+QString SoundCloudService::iconFile;
 static const QString constApiKey=QLatin1String("0cb23dce473528973ce74815bd36a334");
 static const QString constHost=QLatin1String("api.soundcloud.com");
 static const QString constUrl=QLatin1String("http://")+constHost+QLatin1Char('/');
@@ -40,6 +43,13 @@ SoundCloudService::SoundCloudService(MusicModel *m)
     : OnlineService(m, constName)
     , job(0)
 {
+    if (iconFile.isEmpty()) {
+        #ifdef Q_OS_WIN
+        iconFile=QCoreApplication::applicationDirPath()+"/icons/soundcloud.png";
+        #else
+        iconFile=QString(INSTALL_PREFIX"/share/")+QCoreApplication::applicationName()+"/icons/soundcloud.png";
+        #endif
+    }
     setUseArtistImages(false);
     setUseAlbumImages(false);
 }

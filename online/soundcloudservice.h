@@ -51,6 +51,7 @@ public:
     void clear();
     bool isSearching() const { return 0!=job; }
     bool isFlat() const { return true; }
+    static const QString iconPath() { return iconFile; }
 
 private:
     void cancelAll();
@@ -61,6 +62,7 @@ private Q_SLOTS:
 private:
     NetworkJob *job;
     QString currentSearch;
+    static QString iconFile;
 };
 
 #endif

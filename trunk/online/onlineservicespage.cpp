@@ -377,10 +377,14 @@ void OnlineServicesPage::controlActions()
     }
 
     OnlineServicesModel::self()->configureAct()->setEnabled(canConfigure && 1==selected.count());
+    OnlineServicesModel::self()->subscribeAct()->setVisible(canSubscribe || canUnSubscribe);
+    OnlineServicesModel::self()->unSubscribeAct()->setVisible(canSubscribe || canUnSubscribe);
+    OnlineServicesModel::self()->refreshSubscriptionAct()->setVisible(canSubscribe || canUnSubscribe);
     OnlineServicesModel::self()->subscribeAct()->setEnabled(canSubscribe && 1==selected.count());
     OnlineServicesModel::self()->unSubscribeAct()->setEnabled(canUnSubscribe && 1==selected.count());
     OnlineServicesModel::self()->refreshSubscriptionAct()->setEnabled((canUnSubscribe || canSubscribe) && 1==selected.count());
     OnlineServicesModel::self()->refreshAct()->setEnabled(canRefresh && 1==selected.count());
+    downloadAction->setVisible(!srvSelected && canDownload && !selected.isEmpty() && 1==services.count());
     downloadAction->setEnabled(!srvSelected && canDownload && !selected.isEmpty() && 1==services.count());
     StdActions::self()->addToPlayQueueAction->setEnabled(!srvSelected && !selected.isEmpty());
     StdActions::self()->addWithPriorityAction->setEnabled(!srvSelected && !selected.isEmpty());

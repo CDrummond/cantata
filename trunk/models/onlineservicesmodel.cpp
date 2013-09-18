@@ -192,6 +192,17 @@ QVariant OnlineServicesModel::data(const QModelIndex &index, int role) const
             return v;
         }
     }
+    case Qt::DecorationRole:
+        if (MusicLibraryItem::Type_Song==item->itemType() && item->parentItem() && MusicLibraryItem::Type_Podcast==item->parentItem()->itemType()) {
+            if (static_cast<MusicLibraryItemSong *>(item)->song().id) {
+                return Icons::self()->playedPodcastEpisodeIcon;
+            }
+        }
+        break;
+    case Qt::DisplayRole:
+        if (MusicLibraryItem::Type_Podcast==item->itemType() && static_cast<MusicLibraryItemPodcast *>(item)->unplayedEpisodes()) {
+            return i18nc("podcast name (num unplayed episodes)", "%1 (%2)", item->data(), static_cast<MusicLibraryItemPodcast *>(item)->unplayedEpisodes());
+        }
     default:
         break;
     }

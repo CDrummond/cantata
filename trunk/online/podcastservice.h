@@ -70,6 +70,7 @@ private:
 private Q_SLOTS:
     void jobFinished();
     void updateRss();
+    void currentMpdSong(const Song &s);
 
 private:
     QList<NetworkJob *> jobs;

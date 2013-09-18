@@ -24,6 +24,7 @@
 #ifndef SETTINGS_H
 #define SETTINGS_H
 
+#include <QDateTime>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KGlobal>
 #include <KDE/KConfig>
@@ -44,6 +45,7 @@ class Wallet;
 #define CFG_GET_INT(CFG, KEY, DEF)        (CFG.readEntry(KEY, DEF))
 #define CFG_GET_BYTE_ARRAY(CFG, KEY)      (CFG.readEntry(KEY, QByteArray()))
 #define CFG_GET_SIZE(CFG, KEY)            (CFG.readEntry(KEY, QSize()))
+#define CFG_GET_DATE_TIME(CFG, KEY)       (CFG.readEntry(KEY, QDateTime()))
 #define CFG_SET_VALUE(CFG, KEY, V)        (CFG.writeEntry(KEY, V))
 #define HAS_GROUP(GRP)                    (KGlobal::config()->hasGroup(GRP))
 #define REMOVE_GROUP(GRP)                 (KGlobal::config()->deleteGroup(GRP))
@@ -54,6 +56,7 @@ class Wallet;
 #define GET_INT(KEY, DEF)                 CFG_GET_INT(cfg, KEY, DEF)
 #define GET_BYTE_ARRAY(KEY)               CFG_GET_BYTE_ARRAY(cfg, KEY)
 #define GET_SIZE(KEY)                     CFG_GET_SIZE(cfg, KEY)
+#define GET_DATE_TIME(KEY)                CFG_GET_DATE_TIME(cfg, KEY)
 #define SET_VALUE(KEY, V)                 CFG_SET_VALUE(cfg, KEY, V)
 #define HAS_ENTRY(KEY)                    (cfg.hasKey(KEY))
 #define CFG_SYNC                          KGlobal::config()->sync()
@@ -64,6 +67,7 @@ class Wallet;
 #define GET_INT(KEY, DEF)        (cfg.contains(KEY) ? cfg.value(KEY).toInt() : DEF)
 #define GET_BYTE_ARRAY(KEY)      (cfg.value(KEY).toByteArray())
 #define GET_SIZE(KEY)            (cfg.contains(KEY) ? cfg.value(KEY).toSize() : QSize())
+#define GET_DATE_TIME(KEY)       (cfg.contains(KEY) ? cfg.value(KEY).toDateTime() : QDateTime())
 #define SET_VALUE(KEY, V)        (cfg.setValue(KEY, V))
 #define HAS_GROUP(GRP)           (-1!=cfg.childGroups().indexOf(GRP))
 #define REMOVE_GROUP(GRP)        (cfg.remove(GRP))
@@ -176,6 +180,7 @@ public:
     bool inhibitSuspend();
     #endif
     int rssUpdate();
+    QDateTime lastRssUpdate();
 
     void removeConnectionDetails(const QString &v);
     void saveConnectionDetails(const MPDConnectionDetails &v);
@@ -261,6 +266,7 @@ public:
     void saveInhibitSuspend(bool v);
     #endif
     void saveRssUpdate(int v);
+    void saveLastRssUpdate(const QDateTime &v);
     void save(bool force=false);
     #ifdef ENABLE_KDE_SUPPORT
     bool openWallet();

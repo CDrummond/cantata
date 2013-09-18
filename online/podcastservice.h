@@ -28,8 +28,10 @@
 #include "networkaccessmanager.h"
 #include <QLatin1String>
 #include <QList>
+#include <QDateTime>
+#include <QSet>
+#include <QUrl>
 
-class QUrl;
 class QTimer;
 class MusicLibraryItemPodcast;
 
@@ -76,6 +78,8 @@ private Q_SLOTS:
 private:
     QList<NetworkJob *> jobs;
     QTimer *updateTimer;
+    QDateTime lastRssUpdate;
+    QSet<QUrl> updateUrls;
     static QString iconFile;
 };
 

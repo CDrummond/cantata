@@ -40,8 +40,6 @@
 #include <QComboBox>
 #include <QFormLayout>
 
-class QComboBox;
-
 class PodcastSettingsDialog : public Dialog
 {
 public:
@@ -66,6 +64,8 @@ public:
         combo->addItem(i18n("Every 2 hours"), 2*60);
         combo->addItem(i18n("Every 6 hours"), 6*60);
         combo->addItem(i18n("Every 12 hours"), 12*60);
+        combo->addItem(i18n("Every day"), 24*60);
+        combo->addItem(i18n("Every week"), 7*24*60);
 
         int val=Settings::self()->rssUpdate();
         int possible=0;
@@ -155,7 +155,6 @@ void PodcastService::loadAll()
                 applyUpdate();
             }
         }
-
         startTimer();
     }
 }
@@ -184,6 +183,15 @@ void PodcastService::jobFinished()
     if (!j->ok()) {
         emitError(i18n("Failed to download %1", j->url().toString()));
         return;
+    }
+
+    if (updateUrls.contains(j->url())){
+        updateUrls.remove(j->url());
+        if (updateUrls.isEmpty()) {
+            lastRssUpdate=QDateTime::currentDateTime();
+            Settings::self()->saveLastRssUpdate(lastRssUpdate);
+            startTimer();
+        }
     }
 
     bool isNew=j->property(constNewFeedProperty).toBool();
@@ -281,7 +289,6 @@ MusicLibraryItemPodcast * PodcastService::getPodcast(const QUrl &url) const
             return static_cast<MusicLibraryItemPodcast *>(i);
         }
     }
-
     return 0;
 }
 
@@ -320,7 +327,6 @@ bool PodcastService::processingUrl(const QUrl &url)
             return true;
         }
     }
-
     return false;
 }
 
@@ -341,9 +347,24 @@ void PodcastService::startTimer()
     }
     if (!updateTimer) {
         updateTimer=new QTimer(this);
+        updateTimer->setSingleShot(true);
         connect(updateTimer, SIGNAL(timeout()), this, SLOT(updateRss()));
     }
-    updateTimer->start(Settings::self()->rssUpdate()*60*1000);
+    if (!lastRssUpdate.isValid()) {
+        lastRssUpdate=Settings::self()->lastRssUpdate();
+    }
+    if (!lastRssUpdate.isValid()) {
+        updateRss();
+    } else {
+        QDateTime nextUpdate = lastRssUpdate.addSecs(Settings::self()->rssUpdate()*60*1000ll);
+        int secsUntilNextUpdate = QDateTime::currentDateTime().secsTo(nextUpdate);
+        if (secsUntilNextUpdate<0) {
+            // Oops, missed update time!!!
+            updateRss();
+        } else {
+            updateTimer->start(secsUntilNextUpdate*1000ll);
+        }
+    }
 }
 
 void PodcastService::stopTimer()
@@ -357,6 +378,7 @@ void PodcastService::updateRss()
 {
     foreach (MusicLibraryItem *i, m_childItems) {
         QUrl url=static_cast<MusicLibraryItemPodcast *>(i)->rssUrl();
+        updateUrls.insert(url);
         if (!processingUrl(url)) {
             addUrl(url, false);
         }

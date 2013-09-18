@@ -747,7 +747,7 @@ void StreamsModel::fetchMore(const QModelIndex &index)
             }
             cat->addHeaders(req);
 
-            QNetworkReply *job=NetworkAccessManager::self()->get(req);
+            NetworkJob *job=NetworkAccessManager::self()->get(req);
             job->setProperty(constOrigUrlProperty, cat->url);
             if (jobs.isEmpty()) {
                 emit loading();
@@ -1118,7 +1118,7 @@ bool StreamsModel::loadCache(CategoryItem *cat)
 
 void StreamsModel::jobFinished()
 {
-    QNetworkReply *job=dynamic_cast<QNetworkReply *>(sender());
+    NetworkJob *job=dynamic_cast<NetworkJob *>(sender());
 
     if (!job) {
         return;
@@ -1132,24 +1132,24 @@ void StreamsModel::jobFinished()
         jobs.remove(job);
 
         QModelIndex index=createIndex(cat->parent->children.indexOf(cat), 0, (void *)cat);
-        if (QNetworkReply::NoError==job->error()) {
+        if (job->ok()) {
             QList<Item *> newItems;
             if (cat==favourites) {
-                newItems=favourites->loadXml(job);
+                newItems=favourites->loadXml(job->actualJob());
             } else if (QLatin1String("http")==job->url().scheme()) {
                 QString url=job->url().toString();
                 if (constRadioTimeHost==job->url().host()) {
-                    newItems=parseRadioTimeResponse(job, cat);
+                    newItems=parseRadioTimeResponse(job->actualJob(), cat);
                 } else if (constIceCastUrl==url) {
-                    newItems=parseIceCastResponse(job, cat);
+                    newItems=parseIceCastResponse(job->actualJob(), cat);
                 } else if (constSomaFMUrl==url) {
-                    newItems=parseSomaFmResponse(job, cat);
+                    newItems=parseSomaFmResponse(job->actualJob(), cat);
                 } else if (constDiChannelListHost==job->url().host()) {
-                    newItems=parseDigitallyImportedResponse(job, cat);
+                    newItems=parseDigitallyImportedResponse(job->actualJob(), cat);
                 } else if (constShoutCastHost==job->url().host()) {
-                    newItems=parseShoutCastResponse(job, cat, job->property(constOrigUrlProperty).toString());
+                    newItems=parseShoutCastResponse(job->actualJob(), cat, job->property(constOrigUrlProperty).toString());
                 } else {
-                    newItems=parseListenLiveResponse(job, cat);
+                    newItems=parseListenLiveResponse(job->actualJob(), cat);
                 }
             }
 
@@ -1680,7 +1680,7 @@ QList<StreamsModel::Item *> StreamsModel::parseShoutCastResponse(QIODevice *dev,
 
         QNetworkRequest req(url);
         cat->addHeaders(req);
-        QNetworkReply *job=NetworkAccessManager::self()->get(req);
+        NetworkJob *job=NetworkAccessManager::self()->get(req);
         job->setProperty(constOrigUrlProperty, url.toString());
         if (jobs.isEmpty()) {
             emit loading();

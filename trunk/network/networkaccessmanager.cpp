@@ -66,13 +66,6 @@ void NetworkJob::jobFinished()
     emit finished();
 }
 
-void NetworkJob::abort()
-{
-    if (job) {
-        job->abort();
-    }
-}
-
 NetworkAccessManager * NetworkAccessManager::self()
 {
     #ifdef ENABLE_KDE_SUPPORT
@@ -91,9 +84,9 @@ NetworkAccessManager::NetworkAccessManager(QObject *parent)
 {
 }
 
-QNetworkReply * NetworkAccessManager::get(const QNetworkRequest &req, int timeout)
+NetworkJob * NetworkAccessManager::get(const QNetworkRequest &req, int timeout)
 {
-    QNetworkReply *reply=BASE_NETWORK_ACCESS_MANAGER::get(req);
+    NetworkJob *reply = new NetworkJob(BASE_NETWORK_ACCESS_MANAGER::get(req));
 
     if (0!=timeout) {
         connect(reply, SIGNAL(destroyed()), SLOT(replyFinished()));
@@ -103,40 +96,18 @@ QNetworkReply * NetworkAccessManager::get(const QNetworkRequest &req, int timeou
     return reply;
 }
 
-NetworkJob * NetworkAccessManager::getNew(const QNetworkRequest &req, int timeout)
-{
-    NetworkJob *reply = new NetworkJob(BASE_NETWORK_ACCESS_MANAGER::get(req));
-
-    if (0!=timeout) {
-        connect(reply, SIGNAL(destroyed()), SLOT(replyFinished()));
-        connect(reply, SIGNAL(finished()), SLOT(replyFinished()));
-        newTimers[reply] = startTimer(timeout);
-    }
-    return reply;
-}
-
 void NetworkAccessManager::replyFinished()
 {
-    QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
-    if (timers.contains(reply)) {
-        killTimer(timers.take(reply));
-    }
-
-    NetworkJob *newReply = qobject_cast<NetworkJob*>(sender());
-    if (newTimers.contains(newReply)) {
-        killTimer(newTimers.take(newReply));
+    NetworkJob *job = qobject_cast<NetworkJob*>(sender());
+    if (timers.contains(job)) {
+        killTimer(timers.take(job));
     }
 }
 
 void NetworkAccessManager::timerEvent(QTimerEvent *e)
 {
-    QNetworkReply *reply = timers.key(e->timerId());
-    if (reply) {
-        reply->abort();
-    }
-
-    NetworkJob *newReply = newTimers.key(e->timerId());
-    if (newReply) {
-        newReply->abort();
+    NetworkJob *job = timers.key(e->timerId());
+    if (job) {
+        job->abort();
     }
 }

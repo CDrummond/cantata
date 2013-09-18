@@ -27,7 +27,7 @@
 #include <QObject>
 #include <QStringList>
 
-class QNetworkReply;
+class NetworkJob;
 
 class ContextEngine : public QObject
 {
@@ -58,10 +58,10 @@ Q_SIGNALS:
     void searchResult(const QString &html, const QString &lang);
 
 protected:
-    QNetworkReply * getReply(QObject *obj);
+    NetworkJob * getReply(QObject *obj);
 
 protected:
-    QNetworkReply *job;
+    NetworkJob *job;
 };
 
 #endif

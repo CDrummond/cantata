@@ -28,7 +28,7 @@
 #include <QList>
 
 class QImage;
-class QNetworkReply;
+class NetworkJob;
 class QByteArray;
 class QUrl;
 class ContextEngine;

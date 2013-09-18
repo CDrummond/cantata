@@ -25,7 +25,6 @@
 #include "networkaccessmanager.h"
 #include "localize.h"
 #include "covers.h"
-#include <QNetworkReply>
 #if QT_VERSION >= 0x050000
 #include <QUrlQuery>
 #endif
@@ -45,8 +44,6 @@ const QLatin1String LastFmEngine::constLinkPlaceholder("XXX_CONTEXT_READ_MORE_ON
 
 static const char * constModeProperty="mode";
 static const char * constQuery="query";
-static const char * constRedirectsProperty="redirects";
-static const int constMaxRedirects=3;
 
 LastFmEngine::LastFmEngine(QObject *p)
     : ContextEngine(p)
@@ -89,7 +86,6 @@ void LastFmEngine::search(const QStringList &query, Mode mode)
 
     job=NetworkAccessManager::self()->get(url);
     job->setProperty(constModeProperty, (int)mode);
-    job->setProperty(constRedirectsProperty, 0);
     
     QStringList queryString;
     foreach (QString q, fixedQuery) {
@@ -105,24 +101,13 @@ void LastFmEngine::search(const QStringList &query, Mode mode)
 void LastFmEngine::parseResponse()
 {
     DBUG << __FUNCTION__;
-    QNetworkReply *reply = getReply(sender());
+    NetworkJob *reply = getReply(sender());
     if (!reply) {
         return;
     }
 
-    QVariant redirect = reply->header(QNetworkRequest::LocationHeader);
-    int numRirects=reply->property(constRedirectsProperty).toInt();
-    if (redirect.isValid() && ++numRirects<constMaxRedirects) {
-        job=NetworkAccessManager::self()->get(redirect.toString());
-        job->setProperty(constRedirectsProperty, numRirects);
-        job->setProperty(constModeProperty, reply->property(constModeProperty));
-        DBUG <<  "Redirect" << redirect.toString();
-        connect(job, SIGNAL(finished()), this, SLOT(parseResponse()));
-        return;
-    }
-
     QByteArray data=reply->readAll();
-    if (QNetworkReply::NoError!=reply->error() || data.isEmpty()) {
+    if (!reply->ok() || data.isEmpty()) {
         DBUG <<  "Empty/error";
         emit searchResult(QString(), QString());
         return;

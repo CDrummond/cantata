@@ -30,7 +30,7 @@
 
 class ComboBox;
 class QLabel;
-class QNetworkReply;
+class NetworkJob;
 class QIODevice;
 class QImage;
 class QUrl;
@@ -83,7 +83,7 @@ private:
     QString pic;
     QString biography;
     QString similarArtists;
-    QNetworkReply *currentSimilarJob;
+    NetworkJob *currentSimilarJob;
     QString provider;
     QString webLinks;
     QString albums;

@@ -48,13 +48,16 @@ public:
 
     QNetworkReply * actualJob() const { return job; }
 
-    void abort();
+    void abort() { if (job) job->abort(); }
+    bool open(QIODevice::OpenMode mode) { return job && job->open(mode); }
+    void close() { if (job) job->close(); }
 
     QUrl url() const { return job ? job->url() : QUrl(); }
     QNetworkReply::NetworkError error() const { return job ? job->error() : QNetworkReply::NoError; }
     QString errorString() const { return job ? job->errorString() : QString(); }
     QByteArray readAll() { return job ? job->readAll() : QByteArray(); }
     bool ok() const { return job && QNetworkReply::NoError==job->error(); }
+    QVariant attribute(QNetworkRequest::Attribute code) const { return job ? job->attribute(code) : QVariant(); }
 
 Q_SIGNALS:
     void finished();
@@ -77,11 +80,8 @@ public:
     NetworkAccessManager(QObject *parent=0);
     virtual ~NetworkAccessManager() { }
 
-    QNetworkReply * get(const QNetworkRequest &req, int timeout=0);
-    QNetworkReply * get(const QUrl &url, int timeout=0) { return get(QNetworkRequest(url), timeout); }
-
-    NetworkJob * getNew(const QNetworkRequest &req, int timeout=0);
-    NetworkJob * getNew(const QUrl &url, int timeout=0) { return getNew(QNetworkRequest(url), timeout); }
+    NetworkJob * get(const QNetworkRequest &req, int timeout=0);
+    NetworkJob * get(const QUrl &url, int timeout=0) { return get(QNetworkRequest(url), timeout); }
 
 protected:
     void timerEvent(QTimerEvent *e);
@@ -90,8 +90,7 @@ private Q_SLOTS:
     void replyFinished();
 
 private:
-    QMap<QNetworkReply *, int> timers;
-    QMap<NetworkJob *, int> newTimers;
+    QMap<NetworkJob *, int> timers;
     friend class NetworkJob;
 };
 

@@ -32,7 +32,6 @@
 #include "contextengine.h"
 #include "actioncollection.h"
 #include "musiclibrarymodel.h"
-#include <QNetworkReply>
 #include <QApplication>
 #include <QTextStream>
 #include <QLayout>
@@ -242,12 +241,12 @@ void ArtistView::loadSimilar()
 
 void ArtistView::handleSimilarReply()
 {
-    QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
+    NetworkJob *reply = qobject_cast<NetworkJob*>(sender());
     if (!reply) {
         return;
     }
     if (reply==currentSimilarJob) {
-        if (QNetworkReply::NoError==reply->error()) {
+        if (reply->ok()) {
             QByteArray data=reply->readAll();
             QStringList artists=parseSimilarResponse(data);
             if (!artists.isEmpty()) {

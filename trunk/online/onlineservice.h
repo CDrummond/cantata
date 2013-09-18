@@ -34,7 +34,7 @@
 class Thread;
 class NetworkAccessManager;
 class MusicModel;
-class QNetworkReply;
+class NetworkJob;
 class QXmlStreamReader;
 
 class OnlineMusicLoader : public QObject, public MusicLibraryProgressMonitor
@@ -78,7 +78,7 @@ protected:
     QString cache;
     MusicLibraryItemRoot *library;
     NetworkAccessManager *network;
-    QNetworkReply *downloadJob;
+    NetworkJob *downloadJob;
     bool stopRequested;
     int lastProg;
 };

@@ -24,7 +24,7 @@
 #include "contextengine.h"
 #include "metaengine.h"
 #include "wikipediaengine.h"
-#include <QNetworkReply>
+#include "networkaccessmanager.h"
 
 ContextEngine * ContextEngine::create(QObject *parent)
 {
@@ -66,9 +66,9 @@ void ContextEngine::cancel()
     }
 }
 
-QNetworkReply * ContextEngine::getReply(QObject *obj)
+NetworkJob * ContextEngine::getReply(QObject *obj)
 {
-    QNetworkReply *reply = qobject_cast<QNetworkReply*>(obj);
+    NetworkJob *reply = qobject_cast<NetworkJob*>(obj);
     if (!reply) {
         return 0;
     }

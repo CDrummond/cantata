@@ -42,7 +42,6 @@
 #endif
 #include <QTextStream>
 #include <qglobal.h>
-#include <QNetworkReply>
 #include <QIcon>
 #include <QImage>
 #include <QPixmap>
@@ -434,7 +433,7 @@ bool CoverDownloader::downloadViaHttp(Job &job, JobType type)
     #endif
 
     job.type=type;
-    QNetworkReply *j=manager->get(QNetworkRequest(u));
+    NetworkJob *j=manager->get(u);
     connect(j, SIGNAL(finished()), this, SLOT(jobFinished()));
     jobs.insert(j, job);
     DBUG << u.toString();
@@ -461,7 +460,7 @@ void CoverDownloader::downloadViaLastFm(Job &job)
     url.setQuery(query);
     #endif
 
-    QNetworkReply *j = manager->get(url);
+    NetworkJob *j = manager->get(url);
     connect(j, SIGNAL(finished()), this, SLOT(lastFmCallFinished()));
     job.type=JobLastFm;
     jobs.insert(j, job);
@@ -470,22 +469,22 @@ void CoverDownloader::downloadViaLastFm(Job &job)
 
 void CoverDownloader::lastFmCallFinished()
 {
-    QNetworkReply *reply=qobject_cast<QNetworkReply *>(sender());
+    NetworkJob *reply=qobject_cast<NetworkJob *>(sender());
     if (!reply) {
         return;
     }
 
     DBUG << "status" << reply->error() << reply->errorString();
 
-    QHash<QNetworkReply *, Job>::Iterator it(jobs.find(reply));
-    QHash<QNetworkReply *, Job>::Iterator end(jobs.end());
+    QHash<NetworkJob *, Job>::Iterator it(jobs.find(reply));
+    QHash<NetworkJob *, Job>::Iterator end(jobs.end());
 
     if (it!=end) {
         Job job=it.value();
         jobs.erase(it);
         QString url;
 
-        if(QNetworkReply::NoError==reply->error()) {
+        if(reply->ok()) {
             QXmlStreamReader doc(reply->readAll());
             QString largeUrl;
             bool inSection=false;
@@ -525,7 +524,7 @@ void CoverDownloader::lastFmCallFinished()
             #else
             u=QUrl(url);
             #endif
-            QNetworkReply *j=manager->get(QNetworkRequest(u));
+            NetworkJob *j=manager->get(QNetworkRequest(u));
             connect(j, SIGNAL(finished()), this, SLOT(jobFinished()));
             DBUG << "download" << u.toString();
             jobs.insert(j, job);
@@ -550,18 +549,18 @@ void CoverDownloader::lastFmCallFinished()
 
 void CoverDownloader::jobFinished()
 {
-    QNetworkReply *reply=qobject_cast<QNetworkReply *>(sender());
+    NetworkJob *reply=qobject_cast<NetworkJob *>(sender());
     if (!reply) {
         return;
     }
 
     DBUG << "status" << reply->error() << reply->errorString();
 
-    QHash<QNetworkReply *, Job>::Iterator it(jobs.find(reply));
-    QHash<QNetworkReply *, Job>::Iterator end(jobs.end());
+    QHash<NetworkJob *, Job>::Iterator it(jobs.find(reply));
+    QHash<NetworkJob *, Job>::Iterator end(jobs.end());
 
     if (it!=end) {
-        QByteArray data=QNetworkReply::NoError==reply->error() ? reply->readAll() : QByteArray();
+        QByteArray data=reply->ok() ? reply->readAll() : QByteArray();
         QString url=reply->url().toString();
         Covers::Image img;
         img.img= data.isEmpty() ? QImage() : QImage::fromData(data, url.endsWith(".jpg", Qt::CaseInsensitive) || url.endsWith(".jpeg", Qt::CaseInsensitive)
@@ -676,10 +675,10 @@ QString CoverDownloader::saveImg(const Job &job, const QImage &img, const QByteA
     return QString();
 }
 
-QHash<QNetworkReply *, CoverDownloader::Job>::Iterator CoverDownloader::findJob(const Job &job)
+QHash<NetworkJob *, CoverDownloader::Job>::Iterator CoverDownloader::findJob(const Job &job)
 {
-    QHash<QNetworkReply *, Job>::Iterator it(jobs.begin());
-    QHash<QNetworkReply *, Job>::Iterator end(jobs.end());
+    QHash<NetworkJob *, Job>::Iterator it(jobs.begin());
+    QHash<NetworkJob *, Job>::Iterator end(jobs.end());
 
     for (; it!=end; ++it) {
         if ((*it).isArtist==job.isArtist && (*it).song.albumArtist()==job.song.albumArtist() && (*it).song.album==job.song.album) {

@@ -30,7 +30,7 @@
 #include <QIcon>
 #include <QDateTime>
 
-class QNetworkReply;
+class NetworkJob;
 class QXmlStreamReader;
 class QIODevice;
 
@@ -86,7 +86,7 @@ private:
 
 private:
     Category category;
-    QMap<QNetworkReply *, StreamsModel::CategoryItem *> jobs;
+    QMap<NetworkJob *, StreamsModel::CategoryItem *> jobs;
     StreamsModel::CategoryItem *root;
     QString currentSearch;
 

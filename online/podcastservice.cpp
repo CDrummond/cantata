@@ -108,9 +108,7 @@ PodcastService::PodcastService(MusicModel *m)
 Song PodcastService::fixPath(const Song &orig, bool) const
 {
     Song song=orig;
-    song.album=constName;
-    song.albumartist=i18n("Streams");
-    song.disc=0xFF;
+    song.setIsFromOnlineService(constName);
     return encode(song);
 }
 
@@ -200,7 +198,7 @@ void PodcastService::jobFinished()
             foreach (MusicLibraryItem *i, orig->childItems()) {
                 MusicLibraryItemSong *song=static_cast<MusicLibraryItemSong *>(i);
                 origSongs.insert(song->file()+song->data());
-                if (song->song().id) {
+                if (song->song().hasbeenPlayed()) {
                     playedSongs.insert(song->file());
                 }
             }
@@ -363,7 +361,7 @@ void PodcastService::currentMpdSong(const Song &s)
             foreach (MusicLibraryItem *i, podcast->childItems()) {
                 MusicLibraryItemSong *song=static_cast<MusicLibraryItemSong *>(i);
                 if (song->file()==s.file) {
-                    if (!song->song().id) {
+                    if (!song->song().hasbeenPlayed()) {
                         podcast->setPlayed(song);
                         emitDataChanged(createIndex(song));
                         emitDataChanged(createIndex(podcast));

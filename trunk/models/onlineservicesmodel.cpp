@@ -384,14 +384,21 @@ static const char * constMaxSizeProperty="maxSize";
 
 QImage OnlineServicesModel::requestImage(const QString &id, const QString &artist, const QString &album, const QString &url, const QString cacheName, int maxSize)
 {
-    QString baseName=cacheName.isEmpty() ? Utils::cacheDir(id.toLower(), false)+Covers::encodeName(album.isEmpty() ? artist : (artist+" - "+album)) : cacheName;
-    for (int e=0; constExtensions[e]; ++e) {
-        if (QFile::exists(baseName+constExtensions[e])) {
-            QImage img(baseName+constExtensions[e]);
+    if (cacheName.isEmpty()) {
+        QString baseName=Utils::cacheDir(id.toLower(), false)+Covers::encodeName(album.isEmpty() ? artist : (artist+" - "+album));
+        for (int e=0; constExtensions[e]; ++e) {
+            if (QFile::exists(baseName+constExtensions[e])) {
+                QImage img(baseName+constExtensions[e]);
 
-            if (!img.isNull()) {
-                return img;
+                if (!img.isNull()) {
+                    return img;
+                }
             }
+        }
+    } else if (QFile::exists(cacheName)) {
+        QImage img(cacheName);
+        if (!img.isNull()) {
+            return img;
         }
     }
     if (url.endsWith(".jpg", Qt::CaseInsensitive) || url.endsWith(".jpeg", Qt::CaseInsensitive) || url.endsWith(".png", Qt::CaseInsensitive)) {
@@ -463,18 +470,18 @@ void OnlineServicesModel::imageDownloaded()
         }
     }
 
+    int maxSize=j->property(constMaxSizeProperty).toInt();
     QString cacheName=j->property(constCacheProperty).toString();
     QString fileName=(cacheName.isEmpty()
-                        ? Utils::cacheDir(id.toLower(), true)+Covers::encodeName(song.album.isEmpty() ? song.artist : (song.artist+" - "+song.album))
-                        : cacheName)
-                     +(jpeg ? ".jpg" : ".png");
+                        ? Utils::cacheDir(id.toLower(), true)+Covers::encodeName(song.album.isEmpty() ? song.artist : (song.artist+" - "+song.album))+(jpeg ? ".jpg" : ".png")
+                        : cacheName);
 
-    int maxSize=j->property(constMaxSizeProperty).toInt();
-
-    if (maxSize>16) {
+    if (maxSize || !cacheName.isEmpty()) {
         QImage img=QImage::fromData(data, jpeg ? "JPG" : "PNG");
-        if (!img.isNull() && (img.width()>maxSize || img.height()>maxSize)) {
-            img=img.scaled(maxSize, maxSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        if (!img.isNull()) {
+            if (maxSize && (img.width()>maxSize || img.height()>maxSize)) {
+                img=img.scaled(maxSize, maxSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+            }
             img.save(fileName);
             return;
         }

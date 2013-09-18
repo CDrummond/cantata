@@ -42,7 +42,6 @@
 3. Add Russian translation, thanks to Julia Dronova.
 4. Online services support does not require taglib.
 
-
 1.1.2
 -----
  1. Fix build due to broken translation files.

@@ -28,7 +28,7 @@
 #include <QString>
 #include <QList>
 
-class QXmlStreamReader;
+class QIODevice;
 
 namespace RssParser
 {
@@ -49,7 +49,7 @@ struct Channel
     bool isValid() const { return !name.isEmpty(); }
 };
 
-Channel parse(QXmlStreamReader &reader);
+Channel parse(QIODevice *dev);
 
 }
 

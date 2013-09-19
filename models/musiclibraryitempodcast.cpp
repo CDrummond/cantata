@@ -153,14 +153,7 @@ bool MusicLibraryItemPodcast::loadRss(QNetworkReply *dev)
         m_imageFile=m_imageFile.replace(constExt, ".jpg");
     }
 
-    QXmlStreamReader reader(dev);
-    RssParser::Channel ch;
-    while (!reader.atEnd()) {
-        reader.readNext();
-        if (reader.isStartElement() && constRssTag==reader.name()) {
-            ch=RssParser::parse(reader);
-        }
-    }
+    RssParser::Channel ch=RssParser::parse(dev);
 
     if (!ch.isValid()) {
         return false;

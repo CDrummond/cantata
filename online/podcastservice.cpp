@@ -39,6 +39,9 @@
 #include <QTimer>
 #include <QComboBox>
 #include <QFormLayout>
+#if QT_VERSION >= 0x050000
+#include <QUrlQuery>
+#endif
 
 class PodcastSettingsDialog : public Dialog
 {
@@ -96,6 +99,45 @@ const QString PodcastService::constName=QLatin1String("Podcasts");
 QString PodcastService::iconFile;
 
 static const char * constNewFeedProperty="new-feed";
+
+QUrl PodcastService::fixUrl(const QString &url)
+{
+    QString trimmed(url.trimmed());
+
+    // Thanks gpodder!
+    static QMap<QString, QString> prefixMap;
+    if (prefixMap.isEmpty()) {
+        prefixMap.insert(QLatin1String("fb:"),    QLatin1String("http://feeds.feedburner.com/%1"));
+        prefixMap.insert(QLatin1String("yt:"),    QLatin1String("http://www.youtube.com/rss/user/%1/videos.rss"));
+        prefixMap.insert(QLatin1String("sc:"),    QLatin1String("http://soundcloud.com/%1"));
+        prefixMap.insert(QLatin1String("fm4od:"), QLatin1String("http://onapp1.orf.at/webcam/fm4/fod/%1.xspf"));
+        prefixMap.insert(QLatin1String("ytpl:"),  QLatin1String("http://gdata.youtube.com/feeds/api/playlists/%1"));
+    }
+
+    QMap<QString, QString>::ConstIterator it(prefixMap.constBegin());
+    QMap<QString, QString>::ConstIterator end(prefixMap.constEnd());
+    for (; it!=end; ++it) {
+        if (trimmed.startsWith(it.key())) {
+            trimmed=it.value().arg(trimmed.mid(it.key().length()));
+        }
+    }
+
+    if (!trimmed.contains(QLatin1String("://"))) {
+        trimmed.prepend(QLatin1String("http://"));
+    }
+
+    return fixUrl(QUrl(trimmed));
+}
+
+QUrl PodcastService::fixUrl(const QUrl &orig)
+{
+    QUrl u=orig;
+    if (u.scheme().isEmpty() || QLatin1String("itpc")==u.scheme() || QLatin1String("pcast")==u.scheme() ||
+        QLatin1String("feed")==u.scheme() || QLatin1String("itms")==u.scheme()) {
+        u.setScheme(QLatin1String("http"));
+    }
+    return u;
+}
 
 PodcastService::PodcastService(MusicModel *m)
     : OnlineService(m, i18n("Podcasts"))
@@ -356,7 +398,7 @@ void PodcastService::startTimer()
     if (!lastRssUpdate.isValid()) {
         updateRss();
     } else {
-        QDateTime nextUpdate = lastRssUpdate.addSecs(Settings::self()->rssUpdate()*60*1000ll);
+        QDateTime nextUpdate = lastRssUpdate.addSecs(Settings::self()->rssUpdate()*60);
         int secsUntilNextUpdate = QDateTime::currentDateTime().secsTo(nextUpdate);
         if (secsUntilNextUpdate<0) {
             // Oops, missed update time!!!

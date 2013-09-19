@@ -120,7 +120,12 @@ Channel RssParser::parse(QIODevice *dev)
                 if (ch.name.isEmpty() && QLatin1String("title")==name) {
                     ch.name=reader.readElementText();
                 } else if (QLatin1String("image")==name && ch.image.isEmpty()) {
-                    ch.image=parseImage(reader);
+                    if (constITunesNameSpace==reader.namespaceUri()) {
+                        ch.image=reader.attributes().value(QLatin1String("href")).toString();
+                        consumeCurrentElement(reader);
+                    } else {
+                        ch.image=parseImage(reader);
+                    }
                 } else if (QLatin1String("item")==name) {
                     Episode ep=parseEpisode(reader);
                     if (!ep.name.isEmpty() && !ep.url.isEmpty()) {

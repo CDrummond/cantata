@@ -75,6 +75,7 @@ OnlineServicesModel::OnlineServicesModel(QObject *parent)
     : MultiMusicModel(parent)
     , enabled(false)
     , dev(0)
+    , podcast(0)
 {
     configureAction = ActionCollection::get()->createAction("configureonlineservice", i18n("Configure Service"), Icons::self()->configureIcon);
     refreshAction = ActionCollection::get()->createAction("refreshonlineservice", i18n("Refresh Service"), "view-refresh");
@@ -290,7 +291,7 @@ OnlineService * OnlineServicesModel::addService(const QString &name)
         } else if (name==SoundCloudService::constName) {
             srv=new SoundCloudService(this);
         } else if (name==PodcastService::constName) {
-            srv=new PodcastService(this);
+            srv=podcast=new PodcastService(this);
         }
 
         if (srv) {
@@ -374,6 +375,15 @@ Device * OnlineServicesModel::device(const QString &udi)
     return dev;
 }
 #endif
+
+bool OnlineServicesModel::subscribePodcast(const QUrl &url)
+{
+    if (podcast && !podcast->subscribedToUrl(url)) {
+        podcast->addUrl(url);
+        return true;
+    }
+    return false;
+}
 
 static const char * constExtensions[]={".jpg", ".png", 0};
 static const char * constIdProperty="id";

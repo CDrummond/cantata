@@ -106,7 +106,6 @@ public:
     virtual void loadConfig()=0;
     virtual void saveConfig()=0;
     virtual void configure(QWidget *) { }
-    virtual void addSubscription(QWidget *) { }
     virtual bool canDownload() const { return false; }
     virtual bool canConfigure() const { return true; }
     virtual bool canSubscribe() const { return false; }

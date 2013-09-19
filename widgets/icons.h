@@ -45,6 +45,7 @@ public:
     Icon albumIcon;
     Icon podcastIcon;
     Icon playedPodcastEpisodeIcon;
+    Icon folderIcon;
     Icon audioFileIcon;
     Icon playlistIcon;
     Icon dynamicRuleIcon;

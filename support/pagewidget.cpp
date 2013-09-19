@@ -219,7 +219,9 @@ protected:
 };
 
 PageWidgetItem::PageWidgetItem(QWidget *p, const QString &header, const Icon &icon, QWidget *cfg)
-    : QWidget(p) {
+    : QWidget(p)
+    , wid(cfg)
+{
     static int size=-1;
 
     if (-1==size) {
@@ -309,4 +311,9 @@ PageWidgetItem * PageWidget::addPage(QWidget *widget, const QString &name, const
 int PageWidget::count()
 {
     return list->count();
+}
+
+PageWidgetItem * PageWidget::currentPage() const
+{
+    return static_cast<PageWidgetItem *>(stack->currentWidget());
 }

@@ -39,6 +39,7 @@
 #include "stdactions.h"
 #include "actioncollection.h"
 #include "inputdialog.h"
+#include "podcastsearchdialog.h"
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KGlobalSettings>
 #endif
@@ -56,7 +57,7 @@ OnlineServicesPage::OnlineServicesPage(QWidget *p)
     view->addAction(StdActions::self()->addWithPriorityAction);
     view->addAction(StdActions::self()->addToStoredPlaylistAction);
     downloadAction = ActionCollection::get()->createAction("downloadtolibrary", i18n("Download To Library"), "go-down");
-
+    podcastSearchAction = ActionCollection::get()->createAction("podcastsearch", i18n("Search For Podcasts"), "edit-find");
     connect(this, SIGNAL(add(const QStringList &, bool, quint8)), MPDConnection::self(), SLOT(add(const QStringList &, bool, quint8)));
     connect(this, SIGNAL(addSongsToPlaylist(const QString &, const QStringList &)), MPDConnection::self(), SLOT(addToPlaylist(const QString &, const QStringList &)));
     connect(genreCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(searchItems()));
@@ -74,6 +75,7 @@ OnlineServicesPage::OnlineServicesPage(QWidget *p)
     connect(OnlineServicesModel::self()->subscribeAct(), SIGNAL(triggered()), this, SLOT(subscribe()));
     connect(OnlineServicesModel::self()->unSubscribeAct(), SIGNAL(triggered()), this, SLOT(unSubscribe()));
     connect(OnlineServicesModel::self()->refreshSubscriptionAct(), SIGNAL(triggered()), this, SLOT(refreshSubscription()));
+    connect(podcastSearchAction, SIGNAL(triggered()), this, SLOT(searchForPodcasts()));
     connect(downloadAction, SIGNAL(triggered()), this, SLOT(download()));
 
     QMenu *menu=new QMenu(this);
@@ -82,11 +84,13 @@ OnlineServicesPage::OnlineServicesPage(QWidget *p)
     QAction *sep=new QAction(this);
     sep->setSeparator(true);
     menu->addAction(sep);
+    menu->addAction(podcastSearchAction);
     menu->addAction(OnlineServicesModel::self()->subscribeAct());
     menu->addAction(OnlineServicesModel::self()->unSubscribeAct());
     menu->addAction(OnlineServicesModel::self()->refreshSubscriptionAct());
     view->addAction(downloadAction);
     view->addAction(sep);
+    view->addAction(podcastSearchAction);
     view->addAction(OnlineServicesModel::self()->subscribeAct());
     view->addAction(OnlineServicesModel::self()->unSubscribeAct());
     view->addAction(OnlineServicesModel::self()->refreshSubscriptionAct());
@@ -381,9 +385,11 @@ void OnlineServicesPage::controlActions()
     OnlineServicesModel::self()->unSubscribeAct()->setVisible(canSubscribe || canUnSubscribe);
     OnlineServicesModel::self()->refreshSubscriptionAct()->setVisible(canSubscribe || canUnSubscribe);
     OnlineServicesModel::self()->subscribeAct()->setEnabled(canSubscribe && 1==selected.count());
+    podcastSearchAction->setVisible(canSubscribe && 1==selected.count());
     OnlineServicesModel::self()->unSubscribeAct()->setEnabled(canUnSubscribe && 1==selected.count());
     OnlineServicesModel::self()->refreshSubscriptionAct()->setEnabled((canUnSubscribe || canSubscribe) && 1==selected.count());
     OnlineServicesModel::self()->refreshAct()->setEnabled(canRefresh && 1==selected.count());
+    podcastSearchAction->setEnabled(canSubscribe && 1==selected.count());
     downloadAction->setVisible(!srvSelected && canDownload && !selected.isEmpty() && 1==services.count());
     downloadAction->setEnabled(!srvSelected && canDownload && !selected.isEmpty() && 1==services.count());
     StdActions::self()->addToPlayQueueAction->setEnabled(!srvSelected && !selected.isEmpty());
@@ -582,6 +588,14 @@ void OnlineServicesPage::refreshSubscription()
     }
 
     srv->refreshSubscription(item);
+}
+
+void OnlineServicesPage::searchForPodcasts()
+{
+    if (0==PodcastSearchDialog::instanceCount()) {
+        PodcastSearchDialog *dlg=new PodcastSearchDialog(this);
+        dlg->show();
+    }
 }
 
 void OnlineServicesPage::updated(const QModelIndex &idx)

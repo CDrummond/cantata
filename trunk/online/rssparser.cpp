@@ -107,10 +107,11 @@ static Episode parseEpisode(QXmlStreamReader &reader)
     return ep;
 }
 
-Channel RssParser::parse(QXmlStreamReader &reader)
+Channel RssParser::parse(QIODevice *dev)
 {
     Channel ch;
-    if (parseUntil(reader, QLatin1String("channel"))) {
+    QXmlStreamReader reader(dev);
+    if (parseUntil(reader, QLatin1String("rss")) && parseUntil(reader, QLatin1String("channel"))) {
         while (!reader.atEnd()) {
             reader.readNext();
 

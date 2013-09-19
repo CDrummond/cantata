@@ -61,7 +61,10 @@ public:
     void refreshSubscription(MusicLibraryItem *item);
     bool processingUrl(const QUrl &url);
     void addUrl(const QUrl &url, bool isNew=true);
-    static const QString iconPath() { return iconFile; }
+    static const QString & iconPath() { return iconFile; }
+    static QUrl fixUrl(const QString &url);
+    static QUrl fixUrl(const QUrl &orig);
+    static bool isUrlOk(const QUrl &u) { return QLatin1String("http")==u.scheme() || QLatin1String("https")==u.scheme(); }
 
 private:
     void loadAll();

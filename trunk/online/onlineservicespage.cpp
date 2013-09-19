@@ -494,12 +494,9 @@ void OnlineServicesPage::subscribe()
             return;
         }
 
-        QUrl u(url.trimmed());
-        if (QLatin1String("itpc")==u.scheme() || QLatin1String("pcast")==u.scheme() || QLatin1String("feed")==u.scheme()) {
-            u.setScheme(QLatin1String("http"));
-        }
+        QUrl u(PodcastService::fixUrl(url));
 
-        if (QLatin1String("http")!=u.scheme() && QLatin1String("https")!=u.scheme()) {
+        if (!PodcastService::isUrlOk(u)) {
             MessageBox::error(this, i18n("Invalid URL!"));
             return;
         }

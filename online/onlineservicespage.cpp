@@ -535,7 +535,7 @@ void OnlineServicesPage::unSubscribe()
         return;
     }
 
-    if (MessageBox::No==MessageBox::warningYesNo(this, i18n("Unsibscribe from <b>%1</b>?", item->data()))) {
+    if (MessageBox::No==MessageBox::warningYesNo(this, i18n("Unsubscribe from <b>%1</b>?", item->data()))) {
         return;
     }
 
@@ -556,7 +556,7 @@ void OnlineServicesPage::refreshSubscription()
         if (!srv->canSubscribe()) {
             return;
         }
-        if (MessageBox::No==MessageBox::warningYesNo(this, i18n("Refresh all podcast listings?"))) {
+        if (MessageBox::No==MessageBox::questionYesNo(this, i18n("Refresh all podcast listings?"))) {
             return;
         }
         srv->refreshSubscription(0);
@@ -577,7 +577,7 @@ void OnlineServicesPage::refreshSubscription()
         return;
     }
 
-    if (MessageBox::No==MessageBox::warningYesNo(this, i18n("Refresh episode listing from <b>%1</b>?", item->data()))) {
+    if (MessageBox::No==MessageBox::questionYesNo(this, i18n("Refresh episode listing from <b>%1</b>?", item->data()))) {
         return;
     }
 

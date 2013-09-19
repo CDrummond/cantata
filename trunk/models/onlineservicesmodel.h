@@ -31,6 +31,7 @@
 
 class Device;
 class OnlineService;
+class PodcastService;
 class OnlineDevice;
 class MusicLibraryItem;
 
@@ -65,6 +66,7 @@ public:
     Action * subscribeAct() const { return subscribeAction; }
     Action * unSubscribeAct() const { return unSubscribeAction; }
     Action * refreshSubscriptionAct() const { return refreshSubscriptionAction; }
+    bool subscribePodcast(const QUrl &url);
 
     QImage requestImage(const QString &id, const QString &artist, const QString &album, const QString &url,
                         const QString cacheName=QString(), int maxSize=-1);
@@ -96,7 +98,7 @@ private:
     Action *unSubscribeAction;
     Action *refreshSubscriptionAction;
     QSet<QString> busyServices;
-
+    PodcastService *podcast;
     friend class OnlineService;
 };
 

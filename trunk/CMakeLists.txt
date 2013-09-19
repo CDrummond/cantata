@@ -59,7 +59,7 @@ set(CANTATA_SRCS gui/application.cpp gui/main.cpp gui/initialsettingswizard.cpp 
     models/multimusicmodel.cpp models/onlineservicesmodel.cpp models/musiclibraryitempodcast.cpp
     online/onlineservicespage.cpp online/onlineservice.cpp online/jamendoservice.cpp online/jamendosettingsdialog.cpp
     online/magnatuneservice.cpp online/magnatunesettingsdialog.cpp online/soundcloudservice.cpp online/podcastservice.cpp
-    online/rssparser.cpp
+    online/rssparser.cpp online/opmlparser.cpp online/podcastsearchdialog.cpp
     mpd/mpdconnection.cpp mpd/mpdparseutils.cpp mpd/mpdstats.cpp mpd/mpdstatus.cpp mpd/song.cpp mpd/mpduser.cpp mpd/cuefile.cpp
     dynamic/dynamic.cpp dynamic/dynamicpage.cpp dynamic/dynamicproxymodel.cpp dynamic/dynamicruledialog.cpp dynamic/dynamicrulesdialog.cpp
     widgets/treeview.cpp widgets/listview.cpp widgets/itemview.cpp widgets/autohidingsplitter.cpp widgets/timeslider.cpp
@@ -83,7 +83,7 @@ set(CANTATA_MOC_HDRS
     models/actionmodel.h models/digitallyimported.h models/streamsearchmodel.h models/multimusicmodel.h models/onlineservicesmodel.h
     online/onlineservice.h online/onlineservicespage.h online/jamendoservice.h online/magnatuneservice.h
     online/magnatunesettingsdialog.h online/magnatuneservice.h online/magnatunesettingsdialog.h online/soundcloudservice.h
-    online/podcastservice.h
+    online/podcastservice.h online/podcastsearchdialog.h
     mpd/mpdconnection.h mpd/mpdstats.h mpd/mpdstatus.h
     dynamic/dynamic.h dynamic/dynamicpage.h dynamic/dynamicruledialog.h dynamic/dynamicrulesdialog.h
     widgets/treeview.h widgets/listview.h widgets/itemview.h widgets/autohidingsplitter.h widgets/timeslider.h widgets/actionlabel.h

@@ -93,7 +93,7 @@ static Episode parseEpisode(QXmlStreamReader &reader)
                 ep.duration=reader.attributes().value(QLatin1String("duration")).toString().toUInt();
             } else if (QLatin1String("enclosure")==name) {
                 if (reader.attributes().value(QLatin1String("type")).toString().startsWith(QLatin1String("audio/"))) {
-                    ep.url=QUrl::fromEncoded(reader.attributes().value(QLatin1String("url")).toString().toAscii());
+                    ep.url=QUrl::fromEncoded(reader.attributes().value(QLatin1String("url")).toString().toLatin1());
                 }
                 consumeCurrentElement(reader);
             } else {

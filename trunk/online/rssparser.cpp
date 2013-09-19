@@ -60,7 +60,7 @@ static QUrl parseImage(QXmlStreamReader &reader)
         reader.readNext();
         if (reader.isStartElement()) {
             if (QLatin1String("url")==reader.name()) {
-                url=QUrl::fromEncoded(reader.readElementText().toAscii());
+                url=QUrl::fromEncoded(reader.readElementText().toLatin1());
             } else {
                 consumeCurrentElement(reader);
             }

@@ -57,6 +57,10 @@ class PageWidgetItem : public QWidget
 public:
     PageWidgetItem(QWidget *p, const QString &header, const Icon &icon, QWidget *cfg);
     virtual ~PageWidgetItem() { }
+    QWidget * widget() const { return wid; }
+
+private:
+    QWidget *wid;
 };
 
 class PageWidget : public QWidget
@@ -66,6 +70,7 @@ public:
     virtual ~PageWidget() { }
     PageWidgetItem * addPage(QWidget *widget, const QString &name, const Icon &icon, const QString &header);
     int count();
+    PageWidgetItem * currentPage() const;
 
 private:
     QListWidget *list;

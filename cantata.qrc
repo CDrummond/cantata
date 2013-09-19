@@ -38,6 +38,11 @@
 <file alias="jamendo">online/icons/jamendo.svg</file>
 <file alias="magnatune">online/icons/magnatune.svg</file>
 <file alias="podcasts">online/icons/podcasts.svg</file>
+<file alias="bbc">online/icons/bbc.svg</file>
+<file alias="cbc">online/icons/cbc.svg</file>
+<file alias="npr">online/icons/npr.svg</file>
+<file alias="itunes">online/icons/itunes.svg</file>
+<file alias="podcast_directories.xml">online/podcast_directories.xml</file>
 
 <file alias="digitallyimported">streams/icons/digitallyimported.png</file>
 <file alias="favourites">streams/icons/favourites.svg</file>

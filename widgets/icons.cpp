@@ -378,6 +378,7 @@ Icons::Icons()
     playedPodcastEpisodeIcon=Icon("dialog-ok");
     audioFileIcon=Icon("audio-x-generic");
     playlistIcon=Icon("view-media-playlist");
+    folderIcon=Icon("inode-directory");
     dynamicRuleIcon=Icon("media-playlist-shuffle");
     configureIcon=Icon("configure");
     connectIcon=Icon("dialog-ok");

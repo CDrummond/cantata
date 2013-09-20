@@ -244,6 +244,7 @@ PageWidgetItem::PageWidgetItem(QWidget *p, const QString &header, const Icon &ic
     layout->addLayout(titleLayout);
     layout->addItem(new QSpacerItem(8, 8, QSizePolicy::Fixed, QSizePolicy::Fixed));
     layout->addWidget(cfg);
+    layout->setMargin(0);
     cfg->setParent(this);
     cfg->adjustSize();
     adjustSize();

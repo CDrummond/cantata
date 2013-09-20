@@ -334,6 +334,15 @@ void MusicLibraryItemPodcast::setPlayed(MusicLibraryItemSong *song)
     }
 }
 
+void MusicLibraryItemPodcast::addAll(MusicLibraryItemPodcast *other)
+{
+    QList<MusicLibraryItem *> items=other->childItems();
+    foreach (MusicLibraryItem *i, items) {
+        static_cast<MusicLibraryItemSong *>(i)->setPodcastImage(m_imageFile);
+        i->setParent(this);
+    }
+}
+
 bool MusicLibraryItemPodcast::largeImages() const
 {
     return m_parentItem && Type_Root==m_parentItem->itemType() &&

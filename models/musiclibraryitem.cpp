@@ -98,11 +98,3 @@ void MusicLibraryItemContainer::clear()
     m_genres.clear();
     m_rowsSet=false;
 }
-
-void MusicLibraryItemContainer::addAll(MusicLibraryItemContainer *other)
-{
-    QList<MusicLibraryItem *> items=other->childItems();
-    foreach (MusicLibraryItem *i, items) {
-        i->setParent(this);
-    }
-}

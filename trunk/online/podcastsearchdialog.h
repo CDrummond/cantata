@@ -48,19 +48,22 @@ class PodcastPage : public QWidget
     Q_OBJECT
 public:
     PodcastPage(QWidget *p);
-    virtual ~PodcastPage() { cancel(); }
+    virtual ~PodcastPage() { cancel(); cancelImage(); }
     
 Q_SIGNALS:
     void rssSelected(const QUrl &url);
 
 protected:
     void fetch(const QUrl &url);
+    void fetchImage(const QUrl &url);
     void cancel();
+    void cancelImage();
     void addPodcast(const QString &name, const QUrl &url, const QUrl &image, const QString &description, const QString &webPage, QTreeWidgetItem *p);
 
 private Q_SLOTS:
     void selectionChanged();
     void jobFinished();
+    void imageJobFinished();
     void openLink(const QUrl &url);
 
 private:
@@ -69,9 +72,11 @@ private:
 
 protected:
     Spinner *spinner;
+    Spinner *imageSpinner;
     QTreeWidget *tree;
     TextBrowser *text;
     NetworkJob *job;
+    NetworkJob *imageJob;
 };
 
 class PodcastSearchPage : public PodcastPage

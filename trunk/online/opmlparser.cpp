@@ -76,6 +76,9 @@ static void parseOutline(QXmlStreamReader &reader, Category &cat)
                     podcast.url=QUrl::fromEncoded(attributes.value(QLatin1String("url")).toString().toLatin1());
                 }
                 podcast.image=QUrl::fromEncoded(attributes.value(QLatin1String("imageUrl")).toString().toLatin1());
+                if (podcast.image.isEmpty()) {
+                    podcast.image=QUrl::fromEncoded(attributes.value(QLatin1String("imageHref")).toString().toLatin1());
+                }
                 cat.podcasts.append(podcast);
 
                 // Consume any children and the EndElement.

@@ -68,8 +68,14 @@ static void parseOutline(QXmlStreamReader &reader, Category &cat)
                 QLatin1String("link")==attributes.value(QLatin1String("type")).toString()) {
                 // Parse the feed and add it to this container
                 Podcast podcast;
+                podcast.name=attributes.value("title").toString().trimmed();
+                if (podcast.name.isEmpty()) {
+                    podcast.name=attributes.value(QLatin1String("text")).toString();
+                }
                 podcast.description=attributes.value("description").toString().trimmed();
-                podcast.name=attributes.value("text").toString().trimmed();
+                if (podcast.description.isEmpty()) {
+                    podcast.description=attributes.value(QLatin1String("text")).toString();
+                }
                 podcast.htmlUrl=attributes.value("htmlUrl").toString().trimmed();
                 podcast.url=QUrl::fromEncoded(attributes.value(QLatin1String("xmlUrl")).toString().toLatin1());
                 if (podcast.url.isEmpty()) {

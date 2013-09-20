@@ -55,6 +55,7 @@ public:
     Type itemType() const { return Type_Song; }
     bool hasGenre(const QString &genre) const { return m_song.genre==genre; }
     QSet<QString> allGenres() const { return QSet<QString>()<<m_song.genre; }
+    void setPodcastImage(const QString &img) { m_song.setPodcastImage(img); }
 
 private:
     Song m_song;

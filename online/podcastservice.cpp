@@ -246,6 +246,7 @@ void PodcastService::jobFinished()
             beginInsertRows(index(), childCount(), childCount());
             m_childItems.append(podcast);
             endInsertRows();
+            emitNeedToSort();
         } else {
             MusicLibraryItemPodcast *orig = getPodcast(j->url());
             if (!orig) {
@@ -296,7 +297,7 @@ void PodcastService::jobFinished()
                 }
 
                 orig->save();
-                emitUpdated();
+                emitNeedToSort();
             }
 
             delete podcast;

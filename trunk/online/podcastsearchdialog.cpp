@@ -105,7 +105,7 @@ public:
     void parseResonse(QIODevice *dev)
     {
         if (!dev) {
-            MessageBox::error(this, i18n("Failed to fetch podcasts"));
+            MessageBox::error(this, i18n("Failed to fetch podcasts from iTunes"));
             return;
         }
         QJson::Parser parser;
@@ -114,11 +114,8 @@ public:
             MessageBox::error(this, i18n("There was a problem parsing the response from the iTunes Store"));
             return;
         }
-        if (data.toMap().contains(QLatin1String("errorMessage"))) {
-            MessageBox::error(this, data.toMap()[QLatin1String("errorMessage")].toString());
-            return;
-        }
-        foreach (const QVariant& resultVariant, data.toMap()[QLatin1String("results")].toList()) {
+
+        foreach (const QVariant &resultVariant, data.toMap()[QLatin1String("results")].toList()) {
             QVariantMap result(resultVariant.toMap());
             if (result[QLatin1String("kind")].toString() != QLatin1String("podcast")) {
                 continue;
@@ -129,6 +126,56 @@ public:
                        result[QLatin1String("artworkUrl100")].toUrl(),
                        QString(),
                        result[QLatin1String("collectionViewUrl")].toString(),
+                       0);
+        }
+    }
+};
+
+class GPodderSearchPage : public PodcastSearchPage
+{
+public:
+    GPodderSearchPage(QWidget *p) : PodcastSearchPage(p) { }
+
+    void doSearch()
+    {
+        QString text=search->text().trimmed();
+        if (text.isEmpty()) {
+            return;
+        }
+
+        QUrl url(QLatin1String("http://gpodder.net/search.json"));
+        #if QT_VERSION < 0x050000
+        QUrl &query=url;
+        #else
+        QUrlQuery query;
+        #endif
+        query.addQueryItem(QLatin1String("q"), text);
+        #if QT_VERSION >= 0x050000
+        url.setQuery(query);
+        #endif
+        fetch(url);
+    }
+
+    void parseResonse(QIODevice *dev)
+    {
+        if (!dev) {
+            MessageBox::error(this, i18n("Failed to fetch podcasts from GPodder"));
+            return;
+        }
+        QJson::Parser parser;
+        QVariant data = parser.parse(dev);
+        if (data.isNull()) {
+            MessageBox::error(this, i18n("There was a problem parsing the response from GPodder"));
+            return;
+        }
+        QVariantList list=data.toList();
+        foreach (const QVariant &var, list) {
+            QVariantMap map=var.toMap();
+            addPodcast(map[QLatin1String("title")].toString(),
+                       map[QLatin1String("url")].toUrl(),
+                       map[QLatin1String("logo_url")].toUrl(),
+                       map[QLatin1String("description")].toString(),
+                       map[QLatin1String("website")].toString(),
                        0);
         }
     }
@@ -193,6 +240,10 @@ void PodcastPage::cancelImage()
 
 void PodcastPage::addPodcast(const QString &name, const QUrl &url, const QUrl &image, const QString &description, const QString &webPage, QTreeWidgetItem *p)
 {
+    if (name.isEmpty() || url.isEmpty()) {
+        return;
+    }
+
     QTreeWidgetItem *podItem=p ? new QTreeWidgetItem(p, QStringList() << name)
                                : new QTreeWidgetItem(tree, QStringList() << name);
 
@@ -454,11 +505,14 @@ PodcastSearchDialog::PodcastSearchDialog(QWidget *parent)
     ITunesSearchPage *itunes=new ITunesSearchPage(this);
     Icon itunesIcon;
     itunesIcon.addFile(":itunes");
-    if (itunesIcon.isNull()) {
-        itunesIcon=Icon("folder");
-    }
     widget->addPage(itunes, i18n("Search iTunes"), itunesIcon, i18n("Search for podcasts on iTunes"));
     pages << itunes;
+
+    GPodderSearchPage *gpodder=new GPodderSearchPage(this);
+    Icon gpodderIcon;
+    gpodderIcon.addFile(":gpodder");
+    widget->addPage(gpodder, i18n("Search GPodder"), gpodderIcon, i18n("Search for podcasts on GPodder.net"));
+    pages << gpodder;
 
     QFile file(":podcast_directories.xml");
     if (file.open(QIODevice::ReadOnly)) {
@@ -470,11 +524,10 @@ PodcastSearchDialog::PodcastSearchDialog(QWidget *parent)
                 QString name=reader.attributes().value(QLatin1String("name")).toString();
                 QString icon=reader.attributes().value(QLatin1String("icon")).toString();
                 Icon icn;
-                if (!icon.isEmpty()) {
-                    icn.addFile(":"+icon);
-                }
-                if (icn.isNull()) {
+                if (icon.isEmpty()) {
                     icn=Icon("folder");
+                } else {
+                    icn.addFile(":"+icon);
                 }
                 OpmlBrowsePage *page=new OpmlBrowsePage(this, QUrl(reader.attributes().value(QLatin1String("url")).toString()));
                 widget->addPage(page, i18n("Browse %1", name), icn, i18n("Browse %1 podcasts", name));

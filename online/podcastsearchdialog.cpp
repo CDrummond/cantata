@@ -78,43 +78,18 @@ static QString generateCacheFileName(const QUrl &url, bool create)
 class ITunesSearchPage : public PodcastSearchPage
 {
 public:
-    ITunesSearchPage(QWidget *p) : PodcastSearchPage(p) { }
-
-    void doSearch()
+    ITunesSearchPage(QWidget *p)
+        : PodcastSearchPage(p,
+                            QLatin1String("iTunes"),
+                            QLatin1String("itunes"),
+                            QUrl(QLatin1String("http://ax.phobos.apple.com.edgesuite.net/WebObjects/MZStoreServices.woa/wa/wsSearch")),
+                            QLatin1String("term"),
+                            QStringList() << QLatin1String("country") << QLatin1String("US") << QLatin1String("media") << QLatin1String("podcast"))
     {
-        QString text=search->text().trimmed();
-        if (text.isEmpty()) {
-            return;
-        }
-
-        QUrl url(QLatin1String("http://ax.phobos.apple.com.edgesuite.net/WebObjects/MZStoreServices.woa/wa/wsSearch"));
-        #if QT_VERSION < 0x050000
-        QUrl &query=url;
-        #else
-        QUrlQuery query;
-        #endif
-        query.addQueryItem(QLatin1String("country"), QLatin1String("US"));
-        query.addQueryItem(QLatin1String("media"), QLatin1String("podcast"));
-        query.addQueryItem(QLatin1String("term"), text);
-        #if QT_VERSION >= 0x050000
-        url.setQuery(query);
-        #endif
-        fetch(url);
     }
 
-    void parseResonse(QIODevice *dev)
+    void parse(const QVariant &data)
     {
-        if (!dev) {
-            MessageBox::error(this, i18n("Failed to fetch podcasts from iTunes"));
-            return;
-        }
-        QJson::Parser parser;
-        QVariant data = parser.parse(dev);
-        if (data.isNull()) {
-            MessageBox::error(this, i18n("There was a problem parsing the response from the iTunes Store"));
-            return;
-        }
-
         foreach (const QVariant &resultVariant, data.toMap()[QLatin1String("results")].toList()) {
             QVariantMap result(resultVariant.toMap());
             if (result[QLatin1String("kind")].toString() != QLatin1String("podcast")) {
@@ -134,40 +109,17 @@ public:
 class GPodderSearchPage : public PodcastSearchPage
 {
 public:
-    GPodderSearchPage(QWidget *p) : PodcastSearchPage(p) { }
-
-    void doSearch()
+    GPodderSearchPage(QWidget *p)
+        : PodcastSearchPage(p,
+                            QLatin1String("GPodder"),
+                            QLatin1String("gpodder"),
+                            QUrl(QLatin1String("http://gpodder.net/search.json")),
+                            QLatin1String("q"))
     {
-        QString text=search->text().trimmed();
-        if (text.isEmpty()) {
-            return;
-        }
-
-        QUrl url(QLatin1String("http://gpodder.net/search.json"));
-        #if QT_VERSION < 0x050000
-        QUrl &query=url;
-        #else
-        QUrlQuery query;
-        #endif
-        query.addQueryItem(QLatin1String("q"), text);
-        #if QT_VERSION >= 0x050000
-        url.setQuery(query);
-        #endif
-        fetch(url);
     }
 
-    void parseResonse(QIODevice *dev)
+    void parse(const QVariant &data)
     {
-        if (!dev) {
-            MessageBox::error(this, i18n("Failed to fetch podcasts from GPodder"));
-            return;
-        }
-        QJson::Parser parser;
-        QVariant data = parser.parse(dev);
-        if (data.isNull()) {
-            MessageBox::error(this, i18n("There was a problem parsing the response from GPodder"));
-            return;
-        }
         QVariantList list=data.toList();
         foreach (const QVariant &var, list) {
             QVariantMap map=var.toMap();
@@ -181,8 +133,9 @@ public:
     }
 };
 
-PodcastPage::PodcastPage(QWidget *p)
+PodcastPage::PodcastPage(QWidget *p, const QString &n)
     : QWidget(p)
+    , pageName(n)
     , job(0)
     , imageJob(0)
 {
@@ -232,20 +185,20 @@ void PodcastPage::cancelImage()
 {
     imageSpinner->stop();
     if (imageJob) {
-        disconnect(imageJob, SIGNAL(finished()), this, SLOT(jobFinished()));
+        disconnect(imageJob, SIGNAL(finished()), this, SLOT(imageJobFinished()));
         imageJob->deleteLater();
         imageJob=0;
     }
 }
 
-void PodcastPage::addPodcast(const QString &name, const QUrl &url, const QUrl &image, const QString &description, const QString &webPage, QTreeWidgetItem *p)
+void PodcastPage::addPodcast(const QString &title, const QUrl &url, const QUrl &image, const QString &description, const QString &webPage, QTreeWidgetItem *p)
 {
-    if (name.isEmpty() || url.isEmpty()) {
+    if (title.isEmpty() || url.isEmpty()) {
         return;
     }
 
-    QTreeWidgetItem *podItem=p ? new QTreeWidgetItem(p, QStringList() << name)
-                               : new QTreeWidgetItem(tree, QStringList() << name);
+    QTreeWidgetItem *podItem=p ? new QTreeWidgetItem(p, QStringList() << title)
+                               : new QTreeWidgetItem(tree, QStringList() << title);
 
     podItem->setData(0, IsPodcastRole, true);
     podItem->setData(0, UrlRole, url);
@@ -352,8 +305,11 @@ void PodcastPage::openLink(const QUrl &url)
     QProcess::startDetached(QLatin1String("xdg-open"), QStringList() << url.toString());
 }
 
-PodcastSearchPage::PodcastSearchPage(QWidget *p)
-    : PodcastPage(p)
+PodcastSearchPage::PodcastSearchPage(QWidget *p, const QString &n, const QString &i, const QUrl &qu, const QString &qk, const QStringList &other)
+    : PodcastPage(p, n)
+    , queryUrl(qu)
+    , queryKey(qk)
+    , otherArgs(other)
 {
     QBoxLayout *searchLayout=new QBoxLayout(QBoxLayout::LeftToRight);
     QBoxLayout *viewLayout=new QBoxLayout(QBoxLayout::LeftToRight);
@@ -374,6 +330,7 @@ PodcastSearchPage::PodcastSearchPage(QWidget *p)
     mainLayout->addLayout(viewLayout);
     connect(search, SIGNAL(returnPressed()), SLOT(doSearch()));
     connect(searchButton, SIGNAL(clicked()), SLOT(doSearch()));
+    icn.addFile(":"+i);
 }
 
 void PodcastSearchPage::showEvent(QShowEvent *e)
@@ -382,8 +339,49 @@ void PodcastSearchPage::showEvent(QShowEvent *e)
     QWidget::showEvent(e);
 }
 
-OpmlBrowsePage::OpmlBrowsePage(QWidget *p, const QUrl &u)
-    : PodcastPage(p)
+void PodcastSearchPage::doSearch()
+{
+    QString text=search->text().trimmed();
+    if (text.isEmpty() || text==currentSearch) {
+        return;
+    }
+
+    currentSearch=text;
+    QUrl url=queryUrl;
+    #if QT_VERSION < 0x050000
+    QUrl &query=url;
+    #else
+    QUrlQuery query;
+    #endif
+    query.addQueryItem(queryKey, text);
+    if (otherArgs.size()>1) {
+        for (int i=0; i<otherArgs.size()-1; i+=2) {
+            query.addQueryItem(otherArgs.at(i), otherArgs.at(i+1));
+        }
+    }
+    #if QT_VERSION >= 0x050000
+    url.setQuery(query);
+    #endif
+    fetch(url);
+}
+
+void PodcastSearchPage::parseResonse(QIODevice *dev)
+{
+    if (!dev) {
+        MessageBox::error(this, i18n("Failed to fetch podcasts from %1", name()));
+        return;
+    }
+    QJson::Parser parser;
+    QVariant data = parser.parse(dev);
+    if (data.isNull()) {
+        MessageBox::error(this, i18n("There was a problem parsing the response from %1", name()));
+        return;
+    }
+    parse(data);
+}
+
+OpmlBrowsePage::OpmlBrowsePage(QWidget *p, const QString &n, const QString &i, const QUrl &u)
+    : PodcastPage(p, n)
     , loaded(false)
     , url(u)
 {
@@ -395,6 +393,11 @@ OpmlBrowsePage::OpmlBrowsePage(QWidget *p, const QUrl &u)
     tree->addAction(act);
     connect(act, SIGNAL(triggered(bool)), this, SLOT(reload()));
     tree->setContextMenuPolicy(Qt::ActionsContextMenu);
+    if (i.isEmpty()) {
+        icn=Icon("folder");
+    } else {
+        icn.addFile(":"+i);
+    }
 }
 
 void OpmlBrowsePage::showEvent(QShowEvent *e)
@@ -503,15 +506,11 @@ PodcastSearchDialog::PodcastSearchDialog(QWidget *parent)
     QList<PodcastPage *> pages;
 
     ITunesSearchPage *itunes=new ITunesSearchPage(this);
-    Icon itunesIcon;
-    itunesIcon.addFile(":itunes");
-    widget->addPage(itunes, i18n("Search iTunes"), itunesIcon, i18n("Search for podcasts on iTunes"));
+    widget->addPage(itunes, i18n("Search %1", itunes->name()), itunes->icon(), i18n("Search for podcasts on %1", itunes->name()));
     pages << itunes;
 
     GPodderSearchPage *gpodder=new GPodderSearchPage(this);
-    Icon gpodderIcon;
-    gpodderIcon.addFile(":gpodder");
-    widget->addPage(gpodder, i18n("Search GPodder"), gpodderIcon, i18n("Search for podcasts on GPodder.net"));
+    widget->addPage(gpodder, i18n("Search %1", gpodder->name()), gpodder->icon(), i18n("Search for podcasts on %1", gpodder->name()));
     pages << gpodder;
 
     QFile file(":podcast_directories.xml");
@@ -519,18 +518,12 @@ PodcastSearchDialog::PodcastSearchDialog(QWidget *parent)
         QXmlStreamReader reader(&file);
         while (!reader.atEnd()) {
             reader.readNext();
-
             if (reader.isStartElement() && QLatin1String("directory")==reader.name()) {
-                QString name=reader.attributes().value(QLatin1String("name")).toString();
-                QString icon=reader.attributes().value(QLatin1String("icon")).toString();
-                Icon icn;
-                if (icon.isEmpty()) {
-                    icn=Icon("folder");
-                } else {
-                    icn.addFile(":"+icon);
-                }
-                OpmlBrowsePage *page=new OpmlBrowsePage(this, QUrl(reader.attributes().value(QLatin1String("url")).toString()));
-                widget->addPage(page, i18n("Browse %1", name), icn, i18n("Browse %1 podcasts", name));
+                OpmlBrowsePage *page=new OpmlBrowsePage(this,
+                                                        reader.attributes().value(QLatin1String("name")).toString(),
+                                                        reader.attributes().value(QLatin1String("icon")).toString(),
+                                                        QUrl(reader.attributes().value(QLatin1String("url")).toString()));
+                widget->addPage(page, i18n("Browse %1", page->name()), page->icon(), i18n("Browse %1 podcasts", page->name()));
                 pages << page;
             }
         }
@@ -570,7 +563,7 @@ void PodcastSearchDialog::slotButtonClicked(int button)
         if (OnlineServicesModel::self()->subscribePodcast(currentUrl)) {
             MessageBox::information(this, i18n("Subscription added"));
         } else {
-            MessageBox::error(this, i18n("You are already subscribed to this URL!"));
+            MessageBox::error(this, i18n("You are already subscribed to this podcast!"));
         }
         break;
     case Close:

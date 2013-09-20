@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <directories>
-<directory name="Digital Podcast" url="http://www.digitalpodcast.com/opml/digitalpodcastnoadult.opml" icon="podcasts"/>
+<directory name="DigitalPodcast" url="http://www.digitalpodcast.com/opml/digitalpodcastnoadult.opml" icon="podcasts"/>
 <directory name="BBC" url="http://www.bbc.co.uk/radio/opml/bbc_podcast_opml.opml" icon="bbc"/>
 <directory name="NPR" url="http://www.npr.org/podcasts.opml" icon="npr"/>
 <directory name="CBC" url="http://www.cbc.ca/podcasts.opml" icon="cbc"/>

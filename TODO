@@ -32,7 +32,6 @@
 
 - Online
   - DAAP servers? (Online or devices? Online as its read-only?)
-  - Make list configurable?
 
 - Devices
   - libMTP does not support album artist tag.

@@ -43,6 +43,15 @@ public:
     static QString constUdiPrefix;
     static OnlineServicesModel * self();
 
+    struct Provider
+    {
+        Provider(const QString &n, const QIcon &i, const QString &k, bool h) : name(n), icon(i), key(k), hidden(h) { }
+        QString name;
+        QIcon icon;
+        QString key;
+        bool hidden;
+    };
+
     OnlineServicesModel(QObject *parent = 0);
     ~OnlineServicesModel();
     QModelIndex serviceIndex(const OnlineService *srv) const;
@@ -55,6 +64,7 @@ public:
     OnlineService * service(const QString &name);
     bool isEnabled() const { return enabled; }
     void setEnabled(bool e);
+    bool serviceIsBusy(const QString &id) const { return busyServices.contains(id); }
     void stop();
     QMimeData * mimeData(const QModelIndexList &indexes) const;
     void setSearch(const QString &serviceName, const QString &text);
@@ -71,15 +81,19 @@ public:
     QImage requestImage(const QString &id, const QString &artist, const QString &album, const QString &url,
                         const QString cacheName=QString(), int maxSize=-1);
 
+    void save();
+    QList<Provider> getProviders() const;
+    void setHiddenProviders(const QSet<QString> &prov);
+
 public Q_SLOTS:
     void stateChanged(const QString &name, bool state);
 
 private:
-    OnlineService * addService(const QString &name);
+    OnlineService * addService(const QString &name, const QSet<QString> &hidden);
     void removeService(const QString &name);
     void updateItemMenu();
     void load();
-    void setBusy(const QString &serviceName, bool b);
+    void setBusy(const QString &id, bool b);
 
 private Q_SLOTS:
     void imageDownloaded();
@@ -87,6 +101,7 @@ private Q_SLOTS:
 Q_SIGNALS:
     void error(const QString &text);
     void updated(const QModelIndex &idx);
+    void needToSort();
     void busy(bool);
 
 private:
@@ -99,6 +114,7 @@ private:
     Action *refreshSubscriptionAction;
     QSet<QString> busyServices;
     PodcastService *podcast;
+    QList<OnlineService *> hiddenServices;
     friend class OnlineService;
 };
 

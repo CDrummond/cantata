@@ -59,7 +59,7 @@ set(CANTATA_SRCS gui/application.cpp gui/main.cpp gui/initialsettingswizard.cpp 
     models/multimusicmodel.cpp models/onlineservicesmodel.cpp models/musiclibraryitempodcast.cpp
     online/onlineservicespage.cpp online/onlineservice.cpp online/jamendoservice.cpp online/jamendosettingsdialog.cpp
     online/magnatuneservice.cpp online/magnatunesettingsdialog.cpp online/soundcloudservice.cpp online/podcastservice.cpp
-    online/rssparser.cpp online/opmlparser.cpp online/podcastsearchdialog.cpp
+    online/rssparser.cpp online/opmlparser.cpp online/podcastsearchdialog.cpp online/onlinesettings.cpp
     mpd/mpdconnection.cpp mpd/mpdparseutils.cpp mpd/mpdstats.cpp mpd/mpdstatus.cpp mpd/song.cpp mpd/mpduser.cpp mpd/cuefile.cpp
     dynamic/dynamic.cpp dynamic/dynamicpage.cpp dynamic/dynamicproxymodel.cpp dynamic/dynamicruledialog.cpp dynamic/dynamicrulesdialog.cpp
     widgets/treeview.cpp widgets/listview.cpp widgets/itemview.cpp widgets/autohidingsplitter.cpp widgets/timeslider.cpp
@@ -101,7 +101,7 @@ set(CANTATA_UIS
     dynamic/dynamicpage.ui dynamic/dynamicrule.ui dynamic/dynamicrules.ui
     context/togglelist.ui context/othersettings.ui
     widgets/itemview.ui
-    online/onlineservicespage.ui)
+    online/onlineservicespage.ui online/onlinesettings.ui)
 
 if (ENABLE_TAGLIB)
     set(TAGLIB_MIN_VERSION "1.6")

@@ -47,6 +47,7 @@
 #include "stdactions.h"
 #include "actioncollection.h"
 #include "networkaccessmanager.h"
+#include "settings.h"
 #include <QStringList>
 #include <QMimeData>
 #include <QFile>
@@ -257,13 +258,13 @@ OnlineService * OnlineServicesModel::service(const QString &name)
     return idx<0 ? 0 : static_cast<OnlineService *>(collections.at(idx));
 }
 
-void OnlineServicesModel::setBusy(const QString &serviceName, bool b)
+void OnlineServicesModel::setBusy(const QString &id, bool b)
 {
     int before=busyServices.count();
     if (b) {
-        busyServices.insert(serviceName);
+        busyServices.insert(id);
     } else {
-        busyServices.remove(serviceName);
+        busyServices.remove(id);
     }
 
     if (before!=busyServices.count()) {
@@ -279,7 +280,7 @@ Qt::ItemFlags OnlineServicesModel::flags(const QModelIndex &index) const
     return Qt::ItemIsEnabled;
 }
 
-OnlineService * OnlineServicesModel::addService(const QString &name)
+OnlineService * OnlineServicesModel::addService(const QString &name, const QSet<QString> &hidden)
 {
     OnlineService *srv=0;
 
@@ -296,10 +297,14 @@ OnlineService * OnlineServicesModel::addService(const QString &name)
 
         if (srv) {
             srv->loadConfig();
-            beginInsertRows(QModelIndex(), collections.count(), collections.count());
-            srv->setRow(collections.count());
-            collections.append(srv);
-            endInsertRows();
+            if (hidden.contains(srv->id())) {
+                hiddenServices.append(srv);
+            } else {
+                beginInsertRows(QModelIndex(), collections.count(), collections.count());
+                srv->setRow(collections.count());
+                collections.append(srv);
+                endInsertRows();
+            }
             connect(srv, SIGNAL(error(const QString &)), SIGNAL(error(const QString &)));
         }
     }
@@ -338,10 +343,11 @@ void OnlineServicesModel::stateChanged(const QString &name, bool state)
 
 void OnlineServicesModel::load()
 {
-    addService(JamendoService::constName);
-    addService(MagnatuneService::constName);
-    addService(SoundCloudService::constName);
-    addService(PodcastService::constName);
+    QSet<QString> hidden=Settings::self()->hiddenOnlineProviders().toSet();
+    addService(JamendoService::constName, hidden);
+    addService(MagnatuneService::constName, hidden);
+    addService(SoundCloudService::constName, hidden);
+    addService(PodcastService::constName, hidden);
 }
 
 void OnlineServicesModel::setSearch(const QString &serviceName, const QString &text)
@@ -499,5 +505,59 @@ void OnlineServicesModel::imageDownloaded()
     QFile f(fileName);
     if (f.open(QIODevice::WriteOnly)) {
         f.write(data);
+    }
+}
+
+void OnlineServicesModel::save()
+{
+    QStringList disabled;
+    foreach (OnlineService *i, hiddenServices) {
+        disabled.append(i->id());
+    }
+    disabled.sort();
+    Settings::self()->saveHiddenOnlineProviders(disabled);
+}
+
+QList<OnlineServicesModel::Provider> OnlineServicesModel::getProviders() const
+{
+    QList<Provider> providers;
+    foreach (OnlineService *i, hiddenServices) {
+        providers.append(Provider(i->data(), static_cast<OnlineService *>(i)->icon(), static_cast<OnlineService *>(i)->id(), true));
+    }
+    foreach (MusicLibraryItemRoot *i, collections) {
+        providers.append(Provider(i->data(), static_cast<OnlineService *>(i)->icon(), static_cast<OnlineService *>(i)->id(), false));
+    }
+    return providers;
+}
+
+void OnlineServicesModel::setHiddenProviders(const QSet<QString> &prov)
+{
+    bool added=false;
+    foreach (OnlineService *i, hiddenServices) {
+        if (!prov.contains(i->id())) {
+            beginInsertRows(QModelIndex(), collections.count(), collections.count());
+            i->setRow(collections.count());
+            collections.append(i);
+            hiddenServices.removeAll(i);
+            endInsertRows();
+            added=true;
+        }
+    }
+
+    foreach (MusicLibraryItemRoot *i, collections) {
+        if (prov.contains(static_cast<OnlineService *>(i)->id())) {
+            int row=collections.indexOf(i);
+            if (row>=0) {
+                beginRemoveRows(QModelIndex(), row, row);
+                hiddenServices.append(static_cast<OnlineService *>(collections.takeAt(row)));
+                endRemoveRows();
+                for (int i=row; i<collections.count(); ++i) {
+                    static_cast<OnlineService *>(collections.at(i))->setRow(i);
+                }
+            }
+        }
+    }
+    if (added && collections.count()>1) {
+        emit needToSort();
     }
 }

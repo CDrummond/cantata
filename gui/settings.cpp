@@ -692,6 +692,11 @@ QStringList Settings::hiddenStreamCategories()
     return GET_STRINGLIST("hiddenStreamCategories", QStringList());
 }
 
+QStringList Settings::hiddenOnlineProviders()
+{
+    return GET_STRINGLIST("hiddenOnlineProviders", QStringList());
+}
+
 #ifndef Q_OS_WIN32
 bool Settings::inhibitSuspend()
 {
@@ -1120,6 +1125,11 @@ void Settings::saveShowTimeRemaining(bool v)
 void Settings::saveHiddenStreamCategories(const QStringList &v)
 {
     SET_VALUE_MOD(hiddenStreamCategories);
+}
+
+void Settings::saveHiddenOnlineProviders(const QStringList &v)
+{
+    SET_VALUE_MOD(hiddenOnlineProviders);
 }
 
 #ifndef Q_OS_WIN32

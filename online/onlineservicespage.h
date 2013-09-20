@@ -60,6 +60,7 @@ public Q_SLOTS:
     void updateGenres(const QModelIndex &idx);
     void setSearchable(const QModelIndex &idx);
     void updated(const QModelIndex &idx);
+    void sortList();
     void download();
     void subscribe();
     void unSubscribe();

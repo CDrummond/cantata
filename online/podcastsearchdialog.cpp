@@ -34,6 +34,7 @@
 #include "onlineservicesmodel.h"
 #include "utils.h"
 #include "action.h"
+#include "textbrowser.h"
 #include <QPushButton>
 #include <QTreeWidget>
 #include <QGridLayout>
@@ -43,11 +44,20 @@
 #include <QFile>
 #include <QXmlStreamReader>
 #include <QCryptographicHash>
+#include <QProcess>
 #if QT_VERSION >= 0x050000
 #include <QUrlQuery>
 #endif
 
 static int iCount=0;
+
+enum Roles {
+    IsPodcastRole = Qt::UserRole,
+    UrlRole,
+    ImageUrlRole,
+    DescriptionRole,
+    WebPageUrlRole
+};
 
 QString PodcastSearchDialog::constCacheDir=QLatin1String("podcast-directories");
 QString PodcastSearchDialog::constExt=QLatin1String(".opml");
@@ -108,7 +118,12 @@ public:
                 continue;
             }
 
-            addPodcast(result[QLatin1String("trackName")].toString(), result[QLatin1String("feedUrl")].toUrl(), QString(), 0);
+            addPodcast(result[QLatin1String("trackName")].toString(),
+                       result[QLatin1String("feedUrl")].toUrl(),
+                       result[QLatin1String("artworkUrl100")].toUrl(),
+                       QString(),
+                       result[QLatin1String("collectionViewUrl")].toString(),
+                       0);
         }
     }
 };
@@ -120,10 +135,14 @@ PodcastPage::PodcastPage(QWidget *p)
     tree = new QTreeWidget(this);
     tree->setItemDelegate(new BasicItemDelegate(tree));
     tree->header()->setVisible(false);
+    text=new TextBrowser(this);
     spinner=new Spinner(this);
     spinner->setWidget(tree->viewport());
     connect(tree, SIGNAL(itemSelectionChanged()), SLOT(selectionChanged()));
     tree->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
+    text->setOpenLinks(false);
+    connect(text, SIGNAL(anchorClicked(QUrl)), SLOT(openLink(QUrl)));
+    updateText();
 }
 
 void PodcastPage::fetch(const QUrl &url)
@@ -147,20 +166,53 @@ void PodcastPage::cancel()
     }
 }
 
-void PodcastPage::addPodcast(const QString &name, const QUrl &url, const QString &description, QTreeWidgetItem *p)
+void PodcastPage::addPodcast(const QString &name, const QUrl &url, const QUrl &image, const QString &description, const QString &webPage, QTreeWidgetItem *p)
 {
     QTreeWidgetItem *podItem=p ? new QTreeWidgetItem(p, QStringList() << name)
                                : new QTreeWidgetItem(tree, QStringList() << name);
 
-    podItem->setData(0, Qt::UserRole, url);
-    podItem->setToolTip(0, description);
+    podItem->setData(0, IsPodcastRole, true);
+    podItem->setData(0, UrlRole, url);
+    podItem->setData(0, ImageUrlRole, image);
+    podItem->setData(0, DescriptionRole, description);
+    podItem->setData(0, WebPageUrlRole, webPage);
     podItem->setIcon(0, Icons::self()->audioFileIcon);
+}
+
+void PodcastPage::updateText()
+{
+    QList<QTreeWidgetItem *> selection=tree->selectedItems();
+    if (!selection.isEmpty()) {
+        QTreeWidgetItem *item=selection.at(0);
+        if (item->data(0, IsPodcastRole).toBool()) {
+            QUrl url=item->data(0, UrlRole).toUrl();
+            //QUrl image=item->data(0, ImageUrlRole).toUrl();
+            QString descr=item->data(0, DescriptionRole).toString();
+            QString web=item->data(0, WebPageUrlRole).toString();
+            QString str="<b>"+item->text(0)+"</b>";
+            //if (!image.isEmpty()) {
+            //    str+=QString("<img src=\"%1\"><br>").arg(image.toString());
+            //}
+            if (!descr.isEmpty()) {
+                str+="<p>"+descr+"</p>";
+            }
+            str+="<br/><table><tr><td><b>"+i18n("RSS:")+"</b></td><td><a href=\""+url.toString()+"\">"+url.toString()+"</a></td></tr>";
+            if (!web.isEmpty()) {
+                str+="<tr><td><b>"+i18n("Website:")+"</b></td><td><a href=\""+web+"\">"+web+"</a></td></tr>";
+            }
+            str+="</table>";
+            text->setHtml(str);
+            return;
+        }
+    }
+    text->setHtml("<b>"+i18n("Podcast details")+"</b><p><i>"+i18n("Select a podcast to display its details")+"</i></p>");
 }
 
 void PodcastPage::selectionChanged()
 {
+    updateText();
     QList<QTreeWidgetItem *> selection=tree->selectedItems();
-    emit rssSelected(selection.isEmpty() ? QUrl() : selection.at(0)->data(0, Qt::UserRole).toUrl());
+    emit rssSelected(selection.isEmpty() ? QUrl() : selection.at(0)->data(0, UrlRole).toUrl());
 }
 
 void PodcastPage::jobFinished()
@@ -180,19 +232,31 @@ void PodcastPage::jobFinished()
     job=0;
 }
 
+void PodcastPage::openLink(const QUrl &url)
+{
+    QProcess::startDetached(QLatin1String("xdg-open"), QStringList() << url.toString());
+}
+
 PodcastSearchPage::PodcastSearchPage(QWidget *p)
     : PodcastPage(p)
 {
+    QBoxLayout *searchLayout=new QBoxLayout(QBoxLayout::LeftToRight);
+    QBoxLayout *viewLayout=new QBoxLayout(QBoxLayout::LeftToRight);
+    QBoxLayout *mainLayout=new QBoxLayout(QBoxLayout::TopToBottom, this);
+    searchLayout->setMargin(0);
+    viewLayout->setMargin(0);
+    mainLayout->setMargin(0);
     search=new LineEdit(p);
     search->setPlaceholderText(i18n("Enter search term..."));
     searchButton=new QPushButton(i18n("Search"), p);
     QWidget::setTabOrder(search, searchButton);
     QWidget::setTabOrder(searchButton, tree);
-    QGridLayout *layout=new QGridLayout(this);
-    layout->addWidget(search, 0, 0, 1, 1);
-    layout->addWidget(searchButton, 0, 1, 1, 1);
-    layout->addWidget(tree, 1, 0, 1, 2);
-    layout->setMargin(0);
+    searchLayout->addWidget(search);
+    searchLayout->addWidget(searchButton);
+    viewLayout->addWidget(tree, 1);
+    viewLayout->addWidget(text, 0);
+    mainLayout->addLayout(searchLayout);
+    mainLayout->addLayout(viewLayout);
     connect(search, SIGNAL(returnPressed()), SLOT(doSearch()));
     connect(searchButton, SIGNAL(clicked()), SLOT(doSearch()));
 }
@@ -208,9 +272,10 @@ OpmlBrowsePage::OpmlBrowsePage(QWidget *p, const QUrl &u)
     , loaded(false)
     , url(u)
 {
-    QBoxLayout *layout=new QBoxLayout(QBoxLayout::TopToBottom, this);
-    layout->addWidget(tree);
-    layout->setMargin(0);
+    QBoxLayout *mainLayout=new QBoxLayout(QBoxLayout::LeftToRight, this);
+    mainLayout->setMargin(0);
+    mainLayout->addWidget(tree, 1);
+    mainLayout->addWidget(text, 0);
     Action *act=new Action(i18n("Reload"), this);
     tree->addAction(act);
     connect(act, SIGNAL(triggered(bool)), this, SLOT(reload()));
@@ -290,6 +355,7 @@ void OpmlBrowsePage::addCategory(const OpmlParser::Category &cat, QTreeWidgetIte
     QTreeWidgetItem *catItem=p ? new QTreeWidgetItem(p, QStringList() << cat.name)
                                : new QTreeWidgetItem(tree, QStringList() << cat.name);
 
+    catItem->setData(0, IsPodcastRole, false);
     catItem->setIcon(0, Icons::self()->folderIcon);
     foreach (const OpmlParser::Podcast &pod, cat.podcasts) {
         addPodcast(pod, catItem);
@@ -301,7 +367,7 @@ void OpmlBrowsePage::addCategory(const OpmlParser::Category &cat, QTreeWidgetIte
 
 void OpmlBrowsePage::addPodcast(const OpmlParser::Podcast &pod, QTreeWidgetItem *p)
 {
-    PodcastPage::addPodcast(pod.name, pod.url, pod.description, p);
+    PodcastPage::addPodcast(pod.name, pod.url, pod.image, pod.description, pod.htmlUrl, p);
 }
 
 int PodcastSearchDialog::instanceCount()

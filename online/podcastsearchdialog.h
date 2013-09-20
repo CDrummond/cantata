@@ -35,6 +35,7 @@ class NetworkJob;
 class QIODevice;
 class Spinner;
 class QTreeWidgetItem;
+class TextBrowser;
 
 namespace OpmlParser
 {
@@ -55,18 +56,21 @@ Q_SIGNALS:
 protected:
     void fetch(const QUrl &url);
     void cancel();
-    void addPodcast(const QString &name, const QUrl &url, const QString &description, QTreeWidgetItem *p);
+    void addPodcast(const QString &name, const QUrl &url, const QUrl &image, const QString &description, const QString &webPage, QTreeWidgetItem *p);
 
 private Q_SLOTS:
     void selectionChanged();
     void jobFinished();
+    void openLink(const QUrl &url);
 
 private:
+    void updateText();
     virtual void parseResonse(QIODevice *dev) = 0;
 
 protected:
     Spinner *spinner;
     QTreeWidget *tree;
+    TextBrowser *text;
     NetworkJob *job;
 };
 

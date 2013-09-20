@@ -38,7 +38,9 @@ struct Podcast
     Podcast() { }
     QString name;
     QString description;
+    QString htmlUrl;
     QUrl url;
+    QUrl image;
 };
 
 struct Category

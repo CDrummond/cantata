@@ -45,11 +45,17 @@
 #include <QXmlStreamReader>
 #include <QCryptographicHash>
 #include <QProcess>
+#include <QCache>
+#include <QImage>
+#include <QBuffer>
 #if QT_VERSION >= 0x050000
 #include <QUrlQuery>
 #endif
 
 static int iCount=0;
+
+static QCache<QUrl, QImage> imageCache(200*1024);
+static int maxImageSize=-1;
 
 enum Roles {
     IsPodcastRole = Qt::UserRole,
@@ -131,6 +137,7 @@ public:
 PodcastPage::PodcastPage(QWidget *p)
     : QWidget(p)
     , job(0)
+    , imageJob(0)
 {
     tree = new QTreeWidget(this);
     tree->setItemDelegate(new BasicItemDelegate(tree));
@@ -138,6 +145,8 @@ PodcastPage::PodcastPage(QWidget *p)
     text=new TextBrowser(this);
     spinner=new Spinner(this);
     spinner->setWidget(tree->viewport());
+    imageSpinner=new Spinner(this);
+    imageSpinner->setWidget(text->viewport());
     connect(tree, SIGNAL(itemSelectionChanged()), SLOT(selectionChanged()));
     tree->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
     text->setOpenLinks(false);
@@ -154,15 +163,31 @@ void PodcastPage::fetch(const QUrl &url)
     connect(job, SIGNAL(finished()), this, SLOT(jobFinished()));
 }
 
+void PodcastPage::fetchImage(const QUrl &url)
+{
+    cancelImage();
+    imageSpinner->start();
+    imageJob=NetworkAccessManager::self()->get(url);
+    connect(imageJob, SIGNAL(finished()), this, SLOT(imageJobFinished()));
+}
+
 void PodcastPage::cancel()
 {
-    if (spinner) {
-        spinner->stop();
-    }
+    spinner->stop();
     if (job) {
         disconnect(job, SIGNAL(finished()), this, SLOT(jobFinished()));
         job->deleteLater();
         job=0;
+    }
+}
+
+void PodcastPage::cancelImage()
+{
+    imageSpinner->stop();
+    if (imageJob) {
+        disconnect(imageJob, SIGNAL(finished()), this, SLOT(jobFinished()));
+        imageJob->deleteLater();
+        imageJob=0;
     }
 }
 
@@ -179,6 +204,15 @@ void PodcastPage::addPodcast(const QString &name, const QUrl &url, const QUrl &i
     podItem->setIcon(0, Icons::self()->audioFileIcon);
 }
 
+static QString encode(const QImage &img)
+{
+    QByteArray bytes;
+    QBuffer buffer(&bytes);
+    buffer.open(QIODevice::WriteOnly);
+    img.save(&buffer, "PNG");
+    return QString("<br/><img src=\"data:image/png;base64,%1\"><br/>").arg(QString(buffer.data().toBase64()));
+}
+
 void PodcastPage::updateText()
 {
     QList<QTreeWidgetItem *> selection=tree->selectedItems();
@@ -186,17 +220,22 @@ void PodcastPage::updateText()
         QTreeWidgetItem *item=selection.at(0);
         if (item->data(0, IsPodcastRole).toBool()) {
             QUrl url=item->data(0, UrlRole).toUrl();
-            //QUrl image=item->data(0, ImageUrlRole).toUrl();
+            QUrl imageUrl=item->data(0, ImageUrlRole).toUrl();
             QString descr=item->data(0, DescriptionRole).toString();
             QString web=item->data(0, WebPageUrlRole).toString();
-            QString str="<b>"+item->text(0)+"</b>";
-            //if (!image.isEmpty()) {
-            //    str+=QString("<img src=\"%1\"><br>").arg(image.toString());
-            //}
-            if (!descr.isEmpty()) {
-                str+="<p>"+descr+"</p>";
+            QString str="<b>"+item->text(0)+"</b><br/>";
+            if (!imageUrl.isEmpty()) {
+                QImage *img=imageCache.object(imageUrl);
+                if (img) {
+                    str+=encode(*img);
+                } else {
+                    fetchImage(imageUrl);
+                }
             }
-            str+="<br/><table><tr><td><b>"+i18n("RSS:")+"</b></td><td><a href=\""+url.toString()+"\">"+url.toString()+"</a></td></tr>";
+            if (!descr.isEmpty()) {
+                str+="<p>"+descr+"</p><br/>";
+            }
+            str+="<table><tr><td><b>"+i18n("RSS:")+"</b></td><td><a href=\""+url.toString()+"\">"+url.toString()+"</a></td></tr>";
             if (!web.isEmpty()) {
                 str+="<tr><td><b>"+i18n("Website:")+"</b></td><td><a href=\""+web+"\">"+web+"</a></td></tr>";
             }
@@ -210,9 +249,34 @@ void PodcastPage::updateText()
 
 void PodcastPage::selectionChanged()
 {
+    cancelImage();
     updateText();
     QList<QTreeWidgetItem *> selection=tree->selectedItems();
     emit rssSelected(selection.isEmpty() ? QUrl() : selection.at(0)->data(0, UrlRole).toUrl());
+}
+
+void PodcastPage::imageJobFinished()
+{
+    NetworkJob *j=qobject_cast<NetworkJob *>(sender());
+    if (!j) {
+        return;
+    }
+    j->deleteLater();
+    if (j!=imageJob) {
+        return;
+    }
+    if (imageSpinner) {
+        imageSpinner->stop();
+    }
+    QImage img=QImage::fromData(imageJob->readAll());
+    if (!img.isNull()) {
+        if (img.width()>maxImageSize || img.height()>maxImageSize) {
+            img=img.scaled(maxImageSize, maxImageSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        }
+        imageCache.insert(imageJob->url(), new QImage(img), img.byteCount());
+        updateText();
+    }
+    imageJob=0;
 }
 
 void PodcastPage::jobFinished()
@@ -428,11 +492,16 @@ PodcastSearchDialog::PodcastSearchDialog(QWidget *parent)
     setAttribute(Qt::WA_DeleteOnClose);
     enableButton(User1, false);
     setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+
+    if (-1==maxImageSize) {
+        maxImageSize=fontMetrics().height()*8;
+    }
 }
 
 PodcastSearchDialog::~PodcastSearchDialog()
 {
     iCount--;
+    imageCache.clear();
 }
 
 void PodcastSearchDialog::rssSelected(const QUrl &url)

@@ -71,6 +71,8 @@ public:
     PodcastSearchPage(QWidget *p);
     virtual ~PodcastSearchPage() { }
     
+    void showEvent(QShowEvent *e);
+
 private Q_SLOTS:
     virtual void doSearch() = 0;
 

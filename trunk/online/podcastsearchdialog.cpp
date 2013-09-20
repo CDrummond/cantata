@@ -190,6 +190,7 @@ PodcastPage::PodcastPage(QWidget *p)
 void PodcastPage::fetch(const QUrl &url)
 {
     cancel();
+    tree->clear();
     spinner->start();
     job=NetworkAccessManager::self()->get(url);
     connect(job, SIGNAL(finished()), this, SLOT(jobFinished()));

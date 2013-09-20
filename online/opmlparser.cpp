@@ -70,10 +70,12 @@ static void parseOutline(QXmlStreamReader &reader, Category &cat)
                 Podcast podcast;
                 podcast.description=attributes.value("description").toString().trimmed();
                 podcast.name=attributes.value("text").toString().trimmed();
+                podcast.htmlUrl=attributes.value("htmlUrl").toString().trimmed();
                 podcast.url=QUrl::fromEncoded(attributes.value(QLatin1String("xmlUrl")).toString().toLatin1());
                 if (podcast.url.isEmpty()) {
                     podcast.url=QUrl::fromEncoded(attributes.value(QLatin1String("url")).toString().toLatin1());
                 }
+                podcast.image=QUrl::fromEncoded(attributes.value(QLatin1String("imageUrl")).toString().toLatin1());
                 cat.podcasts.append(podcast);
 
                 // Consume any children and the EndElement.
@@ -84,6 +86,9 @@ static void parseOutline(QXmlStreamReader &reader, Category &cat)
 
                 // Take the name from the fullname attribute first if it exists.
                 child.name = attributes.value(QLatin1String("fullname")).toString().trimmed();
+                if (child.name.isEmpty()) {
+                    child.name = attributes.value(QLatin1String("title")).toString().trimmed();
+                }
                 if (child.name.isEmpty()) {
                     child.name = attributes.value(QLatin1String("text")).toString().trimmed();
                 }

@@ -114,3 +114,13 @@ Category OpmlParser::parse(QIODevice *dev)
     return cat;
 }
 
+Category OpmlParser::parse(const QByteArray &data)
+{
+    Category cat;
+    QXmlStreamReader reader(data);
+    if (parseUntil(reader, QLatin1String("body"))) {
+        parseOutline(reader, cat);
+    }
+
+    return cat;
+}

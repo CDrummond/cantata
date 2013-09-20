@@ -512,8 +512,11 @@ void Utils::clearOldCache(const QString &sub, int maxAge)
     }
 
     QString d=cacheDir(sub, false);
-    QDir dir(d);
+    if (d.isEmpty()) {
+        return;
+    }
 
+    QDir dir(d);
     if (dir.exists()) {
         QFileInfoList files=dir.entryInfoList(QDir::Files|QDir::NoDotAndDotDot);
         if (files.count()) {

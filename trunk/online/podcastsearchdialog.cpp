@@ -32,6 +32,8 @@
 #include "qjson/parser.h"
 #include "basicitemdelegate.h"
 #include "onlineservicesmodel.h"
+#include "utils.h"
+#include "action.h"
 #include <QPushButton>
 #include <QTreeWidget>
 #include <QGridLayout>
@@ -40,11 +42,22 @@
 #include <QStringList>
 #include <QFile>
 #include <QXmlStreamReader>
+#include <QCryptographicHash>
 #if QT_VERSION >= 0x050000
 #include <QUrlQuery>
 #endif
 
 static int iCount=0;
+
+QString PodcastSearchDialog::constCacheDir=QLatin1String("podcast-directories");
+QString PodcastSearchDialog::constExt=QLatin1String(".opml");
+
+static QString generateCacheFileName(const QUrl &url, bool create)
+{
+    QString hash=QCryptographicHash::hash(url.toString().toUtf8(), QCryptographicHash::Md5).toHex();
+    QString dir=Utils::cacheDir(PodcastSearchDialog::constCacheDir, create);
+    return dir.isEmpty() ? QString() : (dir+hash+PodcastSearchDialog::constExt);
+}
 
 class ITunesSearchPage : public PodcastSearchPage
 {
@@ -98,80 +111,6 @@ public:
             addPodcast(result[QLatin1String("trackName")].toString(), result[QLatin1String("feedUrl")].toUrl(), QString(), 0);
         }
     }
-};
-
-class OpmlBrowsePage : public PodcastPage
-{
-public:
-    OpmlBrowsePage(QWidget *p, const QUrl &u)
-        : PodcastPage(p)
-        , loaded(false)
-        , url(u)
-    {
-        QBoxLayout *layout=new QBoxLayout(QBoxLayout::TopToBottom, this);
-        layout->addWidget(tree);
-        layout->setMargin(0);
-    }
-    virtual ~OpmlBrowsePage() { }
-
-    void showEvent(QShowEvent *e)
-    {
-        if (!loaded) {
-            fetch(url);
-        }
-        QWidget::showEvent(e);
-    }
-
-private:
-    void parseResonse(QIODevice *dev)
-    {
-        if (!dev) {
-            MessageBox::error(this, i18n("Failed to download directory listing"));
-            return;
-        }
-        OpmlParser::Category parsed=OpmlParser::parse(dev);
-        if (parsed.categories.isEmpty() && parsed.podcasts.isEmpty()) {
-            MessageBox::error(this, i18n("Failed to parse directory listing"));
-            return;
-        }
-
-        if (1==parsed.categories.count() && parsed.podcasts.isEmpty()) {
-            parsed=parsed.categories.at(0);
-        }
-        foreach (const OpmlParser::Category &cat, parsed.categories) {
-            addCategory(cat, 0);
-        }
-        foreach (const OpmlParser::Podcast &pod, parsed.podcasts) {
-            addPodcast(pod, 0);
-        }
-    }
-
-    void addCategory(const OpmlParser::Category &cat, QTreeWidgetItem *p)
-    {
-        if (cat.categories.isEmpty() && cat.podcasts.isEmpty()) {
-            return;
-        }
-
-        QTreeWidgetItem *catItem=p ? new QTreeWidgetItem(p, QStringList() << cat.name)
-                                   : new QTreeWidgetItem(tree, QStringList() << cat.name);
-
-        catItem->setIcon(0, Icons::self()->folderIcon);
-        foreach (const OpmlParser::Podcast &pod, cat.podcasts) {
-            addPodcast(pod, catItem);
-        }
-        foreach (const OpmlParser::Category &cat, cat.categories) {
-            addCategory(cat, catItem);
-        }
-    }
-
-    void addPodcast(const OpmlParser::Podcast &pod, QTreeWidgetItem *p)
-    {
-        PodcastPage::addPodcast(pod.name, pod.url, pod.description, p);
-    }
-
-private:
-    bool loaded;
-    QUrl url;
 };
 
 PodcastPage::PodcastPage(QWidget *p)
@@ -258,6 +197,113 @@ PodcastSearchPage::PodcastSearchPage(QWidget *p)
     connect(searchButton, SIGNAL(clicked()), SLOT(doSearch()));
 }
 
+void PodcastSearchPage::showEvent(QShowEvent *e)
+{
+    search->setFocus();
+    QWidget::showEvent(e);
+}
+
+OpmlBrowsePage::OpmlBrowsePage(QWidget *p, const QUrl &u)
+    : PodcastPage(p)
+    , loaded(false)
+    , url(u)
+{
+    QBoxLayout *layout=new QBoxLayout(QBoxLayout::TopToBottom, this);
+    layout->addWidget(tree);
+    layout->setMargin(0);
+    Action *act=new Action(i18n("Reload"), this);
+    tree->addAction(act);
+    connect(act, SIGNAL(triggered(bool)), this, SLOT(reload()));
+    tree->setContextMenuPolicy(Qt::ActionsContextMenu);
+}
+
+void OpmlBrowsePage::showEvent(QShowEvent *e)
+{
+    if (!loaded) {
+        QString cacheFile=generateCacheFileName(url, false);
+        if (!cacheFile.isEmpty() && QFile::exists(cacheFile)) {
+            QFile f(cacheFile);
+            if (f.open(QIODevice::ReadOnly)) {
+                parseResonse(&f);
+                if (tree->topLevelItemCount()>0) {
+                    Utils::touchFile(cacheFile);
+                    return;
+                }
+            }
+        }
+        fetch(url);
+        loaded=true;
+    }
+    QWidget::showEvent(e);
+}
+
+void OpmlBrowsePage::reload()
+{
+    QString cacheFile=generateCacheFileName(url, false);
+    if (!cacheFile.isEmpty() && QFile::exists(cacheFile)) {
+        QFile::remove(cacheFile);
+    }
+    fetch(url);
+}
+
+void OpmlBrowsePage::parseResonse(QIODevice *dev)
+{
+    bool isLoadingFromCache=dynamic_cast<QFile *>(dev) ? true : false;
+
+    if (!dev) {
+        if (!isLoadingFromCache) MessageBox::error(this, i18n("Failed to download directory listing"));
+        return;
+    }
+    QByteArray data=dev->readAll();
+    OpmlParser::Category parsed=OpmlParser::parse(data);
+    if (parsed.categories.isEmpty() && parsed.podcasts.isEmpty()) {
+        if (!isLoadingFromCache) MessageBox::error(this, i18n("Failed to parse directory listing"));
+        return;
+    }
+
+    if (1==parsed.categories.count() && parsed.podcasts.isEmpty()) {
+        parsed=parsed.categories.at(0);
+    }
+    foreach (const OpmlParser::Category &cat, parsed.categories) {
+        addCategory(cat, 0);
+    }
+    foreach (const OpmlParser::Podcast &pod, parsed.podcasts) {
+        addPodcast(pod, 0);
+    }
+    if (!isLoadingFromCache && tree->topLevelItemCount()>0) {
+        QString cacheFile=generateCacheFileName(url, true);
+        if (!cacheFile.isEmpty()) {
+            QFile f(cacheFile);
+            if (f.open(QIODevice::WriteOnly)) {
+                f.write(data);
+            }
+        }
+    }
+}
+
+void OpmlBrowsePage::addCategory(const OpmlParser::Category &cat, QTreeWidgetItem *p)
+{
+    if (cat.categories.isEmpty() && cat.podcasts.isEmpty()) {
+        return;
+    }
+
+    QTreeWidgetItem *catItem=p ? new QTreeWidgetItem(p, QStringList() << cat.name)
+                               : new QTreeWidgetItem(tree, QStringList() << cat.name);
+
+    catItem->setIcon(0, Icons::self()->folderIcon);
+    foreach (const OpmlParser::Podcast &pod, cat.podcasts) {
+        addPodcast(pod, catItem);
+    }
+    foreach (const OpmlParser::Category &cat, cat.categories) {
+        addCategory(cat, catItem);
+    }
+}
+
+void OpmlBrowsePage::addPodcast(const OpmlParser::Podcast &pod, QTreeWidgetItem *p)
+{
+    PodcastPage::addPodcast(pod.name, pod.url, pod.description, p);
+}
+
 int PodcastSearchDialog::instanceCount()
 {
     return iCount;
@@ -266,6 +312,8 @@ int PodcastSearchDialog::instanceCount()
 PodcastSearchDialog::PodcastSearchDialog(QWidget *parent)
     : Dialog(parent, "PodcastSearchDialog", QSize(800, 600))
 {
+    Utils::clearOldCache(constCacheDir, 2);
+
     iCount++;
     setButtons(User1|Close);
     setButtonText(User1, i18n("Subscribe"));

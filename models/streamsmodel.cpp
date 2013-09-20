@@ -1906,7 +1906,7 @@ void StreamsModel::removeXmlCategory(const QString &key)
     foreach (Item *i, root->children) {
         if (key==static_cast<CategoryItem *>(i)->configName) {
             int row=root->children.indexOf(i);
-            if (row>0) {
+            if (row>=0) {
                 beginRemoveRows(QModelIndex(), row, row);
                 delete root->children.takeAt(row);
                 endRemoveRows();

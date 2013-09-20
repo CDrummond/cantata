@@ -34,6 +34,7 @@
     activating 'Search Play Queue', do not toggle.
 16. Initial MacOS port - thanks to Ian Scott
 17. Podcast support.
+18. Add config page to determine list of online providers.
 
 1.1.3
 -----

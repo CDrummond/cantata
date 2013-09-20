@@ -176,6 +176,7 @@ public:
     bool monoSidebarIcons();
     bool showTimeRemaining();
     QStringList hiddenStreamCategories();
+    QStringList hiddenOnlineProviders();
     #ifndef Q_OS_WIN32
     bool inhibitSuspend();
     #endif
@@ -262,6 +263,7 @@ public:
     void saveMonoSidebarIcons(bool v);
     void saveShowTimeRemaining(bool v);
     void saveHiddenStreamCategories(const QStringList &v);
+    void saveHiddenOnlineProviders(const QStringList &v);
     #ifndef Q_OS_WIN32
     void saveInhibitSuspend(bool v);
     #endif

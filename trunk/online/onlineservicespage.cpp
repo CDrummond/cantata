@@ -63,6 +63,7 @@ OnlineServicesPage::OnlineServicesPage(QWidget *p)
     connect(genreCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(searchItems()));
     connect(OnlineServicesModel::self(), SIGNAL(updateGenres(const QSet<QString> &)), genreCombo, SLOT(update(const QSet<QString> &)));
     connect(OnlineServicesModel::self(), SIGNAL(updated(QModelIndex)), this, SLOT(updated(QModelIndex)));
+    connect(OnlineServicesModel::self(), SIGNAL(needToSort()), this, SLOT(sortList()));
     connect(OnlineServicesModel::self(), SIGNAL(busy(bool)), view, SLOT(showSpinner(bool)));
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
     connect(view, SIGNAL(searchItems()), this, SLOT(searchItems()));
@@ -606,4 +607,9 @@ void OnlineServicesPage::updated(const QModelIndex &idx)
     }
 
     view->setExpanded(proxy.mapFromSource(idx));
+}
+
+void OnlineServicesPage::sortList()
+{
+    proxy.sort();
 }

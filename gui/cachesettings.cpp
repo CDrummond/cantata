@@ -36,6 +36,7 @@
 #include "settings.h"
 #include "basicitemdelegate.h"
 #include "streamsmodel.h"
+#include "podcastsearchdialog.h"
 #include <QLabel>
 #include <QPushButton>
 #include <QStyle>
@@ -245,7 +246,8 @@ CacheSettings::CacheSettings(QWidget *parent)
     new CacheItem(i18n("Album Information"), Utils::cacheDir(AlbumView::constCacheDir, false), QStringList() << "*"+AlbumView::constInfoExt << "*.jpg" << "*.png", tree);
     new CacheItem(i18n("Streams"), Utils::cacheDir(StreamsModel::constSubDir, false), QStringList() << "*"+StreamsModel::constCacheExt, tree);
     new CacheItem(i18n("Jamendo"), Utils::cacheDir("jamendo", false), QStringList() << "*"+MusicLibraryModel::constLibraryCompressedExt << "*.jpg" << "*.png", tree);
-    new CacheItem(i18n("Magnatune"), Utils::cacheDir("magnatune", false), QStringList() << "*"+MusicLibraryModel::constLibraryCompressedExt<< "*.jpg" << "*.png", tree);
+    new CacheItem(i18n("Magnatune"), Utils::cacheDir("magnatune", false), QStringList() << "*"+MusicLibraryModel::constLibraryCompressedExt << "*.jpg" << "*.png", tree);
+    new CacheItem(i18n("Podcast Directories"), Utils::cacheDir(PodcastSearchDialog::constCacheDir, false), QStringList() << "*"+PodcastSearchDialog::constExt, tree);
 
     button=new QPushButton(i18n("Delete All"), this);
     layout->addItem(new QSpacerItem(0, 0, QSizePolicy::MinimumExpanding, QSizePolicy::Fixed), row++, 0);

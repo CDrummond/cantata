@@ -36,6 +36,12 @@ class QIODevice;
 class Spinner;
 class QTreeWidgetItem;
 
+namespace OpmlParser
+{
+struct Category;
+struct Podcast;
+}
+
 class PodcastPage : public QWidget
 {
     Q_OBJECT
@@ -81,11 +87,35 @@ protected:
     QPushButton *searchButton;
 };
 
+class OpmlBrowsePage : public PodcastPage
+{
+    Q_OBJECT
+public:
+    OpmlBrowsePage(QWidget *p, const QUrl &u);
+    virtual ~OpmlBrowsePage() { }
+
+    void showEvent(QShowEvent *e);
+
+private Q_SLOTS:
+    void reload();
+
+private:
+    void parseResonse(QIODevice *dev);
+    void addCategory(const OpmlParser::Category &cat, QTreeWidgetItem *p);
+    void addPodcast(const OpmlParser::Podcast &pod, QTreeWidgetItem *p);
+
+private:
+    bool loaded;
+    QUrl url;
+};
+
 class PodcastSearchDialog : public Dialog
 {
     Q_OBJECT
 public:
     static int instanceCount();
+    static QString constCacheDir;
+    static QString constExt;
 
     PodcastSearchDialog(QWidget *parent);
     virtual ~PodcastSearchDialog();

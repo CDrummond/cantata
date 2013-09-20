@@ -25,6 +25,7 @@
 #define PODCAST_SEARCH_DIALOG_H
 
 #include "dialog.h"
+#include "icon.h"
 #include <QList>
 #include <QUrl>
 
@@ -47,9 +48,12 @@ class PodcastPage : public QWidget
 {
     Q_OBJECT
 public:
-    PodcastPage(QWidget *p);
+    PodcastPage(QWidget *p, const QString &n);
     virtual ~PodcastPage() { cancel(); cancelImage(); }
     
+    const Icon & icon() const { return icn; }
+    const QString & name() const { return pageName; }
+
 Q_SIGNALS:
     void rssSelected(const QUrl &url);
 
@@ -58,7 +62,7 @@ protected:
     void fetchImage(const QUrl &url);
     void cancel();
     void cancelImage();
-    void addPodcast(const QString &name, const QUrl &url, const QUrl &image, const QString &description, const QString &webPage, QTreeWidgetItem *p);
+    void addPodcast(const QString &title, const QUrl &url, const QUrl &image, const QString &description, const QString &webPage, QTreeWidgetItem *p);
 
 private Q_SLOTS:
     void selectionChanged();
@@ -71,36 +75,46 @@ private:
     virtual void parseResonse(QIODevice *dev) = 0;
 
 protected:
+    QString pageName;
     Spinner *spinner;
     Spinner *imageSpinner;
     QTreeWidget *tree;
     TextBrowser *text;
     NetworkJob *job;
     NetworkJob *imageJob;
+    Icon icn;
 };
 
 class PodcastSearchPage : public PodcastPage
 {
     Q_OBJECT
 public:
-    PodcastSearchPage(QWidget *p);
+    PodcastSearchPage(QWidget *p, const QString &n, const QString &i, const QUrl &qu, const QString &qk, const QStringList &other=QStringList());
     virtual ~PodcastSearchPage() { }
     
     void showEvent(QShowEvent *e);
 
+private:
+    void parseResonse(QIODevice *dev);
+
 private Q_SLOTS:
-    virtual void doSearch() = 0;
+    virtual void doSearch();
+    virtual void parse(const QVariant &data)=0;
 
 protected:
     LineEdit *search;
     QPushButton *searchButton;
+    QString currentSearch;
+    QUrl queryUrl;
+    QString queryKey;
+    QStringList otherArgs;
 };
 
 class OpmlBrowsePage : public PodcastPage
 {
     Q_OBJECT
 public:
-    OpmlBrowsePage(QWidget *p, const QUrl &u);
+    OpmlBrowsePage(QWidget *p, const QString &n, const QString &i, const QUrl &u);
     virtual ~OpmlBrowsePage() { }
 
     void showEvent(QShowEvent *e);

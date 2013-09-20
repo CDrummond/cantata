@@ -50,6 +50,7 @@ struct Category
 };
 
 Category parse(QIODevice *dev);
+Category parse(const QByteArray &data);
 
 }
 

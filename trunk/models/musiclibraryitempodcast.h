@@ -65,7 +65,7 @@ public:
     void updateTrackNumbers();
     quint32 unplayedEpisodes() const { return m_unplayedEpisodeCount; }
     void setPlayed(MusicLibraryItemSong *song);
-    bool hasEpisode(const Song &s) const;
+    void addAll(MusicLibraryItemPodcast *other);
 
 private:
     void setCoverImage(const QImage &img) const;

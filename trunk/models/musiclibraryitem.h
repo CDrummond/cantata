@@ -90,7 +90,6 @@ public:
     void updateGenres();
     void resetRows();
     void clear();
-    void addAll(MusicLibraryItemContainer *other);
 
 protected:
     friend class MusicLibraryItem;

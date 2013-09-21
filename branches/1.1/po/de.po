@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-07-20 19:42+0100\n"
-"PO-Revision-Date: 2013-09-17 23:16+0200\n"
+"PO-Revision-Date: 2013-09-21 22:56+0200\n"
 "Last-Translator: Markus Slopianka <kamikazow@web.de>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de\n"
@@ -545,12 +545,12 @@ msgstr "Speichere Cache"
 #: devices/albumdetailsdialog.cpp:129 devices/albumdetailsdialog.cpp:227
 #: tags/tageditor.cpp:142 tags/tageditor.cpp:330
 msgid "Apply \"Various Artists\" Workaround"
-msgstr "Hinzufügen \"Verschiedene Künstler\" Workaround"
+msgstr "Hinzufügen des „Verschiedene Künstler“-Workarounds"
 
 #: devices/albumdetailsdialog.cpp:130 devices/albumdetailsdialog.cpp:251
 #: tags/tageditor.cpp:143 tags/tageditor.cpp:375
 msgid "Revert \"Various Artists\" Workaround"
-msgstr "Zurücksetzen \"Verschiedene Künstler\" Workaround"
+msgstr "Zurücksetzen des „Verschiedene Künstler“-Workarounds"
 
 #: devices/albumdetailsdialog.cpp:131 devices/albumdetailsdialog.cpp:269
 #: tags/tageditor.cpp:145 tags/tageditor.cpp:456
@@ -568,19 +568,19 @@ msgstr "Werkzeuge"
 
 #: devices/albumdetailsdialog.cpp:223 tags/tageditor.cpp:326
 msgid "Apply \"Various Artists\" workaround?"
-msgstr "Hinzufügen \"Verschiedene Künstler\" Workaround?"
+msgstr "Hinzufügen des „Verschiedene Künstler“-Workarounds?"
 
 #: devices/albumdetailsdialog.cpp:225 tags/tageditor.cpp:328
 msgid ""
 "<i>This will set 'Album artist' and 'Artist' to \"Various Artists\", and set "
 "'Title' to \"TrackArtist - TrackTitle\"</i>"
 msgstr ""
-"<i>Dies wird den 'Albumkünstler' und 'Künstler' zu \"Various Artists\" "
+"<i>Dies wird den 'Albumkünstler' und 'Künstler' zu „Verschiedene Künstler“ "
 "gesetzt, und der 'Titel' zu \"TrackArtist - TrackTitle\"</i>"
 
 #: devices/albumdetailsdialog.cpp:244 tags/tageditor.cpp:368
 msgid "Revert \"Various Artists\" workaround"
-msgstr "Zurücksetzen \"Verschiedene Künstler\" Workaround?"
+msgstr "Zurücksetzen des „Verschiedene Künstler“-Workarounds?"
 
 #: devices/albumdetailsdialog.cpp:246 tags/tageditor.cpp:370
 msgid ""
@@ -605,7 +605,7 @@ msgstr "Umkehren"
 msgid ""
 "Capitalize the first letter of 'Title', 'Artist', 'Album artist', and 'Album'"
 msgstr ""
-"Erster Buchstabe von 'Title', 'Artist', 'Album artist', and 'Album' in "
+"Erster Buchstabe von 'Title', 'Künstler', 'Albumkünstler', and 'Album' in "
 "Großschrift"
 
 #: devices/albumdetailsdialog.cpp:286 tags/tageditor.cpp:486
@@ -749,12 +749,13 @@ msgid ""
 "extract the real artist from the 'Title' tag, and remove the artist name "
 "from the 'Title' tag.</p>"
 msgstr ""
-"<p>Beim Kopieren von Stücken auf ein Gerät wird, falls der  'Albumkünstler' "
-"auf 'Various Artists' gesetzt ist, wird Cantata den 'Künstler'-Tag aller "
-"Stücke auf 'Various "
-"Artists' setzen und  'Titel'-Tag auf 'Künstlername - Titelname'.<hr/> Beim "
+"<p>Beim Kopieren von Stücken auf ein Gerät wird, falls der 'Albumkünstler' "
+"auf„Verschiedene Künstler“ gesetzt ist, wird Cantata den 'Künstler'-Tag aller "
+"Stücke auf „Verschiedene Künstler“ setzen und  'Titel'-Tag auf 'Künstlername "
+"- Titelname'.<hr/> Beim "
 "Kopieren von einem Gerät wird Cantata prüfen, ob der 'Albumkünstler' und "
-"'Künstler' auf 'Various Artists' gesetzt ist. Sollte dies zutreffen, wird "
+"'Künstler' auf „Verschiedene Künstler“ gesetzt ist. Sollte dies zutreffen, "
+"wird "
 "versucht den echten Künstlernamen vom 'Titel'-Tag zu lesen und den "
 "Künstlernamen vom 'Titel' Tag zu entfernen.</p>"
 
@@ -1202,6 +1203,7 @@ msgid "Dance"
 msgstr "Dance"
 
 #: devices/filenameschemedialog.cpp:99
+#, fuzzy
 msgid ""
 "<p>The following variables will be replaced with their corresponding meaning "
 "for each track name.</p><p><table border=\"1\"><tr><th><em>Button</em></"
@@ -1624,6 +1626,7 @@ msgid "Dynamic Rules"
 msgstr "Dynamische Regeln"
 
 #: dynamic/dynamicrulesdialog.cpp:288
+#, fuzzy
 msgid ""
 "<p>Cantata will query your library using all of the rules listed. The list "
 "of <i>Include</i> rules will be used to build a set of songs that can be "
@@ -1639,10 +1642,9 @@ msgid ""
 "to keep the play queue filled with 10 entries.</p>"
 msgstr ""
 "<p>Cantata wird die Bibliothek nach allen Regeln durchsuchen, die aufgelistet "
-"sind. Die Liste der <i>Einbeziehenden</i> Regeln wird benutzt, um eine "
-"Auswahl an "
-"Stücken zu erstellen, welche darin enthalten sind. Die Liste der "
-"<i>Ausschließenden</i> Regeln wird benutzt, um eine Auswahl an Stücken zu "
+"sind. Die Liste der <i>Einbeziehen</i>-Regeln wird benutzt, um eine "
+"Auswahl an Stücken zu erstellen, welche darin enthalten sind. Die Liste der "
+"<i>Ausschließen</i>-Regeln wird benutzt, um eine Auswahl an Stücken zu "
 "erstellen, welche nicht benutzt werden.</p>"
 
 #: dynamic/dynamicrulesdialog.cpp:307
@@ -1936,11 +1938,11 @@ msgstr "Symbol/Liste"
 
 #: gui/interfacesettings.cpp:85
 msgid "Grouped by 'Album Artist'"
-msgstr "Gruppiert unter 'Album Artist'"
+msgstr "Gruppiert unter 'Albumkünstler'"
 
 #: gui/interfacesettings.cpp:86
 msgid "Grouped under 'Various Artists'"
-msgstr "Gruppiert unter 'Various Artists'"
+msgstr "Gruppiert unter „Verschiedene Künstler“"
 
 #: gui/main.cpp:151 gui/mainwindow.cpp:2007 gui/trayitem.cpp:71
 #: gui/trayitem.cpp:73 gui/trayitem.cpp:108 gui/trayitem.cpp:172
@@ -3642,7 +3644,7 @@ msgstr "Hinweis zum Dateinamenschema"
 #. i18n: ectx: property (text), widget (QPushButton, albumArtist)
 #: po/rc.cpp:163 rc.cpp:163
 msgid "Album Artist"
-msgstr "Album-Künstler"
+msgstr "Albumkünstler"
 
 #. i18n: file: devices/filenameschemedialog.ui:101
 #. i18n: ectx: property (text), widget (QPushButton, albumTitle)
@@ -3897,7 +3899,7 @@ msgstr "Über Regeln"
 #. i18n: ectx: property (text), widget (BuddyLabel, label_2)
 #: po/rc.cpp:289 rc.cpp:289
 msgid "Album Artist:"
-msgstr "Album-Künstler:"
+msgstr "Albumkünstler:"
 
 #. i18n: file: dynamic/dynamicrule.ui:51
 #. i18n: ectx: property (text), widget (BuddyLabel, label_3)
@@ -3965,7 +3967,8 @@ msgstr "Künstler ähnlich zu:"
 msgid ""
 "<i><b>NOTE</b> Only enter values for the tags you wish to be search on. </i>"
 msgstr ""
-"<i><b>Hinweis</b> Nur Werte für Tags angeben, welche auch gesucht werden. </i>"
+"<i><b>Beachten Sie:</b> Nur Werte für Tags angeben, welche auch gesucht "
+"werden.</i>"
 
 #. i18n: file: dynamic/dynamicrule.ui:249
 #. i18n: ectx: property (text), widget (QLabel, label_7x)
@@ -4844,7 +4847,7 @@ msgstr "Stück:"
 #. i18n: ectx: property (text), widget (StateLabel, albumArtistLabel)
 #: po/rc.cpp:751 rc.cpp:751
 msgid "Album artist:"
-msgstr "Album-Künstler:"
+msgstr "Albumkünstler:"
 
 #. i18n: file: tags/tageditor.ui:87
 #. i18n: ectx: property (text), widget (StateLabel, trackLabel)
@@ -4937,7 +4940,8 @@ msgid ""
 "Scan <b>all</b> tracks?<br><br><i>NOTE: All tracks have existing ReplyGain "
 "tags.</i>"
 msgstr ""
-"Suche in <b>allen</b> Stücken?<br><br><i>Hinweis: Alle Stücke besitzen einen "
+"Suche in <b>allen</b> Stücken?<br><br><i>Beachten Sie: Alle Stücke besitzen "
+"einen "
 "ReplayGain-Tag. </i>"
 
 #: replaygain/rgdialog.cpp:285
@@ -5315,7 +5319,7 @@ msgstr "Tags"
 
 #: tags/tageditor.cpp:144
 msgid "Set 'Album Artist' from 'Artist'"
-msgstr "Setze 'Album Künstler' von 'Künstler'"
+msgstr "Setze 'Albumkünstler' von 'Künstler'"
 
 #: tags/tageditor.cpp:228 tags/tageditor.cpp:549
 msgid "All tracks"
@@ -5340,17 +5344,16 @@ msgid ""
 "Set 'Album Artist' from 'Artist' (if 'Album Artist' is empty) for <b>all</b> "
 "tracks?"
 msgstr ""
-"Setze 'Album Künstler'  mit 'Künstler' (wenn 'Album Künstler' leer ist) bei "
+"Setze 'Albumkünstler'  mit 'Künstler' (wenn 'Albumkünstler' leer ist) bei "
 "<b>allen</b> Stücken?"
 
 #: tags/tageditor.cpp:418
 msgid "Set 'Album Artist' from 'Artist' (if 'Album Artist' is empty)?"
-msgstr ""
-"Setze 'Album Künstler' mit 'Künstler' (wenn 'Album Künstler' leer ist)?"
+msgstr "Setze 'Albumkünstler' mit 'Künstler' (wenn 'Albumkünstler' leer ist)?"
 
 #: tags/tageditor.cpp:419
 msgid "Album Artist from Artist"
-msgstr "Setze Album-Künstler von Künstler"
+msgstr "Setze Albumkünstler von Künstler"
 
 #: tags/tageditor.cpp:452
 msgid ""
@@ -5384,7 +5387,7 @@ msgstr "Dateien umbenennen"
 
 #: tags/trackorganiser.cpp:143
 msgid "Abort renaming of files?"
-msgstr "Umbenennung der Dateien abbrechen?"
+msgstr "Umbenennen der Dateien abbrechen?"
 
 #: tags/trackorganiser.cpp:257
 msgid "Destination file already exists!<br/>%1"

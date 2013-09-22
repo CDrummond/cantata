@@ -37,6 +37,9 @@ NetworkJob::NetworkJob(QNetworkReply *j)
     , job(j)
 {
     connect(job, SIGNAL(finished()), this, SLOT(jobFinished()));
+    connect(job, SIGNAL(error(QNetworkReply::NetworkError)), this, SIGNAL(error(QNetworkReply::NetworkError)));
+    connect(job, SIGNAL(uploadProgress(qint64, qint64)), this, SIGNAL(uploadProgress(qint64, qint64)));
+    connect(job, SIGNAL(downloadProgress(qint64, qint64)), this, SIGNAL(downloadProgress(qint64, qint64)));
 }
 
 NetworkJob::~NetworkJob()

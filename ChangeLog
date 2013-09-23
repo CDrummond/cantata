@@ -39,9 +39,10 @@
 1.1.3
 -----
 1. (Hopefully) fix selection order of items - and order added to playqueue.
-2. Update German translation, use 'ß' instead of 'ss' for certain words.
+2. Updated German translation.
 3. Add Russian translation, thanks to Julia Dronova.
 4. Online services support does not require taglib.
+5. Fix changing of Music folder for 'Personal' mpd collection.
 
 1.1.2
 -----

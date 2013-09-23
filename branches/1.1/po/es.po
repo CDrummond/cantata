@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-07-20 19:42+0100\n"
-"PO-Revision-Date: 2013-01-29 18:59+0200\n"
+"PO-Revision-Date: 2013-09-22 12:13+0200\n"
 "Last-Translator: Omar Campagne <ocampagne@gmail.com>\n"
 "Language-Team: Debian l10n Spanish <debian-l10n-spanish@lists.debian.org>\n"
 "Language: es\n"
@@ -18,27 +18,23 @@ msgstr ""
 "X-Generator: Virtaal 0.7.1\n"
 
 #: context/albumview.cpp:63
-#, fuzzy
 msgid "Refresh Album Information"
-msgstr "Información de servidor"
+msgstr "Actualizar información de álbum"
 
 #: context/albumview.cpp:71 context/contextwidget.cpp:300
 #: gui/cachesettings.cpp:244
-#, fuzzy
 msgid "Album Information"
-msgstr "Información"
+msgstr "Información de albúm"
 
 #. i18n: file: devices/albumdetails.ui:130
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox_2)
 #: context/albumview.cpp:166 po/rc.cpp:73 rc.cpp:73
-#, fuzzy
 msgid "Tracks"
-msgstr "Pista"
+msgstr "Pistas"
 
 #: context/artistview.cpp:88
-#, fuzzy
 msgid "Refresh Artist Information"
-msgstr "Información de artista"
+msgstr "Actualizar información de artista"
 
 #: context/artistview.cpp:95 context/contextwidget.cpp:299
 #: gui/cachesettings.cpp:242
@@ -53,30 +49,28 @@ msgstr "Álbumes"
 
 #: context/artistview.cpp:334
 msgid "Web Links"
-msgstr ""
+msgstr "Enlaces web"
 
 #: context/artistview.cpp:422
-#, fuzzy
 msgid "Similar Artists"
 msgstr "Artistas similares"
 
 #: context/contextsettings.cpp:36
 msgid "Lyrics Providers"
-msgstr ""
+msgstr "Proveedores de letras"
 
 #: context/contextsettings.cpp:37
 msgid "Wikipedia Languages"
-msgstr ""
+msgstr "Idiomas de Wikipedia"
 
 #: context/contextsettings.cpp:38 models/streamsmodel.cpp:1191
 #: models/streamsmodel.cpp:1234 models/streamsmodel.cpp:1438
-#, fuzzy
 msgid "Other"
-msgstr "Otras vistas"
+msgstr "Otro"
 
 #: context/contextwidget.cpp:98
 msgid "Reset Spacing"
-msgstr ""
+msgstr "Restablecer espaciado"
 
 #: context/contextwidget.cpp:301 context/songview.cpp:90
 #: gui/cachesettings.cpp:241
@@ -85,7 +79,7 @@ msgstr "Letras"
 
 #: context/lastfmengine.cpp:65
 msgid "Read more on last.fm"
-msgstr ""
+msgstr "Vea más en last.fm"
 
 #: context/lyricsdialog.cpp:42
 msgid ""
@@ -97,7 +91,7 @@ msgid ""
 "If this search does find new lyrics, these will still be associated with the "
 "original song title and artist as displayed in Cantata."
 msgstr ""
-"Si Cantata no encuentra letras, o encuentra una equivocadas, utilice este "
+"Si Cantata no encuentra letras, o encuentra una equivocada, utilice este "
 "diálogo para introducir detalles de la búsqueda. Por ejemplo, la canción "
 "actual puede ser una versión. Si es así, puede ser útil buscarlas  letras "
 "por el autor original.\n"
@@ -156,9 +150,8 @@ msgid "(Portuguese Translations)"
 msgstr "(Traducción al portugués)"
 
 #: context/songview.cpp:74
-#, fuzzy
 msgid "Refresh Lyrics"
-msgstr "Actualizar dispositivo"
+msgstr "Actualizar letras"
 
 #: context/songview.cpp:75
 msgid "Edit Lyrics"
@@ -178,19 +171,18 @@ msgstr "Eliminar fichero de letras"
 
 #: context/songview.cpp:103 context/songview.cpp:122 context/songview.cpp:181
 msgid "Abort editing of lyrics?"
-msgstr "¿Desea interrumpir la edición de letras?"
+msgstr "¿Desea cancelar la edición de letras?"
 
 #: context/songview.cpp:103 context/songview.cpp:122 context/songview.cpp:181
-#, fuzzy
 msgid "Abort Editing"
-msgstr "¿Desea interrumpir la edición de letras?"
+msgstr "Cancelar edición"
 
 #: context/songview.cpp:104 context/songview.cpp:123 context/songview.cpp:182
 #: replaygain/rgdialog.cpp:248 replaygain/rgdialog.cpp:249
 #: replaygain/rgdialog.cpp:257 replaygain/rgdialog.cpp:258
 #: tags/trackorganiser.cpp:143
 msgid "Abort"
-msgstr ""
+msgstr "Cancelar"
 
 #: context/songview.cpp:106
 msgid "Delete saved copy of lyrics, and re-download?"
@@ -198,9 +190,8 @@ msgstr "¿Desea eliminar y descargar otra vez la copia de las letras?"
 
 #: context/songview.cpp:106 context/songview.cpp:107
 #: online/onlineservicespage.cpp:396 online/onlineservicespage.cpp:397
-#, fuzzy
 msgid "Re-download"
-msgstr "Descargando..."
+msgstr "Volver a descargar"
 
 #: context/songview.cpp:132
 msgid "Current playing song has changed, still perform search?"
@@ -208,12 +199,11 @@ msgstr "La canción en reproducción ha cambiado, ¿quiere realizar la búsqueda
 
 #: context/songview.cpp:132
 msgid "Song Changed"
-msgstr ""
+msgstr "Canción modificada"
 
 #: context/songview.cpp:133
-#, fuzzy
 msgid "Perform Search"
-msgstr "Buscar"
+msgstr "Realizar búsqueda"
 
 #: context/songview.cpp:157
 msgid "Save updated lyrics?"
@@ -236,61 +226,58 @@ msgid "Cancel"
 msgstr "Cancelar"
 
 #: context/songview.cpp:416
-#, fuzzy
 msgid "Fetching lyrics via %1"
-msgstr ""
-"%1 por 2%\n"
-"Obteniendo letras mediante %3"
+msgstr "Obteniendo letras mediante %1"
 
 #: context/wikipediaengine.cpp:250
-#, fuzzy
 msgid "Track listing"
-msgstr "Artista de pista"
+msgstr "Lista de pistas"
 
 #: context/wikipediaengine.cpp:303
 msgid "Read more on wikipedia"
-msgstr ""
+msgstr "Lea más en Wikipedia"
 
 #: context/wikipediaengine.cpp:304
 msgid "Open in browser"
-msgstr ""
+msgstr "Abrir en explorador"
 
 #: context/wikipediaengine.cpp:442
 msgctxt "Search pattern for an artist or band, separated by |"
 msgid "artist|band|singer|vocalist|musician"
-msgstr ""
+msgstr "artista|banda|cantante|vocalista|músico"
 
 #: context/wikipediaengine.cpp:445
 msgctxt "Search pattern for an album, separated by |"
 msgid "album|score|soundtrack"
-msgstr ""
+msgstr "albúm|pista|banda sonora"
 
 #: context/wikipediasettings.cpp:89
-#, fuzzy
 msgid ""
 "Choose the wikipedia languages you want to use when searching for artist and "
 "album information."
-msgstr "Seleccione los sitios web que utilizar para la búsqueda de letras."
+msgstr ""
+"Seleccione los idiomas de Wikipeda que utilizar para la búsqueda de "
+"información de artista y álbum."
 
 #: context/wikipediasettings.cpp:90 models/streamsmodel.cpp:477
 msgid "Reload"
-msgstr ""
+msgstr "Actualizar"
 
 #: devices/actiondialog.cpp:73
 msgid "Songs To Be Copied"
-msgstr ""
+msgstr "Canciones que copiar"
 
 #: devices/actiondialog.cpp:139
 msgid "<b>INVALID</b>"
-msgstr ""
+msgstr "<b>NO VÁLIDO</b>"
 
 #: devices/actiondialog.cpp:153 devices/actiondialog.cpp:156
 msgid "<i>(When different)</i>"
-msgstr ""
+msgstr "<i>(Cuando hay diferencias)</i>"
 
 #: devices/actiondialog.cpp:188 devices/synccollectionwidget.cpp:268
 msgid "Artists:%1, Albums:%2, Songs:%3"
-msgstr ""
+msgstr "Artistas:%1, Álbumes:%2, Canciones:%3"
 
 #: devices/actiondialog.cpp:240 devices/mtpdevice.cpp:1476
 #: devices/remotefsdevice.cpp:575 devices/umsdevice.cpp:105
@@ -303,9 +290,8 @@ msgstr "Biblioteca de música local"
 
 #: devices/actiondialog.cpp:255 devices/albumdetailsdialog.cpp:100
 #: gui/preferencesdialog.cpp:95 widgets/groupedview.cpp:255
-#, fuzzy
 msgid "Audio CD"
-msgstr "Fichero de audio"
+msgstr "CD de audio"
 
 #: devices/actiondialog.cpp:278
 msgid ""
@@ -346,14 +332,12 @@ msgstr ""
 "las opciones predefinidas?</p>"
 
 #: devices/actiondialog.cpp:365 devices/actiondialog.cpp:369
-#, fuzzy
 msgid "Not Configured"
-msgstr "Configuración"
+msgstr "Sin configuración"
 
 #: devices/actiondialog.cpp:366 devices/actiondialog.cpp:370
-#, fuzzy
 msgid "Use Defaults"
-msgstr "Predefinido"
+msgstr "Utilizar valores predefinidos"
 
 #: devices/actiondialog.cpp:368
 msgid ""
@@ -364,9 +348,8 @@ msgstr ""
 "las opciones predefinidas?</p>"
 
 #: devices/actiondialog.cpp:430
-#, fuzzy
 msgid "Are you sure you wish to stop?"
-msgstr "¿Está seguro de que desea cancelar la acción?"
+msgstr "¿Está seguro de que desea detener?"
 
 #: devices/actiondialog.cpp:430 gui/mainwindow.cpp:268
 msgid "Stop"
@@ -398,17 +381,15 @@ msgstr "Eliminando directorios no utilizados"
 
 #: devices/actiondialog.cpp:561
 msgid "Calculate ReplayGain for ripped tracks?"
-msgstr ""
+msgstr "¿Desea calcular la ganancia de reproducción para pistas extraídas?"
 
 #: devices/actiondialog.cpp:561
-#, fuzzy
 msgid "ReplyGain"
 msgstr "Ganancia de reproducción"
 
 #: devices/actiondialog.cpp:562
-#, fuzzy
 msgid "Calculate"
-msgstr "Calculando..."
+msgstr "Calcular"
 
 #: devices/actiondialog.cpp:618
 msgid "The destination filename already exists!<hr/>%1"
@@ -463,39 +444,35 @@ msgstr ""
 "a dispositivos MTP.)<hr/>%1"
 
 #: devices/actiondialog.cpp:649
-#, fuzzy
 msgid "Failed to read source file.<br/><br/<hr/>%1"
-msgstr "Fallo durante la transcodificación.<br/><br/<hr/>%1"
+msgstr "Fallo de lectura del fichero fuente.<br/><br/<hr/>%1"
 
 #: devices/actiondialog.cpp:652
-#, fuzzy
 msgid "Failed to write to destination file.<br/><br/<hr/>%1"
-msgstr "Fallo al crear el directorio de destino. <br/>%1"
+msgstr "Fallo de escritura en el fichero de destino.<br/><br/<hr/>%1"
 
 #: devices/actiondialog.cpp:655
-#, fuzzy
 msgid "No space left on device.<br/><br/<hr/>%1"
-msgstr "¿Ha desaparecido el fichero de origen?<br/><br/<hr/>%1"
+msgstr "No hay espacio libre en el dispositivo.<br/><br/<hr/>%1"
 
 #: devices/actiondialog.cpp:658
-#, fuzzy
 msgid "Failed to update metadata.<br/><br/<hr/>%1"
-msgstr "Fallo al eliminar.<hr/>%1"
+msgstr "Fallo de actualización de metadatos.<br/><br/<hr/>%1"
 
 #: devices/actiondialog.cpp:661
 msgid ""
 "Failed to download track - too many redirects encountered.<br/><br/<hr/>%1"
 msgstr ""
+"Fallo de descarga de la pista: demasiadas redirecciones "
+"detectadas.<br/><br/<hr/>%1"
 
 #: devices/actiondialog.cpp:664
-#, fuzzy
 msgid "Failed to download track.<br/><br/<hr/>%1"
-msgstr "Fallo al eliminar.<hr/>%1"
+msgstr "Fallo de descarga de pista.<br/><br/<hr/>%1"
 
 #: devices/actiondialog.cpp:667
-#, fuzzy
 msgid "Failed to lock device.<hr/>%1"
-msgstr "Fallo al eliminar.<hr/>%1"
+msgstr "Fallo de bloqueo de dispositivo.<hr/>%1"
 
 #: devices/actiondialog.cpp:696
 msgid "Local Music Library Properties"
@@ -520,29 +497,27 @@ msgid "Retry"
 msgstr "Reintentar"
 
 #: devices/actiondialog.cpp:761
-#, fuzzy
 msgid ""
 "<tr><td align=\"right\">Artist:</td><td>%1</td></tr><tr><td align=\"right"
 "\">Album:</td><td>%2</td></tr><tr><td align=\"right\">Track:</td><td>%3</"
 "td></tr>"
 msgstr ""
-"<table><tr><td align=\"right\">Artista:</td><td>%1</td></tr><tr><td align="
-"\"right\">Álbum:</td><td>%2</td></tr><tr><td align=\"right\">Pista:</td><td>"
-"%3</td></tr></table>"
+"<tr><td align=\"right\">Artista:</td><td>%1</td></tr><tr><td "
+"align=\"right\">Álbum:</td><td>%2</td></tr><tr><td "
+"align=\"right\">Pista:</td><td>%3</td></tr>"
 
 #: devices/actiondialog.cpp:768
-#, fuzzy
 msgid ""
 "<tr><td align=\"right\">Source file:</td><td>%1</td></tr><tr><td align="
 "\"right\">Destination file:</td><td>%2</td></tr>"
 msgstr ""
-"<table><tr><td align=\"right\">Artista:</td><td>%1</td></tr><tr><td align="
-"\"right\">Álbum:</td><td>%2</td></tr><tr><td align=\"right\">Pista:</td><td>"
-"%3</td></tr></table>"
+"<tr><td align=\"right\">Artista:</td><td>%1</td></tr><tr><td "
+"align=\"right\">Álbum:</td><td>%2</td></tr><tr><td "
+"align=\"right\">Pista:</td><td>%3</td></tr>"
 
 #: devices/actiondialog.cpp:773
 msgid "<tr><td align=\"right\">File:</td><td>%1</td></tr>"
-msgstr ""
+msgstr "<tr><td align=\"right\">Fichero:</td><td>%1</td></tr>"
 
 #: devices/actiondialog.cpp:779 gui/cachesettings.cpp:169
 msgid "Calculating..."
@@ -551,19 +526,20 @@ msgstr "Calculando..."
 #: devices/actiondialog.cpp:786
 msgctxt "time (Estimated)"
 msgid "%1 (Estimated)"
-msgstr ""
+msgstr "%1 (Estimación)"
 
 #: devices/actiondialog.cpp:789
 msgid ""
 "<tr><i><td align=\"right\"><i>Time remaining:</i></td><td><i>%5</i></td></"
 "i></tr>"
 msgstr ""
+"<tr><i><td align=\"right\"><i>Tiempo restante:</i></td><td><i>%"
+"5</i></td></i></tr>"
 
 #: devices/actiondialog.cpp:812 devices/fsdevice.cpp:765
 #: online/onlineservice.cpp:139 online/onlineservice.cpp:165
-#, fuzzy
 msgid "Saving cache"
-msgstr "Guardando norma"
+msgstr "Guardando almacén"
 
 #: devices/albumdetailsdialog.cpp:129 devices/albumdetailsdialog.cpp:227
 #: tags/tageditor.cpp:142 tags/tageditor.cpp:330
@@ -615,13 +591,13 @@ msgid ""
 msgstr ""
 "<i>Si «Artista del álbum» es igual a «Artista» y «Título» tiene el formato "
 "«Artista de pista - Título de pista», el valor para «Artista» se tomará de "
-"«Título», y «Título» se definirá solo con el título de pista. Por ejemplo:"
-"<br/><br/>si «Título» es «Wibble - Wobble», entonces «Artista» se define "
-"como «Wibble», y «Título» se define como «Wobble»</i>"
+"«Título», y «Título» se definirá solo con el título de pista. Por "
+"ejemplo:<br/><br/>si «Título» es «Wibble - Wobble», entonces «Artista» se "
+"define como «Wibble», y «Título» se define como «Wobble»</i>"
 
 #: devices/albumdetailsdialog.cpp:252 tags/tageditor.cpp:376
 msgid "Revert"
-msgstr ""
+msgstr "Revertir"
 
 #: devices/albumdetailsdialog.cpp:268 tags/tageditor.cpp:454
 msgid ""
@@ -631,9 +607,8 @@ msgstr ""
 "álbum», y «Álbum»"
 
 #: devices/albumdetailsdialog.cpp:286 tags/tageditor.cpp:486
-#, fuzzy
 msgid "Adjust track number by:"
-msgstr "Ajustar números de pista"
+msgstr "Ajustar números de pista según:"
 
 #: devices/albumdetailsdialog.cpp:327 devices/cddbinterface.cpp:140
 #: devices/deviceoptions.cpp:357 devices/musicbrainz.cpp:202
@@ -647,7 +622,7 @@ msgstr "Desconocido"
 
 #: devices/audiocddevice.cpp:114
 msgid "Reading disc"
-msgstr ""
+msgstr "Leyendo disco"
 
 #: devices/audiocddevice.cpp:336 gui/mainwindow.cpp:2239
 #: models/albumsmodel.cpp:252 models/musicmodel.cpp:181
@@ -659,45 +634,42 @@ msgstr[1] "%1 pistas (%2)"
 
 #: devices/audiocdsettings.cpp:38
 msgid "CDDB"
-msgstr ""
+msgstr "CDDB"
 
 #: devices/audiocdsettings.cpp:39
 msgid "MusicBrainz"
-msgstr ""
+msgstr "MusicBrainz"
 
 #: devices/cddbinterface.cpp:53
-#, fuzzy
 msgid "Data Track"
-msgstr "1 pista"
+msgstr "Pista de datos"
 
 #: devices/cddbinterface.cpp:137 devices/musicbrainz.cpp:154
-#, fuzzy
 msgid "Failed to open CD device"
-msgstr "Fallo al leer la imagen"
+msgstr "Fallo al abrir el dispositivo de CD"
 
 #: devices/cddbinterface.cpp:162 devices/cddbinterface.cpp:188
 #: devices/musicbrainz.cpp:217
-#, fuzzy
 msgid "Track %1"
-msgstr "Núm. de pista"
+msgstr "Pista %1"
 
 #: devices/cddbinterface.cpp:286
-#, fuzzy
 msgid "Failed to create CDDB connection"
-msgstr "Fallo de reconexión a «%1»"
+msgstr "Fallo de conexión a CDDB"
 
 #: devices/cddbinterface.cpp:292 devices/cddbinterface.cpp:319
-#, fuzzy
 msgid "No matches found in CDDB"
-msgstr "No se han encontrado dispositivos"
+msgstr "No se han encontrado coincidencias en CDDB"
 
 #: devices/cddbinterface.cpp:300
 msgid "CDDB error: %1"
-msgstr ""
+msgstr "Fallo de CDDB: %1"
 
 #: devices/cddbselectiondialog.cpp:38
 msgid "Multiple matches were found. Please choose the relevant one from below:"
 msgstr ""
+"Se han encontrado varias coincidencias. Seleccione la coincidencia "
+"pertinente de la lista a continuación:"
 
 #. i18n: file: devices/albumdetails.ui:157
 #. i18n: ectx: property (text), widget (QTreeWidget, tracks)
@@ -716,23 +688,18 @@ msgid "Title"
 msgstr "Título"
 
 #: devices/cddbselectiondialog.cpp:55
-#, fuzzy
 msgid "Disc Selection"
-msgstr "Desconectando..."
+msgstr "Selección de disco"
 
 #: devices/cddbselectiondialog.cpp:67
-#, fuzzy
 msgctxt "artist - album Disc disc (year)"
 msgid "%1 -%2 Disc %3 (%4)"
-msgstr ""
-"%1\n"
-"%2 x %3 (%4)"
+msgstr "%1 -%2 Disco %3 (%4)"
 
 #: devices/cddbselectiondialog.cpp:69
-#, fuzzy
 msgctxt "artist - album (year)"
 msgid "%1 - %2 (%3)"
-msgstr "%1 - %2"
+msgstr "%1 - %2 (%3)"
 
 #: devices/device.cpp:340
 msgid "Updating (%1)..."
@@ -814,18 +781,16 @@ msgstr "No transcodificar"
 
 #: devices/devicepropertieswidget.cpp:212
 msgid "Encoder"
-msgstr ""
+msgstr "Codificador"
 
 #: devices/devicepropertieswidget.cpp:228
-#, fuzzy
 msgid "Transcode to %1"
-msgstr "Transcodificar a «%1»"
+msgstr "Transcodificar a %1"
 
 #: devices/devicepropertieswidget.cpp:259
-#, fuzzy
 msgctxt "name (size free)"
 msgid "%1 (%2 free)"
-msgstr "%1 libre"
+msgstr "%1 (%2 libre)"
 
 #: devices/devicespage.cpp:65 devices/syncdialog.cpp:103
 msgid "Copy To Library"
@@ -845,7 +810,7 @@ msgstr "Añadir dispositivo"
 
 #: devices/devicespage.cpp:419 devices/devicespage.cpp:431
 msgid "Lookup album and track details?"
-msgstr ""
+msgstr "¿Desea consultar los detalles de álbum y pista?"
 
 #: devices/devicespage.cpp:420 devices/devicespage.cpp:432
 #: devices/devicespage.cpp:442
@@ -854,11 +819,11 @@ msgstr "Actualizar"
 
 #: devices/devicespage.cpp:420
 msgid "Via CDDB"
-msgstr ""
+msgstr "Mediante CDDB"
 
 #: devices/devicespage.cpp:420
 msgid "Via MusicBrainz"
-msgstr ""
+msgstr "Mediante MusicBrainz"
 
 #: devices/devicespage.cpp:439
 msgid ""
@@ -880,32 +845,28 @@ msgstr "Completa"
 
 #: devices/devicespage.cpp:489 gui/albumspage.cpp:187 gui/folderpage.cpp:255
 #: gui/librarypage.cpp:211
-#, fuzzy
 msgid ""
 "Are you sure you wish to delete the selected songs?\n"
 "This cannot be undone."
 msgstr ""
-"¿Desea eliminar los elementos seleccionados?\n"
-"No se puede deshacer esta acción."
+"¿Desea eliminar las canciones seleccionadas?\n"
+"Esta acción no se puede deshacer."
 
 #: devices/devicespage.cpp:516
-#, fuzzy
 msgid "Are you sure you wish to forget <b>%1</b>?"
-msgstr "¿Desea eliminar <b>%1</b>?"
+msgstr "¿Desea olvidar <b>%1</b>?"
 
 #: devices/devicespage.cpp:535
-#, fuzzy
 msgid "Are you sure you wish to eject Audio CD <b>%1 - %2</b>?"
-msgstr "¿Desea olvidar «%1»?"
+msgstr "¿Desea expulsar el CD de audio <b>%1 - %2</b>?"
 
 #: devices/devicespage.cpp:536
 msgid "Eject"
-msgstr ""
+msgstr "Expulsar"
 
 #: devices/devicespage.cpp:537
-#, fuzzy
 msgid "Are you sure you wish to disconnect <b>%1</b>?"
-msgstr "¿Está seguro de que quiere desconectar «%1»?"
+msgstr "¿Está seguro de que quiere desconectar <b>%1</b>?"
 
 #: devices/devicespage.cpp:538
 msgid "Disconnect"
@@ -913,10 +874,9 @@ msgstr "Desconectar"
 
 #: devices/devicespage.cpp:557 gui/mainwindow.cpp:1150
 msgid "Please close other dialogs first."
-msgstr ""
+msgstr "Primero cierre otras ventanas de diálogo."
 
 #: devices/encoders.cpp:78
-#, fuzzy
 msgctxt ""
 "Feel free to redirect the english Wikipedia link to a local version, if it "
 "exists."
@@ -930,8 +890,7 @@ msgstr ""
 "Coding</a> (AAC) es un códec patentado con pérdida de datos para audio "
 "digital.<br>Habitualmente, AAC ofrece una calidad de audio superior a MP3 "
 "con una tasa de bits similar. Es un elección razonable para los dispositivos "
-"iPod y otros reproductores de música portátiles. Es una implementación "
-"privativa."
+"iPod y otros reproductores de música portátiles."
 
 #: devices/encoders.cpp:83
 msgid ""
@@ -1014,18 +973,18 @@ msgid ""
 msgstr ""
 "La tasa de bits es la medida de la cantidad de datos utilizados para "
 "representar un segundo de la pista de audio.<br>El codificador <b>MP3</b> "
-"utilizado por Cantata permite una <a href=http://en.wikipedia.org/wiki/"
-"Variable_bitrate#Advantages_and_disadvantages_of_VBR>tasa de bits variable "
-"(VBR)</a> ; esto es, la tasa de bits varía a lo largo de la pista en base al "
-"contenido de audio. Los intervalos de datos más complejos se codifican con "
-"una tasa de bits más elevada que los intervalos más sencillos; este enfoque "
-"ofrece una calidad general superior y un fichero más pequeño que el generado "
-"con una tasa de bits constante en toda la pista.<br>Por ello, la medida de "
-"la tasa de bits en esta barra deslizante es una estimación de la tasa de "
-"bits media de la pista codificada.<br><b>160kb/s</b> es una buena elección "
-"para la reproducción de música con un dispositivo portátil.<br/>Algo "
-"inferior a <b>120kb/s</b> puede insatisfactorio para la música y algo "
-"superior a <b>205kb/s</b> es posiblemente demasiado."
+"utilizado por Cantata permite una <a "
+"href=http://en.wikipedia.org/wiki/MP3#VBR>tasa de bits variable (VBR)</a> ; "
+"esto es, la tasa de bits varía a lo largo de la pista en base al contenido "
+"de audio. Los intervalos de datos más complejos se codifican con una tasa de "
+"bits más elevada que los intervalos más sencillos; este enfoque ofrece una "
+"calidad general superior y un fichero más pequeño que el generado con una "
+"tasa de bits constante en toda la pista.<br>Por ello, la medida de la tasa "
+"de bits en esta barra deslizante es una estimación de la tasa de bits media "
+"de la pista codificada.<br><b>160kb/s</b> es una buena elección para la "
+"reproducción de música con un dispositivo portátil.<br/>Algo inferior a "
+"<b>120kb/s</b> puede insatisfactorio para la música y algo superior a "
+"<b>205kb/s</b> es posiblemente demasiado."
 
 #: devices/encoders.cpp:156 online/magnatuneservice.cpp:182
 msgid "Ogg Vorbis"
@@ -1237,7 +1196,6 @@ msgid "Dance"
 msgstr "Dance"
 
 #: devices/filenameschemedialog.cpp:99
-#, fuzzy
 msgid ""
 "<p>The following variables will be replaced with their corresponding meaning "
 "for each track name.</p><p><table border=\"1\"><tr><th><em>Button</em></"
@@ -1257,16 +1215,22 @@ msgid ""
 "of the album.</td></tr></table></p>"
 msgstr ""
 "<p>Las siguientes variables se sustituyen por su significado correspondiente "
-"para cada nombre de pista.</p><p><table border=\"1\"><tr><th><em>Variable</"
-"em></th><th><em>Descripción</em></th></tr><tr><td>%1</td><td>El artista del "
-"álbum. Para la mayoría de álbumes será igual a <i>Artista de pista.</i>Para "
-"compilaciones, será habitualmente <i>Varios Artistas.</i> </td></tr><tr><td>"
-"%2</td><td>El nombre de álbum.</td></tr><tr><td>%3</td><td>El artista de "
-"cada pista.</td></tr><tr><td>%4</td><td>Nombre de pista.</td></tr><tr><td>"
-"%5</td><td>Número de pista.</td></tr><tr><td>%6</td><td>Número de disco de "
-"un álbum multidisco. Habitualmente, las compilaciones se componen de varios "
-"discos.</td></tr><tr><td>%7</td><td>Año de publicación.</td></tr><tr><td>%8</"
-"td><td>Género del álbum.</td></tr></table></p>"
+"para cada nombre de pista.</p><p><table border=\"1\"><tr><th><em>Botón</em></"
+"th><th><em>Variable</em></th><th><em>Descripción</em></th></tr><tr><td>%"
+"albumartist%</td><td>%1</td><td>El artista del álbum. Para la mayoría de "
+"álbumes, será idéntico a <i>Artista de pista.</i> Para compilaciones, "
+"habitualmente será <i>Varios Artistas.</i> </td></tr><tr><td>%album%"
+"</td><td>%2</td><td>El nombre del álbum.</td></tr><tr><td>%artist%</td><td>%"
+"3</td><td>El artista de cada pista.</td></tr><tr><td>%title%</td><td>%"
+"4</td><td>El título de pista (sin <i>Artista de "
+"pista</i>).</td></tr><tr><td>%artistandtitle%</td><td>%5</td><td>El título "
+"de pista (con <i>Artista de pista</i>, si es distinto a <i>Artista del "
+"albúm</i>).</td></tr><tr><td>%track%</td><td>%6</td><td>El número de "
+"pista.</td></tr><tr><td>%discnumber%</td><td>%7</td><td>El número de disco "
+"de un álbum de varios discos. Habitualmente, las compilaciones se componen "
+"de varios discos.</td></tr><tr><td>%year%</td><td>%8</td><td>El año de "
+"publicación del álbum.</td></tr><tr><td>%genre%</td><td>%9</td><td>El género "
+"del álbum.</td></tr></table></p>"
 
 #: devices/fsdevice.cpp:678
 msgid "Updating..."
@@ -1274,14 +1238,13 @@ msgstr "Actualizando..."
 
 #: devices/fsdevice.cpp:760 online/onlineservice.cpp:93
 #: online/onlineservice.cpp:160
-#, fuzzy
 msgid "Reading cache"
-msgstr "Utilizar caché:"
+msgstr "Leyendo caché"
 
 #: devices/fsdevice.cpp:772 online/onlineservice.cpp:348
 msgctxt "Message percent"
 msgid "%1 %2%"
-msgstr ""
+msgstr "%1 %2%"
 
 #: devices/mtpdevice.cpp:137
 msgid "Connecting to device..."
@@ -1304,9 +1267,8 @@ msgid "Updating folders..."
 msgstr "Actualizando directorios..."
 
 #: devices/mtpdevice.cpp:257
-#, fuzzy
 msgid "Updating files..."
-msgstr "Actualizando directorios..."
+msgstr "Actualizando ficheros..."
 
 #: devices/mtpdevice.cpp:262 devices/remotefsdevice.cpp:465
 #: devices/remotefsdevice.cpp:485
@@ -1328,13 +1290,12 @@ msgid "Not Connected"
 msgstr "Sin conexión"
 
 #: devices/musicbrainz.cpp:320
-#, fuzzy
 msgid "%1 (Disc %2)"
-msgstr "%1 (%2)"
+msgstr "%1 (Disco %2)"
 
 #: devices/musicbrainz.cpp:408
 msgid "No matches found in MusicBrainz"
-msgstr ""
+msgstr "No se han encontrado coincidencias en MusicBrainz"
 
 #: devices/remotedevicepropertiesdialog.cpp:51
 msgid "Connection"
@@ -1358,7 +1319,7 @@ msgstr "Recurso compartido Samba"
 
 #: devices/remotedevicepropertieswidget.cpp:53
 msgid "Samba Share (Auto-discover host and port)"
-msgstr ""
+msgstr "Samba Share (Detectar automáticamente host y port)"
 
 #: devices/remotedevicepropertieswidget.cpp:54
 msgid "Secure Shell (sshfs)"
@@ -1370,16 +1331,15 @@ msgstr "Directorio montado localmente"
 
 #: devices/remotefsdevice.cpp:203 devices/remotefsdevice.cpp:612
 msgid "Available"
-msgstr ""
+msgstr "Disponible"
 
 #: devices/remotefsdevice.cpp:211 devices/remotefsdevice.cpp:610
 msgid "Not Available"
-msgstr ""
+msgstr "No disponible"
 
 #: devices/remotefsdevice.cpp:315
-#, fuzzy
 msgid "Failed to resolve connection details for %1"
-msgstr "Fallo de reconexión a «%1»"
+msgstr "Fallo al determinar los detalles de conexión para %1"
 
 #: devices/remotefsdevice.cpp:330 devices/remotefsdevice.cpp:345
 #: devices/remotefsdevice.cpp:403
@@ -1438,19 +1398,16 @@ msgid "Search"
 msgstr "Buscar"
 
 #: devices/synccollectionwidget.cpp:62
-#, fuzzy
 msgid "Check Items"
-msgstr "Elementos almacenados"
+msgstr "Seleccionar elementos"
 
 #: devices/synccollectionwidget.cpp:64
-#, fuzzy
 msgid "Uncheck Items"
-msgstr "Elementos almacenados"
+msgstr "Deseleecionar elementos"
 
 #: devices/synccollectionwidget.cpp:266
-#, fuzzy
 msgid "Nothing selected"
-msgstr "Sin conexión"
+msgstr "Nada seleccionado"
 
 #: devices/syncdialog.cpp:102
 msgid "Songs Only In Library:"
@@ -1481,9 +1438,8 @@ msgid " (recommended)"
 msgstr " (recomendado)"
 
 #: dynamic/dynamic.cpp:195
-#, fuzzy
 msgid "Start Dynamic Playlist"
-msgstr "Iniciar modo dinámico"
+msgstr "Iniciar lista de reproducción dinámica"
 
 #: dynamic/dynamic.cpp:196
 msgid "Stop Dynamic Mode"
@@ -1500,6 +1456,8 @@ msgid ""
 "You need to install \"perl\" on your system in order for Cantata's dynamic "
 "mode to function."
 msgstr ""
+"Es necesario instalar Perl en su sistema para el funcionamiento del modo "
+"dinámico de Cantata."
 
 #: dynamic/dynamic.cpp:390
 msgid "Failed to locate rules file - %1"
@@ -1507,16 +1465,15 @@ msgstr "No se ha podido detectar el fichero de normas - %1"
 
 #: dynamic/dynamic.cpp:398
 msgid "Failed to remove previous rules file - %1"
-msgstr "No se ha podido eliminar el fichero anterior de normas  - %1"
+msgstr "No se ha podido eliminar el fichero anterior de normas - %1"
 
 #: dynamic/dynamic.cpp:403
 msgid "Failed to install rules file - %1 -> %2"
 msgstr "No se ha podido instalar el fichero de normas - %1 -> %2"
 
 #: dynamic/dynamic.cpp:703
-#, fuzzy
 msgid "Dynamizer has been terminated."
-msgstr "El dinamizador no está activo"
+msgstr "El dinamizador se ha interrumpido."
 
 #: dynamic/dynamic.cpp:790
 msgid "Uknown"
@@ -1543,9 +1500,8 @@ msgid "Stopping dynamizer"
 msgstr "Deteniendo dinamizador"
 
 #: dynamic/dynamic.cpp:797
-#, fuzzy
 msgid "Requesting ID details"
-msgstr "Detalles de conexión"
+msgstr "Solicitando detalles de identificación"
 
 #: dynamic/dynamic.cpp:800
 msgid "Awaiting response for previous command. (%1)"
@@ -1588,13 +1544,12 @@ msgid "Remove Dynamic Rules"
 msgstr "Eliminar normas dinámicas"
 
 #: dynamic/dynamicpage.cpp:150
-#, fuzzy
 msgid ""
 "Are you sure you wish to remove the selected rules?\n"
 "This cannot be undone."
 msgstr ""
-"¿Desea eliminar los elementos seleccionados?\n"
-"No se puede deshacer esta acción."
+"¿Desea eliminar las normas seleccionadas?\n"
+"Esta acción no se puede deshacer."
 
 #: dynamic/dynamicruledialog.cpp:41
 msgid "Dynamic Rule"
@@ -1608,13 +1563,15 @@ msgstr "Añadir"
 
 #: dynamic/dynamicruledialog.cpp:191
 msgid "<i><b>ERROR</b>: 'From Year' should be less than 'To Year'</i>"
-msgstr ""
+msgstr "<i><b>ERROR</b>: 'Desde el año' debe ser menor que 'Al año'</i>"
 
 #: dynamic/dynamicruledialog.cpp:194
 msgid ""
 "<i><b>ERROR:</b> Date range is too large (can only be a maximum of %1 years)"
 "</i>"
 msgstr ""
+"<i><b>ERROR:</b> El rango de datos es demasiado grande (solo puede ser un "
+"máximo de %1 años)</i>"
 
 #: dynamic/dynamicrulesdialog.cpp:68
 msgid "SimilarArtists"
@@ -1663,7 +1620,6 @@ msgid "Dynamic Rules"
 msgstr "Normas dinámicas"
 
 #: dynamic/dynamicrulesdialog.cpp:288
-#, fuzzy
 msgid ""
 "<p>Cantata will query your library using all of the rules listed. The list "
 "of <i>Include</i> rules will be used to build a set of songs that can be "
@@ -1684,14 +1640,14 @@ msgstr ""
 "un conjunto de canciones que no se utilizarán. Si no hay normas bajo "
 "<i>Incluir</i>, Cantata supone que todas las canciones (a excepción de las "
 "normas <i>Excluir</i>) se pueden utilizar. <br/>Por ejemplo, para que "
-"Cantata busque \"Canciones de rock por Wibble O canciones de Varios Artistas"
-"\", necesita lo siguiente: <ul><li>Include AlbumArtist=Wibble Genre=Rock</"
-"li><li>Include AlbumArtist=Various Artists</li></ul> Para que Cantata busque "
-"\"Canciones por Wibble pero no del álbum Abc\", necesita lo siguiente: "
-"<ul><li>Include AlbumArtist=Wibble</li><li>Exclude Album=Avc</li></"
-"ul>Después de generar el conjunto de canciones que utilizar, Cantata "
-"seleccionará canciones de forma aleatoria para mantener 10 canciones en la "
-"lista de reproducción.</p>"
+"Cantata busque \"Canciones de rock por Wibble O canciones de Varios "
+"Artistas\", necesita lo siguiente: <ul><li>Include AlbumArtist=Wibble "
+"Genre=Rock</li><li>Include AlbumArtist=Various Artists</li></ul> Para que "
+"Cantata busque \"Canciones por Wibble pero no del álbum Abc\", necesita lo "
+"siguiente: <ul><li>Include AlbumArtist=Wibble</li><li>Exclude "
+"Album=Abc</li></ul>Después de generar el conjunto de canciones que utilizar, "
+"Cantata seleccionará canciones de forma aleatoria para mantener 10 "
+"canciones en la lista de reproducción.</p>"
 
 #: dynamic/dynamicrulesdialog.cpp:307
 msgid "Failed to save %1"
@@ -1702,36 +1658,32 @@ msgid ""
 "A set of rules named '%1' already exists!\n"
 "Overwrite?"
 msgstr ""
-"Ya existe un conjunto de normas llamado \"%1\".\n"
+"Ya existe un conjunto de normas llamado «%1».\n"
 "¿Desea sobrescribir?"
 
 #: dynamic/dynamicrulesdialog.cpp:326
-#, fuzzy
 msgid "Overwrite Rules"
-msgstr "Sobrescribir canciones:"
+msgstr "Sobreescribir normas"
 
 #: dynamic/dynamicrulesdialog.cpp:351
 msgid "Saving %1"
 msgstr "Guardando %1"
 
 #: gui/cachesettings.cpp:163
-#, fuzzy
 msgid "Deleting..."
-msgstr "Eliminando norma"
+msgstr "Eliminando…"
 
 #: gui/cachesettings.cpp:189
-#, fuzzy
 msgid "Name"
-msgstr "Nombre:"
+msgstr "Nombre"
 
 #: gui/cachesettings.cpp:189
 msgid "Item Count"
-msgstr ""
+msgstr "Recuento de elementos"
 
 #: gui/cachesettings.cpp:189
-#, fuzzy
 msgid "Space Used"
-msgstr "Espacio utilizado:"
+msgstr "Espacio utilizado"
 
 #: gui/cachesettings.cpp:227
 msgid ""
@@ -1753,9 +1705,8 @@ msgid "Covers"
 msgstr "Carátulas"
 
 #: gui/cachesettings.cpp:240
-#, fuzzy
 msgid "Backdrops"
-msgstr "Retroceder"
+msgstr "Fondos"
 
 #: gui/cachesettings.cpp:245 gui/mainwindow.cpp:307
 #: widgets/groupedview.cpp:255
@@ -1764,29 +1715,27 @@ msgstr "Flujos"
 
 #: gui/cachesettings.cpp:246
 msgid "Jamendo"
-msgstr ""
+msgstr "Jamendo"
 
 #: gui/cachesettings.cpp:247
 msgid "Magnatune"
-msgstr ""
+msgstr "Magnatune"
 
 #: gui/cachesettings.cpp:249
 msgid "Delete All"
 msgstr "Eliminar todo"
 
 #: gui/cachesettings.cpp:288
-#, fuzzy
 msgid "Delete all '%1' items?"
-msgstr "¿Desea eliminar todos los elementos almacenados?"
+msgstr "¿Desea eliminar los '%1' elementos?"
 
 #: gui/cachesettings.cpp:289 gui/cachesettings.cpp:299
-#, fuzzy
 msgid "Delete Cache Items"
-msgstr "¿Desea eliminar todos los elementos almacenados?"
+msgstr "Eliminar los elementos de la caché"
 
 #: gui/cachesettings.cpp:298
 msgid "<p>Delete all from the following?<ul>%1</ul></p>"
-msgstr ""
+msgstr "<p>¿Desea eliminar todos los elementos a continuación?<ul>%1</ul></p>"
 
 #: gui/coverdialog.cpp:150 gui/main.cpp:169
 msgid "Last.fm"
@@ -1822,6 +1771,8 @@ msgid ""
 "Discogs\n"
 "%1 x %2"
 msgstr ""
+"Discogs\n"
+"%1 x %2"
 
 #: gui/coverdialog.cpp:237
 msgctxt ""
@@ -1848,12 +1799,11 @@ msgid "Image (%1 x %2 %3%)"
 msgstr "Imagen (%1 x %2 %3%)"
 
 #: gui/coverdialog.cpp:431
-#, fuzzy
 msgid ""
 "<p>An image already exists for this artist, and the file is not writeable."
 "<p></p><i>%1</i></p>"
 msgstr ""
-"<p>Ya existe una carátula para este álbum, y el fichero no permite la "
+"<p>Ya existe una imagen para este artista, y el fichero no permite la "
 "escritura.<p></p><i>%1</i></p>"
 
 #: gui/coverdialog.cpp:432
@@ -1871,7 +1821,6 @@ msgid "%1 by %2"
 msgstr "%1 por %2"
 
 #: gui/coverdialog.cpp:613
-#, fuzzy
 msgid ""
 "Failed to set cover!\n"
 "Could not download to temporary file!"
@@ -1910,13 +1859,12 @@ msgid "Remove"
 msgstr "Eliminar"
 
 #: gui/coverdialog.cpp:1218
-#, fuzzy
 msgid ""
 "Failed to set cover!\n"
 "Could not make copy!"
 msgstr ""
 "Fallo al definir la carátula.\n"
-"No ha podido realizar una copia de seguridad del original."
+"No se ha podido realizar una copia."
 
 #: gui/coverdialog.cpp:1227
 msgid ""
@@ -1935,9 +1883,8 @@ msgstr ""
 "No se pudo copiar el fichero a «%1».!"
 
 #: gui/folderpage.cpp:45
-#, fuzzy
 msgid "Open In File Manager"
-msgstr "Abrir explorador de ficheros"
+msgstr "Abrir en el explorador de ficheros"
 
 #: gui/initialsettingswizard.cpp:135
 msgid "Connection Established"
@@ -1972,12 +1919,11 @@ msgstr "Extra grande"
 
 #: gui/interfacesettings.cpp:44
 msgid "Simple Tree"
-msgstr ""
+msgstr "Árbol sencillo"
 
 #: gui/interfacesettings.cpp:45
-#, fuzzy
 msgid "Detailed Tree"
-msgstr "Detalles"
+msgstr "Árbol con detalles"
 
 #. i18n: file: gui/interfacesettings.ui:329
 #. i18n: ectx: property (text), item, widget (QComboBox, playQueueGrouped)
@@ -1995,11 +1941,11 @@ msgstr "Icono/Lista"
 
 #: gui/interfacesettings.cpp:85
 msgid "Grouped by 'Album Artist'"
-msgstr "Agrupado por \"Artista del álbum\""
+msgstr "Agrupado por «Artista del álbum»"
 
 #: gui/interfacesettings.cpp:86
 msgid "Grouped under 'Various Artists'"
-msgstr "Agrupado bajo \"Varios artistas\""
+msgstr "Agrupado bajo «Varios artistas»"
 
 #: gui/main.cpp:151 gui/mainwindow.cpp:2007 gui/trayitem.cpp:71
 #: gui/trayitem.cpp:73 gui/trayitem.cpp:108 gui/trayitem.cpp:172
@@ -2054,21 +2000,23 @@ msgstr "Armin Walland"
 
 #: gui/main.cpp:167
 msgid "FanArt.tv"
-msgstr ""
+msgstr "FanArt.tv"
 
 #: gui/main.cpp:167
 msgid ""
 "Context view backdrops (please consider uploading your own music fan-art to "
 "fanart.tv)"
 msgstr ""
+"Fondos de vista contextual (considere enviar su fan-art de música a "
+"fanart.tv)"
 
 #: gui/main.cpp:168
 msgid "Wikipedia"
-msgstr ""
+msgstr "Wikipedia"
 
 #: gui/main.cpp:168 gui/main.cpp:169
 msgid "Context view metadata"
-msgstr ""
+msgstr "Metadatos de vista contextual"
 
 #: gui/main.cpp:173
 msgid "URL to open"
@@ -2089,9 +2037,8 @@ msgid "Connect"
 msgstr "Conectar"
 
 #: gui/mainwindow.cpp:263 gui/preferencesdialog.cpp:77
-#, fuzzy
 msgid "Collection"
-msgstr "Conexión"
+msgstr "Colección"
 
 #: gui/mainwindow.cpp:264
 msgid "Outputs"
@@ -2110,13 +2057,12 @@ msgid "Play/Pause"
 msgstr "Reproducir/Pausa"
 
 #: gui/mainwindow.cpp:269
-#, fuzzy
 msgid "Stop After Current Track"
-msgstr "Desplazar a pista actual:"
+msgstr "Detener después de la pista actual"
 
 #: gui/mainwindow.cpp:270
 msgid "Stop After Track"
-msgstr ""
+msgstr "Detener después de la pista"
 
 #: gui/mainwindow.cpp:271
 msgid "Increase Volume"
@@ -2128,7 +2074,7 @@ msgstr "Bajar volumen"
 
 #: gui/mainwindow.cpp:273
 msgid "Mute"
-msgstr ""
+msgstr "Silenciar"
 
 #: gui/mainwindow.cpp:274
 msgid "Add To Stored Playlist"
@@ -2151,9 +2097,8 @@ msgid "Shuffle"
 msgstr "Modificar orden"
 
 #: gui/mainwindow.cpp:279
-#, fuzzy
 msgid "Add Stream URL"
-msgstr "Añadir flujo"
+msgstr "Añadir URL de flujo"
 
 #: gui/mainwindow.cpp:280
 msgid "Clear"
@@ -2164,13 +2109,12 @@ msgid "Expanded Interface"
 msgstr "Interfaz expandida"
 
 #: gui/mainwindow.cpp:282
-#, fuzzy
 msgid "Show Current Song Information"
-msgstr "Información de servidor"
+msgstr "Mostrar información de la canción actual"
 
 #: gui/mainwindow.cpp:285
 msgid "Full Screen"
-msgstr ""
+msgstr "Pantalla completa"
 
 #: gui/mainwindow.cpp:287
 msgid "Random"
@@ -2189,8 +2133,8 @@ msgid ""
 "When 'Single' is activated, playback is stopped after current song, or song "
 "is repeated if 'Repeat' is enabled."
 msgstr ""
-"Cuando se activa \"Pistas únicas\", la reproducción se detiene tras la "
-"canción actual, o se repite si se activa el modo de repetición."
+"Cuando se activa «Pistas únicas», la reproducción se detiene tras la canción "
+"actual, o se repite si se activa el modo de repetición."
 
 #: gui/mainwindow.cpp:290
 msgid "Consume"
@@ -2205,9 +2149,8 @@ msgstr ""
 "reproducción tras su reproducción"
 
 #: gui/mainwindow.cpp:291
-#, fuzzy
 msgid "Search Play Queue"
-msgstr "Buscar en lista de reproducción…"
+msgstr "Buscar en lista de reproducción"
 
 #: gui/mainwindow.cpp:293
 msgid "Set Priority"
@@ -2234,9 +2177,8 @@ msgstr "Reproducir lista de reproducción"
 #. i18n: file: gui/interfacesettings.ui:27
 #. i18n: ectx: attribute (title), widget (QWidget, tab)
 #: gui/mainwindow.cpp:302 po/rc.cpp:455 rc.cpp:455
-#, fuzzy
 msgid "Artists"
-msgstr "Artistas:"
+msgstr "Artistas"
 
 #: gui/mainwindow.cpp:304
 msgid "Folders"
@@ -2254,7 +2196,7 @@ msgstr "Dinámico"
 
 #: gui/mainwindow.cpp:308
 msgid "Online"
-msgstr ""
+msgstr "Conectado"
 
 #: gui/mainwindow.cpp:310
 msgid "Devices"
@@ -2278,12 +2220,11 @@ msgstr "Ocultar automáticamente"
 
 #: gui/mainwindow.cpp:441
 msgid "Monochrome Icons"
-msgstr ""
+msgstr "Iconos monocromos"
 
 #: gui/mainwindow.cpp:574
-#, fuzzy
 msgid "Server information..."
-msgstr "Información"
+msgstr "Información del servidor..."
 
 #: gui/mainwindow.cpp:585
 msgid "Configure Cantata..."
@@ -2322,23 +2263,23 @@ msgid "About Cantata"
 msgstr "Acerca de Cantata"
 
 #: gui/mainwindow.cpp:1462
-#, fuzzy
 msgctxt "Qt-only"
 msgid ""
 "<b>Cantata %1</b><br/><br/>MPD client.<br/><br/>(c) Craig Drummond 2011-2013."
 "<br/>Released under the <a href=\"http://www.gnu.org/licenses/gpl.html"
 "\">GPLv3</a>"
 msgstr ""
-"<b>Cantata %1</b><br/><br/>Interfaz gráfica sencilla de MPD.<br/><br/>(c) "
-"Craig Drummond 2011-2012.<br/>Publicado bajo GPLv2<br/><br/><i><small>Basado "
-"en QtMPC - (C) 2007-2010 Los creadores de QtMPC</small></i>"
+"<b>Cantata %1</b><br/><br/>MPD client.<br/><br/>(c) Craig Drummond "
+"2011-2013.<br/>Publicado bajo la licencia <a "
+"href=\"http://www.gnu.org/licenses/gpl.html\">GPLv3</a>"
 
 #: gui/mainwindow.cpp:1464
-#, fuzzy
 msgid ""
 "Based upon <a href=\"http://qtmpc.lowblog.nl\">QtMPC</a> - (C) 2007-2010 The "
 "QtMPC Authors<br/>"
-msgstr "Basado en QtMPC - (C) 2007-2010 Los autores de QtMPC"
+msgstr ""
+"Basado en <a href=\"http://qtmpc.lowblog.nl\">QtMPC</a> - (C) 2007-2010 Los "
+"autores de QtMPC<br/>"
 
 #: gui/mainwindow.cpp:1466
 msgctxt "Qt-only"
@@ -2346,6 +2287,8 @@ msgid ""
 "Context view backdrops courtesy of <a href=\"http://www.fanart.tv\">FanArt."
 "tv</a>"
 msgstr ""
+"Fondos de vista contextual gracias a <a "
+"href=\"http://www.fanart.tv\">FanArt.tv</a>"
 
 #: gui/mainwindow.cpp:1467
 msgctxt "Qt-only"
@@ -2353,26 +2296,30 @@ msgid ""
 "Context view metadata courtesy of <a href=\"http://www.wikipedia.org"
 "\">Wikipedia</a> and <a href=\"http://www.last.fm\">Last.fm</a>"
 msgstr ""
+"Metadatos de vista contextual gracias a <a "
+"href=\"http://www.wikipedia.org\">Wikipedia</a> y <a "
+"href=\"http://www.last.fm\">Last.fm</a>"
 
 #: gui/mainwindow.cpp:1468
 msgid ""
 "Please consider uploading your own music fan-art to <a href=\"http://www."
 "fanart.tv\">FanArt.tv</a>"
 msgstr ""
+"Considere enviar su propio fan-art de música a <a "
+"href=\"http://www.fanart.tv\">FanArt.tv</a>"
 
 #: gui/mainwindow.cpp:1479
-#, fuzzy
 msgid ""
 "<tr><td colspan=\"2\"><b>Server</b></td></tr><tr><td align=\"right\">Version:"
 "</td><td>%1.%2.%3</td></tr><tr><td align=\"right\">Uptime:</td><td>%4</td></"
 "tr><tr><td align=\"right\">Time playing:</td><td>%5</td></tr>"
 msgstr ""
-"<table><tr><td align=\"right\">Artista:</td><td>%1</td></tr><tr><td align="
-"\"right\">Álbum:</td><td>%2</td></tr><tr><td align=\"right\">Pista:</td><td>"
-"%3</td></tr><tr><td align=\"right\">Fichero:</td><td>%4</td></tr></table>"
+"<tr><td colspan=\"2\"><b>Servidor</b></td></tr><tr><td "
+"align=\"right\">Versión:</td><td>%1.%2.%3</td></tr><tr><td "
+"align=\"right\">Tiempo de ejecución:</td><td>%4</td></tr><tr><td "
+"align=\"right\">Tiempo de reproducción:</td><td>%5</td></tr>"
 
 #: gui/mainwindow.cpp:1487
-#, fuzzy
 msgid ""
 "<tr><td colspan=\"2\"><b>Database</b></td></tr><tr><td align=\"right"
 "\">Artists:</td><td>%1</td></tr><tr><td align=\"right\">Albums:</td><td>%2</"
@@ -2381,15 +2328,17 @@ msgid ""
 "duration:</td><td>%5</td></tr><tr><td align=\"right\">Last update:</td><td>"
 "%6</td></tr></table></p>"
 msgstr ""
-"<table><tr><td align=\"right\">Artista:</td><td>%1</td></tr><tr><td align="
-"\"right\">Álbum:</td><td>%2</td></tr><tr><td align=\"right\">Pista:</td><td>"
-"%3</td></tr><tr><td align=\"right\">Fichero de origen:</td><td>%4</td></"
-"tr><tr><td align=\"right\">Fichero de destino:</td><td>%5</td></tr></table>"
+"<tr><td colspan=\"2\"><b>Base de datos</b></td></tr><tr><td "
+"align=\"right\">Artistas:</td><td>%1</td></tr><tr><td "
+"align=\"right\">Álbumes:</td><td>%2</td></tr><tr><td "
+"align=\"right\">Canciones:</td><td>%3</td></tr><tr><td "
+"align=\"right\">Manipuladores de URL:</td><td>%4</td></tr><tr><td "
+"align=\"right\">Duración total:</td><td>%5</td></tr><tr><td align=\"right\">Last "
+"update:</td><td>%6</td></tr></table></p>"
 
 #: gui/mainwindow.cpp:1496
-#, fuzzy
 msgid "Server Information"
-msgstr "Información de servidor"
+msgstr "Información del servidor"
 
 #: gui/mainwindow.cpp:1743 gui/mainwindow.cpp:1750
 msgid "Cantata (%1)"
@@ -2416,12 +2365,10 @@ msgid "%1 - %2 :: Cantata"
 msgstr "%1 - %2 :: Cantata"
 
 #: gui/mainwindow.cpp:1805
-#, fuzzy
 msgid "(Stream)"
-msgstr "Flujos"
+msgstr "(Flujo)"
 
 #: gui/mainwindow.cpp:1807
-#, fuzzy
 msgctxt "title - artist"
 msgid "%1 - %2"
 msgstr "%1 - %2"
@@ -2436,9 +2383,8 @@ msgid "Volume Disabled"
 msgstr "Volumen desactivado"
 
 #: gui/mainwindow.cpp:1933
-#, fuzzy
 msgid "Volume %1% (Muted)"
-msgstr "Volumen %1%"
+msgstr "Volumen: %1 % (silenciado)"
 
 #: gui/mainwindow.cpp:1933
 msgid "Volume %1%"
@@ -2486,29 +2432,26 @@ msgid "Track"
 msgstr "Pista"
 
 #: gui/playbacksettings.cpp:51
-#, fuzzy
 msgid "Auto"
-msgstr "Omitir automáticamente"
+msgstr "Automático"
 
 #: gui/playbacksettings.cpp:143
-#, fuzzy
 msgid ""
 "<i>Connected to %1<br/>The entries below apply to the currently connected "
 "MPD collection.</i>"
 msgstr ""
-"<i><b>Conectando a %1.</b><br/>Las entradas a continuación afectan a la "
-"instancia de MPD conectada actualmente.</i>"
+"<i>Conectando a %1.</b>Las entradas a continuación afectan a la colección de "
+"MPD conectada actualmente.</i>"
 
 #. i18n: file: gui/playbacksettings.ui:26
 #. i18n: ectx: property (text), widget (QLabel, messageLabel)
 #: gui/playbacksettings.cpp:146 po/rc.cpp:582 rc.cpp:582
-#, fuzzy
 msgid ""
 "<i>Not Connected!<br/>The entries below cannot be modified, as Cantata is "
 "not connected to MPD.</i>"
 msgstr ""
-"<i><b>No conectado.</b><br/>Las entradas a continuación no se pueden "
-"modificar, ya que Cantata no está conectado a MPD.</i>"
+"<i>No conectado.</b>Las entradas a continuación no se pueden modificar, ya "
+"que Cantata no está conectado a MPD.</i>"
 
 #: gui/playbacksettings.cpp:153
 msgid ""
@@ -2523,24 +2466,32 @@ msgid ""
 "tags if random play is actived, otherwise the album's tags will be used.</"
 "li></ul></p>"
 msgstr ""
+"<p>ReplayGain es una propuesta de estándar publicada en 2001 para normalizar "
+"el alto volumen percibido en formatos de audio de PC como MP3 y Ogg Vorbis. "
+"Funciona para pista/álbum, y ya es compatible con un número creciente de "
+"reproductores.</p><p>Se pueden utilizar los siguientes ajustes de "
+"ReplayGain:<ul><li><i>Ninguno</i> No se aplica ReplayGain.</li><li>Pista<i> "
+"El volumen se ajusta con las etiquetas ReplayGain de la "
+"pista</li><li><i>Álbum</i> El volumen se ajusta con las etiquetas ReplayGain "
+"del álbum.</li><li><i>Automático</i> El volumen se ajusta con las etiquetas "
+"ReplayGain si se selecciona reproducción aleatoria; de no ser así, se "
+"utilizarán las etiquetas del álbum.</li></ul></p>"
 
 #: gui/playlistspage.cpp:43 tags/tageditor.cpp:759 tags/trackorganiser.cpp:65
 msgid "Rename"
 msgstr "Renombrar"
 
 #: gui/playlistspage.cpp:186
-#, fuzzy
 msgid ""
 "Are you sure you wish to remove the selected playlists?\n"
 "This cannot be undone."
 msgstr ""
-"¿Desea eliminar los elementos seleccionados?\n"
+"¿Desea eliminar las listas de reproducción seleccionadas?\n"
 "No se puede deshacer esta acción."
 
 #: gui/playlistspage.cpp:187
-#, fuzzy
 msgid "Remove Playlists"
-msgstr "Eliminar lista de reproducción"
+msgstr "Eliminar listas de reproducción"
 
 #: gui/playlistspage.cpp:207 gui/playlistspage.cpp:230
 msgid "A playlist named <b>%1</b> already exists!<br/>Overwrite?"
@@ -2549,9 +2500,8 @@ msgstr ""
 "¿Sobrescribir?"
 
 #: gui/playlistspage.cpp:208 gui/playlistspage.cpp:231
-#, fuzzy
 msgid "Overwrite Playlist"
-msgstr "¿Desea sobrescribir la lista de reproducción?"
+msgstr "Sobrescribir la lista de reproducción"
 
 #: gui/playlistspage.cpp:226
 msgid "Rename Playlist"
@@ -2562,9 +2512,8 @@ msgid "Enter new name for playlist:"
 msgstr "Introduzca un nombre nuevo para la lista de reproducción:"
 
 #: gui/preferencesdialog.cpp:77
-#, fuzzy
 msgid "Collection Settings"
-msgstr "Ajustes de conexión"
+msgstr "Ajustes de collección"
 
 #: gui/preferencesdialog.cpp:78
 msgid "Playback"
@@ -2575,14 +2524,12 @@ msgid "Playback Settings"
 msgstr "Opciones de reproducción"
 
 #: gui/preferencesdialog.cpp:79
-#, fuzzy
 msgid "Files"
-msgstr "&Fichero"
+msgstr "Ficheros"
 
 #: gui/preferencesdialog.cpp:79
-#, fuzzy
 msgid "File Settings"
-msgstr "&Ajustes"
+msgstr "Configuración de fichero"
 
 #: gui/preferencesdialog.cpp:80
 msgid "Interface"
@@ -2594,12 +2541,11 @@ msgstr "Configuración de la interfaz"
 
 #: gui/preferencesdialog.cpp:81
 msgid "Context"
-msgstr ""
+msgstr "Contexto"
 
 #: gui/preferencesdialog.cpp:81
-#, fuzzy
 msgid "Context View Settings"
-msgstr "Ajustes de conexión"
+msgstr "Configuración de visualización de contexto"
 
 #: gui/preferencesdialog.cpp:86
 msgid "HTTP Server"
@@ -2610,12 +2556,10 @@ msgid "HTTP Server Settings"
 msgstr "Configuración del servidor HTTP"
 
 #: gui/preferencesdialog.cpp:95
-#, fuzzy
 msgid "Audio CD Settings"
-msgstr "Ajustes de proxy"
+msgstr "Configuración de CD de audio"
 
 #: gui/preferencesdialog.cpp:100
-#, fuzzy
 msgid "Proxy"
 msgstr "Proxy"
 
@@ -2655,7 +2599,6 @@ msgstr ""
 "transferencia desde y al dispositivo.</i>"
 
 #: gui/serversettings.cpp:88
-#, fuzzy
 msgid "Not used"
 msgstr "No está en uso"
 
@@ -2715,6 +2658,10 @@ msgid ""
 "artist of the current song, and %album% will be replaced with the album name."
 "</i></p>"
 msgstr ""
+"<p>Nombre de fichero (sin extensión) para guardar las carátulas "
+"descargadas.<br/>Si no se define, se utiliza «cover».<br/><br/><i>%artist% "
+"se sustituirá por el artista de álbum de la canción actual, y %album% se "
+"sustituirá por el nombre del álbum.</i></p>"
 
 #: gui/serversettings.cpp:230
 msgid ""
@@ -2723,34 +2670,34 @@ msgid ""
 "li><li>Basic - music collection is not shared with others, and Cantata will "
 "configure and control the MPD instance</li></ul>"
 msgstr ""
+"¿A qué tipo de colección quiere conectarse?<br/><ul><li> Estándar: la "
+"colección de música puede ser compartida, en otro sistema, o ya está "
+"configurada.</li><li>Básica: la colección de música no es compartida, y "
+"Cantata configurará y controlará la instancia de MPD.</li></ul>"
 
 #: gui/serversettings.cpp:233
-#, fuzzy
 msgid "Add Collection"
-msgstr "Conexión"
+msgstr "Añadir colección"
 
 #: gui/serversettings.cpp:233
 msgid "Standard"
-msgstr ""
+msgstr "Estándar"
 
 #: gui/serversettings.cpp:233
 msgid "Basic"
-msgstr ""
+msgstr "Básico"
 
 #: gui/serversettings.cpp:264
-#, fuzzy
 msgid "Delete <b>%1</b>?"
-msgstr "¿Quiere eliminar %1?"
+msgstr "¿Eliminar <b>%1</b>?"
 
 #: gui/serversettings.cpp:265
-#, fuzzy
 msgid "Delete"
-msgstr "Eliminar todo"
+msgstr "Eliminar"
 
 #: gui/serversettings.cpp:303
-#, fuzzy
 msgid "New Collection %1"
-msgstr "Conectando a %1"
+msgstr "Colección nueva %1"
 
 #: gui/serversettings.cpp:319 mpd/mpdconnection.cpp:145
 msgid "Default"
@@ -2813,14 +2760,12 @@ msgid "ReplayGain"
 msgstr "Ganancia de reproducción"
 
 #: gui/stdactions.cpp:74
-#, fuzzy
 msgid "Copy Songs To Device"
-msgstr "Copiar a dispositivo"
+msgstr "Copiar canciones a dispositivo"
 
 #: gui/stdactions.cpp:78
-#, fuzzy
 msgid "Set Image"
-msgstr "Imagen"
+msgstr "Establecer imagen"
 
 #: gui/stdactions.cpp:79
 msgid "Refresh Database"
@@ -2831,24 +2776,19 @@ msgid "Back"
 msgstr "Retroceder"
 
 #: gui/trayitem.cpp:165
-#, fuzzy
 msgctxt "Song on Album"
 msgid "%1 on %2"
-msgstr "%1 por %2 en %3 (%4)"
+msgstr "%1 en %2"
 
 #: gui/trayitem.cpp:166
-#, fuzzy
 msgctxt "Song on Album (track duration)"
 msgid "%1 on %2 (%3)"
-msgstr ""
-"Google\n"
-"%1 x %2 (%3)"
+msgstr "%1 - %2 (%3)"
 
 #: gui/trayitem.cpp:168
-#, fuzzy
 msgctxt "Song by Artist on Album"
 msgid "%1 by %2 on %3"
-msgstr "%1 por %2 en %3 (%4)"
+msgstr "%1 por %2 en %3"
 
 #: gui/trayitem.cpp:169
 msgctxt "Song by Artist on Album (track duration)"
@@ -2861,23 +2801,23 @@ msgstr "En reproducción"
 
 #: http/httpserversettings.cpp:40
 msgid "Local loopback (%1)"
-msgstr ""
+msgstr "Loopback local (%1)"
 
 #: http/httpserversettings.cpp:43
 msgid "Wired (%1)"
-msgstr ""
+msgstr "Cableado (%1)"
 
 #: http/httpserversettings.cpp:46
 msgid "Wireless (%1)"
-msgstr ""
+msgstr "Inalámbrico (%1)"
 
 #: http/httpserversettings.cpp:53
 msgid "First active interface"
-msgstr ""
+msgstr "Primera interfaz activa"
 
 #: http/httpserversettings.cpp:98
 msgid "Inactive"
-msgstr ""
+msgstr "Inactivo"
 
 #: models/devicesmodel.cpp:108
 msgid "Configure Device"
@@ -2896,43 +2836,40 @@ msgid "Disconnect Device"
 msgstr "Desconecte el dispositivo"
 
 #: models/devicesmodel.cpp:113
-#, fuzzy
 msgid "Edit CD Details"
-msgstr "Detalles"
+msgstr "Editar detalles de CD"
 
 #: models/devicesmodel.cpp:687
 msgid "No Devices Attached"
 msgstr "No hay dispositivos conectados"
 
 #: models/digitallyimported.cpp:117
-#, fuzzy
 msgid "Not logged in"
-msgstr "No se ha analizado"
+msgstr "No ha iniciado una sesión"
 
 #: models/digitallyimported.cpp:126
 msgid "Logged in"
-msgstr ""
+msgstr "Sesión iniciada"
 
 #: models/digitallyimported.cpp:184 models/digitallyimported.cpp:206
-#, fuzzy
 msgid "Unknown error"
-msgstr "Desconocido"
+msgstr "Error desconocido"
 
 #: models/digitallyimported.cpp:193
 msgid "No subscriptions"
-msgstr ""
+msgstr "Ninguna suscripción"
 
 #: models/digitallyimported.cpp:200
 msgid "You do not have an active subscription"
-msgstr ""
+msgstr "No tiene ninguna suscripción activa"
 
 #: models/digitallyimported.cpp:219
 msgid "Logged in (expiry:%1)"
-msgstr ""
+msgstr "Sesión iniciada (finalización:%1)"
 
 #: models/digitallyimported.cpp:227
 msgid "Session expired"
-msgstr ""
+msgstr "Sesión finalizada"
 
 #: models/dirviewmodel.cpp:175 models/dirviewmodel.cpp:183
 #: models/streamsearchmodel.cpp:122 models/streamsmodel.cpp:560
@@ -2978,34 +2915,29 @@ msgstr[0] "1 álbum"
 msgstr[1] "%1 álbumes"
 
 #: models/onlineservicesmodel.cpp:76
-#, fuzzy
 msgid "Configure Online Service"
-msgstr "Configurar dispositivo"
+msgstr "Configurar servicio online"
 
 #: models/onlineservicesmodel.cpp:77
-#, fuzzy
 msgid "Refresh Online Service"
-msgstr "Actualizar dispositivo"
+msgstr "Actualizar servicio online"
 
 #: models/onlineservicesmodel.cpp:125
-#, fuzzy
 msgid "Last Search:%1"
-msgstr "Buscar:"
+msgstr "Última búsqueda:%1"
 
 #: models/onlineservicesmodel.cpp:136
-#, fuzzy
 msgid "Searching..."
-msgstr "Buscar %1..."
+msgstr "Buscando..."
 
 #: models/onlineservicesmodel.cpp:139 models/streamsearchmodel.cpp:117
 #: models/streamsmodel.cpp:544
-#, fuzzy
 msgid "Not Loaded"
-msgstr "No se ha analizado"
+msgstr "No se ha cargado"
 
 #: models/onlineservicesmodel.cpp:142
 msgid "Use search to locate tracks"
-msgstr ""
+msgstr "Utilizar búsqueda para ubicar pistas"
 
 #: models/playlistsmodel.cpp:78
 msgid "New Playlist..."
@@ -3035,90 +2967,88 @@ msgid "<b>(Priority: %1)</b>"
 msgstr "<b>(Prioridad: %1)</b>"
 
 #: models/streamsearchmodel.cpp:119 models/streamsmodel.cpp:557
-#, fuzzy
 msgid "Loading..."
-msgstr "Descargando..."
+msgstr "Cargando…"
 
 #: models/streamsmodel.cpp:235
 msgid "Bookmarks"
-msgstr ""
+msgstr "Favoritos"
 
 #: models/streamsmodel.cpp:461
 msgid "TuneIn"
-msgstr ""
+msgstr "TuneIn"
 
 #: models/streamsmodel.cpp:464
 msgid "IceCast"
-msgstr ""
+msgstr "IceCast"
 
 #: models/streamsmodel.cpp:465
 msgid "ShoutCast"
-msgstr ""
+msgstr "ShoutCast"
 
 #: models/streamsmodel.cpp:466
 msgid "SomaFM"
-msgstr ""
+msgstr "SomaFM"
 
 #: models/streamsmodel.cpp:467
 msgid "Digitally Imported"
-msgstr ""
+msgstr "Importe digitalmente"
 
 #: models/streamsmodel.cpp:468
 msgid "JazzRadio.com"
-msgstr ""
+msgstr "JazzRadio.com"
 
 #: models/streamsmodel.cpp:469
 msgid "RockRadio.com"
-msgstr ""
+msgstr "RockRadio.com"
 
 #: models/streamsmodel.cpp:470
 msgid "Sky.fm"
-msgstr ""
+msgstr "Sky.fm"
 
 #: models/streamsmodel.cpp:471
 msgid "Favorites"
-msgstr ""
+msgstr "Favoritos"
 
 #: models/streamsmodel.cpp:474
-#, fuzzy
 msgid "Bookmark Category"
-msgstr "Añadir categoría"
+msgstr "Categoría de favorito"
 
 #: models/streamsmodel.cpp:475
 msgid "Add Stream To Favorites"
-msgstr ""
+msgstr "Añadir flujo a favoritos"
 
 #: models/streamsmodel.cpp:476
-#, fuzzy
 msgid "Configure Streams"
-msgstr "Configuración"
+msgstr "Configuración de flujos"
 
 #: models/streamsmodel.cpp:545
 msgid "%1 (Read-Only)"
-msgstr ""
+msgstr "%1 (Solo lectura)"
 
 #: models/streamsmodel.cpp:1064
 msgid "Failed to save stream list. Please check %1 is writable."
 msgstr ""
+"Fallo al guardar la lista de flujo. Compruebe si %1 tiene permisos de "
+"escritura."
 
 #: models/streamsmodel.cpp:1455
 msgid "All"
-msgstr ""
+msgstr "Todo"
 
 #: models/streamsmodel.cpp:1641
 msgid "Listen Live"
-msgstr ""
+msgstr "Listen Live"
 
 #: mpd/mpdconnection.cpp:151
 msgctxt "name (host)"
 msgid "\"%1\""
-msgstr ""
+msgstr "\"%1\""
 
 #: mpd/mpdconnection.cpp:153
-#, fuzzy
 msgctxt "name (host:port)"
 msgid "\"%1\" (%2:%3)"
-msgstr "%1 (%2:%3)"
+msgstr "\"%1\" (%2:%3)"
 
 #: mpd/mpdconnection.cpp:361 mpd/mpdconnection.cpp:401
 #: mpd/mpdconnection.cpp:446 mpd/mpdconnection.cpp:984
@@ -3161,11 +3091,11 @@ msgstr "Fallo al crear <b>%1</b>"
 
 #: mpd/mpdconnection.cpp:1171
 msgid "You cannot add parts of a cue sheet to a playlist!"
-msgstr ""
+msgstr "No puede añadir secciones de una hoja CUE a una lista de reproducción."
 
 #: mpd/mpdconnection.cpp:1174
 msgid "You cannot add a playlist to another playlist!"
-msgstr ""
+msgstr "No puede añadir una lista de reproducción a otra."
 
 #: mpd/mpdparseutils.cpp:663
 msgid "1 day %2"
@@ -3175,7 +3105,7 @@ msgstr[1] "%1 días %2"
 
 #: mpd/mpduser.cpp:55
 msgid "Personal"
-msgstr ""
+msgstr "Personal"
 
 #: mpd/song.cpp:305
 msgctxt ""
@@ -3192,9 +3122,8 @@ msgstr ""
 "%3"
 
 #: network/proxysettings.cpp:33
-#, fuzzy
 msgid "No proxy"
-msgstr "Proxy"
+msgstr "Sin proxy"
 
 #: network/proxysettings.cpp:34
 msgid "Use the system proxy settings"
@@ -3205,9 +3134,8 @@ msgid "Manual proxy configuration"
 msgstr "Configuración manual de proxy"
 
 #: online/jamendosettingsdialog.cpp:33
-#, fuzzy
 msgid "Jamendo Settings"
-msgstr "Configuración del sistema MPD"
+msgstr "Configuración de Jamendo"
 
 #: online/jamendosettingsdialog.cpp:37
 msgid "MP3"
@@ -3215,37 +3143,35 @@ msgstr "MP3"
 
 #: online/jamendosettingsdialog.cpp:38
 msgid "Ogg"
-msgstr ""
+msgstr "Ogg"
 
 #: online/jamendosettingsdialog.cpp:39
 msgid "Streaming format:"
-msgstr ""
+msgstr "Formato de flujo:"
 
 #: online/magnatuneservice.cpp:161
-#, fuzzy
 msgid "Streaming"
-msgstr "Flujos"
+msgstr "Emisión de flujo"
 
 #: online/magnatuneservice.cpp:180
 msgid "MP3 128k"
-msgstr ""
+msgstr "MP3 128k"
 
 #: online/magnatuneservice.cpp:181
 msgid "MP3 VBR"
-msgstr ""
+msgstr "MP3 VBR"
 
 #: online/magnatuneservice.cpp:184
 msgid "WAV"
-msgstr ""
+msgstr "WAV"
 
 #: online/magnatunesettingsdialog.cpp:34
-#, fuzzy
 msgid "Magnatune Settings"
-msgstr "Configuración de la interfaz"
+msgstr "Configuración de Magnatune"
 
 #: online/magnatunesettingsdialog.cpp:49
 msgid "Membership:"
-msgstr ""
+msgstr "Datos de la cuenta:"
 
 #. i18n: file: network/proxysettings.ui:96
 #. i18n: ectx: property (text), widget (BuddyLabel, proxyUsernameLabel)
@@ -3291,72 +3217,63 @@ msgid "Password:"
 msgstr "Contraseña:"
 
 #: online/magnatunesettingsdialog.cpp:55
-#, fuzzy
 msgid "Downloads:"
-msgstr "Descargando..."
+msgstr "Descargas:"
 
 #: online/onlineservice.cpp:67 online/onlineservice.cpp:155
-#, fuzzy
 msgid "Dowloading"
-msgstr "Descargando..."
+msgstr "Descargando"
 
 #: online/onlineservice.cpp:97
-#, fuzzy
 msgid "Updating display"
-msgstr "Actualizando"
+msgstr "Actualizando visualización"
 
 #: online/onlineservice.cpp:108
-#, fuzzy
 msgid "Grouping tracks"
-msgstr "Agrupar álbumes de pista única:"
+msgstr "Agrupación de pistas"
 
 #: online/onlineservice.cpp:131
 msgid "Parsing response"
-msgstr ""
+msgstr "Analizando respuesta"
 
 #: online/onlineservice.cpp:143 online/onlineservice.cpp:146
-#, fuzzy
 msgid "Failed to parse"
-msgstr "Fallo al guardar %1"
+msgstr "Fallo de análisis"
 
 #: online/onlineservice.cpp:149
-#, fuzzy
 msgid "Failed to download"
-msgstr "Fallo al descargar la imagen."
+msgstr "Fallo de descarga"
 
 #: online/onlineservicespage.cpp:58
-#, fuzzy
 msgid "Download To Library"
-msgstr "Copiar a biblioteca"
+msgstr "Descargar a biblioteca"
 
 #: online/onlineservicespage.cpp:282
-#, fuzzy
 msgctxt "Search ServiceName:"
 msgid "Search %1:"
-msgstr "Buscar:"
+msgstr "Buscar %1:"
 
 #: online/onlineservicespage.cpp:396
 msgid "Re-download music listing for %1?"
-msgstr ""
+msgstr "¿Desea descargar otra vez el listado de música de %1?"
 
 #. i18n: file: context/othersettings.ui:19
 #. i18n: ectx: property (text), widget (BuddyLabel, contextBackdropLabel)
 #: po/rc.cpp:3 rc.cpp:3
-#, fuzzy
 msgid "Use backdrop:"
-msgstr "Utilizar caché:"
+msgstr "Utilizar fondo:"
 
 #. i18n: file: context/othersettings.ui:32
 #. i18n: ectx: property (text), widget (BuddyLabel, contextDarkBackgroundLabel)
 #: po/rc.cpp:6 rc.cpp:6
 msgid "Dark background:"
-msgstr ""
+msgstr "Fondo oscuro:"
 
 #. i18n: file: context/othersettings.ui:45
 #. i18n: ectx: property (text), widget (BuddyLabel, wikipediaIntroOnlyLabel)
 #: po/rc.cpp:9 rc.cpp:9
 msgid "Only show basic wikipedia text:"
-msgstr ""
+msgstr "Mostrar solo el texto básico de Wikipedia:"
 
 #. i18n: file: context/othersettings.ui:86
 #. i18n: ectx: property (text), widget (StateLabel, wikipediaIntroOnlyNote)
@@ -3370,19 +3287,25 @@ msgid ""
 "there may be parsing errors. You will also need to remove any currently "
 "cached articles (using the 'Cache' page).</i>"
 msgstr ""
+"<i><b>NOTA:</b> Cantata no muestra siempre páginas completas de Wikipedia "
+"(con imágenes, enlaces, etc), sino que muestra una versión simplificada. "
+"Esta simplificación no es siempre correcta al 100%, y por ello, de forma "
+"predefinida, Cantata solo muestra la introducción básica de cada artículo. "
+"Si selecciona mostrar la página completa, pueden haber errores de análisis. "
+"También tendrá que eliminar cualquier artículo almacenado (mediante la "
+"página «Almacén»).</i>"
 
 #. i18n: file: context/togglelist.ui:17
 #. i18n: ectx: property (text), widget (QLabel, label_2)
 #: po/rc.cpp:16 rc.cpp:16
 msgid "Available:"
-msgstr ""
+msgstr "Disponible:"
 
 #. i18n: file: context/togglelist.ui:24
 #. i18n: ectx: property (text), widget (QLabel, label_3)
 #: po/rc.cpp:19 rc.cpp:19
-#, fuzzy
 msgid "Selected:"
-msgstr "Seleccione el fichero"
+msgstr "Seleccionado:"
 
 #. i18n: file: devices/actiondialog.ui:30
 #. i18n: ectx: property (text), widget (QLabel, label)
@@ -3439,20 +3362,19 @@ msgstr "Copiar canciones a:"
 #. i18n: ectx: property (text), widget (QLabel, codecLabel)
 #: po/rc.cpp:43 rc.cpp:43
 msgid "Destination format:"
-msgstr ""
+msgstr "Formato destino:"
 
 #. i18n: file: devices/actiondialog.ui:171
 #. i18n: ectx: property (text), widget (QLabel, songCountLabel)
 #: po/rc.cpp:46 rc.cpp:46
 msgid "To copy:"
-msgstr ""
+msgstr "Para copiar:"
 
 #. i18n: file: devices/albumdetails.ui:26
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox)
 #: po/rc.cpp:52 rc.cpp:52
-#, fuzzy
 msgid "Album Details"
-msgstr "Artista del álbum"
+msgstr "Detalles del álbum"
 
 #. i18n: file: devices/albumdetails.ui:60
 #. i18n: ectx: property (text), widget (BuddyLabel, label_3)
@@ -3481,69 +3403,62 @@ msgstr "Año:"
 #. i18n: file: devices/albumdetails.ui:83
 #. i18n: ectx: property (text), widget (BuddyLabel, label_5)
 #: po/rc.cpp:67 rc.cpp:67
-#, fuzzy
 msgid "Single artist:"
-msgstr "Artista del álbum:"
+msgstr "Único artista:"
 
 #. i18n: file: devices/albumdetails.ui:103
 #. i18n: ectx: property (text), widget (BuddyLabel, label_6)
 #: po/rc.cpp:70 rc.cpp:70
-#, fuzzy
 msgid "Disc:"
-msgstr "Disco"
+msgstr "Disco:"
 
 #. i18n: file: devices/audiocdsettings.ui:20
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox)
 #: po/rc.cpp:85 rc.cpp:85
-#, fuzzy
 msgid "Album and Track Information Retrieval"
-msgstr "Información de álbum"
+msgstr "Obtención de información de álbum y pista"
 
 #. i18n: file: devices/audiocdsettings.ui:26
 #. i18n: ectx: property (text), widget (BuddyLabel, label_3)
 #: po/rc.cpp:88 rc.cpp:88
-#, fuzzy
 msgid "Automatically lookup:"
-msgstr "Expandir automáticamente el álbum actual:"
+msgstr "Consulta automática:"
 
 #. i18n: file: devices/audiocdsettings.ui:39
 #. i18n: ectx: property (text), widget (BuddyLabel, cdLookupLabel)
 #: po/rc.cpp:91 rc.cpp:91
-#, fuzzy
 msgid "Initially look up via:"
-msgstr "Colapsar álbumes en el inicio:"
+msgstr "Consulta inicial mediante:"
 
 #. i18n: file: devices/audiocdsettings.ui:52
 #. i18n: ectx: property (text), widget (BuddyLabel, cddbHostLabel)
 #: po/rc.cpp:94 rc.cpp:94
-#, fuzzy
 msgid "CDDB Host:"
-msgstr "Host:"
+msgstr "Host CDDB:"
 
 #. i18n: file: devices/audiocdsettings.ui:65
 #. i18n: ectx: property (text), widget (BuddyLabel, cddbPortLabel)
 #: po/rc.cpp:97 rc.cpp:97
-#, fuzzy
 msgid "CDDB Port:"
-msgstr "Puerto:"
+msgstr "Puerto CDDB:"
 
 #. i18n: file: devices/audiocdsettings.ui:88
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox_2)
 #: po/rc.cpp:100 rc.cpp:100
 msgid "Audio Extraction"
-msgstr ""
+msgstr "Extracción de audio"
 
 #. i18n: file: devices/audiocdsettings.ui:94
 #. i18n: ectx: property (text), widget (BuddyLabel, label_4)
 #: po/rc.cpp:103 rc.cpp:103
 msgid "Full paranoia mode (best quality):"
-msgstr ""
+msgstr "Modo «full» de paranoia (máxima calidad):"
 
 #. i18n: file: devices/audiocdsettings.ui:107
 #. i18n: ectx: property (text), widget (BuddyLabel, label_5)
 #: po/rc.cpp:106 rc.cpp:106
 msgid "Never skip on read error:"
-msgstr ""
+msgstr "No omitir por fallo de lectura:"
 
 #. i18n: file: devices/devicepropertieswidget.ui:20
 #. i18n: ectx: property (text), widget (QLabel, remoteDeviceNote)
@@ -3613,9 +3528,8 @@ msgstr "Utilizar caché:"
 #. i18n: file: devices/devicepropertieswidget.ui:121
 #. i18n: ectx: property (text), widget (QLabel, defaultVolumeLabel)
 #: po/rc.cpp:130 rc.cpp:130
-#, fuzzy
 msgid "Default volume:"
-msgstr "Predefinido:"
+msgstr "Volumen predefinido:"
 
 #. i18n: file: devices/devicepropertieswidget.ui:133
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox)
@@ -3742,9 +3656,8 @@ msgstr "Nombre de pista"
 #. i18n: file: devices/filenameschemedialog.ui:158
 #. i18n: ectx: property (text), widget (QPushButton, trackArtistAndTitle)
 #: po/rc.cpp:175 rc.cpp:175
-#, fuzzy
 msgid "Track Title (+Artist)"
-msgstr "Artista de pista"
+msgstr "Nombre de pista (+Artista)"
 
 #. i18n: file: devices/filenameschemedialog.ui:165
 #. i18n: ectx: property (text), widget (QPushButton, trackNo)
@@ -3890,9 +3803,8 @@ msgstr ""
 #. i18n: file: devices/remotedevicepropertieswidget.ui:192
 #. i18n: ectx: property (text), widget (BuddyLabel, hostLabel_2x)
 #: po/rc.cpp:223 rc.cpp:223
-#, fuzzy
 msgid "Service name:"
-msgstr "Nombre de fichero de carátula:"
+msgstr "Nombre del servicio:"
 
 #. i18n: file: devices/remotedevicepropertieswidget.ui:335
 #. i18n: ectx: property (text), widget (BuddyLabel, folderLabel)
@@ -3909,9 +3821,8 @@ msgstr "Directorio:"
 #. i18n: file: devices/remotedevicepropertieswidget.ui:348
 #. i18n: ectx: property (text), widget (BuddyLabel, sshExtraLabel)
 #: po/rc.cpp:253 rc.cpp:253
-#, fuzzy
 msgid "Extra Options:"
-msgstr "Opciones"
+msgstr "Opciones adicionales:"
 
 #. i18n: file: devices/remotedevicepropertieswidget.ui:363
 #. i18n: ectx: property (text), widget (QLabel, label_5)
@@ -3928,7 +3839,6 @@ msgstr ""
 #. i18n: file: devices/remotedevicepropertieswidget.ui:416
 #. i18n: ectx: property (text), widget (QLabel, infoLabel)
 #: po/rc.cpp:262 rc.cpp:262
-#, fuzzy
 msgid ""
 "<i><b>NOTE:</b> This dialog is only used to add remote devices (e.g. via "
 "Samba), or to access locally mounted folders. For normal media players, "
@@ -3936,25 +3846,22 @@ msgid ""
 "attached.</i>"
 msgstr ""
 "<i><b>NOTA:</b> Este diálogo se utiliza solo para añadir dispositivos "
-"remotos (por ejemplo, mediante sshfs), o para acceder a directorios montados "
-"localmente. Para reproductores normales, con conexión USB, Cantata muestra "
-"automáticamente el dispositivo cuando está conectado.</i>"
+"remotos (por ejemplo, mediante Samba), o para acceder a directorios montados "
+"localmente. Para reproductores normales con conexión USB, Cantata mostrará "
+"automáticamente el dispositivo cuando se conecte.</i>"
 
 #. i18n: file: dynamic/dynamicpage.ui:23
 #. i18n: ectx: property (text), widget (StatusLabel, infoLabel)
 #: po/rc.cpp:265 rc.cpp:265
-#, fuzzy
 msgid "No dynamizer port defined in server settings."
 msgstr ""
-"No se ha definido un puerto de dinamizador en los ajustes de servidor. Se ha "
-"desactivado la funcionalidad dinámica."
+"No se ha definido un puerto de dinamizador en la configuración del servidor."
 
 #. i18n: file: dynamic/dynamicpage.ui:30
 #. i18n: ectx: property (text), widget (StatusLabel, remoteRunningLabel)
 #: po/rc.cpp:268 rc.cpp:268
-#, fuzzy
 msgid "Remote dynamizer is not running."
-msgstr "El dinamizador no está activo"
+msgstr "El dinamizador remoto no está activo."
 
 #. i18n: file: dynamic/dynamicrules.ui:30
 #. i18n: ectx: property (placeholderText), widget (LineEdit, nameText)
@@ -4056,6 +3963,9 @@ msgid ""
 "<i><b>NOTE</b> For genre, end string with an asterisk to match various "
 "genres. e.g 'rock*' matches 'Hard Rock' and 'Rock and Roll'. </i>"
 msgstr ""
+"<i><b>NOTA</b> Para el género, finalice la etiqueta con un asterisco para "
+"que coincida con otros géneros. Por ejemplo, 'rock*' coincide con 'Hard "
+"Rock' y 'Rock and Roll'. </i>"
 
 #. i18n: file: gui/coverdialog.ui:23
 #. i18n: ectx: property (toolTip), widget (QToolButton, cancelButton)
@@ -4102,9 +4012,8 @@ msgstr "Guardar letras descargadas en el directorio de música:"
 #. i18n: file: gui/initialsettingswizard.ui:747
 #. i18n: ectx: property (text), widget (QLabel, storeStreamsInMpdDirLabel)
 #: po/rc.cpp:349 po/rc.cpp:437 rc.cpp:349 rc.cpp:437
-#, fuzzy
 msgid "Save list of favorite streams in music folder:"
-msgstr "Guardar portadas descargadas en el directorio de música:"
+msgstr "Guardar la lista de flujos favoritos en el directorio de música:"
 
 #. i18n: file: gui/filesettings.ui:93
 #. i18n: ectx: property (text), widget (QLabel, label_2)
@@ -4125,6 +4034,15 @@ msgid ""
 "folder, then these will be saved in your local config folder - and will only "
 "be accessible to yourself.</i>"
 msgstr ""
+"<i><b>NOTA:</b> Si se selecciona que Cantata almacene portadas o letras "
+"dentro de la carpeta de música, y el usuario no tiene permisos de escritura "
+"para esta carpeta, Cantata almacenará los ficheros en su carpeta de caché "
+"personal. Por otra parte, para flujos, si el usuario no tiene permisos de "
+"escritura, sólo podrá ver (y reproducir) los flujos almacenados en la "
+"carpeta de música, y no podrá añadir o editar ningún flujo. Si se selecciona "
+"no almacenar los flujos en la carpeta de música, entonces se almacenan en "
+"la carpeta de configuración personal del personal, solo accesible por "
+"éste.</i>"
 
 #. i18n: file: gui/filesettings.ui:128
 #. i18n: ectx: property (text), widget (StateLabel, streamLocationNote)
@@ -4137,12 +4055,18 @@ msgid ""
 "you export your existing streams. You can then re-import these to the new "
 "location (after you have toggled the setting).</i>"
 msgstr ""
+"<i><b>NOTA:</b> Si se modifica la ubicación dónde almacenar los flujos(por "
+"ejemplo, conmuta la opción «Guardar la lista de flujos favoritos en el "
+"directorio de música»), entonces Cantata solo muestra los flujos almacenados "
+"en la ubicación pertinente. Por ello, antes de modificar este ajuste se "
+"recomienda que se exporten los flujos existentes. Estos se pueden importar "
+"nuevamente a la nueva ubicación (después de haber conmutado el ajuste).</i>"
 
 #. i18n: file: gui/initialsettingswizard.ui:14
 #. i18n: ectx: property (windowTitle), widget (QWizard, InitialSettingsWizard)
 #: po/rc.cpp:358 rc.cpp:358
 msgid "Cantata First Run"
-msgstr ""
+msgstr "Primera ejecución de Cantata"
 
 #. i18n: file: gui/initialsettingswizard.ui:46
 #. i18n: ectx: property (text), widget (QLabel, label)
@@ -4153,7 +4077,6 @@ msgstr "Bienvenido a Cantata"
 #. i18n: file: gui/initialsettingswizard.ui:69
 #. i18n: ectx: property (text), widget (QLabel, label_2)
 #: po/rc.cpp:364 rc.cpp:364
-#, fuzzy
 msgid ""
 "<html><head/><body><p>Cantata is a feature-rich and user friendly client for "
 "Music Player Daemon (MPD). MPD is a background application that can be used "
@@ -4163,19 +4086,20 @@ msgid ""
 "p><p>This 'wizard' will guide you through the basic settings required for "
 "Cantata to function correctly.</p></body></html>"
 msgstr ""
-"<html><head/><body><p>Cantata es un cliente de (MPD). Para que Cantata "
-"funcione, se debe configurar y ejecutar MPD bien en su máquina local o en "
-"una máquina accesible.</p><p>Para más información sobre MPD, consulte el "
-"sitio web de MPD <a href=\"http://mpd.wikia.com\"><span style=\" text-"
-"decoration: underline; color:#0000ff;\">http://mpd.wikia.com</span></a></"
-"p><p><br/></p></body></html>"
+"<html><head/><body><p>Cantata es un cliente de Music Player Daemon (MPD) "
+"potente y fácil de utilizar. MPD es una aplicación de segundo plano que "
+"sirve para reproducir música.</p><p>Para más información sobre MPD, consulte "
+"el sitio web de MPD <a href=\"http://www.musicpd.org\"><span style=\" text-"
+"decoration: underline; "
+"color:#0000ff;\">http://www.musicpd.org</span></a></p><p>Este asistente le "
+"guiará por los pasos necesarios para el funcionamiento adecuado de "
+"Cantata.</p></body></html>"
 
 #. i18n: file: gui/initialsettingswizard.ui:105
 #. i18n: ectx: property (text), widget (QLabel, label_7)
 #: po/rc.cpp:367 rc.cpp:367
-#, fuzzy
 msgid "<html><head/><body><p>Welcome to Cantata</p></body></html>"
-msgstr "<html><head/><body><p>Cancelar consulta actual</p></body></html>"
+msgstr "<html><head/><body><p>Bienvenido a Cantata</p></body></html>"
 
 #. i18n: file: gui/initialsettingswizard.ui:128
 #. i18n: ectx: property (text), widget (QLabel, label_8)
@@ -4187,18 +4111,23 @@ msgid ""
 "basis. Please select how you would like to have Cantata initially connect to "
 "(or startup) MPD:</p></body></html>"
 msgstr ""
+"<html><head/><body><p>Cantata es un cliente de Music Player Daemon (MPD) "
+"potente y fácil de utilizar. MPD es una aplicación de segundo plano que "
+"sirve para reproducir música. MPD se puede ejecutar para todo el sistema o "
+"para un solo usuario. Seleccione como desea que Cantata se conecte "
+"inicialmente (o arranque) a MPD:</p></body></html>"
 
 #. i18n: file: gui/initialsettingswizard.ui:166
 #. i18n: ectx: property (text), widget (QRadioButton, basic)
 #: po/rc.cpp:373 rc.cpp:373
 msgid "Basic single user setup"
-msgstr ""
+msgstr "Configuración básica para un usuario"
 
 #. i18n: file: gui/initialsettingswizard.ui:189
 #. i18n: ectx: property (text), widget (QRadioButton, advanced)
 #: po/rc.cpp:376 rc.cpp:376
 msgid "Standard multi-user/server setup"
-msgstr ""
+msgstr "Configuración estándar para varios usuarios/servidores"
 
 #. i18n: file: gui/initialsettingswizard.ui:203
 #. i18n: ectx: property (text), widget (BuddyLabel, label_9)
@@ -4207,6 +4136,8 @@ msgid ""
 "<i>Select this option if your music collection is not shared with others, "
 "and you wish Cantata to configure and control the MPD instance.</i>"
 msgstr ""
+"<i>Seleccione esta opción si no comparte con otros su colección de música, y "
+"desea que Cantata configure y controle la instancia de MPD.</i>"
 
 #. i18n: file: gui/initialsettingswizard.ui:225
 #. i18n: ectx: property (text), widget (BuddyLabel, label_10)
@@ -4218,11 +4149,15 @@ msgid ""
 "starting and stopping of the MPD server. You will therfore need to ensure "
 "that MPD is already configured and running.</i>"
 msgstr ""
+"<i>Seleccione esta opción si la colección de música es compartida entre "
+"usuarios, la instancia de MPD se ejecuta en otro sistema, o ya cuenta con "
+"una configuración personal de MPD. Si selecciona esta opción, Cantata no "
+"puede controlar el inicio y parada del servidor MPD. Por ello, tendrá que "
+"asegurarse de que MPD está configurado y en ejecución.</i>"
 
 #. i18n: file: gui/initialsettingswizard.ui:260
 #. i18n: ectx: property (text), widget (QLabel, label_11)
 #: po/rc.cpp:386 rc.cpp:386
-#, fuzzy
 msgid ""
 "<html><head/><body><p>For more information on MPD itself, please refer to "
 "the MPD website <a href=\"http://www.musicpd.org\"><span style=\" text-"
@@ -4230,12 +4165,11 @@ msgid ""
 "p><p>This 'wizard' will guide you through the basic settings required for "
 "Cantata to function correctly.</p></body></html>"
 msgstr ""
-"<html><head/><body><p>Cantata es un cliente de (MPD). Para que Cantata "
-"funcione, se debe configurar y ejecutar MPD bien en su máquina local o en "
-"una máquina accesible.</p><p>Para más información sobre MPD, consulte el "
-"sitio web de MPD <a href=\"http://mpd.wikia.com\"><span style=\" text-"
-"decoration: underline; color:#0000ff;\">http://mpd.wikia.com</span></a></"
-"p><p><br/></p></body></html>"
+"<html><head/><body><p>Para más información sobre MPD, consulte el sitio web "
+"de MPD <a href=\"http://www.musicpd.org\"><span style=\" text-decoration: "
+"underline; color:#0000ff;\">http://www.musicpd.org</span></a></p><p>Este "
+"asistente le guiará por los pasos necesarios para el funcionamiento adecuado "
+"de Cantata.</p></body></html>"
 
 #. i18n: file: gui/initialsettingswizard.ui:319
 #. i18n: ectx: property (text), widget (QLabel, label_3)
@@ -4246,14 +4180,13 @@ msgstr "Detalles de conexión"
 #. i18n: file: gui/initialsettingswizard.ui:342
 #. i18n: ectx: property (text), widget (QLabel, label_4)
 #: po/rc.cpp:392 rc.cpp:392
-#, fuzzy
 msgid ""
 "The settings below are the basic settings required by Cantata. Please enter "
 "the relevant details, and use the 'Connect' button to test the connection."
 msgstr ""
 "Los ajustes a continuación son los ajustes básicos que Cantata requiere. "
-"Introduzca los detalles relevantes y utilice el botón «Conectar» para probar "
-"la conexión."
+"Introduzca los detalles pertinentes y utilice el botón «Conectar» para "
+"probar la conexión."
 
 #. i18n: file: gui/initialsettingswizard.ui:373
 #. i18n: ectx: property (text), widget (BuddyLabel, hostLabel)
@@ -4274,6 +4207,8 @@ msgid ""
 "<i><b>NOTE:</b> The 'Music folder' setting is used to lookup cover-art, "
 "lyrics, etc.</i>"
 msgstr ""
+"<i><b>NOTE:</b> El ajuste «Directorio de música» se utiliza para buscar "
+"portadas, letras y otros.</i>"
 
 #. i18n: file: gui/initialsettingswizard.ui:521
 #. i18n: ectx: property (text), widget (QLabel, socketNoteLabel)
@@ -4294,21 +4229,20 @@ msgstr ""
 #. i18n: file: gui/initialsettingswizard.ui:554
 #. i18n: ectx: property (text), widget (QLabel, label_13)
 #: po/rc.cpp:416 rc.cpp:416
-#, fuzzy
 msgid "Music folder"
-msgstr "Directorio de música:"
+msgstr "Directorio de música"
 
 #. i18n: file: gui/initialsettingswizard.ui:577
 #. i18n: ectx: property (text), widget (QLabel, label_12)
 #: po/rc.cpp:419 rc.cpp:419
 msgid "Please choose the folder containing your music collection."
-msgstr ""
+msgstr "Seleccione la carpeta que contiene su colección de música."
 
 #. i18n: file: gui/initialsettingswizard.ui:663
 #. i18n: ectx: property (text), widget (QLabel, label_6f)
 #: po/rc.cpp:425 rc.cpp:425
 msgid "Covers, Lyrics, and Streams"
-msgstr ""
+msgstr "Portadas, letras y flujos"
 
 #. i18n: file: gui/initialsettingswizard.ui:686
 #. i18n: ectx: property (text), widget (QLabel, label_5f)
@@ -4320,6 +4254,12 @@ msgid ""
 "confirm whether you wish Cantata to store the relevant files within the "
 "music folder, or within your personal cache/config folders.</p>"
 msgstr ""
+"<p>Cantata descarga portadas ausentes y letras a través de Internet. Cantata "
+"también permite almacenar una lista de flujos de Internet (por ejemplo, "
+"emisoras de radio) que desee reproducir.</p><p>Para cada uno de estos "
+"elementos, confirme si desea que Cantata guarde los ficheros pertinentes "
+"dentro del directorio de músico, o dentro de las carpetas de usuario "
+"«cache/config».</p>"
 
 #. i18n: file: gui/initialsettingswizard.ui:808
 #. i18n: ectx: property (text), widget (QLabel, httpNote)
@@ -4329,6 +4269,10 @@ msgid ""
 "currently cannot upload files to external HTTP servers. Therefore, the above "
 "settings should be left disabled.</i>"
 msgstr ""
+"<i><b>NOTA:</b> «Directorio de música» se ha definido como una dirección "
+"HTTP, y actualmente Cantata no puede enviar ficheros a servidores HTTP "
+"externos. Por ello, los ajustes en la parte superior se deben dejar "
+"desactivados.</i>"
 
 #. i18n: file: gui/initialsettingswizard.ui:841
 #. i18n: ectx: property (text), widget (QLabel, label_6)
@@ -4339,16 +4283,15 @@ msgstr "Finalizado"
 #. i18n: file: gui/initialsettingswizard.ui:864
 #. i18n: ectx: property (text), widget (QLabel, label_5)
 #: po/rc.cpp:449 rc.cpp:449
-#, fuzzy
 msgid ""
 "Cantata is now configured! If you wish to further configure Cantata (to add "
 "extra MPD hosts, etc) then Canta's configuration dialog may be accessed from "
 "the menu triggered by the button in the top-right of Cantata's main window."
 msgstr ""
-"Cantata está ahora conectado a MPD. Si desea realizar ajustes adicionales "
-"para Cantata, (añadir hosts de MPD adicionales, etc), puede acceder al "
-"diálogo de configuración de Cantata mediante el menú que muestra el botón en "
-"la parte superior derecha de la ventana principal de Cantata."
+"Cantata ya está configurado. Si desea realizar ajustes adicionales para "
+"Cantata, (añadir hosts adicionales de MPD, etc), puede acceder al diálogo de "
+"configuración de Cantata mediante el menú que muestra el botón en la parte "
+"superior derecha de la ventana principal de Cantata."
 
 #. i18n: file: gui/initialsettingswizard.ui:902
 #. i18n: ectx: property (text), widget (QLabel, groupWarningLabel)
@@ -4413,7 +4356,6 @@ msgstr "Mostrar año de publicación:"
 #. i18n: file: gui/interfacesettings.ui:123
 #. i18n: ectx: property (text), widget (QLabel, label_8)
 #: po/rc.cpp:470 rc.cpp:470
-#, fuzzy
 msgid ""
 "<i><b>NOTE:</b> When looking for artist images, Cantata will look for either "
 "artist.jpg, artist.png, 'Artist'.jpg, or 'Artist'.png,\n"
@@ -4486,9 +4428,8 @@ msgstr "Estilo de vista de flujos:"
 #. i18n: file: gui/interfacesettings.ui:277
 #. i18n: ectx: property (text), widget (BuddyLabel, label_xx)
 #: po/rc.cpp:513 rc.cpp:513
-#, fuzzy
 msgid "Online view style:"
-msgstr "Estilo de vista de directorios:"
+msgstr "Estilo de vista online:"
 
 #. i18n: file: gui/interfacesettings.ui:290
 #. i18n: ectx: property (text), widget (BuddyLabel, devicesViewLabel)
@@ -4517,9 +4458,8 @@ msgstr "Desplazar a pista actual:"
 #. i18n: file: gui/interfacesettings.ui:384
 #. i18n: ectx: property (text), widget (BuddyLabel, playQueueBackgroundLabel)
 #: po/rc.cpp:540 rc.cpp:540
-#, fuzzy
 msgid "Use current album cover as background:"
-msgstr "Utilizar la carátula actual como el icono de la barra de tareas:"
+msgstr "Utilizar la carátula de álbum actual como fondo:"
 
 #. i18n: file: gui/interfacesettings.ui:398
 #. i18n: ectx: attribute (title), widget (QWidget, tab_7)
@@ -4584,13 +4524,12 @@ msgstr "Forzar la activación de elementos con un solo clic:"
 #. i18n: file: gui/interfacesettings.ui:574
 #. i18n: ectx: property (text), widget (StateLabel, singleClickLabel)
 #: po/rc.cpp:573 rc.cpp:573
-#, fuzzy
 msgid ""
 "<i><b>NOTE:</b> Changing the 'Enforce single-click activation of items' "
 "setting will require a re-start of Cantata.</i>"
 msgstr ""
-"<i><b>NOTA:</b> Modificar la opción «Forzar la activación de elementos con "
-"un solo clic» requiere reiniciar Cantata.</i>"
+"<i><b>NOTA:</b> Cantata requiere reiniciar si se modifica la opción «Forzar "
+"la activación de elementos con un solo clic».</i>"
 
 #. i18n: file: gui/mainwindow.ui:244
 #. i18n: ectx: property (text), widget (QLabel, dynamicLabel)
@@ -4625,23 +4564,20 @@ msgstr "Ganancia de reproducción:"
 #. i18n: file: gui/playbacksettings.ui:95
 #. i18n: ectx: property (text), widget (UrlLabel, aboutReplayGain)
 #: po/rc.cpp:594 rc.cpp:594
-#, fuzzy
 msgid "About replay gain"
-msgstr "Ganancia de reproducción:"
+msgstr "Acerca de la ganancia de reproducción"
 
 #. i18n: file: gui/playbacksettings.ui:104
 #. i18n: ectx: property (text), widget (QLabel, outputsViewLabel)
 #: po/rc.cpp:597 rc.cpp:597
-#, fuzzy
 msgid "Devices:"
-msgstr "Dispositivos"
+msgstr "Dispositivos:"
 
 #. i18n: file: gui/playbacksettings.ui:132
 #. i18n: ectx: property (title), widget (QGroupBox, streamBox)
 #: po/rc.cpp:600 rc.cpp:600
-#, fuzzy
 msgid "HTTP Stream"
-msgstr "1 flujo"
+msgstr "Flujo HTTP"
 
 #. i18n: file: gui/playbacksettings.ui:141
 #. i18n: ectx: property (text), widget (BuddyLabel, streamUrlLabel)
@@ -4652,21 +4588,19 @@ msgstr "URL:"
 #. i18n: file: gui/playbacksettings.ui:154
 #. i18n: ectx: property (text), widget (QLabel, streamUrlInfoLabel)
 #: po/rc.cpp:606 rc.cpp:606
-#, fuzzy
 msgid ""
 "<i><b>NOTE:</b> This is only of use if you have MPD configured to output to "
 "a HTTP stream, and you wish Cantata to be able to play that stream.</i>"
 msgstr ""
-"<i><b>NOTA:</b> Activar el flujo HTTP solo es de utilidad si se ha "
-"configurado MPD para que su salida sea un flujo HTTP, y desea que Cantata "
-"pueda reproducir ese flujo.</i>"
+"<i><b>NOTA:</b> Esto es de utilidad solo si se ha configurado MPD para que "
+"su salida sea un flujo HTTP, y desea que Cantata pueda reproducir ese "
+"flujo.</i>"
 
 #. i18n: file: gui/playbacksettings.ui:167
 #. i18n: ectx: property (title), widget (QGroupBox, stopPlaybackBox)
 #: po/rc.cpp:609 rc.cpp:609
-#, fuzzy
 msgid "Stopping Playback"
-msgstr "Reproducción"
+msgstr "Deteniendo reproducción"
 
 #. i18n: file: gui/playbacksettings.ui:176
 #. i18n: ectx: property (text), widget (BuddyLabel, label_6b)
@@ -4694,13 +4628,15 @@ msgid ""
 "shown allowing you to choose whether to stop playback now, or after the "
 "current track.</i>"
 msgstr ""
+"<i><b>NOTA:</b> Si mantiene pulsado el botón de detener, se muestra un menú "
+"que permite seleccionar si detener la reproducción inmediatamente o después "
+"de la pista actual.</i>"
 
 #. i18n: file: gui/serversettings.ui:35
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: po/rc.cpp:624 rc.cpp:624
-#, fuzzy
 msgid "Collection:"
-msgstr "Conexión"
+msgstr "Colección:"
 
 #. i18n: file: gui/serversettings.ui:142
 #. i18n: ectx: property (text), widget (BuddyLabel, coverNameLabel)
@@ -4744,6 +4680,10 @@ msgid ""
 "to manually update the music database. This can be performed by pressing the "
 "'Refresh Database' button in the 'Artists' or 'Albums' views.</i>"
 msgstr ""
+"<i><b>NOTA:</b> Si modifica la opción «Carpeta de música», tendrá que "
+"actualizar manualmente la base de datos de música. Esto se puede hacer "
+"pulsando el botón «Actualizar base de datos» en las vistas de «Artistas» o "
+"«Álbumes».</i>"
 
 #. i18n: file: gui/serversettings.ui:340
 #. i18n: ectx: property (text), widget (QLabel, musicFolderNoteLabel_2)
@@ -4752,19 +4692,20 @@ msgid ""
 "<i><b>NOTE:</b> If no setting is specified for 'Cover filename, then Cantata "
 "will use a default of <code>cover</code> </i>"
 msgstr ""
+"<i><b>NOTE:</b> Si no se define ninguna opción para «Nombre de fichero de "
+"carátula», Cantata utilizará un valor predefinido <code>cover</code> </i>"
 
 #. i18n: file: http/httpserversettings.ui:25
 #. i18n: ectx: property (text), widget (BuddyLabel, label_5)
 #: po/rc.cpp:666 rc.cpp:666
-#, fuzzy
 msgid "Network interface:"
-msgstr "Dirección/interfaz:"
+msgstr "Interfaz de red:"
 
 #. i18n: file: http/httpserversettings.ui:38
 #. i18n: ectx: property (text), widget (QLabel, label_3b)
 #: po/rc.cpp:669 rc.cpp:669
 msgid "Current URL:"
-msgstr ""
+msgstr "URL actual:"
 
 #. i18n: file: http/httpserversettings.ui:73
 #. i18n: ectx: property (text), widget (QLabel, label_4)
@@ -4777,12 +4718,18 @@ msgid ""
 "<b>NOTE:</b> If you choose 'Local loopback' for 'Network interface', then "
 "MPD <b>must</b> also be on this computer.</i>"
 msgstr ""
+"<i><b>NOTA:</b> Habitualmente, MPD solo reproduce canciones almacenadas en "
+"sus carpetas. Cantata incorpora un servidor HTTP básico que sirve para "
+"introducir otras canciones a MPD. No obstante, solo funciona mientras "
+"Cantata está en ejecución.<br/><br/>\n"
+"<b>NOTA:</b> Si selecciona «Loopback local» para «Interfaz de red», MPD "
+"<b>debe</b> estar presente en este sistema</i>"
 
 #. i18n: file: network/proxysettings.ui:26
 #. i18n: ectx: property (text), widget (BuddyLabel, modeLabel)
 #: po/rc.cpp:676 rc.cpp:676
 msgid "Mode:"
-msgstr ""
+msgstr "Modo:"
 
 #. i18n: file: network/proxysettings.ui:50
 #. i18n: ectx: property (text), item, widget (QComboBox, proxyType)
@@ -4805,19 +4752,22 @@ msgid ""
 "di.fm/premium/\">http://www.di.fm/premium/</a> to upgrade to a premium "
 "account."
 msgstr ""
+"Puede escuchar sin coste sin una cuenta, pero los miembros Premium pueden "
+"escuchar flujos de calidad mayor sin anuncios. Visite <a "
+"href=\"http://www.di.fm/premium/\">http://www.di.fm/premium/</a> para pasar a "
+"una cuenta premium."
 
 #. i18n: file: streams/digitallyimportedsettings.ui:42
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox)
 #: po/rc.cpp:703 rc.cpp:703
 msgid "Premium Account"
-msgstr ""
+msgstr "Cuenta premium"
 
 #. i18n: file: streams/digitallyimportedsettings.ui:78
 #. i18n: ectx: property (text), widget (BuddyLabel, label_4)
 #: po/rc.cpp:712 rc.cpp:712
-#, fuzzy
 msgid "Stream type:"
-msgstr "Flujo:"
+msgstr "Tipo de flujo:"
 
 #. i18n: file: streams/digitallyimportedsettings.ui:91
 #. i18n: ectx: property (text), widget (BuddyLabel, label_5)
@@ -4830,13 +4780,13 @@ msgstr "Estado:"
 #: po/rc.cpp:718 streams/digitallyimportedsettings.cpp:130
 #: streams/digitallyimportedsettings.cpp:136 rc.cpp:718
 msgid "Login"
-msgstr ""
+msgstr "Iniciar sesión"
 
 #. i18n: file: streams/digitallyimportedsettings.ui:131
 #. i18n: ectx: property (text), widget (QLabel, expiryLabel)
 #: po/rc.cpp:724 rc.cpp:724
 msgid "Session expiry:"
-msgstr ""
+msgstr "Hora de finalización de sesión:"
 
 #. i18n: file: support/shortcutssettingspage.ui:22
 #. i18n: ectx: property (text), widget (BuddyLabel, label_2)
@@ -4909,19 +4859,16 @@ msgid "Your emails"
 msgstr "ocampagne@gmail.com"
 
 #: replaygain/rgdialog.cpp:125
-#, fuzzy
 msgid "Show All Tracks"
-msgstr "Todas las pistas"
+msgstr "Mostrar todas las pistas"
 
 #: replaygain/rgdialog.cpp:126
-#, fuzzy
 msgid "Show Untagged Tracks"
-msgstr "Pistas sin etiquetar"
+msgstr "Mostrar pistas sin etiquetar"
 
 #: replaygain/rgdialog.cpp:133 tags/trackorganiser.cpp:72
-#, fuzzy
 msgid "Remove From List"
-msgstr "¿Eliminar flujos?"
+msgstr "Eliminar de la lista"
 
 #: replaygain/rgdialog.cpp:140
 msgid "Album Gain"
@@ -4944,35 +4891,32 @@ msgid "Scan"
 msgstr "Analizar"
 
 #: replaygain/rgdialog.cpp:235
-#, fuzzy
 msgid "Update ReplayGain tags in tracks?"
-msgstr "¿Desea actualizar las etiquetas ReplayGain en los ficheros?"
+msgstr "¿Desea actualizar las etiquetas ReplayGain de las pistas?"
 
 #: replaygain/rgdialog.cpp:235 replaygain/rgdialog.cpp:236
-#, fuzzy
 msgid "Update Tags"
-msgstr "Actualizando (%1)..."
+msgstr "Actualizar etiquetas"
 
 #: replaygain/rgdialog.cpp:248
-#, fuzzy
 msgid "Abort scanning of tracks?"
-msgstr "¿Desea interrumpir la edición de letras?"
+msgstr "¿Desea interrumpir el análisis de las pistas?"
 
 #: replaygain/rgdialog.cpp:257
-#, fuzzy
 msgid "Abort reading of existing tags?"
-msgstr "¿Desea cancelar el análisis de las etiquetas existentes?"
+msgstr "¿Desea cancelar la lectura de las etiquetas existentes?"
 
 #: replaygain/rgdialog.cpp:283
 msgid ""
 "Scan <b>all</b> tracks?<br><br><i>NOTE: All tracks have existing ReplyGain "
 "tags.</i>"
 msgstr ""
+"¿Desea analizar <b>todas</b>las pistas?<br><br><i>NOTA: Todas las pistas ya "
+"tienen etiquetas ReplyGain.</i>"
 
 #: replaygain/rgdialog.cpp:285
-#, fuzzy
 msgid "Do you wish to scan all tracks, or only tracks without existing tags?"
-msgstr "¿Desea analizar todos los ficheros, o solo aquellos sin etiquetas?"
+msgstr "¿Desea analizar todas las pistas, o solo aquellas sin etiquetas?"
 
 #: replaygain/rgdialog.cpp:286
 msgid "Untagged Tracks"
@@ -4983,9 +4927,8 @@ msgid "All Tracks"
 msgstr "Todas las pistas"
 
 #: replaygain/rgdialog.cpp:299
-#, fuzzy
 msgid "Scanning tracks..."
-msgstr "Actualizando pistas..."
+msgstr "Analizando pistas..."
 
 #: replaygain/rgdialog.cpp:376
 msgid "Reading existing tags..."
@@ -5011,49 +4954,47 @@ msgstr "Fallo"
 
 #: replaygain/rgdialog.cpp:695 tags/trackorganiser.cpp:380
 msgid "Remove the selected tracks from the list?"
-msgstr ""
+msgstr "¿Eliminar las pistas seleccionadas de la lista?"
 
 #: replaygain/rgdialog.cpp:696 tags/trackorganiser.cpp:381
-#, fuzzy
 msgid "Remove Tracks"
-msgstr "¿Eliminar flujos?"
+msgstr "Eliminar pistas"
 
 #: streams/digitallyimportedsettings.cpp:36
-#, fuzzy
 msgid "Digitally Imported Settings"
-msgstr "Configuración del sistema MPD"
+msgstr "Configuración importada digitalmente"
 
 #: streams/digitallyimportedsettings.cpp:41
 msgid "MP3 256k"
-msgstr ""
+msgstr "MP3 256k"
 
 #: streams/digitallyimportedsettings.cpp:42
 msgid "AAC 64k"
-msgstr ""
+msgstr "AAC 64k"
 
 #: streams/digitallyimportedsettings.cpp:43
 msgid "AAC 128k"
-msgstr ""
+msgstr "AAC 128k"
 
 #: streams/digitallyimportedsettings.cpp:109
 msgid "Logged out"
-msgstr ""
+msgstr "Sesión no iniciada"
 
 #: streams/digitallyimportedsettings.cpp:112
 msgid "Logging in..."
-msgstr ""
+msgstr "Iniciando sesión…"
 
 #: streams/digitallyimportedsettings.cpp:136
 msgid "Logout"
-msgstr ""
+msgstr "Finalizar sesión"
 
 #: streams/streamdialog.cpp:76
 msgid "Just add to play queue, do not save"
-msgstr ""
+msgstr "Añadir a la cola de reproducción, no guardar"
 
 #: streams/streamdialog.cpp:77
 msgid "Add to play queue, and save to favorites"
-msgstr ""
+msgstr "Añadir a la cola de reproducción, y guardar en favoritos"
 
 #: streams/streamdialog.cpp:94
 msgid "Add Stream"
@@ -5064,46 +5005,40 @@ msgid "Edit Stream"
 msgstr "Editar flujo"
 
 #: streams/streamdialog.cpp:146
-#, fuzzy
 msgid "<i><b>ERROR:</b> Invalid protocol</i>"
-msgstr "<i>Protocolo no válido</i>"
+msgstr "<i><b>ERROR:</b>Protocolo no válido</i>"
 
 #: streams/streamfetcher.cpp:198
-#, fuzzy
 msgid "Fetching %1"
-msgstr "Guardando %1"
+msgstr "Obteniendo %1"
 
 #: streams/streamspage.cpp:61
-#, fuzzy
 msgid "Import Streams Into Favorites"
-msgstr "Importar flujos"
+msgstr "Importar flujos a favoritos"
 
 #: streams/streamspage.cpp:62
-#, fuzzy
 msgid "Export Favorite Streams"
-msgstr "Exportar flujos"
+msgstr "Exportar flujos favoritos"
 
 #: streams/streamspage.cpp:63
 msgid "Add New Stream To Favorites"
-msgstr ""
+msgstr "Añadir flujo nuevo a favoritos"
 
 #: streams/streamspage.cpp:123
-#, fuzzy
 msgid "Search TuneIn:"
-msgstr "Buscar:"
+msgstr "Buscar TuneIn:"
 
 #: streams/streamspage.cpp:239
 msgid "*.xml *.xml.gz *.cantata|XML Streams"
-msgstr ""
+msgstr "*.xml *.xml.gz *.cantata|Flujos XML"
 
 #: streams/streamspage.cpp:239 streams/streamspage.cpp:241
 msgid "Import Streams"
 msgstr "Importar flujos"
 
 #: streams/streamspage.cpp:242
-#, fuzzy
 msgid "XML Streams (*.xml *.xml.gz *.cantata)"
-msgstr "Flujos de Cantata (*.cantata)"
+msgstr "Flujos XML (*.xml *.xml.gz *.cantata)"
 
 #: streams/streamspage.cpp:250
 msgid ""
@@ -5112,7 +5047,7 @@ msgstr "Fallo al importar <b>%1</b>.<br/>Compruebe que es del tipo correcto."
 
 #: streams/streamspage.cpp:262
 msgid "*.xml|XML Streams"
-msgstr ""
+msgstr "*.xml|Flujos XML"
 
 #: streams/streamspage.cpp:262 streams/streamspage.cpp:264
 msgid "Export Streams"
@@ -5120,7 +5055,7 @@ msgstr "Exportar flujos"
 
 #: streams/streamspage.cpp:264
 msgid "XML Streams (*.xml)"
-msgstr ""
+msgstr "Flujos XML (*.xml)"
 
 #: streams/streamspage.cpp:276
 msgid "Failed to create <b>%1</b>!"
@@ -5136,34 +5071,31 @@ msgstr "Ya existe un flujo llamado <b>%1</b>."
 
 #: streams/streamspage.cpp:315
 msgid "Bookmark added"
-msgstr ""
+msgstr "Favorito añadido"
 
 #: streams/streamspage.cpp:317
 msgid "Already bookmarked"
-msgstr ""
+msgstr "Ya está en favoritos"
 
 #: streams/streamspage.cpp:363
 msgid "Added to favorites"
-msgstr ""
+msgstr "Añadido a favoritos"
 
 #: streams/streamspage.cpp:365
-#, fuzzy
 msgid "Already in favorites"
-msgstr "Ya existe"
+msgstr "Ya está en favoritos"
 
 #: streams/streamspage.cpp:390
 msgid "Reload <b>%1</b> streams?"
-msgstr ""
+msgstr "¿Actualizar <b>%1</b> flujos?"
 
 #: streams/streamspage.cpp:408
-#, fuzzy
 msgid "Are you sure you wish to remove bookmark to <b>%1</b>?"
-msgstr "¿Desea eliminar <b>%1</b>?"
+msgstr "¿Seguro que desea eliminar el favorito a <b>%1</b>?"
 
 #: streams/streamspage.cpp:414
-#, fuzzy
 msgid "Are you sure you wish to remove all <b>%1</b> bookmarks?"
-msgstr "¿Desea eliminar <b>%1</b>?"
+msgstr "¿Seguro que desea eliminar todos los favoritos <b>%1</b>?"
 
 #: streams/streamspage.cpp:442
 msgid "Are you sure you wish to remove the %1 selected streams?"
@@ -5175,85 +5107,75 @@ msgstr "¿Desea eliminar <b>%1</b>?"
 
 #: streams/streamspage.cpp:609
 msgid "Logged into Digitally Imported"
-msgstr ""
+msgstr "Registrado en Importe digital"
 
 #: streams/streamspage.cpp:609
 msgid "<b>NOT</b> logged into Digitally Imported"
-msgstr ""
+msgstr "<b>NO</b> registrado en Importe digital"
 
 #: support/dialog.cpp:89
 msgid "&Ok"
-msgstr ""
+msgstr "&Aceptar"
 
 #: support/dialog.cpp:90
-#, fuzzy
 msgid "&Cancel"
-msgstr "Cancelar"
+msgstr "&Cancelar"
 
 #: support/dialog.cpp:91
 msgid "&Yes"
-msgstr ""
+msgstr "&Si"
 
 #: support/dialog.cpp:92
 msgid "&No"
-msgstr ""
+msgstr "&No"
 
 #: support/dialog.cpp:93
-#, fuzzy
 msgid "&Discard"
-msgstr "Disco"
+msgstr "&Descartar"
 
 #: support/dialog.cpp:94
-#, fuzzy
 msgid "&Save"
-msgstr "Guardar"
+msgstr "&Guardar"
 
 #: support/dialog.cpp:95
 msgid "&Apply"
-msgstr ""
+msgstr "A&plicar"
 
 #: support/dialog.cpp:96
-#, fuzzy
 msgid "&Close"
-msgstr "Cerrar"
+msgstr "C&errar"
 
 #: support/dialog.cpp:98
-#, fuzzy
 msgid "&Overwrite"
-msgstr "Sobrescribir canciones:"
+msgstr "S&obrescribir"
 
 #: support/dialog.cpp:99
 msgid "&Reset"
-msgstr ""
+msgstr "&Restablecer"
 
 #: support/dialog.cpp:100
 msgid "&Continue"
-msgstr ""
+msgstr "Con&tinuar"
 
 #: support/dialog.cpp:101
-#, fuzzy
 msgid "&Delete"
-msgstr "Eliminar todo"
+msgstr "&Eliminar"
 
 #: support/dialog.cpp:102
-#, fuzzy
 msgid "&Stop"
-msgstr "Detener"
+msgstr "&Parar"
 
 #: support/dialog.cpp:103
-#, fuzzy
 msgid "&Remove"
-msgstr "Eliminar"
+msgstr "&Eliminar"
 
 #: support/dialog.cpp:104
-#, fuzzy
 msgid "&Previous"
-msgstr "Pista anterior"
+msgstr "Anter&ior"
 
 #: support/dialog.cpp:105
-#, fuzzy
 msgid "&Next"
-msgstr "Siguiente"
+msgstr "Sig&uiente"
 
 #: support/fancytabwidget.cpp:952
 msgid "Icons Only"
@@ -5365,7 +5287,7 @@ msgstr "Etiquetas"
 
 #: tags/tageditor.cpp:144
 msgid "Set 'Album Artist' from 'Artist'"
-msgstr "Definir «Album Artist» como «Artist»"
+msgstr "Definir «Artista del álbum» como «Artista»"
 
 #: tags/tageditor.cpp:228 tags/tageditor.cpp:549
 msgid "All tracks"
@@ -5378,7 +5300,7 @@ msgstr "(Varios)"
 #: tags/tageditor.cpp:325
 msgid "Apply \"Various Artists\" workaround to <b>all</b> tracks?"
 msgstr ""
-"¿Desea aplicar el arreglo para «Various Artists» a <b>todas</b> las pistas?"
+"¿Desea aplicar el arreglo para «Varios Artistas» a <b>todas</b> las pistas?"
 
 #: tags/tageditor.cpp:367
 msgid "Revert \"Various Artists\" workaround on <b>all</b> tracks?"
@@ -5386,23 +5308,22 @@ msgstr ""
 "¿Desea deshacer el arreglo para «Varios Artistas» a <b>todas</b> las pistas?"
 
 #: tags/tageditor.cpp:417
-#, fuzzy
 msgid ""
 "Set 'Album Artist' from 'Artist' (if 'Album Artist' is empty) for <b>all</b> "
 "tracks?"
 msgstr ""
-"¿Quiere definir «Album Artist» como «Artist» para <b>todas</b> las pistas?"
+"¿Quiere definir «Artista del álbum» como «Artista» (si «Artista del álbum» "
+"está vacío) para <b>todas</b> las pistas?"
 
 #: tags/tageditor.cpp:418
-#, fuzzy
 msgid "Set 'Album Artist' from 'Artist' (if 'Album Artist' is empty)?"
 msgstr ""
-"¿Quiere definir «Album Artist» como «Artist» para <b>todas</b> las pistas?"
+"¿Quiere definir «Artista del álbum» como «Artista» (si «Artista del álbum» "
+"está vacío)?"
 
 #: tags/tageditor.cpp:419
-#, fuzzy
 msgid "Album Artist from Artist"
-msgstr "Definir «Album Artist» como «Artist»"
+msgstr "«Artista del álbum» como «Artista»"
 
 #: tags/tageditor.cpp:452
 msgid ""
@@ -5413,9 +5334,8 @@ msgstr ""
 "del álbum», y «Álbum» para <b>todas</b> las pistas?"
 
 #: tags/tageditor.cpp:485
-#, fuzzy
 msgid "Adjust the value of each track number by:"
-msgstr "Incrementar el valor de cada número de pista en:"
+msgstr "Ajustar el valor de cada número de pista en:"
 
 #: tags/tageditor.cpp:543
 msgid "All tracks [modified]"
@@ -5429,16 +5349,15 @@ msgstr "%1 [modificado]"
 msgid ""
 "Would you also like to rename your song files, so as to match your tags?"
 msgstr ""
+"¿Desea renombrar los ficheros de audio para que coincidan con las etiquetas?"
 
 #: tags/tageditor.cpp:759
-#, fuzzy
 msgid "Rename Files"
-msgstr "Renombrar lista de reproducción"
+msgstr "Renombrar ficheros"
 
 #: tags/trackorganiser.cpp:143
-#, fuzzy
 msgid "Abort renaming of files?"
-msgstr "¿Desea cancelar la modificación del nombre de los ficheros?"
+msgstr "¿Cancelar la modificación de los ficheros?"
 
 #: tags/trackorganiser.cpp:257
 msgid "Destination file already exists!<br/>%1"
@@ -5458,41 +5377,38 @@ msgid ""
 "\"right\"><b>Album:</b></td><td>%2</td></tr><tr><td align=\"right\"><b>Year:"
 "</b></td><td>%3</td></tr>"
 msgstr ""
-"<tr><td align=\"right\"><b>Artista:</b></td><td>%1</td></tr><tr><td align="
-"\"right\"><b>Álbum:</b></td><td>%2</td></tr><tr><td align=\"right\"><b>Año:</"
-"b></td><td>%3</td></tr>"
+"<tr><td align=\"right\"><b>Artista:</b></td><td>%1</td></tr><tr><td "
+"align=\"right\"><b>Álbum:</b></td><td>%2</td></tr><tr><td "
+"align=\"right\"><b>Año:</b></td><td>%3</td></tr>"
 
 #: widgets/genrecombo.cpp:59
 msgid "All Genres"
 msgstr "Todos los géneros"
 
 #: widgets/groupedview.cpp:266
-#, fuzzy
 msgctxt "artist - album (albumYear)"
 msgid "%1 - %2 (%3)"
-msgstr "%1 - %2"
+msgstr "%1 - %2 (%3)"
 
 #: widgets/itemview.cpp:478
-#, fuzzy
 msgid "Go Back"
 msgstr "Retroceder"
 
 #: widgets/itemview.cpp:482
 msgid "Go Home"
-msgstr ""
+msgstr "Página inicial"
 
 #: widgets/menubutton.cpp:36
 msgid "Other Actions"
 msgstr "Otras acciones"
 
 #: widgets/searchwidget.cpp:62
-#, fuzzy
 msgid "Search..."
-msgstr "Buscar %1..."
+msgstr "Buscar…"
 
 #: widgets/searchwidget.cpp:66
 msgid "Close Search Bar"
-msgstr ""
+msgstr "Cerrar barra de búsqueda"
 
 #: ../gui/qtplural.h:30
 msgctxt "Singular"
@@ -5572,571 +5488,3 @@ msgctxt "Plural (N!=1)"
 msgid "%1 Rules"
 msgstr "%1 normas"
 
-#, fuzzy
-#~ msgid "Disc %1"
-#~ msgstr "Disco"
-
-#~ msgid "Are you sure you wish to forget '%1'?"
-#~ msgstr "¿Desea olvidar «%1»?"
-
-#~ msgid ""
-#~ "When 'Play Stream' is activated, the enabled stream is played locally."
-#~ msgstr ""
-#~ "Cuando se activa «Reproducir flujo», el flujo activo se reproduce "
-#~ "localmente."
-
-#, fuzzy
-#~ msgid "Stop after current track"
-#~ msgstr "Desplazar a pista actual:"
-
-#~ msgid "Output Settings"
-#~ msgstr "Ajustes de la salida"
-
-#~ msgid "Lyrics Settings"
-#~ msgstr "Configuración de letras"
-
-#~ msgid ""
-#~ "Filename (without extension) to save downloaded covers as.\n"
-#~ "If left blank 'cover' will be used."
-#~ msgstr ""
-#~ "Nombre de fichero (sin extensión) para carátulas descargadas.\n"
-#~ "Si no se define, se utiliza «cover»."
-
-#~ msgid "Enter name for settings:"
-#~ msgstr "Introduzca un nombre para la configuración:"
-
-#~ msgid ""
-#~ "A setting named %1 already exists!\n"
-#~ "Overwrite?"
-#~ msgstr ""
-#~ "Ya existe una configuración llamada «%1».\n"
-#~ "¿Desea sobrescribir?"
-
-#~ msgid "Set Cover"
-#~ msgstr "Definir carátula"
-
-#~ msgctxt ""
-#~ "<title> by <artist>\n"
-#~ "Failed\n"
-#~ msgid ""
-#~ "%1 by %2\n"
-#~ "Failed to fetch lyrics"
-#~ msgstr ""
-#~ "%1 por %2\n"
-#~ "Fallo al obtener letras"
-
-#, fuzzy
-#~ msgid "Connect Online Service"
-#~ msgstr "Conecte el dispositivo"
-
-#, fuzzy
-#~ msgid "Disconnect Online Service"
-#~ msgstr "Desconecte el dispositivo"
-
-#, fuzzy
-#~ msgid "Failed to parse downloaded stream list."
-#~ msgstr "Fallo al descargar la imagen."
-
-#, fuzzy
-#~ msgid "Failed to read downloaded stream list."
-#~ msgstr "Fallo al descargar la imagen."
-
-#, fuzzy
-#~ msgid "Failed to download stream list."
-#~ msgstr "Fallo al descargar la imagen."
-
-#~ msgctxt "name (host)"
-#~ msgid "%1 (%2)"
-#~ msgstr "%1 (%2)"
-
-#~ msgid "Failed to reconnect to %1"
-#~ msgstr "Fallo de reconexión a «%1»"
-
-#, fuzzy
-#~ msgid "Add Online Service"
-#~ msgstr "Añadir dispositivo"
-
-#, fuzzy
-#~ msgid "Are you sure you wish to remove '%1'?"
-#~ msgstr "¿Desea olvidar «%1»?"
-
-#, fuzzy
-#~ msgid "Are you sure you wish to unload '%1'?"
-#~ msgstr "¿Desea olvidar «%1»?"
-
-#~ msgid "Use cover as lyrics background:"
-#~ msgstr "Utilizar la portada actual como fondo de las letras:"
-
-#~ msgid "Output HTTP stream:"
-#~ msgstr "Activar flujo HTTP:"
-
-#~ msgid "Details"
-#~ msgstr "Detalles"
-
-#~ msgid "Enable HTTP server:"
-#~ msgstr "Activar servidor HTTP:"
-
-#~ msgid "Always use server:"
-#~ msgstr "Siempre utilizar servidor:"
-
-#, fuzzy
-#~ msgid ""
-#~ "<i><b>NOTE:</b> MPD usually only plays songs that are stored within its "
-#~ "folders. If you have connected via a local socket, then MPD can also play "
-#~ "files located on your filesystem. If you are using a non local socket (e."
-#~ "g. you have entered a hostname or IP address in the 'Host' field of the "
-#~ "'Connection' settings page), then Cantata contains a minimal HTTP server "
-#~ "that can be used to serve files to MPD. This, however, will only work "
-#~ "whilst Cantata is running.  If you enable 'Always use server', then "
-#~ "Cantata will always pass server URLs to MPD for files, even when you "
-#~ "have  connected via a local socket.<br/><br/>\n"
-#~ "<b>NOTE:</b> 'Address/interface' may contain either the IP address, or "
-#~ "interface (e.g. eth0), that you wish to listen for connections on. If you "
-#~ "leave this blank, then Cantata will choose the IP address of the first "
-#~ "active interface.<br/><br/><b>NOTE:</b> Leave port set to 'Dynamic' to "
-#~ "have Cantata choose a random port number.</i>"
-#~ msgstr ""
-#~ "<i><b>NOTA:</b> Habitualmente, MPD solo reproduce canciones almacenadas "
-#~ "en las carpetas configuradas. Si se conecta a través de un fichero "
-#~ "«socket» local,  MPD también puede reproducir ficheros de su sistema de "
-#~ "ficheros. Si no utiliza un fichero «socket» local (esto es, introduce un "
-#~ "hostname o dirección IP en el campo «Host» de la página de configuración "
-#~ "«Servidor»), Cantata incorpora un servidor HTTP básico que se puede "
-#~ "utilizar para introducir ficheros a MPD. Por otra parte, solo funciona "
-#~ "mientras Cantata está en funcionamiento.  Si activa la opción «Siempre "
-#~ "utilizar servidor», Cantata introduce direcciones URL de ficheros a MPD, "
-#~ "incluso si se establece la conexión con un fichero «socket» local.<br/"
-#~ "><br/>\n"
-#~ "<b>NOTA:</b> «Dirección/interfaz» puede contener la dirección IP o la "
-#~ "interfaz (por ejemplo, eth0), donde buscar las conexiones. Deje el "
-#~ "espacio vacío para utilizar la dirección «loopback» local (127.0.0.1).</"
-#~ "i></i>"
-
-#~ msgid "Move Up"
-#~ msgstr "Desplazar arriba"
-
-#~ msgid "Move Down"
-#~ msgstr "Desplazar abajo"
-
-#~ msgid "Direct internet connection"
-#~ msgstr "Conexión directa a Internet"
-
-#~ msgid "Port"
-#~ msgstr "Port"
-
-#~ msgid "Use authentication"
-#~ msgstr "Utilizar autentificación"
-
-#~ msgid "Cancel scanning of files?"
-#~ msgstr "¿Desea cancelar el análisis de ficheros?"
-
-#~ msgid "Scanning files..."
-#~ msgstr "Analizando ficheros..."
-
-#~ msgid "Icon:"
-#~ msgstr "Icono:"
-
-#~ msgid "Edit Category"
-#~ msgstr "Editar categoría"
-
-#~ msgid "Category:"
-#~ msgstr "Categoría:"
-
-#, fuzzy
-#~ msgid "Streams from HTTP server"
-#~ msgstr "Activar servidor HTTP:"
-
-#, fuzzy
-#~ msgid "Music folder not writeable."
-#~ msgstr "Directorio de música:"
-
-#~ msgid "*.cantata|Cantata Streams"
-#~ msgstr "*.cantata|Flujos de Cantata"
-
-#, fuzzy
-#~ msgid "Are you sure you wish to remove the selected categories &streams?"
-#~ msgstr "¿Desea eliminar los elementos seleccionados?"
-
-#, fuzzy
-#~ msgid ""
-#~ "Are you sure you wish to remove the %1 selected categories (and their "
-#~ "streams)?"
-#~ msgstr "¿Desea eliminar los %1 flujos seleccionados?"
-
-#, fuzzy
-#~ msgid ""
-#~ "Are you sure you wish to remove the <b>%1</b> category (and its streams)?"
-#~ msgstr "¿Desea eliminar los %1 flujos seleccionados?"
-
-#~ msgid "Remove?"
-#~ msgstr "¿Eliminar?"
-
-#~ msgid "Stream already exists!<br/><b>%1 (%2)</b>"
-#~ msgstr "El flujo ya existe<br/><b>%1 (%2)</b>."
-
-#~ msgid "A stream named <b>%1 (%2)</b> already exists!"
-#~ msgstr "Ya existe un flujo llamado <b>%1 (%2)</b>."
-
-#, fuzzy
-#~ msgid "Download %1"
-#~ msgstr "Descargando..."
-
-#, fuzzy
-#~ msgctxt ""
-#~ "message \n"
-#~ " url"
-#~ msgid ""
-#~ "Failed to download streams from %1\n"
-#~ "(%2)"
-#~ msgstr "Fallo de conexión con «%1»"
-
-#~ msgid "Library"
-#~ msgstr "Biblioteca"
-
-#, fuzzy
-#~ msgid "No Icon"
-#~ msgstr "Icono:"
-
-#~ msgid "Toggle Device"
-#~ msgstr "Cambiar dispositivo"
-
-#~ msgid "Action is not currently possible, due to other open dialogs."
-#~ msgstr ""
-#~ "La acción no es posible ahora debido a otras ventanas de diálogo abiertas."
-
-#~ msgid "AAC (Non-Free)"
-#~ msgstr "AAC (Privativo)"
-
-#~ msgid "Failed to locate the 'cantata-dynamic' helper script."
-#~ msgstr "No se ha podido detectar el script de asistencia «cantata-dynamic»."
-
-#~ msgid "Number of items:"
-#~ msgstr "Número de elementos:"
-
-#~ msgid "Music Library List"
-#~ msgstr "Lista de la biblioteca de música"
-
-#~ msgid "<h3><i>Loading...</i></h3>"
-#~ msgstr "<h3><i>Cargando...</i></h3>"
-
-#~ msgctxt "Qt-only"
-#~ msgid "Save File"
-#~ msgstr "Guardar fichero"
-
-#~ msgid "Automatic"
-#~ msgstr "Automático"
-
-#~ msgid "Tree"
-#~ msgstr "Árbol"
-
-#~ msgid "Small Playback Buttons"
-#~ msgstr "Botones de reproducción pequeños"
-
-#~ msgid "Update MPD Information"
-#~ msgstr "Actualizar información de MPD"
-
-#~ msgid "Remove Stream?"
-#~ msgstr "¿Eliminar flujo?"
-
-#~ msgid "Set 'Album Artist' from 'Artist'?"
-#~ msgstr "¿Quiere definir «Album Artist» como «Artist»?"
-
-#~ msgid "Increment track number by:"
-#~ msgstr "Incrementar el número de pista en:"
-
-#~ msgctxt "title, by artist"
-#~ msgid "%1, by %2"
-#~ msgstr "%1, por %2"
-
-#~ msgid "Wizard"
-#~ msgstr "Asistente"
-
-#~ msgid ""
-#~ "<i><b>NOTE:</b> The 'Music folder' setting is used to lookup cover-art. "
-#~ "If you also have write permissions to this folder (and it's sub-folders), "
-#~ "then Cantata will save any downloaded covers into the respective album "
-#~ "folder.</i>"
-#~ msgstr ""
-#~ "<i><b>NOTA:</b> Las opciones de «Directorio de música» solo se utilizan "
-#~ "para obtener las carátulas. Si también tiene permisos de escritura en el "
-#~ "directorio (y subdirectorios), Cantata guardará cualquier carátula "
-#~ "descargada en la carpeta respectiva de cada álbum.</i>"
-
-#~ msgid "(00:00)"
-#~ msgstr "(00:00)"
-
-#~ msgid "Server"
-#~ msgstr "Servidor"
-
-#~ msgid "Version:"
-#~ msgstr "Versión:"
-
-#~ msgid "Uptime:"
-#~ msgstr "Tiempo de funcionamiento:"
-
-#~ msgid "Time playing:"
-#~ msgstr "Tiempo de reproducción:"
-
-#~ msgid "Database"
-#~ msgstr "Base de datos"
-
-#~ msgid "Albums:"
-#~ msgstr "Álbumes:"
-
-#~ msgid "Songs:"
-#~ msgstr "Canciones:"
-
-#~ msgid "Total duration:"
-#~ msgstr "Duración total:"
-
-#~ msgid "Last update:"
-#~ msgstr "Última actualización:"
-
-#~ msgid "URL handlers:"
-#~ msgstr "Manipulador de direcciones URL:"
-
-#~ msgid "Failed to update the tags of some tracks."
-#~ msgstr "Fallo al actualizar las etiquetas de algunas pistas"
-
-#~ msgid "Are you sure you wish to forget the selected device?"
-#~ msgstr "¿Desea eliminar el dispositivo seleccionado?"
-
-#~ msgid "Small Control Buttons"
-#~ msgstr "Botones de control pequeños"
-
-#~ msgid "External Settings"
-#~ msgstr "Opciones externas"
-
-#~ msgid ""
-#~ "<table><tr><td align=\"right\"><b>Artist:</b></td><td>%1</td></tr><tr><td "
-#~ "align=\"right\"><b>Album:</b></td><td>%2</td></tr><tr><td align=\"right"
-#~ "\"><b>Song:</b></td><td>%3</td></tr><tr><td align=\"right\"><b>Track:</"
-#~ "b></td><td>%4</td></tr><tr><td align=\"right\"><b>Length:</b></td><td>%5</"
-#~ "td></tr></table>"
-#~ msgstr ""
-#~ "<table><tr><td align=\"right\"><b>Artista:</b></td><td>%1</td></"
-#~ "tr><tr><td align=\"right\"><b>Álbum:</b></td><td>%2</td></tr><tr><td "
-#~ "align=\"right\"><b>Canción:</b></td><td>%3</td></tr><tr><td align=\"right"
-#~ "\"><b>Pista:</b></td><td>%4</td></tr><tr><td align=\"right\"><b>Duración:"
-#~ "</b></td><td>%5</td></tr></table>"
-
-#~ msgid "-"
-#~ msgstr "-"
-
-#~ msgid "Enable basic MPRISv2 interface:"
-#~ msgstr "Activar interfaz básica MPRISv2:"
-
-#, fuzzy
-#~ msgid ""
-#~ "%1\n"
-#~ "%2\n"
-#~ "%3"
-#~ msgstr ""
-#~ "%1\n"
-#~ "%2\n"
-#~ "%3"
-
-#~ msgid ""
-#~ "%1\n"
-#~ "%2 (%3)\n"
-#~ "1 Track (%5)"
-#~ msgid_plural ""
-#~ "%1\n"
-#~ "%2 (%3)\n"
-#~ "%4 Tracks (%5)"
-#~ msgstr[0] ""
-#~ "%1\n"
-#~ "%2 (%3)\n"
-#~ "1 pista (%5)"
-#~ msgstr[1] ""
-#~ "%1\n"
-#~ "%2 (%3)\n"
-#~ "%4 pistas (%5)"
-
-#~ msgid "%1<br/>1 Album"
-#~ msgid_plural "%1<br/>%2 Albums"
-#~ msgstr[0] "%1<br/>1 álbum"
-#~ msgstr[1] "%1<br/>%2 álbumes"
-
-#~ msgid "%1<br/>1 Track (%3)"
-#~ msgid_plural "%1<br/>%2 Tracks (%3)"
-#~ msgstr[0] "%1<br/>1 pista (%3)"
-#~ msgstr[1] "%1<br/>%2 pistas (%3)"
-
-#, fuzzy
-#~ msgid "1 day %1"
-#~ msgstr "1 día %2"
-
-#, fuzzy
-#~ msgid "%1 days %2"
-#~ msgstr "1 día %2"
-
-#~ msgid ""
-#~ "%1\n"
-#~ "1 Artist"
-#~ msgid_plural ""
-#~ "%1\n"
-#~ "%2 Artists"
-#~ msgstr[0] ""
-#~ "%1\n"
-#~ "1 artista"
-#~ msgstr[1] ""
-#~ "%1\n"
-#~ "%2 artistas"
-
-#~ msgid ""
-#~ "%1\n"
-#~ "1 Album"
-#~ msgid_plural ""
-#~ "%1\n"
-#~ "%2 Albums"
-#~ msgstr[0] ""
-#~ "%1\n"
-#~ "1 álbum"
-#~ msgstr[1] ""
-#~ "%1\n"
-#~ "%2 álbumes"
-
-#~ msgid ""
-#~ "%1\n"
-#~ "1 Track (%3)"
-#~ msgid_plural ""
-#~ "%1\n"
-#~ "%2 Tracks (%3)"
-#~ msgstr[0] ""
-#~ "%1\n"
-#~ "1 pista (%3)"
-#~ msgstr[1] ""
-#~ "%1\n"
-#~ "%2 pistas (%3)"
-
-#~ msgid ""
-#~ "%1\n"
-#~ "1 Entry"
-#~ msgid_plural ""
-#~ "%1\n"
-#~ "%2 Entries"
-#~ msgstr[0] ""
-#~ "%1\n"
-#~ "1 entrada"
-#~ msgstr[1] ""
-#~ "%1\n"
-#~ "%2 entradas"
-
-#~ msgid ""
-#~ "%1\n"
-#~ "1 Stream"
-#~ msgid_plural ""
-#~ "%1\n"
-#~ "%2 Streams"
-#~ msgstr[0] ""
-#~ "%1\n"
-#~ "1 flujo"
-#~ msgstr[1] ""
-#~ "%1\n"
-#~ "%2 flujos"
-
-#~ msgid "Priorty"
-#~ msgstr "Prioridad"
-
-#~ msgid "Other Protocol"
-#~ msgstr "Otro protocolo"
-
-#~ msgid "1 Artist, "
-#~ msgid_plural "%1 Artists, "
-#~ msgstr[0] "1 artista,"
-#~ msgstr[1] "%1 artistas,"
-
-#~ msgid "1 Album, "
-#~ msgid_plural "%1 Albums, "
-#~ msgstr[0] "1 álbum,"
-#~ msgstr[1] "%1 álbumes,"
-
-#~ msgid "Control Active Outputs"
-#~ msgstr "Control de salidas activas"
-
-#~ msgctxt "Connection to host:port"
-#~ msgid "Connection to %1:%2 failed"
-#~ msgstr "Fallo de conexión a %1:%2"
-
-#~ msgctxt "Connection to host:port"
-#~ msgid "Connection to %1:%2 failed - incorrect password"
-#~ msgstr "Fallo de conexión a %1:%2 - contraseña incorrecta"
-
-#~ msgid "SqueezedTextLabel"
-#~ msgstr "SqueezedTextLabel"
-
-#~ msgid "Device is currently busy."
-#~ msgstr "El dispositivo está en uso."
-
-#~ msgid "No lyrics found"
-#~ msgstr "No se han encontrado letras"
-
-#~ msgid "Library View"
-#~ msgstr "Vista de biblioteca"
-
-#~ msgid "Albums View"
-#~ msgstr "Vista de álbumes"
-
-#~ msgid "Album - Artist"
-#~ msgstr "Álbum - Artista"
-
-#~ msgid "Playlists view style:"
-#~ msgstr "Estilo de vista de listas de reproducción:"
-
-#~ msgid "A simple interface to MPD"
-#~ msgstr "Una sencilla interfaz para MPD"
-
-#~ msgid "Covers in library view:"
-#~ msgstr "Portadas en la vista de biblioteca:"
-
-#~ msgid "Clear Playlist"
-#~ msgstr "Limpiar lista de reproducción"
-
-#~ msgid ""
-#~ "The MPD connection died unexpectedly.<br/>TThis error is unrecoverable, "
-#~ "please restart %1."
-#~ msgstr ""
-#~ "La conexión a MPD se cerró de forma inesperada. <br/>Este error es "
-#~ "irrecuperable, reinicie %1."
-
-#~ msgid "Category Name"
-#~ msgstr "Nombre de categoría"
-
-#~ msgid "Enter a name for the category:"
-#~ msgstr "Introduzca un nombre para la categoría:"
-
-#~ msgid "A category named <b>%1</b> already exists!"
-#~ msgstr "Ya existe una categoría llamada <b>%1</b>."
-
-#~ msgid "Sorry, failed to save <b>%1</b>"
-#~ msgstr "Fallo al guardar <b>%1</b>"
-
-#~ msgid "Tabs On Top (Icons Only)"
-#~ msgstr "Pestañas en la parte superior (sólo iconos)"
-
-#~ msgid "Tabs On Bottom (Icons Only)"
-#~ msgstr "Pestañas en la parte inferior (sólo iconos)"
-
-#~ msgid "Update Database"
-#~ msgstr "Actualizar base de datos"
-
-#~ msgid "<b>Updating backend database</b><br><i>Please wait...</i>"
-#~ msgstr ""
-#~ "<b>Actualizando la base de datos del sistema</b><br><i>Espere...</i>"
-
-#~ msgid "<b>Finished</b><br><i>Database updated.</i>"
-#~ msgstr "<b>Finalizado</b><br><i>Se ha actualizado la base de datos.</i>"
-
-#~ msgid "Remove Stream/Category"
-#~ msgstr "Eliminar flujo/categoría"
-
-#~ msgid ""
-#~ "*.streams|Cantata Streams\n"
-#~ "*.js|Amarok Script"
-#~ msgstr ""
-#~ "*.streams|Flujos de Cantata\n"
-#~ "*.js|Script de Amarok"
-
-#~ msgid "<nknown"
-#~ msgstr "Desconocido"

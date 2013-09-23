@@ -139,10 +139,10 @@ void MPDUser::setMusicFolder(const QString &folder)
     QFile cfgFile(Utils::configDir(constDir, true)+constConfigFile);
     QStringList lines;
     if (cfgFile.open(QIODevice::ReadOnly|QIODevice::Text)) {
-        while (!cfgFile.atEnd() && (det.dir.isEmpty() || det.hostname.isEmpty())) {
+        while (!cfgFile.atEnd()) {
             QString line = cfgFile.readLine();
             if (line.startsWith(constMusicFolderKey)) {
-                lines.append(constMusicFolderKey+" \""+folder+"\"");
+                lines.append(constMusicFolderKey+" \""+folder+"\"\n");
             } else {
                 lines.append(line);
             }
@@ -154,12 +154,24 @@ void MPDUser::setMusicFolder(const QString &folder)
         if (cfgFile.open(QIODevice::WriteOnly|QIODevice::Text)) {
             QTextStream out(&cfgFile);
             foreach (const QString &line, lines) {
-                out << line << endl;
+                out << line;
             }
         }
     }
     det.dir=folder;
     det.dirReadable=QDir(det.dir).isReadable();
+    if (0!=getPid()) {
+        controlMpd(true); // Stop
+        controlMpd(false); // Start
+    }    
+}
+
+void MPDUser::setDetails(const MPDConnectionDetails &d)
+{
+    setMusicFolder(d.dir);
+    bool dirReadable=det.dirReadable;
+    det=d;
+    det.dirReadable=dirReadable;
 }
 
 static void removeDir(const QString &d)

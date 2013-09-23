@@ -154,6 +154,6 @@ void PlaybackSettings::showAboutReplayGain()
                                        "<li><i>None</i> - No ReplayGain is applied.</li>"
                                        "<li><i>Track</i> - Volume will be adjusted using the track's ReplayGain tags.</li>"
                                        "<li><i>Album</i> - Volume will be adjusted using the albums's ReplayGain tags.</li>"
-                                       "<li><i>Auto</i> - Volume will be adjusted using the track's ReplayGain tags if random play is actived, otherwise the album's tags will be used.</li>"
+                                       "<li><i>Auto</i> - Volume will be adjusted using the track's ReplayGain tags if random play is activated, otherwise the album's tags will be used.</li>"
                                        "</ul></p>"));
 }

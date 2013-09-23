@@ -46,7 +46,7 @@ public:
     void cleanup();
 
     const MPDConnectionDetails & details(bool createFiles=false) { init(createFiles); return det; }
-    void setDetails(const MPDConnectionDetails &d) { det=d; }
+    void setDetails(const MPDConnectionDetails &d);
 
 private:
     void init(bool create);

@@ -45,7 +45,8 @@
 3. Add Russian translation, thanks to Julia Dronova.
 4. Online services support does not require taglib.
 5. Fix changing of Music folder for 'Personal' mpd collection.
-6. Updated Spanish translation.
+6. Use QDesktopServices to ascertain default music folder for 'Personal'
+   collections.
 
 1.1.2
 -----

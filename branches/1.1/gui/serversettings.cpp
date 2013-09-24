@@ -34,7 +34,11 @@
 #include <QPushButton>
 #include <QValidator>
 #include <QStyle>
+#if QT_VERSION > 0x050000
+#include <QStandardPaths>
+#else
 #include <QDesktopServices>
+#endif
 
 class CoverNameValidator : public QValidator
 {
@@ -250,7 +254,11 @@ void ServerSettings::add()
         combo->addItem(details.name);
     } else {
         details=MPDUser::self()->details(true);
+        #if QT_VERSION > 0x050000
+        QString dir=QStandardPaths::writableLocation(QStandardPaths::MusicLocation);
+        #else
         QString dir=QDesktopServices::storageLocation(QDesktopServices::MusicLocation);
+        #endif
         if (dir.isEmpty()) {
             QString dir=QDir::homePath()+"/Music";
             dir=dir.replace("//", "/");

@@ -264,9 +264,7 @@ public Q_SLOTS:
     void showPlaylistsTab() { showTab(PAGE_PLAYLISTS); }
     void showDynamicTab() { showTab(PAGE_DYNAMIC); }
     void showStreamsTab() { showTab(PAGE_STREAMS); }
-    #ifdef TAGLIB_FOUND
     void showOnlineTab() { showTab(PAGE_ONLINE); }
-    #endif
     void showContextTab() { showTab(PAGE_CONTEXT); }
     void showDevicesTab() {
         #ifdef ENABLE_DEVICES_SUPPORT

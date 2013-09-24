@@ -720,10 +720,13 @@ void CoverLocator::locate(const Song &s)
     startTimer(0);
 }
 
-// To improve responsiveness of views, we only process a max of 5 images per even loop iteration.
+// To improve responsiveness of views, we only process a max of X images per even loop iteration.
 // If more images are asked for, we place these into a list, and get them on the next iteration
 // of the loop. This way things appear smoother.
 static const int constMaxPerLoopIteration=5;
+
+// Max number of 'findImage' per iteration - these are done in GUI thread, so keep small...
+static const int constMaxFindPerLoopIteration=2;
 
 void CoverLocator::locate()
 {
@@ -1060,7 +1063,7 @@ Covers::Image Covers::requestImage(const Song &song)
         }
     }
 
-    if (retrieved>=constMaxPerLoopIteration) {
+    if (retrieved>=constMaxFindPerLoopIteration) {
         emit locate(song);
         return Covers::Image();
     }

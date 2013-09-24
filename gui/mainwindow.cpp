@@ -711,7 +711,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(this, SIGNAL(outputs()), MPDConnection::self(), SLOT(outputs()));
     connect(this, SIGNAL(removeSongs(const QList<qint32> &)), MPDConnection::self(), SLOT(removeSongs(const QList<qint32> &)));
     connect(this, SIGNAL(pause(bool)), MPDConnection::self(), SLOT(setPause(bool)));
-    connect(this, SIGNAL(play()), MPDConnection::self(), SLOT(startPlayingSong()));
+    connect(this, SIGNAL(play()), MPDConnection::self(), SLOT(play()));
     connect(this, SIGNAL(stop(bool)), MPDConnection::self(), SLOT(stopPlaying(bool)));
     connect(this, SIGNAL(getStatus()), MPDConnection::self(), SLOT(getStatus()));
     connect(this, SIGNAL(getStats(bool)), MPDConnection::self(), SLOT(getStats(bool)));

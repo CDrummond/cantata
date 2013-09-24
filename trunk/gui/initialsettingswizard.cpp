@@ -112,7 +112,7 @@ InitialSettingsWizard::~InitialSettingsWizard()
 MPDConnectionDetails InitialSettingsWizard::getDetails()
 {
     if (basic->isChecked()) {
-        MPDUser::self()->setMusicFolder(basicDir->text());
+        MPDUser::self()->setMusicFolder(basicDir->text().trimmed());
         return MPDUser::self()->details(true);
     }
     MPDConnectionDetails det;

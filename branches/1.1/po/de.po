@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-07-20 19:42+0100\n"
-"PO-Revision-Date: 2013-09-21 22:56+0200\n"
+"PO-Revision-Date: 2013-09-24 04:33+0200\n"
 "Last-Translator: Markus Slopianka <kamikazow@web.de>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de\n"
@@ -2678,8 +2678,7 @@ msgstr ""
 "br>Musiksammlung kann geteilt werden, ist auf einem anderen Rechner, oder ist "
 "bereits eingerichtet. </"
 "li><li> Einfach: <br>Musiksammlung ist nicht mit anderen geteilt und Cantata "
-"wird"
-"Konfiguration und Steuerung der MPD-Instanz übernehmen.</ li></ ul>"
+"wird Konfiguration und Steuerung der MPD-Instanz übernehmen.</ li></ ul>"
 
 #: gui/serversettings.cpp:233
 msgid "Add Collection"
@@ -4135,7 +4134,7 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QRadioButton, basic)
 #: po/rc.cpp:373 rc.cpp:373
 msgid "Basic single user setup"
-msgstr "Grundlegende Einzelbenutzerkonfiguration"
+msgstr "Einfache Konfiguration für Einzelnutzer"
 
 #. i18n: file: gui/initialsettingswizard.ui:189
 #. i18n: ectx: property (text), widget (QRadioButton, advanced)
@@ -4202,7 +4201,7 @@ msgid ""
 msgstr ""
 "Die folgenden Einstellungen sind die grundlegenden Einstellungen, welche "
 "Cantata benötigt. Bitte die nötigen Details eingeben und die "
-"'Verbinden'-Schaltfläche zum Testen der Verbindung drücken."
+"„Verbinden“-Schaltfläche zum Testen der Verbindung drücken."
 
 #. i18n: file: gui/initialsettingswizard.ui:373
 #. i18n: ectx: property (text), widget (BuddyLabel, hostLabel)

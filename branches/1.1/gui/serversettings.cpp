@@ -126,13 +126,14 @@ void ServerSettings::load()
     combo->clear();
     int idx=0;
     haveBasicCollection=false;
-    foreach (const MPDConnectionDetails &d, all) {
+    foreach (MPDConnectionDetails d, all) {
         combo->addItem(d.getName(), d.name);
         if (d.name==currentCon) {
             prevIndex=idx;
         }
         idx++;
         if (d.name==MPDUser::constName) {
+            d.dir=MPDUser::self()->details().dir;
             haveBasicCollection=true;
             prevBasic=d;
         }
@@ -346,6 +347,7 @@ MPDConnectionDetails ServerSettings::getDetails() const
         details=MPDUser::self()->details(true);
         details.dir=basicDir->text().trimmed();
         details.coverName=basicCoverName->text().trimmed();
+        MPDUser::self()->setMusicFolder(details.dir);
     }
     details.dirReadable=details.dir.isEmpty() ? false : QDir(details.dir).isReadable();
     return details;

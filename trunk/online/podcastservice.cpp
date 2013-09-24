@@ -42,6 +42,7 @@
 #if QT_VERSION >= 0x050000
 #include <QUrlQuery>
 #endif
+#include <stdio.h>
 
 class PodcastSettingsDialog : public Dialog
 {
@@ -100,6 +101,16 @@ QString PodcastService::iconFile;
 
 static const char * constNewFeedProperty="new-feed";
 
+// Move files from previous ~/.config/cantata to ~/.local/share/cantata
+static void moveToNewLocation()
+{
+    #if !defined Q_OS_WIN && !defined Q_OS_MAC // Not required for windows - as already stored in data location!
+    if (Settings::self()->version()<CANTATA_MAKE_VERSION(1, 51, 0)) {
+        Utils::moveDir(Utils::configDir(MusicLibraryItemPodcast::constDir), Utils::dataDir(MusicLibraryItemPodcast::constDir, true));
+    }
+    #endif
+}
+
 QUrl PodcastService::fixUrl(const QString &url)
 {
     QString trimmed(url.trimmed());
@@ -143,6 +154,8 @@ PodcastService::PodcastService(MusicModel *m)
     : OnlineService(m, i18n("Podcasts"))
     , updateTimer(0)
 {
+    moveToNewLocation();
+
     loaded=true;
     setUseArtistImages(false);
     setUseAlbumImages(false);
@@ -172,7 +185,7 @@ void PodcastService::clear()
 
 void PodcastService::loadAll()
 {
-    QString dir=Utils::configDir(MusicLibraryItemPodcast::constDir);
+    QString dir=Utils::dataDir(MusicLibraryItemPodcast::constDir);
 
     if (!dir.isEmpty()) {
         QDir d(dir);

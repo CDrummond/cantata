@@ -60,7 +60,7 @@ const QString MusicLibraryItemPodcast::constDir=QLatin1String("podcasts");
 static QString generateFileName(const QUrl &url, bool creatingNew)
 {
     QString hash=QCryptographicHash::hash(url.toString().toUtf8(), QCryptographicHash::Md5).toHex();
-    QString dir=Utils::configDir(MusicLibraryItemPodcast::constDir, true);
+    QString dir=Utils::dataDir(MusicLibraryItemPodcast::constDir, true);
     QString fileName=dir+hash+MusicLibraryItemPodcast::constExt;
 
     if (creatingNew) {

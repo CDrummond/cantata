@@ -286,10 +286,10 @@ possible for this script to be controlled on the command line (although it was
 never written with this in mind).
 
 The list of dynamic playlists may be obtained by looking in
-~/.config/cantata/dynamic
+~/.local/share/cantata/dynamic
 
 To 'load' a dynamic playlist, all you need to do is symlink the desired one in
-~/.config/cantata/dynamic to ~/.cache/cantata/dynamic/rules. Then you can start
+~/.local/share/cantata/dynamic to ~/.cache/cantata/dynamic/rules. Then you can start
 the helper by calling '/usr/share/cantata/scripts/cantata-dynamic start'  (or 
 first call '/usr/share/cantata/scripts/cantata-dynamic stop' to stop any current
 playlist).
@@ -309,7 +309,7 @@ playlist, load the 'MyPlaylist' playlist, and start this on the mpd at
     if [ -f "$HOME/.cache/cantata/dynamic/rules" ] ; then
         rm "$HOME/.cache/cantata/dynamic/rules"
     fi
-    ln -s "$HOME/.config/cantata/dynamic/MyPlaylist.rules" "$HOME/.cache/cantata/dynamic/rules"
+    ln -s "$HOME/.local/share/cantata/dynamic/MyPlaylist.rules" "$HOME/.cache/cantata/dynamic/rules"
     # Restart dynamic script
     MPD_HOST=pass@hostname MPD_PORT=1234 /usr/share/cantata/scripts/cantata-dynamic start
 

@@ -59,6 +59,7 @@ K_GLOBAL_STATIC(StreamsModel, instance)
 #if defined Q_OS_WIN
 #include <QDesktopServices>
 #endif
+#include <stdio.h>
 
 StreamsModel * StreamsModel::self()
 {
@@ -108,10 +109,11 @@ static QString constShoutCastHost=QLatin1String("api.shoutcast.com");
 static QString constShoutCastUrl=QLatin1String("http://")+constShoutCastHost+QLatin1String("/genre/primary?f=xml&k=")+constShoutCastApiKey;
 
 static const QLatin1String constFavouritesFileName=QLatin1String("streams.xml.gz");
+static const QLatin1String constBookmarksDir=QLatin1String("bookmarks");
 
 QString StreamsModel::favouritesDir()
 {
-    return Settings::self()->storeStreamsInMpdDir() ? MPDConnection::self()->getDetails().dir : Utils::configDir(QString(), false);
+    return Settings::self()->storeStreamsInMpdDir() ? MPDConnection::self()->getDetails().dir : Utils::dataDir(QString(), false);
 }
 
 static QString getInternalFile(bool createDir=false)
@@ -119,7 +121,19 @@ static QString getInternalFile(bool createDir=false)
     if (Settings::self()->storeStreamsInMpdDir()) {
         return MPDConnection::self()->getDetails().dir+constFavouritesFileName;
     }
-    return Utils::configDir(QString(), createDir)+constFavouritesFileName;
+    return Utils::dataDir(QString(), createDir)+constFavouritesFileName;
+}
+
+// Move files from previous ~/.config/cantata to ~/.local/share/cantata
+static void moveToNewLocation()
+{
+    #if !defined Q_OS_WIN && !defined Q_OS_MAC // Not required for windows - as already stored in data location!
+    if (Settings::self()->version()<CANTATA_MAKE_VERSION(1, 51, 0)) {
+        Utils::moveFile(Utils::configDir(QString())+constFavouritesFileName, Utils::dataDir(QString(), true)+constFavouritesFileName);
+        Utils::moveDir(Utils::configDir(constBookmarksDir), Utils::dataDir(constBookmarksDir, true));
+        Utils::moveDir(Utils::configDir(StreamsModel::constSubDir), Utils::dataDir(StreamsModel::constSubDir, true));
+    }
+    #endif
 }
 
 static QIcon getIcon(const QString &name)
@@ -150,7 +164,7 @@ static QString categoryCacheName(const QString &name, bool createDir=false)
 
 static QString categoryBookmarksName(const QString &name, bool createDir=false)
 {
-    return Utils::configDir(QLatin1String("bookmarks"), createDir)+name+StreamsModel::constCacheExt;
+    return Utils::dataDir(constBookmarksDir, createDir)+name+StreamsModel::constCacheExt;
 }
 
 QString StreamsModel::Item::modifiedName() const
@@ -541,6 +555,8 @@ StreamsModel::StreamsModel(QObject *parent)
     , favouritesModified(false)
     , favouritesSaveTimer(0)
 {
+    moveToNewLocation();
+
     tuneIn=new CategoryItem(constRadioTimeUrl+QLatin1String("?locale=")+QLocale::system().name(), i18n("TuneIn"), root, getIcon("tunein"), QString(), "tunein");
     tuneIn->supportsBookmarks=true;
     root->children.append(tuneIn);
@@ -1853,10 +1869,10 @@ void StreamsModel::buildListenLive()
 void StreamsModel::buildXml()
 {
     #ifdef Q_OS_WIN
-    QStringList dirs=QStringList() << Utils::configDir(StreamsModel::constSubDir)
+    QStringList dirs=QStringList() << Utils::dataDir(StreamsModel::constSubDir)
                                    << QCoreApplication::applicationDirPath()+"/streams/";
     #else
-    QStringList dirs=QStringList() << Utils::configDir(StreamsModel::constSubDir)
+    QStringList dirs=QStringList() << Utils::dataDir(StreamsModel::constSubDir)
                                    << INSTALL_PREFIX "/share/cantata/streams/";
     #endif
     QSet<QString> added;

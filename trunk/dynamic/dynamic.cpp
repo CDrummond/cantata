@@ -49,6 +49,7 @@ K_GLOBAL_STATIC(Dynamic, instance)
 #include <QUrlQuery>
 #endif
 #include <signal.h>
+#include <stdio.h>
 
 #include <QDebug>
 static bool debugEnabled=false;
@@ -145,6 +146,16 @@ const QString Dynamic::constExcludeKey=QLatin1String("Exclude");
 static const char * constMulticastMsgHeader="{CANTATA/";
 const QString constStatusMsg(QLatin1String("STATUS:"));
 
+// Move files from previous ~/.config/cantata to ~/.local/share/cantata
+static void moveToNewLocation()
+{
+    #if !defined Q_OS_WIN && !defined Q_OS_MAC // Not required for windows - as already stored in data location!
+    if (Settings::self()->version()<CANTATA_MAKE_VERSION(1, 51, 0)) {
+        Utils::moveDir(Utils::configDir(constDir), Utils::dataDir(constDir, true));
+    }
+    #endif
+}
+
 MulticastReceiver::MulticastReceiver(QObject *parent, const QString &i, const QString &group, quint16 port)
     : QObject(parent)
     , id(i)
@@ -188,6 +199,7 @@ Dynamic::Dynamic()
     , currentCommand(Unknown)
     , receiver(0)
 {
+    moveToNewLocation();
     loadLocal();
     connect(this, SIGNAL(clear()), MPDConnection::self(), SLOT(clear()));
     connect(MPDConnection::self(), SIGNAL(dynamicUrl(const QString &)), this, SLOT(dynamicUrlChanged(const QString &)));
@@ -323,7 +335,7 @@ bool Dynamic::save(const Entry &e)
         return true;
     }
 
-    QFile f(Utils::configDir(constDir, true)+e.name+constExtension);
+    QFile f(Utils::dataDir(constDir, true)+e.name+constExtension);
     if (f.open(QIODevice::WriteOnly|QIODevice::Text)) {
         QTextStream out(&f);
         out.setCodec("UTF-8");
@@ -359,7 +371,7 @@ void Dynamic::del(const QString &name)
     if (it==entryList.end()) {
         return;
     }
-    QString fName(Utils::configDir(constDir, false)+name+constExtension);
+    QString fName(Utils::dataDir(constDir, false)+name+constExtension);
     bool isCurrent=currentEntry==name;
 
     if (!QFile::exists(fName) || QFile::remove(fName)) {
@@ -385,7 +397,7 @@ void Dynamic::start(const QString &name)
         return;
     }
 
-    QString fName(Utils::configDir(constDir, false)+name+constExtension);
+    QString fName(Utils::dataDir(constDir, false)+name+constExtension);
 
     if (!QFile::exists(fName)) {
         emit error(i18n("Failed to locate rules file - %1", fName));
@@ -572,7 +584,7 @@ void Dynamic::loadLocal()
     currentEntry=QString();
 
     // Load all current enttries...
-    QString dirName=Utils::configDir(constDir);
+    QString dirName=Utils::dataDir(constDir);
     QDir d(dirName);
     if (d.exists()) {
         QStringList rulesFiles=d.entryList(QStringList() << QChar('*')+constExtension);

@@ -242,6 +242,7 @@ void MPDUser::cleanup()
             removeDir(d);
         }
         removeDir(Utils::configDir(constDir, false));
+        removeDir(Utils::dataDir(constDir, false));
         removeDir(Utils::cacheDir(constDir, false));
     }
 }
@@ -270,11 +271,13 @@ void MPDUser::init(bool create)
                 if (cfgFile.open(QIODevice::WriteOnly|QIODevice::Text)) {
                     QString homeDir=QDir::homePath();
                     QString cacheDir=Utils::cacheDir(constDir, create);
+                    QString dataDir=Utils::dataDir(constDir, create);
                     QTextStream out(&cfgFile);
                     while (!cfgTemplate.atEnd()) {
                         QString line = cfgTemplate.readLine();
                         line=line.replace(QLatin1String("${HOME}"), homeDir);
                         line=line.replace(QLatin1String("${CONFIG_DIR}"), cfgDir);
+                        line=line.replace(QLatin1String("${DATA_DIR}"), dataDir);
                         line=line.replace(QLatin1String("${CACHE_DIR}"), cacheDir);
                         line=line.replace("//", "/");
                         out << line;

@@ -34,6 +34,7 @@
 #include <QPushButton>
 #include <QValidator>
 #include <QStyle>
+#include <QDesktopServices>
 
 class CoverNameValidator : public QValidator
 {
@@ -249,7 +250,13 @@ void ServerSettings::add()
         combo->addItem(details.name);
     } else {
         details=MPDUser::self()->details(true);
-        basicDir->setText(details.dir);
+        QString dir=QDesktopServices::storageLocation(QDesktopServices::MusicLocation);
+        if (dir.isEmpty()) {
+            QString dir=QDir::homePath()+"/Music";
+            dir=dir.replace("//", "/");
+        }
+        basicDir->setText(dir);
+        MPDUser::self()->setMusicFolder(dir);
         combo->addItem(MPDUser::translatedName());
     }
     removeButton->setEnabled(combo->count()>1);

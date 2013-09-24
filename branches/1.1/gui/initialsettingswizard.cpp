@@ -29,7 +29,7 @@
 #include "icons.h"
 #include "mpduser.h"
 #include <QDir>
-#include <QDebug>
+#include <QDesktopServices>
 
 enum Pages {
     PAGE_INTRO,
@@ -149,8 +149,11 @@ void InitialSettingsWizard::pageChanged(int p)
     if (PAGE_CONNECTION==p) {
         connectionStack->setCurrentIndex(basic->isChecked() ? 1 : 0);
         if (basic->isChecked() && basicDir->text().isEmpty()) {
-            QString dir=QDir::homePath()+"/Music";
-            dir=dir.replace("//", "/");
+            QString dir=QDesktopServices::storageLocation(QDesktopServices::MusicLocation);
+            if (dir.isEmpty()) {
+                QString dir=QDir::homePath()+"/Music";
+                dir=dir.replace("//", "/");
+            }
             basicDir->setText(dir);
         }
         controlNextButton();
@@ -201,6 +204,8 @@ void InitialSettingsWizard::accept()
 
     if (basic->isChecked()) {
         Settings::self()->saveCurrentConnection(MPDUser::constName);
+        Settings::self()->saveStopOnExit(true);
+        Settings::self()->saveStopDynamizerOnExit(true);
         emit setDetails(MPDUser::self()->details());
     } else {
         MPDUser::self()->cleanup();

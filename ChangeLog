@@ -4,9 +4,9 @@
     server, etc.
  2. Add support for user-installable stream providers. Need to copy
     streams.xml.gz/streams.xml, and icon.svg/icon.png to 
-    ~/.config/cantata/streams/NAME - or PREFIX/share/cantata/streams/NAME
-    e.g. For UK streaams, ~/.config/cantata/streams/UK/streams.xml.gz,
-    ~/.config/cantata/streams/UK/icon.svg
+    ~/.local/share/cantata/streams/NAME - or PREFIX/share/cantata/streams/NAME
+    e.g. For UK streams, ~/.local/share/cantata/streams/UK/streams.xml.gz,
+    ~/.local/share/cantata/streams/UK/icon.svg
  3. Request IceCast stream list in compressed format.
  4. Add ShoutCast search.
  5. For some stream categories (digitally imported, jazzradio, rockradio, sky,
@@ -37,6 +37,7 @@
 18. Add config page to determine list of online providers.
 19. If 'Basic'/'Personal' is selected in intitial settings wizard, then enable
     'stop playback' and 'stop dynamizer' options.
+20. Store data under XDG_DATA_HOME (~/.local/share)
 
 1.1.3
 -----

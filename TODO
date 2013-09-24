@@ -45,6 +45,7 @@
   - Seek support for AudioCDs
   - Possible issues UDisks2, might not be able to get block device
     (e.g. /dev/sr0)?
+  - Playback from MTP devices.
 
 - Lyrics
   - Add support for reading via tags in mp4, flac, and ogg files.
@@ -59,8 +60,6 @@
   - How to (reliably) determine duration of last track?
 
 - MPD Stream playback
-  - URL setting should be in collections page, as each instance will
-    have a separate URL!
   - Playback functionality needs to handle URL change when connection changes.
 
 - General

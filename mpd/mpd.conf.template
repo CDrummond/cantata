@@ -6,7 +6,7 @@ db_file "${CACHE_DIR}/tag_cache"
 pid_file "${CACHE_DIR}/pid"
 state_file "${CACHE_DIR}/state"
 log_file "/dev/null"
-metadata_to_use	"artist,album,title,track,name,genre,date,disc,albumartist"
+metadata_to_use	"artist,album,title,track,name,genre,date,disc,albumartist,composer"
 audio_output { 
   type "alsa"
   name "Output"

@@ -135,6 +135,7 @@ void MPDUser::setMusicFolder(const QString &folder)
     if (folder==det.dir) {
         return;
     }
+    init(true);
 
     QFile cfgFile(Utils::configDir(constDir, true)+constConfigFile);
     QStringList lines;
@@ -247,7 +248,7 @@ void MPDUser::cleanup()
 
 void MPDUser::init(bool create)
 {
-    if (det.dir.isEmpty() || det.hostname.isEmpty() || pidFileName.isEmpty()) {
+    if (create || det.dir.isEmpty() || det.hostname.isEmpty() || pidFileName.isEmpty()) {
         // Read coverFileName from Cantata settings...
         det.coverName=Settings::self()->connectionDetails(constName).coverName;
         det.dirReadable=false;
@@ -339,7 +340,11 @@ int MPDUser::getPid()
 
 bool MPDUser::controlMpd(bool stop)
 {
-    QStringList args=QStringList() << Utils::configDir(constDir, true)+constConfigFile;
+    QString confFile=Utils::configDir(constDir, true)+constConfigFile;
+    if (!QFile::exists(confFile)) {
+        return false;
+    }
+    QStringList args=QStringList() << confFile;
     if (stop) {
         args+="--kill";
     }

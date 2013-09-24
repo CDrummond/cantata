@@ -153,7 +153,7 @@ void StreamsSettings::install()
         return;
     }
 
-    QString streamsDir=Utils::configDir(StreamsModel::constSubDir, true);
+    QString streamsDir=Utils::dataDir(StreamsModel::constSubDir, true);
     QString dir=streamsDir+name;
     if (!QDir(dir).exists() && !Utils::createDir(dir, streamsDir)) {
         MessageBox::error(this, i18n("Failed to create stream category folder!"));
@@ -210,7 +210,7 @@ void StreamsSettings::remove()
         return;
     }
 
-    QString dir=Utils::configDir(StreamsModel::constSubDir);
+    QString dir=Utils::dataDir(StreamsModel::constSubDir);
     if (!dir.isEmpty() && !removeDir(dir+item->text(), QStringList() << "*.xml" << "*.xml.gz" << "*.png" << "*.svg")) {
         MessageBox::error(this, i18n("Failed to remove streams folder!"));
         return;

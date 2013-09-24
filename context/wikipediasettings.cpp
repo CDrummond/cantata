@@ -38,9 +38,20 @@
 #include <QXmlStreamReader>
 #include <QFile>
 
+static const QString constFileName=QLatin1String("wikipedia-available.xml.gz");
+
 static QString localeFile()
 {
-    return Utils::configDir(QString(), true)+"wikipedia-available.xml.gz";
+    return Utils::dataDir(QString(), true)+constFileName;
+}
+
+// Move files from previous ~/.config/cantata to ~/.local/share/cantata
+static void moveToNewLocation()
+{
+    #if !defined Q_OS_WIN && !defined Q_OS_MAC // Not required for windows - as already stored in data location!
+    // Can't reliable check version here, as migh tnot have opened the wiki settings before version was changed...
+    Utils::moveFile(Utils::configDir(QString())+constFileName, Utils::dataDir(QString(), true)+constFileName);
+    #endif
 }
 
 WikipediaLoader::WikipediaLoader()
@@ -104,6 +115,7 @@ void WikipediaSettings::showEvent(QShowEvent *e)
     if (Initial==state) {
         state=Loading;
         QByteArray data;
+        moveToNewLocation();
         QString fileName=localeFile();
         if (QFile::exists(fileName)) {
             QFile f(fileName);

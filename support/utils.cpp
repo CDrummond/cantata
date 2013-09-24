@@ -27,6 +27,7 @@
 #include "covers.h"
 #include "localize.h"
 #include <QFile>
+#include <QFileInfo>
 #include <QDir>
 #include <QSet>
 #include <QThread>
@@ -489,6 +490,23 @@ QString Utils::configDir(const QString &sub, bool create)
     return d.exists() || (create && d.mkpath(dir)) ? QDir::toNativeSeparators(dir) : QString();
 }
 
+
+QString Utils::dataDir(const QString &sub, bool create)
+{
+    #if defined Q_OS_WIN
+    QString dir = QDesktopServices::storageLocation(QDesktopServices::DataLocation)+"/";
+    #else
+    QString env = qgetenv("XDG_DATA_HOME");
+    QString dir = (env.isEmpty() ? QDir::homePath() + "/.local/share/" : env) + "/"+QCoreApplication::applicationName()+"/";
+    #endif
+    if(!sub.isEmpty()) {
+        dir+=sub;
+    }
+    dir=Utils::fixPath(dir);
+    QDir d(dir);
+    return d.exists() || (create && d.mkpath(dir)) ? QDir::toNativeSeparators(dir) : QString();
+}
+
 QString Utils::cacheDir(const QString &sub, bool create)
 {
     #if defined Q_OS_WIN
@@ -503,6 +521,46 @@ QString Utils::cacheDir(const QString &sub, bool create)
     dir=Utils::fixPath(dir);
     QDir d(dir);
     return d.exists() || (create && d.mkpath(dir)) ? QDir::toNativeSeparators(dir) : QString();
+}
+
+void Utils::moveFile(const QString &from, const QString &to)
+{
+    if (!from.isEmpty() && !to.isEmpty() && from!=to && QFile::exists(from) && !QFile::exists(to)) {
+        QFile::rename(from, to);
+    }
+}
+
+void Utils::moveDir(const QString &from, const QString &to)
+{
+    if (from.isEmpty() || to.isEmpty() || from==to) {
+        return;
+    }
+
+    QDir f(from);
+    if (!f.exists()) {
+        return;
+    }
+
+    QDir t(to);
+    if (!t.exists()) {
+        return;
+    }
+
+    QFileInfoList files=f.entryInfoList(QStringList() << "*", QDir::Files|QDir::Dirs|QDir::NoDotAndDotDot);
+    foreach (const QFileInfo &file, files) {
+        if (file.isDir()) {
+            QString dest=QDir::toNativeSeparators(to+file.fileName()+"/");
+            if (!QDir(dest).exists()) {
+                t.mkdir(file.fileName());
+            }
+            moveDir(QDir::toNativeSeparators(from+file.fileName()+"/"), dest);
+        } else {
+            QFile::rename(from+file.fileName(), to+file.fileName());
+        }
+    }
+
+    f.cdUp();
+    f.rmdir(from);
 }
 
 void Utils::clearOldCache(const QString &sub, int maxAge)

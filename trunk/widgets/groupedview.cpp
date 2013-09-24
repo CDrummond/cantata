@@ -264,9 +264,9 @@ public:
 
                 if (year>0) {
                     if (song.isFromOnlineService()) {
-                        title=i18nc("album (albumYear)", "%1 (%2)", song.album, year);
+                        title=i18nc("album (albumYear)", "%1 (%2)", song.album, QString::number(year));
                     } else {
-                        title=i18nc("artist - album (albumYear)", "%1 - %2 (%3)", song.artistOrComposer(), song.albumName(), year);
+                        title=i18nc("artist - album (albumYear)", "%1 - %2 (%3)", song.artistOrComposer(), song.albumName(), QString::number(year));
                     }
                     if (Song::useComposer()) {
                         while (title.contains(") (")) {

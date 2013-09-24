@@ -263,7 +263,7 @@ public:
                 quint16 year=Song::albumYear(song);
 
                 if (year>0) {
-                    title=i18nc("artist - album (albumYear)", "%1 - %2 (%3)", song.albumArtist(), album, year);
+                    title=i18nc("artist - album (albumYear)", "%1 - %2 (%3)", song.albumArtist(), album, QString::number(year));
                 } else {
                     title=i18nc("artist - album", "%1 - %2", song.albumArtist(), album);
                 }

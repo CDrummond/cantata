@@ -38,7 +38,6 @@
 #include <QStandardPaths>
 #else
 #include <QDesktopServices>
-#endif
 
 class CoverNameValidator : public QValidator
 {

@@ -185,11 +185,15 @@ Song OnlineService::encode(const Song &song)
     Song encoded=song;
     encoded.file=song.file+constUrlGuard+
                 encoded.artist.replace(constDeliminator, " ")+constDeliminator+
+                encoded.albumartist.replace(constDeliminator, " ")+constDeliminator+
+                encoded.album.replace(constDeliminator, " ")+constDeliminator+
                 encoded.title.replace(constDeliminator, " ")+constDeliminator+
                 encoded.genre.replace(constDeliminator, " ")+constDeliminator+
                 QString::number(song.time)+constDeliminator+
                 QString::number(song.year)+constDeliminator+
-                QString::number(song.track);
+                QString::number(song.track)+constDeliminator+
+                QString::number(song.disc)+constDeliminator+
+                QString::number(song.type);
     return encoded;
 }
 
@@ -203,14 +207,17 @@ bool OnlineService::decode(Song &song)
 
     if (pos>0) {
         QStringList parts=song.file.mid(pos+constUrlGuard.length()).split(constDeliminator);
-        if (parts.length()>=6) {
+        if (parts.length()>=10) {
             song.artist=parts.at(0);
-            song.title=parts.at(1);
-            song.genre=parts.at(2);
-            song.time=parts.at(3).toUInt();
-            song.year=parts.at(4).toUInt();
-            song.track=parts.at(5).toUInt();
-            song.fillEmptyFields();
+            song.albumartist=parts.at(1);
+            song.album=parts.at(2);
+            song.title=parts.at(3);
+            song.genre=parts.at(4);
+            song.time=parts.at(5).toUInt();
+            song.year=parts.at(6).toUInt();
+            song.track=parts.at(7).toUInt();
+            song.disc=parts.at(8).toUInt();
+            song.type=(Song::Type)parts.at(9).toUInt();
             song.file=song.file.left(pos);
             return true;
         }

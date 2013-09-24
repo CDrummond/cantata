@@ -415,3 +415,17 @@ QString Song::basicArtist() const
     }
     return artist;
 }
+
+static const quint8 constOnlineDiscId=0xEE;
+
+bool Song::isFromOnlineService() const
+{
+    return constOnlineDiscId==disc && file.startsWith("http://") && albumartist==album;
+}
+
+void Song::setIsFromOnlineService(const QString &service)
+{
+    disc=constOnlineDiscId;
+    album=service;
+    albumartist=service;
+}

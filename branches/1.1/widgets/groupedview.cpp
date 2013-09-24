@@ -242,6 +242,7 @@ public:
         QFontMetrics fm(f);
         int textHeight=fm.height();
 
+
         if (isCollection) {
             title=index.data(Qt::DisplayRole).toString();
         } else if (AlbumHeader==type) {
@@ -259,21 +260,28 @@ public:
                 title=i18n("Unknown");
                 track=trackTitle;
             } else {
-                QString album=song.album;
                 quint16 year=Song::albumYear(song);
 
                 if (year>0) {
-                    title=i18nc("artist - album (albumYear)", "%1 - %2 (%3)", song.albumArtist(), album, QString::number(year));
+                    if (song.isFromOnlineService()) {
+                        title=song.album+QLatin1String(" (")+QString::number(year)+QLatin1Char(')');
+                    } else {
+                        title=i18nc("artist - album (albumYear)", "%1 - %2 (%3)", song.albumArtist(), song.album, QString::number(year));
+                    }
                 } else {
-                    title=i18nc("artist - album", "%1 - %2", song.albumArtist(), album);
+                    if (song.isFromOnlineService()) {
+                        title=song.album;
+                    } else {
+                        title=i18nc("artist - album", "%1 - %2", song.albumArtist(), song.album);
+                    }
                 }
-                track=formatNumber(song.track)+QChar(' ')+trackTitle;
+                track=song.track ? formatNumber(song.track)+QChar(' ')+trackTitle : trackTitle;
             }
         } else {
             if (stream) {
                 track=streamText(song, trackTitle);
             } else {
-                track=formatNumber(song.track)+QChar(' ')+trackTitle;
+                track=song.track ? formatNumber(song.track)+QChar(' ')+trackTitle : trackTitle;
             }
         }
 

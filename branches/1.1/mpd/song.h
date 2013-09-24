@@ -117,6 +117,17 @@ struct Song
     bool isArtistImageRequest() const { return album.isEmpty() && artist.isEmpty() && !albumartist.isEmpty() && 0==size && 0==track; }
 
     QString basicArtist() const;
+
+    // podcast functions...
+    bool hasbeenPlayed() const { return 0!=id; }
+    void setPlayed(bool p) { id=p ? 1 : 0; }
+    void setPodcastImage(const QString &i) { genre=i; }
+    const QString & podcastImage() const { return genre; }
+
+    // podcast/soundcloud functions...
+    void setIsFromOnlineService(const QString &service);
+    bool isFromOnlineService() const;
+    const QString & onlineService() const { return album; }
 };
 
 Q_DECLARE_METATYPE(Song)

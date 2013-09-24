@@ -32,6 +32,7 @@
 #include "spinner.h"
 #include "icon.h"
 #include "qjson/parser.h"
+#include "config.h"
 #include <QVBoxLayout>
 #include <QLabel>
 #include <QListWidget>
@@ -704,7 +705,11 @@ void CoverDialog::sendLastFmQuery(const QString &fixedQuery, int page)
     #else
     QUrlQuery query;
     #endif
+    #ifdef ENABLE_HTTPS_SUPPORT
+    url.setScheme("https");
+    #else
     url.setScheme("http");
+    #endif
     url.setHost(constLastFmHost);
     url.setPath("/2.0/");
     query.addQueryItem("api_key", Covers::constLastFmApiKey);

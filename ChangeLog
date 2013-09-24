@@ -42,6 +42,8 @@
     2 covers in the GUI event loop per iteration. More than this is handled in
     a separate thread.
 22. Use "play" command if play button is pressed and there is no current song.
+23. Use HTTPS URLs for Last.fm, Wikipedia, SoundCloud, etc, for non-windows
+    builds.
 
 1.1.3
 -----

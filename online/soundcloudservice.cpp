@@ -37,7 +37,11 @@ const QLatin1String SoundCloudService::constName("SoundCloud");
 QString SoundCloudService::iconFile;
 static const QString constApiKey=QLatin1String("0cb23dce473528973ce74815bd36a334");
 static const QString constHost=QLatin1String("api.soundcloud.com");
+#ifdef ENABLE_HTTPS_SUPPORT
+static const QString constUrl=QLatin1String("https://")+constHost+QLatin1Char('/');
+#else
 static const QString constUrl=QLatin1String("http://")+constHost+QLatin1Char('/');
+#endif
 
 SoundCloudService::SoundCloudService(MusicModel *m)
     : OnlineService(m, constName)

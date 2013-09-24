@@ -71,6 +71,10 @@ The following options may be passed to CMake:
         NOTE: Applies to Qt builds only.
         Default: OFF
 
+    -DENABLE_HTTPS_SUPPORT=ON
+        Enable support for https URLs when querying last.fm, wikipedia,
+        soundcloud, etc.
+        Default: ON (OFF for windows)
 
     Windows specific:
 

@@ -25,6 +25,7 @@
 #include "networkaccessmanager.h"
 #include "localize.h"
 #include "settings.h"
+#include "config.h"
 #if QT_VERSION >= 0x050000
 #include <QUrlQuery>
 #endif
@@ -311,7 +312,11 @@ void WikipediaEngine::search(const QStringList &query, Mode mode)
 void WikipediaEngine::requestTitles(const QStringList &query, Mode mode, const QString &lang)
 {
     cancel();
+    #ifdef ENABLE_HTTPS_SUPPORT
+    QUrl url("https://"+lang+".wikipedia.org/w/api.php");
+    #else
     QUrl url("http://"+lang+".wikipedia.org/w/api.php");
+    #endif
     #if QT_VERSION < 0x050000
     QUrl &q=url;
     #else
@@ -508,7 +513,11 @@ void WikipediaEngine::getPage(const QStringList &query, Mode mode, const QString
     }
 
     QUrl url;
+    #ifdef ENABLE_HTTPS_SUPPORT
+    url.setScheme(QLatin1String("https"));
+    #else
     url.setScheme(QLatin1String("http"));
+    #endif
     url.setHost(lang+".wikipedia.org");
     url.setPath("/wiki/Special:Export/"+title);
     job=NetworkAccessManager::self()->get(url);

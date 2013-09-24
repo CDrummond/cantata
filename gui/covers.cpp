@@ -444,7 +444,11 @@ bool CoverDownloader::downloadViaHttp(Job &job, JobType type)
 
 void CoverDownloader::downloadViaLastFm(Job &job)
 {
+    #ifdef ENABLE_HTTPS_SUPPORT
+    QUrl url("https://ws.audioscrobbler.com/2.0/");
+    #else
     QUrl url("http://ws.audioscrobbler.com/2.0/");
+    #endif
     #if QT_VERSION < 0x050000
     QUrl &query=url;
     #else

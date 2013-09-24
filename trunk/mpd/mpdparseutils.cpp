@@ -50,9 +50,7 @@
 #include "utils.h"
 #include "cuefile.h"
 #include "mpdconnection.h"
-#ifdef TAGLIB_FOUND
 #include "onlineservice.h"
-#endif
 
 #include <QDebug>
 static bool debugEnabled=false;

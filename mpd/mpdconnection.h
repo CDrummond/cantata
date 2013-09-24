@@ -213,6 +213,7 @@ public Q_SLOTS:
     void getReplayGain();
     void goToNext();
     void setPause(bool toggle);
+    void play();
     void startPlayingSong(quint32 song = 0);
     void startPlayingSongId(qint32 songId = 0);
     void goToPrevious();

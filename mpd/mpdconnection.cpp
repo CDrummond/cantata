@@ -828,6 +828,12 @@ void MPDConnection::setPause(bool toggle)
     sendCommand("pause "+value(toggle));
 }
 
+void MPDConnection::play()
+{
+    toggleStopAfterCurrent(false);
+    sendCommand("play");
+}
+
 void MPDConnection::startPlayingSong(quint32 song)
 {
     toggleStopAfterCurrent(false);

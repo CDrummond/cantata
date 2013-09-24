@@ -41,6 +41,7 @@
 21. Improve responsiveness when loading covers. Only attempt to locate and load
     2 covers in the GUI event loop per iteration. More than this is handled in
     a separate thread.
+22. Use "play" command if play button is pressed and there is no current song.
 
 1.1.3
 -----

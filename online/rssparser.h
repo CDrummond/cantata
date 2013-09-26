@@ -27,6 +27,8 @@
 #include <QUrl>
 #include <QString>
 #include <QList>
+#include <QList>
+#include <QDateTime>
 
 class QIODevice;
 
@@ -37,6 +39,7 @@ struct Episode
 {
     Episode() : duration(0) { }
     QString name;
+    QDateTime publicationDate;
     unsigned int duration;
     QUrl url;
 };

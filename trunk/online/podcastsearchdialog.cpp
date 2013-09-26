@@ -32,6 +32,7 @@
 #include "qjson/parser.h"
 #include "basicitemdelegate.h"
 #include "onlineservicesmodel.h"
+#include "podcastservice.h"
 #include "utils.h"
 #include "action.h"
 #include "textbrowser.h"
@@ -559,13 +560,15 @@ void PodcastSearchDialog::rssSelected(const QUrl &url)
 void PodcastSearchDialog::slotButtonClicked(int button)
 {
     switch (button) {
-    case User1:
-        if (OnlineServicesModel::self()->subscribePodcast(currentUrl)) {
+    case User1: {
+        QUrl fixed=PodcastService::fixUrl(currentUrl);
+        if (OnlineServicesModel::self()->subscribePodcast(fixed)) {
             MessageBox::information(this, i18n("Subscription added"));
         } else {
             MessageBox::error(this, i18n("You are already subscribed to this podcast!"));
         }
         break;
+    }
     case Close:
         reject();
         // Need to call this - if not, when dialog is closed by window X control, it is not deleted!!!!

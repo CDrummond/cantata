@@ -57,6 +57,8 @@
 7. If no icon is to be used on a message-box button, then ensure the icon is
    cleared.
 8. Fix display of album year in playqueue for KDE builds.
+9. If we recieve an error from MPD via status, then display this in the main
+   window.
 
 1.1.2
 -----

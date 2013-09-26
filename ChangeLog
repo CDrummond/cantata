@@ -13,7 +13,7 @@
     somaFm, and some user categories) add category name to stream name when it
     is saved in favourites, or added to playqueue.
  6. Support composer tag - group albums via composer, edit tag, rename files
-    using tag, and use field for dyanmic playlists.
+    using tag, and use field for dynamic playlists.
  7. Place HTTP stream URL into connections page, as URL could be different per
     connection.
  8. Add config page to control which stream categories are enabled, to import
@@ -29,18 +29,20 @@
     window to have the same height as toolbuttons - this makes it align to the
     bottom.
 14. Place a 0-pixel wide 'size widget' at the bottom of each view, to attempt to
-    ensure consisten sizes between views.
-15. Make playqueue search consisten with view search - ie. only show search on
+    ensure consistent sizes between views.
+15. Make playqueue search consistent with view search - ie. only show search on
     activating 'Search Play Queue', do not toggle.
 16. Initial MacOS port - thanks to Ian Scott
 17. Podcast support.
 18. Add config page to determine list of online providers.
 19. If 'Basic'/'Personal' is selected in intitial settings wizard, then enable
     'stop playback' and 'stop dynamizer' options.
-20. Store data under XDG_DATA_HOME (~/.local/share)
-21. Improve responsiveness when loading covers. Only attempt to locate and load
-    2 covers in the GUI event loop per iteration. More than this is handled in
-    a separate thread.
+20. Store data under XDG_DATA_HOME (~/.local/share) Any existing files will be
+    copied to the new location. NOTE: This is not backwards compatible, so if
+    you downgrade Cantata, you will have issues (e.g. missing stream
+    favourites)
+21. Add two items to config file to modify cover-loading responsiveness. Please
+    see README for further details.
 22. Use "play" command if play button is pressed and there is no current song.
 23. Use HTTPS URLs for Last.fm, Wikipedia, SoundCloud, etc, for non-windows
     builds.

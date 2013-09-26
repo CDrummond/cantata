@@ -727,15 +727,15 @@ void CoverLocator::locate(const Song &s)
 // To improve responsiveness of views, we only process a max of X images per even loop iteration.
 // If more images are asked for, we place these into a list, and get them on the next iteration
 // of the loop. This way things appear smoother.
-static const int constMaxPerLoopIteration=5;
+static int maxPerLoopIteration=5;
 
 // Max number of 'findImage' per iteration - these are done in GUI thread, so keep small...
-static const int constMaxFindPerLoopIteration=2;
+static int maxFindPerLoopIteration=5;
 
 void CoverLocator::locate()
 {
     QList<Song> toDo;
-    for (int i=0; i<constMaxPerLoopIteration && !queue.isEmpty(); ++i) {
+    for (int i=0; i<maxPerLoopIteration && !queue.isEmpty(); ++i) {
         toDo.append(queue.takeFirst());
     }
     if (toDo.isEmpty()) {
@@ -762,6 +762,9 @@ Covers::Covers()
     , cache(300000)
     , countResetTimer(0)
 {
+    maxPerLoopIteration=Settings::self()->maxCoverUpdatePerIteration();
+    maxFindPerLoopIteration=Settings::self()->maxCoverFindPerIteration();
+
     qRegisterMetaType<LocatedCover>("LocatedCover");
     qRegisterMetaType<QList<LocatedCover> >("QList<LocatedCover>");
     saveInMpdDir=Settings::self()->storeCoversInMpdDir();
@@ -1067,7 +1070,7 @@ Covers::Image Covers::requestImage(const Song &song)
         }
     }
 
-    if (retrieved>=constMaxFindPerLoopIteration) {
+    if (retrieved>=maxFindPerLoopIteration) {
         emit locate(song);
         return Covers::Image();
     }

@@ -182,6 +182,8 @@ public:
     #endif
     int rssUpdate();
     QDateTime lastRssUpdate();
+    int maxCoverFindPerIteration();
+    int maxCoverUpdatePerIteration();
 
     void removeConnectionDetails(const QString &v);
     void saveConnectionDetails(const MPDConnectionDetails &v);

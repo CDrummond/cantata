@@ -715,6 +715,18 @@ QDateTime Settings::lastRssUpdate()
     return GET_DATE_TIME("lastRssUpdate");
 }
 
+int Settings::maxCoverFindPerIteration()
+{
+    int v=GET_INT("maxCoverFindPerIteration", 5);
+    return v<0 ? 5 : (v>20 ? 20 : v);
+}
+
+int Settings::maxCoverUpdatePerIteration()
+{
+    int v=GET_INT("maxCoverFindPerIteration", 5);
+    return v<0 ? 5 : (v>20 ? 20 : v);
+}
+
 void Settings::removeConnectionDetails(const QString &v)
 {
     if (v==currentConnection()) {

@@ -1921,6 +1921,10 @@ void MainWindow::updateStatus()
 
 void MainWindow::updateStatus(MPDStatus * const status)
 {
+    if (!status->error().isEmpty()) {
+        showError(i18n("MPD reported the following error: %1", status->error()));
+    }
+
     if (MPDState_Stopped==status->state() || MPDState_Inactive==status->state()) {
         positionSlider->clearTimes();
         playQueueModel.clearStopAfterTrack();

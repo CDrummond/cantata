@@ -271,14 +271,14 @@ void PodcastService::jobFinished()
             QSet<QString> playedSongs;
             foreach (MusicLibraryItem *i, orig->childItems()) {
                 MusicLibraryItemSong *song=static_cast<MusicLibraryItemSong *>(i);
-                origSongs.insert(song->file()+song->data());
+                origSongs.insert(song->file());
                 if (song->song().hasbeenPlayed()) {
                     playedSongs.insert(song->file());
                 }
             }
             foreach (MusicLibraryItem *i, podcast->childItems()) {
                 MusicLibraryItemSong *song=static_cast<MusicLibraryItemSong *>(i);
-                newSongs.insert(song->file()+song->data());
+                newSongs.insert(song->file());
             }
 
             QSet<QString> added=newSongs-origSongs;

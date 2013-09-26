@@ -141,8 +141,18 @@ bool MusicLibraryProxyModel::lessThan(const QModelIndex &left, const QModelIndex
     if (left.row()<0 || right.row()<0) {
         return left.row()<0;
     }
+
     if (static_cast<MusicLibraryItem *>(left.internalPointer())->itemType() == MusicLibraryItem::Type_Song) {
-        return static_cast<MusicLibraryItemSong *>(left.internalPointer())->song()<static_cast<MusicLibraryItemSong *>(right.internalPointer())->song();
+        MusicLibraryItemSong *l=static_cast<MusicLibraryItemSong *>(left.internalPointer());
+        MusicLibraryItemSong *r=static_cast<MusicLibraryItemSong *>(right.internalPointer());
+
+        if (l->parentItem()->itemType() == MusicLibraryItem::Type_Podcast) {
+            int compare=QString::compare(l->song().podcastPublishedDate(), r->song().podcastPublishedDate());
+            if (0!=compare) {
+                return compare>0;
+            }
+        }
+        return l->song()<r->song();
     } else if (static_cast<MusicLibraryItem *>(left.internalPointer())->itemType() == MusicLibraryItem::Type_Album) {
         return MusicLibraryItemAlbum::lessThan(static_cast<MusicLibraryItem *>(left.internalPointer()), static_cast<MusicLibraryItem *>(right.internalPointer()));
     } else if (static_cast<MusicLibraryItem *>(left.internalPointer())->itemType() == MusicLibraryItem::Type_Artist) {

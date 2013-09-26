@@ -271,7 +271,9 @@ void PodcastService::jobFinished()
             QSet<QString> playedSongs;
             foreach (MusicLibraryItem *i, orig->childItems()) {
                 MusicLibraryItemSong *song=static_cast<MusicLibraryItemSong *>(i);
-                origSongs.insert(song->file());
+                if (!song->song().podcastPublishedDate().isEmpty()) {
+                    origSongs.insert(song->file());
+                }
                 if (song->song().hasbeenPlayed()) {
                     playedSongs.insert(song->file());
                 }
@@ -295,12 +297,13 @@ void PodcastService::jobFinished()
                     orig->addAll(podcast);
                     endInsertRows();
                 }
-                orig->updateTrackNumbers();
 
                 // Restore played status...
+                quint32 played=0;
                 foreach (MusicLibraryItem *i, orig->childItems()) {
                     MusicLibraryItemSong *song=static_cast<MusicLibraryItemSong *>(i);
                     if (playedSongs.contains(song->file())) {
+                        played++;
                         orig->setPlayed(song);
                         playedSongs.remove(song->file());
                         if (playedSongs.isEmpty()) {
@@ -309,6 +312,7 @@ void PodcastService::jobFinished()
                     }
                 }
 
+                orig->setUnplayedCount(orig->childCount()-played);
                 orig->save();
                 emitNeedToSort();
             }

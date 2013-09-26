@@ -62,7 +62,7 @@ public:
     void clearImage();
     const QUrl & rssUrl() const { return m_rssUrl; }
     void removeFiles();
-    void updateTrackNumbers();
+    void setUnplayedCount(quint32 upc) { m_unplayedEpisodeCount=upc; }
     quint32 unplayedEpisodes() const { return m_unplayedEpisodeCount; }
     void setPlayed(MusicLibraryItemSong *song);
     void addAll(MusicLibraryItemPodcast *other);

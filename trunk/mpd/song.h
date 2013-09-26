@@ -129,6 +129,8 @@ struct Song
     void setPlayed(bool p) { id=p ? 1 : 0; }
     void setPodcastImage(const QString &i) { genre=i; }
     const QString & podcastImage() const { return genre; }
+    void setPodcastPublishedDate(const QString &pd) { composer=pd; }
+    const QString & podcastPublishedDate() const { return composer; }
 
     // podcast/soundcloud functions...
     void setIsFromOnlineService(const QString &service);

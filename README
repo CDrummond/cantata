@@ -1,5 +1,25 @@
-﻿Introduction
-============
+Table of Contents
+-----------------
+
+ 1. Introduction
+ 2. Dependencies
+ 3. Bugs
+ 4. Translations
+ 5. Covers
+ 6. Advanced Config Items
+ 7. Streams
+ 8. MultiMedia Keys
+ 9. Dynamic Helper Script - Local Mode
+10. Dynamic Helper Script - Server Mode
+11. Source Code
+12. Debug Logging
+13. Credits
+14. Windows
+
+
+
+1. Introduction
+===============
 
 Cantata is a graphical client for MPD. It contains the following features:
 
@@ -32,8 +52,8 @@ code (and user interface) is now *very* different to that of QtMPC, and both
 KDE and Qt (Linux) builds have the same feature set.
 
 
-Dependencies
-============
+2. Dependencies
+===============
 
 Cantata requires the following Qt libraries:
 
@@ -58,8 +78,26 @@ Cantata may also use the following optional libraries:
 9. MusicBrainz5 - either this or CDDB required for Audio CDs
 
 
-Translations
-============
+3. Bugs
+=======
+
+Before reporting bugs, please check that this is not an MPD related issue with
+your system - e.g. please try recreating the issue with another MPD client,
+such as MPDroid, GMPC, etc.
+
+To report bugs please visit http://code.google.com/p/cantata
+
+When reporting a bug, please mention that Cantata version number, the Cantata
+build type (Linux/KDE, Linux/Qt, Windows), any cmake options you specified
+(other than the defaults listed at the top of the INSTALL file), and the
+version of MPD you are using.
+
+Please DO NOT attach images to the bug page - as the attachement quota is almost
+full. Insted, please provide links top any relevant screenshots.
+
+
+4. Translations
+===============
 
 Becasue Cantata started out as a KDE4 application, the translation files are
 based upon KDE's i18n framework - these are located within the 'po' folder.
@@ -112,8 +150,8 @@ In the po folder there is a script named generate.sh, this is used to extract
 translatable strings and update current translations.
 
 
-Covers
-======
+5. Covers
+=========
 
 When displaying covers, Cantata will load album covers in the following order:
 
@@ -200,8 +238,46 @@ if the folder heirarchy is 2 levels (artist/album/) and the user has write
 permissions. If not, then they will be saved in Cantata's cache folder.
 
 
-Streams
-=======
+6. Advanced Config Items
+========================
+
+Cantata contains a few advanced config items, for which there is currently no
+graphical way of control the setting. For these, you will need to edit
+Cantata's config by hand - whilst Cantata is NOT running!
+
+Under Linux, the Cantata config file will be either:
+    Qt builds: ~/.config/cantata/cantata.conf
+    KDE builds: ~/.kde/share/config/cantatarc
+
+The following config items should be added to the "[General]" section.
+
+iconTheme
+    For Qt-only, Linux builds, this allows you to force cantata to use the
+    configured icon theme. This config is empty by default, and Cantata uses
+    the system configured icon theme.
+    
+maxCoverFindPerIteration
+    Controls the maximum number of covers that will attempted to be located per
+    UI event loop iteration. This is set to 5 by default. Increasing this will
+    cause more covers to be loaded in the main UI thread - which will speed up
+    loading, but might make the UI apear to block. Reducing this should reduce
+    lag when scrolling the Albums view.
+
+maxCoverUpdatePerIteration
+    Covers the are not located and loaded in the UI thread, will be loaded in a
+    background thread. These then need to be sent to the UI thread to be
+    displayed. This config controls the number of covers that are sent in one
+    batch. The default is again 5.
+
+e.g.
+[General]
+iconTheme=oxygen
+maxCoverFindPerIteration=5
+maxCoverUpdatePerIteration=5
+
+
+7. Streams
+==========
 
 Cantata contains a list of in-built stream categories, or providers. To import
 new stream categories into Cantata, files need to be GZip compressed tarballs
@@ -261,8 +337,8 @@ tarball, then they will be copied to the install location and used as icons for
 the respective category.
 
 
-MultiMedia Keys
-===============
+8. MultiMedia Keys
+==================
 
 Cantata may be controlled via the media keys on some keyboards. To enable this,
 the KDE version can be configured to use KDE's global shortcuts. The Qt only
@@ -276,8 +352,8 @@ https://code.google.com/p/mediakeys-daemon/ which is a python re-implementation
 of the interface.
 
 
-Dynamic Helper Script - Local Mode
-==================================
+9. Dynamic Helper Script - Local Mode
+=====================================
 
 When a dynamic playlist is loaded in Cantata, the cantata-dynamic helper script
 is executed in the background to do the actual song selection. In this way the
@@ -289,10 +365,10 @@ The list of dynamic playlists may be obtained by looking in
 ~/.local/share/cantata/dynamic
 
 To 'load' a dynamic playlist, all you need to do is symlink the desired one in
-~/.local/share/cantata/dynamic to ~/.cache/cantata/dynamic/rules. Then you can start
-the helper by calling '/usr/share/cantata/scripts/cantata-dynamic start'  (or 
-first call '/usr/share/cantata/scripts/cantata-dynamic stop' to stop any current
-playlist).
+~/.local/share/cantata/dynamic to ~/.cache/cantata/dynamic/rules. Then you can
+start the helper by calling '/usr/share/cantata/scripts/cantata-dynamic start'
+(or first call '/usr/share/cantata/scripts/cantata-dynamic stop' to stop any
+current playlist).
 
 To pass connection details, cantata-dynamic reads the same environment variables
 as mpc - namely MPD_HOST and MPD_PORT
@@ -314,8 +390,8 @@ playlist, load the 'MyPlaylist' playlist, and start this on the mpd at
     MPD_HOST=pass@hostname MPD_PORT=1234 /usr/share/cantata/scripts/cantata-dynamic start
 
 
-Dynamic Helper Script - Server Mode
-===================================
+10. Dynamic Helper Script - Server Mode
+=======================================
 
 In addition to the above, the helper script may be installed on the system
 containing MPD, and run in 'server' mode. When run in this mode, it is intended
@@ -513,8 +589,8 @@ addition of a header - e.g.
 {CANTATA/<id>}STATUS:STATE:<current status>\nRULES:<name of currently active rule>\nTIME:<epoch time since started, or last rule modification>
 
 
-Source Code
-===========
+11. Source Code
+===============
 
 The Cantata source folder contains the following structure:
 
@@ -541,8 +617,8 @@ The Cantata source folder contains the following structure:
     windows    - Files relevant to creating the windows installer.
 
 
-Debug Logging
-=============
+12. Debug Logging
+=================
 
 Cantata contains some debug logging that might help to diagnose certain issues.
 To enable this, you must set an environment variable before starting Cantata.
@@ -574,8 +650,8 @@ NOTE: The above will function regardless of whether you have created a Debug or
 Release build.
 
 
-Credits
-=======
+13. Credits
+===========
 
 Cantata contains code/icons from:
 
@@ -597,8 +673,8 @@ Cantata contains code/icons from:
     Sidebar icons  - Taken from IcoMoon - http://icomoon.io/#icons
 
 
-Windows
-=======
+14. Windows
+===========
 
 The following steps are used to compile Cantata, and create the windows
 installer.

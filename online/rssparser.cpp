@@ -53,6 +53,20 @@ static void consumeCurrentElement(QXmlStreamReader &reader)
     }
 }
 
+static QDateTime parseRfc822DateTime(const QString& text)
+{
+    // This sucks but we need it because some podcasts don't quite follow the
+    // spec properly - they might have 1-digit hour numbers for example.
+
+    QRegExp re("([a-zA-Z]{3}),? (\\d{1,2}) ([a-zA-Z]{3}) (\\d{4}) (\\d{1,2}):(\\d{1,2}):(\\d{1,2})");
+    if (-1==re.indexIn(text)) {
+        return QDateTime();
+    }
+
+    return QDateTime(QDate::fromString(QString("%1 %2 %3 %4").arg(re.cap(1), re.cap(3), re.cap(2), re.cap(4)), Qt::TextDate),
+                     QTime(re.cap(5).toInt(), re.cap(6).toInt(), re.cap(7).toInt()));
+}
+
 static QUrl parseImage(QXmlStreamReader &reader)
 {
     QUrl url;
@@ -96,6 +110,8 @@ static Episode parseEpisode(QXmlStreamReader &reader)
                     ep.url=QUrl::fromEncoded(reader.attributes().value(QLatin1String("url")).toString().toLatin1());
                 }
                 consumeCurrentElement(reader);
+            } else if (QLatin1String("pubDate")==name) {
+                 ep.publicationDate=parseRfc822DateTime(reader.readElementText());
             } else {
                 consumeCurrentElement(reader);
             }

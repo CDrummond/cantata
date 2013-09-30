@@ -261,13 +261,13 @@ maxCoverFindPerIteration
     UI event loop iteration. This is set to 5 by default. Increasing this will
     cause more covers to be loaded in the main UI thread - which will speed up
     loading, but might make the UI apear to block. Reducing this should reduce
-    lag when scrolling the Albums view.
+    lag when scrolling the Albums view. (Values 0..20 are acceptable)
 
 maxCoverUpdatePerIteration
     Covers the are not located and loaded in the UI thread, will be loaded in a
     background thread. These then need to be sent to the UI thread to be
     displayed. This config controls the number of covers that are sent in one
-    batch. The default is again 5.
+    batch. The default is again 5. (Values 1..20 are acceptable)
 
 e.g.
 [General]

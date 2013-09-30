@@ -16,6 +16,7 @@
     increments, whereas it should have been (and is now) 5%
 11. Bind increase volume, decrease volume, and mute actions to main window, so
     that shortcuts work.
+12. Fix number display in replaygain dialog in Qt-only builds.
 
 1.1.2
 -----

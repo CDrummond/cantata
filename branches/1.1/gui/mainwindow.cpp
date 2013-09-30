@@ -319,6 +319,9 @@ MainWindow::MainWindow(QWidget *parent)
     prevTrackAction->setEnabled(false);
     enableStopActions(false);
 
+    addAction(increaseVolumeAction);
+    addAction(decreaseVolumeAction);
+    addAction(muteAction);
     #if defined ENABLE_KDE_SUPPORT
     prevTrackAction->setGlobalShortcut(KShortcut(Qt::META + Qt::Key_Left));
     nextTrackAction->setGlobalShortcut(KShortcut(Qt::META + Qt::Key_Right));

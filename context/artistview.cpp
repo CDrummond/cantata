@@ -163,7 +163,7 @@ void ArtistView::update(const Song &s, bool force)
             if (!currentSong.isVariousArtists()) {
                 s.file=currentSong.file;
             }
-            Covers::Image img=Covers::self()->requestImage(s);
+            Covers::Image img=Covers::self()->requestImage(s, true);
             if (!img.img.isNull()) {
                 pic=createPicTag(img.img, img.fileName);
             }

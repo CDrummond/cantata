@@ -1049,7 +1049,7 @@ static Covers::Image fix(const Covers::Image &img)
     return Covers::Image(img.img, img.fileName.startsWith(constCoverInTagPrefix) ? QString() : img.fileName);
 }
 
-Covers::Image Covers::requestImage(const Song &song)
+Covers::Image Covers::requestImage(const Song &song, bool urgent)
 {
     DBUG << song.file << song.artist << song.albumartist << song.album;
 
@@ -1070,7 +1070,13 @@ Covers::Image Covers::requestImage(const Song &song)
         }
     }
 
-    if (retrieved>=maxFindPerLoopIteration) {
+    QString key=song.isArtistImageRequest() ? artistKey(song) : albumKey(song);
+    if (currentImageRequests.contains(key)) {
+        return Covers::Image();
+    }
+
+    if (retrieved>=maxFindPerLoopIteration && !urgent) {
+        currentImageRequests.insert(key);
         emit locate(song);
         return Covers::Image();
     }
@@ -1079,6 +1085,7 @@ Covers::Image Covers::requestImage(const Song &song)
     Image img=findImage(song, false);
     if (img.img.isNull()) {
         DBUG << song.file << song.artist << song.albumartist << song.album << "Need to download";
+        currentImageRequests.insert(key);
         emit download(song);
     }
 
@@ -1152,9 +1159,11 @@ void Covers::cleanCdda()
 
 void Covers::gotAlbumCover(const Song &song, const QImage &img, const QString &fileName, bool emitResult)
 {
+    QString key=albumKey(song);
+    currentImageRequests.remove(key);
     if (!img.isNull() && !fileName.isEmpty() && !fileName.startsWith("http:/")) {
         mutex.lock();
-        filenames.insert(albumKey(song), fileName);
+        filenames.insert(key, fileName);
         mutex.unlock();
     }
     if (emitResult) {
@@ -1165,9 +1174,11 @@ void Covers::gotAlbumCover(const Song &song, const QImage &img, const QString &f
 
 void Covers::gotArtistImage(const Song &song, const QImage &img, const QString &fileName, bool emitResult)
 {
+    QString key=artistKey(song);
+    currentImageRequests.remove(key);
     if (!img.isNull() && !fileName.isEmpty() && !fileName.startsWith("http:/")) {
         mutex.lock();
-        filenames.insert(artistKey(song), fileName);
+        filenames.insert(key, fileName);
         mutex.unlock();
     }
     if (emitResult) {

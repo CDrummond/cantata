@@ -128,7 +128,7 @@ void AlbumView::update(const Song &song, bool force)
         }
         clearDetails();
         setHeader(song.album.isEmpty() ? stdHeader : song.album);
-        Covers::Image cImg=Covers::self()->requestImage(song);
+        Covers::Image cImg=Covers::self()->requestImage(song, true);
         if (!cImg.img.isNull()) {
             detailsReceived|=Cover;
             pic=createPicTag(cImg.img, cImg.fileName);

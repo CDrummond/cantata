@@ -181,7 +181,7 @@ public:
     // Get QImage and filename associated with Song request. If this is not found, then the cover
     // will be downloaded. If more than 5 covers have been requested in an event-loop iteration, then
     // the cover requests are placed on a queue.
-    Image requestImage(const Song &song);
+    Image requestImage(const Song &song, bool urgent=false);
     void setSaveInMpdDir(bool s);
     void emitCoverUpdated(const Song &song, const QImage &img, const QString &file);
 
@@ -214,6 +214,7 @@ private:
 
 private:
     int retrieved;
+    QSet<QString> currentImageRequests;
     QList<Song> queue;
     QSet<int> cacheSizes;
     QCache<quint32, QPixmap> cache;

@@ -148,7 +148,7 @@ QVariant MusicModel::data(const QModelIndex &index, int role) const
             if (MusicLibraryItem::Type_Podcast==item->parentItem()->itemType()) {
                 return parentData(item)+data(index, Qt::DisplayRole).toString()+QLatin1String("<br/>")+
                        Song::formattedTime(static_cast<MusicLibraryItemSong *>(item)->time(), true)+
-                       QLatin1String("<br/><small><i>")+static_cast<MusicLibraryItemPodcastSong *>(item)->published()+QLatin1String("</i></small>");
+                       QLatin1String("<br/><small><i>")+static_cast<MusicLibraryItemPodcastEpisode *>(item)->published()+QLatin1String("</i></small>");
             }
             if (dynamic_cast<const OnlineService *>(root(item))) {
                 return parentData(item)+data(index, Qt::DisplayRole).toString()+QLatin1String("<br/>")+

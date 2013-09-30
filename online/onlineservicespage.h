@@ -66,6 +66,8 @@ public Q_SLOTS:
     void unSubscribe();
     void refreshSubscription();
     void searchForPodcasts();
+    void downloadPodcast();
+    void deleteDownloadedPodcast();
 
 Q_SIGNALS:
     // These are for communicating with MPD object (which is in its own thread, so need to talk via signal/slots)
@@ -81,6 +83,8 @@ private:
     MusicLibraryProxyModel proxy;
     Action *downloadAction;
     Action *podcastSearchAction;
+    Action *downloadPodcastAction;
+    Action *deleteDownloadedPodcastAction;
     QSet<QString> genres;
     bool onlineSearchRequest;
     QString searchService;

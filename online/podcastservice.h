@@ -34,6 +34,7 @@
 
 class QTimer;
 class MusicLibraryItemPodcast;
+class MusicLibraryItemPodcastEpisode;
 
 class PodcastService : public OnlineService
 {
@@ -59,29 +60,45 @@ public:
     bool subscribedToUrl(const QUrl &url) { return 0!=getPodcast(url); }
     void unSubscribe(MusicLibraryItem *item);
     void refreshSubscription(MusicLibraryItem *item);
-    bool processingUrl(const QUrl &url);
+    bool processingUrl(const QUrl &url) const;
     void addUrl(const QUrl &url, bool isNew=true);
     static const QString & iconPath() { return iconFile; }
     static QUrl fixUrl(const QString &url);
     static QUrl fixUrl(const QUrl &orig);
     static bool isUrlOk(const QUrl &u) { return QLatin1String("http")==u.scheme() || QLatin1String("https")==u.scheme(); }
 
+    bool isDownloading() const { return !downloadJobs.isEmpty(); }
+    void cancelAllDownloads();
+    void downloadPodcasts(MusicLibraryItemPodcast *pod, const QList<MusicLibraryItemPodcastEpisode *> &episodes);
+    void deleteDownloadedPodcasts(MusicLibraryItemPodcast *pod, const QList<MusicLibraryItemPodcastEpisode *> &episodes);
+
 private:
     void loadAll();
     void cancelAll();
     MusicLibraryItemPodcast * getPodcast(const QUrl &url) const;
-    void startTimer();
-    void stopTimer();
+    MusicLibraryItemPodcastEpisode * getEpisode(const MusicLibraryItemPodcast *podcast, const QUrl &episode);
+    void startRssUpdateTimer();
+    void stopRssUpdateTimer();
+    bool downloadingEpisode(const QUrl &url) const;
+    void downloadEpisode(const MusicLibraryItemPodcast *podcast, const QUrl &episode);
+    void cancelDownload(const QUrl &url);
+    void cancelDownload(NetworkJob *job);
 
 private Q_SLOTS:
-    void jobFinished();
+    void rssJobFinished();
     void updateRss();
     void currentMpdSong(const Song &s);
+    void downloadJobFinished();
+    void downloadReadyRead();
+    void downloadPercent(int pc);
 
 private:
-    QList<NetworkJob *> jobs;
-    QTimer *updateTimer;
+    QList<NetworkJob *> rssJobs;
+    QList<NetworkJob *> downloadJobs;
+    QTimer *rssUpdateTimer;
     QDateTime lastRssUpdate;
+    QTimer *deleteTimer;
+    QDateTime lastDelete;
     QSet<QUrl> updateUrls;
     static QString iconFile;
 };

@@ -757,8 +757,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(stopAfterTrackAction, SIGNAL(triggered(bool)), this, SLOT(stopAfterTrack()));
     connect(volumeControl, SIGNAL(valueChanged(int)), MPDConnection::self(), SLOT(setVolume(int)));
     connect(this, SIGNAL(setVolume(int)), MPDConnection::self(), SLOT(setVolume(int)));
-    connect(increaseVolumeAction, SIGNAL(triggered(bool)), this, SLOT(increaseVolume()));
-    connect(decreaseVolumeAction, SIGNAL(triggered(bool)), this, SLOT(decreaseVolume()));
     connect(increaseVolumeAction, SIGNAL(triggered(bool)), volumeControl, SLOT(increaseVolume()));
     connect(decreaseVolumeAction, SIGNAL(triggered(bool)), volumeControl, SLOT(decreaseVolume()));
     connect(muteAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(toggleMute()));
@@ -1700,16 +1698,6 @@ void MainWindow::prevTrack()
 void MainWindow::setPosition()
 {
     emit setSeekId(MPDStatus::self()->songId(), positionSlider->value());
-}
-
-void MainWindow::increaseVolume()
-{
-    volumeControl->sliderWidget()->triggerAction(QAbstractSlider::SliderPageStepAdd);
-}
-
-void MainWindow::decreaseVolume()
-{
-    volumeControl->sliderWidget()->triggerAction(QAbstractSlider::SliderPageStepSub);
 }
 
 void MainWindow::searchPlayQueue()

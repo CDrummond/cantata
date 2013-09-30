@@ -130,7 +130,7 @@ bool MusicLibraryItemPodcast::load()
                     s.setPodcastPublishedDate(attributes.value(constDateAttribute).toString());
                     QString time=attributes.value(constTimeAttribute).toString();
                     s.time=time.isEmpty() ? 0 : time.toUInt();
-                    MusicLibraryItemSong *song=new MusicLibraryItemSong(s, this);
+                    MusicLibraryItemSong *song=new MusicLibraryItemPodcastSong(s, this);
                     m_childItems.append(song);
                     if (!s.hasbeenPlayed()) {
                         m_unplayedEpisodeCount++;
@@ -172,7 +172,7 @@ bool MusicLibraryItemPodcast::loadRss(QNetworkReply *dev)
         s.setPlayed(false);
         s.setPodcastImage(m_imageFile);
         s.setPodcastPublishedDate(ep.publicationDate.toString(Qt::ISODate));
-        MusicLibraryItemSong *song=new MusicLibraryItemSong(s, this);
+        MusicLibraryItemSong *song=new MusicLibraryItemPodcastSong(s, this);
         m_childItems.append(song);
     }
 
@@ -336,4 +336,13 @@ bool MusicLibraryItemPodcast::largeImages() const
 {
     return m_parentItem && Type_Root==m_parentItem->itemType() &&
            static_cast<MusicLibraryItemRoot *>(m_parentItem)->useLargeImages();
+}
+
+const QString & MusicLibraryItemPodcastSong::published()
+{
+    if (publishedDate.isEmpty()) {
+        QDateTime dt=QDateTime::fromString(song().podcastPublishedDate(), Qt::ISODate);
+        publishedDate=dt.toString(Qt::LocalDate);
+    }
+    return publishedDate;
 }

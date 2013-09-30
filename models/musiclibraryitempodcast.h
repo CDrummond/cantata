@@ -30,9 +30,9 @@
 #include <QSet>
 #include <QUrl>
 #include "musiclibraryitem.h"
+#include "musiclibraryitemsong.h"
 #include "song.h"
 
-class MusicLibraryItemSong;
 class QNetworkReply;
 
 class MusicLibraryItemPodcast : public MusicLibraryItemContainer
@@ -82,5 +82,17 @@ private:
     quint32 m_unplayedEpisodeCount;
 };
 
-#endif
+class MusicLibraryItemPodcastSong : public MusicLibraryItemSong
+{
+public:
+    MusicLibraryItemPodcastSong(const Song &s, MusicLibraryItemContainer *parent)
+        : MusicLibraryItemSong(s, parent) { }
+    virtual ~MusicLibraryItemPodcastSong() { }
 
+    const QString & published();
+
+private:
+    QString publishedDate;
+};
+
+#endif

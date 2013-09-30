@@ -27,6 +27,7 @@
 #include "musiclibraryitemroot.h"
 #include "musiclibraryitempodcast.h"
 #include "musicmodel.h"
+#include "onlineservice.h"
 #include "itemview.h"
 #include "localize.h"
 #include "qtplural.h"
@@ -144,6 +145,15 @@ QVariant MusicModel::data(const QModelIndex &index, int role) const
         return item->data();
     case Qt::ToolTipRole:
         if (MusicLibraryItem::Type_Song==item->itemType()) {
+            if (MusicLibraryItem::Type_Podcast==item->parentItem()->itemType()) {
+                return parentData(item)+data(index, Qt::DisplayRole).toString()+QLatin1String("<br/>")+
+                       Song::formattedTime(static_cast<MusicLibraryItemSong *>(item)->time(), true)+
+                       QLatin1String("<br/><small><i>")+static_cast<MusicLibraryItemPodcastSong *>(item)->published()+QLatin1String("</i></small>");
+            }
+            if (dynamic_cast<const OnlineService *>(root(item))) {
+                return parentData(item)+data(index, Qt::DisplayRole).toString()+QLatin1String("<br/>")+
+                       Song::formattedTime(static_cast<MusicLibraryItemSong *>(item)->time(), true);
+            }
             return parentData(item)+data(index, Qt::DisplayRole).toString()+QLatin1String("<br/>")+
                    Song::formattedTime(static_cast<MusicLibraryItemSong *>(item)->time(), true)+
                    QLatin1String("<br/><small><i>")+static_cast<MusicLibraryItemSong *>(item)->song().file+QLatin1String("</i></small>");

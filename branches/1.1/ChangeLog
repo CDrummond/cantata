@@ -1,17 +1,19 @@
 ﻿1.1.3
 -----
-1. (Hopefully) fix selection order of items - and order added to playqueue.
-2. Updated German translation.
-3. Add Russian translation, thanks to Julia Dronova.
-4. Online services support does not require taglib.
-5. Fix changing of Music folder for 'Personal' mpd collection.
-6. Use QDesktopServices/QStandardPaths to ascertain default music folder for
-   'Personal' collections.
-7. If no icon is to be used on a message-box button, then ensure the icon is
-   cleared.
-8. Fix display of album year in playqueue for KDE builds.
-9. If we recieve an error from MPD via status, then display this in the main
-   window.
+ 1. (Hopefully) fix selection order of items - and order added to playqueue.
+ 2. Updated German translation.
+ 3. Add Russian translation, thanks to Julia Dronova.
+ 4. Online services support does not require taglib.
+ 5. Fix changing of Music folder for 'Personal' mpd collection.
+ 6. Use QDesktopServices/QStandardPaths to ascertain default music folder for
+    'Personal' collections.
+ 7. If no icon is to be used on a message-box button, then ensure the icon is
+    cleared.
+ 8. Fix display of album year in playqueue for KDE builds.
+ 9. If we recieve an error from MPD via status, then display this in the main
+    window.
+10. Don't react twice to every volume change. Volume was changing in 10%
+    increments, whereas it should have been (and is now) 5%
 
 1.1.2
 -----

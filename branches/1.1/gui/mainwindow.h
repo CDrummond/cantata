@@ -225,8 +225,6 @@ public Q_SLOTS:
     void playPauseTrack();
     void nextTrack();
     void prevTrack();
-    void increaseVolume();
-    void decreaseVolume();
     void setPosition();
     void searchPlayQueue();
     void realSearchPlayQueue();

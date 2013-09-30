@@ -90,6 +90,7 @@ public:
     void updateGenres();
     void resetRows();
     void clear();
+    int indexOf(MusicLibraryItem *c) const { return m_childItems.indexOf(c); }
 
 protected:
     friend class MusicLibraryItem;

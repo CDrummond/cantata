@@ -182,6 +182,8 @@ public:
     #endif
     int rssUpdate();
     QDateTime lastRssUpdate();
+    QString podcastDownloadPath();
+    bool podcastAutoDownload();
     int maxCoverFindPerIteration();
     int maxCoverUpdatePerIteration();
 
@@ -271,6 +273,8 @@ public:
     #endif
     void saveRssUpdate(int v);
     void saveLastRssUpdate(const QDateTime &v);
+    void savePodcastDownloadPath(const QString &v);
+    void savePodcastAutoDownload(bool v);
     void save(bool force=false);
     #ifdef ENABLE_KDE_SUPPORT
     bool openWallet();

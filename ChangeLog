@@ -63,6 +63,8 @@
     window.
 10. Don't react twice to every volume change. Volume was changing in 10%
     increments, whereas it should have been (and is now) 5%
+11. Bind increase volume, decrease volume, and mute actions to main window, so
+    that shortcuts work.
 
 1.1.2
 -----

@@ -724,7 +724,7 @@ int Settings::maxCoverFindPerIteration()
 int Settings::maxCoverUpdatePerIteration()
 {
     int v=GET_INT("maxCoverUpdatePerIteration", 5);
-    return v<0 ? 5 : (v>20 ? 20 : v);
+    return v<1 ? 5 : (v>20 ? 20 : v);
 }
 
 void Settings::removeConnectionDetails(const QString &v)

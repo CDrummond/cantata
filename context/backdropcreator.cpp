@@ -65,7 +65,7 @@ void BackdropCreator::create(const QString &artist, const QList<Song> &songs)
     images.clear();
     requested.clear();
     foreach (const Song &s, songs) {
-        Covers::Image img=Covers::self()->requestImage(s);
+        Covers::Image img=Covers::self()->requestImage(s, true);
         if (!img.img.isNull()) {
             images.append(img.img.scaled(imageSize, imageSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
         } else {

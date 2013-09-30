@@ -202,7 +202,7 @@ void CoverWidget::update(const Song &s)
         current=s;
         bool isStream=current.isStream() && !current.isCantataStream() && !current.isCdda();
         if (!s.albumArtist().isEmpty() && !s.album.isEmpty() && !isStream) {
-            Covers::Image cImg=Covers::self()->requestImage(s);
+            Covers::Image cImg=Covers::self()->requestImage(s, true);
             valid=!cImg.img.isNull();
             if (valid) {
                 update(cImg.img);

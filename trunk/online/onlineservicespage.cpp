@@ -26,6 +26,7 @@
 #include "musiclibraryitemartist.h"
 #include "musiclibraryitemalbum.h"
 #include "musiclibraryitemsong.h"
+#include "musiclibraryitempodcast.h"
 #include "onlineservicesmodel.h"
 #include "jamendoservice.h"
 #include "magnatuneservice.h"
@@ -58,6 +59,8 @@ OnlineServicesPage::OnlineServicesPage(QWidget *p)
     view->addAction(StdActions::self()->addToStoredPlaylistAction);
     downloadAction = ActionCollection::get()->createAction("downloadtolibrary", i18n("Download To Library"), "go-down");
     podcastSearchAction = ActionCollection::get()->createAction("podcastsearch", i18n("Search For Podcasts"), "edit-find");
+    downloadPodcastAction = ActionCollection::get()->createAction("downloadpodcast", i18n("Download Podcast Episodes"), "go-down");
+    deleteDownloadedPodcastAction = ActionCollection::get()->createAction("deletedownloadedpodcast", i18n("Delete Downloaded Podcast Episodes"), "edit-delete");
     connect(this, SIGNAL(add(const QStringList &, bool, quint8)), MPDConnection::self(), SLOT(add(const QStringList &, bool, quint8)));
     connect(this, SIGNAL(addSongsToPlaylist(const QString &, const QStringList &)), MPDConnection::self(), SLOT(addToPlaylist(const QString &, const QStringList &)));
     connect(genreCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(searchItems()));
@@ -78,6 +81,8 @@ OnlineServicesPage::OnlineServicesPage(QWidget *p)
     connect(OnlineServicesModel::self()->refreshSubscriptionAct(), SIGNAL(triggered()), this, SLOT(refreshSubscription()));
     connect(podcastSearchAction, SIGNAL(triggered()), this, SLOT(searchForPodcasts()));
     connect(downloadAction, SIGNAL(triggered()), this, SLOT(download()));
+    connect(downloadPodcastAction, SIGNAL(triggered()), this, SLOT(downloadPodcast()));
+    connect(deleteDownloadedPodcastAction, SIGNAL(triggered()), this, SLOT(deleteDownloadedPodcast()));
 
     QMenu *menu=new QMenu(this);
     menu->addAction(OnlineServicesModel::self()->configureAct());
@@ -89,12 +94,16 @@ OnlineServicesPage::OnlineServicesPage(QWidget *p)
     menu->addAction(OnlineServicesModel::self()->subscribeAct());
     menu->addAction(OnlineServicesModel::self()->unSubscribeAct());
     menu->addAction(OnlineServicesModel::self()->refreshSubscriptionAct());
+    menu->addAction(downloadPodcastAction);
+    menu->addAction(deleteDownloadedPodcastAction);
     view->addAction(downloadAction);
     view->addAction(sep);
     view->addAction(podcastSearchAction);
     view->addAction(OnlineServicesModel::self()->subscribeAct());
     view->addAction(OnlineServicesModel::self()->unSubscribeAct());
     view->addAction(OnlineServicesModel::self()->refreshSubscriptionAct());
+    view->addAction(downloadPodcastAction);
+    view->addAction(deleteDownloadedPodcastAction);
     menuButton->setMenu(menu);
     proxy.setSourceModel(OnlineServicesModel::self());
     proxy.setDynamicSortFilter(false);
@@ -385,6 +394,10 @@ void OnlineServicesPage::controlActions()
     OnlineServicesModel::self()->subscribeAct()->setVisible(canSubscribe || canUnSubscribe);
     OnlineServicesModel::self()->unSubscribeAct()->setVisible(canSubscribe || canUnSubscribe);
     OnlineServicesModel::self()->refreshSubscriptionAct()->setVisible(canSubscribe || canUnSubscribe);
+    downloadPodcastAction->setEnabled(canUnSubscribe);
+    downloadPodcastAction->setVisible(canUnSubscribe);
+    deleteDownloadedPodcastAction->setEnabled(canUnSubscribe);
+    deleteDownloadedPodcastAction->setVisible(canUnSubscribe);
     OnlineServicesModel::self()->subscribeAct()->setEnabled(canSubscribe && 1==selected.count());
     podcastSearchAction->setVisible(canSubscribe && 1==selected.count());
     OnlineServicesModel::self()->unSubscribeAct()->setEnabled(canUnSubscribe && 1==selected.count());
@@ -596,6 +609,150 @@ void OnlineServicesPage::searchForPodcasts()
     if (0==PodcastSearchDialog::instanceCount()) {
         PodcastSearchDialog *dlg=new PodcastSearchDialog(this);
         dlg->show();
+    }
+}
+
+static QString format(const QMap<MusicLibraryItemPodcast *, QList<MusicLibraryItemPodcastEpisode *> > &urls)
+{
+    QString rv;
+    QMap<MusicLibraryItemPodcast *, QList<MusicLibraryItemPodcastEpisode *> >::ConstIterator it(urls.constBegin());
+    QMap<MusicLibraryItemPodcast *, QList<MusicLibraryItemPodcastEpisode *> >::ConstIterator end(urls.constEnd());
+
+    if (1==urls.keys().count()) {
+        for (; it!=end; ++it) {
+            foreach (MusicLibraryItemPodcastEpisode *ep, it.value()) {
+                rv+=QLatin1String("<li>")+ep->data()+QLatin1String("</li>");
+            }
+        }
+    } else {
+        for (; it!=end; ++it) {
+            rv+=QLatin1String("<li>")+it.key()->data()+QLatin1String("<ul>");
+            foreach (MusicLibraryItemPodcastEpisode *ep, it.value()) {
+                rv+=QLatin1String("<li>")+ep->data()+QLatin1String("</li>");
+            }
+            rv+="</ul></li>";
+        }
+    }
+    return rv;
+}
+
+void OnlineServicesPage::downloadPodcast()
+{
+    const QModelIndexList selected = view->selectedIndexes(true);
+    if (selected.isEmpty()) {
+        return;
+    }
+
+    QMap<MusicLibraryItemPodcast *, QList<MusicLibraryItemPodcastEpisode *> > urls;
+    int count=0;
+    foreach (const QModelIndex &idx, selected) {
+        MusicLibraryItem *item=static_cast<MusicLibraryItem *>(proxy.mapToSource(idx).internalPointer());
+        switch (item->itemType()) {
+        case MusicLibraryItem::Type_Podcast:
+            foreach (MusicLibraryItem *c, static_cast<MusicLibraryItemPodcast *>(item)->childItems()) {
+                MusicLibraryItemPodcastEpisode *episode=static_cast<MusicLibraryItemPodcastEpisode *>(c);
+                if ((episode->localPath().isEmpty() || !QFile::exists(episode->localPath())) &&
+                    !urls[static_cast<MusicLibraryItemPodcast *>(item)].contains(episode)) {
+                    urls[static_cast<MusicLibraryItemPodcast *>(item)].append(episode);
+                    count++;
+                }
+            }
+            break;
+        case MusicLibraryItem::Type_Song:
+            if (MusicLibraryItem::Type_Podcast==item->parentItem()->itemType()) {
+                MusicLibraryItemPodcastEpisode *episode=static_cast<MusicLibraryItemPodcastEpisode *>(item);
+                if ((episode->localPath().isEmpty() || !QFile::exists(episode->localPath())) &&
+                    !urls[static_cast<MusicLibraryItemPodcast *>(item->parentItem())].contains(episode)) {
+                    urls[static_cast<MusicLibraryItemPodcast *>(item->parentItem())].append(episode);
+                    count++;
+                }
+            }
+        default:
+            break;
+        }
+    }
+
+    if (urls.isEmpty()) {
+        MessageBox::information(this, i18n("All selected podcasts have already been downloaded!"));
+    } else {
+        QString question;
+        if (1==count) {
+            question=i18n("Do you wish to download the following podcast episode?")+
+                     urls.constBegin().value().first()->data();
+        } else if (count<15) {
+            question=QLatin1String("<p>")+i18n("Do you wish to download the following podcast episodes?")+
+                     QLatin1String("<ul>")+format(urls)+QLatin1String("</ul></p>");
+        } else {
+            question=i18n("Do you wish to download the selected podcast episodes?");
+        }
+        if (MessageBox::No==MessageBox::questionYesNo(this, question)) {
+            return;
+        }
+        QMap<MusicLibraryItemPodcast *, QList<MusicLibraryItemPodcastEpisode *> >::ConstIterator it(urls.constBegin());
+        QMap<MusicLibraryItemPodcast *, QList<MusicLibraryItemPodcastEpisode *> >::ConstIterator end(urls.constEnd());
+        for (; it!=end; ++it) {
+            OnlineServicesModel::self()->downloadPodcasts(it.key(), it.value());
+        }
+    }
+}
+
+void OnlineServicesPage::deleteDownloadedPodcast()
+{
+    const QModelIndexList selected = view->selectedIndexes(false); // Dont need sorted selection here...
+    if (selected.isEmpty()) {
+        return;
+    }
+
+    QMap<MusicLibraryItemPodcast *, QList<MusicLibraryItemPodcastEpisode *> > urls;
+    int count=0;
+    foreach (const QModelIndex &idx, selected) {
+        MusicLibraryItem *item=static_cast<MusicLibraryItem *>(proxy.mapToSource(idx).internalPointer());
+        switch (item->itemType()) {
+        case MusicLibraryItem::Type_Podcast:
+            foreach (MusicLibraryItem *c, static_cast<MusicLibraryItemPodcast *>(item)->childItems()) {
+                MusicLibraryItemPodcastEpisode *episode=static_cast<MusicLibraryItemPodcastEpisode *>(c);
+                if ((episode->localPath().isEmpty() || !QFile::exists(episode->localPath())) &&
+                    !urls[static_cast<MusicLibraryItemPodcast *>(item)].contains(episode)) {
+                    urls[static_cast<MusicLibraryItemPodcast *>(item)].append(episode);
+                    count++;
+                }
+            }
+            break;
+        case MusicLibraryItem::Type_Song:
+            if (MusicLibraryItem::Type_Podcast==item->parentItem()->itemType()) {
+                MusicLibraryItemPodcastEpisode *episode=static_cast<MusicLibraryItemPodcastEpisode *>(item);
+                if ((episode->localPath().isEmpty() || !QFile::exists(episode->localPath())) &&
+                    !urls[static_cast<MusicLibraryItemPodcast *>(item->parentItem())].contains(episode)) {
+                    urls[static_cast<MusicLibraryItemPodcast *>(item->parentItem())].append(episode);
+                    count++;
+                }
+            }
+        default:
+            break;
+        }
+    }
+
+    if (urls.isEmpty()) {
+        MessageBox::information(this, i18n("All selected downloaded podcast episodes have already been deleted!"));
+    } else {
+        QString question;
+        if (1==count) {
+            question=i18n("Do you wish to delete the downloaded file of the following podcast episode?")+
+                     urls.constBegin().value().first()->data();
+        } else if (count<15) {
+            question=QLatin1String("<p>")+i18n("Do you wish to the delete downloaded files of the following podcast episodes?")+
+                     QLatin1String("<ul>")+format(urls)+QLatin1String("</ul></p>");
+        } else {
+            question=i18n("Do you wish to the delete downloaded files of the selected podcast episodes?");
+        }
+        if (MessageBox::No==MessageBox::questionYesNo(this, question)) {
+            return;
+        }
+        QMap<MusicLibraryItemPodcast *, QList<MusicLibraryItemPodcastEpisode *> >::ConstIterator it(urls.constBegin());
+        QMap<MusicLibraryItemPodcast *, QList<MusicLibraryItemPodcastEpisode *> >::ConstIterator end(urls.constEnd());
+        for (; it!=end; ++it) {
+            OnlineServicesModel::self()->deleteDownloadedPodcasts(it.key(), it.value());
+        }
     }
 }
 

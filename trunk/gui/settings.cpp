@@ -706,13 +706,24 @@ bool Settings::inhibitSuspend()
 
 int Settings::rssUpdate()
 {
+    static int constMax=7*24*60;
     int v=GET_INT("rssUpdate", 0);
-    return v<60 ? 60 : v;
+    return v<0 ? 0 : (v>constMax ? constMax : v);
 }
 
 QDateTime Settings::lastRssUpdate()
 {
     return GET_DATE_TIME("lastRssUpdate");
+}
+
+QString Settings::podcastDownloadPath()
+{
+    return GET_STRING("podcastDownloadPath", Utils::fixPath(QDir::homePath())+QLatin1String("Podcasts/"));
+}
+
+bool Settings::podcastAutoDownload()
+{
+    return GET_BOOL("podcastAutoDownload", false);
 }
 
 int Settings::maxCoverFindPerIteration()
@@ -1159,6 +1170,16 @@ void Settings::saveRssUpdate(int v)
 void Settings::saveLastRssUpdate(const QDateTime &v)
 {
     SET_VALUE_MOD(lastRssUpdate);
+}
+
+void Settings::savePodcastDownloadPath(const QString &v)
+{
+    SET_VALUE_MOD(podcastDownloadPath);
+}
+
+void Settings::savePodcastAutoDownload(bool v)
+{
+    SET_VALUE_MOD(podcastAutoDownload);
 }
 
 void Settings::save(bool force)

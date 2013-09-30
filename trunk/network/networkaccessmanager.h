@@ -58,18 +58,25 @@ public:
     QByteArray readAll() { return job ? job->readAll() : QByteArray(); }
     bool ok() const { return job && QNetworkReply::NoError==job->error(); }
     QVariant attribute(QNetworkRequest::Attribute code) const { return job ? job->attribute(code) : QVariant(); }
+    qint64 bytesAvailable() const { return job ? job->bytesAvailable() : -1; }
+    QByteArray read(qint64 maxlen) { return job ? job->read(maxlen) : QByteArray(); }
 
 Q_SIGNALS:
     void finished();
     void error(QNetworkReply::NetworkError);
     void uploadProgress(qint64 bytesSent, qint64 bytesTotal);
     void downloadProgress(qint64 bytesReceived, qint64 bytesTotal);
+    void downloadPercent(int pc);
+    void readyRead();
 
 private Q_SLOTS:
     void jobFinished();
+    void downloadProg(qint64 bytesReceived, qint64 bytesTotal);
+    void handleReadyRead();
 
 private:
     int numRedirects;
+    int lastDownloadPc;
     QNetworkReply *job;
 };
 

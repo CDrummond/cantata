@@ -34,12 +34,14 @@ static const int constMaxRedirects=5;
 NetworkJob::NetworkJob(QNetworkReply *j)
     : QObject(j->parent())
     , numRedirects(0)
+    , lastDownloadPc(0)
     , job(j)
 {
     connect(job, SIGNAL(finished()), this, SLOT(jobFinished()));
+    connect(job, SIGNAL(readyRead()), this, SLOT(handleReadyRead()));
     connect(job, SIGNAL(error(QNetworkReply::NetworkError)), this, SIGNAL(error(QNetworkReply::NetworkError)));
     connect(job, SIGNAL(uploadProgress(qint64, qint64)), this, SIGNAL(uploadProgress(qint64, qint64)));
-    connect(job, SIGNAL(downloadProgress(qint64, qint64)), this, SIGNAL(downloadProgress(qint64, qint64)));
+    connect(job, SIGNAL(downloadProgress(qint64, qint64)), this, SLOT(downloadProg(qint64, qint64)));
 }
 
 NetworkJob::~NetworkJob()
@@ -67,6 +69,28 @@ void NetworkJob::jobFinished()
     }
 
     emit finished();
+}
+
+void NetworkJob::downloadProg(qint64 bytesReceived, qint64 bytesTotal)
+{
+    int pc=((bytesReceived*1.0)/(bytesTotal*1.0)*100.0)+0.5;
+    pc=pc<0 ? 0 : (pc>100 ? 100 : pc);
+    if (pc!=lastDownloadPc) {
+        emit downloadPercent(pc);
+    }
+    emit downloadProgress(bytesReceived, bytesTotal);
+}
+
+void NetworkJob::handleReadyRead()
+{
+    QNetworkReply *j=dynamic_cast<QNetworkReply *>(sender());
+    if (!j || j!=job) {
+        return;
+    }
+    if (j->attribute(QNetworkRequest::RedirectionTargetAttribute).isValid()) {
+        return;
+    }
+    emit readyRead();
 }
 
 NetworkAccessManager * NetworkAccessManager::self()

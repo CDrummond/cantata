@@ -391,6 +391,16 @@ bool OnlineServicesModel::subscribePodcast(const QUrl &url)
     return false;
 }
 
+void OnlineServicesModel::downloadPodcasts(MusicLibraryItemPodcast *pod, const QList<MusicLibraryItemPodcastEpisode *> &episodes)
+{
+    podcast->downloadPodcasts(pod, episodes);
+}
+
+void OnlineServicesModel::deleteDownloadedPodcasts(MusicLibraryItemPodcast *pod, const QList<MusicLibraryItemPodcastEpisode *> &episodes)
+{
+    podcast->deleteDownloadedPodcasts(pod, episodes);
+}
+
 static const char * constExtensions[]={".jpg", ".png", 0};
 static const char * constIdProperty="id";
 static const char * constArtistProperty="artist";

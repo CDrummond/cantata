@@ -22,14 +22,13 @@
  */
 
 #include "podcastservice.h"
+#include "podcastsettingsdialog.h"
 #include "networkaccessmanager.h"
 #include "onlineservicesmodel.h"
 #include "musiclibraryitempodcast.h"
 #include "musiclibraryitemsong.h"
 #include "utils.h"
 #include "settings.h"
-#include "dialog.h"
-#include "buddylabel.h"
 #include "mpdconnection.h"
 #include "config.h"
 #include <QCoreApplication>
@@ -37,69 +36,18 @@
 #include <QUrl>
 #include <QSet>
 #include <QTimer>
-#include <QComboBox>
-#include <QFormLayout>
 #if QT_VERSION >= 0x050000
 #include <QUrlQuery>
 #endif
 #include <stdio.h>
 
-class PodcastSettingsDialog : public Dialog
-{
-public:
-    PodcastSettingsDialog(QWidget *p)
-        : Dialog(p)
-    {
-        QWidget *mw=new QWidget(this);
-        QFormLayout * lay=new QFormLayout(mw);
-        BuddyLabel *label=new BuddyLabel(i18n("Check for new updates:"), mw);
-        combo = new QComboBox(this);
-        label->setBuddy(combo);
-        lay->setWidget(0, QFormLayout::LabelRole, label);
-        lay->setWidget(0, QFormLayout::FieldRole, combo);
-        setButtons(Ok|Cancel);
-        setMainWidget(mw);
-        setCaption(i18n("Podcast Update"));
-
-        combo->addItem(i18n("Manually"), 0);
-        combo->addItem(i18n("Every 15 minutes"), 15);
-        combo->addItem(i18n("Every 30 minutes"), 30);
-        combo->addItem(i18n("Every hour"), 60);
-        combo->addItem(i18n("Every 2 hours"), 2*60);
-        combo->addItem(i18n("Every 6 hours"), 6*60);
-        combo->addItem(i18n("Every 12 hours"), 12*60);
-        combo->addItem(i18n("Every day"), 24*60);
-        combo->addItem(i18n("Every week"), 7*24*60);
-
-        int val=Settings::self()->rssUpdate();
-        int possible=0;
-        for (int i=0; i<combo->count(); ++i) {
-            int cval=combo->itemData(i).toInt();
-            if (cval==val) {
-                combo->setCurrentIndex(i);
-                possible=-1;
-                break;
-            }
-            if (cval<val) {
-                possible=i;
-            }
-        }
-
-        if (possible>=0) {
-            combo->setCurrentIndex(possible);
-        }
-    }
-
-    int update() const { return combo->itemData(combo->currentIndex()).toInt(); }
-
-private:
-    QComboBox *combo;
-};
-
 const QString PodcastService::constName=QLatin1String("Podcasts");
 QString PodcastService::iconFile;
 
 static const char * constNewFeedProperty="new-feed";
+static const char * constRssUrlProperty="rss-url";
+static const char * constDestProperty="dest";
+static const QLatin1String constPartialExt(".partial");
 
 // Move files from previous ~/.config/cantata to ~/.local/share/cantata
 static void moveToNewLocation()
@@ -152,7 +100,7 @@ QUrl PodcastService::fixUrl(const QUrl &orig)
 
 PodcastService::PodcastService(MusicModel *m)
     : OnlineService(m, i18n("Podcasts"))
-    , updateTimer(0)
+    , rssUpdateTimer(0)
 {
     moveToNewLocation();
 
@@ -180,6 +128,7 @@ Song PodcastService::fixPath(const Song &orig, bool) const
 void PodcastService::clear()
 {
     cancelAll();
+    cancelAllDownloads();
     ::OnlineService::clear();
 }
 
@@ -210,30 +159,30 @@ void PodcastService::loadAll()
                 applyUpdate();
             }
         }
-        startTimer();
+        startRssUpdateTimer();
     }
 }
 
 void PodcastService::cancelAll()
 {
-    foreach (NetworkJob *j, jobs) {
-        disconnect(j, SIGNAL(finished()), this, SLOT(jobFinished()));
+    foreach (NetworkJob *j, rssJobs) {
+        disconnect(j, SIGNAL(finished()), this, SLOT(rssJobFinished()));
         j->abort();
         j->deleteLater();
     }
-    jobs.clear();
-    setBusy(false);
+    rssJobs.clear();
+    setBusy(!rssJobs.isEmpty() || !downloadJobs.isEmpty());
 }
 
-void PodcastService::jobFinished()
+void PodcastService::rssJobFinished()
 {
     NetworkJob *j=dynamic_cast<NetworkJob *>(sender());
-    if (!j || !jobs.contains(j)) {
+    if (!j || !rssJobs.contains(j)) {
         return;
     }
 
     j->deleteLater();
-    jobs.removeAll(j);
+    rssJobs.removeAll(j);
 
     if (!j->ok()) {
         emitError(i18n("Failed to download %1", j->url().toString()));
@@ -245,7 +194,7 @@ void PodcastService::jobFinished()
         if (updateUrls.isEmpty()) {
             lastRssUpdate=QDateTime::currentDateTime();
             Settings::self()->saveLastRssUpdate(lastRssUpdate);
-            startTimer();
+            startRssUpdateTimer();
         }
     }
 
@@ -253,11 +202,18 @@ void PodcastService::jobFinished()
 
     MusicLibraryItemPodcast *podcast=new MusicLibraryItemPodcast(QString(), this);
     if (podcast->loadRss(j->actualJob())) {
+        bool autoDownload=Settings::self()->podcastAutoDownload();
 
         if (isNew) {
             podcast->save();
             beginInsertRows(index(), childCount(), childCount());
             m_childItems.append(podcast);
+            if (autoDownload) {
+                foreach (MusicLibraryItem *i, podcast->childItems()) {
+                    MusicLibraryItemSong *song=static_cast<MusicLibraryItemSong *>(i);
+                    downloadEpisode(podcast, QUrl(song->file()));
+                }
+            }
             endInsertRows();
             emitNeedToSort();
         } else {
@@ -268,15 +224,9 @@ void PodcastService::jobFinished()
             }
             QSet<QString> origSongs;
             QSet<QString> newSongs;
-            QSet<QString> playedSongs;
             foreach (MusicLibraryItem *i, orig->childItems()) {
-                MusicLibraryItemSong *song=static_cast<MusicLibraryItemSong *>(i);
-                if (!song->song().podcastPublishedDate().isEmpty()) {
-                    origSongs.insert(song->file());
-                }
-                if (song->song().hasbeenPlayed()) {
-                    playedSongs.insert(song->file());
-                }
+                MusicLibraryItemPodcastEpisode *episode=static_cast<MusicLibraryItemPodcastEpisode *>(i);
+                origSongs.insert(episode->file());
             }
             foreach (MusicLibraryItem *i, podcast->childItems()) {
                 MusicLibraryItemSong *song=static_cast<MusicLibraryItemSong *>(i);
@@ -287,32 +237,37 @@ void PodcastService::jobFinished()
             QSet<QString> removed=origSongs-newSongs;
             if (added.count() || removed.count()) {
                 QModelIndex origIndex=createIndex(orig);
-                if (orig->childCount()) {
-                    beginRemoveRows(origIndex, 0, orig->childCount()-1);
-                    orig->clear();
-                    endRemoveRows();
-                }
-                if (added.count()) {
-                    beginInsertRows(origIndex, 0, podcast->childCount()-1);
-                    orig->addAll(podcast);
-                    endInsertRows();
-                }
-
-                // Restore played status...
-                quint32 played=0;
-                foreach (MusicLibraryItem *i, orig->childItems()) {
-                    MusicLibraryItemSong *song=static_cast<MusicLibraryItemSong *>(i);
-                    if (playedSongs.contains(song->file())) {
-                        played++;
-                        orig->setPlayed(song);
-                        playedSongs.remove(song->file());
-                        if (playedSongs.isEmpty()) {
-                            break;
+                if (removed.count()) {
+                    foreach (const QString &s, removed) {
+                        MusicLibraryItemPodcastEpisode *episode=orig->getEpisode(s);
+                        if (episode->localPath().isEmpty() || !QFile::exists(episode->localPath())) {
+                            int idx=orig->indexOf(episode);
+                            if (-1!=idx) {
+                                beginRemoveRows(origIndex, idx, idx);
+                                orig->remove(idx);
+                                endRemoveRows();
+                            }
                         }
                     }
                 }
+                if (added.count()) {
+                    QList<MusicLibraryItemPodcastEpisode *> newSongs;
+                    foreach (const QString &s, added) {
+                        MusicLibraryItemPodcastEpisode *episode=podcast->getEpisode(s);
+                        if (episode) {
+                            newSongs.append(episode);
+                            if (autoDownload) {
+                                downloadEpisode(orig, QUrl(episode->file()));
+                            }
+                        }
+                    }
 
-                orig->setUnplayedCount(orig->childCount()-played);
+                    beginInsertRows(origIndex, orig->childCount(), (orig->childCount()+newSongs.count())-1);
+                    orig->addAll(newSongs);
+                    endInsertRows();
+                }
+
+                orig->setUnplayedCount();
                 orig->save();
                 emitNeedToSort();
             }
@@ -325,19 +280,16 @@ void PodcastService::jobFinished()
         emitError(i18n("Failed to parse %1", j->url().toString()));
     }
 
-    if (jobs.isEmpty()) {
-        setBusy(false);
-    }
+    setBusy(!rssJobs.isEmpty() || !downloadJobs.isEmpty());
 }
 
 void PodcastService::configure(QWidget *p)
 {
     PodcastSettingsDialog dlg(p);
     if (QDialog::Accepted==dlg.exec()) {
-        int current=Settings::self()->rssUpdate();
-        if (current!=dlg.update()) {
-            Settings::self()->saveRssUpdate(dlg.update());
-            startTimer();
+        int changes=dlg.changes();
+        if (changes&PodcastSettingsDialog::RssUpdate) {
+            startRssUpdateTimer();
         }
     }
 }
@@ -352,6 +304,20 @@ MusicLibraryItemPodcast * PodcastService::getPodcast(const QUrl &url) const
     return 0;
 }
 
+MusicLibraryItemPodcastEpisode * PodcastService::getEpisode(const MusicLibraryItemPodcast *podcast, const QUrl &episode)
+{
+    if (podcast) {
+        foreach (MusicLibraryItem *i, podcast->childItems()) {
+            MusicLibraryItemPodcastEpisode *song=static_cast<MusicLibraryItemPodcastEpisode *>(i);
+            if (QUrl(song->file())==episode) {
+                return song;
+            }
+        }
+    }
+
+    return 0;
+}
+
 void PodcastService::unSubscribe(MusicLibraryItem *item)
 {
     int row=m_childItems.indexOf(item);
@@ -362,7 +328,7 @@ void PodcastService::unSubscribe(MusicLibraryItem *item)
         resetRows();
         endRemoveRows();
         if (m_childItems.isEmpty()) {
-            stopTimer();
+            stopRssUpdateTimer();
         }
     }
 }
@@ -380,9 +346,9 @@ void PodcastService::refreshSubscription(MusicLibraryItem *item)
     }
 }
 
-bool PodcastService::processingUrl(const QUrl &url)
+bool PodcastService::processingUrl(const QUrl &url) const
 {
-    foreach (NetworkJob *j, jobs) {
+    foreach (NetworkJob *j, rssJobs) {
         if (j->url()==url) {
             return true;
         }
@@ -394,21 +360,205 @@ void PodcastService::addUrl(const QUrl &url, bool isNew)
 {
     setBusy(true);
     NetworkJob *job=NetworkAccessManager::self()->get(QUrl(url));
-    connect(job, SIGNAL(finished()), this, SLOT(jobFinished()));
+    connect(job, SIGNAL(finished()), this, SLOT(rssJobFinished()));
     job->setProperty(constNewFeedProperty, isNew);
-    jobs.append(job);
+    rssJobs.append(job);
 }
 
-void PodcastService::startTimer()
+bool PodcastService::downloadingEpisode(const QUrl &url) const
 {
-    if (0==Settings::self()->rssUpdate() || m_childItems.isEmpty()) {
-        stopTimer();
+    foreach (NetworkJob *j, downloadJobs) {
+        if (j->url()==url) {
+            return true;
+        }
+    }
+    return false;
+}
+
+void PodcastService::cancelAllDownloads()
+{
+    foreach (NetworkJob *j, downloadJobs) {
+        cancelDownload(j);
+    }
+    downloadJobs.clear();
+    setBusy(!rssJobs.isEmpty() || !downloadJobs.isEmpty());
+}
+
+void PodcastService::downloadPodcasts(MusicLibraryItemPodcast *pod, const QList<MusicLibraryItemPodcastEpisode *> &episodes)
+{
+    foreach (MusicLibraryItemPodcastEpisode *ep, episodes) {
+        QUrl url(ep->file());
+        if (!downloadingEpisode(url)) {
+            downloadEpisode(pod, url);
+        }
+    }
+}
+
+void PodcastService::deleteDownloadedPodcasts(MusicLibraryItemPodcast *pod, const QList<MusicLibraryItemPodcastEpisode *> &episodes)
+{
+    // TODO
+}
+
+static QString encodeName(const QString &name)
+{
+    QString n=name;
+    n=n.replace("/", "_");
+    n=n.replace("\\", "_");
+    n=n.replace(":", "_");
+    return n;
+}
+
+void PodcastService::downloadEpisode(const MusicLibraryItemPodcast *podcast, const QUrl &episode)
+{
+    QString dest=Settings::self()->podcastDownloadPath();
+    if (dest.isEmpty()) {
         return;
     }
-    if (!updateTimer) {
-        updateTimer=new QTimer(this);
-        updateTimer->setSingleShot(true);
-        connect(updateTimer, SIGNAL(timeout()), this, SLOT(updateRss()));
+    if (downloadingEpisode(episode)) {
+        return;
+    }
+
+    dest=Utils::fixPath(dest)+Utils::fixPath(encodeName(podcast->data()))+Utils::getFile(episode.toString());
+    setBusy(true);
+    NetworkJob *job=NetworkAccessManager::self()->get(QUrl(episode));
+    connect(job, SIGNAL(finished()), this, SLOT(downloadJobFinished()));
+    connect(job, SIGNAL(readyRead()), this, SLOT(downloadReadyRead()));
+    connect(job, SIGNAL(downloadPercent(int)), this, SLOT(downloadPercent(int)));
+    job->setProperty(constRssUrlProperty, podcast->rssUrl());
+    job->setProperty(constDestProperty, dest);
+    downloadJobs.append(job);
+
+    QString partial=dest+constPartialExt;
+    if (QFile::exists(partial)) {
+        QFile::remove(partial);
+    }
+}
+
+void PodcastService::cancelDownload(const QUrl &url)
+{
+    foreach (NetworkJob *j, downloadJobs) {
+        if (j->url()==url) {
+            cancelDownload(j);
+            downloadJobs.removeAll(j);
+            break;
+        }
+    }
+    setBusy(!rssJobs.isEmpty() || !downloadJobs.isEmpty());
+}
+
+void PodcastService::cancelDownload(NetworkJob *job)
+{
+    disconnect(job, SIGNAL(finished()), this, SLOT(downloadJobFinished()));
+    disconnect(job, SIGNAL(readyRead()), this, SLOT(downloadReadyRead()));
+    disconnect(job, SIGNAL(downloadPercent(int)), this, SLOT(downloadPercent(int)));
+    job->abort();
+    job->deleteLater();
+
+    QString dest=job->property(constDestProperty).toString();
+    QString partial=dest.isEmpty() ? QString() : QString(dest+constPartialExt);
+    if (!partial.isEmpty() && !QFile::exists(partial)) {
+        QFile::remove(partial);
+    }
+}
+
+void PodcastService::downloadJobFinished()
+{
+    NetworkJob *job=dynamic_cast<NetworkJob *>(sender());
+    if (!job || !downloadJobs.contains(job)) {
+        return;
+    }
+    job->deleteLater();
+
+    QString dest=job->property(constDestProperty).toString();
+    QString partial=dest.isEmpty() ? QString() : QString(dest+constPartialExt);
+
+    if (job->ok()) {
+        QString dest=job->property(constDestProperty).toString();
+        if (dest.isEmpty()) {
+            return;
+        }
+
+        QString partial=dest+constPartialExt;
+        if (QFile::exists(partial)) {
+            if (QFile::exists(dest)) {
+                QFile::remove(dest);
+            }
+            if (QFile::rename(partial, dest)) {
+                MusicLibraryItemPodcast *pod=getPodcast(job->property(constRssUrlProperty).toUrl());
+                if (pod) {
+                    MusicLibraryItemPodcastEpisode *song=getEpisode(pod, job->url());
+                    if (song) {
+                        song->setLocalPath(dest);
+                        pod->save();
+                    }
+                }
+            }
+        }
+    } else if (!partial.isEmpty() && !QFile::exists(partial)) {
+        QFile::remove(partial);
+    }
+
+    downloadJobs.removeAll(job);
+    setBusy(!rssJobs.isEmpty() || !downloadJobs.isEmpty());
+}
+
+void PodcastService::downloadReadyRead()
+{
+    NetworkJob *job=dynamic_cast<NetworkJob *>(sender());
+    if (!job || !downloadJobs.contains(job)) {
+        return;
+    }
+    QString dest=job->property(constDestProperty).toString();
+    QString partial=dest.isEmpty() ? QString() : QString(dest+constPartialExt);
+    if (!partial.isEmpty()) {
+        QString dir=Utils::getDir(partial);
+        if (!QDir(dir).exists()) {
+            Utils::createDir(dir, QString());
+        }
+        if (!QDir(dir).exists()) {
+            return;
+        }
+        QFile f(partial);
+        while (true) {
+            const qint64 bytes = job->bytesAvailable();
+            if (bytes <= 0) {
+                break;
+            }
+            if (!f.isOpen()) {
+                if (!f.open(QIODevice::Append)) {
+                    return;
+                }
+            }
+            f.write(job->read(bytes));
+        }
+    }
+}
+
+void PodcastService::downloadPercent(int pc)
+{
+    NetworkJob *job=dynamic_cast<NetworkJob *>(sender());
+    if (!job || !downloadJobs.contains(job)) {
+        return;
+    }
+    MusicLibraryItemPodcast *pod=getPodcast(job->property(constRssUrlProperty).toUrl());
+    if (pod) {
+        MusicLibraryItemPodcastEpisode *song=getEpisode(pod, job->url());
+        if (song) {
+            // TODO: Show progress!!!
+        }
+    }
+}
+
+void PodcastService::startRssUpdateTimer()
+{
+    if (0==Settings::self()->rssUpdate() || m_childItems.isEmpty()) {
+        stopRssUpdateTimer();
+        return;
+    }
+    if (!rssUpdateTimer) {
+        rssUpdateTimer=new QTimer(this);
+        rssUpdateTimer->setSingleShot(true);
+        connect(rssUpdateTimer, SIGNAL(timeout()), this, SLOT(updateRss()));
     }
     if (!lastRssUpdate.isValid()) {
         lastRssUpdate=Settings::self()->lastRssUpdate();
@@ -422,15 +572,15 @@ void PodcastService::startTimer()
             // Oops, missed update time!!!
             updateRss();
         } else {
-            updateTimer->start(secsUntilNextUpdate*1000ll);
+            rssUpdateTimer->start(secsUntilNextUpdate*1000ll);
         }
     }
 }
 
-void PodcastService::stopTimer()
+void PodcastService::stopRssUpdateTimer()
 {
-    if (updateTimer) {
-        updateTimer->stop();
+    if (rssUpdateTimer) {
+        rssUpdateTimer->stop();
     }
 }
 

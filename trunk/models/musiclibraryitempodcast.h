@@ -34,6 +34,7 @@
 #include "song.h"
 
 class QNetworkReply;
+class MusicLibraryItemPodcastEpisode;
 
 class MusicLibraryItemPodcast : public MusicLibraryItemContainer
 {
@@ -62,10 +63,11 @@ public:
     void clearImage();
     const QUrl & rssUrl() const { return m_rssUrl; }
     void removeFiles();
-    void setUnplayedCount(quint32 upc) { m_unplayedEpisodeCount=upc; }
+    void setUnplayedCount();
     quint32 unplayedEpisodes() const { return m_unplayedEpisodeCount; }
     void setPlayed(MusicLibraryItemSong *song);
-    void addAll(MusicLibraryItemPodcast *other);
+    void addAll(const QList<MusicLibraryItemPodcastEpisode *> &others);
+    MusicLibraryItemPodcastEpisode * getEpisode(const QString &file) const;
 
 private:
     void setCoverImage(const QImage &img) const;
@@ -82,17 +84,20 @@ private:
     quint32 m_unplayedEpisodeCount;
 };
 
-class MusicLibraryItemPodcastSong : public MusicLibraryItemSong
+class MusicLibraryItemPodcastEpisode : public MusicLibraryItemSong
 {
 public:
-    MusicLibraryItemPodcastSong(const Song &s, MusicLibraryItemContainer *parent)
+    MusicLibraryItemPodcastEpisode(const Song &s, MusicLibraryItemContainer *parent)
         : MusicLibraryItemSong(s, parent) { }
-    virtual ~MusicLibraryItemPodcastSong() { }
+    virtual ~MusicLibraryItemPodcastEpisode() { }
 
     const QString & published();
+    const QString & localPath() { return local; }
+    void setLocalPath(const QString &l) { local=l; }
 
 private:
     QString publishedDate;
+    QString local;
 };
 
 #endif

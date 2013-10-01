@@ -134,7 +134,7 @@ bool MusicLibraryItemPodcast::load()
                     MusicLibraryItemPodcastEpisode *song=new MusicLibraryItemPodcastEpisode(s, this);
                     song->setLocalPath(attributes.value(constLocalAttribute).toString());
                     m_childItems.append(song);
-                    if (!s.hasbeenPlayed()) {
+                    if (!s.hasBeenPlayed()) {
                         m_unplayedEpisodeCount++;
                     }
                 }
@@ -208,7 +208,7 @@ bool MusicLibraryItemPodcast::save()
         if (s.time) {
             writer.writeAttribute(constTimeAttribute, QString::number(s.time));
         }
-        if (s.hasbeenPlayed()) {
+        if (s.hasBeenPlayed()) {
             writer.writeAttribute(constPlayedAttribute, constTrue);
         }
         if (!s.podcastPublishedDate().isEmpty()) {
@@ -325,7 +325,7 @@ void MusicLibraryItemPodcast::setUnplayedCount()
 {
     m_unplayedEpisodeCount=childCount();
     foreach (MusicLibraryItem *i, m_childItems) {
-        if (static_cast<MusicLibraryItemSong *>(i)->song().hasbeenPlayed()) {
+        if (static_cast<MusicLibraryItemSong *>(i)->song().hasBeenPlayed()) {
             m_unplayedEpisodeCount--;
         }
     }
@@ -333,7 +333,7 @@ void MusicLibraryItemPodcast::setUnplayedCount()
 
 void MusicLibraryItemPodcast::setPlayed(MusicLibraryItemSong *song)
 {
-    if (!song->song().hasbeenPlayed()) {
+    if (!song->song().hasBeenPlayed()) {
         song->setPlayed(true);
         m_unplayedEpisodeCount--;
     }

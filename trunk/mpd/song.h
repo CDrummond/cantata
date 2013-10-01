@@ -125,7 +125,7 @@ struct Song
     QString basicArtist() const;
 
     // podcast functions...
-    bool hasbeenPlayed() const { return 0!=id; }
+    bool hasBeenPlayed() const { return 0!=id; }
     void setPlayed(bool p) { id=p ? 1 : 0; }
     void setPodcastImage(const QString &i) { genre=i; }
     const QString & podcastImage() const { return genre; }

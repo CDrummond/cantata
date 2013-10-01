@@ -190,7 +190,7 @@ public:
         painter->save();
         painter->setClipRect(r);
 
-        QFont textFont(QApplication::font());
+        QFont textFont(index.data(Qt::FontRole).value<QFont>());
         QFontMetrics textMetrics(textFont);
         int textHeight=textMetrics.height();
 

@@ -135,7 +135,8 @@ QVariant OnlineServicesModel::data(const QModelIndex &index, int role) const
         }
         break;
     case ItemView::Role_SubText:
-        if (MusicLibraryItem::Type_Root==item->itemType()) {
+        switch(item->itemType()) {
+        case MusicLibraryItem::Type_Root: {
             OnlineService *srv=static_cast<OnlineService *>(item);
 
             if (srv->isLoading()) {
@@ -164,6 +165,19 @@ QVariant OnlineServicesModel::data(const QModelIndex &index, int role) const
                 return QTP_PODCASTS_STR(item->childCount());
                 #endif
             }
+            break;
+        }
+        case MusicLibraryItem::Type_Song: {
+            if (MusicLibraryItem::Type_Podcast==item->parentItem()->itemType()) {
+                if (static_cast<MusicLibraryItemPodcastEpisode *>(item)->downloadProgress()>=0) {
+                    return MultiMusicModel::data(index, role).toString()+QLatin1Char(' ')+
+                           i18n("(Downloading: %1%)", static_cast<MusicLibraryItemPodcastEpisode *>(item)->downloadProgress());
+                }
+            }
+            break;
+        }
+        default:
+            break;
         }
         break;
     case ItemView::Role_Actions: {
@@ -195,6 +209,7 @@ QVariant OnlineServicesModel::data(const QModelIndex &index, int role) const
             v.setValue<QList<Action *> >(actions);
             return v;
         }
+        break;
     }
     case Qt::DecorationRole:
         if (MusicLibraryItem::Type_Song==item->itemType() && item->parentItem() && MusicLibraryItem::Type_Podcast==item->parentItem()->itemType()) {

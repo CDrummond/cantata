@@ -109,6 +109,7 @@ Q_SIGNALS:
     void updated(const QModelIndex &idx);
     void needToSort();
     void busy(bool);
+    void providersChanged();
 
 private:
     bool enabled;

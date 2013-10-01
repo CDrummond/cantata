@@ -139,6 +139,7 @@ public Q_SLOTS:
     void backActivated();
     void homeActivated();
     void setExpanded(const QModelIndex &idx, bool exp=true);
+    void closeSearch();
 
 Q_SIGNALS:
     void searchItems();

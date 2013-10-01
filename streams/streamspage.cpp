@@ -81,6 +81,7 @@ StreamsPage::StreamsPage(QWidget *p)
     connect(StreamsModel::self(), SIGNAL(error(const QString &)), this, SIGNAL(error(const QString &)));
     connect(StreamsModel::self(), SIGNAL(loading()), view, SLOT(showSpinner()));
     connect(StreamsModel::self(), SIGNAL(loaded()), view, SLOT(hideSpinner()));
+    connect(StreamsModel::self(), SIGNAL(categoriesChanged()), view, SLOT(closeSearch()));
     connect(&searchModel, SIGNAL(loading()), searchView, SLOT(showSpinner()));
     connect(&searchModel, SIGNAL(loaded()), searchView, SLOT(hideSpinner()));
     connect(MPDConnection::self(), SIGNAL(dirChanged()), SLOT(mpdDirChanged()));

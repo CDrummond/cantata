@@ -1095,12 +1095,14 @@ QList<StreamsModel::Category> StreamsModel::getCategories() const
 
 void StreamsModel::setHiddenCategories(const QSet<QString> &cats)
 {
+    bool changed=false;
     foreach (Item *i, hiddenCategories) {
         if (!cats.contains(static_cast<CategoryItem *>(i)->configName)) {
             beginInsertRows(QModelIndex(), root->children.count(), root->children.count());
             root->children.append(i);
             hiddenCategories.removeAll(i);
             endInsertRows();
+            changed=true;
         }
     }
 
@@ -1111,8 +1113,12 @@ void StreamsModel::setHiddenCategories(const QSet<QString> &cats)
                 beginRemoveRows(QModelIndex(), row, row);
                 hiddenCategories.append(root->children.takeAt(row));
                 endRemoveRows();
+                changed=true;
             }
         }
+    }
+    if (changed) {
+        emit categoriesChanged();
     }
 }
 

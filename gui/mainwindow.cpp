@@ -1215,6 +1215,12 @@ void MainWindow::showPreferencesDialog()
 
 void MainWindow::quit()
 {
+    if (OnlineServicesModel::self()->isDownloading() &&
+        MessageBox::No==MessageBox::warningYesNo(this, i18n("Podcasts are currently being downloaded\n\nQuiting now will abort all downloads."),
+                                                 QString(), GuiItem(i18n("Abort downloads and quit")), GuiItem("Do not quit just yet"))) {
+        return;
+    }
+    OnlineServicesModel::self()->cancelAll();
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
     if (RgDialog::instanceCount()) {
         return;

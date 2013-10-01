@@ -81,6 +81,8 @@ public:
     bool subscribePodcast(const QUrl &url);
     void downloadPodcasts(MusicLibraryItemPodcast *pod, const QList<MusicLibraryItemPodcastEpisode *> &episodes);
     void deleteDownloadedPodcasts(MusicLibraryItemPodcast *pod, const QList<MusicLibraryItemPodcastEpisode *> &episodes);
+    bool isDownloading() const;
+    void cancelAll();
 
     QImage requestImage(const QString &id, const QString &artist, const QString &album, const QString &url,
                         const QString cacheName=QString(), int maxSize=-1);

@@ -134,8 +134,7 @@ Song PodcastService::fixPath(const Song &orig, bool) const
 
 void PodcastService::clear()
 {
-    cancelAll();
-    cancelAllDownloads();
+    cancelAllJobs();
     ::OnlineService::clear();
 }
 

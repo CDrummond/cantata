@@ -72,6 +72,8 @@ public:
     void downloadPodcasts(MusicLibraryItemPodcast *pod, const QList<MusicLibraryItemPodcastEpisode *> &episodes);
     void deleteDownloadedPodcasts(MusicLibraryItemPodcast *pod, const QList<MusicLibraryItemPodcastEpisode *> &episodes);
 
+    void cancelAllJobs() { cancelAll(); cancelAllDownloads(); }
+
 private:
     void loadAll();
     void cancelAll();

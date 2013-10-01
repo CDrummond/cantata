@@ -49,6 +49,7 @@ public:
     void focusSearch() { view->focusSearch(); }
     void goBack() { view->backActivated(); }
     void refresh();
+    void showEvent(QShowEvent *e);
 
 public Q_SLOTS:
     void itemDoubleClicked(const QModelIndex &);
@@ -68,7 +69,6 @@ public Q_SLOTS:
     void searchForPodcasts();
     void downloadPodcast();
     void deleteDownloadedPodcast();
-    void expandPodcasts();
 
 Q_SIGNALS:
     // These are for communicating with MPD object (which is in its own thread, so need to talk via signal/slots)
@@ -79,6 +79,7 @@ Q_SIGNALS:
 
 private:
     OnlineService * activeSrv() const;
+    void expandPodcasts();
 
 private:
     MusicLibraryProxyModel proxy;
@@ -90,6 +91,7 @@ private:
     bool onlineSearchRequest;
     QString searchService;
     bool searchable;
+    bool expanded;
 };
 
 #endif

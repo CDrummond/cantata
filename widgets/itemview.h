@@ -129,6 +129,8 @@ public:
     void expand(const QModelIndex &index, bool singleOnly=false);
     void showMessage(const QString &message, int timeout);
     void setBackgroundImage(const QIcon &icon);
+    bool isAnimated() const;
+    void setAnimated(bool a);
 
 public Q_SLOTS:
     void showSpinner(bool v=true);

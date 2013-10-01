@@ -57,7 +57,6 @@ PodcastSettingsDialog::PodcastSettingsDialog(QWidget *p)
     BuddyLabel * updateLabel=new BuddyLabel(i18n("Check for new episodes:"), mw);
     BuddyLabel * downloadLabel=new BuddyLabel(i18n("Download episodes to:"), mw);
     BuddyLabel * autoDownloadLabel=new BuddyLabel(i18n("Automatically download new episodes:"), mw);
-    BuddyLabel * deleteLabel=new BuddyLabel(i18n("Delete played episodes:"), mw);
 
     updateCombo = new QComboBox(this);
     updateLabel->setBuddy(updateCombo);
@@ -66,8 +65,6 @@ PodcastSettingsDialog::PodcastSettingsDialog(QWidget *p)
     downloadPath->setDirMode(true);
     autoDownload = new OnOffButton(this);
     autoDownloadLabel->setBuddy(autoDownload);
-    deleteCombo = new QComboBox(this);
-    deleteLabel->setBuddy(deleteCombo);
 
     int row=0;
     lay->setWidget(row, QFormLayout::LabelRole, updateLabel);
@@ -78,8 +75,6 @@ PodcastSettingsDialog::PodcastSettingsDialog(QWidget *p)
     lay->setWidget(row++, QFormLayout::FieldRole, downloadPath);
     lay->setWidget(row, QFormLayout::LabelRole, autoDownloadLabel);
     lay->setWidget(row++, QFormLayout::FieldRole, autoDownload);
-    lay->setWidget(row, QFormLayout::LabelRole, deleteLabel);
-    lay->setWidget(row++, QFormLayout::FieldRole, deleteCombo);
     setButtons(Ok|Cancel);
     setMainWidget(mw);
     setCaption(i18n("Podcast Settings"));

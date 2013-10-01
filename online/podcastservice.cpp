@@ -623,7 +623,7 @@ void PodcastService::currentMpdSong(const Song &s)
             foreach (MusicLibraryItem *i, podcast->childItems()) {
                 MusicLibraryItemSong *song=static_cast<MusicLibraryItemSong *>(i);
                 if (song->file()==s.file) {
-                    if (!song->song().hasbeenPlayed()) {
+                    if (!song->song().hasBeenPlayed()) {
                         podcast->setPlayed(song);
                         emitDataChanged(createIndex(song));
                         emitDataChanged(createIndex(podcast));

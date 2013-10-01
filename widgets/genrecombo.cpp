@@ -87,3 +87,12 @@ void GenreCombo::update(const QSet<QString> &g)
         }
     }
 }
+
+void GenreCombo::paintEvent(QPaintEvent *e)
+{
+    if (count()>1) {
+        ComboBox::paintEvent(e);
+    } else {
+        QWidget::paintEvent(e);
+    }
+}

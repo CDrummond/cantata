@@ -38,6 +38,8 @@ public:
 
     const QSet<QString> & entries() const { return genres; }
 
+    void paintEvent(QPaintEvent *e);
+
 public Q_SLOTS:
     void update(const QSet<QString> &g);
 

@@ -425,6 +425,16 @@ void OnlineServicesModel::deleteDownloadedPodcasts(MusicLibraryItemPodcast *pod,
     podcast->deleteDownloadedPodcasts(pod, episodes);
 }
 
+bool OnlineServicesModel::isDownloading() const
+{
+    return podcast->isDownloading();
+}
+
+void OnlineServicesModel::cancelAll()
+{
+    podcast->cancelAllJobs();
+}
+
 static const char * constExtensions[]={".jpg", ".png", 0};
 static const char * constIdProperty="id";
 static const char * constArtistProperty="artist";

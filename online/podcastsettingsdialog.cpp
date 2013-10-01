@@ -26,6 +26,7 @@
 #include "pathrequester.h"
 #include "settings.h"
 #include "onoffbutton.h"
+#include "localize.h"
 #include <QComboBox>
 #include <QFormLayout>
 

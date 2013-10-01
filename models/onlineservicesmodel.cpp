@@ -198,8 +198,17 @@ QVariant OnlineServicesModel::data(const QModelIndex &index, int role) const
     }
     case Qt::DecorationRole:
         if (MusicLibraryItem::Type_Song==item->itemType() && item->parentItem() && MusicLibraryItem::Type_Podcast==item->parentItem()->itemType()) {
-            if (static_cast<MusicLibraryItemSong *>(item)->song().hasbeenPlayed()) {
+            if (static_cast<MusicLibraryItemSong *>(item)->song().hasBeenPlayed()) {
                 return Icons::self()->playedPodcastEpisodeIcon;
+            }
+        }
+        break;
+    case Qt::FontRole:
+        if (MusicLibraryItem::Type_Song==item->itemType() && item->parentItem() && MusicLibraryItem::Type_Podcast==item->parentItem()->itemType()) {
+            if (!static_cast<MusicLibraryItemSong *>(item)->song().hasBeenPlayed()) {
+                QFont f;
+                f.setItalic(true);
+                return f;
             }
         }
         break;

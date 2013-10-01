@@ -711,7 +711,7 @@ void OnlineServicesPage::deleteDownloadedPodcast()
         case MusicLibraryItem::Type_Podcast:
             foreach (MusicLibraryItem *c, static_cast<MusicLibraryItemPodcast *>(item)->childItems()) {
                 MusicLibraryItemPodcastEpisode *episode=static_cast<MusicLibraryItemPodcastEpisode *>(c);
-                if ((episode->localPath().isEmpty() || !QFile::exists(episode->localPath())) &&
+                if (!episode->localPath().isEmpty() && QFile::exists(episode->localPath()) &&
                     !urls[static_cast<MusicLibraryItemPodcast *>(item)].contains(episode)) {
                     urls[static_cast<MusicLibraryItemPodcast *>(item)].append(episode);
                     count++;
@@ -721,7 +721,7 @@ void OnlineServicesPage::deleteDownloadedPodcast()
         case MusicLibraryItem::Type_Song:
             if (MusicLibraryItem::Type_Podcast==item->parentItem()->itemType()) {
                 MusicLibraryItemPodcastEpisode *episode=static_cast<MusicLibraryItemPodcastEpisode *>(item);
-                if ((episode->localPath().isEmpty() || !QFile::exists(episode->localPath())) &&
+                if (!episode->localPath().isEmpty() && QFile::exists(episode->localPath()) &&
                     !urls[static_cast<MusicLibraryItemPodcast *>(item->parentItem())].contains(episode)) {
                     urls[static_cast<MusicLibraryItemPodcast *>(item->parentItem())].append(episode);
                     count++;

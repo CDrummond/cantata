@@ -57,7 +57,7 @@ public:
     QSet<QString> allGenres() const { return QSet<QString>()<<m_song.genre; }
     void setPodcastImage(const QString &img) { m_song.setPodcastImage(img); }
 
-private:
+protected:
     Song m_song;
 };
 

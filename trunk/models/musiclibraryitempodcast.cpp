@@ -131,8 +131,8 @@ bool MusicLibraryItemPodcast::load()
                     s.setPodcastPublishedDate(attributes.value(constDateAttribute).toString());
                     QString time=attributes.value(constTimeAttribute).toString();
                     s.time=time.isEmpty() ? 0 : time.toUInt();
+                    s.setPodcastLocalPath(attributes.value(constLocalAttribute).toString());
                     MusicLibraryItemPodcastEpisode *song=new MusicLibraryItemPodcastEpisode(s, this);
-                    song->setLocalPath(attributes.value(constLocalAttribute).toString());
                     m_childItems.append(song);
                     if (!s.hasBeenPlayed()) {
                         m_unplayedEpisodeCount++;
@@ -214,8 +214,8 @@ bool MusicLibraryItemPodcast::save()
         if (!s.podcastPublishedDate().isEmpty()) {
             writer.writeAttribute(constDateAttribute, s.podcastPublishedDate());
         }
-        if (!episode->localPath().isEmpty()) {
-            writer.writeAttribute(constLocalAttribute, episode->localPath());
+        if (!s.podcastLocalPath().isEmpty()) {
+            writer.writeAttribute(constLocalAttribute, s.podcastLocalPath());
         }
         writer.writeEndElement();
     }

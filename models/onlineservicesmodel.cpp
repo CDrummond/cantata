@@ -219,12 +219,12 @@ QVariant OnlineServicesModel::data(const QModelIndex &index, int role) const
         }
         break;
     case Qt::FontRole:
-        if (MusicLibraryItem::Type_Song==item->itemType() && item->parentItem() && MusicLibraryItem::Type_Podcast==item->parentItem()->itemType()) {
-            if (static_cast<MusicLibraryItemSong *>(item)->song().hasBeenPlayed()) {
-                QFont f;
-                f.setItalic(true);
-                return f;
-            }
+        if ((MusicLibraryItem::Type_Song==item->itemType() && item->parentItem() && MusicLibraryItem::Type_Podcast==item->parentItem()->itemType() &&
+             !static_cast<MusicLibraryItemSong *>(item)->song().hasBeenPlayed()) ||
+            (MusicLibraryItem::Type_Podcast==item->itemType() && static_cast<MusicLibraryItemPodcast *>(item)->unplayedEpisodes()>0)) {
+            QFont f;
+            f.setBold(true);
+            return f;
         }
         break;
     case Qt::DisplayRole:

@@ -677,8 +677,8 @@ void OnlineServicesPage::downloadPodcast()
     } else {
         QString question;
         if (1==count) {
-            question=i18n("Do you wish to download the following podcast episode?")+
-                     urls.constBegin().value().first()->data();
+            question=QLatin1String("<p>")+i18n("Do you wish to download the following podcast episode?")+
+                     QLatin1String("<ul>")+format(urls)+QLatin1String("</ul></p>");
         } else if (count<15) {
             question=QLatin1String("<p>")+i18n("Do you wish to download the following podcast episodes?")+
                      QLatin1String("<ul>")+format(urls)+QLatin1String("</ul></p>");
@@ -737,8 +737,8 @@ void OnlineServicesPage::deleteDownloadedPodcast()
     } else {
         QString question;
         if (1==count) {
-            question=i18n("Do you wish to delete the downloaded file of the following podcast episode?")+
-                     urls.constBegin().value().first()->data();
+            question=QLatin1String("<p>")+i18n("Do you wish to delete the downloaded file of the following podcast episode?")+
+                     QLatin1String("<ul>")+format(urls)+QLatin1String("</ul></p>");
         } else if (count<15) {
             question=QLatin1String("<p>")+i18n("Do you wish to the delete downloaded files of the following podcast episodes?")+
                      QLatin1String("<ul>")+format(urls)+QLatin1String("</ul></p>");

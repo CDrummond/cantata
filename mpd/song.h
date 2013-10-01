@@ -131,6 +131,8 @@ struct Song
     const QString & podcastImage() const { return genre; }
     void setPodcastPublishedDate(const QString &pd) { composer=pd; }
     const QString & podcastPublishedDate() const { return composer; }
+    const QString & podcastLocalPath() const { return name; }
+    void setPodcastLocalPath(const QString &l) { name=l; }
 
     // podcast/soundcloud functions...
     void setIsFromOnlineService(const QString &service);

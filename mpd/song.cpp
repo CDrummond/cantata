@@ -445,7 +445,7 @@ static const quint8 constOnlineDiscId=0xEE;
 
 bool Song::isFromOnlineService() const
 {
-    return constOnlineDiscId==disc && file.startsWith("http://") && albumartist==album;
+    return constOnlineDiscId==disc && (isCantataStream() || file.startsWith("http://")) && albumartist==album;
 }
 
 void Song::setIsFromOnlineService(const QString &service)

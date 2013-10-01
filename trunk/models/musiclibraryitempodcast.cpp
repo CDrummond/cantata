@@ -131,7 +131,10 @@ bool MusicLibraryItemPodcast::load()
                     s.setPodcastPublishedDate(attributes.value(constDateAttribute).toString());
                     QString time=attributes.value(constTimeAttribute).toString();
                     s.time=time.isEmpty() ? 0 : time.toUInt();
-                    s.setPodcastLocalPath(attributes.value(constLocalAttribute).toString());
+                    QString localFile=attributes.value(constLocalAttribute).toString();
+                    if (QFile::exists(localFile)) {
+                        s.setPodcastLocalPath(localFile);
+                    }
                     MusicLibraryItemPodcastEpisode *song=new MusicLibraryItemPodcastEpisode(s, this);
                     m_childItems.append(song);
                     if (!s.hasBeenPlayed()) {

@@ -53,14 +53,7 @@
       <number>0</number>
      </property>
      <item>
-      <widget class="QLabel" name="diStatusLabel">
-       <property name="font">
-        <font>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-      </widget>
+      <widget class="ServiceStatusLabel" name="diStatusLabel"/>
      </item>
      <item>
       <spacer name="horizontalSpacer">
@@ -108,6 +101,11 @@
    <class>SizeWidget</class>
    <extends>QWidget</extends>
    <header>sizewidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>ServiceStatusLabel</class>
+   <extends>QLabel</extends>
+   <header>servicestatuslabel.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

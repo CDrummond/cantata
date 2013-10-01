@@ -414,6 +414,8 @@ void PodcastService::deleteDownloadedPodcasts(MusicLibraryItemPodcast *pod, cons
                 }
             }
             ep->setLocalPath(QString());
+            ep->setDownloadProgress(-1);
+            emitDataChanged(createIndex(ep));
         }
     }
     pod->save();
@@ -509,7 +511,9 @@ void PodcastService::downloadJobFinished()
                     MusicLibraryItemPodcastEpisode *song=getEpisode(pod, job->url());
                     if (song) {
                         song->setLocalPath(dest);
+                        song->setDownloadProgress(-1);
                         pod->save();
+                        emitDataChanged(createIndex(song));
                     }
                 }
             }
@@ -564,7 +568,8 @@ void PodcastService::downloadPercent(int pc)
     if (pod) {
         MusicLibraryItemPodcastEpisode *song=getEpisode(pod, job->url());
         if (song) {
-            // TODO: Show progress!!!
+            song->setDownloadProgress(pc);
+            emitDataChanged(createIndex(song));
         }
     }
 }

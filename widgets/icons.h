@@ -44,7 +44,7 @@ public:
     Icon artistIcon;
     Icon albumIcon;
     Icon podcastIcon;
-    Icon playedPodcastEpisodeIcon;
+    Icon downloadedPodcastEpisodeIcon;
     Icon folderIcon;
     Icon audioFileIcon;
     Icon playlistIcon;

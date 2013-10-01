@@ -375,7 +375,7 @@ Icons::Icons()
     }
     albumIcon=Icon("media-optical");
     podcastIcon=Icon("inode-directory");
-    playedPodcastEpisodeIcon=Icon("dialog-ok");
+    downloadedPodcastEpisodeIcon=Icon("document-save-as");
     audioFileIcon=Icon("audio-x-generic");
     playlistIcon=Icon("view-media-playlist");
     folderIcon=Icon("inode-directory");
@@ -425,12 +425,6 @@ Icons::Icons()
         connectIcon=Icon("gtk-stock-ok");
         if (connectIcon.isNull()) {
             connectIcon=Icon("go-bottom");
-        }
-    }
-    if (playedPodcastEpisodeIcon.isNull()) {
-        playedPodcastEpisodeIcon=Icon("gtk-stock-ok");
-        if (playedPodcastEpisodeIcon.isNull()) {
-            playedPodcastEpisodeIcon=Icon("starred");
         }
     }
     if (speakerIcon.isNull()) {

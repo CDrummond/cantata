@@ -46,6 +46,7 @@
 22. Use "play" command if play button is pressed and there is no current song.
 23. Use HTTPS URLs for Last.fm, Wikipedia, SoundCloud, etc, for non-windows
     builds.
+24. Only show genre combo if we have some genres.
 
 1.1.3
 -----

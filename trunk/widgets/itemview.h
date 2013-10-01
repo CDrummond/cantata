@@ -126,7 +126,7 @@ public:
     void setStartClosed(bool sc);
     bool isStartClosed();
     void expandAll(const QModelIndex &index=QModelIndex());
-    void expand(const QModelIndex &index);
+    void expand(const QModelIndex &index, bool singleOnly=false);
     void showMessage(const QString &message, int timeout);
     void setBackgroundImage(const QIcon &icon);
 

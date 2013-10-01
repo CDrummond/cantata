@@ -604,4 +604,5 @@ void OnlineServicesModel::setHiddenProviders(const QSet<QString> &prov)
     if (added && collections.count()>1) {
         emit needToSort();
     }
+    updateGenres();
 }

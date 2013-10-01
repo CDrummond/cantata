@@ -396,7 +396,27 @@ void PodcastService::downloadPodcasts(MusicLibraryItemPodcast *pod, const QList<
 
 void PodcastService::deleteDownloadedPodcasts(MusicLibraryItemPodcast *pod, const QList<MusicLibraryItemPodcastEpisode *> &episodes)
 {
-    // TODO
+    foreach (MusicLibraryItemPodcastEpisode *ep, episodes) {
+        QUrl url(ep->file());
+        if (downloadingEpisode(url)) {
+            cancelDownload(url);
+        }
+        QString fileName=ep->localPath();
+        if (!fileName.isEmpty()) {
+            if (QFile::exists(fileName)) {
+                QFile::remove(fileName);
+            }
+            QString dirName=fileName.isEmpty() ? QString() : Utils::getDir(fileName);
+            if (!dirName.isEmpty()) {
+                QDir dir(dirName);
+                if (dir.exists()) {
+                    dir.rmdir(dirName);
+                }
+            }
+            ep->setLocalPath(QString());
+        }
+    }
+    pod->save();
 }
 
 static QString encodeName(const QString &name)
@@ -456,7 +476,7 @@ void PodcastService::cancelDownload(NetworkJob *job)
 
     QString dest=job->property(constDestProperty).toString();
     QString partial=dest.isEmpty() ? QString() : QString(dest+constPartialExt);
-    if (!partial.isEmpty() && !QFile::exists(partial)) {
+    if (!partial.isEmpty() && QFile::exists(partial)) {
         QFile::remove(partial);
     }
 }
@@ -494,7 +514,7 @@ void PodcastService::downloadJobFinished()
                 }
             }
         }
-    } else if (!partial.isEmpty() && !QFile::exists(partial)) {
+    } else if (!partial.isEmpty() && QFile::exists(partial)) {
         QFile::remove(partial);
     }
 

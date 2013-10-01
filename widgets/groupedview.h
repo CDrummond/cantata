@@ -82,7 +82,7 @@ public:
     QModelIndexList selectedIndexes(bool sorted) const;
     void dropEvent(QDropEvent *event);
     void collectionRemoved(quint32 key);
-    void expand(const QModelIndex &idx);
+    void expand(const QModelIndex &idx, bool singleOnly=false);
 
 public Q_SLOTS:
     void updateRows(const QModelIndex &parent);

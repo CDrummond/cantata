@@ -878,12 +878,12 @@ void ItemView::expandAll(const QModelIndex &index)
     }
 }
 
-void ItemView::expand(const QModelIndex &index)
+void ItemView::expand(const QModelIndex &index, bool singleOnly)
 {
     if (Mode_SimpleTree==mode || Mode_DetailedTree==mode) {
-        treeView->expand(index);
+        treeView->expand(index, singleOnly);
     } else if (Mode_GroupedTree==mode && groupedView) {
-        groupedView->expand(index);
+        groupedView->expand(index, singleOnly);
     }
 }
 

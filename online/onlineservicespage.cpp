@@ -122,6 +122,9 @@ void OnlineServicesPage::setEnabled(bool e)
     controlActions();
     if (e) {
         proxy.sort();
+        // TODO: Why do we need to call tis via a timer, whith such a large timeout?
+        //       If we use a timeout < 75, then nothing gets expanded - eventhough the indexes are valid!
+        QTimer::singleShot(100, this, SLOT(expandPodcasts()));
     }
 }
 
@@ -766,4 +769,23 @@ void OnlineServicesPage::updated(const QModelIndex &idx)
 void OnlineServicesPage::sortList()
 {
     proxy.sort();
+}
+
+
+void OnlineServicesPage::expandPodcasts()
+{
+    // If we only have PodCast service enabled, or only PodCast and SoundCloud, then
+    // expand PodCast by default...
+    if (OnlineServicesModel::self()->rowCount()>0 && OnlineServicesModel::self()->rowCount()<3) {
+        OnlineService *pod=OnlineServicesModel::self()->service(PodcastService::constName);
+        if (!OnlineServicesModel::self()->isHidden(pod)) {
+            if (2==OnlineServicesModel::self()->rowCount()) {
+                OnlineService *sound=OnlineServicesModel::self()->service(SoundCloudService::constName);
+                if (OnlineServicesModel::self()->isHidden(sound)) {
+                    return;
+                }
+            }
+            view->expand(proxy.mapFromSource(pod->index()), true);
+        }
+    }
 }

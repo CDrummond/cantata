@@ -820,14 +820,16 @@ void GroupedView::itemClicked(const QModelIndex &idx)
     }
 }
 
-void GroupedView::expand(const QModelIndex &idx)
+void GroupedView::expand(const QModelIndex &idx, bool singleOnly)
 {
     if (idx.isValid()) {
         if (idx.data(GroupedView::Role_IsCollection).toBool()) {
             setExpanded(idx, true);
-            quint32 count=model()->rowCount(idx);
-            for (quint32 i=0; i<count; ++i) {
-                expand(idx.child(i, 0));
+            if (!singleOnly) {
+                quint32 count=model()->rowCount(idx);
+                for (quint32 i=0; i<count; ++i) {
+                    expand(idx.child(i, 0));
+                }
             }
         }
         else if (AlbumHeader==getType(idx)) {

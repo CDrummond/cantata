@@ -83,6 +83,7 @@ public:
     void deleteDownloadedPodcasts(MusicLibraryItemPodcast *pod, const QList<MusicLibraryItemPodcastEpisode *> &episodes);
     bool isDownloading() const;
     void cancelAll();
+    bool isHidden(OnlineService *srv) { return hiddenServices.contains(srv); }
 
     QImage requestImage(const QString &id, const QString &artist, const QString &album, const QString &url,
                         const QString cacheName=QString(), int maxSize=-1);

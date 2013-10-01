@@ -55,7 +55,6 @@ private:
     QComboBox *updateCombo;
     PathRequester *downloadPath;
     OnOffButton *autoDownload;
-    QComboBox *deleteCombo;
 
     int origRssUpdate;
     QString origPodcastDownloadPath;

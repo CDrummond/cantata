@@ -88,16 +88,19 @@ class MusicLibraryItemPodcastEpisode : public MusicLibraryItemSong
 {
 public:
     MusicLibraryItemPodcastEpisode(const Song &s, MusicLibraryItemContainer *parent)
-        : MusicLibraryItemSong(s, parent) { }
+        : MusicLibraryItemSong(s, parent), downloadProg(-1) { }
     virtual ~MusicLibraryItemPodcastEpisode() { }
 
     const QString & published();
     const QString & localPath() { return local; }
     void setLocalPath(const QString &l) { local=l; }
+    void setDownloadProgress(int prog) { downloadProg=prog; }
+    int downloadProgress() const { return downloadProg; }
 
 private:
     QString publishedDate;
     QString local;
+    int downloadProg;
 };
 
 #endif

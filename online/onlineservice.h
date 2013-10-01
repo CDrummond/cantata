@@ -132,9 +132,9 @@ public:
     const MusicLibraryItem * findSong(const Song &s) const;
     bool songExists(const Song &s) const;
     bool isConfigured() { return configured; }
+    QModelIndex index() const;
 
 protected:
-    QModelIndex index() const;
     QModelIndex createIndex(MusicLibraryItem *child) const;
     void emitUpdated();
     void emitError(const QString &msg);

@@ -270,13 +270,15 @@ void TreeView::expandAll(const QModelIndex &idx)
     }
 }
 
-void TreeView::expand(const QModelIndex &idx)
+void TreeView::expand(const QModelIndex &idx, bool singleOnly)
 {
     if (idx.isValid()) {
         setExpanded(idx, true);
-        quint32 count=model()->rowCount(idx);
-        for (quint32 i=0; i<count; ++i) {
-            expand(idx.child(i, 0));
+        if (!singleOnly) {
+            quint32 count=model()->rowCount(idx);
+            for (quint32 i=0; i<count; ++i) {
+                expand(idx.child(i, 0));
+            }
         }
     }
 }

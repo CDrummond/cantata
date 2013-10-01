@@ -68,6 +68,7 @@ OnlineServicesPage::OnlineServicesPage(QWidget *p)
     connect(OnlineServicesModel::self(), SIGNAL(updated(QModelIndex)), this, SLOT(updated(QModelIndex)));
     connect(OnlineServicesModel::self(), SIGNAL(needToSort()), this, SLOT(sortList()));
     connect(OnlineServicesModel::self(), SIGNAL(busy(bool)), view, SLOT(showSpinner(bool)));
+    connect(OnlineServicesModel::self(), SIGNAL(providersChanged()), view, SLOT(closeSearch()));
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
     connect(view, SIGNAL(searchItems()), this, SLOT(searchItems()));
     connect(view, SIGNAL(searchIsActive(bool)), this, SLOT(controlSearch(bool)));
@@ -290,13 +291,13 @@ void OnlineServicesPage::controlSearch(bool on)
         searchService=SoundCloudService::constName;
     }
 
-    // Handle the case where search was visible, and user selected other search.
-    // In this case we recieve on=false (which is for the previous), so we fake this
-    // into an on=true for the new service...
-    if (!on && !prevSearchService.isEmpty() && searchService!=prevSearchService) {
-        on=true;
-        view->focusSearch();
-    }
+//    // Handle the case where search was visible, and user selected other search.
+//    // In this case we recieve on=false (which is for the previous), so we fake this
+//    // into an on=true for the new service...
+//    if (!on && !prevSearchService.isEmpty() && searchService!=prevSearchService) {
+//        on=true;
+//        view->focusSearch();
+//    }
 
     if (on) {
         genreCombo->setEnabled(true);

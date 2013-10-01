@@ -908,6 +908,26 @@ void ItemView::setBackgroundImage(const QIcon &icon)
     }
 }
 
+bool ItemView::isAnimated() const
+{
+    if (Mode_SimpleTree==mode || Mode_DetailedTree==mode) {
+        return treeView->isAnimated();
+    }
+    if (Mode_GroupedTree==mode && groupedView) {
+        return groupedView->isAnimated();
+    }
+    return false;
+}
+
+void ItemView::setAnimated(bool a)
+{
+    if (Mode_SimpleTree==mode || Mode_DetailedTree==mode) {
+        treeView->setAnimated(a);
+    } else if (Mode_GroupedTree==mode && groupedView) {
+        groupedView->setAnimated(a);
+    }
+}
+
 void ItemView::showSpinner(bool v)
 {
     if (v) {

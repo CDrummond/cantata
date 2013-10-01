@@ -49,6 +49,7 @@ OnlineServicesPage::OnlineServicesPage(QWidget *p)
     : QWidget(p)
     , onlineSearchRequest(false)
     , searchable(true)
+    , expanded(false)
 {
     setupUi(this);
     addToPlayQueue->setDefaultAction(StdActions::self()->addToPlayQueueAction);
@@ -122,10 +123,16 @@ void OnlineServicesPage::setEnabled(bool e)
     controlActions();
     if (e) {
         proxy.sort();
-        // TODO: Why do we need to call tis via a timer, whith such a large timeout?
-        //       If we use a timeout < 75, then nothing gets expanded - eventhough the indexes are valid!
-        QTimer::singleShot(100, this, SLOT(expandPodcasts()));
     }
+}
+
+void OnlineServicesPage::showEvent(QShowEvent *e)
+{
+    if (!expanded && OnlineServicesModel::self()->isEnabled()) {
+        expanded=true;
+        expandPodcasts();
+    }
+    QWidget::showEvent(e);
 }
 
 void OnlineServicesPage::clear()
@@ -771,7 +778,6 @@ void OnlineServicesPage::sortList()
     proxy.sort();
 }
 
-
 void OnlineServicesPage::expandPodcasts()
 {
     // If we only have PodCast service enabled, or only PodCast and SoundCloud, then
@@ -785,7 +791,14 @@ void OnlineServicesPage::expandPodcasts()
                     return;
                 }
             }
+            bool wasAnimated=view->isAnimated();
+            if (wasAnimated) {
+                view->setAnimated(false);
+            }
             view->expand(proxy.mapFromSource(pod->index()), true);
+            if (wasAnimated) {
+                view->setAnimated(true);
+            }
         }
     }
 }

@@ -836,6 +836,13 @@ bool ItemView::isSearchActive() const
     return searchWidget->isActive();
 }
 
+void ItemView::closeSearch()
+{
+    if (searchWidget->isActive()) {
+        searchWidget->close();
+    }
+}
+
 void ItemView::setStartClosed(bool sc)
 {
     if (groupedView) {

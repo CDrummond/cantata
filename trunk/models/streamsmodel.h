@@ -238,6 +238,7 @@ Q_SIGNALS:
     void loading();
     void loaded();
     void error(const QString &msg);
+    void categoriesChanged();
 
 public:
     static QList<Item *> parseRadioTimeResponse(QIODevice *dev, CategoryItem *cat, bool parseSubText=false);

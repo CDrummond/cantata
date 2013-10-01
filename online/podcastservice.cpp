@@ -544,7 +544,7 @@ void PodcastService::downloadReadyRead()
     if (!partial.isEmpty()) {
         QString dir=Utils::getDir(partial);
         if (!QDir(dir).exists()) {
-            Utils::createDir(dir, QString());
+            QDir(dir).mkpath(dir);
         }
         if (!QDir(dir).exists()) {
             return;

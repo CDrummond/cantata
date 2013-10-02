@@ -229,7 +229,7 @@ public:
         QString duration=song.time>0 ? Song::formattedTime(song.time) : QString();
         bool stream=!isCollection && (song.isStream() && !song.isCantataStream());
         bool audiocd=stream && song.isCdda();
-        bool isEmpty=song.title.isEmpty() & song.artist.isEmpty() && !song.file.isEmpty();
+        bool isEmpty=song.title.isEmpty() && song.artist.isEmpty() && !song.file.isEmpty();
         QString trackTitle=isEmpty
                         ? song.file
                         : !song.albumartist.isEmpty() && song.albumartist != song.artist

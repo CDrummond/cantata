@@ -37,6 +37,7 @@ NetworkJob::NetworkJob(QNetworkReply *j)
     , lastDownloadPc(0)
     , job(j)
 {
+    origU=j ? j->url() : QUrl();
     connect(job, SIGNAL(finished()), this, SLOT(jobFinished()));
     connect(job, SIGNAL(readyRead()), this, SLOT(handleReadyRead()));
     connect(job, SIGNAL(error(QNetworkReply::NetworkError)), this, SIGNAL(error(QNetworkReply::NetworkError)));

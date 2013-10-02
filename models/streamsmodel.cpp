@@ -1159,16 +1159,16 @@ void StreamsModel::jobFinished()
             if (cat==favourites) {
                 newItems=favourites->loadXml(job->actualJob());
             } else if (QLatin1String("http")==job->url().scheme()) {
-                QString url=job->url().toString();
-                if (constRadioTimeHost==job->url().host()) {
+                QString url=job->origUrl().toString();
+                if (constRadioTimeHost==job->origUrl().host()) {
                     newItems=parseRadioTimeResponse(job->actualJob(), cat);
                 } else if (constIceCastUrl==url) {
                     newItems=parseIceCastResponse(job->actualJob(), cat);
                 } else if (constSomaFMUrl==url) {
                     newItems=parseSomaFmResponse(job->actualJob(), cat);
-                } else if (constDiChannelListHost==job->url().host()) {
+                } else if (constDiChannelListHost==job->origUrl().host()) {
                     newItems=parseDigitallyImportedResponse(job->actualJob(), cat);
-                } else if (constShoutCastHost==job->url().host()) {
+                } else if (constShoutCastHost==job->origUrl().host()) {
                     newItems=parseShoutCastResponse(job->actualJob(), cat, job->property(constOrigUrlProperty).toString());
                 } else {
                     newItems=parseListenLiveResponse(job->actualJob(), cat);

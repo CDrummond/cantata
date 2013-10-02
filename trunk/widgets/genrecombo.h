@@ -31,8 +31,6 @@ class GenreCombo : public ComboBox
 {
     Q_OBJECT
 public:
-    static int standardHeight();
-
     GenreCombo(QWidget *p);
     virtual ~GenreCombo() { }
 

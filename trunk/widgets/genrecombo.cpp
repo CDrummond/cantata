@@ -86,6 +86,7 @@ void GenreCombo::update(const QSet<QString> &g)
             }
         }
     }
+    setEnabled(count()>1);
 }
 
 void GenreCombo::paintEvent(QPaintEvent *e)

@@ -279,7 +279,15 @@ void OnlineServicesModel::stop()
 OnlineService * OnlineServicesModel::service(const QString &name)
 {
     int idx=name.isEmpty() ? -1 : indexOf(name);
-    return idx<0 ? 0 : static_cast<OnlineService *>(collections.at(idx));
+    if (idx>=0) {
+        return static_cast<OnlineService *>(collections.at(idx));
+    }
+    foreach (OnlineService *srv, hiddenServices) {
+         if (srv->id()==name) {
+             return srv;
+         }
+    }
+    return 0;
 }
 
 void OnlineServicesModel::setBusy(const QString &id, bool b)

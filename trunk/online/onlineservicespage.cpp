@@ -780,25 +780,15 @@ void OnlineServicesPage::sortList()
 
 void OnlineServicesPage::expandPodcasts()
 {
-    // If we only have PodCast service enabled, or only PodCast and SoundCloud, then
-    // expand PodCast by default...
-    if (OnlineServicesModel::self()->rowCount()>0 && OnlineServicesModel::self()->rowCount()<3) {
-        OnlineService *pod=OnlineServicesModel::self()->service(PodcastService::constName);
-        if (!OnlineServicesModel::self()->isHidden(pod)) {
-            if (2==OnlineServicesModel::self()->rowCount()) {
-                OnlineService *sound=OnlineServicesModel::self()->service(SoundCloudService::constName);
-                if (OnlineServicesModel::self()->isHidden(sound)) {
-                    return;
-                }
-            }
-            bool wasAnimated=view->isAnimated();
-            if (wasAnimated) {
-                view->setAnimated(false);
-            }
-            view->expand(proxy.mapFromSource(pod->index()), true);
-            if (wasAnimated) {
-                view->setAnimated(true);
-            }
+    OnlineService *pod=OnlineServicesModel::self()->service(PodcastService::constName);
+    if (!OnlineServicesModel::self()->isHidden(pod)) {
+        bool wasAnimated=view->isAnimated();
+        if (wasAnimated) {
+            view->setAnimated(false);
+        }
+        view->expand(proxy.mapFromSource(pod->index()), true);
+        if (wasAnimated) {
+            view->setAnimated(true);
         }
     }
 }

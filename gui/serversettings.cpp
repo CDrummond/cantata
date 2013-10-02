@@ -29,6 +29,7 @@
 #include "icons.h"
 #include "musiclibrarymodel.h"
 #include "mpduser.h"
+#include "utils.h"
 #include <QDir>
 #include <QComboBox>
 #include <QPushButton>
@@ -263,7 +264,7 @@ void ServerSettings::add()
         details.name=generateName();
         details.port=6600;
         details.hostname=QLatin1String("localhost");
-        details.dir=QLatin1String("/var/lib/mpd/music");
+        details.dir=QLatin1String("/var/lib/mpd/music/");
         details.dynamizerPort=0;
         combo->addItem(details.name);
     } else {
@@ -277,6 +278,7 @@ void ServerSettings::add()
             QString dir=QDir::homePath()+"/Music";
             dir=dir.replace("//", "/");
         }
+        dir=Utils::fixPath(dir);
         basicDir->setText(dir);
         MPDUser::self()->setMusicFolder(dir);
         combo->addItem(MPDUser::translatedName());
@@ -315,7 +317,7 @@ void ServerSettings::nameChanged()
 void ServerSettings::basicDirChanged()
 {
     if (!prevBasic.details.dir.isEmpty()) {
-        QString d=basicDir->text().trimmed();
+        QString d=Utils::fixPath(basicDir->text().trimmed());
         basicMusicFolderNoteLabel->setOn(d.isEmpty() || d!=prevBasic.details.dir);
     }
 }
@@ -372,7 +374,7 @@ MPDConnectionDetails ServerSettings::getDetails() const
         details.hostname=host->text().trimmed();
         details.port=port->value();
         details.password=password->text();
-        details.dir=dir->text().trimmed();
+        details.dir=Utils::fixPath(dir->text().trimmed());
         details.dynamizerPort=dynamizerPort->value();
         details.coverName=coverName->text().trimmed();
         #ifdef ENABLE_HTTP_STREAM_PLAYBACK
@@ -380,7 +382,7 @@ MPDConnectionDetails ServerSettings::getDetails() const
         #endif
     } else {
         details=MPDUser::self()->details(true);
-        details.dir=basicDir->text().trimmed();
+        details.dir=Utils::fixPath(basicDir->text().trimmed());
         details.coverName=basicCoverName->text().trimmed();
         MPDUser::self()->setMusicFolder(details.dir);
     }

@@ -90,7 +90,7 @@ struct MpdDefaults
                 } else if (!(details&DT_DIR) && line.startsWith(QLatin1String("music_directory"))) {
                     QString val=getVal(line);
                     if (!val.isEmpty() && QDir(val).exists()) {
-                        dir=val;
+                        dir=Utils::fixPath(val);
                         details|=DT_DIR;
                     }
                 } else if (!(details&DT_ADDR) && line.startsWith(QLatin1String("bind_to_address"))) {

@@ -27,6 +27,7 @@
 #include "settings.h"
 #include "onoffbutton.h"
 #include "localize.h"
+#include "utils.h"
 #include <QComboBox>
 #include <QFormLayout>
 
@@ -126,7 +127,7 @@ void PodcastSettingsDialog::slotButtonClicked(int button)
         }
         if (downloadPath->text().trimmed()!=origPodcastDownloadPath) {
             changed|=DownloadPath;
-            Settings::self()->savePodcastDownloadPath(downloadPath->text().trimmed());
+            Settings::self()->savePodcastDownloadPath(Utils::fixPath(downloadPath->text().trimmed()));
         }
         accept();
     case Close:

@@ -1083,7 +1083,7 @@ void MainWindow::playQueueItemsSelected(bool s)
     cropPlayQueueAction->setEnabled(playQueue->haveUnSelectedItems() && haveItems);
     shufflePlayQueueAction->setEnabled(haveItems);
     #ifdef TAGLIB_FOUND
-    editPlayQueueTagsAction->setEnabled(s && haveItems);
+    editPlayQueueTagsAction->setEnabled(s && haveItems && editPlayQueueTagsAction);
     #endif
     addPlayQueueToStoredPlaylistAction->setEnabled(haveItems);
     stopAfterTrackAction->setEnabled(singleSelection);
@@ -1203,7 +1203,9 @@ void MainWindow::checkMpdDir()
     #endif
 
     #ifdef TAGLIB_FOUND
-    editPlayQueueTagsAction->setEnabled(MPDConnection::self()->getDetails().dirReadable);
+    if (editPlayQueueTagsAction->isEnabled()) {
+        editPlayQueueTagsAction->setEnabled(MPDConnection::self()->getDetails().dirReadable);
+    }
     #endif
     switch (tabWidget->current_index()) {
     #if defined ENABLE_DEVICES_SUPPORT && defined TAGLIB_FOUND

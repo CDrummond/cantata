@@ -33,6 +33,9 @@
 #include <QMap>
 #include <QFileInfo>
 #include <QStringList>
+#include <QSet>
+#include <QChar>
+#include <QLatin1Char>
 
 const QString Song::constCddaProtocol("cdda:/");
 
@@ -171,12 +174,20 @@ bool Song::isEmpty() const
 void Song::guessTags()
 {
     if (isEmpty() && !isStream()) {
+        static const QLatin1String constAlbumArtistSep(" - ");
         guessed=true;
-        QStringList parts = file.split("/");
+        QStringList parts = file.split("/", QString::SkipEmptyParts);
         if (3==parts.length()) {
             title=parts.at(2);
             album=parts.at(1);
             artist=parts.at(0);
+        } if (2==parts.length() && parts.at(0).contains(constAlbumArtistSep)) {
+            title=parts.at(1);
+            QStringList albumArtistParts = parts.at(0).split(constAlbumArtistSep, QString::SkipEmptyParts);
+            if (2==albumArtistParts.length()) {
+                album=albumArtistParts.at(1);
+                artist=albumArtistParts.at(0);
+            }
         } else if (!parts.isEmpty()) {
             title=parts.at(parts.length()-1);
         }
@@ -186,13 +197,24 @@ void Song::guessTags()
             if (dot==title.length()-4) {
                 title=title.left(dot);
             }
-            int space=title.indexOf(' ');
-            if ( (1==space && title[space-1].isDigit()) ||
-                 (2==space && title[space-2].isDigit() && title[space-1].isDigit()) ) {
-                track=title.left(space).toInt();
-                title=title.mid(space+1);
+            static const QSet<QChar> constSeparators=QSet<QChar>() << QLatin1Char(' ') << QLatin1Char('-') << QLatin1Char('_') << QLatin1Char('.');
+            int separator=0;
 
-                while (!title.isEmpty() && (title[0]==' ' || title[0]=='-')) {
+            foreach (const QChar &sep, constSeparators) {
+                separator=title.indexOf(sep);
+                if (1==separator || 2==separator) {
+                    break;
+                }
+            }
+
+            if ( (1==separator && title[separator-1].isDigit()) ||
+                 (2==separator && title[separator-2].isDigit() && title[separator-1].isDigit()) ) {
+                if (0==track) {
+                    track=title.left(separator).toInt();
+                }
+                title=title.mid(separator+1);
+
+                while (!title.isEmpty() && constSeparators.contains(title[0])) {
                     title=title.mid(1);
                 }
             }

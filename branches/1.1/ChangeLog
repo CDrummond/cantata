@@ -19,6 +19,15 @@
 12. Fix number display in replaygain dialog in Qt-only builds.
 13. When reading default MPD music folder, ensure this has a trailing slash.
 14. Only enable 'Edit Song Tags' on playqueue if MPD music folder is readable.
+15. Slightly improve tag-guessing from tracks without tags. Now the following
+    are acceptable:
+    Artist/Album/TrackTitle.mp3
+    Artist/Album/TrackNo TrackTitle.mp3
+    Artist/Album/TrackNo-TrackTitle.mp3
+    Artist/Album/TrackNo. TrackTitle.mp3
+    Artist - Album/TrackTitle.mp3
+    Artist - Album/TrackNo TrackTitle.mp3
+    ...etc.
 
 1.1.2
 -----

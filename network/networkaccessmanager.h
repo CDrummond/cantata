@@ -53,6 +53,7 @@ public:
     void close() { if (job) job->close(); }
 
     QUrl url() const { return job ? job->url() : QUrl(); }
+    QUrl origUrl() const { return origU; }
     QNetworkReply::NetworkError error() const { return job ? job->error() : QNetworkReply::NoError; }
     QString errorString() const { return job ? job->errorString() : QString(); }
     QByteArray readAll() { return job ? job->readAll() : QByteArray(); }
@@ -78,6 +79,7 @@ private:
     int numRedirects;
     int lastDownloadPc;
     QNetworkReply *job;
+    QUrl origU;
 };
 
 class NetworkAccessManager : public BASE_NETWORK_ACCESS_MANAGER

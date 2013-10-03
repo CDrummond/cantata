@@ -443,23 +443,23 @@ MusicLibraryItemRoot * MPDParseUtils::parseLibraryItems(const QByteArray &data, 
                                 Song s=orig;
                                 Song albumSong=origFiles[s.name];
                                 s.name=QString(); // CueFile has placed source file name here!
-                                if (s.artist.isEmpty()) {
+                                if (s.artist.isEmpty() && !albumSong.artist.isEmpty()) {
                                     s.artist=albumSong.artist;
                                     DBUG << "Get artist from album" << albumSong.artist;
                                 }
-                                if (s.composer.isEmpty()) {
+                                if (s.composer.isEmpty() && !albumSong.composer.isEmpty()) {
                                     s.composer=albumSong.composer;
                                     DBUG << "Get composer from album" << albumSong.composer;
                                 }
-                                if (s.album.isEmpty()) {
+                                if (s.album.isEmpty() && !albumSong.album.isEmpty()) {
                                     s.album=albumSong.album;
                                     DBUG << "Get album from album" << albumSong.album;
                                 }
-                                if (s.albumartist.isEmpty()) {
+                                if (s.albumartist.isEmpty() && !albumSong.albumartist.isEmpty()) {
                                     s.albumartist=albumSong.albumartist;
-                                    DBUG << "Get albumartist from album" << albumSong.album;
+                                    DBUG << "Get albumartist from album" << albumSong.albumartist;
                                 }
-                                if (0==s.year) {
+                                if (0==s.year && 0!=albumSong.year) {
                                     s.year=albumSong.year;
                                     DBUG << "Get year from album" << albumSong.year;
                                 }

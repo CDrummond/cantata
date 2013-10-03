@@ -280,7 +280,7 @@ void MPDUser::init(bool create)
                         out << line;
 
                         if (det.dir.isEmpty()) {
-                            det.dir=readValue(line, constMusicFolderKey);
+                            det.dir=Utils::fixPath(readValue(line, constMusicFolderKey));
                         }
                         if (det.hostname.isEmpty()) {
                             det.hostname=readValue(line, constSocketKey);
@@ -306,7 +306,7 @@ void MPDUser::init(bool create)
                 while (!cfgFile.atEnd() && (det.dir.isEmpty() || det.hostname.isEmpty() || pidFileName.isEmpty())) {
                     QString line = cfgFile.readLine();
                     if (det.dir.isEmpty()) {
-                        det.dir=readValue(line, constMusicFolderKey);
+                        det.dir=Utils::fixPath(readValue(line, constMusicFolderKey));
                     }
                     if (det.hostname.isEmpty()) {
                         det.hostname=readValue(line, constSocketKey);

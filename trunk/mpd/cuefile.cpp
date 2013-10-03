@@ -44,7 +44,7 @@ static const QString constFileLineRegExp = QLatin1String("(\\S+)\\s+(?:\"([^\"]+
 static const QString constIndexRegExp = QLatin1String("(\\d{2,3}):(\\d{2}):(\\d{2})");
 static const QString constPerformer = QLatin1String("performer");
 static const QString constTitle = QLatin1String("title");
-//static const QString constSongWriter = QLatin1String("songwriter");
+static const QString constSongWriter = QLatin1String("songwriter");
 static const QString constFile = QLatin1String("file");
 static const QString constTrack = QLatin1String("track");
 static const QString constIndex = QLatin1String("index");
@@ -88,13 +88,13 @@ struct CueEntry {
     QString artist;
     QString albumArtist;
     QString album;
-//    QString composer;
-//    QString albumComposer;
+    QString composer;
+    QString albumComposer;
     QString genre;
     QString date;
 
     CueEntry(QString &file, QString &index, int trackNo, QString &title, QString &artist, QString &albumArtist,
-             QString &album, /*QString &composer, QString &albumComposer,*/ QString &genre, QString &date) {
+             QString &album, QString &composer, QString &albumComposer, QString &genre, QString &date) {
         this->file = file;
         this->index = index;
         this->trackNo = trackNo;
@@ -102,8 +102,8 @@ struct CueEntry {
         this->artist = artist;
         this->albumArtist = albumArtist;
         this->album = album;
-//        this->composer = composer;
-//        this->albumComposer = albumComposer;
+        this->composer = composer;
+        this->albumComposer = albumComposer;
         this->genre = genre;
         this->date = date;
     }
@@ -154,6 +154,7 @@ static bool updateSong(const CueEntry &entry, const QString &nextIndex, Song &so
     song.genre=entry.genre;
     song.year=entry.date.toInt();
     song.time=(end-beginning)/constMsecPerSec;
+    song.composer=entry.composer.isEmpty() ? entry.albumComposer : entry.composer;
     return true;
 }
 
@@ -174,6 +175,7 @@ static bool updateLastSong(const CueEntry &entry, Song &song)
     song.albumartist=entry.albumArtist;
     song.genre=entry.genre;
     song.year=entry.date.toInt();
+    song.composer=entry.composer.isEmpty() ? entry.albumComposer : entry.composer;
     return true;
 }
 
@@ -243,7 +245,7 @@ bool CueFile::parse(const QString &fileName, const QString &dir, QList<Song> &so
     while (!textStream->atEnd()) {
         QString albumArtist;
         QString album;
-//        QString albumComposer;
+        QString albumComposer;
         QString file;
         QString fileType;
         QString genre;
@@ -265,9 +267,9 @@ bool CueFile::parse(const QString &fileName, const QString &dir, QList<Song> &so
                 albumArtist = lineValue;
             } else if (lineName == constTitle) {
                 album = lineValue;
-            } /*else if (lineName == constSongWriter) {
+            } else if (lineName == constSongWriter) {
                 albumComposer = lineValue;
-            }*/ else if (lineName == constFile) {
+            } else if (lineName == constFile) {
                 file = lineValue;
                 if (splitted.size() > 2) {
                     fileType = splitted[2];
@@ -299,7 +301,7 @@ bool CueFile::parse(const QString &fileName, const QString &dir, QList<Song> &so
         QString trackType;
         QString index;
         QString artist;
-//        QString composer;
+        QString composer;
         QString title;
         int trackNo=0;
 
@@ -321,7 +323,7 @@ bool CueFile::parse(const QString &fileName, const QString &dir, QList<Song> &so
                 // for later (if it's valid of course)
                 // please note that the same code is repeated just after this 'do-while' loop
                 if (validFile && !index.isEmpty() && (trackType.isEmpty() || trackType == constAudioTrackType)) {
-                    entries.append(CueEntry(file, index, trackNo, title, artist, albumArtist, album, /*composer, albumComposer,*/ genre, date));
+                    entries.append(CueEntry(file, index, trackNo, title, artist, albumArtist, album, composer, albumComposer, genre, date));
                 }
 
                 // clear the state
@@ -345,10 +347,10 @@ bool CueFile::parse(const QString &fileName, const QString &dir, QList<Song> &so
                 artist = lineValue;
             } else if (lineName == constTitle) {
                 title = lineValue;
-            } /*else if (lineName == constSongWriter) {
+            } else if (lineName == constSongWriter) {
                 composer = lineValue;
                 // end of track's for the current file -> parse next one
-            }*/ else if (lineName == constFile) {
+            } else if (lineName == constFile) {
                 break;
             }
             // just ignore the rest of possible field types for now...
@@ -356,7 +358,7 @@ bool CueFile::parse(const QString &fileName, const QString &dir, QList<Song> &so
 
         // we didn't add the last song yet...
         if (validFile && !index.isEmpty() && (trackType.isEmpty() || trackType == constAudioTrackType)) {
-            entries.append(CueEntry(file, index, trackNo, title, artist, albumArtist, album, /*composer, albumComposer,*/ genre, date));
+            entries.append(CueEntry(file, index, trackNo, title, artist, albumArtist, album, composer, albumComposer, genre, date));
         }
     }
 

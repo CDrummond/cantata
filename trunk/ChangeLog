@@ -47,6 +47,10 @@
 23. Use HTTPS URLs for Last.fm, Wikipedia, SoundCloud, etc, for non-windows
     builds.
 24. Only show genre combo if we have some genres.
+25. When parsing CUE files - attempt to load as UTF-8, and then "System"
+    encoding. Support a new config item, 'cueFileCodecs', which allows extra
+    Qt text-codecs to be tried (see README for details). If all of these fail,
+    then revert back to the previous behaviour.
 
 1.1.3
 -----

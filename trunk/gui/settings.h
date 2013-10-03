@@ -186,6 +186,7 @@ public:
     bool podcastAutoDownload();
     int maxCoverFindPerIteration();
     int maxCoverUpdatePerIteration();
+    QStringList cueFileCodecs();
 
     void removeConnectionDetails(const QString &v);
     void saveConnectionDetails(const MPDConnectionDetails &v);

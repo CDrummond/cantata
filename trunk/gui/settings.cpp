@@ -738,6 +738,11 @@ int Settings::maxCoverUpdatePerIteration()
     return v<1 ? 5 : (v>20 ? 20 : v);
 }
 
+QStringList Settings::cueFileCodecs()
+{
+    return GET_STRINGLIST("cueFileCodecs", QStringList());
+}
+
 void Settings::removeConnectionDetails(const QString &v)
 {
     if (v==currentConnection()) {

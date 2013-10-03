@@ -503,7 +503,6 @@ quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime 
     Song song;
     quint32 xmlDate=0;
     QString unknown=i18n("Unknown");
-    QString lastGenre;
     quint64 total=0;
     quint64 count=0;
     bool gs=MPDParseUtils::groupSingle();
@@ -629,12 +628,9 @@ quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime 
                     song.fillEmptyFields();
                     song.guessed=constTrueValue==attributes.value(constGuessedAttribute).toString();
                     albumItem->append(new MusicLibraryItemSong(song, albumItem));
-                    if (song.genre!=lastGenre) {
-                        albumItem->addGenre(song.genre);
-                        artistItem->addGenre(song.genre);
-                        addGenre(song.genre);
-                        lastGenre=song.genre;
-                    }
+                    albumItem->addGenre(song.genre);
+                    artistItem->addGenre(song.genre);
+                    addGenre(song.genre);
 
                     if (prog && !prog->wasStopped() && total>0) {
                         count++;

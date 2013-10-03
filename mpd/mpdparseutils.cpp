@@ -447,6 +447,10 @@ MusicLibraryItemRoot * MPDParseUtils::parseLibraryItems(const QByteArray &data, 
                                     s.artist=albumSong.artist;
                                     DBUG << "Get artist from album" << albumSong.artist;
                                 }
+                                if (s.composer.isEmpty()) {
+                                    s.composer=albumSong.composer;
+                                    DBUG << "Get composer from album" << albumSong.composer;
+                                }
                                 if (s.album.isEmpty()) {
                                     s.album=albumSong.album;
                                     DBUG << "Get album from album" << albumSong.album;

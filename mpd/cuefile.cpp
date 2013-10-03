@@ -24,6 +24,7 @@
 #include "cuefile.h"
 #include "mpdconnection.h"
 #include "utils.h"
+#include "settings.h"
 #include <QBuffer>
 #include <QDateTime>
 #include <QFile>
@@ -176,23 +177,70 @@ static bool updateLastSong(const CueEntry &entry, Song &song)
     return true;
 }
 
+// Get list of text codecs used to decode CUE files...
+static const QList<QTextCodec *> & codecList()
+{
+    static QList<QTextCodec *> codecs;
+    if (codecs.isEmpty()) {
+        codecs.append(QTextCodec::codecForName("UTF-8"));
+        QTextCodec *codec=QTextCodec::codecForLocale();
+        if (codec && !codecs.contains(codec)) {
+            codecs.append(codec);
+        }
+        codec=QTextCodec::codecForName("System");
+        if (codec && !codecs.contains(codec)) {
+            codecs.append(codec);
+        }
+
+        QStringList configCodecs=Settings::self()->cueFileCodecs();
+        foreach (const QString &cfg, configCodecs) {
+            codec=QTextCodec::codecForName(cfg.toLatin1());
+            if (codec && !codecs.contains(codec)) {
+                codecs.append(codec);
+            }
+        }
+    }
+    return codecs;
+}
+
 bool CueFile::parse(const QString &fileName, const QString &dir, QList<Song> &songList, QSet<QString> &files)
 {
-    QFile f(dir+fileName);
-    if (!f.open(QIODevice::ReadOnly|QIODevice::Text)) {
-        return false;
-    }
+     QScopedPointer<QTextStream> textStream;
+     QString decoded;
+     QFile f(dir+fileName);
+     if (f.open(QIODevice::ReadOnly)) {
+         // First attempt to use QTextDecoder to decode cue file contents into a QString
+         QByteArray contents=f.readAll();
+         foreach (QTextCodec *codec, codecList()) {
+             QTextDecoder decoder(codec);
+             decoded=decoder.toUnicode(contents);
+             if (!decoder.hasFailure()) {
+                 textStream.reset(new QTextStream(&decoded, QIODevice::ReadOnly));
+                 break;
+             }
+         }
+         f.close();
 
-    QTextStream textStream(&f);
-    textStream.setCodec(QTextCodec::codecForUtfText(f.peek(1024), QTextCodec::codecForName("UTF-8")));
+         if (!textStream) {
+             decoded.clear();
+             // Failed to use text decoders, fall back to old method...
+             f.open(QIODevice::ReadOnly|QIODevice::Text);
+             textStream.reset(new QTextStream(&f));
+             textStream->setCodec(QTextCodec::codecForUtfText(f.peek(1024), QTextCodec::codecForName("UTF-8")));
+         }
+     }
+
+     if (!textStream) {
+         return false;
+     }
 
     // read the first line already
-    QString line = textStream.readLine();
+    QString line = textStream->readLine();
     QList<CueEntry> entries;
     QString fileDir=fileName.contains("/") ? Utils::getDir(fileName) : QString();
 
     // -- whole file
-    while (!textStream.atEnd()) {
+    while (!textStream->atEnd()) {
         QString albumArtist;
         QString album;
 //        QString albumComposer;
@@ -240,7 +288,7 @@ bool CueFile::parse(const QString &fileName, const QString &dir, QList<Song> &so
             }
 
             // just ignore the rest of possible field types for now...
-        } while (!(line = textStream.readLine()).isNull());
+        } while (!(line = textStream->readLine()).isNull());
 
         if (line.isNull()) {
             return false;
@@ -304,7 +352,7 @@ bool CueFile::parse(const QString &fileName, const QString &dir, QList<Song> &so
                 break;
             }
             // just ignore the rest of possible field types for now...
-        } while (!(line = textStream.readLine()).isNull());
+        } while (!(line = textStream->readLine()).isNull());
 
         // we didn't add the last song yet...
         if (validFile && !index.isEmpty() && (trackType.isEmpty() || trackType == constAudioTrackType)) {

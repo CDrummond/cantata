@@ -856,7 +856,7 @@ MainWindow::MainWindow(QWidget *parent)
     readSettings();
     updateConnectionsMenu();
     fadeStop=Settings::self()->stopFadeDuration()>Settings::MinFade;
-    playlistsPage->refresh();
+    //playlistsPage->refresh();
     #if !defined Q_OS_WIN && !defined Q_OS_MAC
     mpris=new Mpris(this);
     connect(coverWidget, SIGNAL(coverFile(const QString &)), mpris, SLOT(updateCurrentCover(const QString &)));

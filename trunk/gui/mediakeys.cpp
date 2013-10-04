@@ -164,6 +164,25 @@ void MediaKeys::load()
     #endif
 }
 
+void MediaKeys::stop()
+{
+    #if !defined Q_OS_WIN && !defined Q_OS_MAC
+    if (gnome) {
+        disable(gnome);
+        gnome->deleteLater();
+        gnome=0;
+    }
+    #endif
+
+    #if !defined Q_OS_MAC && QT_VERSION < 0x050000
+    if (qxt) {
+        disable(qxt);
+        qxt->deleteLater();
+        qxt=0;
+    }
+    #endif
+}
+
 void MediaKeys::enable(MultiMediaKeysInterface *iface)
 {
     if (!iface || iface->isEnabled()) {

@@ -525,10 +525,12 @@ QStringList Settings::hiddenPages()
     return GET_STRINGLIST("hiddenPages", def);
 }
 
+#if !defined Q_OS_WIN && !defined ENABLE_KDE_SUPPORT
 bool Settings::gnomeMediaKeys()
 {
     return GET_BOOL("gnomeMediaKeys", true);
 }
+#endif
 
 #ifdef ENABLE_DEVICES_SUPPORT
 bool Settings::overwriteSongs()
@@ -1013,10 +1015,12 @@ void Settings::saveHiddenPages(const QStringList &v)
     SET_VALUE_MOD(hiddenPages)
 }
 
+#if !defined Q_OS_WIN && !defined ENABLE_KDE_SUPPORT
 void Settings::saveGnomeMediaKeys(bool v)
 {
     SET_VALUE_MOD(gnomeMediaKeys)
 }
+#endif
 
 #ifdef ENABLE_DEVICES_SUPPORT
 void Settings::saveOverwriteSongs(bool v)

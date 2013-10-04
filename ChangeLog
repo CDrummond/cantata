@@ -51,6 +51,9 @@
     encoding. Support a new config item, 'cueFileCodecs', which allows extra
     Qt text-codecs to be tried (see README for details). If all of these fail,
     then revert back to the previous behaviour.
+26. Dont build GNOME media-keys support into KDE builds, as these use KDE's
+    global keyboard shortcuts.
+27. With KDE builds, default to using media-keys as global shortcuts.
 
 1.1.3
 -----

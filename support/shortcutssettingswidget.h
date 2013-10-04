@@ -18,11 +18,11 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef SHORTCUTSSETTINGSPAGE_H
-#define SHORTCUTSSETTINGSPAGE_H
+#ifndef SHORTCUTSSETTINGSWIDGET_H
+#define SHORTCUTSSETTINGSWIDGET_H
 
 #include <QSortFilterProxyModel>
-#include "ui_shortcutssettingspage.h"
+#include "ui_shortcutssettingswidget.h"
 
 class ActionCollection;
 class ShortcutsModel;
@@ -42,7 +42,7 @@ private:
     QString _filterString;
 };
 
-class ShortcutsSettingsWidget : public QWidget, private Ui::ShortcutsSettingsPage {
+class ShortcutsSettingsWidget : public QWidget, private Ui::ShortcutsSettingsWidget {
     Q_OBJECT
 public:
     ShortcutsSettingsWidget(const QHash<QString, ActionCollection *> &actionCollections, QWidget *parent = 0);

@@ -26,6 +26,7 @@
 #include "playeradaptor.h"
 #include "rootadaptor.h"
 #include "config.h"
+#include "mainwindow.h"
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KWindowSystem>
 #endif

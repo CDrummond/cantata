@@ -395,11 +395,15 @@ the respective category.
 ==================
 
 Cantata may be controlled via the media keys on some keyboards. To enable this,
-the KDE version can be configured to use KDE's global shortcuts. The Qt only
-builds (under Linux) can use the GNOME settings daemon's MediaKeys interface.
-This interface is normally started automatically under GNOME/Unity - and you
-will also need to enable the setting in Cantata's configuration dialog (as of
-v1.1 this option is enabled by default)
+the KDE version can be configured to use KDE's global shortcuts. 
+
+Linux Qt4 and Windows builds, as of 1.2, now also support basic media-keys
+shortcuts.
+
+Linux Qt4 and Qt5 builds can also use the GNOME settings daemon's MediaKeys
+interface. This interface is normally started automatically undet GNOME/Unity
+- and you will also need to enable the setting in the shortcuts page of
+Cantata's configuration dialog (as of v1.1 this option is enabled by default)
 
 If your system does not have this daemon, you could possibly use
 https://code.google.com/p/mediakeys-daemon/ which is a python re-implementation

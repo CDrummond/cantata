@@ -30,9 +30,10 @@
 #include <QApplication>
 #include "song.h"
 #include "mpdstatus.h"
-#include "mainwindow.h"
+#include "stdactions.h"
 
 class QDBusObjectPath;
+class MainWindow;
 
 class Mpris : public QObject
 {
@@ -69,23 +70,23 @@ public:
     virtual ~Mpris() { }
 
     // org.mpris.MediaPlayer2.Player
-    void Next() { mw->nextTrack(); }
-    void Previous() { mw->prevTrack(); }
+    void Next() { StdActions::self()->nextTrackAction->trigger(); }
+    void Previous() { StdActions::self()->prevTrackAction->trigger(); }
     void Pause() {
         if (MPDState_Playing==MPDStatus::self()->state()) {
-            mw->playPauseTrack();
+            StdActions::self()->playPauseTrackAction->trigger();
         }
     }
 
-    void PlayPause() { mw->playPauseTrack(); }
-    void Stop() { mw->stopPlayback(); }
-    void StopAfterCurrent() { mw->stopAfterCurrentTrack(); }
+    void PlayPause() { StdActions::self()->playPauseTrackAction->trigger(); }
+    void Stop() { StdActions::self()->stopPlaybackAction->trigger(); }
+    void StopAfterCurrent() { StdActions::self()->stopAfterTrackAction->trigger(); }
 
     void Play() {
         MPDStatus * const status = MPDStatus::self();
 
         if (status->playlistLength() && MPDState_Playing!=status->state()) {
-           mw->playPauseTrack();
+           StdActions::self()->playPauseTrackAction->trigger();
         }
     }
 

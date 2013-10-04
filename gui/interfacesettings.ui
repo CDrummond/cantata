@@ -455,19 +455,6 @@ within the folder of the current track, or within its parent folder. If no image
          </property>
         </widget>
        </item>
-       <item row="3" column="0">
-        <widget class="BuddyLabel" name="gnomeMediaKeysLabel">
-         <property name="text">
-          <string>Support media keys under GNOME/Unity:</string>
-         </property>
-         <property name="buddy">
-          <cstring>gnomeMediaKeys</cstring>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="1">
-        <widget class="OnOffButton" name="gnomeMediaKeys"/>
-       </item>
       </layout>
      </widget>
      <widget class="QWidget" name="tab_4">
@@ -642,7 +629,6 @@ within the folder of the current track, or within its parent folder. If no image
   <tabstop>systemTrayCheckBox</tabstop>
   <tabstop>minimiseOnClose</tabstop>
   <tabstop>systemTrayPopup</tabstop>
-  <tabstop>gnomeMediaKeys</tabstop>
   <tabstop>groupSingle</tabstop>
   <tabstop>groupMultiple</tabstop>
   <tabstop>showDeleteAction</tabstop>

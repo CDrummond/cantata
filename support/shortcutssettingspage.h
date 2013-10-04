@@ -42,10 +42,10 @@ private:
     QString _filterString;
 };
 
-class ShortcutsSettingsPage : public QWidget, private Ui::ShortcutsSettingsPage {
+class ShortcutsSettingsWidget : public QWidget, private Ui::ShortcutsSettingsPage {
     Q_OBJECT
 public:
-    ShortcutsSettingsPage(const QHash<QString, ActionCollection *> &actionCollections, QWidget *parent = 0);
+    ShortcutsSettingsWidget(const QHash<QString, ActionCollection *> &actionCollections, QWidget *parent = 0);
 
     inline bool hasDefaults() const { return true; }
     QTreeView * view();

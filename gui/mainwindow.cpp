@@ -51,6 +51,7 @@
 #else
 #include <QMenuBar>
 #include "networkproxyfactory.h"
+#include "mediakeys.h"
 #endif
 #include "localize.h"
 #include "qtplural.h"
@@ -108,7 +109,6 @@
 #if !defined Q_OS_WIN && !defined Q_OS_MAC
 #include "mpris.h"
 #include "cantataadaptor.h"
-#include "gnomemediakeys.h"
 #include "mountpoints.h"
 #include "gtkproxystyle.h"
 #include "powermanagement.h"
@@ -150,11 +150,11 @@ bool VolumeSliderEventHandler::eventFilter(QObject *obj, QEvent *event)
         int numSteps = numDegrees / 15;
         if (numSteps > 0) {
             for (int i = 0; i < numSteps; ++i) {
-                window->increaseVolumeAction->trigger();
+                StdActions::self()->increaseVolumeAction->trigger();
             }
         } else {
             for (int i = 0; i > numSteps; --i) {
-                window->decreaseVolumeAction->trigger();
+                StdActions::self()->decreaseVolumeAction->trigger();
             }
         }
         return true;
@@ -202,9 +202,6 @@ MainWindow::MainWindow(QWidget *parent)
     , autoScrollPlayQueue(true)
     #if !defined Q_OS_WIN && !defined Q_OS_MAC
     , mpris(0)
-    #ifndef ENABLE_KDE_SUPPORT
-    , gnomeMediaKeys(0)
-    #endif
     #endif
     , statusTimer(0)
     , playQueueSearchTimer(0)
@@ -287,14 +284,7 @@ MainWindow::MainWindow(QWidget *parent)
     connectAction = ActionCollection::get()->createAction("connect", i18n("Connect"), Icons::self()->connectIcon);
     connectionsAction = ActionCollection::get()->createAction("connections", i18n("Collection"), "network-server");
     outputsAction = ActionCollection::get()->createAction("outputs", i18n("Outputs"), Icons::self()->speakerIcon);
-    prevTrackAction = ActionCollection::get()->createAction("prevtrack", i18n("Previous Track"), Icons::self()->toolbarPrevIcon);
-    nextTrackAction = ActionCollection::get()->createAction("nexttrack", i18n("Next Track"), Icons::self()->toolbarNextIcon);
-    playPauseTrackAction = ActionCollection::get()->createAction("playpausetrack", i18n("Play/Pause"), Icons::self()->toolbarPlayIcon);
-    stopPlaybackAction = ActionCollection::get()->createAction("stopplayback", i18n("Stop"), Icons::self()->toolbarStopIcon);
-    stopAfterCurrentTrackAction = ActionCollection::get()->createAction("stopaftercurrenttrack", i18n("Stop After Current Track"), Icons::self()->toolbarStopIcon);
     stopAfterTrackAction = ActionCollection::get()->createAction("stopaftertrack", i18n("Stop After Track"), Icons::self()->toolbarStopIcon);
-    increaseVolumeAction = ActionCollection::get()->createAction("increasevolume", i18n("Increase Volume"));
-    decreaseVolumeAction = ActionCollection::get()->createAction("decreasevolume", i18n("Decrease Volume"));
     muteAction = ActionCollection::get()->createAction("mute", i18n("Mute"));
     addPlayQueueToStoredPlaylistAction = ActionCollection::get()->createAction("addpqtostoredplaylist", i18n("Add To Stored Playlist"), Icons::self()->playlistIcon);
     removeFromPlayQueueAction = ActionCollection::get()->createAction("removefromplaylist", i18n("Remove From Play Queue"), "list-remove");
@@ -337,23 +327,23 @@ MainWindow::MainWindow(QWidget *parent)
     expandAllAction = ActionCollection::get()->createAction("expandall", i18n("Expand All"));
     collapseAllAction = ActionCollection::get()->createAction("collapseall", i18n("Collapse All"));
 
-    playPauseTrackAction->setEnabled(false);
-    nextTrackAction->setEnabled(false);
+    StdActions::self()->playPauseTrackAction->setEnabled(false);
+    StdActions::self()->nextTrackAction->setEnabled(false);
     updateNextTrack(-1);
-    prevTrackAction->setEnabled(false);
+    StdActions::self()->prevTrackAction->setEnabled(false);
     enableStopActions(false);
 
-    addAction(increaseVolumeAction);
-    addAction(decreaseVolumeAction);
+    addAction(StdActions::self()->increaseVolumeAction);
+    addAction(StdActions::self()->decreaseVolumeAction);
     addAction(muteAction);
     #if defined ENABLE_KDE_SUPPORT
-    prevTrackAction->setGlobalShortcut(KShortcut(Qt::Key_MediaPrevious));
-    nextTrackAction->setGlobalShortcut(KShortcut(Qt::Key_MediaNext));
-    playPauseTrackAction->setGlobalShortcut(KShortcut(Qt::Key_MediaPlay));
-    stopPlaybackAction->setGlobalShortcut(KShortcut(Qt::Key_MediaStop));
-    stopAfterCurrentTrackAction->setGlobalShortcut(KShortcut());
-    increaseVolumeAction->setGlobalShortcut(KShortcut(Qt::Key_VolumeUp));
-    decreaseVolumeAction->setGlobalShortcut(KShortcut(Qt::Key_VolumeDown));
+    StdActions::self()->prevTrackAction->setGlobalShortcut(KShortcut(Qt::Key_MediaPrevious));
+    StdActions::self()->nextTrackAction->setGlobalShortcut(KShortcut(Qt::Key_MediaNext));
+    StdActions::self()->playPauseTrackAction->setGlobalShortcut(KShortcut(Qt::Key_MediaPlay));
+    StdActions::self()->stopPlaybackAction->setGlobalShortcut(KShortcut(Qt::Key_MediaStop));
+    StdActions::self()->stopAfterCurrentTrackAction->setGlobalShortcut(KShortcut());
+    StdActions::self()->increaseVolumeAction->setGlobalShortcut(KShortcut(Qt::Key_VolumeUp));
+    StdActions::self()->decreaseVolumeAction->setGlobalShortcut(KShortcut(Qt::Key_VolumeDown));
     muteAction->setGlobalShortcut(KShortcut(Qt::Key_VolumeMute));
     #endif
 
@@ -390,14 +380,14 @@ MainWindow::MainWindow(QWidget *parent)
     menuButton->setMenu(mainMenu);
     volumeButton->setIcon(Icons::self()->toolbarVolumeHighIcon);
 
-    playPauseTrackButton->setDefaultAction(playPauseTrackAction);
-    stopTrackButton->setDefaultAction(stopPlaybackAction);
-    nextTrackButton->setDefaultAction(nextTrackAction);
-    prevTrackButton->setDefaultAction(prevTrackAction);
+    playPauseTrackButton->setDefaultAction(StdActions::self()->playPauseTrackAction);
+    stopTrackButton->setDefaultAction(StdActions::self()->stopPlaybackAction);
+    nextTrackButton->setDefaultAction(StdActions::self()->nextTrackAction);
+    prevTrackButton->setDefaultAction(StdActions::self()->prevTrackAction);
 
     QMenu *stopMenu=new QMenu(this);
-    stopMenu->addAction(stopPlaybackAction);
-    stopMenu->addAction(stopAfterCurrentTrackAction);
+    stopMenu->addAction(StdActions::self()->stopPlaybackAction);
+    stopMenu->addAction(StdActions::self()->stopAfterCurrentTrackAction);
     stopTrackButton->setMenu(stopMenu);
     stopTrackButton->setPopupMode(QToolButton::DelayedPopup);
 
@@ -754,16 +744,16 @@ MainWindow::MainWindow(QWidget *parent)
     connect(StdActions::self()->refreshAction, SIGNAL(triggered(bool)), this, SLOT(refresh()));
     connect(StdActions::self()->refreshAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(update()));
     connect(connectAction, SIGNAL(triggered(bool)), this, SLOT(connectToMpd()));
-    connect(prevTrackAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(goToPrevious()));
-    connect(nextTrackAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(goToNext()));
-    connect(playPauseTrackAction, SIGNAL(triggered(bool)), this, SLOT(playPauseTrack()));
-    connect(stopPlaybackAction, SIGNAL(triggered(bool)), this, SLOT(stopPlayback()));
-    connect(stopAfterCurrentTrackAction, SIGNAL(triggered(bool)), this, SLOT(stopAfterCurrentTrack()));
+    connect(StdActions::self()->prevTrackAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(goToPrevious()));
+    connect(StdActions::self()->nextTrackAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(goToNext()));
+    connect(StdActions::self()->playPauseTrackAction, SIGNAL(triggered(bool)), this, SLOT(playPauseTrack()));
+    connect(StdActions::self()->stopPlaybackAction, SIGNAL(triggered(bool)), this, SLOT(stopPlayback()));
+    connect(StdActions::self()->stopAfterCurrentTrackAction, SIGNAL(triggered(bool)), this, SLOT(stopAfterCurrentTrack()));
     connect(stopAfterTrackAction, SIGNAL(triggered(bool)), this, SLOT(stopAfterTrack()));
     connect(volumeControl, SIGNAL(valueChanged(int)), MPDConnection::self(), SLOT(setVolume(int)));
     connect(this, SIGNAL(setVolume(int)), MPDConnection::self(), SLOT(setVolume(int)));
-    connect(increaseVolumeAction, SIGNAL(triggered(bool)), volumeControl, SLOT(increaseVolume()));
-    connect(decreaseVolumeAction, SIGNAL(triggered(bool)), volumeControl, SLOT(decreaseVolume()));
+    connect(StdActions::self()->increaseVolumeAction, SIGNAL(triggered(bool)), volumeControl, SLOT(increaseVolume()));
+    connect(StdActions::self()->decreaseVolumeAction, SIGNAL(triggered(bool)), volumeControl, SLOT(decreaseVolume()));
     connect(muteAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(toggleMute()));
     connect(positionSlider, SIGNAL(sliderReleased()), this, SLOT(setPosition()));
     connect(randomPlayQueueAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(setRandom(bool)));
@@ -842,7 +832,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(MountPoints::self(), SIGNAL(updated()), SLOT(checkMpdAccessibility()));
     #endif // Q_OS_LINUX
     connect(OnlineServicesModel::self(), SIGNAL(error(const QString &)), this, SLOT(showError(const QString &)));
-
     playQueueItemsSelected(false);
     playQueue->setFocus();
     playQueue->initHeader();
@@ -890,6 +879,7 @@ MainWindow::MainWindow(QWidget *parent)
     if (Settings::self()->firstRun() && MPDConnection::self()->isConnected()) {
         mpdConnectionStateChanged(true);
     }
+    MediaKeys::self()->load();
 }
 
 MainWindow::~MainWindow()
@@ -1397,16 +1387,9 @@ void MainWindow::readSettings()
     updateWindowTitle();
     TreeView::setForceSingleClick(Settings::self()->forceSingleClick());
     #if !defined Q_OS_WIN && !defined Q_OS_MAC
-    #ifndef ENABLE_KDE_SUPPORT
-    if (!gnomeMediaKeys && Settings::self()->gnomeMediaKeys()) {
-        gnomeMediaKeys=new GnomeMediaKeys(this);
-    }
-    if (gnomeMediaKeys) {
-        gnomeMediaKeys->setEnabled(Settings::self()->gnomeMediaKeys());
-    }
-    #endif
     PowerManagement::self()->setInhibitSuspend(Settings::self()->inhibitSuspend());
     #endif
+    MediaKeys::self()->load();
     context->readConfig();
 }
 
@@ -1608,8 +1591,8 @@ void MainWindow::toggleStream(bool s, const QString &url)
 
 void MainWindow::enableStopActions(bool enable)
 {
-    stopAfterCurrentTrackAction->setEnabled(enable);
-    stopPlaybackAction->setEnabled(enable);
+    StdActions::self()->stopAfterCurrentTrackAction->setEnabled(enable);
+    StdActions::self()->stopPlaybackAction->setEnabled(enable);
 }
 
 void MainWindow::stopPlayback()
@@ -1618,8 +1601,8 @@ void MainWindow::stopPlayback()
         emit stop();
     }
     enableStopActions(false);
-    nextTrackAction->setEnabled(false);
-    prevTrackAction->setEnabled(false);
+    StdActions::self()->nextTrackAction->setEnabled(false);
+    StdActions::self()->prevTrackAction->setEnabled(false);
     startVolumeFade();
 }
 
@@ -1700,16 +1683,6 @@ void MainWindow::playPauseTrack()
     }
 }
 
-void MainWindow::nextTrack()
-{
-    nextTrackAction->trigger();
-}
-
-void MainWindow::prevTrack()
-{
-    prevTrackAction->trigger();
-}
-
 void MainWindow::setPosition()
 {
     emit setSeekId(MPDStatus::self()->songId(), positionSlider->value());
@@ -1754,9 +1727,9 @@ void MainWindow::realSearchPlayQueue()
 
 void MainWindow::updatePlayQueue(const QList<Song> &songs)
 {
-    playPauseTrackAction->setEnabled(!songs.isEmpty());
-    nextTrackAction->setEnabled(stopPlaybackAction->isEnabled() && songs.count()>1);
-    prevTrackAction->setEnabled(stopPlaybackAction->isEnabled() && songs.count()>1);
+    StdActions::self()->playPauseTrackAction->setEnabled(!songs.isEmpty());
+    StdActions::self()->nextTrackAction->setEnabled(StdActions::self()->stopPlaybackAction->isEnabled() && songs.count()>1);
+    StdActions::self()->prevTrackAction->setEnabled(StdActions::self()->stopPlaybackAction->isEnabled() && songs.count()>1);
     StdActions::self()->savePlayQueueAction->setEnabled(!songs.isEmpty());
     clearPlayQueueAction->setEnabled(!songs.isEmpty());
 
@@ -1992,8 +1965,8 @@ void MainWindow::updateStatus(MPDStatus * const status)
             volumeControl->setValue(volume);
         }
         muteAction->setEnabled(volumeButton->isEnabled());
-        increaseVolumeAction->setEnabled(volumeButton->isEnabled());
-        decreaseVolumeAction->setEnabled(volumeButton->isEnabled());
+        StdActions::self()->increaseVolumeAction->setEnabled(volumeButton->isEnabled());
+        StdActions::self()->decreaseVolumeAction->setEnabled(volumeButton->isEnabled());
         volumeControl->blockSignals(false);
     }
 
@@ -2019,13 +1992,13 @@ void MainWindow::updateStatus(MPDStatus * const status)
             httpStream->play();
         }
         #endif
-        playPauseTrackAction->setIcon(Icons::self()->toolbarPauseIcon);
-        playPauseTrackAction->setEnabled(0!=playQueueModel.rowCount());
+        StdActions::self()->playPauseTrackAction->setIcon(Icons::self()->toolbarPauseIcon);
+        StdActions::self()->playPauseTrackAction->setEnabled(0!=playQueueModel.rowCount());
         //playPauseTrackButton->setChecked(false);
         if (StopState_Stopping!=stopState) {
             enableStopActions(true);
-            nextTrackAction->setEnabled(playQueueModel.rowCount()>1);
-            prevTrackAction->setEnabled(playQueueModel.rowCount()>1);
+            StdActions::self()->nextTrackAction->setEnabled(playQueueModel.rowCount()>1);
+            StdActions::self()->prevTrackAction->setEnabled(playQueueModel.rowCount()>1);
         }
         positionSlider->startTimer();
 
@@ -2042,12 +2015,12 @@ void MainWindow::updateStatus(MPDStatus * const status)
             httpStream->stop();
         }
         #endif
-        playPauseTrackAction->setIcon(Icons::self()->toolbarPlayIcon);
-        playPauseTrackAction->setEnabled(0!=playQueueModel.rowCount());
+        StdActions::self()->playPauseTrackAction->setIcon(Icons::self()->toolbarPlayIcon);
+        StdActions::self()->playPauseTrackAction->setEnabled(0!=playQueueModel.rowCount());
         enableStopActions(false);
-        nextTrackAction->setEnabled(false);
-        prevTrackAction->setEnabled(false);
-        if (!playPauseTrackAction->isEnabled()) {
+        StdActions::self()->nextTrackAction->setEnabled(false);
+        StdActions::self()->prevTrackAction->setEnabled(false);
+        if (!StdActions::self()->playPauseTrackAction->isEnabled()) {
             trackLabel->setText(QString());
             artistLabel->setText(QString());
             current=Song();
@@ -2070,11 +2043,11 @@ void MainWindow::updateStatus(MPDStatus * const status)
             httpStream->pause();
         }
         #endif
-        playPauseTrackAction->setIcon(Icons::self()->toolbarPlayIcon);
-        playPauseTrackAction->setEnabled(0!=playQueueModel.rowCount());
+        StdActions::self()->playPauseTrackAction->setIcon(Icons::self()->toolbarPlayIcon);
+        StdActions::self()->playPauseTrackAction->setEnabled(0!=playQueueModel.rowCount());
         enableStopActions(0!=playQueueModel.rowCount());
-        nextTrackAction->setEnabled(playQueueModel.rowCount()>1);
-        prevTrackAction->setEnabled(playQueueModel.rowCount()>1);
+        StdActions::self()->nextTrackAction->setEnabled(playQueueModel.rowCount()>1);
+        StdActions::self()->prevTrackAction->setEnabled(playQueueModel.rowCount()>1);
         #ifdef ENABLE_KDE_SUPPORT
         trayItem->setIconByName(Icons::self()->toolbarPauseIcon.name());
         #else
@@ -3026,21 +2999,21 @@ void MainWindow::updateNextTrack(int nextTrackId)
     if (-1!=nextTrackId && MPDState_Stopped==MPDStatus::self()->state()) {
         nextTrackId=-1; // nextSongId is not accurate if we are stopped.
     }
-    QString tt=nextTrackAction->property("tooltip").toString();
+    QString tt=StdActions::self()->nextTrackAction->property("tooltip").toString();
     if (-1==nextTrackId && tt.isEmpty()) {
-        nextTrackAction->setProperty("tooltip", nextTrackAction->toolTip());
+        StdActions::self()->nextTrackAction->setProperty("tooltip", StdActions::self()->nextTrackAction->toolTip());
     } else if (-1==nextTrackId) {
-        nextTrackAction->setToolTip(tt);
-        nextTrackAction->setProperty("trackid", nextTrackId);
-    } else if (nextTrackId!=nextTrackAction->property("trackid").toInt()) {
+        StdActions::self()->nextTrackAction->setToolTip(tt);
+        StdActions::self()->nextTrackAction->setProperty("trackid", nextTrackId);
+    } else if (nextTrackId!=StdActions::self()->nextTrackAction->property("trackid").toInt()) {
         Song s=playQueueModel.getSongByRow(playQueueModel.getRowById(nextTrackId));
         if (!s.artist.isEmpty() && !s.title.isEmpty()) {
             tt+=QLatin1String("<br/><i><small>")+s.artistSong()+QLatin1String("<small></i>");
         } else {
             nextTrackId=-1;
         }
-        nextTrackAction->setToolTip(tt);
-        nextTrackAction->setProperty("trackid", nextTrackId);
+        StdActions::self()->nextTrackAction->setToolTip(tt);
+        StdActions::self()->nextTrackAction->setProperty("trackid", nextTrackId);
     }
 }
 

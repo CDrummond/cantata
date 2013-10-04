@@ -21,41 +21,32 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef GNOME_MEDIA_KEYS_H
-#define GNOME_MEDIA_KEYS_H
+#ifndef MULTI_MEDIA_KEYS_INTERFACE_H
+#define MULTI_MEDIA_KEYS_INTERFACE_H
 
-#include "multimediakeysinterface.h"
+#include <QObject>
 
-class OrgGnomeSettingsDaemonInterface;
-class OrgGnomeSettingsDaemonMediaKeysInterface;
-class QDBusPendingCallWatcher;
-class QDBusServiceWatcher;
-
-class GnomeMediaKeys : public MultiMediaKeysInterface
+class MultiMediaKeysInterface : public QObject
 {
     Q_OBJECT
-
 public:
-    GnomeMediaKeys(QObject *p);
+    MultiMediaKeysInterface(QObject *p) : QObject(p), enabled(false) { }
+    ~MultiMediaKeysInterface() { }
 
-    void activate(bool a);
-
-private:
-    bool daemonIsRunning();
-    void releaseKeys();
-    void grabKeys();
-    void disconnectDaemon();
-
-private Q_SLOTS:
-    void serviceOwnerChanged(const QString &name, const QString &oldOwner, const QString &newOwner);
-    void registerFinished(QDBusPendingCallWatcher *watcher);
-    void keyPressed(const QString &app, const QString &key);
-    void pluginActivated(const QString &name);
+    void setEnabled(bool e) { activate(e); enabled=e; }
+    bool isEnabled() const { return enabled; }
 
 private:
-    OrgGnomeSettingsDaemonInterface *daemon;
-    OrgGnomeSettingsDaemonMediaKeysInterface *mk;
-    QDBusServiceWatcher *watcher;
+    virtual void activate(bool a)=0;
+
+Q_SIGNALS:
+    void playPause();
+    void stop();
+    void next();
+    void previous();
+
+protected:
+    bool enabled;
 };
 
 #endif

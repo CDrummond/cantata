@@ -21,41 +21,44 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef GNOME_MEDIA_KEYS_H
-#define GNOME_MEDIA_KEYS_H
+#ifndef MEDIA_KEYS_H
+#define MEDIA_KEYS_H
 
-#include "multimediakeysinterface.h"
+#include <qglobal.h>
 
-class OrgGnomeSettingsDaemonInterface;
-class OrgGnomeSettingsDaemonMediaKeysInterface;
-class QDBusPendingCallWatcher;
-class QDBusServiceWatcher;
+class GnomeMediaKeys;
+class QxtMediaKeys;
+class MultiMediaKeysInterface;
 
-class GnomeMediaKeys : public MultiMediaKeysInterface
+class MediaKeys
 {
-    Q_OBJECT
-
 public:
-    GnomeMediaKeys(QObject *p);
+    enum InterfaceType {
+        NoInterface,
+        GnomeInteface,
+        QxtInterface
+    };
 
-    void activate(bool a);
+    static MediaKeys * self();
+    static QString toString(InterfaceType i);
+    static InterfaceType toIface(const QString &i);
+
+    MediaKeys();
+    ~MediaKeys();
+
+    void load();
 
 private:
-    bool daemonIsRunning();
-    void releaseKeys();
-    void grabKeys();
-    void disconnectDaemon();
-
-private Q_SLOTS:
-    void serviceOwnerChanged(const QString &name, const QString &oldOwner, const QString &newOwner);
-    void registerFinished(QDBusPendingCallWatcher *watcher);
-    void keyPressed(const QString &app, const QString &key);
-    void pluginActivated(const QString &name);
+    void enable(MultiMediaKeysInterface *iface);
+    void disable(MultiMediaKeysInterface *iface);
 
 private:
-    OrgGnomeSettingsDaemonInterface *daemon;
-    OrgGnomeSettingsDaemonMediaKeysInterface *mk;
-    QDBusServiceWatcher *watcher;
+    #if !defined Q_OS_WIN && !defined Q_OS_MAC
+    GnomeMediaKeys *gnome;
+    #endif
+    #if !defined Q_OS_MAC && QT_VERSION < 0x050000
+    QxtMediaKeys *qxt;
+    #endif
 };
 
 #endif

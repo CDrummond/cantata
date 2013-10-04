@@ -35,6 +35,7 @@
 #include "action.h"
 #include "icons.h"
 #include "song.h"
+#include "stdactions.h"
 
 TrayItem::TrayItem(MainWindow *p)
     : QObject(p)
@@ -73,11 +74,11 @@ void TrayItem::setup()
     trayItem->setToolTip("cantata", i18n("Cantata"), QString());
 
     trayItemMenu = new KMenu(0);
-    trayItemMenu->addAction(mw->prevTrackAction);
-    trayItemMenu->addAction(mw->playPauseTrackAction);
-    trayItemMenu->addAction(mw->stopPlaybackAction);
-    trayItemMenu->addAction(mw->stopAfterCurrentTrackAction);
-    trayItemMenu->addAction(mw->nextTrackAction);
+    trayItemMenu->addAction(StdActions::self()->prevTrackAction);
+    trayItemMenu->addAction(StdActions::self()->playPauseTrackAction);
+    trayItemMenu->addAction(StdActions::self()->stopPlaybackAction);
+    trayItemMenu->addAction(StdActions::self()->stopAfterCurrentTrackAction);
+    trayItemMenu->addAction(StdActions::self()->nextTrackAction);
     trayItem->setContextMenu(trayItemMenu);
     trayItem->setStatus(KStatusNotifierItem::Active);
     trayItemMenu->addSeparator();
@@ -94,11 +95,11 @@ void TrayItem::setup()
     trayItem = new QSystemTrayIcon(this);
     trayItem->installEventFilter(mw->volumeSliderEventHandler);
     trayItemMenu = new QMenu(0);
-    trayItemMenu->addAction(mw->prevTrackAction);
-    trayItemMenu->addAction(mw->playPauseTrackAction);
-    trayItemMenu->addAction(mw->stopPlaybackAction);
-    trayItemMenu->addAction(mw->stopAfterCurrentTrackAction);
-    trayItemMenu->addAction(mw->nextTrackAction);
+    trayItemMenu->addAction(StdActions::self()->prevTrackAction);
+    trayItemMenu->addAction(StdActions::self()->playPauseTrackAction);
+    trayItemMenu->addAction(StdActions::self()->stopPlaybackAction);
+    trayItemMenu->addAction(StdActions::self()->stopAfterCurrentTrackAction);
+    trayItemMenu->addAction(StdActions::self()->nextTrackAction);
     trayItemMenu->addSeparator();
     trayItemMenu->addAction(mw->restoreAction);
     trayItemMenu->addSeparator();
@@ -125,9 +126,9 @@ void TrayItem::trayItemScrollRequested(int delta, Qt::Orientation orientation)
 {
     if (Qt::Vertical==orientation) {
         if (delta>0) {
-            mw->increaseVolumeAction->trigger();
+            StdActions::self()->increaseVolumeAction->trigger();
         } else if(delta<0) {
-            mw->decreaseVolumeAction->trigger();
+            StdActions::self()->decreaseVolumeAction->trigger();
         }
     }
 }

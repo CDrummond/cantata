@@ -139,12 +139,12 @@ void PlaylistsPage::addSelectionToPlaylist(bool replace, quint8 priorty)
 
 void PlaylistsPage::setView(int mode)
 {
-    bool diff=view->viewMode()!=mode;
+    //bool diff=view->viewMode()!=mode;
     view->setMode((ItemView::Mode)mode);
-    if (diff) {
-        clear();
-        refresh();
-    }
+    //if (diff) {
+    //    clear();
+    //    refresh();
+    //}
 }
 
 void PlaylistsPage::removeItems()

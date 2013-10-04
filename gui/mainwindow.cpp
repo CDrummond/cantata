@@ -940,6 +940,7 @@ MainWindow::~MainWindow()
     #ifdef ENABLE_DEVICES_SUPPORT
     DevicesModel::self()->stop();
     #endif
+    MediaKeys::self()->stop();
 }
 
 void MainWindow::initSizes()

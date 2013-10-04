@@ -47,6 +47,7 @@ public:
     ~MediaKeys();
 
     void load();
+    void stop();
 
 private:
     void enable(MultiMediaKeysInterface *iface);

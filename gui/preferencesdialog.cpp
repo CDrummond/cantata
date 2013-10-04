@@ -44,17 +44,13 @@
 #endif
 #ifndef ENABLE_KDE_SUPPORT
 #include "shortcutssettingspage.h"
-#include "actioncollection.h"
-#include "basicitemdelegate.h"
 #endif
 #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
 #include "audiocdsettings.h"
 #endif
-#include "mediakeys.h"
-#include <QBoxLayout>
-#include <QComboBox>
-#include <QGroupBox>
-#include <QFormLayout>
+#ifndef ENABLE_KDE_SUPPORT
+#include "shortcutssettingspage.h"
+#endif
 
 static int iCount=0;
 
@@ -62,73 +58,6 @@ int PreferencesDialog::instanceCount()
 {
     return iCount;
 }
-
-#ifndef ENABLE_KDE_SUPPORT
-class ShortcutsSettingsPage : public QWidget
-{
-public:
-    ShortcutsSettingsPage(QWidget *p)
-        : QWidget(p)
-        , combo(0)
-    {
-        QBoxLayout *lay=new QBoxLayout(QBoxLayout::TopToBottom, this);
-        lay->setMargin(0);
-
-        QHash<QString, ActionCollection *> map;
-        map.insert("Cantata", ActionCollection::get());
-        shortcuts = new ShortcutsSettingsWidget(map, this);
-        shortcuts->view()->setAlternatingRowColors(false);
-        shortcuts->view()->setItemDelegate(new BasicItemDelegate(shortcuts->view()));
-        lay->addWidget(shortcuts);
-
-        #if !defined Q_OS_MAC
-        #if QT_VERSION < 0x050000 || !defined Q_OS_WIN
-        QGroupBox *box=new QGroupBox(i18n("Multi-Media Keys"));
-        QBoxLayout *boxLay=new QBoxLayout(QBoxLayout::TopToBottom, box);
-        combo=new QComboBox(box);
-        boxLay->addWidget(combo);
-        combo->addItem(i18n("Disabled"), (unsigned int)MediaKeys::NoInterface);
-        #if QT_VERSION < 0x050000
-        combo->addItem(i18n("Enabled"), (unsigned int)MediaKeys::QxtInterface);
-        #endif
-        #if !defined Q_OS_WIN
-        QByteArray desktop=qgetenv("XDG_CURRENT_DESKTOP");
-        combo->addItem(desktop=="Unity" || desktop=="GNOME"
-                            ? i18n("Use desktop settings")
-                            : i18n("Use GNOME/Unity settings"), (unsigned int)MediaKeys::GnomeInteface);
-        #endif
-        lay->addWidget(box);
-        #endif // QT_VERSION < 0x050000 || !defined Q_OS_WIN
-        #endif // !defined Q_OS_MAC
-    }
-
-    void load()
-    {
-        if (!combo) {
-            return;
-        }
-        unsigned int iface=(unsigned int)MediaKeys::toIface(Settings::self()->mediaKeysIface());
-        for (int i=0; i<combo->count(); ++i) {
-            if (combo->itemData(i).toUInt()==iface) {
-                combo->setCurrentIndex(i);
-                break;
-            }
-        }
-    }
-
-    void save()
-    {
-        shortcuts->save();
-        if (combo) {
-            Settings::self()->saveMediaKeysIface(MediaKeys::toString((MediaKeys::InterfaceType)combo->itemData(combo->currentIndex()).toUInt()));
-        }
-    }
-
-private:
-    ShortcutsSettingsWidget *shortcuts;
-    QComboBox *combo;
-};
-#endif
 
 PreferencesDialog::PreferencesDialog(QWidget *parent)
     : Dialog(parent, "PreferencesDialog")

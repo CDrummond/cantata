@@ -418,6 +418,9 @@ else (ENABLE_KDE_SUPPORT)
     endif (WIN32)
 
     set(CANTATA_RCS ${CANTATA_RCS} cantata_qt.qrc)
+    set(CANTATA_SRCS ${CANTATA_SRCS} gui/shortcutssettingspage.cpp)
+    set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} gui/shortcutssettingspage.h)
+
     if (ENABLE_QT5)
         QT5_ADD_RESOURCES(CANTATA_RC_SRCS ${CANTATA_RCS})
         QT5_WRAP_UI(CANTATA_UI_HDRS ${CANTATA_UIS})

@@ -21,7 +21,7 @@
 
 #include <QTimer>
 
-#include "shortcutssettingspage.h"
+#include "shortcutssettingswidget.h"
 #include "action.h"
 #include "actioncollection.h"
 #include "shortcutsmodel.h"

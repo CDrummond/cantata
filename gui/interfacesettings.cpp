@@ -30,6 +30,11 @@
 #include <QComboBox>
 #include <qglobal.h>
 
+#define REMOVE(w) \
+    w->setVisible(false); \
+    w->deleteLater(); \
+    w=0;
+
 static void addImageSizes(QComboBox *box)
 {
     box->addItem(i18n("None"), MusicLibraryItemAlbum::CoverNone);
@@ -96,9 +101,9 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     showDeleteAction->setVisible(false);
     showDeleteActionLabel->setVisible(false);
     #endif
-    #ifdef Q_OS_WIN
-    gnomeMediaKeys->setVisible(false);
-    gnomeMediaKeysLabel->setVisible(false);
+    #if defined Q_OS_WIN || defined ENABLE_KDE_SUPPORT
+    REMOVE(gnomeMediaKeys)
+    REMOVE(gnomeMediaKeysLabel)
     #endif
     connect(systemTrayCheckBox, SIGNAL(toggled(bool)), minimiseOnClose, SLOT(setEnabled(bool)));
     connect(systemTrayCheckBox, SIGNAL(toggled(bool)), minimiseOnCloseLabel, SLOT(setEnabled(bool)));
@@ -141,7 +146,7 @@ void InterfaceSettings::load()
     minimiseOnClose->setChecked(Settings::self()->minimiseOnClose());
     minimiseOnClose->setEnabled(systemTrayCheckBox->isChecked());
     minimiseOnCloseLabel->setEnabled(systemTrayCheckBox->isChecked());
-    #ifndef Q_OS_WIN
+    #if !defined Q_OS_WIN && !defined ENABLE_KDE_SUPPORT
     gnomeMediaKeys->setChecked(Settings::self()->gnomeMediaKeys());
     #endif
 }
@@ -176,7 +181,7 @@ void InterfaceSettings::save()
     Settings::self()->saveUseSystemTray(systemTrayCheckBox->isChecked());
     Settings::self()->saveShowPopups(systemTrayPopup->isChecked());
     Settings::self()->saveMinimiseOnClose(minimiseOnClose->isChecked());
-    #ifndef Q_OS_WIN
+    #if !defined Q_OS_WIN && !defined ENABLE_KDE_SUPPORT
     Settings::self()->saveGnomeMediaKeys(gnomeMediaKeys->isChecked());
     #endif
 }

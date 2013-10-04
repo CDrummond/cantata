@@ -70,7 +70,6 @@ class DevicesPage;
 class QAbstractItemView;
 #ifndef Q_OS_WIN
 class Mpris;
-class GnomeMediaKeys;
 #endif // !defined Q_OS_WIN
 class QTimer;
 class QPropertyAnimation;
@@ -224,8 +223,6 @@ public Q_SLOTS:
     void stopAfterCurrentTrack();
     void stopAfterTrack();
     void playPauseTrack();
-    void nextTrack();
-    void prevTrack();
     void setPosition();
     void searchPlayQueue();
     void realSearchPlayQueue();
@@ -330,14 +327,7 @@ private:
     Action *connectionsAction;
     Action *outputsAction;
     QActionGroup *connectionsGroup;
-    Action *prevTrackAction;
-    Action *nextTrackAction;
-    Action *playPauseTrackAction;
-    Action *stopPlaybackAction;
-    Action *stopAfterCurrentTrackAction;
     Action *stopAfterTrackAction;
-    Action *increaseVolumeAction;
-    Action *decreaseVolumeAction;
     Action *muteAction;
     Action *removeFromPlayQueueAction;
     Action *addPlayQueueToStoredPlaylistAction;
@@ -399,9 +389,6 @@ private:
     #endif
     #ifndef Q_OS_WIN
     Mpris *mpris;
-    #ifndef ENABLE_KDE_SUPPORT
-    GnomeMediaKeys *gnomeMediaKeys;
-    #endif
     GtkProxyStyle *gtkStyle;
     #endif // Q_OS_WIN
     QTimer *statusTimer;

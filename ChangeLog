@@ -54,6 +54,9 @@
 26. Dont build GNOME media-keys support into KDE builds, as these use KDE's
     global keyboard shortcuts.
 27. With KDE builds, default to using media-keys as global shortcuts.
+28. Optionally support Qxt global shortcuts for Qt-only (Qt4) Linux, and
+    Windows, builds.
+29. Move media-keys setting into shortcuts page.
 
 1.1.3
 -----

@@ -53,7 +53,7 @@ bool ShortcutsFilter::filterAcceptsRow(int source_row, const QModelIndex &source
 
 /****************************************************************************/
 
-ShortcutsSettingsPage::ShortcutsSettingsPage(const QHash<QString, ActionCollection *> &actionCollections, QWidget *parent)
+ShortcutsSettingsWidget::ShortcutsSettingsWidget(const QHash<QString, ActionCollection *> &actionCollections, QWidget *parent)
   : QWidget(parent),
   _shortcutsModel(new ShortcutsModel(actionCollections, this)),
   _shortcutsFilter(new ShortcutsFilter(this))
@@ -87,12 +87,12 @@ ShortcutsSettingsPage::ShortcutsSettingsPage(const QHash<QString, ActionCollecti
   QTimer::singleShot(0, searchEdit, SLOT(setFocus()));
 }
 
-QTreeView * ShortcutsSettingsPage::view()
+QTreeView * ShortcutsSettingsWidget::view()
 {
     return shortcutsView;
 }
 
-void ShortcutsSettingsPage::setWidgetStates() {
+void ShortcutsSettingsWidget::setWidgetStates() {
   if(shortcutsView->currentIndex().isValid() && shortcutsView->currentIndex().parent().isValid()) {
     QKeySequence active = shortcutsView->currentIndex().data(ShortcutsModel::ActiveShortcutRole).value<QKeySequence>();
     QKeySequence def = shortcutsView->currentIndex().data(ShortcutsModel::DefaultShortcutRole).value<QKeySequence>();
@@ -113,11 +113,11 @@ void ShortcutsSettingsPage::setWidgetStates() {
   }
 }
 
-void ShortcutsSettingsPage::on_searchEdit_textChanged(const QString &text) {
+void ShortcutsSettingsWidget::on_searchEdit_textChanged(const QString &text) {
   _shortcutsFilter->setFilterString(text);
 }
 
-void ShortcutsSettingsPage::keySequenceChanged(const QKeySequence &seq, const QModelIndex &conflicting) {
+void ShortcutsSettingsWidget::keySequenceChanged(const QKeySequence &seq, const QModelIndex &conflicting) {
   if(conflicting.isValid())
     _shortcutsModel->setData(conflicting, QKeySequence(), ShortcutsModel::ActiveShortcutRole);
 
@@ -127,7 +127,7 @@ void ShortcutsSettingsPage::keySequenceChanged(const QKeySequence &seq, const QM
   setWidgetStates();
 }
 
-void ShortcutsSettingsPage::toggledCustomOrDefault() {
+void ShortcutsSettingsWidget::toggledCustomOrDefault() {
   if(!shortcutsView->currentIndex().isValid())
     return;
 
@@ -142,6 +142,6 @@ void ShortcutsSettingsPage::toggledCustomOrDefault() {
   setWidgetStates();
 }
 
-void ShortcutsSettingsPage::save() {
+void ShortcutsSettingsWidget::save() {
   _shortcutsModel->commit();
 }

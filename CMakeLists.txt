@@ -25,9 +25,9 @@ option(ENABLE_TAGLIB "Enable TagLib library(required for tag editing, replaygain
 option(ENABLE_TAGLIB_EXTRAS "Enable TagLib-Extras library(used by tag editing, replaygain calculation, device support, etc)" ON)
 option(ENABLE_HTTP_STREAM_PLAYBACK "Enable playback of MPD HTTP streams(Phonon required for Qt4, QtMultimedia for Qt5)" OFF)
 if (WIN32)
-    option(ENABLE_HTTPS_SUPPORT "Enable HTTPS URLs for LAst.fm, Wikipedia, SoundCloud, etc. (Requires a Qt built with SSL support)" OFF)
+    option(ENABLE_HTTPS_SUPPORT "Enable HTTPS URLs for Last.fm, Wikipedia, SoundCloud, etc. (Requires a Qt built with SSL support)" OFF)
 else (WIN32)
-    option(ENABLE_HTTPS_SUPPORT "Enable HTTPS URLs for LAst.fm, Wikipedia, SoundCloud, etc." ON)
+    option(ENABLE_HTTPS_SUPPORT "Enable HTTPS URLs for Last.fm, Wikipedia, SoundCloud, etc." ON)
 endif (WIN32)
 option(ENABLE_KDE "Enable KDE libraries" ON)
 option(ENABLE_QT5 "Build against Qt5" OFF)
@@ -53,7 +53,7 @@ endif (ENABLE_UDISKS2)
 set(CANTATA_SRCS gui/application.cpp gui/main.cpp gui/initialsettingswizard.cpp gui/mainwindow.cpp gui/preferencesdialog.cpp
     gui/settings.cpp gui/covers.cpp gui/filesettings.cpp gui/interfacesettings.cpp gui/playbacksettings.cpp 
     gui/serversettings.cpp gui/librarypage.cpp gui/albumspage.cpp gui/folderpage.cpp gui/playlistspage.cpp gui/trayitem.cpp
-    gui/cachesettings.cpp gui/coverdialog.cpp gui/stdactions.cpp
+    gui/cachesettings.cpp gui/coverdialog.cpp gui/stdactions.cpp gui/mediakeys.cpp
     streams/streamspage.cpp streams/streamdialog.cpp streams/streamfetcher.cpp streams/digitallyimportedsettings.cpp
     streams/streamssettings.cpp streams/tar.cpp
     models/musiclibraryitemroot.cpp models/musiclibraryitemartist.cpp models/musiclibraryitemalbum.cpp models/musiclibrarymodel.cpp
@@ -81,7 +81,7 @@ set(CANTATA_SRCS gui/application.cpp gui/main.cpp gui/initialsettingswizard.cpp 
 set(CANTATA_MOC_HDRS
     gui/initialsettingswizard.h gui/mainwindow.h gui/settings.h gui/covers.h gui/folderpage.h gui/librarypage.h gui/albumspage.h
     gui/playlistspage.h gui/playbacksettings.h gui/serversettings.h gui/preferencesdialog.h gui/filesettings.h
-    gui/interfacesettings.h gui/cachesettings.h gui/trayitem.h gui/coverdialog.h
+    gui/interfacesettings.h gui/cachesettings.h gui/trayitem.h gui/coverdialog.h gui/multimediakeysinterface.h
     streams/streamspage.h streams/streamdialog.h streams/streamfetcher.h streams/digitallyimportedsettings.h streams/streamssettings.h
     models/musiclibrarymodel.h models/musiclibraryproxymodel.h models/playlistsmodel.h models/playlistsproxymodel.h models/playqueuemodel.h
     models/playqueueproxymodel.h models/dirviewmodel.h models/dirviewproxymodel.h models/albumsmodel.h models/streamsmodel.h
@@ -429,6 +429,12 @@ else (ENABLE_KDE_SUPPORT)
         QT4_WRAP_CPP(CANTATA_MOC_SRCS ${CANTATA_MOC_HDRS})
     endif (ENABLE_QT5)
 
+    if (NOT APPLE AND NOT ENABLE_QT5)
+        add_subdirectory(3rdparty/qxt)
+        include_directories(${CMAKE_SOURCE_DIR}/3rdparty/qxt)
+        set(CANTATA_SRCS ${CANTATA_SRCS} gui/qxtmediakeys.cpp)
+    endif (NOT APPLE AND NOT ENABLE_QT5)
+
     if (WIN32)
         set(CMAKE_BUILD_TYPE "Release")
         ADD_EXECUTABLE(cantata WIN32 ${CANTATA_SRCS} ${CANTATA_MOC_SRCS} ${CANTATA_RC_SRCS} ${CANTATA_UI_HDRS} ${CANTATA_PO})
@@ -459,6 +465,9 @@ else (ENABLE_KDE_SUPPORT)
         add_subdirectory(3rdparty/qtsingleapplication)
         target_link_libraries(cantata qtsingleapplication)
     endif (WIN32)
+    if (NOT APPLE AND NOT ENABLE_QT5)
+        target_link_libraries(cantata qxt)
+    endif (NOT APPLE AND NOT ENABLE_QT5)
 endif (ENABLE_KDE_SUPPORT)
 
 if (ENABLE_HTTP_STREAM_PLAYBACK AND NOT ENABLE_QT5)

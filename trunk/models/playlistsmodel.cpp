@@ -43,7 +43,6 @@ K_GLOBAL_STATIC(PlaylistsModel, instance)
 #include "mpdconnection.h"
 #include "playqueuemodel.h"
 #include "icons.h"
-#include "gtkstyle.h"
 
 PlaylistsModel * PlaylistsModel::self()
 {

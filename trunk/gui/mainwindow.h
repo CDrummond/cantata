@@ -399,7 +399,9 @@ private:
     #endif
     #ifndef Q_OS_WIN
     Mpris *mpris;
+    #ifndef ENABLE_KDE_SUPPORT
     GnomeMediaKeys *gnomeMediaKeys;
+    #endif
     GtkProxyStyle *gtkStyle;
     #endif // Q_OS_WIN
     QTimer *statusTimer;

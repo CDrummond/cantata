@@ -202,7 +202,9 @@ MainWindow::MainWindow(QWidget *parent)
     , autoScrollPlayQueue(true)
     #if !defined Q_OS_WIN && !defined Q_OS_MAC
     , mpris(0)
+    #ifndef ENABLE_KDE_SUPPORT
     , gnomeMediaKeys(0)
+    #endif
     #endif
     , statusTimer(0)
     , playQueueSearchTimer(0)
@@ -345,14 +347,14 @@ MainWindow::MainWindow(QWidget *parent)
     addAction(decreaseVolumeAction);
     addAction(muteAction);
     #if defined ENABLE_KDE_SUPPORT
-    prevTrackAction->setGlobalShortcut(KShortcut(Qt::META + Qt::Key_Left));
-    nextTrackAction->setGlobalShortcut(KShortcut(Qt::META + Qt::Key_Right));
-    playPauseTrackAction->setGlobalShortcut(KShortcut(Qt::META + Qt::Key_C));
-    stopPlaybackAction->setGlobalShortcut(KShortcut(Qt::META + Qt::Key_X));
+    prevTrackAction->setGlobalShortcut(KShortcut(Qt::Key_MediaPrevious));
+    nextTrackAction->setGlobalShortcut(KShortcut(Qt::Key_MediaNext));
+    playPauseTrackAction->setGlobalShortcut(KShortcut(Qt::Key_MediaPlay));
+    stopPlaybackAction->setGlobalShortcut(KShortcut(Qt::Key_MediaStop));
     stopAfterCurrentTrackAction->setGlobalShortcut(KShortcut());
-    increaseVolumeAction->setGlobalShortcut(KShortcut(Qt::META + Qt::Key_Up));
-    decreaseVolumeAction->setGlobalShortcut(KShortcut(Qt::META + Qt::Key_Down));
-    muteAction->setGlobalShortcut(KShortcut(Qt::META + Qt::Key_M));
+    increaseVolumeAction->setGlobalShortcut(KShortcut(Qt::Key_VolumeUp));
+    decreaseVolumeAction->setGlobalShortcut(KShortcut(Qt::Key_VolumeDown));
+    muteAction->setGlobalShortcut(KShortcut(Qt::Key_VolumeMute));
     #endif
 
     copyTrackInfoAction->setShortcut(QKeySequence::Copy);
@@ -1395,12 +1397,14 @@ void MainWindow::readSettings()
     updateWindowTitle();
     TreeView::setForceSingleClick(Settings::self()->forceSingleClick());
     #if !defined Q_OS_WIN && !defined Q_OS_MAC
+    #ifndef ENABLE_KDE_SUPPORT
     if (!gnomeMediaKeys && Settings::self()->gnomeMediaKeys()) {
         gnomeMediaKeys=new GnomeMediaKeys(this);
     }
     if (gnomeMediaKeys) {
         gnomeMediaKeys->setEnabled(Settings::self()->gnomeMediaKeys());
     }
+    #endif
     PowerManagement::self()->setInhibitSuspend(Settings::self()->inhibitSuspend());
     #endif
     context->readConfig();

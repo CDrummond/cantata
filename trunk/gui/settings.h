@@ -138,7 +138,9 @@ public:
     QByteArray contextSplitterState();
     QString page();
     QStringList hiddenPages();
+    #if !defined Q_OS_WIN && !defined ENABLE_KDE_SUPPORT
     bool gnomeMediaKeys();
+    #endif
     #ifdef ENABLE_DEVICES_SUPPORT
     bool overwriteSongs();
     bool showDeleteAction();
@@ -231,7 +233,9 @@ public:
     void saveContextSplitterState(const QByteArray &v);
     void savePage(const QString &v);
     void saveHiddenPages(const QStringList &v);
+    #if !defined Q_OS_WIN && !defined ENABLE_KDE_SUPPORT
     void saveGnomeMediaKeys(bool v);
+    #endif
     #ifdef ENABLE_DEVICES_SUPPORT
     void saveOverwriteSongs(bool v);
     void saveShowDeleteAction(bool v);

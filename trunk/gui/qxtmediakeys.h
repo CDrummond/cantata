@@ -21,41 +21,28 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef GNOME_MEDIA_KEYS_H
-#define GNOME_MEDIA_KEYS_H
+#ifndef QXT_MEDIA_KEYS_H
+#define QXT_MEDIA_KEYS_H
 
 #include "multimediakeysinterface.h"
+#include <QList>
 
-class OrgGnomeSettingsDaemonInterface;
-class OrgGnomeSettingsDaemonMediaKeysInterface;
-class QDBusPendingCallWatcher;
-class QDBusServiceWatcher;
+class QxtGlobalShortcut;
 
-class GnomeMediaKeys : public MultiMediaKeysInterface
+class QxtMediaKeys : public MultiMediaKeysInterface
 {
-    Q_OBJECT
-
 public:
-    GnomeMediaKeys(QObject *p);
+    QxtMediaKeys(QObject *p);
+    virtual ~QxtMediaKeys() { clear(); }
 
     void activate(bool a);
 
 private:
-    bool daemonIsRunning();
-    void releaseKeys();
-    void grabKeys();
-    void disconnectDaemon();
-
-private Q_SLOTS:
-    void serviceOwnerChanged(const QString &name, const QString &oldOwner, const QString &newOwner);
-    void registerFinished(QDBusPendingCallWatcher *watcher);
-    void keyPressed(const QString &app, const QString &key);
-    void pluginActivated(const QString &name);
+    void createShortcuts();
+    void clear();
 
 private:
-    OrgGnomeSettingsDaemonInterface *daemon;
-    OrgGnomeSettingsDaemonMediaKeysInterface *mk;
-    QDBusServiceWatcher *watcher;
+    QList<QxtGlobalShortcut *> shortcuts;
 };
 
 #endif

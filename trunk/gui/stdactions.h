@@ -35,6 +35,14 @@ public:
 
     StdActions();
 
+    Action *nextTrackAction;
+    Action *prevTrackAction;
+    Action *playPauseTrackAction;
+    Action *stopPlaybackAction;
+    Action *stopAfterCurrentTrackAction;
+    Action *stopAfterTrackAction;
+    Action *increaseVolumeAction;
+    Action *decreaseVolumeAction;
     Action *savePlayQueueAction;
     Action *addToPlayQueueAction;
     Action *replacePlayQueueAction;

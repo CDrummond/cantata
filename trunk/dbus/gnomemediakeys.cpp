@@ -22,7 +22,6 @@
  */
 
 #include "gnomemediakeys.h"
-#include "mainwindow.h"
 #include "settingsdaemoninterface.h"
 #include "mediakeysinterface.h"
 #include <QDBusConnection>
@@ -36,31 +35,21 @@ static const char * constService = "org.gnome.SettingsDaemon";
 static const char * constDaemonPath = "/org/gnome/SettingsDaemon";
 static const char * constMediaKeysPath = "/org/gnome/SettingsDaemon/MediaKeys";
 
-GnomeMediaKeys::GnomeMediaKeys(MainWindow *parent)
-    : QObject(parent)
-    , mw(parent)
+GnomeMediaKeys::GnomeMediaKeys(QObject *p)
+    : MultiMediaKeysInterface(p)
     , daemon(0)
     , mk(0)
     , watcher(0)
 {
 }
 
-static bool runningUnderKde()
+void GnomeMediaKeys::activate(bool a)
 {
-    const char *env=qgetenv("KDE_FULL_SESSION");
-    if (env && 0==strcmp(env, "true")) {
-        return true;
-    }
-    return QLatin1String("KDE")==QString(qgetenv("XDG_CURRENT_DESKTOP"));
-}
-
-void GnomeMediaKeys::setEnabled(bool en)
-{
-    if (en && !mk) {
+    if (a && !mk) {
         if (daemonIsRunning()) {
             grabKeys();
         }
-    } else if (!en && mk) {
+    } else if (!a && mk) {
         releaseKeys();
         disconnectDaemon();
         if (watcher) {
@@ -73,7 +62,7 @@ void GnomeMediaKeys::setEnabled(bool en)
 bool GnomeMediaKeys::daemonIsRunning()
 {
     // Check if the service is available
-    if (!QDBusConnection::sessionBus().interface()->isServiceRegistered(constService) && !runningUnderKde()) {
+    if (!QDBusConnection::sessionBus().interface()->isServiceRegistered(constService)) {
         //...not already started, so attempt to start!
         QDBusConnection::sessionBus().interface()->startService(constService);
         if (!daemon) {
@@ -153,13 +142,13 @@ void GnomeMediaKeys::keyPressed(const QString &app, const QString &key)
         return;
     }
     if (QLatin1String("Play")==key) {
-        mw->playPauseTrack();
+        emit playPause();
     } else if (QLatin1String("Stop")==key) {
-        mw->stopPlayback();
+        emit stop();
     } else if (QLatin1String("Next")==key) {
-        mw->nextTrack();
+        emit next();
     } else if (QLatin1String("Previous")==key) {
-        mw->prevTrack();
+        emit previous();
     }
 }
 

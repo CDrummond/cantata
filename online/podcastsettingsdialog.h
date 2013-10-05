@@ -25,6 +25,7 @@
 #define PODCAST_SETTINGS_DIALOG_H
 
 #include "dialog.h"
+#include "config.h"
 
 class QComboBox;
 class PathRequester;
@@ -35,9 +36,11 @@ class PodcastSettingsDialog : public Dialog
     Q_OBJECT
 public:
     enum Changes {
-        RssUpdate    = 0x01,
-        DownloadPath = 0x02,
+        RssUpdate    = 0x01
+        #ifdef TAGLIB_FOUND
+        , DownloadPath = 0x02,
         AutoDownload = 0x04
+        #endif
     };
 
     PodcastSettingsDialog(QWidget *p);
@@ -53,12 +56,13 @@ private:
 
 private:
     QComboBox *updateCombo;
+    int origRssUpdate;
+    #ifdef TAGLIB_FOUND
     PathRequester *downloadPath;
     OnOffButton *autoDownload;
-
-    int origRssUpdate;
     QString origPodcastDownloadPath;
     bool origPodcastAutoDownload;
+    #endif
     int changed;
 };
 

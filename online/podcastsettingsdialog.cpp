@@ -57,26 +57,32 @@ PodcastSettingsDialog::PodcastSettingsDialog(QWidget *p)
     QWidget *mw=new QWidget(this);
     QFormLayout * lay=new QFormLayout(mw);
     BuddyLabel * updateLabel=new BuddyLabel(i18n("Check for new episodes:"), mw);
+    #ifdef TAGLIB_FOUND
     BuddyLabel * downloadLabel=new BuddyLabel(i18n("Download episodes to:"), mw);
     BuddyLabel * autoDownloadLabel=new BuddyLabel(i18n("Automatically download new episodes:"), mw);
+    #endif
 
     updateCombo = new QComboBox(this);
     updateLabel->setBuddy(updateCombo);
+    #ifdef TAGLIB_FOUND
     downloadPath = new PathRequester(this);
     downloadLabel->setBuddy(downloadPath);
     downloadPath->setDirMode(true);
     autoDownload = new OnOffButton(this);
     autoDownloadLabel->setBuddy(autoDownload);
+    #endif
 
     int row=0;
     lay->setWidget(row, QFormLayout::LabelRole, updateLabel);
     lay->setWidget(row++, QFormLayout::FieldRole, updateCombo);
+    #ifdef TAGLIB_FOUND
     lay->setWidget(row, QFormLayout::LabelRole, downloadLabel);
     lay->setWidget(row++, QFormLayout::FieldRole, downloadPath);
     lay->setWidget(row, QFormLayout::LabelRole, downloadLabel);
     lay->setWidget(row++, QFormLayout::FieldRole, downloadPath);
     lay->setWidget(row, QFormLayout::LabelRole, autoDownloadLabel);
     lay->setWidget(row++, QFormLayout::FieldRole, autoDownload);
+    #endif
     setButtons(Ok|Cancel);
     setMainWidget(mw);
     setCaption(i18n("Podcast Settings"));
@@ -92,43 +98,49 @@ PodcastSettingsDialog::PodcastSettingsDialog(QWidget *p)
     updateCombo->addItem(i18n("Every week"), 7*24*60);
 
     origRssUpdate=Settings::self()->rssUpdate();
+    setIndex(updateCombo, origRssUpdate);
+    connect(updateCombo, SIGNAL(currentIndexChanged(int)), SLOT(checkSaveable()));
+    #ifdef TAGLIB_FOUND
     origPodcastDownloadPath=Settings::self()->podcastDownloadPath();
     origPodcastAutoDownload=Settings::self()->podcastAutoDownload();
-
-    setIndex(updateCombo, origRssUpdate);
     downloadPath->setText(origPodcastDownloadPath);
     autoDownload->setChecked(origPodcastAutoDownload);
-
-    connect(updateCombo, SIGNAL(currentIndexChanged(int)), SLOT(checkSaveable()));
     connect(downloadPath, SIGNAL(textChanged(QString)), SLOT(checkSaveable()));
     connect(autoDownload, SIGNAL(toggled(bool)), SLOT(checkSaveable()));
+    #endif
     enableButton(Ok, false);
     changed=0;
 }
 
 void PodcastSettingsDialog::checkSaveable()
 {
+    #ifdef TAGLIB_FOUND
     enableButton(Ok, origPodcastAutoDownload!=autoDownload->isChecked() ||
                      updateCombo->itemData(updateCombo->currentIndex()).toInt()!=origRssUpdate ||
                      downloadPath->text().trimmed()!=origPodcastDownloadPath);
+    #else
+    enableButton(Ok, updateCombo->itemData(updateCombo->currentIndex()).toInt()!=origRssUpdate);
+    #endif
 }
 
 void PodcastSettingsDialog::slotButtonClicked(int button)
 {
     switch (button) {
     case Ok:
-        if (origPodcastAutoDownload!=autoDownload->isChecked()) {
-            changed|=AutoDownload;
-            Settings::self()->savePodcastAutoDownload(autoDownload->isChecked());
-        }
         if (updateCombo->itemData(updateCombo->currentIndex()).toInt()!=origRssUpdate) {
             changed|=RssUpdate;
             Settings::self()->saveRssUpdate(updateCombo->itemData(updateCombo->currentIndex()).toInt());
         }
+        #ifdef TAGLIB_FOUND
         if (downloadPath->text().trimmed()!=origPodcastDownloadPath) {
             changed|=DownloadPath;
             Settings::self()->savePodcastDownloadPath(Utils::fixPath(downloadPath->text().trimmed()));
         }
+        if (origPodcastAutoDownload!=autoDownload->isChecked()) {
+            changed|=AutoDownload;
+            Settings::self()->savePodcastAutoDownload(autoDownload->isChecked());
+        }
+        #endif
         accept();
     case Close:
     case Cancel:

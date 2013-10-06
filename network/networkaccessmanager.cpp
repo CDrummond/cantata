@@ -1,6 +1,3 @@
-#include "networkaccessmanager.h"
-#include <QTimerEvent>
-
 /*
  * Cantata
  *
@@ -24,6 +21,8 @@
  * Boston, MA 02110-1301, USA.
  */
 
+#include "networkaccessmanager.h"
+#include <QTimerEvent>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KGlobal>
 K_GLOBAL_STATIC(NetworkAccessManager, instance)

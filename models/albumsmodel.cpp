@@ -373,6 +373,7 @@ void AlbumsModel::update(const MusicLibraryItemRoot *root)
         return;
     }
 
+    bool changesMade=false;
     bool resettingModel=items.isEmpty() || 0==root->childCount();
     if (resettingModel) {
         beginResetModel();
@@ -422,6 +423,7 @@ void AlbumsModel::update(const MusicLibraryItemRoot *root)
             }
 
             if (!found) {
+                changesMade=true;
                 AlbumItem *a=new AlbumItem(artist, album, albumItem->year());
                 a->setSongs(albumItem);
                 a->genres=albumItem->genres();
@@ -451,6 +453,10 @@ void AlbumsModel::update(const MusicLibraryItemRoot *root)
                 ++i;
             }
         }
+    }
+
+    if (changesMade) {
+        emit updated();
     }
 }
 
@@ -529,6 +535,25 @@ void AlbumsModel::setAlbumSort(int s)
             a->setName();
         }
         endResetModel();
+    }
+}
+
+void AlbumsModel::loadAllCovers()
+{
+    if (items.isEmpty()) {
+        return;
+    }
+    int iSize=iconSize();
+    if (!iSize) {
+        return;
+    }
+    foreach (AlbumItem *al, items) {
+        if (!al->coverRequested && Song::SingleTracks!=al->type) {
+            al->getCover();
+            if (!al->cover) {
+                al->coverRequested=true;
+            }
+        }
     }
 }
 

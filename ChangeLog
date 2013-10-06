@@ -59,6 +59,9 @@
 29. Move media-keys setting into shortcuts page.
 30. Add a config item to disable all network access. Needs to be set manually,
     see README for details.
+31. Add a config item to configure album-view to load all covers immediately,
+    rather than waiting for then to be displayed. Again, no UI for this, and
+    see README for details.
 
 1.1.3
 -----

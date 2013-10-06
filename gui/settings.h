@@ -188,6 +188,7 @@ public:
     int maxCoverUpdatePerIteration();
     QStringList cueFileCodecs();
     bool networkAccessEnabled();
+    bool albumViewLoadAll();
 
     void removeConnectionDetails(const QString &v);
     void saveConnectionDetails(const MPDConnectionDetails &v);

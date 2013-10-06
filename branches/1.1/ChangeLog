@@ -29,6 +29,7 @@
     Artist - Album/TrackNo TrackTitle.mp3
     ...etc.
 16. Fix artist and album genres.
+17. Show albums by artist, etc, even if wiki/last.fm search fails.
 
 1.1.2
 -----

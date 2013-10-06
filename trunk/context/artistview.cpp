@@ -260,6 +260,8 @@ void ArtistView::handleSimilarReply()
                     }
                 }
             }
+        } else {
+            setBio();
         }
         reply->deleteLater();
         currentSimilarJob=0;
@@ -372,18 +374,16 @@ void ArtistView::searchResponse(const QString &resp, const QString &lang)
     biography=engine->translateLinks(resp);
     hideSpinner();
 
-    if (!resp.isEmpty()) {
-        if (!lang.isEmpty()) {
-            QFile f(cacheFileName(currentSong.artist, lang, false, true));
-            QtIOCompressor compressor(&f);
-            compressor.setStreamFormat(QtIOCompressor::GzipFormat);
-            if (compressor.open(QIODevice::WriteOnly)) {
-                compressor.write(resp.toUtf8().constData());
-            }
+    if (!resp.isEmpty() && !lang.isEmpty()) {
+        QFile f(cacheFileName(currentSong.artist, lang, false, true));
+        QtIOCompressor compressor(&f);
+        compressor.setStreamFormat(QtIOCompressor::GzipFormat);
+        if (compressor.open(QIODevice::WriteOnly)) {
+            compressor.write(resp.toUtf8().constData());
         }
-        loadSimilar();
-        setBio();
     }
+    loadSimilar();
+    setBio();
 }
 
 QStringList ArtistView::parseSimilarResponse(const QByteArray &resp)

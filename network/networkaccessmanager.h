@@ -37,12 +37,14 @@
 #include <QMap>
 
 class QTimerEvent;
+class NetworkAccessManager;
 
 class NetworkJob : public QObject
 {
     Q_OBJECT
 
 public:
+    NetworkJob(NetworkAccessManager *p);
     NetworkJob(QNetworkReply *j);
     virtual ~NetworkJob();
 
@@ -54,7 +56,7 @@ public:
 
     QUrl url() const { return job ? job->url() : QUrl(); }
     QUrl origUrl() const { return origU; }
-    QNetworkReply::NetworkError error() const { return job ? job->error() : QNetworkReply::NoError; }
+    QNetworkReply::NetworkError error() const { return job ? job->error() : QNetworkReply::UnknownNetworkError; }
     QString errorString() const { return job ? job->errorString() : QString(); }
     QByteArray readAll() { return job ? job->readAll() : QByteArray(); }
     bool ok() const { return job && QNetworkReply::NoError==job->error(); }
@@ -95,6 +97,9 @@ public:
     NetworkJob * get(const QNetworkRequest &req, int timeout=0);
     NetworkJob * get(const QUrl &url, int timeout=0) { return get(QNetworkRequest(url), timeout); }
 
+    void setEnabled(bool e) { enabled=e; }
+    bool isEnabled() const { return enabled; }
+
 protected:
     void timerEvent(QTimerEvent *e);
 
@@ -102,6 +107,7 @@ private Q_SLOTS:
     void replyFinished();
 
 private:
+    bool enabled;
     QMap<NetworkJob *, int> timers;
     friend class NetworkJob;
 };

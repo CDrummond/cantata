@@ -22,7 +22,9 @@
  */
 
 #include "networkaccessmanager.h"
+#include "settings.h"
 #include <QTimerEvent>
+#include <QTimer>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KGlobal>
 K_GLOBAL_STATIC(NetworkAccessManager, instance)
@@ -30,13 +32,22 @@ K_GLOBAL_STATIC(NetworkAccessManager, instance)
 
 static const int constMaxRedirects=5;
 
+NetworkJob::NetworkJob(NetworkAccessManager *p)
+    : QObject(p)
+    , numRedirects(0)
+    , lastDownloadPc(0)
+    , job(0)
+{
+    QTimer::singleShot(0, this, SLOT(jobFinished()));
+}
+
 NetworkJob::NetworkJob(QNetworkReply *j)
     : QObject(j->parent())
     , numRedirects(0)
     , lastDownloadPc(0)
     , job(j)
 {
-    origU=j ? j->url() : QUrl();
+    origU=j->url();
     connect(job, SIGNAL(finished()), this, SLOT(jobFinished()));
     connect(job, SIGNAL(readyRead()), this, SLOT(handleReadyRead()));
     connect(job, SIGNAL(error(QNetworkReply::NetworkError)), this, SIGNAL(error(QNetworkReply::NetworkError)));
@@ -55,7 +66,11 @@ NetworkJob::~NetworkJob()
 
 void NetworkJob::jobFinished()
 {
-    QNetworkReply *j=dynamic_cast<QNetworkReply *>(sender());
+    if (!job) {
+        emit finished();
+    }
+
+    QNetworkReply *j=qobject_cast<QNetworkReply *>(sender());
     if (!j || j!=job) {
         return;
     }
@@ -109,10 +124,15 @@ NetworkAccessManager * NetworkAccessManager::self()
 NetworkAccessManager::NetworkAccessManager(QObject *parent)
     : BASE_NETWORK_ACCESS_MANAGER(parent)
 {
+    enabled=Settings::self()->networkAccessEnabled();
 }
 
 NetworkJob * NetworkAccessManager::get(const QNetworkRequest &req, int timeout)
 {
+    if (!enabled) {
+        return new NetworkJob(this);
+    }
+
     NetworkJob *reply = new NetworkJob(BASE_NETWORK_ACCESS_MANAGER::get(req));
 
     if (0!=timeout) {

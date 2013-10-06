@@ -187,6 +187,7 @@ public:
     int maxCoverFindPerIteration();
     int maxCoverUpdatePerIteration();
     QStringList cueFileCodecs();
+    bool networkAccessEnabled();
 
     void removeConnectionDetails(const QString &v);
     void saveConnectionDetails(const MPDConnectionDetails &v);

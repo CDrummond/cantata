@@ -748,6 +748,11 @@ QStringList Settings::cueFileCodecs()
     return GET_STRINGLIST("cueFileCodecs", QStringList());
 }
 
+bool Settings::networkAccessEnabled()
+{
+    return GET_BOOL("networkAccessEnabled", true);
+}
+
 void Settings::removeConnectionDetails(const QString &v)
 {
     if (v==currentConnection()) {

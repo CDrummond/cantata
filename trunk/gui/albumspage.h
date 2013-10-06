@@ -34,6 +34,14 @@ class MusicLibraryItemRoot;
 class AlbumsPage : public QWidget, public Ui::AlbumsPage
 {
     Q_OBJECT
+
+    enum CoverLoad
+    {
+        CL_LoadAsRequired,
+        CL_LoadAll,
+        CL_Loaded
+    };
+
 public:
     AlbumsPage(QWidget *p);
     virtual ~AlbumsPage();
@@ -52,6 +60,7 @@ public:
     void focusSearch() { view->focusSearch(); }
     void goBack() { view->backActivated(); }
     void goTop() { view->setLevel(0); }
+    void showEvent(QShowEvent *e);
 
 private:
     void setItemSize(int v);
@@ -69,8 +78,10 @@ public Q_SLOTS:
     void controlActions();
     void searchItems();
     void updateGenres(const QModelIndex &);
+    void albumsUpdated();
 
 private:
+    CoverLoad coverLoad;
     AlbumsProxyModel proxy;
 };
 

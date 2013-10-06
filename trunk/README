@@ -302,6 +302,11 @@ networkAccessEnabled=<Bool - true/false>
     Configure whether Cantata should be allowed to make networks requests - for
     accessing covers, etc. By default this is set to true.
 
+albumViewLoadAll=<bool - true/false>
+    If set to true, then when th ealbum view is shown it will request all covers
+    covers immediately - rather than waiting for the cover to be displayed.
+    Default is false.
+
 e.g.
 [General]
 iconTheme=oxygen
@@ -309,6 +314,7 @@ maxCoverFindPerIteration=5
 maxCoverUpdatePerIteration=5
 cueFileCodecs=GBK, big5-0
 networkAccessEnabled=false
+albumViewLoadAll=true
 
 
 7. CUE Files

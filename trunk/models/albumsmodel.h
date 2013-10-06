@@ -124,7 +124,10 @@ public:
     void setEnabled(bool e);
     int albumSort() const;
     void setAlbumSort(int s);
-//     void getCovers();
+    void loadAllCovers();
+
+Q_SIGNALS:
+    void updated();
 
 public Q_SLOTS:
     void setCover(const Song &song, const QImage &img, const QString &file, bool update=false);

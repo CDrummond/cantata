@@ -252,25 +252,25 @@ Under Linux, the Cantata config file will be either:
 
 The following config items should be added to the "[General]" section.
 
-iconTheme
+iconTheme=<Icon theme name>
     For Qt-only, Linux builds, this allows you to force cantata to use the
     configured icon theme. This config is empty by default, and Cantata uses
     the system configured icon theme.
     
-maxCoverFindPerIteration
+maxCoverFindPerIteration=<Integer>
     Controls the maximum number of covers that will attempted to be located per
     UI event loop iteration. This is set to 5 by default. Increasing this will
     cause more covers to be loaded in the main UI thread - which will speed up
     loading, but might make the UI apear to block. Reducing this should reduce
     lag when scrolling the Albums view. (Values 0..20 are acceptable)
 
-maxCoverUpdatePerIteration
+maxCoverUpdatePerIteration=<Integer>
     Covers the are not located and loaded in the UI thread, will be loaded in a
     background thread. These then need to be sent to the UI thread to be
     displayed. This config controls the number of covers that are sent in one
     batch. The default is again 5. (Values 1..20 are acceptable)
 
-cueFileCodecs
+cueFileCodecs=<Comma separated list of codecs>
     List of extra text codecs to try when loading CUE files. UTF-8 and System
     default are tried first, and then the entries from this config are tried.
     My Qt4.8 has the following codecs available:
@@ -298,12 +298,17 @@ cueFileCodecs
     ksc5601.1987-0, cp949, Big5, Big5-HKSCS, big5-0, big5hkscs-0, Big5-ETen,
     CP950
 
+networkAccessEnabled=<Bool - true/false>
+    Configure whether Cantata should be allowed to make networks requests - for
+    accessing covers, etc. By default this is set to true.
+
 e.g.
 [General]
 iconTheme=oxygen
 maxCoverFindPerIteration=5
 maxCoverUpdatePerIteration=5
 cueFileCodecs=GBK, big5-0
+networkAccessEnabled=false
 
 
 7. CUE Files

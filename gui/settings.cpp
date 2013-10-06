@@ -753,6 +753,11 @@ bool Settings::networkAccessEnabled()
     return GET_BOOL("networkAccessEnabled", true);
 }
 
+bool Settings::albumViewLoadAll()
+{
+    return GET_BOOL("albumViewLoadAll", false);
+}
+
 void Settings::removeConnectionDetails(const QString &v)
 {
     if (v==currentConnection()) {

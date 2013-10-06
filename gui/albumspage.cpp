@@ -34,6 +34,7 @@
 
 AlbumsPage::AlbumsPage(QWidget *p)
     : QWidget(p)
+    , coverLoad(Settings::self()->albumViewLoadAll() ? CL_LoadAll : CL_LoadAsRequired)
 {
     setupUi(this);
     addToPlayQueue->setDefaultAction(StdActions::self()->addToPlayQueueAction);
@@ -67,6 +68,7 @@ AlbumsPage::AlbumsPage(QWidget *p)
     view->setModel(&proxy);
 
     connect(MusicLibraryModel::self(), SIGNAL(updateGenres(const QSet<QString> &)), genreCombo, SLOT(update(const QSet<QString> &)));
+    connect(AlbumsModel::self(), SIGNAL(updated()), this, SLOT(albumsUpdated()));
     connect(this, SIGNAL(add(const QStringList &, bool, quint8)), MPDConnection::self(), SLOT(add(const QStringList &, bool, quint8)));
     connect(this, SIGNAL(addSongsToPlaylist(const QString &, const QStringList &)), MPDConnection::self(), SLOT(addToPlaylist(const QString &, const QStringList &)));
     connect(genreCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(searchItems()));
@@ -87,6 +89,15 @@ void AlbumsPage::setView(int v)
     view->setMode((ItemView::Mode)v);
 }
 
+void AlbumsPage::showEvent(QShowEvent *e)
+{
+    if (CL_LoadAll==coverLoad) {
+        AlbumsModel::self()->loadAllCovers();
+        coverLoad=CL_Loaded;
+    }
+    QWidget::showEvent(e);
+}
+
 void AlbumsPage::clear()
 {
     AlbumsModel::self()->clear();
@@ -104,6 +115,20 @@ void AlbumsPage::setItemSize(int v)
         QSize grid(size+8, size+(fm.height()*2.5));
         view->setGridSize(grid);
         AlbumsModel::setItemSize(grid-QSize(4, 4));
+    }
+}
+
+void AlbumsPage::albumsUpdated()
+{
+    if (CL_LoadAsRequired==coverLoad) {
+        return;
+    }
+
+    if (isVisible()) {
+        AlbumsModel::self()->loadAllCovers();
+        coverLoad=CL_Loaded;
+    } else {
+        coverLoad=CL_LoadAll;
     }
 }
 

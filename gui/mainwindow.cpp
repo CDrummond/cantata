@@ -402,7 +402,6 @@ MainWindow::MainWindow(QWidget *parent)
     devicesPage = new DevicesPage(this);
     #endif
 
-    initSizes();
     clearPlayQueueAction->setEnabled(false);
     StdActions::self()->savePlayQueueAction->setEnabled(false);
     addStreamToPlayQueueAction->setEnabled(false);
@@ -475,6 +474,8 @@ MainWindow::MainWindow(QWidget *parent)
     }
 
     tabWidget->SetMode(FancyTabWidget::Mode_LargeSidebar);
+    initSizes();
+
     expandInterfaceAction->setCheckable(true);
     fullScreenAction->setCheckable(true);
     randomPlayQueueAction->setCheckable(true);
@@ -960,6 +961,10 @@ void MainWindow::initSizes()
     artistLabel->adjustSize();
     positionSlider->adjustSize();
     int cwSize=qMax(playPauseTrackButton->height(), trackLabel->height()+artistLabel->height()+spacing)+positionSlider->height()+spacing;
+    int tabSize=tabWidget->tabSize().width();
+    if ((cwSize<tabSize && (tabSize-cwSize)<(tabSize/3)) || (cwSize>tabSize && (cwSize-tabSize)<(cwSize/3))) {
+        cwSize=tabSize;
+    }
 
     coverWidget->setMinimumSize(cwSize, cwSize);
     coverWidget->setMaximumSize(cwSize, cwSize);

@@ -83,6 +83,7 @@ OnlineServicesModel::OnlineServicesModel(QObject *parent)
     subscribeAction = ActionCollection::get()->createAction("subscribeonlineservice", i18n("Add Subscription"), "list-add");
     unSubscribeAction = ActionCollection::get()->createAction("unsubscribeonlineservice", i18n("Remove Subscription"), "list-remove");
     refreshSubscriptionAction = ActionCollection::get()->createAction("refreshsubscription", i18n("Refresh Subscription"), "view-refresh");
+    load();
 }
 
 OnlineServicesModel::~OnlineServicesModel()
@@ -257,15 +258,9 @@ void OnlineServicesModel::setEnabled(bool e)
         return;
     }
 
-    bool wasEnabled=enabled;
     enabled=e;
-    if (enabled) {
-        load();
-    } else {
-        if (wasEnabled) {
-            stop();
-        }
-        clear();
+    if (!enabled) {
+        stop();
     }
 }
 

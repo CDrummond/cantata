@@ -53,7 +53,7 @@ endif (ENABLE_UDISKS2)
 set(CANTATA_SRCS gui/application.cpp gui/main.cpp gui/initialsettingswizard.cpp gui/mainwindow.cpp gui/preferencesdialog.cpp
     gui/settings.cpp gui/covers.cpp gui/filesettings.cpp gui/interfacesettings.cpp gui/playbacksettings.cpp 
     gui/serversettings.cpp gui/librarypage.cpp gui/albumspage.cpp gui/folderpage.cpp gui/playlistspage.cpp gui/trayitem.cpp
-    gui/cachesettings.cpp gui/coverdialog.cpp gui/stdactions.cpp gui/mediakeys.cpp
+    gui/cachesettings.cpp gui/coverdialog.cpp gui/stdactions.cpp
     streams/streamspage.cpp streams/streamdialog.cpp streams/streamfetcher.cpp streams/digitallyimportedsettings.cpp
     streams/streamssettings.cpp streams/tar.cpp
     models/musiclibraryitemroot.cpp models/musiclibraryitemartist.cpp models/musiclibraryitemalbum.cpp models/musiclibrarymodel.cpp
@@ -81,7 +81,7 @@ set(CANTATA_SRCS gui/application.cpp gui/main.cpp gui/initialsettingswizard.cpp 
 set(CANTATA_MOC_HDRS
     gui/initialsettingswizard.h gui/mainwindow.h gui/settings.h gui/covers.h gui/folderpage.h gui/librarypage.h gui/albumspage.h
     gui/playlistspage.h gui/playbacksettings.h gui/serversettings.h gui/preferencesdialog.h gui/filesettings.h
-    gui/interfacesettings.h gui/cachesettings.h gui/trayitem.h gui/coverdialog.h gui/multimediakeysinterface.h
+    gui/interfacesettings.h gui/cachesettings.h gui/trayitem.h gui/coverdialog.h
     streams/streamspage.h streams/streamdialog.h streams/streamfetcher.h streams/digitallyimportedsettings.h streams/streamssettings.h
     models/musiclibrarymodel.h models/musiclibraryproxymodel.h models/playlistsmodel.h models/playlistsproxymodel.h models/playqueuemodel.h
     models/playqueueproxymodel.h models/dirviewmodel.h models/dirviewproxymodel.h models/albumsmodel.h models/streamsmodel.h
@@ -418,8 +418,8 @@ else (ENABLE_KDE_SUPPORT)
     endif (WIN32)
 
     set(CANTATA_RCS ${CANTATA_RCS} cantata_qt.qrc)
-    set(CANTATA_SRCS ${CANTATA_SRCS} gui/shortcutssettingspage.cpp)
-    set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} gui/shortcutssettingspage.h)
+    set(CANTATA_SRCS ${CANTATA_SRCS} gui/shortcutssettingspage.cpp gui/mediakeys.cpp)
+    set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} gui/shortcutssettingspage.h gui/multimediakeysinterface.h)
 
     if (ENABLE_QT5)
         QT5_ADD_RESOURCES(CANTATA_RC_SRCS ${CANTATA_RCS})

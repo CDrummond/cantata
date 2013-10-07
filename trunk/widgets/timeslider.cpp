@@ -25,11 +25,12 @@
 #include "song.h"
 #include "settings.h"
 #include <QLabel>
-#include <QGridLayout>
+#include <QHBoxLayout>
 #include <QProxyStyle>
 #include <QTimer>
 #include <QApplication>
 #include <QMouseEvent>
+#include <QSlider>
 
 class ProxyStyle : public QProxyStyle
 {
@@ -50,6 +51,8 @@ public:
     }
 };
 
+static const QLatin1String constEmptyTime("0:00:00");
+
 class TimeLabel : public QLabel
 {
 public:
@@ -57,18 +60,8 @@ public:
         : QLabel(p)
         , slider(s)
         , visible(true)
-        , pressed(false)
-        , showRemaining(Settings::self()->showTimeRemaining())
     {
         setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Fixed);
-        setAttribute(Qt::WA_Hover, true);
-    }
-
-    virtual ~TimeLabel() { }
-
-    void saveConfig()
-    {
-        Settings::self()->saveShowTimeRemaining(showRemaining);
     }
 
     void setEnabled(bool e)
@@ -76,8 +69,67 @@ public:
         if (e!=visible) {
             visible=e;
             QLabel::setEnabled(e);
-            setStyleSheet(e ? QString() : QLatin1String("QLabel { color : transparent; }"));
+            if (e) {
+                setStyleSheet(QString());
+            } else {
+                QColor col=palette().text().color();
+                setStyleSheet(QString("QLabel { color : rgba(%1, %2, %3, %4); }").arg(col.red()).arg(col.green()).arg(col.blue()).arg(128));
+            }
         }
+    }
+
+    void updateTime()
+    {
+        if (visible) {
+            updateTimeDisplay();
+        } else {
+            setText(constEmptyTime);
+        }
+    }
+
+private:
+    virtual void updateTimeDisplay()=0;
+
+protected:
+    QSlider *slider;
+    bool visible;
+};
+
+class TimeTakenLabel : public TimeLabel
+{
+public:
+    TimeTakenLabel(QWidget *p, QSlider *s)
+        : TimeLabel(p, s)
+    {
+        setAlignment((Qt::RightToLeft==layoutDirection() ? Qt::AlignLeft : Qt::AlignRight)|Qt::AlignVCenter);
+        setMinimumWidth(fontMetrics().width(constEmptyTime));
+    }
+    virtual ~TimeTakenLabel() { }
+
+    virtual void updateTimeDisplay()
+    {
+        setText(Song::formattedTime(slider->value()));
+    }
+};
+
+class RemainingTimeLabel : public TimeLabel
+{
+public:
+    RemainingTimeLabel(QWidget *p, QSlider *s)
+        : TimeLabel(p, s)
+        , pressed(false)
+        , showRemaining(Settings::self()->showTimeRemaining())
+    {
+        setAttribute(Qt::WA_Hover, true);
+        setAlignment((Qt::RightToLeft==layoutDirection() ? Qt::AlignRight : Qt::AlignLeft)|Qt::AlignVCenter);
+        setMinimumWidth(fontMetrics().width(QLatin1String("-")+constEmptyTime));
+    }
+
+    virtual ~RemainingTimeLabel() { }
+
+    void saveConfig()
+    {
+        Settings::self()->saveShowTimeRemaining(showRemaining);
     }
 
     bool event(QEvent *e)
@@ -91,7 +143,7 @@ public:
         case QEvent::MouseButtonRelease:
             if (visible && pressed) {
                 showRemaining=!showRemaining;
-                updateTimes();
+                updateTime();
             }
             pressed=false;
             break;
@@ -111,16 +163,14 @@ public:
         return QLabel::event(e);
     }
 
-    void updateTimes()
+    void updateTimeDisplay()
     {
-        int value=showRemaining ? slider->maximum()-slider->value() : slider->value();
+        int value=showRemaining ? slider->maximum()-slider->value() : slider->maximum();
         QString prefix=showRemaining && value ? QLatin1String("-") : QString();
-        setText(prefix+Song::formattedTime(value)+" / "+Song::formattedTime(slider->maximum()));
+        setText(prefix+Song::formattedTime(value));
     }
 
 private:
-    QSlider *slider;
-    bool visible;
     bool pressed;
     bool showRemaining;
 };
@@ -171,13 +221,13 @@ TimeSlider::TimeSlider(QWidget *p)
     , lastVal(0)
 {
     slider=new PosSlider(this);
-    label=new TimeLabel(this, slider);
-    label->setAlignment((Qt::RightToLeft==layoutDirection() ? Qt::AlignRight : Qt::AlignLeft)|Qt::AlignVCenter);
-    QGridLayout *layout=new QGridLayout(this);
-    layout->setSpacing(0);
+    timeTaken=new TimeTakenLabel(this, slider);
+    timeLeft=new RemainingTimeLabel(this, slider);
+    QBoxLayout *layout=new QBoxLayout(QBoxLayout::LeftToRight, this);
     layout->setMargin(0);
-    layout->addWidget(label, 0, 0, 1, 1);
-    layout->addWidget(slider, 1, 0, 1, 2);
+    layout->addWidget(timeTaken);
+    layout->addWidget(slider);
+    layout->addWidget(timeLeft);
     connect(slider, SIGNAL(sliderPressed()), this, SLOT(pressed()));
     connect(slider, SIGNAL(sliderReleased()), this, SLOT(released()));
     connect(slider, SIGNAL(valueChanged(int)), this, SLOT(updateTimes()));
@@ -215,7 +265,8 @@ void TimeSlider::setValue(int v)
 void TimeSlider::setRange(int min, int max)
 {
     slider->setRange(min, max);
-    label->setEnabled(min!=max);
+    timeTaken->setEnabled(min!=max);
+    timeLeft->setEnabled(min!=max);
     updateTimes();
 }
 
@@ -224,8 +275,10 @@ void TimeSlider::clearTimes()
     stopTimer();
     lastVal=0;
     slider->setRange(0, 0);
-    label->setEnabled(false);
-    label->updateTimes();
+    timeTaken->setEnabled(false);
+    timeLeft->setEnabled(false);
+    timeTaken->updateTime();
+    timeLeft->updateTime();
 }
 
 void TimeSlider::setOrientation(Qt::Orientation o)
@@ -240,13 +293,14 @@ int TimeSlider::value() const
 
 void TimeSlider::saveConfig()
 {
-    label->saveConfig();
+    timeLeft->saveConfig();
 }
 
 void TimeSlider::updateTimes()
 {
     if (slider->value()<172800 && slider->value() != slider->maximum()) {
-        label->updateTimes();
+        timeTaken->updateTime();
+        timeLeft->updateTime();
     }
 }
 

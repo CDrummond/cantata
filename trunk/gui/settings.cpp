@@ -39,6 +39,8 @@
 #include <QTimer>
 
 K_GLOBAL_STATIC(Settings, instance)
+#else
+#include "mediakeys.h"
 #endif
 #include <QFile>
 #include <QDir>
@@ -526,6 +528,7 @@ QStringList Settings::hiddenPages()
     return GET_STRINGLIST("hiddenPages", def);
 }
 
+#ifndef ENABLE_KDE_SUPPORT
 QString Settings::mediaKeysIface()
 {
     #if defined Q_OS_WIN
@@ -534,6 +537,7 @@ QString Settings::mediaKeysIface()
     return GET_STRING("mediaKeysIface", MediaKeys::toString(MediaKeys::GnomeInteface));
     #endif
 }
+#endif
 
 #ifdef ENABLE_DEVICES_SUPPORT
 bool Settings::overwriteSongs()
@@ -1028,10 +1032,12 @@ void Settings::saveHiddenPages(const QStringList &v)
     SET_VALUE_MOD(hiddenPages)
 }
 
+#ifndef ENABLE_KDE_SUPPORT
 void Settings::saveMediaKeysIface(const QString &v)
 {
     SET_VALUE_MOD(mediaKeysIface)
 }
+#endif
 
 #ifdef ENABLE_DEVICES_SUPPORT
 void Settings::saveOverwriteSongs(bool v)

@@ -138,7 +138,9 @@ public:
     QByteArray contextSplitterState();
     QString page();
     QStringList hiddenPages();
+    #ifndef ENABLE_KDE_SUPPORT
     QString mediaKeysIface();
+    #endif
     #ifdef ENABLE_DEVICES_SUPPORT
     bool overwriteSongs();
     bool showDeleteAction();
@@ -233,7 +235,9 @@ public:
     void saveContextSplitterState(const QByteArray &v);
     void savePage(const QString &v);
     void saveHiddenPages(const QStringList &v);
+    #ifndef ENABLE_KDE_SUPPORT
     void saveMediaKeysIface(const QString &v);
+    #endif
     #ifdef ENABLE_DEVICES_SUPPORT
     void saveOverwriteSongs(bool v);
     void saveShowDeleteAction(bool v);

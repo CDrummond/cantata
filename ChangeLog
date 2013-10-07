@@ -62,6 +62,7 @@
 31. Add a config item to configure album-view to load all covers immediately,
     rather than waiting for then to be displayed. Again, no UI for this, and
     see README for details.
+32. Slimmer toolbar - song times are now at the ends of the time slider.
 
 1.1.3
 -----

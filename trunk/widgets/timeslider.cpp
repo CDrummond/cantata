@@ -180,14 +180,50 @@ class PosSlider : public QSlider
 public:
     PosSlider(QWidget *p)
         : QSlider(p)
+        , isActive(false)
+        , shown(false)
     {
         setPageStep(0);
         setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
-        // Set minimum height to help with some Gtk themes.
-        // BUG:179
-        setMinimumHeight(24);
         setFocusPolicy(Qt::NoFocus);
         setStyle(new ProxyStyle());
+        int h=fontMetrics().height()*0.5;
+        setMinimumHeight(h);
+        setMaximumHeight(h);
+        updateStyleSheet();
+    }
+
+    void showEvent(QShowEvent *e)
+    {
+        QSlider::showEvent(e);
+        if (!shown) {
+            updateStyleSheet();
+            shown=true;
+        }
+    }
+
+    void updateStyleSheet()
+    {
+        QLabel lbl(parentWidget());
+        lbl.ensurePolished();
+        QColor textColor=lbl.palette().text().color();
+        int alpha=textColor.value()<32 ? 128 : 64;
+        QColor fillBorder=QApplication::palette().highlight().color();
+        QColor fillTop=fillBorder.lighter(120);
+        QColor fillBot=fillBorder.lighter(80);
+
+        inactiveStyleSheet=QString("QSlider::groove:horizontal { border: 1px solid rgba(%1, %2, %3, %4); "
+                                   "background: transparent; "
+                                   "border-radius: 2px } ")
+                            .arg(textColor.red()).arg(textColor.green()).arg(textColor.blue()).arg(alpha);
+        activeStyleSheet=inactiveStyleSheet;
+        activeStyleSheet+=QString("QSlider::sub-page:horizontal {border: 1px solid rgb(%1, %2, %3); "
+                                  "background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 rgb(%4, %5, %6), stop:1 rgb(%7, %8, %9)); "
+                                  "border-radius: 1px; margin: 2px;}")
+                            .arg(fillBorder.red()).arg(fillBorder.green()).arg(fillBorder.blue())
+                            .arg(fillTop.red()).arg(fillTop.green()).arg(fillTop.blue())
+                            .arg(fillBot.red()).arg(fillBot.green()).arg(fillBot.blue());
+        setStyleSheet(inactiveStyleSheet);
     }
 
     virtual ~PosSlider() { }
@@ -207,12 +243,24 @@ public:
 
     void setRange(int min, int max)
     {
+        bool active=min!=max;
         QSlider::setRange(min, max);
         setValue(min);
-        if (min==max) {
+        if (!active) {
             setToolTip(QString());
         }
+
+        if (active!=isActive) {
+            isActive=active;
+            setStyleSheet(isActive ? activeStyleSheet : inactiveStyleSheet);
+        }
     }
+
+private:
+    bool isActive;
+    bool shown;
+    QString activeStyleSheet;
+    QString inactiveStyleSheet;
 };
 
 TimeSlider::TimeSlider(QWidget *p)

@@ -63,6 +63,7 @@
     rather than waiting for then to be displayed. Again, no UI for this, and
     see README for details.
 32. Slimmer toolbar - song times are now at the ends of the time slider.
+33. Custom time slider.
 
 1.1.3
 -----

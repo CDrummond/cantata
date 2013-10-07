@@ -25,10 +25,11 @@
 #define TIMESLIDER_H
 
 #include <QWidget>
-#include <QSlider>
 #include <QTime>
+
 class QTimer;
-class TimeLabel;
+class RemainingTimeLabel;
+class TimeTakenLabel;
 class PosSlider;
 
 class TimeSlider : public QWidget
@@ -56,7 +57,8 @@ private Q_SLOTS:
     void released();
 
 private:
-    TimeLabel *label;
+    RemainingTimeLabel *timeLeft;
+    TimeTakenLabel *timeTaken;
     PosSlider *slider;
     QTimer *timer;
     QTime startTime;

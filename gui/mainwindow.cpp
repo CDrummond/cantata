@@ -879,7 +879,9 @@ MainWindow::MainWindow(QWidget *parent)
     if (Settings::self()->firstRun() && MPDConnection::self()->isConnected()) {
         mpdConnectionStateChanged(true);
     }
+    #ifndef ENABLE_KDE_SUPPORT
     MediaKeys::self()->load();
+    #endif
 }
 
 MainWindow::~MainWindow()
@@ -933,14 +935,14 @@ MainWindow::~MainWindow()
     }
     MPDConnection::self()->stop();
     Covers::self()->stop();
-    #if defined ENABLE_DEVICES_SUPPORT
-    FileThread::self()->stop();
-    #endif
-    OnlineServicesModel::self()->stop();
     #ifdef ENABLE_DEVICES_SUPPORT
+    FileThread::self()->stop();
     DevicesModel::self()->stop();
     #endif
+    OnlineServicesModel::self()->stop();
+    #ifndef ENABLE_KDE_SUPPORT
     MediaKeys::self()->stop();
+    #endif
 }
 
 void MainWindow::initSizes()
@@ -1390,7 +1392,9 @@ void MainWindow::readSettings()
     #if !defined Q_OS_WIN && !defined Q_OS_MAC
     PowerManagement::self()->setInhibitSuspend(Settings::self()->inhibitSuspend());
     #endif
+    #ifndef ENABLE_KDE_SUPPORT
     MediaKeys::self()->load();
+    #endif
     context->readConfig();
 }
 

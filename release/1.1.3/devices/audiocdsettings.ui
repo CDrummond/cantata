@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>AudioCdSettings</class>
+ <widget class="QWidget" name="AudioCdSettings">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>506</width>
+    <height>462</height>
+   </rect>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="margin">
+    <number>0</number>
+   </property>
+   <item>
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>Album and Track Information Retrieval</string>
+     </property>
+     <layout class="QFormLayout" name="formLayout">
+      <item row="0" column="0">
+       <widget class="BuddyLabel" name="label_3">
+        <property name="text">
+         <string>Automatically lookup:</string>
+        </property>
+        <property name="buddy">
+         <cstring>cdAuto</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="OnOffButton" name="cdAuto"/>
+      </item>
+      <item row="1" column="0">
+       <widget class="BuddyLabel" name="cdLookupLabel">
+        <property name="text">
+         <string>Initially look up via:</string>
+        </property>
+        <property name="buddy">
+         <cstring>cdLookup</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QComboBox" name="cdLookup"/>
+      </item>
+      <item row="2" column="0">
+       <widget class="BuddyLabel" name="cddbHostLabel">
+        <property name="text">
+         <string>CDDB Host:</string>
+        </property>
+        <property name="buddy">
+         <cstring>cddbHost</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="LineEdit" name="cddbHost"/>
+      </item>
+      <item row="3" column="0">
+       <widget class="BuddyLabel" name="cddbPortLabel">
+        <property name="text">
+         <string>CDDB Port:</string>
+        </property>
+        <property name="buddy">
+         <cstring>cddbPort</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="SpinBox" name="cddbPort">
+        <property name="minimum">
+         <number>1</number>
+        </property>
+        <property name="maximum">
+         <number>65535</number>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_2">
+     <property name="title">
+      <string>Audio Extraction</string>
+     </property>
+     <layout class="QFormLayout" name="formLayout_2">
+      <item row="0" column="0">
+       <widget class="BuddyLabel" name="label_4">
+        <property name="text">
+         <string>Full paranoia mode (best quality):</string>
+        </property>
+        <property name="buddy">
+         <cstring>paranoiaFull</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="OnOffButton" name="paranoiaFull"/>
+      </item>
+      <item row="1" column="0">
+       <widget class="BuddyLabel" name="label_5">
+        <property name="text">
+         <string>Never skip on read error:</string>
+        </property>
+        <property name="buddy">
+         <cstring>paranoiaNeverSkip</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="OnOffButton" name="paranoiaNeverSkip"/>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>3</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>BuddyLabel</class>
+   <extends>QLabel</extends>
+   <header>buddylabel.h</header>
+  </customwidget>
+  <customwidget>
+   <class>LineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>lineedit.h</header>
+  </customwidget>
+  <customwidget>
+   <class>OnOffButton</class>
+   <extends>QCheckBox</extends>
+   <header>onoffbutton.h</header>
+  </customwidget>
+  <customwidget>
+   <class>SpinBox</class>
+   <extends>QSpinBox</extends>
+   <header>spinbox.h</header>
+  </customwidget>
+ </customwidgets>
+ <tabstops>
+  <tabstop>cdAuto</tabstop>
+  <tabstop>cddbHost</tabstop>
+  <tabstop>cddbPort</tabstop>
+  <tabstop>paranoiaFull</tabstop>
+  <tabstop>paranoiaNeverSkip</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>

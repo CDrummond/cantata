@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>DevicePropertiesWidget</class>
+ <widget class="QWidget" name="DevicePropertiesWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>549</width>
+    <height>496</height>
+   </rect>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="margin">
+    <number>0</number>
+   </property>
+   <item>
+    <widget class="QLabel" name="remoteDeviceNote">
+     <property name="text">
+      <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; These settings are only valid, and editable, when the device is connected.&lt;/i&gt;</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QFormLayout" name="formLayout">
+     <property name="fieldGrowthPolicy">
+      <enum>QFormLayout::ExpandingFieldsGrow</enum>
+     </property>
+     <item row="0" column="0">
+      <widget class="BuddyLabel" name="musicFolderLabel">
+       <property name="text">
+        <string>Music folder:</string>
+       </property>
+       <property name="buddy">
+        <cstring>musicFolder</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="PathRequester" name="musicFolder"/>
+     </item>
+     <item row="1" column="0">
+      <widget class="BuddyLabel" name="albumCoversLabel">
+       <property name="text">
+        <string>Copy album covers as:</string>
+       </property>
+       <property name="buddy">
+        <cstring>albumCovers</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QComboBox" name="albumCovers">
+       <property name="editable">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="BuddyLabel" name="coverMaxSizeLabel">
+       <property name="text">
+        <string>Maximum cover size:</string>
+       </property>
+       <property name="buddy">
+        <cstring>coverMaxSize</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QComboBox" name="coverMaxSize">
+       <property name="editable">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="BuddyLabel" name="fixVariousArtistsLabel">
+       <property name="text">
+        <string>'Various Artists' workaround:</string>
+       </property>
+       <property name="buddy">
+        <cstring>fixVariousArtists</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="OnOffButton" name="fixVariousArtists"/>
+     </item>
+     <item row="4" column="0">
+      <widget class="BuddyLabel" name="autoScanLabel">
+       <property name="text">
+        <string>Automatically scan music when attached:</string>
+       </property>
+       <property name="buddy">
+        <cstring>autoScan</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="1">
+      <widget class="OnOffButton" name="autoScan"/>
+     </item>
+     <item row="5" column="0">
+      <widget class="BuddyLabel" name="useCacheLabel">
+       <property name="text">
+        <string>Use cache:</string>
+       </property>
+       <property name="buddy">
+        <cstring>useCache</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="1">
+      <widget class="OnOffButton" name="useCache"/>
+     </item>
+     <item row="6" column="0">
+      <widget class="QLabel" name="defaultVolumeLabel">
+       <property name="text">
+        <string>Default volume:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="1">
+      <widget class="QComboBox" name="defaultVolume"/>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>Filenames</string>
+     </property>
+     <layout class="QFormLayout" name="formLayout_2">
+      <property name="fieldGrowthPolicy">
+       <enum>QFormLayout::ExpandingFieldsGrow</enum>
+      </property>
+      <item row="1" column="0">
+       <widget class="BuddyLabel" name="label_3">
+        <property name="text">
+         <string>Use only ASCII characters:</string>
+        </property>
+        <property name="buddy">
+         <cstring>asciiOnly</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="OnOffButton" name="asciiOnly">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="BuddyLabel" name="label_4">
+        <property name="text">
+         <string>Replace spaces with underscores:</string>
+        </property>
+        <property name="buddy">
+         <cstring>replaceSpaces</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="OnOffButton" name="replaceSpaces">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="BuddyLabel" name="label_5">
+        <property name="text">
+         <string>Ignore 'The' in artist names:</string>
+        </property>
+        <property name="buddy">
+         <cstring>ignoreThe</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="OnOffButton" name="ignoreThe">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="BuddyLabel" name="label_6">
+        <property name="text">
+         <string>Filename scheme:</string>
+        </property>
+        <property name="buddy">
+         <cstring>filenameScheme</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="LineEdit" name="filenameScheme">
+          <property name="minimumSize">
+           <size>
+            <width>288</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QToolButton" name="configFilename">
+          <property name="autoRaise">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="0" column="1">
+       <widget class="OnOffButton" name="vfatSafe">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="BuddyLabel" name="label_2">
+        <property name="text">
+         <string>VFAT safe:</string>
+        </property>
+        <property name="buddy">
+         <cstring>vfatSafe</cstring>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="transcoderFrame">
+     <property name="title">
+      <string>Transcoding</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <widget class="QComboBox" name="transcoderName"/>
+      </item>
+      <item>
+       <layout class="QFormLayout" name="formLayout_3">
+        <item row="0" column="0">
+         <widget class="BuddyLabel" name="transcoderWhenDifferentLabel">
+          <property name="text">
+           <string>Only transcode if source file is of a different format:</string>
+          </property>
+          <property name="buddy">
+           <cstring>transcoderWhenDifferent</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="OnOffButton" name="transcoderWhenDifferent"/>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="ValueSlider" name="transcoderValue"/>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>0</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>OnOffButton</class>
+   <extends>QCheckBox</extends>
+   <header>onoffbutton.h</header>
+  </customwidget>
+  <customwidget>
+   <class>LineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>lineedit.h</header>
+  </customwidget>
+  <customwidget>
+   <class>PathRequester</class>
+   <extends>QLineEdit</extends>
+   <header>pathrequester.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>ValueSlider</class>
+   <extends>QSlider</extends>
+   <header>valueslider.h</header>
+  </customwidget>
+  <customwidget>
+   <class>BuddyLabel</class>
+   <extends>QLabel</extends>
+   <header>buddylabel.h</header>
+  </customwidget>
+ </customwidgets>
+ <tabstops>
+  <tabstop>musicFolder</tabstop>
+  <tabstop>albumCovers</tabstop>
+  <tabstop>coverMaxSize</tabstop>
+  <tabstop>fixVariousArtists</tabstop>
+  <tabstop>autoScan</tabstop>
+  <tabstop>useCache</tabstop>
+  <tabstop>defaultVolume</tabstop>
+  <tabstop>vfatSafe</tabstop>
+  <tabstop>asciiOnly</tabstop>
+  <tabstop>replaceSpaces</tabstop>
+  <tabstop>ignoreThe</tabstop>
+  <tabstop>filenameScheme</tabstop>
+  <tabstop>configFilename</tabstop>
+  <tabstop>transcoderName</tabstop>
+  <tabstop>transcoderWhenDifferent</tabstop>
+  <tabstop>transcoderValue</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>

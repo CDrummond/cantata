@@ -299,29 +299,19 @@
            </widget>
           </item>
           <item>
-           <spacer name="horizontalSpacer_4">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeType">
-             <enum>QSizePolicy::Fixed</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>16</width>
-              <height>16</height>
-             </size>
-            </property>
-           </spacer>
+           <widget class="SpacerWidget" name="horizontalSpacer_4"/>
+          </item>
+          <item>
+           <widget class="ToolButton" name="clearPlayQueueButton"/>
+          </item>
+          <item>
+           <widget class="SpacerWidget" name="horizontalSpacer_4b"/>
           </item>
           <item>
            <widget class="ToolButton" name="searchPlayQueueButton"/>
           </item>
           <item>
            <widget class="ToolButton" name="savePlayQueueButton"/>
-          </item>
-          <item>
-           <widget class="ToolButton" name="clearPlayQueueButton"/>
           </item>
           <item>
            <widget class="SizeGrip" name="sizeGrip"/>
@@ -414,6 +404,11 @@
    <class>SizeGrip</class>
    <extends>QSizeGrip</extends>
    <header>sizegrip.h</header>
+  </customwidget>
+  <customwidget>
+   <class>SpacerWidget</class>
+   <extends>QWidget</extends>
+   <header>spacerwidget.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

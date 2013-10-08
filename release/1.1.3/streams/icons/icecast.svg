@@ -1,0 +1,26 @@
+<svg viewBox="0 0 210 210" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<linearGradient gradientUnits="userSpaceOnUse" id="SVGID_1_" x2="0" y1="12.3687" y2="79.9995">
+<stop offset="0" stop-color="#ccf8ff"/>
+<stop offset="1" stop-color="#67d4ff"/>
+</linearGradient>
+<linearGradient gradientTransform="matrix(1,0,0,-1,-315.9902,-16.5996)" gradientUnits="userSpaceOnUse" id="SVGID_2_" x1="348.3721" x2="419.7986" y1="-165.4727" y2="-94.6755">
+<stop offset="0" stop-color="#ebffff"/>
+<stop offset="1" stop-color="#0ab2ff"/>
+</linearGradient>
+<linearGradient gradientTransform="matrix(1,0,0,-1,-315.9902,-16.5996)" gradientUnits="userSpaceOnUse" id="SVGID_3_" x1="478.9404" x2="451.2592" y1="-166.6392" y2="-105.5098">
+<stop offset="0" stop-color="#a2ffff"/>
+<stop offset="1" stop-color="#32c8ff"/>
+</linearGradient>
+<linearGradient gradientUnits="userSpaceOnUse" id="SVGID_5_" x2="0" y1="205" y2="5">
+<stop offset="0" stop-color="#244d80"/>
+<stop offset="1" stop-color="#0176c5"/>
+</linearGradient>
+</defs>
+<title>Nuvola apps package</title>
+<path d="m105,12.369-90.093,33.091 90.093,34.54 90.093-34.54-90.093-33.091z" fill="url(#SVGID_1_)"/>
+<path d="m14.907,45.46v119.32l90.093,32.85v-117.63l-90.093-34.54z" fill="url(#SVGID_2_)"/>
+<path d="m195.093,45.46-90.093,34.54v117.63l90.093-32.85v-119.32z" fill="url(#SVGID_3_)"/>
+<path d="m14.907,45.46 90.093,34.54 90.093-34.54m-90.093,34.54v117.63" fill="none" stroke="#fff" stroke-linejoin="round" stroke-width="2.4"/>
+<path d="m197.479,38.966-90.097-33.091-2.384-.875-2.385.875-90.092,33.091-4.533,1.665v4.831 119.321 4.843l4.549,1.658 90.089,32.851 2.372.865 2.37-.865 90.094-32.851 4.55-1.658v-4.843-119.321-4.831l-4.533-1.665zm-2.387,125.817-90.094,32.851-90.093-32.851v-119.321l90.093-33.092 90.094,33.092v119.321z" fill="url(#SVGID_5_)"/>
+</svg>

@@ -46,6 +46,7 @@ class CacheSettings;
 #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
 class AudioCdSettings;
 #endif
+class QStringList;
 
 class PreferencesDialog : public Dialog
 {
@@ -54,7 +55,7 @@ class PreferencesDialog : public Dialog
 public:
     static int instanceCount();
 
-    PreferencesDialog(QWidget *parent);
+    PreferencesDialog(QWidget *parent, const QStringList &hiddenPages);
     virtual ~PreferencesDialog();
 
 private:

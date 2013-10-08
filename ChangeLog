@@ -65,6 +65,7 @@
 32. Slimmer toolbar - song times are now at the ends of the time slider.
 33. Custom time slider.
 34. Prompt before clearing playqueue.
+35. Only show config pages, and tabs, that are relevant to the enabled views.
 
 1.1.3
 -----

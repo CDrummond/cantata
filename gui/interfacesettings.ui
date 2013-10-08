@@ -246,7 +246,7 @@ within the folder of the current track, or within its parent folder. If no image
         <enum>QFormLayout::ExpandingFieldsGrow</enum>
        </property>
        <item row="0" column="0">
-        <widget class="BuddyLabel" name="label_2">
+        <widget class="BuddyLabel" name="folderViewLabel">
          <property name="text">
           <string>Folder view style:</string>
          </property>
@@ -259,7 +259,7 @@ within the folder of the current track, or within its parent folder. If no image
         <widget class="QComboBox" name="folderView"/>
        </item>
        <item row="1" column="0">
-        <widget class="BuddyLabel" name="label_x">
+        <widget class="BuddyLabel" name="streamsViewLabel">
          <property name="text">
           <string>Streams view style:</string>
          </property>
@@ -272,7 +272,7 @@ within the folder of the current track, or within its parent folder. If no image
         <widget class="QComboBox" name="streamsView"/>
        </item>
        <item row="2" column="0">
-        <widget class="BuddyLabel" name="label_xx">
+        <widget class="BuddyLabel" name="onlineViewLabel">
          <property name="text">
           <string>Online view style:</string>
          </property>

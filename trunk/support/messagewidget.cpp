@@ -40,7 +40,7 @@ MessageWidget::~MessageWidget()
 #endif
 #endif
 
-void MessageWidget::setMessage(const QString &msg, bool isError)
+void MessageWidget::setMessage(const QString &msg, MessageType type, bool showCloseButton)
 {
     if (msg.isEmpty() && isVisible()) {
         setVisible(false);
@@ -56,7 +56,8 @@ void MessageWidget::setMessage(const QString &msg, bool isError)
         setToolTip(msg);
     }
     setText(text);
-    setMessageType(isError ? Error : Information);
+    setMessageType(type);
+    setCloseButtonVisible(showCloseButton);
     #if defined NO_ANIMATED_SHOW
     setVisible(true);
     #else

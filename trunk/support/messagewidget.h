@@ -40,10 +40,12 @@ class MessageWidget : public KMsgWidget
 {
     Q_OBJECT
 public:
+
     MessageWidget(QWidget *parent);
     virtual ~MessageWidget();
-    void setError(const QString &msg) { setMessage(msg, true); }
-    void setInformation(const QString &msg) { setMessage(msg, false); }
+    void setError(const QString &msg, bool showCloseButton=true) { setMessage(msg, Error, showCloseButton); }
+    void setInformation(const QString &msg, bool showCloseButton=true) { setMessage(msg, Information, showCloseButton); }
+    void setWarning(const QString &msg, bool showCloseButton=true) { setMessage(msg, Warning, showCloseButton); }
     void setVisible(bool v);
     bool isActive() const { return active; }
 
@@ -51,7 +53,7 @@ Q_SIGNALS:
     void visible(bool);
 
 private:
-    void setMessage(const QString &msg, bool isError);
+    void setMessage(const QString &msg, MessageType type, bool showCloseButton);
 
 private:
     bool active;

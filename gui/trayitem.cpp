@@ -26,7 +26,7 @@
 #include <KDE/KMenu>
 #include <QPixmap>
 #endif
-#if !defined Q_OS_WIN && !defined Q_OS_MAC
+#ifdef QT_QTDBUS_FOUND
 #include "notify.h"
 #endif
 #include "localize.h"
@@ -42,7 +42,7 @@ TrayItem::TrayItem(MainWindow *p)
     , mw(p)
     , trayItem(0)
     , trayItemMenu(0)
-    #if !defined Q_OS_WIN && !defined Q_OS_MAC
+    #ifdef QT_QTDBUS_FOUND
     , notification(0)
     #endif
 {
@@ -189,7 +189,7 @@ void TrayItem::songChanged(const Song &song, bool isPlaying)
                 trayItem->setToolTip(i18n("Cantata")+"\n\n"+text);
                 #endif // ENABLE_KDE_SUPPORT
             }
-            #if !defined Q_OS_WIN && !defined Q_OS_MAC
+            #ifdef QT_QTDBUS_FOUND
             if (Settings::self()->showPopups() && isPlaying) {
                 if (!notification) {
                     notification=new Notify(this);

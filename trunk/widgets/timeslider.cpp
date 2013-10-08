@@ -204,23 +204,23 @@ public:
 
     void updateStyleSheet()
     {
+        QString boderFormat=QString("QSlider::groove:horizontal { border: 1px solid rgba(%1, %2, %3, %4); "
+                                    "background: transparent; "
+                                    "border-radius: 2px } ");
+        QString fillFormat=QString("QSlider::sub-page:horizontal {border: 1px solid rgb(%1, %2, %3); "
+                                   "background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 rgb(%4, %5, %6), stop:1 rgb(%7, %8, %9)); "
+                                   "border-radius: 1px; margin: 2px;}");
         QLabel lbl(parentWidget());
         lbl.ensurePolished();
         QColor textColor=lbl.palette().text().color();
-        int alpha=textColor.value()<32 ? 128 : 64;
+        int alpha=textColor.value()<32 ? 96 : 64;
         QColor fillBorder=QApplication::palette().highlight().color();
         QColor fillTop=fillBorder.lighter(120);
         QColor fillBot=fillBorder.lighter(80);
 
-        inactiveStyleSheet=QString("QSlider::groove:horizontal { border: 1px solid rgba(%1, %2, %3, %4); "
-                                   "background: transparent; "
-                                   "border-radius: 2px } ")
-                            .arg(textColor.red()).arg(textColor.green()).arg(textColor.blue()).arg(alpha);
-        activeStyleSheet=inactiveStyleSheet;
-        activeStyleSheet+=QString("QSlider::sub-page:horizontal {border: 1px solid rgb(%1, %2, %3); "
-                                  "background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 rgb(%4, %5, %6), stop:1 rgb(%7, %8, %9)); "
-                                  "border-radius: 1px; margin: 2px;}")
-                            .arg(fillBorder.red()).arg(fillBorder.green()).arg(fillBorder.blue())
+        inactiveStyleSheet=boderFormat.arg(textColor.red()).arg(textColor.green()).arg(textColor.blue()).arg(alpha/2);
+        activeStyleSheet=boderFormat.arg(textColor.red()).arg(textColor.green()).arg(textColor.blue()).arg(alpha);
+        activeStyleSheet+=fillFormat.arg(fillBorder.red()).arg(fillBorder.green()).arg(fillBorder.blue())
                             .arg(fillTop.red()).arg(fillTop.green()).arg(fillTop.blue())
                             .arg(fillBot.red()).arg(fillBot.green()).arg(fillBot.blue());
         setStyleSheet(inactiveStyleSheet);

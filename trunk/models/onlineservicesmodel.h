@@ -70,7 +70,7 @@ public:
     void stop();
     QMimeData * mimeData(const QModelIndexList &indexes) const;
     void setSearch(const QString &serviceName, const QString &text);
-    #ifdef TAGLIB_FOUND
+    #ifdef ENABLE_DEVICES_SUPPORT
     Device *device(const QString &udi);
     #endif
     Action * configureAct() const { return configureAction; }

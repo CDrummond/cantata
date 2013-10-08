@@ -29,7 +29,9 @@
 #include "dirviewmodel.h"
 #include "onlineservicesmodel.h"
 #include "onlineservice.h"
+#ifdef ENABLE_DEVICES_SUPPORT
 #include "onlinedevice.h"
+#endif
 #include "jamendoservice.h"
 #include "magnatuneservice.h"
 #include "soundcloudservice.h"
@@ -378,7 +380,7 @@ QMimeData * OnlineServicesModel::mimeData(const QModelIndexList &indexes) const
     return mimeData;
 }
 
-#ifdef TAGLIB_FOUND
+#ifdef ENABLE_DEVICES_SUPPORT
 Device * OnlineServicesModel::device(const QString &udi)
 {
     if (!dev) {

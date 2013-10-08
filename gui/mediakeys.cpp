@@ -25,7 +25,7 @@
 #if !defined Q_OS_WIN && !defined Q_OS_MAC
 #include "gnomemediakeys.h"
 #endif
-#if !defined Q_OS_MAC && QT_VERSION < 0x050000
+#ifdef QT_QTDBUS_FOUND
 #include "qxtmediakeys.h"
 #endif
 #include "stdactions.h"
@@ -67,7 +67,7 @@ MediaKeys::InterfaceType MediaKeys::toIface(const QString &i)
     #endif
 
     if (i==toString(GnomeInteface)) {
-        #if !defined Q_OS_WIN && !defined Q_OS_MAC
+        #ifdef QT_QTDBUS_FOUND
         return GnomeInteface;
         #else
         return NoInterface;
@@ -86,7 +86,7 @@ MediaKeys::InterfaceType MediaKeys::toIface(const QString &i)
 
 MediaKeys::MediaKeys()
 {
-    #if !defined Q_OS_WIN && !defined Q_OS_MAC
+    #ifdef QT_QTDBUS_FOUND
     gnome=0;
     #endif
 
@@ -102,7 +102,7 @@ MediaKeys::~MediaKeys()
         delete qxt;
     }
     #endif
-    #if !defined Q_OS_WIN && !defined Q_OS_MAC
+    #ifdef QT_QTDBUS_FOUND
     if (gnome) {
         delete gnome;
     }
@@ -113,7 +113,7 @@ void MediaKeys::load()
 {
     InterfaceType current=NoInterface;
     InterfaceType configured=toIface(Settings::self()->mediaKeysIface());
-    #if !defined Q_OS_WIN && !defined Q_OS_MAC
+    #ifdef QT_QTDBUS_FOUND
     if (gnome && gnome->isEnabled()) {
         current=GnomeInteface;
     }
@@ -129,7 +129,7 @@ void MediaKeys::load()
         return;
     }
 
-    #if !defined Q_OS_WIN && !defined Q_OS_MAC
+    #ifdef QT_QTDBUS_FOUND
     if (gnome && GnomeInteface==current) {
         disable(gnome);
         gnome->deleteLater();
@@ -145,7 +145,7 @@ void MediaKeys::load()
     }
     #endif
 
-    #if !defined Q_OS_WIN && !defined Q_OS_MAC
+    #ifdef QT_QTDBUS_FOUND
     if (GnomeInteface==configured) {
         if (!gnome) {
             gnome=new GnomeMediaKeys(0);
@@ -166,7 +166,7 @@ void MediaKeys::load()
 
 void MediaKeys::stop()
 {
-    #if !defined Q_OS_WIN && !defined Q_OS_MAC
+    #ifdef QT_QTDBUS_FOUND
     if (gnome) {
         disable(gnome);
         gnome->deleteLater();

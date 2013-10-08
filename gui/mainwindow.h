@@ -395,7 +395,7 @@ private:
     #endif // Q_OS_WIN
     QTimer *statusTimer;
     QTimer *playQueueSearchTimer;
-    #ifdef Q_OS_LINUX
+    #if !defined Q_OS_WIN && !defined Q_OS_MAC
     QTimer *mpdAccessibilityTimer;
     #endif
 

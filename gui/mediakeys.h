@@ -25,6 +25,7 @@
 #define MEDIA_KEYS_H
 
 #include <qglobal.h>
+#include "config.h"
 
 class GnomeMediaKeys;
 class QxtMediaKeys;
@@ -54,7 +55,7 @@ private:
     void disable(MultiMediaKeysInterface *iface);
 
 private:
-    #if !defined Q_OS_WIN && !defined Q_OS_MAC
+    #ifdef QT_QTDBUS_FOUND
     GnomeMediaKeys *gnome;
     #endif
     #if !defined Q_OS_MAC && QT_VERSION < 0x050000

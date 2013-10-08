@@ -106,12 +106,14 @@
 #include "playlistspage.h"
 #include "fancytabwidget.h"
 #include "timeslider.h"
-#if !defined Q_OS_WIN && !defined Q_OS_MAC
+#ifdef QT_QTDBUS_FOUND
 #include "mpris.h"
 #include "cantataadaptor.h"
+#include "powermanagement.h"
+#endif
+#if !defined Q_OS_WIN && !defined Q_OS_MAC
 #include "mountpoints.h"
 #include "gtkproxystyle.h"
-#include "powermanagement.h"
 #endif
 #include "dynamicpage.h"
 #include "dynamic.h"
@@ -200,12 +202,12 @@ MainWindow::MainWindow(QWidget *parent)
     , lastState(MPDState_Inactive)
     , lastSongId(-1)
     , autoScrollPlayQueue(true)
-    #if !defined Q_OS_WIN && !defined Q_OS_MAC
+    #ifdef QT_QTDBUS_FOUND
     , mpris(0)
     #endif
     , statusTimer(0)
     , playQueueSearchTimer(0)
-    #ifdef Q_OS_LINUX
+    #if !defined Q_OS_WIN && !defined Q_OS_MAC
     , mpdAccessibilityTimer(0)
     #endif
     , connectedState(CS_Init)
@@ -224,7 +226,7 @@ MainWindow::MainWindow(QWidget *parent)
     ActionCollection::setMainWidget(this);
     trayItem=new TrayItem(this);
 
-    #if !defined Q_OS_WIN && !defined Q_OS_MAC
+    #ifdef QT_QTDBUS_FOUND
     new CantataAdaptor(this);
     QDBusConnection::sessionBus().registerObject("/cantata", this);
     #endif
@@ -832,9 +834,9 @@ MainWindow::MainWindow(QWidget *parent)
     connect(playlistsPage, SIGNAL(add(const QStringList &, bool, quint8)), &playQueueModel, SLOT(addItems(const QStringList &, bool, quint8)));
     connect(coverWidget, SIGNAL(clicked()), expandInterfaceAction, SLOT(trigger()));
     connect(coverWidget, SIGNAL(albumCover(QImage)), playQueue, SLOT(setImage(QImage)));
-    #ifdef Q_OS_LINUX
+    #if !defined Q_OS_WIN && !defined Q_OS_MAC
     connect(MountPoints::self(), SIGNAL(updated()), SLOT(checkMpdAccessibility()));
-    #endif // Q_OS_LINUX
+    #endif
     connect(OnlineServicesModel::self(), SIGNAL(error(const QString &)), this, SLOT(showError(const QString &)));
     playQueueItemsSelected(false);
     playQueue->setFocus();
@@ -861,7 +863,7 @@ MainWindow::MainWindow(QWidget *parent)
     updateConnectionsMenu();
     fadeStop=Settings::self()->stopFadeDuration()>Settings::MinFade;
     //playlistsPage->refresh();
-    #if !defined Q_OS_WIN && !defined Q_OS_MAC
+    #ifdef QT_QTDBUS_FOUND
     mpris=new Mpris(this);
     connect(coverWidget, SIGNAL(coverFile(const QString &)), mpris, SLOT(updateCurrentCover(const QString &)));
     #endif
@@ -1385,7 +1387,7 @@ void MainWindow::readSettings()
     autoScrollPlayQueue=Settings::self()->playQueueScroll();
     updateWindowTitle();
     TreeView::setForceSingleClick(Settings::self()->forceSingleClick());
-    #if !defined Q_OS_WIN && !defined Q_OS_MAC
+    #ifdef QT_QTDBUS_FOUND
     PowerManagement::self()->setInhibitSuspend(Settings::self()->inhibitSuspend());
     #endif
     #ifndef ENABLE_KDE_SUPPORT
@@ -1817,7 +1819,7 @@ void MainWindow::updateCurrentSong(const Song &song)
     }
     #endif
 
-    #if !defined Q_OS_WIN && !defined Q_OS_MAC
+    #ifdef QT_QTDBUS_FOUND
     mpris->updateCurrentSong(current);
     #endif
     if (current.time<5 && MPDStatus::self()->songId()==current.id && MPDStatus::self()->timeTotal()>5) {

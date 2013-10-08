@@ -36,6 +36,8 @@ typedef KMessageWidget KMsgWidget;
 #include "kmessagewidget.h"
 #endif // ENABLE_KDE_SUPPORT
 
+#include <QList>
+
 class MessageWidget : public KMsgWidget
 {
     Q_OBJECT
@@ -48,6 +50,8 @@ public:
     void setWarning(const QString &msg, bool showCloseButton=true) { setMessage(msg, Warning, showCloseButton); }
     void setVisible(bool v);
     bool isActive() const { return active; }
+    void removeAllActions();
+    void setActions(const QList<QAction *> acts);
 
 Q_SIGNALS:
     void visible(bool);

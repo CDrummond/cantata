@@ -232,6 +232,7 @@ public Q_SLOTS:
     void updateStats();
     void updateStatus();
     void playQueueItemActivated(const QModelIndex &);
+    void promptClearPlayQueue();
     void clearPlayQueue();
     void removeFromPlayQueue();
     void replacePlayQueue();
@@ -331,7 +332,7 @@ private:
     Action *muteAction;
     Action *removeFromPlayQueueAction;
     Action *addPlayQueueToStoredPlaylistAction;
-    Action *clearPlayQueueAction;
+    Action *promptClearPlayQueueAction;
     Action *copyTrackInfoAction;
     Action *cropPlayQueueAction;
     Action *shufflePlayQueueAction;
@@ -370,6 +371,7 @@ private:
     Action *serverInfoAction;
     QAction *autoHideSplitterAction;
     QAction *monoIconsAction;
+    QAction *clearPlayQueueAction;
     TrayItem *trayItem;
     QPoint lastPos;
     QSize expandedSize;

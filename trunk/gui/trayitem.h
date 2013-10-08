@@ -25,7 +25,6 @@
 #define TRAYITEM_H
 
 #include <QObject>
-
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KStatusNotifierItem>
 class KMenu;
@@ -34,7 +33,9 @@ class KMenu;
 #include "icon.h"
 class QMenu;
 #endif
-#if !defined Q_OS_WIN && !defined Q_OS_MAC
+#include "config.h"
+
+#ifdef QT_QTDBUS_FOUND
 class Notify;
 #endif
 class MainWindow;
@@ -92,7 +93,7 @@ private:
     QSystemTrayIcon *trayItem;
     QMenu *trayItemMenu;
     #endif
-    #if !defined Q_OS_WIN && !defined Q_OS_MAC
+    #ifdef QT_QTDBUS_FOUND
     Notify *notification;
     #endif
 };

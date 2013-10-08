@@ -38,7 +38,7 @@
 #include "thread.h"
 #include "settings.h"
 #include "cuefile.h"
-#ifndef Q_OS_WIN32
+#ifdef QT_QTDBUS_FOUND
 #include "powermanagement.h"
 #endif
 #include <QDebug>
@@ -183,7 +183,7 @@ MPDConnection::MPDConnection()
     qRegisterMetaType<MPDStatsValues>("MPDStatsValues");
     qRegisterMetaType<MPDStatusValues>("MPDStatusValues");
     qRegisterMetaType<MPDConnectionDetails>("MPDConnectionDetails");
-    #if !defined Q_OS_WIN32 && !defined Q_OS_MAC
+    #ifdef QT_QTDBUS_FOUND
     connect(PowerManagement::self(), SIGNAL(resuming()), this, SLOT(reconnect()));
     #endif
 }

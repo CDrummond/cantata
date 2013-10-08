@@ -43,6 +43,7 @@
 #include <QPropertyAnimation>
 #include <QTimer>
 #include <QScopedPointer>
+#include <QStringList>
 
 //#include <boost/scoped_ptr.hpp>
 
@@ -193,7 +194,7 @@ public:
 
         enum Type {
             Type_Tab,
-            Type_Spacer,
+            Type_Spacer
         };
 
         Type type_;
@@ -226,6 +227,7 @@ public:
     void removeStyleAction(QAction *a) { otherStyleActions.removeAll(a); }
     void SetIcon(int index, const QIcon &icon);
     void Recreate();
+    QStringList hiddenPages() const;
 
 public slots:
     void SetCurrentIndex(int index);

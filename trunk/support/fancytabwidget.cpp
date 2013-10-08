@@ -1128,3 +1128,17 @@ void FancyTabWidget::Recreate()
     mode_=Mode_None;
     SetMode(m);
 }
+
+QStringList FancyTabWidget::hiddenPages() const
+{
+    QStringList pages;
+    for (int i=0; i<count(); ++i) {
+        if (!isEnabled(i)) {
+            QWidget *w=widget(i);
+            if (w) {
+                pages << w->metaObject()->className();
+            }
+        }
+    }
+    return pages;
+}

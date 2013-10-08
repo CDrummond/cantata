@@ -29,6 +29,11 @@
 #include "onoffbutton.h"
 #include <QComboBox>
 
+#define REMOVE(w) \
+    w->setVisible(false); \
+    w->deleteLater(); \
+    w=0;
+
 static void addImageSizes(QComboBox *box)
 {
     box->addItem(i18n("None"), MusicLibraryItemAlbum::CoverNone);
@@ -66,34 +71,127 @@ static inline int getViewType(QComboBox *box)
     return box->itemData(box->currentIndex()).toInt();
 }
 
-InterfaceSettings::InterfaceSettings(QWidget *p)
+InterfaceSettings::InterfaceSettings(QWidget *p, const QStringList &hiddenPages)
     : QWidget(p)
 {
-    setupUi(this);
-    addImageSizes(libraryCoverSize);
-    addImageSizes(albumsCoverSize);
-    addViewTypes(libraryView, true);
-    addViewTypes(albumsView, true);
-    addViewTypes(folderView);
-    addViewTypes(playlistsView, false, true);
-    addViewTypes(streamsView);
-    addViewTypes(onlineView);
+    int removeCount=0;
+    enabledViews=V_All;
+    if (hiddenPages.contains(QLatin1String("LibraryPage"))) {
+        enabledViews-=V_Artists;
+    }
+    if (hiddenPages.contains(QLatin1String("AlbumsPage"))) {
+        enabledViews-=V_Albums;
+    }
+    if (hiddenPages.contains(QLatin1String("FolderPage"))) {
+        enabledViews-=V_Folders;
+    }
+    if (hiddenPages.contains(QLatin1String("PlaylistsPage"))) {
+        enabledViews-=V_Playlists;
+    }
+//    if (hiddenPages.contains(QLatin1String("DynamicPage"))) {
+//        enabledViews-=V_Dynamic;
+//    }
+    if (hiddenPages.contains(QLatin1String("StreamsPage"))) {
+        enabledViews-=V_Streams;
+    }
+    if (hiddenPages.contains(QLatin1String("OnlineServicesPage"))) {
+        enabledViews-=V_Online;
+    }
     #ifdef ENABLE_DEVICES_SUPPORT
-    addViewTypes(devicesView);
+    if (hiddenPages.contains(QLatin1String("DevicesPage"))) {
+        enabledViews-=V_Devices;
+    }
+    #else
+    enabledViews-=V_Devices;
     #endif
+
+    setupUi(this);
+    if (enabledViews&V_Artists) {
+        addImageSizes(libraryCoverSize);
+        addViewTypes(libraryView, true);
+    } else {
+        tabWidget->removeTab(0);
+        removeCount++;
+    }
+    if (enabledViews&V_Albums) {
+        addImageSizes(albumsCoverSize);
+        addViewTypes(albumsView, true);
+    } else {
+        tabWidget->removeTab(1-removeCount);
+        removeCount++;
+    }
+    if (enabledViews&V_Folders) {
+        addViewTypes(folderView);
+    }  else {
+        REMOVE(folderView)
+        REMOVE(folderViewLabel)
+    }
+    if (enabledViews&V_Playlists) {
+        addViewTypes(playlistsView, false, true);
+    } else {
+        tabWidget->removeTab(2-removeCount);
+        removeCount++;
+    }
+    if (enabledViews&V_Streams) {
+        addViewTypes(streamsView);
+    } else {
+        REMOVE(streamsView)
+        REMOVE(streamsViewLabel)
+    }
+    if (enabledViews&V_Online) {
+        addViewTypes(onlineView);
+    } else {
+        REMOVE(onlineView)
+        REMOVE(onlineViewLabel)
+    }
+    #ifdef ENABLE_DEVICES_SUPPORT
+    if (enabledViews&V_Devices) {
+        addViewTypes(devicesView);
+    }
+    #endif
+    if (!(enabledViews&V_Devices)) {
+        REMOVE(devicesView)
+        REMOVE(devicesViewLabel)
+    }
+
+    int otherViewCount=(enabledViews&V_Folders ? 1 : 0)+(enabledViews&V_Streams ? 1 : 0)+(enabledViews&V_Online ? 1 : 0)+(enabledViews&V_Devices ? 1 : 0);
+
+    if (0==otherViewCount) {
+        tabWidget->removeTab(3-removeCount);
+        removeCount++;
+    } else if (1==otherViewCount) {
+        if (enabledViews&V_Folders) {
+            tabWidget->setTabText(3-removeCount, i18n("Folders"));
+            folderViewLabel->setText(i18n("Style:"));
+        } else if (enabledViews&V_Streams) {
+            tabWidget->setTabText(3-removeCount, i18n("Streams"));
+            streamsViewLabel->setText(i18n("Style:"));
+        } else if (enabledViews&V_Online) {
+            tabWidget->setTabText(3-removeCount, i18n("Online"));
+            onlineViewLabel->setText(i18n("Style:"));
+        } else if (enabledViews&V_Devices) {
+            tabWidget->setTabText(3-removeCount, i18n("Devices"));
+            devicesViewLabel->setText(i18n("Style:"));
+        }
+    }
+
     groupMultiple->addItem(i18n("Grouped by \'Album Artist\'"));
     groupMultiple->addItem(i18n("Grouped under \'Various Artists\'"));
-    connect(libraryView, SIGNAL(currentIndexChanged(int)), SLOT(libraryViewChanged()));
-    connect(libraryCoverSize, SIGNAL(currentIndexChanged(int)), SLOT(libraryCoverSizeChanged()));
-    connect(albumsView, SIGNAL(currentIndexChanged(int)), SLOT(albumsViewChanged()));
-    connect(albumsCoverSize, SIGNAL(currentIndexChanged(int)), SLOT(albumsCoverSizeChanged()));
-    connect(playlistsView, SIGNAL(currentIndexChanged(int)), SLOT(playListsStyleChanged()));
+    if (enabledViews&V_Artists) {
+        connect(libraryView, SIGNAL(currentIndexChanged(int)), SLOT(libraryViewChanged()));
+        connect(libraryCoverSize, SIGNAL(currentIndexChanged(int)), SLOT(libraryCoverSizeChanged()));
+    }
+    if (enabledViews&V_Albums) {
+        connect(albumsView, SIGNAL(currentIndexChanged(int)), SLOT(albumsViewChanged()));
+        connect(albumsCoverSize, SIGNAL(currentIndexChanged(int)), SLOT(albumsCoverSizeChanged()));
+    }
+    if (enabledViews&V_Playlists) {
+        connect(playlistsView, SIGNAL(currentIndexChanged(int)), SLOT(playListsStyleChanged()));
+    }
     connect(playQueueGrouped, SIGNAL(currentIndexChanged(int)), SLOT(playQueueGroupedChanged()));
     #ifndef ENABLE_DEVICES_SUPPORT
-    devicesView->setVisible(false);
-    devicesViewLabel->setVisible(false);
-    showDeleteAction->setVisible(false);
-    showDeleteActionLabel->setVisible(false);
+    REMOVE(showDeleteAction);
+    REMOVE(showDeleteActionLabel);
     #endif
     connect(systemTrayCheckBox, SIGNAL(toggled(bool)), minimiseOnClose, SLOT(setEnabled(bool)));
     connect(systemTrayCheckBox, SIGNAL(toggled(bool)), minimiseOnCloseLabel, SLOT(setEnabled(bool)));
@@ -102,33 +200,53 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
 
 void InterfaceSettings::load()
 {
-    libraryArtistImage->setChecked(Settings::self()->libraryArtistImage());
-    selectEntry(libraryView, Settings::self()->libraryView());
-    libraryCoverSize->setCurrentIndex(Settings::self()->libraryCoverSize());
-    libraryYear->setChecked(Settings::self()->libraryYear());
-    selectEntry(albumsView, Settings::self()->albumsView());
-    albumsCoverSize->setCurrentIndex(Settings::self()->albumsCoverSize());
-    albumSort->setCurrentIndex(Settings::self()->albumSort());
-    selectEntry(folderView, Settings::self()->folderView());
-    selectEntry(playlistsView, Settings::self()->playlistsView());
-    playListsStartClosed->setChecked(Settings::self()->playListsStartClosed());
-    selectEntry(streamsView, Settings::self()->streamsView());
-    selectEntry(onlineView, Settings::self()->onlineView());
+    if (enabledViews&V_Artists) {
+        libraryArtistImage->setChecked(Settings::self()->libraryArtistImage());
+        selectEntry(libraryView, Settings::self()->libraryView());
+        libraryCoverSize->setCurrentIndex(Settings::self()->libraryCoverSize());
+        libraryYear->setChecked(Settings::self()->libraryYear());
+    }
+    if (enabledViews&V_Albums) {
+        selectEntry(albumsView, Settings::self()->albumsView());
+        albumsCoverSize->setCurrentIndex(Settings::self()->albumsCoverSize());
+        albumSort->setCurrentIndex(Settings::self()->albumSort());
+    }
+    if (enabledViews&V_Folders) {
+        selectEntry(folderView, Settings::self()->folderView());
+    }
+    if (enabledViews&V_Playlists) {
+        selectEntry(playlistsView, Settings::self()->playlistsView());
+        playListsStartClosed->setChecked(Settings::self()->playListsStartClosed());
+    }
+    if (enabledViews&V_Streams) {
+        selectEntry(streamsView, Settings::self()->streamsView());
+    }
+    if (enabledViews&V_Online) {
+        selectEntry(onlineView, Settings::self()->onlineView());
+    }
     groupSingle->setChecked(Settings::self()->groupSingle());
     useComposer->setChecked(Settings::self()->useComposer());
     groupMultiple->setCurrentIndex(Settings::self()->groupMultiple() ? 1 : 0);
     #ifdef ENABLE_DEVICES_SUPPORT
-    showDeleteAction->setChecked(Settings::self()->showDeleteAction());
-    selectEntry(devicesView, Settings::self()->devicesView());
+    if (showDeleteAction) {
+        showDeleteAction->setChecked(Settings::self()->showDeleteAction());
+    }
+    if (devicesView) {
+        selectEntry(devicesView, Settings::self()->devicesView());
+    }
     #endif
     playQueueGrouped->setCurrentIndex(Settings::self()->playQueueGrouped() ? 1 : 0);
     playQueueAutoExpand->setChecked(Settings::self()->playQueueAutoExpand());
     playQueueStartClosed->setChecked(Settings::self()->playQueueStartClosed());
     playQueueScroll->setChecked(Settings::self()->playQueueScroll());
     playQueueBackground->setChecked(Settings::self()->playQueueBackground());
-    albumsViewChanged();
-    albumsCoverSizeChanged();
-    playListsStyleChanged();
+    if (enabledViews&V_Albums) {
+        albumsViewChanged();
+        albumsCoverSizeChanged();
+    }
+    if (enabledViews&V_Playlists) {
+        playListsStyleChanged();
+    }
     playQueueGroupedChanged();
     forceSingleClick->setChecked(Settings::self()->forceSingleClick());
     systemTrayCheckBox->setChecked(Settings::self()->useSystemTray());
@@ -140,24 +258,40 @@ void InterfaceSettings::load()
 
 void InterfaceSettings::save()
 {
-    Settings::self()->saveLibraryArtistImage(libraryArtistImage->isChecked());
-    Settings::self()->saveLibraryView(getViewType(libraryView));
-    Settings::self()->saveLibraryCoverSize(libraryCoverSize->currentIndex());
-    Settings::self()->saveLibraryYear(libraryYear->isChecked());
-    Settings::self()->saveAlbumsView(getViewType(albumsView));
-    Settings::self()->saveAlbumsCoverSize(albumsCoverSize->currentIndex());
-    Settings::self()->saveAlbumSort(albumSort->currentIndex());
-    Settings::self()->saveFolderView(getViewType(folderView));
-    Settings::self()->savePlaylistsView(getViewType(playlistsView));
-    Settings::self()->savePlayListsStartClosed(playListsStartClosed->isChecked());
-    Settings::self()->saveStreamsView(getViewType(streamsView));
-    Settings::self()->saveOnlineView(getViewType(onlineView));
+    if (enabledViews&V_Artists) {
+        Settings::self()->saveLibraryArtistImage(libraryArtistImage->isChecked());
+        Settings::self()->saveLibraryView(getViewType(libraryView));
+        Settings::self()->saveLibraryCoverSize(libraryCoverSize->currentIndex());
+        Settings::self()->saveLibraryYear(libraryYear->isChecked());
+    }
+    if (enabledViews&V_Albums) {
+        Settings::self()->saveAlbumsView(getViewType(albumsView));
+        Settings::self()->saveAlbumsCoverSize(albumsCoverSize->currentIndex());
+        Settings::self()->saveAlbumSort(albumSort->currentIndex());
+    }
+    if (enabledViews&V_Folders) {
+        Settings::self()->saveFolderView(getViewType(folderView));
+    }
+    if (enabledViews&V_Playlists) {
+        Settings::self()->savePlaylistsView(getViewType(playlistsView));
+        Settings::self()->savePlayListsStartClosed(playListsStartClosed->isChecked());
+    }
+    if (enabledViews&V_Streams) {
+        Settings::self()->saveStreamsView(getViewType(streamsView));
+    }
+    if (enabledViews&V_Online) {
+        Settings::self()->saveOnlineView(getViewType(onlineView));
+    }
     Settings::self()->saveGroupSingle(groupSingle->isChecked());
     Settings::self()->saveUseComposer(useComposer->isChecked());
     Settings::self()->saveGroupMultiple(1==groupMultiple->currentIndex());
     #ifdef ENABLE_DEVICES_SUPPORT
-    Settings::self()->saveShowDeleteAction(showDeleteAction->isChecked());
-    Settings::self()->saveDevicesView(getViewType(devicesView));
+    if (showDeleteAction) {
+        Settings::self()->saveShowDeleteAction(showDeleteAction->isChecked());
+    }
+    if (enabledViews&V_Devices) {
+        Settings::self()->saveDevicesView(getViewType(devicesView));
+    }
     #endif
     Settings::self()->savePlayQueueGrouped(1==playQueueGrouped->currentIndex());
     Settings::self()->savePlayQueueAutoExpand(playQueueAutoExpand->isChecked());

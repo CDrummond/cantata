@@ -26,12 +26,28 @@
 
 #include "ui_interfacesettings.h"
 
+class QStringList;
+
 class InterfaceSettings : public QWidget, private Ui::InterfaceSettings
 {
     Q_OBJECT
 
+    enum Views
+    {
+        V_Artists    = 0x01,
+        V_Albums     = 0x02,
+        V_Folders    = 0x04,
+        V_Playlists  = 0x08,
+        // V_Dynamic    = 0x10,
+        V_Streams    = 0x20,
+        V_Online     = 0x40,
+        V_Devices    = 0x80,
+
+        V_All        = 0xFF
+    };
+
 public:
-    InterfaceSettings(QWidget *p);
+    InterfaceSettings(QWidget *p, const QStringList &hiddenPages);
     virtual ~InterfaceSettings() { }
 
     void load();
@@ -45,6 +61,9 @@ private Q_SLOTS:
     void playListsStyleChanged();
     void playQueueGroupedChanged();
     void forceSingleClickChanged();
+
+private:
+    int enabledViews;
 };
 
 #endif

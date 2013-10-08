@@ -76,3 +76,23 @@ void MessageWidget::setVisible(bool v)
     KMsgWidget::setVisible(v);
     emit visible(v);
 }
+
+void MessageWidget::removeAllActions()
+{
+     QList<QAction *> acts=actions();
+     foreach (QAction *a, acts) {
+         removeAction(a);
+     }
+}
+
+void MessageWidget::setActions(const QList<QAction *> acts)
+{
+    if (acts==actions()) {
+        return;
+    }
+
+    removeAllActions();
+    foreach (QAction *a, acts) {
+        addAction(a);
+    }
+}

@@ -292,7 +292,7 @@ MainWindow::MainWindow(QWidget *parent)
     cropPlayQueueAction = ActionCollection::get()->createAction("cropplaylist", i18n("Crop"));
     shufflePlayQueueAction = ActionCollection::get()->createAction("shuffleplaylist", i18n("Shuffle"));
     addStreamToPlayQueueAction = ActionCollection::get()->createAction("addstreamtoplayqueue", i18n("Add Stream URL"), Icons::self()->addRadioStreamIcon);
-    clearPlayQueueAction = ActionCollection::get()->createAction("clearplaylist", i18n("Clear"), Icons::self()->clearListIcon);
+    promptClearPlayQueueAction = ActionCollection::get()->createAction("clearplaylist", i18n("Clear"), Icons::self()->clearListIcon);
     expandInterfaceAction = ActionCollection::get()->createAction("expandinterface", i18n("Expanded Interface"), "view-media-playlist");
     songInfoAction = ActionCollection::get()->createAction("showsonginfo", i18n("Show Current Song Information"), Icons::self()->infoIcon);
     songInfoAction->setShortcut(Qt::Key_F12);
@@ -326,6 +326,9 @@ MainWindow::MainWindow(QWidget *parent)
     #endif
     expandAllAction = ActionCollection::get()->createAction("expandall", i18n("Expand All"));
     collapseAllAction = ActionCollection::get()->createAction("collapseall", i18n("Collapse All"));
+    clearPlayQueueAction = new QAction(Icons::self()->clearListIcon, i18n("Remove All Songs"), this);
+    connect(clearPlayQueueAction, SIGNAL(triggered(bool)), messageWidget, SLOT(hide()));
+    connect(clearPlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(clearPlayQueue()));
 
     StdActions::self()->playPauseTrackAction->setEnabled(false);
     StdActions::self()->nextTrackAction->setEnabled(false);
@@ -402,10 +405,10 @@ MainWindow::MainWindow(QWidget *parent)
     devicesPage = new DevicesPage(this);
     #endif
 
-    clearPlayQueueAction->setEnabled(false);
+    promptClearPlayQueueAction->setEnabled(false);
     StdActions::self()->savePlayQueueAction->setEnabled(false);
     addStreamToPlayQueueAction->setEnabled(false);
-    clearPlayQueueButton->setDefaultAction(clearPlayQueueAction);
+    clearPlayQueueButton->setDefaultAction(promptClearPlayQueueAction);
     savePlayQueueButton->setDefaultAction(StdActions::self()->savePlayQueueAction);
     searchPlayQueueButton->setDefaultAction(searchPlayQueueAction);
     randomButton->setDefaultAction(randomPlayQueueAction);
@@ -668,7 +671,7 @@ MainWindow::MainWindow(QWidget *parent)
     playQueueProxyModel.setSourceModel(&playQueueModel);
     playQueue->setModel(&playQueueProxyModel);
     playQueue->addAction(removeFromPlayQueueAction);
-    playQueue->addAction(clearPlayQueueAction);
+    playQueue->addAction(promptClearPlayQueueAction);
     playQueue->addAction(StdActions::self()->savePlayQueueAction);
     playQueue->addAction(addStreamToPlayQueueAction);
     playQueue->addAction(addPlayQueueToStoredPlaylistAction);
@@ -773,8 +776,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(StdActions::self()->addToPlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(addToPlayQueue()));
     connect(StdActions::self()->replacePlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(replacePlayQueue()));
     connect(removeFromPlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(removeFromPlayQueue()));
-    connect(clearPlayQueueAction, SIGNAL(triggered(bool)), playQueueSearchWidget, SLOT(clear()));
-    connect(clearPlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(clearPlayQueue()));
+    connect(promptClearPlayQueueAction, SIGNAL(triggered(bool)), playQueueSearchWidget, SLOT(clear()));
+    connect(promptClearPlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(promptClearPlayQueue()));
     connect(copyTrackInfoAction, SIGNAL(triggered(bool)), this, SLOT(copyTrackInfo()));
     connect(cropPlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(cropPlayQueue()));
     connect(shufflePlayQueueAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(shuffle()));
@@ -1018,19 +1021,16 @@ void MainWindow::showError(const QString &message, bool showActions)
         messageWidget->setError(message);
     }
     if (showActions) {
-        messageWidget->addAction(prefAction);
-        messageWidget->addAction(connectAction);
+        messageWidget->setActions(QList<QAction*>() << prefAction << connectAction);
     } else {
-        messageWidget->removeAction(prefAction);
-        messageWidget->removeAction(connectAction);
+        messageWidget->removeAllActions();
     }
 }
 
 void MainWindow::showInformation(const QString &message)
 {
     messageWidget->setInformation(message);
-    messageWidget->removeAction(prefAction);
-    messageWidget->removeAction(connectAction);
+    messageWidget->removeAllActions();
 }
 
 void MainWindow::messageWidgetVisibility(bool v)
@@ -1741,7 +1741,7 @@ void MainWindow::updatePlayQueue(const QList<Song> &songs)
     StdActions::self()->nextTrackAction->setEnabled(StdActions::self()->stopPlaybackAction->isEnabled() && songs.count()>1);
     StdActions::self()->prevTrackAction->setEnabled(StdActions::self()->stopPlaybackAction->isEnabled() && songs.count()>1);
     StdActions::self()->savePlayQueueAction->setEnabled(!songs.isEmpty());
-    clearPlayQueueAction->setEnabled(!songs.isEmpty());
+    promptClearPlayQueueAction->setEnabled(!songs.isEmpty());
 
     bool wasEmpty=0==playQueueModel.rowCount();
     playQueueModel.update(songs);
@@ -2084,6 +2084,12 @@ void MainWindow::updateStatus(MPDStatus * const status)
 void MainWindow::playQueueItemActivated(const QModelIndex &index)
 {
     emit startPlayingSongId(playQueueModel.getIdByRow(playQueueProxyModel.mapToSource(index).row()));
+}
+
+void MainWindow::promptClearPlayQueue()
+{
+    messageWidget->setActions(QList<QAction*>() << clearPlayQueueAction);
+    messageWidget->setWarning(i18n("Remove all songs from play queue?"));
 }
 
 void MainWindow::clearPlayQueue()

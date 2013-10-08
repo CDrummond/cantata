@@ -911,16 +911,7 @@ MainWindow::~MainWindow()
     Settings::self()->saveSidebar((int)(tabWidget->mode()));
     Settings::self()->savePage(tabWidget->currentWidget()->metaObject()->className());
     playQueue->saveHeader();
-    QStringList hiddenPages;
-    for (int i=0; i<tabWidget->count(); ++i) {
-        if (!tabWidget->isEnabled(i)) {
-            QWidget *w=tabWidget->widget(i);
-            if (w) {
-                hiddenPages << w->metaObject()->className();
-            }
-        }
-    }
-    Settings::self()->saveHiddenPages(hiddenPages);
+    Settings::self()->saveHiddenPages(tabWidget->hiddenPages());
     context->saveConfig();
     streamsPage->save();
     positionSlider->saveConfig();
@@ -1205,7 +1196,7 @@ void MainWindow::showPreferencesDialog()
     if (PreferencesDialog::instanceCount() || !canShowDialog()) {
         return;
     }
-    PreferencesDialog *pref=new PreferencesDialog(this);
+    PreferencesDialog *pref=new PreferencesDialog(this, tabWidget->hiddenPages());
     controlConnectionsMenu(false);
     connect(pref, SIGNAL(settingsSaved()), this, SLOT(updateSettings()));
     connect(pref, SIGNAL(reloadStreams()), streamsPage, SLOT(refresh()));

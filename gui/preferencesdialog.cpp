@@ -59,7 +59,7 @@ int PreferencesDialog::instanceCount()
     return iCount;
 }
 
-PreferencesDialog::PreferencesDialog(QWidget *parent)
+PreferencesDialog::PreferencesDialog(QWidget *parent, const QStringList &hiddenPages)
     : Dialog(parent, "PreferencesDialog")
 {
     iCount++;
@@ -69,24 +69,28 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
     server = new ServerSettings(0);
     playback = new PlaybackSettings(0);
     files = new FileSettings(0);
-    interface = new InterfaceSettings(0);
-    streams = new StreamsSettings(0);
-    online = new OnlineSettings(0);
+    interface = new InterfaceSettings(0, hiddenPages);
+    streams = hiddenPages.contains(QLatin1String("StreamsPage")) ? 0 : new StreamsSettings(0);
+    online = hiddenPages.contains(QLatin1String("OnlineServicesPage")) ? 0 : new OnlineSettings(0);
     context = new ContextSettings(0);
     cache = new CacheSettings(0);
     server->load();
     playback->load();
     files->load();
     interface->load();
-    streams->load();
-    online->load();
     context->load();
     widget->addPage(server, i18n("Collection"), Icons::self()->libraryIcon, i18n("Collection Settings"));
     widget->addPage(playback, i18n("Playback"), Icon("media-playback-start"), i18n("Playback Settings"));
     widget->addPage(files, i18n("Files"), Icons::self()->filesIcon, i18n("File Settings"));
     widget->addPage(interface, i18n("Interface"), Icon("preferences-other"), i18n("Interface Settings"));
-    widget->addPage(streams, i18n("Streams"), Icons::self()->radioStreamIcon, i18n("Streams Settings"));
-    widget->addPage(online, i18n("Online"), Icon("applications-internet"), i18n("Online Providers"));
+    if (streams) {
+        widget->addPage(streams, i18n("Streams"), Icons::self()->radioStreamIcon, i18n("Streams Settings"));
+        streams->load();
+    }
+    if (online) {
+        widget->addPage(online, i18n("Online"), Icon("applications-internet"), i18n("Online Providers"));
+        online->load();
+    }
     widget->addPage(context, i18n("Context"), Icons::self()->contextIcon, i18n("Context View Settings"));
     #ifdef TAGLIB_FOUND
     http = new HttpServerSettings(0);
@@ -138,8 +142,12 @@ void PreferencesDialog::writeSettings()
     playback->save();
     files->save();
     interface->save();
-    streams->save();
-    online->save();
+    if (streams) {
+        streams->save();
+    }
+    if (online) {
+        online->save();
+    }
     #ifdef TAGLIB_FOUND
     if (http) {
         http->save();

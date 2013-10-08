@@ -302,7 +302,7 @@ networkAccessEnabled=<Bool - true/false>
     Configure whether Cantata should be allowed to make networks requests - for
     accessing covers, etc. By default this is set to true.
 
-albumViewLoadAll=<bool - true/false>
+albumViewLoadAll=<Bool - true/false>
     If set to true, then when the album view is shown it will request all covers
     covers immediately - rather than waiting for the cover to be displayed.
     Default is false.

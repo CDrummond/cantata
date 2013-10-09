@@ -333,8 +333,8 @@ MainWindow::MainWindow(QWidget *parent)
     clearPlayQueueAction->setShortcut(Qt::AltModifier+Qt::Key_Return);
     cancelAction = ActionCollection::get()->createAction("cancel", i18n("Cancel"), Icons::self()->cancelIcon);
     cancelAction->setShortcut(Qt::AltModifier+Qt::Key_Escape);
-    connect(cancelAction, SIGNAL(triggered(bool)), messageWidget, SLOT(hide()));
-    connect(clearPlayQueueAction, SIGNAL(triggered(bool)), messageWidget, SLOT(hide()));
+    connect(cancelAction, SIGNAL(triggered(bool)), messageWidget, SLOT(animatedHide()));
+    connect(clearPlayQueueAction, SIGNAL(triggered(bool)), messageWidget, SLOT(animatedHide()));
     connect(clearPlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(clearPlayQueue()));
 
     StdActions::self()->playPauseTrackAction->setEnabled(false);

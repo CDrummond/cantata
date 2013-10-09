@@ -120,47 +120,49 @@ void SoundCloudService::jobFinished()
 
     j->deleteLater();
 
-    QJson::Parser parser;
-    #ifdef Q_OS_WIN
-    QVariant result = parser.parse(j->readAll());
-    #else
-    QVariant result = parser.parse(j->actualJob());
-    #endif
-    if (result.isValid()) {
-        QVariantList list = result.toList();
-        foreach(const QVariant &item, list) {
-            QVariantMap details=item.toMap();
-            if (details["title"].toString().isEmpty()) {
-                continue;
+    if (j->ok()) {
+        QJson::Parser parser;
+        #ifdef Q_OS_WIN
+        QVariant result = parser.parse(j->readAll());
+        #else
+        QVariant result = parser.parse(j->actualJob());
+        #endif
+        if (result.isValid()) {
+            QVariantList list = result.toList();
+            foreach(const QVariant &item, list) {
+                QVariantMap details=item.toMap();
+                if (details["title"].toString().isEmpty()) {
+                    continue;
+                }
+                Song song;
+                QUrl url = details["stream_url"].toUrl();
+                #if QT_VERSION < 0x050000
+                QUrl &query=url;
+                #else
+                QUrlQuery query;
+                #endif
+                query.addQueryItem("client_id", constApiKey);
+                #if QT_VERSION >= 0x050000
+                url.setQuery(query);
+                #endif
+                // MPD does not seem to support https :-(
+                if (QLatin1String("https")==url.scheme()) {
+                    url.setScheme(QLatin1String("http"));
+                }
+                song.file=url.toString();
+                // We don't have a real artist name, but username is the most similar thing we have
+                song.artist=details["user"].toMap()["username"].toString();
+                song.title=details["title"].toString();
+                song.genre=details["genre"].toString();
+                song.year=details["release_year"].toInt();
+                song.time=details["duration"].toUInt()/1000;
+                song.setIsFromOnlineService(constName);
+                if (!update) {
+                    update=new MusicLibraryItemRoot();
+                }
+                song.fillEmptyFields();
+                update->append(new MusicLibraryItemSong(song, update));
             }
-            Song song;
-            QUrl url = details["stream_url"].toUrl();
-            #if QT_VERSION < 0x050000
-            QUrl &query=url;
-            #else
-            QUrlQuery query;
-            #endif
-            query.addQueryItem("client_id", constApiKey);
-            #if QT_VERSION >= 0x050000
-            url.setQuery(query);
-            #endif
-            // MPD does not seem to support https :-(
-            if (QLatin1String("https")==url.scheme()) {
-                url.setScheme(QLatin1String("http"));
-            }
-            song.file=url.toString();
-            // We don't have a real artist name, but username is the most similar thing we have
-            song.artist=details["user"].toMap()["username"].toString();
-            song.title=details["title"].toString();
-            song.genre=details["genre"].toString();
-            song.year=details["release_year"].toInt();
-            song.time=details["duration"].toUInt()/1000;
-            song.setIsFromOnlineService(constName);
-            if (!update) {
-                update=new MusicLibraryItemRoot();
-            }
-            song.fillEmptyFields();
-            update->append(new MusicLibraryItemSong(song, update));
         }
     }
 

@@ -23,6 +23,7 @@
 
 #include "networkaccessmanager.h"
 #include "settings.h"
+#include "config.h"
 #include <QTimerEvent>
 #include <QTimer>
 #ifdef ENABLE_KDE_SUPPORT
@@ -133,7 +134,22 @@ NetworkJob * NetworkAccessManager::get(const QNetworkRequest &req, int timeout)
         return new NetworkJob(this);
     }
 
+    #ifndef ENABLE_HTTPS_SUPPORT
+    // Windows builds do not support HTTPS - unless QtNetwork is recompiled...
+    NetworkJob *reply=0;
+    if (QLatin1String("https")==req.url().scheme()) {
+        QUrl httpUrl=req.url();
+        httpUrl.setScheme(QLatin1String("http"));
+        QNetworkRequest httpReq=req;
+        httpReq.setUrl(httpUrl);
+        reply = new NetworkJob(BASE_NETWORK_ACCESS_MANAGER::get(httpReq));
+        reply->setOrigUrl(req.url());
+    } else {
+        reply = new NetworkJob(BASE_NETWORK_ACCESS_MANAGER::get(req));
+    }
+    #else
     NetworkJob *reply = new NetworkJob(BASE_NETWORK_ACCESS_MANAGER::get(req));
+    #endif
 
     if (0!=timeout) {
         connect(reply, SIGNAL(destroyed()), SLOT(replyFinished()));

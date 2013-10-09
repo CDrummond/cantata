@@ -310,6 +310,7 @@ private:
     void showTab(int page);
     bool fadeWhenStop() const;
     void updateNextTrack(int nextTrackId);
+    void updateActionToolTips();
 
 private:
     int loaded;
@@ -369,9 +370,10 @@ private:
     Action *expandAllAction;
     Action *collapseAllAction;
     Action *serverInfoAction;
+    Action *clearPlayQueueAction;
+    Action *cancelAction;
     QAction *autoHideSplitterAction;
     QAction *monoIconsAction;
-    QAction *clearPlayQueueAction;
     TrayItem *trayItem;
     QPoint lastPos;
     QSize expandedSize;

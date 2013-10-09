@@ -1122,6 +1122,22 @@ void FancyTabWidget::SetIcon(int index, const QIcon &icon)
     }
 }
 
+void FancyTabWidget::SetToolTip(int index, const QString &tt)
+{
+    if (index>0 && index<items_.count()) {
+        Item &item=items_[index];
+        item.tab_tooltip_=tt.isEmpty() ? item.tab_label_ : tt;
+
+        if (tab_bar_ && -1!=item.index_) {
+            if (qobject_cast<QTabBar *>(tab_bar_)) {
+                static_cast<QTabBar *>(tab_bar_)->setTabToolTip(item.index_, item.tab_tooltip_);
+            } else {
+                static_cast<FancyTabBar *>(tab_bar_)->setTabToolTip(item.index_, item.tab_tooltip_);
+            }
+        }
+    }
+}
+
 void FancyTabWidget::Recreate()
 {
     Mode m=mode_;

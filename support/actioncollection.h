@@ -39,6 +39,8 @@ public:
     static ActionCollection * get();
     Action * createAction(const QString &name, const QString &text, const char *icon=0, const QString &whatsThis=QString());
     Action * createAction(const QString &name, const QString &text, const QIcon &icon, const QString &whatsThis=QString());
+
+    void updateToolTips();
 };
 
 #else
@@ -107,12 +109,14 @@ public:
         return a;
     }
 
-signals:
+    void updateToolTips();
+
+Q_SIGNALS:
     void inserted(QAction *action);
     void actionHovered(QAction *action);
     void actionTriggered(QAction *action);
 
-protected slots:
+protected Q_SLOTS:
     virtual void connectNotify(const char *signal);
     virtual void slotActionTriggered();
 
@@ -121,7 +125,7 @@ protected:
     virtual void connectNotify(const QMetaMethod &signal);
 #endif
 
-private slots:
+private Q_SLOTS:
     void slotActionHovered();
     void actionDestroyed(QObject *);
     void associatedWidgetDestroyed(QObject *);

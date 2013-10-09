@@ -78,6 +78,13 @@ Action * ActionCollection::createAction(const QString &name, const QString &text
     return act;
 }
 
+void ActionCollection::updateToolTips()
+{
+    foreach (QAction *act, actions()) {
+        Action::updateToolTip(act);
+    }
+}
+
 #ifndef ENABLE_KDE_SUPPORT
 
 #include <QSettings>

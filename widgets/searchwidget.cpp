@@ -63,7 +63,7 @@ SearchWidget::SearchWidget(QWidget *p)
     l->addWidget(label, 0, 0, 1, 2);
     l->addWidget(edit, 1, 0);
     closeButton=new ToolButton(this);
-    closeButton->setToolTip(i18n("Close Search Bar"));
+    closeButton->setToolTip(i18n("Close Search Bar")+QLatin1String(" (")+QKeySequence(Qt::Key_Escape).toString()+QLatin1Char(')'));
     l->addWidget(closeButton, 1, 1);
     Icon icon=Icon("dialog-close");
     if (icon.isNull()) {

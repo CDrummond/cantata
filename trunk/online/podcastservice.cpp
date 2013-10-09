@@ -110,7 +110,7 @@ PodcastService::PodcastService(MusicModel *m)
     loaded=true;
     setUseArtistImages(false);
     setUseAlbumImages(false);
-    loadAll();
+    QMetaObject::invokeMethod(this, "loadAll", Qt::QueuedConnection);
     connect(MPDConnection::self(), SIGNAL(currentSongUpdated(const Song &)), this, SLOT(currentMpdSong(const Song &)));
     if (iconFile.isEmpty()) {
         #ifdef Q_OS_WIN

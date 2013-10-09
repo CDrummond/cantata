@@ -1,4 +1,8 @@
-﻿1.1.3
+﻿1.1.4
+-----
+1. Cantata requires libMTP 1.1.0 or newer.
+
+1.1.3
 -----
  1. (Hopefully) fix selection order of items - and order added to playqueue.
  2. Updated translations: German, Spanish.

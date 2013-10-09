@@ -75,7 +75,6 @@ public:
     void cancelAllJobs() { cancelAll(); cancelAllDownloads(); }
 
 private:
-    void loadAll();
     void cancelAll();
     MusicLibraryItemPodcast * getPodcast(const QUrl &url) const;
     MusicLibraryItemPodcastEpisode * getEpisode(const MusicLibraryItemPodcast *podcast, const QUrl &episode);
@@ -87,6 +86,7 @@ private:
     void cancelDownload(NetworkJob *job);
 
 private Q_SLOTS:
+    void loadAll();
     void rssJobFinished();
     void updateRss();
     void currentMpdSong(const Song &s);

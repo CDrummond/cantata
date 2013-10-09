@@ -234,6 +234,8 @@ public:
     CategoryItem * addXmlCategory(const QString &name, const QIcon &icon, const QString &xmlFileName, bool replace);
     void removeXmlCategory(const QString &key);
 
+    QModelIndex categoryIndex(const CategoryItem *cat) const;
+
 Q_SIGNALS:
     void loading();
     void loaded();

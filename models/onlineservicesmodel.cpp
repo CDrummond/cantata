@@ -261,13 +261,23 @@ void OnlineServicesModel::setEnabled(bool e)
     }
 
     enabled=e;
-    if (!enabled) {
+    if (enabled) {
+//        connect(Covers::self(), SIGNAL(artistImage(const Song &, const QImage &, const QString &)),
+//                this, SLOT(setArtistImage(const Song &, const QImage &)));
+        connect(Covers::self(), SIGNAL(cover(const Song &, const QImage &, const QString &)),
+                this, SLOT(setCover(const Song &, const QImage &, const QString &)));
+    } else {
         stop();
     }
 }
 
 void OnlineServicesModel::stop()
 {
+//    connect(Covers::self(), SIGNAL(artistImage(const Song &, const QImage &, const QString &)),
+//            this, SLOT(setArtistImage(const Song &, const QImage &)));
+    connect(Covers::self(), SIGNAL(cover(const Song &, const QImage &, const QString &)),
+            this, SLOT(setCover(const Song &, const QImage &, const QString &)));
+
     foreach (MusicLibraryItemRoot *col, collections) {
         static_cast<OnlineService *>(col)->stopLoader();
     }
@@ -285,6 +295,46 @@ OnlineService * OnlineServicesModel::service(const QString &name)
          }
     }
     return 0;
+}
+
+//void OnlineServicesModel::setArtistImage(const Song &song, const QImage &img)
+//{
+//    if (img.isNull() || MusicLibraryItemAlbum::CoverNone==MusicLibraryItemAlbum::currentCoverSize() || !(song.file.startsWith("http:/") || song.name.startsWith("http:/"))) {
+//        return;
+//    }
+
+//    for (int i=0; i<collections.count() ; ++i) {
+//        OnlineService *srv=static_cast<OnlineService *>(collections.at(i));
+//        if (srv->useArtistImages()) {
+//            MusicLibraryItemArtist *artistItem = srv->artist(song, false);
+//            if (artistItem && artistItem->setCover(img)) {
+//                QModelIndex idx=index(artistItem->row(), 0, index(i, 0, QModelIndex()));
+//                emit dataChanged(idx, idx);
+//            }
+//        }
+//    }
+//}
+
+void OnlineServicesModel::setCover(const Song &song, const QImage &img, const QString &fileName)
+{
+    Q_UNUSED(fileName)
+    if (img.isNull() || MusicLibraryItemAlbum::CoverNone==MusicLibraryItemAlbum::currentCoverSize() || !(song.file.startsWith("http:/") || song.name.startsWith("http:/"))) {
+        return;
+    }
+
+    for (int i=0; i<collections.count() ; ++i) {
+        OnlineService *srv=static_cast<OnlineService *>(collections.at(i));
+        if (srv->useAlbumImages()) {
+            MusicLibraryItemArtist *artistItem = srv->artist(song, false);
+            if (artistItem) {
+                MusicLibraryItemAlbum *albumItem = artistItem->album(song, false);
+                if (albumItem && albumItem->setCover(img)) {
+                    QModelIndex idx=index(albumItem->row(), 0, index(artistItem->row(), 0, index(i, 0, QModelIndex())));
+                    emit dataChanged(idx, idx);
+                }
+            }
+        }
+    }
 }
 
 void OnlineServicesModel::setBusy(const QString &id, bool b)

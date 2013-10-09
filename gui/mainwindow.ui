@@ -299,12 +299,6 @@
            </widget>
           </item>
           <item>
-           <widget class="SpacerWidget" name="horizontalSpacer_4"/>
-          </item>
-          <item>
-           <widget class="ToolButton" name="clearPlayQueueButton"/>
-          </item>
-          <item>
            <widget class="SpacerWidget" name="horizontalSpacer_4b"/>
           </item>
           <item>
@@ -312,6 +306,12 @@
           </item>
           <item>
            <widget class="ToolButton" name="savePlayQueueButton"/>
+          </item>
+          <item>
+           <widget class="SpacerWidget" name="horizontalSpacer_4"/>
+          </item>
+          <item>
+           <widget class="ToolButton" name="clearPlayQueueButton"/>
           </item>
           <item>
            <widget class="SizeGrip" name="sizeGrip"/>

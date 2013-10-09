@@ -226,6 +226,7 @@ public:
     void addStyleAction(QAction *a) { removeMenuAction(a); otherStyleActions.append(a); }
     void removeStyleAction(QAction *a) { otherStyleActions.removeAll(a); }
     void SetIcon(int index, const QIcon &icon);
+    void SetToolTip(int index, const QString &tt);
     void Recreate();
     QStringList hiddenPages() const;
 

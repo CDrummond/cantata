@@ -481,10 +481,12 @@ ItemView::ItemView(QWidget *p)
     backAction->setIcon(Icon("go-previous"));
     backButton->setDefaultAction(backAction);
     backAction->setShortcut(Qt::AltModifier+(Qt::LeftToRight==layoutDirection() ? Qt::Key_Left : Qt::Key_Right));
+    Action::updateToolTip(backAction);
     homeAction = new QAction(i18n("Go Home"), this);
     homeAction->setIcon(Icon("go-home"));
     homeButton->setDefaultAction(homeAction);
     homeAction->setShortcut(Qt::AltModifier+Qt::Key_Up);
+    Action::updateToolTip(homeAction);
     listView->addAction(backAction);
     listView->addAction(homeAction);
     listView->addDefaultAction(backAction);

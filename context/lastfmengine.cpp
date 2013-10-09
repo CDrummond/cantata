@@ -67,11 +67,7 @@ QString LastFmEngine::translateLinks(QString text) const
 void LastFmEngine::search(const QStringList &query, Mode mode)
 {
     QStringList fixedQuery=fixQuery(query);
-    #ifdef ENABLE_HTTPS_SUPPORT
     QUrl url("https://ws.audioscrobbler.com/2.0/");
-    #else
-    QUrl url("http://ws.audioscrobbler.com/2.0/");
-    #endif
     #if QT_VERSION < 0x050000
     QUrl &urlQuery=url;
     #else

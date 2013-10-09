@@ -21,22 +21,7 @@
 #include "shortcutsmodel.h"
 #include "action.h"
 #include "actioncollection.h"
-
-static QString stripAcceleratorMarkers(const QString &label_) {
-  QString label = label_;
-  int p = 0;
-  forever {
-    p = label.indexOf('&', p);
-    if(p < 0 || p + 1 >= label.length())
-      break;
-
-    if(label.at(p + 1).isLetterOrNumber() || label.at(p + 1) == '&')
-      label.remove(p, 1);
-
-    ++p;
-  }
-  return label;
-}
+#include "utils.h"
 
 ShortcutsModel::ShortcutsModel(const QHash<QString, ActionCollection *> &actionCollections, QObject *parent)
   : QAbstractItemModel(parent),
@@ -155,7 +140,7 @@ QVariant ShortcutsModel::data(const QModelIndex &index, int role) const {
   case Qt::DisplayRole:
     switch(index.column()) {
     case 0:
-      return stripAcceleratorMarkers(action->text());
+      return Utils::stripAcceleratorMarkers(action->text());
     case 1:
       return item->shortcut.toString(QKeySequence::NativeText);
     default:

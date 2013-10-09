@@ -56,6 +56,7 @@ public:
 
     QUrl url() const { return job ? job->url() : QUrl(); }
     QUrl origUrl() const { return origU; }
+    void setOrigUrl(const QUrl &u) { origU=u; }
     QNetworkReply::NetworkError error() const { return job ? job->error() : QNetworkReply::UnknownNetworkError; }
     QString errorString() const { return job ? job->errorString() : QString(); }
     QByteArray readAll() { return job ? job->readAll() : QByteArray(); }

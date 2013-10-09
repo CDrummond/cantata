@@ -69,6 +69,24 @@ QString Utils::strippedText(QString s)
     return s.trimmed();
 }
 
+QString Utils::stripAcceleratorMarkers(QString label)
+{
+    int p = 0;
+    forever {
+        p = label.indexOf('&', p);
+        if(p < 0 || p + 1 >= label.length()) {
+            break;
+        }
+
+        if(label.at(p + 1).isLetterOrNumber() || label.at(p + 1) == '&') {
+            label.remove(p, 1);
+        }
+
+        ++p;
+    }
+    return label;
+}
+
 QString Utils::fixPath(const QString &dir)
 {
     QString d(dir);

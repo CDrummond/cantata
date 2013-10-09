@@ -37,6 +37,7 @@
 #endif
 #endif
 #include <QVBoxLayout>
+#include <QDialogButtonBox>
 #include <QTextStream>
 #include <cstdlib>
 #ifdef ENABLE_KDE_SUPPORT
@@ -328,7 +329,11 @@ MainWindow::MainWindow(QWidget *parent)
     #endif
     expandAllAction = ActionCollection::get()->createAction("expandall", i18n("Expand All"));
     collapseAllAction = ActionCollection::get()->createAction("collapseall", i18n("Collapse All"));
-    clearPlayQueueAction = new QAction(Icons::self()->clearListIcon, i18n("Remove All Songs"), this);
+    clearPlayQueueAction = ActionCollection::get()->createAction("confimclearplaylist", i18n("Remove All Songs"), Icons::self()->clearListIcon);
+    clearPlayQueueAction->setShortcut(Qt::AltModifier+Qt::Key_Return);
+    cancelAction = ActionCollection::get()->createAction("cancel", i18n("Cancel"), Icons::self()->cancelIcon);
+    cancelAction->setShortcut(Qt::AltModifier+Qt::Key_Escape);
+    connect(cancelAction, SIGNAL(triggered(bool)), messageWidget, SLOT(hide()));
     connect(clearPlayQueueAction, SIGNAL(triggered(bool)), messageWidget, SLOT(hide()));
     connect(clearPlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(clearPlayQueue()));
 
@@ -888,6 +893,7 @@ MainWindow::MainWindow(QWidget *parent)
     #ifndef ENABLE_KDE_SUPPORT
     MediaKeys::self()->load();
     #endif
+    updateActionToolTips();
 }
 
 MainWindow::~MainWindow()
@@ -1484,6 +1490,7 @@ void MainWindow::updateSettings()
     if (ItemView::Mode_GroupedTree==Settings::self()->playlistsView() && wasStartClosed!=playlistsPage->isStartClosed()) {
         playlistsPage->updateRows();
     }
+    updateActionToolTips();
 }
 
 void MainWindow::toggleOutput()
@@ -2081,8 +2088,12 @@ void MainWindow::playQueueItemActivated(const QModelIndex &index)
 
 void MainWindow::promptClearPlayQueue()
 {
-    messageWidget->setActions(QList<QAction*>() << clearPlayQueueAction);
-    messageWidget->setWarning(i18n("Remove all songs from play queue?"));
+    if (QDialogButtonBox::GnomeLayout==style()->styleHint(QStyle::SH_DialogButtonLayout)) {
+        messageWidget->setActions(QList<QAction*>() << cancelAction << clearPlayQueueAction);
+    } else {
+        messageWidget->setActions(QList<QAction*>() << clearPlayQueueAction << cancelAction);
+    }
+    messageWidget->setWarning(i18n("Remove all songs from play queue?"), false);
 }
 
 void MainWindow::clearPlayQueue()
@@ -3024,6 +3035,23 @@ void MainWindow::updateNextTrack(int nextTrackId)
         StdActions::self()->nextTrackAction->setToolTip(tt);
         StdActions::self()->nextTrackAction->setProperty("trackid", nextTrackId);
     }
+}
+
+void MainWindow::updateActionToolTips()
+{
+    ActionCollection::get()->updateToolTips();
+    tabWidget->SetToolTip(PAGE_PLAYQUEUE, showPlayQueueAction->toolTip());
+    tabWidget->SetToolTip(PAGE_LIBRARY, libraryTabAction->toolTip());
+    tabWidget->SetToolTip(PAGE_ALBUMS, albumsTabAction->toolTip());
+    tabWidget->SetToolTip(PAGE_FOLDERS, foldersTabAction->toolTip());
+    tabWidget->SetToolTip(PAGE_PLAYLISTS, playlistsTabAction->toolTip());
+    tabWidget->SetToolTip(PAGE_DYNAMIC, dynamicTabAction->toolTip());
+    tabWidget->SetToolTip(PAGE_STREAMS, streamsTabAction->toolTip());
+    tabWidget->SetToolTip(PAGE_ONLINE, onlineTabAction->toolTip());
+    #ifdef ENABLE_DEVICES_SUPPORT
+    tabWidget->SetToolTip(PAGE_DEVICES, devicesTabAction->toolTip());
+    #endif
+    tabWidget->SetToolTip(PAGE_CONTEXT, songInfoAction->toolTip());
 }
 
 #if !defined Q_OS_WIN && !defined Q_OS_MAC

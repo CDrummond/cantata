@@ -45,6 +45,7 @@ namespace Utils
     }
 
     extern QString strippedText(QString s);
+    extern QString stripAcceleratorMarkers(QString label);
     extern QString fixPath(const QString &d);
     extern QString getDir(const QString &file);
     extern QString getFile(const QString &file);

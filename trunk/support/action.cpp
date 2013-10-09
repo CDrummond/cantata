@@ -22,7 +22,9 @@
 
 #include "action.h"
 #include "gtkstyle.h"
+#include "utils.h"
 #include <QApplication>
+#include <QKeySequence>
 
 Action::Action(QObject *parent)
 #ifdef ENABLE_KDE_SUPPORT
@@ -71,8 +73,19 @@ Action::Action(const QIcon &icon, const QString &text, QObject *parent, const QO
 
 void Action::initIcon(QAction *act)
 {
-    if (GtkStyle::isActive()) {
+    if (GtkStyle::isActive() && act) {
         act->setIconVisibleInMenu(false);
+    }
+}
+
+void Action::updateToolTip(QAction *act)
+{
+    if (!act) {
+        return;
+    }
+    QKeySequence sc=act->shortcut();
+    if (!sc.isEmpty()) {
+        act->setToolTip(Utils::stripAcceleratorMarkers(act->text())+QLatin1String(" (")+sc.toString()+QLatin1Char(')'));
     }
 }
 

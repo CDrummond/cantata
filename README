@@ -307,6 +307,10 @@ albumViewLoadAll=<Bool - true/false>
     covers immediately - rather than waiting for the cover to be displayed.
     Default is false.
 
+promptClearPlayQueue=<Bool - true/false>
+    Determines whether the user should be prompted before clearing playqueue.
+    Default is true.
+
 e.g.
 [General]
 iconTheme=oxygen
@@ -315,6 +319,7 @@ maxCoverUpdatePerIteration=5
 cueFileCodecs=GBK, big5-0
 networkAccessEnabled=false
 albumViewLoadAll=true
+promptClearPlayQueue=false
 
 
 7. CUE Files

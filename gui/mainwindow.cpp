@@ -2088,12 +2088,16 @@ void MainWindow::playQueueItemActivated(const QModelIndex &index)
 
 void MainWindow::promptClearPlayQueue()
 {
-    if (QDialogButtonBox::GnomeLayout==style()->styleHint(QStyle::SH_DialogButtonLayout)) {
-        messageWidget->setActions(QList<QAction*>() << cancelAction << clearPlayQueueAction);
+    if (Settings::self()->confirmClearPlayQueue()) {
+        if (QDialogButtonBox::GnomeLayout==style()->styleHint(QStyle::SH_DialogButtonLayout)) {
+            messageWidget->setActions(QList<QAction*>() << cancelAction << clearPlayQueueAction);
+        } else {
+            messageWidget->setActions(QList<QAction*>() << clearPlayQueueAction << cancelAction);
+        }
+        messageWidget->setWarning(i18n("Remove all songs from play queue?"), false);
     } else {
-        messageWidget->setActions(QList<QAction*>() << clearPlayQueueAction << cancelAction);
+        clearPlayQueue();
     }
-    messageWidget->setWarning(i18n("Remove all songs from play queue?"), false);
 }
 
 void MainWindow::clearPlayQueue()

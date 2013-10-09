@@ -762,6 +762,11 @@ bool Settings::albumViewLoadAll()
     return GET_BOOL("albumViewLoadAll", false);
 }
 
+bool Settings::confirmClearPlayQueue()
+{
+    return GET_BOOL("confirmClearPlayQueue", true);
+}
+
 void Settings::removeConnectionDetails(const QString &v)
 {
     if (v==currentConnection()) {

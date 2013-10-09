@@ -268,9 +268,9 @@ const QPixmap & MusicLibraryItemAlbum::cover()
                 static_cast<Device *>(parentItem()->parentItem())->requestCover(song);
             }
             #endif
-            else if (parentItem() && parentItem()->parentItem() && dynamic_cast<OnlineService *>(parentItem()->parentItem())) {
+            /*else if (parentItem() && parentItem()->parentItem() && dynamic_cast<OnlineService *>(parentItem()->parentItem())) {
                 img.img=OnlineServicesModel::self()->requestImage(static_cast<OnlineService *>(parentItem()->parentItem())->id(), parentItem()->data(), data(), m_imageUrl);
-            } else {
+            }*/ else {
                 img=Covers::self()->requestImage(song);
             }
 

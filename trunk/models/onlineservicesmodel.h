@@ -93,6 +93,8 @@ public:
     void setHiddenProviders(const QSet<QString> &prov);
 
 public Q_SLOTS:
+//    void setArtistImage(const Song &song, const QImage &img);
+    void setCover(const Song &song, const QImage &img, const QString &fileName);
     void stateChanged(const QString &name, bool state);
 
 private:

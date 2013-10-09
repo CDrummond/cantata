@@ -268,9 +268,15 @@ const QPixmap & MusicLibraryItemAlbum::cover()
                 static_cast<Device *>(parentItem()->parentItem())->requestCover(song);
             }
             #endif
-            /*else if (parentItem() && parentItem()->parentItem() && dynamic_cast<OnlineService *>(parentItem()->parentItem())) {
-                img.img=OnlineServicesModel::self()->requestImage(static_cast<OnlineService *>(parentItem()->parentItem())->id(), parentItem()->data(), data(), m_imageUrl);
-            }*/ else {
+            else if (parentItem() && parentItem()->parentItem() && dynamic_cast<OnlineService *>(parentItem()->parentItem())) {
+                //img.img=OnlineServicesModel::self()->requestImage(static_cast<OnlineService *>(parentItem()->parentItem())->id(), parentItem()->data(), data(), m_imageUrl);
+                // ONLINE: Image URL is encoded in song.name...
+                if (!m_imageUrl.isEmpty()) {
+                    song.name=m_imageUrl;
+                    song.title=parentItem()->parentItem()->data().toLower();
+                }
+                img=Covers::self()->requestImage(song);
+            } else {
                 img=Covers::self()->requestImage(song);
             }
 

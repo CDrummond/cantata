@@ -549,7 +549,7 @@ void StreamsPage::controlSearch(bool on)
                 proxy->updateWithFilter(QString(), QString(), cat);
                 QModelIndex filterIndex=cat ? StreamsModel::self()->categoryIndex(cat) : QModelIndex();
                 if (filterIndex.isValid()) {
-                    view->showIndex(proxy->mapFromSource(filterIndex), true);
+                    view->expand(proxy->mapFromSource(filterIndex), true);
                 }
                 // We need to call focusSearch via 'invokeMethod' as we need this to occur at the nex event-loop iteration.
                 // This is due to the fact that we have 2 views - search (for TuneIn/ShoutCasy) and standard. Our focusSearch()

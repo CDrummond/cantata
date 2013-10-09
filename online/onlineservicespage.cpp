@@ -334,7 +334,7 @@ void OnlineServicesPage::controlSearch(bool on)
         QModelIndex filterIndex=srv ? OnlineServicesModel::self()->serviceIndex(srv) : QModelIndex();
         proxy.updateWithFilter(QString(), QString(), srv);
         if (filterIndex.isValid()) {
-            view->showIndex(proxy.mapFromSource(filterIndex), true);
+            view->expand(proxy.mapFromSource(filterIndex), true);
         }
     } else {
         OnlineService *srv=OnlineServicesModel::self()->service(prevSearchService);

@@ -67,6 +67,13 @@ bool StreamsProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourc
     QModelIndex idx=index.parent();
     QStringList strings;
 
+    if (filter && item==filter) { // Accept top-level item!
+        return true;
+    }
+    if (filter && !idx.isValid() && item!=filter) { // Accept all items that are not children of top-level item!
+        return true;
+    }
+
     // Traverse back up tree, so we get parent strings...
     while (idx.isValid()) {
         StreamsModel::Item *i = static_cast<StreamsModel::Item *>(idx.internalPointer());
@@ -75,6 +82,9 @@ bool StreamsProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourc
         }
         strings << i->name;
         idx=idx.parent();
+        if (filter && !idx.isValid() && i!=filter) { // Accept all items that are not children of top-level item!
+            return true;
+        }
     }
 
     if (item->isCategory()) {

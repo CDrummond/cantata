@@ -23,8 +23,7 @@
     used.
 10. Add ability to 'filter search' stream categories.
 11. Add option to prevent system from suspending whilst playing (Linux only).
-12. If playqueue is cleared when dynamizer is running, then also stop
-    dynamizer.
+12. If playqueue is cleared when dynamizer is running, then also stop dynamizer.
 13. Create a new SizeGrip class, so that we can force the size-grip on the main
     window to have the same height as toolbuttons - this makes it align to the
     bottom.
@@ -67,6 +66,10 @@
 34. Prompt before clearing playqueue.
 35. Only show config pages, and tabs, that are relevant to the enabled views.
 36. Show action short-cuts in tooltips.
+37. When filtering (i.e. searching) Jamendo, Maganatue, and stream providers
+    (apart from TuneIn and ShoutCast), then dont hide items from other
+    services - but only filter the ones on the filtering service.
+38. Dont hide other online services / streams when searching.
 
 1.1.4
 -----

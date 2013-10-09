@@ -96,6 +96,37 @@ bool ProxyModel::update(const QString &text, const QString &genre)
     return false;
 }
 
+bool ProxyModel::updateWithFilter(const QString &text, const QString &genre, const void *f)
+{
+    bool wasEmpty=isEmpty();
+    filterStrings = text.split(' ', QString::SkipEmptyParts, Qt::CaseInsensitive);
+    unmatchedStrings = 0;
+    const int n = qMin(filterStrings.count(), (int)sizeof(uint));
+    for ( int i = 0; i < n; ++i ) {
+        unmatchedStrings |= (1<<i);
+    }
+
+    origFilterText=text;
+    filterGenre=genre;
+    filter=f;
+
+    if (text.length()<2 && genre.isEmpty() && !filter) {
+        if (filterEnabled) {
+            filterEnabled=false;
+            if (!wasEmpty) {
+                invalidate();
+            }
+            return true;
+        }
+    } else {
+        filterEnabled=true;
+        invalidate();
+        return true;
+    }
+
+    return false;
+}
+
 bool ProxyModel::isChildOfRoot(const QModelIndex &idx) const
 {
     if (!rootIndex.isValid()) {

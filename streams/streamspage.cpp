@@ -41,7 +41,6 @@
 #include <QFileDialog>
 #include <QDir>
 #endif
-#include <QAction>
 #include <QMenu>
 #include <QFileInfo>
 #if QT_VERSION >= 0x050000
@@ -65,6 +64,7 @@ StreamsPage::StreamsPage(QWidget *p)
 //     connect(view, SIGNAL(itemsSelected(bool)), addToPlaylist, SLOT(setEnabled(bool)));
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
     connect(view, SIGNAL(searchIsActive(bool)), this, SLOT(controlSearch(bool)));
+    connect(view, SIGNAL(searchItems()), this, SLOT(searchItems()));
     connect(view, SIGNAL(itemsSelected(bool)), SLOT(controlActions()));
     connect(searchView, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
     connect(searchView, SIGNAL(searchItems()), this, SLOT(searchItems()));
@@ -495,7 +495,17 @@ void StreamsPage::searchItems()
     if (!searching) {
         return;
     }
-    searchModel.search(searchView->searchText().trimmed(), false);
+    if (proxy==&searchProxy) {
+        searchModel.search(searchView->searchText().trimmed(), false);
+    } else {
+        QString text=view->searchText().trimmed();
+        proxy->updateWithFilter(text, QString(), proxy->filterItem());
+        if (proxy->enabled() && !text.isEmpty()) {
+            view->expandAll(proxy->filterItem()
+                            ? proxy->mapFromSource(StreamsModel::self()->categoryIndex(static_cast<const StreamsModel::CategoryItem *>(proxy->filterItem())))
+                            : QModelIndex());
+        }
+    }
 }
 
 StreamsModel::CategoryItem * StreamsPage::getSearchCategory()
@@ -530,20 +540,37 @@ void StreamsPage::controlSearch(bool on)
                                                         ? StreamSearchModel::ShoutCast
                                                         : StreamSearchModel::Filter;
 
-            proxy=&searchProxy;
-            view->clearSelection();
-            searchModel.setCat(searchCat);
-            searchView->setSearchLabelText(i18n("Search %1:", cat->name));
-            searchView->setBackgroundImage(cat->icon);
             if (StreamSearchModel::Filter==searchCat) {
-                searchModel.setFilterRoot(cat);
+                proxy=&streamsProxy;
+                searchModel.clear();
+                viewStack->setCurrentIndex(0);
+                view->setSearchLabelText(i18n("Search %1:", cat->name));
+                view->setBackgroundImage(cat->icon);
+                proxy->updateWithFilter(QString(), QString(), cat);
+                QModelIndex filterIndex=cat ? StreamsModel::self()->categoryIndex(cat) : QModelIndex();
+                if (filterIndex.isValid()) {
+                    view->showIndex(proxy->mapFromSource(filterIndex), true);
+                }
+                // We need to call focusSearch via 'invokeMethod' as we need this to occur at the nex event-loop iteration.
+                // This is due to the fact that we have 2 views - search (for TuneIn/ShoutCasy) and standard. Our focusSearch()
+                // calls focusSearch on both - which triggers this controlSearch().
+                QMetaObject::invokeMethod(view, "focusSearch", Qt::QueuedConnection);
+            } else {
+                proxy=&searchProxy;
+                searchModel.setCat(searchCat);
+                viewStack->setCurrentIndex(1);
+                searchView->setSearchLabelText(i18n("Search %1:", cat->name));
+                searchView->setBackgroundImage(cat->icon);
             }
+            view->clearSelection();
         } else {
+            proxy->updateWithFilter(QString(), QString(), 0);
             proxy=&streamsProxy;
             searchModel.clear();
             view->setSearchVisible(false);
+            viewStack->setCurrentIndex(0);
+            view->setBackgroundImage(QIcon());
         }
-        viewStack->setCurrentIndex(on ? 1 : 0);
         controlActions();
     }
 }

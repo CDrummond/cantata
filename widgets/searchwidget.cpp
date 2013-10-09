@@ -99,16 +99,22 @@ void SearchWidget::toggle()
 
 void SearchWidget::activate()
 {
+    bool wasActive=widgetIsActive;
     widgetIsActive=true;
     show();
     setFocus();
-    emit active(widgetIsActive);
+    if (wasActive!=widgetIsActive) {
+        emit active(widgetIsActive);
+    }
 }
 
 void SearchWidget::close()
 {
+    bool wasActive=widgetIsActive;
     widgetIsActive=false;
     setVisible(false);
     edit->setText(QString());
-    emit active(widgetIsActive);
+    if (wasActive!=widgetIsActive) {
+        emit active(widgetIsActive);
+    }
 }

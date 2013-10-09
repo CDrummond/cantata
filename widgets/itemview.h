@@ -119,7 +119,6 @@ public:
     void setDeleteAction(QAction *act);
     void setRootIsDecorated(bool v) { treeView->setRootIsDecorated(v); }
     void showIndex(const QModelIndex &idx, bool scrollTo);
-    void focusSearch();
     void setSearchLabelText(const QString &text);
     void setSearchVisible(bool v);
     bool isSearchActive() const;
@@ -133,6 +132,7 @@ public:
     void setAnimated(bool a);
 
 public Q_SLOTS:
+    void focusSearch();
     void showSpinner(bool v=true);
     void hideSpinner();
     void collectionRemoved(quint32 key);

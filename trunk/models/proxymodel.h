@@ -31,13 +31,15 @@
 class ProxyModel : public QSortFilterProxyModel
 {
 public:
-    ProxyModel(QObject *parent) : QSortFilterProxyModel(parent), isSorted(false), filterEnabled(false) { }
+    ProxyModel(QObject *parent) : QSortFilterProxyModel(parent), isSorted(false), filterEnabled(false), filter(0) { }
     virtual ~ProxyModel() { }
 
     bool update(const QString &text, const QString &genre=QString());
+    bool updateWithFilter(const QString &text, const QString &genre, const void *f);
+    const void * filterItem() const { return filter; }
     void setRootIndex(const QModelIndex &idx) { rootIndex=idx.isValid() ? mapToSource(idx) : idx; }
     bool isChildOfRoot(const QModelIndex &idx) const;
-    bool isEmpty() const { return filterGenre.isEmpty() && filterStrings.isEmpty(); }
+    bool isEmpty() const { return filterGenre.isEmpty() && filterStrings.isEmpty() && 0==filter; }
     bool enabled() const { return filterEnabled; }
     const QString & filterText() const { return origFilterText; }
     void sort() { isSorted=false; sort(0); }
@@ -55,6 +57,7 @@ protected:
     QString origFilterText;
     QStringList filterStrings;
     uint unmatchedStrings;
+    const void *filter;
 };
 
 #endif

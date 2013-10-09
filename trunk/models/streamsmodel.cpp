@@ -1937,3 +1937,9 @@ void StreamsModel::removeXmlCategory(const QString &key)
         }
     }
 }
+
+QModelIndex StreamsModel::categoryIndex(const CategoryItem *cat) const
+{
+    int row=root->children.indexOf(const_cast<CategoryItem *>(cat));
+    return -1==row ? QModelIndex() : createIndex(row, 0, (void *)cat);
+}

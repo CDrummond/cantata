@@ -191,6 +191,7 @@ public:
     QStringList cueFileCodecs();
     bool networkAccessEnabled();
     bool albumViewLoadAll();
+    bool confirmClearPlayQueue();
 
     void removeConnectionDetails(const QString &v);
     void saveConnectionDetails(const MPDConnectionDetails &v);

@@ -642,7 +642,7 @@ QList<OnlineServicesModel::Provider> OnlineServicesModel::getProviders() const
 
 void OnlineServicesModel::setHiddenProviders(const QSet<QString> &prov)
 {
-    bool added=false;
+//    bool added=false;
     bool changed=false;
     foreach (OnlineService *i, hiddenServices) {
         if (!prov.contains(i->id())) {
@@ -650,7 +650,7 @@ void OnlineServicesModel::setHiddenProviders(const QSet<QString> &prov)
             collections.append(i);
             hiddenServices.removeAll(i);
             endInsertRows();
-            added=changed=true;
+            /*added=*/changed=true;
         }
     }
 
@@ -665,9 +665,9 @@ void OnlineServicesModel::setHiddenProviders(const QSet<QString> &prov)
             }
         }
     }
-    if (added && collections.count()>1) {
-        emit needToSort();
-    }
+//    if (added && collections.count()>1) {
+//        emit needToSort();
+//    }
     updateGenres();
     if (changed) {
         emit providersChanged();

@@ -96,7 +96,7 @@ void DynamicPage::searchItems()
 {
     QString text=view->searchText().trimmed();
     proxy.update(text);
-    if (proxy.enabled() && !text.isEmpty()) {
+    if (proxy.enabled() && !proxy.filterText().isEmpty()) {
         view->expandAll();
     }
 }

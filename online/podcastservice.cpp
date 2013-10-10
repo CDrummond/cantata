@@ -221,7 +221,7 @@ void PodcastService::rssJobFinished()
                     }
                 }
                 endInsertRows();
-                emitNeedToSort();
+//                emitNeedToSort();
             } else {
                 MusicLibraryItemPodcast *orig = getPodcast(j->url());
                 if (!orig) {
@@ -275,7 +275,7 @@ void PodcastService::rssJobFinished()
 
                     orig->setUnplayedCount();
                     orig->save();
-                    emitNeedToSort();
+//                    emitNeedToSort();
                 }
 
                 delete podcast;

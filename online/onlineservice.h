@@ -139,7 +139,7 @@ protected:
     void emitUpdated();
     void emitError(const QString &msg);
     void emitDataChanged(const QModelIndex &idx);
-    void emitNeedToSort();
+//    void emitNeedToSort();
     void setBusy(bool b);
     void beginInsertRows(const QModelIndex &idx, int from, int to);
     void endInsertRows();

@@ -39,7 +39,7 @@ public:
 private:
     void parseArtist(QXmlStreamReader &xml);
     void parseAlbum(MusicLibraryItemArtist *artist, QXmlStreamReader &xml);
-    void parseSong(MusicLibraryItemArtist *artist, MusicLibraryItemAlbum *album, QXmlStreamReader &xml);
+    void parseSong(MusicLibraryItemArtist *artist, MusicLibraryItemAlbum *album, int genre, QXmlStreamReader &xml);
 };
 
 class JamendoService : public OnlineService

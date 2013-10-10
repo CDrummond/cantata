@@ -244,6 +244,7 @@ void JamendoMusicLoader::parseAlbum(MusicLibraryItemArtist *artist, QXmlStreamRe
 {
     MusicLibraryItemAlbum *album=0;
     QString id;
+    int genre=0;
 
     while (!xml.atEnd()) {
         if (wasStopped()) {
@@ -260,9 +261,11 @@ void JamendoMusicLoader::parseAlbum(MusicLibraryItemArtist *artist, QXmlStreamRe
                 s.album=xml.readElementText().trimmed();
                 album=artist->album(s, true);
             } else if (album && QLatin1String("track")==name) {
-                parseSong(artist, album, xml);
+                parseSong(artist, album, genre, xml);
             } else if (QLatin1String("id")==name) {
                 id=xml.readElementText().trimmed();
+            } else if (QLatin1String("id3genre")==name) {
+                genre=xml.readElementText().toInt();
             }
         } else if (xml.isEndElement() && QLatin1String("album")==xml.name()) {
             break;
@@ -273,7 +276,7 @@ void JamendoMusicLoader::parseAlbum(MusicLibraryItemArtist *artist, QXmlStreamRe
     }
 }
 
-void JamendoMusicLoader::parseSong(MusicLibraryItemArtist *artist, MusicLibraryItemAlbum *album, QXmlStreamReader &xml)
+void JamendoMusicLoader::parseSong(MusicLibraryItemArtist *artist, MusicLibraryItemAlbum *album, int genre, QXmlStreamReader &xml)
 {
     Song s;
     s.artist=album->parentItem()->data();
@@ -293,7 +296,7 @@ void JamendoMusicLoader::parseSong(MusicLibraryItemArtist *artist, MusicLibraryI
             } else if (QLatin1String("duration")==name) {
                 s.time=xml.readElementText().toFloat();
             } else if (QLatin1String("id3genre")==name) {
-                s.genre=id3Genre(xml.readElementText().toInt());
+                genre=xml.readElementText().toInt();
             } else if (QLatin1String("id")==name) {
                 s.file=xml.readElementText().trimmed();
             }
@@ -303,6 +306,7 @@ void JamendoMusicLoader::parseSong(MusicLibraryItemArtist *artist, MusicLibraryI
     }
 
     if (!s.title.isEmpty()) {
+        s.genre=id3Genre(genre);
         s.fillEmptyFields();
         s.track=album->childItems().count()+1;
         MusicLibraryItemSong *song=new MusicLibraryItemSong(s, album);

@@ -53,6 +53,8 @@ public:
     };
 
     static const QLatin1String constName;
+    static QString imageUrl(const QString &id);
+
     JamendoService(MusicModel *m) : OnlineService(m, constName), format(FMT_MP3) { }
 
     Song fixPath(const Song &orig, bool) const;

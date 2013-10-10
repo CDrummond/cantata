@@ -46,7 +46,8 @@ struct Song
         Playlist        = 3,
         Stream          = 4,
         CantataStream   = 5,
-        Cdda            = 6
+        Cdda            = 6,
+        OnlineSvrTrack  = 7
     };
 
     qint32 id;

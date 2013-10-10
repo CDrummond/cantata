@@ -218,6 +218,7 @@ void JamendoMusicLoader::parseArtist(QXmlStreamReader &xml)
 void JamendoMusicLoader::parseAlbum(MusicLibraryItemArtist *artist, QXmlStreamReader &xml)
 {
     MusicLibraryItemAlbum *album=0;
+    QString id;
 
     while (!xml.atEnd()) {
         if (wasStopped()) {
@@ -235,12 +236,15 @@ void JamendoMusicLoader::parseAlbum(MusicLibraryItemArtist *artist, QXmlStreamRe
                 album=artist->album(s, true);
             } else if (album && QLatin1String("track")==name) {
                 parseSong(artist, album, xml);
-            }  else if (album && QLatin1String("image")==name) {
-                album->setImageUrl(xml.readElementText().trimmed());
+            } else if (QLatin1String("id")==name) {
+                id=xml.readElementText().trimmed();
             }
         } else if (xml.isEndElement() && QLatin1String("album")==xml.name()) {
             break;
         }
+    }
+    if (album && !id.isEmpty()) {
+        album->setImageUrl(id);
     }
 }
 
@@ -286,6 +290,12 @@ void JamendoMusicLoader::parseSong(MusicLibraryItemArtist *artist, MusicLibraryI
 
 const QLatin1String JamendoService::constName("Jamendo");
 static const QLatin1String constStreamUrl("http://api.jamendo.com/get2/stream/track/redirect/?id=%1&streamencoding=");
+
+QString JamendoService::imageUrl(const QString &id)
+{
+    return QString("http://api.jamendo.com/get2/image/album/redirect/?id=%1&imagesize=300").arg(id);
+}
+
 void JamendoService::createLoader()
 {
     loader=new JamendoMusicLoader(QUrl("http://img.jamendo.com/data/dbdump_artistalbumtrack.xml.gz"));
@@ -298,6 +308,7 @@ Song JamendoService::fixPath(const Song &orig, bool) const
     s.file.replace("id=%1", "id="+orig.file);
     s.file+=FMT_MP3==format ? QLatin1String("mp31") : QLatin1String("ogg2");
     s.genre=FMT_MP3==format ? QLatin1String("mp3") : QLatin1String("ogg");
+    s.type=Song::OnlineSvrTrack;
     return encode(s);
 }
 

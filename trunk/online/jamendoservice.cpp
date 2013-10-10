@@ -28,10 +28,34 @@
 #include "musiclibraryitemsong.h"
 #include "song.h"
 #include "settings.h"
+#include "config.h"
 #include <QXmlStreamReader>
+
+#ifdef TAGLIB_FOUND
+#include <QTextCodec>
+#include <taglib/id3v1genres.h>
+#include <taglib/tstring.h>
+
+static QString tString2QString(const TagLib::String &str)
+{
+    static QTextCodec *codec = QTextCodec::codecForName("UTF-8");
+    return codec->toUnicode(str.toCString(true)).trimmed();
+}
 
 static QString id3Genre(int id)
 {
+    // Clementine: In theory, genre 0 is "blues"; in practice it's invalid.
+    return 0==id ? QString() : tString2QString(TagLib::ID3v1::genre(id));
+}
+
+#else
+static QString id3Genre(int id)
+{
+    // Clementine: In theory, genre 0 is "blues"; in practice it's invalid.
+    if (0==id) {
+        return QString();
+    }
+
     static QMap<int, QString> idMap;
 
     if (idMap.isEmpty()) {
@@ -165,6 +189,7 @@ static QString id3Genre(int id)
 
     return idMap[id];
 }
+#endif
 
 JamendoMusicLoader::JamendoMusicLoader(const QUrl &src)
     : OnlineMusicLoader(src)

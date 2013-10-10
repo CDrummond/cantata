@@ -339,7 +339,7 @@ void PlaylistsPage::searchItems()
 {
     QString text=view->searchText().trimmed();
     bool updated=proxy.update(text, genreCombo->currentIndex()<=0 ? QString() : genreCombo->currentText());
-    if (proxy.enabled() && !text.isEmpty()) {
+    if (proxy.enabled() && !proxy.filterText().isEmpty()) {
         view->expandAll();
     }
     if(updated) {

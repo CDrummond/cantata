@@ -26,6 +26,7 @@
 #include <QSet>
 #include "song.h"
 #include "config.h"
+#include "covers.h"
 #include "multimusicmodel.h"
 #include "musiclibraryproxymodel.h"
 
@@ -85,6 +86,7 @@ public:
     void cancelAll();
     bool isHidden(OnlineService *srv) { return hiddenServices.contains(srv); }
 
+    Covers::Image readImage(const Song &song);
     QImage requestImage(const QString &id, const QString &artist, const QString &album, const QString &url,
                         const QString cacheName=QString(), int maxSize=-1);
 
@@ -93,8 +95,6 @@ public:
     void setHiddenProviders(const QSet<QString> &prov);
 
 public Q_SLOTS:
-//    void setArtistImage(const Song &song, const QImage &img);
-    void setCover(const Song &song, const QImage &img, const QString &fileName);
     void stateChanged(const QString &name, bool state);
 
 private:

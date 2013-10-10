@@ -413,10 +413,10 @@ void OnlineService::emitDataChanged(const QModelIndex &idx)
     emit static_cast<OnlineServicesModel *>(m_model)->dataChanged(idx, idx);
 }
 
-void OnlineService::emitNeedToSort()
-{
-    emit static_cast<OnlineServicesModel *>(m_model)->needToSort();
-}
+//void OnlineService::emitNeedToSort()
+//{
+//    emit static_cast<OnlineServicesModel *>(m_model)->needToSort();
+//}
 
 void OnlineService::setBusy(bool b)
 {

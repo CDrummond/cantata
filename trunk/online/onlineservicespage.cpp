@@ -69,7 +69,7 @@ OnlineServicesPage::OnlineServicesPage(QWidget *p)
     connect(genreCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(searchItems()));
     connect(OnlineServicesModel::self(), SIGNAL(updateGenres(const QSet<QString> &)), genreCombo, SLOT(update(const QSet<QString> &)));
     connect(OnlineServicesModel::self(), SIGNAL(updated(QModelIndex)), this, SLOT(updated(QModelIndex)));
-    connect(OnlineServicesModel::self(), SIGNAL(needToSort()), this, SLOT(sortList()));
+//    connect(OnlineServicesModel::self(), SIGNAL(needToSort()), this, SLOT(sortList()));
     connect(OnlineServicesModel::self(), SIGNAL(busy(bool)), view, SLOT(showSpinner(bool)));
     connect(OnlineServicesModel::self(), SIGNAL(providersChanged()), view, SLOT(closeSearch()));
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
@@ -116,7 +116,7 @@ OnlineServicesPage::OnlineServicesPage(QWidget *p)
     #endif
     menuButton->setMenu(menu);
     proxy.setSourceModel(OnlineServicesModel::self());
-    proxy.setDynamicSortFilter(false);
+//    proxy.setDynamicSortFilter(false);
     view->setModel(&proxy);
     view->setRootIsDecorated(true);
 }
@@ -129,9 +129,9 @@ void OnlineServicesPage::setEnabled(bool e)
 {
     OnlineServicesModel::self()->setEnabled(e);
     controlActions();
-    if (e) {
-        proxy.sort();
-    }
+//    if (e) {
+//        proxy.sort();
+//    }
 }
 
 void OnlineServicesPage::showEvent(QShowEvent *e)
@@ -358,8 +358,8 @@ void OnlineServicesPage::searchItems()
         }
     } else {
         proxy.update(text, genreCombo->currentIndex()<=0 ? QString() : genreCombo->currentText(), view->isSearchActive() ? proxy.filterItem() : 0);
-        if (proxy.enabled() && !text.isEmpty()) {
-            view->expandAll(proxy.filterItem()
+        if (proxy.enabled() && !proxy.filterText().isEmpty()) {
+            view->expandAll(proxy.filterItem() && view->isSearchActive()
                                 ? proxy.mapFromSource(OnlineServicesModel::self()->serviceIndex(static_cast<const OnlineService *>(proxy.filterItem())))
                                 : QModelIndex());
         }
@@ -774,18 +774,18 @@ void OnlineServicesPage::deleteDownloadedPodcast()
 
 void OnlineServicesPage::updated(const QModelIndex &idx)
 {
-    MusicLibraryItem *item=static_cast<MusicLibraryItem *>(idx.internalPointer());
-    if (MusicLibraryItem::Type_Root==item->itemType() && !static_cast<OnlineService *>(item)->isSearchBased()) {
-        proxy.sort();
-    }
+//    MusicLibraryItem *item=static_cast<MusicLibraryItem *>(idx.internalPointer());
+//    if (MusicLibraryItem::Type_Root==item->itemType() && !static_cast<OnlineService *>(item)->isSearchBased()) {
+//        proxy.sort();
+//    }
 
     view->setExpanded(proxy.mapFromSource(idx));
 }
 
-void OnlineServicesPage::sortList()
-{
-    proxy.sort();
-}
+//void OnlineServicesPage::sortList()
+//{
+//    proxy.sort();
+//}
 
 void OnlineServicesPage::expandPodcasts()
 {

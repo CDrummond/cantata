@@ -194,102 +194,100 @@ void PodcastService::rssJobFinished()
     j->deleteLater();
     rssJobs.removeAll(j);
 
-    if (!j->ok()) {
-        emitError(i18n("Failed to download %1", j->url().toString()));
-        return;
-    }
-
-    if (updateUrls.contains(j->url())){
-        updateUrls.remove(j->url());
-        if (updateUrls.isEmpty()) {
-            lastRssUpdate=QDateTime::currentDateTime();
-            Settings::self()->saveLastRssUpdate(lastRssUpdate);
-            startRssUpdateTimer();
+    if (j->ok()) {
+        if (updateUrls.contains(j->url())){
+            updateUrls.remove(j->url());
+            if (updateUrls.isEmpty()) {
+                lastRssUpdate=QDateTime::currentDateTime();
+                Settings::self()->saveLastRssUpdate(lastRssUpdate);
+                startRssUpdateTimer();
+            }
         }
-    }
 
-    bool isNew=j->property(constNewFeedProperty).toBool();
+        bool isNew=j->property(constNewFeedProperty).toBool();
 
-    MusicLibraryItemPodcast *podcast=new MusicLibraryItemPodcast(QString(), this);
-    if (podcast->loadRss(j->actualJob())) {
-        bool autoDownload=Settings::self()->podcastAutoDownload();
+        MusicLibraryItemPodcast *podcast=new MusicLibraryItemPodcast(QString(), this);
+        if (podcast->loadRss(j->actualJob())) {
+            bool autoDownload=Settings::self()->podcastAutoDownload();
 
-        if (isNew) {
-            podcast->save();
-            beginInsertRows(index(), childCount(), childCount());
-            m_childItems.append(podcast);
-            if (autoDownload) {
+            if (isNew) {
+                podcast->save();
+                beginInsertRows(index(), childCount(), childCount());
+                m_childItems.append(podcast);
+                if (autoDownload) {
+                    foreach (MusicLibraryItem *i, podcast->childItems()) {
+                        MusicLibraryItemSong *song=static_cast<MusicLibraryItemSong *>(i);
+                        downloadEpisode(podcast, QUrl(song->file()));
+                    }
+                }
+                endInsertRows();
+                emitNeedToSort();
+            } else {
+                MusicLibraryItemPodcast *orig = getPodcast(j->url());
+                if (!orig) {
+                    delete podcast;
+                    return;
+                }
+                QSet<QString> origSongs;
+                QSet<QString> newSongs;
+                foreach (MusicLibraryItem *i, orig->childItems()) {
+                    MusicLibraryItemPodcastEpisode *episode=static_cast<MusicLibraryItemPodcastEpisode *>(i);
+                    origSongs.insert(episode->file());
+                }
                 foreach (MusicLibraryItem *i, podcast->childItems()) {
                     MusicLibraryItemSong *song=static_cast<MusicLibraryItemSong *>(i);
-                    downloadEpisode(podcast, QUrl(song->file()));
+                    newSongs.insert(song->file());
                 }
-            }
-            endInsertRows();
-            emitNeedToSort();
-        } else {
-            MusicLibraryItemPodcast *orig = getPodcast(j->url());
-            if (!orig) {
+
+                QSet<QString> added=newSongs-origSongs;
+                QSet<QString> removed=origSongs-newSongs;
+                if (added.count() || removed.count()) {
+                    QModelIndex origIndex=createIndex(orig);
+                    if (removed.count()) {
+                        foreach (const QString &s, removed) {
+                            MusicLibraryItemPodcastEpisode *episode=orig->getEpisode(s);
+                            if (episode->localPath().isEmpty() || !QFile::exists(episode->localPath())) {
+                                int idx=orig->indexOf(episode);
+                                if (-1!=idx) {
+                                    beginRemoveRows(origIndex, idx, idx);
+                                    orig->remove(idx);
+                                    endRemoveRows();
+                                }
+                            }
+                        }
+                    }
+                    if (added.count()) {
+                        QList<MusicLibraryItemPodcastEpisode *> newSongs;
+                        foreach (const QString &s, added) {
+                            MusicLibraryItemPodcastEpisode *episode=podcast->getEpisode(s);
+                            if (episode) {
+                                newSongs.append(episode);
+                                if (autoDownload) {
+                                    downloadEpisode(orig, QUrl(episode->file()));
+                                }
+                            }
+                        }
+
+                        beginInsertRows(origIndex, orig->childCount(), (orig->childCount()+newSongs.count())-1);
+                        orig->addAll(newSongs);
+                        endInsertRows();
+                    }
+
+                    orig->setUnplayedCount();
+                    orig->save();
+                    emitNeedToSort();
+                }
+
                 delete podcast;
-                return;
-            }
-            QSet<QString> origSongs;
-            QSet<QString> newSongs;
-            foreach (MusicLibraryItem *i, orig->childItems()) {
-                MusicLibraryItemPodcastEpisode *episode=static_cast<MusicLibraryItemPodcastEpisode *>(i);
-                origSongs.insert(episode->file());
-            }
-            foreach (MusicLibraryItem *i, podcast->childItems()) {
-                MusicLibraryItemSong *song=static_cast<MusicLibraryItemSong *>(i);
-                newSongs.insert(song->file());
             }
 
-            QSet<QString> added=newSongs-origSongs;
-            QSet<QString> removed=origSongs-newSongs;
-            if (added.count() || removed.count()) {
-                QModelIndex origIndex=createIndex(orig);
-                if (removed.count()) {
-                    foreach (const QString &s, removed) {
-                        MusicLibraryItemPodcastEpisode *episode=orig->getEpisode(s);
-                        if (episode->localPath().isEmpty() || !QFile::exists(episode->localPath())) {
-                            int idx=orig->indexOf(episode);
-                            if (-1!=idx) {
-                                beginRemoveRows(origIndex, idx, idx);
-                                orig->remove(idx);
-                                endRemoveRows();
-                            }
-                        }
-                    }
-                }
-                if (added.count()) {
-                    QList<MusicLibraryItemPodcastEpisode *> newSongs;
-                    foreach (const QString &s, added) {
-                        MusicLibraryItemPodcastEpisode *episode=podcast->getEpisode(s);
-                        if (episode) {
-                            newSongs.append(episode);
-                            if (autoDownload) {
-                                downloadEpisode(orig, QUrl(episode->file()));
-                            }
-                        }
-                    }
-
-                    beginInsertRows(origIndex, orig->childCount(), (orig->childCount()+newSongs.count())-1);
-                    orig->addAll(newSongs);
-                    endInsertRows();
-                }
-
-                orig->setUnplayedCount();
-                orig->save();
-                emitNeedToSort();
-            }
-
+        } else if (isNew) {
             delete podcast;
+            emitError(i18n("Failed to parse %1", j->url().toString()));
         }
-
-    } else if (isNew) {
-        delete podcast;
-        emitError(i18n("Failed to parse %1", j->url().toString()));
+    } else {
+        emitError(i18n("Failed to download %1", j->url().toString()));
     }
-
     setBusy(!rssJobs.isEmpty() || !downloadJobs.isEmpty());
 }
 

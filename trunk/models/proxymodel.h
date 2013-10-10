@@ -34,8 +34,7 @@ public:
     ProxyModel(QObject *parent) : QSortFilterProxyModel(parent), isSorted(false), filterEnabled(false), filter(0) { }
     virtual ~ProxyModel() { }
 
-    bool update(const QString &text, const QString &genre=QString());
-    bool updateWithFilter(const QString &text, const QString &genre, const void *f);
+    bool update(const QString &text, const QString &genre=QString(), const void *f=0);
     const void * filterItem() const { return filter; }
     void setRootIndex(const QModelIndex &idx) { rootIndex=idx.isValid() ? mapToSource(idx) : idx; }
     bool isChildOfRoot(const QModelIndex &idx) const;

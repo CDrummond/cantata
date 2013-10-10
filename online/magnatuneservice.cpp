@@ -125,31 +125,30 @@ void MagnatuneService::createLoader()
 
 Song MagnatuneService::fixPath(const Song &orig, bool) const
 {
-    if (MB_None==membership) {
-        return encode(orig);
-    }
-
     Song s=orig;
-    QUrl url;
-    #if QT_VERSION < 0x050000
-    url.setEncodedUrl(orig.file.toLocal8Bit());
-    #else
-    url=QUrl(orig.file);
-    #endif
-    url.setScheme("http");
-    url.setHost(MB_Streaming==membership ? constStreamingHostname : constDownloadHostname);
-    url.setUserName(username);
-    url.setPassword(password);
+    s.type=Song::OnlineSvrTrack;
+    if (MB_None!=membership) {
+        QUrl url;
+        #if QT_VERSION < 0x050000
+        url.setEncodedUrl(orig.file.toLocal8Bit());
+        #else
+        url=QUrl(orig.file);
+        #endif
+        url.setScheme("http");
+        url.setHost(MB_Streaming==membership ? constStreamingHostname : constDownloadHostname);
+        url.setUserName(username);
+        url.setPassword(password);
 
-    // And remove the commercial
-    QString path = url.path();
-    path.insert(path.lastIndexOf('.'), "_nospeech");
-    url.setPath(path);
-    s.file=url.toString();
-// TODO: Magnatune downloads!
-//    if (MB_Download==membership) {
-//        s.genre=downloadTypeStr(download);
-//    }
+        // And remove the commercial
+        QString path = url.path();
+        path.insert(path.lastIndexOf('.'), "_nospeech");
+        url.setPath(path);
+        s.file=url.toString();
+    // TODO: Magnatune downloads!
+    //    if (MB_Download==membership) {
+    //        s.genre=downloadTypeStr(download);
+    //    }
+    }
     return encode(s);
 }
 

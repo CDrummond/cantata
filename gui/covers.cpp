@@ -32,6 +32,7 @@
 #include "thread.h"
 #include "soundcloudservice.h"
 #include "podcastservice.h"
+#include "onlineservicesmodel.h"
 #ifdef TAGLIB_FOUND
 #include "tags.h"
 #endif
@@ -61,12 +62,17 @@ K_GLOBAL_STATIC(Covers, instance)
 #endif
 
 #include <QDebug>
-static bool debugEnabled=false;
-#define DBUG_CLASS(CLASS) if (debugEnabled) qWarning() << CLASS << QThread::currentThread()->objectName() << __FUNCTION__
+static bool debugIsEnabled=false;
+#define DBUG_CLASS(CLASS) if (debugIsEnabled) qWarning() << CLASS << QThread::currentThread()->objectName() << __FUNCTION__
 #define DBUG DBUG_CLASS(metaObject()->className())
 void Covers::enableDebug()
 {
-    debugEnabled=true;
+    debugIsEnabled=true;
+}
+
+bool Covers::debugEnabled()
+{
+    return debugIsEnabled;
 }
 
 const QLatin1String Covers::constLastFmApiKey("11172d35eb8cc2fd33250a9e45a2d486");
@@ -391,37 +397,21 @@ void CoverDownloader::download(const Song &song)
         return;
     }
 
-    bool isOnline=song.file.startsWith("http:/") && song.name.startsWith("http:/");
     QString dirName;
+    bool haveAbsPath=song.file.startsWith('/');
 
-    if (!isOnline) {
-        bool haveAbsPath=song.file.startsWith('/');
-
-        if (haveAbsPath || !MPDConnection::self()->getDetails().dir.isEmpty()) {
-            dirName=song.file.endsWith('/') ? (haveAbsPath ? QString() : MPDConnection::self()->getDetails().dir)+song.file
-                                            : Utils::getDir((haveAbsPath ? QString() : MPDConnection::self()->getDetails().dir)+song.file);
-        }
+    if (haveAbsPath || !MPDConnection::self()->getDetails().dir.isEmpty()) {
+        dirName=song.file.endsWith('/') ? (haveAbsPath ? QString() : MPDConnection::self()->getDetails().dir)+song.file
+                                        : Utils::getDir((haveAbsPath ? QString() : MPDConnection::self()->getDetails().dir)+song.file);
     }
 
     Job job(song, dirName, isArtistImage);
 
-    if (isOnline) {
-        downloadOnlineImage(job);
-    } else if (!MPDConnection::self()->getDetails().dir.isEmpty() && MPDConnection::self()->getDetails().dir.startsWith(QLatin1String("http://"))) {
+    if (!MPDConnection::self()->getDetails().dir.isEmpty() && MPDConnection::self()->getDetails().dir.startsWith(QLatin1String("http://"))) {
         downloadViaHttp(job, JobHttpJpg);
     } else {
         downloadViaLastFm(job);
     }
-}
-
-void CoverDownloader::downloadOnlineImage(Job &job)
-{
-    job.type=JobOnline;
-    // ONLINE: Image URL is encoded in song.name...
-    NetworkJob *j=manager->get(QUrl(job.song.name));
-    connect(j, SIGNAL(finished()), this, SLOT(jobFinished()));
-    jobs.insert(j, job);
-    DBUG << job.song.name;
 }
 
 bool CoverDownloader::downloadViaHttp(Job &job, JobType type)
@@ -590,7 +580,7 @@ void CoverDownloader::jobFinished()
         }
 
         jobs.remove(it.key());
-        if (img.img.isNull() && JobLastFm!=job.type && JobOnline!=job.type) {
+        if (img.img.isNull() && JobLastFm!=job.type) {
             if (JobHttpJpg==job.type) {
                 if (!job.level || !downloadViaHttp(job, JobHttpJpg)) {
                     job.level=0;
@@ -646,14 +636,7 @@ QString CoverDownloader::saveImg(const Job &job, const QImage &img, const QByteA
         return QString();
     }
 
-    /*if (JobOnline==job.type) {
-        // ONLINE: Cache dir is saved in Song.title
-        savedName=save(mimeType, extension, Utils::cacheDir(job.song.title)+Covers::encodeName(job.isArtist ? job.song.albumartist : (job.song.albumartist+" - "+job.song.album)), img, raw);
-        if (!savedName.isEmpty()) {
-            DBUG << job.song.file << savedName;
-            return savedName;
-        }
-    } else*/ if (job.isArtist) {
+    if (job.isArtist) {
         if (saveInMpdDir && canSaveTo(job.dir)) {
             QString mpdDir=MPDConnection::self()->getDetails().dir;
             if (!mpdDir.isEmpty() && job.dir.startsWith(mpdDir) && 2==job.dir.mid(mpdDir.length()).split('/', QString::SkipEmptyParts).count()) {
@@ -842,7 +825,9 @@ QPixmap * Covers::get(const Song &song, int size)
             cache.insert(key, pix, pix->width()*pix->height()*(pix->depth()/8));
         } else {
             // Attempt to download cover...
-            emit download(song);
+            if (Song::OnlineSvrTrack!=song.type) {
+                emit download(song);
+            }
             // Create a dummy pixmap so that we dont keep on stating files that do not exist!
             pix=new QPixmap(1, 1);
             cache.insert(key, pix, 4);
@@ -912,7 +897,10 @@ Covers::Image Covers::findImage(const Song &song, bool emitResult)
 
 Covers::Image Covers::locateImage(const Song &song)
 {
-    DBUG_CLASS("Covers") << song.file << song.artist << song.albumartist << song.album;
+    DBUG_CLASS("Covers") << song.file << song.artist << song.albumartist << song.album << song.type;
+    if (Song::OnlineSvrTrack==song.type) {
+        return OnlineServicesModel::self()->readImage(song);
+    }
     bool isArtistImage=song.isArtistImageRequest();
     QString prevFileName=Covers::self()->getFilename(song, isArtistImage);
     if (!prevFileName.isEmpty()) {
@@ -932,26 +920,6 @@ Covers::Image Covers::locateImage(const Song &song)
         }
     }
 
-
-//    bool isOnline=song.file.startsWith("http:/") && song.name.startsWith("http:/");
-
-//    if (isOnline) {
-//        // ONLINE: Cache dir is saved in Song.title
-//        QString baseName=Utils::cacheDir(song.title, false)+encodeName(isArtistImage ? song.albumartist : (song.albumartist+" - "+song.album));
-//        for (int e=0; constExtensions[e]; ++e) {
-//            if (QFile::exists(baseName+constExtensions[e])) {
-//                QImage img(baseName+constExtensions[e]);
-
-//                if (!img.isNull()) {
-//                    DBUG_CLASS("Covers") << "Got online from cache" << QString(baseName+constExtensions[e]);
-//                    return Image(img, baseName+constExtensions[e]);
-//                }
-//            }
-//        }
-//        DBUG_CLASS("Covers") << "Online image not in cache";
-//        return Image(QImage(), QString());
-//    }
-
     QString songFile=song.file;
     QString dirName;
     bool haveAbsPath=song.file.startsWith('/');
@@ -965,6 +933,7 @@ Covers::Image Covers::locateImage(const Song &song)
         #endif
         songFile=u.hasQueryItem("file") ? u.queryItemValue("file") : QString();
     }
+
     if (!songFile.isEmpty() && !song.file.startsWith(("http:/")) &&
         (haveAbsPath || (!MPDConnection::self()->getDetails().dir.isEmpty() && !MPDConnection::self()->getDetails().dir.startsWith(QLatin1String("http://")) ) ) ) {
         dirName=songFile.endsWith('/') ? (haveAbsPath ? QString() : MPDConnection::self()->getDetails().dir)+songFile
@@ -1047,7 +1016,7 @@ Covers::Image Covers::locateImage(const Song &song)
             if (QFile::exists(dir+artist+constExtensions[e])) {
                 QImage img(dir+artist+constExtensions[e]);
                 if (!img.isNull()) {
-                    DBUG_CLASS("Covers") << "Got artist image" << QString(dir+artist+constExtensions[e]);
+                    DBUG_CLASS("Covers") << "Got cached artist image" << QString(dir+artist+constExtensions[e]);
                     return Image(img, dir+artist+constExtensions[e]);
                 }
             }
@@ -1060,7 +1029,7 @@ Covers::Image Covers::locateImage(const Song &song)
             if (QFile::exists(dir+album+constExtensions[e])) {
                 QImage img(dir+album+constExtensions[e]);
                 if (!img.isNull()) {
-                    DBUG_CLASS("Covers") << "Got cover image" << QString(dir+album+constExtensions[e]);
+                    DBUG_CLASS("Covers") << "Got cached cover image" << QString(dir+album+constExtensions[e]);
                     return Image(img, dir+album+constExtensions[e]);
                 }
             }
@@ -1105,7 +1074,7 @@ Covers::Image Covers::requestImage(const Song &song, bool urgent)
 
     retrieved++;
     Image img=findImage(song, false);
-    if (img.img.isNull()) {
+    if (img.img.isNull() && Song::OnlineSvrTrack!=song.type) {
         DBUG << song.file << song.artist << song.albumartist << song.album << "Need to download";
         currentImageRequests.insert(key);
         emit download(song);

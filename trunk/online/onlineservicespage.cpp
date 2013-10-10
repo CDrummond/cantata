@@ -256,7 +256,7 @@ void OnlineServicesPage::itemDoubleClicked(const QModelIndex &)
          addSelectionToPlaylist();
      }
 }
-#include <QDebug>
+
 void OnlineServicesPage::controlSearch(bool on)
 {
     // Can only search when we are at top level...
@@ -332,7 +332,6 @@ void OnlineServicesPage::controlSearch(bool on)
             view->setBackgroundImage(srv->icon());
         }
         QModelIndex filterIndex=srv ? OnlineServicesModel::self()->serviceIndex(srv) : QModelIndex();
-        qWarning() << "TURN FILTER ON";
         proxy.update(QString(), QString(), srv);
         if (filterIndex.isValid()) {
             view->expand(proxy.mapFromSource(filterIndex), true);
@@ -344,7 +343,6 @@ void OnlineServicesPage::controlSearch(bool on)
         }
         genreCombo->setEnabled(true);
         searchService=QString();
-        qWarning() << "TURN FILTER OFF";
         proxy.update(QString(), QString(), 0);
         view->setBackgroundImage(QIcon());
     }

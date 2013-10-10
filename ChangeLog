@@ -70,6 +70,7 @@
     (apart from TuneIn and ShoutCast), then dont hide items from other
     services - but only filter the ones on the filtering service.
 38. Dont hide other online services / streams when searching.
+39. Also read Jamendo genre's from album tag.
 
 1.1.4
 -----

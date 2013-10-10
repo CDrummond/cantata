@@ -44,7 +44,7 @@ class NetworkJob : public QObject
     Q_OBJECT
 
 public:
-    NetworkJob(NetworkAccessManager *p);
+    NetworkJob(NetworkAccessManager *p, const QUrl &u);
     NetworkJob(QNetworkReply *j);
     virtual ~NetworkJob();
 
@@ -54,7 +54,7 @@ public:
     bool open(QIODevice::OpenMode mode) { return job && job->open(mode); }
     void close() { if (job) job->close(); }
 
-    QUrl url() const { return job ? job->url() : QUrl(); }
+    QUrl url() const { return job ? job->url() : origU; }
     QUrl origUrl() const { return origU; }
     void setOrigUrl(const QUrl &u) { origU=u; }
     QNetworkReply::NetworkError error() const { return job ? job->error() : QNetworkReply::UnknownNetworkError; }

@@ -66,38 +66,12 @@ bool ProxyModel::matchesFilter(const QStringList &strings) const
     return false;
 }
 
-bool ProxyModel::update(const QString &text, const QString &genre)
+bool ProxyModel::update(const QString &text, const QString &genre, const void *f)
 {
-    bool wasEmpty=isEmpty();
-    filterStrings = text.split(' ', QString::SkipEmptyParts, Qt::CaseInsensitive);
-    unmatchedStrings = 0;
-    const int n = qMin(filterStrings.count(), (int)sizeof(uint));
-    for ( int i = 0; i < n; ++i ) {
-        unmatchedStrings |= (1<<i);
+    if (text==origFilterText && genre==filterGenre && f==filter) {
+        return false;
     }
 
-    origFilterText=text;
-    filterGenre=genre;
-
-    if (text.length()<2 && genre.isEmpty()) {
-        if (filterEnabled) {
-            filterEnabled=false;
-            if (!wasEmpty) {
-                invalidate();
-            }
-            return true;
-        }
-    } else {
-        filterEnabled=true;
-        invalidate();
-        return true;
-    }
-
-    return false;
-}
-
-bool ProxyModel::updateWithFilter(const QString &text, const QString &genre, const void *f)
-{
     bool wasEmpty=isEmpty();
     filterStrings = text.split(' ', QString::SkipEmptyParts, Qt::CaseInsensitive);
     unmatchedStrings = 0;
@@ -114,13 +88,13 @@ bool ProxyModel::updateWithFilter(const QString &text, const QString &genre, con
         if (filterEnabled) {
             filterEnabled=false;
             if (!wasEmpty) {
-                invalidate();
+                invalidateFilter();
             }
             return true;
         }
     } else {
         filterEnabled=true;
-        invalidate();
+        invalidateFilter();
         return true;
     }
 

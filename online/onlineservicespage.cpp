@@ -256,7 +256,7 @@ void OnlineServicesPage::itemDoubleClicked(const QModelIndex &)
          addSelectionToPlaylist();
      }
 }
-
+#include <QDebug>
 void OnlineServicesPage::controlSearch(bool on)
 {
     // Can only search when we are at top level...
@@ -332,7 +332,8 @@ void OnlineServicesPage::controlSearch(bool on)
             view->setBackgroundImage(srv->icon());
         }
         QModelIndex filterIndex=srv ? OnlineServicesModel::self()->serviceIndex(srv) : QModelIndex();
-        proxy.updateWithFilter(QString(), QString(), srv);
+        qWarning() << "TURN FILTER ON";
+        proxy.update(QString(), QString(), srv);
         if (filterIndex.isValid()) {
             view->expand(proxy.mapFromSource(filterIndex), true);
         }
@@ -343,7 +344,8 @@ void OnlineServicesPage::controlSearch(bool on)
         }
         genreCombo->setEnabled(true);
         searchService=QString();
-        proxy.updateWithFilter(QString(), QString(), 0);
+        qWarning() << "TURN FILTER OFF";
+        proxy.update(QString(), QString(), 0);
         view->setBackgroundImage(QIcon());
     }
 }
@@ -357,7 +359,7 @@ void OnlineServicesPage::searchItems()
             OnlineServicesModel::self()->setSearch(searchService, text);
         }
     } else {
-        proxy.updateWithFilter(text, genreCombo->currentIndex()<=0 ? QString() : genreCombo->currentText(), proxy.filterItem());
+        proxy.update(text, genreCombo->currentIndex()<=0 ? QString() : genreCombo->currentText(), view->isSearchActive() ? proxy.filterItem() : 0);
         if (proxy.enabled() && !text.isEmpty()) {
             view->expandAll(proxy.filterItem()
                                 ? proxy.mapFromSource(OnlineServicesModel::self()->serviceIndex(static_cast<const OnlineService *>(proxy.filterItem())))

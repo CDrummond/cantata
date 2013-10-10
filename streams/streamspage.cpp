@@ -499,7 +499,7 @@ void StreamsPage::searchItems()
         searchModel.search(searchView->searchText().trimmed(), false);
     } else {
         QString text=view->searchText().trimmed();
-        proxy->updateWithFilter(text, QString(), proxy->filterItem());
+        proxy->update(text, QString(), proxy->filterItem());
         if (proxy->enabled() && !text.isEmpty()) {
             view->expandAll(proxy->filterItem()
                             ? proxy->mapFromSource(StreamsModel::self()->categoryIndex(static_cast<const StreamsModel::CategoryItem *>(proxy->filterItem())))
@@ -546,7 +546,7 @@ void StreamsPage::controlSearch(bool on)
                 viewStack->setCurrentIndex(0);
                 view->setSearchLabelText(i18n("Search %1:", cat->name));
                 view->setBackgroundImage(cat->icon);
-                proxy->updateWithFilter(QString(), QString(), cat);
+                proxy->update(QString(), QString(), cat);
                 QModelIndex filterIndex=cat ? StreamsModel::self()->categoryIndex(cat) : QModelIndex();
                 if (filterIndex.isValid()) {
                     view->expand(proxy->mapFromSource(filterIndex), true);
@@ -564,7 +564,7 @@ void StreamsPage::controlSearch(bool on)
             }
             view->clearSelection();
         } else {
-            proxy->updateWithFilter(QString(), QString(), 0);
+            proxy->update(QString(), QString(), 0);
             proxy=&streamsProxy;
             searchModel.clear();
             view->setSearchVisible(false);

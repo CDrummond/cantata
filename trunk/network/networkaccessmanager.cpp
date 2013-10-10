@@ -33,11 +33,12 @@ K_GLOBAL_STATIC(NetworkAccessManager, instance)
 
 static const int constMaxRedirects=5;
 
-NetworkJob::NetworkJob(NetworkAccessManager *p)
+NetworkJob::NetworkJob(NetworkAccessManager *p, const QUrl &u)
     : QObject(p)
     , numRedirects(0)
     , lastDownloadPc(0)
     , job(0)
+    , origU(u)
 {
     QTimer::singleShot(0, this, SLOT(jobFinished()));
 }
@@ -131,7 +132,7 @@ NetworkAccessManager::NetworkAccessManager(QObject *parent)
 NetworkJob * NetworkAccessManager::get(const QNetworkRequest &req, int timeout)
 {
     if (!enabled) {
-        return new NetworkJob(this);
+        return new NetworkJob(this, req.url());
     }
 
     #ifndef ENABLE_HTTPS_SUPPORT

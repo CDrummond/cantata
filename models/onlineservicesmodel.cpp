@@ -94,8 +94,8 @@ OnlineServicesModel::~OnlineServicesModel()
 
 QModelIndex OnlineServicesModel::serviceIndex(const OnlineService *srv) const
 {
-    int row=collections.indexOf(const_cast<OnlineService *>(srv));
-    return -1==row ? QModelIndex() : createIndex(row, 0, (void *)srv);
+    int r=row(const_cast<OnlineService *>(srv));
+    return -1==r ? QModelIndex() : createIndex(r, 0, (void *)srv);
 }
 
 bool OnlineServicesModel::hasChildren(const QModelIndex &index) const
@@ -330,7 +330,6 @@ OnlineService * OnlineServicesModel::addService(const QString &name, const QSet<
                 hiddenServices.append(srv);
             } else {
                 beginInsertRows(QModelIndex(), collections.count(), collections.count());
-                srv->setRow(collections.count());
                 collections.append(srv);
                 endInsertRows();
             }
@@ -561,7 +560,7 @@ void OnlineServicesModel::imageDownloaded()
     if (id==PodcastService::constName) {
         MusicLibraryItem *podcast=srv->childItem(song.artist);
         if (podcast && static_cast<MusicLibraryItemPodcast *>(podcast)->setCover(img)) {
-            QModelIndex idx=index(podcast->row(), 0, index(srv->row(), 0, QModelIndex()));
+            QModelIndex idx=index(podcast->row(), 0, index(row(srv), 0, QModelIndex()));
             emit dataChanged(idx, idx);
 
         }
@@ -569,7 +568,7 @@ void OnlineServicesModel::imageDownloaded()
         if (srv->useArtistImages() && srv->id()==id) {
             MusicLibraryItemArtist *artistItem = srv->artist(song, false);
             if (artistItem && artistItem->setCover(img)) {
-                QModelIndex idx=index(artistItem->row(), 0, index(srv->row(), 0, QModelIndex()));
+                QModelIndex idx=index(artistItem->row(), 0, index(row(srv), 0, QModelIndex()));
                 emit dataChanged(idx, idx);
             }
         }
@@ -579,7 +578,7 @@ void OnlineServicesModel::imageDownloaded()
             if (artistItem) {
                 MusicLibraryItemAlbum *albumItem = artistItem->album(song, false);
                 if (albumItem && albumItem->setCover(img)) {
-                    QModelIndex idx=index(albumItem->row(), 0, index(artistItem->row(), 0, index(srv->row(), 0, QModelIndex())));
+                    QModelIndex idx=index(albumItem->row(), 0, index(artistItem->row(), 0, index(row(srv), 0, QModelIndex())));
                     emit dataChanged(idx, idx);
                 }
             }
@@ -648,7 +647,6 @@ void OnlineServicesModel::setHiddenProviders(const QSet<QString> &prov)
     foreach (OnlineService *i, hiddenServices) {
         if (!prov.contains(i->id())) {
             beginInsertRows(QModelIndex(), collections.count(), collections.count());
-            i->setRow(collections.count());
             collections.append(i);
             hiddenServices.removeAll(i);
             endInsertRows();
@@ -658,14 +656,11 @@ void OnlineServicesModel::setHiddenProviders(const QSet<QString> &prov)
 
     foreach (MusicLibraryItemRoot *i, collections) {
         if (prov.contains(static_cast<OnlineService *>(i)->id())) {
-            int row=collections.indexOf(i);
-            if (row>=0) {
-                beginRemoveRows(QModelIndex(), row, row);
-                hiddenServices.append(static_cast<OnlineService *>(collections.takeAt(row)));
+            int r=row(i);
+            if (r>=0) {
+                beginRemoveRows(QModelIndex(), r, r);
+                hiddenServices.append(static_cast<OnlineService *>(collections.takeAt(r)));
                 endRemoveRows();
-                for (int i=row; i<collections.count(); ++i) {
-                    static_cast<OnlineService *>(collections.at(i))->setRow(i);
-                }
                 changed=true;
             }
         }

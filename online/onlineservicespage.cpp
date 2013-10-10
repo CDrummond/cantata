@@ -332,7 +332,8 @@ void OnlineServicesPage::controlSearch(bool on)
             view->setBackgroundImage(srv->icon());
         }
         QModelIndex filterIndex=srv ? OnlineServicesModel::self()->serviceIndex(srv) : QModelIndex();
-        proxy.update(QString(), QString(), srv);
+        proxy.setFilterItem(srv);
+        proxy.update(QString(), QString());
         if (filterIndex.isValid()) {
             view->expand(proxy.mapFromSource(filterIndex), true);
         }
@@ -343,7 +344,8 @@ void OnlineServicesPage::controlSearch(bool on)
         }
         genreCombo->setEnabled(true);
         searchService=QString();
-        proxy.update(QString(), QString(), 0);
+        proxy.setFilterItem(0);
+        proxy.update(QString(), QString());
         view->setBackgroundImage(QIcon());
     }
 }
@@ -357,7 +359,10 @@ void OnlineServicesPage::searchItems()
             OnlineServicesModel::self()->setSearch(searchService, text);
         }
     } else {
-        proxy.update(text, genreCombo->currentIndex()<=0 ? QString() : genreCombo->currentText(), view->isSearchActive() ? proxy.filterItem() : 0);
+        if (!view->isSearchActive()) {
+            proxy.setFilterItem(0);
+        }
+        proxy.update(view->isSearchActive() ? text : QString(), genreCombo->currentIndex()<=0 ? QString() : genreCombo->currentText());
         if (proxy.enabled() && !proxy.filterText().isEmpty()) {
             view->expandAll(proxy.filterItem() && view->isSearchActive()
                                 ? proxy.mapFromSource(OnlineServicesModel::self()->serviceIndex(static_cast<const OnlineService *>(proxy.filterItem())))

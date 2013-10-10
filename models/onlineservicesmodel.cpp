@@ -456,7 +456,6 @@ static Covers::Image readCache(const QString &id, const QString &artist, const Q
     QString baseName=Utils::cacheDir(id.toLower(), false)+Covers::encodeName(album.isEmpty() ? artist : (artist+" - "+album));
     for (int e=0; constExtensions[e]; ++e) {
         QString fileName=baseName+constExtensions[e];
-        qWarning() << "TRY" << fileName;
         if (QFile::exists(fileName)) {
             QImage img(fileName);
 
@@ -600,7 +599,6 @@ void OnlineServicesModel::imageDownloaded()
                 img=img.scaled(maxSize, maxSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
             }
             DBUG << "Saved scaled image to" << fileName;
-            qWarning() << "RES" << img.save(fileName);
             if (!song.album.isEmpty()) {
                 song.track=1;
                 song.setKey();

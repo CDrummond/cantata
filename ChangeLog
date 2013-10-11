@@ -71,6 +71,8 @@
     services - but only filter the ones on the filtering service.
 38. Dont hide other online services / streams when searching.
 39. Also read Jamendo genre's from album tag.
+40. Modify message-widget so that it uses a squeezed-text label. Because of
+    this, always use Cantata's copy of KMessageWidget for all KDE builds.
 
 1.1.4
 -----

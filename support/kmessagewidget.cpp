@@ -30,6 +30,7 @@
 #endif
 
 #include "icon.h"
+#include "squeezedtextlabel.h"
 #include <QEvent>
 #include <QGridLayout>
 #include <QHBoxLayout>
@@ -88,7 +89,7 @@ void KMsgWidgetPrivate::init(KMsgWidget *q_ptr)
     iconLabel = new QLabel(content);
     iconLabel->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
-    textLabel = new QLabel(content);
+    textLabel = new SqueezedTextLabel(content);
     textLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     textLabel->setTextInteractionFlags(Qt::TextBrowserInteraction);
 
@@ -344,17 +345,17 @@ void KMsgWidget::setMessageType(KMsgWidget::MessageType type)
     d->iconLabel->setPixmap(icon.pixmap(size));
 }
 
-QSize KMsgWidget::sizeHint() const
-{
-    ensurePolished();
-    return d->content->sizeHint();
-}
+//QSize KMsgWidget::sizeHint() const
+//{
+//    ensurePolished();
+//    return d->content->sizeHint();
+//}
 
-QSize KMsgWidget::minimumSizeHint() const
-{
-    ensurePolished();
-    return d->content->minimumSizeHint();
-}
+//QSize KMsgWidget::minimumSizeHint() const
+//{
+//    ensurePolished();
+//    return d->content->minimumSizeHint();
+//}
 
 bool KMsgWidget::event(QEvent* event)
 {

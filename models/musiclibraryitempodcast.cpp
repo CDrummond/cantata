@@ -150,7 +150,7 @@ bool MusicLibraryItemPodcast::load()
 
 static const QString constRssTag=QLatin1String("rss");
 
-bool MusicLibraryItemPodcast::loadRss(QNetworkReply *dev)
+MusicLibraryItemPodcast::RssStatus MusicLibraryItemPodcast::loadRss(QNetworkReply *dev)
 {
     m_rssUrl=dev->url();
     if (m_fileName.isEmpty()) {
@@ -161,7 +161,11 @@ bool MusicLibraryItemPodcast::loadRss(QNetworkReply *dev)
     RssParser::Channel ch=RssParser::parse(dev);
 
     if (!ch.isValid()) {
-        return false;
+        return FailedToParse;
+    }
+
+    if (ch.video) {
+        return VideoPodcast;
     }
 
     m_imageUrl=ch.image;
@@ -181,7 +185,7 @@ bool MusicLibraryItemPodcast::loadRss(QNetworkReply *dev)
         m_childItems.append(song);
     }
 
-    return true;
+    return Loaded;
 }
 
 bool MusicLibraryItemPodcast::save()

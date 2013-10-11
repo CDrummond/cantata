@@ -24,6 +24,7 @@
 #include "rssparser.h"
 #include <QXmlStreamReader>
 #include <QStringList>
+#include <QSet>
 
 static const char * constITunesNameSpace = "http://www.itunes.com/dtds/podcast-1.0.dtd";
 static const char * constMediaNameSpace = "http://search.yahoo.com/mrss/";
@@ -106,7 +107,14 @@ static Episode parseEpisode(QXmlStreamReader &reader)
             } else if (0==ep.duration && QLatin1String("content")==name && constMediaNameSpace==reader.namespaceUri()) {
                 ep.duration=reader.attributes().value(QLatin1String("duration")).toString().toUInt();
             } else if (QLatin1String("enclosure")==name) {
-                if (reader.attributes().value(QLatin1String("type")).toString().startsWith(QLatin1String("audio/"))) {
+                static QSet<QString> audioFormats;
+                if (audioFormats.isEmpty()) {
+                    audioFormats.insert(QLatin1String("mp3")); audioFormats.insert(QLatin1String("MP3"));
+                    audioFormats.insert(QLatin1String("ogg")); audioFormats.insert(QLatin1String("OGG"));
+                    audioFormats.insert(QLatin1String("wma")); audioFormats.insert(QLatin1String("WMA"));
+                }
+                QString type=reader.attributes().value(QLatin1String("type")).toString();
+                if (type.startsWith(QLatin1String("audio/")) || audioFormats.contains(type)) {
                     ep.url=QUrl::fromEncoded(reader.attributes().value(QLatin1String("url")).toString().toLatin1());
                 }
                 consumeCurrentElement(reader);

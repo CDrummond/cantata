@@ -24,17 +24,17 @@
 #ifndef MESSAGEWIDGET_H
 #define MESSAGEWIDGET_H
 
-#ifdef ENABLE_KDE_SUPPORT
-#include <kdeversion.h>
-#if KDE_IS_VERSION(4, 7, 0)
-#include <KDE/KMessageWidget>
-typedef KMessageWidget KMsgWidget;
-#else // KDE_IS_VERSION(4, 7, 0)
+//#ifdef ENABLE_KDE_SUPPORT
+//#include <kdeversion.h>
+//#if KDE_IS_VERSION(4, 7, 0)
+//#include <KDE/KMessageWidget>
+//typedef KMessageWidget KMsgWidget;
+//#else // KDE_IS_VERSION(4, 7, 0)
+//#include "kmessagewidget.h"
+//#endif // KDE_IS_VERSION(4, 7, 0)
+//#else // ENABLE_KDE_SUPPORT
 #include "kmessagewidget.h"
-#endif // KDE_IS_VERSION(4, 7, 0)
-#else // ENABLE_KDE_SUPPORT
-#include "kmessagewidget.h"
-#endif // ENABLE_KDE_SUPPORT
+//#endif // ENABLE_KDE_SUPPORT
 
 #include <QList>
 

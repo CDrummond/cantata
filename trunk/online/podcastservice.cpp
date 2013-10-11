@@ -285,7 +285,7 @@ void PodcastService::rssJobFinished()
         } else if (isNew) {
             delete podcast;
             if (MusicLibraryItemPodcast::VideoPodcast==loadStatus) {
-                emitError(i18n("Cantata only supports audio podcasts! %1 contains    only video podcasts.", j->url().toString()));
+                emitError(i18n("Cantata only supports audio podcasts! %1 contains only video podcasts.", j->url().toString()));
             } else {
                 emitError(i18n("Failed to parse %1", j->url().toString()));
             }

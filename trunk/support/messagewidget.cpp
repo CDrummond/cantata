@@ -33,12 +33,12 @@ MessageWidget::~MessageWidget()
 {
 }
 
-#if defined ENABLE_KDE_SUPPORT
-#if KDE_IS_VERSION(4, 9, 4) && !KDE_IS_VERSION(4, 9, 5)
-// BUG:142
-#define NO_ANIMATED_SHOW
-#endif
-#endif
+//#if defined ENABLE_KDE_SUPPORT
+//#if KDE_IS_VERSION(4, 9, 4) && !KDE_IS_VERSION(4, 9, 5)
+//// BUG:142
+//#define NO_ANIMATED_SHOW
+//#endif
+//#endif
 
 void MessageWidget::setMessage(const QString &msg, MessageType type, bool showCloseButton)
 {
@@ -46,16 +46,18 @@ void MessageWidget::setMessage(const QString &msg, MessageType type, bool showCl
         setVisible(false);
         return;
     }
-    QString text=msg;
-    if (text.length()>154) {
-        text=text.left(150)+QLatin1String("...");
-    }
-    if (msg.length()>500) {
-        setToolTip(msg.left(500)+QLatin1String("..."));
-    } else {
-        setToolTip(msg);
-    }
-    setText(text);
+//    QString text=msg;
+//    if (text.length()>154) {
+//        text=text.left(150)+QLatin1String("...");
+//    }
+//    if (msg.length()>500) {
+//        setToolTip(msg.left(500)+QLatin1String("..."));
+//    } else {
+//        setToolTip(msg);
+//    }
+//    setText(text);
+    setText(msg);
+    setToolTip(msg);
     setMessageType(type);
     setCloseButtonVisible(showCloseButton);
     #if defined NO_ANIMATED_SHOW

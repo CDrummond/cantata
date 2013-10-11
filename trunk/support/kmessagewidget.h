@@ -23,6 +23,7 @@
 #include <QFrame>
 
 class KMsgWidgetPrivate;
+class SqueezedTextLabel;
 
 /**
  * @short A widget to provide feedback or propose opportunistic interactions.
@@ -125,9 +126,9 @@ public:
 
     void removeAction(QAction *action);
 
-    QSize sizeHint() const;
+//    QSize sizeHint() const;
 
-    QSize minimumSizeHint() const;
+//    QSize minimumSizeHint() const;
 
     int heightForWidth(int width) const;
 
@@ -180,7 +181,7 @@ public:
     KMsgWidget* q;
     QFrame* content;
     QLabel* iconLabel;
-    QLabel* textLabel;
+    SqueezedTextLabel* textLabel;
     QToolButton* closeButton;
     QTimeLine* timeLine;
 

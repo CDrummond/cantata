@@ -39,6 +39,12 @@ class MusicLibraryItemPodcastEpisode;
 class MusicLibraryItemPodcast : public MusicLibraryItemContainer
 {
 public:
+    enum RssStatus {
+        Loaded,
+        FailedToParse,
+        VideoPodcast
+    };
+
     static const QString constExt;
     static const QString constDir;
 
@@ -50,7 +56,7 @@ public:
     virtual ~MusicLibraryItemPodcast() { }
 
     bool load();
-    bool loadRss(QNetworkReply *dev);
+    RssStatus loadRss(QNetworkReply *dev);
     bool save();
     bool setCover(const QImage &img, bool update=false) const;
     const QPixmap & cover();

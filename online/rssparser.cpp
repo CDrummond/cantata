@@ -116,6 +116,8 @@ static Episode parseEpisode(QXmlStreamReader &reader)
                 QString type=reader.attributes().value(QLatin1String("type")).toString();
                 if (type.startsWith(QLatin1String("audio/")) || audioFormats.contains(type)) {
                     ep.url=QUrl::fromEncoded(reader.attributes().value(QLatin1String("url")).toString().toLatin1());
+                } else if (type.startsWith(QLatin1String("video/")) ) {
+                    ep.video=true;
                 }
                 consumeCurrentElement(reader);
             } else if (QLatin1String("pubDate")==name) {
@@ -154,6 +156,8 @@ Channel RssParser::parse(QIODevice *dev)
                     Episode ep=parseEpisode(reader);
                     if (!ep.name.isEmpty() && !ep.url.isEmpty()) {
                         ch.episodes.append(ep);
+                    } else if (ep.video) {
+                        ch.video=true;
                     }
                 } else {
                     consumeCurrentElement(reader);
@@ -162,6 +166,10 @@ Channel RssParser::parse(QIODevice *dev)
                 break;
             }
         }
+    }
+
+    if (ch.video && !ch.episodes.isEmpty()) {
+        ch.video=false;
     }
 
     return ch;

@@ -37,18 +37,21 @@ namespace RssParser
 
 struct Episode
 {
-    Episode() : duration(0) { }
+    Episode() : duration(0), video(false) { }
     QString name;
     QDateTime publicationDate;
     unsigned int duration;
     QUrl url;
+    bool video;
 };
 
 struct Channel
 {
+    Channel() : video(false) { }
     QString name;
     QUrl image;
     QList<Episode> episodes;
+    bool video;
     bool isValid() const { return !name.isEmpty(); }
 };
 

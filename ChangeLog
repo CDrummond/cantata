@@ -73,6 +73,9 @@
 39. Also read Jamendo genre's from album tag.
 40. Modify message-widget so that it uses a squeezed-text label. Because of
     this, always use Cantata's copy of KMessageWidget for all KDE builds.
+41. No longer compile Windows versions against TagLib. Seems like the tag
+    editor, track organiser, and HTTP server are not really working for windows
+    builds - and I have neither the time nor enthusiasm to determine why.
 
 1.1.4
 -----

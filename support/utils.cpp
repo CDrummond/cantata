@@ -94,18 +94,24 @@ QString Utils::fixPath(const QString &dir)
     if (!d.isEmpty() && !d.startsWith(QLatin1String("http://"))) {
         d.replace(QLatin1String("//"), QChar('/'));
     }
+    #ifndef Q_OS_WIN
     d.replace(QLatin1String("/./"), QChar('/'));
-    if (!d.isEmpty() && !d.endsWith('/')) {
-        d+='/';
+    #endif
+    if (!d.isEmpty() && !d.endsWith(DIR_SEPARATOR)) {
+        d+=DIR_SEPARATOR;
     }
     return d;
 }
 
 QString Utils::getDir(const QString &file)
 {
+    #ifdef Q_OS_WIN
+    QString d=QDir::toNativeSeparators(file);
+    #else
     QString d(file);
+    #endif
 
-    int slashPos(d.lastIndexOf('/'));
+    int slashPos(d.lastIndexOf(DIR_SEPARATOR));
 
     if(slashPos!=-1) {
         d.remove(slashPos+1, d.length());
@@ -116,8 +122,13 @@ QString Utils::getDir(const QString &file)
 
 QString Utils::getFile(const QString &file)
 {
+    #ifdef Q_OS_WIN
+    QString d=QDir::toNativeSeparators(file);
+    #else
     QString d(file);
-    int slashPos=d.lastIndexOf('/');
+    #endif
+
+    int slashPos=d.lastIndexOf(DIR_SEPARATOR);
 
     if (-1!=slashPos) {
         d.remove(0, slashPos+1);

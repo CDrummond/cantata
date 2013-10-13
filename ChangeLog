@@ -76,10 +76,7 @@
 41. No longer compile Windows versions against TagLib. Seems like the tag
     editor, track organiser, and HTTP server are not really working for windows
     builds - and I have neither the time nor enthusiasm to determine why.
-
-1.1.4
------
-1. Cantata requires libMTP 1.1.0 or newer.
+42. Cantata requires libMTP 1.1.0 or newer.
 
 1.1.3
 -----

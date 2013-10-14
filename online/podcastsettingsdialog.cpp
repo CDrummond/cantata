@@ -100,7 +100,7 @@ PodcastSettingsDialog::PodcastSettingsDialog(QWidget *p)
     setIndex(updateCombo, origRssUpdate);
     connect(updateCombo, SIGNAL(currentIndexChanged(int)), SLOT(checkSaveable()));
     #ifdef TAGLIB_FOUND
-    origPodcastDownloadPath=QDir::toNativeSeparators(Settings::self()->podcastDownloadPath());
+    origPodcastDownloadPath=Utils::convertDirForDisplay(Settings::self()->podcastDownloadPath());
     origPodcastAutoDownload=Settings::self()->podcastAutoDownload();
     downloadPath->setText(origPodcastDownloadPath);
     autoDownload->setChecked(origPodcastAutoDownload);
@@ -133,7 +133,7 @@ void PodcastSettingsDialog::slotButtonClicked(int button)
         #ifdef TAGLIB_FOUND
         if (downloadPath->text().trimmed()!=origPodcastDownloadPath) {
             changed|=DownloadPath;
-            Settings::self()->savePodcastDownloadPath(Utils::fixPath(QDir::fromNativeSeparators(downloadPath->text().trimmed())));
+            Settings::self()->savePodcastDownloadPath(Utils::convertDirFromDisplay(downloadPath->text().trimmed()));
         }
         if (origPodcastAutoDownload!=autoDownload->isChecked()) {
             changed|=AutoDownload;

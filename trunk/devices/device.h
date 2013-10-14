@@ -179,13 +179,13 @@ public:
     QModelIndex index() const;
     #endif
 
-#ifndef Q_OS_WIN
+    #if !defined Q_OS_WIN && !defined WIN32
     void updateStatus();
 
 public Q_SLOTS:
     void setStatusMessage(const QString &message);
     void songCount(int c);
-#endif
+    #endif
 
 Q_SIGNALS:
     void connected(const QString &id);

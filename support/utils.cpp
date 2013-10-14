@@ -100,9 +100,23 @@ QString Utils::fixPath(const QString &dir)
     }
     d.replace(QLatin1String("/./"), constDirSepStr);
     if (!d.isEmpty() && !d.endsWith(constDirSep)) {
-        d+="/";
+        d+=constDirSep;
     }
     return d;
+}
+
+QString Utils::convertDirForDisplay(const QString &dir)
+{
+    QString d(dir);
+    if (d.endsWith(constDirSep)) {
+        d=d.left(d.length()-1);
+    }
+    return QDir::toNativeSeparators(d);
+}
+
+QString Utils::convertDirFromDisplay(const QString &dir)
+{
+    return fixPath(QDir::fromNativeSeparators(dir.trimmed()));
 }
 
 QString Utils::getDir(const QString &file)
@@ -241,7 +255,7 @@ bool Utils::createDir(const QString &dir, const QString &base, const char *group
         QString d(base);
 
         foreach (const QString &p, parts) {
-            d+='/'+p;
+            d+=constDirSep+p;
             int rv=::chown(QFile::encodeName(d).constData(), geteuid(), gid);
             Q_UNUSED(rv);
         }

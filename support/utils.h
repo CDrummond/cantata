@@ -53,6 +53,10 @@ namespace Utils
     extern QString strippedText(QString s);
     extern QString stripAcceleratorMarkers(QString label);
     extern QString fixPath(const QString &d);
+    // Convert directory to a format suitable fo rUI - e.g. use native separators, and remove any traling separator
+    extern QString convertDirForDisplay(const QString &dir);
+    // Convert directory from a UI field - convert to / separators, and add a trailing separator
+    extern QString convertDirFromDisplay(const QString &dir);
     extern QString getDir(const QString &file);
     extern QString getFile(const QString &file);
     extern QString changeExtension(const QString &file, const QString &extension);

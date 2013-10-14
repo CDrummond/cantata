@@ -133,7 +133,7 @@ void DevicePropertiesWidget::update(const QString &path, const DeviceOptions &op
     origOpts=opts;
 
     if (props&Prop_Folder) {
-        musicFolder->setText(path);
+        musicFolder->setText(Utils::convertDirForDisplay(path));
         connect(musicFolder, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
     } else {
         REMOVE(musicFolder);
@@ -269,7 +269,7 @@ void DevicePropertiesWidget::update(const QString &path, const DeviceOptions &op
         connect(defaultVolume,SIGNAL(currentIndexChanged(int)), this, SLOT(checkSaveable()));
     }
 
-    origMusicFolder=path;
+    origMusicFolder=Utils::fixPath(path);
     connect(configFilename, SIGNAL(clicked()), SLOT(configureFilenameScheme()));
     connect(filenameScheme, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
     connect(vfatSafe, SIGNAL(stateChanged(int)), this, SLOT(checkSaveable()));
@@ -326,9 +326,9 @@ void DevicePropertiesWidget::checkSaveable()
 
     modified=opts!=origOpts;
     if (!modified && checkFolder) {
-        modified=musicFolder->text().trimmed()!=origMusicFolder;
+        modified=music()!=origMusicFolder;
     }
-    saveable=!opts.scheme.isEmpty() && (!checkFolder || !musicFolder->text().trimmed().isEmpty()) && !opts.coverName.isEmpty();
+    saveable=!opts.scheme.isEmpty() && (!checkFolder || !music().isEmpty()) && !opts.coverName.isEmpty();
     if (saveable &&
         ( (-1!=opts.coverName.indexOf(noCoverText) && opts.coverName!=noCoverText) ||
           (-1!=opts.coverName.indexOf(embedCoverText) && opts.coverName!=embedCoverText) ) ) {

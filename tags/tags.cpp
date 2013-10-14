@@ -147,15 +147,6 @@ struct RgTagsStrings
     std::string trackGain, trackPeak, albumGain, albumPeak;
 };
 
-static TagLib::FileRef getFileRef(const QString &path)
-{
-    #ifdef Q_OS_WIN32
-    return TagLib::FileRef(path.toStdWString().c_str(), true, TagLib::AudioProperties::Fast);
-    #else
-    return TagLib::FileRef(QFile::encodeName(path).constData(), true, TagLib::AudioProperties::Fast);
-    #endif
-}
-
 static void ensureFileTypeResolvers()
 {
     static bool alreadyAdded = false;
@@ -168,6 +159,17 @@ static void ensureFileTypeResolvers()
         #endif
         TagLib::FileRef::addFileTypeResolver(new Meta::Tag::FileTypeResolver());
     }
+}
+
+static TagLib::FileRef getFileRef(const QString &path)
+{
+    ensureFileTypeResolvers();
+
+    #ifdef Q_OS_WIN32
+    return TagLib::FileRef(path.toStdWString().c_str(), true, TagLib::AudioProperties::Fast);
+    #else
+    return TagLib::FileRef(QFile::encodeName(path).constData(), true, TagLib::AudioProperties::Fast);
+    #endif
 }
 
 static QPair<int, int> splitDiscNumber(const QString &value)
@@ -993,8 +995,6 @@ static QMutex mutex;
 Song read(const QString &fileName)
 {
     QMutexLocker locker(&mutex);
-    ensureFileTypeResolvers();
-
     Song song;
     TagLib::FileRef fileref = getFileRef(fileName);
 
@@ -1011,8 +1011,6 @@ Song read(const QString &fileName)
 QImage readImage(const QString &fileName)
 {
     QMutexLocker locker(&mutex);
-    ensureFileTypeResolvers();
-
     QImage img;
     TagLib::FileRef fileref = getFileRef(fileName);
 
@@ -1027,8 +1025,6 @@ QImage readImage(const QString &fileName)
 QString readLyrics(const QString &fileName)
 {
     QMutexLocker locker(&mutex);
-    ensureFileTypeResolvers();
-
     QString lyrics;
     TagLib::FileRef fileref = getFileRef(fileName);
 
@@ -1065,8 +1061,6 @@ static Update update(const TagLib::FileRef fileref, const Song &from, const Song
 Update updateArtistAndTitle(const QString &fileName, const Song &song)
 {
     QMutexLocker locker(&mutex);
-    ensureFileTypeResolvers();
-
     TagLib::FileRef fileref = getFileRef(fileName);
 
     if (fileref.isNull()) {
@@ -1095,8 +1089,6 @@ Update updateArtistAndTitle(const QString &fileName, const Song &song)
 Update update(const QString &fileName, const Song &from, const Song &to, int id3Ver)
 {
     QMutexLocker locker(&mutex);
-    ensureFileTypeResolvers();
-
     TagLib::FileRef fileref = getFileRef(fileName);
     return fileref.isNull() ? Update_Failed : update(fileref, from, to, RgTags(), QByteArray(), id3Ver);
 }
@@ -1104,8 +1096,6 @@ Update update(const QString &fileName, const Song &from, const Song &to, int id3
 ReplayGain readReplaygain(const QString &fileName)
 {
     QMutexLocker locker(&mutex);
-    ensureFileTypeResolvers();
-
     TagLib::FileRef fileref = getFileRef(fileName);
 
     if (fileref.isNull()) {
@@ -1120,8 +1110,6 @@ ReplayGain readReplaygain(const QString &fileName)
 Update updateReplaygain(const QString &fileName, const ReplayGain &rg)
 {
     QMutexLocker locker(&mutex);
-    ensureFileTypeResolvers();
-
     TagLib::FileRef fileref = getFileRef(fileName);
     return fileref.isNull() ? Update_Failed : update(fileref, Song(), Song(), RgTags(rg), QByteArray());
 }
@@ -1129,8 +1117,6 @@ Update updateReplaygain(const QString &fileName, const ReplayGain &rg)
 Update embedImage(const QString &fileName, const QByteArray &cover)
 {
     QMutexLocker locker(&mutex);
-    ensureFileTypeResolvers();
-
     TagLib::FileRef fileref = getFileRef(fileName);
     return fileref.isNull() ? Update_Failed : update(fileref, Song(), Song(), RgTags(), cover);
 }

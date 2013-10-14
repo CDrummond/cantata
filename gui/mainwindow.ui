@@ -108,37 +108,13 @@
          <number>0</number>
         </property>
         <item>
-         <widget class="ToolButton" name="songInfoButton">
-          <property name="iconSize">
-           <size>
-            <width>20</width>
-            <height>20</height>
-           </size>
-          </property>
-         </widget>
+         <widget class="ToolButton" name="songInfoButton"/>
         </item>
         <item>
-         <widget class="ToolButton" name="volumeButton">
-          <property name="iconSize">
-           <size>
-            <width>20</width>
-            <height>20</height>
-           </size>
-          </property>
-         </widget>
+         <widget class="ToolButton" name="volumeButton"/>
         </item>
         <item>
-         <widget class="MenuButton" name="menuButton">
-          <property name="toolTip">
-           <string>Menu</string>
-          </property>
-          <property name="iconSize">
-           <size>
-            <width>20</width>
-            <height>20</height>
-           </size>
-          </property>
-         </widget>
+         <widget class="MenuButton" name="menuButton"/>
         </item>
        </layout>
       </item>

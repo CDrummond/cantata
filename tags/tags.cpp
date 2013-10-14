@@ -150,14 +150,10 @@ struct RgTagsStrings
 static TagLib::FileRef getFileRef(const QString &path)
 {
     #ifdef Q_OS_WIN32
-    const wchar_t *encodedName = reinterpret_cast< const wchar_t * >(path.utf16());
-    #elif defined COMPLEX_TAGLIB_FILENAME
-    const wchar_t *encodedName = reinterpret_cast< const wchar_t * >(path.utf16());
+    return TagLib::FileRef(path.toStdWString().c_str(), true, TagLib::AudioProperties::Fast);
     #else
-    QByteArray fileName = QFile::encodeName(path);
-    const char *encodedName = fileName.constData(); // valid as long as fileName exists
+    return TagLib::FileRef(QFile::encodeName(path).constData(), true, TagLib::AudioProperties::Fast);
     #endif
-    return TagLib::FileRef(encodedName, true, TagLib::AudioProperties::Fast);
 }
 
 static void ensureFileTypeResolvers()

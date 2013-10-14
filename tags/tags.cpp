@@ -166,7 +166,7 @@ static TagLib::FileRef getFileRef(const QString &path)
     ensureFileTypeResolvers();
 
     #ifdef Q_OS_WIN32
-    return TagLib::FileRef(path.toStdWString().c_str(), true, TagLib::AudioProperties::Fast);
+    return TagLib::FileRef(reinterpret_cast<const wchar_t*>(path.constData()), true, TagLib::AudioProperties::Fast);
     #else
     return TagLib::FileRef(QFile::encodeName(path).constData(), true, TagLib::AudioProperties::Fast);
     #endif

@@ -548,12 +548,6 @@ if (UNIX AND NOT APPLE)
     install(FILES cantata.desktop DESTINATION ${XDG_APPS_INSTALL_DIR})
 endif (UNIX AND NOT APPLE)
 
-if (WIN32)
-    set(DIR_SEPARATOR "\\\\")
-else (WIN32)
-    set(DIR_SEPARATOR "/")
-endif (WIN32)
-
 configure_file(config.h.cmake ${CMAKE_BINARY_DIR}/config.h)
 
 message("")

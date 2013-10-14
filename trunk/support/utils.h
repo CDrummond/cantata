@@ -28,6 +28,7 @@
 #include <sys/types.h>
 #include <qglobal.h>
 #include <QString>
+#include <QLatin1Char>
 #include <QDir>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KGlobal>
@@ -40,16 +41,15 @@ class QWidget;
 
 namespace Utils
 {
+    extern QLatin1Char constDirSep;
+    extern QLatin1String constDirSepStr;
+    extern const char * constDirSepCharStr;
+
     inline bool equal(double d1, double d2, double precision=0.0001)
     {
         return (fabs(d1 - d2) < precision);
     }
 
-    #ifdef Q_OS_WIN
-    inline QString nativeDirSeparators(const QString &path) { return QDir::toNativeSeparators(path); }
-    #else
-    inline QString nativeDirSeparators(const QString &path) { return path; }
-    #endif
     extern QString strippedText(QString s);
     extern QString stripAcceleratorMarkers(QString label);
     extern QString fixPath(const QString &d);

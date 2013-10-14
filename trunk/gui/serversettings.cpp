@@ -345,7 +345,7 @@ QString ServerSettings::generateName(int ignore) const
 void ServerSettings::setDetails(const MPDConnectionDetails &details)
 {
     if (details.name==MPDUser::constName) {
-        basicDir->setText(details.dir);
+        basicDir->setText(QDir::toNativeSeparators(details.dir));
         basicCoverName->setText(details.coverName);
         stackedWidget->setCurrentIndex(1);
     } else {
@@ -353,7 +353,7 @@ void ServerSettings::setDetails(const MPDConnectionDetails &details)
         host->setText(details.hostname);
         port->setValue(details.port);
         password->setText(details.password);
-        dir->setText(details.dir);
+        dir->setText(QDir::toNativeSeparators(details.dir));
         dynamizerPort->setValue(details.dynamizerPort);
         coverName->setText(details.coverName);
         #ifdef ENABLE_HTTP_STREAM_PLAYBACK
@@ -374,7 +374,7 @@ MPDConnectionDetails ServerSettings::getDetails() const
         details.hostname=host->text().trimmed();
         details.port=port->value();
         details.password=password->text();
-        details.dir=Utils::fixPath(dir->text().trimmed());
+        details.dir=Utils::fixPath(QDir::fromNativeSeparators(dir->text().trimmed()));
         details.dynamizerPort=dynamizerPort->value();
         details.coverName=coverName->text().trimmed();
         #ifdef ENABLE_HTTP_STREAM_PLAYBACK
@@ -382,7 +382,7 @@ MPDConnectionDetails ServerSettings::getDetails() const
         #endif
     } else {
         details=MPDUser::self()->details(true);
-        details.dir=Utils::fixPath(basicDir->text().trimmed());
+        details.dir=Utils::fixPath(QDir::fromNativeSeparators(basicDir->text().trimmed()));
         details.coverName=basicCoverName->text().trimmed();
         MPDUser::self()->setMusicFolder(details.dir);
     }

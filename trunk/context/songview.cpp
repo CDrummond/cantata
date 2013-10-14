@@ -56,11 +56,7 @@ static QString cacheFile(QString artist, QString title, bool createDir=false)
 {
     title.replace("/", "_");
     artist.replace("/", "_");
-    #if defined Q_OS_WIN
-    title.replace("\\", "_");
-    artist.replace("\\", "_");
-    #endif
-    QString dir=Utils::cacheDir(SongView::constLyricsDir+artist+'/', createDir);
+    QString dir=Utils::cacheDir(SongView::constLyricsDir+artist+Utils::constDirSep, createDir);
 
     if (dir.isEmpty()) {
         return QString();
@@ -70,7 +66,7 @@ static QString cacheFile(QString artist, QString title, bool createDir=false)
 
 static inline QString mpdFilePath(const QString &songFile)
 {
-    return Utils::nativeDirSeparators(Utils::changeExtension(MPDConnection::self()->getDetails().dir+songFile, SongView::constExtension));
+    return Utils::changeExtension(MPDConnection::self()->getDetails().dir+songFile, SongView::constExtension);
 }
 
 static inline QString mpdFilePath(const Song &song)

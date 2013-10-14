@@ -51,6 +51,10 @@
 #include <sys/types.h>
 #include <utime.h>
 
+QLatin1Char Utils::constDirSep('/');
+QLatin1String Utils::constDirSepStr("/");
+const char * Utils::constDirSepCharStr="/";
+
 QString Utils::strippedText(QString s)
 {
     s.remove(QString::fromLatin1("..."));
@@ -92,21 +96,19 @@ QString Utils::fixPath(const QString &dir)
     QString d(dir);
 
     if (!d.isEmpty() && !d.startsWith(QLatin1String("http://"))) {
-        d.replace(QLatin1String("//"), QChar('/'));
+        d.replace(QLatin1String("//"), constDirSepStr);
     }
-    #ifndef Q_OS_WIN
-    d.replace(QLatin1String("/./"), QChar('/'));
-    #endif
-    if (!d.isEmpty() && !d.endsWith(DIR_SEPARATOR)) {
-        d+=DIR_SEPARATOR;
+    d.replace(QLatin1String("/./"), constDirSepStr);
+    if (!d.isEmpty() && !d.endsWith(constDirSep)) {
+        d+="/";
     }
     return d;
 }
 
 QString Utils::getDir(const QString &file)
 {
-    QString d=nativeDirSeparators(file);
-    int slashPos(d.lastIndexOf(DIR_SEPARATOR));
+    QString d(file);
+    int slashPos(d.lastIndexOf(constDirSep));
 
     if(slashPos!=-1) {
         d.remove(slashPos+1, d.length());
@@ -117,8 +119,8 @@ QString Utils::getDir(const QString &file)
 
 QString Utils::getFile(const QString &file)
 {
-    QString d=nativeDirSeparators(file);
-    int slashPos=d.lastIndexOf(DIR_SEPARATOR);
+    QString d(file);
+    int slashPos=d.lastIndexOf(constDirSep);
 
     if (-1!=slashPos) {
         d.remove(0, slashPos+1);
@@ -235,7 +237,7 @@ bool Utils::createDir(const QString &dir, const QString &base, const char *group
     #endif
     #ifndef Q_OS_WIN
     if (status && 0!=gid && dir.startsWith(base)) {
-        QStringList parts=dir.mid(base.length()).split('/');
+        QStringList parts=dir.mid(base.length()).split(constDirSep);
         QString d(base);
 
         foreach (const QString &p, parts) {
@@ -488,16 +490,16 @@ QString Utils::cleanPath(const QString &p)
 {
     QString path(p);
     while (path.contains("//")) {
-        path.replace("//", "/");
+        path.replace("//", constDirSepStr);
     }
     return fixPath(path);
 }
 
 static QString userDir(const QString &mainDir, const QString &sub, bool create)
 {
-    QString dir=Utils::nativeDirSeparators(mainDir);
+    QString dir=mainDir;
     if (!sub.isEmpty()) {
-        dir+=Utils::nativeDirSeparators(sub);
+        dir+=sub;
     }
     dir=Utils::cleanPath(dir);
     QDir d(dir);
@@ -507,30 +509,30 @@ static QString userDir(const QString &mainDir, const QString &sub, bool create)
 QString Utils::configDir(const QString &sub, bool create)
 {
     #if defined Q_OS_WIN
-    return userDir(QDesktopServices::storageLocation(QDesktopServices::DataLocation)+"/", sub, create);
+    return userDir(QDesktopServices::storageLocation(QDesktopServices::DataLocation)+constDirSep, sub, create);
     #else
     QString env = qgetenv("XDG_CONFIG_HOME");
-    return userDir((env.isEmpty() ? QDir::homePath() + "/.config" : env) + "/"+QCoreApplication::applicationName()+"/", sub, create);
+    return userDir((env.isEmpty() ? QDir::homePath() + "/.config" : env) + constDirSep+QCoreApplication::applicationName()+constDirSep, sub, create);
     #endif
 }
 
 QString Utils::dataDir(const QString &sub, bool create)
 {
     #if defined Q_OS_WIN
-    return userDir(QDesktopServices::storageLocation(QDesktopServices::DataLocation)+"/", sub, create);
+    return userDir(QDesktopServices::storageLocation(QDesktopServices::DataLocation)+constDirSep, sub, create);
     #else
     QString env = qgetenv("XDG_DATA_HOME");
-    return userDir((env.isEmpty() ? QDir::homePath() + "/.local/share" : env) + "/"+QCoreApplication::applicationName()+"/", sub, create);
+    return userDir((env.isEmpty() ? QDir::homePath() + "/.local/share" : env) + constDirSep+QCoreApplication::applicationName()+constDirSep, sub, create);
     #endif
 }
 
 QString Utils::cacheDir(const QString &sub, bool create)
 {
     #if defined Q_OS_WIN
-    return userDir(QDesktopServices::storageLocation(QDesktopServices::CacheLocation)+"/", sub, create);
+    return userDir(QDesktopServices::storageLocation(QDesktopServices::CacheLocation)+constDirSep, sub, create);
     #else
     QString env = qgetenv("XDG_CACHE_HOME");
-    return userDir((env.isEmpty() ? QDir::homePath() + "/.cache" : env) + "/"+QCoreApplication::applicationName()+"/", sub, create);
+    return userDir((env.isEmpty() ? QDir::homePath() + "/.cache" : env) + constDirSep+QCoreApplication::applicationName()+constDirSep, sub, create);
     #endif
 }
 
@@ -560,13 +562,13 @@ void Utils::moveDir(const QString &from, const QString &to)
     QFileInfoList files=f.entryInfoList(QStringList() << "*", QDir::Files|QDir::Dirs|QDir::NoDotAndDotDot);
     foreach (const QFileInfo &file, files) {
         if (file.isDir()) {
-            QString dest=nativeDirSeparators(to+file.fileName()+"/");
+            QString dest=to+file.fileName()+constDirSep;
             if (!QDir(dest).exists()) {
                 t.mkdir(file.fileName());
             }
-            moveDir(nativeDirSeparators(from+file.fileName()+"/"), dest);
+            moveDir(from+file.fileName()+constDirSep, dest);
         } else {
-            QFile::rename(nativeDirSeparators(from+file.fileName()), nativeDirSeparators(to+file.fileName()));
+            QFile::rename(from+file.fileName(), to+file.fileName());
         }
     }
 

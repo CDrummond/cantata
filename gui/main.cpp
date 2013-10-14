@@ -55,13 +55,14 @@
 #include "streamfetcher.h"
 
 #include <QMutex>
+#include <QMutexLocker>
 #include <QTextStream>
 #include <QDateTime>
 static QMutex msgMutex;
 static bool firstMsg=true;
 static void cantataQtMsgHandler(QtMsgType, const char *msg)
 {
-    msgMutex.lock();
+    QMutexLocker locker(&msgMutex);
     QFile f(Utils::cacheDir(QString(), true)+"cantata.log");
     if (f.open(QIODevice::WriteOnly|QIODevice::Append)) {
         QTextStream stream(&f);
@@ -71,7 +72,6 @@ static void cantataQtMsgHandler(QtMsgType, const char *msg)
         }
         stream << QDateTime::currentDateTime().toString(Qt::ISODate).replace("T", " ") << " - " << msg << endl;
     }
-    msgMutex.unlock();
 }
 
 #ifndef ENABLE_KDE_SUPPORT

@@ -103,35 +103,34 @@ static const QString typeFromRaw(const QByteArray &raw)
 
 static QString save(const QString &mimeType, const QString &extension, const QString &filePrefix, const QImage &img, const QByteArray &raw)
 {
-    QString nativeFilePrefix=Utils::nativeDirSeparators(filePrefix);
     if (!mimeType.isEmpty() && extension==mimeType) {
-        if (QFile::exists(nativeFilePrefix+mimeType)) {
-            return nativeFilePrefix+mimeType;
+        if (QFile::exists(filePrefix+mimeType)) {
+            return filePrefix+mimeType;
         }
 
-        QFile f(nativeFilePrefix+mimeType);
+        QFile f(filePrefix+mimeType);
         if (f.open(QIODevice::WriteOnly) && raw.size()==f.write(raw)) {
-            #ifndef Q_OS_WIN
-            if (!MPDConnection::self()->getDetails().dir.isEmpty() && filePrefix.startsWith(MPDConnection::self()->getDetails().dir)) {
-                Utils::setFilePerms(nativeFilePrefix+mimeType);
-            }
-            #endif
-            return nativeFilePrefix+mimeType;
-        }
-    }
-
-    if (extension!=mimeType) {
-        if (QFile::exists(nativeFilePrefix+extension)) {
-            return nativeFilePrefix+extension;
-        }
-
-        if (img.save(nativeFilePrefix+extension)) {
             #ifndef Q_OS_WIN
             if (!MPDConnection::self()->getDetails().dir.isEmpty() && filePrefix.startsWith(MPDConnection::self()->getDetails().dir)) {
                 Utils::setFilePerms(filePrefix+mimeType);
             }
             #endif
-            return nativeFilePrefix+extension;
+            return filePrefix+mimeType;
+        }
+    }
+
+    if (extension!=mimeType) {
+        if (QFile::exists(filePrefix+extension)) {
+            return filePrefix+extension;
+        }
+
+        if (img.save(filePrefix+extension)) {
+            #ifndef Q_OS_WIN
+            if (!MPDConnection::self()->getDetails().dir.isEmpty() && filePrefix.startsWith(MPDConnection::self()->getDetails().dir)) {
+                Utils::setFilePerms(filePrefix+mimeType);
+            }
+            #endif
+            return filePrefix+extension;
         }
     }
 
@@ -189,11 +188,7 @@ QString Covers::fixArtist(const QString &artist)
 static QString xdgConfig()
 {
     QString env = QString::fromLocal8Bit(qgetenv("XDG_CONFIG_HOME"));
-    QString dir = (env.isEmpty() ? QDir::homePath() + QLatin1String("/.config/") : env);
-    if (!dir.endsWith("/")) {
-        dir=dir+'/';
-    }
-    return dir;
+    return Utils::fixPath(env.isEmpty() ? QDir::homePath() + QLatin1String("/.config/") : env);
 }
 
 #ifndef ENABLE_KDE_SUPPORT
@@ -403,10 +398,10 @@ void CoverDownloader::download(const Song &song)
     }
 
     QString dirName;
-    bool haveAbsPath=song.file.startsWith('/');
+    bool haveAbsPath=song.file.startsWith(Utils::constDirSep);
 
     if (haveAbsPath || !MPDConnection::self()->getDetails().dir.isEmpty()) {
-        dirName=song.file.endsWith('/') ? (haveAbsPath ? QString() : MPDConnection::self()->getDetails().dir)+song.file
+        dirName=song.file.endsWith(Utils::constDirSep) ? (haveAbsPath ? QString() : MPDConnection::self()->getDetails().dir)+song.file
                                         : Utils::getDir((haveAbsPath ? QString() : MPDConnection::self()->getDetails().dir)+song.file);
     }
 
@@ -428,19 +423,19 @@ bool CoverDownloader::downloadViaHttp(Job &job, JobType type)
     QString dir=Utils::getDir(job.song.file);
     if (isArtistImage) {
         if (job.level) {
-            QStringList parts=dir.split("/", QString::SkipEmptyParts);
+            QStringList parts=dir.split(Utils::constDirSep, QString::SkipEmptyParts);
             if (parts.size()<job.level) {
                 return false;
             }
             dir=QString();
             for (int i=0; i<(parts.length()-job.level); ++i) {
-                dir+=parts.at(i)+"/";
+                dir+=parts.at(i)+Utils::constDirSep;
             }
         }
         job.level++;
     }
     #if QT_VERSION < 0x050000
-    u.setEncodedUrl(MPDConnection::self()->getDetails().dir.toLatin1()+QUrl::toPercentEncoding(dir, "/")+coverName.toLatin1());
+    u.setEncodedUrl(MPDConnection::self()->getDetails().dir.toLatin1()+QUrl::toPercentEncoding(dir, Utils::constDirSepCharStr)+coverName.toLatin1());
     #else
     u=QUrl(MPDConnection::self()->getDetails().dir+dir+coverName.toLatin1());
     #endif
@@ -644,10 +639,10 @@ QString CoverDownloader::saveImg(const Job &job, const QImage &img, const QByteA
     if (job.isArtist) {
         if (saveInMpdDir && canSaveTo(job.dir)) {
             QString mpdDir=MPDConnection::self()->getDetails().dir;
-            if (!mpdDir.isEmpty() && job.dir.startsWith(mpdDir) && 2==job.dir.mid(mpdDir.length()).split('/', QString::SkipEmptyParts).count()) {
+            if (!mpdDir.isEmpty() && job.dir.startsWith(mpdDir) && 2==job.dir.mid(mpdDir.length()).split(Utils::constDirSep, QString::SkipEmptyParts).count()) {
                 QDir d(job.dir);
                 d.cdUp();
-                savedName=save(mimeType, extension, d.absolutePath()+'/'+Covers::artistFileName(job.song), img, raw);
+                savedName=save(mimeType, extension, d.absolutePath()+Utils::constDirSep+Covers::artistFileName(job.song), img, raw);
                 if (!savedName.isEmpty()) {
                     DBUG << job.song.file << savedName;
                     return savedName;
@@ -927,7 +922,7 @@ Covers::Image Covers::locateImage(const Song &song)
 
     QString songFile=song.file;
     QString dirName;
-    bool haveAbsPath=song.file.startsWith(DIR_SEPARATOR);
+    bool haveAbsPath=song.file.startsWith(Utils::constDirSep);
 
     if (song.isCantataStream()) {
         #if QT_VERSION < 0x050000
@@ -939,22 +934,11 @@ Covers::Image Covers::locateImage(const Song &song)
         songFile=u.hasQueryItem("file") ? u.queryItemValue("file") : QString();
     }
 
-    #ifdef Q_OS_WIN
-    if (!songFile.isEmpty()) {
-        songFile=Utils::nativeDirSeparators(songFile);
-    }
-    #endif
-
     if (!songFile.isEmpty() && !song.file.startsWith(("http:/")) &&
         (haveAbsPath || (!MPDConnection::self()->getDetails().dir.isEmpty() && !MPDConnection::self()->getDetails().dir.startsWith(QLatin1String("http://")) ) ) ) {
-        dirName=songFile.endsWith('/') ? (haveAbsPath ? QString() : MPDConnection::self()->getDetails().dir)+songFile
+        dirName=songFile.endsWith(Utils::constDirSep) ? (haveAbsPath ? QString() : MPDConnection::self()->getDetails().dir)+songFile
                                        : Utils::getDir((haveAbsPath ? QString() : MPDConnection::self()->getDetails().dir)+songFile);
 
-        #ifdef Q_OS_WIN
-        if (!dirName.isEmpty()) {
-            dirName=Utils::nativeDirSeparators(dirName);
-        }
-        #endif
 
         if (isArtistImage) {
             QString artistFile=artistFileName(song);

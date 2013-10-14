@@ -180,7 +180,11 @@ MPDConnectionDetails Settings::connectionDetails(const QString &name)
         details.password=GET_STRING("connectionPasswd", name.isEmpty() ? mpdDefaults.passwd : QString());
         #endif
         details.port=GET_INT("connectionPort", name.isEmpty() ? mpdDefaults.port : 6600);
+        #ifdef Q_OS_WIN32
+        details.dir=Utils::fixPath(QDir::fromNativeSeparators(GET_STRING("mpdDir", mpdDefaults.dir)));
+        #else
         details.dir=Utils::fixPath(GET_STRING("mpdDir", mpdDefaults.dir));
+        #endif
         details.dynamizerPort=0;
     } else {
         QString n=MPDConnectionDetails::configGroupName(name);
@@ -215,7 +219,11 @@ MPDConnectionDetails Settings::connectionDetails(const QString &name)
             cfg.beginGroup(n);
             details.hostname=GET_STRING("host", name.isEmpty() ? mpdDefaults.host : QString());
             details.port=GET_INT("port", name.isEmpty() ? mpdDefaults.port : 6600);
+            #ifdef Q_OS_WIN32
+            details.dir=Utils::fixPath(QDir::fromNativeSeparators(GET_STRING("dir", name.isEmpty() ? mpdDefaults.dir : "/var/lib/mpd/music")));
+            #else
             details.dir=Utils::fixPath(GET_STRING("dir", name.isEmpty() ? mpdDefaults.dir : "/var/lib/mpd/music"));
+            #endif
             details.password=GET_STRING("passwd", name.isEmpty() ? mpdDefaults.passwd : QString());
             details.dynamizerPort=GET_INT("dynamizerPort", 0);
             details.coverName=GET_STRING("coverName", QString());

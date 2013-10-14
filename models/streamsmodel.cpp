@@ -119,7 +119,7 @@ QString StreamsModel::favouritesDir()
 static QString getInternalFile(bool createDir=false)
 {
     if (Settings::self()->storeStreamsInMpdDir()) {
-        return Utils::nativeDirSeparators(MPDConnection::self()->getDetails().dir)+constFavouritesFileName;
+        return MPDConnection::self()->getDetails().dir+constFavouritesFileName;
     }
     return Utils::dataDir(QString(), createDir)+constFavouritesFileName;
 }
@@ -146,7 +146,7 @@ static QIcon getIcon(const QString &name)
 static QIcon getExternalIcon(const QString &path, QStringList files=QStringList() << StreamsModel::constSvgIcon <<  StreamsModel::constPngIcon)
 {
     foreach (const QString &file, files) {
-        QString iconFile=path+"/"+file;
+        QString iconFile=path+Utils::constDirSep+file;
         if (QFile::exists(iconFile)) {
             QIcon icon;
             icon.addFile(iconFile);
@@ -338,7 +338,7 @@ QList<StreamsModel::Item *> StreamsModel::XmlCategoryItem::loadCache()
             if (i->isCategory()) {
                 StreamsModel::CategoryItem *cat=static_cast<StreamsModel::CategoryItem *>(i);
                 QString name=cat->name;
-                name=name.replace("/", "_");
+                name=name.replace(Utils::constDirSep, "_");
                 cat->icon=getExternalIcon(dir, QStringList() << name+".svg" << name+".png");
             }
         }
@@ -1848,7 +1848,7 @@ void StreamsModel::buildListenLive()
                     QString url=doc.attributes().value("url").toString();
                     QString cache=doc.attributes().value("cache").toString();
                     if (cache.isEmpty() && url.endsWith(".html")) {
-                        QStringList parts=url.split("/", QString::SkipEmptyParts);
+                        QStringList parts=url.split(Utils::constDirSep, QString::SkipEmptyParts);
                         if (!parts.isEmpty()) {
                             cache=parts.last().remove((".html"));
                         }
@@ -1892,9 +1892,8 @@ void StreamsModel::buildXml()
         foreach (const QString &sub, subDirs) {
             if (!added.contains(sub)) {
                 foreach (const QString &streamFile, streamFiles) {
-                    QString dirName=Utils::nativeDirSeparators(dir+sub+"/");
-                    if (QFile::exists(dirName+streamFile)) {
-                        addXmlCategory(sub, getExternalIcon(dirName), dirName+streamFile, false);
+                    if (QFile::exists(dir+sub+Utils::constDirSep+streamFile)) {
+                        addXmlCategory(sub, getExternalIcon(dir+sub), dir+sub+Utils::constDirSep+streamFile, false);
                         added.insert(sub);
                         break;
                     }

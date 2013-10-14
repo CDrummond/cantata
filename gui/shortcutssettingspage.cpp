@@ -51,19 +51,16 @@ ShortcutsSettingsPage::ShortcutsSettingsPage(QWidget *p)
     shortcuts->view()->setItemDelegate(new BasicItemDelegate(shortcuts->view()));
     lay->addWidget(shortcuts);
 
-    #if !defined Q_OS_MAC
-
-    #if QT_VERSION < 0x050000 || !defined Q_OS_WIN
     QGroupBox *box=new QGroupBox(i18n("Multi-Media Keys"));
     QBoxLayout *boxLay=new QBoxLayout(QBoxLayout::LeftToRight, box);
     mediaKeysIfaceCombo=new QComboBox(box);
     boxLay->addWidget(mediaKeysIfaceCombo);
     mediaKeysIfaceCombo->addItem(i18n("Disabled"), (unsigned int)MediaKeys::NoInterface);
-    #if QT_VERSION < 0x050000
+    #ifdef CANTATA_USE_QXT_MEDIAKEYS
     mediaKeysIfaceCombo->addItem(i18n("Enabled"), (unsigned int)MediaKeys::QxtInterface);
     #endif
 
-    #if !defined Q_OS_WIN
+    #if !defined Q_OS_WIN && !defined Q_OS_MAC
     QByteArray desktop=qgetenv("XDG_CURRENT_DESKTOP");
     mediaKeysIfaceCombo->addItem(desktop=="Unity" || desktop=="GNOME"
                    ? i18n("Use desktop settings")
@@ -78,9 +75,6 @@ ShortcutsSettingsPage::ShortcutsSettingsPage(QWidget *p)
     #endif
 
     lay->addWidget(box);
-    #endif // QT_VERSION < 0x050000 || !defined Q_OS_WIN
-
-    #endif // !defined Q_OS_MAC
 }
 
 void ShortcutsSettingsPage::load()

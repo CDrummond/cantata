@@ -22,12 +22,13 @@
  */
 
 #include "mediakeys.h"
-#if !defined Q_OS_WIN && !defined Q_OS_MAC
+#ifdef QT_QTDBUS_FOUND
 #include "gnomemediakeys.h"
 #endif
-#ifdef QT_QTDBUS_FOUND
+#ifdef CANTATA_USE_QXT_MEDIAKEYS
 #include "qxtmediakeys.h"
 #endif
+#include "multimediakeysinterface.h"
 #include "stdactions.h"
 #include "settings.h"
 #ifdef ENABLE_KDE_SUPPORT
@@ -90,14 +91,14 @@ MediaKeys::MediaKeys()
     gnome=0;
     #endif
 
-    #if !defined Q_OS_MAC && QT_VERSION < 0x050000
+    #ifdef CANTATA_USE_QXT_MEDIAKEYS
     qxt=0;
     #endif
 }
 
 MediaKeys::~MediaKeys()
 {
-    #if !defined Q_OS_MAC && QT_VERSION < 0x050000
+    #ifdef CANTATA_USE_QXT_MEDIAKEYS
     if (qxt) {
         delete qxt;
     }
@@ -119,7 +120,7 @@ void MediaKeys::load()
     }
     #endif
 
-    #if !defined Q_OS_MAC && QT_VERSION < 0x050000
+    #ifdef CANTATA_USE_QXT_MEDIAKEYS
     if (qxt && qxt->isEnabled()) {
         current=QxtInterface;
     }
@@ -137,7 +138,7 @@ void MediaKeys::load()
     }
     #endif
 
-    #if !defined Q_OS_MAC && QT_VERSION < 0x050000
+    #ifdef CANTATA_USE_QXT_MEDIAKEYS
     if (qxt && QxtInterface==current) {
         disable(qxt);
         qxt->deleteLater();
@@ -154,7 +155,7 @@ void MediaKeys::load()
     }
     #endif
 
-    #if !defined Q_OS_MAC && QT_VERSION < 0x050000
+    #ifdef CANTATA_USE_QXT_MEDIAKEYS
     if (QxtInterface==configured) {
         if (!qxt) {
             qxt=new QxtMediaKeys(0);
@@ -174,7 +175,7 @@ void MediaKeys::stop()
     }
     #endif
 
-    #if !defined Q_OS_MAC && QT_VERSION < 0x050000
+    #ifdef CANTATA_USE_QXT_MEDIAKEYS
     if (qxt) {
         disable(qxt);
         qxt->deleteLater();
@@ -206,3 +207,4 @@ void MediaKeys::disable(MultiMediaKeysInterface *iface)
     QObject::disconnect(iface, SIGNAL(previous()), StdActions::self()->prevTrackAction, SIGNAL(triggered()));
     iface->setEnabled(false);
 }
+

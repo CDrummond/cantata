@@ -56,7 +56,26 @@ static QString cacheFile(QString artist, QString title, bool createDir=false)
 {
     title.replace("/", "_");
     artist.replace("/", "_");
-    return QDir::toNativeSeparators(Utils::cacheDir(SongView::constLyricsDir+artist+'/', createDir))+title+SongView::constExtension;
+    #if defined Q_OS_WIN
+    title.replace("\\", "_");
+    artist.replace("\\", "_");
+    #endif
+    QString dir=Utils::cacheDir(SongView::constLyricsDir+artist+'/', createDir);
+
+    if (dir.isEmpty()) {
+        return QString();
+    }
+    return dir+title+SongView::constExtension;
+}
+
+static inline QString mpdFilePath(const QString &songFile)
+{
+    return Utils::nativeDirSeparators(Utils::changeExtension(MPDConnection::self()->getDetails().dir+songFile, SongView::constExtension));
+}
+
+static inline QString mpdFilePath(const Song &song)
+{
+    return mpdFilePath(song.file);
 }
 
 static inline QString fixNewLines(const QString &o)
@@ -284,7 +303,7 @@ void SongView::update(const Song &s, bool force)
                 songFile=u.hasQueryItem("file") ? u.queryItemValue("file") : QString();
             }
 
-            QString mpdLyrics=Utils::changeExtension(MPDConnection::self()->getDetails().dir+songFile, constExtension);
+            QString mpdLyrics=mpdFilePath(songFile);
 
             if (MPDConnection::self()->getDetails().dir.startsWith(QLatin1String("http:/"))) {
                 QUrl url(mpdLyrics);
@@ -376,7 +395,7 @@ void SongView::lyricsReady(int id, QString lyrics)
             text->setText(fixNewLines(plain));
             lyricsFile=QString();
             if (! ( Settings::self()->storeLyricsInMpdDir() &&
-                    saveFile(Utils::changeExtension(MPDConnection::self()->getDetails().dir+currentSong.file, constExtension))) ) {
+                    saveFile(mpdFilePath(currentSong))) ) {
                 saveFile(cacheFile(currentSong.artist, currentSong.title, true));
             }
             setMode(Mode_Display);
@@ -401,7 +420,7 @@ bool SongView::saveFile(const QString &fileName)
 QString SongView::mpdFileName() const
 {
     return currentSong.file.isEmpty() || MPDConnection::self()->getDetails().dir.isEmpty() || currentSong.isStream()
-            ? QString() : Utils::changeExtension(MPDConnection::self()->getDetails().dir+currentSong.file, constExtension);
+            ? QString() : mpdFilePath(currentSong);
 }
 
 QString SongView::cacheFileName() const
@@ -422,7 +441,7 @@ void SongView::getLyrics()
         hideSpinner();
         // Set lyrics file anyway - so that editing is enabled!
         lyricsFile=Settings::self()->storeLyricsInMpdDir()
-                ? Utils::changeExtension(MPDConnection::self()->getDetails().dir+currentSong.file, constExtension)
+                ? mpdFilePath(currentSong)
                 : cacheFile(currentSong.artist, currentSong.title);
         setMode(Mode_Display);
     }
@@ -438,7 +457,7 @@ void SongView::setMode(Mode m)
     saveAction->setEnabled(Mode_Edit==m);
     cancelAction->setEnabled(Mode_Edit==m);
     editAction->setEnabled(editable);
-    delAction->setEnabled(editable && !MPDConnection::self()->getDetails().dir.isEmpty() && QFile::exists(Utils::changeExtension(MPDConnection::self()->getDetails().dir+currentSong.file, constExtension)));
+    delAction->setEnabled(editable && !MPDConnection::self()->getDetails().dir.isEmpty() && QFile::exists(mpdFilePath(currentSong)));
     setEditable(Mode_Edit==m);
 }
 

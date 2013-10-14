@@ -28,6 +28,7 @@
 #include <sys/types.h>
 #include <qglobal.h>
 #include <QString>
+#include <QDir>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KGlobal>
 #include <KDE/KLocale>
@@ -44,6 +45,11 @@ namespace Utils
         return (fabs(d1 - d2) < precision);
     }
 
+    #ifdef Q_OS_WIN
+    inline QString nativeDirSeparators(const QString &path) { return QDir::toNativeSeparators(path); }
+    #else
+    inline QString nativeDirSeparators(const QString &path) { return path; }
+    #endif
     extern QString strippedText(QString s);
     extern QString stripAcceleratorMarkers(QString label);
     extern QString fixPath(const QString &d);

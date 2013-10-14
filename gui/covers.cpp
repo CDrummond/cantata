@@ -103,30 +103,35 @@ static const QString typeFromRaw(const QByteArray &raw)
 
 static QString save(const QString &mimeType, const QString &extension, const QString &filePrefix, const QImage &img, const QByteArray &raw)
 {
+    QString nativeFilePrefix=Utils::nativeDirSeparators(filePrefix);
     if (!mimeType.isEmpty() && extension==mimeType) {
-        if (QFile::exists(filePrefix+mimeType)) {
-            return filePrefix+mimeType;
+        if (QFile::exists(nativeFilePrefix+mimeType)) {
+            return nativeFilePrefix+mimeType;
         }
 
-        QFile f(filePrefix+mimeType);
+        QFile f(nativeFilePrefix+mimeType);
         if (f.open(QIODevice::WriteOnly) && raw.size()==f.write(raw)) {
+            #ifndef Q_OS_WIN
             if (!MPDConnection::self()->getDetails().dir.isEmpty() && filePrefix.startsWith(MPDConnection::self()->getDetails().dir)) {
-                Utils::setFilePerms(filePrefix+mimeType);
+                Utils::setFilePerms(nativeFilePrefix+mimeType);
             }
-            return filePrefix+mimeType;
+            #endif
+            return nativeFilePrefix+mimeType;
         }
     }
 
     if (extension!=mimeType) {
-        if (QFile::exists(filePrefix+extension)) {
-            return filePrefix+extension;
+        if (QFile::exists(nativeFilePrefix+extension)) {
+            return nativeFilePrefix+extension;
         }
 
-        if (img.save(filePrefix+extension)) {
+        if (img.save(nativeFilePrefix+extension)) {
+            #ifndef Q_OS_WIN
             if (!MPDConnection::self()->getDetails().dir.isEmpty() && filePrefix.startsWith(MPDConnection::self()->getDetails().dir)) {
                 Utils::setFilePerms(filePrefix+mimeType);
             }
-            return filePrefix+extension;
+            #endif
+            return nativeFilePrefix+extension;
         }
     }
 
@@ -922,7 +927,7 @@ Covers::Image Covers::locateImage(const Song &song)
 
     QString songFile=song.file;
     QString dirName;
-    bool haveAbsPath=song.file.startsWith('/');
+    bool haveAbsPath=song.file.startsWith(DIR_SEPARATOR);
 
     if (song.isCantataStream()) {
         #if QT_VERSION < 0x050000
@@ -934,10 +939,23 @@ Covers::Image Covers::locateImage(const Song &song)
         songFile=u.hasQueryItem("file") ? u.queryItemValue("file") : QString();
     }
 
+    #ifdef Q_OS_WIN
+    if (!songFile.isEmpty()) {
+        songFile=Utils::nativeDirSeparators(songFile);
+    }
+    #endif
+
     if (!songFile.isEmpty() && !song.file.startsWith(("http:/")) &&
         (haveAbsPath || (!MPDConnection::self()->getDetails().dir.isEmpty() && !MPDConnection::self()->getDetails().dir.startsWith(QLatin1String("http://")) ) ) ) {
         dirName=songFile.endsWith('/') ? (haveAbsPath ? QString() : MPDConnection::self()->getDetails().dir)+songFile
                                        : Utils::getDir((haveAbsPath ? QString() : MPDConnection::self()->getDetails().dir)+songFile);
+
+        #ifdef Q_OS_WIN
+        if (!dirName.isEmpty()) {
+            dirName=Utils::nativeDirSeparators(dirName);
+        }
+        #endif
+
         if (isArtistImage) {
             QString artistFile=artistFileName(song);
             QStringList names=QStringList() << song.albumartist+".jpg" << song.albumartist+".png" << artistFile+".jpg" << artistFile+".png";

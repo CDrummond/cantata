@@ -66,6 +66,8 @@ PlaybackSettings::PlaybackSettings(QWidget *p)
     REMOVE(inhibitSuspendLabel)
     REMOVE(inhibitSuspend)
     #endif
+    outputsView->setVisible(outputsView->count()>1);
+    outputsViewLabel->setVisible(outputsView->count()>1);
 }
 
 void PlaybackSettings::load()

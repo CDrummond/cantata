@@ -784,7 +784,9 @@ void OnlineServicesPage::updated(const QModelIndex &idx)
 //        proxy.sort();
 //    }
 
-    view->setExpanded(proxy.mapFromSource(idx));
+    if (isVisible() || !idx.isValid() || PodcastService::constName!=static_cast<OnlineService *>(idx.internalPointer())->id()) {
+        view->setExpanded(proxy.mapFromSource(idx));
+    }
 }
 
 //void OnlineServicesPage::sortList()

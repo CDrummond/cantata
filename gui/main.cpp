@@ -54,6 +54,26 @@
 #include "dynamic.h"
 #include "streamfetcher.h"
 
+#include <QMutex>
+#include <QTextStream>
+#include <QDateTime>
+static QMutex msgMutex;
+static bool firstMsg=true;
+static void cantataQtMsgHandler(QtMsgType, const char *msg)
+{
+    msgMutex.lock();
+    QFile f(Utils::cacheDir(QString(), true)+"cantata.log");
+    if (f.open(QIODevice::WriteOnly|QIODevice::Append)) {
+        QTextStream stream(&f);
+        if (firstMsg) {
+            stream << "------------START------------" << endl;
+            firstMsg=false;
+        }
+        stream << QDateTime::currentDateTime().toString(Qt::ISODate).replace("T", " ") << " - " << msg << endl;
+    }
+    msgMutex.unlock();
+}
+
 #ifndef ENABLE_KDE_SUPPORT
 // Taken from Clementine!
 //
@@ -108,46 +128,13 @@ enum Debug {
     Dbg_Context_Widget    = 0x0040,
     Dbg_Context_Backdrop  = 0x0080,
     Dbg_Dynamic           = 0x0100,
-    Dbg_StreamFetching    = 0x0200
+    Dbg_StreamFetching    = 0x0200,
+
+    Dbg_All               = 0x03FF
 };
 
 int main(int argc, char *argv[])
 {
-    QString debug=qgetenv("CANTATA_DEBUG");
-    if (!debug.isEmpty()) {
-        int dbg=debug.toInt();
-        if (dbg&Dbg_Mpd) {
-            MPDConnection::enableDebug();
-        }
-        if (dbg&Dbg_MpdParse) {
-            MPDParseUtils::enableDebug();
-        }
-        if (dbg&Dbg_Covers) {
-            Covers::enableDebug();
-        }
-        if (dbg&Dbg_Context_Wikipedia) {
-            WikipediaEngine::enableDebug();
-        }
-        if (dbg&Dbg_Context_LastFm) {
-            LastFmEngine::enableDebug();
-        }
-        if (dbg&Dbg_Context_Meta) {
-            MetaEngine::enableDebug();
-        }
-        if (dbg&Dbg_Context_Widget) {
-            ContextWidget::enableDebug();
-        }
-        if (dbg&Dbg_Context_Backdrop) {
-            BackdropCreator::enableDebug();
-        }
-        if (dbg&Dbg_Dynamic) {
-            Dynamic::enableDebug();
-        }
-        if (dbg&Dbg_StreamFetching) {
-            StreamFetcher::enableDebug();
-        }
-    }
-
     #ifdef ENABLE_KDE_SUPPORT
     KAboutData aboutData(PACKAGE_NAME, 0,
                          ki18n("Cantata"), PACKAGE_VERSION_STRING,
@@ -192,6 +179,44 @@ int main(int argc, char *argv[])
     Application app(argc, argv);
     if (!app.start()) {
         return 0;
+    }
+
+    QString debug=qgetenv("CANTATA_DEBUG");
+    if (!debug.isEmpty()) {
+        int dbg=debug.toInt();
+        if (dbg&Dbg_Mpd) {
+            MPDConnection::enableDebug();
+        }
+        if (dbg&Dbg_MpdParse) {
+            MPDParseUtils::enableDebug();
+        }
+        if (dbg&Dbg_Covers) {
+            Covers::enableDebug();
+        }
+        if (dbg&Dbg_Context_Wikipedia) {
+            WikipediaEngine::enableDebug();
+        }
+        if (dbg&Dbg_Context_LastFm) {
+            LastFmEngine::enableDebug();
+        }
+        if (dbg&Dbg_Context_Meta) {
+            MetaEngine::enableDebug();
+        }
+        if (dbg&Dbg_Context_Widget) {
+            ContextWidget::enableDebug();
+        }
+        if (dbg&Dbg_Context_Backdrop) {
+            BackdropCreator::enableDebug();
+        }
+        if (dbg&Dbg_Dynamic) {
+            Dynamic::enableDebug();
+        }
+        if (dbg&Dbg_StreamFetching) {
+            StreamFetcher::enableDebug();
+        }
+        if (dbg&Dbg_All) {
+            qInstallMsgHandler(cantataQtMsgHandler);
+        }
     }
 
     // Translations

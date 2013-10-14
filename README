@@ -719,9 +719,13 @@ covers logging:
 for just covers logging:
 
     CANTATA_DEBUG=4 cantata
-    
-NOTE: The above will function regardless of whether you have created a Debug or
-Release build.
+
+As of Cantata 1.2.0, all logging output is saved to a file. On Linux systems
+this will be ~/.cache/cantata/cantata.log For Windows this will be
+C:\Users\USERNAME\AppData\Local\mpd\cantata\cache\cantata.log
+
+NOTE: Debug logging will function regardless of whether you have created a
+Debug or Release build.
 
 
 14. Credits

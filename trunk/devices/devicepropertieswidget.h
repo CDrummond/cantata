@@ -26,6 +26,7 @@
 
 #include "ui_devicepropertieswidget.h"
 #include "device.h"
+#include "utils.h"
 
 class FilenameSchemeDialog;
 class DevicePropertiesWidget : public QWidget, Ui::DevicePropertiesWidget
@@ -54,7 +55,7 @@ public:
     DeviceOptions settings();
     bool isModified() const { return modified; }
     bool isSaveable() const { return saveable; }
-    QString music() const { return musicFolder ? musicFolder->text().trimmed() : origMusicFolder; }
+    QString music() const { return musicFolder ? Utils::convertDirFromDisplay(musicFolder->text()) : origMusicFolder; }
     QString cover() const;
     void showRemoteConnectionNote(bool v) { remoteDeviceNote->setVisible(v); }
 

@@ -192,7 +192,8 @@ static QPair<int, int> splitDiscNumber(const QString &value)
 }
 
 // -- taken from rgtag.cpp from libebur128 -- START
-static bool clearTxxxTag(TagLib::ID3v2::Tag* tag, TagLib::String tagName) {
+static bool clearTxxxTag(TagLib::ID3v2::Tag* tag, TagLib::String tagName)
+{
     TagLib::ID3v2::FrameList l = tag->frameList("TXXX");
     for (TagLib::ID3v2::FrameList::Iterator it = l.begin(); it != l.end(); ++it) {
         TagLib::ID3v2::UserTextIdentificationFrame *fr=dynamic_cast<TagLib::ID3v2::UserTextIdentificationFrame*>(*it);
@@ -204,7 +205,8 @@ static bool clearTxxxTag(TagLib::ID3v2::Tag* tag, TagLib::String tagName) {
     return false;
 }
 
-static bool clearRva2Tag(TagLib::ID3v2::Tag* tag, TagLib::String tagName) {
+static bool clearRva2Tag(TagLib::ID3v2::Tag* tag, TagLib::String tagName)
+{
     TagLib::ID3v2::FrameList l = tag->frameList("RVA2");
     for (TagLib::ID3v2::FrameList::Iterator it = l.begin(); it != l.end(); ++it) {
         TagLib::ID3v2::RelativeVolumeFrame *fr=dynamic_cast<TagLib::ID3v2::RelativeVolumeFrame*>(*it);
@@ -213,10 +215,11 @@ static bool clearRva2Tag(TagLib::ID3v2::Tag* tag, TagLib::String tagName) {
             return true;
         }
     }
-  return false;
+    return false;
 }
 
-static void setTxxxTag(TagLib::ID3v2::Tag* tag, const std::string &tagName, const std::string &value) {
+static void setTxxxTag(TagLib::ID3v2::Tag* tag, const std::string &tagName, const std::string &value)
+{
     TagLib::ID3v2::UserTextIdentificationFrame *frame = TagLib::ID3v2::UserTextIdentificationFrame::find(tag, tagName);
     if (!frame) {
         frame = new TagLib::ID3v2::UserTextIdentificationFrame;
@@ -226,7 +229,8 @@ static void setTxxxTag(TagLib::ID3v2::Tag* tag, const std::string &tagName, cons
     frame->setText(value);
 }
 
-static void setRva2Tag(TagLib::ID3v2::Tag* tag, const std::string &tagName, double gain, double peak) {
+static void setRva2Tag(TagLib::ID3v2::Tag* tag, const std::string &tagName, double gain, double peak)
+{
     TagLib::ID3v2::RelativeVolumeFrame *frame = NULL;
     TagLib::ID3v2::FrameList frameList = tag->frameList("RVA2");
     TagLib::ID3v2::FrameList::ConstIterator it = frameList.begin();

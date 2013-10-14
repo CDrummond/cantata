@@ -25,11 +25,11 @@
 #define PODCAST_SETTINGS_DIALOG_H
 
 #include "dialog.h"
+#include "onoffbutton.h"
 #include "config.h"
 
 class QComboBox;
 class PathRequester;
-class OnOffButton;
 
 class PodcastSettingsDialog : public Dialog
 {

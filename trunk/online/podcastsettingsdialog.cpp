@@ -25,7 +25,6 @@
 #include "buddylabel.h"
 #include "pathrequester.h"
 #include "settings.h"
-#include "onoffbutton.h"
 #include "localize.h"
 #include "utils.h"
 #include <QComboBox>

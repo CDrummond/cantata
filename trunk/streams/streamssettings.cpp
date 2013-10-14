@@ -127,6 +127,9 @@ void StreamsSettings::install()
         return;
     }
     name=name.replace("/", "_");
+    #ifdef Q_OS_WIN
+    name=name.replace("\\", "_");
+    #endif
 
     QListWidgetItem *existing=get(name);
 
@@ -160,26 +163,26 @@ void StreamsSettings::install()
         return;
     }
 
-    QFile streamsFile(dir+"/"+streamsName);
+    QFile streamsFile(dir+DIR_SEPARATOR+streamsName);
     if (!streamsFile.open(QIODevice::WriteOnly)) {
         MessageBox::error(this, i18n("Failed to save stream list!"));
         return;
     }
     streamsFile.write(xml);
 
-    QFile iconFile(dir+"/"+iconName);
+    QFile iconFile(dir+DIR_SEPARATOR+iconName);
     if (iconFile.open(QIODevice::WriteOnly)) {
         iconFile.write(icon);
     }
     QIcon icn;
-    icn.addFile(dir+"/"+iconName);
+    icn.addFile(dir+DIR_SEPARATOR+iconName);
 
     // Write all other png and svg files...
     QMap<QString, QByteArray>::ConstIterator it=files.constBegin();
     QMap<QString, QByteArray>::ConstIterator end=files.constEnd();
     for (; it!=end; ++it) {
         if (it.key()!=iconName && (it.key().endsWith(".png") || it.key().endsWith(".svg"))) {
-            QFile f(dir+"/"+it.key());
+            QFile f(dir+DIR_SEPARATOR+it.key());
             if (f.open(QIODevice::WriteOnly)) {
                 f.write(it.value());
             }

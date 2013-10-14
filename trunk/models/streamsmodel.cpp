@@ -119,7 +119,7 @@ QString StreamsModel::favouritesDir()
 static QString getInternalFile(bool createDir=false)
 {
     if (Settings::self()->storeStreamsInMpdDir()) {
-        return MPDConnection::self()->getDetails().dir+constFavouritesFileName;
+        return Utils::nativeDirSeparators(MPDConnection::self()->getDetails().dir)+constFavouritesFileName;
     }
     return Utils::dataDir(QString(), createDir)+constFavouritesFileName;
 }
@@ -1892,8 +1892,9 @@ void StreamsModel::buildXml()
         foreach (const QString &sub, subDirs) {
             if (!added.contains(sub)) {
                 foreach (const QString &streamFile, streamFiles) {
-                    if (QFile::exists(dir+sub+"/"+streamFile)) {
-                        addXmlCategory(sub, getExternalIcon(dir+sub), dir+sub+"/"+streamFile, false);
+                    QString dirName=Utils::nativeDirSeparators(dir+sub+"/");
+                    if (QFile::exists(dirName+streamFile)) {
+                        addXmlCategory(sub, getExternalIcon(dirName), dirName+streamFile, false);
                         added.insert(sub);
                         break;
                     }

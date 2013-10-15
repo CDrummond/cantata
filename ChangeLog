@@ -76,6 +76,8 @@
 41. Cantata requires libMTP 1.1.0 or newer.
 42. When displaying paths, convert to native separators, and remove trailing
     separator. When reading back entry, revert this process.
+43. Fix tag editing, track re-organisation, and playback of non-MPD files via
+    HTTP server on windows.
 
 1.1.3
 -----

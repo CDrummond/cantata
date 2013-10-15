@@ -49,6 +49,8 @@
 #include <taglib/vorbisfile.h>
 #include <taglib/audioproperties.h>
 #endif
+#include <QDebug>
+#define DBUG if (HttpServer::debugEnabled()) qWarning() << "HttpSocket" << __FUNCTION__
 
 static QString detectMimeType(const QString &file)
 {
@@ -325,6 +327,7 @@ void HttpSocket::readClient()
         if (tokens.length()>=2 && "GET"==tokens[0]) {
             QStringList params = QString(socket->readAll()).split(QRegExp("[\r\n][\r\n]*"));
 
+            DBUG << "params" << params;
             if (!isFromMpd(params)) {
                 return;
             }
@@ -341,6 +344,7 @@ void HttpSocket::readClient()
             qint32 readBytesTo=0;
             getRange(params, readBytesFrom, readBytesTo);
 
+            DBUG << url.toString() << q.hasQueryItem("cantata");
             if (q.hasQueryItem("cantata")) {
                 Song song=HttpServer::self()->decodeUrl(url);
                 if (song.isCdda()) {
@@ -398,13 +402,13 @@ void HttpSocket::readClient()
                         }
                     }
                     #endif
-                } else {
-                    QFile f(url.path());
+                } else if (!song.file.isEmpty()) {
+                    QFile f(song.file);
 
                     if (f.open(QIODevice::ReadOnly)) {                        
                         qint32 totalBytes = f.size();
 
-                        writeMimeType(detectMimeType(url.path()), socket, totalBytes, true);
+                        writeMimeType(detectMimeType(song.file), socket, totalBytes, true);
                         ok=true;
                         static const int constChunkSize=32768;
                         char buffer[constChunkSize];

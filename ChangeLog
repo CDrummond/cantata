@@ -74,7 +74,7 @@
 40. Modify message-widget so that it uses a squeezed-text label. Because of
     this, always use Cantata's copy of KMessageWidget for all KDE builds.
 41. Cantata requires libMTP 1.1.0 or newer.
-42. When diplaying paths, convert to native separators, and remove trailing
+42. When displaying paths, convert to native separators, and remove trailing
     separator. When reading back entry, revert this process.
 
 1.1.3

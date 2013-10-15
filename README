@@ -389,7 +389,7 @@ streams.xml.gz with:
   </streams>
 
 streams.xml.gz & icon.svg need to be placed into a gzip'ed tarball named
-Wicked Radio.streams
+Wicked Radio.streams.
 
 With the above example, Cantata would list the following in the streams view:
 

@@ -122,7 +122,7 @@
 #include "groupedview.h"
 #include "actionitemdelegate.h"
 #include "icons.h"
-#include "volumecontrol.h"
+#include "volumeslider.h"
 #include "action.h"
 #include "actioncollection.h"
 #include "stdactions.h"
@@ -144,39 +144,6 @@ bool DeleteKeyEventHandler::eventFilter(QObject *obj, QEvent *event)
         return true;
     }
     return QObject::eventFilter(obj, event);
-}
-
-bool VolumeSliderEventHandler::eventFilter(QObject *obj, QEvent *event)
-{
-    if (QEvent::Wheel==event->type() && (!MPDConnection::self()->isMuted() || !qstrcmp("VolumeControl", obj->metaObject()->className()))) {
-        int numDegrees = static_cast<QWheelEvent *>(event)->delta() / 8;
-        int numSteps = numDegrees / 15;
-        if (numSteps > 0) {
-            for (int i = 0; i < numSteps; ++i) {
-                StdActions::self()->increaseVolumeAction->trigger();
-            }
-        } else {
-            for (int i = 0; i > numSteps; --i) {
-                StdActions::self()->decreaseVolumeAction->trigger();
-            }
-        }
-        return true;
-    }
-
-    return QObject::eventFilter(obj, event);
-}
-
-bool VolumeButtonEventHandler::eventFilter(QObject *obj, QEvent *event)
-{
-    if (QEvent::MouseButtonPress==event->type() && Qt::MiddleButton==static_cast<QMouseEvent *>(event)->buttons()) {
-        down=true;
-    } else if (QEvent::MouseButtonRelease==event->type()) {
-        if (down) {
-            window->muteAction->trigger();
-        }
-        down=false;
-    }
-    return VolumeSliderEventHandler::eventFilter(obj, event);
 }
 
 static int nextKey(int &key) {
@@ -288,7 +255,6 @@ MainWindow::MainWindow(QWidget *parent)
     connectionsAction = ActionCollection::get()->createAction("connections", i18n("Collection"), "network-server");
     outputsAction = ActionCollection::get()->createAction("outputs", i18n("Outputs"), Icons::self()->speakerIcon);
     stopAfterTrackAction = ActionCollection::get()->createAction("stopaftertrack", i18n("Stop After Track"), Icons::self()->toolbarStopIcon);
-    muteAction = ActionCollection::get()->createAction("mute", i18n("Mute"));
     addPlayQueueToStoredPlaylistAction = ActionCollection::get()->createAction("addpqtostoredplaylist", i18n("Add To Stored Playlist"), Icons::self()->playlistIcon);
     removeFromPlayQueueAction = ActionCollection::get()->createAction("removefromplaylist", i18n("Remove From Play Queue"), "list-remove");
     copyTrackInfoAction = ActionCollection::get()->createAction("copytrackinfo", i18n("Copy Track Info"));
@@ -342,19 +308,14 @@ MainWindow::MainWindow(QWidget *parent)
     updateNextTrack(-1);
     StdActions::self()->prevTrackAction->setEnabled(false);
     enableStopActions(false);
+    volumeSlider->initActions();
 
-    addAction(StdActions::self()->increaseVolumeAction);
-    addAction(StdActions::self()->decreaseVolumeAction);
-    addAction(muteAction);
     #if defined ENABLE_KDE_SUPPORT
     StdActions::self()->prevTrackAction->setGlobalShortcut(KShortcut(Qt::Key_MediaPrevious));
     StdActions::self()->nextTrackAction->setGlobalShortcut(KShortcut(Qt::Key_MediaNext));
     StdActions::self()->playPauseTrackAction->setGlobalShortcut(KShortcut(Qt::Key_MediaPlay));
     StdActions::self()->stopPlaybackAction->setGlobalShortcut(KShortcut(Qt::Key_MediaStop));
     StdActions::self()->stopAfterCurrentTrackAction->setGlobalShortcut(KShortcut());
-    StdActions::self()->increaseVolumeAction->setGlobalShortcut(KShortcut(Qt::Key_VolumeUp));
-    StdActions::self()->decreaseVolumeAction->setGlobalShortcut(KShortcut(Qt::Key_VolumeDown));
-    muteAction->setGlobalShortcut(KShortcut(Qt::Key_VolumeMute));
     #endif
 
     copyTrackInfoAction->setShortcut(QKeySequence::Copy);
@@ -374,13 +335,6 @@ MainWindow::MainWindow(QWidget *parent)
     devicesTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
     #endif // ENABLE_DEVICES_SUPPORT
 
-    volumeSliderEventHandler = new VolumeSliderEventHandler(this);
-    volumeControl = new VolumeControl(volumeButton);
-    volumeControl->installEventFilter(volumeSliderEventHandler);
-    volumeControl->installSliderEventFilter(volumeSliderEventHandler);
-    volumeButton->installEventFilter(new VolumeButtonEventHandler(this));
-    volumeButton->setMenu(volumeControl);
-
     connectionsAction->setMenu(new QMenu(this));
     connectionsGroup=new QActionGroup(connectionsAction->menu());
     outputsAction->setMenu(new QMenu(this));
@@ -388,7 +342,6 @@ MainWindow::MainWindow(QWidget *parent)
     addPlayQueueToStoredPlaylistAction->setMenu(PlaylistsModel::self()->menu());
 
     menuButton->setMenu(mainMenu);
-    volumeButton->setIcon(Icons::self()->toolbarVolumeHighIcon);
 
     playPauseTrackButton->setDefaultAction(StdActions::self()->playPauseTrackAction);
     stopTrackButton->setDefaultAction(StdActions::self()->stopPlaybackAction);
@@ -501,7 +454,7 @@ MainWindow::MainWindow(QWidget *parent)
     QList<QToolButton *> playbackBtns;
     QList<QToolButton *> controlBtns;
     playbackBtns << prevTrackButton << stopTrackButton << playPauseTrackButton << nextTrackButton;
-    controlBtns << volumeButton << menuButton << songInfoButton;
+    controlBtns << menuButton << songInfoButton;
 
     int playbackIconSize=28;
     int controlIconSize=22;
@@ -761,11 +714,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(StdActions::self()->stopPlaybackAction, SIGNAL(triggered(bool)), this, SLOT(stopPlayback()));
     connect(StdActions::self()->stopAfterCurrentTrackAction, SIGNAL(triggered(bool)), this, SLOT(stopAfterCurrentTrack()));
     connect(stopAfterTrackAction, SIGNAL(triggered(bool)), this, SLOT(stopAfterTrack()));
-    connect(volumeControl, SIGNAL(valueChanged(int)), MPDConnection::self(), SLOT(setVolume(int)));
     connect(this, SIGNAL(setVolume(int)), MPDConnection::self(), SLOT(setVolume(int)));
-    connect(StdActions::self()->increaseVolumeAction, SIGNAL(triggered(bool)), volumeControl, SLOT(increaseVolume()));
-    connect(StdActions::self()->decreaseVolumeAction, SIGNAL(triggered(bool)), volumeControl, SLOT(decreaseVolume()));
-    connect(muteAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(toggleMute()));
     connect(positionSlider, SIGNAL(sliderReleased()), this, SLOT(setPosition()));
     connect(randomPlayQueueAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(setRandom(bool)));
     connect(repeatPlayQueueAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(setRepeat(bool)));
@@ -1639,13 +1588,13 @@ void MainWindow::startVolumeFade()
     }
 
     stopState=StopState_Stopping;
+    volumeSlider->setFadingStop(true);
     if (!volumeFade) {
         volumeFade = new QPropertyAnimation(this, "volume");
         volumeFade->setDuration(Settings::self()->stopFadeDuration());
     }
-    origVolume=volume;
-    lastVolume=volume;
-    volumeFade->setStartValue(volume);
+    origVolume=lastVolume=volumeSlider->value();
+    volumeFade->setStartValue(origVolume);
     volumeFade->setEndValue(-1);
     volumeFade->start();
 }
@@ -1659,11 +1608,16 @@ void MainWindow::stopVolumeFade()
     }
 }
 
+int MainWindow::mpdVolume() const
+{
+    return volumeSlider->value();
+}
+
 void MainWindow::setMpdVolume(int v)
 {
     if (-1==v) {
-        volume=origVolume;
-        emit setVolume(origVolume);
+        volumeSlider->setFadingStop(false);
+        emit setVolume(volumeSlider->value());
         if (StopState_Stopping==stopState) {
             emit stop();
         }
@@ -1940,44 +1894,6 @@ void MainWindow::updateStatus(MPDStatus * const status)
         } else if (!positionSlider->isEnabled()) {
             positionSlider->setEnabled(-1!=current.id && !current.isCdda() && (!currentIsStream() || status->timeTotal()>5));
         }
-    }
-
-    if (!stopState) {
-        volume=status->volume();
-
-        if (volume<=0) {
-            volumeButton->setIcon(Icons::self()->toolbarVolumeMutedIcon);
-        } else if (volume<=33) {
-            volumeButton->setIcon(Icons::self()->toolbarVolumeLowIcon);
-        } else if (volume<=67) {
-            volumeButton->setIcon(Icons::self()->toolbarVolumeMediumIcon);
-        } else {
-            volumeButton->setIcon(Icons::self()->toolbarVolumeHighIcon);
-        }
-
-        volumeControl->blockSignals(true);
-        if (volume<0) {
-            volumeButton->setEnabled(false);
-            volumeButton->setToolTip(i18n("Volume Disabled"));
-            volumeControl->setToolTip(i18n("Volume Disabled"));
-            volumeControl->setValue(0);
-        } else {
-            int unmuteVolume=-1;
-            if (0==volume) {
-                unmuteVolume=MPDConnection::self()->unmuteVolume();
-                if (unmuteVolume>0) {
-                    volume=unmuteVolume;
-                }
-            }
-            volumeButton->setEnabled(true);
-            volumeButton->setToolTip(unmuteVolume>0 ? i18n("Volume %1% (Muted)", volume) : i18n("Volume %1%", volume));
-            volumeControl->setToolTip(volumeButton->toolTip());
-            volumeControl->setValue(volume);
-        }
-        muteAction->setEnabled(volumeButton->isEnabled());
-        StdActions::self()->increaseVolumeAction->setEnabled(volumeButton->isEnabled());
-        StdActions::self()->decreaseVolumeAction->setEnabled(volumeButton->isEnabled());
-        volumeControl->blockSignals(false);
     }
 
     randomPlayQueueAction->setChecked(status->random());
@@ -2774,7 +2690,7 @@ void MainWindow::showSearch()
 
 bool MainWindow::fadeWhenStop() const
 {
-    return fadeStop && volumeButton->isEnabled();
+    return fadeStop && volumeSlider->isEnabled();
 }
 
 void MainWindow::expandAll()

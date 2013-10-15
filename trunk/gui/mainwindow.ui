@@ -108,10 +108,26 @@
          <number>0</number>
         </property>
         <item>
-         <widget class="ToolButton" name="songInfoButton"/>
+         <widget class="VolumeSlider" name="volumeSlider"/>
         </item>
         <item>
-         <widget class="ToolButton" name="volumeButton"/>
+         <spacer name="volumeSliderSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Fixed</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>4</width>
+            <height>4</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="ToolButton" name="songInfoButton"/>
         </item>
         <item>
          <widget class="MenuButton" name="menuButton"/>
@@ -428,6 +444,11 @@
    <class>SizeGrip</class>
    <extends>QWidget</extends>
    <header>sizegrip.h</header>
+  </customwidget>
+  <customwidget>
+   <class>VolumeSlider</class>
+   <extends>QSlider</extends>
+   <header>volumeslider.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

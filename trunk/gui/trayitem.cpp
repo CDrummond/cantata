@@ -37,6 +37,32 @@
 #include "song.h"
 #include "stdactions.h"
 
+class VolumeSliderEventHandler : public QObject
+{
+public:
+    VolumeSliderEventHandler(QObject *p) : QObject(p) { }
+protected:
+    bool eventFilter(QObject *obj, QEvent *event)
+    {
+        if (QEvent::Wheel==event->type()) {
+            int numDegrees = static_cast<QWheelEvent *>(event)->delta() / 8;
+            int numSteps = numDegrees / 15;
+            if (numSteps > 0) {
+                for (int i = 0; i < numSteps; ++i) {
+                    StdActions::self()->increaseVolumeAction->trigger();
+                }
+            } else {
+                for (int i = 0; i > numSteps; --i) {
+                    StdActions::self()->decreaseVolumeAction->trigger();
+                }
+            }
+            return true;
+        }
+
+        return QObject::eventFilter(obj, event);
+    }
+};
+
 TrayItem::TrayItem(MainWindow *p)
     : QObject(p)
     , mw(p)
@@ -93,7 +119,7 @@ void TrayItem::setup()
     }
 
     trayItem = new QSystemTrayIcon(this);
-    trayItem->installEventFilter(mw->volumeSliderEventHandler);
+    trayItem->installEventFilter(new VolumeSliderEventHandler(this));
     trayItemMenu = new QMenu(0);
     trayItemMenu->addAction(StdActions::self()->prevTrackAction);
     trayItemMenu->addAction(StdActions::self()->playPauseTrackAction);

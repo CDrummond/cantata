@@ -40,7 +40,7 @@
 #endif
 
 static QString constRadioTimeSearchUrl=QLatin1String("http://opml.radiotime.com/Search.ashx");
-static QString constShoutCastSearchUrl=QLatin1String("http://")+StreamsModel::constShoutCastHost+QLatin1String("/legacy/genrelist");
+static QString constShoutCastSearchUrl=QLatin1String("http://api.shoutcast.com/legacy/genrelist");
 
 StreamSearchModel::StreamSearchModel(QObject *parent)
     : ActionModel(parent)

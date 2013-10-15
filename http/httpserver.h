@@ -35,6 +35,9 @@ class QUrl;
 class HttpServer
 {
 public:
+    static void enableDebug();
+    static bool debugEnabled();
+
     static HttpServer * self();
 
     HttpServer() : thread(0), socket(0) { }

@@ -153,9 +153,10 @@ void VolumeSlider::paintEvent(QPaintEvent *)
     p.drawPixmap(0, 0, *(pixmaps[0]));
     if (steps>0) {
         if (steps<10) {
+            int wStep=constWidthStep*lineWidth;
             p.setClipRect(reverse
-                            ? QRect(width()-((steps*constWidthStep*2)-constWidthStep), 0, width(), height())
-                            : QRect(0, 0, (steps*constWidthStep*2)-constWidthStep, height()));
+                            ? QRect(width()-((steps*wStep*2)-wStep), 0, width(), height())
+                            : QRect(0, 0, (steps*wStep*2)-wStep, height()));
             p.setClipping(true);
         }
         p.drawPixmap(0, 0, *(pixmaps[1]));
@@ -294,6 +295,9 @@ QPixmap * VolumeSlider::generatePixmap(bool filled)
                 pix->height()-(barHeight+1), (lineWidth*constWidthStep)-1, barHeight);
         if (filled) {
             p.fillRect(r, textCol);
+        } else if (lineWidth>1) {
+            p.drawRect(r);
+            p.drawRect(r.adjusted(1, 1, -1, -1));
         } else {
             p.drawRect(r);
         }

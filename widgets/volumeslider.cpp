@@ -97,6 +97,7 @@ VolumeSlider::VolumeSlider(QWidget *p)
     setFixedWidth(w);
     setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     setOrientation(Qt::Horizontal);
+    setFocusPolicy(Qt::NoFocus);
     setStyle(new ProxyStyle());
     setStyleSheet(QString("QSlider::groove:horizontal {border: 0px;} "
                           "QSlider::sub-page:horizontal {border: 0px;} "

@@ -42,11 +42,12 @@ public:
 
     void initActions();
     void setFadingStop(bool f) { fadingStop=f; }
-    void showEvent(QShowEvent *e);
+    void showEvent(QShowEvent *ev);
     void paintEvent(QPaintEvent *ev);
     void mousePressEvent(QMouseEvent *ev);
     void mouseReleaseEvent(QMouseEvent *ev);
     void contextMenuEvent(QContextMenuEvent *ev);
+    void wheelEvent(QWheelEvent *ev);
 
 private Q_SLOTS:
     void updateMpdStatus();

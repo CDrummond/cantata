@@ -391,7 +391,7 @@ streams.xml.gz with:
 streams.xml.gz & icon.svg need to be placed into a gzip'ed tarball named
 Wicked Radio.streams
 
-With the above, Cantata would list the following in the streams view:
+With the above example, Cantata would list the following in the streams view:
 
 > Wicked Radio
    > Rock
@@ -405,6 +405,12 @@ When "Hard Rock" is added to the playqueue, it will be listed as
 If Rock.png (or Rock.svg) and/or Blues.png (or Blues.svg) also exist in the
 tarball, then they will be copied to the install location and used as icons for
 the respective category.
+
+To create .streams file:
+    1. Place all files in a temp folder
+    2. cd into temp folder
+    3. tar cfz NAME.tar.gz *
+    4. mv NAME.tar.gz NAME.streams
 
 
 9. MultiMedia Keys

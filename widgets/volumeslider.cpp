@@ -174,7 +174,7 @@ void VolumeSlider::paintEvent(QPaintEvent *)
 
     if (muted) {
         QFontMetrics fm(p.fontMetrics());
-        QString text(fm.elidedText(i18n("Muted"), reverse ? Qt::ElideLeft : Qt::ElideRight, width(), QPalette::WindowText));
+        QString text(fm.elidedText(i18n("Muted"), Qt::ElideRight, width(), QPalette::WindowText));
         p.drawText(rect(), Qt::AlignLeft, text);
     } else {
         p.drawText(rect(), Qt::AlignLeft, QString("%1%").arg(value()));

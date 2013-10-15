@@ -92,10 +92,6 @@ public:
     Icon toolbarPauseIcon;
     Icon toolbarNextIcon;
     Icon toolbarStopIcon;
-    Icon toolbarVolumeMutedIcon;
-    Icon toolbarVolumeLowIcon;
-    Icon toolbarVolumeMediumIcon;
-    Icon toolbarVolumeHighIcon;
 };
 
 #endif

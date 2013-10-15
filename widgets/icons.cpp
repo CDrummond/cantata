@@ -555,10 +555,6 @@ void Icons::initToolbarIcons(const QColor &color, bool forceLight)
         toolbarPauseIcon=Icon("media-playback-pause-symbolic");
         toolbarStopIcon=Icon("media-playback-stop-symbolic");
         toolbarNextIcon=Icon("media-skip-forward-symbolic");
-        toolbarVolumeMutedIcon=Icon("audio-volume-muted-symbolic");
-        toolbarVolumeLowIcon=Icon("audio-volume-low-symbolic");
-        toolbarVolumeMediumIcon=Icon("audio-volume-medium-symbolic");
-        toolbarVolumeHighIcon=Icon("audio-volume-high-symbolic");
         QColor col(196, 196, 196);
         infoIcon=loadSidebarIcon("info", col, col);
     } else
@@ -604,17 +600,5 @@ void Icons::initToolbarIcons(const QColor &color, bool forceLight)
         toolbarNextIcon=Icon::getMediaIcon("media-skip-forward");
     } else {
         setDisabledOpacity(toolbarNextIcon);
-    }
-    if (toolbarVolumeMutedIcon.isNull()) {
-        toolbarVolumeMutedIcon=Icon("audio-volume-muted");
-    }
-    if (toolbarVolumeLowIcon.isNull()) {
-        toolbarVolumeLowIcon=Icon("audio-volume-low");
-    }
-    if (toolbarVolumeMediumIcon.isNull()) {
-        toolbarVolumeMediumIcon=Icon("audio-volume-medium");
-    }
-    if (toolbarVolumeHighIcon.isNull()) {
-        toolbarVolumeHighIcon=Icon("audio-volume-high");
     }
 }

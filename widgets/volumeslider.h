@@ -21,35 +21,52 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef VOLUMECONTROL_H
-#define VOLUMECONTROL_H
+#ifndef VOLUMESLIDER_H
+#define VOLUMESLIDER_H
 
-#include <QMenu>
+#include <QSlider>
+#include <QColor>
 
-class QSlider;
+class QPixmap;
+class QMenu;
+class Action;
+class QAction;
 
-class VolumeControl : public QMenu
+class VolumeSlider : public QSlider
 {
     Q_OBJECT
 
 public:
-    VolumeControl(QWidget *parent);
-    virtual ~VolumeControl();
+    VolumeSlider(QWidget *p=0);
+    virtual ~VolumeSlider() { }
 
-    void installSliderEventFilter(QObject *filter);
+    void initActions();
+    void setFadingStop(bool f) { fadingStop=f; }
+    void showEvent(QShowEvent *e);
+    void paintEvent(QPaintEvent *ev);
+    void mousePressEvent(QMouseEvent *ev);
+    void mouseReleaseEvent(QMouseEvent *ev);
+    void contextMenuEvent(QContextMenuEvent *ev);
 
-public Q_SLOTS:
+private Q_SLOTS:
+    void updateMpdStatus();
     void increaseVolume();
     void decreaseVolume();
-    void setValue(int v);
-
-    QSlider * sliderWidget() { return slider; }
-
-Q_SIGNALS:
-    void valueChanged(int v);
 
 private:
-    QSlider *slider;
+    void generatePixmaps();
+    QPixmap * generatePixmap(bool filled);
+
+private:
+    int lineWidth;
+    bool shown;
+    bool down;
+    bool fadingStop;
+    QColor textCol;
+    QPixmap *pixmaps[2];
+    Action *muteAction;
+    QAction *muteMenuAction;
+    QMenu *menu;
 };
 
 #endif

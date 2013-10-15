@@ -75,7 +75,6 @@ class QTimer;
 class QPropertyAnimation;
 class QActionGroup;
 class QDateTime;
-class VolumeControl;
 class TrayItem;
 class GtkProxyStyle;
 
@@ -102,26 +101,6 @@ protected:
 private:
     QAbstractItemView *view;
     QAction *act;
-};
-
-class VolumeSliderEventHandler : public QObject
-{
-public:
-    VolumeSliderEventHandler(MainWindow *w) : QObject((QObject *)w), window(w) { }
-protected:
-    bool eventFilter(QObject *obj, QEvent *event);
-protected:
-    MainWindow * const window;
-};
-
-class VolumeButtonEventHandler : public VolumeSliderEventHandler
-{
-public:
-    VolumeButtonEventHandler(MainWindow *w) : VolumeSliderEventHandler(w), down(false) { }
-protected:
-    bool eventFilter(QObject *obj, QEvent *event);
-private:
-    bool down;
 };
 
 #ifdef ENABLE_KDE_SUPPORT
@@ -154,7 +133,7 @@ public:
     MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
-    int mpdVolume() const { return volume; }
+    int mpdVolume() const;
     int currentTrackPosition() const;
     QString coverFile() const;
 
@@ -200,7 +179,7 @@ public Q_SLOTS:
     void configureShortcuts();
     void saveShortcuts();
     #endif
-    void setMpdVolume(int );
+    void setMpdVolume(int v);
     void songLoaded();
     void messageWidgetVisibility(bool v);
     void mpdConnectionStateChanged(bool connected);
@@ -319,8 +298,6 @@ private:
     PlayQueueModel playQueueModel;
     PlayQueueProxyModel playQueueProxyModel;
     bool autoScrollPlayQueue;
-    VolumeSliderEventHandler *volumeSliderEventHandler;
-    VolumeControl *volumeControl;
     Action *prefAction;
     #ifdef ENABLE_KDE_SUPPORT
     Action *shortcutsAction;
@@ -330,7 +307,6 @@ private:
     Action *outputsAction;
     QActionGroup *connectionsGroup;
     Action *stopAfterTrackAction;
-    Action *muteAction;
     Action *removeFromPlayQueueAction;
     Action *addPlayQueueToStoredPlaylistAction;
     Action *promptClearPlayQueueAction;
@@ -430,9 +406,6 @@ private:
     QMediaPlayer *httpStream;
     #endif
     #endif
-
-    friend class VolumeSliderEventHandler;
-    friend class VolumeButtonEventHandler;
     friend class CoverEventHandler;
     friend class TrayItem;
 };

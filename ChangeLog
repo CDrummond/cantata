@@ -78,6 +78,8 @@
     separator. When reading back entry, revert this process.
 43. Fix tag editing, track re-organisation, and playback of non-MPD files via
     HTTP server on windows.
+44. Dont treat albums that have artists such as 'Abc' and 'Abc with xyz' as
+    multiple artist albums.
 
 1.1.3
 -----

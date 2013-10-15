@@ -35,6 +35,27 @@
 K_GLOBAL_STATIC(HttpServer, instance)
 #endif
 
+#include <QDebug>
+static bool debugIsEnabled=false;
+#define DBUG if (debugIsEnabled) qWarning() << "HttpServer" << __FUNCTION__
+
+#ifdef Q_OS_WIN
+static inline QString fixWindowsPath(const QString &f)
+{
+    return f.length()>3 && f.startsWith(QLatin1Char('/')) && QLatin1Char(':')==f.at(2) ? f.mid(1) : f;
+}
+#endif
+
+void HttpServer::enableDebug()
+{
+    debugIsEnabled=true;
+}
+
+bool HttpServer::debugEnabled()
+{
+    return debugIsEnabled;
+}
+
 HttpServer * HttpServer::self()
 {
     #ifdef ENABLE_KDE_SUPPORT
@@ -108,6 +129,7 @@ bool HttpServer::isOurs(const QString &url) const
 
 QByteArray HttpServer::encodeUrl(const Song &s) const
 {
+    DBUG << "song" << s.file << isAlive();
     if (!isAlive()) {
         return QByteArray();
     }
@@ -154,13 +176,22 @@ QByteArray HttpServer::encodeUrl(const Song &s) const
     #if QT_VERSION >= 0x050000
     url.setQuery(query);
     #endif
+    DBUG << "encoded as" << url.toString();
     return url.toEncoded();
 }
 
 QByteArray HttpServer::encodeUrl(const QString &file) const
 {
+    #ifdef Q_OS_WIN
+    QString f=fixWindowsPath(file);
+    DBUG << "file" << f;
+    Song s=Tags::read(f);
+    s.file=f;
+    #else
+    DBUG << "file" << file;
     Song s=Tags::read(file);
     s.file=file;
+    #endif
     return encodeUrl(s);
 }
 
@@ -211,12 +242,16 @@ Song HttpServer::decodeUrl(const QUrl &url) const
         }
         s.file=url.path();
         s.type=Song::CantataStream;
+        #ifdef Q_OS_WIN
+        s.file=fixWindowsPath(s.file);
+        #endif
         #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
         if (s.file.startsWith(QChar('/')+Song::constCddaProtocol)) {
             s.file=s.file.mid(1);
             s.type=Song::Cdda;
         }
         #endif
+        DBUG << s.file << s.albumArtist() << s.album << s.title;
     }
 
     return s;

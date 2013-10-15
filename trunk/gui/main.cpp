@@ -53,6 +53,9 @@
 #include "backdropcreator.h"
 #include "dynamic.h"
 #include "streamfetcher.h"
+#ifdef TAGLIB_FOUND
+#include "httpserver.h"
+#endif
 
 #include <QMutex>
 #include <QMutexLocker>
@@ -64,7 +67,7 @@ static void cantataQtMsgHandler(QtMsgType, const char *msg)
 {
     QMutexLocker locker(&msgMutex);
     QFile f(Utils::cacheDir(QString(), true)+"cantata.log");
-    if (f.open(QIODevice::WriteOnly|QIODevice::Append)) {
+    if (f.open(QIODevice::WriteOnly|QIODevice::Append|QIODevice::Text)) {
         QTextStream stream(&f);
         if (firstMsg) {
             stream << "------------START------------" << endl;
@@ -129,8 +132,9 @@ enum Debug {
     Dbg_Context_Backdrop  = 0x0080,
     Dbg_Dynamic           = 0x0100,
     Dbg_StreamFetching    = 0x0200,
+    Dbg_HttpServer        = 0x0400,
 
-    Dbg_All               = 0x03FF
+    Dbg_All               = 0x07FF
 };
 
 int main(int argc, char *argv[])
@@ -214,6 +218,11 @@ int main(int argc, char *argv[])
         if (dbg&Dbg_StreamFetching) {
             StreamFetcher::enableDebug();
         }
+        #ifdef TAGLIB_FOUND
+        if (dbg&Dbg_HttpServer) {
+            HttpServer::enableDebug();
+        }
+        #endif
         if (dbg&Dbg_All) {
             qInstallMsgHandler(cantataQtMsgHandler);
         }

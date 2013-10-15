@@ -710,6 +710,7 @@ The following debug values may be used:
     Context backdrop        128
     Dynamic                 256
     Stream Fetching         512
+    Http Server            1024
 
 These values may be combined to enable multiple output. e.g. to enable MPD and
 covers logging:
@@ -723,6 +724,14 @@ for just covers logging:
 As of Cantata 1.2.0, all logging output is saved to a file. On Linux systems
 this will be ~/.cache/cantata/cantata.log For Windows this will be
 C:\Users\USERNAME\AppData\Local\mpd\cantata\cache\cantata.log
+
+With windows builds, it is probably easier to ser the env var from a DOS
+command prompt box. e.g.:
+
+    1. Run cmd.exe from start menu.
+    2. cd c:\Program Files\Cantata
+    3. set CANTATA_DEBUG=4
+    4. cantata.exe
 
 NOTE: Debug logging will function regardless of whether you have created a
 Debug or Release build.

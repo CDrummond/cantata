@@ -64,7 +64,7 @@ namespace Utils
     extern gid_t getGroupId(const char *groupName="users"); // Return 0 if user is not in group, otherwise returns group ID
     #endif
     extern void setFilePerms(const QString &file, const char *groupName="users");
-    extern bool createDir(const QString &dir, const QString &base, const char *groupName="users");
+    extern bool createWorldReadableDir(const QString &dir, const QString &base, const char *groupName="users");
     extern void msleep(int msecs);
     inline void sleep() { msleep(100); }
 

@@ -271,7 +271,7 @@ void AudioCdDevice::copySongTo(const Song &s, const QString &baseDir, const QStr
     currentDestFile=encoder.changeExtension(baseDir+musicPath);
 
     QDir dir(Utils::getDir(currentDestFile));
-    if (!dir.exists() && !Utils::createDir(dir.absolutePath(), baseDir)) {
+    if (!dir.exists() && !Utils::createWorldReadableDir(dir.absolutePath(), baseDir)) {
         emit actionStatus(DirCreationFaild);
         return;
     }

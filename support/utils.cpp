@@ -55,6 +55,8 @@ QLatin1Char Utils::constDirSep('/');
 QLatin1String Utils::constDirSepStr("/");
 const char * Utils::constDirSepCharStr="/";
 
+static const QLatin1String constHttp("http://");
+
 QString Utils::strippedText(QString s)
 {
     s.remove(QString::fromLatin1("..."));
@@ -95,7 +97,7 @@ QString Utils::fixPath(const QString &dir)
 {
     QString d(dir);
 
-    if (!d.isEmpty() && !d.startsWith(QLatin1String("http://"))) {
+    if (!d.isEmpty() && !d.startsWith(constHttp)) {
         d.replace(QLatin1String("//"), constDirSepStr);
     }
     d.replace(QLatin1String("/./"), constDirSepStr);
@@ -107,6 +109,10 @@ QString Utils::fixPath(const QString &dir)
 
 QString Utils::convertDirForDisplay(const QString &dir)
 {
+    if (dir.isEmpty() || dir.startsWith(constHttp)) {
+        return dir;
+    }
+
     QString d(dir);
     if (d.endsWith(constDirSep)) {
         d=d.left(d.length()-1);
@@ -116,7 +122,15 @@ QString Utils::convertDirForDisplay(const QString &dir)
 
 QString Utils::convertDirFromDisplay(const QString &dir)
 {
-    return fixPath(QDir::fromNativeSeparators(dir.trimmed()));
+    QString d=dir.trimmed();
+    if (d.isEmpty()) {
+        return d;
+    }
+
+    if (d.startsWith(constHttp)) {
+        return fixPath(d);
+    }
+    return fixPath(QDir::fromNativeSeparators(d));
 }
 
 QString Utils::getDir(const QString &file)

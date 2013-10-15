@@ -206,12 +206,13 @@ public:
     {
         int lineWidth=maximumHeight()>12 ? 2 : 1;
 
-        QString boderFormat=QString("QSlider::groove:horizontal { border: %1px solid rgba(%2, %3, %4, %5); "
-                                    "background: transparent; "
-                                    "border-radius: %6px } ");
-        QString fillFormat=QString("QSlider::sub-page:horizontal {border: %1px solid rgb(%2, %3, %4); "
-                                   "background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 rgb(%5, %6, %7), stop:1 rgb(%8, %9, %10)); "
-                                   "border-radius: %11px; margin: %12px;}");
+        QString boderFormat=QLatin1String("QSlider::groove:horizontal { border: %1px solid rgba(%2, %3, %4, %5); "
+                                          "background: transparent; "
+                                          "border-radius: %6px } ");
+        QString fillFormat=QLatin1String("QSlider::")+QLatin1String(Qt::RightToLeft==layoutDirection() ? "add" : "sub")+
+                           QLatin1String("-page:horizontal {border: %1px solid rgb(%2, %3, %4); "
+                                         "background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 rgb(%5, %6, %7), stop:1 rgb(%8, %9, %10)); "
+                                         "border-radius: %11px; margin: %12px;}");
         QLabel lbl(parentWidget());
         lbl.ensurePolished();
         QColor textColor=lbl.palette().text().color();

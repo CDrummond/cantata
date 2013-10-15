@@ -295,7 +295,7 @@ void MPDUser::init(bool create)
                         if (playlists.isEmpty()) {
                             playlists=readValue(line, constPlaylistsKey);
                             if (!playlists.isEmpty()) {
-                                Utils::createDir(playlists, QString());
+                                Utils::createWorldReadableDir(playlists, QString());
                             }
                         }
                     }

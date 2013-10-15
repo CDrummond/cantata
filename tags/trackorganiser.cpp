@@ -272,7 +272,7 @@ void TrackOrganiser::renameFile()
         // Create dest folder...
         if (!skip) {
             QDir dir(Utils::getDir(dest));
-            if(!dir.exists() && !Utils::createDir(dir.absolutePath(), musicFolder)) {
+            if(!dir.exists() && !Utils::createWorldReadableDir(dir.absolutePath(), musicFolder)) {
                 if (autoSkip) {
                     skip=true;
                 } else {

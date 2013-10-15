@@ -44,7 +44,7 @@ void OnlineDevice::copySongTo(const Song &s, const QString &baseDir, const QStri
     currentDestFile=baseDir+musicPath;
 
     QDir dir(Utils::getDir(dest));
-    if (!dir.exists() && !Utils::createDir(dir.absolutePath(), baseDir)) {
+    if (!dir.exists() && !Utils::createWorldReadableDir(dir.absolutePath(), baseDir)) {
         emit actionStatus(DirCreationFaild);
         return;
     }

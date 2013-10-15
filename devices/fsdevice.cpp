@@ -418,7 +418,7 @@ void FsDevice::addSong(const Song &s, bool overwrite, bool copyCover)
     }
 
     QDir dir(Utils::getDir(currentDestFile));
-    if(!dir.exists() && !Utils::createDir(dir.absolutePath(), QString())) {
+    if(!dir.exists() && !Utils::createWorldReadableDir(dir.absolutePath(), QString())) {
         emit actionStatus(DirCreationFaild);
         return;
     }
@@ -480,7 +480,7 @@ void FsDevice::copySongTo(const Song &s, const QString &baseDir, const QString &
     currentDestFile=baseDir+musicPath;
 
     QDir dir(Utils::getDir(currentDestFile));
-    if (!dir.exists() && !Utils::createDir(dir.absolutePath(), baseDir)) {
+    if (!dir.exists() && !Utils::createWorldReadableDir(dir.absolutePath(), baseDir)) {
         emit actionStatus(DirCreationFaild);
         return;
     }

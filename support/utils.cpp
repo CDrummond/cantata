@@ -247,7 +247,7 @@ void Utils::setFilePerms(const QString &file, const char *groupName)
  * Create directory, and set its permissions.
  * If user is a memeber of "audio" group, then set dir as owned by and writeable by "audio" group.
  */
-bool Utils::createDir(const QString &dir, const QString &base, const char *groupName)
+bool Utils::createWorldReadableDir(const QString &dir, const QString &base, const char *groupName)
 {
     #ifdef Q_OS_WIN
     Q_UNUSED(base);

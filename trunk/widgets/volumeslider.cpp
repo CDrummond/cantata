@@ -149,8 +149,9 @@ void VolumeSlider::paintEvent(QPaintEvent *)
         p.setOpacity(0.25);
     }
 
-    int steps=(value()/10.0)+0.5;
     p.drawPixmap(0, 0, *(pixmaps[0]));
+    #if 1
+    int steps=(value()/10.0)+0.5;
     if (steps>0) {
         if (steps<10) {
             int wStep=constWidthStep*lineWidth;
@@ -164,6 +165,21 @@ void VolumeSlider::paintEvent(QPaintEvent *)
             p.setClipping(false);
         }
     }
+    #else // Partial filling of each block?
+    if (value()>0) {
+        if (value()<100) {
+            int fillWidth=(width()*(0.01*value()))+0.5;
+            p.setClipRect(reverse
+                            ? QRect(width()-fillWidth, 0, width(), height())
+                            : QRect(0, 0, fillWidth, height()));
+            p.setClipping(true);
+        }
+        p.drawPixmap(0, 0, *(pixmaps[1]));
+        if (value()<100) {
+            p.setClipping(false);
+        }
+    }
+    #endif
 
     if (muted) {
         p.setOpacity(1.0);
@@ -294,7 +310,7 @@ QPixmap * VolumeSlider::generatePixmap(bool filled)
                         : i*lineWidth*constWidthStep*2,
                 pix->height()-(barHeight+1), (lineWidth*constWidthStep)-1, barHeight);
         if (filled) {
-            p.fillRect(r, textCol);
+            p.fillRect(r.adjusted(1, 1, 0, 0), textCol);
         } else if (lineWidth>1) {
             p.drawRect(r);
             p.drawRect(r.adjusted(1, 1, -1, -1));

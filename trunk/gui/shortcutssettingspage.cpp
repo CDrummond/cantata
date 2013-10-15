@@ -30,16 +30,20 @@
 #include "localize.h"
 #include "settings.h"
 #include "icons.h"
+#include "buddylabel.h"
 #include <QBoxLayout>
 #include <QComboBox>
 #include <QGroupBox>
 #include <QFormLayout>
 #include <QProcess>
 
+static const char * constMkEnabledVal="mk-enabled-val";
+
 ShortcutsSettingsPage::ShortcutsSettingsPage(QWidget *p)
     : QWidget(p)
     , mediaKeysIfaceCombo(0)
     , settingsButton(0)
+    , mediaKeysEnabled(0)
 {
     QBoxLayout *lay=new QBoxLayout(QBoxLayout::TopToBottom, this);
     lay->setMargin(0);
@@ -51,42 +55,96 @@ ShortcutsSettingsPage::ShortcutsSettingsPage(QWidget *p)
     shortcuts->view()->setItemDelegate(new BasicItemDelegate(shortcuts->view()));
     lay->addWidget(shortcuts);
 
-    QGroupBox *box=new QGroupBox(i18n("Multi-Media Keys"));
-    QBoxLayout *boxLay=new QBoxLayout(QBoxLayout::LeftToRight, box);
-    mediaKeysIfaceCombo=new QComboBox(box);
-    boxLay->addWidget(mediaKeysIfaceCombo);
-    mediaKeysIfaceCombo->addItem(i18n("Disabled"), (unsigned int)MediaKeys::NoInterface);
-    #ifdef CANTATA_USE_QXT_MEDIAKEYS
-    mediaKeysIfaceCombo->addItem(i18n("Enabled"), (unsigned int)MediaKeys::QxtInterface);
-    #endif
-
     #if !defined Q_OS_WIN && !defined Q_OS_MAC
+    bool useDesktop=true;
     QByteArray desktop=qgetenv("XDG_CURRENT_DESKTOP");
-    mediaKeysIfaceCombo->addItem(desktop=="Unity" || desktop=="GNOME"
-                   ? i18n("Use desktop settings")
-                   : i18n("Use GNOME/Unity settings"), (unsigned int)MediaKeys::GnomeInteface);
-
-    settingsButton=new ToolButton(box);
-    settingsButton->setToolTip(i18n("Configure..."));
-    settingsButton->setIcon(Icons::self()->configureIcon);
-    boxLay->addWidget(settingsButton);
-    connect(settingsButton, SIGNAL(clicked(bool)), SLOT(showGnomeSettings()));
-    connect(mediaKeysIfaceCombo, SIGNAL(currentIndexChanged(int)), SLOT(mediaKeysIfaceChanged()));
+    bool isGnome=desktop=="Unity" || desktop=="GNOME";
+    #else
+    bool useDesktop=false;
+    bool isGnome=false;
     #endif
 
-    lay->addWidget(box);
+    #ifdef CANTATA_USE_QXT_MEDIAKEYS
+    bool useQxt=true;
+    #else
+    bool useQxt=false;
+    #endif
+
+    if (useDesktop || useQxt) {
+        QGroupBox *box=new QGroupBox(i18n("Multi-Media Keys"));
+
+        if (useDesktop && useQxt) {
+            QBoxLayout *boxLay=new QBoxLayout(QBoxLayout::LeftToRight, box);
+            mediaKeysIfaceCombo=new QComboBox(box);
+            boxLay->addWidget(mediaKeysIfaceCombo);
+            mediaKeysIfaceCombo->addItem(i18n("Do not use media keys to control Cantata"), (unsigned int)MediaKeys::NoInterface);
+            mediaKeysIfaceCombo->addItem(i18n("Use media keys to control Cantata"), (unsigned int)MediaKeys::QxtInterface);
+
+            mediaKeysIfaceCombo->addItem(isGnome
+                                         ? i18n("Use media keys, as configured in desktop settings, to control Cantata")
+                                         : i18n("Use media keys, as configured in GNOME/Unity settings, to control Cantata"), (unsigned int)MediaKeys::GnomeInteface);
+
+            settingsButton=new ToolButton(box);
+            settingsButton->setToolTip(i18n("Configure..."));
+            settingsButton->setIcon(Icons::self()->configureIcon);
+            boxLay->addWidget(settingsButton);
+            connect(settingsButton, SIGNAL(clicked(bool)), SLOT(showGnomeSettings()));
+            connect(mediaKeysIfaceCombo, SIGNAL(currentIndexChanged(int)), SLOT(mediaKeysIfaceChanged()));
+        } else if (useQxt) {
+            QFormLayout *boxLay=new QFormLayout(box);
+            BuddyLabel *label=new BuddyLabel(i18n("Use media keys to control Cantata:"), box);
+            mediaKeysEnabled = new OnOffButton(box);
+            label->setBuddy(mediaKeysEnabled);
+            boxLay->setWidget(0, QFormLayout::LabelRole, label);
+            boxLay->setWidget(0, QFormLayout::FieldRole, mediaKeysEnabled);
+            mediaKeysEnabled->setProperty(constMkEnabledVal, (unsigned int)MediaKeys::QxtInterface);
+        } else if (useDesktop) {
+            QFormLayout *boxLay=new QFormLayout(box);
+            QWidget *controlWidget = new QWidget(box);
+            QBoxLayout *controlLay=new QBoxLayout(QBoxLayout::LeftToRight, controlWidget);
+            BuddyLabel *label=new BuddyLabel(isGnome
+                                                ? i18n("Use media keys, as configured in desktop settings, to control Cantata:")
+                                                : i18n("Use media keys, as configured in GNOME/Unity settings, to control Cantata:"), box);
+            mediaKeysEnabled = new OnOffButton(controlWidget);
+            settingsButton=new ToolButton(controlWidget);
+            settingsButton->setToolTip(i18n("Configure..."));
+            settingsButton->setIcon(Icons::self()->configureIcon);
+            label->setBuddy(mediaKeysEnabled);
+            label->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Preferred);
+            controlWidget->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Preferred);
+            controlLay->setMargin(0);
+            controlLay->addWidget(mediaKeysEnabled);
+            controlLay->addWidget(settingsButton);
+            boxLay->setWidget(0, QFormLayout::LabelRole, label);
+            boxLay->setWidget(0, QFormLayout::FieldRole, controlWidget);
+            mediaKeysEnabled->setProperty(constMkEnabledVal, (unsigned int)MediaKeys::GnomeInteface);
+            connect(mediaKeysEnabled, SIGNAL(toggled(bool)), settingsButton, SLOT(setEnabled(bool)));
+            connect(settingsButton, SIGNAL(clicked(bool)), SLOT(showGnomeSettings()));
+        }
+        lay->addWidget(box);
+    }
 }
 
 void ShortcutsSettingsPage::load()
 {
-    if (!mediaKeysIfaceCombo) {
-        return;
+    if (settingsButton) {
+        settingsButton->setEnabled(false);
     }
-    unsigned int iface=(unsigned int)MediaKeys::toIface(Settings::self()->mediaKeysIface());
-    for (int i=0; i<mediaKeysIfaceCombo->count(); ++i) {
-        if (mediaKeysIfaceCombo->itemData(i).toUInt()==iface) {
-            mediaKeysIfaceCombo->setCurrentIndex(i);
-            break;
+    if (mediaKeysIfaceCombo) {
+        unsigned int iface=(unsigned int)MediaKeys::toIface(Settings::self()->mediaKeysIface());
+        for (int i=0; i<mediaKeysIfaceCombo->count(); ++i) {
+            if (mediaKeysIfaceCombo->itemData(i).toUInt()==iface) {
+                mediaKeysIfaceCombo->setCurrentIndex(i);
+                if (settingsButton) {
+                    settingsButton->setEnabled(iface==MediaKeys::GnomeInteface);
+                }
+                break;
+            }
+        }
+    } else if (mediaKeysEnabled) {
+        mediaKeysEnabled->setChecked(MediaKeys::NoInterface!=MediaKeys::toIface(Settings::self()->mediaKeysIface()));
+        if (settingsButton) {
+            settingsButton->setEnabled(mediaKeysEnabled->isChecked());
         }
     }
 }
@@ -96,6 +154,11 @@ void ShortcutsSettingsPage::save()
     shortcuts->save();
     if (mediaKeysIfaceCombo) {
         Settings::self()->saveMediaKeysIface(MediaKeys::toString((MediaKeys::InterfaceType)mediaKeysIfaceCombo->itemData(mediaKeysIfaceCombo->currentIndex()).toUInt()));
+    } else if (mediaKeysEnabled) {
+        Settings::self()->saveMediaKeysIface(MediaKeys::toString(
+                                                mediaKeysEnabled->isChecked()
+                                                    ? (MediaKeys::InterfaceType)mediaKeysEnabled->property(constMkEnabledVal).toUInt()
+                                                    : MediaKeys::NoInterface));
     }
 }
 

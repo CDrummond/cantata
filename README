@@ -389,7 +389,7 @@ streams.xml.gz with:
   </streams>
 
 streams.xml.gz & icon.svg need to be placed into a gzip'ed tarball named
-Wicked Radio.streams.
+Wicked Radio.streams
 
 With the above example, Cantata would list the following in the streams view:
 
@@ -695,6 +695,9 @@ The Cantata source folder contains the following structure:
     tags       - Tag reading, editing, etc.
     widgets    - Widgets that are probably Cantata specific.
     windows    - Files relevant to creating the windows installer.
+
+Cantata's SVG icons have been 'cleaned' using:
+  scour --strip-xml-prolog --indent=none -i in.svg -o out.svg
 
 
 13. Debug Logging

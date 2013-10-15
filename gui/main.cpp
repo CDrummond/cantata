@@ -63,7 +63,11 @@
 #include <QDateTime>
 static QMutex msgMutex;
 static bool firstMsg=true;
+#if QT_VERSION < 0x050000
 static void cantataQtMsgHandler(QtMsgType, const char *msg)
+#else
+static void cantataQtMsgHandler(QtMsgType, const QMessageLogContext &, const QString &msg)
+#endif
 {
     QMutexLocker locker(&msgMutex);
     QFile f(Utils::cacheDir(QString(), true)+"cantata.log");
@@ -224,7 +228,11 @@ int main(int argc, char *argv[])
         }
         #endif
         if (dbg&Dbg_All) {
+            #if QT_VERSION < 0x050000
             qInstallMsgHandler(cantataQtMsgHandler);
+            #else
+            qInstallMessageHandler(cantataQtMsgHandler);
+            #endif
         }
     }
 

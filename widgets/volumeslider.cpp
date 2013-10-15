@@ -35,6 +35,7 @@
 #include <QApplication>
 #include <QLabel>
 #include <QMouseEvent>
+#include <QWheelEvent>
 #include <QMenu>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KShortcut>
@@ -122,9 +123,11 @@ void VolumeSlider::initActions()
     connect(StdActions::self()->increaseVolumeAction, SIGNAL(triggered(bool)), this, SLOT(increaseVolume()));
     connect(StdActions::self()->decreaseVolumeAction, SIGNAL(triggered(bool)), this, SLOT(decreaseVolume()));
     connect(this, SIGNAL(valueChanged(int)), MPDConnection::self(), SLOT(setVolume(int)));
+    addAction(StdActions::self()->increaseVolumeAction);
+    addAction(StdActions::self()->decreaseVolumeAction);
 }
 
-void VolumeSlider::showEvent(QShowEvent *e)
+void VolumeSlider::showEvent(QShowEvent *ev)
 {
     if (!shown) {
         shown=true;
@@ -137,7 +140,7 @@ void VolumeSlider::showEvent(QShowEvent *e)
             generatePixmaps();
         }
     }
-    QSlider::showEvent(e);
+    QSlider::showEvent(ev);
 }
 
 void VolumeSlider::paintEvent(QPaintEvent *)
@@ -239,6 +242,21 @@ void VolumeSlider::contextMenuEvent(QContextMenuEvent *ev)
             muteAction->trigger();
         } else {
             setValue(val);
+        }
+    }
+}
+
+void VolumeSlider::wheelEvent(QWheelEvent *ev)
+{
+    int numDegrees = ev->delta() / 8;
+    int numSteps = numDegrees / 15;
+    if (numSteps > 0) {
+        for (int i = 0; i < numSteps; ++i) {
+            increaseVolume();
+        }
+    } else {
+        for (int i = 0; i > numSteps; --i) {
+            decreaseVolume();
         }
     }
 }

@@ -75,6 +75,8 @@
     HTTP server on windows.
 43. Don't treat albums that have artists such as 'Abc' and 'Abc with xyz' as
     multiple artist albums.
+44. When setting window title, use full-text from track/artist labels, and not
+    the squeezed text!
 
 1.1.3
 -----

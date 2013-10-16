@@ -29,12 +29,7 @@
 class SqueezedTextLabel : public KSqueezedTextLabel
 {
 public:
-    SqueezedTextLabel(QWidget *p)
-        : KSqueezedTextLabel(p) {
-        bool rtl=Qt::RightToLeft==layoutDirection();
-        setTextElideMode(rtl ? Qt::ElideLeft : Qt::ElideRight);
-        setAlignment((rtl ? Qt::AlignRight : Qt::AlignLeft) | Qt::AlignVCenter);
-    }
+    SqueezedTextLabel(QWidget *p);
 };
 #else
 #include <QLabel>
@@ -44,18 +39,10 @@ class QResizeEvent;
 class SqueezedTextLabel : public QLabel
 {
 public:
-    SqueezedTextLabel(QWidget *p)
-        : QLabel(p) {
-        bool rtl=Qt::RightToLeft==layoutDirection();
-        elideMode=rtl ? Qt::ElideLeft : Qt::ElideRight;
-        setAlignment((rtl ? Qt::AlignRight : Qt::AlignLeft) | Qt::AlignVCenter);
-        setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
-    }
+    SqueezedTextLabel(QWidget *p);
 
-    void setText(const QString &text) {
-        fullText=text;
-        elideText();
-    }
+    void setText(const QString &text) { originalText=text; elideText(); }
+    const QString & fullText() const { return originalText; }
 
 protected:
     QSize minimumSizeHint() const {
@@ -64,31 +51,14 @@ protected:
         return sh;
     }
 
-    QSize sizeHint() const {
-        return QSize(fontMetrics().width(fullText), QLabel::sizeHint().height());
-    }
-
-    void resizeEvent(QResizeEvent *) {
-        elideText();
-    }
+    QSize sizeHint() const { return QSize(fontMetrics().width(originalText), QLabel::sizeHint().height()); }
+    void resizeEvent(QResizeEvent *) { elideText(); }
 
 private:
-    void elideText() {
-        QFontMetrics fm(fontMetrics());
-        int labelWidth = size().width();
-        int lineWidth = fm.width(fullText);
-
-        if (lineWidth > labelWidth) {
-            QLabel::setText(fm.elidedText(fullText, elideMode, labelWidth));
-            setToolTip(fullText);
-        } else {
-            QLabel::setText(fullText);
-            setToolTip(QString());
-        }
-    }
+    void elideText();
 
 private:
-    QString fullText;
+    QString originalText;
     Qt::TextElideMode elideMode;
 };
 #endif
@@ -96,15 +66,10 @@ private:
 class PaddedSqueezedTextLabel : public SqueezedTextLabel
 {
 public:
-    PaddedSqueezedTextLabel(QWidget *p)
-        : SqueezedTextLabel(p) {
-    }
+    PaddedSqueezedTextLabel(QWidget *p) : SqueezedTextLabel(p) { }
 
 protected:
-    QSize sizeHint() const {
-        QSize sh(SqueezedTextLabel::sizeHint());;
-        return QSize(sh.width(), qMax((int)((fontMetrics().height()*1.1)+0.5), sh.height()));
-    }
+    QSize sizeHint() const;
 };
 
 #endif // SQUEEZEDTEXTLABEL_H

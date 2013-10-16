@@ -632,6 +632,11 @@ bool Settings::playQueueBackground()
     return GET_BOOL("playQueueBackground", false);
 }
 
+bool Settings::playQueueConfirmClear()
+{
+    return GET_BOOL("playQueueConfirmClear", true);
+}
+
 bool Settings::playListsStartClosed()
 {
     return GET_BOOL("playListsStartClosed", true);
@@ -768,11 +773,6 @@ bool Settings::networkAccessEnabled()
 bool Settings::albumViewLoadAll()
 {
     return GET_BOOL("albumViewLoadAll", false);
-}
-
-bool Settings::confirmClearPlayQueue()
-{
-    return GET_BOOL("confirmClearPlayQueue", true);
 }
 
 void Settings::removeConnectionDetails(const QString &v)
@@ -1114,6 +1114,11 @@ void Settings::savePlayQueueScroll(bool v)
 void Settings::savePlayQueueBackground(bool v)
 {
     SET_VALUE_MOD(playQueueBackground)
+}
+
+void Settings::savePlayQueueConfirmClear(bool v)
+{
+    SET_VALUE_MOD(playQueueConfirmClear);
 }
 
 void Settings::savePlayListsStartClosed(bool v)

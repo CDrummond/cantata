@@ -2,23 +2,19 @@
 -----
  1. Add support for opus audio format - AudioCD encoding, transcoding, HTTP
     server, etc.
- 2. Add support for user-installable stream providers. Need to copy
-    streams.xml.gz/streams.xml, and icon.svg/icon.png to 
-    ~/.local/share/cantata/streams/NAME - or PREFIX/share/cantata/streams/NAME
-    e.g. For UK streams, ~/.local/share/cantata/streams/UK/streams.xml.gz,
-    ~/.local/share/cantata/streams/UK/icon.svg
- 3. Request IceCast stream list in compressed format.
- 4. Add ShoutCast search.
- 5. For some stream categories (digitally imported, jazzradio, rockradio, sky,
+ 2. Add support for user-installable stream providers. See README for file
+    format.
+ 3. Add config page to control which stream categories are enabled, to import
+    new categories, and to remove imported categories.
+ 4. Request IceCast stream list in compressed format.
+ 5. Add ShoutCast search.
+ 6. For some stream categories (digitally imported, jazzradio, rockradio, sky,
     somaFm, and some user categories) add category name to stream name when it
     is saved in favourites, or added to playqueue.
- 6. Support composer tag - group albums via composer, edit tag, rename files
+ 7. Support composer tag - group albums via composer, edit tag, rename files
     using tag, and use field for dynamic playlists.
- 7. Place HTTP stream URL into connections page, as URL could be different per
+ 8. Place HTTP stream URL into connections page, as URL could be different per
     connection.
- 8. Add config page to control which stream categories are enabled, to import
-    new categories, and to remove imported categories. See README for import
-    file format.
  9. Use QListWidget in Qt preferences dialog, so that keyboard navigation can be
     used.
 10. Add ability to 'filter search' stream categories.
@@ -38,8 +34,8 @@
     'stop playback' and 'stop dynamizer' options.
 20. Store data under XDG_DATA_HOME (~/.local/share) Any existing files will be
     copied to the new location. NOTE: This is not backwards compatible, so if
-    you downgrade Cantata, you will have issues (e.g. missing stream
-    favourites)
+    you downgrade Cantata, you will have issues (e.g. missing favourite
+    streams)
 21. Add two items to config file to modify cover-loading responsiveness. Please
     see README for further details.
 22. Use "play" command if play button is pressed and there is no current song.
@@ -50,11 +46,11 @@
     encoding. Support a new config item, 'cueFileCodecs', which allows extra
     Qt text-codecs to be tried (see README for details). If all of these fail,
     then revert back to the previous behaviour.
-26. Dont build GNOME media-keys support into KDE builds, as these use KDE's
+26. Don't build GNOME media-keys support into KDE builds, as these use KDE's
     global keyboard shortcuts.
 27. With KDE builds, default to using media-keys as global shortcuts.
-28. Optionally support Qxt global shortcuts for Qt-only (Qt4) Linux, and
-    Windows, builds.
+28. Optionally support Qxt global shortcuts for Qt-only (Qt4) Linux and Windows
+    builds.
 29. Move media-keys setting into shortcuts page.
 30. Add a config item to disable all network access. Needs to be set manually,
     see README for details.
@@ -69,16 +65,15 @@
 37. When filtering (i.e. searching) Jamendo, Maganatue, and stream providers
     (apart from TuneIn and ShoutCast), then dont hide items from other
     services - but only filter the ones on the filtering service.
-38. Dont hide other online services / streams when searching.
-39. Also read Jamendo genre's from album tag.
-40. Modify message-widget so that it uses a squeezed-text label. Because of
+38. Also read Jamendo genre's from album tag.
+39. Modify message-widget so that it uses a squeezed-text label. Because of
     this, always use Cantata's copy of KMessageWidget for all KDE builds.
-41. Cantata requires libMTP 1.1.0 or newer.
-42. When displaying paths, convert to native separators, and remove trailing
+40. Cantata requires libMTP 1.1.0 or newer.
+41. When displaying paths, convert to native separators, and remove trailing
     separator. When reading back entry, revert this process.
-43. Fix tag editing, track re-organisation, and playback of non-MPD files via
+42. Fix tag editing, track re-organisation, and playback of non-MPD files via
     HTTP server on windows.
-44. Dont treat albums that have artists such as 'Abc' and 'Abc with xyz' as
+43. Don't treat albums that have artists such as 'Abc' and 'Abc with xyz' as
     multiple artist albums.
 
 1.1.3
@@ -121,12 +116,12 @@
     of genres associated with artists.
  3. Fix decoding of details for Online service URLs sent to MPD, and
     subsequently read back.
- 4. Dont allow dragging of stream categories onto playqueue.
+ 4. Don't allow dragging of stream categories onto playqueue.
  5. Replace # in stream names with ${hash} when passing to MPD, and revert when
     URL is displayed.
  6. Fix covers when using album artist for multiple artist albums, and album
     artist name is "Various Artists" - but this has been translated in Cantata.
- 7. Dont draw item divider in icon views.
+ 7. Don't draw item divider in icon views.
  8. For Qt4 less than 4.8.4, then use old dbus Qt type annotations.
  9. Default to exporting favourites streams XML into home folder.
 10. Reset the covers-requested-per-iteration counter after each event loop
@@ -143,7 +138,7 @@
     passwords will be saved here.
  4. Fix reading of genres from cache file.
  5. Fix updating of genres after DB is refreshed.
- 6. Dont use https for context view searches.
+ 6. Don't use https for context view searches.
  7. Work-around Windows and QJson issue.
  8. Remove cantata prefix when showing status message about fetching streams.
  9. When adding streams that have a name assinged, but no path, then add a
@@ -165,14 +160,14 @@
  7. Only show actions on mouse-over.
  8. Use larger action icons in icon view when we have larger previews.
  9. Better non-monochrome radio-stream icons. Thanks to Grely
-10. Dont use alternating rows in views (does not look too great with grouped
+10. Don't use alternating rows in views (does not look too great with grouped
     view). Use a fading divider instead.
 11. Combine info and lyrics pages into a new context view. By default this is
     not placed in the sidebar, but has a toggle to show in the main view.
 12. Remove EchoNest usage, as this only seems to return English results. Use
     wikipedia instead. Only the introduction is displayed by default. If no
     entry is found on wikipedia, then last.fm is consulted.
-13. Dont display stream URL as sub-text, it makes the view look messy for no
+13. Don't display stream URL as sub-text, it makes the view look messy for no
     real gain. (URL is still shown in tooltip)
 14. Detailed tree view for folders and playlists by default.
 15. Remove config compatibility with Cantata versions older than 0.7
@@ -181,7 +176,7 @@
 17. Make 'stop after current track' assignable to KDE global shortcut.
 18. Add 'stop after current' to tray item menu, and to Cantata MPRIS interface.
 19. Try to use better text for buttons in dialogs, and not just yes/no.
-20. Dont use icons in buttons when using QGtkStyle - Gtk does not use button
+20. Don't use icons in buttons when using QGtkStyle - Gtk does not use button
     icons.
 21. Use checkboxes in sync dialog to mark songs to be copied.
 22. Show number of selected artists, albums, and songs in sync dialog.
@@ -278,7 +273,7 @@
 
 1.0.3
 -----
- 1. Dont display codec settings in copy dialog unless we are copying to a
+ 1. Don't display codec settings in copy dialog unless we are copying to a
     device, or from an AudioCD.
  2. Save size of Track Organiser, Tag Editor, and ReplayGain dialogs.
  3. Fix consistency of default button in messageboxes between Qt and KDE builds.
@@ -316,7 +311,7 @@
 
 1.0.1
 -----
-1. Dont display Jamendo and Magnatune cache settings in config dialog if these
+1. Don't display Jamendo and Magnatune cache settings in config dialog if these
    have been disabled at build time.
 2. Correctly calculate size of cache folders when folder does not exist.
 3. Fix deletion of cache when single item selected.
@@ -499,7 +494,7 @@
 
 0.9.2
 -----
- 1. (Qt-Only) Dont show clear button for read-only line-edits.
+ 1. (Qt-Only) Don't show clear button for read-only line-edits.
  2. Fix 'Locate In Library' when library is not set to tree mode.
  3. Use grid layout for transcoder slider, removes Qt layout warning.
  4. Simplified Chinese translation - thanks to 薛景
@@ -528,7 +523,7 @@
 1. Fix saving of 'Store covers in MPD dir' setting.
 2. Show/hide main window when KDE tray item clicked.
 3. Add 'Show Window' to tray item menu.
-4. Dont allow to set focus onto clear button in line-edits.
+4. Don't allow to set focus onto clear button in line-edits.
 5. Remove animation when showing messagewidget, seems to workaround a crash
    when compiled with KDE and using Oxygen.
 6. Fix activation of devices tab via keyboard shortcut.
@@ -734,7 +729,7 @@
     translations. Plural forms not supported correctly, hence instead of
     "1 Track" / "2 Tracks" Qt will have "Tracks: 1" / "Tracks: 2" The existing
     translations will need to be updated to handle the Qt specific cases.
-41. Dont clear genre list when clearing music library model.
+41. Don't clear genre list when clearing music library model.
 42. If we are grouping multiple-artists albums under 'Various Artists', then
     we also need to place 'Various Artists' albums there as well. This oddity
     can occur when i18n('Various Artists') != 'Various Artists'

@@ -98,7 +98,17 @@ QString Utils::fixPath(const QString &dir)
     QString d(dir);
 
     if (!d.isEmpty() && !d.startsWith(constHttp)) {
+        #ifdef Q_OS_WIN
+        // Windows shares can be \\host\share (which gets converted to //host/share)
+        // so if th epath starts with // we need to keep this double slash.
+        bool startsWithDoubleSlash=d.length()>2 && d.startsWith(QLatin1String("//"));
+        #endif
         d.replace(QLatin1String("//"), constDirSepStr);
+        #ifdef Q_OS_WIN
+        if (startsWithDoubleSlash) { // Re add first slash
+            d=QLatin1Char('/')+d;
+        }
+        #endif
     }
     d.replace(QLatin1String("/./"), constDirSepStr);
     if (!d.isEmpty() && !d.endsWith(constDirSep)) {

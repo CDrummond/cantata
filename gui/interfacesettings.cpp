@@ -240,6 +240,7 @@ void InterfaceSettings::load()
     playQueueStartClosed->setChecked(Settings::self()->playQueueStartClosed());
     playQueueScroll->setChecked(Settings::self()->playQueueScroll());
     playQueueBackground->setChecked(Settings::self()->playQueueBackground());
+    playQueueConfirmClear->setChecked(Settings::self()->playQueueConfirmClear());
     if (enabledViews&V_Albums) {
         albumsViewChanged();
         albumsCoverSizeChanged();
@@ -298,6 +299,7 @@ void InterfaceSettings::save()
     Settings::self()->savePlayQueueStartClosed(playQueueStartClosed->isChecked());
     Settings::self()->savePlayQueueScroll(playQueueScroll->isChecked());
     Settings::self()->savePlayQueueBackground(playQueueBackground->isChecked());
+    Settings::self()->savePlayQueueConfirmClear(playQueueConfirmClear->isChecked());
     Settings::self()->saveForceSingleClick(forceSingleClick->isChecked());
     Settings::self()->saveUseSystemTray(systemTrayCheckBox->isChecked());
     Settings::self()->saveShowPopups(systemTrayPopup->isChecked());

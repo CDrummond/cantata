@@ -307,10 +307,6 @@ albumViewLoadAll=<Bool - true/false>
     covers immediately - rather than waiting for the cover to be displayed.
     Default is false.
 
-promptClearPlayQueue=<Bool - true/false>
-    Determines whether the user should be prompted before clearing playqueue.
-    Default is true.
-
 e.g.
 [General]
 iconTheme=oxygen
@@ -319,7 +315,6 @@ maxCoverUpdatePerIteration=5
 cueFileCodecs=GBK, big5-0
 networkAccessEnabled=false
 albumViewLoadAll=true
-promptClearPlayQueue=false
 
 
 7. CUE Files
@@ -811,4 +806,5 @@ TagLib
 
 Windows version of taglib was built from TagLib 1.8, using the following cmake command:
     cmake .. -G "MinGW Makefiles" -DWITH_ASF=1 -DWITH_MP4=1 -DCMAKE_INSTALL_PREFIX=z:\dev\taglib
+
 

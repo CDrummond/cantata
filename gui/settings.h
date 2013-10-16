@@ -157,6 +157,7 @@ public:
     bool playQueueStartClosed();
     bool playQueueScroll();
     bool playQueueBackground();
+    bool playQueueConfirmClear();
     bool playListsStartClosed();
     #ifdef ENABLE_HTTP_STREAM_PLAYBACK
     bool playStream();
@@ -191,7 +192,6 @@ public:
     QStringList cueFileCodecs();
     bool networkAccessEnabled();
     bool albumViewLoadAll();
-    bool confirmClearPlayQueue();
 
     void removeConnectionDetails(const QString &v);
     void saveConnectionDetails(const MPDConnectionDetails &v);
@@ -254,6 +254,7 @@ public:
     void savePlayQueueStartClosed(bool v);
     void savePlayQueueScroll(bool v);
     void savePlayQueueBackground(bool v);
+    void savePlayQueueConfirmClear(bool v);
     void savePlayListsStartClosed(bool v);
     #ifdef ENABLE_HTTP_STREAM_PLAYBACK
     void savePlayStream(bool v);

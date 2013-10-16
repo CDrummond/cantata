@@ -2004,7 +2004,7 @@ void MainWindow::playQueueItemActivated(const QModelIndex &index)
 
 void MainWindow::promptClearPlayQueue()
 {
-    if (Settings::self()->confirmClearPlayQueue()) {
+    if (Settings::self()->playQueueConfirmClear()) {
         if (QDialogButtonBox::GnomeLayout==style()->styleHint(QStyle::SH_DialogButtonLayout)) {
             messageWidget->setActions(QList<QAction*>() << cancelAction << clearPlayQueueAction);
         } else {

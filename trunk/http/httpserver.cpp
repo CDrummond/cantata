@@ -26,6 +26,7 @@
 #include "tags.h"
 #include "settings.h"
 #include "thread.h"
+#include <QFile>
 #include <QUrl>
 #if QT_VERSION >= 0x050000
 #include <QUrlQuery>
@@ -187,7 +188,15 @@ QByteArray HttpServer::encodeUrl(const QString &file) const
 {
     #ifdef Q_OS_WIN
     QString f=fixWindowsPath(file);
-    DBUG << "file" << f;
+    DBUG << "file" << f << "orig" << file;
+    // For some reason, drag'n' drop of \\share\path\file.mp3 is changed to share/path/file.mp3!
+    if (!f.startsWith(QLatin1String("//")) && !QFile::exists(f)) {
+        QString share=f.startsWith(QLatin1Char('/')) ? (QLatin1Char('/')+f) : (QLatin1String("//")+f);
+        if (QFile::exists(share)) {
+            f=share;
+            DBUG << "converted to share-path" << f;
+        }
+    }
     Song s=Tags::read(f);
     s.file=f;
     #else

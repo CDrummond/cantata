@@ -327,7 +327,7 @@ void HttpSocket::readClient()
         if (tokens.length()>=2 && "GET"==tokens[0]) {
             QStringList params = QString(socket->readAll()).split(QRegExp("[\r\n][\r\n]*"));
 
-            DBUG << "params" << params;
+            DBUG << "params" << params << "tokens" << tokens;
             if (!isFromMpd(params)) {
                 return;
             }
@@ -403,6 +403,16 @@ void HttpSocket::readClient()
                     }
                     #endif
                 } else if (!song.file.isEmpty()) {
+                    #ifdef Q_OS_WIN
+                    if (tokens[1].startsWith("//") && !song.file.startsWith(QLatin1String("//")) && !QFile::exists(song.file)) {
+                        QString share=QLatin1String("//")+url.host()+song.file;
+                        if (QFile::exists(share)) {
+                            song.file=share;
+                            DBUG << "fixed share-path" << song.file;
+                        }
+                    }
+                    #endif
+
                     QFile f(song.file);
 
                     if (f.open(QIODevice::ReadOnly)) {                        
@@ -464,7 +474,7 @@ void HttpSocket::readClient()
             if (!ok) {
                 QTextStream os(socket);
                 os.setAutoDetectUnicode(true);
-                os << "HTTP/1.0 404 Ok\r\n"
+                os << "HTTP/1.0 404 OK\r\n"
                       "Content-Type: text/html; charset=\"utf-8\"\r\n"
                       "\r\n"
                       "<h1>Nothing to see here</h1>\n";

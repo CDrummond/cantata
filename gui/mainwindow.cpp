@@ -1733,21 +1733,21 @@ void MainWindow::updateWindowTitle()
         setWindowTitle(multipleConnections ? i18n("Cantata (%1)", connection) : "Cantata");
     } else if (current.isStream() && !current.isCantataStream() && !current.isCdda()) {
         setWindowTitle(multipleConnections
-                        ? i18nc("track :: Cantata (connection)", "%1 :: Cantata (%2)", trackLabel->text(), connection)
-                        : i18nc("track :: Cantata", "%1 :: Cantata", trackLabel->text()));
+                        ? i18nc("track :: Cantata (connection)", "%1 :: Cantata (%2)", trackLabel->fullText(), connection)
+                        : i18nc("track :: Cantata", "%1 :: Cantata", trackLabel->fullText()));
     } else if (current.artist.isEmpty()) {
-        if (trackLabel->text().isEmpty()) {
+        if (trackLabel->fullText().isEmpty()) {
             setWindowTitle(multipleConnections ? i18n("Cantata (%1)", connection) : "Cantata");
         } else {
             setWindowTitle(multipleConnections
-                            ? i18nc("track :: Cantata (connection)", "%1 :: Cantata (%2)", trackLabel->text(), connection)
-                            : i18nc("track :: Cantata", "%1 :: Cantata", trackLabel->text()));
+                            ? i18nc("track :: Cantata (connection)", "%1 :: Cantata (%2)", trackLabel->fullText(), connection)
+                            : i18nc("track :: Cantata", "%1 :: Cantata", trackLabel->fullText()));
         }
     } else {
         setWindowTitle(multipleConnections
                         ? i18nc("track - artist :: Cantata (connection)", "%1 - %2 :: Cantata (%3)",
-                                trackLabel->text(), current.artist, connection)
-                        : i18nc("track - artist :: Cantata", "%1 - %2 :: Cantata", trackLabel->text(), current.artist));
+                                trackLabel->fullText(), current.artist, connection)
+                        : i18nc("track - artist :: Cantata", "%1 - %2 :: Cantata", trackLabel->fullText(), current.artist));
     }
 }
 
@@ -1803,7 +1803,7 @@ void MainWindow::updateCurrentSong(const Song &song)
             trackLabel->setText(current.title);
         }
         if (current.album.isEmpty() && current.artist.isEmpty()) {
-            artistLabel->setText(trackLabel->text().isEmpty() ? QString() : i18n("Unknown"));
+            artistLabel->setText(trackLabel->fullText().isEmpty() ? QString() : i18n("Unknown"));
         } else if (current.album.isEmpty()) {
             artistLabel->setText(current.artist);
         } else {

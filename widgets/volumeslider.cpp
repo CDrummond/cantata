@@ -227,7 +227,6 @@ void VolumeSlider::contextMenuEvent(QContextMenuEvent *ev)
     static const char *constValProp="val";
     if (!menu) {
         menu=new QMenu(this);
-        menu->setTitle(i18n("Volume"));
         muteMenuAction=menu->addAction(i18n("Mute"));
         muteMenuAction->setProperty(constValProp, -1);
         for (int i=0; i<11; ++i) {

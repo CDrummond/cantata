@@ -146,6 +146,16 @@
     </widget>
    </item>
    <item>
+    <widget class="QLabel" name="noteLabel">
+     <property name="text">
+      <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; These settings apply to Digitally Imported, JazzRadio.com, RockRadio.com, and Sky.fm&lt;/i&gt;</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>

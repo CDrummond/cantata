@@ -98,14 +98,15 @@ public:
         addAction(act);
         connect(act, SIGNAL(triggered(bool)), parent, SLOT(reset()));
         setContextMenuPolicy(Qt::ActionsContextMenu);
+        size=Utils::isHighDpi() ? 4 : 2;
     }
 
     void resizeEvent(QResizeEvent *event)
     {
         if (Qt::Horizontal==orientation()) {
-            setContentsMargins(2, 0, 2, 0);
+            setContentsMargins(size, 0, size, 0);
         } else {
-            setContentsMargins(0, 2, 0, 2);
+            setContentsMargins(0, size, 0, size);
         }
         setMask(QRegion(contentsRect()));
         QSplitterHandle::resizeEvent(event);
@@ -145,8 +146,8 @@ public:
     }
 
     bool underMouse;
+    int size;
 };
-
 
 ThinSplitter::ThinSplitter(QWidget *parent)
     : QSplitter(parent)

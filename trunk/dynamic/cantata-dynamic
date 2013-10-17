@@ -38,7 +38,6 @@ use Sys::Hostname;
 use Socket qw(:all);
 
 # UDP multicast message sender - used to communicate with Cantata when cantata-dynamic is run in server mode!
-my $serverSender : shared = dirname(__FILE__) . '/message-sender';
 my $mcastGroup : shared = '239.123.123.123';
 my $mcastPort : shared = 6602;
 my $mcastTtl : shared = 1;

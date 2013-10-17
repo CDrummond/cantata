@@ -1197,8 +1197,7 @@ void MainWindow::checkMpdDir()
     if (mpdAccessibilityTimer) {
         mpdAccessibilityTimer->stop();
     }
-    QString dir=MPDConnection::self()->getDetails().dir;
-    MPDConnection::self()->setDirReadable(dir.isEmpty() ? false : QDir(dir).isReadable());
+    MPDConnection::self()->setDirReadable();
     #endif
 
     #ifdef TAGLIB_FOUND

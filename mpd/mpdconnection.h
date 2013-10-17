@@ -141,6 +141,7 @@ struct MPDConnectionDetails {
     bool operator!=(const MPDConnectionDetails &o) const { return !(*this==o); }
     bool operator<(const MPDConnectionDetails &o) const { return name.localeAwareCompare(o.name)<0; }
     static QString configGroupName(const QString &n=QString()) { return n.isEmpty() ? "Connection" : ("Connection-"+n); }
+    void setDirReadable();
 
     QString name;
     QString hostname;
@@ -180,7 +181,7 @@ public:
     void start();
     void stop();
     const MPDConnectionDetails & getDetails() const { return details; }
-    void setDirReadable(bool r) { details.dirReadable=r; }
+    void setDirReadable() { details.setDirReadable(); }
     bool isConnected() const { return State_Connected==state; }
     bool canUsePriority() const { return ver>=MPD_MAKE_VERSION(0, 17, 0); }
     const QSet<QString> & urlHandlers() const { return handlers; }

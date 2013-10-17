@@ -36,22 +36,18 @@
 #include <QMacNativeToolBar>
 #endif
 #endif
-#include <QVBoxLayout>
 #include <QDialogButtonBox>
 #include <QTextStream>
 #include <cstdlib>
 #ifdef ENABLE_KDE_SUPPORT
 #include <kdeversion.h>
 #include <KDE/KApplication>
-#include <KDE/KAction>
-#include <KDE/KActionCollection>
 #include <KDE/KStandardAction>
 #include <KDE/KMenuBar>
 #include <KDE/KMenu>
 #include <KDE/KShortcutsDialog>
 #else
 #include <QMenuBar>
-#include "networkproxyfactory.h"
 #include "mediakeys.h"
 #endif
 #include "localize.h"
@@ -146,9 +142,9 @@ bool DeleteKeyEventHandler::eventFilter(QObject *obj, QEvent *event)
     return QObject::eventFilter(obj, event);
 }
 
-static int nextKey(int &key) {
+static int nextKey(int &key)
+{
     int k=key;
-
     if (Qt::Key_0==key) {
         key=Qt::Key_A;
     } else {
@@ -161,11 +157,7 @@ static int nextKey(int &key) {
 }
 
 MainWindow::MainWindow(QWidget *parent)
-    #ifdef ENABLE_KDE_SUPPORT
-    : KXmlGuiWindow(parent)
-    #else
-    : QMainWindow(parent)
-    #endif
+    : MAIN_WINDOW_BASE_CLASS(parent)
     , loaded(0)
     , lastState(MPDState_Inactive)
     , lastSongId(-1)
@@ -190,7 +182,6 @@ MainWindow::MainWindow(QWidget *parent)
     #endif
 {
     QPoint p=pos();
-
     ActionCollection::setMainWidget(this);
     trayItem=new TrayItem(this);
 
@@ -227,6 +218,7 @@ MainWindow::MainWindow(QWidget *parent)
     Icons::self()->self()->initToolbarIcons(artistLabel->palette().color(QPalette::Foreground), GtkStyle::useLightIcons());
     Icons::self()->initSidebarIcons();
     menuButton->setIcon(Icons::self()->toolbarMenuIcon);
+    menuButton->setMenu(mainMenu);
 
     // With ambiance (which has a drak toolbar) we need a gap between the toolbar and the earch fields. But, in the context view we dont
     // want a gap - as this looks odd with a background. To workaround this, the tabwidget and playqueue sides of the splitter have a
@@ -242,7 +234,6 @@ MainWindow::MainWindow(QWidget *parent)
     quitAction=static_cast<Action *>(KStandardAction::quit(this, SLOT(quit()), ActionCollection::get()));
     #else
     setWindowIcon(Icons::self()->appIcon);
-    QNetworkProxyFactory::setApplicationProxyFactory(NetworkProxyFactory::self());
 
     quitAction = ActionCollection::get()->createAction("quit", i18n("Quit"), "application-exit");
     connect(quitAction, SIGNAL(triggered(bool)), this, SLOT(quit()));
@@ -340,8 +331,6 @@ MainWindow::MainWindow(QWidget *parent)
     outputsAction->setMenu(new QMenu(this));
     outputsAction->setVisible(false);
     addPlayQueueToStoredPlaylistAction->setMenu(PlaylistsModel::self()->menu());
-
-    menuButton->setMenu(mainMenu);
 
     playPauseTrackButton->setDefaultAction(StdActions::self()->playPauseTrackAction);
     stopTrackButton->setDefaultAction(StdActions::self()->stopPlaybackAction);
@@ -509,7 +498,6 @@ MainWindow::MainWindow(QWidget *parent)
     MusicLibraryItemAlbum::setCoverSize((MusicLibraryItemAlbum::CoverSize)Settings::self()->libraryCoverSize());
     MusicLibraryItemAlbum::setShowDate(Settings::self()->libraryYear());
     AlbumsModel::setCoverSize((MusicLibraryItemAlbum::CoverSize)Settings::self()->albumsCoverSize());
-
     tabWidget->SetMode((FancyTabWidget::Mode)Settings::self()->sidebar());
     expandedSize=Settings::self()->mainWindowSize();
     collapsedSize=Settings::self()->mainWindowCollapsedSize();
@@ -649,7 +637,6 @@ MainWindow::MainWindow(QWidget *parent)
     //playQueue->addAction(copyTrackInfoAction);
     playQueue->tree()->installEventFilter(new DeleteKeyEventHandler(playQueue->tree(), removeFromPlayQueueAction));
     playQueue->list()->installEventFilter(new DeleteKeyEventHandler(playQueue->list(), removeFromPlayQueueAction));
-
     playQueue->setGrouped(Settings::self()->playQueueGrouped());
     playQueue->setAutoExpand(Settings::self()->playQueueAutoExpand());
     playQueue->setStartClosed(Settings::self()->playQueueStartClosed());
@@ -824,8 +811,7 @@ MainWindow::MainWindow(QWidget *parent)
     ActionCollection::get()->readSettings();
 
     if (testAttribute(Qt::WA_TranslucentBackground)) {
-        // Work-around non-showing main window on start-up with transparent QtCurve windows.
-        // BUG: 146
+        // BUG: 146 - Work-around non-showing main window on start-up with transparent QtCurve windows.
         move(p.isNull() ? QPoint(96, 96) : p);
     }
 
@@ -981,7 +967,6 @@ void MainWindow::showInformation(const QString &message)
 void MainWindow::messageWidgetVisibility(bool v)
 {
     Q_UNUSED(v)
-
     if (!expandInterfaceAction->isChecked()) {
         int prevWidth=width();
         int compactHeight=calcCompactHeight();
@@ -1044,11 +1029,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
         }
     } else {
         GtkStyle::cleanup();
-        #ifdef ENABLE_KDE_SUPPORT
-        KXmlGuiWindow::closeEvent(event);
-        #else
-        QMainWindow::closeEvent(event);
-        #endif
+        MAIN_WINDOW_BASE_CLASS::closeEvent(event);
     }
 }
 
@@ -1123,7 +1104,6 @@ void MainWindow::saveShortcuts()
 {
     ActionCollection::get()->writeSettings();
 }
-
 #endif
 
 bool MainWindow::canShowDialog()
@@ -1462,7 +1442,6 @@ void MainWindow::showAboutDialog()
                        i18nc("Qt-only", "<b>Cantata %1</b><br/><br/>MPD client.<br/><br/>"
                              "© Craig Drummond 2011-2013.<br/>Released under the <a href=\"http://www.gnu.org/licenses/gpl.html\">GPLv3</a>", PACKAGE_VERSION_STRING)+
                        QLatin1String("<br/><br/><i><small>")+i18n("Based upon <a href=\"http://qtmpc.lowblog.nl\">QtMPC</a> - © 2007-2010 The QtMPC Authors<br/>")+
-//                       (ContextWidget::constHtbApiKey.latin1() ? i18nc("Qt-only", "Context view backdrops courtesy of <a href=\"http://www.htbackdrops.com\">Home Theater Backdrops</a><br/>") : "")+
                        i18nc("Qt-only", "Context view backdrops courtesy of <a href=\"http://www.fanart.tv\">FanArt.tv</a>")+QLatin1String("<br/>")+
                        i18nc("Qt-only", "Context view metadata courtesy of <a href=\"http://www.wikipedia.org\">Wikipedia</a> and <a href=\"http://www.last.fm\">Last.fm</a>")+
                        QLatin1String("<br/><br/>")+i18n("Please consider uploading your own music fan-art to <a href=\"http://www.fanart.tv\">FanArt.tv</a>")+
@@ -1539,8 +1518,7 @@ void MainWindow::toggleStream(bool s, const QString &url)
         }
     }
     #else
-    Q_UNUSED(s)
-    Q_UNUSED(url)
+    Q_UNUSED(s) Q_UNUSED(url)
     #endif
 }
 
@@ -1982,8 +1960,7 @@ void MainWindow::updateStatus(MPDStatus * const status)
         break;
     }
 
-    // Check if song has changed or we're playing again after being stopped
-    // and update song info if needed
+    // Check if song has changed or we're playing again after being stopped, and update song info if needed
     if (MPDState_Inactive!=status->state() &&
         (MPDState_Inactive==lastState || (MPDState_Stopped==lastState && MPDState_Playing==status->state()) || lastSongId != status->songId())) {
         emit currentSong();
@@ -2524,9 +2501,7 @@ void MainWindow::toggleMonoIcons()
 
 void MainWindow::locateTrack()
 {
-    if (!libraryPage->isVisible()) {
-        showLibraryTab();
-    }
+    showLibraryTab();
     libraryPage->showSongs(playQueue->selectedSongs());
 }
 
@@ -2536,9 +2511,7 @@ void MainWindow::locateArtist(const QString &artist)
         songInfoAction->setChecked(false);
         showSongInfo();
     }
-    if (!libraryPage->isVisible()) {
-        showLibraryTab();
-    }
+    showLibraryTab();
     libraryPage->showArtist(artist);
 }
 
@@ -2548,9 +2521,7 @@ void MainWindow::locateAlbum(const QString &artist, const QString &album)
         songInfoAction->setChecked(false);
         showSongInfo();
     }
-    if (!libraryPage->isVisible()) {
-        showLibraryTab();
-    }
+    showLibraryTab();
     libraryPage->showAlbum(artist, album);
 }
 
@@ -2843,9 +2814,7 @@ void MainWindow::copyToDevice(const QString &from, const QString &to, const QLis
     ActionDialog *dlg=new ActionDialog(this);
     dlg->copy(from, to, songs);
     #else
-    Q_UNUSED(from)
-    Q_UNUSED(to)
-    Q_UNUSED(songs)
+    Q_UNUSED(from) Q_UNUSED(to) Q_UNUSED(songs)
     #endif
 }
 
@@ -2858,8 +2827,7 @@ void MainWindow::deleteSongs(const QString &from, const QList<Song> &songs)
     ActionDialog *dlg=new ActionDialog(this);
     dlg->remove(from, songs);
     #else
-    Q_UNUSED(from)
-    Q_UNUSED(songs)
+    Q_UNUSED(from) Q_UNUSED(songs)
     #endif
 }
 
@@ -3008,12 +2976,8 @@ void MainWindow::restoreWindow()
     xev.xclient.window = effectiveWinId();
     xev.xclient.format = 32;
     xev.xclient.data.l[0] = 2;
-    xev.xclient.data.l[1] = 0;
-    xev.xclient.data.l[2] = 0;
-    xev.xclient.data.l[3] = 0;
-    xev.xclient.data.l[4] = 0;
-    XSendEvent(QX11Info::display(), QX11Info::appRootWindow(info.screen()), False,
-               SubstructureRedirectMask | SubstructureNotifyMask, &xev);
+    xev.xclient.data.l[1] = xev.xclient.data.l[2] = xev.xclient.data.l[3] = xev.xclient.data.l[4] = 0;
+    XSendEvent(QX11Info::display(), QX11Info::appRootWindow(info.screen()), False, SubstructureRedirectMask|SubstructureNotifyMask, &xev);
     #endif
     #endif
     if (wasHidden && !lastPos.isNull()) {

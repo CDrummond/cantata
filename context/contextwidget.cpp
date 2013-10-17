@@ -717,22 +717,25 @@ void ContextWidget::musicbrainzResponse()
 
     DBUG << "status" << reply->error() << reply->errorString();
 
-    bool inSection=false;
-    QXmlStreamReader doc(reply->actualJob());
     QString id;
 
-    while (!doc.atEnd()) {
-        doc.readNext();
+    if (reply->ok()) {
+        bool inSection=false;
+        QXmlStreamReader doc(reply->actualJob());
 
-        if (doc.isStartElement()) {
-            if (!inSection && QLatin1String("artist-list")==doc.name()) {
-                inSection=true;
-            } if (inSection && QLatin1String("artist")==doc.name()) {
-                id=doc.attributes().value("id").toString();
+        while (!doc.atEnd()) {
+            doc.readNext();
+
+            if (doc.isStartElement()) {
+                if (!inSection && QLatin1String("artist-list")==doc.name()) {
+                    inSection=true;
+                } if (inSection && QLatin1String("artist")==doc.name()) {
+                    id=doc.attributes().value("id").toString();
+                    break;
+                }
+            } else if (doc.isEndElement() && inSection && QLatin1String("artist")==doc.name()) {
                 break;
             }
-        } else if (doc.isEndElement() && inSection && QLatin1String("artist")==doc.name()) {
-            break;
         }
     }
 
@@ -884,12 +887,13 @@ void ContextWidget::downloadResponse()
 
     DBUG << "status" << reply->error() << reply->errorString();
 
-    if (!reply->ok()) {
-        return;
-    }
+    QImage img;
+    QByteArray data;
 
-    QByteArray data=reply->readAll();
-    QImage img=QImage::fromData(data);
+    if (reply->ok()) {
+        data=reply->readAll();
+        img=QImage::fromData(data);
+    }
 
     if (img.isNull()) {
         createBackdrop();

@@ -852,9 +852,6 @@ MainWindow::~MainWindow()
         Settings::self()->saveMainWindowSize(expandInterfaceAction->isChecked() ? size() : expandedSize);
         Settings::self()->saveMainWindowCollapsedSize(expandInterfaceAction->isChecked() ? collapsedSize : size());
     }
-    #if defined ENABLE_REMOTE_DEVICES && defined ENABLE_DEVICES_SUPPORT
-    DevicesModel::self()->unmountRemote();
-    #endif
     #ifdef ENABLE_HTTP_STREAM_PLAYBACK
     Settings::self()->savePlayStream(streamPlayAction->isVisible() && streamPlayAction->isChecked());
     #endif

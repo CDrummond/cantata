@@ -27,6 +27,7 @@
 #include "ui_playbacksettings.h"
 #include "output.h"
 #include <QList>
+#include <QSet>
 
 class PlaybackSettings : public QWidget, private Ui::PlaybackSettings
 {
@@ -52,6 +53,10 @@ private Q_SLOTS:
     void updateOutputs(const QList<Output> &outputs);
     void mpdConnectionStateChanged(bool c);
     void showAboutReplayGain();
+
+private:
+    QSet<int> enabledOutputs;
+    QString rgSetting;
 };
 
 #endif

@@ -124,7 +124,7 @@ MPDConnectionDetails InitialSettingsWizard::getDetails()
     det.port=port->value();
     det.password=password->text();
     det.dir=dir->text().trimmed();
-    det.dirReadable=det.dir.isEmpty() ? false : QDir(det.dir).isReadable();
+    det.setDirReadable();
     det.dynamizerPort=0;
     return det;
 }

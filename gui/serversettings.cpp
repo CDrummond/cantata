@@ -386,6 +386,6 @@ MPDConnectionDetails ServerSettings::getDetails() const
         details.coverName=basicCoverName->text().trimmed();
         MPDUser::self()->setMusicFolder(details.dir);
     }
-    details.dirReadable=details.dir.isEmpty() ? false : QDir(details.dir).isReadable();
+    details.setDirReadable();
     return details;
 }

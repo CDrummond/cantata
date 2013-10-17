@@ -35,6 +35,7 @@
 #include <QApplication>
 #include <QStringList>
 #include <QTimer>
+#include <QDir>
 #include "thread.h"
 #include "settings.h"
 #include "cuefile.h"
@@ -154,6 +155,24 @@ QString MPDConnectionDetails::description() const
     } else {
         return i18nc("name (host:port)", "\"%1\" (%2:%3)", getName(), hostname, port);
     }
+}
+
+void MPDConnectionDetails::setDirReadable()
+{
+    #ifdef Q_OS_WIN32
+    if (dir.isEmpty()) {
+        dirReadable=false;
+    } else {
+        QDir d(dir);
+        dirReadable=d.isReadable();
+        // Handle cases where dir is set to \\server\ (i.e. no shared folder is set in path)
+        if (!dirReadable && dir.startsWith(QLatin1String("//")) && d.isRoot() && d.canonicalPath().isEmpty() && (dir.length()-1)==dir.indexOf(Utils::constDirSep, 2)) {
+            dirReadable=true;
+        }
+    }
+    #else
+    dirReadable=dir.isEmpty() ? false : QDir(dir).isReadable();
+    #endif
 }
 
 MPDConnection::MPDConnection()

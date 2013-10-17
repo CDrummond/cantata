@@ -244,7 +244,7 @@ MPDConnectionDetails Settings::connectionDetails(const QString &name)
             #endif
         }
     }
-    details.dirReadable=details.dir.isEmpty() ? false : QDir(details.dir).isReadable();
+    details.setDirReadable();
     return details;
 }
 

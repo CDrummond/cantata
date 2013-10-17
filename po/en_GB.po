@@ -1728,7 +1728,7 @@ msgid "A KDE client for MPD"
 msgstr ""
 
 #: gui/main.cpp:154
-msgid "Copyright (C) 2011-2013 Craig Drummond"
+msgid "Copyright © 2011-2013 Craig Drummond"
 msgstr ""
 
 #: gui/main.cpp:158
@@ -2026,14 +2026,14 @@ msgstr ""
 #: gui/mainwindow.cpp:1462
 msgctxt "Qt-only"
 msgid ""
-"<b>Cantata %1</b><br/><br/>MPD client.<br/><br/>(c) Craig Drummond 2011-2013."
+"<b>Cantata %1</b><br/><br/>MPD client.<br/><br/>© Craig Drummond 2011-2013."
 "<br/>Released under the <a href=\"http://www.gnu.org/licenses/gpl.html"
 "\">GPLv3</a>"
 msgstr ""
 
 #: gui/mainwindow.cpp:1464
 msgid ""
-"Based upon <a href=\"http://qtmpc.lowblog.nl\">QtMPC</a> - (C) 2007-2010 The "
+"Based upon <a href=\"http://qtmpc.lowblog.nl\">QtMPC</a> - © 2007-2010 The "
 "QtMPC Authors<br/>"
 msgstr ""
 

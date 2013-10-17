@@ -1889,8 +1889,8 @@ msgid "A KDE client for MPD"
 msgstr "MPD의 KDE 클라이언트"
 
 #: gui/main.cpp:154
-msgid "Copyright (C) 2011-2013 Craig Drummond"
-msgstr "Copyright (C) 2011-2013 Craig Drummond"
+msgid "Copyright © 2011-2013 Craig Drummond"
+msgstr "Copyright © 2011-2013 Craig Drummond"
 
 #: gui/main.cpp:158
 msgid "Craig Drummond"
@@ -2189,20 +2189,20 @@ msgstr "칸타타에 대하여"
 #: gui/mainwindow.cpp:1462
 msgctxt "Qt-only"
 msgid ""
-"<b>Cantata %1</b><br/><br/>MPD client.<br/><br/>(c) Craig Drummond 2011-2013."
+"<b>Cantata %1</b><br/><br/>MPD client.<br/><br/>© Craig Drummond 2011-2013."
 "<br/>Released under the <a href=\"http://www.gnu.org/licenses/gpl.html"
 "\">GPLv3</a>"
 msgstr ""
-"<b>칸타타 %1</b><br/><br/>MPD 클라이언트.<br/><br/>(c) Craig Drummond "
+"<b>칸타타 %1</b><br/><br/>MPD 클라이언트.<br/><br/>© Craig Drummond "
 "2011-2013.<br/><a href=\"http://www.gnu.org/licenses/gpl.html"
 "\">GPLv3</a>에 따라 배포"
 
 #: gui/mainwindow.cpp:1464
 msgid ""
-"Based upon <a href=\"http://qtmpc.lowblog.nl\">QtMPC</a> - (C) 2007-2010 The "
+"Based upon <a href=\"http://qtmpc.lowblog.nl\">QtMPC</a> - © 2007-2010 The "
 "QtMPC Authors<br/>"
 msgstr ""
-"<a href=\"http://qtmpc.lowblog.nl\">QtMPC</a> 기반 - (C) 2007-2010 QtMPC 개발자<br/>"
+"<a href=\"http://qtmpc.lowblog.nl\">QtMPC</a> 기반 - © 2007-2010 QtMPC 개발자<br/>"
 
 #: gui/mainwindow.cpp:1466
 msgctxt "Qt-only"

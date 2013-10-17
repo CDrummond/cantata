@@ -160,7 +160,7 @@ void MPDUser::setMusicFolder(const QString &folder)
         }
     }
     det.dir=folder;
-    det.dirReadable=QDir(det.dir).isReadable();
+    det.setDirReadable();
     if (0!=getPid()) {
         controlMpd(true); // Stop
         controlMpd(false); // Start
@@ -319,7 +319,7 @@ void MPDUser::init(bool create)
                     }
                 }
             }
-            det.dirReadable=QDir(det.dir).isReadable();
+            det.setDirReadable();
         }
         det.name=constName;
     }

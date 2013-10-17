@@ -246,3 +246,17 @@ endforeach(ICON ${OXYGEN_ICONS})
 install(FILES index.theme DESTINATION ${MACOSX_BUNDLE_RESOURCES}/icons/oxygen)
 install(FILES "LICENSE.Creative Common Attribution-ShareAlike 3.0 License.html" LICENSE.LGPL_V3 README DESTINATION ${MACOSX_BUNDLE_RESOURCES}/icons)
 
+png
+16x16/actions/go-home.png
+32x32/actions/go-home.png
+48x48/actions/go-home.png
+22x22/actions/go-home.png
+)
+
+foreach(ICON ${OXYGEN_ICONS})
+    get_filename_component(ICON_PATH ${ICON} PATH)
+    install(FILES ${CANTATA_OXYGEN_DIR}/${ICON} DESTINATION ${MACOSX_BUNDLE_RESOURCES}/icons/oxygen/${ICON_PATH})
+endforeach(ICON ${OXYGEN_ICONS})
+install(FILES index.theme DESTINATION ${MACOSX_BUNDLE_RESOURCES}/icons/oxygen)
+install(FILES "LICENSE.Creative Common Attribution-ShareAlike 3.0 License.html" LICENSE.LGPL_V3 README DESTINATION ${MACOSX_BUNDLE_RESOURCES}/icons)
+

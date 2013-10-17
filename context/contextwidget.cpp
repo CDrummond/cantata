@@ -616,6 +616,12 @@ void ContextWidget::getBackdrop()
 void ContextWidget::getFanArtBackdrop()
 {
     // First we need to query musicbrainz to get id
+    getMusicbrainzId(fixArtist(currentArtist));
+}
+
+static const char * constArtistProp="artist-name";
+void ContextWidget::getMusicbrainzId(const QString &artist)
+{
     QUrl url("http://www.musicbrainz.org/ws/2/artist/");
     #if QT_VERSION < 0x050000
     QUrl &query=url;
@@ -623,13 +629,14 @@ void ContextWidget::getFanArtBackdrop()
     QUrlQuery query;
     #endif
 
-    query.addQueryItem("query", "artist:"+fixArtist(currentArtist));
+    query.addQueryItem("query", "artist:"+artist);
     #if QT_VERSION >= 0x050000
     url.setQuery(query);
     #endif
 
     job = NetworkAccessManager::self()->get(url);
     DBUG << url.toString();
+    job->setProperty(constArtistProp, artist);
     connect(job, SIGNAL(finished()), this, SLOT(musicbrainzResponse()));
 }
 
@@ -740,7 +747,15 @@ void ContextWidget::musicbrainzResponse()
     }
 
     if (id.isEmpty()) {
-        getDiscoGsImage();
+        QString artist=reply->property(constArtistProp).toString();
+        // MusicBrainz does not seem to like AC/DC, but AC DC works - so if we fail with an artist
+        // containing /, then try with space...
+        if (!artist.isEmpty() && artist.contains("/")) {
+            artist=artist.replace("/", " ");
+            getMusicbrainzId(artist);
+        } else {
+            getDiscoGsImage();
+        }
     } else {
         QUrl url("http://api.fanart.tv/webservice/artist/"+constFanArtApiKey+"/"+id+"/json/artistbackground/1");
         job=NetworkAccessManager::self()->get(url);

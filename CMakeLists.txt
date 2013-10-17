@@ -132,6 +132,7 @@ if (ENABLE_QT5)
     set(CMAKE_CXX_FLAGS "${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS}")
     find_package(Qt5DBus)
     if (Qt5DBus_FOUND)
+        set(QT_QTDBUS_FOUND 1) # required for config.h !!!
         set(QTLIBS ${QTLIBS} ${Qt5DBus_LIBRARIES})
         set(QTINCLUDES ${QTINCLUDES} ${Qt5DBus_INCLUDE_DIRS})
         add_definitions(${Qt5DBus_DEFINITIONS})

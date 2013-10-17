@@ -27,7 +27,6 @@
 #include <QStringList>
 #include <stdlib.h>
 
-
 const char * NetworkProxyFactory::constSettingsGroup = "Proxy";
 
 #if defined Q_OS_LINUX && QT_VERSION < 0x050000
@@ -129,11 +128,13 @@ NetworkProxyFactory::NetworkProxyFactory()
     , type(QNetworkProxy::HttpProxy)
     , port(8080)
 {
+    QNetworkProxyFactory::setApplicationProxyFactory(this);
     reloadSettings();
 }
 #else
 NetworkProxyFactory::NetworkProxyFactory()
 {
+    QNetworkProxyFactory::setApplicationProxyFactory(this);
 }
 #endif
 

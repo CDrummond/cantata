@@ -104,10 +104,12 @@ private:
 };
 
 #ifdef ENABLE_KDE_SUPPORT
-class MainWindow : public KXmlGuiWindow, private Ui::MainWindow
+#define MAIN_WINDOW_BASE_CLASS KXmlGuiWindow
 #else
-class MainWindow : public QMainWindow, private Ui::MainWindow
+#define MAIN_WINDOW_BASE_CLASS QMainWindow
 #endif
+
+class MainWindow : public MAIN_WINDOW_BASE_CLASS, private Ui::MainWindow
 {
     Q_OBJECT
 

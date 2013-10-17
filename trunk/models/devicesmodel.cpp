@@ -260,6 +260,9 @@ void DevicesModel::stop()
 //        disconnect(Covers::self(), SIGNAL(cover(const Song &, const QImage &, const QString &)),
 //                   this, SLOT(setCover(const Song &, const QImage &, const QString &)));
     disconnect(MountPoints::self(), SIGNAL(updated()), this, SLOT(mountsChanged()));
+    #if defined ENABLE_REMOTE_DEVICES
+    unmountRemote();
+    #endif
 }
 
 Device * DevicesModel::device(const QString &udi)

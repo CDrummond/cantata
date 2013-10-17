@@ -33,7 +33,7 @@ MenuButton::MenuButton(QWidget *parent)
 {
     setPopupMode(QToolButton::InstantPopup);
     setIcon(Icons::self()->menuIcon);
-    setToolTip(i18n("Other Actions"));
+    setToolTip(i18n("Menu"));
 }
 
 void MenuButton::controlState()

@@ -101,6 +101,7 @@ private:
     void getBackdrop();
 //    void getHtBackdrop();
     void getFanArtBackdrop();
+    void getMusicbrainzId(const QString &artist);
     void getDiscoGsImage();
     void createBackdrop();
     NetworkJob * getReply(QObject *obj);

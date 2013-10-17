@@ -28,6 +28,7 @@
 #include "action.h"
 #include "actioncollection.h"
 #include "stdactions.h"
+#include "utils.h"
 #include <QStyle>
 #include <QPainter>
 #include <QPainterPath>
@@ -86,10 +87,9 @@ VolumeSlider::VolumeSlider(QWidget *p)
     , muteAction(0)
     , menu(0)
 {
-    int fontHeight=fontMetrics().height();
     setRange(0, 100);
     setPageStep(5);
-    lineWidth=fontHeight>22 ? 2 : 1;
+    lineWidth=Utils::isHighDpi() ? 2 : 1;
 
     int w=lineWidth*constWidthStep*19;
     int h=lineWidth*constHeightStep*10;

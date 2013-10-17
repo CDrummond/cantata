@@ -86,6 +86,7 @@ namespace Utils
     extern void touchFile(const QString &fileName);
 
     extern int layoutSpacing(QWidget *w);
+    extern bool isHighDpi();
 };
 
 #endif

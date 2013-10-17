@@ -648,7 +648,16 @@ extern int Utils::layoutSpacing(QWidget *w)
 {
     int spacing=(w ? w->style() : qApp->style())->layoutSpacing(QSizePolicy::DefaultType, QSizePolicy::DefaultType, Qt::Vertical);
     if (spacing<0) {
-        spacing=QApplication::fontMetrics().height()>20 ? 8 : 4;
+        spacing=isHighDpi() ? 8 : 4;
     }
     return spacing;
+}
+
+extern bool Utils::isHighDpi()
+{
+    static int fontHeight=-1;
+    if (-1==fontHeight) {
+        fontHeight=QApplication::fontMetrics().height();
+    }
+    return fontHeight>22;
 }

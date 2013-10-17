@@ -96,17 +96,35 @@ void PlaybackSettings::save()
     #endif
 
     if (MPDConnection::self()->isConnected()) {
-        emit setCrossFade(crossfading->value());
-        emit setReplayGain(replayGain->itemData(replayGain->currentIndex()).toString());
-        for (int i=0; i<outputsView->count(); ++i) {
-            QListWidgetItem *item=outputsView->item(i);
-            emit enableOutput(item->data(Qt::UserRole).toInt(), Qt::Checked==item->checkState());
+        int crossFade=crossfading->value();
+        if (crossFade!=MPDStatus::self()->crossFade()) {
+            emit setCrossFade(crossFade);
+        }
+        QString rg=replayGain->itemData(replayGain->currentIndex()).toString();
+        if (rgSetting!=rg) {
+            rgSetting=rg;
+            emit setReplayGain(rg);
+        }
+        if (outputsView->isVisible()) {
+            for (int i=0; i<outputsView->count(); ++i) {
+                QListWidgetItem *item=outputsView->item(i);
+                bool isEnabled=Qt::Checked==item->checkState();
+                int id=item->data(Qt::UserRole).toInt();
+                if (isEnabled && !enabledOutputs.contains(id)) {
+                    enabledOutputs.insert(id);
+                    emit enableOutput(id, isEnabled);
+                } else if (!isEnabled && enabledOutputs.contains(id)) {
+                    enabledOutputs.remove(id);
+                    emit enableOutput(id, isEnabled);
+                }
+            }
         }
     }
 }
 
 void PlaybackSettings::replayGainSetting(const QString &rg)
 {
+    rgSetting=rg;
     replayGain->setCurrentIndex(0);
 
     for(int i=0; i<replayGain->count(); ++i) {
@@ -120,10 +138,14 @@ void PlaybackSettings::replayGainSetting(const QString &rg)
 void PlaybackSettings::updateOutputs(const QList<Output> &outputs)
 {
     outputsView->clear();
+    enabledOutputs.clear();
     foreach(const Output &output, outputs) {
         QListWidgetItem *item=new QListWidgetItem(output.name, outputsView);
         item->setCheckState(output.enabled ? Qt::Checked : Qt::Unchecked);
         item->setData(Qt::UserRole, output.id);
+        if (output.enabled) {
+            enabledOutputs.insert(output.id);
+        }
     }
     outputsView->setVisible(outputsView->count()>1);
     outputsViewLabel->setVisible(outputsView->count()>1);

@@ -27,7 +27,6 @@
 #include "ui_onlineservicespage.h"
 #include "onlineservice.h"
 #include "musiclibraryproxymodel.h"
-#include "config.h"
 
 class Action;
 class QAction;
@@ -86,10 +85,8 @@ private:
     MusicLibraryProxyModel proxy;
     Action *downloadAction;
     Action *podcastSearchAction;
-    #ifdef TAGLIB_FOUND
     Action *downloadPodcastAction;
     Action *deleteDownloadedPodcastAction;
-    #endif
     QSet<QString> genres;
     bool onlineSearchRequest;
     QString searchService;

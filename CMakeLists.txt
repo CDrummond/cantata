@@ -215,6 +215,7 @@ set(CANTATA_SRCS gui/application.cpp gui/main.cpp gui/initialsettingswizard.cpp 
     widgets/toolbutton.cpp widgets/wizardpage.cpp widgets/statuslabel.cpp widgets/searchwidget.cpp widgets/messageoverlay.cpp
     widgets/basicitemdelegate.cpp widgets/sizegrip.cpp widgets/sizewidget.cpp widgets/servicestatuslabel.cpp widgets/spacerwidget.cpp
     network/networkaccessmanager.cpp network/networkproxyfactory.cpp
+    http/httpserversettings.cpp http/httpserver.cpp http/httpsocket.cpp
     devices/deviceoptions.cpp
     context/lyricsettings.cpp context/ultimatelyricsprovider.cpp context/ultimatelyrics.cpp context/lyricsdialog.cpp
     context/contextwidget.cpp context/view.cpp context/artistview.cpp context/albumview.cpp context/songview.cpp context/contextengine.cpp
@@ -237,6 +238,7 @@ set(CANTATA_MOC_HDRS
     widgets/playqueueview.h widgets/groupedview.h widgets/actionitemdelegate.h widgets/coverwidget.h widgets/volumeslider.h
     widgets/genrecombo.h widgets/toolbar.h widgets/searchwidget.h widgets/messageoverlay.h
     network/networkaccessmanager.h
+    http/httpserversettings.h http/httpsocket.h
     context/togglelist.h context/ultimatelyrics.h context/ultimatelyricsprovider.h context/lyricsdialog.h
     context/contextwidget.h context/artistview.h context/albumview.h context/songview.h context/view.h context/contextengine.h
     context/wikipediaengine.h context/wikipediasettings.h context/othersettings.h context/lastfmengine.h context/metaengine.h
@@ -248,6 +250,7 @@ set(CANTATA_UIS
     dynamic/dynamicpage.ui dynamic/dynamicrule.ui dynamic/dynamicrules.ui
     context/togglelist.ui context/othersettings.ui
     widgets/itemview.ui
+    http/httpserversettings.ui
     online/onlineservicespage.ui online/onlinesettings.ui)
 
 if (QT_QTDBUS_FOUND)
@@ -304,14 +307,11 @@ set(CANTATA_RCS cantata.qrc)
 if (TAGLIB_FOUND)
     set(CANTATA_SRCS ${CANTATA_SRCS}
         tags/tageditor.cpp tags/trackorganiser.cpp tags/tags.cpp
-        devices/filenameschemedialog.cpp
-        http/httpserversettings.cpp http/httpserver.cpp http/httpsocket.cpp)
+        devices/filenameschemedialog.cpp)
     set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS}
         tags/tageditor.h tags/trackorganiser.h
-        http/httpserversettings.h http/httpsocket.h
         devices/filenameschemedialog.h devices/device.h)
     set(CANTATA_UIS ${CANTATA_UIS}
-        http/httpserversettings.ui
         tags/tageditor.ui tags/trackorganiser.ui
         devices/filenameschemedialog.ui)
 
@@ -624,8 +624,6 @@ else (TAGLIB_FOUND)
     message("        - Tag Editor (taglib required)")
     message("        - Track Organizer (taglib required)")
     message("        - Commandline support (taglib required)")
-    message("        - HTTP server support (taglib required)")
-    message("        - Podcast download, and local playback (taglib required)")
     if (NOT WIN32 AND NOT APPLE)
         message("        - UMS device sync (taglib required)")
         message("        - MTP device sync (taglib and libmtp required)")

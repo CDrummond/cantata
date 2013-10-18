@@ -23,7 +23,9 @@
 
 #include "httpserver.h"
 #include "httpsocket.h"
+#ifdef TAGLIB_FOUND
 #include "tags.h"
+#endif
 #include "settings.h"
 #include "thread.h"
 #include <QFile>
@@ -184,6 +186,7 @@ QByteArray HttpServer::encodeUrl(const Song &s) const
     return url.toEncoded();
 }
 
+#ifdef TAGLIB_FOUND
 QByteArray HttpServer::encodeUrl(const QString &file) const
 {
     #ifdef Q_OS_WIN
@@ -206,6 +209,7 @@ QByteArray HttpServer::encodeUrl(const QString &file) const
     #endif
     return encodeUrl(s);
 }
+#endif
 
 Song HttpServer::decodeUrl(const QString &url) const
 {

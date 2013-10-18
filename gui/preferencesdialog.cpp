@@ -31,9 +31,7 @@
 #include "serversettings.h"
 #include "playbacksettings.h"
 #include "filesettings.h"
-#ifdef TAGLIB_FOUND
 #include "httpserversettings.h"
-#endif
 #include "contextsettings.h"
 #include "cachesettings.h"
 #include "localize.h"
@@ -73,6 +71,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, const QStringList &hiddenP
     streams = hiddenPages.contains(QLatin1String("StreamsPage")) ? 0 : new StreamsSettings(0);
     online = hiddenPages.contains(QLatin1String("OnlineServicesPage")) ? 0 : new OnlineSettings(0);
     context = new ContextSettings(0);
+    http = new HttpServerSettings(0);
     cache = new CacheSettings(0);
     server->load();
     playback->load();
@@ -92,8 +91,6 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, const QStringList &hiddenP
         online->load();
     }
     widget->addPage(context, i18n("Context"), Icons::self()->contextIcon, i18n("Context View Settings"));
-    #ifdef TAGLIB_FOUND
-    http = new HttpServerSettings(0);
     if (http->haveMultipleInterfaces()) {
         http->load();
         widget->addPage(http, i18n("HTTP Server"), Icon("network-server"), i18n("HTTP Server Settings"));
@@ -101,7 +98,6 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, const QStringList &hiddenP
         http->deleteLater();
         http=0;
     }
-    #endif
     #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
     audiocd = new AudioCdSettings(0);
     audiocd->load();
@@ -148,11 +144,9 @@ void PreferencesDialog::writeSettings()
     if (online) {
         online->save();
     }
-    #ifdef TAGLIB_FOUND
     if (http) {
         http->save();
     }
-    #endif
     #ifndef ENABLE_KDE_SUPPORT
     #ifdef ENABLE_PROXY_CONFIG
     proxy->save();

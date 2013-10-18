@@ -89,8 +89,8 @@
 #endif
 #include "onlineservicespage.h"
 #include "onlineservicesmodel.h"
-#ifdef TAGLIB_FOUND
 #include "httpserver.h"
+#ifdef TAGLIB_FOUND
 #include "trackorganiser.h"
 #include "tageditor.h"
 #ifdef ENABLE_REPLAYGAIN_SUPPORT
@@ -1294,9 +1294,7 @@ void MainWindow::readSettings()
 {
     checkMpdDir();
     Covers::self()->setSaveInMpdDir(Settings::self()->storeCoversInMpdDir());
-    #ifdef TAGLIB_FOUND
     HttpServer::self()->readConfig();
-    #endif
     #ifdef ENABLE_DEVICES_SUPPORT
     StdActions::self()->deleteSongsAction->setVisible(Settings::self()->showDeleteAction());
     #endif
@@ -1744,7 +1742,6 @@ void MainWindow::updateCurrentSong(const Song &song)
         }
     }
 
-    #ifdef TAGLIB_FOUND
     if (current.isCantataStream()) {
         Song mod=HttpServer::self()->decodeUrl(current.file);
         if (!mod.title.isEmpty()) {
@@ -1752,7 +1749,6 @@ void MainWindow::updateCurrentSong(const Song &song)
             current.id=song.id;
         }
     }
-    #endif
 
     #ifdef QT_QTDBUS_FOUND
     mpris->updateCurrentSong(current);

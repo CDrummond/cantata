@@ -523,6 +523,7 @@ quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime 
     bool gs=MPDParseUtils::groupSingle();
     bool gm=MPDParseUtils::groupMultiple();
     int percent=0;
+    bool online=isOnlineService();
 
     if (prog) {
         prog->readProgress(0.0);
@@ -654,6 +655,9 @@ quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime 
 
                     song.fillEmptyFields();
                     song.guessed=constTrueValue==attributes.value(constGuessedAttribute).toString();
+                    if (online) {
+                        song.type=Song::OnlineSvrTrack;
+                    }
                     albumItem->append(new MusicLibraryItemSong(song, albumItem));
                     albumItem->addGenre(song.genre);
                     artistItem->addGenre(song.genre);

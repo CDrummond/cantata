@@ -258,24 +258,27 @@ const QPixmap & MusicLibraryItemAlbum::cover()
             song.type=m_type;
             song.composer=firstSong->song().composer;
             Covers::Image img;
-            if (parentItem() && parentItem()->parentItem() && !static_cast<MusicLibraryItemRoot *>(parentItem()->parentItem())->useAlbumImages()) {
+            MusicLibraryItemRoot *root=parentItem() && parentItem()->parentItem() && MusicLibraryItem::Type_Root==parentItem()->parentItem()->itemType()
+                                        ? static_cast<MusicLibraryItemRoot *>(parentItem()->parentItem()) : 0;
+            if (root && !root->useAlbumImages()) {
                 // Not showing album images in this model, so dont request any!
             }
             #ifdef ENABLE_DEVICES_SUPPORT
-            else if (parentItem() && parentItem()->parentItem() && dynamic_cast<Device *>(parentItem()->parentItem())) {
+            else if (root->isDevice()) {
                 // This item is in the devices model, so get cover from device...
                 song.id=firstSong->song().id;
                 static_cast<Device *>(parentItem()->parentItem())->requestCover(song);
             }
             #endif
-            else if (parentItem() && parentItem()->parentItem() && dynamic_cast<OnlineService *>(parentItem()->parentItem())) {
-                //img.img=OnlineServicesModel::self()->requestImage(static_cast<OnlineService *>(parentItem()->parentItem())->id(), parentItem()->data(), data(), m_imageUrl);
+            else if (root->isOnlineService()) {
+                img.img=OnlineServicesModel::self()->requestImage(static_cast<OnlineService *>(root)->id(), parentItem()->data(), data(), m_imageUrl);
                 // ONLINE: Image URL is encoded in song.name...
-                if (!m_imageUrl.isEmpty()) {
-                    song.name=m_imageUrl;
-                    song.title=parentItem()->parentItem()->data().toLower();
-                }
-                img=Covers::self()->requestImage(song);
+//                if (!m_imageUrl.isEmpty()) {
+//                    song.name=m_imageUrl;
+//                    song.title=parentItem()->parentItem()->data().toLower();
+//                    song.type=Song::OnlineSvrTrack;
+//                }
+//                img=Covers::self()->requestImage(song);
             } else {
                 img=Covers::self()->requestImage(song);
             }

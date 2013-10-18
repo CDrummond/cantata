@@ -37,6 +37,14 @@ class MusicModel;
 class NetworkJob;
 class QXmlStreamReader;
 
+class OnlineServiceMusicRoot : public MusicLibraryItemRoot
+{
+public:
+    OnlineServiceMusicRoot(const QString &name=QString()) : MusicLibraryItemRoot(name, false) { }
+    virtual ~OnlineServiceMusicRoot() { }
+    virtual bool isOnlineService() const { return true; }
+};
+
 class OnlineMusicLoader : public QObject, public MusicLibraryProgressMonitor
 {
     Q_OBJECT
@@ -47,7 +55,7 @@ public:
     void start();
     void stop();
     bool wasStopped() const { return stopRequested; }
-    MusicLibraryItemRoot * takeLibrary();
+    OnlineServiceMusicRoot * takeLibrary();
     virtual bool parse(QXmlStreamReader &xml)=0;
     void setCacheFileName(const QString &c) { cache=c; }
 
@@ -76,7 +84,7 @@ protected:
     Thread *thread;
     QUrl source;
     QString cache;
-    MusicLibraryItemRoot *library;
+    OnlineServiceMusicRoot *library;
     NetworkAccessManager *network;
     NetworkJob *downloadJob;
     bool stopRequested;
@@ -86,9 +94,9 @@ protected:
 // MOC requires the QObject class to be first. But due to models storing void pointers, and
 // needing to cast these - the model prefers MusicLibraryItemRoot to be first!
 #ifdef Q_MOC_RUN
-class OnlineService : public QObject, public MusicLibraryItemRoot
+class OnlineService : public QObject, public OnlineServiceMusicRoot
 #else
-class OnlineService : public MusicLibraryItemRoot, public QObject
+class OnlineService : public OnlineServiceMusicRoot, public QObject
 #endif
 {
     Q_OBJECT
@@ -161,7 +169,7 @@ Q_SIGNALS:
 protected:
     Icon icn;
     bool configured;
-    MusicLibraryItemRoot *update;
+    OnlineServiceMusicRoot *update;
     QString statusMsg;
     double lProgress;
     bool loaded;

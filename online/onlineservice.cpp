@@ -63,7 +63,7 @@ void OnlineMusicLoader::doLoad()
     if (library) {
         delete library;
     }
-    library = new MusicLibraryItemRoot;
+    library = new OnlineServiceMusicRoot;
     if (!readFromCache()) {
         emit status(i18n("Dowloading"), 0);
         if (!network) {
@@ -81,9 +81,9 @@ void OnlineMusicLoader::stop()
     thread->stop();
 }
 
-MusicLibraryItemRoot * OnlineMusicLoader::takeLibrary()
+OnlineServiceMusicRoot * OnlineMusicLoader::takeLibrary()
 {
-    MusicLibraryItemRoot *lib=library;
+    OnlineServiceMusicRoot *lib=library;
     library=0;
     return lib;
 }
@@ -226,7 +226,7 @@ bool OnlineService::decode(Song &song)
 }
 
 OnlineService::OnlineService(MusicModel *m, const QString &name)
-    : MusicLibraryItemRoot(name, false)
+    : OnlineServiceMusicRoot(name)
     , configured(false)
     , update(0)
     , lProgress(0.0)

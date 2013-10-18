@@ -60,10 +60,8 @@ OnlineServicesPage::OnlineServicesPage(QWidget *p)
     view->addAction(StdActions::self()->addToStoredPlaylistAction);
     downloadAction = ActionCollection::get()->createAction("downloadtolibrary", i18n("Download To Library"), "go-down");
     podcastSearchAction = ActionCollection::get()->createAction("podcastsearch", i18n("Search For Podcasts"), "edit-find");
-    #ifdef TAGLIB_FOUND
     downloadPodcastAction = ActionCollection::get()->createAction("downloadpodcast", i18n("Download Podcast Episodes"), "go-down");
     deleteDownloadedPodcastAction = ActionCollection::get()->createAction("deletedownloadedpodcast", i18n("Delete Downloaded Podcast Episodes"), "edit-delete");
-    #endif
     connect(this, SIGNAL(add(const QStringList &, bool, quint8)), MPDConnection::self(), SLOT(add(const QStringList &, bool, quint8)));
     connect(this, SIGNAL(addSongsToPlaylist(const QString &, const QStringList &)), MPDConnection::self(), SLOT(addToPlaylist(const QString &, const QStringList &)));
     connect(genreCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(searchItems()));
@@ -85,10 +83,8 @@ OnlineServicesPage::OnlineServicesPage(QWidget *p)
     connect(OnlineServicesModel::self()->refreshSubscriptionAct(), SIGNAL(triggered()), this, SLOT(refreshSubscription()));
     connect(podcastSearchAction, SIGNAL(triggered()), this, SLOT(searchForPodcasts()));
     connect(downloadAction, SIGNAL(triggered()), this, SLOT(download()));
-    #ifdef TAGLIB_FOUND
     connect(downloadPodcastAction, SIGNAL(triggered()), this, SLOT(downloadPodcast()));
     connect(deleteDownloadedPodcastAction, SIGNAL(triggered()), this, SLOT(deleteDownloadedPodcast()));
-    #endif
 
     QMenu *menu=new QMenu(this);
     menu->addAction(OnlineServicesModel::self()->configureAct());
@@ -100,20 +96,16 @@ OnlineServicesPage::OnlineServicesPage(QWidget *p)
     menu->addAction(OnlineServicesModel::self()->subscribeAct());
     menu->addAction(OnlineServicesModel::self()->unSubscribeAct());
     menu->addAction(OnlineServicesModel::self()->refreshSubscriptionAct());
-    #ifdef TAGLIB_FOUND 
     menu->addAction(downloadPodcastAction);
     menu->addAction(deleteDownloadedPodcastAction);
-    #endif
     view->addAction(downloadAction);
     view->addAction(sep);
     view->addAction(podcastSearchAction);
     view->addAction(OnlineServicesModel::self()->subscribeAct());
     view->addAction(OnlineServicesModel::self()->unSubscribeAct());
     view->addAction(OnlineServicesModel::self()->refreshSubscriptionAct());
-    #ifdef TAGLIB_FOUND
     view->addAction(downloadPodcastAction);
     view->addAction(deleteDownloadedPodcastAction);
-    #endif
     menuButton->setMenu(menu);
     proxy.setSourceModel(OnlineServicesModel::self());
 //    proxy.setDynamicSortFilter(false);
@@ -417,12 +409,10 @@ void OnlineServicesPage::controlActions()
     OnlineServicesModel::self()->subscribeAct()->setVisible(canSubscribe || canUnSubscribe);
     OnlineServicesModel::self()->unSubscribeAct()->setVisible(canSubscribe || canUnSubscribe);
     OnlineServicesModel::self()->refreshSubscriptionAct()->setVisible(canSubscribe || canUnSubscribe);
-    #ifdef TAGLIB_FOUND
     downloadPodcastAction->setEnabled(canUnSubscribe);
     downloadPodcastAction->setVisible(canUnSubscribe);
     deleteDownloadedPodcastAction->setEnabled(canUnSubscribe);
     deleteDownloadedPodcastAction->setVisible(canUnSubscribe);
-    #endif
     OnlineServicesModel::self()->subscribeAct()->setEnabled(canSubscribe && 1==selected.count());
     podcastSearchAction->setVisible(canSubscribe && 1==selected.count());
     OnlineServicesModel::self()->unSubscribeAct()->setEnabled(canUnSubscribe && 1==selected.count());

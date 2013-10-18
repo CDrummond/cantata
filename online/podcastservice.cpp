@@ -31,9 +31,7 @@
 #include "settings.h"
 #include "mpdconnection.h"
 #include "config.h"
-#ifdef TAGLIB_FOUND
 #include "httpserver.h"
-#endif
 #include <QCoreApplication>
 #include <QDir>
 #include <QUrl>
@@ -126,13 +124,11 @@ Song PodcastService::fixPath(const Song &orig, bool) const
     Song song=orig;
     song.setPodcastLocalPath(QString());
     song.setIsFromOnlineService(constName);
-    #ifdef TAGLIB_FOUND
     if (!orig.podcastLocalPath().isEmpty() && QFile::exists(orig.podcastLocalPath())) {
         song.file=orig.podcastLocalPath();
         song.file=HttpServer::self()->encodeUrl(song);
         return song;
     }
-    #endif
     return encode(song);
 }
 

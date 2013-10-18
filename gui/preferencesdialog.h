@@ -38,9 +38,7 @@ class InterfaceSettings;
 class StreamsSettings;
 class OnlineSettings;
 class ContextSettings;
-#ifdef TAGLIB_FOUND
 class HttpServerSettings;
-#endif
 struct MPDConnectionDetails;
 class CacheSettings;
 #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
@@ -76,9 +74,7 @@ private:
     StreamsSettings *streams;
     OnlineSettings *online;
     ContextSettings *context;
-    #ifdef TAGLIB_FOUND
     HttpServerSettings *http;
-    #endif
     #ifdef ENABLE_PROXY_CONFIG
     ProxySettings *proxy;
     #endif

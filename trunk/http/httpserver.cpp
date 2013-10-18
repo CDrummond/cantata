@@ -186,9 +186,9 @@ QByteArray HttpServer::encodeUrl(const Song &s) const
     return url.toEncoded();
 }
 
-#ifdef TAGLIB_FOUND
 QByteArray HttpServer::encodeUrl(const QString &file) const
 {
+    Song s;
     #ifdef Q_OS_WIN
     QString f=fixWindowsPath(file);
     DBUG << "file" << f << "orig" << file;
@@ -200,16 +200,19 @@ QByteArray HttpServer::encodeUrl(const QString &file) const
             DBUG << "converted to share-path" << f;
         }
     }
-    Song s=Tags::read(f);
+    #ifdef TAGLIB_FOUND
+    s=Tags::read(f);
+    #endif
     s.file=f;
     #else
     DBUG << "file" << file;
-    Song s=Tags::read(file);
+    #ifdef TAGLIB_FOUND
+    s=Tags::read(file);
+    #endif
     s.file=file;
     #endif
     return encodeUrl(s);
 }
-#endif
 
 Song HttpServer::decodeUrl(const QString &url) const
 {

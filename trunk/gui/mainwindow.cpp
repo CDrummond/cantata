@@ -906,7 +906,6 @@ void MainWindow::initSizes()
 
 void MainWindow::load(const QStringList &urls)
 {
-    #ifdef TAGLIB_FOUND
     QStringList useable;
     bool haveHttp=HttpServer::self()->isAlive();
 
@@ -927,9 +926,6 @@ void MainWindow::load(const QStringList &urls)
     if (useable.count()) {
         playQueueModel.addItems(useable, playQueueModel.rowCount(), false, 0);
     }
-    #else
-    Q_UNUSED(urls)
-    #endif
 }
 
 void MainWindow::songLoaded()

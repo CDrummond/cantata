@@ -50,9 +50,7 @@ public:
     QString address() const;
     bool isOurs(const QString &url) const;
     QByteArray encodeUrl(const Song &s) const;
-    #ifdef TAGLIB_FOUND
     QByteArray encodeUrl(const QString &file) const;
-    #endif
     Song decodeUrl(const QUrl &url) const;
     Song decodeUrl(const QString &file) const;
 

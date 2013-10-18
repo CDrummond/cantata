@@ -60,14 +60,10 @@ public:
 
     bool winEventFilter(MSG *msg, long *result);
     bool start();
-    #if defined TAGLIB_FOUND
     void loadFiles();
-    #endif // TAGLIB_FOUND
 
 private:
-    #if defined TAGLIB_FOUND
     void load(const QStringList &files);
-    #endif
 
 private Q_SLOTS:
     void message(const QString &m);
@@ -84,15 +80,11 @@ public:
     virtual ~Application() { }
 
     bool start();
-    #if defined TAGLIB_FOUND
     void loadFiles();
-    #endif // TAGLIB_FOUND
     void setupIconTheme();
 
 private:
-    #if defined TAGLIB_FOUND
     void load(const QStringList &files);
-    #endif
 };
 #else
 #include <QApplication>

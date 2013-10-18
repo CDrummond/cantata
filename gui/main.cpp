@@ -53,9 +53,7 @@
 #include "backdropcreator.h"
 #include "dynamic.h"
 #include "streamfetcher.h"
-#ifdef TAGLIB_FOUND
 #include "httpserver.h"
-#endif
 
 #include <QMutex>
 #include <QMutexLocker>
@@ -251,11 +249,9 @@ int main(int argc, char *argv[])
         if (dbg&Dbg_StreamFetching) {
             StreamFetcher::enableDebug();
         }
-        #ifdef TAGLIB_FOUND
         if (dbg&Dbg_HttpServer) {
             HttpServer::enableDebug();
         }
-        #endif
         if (dbg&Dbg_All) {
             #if QT_VERSION < 0x050000
             qInstallMsgHandler(cantataQtMsgHandler);
@@ -275,9 +271,7 @@ int main(int argc, char *argv[])
     #if !defined Q_OS_MAC
     app.setActivationWindow(&mw);
     #endif // !defined Q_OS_MAC
-    #ifdef TAGLIB_FOUND
     app.loadFiles();
-    #endif // TAGLIB_FOUND
     if (!Settings::self()->startHidden()) {
         mw.show();
     }

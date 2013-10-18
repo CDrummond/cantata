@@ -151,7 +151,7 @@ void PodcastService::loadAll()
         QStringList entries=d.entryList(QStringList() << "*"+MusicLibraryItemPodcast::constExt, QDir::Files|QDir::Readable|QDir::NoDot|QDir::NoDotDot);
         foreach (const QString &e, entries) {
             if (!update) {
-                update=new MusicLibraryItemRoot();
+                update=new OnlineServiceMusicRoot();
             }
 
             MusicLibraryItemPodcast *podcast=new MusicLibraryItemPodcast(dir+e, update);

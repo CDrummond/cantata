@@ -72,6 +72,8 @@ public:
     virtual Song fixPath(const Song &orig, bool) const { return orig; }
     virtual const QString & id() const { return data(); }
     virtual bool canPlaySongs() const { return true; }
+    virtual bool isOnlineService() const { return false; }
+    virtual bool isDevice() const { return false; }
     MusicLibraryItemArtist * artist(const Song &s, bool create=true);
     MusicLibraryItemArtist * createArtist(const Song &s);
     void groupSingleTracks();

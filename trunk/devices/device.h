@@ -157,6 +157,7 @@ public:
     virtual qint64 freeSpace()=0;
     virtual DevType devType() const=0;
     virtual void removeCache() { }
+    virtual bool isDevice() const { return true; }
 
     #ifndef Q_OS_WIN
     void toggleGrouping();

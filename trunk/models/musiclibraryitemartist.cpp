@@ -165,17 +165,19 @@ const QPixmap & MusicLibraryItemArtist::cover()
                     song.albumartist=firstSong->song().albumArtist();
                 }
             }
+            MusicLibraryItemRoot *root=parentItem() && MusicLibraryItem::Type_Root==parentItem()->itemType()
+                                        ? static_cast<MusicLibraryItemRoot *>(parentItem()) : 0;
             // NO ARTIST IMAGES FOR DEVICES!
             //#ifdef ENABLE_DEVICES_SUPPORT
-            //if (parentItem() && qobject_cast<Device *>(parentItem())) {
+            //if (root && root->isDevice()) {
             //    // This item is in the devices model, so get cover from device...
             //    song.id=firstSong->song().id;
-            //    static_cast<Device *>(parentItem())->requestArtistImage(song);
+            //    static_cast<Device *>(root)->requestArtistImage(song);
             //} else
             //#endif
-            if (parentItem() && !static_cast<MusicLibraryItemRoot *>(parentItem())->useArtistImages()) {
+            if (root && !root->useArtistImages()) {
                 // Not showing artist images in this model, so dont request any!
-            } else if (parentItem() && dynamic_cast<OnlineService *>(parentItem())) {
+            } else if (root && root->isOnlineService()) {
                 img.img=OnlineServicesModel::self()->requestImage(static_cast<OnlineService *>(parentItem())->id(), data(), QString(), m_imageUrl);
             } else {
                 img=Covers::self()->requestImage(song);

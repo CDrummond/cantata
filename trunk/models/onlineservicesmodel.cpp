@@ -591,13 +591,14 @@ void OnlineServicesModel::imageDownloaded()
                         ? Utils::cacheDir(id.toLower(), true)+Covers::encodeName(song.album.isEmpty() ? song.artist : (song.artist+" - "+song.album))+(png ? ".png" : ".jpg")
                         : cacheName);
 
-    if (maxSize || !cacheName.isEmpty()) {
+    if (maxSize>0 || !cacheName.isEmpty()) {
         QImage img=QImage::fromData(data, png ? "PNG" : "JPG");
         if (!img.isNull()) {
             if (maxSize>32 && (img.width()>maxSize || img.height()>maxSize)) {
                 img=img.scaled(maxSize, maxSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
             }
-            DBUG << "Saved scaled image to" << fileName;
+            DBUG << "Saved scaled image to" << fileName << maxSize;
+            img.save(fileName);
             if (!song.album.isEmpty()) {
                 song.track=1;
                 song.setKey();

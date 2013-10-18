@@ -158,7 +158,7 @@ void SoundCloudService::jobFinished()
                 song.time=details["duration"].toUInt()/1000;
                 song.setIsFromOnlineService(constName);
                 if (!update) {
-                    update=new MusicLibraryItemRoot();
+                    update=new OnlineServiceMusicRoot();
                 }
                 song.fillEmptyFields();
                 update->append(new MusicLibraryItemSong(song, update));

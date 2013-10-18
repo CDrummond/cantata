@@ -166,7 +166,7 @@ void MPDConnectionDetails::setDirReadable()
         QDir d(dir);
         dirReadable=d.isReadable();
         // Handle cases where dir is set to \\server\ (i.e. no shared folder is set in path)
-        if (!dirReadable && dir.startsWith(QLatin1String("//")) && d.isRoot() && d.canonicalPath().isEmpty() && (dir.length()-1)==dir.indexOf(Utils::constDirSep, 2)) {
+        if (!dirReadable && dir.startsWith(QLatin1String("//")) && d.isRoot() && (dir.length()-1)==dir.indexOf(Utils::constDirSep, 2)) {
             dirReadable=true;
         }
     }

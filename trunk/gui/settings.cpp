@@ -595,7 +595,6 @@ int Settings::stopFadeDuration()
     return v;
 }
 
-#ifdef TAGLIB_FOUND
 int Settings::httpAllocatedPort()
 {
     return GET_INT("httpAllocatedPort", 0);
@@ -605,7 +604,6 @@ QString Settings::httpInterface()
 {
     return GET_STRING("httpInterface", QString());
 }
-#endif
 
 bool Settings::playQueueGrouped()
 {
@@ -1079,7 +1077,6 @@ void Settings::saveStopFadeDuration(int v)
     SET_VALUE_MOD(stopFadeDuration)
 }
 
-#ifdef TAGLIB_FOUND
 void Settings::saveHttpAllocatedPort(int v)
 {
     SET_VALUE_MOD(httpAllocatedPort)
@@ -1089,7 +1086,6 @@ void Settings::saveHttpInterface(const QString &v)
 {
     SET_VALUE_MOD(httpInterface)
 }
-#endif
 
 void Settings::savePlayQueueGrouped(bool v)
 {

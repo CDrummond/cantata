@@ -148,10 +148,8 @@ public:
     #endif
     int version();
     int stopFadeDuration();
-    #ifdef TAGLIB_FOUND
     int httpAllocatedPort();
     QString httpInterface();
-    #endif
     bool playQueueGrouped();
     bool playQueueAutoExpand();
     bool playQueueStartClosed();
@@ -245,10 +243,8 @@ public:
     void saveDevicesView(int v);
     #endif
     void saveStopFadeDuration(int v);
-    #ifdef TAGLIB_FOUND
     void saveHttpAllocatedPort(int v);
     void saveHttpInterface(const QString &v);
-    #endif
     void savePlayQueueGrouped(bool v);
     void savePlayQueueAutoExpand(bool v);
     void savePlayQueueStartClosed(bool v);

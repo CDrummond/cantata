@@ -95,7 +95,6 @@ int Application::newInstance() {
         }
     }
 
-    #ifdef TAGLIB_FOUND
     KCmdLineArgs *args(KCmdLineArgs::parsedArgs());
     QStringList urls;
     for (int i = 0; i < args->count(); ++i) {
@@ -104,7 +103,6 @@ int Application::newInstance() {
     if (!urls.isEmpty()) {
         w->load(urls);
     }
-    #endif
     KStartupInfo::appStarted(startupId());
     in=false;
     return 0;
@@ -121,10 +119,7 @@ void Application::mwDestroyed(QObject *obj)
 Application::Application(int &argc, char **argv)
     : QtSingleApplication(argc, argv)
 {
-    #if defined TAGLIB_FOUND
     connect(this, SIGNAL(messageReceived(const QString &)), SLOT(message(const QString &)));
-    #endif
-
     connect(this, SIGNAL(reconnect()), MPDConnection::self(), SLOT(reconnect()));
 }
 
@@ -159,14 +154,13 @@ bool Application::winEventFilter(MSG *msg, long *result)
 bool Application::start()
 {
     if (isRunning()) {
-        #ifdef TAGLIB_FOUND
         QStringList args(arguments());
         if (args.count()>1) {
             args.takeAt(0);
             sendMessage(args.join("\n"));
-        } else
-        #endif
+        } else {
             sendMessage(QString());
+        }
         return false;
     }
 
@@ -176,20 +170,15 @@ bool Application::start()
 
 void Application::message(const QString &msg)
 {
-    #if defined TAGLIB_FOUND
     if (!msg.isEmpty()) {
         load(msg.split("\n"));
     }
-    #else
-    Q_UNUSED(msg)
-    #endif
     MainWindow *mw=qobject_cast<MainWindow *>(activationWindow());
     if (mw) {
         mw->restoreWindow();
     }
 }
 
-#if defined TAGLIB_FOUND
 void Application::loadFiles()
 {
     QStringList args(arguments());
@@ -216,16 +205,12 @@ void Application::load(const QStringList &files)
         }
     }
 }
-#endif // TAGLIB_FOUND
 
 #elif defined Q_OS_MAC
 Application::Application(int &argc, char **argv)
     : QApplication(argc, argv)
 {
-    #if defined TAGLIB_FOUND
     connect(this, SIGNAL(messageReceived(const QString &)), SLOT(message(const QString &)));
-    #endif
-
     connect(this, SIGNAL(reconnect()), MPDConnection::self(), SLOT(reconnect()));
 }
 
@@ -241,7 +226,6 @@ bool Application::start()
     return true;
 }
 
-#if defined TAGLIB_FOUND
 void Application::loadFiles()
 {
     QStringList args(arguments());
@@ -268,7 +252,6 @@ void Application::load(const QStringList &files)
         }
     }
 }
-#endif // TAGLIB_FOUND
 
 #else // Q_OS_WIN || Q_OS_MAC
 #include <QDBusConnection>
@@ -317,7 +300,6 @@ void Application::setupIconTheme()
 
 void Application::loadFiles()
 {
-    #ifdef TAGLIB_FOUND
     QStringList args(arguments());
     if (args.count()>1) {
         args.takeAt(0);
@@ -327,7 +309,6 @@ void Application::loadFiles()
         m.setArguments(a);
         QDBusConnection::sessionBus().send(m);
     }
-    #endif
 }
 
 #endif

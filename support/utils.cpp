@@ -644,6 +644,25 @@ void Utils::touchFile(const QString &fileName)
     ::utime(QFile::encodeName(fileName).constData(), 0);
 }
 
+bool Utils::isDirReadable(const QString &dir)
+{
+    #ifdef Q_OS_WIN32
+    if (dir.isEmpty()) {
+        return false;
+    } else {
+        QDir d(dir);
+        bool dirReadable=d.isReadable();
+        // Handle cases where dir is set to \\server\ (i.e. no shared folder is set in path)
+        if (!dirReadable && dir.startsWith(QLatin1String("//")) && d.isRoot() && (dir.length()-1)==dir.indexOf(Utils::constDirSep, 2)) {
+            dirReadable=true;
+        }
+        return dirReadable;
+    }
+    #else
+    return dir.isEmpty() ? false : QDir(dir).isReadable();
+    #endif
+}
+
 extern int Utils::layoutSpacing(QWidget *w)
 {
     int spacing=(w ? w->style() : qApp->style())->layoutSpacing(QSizePolicy::DefaultType, QSizePolicy::DefaultType, Qt::Vertical);

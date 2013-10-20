@@ -84,6 +84,7 @@ namespace Utils
     extern void moveDir(const QString &from, const QString &to);
     extern void clearOldCache(const QString &sub, int maxAge);
     extern void touchFile(const QString &fileName);
+    extern bool isDirReadable(const QString &dir);
 
     extern int layoutSpacing(QWidget *w);
     extern bool isHighDpi();

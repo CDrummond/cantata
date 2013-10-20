@@ -159,20 +159,7 @@ QString MPDConnectionDetails::description() const
 
 void MPDConnectionDetails::setDirReadable()
 {
-    #ifdef Q_OS_WIN32
-    if (dir.isEmpty()) {
-        dirReadable=false;
-    } else {
-        QDir d(dir);
-        dirReadable=d.isReadable();
-        // Handle cases where dir is set to \\server\ (i.e. no shared folder is set in path)
-        if (!dirReadable && dir.startsWith(QLatin1String("//")) && d.isRoot() && (dir.length()-1)==dir.indexOf(Utils::constDirSep, 2)) {
-            dirReadable=true;
-        }
-    }
-    #else
-    dirReadable=dir.isEmpty() ? false : QDir(dir).isReadable();
-    #endif
+    dirReadable=Utils::isDirReadable(dir);
 }
 
 MPDConnection::MPDConnection()

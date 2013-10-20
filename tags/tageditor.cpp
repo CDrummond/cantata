@@ -31,6 +31,7 @@
 #include "localize.h"
 #include "trackorganiser.h"
 #include "cuefile.h"
+#include "utils.h"
 #ifdef ENABLE_DEVICES_SUPPORT
 #include "devicesmodel.h"
 #include "device.h"
@@ -40,6 +41,7 @@
 #include <QCoreApplication>
 #include <QEventLoop>
 #include <QDir>
+#include <QDebug>
 
 static bool equalTags(const Song &a, const Song &b, bool compareCommon)
 {
@@ -259,7 +261,7 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
     connect(this, SIGNAL(update()), MPDConnection::self(), SLOT(update()));
 
     if (original.count()>0) {
-        saveable=QDir(baseDir).isReadable();
+        saveable=Utils::isDirReadable(baseDir);
     } else {
         saveable=false;
     }

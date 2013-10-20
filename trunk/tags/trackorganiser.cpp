@@ -249,8 +249,26 @@ void TrackOrganiser::renameFile()
         QString source=musicFolder+s.file;
         QString dest=musicFolder+modified;
         bool skip=false;
+        if (!QFile::exists(source)) {
+            if (autoSkip) {
+                skip=true;
+            } else {
+                switch(MessageBox::questionYesNoCancel(this, i18n("Source file does not exist!<br/>%1", dest),
+                                                       QString(), GuiItem(i18n("Skip")), GuiItem(i18n("Auto Skip")))) {
+                case MessageBox::Yes:
+                    skip=true;
+                    break;
+                case MessageBox::No:
+                    autoSkip=skip=true;
+                    break;
+                case MessageBox::Cancel:
+                    finish(false);
+                    return;
+                }
+            }
+        }
         // Check if dest exists...
-        if (QFile::exists(dest)) {
+        if (!skip && QFile::exists(dest)) {
             if (autoSkip) {
                 skip=true;
             } else {

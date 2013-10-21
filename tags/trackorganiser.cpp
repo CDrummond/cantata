@@ -94,8 +94,10 @@ void TrackOrganiser::show(const QList<Song> &songs, const QString &udi)
         return;
     }
 
+    QString musicFolder;
     #ifdef ENABLE_DEVICES_SUPPORT
     if (udi.isEmpty()) {
+        musicFolder=MPDConnection::self()->getDetails().dir;
         opts.load(MPDConnectionDetails::configGroupName(MPDConnection::self()->getDetails().name), true);
     } else {
         deviceUdi=udi;
@@ -107,10 +109,12 @@ void TrackOrganiser::show(const QList<Song> &songs, const QString &udi)
         }
 
         opts=dev->options();
+        musicFolder=dev->path();
     }
     #else
     Q_UNUSED(udi)
     opts.load(MPDConnectionDetails::configGroupName(MPDConnection::self()->getDetails().name), true);
+    musicFolder=MPDConnection::self()->getDetails().dir;
     #endif
     qSort(origSongs);
 
@@ -125,6 +129,25 @@ void TrackOrganiser::show(const QList<Song> &songs, const QString &udi)
     connect(vfatSafe, SIGNAL(stateChanged(int)), this, SLOT(updateView()));
     connect(asciiOnly, SIGNAL(stateChanged(int)), this, SLOT(updateView()));
     connect(ignoreThe, SIGNAL(stateChanged(int)), this, SLOT(updateView()));
+
+    int checked=0;
+    foreach (const Song &s, origSongs) {
+        if (!QFile::exists(musicFolder+s.file)) {
+            #ifdef ENABLE_DEVICES_SUPPORT
+            if (!udi.isEmpty()) {
+                MessageBox::error(parentWidget(), i18n("<p>Cannot access the files related to the songs!<br/><br/>"
+                                                       "Please check that the device is still attached.</p>"));
+            } else
+            #endif
+            MessageBox::error(parentWidget(), i18n("<p>Cannot access the files related to the songs!<br/><br/>"
+                                                   "Please check Cantata's \"Music folder\" setting, and MPD's \"music_directory\" setting.</p>"));
+            deleteLater();
+            return;
+        }
+        if (++checked>99) {
+            break;
+        }
+    }
 
     Dialog::show();
     enableButtonOk(false);

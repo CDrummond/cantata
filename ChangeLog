@@ -78,6 +78,9 @@
 44. When setting window title, use full-text from track/artist labels, and not
     the squeezed text!
 45. Hungarian translation - thanks to Török Árpád
+46. When displaying tag editor, track orgainiser, or replay gain dialogs, check
+    that the song files can be accessed. (For speed reasons, only the 1st 100
+    files are checked)
 
 1.1.3
 -----

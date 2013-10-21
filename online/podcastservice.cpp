@@ -189,6 +189,7 @@ void PodcastService::rssJobFinished()
 
     j->deleteLater();
     rssJobs.removeAll(j);
+    bool isNew=j->property(constNewFeedProperty).toBool();
 
     if (j->ok()) {
         if (updateUrls.contains(j->url())){
@@ -200,7 +201,6 @@ void PodcastService::rssJobFinished()
             }
         }
 
-        bool isNew=j->property(constNewFeedProperty).toBool();
 
         MusicLibraryItemPodcast *podcast=new MusicLibraryItemPodcast(QString(), this);
         MusicLibraryItemPodcast::RssStatus loadStatus=podcast->loadRss(j->actualJob());
@@ -281,13 +281,13 @@ void PodcastService::rssJobFinished()
         } else if (isNew) {
             delete podcast;
             if (MusicLibraryItemPodcast::VideoPodcast==loadStatus) {
-                emitError(i18n("Cantata only supports audio podcasts! %1 contains only video podcasts.", j->url().toString()));
+                emitError(i18n("Cantata only supports audio podcasts! %1 contains only video podcasts.", j->url().toString()), isNew);
             } else {
-                emitError(i18n("Failed to parse %1", j->url().toString()));
+                emitError(i18n("Failed to parse %1", j->url().toString()), isNew);
             }
         }
     } else {
-        emitError(i18n("Failed to download %1", j->url().toString()));
+        emitError(i18n("Failed to download %1", j->url().toString()), isNew);
     }
     setBusy(!rssJobs.isEmpty() || !downloadJobs.isEmpty());
 }

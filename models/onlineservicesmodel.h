@@ -109,6 +109,7 @@ private Q_SLOTS:
 
 Q_SIGNALS:
     void error(const QString &text);
+    void podcastError(const QString &text);
     void updated(const QModelIndex &idx);
 //    void needToSort();
     void busy(bool);

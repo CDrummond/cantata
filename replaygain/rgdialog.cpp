@@ -104,7 +104,7 @@ static inline void setResizeMode(QHeaderView *hdr, QHeaderView::ResizeMode mode)
 #endif
 
 RgDialog::RgDialog(QWidget *parent)
-    : Dialog(parent, "RgDialog", QSize(800, 400))
+    : SongDialog(parent, "RgDialog", QSize(800, 400))
     , state(State_Idle)
     , totalToScan(0)
     , tagReader(0)
@@ -214,27 +214,11 @@ void RgDialog::show(const QList<Song> &songs, const QString &udi, bool autoScan)
         base=dev->path();
     }
     #else
-    Q_UNUSED(udi)
     base=MPDConnection::self()->getDetails().dir;
     #endif
 
-    int checked=0;
-    foreach (const Song &s, origSongs) {
-        if (!QFile::exists(base+s.file)) {
-            #ifdef ENABLE_DEVICES_SUPPORT
-            if (!udi.isEmpty()) {
-                MessageBox::error(parentWidget(), i18n("<p>Cannot access the files related to the songs!<br/><br/>"
-                                                       "Please check that the device is still attached.</p>"));
-            } else
-            #endif
-            MessageBox::error(parentWidget(), i18n("<p>Cannot access the files related to the songs!<br/><br/>"
-                                                   "Please check Cantata's \"Music folder\" setting, and MPD's \"music_directory\" setting.</p>"));
-            deleteLater();
-            return;
-        }
-        if (++checked>99) {
-            break;
-        }
+    if (!songsOk(origSongs, base, udi.isEmpty())) {
+        return;
     }
 
     state=State_Idle;

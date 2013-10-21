@@ -25,8 +25,7 @@
 #define TRACKORGANISER_H
 
 #include "ui_trackorganiser.h"
-#include "dialog.h"
-#include "song.h"
+#include "songdialog.h"
 #include "config.h"
 #ifdef ENABLE_DEVICES_SUPPORT
 #include "device.h"
@@ -37,7 +36,7 @@
 class FilenameSchemeDialog;
 class Action;
 
-class TrackOrganiser : public Dialog, Ui::TrackOrganiser
+class TrackOrganiser : public SongDialog, Ui::TrackOrganiser
 {
     Q_OBJECT
 

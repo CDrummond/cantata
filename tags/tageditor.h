@@ -25,9 +25,8 @@
 #define TAG_EDITOR_H
 
 #include "config.h"
-#include "dialog.h"
+#include "songdialog.h"
 #include "ui_tageditor.h"
-#include "song.h"
 #include <QSet>
 #include <QList>
 
@@ -35,7 +34,7 @@
 class Device;
 #endif
 
-class TagEditor : public Dialog, Ui::TagEditor
+class TagEditor : public SongDialog, Ui::TagEditor
 {
     Q_OBJECT
 

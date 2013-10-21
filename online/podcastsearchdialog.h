@@ -37,6 +37,7 @@ class QIODevice;
 class Spinner;
 class QTreeWidgetItem;
 class TextBrowser;
+class MessageWidget;
 
 namespace OpmlParser
 {
@@ -56,6 +57,7 @@ public:
 
 Q_SIGNALS:
     void rssSelected(const QUrl &url);
+    void error(const QString &msg);
 
 protected:
     void fetch(const QUrl &url);
@@ -145,12 +147,17 @@ public:
 
 private Q_SLOTS:
     void rssSelected(const QUrl &url);
+    void showError(const QString &msg);
+    void showInfo(const QString &msg);
+    void msgWidgetVisible(bool v);
 
 private:
     void slotButtonClicked(int button);
 
 private:
     QUrl currentUrl;
+    MessageWidget *messageWidget;
+    QWidget *spacer;
 };
 
 #endif

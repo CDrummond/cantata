@@ -25,7 +25,6 @@
 #include "pagewidget.h"
 #include "lineedit.h"
 #include "networkaccessmanager.h"
-#include "messagebox.h"
 #include "opmlparser.h"
 #include "icons.h"
 #include "spinner.h"
@@ -36,6 +35,7 @@
 #include "utils.h"
 #include "action.h"
 #include "textbrowser.h"
+#include "messagewidget.h"
 #include <QPushButton>
 #include <QTreeWidget>
 #include <QGridLayout>
@@ -369,13 +369,13 @@ void PodcastSearchPage::doSearch()
 void PodcastSearchPage::parseResonse(QIODevice *dev)
 {
     if (!dev) {
-        MessageBox::error(this, i18n("Failed to fetch podcasts from %1", name()));
+        emit error(i18n("Failed to fetch podcasts from %1", name()));
         return;
     }
     QJson::Parser parser;
     QVariant data = parser.parse(dev);
     if (data.isNull()) {
-        MessageBox::error(this, i18n("There was a problem parsing the response from %1", name()));
+        emit error(i18n("There was a problem parsing the response from %1", name()));
         return;
     }
     parse(data);
@@ -435,13 +435,17 @@ void OpmlBrowsePage::parseResonse(QIODevice *dev)
     bool isLoadingFromCache=dynamic_cast<QFile *>(dev) ? true : false;
 
     if (!dev) {
-        if (!isLoadingFromCache) MessageBox::error(this, i18n("Failed to download directory listing"));
+        if (!isLoadingFromCache) {
+            emit error(i18n("Failed to download directory listing"));
+        }
         return;
     }
     QByteArray data=dev->readAll();
     OpmlParser::Category parsed=OpmlParser::parse(data);
     if (parsed.categories.isEmpty() && parsed.podcasts.isEmpty()) {
-        if (!isLoadingFromCache) MessageBox::error(this, i18n("Failed to parse directory listing"));
+        if (!isLoadingFromCache) {
+            emit error(i18n("Failed to parse directory listing"));
+        }
         return;
     }
 
@@ -503,15 +507,27 @@ PodcastSearchDialog::PodcastSearchDialog(QWidget *parent)
     setButtons(User1|Close);
     setButtonText(User1, i18n("Subscribe"));
 
-    PageWidget *widget = new PageWidget(this);
+    QWidget *mainWidget = new QWidget(this);
+    messageWidget = new MessageWidget(mainWidget);
+    spacer = new QWidget(this);
+    spacer->setFixedSize(Utils::layoutSpacing(this), 0);
+    QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom, mainWidget);
+    layout->setMargin(0);
+    layout->setSpacing(0);
+
+    PageWidget *pageWidget = new PageWidget(mainWidget);
     QList<PodcastPage *> pages;
 
-    ITunesSearchPage *itunes=new ITunesSearchPage(this);
-    widget->addPage(itunes, i18n("Search %1", itunes->name()), itunes->icon(), i18n("Search for podcasts on %1", itunes->name()));
+    layout->addWidget(messageWidget);
+    layout->addWidget(spacer);
+    layout->addWidget(pageWidget);
+
+    ITunesSearchPage *itunes=new ITunesSearchPage(pageWidget);
+    pageWidget->addPage(itunes, i18n("Search %1", itunes->name()), itunes->icon(), i18n("Search for podcasts on %1", itunes->name()));
     pages << itunes;
 
-    GPodderSearchPage *gpodder=new GPodderSearchPage(this);
-    widget->addPage(gpodder, i18n("Search %1", gpodder->name()), gpodder->icon(), i18n("Search for podcasts on %1", gpodder->name()));
+    GPodderSearchPage *gpodder=new GPodderSearchPage(pageWidget);
+    pageWidget->addPage(gpodder, i18n("Search %1", gpodder->name()), gpodder->icon(), i18n("Search for podcasts on %1", gpodder->name()));
     pages << gpodder;
 
     QFile file(":podcast_directories.xml");
@@ -520,11 +536,11 @@ PodcastSearchDialog::PodcastSearchDialog(QWidget *parent)
         while (!reader.atEnd()) {
             reader.readNext();
             if (reader.isStartElement() && QLatin1String("directory")==reader.name()) {
-                OpmlBrowsePage *page=new OpmlBrowsePage(this,
+                OpmlBrowsePage *page=new OpmlBrowsePage(pageWidget,
                                                         reader.attributes().value(QLatin1String("name")).toString(),
                                                         reader.attributes().value(QLatin1String("icon")).toString(),
                                                         QUrl(reader.attributes().value(QLatin1String("url")).toString()));
-                widget->addPage(page, i18n("Browse %1", page->name()), page->icon(), i18n("Browse %1 podcasts", page->name()));
+                pageWidget->addPage(page, i18n("Browse %1", page->name()), page->icon(), i18n("Browse %1 podcasts", page->name()));
                 pages << page;
             }
         }
@@ -532,10 +548,11 @@ PodcastSearchDialog::PodcastSearchDialog(QWidget *parent)
 
     foreach (PodcastPage *p, pages) {
         connect(p, SIGNAL(rssSelected(QUrl)), SLOT(rssSelected(QUrl)));
+        connect(p, SIGNAL(error(QString)), SLOT(showError(QString)));
     }
 
     setCaption(i18n("Search For Podcasts"));
-    setMainWidget(widget);
+    setMainWidget(mainWidget);
     setAttribute(Qt::WA_DeleteOnClose);
     enableButton(User1, false);
     setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
@@ -543,10 +560,14 @@ PodcastSearchDialog::PodcastSearchDialog(QWidget *parent)
     if (-1==maxImageSize) {
         maxImageSize=fontMetrics().height()*8;
     }
+    connect(OnlineServicesModel::self(), SIGNAL(podcastError(QString)), this, SLOT(showError(QString)));
+    connect(messageWidget, SIGNAL(visible(bool)), SLOT(msgWidgetVisible(bool)));
+    messageWidget->hide();
 }
 
 PodcastSearchDialog::~PodcastSearchDialog()
 {
+    disconnect(OnlineServicesModel::self(), SIGNAL(podcastError(QString)), this, SLOT(showError(QString)));
     iCount--;
     imageCache.clear();
 }
@@ -557,15 +578,30 @@ void PodcastSearchDialog::rssSelected(const QUrl &url)
     enableButton(User1, currentUrl.isValid());
 }
 
+void PodcastSearchDialog::showError(const QString &msg)
+{
+    messageWidget->setError(msg);
+}
+
+void PodcastSearchDialog::showInfo(const QString &msg)
+{
+    messageWidget->setInformation(msg);
+}
+
+void PodcastSearchDialog::msgWidgetVisible(bool v)
+{
+    spacer->setFixedSize(spacer->width(), v ? spacer->width() : 0);
+}
+
 void PodcastSearchDialog::slotButtonClicked(int button)
 {
     switch (button) {
     case User1: {
         QUrl fixed=PodcastService::fixUrl(currentUrl);
         if (OnlineServicesModel::self()->subscribePodcast(fixed)) {
-            MessageBox::information(this, i18n("Subscription added"));
+            showInfo(i18n("Subscription added"));
         } else {
-            MessageBox::error(this, i18n("You are already subscribed to this podcast!"));
+            showError(i18n("You are already subscribed to this podcast!"));
         }
         break;
     }

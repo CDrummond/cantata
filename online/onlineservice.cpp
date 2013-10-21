@@ -403,9 +403,15 @@ void OnlineService::emitUpdated()
     emit static_cast<OnlineServicesModel *>(m_model)->updated(index());
 }
 
-void OnlineService::emitError(const QString &msg)
+void OnlineService::emitError(const QString &msg, bool isPodcastError)
 {
-    emit static_cast<OnlineServicesModel *>(m_model)->error(msg);
+    OnlineServicesModel *om=static_cast<OnlineServicesModel *>(m_model);
+
+    if (isPodcastError && om->receivers(SIGNAL(podcastError(QString)))>0) {
+        emit om->podcastError(msg);
+    } else {
+        emit om->error(msg);
+    }
 }
 
 void OnlineService::emitDataChanged(const QModelIndex &idx)

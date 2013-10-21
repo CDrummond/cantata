@@ -65,10 +65,10 @@ enum Pages
     PAGE_PROGRESS
 };
 
-class SongDialog : public Dialog
+class SongListDialog : public Dialog
 {
 public:
-    SongDialog(ActionDialog *p)
+    SongListDialog(ActionDialog *p)
         : Dialog(p) {
         setCaption(i18n("Songs To Be Copied"));
         setButtons(Close);
@@ -161,7 +161,7 @@ void ActionDialog::controlInfoLabel(Device *dev)
 void ActionDialog::showSongs()
 {
     if (!songDialog) {
-        songDialog=new SongDialog(this);
+        songDialog=new SongListDialog(this);
     }
     songDialog->show();
 }

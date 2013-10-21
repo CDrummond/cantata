@@ -30,7 +30,7 @@
 #include "ui_actiondialog.h"
 #include <QElapsedTimer>
 
-class SongDialog;
+class SongListDialog;
 
 class ActionDialog : public Dialog, Ui::ActionDialog
 {
@@ -118,8 +118,8 @@ private:
     QSet<QString> albumsWithoutRgTags;
     #endif
 
-    SongDialog *songDialog;
-    friend class SongDialog;
+    SongListDialog *songDialog;
+    friend class SongListDialog;
 };
 
 #endif

@@ -116,6 +116,10 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
     #endif
     qSort(original);
 
+    if (!songsOk(original, baseDir, udi.isEmpty())) {
+        return;
+    }
+
     QWidget *mainWidet = new QWidget(this);
     setupUi(mainWidet);
     track->setAllowEmpty();
@@ -258,8 +262,6 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
     connect(year, SIGNAL(valueChanged(int)), SLOT(checkChanged()));
     connect(trackName, SIGNAL(activated(int)), SLOT(setIndex(int)));
     connect(this, SIGNAL(update()), MPDConnection::self(), SLOT(update()));
-
-    songsOk(original, baseDir, udi.isEmpty());
 }
 
 TagEditor::~TagEditor()

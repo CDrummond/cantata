@@ -199,6 +199,7 @@ void RgDialog::show(const QList<Song> &songs, const QString &udi, bool autoScan)
 
     autoScanTags=autoScan;
     qSort(origSongs);
+
     #ifdef ENABLE_DEVICES_SUPPORT
     if (udi.isEmpty()) {
         base=MPDConnection::self()->getDetails().dir;
@@ -216,6 +217,26 @@ void RgDialog::show(const QList<Song> &songs, const QString &udi, bool autoScan)
     Q_UNUSED(udi)
     base=MPDConnection::self()->getDetails().dir;
     #endif
+
+    int checked=0;
+    foreach (const Song &s, origSongs) {
+        if (!QFile::exists(base+s.file)) {
+            #ifdef ENABLE_DEVICES_SUPPORT
+            if (!udi.isEmpty()) {
+                MessageBox::error(parentWidget(), i18n("<p>Cannot access the files related to the songs!<br/><br/>"
+                                                       "Please check that the device is still attached.</p>"));
+            } else
+            #endif
+            MessageBox::error(parentWidget(), i18n("<p>Cannot access the files related to the songs!<br/><br/>"
+                                                   "Please check Cantata's \"Music folder\" setting, and MPD's \"music_directory\" setting.</p>"));
+            deleteLater();
+            return;
+        }
+        if (++checked>99) {
+            break;
+        }
+    }
+
     state=State_Idle;
     enableButton(User1, origSongs.count());
     view->clear();

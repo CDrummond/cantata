@@ -66,7 +66,7 @@ int TagEditor::instanceCount()
 TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
                      const QSet<QString> &existingArtists, const QSet<QString> &existingAlbumArtists, const QSet<QString> &existingComposers,
                      const QSet<QString> &existingAlbums, const QSet<QString> &existingGenres, const QString &udi)
-    : Dialog(parent, "TagEditor", QSize(500, 200))
+    : SongDialog(parent, "TagEditor", QSize(500, 200))
     #ifdef ENABLE_DEVICES_SUPPORT
     , deviceUdi(udi)
     #endif
@@ -112,7 +112,6 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
         baseDir=dev->path();
     }
     #else
-    Q_UNUSED(udi)
     baseDir=MPDConnection::self()->getDetails().dir;
     #endif
     qSort(original);
@@ -260,24 +259,7 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
     connect(trackName, SIGNAL(activated(int)), SLOT(setIndex(int)));
     connect(this, SIGNAL(update()), MPDConnection::self(), SLOT(update()));
 
-    int checked=0;
-    foreach (const Song &s, original) {
-        if (!QFile::exists(baseDir+s.file)) {
-            #ifdef ENABLE_DEVICES_SUPPORT
-            if (!udi.isEmpty()) {
-                MessageBox::error(parentWidget(), i18n("<p>Cannot access the files related to the songs!<br/><br/>"
-                                                       "Please check that the device is still attached.</p>"));
-            } else
-            #endif
-            MessageBox::error(parentWidget(), i18n("<p>Cannot access the files related to the songs!<br/><br/>"
-                                                   "Please check Cantata's \"Music folder\" setting, and MPD's \"music_directory\" setting.</p>"));
-            deleteLater();
-            return;
-        }
-        if (++checked>99) {
-            break;
-        }
-    }
+    songsOk(original, baseDir, udi.isEmpty());
 }
 
 TagEditor::~TagEditor()

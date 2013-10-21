@@ -25,9 +25,8 @@
 #define _RGDIALOG_H_
 
 #include <QFont>
-#include "dialog.h"
+#include "songdialog.h"
 #include "albumscanner.h"
-#include "song.h"
 #include "tags.h"
 #include "config.h"
 
@@ -41,7 +40,7 @@ class Device;
 class TagReader;
 class Action;
 
-class RgDialog : public Dialog
+class RgDialog : public SongDialog
 {
     Q_OBJECT
 

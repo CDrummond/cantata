@@ -30,6 +30,8 @@
 class SongDialog : public Dialog
 {
 public:
+    static void enableDebug();
+
     SongDialog(QWidget *parent, const QString &name=QString(), const QSize &defSize=QSize())
         : Dialog(parent, name, defSize) { }
     virtual ~SongDialog() { }

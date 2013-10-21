@@ -54,6 +54,7 @@
 #include "dynamic.h"
 #include "streamfetcher.h"
 #include "httpserver.h"
+#include "songdialog.h"
 
 #include <QMutex>
 #include <QMutexLocker>
@@ -135,8 +136,10 @@ enum Debug {
     Dbg_Dynamic           = 0x0100,
     Dbg_StreamFetching    = 0x0200,
     Dbg_HttpServer        = 0x0400,
+    Dbg_SongDialogs       = 0x0800,
+    // NOTE: MUST UPDATE Dbg_All IF ADD NEW ITEMS!!!
 
-    Dbg_All               = 0x07FF
+    Dbg_All               = 0x0FFF
 };
 
 int main(int argc, char *argv[])
@@ -219,6 +222,10 @@ int main(int argc, char *argv[])
     QString debug=qgetenv("CANTATA_DEBUG");
     if (!debug.isEmpty()) {
         int dbg=debug.toInt();
+        bool logToFile=dbg>0;
+        if (dbg<0) {
+            dbg*=-1;
+        }
         if (dbg&Dbg_Mpd) {
             MPDConnection::enableDebug();
         }
@@ -252,7 +259,10 @@ int main(int argc, char *argv[])
         if (dbg&Dbg_HttpServer) {
             HttpServer::enableDebug();
         }
-        if (dbg&Dbg_All) {
+        if (dbg&Dbg_SongDialogs) {
+            SongDialog::enableDebug();
+        }
+        if (dbg&Dbg_All && logToFile) {
             #if QT_VERSION < 0x050000
             qInstallMsgHandler(cantataQtMsgHandler);
             #else

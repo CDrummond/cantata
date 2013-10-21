@@ -260,30 +260,23 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
     connect(trackName, SIGNAL(activated(int)), SLOT(setIndex(int)));
     connect(this, SIGNAL(update()), MPDConnection::self(), SLOT(update()));
 
-    saveable=Utils::isDirReadable(baseDir);
-
-    if (saveable) {
-        int checked=0;
-        foreach (const Song &s, original) {
-            if (!QFile::exists(baseDir+s.file)) {
-                saveable=false;
-                break;
-            }
-            if (++checked>99) {
-                break;
-            }
-        }
-    }
-    if (!saveable) {
-        #ifdef ENABLE_DEVICES_SUPPORT
-        if (!udi.isEmpty()) {
-            MessageBox::error(parentWidget(), i18n("<p>Cannot access the files related to the songs!<br/><br/>"
-                                                   "Please check that the device is still attached.</p>"));
-        } else
-        #endif
+    int checked=0;
+    foreach (const Song &s, original) {
+        if (!QFile::exists(baseDir+s.file)) {
+            #ifdef ENABLE_DEVICES_SUPPORT
+            if (!udi.isEmpty()) {
+                MessageBox::error(parentWidget(), i18n("<p>Cannot access the files related to the songs!<br/><br/>"
+                                                       "Please check that the device is still attached.</p>"));
+            } else
+            #endif
             MessageBox::error(parentWidget(), i18n("<p>Cannot access the files related to the songs!<br/><br/>"
                                                    "Please check Cantata's \"Music folder\" setting, and MPD's \"music_directory\" setting.</p>"));
-        deleteLater();
+            deleteLater();
+            return;
+        }
+        if (++checked>99) {
+            break;
+        }
     }
 }
 
@@ -329,10 +322,6 @@ void TagEditor::setPlaceholderTexts()
 
 void TagEditor::enableOkButton()
 {
-    if (!saveable) {
-        return;
-    }
-
     enableButton(Ok, (editedIndexes.count()>1) ||
                      (1==original.count() && 1==editedIndexes.count()) ||
                      (1==editedIndexes.count() && !editedIndexes.contains(0)) );

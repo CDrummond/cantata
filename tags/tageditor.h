@@ -86,7 +86,6 @@ private:
     int currentSongIndex;
     QSet<int> editedIndexes;
     bool updating;
-    bool saveable;
     bool haveArtists;
     bool haveAlbumArtists;
     bool haveComposers;

@@ -145,7 +145,7 @@ public:
 protected:
     QModelIndex createIndex(MusicLibraryItem *child) const;
     void emitUpdated();
-    void emitError(const QString &msg);
+    void emitError(const QString &msg, bool isPodcastError=false);
     void emitDataChanged(const QModelIndex &idx);
 //    void emitNeedToSort();
     void setBusy(bool b);

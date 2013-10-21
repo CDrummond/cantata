@@ -26,6 +26,14 @@
 #include "localize.h"
 #include <QFile>
 
+#include <QDebug>
+static bool debugEnabled=false;
+#define DBUG if (debugEnabled) qWarning() << metaObject()->className() << __FUNCTION__
+void SongDialog::enableDebug()
+{
+    debugEnabled=true;
+}
+
 static const int constNumToCheck=10;
 
 bool SongDialog::songsOk(const QList<Song> &songs, const QString &base, bool isMpd)
@@ -33,7 +41,9 @@ bool SongDialog::songsOk(const QList<Song> &songs, const QString &base, bool isM
     QWidget *wid=isVisible() ? this : parentWidget();
     int checked=0;
     foreach (const Song &s, songs) {
+        DBUG << "Checking dir:" << base << " song:" << s.file << " file:" << QString(base+s.file);
         if (!QFile::exists(base+s.file)) {
+            DBUG << QString(base+s.file) << "does not exist";
             if (isMpd) {
                 MessageBox::error(wid, i18n("<p>Cannot access the files related to the songs!<br/><br/>"
                                             "Please check Cantata's \"Music folder\" setting, and MPD's \"music_directory\" setting.</p>"));
@@ -48,6 +58,7 @@ bool SongDialog::songsOk(const QList<Song> &songs, const QString &base, bool isM
             break;
         }
     }
+    DBUG << "Checked" << checked << "files";
 
     return true;
 }

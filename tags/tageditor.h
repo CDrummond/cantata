@@ -58,7 +58,7 @@ private:
     void slotButtonClicked(int button);
     void updateTrackName(int index, bool edited);
     void updateEditedStatus(int index);
-    void applyUpdates();
+    bool applyUpdates();
     #ifdef ENABLE_DEVICES_SUPPORT
     Device * getDevice(const QString &udi, QWidget *p);
     #endif

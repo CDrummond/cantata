@@ -27,9 +27,11 @@
 #include <cmath>
 #include "config.h"
 #include "song.h"
-#include "mpdparseutils.h"
 #include "musiclibraryitemalbum.h"
 #include "localize.h"
+#ifndef CANTATA_NO_SONG_TIME_FUNCTION
+#include "utils.h"
+#endif
 #include <QMap>
 #include <QFileInfo>
 #include <QStringList>
@@ -291,6 +293,7 @@ void Song::clear()
     type = Standard;
 }
 
+#ifndef CANTATA_NO_SONG_TIME_FUNCTION
 QString Song::formattedTime(quint32 seconds, bool zeroIsUnknown)
 {
     if (0==seconds && zeroIsUnknown) {
@@ -299,7 +302,7 @@ QString Song::formattedTime(quint32 seconds, bool zeroIsUnknown)
 
     static const quint32 constHour=60*60;
     if (seconds>constHour) {
-        return MPDParseUtils::formatDuration(seconds);
+        return Utils::formatDuration(seconds);
     }
 
     QString result(QString::number(floor(seconds / 60.0))+QChar(':'));
@@ -308,6 +311,7 @@ QString Song::formattedTime(quint32 seconds, bool zeroIsUnknown)
     }
     return result+QString::number(seconds % 60);
 }
+#endif
 
 /*
  * Genarate a string with song info.
@@ -476,3 +480,27 @@ void Song::setIsFromOnlineService(const QString &service)
     album=service;
     albumartist=service;
 }
+
+#ifdef ENABLE_EXTERNAL_TAGS
+QDataStream & operator<<(QDataStream &stream, const Song &song)
+{
+    stream << song.id << song.file << song.album << song.artist << song.albumartist << song.composer << song.title
+           << song.genre << song.name << song.disc << song.priority << song.time << song.track << (quint16)song.year
+           << (quint16)song.type << (bool)song.guessed << song.size;
+    return stream;
+}
+
+QDataStream & operator>>(QDataStream &stream, Song &song)
+{
+    quint16 type;
+    quint16 year;
+    bool guessed;
+    stream >> song.id >> song.file >> song.album >> song.artist >> song.albumartist >> song.composer >> song.title
+           >> song.genre >> song.name >> song.disc >> song.priority >> song.time >> song.track >> year
+           >> type >> guessed >> song.size;
+    song.type=(Song::Type)type;
+    song.year=year;
+    song.guessed=guessed;
+    return stream;
+}
+#endif

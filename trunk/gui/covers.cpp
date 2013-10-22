@@ -34,7 +34,7 @@
 #include "podcastservice.h"
 #include "onlineservicesmodel.h"
 #ifdef TAGLIB_FOUND
-#include "tags.h"
+#include "tagclient.h"
 #endif
 #include <QFile>
 #include <QDir>
@@ -907,7 +907,7 @@ Covers::Image Covers::locateImage(const Song &song)
         #ifdef TAGLIB_FOUND
         QImage img;
         if (prevFileName.startsWith(constCoverInTagPrefix)) {
-            img=Tags::readImage(prevFileName.mid(constCoverInTagPrefix.length()));
+            img=TagClient::self()->readImage(prevFileName.mid(constCoverInTagPrefix.length()));
         } else {
             img=QImage(prevFileName);
         }
@@ -990,7 +990,7 @@ Covers::Image Covers::locateImage(const Song &song)
             #ifdef TAGLIB_FOUND
             QString fileName=haveAbsPath ? song.file : (MPDConnection::self()->getDetails().dir+songFile);
             if (QFile::exists(fileName)) {
-                QImage img(Tags::readImage(fileName));
+                QImage img(TagClient::self()->readImage(fileName));
                 if (!img.isNull()) {
                     DBUG_CLASS("Covers") << "Got cover image from tag" << fileName;
                     return Image(img, constCoverInTagPrefix+fileName);

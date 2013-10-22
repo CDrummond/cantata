@@ -63,7 +63,6 @@ namespace MPDParseUtils
     extern MusicLibraryItemRoot * parseLibraryItems(const QByteArray &data, const QString &mpdDir, long mpdVersion);
     extern DirViewItemRoot * parseDirViewItems(const QByteArray &data);
     extern QList<Output> parseOuputs(const QByteArray &data);
-    extern QString formatDuration(const quint32 totalseconds);
     extern QString addStreamName(const QString &url, const QString &name);
     extern QString getStreamName(const QString &url);
     extern QString getAndRemoveStreamName(QString &url);

@@ -81,6 +81,8 @@
 46. When displaying tag editor, track orgainiser, or replay gain dialogs, check
     that the song files can be accessed. (For speed reasons, only the 1st few
     files are checked)
+47. Read/write tags in an external app - as per Clementine and Amarok. Isolates
+    Cantata from TagLib crashes.
 
 1.1.3
 -----

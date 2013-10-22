@@ -636,30 +636,6 @@ QList<Output> MPDParseUtils::parseOuputs(const QByteArray &data)
     return outputs;
 }
 
-QString MPDParseUtils::formatDuration(const quint32 totalseconds)
-{
-    //Get the days,hours,minutes and seconds out of the total seconds
-    quint32 days = totalseconds / 86400;
-    quint32 rest = totalseconds - (days * 86400);
-    quint32 hours = rest / 3600;
-    rest = rest - (hours * 3600);
-    quint32 minutes = rest / 60;
-    quint32 seconds = rest - (minutes * 60);
-
-    //Convert hour,minutes and seconds to a QTime for easier parsing
-    QTime time(hours, minutes, seconds);
-
-    #ifdef ENABLE_KDE_SUPPORT
-    return 0==days
-            ? time.toString("h:mm:ss")
-            : i18np("1 day %2", "%1 days %2", days, time.toString("h:mm:ss"));
-    #else
-    return 0==days
-            ? time.toString("h:mm:ss")
-            : QString("%1:%2").arg(days).arg(time.toString("hh:mm:ss"));
-    #endif
-}
-
 static const QString constHashReplacement=QLatin1String("${hash}");
 
 QString MPDParseUtils::addStreamName(const QString &url, const QString &name)

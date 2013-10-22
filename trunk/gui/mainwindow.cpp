@@ -93,6 +93,7 @@
 #ifdef TAGLIB_FOUND
 #include "trackorganiser.h"
 #include "tageditor.h"
+#include "tagclient.h"
 #ifdef ENABLE_REPLAYGAIN_SUPPORT
 #include "rgdialog.h"
 #endif
@@ -878,6 +879,9 @@ MainWindow::~MainWindow()
     #ifndef ENABLE_KDE_SUPPORT
     MediaKeys::self()->stop();
     #endif
+    #ifdef TAGLIB_FOUND
+    TagClient::self()->stop();
+    #endif
 }
 
 void MainWindow::initSizes()
@@ -1454,8 +1458,8 @@ void MainWindow::showServerInfo()
                                        "<tr><td align=\"right\">Uptime:</td><td>%4</td></tr>"
                                        "<tr><td align=\"right\">Time playing:</td><td>%5</td></tr>",
                                        (version>>16)&0xFF, (version>>8)&0xFF, version&0xFF,
-                                       MPDParseUtils::formatDuration(MPDStats::self()->uptime()),
-                                       MPDParseUtils::formatDuration(MPDStats::self()->playtime()))+
+                                       Utils::formatDuration(MPDStats::self()->uptime()),
+                                       Utils::formatDuration(MPDStats::self()->playtime()))+
                                   QLatin1String("<tr/>")+
                                   i18n("<tr><td colspan=\"2\"><b>Database</b></td></tr>"
                                        "<tr><td align=\"right\">Artists:</td><td>%1</td></tr>"
@@ -1465,7 +1469,7 @@ void MainWindow::showServerInfo()
                                        "<tr><td align=\"right\">Total duration:</td><td>%5</td></tr>"
                                        "<tr><td align=\"right\">Last update:</td><td>%6</td></tr></table></p>",
                                        MPDStats::self()->artists(), MPDStats::self()->albums(), MPDStats::self()->songs(), handlers.join(", "),
-                                       MPDParseUtils::formatDuration(MPDStats::self()->dbPlaytime()), MPDStats::self()->dbUpdate().toString(Qt::SystemLocaleShortDate)),
+                                       Utils::formatDuration(MPDStats::self()->dbPlaytime()), MPDStats::self()->dbUpdate().toString(Qt::SystemLocaleShortDate)),
                             i18n("Server Information"));
 }
 
@@ -2179,9 +2183,9 @@ void MainWindow::updatePlayQueueStats(int songs, quint32 time)
     }
 
     #ifdef ENABLE_KDE_SUPPORT
-    playQueueStatsLabel->setText(i18np("1 Track (%2)", "%1 Tracks (%2)", songs, MPDParseUtils::formatDuration(time)));
+    playQueueStatsLabel->setText(i18np("1 Track (%2)", "%1 Tracks (%2)", songs, Utils::formatDuration(time)));
     #else
-    playQueueStatsLabel->setText(QTP_TRACKS_DURATION_STR(songs, MPDParseUtils::formatDuration(time)));
+    playQueueStatsLabel->setText(QTP_TRACKS_DURATION_STR(songs, Utils::formatDuration(time)));
     #endif
 }
 

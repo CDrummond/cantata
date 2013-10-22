@@ -31,7 +31,7 @@
 #include "messagebox.h"
 #include "localize.h"
 #ifdef TAGLIB_FOUND
-#include "tags.h"
+#include "tagclient.h"
 #endif
 #include "icons.h"
 #include "utils.h"
@@ -309,7 +309,7 @@ void SongView::update(const Song &s, bool force)
                 return;
             } else {
                 #ifdef TAGLIB_FOUND
-                QString tagLyrics=Tags::readLyrics(MPDConnection::self()->getDetails().dir+songFile);
+                QString tagLyrics=TagClient::self()->readLyrics(MPDConnection::self()->getDetails().dir+songFile);
 
                 if (!tagLyrics.isEmpty()) {
                     text->setText(fixNewLines(tagLyrics));

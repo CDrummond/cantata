@@ -674,7 +674,7 @@ void TagEditor::setIndex(int idx)
     updating=false;
 }
 
-void TagEditor::applyUpdates()
+bool TagEditor::applyUpdates()
 {
     bool skipFirst=original.count()>1;
     QStringList failed;
@@ -685,7 +685,7 @@ void TagEditor::applyUpdates()
     if (!deviceUdi.isEmpty()) {
         dev=getDevice(deviceUdi, this);
         if (!dev) {
-            return;
+            return true;
         }
         opts=dev->options();
         udi=dev->id();
@@ -708,6 +708,7 @@ void TagEditor::applyUpdates()
     progress->setRange(1, toSave);
 
     int count=0;
+    bool someTimedout=false;
     foreach (int idx, editedIndexes) {
         progress->setValue(progress->value()+1);
 
@@ -751,6 +752,7 @@ void TagEditor::applyUpdates()
         #ifdef ENABLE_EXTERNAL_TAGS
         case Tags::Update_Timedout:
             failed.append(i18nc("filename (Timeout)", "%1 (Timeout)", orig.file));
+            someTimedout=true;
             break;
         case Tags::Update_BadFile:
             failed.append(i18nc("filename (Corrupt tags?)", "%1 (Corrupt tags?)", orig.file));
@@ -784,14 +786,17 @@ void TagEditor::applyUpdates()
             dlg->show(updatedSongs, udi);
         }
     }
+
+    return !someTimedout;
 }
 
 void TagEditor::slotButtonClicked(int button)
 {
     switch (button) {
     case Ok: {
-        applyUpdates();
-        accept();
+        if (applyUpdates()) {
+            accept();
+        }
         break;
     }
     case Reset: // Reset

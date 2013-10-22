@@ -64,7 +64,7 @@ private:
     void clearScanners();
     void startReadingTags();
     void stopReadingTags();
-    void saveTags();
+    bool saveTags();
     void updateView();
     #ifdef ENABLE_DEVICES_SUPPORT
     Device * getDevice(const QString &udi, QWidget *p);

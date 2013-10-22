@@ -87,7 +87,7 @@ void TagServer::readRequest()
 
 void TagServer::stateChanged(QLocalSocket::LocalSocketState state)
 {
-    if (QLocalSocket::ClosingState==state) {
+    if (QLocalSocket::ClosingState==state || QLocalSocket::UnconnectedState==state) {
         qApp->exit(0);
     }
 }

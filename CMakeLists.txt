@@ -41,6 +41,7 @@ option(ENABLE_CDPARANOIA "Enable CDParanoia libraries(required for AudioCD suppo
 option(ENABLE_CDDB "Enable CDDB libraries(either this or MusicBrianz required for AudioCD support)" ON)
 option(ENABLE_MUSICBRAINZ "Enable MusicBrianz libraries(either this or CDDB required for AudioCD support)" ON)
 option(ENABLE_PROXY_CONFIG "Enable proxy config in settings dialog" OFF)
+option(ENABLE_EXTERNAL_TAGS "Enable usage of external app for reading/writing tags" ON)
 
 if (ENABLE_QT5)
     set(ENABLE_KDE FALSE)
@@ -126,7 +127,8 @@ if (ENABLE_QT5)
     find_package(Qt5Network REQUIRED)
     find_package(Qt5Concurrent REQUIRED)
     set(QTCORELIBS ${Qt5Core_LIBRARIES})
-    set(QTLIBS ${QTCORELIBS} ${Qt5Widgets_LIBRARIES} ${Qt5Network_LIBRARIES} ${Qt5Xml_LIBRARIES} ${Qt5Concurrent_LIBRARIES})
+    set(QTNETWORKLIBS ${Qt5Network_LIBRARIES})
+    set(QTLIBS ${QTCORELIBS} ${Qt5Widgets_LIBRARIES} ${QTNETWORKLIBS} ${Qt5Xml_LIBRARIES} ${Qt5Concurrent_LIBRARIES})
     set(QTINCLUDES ${Qt5Widgets_INCLUDE_DIRS} ${Qt5Network_INCLUDE_DIRS} ${Qt5Xml_INCLUDE_DIRS} ${Qt5Core_INCLUDE_DIRS} ${Qt5Concurrent_INCLUDE_DIRS})
     add_definitions(${Qt5Widgets_DEFINITIONS} ${Qt5Network_DEFINITIONS} ${Qt5Xml_DEFINITIONS} ${Qt5Concurrent_DEFINITIONS})
     set(CMAKE_CXX_FLAGS "${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS}")
@@ -140,7 +142,8 @@ if (ENABLE_QT5)
 else (ENABLE_QT5)
     find_package(Qt4 REQUIRED QtCore QtGui QtXml QtNetwork)
     set(QTCORELIBS ${QT_QTCORE_LIBRARY})
-    set(QTLIBS ${QT_QTSVG_LIBRARY} ${QT_QTXML_LIBRARY} ${QTCORELIBS} ${QT_QTGUI_LIBRARY} ${QT_QTNETWORK_LIBRARY})
+    set(QTNETWORKLIBS ${QT_QTNETWORK_LIBRARY})
+    set(QTLIBS ${QT_QTSVG_LIBRARY} ${QT_QTXML_LIBRARY} ${QTCORELIBS} ${QT_QTGUI_LIBRARY} ${QTNETWORKLIBS})
     if (QT_QTDBUS_FOUND)
         set(QTLIBS ${QTLIBS} ${QT_QTDBUS_LIBRARY})
     endif (QT_QTDBUS_FOUND)
@@ -307,10 +310,10 @@ set(CANTATA_RCS cantata.qrc)
 
 if (TAGLIB_FOUND)
     set(CANTATA_SRCS ${CANTATA_SRCS}
-        tags/tageditor.cpp tags/trackorganiser.cpp tags/tags.cpp
+        tags/tageditor.cpp tags/trackorganiser.cpp tags/tagclient.cpp
         devices/filenameschemedialog.cpp)
     set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS}
-        tags/tageditor.h tags/trackorganiser.h
+        tags/tageditor.h tags/trackorganiser.h tags/tagclient.h
         devices/filenameschemedialog.h devices/device.h)
     set(CANTATA_UIS ${CANTATA_UIS}
         tags/tageditor.ui tags/trackorganiser.ui
@@ -324,9 +327,14 @@ if (TAGLIB_FOUND)
         set(ENABLE_REPLAYGAIN_SUPPORT 1)
         add_subdirectory(replaygain)
     endif (FFMPEG_FOUND OR MPG123_FOUND)
+    if (ENABLE_EXTERNAL_TAGS)
+        add_subdirectory(tags)
+    else (ENABLE_EXTERNAL_TAGS)
+        set(CANTATA_SRCS ${CANTATA_SRCS} tags/tags.cpp tags/filetyperesolver.cpp)
+    endif (ENABLE_EXTERNAL_TAGS)
 
     if (WIN32 OR APPLE)
-        set(CANTATA_SRCS ${CANTATA_SRCS} devices/device.cpp tags/filetyperesolver.cpp)
+        set(CANTATA_SRCS ${CANTATA_SRCS} devices/device.cpp)
     else (WIN32 OR APPLE)
         set(ENABLE_DEVICES_SUPPORT 1)
         if (NOT ENABLE_KDE)
@@ -354,7 +362,7 @@ if (TAGLIB_FOUND)
 
         set(CANTATA_SRCS ${CANTATA_SRCS} devices/devicespage.cpp devices/filejob.cpp
                 devices/device.cpp devices/fsdevice.cpp devices/umsdevice.cpp
-                models/devicesmodel.cpp tags/filetyperesolver.cpp devices/actiondialog.cpp devices/devicepropertieswidget.cpp
+                models/devicesmodel.cpp devices/actiondialog.cpp devices/devicepropertieswidget.cpp
                 devices/devicepropertiesdialog.cpp devices/encoders.cpp devices/freespaceinfo.cpp
                 devices/transcodingjob.cpp devices/valueslider.cpp devices/syncdialog.cpp devices/synccollectionwidget.cpp
                 online/onlinedevice.cpp)
@@ -530,12 +538,16 @@ target_link_libraries(cantata support qtiocompressor ${QTLIBS} ${ZLIB_LIBRARIES}
 include_directories(${QTINCLUDES} ${ZLIB_INCLUDE_DIRS})
 
 if (TAGLIB_FOUND)
+    # Cantata still links to taglib, even if external tag reader/writer is used,
+    # because JamendoService uses taglib for ID3 genres.
     target_link_libraries(cantata ${TAGLIB_LIBRARIES})
     include_directories(${TAGLIB_INCLUDES})
-    if (TAGLIB-EXTRAS_FOUND)
-        target_link_libraries(cantata ${TAGLIB-EXTRAS_LIBRARIES})
-        include_directories(${TAGLIB-EXTRAS_INCLUDES})
-    endif (TAGLIB-EXTRAS_FOUND)
+    if (NOT ENABLE_EXTERNAL_TAGS)     
+        if (TAGLIB-EXTRAS_FOUND)
+            target_link_libraries(cantata ${TAGLIB-EXTRAS_LIBRARIES})
+            include_directories(${TAGLIB-EXTRAS_INCLUDES})
+        endif (TAGLIB-EXTRAS_FOUND)
+    endif (NOT ENABLE_EXTERNAL_TAGS)
     if (NOT ENABLE_KDE AND NOT WIN32 AND NOT APPLE)
         target_link_libraries(cantata solidlite)
     endif (NOT ENABLE_KDE AND NOT WIN32 AND NOT APPLE)

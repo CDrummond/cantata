@@ -64,7 +64,7 @@ static QString detectMimeType(const QString &file)
     if (suffix == QLatin1String("mp3")) {
         return QLatin1String("audio/mpeg");
     }
-    #ifdef TAGLIB_FOUND
+    #if defined TAGLIB_FOUND && !defined ENABLE_EXTERNAL_TAGS
     if (suffix == QLatin1String("ogg")) {
         #ifdef Q_OS_WIN32
         const wchar_t *encodedName = reinterpret_cast< const wchar_t * >(file.utf16());

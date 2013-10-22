@@ -33,8 +33,6 @@
 #include <ios>
 #include <QPair>
 #include <QFile>
-#include <QMutex>
-#include <QMutexLocker>
 #include <QString>
 #include <QStringList>
 #include <QTextCodec>
@@ -110,11 +108,6 @@ static double parseRgString(const TagLib::String &str) {
     double v=s.toDouble(&ok);
 
     return ok ? v : 0.0;
-}
-
-bool ReplayGain::isEmpty() const
-{
-    return Utils::equal(trackGain, 0.0) && Utils::equal(trackPeak, 0.0) && Utils::equal(albumGain, 0.0) && Utils::equal(albumPeak, 0.0);
 }
 
 struct RgTags : public ReplayGain
@@ -258,7 +251,7 @@ static void setRva2Tag(TagLib::ID3v2::Tag* tag, const std::string &tagName, doub
 }
 // -- taken from rgtag.cpp from libebur128 -- END
 
-static void readID3v2Tags(TagLib::ID3v2::Tag *tag, Song *song, ReplayGain *rg, QImage *img, QString *lyrics)
+static void readID3v2Tags(TagLib::ID3v2::Tag *tag, Song *song, ReplayGain *rg, QByteArray *img, QString *lyrics)
 {
     if (song) {
         const TagLib::ID3v2::FrameList &albumArtist = tag->frameListMap()["TPE2"];
@@ -317,8 +310,8 @@ static void readID3v2Tags(TagLib::ID3v2::Tag *tag, Song *song, ReplayGain *rg, Q
             for (; it != end && !found; ++it) {
                 TagLib::ID3v2::AttachedPictureFrame *pic=dynamic_cast<TagLib::ID3v2::AttachedPictureFrame*>(*it);
                 if (pic && TagLib::ID3v2::AttachedPictureFrame::FrontCover==pic->type()) {
-                    img->loadFromData((const uchar *) pic->picture().data(), pic->picture().size());
-                    if (!img->isNull()) {
+                    *img=QByteArray((const char *) pic->picture().data(), (int) pic->picture().size());
+                    if (!img->isEmpty()) {
                         found=true;
                     }
                 }
@@ -327,7 +320,7 @@ static void readID3v2Tags(TagLib::ID3v2::Tag *tag, Song *song, ReplayGain *rg, Q
             if (!found) {
                 // Just use first image!
                 TagLib::ID3v2::AttachedPictureFrame *pic=static_cast<TagLib::ID3v2::AttachedPictureFrame *>(frames.front());
-                img->loadFromData((const uchar *) pic->picture().data(), pic->picture().size());
+                *img=QByteArray((const char *) pic->picture().data(), (int) pic->picture().size());
             }
         }
     }
@@ -523,7 +516,7 @@ static TagLib::String readVorbisTag(TagLib::Ogg::XiphComment *tag, const char *f
     return TagLib::String();
 }
 
-static void readVorbisCommentTags(TagLib::Ogg::XiphComment *tag, Song *song, ReplayGain *rg, QImage *img)
+static void readVorbisCommentTags(TagLib::Ogg::XiphComment *tag, Song *song, ReplayGain *rg, QByteArray *img)
 {
     if (song) {
         TagLib::String str=readVorbisTag(tag, "ALBUMARTIST");
@@ -552,22 +545,17 @@ static void readVorbisCommentTags(TagLib::Ogg::XiphComment *tag, Song *song, Rep
         // Ogg lacks a definitive standard for embedding cover art, but it seems
         // b64 encoding a field called COVERART is the general convention
         if (map.contains("COVERART")) {
-            QByteArray data=map["COVERART"].toString().toCString();
-            img->loadFromData(QByteArray::fromBase64(data));
-            if (img->isNull()) {
-                img->loadFromData(data); // not base64??
-            }
+            *img=map["COVERART"].toString().toCString();
         }
     }
 }
 
 #if (TAGLIB_MAJOR_VERSION > 1) || (TAGLIB_MAJOR_VERSION == 1 && TAGLIB_MINOR_VERSION >= 7)
-static void readFlacPicture(const TagLib::List<TagLib::FLAC::Picture*> &pics, QImage *img)
+static void readFlacPicture(const TagLib::List<TagLib::FLAC::Picture*> &pics, QByteArray *img)
 {
     if (!pics.isEmpty() && 1==pics.size()) {
         TagLib::FLAC::Picture *picture = *(pics.begin());
-        QByteArray data(picture->data().data(), picture->data().size());
-        img->loadFromData(data);
+        *img=QByteArray(picture->data().data(), picture->data().size());
     }
 }
 #endif
@@ -629,7 +617,7 @@ static bool writeVorbisCommentTags(TagLib::Ogg::XiphComment *tag, const Song &fr
 }
 
 #ifdef TAGLIB_MP4_FOUND
-static void readMP4Tags(TagLib::MP4::Tag *tag, Song *song, ReplayGain *rg, QImage *img)
+static void readMP4Tags(TagLib::MP4::Tag *tag, Song *song, ReplayGain *rg, QByteArray *img)
 {
     TagLib::MP4::ItemListMap &map = tag->itemListMap();
 
@@ -664,7 +652,7 @@ static void readMP4Tags(TagLib::MP4::Tag *tag, Song *song, ReplayGain *rg, QImag
             TagLib::MP4::CoverArtList coverArtList = coverItem.toCoverArtList();
             if (!coverArtList.isEmpty()) {
                 TagLib::MP4::CoverArt coverArt = coverArtList.front();
-                img->loadFromData((const uchar *) coverArt.data().data(), coverArt.data().size());
+                *img=QByteArray((const char *) coverArt.data().data(), (int) coverArt.data().size());
             }
         }
     }
@@ -787,7 +775,7 @@ static bool writeASFTags(TagLib::ASF::Tag *tag, const Song &from, const Song &to
 }
 #endif
 
-static void readTags(const TagLib::FileRef fileref, Song *song, ReplayGain *rg, QImage *img, QString *lyrics)
+static void readTags(const TagLib::FileRef fileref, Song *song, ReplayGain *rg, QByteArray *img, QString *lyrics)
 {
     TagLib::Tag *tag=fileref.tag();
     if (song) {
@@ -994,11 +982,8 @@ static bool writeTags(const TagLib::FileRef fileref, const Song &from, const Son
     return changed;
 }
 
-static QMutex mutex;
-
 Song read(const QString &fileName)
 {
-    QMutexLocker locker(&mutex);
     Song song;
     TagLib::FileRef fileref = getFileRef(fileName);
 
@@ -1012,10 +997,9 @@ Song read(const QString &fileName)
     return song;
 }
 
-QImage readImage(const QString &fileName)
+QByteArray readImage(const QString &fileName)
 {
-    QMutexLocker locker(&mutex);
-    QImage img;
+    QByteArray img;
     TagLib::FileRef fileref = getFileRef(fileName);
 
     if (fileref.isNull()) {
@@ -1028,7 +1012,6 @@ QImage readImage(const QString &fileName)
 
 QString readLyrics(const QString &fileName)
 {
-    QMutexLocker locker(&mutex);
     QString lyrics;
     TagLib::FileRef fileref = getFileRef(fileName);
 
@@ -1064,7 +1047,6 @@ static Update update(const TagLib::FileRef fileref, const Song &from, const Song
 
 Update updateArtistAndTitle(const QString &fileName, const Song &song)
 {
-    QMutexLocker locker(&mutex);
     TagLib::FileRef fileref = getFileRef(fileName);
 
     if (fileref.isNull()) {
@@ -1092,14 +1074,12 @@ Update updateArtistAndTitle(const QString &fileName, const Song &song)
 
 Update update(const QString &fileName, const Song &from, const Song &to, int id3Ver)
 {
-    QMutexLocker locker(&mutex);
     TagLib::FileRef fileref = getFileRef(fileName);
     return fileref.isNull() ? Update_Failed : update(fileref, from, to, RgTags(), QByteArray(), id3Ver);
 }
 
 ReplayGain readReplaygain(const QString &fileName)
 {
-    QMutexLocker locker(&mutex);
     TagLib::FileRef fileref = getFileRef(fileName);
 
     if (fileref.isNull()) {
@@ -1113,14 +1093,12 @@ ReplayGain readReplaygain(const QString &fileName)
 
 Update updateReplaygain(const QString &fileName, const ReplayGain &rg)
 {
-    QMutexLocker locker(&mutex);
     TagLib::FileRef fileref = getFileRef(fileName);
     return fileref.isNull() ? Update_Failed : update(fileref, Song(), Song(), RgTags(rg), QByteArray());
 }
 
 Update embedImage(const QString &fileName, const QByteArray &cover)
 {
-    QMutexLocker locker(&mutex);
     TagLib::FileRef fileref = getFileRef(fileName);
     return fileref.isNull() ? Update_Failed : update(fileref, Song(), Song(), RgTags(), cover);
 }

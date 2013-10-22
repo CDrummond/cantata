@@ -25,7 +25,9 @@
 #define TAGS_H
 
 #include "song.h"
-#include <QImage>
+#include "utils.h"
+#include <QByteArray>
+#include <QMetaType>
 
 namespace Tags
 {
@@ -38,7 +40,10 @@ namespace Tags
             , albumPeak(ap) {
         }
 
-        bool isEmpty() const;
+        bool isEmpty() const
+        {
+            return Utils::equal(trackGain, 0.0) && Utils::equal(trackPeak, 0.0) && Utils::equal(albumGain, 0.0) && Utils::equal(albumPeak, 0.0);
+        }
 
         double trackGain;
         double albumGain;
@@ -51,16 +56,36 @@ namespace Tags
         Update_Failed,
         Update_None,
         Update_Modified
+        #ifdef ENABLE_EXTERNAL_TAGS
+        , Update_Timedout
+        , Update_BadFile
+        #endif
     };
 
     extern Song read(const QString &fileName);
-    extern QImage readImage(const QString &fileName);
+    extern QByteArray readImage(const QString &fileName);
     extern QString readLyrics(const QString &fileName);
     extern Update updateArtistAndTitle(const QString &fileName, const Song &song);
     extern Update update(const QString &fileName, const Song &from, const Song &to, int id3Ver=-1);
     extern ReplayGain readReplaygain(const QString &fileName);
     extern Update updateReplaygain(const QString &fileName, const ReplayGain &rg);
     extern Update embedImage(const QString &fileName, const QByteArray &cover);
-};
+}
+
+#ifdef ENABLE_EXTERNAL_TAGS
+Q_DECLARE_METATYPE(Tags::ReplayGain)
+
+inline QDataStream & operator<<(QDataStream &stream, const Tags::ReplayGain &rg)
+{
+    stream << rg.trackGain << rg.albumGain << rg.trackPeak << rg.albumPeak;
+    return stream;
+}
+
+inline QDataStream & operator>>(QDataStream &stream, Tags::ReplayGain &rg)
+{
+    stream >> rg.trackGain >> rg.albumGain >> rg.trackPeak >> rg.albumPeak;
+    return stream;
+}
+#endif
 
 #endif

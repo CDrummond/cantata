@@ -31,6 +31,7 @@
 #include <QString>
 #include <QSet>
 #include <QMetaType>
+#include "config.h"
 
 struct Song
 {
@@ -90,7 +91,9 @@ struct Song
     void fillEmptyFields();
     void setKey();
     virtual void clear();
+    #ifndef CANTATA_NO_SONG_TIME_FUNCTION
     static QString formattedTime(quint32 seconds, bool zeroIsUnknown=false);
+    #endif
     QString format();
     QString entryName() const;
     QString artistOrComposer() const;
@@ -142,6 +145,11 @@ struct Song
 };
 
 Q_DECLARE_METATYPE(Song)
+
+#ifdef ENABLE_EXTERNAL_TAGS
+QDataStream & operator<<(QDataStream &stream, const Song &song);
+QDataStream & operator>>(QDataStream &stream, Song &song);
+#endif
 
 inline uint qHash(const Song &key)
 {

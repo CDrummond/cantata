@@ -76,6 +76,12 @@ The following options may be passed to CMake:
         soundcloud, etc.
         Default: ON (OFF for windows)
 
+    -DENABLE_EXTERNAL_TAGS=ON
+        Enable usage of external app for reading/writing tags. Helps to
+        isoloate Cantata from TagLib crashes.
+        Default: ON
+
+
     Windows specific:
 
     -DCANTATA_WINDOWS_INSTALLER_DEST=<folder>

@@ -22,7 +22,7 @@
  */
 
 #include "umsdevice.h"
-#include "tags.h"
+#include "tagclient.h"
 #include "musiclibrarymodel.h"
 #include "musiclibraryitemsong.h"
 #include "musiclibraryitemalbum.h"
@@ -162,7 +162,7 @@ void MusicScanner::scanFolder(MusicLibraryItemRoot *library, const QString &topL
                 song.file=fname;
                 QSet<FileOnlySong>::iterator it=existing.find(song);
                 if (existing.end()==it) {
-                    song=Tags::read(info.absoluteFilePath());
+                    song=TagClient::self()->read(info.absoluteFilePath());
                     song.file=fname;
                 } else {
                     song=*it;

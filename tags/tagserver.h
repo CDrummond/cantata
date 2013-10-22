@@ -21,24 +21,28 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include "tagreader.h"
-#include "tagclient.h"
+#ifndef TAG_SERVER_H
+#define TAG_SERVER_H
 
-void TagReader::setDetails(const QList<Song> &s, const QString &dir)
+#include <QObject>
+#include <QLocalSocket>
+
+class TagServer : public QObject
 {
-    songs=s;
-    baseDir=dir;
-}
+    Q_OBJECT
 
-void TagReader::run()
-{
-    for(int i=0; i<songs.count(); ++i) {
-        if (abortRequested) {
-            setFinished(false);
-            return;
-        }
+public:
+    TagServer(const char *socketName);
+    ~TagServer();
 
-        emit progress(i, TagClient::self()->readReplaygain(baseDir+songs.at(i).file));
-    }
-    setFinished(true);
-}
+    bool ok() const { return 0!=socket; }
+
+private Q_SLOTS:
+    void readRequest();
+    void stateChanged(QLocalSocket::LocalSocketState state);
+
+private:
+    QLocalSocket *socket;
+};
+
+#endif

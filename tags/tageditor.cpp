@@ -22,7 +22,7 @@
  */
 
 #include "tageditor.h"
-#include "tags.h"
+#include "tagclient.h"
 #include "musiclibrarymodel.h"
 #include "mpdconnection.h"
 #include "settings.h"
@@ -724,7 +724,7 @@ void TagEditor::applyUpdates()
             continue;
         }
 
-        switch(Tags::update(baseDir+orig.file, orig, edit)) {
+        switch(TagClient::self()->update(baseDir+orig.file, orig, edit)) {
         case Tags::Update_Modified:
             #ifdef ENABLE_DEVICES_SUPPORT
             if (!deviceUdi.isEmpty()) {
@@ -748,6 +748,14 @@ void TagEditor::applyUpdates()
         case Tags::Update_Failed:
             failed.append(orig.file);
             break;
+        #ifdef ENABLE_EXTERNAL_TAGS
+        case Tags::Update_Timedout:
+            failed.append(i18nc("filename (Timeout)", "%1 (Timeout)", orig.file));
+            break;
+        case Tags::Update_BadFile:
+            failed.append(i18nc("filename (Corrupt tags?)", "%1 (Corrupt tags?)", orig.file));
+            break;
+        #endif
         default:
             break;
         }

@@ -21,24 +21,16 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include "tagreader.h"
-#include "tagclient.h"
+#include <QCoreApplication>
+#include <stdio.h>
+#include "tagserver.h"
 
-void TagReader::setDetails(const QList<Song> &s, const QString &dir)
+int main(int argc, char *argv[])
 {
-    songs=s;
-    baseDir=dir;
-}
-
-void TagReader::run()
-{
-    for(int i=0; i<songs.count(); ++i) {
-        if (abortRequested) {
-            setFinished(false);
-            return;
-        }
-
-        emit progress(i, TagClient::self()->readReplaygain(baseDir+songs.at(i).file));
+    if (argc<2) {
+        return -1;
     }
-    setFinished(true);
+    QCoreApplication app(argc, argv);
+    TagServer *srv=new TagServer(argv[1]);
+    return srv->ok() ? app.exec() : -1;
 }

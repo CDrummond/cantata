@@ -75,6 +75,7 @@ namespace Utils
     extern QString findExe(const QString &appname, const QString &pathstr=QString());
     extern QString formatByteSize(double size);
     #endif
+    extern QString formatDuration(const quint32 totalseconds);
 
     extern QString cleanPath(const QString &p);
     extern QString configDir(const QString &sub=QString(), bool create=false);

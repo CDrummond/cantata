@@ -23,7 +23,7 @@
 #include "extractjob.h"
 #include "device.h"
 #include "utils.h"
-#include "tags.h"
+#include "tagclient.h"
 #include "cdparanoia.h"
 #include "covers.h"
 #include "mpdconnection.h"
@@ -150,7 +150,7 @@ void ExtractJob::run()
         process.closeWriteChannel();
         process.waitForFinished();
         Utils::setFilePerms(destFile);
-        Tags::update(destFile, Song(), song, 3);
+        TagClient::self()->update(destFile, Song(), song, 3);
 
         if (!stopRequested && !coverFile.isEmpty()) {
             QString mpdCover=MPDConnection::self()->getDetails().coverName;

@@ -27,7 +27,7 @@
 #endif
 #include "devicesmodel.h"
 #include "settings.h"
-#include "tags.h"
+#include "tagclient.h"
 #include "tagreader.h"
 #include "utils.h"
 #include "localize.h"
@@ -411,9 +411,22 @@ void RgDialog::saveTags()
     QMap<int, Tags::ReplayGain>::ConstIterator end=tagsToSave.constEnd();
 
     for (; it!=end; ++it) {
-        if (Tags::Update_Failed==Tags::updateReplaygain(base+origSongs.at(it.key()).file, it.value())) {
+        switch (TagClient::self()->updateReplaygain(base+origSongs.at(it.key()).file, it.value())) {
+        case Tags::Update_Failed:
             failed.append(origSongs.at(it.key()).file);
+            break;
+        #ifdef ENABLE_EXTERNAL_TAGS
+        case Tags::Update_Timedout:
+            failed.append(i18nc("filename (Timeout)", "%1 (Timeout)", origSongs.at(it.key()).file));
+            break;
+        case Tags::Update_BadFile:
+            failed.append(i18nc("filename (Corrupt tags?)", "%1 (Corrupt tags?)", origSongs.at(it.key()).file));
+            break;
+        #endif
+        default:
+            break;
         }
+
         progress->setValue(progress->value()+1);
         if (0==count++%10) {
             QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);

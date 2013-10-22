@@ -241,9 +241,10 @@ void RgDialog::slotButtonClicked(int button)
     case Ok:
         if (MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Update ReplayGain tags in tracks?"), i18n("Update Tags"),
                                                        GuiItem(i18n("Update Tags")), StdGuiItem::cancel())) {
-            saveTags();
-            stopScanning();
-            accept();
+            if (saveTags()) {
+                stopScanning();
+                accept();
+            }
         }
         break;
     case User1:
@@ -393,7 +394,7 @@ void RgDialog::stopReadingTags()
     autoScanTags=false;
 }
 
-void RgDialog::saveTags()
+bool RgDialog::saveTags()
 {
     state=State_Saving;
     enableButton(Ok, false);
@@ -407,6 +408,7 @@ void RgDialog::saveTags()
     progress->setRange(0, tagsToSave.count());
 
     int count=0;
+    bool someTimedout=false;
     QMap<int, Tags::ReplayGain>::ConstIterator it=tagsToSave.constBegin();
     QMap<int, Tags::ReplayGain>::ConstIterator end=tagsToSave.constEnd();
 
@@ -418,6 +420,7 @@ void RgDialog::saveTags()
         #ifdef ENABLE_EXTERNAL_TAGS
         case Tags::Update_Timedout:
             failed.append(i18nc("filename (Timeout)", "%1 (Timeout)", origSongs.at(it.key()).file));
+            someTimedout=true;
             break;
         case Tags::Update_BadFile:
             failed.append(i18nc("filename (Corrupt tags?)", "%1 (Corrupt tags?)", origSongs.at(it.key()).file));
@@ -436,6 +439,8 @@ void RgDialog::saveTags()
     if (failed.count()) {
         MessageBox::errorListEx(this, i18n("Failed to update the tags of the following tracks:"), failed);
     }
+
+    return !someTimedout;
 }
 
 void RgDialog::updateView()

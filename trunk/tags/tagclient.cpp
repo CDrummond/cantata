@@ -35,6 +35,7 @@ K_GLOBAL_STATIC(TagClient, instance)
 #include <QLocalServer>
 #include <QLocalSocket>
 #include <QEventLoop>
+#include <QApplication>
 #endif
 #include <QDebug>
 
@@ -332,7 +333,7 @@ void TagClient::stopHelper()
     socket=0;
     if (p) {
         disconnect(p, SIGNAL(error(QProcess::ProcessError)), this, SLOT(processError(QProcess::ProcessError)));
-        p->terminate();
+        p->kill();
         p->deleteLater();
     }
     if (s) {

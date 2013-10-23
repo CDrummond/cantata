@@ -28,4 +28,3 @@ if (TAGLIB-EXTRAS_FOUND)
     target_link_libraries(cantata-tags ${TAGLIB-EXTRAS_LIBRARIES})
     include_directories(${TAGLIB-EXTRAS_INCLUDES})
 endif (TAGLIB-EXTRAS_FOUND)
-

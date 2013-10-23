@@ -68,6 +68,7 @@ public Q_SLOTS:
 
 Q_SIGNALS:
     void loginStatus(bool ok, const QString &msg);
+    void updated();
 
 private Q_SLOTS:
     void timeout();

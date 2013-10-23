@@ -29,6 +29,7 @@
 #include "tar.h"
 #include "messagebox.h"
 #include "utils.h"
+#include "digitallyimportedsettings.h"
 #include <QListWidget>
 #include <QFileInfo>
 #ifdef ENABLE_KDE_SUPPORT
@@ -39,7 +40,8 @@
 
 enum Roles {
     KeyRole = Qt::UserRole,
-    BuiltInRole
+    BuiltInRole,
+    ConfigurableRole
 };
 
 static bool removeDir(const QString &d, const QStringList &types)
@@ -68,7 +70,9 @@ StreamsSettings::StreamsSettings(QWidget *p)
     connect(categories, SIGNAL(currentRowChanged(int)), SLOT(currentCategoryChanged(int)));
     connect(installButton, SIGNAL(clicked()), this, SLOT(install()));
     connect(removeButton, SIGNAL(clicked()), this, SLOT(remove()));
+    connect(configureButton, SIGNAL(clicked()), this, SLOT(configure()));
     removeButton->setEnabled(false);
+    configureButton->setEnabled(false);
 }
 
 void StreamsSettings::load()
@@ -81,6 +85,7 @@ void StreamsSettings::load()
         item->setCheckState(cat.hidden ? Qt::Unchecked : Qt::Checked);
         item->setData(KeyRole, cat.key);
         item->setData(BuiltInRole, cat.builtin);
+        item->setData(ConfigurableRole, cat.configurable);
         item->setIcon(cat.icon);
         if (cat.builtin) {
             item->setFont(f);
@@ -102,13 +107,16 @@ void StreamsSettings::save()
 
 void StreamsSettings::currentCategoryChanged(int row)
 {
-    bool enable=false;
+    bool enableRemove=false;
+    bool enableConfigure=false;
 
     if (row>=0) {
         QListWidgetItem *item=categories->item(row);
-        enable=!item->data(BuiltInRole).toBool();
+        enableRemove=!item->data(BuiltInRole).toBool();
+        enableConfigure=item->data(ConfigurableRole).toBool();
     }
-    removeButton->setEnabled(enable);
+    removeButton->setEnabled(enableRemove);
+    configureButton->setEnabled(enableConfigure);
 }
 
 void StreamsSettings::install()
@@ -198,6 +206,7 @@ void StreamsSettings::install()
     item->setCheckState(Qt::Checked);
     item->setData(KeyRole, cat->configName);
     item->setData(BuiltInRole, false);
+    item->setData(ConfigurableRole, false);
     item->setIcon(icn);
 }
 
@@ -221,6 +230,22 @@ void StreamsSettings::remove()
 
     StreamsModel::self()->removeXmlCategory(item->data(KeyRole).toString());
     delete item;
+}
+
+void StreamsSettings::configure()
+{
+    int row=categories->currentRow();
+    if (row<0) {
+        return;
+    }
+
+    QListWidgetItem *item=categories->item(row);
+    if (!item->data(ConfigurableRole).toBool()) {
+        return;
+    }
+
+    // TODO: Currently only digitally imported can be configured...
+    DigitallyImportedSettings(this).show();
 }
 
 QListWidgetItem *  StreamsSettings::get(const QString &name)

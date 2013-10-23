@@ -43,6 +43,7 @@ private Q_SLOTS:
     void currentCategoryChanged(int row);
     void install();
     void remove();
+    void configure();
 
 private:
     QListWidgetItem * get(const QString &name);

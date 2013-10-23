@@ -1082,12 +1082,12 @@ QList<StreamsModel::Category> StreamsModel::getCategories() const
     QList<StreamsModel::Category> categories;
     foreach (Item *i, hiddenCategories) {
         categories.append(Category(i->name, static_cast<CategoryItem *>(i)->icon, static_cast<CategoryItem *>(i)->configName,
-                                   static_cast<CategoryItem *>(i)->isBuiltIn(), true));
+                                   static_cast<CategoryItem *>(i)->isBuiltIn(), true, static_cast<CategoryItem *>(i)->canConfigure()));
     }
     foreach (Item *i, root->children) {
         if (i!=favourites) {
             categories.append(Category(i->name, static_cast<CategoryItem *>(i)->icon, static_cast<CategoryItem *>(i)->configName,
-                                       static_cast<CategoryItem *>(i)->isBuiltIn(), false));
+                                       static_cast<CategoryItem *>(i)->isBuiltIn(), false, static_cast<CategoryItem *>(i)->canConfigure()));
         }
     }
     return categories;

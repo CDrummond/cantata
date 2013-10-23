@@ -26,6 +26,9 @@
 
 #include "config.h"
 #include "dialog.h"
+
+class PageWidget;
+class PageWidgetItem;
 #ifndef ENABLE_KDE_SUPPORT
 class ProxySettings;
 class ShortcutsSettingsPage;
@@ -59,6 +62,9 @@ public:
 private:
     void slotButtonClicked(int button);
 
+public Q_SLOTS:
+    void showPage(const QString &page);
+
 private Q_SLOTS:
     void writeSettings();
 
@@ -67,6 +73,7 @@ Q_SIGNALS:
     void reloadStreams();
 
 private:
+    PageWidget *pageWidget;
     ServerSettings *server;
     PlaybackSettings *playback;
     FileSettings *files;
@@ -85,6 +92,7 @@ private:
     #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
     AudioCdSettings *audiocd;
     #endif
+    QMap<QString, PageWidgetItem *> pages;
 };
 
 #endif

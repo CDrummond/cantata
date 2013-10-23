@@ -69,6 +69,7 @@ public Q_SLOTS:
     void searchForPodcasts();
     void downloadPodcast();
     void deleteDownloadedPodcast();
+    void showPreferencesPage();
 
 Q_SIGNALS:
     // These are for communicating with MPD object (which is in its own thread, so need to talk via signal/slots)
@@ -76,6 +77,7 @@ Q_SIGNALS:
     void addSongsToPlaylist(const QString &name, const QStringList &files);
 
     void addToDevice(const QString &from, const QString &to, const QList<Song> &songs);
+    void showPreferencesPage(const QString &page);
 
 private:
     OnlineService * activeSrv() const;

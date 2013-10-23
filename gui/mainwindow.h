@@ -168,6 +168,7 @@ Q_SIGNALS:
     void setPriority(const QList<qint32> &ids, quint8 priority);
     void addSongsToPlaylist(const QString &name, const QStringList &files);
     void addAndPlay(const QString &file);
+    void showPreferencesPage(const QString &page);
 
 public Q_SLOTS:
     void showError(const QString &message, bool showActions=false);
@@ -186,7 +187,7 @@ public Q_SLOTS:
     void messageWidgetVisibility(bool v);
     void mpdConnectionStateChanged(bool connected);
     void playQueueItemsSelected(bool s);
-    void showPreferencesDialog();
+    void showPreferencesDialog(const QString &page=QString());
     void quit();
     void updateSettings();
     void toggleOutput();

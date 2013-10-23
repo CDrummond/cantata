@@ -71,6 +71,7 @@ public:
     PageWidgetItem * addPage(QWidget *widget, const QString &name, const Icon &icon, const QString &header);
     int count();
     PageWidgetItem * currentPage() const;
+    void setCurrentPage(PageWidgetItem *item);
 
 private:
     QListWidget *list;

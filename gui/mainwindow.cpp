@@ -681,6 +681,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(playQueue, SIGNAL(itemsSelected(bool)), SLOT(playQueueItemsSelected(bool)));
     connect(streamsPage, SIGNAL(add(const QStringList &, bool, quint8)), &playQueueModel, SLOT(addItems(const QStringList &, bool, quint8)));
     connect(streamsPage, SIGNAL(error(QString)), this, SLOT(showError(QString)));
+    connect(streamsPage, SIGNAL(showPreferencesPage(QString)), this, SLOT(showPreferencesDialog(QString)));
+    connect(onlinePage, SIGNAL(showPreferencesPage(QString)), this, SLOT(showPreferencesDialog(QString)));
     connect(MPDStats::self(), SIGNAL(updated()), this, SLOT(updateStats()));
     connect(MPDStatus::self(), SIGNAL(updated()), this, SLOT(updateStatus()));
     connect(MPDConnection::self(), SIGNAL(playlistUpdated(const QList<Song> &)), this, SLOT(updatePlayQueue(const QList<Song> &)));
@@ -1125,8 +1127,11 @@ bool MainWindow::canShowDialog()
     return true;
 }
 
-void MainWindow::showPreferencesDialog()
+void MainWindow::showPreferencesDialog(const QString &page)
 {
+    if (PreferencesDialog::instanceCount() && !page.isEmpty()) {
+        emit showPreferencesPage(page);
+    }
     if (PreferencesDialog::instanceCount() || !canShowDialog()) {
         return;
     }
@@ -1135,7 +1140,11 @@ void MainWindow::showPreferencesDialog()
     connect(pref, SIGNAL(settingsSaved()), this, SLOT(updateSettings()));
     connect(pref, SIGNAL(reloadStreams()), streamsPage, SLOT(refresh()));
     connect(pref, SIGNAL(destroyed()), SLOT(controlConnectionsMenu()));
+    connect(this, SIGNAL(showPreferencesPage(QString)), pref, SLOT(showPage(QString)));
     pref->show();
+    if (!page.isEmpty()) {
+        pref->showPage(page);
+    }
 }
 
 void MainWindow::quit()

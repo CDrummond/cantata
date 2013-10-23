@@ -95,6 +95,9 @@ StreamsPage::StreamsPage(QWidget *p)
     menu->addAction(importAction);
     menu->addAction(exportAction);
     menu->addSeparator();
+    QAction *configAction=new QAction(Icons::self()->configureIcon, i18n("Configure..."), this);
+    menu->addAction(configAction);
+    connect(configAction, SIGNAL(triggered(bool)), this, SLOT(showPreferencesPage()));
     menuButton->setMenu(menu);
     Icon::init(replacePlayQueue);
 
@@ -664,4 +667,9 @@ void StreamsPage::updateDiStatus()
     } else {
         diStatusLabel->setStatus(DigitallyImported::self()->loggedIn());
     }
+}
+
+void StreamsPage::showPreferencesPage()
+{
+    emit showPreferencesPage(QLatin1String("streams"));
 }

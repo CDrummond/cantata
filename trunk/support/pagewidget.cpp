@@ -306,6 +306,7 @@ PageWidgetItem * PageWidget::addPage(QWidget *widget, const QString &name, const
     setMinimumSize(sz);
     list->setCurrentRow(0);
     stack->setCurrentIndex(0);
+    pages.insert(listItem, page);
     return page;
 }
 
@@ -317,4 +318,20 @@ int PageWidget::count()
 PageWidgetItem * PageWidget::currentPage() const
 {
     return static_cast<PageWidgetItem *>(stack->currentWidget());
+}
+
+void PageWidget::setCurrentPage(PageWidgetItem *item)
+{
+    if (!item) {
+        return;
+    }
+
+    QMap<QListWidgetItem *, PageWidgetItem*>::ConstIterator it(pages.constBegin());
+    QMap<QListWidgetItem *, PageWidgetItem*>::ConstIterator end(pages.constEnd());
+
+    for (; it!=end; ++it) {
+        if (it.value()==item) {
+            list->setCurrentItem(it.key());
+        }
+    }
 }

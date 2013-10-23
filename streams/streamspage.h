@@ -54,6 +54,7 @@ Q_SIGNALS:
     void add(const QStringList &streams, bool replace, quint8 priorty);
 
     void error(const QString &str);
+    void showPreferencesPage(const QString &page);
 
 public Q_SLOTS:
     void mpdDirChanged();
@@ -76,6 +77,7 @@ private Q_SLOTS:
     void controlSearch(bool on);
     void itemDoubleClicked(const QModelIndex &index);
     void updateDiStatus();
+    void showPreferencesPage();
 
 private:
     void addItemsToPlayQueue(const QModelIndexList &indexes, bool replace, quint8 priorty=0);

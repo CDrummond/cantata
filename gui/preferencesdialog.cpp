@@ -63,7 +63,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, const QStringList &hiddenP
     iCount++;
     setButtons(Ok|Apply|Cancel);
 
-    PageWidget *widget = new PageWidget(this);
+    pageWidget = new PageWidget(this);
     server = new ServerSettings(0);
     playback = new PlaybackSettings(0);
     files = new FileSettings(0);
@@ -78,22 +78,22 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, const QStringList &hiddenP
     files->load();
     interface->load();
     context->load();
-    widget->addPage(server, i18n("Collection"), Icons::self()->libraryIcon, i18n("Collection Settings"));
-    widget->addPage(playback, i18n("Playback"), Icon("media-playback-start"), i18n("Playback Settings"));
-    widget->addPage(files, i18n("Files"), Icons::self()->filesIcon, i18n("File Settings"));
-    widget->addPage(interface, i18n("Interface"), Icon("preferences-other"), i18n("Interface Settings"));
+    pageWidget->addPage(server, i18n("Collection"), Icons::self()->libraryIcon, i18n("Collection Settings"));
+    pageWidget->addPage(playback, i18n("Playback"), Icon("media-playback-start"), i18n("Playback Settings"));
+    pageWidget->addPage(files, i18n("Files"), Icons::self()->filesIcon, i18n("File Settings"));
+    pageWidget->addPage(interface, i18n("Interface"), Icon("preferences-other"), i18n("Interface Settings"));
     if (streams) {
-        widget->addPage(streams, i18n("Streams"), Icons::self()->radioStreamIcon, i18n("Streams Settings"));
+        pages.insert(QLatin1String("streams"), pageWidget->addPage(streams, i18n("Streams"), Icons::self()->radioStreamIcon, i18n("Streams Settings")));
         streams->load();
     }
     if (online) {
-        widget->addPage(online, i18n("Online"), Icon("applications-internet"), i18n("Online Providers"));
+        pages.insert(QLatin1String("online"), pageWidget->addPage(online, i18n("Online"), Icon("applications-internet"), i18n("Online Providers")));
         online->load();
     }
-    widget->addPage(context, i18n("Context"), Icons::self()->contextIcon, i18n("Context View Settings"));
+    pageWidget->addPage(context, i18n("Context"), Icons::self()->contextIcon, i18n("Context View Settings"));
     if (http->haveMultipleInterfaces()) {
         http->load();
-        widget->addPage(http, i18n("HTTP Server"), Icon("network-server"), i18n("HTTP Server Settings"));
+        pageWidget->addPage(http, i18n("HTTP Server"), Icon("network-server"), i18n("HTTP Server Settings"));
     } else {
         http->deleteLater();
         http=0;
@@ -101,7 +101,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, const QStringList &hiddenP
     #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
     audiocd = new AudioCdSettings(0);
     audiocd->load();
-    widget->addPage(audiocd, i18n("Audio CD"), Icon("media-optical"), i18n("Audio CD Settings"));
+    pageWidget->addPage(audiocd, i18n("Audio CD"), Icon("media-optical"), i18n("Audio CD Settings"));
     #endif
     #ifdef ENABLE_PROXY_CONFIG
     proxy = new ProxySettings(0);
@@ -109,13 +109,13 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, const QStringList &hiddenP
     widget->addPage(proxy, i18n("Proxy"), Icon("preferences-system-network"), i18nc("Qt-only", "Proxy Settings"));
     #endif
     #ifndef ENABLE_KDE_SUPPORT
-    shortcuts = new ShortcutsSettingsPage(widget);
-    widget->addPage(shortcuts, i18nc("Qt-only", "Shortcuts"), Icons::self()->shortcutsIcon, i18nc("Qt-only", "Keyboard Shortcut Settings"));
+    shortcuts = new ShortcutsSettingsPage(pageWidget);
+    pageWidget->addPage(shortcuts, i18nc("Qt-only", "Shortcuts"), Icons::self()->shortcutsIcon, i18nc("Qt-only", "Keyboard Shortcut Settings"));
     shortcuts->load();
     #endif
-    widget->addPage(cache, i18n("Cache"), Icon("folder"), i18n("Cached Items"));
+    pageWidget->addPage(cache, i18n("Cache"), Icon("folder"), i18n("Cached Items"));
     setCaption(i18n("Configure"));
-    setMainWidget(widget);
+    setMainWidget(pageWidget);
     setAttribute(Qt::WA_DeleteOnClose);
     connect(files, SIGNAL(reloadStreams()), SIGNAL(reloadStreams()));
     #ifndef ENABLE_KDE_SUPPORT
@@ -129,6 +129,13 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, const QStringList &hiddenP
 PreferencesDialog::~PreferencesDialog()
 {
     iCount--;
+}
+
+void PreferencesDialog::showPage(const QString &page)
+{
+    if (pages.contains(page)) {
+        pageWidget->setCurrentPage(pages[page]);
+    }
 }
 
 void PreferencesDialog::writeSettings()

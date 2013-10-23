@@ -98,6 +98,11 @@ OnlineServicesPage::OnlineServicesPage(QWidget *p)
     menu->addAction(OnlineServicesModel::self()->refreshSubscriptionAct());
     menu->addAction(downloadPodcastAction);
     menu->addAction(deleteDownloadedPodcastAction);
+    menu->addSeparator();
+    QAction *configAction=new QAction(Icons::self()->configureIcon, i18n("Configure..."), this);
+    menu->addAction(configAction);
+    connect(configAction, SIGNAL(triggered(bool)), this, SLOT(showPreferencesPage()));
+
     view->addAction(downloadAction);
     view->addAction(sep);
     view->addAction(podcastSearchAction);
@@ -765,6 +770,11 @@ void OnlineServicesPage::deleteDownloadedPodcast()
             OnlineServicesModel::self()->deleteDownloadedPodcasts(it.key(), it.value());
         }
     }
+}
+
+void OnlineServicesPage::showPreferencesPage()
+{
+    emit showPreferencesPage(QLatin1String("online"));
 }
 
 void OnlineServicesPage::updated(const QModelIndex &idx)

@@ -148,6 +148,7 @@ void DigitallyImported::save()
     cfg.endGroup();
     #endif
     CFG_SYNC;
+    emit updated();
 }
 
 QString DigitallyImported::modifyUrl(const QString &u) const

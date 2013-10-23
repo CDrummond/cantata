@@ -48,11 +48,13 @@ public:
 
     struct Provider
     {
-        Provider(const QString &n, const QIcon &i, const QString &k, bool h) : name(n), icon(i), key(k), hidden(h) { }
+        Provider(const QString &n, const QIcon &i, const QString &k, bool h, bool c)
+            : name(n), icon(i), key(k), hidden(h), configurable(c) { }
         QString name;
         QIcon icon;
         QString key;
         bool hidden;
+        bool configurable;
     };
 
     OnlineServicesModel(QObject *parent = 0);

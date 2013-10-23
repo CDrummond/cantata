@@ -157,12 +157,14 @@ public:
 
     struct Category
     {
-        Category(const QString &n, const QIcon &i, const QString &k, bool b, bool h) : name(n), icon(i), key(k), builtin(b), hidden(h) { }
+        Category(const QString &n, const QIcon &i, const QString &k, bool b, bool h, bool c)
+            : name(n), icon(i), key(k), builtin(b), hidden(h), configurable(c) { }
         QString name;
         QIcon icon;
         QString key;
         bool builtin;
         bool hidden;
+        bool configurable;
     };
 
     static const QString constPrefix;

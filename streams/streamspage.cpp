@@ -86,6 +86,7 @@ StreamsPage::StreamsPage(QWidget *p)
     connect(&searchModel, SIGNAL(loaded()), searchView, SLOT(hideSpinner()));
     connect(MPDConnection::self(), SIGNAL(dirChanged()), SLOT(mpdDirChanged()));
     connect(DigitallyImported::self(), SIGNAL(loginStatus(bool,QString)), SLOT(updateDiStatus()));
+    connect(DigitallyImported::self(), SIGNAL(updated()), SLOT(updateDiStatus()));
     QMenu *menu=new QMenu(this);
     menu->addAction(addAction);
     menu->addAction(StdActions::self()->removeAction);
@@ -223,7 +224,6 @@ void StreamsPage::configureStreams()
 void StreamsPage::diSettings()
 {
     DigitallyImportedSettings(this).show();
-    updateDiStatus();
 }
 
 void StreamsPage::importXml()

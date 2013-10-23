@@ -633,10 +633,12 @@ QList<OnlineServicesModel::Provider> OnlineServicesModel::getProviders() const
 {
     QList<Provider> providers;
     foreach (OnlineService *i, hiddenServices) {
-        providers.append(Provider(i->data(), static_cast<OnlineService *>(i)->icon(), static_cast<OnlineService *>(i)->id(), true));
+        providers.append(Provider(i->data(), static_cast<OnlineService *>(i)->icon(), static_cast<OnlineService *>(i)->id(), true,
+                                  static_cast<OnlineService *>(i)->canConfigure()));
     }
     foreach (MusicLibraryItemRoot *i, collections) {
-        providers.append(Provider(i->data(), static_cast<OnlineService *>(i)->icon(), static_cast<OnlineService *>(i)->id(), false));
+        providers.append(Provider(i->data(), static_cast<OnlineService *>(i)->icon(), static_cast<OnlineService *>(i)->id(), false,
+                                  static_cast<OnlineService *>(i)->canConfigure()));
     }
     return providers;
 }

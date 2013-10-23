@@ -235,7 +235,7 @@ set(CANTATA_MOC_HDRS
     models/actionmodel.h models/digitallyimported.h models/streamsearchmodel.h models/multimusicmodel.h models/onlineservicesmodel.h
     online/onlineservice.h online/onlineservicespage.h online/jamendoservice.h online/magnatuneservice.h
     online/magnatunesettingsdialog.h online/magnatuneservice.h online/magnatunesettingsdialog.h online/soundcloudservice.h
-    online/podcastservice.h online/podcastsearchdialog.h online/podcastsettingsdialog.h
+    online/podcastservice.h online/podcastsearchdialog.h online/podcastsettingsdialog.h online/onlinesettings.h
     mpd/mpdconnection.h mpd/mpdstats.h mpd/mpdstatus.h
     dynamic/dynamic.h dynamic/dynamicpage.h dynamic/dynamicruledialog.h dynamic/dynamicrulesdialog.h
     widgets/treeview.h widgets/listview.h widgets/itemview.h widgets/autohidingsplitter.h widgets/timeslider.h widgets/actionlabel.h

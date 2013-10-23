@@ -51,7 +51,7 @@ static void setIndex(QComboBox *combo, int val)
 }
 
 PodcastSettingsDialog::PodcastSettingsDialog(QWidget *p)
-    : Dialog(p)
+    : Dialog(p, "PodcastSettingsDialog", QSize(550, 160))
 {
     QWidget *mw=new QWidget(this);
     QFormLayout * lay=new QFormLayout(mw);

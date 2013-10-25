@@ -22,15 +22,10 @@
  */
 
 #include <QCoreApplication>
-#include <stdio.h>
 #include "tagserver.h"
 
 int main(int argc, char *argv[])
 {
-    if (argc<2) {
-        return -1;
-    }
-    QCoreApplication app(argc, argv);
-    TagServer *srv=new TagServer(argv[1]);
-    return srv->ok() ? app.exec() : -1;
+    TagServer server;
+    return server.process();
 }

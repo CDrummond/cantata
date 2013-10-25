@@ -39,7 +39,7 @@
 #include "audiocddevice.h"
 #endif // defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
 #include "encoders.h"
-#include "tagclient.h"
+#include "tags.h"
 #include "song.h"
 #include "mpdparseutils.h"
 #include "musiclibraryitemartist.h"
@@ -198,7 +198,7 @@ bool Device::fixVariousArtists(const QString &file, Song &song, bool applyFix)
 {
     Song orig=song;
     if (!file.isEmpty() && song.albumartist.isEmpty()) {
-        song=TagClient::self()->read(file);
+        song=Tags::read(file);
     }
 
     if (song.artist.isEmpty() || song.albumartist.isEmpty() || !Song::isVariousArtists(song.albumartist)) {
@@ -214,7 +214,7 @@ bool Device::fixVariousArtists(const QString &file, Song &song, bool applyFix)
         needsUpdating=song.fixVariousArtists();
     }
 
-    if (needsUpdating && (file.isEmpty() || Tags::Update_Modified==TagClient::self()->updateArtistAndTitle(file, song))) {
+    if (needsUpdating && (file.isEmpty() || Tags::Update_Modified==Tags::updateArtistAndTitle(file, song))) {
         return true;
     }
     song=orig;
@@ -232,7 +232,7 @@ static QByteArray save(const QImage &img) {
 
 void Device::embedCover(const QString &file, Song &song, unsigned int coverMaxSize)
 {
-    if (TagClient::self()->readImage(file).isNull()) {
+    if (Tags::readImage(file).isNull()) {
         Covers::Image coverImage=Covers::self()->getImage(song);
         if (!coverImage.img.isNull()) {
             QByteArray imgData;
@@ -248,7 +248,7 @@ void Device::embedCover(const QString &file, Song &song, unsigned int coverMaxSi
                     imgData=save(coverImage.img);
                 }
             }
-            TagClient::self()->embedImage(file, imgData);
+            Tags::embedImage(file, imgData);
         }
     }
 }

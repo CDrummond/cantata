@@ -24,68 +24,26 @@
 #ifndef TAG_CLIENT_H
 #define TAG_CLIENT_H
 
-#include "tags.h"
-#include "config.h"
-#ifdef ENABLE_EXTERNAL_TAGS
-#include <QVariant>
-#include <QVariantList>
-#endif
-#include <QProcess>
+#include "song.h"
+#include <QImage>
+#include <QString>
 
-#ifdef ENABLE_EXTERNAL_TAGS
-class QEventLoop;
-class QLocalServer;
-class QLocalSocket;
-#endif
-class QMutex;
-
-class TagClient : public QObject
+namespace Tags
 {
-    Q_OBJECT
+    struct ReplayGain;
+}
 
-public:
-    static TagClient * self();
-
-    TagClient();
-    ~TagClient();
-
-    void stop();
-
-    Song read(const QString &fileName);
-    QImage readImage(const QString &fileName);
-    QString readLyrics(const QString &fileName);
-    Tags::Update updateArtistAndTitle(const QString &fileName, const Song &song);
-    Tags::Update update(const QString &fileName, const Song &from, const Song &to, int id3Ver=-1);
-    Tags::ReplayGain readReplaygain(const QString &fileName);
-    Tags::Update updateReplaygain(const QString &fileName, const Tags::ReplayGain &rg);
-    Tags::Update embedImage(const QString &fileName, const QByteArray &cover);
-
-private Q_SLOTS:
-    void processError(QProcess::ProcessError error);
-    void newConnection();
-
-private:
-    #ifdef ENABLE_EXTERNAL_TAGS
-    enum WaitReply {
-        Wait_Ok,
-        Wait_Timeout,
-        Wait_Closed
-    };
-
-    bool startHelper();
-    void stopHelper();
-    void closeServerSocket();
-    WaitReply waitForReply();
-    #endif
-
-private:
-    QMutex *mutex;
-    #ifdef ENABLE_EXTERNAL_TAGS
-    QEventLoop *loop;
-    QProcess *proc;
-    QLocalServer *server;
-    QLocalSocket *socket;
-    #endif
-};
+namespace TagClient
+{
+    extern void enableDebug();
+    extern Song read(const QString &fileName);
+    extern QImage readImage(const QString &fileName);
+    extern QString readLyrics(const QString &fileName);
+    extern int updateArtistAndTitle(const QString &fileName, const Song &song);
+    extern int update(const QString &fileName, const Song &from, const Song &to, int id3Ver);
+    extern Tags::ReplayGain readReplaygain(const QString &fileName);
+    extern int updateReplaygain(const QString &fileName, const Tags::ReplayGain &rg);
+    extern int embedImage(const QString &fileName, const QByteArray &cover);
+}
 
 #endif

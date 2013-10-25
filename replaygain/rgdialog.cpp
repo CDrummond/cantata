@@ -27,7 +27,7 @@
 #endif
 #include "devicesmodel.h"
 #include "settings.h"
-#include "tagclient.h"
+#include "tags.h"
 #include "tagreader.h"
 #include "utils.h"
 #include "localize.h"
@@ -413,7 +413,7 @@ bool RgDialog::saveTags()
     QMap<int, Tags::ReplayGain>::ConstIterator end=tagsToSave.constEnd();
 
     for (; it!=end; ++it) {
-        switch (TagClient::self()->updateReplaygain(base+origSongs.at(it.key()).file, it.value())) {
+        switch (Tags::updateReplaygain(base+origSongs.at(it.key()).file, it.value())) {
         case Tags::Update_Failed:
             failed.append(origSongs.at(it.key()).file);
             break;

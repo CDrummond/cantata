@@ -24,7 +24,7 @@
 #include "httpserver.h"
 #include "httpsocket.h"
 #ifdef TAGLIB_FOUND
-#include "tagclient.h"
+#include "tags.h"
 #endif
 #include "settings.h"
 #include "thread.h"
@@ -201,13 +201,13 @@ QByteArray HttpServer::encodeUrl(const QString &file) const
         }
     }
     #ifdef TAGLIB_FOUND
-    s=TagClient::self()->read(f);
+    s=Tags::read(f);
     #endif
     s.file=f;
     #else
     DBUG << "file" << file;
     #ifdef TAGLIB_FOUND
-    s=TagClient::self()->read(file);
+    s=Tags::read(file);
     #endif
     s.file=file;
     #endif

@@ -93,7 +93,6 @@
 #ifdef TAGLIB_FOUND
 #include "trackorganiser.h"
 #include "tageditor.h"
-#include "tagclient.h"
 #ifdef ENABLE_REPLAYGAIN_SUPPORT
 #include "rgdialog.h"
 #endif
@@ -880,9 +879,6 @@ MainWindow::~MainWindow()
     OnlineServicesModel::self()->stop();
     #ifndef ENABLE_KDE_SUPPORT
     MediaKeys::self()->stop();
-    #endif
-    #ifdef TAGLIB_FOUND
-    TagClient::self()->stop();
     #endif
 }
 

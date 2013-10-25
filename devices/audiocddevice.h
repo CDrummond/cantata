@@ -57,7 +57,7 @@ public:
     virtual ~AudioCdDevice();
 
     QImage image() const { return cover().img; }
-    bool isDevice(const QString &dev);
+    bool isAudioDevice(const QString &dev) const;
     bool supportsDisconnect() const { return 0!=drive; }
     bool isConnected() const { return !device.isEmpty(); }
     void rescan(bool useCddb);

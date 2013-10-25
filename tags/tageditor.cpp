@@ -22,7 +22,7 @@
  */
 
 #include "tageditor.h"
-#include "tagclient.h"
+#include "tags.h"
 #include "musiclibrarymodel.h"
 #include "mpdconnection.h"
 #include "settings.h"
@@ -725,7 +725,7 @@ bool TagEditor::applyUpdates()
             continue;
         }
 
-        switch(TagClient::self()->update(baseDir+orig.file, orig, edit)) {
+        switch(Tags::update(baseDir+orig.file, orig, edit)) {
         case Tags::Update_Modified:
             #ifdef ENABLE_DEVICES_SUPPORT
             if (!deviceUdi.isEmpty()) {

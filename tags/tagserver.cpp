@@ -26,68 +26,67 @@
 #include <QDataStream>
 #include <QVariant>
 #include <QCoreApplication>
+#include <QFile>
 
-TagServer::TagServer(const char *socketName)
-    : QObject(0)
-    , socket(new QLocalSocket(this))
+TagServer::TagServer()
 {
-    socket->connectToServer(socketName);
-    if (socket->waitForConnected(1000)) {
-        connect(socket, SIGNAL(readyRead()), this, SLOT(readRequest()));
-        connect(socket, SIGNAL(stateChanged(QLocalSocket::LocalSocketState)), this, SLOT(stateChanged(QLocalSocket::LocalSocketState)));
-    } else {
-        socket->close();
-        socket->deleteLater();
-        socket=0;
-    }
+    in=new QFile(0);
+    in->open(stdin, QIODevice::ReadOnly);
+    out=new QFile(0);
+    out->open(stdout, QIODevice::WriteOnly);
 }
 
 TagServer::~TagServer()
 {
-    if (socket) {
-        socket->close();
-        socket->deleteLater();
-    }
+    delete in;
+    delete out;
 }
 
-void TagServer::readRequest()
+int TagServer::process()
 {
-    QDataStream stream(socket);
-    QString request;
-    QString fileName;
-    stream >> request >> fileName;
+    while (in->isReadable() && out->isWritable()) {
+        QString request;
+        QString fileName;
+        QDataStream inStream(in);
+        QDataStream outStream(out);
 
-    if (QLatin1String("read")==request) {
-        stream << Tags::read(fileName);
-    } else if (QLatin1String("readImage")==request) {
-        stream << Tags::readImage(fileName);
-    } else if (QLatin1String("readLyrics")==request) {
-        stream << Tags::readLyrics(fileName);
-    } else if (QLatin1String("updateArtistAndTitle")==request) {
-        Song song;
-        stream << (int)Tags::updateArtistAndTitle(fileName, song);
-    } else if (QLatin1String("update")==request) {
-        Song from;
-        Song to;
-        int id3Ver;
-        stream >> from >> to >> id3Ver;
-        stream << (int)Tags::update(fileName, from, to, id3Ver);
-    } else if (QLatin1String("readReplaygain")==request) {
-        stream << Tags::readReplaygain(fileName);
-    } else if (QLatin1String("updateReplaygain")==request) {
-        Tags::ReplayGain rg;
-        stream >> rg;
-        stream << (int)Tags::updateReplaygain(fileName, rg);
-    } else if (QLatin1String("embedImage")==request) {
-        QByteArray cover;
-        stream >> cover;
-        stream << (int)Tags::embedImage(fileName, cover);
-    }
-}
+        inStream >> request >> fileName;
 
-void TagServer::stateChanged(QLocalSocket::LocalSocketState state)
-{
-    if (QLocalSocket::ClosingState==state || QLocalSocket::UnconnectedState==state) {
-        qApp->exit(0);
+        if (QLatin1String("read")==request) {
+            outStream << Tags::read(fileName);
+            out->flush();
+        } else if (QLatin1String("readImage")==request) {
+            outStream << Tags::readImage(fileName);
+            out->flush();
+        } else if (QLatin1String("readLyrics")==request) {
+            outStream << Tags::readLyrics(fileName);
+            out->flush();
+        } else if (QLatin1String("updateArtistAndTitle")==request) {
+            Song song;
+            outStream << (int)Tags::updateArtistAndTitle(fileName, song);
+            out->flush();
+        } else if (QLatin1String("update")==request) {
+            Song from;
+            Song to;
+            int id3Ver;
+            inStream >> from >> to >> id3Ver;
+            outStream << (int)Tags::update(fileName, from, to, id3Ver);
+            out->flush();
+        } else if (QLatin1String("readReplaygain")==request) {
+            Tags::ReplayGain rg=Tags::readReplaygain(fileName);
+            outStream << rg;
+            out->flush();
+        } else if (QLatin1String("updateReplaygain")==request) {
+            Tags::ReplayGain rg;
+            inStream >> rg;
+            outStream << (int)Tags::updateReplaygain(fileName, rg);
+            out->flush();
+        } else if (QLatin1String("embedImage")==request) {
+            QByteArray cover;
+            inStream >> cover;
+            outStream << (int)Tags::embedImage(fileName, cover);
+            out->flush();
+        }
     }
+    return 0;
 }

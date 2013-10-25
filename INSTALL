@@ -79,7 +79,8 @@ The following options may be passed to CMake:
     -DENABLE_EXTERNAL_TAGS=ON
         Enable usage of external app for reading/writing tags. Helps to
         isoloate Cantata from TagLib crashes.
-        Default: ON
+        EXPERIMENTAL - CURRENTLY **NOT** WORKING!!!
+        Default: OFF
 
 
     Windows specific:

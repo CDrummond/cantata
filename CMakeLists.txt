@@ -41,7 +41,7 @@ option(ENABLE_CDPARANOIA "Enable CDParanoia libraries(required for AudioCD suppo
 option(ENABLE_CDDB "Enable CDDB libraries(either this or MusicBrianz required for AudioCD support)" ON)
 option(ENABLE_MUSICBRAINZ "Enable MusicBrianz libraries(either this or CDDB required for AudioCD support)" ON)
 option(ENABLE_PROXY_CONFIG "Enable proxy config in settings dialog" OFF)
-option(ENABLE_EXTERNAL_TAGS "Enable usage of external app for reading/writing tags" ON)
+option(ENABLE_EXTERNAL_TAGS "Enable usage of external app for reading/writing tags" OFF)
 
 if (ENABLE_QT5)
     set(ENABLE_KDE FALSE)
@@ -128,7 +128,8 @@ if (ENABLE_QT5)
     find_package(Qt5Concurrent REQUIRED)
     set(QTCORELIBS ${Qt5Core_LIBRARIES})
     set(QTNETWORKLIBS ${Qt5Network_LIBRARIES})
-    set(QTLIBS ${QTCORELIBS} ${Qt5Widgets_LIBRARIES} ${QTNETWORKLIBS} ${Qt5Xml_LIBRARIES} ${Qt5Concurrent_LIBRARIES})
+    set(QTGUILIBS ${Qt5Gui_LIBRARIES})
+    set(QTLIBS ${QTCORELIBS} ${Qt5Widgets_LIBRARIES} ${QTNETWORKLIBS} ${QTGUILIBS} ${Qt5Xml_LIBRARIES} ${Qt5Concurrent_LIBRARIES})
     set(QTINCLUDES ${Qt5Widgets_INCLUDE_DIRS} ${Qt5Network_INCLUDE_DIRS} ${Qt5Xml_INCLUDE_DIRS} ${Qt5Core_INCLUDE_DIRS} ${Qt5Concurrent_INCLUDE_DIRS})
     add_definitions(${Qt5Widgets_DEFINITIONS} ${Qt5Network_DEFINITIONS} ${Qt5Xml_DEFINITIONS} ${Qt5Concurrent_DEFINITIONS})
     set(CMAKE_CXX_FLAGS "${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS}")
@@ -143,7 +144,8 @@ else (ENABLE_QT5)
     find_package(Qt4 REQUIRED QtCore QtGui QtXml QtNetwork)
     set(QTCORELIBS ${QT_QTCORE_LIBRARY})
     set(QTNETWORKLIBS ${QT_QTNETWORK_LIBRARY})
-    set(QTLIBS ${QT_QTSVG_LIBRARY} ${QT_QTXML_LIBRARY} ${QTCORELIBS} ${QT_QTGUI_LIBRARY} ${QTNETWORKLIBS})
+    set(QTGUILIBS ${QT_QTGUI_LIBRARY})
+    set(QTLIBS ${QT_QTSVG_LIBRARY} ${QT_QTXML_LIBRARY} ${QTCORELIBS} ${QTGUILIBS} ${QTNETWORKLIBS})
     if (QT_QTDBUS_FOUND)
         set(QTLIBS ${QTLIBS} ${QT_QTDBUS_LIBRARY})
     endif (QT_QTDBUS_FOUND)
@@ -310,10 +312,10 @@ set(CANTATA_RCS cantata.qrc)
 
 if (TAGLIB_FOUND)
     set(CANTATA_SRCS ${CANTATA_SRCS}
-        tags/tageditor.cpp tags/trackorganiser.cpp tags/tagclient.cpp
+        tags/tageditor.cpp tags/trackorganiser.cpp
         devices/filenameschemedialog.cpp)
     set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS}
-        tags/tageditor.h tags/trackorganiser.h tags/tagclient.h
+        tags/tageditor.h tags/trackorganiser.h
         devices/filenameschemedialog.h devices/device.h)
     set(CANTATA_UIS ${CANTATA_UIS}
         tags/tageditor.ui tags/trackorganiser.ui
@@ -328,6 +330,7 @@ if (TAGLIB_FOUND)
         add_subdirectory(replaygain)
     endif (FFMPEG_FOUND OR MPG123_FOUND)
     if (ENABLE_EXTERNAL_TAGS)
+        set(CANTATA_SRCS ${CANTATA_SRCS} tags/tagclient.cpp)
         add_subdirectory(tags)
     else (ENABLE_EXTERNAL_TAGS)
         set(CANTATA_SRCS ${CANTATA_SRCS} tags/tags.cpp tags/filetyperesolver.cpp)
@@ -628,6 +631,11 @@ if (TAGLIB_FOUND)
         endif (NOT ENABLE_PROXY_CONFIG AND NOT ENABLE_KDE)
     endif (NOT TAGLIB_FOUND OR NOT MTP_FOUND OR NOT AUDIOCD_SUPPORT OR NOT ENABLE_REPLAYGAIN_SUPPORT OR NOT ENABLE_HTTP_STREAM_PLAYBACK OR NOT ENABLE_REMOTE_DEVICES OR (NOT ENABLE_PROXY_CONFIG AND NOT ENABLE_KDE))
 
+    if (ENABLE_EXTERNAL_TAGS)
+        message("      Tags will be read/written via an external helper app")
+        message("      NOTE: This is EXPERIMENTAL, and is NOT CURRENTLY WORKING!!!!")
+        message("            Do NOT report bugs with this build!!!")
+    endif (ENABLE_EXTERNAL_TAGS)
 else (TAGLIB_FOUND)
 
     message("      Disabled features:")

@@ -166,7 +166,24 @@ MPDStatusValues MPDParseUtils::parseStatus(const QByteArray &data)
         } else if (tokens.at(0) == "updating_db") {
             v.updatingDb=tokens.at(1).toInt();
         } else if (tokens.at(0) == "error") {
-            v.error=tokens.at(1);
+            // For errors, we dont really want to split by ':' !!!
+            QString line=lines.at(i);
+            int pos=line.indexOf(": ");
+            if (pos>0) {
+                v.error=line.mid(pos+2);
+            } else {
+                v.error=tokens.at(1);
+            }
+
+            // If we are reporting a stream error, remove any stream name added by Cantata...
+            int start=v.error.indexOf(QLatin1String("\"http://"));
+            if (start>0) {
+                int end=v.error.indexOf(QChar('\"'), start+6);
+                pos=v.error.indexOf(QChar('#'), start+6);
+                if (pos>start && pos<end) {
+                    v.error=v.error.left(pos)+v.error.mid(end);
+                }
+            }
         }
     }
     return v;

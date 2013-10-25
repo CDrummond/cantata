@@ -301,6 +301,7 @@ void MtpConnection::updateLibrary()
         s.genre=QString::fromUtf8(track->genre);
         s.track=track->tracknumber;
         s.time=(track->duration/1000.0)+0.5;
+        s.size=track->filesize;
         s.fillEmptyFields();
         #ifdef MTP_FAKE_ALBUMARTIST_SUPPORT
         if (getAlbumArtistFromPath) {

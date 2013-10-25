@@ -213,6 +213,14 @@ void ActionDialog::copy(const QString &srcUdi, const QString &dstUdi, const QLis
     totalTime=0;
     #endif
     foreach (const Song &s, songsToAction) {
+        quint32 size=s.size;
+        if (0==size) {
+            if (srcUdi.isEmpty()) {
+                 size=QFileInfo(MPDConnection::self()->getDetails().dir+s.file).size();
+            } else if (QFile::exists(s.file)) { // FS device...
+                size=QFileInfo(s.file).size();
+            }
+        }
         if (s.size>0) {
             spaceRequired+=s.size;
         }

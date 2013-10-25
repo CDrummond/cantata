@@ -704,7 +704,6 @@ static inline void addSong(const MusicLibraryItem *song, QList<Song> &insertInto
     if (MusicLibraryItem::Type_Song==song->itemType() &&
         (allowPlaylists || Song::Playlist!=static_cast<const MusicLibraryItemSong*>(song)->song().type) &&
         !checkAgainst.contains(static_cast<const MusicLibraryItemSong*>(song)->song())) {
-        static_cast<const MusicLibraryItemSong*>(song)->song().updateSize(MPDConnection::self()->getDetails().dir);
         insertInto << static_cast<const MusicLibraryItemSong*>(song)->song();
     }
 }

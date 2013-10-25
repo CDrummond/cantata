@@ -26,9 +26,8 @@
 
 #include "config.h"
 #include "dialog.h"
+#include "pagewidget.h"
 
-class PageWidget;
-class PageWidgetItem;
 #ifndef ENABLE_KDE_SUPPORT
 class ProxySettings;
 class ShortcutsSettingsPage;

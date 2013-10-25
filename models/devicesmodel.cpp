@@ -405,7 +405,7 @@ void DevicesModel::addLocalDevice(const QString &udi)
         if (Device::AudioCd==dev->devType()) {
             connect(static_cast<AudioCdDevice *>(dev), SIGNAL(matches(const QString &, const QList<CdAlbum> &)),
                     SIGNAL(matches(const QString &, const QList<CdAlbum> &)));
-            if (!autoplayCd.isEmpty() && static_cast<AudioCdDevice *>(dev)->isDevice(autoplayCd)) {
+            if (!autoplayCd.isEmpty() && static_cast<AudioCdDevice *>(dev)->isAudioDevice(autoplayCd)) {
                 autoplayCd=QString();
                 static_cast<AudioCdDevice *>(dev)->autoplay();
             }
@@ -659,7 +659,7 @@ void DevicesModel::playCd(const QString &dev)
 {
     foreach (MusicLibraryItemRoot *col, collections) {
         Device *d=static_cast<Device *>(col);
-        if (Device::AudioCd==d->devType() && static_cast<AudioCdDevice *>(d)->isDevice(dev)) {
+        if (Device::AudioCd==d->devType() && static_cast<AudioCdDevice *>(d)->isAudioDevice(dev)) {
             static_cast<AudioCdDevice *>(d)->autoplay();
             return;
         }

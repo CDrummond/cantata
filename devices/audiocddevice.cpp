@@ -165,7 +165,7 @@ AudioCdDevice::~AudioCdDevice()
     #endif
 }
 
-bool AudioCdDevice::isDevice(const QString &dev)
+bool AudioCdDevice::isAudioDevice(const QString &dev) const
 {
     return constAnyDev==dev || device==dev;
 }

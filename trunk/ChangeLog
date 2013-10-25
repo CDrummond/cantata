@@ -81,6 +81,8 @@
 46. When displaying tag editor, track orgainiser, or replay gain dialogs, check
     that the song files can be accessed. (For speed reasons, only the 1st few
     files are checked)
+47. Add a config item to control volume step - no config UI, see README for
+    details.
 
 1.1.3
 -----

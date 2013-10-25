@@ -724,11 +724,13 @@ bool Settings::inhibitSuspend()
 }
 #endif
 
+#define RESTRICT(VAL, MIN_VAL, MAX_VAL) (VAL<MIN_VAL ? MIN_VAL : (VAL>MAX_VAL ? MAX_VAL : VAL))
+
 int Settings::rssUpdate()
 {
     static int constMax=7*24*60;
     int v=GET_INT("rssUpdate", 0);
-    return v<0 ? 0 : (v>constMax ? constMax : v);
+    return RESTRICT(v, 0, constMax);
 }
 
 QDateTime Settings::lastRssUpdate()
@@ -749,13 +751,13 @@ bool Settings::podcastAutoDownload()
 int Settings::maxCoverFindPerIteration()
 {
     int v=GET_INT("maxCoverFindPerIteration", 5);
-    return v<0 ? 5 : (v>20 ? 20 : v);
+    return RESTRICT(v, 0, 20);
 }
 
 int Settings::maxCoverUpdatePerIteration()
 {
     int v=GET_INT("maxCoverUpdatePerIteration", 5);
-    return v<1 ? 5 : (v>20 ? 20 : v);
+    return RESTRICT(v, 1, 20);
 }
 
 QStringList Settings::cueFileCodecs()
@@ -771,6 +773,12 @@ bool Settings::networkAccessEnabled()
 bool Settings::albumViewLoadAll()
 {
     return GET_BOOL("albumViewLoadAll", false);
+}
+
+int Settings::volumeStep()
+{
+    int v=GET_INT("volumeStep", 5);
+    return RESTRICT(v, 1, 20);
 }
 
 void Settings::removeConnectionDetails(const QString &v)

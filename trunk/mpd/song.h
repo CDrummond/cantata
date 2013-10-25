@@ -68,7 +68,7 @@ struct Song
     quint16 year : 12;
     mutable Type type : 3;
     mutable bool guessed : 1;
-    mutable qint32 size;
+    qint32 size;
 
     // Only used in PlayQueue/PlayLists...
     quint16 key;
@@ -102,7 +102,6 @@ struct Song
     const QString & albumArtist() const { return albumartist.isEmpty() ? artist : albumartist; }
     QString displayTitle() const { return !albumartist.isEmpty() && albumartist!=artist ? artistSong() : title; }
     QString trackAndTitleStr(bool addArtist=false) const;
-    void updateSize(const QString &dir) const;
     static bool isVariousArtists(const QString &str);
     bool isVariousArtists() const { return isVariousArtists(albumArtist()); }
     bool isUnknown() const;

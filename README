@@ -243,12 +243,14 @@ permissions. If not, then they will be saved in Cantata's cache folder.
 ========================
 
 Cantata contains a few advanced config items, for which there is currently no
-graphical way of control the setting. For these, you will need to edit
+graphical way to control the setting. For these, you will need to edit
 Cantata's config by hand - whilst Cantata is NOT running!
 
 Under Linux, the Cantata config file will be either:
-    Qt builds: ~/.config/cantata/cantata.conf
-    KDE builds: ~/.kde/share/config/cantatarc
+    Qt builds:  ~/.config/cantata/cantata.conf  ( Current User )
+                /etc/xdg/cantata.conf           ( All Users    )
+    KDE builds: ~/.kde/share/config/cantatarc   ( Current User )
+                /etc/kde4/cantatarc             ( All Users    )
 
 The following config items should be added to the "[General]" section.
 
@@ -307,6 +309,10 @@ albumViewLoadAll=<Bool - true/false>
     covers immediately - rather than waiting for the cover to be displayed.
     Default is false.
 
+volumeStep=<Integer>
+    Volume % increments. Used when mouse wheel is activated over volume control.
+    Default is 5. (Values 1..20 are acceptable)
+
 e.g.
 [General]
 iconTheme=oxygen
@@ -315,6 +321,7 @@ maxCoverUpdatePerIteration=5
 cueFileCodecs=GBK, big5-0
 networkAccessEnabled=false
 albumViewLoadAll=true
+volumeStep=2
 
 
 7. CUE Files

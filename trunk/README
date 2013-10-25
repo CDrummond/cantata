@@ -716,6 +716,7 @@ The following debug values may be used:
     Stream Fetching            512
     Http Server               1024
     Song Dialog file checks   2048 (Tag Editor, Track Organiser, etc)
+    Tag Reader/Writer         4096 (Only if built with external reader/writer)
 
 These values may be combined to enable multiple output. e.g. to enable MPD and
 covers logging:

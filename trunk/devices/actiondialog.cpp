@@ -41,7 +41,7 @@
 #include "freespaceinfo.h"
 #include "icons.h"
 #include "config.h"
-#include "tagclient.h"
+#include "tags.h"
 #include "treeview.h"
 #include "onlineservicesmodel.h"
 #ifdef ENABLE_REPLAYGAIN_SUPPORT
@@ -600,7 +600,7 @@ void ActionDialog::actionStatus(int status, bool copiedCover)
                 actionedTime+=currentSong.time;
                 #endif
                 #ifdef ENABLE_REPLAYGAIN_SUPPORT
-                if (Copy==mode && sourceIsAudioCd && !albumsWithoutRgTags.contains(currentSong.album) && TagClient::self()->readReplaygain(destFile).isEmpty()) {
+                if (Copy==mode && sourceIsAudioCd && !albumsWithoutRgTags.contains(currentSong.album) && Tags::readReplaygain(destFile).isEmpty()) {
                     albumsWithoutRgTags.insert(currentSong.album);
                 }
                 #endif

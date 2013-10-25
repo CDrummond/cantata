@@ -22,7 +22,7 @@
  */
 
 #include "tagreader.h"
-#include "tagclient.h"
+#include "tags.h"
 
 void TagReader::setDetails(const QList<Song> &s, const QString &dir)
 {
@@ -38,7 +38,7 @@ void TagReader::run()
             return;
         }
 
-        emit progress(i, TagClient::self()->readReplaygain(baseDir+songs.at(i).file));
+        emit progress(i, Tags::readReplaygain(baseDir+songs.at(i).file));
     }
     setFinished(true);
 }

@@ -55,6 +55,9 @@
 #include "streamfetcher.h"
 #include "httpserver.h"
 #include "songdialog.h"
+#ifdef ENABLE_EXTERNAL_TAGS
+#include "tagclient.h"
+#endif
 
 #include <QMutex>
 #include <QMutexLocker>
@@ -137,9 +140,10 @@ enum Debug {
     Dbg_StreamFetching    = 0x0200,
     Dbg_HttpServer        = 0x0400,
     Dbg_SongDialogs       = 0x0800,
+    Dbg_TagHelper         = 0x1000,
     // NOTE: MUST UPDATE Dbg_All IF ADD NEW ITEMS!!!
 
-    Dbg_All               = 0x0FFF
+    Dbg_All               = 0x1FFF
 };
 
 int main(int argc, char *argv[])
@@ -262,6 +266,11 @@ int main(int argc, char *argv[])
         if (dbg&Dbg_SongDialogs) {
             SongDialog::enableDebug();
         }
+        #ifdef ENABLE_EXTERNAL_TAGS
+        if (dbg&Dbg_TagHelper) {
+            TagClient::enableDebug();
+        }
+        #endif
         if (dbg&Dbg_All && logToFile) {
             #if QT_VERSION < 0x050000
             qInstallMsgHandler(cantataQtMsgHandler);

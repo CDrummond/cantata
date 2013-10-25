@@ -26,8 +26,13 @@
 
 #include "song.h"
 #include "utils.h"
-#include <QByteArray>
+#include "config.h"
+#include <QImage>
 #include <QMetaType>
+
+#if defined ENABLE_EXTERNAL_TAGS && !defined CANTATA_TAG_SERVER
+#include "tagclient.h"
+#endif
 
 namespace Tags
 {
@@ -62,14 +67,25 @@ namespace Tags
         #endif
     };
 
+    #if defined ENABLE_EXTERNAL_TAGS && !defined CANTATA_TAG_SERVER
+    inline Song read(const QString &fileName) { return TagClient::read(fileName); }
+    inline QImage readImage(const QString &fileName) { return TagClient::readImage(fileName); }
+    inline QString readLyrics(const QString &fileName) { return TagClient::readLyrics(fileName); }
+    inline Update updateArtistAndTitle(const QString &fileName, const Song &song) { return (Update)TagClient::updateArtistAndTitle(fileName, song); }
+    inline Update update(const QString &fileName, const Song &from, const Song &to, int id3Ver=-1) { return (Update)TagClient::update(fileName, from, to, id3Ver); }
+    inline ReplayGain readReplaygain(const QString &fileName) { return TagClient::readReplaygain(fileName); }
+    inline Update updateReplaygain(const QString &fileName, const ReplayGain &rg) { return (Update)TagClient::updateReplaygain(fileName, rg); }
+    inline Update embedImage(const QString &fileName, const QByteArray &cover) { return (Update)TagClient::embedImage(fileName, cover); }
+    #else
     extern Song read(const QString &fileName);
-    extern QByteArray readImage(const QString &fileName);
+    extern QImage readImage(const QString &fileName);
     extern QString readLyrics(const QString &fileName);
     extern Update updateArtistAndTitle(const QString &fileName, const Song &song);
     extern Update update(const QString &fileName, const Song &from, const Song &to, int id3Ver=-1);
     extern ReplayGain readReplaygain(const QString &fileName);
     extern Update updateReplaygain(const QString &fileName, const ReplayGain &rg);
     extern Update embedImage(const QString &fileName, const QByteArray &cover);
+    #endif
 }
 
 #ifdef ENABLE_EXTERNAL_TAGS

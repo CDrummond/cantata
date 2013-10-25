@@ -235,11 +235,11 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
                                             .scaled(QSize(cSize, cSize), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
             }
             if (!al->coverRequested && iSize && Song::SingleTracks!=al->type) {
+                al->coverRequested=true;
                 al->getCover();
                 if (al->cover) {
                     return *(al->cover);
                 }
-                al->coverRequested=true;
             }
             return *theDefaultIcon;
         }
@@ -549,10 +549,8 @@ void AlbumsModel::loadAllCovers()
     }
     foreach (AlbumItem *al, items) {
         if (!al->coverRequested && Song::SingleTracks!=al->type) {
+            al->coverRequested=true;
             al->getCover();
-            if (!al->cover) {
-                al->coverRequested=true;
-            }
         }
     }
 }

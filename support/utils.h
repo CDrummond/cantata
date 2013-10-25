@@ -64,6 +64,11 @@ namespace Utils
     extern gid_t getGroupId(const char *groupName="users"); // Return 0 if user is not in group, otherwise returns group ID
     #endif
     extern void setFilePerms(const QString &file, const char *groupName="users");
+    #ifdef ENABLE_KDE_SUPPORT
+    inline bool makeDir(const QString &dir, int mode) { return KStandardDirs::makeDir(dir, mode); }
+    #else
+    extern bool makeDir(const QString &dir, int mode);
+    #endif
     extern bool createWorldReadableDir(const QString &dir, const QString &base, const char *groupName="users");
     extern void msleep(int msecs);
     inline void sleep() { msleep(100); }

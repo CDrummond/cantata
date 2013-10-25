@@ -269,11 +269,7 @@ bool Utils::createWorldReadableDir(const QString &dir, const QString &base, cons
     mode_t oldMask(umask(0000));
     gid_t gid=base.isEmpty() ? 0 : getGroupId(groupName);
     #endif
-    #ifdef ENABLE_KDE_SUPPORT
-    bool status(KStandardDirs::makeDir(dir, 0==gid ? 0755 : 0775));
-    #else
-    bool status(QDir(dir).mkpath(dir));
-    #endif
+    bool status(makeDir(dir, 0==gid ? 0755 : 0775));
     #ifndef Q_OS_WIN
     if (status && 0!=gid && dir.startsWith(base)) {
         QStringList parts=dir.mid(base.length()).split(constDirSep);
@@ -304,6 +300,70 @@ void Utils::msleep(int msecs)
 #ifndef ENABLE_KDE_SUPPORT
 // Copied from KDE... START
 #include <QLocale>
+#include <fcntl.h>
+#include <sys/stat.h>
+
+// kde_file.h
+#ifndef Q_WS_WIN
+#if (defined _LFS64_LARGEFILE) && (defined _LARGEFILE64_SOURCE) && (!defined _GNU_SOURCE) && (!defined __sun)
+#define KDE_stat                ::stat64
+#define KDE_lstat               ::lstat64
+#define KDE_struct_stat         struct stat64
+#define KDE_mkdir               ::mkdir
+#else
+#define KDE_stat                ::stat
+#define KDE_lstat               ::lstat
+#define KDE_struct_stat         struct stat
+#define KDE_mkdir               ::mkdir
+#endif
+#endif // Q_WS_WIN
+
+// kstandarddirs.h
+extern bool Utils::makeDir(const QString &dir, int mode)
+{
+    // we want an absolute path
+    if (QDir::isRelativePath(dir)) {
+        return false;
+    }
+
+    #ifdef Q_WS_WIN
+    Q_UNUSED(mode)
+    return QDir().mkpath(dir);
+    #else
+    QString target = dir;
+    uint len = target.length();
+
+    // append trailing slash if missing
+    if (dir.at(len - 1) != QLatin1Char('/')) {
+        target += QLatin1Char('/');
+    }
+
+    QString base;
+    uint i = 1;
+
+    while ( i < len ) {
+        KDE_struct_stat st;
+        int pos = target.indexOf(QLatin1Char('/'), i);
+        base += target.mid(i - 1, pos - i + 1);
+        QByteArray baseEncoded = QFile::encodeName(base);
+        // bail out if we encountered a problem
+        if (KDE_stat(baseEncoded, &st) != 0) {
+            // Directory does not exist....
+            // Or maybe a dangling symlink ?
+            if (KDE_lstat(baseEncoded, &st) == 0)
+                (void)unlink(baseEncoded); // try removing
+
+            if (KDE_mkdir(baseEncoded, static_cast<mode_t>(mode)) != 0) {
+                baseEncoded.prepend( "trying to create local folder " );
+                perror(baseEncoded.constData());
+                return false; // Couldn't create it :-(
+            }
+        }
+        i = pos + 1;
+    }
+    return true;
+    #endif
+}
 
 QString Utils::formatByteSize(double size)
 {

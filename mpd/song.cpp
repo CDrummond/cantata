@@ -33,7 +33,6 @@
 #include "utils.h"
 #endif
 #include <QMap>
-#include <QFileInfo>
 #include <QStringList>
 #include <QSet>
 #include <QChar>
@@ -365,13 +364,6 @@ QString Song::trackAndTitleStr(bool addArtist) const
 {
     return (track>9 ? QString::number(track) : (QChar('0')+QString::number(track)))
            +QChar(' ')+(addArtist ? artistSong() : title);
-}
-
-void Song::updateSize(const QString &dir) const
-{
-    if (size<=0) {
-        size=QFileInfo(dir+file).size();
-    }
 }
 
 bool Song::isVariousArtists(const QString &str)

@@ -36,7 +36,6 @@
 #include "cachesettings.h"
 #include "localize.h"
 #include "mpdconnection.h"
-#include "pagewidget.h"
 #ifdef ENABLE_PROXY_CONFIG
 #include "proxysettings.h"
 #endif

@@ -579,25 +579,39 @@ QList<Song> MusicLibraryModel::getAlbumTracks(const Song &s) const
 
 QList<Song> MusicLibraryModel::getArtistAlbumsFirstTracks(const Song &song) const
 {
-    QString artist=song.isVariousArtists() ? song.artist : song.albumArtist();
+    //QString artist=song.isVariousArtists() ? song.artist : song.albumArtist();
     QString basicArtist=song.basicArtist();
     QList<Song> tracks;
+    bool foundCurrent=false;
+    bool checkAll=!song.isVariousArtists() && song.albumArtist()!=basicArtist;
+
     foreach (MusicLibraryItem *ar, rootItem->childItems()) {
-        if (static_cast<MusicLibraryItemArtist *>(ar)->isVarious()) {
+        if (static_cast<MusicLibraryItemArtist *>(ar)->isVarious() || checkAll) {
             foreach (MusicLibraryItem *al, static_cast<MusicLibraryItemContainer *>(ar)->childItems()) {
                 MusicLibraryItemAlbum *a=static_cast<MusicLibraryItemAlbum *>(al);
                 if (a->containsArtist(basicArtist)) {
-                    tracks.append(static_cast<MusicLibraryItemSong *>(a->childItems().first())->song());
+                    Song first=static_cast<MusicLibraryItemSong *>(a->childItems().first())->song();
+                    tracks.append(first);
+                    if (!foundCurrent && first.album==song.album && first.albumArtist()==song.albumArtist()) {
+                        foundCurrent=true;
+                    }
                 }
             }
-        } else if (ar->data()==artist || ar->data()==basicArtist) {
+        } else if (ar->data()==basicArtist) { // i.e. album-artist == basic artist (most cases!)
             foreach (MusicLibraryItem *al, static_cast<MusicLibraryItemContainer *>(ar)->childItems()) {
                 MusicLibraryItemContainer *a=static_cast<MusicLibraryItemContainer *>(al);
                 if (!a->childItems().isEmpty()) {
-                    tracks.append(static_cast<MusicLibraryItemSong *>(a->childItems().first())->song());
+                    Song first=static_cast<MusicLibraryItemSong *>(a->childItems().first())->song();
+                    tracks.append(first);
+                    if (!foundCurrent && first.album==song.album && first.albumArtist()==song.albumArtist()) {
+                        foundCurrent=true;
+                    }
                 }
             }
         }
+    }
+    if (!foundCurrent) {
+        tracks.append(song);
     }
     return tracks;
 }

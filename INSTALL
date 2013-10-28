@@ -81,6 +81,10 @@ The following options may be passed to CMake:
         isoloate Cantata from TagLib crashes.
         EXPERIMENTAL - CURRENTLY **NOT** WORKING!!!
         Default: OFF
+        
+    -DENABLE_KWALLET=ON
+        Use KWallet with KDE builds.
+        Default: ON
 
 
     Windows specific:

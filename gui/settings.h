@@ -282,7 +282,7 @@ public:
     void savePodcastDownloadPath(const QString &v);
     void savePodcastAutoDownload(bool v);
     void save(bool force=false);
-    #ifdef ENABLE_KDE_SUPPORT
+    #if defined ENABLE_KDE_SUPPORT && defined ENABLE_KWALLET
     bool openWallet();
     #else
     QString iconTheme();
@@ -301,7 +301,9 @@ private:
     int ver;
     #ifdef ENABLE_KDE_SUPPORT
     KConfigGroup cfg;
+    #ifdef ENABLE_KWALLET
     KWallet::Wallet *wallet;
+    #endif
     #else
     QSettings cfg;
     #endif

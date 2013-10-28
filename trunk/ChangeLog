@@ -83,6 +83,8 @@
     files are checked)
 47. Add a config item to control volume step - no config UI, see README for
     details.
+48. Provide a CMake option to control whether KWallet is used to store MPD
+    passwords for KDE builds.
 
 1.1.3
 -----

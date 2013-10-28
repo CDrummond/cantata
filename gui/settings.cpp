@@ -22,7 +22,6 @@
  */
 
 #include "settings.h"
-#include "config.h"
 #include "musiclibraryitemalbum.h"
 #include "fancytabwidget.h"
 #include "albumsmodel.h"
@@ -33,7 +32,9 @@
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KGlobal>
 #include <KDE/KConfig>
-#include "kwallet.h"
+#ifdef ENABLE_KWALLET
+#include <kwallet.h>
+#endif
 #include <QApplication>
 #include <QWidget>
 #include <QTimer>
@@ -140,7 +141,9 @@ Settings::Settings()
     , ver(-1)
     #ifdef ENABLE_KDE_SUPPORT
     , cfg(KGlobal::config(), "General")
+    #ifdef ENABLE_KWALLET
     , wallet(0)
+    #endif
     #endif
 {
     // Only need to read system defaults if we have not previously been configured...
@@ -153,7 +156,7 @@ Settings::Settings()
 
 Settings::~Settings()
 {
-    #ifdef ENABLE_KDE_SUPPORT
+    #if defined ENABLE_KDE_SUPPORT && defined ENABLE_KWALLET
     delete wallet;
     #endif
 }
@@ -168,7 +171,7 @@ MPDConnectionDetails Settings::connectionDetails(const QString &name)
     MPDConnectionDetails details;
     if (version()<CANTATA_MAKE_VERSION(0, 8, 0) || (name.isEmpty() && !HAS_GROUP(MPDConnectionDetails::configGroupName(name)))) {
         details.hostname=GET_STRING("connectionHost", name.isEmpty() ? mpdDefaults.host : QString());
-        #ifdef ENABLE_KDE_SUPPORT
+        #if defined ENABLE_KDE_SUPPORT && defined ENABLE_KWALLET
         if (GET_BOOL("connectionPasswd", false)) {
             if (openWallet()) {
                 wallet->readPassword("mpd", details.password);
@@ -199,6 +202,7 @@ MPDConnectionDetails Settings::connectionDetails(const QString &name)
             details.hostname=CFG_GET_STRING(grp, "host", name.isEmpty() ? mpdDefaults.host : QString());
             details.port=CFG_GET_INT(grp, "port", name.isEmpty() ? mpdDefaults.port : 6600);
             details.dir=Utils::fixPath(CFG_GET_STRING(grp, "dir", name.isEmpty() ? mpdDefaults.dir : "/var/lib/mpd/music"));
+            #ifdef ENABLE_KWALLET
             if (KWallet::Wallet::isEnabled()) {
                 if (CFG_GET_BOOL(grp, "passwd", false)) {
                     if (openWallet()) {
@@ -207,7 +211,9 @@ MPDConnectionDetails Settings::connectionDetails(const QString &name)
                 } else if (name.isEmpty()) {
                     details.password=mpdDefaults.passwd;
                 }
-            } else {
+            } else 
+            #endif // ENABLE_KWALLET
+            {
                 details.password=CFG_GET_STRING(grp, "pass", name.isEmpty() ? mpdDefaults.passwd : QString());
             }
             details.dynamizerPort=CFG_GET_INT(grp, "dynamizerPort", 0);
@@ -215,7 +221,7 @@ MPDConnectionDetails Settings::connectionDetails(const QString &name)
             #ifdef ENABLE_HTTP_STREAM_PLAYBACK
             details.streamUrl=CFG_GET_STRING(grp, "streamUrl", QString());
             #endif
-            #else
+            #else // ENABLE_KDE_SUPPORT
             cfg.beginGroup(n);
             details.hostname=GET_STRING("host", name.isEmpty() ? mpdDefaults.host : QString());
             details.port=GET_INT("port", name.isEmpty() ? mpdDefaults.port : 6600);
@@ -231,7 +237,7 @@ MPDConnectionDetails Settings::connectionDetails(const QString &name)
             details.streamUrl=GET_STRING("streamUrl", QString());
             #endif
             cfg.endGroup();
-            #endif
+            #endif // ENABLE_KDE_SUPPORT
         } else {
             details.hostname=mpdDefaults.host;
             details.port=mpdDefaults.port;
@@ -269,7 +275,7 @@ QList<MPDConnectionDetails> Settings::allConnections()
     return connections;
 }
 
-#ifdef ENABLE_KDE_SUPPORT
+#if defined ENABLE_KDE_SUPPORT && defined ENABLE_KWALLET
 bool Settings::openWallet()
 {
     if (wallet) {
@@ -287,7 +293,9 @@ bool Settings::openWallet()
 
     return false;
 }
-#else
+#endif
+
+#ifndef ENABLE_KDE_SUPPORT
 QString Settings::iconTheme()
 {
     return GET_STRING("iconTheme", QString());
@@ -813,6 +821,7 @@ void Settings::saveConnectionDetails(const MPDConnectionDetails &v)
     #ifdef ENABLE_HTTP_STREAM_PLAYBACK
     CFG_SET_VALUE(grp, "streamUrl", v.streamUrl);
     #endif
+    #ifdef ENABLE_KWALLET
     if (KWallet::Wallet::isEnabled()) {
         CFG_SET_VALUE(grp, "passwd", !v.password.isEmpty());
         QString walletEntry=v.name.isEmpty() ? "mpd" : v.name;
@@ -824,7 +833,9 @@ void Settings::saveConnectionDetails(const MPDConnectionDetails &v)
         else if (openWallet()) {
             wallet->writePassword(walletEntry, v.password);
         }
-    } else {
+    } else 
+    #endif // ENABLE_KWALLET
+    {
         CFG_SET_VALUE(grp, "pass", v.password);
     }
     #else

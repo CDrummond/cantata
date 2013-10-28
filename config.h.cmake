@@ -24,6 +24,7 @@
 #cmakedefine MTP_FOUND 1
 #cmakedefine ENABLE_HTTP_STREAM_PLAYBACK 1
 #cmakedefine ENABLE_HTTPS_SUPPORT 1
+#cmakedefine ENABLE_KWALLET 1
 #cmakedefine FFMPEG_FOUND 1
 #cmakedefine MPG123_FOUND 1
 #cmakedefine CDDB_FOUND 1

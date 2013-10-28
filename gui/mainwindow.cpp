@@ -1251,6 +1251,7 @@ void MainWindow::updateConnectionsMenu()
         connectionsAction->setVisible(false);
     } else {
         connectionsAction->setVisible(true);
+        QString current=Settings::self()->currentConnection();
         QSet<QString> cfg;
         QSet<QString> menuItems;
         QMenu *menu=connectionsAction->menu();
@@ -1260,12 +1261,12 @@ void MainWindow::updateConnectionsMenu()
 
         foreach (QAction *act, menu->actions()) {
             menuItems.insert(act->data().toString());
+            act->setChecked(act->data().toString()==current);
         }
 
         if (menuItems!=cfg) {
             menu->clear();
             qSort(connections);
-            QString current=Settings::self()->currentConnection();
             int i=Qt::Key_1;
             foreach (const MPDConnectionDetails &d, connections) {
                 QAction *act=menu->addAction(d.getName(), this, SLOT(changeConnection()));

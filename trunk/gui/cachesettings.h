@@ -30,6 +30,7 @@
 #include <QTreeWidget>
 
 class QPushButton;
+class SpaceLabel;
 class Thread;
 
 class CacheItemCounter : public QObject
@@ -41,7 +42,7 @@ public:
     ~CacheItemCounter();
 
 Q_SIGNALS:
-    void count(int num, int space);
+    void count(int num, quint64 space);
 
 public Q_SLOTS:
     void getCount();
@@ -65,6 +66,7 @@ public:
     void clean();
     bool isEmpty() const { return empty; }
     QString name() const { return text(0); }
+    int spaceUsed() const { return usedSpace; }
 
 Q_SIGNALS:
     void getCount();
@@ -72,7 +74,7 @@ Q_SIGNALS:
     void updated();
 
 private Q_SLOTS:
-    void update(int itemCount, int space);
+    void update(int itemCount, quint64 space);
 
 private:
     void setStatus(const QString &str=QString());
@@ -80,6 +82,7 @@ private:
 private:
     CacheItemCounter *counter;
     bool empty;
+    quint64 usedSpace;
 };
 
 class CacheTree : public QTreeWidget
@@ -105,9 +108,11 @@ public:
 private Q_SLOTS:
     void controlButton();
     void deleteAll();
+    void updateSpace();
 
 private:
     QTreeWidget *tree;
+    SpaceLabel *spaceLabel;
     QPushButton *button;
 };
 

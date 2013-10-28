@@ -37,6 +37,7 @@
 #include "basicitemdelegate.h"
 #include "streamsmodel.h"
 #include "podcastsearchdialog.h"
+#include "squeezedtextlabel.h"
 #include <QLabel>
 #include <QPushButton>
 #include <QStyle>
@@ -48,7 +49,7 @@
 
 static const int constMaxRecurseLevel=4;
 
-static void calculate(const QString &d, const QStringList &types, int &items, int &space, int level=0)
+static void calculate(const QString &d, const QStringList &types, int &items, quint64 &space, int level=0)
 {
     if (!d.isEmpty() && level<constMaxRecurseLevel) {
         QDir dir(d);
@@ -111,7 +112,7 @@ CacheItemCounter::~CacheItemCounter()
 void CacheItemCounter::getCount()
 {
     int items=0;
-    int space=0;
+    quint64 space=0;
     calculate(dir, types, items, space);
     emit count(items, space);
 }
@@ -126,10 +127,11 @@ CacheItem::CacheItem(const QString &title, const QString &d, const QStringList &
     : QTreeWidgetItem(p, QStringList() << title)
     , counter(new CacheItemCounter(title, d, t))
     , empty(true)
+    , usedSpace(0)
 {
     connect(this, SIGNAL(getCount()), counter, SLOT(getCount()), Qt::QueuedConnection);
     connect(this, SIGNAL(deleteAll()), counter, SLOT(deleteAll()), Qt::QueuedConnection);
-    connect(counter, SIGNAL(count(int, int)), this, SLOT(update(int, int)), Qt::QueuedConnection);
+    connect(counter, SIGNAL(count(int, quint64)), this, SLOT(update(int, quint64)), Qt::QueuedConnection);
     connect(this, SIGNAL(updated()), p, SIGNAL(itemSelectionChanged()));
 }
 
@@ -138,11 +140,12 @@ CacheItem::~CacheItem()
     delete counter;
 }
 
-void CacheItem::update(int itemCount, int space)
+void CacheItem::update(int itemCount, quint64 space)
 {
     setText(1, QString::number(itemCount));
     setText(2, Utils::formatByteSize(space));
     empty=0==itemCount;
+    usedSpace=space;
     setStatus();
     emit updated();
 }
@@ -218,6 +221,22 @@ void CacheTree::showEvent(QShowEvent *e)
     QTreeWidget::showEvent(e);
 }
 
+class SpaceLabel : public SqueezedTextLabel
+{
+public:
+    SpaceLabel(QWidget *p)
+        : SqueezedTextLabel(p)
+    {
+        QFont f=font();
+        f.setItalic(true);
+        setFont(f);
+        update(i18n("Calculating..."));
+    }
+
+    void update(int space) { update(Utils::formatByteSize(space)); }
+    void update(const QString &text) { setText(i18n("Total space used: %1", text)); }
+};
+
 CacheSettings::CacheSettings(QWidget *parent)
     : QWidget(parent)
 {
@@ -249,9 +268,14 @@ CacheSettings::CacheSettings(QWidget *parent)
     new CacheItem(i18n("Magnatune"), Utils::cacheDir("magnatune", false), QStringList() << "*"+MusicLibraryModel::constLibraryCompressedExt << "*.jpg" << "*.png", tree);
     new CacheItem(i18n("Podcast Directories"), Utils::cacheDir(PodcastSearchDialog::constCacheDir, false), QStringList() << "*"+PodcastSearchDialog::constExt, tree);
 
+    for (int i=0; i<tree->topLevelItemCount(); ++i) {
+        connect(static_cast<CacheItem *>(tree->topLevelItem(i)), SIGNAL(updated()), this, SLOT(updateSpace()));
+    }
+
+    spaceLabel=new SpaceLabel(this);
     button=new QPushButton(i18n("Delete All"), this);
-    layout->addItem(new QSpacerItem(0, 0, QSizePolicy::MinimumExpanding, QSizePolicy::Fixed), row++, 0);
-    layout->addWidget(button, row, 1, 1, 1);
+    layout->addWidget(spaceLabel, row, 0, 1, 1);
+    layout->addWidget(button, row++, 1, 1, 1);
     button->setEnabled(false);
 
     connect(tree, SIGNAL(itemSelectionChanged()), this, SLOT(controlButton()));
@@ -308,4 +332,13 @@ void CacheSettings::deleteAll()
             }
         }
     }
+}
+
+void CacheSettings::updateSpace()
+{
+    quint64 space=0;
+    for (int i=0; i<tree->topLevelItemCount(); ++i) {
+        space+=static_cast<CacheItem *>(tree->topLevelItem(i))->spaceUsed();
+    }
+    spaceLabel->update(space);
 }

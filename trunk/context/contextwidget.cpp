@@ -213,11 +213,17 @@ ContextWidget::ContextWidget(QWidget *parent)
     splitterColor=palette().text().color();
     QDesktopWidget *dw=QApplication::desktop();
     if (dw) {
-        minBackdropSize=dw->availableGeometry(this).size()-QSize(32, 64);
+        QSize geo=dw->availableGeometry(this).size()-QSize(32, 64);
+        minBackdropSize=geo;
         minBackdropSize.setWidth(((int)(minBackdropSize.width()/32))*32);
         minBackdropSize.setHeight(((int)(minBackdropSize.height()/32))*32);
+        maxBackdropSize=QSize(geo.width()*1.25, geo.height()*1.25);
+    } else if (Utils::isHighDpi()) {
+        minBackdropSize=QSize(1024*3, 768*3);
+        maxBackdropSize=QSize(minBackdropSize.width()*2, minBackdropSize.height()*2);
     } else {
         minBackdropSize=QSize(1024, 768);
+        maxBackdropSize=QSize(minBackdropSize.width()*2, minBackdropSize.height()*2);
     }
 }
 
@@ -480,12 +486,17 @@ void ContextWidget::updateImage(const QImage &img, bool created)
         currentBackdrop=QPixmap::fromImage(setOpacity(img));
     }
 
-    if (!currentBackdrop.isNull() && !created && currentBackdrop.width()<minBackdropSize.width() && currentBackdrop.height()<minBackdropSize.height()) {
-        QSize size(minBackdropSize);
-        if (currentBackdrop.width()<minBackdropSize.width()/4 && currentBackdrop.height()<minBackdropSize.height()/4) {
-            size=QSize(minBackdropSize.width()/2, minBackdropSize.height()/2);
+    if (!currentBackdrop.isNull() && !created) {
+        if (currentBackdrop.width()<minBackdropSize.width() && currentBackdrop.height()<minBackdropSize.height()) {
+            QSize size(minBackdropSize);
+            if (currentBackdrop.width()<minBackdropSize.width()/4 && currentBackdrop.height()<minBackdropSize.height()/4) {
+                size=QSize(minBackdropSize.width()/2, minBackdropSize.height()/2);
+            }
+            currentBackdrop=currentBackdrop.scaled(size, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        } else if (maxBackdropSize.width()>1024 && maxBackdropSize.height()>768 &&
+                   (currentBackdrop.width()>maxBackdropSize.width() || currentBackdrop.height()>maxBackdropSize.height())) {
+            currentBackdrop=currentBackdrop.scaled(maxBackdropSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
         }
-        currentBackdrop=currentBackdrop.scaled(size, Qt::KeepAspectRatio, Qt::SmoothTransformation);
     }
 
     fadeValue=0.0;

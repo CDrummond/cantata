@@ -51,7 +51,7 @@ static QPixmap createPixmap(int size, QColor &col, double opacity, bool isPlus)
     p.setPen(QPen(col, lineWidth));
     p.setOpacity(opacity);
 
-    int offset=lineWidth*2;
+    int offset=size<=16 ? 4 : size<=22 ? 6 : 8; // lineWidth*2;
     int pos=(size/2);
     p.drawLine(offset, pos, size-offset, pos);
     if (isPlus) {
@@ -95,6 +95,25 @@ static QString toString(const QColor &col, int alpha)
     return QString("rgba(%1, %2, %3, %4%)").arg(col.red()).arg(col.green()).arg(col.blue()).arg(alpha);
 }
 
+class SpinBoxButton : public QToolButton
+{
+public:
+    SpinBoxButton(QWidget *p)
+        : QToolButton(p)
+    {
+        setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
+    }
+
+    QSize sizeHint() const
+    {
+        QSize sz=QToolButton::sizeHint();
+        if (sz.width()==sz.height()) {
+            sz.setWidth(sz.width()*1.5);
+        }
+        return sz;
+    }
+};
+
 SpinBox::SpinBox(QWidget *p)
     : QWidget(p)
 {
@@ -105,8 +124,8 @@ SpinBox::SpinBox(QWidget *p)
     connect(spin, SIGNAL(valueChanged(int)), SIGNAL(valueChanged(int)));
     if (GtkStyle::mimicWidgets()) {
         spin->setButtonSymbols(QAbstractSpinBox::NoButtons);
-        decButton=new QToolButton(this);
-        incButton=new QToolButton(this);
+        decButton=new SpinBoxButton(this);
+        incButton=new SpinBoxButton(this);
         layout->addWidget(spin);
         layout->addWidget(decButton);
         layout->addWidget(incButton);

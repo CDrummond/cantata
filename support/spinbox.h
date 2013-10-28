@@ -65,7 +65,7 @@ private:
 #ifdef Q_WS_WIN
 typedef EmptySpinBox SpinBox;
 #else
-class QToolButton;
+class SpinBoxButton;
 
 class SpinBox : public QWidget
 {
@@ -102,8 +102,8 @@ private:
 
 private:
     EmptySpinBox *spin;
-    QToolButton *incButton;
-    QToolButton *decButton;
+    SpinBoxButton *incButton;
+    SpinBoxButton *decButton;
 };
 #endif // Q_WS_WIN
 

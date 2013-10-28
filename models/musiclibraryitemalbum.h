@@ -111,7 +111,7 @@ private:
     Song::Type m_type;
     QSet<QString> m_singleTrackFiles;
     QString m_imageUrl;
-    // m_artists is used to cache the list of artists in a vraious artists albu
+    // m_artists is used to cache the list of artists in a various artists album
     // this is built when containsArtist() is called, and is mainly used by the
     // context view
     QSet<QString> m_artists;

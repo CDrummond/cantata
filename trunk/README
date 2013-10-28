@@ -34,7 +34,7 @@ Cantata is a graphical client for MPD. It contains the following features:
  8. Ability to calculate ReplyGain tags. (Linux only, and if relevant libraries
     installed)
  9. Dynamic playlists.
-10. Online services; Jamendo, Magnatune, and SoundCloud.
+10. Online services; Jamendo, Magnatune, SoundCloud, and Podcasts.
 11. Radio stream support - wth the ability to search for streams via TuneIn.
 12. USB-Mass-Storage and MTP device support. (Linux only, and if relevant
     libraries installed)

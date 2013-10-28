@@ -86,6 +86,8 @@
 48. Provide a CMake option to control whether KWallet is used to store MPD
     passwords for KDE builds.
 49. Display total cache usage in Cache settings.
+50. Fix updating of current collecion in Cantata's menu when current collection
+    is set in settings dialog.
 
 1.1.3
 -----

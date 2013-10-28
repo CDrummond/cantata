@@ -590,7 +590,7 @@ QList<Song> MusicLibraryModel::getArtistAlbumsFirstTracks(const Song &song) cons
                     tracks.append(static_cast<MusicLibraryItemSong *>(a->childItems().first())->song());
                 }
             }
-        } else if (ar->data()==artist) {
+        } else if (ar->data()==artist || ar->data()==basicArtist) {
             foreach (MusicLibraryItem *al, static_cast<MusicLibraryItemContainer *>(ar)->childItems()) {
                 MusicLibraryItemContainer *a=static_cast<MusicLibraryItemContainer *>(al);
                 if (!a->childItems().isEmpty()) {

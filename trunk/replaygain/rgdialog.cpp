@@ -81,27 +81,23 @@ int RgDialog::instanceCount()
     return iCount;
 }
 
-#if QT_VERSION < 0x050000
 static inline void setResizeMode(QHeaderView *hdr, int idx, QHeaderView::ResizeMode mode)
 {
+    #if QT_VERSION < 0x050000
     hdr->setResizeMode(idx, mode);
-}
-
-static inline void setResizeMode(QHeaderView *hdr, QHeaderView::ResizeMode mode)
-{
-    hdr->setResizeMode(mode);
-}
-#else
-static inline void setResizeMode(QHeaderView *hdr, int idx, QHeaderView::ResizeMode mode)
-{
+    #else
     hdr->setSectionResizeMode(idx, mode);
+    #endif
 }
 
 static inline void setResizeMode(QHeaderView *hdr, QHeaderView::ResizeMode mode)
 {
+    #if QT_VERSION < 0x050000
+    hdr->setResizeMode(mode);
+    #else
     hdr->setSectionResizeMode(mode);
+    #endif
 }
-#endif
 
 RgDialog::RgDialog(QWidget *parent)
     : SongDialog(parent, "RgDialog", QSize(800, 400))

@@ -46,7 +46,7 @@ Q_SIGNALS:
     void leftClickedUrl();
 
 protected:
-    void mousePressEvent(QMouseEvent *);
+    void mousePressEvent(QMouseEvent *ev);
     void mouseReleaseEvent(QMouseEvent *);
 
 private:

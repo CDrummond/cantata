@@ -25,9 +25,12 @@
 #include "localize.h"
 #include <QPalette>
 #include <QStyle>
+#include <QApplication>
+#include <QCursor>
 
 ServiceStatusLabel::ServiceStatusLabel(QWidget *p)
     : QLabel(p)
+    , pressed(false)
 {
     QFont f(font());
     f.setBold(true);
@@ -56,3 +59,21 @@ void ServiceStatusLabel::setStatus(bool on)
     setStyleSheet(QString("QLabel { color : %1; border-radius: %4px; border: 2px solid %2; margin: %3px}")
                   .arg(col).arg(col).arg(margin).arg(margin*2));
 }
+
+void ServiceStatusLabel::mousePressEvent(QMouseEvent *ev)
+{
+    QLabel::mousePressEvent(ev);
+    pressed=true;
+}
+
+void ServiceStatusLabel::mouseReleaseEvent(QMouseEvent *ev)
+{
+    QLabel::mouseReleaseEvent(ev);
+    if (pressed) {
+        pressed=false;
+        if (this==QApplication::widgetAt(QCursor::pos())) {
+            emit clicked();
+        }
+    }
+}
+

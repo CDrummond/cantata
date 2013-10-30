@@ -243,7 +243,7 @@ set(CANTATA_MOC_HDRS
     dynamic/dynamic.h dynamic/dynamicpage.h dynamic/dynamicruledialog.h dynamic/dynamicrulesdialog.h
     widgets/treeview.h widgets/listview.h widgets/itemview.h widgets/autohidingsplitter.h widgets/timeslider.h widgets/actionlabel.h
     widgets/playqueueview.h widgets/groupedview.h widgets/actionitemdelegate.h widgets/coverwidget.h widgets/volumeslider.h
-    widgets/genrecombo.h widgets/toolbar.h widgets/searchwidget.h widgets/messageoverlay.h
+    widgets/genrecombo.h widgets/toolbar.h widgets/searchwidget.h widgets/messageoverlay.h widgets/servicestatuslabel.h
     network/networkaccessmanager.h
     http/httpserversettings.h http/httpsocket.h
     context/togglelist.h context/ultimatelyrics.h context/ultimatelyricsprovider.h context/lyricsdialog.h

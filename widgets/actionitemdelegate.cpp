@@ -190,6 +190,11 @@ bool ActionItemDelegate::helpEvent(QHelpEvent *e, QAbstractItemView *view, const
 
 QAction * ActionItemDelegate::getAction(const QModelIndex &index) const
 {
+    QList<Action *> actions=index.data(ItemView::Role_Actions).value<QList<Action *> >();
+    if (actions.isEmpty()) {
+        return 0;
+    }
+
     QAbstractItemView *view=(QAbstractItemView *)parent();
     bool rtl = Qt::RightToLeft==QApplication::layoutDirection();
     QListView *lv=qobject_cast<QListView *>(view);
@@ -215,11 +220,11 @@ QAction * ActionItemDelegate::getAction(const QModelIndex &index) const
     QRect actionRect=calcActionRect(rtl, actionPos, rect);
     QRect actionRect2(actionRect);
     ActionItemDelegate::adjustActionRect(rtl, actionPos, actionRect2, iconSize);
-    QList<Action *> actions=index.data(ItemView::Role_Actions).value<QList<Action *> >();
+    QPoint cursorPos=QCursor::pos();
 
     foreach (const QPointer<Action> &a, actions) {
         actionRect=actionPos ? actionRect.adjusted(0, -2, 0, 2) : actionRect.adjusted(-2, 0, 2, 0);
-        if (actionRect.contains(QCursor::pos())) {
+        if (actionRect.contains(cursorPos)) {
             return a;
         }
 

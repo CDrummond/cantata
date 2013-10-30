@@ -570,8 +570,10 @@ StreamsModel::StreamsModel(QObject *parent)
     root->children.append(new DiCategoryItem(constRockRadioUrl, i18n("RockRadio.com"), root, getIcon("rockradio"), "rockradio"));
     root->children.append(new DiCategoryItem(constSkyFmUrl, i18n("Sky.fm"), root, getIcon("skyfm"), "skyfm"));
     favourites=new FavouritesCategoryItem(constFavouritesUrl, i18n("Favorites"), root, getIcon("favourites"));
+    listenLive=new ListenLiveCategoryItem(i18n("Listen Live"), root, getIcon("listenlive"));
+    listenLive->configName="listenlive";
+    root->children.append(listenLive);
     root->children.append(favourites);
-    buildListenLive();
     buildXml();
     addBookmarkAction = ActionCollection::get()->createAction("bookmarkcategory", i18n("Bookmark Category"), Icon("bookmark-new"));
     addToFavouritesAction = ActionCollection::get()->createAction("addtofavourites", i18n("Add Stream To Favorites"), favouritesIcon());
@@ -754,6 +756,13 @@ void StreamsModel::fetchMore(const QModelIndex &index)
             emit dataChanged(index, index);
             loadFavourites(getInternalFile(false), index);
             cat->state=CategoryItem::Fetched;
+        } else if (cat==listenLive) {
+            if (listenLive->children.isEmpty()) {
+                cat->state=CategoryItem::Fetching;
+                emit dataChanged(index, index);
+                buildListenLive(index);
+                cat->state=CategoryItem::Fetched;
+            }
         } else if (!loadCache(cat)) {
             QNetworkRequest req;
             if (constDiUrls.contains(cat->url)) {
@@ -789,13 +798,6 @@ void StreamsModel::reload(const QModelIndex &index)
         qDeleteAll(cat->children);
         cat->children.clear();
         endRemoveRows();
-
-        if (listenLive==cat) {
-            QModelIndex index=createIndex(root->children.indexOf(listenLive), 0, (void *)listenLive);
-            buildListenLive();
-            beginInsertRows(index, 0, listenLive->children.count()-1);
-            endInsertRows();
-        }
     }
 
     fetchMore(index);
@@ -1828,18 +1830,13 @@ bool StreamsModel::loadFavourites(const QString &fileName, const QModelIndex &in
     return false;
 }
 
-void StreamsModel::buildListenLive()
+void StreamsModel::buildListenLive(const QModelIndex &index)
 {
     QFile f(":listenlive.xml");
     if (f.open(QIODevice::ReadOnly)) {
-        if (!listenLive) {
-            listenLive=new ListenLiveCategoryItem(i18n("Listen Live"), root, getIcon("listenlive"));
-            root->children.append(listenLive);
-            listenLive->state=CategoryItem::Fetched;
-            listenLive->configName="listenlive";
-        }
-        CategoryItem *region=listenLive;
-        CategoryItem *prevRegion=listenLive;
+        CategoryItem *top=new CategoryItem(QString());
+        CategoryItem *region=top;
+        CategoryItem *prevRegion=top;
         QXmlStreamReader doc(&f);
         while (!doc.atEnd()) {
             doc.readNext();
@@ -1869,6 +1866,17 @@ void StreamsModel::buildListenLive()
                 region=prevRegion;
             }
         }
+
+        if (top->children.count()) {
+            beginInsertRows(index, listenLive->children.count(), (listenLive->children.count()+top->children.count())-1);
+            foreach (Item *c, top->children) {
+                c->parent=listenLive;
+            }
+            listenLive->children+=top->children;
+            top->children.clear();
+            endInsertRows();
+        }
+        delete top;
     }
 }
 

@@ -133,7 +133,7 @@ public:
     struct ListenLiveCategoryItem : public CategoryItem
     {
         ListenLiveCategoryItem(const QString &n, CategoryItem *p, const QIcon &i=QIcon())
-            : CategoryItem(QString(), n, p, i) { }
+            : CategoryItem(QLatin1String("-"), n, p, i) { }
         void removeCache();
     };
 
@@ -148,7 +148,7 @@ public:
     struct XmlCategoryItem : public CategoryItem
     {
         XmlCategoryItem(const QString &n, CategoryItem *p, const QIcon &i, const QString &cn)
-            : CategoryItem("-", n, p, i, cn, QString(), true) { }
+            : CategoryItem(QLatin1String("-"), n, p, i, cn, QString(), true) { }
         QList<Item *> loadCache();
         bool canReload() const { return false; }
         void removeCache() { }
@@ -265,7 +265,7 @@ private:
     bool loadCache(CategoryItem *cat);
     Item * toItem(const QModelIndex &index) const { return index.isValid() ? static_cast<Item*>(index.internalPointer()) : root; }
     bool loadFavourites(const QString &fileName, const QModelIndex &index, bool importing=false);
-    void buildListenLive();
+    void buildListenLive(const QModelIndex &index);
     void buildXml();
 
 private:

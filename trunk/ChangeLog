@@ -88,6 +88,7 @@
 49. Display total cache usage in Cache settings.
 50. Fix updating of current collecion in Cantata's menu when current collection
     is set in settings dialog.
+51. Only load ListenLive categories when requested.
 
 1.1.3
 -----

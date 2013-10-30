@@ -23,12 +23,14 @@
 
 #include "urllabel.h"
 #include <QVariant>
+#include <QMouseEvent>
 
 UrlLabel::UrlLabel(QWidget *p)
     : QLabel(p)
     , pressed(false)
 {
     setCursor(QCursor(Qt::PointingHandCursor));
+    setContextMenuPolicy(Qt::NoContextMenu);
 }
 
 void UrlLabel::setText(const QString &t)
@@ -43,9 +45,11 @@ void UrlLabel::setProperty(const char *name, const QVariant &value)
     }
 }
 
-void UrlLabel::mousePressEvent(QMouseEvent *)
+void UrlLabel::mousePressEvent(QMouseEvent *ev)
 {
-    pressed=true;
+    if (Qt::LeftButton==ev->buttons()) {
+        pressed=true;
+    }
 }
 
 void UrlLabel::mouseReleaseEvent(QMouseEvent *)

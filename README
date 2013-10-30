@@ -330,7 +330,7 @@ volumeStep=2
 If Cantata is running with MPD>=0.17, then it will attempt to parse the contents
 of CUE files. The CUE file will be parsed to ascertain the album and track
 details. The track durations for all bar the last should be accurate, and
-Cantata will attempt to determine the dutation of the last track - but this
+Cantata will attempt to determine the duration of the last track - but this
 might not be 100% accurate.
 
 If the CUE file references an audio file that does not exist in the MPD music
@@ -345,7 +345,7 @@ detailed in section 6 above). If Cantata fails with all configured encodings,
 then it will 'peek' at the 1st 1k bytes, and ask Qt to see if it can determine
 the encoding - and fallback to UTF-8 otherwise. (This 'peek'ing and fallback was
 how Cantata behaved in pre 1.2 versions - and is how Clementine behaves (where
-Cantata' CUE file support originates from.))
+Cantata's CUE file support originates from.))
 
 
 8. Streams
@@ -359,7 +359,7 @@ of the following format.
 
   Contents: Either streams.xml or streams.xml.gz, & either icon.png or icon.svg
             streams.xml.gz should be gzipped.
-            icon.svg should be non-compressed SVG file.
+            icon.svg should be a non-compressed SVG file.
 
             Icons for sub-categories (first level only) - these should be named
             the same as the category (with / replaced by _) -
@@ -425,13 +425,9 @@ Linux Qt4 and Windows builds, as of 1.2, now also support basic media-keys
 shortcuts.
 
 Linux Qt4 and Qt5 builds can also use the GNOME settings daemon's MediaKeys
-interface. This interface is normally started automatically undet GNOME/Unity
+interface. This interface is normally started automatically under GNOME/Unity
 - and you will also need to enable the setting in the shortcuts page of
 Cantata's configuration dialog (as of v1.1 this option is enabled by default)
-
-If your system does not have this daemon, you could possibly use
-https://code.google.com/p/mediakeys-daemon/ which is a python re-implementation
-of the interface.
 
 
 10. Dynamic Helper Script - Local Mode
@@ -760,7 +756,7 @@ Cantata contains code/icons from:
 
     Amarok         - amarok.kde.org (Transcoding, Cover fetching code in cover
                      dialog)
-    Clementine     - www.clementine-player.org (Lyrics searches, CueFile
+    Clementine     - www.clementine-player.org (Lyrics searches, CUE file
                      parsing, and digitally imported support)
     Be::MPC        - Wikipedia parsing code
     Quassel        - quassel-irc.org (Qt-only keyboard short-cut config support)
@@ -818,5 +814,4 @@ TagLib
 
 Windows version of taglib was built from TagLib 1.8, using the following cmake command:
     cmake .. -G "MinGW Makefiles" -DWITH_ASF=1 -DWITH_MP4=1 -DCMAKE_INSTALL_PREFIX=z:\dev\taglib
-
 

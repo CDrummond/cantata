@@ -447,35 +447,31 @@ MainWindow::MainWindow(QWidget *parent)
 
     int playbackIconSize=28;
     int controlIconSize=22;
-    int buttonSize=32;
+    int controlButtonSize=32;
 
     if (repeatButton->iconSize().height()>=32) {
-        controlIconSize=48;
-        playbackIconSize=48;
-        buttonSize=54;
+        controlIconSize=playbackIconSize=48;
+        controlButtonSize=54;
     } else if (repeatButton->iconSize().height()>=22) {
-        controlIconSize=32;
-        playbackIconSize=32;
-        buttonSize=36;
-    } else if (QLatin1String("oxygen")!=Icon::currentTheme().toLower()) {
-        // Oxygen does not have 24x24 icons, and media players eem to use scaled 28x28 icons...
+        controlIconSize=playbackIconSize=32;
+        controlButtonSize=36;
+    } else if (QLatin1String("oxygen")!=Icon::currentTheme().toLower() || (GtkStyle::isActive() && GtkStyle::useLightIcons())) {
+        // Oxygen does not have 24x24 icons, and media players seem to use scaled 28x28 icons...
         // But, if the theme does have media icons at 24x24 use these - as they will be sharper...
         playbackIconSize=24==Icons::self()->toolbarPlayIcon.actualSize(QSize(24, 24)).width() ? 24 : 28;
     }
-
+    int playbackButtonSize=28==playbackIconSize ? 34 : controlButtonSize;
     foreach (QToolButton *b, controlBtns) {
         b->setAutoRaise(true);
         b->setToolButtonStyle(Qt::ToolButtonIconOnly);
-        b->setMinimumSize(QSize(buttonSize, buttonSize));
-        b->setMaximumSize(QSize(buttonSize, buttonSize));
         b->setIconSize(QSize(controlIconSize, controlIconSize));
+        b->setFixedSize(QSize(controlButtonSize, controlButtonSize));
     }
     foreach (QToolButton *b, playbackBtns) {
         b->setAutoRaise(true);
         b->setToolButtonStyle(Qt::ToolButtonIconOnly);
-        b->setMinimumSize(QSize(buttonSize, buttonSize));
-        b->setMaximumSize(QSize(buttonSize, buttonSize));
         b->setIconSize(QSize(playbackIconSize, playbackIconSize));
+        b->setFixedSize(QSize(playbackButtonSize, playbackButtonSize));
     }
 
     trackLabel->setText(QString());

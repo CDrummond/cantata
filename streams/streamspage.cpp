@@ -122,6 +122,7 @@ StreamsPage::StreamsPage(QWidget *p)
     searchView->setModel(&searchProxy);
 
     diStatusLabel->setText("DI", i18nc("Service name", "Digitally Imported"));
+    connect(diStatusLabel, SIGNAL(clicked()), SLOT(diSettings()));
     updateDiStatus();  
 }
 

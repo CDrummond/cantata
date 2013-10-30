@@ -28,14 +28,24 @@
 
 class ServiceStatusLabel : public QLabel
 {
+    Q_OBJECT
+
 public:
     ServiceStatusLabel(QWidget *p);
     virtual ~ServiceStatusLabel() { }
 
     void setText(const QString &txt, const QString &name);
     void setStatus(bool on);
-    
+
+Q_SIGNALS:
+    void clicked();
+
 private:
+    void mousePressEvent(QMouseEvent *ev);
+    void mouseReleaseEvent(QMouseEvent *ev);
+
+private:
+    bool pressed;
     QString onTooltip;
     QString offTooltip;
 };

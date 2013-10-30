@@ -23,4 +23,5 @@ Icon=cantata
 Exec=cantata %U
 Categories=Qt;KDE;AudioVideo;Player;
 X-DBUS-StartupType=Unique
+X-DBUS-ServiceName=com.googlecode.cantata
 Keywords=Music;MPD;

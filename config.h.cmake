@@ -3,7 +3,8 @@
 
 #define CANTATA_MAKE_VERSION(a, b, c) (((a) << 16) | ((b) << 8) | (c))
 /*
-  NOTE: If CANTATA_REV_URL is changed, then cantata-dynamac, CMakeLists.txt, and README will need updating.
+  NOTE: If CANTATA_REV_URL, or CANTATA_URL, are changed, then cantata-dynamac,
+        CMakeLists.txt, README, and cantata.desktop  will need updating.
         dbus/com.googlecode.cantata.xml will also need renaming/updating.
 */
 #define CANTATA_REV_URL "com.googlecode.cantata"

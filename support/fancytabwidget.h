@@ -72,12 +72,13 @@ protected:
     bool eventFilter(QObject* o, QEvent* e);
 };
 
+class FancyTabBar;
 class FancyTab : public QWidget{
     Q_OBJECT
 
     Q_PROPERTY(float fader READ fader WRITE setFader)
 public:
-    FancyTab(QWidget *tabbar);
+    FancyTab(FancyTabBar *tabbar);
     float fader() { return m_fader; }
     void setFader(float value);
 
@@ -95,7 +96,7 @@ protected:
 
 private:
     QPropertyAnimation animator;
-    QWidget *tabbar;
+    FancyTabBar *tabbar;
     float m_fader;
 };
 

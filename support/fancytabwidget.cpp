@@ -285,7 +285,7 @@ bool FancyTabProxyStyle::eventFilter(QObject* o, QEvent* e) {
   return false;
 }
 
-FancyTab::FancyTab(QWidget* tabbar)
+FancyTab::FancyTab(FancyTabBar* tabbar)
   : QWidget(tabbar), tabbar(tabbar), m_fader(0)
 {
   animator.setPropertyName("fader");
@@ -362,8 +362,8 @@ QSize FancyTab::sizeHint() const {
 //   QFont boldFont(font());
 //   boldFont.setPointSizeF(Utils::StyleHelper::sidebarFontSize());
 //   boldFont.setBold(true);
-    int iconSize=static_cast<FancyTabBar *>(parent())->iconSize();
-    bool withText=static_cast<FancyTabBar *>(parent())->showText();
+    int iconSize=tabbar->iconSize();
+    bool withText=tabbar->showText();
     const int spacing = tabSpacing(withText);
     if (withText) {
         QFontMetrics fm(font());

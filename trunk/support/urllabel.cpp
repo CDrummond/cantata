@@ -24,6 +24,8 @@
 #include "urllabel.h"
 #include <QVariant>
 #include <QMouseEvent>
+#include <QApplication>
+#include <QCursor>
 
 UrlLabel::UrlLabel(QWidget *p)
     : QLabel(p)
@@ -56,6 +58,8 @@ void UrlLabel::mouseReleaseEvent(QMouseEvent *)
 {
     if (pressed) {
         pressed=false;
-        emit leftClickedUrl();
+        if (this==QApplication::widgetAt(QCursor::pos())) {
+            emit leftClickedUrl();
+        }
     }
 }

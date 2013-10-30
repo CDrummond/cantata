@@ -335,7 +335,7 @@ FancyTabBar::FancyTabBar(QWidget *parent, bool hasBorder, bool text, int iSize, 
         layout=new QHBoxLayout;
 //         layout->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Fixed));
     } else {
-        setMinimumWidth(28);
+        setMinimumWidth(tabSizeHint().width());
         setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
         layout=new QVBoxLayout;
         layout->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Fixed, QSizePolicy::Expanding));
@@ -354,13 +354,18 @@ FancyTabBar::~FancyTabBar()
 //    delete style();
 }
 
+static inline int tabSpacing(bool withText) {
+    return withText ? 8 : 14;
+}
+
 QSize FancyTab::sizeHint() const {
 //   QFont boldFont(font());
 //   boldFont.setPointSizeF(Utils::StyleHelper::sidebarFontSize());
 //   boldFont.setBold(true);
     int iconSize=static_cast<FancyTabBar *>(parent())->iconSize();
-    const int spacing = 8;
-    if (static_cast<FancyTabBar *>(parent())->showText()) {
+    bool withText=static_cast<FancyTabBar *>(parent())->showText();
+    const int spacing = tabSpacing(withText);
+    if (withText) {
         QFontMetrics fm(font());
         int textWidth = fm.width(text)*1.1;
         int width = qMax(iconSize, qMin(3*iconSize, textWidth)) + spacing + 2;
@@ -376,7 +381,7 @@ QSize FancyTabBar::tabSizeHint() const
 //   QFont boldFont(font());
 //   boldFont.setPointSizeF(Utils::StyleHelper::sidebarFontSize());
 //   boldFont.setBold(true);
-    const int spacing = 8;
+    const int spacing = tabSpacing(m_showText);
     if (m_showText) {
         QFontMetrics fm(font());
         int maxTw=0;

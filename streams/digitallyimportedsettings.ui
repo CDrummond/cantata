@@ -156,6 +156,16 @@
     </widget>
    </item>
    <item>
+    <widget class="QLabel" name="note2Label">
+     <property name="text">
+      <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; If you enter account details, then a 'DI' status item will appear under the list of streams. This will indicate if you are logged in or not&lt;/i&gt;</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>

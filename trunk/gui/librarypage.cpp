@@ -33,13 +33,10 @@
 #include "messagebox.h"
 #include "settings.h"
 #include "stdactions.h"
+#include "utils.h"
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KLocale>
 #include <KDE/KGlobalSettings>
-#endif
-#include <stdlib.h>
-#ifdef Q_OS_WIN32
-#include <time.h>
 #endif
 
 LibraryPage::LibraryPage(QWidget *p)
@@ -179,12 +176,7 @@ QStringList LibraryPage::selectedFiles(bool allowPlaylists, bool randomAlbums) c
         } else {
             mapped.clear();
             while (!albumIndexes.isEmpty()) {
-                #ifdef Q_OS_WIN32
-                int index=rand()%randomIndexes.count();
-                #else
-                int index=random()%albumIndexes.count();
-                #endif
-                mapped.append(albumIndexes.takeAt(index));
+                mapped.append(albumIndexes.takeAt(Utils::random(albumIndexes.count())));
             }
         }
     }

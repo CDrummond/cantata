@@ -31,10 +31,7 @@
 #include "messagebox.h"
 #include "settings.h"
 #include "stdactions.h"
-#include <stdlib.h>
-#ifdef Q_OS_WIN32
-#include <time.h>
-#endif
+#include "utils.h"
 
 AlbumsPage::AlbumsPage(QWidget *p)
     : QWidget(p)
@@ -166,12 +163,7 @@ QStringList AlbumsPage::selectedFiles(bool allowPlaylists, bool randomAlbums) co
         } else {
             mapped.clear();
             while (!albumIndexes.isEmpty()) {
-                #ifdef Q_OS_WIN32
-                int index=rand()%randomIndexes.count();
-                #else
-                int index=random()%albumIndexes.count();
-                #endif
-                mapped.append(albumIndexes.takeAt(index));
+                mapped.append(albumIndexes.takeAt(Utils::random(albumIndexes.count())));
             }
         }
     }

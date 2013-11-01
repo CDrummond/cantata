@@ -24,13 +24,9 @@
 #include "backdropcreator.h"
 #include "covers.h"
 #include "thread.h"
+#include "utils.h"
 #include <QApplication>
 #include <QPainter>
-#include <QDebug>
-#include <stdlib.h>
-#ifdef Q_OS_WIN32
-#include <time.h>
-#endif
 
 #include <QDebug>
 static bool debugEnabled=false;
@@ -124,11 +120,7 @@ void BackdropCreator::createImage()
 
         for (int y=0; y<constVCount; ++y) {
             for (int x=0; x<constHCount; ++x) {
-                #ifdef Q_OS_WIN32
-                int index=rand()%toUse.count();
-                #else
-                int index=random()%toUse.count();
-                #endif
+                int index=Utils::random(toUse.count());
                 p.drawImage(x*imageSize, y*imageSize, toUse.takeAt(index));
                 if (toUse.isEmpty()) {
                     toUse=images;

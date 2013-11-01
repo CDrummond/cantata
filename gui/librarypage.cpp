@@ -37,6 +37,10 @@
 #include <KDE/KLocale>
 #include <KDE/KGlobalSettings>
 #endif
+#include <stdlib.h>
+#ifdef Q_OS_WIN32
+#include <time.h>
+#endif
 
 LibraryPage::LibraryPage(QWidget *p)
     : QWidget(p)
@@ -48,6 +52,7 @@ LibraryPage::LibraryPage(QWidget *p)
     searchButton->setDefaultAction(StdActions::self()->searchAction);
 
     view->addAction(StdActions::self()->addToPlayQueueAction);
+    view->addAction(StdActions::self()->addRandomToPlayQueueAction);
     view->addAction(StdActions::self()->replacePlayQueueAction);
     view->addAction(StdActions::self()->addWithPriorityAction);
     view->addAction(StdActions::self()->addToStoredPlaylistAction);
@@ -125,7 +130,12 @@ void LibraryPage::clear()
     view->setLevel(0);
 }
 
-QStringList LibraryPage::selectedFiles(bool allowPlaylists) const
+static inline QString nameKey(const QString &artist, const QString &album)
+{
+    return '{'+artist+"}{"+album+'}';
+}
+
+QStringList LibraryPage::selectedFiles(bool allowPlaylists, bool randomAlbums) const
 {
     QModelIndexList selected = view->selectedIndexes();
     if (selected.isEmpty()) {
@@ -135,6 +145,48 @@ QStringList LibraryPage::selectedFiles(bool allowPlaylists) const
     QModelIndexList mapped;
     foreach (const QModelIndex &idx, selected) {
         mapped.append(proxy.mapToSource(idx));
+    }
+
+    if (randomAlbums) {
+        QModelIndexList albumIndexes;
+        QSet<QString> albumNames;
+        foreach (const QModelIndex &idx, mapped) {
+            MusicLibraryItem *item=static_cast<MusicLibraryItem *>(idx.internalPointer());
+            if (MusicLibraryItem::Type_Album==item->itemType()) {
+                QString name=nameKey(item->parentItem()->data(), item->data());
+                if (!albumNames.contains(name)) {
+                    albumNames.insert(name);
+                    albumIndexes.append(idx);
+                }
+            } else if (MusicLibraryItem::Type_Artist==item->itemType()) {
+                for (int row=0; row<static_cast<MusicLibraryItemContainer *>(item)->childCount(); ++row) {
+                MusicLibraryItem *album=static_cast<MusicLibraryItemContainer *>(item)->childItem(row);
+                    QString name=nameKey(item->data(), album->data());
+                    if (!albumNames.contains(name)) {
+                        albumNames.insert(name);
+                        albumIndexes.append(MusicLibraryModel::self()->index(row, 0, idx));
+                    }
+                }
+            }
+        }
+
+        if (albumIndexes.isEmpty()) {
+            return QStringList();
+        }
+
+        if (1==albumIndexes.count()) {
+            mapped=albumIndexes;
+        } else {
+            mapped.clear();
+            while (!albumIndexes.isEmpty()) {
+                #ifdef Q_OS_WIN32
+                int index=rand()%randomIndexes.count();
+                #else
+                int index=random()%albumIndexes.count();
+                #endif
+                mapped.append(albumIndexes.takeAt(index));
+            }
+        }
     }
 
     return MusicLibraryModel::self()->filenames(mapped, allowPlaylists);
@@ -174,9 +226,9 @@ Song LibraryPage::coverRequest() const
     return Song();
 }
 
-void LibraryPage::addSelectionToPlaylist(const QString &name, bool replace, quint8 priorty)
+void LibraryPage::addSelectionToPlaylist(const QString &name, bool replace, quint8 priorty, bool randomAlbums)
 {
-    QStringList files=selectedFiles(true);
+    QStringList files=selectedFiles(true, randomAlbums);
 
     if (!files.isEmpty()) {
         if (name.isEmpty()) {
@@ -346,4 +398,15 @@ void LibraryPage::controlActions()
     } else {
         StdActions::self()->setCoverAction->setEnabled(false);
     }
+
+    bool allowRandomAlbum=!selected.isEmpty();
+    if (allowRandomAlbum) {
+        foreach (const QModelIndex &idx, selected) {
+            if (MusicLibraryItem::Type_Song==static_cast<MusicLibraryItem *>(proxy.mapToSource(idx).internalPointer())->itemType()) {
+                allowRandomAlbum=false;
+                break;
+            }
+        }
+    }
+    StdActions::self()->addRandomToPlayQueueAction->setEnabled(allowRandomAlbum);
 }

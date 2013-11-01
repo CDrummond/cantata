@@ -45,6 +45,7 @@ public:
     Action *decreaseVolumeAction;
     Action *savePlayQueueAction;
     Action *addToPlayQueueAction;
+    Action *addRandomToPlayQueueAction;
     Action *replacePlayQueueAction;
     Action *addWithPriorityAction;
     Action *addToStoredPlaylistAction;

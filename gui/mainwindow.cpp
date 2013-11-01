@@ -715,6 +715,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(playQueue, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(playQueueItemActivated(const QModelIndex &)));
     connect(StdActions::self()->removeAction, SIGNAL(triggered(bool)), this, SLOT(removeItems()));
     connect(StdActions::self()->addToPlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(addToPlayQueue()));
+    connect(StdActions::self()->addRandomToPlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(addRandomToPlayQueue()));
     connect(StdActions::self()->replacePlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(replacePlayQueue()));
     connect(removeFromPlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(removeFromPlayQueue()));
     connect(promptClearPlayQueueAction, SIGNAL(triggered(bool)), playQueueSearchWidget, SLOT(clear()));
@@ -2022,13 +2023,18 @@ void MainWindow::addToPlayQueue()
     addToPlayQueue(false);
 }
 
-void MainWindow::addToPlayQueue(bool replace, quint8 priority)
+void MainWindow::addRandomToPlayQueue()
+{
+    addToPlayQueue(false, 0, true);
+}
+
+void MainWindow::addToPlayQueue(bool replace, quint8 priority, bool randomAlbums)
 {
     playQueueSearchWidget->clear();
     if (libraryPage->isVisible()) {
-        libraryPage->addSelectionToPlaylist(QString(), replace, priority);
+        libraryPage->addSelectionToPlaylist(QString(), replace, priority, randomAlbums);
     } else if (albumsPage->isVisible()) {
-        albumsPage->addSelectionToPlaylist(QString(), replace, priority);
+        albumsPage->addSelectionToPlaylist(QString(), replace, priority, randomAlbums);
     } else if (folderPage->isVisible()) {
         folderPage->addSelectionToPlaylist(QString(), replace, priority);
     } else if (playlistsPage->isVisible()) {

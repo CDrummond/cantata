@@ -219,6 +219,7 @@ public Q_SLOTS:
     void removeFromPlayQueue();
     void replacePlayQueue();
     void addToPlayQueue();
+    void addRandomToPlayQueue();
     void addWithPriority();
     void addToNewStoredPlaylist();
     void addToExistingStoredPlaylist(const QString &name);
@@ -281,7 +282,7 @@ private:
     void readSettings();
     int calcMinHeight();
     int calcCompactHeight();
-    void addToPlayQueue(bool replace, quint8 priority=0);
+    void addToPlayQueue(bool replace, quint8 priority=0, bool randomAlbums=false);
     #ifdef TAGLIB_FOUND
     void editTags(const QList<Song> &songs, bool isPlayQueue);
     #endif

@@ -62,6 +62,7 @@ StdActions::StdActions()
     decreaseVolumeAction = ActionCollection::get()->createAction("decreasevolume", i18n("Decrease Volume"));
     savePlayQueueAction = ActionCollection::get()->createAction("saveplaylist", i18n("Save As"), "document-save-as");
     addToPlayQueueAction = ActionCollection::get()->createAction("addtoplaylist", i18n("Add To Play Queue"), "list-add");
+    addRandomToPlayQueueAction = ActionCollection::get()->createAction("addrandomalbumstoplaylist", i18n("Add Albums In Random Order"), Icons::self()->shuffleIcon);
     replacePlayQueueAction = ActionCollection::get()->createAction("replaceplaylist", i18n("Replace Play Queue"), "media-playback-start");
     addWithPriorityAction = ActionCollection::get()->createAction("addwithprio", i18n("Add With Priority"), Icon("favorites"));
     addPrioHighestAction = new Action(i18n("Highest Priority (255)"), 0);

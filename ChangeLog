@@ -89,6 +89,9 @@
 50. Fix updating of current collecion in Cantata's menu when current collection
     is set in settings dialog.
 51. Only load ListenLive categories when requested.
+52. In artists and albums views, add 'Add Albums In Random Order' entry to
+    context menu. When selected, all highlighted albums (or albums by
+    highlighted artists) will be added to playqueue in a random order.
 
 1.1.3
 -----

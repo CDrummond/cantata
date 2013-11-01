@@ -317,6 +317,7 @@ private:
     Action *copyTrackInfoAction;
     Action *cropPlayQueueAction;
     Action *shufflePlayQueueAction;
+    Action *shufflePlayQueueAlbumsAction;
     Action *addStreamToPlayQueueAction;
     Action *randomPlayQueueAction;
     Action *repeatPlayQueueAction;

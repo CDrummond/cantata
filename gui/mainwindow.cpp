@@ -250,7 +250,8 @@ MainWindow::MainWindow(QWidget *parent)
     removeFromPlayQueueAction = ActionCollection::get()->createAction("removefromplaylist", i18n("Remove From Play Queue"), "list-remove");
     copyTrackInfoAction = ActionCollection::get()->createAction("copytrackinfo", i18n("Copy Track Info"));
     cropPlayQueueAction = ActionCollection::get()->createAction("cropplaylist", i18n("Crop"));
-    shufflePlayQueueAction = ActionCollection::get()->createAction("shuffleplaylist", i18n("Shuffle"));
+    shufflePlayQueueAction = ActionCollection::get()->createAction("shuffleplaylist", i18n("Shuffle Tracks"));
+    shufflePlayQueueAlbumsAction = ActionCollection::get()->createAction("shuffleplaylistalbums", i18n("Shuffle Albums"));
     addStreamToPlayQueueAction = ActionCollection::get()->createAction("addstreamtoplayqueue", i18n("Add Stream URL"), Icons::self()->addRadioStreamIcon);
     promptClearPlayQueueAction = ActionCollection::get()->createAction("clearplaylist", i18n("Clear"), Icons::self()->clearListIcon);
     expandInterfaceAction = ActionCollection::get()->createAction("expandinterface", i18n("Expanded Interface"), "view-media-playlist");
@@ -621,6 +622,7 @@ MainWindow::MainWindow(QWidget *parent)
     playQueue->addAction(addPlayQueueToStoredPlaylistAction);
     playQueue->addAction(cropPlayQueueAction);
     playQueue->addAction(shufflePlayQueueAction);
+    playQueue->addAction(shufflePlayQueueAlbumsAction);
     Action *sep=new Action(this);
     sep->setSeparator(true);
     playQueue->addAction(sep);
@@ -723,6 +725,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(copyTrackInfoAction, SIGNAL(triggered(bool)), this, SLOT(copyTrackInfo()));
     connect(cropPlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(cropPlayQueue()));
     connect(shufflePlayQueueAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(shuffle()));
+    connect(shufflePlayQueueAlbumsAction, SIGNAL(triggered(bool)), &playQueueModel, SLOT(shuffleAlbums()));
     connect(expandInterfaceAction, SIGNAL(triggered(bool)), this, SLOT(expandOrCollapse()));
     connect(songInfoAction, SIGNAL(triggered(bool)), this, SLOT(showSongInfo()));
     connect(fullScreenAction, SIGNAL(triggered(bool)), this, SLOT(fullScreen()));
@@ -1030,13 +1033,15 @@ void MainWindow::closeEvent(QCloseEvent *event)
 
 void MainWindow::playQueueItemsSelected(bool s)
 {
-    bool haveItems=playQueue->model()->rowCount()>0;
+    int rc=playQueue->model()->rowCount();
+    bool haveItems=rc>0;
     bool singleSelection=1==playQueue->selectedIndexes(false).count(); // Dont need sorted selection here...
     removeFromPlayQueueAction->setEnabled(s && haveItems);
     locateTrackAction->setEnabled(singleSelection);
     copyTrackInfoAction->setEnabled(s && haveItems);
     cropPlayQueueAction->setEnabled(playQueue->haveUnSelectedItems() && haveItems);
-    shufflePlayQueueAction->setEnabled(haveItems);
+    shufflePlayQueueAction->setEnabled(rc>1);
+    shufflePlayQueueAlbumsAction->setEnabled(rc>1);
     #ifdef TAGLIB_FOUND
     editPlayQueueTagsAction->setEnabled(s && haveItems && MPDConnection::self()->getDetails().dirReadable);
     #endif

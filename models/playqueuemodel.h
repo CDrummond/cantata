@@ -105,6 +105,7 @@ public Q_SLOTS:
     void prioritySet(const QList<qint32> &ids, quint8 priority);
     void stats();
     void cancelStreamFetch();
+    void shuffleAlbums();
 
 private Q_SLOTS:
     void stopAfterCurrentChanged(bool afterCurrent);

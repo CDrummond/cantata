@@ -45,6 +45,7 @@
 #include "httpserver.h"
 #include "settings.h"
 #include "icon.h"
+#include "utils.h"
 #include "config.h"
 #ifdef ENABLE_DEVICES_SUPPORT
 #include "devicesmodel.h"
@@ -800,6 +801,29 @@ void PlayQueueModel::stats()
 void PlayQueueModel::cancelStreamFetch()
 {
     fetcher->cancel();
+}
+
+void PlayQueueModel::shuffleAlbums()
+{
+    QMap<quint32, QStringList> albums;
+    foreach (const Song &s, songs) {
+        albums[s.key].append(s.file);
+    }
+
+    QList<quint32> keys=albums.keys();
+    if (keys.count()<2) {
+        return;
+    }
+
+    QStringList files;
+    while (!keys.isEmpty()) {
+        quint32 key=keys.takeAt(Utils::random(keys.count()));
+        foreach (const QString &file, albums[key]) {
+            files.append(file);
+        }
+    }
+
+    emit filesAdded(files, 0, 0, true, 0);
 }
 
 void PlayQueueModel::stopAfterCurrentChanged(bool afterCurrent)

@@ -35,6 +35,10 @@
 #include <KDE/KLocale>
 #include <KDE/KStandardDirs>
 #endif
+#include <stdlib.h>
+#ifdef Q_OS_WIN32
+#include <time.h>
+#endif
 
 class QString;
 class QWidget;
@@ -48,6 +52,14 @@ namespace Utils
     inline bool equal(double d1, double d2, double precision=0.0001)
     {
         return (fabs(d1 - d2) < precision);
+    }
+    inline int random(int max)
+    {
+        #ifdef Q_OS_WIN32
+        return ::rand()%max;
+        #else
+        return ::random()%max;
+        #endif
     }
 
     extern QString strippedText(QString s);

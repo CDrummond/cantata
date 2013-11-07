@@ -23,8 +23,6 @@
 
 #include "utils.h"
 #include "config.h"
-#include "mpdparseutils.h"
-#include "covers.h"
 #include "localize.h"
 #include <QFile>
 #include <QFileInfo>

@@ -232,13 +232,15 @@ QStringList StreamSearchModel::mimeTypes() const
 void StreamSearchModel::clear()
 {
     cancelAll();
-    beginRemoveRows(QModelIndex(), 0, root->children.count()-1);
-    if (Filter!=category) {
-        qDeleteAll(root->children);
+    if (!root->children.isEmpty()) {
+        beginRemoveRows(QModelIndex(), 0, root->children.count()-1);
+        if (Filter!=category) {
+            qDeleteAll(root->children);
+        }
+        root->children.clear();
+        endRemoveRows();
     }
-    root->children.clear();
     currentSearch=QString();
-    endRemoveRows();
 }
 
 static int getParam(const QString &key, QString &query)

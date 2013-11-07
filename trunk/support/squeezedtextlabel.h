@@ -43,6 +43,7 @@ public:
 
     void setText(const QString &text) { originalText=text; elideText(); }
     const QString & fullText() const { return originalText; }
+    void setTextElideMode(Qt::TextElideMode mode);
 
 protected:
     QSize minimumSizeHint() const {

@@ -73,6 +73,9 @@ CddbInterface::~CddbInterface()
 static CdAlbum toAlbum(cddb_disc_t *disc, const CdAlbum &initial=CdAlbum())
 {
     CdAlbum album;
+    if (!disc) {
+        return album;
+    }
     album.name=QString::fromUtf8(cddb_disc_get_title(disc));
     album.artist=QString::fromUtf8(cddb_disc_get_artist(disc));
     album.genre=QString::fromUtf8(cddb_disc_get_genre(disc));
@@ -144,7 +147,7 @@ void CddbInterface::readDisc()
     struct ioc_read_toc_single_entry te;
     struct ioc_read_subchannel cdsc;
     struct cd_sub_channel_info data;
-    bzero(&cdsc,sizeof(cdsc));
+    bzero(&cdsc, sizeof(cdsc));
     cdsc.data = &data;
     cdsc.data_len = sizeof(data);
     cdsc.data_format = CD_CURRENT_POSITION;
@@ -200,10 +203,12 @@ void CddbInterface::readDisc()
     }
     #endif
 
-    cddb_disc_set_artist(disc, unknown.constData());
-    cddb_disc_set_title(disc, unknown.constData());
-    cddb_disc_set_genre(disc, unknown.constData());
-    cddb_disc_calc_discid(disc);
+    if (disc) {
+        cddb_disc_set_artist(disc, unknown.constData());
+        cddb_disc_set_title(disc, unknown.constData());
+        cddb_disc_set_genre(disc, unknown.constData());
+        cddb_disc_calc_discid(disc);
+    }
     close(fd);
 
     initial=toAlbum(disc);

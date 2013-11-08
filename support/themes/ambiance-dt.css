@@ -1,35 +1,45 @@
 /* drag:toolbar scrollbar:overlay symbolic-icons:true light-icons:true*/
+QToolBar,
 ToolBar {
   background-color: #3c3b37;
   border: 0px;
 }
 
+QToolBar:active,
 ToolBar:active {
   background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,  stop: 0 #3c3b37, stop: 1 #575651);
   border: 0px;
 }
 
+QToolBar QToolButton,
+QToolBar QLabel,
 ToolBar QToolButton,
 ToolBar QLabel {
   color: #bfbbb2;
 }
 
+QToolBar QToolButton,
+QToolBar QLabel,
 ToolBar QToolButton,
 ToolBar QLabel:active {
   color: #dfdbd2;
 }
 
+QToolBar QToolButton,
 ToolBar QToolButton {
   background: transparent;
   border: 1px outset transparent;
 }
 
+QToolBar QToolButton:hover,
 ToolBar QToolButton:hover {
   background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #464640, stop: 1 #303025);
   border-radius: 5px;
   border: 1px outset #3c3b37;
 }
 
+QToolBar QToolButton:pressed,
+QToolBar QToolButton:checked,
 ToolBar QToolButton:pressed,
 ToolBar QToolButton:checked {
   background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #383730, stop: 1 #2b2c27);

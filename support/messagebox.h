@@ -40,6 +40,11 @@ namespace MessageBox {
         No=QMessageBox::No,
         Cancel=QMessageBox::Cancel
     };
+    enum Type {
+        Error,
+        Question,
+        Warning
+    };
 
     extern ButtonCode questionYesNoCancel(QWidget *parent, const QString &message, const QString &title=QString(),
                                           const GuiItem &yesText=StdGuiItem::yes(), const GuiItem &noText=StdGuiItem::no(), bool showCancel=true, bool isWarning=false);
@@ -59,9 +64,18 @@ namespace MessageBox {
     inline void information(QWidget *parent, const QString &message, const QString &title=QString()) {
         QMessageBox::information(parent, title.isEmpty() ? i18n("Information") : title, message);
     }
-    extern void errorListEx(QWidget *parent, const QString &message, const QStringList &strlist, const QString &title=QString());
+    extern ButtonCode msgListEx(QWidget *parent, Type type, const QString &message, const QStringList &strlist, const QString &title=QString());
+    inline void errorListEx(QWidget *parent, const QString &message, const QStringList &strlist, const QString &title=QString()) {
+        msgListEx(parent, Error, message, strlist, title);
+    }
     inline void errorList(QWidget *parent, const QString &message, const QStringList &strlist, const QString &title=QString()) {
-        errorListEx(parent, message, strlist, title);
+        msgListEx(parent, Error, message, strlist, title);
+    }
+    inline ButtonCode questionYesNoList(QWidget *parent, const QString &message, const QStringList &strlist, const QString &title=QString()) {
+        return msgListEx(parent, Question, message, strlist, title);
+    }
+    inline ButtonCode warningYesNoList(QWidget *parent, const QString &message, const QStringList &strlist, const QString &title=QString()) {
+        return msgListEx(parent, Warning, message, strlist, title);
     }
 };
 #endif

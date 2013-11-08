@@ -66,24 +66,52 @@ MessageBox::ButtonCode MessageBox::questionYesNoCancel(QWidget *parent, const QS
 }
 #endif
 
+#ifdef ENABLE_KDE_SUPPORT
 void MessageBox::errorListEx(QWidget *parent, const QString &message, const QStringList &strlist, const QString &title)
+#else
+MessageBox::ButtonCode MessageBox::msgListEx(QWidget *parent, Type type, const QString &message, const QStringList &strlist, const QString &title)
+#endif
 {
     Dialog *dlg=new Dialog(parent);
-    dlg->setCaption(title.isEmpty() ? i18n("Error") : title);
     dlg->setAttribute(Qt::WA_DeleteOnClose);
-    dlg->setButtons(Dialog::Ok);
     QWidget *wid=new QWidget(dlg);
     QGridLayout *lay=new QGridLayout(wid);
     QLabel *iconLabel=new QLabel(wid);
     int iconSize=Icon::dlgIconSize();
     iconLabel->setMinimumSize(iconSize, iconSize);
     iconLabel->setMaximumSize(iconSize, iconSize);
+    #ifdef ENABLE_KDE_SUPPORT
+    dlg->setCaption(title.isEmpty() ? i18n("Error") : title);
+    dlg->setButtons(Dialog::Ok);
     iconLabel->setPixmap(Icon("dialog-error").pixmap(iconSize, iconSize));
+    #else
+    switch(type) {
+    case Error:
+        dlg->setCaption(title.isEmpty() ? i18n("Error") : title);
+        dlg->setButtons(Dialog::Ok);
+        iconLabel->setPixmap(Icon("dialog-error").pixmap(iconSize, iconSize));
+        break;
+    case Question:
+        dlg->setCaption(title.isEmpty() ? i18n("Question") : title);
+        dlg->setButtons(Dialog::Yes|Dialog::No);
+        iconLabel->setPixmap(Icon("dialog-information").pixmap(iconSize, iconSize));
+        break;
+    case Warning:
+        dlg->setCaption(title.isEmpty() ? i18n("Warning") : title);
+        dlg->setButtons(Dialog::Yes|Dialog::No);
+        iconLabel->setPixmap(Icon("dialog-warning").pixmap(iconSize, iconSize));
+        break;
+    }
+    #endif
     lay->addWidget(iconLabel, 0, 0, 1, 1);
     lay->addWidget(new QLabel(message, wid), 0, 1, 1, 1);
     QListWidget *list=new QListWidget(wid);
     lay->addWidget(list, 1, 0, 1, 2);
     list->insertItems(0, strlist);
     dlg->setMainWidget(wid);
+    #ifdef ENABLE_KDE_SUPPORT
     dlg->exec();
+    #else
+    return QDialog::Accepted==dlg->exec() ? Yes : No;
+    #endif
 }

@@ -25,6 +25,13 @@ ToolBar QLabel:active {
   color: #dfdbd2;
 }
 
+QToolBar QToolButton:disabled,
+QToolBar QLabel:disabled,
+ToolBar QToolButton:disabled,
+ToolBar QLabel:disabled {
+  color: #9f9b92;
+}
+
 QToolBar QToolButton,
 ToolBar QToolButton {
   background: transparent;

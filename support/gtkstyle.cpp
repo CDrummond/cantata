@@ -133,60 +133,67 @@ static QString runProc(const QString &cmd, const QStringList &args)
 }
 #endif
 
+#if !defined Q_OS_WIN && !defined QT_NO_STYLE_GTK
+static QString iconThemeSetting;
+static QString themeNameSetting;
+#endif
+
 // Copied from musique
 QString GtkStyle::themeName()
 {
     #if defined Q_OS_WIN || defined QT_NO_STYLE_GTK
     return QString();
     #else
-    static QString name;
-    static bool read=false;
 
-    if (read) {
-        return name;
-    }
-    read=true;
+    if (themeNameSetting.isEmpty()) {
+        static bool read=false;
 
-    if (name.isEmpty()) {
-        name=runProc("dconf",  QStringList() << "read" << "/org/gnome/desktop/interface/gtk-theme");
-        if (!name.isEmpty()) {
-            return name;
+        if (read) {
+            return themeNameSetting;
         }
+        read=true;
 
-        QString rcPaths = QString::fromLocal8Bit(qgetenv("GTK2_RC_FILES"));
-        if (!rcPaths.isEmpty()) {
-            QStringList paths = rcPaths.split(QLatin1String(":"));
-            foreach (const QString &rcPath, paths) {
-                if (!rcPath.isEmpty()) {
-                    QFile rcFile(rcPath);
-                    if (rcFile.exists() && rcFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-                        QTextStream in(&rcFile);
-                        while(!in.atEnd()) {
-                            QString line = in.readLine();
-                            if (line.contains(QLatin1String("gtk-theme-name"))) {
-                                line = line.right(line.length() - line.indexOf(QLatin1Char('=')) - 1);
-                                line.remove(QLatin1Char('\"'));
-                                line = line.trimmed();
-                                name = line;
-                                break;
+        if (themeNameSetting.isEmpty()) {
+            themeNameSetting=runProc("dconf",  QStringList() << "read" << "/org/gnome/desktop/interface/gtk-theme");
+            if (!themeNameSetting.isEmpty()) {
+                return themeNameSetting;
+            }
+
+            QString rcPaths = QString::fromLocal8Bit(qgetenv("GTK2_RC_FILES"));
+            if (!rcPaths.isEmpty()) {
+                QStringList paths = rcPaths.split(QLatin1String(":"));
+                foreach (const QString &rcPath, paths) {
+                    if (!rcPath.isEmpty()) {
+                        QFile rcFile(rcPath);
+                        if (rcFile.exists() && rcFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+                            QTextStream in(&rcFile);
+                            while(!in.atEnd()) {
+                                QString line = in.readLine();
+                                if (line.contains(QLatin1String("gtk-theme-name"))) {
+                                    line = line.right(line.length() - line.indexOf(QLatin1Char('=')) - 1);
+                                    line.remove(QLatin1Char('\"'));
+                                    line = line.trimmed();
+                                    themeNameSetting = line;
+                                    break;
+                                }
                             }
                         }
                     }
-                }
-                if (!name.isEmpty()) {
-                    break;
+                    if (!themeNameSetting.isEmpty()) {
+                        break;
+                    }
                 }
             }
-        }
 
-        #if QT_VERSION < 0x050000
-        // Fall back to gconf
-        if (name.isEmpty()) {
-            name = QGtkStyle::getGConfString(QLatin1String("/desktop/gnome/interface/gtk_theme"));
+            #if QT_VERSION < 0x050000
+            // Fall back to gconf
+            if (themeNameSetting.isEmpty()) {
+                themeNameSetting = QGtkStyle::getGConfString(QLatin1String("/desktop/gnome/interface/gtk_theme"));
+            }
+            #endif
         }
-        #endif
     }
-    return name;
+    return themeNameSetting;
     #endif
 }
 
@@ -195,14 +202,33 @@ QString GtkStyle::iconTheme()
     #if defined Q_OS_WIN || defined QT_NO_STYLE_GTK
     return QString();
     #else
-    static bool read=false;
-    static QString name;
+    if (iconThemeSetting.isEmpty()) {
+        static bool read=false;
 
-    if (!read) {
-        read=true;
-        name=runProc("dconf",  QStringList() << "read" << "/org/gnome/desktop/interface/icon-theme");
+        if (!read) {
+            read=true;
+            iconThemeSetting=runProc("dconf",  QStringList() << "read" << "/org/gnome/desktop/interface/icon-theme");
+        }
     }
-    return name;
+    return iconThemeSetting;
+    #endif
+}
+
+extern void GtkStyle::setThemeName(const QString &n)
+{
+    #if defined Q_OS_WIN || defined QT_NO_STYLE_GTK
+    Q_UNUSED(n)
+    #else
+    themeNameSetting=n;
+    #endif
+}
+
+extern void GtkStyle::setIconTheme(const QString &n)
+{
+    #if defined Q_OS_WIN || defined QT_NO_STYLE_GTK
+    Q_UNUSED(n)
+    #else
+    iconThemeSetting=n;
     #endif
 }
 

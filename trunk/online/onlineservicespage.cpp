@@ -133,6 +133,7 @@ void OnlineServicesPage::setEnabled(bool e)
 
 void OnlineServicesPage::showEvent(QShowEvent *e)
 {
+    view->focusView();
     if (!expanded && OnlineServicesModel::self()->isEnabled()) {
         expanded=true;
         expandPodcasts();

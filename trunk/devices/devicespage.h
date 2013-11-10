@@ -52,6 +52,7 @@ public:
     void focusSearch() { view->focusSearch(); }
     void goBack() { view->backActivated(); }
     void refresh();
+    void showEvent(QShowEvent *e);
 
 public Q_SLOTS:
     void itemDoubleClicked(const QModelIndex &);

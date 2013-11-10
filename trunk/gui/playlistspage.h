@@ -51,6 +51,7 @@ public:
     QList<Song> selectedSongs() const;
     void addSelectionToDevice(const QString &udi);
     #endif
+    void showEvent(QShowEvent *e);
 
 Q_SIGNALS:
     // These are for communicating with MPD object (which is in its own thread, so need to talk via signal/slots)

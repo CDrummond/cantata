@@ -49,6 +49,7 @@ public:
     void focusSearch() { view->focusSearch(); searchView->focusSearch(); }
     void goBack() { itemView()->backActivated(); }
     ItemView *itemView() { return searching ? searchView : view; }
+    void showEvent(QShowEvent *e);
 
 Q_SIGNALS:
     void add(const QStringList &streams, bool replace, quint8 priorty);

@@ -97,6 +97,12 @@ void LibraryPage::setView(int v)
     MusicLibraryModel::self()->setLargeImages(ItemView::Mode_IconTop==v);
 }
 
+void LibraryPage::showEvent(QShowEvent *e)
+{
+    view->focusView();
+    QWidget::showEvent(e);
+}
+
 void LibraryPage::setItemSize(int v)
 {
     if (ItemView::Mode_IconTop!=v) {

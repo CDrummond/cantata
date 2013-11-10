@@ -91,6 +91,12 @@ PlaylistsPage::~PlaylistsPage()
 {
 }
 
+void PlaylistsPage::showEvent(QShowEvent *e)
+{
+    view->focusView();
+    QWidget::showEvent(e);
+}
+
 void PlaylistsPage::setStartClosed(bool sc)
 {
     view->setStartClosed(sc);

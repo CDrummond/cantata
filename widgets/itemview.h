@@ -133,6 +133,7 @@ public:
 
 public Q_SLOTS:
     void focusSearch();
+    void focusView();
     void showSpinner(bool v=true);
     void hideSpinner();
     void collectionRemoved(quint32 key);

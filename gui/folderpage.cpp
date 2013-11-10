@@ -117,6 +117,12 @@ void FolderPage::clear()
     DirViewModel::self()->clear();
 }
 
+void FolderPage::showEvent(QShowEvent *e)
+{
+    view->focusView();
+    QWidget::showEvent(e);
+}
+
 void FolderPage::searchItems()
 {
     QString text=view->searchText().trimmed();

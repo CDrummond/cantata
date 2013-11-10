@@ -452,7 +452,9 @@ void MusicLibraryModel::updateMusicLibrary(MusicLibraryItemRoot *newroot, QDateT
     }
 
     if ((updatedSongs || needToUpdate) && (!fromFile && (needToSave || needToUpdate))) {
-        rootItem->toXML(cacheFileName(), dbUpdate);
+        if (dbUpdate.isValid()) { // MPD proxy DB does not send a db_update
+            rootItem->toXML(cacheFileName(), dbUpdate);
+        }
     }
 
     AlbumsModel::self()->update(rootItem);
@@ -554,7 +556,9 @@ void MusicLibraryModel::toggleGrouping()
 {
     beginResetModel();
     rootItem->toggleGrouping();
-    rootItem->toXML(cacheFileName(), databaseTime);
+    if (databaseTime.isValid()) { // MPD proxy DB does not send a db_update
+        rootItem->toXML(cacheFileName(), databaseTime);
+    }
     endResetModel();
     if (mpdModel) {
         AlbumsModel::self()->update(rootItem);

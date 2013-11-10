@@ -823,6 +823,11 @@ void ItemView::focusSearch()
     searchWidget->activate();
 }
 
+void ItemView::focusView()
+{
+    view()->setFocus();
+}
+
 void ItemView::setSearchLabelText(const QString &text)
 {
     searchWidget->setLabel(text);

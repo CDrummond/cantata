@@ -130,6 +130,12 @@ StreamsPage::~StreamsPage()
 {
 }
 
+void StreamsPage::showEvent(QShowEvent *e)
+{
+    view->focusView();
+    QWidget::showEvent(e);
+}
+
 void StreamsPage::setEnabled(bool e)
 {
     if (e==enabled) {

@@ -135,6 +135,12 @@ DevicesPage::~DevicesPage()
 {
 }
 
+void DevicesPage::showEvent(QShowEvent *e)
+{
+    view->focusView();
+    QWidget::showEvent(e);
+}
+
 void DevicesPage::clear()
 {
     DevicesModel::self()->clear();

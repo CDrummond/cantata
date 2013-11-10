@@ -59,6 +59,7 @@ public:
     void setView(int v) { view->setMode((ItemView::Mode)v); }
     void focusSearch() { view->focusSearch(); }
     void goBack() { view->backActivated(); }
+    void showEvent(QShowEvent *e);
 
 Q_SIGNALS:
     // These are for communicating with MPD object (which is in its own thread, so need to talk via signal/slots)

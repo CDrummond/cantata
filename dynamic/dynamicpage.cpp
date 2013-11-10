@@ -207,6 +207,7 @@ void DynamicPage::enableWidgets(bool enable)
 
 void DynamicPage::showEvent(QShowEvent *e)
 {
+    view->focusView();
     Dynamic::self()->enableRemotePolling(true);
     QWidget::showEvent(e);
 }

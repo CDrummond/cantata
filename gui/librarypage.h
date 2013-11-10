@@ -55,6 +55,7 @@ public:
     void showAlbum(const QString &artist, const QString &album);
     void focusSearch() { view->focusSearch(); }
     void goBack() { view->backActivated(); }
+    void showEvent(QShowEvent *e);
 
 private:
     void setItemSize(int v);

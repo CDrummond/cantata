@@ -93,6 +93,7 @@ void AlbumsPage::setView(int v)
 
 void AlbumsPage::showEvent(QShowEvent *e)
 {
+    view->focusView();
     if (CL_LoadAll==coverLoad) {
         AlbumsModel::self()->loadAllCovers();
         coverLoad=CL_Loaded;

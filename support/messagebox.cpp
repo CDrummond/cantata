@@ -69,10 +69,33 @@ MessageBox::ButtonCode MessageBox::questionYesNoCancel(QWidget *parent, const QS
 #ifdef ENABLE_KDE_SUPPORT
 void MessageBox::errorListEx(QWidget *parent, const QString &message, const QStringList &strlist, const QString &title)
 #else
+namespace MessageBox
+{
+class YesNoListDialog : public Dialog
+{
+public:
+    YesNoListDialog(QWidget *p) : Dialog(p) { }
+    void slotButtonClicked(int b) {
+        switch(b) {
+        case Dialog::Yes:
+            accept();
+            break;
+        case Dialog::No:
+            reject();
+            break;
+        }
+    }
+};
+}
+
 MessageBox::ButtonCode MessageBox::msgListEx(QWidget *parent, Type type, const QString &message, const QStringList &strlist, const QString &title)
 #endif
 {
+    #ifdef ENABLE_KDE_SUPPORT
     Dialog *dlg=new Dialog(parent);
+    #else
+    MessageBox::YesNoListDialog *dlg=new MessageBox::YesNoListDialog(parent);
+    #endif
     dlg->setAttribute(Qt::WA_DeleteOnClose);
     QWidget *wid=new QWidget(dlg);
     QGridLayout *lay=new QGridLayout(wid);

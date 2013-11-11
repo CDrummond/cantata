@@ -97,6 +97,9 @@
 55. If MPD's database time is invalid, and the cache's database time is
     invalid, then accept a database listing. This works-around an issue with
     using MPD's proxy DB - where no database time is sent.
+56. Look for backdrop.jpg/png in music folder before attempting to download.
+57. Add option to store downloaded backdrops into music folder. Stored as
+    backdrop.jpg
 
 1.1.3
 -----

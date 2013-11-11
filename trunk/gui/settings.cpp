@@ -385,6 +385,11 @@ bool Settings::storeStreamsInMpdDir()
     return GET_BOOL("storeStreamsInMpdDir", def);
 }
 
+bool Settings::storeBackdropsInMpdDir()
+{
+    return GET_BOOL("storeBackdropsInMpdDir", false);
+}
+
 int Settings::libraryView()
 {
     int v=version();
@@ -935,6 +940,12 @@ void Settings::saveStoreLyricsInMpdDir(bool v)
 void Settings::saveStoreStreamsInMpdDir(bool v)
 {
     SET_VALUE_MOD(storeStreamsInMpdDir)
+}
+
+
+void Settings::saveStoreBackdropsInMpdDir(bool v)
+{
+    SET_VALUE_MOD(storeBackdropsInMpdDir)
 }
 
 void Settings::saveLibraryView(int v)

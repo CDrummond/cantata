@@ -61,6 +61,7 @@ void ContextWidget::enableDebug()
     debugEnabled=true;
 }
 
+static const QString constBackdropName=QLatin1String("backdrop");
 //const QLatin1String ContextWidget::constHtbApiKey(0); // API key required
 const QLatin1String ContextWidget::constFanArtApiKey("ee86404cb429fa27ac32a1a3c117b006");
 const QLatin1String ContextWidget::constCacheDir("backdrops/");
@@ -530,6 +531,7 @@ void ContextWidget::update(const Song &s)
     artist->update(sng);
     album->update(sng);
     song->update(sng);
+    currentSong=s;
 
     updateArtist=Covers::fixArtist(sng.basicArtist());
     if (isVisible() && drawBackdrop) {
@@ -563,7 +565,7 @@ void ContextWidget::cancel()
 
 void ContextWidget::updateBackdrop()
 {
-    DBUG << updateArtist << currentArtist;
+    DBUG << updateArtist << currentArtist << currentSong.file;
     if (updateArtist==currentArtist) {
         return;
     }
@@ -573,6 +575,34 @@ void ContextWidget::updateBackdrop()
         updateImage(QImage());
         QWidget::update();
         return;
+    }
+
+    if (!currentSong.isStream() && MPDConnection::self()->getDetails().dirReadable) {
+        QString dirName=MPDConnection::self()->getDetails().dir;
+        if (!dirName.isEmpty() && !dirName.startsWith(QLatin1String("http:/"))) {
+            dirName+=Utils::getDir(currentSong.file);
+            QString encoded=Covers::encodeName(currentArtist);
+            QStringList names=QStringList() << encoded+"-"+constBackdropName+".jpg" << encoded+"-"+constBackdropName+".png"
+                                            << constBackdropName+".jpg" << constBackdropName+".png";
+            for (int level=0; level<2; ++level) {
+                foreach (const QString &fileName, names) {
+                    DBUG << "Checking file" << QString(dirName+fileName);
+                    if (QFile::exists(dirName+fileName)) {
+                        QImage img(dirName+fileName);
+
+                        if (!img.isNull()) {
+                            DBUG << "Got backdrop from" << QString(dirName+fileName);
+                            updateImage(img);
+                            QWidget::update();
+                            return;
+                        }
+                    }
+                }
+                QDir d(dirName);
+                d.cdUp();
+                dirName=Utils::fixPath(d.absolutePath());
+            }
+        }
     }
 
     QImage img(cacheFileName(currentArtist, false));
@@ -926,10 +956,32 @@ void ContextWidget::downloadResponse()
         createBackdrop();
     } else {
         updateImage(img);
-        QFile f(cacheFileName(currentArtist, true));
-        if (f.open(QIODevice::WriteOnly)) {
-            f.write(data);
-            f.close();
+        bool saved=false;
+
+        if (Settings::self()->storeBackdropsInMpdDir() && !currentSong.isVariousArtists() && !currentSong.isStream() &&
+            MPDConnection::self()->getDetails().dirReadable) {
+            QString mpdDir=MPDConnection::self()->getDetails().dir;
+            QString songDir=Utils::getDir(currentSong.file);
+            if (!mpdDir.isEmpty() && 2==songDir.split(Utils::constDirSep, QString::SkipEmptyParts).count()) {
+                QDir d(mpdDir+songDir);
+                d.cdUp();
+                QString fileName=Utils::fixPath(d.absolutePath())+constBackdropName+".jpg";
+                QFile f(fileName);
+                if (f.open(QIODevice::WriteOnly)) {
+                    f.write(data);
+                    f.close();
+                    DBUG << "Saved backdrop to" << fileName << "for artist" << currentArtist << ", current song" << currentSong.file;
+                    saved=true;
+                }
+            }
+        }
+
+        if (!saved) {
+            QFile f(cacheFileName(currentArtist, true));
+            if (f.open(QIODevice::WriteOnly)) {
+                f.write(data);
+                f.close();
+            }
         }
         QWidget::update();
     }

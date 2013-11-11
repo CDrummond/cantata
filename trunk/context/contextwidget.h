@@ -112,6 +112,7 @@ private:
     bool darkBackground;
 //    bool useHtBackdrops;
     bool useFanArt;
+    Song currentSong;
     QPixmap oldBackdrop;
     QPixmap currentBackdrop;
     QString currentArtist;

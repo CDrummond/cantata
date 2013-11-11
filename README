@@ -213,8 +213,7 @@ For artist images:
 3. artist.jpg
 4. artist.png
 
-... the above will be repeated for each parent folder (until we reach the MPD
-    root folder)
+...the above will be repeated for the parent folder
 
 ...then Cantata will check its cache folder (~/.cache/cantata/covers), for :
 
@@ -226,8 +225,7 @@ For artist images:
 7. ${url}/${dirFromFile}/artist.jpg
 8. ${url}/${dirFromFile}/artist.png
  
-... the above will be repeated for each parent folder (until we reach the MPD
-    root folder)
+...the above will be repeated for the parent folder
 
 ...lastly
 
@@ -237,6 +235,39 @@ For artist images:
 Downloaded images will be saved as artist.jpg/png, within the artist folder
 if the folder heirarchy is 2 levels (artist/album/) and the user has write
 permissions. If not, then they will be saved in Cantata's cache folder.
+
+For context view backdrops:
+
+...if MPD folder exists, is not specified as a http URL, and is readable, then
+   cantata will look for the following within the folder containing the song:
+
+1. ${currentArtist}-backdrop.jpg
+2. ${currentArtist}-backdrop.png
+3. backdrop.jpg
+4. backdrop.png
+
+...the above will be repeated for the parent folder
+
+...then Cantata will check its cache folder (~/.cache/cantata/backdrops), for :
+
+5. ${currentArtist}.jpg
+6. ${currentArtist}.png
+
+...internet services:
+
+7. MusizBrainz is queried for an artist ID. If returned, this artist ID is used
+   to locate a cover from fanart.tv
+8. Download image from discogs
+
+...lastly:
+
+9. If all the above fails, a backdrop is created from all the album covers
+   featuring the artist.
+
+Downloaded images will be saved as backdrop.jpg, within the artist folder
+if the current song is not from a Various Artists album, the folder heirarchy is
+2 levels (artist/album/) and the user has write permissions. If not, then they
+will be saved in Cantata's cache folder.
 
 
 6. Advanced Config Items

@@ -37,6 +37,7 @@ void FileSettings::load()
     storeCoversInMpdDir->setChecked(Settings::self()->storeCoversInMpdDir());
     storeLyricsInMpdDir->setChecked(Settings::self()->storeLyricsInMpdDir());
     storeStreamsInMpdDir->setChecked(Settings::self()->storeStreamsInMpdDir());
+    storeBackdropsInMpdDir->setChecked(Settings::self()->storeBackdropsInMpdDir());
 }
 
 void FileSettings::save()
@@ -47,6 +48,7 @@ void FileSettings::save()
     Settings::self()->saveStoreCoversInMpdDir(storeCoversInMpdDir->isChecked());
     Settings::self()->saveStoreLyricsInMpdDir(storeLyricsInMpdDir->isChecked());
     Settings::self()->saveStoreStreamsInMpdDir(storeStreamsInMpdDir->isChecked());
+    Settings::self()->saveStoreBackdropsInMpdDir(storeBackdropsInMpdDir->isChecked());
 
     if (streamsChaged) {
         emit reloadStreams();

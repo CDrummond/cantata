@@ -47,6 +47,23 @@
       </widget>
      </item>
      <item row="2" column="0">
+      <widget class="BuddyLabel" name="storeBackdropsInMpdDirLabel">
+       <property name="text">
+        <string>Save downloaded backdrops in music folder:</string>
+       </property>
+       <property name="buddy">
+        <cstring>storeBackdropsInMpdDir</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="OnOffButton" name="storeBackdropsInMpdDir">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
       <widget class="QLabel" name="label">
        <property name="text">
         <string>Save list of favorite streams in music folder:</string>
@@ -56,7 +73,7 @@
        </property>
       </widget>
      </item>
-     <item row="2" column="1">
+     <item row="3" column="1">
       <widget class="OnOffButton" name="storeStreamsInMpdDir">
        <property name="text">
         <string/>

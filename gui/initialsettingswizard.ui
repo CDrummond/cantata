@@ -741,6 +741,23 @@
        </widget>
       </item>
       <item row="2" column="0">
+       <widget class="BuddyLabel" name="storeBackdropsInMpdDirLabel">
+        <property name="text">
+         <string>Save downloaded backdrops in music folder:</string>
+        </property>
+        <property name="buddy">
+         <cstring>storeBackdropsInMpdDir</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="OnOffButton" name="storeBackdropsInMpdDir">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
        <widget class="QLabel" name="storeStreamsInMpdDirLabel">
         <property name="text">
          <string>Save list of favorite streams in music folder:</string>
@@ -750,14 +767,14 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="1">
+      <item row="3" column="1">
        <widget class="OnOffButton" name="storeStreamsInMpdDir" native="true">
         <property name="text" stdset="0">
          <string/>
         </property>
        </widget>
       </item>
-      <item row="10" column="0">
+      <item row="4" column="0">
        <spacer name="verticalSpacer_5x">
         <property name="orientation">
          <enum>Qt::Vertical</enum>
@@ -773,7 +790,7 @@
         </property>
        </spacer>
       </item>
-      <item row="11" column="0" colspan="2">
+      <item row="5" column="0" colspan="2">
        <widget class="QLabel" name="persNote">
         <property name="text">
          <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; If you elect to have Cantata store covers, or lyrics, within the music folder, and you do not have write access to this folder, then Cantata will revert to saving the files in your personal cache folder. However, for streams, if you do not have write access, then you will only be able to view (and play) the streams stored in the music folder, and not add (or edit) any streams. If you elect not to store streams within the music folder, then these will be saved in your local config folder - and will only be accessible to yourself.&lt;/i&gt;</string>

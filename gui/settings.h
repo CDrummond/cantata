@@ -113,6 +113,7 @@ public:
     bool storeCoversInMpdDir();
     bool storeLyricsInMpdDir();
     bool storeStreamsInMpdDir();
+    bool storeBackdropsInMpdDir();
     int libraryView();
     int albumsView();
     int folderView();
@@ -210,6 +211,7 @@ public:
     void saveStoreCoversInMpdDir(bool v);
     void saveStoreLyricsInMpdDir(bool v);
     void saveStoreStreamsInMpdDir(bool v);
+    void saveStoreBackdropsInMpdDir(bool v);
     void saveLibraryView(int v);
     void saveAlbumsView(int v);
     void saveFolderView(int v);

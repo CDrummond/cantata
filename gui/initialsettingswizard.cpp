@@ -73,6 +73,7 @@ InitialSettingsWizard::InitialSettingsWizard(QWidget *p)
     storeCoversInMpdDir->setChecked(Settings::self()->storeCoversInMpdDir());
     storeLyricsInMpdDir->setChecked(Settings::self()->storeLyricsInMpdDir());
     storeStreamsInMpdDir->setChecked(Settings::self()->storeStreamsInMpdDir());
+    storeBackdropsInMpdDir->setChecked(Settings::self()->storeBackdropsInMpdDir());
     #ifdef ENABLE_KDE_SUPPORT
     introPage->setBackground(Icon("cantata"));
     #else

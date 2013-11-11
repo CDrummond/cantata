@@ -77,7 +77,7 @@ namespace MessageBox {
     inline ButtonCode warningYesNoList(QWidget *parent, const QString &message, const QStringList &strlist, const QString &title=QString()) {
         return msgListEx(parent, Warning, message, strlist, title);
     }
-};
+}
 #endif
 
 #endif

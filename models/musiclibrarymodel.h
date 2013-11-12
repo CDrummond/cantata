@@ -112,7 +112,7 @@ Q_SIGNALS:
 
 private:
     void setCover(const Song &song, const QImage &img, const QString &file, bool update);
-    void setParentState(const QModelIndex &parent, bool childChecked, MusicLibraryItemContainer *parentItem, MusicLibraryItem *item);
+    void setParentState(const QModelIndex &parent);
 
 private:
     bool mpdModel;

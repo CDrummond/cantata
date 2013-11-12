@@ -262,16 +262,13 @@ bool MusicLibraryModel::setData(const QModelIndex &idx, const QVariant &value, i
         }
         case MusicLibraryItem::Type_Album: {
             MusicLibraryItemArtist *artistItem=static_cast<MusicLibraryItemArtist *>(item->parentItem());
-            QModelIndex artistIndex=index(artistItem->row(), 0, QModelIndex());
             MusicLibraryItemAlbum *albumItem=static_cast<MusicLibraryItemAlbum *>(item);
-            albumItem->setCheckState(check);
-            QModelIndex albumIndex=index(albumItem->row(), 0, artistIndex);
+            QModelIndex artistIndex=index(artistItem->row(), 0, QModelIndex());
             item->setCheckState(check);
             foreach (MusicLibraryItem *song, albumItem->childItems()) {
                 song->setCheckState(check);
             }
-            emit dataChanged(index(0, 0, albumIndex), index(0, albumItem->childCount(), albumIndex));
-            setParentState(artistIndex, value.toBool(), artistItem, item);
+            setParentState(artistIndex);
             emit dataChanged(idx, idx);
             break;
         }
@@ -281,8 +278,8 @@ bool MusicLibraryModel::setData(const QModelIndex &idx, const QVariant &value, i
             MusicLibraryItemArtist *artistItem=static_cast<MusicLibraryItemArtist *>(albumItem->parentItem());
             QModelIndex artistIndex=index(artistItem->row(), 0, QModelIndex());
             QModelIndex albumIndex=index(albumItem->row(), 0, artistIndex);
-            setParentState(albumIndex, value.toBool(), albumItem, item);
-            setParentState(artistIndex, Qt::Unchecked!=albumItem->checkState(), artistItem, albumItem);
+            setParentState(albumIndex);
+            setParentState(artistIndex);
             emit dataChanged(idx, idx);
             break;
         }
@@ -295,35 +292,36 @@ bool MusicLibraryModel::setData(const QModelIndex &idx, const QVariant &value, i
     return ActionModel::setData(idx, value, role);
 }
 
-void MusicLibraryModel::setParentState(const QModelIndex &parent, bool childChecked, MusicLibraryItemContainer *parentItem, MusicLibraryItem *item)
+void MusicLibraryModel::setParentState(const QModelIndex &parent)
 {
-    Qt::CheckState parentCheck=childChecked ? Qt::PartiallyChecked : Qt::Unchecked;
-    int checkedChildren=childChecked ? 1 : 0;
-    int uncheckedChildren=childChecked ? 0 : 1;
+    MusicLibraryItemContainer *parentItem=static_cast<MusicLibraryItemContainer *>(parent.internalPointer());
+    Qt::CheckState parentCheck=parentItem->checkState();
+    bool haveCheckedChildren=false;
+    bool haveUncheckedChildren=false;
     bool stop=false;
+
     foreach (MusicLibraryItem *child, parentItem->childItems()) {
-        if (child!=item) {
-            switch (child->checkState()) {
-            case Qt::PartiallyChecked:
-                parentCheck=Qt::PartiallyChecked;
-                stop=true;
-                break;
-            case Qt::Unchecked:
-                uncheckedChildren++;
-                parentCheck=checkedChildren ? Qt::PartiallyChecked : Qt::Unchecked;
-                stop=checkedChildren && uncheckedChildren;
-                break;
-            case Qt::Checked:
-                checkedChildren++;
-                parentCheck=uncheckedChildren ? Qt::PartiallyChecked : Qt::Checked;
-                stop=checkedChildren && uncheckedChildren;
-                break;
-            }
+        switch (child->checkState()) {
+        case Qt::PartiallyChecked:
+            parentCheck=Qt::PartiallyChecked;
+            stop=true;
+            break;
+        case Qt::Unchecked:
+            haveUncheckedChildren=true;
+            parentCheck=haveCheckedChildren ? Qt::PartiallyChecked : Qt::Unchecked;
+            stop=haveCheckedChildren && haveUncheckedChildren;
+            break;
+        case Qt::Checked:
+            haveCheckedChildren=true;
+            parentCheck=haveUncheckedChildren ? Qt::PartiallyChecked : Qt::Checked;
+            stop=haveCheckedChildren && haveUncheckedChildren;
+            break;
         }
         if (stop) {
             break;
         }
     }
+
     if (parentItem->checkState()!=parentCheck) {
         parentItem->setCheckState(parentCheck);
         emit dataChanged(parent, parent);

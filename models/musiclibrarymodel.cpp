@@ -380,7 +380,7 @@ QModelIndex MusicLibraryModel::findAlbumIndex(const QString &artist, const QStri
     s.album=album;
     MusicLibraryItemArtist *artistItem = rootItem->artist(s, false);
     MusicLibraryItemAlbum *albumItem = artistItem ? artistItem->album(s, false) : 0;
-    return artistItem ? index(albumItem->row(), 0, index(artistItem->row(), 0, QModelIndex())) : QModelIndex();
+    return albumItem ? index(albumItem->row(), 0, index(artistItem->row(), 0, QModelIndex())) : QModelIndex();
 }
 
 void MusicLibraryModel::removeCache()

@@ -291,7 +291,7 @@ void ArtistView::setBio()
             QStringList artistAlbums=c.value();
             qSort(artistAlbums);
             foreach (const QString &album, artistAlbums) {
-                albums+=QLatin1String("<li><a href=\"")+buildUrl(currentSong.albumArtist(), album)+"\">"+album+"</a></li>";
+                albums+=QLatin1String("<li><a href=\"")+buildUrl(currentSong.artist, album)+"\">"+album+"</a></li>";
             }
         }
         for (; it!=end; ++it) {

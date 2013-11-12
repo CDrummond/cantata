@@ -100,6 +100,9 @@
 56. Look for backdrop.jpg/png in music folder before attempting to download.
 57. Add option to store downloaded backdrops into music folder. Stored as
     backdrop.jpg
+58. Fix crash when an album link is clicked on in context-view when current
+    song is from a Various Artists album and the album link is to another album
+    by the artist.
 
 1.1.3
 -----

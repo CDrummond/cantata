@@ -49,6 +49,9 @@
 #endif
 #include <QFile>
 #include <QDebug>
+#ifdef QT_QTDBUS_FOUND
+#include <QDBusConnection>
+#endif
 
 static int iCount=0;
 
@@ -112,11 +115,15 @@ ActionDialog::ActionDialog(QWidget *parent)
     connect(configureDestButton, SIGNAL(clicked()), SLOT(configureDest()));
     connect(this, SIGNAL(update()), MPDConnection::self(), SLOT(update()));
     connect(songCount, SIGNAL(leftClickedUrl()), SLOT(showSongs()));
+    #ifdef QT_QTDBUS_FOUND
+    unityMessage=QDBusMessage::createSignal("/Cantata", "com.canonical.Unity.LauncherEntry", "Update");
+    #endif
 }
 
 ActionDialog::~ActionDialog()
 {
     iCount--;
+    updateUnity(true);
 }
 
 void ActionDialog::controlInfoLabel(Device *dev)
@@ -359,6 +366,7 @@ void ActionDialog::init(const QString &srcUdi, const QString &dstUdi, const QLis
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
     albumsWithoutRgTags.clear();
     #endif
+    updateUnity(false);
 }
 
 void ActionDialog::slotButtonClicked(int button)
@@ -877,6 +885,27 @@ void ActionDialog::incProgress()
 {
     count++;
     progressBar->setValue(100*count);
+    updateUnity(false);
+}
+
+void ActionDialog::updateUnity(bool finished)
+{
+    #ifdef QT_QTDBUS_FOUND
+    QList<QVariant> args;
+    double progress = finished || progressBar->maximum()<1 ? 0.0 : (progressBar->value()/(progressBar->maximum()*1.0));
+    bool showProgress = progress>-0.1 && progress < 100.0 && !finished;
+    QMap<QString, QVariant> props;
+    props["count-visible"]=!finished && songsToAction.count()>0;
+    props["count"]=(long long)songsToAction.count();
+    props["progress-visible"]=showProgress;
+    props["progress"]=showProgress ? progress : 0.0;
+    args.append("application://cantata.desktop");
+    args.append(props);
+    unityMessage.setArguments(args);
+    QDBusConnection::sessionBus().send(unityMessage);
+    #else
+    Q_UNUSED(finished)
+    #endif
 }
 
 void ActionDialog::cacheSaved()

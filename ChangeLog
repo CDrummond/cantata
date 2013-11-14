@@ -103,6 +103,8 @@
 58. Fix crash when an album link is clicked on in context-view when current
     song is from a Various Artists album and the album link is to another album
     by the artist.
+59. Show device copy/delete status in Unity launcher - show current progress,
+    and track count to be actioned.
 
 1.1.3
 -----

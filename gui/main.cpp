@@ -146,83 +146,8 @@ enum Debug {
     Dbg_All               = 0x1FFF
 };
 
-int main(int argc, char *argv[])
+static void installDebugMessageHandler()
 {
-    #ifdef ENABLE_KDE_SUPPORT
-    KAboutData aboutData(PACKAGE_NAME, 0,
-                         ki18n("Cantata"), PACKAGE_VERSION_STRING,
-                         ki18n("A KDE client for MPD"),
-                         KAboutData::License_GPL_V3,
-                         ki18n("Copyright © 2011–2013 Craig Drummond"),
-                         KLocalizedString(),
-                         "http://"CANTATA_URL, "craig.p.drummond@gmail.com");
-
-    aboutData.addAuthor(ki18n("Craig Drummond"), ki18n("Maintainer"), "craig.p.drummond@gmail.com");
-    aboutData.addAuthor(ki18n("Piotr Wicijowski"), ki18n("UI Improvements"), "piotr.wicijowski@gmail.com");
-    aboutData.addAuthor(ki18n("Sander Knopper"), ki18n("QtMPC author"), QByteArray(), "http://qtmpc.lowblog.nl");
-    aboutData.addAuthor(ki18n("Roeland Douma"), ki18n("QtMPC author"), QByteArray(), "http://qtmpc.lowblog.nl");
-    aboutData.addAuthor(ki18n("Daniel Selinger"), ki18n("QtMPC author"), QByteArray(), "http://qtmpc.lowblog.nl");
-    aboutData.addAuthor(ki18n("Armin Walland"), ki18n("QtMPC author"), QByteArray(), "http://qtmpc.lowblog.nl");
-//    if (ContextWidget::constHtbApiKey.latin1()) {
-//        aboutData.addCredit(ki18n("Home Theater Backdrops"), ki18n("Context view backdrops"), QByteArray(), "www.htbackdrops.com");
-//    }
-    aboutData.addCredit(ki18n("FanArt.tv"), ki18n("Context view backdrops (please consider uploading your own music fan-art to fanart.tv)"), QByteArray(), "www.fanart.tv");
-    aboutData.addCredit(ki18n("Wikipedia"), ki18n("Context view metadata"), QByteArray(), "www.wikipedia.org");
-    aboutData.addCredit(ki18n("Last.fm"), ki18n("Context view metadata"), QByteArray(), "www.last.fm");
-    KCmdLineArgs::init(argc, argv, &aboutData);
-    #ifdef TAGLIB_FOUND
-    KCmdLineOptions options;
-    options.add("+[URL]", ki18n("URL to open"));
-    KCmdLineArgs::addCmdLineOptions(options);
-    KUniqueApplication::addCmdLineOptions();
-    #endif
-    if (!KUniqueApplication::start()) {
-        exit(0);
-    }
-
-    Application app;
-    #else // ENABLE_KDE_SUPPORT
-    QCoreApplication::setApplicationName(PACKAGE_NAME);
-    #ifdef Q_OS_WIN
-    QCoreApplication::setOrganizationName("mpd");
-    #else
-    QCoreApplication::setOrganizationName(PACKAGE_NAME);
-    #endif
-
-    Application app(argc, argv);
-    if (!app.start()) {
-        return 0;
-    }
-
-    // Translations
-    QString langEnv=qgetenv("CANTATA_LANG");
-    loadTranslation("qt", QLibraryInfo::location(QLibraryInfo::TranslationsPath), langEnv);
-    #ifdef Q_OS_WIN
-    loadTranslation("qt", app.applicationDirPath()+QLatin1String("/translations"), langEnv);
-    loadTranslation("qt", QDir::currentPath()+QLatin1String("/translations"), langEnv);
-    #endif
-    loadTranslation("cantata", app.applicationDirPath()+QLatin1String("/translations"), langEnv);
-    loadTranslation("cantata", QDir::currentPath()+QLatin1String("/translations"), langEnv);
-    #ifndef Q_OS_WIN
-    loadTranslation("cantata", INSTALL_PREFIX"/share/cantata/translations/", langEnv);
-    #endif
-
-      // Set the permissions on the config file on Unix - it can contain passwords
-      // for internet services so it's important that other users can't read it.
-    // On Windows these are stored in the registry instead.
-    #ifdef Q_OS_UNIX
-    QSettings s;
-
-    // Create the file if it doesn't exist already
-    if (!QFile::exists(s.fileName())) {
-        QFile file(s.fileName());
-        file.open(QIODevice::WriteOnly);
-    }
-
-    // Set -rw-------
-    QFile::setPermissions(s.fileName(), QFile::ReadOwner | QFile::WriteOwner);
-    #endif
-
     QString debug=qgetenv("CANTATA_DEBUG");
     if (!debug.isEmpty()) {
         int dbg=debug.toInt();
@@ -279,6 +204,89 @@ int main(int argc, char *argv[])
             #endif
         }
     }
+}
+
+int main(int argc, char *argv[])
+{
+    #ifdef ENABLE_KDE_SUPPORT
+    KAboutData aboutData(PACKAGE_NAME, 0,
+                         ki18n("Cantata"), PACKAGE_VERSION_STRING,
+                         ki18n("A KDE client for MPD"),
+                         KAboutData::License_GPL_V3,
+                         ki18n("Copyright © 2011–2013 Craig Drummond"),
+                         KLocalizedString(),
+                         "http://"CANTATA_URL, "craig.p.drummond@gmail.com");
+
+    aboutData.addAuthor(ki18n("Craig Drummond"), ki18n("Maintainer"), "craig.p.drummond@gmail.com");
+    aboutData.addAuthor(ki18n("Piotr Wicijowski"), ki18n("UI Improvements"), "piotr.wicijowski@gmail.com");
+    aboutData.addAuthor(ki18n("Sander Knopper"), ki18n("QtMPC author"), QByteArray(), "http://qtmpc.lowblog.nl");
+    aboutData.addAuthor(ki18n("Roeland Douma"), ki18n("QtMPC author"), QByteArray(), "http://qtmpc.lowblog.nl");
+    aboutData.addAuthor(ki18n("Daniel Selinger"), ki18n("QtMPC author"), QByteArray(), "http://qtmpc.lowblog.nl");
+    aboutData.addAuthor(ki18n("Armin Walland"), ki18n("QtMPC author"), QByteArray(), "http://qtmpc.lowblog.nl");
+//    if (ContextWidget::constHtbApiKey.latin1()) {
+//        aboutData.addCredit(ki18n("Home Theater Backdrops"), ki18n("Context view backdrops"), QByteArray(), "www.htbackdrops.com");
+//    }
+    aboutData.addCredit(ki18n("FanArt.tv"), ki18n("Context view backdrops (please consider uploading your own music fan-art to fanart.tv)"), QByteArray(), "www.fanart.tv");
+    aboutData.addCredit(ki18n("Wikipedia"), ki18n("Context view metadata"), QByteArray(), "www.wikipedia.org");
+    aboutData.addCredit(ki18n("Last.fm"), ki18n("Context view metadata"), QByteArray(), "www.last.fm");
+    KCmdLineArgs::init(argc, argv, &aboutData);
+    #ifdef TAGLIB_FOUND
+    KCmdLineOptions options;
+    options.add("+[URL]", ki18n("URL to open"));
+    KCmdLineArgs::addCmdLineOptions(options);
+    KUniqueApplication::addCmdLineOptions();
+    #endif
+    if (!KUniqueApplication::start()) {
+        exit(0);
+    }
+
+    Application app;
+    
+    installDebugMessageHandler();
+
+    #else // ENABLE_KDE_SUPPORT
+    QCoreApplication::setApplicationName(PACKAGE_NAME);
+    #ifdef Q_OS_WIN
+    QCoreApplication::setOrganizationName("mpd");
+    #else
+    QCoreApplication::setOrganizationName(PACKAGE_NAME);
+    #endif
+
+    Application app(argc, argv);
+    if (!app.start()) {
+        return 0;
+    }
+
+    // Translations
+    QString langEnv=qgetenv("CANTATA_LANG");
+    loadTranslation("qt", QLibraryInfo::location(QLibraryInfo::TranslationsPath), langEnv);
+    #ifdef Q_OS_WIN
+    loadTranslation("qt", app.applicationDirPath()+QLatin1String("/translations"), langEnv);
+    loadTranslation("qt", QDir::currentPath()+QLatin1String("/translations"), langEnv);
+    #endif
+    loadTranslation("cantata", app.applicationDirPath()+QLatin1String("/translations"), langEnv);
+    loadTranslation("cantata", QDir::currentPath()+QLatin1String("/translations"), langEnv);
+    #ifndef Q_OS_WIN
+    loadTranslation("cantata", INSTALL_PREFIX"/share/cantata/translations/", langEnv);
+    #endif
+
+      // Set the permissions on the config file on Unix - it can contain passwords
+      // for internet services so it's important that other users can't read it.
+    // On Windows these are stored in the registry instead.
+    #ifdef Q_OS_UNIX
+    QSettings s;
+
+    // Create the file if it doesn't exist already
+    if (!QFile::exists(s.fileName())) {
+        QFile file(s.fileName());
+        file.open(QIODevice::WriteOnly);
+    }
+
+    // Set -rw-------
+    QFile::setPermissions(s.fileName(), QFile::ReadOwner | QFile::WriteOwner);
+    #endif
+
+    installDebugMessageHandler();
 
     if (Settings::self()->firstRun()) {
         InitialSettingsWizard wz;

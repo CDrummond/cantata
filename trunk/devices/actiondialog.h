@@ -27,9 +27,12 @@
 #include "dialog.h"
 #include "song.h"
 #include "device.h"
+#include "config.h"
 #include "ui_actiondialog.h"
 #include <QElapsedTimer>
-
+#ifdef QT_QTDBUS_FOUND
+#include <QDBusMessage>
+#endif
 class SongListDialog;
 
 class ActionDialog : public Dialog, Ui::ActionDialog
@@ -85,6 +88,7 @@ private:
     void removeSong(const Song &s);
     void cleanDirs();
     void incProgress();
+    void updateUnity(bool finished);
 
 private:
     Mode mode;
@@ -116,6 +120,9 @@ private:
     DeviceOptions namingOptions;
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
     QSet<QString> albumsWithoutRgTags;
+    #endif
+    #ifdef QT_QTDBUS_FOUND
+    QDBusMessage unityMessage;
     #endif
 
     SongListDialog *songDialog;

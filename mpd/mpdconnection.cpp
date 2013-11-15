@@ -492,14 +492,14 @@ MPDConnection::Response MPDConnection::sendCommand(const QByteArray &command, bo
                 } else if (!details.isLocal() && response.data=="Access denied") {
                     emit error(i18n("Failed to load. MPD can only play local files if connected via a local socket."));
                 } else if (!response.getError().isEmpty()) {
-                    emit error(response.getError());
+                    emit error(i18n("MPD reported the following error: %1", response.getError()));
                 } else {
                     disconnectFromMPD();
                     emit stateChanged(false);
                     emit error(i18n("Failed to send command. Disconnected from %1", details.description()), true);
                 }
             } else if (!response.getError().isEmpty()) {
-                emit error(response.getError());
+                emit error(i18n("MPD reported the following error: %1", response.getError()));
             } else {
                 disconnectFromMPD();
                 emit stateChanged(false);

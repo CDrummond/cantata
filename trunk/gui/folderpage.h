@@ -80,6 +80,7 @@ private:
     QStringList walk(QModelIndex rootItem);
 
 private:
+    bool loaded;
     #ifndef Q_OS_WIN
     Action *browseAction;
     #endif

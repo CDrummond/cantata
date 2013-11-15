@@ -79,6 +79,7 @@ void DirViewModel::setEnabled(bool e)
     if (enabled) {
         connect(MPDConnection::self(), SIGNAL(dirViewUpdated(DirViewItemRoot *)), this, SLOT(updateDirView(DirViewItemRoot *)));
     } else {
+        clear();
         disconnect(MPDConnection::self(), SIGNAL(dirViewUpdated(DirViewItemRoot *)), this, SLOT(updateDirView(DirViewItemRoot *)));
     }
 }

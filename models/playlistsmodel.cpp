@@ -59,6 +59,7 @@ PlaylistsModel * PlaylistsModel::self()
 
 PlaylistsModel::PlaylistsModel(QObject *parent)
     : ActionModel(parent)
+    , enabled(true)
     , itemMenu(0)
     , dropAdjust(0)
 {
@@ -516,7 +517,9 @@ QStringList PlaylistsModel::mimeTypes() const
 
 void PlaylistsModel::getPlaylists()
 {
-    emit listPlaylists();
+    if (enabled) {
+        emit listPlaylists();
+    }
 }
 
 void PlaylistsModel::clear()
@@ -525,6 +528,20 @@ void PlaylistsModel::clear()
     clearPlaylists();
     updateItemMenu();
     endResetModel();
+}
+
+void PlaylistsModel::setEnabled(bool e)
+{
+    if (e==enabled) {
+        return;
+    }
+
+    enabled=e;
+    if (enabled) {
+        getPlaylists();
+    } else {
+        clear();
+    }
 }
 
 void PlaylistsModel::setPlaylists(const QList<Playlist> &playlists)

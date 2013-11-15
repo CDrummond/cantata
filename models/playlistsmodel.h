@@ -97,6 +97,8 @@ public:
     QStringList mimeTypes() const;
     void getPlaylists();
     void clear();
+    bool isEnabled() const { return enabled; }
+    void setEnabled(bool e);
     bool exists(const QString &n) { return 0!=getPlaylist(n); }
     QMenu * menu() { return itemMenu; }
     const QSet<QString> & genres() { return plGenres; }
@@ -132,6 +134,7 @@ private:
     quint32 allocateKey();
 
 private:
+    bool enabled;
     QList<PlaylistItem *> items;
     QSet<quint32> usedKeys;
     QSet<QString> plGenres;

@@ -35,6 +35,7 @@
 
 FolderPage::FolderPage(QWidget *p)
     : QWidget(p)
+    , loaded(false)
 {
     setupUi(this);
     addToPlayQueue->setDefaultAction(StdActions::self()->addToPlayQueueAction);
@@ -98,6 +99,7 @@ void FolderPage::setEnabled(bool e)
         connect(MPDConnection::self(), SIGNAL(updatedFileList()), view, SLOT(hideSpinner()));
         refresh();
     } else {
+        loaded=false;
         disconnect(MPDConnection::self(), SIGNAL(updatingFileList()), view, SLOT(showSpinner()));
         disconnect(MPDConnection::self(), SIGNAL(updatedFileList()), view, SLOT(hideSpinner()));
     }
@@ -105,10 +107,11 @@ void FolderPage::setEnabled(bool e)
 
 void FolderPage::refresh()
 {
-    if (DirViewModel::self()->isEnabled()) {
+    if (DirViewModel::self()->isEnabled() && isVisible()) {
         view->setLevel(0);
         view->showSpinner();
         emit loadFolders();
+        loaded=true;
     }
 }
 
@@ -121,6 +124,10 @@ void FolderPage::showEvent(QShowEvent *e)
 {
     view->focusView();
     QWidget::showEvent(e);
+    if (!loaded) {
+        emit loadFolders();
+        loaded=true;
+    }
 }
 
 void FolderPage::searchItems()

@@ -401,6 +401,7 @@ MainWindow::MainWindow(QWidget *parent)
     folderPage->setEnabled(!hiddenPages.contains(folderPage->metaObject()->className()));
     streamsPage->setEnabled(!hiddenPages.contains(streamsPage->metaObject()->className()));
     onlinePage->setEnabled(!hiddenPages.contains(onlinePage->metaObject()->className()));
+    setPlaylistsEnabled(!hiddenPages.contains(playlistsPage->metaObject()->className()));
 
     autoHideSplitterAction=new QAction(i18n("Auto Hide"), this);
     autoHideSplitterAction->setCheckable(true);
@@ -2451,6 +2452,9 @@ void MainWindow::tabToggled(int index)
         folderPage->setEnabled(!folderPage->isEnabled());
         if (folderPage->isEnabled() && loaded&TAB_FOLDERS) loaded-=TAB_FOLDERS;
         break;
+    case PAGE_PLAYLISTS:
+        setPlaylistsEnabled(tabWidget->isEnabled(index));
+        break;
     case PAGE_STREAMS:
         streamsPage->setEnabled(!streamsPage->isEnabled());
         if (streamsPage->isEnabled() && loaded&TAB_STREAMS) loaded-=TAB_STREAMS;
@@ -2945,6 +2949,15 @@ void MainWindow::updateActionToolTips()
     tabWidget->SetToolTip(PAGE_DEVICES, devicesTabAction->toolTip());
     #endif
     tabWidget->SetToolTip(PAGE_CONTEXT, songInfoAction->toolTip());
+}
+
+void MainWindow::setPlaylistsEnabled(bool e)
+{
+    PlaylistsModel::self()->setEnabled(e);
+    StdActions::self()->addToStoredPlaylistAction->setVisible(PlaylistsModel::self()->isEnabled());
+    StdActions::self()->savePlayQueueAction->setVisible(PlaylistsModel::self()->isEnabled());
+    savePlayQueueButton->setVisible(PlaylistsModel::self()->isEnabled());
+    addPlayQueueToStoredPlaylistAction->setVisible(PlaylistsModel::self()->isEnabled());
 }
 
 #if !defined Q_OS_WIN && !defined Q_OS_MAC

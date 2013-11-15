@@ -294,6 +294,7 @@ private:
     bool fadeWhenStop() const;
     void updateNextTrack(int nextTrackId);
     void updateActionToolTips();
+    void setPlaylistsEnabled(bool e);
 
 private:
     int loaded;

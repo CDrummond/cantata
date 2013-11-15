@@ -415,7 +415,7 @@ QSet<QString> MusicLibraryModel::getAlbumArtists()
 
 void MusicLibraryModel::updateMusicLibrary(MusicLibraryItemRoot *newroot, QDateTime dbUpdate, bool fromFile)
 {
-    if (!mpdModel || (databaseTime.isValid() && dbUpdate.isValid() && databaseTime >= dbUpdate)) {
+    if (!mpdModel || (databaseTime.isValid() && databaseTime >= dbUpdate)) {
         delete newroot;
         return;
     }
@@ -425,7 +425,7 @@ void MusicLibraryModel::updateMusicLibrary(MusicLibraryItemRoot *newroot, QDateT
     bool updatedSongs=false;
     bool needToSave=dbUpdate>databaseTime;
     bool incremental=rootItem->childCount() && newroot->childCount();
-    bool needToUpdate=databaseTime.isNull();
+    bool needToUpdate=!databaseTime.isValid();
 
     if (incremental && !QFile::exists(cacheFileName())) {
         incremental=false;
@@ -449,10 +449,17 @@ void MusicLibraryModel::updateMusicLibrary(MusicLibraryItemRoot *newroot, QDateT
         updatedSongs=true;
     }
 
+    // MPD proxy DB plugin does not provide a datetime for the DB. Therefore, just use current datetime
+    // so that we dont keep requesting DB listing each time Cantata starts...
+    //
+    // Users of this plugin will have to force Cantata to refresh :-(
+    //
+    if (!databaseTime.isValid() && !dbUpdate.isValid()) {
+        databaseTime=QDateTime::currentDateTime();
+    }
+
     if ((updatedSongs || needToUpdate) && (!fromFile && (needToSave || needToUpdate))) {
-        if (dbUpdate.isValid()) { // MPD proxy DB does not send a db_update
-            rootItem->toXML(cacheFileName(), dbUpdate);
-        }
+        rootItem->toXML(cacheFileName(), databaseTime);
     }
 
     AlbumsModel::self()->update(rootItem);
@@ -554,9 +561,7 @@ void MusicLibraryModel::toggleGrouping()
 {
     beginResetModel();
     rootItem->toggleGrouping();
-    if (databaseTime.isValid()) { // MPD proxy DB does not send a db_update
-        rootItem->toXML(cacheFileName(), databaseTime);
-    }
+    rootItem->toXML(cacheFileName(), databaseTime);
     endResetModel();
     if (mpdModel) {
         AlbumsModel::self()->update(rootItem);

@@ -107,6 +107,9 @@
     by the artist.
 59. Show device copy/delete status in Unity launcher - show current progress,
     and track count to be actioned.
+60. If playlists page is disabled, then hide 'Add to playlist' actions ahd hide
+    playqueue save button.
+61. Dont load folder list until view is visible.
 
 1.1.3
 -----

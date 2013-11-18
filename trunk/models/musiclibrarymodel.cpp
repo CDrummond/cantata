@@ -80,6 +80,7 @@ static QString cacheFileName(const MPDConnectionDetails &details, bool withPort=
     QString fileName=(withPort && !details.isLocal() ? details.hostname+'_'+QString::number(details.port) : details.hostname)
                      +MusicLibraryModel::constLibraryCompressedExt;
     fileName.replace('/', '_');
+    fileName.replace('~', '_');
     return Utils::cacheDir(MusicLibraryModel::constLibraryCache)+fileName;
 }
 

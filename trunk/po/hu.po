@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-11-14 20:26+0000\n"
-"PO-Revision-Date: 2013-10-15 14:06+0100\n"
+"PO-Revision-Date: 2013-11-15 18:43+0100\n"
 "Last-Translator: Török Árpád <torar@freemail.hu>\n"
 "Language-Team: Hungarian <kde-l10n-hu@kde.org>\n"
 "Language: hu\n"
@@ -75,7 +75,7 @@ msgstr "Szüneteket alaphelyzetbe"
 #: context/contextwidget.cpp:308 context/songview.cpp:105
 #: gui/cachesettings.cpp:259
 msgid "Lyrics"
-msgstr "Dalszöveg"
+msgstr "Dalszövegek"
 
 #: context/lastfmengine.cpp:63
 msgid "Read more on last.fm"
@@ -175,14 +175,14 @@ msgstr "Félbeszakítod a dalszöveg szerkesztését?"
 
 #: context/songview.cpp:118 context/songview.cpp:137 context/songview.cpp:196
 msgid "Abort Editing"
-msgstr "Szerkesztés abbahagyása"
+msgstr "Szerkesztés megszakítása"
 
 #: context/songview.cpp:119 context/songview.cpp:138 context/songview.cpp:197
 #: replaygain/rgdialog.cpp:252 replaygain/rgdialog.cpp:253
 #: replaygain/rgdialog.cpp:261 replaygain/rgdialog.cpp:262
 #: tags/trackorganiser.cpp:150
 msgid "Abort"
-msgstr "Abbahagy"
+msgstr "Megszakít"
 
 #: context/songview.cpp:121
 msgid "Delete saved copy of lyrics, and re-download?"
@@ -195,7 +195,7 @@ msgstr "Újra betölt"
 
 #: context/songview.cpp:147
 msgid "Current playing song has changed, still perform search?"
-msgstr "A mostani dal megváltozott, továbbra is keresel?"
+msgstr "A dal, amit játszik megváltozott, továbbra is keresel?"
 
 #: context/songview.cpp:147
 msgid "Song Changed"
@@ -267,7 +267,7 @@ msgstr "Újratöltés"
 
 #: dbus/powermanagement.cpp:96
 msgid "Cantata is playing a track"
-msgstr ""
+msgstr "A Cantata éppen számot játszik le"
 
 #: devices/actiondialog.cpp:76
 msgid "Songs To Be Copied"
@@ -292,7 +292,7 @@ msgstr "%1 szabad"
 
 #: devices/actiondialog.cpp:268 devices/actiondialog.cpp:272
 msgid "Local Music Library"
-msgstr "Helyi lemezkönyvtár"
+msgstr "Helyi zenekönyvtár"
 
 #: devices/actiondialog.cpp:270 devices/albumdetailsdialog.cpp:100
 #: gui/preferencesdialog.cpp:103 widgets/groupedview.cpp:256
@@ -334,7 +334,7 @@ msgid ""
 "<p>You have not configured the destination device.<br/>Continue with the "
 "default settings?</p>"
 msgstr ""
-"<p>A céleszközt nem Állítottad be.<br/>Folytatod az alapbeállításokkal?</p>"
+"<p>A céleszközt nem állítottad be.<br/>Folytatod az alapbeállításokkal?</p>"
 
 #: devices/actiondialog.cpp:381 devices/actiondialog.cpp:385
 msgid "Not Configured"
@@ -349,7 +349,7 @@ msgid ""
 "<p>You have not configured the source device.<br/>Continue with the default "
 "settings?</p>"
 msgstr ""
-"<p>A forrás eszközt nem Állítottad be.<br/>Folytatod az alapbeállításokkal?</"
+"<p>Nem állítottad be a forráseszközt.</br> Használjuk az alapbeállításokat?</"
 "p>"
 
 #: devices/actiondialog.cpp:446
@@ -430,7 +430,7 @@ msgstr "Nem sikerült törölni.<hr/>%1"
 
 #: devices/actiondialog.cpp:653
 msgid "Not connected to device.<hr/>%1"
-msgstr "Az eszköz nincs csatlakoztatva.<hr/>%1"
+msgstr "Nincs csatlakoztatva az eszközhöz.<hr/>%1"
 
 #: devices/actiondialog.cpp:656
 msgid "Selected codec is not available.<hr/>%1"
@@ -445,8 +445,8 @@ msgid ""
 "Failed to create temporary file.<br/>(Required for transcoding to MTP "
 "devices.)<hr/>%1"
 msgstr ""
-"Nem sikerült létrehozni az átmeneti fájlt.<br/>(MTP eszközre kell átkódolni.)"
-"<hr/>%1"
+"Nem sikerült létrehozni az átmeneti fájlt.<br/>(MTP eszközre átkódoláshoz "
+"kell.)<hr/>%1"
 
 #: devices/actiondialog.cpp:665
 msgid "Failed to read source file.<br/><br/<hr/>%1"
@@ -544,12 +544,12 @@ msgstr "A cache mentése"
 #: devices/albumdetailsdialog.cpp:135 devices/albumdetailsdialog.cpp:234
 #: tags/tageditor.cpp:145 tags/tageditor.cpp:341
 msgid "Apply \"Various Artists\" Workaround"
-msgstr "Alkalmazza a \"Válogatott előadók\" munkakörnyezetet"
+msgstr "Alkalmazza a \"Vegyes előadók\" munkakörnyezetet"
 
 #: devices/albumdetailsdialog.cpp:136 devices/albumdetailsdialog.cpp:258
 #: tags/tageditor.cpp:146 tags/tageditor.cpp:386
 msgid "Revert \"Various Artists\" Workaround"
-msgstr "Visszaállítja a \"Válogatott előadók\" munkakörnyezetet"
+msgstr "Visszaállítja a \"Vegyes előadók\" munkakörnyezetet"
 
 #: devices/albumdetailsdialog.cpp:137 devices/albumdetailsdialog.cpp:276
 #: tags/tageditor.cpp:148 tags/tageditor.cpp:467
@@ -559,7 +559,7 @@ msgstr "Váltás nagybetűre"
 #: devices/albumdetailsdialog.cpp:138 devices/albumdetailsdialog.cpp:293
 #: tags/tageditor.cpp:149 tags/tageditor.cpp:496
 msgid "Adjust Track Numbers"
-msgstr "számok számának beállítása"
+msgstr "Számok sorszámának beállítása"
 
 #: devices/albumdetailsdialog.cpp:140 tags/tageditor.cpp:143
 msgid "Tools"
@@ -567,19 +567,19 @@ msgstr "Eszközök"
 
 #: devices/albumdetailsdialog.cpp:230 tags/tageditor.cpp:337
 msgid "Apply \"Various Artists\" workaround?"
-msgstr "Alkalmazza a \"Válogatott előadók\" munkakörnyezet?"
+msgstr "Alkalmazza a \"Vegyes előadók\" munkakörnyezetet?"
 
 #: devices/albumdetailsdialog.cpp:232 tags/tageditor.cpp:339
 msgid ""
 "<i>This will set 'Album artist' and 'Artist' to \"Various Artists\", and set "
 "'Title' to \"TrackArtist - TrackTitle\"</i>"
 msgstr ""
-"<i>Ez a \"Album előadót\" és \"Előadót\" \"Válogatott előadók\"-ra állítja, "
-"és a \"Címet\" \"Előadó Szám - Szám címe\"</i>"
+"<i>Ez a \"Album előadót\" és \"Előadót\" \"Vegyes előadók\"-ra állítja, és a "
+"\"Címet\" \"Előadó Szám - Szám címe\"</i>"
 
 #: devices/albumdetailsdialog.cpp:251 tags/tageditor.cpp:379
 msgid "Revert \"Various Artists\" workaround"
-msgstr "Visszaállítja a \"Válogatott előadók\" munkakörnyezetet"
+msgstr "Visszaállítja a \"Vegyes előadók\" munkakörnyezetet"
 
 #: devices/albumdetailsdialog.cpp:253 tags/tageditor.cpp:381
 msgid ""
@@ -603,8 +603,7 @@ msgstr "Visszaállít"
 msgid ""
 "Capitalize the first letter of 'Title', 'Artist', 'Album artist', and 'Album'"
 msgstr ""
-"A \"Cím\", Előadó\", \"Előadó lemez\" és \"Lemez\" kezdőbetűjét nagybetűsre "
-"váltja"
+"A 'Cím', 'Előadó', 'Előadó lemez' és 'Lemez' kezdőbetűjét nagybetűsre váltja"
 
 #: devices/albumdetailsdialog.cpp:293 tags/tageditor.cpp:497
 msgid "Adjust track number by:"
@@ -630,7 +629,7 @@ msgstr "Lemez olvasása"
 msgid "1 Track (%2)"
 msgid_plural "%1 Tracks (%2)"
 msgstr[0] "1 Szám (%2)"
-msgstr[1] "%1 Sávok (%2)"
+msgstr[1] "%1 Számok (%2)"
 
 #: devices/audiocdsettings.cpp:38
 msgid "CDDB"
@@ -667,8 +666,7 @@ msgstr "CDDB hiba: %1"
 
 #: devices/cddbselectiondialog.cpp:38
 msgid "Multiple matches were found. Please choose the relevant one from below:"
-msgstr ""
-"Többes egyezést találtam. Kérem válaszd ki a megfelelőt az alábbiakból:"
+msgstr "Több egyezést találtam. Kérem válaszd ki a megfelelőt az alábbiakból:"
 
 #. i18n: file: devices/albumdetails.ui:170
 #. i18n: ectx: property (text), widget (QTreeWidget, tracks)
@@ -747,13 +745,13 @@ msgid ""
 "extract the real artist from the 'Title' tag, and remove the artist name "
 "from the 'Title' tag.</p>"
 msgstr ""
-"<p>Amikor az eszközre számokat másol, és az \"Album Előadó\" \"Válogatott "
-"előadók\", a Cantata az \"Előadó\" címke az összes számnál \"Válogatott "
-"előadók\"-ra lesz állítva és a számok \"Cím\" jelzője \"Szám Előadó - SzámCím"
-"\"-re változik.<hr/> Eszközre másolás során a Cantata ellenőrzi, hogy az "
-"\"Album Előadó\" és az \"Előadó\" egyaránt \"Vegyes Előadó\"-e. Ha igen, "
-"megpróbálja a \"Cím\" címkéből előállítani az igazi előadót és eltávolítani "
-"az előadó nevét a \"Cím\" jelzőből.<!p>"
+"<p>Amikor az eszközre számokat másol, és az 'Album Előadó' 'Vegyes előadók', "
+"a Cantata az 'Előadó' címke az összes számnál 'Vegyes előadók'-ra lesz "
+"állítva és a számok 'Cím\" jelzője 'SzámElőadó - SzámCím'-re változik.<hr/> "
+"Eszközre másolás során a Cantata ellenőrzi, hogy az 'Album Előadó' és az "
+"'Előadó' egyaránt 'Vegyes Előadó'-e. Ha igen, megpróbálja a \"Cím\" címkéből "
+"előállítani az igazi előadót és eltávolítani az előadó nevét a 'Cím' "
+"jelzőből.<!p>"
 
 #: devices/devicepropertieswidget.cpp:99
 msgid ""
@@ -770,7 +768,7 @@ msgstr ""
 "fájlját használja ahelyett, hogy az egyes fájlok címkéit kellene végig "
 "olvasnia.)<hr/><b>Megjegyzés:</b> Ha egy másik alkalmazással frissíted az "
 "eszközök könyvtárait, akkor ez a cache elavulttá válik. Ennek helyesbítésére "
-"egyszerűen kattints a \"frissítés\" ikonra az eszközlistán. Ennek hatására a "
+"egyszerűen kattints a 'frissítés' ikonra az eszközlistán. Ennek hatására a "
 "cache fájlt eltávolítja és az eszköz tartalmát újra átnézi.</p>"
 
 #: devices/devicepropertieswidget.cpp:204
@@ -800,7 +798,7 @@ msgstr "Sync"
 
 #: devices/devicespage.cpp:71
 msgid "Forget Device"
-msgstr "Eszköz figyelmen kívül hagyása"
+msgstr "Eszköz elfelejtése"
 
 #: devices/devicespage.cpp:114 devices/remotedevicepropertiesdialog.cpp:60
 msgid "Add Device"
@@ -808,7 +806,7 @@ msgstr "Eszköz hozzáadása"
 
 #: devices/devicespage.cpp:432 devices/devicespage.cpp:444
 msgid "Lookup album and track details?"
-msgstr "Nézzek album és szám részletei után?"
+msgstr "Keressem az album és szám részleteit?"
 
 #: devices/devicespage.cpp:433 devices/devicespage.cpp:445
 #: devices/devicespage.cpp:455
@@ -826,12 +824,12 @@ msgstr "MusicBrainz útján"
 #: devices/devicespage.cpp:452
 msgid ""
 "<p>Which type of refresh do you wish to perform?<ul><li>Partial - Only new "
-"songs are scanned <i>(quick)</i></li><li>Full - All songs are rescanned <i>"
-"(slow)</i></li></ul></p>"
+"songs are scanned <i>(quick)</i></li><li>Full - All songs are rescanned "
+"<i>(slow)</i></li></ul></p>"
 msgstr ""
 "<p>Milyen fajta frissítést szeretne végrehajtani?<ul><li>Részleges - Csak új "
-"számokat keres <i>(gyors)</i></li><li>Teljes - Minden számot újrakeres <i>"
-"(lassú)</i></li></ul></p>"
+"számokat keres <i>(gyors)</i></li><li>Teljes - Minden számot újrakeres "
+"<i>(lassú)</i></li></ul></p>"
 
 #: devices/devicespage.cpp:455
 msgid "Partial"
@@ -908,15 +906,16 @@ msgid ""
 msgstr ""
 "A bitráta az adatminőség mérésére szolgál a szám egy másodpercére "
 "vonatkoztatva.<br> A Cantata által használt <b>AAC</b> kódoló támogatj a <a "
-"href=http://en.wikipedia.org/wiki/"
-"Variable_bitrate#Advantages_and_disadvantages_of_VBR>változó bitráta (VBR)</"
-"a> beállítását, ami azt jelenti, hogy értéke fluktuál a szám során, annak "
-"megfelelően, hogy a hanganyag tartalma mennyire komplex. A komplexebb "
+"href=http://hu.wikipedia.org/wiki/Változó_bitráta>változó bitráta (VBR)</a> "
+"beállítását, ami azt jelenti, hogy értéke változik a szám során, annak "
+"megfelelően, hogy a hanganyag tartalma mennyire összetett. A komplexebb "
 "adatszakaszok magasabb bitrátával lesznek kódolva, mint a kevésbé komplexek; "
-"ez a megközelítés egyszerre produkál jobb minőséget és kisebb fájlt, mint sz "
-"állandó bitráta a szám egésze során. <br><b>150kb/s</b> jó választás zenék "
-"hordozható lejátszókon történő hallgatására. <br/>Bármi <b>120kb/s</b> alatt "
-"bárki számára alkalmatlan lehet és bármi <b>200kb/s</b> fölött túlzó lehet."
+"ez a megközelítés egyszerre produkál jobb minőséget és kisebb fájlt, mint az "
+"állandó bitráta a szám egésze során. <br>Ezért a csúszkán lévő bitrátaérték "
+"csak becslése <a href=http://www.ffmpeg.org/faq.html#SEC21>az átlagos "
+"értéknek <b>150kb/s</b> jó választás zenék hordozható lejátszókon történő "
+"hallgatására. <br/>Bármi <b>120kb/s</b> alatt bárki számára alkalmatlan "
+"lehet és bármi <b>200kb/s</b> fölött túlzó lehet."
 
 #: devices/encoders.cpp:100 devices/encoders.cpp:140
 msgid "Expected average bitrate for variable bitrate encoding"
@@ -942,7 +941,7 @@ msgid ""
 "spite of its shortcomings, it is a common format for consumer audio storage, "
 "and is widely supported on portable music players."
 msgstr ""
-"<a href=http://en.wikipedia.org/wiki/MP3>MPEG Audio Layer 3</a> (MP3) "
+"<a href=http://hu.wikipedia.org/wiki/MP3>MPEG Audio Layer 3</a> (MP3) "
 "veszteséges adattömörítést alkalmazó szabadalmaztatott digitális hang codec, "
 "<br>Tökéletlenségei ellenére a felhasználói hang tárolás elterjedt "
 "formátuma, és a hordozható zenejátszók széles köre támogatja. "
@@ -965,10 +964,10 @@ msgstr ""
 "A bitráta az adatminőség mérésére szolgál a szám egy másodpercére "
 "vonatkoztatva.<br> A Cantata által használt <b>MP3</b> kódoló támogatja a <a "
 "href=http://en.wikipedia.org/wiki/MP3#VBR>változó bitráta (VBR)</a> "
-"beállítását, ami azt jelenti, hogy értéke fluktuál a szám során, annak "
-"megfelelően, hogy a hanganyag tartalma mennyire komplex. A komplexebb "
+"beállítását, ami azt jelenti, hogy értéke változik a szám során, annak "
+"megfelelően, hogy a hanganyag tartalma mennyire összetett. A komplexebb "
 "adatszakaszok magasabb bitrátával lesznek kódolva, mint a kevésbé komplexek; "
-"ez a megközelítés egyszerre produkál jobb minőséget és kisebb fájlt, mint sz "
+"ez a megközelítés egyszerre produkál jobb minőséget és kisebb fájlt, mint az "
 "állandó bitráta a szám egésze során. <br><b>160kb/s</b> jó választás zenék "
 "hordozható lejátszókon történő hallgatására. <br/>Bármi <b>120kb/s</b> alatt "
 "bárki számára alkalmatlan lehet és bármi <b>205kb/s</b> fölött túlzó lehet."
@@ -987,7 +986,7 @@ msgid ""
 "files than MP3 at equivalent or higher quality. Ogg Vorbis is an all-around "
 "excellent choice, especially for portable music players that support it."
 msgstr ""
-"<a href=http://en.wikipedia.org/wiki/Vorbis>Ogg Vorbis</a> nyílt jogtiszta "
+"<a href=http://hu.wikipedia.org/wiki/Ogg>Ogg Vorbis</a> nyílt jogtiszta "
 "veszteséges hangtömörítő hang codec. <br> Az MP3-nál kisebb fájlokat "
 "produkál azonos, vagy jobb minőség  mellett. Az Ogg Vorbis általában kiváló "
 "választás, különösen azokat hordozható zenelejátszók esetén. "
@@ -1012,18 +1011,18 @@ msgid ""
 msgstr ""
 "A bitráta az adatminőség mérésére szolgál a szám egy másodpercére "
 "vonatkoztatva.<br> A Cantata által használt <b>Ogg Vorbis</b> kódoló "
-"támogatja <a href=http://en.wikipedia.org/wiki/"
-"Vorbis#Technical_Encoder>változó bitráta (VBR)</a> beállítását, ami azt "
-"jelenti, hogy értéke fluktuál a szám során, annak megfelelően, hogy a "
-"hanganyag tartalma mennyire komplex. A komplexebb adatszakaszok magasabb "
-"bitrátával lesznek kódolva, mint a kevésbé komplexek; ez a megközelítés "
-"egyszerre produkál jobb minőséget és kisebb fájlt, mint sz állandó bitráta a "
-"szám egésze során. <br>A Vorbis kódoló -1 és 10 közötti értéket használ egy "
-"adott elvárt hangminőség meghatározására A bitráta érték a csúszkán csak "
-"durva becslése (Vorbis adja meg) a kódolt szám minőségének. A valóságban az "
-"újabb Vorbis verziók bitrátája ennél kisebb. <b><b>5</b> jó választás zenék "
-"hordozható lejátszókon történő hallgatására. <br/>Bármi <b>3</b> alatt bárki "
-"számára alkalmatlan lehet és bármi <b>8</b> fölött túlzó lehet."
+"támogatja <a href=http://hu.wikipedia.org/wiki/Vorbis>változó bitráta (VBR)</"
+"a> beállítását, ami azt jelenti, hogy értéke változik a szám során, annak "
+"megfelelően, hogy a hanganyag tartalma mennyire összetett. A komplexebb "
+"adatszakaszok magasabb bitrátával lesznek kódolva, mint a kevésbé komplexek;"
+"ez a megközelítés egyszerre produkál jobb minőséget és kisebb fájlt, mint  "
+"az állandó bitráta a szám egésze során. <br>A Vorbis kódoló -1 és 10 közötti "
+"értéket használ egy adott elvárt hangminőség meghatározására A bitráta érték "
+"a csúszkán csak durva becslése (Vorbis adja meg) a kódolt szám minőségének. "
+"A valóságban az újabb Vorbis verziók bitrátája ennél kisebb. <b><b>5</b> jó  "
+"választás zenék hordozható lejátszókon történő hallgatására. <br/>Bármi "
+"<b>3</b> alatt bárki számára alkalmatlan lehet és bármi <b>8</b> fölött "
+"túlzó lehet."
 
 #: devices/encoders.cpp:183
 msgid "Quality rating"
@@ -1031,7 +1030,7 @@ msgstr "Minőségi osztályzat"
 
 #: devices/encoders.cpp:200
 msgid "Opus"
-msgstr ""
+msgstr "Opus"
 
 #: devices/encoders.cpp:203
 msgctxt ""
@@ -1041,9 +1040,10 @@ msgid ""
 "<a href=http://en.wikipedia.org/wiki/Opus_(audio_format)>Opus</a> is a "
 "patent-free digital audio codec using a form of lossy data compression."
 msgstr ""
+"<a href=http://hu.wikipedia.org/wiki/Opus_(hangformátum)>Opus</a> "
+"szabadalommentes, veszteséges adattömörítést alkalmazó digitális audio codec."
 
 #: devices/encoders.cpp:205
-#, fuzzy
 msgid ""
 "The bitrate is a measure of the quantity of data used to represent a second "
 "of the audio track.<br>The <b>Opus</b> encoder used by Cantata supports a <a "
@@ -1059,15 +1059,17 @@ msgid ""
 "anything above <b>256kb/s</b> is probably overkill."
 msgstr ""
 "A bitráta az adatminőség mérésére szolgál a szám egy másodpercére "
-"vonatkoztatva.<br> A Cantata által használt <b>MP3</b> kódoló támogatja a <a "
-"href=http://en.wikipedia.org/wiki/MP3#VBR>változó bitráta (VBR)</a> "
-"beállítását, ami azt jelenti, hogy értéke fluktuál a szám során, annak "
-"megfelelően, hogy a hanganyag tartalma mennyire komplex. A komplexebb "
+"vonatkoztatva.<br> A Cantata által használt <b>Opus</b> kódoló támogatja a "
+"<a href=http://hu.wikipedia.org/wiki/Változó_bitráta>változó bitráta (VBR)</"
+"a> beállítását, ami azt jelenti, hogy értéke változik a szám során, annak "
+"megfelelően, hogy a hanganyag tartalma mennyire összetett. A komplexebb "
 "adatszakaszok magasabb bitrátával lesznek kódolva, mint a kevésbé komplexek; "
-"ez a megközelítés egyszerre produkál jobb minőséget és kisebb fájlt, mint sz "
-"állandó bitráta a szám egésze során. <br><b>160kb/s</b> jó választás zenék "
-"hordozható lejátszókon történő hallgatására. <br/>Bármi <b>120kb/s</b> alatt "
-"bárki számára alkalmatlan lehet és bármi <b>205kb/s</b> fölött túlzó lehet."
+"ez a megközelítés egyszerre produkál jobb minőséget és kisebb fájlt, mint a "
+"szám egésze során állandó bitráta. <br>Ezért a csúszkán lévő bitrátaérték "
+"csak becslése az átkódolt szám átlagos bitrátájának.<br><b>128kb/s</b> jó "
+"választás zenék hordozható lejátszókon történő hallgatására. <br/>Bármi "
+"<b>100kb/s</b> alatt bárki számára alkalmatlan lehet és bármi <b>256kb/s</b> "
+"fölött túlzó lehet."
 
 #: devices/encoders.cpp:222 devices/encoders.cpp:319
 msgid "Bitrate"
@@ -1088,8 +1090,8 @@ msgid ""
 "FLAC."
 msgstr ""
 "<a href=http://en.wikipedia.org/wiki/Apple_Lossless>Apple Lossless</a> "
-"(ALAC) veszteségmentes digitális zenetömörítő audio codec. <br>Csak az FLAC-"
-"t nem támogató Apple zenelejátszók és lejátszók számára javasolt "
+"(ALAC) veszteségmentes digitális zenetömörítő audio codec. <br>Csak a FLAC-"
+"ot nem támogató Apple zenelejátszók és lejátszók számára javasolt "
 
 #: devices/encoders.cpp:259 online/magnatuneservice.cpp:182
 msgid "FLAC"
@@ -1105,7 +1107,7 @@ msgid ""
 "compression of digital music.<br>If you wish to store your music without "
 "compromising on audio quality, FLAC is an excellent choice."
 msgstr ""
-"<a href=http://en.wikipedia.org/wiki/Free_Lossless_Audio_Codec>Free Lossless "
+"<a href=http://hu.wikipedia.org/wiki/Free_Lossless_Audio_Codec>Free Lossless "
 "Audio Codec</a> (FLAC) egy veszteségmentes, nyílt és jogdíjmentes digitális "
 "zenetömörítő codec. <br>Ha a zenédet hangminőség-romlás nélkül akarod "
 "tárolni, FLAC kitűnő választás."
@@ -1130,8 +1132,11 @@ msgstr ""
 "kompromisszumot. <br/>A tömörítés szintjét <b>0</b>-ra állítva a tömörítési "
 "idő rövid lesz, de viszonylag nagy fájlt eredményez. <br/>Más részről ha a "
 "tömörítés szintje <b>8<b>, a tömörítés nagyon lassú lesz, de a legkisebb "
-"mérete adja. <br/>Minden <b>5<b> fölötti érték miközben drámaian növeli a "
-"tömörítési időt, a fájlméret csak kicsit lesz kisebb és nem ajánlott."
+"mérete adja. <br/> Mellesleg, mivel definíciója szerint a FLAC "
+"veszteségmentes kódoló, a kimeneti hangfájl minősége a tömörítés értékétől "
+"függetlenül azonos lesz.</br>Minden <b>5<b> fölötti érték miközben drámaian "
+"növeli a tömörítési időt, a fájlméret csak kicsit lesz kisebb és nem "
+"ajánlott."
 
 #: devices/encoders.cpp:281
 msgid "Compression level"
@@ -1190,7 +1195,7 @@ msgstr "Fájlnév-séma"
 #: devices/filenameschemedialog.cpp:52
 msgctxt "Example album artist"
 msgid "Various Artists"
-msgstr "Válogatott előadók"
+msgstr "Vegyes előadók"
 
 #: devices/filenameschemedialog.cpp:53
 msgctxt "Example artist"
@@ -1200,7 +1205,7 @@ msgstr "Zengetés"
 #: devices/filenameschemedialog.cpp:54
 msgctxt "Example composer"
 msgid "Vivaldi"
-msgstr ""
+msgstr "Vivaldi"
 
 #: devices/filenameschemedialog.cpp:55
 msgctxt "Example album"
@@ -1222,12 +1227,16 @@ msgid ""
 "<p>The following variables will be replaced with their corresponding meaning "
 "for each track name.</p>"
 msgstr ""
+"<p>A számok címeiben a következő változók, értelmüknek megfelelően "
+"lecserélésre kerülnek."
 
 #: devices/filenameschemedialog.cpp:103
 msgid ""
 "<tr><th><em>Button</em></th><th><em>Variable</em></th><th><em>Description</"
 "em></th></tr>"
 msgstr ""
+"<tr><th><em>Gomb</em></th><th><em>Változó</em></th><th><em>Leírás</em></th></"
+"tr>"
 
 #: devices/filenameschemedialog.cpp:104
 msgid ""
@@ -1235,49 +1244,59 @@ msgid ""
 "albums, this will be the same as the <i>Track Artist.</i> For compilations, "
 "this will often be <i>Various Artists.</i> </td></tr>"
 msgstr ""
+"<tr><td>%albumartist%</td><td>%1</td><td>Az album előadója. Az albumok "
+"többségében ugyan az, mint a <i>Szám előadója.</i> A válogatások esetében ez "
+"többnyire <i>Vegyes előadók.</i> lesz. </td></tr>"
 
 #: devices/filenameschemedialog.cpp:106
 msgid "<tr><td>%album%</td><td>%1</td><td>The name of the album.</td></tr>"
-msgstr ""
+msgstr "<tr><td>%album%</td><td>%1</td><td>Az album címe.</td></tr>"
 
 #: devices/filenameschemedialog.cpp:107
 msgid "<tr><td>%composer%</td><td>%1</td><td>The composer.</td></tr>"
-msgstr ""
+msgstr "<tr><td>%composer%</td><td>%1</td><td>A zeneszerző.</td></tr>"
 
 #: devices/filenameschemedialog.cpp:108
 msgid "<tr><td>%artist%</td><td>%1</td><td>The artist of each track.</td></tr>"
 msgstr ""
+"<tr><td>%artist%</td><td>%1</td><td>Az egyes számok előadója.</td></tr>"
 
 #: devices/filenameschemedialog.cpp:109
 msgid ""
 "<tr><td>%title%</td><td>%1</td><td>The track title (without <i>Track Artist</"
 "i>).</td></tr>"
 msgstr ""
+"<tr><td>%title%</td><td>%1</td><td>A szám címe (a <i>Szám előadója</i> "
+"nélkül).</td></tr>"
 
 #: devices/filenameschemedialog.cpp:110
 msgid ""
 "<tr><td>%artistandtitle%</td><td>%1</td><td>The track title (with <i>Track "
 "Artist</i>, if different to <i>Album Artist</i>).</td></tr>"
 msgstr ""
+"<tr><td>%artistandtitle%</td><td>%1</td><td>A szám címe (a <i>Szám "
+"előadójával</i>, ha az eltér az <i>Album előadójától</i>).</td></tr>"
 
 #: devices/filenameschemedialog.cpp:111
 msgid "<tr><td>%track%</td><td>%1</td><td>The track number.</td></tr>"
-msgstr ""
+msgstr "<tr><td>%track%</td><td>%1</td><td>A szám sorszáma.</td></tr>"
 
 #: devices/filenameschemedialog.cpp:112
 msgid ""
 "<tr><td>%discnumber%</td><td>%1</td><td>The album number of a multi-album "
 "album. Often compilations consist of several albums.</td></tr>"
 msgstr ""
+"<tr><td>%discnumber%</td><td>%1</td><td>Többlemezes album esetén a lemez "
+"sorszáma. A válogatások sokszor több lemezből állnak.</td></tr>"
 
 #: devices/filenameschemedialog.cpp:113
 msgid ""
 "<tr><td>%year%</td><td>%1</td><td>The year of the album's release.</td></tr>"
-msgstr ""
+msgstr "<tr><td>%year%</td><td>%1</td><td>Az album kiadásának éve.</td></tr>"
 
 #: devices/filenameschemedialog.cpp:114
 msgid "<tr><td>%genre%</td><td>%1</td><td>The genre of the album.</td></tr>"
-msgstr ""
+msgstr "<tr><td>%genre%</td><td>%1</td><td>Az album műfaja.</td></tr>"
 
 #: devices/fsdevice.cpp:668
 msgid "Updating..."
@@ -1327,7 +1346,7 @@ msgstr "számok frissítése..."
 #: models/musiclibraryitemroot.cpp:171 models/musiclibraryitemroot.cpp:833
 #: models/musiclibraryitemroot.cpp:1012 mpd/song.cpp:371
 msgid "Various Artists"
-msgstr "Válogatott előadók"
+msgstr "Vegyes előadók"
 
 #: devices/mtpdevice.cpp:1469 devices/remotefsdevice.cpp:568
 #: devices/umsdevice.cpp:102 gui/initialsettingswizard.cpp:57
@@ -1480,7 +1499,7 @@ msgstr "Nincs átnézve"
 
 #: devices/valueslider.cpp:99
 msgid " (recommended)"
-msgstr "(ajánlott)"
+msgstr " (ajánlott)"
 
 #: dynamic/dynamic.cpp:208
 msgid "Start Dynamic Playlist"
@@ -1494,7 +1513,7 @@ msgstr "Dinamikus mód leállítása"
 msgid "1 Rule"
 msgid_plural "%1 Rules"
 msgstr[0] "1 Szabály"
-msgstr[1] "% Szabályok"
+msgstr[1] "%1 Szabályok"
 
 #: dynamic/dynamic.cpp:396
 msgid ""
@@ -1608,14 +1627,12 @@ msgstr "Hozzáad"
 
 #: dynamic/dynamicruledialog.cpp:202
 msgid "<i><b>ERROR</b>: 'From Year' should be less than 'To Year'</i>"
-msgstr ""
-"<i><b>HIBA</b>: \"Ebből az évtől\" kisebb legyen mint a  \"Eddig az évig\"</"
-"i>"
+msgstr "<i><b>HIBA</b>: Az 'Évtől...' kisebb legyen mint az 'Évig...'</i>"
 
 #: dynamic/dynamicruledialog.cpp:205
 msgid ""
-"<i><b>ERROR:</b> Date range is too large (can only be a maximum of %1 years)"
-"</i>"
+"<i><b>ERROR:</b> Date range is too large (can only be a maximum of %1 "
+"years)</i>"
 msgstr "<i><b>HIBA:</b> A dátumtartomány túl nagy (legfeljebb %1 év lehet)</i>"
 
 #: dynamic/dynamicrulesdialog.cpp:68
@@ -1624,13 +1641,13 @@ msgstr "Hasonló előadók"
 
 #: dynamic/dynamicrulesdialog.cpp:70
 msgid "AlbumArtist"
-msgstr "Előadói lemez"
+msgstr "AlbumElőadó"
 
 #. i18n: file: devices/filenameschemedialog.ui:84
 #. i18n: ectx: property (text), widget (QPushButton, composer)
 #: dynamic/dynamicrulesdialog.cpp:72 po/rc.cpp:172 rc.cpp:172
 msgid "Composer"
-msgstr ""
+msgstr "Zeneszerző"
 
 #: dynamic/dynamicrulesdialog.cpp:74 gui/playbacksettings.cpp:50
 #: models/playqueuemodel.cpp:101 replaygain/rgdialog.cpp:134
@@ -1690,14 +1707,14 @@ msgstr ""
 "készítésére használja. A <i>Kizár</i> szabályokat fel nem használható dalok "
 "összegyűjtésére használja. <i>Hozzávesz</i> szabályok hiányát, a Cantata úgy "
 "értelmezi, hogy az összes dal (a <i>Kizár</i> kivételével) felhasználható. "
-"<br/>pl. hogy a Cantata \"Wibble VAGY Válogatott előadók rock dalokat gyűjtse"
-"\", a következők kellenek: <ul><li>Hozzávesz AlbumElőadó=Wibble Műfaj=Rock</"
-"li><li>Hozzávesz AlbumElőadó=Various Artists</li></ul>. Hogy a Cantata "
-"keresse a 'Wibble dalokat, de nem az ABC albumból\", a következők kellenek: "
-"<ul><li>Hozzávesz AlbumElőadó=Wibble</li><li>Kizár Album=Abc</li></ul>. "
-"Ezután a használható dalokból készül összeállítás. A Cantata véletlenszerűen "
-"választ ki dalokat lejátszásra, hogy a lejátszó listában meglegyen a 10 "
-"tétel.</p>"
+"<br/>pl. hogy a Cantata 'Wibble VAGY Válogatott előadók rock dalokat "
+"gyűjtse', a következők kellenek: <ul><li>Hozzávesz AlbumElőadó=Wibble "
+"Műfaj=Rock</li><li>Hozzávesz AlbumElőadó=Vegyes előadók</li></ul>. Hogy a "
+"Cantata keresse a 'Wibble dalokat, de nem az ABC albumból', a következők "
+"kellenek: <ul><li>Hozzávesz AlbumElőadó=Wibble</li><li>Kizár Album=Abc</li></"
+"ul>. Ezután a használható dalokból készül összeállítás. A Cantata "
+"véletlenszerűen választ ki dalokat lejátszásra, hogy a lejátszó listában "
+"meglegyen a 10 tétel.</p>"
 
 #: dynamic/dynamicrulesdialog.cpp:309
 msgid "Failed to save %1"
@@ -1737,7 +1754,7 @@ msgstr "Felhasznált hely"
 
 #: gui/cachesettings.cpp:234
 msgid "Total space used: %1"
-msgstr ""
+msgstr "Teljes felhasznált terület: %1"
 
 #: gui/cachesettings.cpp:245
 msgid ""
@@ -1748,7 +1765,7 @@ msgid ""
 "there). Below is a summary of Cantata's cache usage."
 msgstr ""
 "Hogy a zenekönyvtár feltöltését gyorsítsa, a Cantata az MPD listájából helyi "
-"másolatot olvas be. A cache be bekerülhetnek borítók, vagy dalszövegek is, "
+"másolatot olvas be. A cache be tehet borítókat, vagy dalszövegeket is, "
 "amennyiben ezek letöltésre kerültek, de az MPD-könyvtárába nem menthetők "
 "(vagy azért, mert a Cantata nem éri el, vagy a Cantata-t úgy állítottad be, "
 "hogy ne mentse azokat oda). Alább olvasható a Cantata cache használatáról "
@@ -1778,7 +1795,7 @@ msgstr "Magnatune"
 
 #: gui/cachesettings.cpp:266
 msgid "Podcast Directories"
-msgstr ""
+msgstr "Podcast-könyvtárak"
 
 #: gui/cachesettings.cpp:273
 msgid "Delete All"
@@ -1884,8 +1901,8 @@ msgid ""
 "Failed to set cover!\n"
 "Could not download to temporary file!"
 msgstr ""
-"Nem sikerült konvertálni\n"
-"Az átmeneti fájlt nem tudtam letölteni!"
+"Nem sikerült a borítót beállítani\n"
+"Nem tudtam átmeneti fájlba tölteni!"
 
 #: gui/coverdialog.cpp:607
 msgid "Failed to download image!"
@@ -1929,7 +1946,7 @@ msgid ""
 "Failed to set cover!\n"
 "Could not make copy!"
 msgstr ""
-"Konvertálás beállítása sikertelen!\n"
+"A borító beállítása sikertelen!\n"
 "Nem tudtam másolatot készíteni!"
 
 #: gui/coverdialog.cpp:1190
@@ -1937,7 +1954,7 @@ msgid ""
 "Failed to set cover!\n"
 "Could not backup original!"
 msgstr ""
-"Konvertálás beállítása sikertelen!\n"
+"A borító beállítása sikertelen!\n"
 "Nem tudtam menteni az eredetit!"
 
 #: gui/coverdialog.cpp:1239
@@ -1945,7 +1962,7 @@ msgid ""
 "Failed to set cover!\n"
 "Could not copy file to '%1'!"
 msgstr ""
-"Konvertálás beállítása sikertelen!\n"
+"A borító beállítása sikertelen!\n"
 "Nem tudtam másolni a fájlt ide '%1'!"
 
 #: gui/folderpage.cpp:45
@@ -2047,7 +2064,7 @@ msgstr "'Album Előadó' szerint csoportosítva"
 
 #: gui/interfacesettings.cpp:179
 msgid "Grouped under 'Various Artists'"
-msgstr "\"Válogatott előadók\" alatt csoportosítva"
+msgstr "'Vegyes előadók' alatt csoportosítva"
 
 #: gui/main.cpp:213 gui/mainwindow.cpp:1941 gui/trayitem.cpp:98
 #: gui/trayitem.cpp:100 gui/trayitem.cpp:135 gui/trayitem.cpp:199
@@ -2058,12 +2075,11 @@ msgstr "Cantata"
 
 #: gui/main.cpp:214
 msgid "A KDE client for MPD"
-msgstr "MPD kliens KDE alá"
+msgstr "KDE kliens az MPD-nek"
 
 #: gui/main.cpp:216
-#, fuzzy
 msgid "Copyright © 2011–2013 Craig Drummond"
-msgstr "Copyright © 2011-2013 Craig Drummond"
+msgstr "Copyright © 2011-2013 Craig Drummond "
 
 #: gui/main.cpp:220
 msgid "Craig Drummond"
@@ -2115,7 +2131,7 @@ msgstr ""
 
 #: gui/main.cpp:230
 msgid "Wikipedia"
-msgstr "Wikipedia"
+msgstr "Wikipédia"
 
 #: gui/main.cpp:230 gui/main.cpp:231
 msgid "Context view metadata"
@@ -2168,14 +2184,12 @@ msgid "Crop"
 msgstr "Vágás"
 
 #: gui/mainwindow.cpp:253
-#, fuzzy
 msgid "Shuffle Tracks"
-msgstr "Egyedüli számok"
+msgstr "Számok keverése"
 
 #: gui/mainwindow.cpp:254
-#, fuzzy
 msgid "Shuffle Albums"
-msgstr "Keverés"
+msgstr "Albumok keverése"
 
 #: gui/mainwindow.cpp:255
 msgid "Add Stream URL"
@@ -2280,9 +2294,8 @@ msgid "Collapse All"
 msgstr "Mind elrejtése"
 
 #: gui/mainwindow.cpp:290
-#, fuzzy
 msgid "Remove All Songs"
-msgstr "Lejátszási lista eltávolítása"
+msgstr "Összes dal eltávolítása"
 
 #: gui/mainwindow.cpp:398
 msgid "Info"
@@ -2336,10 +2349,13 @@ msgid ""
 "\n"
 "Quiting now will abort all downloads."
 msgstr ""
+"Podcast-ok  letöltése folyik\n"
+"\n"
+"A kilépés az összes letöltést megszakítja."
 
 #: gui/mainwindow.cpp:1152
 msgid "Abort downloads and quit"
-msgstr ""
+msgstr "Letöltés megszakítása és kilépés"
 
 #: gui/mainwindow.cpp:1447
 msgctxt "Qt-only"
@@ -2354,7 +2370,7 @@ msgid ""
 "\">GPLv3</a>"
 msgstr ""
 "<b>Cantata %1</b><br/><br/>MPD kliens.<br/><br/>© Craig Drummond 2011-2013."
-"<br/>kiadva <a href=\"http://www.gnu.org/licenses/gpl.html\">GPLv3 alatt</a>"
+"<br/>Kiadva <a href=\"http://www.gnu.org/licenses/gpl.html\">GPLv3 alatt</a>"
 
 #: gui/mainwindow.cpp:1450
 msgid ""
@@ -2460,12 +2476,11 @@ msgstr "%1 - %2"
 
 #: gui/mainwindow.cpp:1843
 msgid "MPD reported the following error: %1"
-msgstr ""
+msgstr "Az MPD a következő hibát jelezte: %1"
 
 #: gui/mainwindow.cpp:1990
-#, fuzzy
 msgid "Remove all songs from play queue?"
-msgstr "A lejátszási sorból töröl"
+msgstr "A lejátszási sorból minden számot töröl?"
 
 #: gui/mainwindow.cpp:2080 models/playqueuemodel.cpp:107
 msgid "Priority"
@@ -2486,8 +2501,8 @@ msgstr "Írj be egy nevet a lejátszási listának:"
 #: gui/mainwindow.cpp:2106
 msgid "A playlist named <b>%1</b> already exists!<br/>Add to that playlist?"
 msgstr ""
-"A lejátszási lista <b>%1</b> neve már létezik!<br/>Hozzáadjam a lejátszási "
-"listához?"
+"A(z) <b>%1</b> lejátszási lista már létezik!<br/>Ahhoz a listához adjam "
+"hozzá?"
 
 #: gui/mainwindow.cpp:2107
 msgid "Existing Playlist"
@@ -2495,7 +2510,7 @@ msgstr "Létező lejátszási lista"
 
 #: gui/playbacksettings.cpp:42
 msgid "Do not fadeout"
-msgstr "Nem úsztat ki"
+msgstr "Nem úsztasson ki"
 
 #: gui/playbacksettings.cpp:43
 msgid " ms"
@@ -2572,7 +2587,7 @@ msgstr "Lejátszási lista eltávolítása"
 
 #: gui/playlistspage.cpp:211 gui/playlistspage.cpp:234
 msgid "A playlist named <b>%1</b> already exists!<br/>Overwrite?"
-msgstr "Már van <b>%1</b> nevű lejátszási lista!<br/>Felülírjam?"
+msgstr "A(z) <b>%1</b> lejátszási lista létezik!<br/>Felülírjam?"
 
 #: gui/playlistspage.cpp:212 gui/playlistspage.cpp:235
 msgid "Overwrite Playlist"
@@ -2617,14 +2632,12 @@ msgid "Interface Settings"
 msgstr "A felület beállításai"
 
 #: gui/preferencesdialog.cpp:85
-#, fuzzy
 msgid "Streams Settings"
-msgstr "Hangfolyam"
+msgstr "Hangfolyam beállításai"
 
 #: gui/preferencesdialog.cpp:89
-#, fuzzy
 msgid "Online Providers"
-msgstr "Szövegtárak"
+msgstr "Online szolgáltatók"
 
 #: gui/preferencesdialog.cpp:92
 msgid "Context"
@@ -2715,11 +2728,11 @@ msgid ""
 "relevant host - Cantata itself cannot control the starting/stopping of this "
 "service.</i>"
 msgstr ""
-"<i><b>Megjegyzés:</b> \"Dinamizáló port\" csak akkor releváns, ha a "
-"\"dinamikus lejátszási listát\" akarod használni. A működtetéshez a "
-"<code>cantata-dynamic</code> alkalmazás telepítve és elindítva <b>kell</b> "
-"legyen a megfelelő host-on - a Cantata maga nem tudja vezérelni a "
-"szolgáltatás elindítását/leállítását.</i>"
+"<i><b>Megjegyzés:</b> 'Dinamizáló port' csak akkor releváns, ha a 'dinamikus "
+"lejátszási listát' akarod használni. A működtetéshez a <code>cantata-"
+"dynamic</code> alkalmazás telepítve és elindítva <b>kell</b> legyen a "
+"megfelelő host-on - a Cantata maga nem tudja vezérelni a szolgáltatás "
+"elindítását/leállítását.</i>"
 
 #: gui/serversettings.cpp:112
 msgid ""
@@ -2731,7 +2744,7 @@ msgid ""
 "then Cantata will use a per-user instance of the dynamizer to facilitate "
 "dynamic playlists.</i>"
 msgstr ""
-"<i><b>Megjegyzés:</b> a \"Dinamizáló port\" csak akkor számít, ha rendszer-, "
+"<i><b>Megjegyzés:</b> a 'Dinamizáló port' csak akkor számít, ha rendszer-, "
 "vagy nem helyi szinten üzemelteted a Cantatat dinamizáló példányát. Ehhez a "
 "funkcióhoz a <code>cantata-dynamic</code> alkalmazás telepítve és elindítva "
 "<b>kell</b> legyen a megfelelő host-on - a Cantata önmaga nem tudja "
@@ -2747,9 +2760,8 @@ msgid ""
 "</i></p>"
 msgstr ""
 "<p>Fájlnév (kiterjesztés nélkül) lementi a borítót aszerint.<br/>Ha üresen "
-"marad \"borítót\" használja.<br/><br/><i>A jelenlegi számnál az %előadó% "
-"album előadóra kerül lecserélésre, és az %album% pedig az album nevére.</i></"
-"p>"
+"marad 'borítót' használja.<br/><br/><i>A jelenlegi számnál az %előadó% album "
+"előadóra kerül lecserélésre, és az %album% pedig az album nevére.</i></p>"
 
 #: gui/serversettings.cpp:252
 msgid ""
@@ -2765,7 +2777,7 @@ msgstr ""
 
 #: gui/serversettings.cpp:255
 msgid "Add Collection"
-msgstr "Gyűjteményhez ad"
+msgstr "Gyűjteményt hozzáad"
 
 #: gui/serversettings.cpp:255
 msgid "Standard"
@@ -2793,43 +2805,48 @@ msgstr "Alapbeállítás"
 
 #: gui/shortcutssettingspage.cpp:74
 msgid "Multi-Media Keys"
-msgstr ""
+msgstr "Multimédia-gombok"
 
 #: gui/shortcutssettingspage.cpp:80
 msgid "Do not use media keys to control Cantata"
-msgstr ""
+msgstr "Ne használd a média-gombokat a Cantata vezérlésére"
 
 #: gui/shortcutssettingspage.cpp:81
 msgid "Use media keys to control Cantata"
-msgstr ""
+msgstr "A médiagombok használata a Cantata vezérlésére"
 
 #: gui/shortcutssettingspage.cpp:84
 msgid "Use media keys, as configured in desktop settings, to control Cantata"
 msgstr ""
+"A médiagombok használata a Cantata vezérlésére asztalbeállítások szerint"
 
 #: gui/shortcutssettingspage.cpp:85
 msgid ""
 "Use media keys, as configured in GNOME/Unity settings, to control Cantata"
 msgstr ""
+"A médiagombok használata a Cantata vezérlésére a GNOME/Unity beállításai "
+"szerint"
 
 #: gui/shortcutssettingspage.cpp:88 gui/shortcutssettingspage.cpp:110
 #: online/onlineservicespage.cpp:102 streams/streamspage.cpp:99
-#, fuzzy
 msgid "Configure..."
-msgstr "Beállítás"
+msgstr "Beállítás..."
 
 #: gui/shortcutssettingspage.cpp:95
 msgid "Use media keys to control Cantata:"
-msgstr ""
+msgstr "A médiagombok használata a Cantata vezérlésére:"
 
 #: gui/shortcutssettingspage.cpp:106
 msgid "Use media keys, as configured in desktop settings, to control Cantata:"
 msgstr ""
+"A médiagombok használata a Cantata vezérlésére asztalbeállítások szerint:"
 
 #: gui/shortcutssettingspage.cpp:107
 msgid ""
 "Use media keys, as configured in GNOME/Unity settings, to control Cantata:"
 msgstr ""
+"A médiagombok használata a Cantata vezérlésére a GNOME/Unity beállításai "
+"szerint:"
 
 #: gui/stdactions.cpp:55
 msgid "Previous Track"
@@ -2865,7 +2882,7 @@ msgstr "Lejátszási listához hozzáad"
 
 #: gui/stdactions.cpp:65
 msgid "Add Albums In Random Order"
-msgstr ""
+msgstr "Albumok hozzáadása véletlenszerű sorrendben."
 
 #: gui/stdactions.cpp:66
 msgid "Replace Play Queue"
@@ -2909,11 +2926,11 @@ msgstr "Fájlok rendezése"
 
 #: gui/stdactions.cpp:77
 msgid "Edit Tags"
-msgstr "Jelölők szerkesztése"
+msgstr "Címkék szerkesztése"
 
 #: gui/stdactions.cpp:80 replaygain/rgdialog.cpp:111
 msgid "ReplayGain"
-msgstr "Ismétlési szint"
+msgstr "Lejátszási szint"
 
 #: gui/stdactions.cpp:83
 msgid "Copy Songs To Device"
@@ -2944,16 +2961,16 @@ msgstr "%1 ezen %2 (%3)"
 #: gui/trayitem.cpp:195
 msgctxt "Song by Artist on Album"
 msgid "%1 by %2 on %3"
-msgstr "%1 szerző %2 ezen %3"
+msgstr "%1 előadja %2 ezen %3"
 
 #: gui/trayitem.cpp:196
 msgctxt "Song by Artist on Album (track duration)"
 msgid "%1 by %2 on %3 (%4)"
-msgstr "%1 szerző %2 ezen %3"
+msgstr "%1 előadja %2 ezen %3"
 
 #: gui/trayitem.cpp:223
 msgid "Now playing"
-msgstr "Most szól"
+msgstr "Most megy"
 
 #: http/httpserversettings.cpp:40
 msgid "Local loopback (%1)"
@@ -3015,7 +3032,7 @@ msgstr "Nincs bejelentkezve"
 
 #: models/digitallyimported.cpp:126
 msgid "Logged in"
-msgstr "Bejelentkezés"
+msgstr "Bejelentkezve"
 
 #: models/digitallyimported.cpp:185 models/digitallyimported.cpp:211
 msgid "Unknown error"
@@ -3031,7 +3048,7 @@ msgstr "Nincs aktív előfizetésed"
 
 #: models/digitallyimported.cpp:224
 msgid "Logged in (expiry:%1)"
-msgstr "bejelentkezve (lejárat:%1) "
+msgstr "Bejelentkezve (lejárat:%1) "
 
 #: models/digitallyimported.cpp:232
 msgid "Session expired"
@@ -3042,7 +3059,7 @@ msgstr "Munkamenet lejárt"
 msgid "1 Entry"
 msgid_plural "%1 Entries"
 msgstr[0] "1 elem"
-msgstr[1] "1 elemek"
+msgstr[1] "%1 elemek"
 
 #: models/dirviewmodel.cpp:190
 msgid "Audio File"
@@ -3075,35 +3092,30 @@ msgstr[1] "%1 Albumok"
 #: models/musicmodel.cpp:198
 msgid "1 Episode"
 msgid_plural "%1 Episodes"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "1 Rész"
+msgstr[1] "%1 Részek"
 
 #. i18n: file: online/onlinesettings.ui:47
 #. i18n: ectx: property (text), widget (QPushButton, configureButton)
 #: models/onlineservicesmodel.cpp:83 po/rc.cpp:720 rc.cpp:720
-#, fuzzy
 msgid "Configure Service"
-msgstr "Eszköz beállítása"
+msgstr "Szolgáltatás beállítása"
 
 #: models/onlineservicesmodel.cpp:84
-#, fuzzy
 msgid "Refresh Service"
-msgstr "Eszköz frissítése"
+msgstr "Szolgáltatás frissítése"
 
 #: models/onlineservicesmodel.cpp:85
-#, fuzzy
 msgid "Add Subscription"
-msgstr "Nincs előfizetés"
+msgstr "Előfizetés hozzáadása"
 
 #: models/onlineservicesmodel.cpp:86
-#, fuzzy
 msgid "Remove Subscription"
-msgstr "Nincs előfizetés"
+msgstr "Előfizetés eltávolítása"
 
 #: models/onlineservicesmodel.cpp:87
-#, fuzzy
 msgid "Refresh Subscription"
-msgstr "Nincs előfizetés"
+msgstr "Előfizetés frissítése"
 
 #: models/onlineservicesmodel.cpp:137
 msgid "Last Search:%1"
@@ -3125,19 +3137,17 @@ msgstr "Számok előkerítésére használd a keresést "
 #: models/onlineservicesmodel.cpp:166
 msgid "1 Podcast"
 msgid_plural "%1 Podcasts"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "1 Podcast"
+msgstr[1] "%1 Pocast-ok"
 
 #: models/onlineservicesmodel.cpp:177
-#, fuzzy
 msgid "(Downloading: %1%)"
-msgstr "Letöltés"
+msgstr "(Letölt: %1%)"
 
 #: models/onlineservicesmodel.cpp:235
-#, fuzzy
 msgctxt "podcast name (num unplayed episodes)"
 msgid "%1 (%2)"
-msgstr "%1 (Lemez %2)"
+msgstr "%1 (%2)"
 
 #: models/playlistsmodel.cpp:77
 msgid "New Playlist..."
@@ -3192,7 +3202,7 @@ msgstr "SomaFM"
 
 #: models/streamsmodel.cpp:568
 msgid "Digitally Imported"
-msgstr "Digitálisan importált"
+msgstr "Digitally Imported"
 
 #: models/streamsmodel.cpp:569
 msgid "JazzRadio.com"
@@ -3440,17 +3450,16 @@ msgid "Download To Library"
 msgstr "Letöltés könyvtárba"
 
 #: online/onlineservicespage.cpp:62 online/podcastsearchdialog.cpp:554
-#, fuzzy
 msgid "Search For Podcasts"
-msgstr "Dalszöveg keresése"
+msgstr "Podcast keresése"
 
 #: online/onlineservicespage.cpp:63
 msgid "Download Podcast Episodes"
-msgstr ""
+msgstr "Podcast részek letöltése"
 
 #: online/onlineservicespage.cpp:64
 msgid "Delete Downloaded Podcast Episodes"
-msgstr ""
+msgstr "A letöltött podcast részek törlése"
 
 #: online/onlineservicespage.cpp:329
 msgctxt "Search ServiceName:"
@@ -3463,214 +3472,204 @@ msgstr "Újratöltésem a zenelistát evvel kapcsolatban %1?"
 
 #: online/onlineservicespage.cpp:532
 msgid "Subscribe to Podcast"
-msgstr ""
+msgstr "Feliratkozás a podcast-ra"
 
 #: online/onlineservicespage.cpp:532
 msgid "Enter podcast URL:"
-msgstr ""
+msgstr "Írd be a podcast URL-jét:"
 
 #: online/onlineservicespage.cpp:541
 msgid "Invalid URL!"
-msgstr ""
+msgstr "Érvénytelen URL!"
 
 #: online/onlineservicespage.cpp:546
 msgid "You are already subscribed to this URL!"
-msgstr ""
+msgstr "Már feliratkoztál erre az URL-re!"
 
 #: online/onlineservicespage.cpp:550
 msgid "Already downloading this URL!"
-msgstr ""
+msgstr "Már folyik az URL letöltése!"
 
 #: online/onlineservicespage.cpp:579
 msgid "Unsubscribe from <b>%1</b>?"
-msgstr ""
+msgstr "Leiratkozik innen <b>%1</b>?"
 
 #: online/onlineservicespage.cpp:600
 msgid "Refresh all podcast listings?"
-msgstr ""
+msgstr "Az összes podcast-listát frissíti?"
 
 #: online/onlineservicespage.cpp:621
 msgid "Refresh episode listing from <b>%1</b>?"
-msgstr ""
+msgstr "Frissíti a részek listáját innentől: <b>%1</b>?"
 
 #: online/onlineservicespage.cpp:695
 msgid "All selected podcasts have already been downloaded!"
-msgstr ""
+msgstr "Az összes kiválasztott podcast-részt már letöltöttem!"
 
 #: online/onlineservicespage.cpp:699
 msgid "Do you wish to download the following podcast episode?"
-msgstr ""
+msgstr "Letöltenéd a következő podcast részt?"
 
 #: online/onlineservicespage.cpp:702
 msgid "Do you wish to download the following podcast episodes?"
-msgstr ""
+msgstr "Letöltenéd a következő podcast részeket?"
 
 #: online/onlineservicespage.cpp:705
-#, fuzzy
 msgid "Do you wish to download the selected podcast episodes?"
-msgstr "Biztosan eltávolítanád a kiválasztott %1 stream-eket?"
+msgstr "Biztosan eltávolítanád a kiválasztott %1 podcast epizódot?"
 
 #: online/onlineservicespage.cpp:753
 msgid "All selected downloaded podcast episodes have already been deleted!"
-msgstr ""
+msgstr "Az összes kiválasztott podcast-részt már töröltem!"
 
 #: online/onlineservicespage.cpp:757
 msgid ""
 "Do you wish to delete the downloaded file of the following podcast episode?"
-msgstr ""
+msgstr "Letörölnéd a következő podcast rész letöltött fájlját?"
 
 #: online/onlineservicespage.cpp:760
 msgid ""
 "Do you wish to the delete downloaded files of the following podcast episodes?"
-msgstr ""
+msgstr "Letörölnéd a következő podcast részek letöltött fájljait?"
 
 #: online/onlineservicespage.cpp:763
 msgid ""
 "Do you wish to the delete downloaded files of the selected podcast episodes?"
-msgstr ""
+msgstr "Letörölnéd a következő kiválasztott podcast részek letöltött fájljait?"
 
 #: online/podcastsearchdialog.cpp:243
 msgid "RSS:"
-msgstr ""
+msgstr "RSS:"
 
 #: online/podcastsearchdialog.cpp:245
 msgid "Website:"
-msgstr ""
+msgstr "Weblap:"
 
 #: online/podcastsearchdialog.cpp:252
-#, fuzzy
 msgid "Podcast details"
-msgstr "Gyűjtemény részletei"
+msgstr "A podcast részletei"
 
 #: online/podcastsearchdialog.cpp:252
 msgid "Select a podcast to display its details"
-msgstr ""
+msgstr "Válaszd ki a podcast-ot, amiek a részleteit megjelenítenéd"
 
 #: online/podcastsearchdialog.cpp:322
 msgid "Enter search term..."
-msgstr ""
+msgstr "Írd be a keresett kifejezést..."
 
 #: online/podcastsearchdialog.cpp:372
-#, fuzzy
 msgid "Failed to fetch podcasts from %1"
-msgstr "Nem sikerült leválasztani erről \"%1\""
+msgstr "Nem sikerült podcast-ot letölteni erről %1"
 
 #: online/podcastsearchdialog.cpp:378
 msgid "There was a problem parsing the response from %1"
-msgstr ""
+msgstr "A(z) %1 válaszának elemzésével probléma adódott."
 
 #: online/podcastsearchdialog.cpp:439
-#, fuzzy
 msgid "Failed to download directory listing"
-msgstr "A képet nem tudtam letölteni!"
+msgstr "A könyvtárlistát nem sikerült letölteni"
 
 #: online/podcastsearchdialog.cpp:447
-#, fuzzy
 msgid "Failed to parse directory listing"
-msgstr "Elemzés sikertelen"
+msgstr "Könyvtárlista elemzése sikertelen"
 
 #: online/podcastsearchdialog.cpp:508
 msgid "Subscribe"
-msgstr ""
+msgstr "Feliratkozás"
 
 #: online/podcastsearchdialog.cpp:526 online/podcastsearchdialog.cpp:530
-#, fuzzy
 msgid "Search %1"
-msgstr "Keresés %1:"
+msgstr "Keresés %1"
 
 #: online/podcastsearchdialog.cpp:526 online/podcastsearchdialog.cpp:530
 msgid "Search for podcasts on %1"
-msgstr ""
+msgstr "Podcast keresése itt: %1"
 
 #: online/podcastsearchdialog.cpp:543
 msgid "Browse %1"
-msgstr ""
+msgstr "Böngészés %1"
 
 #: online/podcastsearchdialog.cpp:543
 msgid "Browse %1 podcasts"
-msgstr ""
+msgstr "A(z) %1 podcast-ok böngészése"
 
 #: online/podcastsearchdialog.cpp:602
-#, fuzzy
 msgid "Subscription added"
-msgstr "Nincs előfizetés"
+msgstr "Előfizetés hozzáadva"
 
 #: online/podcastsearchdialog.cpp:604
 msgid "You are already subscribed to this podcast!"
-msgstr ""
+msgstr "Már feliratkoztál erre a podcsat-ra!"
 
 #: online/podcastservice.cpp:103
 msgid "Podcasts"
-msgstr ""
+msgstr "Podcast-ok"
 
 #: online/podcastservice.cpp:284
 msgid "Cantata only supports audio podcasts! %1 contains only video podcasts."
 msgstr ""
+"A Cantata csak audio podcast-ok lejátszását támogatja! A(z) %1 csak videó "
+"podcast-okat tartalmaz."
 
 #: online/podcastservice.cpp:286
-#, fuzzy
 msgid "Failed to parse %1"
-msgstr "Elemzés sikertelen"
+msgstr "Elemzés sikertelen %1"
 
 #: online/podcastservice.cpp:290
-#, fuzzy
 msgid "Failed to download %1"
-msgstr "Letöltés sikertelen"
+msgstr "Letöltés sikertelen %1"
 
 #: online/podcastsettingsdialog.cpp:58
 msgid "Check for new episodes:"
-msgstr ""
+msgstr "Új részek keresése:"
 
 #: online/podcastsettingsdialog.cpp:59
-#, fuzzy
 msgid "Download episodes to:"
-msgstr "Letöltések:"
+msgstr "Részek letöltése ide:"
 
 #: online/podcastsettingsdialog.cpp:60
-#, fuzzy
 msgid "Automatically download new episodes:"
-msgstr "Automatikus áttekintés:"
+msgstr "Új részek automatikus letöltése::"
 
 #: online/podcastsettingsdialog.cpp:82
-#, fuzzy
 msgid "Podcast Settings"
-msgstr "Proxybeállítások"
+msgstr "Podcast beállítások"
 
 #: online/podcastsettingsdialog.cpp:84
 msgid "Manually"
-msgstr ""
+msgstr "Kézzel"
 
 #: online/podcastsettingsdialog.cpp:85
 msgid "Every 15 minutes"
-msgstr ""
+msgstr "Minden 15. percben"
 
 #: online/podcastsettingsdialog.cpp:86
 msgid "Every 30 minutes"
-msgstr ""
+msgstr "Minden 30. percben"
 
 #: online/podcastsettingsdialog.cpp:87
 msgid "Every hour"
-msgstr ""
+msgstr "Minden órában"
 
 #: online/podcastsettingsdialog.cpp:88
 msgid "Every 2 hours"
-msgstr ""
+msgstr "Minden 2. órában"
 
 #: online/podcastsettingsdialog.cpp:89
 msgid "Every 6 hours"
-msgstr ""
+msgstr "Minden 6. órában"
 
 #: online/podcastsettingsdialog.cpp:90
 msgid "Every 12 hours"
-msgstr ""
+msgstr "Minden 12. órában"
 
 #: online/podcastsettingsdialog.cpp:91
 msgid "Every day"
-msgstr ""
+msgstr "Minden nap"
 
 #: online/podcastsettingsdialog.cpp:92
 msgid "Every week"
-msgstr ""
+msgstr "Minden héten"
 
 #. i18n: file: context/othersettings.ui:19
 #. i18n: ectx: property (text), widget (BuddyLabel, contextBackdropLabel)
@@ -3707,7 +3706,7 @@ msgstr ""
 "csökkentett változat nem mindig 100%-osan pontos, mivel a Cantata alapból az "
 "egyes cikkeknek csak a felvezetőt jeleníti meg. Ha a teljes cikk "
 "megjelenítését választod, beolvasási hibák léphetnek fel. Emellett el kell "
-"távolítanod a pillanatnyilag cache-ba tárolt cikkeket (a \"Cache\" lap "
+"távolítanod a pillanatnyilag cache-ba tárolt cikkeket (a 'Cache' lap "
 "használatával).</i>"
 
 #. i18n: file: context/togglelist.ui:17
@@ -3765,7 +3764,7 @@ msgstr "(Beállítandó)"
 #. i18n: ectx: property (text), widget (BuddyLabel, label_2)
 #: po/rc.cpp:37 rc.cpp:37
 msgid "Overwrite songs:"
-msgstr "Felülírandó dalok:"
+msgstr "Dalok felülírása:"
 
 #. i18n: file: devices/actiondialog.ui:150
 #. i18n: ectx: property (text), widget (QLabel, label_3)
@@ -3805,7 +3804,7 @@ msgstr "Album részletei"
 #. i18n: ectx: property (text), widget (StateLabel, composerLabel)
 #: po/rc.cpp:58 po/rc.cpp:298 po/rc.cpp:798 rc.cpp:58 rc.cpp:298 rc.cpp:798
 msgid "Composer:"
-msgstr ""
+msgstr "Zeneszerző:"
 
 #. i18n: file: devices/albumdetails.ui:73
 #. i18n: ectx: property (text), widget (BuddyLabel, label_3)
@@ -3841,7 +3840,7 @@ msgstr "Lemez:"
 #. i18n: ectx: property (text), widget (BuddyLabel, label_5)
 #: po/rc.cpp:73 rc.cpp:73
 msgid "Single artist:"
-msgstr "Előadó:"
+msgstr "Szólista:"
 
 #. i18n: file: devices/audiocdsettings.ui:20
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox)
@@ -3889,7 +3888,7 @@ msgstr "Teljes paranoia mód (legjobb minőség):"
 #. i18n: ectx: property (text), widget (BuddyLabel, label_5)
 #: po/rc.cpp:109 rc.cpp:109
 msgid "Never skip on read error:"
-msgstr "Hiba átlépése - soha:"
+msgstr "Olvasási hiba átlépése - soha:"
 
 #. i18n: file: devices/devicepropertieswidget.ui:20
 #. i18n: ectx: property (text), widget (QLabel, remoteDeviceNote)
@@ -3898,8 +3897,8 @@ msgid ""
 "<i><b>NOTE:</b> These settings are only valid, and editable, when the device "
 "is connected.</i>"
 msgstr ""
-"<i><b>Megjegyzés:</b> Ezek a beállítások csak akkor érvényesek, amikor az "
-"eszköz csatlakoztatva.</i>"
+"<i><b>Megjegyzés:</b> Ezek a beállítások csak akkor érvényesek és "
+"szerkeszthetők, ha az eszköz csatlakozik.</i>"
 
 #. i18n: file: devices/devicepropertieswidget.ui:35
 #. i18n: ectx: property (text), widget (BuddyLabel, musicFolderLabel)
@@ -3930,7 +3929,7 @@ msgstr "Zenekönyvtár:"
 #. i18n: ectx: property (text), widget (BuddyLabel, albumCoversLabel)
 #: po/rc.cpp:118 rc.cpp:118
 msgid "Copy album covers as:"
-msgstr "Másolja az albumborítót mint:"
+msgstr "Másolja az albumborítókat mint:"
 
 #. i18n: file: devices/devicepropertieswidget.ui:65
 #. i18n: ectx: property (text), widget (BuddyLabel, coverMaxSizeLabel)
@@ -3942,7 +3941,7 @@ msgstr "Borító maximális mérete:"
 #. i18n: ectx: property (text), widget (BuddyLabel, fixVariousArtistsLabel)
 #: po/rc.cpp:124 rc.cpp:124
 msgid "'Various Artists' workaround:"
-msgstr "\"Válogatott előadók\" munkakörnyezet:"
+msgstr "'Vegyes előadók' munkakörnyezet:"
 
 #. i18n: file: devices/devicepropertieswidget.ui:95
 #. i18n: ectx: property (text), widget (BuddyLabel, autoScanLabel)
@@ -3954,7 +3953,7 @@ msgstr "Csatlakozáskor zene automatikus keresése:"
 #. i18n: ectx: property (text), widget (BuddyLabel, useCacheLabel)
 #: po/rc.cpp:130 rc.cpp:130
 msgid "Use cache:"
-msgstr "Használt cache:"
+msgstr "Cache használata:"
 
 #. i18n: file: devices/devicepropertieswidget.ui:121
 #. i18n: ectx: property (text), widget (QLabel, defaultVolumeLabel)
@@ -4086,7 +4085,7 @@ msgstr "Szám címe"
 #. i18n: ectx: property (text), widget (QPushButton, trackArtistAndTitle)
 #: po/rc.cpp:181 rc.cpp:181
 msgid "Track Title (+Artist)"
-msgstr "Szám címe"
+msgstr "Szám címe (+Artist)"
 
 #. i18n: file: devices/filenameschemedialog.ui:124
 #. i18n: ectx: property (text), widget (QPushButton, trackNo)
@@ -4107,7 +4106,7 @@ msgid ""
 "<i><b>NOTE:</b> These settings are only editable when the device is not "
 "connected.</i>"
 msgstr ""
-"<i><b>Megjegyzés:</b> Ezek a beállítások csak akkor érvényesek, amikor az "
+"<i><b>Megjegyzés:</b> Ezek a beállítások csak akkor szerkeszthetők, ha az "
 "eszköz nincs csatlakoztatva.</i>"
 
 #. i18n: file: devices/remotedevicepropertieswidget.ui:32
@@ -4224,9 +4223,9 @@ msgid ""
 "<b>unencrypted</b> in Cantata's config file. To have Cantata prompt for the "
 "password before accessing the share, set the password to '-'</i>"
 msgstr ""
-"<i><b>Megjegyzés:</b>Az itt megadott <b>nyíltan</b> kerül mentésre a Cantata "
-"beállító fájljába. Hogy a Cantata a megosztás eléréséhez jelszót kérjen, a "
-"jelszót állítsd '-'-re.</i>"
+"<i><b>Megjegyzés:</b> az itt megadott jelszó <b>nyíltan</b> kerül mentésre a "
+"Cantata beállító fájljába. Hogy a Cantata a megosztás eléréséhez jelszót "
+"kérjen, a jelszót állítsd '-'-re.</i>"
 
 #. i18n: file: devices/remotedevicepropertieswidget.ui:192
 #. i18n: ectx: property (text), widget (BuddyLabel, hostLabel_2x)
@@ -4260,7 +4259,7 @@ msgid ""
 "application (ksshaskpass, ssh-askpass-gnome, etc.) will be required to enter "
 "the password.</i>"
 msgstr ""
-"<i><b>Megjegyzés:</b> Az sshfs futási módja miatt, megfelelő ssh "
+"<i><b>Megjegyzés:</b> az sshfs futási módja miatt, megfelelő ssh "
 "jelszóbekérő alkalmazás (ksshaskpass, ssh-askpass-gnome, stb.) kell jelszó "
 "beviteléhez.</i>"
 
@@ -4273,7 +4272,7 @@ msgid ""
 "attached via USB, Cantata will automatically display the device when it is "
 "attached.</i>"
 msgstr ""
-"<i><b>Megjegyzés:</b> Ez a párbeszéd csak távoli eszközök csatlakozására "
+"<i><b>Megjegyzés:</b> ez a párbeszéd csak távoli eszközök csatlakozására "
 "(pl. Samba-n keresztül), vagy helyileg csatolt eszközök elérésére  szolgál. "
 "Egyszerű, USB-n csatlakoztatott médialejátszókat a Cantata "
 "csatlakoztatásukkor automatikusan megjeleníti.</i>"
@@ -4380,7 +4379,7 @@ msgstr "Ehhez hasonló előadók:"
 msgid ""
 "<i><b>NOTE</b> Only enter values for the tags you wish to be search on. </i>"
 msgstr ""
-"<i><b>Megjegyzés:</b> Csak azokhoz a címkékhez írj értéket, amelyekre "
+"<i><b>Megjegyzés:</b> csak azokhoz a címkékhez írj értéket, amelyekre "
 "keresni akarsz.</i>"
 
 #. i18n: file: dynamic/dynamicrule.ui:262
@@ -4390,9 +4389,9 @@ msgid ""
 "<i><b>NOTE</b> For genre, end string with an asterisk to match various "
 "genres. e.g 'rock*' matches 'Hard Rock' and 'Rock and Roll'. </i>"
 msgstr ""
-"<i><b>Megjegyzés:</b> A műfajnál, ha többfélére akarsz keresni a "
-"karaktersort csillaggal zárd pl. \"rock*\" megfelelője a \"Hard Rock\" és a "
-"\"Rock and Roll\" is. </i>"
+"<i><b>Megjegyzés:</b> ha többféle műfajra akarsz keresni a karaktersort "
+"csillaggal zárd pl. 'rock*' megfelelője a 'Hard Rock' és a 'Rock and Roll' "
+"is. </i>"
 
 #. i18n: file: gui/coverdialog.ui:23
 #. i18n: ectx: property (toolTip), widget (QToolButton, cancelButton)
@@ -4439,9 +4438,8 @@ msgstr "Letöltött dalszövegek mentése a zenekönyvtárban:"
 #. i18n: file: gui/initialsettingswizard.ui:746
 #. i18n: ectx: property (text), widget (BuddyLabel, storeBackdropsInMpdDirLabel)
 #: po/rc.cpp:358 po/rc.cpp:448 rc.cpp:358 rc.cpp:448
-#, fuzzy
 msgid "Save downloaded backdrops in music folder:"
-msgstr "Letöltött borítók mentése a zenekönyvtárban:"
+msgstr "Letöltött hátterek mentése a a zenekönyvtárban:"
 
 #. i18n: file: gui/filesettings.ui:69
 #. i18n: ectx: property (text), widget (QLabel, label)
@@ -4458,7 +4456,6 @@ msgstr "Kedvenc stream-ek mentése a zenekönyvtárban:"
 #. i18n: file: gui/filesettings.ui:110
 #. i18n: ectx: property (text), widget (QLabel, label_2)
 #: po/rc.cpp:364 rc.cpp:364
-#, fuzzy
 msgid ""
 "<i><b>NOTE:</b> If you elect to have Cantata store covers, lyrics, or "
 "backdrops, within the music folder, and you do not have write access to this "
@@ -4471,12 +4468,12 @@ msgid ""
 msgstr ""
 "<i><b>Megjegyzés:</b> ha azt választod, hogy a Cantata tárolja a borítókat, "
 "vagy dalszövegeket a zenekönyvtárban és nincs írási jogod ahhoz a "
-"könyvtárhoz, akkor a Cantata visszalép a személyes könyvtáradba a fájlok "
+"könyvtárhoz, akkor a Cantata visszaléptet a személyes könyvtáradba a fájlok "
 "mentésére. Ugyanakkor a hangfolyamoknál, ha nincs írási jogod, akkor a "
 "zenekönyvtárban csak láthatod (és lejátszhatod) a stream-eket, de nem "
-"adhatsz hozzá (vagy szerkeszthetsz) stream-et. Ha úgy állítod be, hogy a "
-"stream-eket ne mentse a zenekönyvtárba, akkor ezeket a helyi beállítások "
-"szerinti könyvtárba menti - és csak te érheted el.</i>"
+"adhatsz hozzá (vagy szerkeszthetsz) stream-et. Ha úgy állítod be, hogy "
+"stream-eket ne mentsen a zenekönyvtárba, akkor ezeket a helyi beállítások "
+"könyvtárba menti - és csak te érheted el.</i>"
 
 #. i18n: file: gui/filesettings.ui:145
 #. i18n: ectx: property (text), widget (StateLabel, streamLocationNote)
@@ -4490,7 +4487,7 @@ msgid ""
 "(after you have toggled the setting).</i>"
 msgstr ""
 "<i><b>Megjegyzés:</b> ha megváltoztatod a stream-ek tárolási helyét (pl. "
-"átváltasz a \"Kedvenc stream-ek mentése a zenekönyvtárba\" opcióra), akkor a "
+"átváltasz a 'Kedvenc stream-ek mentése a zenekönyvtárba' opcióra), akkor a "
 "Cantata csak azokat a stream-eket jeleníti meg, amik az adott könyvtárban "
 "találhatók. Vagyis, ezen beállítások változtatása előtt ajánlott a létező "
 "stream-jeid exportálása. Később azokat vissza importálhatod az új helyre (a "
@@ -4545,16 +4542,16 @@ msgid ""
 "(or startup) MPD:</p></body></html>"
 msgstr ""
 "<html><head/><body><p>A Cantata egy funkciókban gazdag és felhasználóbarát "
-"Music Player Daemon (MPD) kliens. Az MPD egy zenék lejátszására alkalmas "
-"háttéralkalmazás. Az MPD akár rendszerszinten, vagy felhasználói alapon "
-"indítható. Kérem, válaszd ki, hogy a Cantata miként csatlakozzon az MPD-hez "
-"induláskor (vagy rendszer indításkor):</p></body></html>"
+"kliens Music Player Daemon (MPD) számára. Az MPD egy zenék lejátszására "
+"alkalmas háttéralkalmazás. Az MPD akár rendszerszinten, vagy felhasználói "
+"alapon indítható. Kérem, válaszd ki, hogy a Cantata miként csatlakozzon az "
+"MPD-hez induláskor (vagy rendszer indításkor):</p></body></html>"
 
 #. i18n: file: gui/initialsettingswizard.ui:166
 #. i18n: ectx: property (text), widget (QRadioButton, advanced)
 #: po/rc.cpp:385 rc.cpp:385
 msgid "Standard multi-user/server setup"
-msgstr "Szabvány többfelhasználós, vagy szerver beállítások."
+msgstr "Szabványos többfelhasználós, vagy szerver beállítások."
 
 #. i18n: file: gui/initialsettingswizard.ui:179
 #. i18n: ectx: property (text), widget (BuddyLabel, label_10)
@@ -4618,7 +4615,7 @@ msgid ""
 "the relevant details, and use the 'Connect' button to test the connection."
 msgstr ""
 "Az alábbiak a Cantata által megkívánt alapvető beállítások. Kérlek add meg a "
-"megfelelő adatokat és a \"Csatlakozás\" gombbal ellenőrizd a kapcsolatot."
+"megfelelő adatokat és a 'Csatlakozás' gombbal ellenőrizd a kapcsolatot."
 
 #. i18n: file: gui/initialsettingswizard.ui:372
 #. i18n: ectx: property (text), widget (BuddyLabel, hostLabel)
@@ -4639,8 +4636,8 @@ msgid ""
 "<i><b>NOTE:</b> The 'Music folder' setting is used to lookup cover-art, "
 "lyrics, etc.</i>"
 msgstr ""
-"<i><b>Megjegyzés:</b> A \"Zenekönyvtár\" beállításait borítóképek, "
-"dalszövegek stb. keresésére használja.</i>"
+"<i><b>Megjegyzés:</b> a 'Zenekönyvtár' beállításait borítóképek, dalszövegek "
+"stb. keresésére használja.</i>"
 
 #. i18n: file: gui/initialsettingswizard.ui:520
 #. i18n: ectx: property (text), widget (QLabel, socketNoteLabel)
@@ -4655,8 +4652,8 @@ msgid ""
 "<i><b>NOTE:</b> When using a local socket the full absolute path to the "
 "socket needs to be set. (Port number is not required.)</i>"
 msgstr ""
-"<i><b>Megjegyzés:</b> Helyi csatlakozáskor a csatlakozó teljes, abszolút "
-"elérési útvonalát kell beállítani. (A port száma nem szükséges.)</i>"
+"<i><b>Megjegyzés:</b> helyi csatlakozó használatakor a csatlakozó teljes, "
+"abszolút elérési útvonalát kell beállítani. (Portszám nem kell.)</i>"
 
 #. i18n: file: gui/initialsettingswizard.ui:553
 #. i18n: ectx: property (text), widget (QLabel, label_13)
@@ -4723,9 +4720,9 @@ msgid ""
 "currently cannot upload files to external HTTP servers. Therefore, the above "
 "settings should be left disabled.</i>"
 msgstr ""
-"<i><b>Megjegyzés:</b> A \"Zenekönyvtár\" HTTP címre mutat, miközben a "
-"Cantata pillanatnyilag nem tud fájlokat feltölteni külső HTTP szerverekre. "
-"Emiatt a fenti beállításokat nem szabad engedélyezni.</i>"
+"<i><b>Megjegyzés:</b> aA 'Zenekönyvtár' HTTP címre mutat, miközben a Cantata "
+"pillanatnyilag nem tud fájlokat feltölteni külső HTTP szerverekre. Emiatt a "
+"fenti beállításokat ki kell kapcsolni.</i>"
 
 #. i18n: file: gui/initialsettingswizard.ui:857
 #. i18n: ectx: property (text), widget (QLabel, label_6)
@@ -4743,7 +4740,7 @@ msgid ""
 msgstr ""
 "A Cantata beállítása kész. Ha a Cantata beállításait tovább finomítanád "
 "(további MPD host-okat adnál hozzá, stb.), akkor a Cantata beállító "
-"képernyőjét a menüjéből elérheted, a Cantata fő képernyőjének jobb felső "
+"képernyőjét a menüjéből éred el, a Cantata fő képernyőjének jobb felső "
 "sarkában."
 
 #. i18n: file: gui/initialsettingswizard.ui:918
@@ -4756,7 +4753,7 @@ msgid ""
 "you do add yourself you will need to logout and back in for this to take "
 "effect."
 msgstr ""
-"<b>Figyelmeztetés: jelenleg a felhasználói csoport tagja vagy. A Cantatat "
+"<b>Figyelmeztetés: jelenleg a felhasználói csoport tagja vagy. A Cantata "
 "jobban fog működni (album borítók, dalszövegek stb. mentésében megfelelő "
 "jogosultságok mellett), ha te (vagy a rendszergazdád) hozzá ad(od magad) "
 "ehhez a csoporthoz. Ha te adod magad hozzá, akkor ki, és be kell "
@@ -4797,12 +4794,12 @@ msgid ""
 "displayed, it will be cropped (either top/bottom, or left/right) to provide "
 "a square image.</i>"
 msgstr ""
-"<i><b>Megjegyzés:</b> amikor előadó képét keresed, Cantata mind .jpg,-t "
-"mind .png fog keresni. \"Előadó.jpg, vagy \"Előadó.jpg\".\n"
+"<i><b>Megjegyzés:</b> amikor előadó képét keresi, Cantata előadó.jpg,-t és "
+"előadó.png-t, vagy 'Előadó.jpg',-t illetve 'Előadó.png'-t egyaránt keres.\n"
 "a jelenlegi szám könyvtárában, vagy annak szülő könyvtárában. Ha nem talál "
-"képet, a Cantata megpróbál letölteni egyet. Amikor a megjelenített kép le "
-"lesz vágva (vagy lent/fent, vagy bal/jobb oldalon), hogy megfelelő kép "
-"jelenjen meg.</i>"
+"képet, a Cantata megpróbál letölteni egyet. A megjelenített kép le lesz "
+"vágva (vagy lent/fent, vagy bal/jobb oldalon), hogy megfelelő kép jelenjen "
+"meg.</i>"
 
 #. i18n: file: gui/interfacesettings.ui:172
 #. i18n: ectx: property (text), widget (BuddyLabel, label_5x)
@@ -4838,7 +4835,7 @@ msgstr "Előadó/Év/Album"
 #. i18n: ectx: property (text), widget (BuddyLabel, playQueueStartClosedLabel)
 #: po/rc.cpp:515 po/rc.cpp:545 rc.cpp:515 rc.cpp:545
 msgid "Initially collapse albums:"
-msgstr "Induláskor az albumok rejtése:"
+msgstr "Induláskor az albumok becsukása:"
 
 #. i18n: file: gui/interfacesettings.ui:242
 #. i18n: ectx: attribute (title), widget (QWidget, tab_3)
@@ -4886,19 +4883,19 @@ msgstr "Aktuális album automatikus kinyitása:"
 #. i18n: ectx: property (text), widget (BuddyLabel, playQueueScrollLabel)
 #: po/rc.cpp:551 rc.cpp:551
 msgid "Scroll to current track:"
-msgstr "Aktuális szám görgetése:"
+msgstr "Aktuális számhoz görgetés:"
 
 #. i18n: file: gui/interfacesettings.ui:384
 #. i18n: ectx: property (text), widget (BuddyLabel, playQueueBackgroundLabel)
 #: po/rc.cpp:554 rc.cpp:554
 msgid "Use current album cover as background:"
-msgstr "Az aktuális album borítójának használata háttérként:"
+msgstr "Haználja az aktuális album borítóját háttérként:"
 
 #. i18n: file: gui/interfacesettings.ui:397
 #. i18n: ectx: property (text), widget (BuddyLabel, playQueueConfirmClearLabel)
 #: po/rc.cpp:557 rc.cpp:557
 msgid "Prompt before clearing:"
-msgstr ""
+msgstr "Törlés előtt jelezzen:"
 
 #. i18n: file: gui/interfacesettings.ui:411
 #. i18n: ectx: attribute (title), widget (QWidget, tab_7)
@@ -4916,7 +4913,7 @@ msgstr "Ikonok mutatása az értesítési területen:"
 #. i18n: ectx: property (text), widget (BuddyLabel, minimiseOnCloseLabel)
 #: po/rc.cpp:566 rc.cpp:566
 msgid "Minimize to notification area when closed:"
-msgstr "Bezáráskor az értesítési területre rakja:"
+msgstr "Bezárás az értesítési területre:"
 
 #. i18n: file: gui/interfacesettings.ui:457
 #. i18n: ectx: property (text), widget (BuddyLabel, label_11)
@@ -4939,9 +4936,8 @@ msgstr "Az egyszámos albumok csoportosítása:"
 #. i18n: file: gui/interfacesettings.ui:503
 #. i18n: ectx: property (text), widget (BuddyLabel, useComposerLabel)
 #: po/rc.cpp:578 rc.cpp:578
-#, fuzzy
 msgid "Group albums by composer:"
-msgstr "Másolja az albumborítót mint:"
+msgstr "Albumok csoportosítása zeneszerző szerint:"
 
 #. i18n: file: gui/interfacesettings.ui:520
 #. i18n: ectx: property (text), widget (BuddyLabel, groupMultipleLabel)
@@ -4968,7 +4964,7 @@ msgid ""
 "<i><b>NOTE:</b> Changing the 'Enforce single-click activation of items' "
 "setting will require a re-start of Cantata.</i>"
 msgstr ""
-"<i><b>Megjegyzés:</b> Az \"Elemek egy-kattintásos aktiválása\" "
+"<i><b>Megjegyzés:</b> az 'Elemek egy-kattintásos aktiválása' "
 "engedélyezésekor a Cantata újraindítása szükséges.</i>"
 
 #. i18n: file: gui/mainwindow.ui:287
@@ -4993,19 +4989,19 @@ msgstr "Kereszt-átúsztatás:"
 #. i18n: ectx: property (suffix), widget (SpinBox, crossfading)
 #: po/rc.cpp:605 rc.cpp:605
 msgid " seconds"
-msgstr "másodperc"
+msgstr " másodperc"
 
 #. i18n: file: gui/playbacksettings.ui:61
 #. i18n: ectx: property (text), widget (BuddyLabel, replayGainLabel)
 #: po/rc.cpp:608 rc.cpp:608
 msgid "Replay gain:"
-msgstr "Visszajátszási szint:"
+msgstr "Lejátszási szint:"
 
 #. i18n: file: gui/playbacksettings.ui:95
 #. i18n: ectx: property (text), widget (UrlLabel, aboutReplayGain)
 #: po/rc.cpp:611 rc.cpp:611
 msgid "About replay gain"
-msgstr "A visszajátszási szintről"
+msgstr "A lejátszási szintről"
 
 #. i18n: file: gui/playbacksettings.ui:104
 #. i18n: ectx: property (text), widget (QLabel, outputsViewLabel)
@@ -5035,7 +5031,7 @@ msgstr "Kilépéskor a dinamizáló leállítása:"
 #. i18n: ectx: property (text), widget (BuddyLabel, inhibitSuspendLabel)
 #: po/rc.cpp:629 rc.cpp:629
 msgid "Inhibit suspend whilst playing:"
-msgstr ""
+msgstr "Lejátszás közbeni felfüggesztés megakadályozás:"
 
 #. i18n: file: gui/playbacksettings.ui:217
 #. i18n: ectx: property (text), widget (QLabel, noteLabel)
@@ -5045,8 +5041,8 @@ msgid ""
 "shown allowing you to choose whether to stop playback now, or after the "
 "current track.</i>"
 msgstr ""
-"<i><b>Megjegyzés:</b> Ha lenyomod és úgy tartod a Stop gombot, megjelenik a "
-"menü, lehetővé téve, hogy válassz, megállítod a lejátszást most, vagy az "
+"<i><b>Megjegyzés:</b> ha a Stop gombotlenyomod és tartod, megjelenik a menü, "
+"lehetővé téve, hogy válassz, azonnal megállítod a lejátszást, vagy az "
 "aktuális szám után.</i>"
 
 #. i18n: file: gui/serversettings.ui:35
@@ -5076,9 +5072,8 @@ msgstr "Dinamizáló port:"
 #. i18n: file: gui/serversettings.ui:168
 #. i18n: ectx: property (text), widget (BuddyLabel, streamUrlLabel)
 #: po/rc.cpp:659 rc.cpp:659
-#, fuzzy
 msgid "HTTP stream URL:"
-msgstr "HTTP stream"
+msgstr "HTTP hangfolyam URL:"
 
 #. i18n: file: gui/serversettings.ui:199
 #. i18n: ectx: property (text), widget (QLabel, musicFolderNoteLabel)
@@ -5090,24 +5085,23 @@ msgid ""
 "folders), then Cantata will save any downloaded covers into the respective "
 "album folder.</i>"
 msgstr ""
-"<i><b>Megjegyzés:</b> A \"Zenekönyvtár\" beállításait használja borítóképek "
-"keresésére (akár a fentiek lettek beállítva, vagy <code>borító.jpg / borító."
-"png</code> ha nincsenek beállítva). Ha az adott könyvtárra (és "
+"<i><b>Megjegyzés:</b> a 'Zenekönyvtár' beállításait használja borítóképek "
+"keresésére (akár a fenti érték lett beállítva, vagy <code>borító.jpg / "
+"borító.png</code> ha nincs beállítva). Ha az adott könyvtárra (és "
 "alkönyvtáraira) írási jogod van, akkor a Cantata a letöltött borítókat a "
 "megfelelő album könyvtárába lementi.</i>"
 
 #. i18n: file: gui/serversettings.ui:277
 #. i18n: ectx: property (text), widget (QLabel, streamUrlNoteLabel)
 #: po/rc.cpp:668 rc.cpp:668
-#, fuzzy
 msgid ""
 "<i><b>NOTE:</b> 'HTTP Stream URL' is only of use if you have MPD configured "
 "to output to a HTTP stream, and you wish Cantata to be able to play that "
 "stream.</i>"
 msgstr ""
-"<i><b>Megjegyzés:</b> Ez akkor kerül alkalmazásra, ha az MPD kimenete a "
-"beállítások szerint HTTP stream-re megy, és szeretnéd, hogy a Cantata képes "
-"legyen azt a stream-et lejátszani.</i>"
+"<i><b>Megjegyzés:</b> a HTTP stream URL-je akkor kerül alkalmazásra, ha az "
+"MPD kimenete a beállítások szerint HTTP stream-re megy, és szeretnéd, hogy a "
+"Cantata képes legyen azt a stream-et lejátszani.</i>"
 
 #. i18n: file: gui/serversettings.ui:353
 #. i18n: ectx: property (text), widget (StateLabel, basicMusicFolderNoteLabel)
@@ -5117,9 +5111,9 @@ msgid ""
 "to manually update the music database. This can be performed by pressing the "
 "'Refresh Database' button in the 'Artists' or 'Albums' views.</i>"
 msgstr ""
-"<i><b>Megjegyzés:</b> Ha Zenekönyvtár beállításait változtatod, akkor kézzel "
-"kell frissítened a zenei adatbázist. Végrehajtható \"Előadó-\", vagy "
-"\"Albumnézetben\" az \"Adatbázis frissítése\" gomb lenyomásával.</i>"
+"<i><b>Megjegyzés:</b> Ha 'Zenekönyvtár' beállításait változtatod, akkor "
+"kézzel kell frissítened a zenei adatbázist. Végrehajtható 'Előadó-', vagy "
+"'Albumnézetben' az 'Adatbázis frissítése' gomb lenyomásával.</i>"
 
 #. i18n: file: gui/serversettings.ui:379
 #. i18n: ectx: property (text), widget (QLabel, musicFolderNoteLabel_2)
@@ -5128,7 +5122,7 @@ msgid ""
 "<i><b>NOTE:</b> If no setting is specified for 'Cover filename, then Cantata "
 "will use a default of <code>cover</code> </i>"
 msgstr ""
-"<i><b>Megjegyzés:</b> Ha a \"Borító fájlneve\" nincs meghatározva, akkor a "
+"<i><b>Megjegyzés:</b> Ha a 'Borító fájlneve' nincs meghatározva, akkor a "
 "Cantata a <code>borító</code> alapbeállítást használja</i>"
 
 #. i18n: file: http/httpserversettings.ui:25
@@ -5154,13 +5148,12 @@ msgid ""
 "<b>NOTE:</b> If you choose 'Local loopback' for 'Network interface', then "
 "MPD <b>must</b> also be on this computer.</i>"
 msgstr ""
-"<i><b>Megjegyzés:</b> <br/><br/>\n"
-" az MPD általában csak a könyvtáraiban tárolt dalokat játssza le. A Cantata "
-"rendelkezik egy alap HTTP szerverrel, ami használható az MPD más fájlokkal "
-"való kiszolgálására. Azonban ez csak akkor működik, amikor a Cantata fut.<br/"
-"><br/>\n"
-"<b>Megjegyzés:</b> ha a hálózati interfésznek a \"helyi visszacsatolást\" "
-"választod, akkor az MPD az MPD-nek is azon a gépen <b>kell </b>lennie.</i>"
+"<i><b>Megjegyzés:</b> az MPD általában csak a könyvtáraiban tárolt dalokat "
+"játssza le. A Cantata rendelkezik egy alap HTTP szerverrel, ami használható "
+"az MPD más fájlokkal való kiszolgálására. Azonban ez csak akkor működik, "
+"amikor a Cantata fut.<br/><br/>\n"
+"<b>Megjegyzés:</b> ha a hálózati interfésznek a 'helyi visszacsatolást' "
+"választod, akkor az MPD-nek is ezen a gépen <b>kell </b>lennie.</i>"
 
 #. i18n: file: network/proxysettings.ui:26
 #. i18n: ectx: property (text), widget (BuddyLabel, modeLabel)
@@ -5187,6 +5180,8 @@ msgid ""
 "The following is a list of online providers, to hide a provider simply un-"
 "check its entry in this list."
 msgstr ""
+"A következő egy lista az online szolgáltatókról. Szolgáltató elrejtéséhez "
+"vedd ki a jelölést a listaeleme elől."
 
 #. i18n: file: streams/digitallyimportedsettings.ui:29
 #. i18n: ectx: property (text), widget (QLabel, label)
@@ -5236,13 +5231,12 @@ msgstr "Munkamenet lejárta:"
 #. i18n: file: streams/digitallyimportedsettings.ui:151
 #. i18n: ectx: property (text), widget (QLabel, noteLabel)
 #: po/rc.cpp:750 rc.cpp:750
-#, fuzzy
 msgid ""
 "<i><b>NOTE:</b> These settings apply to Digitally Imported, JazzRadio.com, "
 "RockRadio.com, and Sky.fm</i>"
 msgstr ""
-"<i><b>Megjegyzés:</b> Ezek a beállítások csak akkor érvényesek, amikor az "
-"eszköz nincs csatlakoztatva.</i>"
+"<i><b>Megjegyzés:</b> a beállítások ezekre érvényesek: Digitally Imported, "
+"JazzRadio.com, RockRadio.com és Sky.fm.</i>"
 
 #. i18n: file: streams/digitallyimportedsettings.ui:161
 #. i18n: ectx: property (text), widget (QLabel, note2Label)
@@ -5252,6 +5246,9 @@ msgid ""
 "appear under the list of streams. This will indicate if you are logged in or "
 "not</i>"
 msgstr ""
+"<i><b>Megjegyzés:</b> ha beírod a fiók adatait, akkor egy 'DI' állapotjelző "
+"megjelenik a stream-ek listája alatt jelezvén, hogy be vagy-e jelentkezve, "
+"vagy sem.</i>"
 
 #. i18n: file: streams/streamssettings.ui:12
 #. i18n: ectx: property (text), widget (QLabel, label)
@@ -5260,30 +5257,30 @@ msgid ""
 "The following is a list of the top-level stream categories, to hide a "
 "category simply un-check its entry in this list."
 msgstr ""
+"A következő egy lista a felsőszintű kategóriás stream kategóriákról. "
+"Kategória elrejtéséhez vedd ki a jelölést a listaeleme elől."
 
 #. i18n: file: streams/streamssettings.ui:47
 #. i18n: ectx: property (text), widget (QPushButton, configureButton)
 #: po/rc.cpp:759 rc.cpp:759
-#, fuzzy
 msgid "Configure Provider"
-msgstr "Eszköz beállítása"
+msgstr "Szolgáltató beállítása"
 
 #. i18n: file: streams/streamssettings.ui:60
 #. i18n: ectx: property (text), widget (QPushButton, installButton)
 #: po/rc.cpp:762 rc.cpp:762
 msgid "Install"
-msgstr ""
+msgstr "Telepítés"
 
 #. i18n: file: streams/streamssettings.ui:80
 #. i18n: ectx: property (text), widget (QLabel, note)
 #: po/rc.cpp:768 rc.cpp:768
-#, fuzzy
 msgid ""
 "<i><b>NOTE:</b> Built-in categories are shown in italic, and these cannot be "
 "removed.</i>"
 msgstr ""
-"<i><b>Megjegyzés:</b> Ezek a beállítások csak akkor érvényesek, amikor az "
-"eszköz csatlakoztatva.</i>"
+"<i><b>Megjegyzés:</b> a dőlt betűsek beépített beállítások, és nem lehet "
+"eltávolítani őket.</i>"
 
 #. i18n: file: support/shortcutssettingswidget.ui:22
 #. i18n: ectx: property (text), widget (BuddyLabel, label_2)
@@ -5361,7 +5358,7 @@ msgstr "Összes szám mutatása"
 
 #: replaygain/rgdialog.cpp:122
 msgid "Show Untagged Tracks"
-msgstr "A jelöletlen számok mutatása"
+msgstr "A címke nélküli számok mutatása"
 
 #: replaygain/rgdialog.cpp:129 tags/trackorganiser.cpp:72
 msgid "Remove From List"
@@ -5432,15 +5429,14 @@ msgid "Reading existing tags..."
 msgstr "Létező címkék beolvasása..."
 
 #: replaygain/rgdialog.cpp:418 tags/tageditor.cpp:754
-#, fuzzy
 msgctxt "filename (Timeout)"
 msgid "%1 (Timeout)"
-msgstr "%1 (Becsült)"
+msgstr "%1 (Időtúllépés)"
 
 #: replaygain/rgdialog.cpp:422 tags/tageditor.cpp:758
 msgctxt "filename (Corrupt tags?)"
 msgid "%1 (Corrupt tags?)"
-msgstr ""
+msgstr "%1 (Hibás címkék?)"
 
 #: replaygain/rgdialog.cpp:436 tags/tageditor.cpp:768
 msgid "Failed to update the tags of the following tracks:"
@@ -5473,7 +5469,7 @@ msgstr "Számok eltávolítása"
 
 #: streams/digitallyimportedsettings.cpp:36
 msgid "Digitally Imported Settings"
-msgstr "Digitálisan importált beállítások"
+msgstr "Digitally Imported beállításai"
 
 #: streams/digitallyimportedsettings.cpp:41
 msgid "MP3 256k"
@@ -5521,11 +5517,11 @@ msgstr "Stream szerkesztése"
 
 #: streams/streamdialog.cpp:146
 msgid "<i><b>ERROR:</b> Invalid protocol</i>"
-msgstr "<i><b>Hiba:</b> Érvénytelen protokoll</i>"
+msgstr "<i><b>Hiba:</b> érvénytelen protokoll</i>"
 
 #: streams/streamfetcher.cpp:205
 msgid "Fetching %1"
-msgstr "Kapcsolás %1"
+msgstr "Leszedés %1"
 
 #: streams/streamspage.cpp:59
 msgid "Import Streams Into Favorites"
@@ -5540,14 +5536,13 @@ msgid "Add New Stream To Favorites"
 msgstr "Új stream hozzáadása a kedvencekhez"
 
 #: streams/streamspage.cpp:124
-#, fuzzy
 msgctxt "Service name"
 msgid "Digitally Imported"
-msgstr "Digitálisan importált"
+msgstr "Digitally Imported"
 
 #: streams/streamspage.cpp:242
 msgid "*.xml *.xml.gz *.cantata|XML Streams"
-msgstr "*.xml *.xml.gz *.cantata|XML Streams"
+msgstr "*.xml *.xml.gz *.cantata|XML Stream-ek"
 
 #: streams/streamspage.cpp:242 streams/streamspage.cpp:244
 msgid "Import Streams"
@@ -5586,7 +5581,7 @@ msgstr "Létező stream!<br/><b>%1</b>"
 
 #: streams/streamspage.cpp:298 streams/streamspage.cpp:494
 msgid "A stream named <b>%1</b> already exists!"
-msgstr "A nevezett stream <b>%1</b> létezik!"
+msgstr "A nevezett stream <b>%1</b> már létezik!"
 
 #: streams/streamspage.cpp:318
 msgid "Bookmark added"
@@ -5602,7 +5597,7 @@ msgstr "Kedvencekhez hozzáadva"
 
 #: streams/streamspage.cpp:368
 msgid "Already in favorites"
-msgstr "Már szerepel kedvencként"
+msgstr "Már szerepel a kedvencek között"
 
 #: streams/streamspage.cpp:393
 msgid "Reload <b>%1</b> streams?"
@@ -5610,7 +5605,7 @@ msgstr "<b>%1</b> stream-ek újratöltése?"
 
 #: streams/streamspage.cpp:411
 msgid "Are you sure you wish to remove bookmark to <b>%1</b>?"
-msgstr "Biztosan eltávolítanád a könyvjelzőt ehhez: <b>%1</b>?"
+msgstr "Biztosan eltávolítanád a könyvjelzőjét ennek: <b>%1</b>?"
 
 #: streams/streamspage.cpp:417
 msgid "Are you sure you wish to remove all <b>%1</b> bookmarks?"
@@ -5625,52 +5620,44 @@ msgid "Are you sure you wish to remove <b>%1</b>?"
 msgstr "Biztosan eltávolítanád ezt <b>%1</b>?"
 
 #: streams/streamspage.cpp:560 streams/streamspage.cpp:576
-#, fuzzy
 msgid "Search %1:"
 msgstr "Keresés %1:"
 
 #: streams/streamssettings.cpp:125
 msgid "*.streams|Cantata Streams"
-msgstr ""
+msgstr "*.streams|Cantata hangfolyamok"
 
 #: streams/streamssettings.cpp:125 streams/streamssettings.cpp:127
-#, fuzzy
 msgid "Install Streams"
-msgstr "Stream-ek importálása"
+msgstr "Stream-ek telelpítése"
 
 #: streams/streamssettings.cpp:127
-#, fuzzy
 msgid "Cantata Streams (*.streams)"
-msgstr "XML Stream-ek (*.xml)"
+msgstr "Cantata stream-ek (*.streams)"
 
 #: streams/streamssettings.cpp:144
-#, fuzzy
 msgid "A category named <b>%1</b> already exists!<br/>Overwrite?"
 msgstr "Már van <b>%1</b> nevű lejátszási lista!<br/>Felülírjam?"
 
 #: streams/streamssettings.cpp:150
-#, fuzzy
 msgid "Failed top open %1"
-msgstr "Nem sikerült menteni %1"
+msgstr "Nem sikerült megnyitni %1"
 
 #: streams/streamssettings.cpp:163
 msgid "Invalid file format!"
-msgstr ""
+msgstr "Érvénytelen fájlformátum!"
 
 #: streams/streamssettings.cpp:170
-#, fuzzy
 msgid "Failed to create stream category folder!"
-msgstr "Nem sikerült létrehozni a könyvtárat!<br/>%1"
+msgstr "Nem sikerült létrehozni a steram-kategória könyvtárát!<br/>%1"
 
 #: streams/streamssettings.cpp:176
-#, fuzzy
 msgid "Failed to save stream list!"
-msgstr "Nem sikerült menteni a dalszöveget."
+msgstr "Nem sikerült menteni a stream-ek litáját!"
 
 #: streams/streamssettings.cpp:227
-#, fuzzy
 msgid "Failed to remove streams folder!"
-msgstr "Nem sikerült eltávolítani a korábbi szabályok fájlt - %1"
+msgstr "Nem sikerült eltávolítani a stream-ek könyvtárát"
 
 #: support/dialog.cpp:89
 msgid "&Ok"
@@ -5844,8 +5831,8 @@ msgstr "%1 GiB"
 #: support/utils.cpp:602
 msgid "1 day %2"
 msgid_plural "%1 days %2"
-msgstr[0] "1 nap"
-msgstr[1] "%1 napok"
+msgstr[0] "1 nap %2"
+msgstr[1] "%1 napok %2"
 
 #: tags/tageditor.cpp:134
 msgid "Tags"
@@ -5853,7 +5840,7 @@ msgstr "Címkék"
 
 #: tags/tageditor.cpp:147
 msgid "Set 'Album Artist' from 'Artist'"
-msgstr "\"Album Előadó\" beállítása \"Előadó\"-ból"
+msgstr "'Album Előadó' beállítása 'Előadó'-ból"
 
 #: tags/tageditor.cpp:243 tags/tageditor.cpp:560
 msgid "All tracks"
@@ -5871,22 +5858,20 @@ msgstr ""
 #: tags/tageditor.cpp:378
 msgid "Revert \"Various Artists\" workaround on <b>all</b> tracks?"
 msgstr ""
-"Visszaállítod a \"Válogatott előadók\" munkakörnyezetet az <b>összes</b> "
-"számra? "
+"Visszaállítod a \"Vegyes előadók\" munkakörnyezetet az <b>összes</b> számra? "
 
 #: tags/tageditor.cpp:428
 msgid ""
 "Set 'Album Artist' from 'Artist' (if 'Album Artist' is empty) for <b>all</b> "
 "tracks?"
 msgstr ""
-"\"Album Előadó\"-t állítasz az \"Előadó\" helyett (ha az \"Album Előadó\" "
-"üres) <b>az összes</b> számnál?"
+"'Album Előadó'-t állítasz az 'Előadó' helyett (ha az 'Album Előadó' üres) "
+"<b>az összes</b> számnál?"
 
 #: tags/tageditor.cpp:429
 msgid "Set 'Album Artist' from 'Artist' (if 'Album Artist' is empty)?"
 msgstr ""
-"Beállítod \"Album előadót\" az \"Előadó\" helyett (ha az \"Album Előadó\" "
-"üres)?"
+"Beállítod 'Album előadót' az 'Előadó' helyett (ha az 'Album Előadó' üres)?"
 
 #: tags/tageditor.cpp:430
 msgid "Album Artist from Artist"
@@ -5897,8 +5882,8 @@ msgid ""
 "Capitalize the first letter of 'Title', 'Artist', 'Album artist', and "
 "'Album' of <b>all</b> tracks?"
 msgstr ""
-"A \"Cím\", \"Előadó\", Album előadó\" és \"Album\" első betűjének nagyra "
-"váltása az <b>összes</b> számnál?"
+"A 'Cím', 'Előadó', 'Album előadó' és 'Album' első betűjének nagyra váltása "
+"az <b>összes</b> számnál?"
 
 #: tags/tageditor.cpp:496
 msgid "Adjust the value of each track number by:"
@@ -5915,7 +5900,7 @@ msgstr "%1 [módosítva]"
 #: tags/tageditor.cpp:783
 msgid ""
 "Would you also like to rename your song files, so as to match your tags?"
-msgstr "Átnevezed a dalok fájljait is, hogy egyezzenek a jelölőiddel?"
+msgstr "Átnevezed a dalok fájljait is, hogy egyezzenek a címkéiddel?"
 
 #: tags/tageditor.cpp:784
 msgid "Rename Files"
@@ -5926,9 +5911,8 @@ msgid "Abort renaming of files?"
 msgstr "Fájlátnevezés megszakítása?"
 
 #: tags/trackorganiser.cpp:263
-#, fuzzy
 msgid "Source file does not exist!<br/>%1"
-msgstr "A dal nem létezik!<hr/>%1"
+msgstr "Forrásfájl nem létezik!<br/>%1"
 
 #: tags/trackorganiser.cpp:282
 msgid "Destination file already exists!<br/>%1"
@@ -5943,9 +5927,8 @@ msgid "Failed to rename %1 to %2"
 msgstr "Nem sikerült %1 átnevezése %2-re"
 
 #: widgets/coverwidget.cpp:267
-#, fuzzy
 msgid "<tr><td align=\"right\"><b>Composer:</b></td><td>%1</td></tr>"
-msgstr "<tr><td align=\"right\">Fájl:</td><td>%1</td></tr>"
+msgstr "<tr><td align=\"right\">Zeneszerző:</td><td>%1</td></tr>"
 
 #: widgets/coverwidget.cpp:269
 msgid ""
@@ -5962,10 +5945,9 @@ msgid "All Genres"
 msgstr "Minden műfaj"
 
 #: widgets/groupedview.cpp:267
-#, fuzzy
 msgctxt "album (albumYear)"
 msgid "%1 (%2)"
-msgstr "%1 (Lemez %2)"
+msgstr "%1 (%2)"
 
 #: widgets/groupedview.cpp:269
 msgctxt "artist - album (albumYear)"
@@ -5982,7 +5964,7 @@ msgstr "Vissza a kiinduláshoz"
 
 #: widgets/menubutton.cpp:36
 msgid "Menu"
-msgstr ""
+msgstr "Menü"
 
 #: widgets/searchwidget.cpp:62
 msgid "Search..."
@@ -5993,40 +5975,42 @@ msgid "Close Search Bar"
 msgstr "Keresősáv bezárása"
 
 #: widgets/servicestatuslabel.cpp:43
-#, fuzzy
 msgid "Logged into %1"
-msgstr "Bejelentkezés"
+msgstr "Bejelentkezve ide: %1"
 
 #: widgets/servicestatuslabel.cpp:44
-#, fuzzy
 msgid "<b>NOT</b> logged into %1"
-msgstr "<b>NEM VAGY</b> bejelentkezve a ide:  Digitally Imported"
+msgstr "<b>NEM VAGY</b> bejelentkezve a ide: %1"
 
 #: widgets/songdialog.cpp:48
 msgid ""
 "<p>Cannot access song files!<br/><br/>Please check Cantata's \"Music folder"
 "\" setting, and MPD's \"music_directory\" setting.</p>"
 msgstr ""
+"<p>Nem tudom elérni a dalok fájljait!<br/><br/>Ellenőrizd a Cantata "
+"\"Zenekönyvtárát\" és az MPD \"music_directory\" (zenekönyvtár) beállításait."
+"</p>"
 
 #: widgets/songdialog.cpp:51
 msgid ""
 "<p>Cannot access song files!<br/><br/>Please check that the device is still "
 "attached.</p>"
 msgstr ""
+"<p>Nem tudom elérni a dalok fájljait!<br/><br/>Ellenőrizd, hogy az eszköz "
+"csatlakozik-e még.</p>"
 
 #: widgets/volumeslider.cpp:116 widgets/volumeslider.cpp:231
 #: widgets/volumeslider.cpp:238
 msgid "Mute"
-msgstr "Csendesít"
+msgstr "Némít"
 
 #: widgets/volumeslider.cpp:199
-#, fuzzy
 msgid "Muted"
-msgstr "Csendesít"
+msgstr "Némítva"
 
 #: widgets/volumeslider.cpp:238
 msgid "Unmute"
-msgstr ""
+msgstr "Némítás kikapcsolása"
 
 #: widgets/volumeslider.cpp:276
 msgid "Volume Disabled"
@@ -6034,7 +6018,7 @@ msgstr "Hangerőszabályozó kikapcsolva"
 
 #: widgets/volumeslider.cpp:287
 msgid "Volume %1% (Muted)"
-msgstr "Hangerő %1% (Lekapcsolva)"
+msgstr "Hangerő %1% (Némítva)"
 
 #: widgets/volumeslider.cpp:287
 msgid "Volume %1%"
@@ -6121,24 +6105,24 @@ msgstr "%1 Szabályok"
 #: ../gui/qtplural.h:58
 msgctxt "Singular"
 msgid "1 Podcast"
-msgstr ""
+msgstr "1 Podcast"
 
 #: ../gui/qtplural.h:59
 #, qt-format
 msgctxt "Plural (N!=1)"
 msgid "%1 Podcasts"
-msgstr ""
+msgstr "%1 Podcast"
 
 #: ../gui/qtplural.h:62
 msgctxt "Singular"
 msgid "1 Episode"
-msgstr ""
+msgstr "1 Rész"
 
 #: ../gui/qtplural.h:63
-#, fuzzy, qt-format
+#, qt-format
 msgctxt "Plural (N!=1)"
 msgid "%1 Episodes"
-msgstr "%1 Tételek"
+msgstr "%1 Részek"
 
 #~ msgid ""
 #~ "Failed to download track - too many redirects encountered.<br/><br/<hr/>%1"

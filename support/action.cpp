@@ -22,7 +22,6 @@
 
 #include "action.h"
 #include "gtkstyle.h"
-#include "utils.h"
 #include <QApplication>
 #include <QKeySequence>
 
@@ -78,15 +77,25 @@ void Action::initIcon(QAction *act)
     }
 }
 
+static const char *constPlainToolTipProperty="plain-tt";
+
 void Action::updateToolTip(QAction *act)
 {
     if (!act) {
         return;
     }
     QKeySequence sc=act->shortcut();
-    if (!sc.isEmpty()) {
+    if (sc.isEmpty()) {
+        act->setToolTip(act->property(constPlainToolTipProperty).toString());
+        act->setProperty(constPlainToolTipProperty, QString());
+    } else {
+        QString tt=act->property(constPlainToolTipProperty).toString();
+        if (tt.isEmpty()) {
+            tt=act->toolTip();
+            act->setProperty(constPlainToolTipProperty, tt);
+        }
         act->setToolTip(QString::fromLatin1("%1 <span style=\"color: gray; font-size: small\">%2</span>")
-                        .arg(Utils::stripAcceleratorMarkers(act->text()))
+                        .arg(tt)
                         .arg(sc.toString()));
     }
 }

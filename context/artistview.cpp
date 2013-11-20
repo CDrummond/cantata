@@ -105,11 +105,15 @@ ArtistView::ArtistView(QWidget *parent)
 
 void ArtistView::showContextMenu(const QPoint &pos)
 {
-   QMenu *menu = text->createStandardContextMenu();
-   menu->addSeparator();
-   menu->addAction(refreshAction);
-   menu->exec(text->mapToGlobal(pos));
-   delete menu;
+    QMenu *menu = text->createStandardContextMenu();
+    menu->addSeparator();
+    if (cancelJobAction->isEnabled()) {
+        menu->addAction(cancelJobAction);
+    } else {
+        menu->addAction(refreshAction);
+    }
+    menu->exec(text->mapToGlobal(pos));
+    delete menu;
 }
 
 void ArtistView::refresh()
@@ -367,6 +371,7 @@ void ArtistView::abort()
         currentSimilarJob->abort();
         currentSimilarJob=0;
     }
+    hideSpinner();
 }
 
 void ArtistView::searchResponse(const QString &resp, const QString &lang)

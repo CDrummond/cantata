@@ -128,6 +128,11 @@ UltimateLyricsProvider::UltimateLyricsProvider()
 {
 }
 
+UltimateLyricsProvider::~UltimateLyricsProvider()
+{
+    abort();
+}
+
 void UltimateLyricsProvider::fetchInfo(int id, const Song &metadata)
 {
     #if QT_VERSION < 0x050000
@@ -159,7 +164,20 @@ void UltimateLyricsProvider::fetchInfo(int id, const Song &metadata)
 
     NetworkJob *reply = NetworkAccessManager::self()->get(QUrl(urlText));
     requests[reply] = id;
-    connect(reply, SIGNAL(finished()), SLOT(lyricsFetched()));
+    connect(reply, SIGNAL(finished()), this, SLOT(lyricsFetched()));
+}
+
+void UltimateLyricsProvider::abort()
+{
+    QHash<NetworkJob *, int>::ConstIterator it(requests.constBegin());
+    QHash<NetworkJob *, int>::ConstIterator end(requests.constEnd());
+
+    for (; it!=end; ++it) {
+        disconnect(it.key(), SIGNAL(finished()), this, SLOT(lyricsFetched()));
+        it.key()->deleteLater();
+        it.key()->close();
+    }
+    requests.clear();
 }
 
 void UltimateLyricsProvider::lyricsFetched()

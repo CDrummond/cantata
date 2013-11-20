@@ -34,12 +34,14 @@ class Spinner;
 class QNetworkReply;
 class QLayoutItem;
 class TextBrowser;
+class Action;
 
 class View : public QWidget
 {
     Q_OBJECT
 public:
     View(QWidget *p);
+    virtual ~View();
 
     static QString subHeader(const QString &str) { return "<"+subTag+">"+str+"</"+subTag+">"; }
     static void initHeaderTags();
@@ -63,6 +65,7 @@ public:
 
 protected Q_SLOTS:
     virtual void searchResponse(const QString &r, const QString &l);
+    virtual void abort();
 
 protected:
     static QString subTag;
@@ -72,6 +75,7 @@ protected:
     TextBrowser *text;
     bool needToUpdate;
     Spinner *spinner;
+    Action *cancelJobAction;
 };
 
 #endif

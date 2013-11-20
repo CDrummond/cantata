@@ -85,6 +85,7 @@ SongView::SongView(QWidget *p)
     , currentRequest(0)
     , mode(Mode_Display)
     , job(0)
+    , currentProv(0)
 {
     refreshAction = ActionCollection::get()->createAction("refreshlyrics", i18n("Refresh Lyrics"), "view-refresh");
     editAction = ActionCollection::get()->createAction("editlyrics", i18n("Edit Lyrics"), Icons::self()->editIcon);
@@ -240,8 +241,36 @@ void SongView::showContextMenu(const QPoint &pos)
        break;
    }
 
+   if (Mode_Edit!=mode && cancelJobAction->isEnabled()) {
+       menu->addSeparator();
+       menu->addAction(cancelJobAction);
+   }
+
    menu->exec(text->mapToGlobal(pos));
    delete menu;
+}
+
+void SongView::abort()
+{
+    if (job) {
+        connect(job, SIGNAL(finished()), this, SLOT(downloadFinished()));
+        job->abort();
+        job->deleteLater();
+        job=0;
+    }
+    currentProvider=-1;
+    if (currentProv) {
+        currentProv->abort();
+        currentProv=0;
+
+        text->setText(QString());
+        // Set lyrics file anyway - so that editing is enabled!
+        lyricsFile=Settings::self()->storeLyricsInMpdDir()
+                ? mpdFilePath(currentSong)
+                : cacheFile(currentSong.artist, currentSong.title);
+        setMode(Mode_Display);
+    }
+    hideSpinner();
 }
 
 void SongView::update(const Song &s, bool force)
@@ -305,7 +334,7 @@ void SongView::update(const Song &s, bool force)
                 QUrl url(mpdLyrics);
                 job=NetworkAccessManager::self()->get(url);
                 job->setProperty("file", songFile);
-                connect(job, SIGNAL(finished()), SLOT(downloadFinished()));
+                connect(job, SIGNAL(finished()), this, SLOT(downloadFinished()));
                 return;
             } else {
                 #ifdef TAGLIB_FOUND
@@ -313,7 +342,6 @@ void SongView::update(const Song &s, bool force)
 
                 if (!tagLyrics.isEmpty()) {
                     text->setText(fixNewLines(tagLyrics));
-                    hideSpinner();
                     setMode(Mode_Display);
 //                    controls->setVisible(false);
                     return;
@@ -352,17 +380,20 @@ void SongView::downloadFinished()
     NetworkJob *reply=qobject_cast<NetworkJob *>(sender());
     if (reply) {
         reply->deleteLater();
-        if (reply->ok()) {
-            QString file=reply->property("file").toString();
-            if (!file.isEmpty() && file==currentSong.file) {
-                QTextStream str(reply->actualJob());
-                QString lyrics=str.readAll();
-                if (!lyrics.isEmpty()) {
-                    text->setText(fixNewLines(lyrics));
-                    hideSpinner();
-                    return;
+        if (job==reply) {
+            if (reply->ok()) {
+                QString file=reply->property("file").toString();
+                if (!file.isEmpty() && file==currentSong.file) {
+                    QTextStream str(reply->actualJob());
+                    QString lyrics=str.readAll();
+                    if (!lyrics.isEmpty()) {
+                        text->setText(fixNewLines(lyrics));
+                        hideSpinner();
+                        return;
+                    }
                 }
             }
+            job=0;
         }
     }
     getLyrics();
@@ -426,15 +457,14 @@ QString SongView::cacheFileName() const
 
 void SongView::getLyrics()
 {
-    UltimateLyricsProvider *prov=UltimateLyrics::self()->getNext(currentProvider);
-    if (prov) {
-        text->setText(i18n("Fetching lyrics via %1", prov->getName()));
-        prov->fetchInfo(currentRequest, currentSong);
+    currentProv=UltimateLyrics::self()->getNext(currentProvider);
+    if (currentProv) {
+        text->setText(i18n("Fetching lyrics via %1", currentProv->getName()));
+        currentProv->fetchInfo(currentRequest, currentSong);
         showSpinner();
     } else {
         text->setText(QString());
         currentProvider=-1;
-        hideSpinner();
         // Set lyrics file anyway - so that editing is enabled!
         lyricsFile=Settings::self()->storeLyricsInMpdDir()
                 ? mpdFilePath(currentSong)
@@ -445,6 +475,9 @@ void SongView::getLyrics()
 
 void SongView::setMode(Mode m)
 {
+    if (Mode_Display==m) {
+        hideSpinner();
+    }
     if (mode==m) {
         return;
     }

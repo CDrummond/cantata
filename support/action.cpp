@@ -85,7 +85,9 @@ void Action::updateToolTip(QAction *act)
     }
     QKeySequence sc=act->shortcut();
     if (!sc.isEmpty()) {
-        act->setToolTip(Utils::stripAcceleratorMarkers(act->text())+QLatin1String(" (")+sc.toString()+QLatin1Char(')'));
+        act->setToolTip(QString::fromLatin1("%1 <span style=\"color: gray; font-size: small\">%2</span>")
+                        .arg(Utils::stripAcceleratorMarkers(act->text()))
+                        .arg(sc.toString()));
     }
 }
 

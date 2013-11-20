@@ -82,11 +82,15 @@ AlbumView::AlbumView(QWidget *p)
 
 void AlbumView::showContextMenu(const QPoint &pos)
 {
-   QMenu *menu = text->createStandardContextMenu();
-   menu->addSeparator();
-   menu->addAction(refreshAction);
-   menu->exec(text->mapToGlobal(pos));
-   delete menu;
+    QMenu *menu = text->createStandardContextMenu();
+    menu->addSeparator();
+    if (cancelJobAction->isEnabled()) {
+        menu->addAction(cancelJobAction);
+    } else {
+        menu->addAction(refreshAction);
+    }
+    menu->exec(text->mapToGlobal(pos));
+    delete menu;
 }
 
 void AlbumView::refresh()
@@ -250,6 +254,12 @@ void AlbumView::updateDetails(bool preservePos)
     if (preservePos) {
         text->verticalScrollBar()->setValue(pos);
     }
+}
+
+void AlbumView::abort()
+{
+    engine->cancel();
+    hideSpinner();
 }
 
 void AlbumView::clearCache()

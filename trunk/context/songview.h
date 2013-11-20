@@ -66,6 +66,7 @@ public Q_SLOTS:
     void showContextMenu(const QPoint &pos);
 
 private:
+    void abort();
     QString mpdFileName() const;
     QString cacheFileName() const;
     void getLyrics();
@@ -95,6 +96,7 @@ private:
     QString lyricsFile;
     QString preEdit;
     NetworkJob *job;
+    UltimateLyricsProvider *currentProv;
 };
 
 #endif

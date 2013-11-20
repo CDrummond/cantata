@@ -37,6 +37,7 @@ class UltimateLyricsProvider : public QObject {
 
 public:
     UltimateLyricsProvider();
+    virtual ~UltimateLyricsProvider();
 
     typedef QPair<QString, QString> RuleItem;
     typedef QList<RuleItem> Rule;
@@ -56,6 +57,7 @@ public:
     void fetchInfo(int id, const Song &metadata);
     bool isEnabled() const { return enabled; }
     void setEnabled(bool e) { enabled = e; }
+    void abort();
 
 Q_SIGNALS:
     void lyricsReady(int id, const QString &data);

@@ -110,6 +110,7 @@
 60. If playlists page is disabled, then hide 'Add to playlist' actions ahd hide
     playqueue save button.
 61. Dont load folder list until view is visible.
+62. Add 'Cancel' to context-view context menus - cancels current fetch job.
 
 1.1.3
 -----

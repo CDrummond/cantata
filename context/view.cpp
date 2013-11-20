@@ -27,6 +27,10 @@
 #include "settings.h"
 #include "textbrowser.h"
 #include "gtkstyle.h"
+#include "actioncollection.h"
+#include "action.h"
+#include "icons.h"
+#include "localize.h"
 #include <QLabel>
 #include <QScrollBar>
 #include <QImage>
@@ -83,6 +87,14 @@ View::View(QWidget *parent)
     if (headerTag.isEmpty()) {
         initHeaderTags();
     }
+
+    cancelJobAction=new Action(Icons::self()->cancelIcon, i18n("Cancel"), this);
+    connect(cancelJobAction, SIGNAL(triggered()), SLOT(abort()));
+}
+
+View::~View()
+{
+    abort();
 }
 
 void View::clear()
@@ -135,6 +147,7 @@ void View::showSpinner()
     }
     if (!spinner->isActive()) {
         spinner->start();
+        cancelJobAction->setEnabled(true);
     }
 }
 
@@ -142,6 +155,7 @@ void View::hideSpinner()
 {
     if (spinner) {
         spinner->stop();
+        cancelJobAction->setEnabled(false);
     }
 }
 
@@ -198,4 +212,8 @@ void View::searchResponse(const QString &r, const QString &l)
 {
     Q_UNUSED(l)
     text->setText(r);
+}
+
+void View::abort()
+{
 }

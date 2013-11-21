@@ -27,6 +27,7 @@
 #include <QModelIndex>
 #include <QMimeData>
 #include <QMenu>
+#include "config.h"
 #include "playlistsmodel.h"
 #include "playlistsproxymodel.h"
 #include "itemview.h"
@@ -44,6 +45,10 @@ K_GLOBAL_STATIC(PlaylistsModel, instance)
 #include "playqueuemodel.h"
 #include "icons.h"
 
+#if defined ENABLE_MODEL_TEST
+#include "modeltest.h"
+#endif
+
 PlaylistsModel * PlaylistsModel::self()
 {
     #ifdef ENABLE_KDE_SUPPORT
@@ -52,6 +57,9 @@ PlaylistsModel * PlaylistsModel::self()
     static PlaylistsModel *instance=0;
     if(!instance) {
         instance=new PlaylistsModel;
+        #if defined ENABLE_MODEL_TEST
+        new ModelTest(instance, instance);
+        #endif
     }
     return instance;
     #endif
@@ -308,17 +316,10 @@ bool PlaylistsModel::setData(const QModelIndex &index, const QVariant &value, in
 
 Qt::ItemFlags PlaylistsModel::flags(const QModelIndex &index) const
 {
-    Q_UNUSED(index)
-    return Qt::ItemIsSelectable | Qt::ItemIsDragEnabled | Qt::ItemIsEnabled | Qt::ItemIsDropEnabled;
-//     if (index.isValid()) {
-//         if (static_cast<Item *>(index.internalPointer())->isPlaylist()) {
-//             return Qt::ItemIsSelectable | Qt::ItemIsDragEnabled | Qt::ItemIsEnabled | Qt::ItemIsDropEnabled;
-//         } else {
-//             return Qt::ItemIsSelectable | Qt::ItemIsDragEnabled | Qt::ItemIsEnabled | Qt::ItemIsDropEnabled;
-//         }
-//     } else {
-//         return 0;
-//     }
+    if (index.isValid()) {
+        return Qt::ItemIsSelectable | Qt::ItemIsDragEnabled | Qt::ItemIsEnabled | Qt::ItemIsDropEnabled;
+    }
+    return Qt::NoItemFlags;
 }
 
 Qt::DropActions PlaylistsModel::supportedDropActions() const

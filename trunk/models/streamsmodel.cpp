@@ -39,6 +39,7 @@
 #include "qjson/parser.h"
 #include "qtiocompressor/qtiocompressor.h"
 #include "utils.h"
+#include "config.h"
 #include <QModelIndex>
 #include <QString>
 #include <QVariant>
@@ -61,6 +62,10 @@ K_GLOBAL_STATIC(StreamsModel, instance)
 #endif
 #include <stdio.h>
 
+#if defined ENABLE_MODEL_TEST
+#include "modeltest.h"
+#endif
+
 StreamsModel * StreamsModel::self()
 {
     #ifdef ENABLE_KDE_SUPPORT
@@ -69,6 +74,9 @@ StreamsModel * StreamsModel::self()
     static StreamsModel *instance=0;
     if(!instance) {
         instance=new StreamsModel;
+        #if defined ENABLE_MODEL_TEST
+        new ModelTest(instance, instance);
+        #endif
     }
     return instance;
     #endif
@@ -645,6 +653,10 @@ int StreamsModel::columnCount(const QModelIndex &) const
 
 QVariant StreamsModel::data(const QModelIndex &index, int role) const
 {
+    if (!index.isValid()) {
+        return QVariant();
+    }
+
     const Item *item = toItem(index);
 
     switch (role) {
@@ -722,9 +734,8 @@ Qt::ItemFlags StreamsModel::flags(const QModelIndex &index) const
         } else {
             return Qt::ItemIsSelectable | Qt::ItemIsDragEnabled | Qt::ItemIsEnabled;
         }
-    } else {
-        return Qt::NoItemFlags;
     }
+    return Qt::NoItemFlags;
 }
 
 bool StreamsModel::hasChildren(const QModelIndex &index) const

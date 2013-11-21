@@ -46,6 +46,11 @@
 #include "mpdparseutils.h"
 #include "icons.h"
 #include "utils.h"
+#include "config.h"
+
+#if defined ENABLE_MODEL_TEST
+#include "modeltest.h"
+#endif
 
 #ifdef CACHE_SCALED_COVERS
 static QString cacheCoverName(const QString &artist, const QString &album, int size, bool createDir=false)
@@ -68,6 +73,9 @@ AlbumsModel * AlbumsModel::self()
     static AlbumsModel *instance=0;
     if(!instance) {
         instance=new AlbumsModel;
+        #if defined ENABLE_MODEL_TEST
+        new ModelTest(instance, instance);
+        #endif
     }
     return instance;
     #endif
@@ -308,9 +316,8 @@ Qt::ItemFlags AlbumsModel::flags(const QModelIndex &index) const
 {
     if (index.isValid()) {
         return Qt::ItemIsSelectable | Qt::ItemIsDragEnabled | Qt::ItemIsEnabled;
-    } else {
-        return Qt::NoItemFlags;
     }
+    return Qt::NoItemFlags;
 }
 
 QStringList AlbumsModel::filenames(const QModelIndexList &indexes, bool allowPlaylists) const

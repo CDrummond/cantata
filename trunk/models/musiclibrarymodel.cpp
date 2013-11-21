@@ -54,6 +54,10 @@
 #include <KDE/KGlobal>
 #endif
 
+#if defined ENABLE_MODEL_TEST
+#include "modeltest.h"
+#endif
+
 #ifdef ENABLE_KDE_SUPPORT
 K_GLOBAL_STATIC(MusicLibraryModel, instance)
 #endif
@@ -66,6 +70,9 @@ MusicLibraryModel * MusicLibraryModel::self()
     static MusicLibraryModel *instance=0;
     if(!instance) {
         instance=new MusicLibraryModel;
+        #if defined ENABLE_MODEL_TEST
+        new ModelTest(instance, instance);
+        #endif
     }
     return instance;
     #endif
@@ -706,9 +713,8 @@ Qt::ItemFlags MusicLibraryModel::flags(const QModelIndex &index) const
 {
     if (index.isValid()) {
         return Qt::ItemIsSelectable | Qt::ItemIsDragEnabled | Qt::ItemIsEnabled | (checkable ? Qt::ItemIsUserCheckable : Qt::NoItemFlags);
-    } else {
-        return Qt::ItemIsDropEnabled;
     }
+    return Qt::ItemIsDropEnabled;
 }
 
 QStringList MusicLibraryModel::filenames(const QModelIndexList &indexes, bool allowPlaylists) const

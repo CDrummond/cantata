@@ -39,6 +39,11 @@
 #include "mpdconnection.h"
 #include "icon.h"
 #include "icons.h"
+#include "config.h"
+
+#if defined ENABLE_MODEL_TEST
+#include "modeltest.h"
+#endif
 
 #ifdef ENABLE_KDE_SUPPORT
 K_GLOBAL_STATIC(DirViewModel, instance)
@@ -52,6 +57,9 @@ DirViewModel * DirViewModel::self()
     static DirViewModel *instance=0;
     if(!instance) {
         instance=new DirViewModel;
+        #if defined ENABLE_MODEL_TEST
+        new ModelTest(instance, instance);
+        #endif
     }
     return instance;
     #endif

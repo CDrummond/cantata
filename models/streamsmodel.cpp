@@ -50,6 +50,7 @@
 #include <QFileInfo>
 #include <QTimer>
 #include <QLocale>
+#include <QFileSystemWatcher>
 #if QT_VERSION >= 0x050000
 #include <QUrlQuery>
 #endif
@@ -61,6 +62,7 @@ K_GLOBAL_STATIC(StreamsModel, instance)
 #include <QDesktopServices>
 #endif
 #include <stdio.h>
+#include <time.h>
 
 #if defined ENABLE_MODEL_TEST
 #include "modeltest.h"
@@ -840,6 +842,13 @@ bool StreamsModel::exportFavourites(const QString &fileName)
     return favourites->saveXml(fileName, true);
 }
 
+void StreamsModel::reloadFavourites()
+{
+    if (favourites->lastFileName.isEmpty() || favourites->lastFileName!=getInternalFile() || favourites->lastFileName.startsWith("http://")) {
+        reload(favouritesIndex());
+    }
+}
+
 bool StreamsModel::checkFavouritesWritable()
 {
     bool wasWriteable=favouritesIsWriteable;
@@ -1171,6 +1180,7 @@ void StreamsModel::jobFinished()
             QList<Item *> newItems;
             if (cat==favourites) {
                 newItems=favourites->loadXml(job->actualJob());
+                favourites->lastFileName=QString();
             } else if (QLatin1String("http")==job->url().scheme()) {
                 QString url=job->origUrl().toString();
                 if (constRadioTimeHost==job->origUrl().host()) {
@@ -1830,7 +1840,10 @@ StreamsModel::Item * StreamsModel::parseSomaFmEntry(QXmlStreamReader &doc, Categ
 
 bool StreamsModel::loadFavourites(const QString &fileName, const QModelIndex &index, bool importing)
 {
-    QList<Item *> newItems=favourites->loadXml(fileName, importing);
+    QList<Item *> newItems=favourites->CategoryItem::loadXml(fileName, importing);
+    if (!importing) {
+        favourites->lastFileName=fileName;
+    }
 
     if (!newItems.isEmpty()) {
         beginInsertRows(index, favourites->children.count(), (favourites->children.count()+newItems.count())-1);

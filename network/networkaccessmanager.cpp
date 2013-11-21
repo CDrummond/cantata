@@ -22,6 +22,7 @@
  */
 
 #include "networkaccessmanager.h"
+#include "networkproxyfactory.h"
 #include "settings.h"
 #include "config.h"
 #include <QTimerEvent>
@@ -127,6 +128,13 @@ NetworkAccessManager::NetworkAccessManager(QObject *parent)
     : BASE_NETWORK_ACCESS_MANAGER(parent)
 {
     enabled=Settings::self()->networkAccessEnabled();
+    //#ifdef ENABLE_KDE_SUPPORT
+    // TODO: Not sure if NetworkProxyFactory is required if building KDE support
+    // with KIO::Integration::AccessManager. But, as we dont use that anyway...
+    if (enabled) {
+        NetworkProxyFactory::self();
+    }
+    //#endif
 }
 
 NetworkJob * NetworkAccessManager::get(const QNetworkRequest &req, int timeout)

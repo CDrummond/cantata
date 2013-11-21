@@ -112,6 +112,7 @@ public:
         QList<Item *> loadXml(QIODevice *dev, bool importing=false);
         bool isFavourites() const { return true; }
         bool canReload() const { return false; }
+        QString lastFileName;
     };
 
     struct IceCastCategoryItem : public CategoryItem
@@ -204,7 +205,7 @@ public:
     bool haveFavourites() const { return !favourites->children.isEmpty(); }
     bool isFavoritesWritable() { return favouritesIsWriteable; }
     bool checkFavouritesWritable();
-    void reloadFavourites() { reload(favouritesIndex()); }
+    void reloadFavourites();
     void removeFromFavourites(const QModelIndex &index);
     bool addToFavourites(const QString &url, const QString &name);
     QString favouritesNameForUrl(const QString &u);
@@ -271,7 +272,7 @@ private:
 private:
     QMap<NetworkJob *, CategoryItem *> jobs;
     CategoryItem *root;
-    CategoryItem *favourites;
+    FavouritesCategoryItem *favourites;
     CategoryItem *tuneIn;
     CategoryItem *shoutCast;
     CategoryItem *listenLive;

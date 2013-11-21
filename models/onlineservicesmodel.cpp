@@ -21,6 +21,7 @@
  * Boston, MA 02110-1301, USA.
  */
 
+#include "config.h"
 #include "musiclibraryitemalbum.h"
 #include "musiclibraryitemartist.h"
 #include "musiclibraryitemsong.h"
@@ -59,6 +60,10 @@
 K_GLOBAL_STATIC(OnlineServicesModel, instance)
 #endif
 
+#if defined ENABLE_MODEL_TEST
+#include "modeltest.h"
+#endif
+
 QString OnlineServicesModel::constUdiPrefix("online-service://");
 
 OnlineServicesModel * OnlineServicesModel::self()
@@ -69,6 +74,9 @@ OnlineServicesModel * OnlineServicesModel::self()
     static OnlineServicesModel *instance=0;
     if(!instance) {
         instance=new OnlineServicesModel;
+        #if defined ENABLE_MODEL_TEST
+        new ModelTest(instance, instance);
+        #endif
     }
     return instance;
     #endif
@@ -306,7 +314,7 @@ Qt::ItemFlags OnlineServicesModel::flags(const QModelIndex &index) const
     if (index.isValid()) {
         return Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled;
     }
-    return Qt::ItemIsEnabled;
+    return Qt::NoItemFlags;
 }
 
 OnlineService * OnlineServicesModel::addService(const QString &name, const QSet<QString> &hidden)

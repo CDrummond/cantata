@@ -39,6 +39,7 @@
 #include "mountpoints.h"
 #include "stdactions.h"
 #include "actioncollection.h"
+#include "config.h"
 #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
 #include "audiocddevice.h"
 #endif
@@ -69,6 +70,10 @@ K_GLOBAL_STATIC(DevicesModel, instance)
 #include "solid-lite/opticaldisc.h"
 #endif
 
+#if defined ENABLE_MODEL_TEST
+#include "modeltest.h"
+#endif
+
 #include <QDebug>
 #define DBUG qDebug()
 
@@ -94,6 +99,9 @@ DevicesModel * DevicesModel::self()
     static DevicesModel *instance=0;
     if(!instance) {
         instance=new DevicesModel;
+        #if defined ENABLE_MODEL_TEST
+        new ModelTest(instance, instance);
+        #endif
     }
     return instance;
     #endif
@@ -325,7 +333,7 @@ Qt::ItemFlags DevicesModel::flags(const QModelIndex &index) const
     if (index.isValid()) {
         return Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled;
     }
-    return Qt::ItemIsEnabled;
+    return Qt::NoItemFlags;
 }
 
 QStringList DevicesModel::playableUrls(const QModelIndexList &indexes) const

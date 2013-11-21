@@ -101,3 +101,12 @@ The following options may be passed to CMake:
         Path to Oxygen icons, required for install stage
         Default: <empty>
 
+
+    Testing ONLY options:
+
+    -DENABLE_MODEL_TEST=ON
+        Enable testing of Cantata's QAbstractItemModels. Builds with this set
+        are ONLY intended to be run under a debugger!!!
+        Currently this option ONLY affects pure Qt4 builds.
+        Default: OFF
+

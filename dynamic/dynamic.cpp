@@ -51,6 +51,10 @@ K_GLOBAL_STATIC(Dynamic, instance)
 #include <signal.h>
 #include <stdio.h>
 
+#if defined ENABLE_MODEL_TEST
+#include "modeltest.h"
+#endif
+
 #include <QDebug>
 static bool debugEnabled=false;
 #define DBUG if (debugEnabled) qWarning() << metaObject()->className() << __FUNCTION__
@@ -126,6 +130,9 @@ Dynamic * Dynamic::self()
     static Dynamic *instance=0;
     if(!instance) {
         instance=new Dynamic;
+        #if defined ENABLE_MODEL_TEST
+        new ModelTest(instance, instance);
+        #endif
     }
     return instance;
     #endif
@@ -271,10 +278,10 @@ QVariant Dynamic::data(const QModelIndex &index, int role) const
 
 Qt::ItemFlags Dynamic::flags(const QModelIndex &index) const
 {
-    if (index.isValid())
+    if (index.isValid()) {
         return Qt::ItemIsSelectable | Qt::ItemIsEnabled;
-    else
-        return Qt::NoItemFlags;
+    }
+    return Qt::NoItemFlags;
 }
 
 Dynamic::Entry Dynamic::entry(const QString &e)

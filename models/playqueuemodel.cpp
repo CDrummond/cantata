@@ -51,6 +51,10 @@
 #include "devicesmodel.h"
 #endif
 
+#if defined ENABLE_MODEL_TEST
+#include "modeltest.h"
+#endif
+
 const QLatin1String PlayQueueModel::constMoveMimeType("cantata/move");
 const QLatin1String PlayQueueModel::constFileNameMimeType("cantata/filename");
 const QLatin1String PlayQueueModel::constUriMimeType("text/uri-list");
@@ -135,6 +139,9 @@ PlayQueueModel::PlayQueueModel(QObject *parent)
     #ifdef ENABLE_DEVICES_SUPPORT
     connect(DevicesModel::self(), SIGNAL(invalid(QList<Song>)), SLOT(remove(QList<Song>)));
     connect(DevicesModel::self(), SIGNAL(updatedDetails(QList<Song>)), SLOT(updateDetails(QList<Song>)));
+    #endif
+    #if defined ENABLE_MODEL_TEST
+    new ModelTest(this, this);
     #endif
 }
 
@@ -425,9 +432,8 @@ Qt::ItemFlags PlayQueueModel::flags(const QModelIndex &index) const
 {
     if (index.isValid()) {
         return Qt::ItemIsSelectable | Qt::ItemIsDragEnabled | Qt::ItemIsEnabled;
-    } else {
-        return Qt::ItemIsDropEnabled;
     }
+    return Qt::ItemIsDropEnabled;
 }
 
 /**

@@ -260,6 +260,13 @@ set(CANTATA_UIS
     http/httpserversettings.ui
     online/onlineservicespage.ui online/onlinesettings.ui)
 
+if (ENABLE_MODEL_TEST AND NOT ENABLE_KDE AND NOT ENABLE_QT5)
+    set(QTLIBS ${QTLIBS} ${QT_QTTEST_LIBRARY})
+    set(CANTATA_SRCS ${CANTATA_SRCS} models/modeltest.cpp)
+    set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} models/modeltest.h)
+    set(CMAKE_BUILD_TYPE "Debug")
+endif (ENABLE_MODEL_TEST AND NOT ENABLE_KDE AND NOT ENABLE_QT5)
+
 if (QT_QTDBUS_FOUND)
     if (NOT ENABLE_KDE)
         set(CANTATA_SRCS ${CANTATA_SRCS} dbus/gnomemediakeys.cpp)
@@ -669,3 +676,13 @@ if (NOT CMAKE_SYSTEM_NAME MATCHES Linux)
     message("")
 endif (NOT CMAKE_SYSTEM_NAME MATCHES Linux)
 message("")
+
+if (ENABLE_MODEL_TEST AND NOT ENABLE_KDE AND NOT ENABLE_QT5)
+    message("***************************************************")
+    message("************* ENABLING MODEL TESTS!!! *************")
+    message("***************************************************")
+    message("")
+    message("This build is intended to be run under a debugger!!")
+    message("DO NOT use this as a release build!!!!")
+    message("")
+endif (ENABLE_MODEL_TEST AND NOT ENABLE_KDE AND NOT ENABLE_QT5)

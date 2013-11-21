@@ -112,6 +112,8 @@
 61. Dont load folder list until view is visible.
 62. Add 'Cancel' to context-view context menus - cancels current fetch job.
 63. Correctly update tooltips when removing a short-cut from an action.
+64. Instantiate network proxy factory when network access manager is
+    constructed.
 
 1.1.3
 -----

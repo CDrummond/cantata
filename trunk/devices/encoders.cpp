@@ -34,7 +34,7 @@ namespace Encoders
 static QList<Encoder> installedEncoders;
 static bool usingAvconv=false;
 
-static void insertCodec(const QString &cmd, const QString &param, Encoder &enc)
+static void insertCodec(const QString &cmd, const QString &param,const QString &outputParam, Encoder &enc)
 {
     QString command=Utils::findExe(cmd);
     if (!command.isEmpty()) {
@@ -43,6 +43,7 @@ static void insertCodec(const QString &cmd, const QString &param, Encoder &enc)
         enc.param=param;
         enc.transcoder=false;
         enc.app=command;
+        enc.outputParam=outputParam;
         if (-1!=index) {
             Encoder orig=installedEncoders.takeAt(index);
             orig.name+=QLatin1String(" (ffmpeg)");
@@ -365,10 +366,10 @@ static void init()
             }
         }
 
-        insertCodec(QLatin1String("faac"), QLatin1String("-q"), aac);
-        insertCodec(QLatin1String("lame"), QLatin1String("-V"), lame);
-        insertCodec(QLatin1String("oggenc"), QLatin1String("-q"), ogg);
-        insertCodec(QLatin1String("opusenc"), QLatin1String("--bitrate"), opus);
+        insertCodec(QLatin1String("faac"), QLatin1String("-q"), QLatin1String("-o"), aac);
+        insertCodec(QLatin1String("lame"), QLatin1String("-V"), QString(), lame);
+        insertCodec(QLatin1String("oggenc"), QLatin1String("-q"), QLatin1String("-o"), ogg);
+        insertCodec(QLatin1String("opusenc"), QLatin1String("--bitrate"), QString(), opus);
         qSort(installedEncoders);
     }
 }
@@ -414,6 +415,9 @@ QStringList Encoder::params(int value, const QString &in, const QString &out) co
           << "-y"; // Overwrite destination
     } else {
         p << in;
+    }
+    if (!outputParam.isEmpty()) {
+        p << outputParam;
     }
     p << out;
     return p;

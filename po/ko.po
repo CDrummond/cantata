@@ -70,7 +70,7 @@ msgstr "기타"
 
 #: context/contextwidget.cpp:98
 msgid "Reset Spacing"
-msgstr "간격 다시 맞추기"
+msgstr "간격 새로 맞추기"
 
 #: context/contextwidget.cpp:308 context/songview.cpp:105
 #: gui/cachesettings.cpp:259
@@ -154,23 +154,23 @@ msgstr "가사 새로 읽기"
 
 #: context/songview.cpp:90
 msgid "Edit Lyrics"
-msgstr "가사 수정"
+msgstr "가사수정"
 
 #: context/songview.cpp:91
 msgid "Save Lyrics"
-msgstr "가사 저장"
+msgstr "가사저장"
 
 #: context/songview.cpp:92
 msgid "Cancel Editing Lyrics"
-msgstr "가사 수정 취소"
+msgstr "가사수정 취소"
 
 #: context/songview.cpp:93
 msgid "Delete Lyrics File"
-msgstr "가사 파일 지우기"
+msgstr "가사파일 지우기"
 
 #: context/songview.cpp:118 context/songview.cpp:137 context/songview.cpp:196
 msgid "Abort editing of lyrics?"
-msgstr "가사 수정을 취소할까요?"
+msgstr "가사수정을 취소할까요?"
 
 #: context/songview.cpp:118 context/songview.cpp:137 context/songview.cpp:196
 msgid "Abort Editing"
@@ -185,7 +185,7 @@ msgstr "취소"
 
 #: context/songview.cpp:121
 msgid "Delete saved copy of lyrics, and re-download?"
-msgstr "저장된 가사를 지우고 새로 받을까요?"
+msgstr "저장된 가사를 지우고 다시 받을까요?"
 
 #: context/songview.cpp:121 context/songview.cpp:122
 #: online/onlineservicespage.cpp:464 online/onlineservicespage.cpp:465
@@ -750,7 +750,7 @@ msgstr ""
 "이브러리를 읽는 대신에 캐시 파일을 이용하므로 라이브러리 검색을 빠르게 하는 "
 "데에 도움이 됩니다.<hr/><b>참고:</b> 만약 장치의 라이브러리를 업데이트하는 데"
 "에 다른 응용 프로그램을 사용하면, 이 캐시는 쓸모 없어질 수 있습니다. 이를 해"
-"결하려면, 장치 리스트의 새로 읽기 단추를 눌러 캐시 파일을 지우고 장치를 새로 "
+"결하려면, 장치 리스트의 새로 읽기 단추를 눌러 캐시 파일을 지우고 장치를 다시 "
 "읽습니다.</p>"
 
 #: devices/devicepropertieswidget.cpp:204
@@ -810,7 +810,7 @@ msgid ""
 "(slow)</i></li></ul></p>"
 msgstr ""
 "<p>어떻게 새로 읽을까요?<ul><li>부분 - 새 음악만 읽기 <i>(빠름)</i></li><li>"
-"전체 - 모든 음악 새로 읽기 <i>(느림)</i></li></ul></p>"
+"전체 - 모든 음악 다시 읽기 <i>(느림)</i></li></ul></p>"
 
 #: devices/devicespage.cpp:455
 msgid "Partial"
@@ -1713,7 +1713,7 @@ msgstr "사용 공간"
 
 #: gui/cachesettings.cpp:234
 msgid "Total space used: %1"
-msgstr "전체 사용 공간: %1"
+msgstr "전체사용공간: %1"
 
 #: gui/cachesettings.cpp:245
 msgid ""
@@ -1764,7 +1764,7 @@ msgstr "'%1' 항목을 모두 지울까요?"
 
 #: gui/cachesettings.cpp:313 gui/cachesettings.cpp:323
 msgid "Delete Cache Items"
-msgstr "캐시 항목을 지웁니다"
+msgstr "캐시항목을 지웁니다"
 
 #: gui/cachesettings.cpp:322
 msgid "<p>Delete all from the following?<ul>%1</ul></p>"
@@ -1923,7 +1923,7 @@ msgstr ""
 
 #: gui/folderpage.cpp:45
 msgid "Open In File Manager"
-msgstr "파일 관리자 열기"
+msgstr "파일관리자 열기"
 
 #: gui/initialsettingswizard.cpp:140
 msgid "Connection Established"
@@ -2131,7 +2131,7 @@ msgstr "연주순서 지우기"
 
 #: gui/mainwindow.cpp:251
 msgid "Copy Track Info"
-msgstr "곡 정보 복사"
+msgstr "곡 정보복사"
 
 #: gui/mainwindow.cpp:252
 msgid "Crop"
@@ -2159,11 +2159,11 @@ msgstr "넓게 보기"
 
 #: gui/mainwindow.cpp:258
 msgid "Show Current Song Information"
-msgstr "지금 곡 정보 보기"
+msgstr "지금 곡 정보보기"
 
 #: gui/mainwindow.cpp:261
 msgid "Full Screen"
-msgstr "전체 화면"
+msgstr "전체화면"
 
 #: gui/mainwindow.cpp:263
 msgid "Random"
@@ -2213,7 +2213,7 @@ msgstr "라이브러리 위치 찾기"
 
 #: gui/mainwindow.cpp:275
 msgid "Edit Song Tags"
-msgstr "곡 태그 수정"
+msgstr "곡 태그수정"
 
 #. i18n: file: gui/interfacesettings.ui:304
 #. i18n: ectx: attribute (title), widget (QWidget, tab_5)
@@ -2239,11 +2239,11 @@ msgstr "동적"
 
 #: gui/mainwindow.cpp:288
 msgid "Expand All"
-msgstr "전체 확장"
+msgstr "전체확장"
 
 #: gui/mainwindow.cpp:289
 msgid "Collapse All"
-msgstr "전체 축소"
+msgstr "전체축소"
 
 #: gui/mainwindow.cpp:290
 msgid "Remove All Songs"
@@ -2263,7 +2263,7 @@ msgstr "단색 아이콘"
 
 #: gui/mainwindow.cpp:541
 msgid "Server information..."
-msgstr "서버 정보..."
+msgstr "서버정보..."
 
 #: gui/mainwindow.cpp:552
 msgid "Configure Cantata..."
@@ -2384,7 +2384,7 @@ msgstr ""
 
 #: gui/mainwindow.cpp:1481
 msgid "Server Information"
-msgstr "서버 정보"
+msgstr "서버정보"
 
 #: gui/mainwindow.cpp:1713 gui/mainwindow.cpp:1720
 msgid "Cantata (%1)"
@@ -2581,7 +2581,7 @@ msgstr "스트림 설정"
 
 #: gui/preferencesdialog.cpp:89
 msgid "Online Providers"
-msgstr "온라인 제공자"
+msgstr "온라인제공자"
 
 #: gui/preferencesdialog.cpp:92
 msgid "Context"
@@ -2628,7 +2628,7 @@ msgstr "캐시"
 
 #: gui/preferencesdialog.cpp:115
 msgid "Cached Items"
-msgstr "캐시 항목"
+msgstr "캐시항목"
 
 #: gui/preferencesdialog.cpp:116
 msgid "Configure"
@@ -2855,11 +2855,11 @@ msgstr "연주목록 추가"
 
 #: gui/stdactions.cpp:76 tags/trackorganiser.cpp:59
 msgid "Organize Files"
-msgstr "파일 구성"
+msgstr "파일구성"
 
 #: gui/stdactions.cpp:77
 msgid "Edit Tags"
-msgstr "태그 수정"
+msgstr "태그수정"
 
 #: gui/stdactions.cpp:80 replaygain/rgdialog.cpp:111
 msgid "ReplayGain"
@@ -3032,7 +3032,7 @@ msgstr[1] "%1 에피소드"
 #. i18n: ectx: property (text), widget (QPushButton, configureButton)
 #: models/onlineservicesmodel.cpp:83 po/rc.cpp:720 rc.cpp:720
 msgid "Configure Service"
-msgstr "서비스 설정"
+msgstr "서비스설정"
 
 #: models/onlineservicesmodel.cpp:84
 msgid "Refresh Service"
@@ -3159,7 +3159,7 @@ msgstr "Listen Live"
 
 #: models/streamsmodel.cpp:578
 msgid "Bookmark Category"
-msgstr "책갈피 카테고리"
+msgstr "카테고리를 책갈피에 추가"
 
 #: models/streamsmodel.cpp:579
 msgid "Add Stream To Favorites"
@@ -3378,7 +3378,7 @@ msgstr "내려받을 수 없음"
 
 #: online/onlineservicespage.cpp:61
 msgid "Download To Library"
-msgstr "라이브러리로 복사"
+msgstr "라이브러리로 내려받기"
 
 #: online/onlineservicespage.cpp:62 online/podcastsearchdialog.cpp:554
 msgid "Search For Podcasts"
@@ -3427,7 +3427,7 @@ msgstr "<b>%1</b>을 구독 취소할까요?"
 
 #: online/onlineservicespage.cpp:600
 msgid "Refresh all podcast listings?"
-msgstr "전체 팟캐스트를 새로 읽을까요?"
+msgstr "모든 팟캐스트를 새로 읽을까요?"
 
 #: online/onlineservicespage.cpp:621
 msgid "Refresh episode listing from <b>%1</b>?"
@@ -3435,7 +3435,7 @@ msgstr "<b>%1</b>의 팟캐스트 항목을 새로 읽을까요?"
 
 #: online/onlineservicespage.cpp:695
 msgid "All selected podcasts have already been downloaded!"
-msgstr "이미 선택된 전체 팟캐스트를 내려받았습니다!"
+msgstr "이미 선택된 모든 팟캐스트를 내려받았습니다!"
 
 #: online/onlineservicespage.cpp:699
 msgid "Do you wish to download the following podcast episode?"
@@ -3451,7 +3451,7 @@ msgstr "선택된 팟캐스트 에피소드를 내려받을까요?"
 
 #: online/onlineservicespage.cpp:753
 msgid "All selected downloaded podcast episodes have already been deleted!"
-msgstr "이미 선택된 전체 팟캐스트를 지웠습니다!"
+msgstr "이미 선택된 모든 팟캐스트를 지웠습니다!"
 
 #: online/onlineservicespage.cpp:757
 msgid ""
@@ -3772,13 +3772,13 @@ msgstr "한 연주자:"
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox)
 #: po/rc.cpp:88 rc.cpp:88
 msgid "Album and Track Information Retrieval"
-msgstr "음반과 곡 정보 검색"
+msgstr "음반과 곡 정보검색"
 
 #. i18n: file: devices/audiocdsettings.ui:26
 #. i18n: ectx: property (text), widget (BuddyLabel, label_3)
 #: po/rc.cpp:91 rc.cpp:91
 msgid "Automatically lookup:"
-msgstr "자동 찾기:"
+msgstr "자동찾기:"
 
 #. i18n: file: devices/audiocdsettings.ui:39
 #. i18n: ectx: property (text), widget (BuddyLabel, cdLookupLabel)
@@ -3802,19 +3802,19 @@ msgstr "CDDB 포트:"
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox_2)
 #: po/rc.cpp:103 rc.cpp:103
 msgid "Audio Extraction"
-msgstr "오디오 추출"
+msgstr "오디오추출"
 
 #. i18n: file: devices/audiocdsettings.ui:94
 #. i18n: ectx: property (text), widget (BuddyLabel, label_4)
 #: po/rc.cpp:106 rc.cpp:106
 msgid "Full paranoia mode (best quality):"
-msgstr "전체 Paranoia 모드 (최고 품질):"
+msgstr "Paranoia 완전 기능 (최고품질):"
 
 #. i18n: file: devices/audiocdsettings.ui:107
 #. i18n: ectx: property (text), widget (BuddyLabel, label_5)
 #: po/rc.cpp:109 rc.cpp:109
 msgid "Never skip on read error:"
-msgstr "읽기 오류 건너뛰지 않음:"
+msgstr "읽기오류 건너뛰지 않음:"
 
 #. i18n: file: devices/devicepropertieswidget.ui:20
 #. i18n: ectx: property (text), widget (QLabel, remoteDeviceNote)
@@ -4348,7 +4348,7 @@ msgstr "음악 폴더에 내려받은 표지 저장:"
 #. i18n: ectx: property (text), widget (BuddyLabel, storeLyricsInMpdDirLabel)
 #: po/rc.cpp:355 po/rc.cpp:445 rc.cpp:355 rc.cpp:445
 msgid "Save downloaded lyrics in music folder:"
-msgstr "음악 폴더에 내려받은 가사 저장:"
+msgstr "음악 폴더에 내려받은 가사저장:"
 
 #. i18n: file: gui/filesettings.ui:52
 #. i18n: ectx: property (text), widget (BuddyLabel, storeBackdropsInMpdDirLabel)
@@ -4540,7 +4540,7 @@ msgstr ""
 #. i18n: ectx: property (text), widget (BuddyLabel, hostLabel)
 #: po/rc.cpp:406 po/rc.cpp:641 rc.cpp:406 rc.cpp:641
 msgid "Host (or local socket):"
-msgstr "호스트 (또는 로컬 소켓):"
+msgstr "호스트 (또는 로컬소켓):"
 
 #. i18n: file: gui/initialsettingswizard.ui:494
 #. i18n: ectx: property (text), widget (QLabel, musicFolderNoteLabel)
@@ -4565,7 +4565,7 @@ msgid ""
 "<i><b>NOTE:</b> When using a local socket the full absolute path to the "
 "socket needs to be set. (Port number is not required.)</i>"
 msgstr ""
-"<i><b>참고:</b> 로컬 소켓을 사용할 때는 절대경로로 설정되어야 합니다 (포트번"
+"<i><b>참고:</b> 로컬소켓을 사용할 때는 절대경로로 설정되어야 합니다 (포트번"
 "호는 필요 없음).</i>"
 
 #. i18n: file: gui/initialsettingswizard.ui:553
@@ -5007,7 +5007,7 @@ msgid ""
 "'Refresh Database' button in the 'Artists' or 'Albums' views.</i>"
 msgstr ""
 "<i><b>참고:</b> '음악폴더' 설정을 바꾸면, 음악데이터베이스를 직접 업데이트해"
-"야 합니다. 이는 '연주자'나 '음반' 보기의 '데이터베이스 다시 읽기' 단추를 누르"
+"야 합니다. 이는 '연주자'나 '음반' 보기의 '데이터베이스 새로 읽기' 단추를 누르"
 "면 됩니다.</i>"
 
 #. i18n: file: gui/serversettings.ui:379
@@ -5024,7 +5024,7 @@ msgstr ""
 #. i18n: ectx: property (text), widget (BuddyLabel, label_5)
 #: po/rc.cpp:683 rc.cpp:683
 msgid "Network interface:"
-msgstr "네트워크 인터페이스:"
+msgstr "네트워크 연결:"
 
 #. i18n: file: http/httpserversettings.ui:38
 #. i18n: ectx: property (text), widget (QLabel, label_3b)
@@ -5044,7 +5044,7 @@ msgid ""
 "MPD <b>must</b> also be on this computer.</i>"
 msgstr ""
 "<i><b>참고:</b> MPD는 주로 음악 폴더에 저장된 음악만 연주합니다. 칸타타는 파"
-"일을 MPD로 서비스하는 최소한의 HTTP서버 역할을 합니다. 다만, 칸타타가 실행되"
+"일을 MPD로 서비스하는 최소한의 HTTP 서버 역할을 합니다. 다만, 칸타타가 실행되"
 "는 한에서만 작동합니다.<br/><br/>\n"
 "<b>참고:</b> 만약 '네트워크 연결'에 '로컬 루프백'을 선택한다면, MPD가 이 컴퓨"
 "터에 <b>반드시</b> 있어야 합니다.</i>"
@@ -5073,7 +5073,7 @@ msgstr "SOCKS 프락시"
 msgid ""
 "The following is a list of online providers, to hide a provider simply un-"
 "check its entry in this list."
-msgstr "아래는 온라인 제공자로, 해당 카테고리를 숨기려면 아래 항목에서 선택"
+msgstr "아래는 온라인제공자로, 해당 카테고리를 숨기려면 아래 항목에서 선택"
 "하지 않습니다."
 
 #. i18n: file: streams/digitallyimportedsettings.ui:29
@@ -5478,7 +5478,7 @@ msgstr "책갈피 추가됨"
 
 #: streams/streamspage.cpp:320
 msgid "Already bookmarked"
-msgstr "책갈피 있음"
+msgstr "책갈피 이미 있음"
 
 #: streams/streamspage.cpp:366
 msgid "Added to favorites"
@@ -5490,15 +5490,15 @@ msgstr "즐겨찾기에 있음"
 
 #: streams/streamspage.cpp:393
 msgid "Reload <b>%1</b> streams?"
-msgstr "<b>%1</b> 스트림을 새로 읽을까요?"
+msgstr "<b>%1</b> 스트림을 다시 읽을까요?"
 
 #: streams/streamspage.cpp:411
 msgid "Are you sure you wish to remove bookmark to <b>%1</b>?"
-msgstr "책갈치 <b>%1</b>을 지울까요?"
+msgstr "<b>%1</b>의 책갈피를 지울까요?"
 
 #: streams/streamspage.cpp:417
 msgid "Are you sure you wish to remove all <b>%1</b> bookmarks?"
-msgstr "책갈피 전체 <b>%1</b>을 지울까요?"
+msgstr "<b>%1</b>의 모든 책갈피를 지울까요?"
 
 #: streams/streamspage.cpp:445
 msgid "Are you sure you wish to remove the %1 selected streams?"
@@ -6046,7 +6046,7 @@ msgstr "%1 에피소드"
 #~ "td><td>음반 장르.</td></tr></table></p>"
 
 #~ msgid "Configure Online Service"
-#~ msgstr "온라인서비스 설정"
+#~ msgstr "온라인서비스설정"
 
 #~ msgid "Refresh Online Service"
 #~ msgstr "온라인서비스 새로 읽기"
@@ -6236,12 +6236,12 @@ msgstr "%1 에피소드"
 #~ "active interface.<br/><br/><b>NOTE:</b> Leave port set to 'Dynamic' to "
 #~ "have Cantata choose a random port number.</i>"
 #~ msgstr ""
-#~ "<i><b>참고:</b> MPD는 주로 음악 폴더에 저장된 음악만 연주합니다.로컬 소켓"
-#~ "에 연결되면 파일시스템의 파일을 연주할 수 있습니다. 로컬 소켓을 사용하지 "
+#~ "<i><b>참고:</b> MPD는 주로 음악 폴더에 저장된 음악만 연주합니다.로컬소켓"
+#~ "에 연결되면 파일시스템의 파일을 연주할 수 있습니다. 로컬소켓을 사용하지 "
 #~ "않는다면 (예로 '서버' 설정페이지의 '호스트' 입력란에 호스트 이름이나 IP주"
-#~ "소를 입력했다면) 칸타타는 파일을 MPD로 서비스하는 최소한의 HTTP서버 역할"
+#~ "소를 입력했다면) 칸타타는 파일을 MPD로 서비스하는 최소한의 HTTP 서버 역할"
 #~ "을 합니다. 다만, 칸타타가 실행되는 한에서만 작동합니다. '항상 서버 사"
-#~ "용'을 선택하면 칸타타는 로컬 소켓에 연결되었더라도 항상 서버 URL을 MPD 파"
+#~ "용'을 선택하면 칸타타는 로컬소켓에 연결되었더라도 항상 서버 URL을 MPD 파"
 #~ "일로 전달합니다.<br/><br/>\n"
 #~ "<b>참고:</b>'주소/인터페이스'는 연결을 원하는 IP주소나 eth0등 인터페이스"
 #~ "를 포함할 수 있습니다. 로컬 루프백 주소 (127.0.0.1)을 쓰려면 비워두시기 바"

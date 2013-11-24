@@ -803,7 +803,7 @@ static void readTags(const TagLib::FileRef fileref, Song *song, ReplayGain *rg, 
     }
 
     if (TagLib::MPEG::File *file = dynamic_cast< TagLib::MPEG::File * >(fileref.file())) {
-        if (file->ID3v2Tag()) {
+        if (file->ID3v2Tag() && !file->ID3v2Tag()->isEmpty()) {
             readID3v2Tags(file->ID3v2Tag(), song, rg, img, lyrics);
         } else if (file->APETag()) {
             readAPETags(file->APETag(), song, rg);
@@ -836,7 +836,7 @@ static void readTags(const TagLib::FileRef fileref, Song *song, ReplayGain *rg, 
                 readFlacPicture(file->pictureList(), img);
             }
             #endif
-        } else if (file->ID3v2Tag()) {
+        } else if (file->ID3v2Tag() && !file->ID3v2Tag()->isEmpty()) {
             readID3v2Tags(file->ID3v2Tag(), song, rg, img, lyrics);
 //         } else if (file->ID3v1Tag()) {
 //             readID3v1Tags(fileref, song, rg);
@@ -915,7 +915,7 @@ static bool writeTags(const TagLib::FileRef fileref, const Song &from, const Son
         }
     }
     if (TagLib::MPEG::File *file = dynamic_cast< TagLib::MPEG::File * >(fileref.file())) {
-        if (file->ID3v2Tag()) {
+        if (file->ID3v2Tag() && !file->ID3v2Tag()->isEmpty()) {
             changed=writeID3v2Tags(file->ID3v2Tag(), from, to, rg, img) || changed;
         } else if (file->APETag()) {
             changed=writeAPETags(file->APETag(), from, to, rg) || changed;
@@ -945,7 +945,7 @@ static bool writeTags(const TagLib::FileRef fileref, const Song &from, const Son
     } else if (TagLib::FLAC::File *file = dynamic_cast< TagLib::FLAC::File * >(fileref.file())) {
         if (file->xiphComment()) {
             changed=writeVorbisCommentTags(file->xiphComment(), from, to, rg, img) || changed;
-        } else if (file->ID3v2Tag()) {
+        } else if (file->ID3v2Tag() && !file->ID3v2Tag()->isEmpty()) {
             changed=writeID3v2Tags(file->ID3v2Tag(), from, to, rg, img) || changed;
 //         } else if (file->ID3v1Tag()) {
 //             changed=writeID3v1Tags(fileref, from, to, rg, img) || changed;

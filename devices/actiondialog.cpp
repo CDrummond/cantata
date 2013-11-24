@@ -874,6 +874,7 @@ void ActionDialog::jobPercent(int percent)
 {
     if (percent!=currentPercent) {
         progressBar->setValue((100*count)+percent);
+        updateUnity(false);
         currentPercent=percent;
         if (PAGE_PROGRESS==stack->currentIndex()) {
             progressLabel->setText(formatSong(currentSong, false, true));

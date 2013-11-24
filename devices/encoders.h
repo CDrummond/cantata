@@ -77,6 +77,7 @@ namespace Encoders
         QList<Setting> values;
         QString low;
         QString high;
+        QString outputParam;
         int defaultValueIndex;
         int ffmpegValueMultiplier;
         bool transcoder;

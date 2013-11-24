@@ -173,22 +173,7 @@ QList<QNetworkProxy> NetworkProxyFactory::queryProxy(const QNetworkProxyQuery& q
 
     switch (mode) {
     case Mode_System:
-        #if defined Q_OS_LINUX && QT_VERSION < 0x050000
-        Q_UNUSED(query);
-
-        if (envUrl.isEmpty()) {
-            ret.setType(QNetworkProxy::NoProxy);
-        } else {
-            ret.setHostName(envUrl.host());
-            ret.setPort(envUrl.port());
-            ret.setUser(envUrl.userName());
-            ret.setPassword(envUrl.password());
-            ret.setType(envUrl.scheme().startsWith("http") ? QNetworkProxy::HttpProxy : QNetworkProxy::Socks5Proxy);
-        }
-        break;
-        #else
-        return systemProxyForQuery(query);
-        #endif
+        return ::systemProxyForQuery(query);
     case Mode_Direct:
         ret.setType(QNetworkProxy::NoProxy);
         break;

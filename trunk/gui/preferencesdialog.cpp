@@ -105,7 +105,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, const QStringList &hiddenP
     #ifdef ENABLE_PROXY_CONFIG
     proxy = new ProxySettings(0);
     proxy->load();
-    widget->addPage(proxy, i18n("Proxy"), Icon("preferences-system-network"), i18nc("Qt-only", "Proxy Settings"));
+    pageWidget->addPage(proxy, i18n("Proxy"), Icon("preferences-system-network"), i18nc("Qt-only", "Proxy Settings"));
     #endif
     #ifndef ENABLE_KDE_SUPPORT
     shortcuts = new ShortcutsSettingsPage(pageWidget);

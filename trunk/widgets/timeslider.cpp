@@ -175,96 +175,123 @@ private:
     bool showRemaining;
 };
 
-class PosSlider : public QSlider
+PosSlider::PosSlider(QWidget *p)
+    : QSlider(p)
+    , isActive(false)
+    , shown(false)
 {
-public:
-    PosSlider(QWidget *p)
-        : QSlider(p)
-        , isActive(false)
-        , shown(false)
-    {
-        setPageStep(0);
-        setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
-        setFocusPolicy(Qt::NoFocus);
-        setStyle(new ProxyStyle());
-        int h=fontMetrics().height()*0.5;
-        setMinimumHeight(h);
-        setMaximumHeight(h);
-        updateStyleSheet();
-    }
+    setPageStep(0);
+    setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
+    setFocusPolicy(Qt::NoFocus);
+    setStyle(new ProxyStyle());
+    int h=fontMetrics().height()*0.5;
+    setMinimumHeight(h);
+    setMaximumHeight(h);
+    updateStyleSheet();
+}
 
-    void showEvent(QShowEvent *e)
-    {
-        QSlider::showEvent(e);
-        if (!shown) {
-            updateStyleSheet();
-            shown=true;
+void PosSlider::showEvent(QShowEvent *e)
+{
+    QSlider::showEvent(e);
+    if (!shown) {
+        updateStyleSheet();
+        shown=true;
+    }
+}
+
+void PosSlider::updateStyleSheet()
+{
+    int lineWidth=maximumHeight()>12 ? 2 : 1;
+
+    QString boderFormat=QLatin1String("QSlider::groove:horizontal { border: %1px solid rgba(%2, %3, %4, %5); "
+                                      "background: transparent; "
+                                      "border-radius: %6px } ");
+    QString fillFormat=QLatin1String("QSlider::")+QLatin1String(Qt::RightToLeft==layoutDirection() ? "add" : "sub")+
+            QLatin1String("-page:horizontal {border: %1px solid rgb(%2, %3, %4); "
+                          "background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 rgb(%5, %6, %7), stop:1 rgb(%8, %9, %10)); "
+                          "border-radius: %11px; margin: %12px;}");
+    QLabel lbl(parentWidget());
+    lbl.ensurePolished();
+    QColor textColor=lbl.palette().text().color();
+    int alpha=textColor.value()<32 ? 96 : 64;
+    QColor fillBorder=QApplication::palette().highlight().color();
+    QColor fillTop=fillBorder.lighter(120);
+    QColor fillBot=fillBorder.lighter(80);
+
+    inactiveStyleSheet=boderFormat.arg(lineWidth).arg(textColor.red()).arg(textColor.green()).arg(textColor.blue()).arg(alpha/2).arg(lineWidth*2);
+    activeStyleSheet=boderFormat.arg(lineWidth).arg(textColor.red()).arg(textColor.green()).arg(textColor.blue()).arg(alpha).arg(lineWidth*2);
+    activeStyleSheet+=fillFormat.arg(lineWidth).arg(fillBorder.red()).arg(fillBorder.green()).arg(fillBorder.blue())
+            .arg(fillTop.red()).arg(fillTop.green()).arg(fillTop.blue())
+            .arg(fillBot.red()).arg(fillBot.green()).arg(fillBot.blue()).arg(lineWidth).arg(lineWidth*2);
+    setStyleSheet(inactiveStyleSheet);
+}
+
+bool PosSlider::event(QEvent *e)
+{
+    if (QEvent::ToolTip==e->type() && maximum()!=minimum()) {
+        QHelpEvent *he = dynamic_cast<QHelpEvent *>(e);
+        if (he) {
+            qreal pc = (qreal)he->x()/(qreal)width();
+            setToolTip(Song::formattedTime(maximum()*pc));
         }
     }
 
-    void updateStyleSheet()
-    {
-        int lineWidth=maximumHeight()>12 ? 2 : 1;
+    return QSlider::event(e);
+}
 
-        QString boderFormat=QLatin1String("QSlider::groove:horizontal { border: %1px solid rgba(%2, %3, %4, %5); "
-                                          "background: transparent; "
-                                          "border-radius: %6px } ");
-        QString fillFormat=QLatin1String("QSlider::")+QLatin1String(Qt::RightToLeft==layoutDirection() ? "add" : "sub")+
-                           QLatin1String("-page:horizontal {border: %1px solid rgb(%2, %3, %4); "
-                                         "background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 rgb(%5, %6, %7), stop:1 rgb(%8, %9, %10)); "
-                                         "border-radius: %11px; margin: %12px;}");
-        QLabel lbl(parentWidget());
-        lbl.ensurePolished();
-        QColor textColor=lbl.palette().text().color();
-        int alpha=textColor.value()<32 ? 96 : 64;
-        QColor fillBorder=QApplication::palette().highlight().color();
-        QColor fillTop=fillBorder.lighter(120);
-        QColor fillBot=fillBorder.lighter(80);
-
-        inactiveStyleSheet=boderFormat.arg(lineWidth).arg(textColor.red()).arg(textColor.green()).arg(textColor.blue()).arg(alpha/2).arg(lineWidth*2);
-        activeStyleSheet=boderFormat.arg(lineWidth).arg(textColor.red()).arg(textColor.green()).arg(textColor.blue()).arg(alpha).arg(lineWidth*2);
-        activeStyleSheet+=fillFormat.arg(lineWidth).arg(fillBorder.red()).arg(fillBorder.green()).arg(fillBorder.blue())
-                            .arg(fillTop.red()).arg(fillTop.green()).arg(fillTop.blue())
-                            .arg(fillBot.red()).arg(fillBot.green()).arg(fillBot.blue()).arg(lineWidth).arg(lineWidth*2);
-        setStyleSheet(inactiveStyleSheet);
+void PosSlider::wheelEvent(QWheelEvent *ev)
+{
+    if (!isActive) {
+        return;
     }
 
-    virtual ~PosSlider() { }
-
-    bool event(QEvent *e)
-    {
-        if (QEvent::ToolTip==e->type() && maximum()!=minimum()) {
-            QHelpEvent *he = dynamic_cast<QHelpEvent *>(e);
-            if (he) {
-                qreal pc = (qreal)he->x()/(qreal)width();
-                setToolTip(Song::formattedTime(maximum()*pc));
+    static const int constStep=5;
+    int numDegrees = ev->delta() / 8;
+    int numSteps = numDegrees / 15;
+    int val=value();
+    if (numSteps > 0) {
+        int max=maximum();
+        if (val!=max) {
+            for (int i = 0; i < numSteps; ++i) {
+                val+=constStep;
+                if (val>max) {
+                    val=max;
+                    break;
+                }
             }
         }
-
-        return QSlider::event(e);
-    }
-
-    void setRange(int min, int max)
-    {
-        bool active=min!=max;
-        QSlider::setRange(min, max);
-        setValue(min);
-        if (!active) {
-            setToolTip(QString());
-        }
-
-        if (active!=isActive) {
-            isActive=active;
-            setStyleSheet(isActive ? activeStyleSheet : inactiveStyleSheet);
+    } else {
+        int min=minimum();
+        if (val!=min) {
+            for (int i = 0; i > numSteps; --i) {
+                val-=constStep;
+                if (val<min) {
+                    val=min;
+                    break;
+                }
+            }
         }
     }
+    if (val!=value()) {
+        setValue(val);
+        emit positionSet();
+    }
+}
 
-private:
-    bool isActive;
-    bool shown;
-    QString activeStyleSheet;
-    QString inactiveStyleSheet;
-};
+void PosSlider::setRange(int min, int max)
+{
+    bool active=min!=max;
+    QSlider::setRange(min, max);
+    setValue(min);
+    if (!active) {
+        setToolTip(QString());
+    }
+
+    if (active!=isActive) {
+        isActive=active;
+        setStyleSheet(isActive ? activeStyleSheet : inactiveStyleSheet);
+    }
+}
 
 TimeSlider::TimeSlider(QWidget *p)
     : QWidget(p)
@@ -281,6 +308,7 @@ TimeSlider::TimeSlider(QWidget *p)
     layout->addWidget(timeLeft);
     connect(slider, SIGNAL(sliderPressed()), this, SLOT(pressed()));
     connect(slider, SIGNAL(sliderReleased()), this, SLOT(released()));
+    connect(slider, SIGNAL(positionSet()), this, SIGNAL(sliderReleased()));
     connect(slider, SIGNAL(valueChanged(int)), this, SLOT(updateTimes()));
     setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
     clearTimes();

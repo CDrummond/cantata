@@ -26,11 +26,34 @@
 
 #include <QWidget>
 #include <QTime>
+#include <QSlider>
 
 class QTimer;
 class RemainingTimeLabel;
 class TimeTakenLabel;
-class PosSlider;
+
+class PosSlider : public QSlider
+{
+    Q_OBJECT
+public:
+    PosSlider(QWidget *p);
+    virtual ~PosSlider() { }
+
+    void showEvent(QShowEvent *e);
+    void updateStyleSheet();
+    bool event(QEvent *e);
+    void wheelEvent(QWheelEvent *ev);
+    void setRange(int min, int max);
+
+Q_SIGNALS:
+    void positionSet();
+
+private:
+    bool isActive;
+    bool shown;
+    QString activeStyleSheet;
+    QString inactiveStyleSheet;
+};
 
 class TimeSlider : public QWidget
 {

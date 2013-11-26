@@ -426,7 +426,7 @@ void ContextWidget::paintEvent(QPaintEvent *e)
     QRect r(rect());
 
     if (!isWide && viewCombo) {
-        int space=fontMetrics().height()/4;
+        int space=2; // fontMetrics().height()/4;
         r.adjust(0, 0, 0, -(viewCombo->rect().height()+space));
     }
     if (darkBackground) {

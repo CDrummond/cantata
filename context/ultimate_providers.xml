@@ -66,7 +66,7 @@
     </extract>
     <invalidIndicator value="we do not have the lyric for this song"/>
   </provider>
-  <provider name="lyrics.wikia.com" charset="utf-8" url="http://lyrics.wikia.com/{Artist}:{Title}">
+  <provider name="lyrics.wikia.com" charset="utf-8" url="http://lyrics.wikia.com/api.php">
     <urlFormat replace=" _@;\&quot;" with="_"/>
     <urlFormat replace="?" with="%3F"/>
     <extract>

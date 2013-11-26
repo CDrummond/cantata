@@ -62,6 +62,7 @@ Q_SIGNALS:
     void lyricsReady(int id, const QString &data);
 
 private Q_SLOTS:
+    void wikiMediaSearchResponse();
     void lyricsFetched();
 
 private:

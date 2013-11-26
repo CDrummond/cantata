@@ -205,6 +205,10 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
         case GroupedView::Role_AlbumDuration:
             return pl->totalTime();
         case GroupedView::Role_SongCount:
+            if (!pl->loaded) {
+                pl->loaded=true;
+                emit playlistInfo(pl->name);
+            }
             return pl->songs.count();
         case GroupedView::Role_CurrentStatus:
         case GroupedView::Role_Status:

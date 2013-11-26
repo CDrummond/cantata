@@ -82,6 +82,8 @@ public:
     ~PlaylistsModel();
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
+    bool canFetchMore(const QModelIndex &index) const;
+    void fetchMore(const QModelIndex &index);
     bool hasChildren(const QModelIndex &parent = QModelIndex()) const;
     int columnCount(const QModelIndex&) const { return 1; }
     QModelIndex parent(const QModelIndex &index) const;

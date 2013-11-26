@@ -162,7 +162,15 @@ void UltimateLyricsProvider::fetchInfo(int id, const Song &metadata)
     doUrlReplace("{a}",       firstChar(artistFixed),            urlText);
     doUrlReplace("{track}",   QString::number(metadata.track),   urlText);
 
-    NetworkJob *reply = NetworkAccessManager::self()->get(QUrl(urlText));
+    // For some reason Qt messes up the ? -> %3F and & -> %26 conversions - by placing 25 after the %
+    // So, try and revert this...
+    QUrl url(urlText);
+    QByteArray data=url.toEncoded();
+    data.replace("%253F", "%3F");
+    data.replace("%253f", "%3f");
+    data.replace("%2526", "%26");
+
+    NetworkJob *reply = NetworkAccessManager::self()->get(QUrl::fromEncoded(data, QUrl::StrictMode));
     requests[reply] = id;
     connect(reply, SIGNAL(finished()), this, SLOT(lyricsFetched()));
 }
@@ -245,6 +253,8 @@ void UltimateLyricsProvider::doUrlReplace(const QString &tag, const QString &val
         QRegExp re("[" + QRegExp::escape(format.first) + "]");
         valueCopy.replace(re, format.second);
     }
-
+    // ? and & should ony be used in URL queries...
+    valueCopy.replace(QLatin1Char('&'), QLatin1String("%26"));
+    valueCopy.replace(QLatin1Char('?'), QLatin1String("%3f"));
     u.replace(tag, valueCopy, Qt::CaseInsensitive);
 }

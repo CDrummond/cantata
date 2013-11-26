@@ -44,7 +44,6 @@ public:
     typedef QPair<QString, QString> UrlFormat;
 
     void setName(const QString &n) { name = n; }
-    void setTitle(const QString &t) { title = t; }
     void setUrl(const QString &u) { url = u; }
     void setCharset(const QString &c) { charset = c; }
     void setRelevance(int r) { relevance = r; }
@@ -72,7 +71,6 @@ private:
     bool enabled;
     QHash<NetworkJob *, int> requests;
     QString name;
-    QString title;
     QString url;
     QString charset;
     int relevance;

@@ -96,9 +96,10 @@
 54. When showing a new page, place focus on view.
 55. If MPD's database time is invalid, and the cache's database time is
     invalid, then accept a database listing. This works-around an issue with
-    using MPD's proxy DB - where no database time is sent. In this case,
-    Cantata will store the current date and time in its cache file. Users
-    with a proxy DB will need to force Cantata to update to notice changes.
+    using MPD's proxy DB in versions prior to 0.18.5  - where no database time
+    is sent. In this case, Cantata will store the current date and time in its
+    cache file. Users with a proxy DB (and using MPD version before 0;18.5)
+    will need to force Cantata to update to notice changes.
 56. Look for backdrop.jpg/png in music folder before attempting to download.
 57. Add option to store downloaded backdrops into music folder. Stored as
     backdrop.jpg
@@ -107,7 +108,7 @@
     by the artist.
 59. Show device copy/delete status in Unity launcher - show current progress,
     and track count to be actioned.
-60. If playlists page is disabled, then hide 'Add to playlist' actions ahd hide
+60. If playlists page is disabled, then hide 'Add to playlist' actions and hide
     playqueue save button.
 61. Dont load folder list until view is visible.
 62. Add 'Cancel' to context-view context menus - cancels current fetch job.
@@ -117,6 +118,7 @@
 65. Using mouse wheel over position slider changes position by 5 seconds.
 66. Fix fetching lyrics for songs, or artists, containing ampersand or question
     mark characters.
+67. Use correct output argument for oggenc and faac.
 
 1.1.3
 -----

@@ -76,7 +76,6 @@ static UltimateLyricsProvider * parseProvider(QXmlStreamReader *reader)
 
     UltimateLyricsProvider* scraper = new UltimateLyricsProvider;
     scraper->setName(attributes.value("name").toString());
-    scraper->setTitle(attributes.value("title").toString());
     scraper->setCharset(attributes.value("charset").toString());
     scraper->setUrl(attributes.value("url").toString());
 

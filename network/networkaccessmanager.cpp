@@ -32,6 +32,14 @@
 K_GLOBAL_STATIC(NetworkAccessManager, instance)
 #endif
 
+#include <QDebug>
+static bool debugEnabled=false;
+#define DBUG if (debugEnabled) qWarning() << metaObject()->className() << __FUNCTION__
+void NetworkAccessManager::enableDebug()
+{
+    debugEnabled=true;
+}
+
 static const int constMaxRedirects=5;
 
 NetworkJob::NetworkJob(NetworkAccessManager *p, const QUrl &u)
@@ -81,11 +89,13 @@ void NetworkJob::jobFinished()
     QVariant redirect = j->header(QNetworkRequest::LocationHeader);
     if (redirect.isValid() && ++numRedirects<constMaxRedirects) {
         job=static_cast<BASE_NETWORK_ACCESS_MANAGER *>(j->manager())->get(QNetworkRequest(redirect.toUrl()));
+        DBUG << "redirect" << job->url().toString();
         connect(job, SIGNAL(finished()), this, SLOT(jobFinished()));
         j->deleteLater();
         return;
     }
 
+    DBUG << job->url().toString() << job->error() << (0==job->error() ? QLatin1String("OK") : job->errorString());
     emit finished();
 }
 
@@ -139,6 +149,7 @@ NetworkAccessManager::NetworkAccessManager(QObject *parent)
 
 NetworkJob * NetworkAccessManager::get(const QNetworkRequest &req, int timeout)
 {
+    DBUG << req.url().toString() << enabled;
     if (!enabled) {
         return new NetworkJob(this, req.url());
     }

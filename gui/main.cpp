@@ -55,6 +55,7 @@
 #include "streamfetcher.h"
 #include "httpserver.h"
 #include "songdialog.h"
+#include "networkaccessmanager.h"
 #ifdef ENABLE_EXTERNAL_TAGS
 #include "tagclient.h"
 #endif
@@ -140,10 +141,12 @@ enum Debug {
     Dbg_StreamFetching    = 0x0200,
     Dbg_HttpServer        = 0x0400,
     Dbg_SongDialogs       = 0x0800,
-    Dbg_TagHelper         = 0x1000,
+    Dbg_NetworkAccess     = 0x1000,
+
+    Dbg_TagHelper         = 0x2000,
     // NOTE: MUST UPDATE Dbg_All IF ADD NEW ITEMS!!!
 
-    Dbg_All               = 0x1FFF
+    Dbg_All               = 0x3FFF
 };
 
 static void installDebugMessageHandler()
@@ -190,6 +193,9 @@ static void installDebugMessageHandler()
         }
         if (dbg&Dbg_SongDialogs) {
             SongDialog::enableDebug();
+        }
+        if (dbg&Dbg_NetworkAccess) {
+            NetworkAccessManager::enableDebug();
         }
         #ifdef ENABLE_EXTERNAL_TAGS
         if (dbg&Dbg_TagHelper) {

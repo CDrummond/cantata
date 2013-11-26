@@ -115,6 +115,8 @@
 64. Instantiate network proxy factory when network access manager is
     constructed.
 65. Using mouse wheel over position slider changes position by 5 seconds.
+66. Fix fetching lyrics for songs, or artists, containing ampersand or question
+    mark characters.
 
 1.1.3
 -----

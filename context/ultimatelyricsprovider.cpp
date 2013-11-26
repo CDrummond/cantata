@@ -25,6 +25,11 @@
 #include "networkaccessmanager.h"
 #include "song.h"
 #include <QTextCodec>
+#include <QXmlStreamReader>
+#include <QUrl>
+#if QT_VERSION >= 0x050000
+#include <QUrlQuery>
+#endif
 
 static QString extract(const QString &source, const QString &begin, const QString &end)
 {
@@ -133,6 +138,20 @@ UltimateLyricsProvider::~UltimateLyricsProvider()
     abort();
 }
 
+static const QString constArtistArg=QLatin1String("{Artist}");
+static const QString constArtistLowerArg=QLatin1String("{artist}");
+static const QString constArtistLowerNoSpaceArg=QLatin1String("{artist2}");
+static const QString constArtistUpperArg=QLatin1String("{ARTIST}");
+static const QString constArtistFirstCharArg=QLatin1String("{a}");
+static const QString constAlbumArg=QLatin1String("{Album}");
+static const QString constAlbumLowerArg=QLatin1String("{album}");
+static const QString constAlbumLowerNoSpaceArg=QLatin1String("{album2}");
+static const QString constTitleLowerArg=QLatin1String("{title}");
+static const QString constTitleArg=QLatin1String("{Title}");
+static const QString constTitleCaseArg=QLatin1String("{Title2}");
+static const QString constYearArg=QLatin1String("{year}");
+static const QString constTrackNoArg=QLatin1String("{track}");
+
 void UltimateLyricsProvider::fetchInfo(int id, const Song &metadata)
 {
     #if QT_VERSION < 0x050000
@@ -146,31 +165,61 @@ void UltimateLyricsProvider::fetchInfo(int id, const Song &metadata)
     }
 
     QString artistFixed=metadata.basicArtist();
-    // Fill in fields in the URL
     QString urlText(url);
-    doUrlReplace("{artist}",  artistFixed.toLower(),             urlText);
-    doUrlReplace("{artist2}", noSpace(artistFixed.toLower()),    urlText);
-    doUrlReplace("{album}",   metadata.album.toLower(),          urlText);
-    doUrlReplace("{album2}",  noSpace(metadata.album.toLower()), urlText);
-    doUrlReplace("{title}",   metadata.title.toLower(),          urlText);
-    doUrlReplace("{Artist}",  artistFixed,                       urlText);
-    doUrlReplace("{Album}",   metadata.album,                    urlText);
-    doUrlReplace("{ARTIST}",  artistFixed.toUpper(),             urlText);
-    doUrlReplace("{year}",    QString::number(metadata.year),    urlText);
-    doUrlReplace("{Title}",   metadata.title,                    urlText);
-    doUrlReplace("{Title2}",  titleCase(metadata.title),         urlText);
-    doUrlReplace("{a}",       firstChar(artistFixed),            urlText);
-    doUrlReplace("{track}",   QString::number(metadata.track),   urlText);
+
+    if (QLatin1String("lyrics.wikia.com")==name) {
+        QUrl url(urlText);
+        #if QT_VERSION < 0x050000
+        QUrl &query=url;
+        #else
+        QUrlQuery query;
+        #endif
+
+        query.addQueryItem(QLatin1String("artist"), artistFixed);
+        query.addQueryItem(QLatin1String("song"), metadata.title);
+        query.addQueryItem(QLatin1String("func"), QLatin1String("getSong"));
+        query.addQueryItem(QLatin1String("fmt"), QLatin1String("xml"));
+        #if QT_VERSION >= 0x050000
+        url.setQuery(query);
+        #endif
+
+        NetworkJob *reply = NetworkAccessManager::self()->get(url);
+        requests[reply] = id;
+        connect(reply, SIGNAL(finished()), this, SLOT(wikiMediaSearchResponse()));
+        return;
+    }
+
+    // Fill in fields in the URL
+    bool urlContainsDetails=urlText.contains(QLatin1Char('{'));
+    if (urlContainsDetails) {
+        doUrlReplace(constArtistArg, artistFixed, urlText);
+        doUrlReplace(constArtistLowerArg, artistFixed.toLower(), urlText);
+        doUrlReplace(constArtistLowerNoSpaceArg, noSpace(artistFixed.toLower()), urlText);
+        doUrlReplace(constArtistUpperArg, artistFixed.toUpper(), urlText);
+        doUrlReplace(constArtistFirstCharArg, firstChar(artistFixed), urlText);
+        doUrlReplace(constAlbumArg, metadata.album, urlText);
+        doUrlReplace(constAlbumLowerArg, metadata.album.toLower(), urlText);
+        doUrlReplace(constAlbumLowerNoSpaceArg, noSpace(metadata.album.toLower()), urlText);
+        doUrlReplace(constTitleArg, metadata.title, urlText);
+        doUrlReplace(constTitleLowerArg, metadata.title.toLower(), urlText);
+        doUrlReplace(constTitleCaseArg, titleCase(metadata.title), urlText);
+        doUrlReplace(constYearArg, QString::number(metadata.year), urlText);
+        doUrlReplace(constTrackNoArg, QString::number(metadata.track), urlText);
+    }
 
     // For some reason Qt messes up the ? -> %3F and & -> %26 conversions - by placing 25 after the %
     // So, try and revert this...
     QUrl url(urlText);
-    QByteArray data=url.toEncoded();
-    data.replace("%253F", "%3F");
-    data.replace("%253f", "%3f");
-    data.replace("%2526", "%26");
 
-    NetworkJob *reply = NetworkAccessManager::self()->get(QUrl::fromEncoded(data, QUrl::StrictMode));
+    if (urlContainsDetails) {
+        QByteArray data=url.toEncoded();
+        data.replace("%253F", "%3F");
+        data.replace("%253f", "%3f");
+        data.replace("%2526", "%26");
+        url=QUrl::fromEncoded(data, QUrl::StrictMode);
+    }
+
+    NetworkJob *reply = NetworkAccessManager::self()->get(url);
     requests[reply] = id;
     connect(reply, SIGNAL(finished()), this, SLOT(lyricsFetched()));
 }
@@ -182,10 +231,48 @@ void UltimateLyricsProvider::abort()
 
     for (; it!=end; ++it) {
         disconnect(it.key(), SIGNAL(finished()), this, SLOT(lyricsFetched()));
+        disconnect(it.key(), SIGNAL(finished()), this, SLOT(wikiMediaSearchResponse()));
         it.key()->deleteLater();
         it.key()->close();
     }
     requests.clear();
+}
+
+void UltimateLyricsProvider::wikiMediaSearchResponse()
+{
+    NetworkJob *reply = qobject_cast<NetworkJob*>(sender());
+    if (!reply) {
+        return;
+    }
+
+    int id = requests.take(reply);
+    reply->deleteLater();
+
+    if (!reply->ok()) {
+        emit lyricsReady(id, QString());
+        return;
+    }
+
+    QUrl url;
+    QXmlStreamReader doc(reply->actualJob());
+    while (!doc.atEnd()) {
+        doc.readNext();
+        if (doc.isStartElement() && QLatin1String("url")==doc.name()) {
+            QString lyricsUrl=doc.readElementText();
+            if (!lyricsUrl.contains(QLatin1String("action=edit"))) {
+                url=QUrl::fromEncoded(lyricsUrl.toUtf8()).toString();
+            }
+            break;
+        }
+    }
+
+    if (url.isValid()) {
+        NetworkJob *reply = NetworkAccessManager::self()->get(url);
+        requests[reply] = id;
+        connect(reply, SIGNAL(finished()), this, SLOT(lyricsFetched()));
+    } else {
+        emit lyricsReady(id, QString());
+    }
 }
 
 void UltimateLyricsProvider::lyricsFetched()

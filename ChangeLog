@@ -120,6 +120,8 @@
     mark characters.
 67. Use correct output argument for oggenc and faac.
 68. Only load info of stored playlists when required.
+69. If looking for lyrics on lyrics.wikia.com, then use its search API to
+    locate lyrics page.
 
 1.1.3
 -----

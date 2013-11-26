@@ -64,6 +64,7 @@
 #include <taglib/apetag.h>
 #include <taglib/id3v2tag.h>
 #include <taglib/id3v1tag.h>
+#include <taglib/id3v1genres.h>
 #ifdef TAGLIB_MP4_FOUND
 #include <taglib/mp4tag.h>
 #endif
@@ -1119,6 +1120,45 @@ Update embedImage(const QString &fileName, const QByteArray &cover)
     LOCK_MUTEX
     TagLib::FileRef fileref = getFileRef(fileName);
     return fileref.isNull() ? Update_Failed : update(fileref, Song(), Song(), RgTags(), cover);
+}
+
+QString oggMimeType(const QString &fileName)
+{
+    LOCK_MUTEX
+    #ifdef Q_OS_WIN32
+    const wchar_t*encodedName=reinterpret_cast<const wchar_t*>(fileName.constData());
+    #else
+    const char *encodedName=QFile::encodeName(fileName).constData();
+    #endif
+
+    TagLib::Ogg::Vorbis::File vorbis(encodedName, false, TagLib::AudioProperties::Fast);
+    if (vorbis.isValid()) {
+        return QLatin1String("audio/x-vorbis+ogg");
+    }
+
+    TagLib::Ogg::FLAC::File flac(encodedName, false, TagLib::AudioProperties::Fast);
+    if (flac.isValid()) {
+        return QLatin1String("audio/x-flac+ogg");
+    }
+
+    TagLib::Ogg::Speex::File speex(encodedName, false, TagLib::AudioProperties::Fast);
+    if (speex.isValid()) {
+        return QLatin1String("audio/x-speex+ogg");
+    }
+
+    #ifdef TAGLIB_OPUS_FOUND
+    TagLib::Ogg::Opus::File opus(encodedName, false, TagLib::AudioProperties::Fast);
+    if (opus.isValid()) {
+        return QLatin1String("audio/x-opus+ogg");
+    }
+    #endif
+    return QLatin1String("audio/ogg");
+}
+
+QString id3Genre(int id)
+{
+    // Clementine: In theory, genre 0 is "blues"; in practice it's invalid.
+    return 0==id ? QString() : tString2QString(TagLib::ID3v1::genre(id));
 }
 
 }

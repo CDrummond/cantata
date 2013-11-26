@@ -85,7 +85,9 @@ namespace Tags
     extern ReplayGain readReplaygain(const QString &fileName);
     extern Update updateReplaygain(const QString &fileName, const ReplayGain &rg);
     extern Update embedImage(const QString &fileName, const QByteArray &cover);
+    extern QString oggMimeType(const QString &fileName);
     #endif
+    extern QString id3Genre(int id);
 }
 
 #ifdef ENABLE_EXTERNAL_TAGS

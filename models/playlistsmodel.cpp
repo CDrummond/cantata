@@ -109,14 +109,30 @@ int PlaylistsModel::rowCount(const QModelIndex &index) const
     Item *item=static_cast<Item *>(index.internalPointer());
     if (item->isPlaylist()) {
         PlaylistItem *pl=static_cast<PlaylistItem *>(index.internalPointer());
-        if (!pl->loaded) {
-            pl->loaded=true;
-            emit playlistInfo(pl->name);
-        }
         return pl->songs.count();
     }
     return 0;
-    //return item->isPlaylist() ? static_cast<PlaylistItem *>(item)->songs.count() : 0;
+}
+
+bool PlaylistsModel::canFetchMore(const QModelIndex &index) const
+{
+    if (!index.isValid()) {
+        return false;
+    }
+    Item *item=static_cast<Item *>(index.internalPointer());
+    return item && item->isPlaylist() && !static_cast<PlaylistItem *>(item)->loaded;
+}
+
+void PlaylistsModel::fetchMore(const QModelIndex &index)
+{
+    if (!index.isValid()) {
+        return;
+    }
+    Item *item=static_cast<Item *>(index.internalPointer());
+    if (item->isPlaylist() && !static_cast<PlaylistItem *>(item)->loaded) {
+        static_cast<PlaylistItem *>(item)->loaded=true;
+        emit playlistInfo(static_cast<PlaylistItem *>(item)->name);
+    }
 }
 
 bool PlaylistsModel::hasChildren(const QModelIndex &parent) const
@@ -194,12 +210,12 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
         case GroupedView::Role_Status:
             return (int)GroupedView::State_Default;
         case Qt::DisplayRole:
+            return pl->name;
+        case Qt::ToolTipRole:
             if (!pl->loaded) {
                 pl->loaded=true;
                 emit playlistInfo(pl->name);
             }
-            return pl->name;
-        case Qt::ToolTipRole:
             return 0==pl->songs.count()
                 ? pl->name
                 : pl->name+"\n"+
@@ -211,6 +227,10 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
         case Qt::DecorationRole:
             return Icons::self()->playlistIcon;
         case ItemView::Role_SubText:
+            if (!pl->loaded) {
+                pl->loaded=true;
+                emit playlistInfo(pl->name);
+            }
             #ifdef ENABLE_KDE_SUPPORT
             return i18np("1 Track (%2)", "%1 Tracks (%2)", pl->songs.count(), Song::formattedTime(pl->totalTime()));
             #else
@@ -668,6 +688,7 @@ void PlaylistsModel::playlistInfoRetrieved(const QString &name, const QList<Song
         }
         pl->updateGenres();
         emit updated(idx);
+        emit dataChanged(idx, idx);
     } else {
         emit listPlaylists();
     }

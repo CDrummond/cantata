@@ -119,6 +119,7 @@
 66. Fix fetching lyrics for songs, or artists, containing ampersand or question
     mark characters.
 67. Use correct output argument for oggenc and faac.
+68. Only load info of stored playlists when required.
 
 1.1.3
 -----

@@ -90,6 +90,7 @@ class NetworkAccessManager : public BASE_NETWORK_ACCESS_MANAGER
     Q_OBJECT
 
 public:
+    static void enableDebug();
     static NetworkAccessManager * self();
 
     NetworkAccessManager(QObject *parent=0);

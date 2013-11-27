@@ -2,10 +2,10 @@
 <lyricproviders>
   <provider name="azlyrics.com" charset="utf-8" url="http://www.azlyrics.com/lyrics/{artist}/{title}.html">
     <urlFormat replace=" ._@,;&amp;\/'&quot;-" with=""/>
-    <extract>
+    <extract> <!-- old -->
       <item begin="&lt;!-- END OF RINGTONE 1 --&gt;" end="&lt;!-- RINGTONE 2 --&gt;"/>
     </extract>
-    <extract>
+    <extract> <!-- new -->
       <item begin="&lt;!-- start of lyrics --&gt;" end="&lt;!-- end of lyrics --&gt;"/>
     </extract>
     <exclude>
@@ -186,8 +186,11 @@
   <provider name="songlyrics.com" charset="utf-8" url="http://www.songlyrics.com/{artist}/{title}-lyrics/">
     <urlFormat replace=" ._@,;&amp;\/&quot;" with="-"/>
     <urlFormat replace="'" with="_"/>
-    <extract>
+    <extract> <!-- old -->
       <item tag="&lt;p id=&quot;songLyricsDiv&quot; ondragstart=&quot;return false;&quot; onselectstart=&quot;return false;&quot; oncontextmenu=&quot;return false;&quot; class=&quot;songLyricsV14&quot; style=&quot;font-size: 14px;z-index: 9999;position: absolute;left: -6000px;&quot;&gt;"/>
+    </extract>
+    <extract> <!-- new -->
+      <item tag="&lt;p id=&quot;songLyricsDiv&quot; ondragstart=&quot;return false;&quot; onselectstart=&quot;return false;&quot; oncontextmenu=&quot;return false;&quot; class=&quot;songLyricsV14&quot;&gt;"/>
     </extract>
     <exclude>
       <item begin="&#10;[" end="] "/>

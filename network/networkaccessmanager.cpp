@@ -89,7 +89,7 @@ void NetworkJob::jobFinished()
     QVariant redirect = j->header(QNetworkRequest::LocationHeader);
     if (redirect.isValid() && ++numRedirects<constMaxRedirects) {
         job=static_cast<BASE_NETWORK_ACCESS_MANAGER *>(j->manager())->get(QNetworkRequest(redirect.toUrl()));
-        DBUG << "redirect" << job->url().toString();
+        DBUG << j->url().toString() << "redirected to" << job->url().toString();
         connect(job, SIGNAL(finished()), this, SLOT(jobFinished()));
         j->deleteLater();
         return;
@@ -127,7 +127,7 @@ NetworkAccessManager * NetworkAccessManager::self()
     return instance;
     #else
     static NetworkAccessManager *instance=0;
-    if(!instance) {
+    if (!instance) {
         instance=new NetworkAccessManager;
     }
     return instance;

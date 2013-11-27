@@ -33,8 +33,14 @@
       <item tag="&lt;div id=&quot;lyricsContent&quot;&gt;"/>
       <item tag="&lt;p&gt;"/>
     </extract>
+    <extract> <!-- new -->
+      <item begin="&lt;div class=&quot;lyrics&quot;&gt;" end="&lt;/div&gt;">
+    </extract>
     <exclude>
       <item begin="&lt;b&gt;" end="&lt;/b&gt;"/>
+    </exclude>
+    <exclude> <!-- new -->
+      <item begin="&lt;script async src=&quot;" end="&lt;/script&gt;&lt;br&gt;"/>
     </exclude>
   </provider>
   <provider name="elyrics.net" charset="iso-8859-1" url="http://www.elyrics.net/read/{a}/{artist}-lyrics/{title}-lyrics.html">

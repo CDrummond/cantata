@@ -2960,11 +2960,9 @@ void MainWindow::setPlaylistsEnabled(bool e)
     addPlayQueueToStoredPlaylistAction->setVisible(PlaylistsModel::self()->isEnabled());
 }
 
-#if !defined Q_OS_WIN && !defined Q_OS_MAC
-#if QT_VERSION < 0x050000
+#if !defined Q_OS_WIN && !defined Q_OS_MAC && QT_VERSION < 0x050000
 #include <QX11Info>
 #include <X11/Xlib.h>
-#endif
 #endif
 
 void MainWindow::hideWindow()
@@ -2982,8 +2980,7 @@ void MainWindow::restoreWindow()
     raise();
     showNormal();
     activateWindow();
-    #if !defined Q_OS_WIN && !defined Q_OS_MAC
-    #if QT_VERSION < 0x050000
+    #if !defined Q_OS_WIN && !defined Q_OS_MAC && QT_VERSION < 0x050000
     // This section seems to be required for compiz...
     // ...without this, when 'qdbus com.googlecode.cantata /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Raise' is used
     // the Unity launcher item is highlighted, but the window is not shown!
@@ -3000,7 +2997,6 @@ void MainWindow::restoreWindow()
     xev.xclient.data.l[0] = 2;
     xev.xclient.data.l[1] = xev.xclient.data.l[2] = xev.xclient.data.l[3] = xev.xclient.data.l[4] = 0;
     XSendEvent(QX11Info::display(), QX11Info::appRootWindow(info.screen()), False, SubstructureRedirectMask|SubstructureNotifyMask, &xev);
-    #endif
     #endif
     if (wasHidden && !lastPos.isNull()) {
         move(lastPos);

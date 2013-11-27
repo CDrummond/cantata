@@ -102,7 +102,9 @@ static QString constRadioTimeHost=QLatin1String("opml.radiotime.com");
 static QString constRadioTimeUrl=QLatin1String("http://")+constRadioTimeHost+QLatin1String("/Browse.ashx");
 static QString constFavouritesUrl=QLatin1String("cantata://internal");
 static QString constIceCastUrl=QLatin1String("http://dir.xiph.org/yp.xml");
+
 static QString constSomaFMUrl=QLatin1String("http://somafm.com/channels.xml");
+static QString constRadioGFMUrl=QLatin1String("http://streams.radio-gfm.net/channels.xml");
 
 static QString constDigitallyImportedUrl=QLatin1String("http://www.di.fm");
 static QString constJazzRadioUrl=QLatin1String("http://www.jazzradio.com");
@@ -575,6 +577,7 @@ StreamsModel::StreamsModel(QObject *parent)
     shoutCast->configName="shoutcast";
     root->children.append(shoutCast);
     root->children.append(new CategoryItem(constSomaFMUrl, i18n("SomaFM"), root, getIcon("somafm"), "somafm", QString(), true));
+    root->children.append(new CategoryItem(constRadioGFMUrl, i18n("Radio GFM"), root, getIcon("radiogfm"), "radiogfm", QString(), true));
     root->children.append(new DiCategoryItem(constDigitallyImportedUrl, i18n("Digitally Imported"), root, getIcon("digitallyimported"), "di"));
     root->children.append(new DiCategoryItem(constJazzRadioUrl, i18n("JazzRadio.com"), root, getIcon("jazzradio"), "jazzradio"));
     root->children.append(new DiCategoryItem(constRockRadioUrl, i18n("RockRadio.com"), root, getIcon("rockradio"), "rockradio"));
@@ -1187,7 +1190,7 @@ void StreamsModel::jobFinished()
                     newItems=parseRadioTimeResponse(job->actualJob(), cat);
                 } else if (constIceCastUrl==url) {
                     newItems=parseIceCastResponse(job->actualJob(), cat);
-                } else if (constSomaFMUrl==url) {
+                } else if (constSomaFMUrl==url || constRadioGFMUrl==url) {
                     newItems=parseSomaFmResponse(job->actualJob(), cat);
                 } else if (constDiChannelListHost==job->origUrl().host()) {
                     newItems=parseDigitallyImportedResponse(job->actualJob(), cat);

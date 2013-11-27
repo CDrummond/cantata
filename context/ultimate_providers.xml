@@ -210,11 +210,14 @@
       <item begin="&lt;div style=&quot;float:left&quot;" end="&gt;"/>
     </exclude>
   </provider>
-  <provider name="teksty.org" charset="UTF-8" url="http://www.teksty.org/{artist},{title},tekst-piosenki">
+  <provider name="teksty.org" charset="utf-8" url="http://www.teksty.org/{artist},{title},tekst-piosenki">
     <urlFormat replace=" _@,;&amp;\/&quot;." with="_"/>
     <urlFormat replace="'" with=""/>
-    <extract>
+    <extract> <!-- old -->
       <item tag="&lt;span class=&quot;text&quot; id='text25534-dta'&gt;"/>
+    </extract>
+    <extract> <!-- new -->
+      <item begin="&lt;div class=&quot;songText&quot; id=&quot;songContent&quot;&gt;" end="&lt;/div&gt;"/>
     </extract>
     <exclude>
       <item begin="&lt;div style=&quot;float:left&quot;" end="&gt;"/>

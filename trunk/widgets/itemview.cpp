@@ -815,7 +815,9 @@ void ItemView::showIndex(const QModelIndex &idx, bool scrollTo)
         }
     }
 
-    view()->selectionModel()->select(idx, QItemSelectionModel::Select|QItemSelectionModel::Rows);
+    if (view()->selectionModel()) {
+        view()->selectionModel()->select(idx, QItemSelectionModel::Select|QItemSelectionModel::Rows);
+    }
 }
 
 void ItemView::focusSearch()

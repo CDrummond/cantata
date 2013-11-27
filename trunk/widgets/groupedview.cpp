@@ -799,7 +799,7 @@ void GroupedView::itemClicked(const QModelIndex &idx)
             }
             if (list.count()) {
                 #if 0 // Commendted out as (as noted below) unselection is not working, and we always add to 'unsel' above (because of playlists)
-                if (unsel.isEmpty()) { // TODO: This is not working!!!
+                if (unsel.isEmpty()) { // TODO: This is not working!!!   CHECK selModel if re-add!!!
                     foreach(const QModelIndex &i, list) {
                         selModel->select(i, QItemSelectionModel::Deselect|QItemSelectionModel::Rows);
                     }
@@ -809,7 +809,7 @@ void GroupedView::itemClicked(const QModelIndex &idx)
                     }
                 }
                 #else
-                if (!unsel.isEmpty()) {
+                if (!unsel.isEmpty() && selModel) {
                     foreach(const QModelIndex &i, unsel) {
                         selModel->select(i, QItemSelectionModel::Select|QItemSelectionModel::Rows);
                     }

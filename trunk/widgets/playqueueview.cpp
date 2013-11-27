@@ -345,8 +345,12 @@ bool PlayQueueView::haveUnSelectedItems()
 
 void PlayQueueView::clearSelection()
 {
-    groupedView->selectionModel()->clear();
-    treeView->selectionModel()->clear();
+    if (groupedView->selectionModel()) {
+        groupedView->selectionModel()->clear();
+    }
+    if (treeView->selectionModel()) {
+        treeView->selectionModel()->clear();
+    }
 }
 
 QHeaderView * PlayQueueView::header()

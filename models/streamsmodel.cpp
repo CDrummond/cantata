@@ -42,6 +42,7 @@
 #include "config.h"
 #include <QModelIndex>
 #include <QString>
+#include <QSet>
 #include <QVariant>
 #include <QMimeData>
 #include <QXmlStreamReader>
@@ -105,12 +106,13 @@ static QString constIceCastUrl=QLatin1String("http://dir.xiph.org/yp.xml");
 
 static QString constSomaFMUrl=QLatin1String("http://somafm.com/channels.xml");
 static QString constRadioGFMUrl=QLatin1String("http://streams.radio-gfm.net/channels.xml");
+static QSet<QString> constSomaUrls=QSet<QString>() << constSomaFMUrl << constRadioGFMUrl;
 
 static QString constDigitallyImportedUrl=QLatin1String("http://www.di.fm");
 static QString constJazzRadioUrl=QLatin1String("http://www.jazzradio.com");
 static QString constRockRadioUrl=QLatin1String("http://www.rockradio.com");
 static QString constSkyFmUrl=QLatin1String("http://www.sky.fm");
-static QStringList constDiUrls=QStringList() << constDigitallyImportedUrl << constJazzRadioUrl << constSkyFmUrl << constRockRadioUrl;
+static QSet<QString> constDiUrls=QSet<QString>() << constDigitallyImportedUrl << constJazzRadioUrl << constSkyFmUrl << constRockRadioUrl;
 
 static const QString constDiChannelListHost=QLatin1String("api.v2.audioaddict.com");
 static const QString constDiChannelListUrl=QLatin1String("http://")+constDiChannelListHost+("/v1/%1/mobile/batch_update?asset_group_key=mobile_icons&stream_set_key=");
@@ -1190,7 +1192,7 @@ void StreamsModel::jobFinished()
                     newItems=parseRadioTimeResponse(job->actualJob(), cat);
                 } else if (constIceCastUrl==url) {
                     newItems=parseIceCastResponse(job->actualJob(), cat);
-                } else if (constSomaFMUrl==url || constRadioGFMUrl==url) {
+                } else if (constSomaUrls.contains(url)) {
                     newItems=parseSomaFmResponse(job->actualJob(), cat);
                 } else if (constDiChannelListHost==job->origUrl().host()) {
                     newItems=parseDigitallyImportedResponse(job->actualJob(), cat);

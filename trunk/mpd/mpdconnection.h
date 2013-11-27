@@ -163,6 +163,13 @@ class MPDConnection : public QObject
     Q_OBJECT
 
 public:
+    enum AddAction
+    {
+        AddToEnd=0,
+        AddAndReplace=1,
+        AddReplaceAndPlay=2
+    };
+
     static MPDConnection * self();
     static QByteArray encodeName(const QString &name);
 
@@ -196,7 +203,7 @@ public Q_SLOTS:
     void disconnectMpd();
     // Current Playlist
     void add(const QStringList &files, bool replace, quint8 priority);
-    void add(const QStringList &files, quint32 pos, quint32 size, bool replace, quint8 priority);
+    void add(const QStringList &files, quint32 pos, quint32 size, int action, quint8 priority);
     void addAndPlay(const QString &file);
     void currentSong();
     void playListChanges();

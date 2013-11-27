@@ -523,13 +523,13 @@ bool MPDConnection::isPlaylist(const QString &file)
 
 void MPDConnection::add(const QStringList &files, bool replace, quint8 priority)
 {
-    add(files, 0, 0, replace, priority);
+    add(files, 0, 0, replace ? AddReplaceAndPlay : AddToEnd, priority);
 }
 
-void MPDConnection::add(const QStringList &files, quint32 pos, quint32 size, bool replace, quint8 priority)
+void MPDConnection::add(const QStringList &files, quint32 pos, quint32 size, int action, quint8 priority)
 {
     toggleStopAfterCurrent(false);
-    if (replace) {
+    if (AddToEnd!=action) {
         clear();
         getStatus();
     }
@@ -568,7 +568,7 @@ void MPDConnection::add(const QStringList &files, quint32 pos, quint32 size, boo
     send += "command_list_end";
 
     if (sendCommand(send).ok) {
-        if (replace /*&& addedFile */&& !files.isEmpty()) {
+        if (AddReplaceAndPlay==action /*&& addedFile */&& !files.isEmpty()) {
             // Dont emit error if fail plays, might be that playlist was not loaded...
             sendCommand("play "+QByteArray::number(0), false);
         }

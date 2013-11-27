@@ -127,8 +127,8 @@ PlayQueueModel::PlayQueueModel(QObject *parent)
     connect(fetcher, SIGNAL(result(const QStringList &, int, bool, quint8)), SLOT(addFiles(const QStringList &, int, bool, quint8)));
     connect(fetcher, SIGNAL(result(const QStringList &, int, bool, quint8)), SIGNAL(streamsFetched()));
     connect(fetcher, SIGNAL(status(QString)), SIGNAL(streamFetchStatus(QString)));
-    connect(this, SIGNAL(filesAdded(const QStringList, quint32, quint32, bool, quint8)),
-            MPDConnection::self(), SLOT(add(const QStringList, quint32, quint32, bool, quint8)));
+    connect(this, SIGNAL(filesAdded(const QStringList, quint32, quint32, int, quint8)),
+            MPDConnection::self(), SLOT(add(const QStringList, quint32, quint32, int, quint8)));
     connect(this, SIGNAL(move(const QList<quint32> &, quint32, quint32)),
             MPDConnection::self(), SLOT(move(const QList<quint32> &, quint32, quint32)));
     connect(MPDConnection::self(), SIGNAL(prioritySet(const QList<qint32> &, quint8)), SLOT(prioritySet(const QList<qint32> &, quint8)));
@@ -572,13 +572,11 @@ void PlayQueueModel::addFiles(const QStringList &filenames, int row, bool replac
 {
     //Check for empty playlist
     if (replace || songs.isEmpty()) {
-        emit filesAdded(filenames, 0, 0, replace, priority);
+        emit filesAdded(filenames, 0, 0, MPDConnection::AddReplaceAndPlay, priority);
+    } else if (row < 0) {
+        emit filesAdded(filenames, songs.size(), songs.size(), MPDConnection::AddToEnd, priority);
     } else {
-        if (row < 0) {
-            emit filesAdded(filenames, songs.size(), songs.size(), false, priority);
-        } else {
-            emit filesAdded(filenames, row, songs.size(), false, priority);
-        }
+        emit filesAdded(filenames, row, songs.size(), MPDConnection::AddToEnd, priority);
     }
 }
 
@@ -829,7 +827,7 @@ void PlayQueueModel::shuffleAlbums()
         }
     }
 
-    emit filesAdded(files, 0, 0, true, 0);
+    emit filesAdded(files, 0, 0, MPDState_Playing==MPDStatus::self()->state() ? MPDConnection::AddReplaceAndPlay : MPDConnection::AddAndReplace , 0);
 }
 
 void PlayQueueModel::stopAfterCurrentChanged(bool afterCurrent)

@@ -115,7 +115,7 @@ private Q_SLOTS:
 Q_SIGNALS:
     void stop(bool afterCurrent);
     void clearStopAfter();
-    void filesAdded(const QStringList filenames, const quint32 row, const quint32 size, bool replace, quint8 priority);
+    void filesAdded(const QStringList filenames, const quint32 row, const quint32 size, int action, quint8 priority);
     void move(const QList<quint32> &items, const quint32 row, const quint32 size);
     void statsUpdated(int songs, quint32 time);
     void fetchingStreams();

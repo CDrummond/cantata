@@ -37,6 +37,8 @@ class UltimateLyricsProvider : public QObject {
     Q_OBJECT
 
 public:
+    static void enableDebug();
+
     UltimateLyricsProvider();
     virtual ~UltimateLyricsProvider();
 

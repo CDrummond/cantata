@@ -56,6 +56,7 @@
 #include "httpserver.h"
 #include "songdialog.h"
 #include "networkaccessmanager.h"
+#include "ultimatelyricsprovider.h"
 #ifdef ENABLE_EXTERNAL_TAGS
 #include "tagclient.h"
 #endif
@@ -142,11 +143,12 @@ enum Debug {
     Dbg_HttpServer        = 0x0400,
     Dbg_SongDialogs       = 0x0800,
     Dbg_NetworkAccess     = 0x1000,
+    Dbg_Context_Lyrics    = 0x2000,
 
-    Dbg_TagHelper         = 0x2000,
+    Dbg_TagHelper         = 0x4000,
     // NOTE: MUST UPDATE Dbg_All IF ADD NEW ITEMS!!!
 
-    Dbg_All               = 0x3FFF
+    Dbg_All               = 0x7FFF
 };
 
 static void installDebugMessageHandler()
@@ -196,6 +198,9 @@ static void installDebugMessageHandler()
         }
         if (dbg&Dbg_NetworkAccess) {
             NetworkAccessManager::enableDebug();
+        }
+        if (dbg&Dbg_Context_Lyrics) {
+            UltimateLyricsProvider::enableDebug();
         }
         #ifdef ENABLE_EXTERNAL_TAGS
         if (dbg&Dbg_TagHelper) {

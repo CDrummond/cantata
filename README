@@ -751,7 +751,8 @@ The following debug values may be used:
     Http Server               1024
     Song Dialog file checks   2048 (Tag Editor, Track Organiser, etc)
     Network Access            4096
-    Tag Reader/Writer         8192 (Only if built with external reader/writer)
+    Context lyrics            8192
+    Tag Reader/Writer        16384 (Only if built with external reader/writer)
 
 These values may be combined to enable multiple output. e.g. to enable MPD and
 covers logging:

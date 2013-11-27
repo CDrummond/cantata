@@ -29,6 +29,13 @@
 #if QT_VERSION >= 0x050000
 #include <QUrlQuery>
 #endif
+#include <QDebug>
+static bool debugEnabled=false;
+#define DBUG if (debugEnabled) qWarning() << "Lyrics" << __FUNCTION__
+void UltimateLyricsProvider::enableDebug()
+{
+    debugEnabled=true;
+}
 
 static const QString constArtistArg=QLatin1String("{Artist}");
 static const QString constArtistLowerArg=QLatin1String("{artist}");
@@ -82,27 +89,34 @@ static QString doTagReplace(QString str, const Song &song)
 
 static QString extract(const QString &source, const QString &begin, const QString &end)
 {
+    DBUG << "Looking for" << begin << end;
     int beginIdx = source.indexOf(begin, 0, Qt::CaseInsensitive);
     if (-1==beginIdx) {
+        DBUG << "Failed to find begin";
         return QString();
     }
     beginIdx += begin.length();
 
     int endIdx = source.indexOf(end, beginIdx, Qt::CaseInsensitive);
     if (-1==endIdx) {
+        DBUG << "Failed to find end";
         return QString();
     }
 
+    DBUG << "Found match";
     return source.mid(beginIdx, endIdx - beginIdx - 1);
 }
 
 static QString extractXmlTag(const QString &source, const QString &tag)
 {
+    DBUG << "Looking for" << tag;
     QRegExp re("<(\\w+).*>"); // ಠ_ಠ
     if (-1==re.indexIn(tag)) {
+        DBUG << "Failed to find tag";
         return QString();
     }
 
+    DBUG << "Found match";
     return extract(source, tag, "</" + re.cap(1) + ">");
 }
 
@@ -313,7 +327,7 @@ void UltimateLyricsProvider::lyricsFetched()
     const QTextCodec *codec = QTextCodec::codecForName(charset.toLatin1().constData());
     #endif
     const QString originalContent = codec->toUnicode(reply->readAll()).replace("<br />", "<br/>");
-
+    DBUG << name << "response" << originalContent;
     // Check for invalid indicators
     foreach (const QString &indicator, invalidIndicators) {
         if (originalContent.contains(indicator)) {

@@ -108,7 +108,7 @@ static QByteArray readFromSocket(MpdSocket &socket)
     return data;
 }
 
-MPDConnection::Response readReply(MpdSocket &socket)
+static MPDConnection::Response readReply(MpdSocket &socket)
 {
     QByteArray data = readFromSocket(socket);
     return MPDConnection::Response(data.endsWith("OK\n"), data);

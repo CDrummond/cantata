@@ -141,13 +141,13 @@ void TreeView::selectionChanged(const QItemSelection &selected, const QItemSelec
 bool TreeView::haveSelectedItems() const
 {
     // Dont need the sorted type of 'selectedIndexes' here...
-    return selectionModel()->selectedIndexes().count()>0;
+    return selectionModel() && selectionModel()->selectedIndexes().count()>0;
 }
 
 bool TreeView::haveUnSelectedItems() const
 {
     // Dont need the sorted type of 'selectedIndexes' here...
-    return selectionModel()->selectedIndexes().count()!=model()->rowCount();
+    return selectionModel() && selectionModel()->selectedIndexes().count()!=model()->rowCount();
 }
 
 void TreeView::startDrag(Qt::DropActions supportedActions)
@@ -189,6 +189,10 @@ void TreeView::mouseReleaseEvent(QMouseEvent *event)
 
 QModelIndexList TreeView::selectedIndexes(bool sorted) const
 {
+    if (!selectionModel()) {
+        return QModelIndexList();
+    }
+
     if (sorted) {
         return sortIndexes(selectionModel()->selectedIndexes());
     } else if (model()->columnCount()>1) {
@@ -336,6 +340,10 @@ void TreeView::setModel(QAbstractItemModel *m)
 // Workaround for https://bugreports.qt-project.org/browse/QTBUG-18009
 void TreeView::correctSelection()
 {
+    if (!selectionModel()) {
+        return;
+    }
+
     QItemSelection s = selectionModel()->selection();
     setCurrentIndex(currentIndex());
     selectionModel()->select(s, QItemSelectionModel::SelectCurrent);

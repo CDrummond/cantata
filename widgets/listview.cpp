@@ -63,13 +63,13 @@ void ListView::selectionChanged(const QItemSelection &selected, const QItemSelec
 bool ListView::haveSelectedItems() const
 {
     // Dont need the sorted type of 'selectedIndexes' here...
-    return selectionModel()->selectedIndexes().count()>0;
+    return selectionModel() && selectionModel()->selectedIndexes().count()>0;
 }
 
 bool ListView::haveUnSelectedItems() const
 {
     // Dont need the sorted type of 'selectedIndexes' here...
-    return selectionModel()->selectedIndexes().count()!=model()->rowCount();
+    return selectionModel() && selectionModel()->selectedIndexes().count()!=model()->rowCount();
 }
 
 void ListView::startDrag(Qt::DropActions supportedActions)
@@ -111,7 +111,7 @@ void ListView::mouseReleaseEvent(QMouseEvent *event)
 
 QModelIndexList ListView::selectedIndexes(bool sorted) const
 {
-    QModelIndexList indexes=selectionModel()->selectedIndexes();
+    QModelIndexList indexes=selectionModel() ? selectionModel()->selectedIndexes() : QModelIndexList();
     if (sorted) {
         qSort(indexes);
     }
@@ -165,6 +165,10 @@ void ListView::paintEvent(QPaintEvent *e)
 // Workaround for https://bugreports.qt-project.org/browse/QTBUG-18009
 void ListView::correctSelection()
 {
+    if (!selectionModel()) {
+        return;
+    }
+
     QItemSelection s = selectionModel()->selection();
     setCurrentIndex(currentIndex());
     selectionModel()->select(s, QItemSelectionModel::SelectCurrent);

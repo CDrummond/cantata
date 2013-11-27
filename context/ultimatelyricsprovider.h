@@ -24,12 +24,13 @@
 #ifndef ULTIMATELYRICSPROVIDER_H
 #define ULTIMATELYRICSPROVIDER_H
 
+#include "song.h"
 #include <QObject>
 #include <QPair>
 #include <QStringList>
 #include <QHash>
+#include <QMap>
 
-struct Song;
 class NetworkJob;
 
 class UltimateLyricsProvider : public QObject {
@@ -66,11 +67,13 @@ private Q_SLOTS:
     void lyricsFetched();
 
 private:
+    QString doTagReplace(QString str, const Song &song, bool doAll=true);
     void doUrlReplace(const QString &tag, const QString &value, QString &u) const;
 
 private:
     bool enabled;
     QHash<NetworkJob *, int> requests;
+    QMap<int, Song> songs;
     QString name;
     QString url;
     QString charset;

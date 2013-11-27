@@ -54,6 +54,7 @@
 <file alias="shoutcast">streams/icons/shoutcast.svg</file>
 <file alias="skyfm">streams/icons/skyfm.png</file>
 <file alias="somafm">streams/icons/somafm.png</file>
+<file alias="radiogfm">streams/icons/radiogfm.png</file>
 <file alias="tunein">streams/icons/tunein.svg</file>
 
 <file alias="va16.png">icons/hi16-action-cantata-view-media-artist-various.png</file>

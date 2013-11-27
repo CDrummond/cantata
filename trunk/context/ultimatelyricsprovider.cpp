@@ -23,7 +23,6 @@
 
 #include "ultimatelyricsprovider.h"
 #include "networkaccessmanager.h"
-#include "song.h"
 #include <QTextCodec>
 #include <QXmlStreamReader>
 #include <QUrl>
@@ -31,78 +30,18 @@
 #include <QUrlQuery>
 #endif
 
-static QString extract(const QString &source, const QString &begin, const QString &end)
-{
-    int beginIdx = source.indexOf(begin);
-    if (-1==beginIdx) {
-        return QString();
-    }
-    beginIdx += begin.length();
-
-    int endIdx = source.indexOf(end, beginIdx);
-    if (-1==endIdx) {
-        return QString();
-    }
-
-    return source.mid(beginIdx, endIdx - beginIdx - 1);
-}
-
-static QString extractXmlTag(const QString &source, const QString &tag)
-{
-    QRegExp re("<(\\w+).*>"); // ಠ_ಠ
-    if (-1==re.indexIn(tag)) {
-        return QString();
-    }
-
-    return extract(source, tag, "</" + re.cap(1) + ">");
-}
-
-static QString exclude(const QString &source, const QString &begin, const QString &end)
-{
-    int beginIdx = source.indexOf(begin);
-    if (-1==beginIdx) {
-        return source;
-    }
-
-    int endIdx = source.indexOf(end, beginIdx + begin.length());
-    if (-1==endIdx) {
-        return source;
-    }
-
-    return source.left(beginIdx) + source.right(source.length() - endIdx - end.length());
-}
-
-static QString excludeXmlTag(const QString &source, const QString &tag)
-{
-    QRegExp re("<(\\w+).*>"); // ಠ_ಠ
-    if (-1==re.indexIn(tag)) {
-        return source;
-    }
-
-    return exclude(source, tag, "</" + re.cap(1) + ">");
-}
-
-static void applyExtractRule(const UltimateLyricsProvider::Rule &rule, QString *content)
-{
-    foreach (const UltimateLyricsProvider::RuleItem& item, rule) {
-        if (item.second.isNull()) {
-            *content = extractXmlTag(*content, item.first);
-        } else {
-            *content = extract(*content, item.first, item.second);
-        }
-    }
-}
-
-static void applyExcludeRule(const UltimateLyricsProvider::Rule &rule, QString *content)
-{
-    foreach (const UltimateLyricsProvider::RuleItem& item, rule) {
-        if (item.second.isNull()) {
-            *content = excludeXmlTag(*content, item.first);
-        } else {
-            *content = exclude(*content, item.first, item.second);
-        }
-    }
-}
+static const QString constArtistArg=QLatin1String("{Artist}");
+static const QString constArtistLowerArg=QLatin1String("{artist}");
+static const QString constArtistLowerNoSpaceArg=QLatin1String("{artist2}");
+static const QString constArtistFirstCharArg=QLatin1String("{a}");
+static const QString constAlbumArg=QLatin1String("{Album}");
+static const QString constAlbumLowerArg=QLatin1String("{album}");
+static const QString constAlbumLowerNoSpaceArg=QLatin1String("{album2}");
+static const QString constTitleLowerArg=QLatin1String("{title}");
+static const QString constTitleArg=QLatin1String("{Title}");
+static const QString constTitleCaseArg=QLatin1String("{Title2}");
+static const QString constYearArg=QLatin1String("{year}");
+static const QString constTrackNoArg=QLatin1String("{track}");
 
 static QString noSpace(const QString &text)
 {
@@ -127,6 +66,93 @@ static QString titleCase(const QString &text)
     return text[0].toUpper() + text.right(text.length() - 1).toLower();
 }
 
+static QString doTagReplace(QString str, const Song &song)
+{
+    if (str.contains(QLatin1Char('{'))) {
+        QString artistFixed=song.basicArtist();
+        str.replace(constArtistArg, artistFixed);
+        str.replace(constArtistFirstCharArg, firstChar(artistFixed));
+        str.replace(constAlbumArg, song.album);
+        str.replace(constTitleArg, song.title);
+        str.replace(constYearArg, QString::number(song.year));
+        str.replace(constTrackNoArg, QString::number(song.track));
+    }
+    return str;
+}
+
+static QString extract(const QString &source, const QString &begin, const QString &end)
+{
+    int beginIdx = source.indexOf(begin, 0, Qt::CaseInsensitive);
+    if (-1==beginIdx) {
+        return QString();
+    }
+    beginIdx += begin.length();
+
+    int endIdx = source.indexOf(end, beginIdx, Qt::CaseInsensitive);
+    if (-1==endIdx) {
+        return QString();
+    }
+
+    return source.mid(beginIdx, endIdx - beginIdx - 1);
+}
+
+static QString extractXmlTag(const QString &source, const QString &tag)
+{
+    QRegExp re("<(\\w+).*>"); // ಠ_ಠ
+    if (-1==re.indexIn(tag)) {
+        return QString();
+    }
+
+    return extract(source, tag, "</" + re.cap(1) + ">");
+}
+
+static QString exclude(const QString &source, const QString &begin, const QString &end)
+{
+    int beginIdx = source.indexOf(begin, 0, Qt::CaseInsensitive);
+    if (-1==beginIdx) {
+        return source;
+    }
+
+    int endIdx = source.indexOf(end, beginIdx + begin.length(), Qt::CaseInsensitive);
+    if (-1==endIdx) {
+        return source;
+    }
+
+    return source.left(beginIdx) + source.right(source.length() - endIdx - end.length());
+}
+
+static QString excludeXmlTag(const QString &source, const QString &tag)
+{
+    QRegExp re("<(\\w+).*>"); // ಠ_ಠ
+    if (-1==re.indexIn(tag)) {
+        return source;
+    }
+
+    return exclude(source, tag, "</" + re.cap(1) + ">");
+}
+
+static void applyExtractRule(const UltimateLyricsProvider::Rule &rule, QString &content, const Song &song)
+{
+    foreach (const UltimateLyricsProvider::RuleItem &item, rule) {
+        if (item.second.isNull()) {
+            content = extractXmlTag(content, doTagReplace(item.first, song));
+        } else {
+            content = extract(content, doTagReplace(item.first, song), doTagReplace(item.second, song));
+        }
+    }
+}
+
+static void applyExcludeRule(const UltimateLyricsProvider::Rule &rule, QString &content, const Song &song)
+{
+    foreach (const UltimateLyricsProvider::RuleItem &item, rule) {
+        if (item.second.isNull()) {
+            content = excludeXmlTag(content, doTagReplace(item.first, song));
+        } else {
+            content = exclude(content, doTagReplace(item.first, song), doTagReplace(item.second, song));
+        }
+    }
+}
+
 UltimateLyricsProvider::UltimateLyricsProvider()
     : enabled(true)
     , relevance(0)
@@ -137,20 +163,6 @@ UltimateLyricsProvider::~UltimateLyricsProvider()
 {
     abort();
 }
-
-static const QString constArtistArg=QLatin1String("{Artist}");
-static const QString constArtistLowerArg=QLatin1String("{artist}");
-static const QString constArtistLowerNoSpaceArg=QLatin1String("{artist2}");
-static const QString constArtistUpperArg=QLatin1String("{ARTIST}");
-static const QString constArtistFirstCharArg=QLatin1String("{a}");
-static const QString constAlbumArg=QLatin1String("{Album}");
-static const QString constAlbumLowerArg=QLatin1String("{album}");
-static const QString constAlbumLowerNoSpaceArg=QLatin1String("{album2}");
-static const QString constTitleLowerArg=QLatin1String("{title}");
-static const QString constTitleArg=QLatin1String("{Title}");
-static const QString constTitleCaseArg=QLatin1String("{Title2}");
-static const QString constYearArg=QLatin1String("{year}");
-static const QString constTrackNoArg=QLatin1String("{track}");
 
 void UltimateLyricsProvider::fetchInfo(int id, const Song &metadata)
 {
@@ -167,6 +179,7 @@ void UltimateLyricsProvider::fetchInfo(int id, const Song &metadata)
     QString artistFixed=metadata.basicArtist();
     QString urlText(url);
 
+    songs.insert(id, metadata);
     if (QLatin1String("lyrics.wikia.com")==name) {
         QUrl url(urlText);
         #if QT_VERSION < 0x050000
@@ -195,7 +208,6 @@ void UltimateLyricsProvider::fetchInfo(int id, const Song &metadata)
         doUrlReplace(constArtistArg, artistFixed, urlText);
         doUrlReplace(constArtistLowerArg, artistFixed.toLower(), urlText);
         doUrlReplace(constArtistLowerNoSpaceArg, noSpace(artistFixed.toLower()), urlText);
-        doUrlReplace(constArtistUpperArg, artistFixed.toUpper(), urlText);
         doUrlReplace(constArtistFirstCharArg, firstChar(artistFixed), urlText);
         doUrlReplace(constAlbumArg, metadata.album, urlText);
         doUrlReplace(constAlbumLowerArg, metadata.album.toLower(), urlText);
@@ -236,6 +248,7 @@ void UltimateLyricsProvider::abort()
         it.key()->close();
     }
     requests.clear();
+    songs.clear();
 }
 
 void UltimateLyricsProvider::wikiMediaSearchResponse()
@@ -249,6 +262,7 @@ void UltimateLyricsProvider::wikiMediaSearchResponse()
     reply->deleteLater();
 
     if (!reply->ok()) {
+        songs.remove(id);
         emit lyricsReady(id, QString());
         return;
     }
@@ -271,6 +285,7 @@ void UltimateLyricsProvider::wikiMediaSearchResponse()
         requests[reply] = id;
         connect(reply, SIGNAL(finished()), this, SLOT(lyricsFetched()));
     } else {
+        songs.remove(id);
         emit lyricsReady(id, QString());
     }
 }
@@ -284,6 +299,7 @@ void UltimateLyricsProvider::lyricsFetched()
 
     int id = requests.take(reply);
     reply->deleteLater();
+    Song song=songs.take(id);
 
     if (!reply->ok()) {
         //emit Finished(id);
@@ -296,7 +312,7 @@ void UltimateLyricsProvider::lyricsFetched()
     #else
     const QTextCodec *codec = QTextCodec::codecForName(charset.toLatin1().constData());
     #endif
-    const QString originalContent = codec->toUnicode(reply->readAll());
+    const QString originalContent = codec->toUnicode(reply->readAll()).replace("<br />", "<br/>");
 
     // Check for invalid indicators
     foreach (const QString &indicator, invalidIndicators) {
@@ -312,7 +328,7 @@ void UltimateLyricsProvider::lyricsFetched()
     // Apply extract rules
     foreach (const Rule& rule, extractRules) {
         QString content = originalContent;
-        applyExtractRule(rule, &content);
+        applyExtractRule(rule, content, song);
 
         if (!content.isEmpty()) {
             lyrics = content;
@@ -321,11 +337,10 @@ void UltimateLyricsProvider::lyricsFetched()
 
     // Apply exclude rules
     foreach (const Rule& rule, excludeRules) {
-        applyExcludeRule(rule, &lyrics);
+        applyExcludeRule(rule, lyrics, song);
     }
 
     lyrics=lyrics.trimmed();
-    lyrics.replace("<br />", "<br/>");
     lyrics.replace("<br/>\n", "<br/>");
     emit lyricsReady(id, lyrics);
 }

@@ -122,6 +122,7 @@
 68. Only load info of stored playlists when required.
 69. If looking for lyrics on lyrics.wikia.com, then use its search API to
     locate lyrics page.
+70. Radio GFM streams.
 
 1.1.3
 -----

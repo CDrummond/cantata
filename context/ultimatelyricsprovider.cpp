@@ -325,6 +325,8 @@ void UltimateLyricsProvider::lyricsFetched()
     }
 
     lyrics=lyrics.trimmed();
+    lyrics.replace("<br />", "<br/>");
+    lyrics.replace("<br/>\n", "<br/>");
     emit lyricsReady(id, lyrics);
 }
 

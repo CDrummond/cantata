@@ -217,7 +217,6 @@ void UltimateLyricsProvider::fetchInfo(int id, const Song &metadata)
     QString artistFixed=metadata.basicArtist();
     QString urlText(url);
 
-    songs.insert(id, metadata);
     if (QLatin1String("lyrics.wikia.com")==name) {
         QUrl url(urlText);
         #if QT_VERSION < 0x050000
@@ -239,6 +238,8 @@ void UltimateLyricsProvider::fetchInfo(int id, const Song &metadata)
         connect(reply, SIGNAL(finished()), this, SLOT(wikiMediaSearchResponse()));
         return;
     }
+
+    songs.insert(id, metadata);
 
     // Fill in fields in the URL
     bool urlContainsDetails=urlText.contains(QLatin1Char('{'));
@@ -284,6 +285,7 @@ void UltimateLyricsProvider::abort()
     for (; it!=end; ++it) {
         disconnect(it.key(), SIGNAL(finished()), this, SLOT(lyricsFetched()));
         disconnect(it.key(), SIGNAL(finished()), this, SLOT(wikiMediaSearchResponse()));
+        disconnect(it.key(), SIGNAL(finished()), this, SLOT(wikiMediaLyricsFetched()));
         it.key()->deleteLater();
         it.key()->close();
     }
@@ -302,7 +304,6 @@ void UltimateLyricsProvider::wikiMediaSearchResponse()
     reply->deleteLater();
 
     if (!reply->ok()) {
-        songs.remove(id);
         emit lyricsReady(id, QString());
         return;
     }
@@ -321,13 +322,54 @@ void UltimateLyricsProvider::wikiMediaSearchResponse()
     }
 
     if (url.isValid()) {
+        QString path=url.path();
+        #if QT_VERSION < 0x050000
+        QUrl &query=url;
+        #else
+        QUrlQuery query;
+        #endif
+        // ?action=query&prop=revisions&rvprop=content&format=xml&titles="
+        url.setPath(QLatin1String("/api.php"));
+        query.addQueryItem(QLatin1String("action"), QLatin1String("query"));
+        query.addQueryItem(QLatin1String("prop"), QLatin1String("revisions"));
+        query.addQueryItem(QLatin1String("rvprop"), QLatin1String("content"));
+        query.addQueryItem(QLatin1String("format"), QLatin1String("xml"));
+        query.addQueryItem(QLatin1String("titles"), path.startsWith(QLatin1Char('/')) ? path.mid(1) : path);
+        #if QT_VERSION >= 0x050000
+        url.setQuery(query);
+        #endif
+
         NetworkJob *reply = NetworkAccessManager::self()->get(url);
         requests[reply] = id;
-        connect(reply, SIGNAL(finished()), this, SLOT(lyricsFetched()));
+        connect(reply, SIGNAL(finished()), this, SLOT(wikiMediaLyricsFetched()));
     } else {
-        songs.remove(id);
         emit lyricsReady(id, QString());
     }
+}
+
+void UltimateLyricsProvider::wikiMediaLyricsFetched()
+{
+    NetworkJob *reply = qobject_cast<NetworkJob*>(sender());
+    if (!reply) {
+        return;
+    }
+
+    int id = requests.take(reply);
+    reply->deleteLater();
+
+    if (!reply->ok()) {
+        emit lyricsReady(id, QString());
+        return;
+    }
+
+    #if QT_VERSION < 0x050000
+    const QTextCodec *codec = QTextCodec::codecForName(charset.toAscii().constData());
+    #else
+    const QTextCodec *codec = QTextCodec::codecForName(charset.toLatin1().constData());
+    #endif
+    QString contents = codec->toUnicode(reply->readAll()).replace("<br />", "<br/>");
+    DBUG << name << "response" << contents;
+    emit lyricsReady(id, extract(contents, QLatin1String("&lt;lyrics&gt;"), QLatin1String("&lt;/lyrics&gt;")));
 }
 
 void UltimateLyricsProvider::lyricsFetched()

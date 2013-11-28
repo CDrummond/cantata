@@ -124,6 +124,7 @@
     locate lyrics page.
 70. Radio GFM streams.
 71. Fix lyrics scraping code for most providers.
+72. Use MediaWiki API (as per Amarok) to retrieve lyrics from lyrics.wikia.com
 
 1.1.3
 -----

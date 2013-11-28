@@ -123,6 +123,7 @@
 69. If looking for lyrics on lyrics.wikia.com, then use its search API to
     locate lyrics page.
 70. Radio GFM streams.
+71. Fix lyrics scraping code for most providers.
 
 1.1.3
 -----

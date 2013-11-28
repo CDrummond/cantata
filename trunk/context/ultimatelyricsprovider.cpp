@@ -88,18 +88,33 @@ static QString doTagReplace(QString str, const Song &song)
     return str;
 }
 
-static QString extract(const QString &source, const QString &begin, const QString &end)
+static QString extract(const QString &source, const QString &begin, const QString &end, bool isTag=false)
 {
     DBUG << "Looking for" << begin << end;
     int beginIdx = source.indexOf(begin, 0, Qt::CaseInsensitive);
+    bool skipTagClose=false;
+
+    if (-1==beginIdx && isTag) {
+        beginIdx = source.indexOf(QString(begin).remove(">"), 0, Qt::CaseInsensitive);
+        skipTagClose=true;
+    }
     if (-1==beginIdx) {
         DBUG << "Failed to find begin";
         return QString();
     }
-    beginIdx += begin.length();
+    if (skipTagClose) {
+        int closeIdx=source.indexOf(">", beginIdx);
+        if (-1!=closeIdx) {
+            beginIdx=closeIdx+1;
+        } else {
+            beginIdx += begin.length();
+        }
+    } else {
+        beginIdx += begin.length();
+    }
 
     int endIdx = source.indexOf(end, beginIdx, Qt::CaseInsensitive);
-    if (-1==endIdx) {
+    if (-1==endIdx && QLatin1String("null")!=end) {
         DBUG << "Failed to find end";
         return QString();
     }
@@ -118,7 +133,7 @@ static QString extractXmlTag(const QString &source, const QString &tag)
     }
 
     DBUG << "Found match";
-    return extract(source, tag, "</" + re.cap(1) + ">");
+    return extract(source, tag, "</" + re.cap(1) + ">", true);
 }
 
 static QString exclude(const QString &source, const QString &begin, const QString &end)

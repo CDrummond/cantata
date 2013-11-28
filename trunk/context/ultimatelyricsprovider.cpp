@@ -332,6 +332,7 @@ void UltimateLyricsProvider::lyricsFetched()
     foreach (const QString &indicator, invalidIndicators) {
         if (originalContent.contains(indicator)) {
             //emit Finished(id);
+            DBUG << name << "invalid";
             emit lyricsReady(id, QString());
             return;
         }
@@ -346,6 +347,7 @@ void UltimateLyricsProvider::lyricsFetched()
 
         if (!content.isEmpty()) {
             lyrics = content;
+            break;
         }
     }
 
@@ -357,6 +359,7 @@ void UltimateLyricsProvider::lyricsFetched()
     lyrics=lyrics.trimmed();
     lyrics.replace("<br/>\n", "<br/>");
     lyrics.replace("<br>\n", "<br/>");
+    DBUG << name << "succeeded";
     emit lyricsReady(id, lyrics);
 }
 

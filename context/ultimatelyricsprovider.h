@@ -67,6 +67,7 @@ Q_SIGNALS:
 
 private Q_SLOTS:
     void wikiMediaSearchResponse();
+    void wikiMediaLyricsFetched();
     void lyricsFetched();
 
 private:

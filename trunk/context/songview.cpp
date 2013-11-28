@@ -459,7 +459,7 @@ void SongView::getLyrics()
 {
     currentProv=UltimateLyrics::self()->getNext(currentProvider);
     if (currentProv) {
-        text->setText(i18n("Fetching lyrics via %1", currentProv->getName()));
+        text->setText(i18n("Fetching lyrics via %1", currentProv->displayName()));
         currentProv->fetchInfo(currentRequest, currentSong);
         showSpinner();
     } else {

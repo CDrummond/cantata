@@ -62,10 +62,7 @@ void LyricSettings::showEvent(QShowEvent *e)
         selected->clear();
         foreach (const UltimateLyricsProvider *provider, lprov) {
             QListWidgetItem *item = new QListWidgetItem(provider->isEnabled() ? selected : available);
-            QString name(provider->getName());
-            name.replace("(POLISH)", i18n("(Polish Translations)"));
-            name.replace("(PORTUGUESE)", i18n("(Portuguese Translations)"));
-            item->setText(name);
+            item->setText(provider->displayName());
             item->setData(Qt::UserRole, provider->getName());
         }
         loadedXml=true;

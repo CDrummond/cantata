@@ -254,7 +254,9 @@ void UltimateLyricsProvider::fetchInfo(int id, const Song &metadata)
         url=QUrl::fromEncoded(data, QUrl::StrictMode);
     }
 
-    NetworkJob *reply = NetworkAccessManager::self()->get(url);
+    QNetworkRequest req(url);
+    req.setRawHeader("User-Agent", "Mozilla/5.0 (X11; Linux i686; rv:6.0) Gecko/20100101 Firefox/6.0");
+    NetworkJob *reply = NetworkAccessManager::self()->get(req);
     requests[reply] = id;
     connect(reply, SIGNAL(finished()), this, SLOT(lyricsFetched()));
 }

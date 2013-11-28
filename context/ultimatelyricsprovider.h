@@ -55,6 +55,7 @@ public:
     void addExcludeRule(const Rule &rule) { excludeRules << rule; }
     void addInvalidIndicator(const QString &indicator) { invalidIndicators << indicator; }
     QString getName() const { return name; }
+    QString displayName() const;
     int getRelevance() const { return relevance; }
     void fetchInfo(int id, const Song &metadata);
     bool isEnabled() const { return enabled; }

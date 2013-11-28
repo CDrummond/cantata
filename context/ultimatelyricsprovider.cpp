@@ -23,6 +23,7 @@
 
 #include "ultimatelyricsprovider.h"
 #include "networkaccessmanager.h"
+#include "localize.h"
 #include <QTextCodec>
 #include <QXmlStreamReader>
 #include <QUrl>
@@ -176,6 +177,14 @@ UltimateLyricsProvider::UltimateLyricsProvider()
 UltimateLyricsProvider::~UltimateLyricsProvider()
 {
     abort();
+}
+
+QString UltimateLyricsProvider::displayName() const
+{
+    QString n(name);
+    n.replace("(POLISH)", i18n("(Polish Translations)"));
+    n.replace("(PORTUGUESE)", i18n("(Portuguese Translations)"));
+    return n;
 }
 
 void UltimateLyricsProvider::fetchInfo(int id, const Song &metadata)

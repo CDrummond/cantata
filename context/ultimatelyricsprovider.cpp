@@ -368,7 +368,7 @@ void UltimateLyricsProvider::lyricsFetched()
     lyrics=lyrics.trimmed();
     lyrics.replace("<br/>\n", "<br/>");
     lyrics.replace("<br>\n", "<br/>");
-    DBUG << name << "succeeded";
+    DBUG << name << (lyrics.isEmpty() ? "empty" : "succeeded");
     emit lyricsReady(id, lyrics);
 }
 

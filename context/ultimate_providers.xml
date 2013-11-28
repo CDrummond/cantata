@@ -94,6 +94,7 @@
     <invalidIndicator value="we do not have the lyric for this song"/>
   </provider>
   <provider name="lyrics.wikia.com" charset="utf-8" url="http://lyrics.wikia.com/api.php">
+    <!-- These are not used, as mediawiki API is used instead...
     <urlFormat replace=" _@;\&quot;" with="_"/>
     <urlFormat replace="?" with="%3F"/>
     <extract>
@@ -103,6 +104,7 @@
       <item tag="&lt;div class='rtMatcher'&gt;"/>
       <item tag="&lt;span style=&quot;padding:1em&quot;&gt;"/>
     </exclude>
+    -->
   </provider>
   <provider name="lyricsbay.com" charset="iso-8859-1" url="http://www.lyricsbay.com/{title}_lyrics-{artist}.html">
     <urlFormat replace=" _@,;&amp;\/'&quot;" with="_"/>

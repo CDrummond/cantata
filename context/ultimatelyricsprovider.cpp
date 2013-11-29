@@ -394,10 +394,7 @@ void UltimateLyricsProvider::lyricsFetched()
     #else
     const QTextCodec *codec = QTextCodec::codecForName(charset.toLatin1().constData());
     #endif
-    QString originalContent = codec->toUnicode(reply->readAll()).replace("<br />", "<br/>");
-    #ifndef Q_OS_WIN
-    originalContent=originalContent.replace(QLatin1String("\r"), QLatin1String(""));
-    #endif
+    const QString originalContent = codec->toUnicode(reply->readAll()).replace("<br />", "<br/>");
 
     DBUG << name << "response" << originalContent;
     // Check for invalid indicators
@@ -416,6 +413,9 @@ void UltimateLyricsProvider::lyricsFetched()
     foreach (const Rule& rule, extractRules) {
         QString content = originalContent;
         applyExtractRule(rule, content, song);
+        #ifndef Q_OS_WIN
+        content.replace(QLatin1String("\r"), QLatin1String(""));
+        #endif
         content=content.trimmed();
 
         if (!content.isEmpty()) {

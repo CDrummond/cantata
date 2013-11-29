@@ -125,6 +125,7 @@
 70. Radio GFM streams.
 71. Fix lyrics scraping code for most providers.
 72. Add leoslyrics.com to list of lyrics providers.
+73. Align main popup menu to side of window.
 
 1.1.3
 -----

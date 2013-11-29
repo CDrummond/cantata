@@ -27,6 +27,9 @@
 #include "localize.h"
 #include <QAction>
 #include <QMenu>
+#include <QEvent>
+#include <QApplication>
+#include <QDesktopWidget>
 
 MenuButton::MenuButton(QWidget *parent)
     : ToolButton(parent)
@@ -48,4 +51,37 @@ void MenuButton::controlState()
         }
     }
     setEnabled(false);
+}
+
+void MenuButton::setAlignedMenu(QMenu *m)
+{
+    QToolButton::setMenu(m);
+    m->installEventFilter(this);
+}
+
+bool MenuButton::eventFilter(QObject *o, QEvent *e)
+{
+    if (QEvent::Show==e->type() && qobject_cast<QMenu *>(o)) {
+        QMenu *mnu=static_cast<QMenu *>(o);
+        QPoint p=parentWidget()->mapToGlobal(pos());
+        int newPos=Qt::RightToLeft==layoutDirection()
+                    ? p.x()
+                    : ((p.x()+width())-mnu->width());
+
+        if (newPos<0) {
+            newPos=0;
+        } else {
+            QDesktopWidget *dw=QApplication::desktop();
+            if (dw) {
+                QRect geo=dw->availableGeometry(this);
+                int maxWidth=geo.x()+geo.width();
+                if (maxWidth>0 && (newPos+mnu->width())>maxWidth) {
+                    newPos=maxWidth-mnu->width();
+                }
+            }
+        }
+        mnu->move(newPos, mnu->y());
+    }
+
+    return ToolButton::eventFilter(o, e);
 }

@@ -124,16 +124,17 @@
     </extract>
     <invalidIndicator value="We haven't lyrics of this song"/>
   </provider>
-  <!-- Site not accessible???
   <provider name="lyricsmania.com" charset="iso-8859-1" url="http://www.lyricsmania.com/{title}_lyrics_{artist}.html">
     <urlFormat replace=" _@;&amp;\/&quot;'." with="_"/>
+    <extract> <!-- new -->
+      <item tag="&lt;div id='songlyrics_h' class='dn'&gt;"/>
+    </extract>
     <extract>
       <item begin="&lt;span style=&quot;font-size:14px;&quot;&gt;" end="&lt;span style=&quot;font-size:14px;&quot;&gt;"/>
       <item begin="&lt;/center&gt;" end="&lt;a"/>
     </extract>
     <invalidIndicator value="The lyrics you requested is not in our archive yet,"/>
   </provider>
-  -->
   <provider name="lyricsmode.com" charset="iso-8859-1" url="http://www.lyricsmode.com/lyrics/{a}/{artist}/{title}.html">
     <urlFormat replace=" ._@,;&amp;\/&quot;" with="_"/>
     <extract>

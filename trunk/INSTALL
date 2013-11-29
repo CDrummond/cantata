@@ -1,5 +1,9 @@
-KDE
-===
+Build & Installation
+====================
+
+KDE4
+----
+
 1. mkdir build
 2. cd build
 3. cmake .. -DCMAKE_INSTALL_PREFIX=`kde4-config --prefix` -DCMAKE_BUILD_TYPE=Release
@@ -8,7 +12,8 @@ KDE
 
 
 Qt4
-===
+---
+
 1. mkdir build
 2. cd build
 3. cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Release -DENABLE_KDE=OFF
@@ -17,7 +22,8 @@ Qt4
 
 
 Qt5
-===
+---
+
 1. mkdir build
 2. cd build
 3. cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Release -DENABLE_KDE=OFF -DENABLE_QT5=ON
@@ -66,7 +72,7 @@ The following options may be passed to CMake:
         Default: OFF
 
     -DENABLE_PROXY_CONFIG=ON
-        Enable support fpor proxy settings in config dialog. If disabled,i
+        Enable support for proxy settings in config dialog. If disabled,
         system proxy settings are used.
         NOTE: Applies to Qt builds only.
         Default: OFF
@@ -94,11 +100,11 @@ The following options may be passed to CMake:
         Default: z:\
         
     -DCANTATA_MINGW_LIBS=<path>\mingwm10.dll;<path>libgcc_s_dw2-1.dll
-        Extra MinGW libraries required for install stage
+        Extra MinGW libraries required for install stage.
         Default: <empty>
         
     -DCANTATA_OXYGEN_DIR=<path>
-        Path to Oxygen icons, required for install stage
+        Path to Oxygen icons, required for install stage.
         Default: <empty>
 
 
@@ -106,7 +112,8 @@ The following options may be passed to CMake:
 
     -DENABLE_MODEL_TEST=ON
         Enable testing of Cantata's QAbstractItemModels. Builds with this set
-        are ONLY intended to be run under a debugger!!!
+        are ONLY intended to be run under a debugger! If enabled, then 
+        CMAKE_BUILD_TYPE will automatically be set to Debug. 
         Currently this option ONLY affects pure Qt4 builds.
         Default: OFF
 

@@ -261,14 +261,14 @@ bool Utils::createWorldReadableDir(const QString &dir, const QString &base, cons
     #ifdef Q_OS_WIN
     Q_UNUSED(base);
     Q_UNUSED(groupName);
+    return makeDir(dir, 0775);
     #else
     //
     // Clear any umask before dir is created
     mode_t oldMask(umask(0000));
     gid_t gid=base.isEmpty() ? 0 : getGroupId(groupName);
-    #endif
     bool status(makeDir(dir, 0==gid ? 0755 : 0775));
-    #ifndef Q_OS_WIN
+
     if (status && 0!=gid && dir.startsWith(base)) {
         QStringList parts=dir.mid(base.length()).split(constDirSep);
         QString d(base);
@@ -281,8 +281,8 @@ bool Utils::createWorldReadableDir(const QString &dir, const QString &base, cons
     }
     // Reset umask
     ::umask(oldMask);
-    #endif
     return status;
+    #endif
 }
 
 struct Thread : public QThread

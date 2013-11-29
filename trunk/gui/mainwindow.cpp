@@ -218,7 +218,7 @@ MainWindow::MainWindow(QWidget *parent)
     Icons::self()->self()->initToolbarIcons(artistLabel->palette().color(QPalette::Foreground), GtkStyle::useLightIcons());
     Icons::self()->initSidebarIcons();
     menuButton->setIcon(Icons::self()->toolbarMenuIcon);
-    menuButton->setMenu(mainMenu);
+    menuButton->setAlignedMenu(mainMenu);
 
     // With ambiance (which has a drak toolbar) we need a gap between the toolbar and the earch fields. But, in the context view we dont
     // want a gap - as this looks odd with a background. To workaround this, the tabwidget and playqueue sides of the splitter have a

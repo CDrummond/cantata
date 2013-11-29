@@ -124,6 +124,7 @@
     locate lyrics page.
 70. Radio GFM streams.
 71. Fix lyrics scraping code for most providers.
+72. Add leoslyrics.com to list of lyrics providers.
 
 1.1.3
 -----

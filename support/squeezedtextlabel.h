@@ -64,13 +64,4 @@ private:
 };
 #endif
 
-class PaddedSqueezedTextLabel : public SqueezedTextLabel
-{
-public:
-    PaddedSqueezedTextLabel(QWidget *p) : SqueezedTextLabel(p) { }
-
-protected:
-    QSize sizeHint() const;
-};
-
 #endif // SQUEEZEDTEXTLABEL_H

@@ -86,19 +86,26 @@
        </layout>
       </item>
       <item row="0" column="2">
-       <layout class="QVBoxLayout" name="verticalLayout_3">
+       <layout class="QVBoxLayout" name="detailsLayout">
         <item>
-         <widget class="PaddedSqueezedTextLabel" name="trackLabel">
+         <widget class="SqueezedTextLabel" name="trackLabel">
           <property name="font">
            <font>
             <weight>75</weight>
             <bold>true</bold>
            </font>
           </property>
+          <property name="alignment">
+           <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+          </property>
          </widget>
         </item>
         <item>
-         <widget class="PaddedSqueezedTextLabel" name="artistLabel"/>
+         <widget class="SqueezedTextLabel" name="artistLabel">
+          <property name="alignment">
+           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+          </property>
+         </widget>
         </item>
        </layout>
       </item>
@@ -367,11 +374,6 @@
   </layout>
  </widget>
  <customwidgets>
-  <customwidget>
-   <class>PaddedSqueezedTextLabel</class>
-   <extends>QLabel</extends>
-   <header>squeezedtextlabel.h</header>
-  </customwidget>
   <customwidget>
    <class>SqueezedTextLabel</class>
    <extends>QLabel</extends>

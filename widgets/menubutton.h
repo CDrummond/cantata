@@ -31,6 +31,10 @@ class MenuButton : public ToolButton
 public:
     explicit MenuButton(QWidget *parent = 0);
     void controlState();
+    void setAlignedMenu(QMenu *m);
+
+private:
+    bool eventFilter(QObject *o, QEvent *e);
 };
 
 #endif // MENUBUTTON_H

@@ -286,4 +286,13 @@
       <item begin="&lt;div&gt;" end="null"/>
     </extract>
   </provider>
+  <!-- new -->
+  <provider name="leoslyrics.com" charset="iso-8859-1" url="http://www.leoslyrics.com/{artist}/{title}-lyrics/">
+    <urlFormat replace=" ._@,;&amp;\/&quot;" with="-"/>
+    <urlFormat replace="'" with="_"/>
+    <extract>
+      <item tag="&lt;div ondragstart=&quot;return false;&quot; onselectstart=&quot;return false;&quot; oncontextmenu=&quot;return false;&quot;&gt;"/>
+    </extract>
+    <invalidIndicator value="Sorry, you either followed an invalid link or that page no longer exists."/>
+  </provider>
 </lyricproviders>

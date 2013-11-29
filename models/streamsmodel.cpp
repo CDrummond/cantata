@@ -187,7 +187,7 @@ QString StreamsModel::Item::modifiedName() const
         return name;
     }
     const CategoryItem *cat=getTopLevelCategory();
-    if (!cat || !cat->addCatToModifiedName) {
+    if (!cat || !cat->addCatToModifiedName || name.startsWith(cat->name)) {
         return name;
     }
     return cat->name+QLatin1String(" - ")+name;
@@ -579,7 +579,7 @@ StreamsModel::StreamsModel(QObject *parent)
     shoutCast->configName="shoutcast";
     root->children.append(shoutCast);
     root->children.append(new CategoryItem(constSomaFMUrl, i18n("SomaFM"), root, getIcon("somafm"), "somafm", QString(), true));
-    root->children.append(new CategoryItem(constRadioGFMUrl, i18n("Radio GFM"), root, getIcon("radiogfm"), "radiogfm", QString(), true));
+    root->children.append(new CategoryItem(constRadioGFMUrl, i18n("Radio GFM"), root, getIcon("radiogfm"), "radiogfm", QString(), false));
     root->children.append(new DiCategoryItem(constDigitallyImportedUrl, i18n("Digitally Imported"), root, getIcon("digitallyimported"), "di"));
     root->children.append(new DiCategoryItem(constJazzRadioUrl, i18n("JazzRadio.com"), root, getIcon("jazzradio"), "jazzradio"));
     root->children.append(new DiCategoryItem(constRockRadioUrl, i18n("RockRadio.com"), root, getIcon("rockradio"), "rockradio"));

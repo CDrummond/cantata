@@ -26,7 +26,7 @@
     </extract>
     <invalidIndicator value="The page you requested was not found on DarkLyrics.com."/>
   </provider>
-  <provider name="directlyrics.com" charset="iso-8859-1" url="http://www.directlyrics.com/{artist}-{title}-lyrics.html">
+  <provider name="directlyrics.com" charset="utf-8" url="http://www.directlyrics.com/{artist}-{title}-lyrics.html"> <!-- was iso-8859-1 -->
     <urlFormat replace=" _@,;&amp;\/'&quot;" with="-"/>
     <urlFormat replace="." with=""/>
     <extract>

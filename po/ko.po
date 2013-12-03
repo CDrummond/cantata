@@ -5549,7 +5549,7 @@ msgid "Failed to remove streams folder!"
 msgstr "스트림 폴더를 지울 수 없음!"
 
 #: support/dialog.cpp:89
-msgid "&Ok"
+msgid "&OK"
 msgstr "확인(&O)"
 
 #: support/dialog.cpp:90

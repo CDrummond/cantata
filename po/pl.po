@@ -5725,7 +5725,7 @@ msgid "Failed to remove streams folder!"
 msgstr "Usunięcie katalogu strumieni nie powiodło się!"
 
 #: support/dialog.cpp:89
-msgid "&Ok"
+msgid "&OK"
 msgstr "&Ok"
 
 #: support/dialog.cpp:90

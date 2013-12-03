@@ -5711,7 +5711,7 @@ msgid "Failed to remove streams folder!"
 msgstr "Не удалось удалить папку с потоками."
 
 #: support/dialog.cpp:89
-msgid "&Ok"
+msgid "&OK"
 msgstr "&Ok"
 
 #: support/dialog.cpp:90

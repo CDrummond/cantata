@@ -86,7 +86,7 @@ void Dialog::resize(const QSize &sz)
 #include <QStyle>
 
 namespace StdGuiItem {
-GuiItem ok() { return GuiItem(i18n("&Ok"), "dialog-ok"); }
+GuiItem ok() { return GuiItem(i18n("&OK"), "dialog-ok"); }
 GuiItem cancel() { return GuiItem(i18n("&Cancel"), "dialog-cancel"); }
 GuiItem yes() { return GuiItem(i18n("&Yes"), "dialog-ok"); }
 GuiItem no() { return GuiItem(i18n("&No"), "process-stop"); }

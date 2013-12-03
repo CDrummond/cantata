@@ -77,6 +77,7 @@ public:
     YesNoListDialog(QWidget *p) : Dialog(p) { }
     void slotButtonClicked(int b) {
         switch(b) {
+        case Dialog::Ok:
         case Dialog::Yes:
             accept();
             break;

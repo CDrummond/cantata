@@ -5716,7 +5716,7 @@ msgid "Failed to remove streams folder!"
 msgstr "No se ha podido eliminar el fichero anterior de normas - %1"
 
 #: support/dialog.cpp:89
-msgid "&Ok"
+msgid "&OK"
 msgstr "&Aceptar"
 
 #: support/dialog.cpp:90

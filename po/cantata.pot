@@ -5222,7 +5222,7 @@ msgid "Failed to remove streams folder!"
 msgstr ""
 
 #: support/dialog.cpp:89
-msgid "&Ok"
+msgid "&OK"
 msgstr ""
 
 #: support/dialog.cpp:90

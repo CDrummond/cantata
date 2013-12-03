@@ -5436,7 +5436,7 @@ msgid "Failed to remove streams folder!"
 msgstr "无法删除前一个配置 - %1"
 
 #: support/dialog.cpp:89
-msgid "&Ok"
+msgid "&OK"
 msgstr ""
 
 #: support/dialog.cpp:90

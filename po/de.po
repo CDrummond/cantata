@@ -5146,7 +5146,7 @@ msgid "<b>NOT</b> logged into Digitally Imported"
 msgstr "<b>NICHT</b> eingeloggt bei Digitally Imported"
 
 #: support/dialog.cpp:89
-msgid "&Ok"
+msgid "&OK"
 msgstr "&OK"
 
 #: support/dialog.cpp:90

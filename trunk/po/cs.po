@@ -5690,7 +5690,7 @@ msgid "Failed to remove streams folder!"
 msgstr "Nepodařilo se odstranit složku s proudy!"
 
 #: support/dialog.cpp:89
-msgid "&Ok"
+msgid "&OK"
 msgstr "&OK"
 
 #: support/dialog.cpp:90

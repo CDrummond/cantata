@@ -5660,7 +5660,7 @@ msgid "Failed to remove streams folder!"
 msgstr "Nem sikerült eltávolítani a stream-ek könyvtárát"
 
 #: support/dialog.cpp:89
-msgid "&Ok"
+msgid "&OK"
 msgstr "&Ok"
 
 #: support/dialog.cpp:90

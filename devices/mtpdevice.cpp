@@ -56,6 +56,8 @@
 #define MTP_FAKE_ALBUMARTIST_SUPPORT
 #define MTP_TRACKNUMBER_FROM_FILENAME
 
+static const QLatin1String constMtpDefaultCover("AlbumArt.jpg");
+
 static int progressMonitor(uint64_t const processed, uint64_t const total, void const * const data)
 {
     ((MtpConnection *)data)->emitProgress((int)(((processed*1.0)/(total*1.0)*100.0)+0.5));
@@ -1153,7 +1155,7 @@ MtpDevice::MtpDevice(MusicModel *m, Solid::Device &dev)
     connect(connection, SIGNAL(songCount(int)), this, SLOT(songCount(int)));
     connect(connection, SIGNAL(cover(const Song &, const QImage &)), this, SIGNAL(cover(const Song &, const QImage &)));
     opts.fixVariousArtists=false;
-    opts.coverName=Device::constEmbedCover;
+    opts.coverName=constMtpDefaultCover;
     QTimer::singleShot(0, this, SLOT(rescan(bool)));
 }
 

@@ -64,14 +64,17 @@ NetworkJob::NetworkJob(QNetworkReply *j)
     connect(job, SIGNAL(error(QNetworkReply::NetworkError)), this, SIGNAL(error(QNetworkReply::NetworkError)));
     connect(job, SIGNAL(uploadProgress(qint64, qint64)), this, SIGNAL(uploadProgress(qint64, qint64)));
     connect(job, SIGNAL(downloadProgress(qint64, qint64)), this, SLOT(downloadProg(qint64, qint64)));
+    connect(job, SIGNAL(destroyed(QObject *)), this, SLOT(jobDestroyed(QObject *)));
 }
 
 NetworkJob::~NetworkJob()
 {
     if (job) {
         disconnect(job, SIGNAL(finished()), this, SLOT(jobFinished()));
+        disconnect(job, SIGNAL(destroyed(QObject)), this, SLOT(jobDestroyed(QObject)));
         job->abort();
         job->deleteLater();
+        job=0;
     }
 }
 
@@ -97,6 +100,13 @@ void NetworkJob::jobFinished()
 
     DBUG << job->url().toString() << job->error() << (0==job->error() ? QLatin1String("OK") : job->errorString());
     emit finished();
+}
+
+void NetworkJob::jobDestroyed(QObject *o)
+{
+    if (o==job) {
+        job=0;
+    }
 }
 
 void NetworkJob::downloadProg(qint64 bytesReceived, qint64 bytesTotal)

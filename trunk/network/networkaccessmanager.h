@@ -75,6 +75,7 @@ Q_SIGNALS:
 
 private Q_SLOTS:
     void jobFinished();
+    void jobDestroyed(QObject *o);
     void downloadProg(qint64 bytesReceived, qint64 bytesTotal);
     void handleReadyRead();
 

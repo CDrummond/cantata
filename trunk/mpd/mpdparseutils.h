@@ -55,7 +55,7 @@ namespace MPDParseUtils
     extern Song parseSong(const QByteArray &data, bool isPlayQueue);
     extern QList<Song> parseSongs(const QByteArray &data);
     extern QList<IdPos> parseChanges(const QByteArray &data);
-    extern QStringList parseUrlHandlers(const QByteArray &data);
+    extern QStringList parseList(const QByteArray &data, const QLatin1String &key);
     extern bool groupSingle();
     extern void setGroupSingle(bool g);
     extern bool groupMultiple();

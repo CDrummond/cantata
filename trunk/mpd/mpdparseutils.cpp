@@ -352,25 +352,25 @@ QList<MPDParseUtils::IdPos> MPDParseUtils::parseChanges(const QByteArray &data)
     return changes;
 }
 
-QStringList MPDParseUtils::parseUrlHandlers(const QByteArray &data)
+QStringList MPDParseUtils::parseList(const QByteArray &data, const QLatin1String &key)
 {
-    QStringList urls;
-    QByteArray song;
+    QStringList items;
     QList<QByteArray> lines = data.split('\n');
     int amountOfLines = lines.size();
+    int keyLen=QString(key).length();
 
     for (int i = 0; i < amountOfLines; i++) {
-        QString url(lines.at(i));
-        // Skip the "OK" line, this is NOT a url handler!!!
-        if (QLatin1String("OK")==url) {
+        QString item(lines.at(i));
+        // Skip the "OK" line, this is NOT a valid item!!!
+        if (QLatin1String("OK")==item) {
             continue;
         }
-        if (url.startsWith(QLatin1String("handler: "))) {
-            urls.append(url.mid(9).replace("://", ""));
+        if (items.startsWith(key)) {
+            items.append(item.mid(keyLen).replace("://", ""));
         }
     }
 
-    return urls;
+    return items;
 }
 
 static bool groupSingleTracks=false;

@@ -348,6 +348,7 @@ void MPDConnection::reconnect()
         getStatus();
         getStats(false);
         getUrlHandlers();
+        getTagTypes();
         playListInfo();
         outputs();
         reconnectStart=0;
@@ -408,6 +409,7 @@ void MPDConnection::setDetails(const MPDConnectionDetails &d)
             getStatus();
             getStats(false);
             getUrlHandlers();
+            getTagTypes();
             emit stateChanged(true);
             break;
         case Failed:
@@ -971,9 +973,18 @@ void MPDConnection::getUrlHandlers()
 {
     Response response=sendCommand("urlhandlers");
     if (response.ok) {
-        handlers=MPDParseUtils::parseUrlHandlers(response.data).toSet();
+        handlers=MPDParseUtils::parseList(response.data, QLatin1String("handler: ")).toSet();
     }
 }
+
+void MPDConnection::getTagTypes()
+{
+    Response response=sendCommand("tagtypes");
+    if (response.ok) {
+        tagTypes=MPDParseUtils::parseList(response.data, QLatin1String("tagtype: ")).toSet();
+    }
+}
+
 
 /*
  * Data is written during idle.

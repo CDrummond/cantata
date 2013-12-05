@@ -42,6 +42,9 @@
          </item>
          <item>
           <widget class="QToolButton" name="configureSourceButton">
+           <property name="toolTip">
+            <string>Configure</string>
+           </property>
            <property name="autoRaise">
             <bool>true</bool>
            </property>
@@ -85,6 +88,9 @@
          </item>
          <item>
           <widget class="QToolButton" name="configureDestButton">
+           <property name="toolTip">
+            <string>Configure</string>
+           </property>
            <property name="autoRaise">
             <bool>true</bool>
            </property>

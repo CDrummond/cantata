@@ -125,11 +125,21 @@ void DevicePropertiesWidget::update(const QString &path, const DeviceOptions &op
             albumCovers->insertItems(0, QStringList() << noCoverText << embedCoverText);
         }
     }
-    filenameScheme->setText(opts.scheme);
-    vfatSafe->setChecked(opts.vfatSafe);
-    asciiOnly->setChecked(opts.asciiOnly);
-    ignoreThe->setChecked(opts.ignoreThe);
-    replaceSpaces->setChecked(opts.replaceSpaces);
+    if (props&Prop_FileName) {
+        filenameScheme->setText(opts.scheme);
+        vfatSafe->setChecked(opts.vfatSafe);
+        asciiOnly->setChecked(opts.asciiOnly);
+        ignoreThe->setChecked(opts.ignoreThe);
+        replaceSpaces->setChecked(opts.replaceSpaces);
+    } else {
+        REMOVE(filenamesGroupBox)
+        filenameScheme=0;
+        vfatSafe=0;
+        asciiOnly=0;
+        ignoreThe=0;
+        replaceSpaces=0;
+        configFilename=0;
+    }
     origOpts=opts;
 
     if (props&Prop_Folder) {
@@ -270,12 +280,14 @@ void DevicePropertiesWidget::update(const QString &path, const DeviceOptions &op
     }
 
     origMusicFolder=Utils::fixPath(path);
-    connect(configFilename, SIGNAL(clicked()), SLOT(configureFilenameScheme()));
-    connect(filenameScheme, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
-    connect(vfatSafe, SIGNAL(stateChanged(int)), this, SLOT(checkSaveable()));
-    connect(asciiOnly, SIGNAL(stateChanged(int)), this, SLOT(checkSaveable()));
-    connect(ignoreThe, SIGNAL(stateChanged(int)), this, SLOT(checkSaveable()));
-    connect(replaceSpaces, SIGNAL(stateChanged(int)), this, SLOT(checkSaveable()));
+    if (props&Prop_FileName) {
+        connect(configFilename, SIGNAL(clicked()), SLOT(configureFilenameScheme()));
+        connect(filenameScheme, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
+        connect(vfatSafe, SIGNAL(stateChanged(int)), this, SLOT(checkSaveable()));
+        connect(asciiOnly, SIGNAL(stateChanged(int)), this, SLOT(checkSaveable()));
+        connect(ignoreThe, SIGNAL(stateChanged(int)), this, SLOT(checkSaveable()));
+        connect(replaceSpaces, SIGNAL(stateChanged(int)), this, SLOT(checkSaveable()));
+    }
 
     if (albumCovers) {
         albumCoversChanged();
@@ -349,11 +361,21 @@ void DevicePropertiesWidget::configureFilenameScheme()
 DeviceOptions DevicePropertiesWidget::settings()
 {
     DeviceOptions opts;
-    opts.scheme=filenameScheme->text().trimmed();
-    opts.vfatSafe=vfatSafe->isChecked();
-    opts.asciiOnly=asciiOnly->isChecked();
-    opts.ignoreThe=ignoreThe->isChecked();
-    opts.replaceSpaces=replaceSpaces->isChecked();
+    if (filenameScheme) {
+        opts.scheme=filenameScheme->text().trimmed();
+    }
+    if (vfatSafe) {
+        opts.vfatSafe=vfatSafe->isChecked();
+    }
+    if (asciiOnly) {
+        opts.asciiOnly=asciiOnly->isChecked();
+    }
+    if (ignoreThe) {
+        opts.ignoreThe=ignoreThe->isChecked();
+    }
+    if (replaceSpaces) {
+        opts.replaceSpaces=replaceSpaces->isChecked();
+    }
     opts.fixVariousArtists=fixVariousArtists ? fixVariousArtists->isChecked() : false;
     opts.useCache=useCache ? useCache->isChecked() : false;
     opts.autoScan=autoScan ? autoScan->isChecked() : false;

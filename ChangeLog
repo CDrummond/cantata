@@ -129,6 +129,8 @@
 74. Use AlbumArt.jpg as default cover name for MTP devices. Android's gallery
     application wi;l ignore album covers if they are named this way - which
     prevents the gallery from being polluted with album covers!
+75. Don't allow configuring of filename for MPT devices. MTP device support
+    uses fodler structure to determine album-artist.
 
 1.1.3
 -----

@@ -247,7 +247,7 @@ void DeviceOptions::load(const QString &group, bool isMpd)
     #endif
 }
 
-void DeviceOptions::save(const QString &group, bool isMpd, bool saveTrans) const
+void DeviceOptions::save(const QString &group, bool isMpd, bool saveTrans, bool saveFileName) const
 {
     #ifdef ENABLE_KDE_SUPPORT
     KConfigGroup cfg(KGlobal::config(), !isMpd || group.isEmpty() || KGlobal::config()->hasGroup(group) ? group : constMpdGroup);
@@ -256,11 +256,13 @@ void DeviceOptions::save(const QString &group, bool isMpd, bool saveTrans) const
     cfg.beginGroup(!isMpd || group.isEmpty() || HAS_GROUP(group) ? group : constMpdGroup);
     #endif
 
-    SET_VALUE("scheme", scheme);
-    SET_VALUE("vfatSafe", vfatSafe);
-    SET_VALUE("asciiOnly", asciiOnly);
-    SET_VALUE("ignoreThe", ignoreThe);
-    SET_VALUE("replaceSpaces", replaceSpaces);
+    if (saveFileName) {
+        SET_VALUE("scheme", scheme);
+        SET_VALUE("vfatSafe", vfatSafe);
+        SET_VALUE("asciiOnly", asciiOnly);
+        SET_VALUE("ignoreThe", ignoreThe);
+        SET_VALUE("replaceSpaces", replaceSpaces);
+    }
     #ifdef ENABLE_DEVICES_SUPPORT
     if (!isMpd) {
         SET_VALUE("useCache", useCache);

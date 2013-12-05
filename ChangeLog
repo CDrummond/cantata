@@ -127,10 +127,10 @@
 72. Add leoslyrics.com to list of lyrics providers.
 73. Align main popup menu to side of window.
 74. Use AlbumArt.jpg as default cover name for MTP devices. Android's gallery
-    application wi;l ignore album covers if they are named this way - which
-    prevents the gallery from being polluted with album covers!
-75. Don't allow configuring of filename for MPT devices. MTP device support
-    uses fodler structure to determine album-artist.
+    application will ignore album covers if they are named this way.
+75. Don't allow configuring of filename for MTP devices. MTP device support
+    uses fodler structure to determine album-artist (as LibMTP does not support
+    album artist tag).
 76. If song has a disc number set, then display song track as
      "disc.track title" - e.g. "2.01 Blah blah"
 

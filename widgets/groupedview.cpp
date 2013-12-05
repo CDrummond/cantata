@@ -253,6 +253,9 @@ public:
             } else if (isEmpty) {
                 title=i18n("Unknown");
                 track=trackTitle;
+            } else if (song.album.isEmpty()) {
+                title=song.artistOrComposer();
+                track=song.trackAndTitleStr();
             } else {
                 quint16 year=Song::albumYear(song);
 

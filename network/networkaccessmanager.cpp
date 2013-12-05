@@ -71,7 +71,7 @@ NetworkJob::~NetworkJob()
 {
     if (job) {
         disconnect(job, SIGNAL(finished()), this, SLOT(jobFinished()));
-        disconnect(job, SIGNAL(destroyed(QObject)), this, SLOT(jobDestroyed(QObject)));
+        disconnect(job, SIGNAL(destroyed(QObject *)), this, SLOT(jobDestroyed(QObject *)));
         job->abort();
         job->deleteLater();
         job=0;

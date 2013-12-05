@@ -91,6 +91,7 @@ private:
     bool haveAlbums;
     bool haveGenres;
     bool saving;
+    bool composerSupport;
 };
 
 #endif

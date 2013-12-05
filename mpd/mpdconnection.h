@@ -192,6 +192,9 @@ public:
     bool isConnected() const { return State_Connected==state; }
     bool canUsePriority() const { return ver>=MPD_MAKE_VERSION(0, 17, 0); }
     const QSet<QString> & urlHandlers() const { return handlers; }
+    const QSet<QString> & tags() const { return tagTypes; }
+    bool composerTagSupported() const { return tagTypes.contains(QLatin1String("Composer")); }
+
     long version() const { return ver; }
     static bool isPlaylist(const QString &file);
     int unmuteVolume() { return unmuteVol; }
@@ -244,6 +247,7 @@ public Q_SLOTS:
     void getStats(bool andUpdate=false);
     void getStatus();
     void getUrlHandlers();
+    void getTagTypes();
 
     // Database
     void loadLibrary();
@@ -325,6 +329,7 @@ private:
     Thread *thread;
     long ver;
     QSet<QString> handlers;
+    QSet<QString> tagTypes;
     MPDConnectionDetails details;
     QDateTime dbUpdate;
     // Use 2 sockets, 1 for commands and 1 to receive MPD idle events.

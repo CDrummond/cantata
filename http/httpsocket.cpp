@@ -123,10 +123,12 @@ static void writeMimeType(const QString &mimeType, QTcpSocket *socket, qint32 si
                << "\r\nAccept-Ranges: bytes"
                << "\r\nContent-Length: " << QString::number(size)
                << "\r\nContent-Type: " << mimeType << "\r\n\r\n";
+            DBUG << mimeType << QString::number(size) << "Can seek";
         } else {
             os << "HTTP/1.0 200 OK"
                << "\r\nContent-Length: " << QString::number(size)
                << "\r\nContent-Type: " << mimeType << "\r\n\r\n";
+            DBUG << mimeType << QString::number(size);
         }
     }
 }
@@ -334,19 +336,23 @@ void HttpSocket::readClient()
                             int lastSector = cdparanoia.lastSectorOfTrack(song.id);
                             qint32 totalSize = ((lastSector-firstSector)+1)*CD_FRAMESIZE_RAW;
                             int count = 0;
-                            //int bytesToDiscard = 0; // Number of bytes to discard in first read sector due to range request in HTTP header
+//                            int bytesToDiscard = 0; // Number of bytes to discard in first read sector due to range request in HTTP header
 
-                            //if (readBytesFrom>0) {
-                            //    int sectorsToSeek=readBytesFrom/CD_FRAMESIZE_RAW;
-                            //    firstSector+=sectorsToSeek;
-                            //    bytesToDiscard=readBytesFrom-(sectorsToSeek*CD_FRAMESIZE_RAW);
-                            //}
+//                            if (readBytesFrom>=ExtractJob::constWavHeaderSize) {
+//                                readBytesFrom-=ExtractJob::constWavHeaderSize;
+//                            }
+
+//                            if (readBytesFrom>0) {
+//                                int sectorsToSeek=readBytesFrom/CD_FRAMESIZE_RAW;
+//                                firstSector+=sectorsToSeek;
+//                                bytesToDiscard=readBytesFrom-(sectorsToSeek*CD_FRAMESIZE_RAW);
+//                            }
                             cdparanoia.seek(firstSector, SEEK_SET);
                             ok=true;
-                            writeMimeType(QLatin1String("audio/x-wav"), socket, totalSize+ExtractJob::constWavHeaderSize, false);
-                            //if (0==readBytesFrom) { // Only write header if we are no seeking...
+                            writeMimeType(QLatin1String("audio/x-wav"), socket, totalSize+ExtractJob::constWavHeaderSize, true);
+                            if (0==readBytesFrom) { // Only write header if we are not seeking...
                                 ExtractJob::writeWavHeader(*socket, totalSize);
-                            //}
+                            }
                             bool stop=false;
                             while (!terminated && (firstSector+count) <= lastSector && !stop) {
                                 qint16 *buf = cdparanoia.read();
@@ -357,21 +363,16 @@ void HttpSocket::readClient()
                                 qint32 writePos=0;
                                 qint32 toWrite=CD_FRAMESIZE_RAW;
 
-                                //if (0==count && bytesToDiscard) {
-                                //    writePos=bytesToDiscard;
-                                //    toWrite-=bytesToDiscard;
-                                //    bytesToDiscard=0;
-                                //}
+//                                if (bytesToDiscard>0) {
+//                                    int toSkip=qMin(toWrite, bytesToDiscard);
+//                                    writePos=toSkip;
+//                                    toWrite-=toSkip;
+//                                    bytesToDiscard-=toSkip;
+//                                }
 
-                                do {
-                                    qint32 bytesWritten=socket->write(&buffer[writePos], toWrite - writePos);
-                                    if (terminated || -1==bytesWritten) {
-                                        stop=true;
-                                        break;
-                                    }
-                                    socket->flush();
-                                    writePos+=bytesWritten;
-                                } while (!terminated && writePos<toWrite);
+                                if (toWrite>0 && !write(socket, &buffer[writePos], toWrite, stop)) {
+                                    break;
+                                }
                                 count++;
                             }
                         }
@@ -416,28 +417,7 @@ void HttpSocket::readClient()
                             do {
                                 bytesRead = f.read(buffer, constChunkSize);
                                 readPos+=bytesRead;
-                                if (bytesRead<0 || terminated) {
-                                    break;
-                                }
-
-                                qint32 writePos=0;
-                                do {
-                                    qint32 bytesWritten = socket->write(&buffer[writePos], bytesRead - writePos);
-                                    if (terminated || -1==bytesWritten) {
-                                        stop=true;
-                                        break;
-                                    }
-                                    socket->flush();
-                                    writePos+=bytesWritten;
-                                } while (writePos<bytesRead);
-
-                                if (f.atEnd()) {
-                                    break;
-                                }
-                                if (QAbstractSocket::ConnectedState==socket->state()) {
-                                    socket->waitForBytesWritten();
-                                }
-                                if (QAbstractSocket::ConnectedState!=socket->state()) {
+                                if (!write(socket, buffer, bytesRead, stop) || f.atEnd()) {
                                     break;
                                 }
                             } while ((readPos+bytesRead)<totalBytes && !stop && !terminated);
@@ -468,4 +448,30 @@ void HttpSocket::discardClient()
 {
     QTcpSocket *socket = (QTcpSocket*)sender();
     socket->deleteLater();
+}
+
+bool HttpSocket::write(QTcpSocket *socket, char *buffer, qint32 bytesRead, bool &stop)
+{
+    if (bytesRead<0 || terminated) {
+        return false;
+    }
+
+    qint32 writePos=0;
+    do {
+        qint32 bytesWritten = socket->write(&buffer[writePos], bytesRead - writePos);
+        if (terminated || -1==bytesWritten) {
+            stop=true;
+            break;
+        }
+        socket->flush();
+        writePos+=bytesWritten;
+    } while (writePos<bytesRead);
+
+    if (QAbstractSocket::ConnectedState==socket->state()) {
+        socket->waitForBytesWritten();
+    }
+    if (QAbstractSocket::ConnectedState!=socket->state()) {
+        return false;
+    }
+    return true;
 }

@@ -27,6 +27,7 @@
 #include <QTcpServer>
 
 class QHostAddress;
+class QTcpSocket;
 
 class HttpSocket : public QTcpServer
 {
@@ -47,6 +48,9 @@ private:
 private Q_SLOTS:
      void readClient();
      void discardClient();
+
+private:
+     bool write(QTcpSocket *socket, char *buffer, qint32 bytesRead, bool &stop);
 
 private:
     QString cfgInterface;

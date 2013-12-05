@@ -131,12 +131,6 @@ public:
         return QStyledItemDelegate::sizeHint(option, index);
     }
 
-    inline QString formatNumber(int num) const
-    {
-        QString text=QString::number(num);
-        return num<10 ? "0"+text : text;
-    }
-
     static void drawFadedLine(QPainter *p, const QRect &r, const QColor &col)
     {
         QPoint start(r.x(), r.y());
@@ -280,13 +274,13 @@ public:
                         title=i18nc("artist - album", "%1 - %2", song.artistOrComposer(), song.albumName());
                     }
                 }
-                track=song.track ? formatNumber(song.track)+QChar(' ')+trackTitle : trackTitle;
+                track=song.trackAndTitleStr();
             }
         } else {
             if (stream) {
                 track=streamText(song, trackTitle);
             } else {
-                track=song.track ? formatNumber(song.track)+QChar(' ')+trackTitle : trackTitle;
+                track=song.trackAndTitleStr();
             }
         }
 

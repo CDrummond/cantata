@@ -362,8 +362,9 @@ QString Song::artistSong() const
 
 QString Song::trackAndTitleStr(bool addArtist) const
 {
-    return (track>9 ? QString::number(track) : (QChar('0')+QString::number(track)))
-           +QChar(' ')+(addArtist ? artistSong() : title);
+    return (disc>0 ? (QString::number(disc)+QLatin1Char('.')) : QString())+
+           (track>9 ? QString::number(track) : (QLatin1Char('0')+QString::number(track)))
+           +QLatin1Char(' ')+(addArtist ? artistSong() : title);
 }
 
 bool Song::isVariousArtists(const QString &str)

@@ -1507,7 +1507,7 @@ void MtpDevice::saveProperties()
 {
     if (solidDev.isValid()) {
         configured=true;
-        opts.save(cfgKey(solidDev, serial));
+        opts.save(cfgKey(solidDev, serial), false, true, false); // Dont save fileame scheme - cant be changed!
         emit configurationChanged();
     }
 }
@@ -1515,7 +1515,7 @@ void MtpDevice::saveProperties()
 void MtpDevice::saveOptions()
 {
     if (solidDev.isValid()) {
-        opts.save(cfgKey(solidDev, serial));
+        opts.save(cfgKey(solidDev, serial), false, true, false); // Dont save fileame scheme - cant be changed!
     }
 }
 

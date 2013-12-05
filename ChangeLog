@@ -131,6 +131,8 @@
     prevents the gallery from being polluted with album covers!
 75. Don't allow configuring of filename for MPT devices. MTP device support
     uses fodler structure to determine album-artist.
+76. If song has a disc number set, then display song track as
+     "disc.track title" - e.g. "2.01 Blah blah"
 
 1.1.3
 -----

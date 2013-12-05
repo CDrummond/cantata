@@ -133,6 +133,8 @@
     album artist tag).
 76. If song has a disc number set, then display song track as
      "disc.track title" - e.g. "2.01 Blah blah"
+77. Better handling of Cantata stream URLs with special characters (e.g.
+    question marks)
 
 1.1.3
 -----

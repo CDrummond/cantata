@@ -63,7 +63,7 @@ void ExtractJob::writeWavHeader(QIODevice &dev, qint32 size)
         insertSize(&riffHeader[40], size);
     }
 
-    dev.write((char*)riffHeader, 44);
+    dev.write((char*)riffHeader, constWavHeaderSize);
 }
 
 ExtractJob::ExtractJob(const Encoders::Encoder &enc, int val, const QString &src, const QString &dest, const Song &s, const QString &cover)

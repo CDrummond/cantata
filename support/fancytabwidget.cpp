@@ -338,7 +338,7 @@ FancyTabBar::FancyTabBar(QWidget *parent, bool hasBorder, bool text, int iSize, 
         setMinimumWidth(tabSizeHint().width());
         setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
         layout=new QVBoxLayout;
-        layout->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Fixed, QSizePolicy::Expanding));
+        layout->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Fixed, QSizePolicy::MinimumExpanding));
     }
 
     layout->setSpacing(0);
@@ -354,43 +354,35 @@ FancyTabBar::~FancyTabBar()
 //    delete style();
 }
 
-static inline int tabSpacing(bool withText) {
-    return withText ? 8 : 14;
-}
-
 QSize FancyTab::sizeHint() const {
-//   QFont boldFont(font());
-//   boldFont.setPointSizeF(Utils::StyleHelper::sidebarFontSize());
-//   boldFont.setBold(true);
+    QFontMetrics fm(font());
     int iconSize=tabbar->iconSize();
     bool withText=tabbar->showText();
-    const int spacing = tabSpacing(withText);
+    int hSpacing = fm.height();
+    int vSpacing = hSpacing*0.8;
     if (withText) {
-        QFontMetrics fm(font());
         int textWidth = fm.width(text)*1.1;
-        int width = qMax(iconSize, qMin(3*iconSize, textWidth)) + spacing + 2;
-        QSize ret(width, iconSize + iconSize + fm.height());
+        int width = qMax(iconSize, qMin(3*iconSize, textWidth)) + vSpacing;
+        QSize ret(width, iconSize + hSpacing + fm.height());
         return ret;
     } else {
-        return QSize(iconSize + spacing, iconSize + spacing);
+        return QSize(iconSize + vSpacing, iconSize + hSpacing);
     }
 }
 
 QSize FancyTabBar::tabSizeHint() const
 {
-//   QFont boldFont(font());
-//   boldFont.setPointSizeF(Utils::StyleHelper::sidebarFontSize());
-//   boldFont.setBold(true);
-    const int spacing = tabSpacing(m_showText);
+    QFontMetrics fm(font());
+    int hSpacing = fm.height();
+    int vSpacing = hSpacing*0.8;
     if (m_showText) {
-        QFontMetrics fm(font());
         int maxTw=0;
         foreach (FancyTab *tab, m_tabs) {
             maxTw=qMax(maxTw, tab->sizeHint().width());
         }
-        return QSize(qMax(m_iconSize + spacing + 2, maxTw), m_iconSize + spacing + fm.height());
+        return QSize(qMax(m_iconSize + vSpacing, maxTw), m_iconSize + hSpacing + fm.height());
     } else {
-        return QSize(m_iconSize + spacing, m_iconSize + spacing);
+        return QSize(m_iconSize + vSpacing, m_iconSize + hSpacing);
     }
 }
 

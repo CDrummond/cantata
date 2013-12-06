@@ -267,7 +267,14 @@ Song MPDParseUtils::parseSong(const QByteArray &data, bool isPlayQueue)
 
     if (!song.file.isEmpty()) {
         if (song.isStream()) {
-            if (!song.isCantataStream()) {
+            if (song.isCantataStream()) {
+                if (song.title.isEmpty()) {
+                    QStringList parts=QUrl(song.file).path().split('/');
+                    if (!parts.isEmpty()) {
+                        song.file=parts.last();
+                    }
+                }
+            } else {
                 if (!OnlineService::decode(song)) {
                     QString name=getAndRemoveStreamName(song.file);
                     if (!name.isEmpty()) {

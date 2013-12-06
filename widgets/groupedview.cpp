@@ -255,7 +255,7 @@ public:
                 track=trackTitle;
             } else if (song.album.isEmpty()) {
                 title=song.artistOrComposer();
-                track=song.trackAndTitleStr();
+                track=song.trackAndTitleStr(song.isVariousArtists());
             } else {
                 quint16 year=Song::albumYear(song);
 
@@ -277,13 +277,13 @@ public:
                         title=i18nc("artist - album", "%1 - %2", song.artistOrComposer(), song.albumName());
                     }
                 }
-                track=song.trackAndTitleStr();
+                track=song.trackAndTitleStr(song.isVariousArtists());
             }
         } else {
             if (stream) {
                 track=streamText(song, trackTitle);
             } else {
-                track=song.trackAndTitleStr();
+                track=song.trackAndTitleStr(song.isVariousArtists());
             }
         }
 

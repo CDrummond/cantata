@@ -349,7 +349,7 @@ void HttpSocket::readClient()
 //                            }
                             cdparanoia.seek(firstSector, SEEK_SET);
                             ok=true;
-                            writeMimeType(QLatin1String("audio/x-wav"), socket, totalSize+ExtractJob::constWavHeaderSize, true);
+                            writeMimeType(QLatin1String("audio/x-wav"), socket, totalSize+ExtractJob::constWavHeaderSize, false);
                             if (0==readBytesFrom) { // Only write header if we are not seeking...
                                 ExtractJob::writeWavHeader(*socket, totalSize);
                             }

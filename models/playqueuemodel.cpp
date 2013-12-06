@@ -790,6 +790,21 @@ void PlayQueueModel::setStopAfterTrack(qint32 track)
     }
 }
 
+void PlayQueueModel::removeCantataStreams()
+{
+    QList<qint32> ids;
+
+    foreach (const Song &s, songs) {
+        if (s.isCantataStream()) {
+            ids.append(s.id);
+        }
+    }
+
+    if (!ids.isEmpty()) {
+        emit removeSongs(ids);
+    }
+}
+
 void PlayQueueModel::stats()
 {
     quint32 time = 0;

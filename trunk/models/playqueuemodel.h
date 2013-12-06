@@ -97,6 +97,7 @@ public:
     void update(const QList<Song> &songList);
     void setStopAfterTrack(qint32 track);
     void clearStopAfterTrack() { setStopAfterTrack(-1); }
+    void removeCantataStreams();
 
 public Q_SLOTS:
     void addItems(const QStringList &items, int row, bool replace, quint8 priority);

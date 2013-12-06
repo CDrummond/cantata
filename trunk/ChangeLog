@@ -135,6 +135,7 @@
      "disc.track title" - e.g. "2.01 Blah blah"
 77. Better handling of Cantata stream URLs with special characters (e.g.
     question marks)
+78. Remove Cantata streams when exiting.
 
 1.1.3
 -----

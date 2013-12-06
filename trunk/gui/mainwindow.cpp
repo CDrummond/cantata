@@ -837,6 +837,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
+    playQueueModel.removeCantataStreams();
     Settings::self()->saveShowFullScreen(fullScreenAction->isChecked());
     if (!fullScreenAction->isChecked()) {
         Settings::self()->saveMainWindowSize(expandInterfaceAction->isChecked() ? size() : expandedSize);

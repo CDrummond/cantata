@@ -888,6 +888,7 @@ bool MusicLibraryItemRoot::updateSong(const Song &orig, const Song &edit)
         foreach (MusicLibraryItem *song, albumItem->childItems()) {
             if (static_cast<MusicLibraryItemSong *>(song)->song()==orig) {
                 static_cast<MusicLibraryItemSong *>(song)->setSong(edit);
+                bool yearUpdated=orig.year!=edit.year && albumItem->updateYear();
                 if (orig.genre!=edit.genre) {
                     albumItem->updateGenres();
                     artistItem->updateGenres();
@@ -895,6 +896,10 @@ bool MusicLibraryItemRoot::updateSong(const Song &orig, const Song &edit)
                 }
                 QModelIndex idx=m_model->createIndex(songRow, 0, song);
                 emit m_model->dataChanged(idx, idx);
+                if (yearUpdated) {
+                    idx=m_model->createIndex(albumItem->row(), 0, albumItem);
+                    emit m_model->dataChanged(idx, idx);
+                }
                 return true;
             }
             songRow++;

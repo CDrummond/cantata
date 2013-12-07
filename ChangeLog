@@ -136,6 +136,7 @@
 77. Better handling of Cantata stream URLs with special characters (e.g.
     question marks)
 78. Remove Cantata streams when exiting.
+79. Update album's year if song year is changed in tag editor.
 
 1.1.3
 -----

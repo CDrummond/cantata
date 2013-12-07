@@ -216,9 +216,13 @@ QByteArray HttpServer::encodeUrl(const QString &file) const
 
 Song HttpServer::decodeUrl(const QString &url) const
 {
+    #if QT_VERSION >= 0x050000
+    return decodeUrl(QUrl(url));
+    #else
     QUrl u;
     u.setEncodedUrl(url.toUtf8());
     return decodeUrl(u);
+    #endif
 }
 
 Song HttpServer::decodeUrl(const QUrl &url) const

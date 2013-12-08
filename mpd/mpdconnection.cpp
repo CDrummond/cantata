@@ -518,9 +518,9 @@ MPDConnection::Response MPDConnection::sendCommand(const QByteArray &command, bo
  */
 bool MPDConnection::isPlaylist(const QString &file)
 {
-    return file.endsWith("asx", Qt::CaseInsensitive) || file.endsWith("cue", Qt::CaseInsensitive) ||
-           file.endsWith("m3u", Qt::CaseInsensitive) || file.endsWith("pls", Qt::CaseInsensitive) ||
-           file.endsWith("xspf", Qt::CaseInsensitive);
+    return file.endsWith(QLatin1String(".asx"), Qt::CaseInsensitive) || file.endsWith(QLatin1String(".cue"), Qt::CaseInsensitive) ||
+           file.endsWith(QLatin1String(".m3u"), Qt::CaseInsensitive) || file.endsWith(QLatin1String(".pls"), Qt::CaseInsensitive) ||
+           file.endsWith(QLatin1String(".xspf"), Qt::CaseInsensitive);
 }
 
 void MPDConnection::add(const QStringList &files, bool replace, quint8 priority)

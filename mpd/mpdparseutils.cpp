@@ -432,7 +432,7 @@ MusicLibraryItemRoot * MPDParseUtils::parseLibraryItems(const QByteArray &data, 
                 QSet<QString> cueFiles; // List of source (flac, mp3, etc) files referenced in cue file
 
                 DBUG << "Got playlist item" << currentSong.file << "prevFile:" << prevSongFile;
-                if (canSplitCue && currentSong.file.endsWith(".cue", Qt::CaseInsensitive) && !mpdDir.startsWith("http://") &&
+                if (canSplitCue && currentSong.isCueFile() && !mpdDir.startsWith("http://") &&
                         CueFile::parse(currentSong.file, mpdDir, cueSongs, cueFiles) &&
                         (cueFiles.count()<cueSongs.count() || (albumItem && albumItem->data()==unknown && albumItem->parentItem()->data()==unknown))) {
                     DBUG << "Parsed file, songs:" << cueSongs.count() << "files:" << cueFiles;

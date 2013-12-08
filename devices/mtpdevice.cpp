@@ -52,6 +52,11 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
+//#define TIME_MTP_OPERATIONS
+#ifdef TIME_MTP_OPERATIONS
+#include <QDebug>
+#include <QElapsedTimer>
+#endif
 
 #define MTP_FAKE_ALBUMARTIST_SUPPORT
 #define MTP_TRACKNUMBER_FROM_FILENAME
@@ -131,6 +136,13 @@ void MtpConnection::trackListProgress(uint64_t count)
 
 void MtpConnection::connectToDevice()
 {
+    #ifdef TIME_MTP_OPERATIONS
+    QElapsedTimer timer;
+    QElapsedTimer totalTimer;
+    timer.start();
+    totalTimer.start();
+    #endif
+
     device=0;
     storage.clear();
     defaultMusicFolder=0;
@@ -141,6 +153,10 @@ void MtpConnection::connectToDevice()
         emit statusMessage(i18n("No devices found"));
         return;
     }
+    #ifdef TIME_MTP_OPERATIONS
+    qWarning() << "Connect to device:" << timer.elapsed();
+    timer.restart();
+    #endif
 
     LIBMTP_mtpdevice_t *mptDev=0;
     for (int i = 0; i < numDev; i++) {
@@ -154,13 +170,25 @@ void MtpConnection::connectToDevice()
         }
     }
 
+    #ifdef TIME_MTP_OPERATIONS
+    qWarning() << "Open raw device:" << timer.elapsed();
+    timer.restart();
+    #endif
+
     size=0;
     used=0;
     device=mptDev;
     updateStorage();
+    #ifdef TIME_MTP_OPERATIONS
+    qWarning() << "Update storage:" << timer.elapsed();
+    #endif
+
     free(rawDevices);
     if (!device) {
         emit statusMessage(i18n("No devices found"));
+        #ifdef TIME_MTP_OPERATIONS
+        qWarning() << "TOTAL connect:" <<totalTimer.elapsed();
+        #endif
         return;
     }
     char *ser=LIBMTP_Get_Serialnumber(device);
@@ -173,6 +201,9 @@ void MtpConnection::connectToDevice()
 
     defaultMusicFolder=device->default_music_folder;
     emit statusMessage(i18n("Connected to device"));
+    #ifdef TIME_MTP_OPERATIONS
+    qWarning() << "TOTAL connect:" <<totalTimer.elapsed();
+    #endif
 }
 
 void MtpConnection::disconnectFromDevice(bool showStatus)
@@ -248,9 +279,20 @@ void MtpConnection::updateLibrary()
         return;
     }
 
+    #ifdef TIME_MTP_OPERATIONS
+    QElapsedTimer timer;
+    QElapsedTimer totalTimer;
+    timer.start();
+    totalTimer.start();
+    #endif
+
     library = new MusicLibraryItemRoot;
     emit statusMessage(i18n("Updating folders..."));
     updateFolders();
+    #ifdef TIME_MTP_OPERATIONS
+    qWarning() << "Folder update:" << timer.elapsed();
+    timer.restart();
+    #endif
     if (folderMap.isEmpty()) {
         destroyData();
         emit libraryUpdated();
@@ -258,6 +300,10 @@ void MtpConnection::updateLibrary()
     }
     emit statusMessage(i18n("Updating files..."));
     updateFiles();
+    #ifdef TIME_MTP_OPERATIONS
+    qWarning() << "Files update:" << timer.elapsed();
+    timer.restart();
+    #endif
     #ifdef MTP_CLEAN_ALBUMS
     updateAlbums();
     #endif
@@ -349,6 +395,10 @@ void MtpConnection::updateLibrary()
     if (tracks) {
         LIBMTP_destroy_track_t(tracks);
     }
+    #ifdef TIME_MTP_OPERATIONS
+    qWarning() << "Tracks update:" << timer.elapsed();
+    timer.restart();
+    #endif
     if (!abortRequested()) {
         #ifdef MTP_FAKE_ALBUMARTIST_SUPPORT
         // Use Album map to determine 'AlbumArtist' tag for various artist albums, and
@@ -415,8 +465,16 @@ void MtpConnection::updateLibrary()
                 }
             }
         }
+        #ifdef TIME_MTP_OPERATIONS
+        qWarning() << "AlbumArtist detection:" << timer.elapsed();
+        timer.restart();
+        #endif
         #endif
         library->applyGrouping();
+        #ifdef TIME_MTP_OPERATIONS
+        qWarning() << "Grouping:" << timer.elapsed();
+        qWarning() << "TOTAL update:" <<totalTimer.elapsed();
+        #endif
         emit libraryUpdated();
     }
 }

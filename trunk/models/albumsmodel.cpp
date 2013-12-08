@@ -296,7 +296,7 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
         }
         case Qt::DisplayRole:
             if (Song::Playlist==si->type) {
-                return si->file.endsWith(".cue", Qt::CaseInsensitive) ? i18n("Cue Sheet") : i18n("Playlist");
+                return si->isCueFile() ? i18n("Cue Sheet") : i18n("Playlist");
             }
             if (Song::SingleTracks==si->parent->type) {
                 return si->artistSong();
@@ -703,7 +703,7 @@ void AlbumsModel::AlbumItem::setCover(const QImage &img)
 const AlbumsModel::SongItem *AlbumsModel::AlbumItem::getCueFile() const
 {
     foreach (SongItem *s, songs) {
-        if (Song::Playlist==s->type && s->file.endsWith(".cue", Qt::CaseInsensitive)) {
+        if (s->isCueFile()) {
             return s;
         }
     }

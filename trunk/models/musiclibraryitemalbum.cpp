@@ -449,8 +449,7 @@ bool MusicLibraryItemAlbum::detectIfIsMultipleArtists()
 const MusicLibraryItemSong * MusicLibraryItemAlbum::getCueFile() const
 {
     foreach (const MusicLibraryItem *s, m_childItems) {
-        if (Song::Playlist==static_cast<const MusicLibraryItemSong *>(s)->song().type &&
-            static_cast<const MusicLibraryItemSong *>(s)->song().file.endsWith(".cue", Qt::CaseInsensitive)) {
+        if (static_cast<const MusicLibraryItemSong *>(s)->song().isCueFile()) {
             return static_cast<const MusicLibraryItemSong *>(s);
         }
     }

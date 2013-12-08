@@ -40,7 +40,7 @@ public:
 
     DirViewItemFile(const QString &name, DirViewItem *parent) : DirViewItem(name, parent) {
         fType=MPDConnection::isPlaylist(name)
-                ? name.endsWith(".cue", Qt::CaseInsensitive)
+                ? name.endsWith(QLatin1String(".cue"), Qt::CaseInsensitive)
                     ? CueSheet
                     : Playlist
                 : Audio;

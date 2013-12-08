@@ -113,7 +113,8 @@ struct Song
     bool isStream() const { return Stream==type || CantataStream==type; }
     bool isCantataStream() const { return CantataStream==type; }
     bool isCdda() const { return Cdda==type; }
-    QString albumKey() const { return albumArtist()+QChar(':')+album; }
+    QString albumKey() const { return albumArtist()+QLatin1Char(':')+album; }
+    bool isCueFile() const { return Playlist==type && file.endsWith(QLatin1String(".cue"), Qt::CaseInsensitive); }
 
     // We pass 'Song' around to cover requester. When we want the artist image, and not album image,
     // then we blank certain fields to indicate this!

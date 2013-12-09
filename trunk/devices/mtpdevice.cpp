@@ -52,7 +52,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
-#define TIME_MTP_OPERATIONS
+//#define TIME_MTP_OPERATIONS
 #ifdef TIME_MTP_OPERATIONS
 #include <QDebug>
 #include <QElapsedTimer>
@@ -62,6 +62,8 @@
 #define MTP_TRACKNUMBER_FROM_FILENAME
 
 static const QLatin1String constMtpDefaultCover("AlbumArt.jpg");
+static const uint32_t constRootFolder=0xffffffffU;
+static const QString constMusicFolder=QLatin1String("Music");
 
 static int progressMonitor(uint64_t const processed, uint64_t const total, void const * const data)
 {
@@ -161,11 +163,23 @@ void MtpConnection::connectToDevice()
     for (int i = 0; i < numDev; i++) {
         if (0!=dev->busNum && 0!=dev->devNum) {
             if (rawDevices[i].bus_location==dev->busNum && rawDevices[i].devnum==dev->devNum) {
+                #ifdef ENABLE_UNCACHED_MTP
+                mptDev = LIBMTP_Open_Raw_Device_Uncached(&rawDevices[i]);
+                #else
                 mptDev = LIBMTP_Open_Raw_Device(&rawDevices[i]);
+                #endif
                 break;
             }
-        } else if ((mptDev = LIBMTP_Open_Raw_Device(&rawDevices[i]))) {
-            break;
+        } else {
+            #ifdef ENABLE_UNCACHED_MTP
+            if ((mptDev = LIBMTP_Open_Raw_Device_Uncached(&rawDevices[i]))) {
+                break;
+            }
+            #else
+            if ((mptDev = LIBMTP_Open_Raw_Device(&rawDevices[i]))) {
+                break;
+            }
+            #endif
         }
     }
 
@@ -287,7 +301,11 @@ void MtpConnection::updateLibrary()
 
     library = new MusicLibraryItemRoot;
     emit statusMessage(i18n("Updating folders..."));
+    #ifdef ENABLE_UNCACHED_MTP
+    updateFilesAndFolders();
+    #else
     updateFolders();
+    #endif
     #ifdef TIME_MTP_OPERATIONS
     qWarning() << "Folder update:" << timer.elapsed();
     timer.restart();
@@ -297,11 +315,13 @@ void MtpConnection::updateLibrary()
         emit libraryUpdated();
         return;
     }
+    #ifndef ENABLE_UNCACHED_MTP
     emit statusMessage(i18n("Updating files..."));
     updateFiles();
     #ifdef TIME_MTP_OPERATIONS
     qWarning() << "Files update:" << timer.elapsed();
     timer.restart();
+    #endif
     #endif
     #ifdef MTP_CLEAN_ALBUMS
     updateAlbums();
@@ -494,9 +514,9 @@ void MtpConnection::updateLibrary()
 void MtpConnection::setMusicFolder(Storage &store)
 {
     if (0==store.musicFolderId) {
-        store.musicFolderId=getFolder("Music/", store.id);
+        store.musicFolderId=getFolder(constMusicFolder+QLatin1Char('/'), store.id);
         if (0==store.musicFolderId) {
-            store.musicFolderId=createFolder("Music", "Music/", 0, store.id);
+            store.musicFolderId=createFolder(constMusicFolder, constMusicFolder+QLatin1Char('/'), 0, store.id);
         }
         if (0!=store.musicFolderId) {
             store.musicPath=getPath(store.musicFolderId);
@@ -504,6 +524,52 @@ void MtpConnection::setMusicFolder(Storage &store)
     }
 }
 
+#ifdef ENABLE_UNCACHED_MTP
+void MtpConnection::updateFilesAndFolders()
+{
+    folderMap.clear();
+    foreach (const Storage st, storage) {
+        listFolder(st.id, constRootFolder, 0);
+    }
+}
+
+void MtpConnection::listFolder(uint32_t storage, uint32_t parentDir, Folder *f)
+{
+    LIBMTP_file_t *files=LIBMTP_Get_Files_And_Folders(device, storage, parentDir);
+
+    while (files) {
+        LIBMTP_file_t *file=files;
+        files = files->next;
+
+        QString name=QString::fromUtf8(file->filename);
+        if (LIBMTP_FILETYPE_FOLDER==file->filetype) {
+            bool isMusic=constRootFolder!=parentDir || 0==name.compare(constMusicFolder, Qt::CaseInsensitive);
+            if (isMusic) {
+                QMap<uint32_t, Folder>::ConstIterator it=folderMap.find(file->parent_id);
+                QString path;
+                if (it!=folderMap.constEnd()) {
+                    path=it.value().path+name+QLatin1Char('/');
+                } else {
+                    path=name+QLatin1Char('/');
+                }
+
+                QMap<uint32_t, Folder>::iterator entry=folderMap.insert(file->item_id, Folder(path, file->item_id, file->parent_id, file->storage_id));
+                if (folderMap.contains(file->parent_id)) {
+                    folderMap[file->parent_id].folders.insert(file->item_id);
+                }
+                listFolder(storage, file->item_id, &(entry.value()));
+            }
+        } else if (f && constRootFolder!=parentDir) {
+            if (name.endsWith(".jpg", Qt::CaseInsensitive) || name.endsWith(".png", Qt::CaseInsensitive) || QLatin1String("albumart.pamp")==name) {
+                f->covers.insert(file->item_id, File(name, file->filesize, file->item_id));
+            } else {
+                f->files.insert(file->item_id, File(name, file->filesize, file->item_id));
+            }
+        }
+        LIBMTP_destroy_file_t(file);
+    }
+}
+#else
 void MtpConnection::updateFolders()
 {
     folderMap.clear();
@@ -539,6 +605,7 @@ void MtpConnection::updateFiles()
         LIBMTP_destroy_file_t(file);
     }
 }
+#endif
 
 void MtpConnection::updateStorage()
 {
@@ -679,6 +746,7 @@ uint32_t MtpConnection::checkFolderStructure(const QStringList &dirs, Storage &s
     return parentId;
 }
 
+#ifndef ENABLE_UNCACHED_MTP
 void MtpConnection::parseFolder(LIBMTP_folder_t *folder)
 {
     if (!folder) {
@@ -692,7 +760,7 @@ void MtpConnection::parseFolder(LIBMTP_folder_t *folder)
     } else {
         path=QString::fromUtf8(folder->name)+QChar('/');
     }
-    bool isMusic=path.startsWith(QLatin1String("Music/"), Qt::CaseInsensitive);
+    bool isMusic=path.startsWith(constMusicFolder+QLatin1Char('/'), Qt::CaseInsensitive);
     if (isMusic) {
         folderMap.insert(folder->folder_id, Folder(path, folder->folder_id, folder->parent_id, folder->storage_id));
         if (folderMap.contains(folder->parent_id)) {
@@ -707,6 +775,7 @@ void MtpConnection::parseFolder(LIBMTP_folder_t *folder)
         parseFolder(folder->sibling);
     }
 }
+#endif
 
 static char * createString(const QString &str)
 {

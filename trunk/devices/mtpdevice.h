@@ -26,12 +26,14 @@
 
 #include "fsdevice.h"
 #include "song.h"
+#include "config.h"
 #ifdef ENABLE_KDE_SUPPORT
 #include <solid/portablemediaplayer.h>
 #else
 #include "solid-lite/portablemediaplayer.h"
 #endif
 #include <libmtp.h>
+
 
 class MusicLibraryItemRoot;
 class Thread;
@@ -109,8 +111,13 @@ Q_SIGNALS:
 private:
     File getCoverDetils(const Song &s);
     bool removeFolder(uint32_t folderId);
+    #ifdef ENABLE_UNCACHED_MTP
+    void updateFilesAndFolders();
+    void listFolder(uint32_t storage, uint32_t parentDir, Folder *f=0);
+    #else
     void updateFolders();
     void updateFiles();
+    #endif
     void updateStorage();
     Storage & getStorage(const QString &volumeIdentifier);
     Storage & getStorage(uint32_t id);
@@ -118,7 +125,9 @@ private:
     uint32_t getFolder(const QString &path, uint32_t storageId);
     QString getPath(uint32_t folderId);
     uint32_t checkFolderStructure(const QStringList &dirs, Storage &store);
+    #ifndef ENABLE_UNCACHED_MTP
     void parseFolder(LIBMTP_folder_t *folder);
+    #endif
     void setMusicFolder(Storage &store);
     #ifdef MTP_CLEAN_ALBUMS
     void updateAlbums();

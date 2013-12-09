@@ -432,10 +432,19 @@ MusicLibraryItemRoot * MPDParseUtils::parseLibraryItems(const QByteArray &data, 
                 QSet<QString> cueFiles; // List of source (flac, mp3, etc) files referenced in cue file
 
                 DBUG << "Got playlist item" << currentSong.file << "prevFile:" << prevSongFile;
-                if (canSplitCue && currentSong.isCueFile() && !mpdDir.startsWith("http://") &&
-                        CueFile::parse(currentSong.file, mpdDir, cueSongs, cueFiles) &&
-                        (cueFiles.count()<cueSongs.count() || (albumItem && albumItem->data()==unknown && albumItem->parentItem()->data()==unknown))) {
-                    DBUG << "Parsed file, songs:" << cueSongs.count() << "files:" << cueFiles;
+
+                bool parseCue=canSplitCue && currentSong.isCueFile() && !mpdDir.startsWith("http://") && QFile::exists(mpdDir+currentSong.file);
+                bool cueParseStatus=false;
+                if (parseCue) {
+                    DBUG << "Parsing cue file:" << currentSong.file << "mpdDir:" << mpdDir;
+                    cueParseStatus=CueFile::parse(currentSong.file, mpdDir, cueSongs, cueFiles);
+                    if (!cueParseStatus) {
+                        DBUG << "Failed to parse cue file!";
+                        continue;
+                    } else DBUG << "Parsed cue file, songs:" << cueSongs.count() << "files:" << cueFiles;
+                }
+                if (cueParseStatus &&
+                    (cueFiles.count()<cueSongs.count() || (albumItem && albumItem->data()==unknown && albumItem->parentItem()->data()==unknown))) {
 
                     bool canUseThisCueFile=true;
                     foreach (const Song &s, cueSongs) {

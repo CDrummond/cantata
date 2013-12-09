@@ -139,6 +139,7 @@
 79. Update album's year if song year is changed in tag editor.
 80. If we can access a CUE file, but fail to parse it, then do not add CUE to
     album's track list.
+81. Show MTP track list progress in percentages.
 
 1.1.3
 -----

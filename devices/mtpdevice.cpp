@@ -72,7 +72,7 @@ static int progressMonitor(uint64_t const processed, uint64_t const total, void 
 static int trackListMonitor(uint64_t const processed, uint64_t const total, void const * const data)
 {
     Q_UNUSED(total)
-    ((MtpConnection *)data)->trackListProgress(processed);
+    ((MtpConnection *)data)->trackListProgress(((processed*100.0)/(total*1.0))+0.5);
     return ((MtpConnection *)data)->abortRequested() ? -1 : 0;
 }
 
@@ -92,7 +92,7 @@ MtpConnection::MtpConnection(MtpDevice *p)
     #endif
     , library(0)
     , dev(p)
-    , lastUpdate(0)
+    , lastListPercent(-1)
 {
     size=0;
     used=0;
@@ -125,12 +125,11 @@ void MtpConnection::emitProgress(int percent)
     emit progress(percent);
 }
 
-void MtpConnection::trackListProgress(uint64_t count)
+void MtpConnection::trackListProgress(int percent)
 {
-    int t=time(NULL);
-    if ((t-lastUpdate)>=2 || 0==(count%10)) {
-        lastUpdate=t;
-        emit songCount((int)count);
+    if (percent!=lastListPercent) {
+        lastListPercent=percent;
+        emit updatePercentage(percent);
     }
 }
 
@@ -308,7 +307,7 @@ void MtpConnection::updateLibrary()
     updateAlbums();
     #endif
     emit statusMessage(i18n("Updating tracks..."));
-    lastUpdate=0;
+    lastListPercent=-1;
     LIBMTP_track_t *tracks=LIBMTP_Get_Tracklisting_With_Callback(device, &trackListMonitor, this);
     LIBMTP_track_t *track=tracks;
     QMap<uint32_t, Folder>::ConstIterator folderEnd=folderMap.constEnd();
@@ -1210,7 +1209,7 @@ MtpDevice::MtpDevice(MusicModel *m, Solid::Device &dev)
     connect(connection, SIGNAL(cleanDirsStatus(bool)), this, SLOT(cleanDirsStatus(bool)));
     connect(connection, SIGNAL(statusMessage(const QString &)), this, SLOT(setStatusMessage(const QString &)));
     connect(connection, SIGNAL(deviceDetails(const QString &)), this, SLOT(deviceDetails(const QString &)));
-    connect(connection, SIGNAL(songCount(int)), this, SLOT(songCount(int)));
+    connect(connection, SIGNAL(updatePercentage(int)), this, SLOT(updatePercentage(int)));
     connect(connection, SIGNAL(cover(const Song &, const QImage &)), this, SIGNAL(cover(const Song &, const QImage &)));
     opts.fixVariousArtists=false;
     opts.coverName=constMtpDefaultCover;

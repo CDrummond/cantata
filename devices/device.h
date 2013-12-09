@@ -186,6 +186,7 @@ public:
 public Q_SLOTS:
     void setStatusMessage(const QString &message);
     void songCount(int c);
+    void updatePercentage(int pc);
     #endif
 
 Q_SIGNALS:

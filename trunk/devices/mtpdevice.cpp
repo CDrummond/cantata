@@ -52,7 +52,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
-//#define TIME_MTP_OPERATIONS
+#define TIME_MTP_OPERATIONS
 #ifdef TIME_MTP_OPERATIONS
 #include <QDebug>
 #include <QElapsedTimer>
@@ -305,18 +305,22 @@ void MtpConnection::updateLibrary()
     #endif
     #ifdef MTP_CLEAN_ALBUMS
     updateAlbums();
+    #ifdef TIME_MTP_OPERATIONS
+    qWarning() << "Clean albums:" << timer.elapsed();
+    timer.restart();
+    #endif
     #endif
     emit statusMessage(i18n("Updating tracks..."));
     lastListPercent=-1;
     LIBMTP_track_t *tracks=LIBMTP_Get_Tracklisting_With_Callback(device, &trackListMonitor, this);
     LIBMTP_track_t *track=tracks;
     QMap<uint32_t, Folder>::ConstIterator folderEnd=folderMap.constEnd();
-    QList<Storage>::Iterator it=storage.begin();
-    QList<Storage>::Iterator end=storage.end();
+    QList<Storage>::Iterator store=storage.begin();
+    QList<Storage>::Iterator storeEnd=storage.end();
     QMap<int, QString> storageNames;
-    for (; it!=end; ++it) {
-        setMusicFolder(*it);
-        storageNames[(*it).id]=(*it).description;
+    for (; store!=storeEnd; ++store) {
+        setMusicFolder(*store);
+        storageNames[(*store).id]=(*store).description;
     }
 
     MusicLibraryItemArtist *artistItem = 0;
@@ -327,10 +331,13 @@ void MtpConnection::updateLibrary()
     bool getAlbumArtistFromPath=dev->options().scheme.startsWith(DeviceOptions::constAlbumArtist+QChar('/')+DeviceOptions::constAlbumTitle+QChar('/'));
     QString va=i18n("Various Artists");
     #endif
-
+    #ifdef TIME_MTP_OPERATIONS
+    qWarning() << "Tracks update:" << timer.elapsed();
+    timer.restart();
+    #endif
     while (track && !abortRequested()) {
-        QMap<uint32_t, Folder>::ConstIterator it=folderMap.find(track->parent_id);
-        if (it==folderEnd) {
+        QMap<uint32_t, Folder>::ConstIterator folder=folderMap.find(track->parent_id);
+        if (folder==folderEnd) {
             // We only care about tracks in the music folder...
             track=track->next;
             continue;
@@ -338,7 +345,7 @@ void MtpConnection::updateLibrary()
         Song s;
         QString trackFilename=QString::fromUtf8(track->filename);
         s.id=track->item_id;
-        s.file=encodePath(track, it.value().path+trackFilename, storageNames.count()>1 ? storageNames[track->storage_id] : QString());
+        s.file=encodePath(track, folder.value().path+trackFilename, storageNames.count()>1 ? storageNames[track->storage_id] : QString());
         s.album=QString::fromUtf8(track->album);
         s.artist=QString::fromUtf8(track->artist);
         s.albumartist=s.artist; // TODO: ALBUMARTIST: Read from 'track' when libMTP supports album artist!
@@ -352,7 +359,7 @@ void MtpConnection::updateLibrary()
         s.fillEmptyFields();
         #ifdef MTP_FAKE_ALBUMARTIST_SUPPORT
         if (getAlbumArtistFromPath) {
-            QStringList folderParts=(*it).path.split('/', QString::SkipEmptyParts);
+            QStringList folderParts=(*folder).path.split('/', QString::SkipEmptyParts);
             if (folderParts.length()>=3) {
                 MtpFolder folder(folderParts.at(1), folderParts.at(2));
                 folders.insert(track->parent_id, folder);
@@ -395,7 +402,7 @@ void MtpConnection::updateLibrary()
         LIBMTP_destroy_track_t(tracks);
     }
     #ifdef TIME_MTP_OPERATIONS
-    qWarning() << "Tracks update:" << timer.elapsed();
+    qWarning() << "Tracks parse:" << timer.elapsed();
     timer.restart();
     #endif
     if (!abortRequested()) {

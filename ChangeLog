@@ -129,10 +129,10 @@
 74. Use AlbumArt.jpg as default cover name for MTP devices. Android's gallery
     application will ignore album covers if they are named this way.
 75. Don't allow configuring of filename for MTP devices. MTP device support
-    uses fodler structure to determine album-artist (as LibMTP does not support
-    album artist tag).
+    uses folder structure to determine 'Various Artists' album-artist (as LibMTP
+    does not support album artist tag).
 76. If song has a disc number set, then display song track as
-     "disc.track title" - e.g. "2.01 Blah blah"
+    "disc.track title" - e.g. "2.01 Blah blah"
 77. Better handling of Cantata stream URLs with special characters (e.g.
     question marks)
 78. Remove Cantata streams when exiting.

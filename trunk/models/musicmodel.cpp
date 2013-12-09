@@ -113,7 +113,7 @@ QVariant MusicModel::data(const QModelIndex &index, int role) const
                 return static_cast<MusicLibraryItemPodcast *>(item)->cover();
             }
         case MusicLibraryItem::Type_Album:
-            if (MusicLibraryItemAlbum::CoverNone==MusicLibraryItemAlbum::currentCoverSize()) {
+            if (MusicLibraryItemAlbum::CoverNone==MusicLibraryItemAlbum::currentCoverSize() || !root(item)->useAlbumImages()) {
                 return Icons::self()->albumIcon;
             } else {
                 return static_cast<MusicLibraryItemAlbum *>(item)->cover();
@@ -162,13 +162,15 @@ QVariant MusicModel::data(const QModelIndex &index, int role) const
                 (0==item->childCount()
                     ? item->data()
                     : (item->data()+"<br/>"+data(index, ItemView::Role_SubText).toString()));
-    case ItemView::Role_ImageSize:
+    case ItemView::Role_ImageSize: {
+        const MusicLibraryItemRoot *r=root(item);
         if (MusicLibraryItem::Type_Song!=item->itemType() && !MusicLibraryItemAlbum::itemSize().isNull()) { // icon/list style view...
-            return MusicLibraryItemAlbum::iconSize(root(item)->useLargeImages());
-        } else if (MusicLibraryItem::Type_Album==item->itemType() || MusicLibraryItem::Type_Podcast==item->itemType() || (root(item)->useArtistImages() && MusicLibraryItem::Type_Artist==item->itemType())) {
+            return MusicLibraryItemAlbum::iconSize(r->useLargeImages());
+        } else if ((r->useAlbumImages() && MusicLibraryItem::Type_Album==item->itemType()) || MusicLibraryItem::Type_Podcast==item->itemType() || (r->useArtistImages() && MusicLibraryItem::Type_Artist==item->itemType())) {
             return MusicLibraryItemAlbum::iconSize();
         }
         break;
+    }
     case ItemView::Role_SubText:
         switch (item->itemType()) {
         case MusicLibraryItem::Type_Root: {

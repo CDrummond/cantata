@@ -81,7 +81,7 @@ public:
     uint64_t usedSpace() const { return used; }
     QList<DeviceStorage> getStorageList() const;
     void emitProgress(int percent);
-    void trackListProgress(uint64_t count);
+    void trackListProgress(int percent);
     bool abortRequested() const;
 
 public Q_SLOTS:
@@ -103,7 +103,7 @@ Q_SIGNALS:
     void libraryUpdated();
     void progress(int);
     void deviceDetails(const QString &serialNumber);
-    void songCount(int);
+    void updatePercentage(int);
     void cover(const Song &s, const QImage &img);
 
 private:
@@ -139,7 +139,7 @@ private:
     uint64_t size;
     uint64_t used;
     MtpDevice *dev;
-    int lastUpdate;
+    int lastListPercent;
 };
 
 class MtpDevice : public Device

@@ -346,4 +346,9 @@ void Device::songCount(int c)
     setStatusMessage(i18n("Updating (%1)...", c));
 }
 
+void Device::updatePercentage(int pc)
+{
+    setStatusMessage(i18n("Updating (%1%)...", pc));
+}
+
 #endif // Q_OS_WIN

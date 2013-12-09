@@ -698,6 +698,10 @@ msgstr "%1 - %2"
 msgid "Updating (%1)..."
 msgstr "正在更新 (%1)..."
 
+#: devices/device.cpp:351
+msgid "Updating (%1%)..."
+msgstr "正在更新 (%1%)..."
+
 #: devices/devicepropertiesdialog.cpp:32
 #: devices/remotedevicepropertiesdialog.cpp:40
 msgid "Device Properties"

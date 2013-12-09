@@ -313,7 +313,6 @@ void MtpConnection::updateLibrary()
     emit statusMessage(i18n("Updating tracks..."));
     lastListPercent=-1;
     LIBMTP_track_t *tracks=LIBMTP_Get_Tracklisting_With_Callback(device, &trackListMonitor, this);
-    LIBMTP_track_t *track=tracks;
     QMap<uint32_t, Folder>::ConstIterator folderEnd=folderMap.constEnd();
     QList<Storage>::Iterator store=storage.begin();
     QList<Storage>::Iterator storeEnd=storage.end();
@@ -335,11 +334,14 @@ void MtpConnection::updateLibrary()
     qWarning() << "Tracks update:" << timer.elapsed();
     timer.restart();
     #endif
-    while (track && !abortRequested()) {
+    while (tracks && !abortRequested()) {
+        LIBMTP_track_t *track=tracks;
+        tracks=tracks->next;
+
         QMap<uint32_t, Folder>::ConstIterator folder=folderMap.find(track->parent_id);
         if (folder==folderEnd) {
             // We only care about tracks in the music folder...
-            track=track->next;
+            LIBMTP_destroy_track_t(track);
             continue;
         }
         Song s;
@@ -396,11 +398,15 @@ void MtpConnection::updateLibrary()
         al.songs.append(songItem);
         al.folder=track->parent_id;
         #endif
-        track=track->next;
+        LIBMTP_destroy_track_t(track);
     }
-    if (tracks) {
-        LIBMTP_destroy_track_t(tracks);
+
+    while (tracks) {
+        LIBMTP_track_t *track=tracks;
+        tracks=tracks->next;
+        LIBMTP_destroy_track_t(track);
     }
+
     #ifdef TIME_MTP_OPERATIONS
     qWarning() << "Tracks parse:" << timer.elapsed();
     timer.restart();
@@ -504,6 +510,7 @@ void MtpConnection::updateFolders()
     LIBMTP_folder_t *folders=LIBMTP_Get_Folder_List(device);
     parseFolder(folders);
     if (folders) {
+        // LIBMTP_destroy_folder_t is recursive
         LIBMTP_destroy_folder_t(folders);
     }
 }
@@ -511,9 +518,11 @@ void MtpConnection::updateFolders()
 void MtpConnection::updateFiles()
 {
     LIBMTP_file_t *files=LIBMTP_Get_Filelisting_With_Callback(device, 0, 0);
-    LIBMTP_file_t *file=files;
     QSet<uint32_t> folders=folderMap.keys().toSet();
-    while (file) {
+    while (files) {
+        LIBMTP_file_t *file=files;
+        files=files->next;
+
         if (folders.contains(file->parent_id)) {
             Folder &folder=folderMap[file->parent_id];
             if (LIBMTP_FILETYPE_FOLDER==file->filetype) {
@@ -527,10 +536,7 @@ void MtpConnection::updateFiles()
                 }
             }
         }
-        file=file->next;
-    }
-    if (files) {
-        LIBMTP_destroy_file_t(files);
+        LIBMTP_destroy_file_t(file);
     }
 }
 
@@ -1115,8 +1121,10 @@ void MtpConnection::getCover(const Song &song)
 #ifdef MTP_CLEAN_ALBUMS
 void MtpConnection::updateAlbums()
 {
-    if (albums) {
-        LIBMTP_destroy_album_t(albums);
+    while (albums) {
+        LIBMTP_album_t *album=albums;
+        albums=albums->next;
+        LIBMTP_destroy_album_t(album);
     }
     albums=LIBMTP_Get_Album_List(device);
 }
@@ -1159,9 +1167,10 @@ void MtpConnection::destroyData()
     }
     
     #ifdef MTP_CLEAN_ALBUMS
-    if (albums) {
-        LIBMTP_destroy_album_t(albums);
-        albums=0;
+    while (albums) {
+        LIBMTP_album_t *album=albums;
+        albums=albums->next;
+        LIBMTP_destroy_album_t(album);
     }
     #endif
 }

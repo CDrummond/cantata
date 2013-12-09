@@ -137,6 +137,8 @@
     question marks)
 78. Remove Cantata streams when exiting.
 79. Update album's year if song year is changed in tag editor.
+80. If we can access a CUE file, but fail to parse it, then do not add CUE to
+    album's track list.
 
 1.1.3
 -----

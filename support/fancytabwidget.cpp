@@ -359,12 +359,11 @@ QSize FancyTab::sizeHint() const {
     int iconSize=tabbar->iconSize();
     bool withText=tabbar->showText();
     int hSpacing = fm.height();
-    int vSpacing = hSpacing*0.8;
+    int vSpacing = hSpacing*0.6;
     if (withText) {
         int textWidth = fm.width(text)*1.1;
         int width = qMax(iconSize, qMin(3*iconSize, textWidth)) + vSpacing;
-        QSize ret(width, iconSize + hSpacing + fm.height());
-        return ret;
+        return QSize(width, iconSize + hSpacing + fm.height());
     } else {
         return QSize(iconSize + vSpacing, iconSize + hSpacing);
     }
@@ -374,7 +373,7 @@ QSize FancyTabBar::tabSizeHint() const
 {
     QFontMetrics fm(font());
     int hSpacing = fm.height();
-    int vSpacing = hSpacing*0.8;
+    int vSpacing = hSpacing*0.6;
     if (m_showText) {
         int maxTw=0;
         foreach (FancyTab *tab, m_tabs) {

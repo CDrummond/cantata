@@ -378,6 +378,10 @@ the encoding - and fallback to UTF-8 otherwise. (This 'peek'ing and fallback was
 how Cantata behaved in pre 1.2 versions - and is how Clementine behaves (where
 Cantata's CUE file support originates from.))
 
+NOTE: If Cantata cannot access the CUE file (as MPD is running on a remote host,
+or you have not configured the music folder correctly, etc.) then Cantata will
+add the CUE File to album track listing.
+
 
 8. Streams
 ==========

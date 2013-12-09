@@ -43,6 +43,7 @@ option(ENABLE_CDDB "Enable CDDB libraries (either this or MusicBrianz required f
 option(ENABLE_MUSICBRAINZ "Enable MusicBrianz libraries (either this or CDDB required for AudioCD support)" ON)
 option(ENABLE_PROXY_CONFIG "Enable proxy config in settings dialog" OFF)
 option(ENABLE_EXTERNAL_TAGS "Enable usage of external app for reading/writing tags (EXPERIMENTAL - NOT FULLY WORKING)" OFF)
+option(ENABLE_UNCACHED_MTP "Open MTP devices in un-cached mode (faster)" ON)
 
 if (ENABLE_QT5)
     set(ENABLE_KDE FALSE)

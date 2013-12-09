@@ -702,6 +702,10 @@ msgstr "%1 - %2 (%3)"
 msgid "Updating (%1)..."
 msgstr "Frissítés (%1)..."
 
+#: devices/device.cpp:351
+msgid "Updating (%1%)..."
+msgstr "Frissítés (%1%)..."
+
 #: devices/devicepropertiesdialog.cpp:32
 #: devices/remotedevicepropertiesdialog.cpp:40
 msgid "Device Properties"

@@ -120,7 +120,7 @@ MPDConnection::Response::Response(bool o, const QByteArray &d)
 {
 }
 
-QString MPDConnection::Response::getError()
+QString MPDConnection::Response::getError(const QByteArray &command)
 {
     if (ok || data.isEmpty()) {
         return QString();
@@ -129,6 +129,8 @@ QString MPDConnection::Response::getError()
     if (!ok && data.size()>0) {
         int cmdEnd=data.indexOf("} ");
         if (-1!=cmdEnd) {
+            return i18n("Uknown")+QLatin1String(" (")+command+QLatin1Char(')');
+        } else {
             cmdEnd+=2;
             data=data.mid(cmdEnd, data.length()-(data.endsWith('\n') ? cmdEnd+1 : cmdEnd));
         }
@@ -493,15 +495,15 @@ MPDConnection::Response MPDConnection::sendCommand(const QByteArray &command, bo
                     emit error(i18n("Failed to load. Please check user \"mpd\" has read permission."));
                 } else if (!details.isLocal() && response.data=="Access denied") {
                     emit error(i18n("Failed to load. MPD can only play local files if connected via a local socket."));
-                } else if (!response.getError().isEmpty()) {
-                    emit error(i18n("MPD reported the following error: %1", response.getError()));
+                } else if (!response.getError(command).isEmpty()) {
+                    emit error(i18n("MPD reported the following error: %1", response.getError(command)));
                 } else {
                     disconnectFromMPD();
                     emit stateChanged(false);
                     emit error(i18n("Failed to send command. Disconnected from %1", details.description()), true);
                 }
-            } else if (!response.getError().isEmpty()) {
-                emit error(i18n("MPD reported the following error: %1", response.getError()));
+            } else if (!response.getError(command).isEmpty()) {
+                emit error(i18n("MPD reported the following error: %1", response.getError(command)));
             } else {
                 disconnectFromMPD();
                 emit stateChanged(false);

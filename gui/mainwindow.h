@@ -150,7 +150,6 @@ private:
 Q_SIGNALS:
     // These are for communicating with MPD object (which is in its own thread, so need to talk via signal/slots)
     void setDetails(const MPDConnectionDetails &det);
-    void removeSongs(const QList<qint32> &);
     void pause(bool p);
     void play();
     void stop(bool afterCurrent=false);

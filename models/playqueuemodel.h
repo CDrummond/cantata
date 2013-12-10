@@ -88,7 +88,6 @@ public:
     QStringList mimeTypes() const;
     QMimeData *mimeData(const QModelIndexList &indexes) const;
     bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent);
-    QSet<qint32> getSongIdSet();
     QStringList filenames();
     void clear();
     qint32 currentSong() const { return currentSongId; }
@@ -98,6 +97,8 @@ public:
     void setStopAfterTrack(qint32 track);
     void clearStopAfterTrack() { setStopAfterTrack(-1); }
     void removeCantataStreams();
+    void remove(const QList<int> &rowsToRemove);
+    void crop(const QList<int> &rowsToKeep);
 
 public Q_SLOTS:
     void addItems(const QStringList &items, int row, bool replace, quint8 priority);

@@ -120,7 +120,7 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
     }
     #else
     baseDir=MPDConnection::self()->getDetails().dir;
-    composerSupport=MPDConnection::self()->supportsComposerTag();
+    composerSupport=MPDConnection::self()->composerTagSupported();
     #endif
     qSort(original);
 

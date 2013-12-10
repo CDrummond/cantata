@@ -793,7 +793,6 @@ void PlayQueueModel::setStopAfterTrack(qint32 track)
 void PlayQueueModel::removeCantataStreams()
 {
     QList<qint32> ids;
-
     foreach (const Song &s, songs) {
         if (s.isCantataStream()) {
             ids.append(s.id);
@@ -802,6 +801,40 @@ void PlayQueueModel::removeCantataStreams()
 
     if (!ids.isEmpty()) {
         emit removeSongs(ids);
+    }
+}
+
+void PlayQueueModel::remove(const QList<int> &rowsToRemove)
+{
+    QList<qint32> removeIds;
+    foreach (const int &r, rowsToRemove) {
+        if (r>0 && r<songs.count()) {
+            removeIds.append(songs.at(r).id);
+        }
+    }
+
+    if (!removeIds.isEmpty()) {
+        emit removeSongs(removeIds);
+    }
+}
+
+void PlayQueueModel::crop(const QList<qint32> &rowsToKeep)
+{
+    QSet<qint32> allIds;
+    foreach(const Song &song, songs) {
+        allIds.insert(song.id);
+    }
+
+    QSet<qint32> keepIds;
+    foreach (const int &r, rowsToKeep) {
+        if (r>0 && r<songs.count()) {
+            keepIds.insert(songs.at(r).id);
+        }
+    }
+
+    QSet<qint32> removeIds=allIds-keepIds;
+    if (!removeIds.isEmpty()) {
+        emit removeSongs(removeIds.toList());
     }
 }
 
@@ -925,17 +958,6 @@ void PlayQueueModel::updateDetails(const QList<Song> &updated)
     if (currentUpdated) {
         emit updateCurrent(currentSong);
     }
-}
-
-QSet<qint32> PlayQueueModel::getSongIdSet()
-{
-    QSet<qint32> ids;
-
-    foreach(const Song &song, songs) {
-        ids << song.id;
-    }
-
-    return ids;
 }
 
 QStringList PlayQueueModel::filenames()

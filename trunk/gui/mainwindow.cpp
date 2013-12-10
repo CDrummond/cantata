@@ -655,7 +655,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(MPDConnection::self(), SIGNAL(outputsUpdated(const QList<Output> &)), this, SLOT(outputsUpdated(const QList<Output> &)));
     connect(this, SIGNAL(enableOutput(int, bool)), MPDConnection::self(), SLOT(enableOutput(int, bool)));
     connect(this, SIGNAL(outputs()), MPDConnection::self(), SLOT(outputs()));
-    connect(this, SIGNAL(removeSongs(const QList<qint32> &)), MPDConnection::self(), SLOT(removeSongs(const QList<qint32> &)));
     connect(this, SIGNAL(pause(bool)), MPDConnection::self(), SLOT(setPause(bool)));
     connect(this, SIGNAL(play()), MPDConnection::self(), SLOT(play()));
     connect(this, SIGNAL(stop(bool)), MPDConnection::self(), SLOT(stopPlaying(bool)));
@@ -2007,18 +2006,7 @@ void MainWindow::clearPlayQueue()
 
 void MainWindow::removeFromPlayQueue()
 {
-    const QModelIndexList items = playQueue->selectedIndexes();
-    QList<qint32> toBeRemoved;
-
-    if (items.isEmpty()) {
-        return;
-    }
-
-    foreach (const QModelIndex &idx, items) {
-        toBeRemoved.append(playQueueModel.getIdByRow(playQueueProxyModel.mapToSource(idx).row()));
-    }
-
-    emit removeSongs(toBeRemoved);
+    playQueueModel.remove(playQueueProxyModel.mapToSourceRows(playQueue->selectedIndexes()));
 }
 
 void MainWindow::replacePlayQueue()
@@ -2339,22 +2327,9 @@ void MainWindow::sidebarModeChanged()
     }
 }
 
-// Do this by taking the set off all song id's and subtracting from that the set of selected song id's. Feed that list to emit removeSongs
 void MainWindow::cropPlayQueue()
 {
-    const QModelIndexList items = playQueue->selectedIndexes();
-    if (items.isEmpty()) {
-        return;
-    }
-
-    QSet<qint32> songs = playQueueModel.getSongIdSet();
-    QSet<qint32> selected;
-
-    foreach (const QModelIndex &idx, items) {
-        selected << playQueueModel.getIdByRow(playQueueProxyModel.mapToSource(idx).row());
-    }
-
-    emit removeSongs((songs - selected).toList());
+    playQueueModel.crop(playQueueProxyModel.mapToSourceRows(playQueue->selectedIndexes()));
 }
 
 void MainWindow::currentTabChanged(int index)

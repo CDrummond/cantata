@@ -130,3 +130,12 @@ void ProxyModel::sort(int column, Qt::SortOrder order)
         isSorted=true;
     }
 }
+
+QList<int> ProxyModel::mapToSourceRows(const QModelIndexList &list) const
+{
+    QList<int> rows;
+    foreach (const QModelIndex &idx, list) {
+        rows.append(mapToSource(idx).row());
+    }
+    return rows;
+}

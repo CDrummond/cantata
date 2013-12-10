@@ -44,6 +44,7 @@ public:
     const QString & filterText() const { return origFilterText; }
     void sort() { isSorted=false; sort(0); }
     void sort(int column, Qt::SortOrder order = Qt::AscendingOrder);
+    QList<int> mapToSourceRows(const QModelIndexList &list) const;
 
 protected:
     bool matchesFilter(const Song &s) const;

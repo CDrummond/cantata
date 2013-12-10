@@ -38,6 +38,7 @@
 #include "icon.h"
 #include "gtkstyle.h"
 #include "action.h"
+#include "utils.h"
 #include <QHBoxLayout>
 #include <QMenu>
 #include <QMouseEvent>
@@ -66,13 +67,10 @@ const int FancyTabBar::m_textPadding = 4;
 
 static int largeIconSize=32;
 static int smallIconSize=16;
-
 void FancyTabWidget::setup()
 {
-    int height=QApplication::fontMetrics().height();
-
-    if (height>22) {
-        largeIconSize=Icon::stdSize(height*2.5);
+    if (Utils::isHighDpi()) {
+        largeIconSize=Icon::stdSize(40);
         smallIconSize=16;
         if (largeIconSize>32) {
             if (largeIconSize<56) {
@@ -354,34 +352,39 @@ FancyTabBar::~FancyTabBar()
 //    delete style();
 }
 
+static inline int spacing()
+{
+    return Utils::isHighDpi() ? 36 : 18;
+}
+
 QSize FancyTab::sizeHint() const {
-    QFontMetrics fm(font());
     int iconSize=tabbar->iconSize();
     bool withText=tabbar->showText();
-    int hSpacing = fm.height();
+    int hSpacing = spacing();
     int vSpacing = hSpacing*0.6;
     if (withText) {
+        QFontMetrics fm(font());
         int textWidth = fm.width(text)*1.1;
         int width = qMax(iconSize, qMin(3*iconSize, textWidth)) + vSpacing;
         return QSize(width, iconSize + hSpacing + fm.height());
     } else {
-        return QSize(iconSize + vSpacing, iconSize + hSpacing);
+        return QSize(iconSize + (vSpacing*1.25), iconSize + (hSpacing*1.25));
     }
 }
 
 QSize FancyTabBar::tabSizeHint() const
 {
-    QFontMetrics fm(font());
-    int hSpacing = fm.height();
+    int hSpacing = spacing();
     int vSpacing = hSpacing*0.6;
     if (m_showText) {
+        QFontMetrics fm(font());
         int maxTw=0;
         foreach (FancyTab *tab, m_tabs) {
             maxTw=qMax(maxTw, tab->sizeHint().width());
         }
         return QSize(qMax(m_iconSize + vSpacing, maxTw), m_iconSize + hSpacing + fm.height());
     } else {
-        return QSize(m_iconSize + vSpacing, m_iconSize + hSpacing);
+        return QSize(m_iconSize + (vSpacing*1.25), m_iconSize + (hSpacing*1.25));
     }
 }
 

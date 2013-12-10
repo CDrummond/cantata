@@ -175,7 +175,7 @@ public:
 
     struct Response {
         Response(bool o=true, const QByteArray &d=QByteArray());
-        QString getError();
+        QString getError(const QByteArray &command);
         bool ok;
         QByteArray data;
     };

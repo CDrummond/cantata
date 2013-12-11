@@ -54,6 +54,15 @@
 #include <QPropertyAnimation>
 #include <QSignalMapper>
 
+static inline int sidebarSpacing(bool withText)
+{
+    int sp=Utils::isHighDpi() ? 24 : 12;
+    if (!withText) {
+        sp*=1.25;
+    }
+    return sp;
+}
+
 static inline Qt::TextElideMode elideMode()
 {
     return Qt::LeftToRight==QApplication::layoutDirection() ? Qt::ElideRight : Qt::ElideLeft;
@@ -246,9 +255,7 @@ void FancyTabProxyStyle::drawControl(
   QString txt=text;
   txt.replace("&", "");
   txt=p->fontMetrics().elidedText(txt, elideMode(), text_rect.width());
-
   p->drawText(text_rect.translated(0, -1), textFlags, txt);
-
   p->restore();
 }
 
@@ -352,39 +359,32 @@ FancyTabBar::~FancyTabBar()
 //    delete style();
 }
 
-static inline int spacing()
-{
-    return Utils::isHighDpi() ? 36 : 18;
-}
-
 QSize FancyTab::sizeHint() const {
     int iconSize=tabbar->iconSize();
     bool withText=tabbar->showText();
-    int hSpacing = spacing();
-    int vSpacing = hSpacing*0.6;
+    int spacing = sidebarSpacing(withText);
     if (withText) {
         QFontMetrics fm(font());
         int textWidth = fm.width(text)*1.1;
-        int width = qMax(iconSize, qMin(3*iconSize, textWidth)) + vSpacing;
-        return QSize(width, iconSize + hSpacing + fm.height());
+        int width = qMax(iconSize, qMin(3*iconSize, textWidth)) + spacing;
+        return QSize(width, iconSize + spacing + fm.height());
     } else {
-        return QSize(iconSize + (vSpacing*1.25), iconSize + (hSpacing*1.25));
+        return QSize(iconSize + spacing, iconSize + spacing);
     }
 }
 
 QSize FancyTabBar::tabSizeHint() const
 {
-    int hSpacing = spacing();
-    int vSpacing = hSpacing*0.6;
+    int spacing = sidebarSpacing(m_showText);
     if (m_showText) {
         QFontMetrics fm(font());
         int maxTw=0;
         foreach (FancyTab *tab, m_tabs) {
             maxTw=qMax(maxTw, tab->sizeHint().width());
         }
-        return QSize(qMax(m_iconSize + vSpacing, maxTw), m_iconSize + hSpacing + fm.height());
+        return QSize(qMax(m_iconSize + spacing, maxTw), m_iconSize + spacing + fm.height());
     } else {
-        return QSize(m_iconSize + (vSpacing*1.25), m_iconSize + (hSpacing*1.25));
+        return QSize(m_iconSize + spacing, m_iconSize + spacing);
     }
 }
 

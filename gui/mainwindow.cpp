@@ -568,7 +568,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     #if !defined Q_OS_WIN
     #if !defined Q_OS_MAC
-    if (qgetenv("XDG_CURRENT_DESKTOP")=="Unity") {
+    if (Utils::Unity==Utils::currentDe()) {
     #endif
         QMenu *menu=new QMenu(i18n("&File"), this);
         menu->addAction(quitAction);

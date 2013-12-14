@@ -808,7 +808,7 @@ void PlayQueueModel::remove(const QList<int> &rowsToRemove)
 {
     QList<qint32> removeIds;
     foreach (const int &r, rowsToRemove) {
-        if (r>0 && r<songs.count()) {
+        if (r>-1 && r<songs.count()) {
             removeIds.append(songs.at(r).id);
         }
     }
@@ -818,7 +818,7 @@ void PlayQueueModel::remove(const QList<int> &rowsToRemove)
     }
 }
 
-void PlayQueueModel::crop(const QList<qint32> &rowsToKeep)
+void PlayQueueModel::crop(const QList<int> &rowsToKeep)
 {
     QSet<qint32> allIds;
     foreach(const Song &song, songs) {
@@ -827,7 +827,7 @@ void PlayQueueModel::crop(const QList<qint32> &rowsToKeep)
 
     QSet<qint32> keepIds;
     foreach (const int &r, rowsToKeep) {
-        if (r>0 && r<songs.count()) {
+        if (r>-1 && r<songs.count()) {
             keepIds.insert(songs.at(r).id);
         }
     }

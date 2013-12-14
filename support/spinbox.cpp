@@ -129,7 +129,6 @@ SpinBox::SpinBox(QWidget *p)
         layout->addWidget(spin);
         layout->addWidget(decButton);
         layout->addWidget(incButton);
-        layout->addItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum));
         connect(spin, SIGNAL(valueChanged(int)), SLOT(checkValue()));
         connect(decButton, SIGNAL(pressed()), SLOT(decPressed()));
         connect(incButton, SIGNAL(pressed()), SLOT(incPressed()));

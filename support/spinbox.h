@@ -63,7 +63,11 @@ private:
 };
 
 #ifdef Q_WS_WIN
-typedef EmptySpinBox SpinBox;
+class SpinBox : public EmptySpinBox
+{
+public:
+    SpinBox(QWidget *p) : EmptySpinBox(p) { }
+};
 #else
 class SpinBoxButton;
 
@@ -87,6 +91,7 @@ public:
     int maximum() const { return spin->maximum(); }
     void setFocus() const { spin->setFocus(); }
     void setAllowEmpty() { spin->setAllowEmpty(); }
+    void setSizePolicy(QSizePolicy::Policy horizontal, QSizePolicy::Policy vertical) { spin->setSizePolicy(horizontal, vertical); }
 
 Q_SIGNALS:
     void valueChanged(int v);

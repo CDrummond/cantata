@@ -142,6 +142,7 @@
 81. Show MTP track list progress in percentages.
 82. Fix memleak with MTP devices.
 83. Open MTP devices in un-cached mode (faster)
+84. Add clear button to Qt input dialogs.
 
 1.1.3
 -----

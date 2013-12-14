@@ -31,6 +31,7 @@
 #include "settings.h"
 #include "icons.h"
 #include "buddylabel.h"
+#include "utils.h"
 #include <QBoxLayout>
 #include <QComboBox>
 #include <QGroupBox>
@@ -172,5 +173,11 @@ void ShortcutsSettingsPage::mediaKeysIfaceChanged()
 
 void ShortcutsSettingsPage::showGnomeSettings()
 {
+    #if !defined Q_OS_WIN && !defined Q_OS_MAC
+    if ("Unity"==qgetenv("XDG_CURRENT_DESKTOP") && !Utils::findExe("unity-control-center").isEmpty()) {
+        QProcess::startDetached("unity-control-center", QStringList() << "keyboard");
+        return;
+    }
+    #endif
     QProcess::startDetached("gnome-control-center", QStringList() << "keyboard");
 }

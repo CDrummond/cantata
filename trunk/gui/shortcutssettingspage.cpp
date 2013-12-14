@@ -57,9 +57,9 @@ ShortcutsSettingsPage::ShortcutsSettingsPage(QWidget *p)
     lay->addWidget(shortcuts);
 
     #if !defined Q_OS_WIN && !defined Q_OS_MAC
+    Utils::Desktop de=Utils::currentDe();
     bool useDesktop=true;
-    QByteArray desktop=qgetenv("XDG_CURRENT_DESKTOP");
-    bool isGnome=desktop=="Unity" || desktop=="GNOME";
+    bool isGnome=Utils::Unity==de || Utils::Gnome==de;
     #else
     bool useDesktop=false;
     bool isGnome=false;
@@ -174,7 +174,7 @@ void ShortcutsSettingsPage::mediaKeysIfaceChanged()
 void ShortcutsSettingsPage::showGnomeSettings()
 {
     #if !defined Q_OS_WIN && !defined Q_OS_MAC
-    if ("Unity"==qgetenv("XDG_CURRENT_DESKTOP") && !Utils::findExe("unity-control-center").isEmpty()) {
+    if (Utils::Unity==Utils::currentDe() && !Utils::findExe("unity-control-center").isEmpty()) {
         QProcess::startDetached("unity-control-center", QStringList() << "keyboard");
         return;
     }

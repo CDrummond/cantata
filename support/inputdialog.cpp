@@ -24,57 +24,91 @@
 #include "inputdialog.h"
 #include "gtkstyle.h"
 #include "spinbox.h"
+#include "lineedit.h"
 #include "dialog.h"
+#include "utils.h"
 #include <QLabel>
-#include <QFormLayout>
+#include <QBoxLayout>
 
-class IntInputDialog : public Dialog
+InputDialog::InputDialog(const QString &caption, const QString &label, const QString &value, QLineEdit::EchoMode echo, QWidget *parent)
+    : Dialog(parent)
+    , spin(0)
 {
-public:
-    IntInputDialog(const QString &caption, const QString &label, int value, int minValue, int maxValue, int step, QWidget *parent)
-        : Dialog(parent) {
-        setButtons(Ok|Cancel);
-        QWidget *wid=new QWidget(this);
-        QFormLayout *layout=new QFormLayout(wid);
+    init(false, caption, label);
+    edit->setText(value);
+    edit->setEchoMode(echo);
+    enableOkButton();
+    connect(edit, SIGNAL(textChanged(QString)), this, SLOT(enableOkButton()));
+}
 
+InputDialog::InputDialog(const QString &caption, const QString &label, int value, int minValue, int maxValue, int step, QWidget *parent)
+    : Dialog(parent)
+    , edit(0)
+{
+    init(true, caption, label);
+    spin->setRange(minValue, maxValue);
+    spin->setValue(value);
+    spin->setSingleStep(step);
+}
+
+void InputDialog::init(bool intInput, const QString &caption, const QString &label)
+{
+    setButtons(Ok|Cancel);
+    QWidget *wid=new QWidget(this);
+    QBoxLayout *layout=new QBoxLayout(QBoxLayout::TopToBottom, wid);
+
+    if (intInput) {
         spin=new SpinBox(wid);
-        spin->setRange(minValue, maxValue);
-        spin->setValue(value);
-        spin->setSingleStep(step);
         spin->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Preferred);
-        layout->setWidget(0, QFormLayout::LabelRole, new QLabel(label, wid));
-        layout->setWidget(0, QFormLayout::FieldRole, spin);
-        layout->setMargin(0);
-
-        setCaption(caption);
-        setMainWidget(wid);
-        setButtons(Ok|Cancel);
-    }
-
-SpinBox *spin;
-};
-
-int InputDialog::getInteger(const QString &caption, const QString &label, int value, int minValue, int maxValue, int step, int base, bool *ok, QWidget *parent) {
-
-    if (GtkStyle::mimicWidgets()) {
-        IntInputDialog dlg(caption, label, value, minValue, maxValue, step, parent);
-        if (QDialog::Accepted==dlg.exec()) {
-            if (ok) {
-                *ok=true;
-            }
-            return dlg.spin->value();
-        } else {
-            if (ok) {
-                *ok=false;
-            }
-            return value;
-        }
+        setMinimumWidth(Utils::isHighDpi() ? 600 : 300);
     } else {
-        #ifdef ENABLE_KDE_SUPPORT
-        return KInputDialog::getInteger(caption, label, value, minValue, maxValue, step, base, ok, parent);
-        #else
-        Q_UNUSED(base)
-        return QInputDialog::getInt(parent, caption, label, value, minValue, maxValue, step, ok);
-        #endif
+        edit=new LineEdit(wid);
+        edit->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Preferred);
+        setMinimumWidth(Utils::isHighDpi() ? 700 : 350);
+    }
+    layout->addWidget(new QLabel(label, wid));
+    layout->addWidget(intInput ? (QWidget *)spin : (QWidget *)edit);
+    layout->setMargin(0);
+
+    setCaption(caption);
+    setMainWidget(wid);
+    setButtons(Ok|Cancel);
+}
+
+void InputDialog::enableOkButton()
+{
+    enableButton(Ok, 0==edit || !edit->text().trimmed().isEmpty());
+}
+
+int InputDialog::getInteger(const QString &caption, const QString &label, int value, int minValue, int maxValue, int step, int base, bool *ok, QWidget *parent)
+{
+    Q_UNUSED(base)
+    InputDialog dlg(caption, label, value, minValue, maxValue, step, parent);
+    if (QDialog::Accepted==dlg.exec()) {
+        if (ok) {
+            *ok=true;
+        }
+        return dlg.spin->value();
+    } else {
+        if (ok) {
+            *ok=false;
+        }
+        return value;
+    }
+}
+
+QString InputDialog::getText(const QString &caption, const QString &label, QLineEdit::EchoMode echoMode, const QString &value, bool *ok, QWidget *parent)
+{
+    InputDialog dlg(caption, label, value, echoMode, parent);
+    if (QDialog::Accepted==dlg.exec()) {
+        if (ok) {
+            *ok=true;
+        }
+        return dlg.edit->text();
+    } else {
+        if (ok) {
+            *ok=false;
+        }
+        return value;
     }
 }

@@ -763,3 +763,24 @@ extern bool Utils::isHighDpi()
     }
     return fontHeight>22;
 }
+
+#if !defined Q_OS_WIN32 && !defined Q_OS_MAC
+Utils::Desktop Utils::currentDe()
+{
+    QByteArray desktop=qgetenv("XDG_CURRENT_DESKTOP").toLower();
+    if ("unity"==desktop) {
+        return Unity;
+    }
+    if ("kde"==desktop) {
+        return KDE;
+    }
+    if ("gnome"==desktop) {
+        return Gnome;
+    }
+    QByteArray kde=qgetenv("KDE_FULL_SESSION");
+    if ("true"==kde) {
+        return KDE;
+    }
+    return Other;
+}
+#endif

@@ -359,9 +359,7 @@ void RemoteFsDevice::mount()
                 return;
             }
             QStringList askPassList;
-            const char *env=qgetenv("KDE_FULL_SESSION");
-            QString dm=env && 0==strcmp(env, "true") ? QLatin1String("KDE") : QString(qgetenv("XDG_CURRENT_DESKTOP"));
-            if (dm.isEmpty() || QLatin1String("KDE")==dm) {
+            if (Utils::KDE==Utils::currentDe()) {
                 askPassList << QLatin1String("ksshaskpass") << QLatin1String("ssh-askpass") << QLatin1String("ssh-askpass-gnome");
             } else {
                 askPassList << QLatin1String("ssh-askpass-gnome") << QLatin1String("ssh-askpass") << QLatin1String("ksshaskpass");

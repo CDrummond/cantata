@@ -452,6 +452,19 @@ within the folder of the current track, or within its parent folder. If no image
         </widget>
        </item>
        <item row="2" column="0">
+        <widget class="BuddyLabel" name="startupStateLabel">
+         <property name="text">
+          <string>When Cantata is started:</string>
+         </property>
+         <property name="buddy">
+          <cstring>startupStateLabel</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QComboBox" name="startupState"/>
+       </item>
+       <item row="3" column="0">
         <widget class="BuddyLabel" name="label_11">
          <property name="text">
           <string>Show popup messages when changing tracks:</string>
@@ -461,7 +474,7 @@ within the folder of the current track, or within its parent folder. If no image
          </property>
         </widget>
        </item>
-       <item row="2" column="1">
+       <item row="3" column="1">
         <widget class="OnOffButton" name="systemTrayPopup">
          <property name="text">
           <string/>
@@ -641,6 +654,7 @@ within the folder of the current track, or within its parent folder. If no image
   <tabstop>playQueueScroll</tabstop>
   <tabstop>systemTrayCheckBox</tabstop>
   <tabstop>minimiseOnClose</tabstop>
+  <tabstop>startupState</tabstop>
   <tabstop>systemTrayPopup</tabstop>
   <tabstop>groupSingle</tabstop>
   <tabstop>groupMultiple</tabstop>

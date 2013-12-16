@@ -134,6 +134,26 @@ struct MpdDefaults
 
 static MpdDefaults mpdDefaults;
 
+static QString getStartupStateStr(Settings::StartupState s)
+{
+    switch (s) {
+    case Settings::SS_ShowMainWindow: return QLatin1String("show");
+    case Settings::SS_HideMainWindow: return QLatin1String("hide");
+    default:
+    case Settings::SS_Previous: return QLatin1String("prev");
+    }
+}
+
+static Settings::StartupState getStartupState(const QString &str)
+{
+    for (int i=0; i<=Settings::SS_Previous; ++i) {
+        if (getStartupStateStr((Settings::StartupState)i)==str) {
+            return (Settings::StartupState)i;
+        }
+    }
+    return Settings::SS_Previous;
+}
+
 Settings::Settings()
     : isFirstRun(false)
     , modified(false)
@@ -794,6 +814,11 @@ int Settings::volumeStep()
     return RESTRICT(v, 1, 20);
 }
 
+Settings::StartupState Settings::startupState()
+{
+    return getStartupState(GET_STRING("startupState", getStartupStateStr(SS_Previous)));
+}
+
 void Settings::removeConnectionDetails(const QString &v)
 {
     if (v==currentConnection()) {
@@ -861,6 +886,7 @@ void Settings::saveConnectionDetails(const MPDConnectionDetails &v)
 
 #define SET_VALUE_MOD(KEY) if (v!=KEY()) { modified=true; SET_VALUE(#KEY, v); }
 #define SET_ITEMVIEW_MODE_VALUE_MOD(KEY) if (v!=KEY()) { modified=true; SET_VALUE(#KEY, ItemView::modeStr((ItemView::Mode)v)); }
+#define SET_STARTUPSTATE_VALUE_MOD(KEY) if (v!=KEY()) { modified=true; SET_VALUE(#KEY, getStartupStateStr((StartupState)v)); }
 
 void Settings::saveCurrentConnection(const QString &v)
 {
@@ -1250,6 +1276,11 @@ void Settings::savePodcastDownloadPath(const QString &v)
 void Settings::savePodcastAutoDownload(bool v)
 {
     SET_VALUE_MOD(podcastAutoDownload);
+}
+
+void Settings::saveStartupState(int v)
+{
+    SET_STARTUPSTATE_VALUE_MOD(startupState);
 }
 
 void Settings::save(bool force)

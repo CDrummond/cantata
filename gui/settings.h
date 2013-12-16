@@ -90,6 +90,13 @@ public:
         DefaultFade = 2000
     };
 
+    enum StartupState
+    {
+        SS_ShowMainWindow,
+        SS_HideMainWindow,
+        SS_Previous
+    };
+
     static Settings *self();
 
     Settings();
@@ -192,6 +199,7 @@ public:
     bool networkAccessEnabled();
     bool albumViewLoadAll();
     int volumeStep();
+    StartupState startupState();
 
     void removeConnectionDetails(const QString &v);
     void saveConnectionDetails(const MPDConnectionDetails &v);
@@ -283,6 +291,7 @@ public:
     void saveLastRssUpdate(const QDateTime &v);
     void savePodcastDownloadPath(const QString &v);
     void savePodcastAutoDownload(bool v);
+    void saveStartupState(int v);
     void save(bool force=false);
     #if defined ENABLE_KDE_SUPPORT && defined ENABLE_KWALLET
     bool openWallet();

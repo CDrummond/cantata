@@ -61,6 +61,7 @@ private Q_SLOTS:
     void playListsStyleChanged();
     void playQueueGroupedChanged();
     void forceSingleClickChanged();
+    void enableStartupState();
 
 private:
     int enabledViews;

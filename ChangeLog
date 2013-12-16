@@ -1,4 +1,9 @@
-﻿1.2.0
+﻿1.3.0
+-----
+1. Add option to control startup-state; visible, hidden, or remebered from
+   previous run.
+
+1.2.0
 -----
  1. Add support for opus audio format - AudioCD encoding, transcoding, HTTP
     server, etc.

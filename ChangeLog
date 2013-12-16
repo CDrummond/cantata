@@ -3,6 +3,10 @@
 1. Add option to control startup-state; visible, hidden, or remebered from
    previous run.
 
+1.2.1
+-----
+1. Only use old Qt DBUS type annotations for Qt less than 4.8.2
+
 1.2.0
 -----
  1. Add support for opus audio format - AudioCD encoding, transcoding, HTTP

@@ -56,6 +56,13 @@ static void addViewTypes(QComboBox *box, bool iconMode=false, bool groupedTree=f
     }
 }
 
+static void addStartupState(QComboBox *box)
+{
+    box->addItem(i18n("Show main window"), Settings::SS_ShowMainWindow);
+    box->addItem(i18n("Hide main window"), Settings::SS_HideMainWindow);
+    box->addItem(i18n("Restore previous state"), Settings::SS_Previous);
+}
+
 static void selectEntry(QComboBox *box, int v)
 {
     for (int i=1; i<box->count(); ++i) {
@@ -66,7 +73,7 @@ static void selectEntry(QComboBox *box, int v)
     }
 }
 
-static inline int getViewType(QComboBox *box)
+static inline int getValue(QComboBox *box)
 {
     return box->itemData(box->currentIndex()).toInt();
 }
@@ -177,6 +184,7 @@ InterfaceSettings::InterfaceSettings(QWidget *p, const QStringList &hiddenPages)
 
     groupMultiple->addItem(i18n("Grouped by \'Album Artist\'"));
     groupMultiple->addItem(i18n("Grouped under \'Various Artists\'"));
+    addStartupState(startupState);
     if (enabledViews&V_Artists) {
         connect(libraryView, SIGNAL(currentIndexChanged(int)), SLOT(libraryViewChanged()));
         connect(libraryCoverSize, SIGNAL(currentIndexChanged(int)), SLOT(libraryCoverSizeChanged()));
@@ -195,6 +203,8 @@ InterfaceSettings::InterfaceSettings(QWidget *p, const QStringList &hiddenPages)
     #endif
     connect(systemTrayCheckBox, SIGNAL(toggled(bool)), minimiseOnClose, SLOT(setEnabled(bool)));
     connect(systemTrayCheckBox, SIGNAL(toggled(bool)), minimiseOnCloseLabel, SLOT(setEnabled(bool)));
+    connect(systemTrayCheckBox, SIGNAL(toggled(bool)), SLOT(enableStartupState()));
+    connect(minimiseOnClose, SIGNAL(toggled(bool)), SLOT(enableStartupState()));
     connect(forceSingleClick, SIGNAL(toggled(bool)), SLOT(forceSingleClickChanged()));
 }
 
@@ -255,33 +265,35 @@ void InterfaceSettings::load()
     minimiseOnClose->setChecked(Settings::self()->minimiseOnClose());
     minimiseOnClose->setEnabled(systemTrayCheckBox->isChecked());
     minimiseOnCloseLabel->setEnabled(systemTrayCheckBox->isChecked());
+    selectEntry(startupState, Settings::self()->startupState());
+    enableStartupState();
 }
 
 void InterfaceSettings::save()
 {
     if (enabledViews&V_Artists) {
         Settings::self()->saveLibraryArtistImage(libraryArtistImage->isChecked());
-        Settings::self()->saveLibraryView(getViewType(libraryView));
+        Settings::self()->saveLibraryView(getValue(libraryView));
         Settings::self()->saveLibraryCoverSize(libraryCoverSize->currentIndex());
         Settings::self()->saveLibraryYear(libraryYear->isChecked());
     }
     if (enabledViews&V_Albums) {
-        Settings::self()->saveAlbumsView(getViewType(albumsView));
+        Settings::self()->saveAlbumsView(getValue(albumsView));
         Settings::self()->saveAlbumsCoverSize(albumsCoverSize->currentIndex());
         Settings::self()->saveAlbumSort(albumSort->currentIndex());
     }
     if (enabledViews&V_Folders) {
-        Settings::self()->saveFolderView(getViewType(folderView));
+        Settings::self()->saveFolderView(getValue(folderView));
     }
     if (enabledViews&V_Playlists) {
-        Settings::self()->savePlaylistsView(getViewType(playlistsView));
+        Settings::self()->savePlaylistsView(getValue(playlistsView));
         Settings::self()->savePlayListsStartClosed(playListsStartClosed->isChecked());
     }
     if (enabledViews&V_Streams) {
-        Settings::self()->saveStreamsView(getViewType(streamsView));
+        Settings::self()->saveStreamsView(getValue(streamsView));
     }
     if (enabledViews&V_Online) {
-        Settings::self()->saveOnlineView(getViewType(onlineView));
+        Settings::self()->saveOnlineView(getValue(onlineView));
     }
     Settings::self()->saveGroupSingle(groupSingle->isChecked());
     Settings::self()->saveUseComposer(useComposer->isChecked());
@@ -291,7 +303,7 @@ void InterfaceSettings::save()
         Settings::self()->saveShowDeleteAction(showDeleteAction->isChecked());
     }
     if (enabledViews&V_Devices) {
-        Settings::self()->saveDevicesView(getViewType(devicesView));
+        Settings::self()->saveDevicesView(getValue(devicesView));
     }
     #endif
     Settings::self()->savePlayQueueGrouped(1==playQueueGrouped->currentIndex());
@@ -304,11 +316,12 @@ void InterfaceSettings::save()
     Settings::self()->saveUseSystemTray(systemTrayCheckBox->isChecked());
     Settings::self()->saveShowPopups(systemTrayPopup->isChecked());
     Settings::self()->saveMinimiseOnClose(minimiseOnClose->isChecked());
+    Settings::self()->saveStartupState(getValue(startupState));
 }
 
 void InterfaceSettings::libraryViewChanged()
 {
-    int vt=getViewType(libraryView);
+    int vt=getValue(libraryView);
     if (ItemView::Mode_IconTop==vt && 0==libraryCoverSize->currentIndex()) {
         libraryCoverSize->setCurrentIndex(2);
     }
@@ -326,7 +339,7 @@ void InterfaceSettings::libraryViewChanged()
 
 void InterfaceSettings::libraryCoverSizeChanged()
 {
-    if (ItemView::Mode_IconTop==getViewType(libraryView) && 0==libraryCoverSize->currentIndex()) {
+    if (ItemView::Mode_IconTop==getValue(libraryView) && 0==libraryCoverSize->currentIndex()) {
         libraryView->setCurrentIndex(1);
     }
     if (0==libraryCoverSize->currentIndex()) {
@@ -336,14 +349,14 @@ void InterfaceSettings::libraryCoverSizeChanged()
 
 void InterfaceSettings::albumsViewChanged()
 {
-    if (ItemView::Mode_IconTop==getViewType(albumsView) && 0==albumsCoverSize->currentIndex()) {
+    if (ItemView::Mode_IconTop==getValue(albumsView) && 0==albumsCoverSize->currentIndex()) {
         albumsCoverSize->setCurrentIndex(2);
     }
 }
 
 void InterfaceSettings::albumsCoverSizeChanged()
 {
-    if (ItemView::Mode_IconTop==getViewType(albumsView) && 0==albumsCoverSize->currentIndex()) {
+    if (ItemView::Mode_IconTop==getValue(albumsView) && 0==albumsCoverSize->currentIndex()) {
         albumsView->setCurrentIndex(1);
     }
 }
@@ -358,7 +371,7 @@ void InterfaceSettings::playQueueGroupedChanged()
 
 void InterfaceSettings::playListsStyleChanged()
 {
-    bool grouped=getViewType(playlistsView)==ItemView::Mode_GroupedTree;
+    bool grouped=getValue(playlistsView)==ItemView::Mode_GroupedTree;
     playListsStartClosed->setEnabled(grouped);
     playListsStartClosedLabel->setEnabled(grouped);
 }
@@ -366,4 +379,10 @@ void InterfaceSettings::playListsStyleChanged()
 void InterfaceSettings::forceSingleClickChanged()
 {
     singleClickLabel->setOn(forceSingleClick->isChecked()!=Settings::self()->forceSingleClick());
+}
+
+void InterfaceSettings::enableStartupState()
+{
+    startupState->setEnabled(systemTrayCheckBox->isChecked() && minimiseOnClose->isChecked());
+    startupStateLabel->setEnabled(startupState->isEnabled());
 }

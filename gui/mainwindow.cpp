@@ -625,6 +625,8 @@ MainWindow::MainWindow(QWidget *parent)
     playQueue->addAction(cropPlayQueueAction);
     playQueue->addAction(shufflePlayQueueAction);
     playQueue->addAction(shufflePlayQueueAlbumsAction);
+//    playQueue->addAction(playQueueModel.undoAct());
+//    playQueue->addAction(playQueueModel.redoAct());
     Action *sep=new Action(this);
     sep->setSeparator(true);
     playQueue->addAction(sep);
@@ -661,7 +663,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(this, SIGNAL(getStatus()), MPDConnection::self(), SLOT(getStatus()));
     connect(this, SIGNAL(getStats(bool)), MPDConnection::self(), SLOT(getStats(bool)));
     connect(this, SIGNAL(updateMpd()), MPDConnection::self(), SLOT(update()));
-    connect(this, SIGNAL(clear()), MPDConnection::self(), SLOT(clear()));
     connect(this, SIGNAL(playListInfo()), MPDConnection::self(), SLOT(playListInfo()));
     connect(this, SIGNAL(currentSong()), MPDConnection::self(), SLOT(currentSong()));
     connect(this, SIGNAL(setSeekId(qint32, quint32)), MPDConnection::self(), SLOT(setSeekId(qint32, quint32)));
@@ -669,7 +670,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(this, SIGNAL(setDetails(const MPDConnectionDetails &)), MPDConnection::self(), SLOT(setDetails(const MPDConnectionDetails &)));
     connect(this, SIGNAL(setPriority(const QList<qint32> &, quint8 )), MPDConnection::self(), SLOT(setPriority(const QList<qint32> &, quint8)));
     connect(this, SIGNAL(addSongsToPlaylist(const QString &, const QStringList &)), MPDConnection::self(), SLOT(addToPlaylist(const QString &, const QStringList &)));
-    connect(this, SIGNAL(addAndPlay(QString)), MPDConnection::self(), SLOT(addAndPlay(QString)));
     connect(&playQueueModel, SIGNAL(statsUpdated(int, quint32)), this, SLOT(updatePlayQueueStats(int, quint32)));
     connect(&playQueueModel, SIGNAL(fetchingStreams()), playQueue, SLOT(showSpinner()));
     connect(&playQueueModel, SIGNAL(streamsFetched()), playQueue, SLOT(hideSpinner()));
@@ -737,7 +737,7 @@ MainWindow::MainWindow(QWidget *parent)
     #endif
     connect(context, SIGNAL(findArtist(QString)), this, SLOT(locateArtist(QString)));
     connect(context, SIGNAL(findAlbum(QString,QString)), this, SLOT(locateAlbum(QString,QString)));
-    connect(context, SIGNAL(playSong(QString)), this, SLOT(playSong(QString)));
+    connect(context, SIGNAL(playSong(QString)), &playQueueModel, SLOT(playSong(QString)));
     connect(locateTrackAction, SIGNAL(triggered(bool)), this, SLOT(locateTrack()));
     connect(showPlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(showPlayQueue()));
     connect(libraryTabAction, SIGNAL(triggered(bool)), this, SLOT(showLibraryTab()));
@@ -1301,6 +1301,7 @@ void MainWindow::controlConnectionsMenu(bool enable)
 void MainWindow::controlDynamicButton()
 {
     stopDynamicButton->setVisible(dynamicLabel->isVisible() && PAGE_DYNAMIC!=tabWidget->current_index());
+//    playQueueModel.enableUndo(!Dynamic::self()->isRunning());
 }
 
 void MainWindow::readSettings()
@@ -2003,7 +2004,7 @@ void MainWindow::clearPlayQueue()
     if (dynamicLabel->isVisible()) {
         Dynamic::self()->stop(true);
     } else {
-        emit clear();
+        playQueueModel.removeAll();
     }
 }
 
@@ -2516,16 +2517,6 @@ void MainWindow::locateAlbum(const QString &artist, const QString &album)
     }
     showLibraryTab();
     libraryPage->showAlbum(artist, album);
-}
-
-void MainWindow::playSong(const QString &song)
-{
-    qint32 id=playQueueModel.getSongId(song);
-    if (-1==id) {
-        addAndPlay(song);
-    } else {
-        emit startPlayingSongId(id);
-    }
 }
 
 void MainWindow::showPage(const QString &page, bool focusSearch)

@@ -24,15 +24,6 @@
  * along with QtMPC.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QPalette>
-#include <QFont>
-#include <QModelIndex>
-#include <QMimeData>
-#include <QTextStream>
-#include <QSet>
-#include <QUrl>
-#include <QTimer>
-#include <QApplication>
 #include "localize.h"
 #include "playqueuemodel.h"
 #include "groupedview.h"
@@ -47,9 +38,21 @@
 #include "icon.h"
 #include "utils.h"
 #include "config.h"
+#include "action.h"
+#include "actioncollection.h"
 #ifdef ENABLE_DEVICES_SUPPORT
 #include "devicesmodel.h"
 #endif
+#include <QPalette>
+#include <QFont>
+#include <QModelIndex>
+#include <QMimeData>
+#include <QTextStream>
+#include <QSet>
+#include <QUrl>
+#include <QTimer>
+#include <QApplication>
+#include <QUndoStack>
 
 #if defined ENABLE_MODEL_TEST
 #include "modeltest.h"
@@ -58,6 +61,9 @@
 const QLatin1String PlayQueueModel::constMoveMimeType("cantata/move");
 const QLatin1String PlayQueueModel::constFileNameMimeType("cantata/filename");
 const QLatin1String PlayQueueModel::constUriMimeType("text/uri-list");
+
+static const int constUndoStackSize = 20;
+static const int constUndoItemLimit = 500;
 
 static bool checkExtension(const QString &file)
 {
@@ -121,7 +127,10 @@ PlayQueueModel::PlayQueueModel(QObject *parent)
     , dropAdjust(0)
     , stopAfterCurrent(false)
     , stopAfterTrackId(-1)
+//    , undoEnabled(true)
+//    , undoStack(new QUndoStack(this))
 {
+//    undoStack->setUndoLimit(constUndoStackSize);
     fetcher=new StreamFetcher(this);
     connect(this, SIGNAL(modelReset()), this, SLOT(stats()));
     connect(fetcher, SIGNAL(result(const QStringList &, int, bool, quint8)), SLOT(addFiles(const QStringList &, int, bool, quint8)));
@@ -136,6 +145,9 @@ PlayQueueModel::PlayQueueModel(QObject *parent)
     connect(this, SIGNAL(stop(bool)), MPDConnection::self(), SLOT(stopPlaying(bool)));
     connect(this, SIGNAL(clearStopAfter()), MPDConnection::self(), SLOT(clearStopAfter()));
     connect(this, SIGNAL(removeSongs(QList<qint32>)), MPDConnection::self(), SLOT(removeSongs(QList<qint32>)));
+    connect(this, SIGNAL(clearEntries()), MPDConnection::self(), SLOT(clear()));
+    connect(this, SIGNAL(addAndPlay(QString)), MPDConnection::self(), SLOT(addAndPlay(QString)));
+    connect(this, SIGNAL(startPlayingSongId(qint32)), MPDConnection::self(), SLOT(startPlayingSongId(qint32)));
     #ifdef ENABLE_DEVICES_SUPPORT
     connect(DevicesModel::self(), SIGNAL(invalid(QList<Song>)), SLOT(remove(QList<Song>)));
     connect(DevicesModel::self(), SIGNAL(updatedDetails(QList<Song>)), SLOT(updateDetails(QList<Song>)));
@@ -143,6 +155,14 @@ PlayQueueModel::PlayQueueModel(QObject *parent)
     #if defined ENABLE_MODEL_TEST
     new ModelTest(this, this);
     #endif
+
+//    undoAction=ActionCollection::get()->createAction("playqueue-undo", i18n("Undo"), "edit-undo");
+//    undoAction->setShortcut(Qt::ControlModifier+Qt::Key_Z);
+//    redoAction=ActionCollection::get()->createAction("playqueue-redo", i18n("Redo"), "edit-redo");
+//    redoAction->setShortcut(Qt::ControlModifier+Qt::ShiftModifier+Qt::Key_Z);
+//    connect(undoAction, SIGNAL(triggered(bool)), this, SLOT(undo()));
+//    connect(redoAction, SIGNAL(triggered(bool)), this, SLOT(redo()));
+//    controlActions();
 }
 
 PlayQueueModel::~PlayQueueModel()
@@ -700,6 +720,7 @@ void PlayQueueModel::setState(MPDState st)
 // Update playqueue with contents returned from MPD.
 void PlayQueueModel::update(const QList<Song> &songList)
 {
+//    saveHistory();
     QSet<qint32> newIds;
     foreach (const Song &s, songList) {
         newIds.insert(s.id);
@@ -804,6 +825,11 @@ void PlayQueueModel::removeCantataStreams()
     }
 }
 
+void PlayQueueModel::removeAll()
+{
+    emit clearEntries();
+}
+
 void PlayQueueModel::remove(const QList<int> &rowsToRemove)
 {
     QList<qint32> removeIds;
@@ -835,6 +861,56 @@ void PlayQueueModel::crop(const QList<int> &rowsToKeep)
     QSet<qint32> removeIds=allIds-keepIds;
     if (!removeIds.isEmpty()) {
         emit removeSongs(removeIds.toList());
+    }
+}
+
+//void PlayQueueModel::enableUndo(bool e)
+//{
+//    if (e==undoEnabled) {
+//        return;
+//    }
+//    undoEnabled=e;
+//    if (!e) {
+//        undoStack->clear();
+//    }
+//    controlActions();
+//}
+
+//void PlayQueueModel::saveHistory()
+//{
+//    if (!undoEnabled) {
+//        return;
+//    }
+//    controlActions();
+//}
+
+//void PlayQueueModel::controlActions()
+//{
+//    undoAction->setEnabled(!undoStack.isEmpty());
+//    redoAction->setEnabled(!redoStack.isEmpty());
+//}
+
+//void PlayQueueModel::undo()
+//{
+//    if (!undoEnabled) {
+//        return;
+//    }
+//}
+
+//void PlayQueueModel::redo()
+//{
+//    if (!undoEnabled) {
+//        return;
+//    }
+//}
+
+void PlayQueueModel::playSong(const QString &file)
+{
+    qint32 id=getSongId(file);
+    if (-1==id) {
+        emit addAndPlay(file);
+    } else {
+        emit startPlayingSongId(id);
     }
 }
 

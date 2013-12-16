@@ -27,15 +27,17 @@
 #ifndef PLAYQUEUEMODEL_H
 #define PLAYQUEUEMODEL_H
 
-#include <QList>
-#include <QStringList>
-#include <QSet>
-#include <QAbstractItemModel>
 #include "song.h"
 #include "mpdstatus.h"
 #include "config.h"
+#include <QStringList>
+#include <QAbstractItemModel>
+#include <QList>
+#include <QSet>
 
+class QUndoStack;
 class StreamFetcher;
+class Action;
 
 class PlayQueueModel : public QAbstractItemModel
 {
@@ -97,8 +99,17 @@ public:
     void setStopAfterTrack(qint32 track);
     void clearStopAfterTrack() { setStopAfterTrack(-1); }
     void removeCantataStreams();
+    void removeAll();
     void remove(const QList<int> &rowsToRemove);
     void crop(const QList<int> &rowsToKeep);
+
+//    void enableUndo(bool e);
+//    Action * undoAct() { return undoAction; }
+//    Action * redoAct() { return redoAction; }
+
+//private:
+//    void saveHistory();
+//    void controlActions();
 
 public Q_SLOTS:
     void addItems(const QStringList &items, int row, bool replace, quint8 priority);
@@ -108,11 +119,14 @@ public Q_SLOTS:
     void stats();
     void cancelStreamFetch();
     void shuffleAlbums();
+    void playSong(const QString &file);
 
 private Q_SLOTS:
     void stopAfterCurrentChanged(bool afterCurrent);
     void remove(const QList<Song> &rem);
     void updateDetails(const QList<Song> &updated);
+//    void undo();
+//    void redo();
 
 Q_SIGNALS:
     void stop(bool afterCurrent);
@@ -125,6 +139,9 @@ Q_SIGNALS:
     void removeSongs(const QList<qint32> &items);
     void updateCurrent(const Song &s);
     void streamFetchStatus(const QString &msg);
+    void clearEntries();
+    void addAndPlay(const QString &file);
+    void startPlayingSongId(qint32 id);
 
 private:
     QList<Song> songs;
@@ -136,6 +153,11 @@ private:
     quint32 dropAdjust;
     bool stopAfterCurrent;
     qint32 stopAfterTrackId;
+
+//    bool undoEnabled;
+//    Action *undoAction;
+//    Action *redoAction;
+//    QUndoStack *undoStack;
 };
 
 #endif

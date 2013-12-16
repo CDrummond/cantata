@@ -156,7 +156,6 @@ Q_SIGNALS:
     void getStatus();
     void getStats(bool andUpdate);
     void updateMpd();
-    void clear();
     void playListInfo();
     void currentSong();
     void setSeekId(qint32, quint32);
@@ -166,7 +165,6 @@ Q_SIGNALS:
     void enableOutput(int id, bool);
     void setPriority(const QList<qint32> &ids, quint8 priority);
     void addSongsToPlaylist(const QString &name, const QStringList &files);
-    void addAndPlay(const QString &file);
     void showPreferencesPage(const QString &page);
 
 public Q_SLOTS:
@@ -254,7 +252,6 @@ public Q_SLOTS:
     void locateTrack();
     void locateArtist(const QString &artist);
     void locateAlbum(const QString &artist, const QString &album);
-    void playSong(const QString &song);
     void editTags();
     void editPlayQueueTags();
     void organiseFiles();

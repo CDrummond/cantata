@@ -6,7 +6,7 @@
 1.2.1
 -----
 1. Only use old Qt DBUS type annotations for Qt less than 4.8.2
-2. Use "(C)" instead of "©", as "©" seems to mess up Qt translations.
+2. Use "(c)" instead of "©", as "©" seems to mess up Qt translations.
 3. Fix tagtype and URL handler detection.
 
 1.2.0

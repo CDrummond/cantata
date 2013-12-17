@@ -372,7 +372,7 @@ QStringList MPDParseUtils::parseList(const QByteArray &data, const QLatin1String
         if (QLatin1String("OK")==item) {
             continue;
         }
-        if (items.startsWith(key)) {
+        if (item.startsWith(key)) {
             items.append(item.mid(keyLen).replace("://", ""));
         }
     }

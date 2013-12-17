@@ -1452,8 +1452,8 @@ void MainWindow::showAboutDialog()
 {
     QMessageBox::about(this, i18nc("Qt-only", "About Cantata"),
                        i18nc("Qt-only", "<b>Cantata %1</b><br/><br/>MPD client.<br/><br/>"
-                             "(C) Craig Drummond 2011-2013.<br/>Released under the <a href=\"http://www.gnu.org/licenses/gpl.html\">GPLv3</a>", PACKAGE_VERSION_STRING)+
-                       QLatin1String("<br/><br/><i><small>")+i18n("Based upon <a href=\"http://qtmpc.lowblog.nl\">QtMPC</a> - (C) 2007-2010 The QtMPC Authors<br/>")+
+                             "(c) Craig Drummond 2011-2013.<br/>Released under the <a href=\"http://www.gnu.org/licenses/gpl.html\">GPLv3</a>", PACKAGE_VERSION_STRING)+
+                       QLatin1String("<br/><br/><i><small>")+i18n("Based upon <a href=\"http://qtmpc.lowblog.nl\">QtMPC</a> - (c) 2007-2010 The QtMPC Authors<br/>")+
                        i18nc("Qt-only", "Context view backdrops courtesy of <a href=\"http://www.fanart.tv\">FanArt.tv</a>")+QLatin1String("<br/>")+
                        i18nc("Qt-only", "Context view metadata courtesy of <a href=\"http://www.wikipedia.org\">Wikipedia</a> and <a href=\"http://www.last.fm\">Last.fm</a>")+
                        QLatin1String("<br/><br/>")+i18n("Please consider uploading your own music fan-art to <a href=\"http://www.fanart.tv\">FanArt.tv</a>")+

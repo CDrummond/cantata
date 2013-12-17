@@ -819,6 +819,12 @@ Settings::StartupState Settings::startupState()
     return getStartupState(GET_STRING("startupState", getStartupStateStr(SS_Previous)));
 }
 
+int Settings::undoSteps()
+{
+    int v=GET_INT("undoSteps", 10);
+    return RESTRICT(v, 0, 20);
+}
+
 void Settings::removeConnectionDetails(const QString &v)
 {
     if (v==currentConnection()) {

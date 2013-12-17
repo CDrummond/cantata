@@ -52,7 +52,6 @@
 #include <QUrl>
 #include <QTimer>
 #include <QApplication>
-#include <QUndoStack>
 
 #if defined ENABLE_MODEL_TEST
 #include "modeltest.h"
@@ -127,10 +126,10 @@ PlayQueueModel::PlayQueueModel(QObject *parent)
     , dropAdjust(0)
     , stopAfterCurrent(false)
     , stopAfterTrackId(-1)
-//    , undoEnabled(true)
-//    , undoStack(new QUndoStack(this))
+    , undoLimit(Settings::self()->undoSteps())
+    , undoEnabled(undoLimit>0)
+    , lastCommand(Cmd_Other)
 {
-//    undoStack->setUndoLimit(constUndoStackSize);
     fetcher=new StreamFetcher(this);
     connect(this, SIGNAL(modelReset()), this, SLOT(stats()));
     connect(fetcher, SIGNAL(result(const QStringList &, int, bool, quint8)), SLOT(addFiles(const QStringList &, int, bool, quint8)));
@@ -138,6 +137,7 @@ PlayQueueModel::PlayQueueModel(QObject *parent)
     connect(fetcher, SIGNAL(status(QString)), SIGNAL(streamFetchStatus(QString)));
     connect(this, SIGNAL(filesAdded(const QStringList, quint32, quint32, int, quint8)),
             MPDConnection::self(), SLOT(add(const QStringList, quint32, quint32, int, quint8)));
+    connect(this, SIGNAL(populate(QStringList)), MPDConnection::self(), SLOT(populate(QStringList)));
     connect(this, SIGNAL(move(const QList<quint32> &, quint32, quint32)),
             MPDConnection::self(), SLOT(move(const QList<quint32> &, quint32, quint32)));
     connect(MPDConnection::self(), SIGNAL(prioritySet(const QList<qint32> &, quint8)), SLOT(prioritySet(const QList<qint32> &, quint8)));
@@ -156,13 +156,13 @@ PlayQueueModel::PlayQueueModel(QObject *parent)
     new ModelTest(this, this);
     #endif
 
-//    undoAction=ActionCollection::get()->createAction("playqueue-undo", i18n("Undo"), "edit-undo");
-//    undoAction->setShortcut(Qt::ControlModifier+Qt::Key_Z);
-//    redoAction=ActionCollection::get()->createAction("playqueue-redo", i18n("Redo"), "edit-redo");
-//    redoAction->setShortcut(Qt::ControlModifier+Qt::ShiftModifier+Qt::Key_Z);
-//    connect(undoAction, SIGNAL(triggered(bool)), this, SLOT(undo()));
-//    connect(redoAction, SIGNAL(triggered(bool)), this, SLOT(redo()));
-//    controlActions();
+    undoAction=ActionCollection::get()->createAction("playqueue-undo", i18n("Undo"), "edit-undo");
+    undoAction->setShortcut(Qt::ControlModifier+Qt::Key_Z);
+    redoAction=ActionCollection::get()->createAction("playqueue-redo", i18n("Redo"), "edit-redo");
+    redoAction->setShortcut(Qt::ControlModifier+Qt::ShiftModifier+Qt::Key_Z);
+    connect(undoAction, SIGNAL(triggered(bool)), this, SLOT(undo()));
+    connect(redoAction, SIGNAL(triggered(bool)), this, SLOT(redo()));
+    controlActions();
 }
 
 PlayQueueModel::~PlayQueueModel()
@@ -720,7 +720,11 @@ void PlayQueueModel::setState(MPDState st)
 // Update playqueue with contents returned from MPD.
 void PlayQueueModel::update(const QList<Song> &songList)
 {
-//    saveHistory();
+    QList<Song> prev;
+    if (undoEnabled) {
+        prev=songs;
+    }
+
     QSet<qint32> newIds;
     foreach (const Song &s, songList) {
         newIds.insert(s.id);
@@ -793,6 +797,8 @@ void PlayQueueModel::update(const QList<Song> &songList)
         }
         emit statsUpdated(songs.size(), time);
     }
+
+    saveHistory(prev);
 }
 
 void PlayQueueModel::setStopAfterTrack(qint32 track)
@@ -864,45 +870,107 @@ void PlayQueueModel::crop(const QList<int> &rowsToKeep)
     }
 }
 
-//void PlayQueueModel::enableUndo(bool e)
-//{
-//    if (e==undoEnabled) {
-//        return;
-//    }
-//    undoEnabled=e;
-//    if (!e) {
-//        undoStack->clear();
-//    }
-//    controlActions();
-//}
+void PlayQueueModel::enableUndo(bool e)
+{
+    if (e==undoEnabled) {
+        return;
+    }
+    undoEnabled=e && undoLimit>0;
+    if (!e) {
+        undoStack.clear();
+        redoStack.clear();
+    }
+    controlActions();
+}
 
-//void PlayQueueModel::saveHistory()
-//{
-//    if (!undoEnabled) {
-//        return;
-//    }
-//    controlActions();
-//}
+static QStringList getFileNames(const QList<Song> &songs)
+{
+    QStringList fn;
+    foreach (const Song &s, songs) {
+        fn.append(s.file);
+    }
+    return fn;
+}
 
-//void PlayQueueModel::controlActions()
-//{
-//    undoAction->setEnabled(!undoStack.isEmpty());
-//    redoAction->setEnabled(!redoStack.isEmpty());
-//}
+void PlayQueueModel::saveHistory(const QList<Song> &prevList)
+{
+    if (!undoEnabled) {
+        return;
+    }
 
-//void PlayQueueModel::undo()
-//{
-//    if (!undoEnabled) {
-//        return;
-//    }
-//}
+    if (prevList==songs) {
+        lastCommand=Cmd_Other;
+        return;
+    }
 
-//void PlayQueueModel::redo()
-//{
-//    if (!undoEnabled) {
-//        return;
-//    }
-//}
+    switch (lastCommand) {
+    case Cmd_Redo: {
+        if (redoStack.isEmpty()) {
+            lastCommand=Cmd_Other;
+        } else {
+            QStringList actioned=redoStack.pop();
+            if (actioned!=getFileNames(songs)) {
+                lastCommand=Cmd_Other;
+            } else {
+                undoStack.push(getFileNames(prevList));
+            }
+        }
+        break;
+    }
+    case Cmd_Undo: {
+        if (undoStack.isEmpty()) {
+            lastCommand=Cmd_Other;
+        } else {
+            QStringList actioned=undoStack.pop();
+            if (actioned!=getFileNames(songs)) {
+                lastCommand=Cmd_Other;
+            } else {
+                redoStack.push(getFileNames(prevList));
+            }
+        }
+        break;
+    }
+    case Cmd_Other:
+        break;
+    }
+
+    if (Cmd_Other==lastCommand) {
+        redoStack.clear();
+        undoStack.push(getFileNames(prevList));
+        if (undoStack.size()>undoLimit) {
+            undoStack.pop_back();
+        }
+    }
+
+    controlActions();
+    lastCommand=Cmd_Other;
+}
+
+void PlayQueueModel::controlActions()
+{
+    undoAction->setEnabled(!undoStack.isEmpty());
+    undoAction->setVisible(undoLimit>0);
+    redoAction->setEnabled(!redoStack.isEmpty());
+    redoAction->setVisible(undoLimit>0);
+}
+
+void PlayQueueModel::undo()
+{
+    if (!undoEnabled || undoStack.isEmpty()) {
+        return;
+    }
+    emit populate(undoStack.top());
+    lastCommand=Cmd_Undo;
+}
+
+void PlayQueueModel::redo()
+{
+    if (!undoEnabled || redoStack.isEmpty()) {
+        return;
+    }
+    emit populate(redoStack.top());
+    lastCommand=Cmd_Redo;
+}
 
 void PlayQueueModel::playSong(const QString &file)
 {

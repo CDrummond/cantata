@@ -2,6 +2,7 @@
 -----
 1. Add option to control startup-state; visible, hidden, or remembered from
    previous run.
+2. Basic undo/redo support for playqueue.
 
 1.2.1
 -----

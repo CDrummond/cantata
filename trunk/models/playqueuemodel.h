@@ -34,8 +34,8 @@
 #include <QAbstractItemModel>
 #include <QList>
 #include <QSet>
+#include <QStack>
 
-class QUndoStack;
 class StreamFetcher;
 class Action;
 
@@ -103,13 +103,13 @@ public:
     void remove(const QList<int> &rowsToRemove);
     void crop(const QList<int> &rowsToKeep);
 
-//    void enableUndo(bool e);
-//    Action * undoAct() { return undoAction; }
-//    Action * redoAct() { return redoAction; }
+    void enableUndo(bool e);
+    Action * undoAct() { return undoAction; }
+    Action * redoAct() { return redoAction; }
 
-//private:
-//    void saveHistory();
-//    void controlActions();
+private:
+    void saveHistory(const QList<Song> &prevList);
+    void controlActions();
 
 public Q_SLOTS:
     void addItems(const QStringList &items, int row, bool replace, quint8 priority);
@@ -125,13 +125,14 @@ private Q_SLOTS:
     void stopAfterCurrentChanged(bool afterCurrent);
     void remove(const QList<Song> &rem);
     void updateDetails(const QList<Song> &updated);
-//    void undo();
-//    void redo();
+    void undo();
+    void redo();
 
 Q_SIGNALS:
     void stop(bool afterCurrent);
     void clearStopAfter();
     void filesAdded(const QStringList filenames, const quint32 row, const quint32 size, int action, quint8 priority);
+    void populate(const QStringList &items);
     void move(const QList<quint32> &items, const quint32 row, const quint32 size);
     void statsUpdated(int songs, quint32 time);
     void fetchingStreams();
@@ -154,10 +155,20 @@ private:
     bool stopAfterCurrent;
     qint32 stopAfterTrackId;
 
-//    bool undoEnabled;
-//    Action *undoAction;
-//    Action *redoAction;
-//    QUndoStack *undoStack;
+    enum Command
+    {
+        Cmd_Other,
+        Cmd_Undo,
+        Cmd_Redo
+    };
+
+    int undoLimit;
+    bool undoEnabled;
+    Command lastCommand;
+    Action *undoAction;
+    Action *redoAction;
+    QStack<QStringList> undoStack;
+    QStack<QStringList> redoStack;
 };
 
 #endif

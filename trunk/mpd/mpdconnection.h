@@ -207,6 +207,7 @@ public Q_SLOTS:
     // Current Playlist
     void add(const QStringList &files, bool replace, quint8 priority);
     void add(const QStringList &files, quint32 pos, quint32 size, int action, quint8 priority);
+    void populate(const QStringList &files);
     void addAndPlay(const QString &file);
     void currentSong();
     void playListChanges();

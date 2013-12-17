@@ -344,6 +344,11 @@ volumeStep=<Integer>
     Volume % increments. Used when mouse wheel is activated over volume control.
     Default is 5. (Values 1..20 are acceptable)
 
+undoSteps=<Integer>
+    Control maximum number of playqueue undo/redo steps. Set to 0 to disable
+    undo/redo.
+    Default is 10. (Values 0..20 are acceptable)
+
 e.g.
 [General]
 iconTheme=oxygen
@@ -353,6 +358,7 @@ cueFileCodecs=GBK, big5-0
 networkAccessEnabled=false
 albumViewLoadAll=true
 volumeStep=2
+undoSteps=20
 
 
 7. CUE Files

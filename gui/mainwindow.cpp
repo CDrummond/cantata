@@ -625,8 +625,8 @@ MainWindow::MainWindow(QWidget *parent)
     playQueue->addAction(cropPlayQueueAction);
     playQueue->addAction(shufflePlayQueueAction);
     playQueue->addAction(shufflePlayQueueAlbumsAction);
-//    playQueue->addAction(playQueueModel.undoAct());
-//    playQueue->addAction(playQueueModel.redoAct());
+    playQueue->addAction(playQueueModel.undoAct());
+    playQueue->addAction(playQueueModel.redoAct());
     Action *sep=new Action(this);
     sep->setSeparator(true);
     playQueue->addAction(sep);
@@ -1301,7 +1301,7 @@ void MainWindow::controlConnectionsMenu(bool enable)
 void MainWindow::controlDynamicButton()
 {
     stopDynamicButton->setVisible(dynamicLabel->isVisible() && PAGE_DYNAMIC!=tabWidget->current_index());
-//    playQueueModel.enableUndo(!Dynamic::self()->isRunning());
+    playQueueModel.enableUndo(!Dynamic::self()->isRunning());
 }
 
 void MainWindow::readSettings()

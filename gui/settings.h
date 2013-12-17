@@ -200,6 +200,7 @@ public:
     bool albumViewLoadAll();
     int volumeStep();
     StartupState startupState();
+    int undoSteps();
 
     void removeConnectionDetails(const QString &v);
     void saveConnectionDetails(const MPDConnectionDetails &v);

@@ -580,6 +580,11 @@ void MPDConnection::add(const QStringList &files, quint32 pos, quint32 size, int
     }
 }
 
+void MPDConnection::populate(const QStringList &files)
+{
+    add(files, 0, 0, AddAndReplace, 0);
+}
+
 void MPDConnection::addAndPlay(const QString &file)
 {
     toggleStopAfterCurrent(false);

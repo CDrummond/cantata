@@ -26,6 +26,7 @@
 #include "treeview.h"
 #include "config.h"
 #include "icons.h"
+#include "utils.h"
 #include <QMimeData>
 #include <QDrag>
 #include <QMouseEvent>
@@ -93,10 +94,11 @@ void ListView::startDrag(Qt::DropActions supportedActions)
                 pix=QPixmap::fromImage(img);
             }
         }
+        int pixSize=Utils::isHighDpi() ? 64 : 32;
         if (pix.isNull()) {
-            drag->setPixmap(Icons::self()->albumIcon.pixmap(64, 64));
+            drag->setPixmap(Icons::self()->audioFileIcon.pixmap(pixSize, pixSize));
         } else {
-            drag->setPixmap(pix.width()<64 ? pix : pix.scaled(QSize(64, 64), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+            drag->setPixmap(pix.width()<pixSize ? pix : pix.scaled(QSize(pixSize, pixSize), Qt::KeepAspectRatio, Qt::SmoothTransformation));
         }
         drag->start(supportedActions);
     }

@@ -10,6 +10,8 @@
 1. Only use old Qt DBUS type annotations for Qt less than 4.8.2
 2. Use "(c)" instead of "©", as "©" seems to mess up Qt translations.
 3. Fix tagtype and URL handler detection.
+4. Use 32x32 for drag'n'drop icon, 64x64 for highdpi 
+5. Use audio-x-generic icon for drag'n'drop if no cover found.
 
 1.2.0
 -----

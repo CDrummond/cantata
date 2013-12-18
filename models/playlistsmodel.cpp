@@ -315,7 +315,7 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
             return text;
         }
         case Qt::DecorationRole:
-            return s->title.isEmpty() ? Icons::self()->streamIcon : Icon("audio-x-generic");
+            return s->title.isEmpty() ? Icons::self()->streamIcon : Icons::self()->audioFileIcon;
         case ItemView::Role_MainText:
             return s->title.isEmpty() ? s->file : s->title;
         case ItemView::Role_SubText:

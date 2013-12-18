@@ -439,7 +439,7 @@ Icons::Icons()
     if (playlistIcon.isNull()) {
         playlistIcon=Icon("audio-x-mp3-playlist");
         if (playlistIcon.isNull()) {
-            playlistIcon=Icon("audio-x-generic");
+            playlistIcon=audioFileIcon;
         }
     }
     if (editIcon.isNull()) {

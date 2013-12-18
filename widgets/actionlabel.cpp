@@ -22,7 +22,7 @@
  */
 
 #include "actionlabel.h"
-#include "icon.h"
+#include "icons.h"
 #include <QLabel>
 #include <QTimer>
 #include <QPixmap>
@@ -61,7 +61,7 @@ ActionLabel::ActionLabel(QWidget *parent)
     setAlignment(Qt::AlignCenter);
 
     if(0==theUsageCount++) {
-        QImage img(Icon::fromTheme("audio-x-generic").pixmap(iconSize, iconSize).toImage());
+        QImage img(Icons::self()->audioFileIcon.pixmap(iconSize, iconSize).toImage());
         double increment=360.0/constNumIcons;
 
         for(int i=0; i<constNumIcons; ++i) {

@@ -133,6 +133,19 @@ void SearchWidget::setCategories(const QList<QPair<QString, QString> > &categori
     }
 }
 
+void SearchWidget::setCategory(const QString &id)
+{
+    if (!cat || id.isEmpty()) {
+        return;
+    }
+    for (int i=0; i<cat->count(); ++i) {
+        if (cat->itemData(i).toString()==id) {
+            cat->setCurrentIndex(i);
+            return;
+        }
+    }
+}
+
 void SearchWidget::toggle()
 {
     if (isVisible()) {

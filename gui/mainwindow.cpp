@@ -865,6 +865,7 @@ MainWindow::~MainWindow()
     Settings::self()->saveHiddenPages(tabWidget->hiddenPages());
     context->saveConfig();
     streamsPage->save();
+    searchPage->save();
     positionSlider->saveConfig();
     StreamsModel::self()->save();
     OnlineServicesModel::self()->save();

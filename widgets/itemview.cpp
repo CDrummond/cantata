@@ -707,7 +707,7 @@ QString ItemView::searchText() const
 
 QString ItemView::searchCategory() const
 {
-    return searchWidget->isVisible() ? searchWidget->category() : QString();
+    return searchWidget->category();
 }
 
 void ItemView::clearSearchText()
@@ -950,6 +950,11 @@ void ItemView::setPermanentSearch()
 void ItemView::setSearchCategories(const QList<QPair<QString, QString> > &categories)
 {
     searchWidget->setCategories(categories);
+}
+
+void ItemView::setSearchCategory(const QString &id)
+{
+    searchWidget->setCategory(id);
 }
 
 void ItemView::showSpinner(bool v)

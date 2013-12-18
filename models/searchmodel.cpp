@@ -75,8 +75,7 @@ QVariant SearchModel::headerData(int /*section*/, Qt::Orientation /*orientation*
 
 int SearchModel::rowCount(const QModelIndex &parent) const
 {
-    Q_UNUSED(parent)
-    return songList.count();
+    return parent.isValid() ? 0 : songList.count();
 }
 
 int SearchModel::columnCount(const QModelIndex &) const

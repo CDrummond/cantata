@@ -106,6 +106,7 @@ public:
     void enableUndo(bool e);
     Action * undoAct() { return undoAction; }
     Action * redoAct() { return redoAction; }
+    bool lastCommandWasUnodOrRedo() const { return Cmd_Other!=lastCommand; }
 
 private:
     void saveHistory(const QList<Song> &prevList);

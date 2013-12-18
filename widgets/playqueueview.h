@@ -95,6 +95,7 @@ public:
     void setFilterActive(bool f);
     void updateRows(qint32 row, quint16 curAlbum, bool scroll);
     void scrollTo(const QModelIndex &index, QAbstractItemView::ScrollHint hint);
+    QModelIndex indexAt(const QPoint &point);
     void setModel(QAbstractItemModel *m) { view()->setModel(m); }
     void addAction(QAction *a);
     void setFocus();

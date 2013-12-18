@@ -1694,10 +1694,19 @@ void MainWindow::updatePlayQueue(const QList<Song> &songs)
     StdActions::self()->savePlayQueueAction->setEnabled(!songs.isEmpty());
     promptClearPlayQueueAction->setEnabled(!songs.isEmpty());
 
+    int topRow=-1;
+    QModelIndex topIndex=playQueueModel.lastCommandWasUnodOrRedo() ? playQueue->indexAt(QPoint(0, 0)) : QModelIndex();
+    if (topIndex.isValid()) {
+        topRow=playQueueProxyModel.mapToSource(topIndex).row();
+    }
     bool wasEmpty=0==playQueueModel.rowCount();
     playQueueModel.update(songs);
     QModelIndex idx=playQueueProxyModel.mapFromSource(playQueueModel.index(playQueueModel.currentSongRow(), 0));
-    playQueue->updateRows(idx.row(), current.key, autoScrollPlayQueue && playQueueProxyModel.isEmpty() && wasEmpty && MPDState_Playing==MPDStatus::self()->state());
+    bool scroll=autoScrollPlayQueue && playQueueProxyModel.isEmpty() && wasEmpty && MPDState_Playing==MPDStatus::self()->state();
+    playQueue->updateRows(idx.row(), current.key, scroll);
+    if (!scroll && topRow>0 && topRow<playQueueModel.rowCount()) {
+        playQueue->scrollTo(playQueueProxyModel.mapFromSource(playQueueModel.index(topRow, 0)), QAbstractItemView::PositionAtTop);
+    }
 
     /*if (1==songs.count() && MPDState_Playing==MPDStatus::self()->state()) {
         updateCurrentSong(songs.at(0));

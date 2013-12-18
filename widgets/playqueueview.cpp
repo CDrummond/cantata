@@ -302,13 +302,12 @@ void PlayQueueView::updateRows(qint32 row, quint16 curAlbum, bool scroll)
 
 void PlayQueueView::scrollTo(const QModelIndex &index, QAbstractItemView::ScrollHint hint)
 {
-    if (isGrouped() && !groupedView->isFilterActive()) {
-        return;
-    }
-    if (MPDState_Playing==MPDStatus::self()->state()) {
-//         groupedView->scrollTo(index, hint);
-        treeView->scrollTo(index, hint);
-    }
+    view()->scrollTo(index, hint);
+}
+
+QModelIndex PlayQueueView::indexAt(const QPoint &point)
+{
+    return view()->indexAt(point);
 }
 
 void PlayQueueView::addAction(QAction *a)

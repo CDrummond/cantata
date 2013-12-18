@@ -26,6 +26,7 @@
 #include "icons.h"
 #include "config.h"
 #include "basicitemdelegate.h"
+#include "utils.h"
 #include <QMouseEvent>
 #include <QPaintEvent>
 #include <QPainter>
@@ -171,10 +172,11 @@ void TreeView::startDrag(Qt::DropActions supportedActions)
                 pix=QPixmap::fromImage(img);
             }
         }
+        int pixSize=Utils::isHighDpi() ? 64 : 32;
         if (pix.isNull()) {
-            drag->setPixmap(Icons::self()->albumIcon.pixmap(32, 32));
+            drag->setPixmap(Icons::self()->audioFileIcon.pixmap(pixSize, pixSize));
         } else {
-            drag->setPixmap(pix.width()<32 ? pix : pix.scaled(QSize(32, 32), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+            drag->setPixmap(pix.width()<pixSize ? pix : pix.scaled(QSize(pixSize, pixSize), Qt::KeepAspectRatio, Qt::SmoothTransformation));
         }
         drag->start(supportedActions);
     }

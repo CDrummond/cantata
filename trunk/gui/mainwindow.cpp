@@ -76,6 +76,7 @@
 #include "albumspage.h"
 #include "folderpage.h"
 #include "streamspage.h"
+#include "searchpage.h"
 #include "gtkstyle.h"
 #ifdef ENABLE_DEVICES_SUPPORT
 #include "filejob.h"
@@ -286,6 +287,7 @@ MainWindow::MainWindow(QWidget *parent)
     #ifdef ENABLE_DEVICES_SUPPORT
     addAction(devicesTabAction = ActionCollection::get()->createAction("showdevicestab", i18n("Devices"), Icons::self()->devicesIcon));
     #endif
+    addAction(searchTabAction = ActionCollection::get()->createAction("showsearchtab", i18n("Search"), Icons::self()->searchTabIcon));
     expandAllAction = ActionCollection::get()->createAction("expandall", i18n("Expand All"));
     collapseAllAction = ActionCollection::get()->createAction("collapseall", i18n("Collapse All"));
     clearPlayQueueAction = ActionCollection::get()->createAction("confimclearplaylist", i18n("Remove All Songs"), Icons::self()->clearListIcon);
@@ -327,6 +329,7 @@ MainWindow::MainWindow(QWidget *parent)
     #ifdef ENABLE_DEVICES_SUPPORT
     devicesTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
     #endif // ENABLE_DEVICES_SUPPORT
+    searchTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
 
     connectionsAction->setMenu(new QMenu(this));
     connectionsGroup=new QActionGroup(connectionsAction->menu());
@@ -355,6 +358,7 @@ MainWindow::MainWindow(QWidget *parent)
     #ifdef ENABLE_DEVICES_SUPPORT
     devicesPage = new DevicesPage(this);
     #endif
+    searchPage = new SearchPage(this);
 
     promptClearPlayQueueAction->setEnabled(false);
     StdActions::self()->savePlayQueueAction->setEnabled(false);
@@ -396,6 +400,7 @@ MainWindow::MainWindow(QWidget *parent)
     tabWidget->AddTab(devicesPage, TAB_ACTION(devicesTabAction), !hiddenPages.contains(devicesPage->metaObject()->className()));
     DevicesModel::self()->setEnabled(!hiddenPages.contains(devicesPage->metaObject()->className()));
     #endif
+    tabWidget->AddTab(searchPage, TAB_ACTION(searchTabAction), !hiddenPages.contains(searchPage->metaObject()->className()));
     tabWidget->AddTab(contextPage, Icons::self()->infoSidebarIcon, i18n("Info"), songInfoAction->text(),
                       !hiddenPages.contains(contextPage->metaObject()->className()));
     AlbumsModel::self()->setEnabled(!hiddenPages.contains(albumsPage->metaObject()->className()));
@@ -747,6 +752,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(dynamicTabAction, SIGNAL(triggered(bool)), this, SLOT(showDynamicTab()));
     connect(streamsTabAction, SIGNAL(triggered(bool)), this, SLOT(showStreamsTab()));
     connect(onlineTabAction, SIGNAL(triggered(bool)), this, SLOT(showOnlineTab()));
+    connect(searchTabAction, SIGNAL(triggered(bool)), this, SLOT(showSearchTab()));
     addAction(StdActions::self()->searchAction); // Weird, but if I dont add thiis action, it does not work!!!!
     connect(StdActions::self()->searchAction, SIGNAL(triggered(bool)), SLOT(showSearch()));
     connect(searchPlayQueueAction, SIGNAL(triggered(bool)), playQueueSearchWidget, SLOT(activate()));
@@ -762,6 +768,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(playlistsPage, SIGNAL(addToDevice(const QString &, const QString &, const QList<Song> &)), SLOT(copyToDevice(const QString &, const QString &, const QList<Song> &)));
     connect(devicesPage, SIGNAL(addToDevice(const QString &, const QString &, const QList<Song> &)), SLOT(copyToDevice(const QString &, const QString &, const QList<Song> &)));
     connect(onlinePage, SIGNAL(addToDevice(const QString &, const QString &, const QList<Song> &)), SLOT(copyToDevice(const QString &, const QString &, const QList<Song> &)));
+    connect(searchPage, SIGNAL(addToDevice(const QString &, const QString &, const QList<Song> &)), SLOT(copyToDevice(const QString &, const QString &, const QList<Song> &)));
     connect(StdActions::self()->deleteSongsAction, SIGNAL(triggered(bool)), SLOT(deleteSongs()));
     connect(devicesPage, SIGNAL(deleteSongs(const QString &, const QList<Song> &)), SLOT(deleteSongs(const QString &, const QList<Song> &)));
     connect(libraryPage, SIGNAL(deleteSongs(const QString &, const QList<Song> &)), SLOT(deleteSongs(const QString &, const QList<Song> &)));
@@ -1004,6 +1011,7 @@ void MainWindow::mpdConnectionStateChanged(bool connected)
         folderPage->clear();
         playlistsPage->clear();
         playQueueModel.clear();
+        searchPage->clear();
         connectedState=CS_Disconnected;
         outputsAction->setVisible(false);
         MPDStatus dummyStatus;
@@ -1062,6 +1070,7 @@ void MainWindow::connectToMpd(const MPDConnectionDetails &details)
         folderPage->clear();
         playlistsPage->clear();
         playQueueModel.clear();
+        searchPage->clear();
         if (!MPDConnection::self()->getDetails().isEmpty() && details!=MPDConnection::self()->getDetails()) {
             Dynamic::self()->stop();
         }
@@ -1205,6 +1214,7 @@ void MainWindow::checkMpdDir()
     case PAGE_DYNAMIC:   dynamicPage->controlActions();    break;
     case PAGE_STREAMS:   streamsPage->controlActions();    break;
     case PAGE_ONLINE:    onlinePage->controlActions();     break;
+    case PAGE_SEARCH:    searchPage->controlActions();     break;
     default:                                               break;
     }
 }
@@ -2043,6 +2053,8 @@ void MainWindow::addToPlayQueue(bool replace, quint8 priority, bool randomAlbums
         streamsPage->addSelectionToPlaylist(replace, priority);
     } else if (onlinePage->isVisible()) {
         onlinePage->addSelectionToPlaylist(QString(), replace, priority);
+    }  else if (searchPage->isVisible()) {
+        searchPage->addSelectionToPlaylist(QString(), replace, priority);
     }
     #ifdef ENABLE_DEVICES_SUPPORT
     else if (devicesPage->isVisible()) {
@@ -2382,6 +2394,9 @@ void MainWindow::currentTabChanged(int index)
     case PAGE_ONLINE:
         onlinePage->controlActions();
         break;
+    case PAGE_SEARCH:
+        searchPage->controlActions();
+        break;
     default:
         break;
     }
@@ -2489,6 +2504,8 @@ void MainWindow::toggleMonoIcons()
         devicesTabAction->setIcon(Icons::self()->devicesIcon);
         tabWidget->SetIcon(PAGE_DEVICES, devicesTabAction->icon());
         #endif
+        searchTabAction->setIcon(Icons::self()->searchTabIcon);
+        tabWidget->SetIcon(PAGE_SEARCH, searchTabAction->icon());
         tabWidget->Recreate();
     }
 }
@@ -2576,6 +2593,8 @@ void MainWindow::showPage(const QString &page, bool focusSearch)
         if (focusSearch) {
             playQueueSearchWidget->setFocus();
         }
+    } else if (QLatin1String("search")==p) {
+        showTab(MainWindow::PAGE_SEARCH);
     }
 
     if (!expandInterfaceAction->isChecked()) {
@@ -2765,6 +2784,8 @@ void MainWindow::addToDevice(const QString &udi)
         folderPage->addSelectionToDevice(udi);
     } else if (playlistsPage->isVisible()) {
         playlistsPage->addSelectionToDevice(udi);
+    } else if (searchPage->isVisible()) {
+        searchPage->addSelectionToDevice(udi);
     }
     #else
     Q_UNUSED(udi)
@@ -2919,6 +2940,7 @@ void MainWindow::updateActionToolTips()
     #ifdef ENABLE_DEVICES_SUPPORT
     tabWidget->SetToolTip(PAGE_DEVICES, devicesTabAction->toolTip());
     #endif
+    tabWidget->SetToolTip(PAGE_SEARCH, searchTabAction->toolTip());
     tabWidget->SetToolTip(PAGE_CONTEXT, songInfoAction->toolTip());
 }
 

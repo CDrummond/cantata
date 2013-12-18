@@ -479,6 +479,7 @@ void Icons::initSidebarIcons()
         #ifdef ENABLE_DEVICES_SUPPORT
         devicesIcon=loadSidebarIcon("devices", textCol, highlightedTexCol);
         #endif
+        searchTabIcon=loadSidebarIcon("search", textCol, highlightedTexCol);
     } else {
         playqueueIcon=Icon("media-playback-start");
         artistsIcon=artistIcon;
@@ -497,6 +498,7 @@ void Icons::initSidebarIcons()
         #ifdef ENABLE_DEVICES_SUPPORT
         devicesIcon=Icon("multimedia-player");
         #endif
+        searchTabIcon=searchIcon;
     }
 }
 

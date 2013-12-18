@@ -26,6 +26,8 @@
 
 #include "ui_itemview.h"
 #include <QMap>
+#include <QList>
+#include <QPair>
 
 class ProxyModel;
 class Spinner;
@@ -34,6 +36,7 @@ class QTimer;
 class GroupedView;
 class ActionItemDelegate;
 class MessageOverlay;
+class Icon;
 
 class ViewEventHandler : public QObject
 {
@@ -108,6 +111,7 @@ public:
     void select(const QModelIndex &idx);
     QModelIndexList selectedIndexes(bool sorted=true) const;
     QString searchText() const;
+    QString searchCategory() const;
     void clearSearchText();
     void setUniformRowHeights(bool v);
     void setAcceptDrops(bool v);
@@ -130,6 +134,8 @@ public:
     void setBackgroundImage(const QIcon &icon);
     bool isAnimated() const;
     void setAnimated(bool a);
+    void setPermanentSearch();
+    void setSearchCategories(const QList<QPair<QString, QString> > &categories);
 
 public Q_SLOTS:
     void focusSearch();

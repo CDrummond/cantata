@@ -272,6 +272,8 @@ public Q_SLOTS:
 
     void setPriority(const QList<qint32> &ids, quint8 priority);
 
+    void search(const QString &field, const QString &value, int id);
+
 Q_SIGNALS:
     void stateChanged(bool connected);
     void passwordError();
@@ -304,6 +306,8 @@ Q_SIGNALS:
     void dynamicUrl(const QString &url);
     void stopAfterCurrentChanged(bool afterCurrent);
     void streamUrl(const QString &url);
+
+    void searchResponse(int id, const QList<Song> &songs);
 
 private Q_SLOTS:
     void idleDataReady();

@@ -63,6 +63,7 @@ SearchPage::SearchPage(QWidget *p)
     view->setMode(ItemView::Mode_List);
     view->setPermanentSearch();
     setSearchCategories();
+    view->setSearchCategory(Settings::self()->searchCategory());
 }
 
 SearchPage::~SearchPage()
@@ -71,8 +72,13 @@ SearchPage::~SearchPage()
 
 void SearchPage::showEvent(QShowEvent *e)
 {
-    //view->focusView();
+    view->focusSearch();
     QWidget::showEvent(e);
+}
+
+void SearchPage::save()
+{
+    Settings::self()->saveSearchCategory(view->searchCategory());
 }
 
 void SearchPage::refresh()

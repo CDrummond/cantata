@@ -50,6 +50,7 @@ public:
     bool isActive() const { return widgetIsActive; }
     void setPermanent();
     void setCategories(const QList<QPair<QString, QString> > &categories);
+    void setCategory(const QString &id);
 
 Q_SIGNALS:
     void textChanged(const QString &);

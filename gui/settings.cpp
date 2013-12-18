@@ -825,6 +825,11 @@ int Settings::undoSteps()
     return RESTRICT(v, 0, 20);
 }
 
+QString Settings::searchCategory()
+{
+    return GET_STRING("searchCategory", QString());
+}
+
 void Settings::removeConnectionDetails(const QString &v)
 {
     if (v==currentConnection()) {
@@ -1287,6 +1292,11 @@ void Settings::savePodcastAutoDownload(bool v)
 void Settings::saveStartupState(int v)
 {
     SET_STARTUPSTATE_VALUE_MOD(startupState);
+}
+
+void Settings::saveSearchCategory(const QString &v)
+{
+    SET_VALUE_MOD(searchCategory);
 }
 
 void Settings::save(bool force)

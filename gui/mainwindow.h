@@ -67,6 +67,7 @@ class OnlineServicesPage;
 #ifdef ENABLE_DEVICES_SUPPORT
 class DevicesPage;
 #endif
+class SearchPage;
 class QAbstractItemView;
 #ifndef Q_OS_WIN
 class Mpris;
@@ -127,6 +128,7 @@ public:
         #ifdef ENABLE_DEVICES_SUPPORT
         PAGE_DEVICES,
         #endif
+        PAGE_SEARCH,
         PAGE_CONTEXT
     };
 
@@ -247,6 +249,7 @@ public Q_SLOTS:
         showTab(PAGE_DEVICES);
         #endif
     }
+    void showSearchTab() { showTab(PAGE_SEARCH); }
     void toggleSplitterAutoHide();
     void toggleMonoIcons();
     void locateTrack();
@@ -345,6 +348,7 @@ private:
     #ifdef ENABLE_DEVICES_SUPPORT
     Action *devicesTabAction;
     #endif
+    Action *searchTabAction;
     Action *expandAllAction;
     Action *collapseAllAction;
     Action *serverInfoAction;
@@ -369,6 +373,7 @@ private:
     #ifdef ENABLE_DEVICES_SUPPORT
     DevicesPage *devicesPage;
     #endif
+    SearchPage *searchPage;
     #ifndef Q_OS_WIN
     Mpris *mpris;
     GtkProxyStyle *gtkStyle;

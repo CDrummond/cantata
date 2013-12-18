@@ -27,7 +27,12 @@
 #include "lineedit.h"
 #include "toolbutton.h"
 #include "squeezedtextlabel.h"
+#include "combobox.h"
 #include <QSet>
+#include <QList>
+#include <QPair>
+
+class Icon;
 
 class SearchWidget : public QWidget
 {
@@ -39,9 +44,12 @@ public:
     void setLabel(const QString &s);
     void setText(const QString &t) { edit->setText(t); }
     QString text() const { return edit->text(); }
+    QString category() const { return cat ? cat->itemData(cat->currentIndex()).toString() : QString(); }
     void setFocus() { edit->setFocus(); }
-    bool hasFocus() const { return edit->hasFocus() || closeButton->hasFocus(); }
+    bool hasFocus() const { return edit->hasFocus() || (closeButton && closeButton->hasFocus()); }
     bool isActive() const { return widgetIsActive; }
+    void setPermanent();
+    void setCategories(const QList<QPair<QString, QString> > &categories);
 
 Q_SIGNALS:
     void textChanged(const QString &);
@@ -57,6 +65,7 @@ public Q_SLOTS:
 
 private:
     SqueezedTextLabel *label;
+    ComboBox *cat;
     LineEdit *edit;
     ToolButton *closeButton;
     bool widgetIsActive;

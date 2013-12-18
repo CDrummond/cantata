@@ -202,7 +202,7 @@ endif (MSVC)
 set(CANTATA_SRCS gui/application.cpp gui/main.cpp gui/initialsettingswizard.cpp gui/mainwindow.cpp gui/preferencesdialog.cpp
     gui/settings.cpp gui/covers.cpp gui/filesettings.cpp gui/interfacesettings.cpp gui/playbacksettings.cpp 
     gui/serversettings.cpp gui/librarypage.cpp gui/albumspage.cpp gui/folderpage.cpp gui/playlistspage.cpp gui/trayitem.cpp
-    gui/cachesettings.cpp gui/coverdialog.cpp gui/stdactions.cpp
+    gui/cachesettings.cpp gui/coverdialog.cpp gui/stdactions.cpp gui/searchpage.cpp
     streams/streamspage.cpp streams/streamdialog.cpp streams/streamfetcher.cpp streams/digitallyimportedsettings.cpp
     streams/streamssettings.cpp streams/tar.cpp
     models/musiclibraryitemroot.cpp models/musiclibraryitemartist.cpp models/musiclibraryitemalbum.cpp models/musiclibrarymodel.cpp
@@ -210,7 +210,7 @@ set(CANTATA_SRCS gui/application.cpp gui/main.cpp gui/initialsettingswizard.cpp 
     models/playqueueproxymodel.cpp models/dirviewmodel.cpp models/dirviewproxymodel.cpp models/dirviewitem.cpp models/dirviewitemdir.cpp
     models/streamsmodel.cpp models/streamsproxymodel.cpp models/albumsmodel.cpp models/albumsproxymodel.cpp models/proxymodel.cpp
     models/actionmodel.cpp models/digitallyimported.cpp models/streamsearchmodel.cpp models/musiclibraryitem.cpp models/musicmodel.cpp
-    models/multimusicmodel.cpp models/onlineservicesmodel.cpp models/musiclibraryitempodcast.cpp
+    models/multimusicmodel.cpp models/onlineservicesmodel.cpp models/musiclibraryitempodcast.cpp models/searchmodel.cpp
     online/onlineservicespage.cpp online/onlineservice.cpp online/jamendoservice.cpp online/jamendosettingsdialog.cpp
     online/magnatuneservice.cpp online/magnatunesettingsdialog.cpp online/soundcloudservice.cpp online/podcastservice.cpp
     online/rssparser.cpp online/opmlparser.cpp online/podcastsearchdialog.cpp online/onlinesettings.cpp online/podcastsettingsdialog.cpp
@@ -232,11 +232,12 @@ set(CANTATA_SRCS gui/application.cpp gui/main.cpp gui/initialsettingswizard.cpp 
 set(CANTATA_MOC_HDRS
     gui/initialsettingswizard.h gui/mainwindow.h gui/settings.h gui/covers.h gui/folderpage.h gui/librarypage.h gui/albumspage.h
     gui/playlistspage.h gui/playbacksettings.h gui/serversettings.h gui/preferencesdialog.h gui/filesettings.h
-    gui/interfacesettings.h gui/cachesettings.h gui/trayitem.h gui/coverdialog.h
+    gui/interfacesettings.h gui/cachesettings.h gui/trayitem.h gui/coverdialog.h gui/searchpage.h
     streams/streamspage.h streams/streamdialog.h streams/streamfetcher.h streams/digitallyimportedsettings.h streams/streamssettings.h
     models/musiclibrarymodel.h models/musiclibraryproxymodel.h models/playlistsmodel.h models/playlistsproxymodel.h models/playqueuemodel.h
     models/playqueueproxymodel.h models/dirviewmodel.h models/dirviewproxymodel.h models/albumsmodel.h models/streamsmodel.h
     models/actionmodel.h models/digitallyimported.h models/streamsearchmodel.h models/multimusicmodel.h models/onlineservicesmodel.h
+    models/searchmodel.h
     online/onlineservice.h online/onlineservicespage.h online/jamendoservice.h online/magnatuneservice.h
     online/magnatunesettingsdialog.h online/magnatuneservice.h online/magnatunesettingsdialog.h online/soundcloudservice.h
     online/podcastservice.h online/podcastsearchdialog.h online/podcastsettingsdialog.h online/onlinesettings.h
@@ -253,7 +254,7 @@ set(CANTATA_MOC_HDRS
     context/backdropcreator.h)
 set(CANTATA_UIS
     gui/initialsettingswizard.ui gui/mainwindow.ui gui/folderpage.ui gui/librarypage.ui gui/albumspage.ui gui/playlistspage.ui
-    gui/filesettings.ui gui/interfacesettings.ui gui/playbacksettings.ui gui/serversettings.ui gui/coverdialog.ui
+    gui/filesettings.ui gui/interfacesettings.ui gui/playbacksettings.ui gui/serversettings.ui gui/coverdialog.ui gui/searchpage.ui
     streams/streamspage.ui streams/digitallyimportedsettings.ui streams/streamssettings.ui
     dynamic/dynamicpage.ui dynamic/dynamicrule.ui dynamic/dynamicrules.ui
     context/togglelist.ui context/othersettings.ui

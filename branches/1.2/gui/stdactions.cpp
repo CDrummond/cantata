@@ -77,7 +77,7 @@ StdActions::StdActions()
     editTagsAction = ActionCollection::get()->createAction("edittags", i18n("Edit Tags"), "document-edit");
     #endif
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
-    replaygainAction = ActionCollection::get()->createAction("replaygain", i18n("ReplayGain"), "audio-x-generic");
+    replaygainAction = ActionCollection::get()->createAction("replaygain", i18n("ReplayGain"), Icons::self()->audioFileIcon);
     #endif
     #ifdef ENABLE_DEVICES_SUPPORT
     copyToDeviceAction = ActionCollection::get()->createAction("copytodevice", i18n("Copy Songs To Device"), "multimedia-player");

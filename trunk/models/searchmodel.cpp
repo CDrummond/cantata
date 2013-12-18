@@ -94,7 +94,7 @@ QVariant SearchModel::data(const QModelIndex &index, int role) const
     
     switch (role) {
     case Qt::DecorationRole:
-        return song->isStream() ? Icons::self()->streamIcon : Icon("audio-x-generic");
+        return song->isStream() ? Icons::self()->streamIcon : Icons::self()->audioFileIcon;
     case Qt::DisplayRole:
     case Qt::ToolTipRole: {
         QString text=song->entryName();

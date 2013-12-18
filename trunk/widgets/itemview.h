@@ -136,6 +136,7 @@ public:
     void setAnimated(bool a);
     void setPermanentSearch();
     void setSearchCategories(const QList<QPair<QString, QString> > &categories);
+    void setSearchCategory(const QString &id);
 
 public Q_SLOTS:
     void focusSearch();

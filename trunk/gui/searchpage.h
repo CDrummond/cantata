@@ -40,6 +40,7 @@ public:
     SearchPage(QWidget *p);
     virtual ~SearchPage();
 
+    void save();
     void refresh();
     void clear();
     QStringList selectedFiles(bool allowPlaylists=false) const;

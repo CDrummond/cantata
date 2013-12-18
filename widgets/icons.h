@@ -80,6 +80,7 @@ public:
     Icon streamsIcon;
     Icon onlineIcon;
     Icon contextIcon;
+    Icon searchTabIcon;
     Icon infoIcon;
     Icon infoSidebarIcon;
     #ifdef ENABLE_DEVICES_SUPPORT

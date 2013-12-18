@@ -1287,6 +1287,17 @@ void MPDConnection::setPriority(const QList<qint32> &ids, quint8 priority)
     }
 }
 
+void MPDConnection::search(const QString &field, const QString &value, int id)
+{
+    QList<Song> songs;
+    Response response=sendCommand("search "+field.toLatin1()+" "+encodeName(value));
+    if (response.ok) {
+        songs=MPDParseUtils::parseSongs(response.data);
+        qSort(songs);
+    }
+    emit searchResponse(id, songs);
+}
+
 void MPDConnection::moveInPlaylist(const QString &name, const QList<quint32> &items, quint32 pos, quint32 size)
 {
     if (doMoveInPlaylist(name, items, pos, size)) {

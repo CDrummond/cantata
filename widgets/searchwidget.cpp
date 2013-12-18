@@ -52,19 +52,20 @@ private:
 
 SearchWidget::SearchWidget(QWidget *p)
      : QWidget(p)
+     , cat(0)
      , widgetIsActive(false)
 {
     QGridLayout *l=new QGridLayout(this);
     l->setMargin(0);
-    l->setSpacing(1);
+    l->setSpacing(0);
     label=new SqueezedTextLabel(this);
     edit=new LineEdit(this);
     edit->setPlaceholderText(i18n("Search..."));
-    l->addWidget(label, 0, 0, 1, 2);
-    l->addWidget(edit, 1, 0);
+    l->addWidget(label, 0, 0, 1, 3);
+    l->addWidget(edit, 1, 1);
     closeButton=new ToolButton(this);
     closeButton->setToolTip(i18n("Close Search Bar")+QLatin1String(" (")+QKeySequence(Qt::Key_Escape).toString()+QLatin1Char(')'));
-    l->addWidget(closeButton, 1, 1);
+    l->addWidget(closeButton, 1, 2);
     Icon icon=Icon("dialog-close");
     if (icon.isNull()) {
         icon=Icon("window-close");
@@ -86,6 +87,50 @@ void SearchWidget::setLabel(const QString &s)
 {
     label->setText(s);
     label->setVisible(!s.isEmpty());
+}
+
+void SearchWidget::setPermanent()
+{
+    show();
+    setFocus();
+    closeButton->setVisible(false);
+    closeButton->deleteLater();
+    closeButton=0;
+}
+
+void SearchWidget::setCategories(const QList<QPair<QString, QString> > &categories)
+{
+    QString currentCat;
+    if (!cat) {
+        cat=new ComboBox(this);
+        ((QGridLayout *)layout())->addWidget(cat, 1, 0);
+        connect(cat, SIGNAL(currentIndexChanged(int)), SIGNAL(returnPressed()));
+    } else {
+        currentCat=category();
+        if (!currentCat.isEmpty()) {
+            cat->blockSignals(true);
+        }
+    }
+
+    cat->clear();
+
+    QList<QPair<QString, QString> >::ConstIterator it=categories.constBegin();
+    QList<QPair<QString, QString> >::ConstIterator end=categories.constEnd();
+    for (; it!=end; ++it) {
+        cat->addItem((*it).first, (*it).second);
+    }
+
+    if (!currentCat.isEmpty()) {
+        for (int i=0; i<cat->count(); ++i) {
+            if (cat->itemData(i).toString()==currentCat) {
+                cat->setCurrentIndex(i);
+                cat->blockSignals(false);
+                return;
+            }
+        }
+        cat->blockSignals(false);
+        cat->setCurrentIndex(0);
+    }
 }
 
 void SearchWidget::toggle()

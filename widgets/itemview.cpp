@@ -705,6 +705,11 @@ QString ItemView::searchText() const
     return searchWidget->isVisible() ? searchWidget->text() : QString();
 }
 
+QString ItemView::searchCategory() const
+{
+    return searchWidget->isVisible() ? searchWidget->category() : QString();
+}
+
 void ItemView::clearSearchText()
 {
     return searchWidget->setText(QString());
@@ -935,6 +940,16 @@ void ItemView::setAnimated(bool a)
     } else if (Mode_GroupedTree==mode && groupedView) {
         groupedView->setAnimated(a);
     }
+}
+
+void ItemView::setPermanentSearch()
+{
+    searchWidget->setPermanent();
+}
+
+void ItemView::setSearchCategories(const QList<QPair<QString, QString> > &categories)
+{
+    searchWidget->setCategories(categories);
 }
 
 void ItemView::showSpinner(bool v)

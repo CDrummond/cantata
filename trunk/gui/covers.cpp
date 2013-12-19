@@ -148,18 +148,18 @@ static inline QString artistKey(const Song &s)
     return "{"+s.albumArtist()+"}";
 }
 
-static const QLatin1String constScaledForamt(".jpg");
+static const QLatin1String constScaledFormat(".jpg");
 static bool cacheScaledCovers=true;
 
 static QString getScaledCoverName(const QString &artist, const QString &album, int size, bool createDir)
 {
     if (album.isEmpty()) {
         QString dir=Utils::cacheDir(Covers::constScaledCoverDir+QString::number(size)+QLatin1Char('/'), createDir);
-        return dir.isEmpty() ? QString() : (dir+Covers::encodeName(artist)+constScaledForamt);
+        return dir.isEmpty() ? QString() : (dir+Covers::encodeName(artist)+constScaledFormat);
     }
 
     QString dir=Utils::cacheDir(Covers::constScaledCoverDir+QString::number(size)+QLatin1Char('/')+Covers::encodeName(artist), createDir);
-    return dir.isEmpty() ? QString() : (dir+Covers::encodeName(album)+constScaledForamt);
+    return dir.isEmpty() ? QString() : (dir+Covers::encodeName(album)+constScaledFormat);
 }
 
 static void clearScaledCache(const Song &song)
@@ -178,7 +178,7 @@ static void clearScaledCache(const Song &song)
     QStringList sizeDirNames=d.entryList(QStringList() << "*", QDir::Dirs|QDir::NoDotAndDotDot);
 
     if (artistImage) {
-        QString fileName=Covers::encodeName(song.artist)+constScaledForamt;
+        QString fileName=Covers::encodeName(song.artist)+constScaledFormat;
         foreach (const QString &sizeDirName, sizeDirNames) {
             QDir sizeDir(dirName+QLatin1Char('/')+sizeDirName);
             QStringList matches=sizeDir.entryList(QStringList() << fileName, QDir::Files);
@@ -188,7 +188,7 @@ static void clearScaledCache(const Song &song)
         }
     } else {
         QString subDir=Covers::encodeName(song.artist);
-        QString fileName=Covers::encodeName(song.album)+constScaledForamt;
+        QString fileName=Covers::encodeName(song.album)+constScaledFormat;
 
         foreach (const QString &sizeDirName, sizeDirNames) {
             QDir artistDir(dirName+QLatin1Char('/')+sizeDirName+QLatin1Char('/')+subDir);

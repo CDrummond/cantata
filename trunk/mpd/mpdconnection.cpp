@@ -187,6 +187,7 @@ MPDConnection::MPDConnection()
     qRegisterMetaType<QList<Playlist> >("QList<Playlist>");
     qRegisterMetaType<QList<quint32> >("QList<quint32>");
     qRegisterMetaType<QList<qint32> >("QList<qint32>");
+    qRegisterMetaType<QList<quint8> >("QList<quint8>");
     qRegisterMetaType<QAbstractSocket::SocketState >("QAbstractSocket::SocketState");
     qRegisterMetaType<MPDStatsValues>("MPDStatsValues");
     qRegisterMetaType<MPDStatusValues>("MPDStatusValues");
@@ -532,6 +533,15 @@ void MPDConnection::add(const QStringList &files, bool replace, quint8 priority)
 
 void MPDConnection::add(const QStringList &files, quint32 pos, quint32 size, int action, quint8 priority)
 {
+    QList<quint8> prioList;
+    if (priority>0) {
+        prioList << priority;
+    }
+    add(files, pos, size, action, prioList);
+}
+
+void MPDConnection::add(const QStringList &files, quint32 pos, quint32 size, int action, const QList<quint8> &priority)
+{
     toggleStopAfterCurrent(false);
     if (AddToEnd!=action) {
         clear();
@@ -543,7 +553,9 @@ void MPDConnection::add(const QStringList &files, quint32 pos, quint32 size, int
     int curPos = pos;
 //    bool addedFile=false;
     bool havePlaylist=false;
-    bool usePrio=priority>0 && canUsePriority();
+    bool usePrio=!priority.isEmpty() && canUsePriority() && (1==priority.count() || priority.count()==files.count());
+    quint8 singlePrio=usePrio && 1==priority.count() ? priority.at(0) : 0;
+
     for (int i = 0; i < files.size(); i++) {
         if (CueFile::isCue(files.at(i))) {
             send += "load "+CueFile::getLoadLine(files.at(i))+"\n";
@@ -562,7 +574,7 @@ void MPDConnection::add(const QStringList &files, quint32 pos, quint32 size, int
                 send += "move "+QByteArray::number(curSize)+" "+QByteArray::number(curPos)+"\n";
             }
             if (usePrio && !havePlaylist) {
-                send += "prio "+QByteArray::number(priority)+" "+QByteArray::number(curPos)+" "+QByteArray::number(curPos)+"\n";
+                send += "prio "+QByteArray::number(singlePrio || i>=priority.count() ? singlePrio : priority.at(i))+" "+QByteArray::number(curPos)+" "+QByteArray::number(curPos)+"\n";
             }
         }
         curSize++;
@@ -580,9 +592,9 @@ void MPDConnection::add(const QStringList &files, quint32 pos, quint32 size, int
     }
 }
 
-void MPDConnection::populate(const QStringList &files)
+void MPDConnection::populate(const QStringList &files, const QList<quint8> &priority)
 {
-    add(files, 0, 0, AddAndReplace, 0);
+    add(files, 0, 0, AddAndReplace, priority);
 }
 
 void MPDConnection::addAndPlay(const QString &file)

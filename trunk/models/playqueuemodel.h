@@ -61,6 +61,14 @@ public:
         COL_COUNT
     };
 
+    struct UndoItem
+    {
+        bool operator==(const UndoItem &o) const { return priority==o.priority && files==o.files; }
+        bool operator!=(const UndoItem &o) const { return !(*this==o); }
+        QStringList files;
+        QList<quint8> priority;
+    };
+
     static const QLatin1String constMoveMimeType;
     static const QLatin1String constFileNameMimeType;
     static const QLatin1String constUriMimeType;
@@ -133,7 +141,7 @@ Q_SIGNALS:
     void stop(bool afterCurrent);
     void clearStopAfter();
     void filesAdded(const QStringList filenames, const quint32 row, const quint32 size, int action, quint8 priority);
-    void populate(const QStringList &items);
+    void populate(const QStringList &items, const QList<quint8> &priority);
     void move(const QList<quint32> &items, const quint32 row, const quint32 size);
     void statsUpdated(int songs, quint32 time);
     void fetchingStreams();
@@ -168,8 +176,8 @@ private:
     Command lastCommand;
     Action *undoAction;
     Action *redoAction;
-    QStack<QStringList> undoStack;
-    QStack<QStringList> redoStack;
+    QStack<UndoItem> undoStack;
+    QStack<UndoItem> redoStack;
 };
 
 #endif

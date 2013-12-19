@@ -47,17 +47,7 @@
       <number>0</number>
      </property>
      <item>
-      <spacer name="horizontalSpacer_2">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>191</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
+      <widget class="SqueezedTextLabel" name="statsLabel"/>
      </item>
      <item>
       <widget class="SizeWidget" name="sizeWidget"/>
@@ -73,6 +63,11 @@
   </layout>
  </widget>
  <customwidgets>
+  <customwidget>
+   <class>SqueezedTextLabel</class>
+   <extends>QLabel</extends>
+   <header>squeezedtextlabel.h</header>
+  </customwidget>
   <customwidget>
    <class>ItemView</class>
    <extends>QTreeView</extends>

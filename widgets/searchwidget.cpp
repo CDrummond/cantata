@@ -81,6 +81,7 @@ SearchWidget::SearchWidget(QWidget *p)
     QFont f(font());
     f.setBold(true);
     label->setFont(f);
+    setTabOrder(edit, closeButton);
 }
 
 void SearchWidget::setLabel(const QString &s)
@@ -105,6 +106,7 @@ void SearchWidget::setCategories(const QList<QPair<QString, QString> > &categori
         cat=new ComboBox(this);
         ((QGridLayout *)layout())->addWidget(cat, 1, 0);
         connect(cat, SIGNAL(currentIndexChanged(int)), SIGNAL(returnPressed()));
+        setTabOrder(cat, edit);
     } else {
         currentCat=category();
         if (!currentCat.isEmpty()) {

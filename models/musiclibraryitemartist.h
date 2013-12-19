@@ -32,6 +32,7 @@
 #include <QHash>
 #include "musiclibraryitem.h"
 
+class QPixmap;
 class MusicLibraryItemRoot;
 class MusicLibraryItemAlbum;
 struct Song;

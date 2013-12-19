@@ -29,11 +29,11 @@
 
 #include <QList>
 #include <QVariant>
-#include <QPixmap>
 #include <QSet>
 #include "musiclibraryitem.h"
 #include "song.h"
 
+class QPixmap;
 class MusicLibraryItemArtist;
 class MusicLibraryItemSong;
 

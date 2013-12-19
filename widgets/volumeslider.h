@@ -56,7 +56,7 @@ private Q_SLOTS:
 
 private:
     void generatePixmaps();
-    QPixmap * generatePixmap(bool filled);
+    QPixmap generatePixmap(bool filled);
 
 private:
     int lineWidth;
@@ -64,7 +64,7 @@ private:
     bool down;
     bool fadingStop;
     QColor textCol;
-    QPixmap *pixmaps[2];
+    QPixmap pixmaps[2];
     Action *muteAction;
     QAction *muteMenuAction;
     QMenu *menu;

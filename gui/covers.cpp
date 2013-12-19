@@ -212,7 +212,7 @@ QPixmap * Covers::getScaledCover(const QString &artist, const QString &album, in
     QString cache=getScaledCoverName(artist, album, size, true);
     if (!cache.isEmpty() && QFile::exists(cache)) {
         QImage img(cache);
-        if (!img.isNull()) {
+        if (!img.isNull() && (img.width()==size || img.height()==size)) {
             DBUG_CLASS("Covers") << artist << album << size << "scaled cover found";
             return new QPixmap(QPixmap::fromImage(img));
         }
@@ -226,8 +226,10 @@ bool Covers::saveScaledCover(const QImage &img, const QString &artist, const QSt
         return false;
     }
 
-    DBUG_CLASS("Covers") << artist << album << size;
-    return img.save(getScaledCoverName(artist, album, size, true));
+    QString fileName=getScaledCoverName(artist, album, size, true);
+    bool status=img.save(fileName);
+    DBUG_CLASS("Covers") << artist << album << size << fileName << status;
+    return status;
 }
 
 QString Covers::encodeName(QString name)

@@ -40,14 +40,6 @@
 #endif
 #include "onlineservice.h"
 #include "onlineservicesmodel.h"
-#include <QFile>
-
-#ifdef CACHE_SCALED_COVERS
-static QString cacheCoverName(const QString &artist, int size, bool createDir=false)
-{
-    return Utils::cacheDir(Covers::constCoverDir+QString::number(size)+"/", createDir)+Covers::encodeName(artist)+".png";
-}
-#endif
 
 bool MusicLibraryItemArtist::lessThan(const MusicLibraryItem *a, const MusicLibraryItem *b)
 {
@@ -99,9 +91,7 @@ bool MusicLibraryItemArtist::setCover(const QImage &img, bool update) const
         }
         m_cover = new QPixmap(QPixmap::fromImage(scaled));
         m_coverIsDefault=false;
-        #ifdef CACHE_SCALED_COVERS
-        scaled.save(cacheCoverName(data(), size, true));
-        #endif
+        Covers::saveScaledCover(scaled, data(), QString(), size);
         return true;
     }
 
@@ -132,18 +122,12 @@ const QPixmap & MusicLibraryItemArtist::cover()
             m_cover = new QPixmap(Icons::self()->variousArtistsIcon.pixmap(cSize, cSize).scaled(QSize(cSize, cSize), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
             m_coverIsDefault=false;
         } else {
-            #ifdef CACHE_SCALED_COVERS
-            QString cache=cacheCoverName(data(), iSize);
-
-            if (QFile::exists(cache)) {
-                QImage img(cache);
-                if (!img.isNull()) {
-                    m_cover=new QPixmap(QPixmap::fromImage(img));
-                    m_coverIsDefault=false;
-                    return *m_cover;
-                }
+            m_cover=Covers::getScaledCover(data(), QString(), iSize);
+            if (m_cover) {
+                m_coverIsDefault=false;
+                return *m_cover;
             }
-            #endif
+
             if (useLarge) {
                 theDefaultLargeIcon = new QPixmap(Icons::self()->artistIcon.pixmap(cSize, cSize)
                                                  .scaled(QSize(cSize, cSize), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));

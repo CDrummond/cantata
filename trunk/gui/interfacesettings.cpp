@@ -267,6 +267,7 @@ void InterfaceSettings::load()
     minimiseOnCloseLabel->setEnabled(systemTrayCheckBox->isChecked());
     selectEntry(startupState, Settings::self()->startupState());
     enableStartupState();
+    cacheScaledCovers->setChecked(Settings::self()->cacheScaledCovers());
 }
 
 void InterfaceSettings::save()
@@ -317,6 +318,7 @@ void InterfaceSettings::save()
     Settings::self()->saveShowPopups(systemTrayPopup->isChecked());
     Settings::self()->saveMinimiseOnClose(minimiseOnClose->isChecked());
     Settings::self()->saveStartupState(getValue(startupState));
+    Settings::self()->saveCacheScaledCovers(cacheScaledCovers->isChecked());
 }
 
 void InterfaceSettings::libraryViewChanged()

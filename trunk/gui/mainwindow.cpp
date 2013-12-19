@@ -1318,7 +1318,7 @@ void MainWindow::controlDynamicButton()
 void MainWindow::readSettings()
 {
     checkMpdDir();
-    Covers::self()->setSaveInMpdDir(Settings::self()->storeCoversInMpdDir());
+    Covers::self()->readConfig();
     HttpServer::self()->readConfig();
     #ifdef ENABLE_DEVICES_SUPPORT
     StdActions::self()->deleteSongsAction->setVisible(Settings::self()->showDeleteAction());

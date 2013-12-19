@@ -30,7 +30,6 @@
 #include "musiclibraryitemsong.h"
 #include "song.h"
 #include "covers.h"
-#include "config.h"
 #include "icons.h"
 #ifdef ENABLE_DEVICES_SUPPORT
 #include "device.h"
@@ -41,7 +40,6 @@
 #include <QPixmap>
 #include <QApplication>
 #include <QFontMetrics>
-#include <QFile>
 
 static MusicLibraryItemAlbum::CoverSize coverSize=MusicLibraryItemAlbum::CoverNone;
 static QPixmap *theDefaultIcon=0;
@@ -60,13 +58,6 @@ static inline int adjust(int v)
 }
 
 static int fontHeight=16;
-
-#ifdef CACHE_SCALED_COVERS
-static QString cacheCoverName(const QString &artist, const QString &album, int size, bool createDir=false)
-{
-    return Utils::cacheDir(Covers::constCoverDir+QString::number(size)+"/"+Covers::encodeName(artist), createDir)+Covers::encodeName(album)+".png";
-}
-#endif
 
 void MusicLibraryItemAlbum::setup()
 {
@@ -184,9 +175,7 @@ void MusicLibraryItemAlbum::setCoverImage(const QImage &img) const
     QImage scaled=img.scaled(QSize(size, size), Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
     m_cover = new QPixmap(QPixmap::fromImage(scaled));
     m_coverIsDefault=false;
-    #ifdef CACHE_SCALED_COVERS
-    scaled.save(cacheCoverName(parentItem()->data(), data(), size, true));
-    #endif
+    Covers::saveScaledCover(scaled, parentItem()->data(), QString(), size);
 }
 
 bool MusicLibraryItemAlbum::setCover(const QImage &img, bool update) const
@@ -230,18 +219,11 @@ const QPixmap & MusicLibraryItemAlbum::cover()
         }
         m_coverIsDefault = true;
         if (Song::SingleTracks!=m_type && parentItem() && iSize && childCount()) {
-            #ifdef CACHE_SCALED_COVERS
-            QString cache=cacheCoverName(parentItem()->data(), data(), iSize);
-
-            if (QFile::exists(cache)) {
-                QImage img(cache);
-                if (!img.isNull()) {
-                    m_cover=new QPixmap(QPixmap::fromImage(img));
-                    m_coverIsDefault=false;
-                    return *m_cover;
-                }
+            m_cover=Covers::getScaledCover(parentItem()->data(), data(), iSize);
+            if (m_cover) {
+                m_coverIsDefault=false;
+                return *m_cover;
             }
-            #endif
 
             MusicLibraryItemSong *firstSong=static_cast<MusicLibraryItemSong*>(childItem(0));
             Song song;

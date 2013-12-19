@@ -830,6 +830,11 @@ QString Settings::searchCategory()
     return GET_STRING("searchCategory", QString());
 }
 
+bool Settings::cacheScaledCovers()
+{
+    return GET_BOOL("cacheScaledCovers", true);
+}
+
 void Settings::removeConnectionDetails(const QString &v)
 {
     if (v==currentConnection()) {
@@ -1297,6 +1302,11 @@ void Settings::saveStartupState(int v)
 void Settings::saveSearchCategory(const QString &v)
 {
     SET_VALUE_MOD(searchCategory);
+}
+
+void Settings::saveCacheScaledCovers(bool v)
+{
+    SET_VALUE_MOD(cacheScaledCovers);
 }
 
 void Settings::save(bool force)

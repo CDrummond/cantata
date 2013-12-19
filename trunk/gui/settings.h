@@ -202,6 +202,7 @@ public:
     StartupState startupState();
     int undoSteps();
     QString searchCategory();
+    bool cacheScaledCovers();
 
     void removeConnectionDetails(const QString &v);
     void saveConnectionDetails(const MPDConnectionDetails &v);
@@ -295,6 +296,7 @@ public:
     void savePodcastAutoDownload(bool v);
     void saveStartupState(int v);
     void saveSearchCategory(const QString &v);
+    void saveCacheScaledCovers(bool v);
     void save(bool force=false);
     #if defined ENABLE_KDE_SUPPORT && defined ENABLE_KWALLET
     bool openWallet();

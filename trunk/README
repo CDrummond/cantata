@@ -812,7 +812,7 @@ Cantata contains code/icons from:
     libebur128     - https://github.com/jiixyj/libebur128 (Replay gain
                      calculation)
     QJson          - JSON parser, taken from https://github.com/flavio/qjson
-    Sidebar icons  - Taken from IcoMoon - http://icomoon.io/#icons
+    IcoMoon        - http://icomoon.io/#icons (Monochrome sidebar icons)
 
 
 15. Windows

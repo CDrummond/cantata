@@ -679,6 +679,10 @@ void AlbumsModel::AlbumItem::getCover()
 
 void AlbumsModel::AlbumItem::setCover(const QImage &img)
 {
+    if (cover) {
+        delete cover;
+    }
+
     #ifdef CACHE_SCALED_COVERS
     if (Song::SingleTracks!=type && songs.count() && !img.isNull()) {
         SongItem *firstSong=songs.first();

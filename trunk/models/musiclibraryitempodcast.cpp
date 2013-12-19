@@ -233,6 +233,9 @@ bool MusicLibraryItemPodcast::save()
 
 void MusicLibraryItemPodcast::setCoverImage(const QImage &img) const
 {
+    if (m_cover) {
+        delete m_cover;
+    }
     int size=MusicLibraryItemAlbum::iconSize(largeImages());
     QImage scaled=img.scaled(QSize(size, size), Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
     m_cover = new QPixmap(QPixmap::fromImage(scaled));

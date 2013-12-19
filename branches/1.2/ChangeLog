@@ -5,6 +5,7 @@
 3. Fix tagtype and URL handler detection.
 4. Use 32x32 for drag'n'drop icon, 64x64 for highdpi.
 5. Use audio-x-generic icon for drag'n'drop if no cover found.
+6. Fix potential memory leak with cover images.
 
 1.2.0
 -----

@@ -30,7 +30,6 @@
 #include "musiclibraryitemsong.h"
 #include "song.h"
 #include "covers.h"
-#include "config.h"
 #include "icons.h"
 #ifdef ENABLE_DEVICES_SUPPORT
 #include "device.h"
@@ -41,7 +40,6 @@
 #include <QPixmap>
 #include <QApplication>
 #include <QFontMetrics>
-#include <QFile>
 
 static MusicLibraryItemAlbum::CoverSize coverSize=MusicLibraryItemAlbum::CoverNone;
 static QPixmap *theDefaultIcon=0;
@@ -180,6 +178,9 @@ MusicLibraryItemAlbum::~MusicLibraryItemAlbum()
 
 void MusicLibraryItemAlbum::setCoverImage(const QImage &img) const
 {
+    if (m_cover) {
+        delete m_cover;
+    }
     int size=iconSize(largeImages());
     QImage scaled=img.scaled(QSize(size, size), Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
     m_cover = new QPixmap(QPixmap::fromImage(scaled));

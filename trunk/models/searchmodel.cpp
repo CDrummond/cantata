@@ -183,6 +183,7 @@ void SearchModel::clear()
     }
     currentKey=currentValue=QString();
     currentId++;
+    emit statsUpdated(0, 0);
 }
 
 void SearchModel::search(const QString &key, const QString &value)
@@ -190,6 +191,7 @@ void SearchModel::search(const QString &key, const QString &value)
     if (key==currentKey && value==currentValue) {
         return;
     }
+    emit searching();
     clear();
     currentKey=key;
     currentValue=value;
@@ -207,4 +209,11 @@ void SearchModel::searchFinished(int id, const QList<Song> &result)
     songList.clear();
     songList=result;
     endResetModel();
+    quint32 time=0;
+    foreach (const Song &s, songList) {
+        time+=s.time;
+    }
+
+    emit statsUpdated(songList.size(), time);
+    emit searched();
 }

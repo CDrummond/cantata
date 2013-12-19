@@ -55,7 +55,8 @@ public:
 Q_SIGNALS:
     void searching();
     void searched();
-    
+    void statsUpdated(int songs, quint32 time);
+
     void search(const QString &field, const QString &value, int id);
 
 private Q_SLOTS:

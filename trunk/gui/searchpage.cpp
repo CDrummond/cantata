@@ -28,6 +28,7 @@
 #include "stdactions.h"
 #include "utils.h"
 #include "icon.h"
+#include "qtplural.h"
 
 SearchPage::SearchPage(QWidget *p)
     : QWidget(p)
@@ -54,6 +55,7 @@ SearchPage::SearchPage(QWidget *p)
     connect(this, SIGNAL(addSongsToPlaylist(const QString &, const QStringList &)), MPDConnection::self(), SLOT(addToPlaylist(const QString &, const QStringList &)));
     connect(&model, SIGNAL(searching()), view, SLOT(showSpinner()));
     connect(&model, SIGNAL(searched()), view, SLOT(hideSpinner()));
+    connect(&model, SIGNAL(statsUpdated(int, quint32)), this, SLOT(statsUpdated(int, quint32)));
     connect(view, SIGNAL(itemsSelected(bool)), this, SLOT(controlActions()));
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
     connect(view, SIGNAL(searchItems()), this, SLOT(searchItems()));
@@ -204,4 +206,18 @@ void SearchPage::setSearchCategories()
                << QPair<QString, QString>(i18n("File:"), QLatin1String("file"))
                << QPair<QString, QString>(i18n("Any:"), QLatin1String("any"));
     view->setSearchCategories(categories);
+}
+
+void SearchPage::statsUpdated(int songs, quint32 time)
+{
+    if (0==time) {
+        statsLabel->setText(QString());
+        return;
+    }
+
+    #ifdef ENABLE_KDE_SUPPORT
+    statsLabel->setText(i18np("1 Track (%2)", "%1 Tracks (%2)", songs, Utils::formatDuration(time)));
+    #else
+    statsLabel->setText(QTP_TRACKS_DURATION_STR(songs, Utils::formatDuration(time)));
+    #endif
 }

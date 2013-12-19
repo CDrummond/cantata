@@ -155,6 +155,7 @@ public:
     static const QSize constMaxSize;
     static const QLatin1String constLastFmApiKey;
     static const QLatin1String constCoverDir;
+    static const QLatin1String constScaledCoverDir;
     static const QLatin1String constFileName;
     static const QLatin1String constCddaCoverDir;
     static const QLatin1String constArtistImage;
@@ -168,8 +169,11 @@ public:
     static QString albumFileName(const Song &song);
     static QString artistFileName(const Song &song);
     static QString fixArtist(const QString &artist);
+    static QPixmap * getScaledCover(const QString &artist, const QString &album, int size);
+    static bool saveScaledCover(const QImage &img, const QString &artist, const QString &album, int size);
 
     Covers();
+    void readConfig();
     void stop();
 
     // Get cover image of specified size. If this is not found 0 will be returned, and the cover
@@ -183,7 +187,6 @@ public:
     // will be downloaded. If more than 5 covers have been requested in an event-loop iteration, then
     // the cover requests are placed on a queue.
     Image requestImage(const Song &song, bool urgent=false);
-    void setSaveInMpdDir(bool s);
     void emitCoverUpdated(const Song &song, const QImage &img, const QString &file);
 
     #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND

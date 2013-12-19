@@ -77,6 +77,7 @@ bool Covers::debugEnabled()
 
 const QLatin1String Covers::constLastFmApiKey("11172d35eb8cc2fd33250a9e45a2d486");
 const QLatin1String Covers::constCoverDir("covers/");
+const QLatin1String Covers::constScaledCoverDir("covers-scaled/");
 const QLatin1String Covers::constCddaCoverDir("cdda/");
 const QLatin1String Covers::constFileName("cover");
 const QLatin1String Covers::constArtistImage("artist");
@@ -145,6 +146,88 @@ static inline QString albumKey(const Song &s)
 static inline QString artistKey(const Song &s)
 {
     return "{"+s.albumArtist()+"}";
+}
+
+static const QLatin1String constScaledForamt(".jpg");
+static bool cacheScaledCovers=true;
+
+static QString getScaledCoverName(const QString &artist, const QString &album, int size, bool createDir)
+{
+    if (album.isEmpty()) {
+        QString dir=Utils::cacheDir(Covers::constScaledCoverDir+QString::number(size)+QLatin1Char('/'), createDir);
+        return dir.isEmpty() ? QString() : (dir+Covers::encodeName(artist)+constScaledForamt);
+    }
+
+    QString dir=Utils::cacheDir(Covers::constScaledCoverDir+QString::number(size)+QLatin1Char('/')+Covers::encodeName(artist), createDir);
+    return dir.isEmpty() ? QString() : (dir+Covers::encodeName(album)+constScaledForamt);
+}
+
+static void clearScaledCache(const Song &song)
+{
+    bool artistImage=song.isArtistImageRequest();
+    QString dirName=Utils::cacheDir(Covers::constScaledCoverDir, false);
+    if (dirName.isEmpty()) {
+        return;
+    }
+
+    QDir d(dirName);
+    if (!d.exists()) {
+        return;
+    }
+
+    QStringList sizeDirNames=d.entryList(QStringList() << "*", QDir::Dirs|QDir::NoDotAndDotDot);
+
+    if (artistImage) {
+        QString fileName=Covers::encodeName(song.artist)+constScaledForamt;
+        foreach (const QString &sizeDirName, sizeDirNames) {
+            QDir sizeDir(dirName+QLatin1Char('/')+sizeDirName);
+            QStringList matches=sizeDir.entryList(QStringList() << fileName, QDir::Files);
+            if (1==matches.count()) {
+                QFile::remove(sizeDir.absolutePath()+QLatin1Char('/')+fileName);
+            }
+        }
+    } else {
+        QString subDir=Covers::encodeName(song.artist);
+        QString fileName=Covers::encodeName(song.album)+constScaledForamt;
+
+        foreach (const QString &sizeDirName, sizeDirNames) {
+            QDir artistDir(dirName+QLatin1Char('/')+sizeDirName+QLatin1Char('/')+subDir);
+            if (artistDir.exists()) {
+                QStringList matches=artistDir.entryList(QStringList() << fileName, QDir::Files);
+                if (1==matches.count()) {
+                    QFile::remove(artistDir.absolutePath()+QLatin1Char('/')+fileName);
+                }
+            }
+        }
+    }
+}
+
+QPixmap * Covers::getScaledCover(const QString &artist, const QString &album, int size)
+{
+    if (!cacheScaledCovers) {
+        return 0;
+    }
+
+    DBUG_CLASS("Covers") << artist << album << size;
+    QString cache=getScaledCoverName(artist, album, size, true);
+    if (!cache.isEmpty() && QFile::exists(cache)) {
+        QImage img(cache);
+        if (!img.isNull()) {
+            DBUG_CLASS("Covers") << artist << album << size << "scaled cover found";
+            return new QPixmap(QPixmap::fromImage(img));
+        }
+    }
+    return 0;
+}
+
+bool Covers::saveScaledCover(const QImage &img, const QString &artist, const QString &album, int size)
+{
+    if (!cacheScaledCovers) {
+        return false;
+    }
+
+    DBUG_CLASS("Covers") << artist << album << size;
+    return img.save(getScaledCoverName(artist, album, size, true));
 }
 
 QString Covers::encodeName(QString name)
@@ -769,7 +852,6 @@ Covers::Covers()
 
     qRegisterMetaType<LocatedCover>("LocatedCover");
     qRegisterMetaType<QList<LocatedCover> >("QList<LocatedCover>");
-    saveInMpdDir=Settings::self()->storeCoversInMpdDir();
     downloader=new CoverDownloader();
     locator=new CoverLocator();
     connect(this, SIGNAL(download(Song)), downloader, SLOT(download(Song)), Qt::QueuedConnection);
@@ -777,6 +859,12 @@ Covers::Covers()
     connect(downloader, SIGNAL(cover(Song,QImage,QString)), this, SLOT(coverDownloaded(Song,QImage,QString)), Qt::QueuedConnection);
     connect(locator, SIGNAL(located(QList<LocatedCover>)), this, SLOT(located(QList<LocatedCover>)), Qt::QueuedConnection);
     connect(this, SIGNAL(locate(Song)), locator, SLOT(locate(Song)), Qt::QueuedConnection);
+}
+
+void Covers::readConfig()
+{
+    saveInMpdDir=Settings::self()->storeCoversInMpdDir();
+    cacheScaledCovers=Settings::self()->cacheScaledCovers();
 }
 
 void Covers::stop()
@@ -854,6 +942,7 @@ void Covers::artistImageDownloaded(const Song &song, const QImage &img, const QS
 //                   the next time get() is called, it can read the saved file!
 void Covers::clearCache(const Song &song, const QImage &img, bool dummyEntriesOnly)
 {
+    clearScaledCache(song);
     bool hadDummy=false;
     bool hadEntries=false;
     foreach (int s, cacheSizes) {
@@ -1117,11 +1206,6 @@ void Covers::located(const QList<LocatedCover> &covers)
     if (retrieved<0) {
         retrieved=0;
     }
-}
-
-void Covers::setSaveInMpdDir(bool s)
-{
-    saveInMpdDir=s;
 }
 
 void Covers::emitCoverUpdated(const Song &song, const QImage &img, const QString &file)

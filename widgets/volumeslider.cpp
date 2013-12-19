@@ -104,7 +104,6 @@ VolumeSlider::VolumeSlider(QWidget *p)
                           "QSlider::sub-page:horizontal {border: 0px;} "
                           "QSlider::handle:horizontal {width: 1px; height:%1px; margin:0;}").arg(h));
     textCol=clampColor(palette().color(QPalette::Active, QPalette::Text));
-    pixmaps[0]=pixmaps[1]=0;
     generatePixmaps();
 }
 
@@ -154,7 +153,7 @@ void VolumeSlider::paintEvent(QPaintEvent *)
         p.setOpacity(0.25);
     }
 
-    p.drawPixmap(0, 0, *(pixmaps[0]));
+    p.drawPixmap(0, 0, pixmaps[0]);
     #if 1
     int steps=(value()/10.0)+0.5;
     if (steps>0) {
@@ -165,7 +164,7 @@ void VolumeSlider::paintEvent(QPaintEvent *)
                             : QRect(0, 0, (steps*wStep*2)-wStep, height()));
             p.setClipping(true);
         }
-        p.drawPixmap(0, 0, *(pixmaps[1]));
+        p.drawPixmap(0, 0, pixmaps[1]);
         if (steps<10) {
             p.setClipping(false);
         }
@@ -306,28 +305,22 @@ void VolumeSlider::decreaseVolume()
 
 void VolumeSlider::generatePixmaps()
 {
-    if (pixmaps[0]) {
-        delete pixmaps[0];
-    }
-    if (pixmaps[1]) {
-        delete pixmaps[1];
-    }
     pixmaps[0]=generatePixmap(false);
     pixmaps[1]=generatePixmap(true);
 }
 
-QPixmap * VolumeSlider::generatePixmap(bool filled)
+QPixmap VolumeSlider::generatePixmap(bool filled)
 {
     bool reverse=Qt::RightToLeft==layoutDirection();
-    QPixmap *pix=new QPixmap(size());
-    pix->fill(Qt::transparent);
-    QPainter p(pix);
+    QPixmap pix(size());
+    pix.fill(Qt::transparent);
+    QPainter p(&pix);
     p.setPen(textCol);
     for (int i=0; i<10; ++i) {
         int barHeight=(lineWidth*constHeightStep)*(i+1);
-        QRect r(reverse ? pix->width()-(constWidthStep+(i*lineWidth*constWidthStep*2))
+        QRect r(reverse ? pix.width()-(constWidthStep+(i*lineWidth*constWidthStep*2))
                         : i*lineWidth*constWidthStep*2,
-                pix->height()-(barHeight+1), (lineWidth*constWidthStep)-1, barHeight);
+                pix.height()-(barHeight+1), (lineWidth*constWidthStep)-1, barHeight);
         if (filled) {
             p.fillRect(r.adjusted(1, 1, 0, 0), textCol);
         } else if (lineWidth>1) {

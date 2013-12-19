@@ -26,13 +26,13 @@
 
 #include <QList>
 #include <QVariant>
-#include <QPixmap>
 #include <QSet>
 #include <QUrl>
 #include "musiclibraryitem.h"
 #include "musiclibraryitemsong.h"
 #include "song.h"
 
+class QPixmap;
 class QNetworkReply;
 class MusicLibraryItemPodcastEpisode;
 

@@ -665,6 +665,10 @@ void AlbumsModel::AlbumItem::getCover()
 
 void AlbumsModel::AlbumItem::setCover(const QImage &img)
 {
+    if (cover) {
+        delete cover;
+    }
+
     if (Song::SingleTracks!=type && songs.count() && !img.isNull()) {
         int size=iconSize();
         QImage scaled=img.scaled(QSize(size, size), Qt::IgnoreAspectRatio, Qt::SmoothTransformation);

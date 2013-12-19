@@ -180,23 +180,18 @@ static void clearScaledCache(const Song &song)
     if (artistImage) {
         QString fileName=Covers::encodeName(song.artist)+constScaledFormat;
         foreach (const QString &sizeDirName, sizeDirNames) {
-            QDir sizeDir(dirName+QLatin1Char('/')+sizeDirName);
-            QStringList matches=sizeDir.entryList(QStringList() << fileName, QDir::Files);
-            if (1==matches.count()) {
-                QFile::remove(sizeDir.absolutePath()+QLatin1Char('/')+fileName);
+            QString fname=dirName+sizeDirName+QLatin1Char('/')+fileName;
+            if (QFile::exists(fname)) {
+                QFile::remove(fname);
             }
         }
     } else {
         QString subDir=Covers::encodeName(song.artist);
         QString fileName=Covers::encodeName(song.album)+constScaledFormat;
-
         foreach (const QString &sizeDirName, sizeDirNames) {
-            QDir artistDir(dirName+QLatin1Char('/')+sizeDirName+QLatin1Char('/')+subDir);
-            if (artistDir.exists()) {
-                QStringList matches=artistDir.entryList(QStringList() << fileName, QDir::Files);
-                if (1==matches.count()) {
-                    QFile::remove(artistDir.absolutePath()+QLatin1Char('/')+fileName);
-                }
+            QString fname=dirName+sizeDirName+QLatin1Char('/')+subDir+QLatin1Char('/')+fileName;
+            if (QFile::exists(fname)) {
+                QFile::remove(fname);
             }
         }
     }

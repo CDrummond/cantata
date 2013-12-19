@@ -63,6 +63,7 @@ public Q_SLOTS:
     void itemDoubleClicked(const QModelIndex &);
     void controlActions();
     void setSearchCategories();
+    void statsUpdated(int songs, quint32 time);
 
 private:
     enum State

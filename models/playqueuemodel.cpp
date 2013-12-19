@@ -137,7 +137,7 @@ PlayQueueModel::PlayQueueModel(QObject *parent)
     connect(fetcher, SIGNAL(status(QString)), SIGNAL(streamFetchStatus(QString)));
     connect(this, SIGNAL(filesAdded(const QStringList, quint32, quint32, int, quint8)),
             MPDConnection::self(), SLOT(add(const QStringList, quint32, quint32, int, quint8)));
-    connect(this, SIGNAL(populate(QStringList)), MPDConnection::self(), SLOT(populate(QStringList)));
+    connect(this, SIGNAL(populate(QStringList, QList<quint8>)), MPDConnection::self(), SLOT(populate(QStringList, QList<quint8>)));
     connect(this, SIGNAL(move(const QList<quint32> &, quint32, quint32)),
             MPDConnection::self(), SLOT(move(const QList<quint32> &, quint32, quint32)));
     connect(MPDConnection::self(), SIGNAL(prioritySet(const QList<qint32> &, quint8)), SLOT(prioritySet(const QList<qint32> &, quint8)));
@@ -602,6 +602,12 @@ void PlayQueueModel::addFiles(const QStringList &filenames, int row, bool replac
 
 void PlayQueueModel::prioritySet(const QList<qint32> &ids, quint8 priority)
 {
+    QList<Song> prev;
+    if (undoEnabled) {
+        foreach (Song s, songs) {
+            prev.append(s);
+        }
+    }
     QSet<qint32> i=ids.toSet();
     int row=0;
 
@@ -612,11 +618,13 @@ void PlayQueueModel::prioritySet(const QList<qint32> &ids, quint8 priority)
             QModelIndex idx(index(row, 0));
             emit dataChanged(idx, idx);
             if (i.isEmpty()) {
-                return;
+                break;
             }
         }
         ++row;
     }
+
+    saveHistory(prev);
 }
 
 qint32 PlayQueueModel::getIdByRow(qint32 row) const
@@ -883,13 +891,30 @@ void PlayQueueModel::enableUndo(bool e)
     controlActions();
 }
 
-static QStringList getFileNames(const QList<Song> &songs)
+static PlayQueueModel::UndoItem getState(const QList<Song> &songs)
 {
-    QStringList fn;
+    PlayQueueModel::UndoItem item;
     foreach (const Song &s, songs) {
-        fn.append(s.file);
+        item.files.append(s.file);
+        item.priority.append(s.priority);
     }
-    return fn;
+    return item;
+}
+
+static bool equalSongList(const QList<Song> &a, const QList<Song> &b)
+{
+    if (a.count()!=b.count()) {
+        return false;
+    }
+
+    for (int i=0; i<a.count(); ++i) {
+        const Song &sa=a.at(i);
+        const Song &sb=b.at(i);
+        if (sa.priority!=sb.priority || sa.file!=sb.file) {
+            return false;
+        }
+    }
+    return true;
 }
 
 void PlayQueueModel::saveHistory(const QList<Song> &prevList)
@@ -898,7 +923,7 @@ void PlayQueueModel::saveHistory(const QList<Song> &prevList)
         return;
     }
 
-    if (prevList==songs) {
+    if (equalSongList(prevList, songs)) {
         lastCommand=Cmd_Other;
         return;
     }
@@ -908,11 +933,11 @@ void PlayQueueModel::saveHistory(const QList<Song> &prevList)
         if (redoStack.isEmpty()) {
             lastCommand=Cmd_Other;
         } else {
-            QStringList actioned=redoStack.pop();
-            if (actioned!=getFileNames(songs)) {
+            UndoItem actioned=redoStack.pop();
+            if (actioned!=getState(songs)) {
                 lastCommand=Cmd_Other;
             } else {
-                undoStack.push(getFileNames(prevList));
+                undoStack.push(getState(prevList));
             }
         }
         break;
@@ -921,11 +946,11 @@ void PlayQueueModel::saveHistory(const QList<Song> &prevList)
         if (undoStack.isEmpty()) {
             lastCommand=Cmd_Other;
         } else {
-            QStringList actioned=undoStack.pop();
-            if (actioned!=getFileNames(songs)) {
+            UndoItem actioned=undoStack.pop();
+            if (actioned!=getState(songs)) {
                 lastCommand=Cmd_Other;
             } else {
-                redoStack.push(getFileNames(prevList));
+                redoStack.push(getState(prevList));
             }
         }
         break;
@@ -936,7 +961,7 @@ void PlayQueueModel::saveHistory(const QList<Song> &prevList)
 
     if (Cmd_Other==lastCommand) {
         redoStack.clear();
-        undoStack.push(getFileNames(prevList));
+        undoStack.push(getState(prevList));
         if (undoStack.size()>undoLimit) {
             undoStack.pop_back();
         }
@@ -959,7 +984,8 @@ void PlayQueueModel::undo()
     if (!undoEnabled || undoStack.isEmpty()) {
         return;
     }
-    emit populate(undoStack.top());
+    UndoItem item=undoStack.top();
+    emit populate(item.files, item.priority);
     lastCommand=Cmd_Undo;
 }
 
@@ -968,7 +994,8 @@ void PlayQueueModel::redo()
     if (!undoEnabled || redoStack.isEmpty()) {
         return;
     }
-    emit populate(redoStack.top());
+    UndoItem item=redoStack.top();
+    emit populate(item.files, item.priority);
     lastCommand=Cmd_Redo;
 }
 

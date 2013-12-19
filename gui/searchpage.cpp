@@ -66,6 +66,7 @@ SearchPage::SearchPage(QWidget *p)
     view->setPermanentSearch();
     setSearchCategories();
     view->setSearchCategory(Settings::self()->searchCategory());
+    statsUpdated(0, 0);
 }
 
 SearchPage::~SearchPage()
@@ -210,8 +211,8 @@ void SearchPage::setSearchCategories()
 
 void SearchPage::statsUpdated(int songs, quint32 time)
 {
-    if (0==time) {
-        statsLabel->setText(QString());
+    if (0==songs) {
+        statsLabel->setText(i18n("No tracks found."));
         return;
     }
 

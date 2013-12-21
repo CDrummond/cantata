@@ -197,7 +197,7 @@ QModelIndexList TreeView::selectedIndexes(bool sorted) const
 
     if (sorted) {
         return sortIndexes(selectionModel()->selectedIndexes());
-    } else if (model()->columnCount()>1) {
+    } else if (model() && model()->columnCount()>1) {
         QModelIndexList list=selectionModel()->selectedIndexes();
         QModelIndexList sel;
         foreach (const QModelIndex &idx, list) {

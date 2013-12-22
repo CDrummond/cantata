@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>OtherSettings</class>
+ <widget class="QWidget" name="OtherSettings">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>442</width>
+    <height>602</height>
+   </rect>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <layout class="QFormLayout" name="formLayout">
+     <item row="0" column="0">
+      <widget class="BuddyLabel" name="contextBackdropLabel">
+       <property name="text">
+        <string>Use backdrop:</string>
+       </property>
+       <property name="buddy">
+        <cstring>contextBackdrop</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="OnOffButton" name="contextBackdrop"/>
+     </item>
+     <item row="1" column="0">
+      <widget class="BuddyLabel" name="contextDarkBackgroundLabel">
+       <property name="text">
+        <string>Dark background:</string>
+       </property>
+       <property name="buddy">
+        <cstring>contextDarkBackground</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="OnOffButton" name="contextDarkBackground"/>
+     </item>
+     <item row="2" column="0">
+      <widget class="BuddyLabel" name="wikipediaIntroOnlyLabel">
+       <property name="text">
+        <string>Only show basic wikipedia text:</string>
+       </property>
+       <property name="buddy">
+        <cstring>wikipediaIntroOnly</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="OnOffButton" name="wikipediaIntroOnly">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Fixed</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>8</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item>
+    <widget class="StateLabel" name="wikipediaIntroOnlyNote">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="text">
+      <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; Cantata does not show the full wikipedia pages (with images, links, etc), instead it shows a trimmed down version. This trimming is not always 100% accurate, hence by default Cantata will only show the basic introduction to each article. If you elect to show the full article, then there may be parsing errors. You will also need to remove any currently cached articles (using the 'Cache' page).&lt;/i&gt;</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer_2">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::MinimumExpanding</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>8</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>BuddyLabel</class>
+   <extends>QLabel</extends>
+   <header>buddylabel.h</header>
+  </customwidget>
+  <customwidget>
+   <class>StateLabel</class>
+   <extends>QLabel</extends>
+   <header>statelabel.h</header>
+  </customwidget>
+  <customwidget>
+   <class>OnOffButton</class>
+   <extends>QCheckBox</extends>
+   <header>onoffbutton.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

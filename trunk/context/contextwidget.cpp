@@ -45,7 +45,9 @@
 #include <QFile>
 #include <QWheelEvent>
 #include <QApplication>
+#ifndef SCALE_CONTEXT_BGND
 #include <QDesktopWidget>
+#endif
 #include <QComboBox>
 #include <QStackedWidget>
 #include <QAction>
@@ -185,6 +187,7 @@ ContextWidget::ContextWidget(QWidget *parent)
     , darkBackground(false)
 //    , useHtBackdrops(0!=constHtbApiKey.latin1())
     , useFanArt(0!=constFanArtApiKey.latin1())
+    , albumCoverBackdrop(false)
     , fadeValue(0)
     , isWide(false)
     , stack(0)
@@ -212,6 +215,8 @@ ContextWidget::ContextWidget(QWidget *parent)
     setZoom();
     setWide(true);
     splitterColor=palette().text().color();
+
+    #ifndef SCALE_CONTEXT_BGND
     QDesktopWidget *dw=QApplication::desktop();
     if (dw) {
         QSize geo=dw->availableGeometry(this).size()-QSize(32, 64);
@@ -226,6 +231,7 @@ ContextWidget::ContextWidget(QWidget *parent)
         minBackdropSize=QSize(1024, 768);
         maxBackdropSize=QSize(minBackdropSize.width()*2, minBackdropSize.height()*2);
     }
+    #endif
 }
 
 void ContextWidget::setZoom()
@@ -340,6 +346,9 @@ void ContextWidget::resizeEvent(QResizeEvent *e)
     if (isVisible()) {
         setWide(width()>minWidth && !alwaysCollapsed);
     }
+    #ifdef SCALE_CONTEXT_BGND
+    resizeBackdrop();
+    #endif
     QWidget::resizeEvent(e);
 }
 
@@ -491,19 +500,8 @@ void ContextWidget::updateImage(const QImage &img, bool created)
     if (!img.isNull()) {
         currentBackdrop=QPixmap::fromImage(setOpacity(img));
     }
-
-    if (!currentBackdrop.isNull() && !created) {
-        if (currentBackdrop.width()<minBackdropSize.width() && currentBackdrop.height()<minBackdropSize.height()) {
-            QSize size(minBackdropSize);
-            if (currentBackdrop.width()<minBackdropSize.width()/4 && currentBackdrop.height()<minBackdropSize.height()/4) {
-                size=QSize(minBackdropSize.width()/2, minBackdropSize.height()/2);
-            }
-            currentBackdrop=currentBackdrop.scaled(size, Qt::KeepAspectRatio, Qt::SmoothTransformation);
-        } else if (maxBackdropSize.width()>1024 && maxBackdropSize.height()>768 &&
-                   (currentBackdrop.width()>maxBackdropSize.width() || currentBackdrop.height()>maxBackdropSize.height())) {
-            currentBackdrop=currentBackdrop.scaled(maxBackdropSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
-        }
-    }
+    albumCoverBackdrop=created;
+    resizeBackdrop();
 
     fadeValue=0.0;
     animator.setDuration(250);
@@ -1011,6 +1009,29 @@ void ContextWidget::createBackdrop()
         backdropAlbums=albumNames;
         emit createBackdrop(currentArtist, artistAlbumsFirstTracks);
     }
+}
+
+void ContextWidget::resizeBackdrop()
+{
+    #ifdef SCALE_CONTEXT_BGND
+    if (!currentBackdrop.isNull() && !albumCoverBackdrop && currentBackdrop.width()!=width()) {
+        QSize sz(width(), width()*currentBackdrop.height()/currentBackdrop.width());
+        currentBackdrop=currentBackdrop.scaled(sz, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    }
+    #else
+    if (!currentBackdrop.isNull() && !albumCoverBackdrop) {
+        if (currentBackdrop.width()<minBackdropSize.width() && currentBackdrop.height()<minBackdropSize.height()) {
+            QSize size(minBackdropSize);
+            if (currentBackdrop.width()<minBackdropSize.width()/4 && currentBackdrop.height()<minBackdropSize.height()/4) {
+                size=QSize(minBackdropSize.width()/2, minBackdropSize.height()/2);
+            }
+            currentBackdrop=currentBackdrop.scaled(size, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        } else if (maxBackdropSize.width()>1024 && maxBackdropSize.height()>768 &&
+                   (currentBackdrop.width()>maxBackdropSize.width() || currentBackdrop.height()>maxBackdropSize.height())) {
+            currentBackdrop=currentBackdrop.scaled(maxBackdropSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        }
+    }
+    #endif
 }
 
 void ContextWidget::backdropCreated(const QString &artist, const QImage &img)

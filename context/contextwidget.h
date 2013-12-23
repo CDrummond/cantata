@@ -31,6 +31,10 @@
 #include <QSplitter>
 #include "song.h"
 
+#ifndef SCALE_CONTEXT_BGND
+#define SCALE_CONTEXT_BGND
+#endif
+
 class ArtistView;
 class AlbumView;
 class SongView;
@@ -104,6 +108,7 @@ private:
     void getMusicbrainzId(const QString &artist);
     void getDiscoGsImage();
     void createBackdrop();
+    void resizeBackdrop();
     NetworkJob * getReply(QObject *obj);
 
 private:
@@ -113,6 +118,7 @@ private:
     bool darkBackground;
 //    bool useHtBackdrops;
     bool useFanArt;
+    bool albumCoverBackdrop;
     Song currentSong;
     QPixmap oldBackdrop;
     QPixmap currentBackdrop;
@@ -132,8 +138,10 @@ private:
     BackdropCreator *creator;
 //    QString backdropText;
     QSet<QString> backdropAlbums;
+    #ifndef SCALE_CONTEXT_BGND
     QSize minBackdropSize;
     QSize maxBackdropSize;
+    #endif
     QList<QString> artistsCreatedBackdropsFor;
 };
 

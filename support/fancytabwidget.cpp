@@ -803,19 +803,22 @@ void FancyTabWidget::SetMode(Mode mode) {
     case Mode_BottomBar:
     case Mode_IconOnlyBottomBar:
     case Mode_IconOnlySmallSidebar:
+    case Mode_IconOnlySmallBottomBar:
+    case Mode_IconOnlySmallTopBar:
     case Mode_IconOnlyLargeSidebar:
     case Mode_LargeSidebar: {
       FancyTabBar* bar = new FancyTabBar(this, drawBorder_, Mode_LargeSidebar==mode || Mode_BottomBar==mode || Mode_TopBar==mode,
-                                         Mode_IconOnlySmallSidebar==mode ? smallIconSize : largeIconSize,
-                                         Mode_BottomBar==mode || Mode_IconOnlyBottomBar==mode
+                                         Mode_IconOnlySmallSidebar==mode || Mode_IconOnlySmallBottomBar==mode || Mode_IconOnlySmallTopBar==mode
+                                            ? smallIconSize : largeIconSize,
+                                         Mode_BottomBar==mode || Mode_IconOnlyBottomBar==mode || Mode_IconOnlySmallBottomBar==mode
                                             ? FancyTabBar::Bot
-                                            : Mode_TopBar==mode || Mode_IconOnlyTopBar==mode
+                                            : Mode_TopBar==mode || Mode_IconOnlyTopBar==mode || Mode_IconOnlySmallTopBar==mode
                                                 ? FancyTabBar::Top
                                                 : FancyTabBar::Side);
-      if (Mode_BottomBar==mode || Mode_IconOnlyBottomBar==mode) {
+      if (Mode_BottomBar==mode || Mode_IconOnlyBottomBar==mode || Mode_IconOnlySmallBottomBar==mode) {
         top_layout_->insertWidget(1, bar);
-      } else if (Mode_TopBar==mode || Mode_IconOnlyTopBar==mode) {
-          top_layout_->insertWidget(0, bar);
+      } else if (Mode_TopBar==mode || Mode_IconOnlyTopBar==mode || Mode_IconOnlySmallTopBar==mode) {
+        top_layout_->insertWidget(0, bar);
       } else {
         side_layout_->insertWidget(0, bar);
       }
@@ -866,7 +869,14 @@ void FancyTabWidget::SetMode(Mode mode) {
 
     case Mode_SmallSidebar:
       MakeTabBar(QTabBar::RoundedWest, true, true, true);
-//       use_background_ = true;
+      break;
+
+    case Mode_SmallBottomBar:
+      MakeTabBar(QTabBar::RoundedSouth, true, true, true);
+      break;
+
+    case Mode_SmallTopBar:
+      MakeTabBar(QTabBar::RoundedNorth, true, true, true);
       break;
 
 //    case Mode_PlainSidebar:
@@ -908,11 +918,11 @@ void FancyTabWidget::contextMenuEvent(QContextMenuEvent* e) {
   }
 
   // Check we are over tab space...
-  if (Mode_BottomBar==mode_ || Mode_IconOnlyBottomBar==mode_) {
+  if (Mode_BottomBar==mode_ || Mode_IconOnlyBottomBar==mode_ || Mode_SmallBottomBar==mode_ || Mode_IconOnlySmallBottomBar==mode_) {
       if (e->pos().y()<=(side_widget_->pos().y()+(side_widget_->height()-tab_bar_->height()))) {
         return;
       }
-  } else if (Mode_TopBar==mode_ || Mode_IconOnlyTopBar==mode_) {
+  } else if (Mode_TopBar==mode_ || Mode_IconOnlyTopBar==mode_ || Mode_SmallTopBar==mode_ || Mode_IconOnlySmallTopBar==mode_) {
       if (e->pos().y()>(side_widget_->pos().y()+tab_bar_->height())) {
         return;
       }
@@ -952,8 +962,10 @@ void FancyTabWidget::contextMenuEvent(QContextMenuEvent* e) {
     modeAct=new QAction(i18n("Style"), this);
     AddMenuItem(group, i18n("Large Sidebar"), Mode_LargeSidebar, Mode_IconOnlyLargeSidebar);
     AddMenuItem(group, i18n("Small Sidebar"), Mode_SmallSidebar, Mode_IconOnlySmallSidebar);
-    AddMenuItem(group, i18n("Top Bar"), Mode_TopBar, Mode_IconOnlyTopBar);
-    AddMenuItem(group, i18n("Bottom Bar"), Mode_BottomBar, Mode_IconOnlyBottomBar);
+    AddMenuItem(group, i18n("Large Top Bar"), Mode_TopBar, Mode_IconOnlyTopBar);
+    AddMenuItem(group, i18n("Small Top Bar"), Mode_SmallTopBar, Mode_IconOnlySmallTopBar);
+    AddMenuItem(group, i18n("Large Bottom Bar"), Mode_BottomBar, Mode_IconOnlyBottomBar);
+    AddMenuItem(group, i18n("Small Bottom Bar"), Mode_SmallBottomBar, Mode_IconOnlySmallBottomBar);
     AddMenuItem(group, i18n("Tabs On Side"), Mode_SideTabs, Mode_IconOnlySideTabs);
     AddMenuItem(group, i18n("Tabs On Top"), Mode_TopTabs, Mode_IconOnlyTopTabs);
     AddMenuItem(group, i18n("Tabs On Bottom"), Mode_BotTabs, Mode_IconOnlyBotTabs);
@@ -962,7 +974,8 @@ void FancyTabWidget::contextMenuEvent(QContextMenuEvent* e) {
     iconOnlyAct->setChecked(Mode_IconOnlyLargeSidebar==mode_ || Mode_IconOnlySmallSidebar==mode_ ||
                             Mode_IconOnlySideTabs==mode_ || Mode_IconOnlyTopTabs==mode_ ||
                             Mode_IconOnlyBotTabs==mode_ || Mode_IconOnlyTopBar==mode_ ||
-                            Mode_IconOnlyBottomBar==mode_);
+                            Mode_IconOnlyBottomBar==mode_ || Mode_IconOnlySmallTopBar==mode_ ||
+                            Mode_IconOnlySmallBottomBar==mode_);
     iconOnlyAct->setData(0);
     connect(iconOnlyAct, SIGNAL(triggered()), this, SLOT(SetMode()));
     modeMenu->addSeparator();
@@ -1020,6 +1033,10 @@ void FancyTabWidget::SetMode()
             case Mode_IconOnlySideTabs:     SetMode(Mode_SideTabs); break;
             case Mode_BottomBar:            SetMode(Mode_IconOnlyBottomBar); break;
             case Mode_IconOnlyBottomBar:    SetMode(Mode_BottomBar); break;
+            case Mode_SmallBottomBar:       SetMode(Mode_IconOnlySmallBottomBar); break;
+            case Mode_IconOnlySmallBottomBar:SetMode(Mode_SmallBottomBar); break;
+            case Mode_SmallTopBar:          SetMode(Mode_IconOnlySmallTopBar); break;
+            case Mode_IconOnlySmallTopBar:  SetMode(Mode_SmallTopBar); break;
             case Mode_TopBar:               SetMode(Mode_IconOnlyTopBar); break;
             case Mode_IconOnlyTopBar:       SetMode(Mode_TopBar); break;
             default: break;
@@ -1028,7 +1045,8 @@ void FancyTabWidget::SetMode()
             bool iconOnly=Mode_IconOnlyLargeSidebar==mode_ || Mode_IconOnlySmallSidebar==mode_ ||
                           Mode_IconOnlySideTabs==mode_ || Mode_IconOnlyTopTabs==mode_ ||
                           Mode_IconOnlyBotTabs==mode_ || Mode_IconOnlyBottomBar==mode_ ||
-                          Mode_IconOnlyTopBar==mode_;
+                          Mode_IconOnlyTopBar==mode_ || Mode_IconOnlySmallBottomBar==mode_ ||
+                          Mode_IconOnlySmallTopBar==mode_;
             switch (data) {
             case Mode_LargeSidebar: SetMode(iconOnly ? Mode_IconOnlyLargeSidebar : Mode_LargeSidebar); break;
             case Mode_SmallSidebar: SetMode(iconOnly ? Mode_IconOnlySmallSidebar : Mode_SmallSidebar); break;
@@ -1037,6 +1055,8 @@ void FancyTabWidget::SetMode()
             case Mode_BotTabs:      SetMode(iconOnly ? Mode_IconOnlyBotTabs : Mode_BotTabs); break;
             case Mode_BottomBar:    SetMode(iconOnly ? Mode_IconOnlyBottomBar : Mode_BottomBar); break;
             case Mode_TopBar:       SetMode(iconOnly ? Mode_IconOnlyTopBar : Mode_TopBar); break;
+            case Mode_SmallBottomBar:SetMode(iconOnly ? Mode_IconOnlySmallBottomBar : Mode_SmallBottomBar); break;
+            case Mode_SmallTopBar:  SetMode(iconOnly ? Mode_IconOnlySmallTopBar : Mode_SmallTopBar); break;
             default: break;
             }
         }

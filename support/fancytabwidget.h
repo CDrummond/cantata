@@ -185,7 +185,13 @@ public:
         Mode_IconOnlyBottomBar = 12,
 
         Mode_TopBar = 13,
-        Mode_IconOnlyTopBar = 14
+        Mode_IconOnlyTopBar = 14,
+
+        Mode_SmallBottomBar = 15,
+        Mode_IconOnlySmallBottomBar = 16,
+
+        Mode_SmallTopBar = 17,
+        Mode_IconOnlySmallTopBar = 18
     };
 
     struct Item {

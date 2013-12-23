@@ -1,4 +1,8 @@
-﻿1.2.1
+﻿1.2.2
+-----
+1. Fix British English translation.
+
+1.2.1
 -----
 1. Only use old Qt DBUS type annotations for Qt less than 4.8.2
 2. Use "(C)" instead of "©", as "©" seems to mess up Qt translations.

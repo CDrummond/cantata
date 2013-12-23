@@ -108,6 +108,7 @@ private:
 
 private:
     NetworkJob *job;
+    bool alwaysCollapsed;
     bool drawBackdrop;
     bool darkBackground;
 //    bool useHtBackdrops;

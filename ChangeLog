@@ -16,6 +16,8 @@
 6. Fix potential memory leak with cover images.
 7. Fix crash when changing online view from list to tree, after a soundcloud
    search.
+8. Use MPD status.playlistLength to determine number of playqueue items when
+   controlling state of prev, next, and stop buttons.
 
 1.2.0
 -----

@@ -4134,9 +4134,8 @@ msgstr ""
 #. i18n: file: gui/initialsettingswizard.ui:746
 #. i18n: ectx: property (text), widget (BuddyLabel, storeBackdropsInMpdDirLabel)
 #: po/rc.cpp:358 po/rc.cpp:448 rc.cpp:358 rc.cpp:448
-#, fuzzy
 msgid "Save downloaded backdrops in music folder:"
-msgstr "Save list of favourite streams in music folder:"
+msgstr ""
 
 #. i18n: file: gui/filesettings.ui:69
 #. i18n: ectx: property (text), widget (QLabel, label)

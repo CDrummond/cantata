@@ -7,6 +7,10 @@
 4. Optionally save scaled covers (used in artist and albums views) to disk.
 5. Add option to always collapse context into single pane.
 
+1.2.2
+-----
+1. Fix British English translation.
+
 1.2.1
 -----
 1. Only use old Qt DBUS type annotations for Qt less than 4.8.2

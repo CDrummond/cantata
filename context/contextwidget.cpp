@@ -338,7 +338,7 @@ void ContextWidget::setWide(bool w)
 void ContextWidget::resizeEvent(QResizeEvent *e)
 {
     if (isVisible()) {
-        setWide(width()>minWidth);
+        setWide(width()>minWidth && !alwaysCollapsed);
     }
     QWidget::resizeEvent(e);
 }
@@ -348,6 +348,11 @@ void ContextWidget::readConfig()
     useBackdrop(Settings::self()->contextBackdrop());
     useDarkBackground(Settings::self()->contextDarkBackground());
     WikipediaEngine::setIntroOnly(Settings::self()->wikipediaIntroOnly());
+    bool wasCollpased=stack && stack->isVisible();
+    alwaysCollapsed=Settings::self()->contextAlwaysCollapsed();
+    if (alwaysCollapsed && !wasCollpased) {
+        setWide(false);
+    }
 }
 
 void ContextWidget::saveConfig()
@@ -413,7 +418,7 @@ void ContextWidget::useDarkBackground(bool u)
 
 void ContextWidget::showEvent(QShowEvent *e)
 {
-    setWide(width()>minWidth);
+    setWide(width()>minWidth && !alwaysCollapsed);
     if (drawBackdrop) {
         updateBackdrop();
     }

@@ -1923,12 +1923,12 @@ void MainWindow::updateStatus(MPDStatus * const status)
         }
         #endif
         StdActions::self()->playPauseTrackAction->setIcon(Icons::self()->toolbarPauseIcon);
-        StdActions::self()->playPauseTrackAction->setEnabled(0!=playQueueModel.rowCount());
+        StdActions::self()->playPauseTrackAction->setEnabled(0!=status->playlistLength());
         //playPauseTrackButton->setChecked(false);
         if (StopState_Stopping!=stopState) {
             enableStopActions(true);
-            StdActions::self()->nextTrackAction->setEnabled(playQueueModel.rowCount()>1);
-            StdActions::self()->prevTrackAction->setEnabled(playQueueModel.rowCount()>1);
+            StdActions::self()->nextTrackAction->setEnabled(status->playlistLength()>1);
+            StdActions::self()->prevTrackAction->setEnabled(status->playlistLength()>1);
         }
         positionSlider->startTimer();
 
@@ -1946,7 +1946,7 @@ void MainWindow::updateStatus(MPDStatus * const status)
         }
         #endif
         StdActions::self()->playPauseTrackAction->setIcon(Icons::self()->toolbarPlayIcon);
-        StdActions::self()->playPauseTrackAction->setEnabled(0!=playQueueModel.rowCount());
+        StdActions::self()->playPauseTrackAction->setEnabled(0!=status->playlistLength());
         enableStopActions(false);
         StdActions::self()->nextTrackAction->setEnabled(false);
         StdActions::self()->prevTrackAction->setEnabled(false);
@@ -1974,10 +1974,10 @@ void MainWindow::updateStatus(MPDStatus * const status)
         }
         #endif
         StdActions::self()->playPauseTrackAction->setIcon(Icons::self()->toolbarPlayIcon);
-        StdActions::self()->playPauseTrackAction->setEnabled(0!=playQueueModel.rowCount());
-        enableStopActions(0!=playQueueModel.rowCount());
-        StdActions::self()->nextTrackAction->setEnabled(playQueueModel.rowCount()>1);
-        StdActions::self()->prevTrackAction->setEnabled(playQueueModel.rowCount()>1);
+        StdActions::self()->playPauseTrackAction->setEnabled(0!=status->playlistLength());
+        enableStopActions(0!=status->playlistLength());
+        StdActions::self()->nextTrackAction->setEnabled(status->playlistLength()>1);
+        StdActions::self()->prevTrackAction->setEnabled(status->playlistLength()>1);
         #ifdef ENABLE_KDE_SUPPORT
         trayItem->setIconByName(Icons::self()->toolbarPauseIcon.name());
         #else

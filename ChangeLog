@@ -5,6 +5,7 @@
 2. Basic undo/redo support for playqueue.
 3. Search tab.
 4. Optionally save scaled covers (used in artist and albums views) to disk.
+5. Add option to always collapse context into single pane.
 
 1.2.1
 -----

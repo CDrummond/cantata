@@ -558,6 +558,11 @@ QByteArray Settings::contextSplitterState()
     return GET_BYTE_ARRAY("contextSplitterState");
 }
 
+bool Settings::contextAlwaysCollapsed()
+{
+    return GET_BOOL("contextAlwaysCollapsed", false);
+}
+
 QString Settings::page()
 {
     return GET_STRING("page", QString());
@@ -1103,6 +1108,11 @@ void Settings::saveContextSlimPage(const QString &v)
 void Settings::saveContextSplitterState(const QByteArray &v)
 {
     SET_VALUE_MOD(contextSplitterState)
+}
+
+void Settings::saveContextAlwaysCollapsed(bool v)
+{
+    SET_VALUE_MOD(contextAlwaysCollapsed)
 }
 
 void Settings::savePage(const QString &v)

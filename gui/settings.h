@@ -144,6 +144,7 @@ public:
     int contextZoom();
     QString contextSlimPage();
     QByteArray contextSplitterState();
+    bool contextAlwaysCollapsed();
     QString page();
     QStringList hiddenPages();
     #ifndef ENABLE_KDE_SUPPORT
@@ -246,6 +247,7 @@ public:
     void saveContextZoom(int v);
     void saveContextSlimPage(const QString &v);
     void saveContextSplitterState(const QByteArray &v);
+    void saveContextAlwaysCollapsed(bool v);
     void savePage(const QString &v);
     void saveHiddenPages(const QStringList &v);
     #ifndef ENABLE_KDE_SUPPORT

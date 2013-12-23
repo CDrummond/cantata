@@ -7,6 +7,7 @@
 4. Optionally save scaled covers (used in artist and albums views) to disk.
 5. Add option to always collapse context into single pane.
 6. Option to have small sidebar at top or bottom.
+7. Scale context view backdrops.
 
 1.2.2
 -----

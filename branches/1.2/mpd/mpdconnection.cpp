@@ -763,7 +763,10 @@ void MPDConnection::playListChanges()
                     s.id=idp.id;
 //                     s.pos=idp.pos;
                     songs.append(s);
-                    if (s.isStream()) {
+
+                    if (s.isCdda()) {
+                        newCantataStreams.append(s);
+                    } else if (s.isStream()) {
                         if (s.isCantataStream()) {
                             newCantataStreams.append(s);
                         } else {
@@ -817,7 +820,9 @@ void MPDConnection::playListInfo()
         QList<Song> cStreams;
         foreach (const Song &s, songs) {
             playQueueIds.append(s.id);
-            if (s.isStream()) {
+            if (s.isCdda()) {
+                cStreams.append(s);
+            } else if (s.isStream()) {
                 if (s.isCantataStream()) {
                     cStreams.append(s);
                 } else {

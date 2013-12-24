@@ -12,6 +12,8 @@
 1.2.2
 -----
 1. Fix British English translation.
+2. Improve internal HTTP security - only server files to MPD host, and only
+   serve files in playqueue.
 
 1.2.1
 -----

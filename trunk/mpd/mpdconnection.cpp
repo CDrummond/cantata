@@ -252,6 +252,7 @@ MPDConnection::ConnectionReturn MPDConnection::connectToMPD(MpdSocket &socket, b
 
             lastUpdatePlayQueueVersion=lastStatusPlayQueueVersion=0;
             playQueueIds.clear();
+            emit cantataStreams(QList<Song>(), false);
             int min, maj, patch;
             if (3==sscanf(&(recvdata.constData()[7]), "%d.%d.%d", &maj, &min, &patch)) {
                 long v=((maj&0xFF)<<16)+((min&0xFF)<<8)+(patch&0xFF);
@@ -300,6 +301,7 @@ MPDConnection::ConnectionReturn MPDConnection::connectToMPD()
     ConnectionReturn status=Failed;
     if (Success==(status=connectToMPD(sock)) && Success==(status=connectToMPD(idleSocket, true))) {
         state=State_Connected;
+        emit socketAddress(sock.address());
     } else {
         disconnectFromMPD();
         state=State_Disconnected;
@@ -323,6 +325,7 @@ void MPDConnection::disconnectFromMPD()
     idleSocket.close();
     state=State_Disconnected;
     ver=0;
+    emit socketAddress(QString());
 }
 
 // This function is mainly intended to be called after the computer (laptop) has been 'resumed'
@@ -555,19 +558,24 @@ void MPDConnection::add(const QStringList &files, quint32 pos, quint32 size, int
     bool havePlaylist=false;
     bool usePrio=!priority.isEmpty() && canUsePriority() && (1==priority.count() || priority.count()==files.count());
     quint8 singlePrio=usePrio && 1==priority.count() ? priority.at(0) : 0;
+    QStringList cStreamFiles;
 
     for (int i = 0; i < files.size(); i++) {
-        if (CueFile::isCue(files.at(i))) {
-            send += "load "+CueFile::getLoadLine(files.at(i))+"\n";
+        QString fileName=files.at(i);
+        if (fileName.startsWith(QLatin1String("http://")) && fileName.contains(QLatin1String("cantata=song"))) {
+            cStreamFiles.append(fileName);
+        }
+        if (CueFile::isCue(fileName)) {
+            send += "load "+CueFile::getLoadLine(fileName)+"\n";
         } else {
-            if (isPlaylist(files.at(i))) {
+            if (isPlaylist(fileName)) {
                 send+="load ";
                 havePlaylist=true;
             } else {
 //                addedFile=true;
                 send += "add ";
             }
-            send += encodeName(files.at(i))+"\n";
+            send += encodeName(fileName)+"\n";
         }
         if (!havePlaylist) {
             if (0!=size) {
@@ -584,6 +592,10 @@ void MPDConnection::add(const QStringList &files, quint32 pos, quint32 size, int
     send += "command_list_end";
 
     if (sendCommand(send).ok) {
+        if (!cStreamFiles.isEmpty()) {
+            emit cantataStreams(cStreamFiles);
+        }
+
         if (AddReplaceAndPlay==action /*&& addedFile */&& !files.isEmpty()) {
             // Dont emit error if fail plays, might be that playlist was not loaded...
             sendCommand("play "+QByteArray::number(0), false);
@@ -617,6 +629,7 @@ void MPDConnection::clear()
     if (sendCommand("clear").ok) {
         lastUpdatePlayQueueVersion=0;
         playQueueIds.clear();
+        emit cantataStreams(QList<Song>(), false);
     }
 }
 
@@ -726,6 +739,7 @@ void MPDConnection::playListChanges()
             bool first=true;
             quint32 firstPos=0;
             QList<Song> songs;
+            QList<Song> newCantataStreams;
             QList<qint32> ids;
             QSet<qint32> prevIds=playQueueIds.toSet();
             QSet<qint32> strmIds;
@@ -765,8 +779,12 @@ void MPDConnection::playListChanges()
                     s.id=idp.id;
 //                     s.pos=idp.pos;
                     songs.append(s);
-                    if (s.isStream() && !s.isCantataStream()) {
-                        strmIds.insert(s.id);
+                    if (s.isStream()) {
+                        if (s.isCantataStream()) {
+                            newCantataStreams.append(s);
+                        } else {
+                            strmIds.insert(s.id);
+                        }
                     }
                 }
                 ids.append(idp.id);
@@ -788,6 +806,13 @@ void MPDConnection::playListChanges()
 
             playQueueIds=ids;
             streamIds=strmIds;
+            if (!newCantataStreams.isEmpty()) {
+                emit cantataStreams(newCantataStreams, true);
+            }
+            QSet<qint32> removed=prevIds-playQueueIds.toSet();
+            if (!removed.isEmpty()) {
+                emit removedIds(removed);
+            }
             emit playlistUpdated(songs);
             return;
         }
@@ -804,12 +829,19 @@ void MPDConnection::playListInfo()
         QList<Song> songs=MPDParseUtils::parseSongs(response.data);
         playQueueIds.clear();
         streamIds.clear();
+
+        QList<Song> cStreams;
         foreach (const Song &s, songs) {
             playQueueIds.append(s.id);
-            if (s.isStream() && !s.isCantataStream()) {
-                streamIds.insert(s.id);
+            if (s.isStream()) {
+                if (s.isCantataStream()) {
+                    cStreams.append(s);
+                } else {
+                    streamIds.insert(s.id);
+                }
             }
         }
+        emit cantataStreams(cStreams, false);
         emit playlistUpdated(songs);
     }
 }

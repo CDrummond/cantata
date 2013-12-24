@@ -29,6 +29,7 @@
 
 #include <QTcpSocket>
 #include <QLocalSocket>
+#include <QHostAddress>
 #include <QDateTime>
 #include <QStringList>
 #include "mpdstats.h"
@@ -114,6 +115,7 @@ public:
     }
 
     bool isLocal() const { return 0!=local; }
+    QString address() const { return tcp ? tcp->peerAddress().toString() : QString(); }
 
 Q_SIGNALS:
     void stateChanged(QAbstractSocket::SocketState state);
@@ -303,6 +305,11 @@ Q_SIGNALS:
     void dynamicUrl(const QString &url);
     void stopAfterCurrentChanged(bool afterCurrent);
     void streamUrl(const QString &url);
+
+    void socketAddress(const QString &addr);
+    void cantataStreams(const QStringList &files);
+    void cantataStreams(const QList<Song> &songs, bool isUpdate);
+    void removedIds(const QSet<qint32> &ids);
 
 private Q_SLOTS:
     void idleDataReady();

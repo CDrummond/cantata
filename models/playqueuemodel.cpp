@@ -829,7 +829,7 @@ void PlayQueueModel::removeCantataStreams()
 {
     QList<qint32> ids;
     foreach (const Song &s, songs) {
-        if (s.isCantataStream()) {
+        if (s.isCantataStream() || s.isCdda()) {
             ids.append(s.id);
         }
     }

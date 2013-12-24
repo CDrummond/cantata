@@ -25,7 +25,11 @@
 #define _HTTP_SOCKET_H_
 
 #include <QTcpServer>
+#include <QMap>
+#include <QList>
+#include <QSet>
 
+class Song;
 class QHostAddress;
 class QTcpSocket;
 
@@ -34,27 +38,36 @@ class HttpSocket : public QTcpServer
     Q_OBJECT
 
 public:
-     HttpSocket(const QString &iface, quint16 port);
-     virtual ~HttpSocket() { }
+    HttpSocket(const QString &iface, quint16 port);
+    virtual ~HttpSocket() { }
 
-     void terminate();
-     void incomingConnection(int socket);
-     QString address() const { return ifaceAddress; }
-     QString configuredInterface() { return cfgInterface; }
+    void terminate();
+    void incomingConnection(int socket);
+    QString address() const { return ifaceAddress; }
+    QString configuredInterface() { return cfgInterface; }
 
 private:
-     bool openPort(const QHostAddress &a, quint16 p);
+    bool openPort(const QHostAddress &a, quint16 p);
+    bool isCantataStream(const QString &file) const;
+    void sendErrorResponse(QTcpSocket *socket, int code);
 
 private Q_SLOTS:
-     void readClient();
-     void discardClient();
+    void readClient();
+    void discardClient();
+    void mpdAddress(const QString &a);
+    void cantataStreams(const QStringList &files);
+    void cantataStreams(const QList<Song> &songs, bool isUpdate);
+    void removedIds(const QSet<qint32> &ids);
 
 private:
-     bool write(QTcpSocket *socket, char *buffer, qint32 bytesRead, bool &stop);
+    bool write(QTcpSocket *socket, char *buffer, qint32 bytesRead, bool &stop);
 
 private:
+    QSet<QString> newlyAddedFiles; // Holds cantata strema filenames as added to MPD via "add"
+    QMap<qint32, QString> streamIds; // Maps MPD playqueue song ID to fileName
     QString cfgInterface;
     QString ifaceAddress;
+    QString mpdAddr;
     bool terminated;
 };
 

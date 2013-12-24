@@ -250,6 +250,11 @@ HttpSocket::HttpSocket(const QString &iface, quint16 port)
     if (isListening() && ifaceAddress.isEmpty()) {
         ifaceAddress=QLatin1String("127.0.0.1");
     }
+
+    connect(MPDConnection::self(), SIGNAL(socketAddress(QString)), this, SLOT(mpdAddress(QString)));
+    connect(MPDConnection::self(), SIGNAL(cantataStreams(QList<Song>,bool)), this, SLOT(cantataStreams(QList<Song>,bool)));
+    connect(MPDConnection::self(), SIGNAL(cantataStreams(QStringList)), this, SLOT(cantataStreams(QStringList)));
+    connect(MPDConnection::self(), SIGNAL(removedIds(QSet<qint32>)), this, SLOT(removedIds(QSet<qint32>)));
 }
 
 bool HttpSocket::openPort(const QHostAddress &a, quint16 p)
@@ -306,6 +311,20 @@ void HttpSocket::readClient()
 
             DBUG << "params" << params << "tokens" << tokens;
             if (!isFromMpd(params)) {
+                sendErrorResponse(socket, 400);
+                socket->close();
+                DBUG << "Not from MPD";
+                return;
+            }
+
+            QString peer=socket->peerAddress().toString();
+            bool hostOk=peer==ifaceAddress || peer==mpdAddr || peer==QLatin1String("127.0.0.1");
+
+            DBUG << "peer:" << peer << "mpd:" << mpdAddr << "iface:" << ifaceAddress << "ok:" << hostOk;
+            if (!hostOk) {
+                sendErrorResponse(socket, 400);
+                socket->close();
+                DBUG << "Not from valid host";
                 return;
             }
 
@@ -321,9 +340,16 @@ void HttpSocket::readClient()
             qint32 readBytesTo=0;
             getRange(params, readBytesFrom, readBytesTo);
 
-            DBUG << url.toString() << q.hasQueryItem("cantata");
             if (q.hasQueryItem("cantata")) {
                 Song song=HttpServer::self()->decodeUrl(url);
+
+                if (!isCantataStream(song.file)) {
+                    sendErrorResponse(socket, 400);
+                    socket->close();
+                    DBUG << "Not cantata stream file";
+                    return;
+                }
+
                 if (song.isCdda()) {
                     #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
                     QStringList parts=song.file.split("/", QString::SkipEmptyParts);
@@ -427,12 +453,7 @@ void HttpSocket::readClient()
             }
 
             if (!ok) {
-                QTextStream os(socket);
-                os.setAutoDetectUnicode(true);
-                os << "HTTP/1.0 404 OK\r\n"
-                      "Content-Type: text/html; charset=\"utf-8\"\r\n"
-                      "\r\n"
-                      "<h1>Nothing to see here</h1>\n";
+                sendErrorResponse(socket, 404);
             }
 
             socket->close();
@@ -448,6 +469,60 @@ void HttpSocket::discardClient()
 {
     QTcpSocket *socket = (QTcpSocket*)sender();
     socket->deleteLater();
+}
+
+
+void HttpSocket::mpdAddress(const QString &a)
+{
+    mpdAddr=a;
+}
+
+bool HttpSocket::isCantataStream(const QString &file) const
+{
+    DBUG << file << newlyAddedFiles.contains(file) << streamIds.values().contains(file);
+    return newlyAddedFiles.contains(file) || streamIds.values().contains(file);
+}
+
+void HttpSocket::sendErrorResponse(QTcpSocket *socket, int code)
+{
+    QTextStream os(socket);
+    os.setAutoDetectUnicode(true);
+    os << "HTTP/1.0 " << code << " OK\r\n"
+          "Content-Type: text/html; charset=\"utf-8\"\r\n"
+          "\r\n";
+}
+
+void HttpSocket::cantataStreams(const QStringList &files)
+{
+    DBUG << files;
+    foreach (const QString &f, files) {
+        Song s=HttpServer::self()->decodeUrl(f);
+        if (s.isCantataStream() || s.isCdda()) {
+            DBUG << s.file;
+            newlyAddedFiles+=s.file;
+        }
+    }
+}
+
+void HttpSocket::cantataStreams(const QList<Song> &songs, bool isUpdate)
+{
+    DBUG << isUpdate << songs.count();
+    if (!isUpdate) {
+        streamIds.clear();
+    }
+
+    foreach (const Song &s, songs) {
+        DBUG << s.file;
+        streamIds.insert(s.id, s.file);
+        newlyAddedFiles.remove(s.file);
+    }
+}
+
+void HttpSocket::removedIds(const QSet<qint32> &ids)
+{
+    foreach (qint32 id, ids) {
+        streamIds.remove(id);
+    }
 }
 
 bool HttpSocket::write(QTcpSocket *socket, char *buffer, qint32 bytesRead, bool &stop)

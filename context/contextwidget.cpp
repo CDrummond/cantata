@@ -455,6 +455,11 @@ void ContextWidget::paintEvent(QPaintEvent *e)
         }
         if (!currentBackdrop.isNull()) {
             p.setOpacity(fadeValue);
+            #ifdef SCALE_CONTEXT_BGND
+            if (!albumCoverBackdrop && currentBackdrop.height()<height()) {
+                p.drawPixmap(0, (height()-currentBackdrop.height())/2, currentBackdrop);
+            } else
+            #endif
             p.fillRect(r, QBrush(currentBackdrop));
         }
 //        if (!backdropText.isEmpty() && isWide) {

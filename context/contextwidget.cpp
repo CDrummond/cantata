@@ -967,7 +967,7 @@ void ContextWidget::downloadResponse()
         bool saved=false;
 
         if (Settings::self()->storeBackdropsInMpdDir() && !currentSong.isVariousArtists() && !currentSong.isStream() &&
-            MPDConnection::self()->getDetails().dirReadable) {
+            !currentSong.isCdda() && MPDConnection::self()->getDetails().dirReadable) {
             QString mpdDir=MPDConnection::self()->getDetails().dir;
             QString songDir=Utils::getDir(currentSong.file);
             if (!mpdDir.isEmpty() && 2==songDir.split(Utils::constDirSep, QString::SkipEmptyParts).count()) {
@@ -981,7 +981,14 @@ void ContextWidget::downloadResponse()
                     DBUG << "Saved backdrop to" << fileName << "for artist" << currentArtist << ", current song" << currentSong.file;
                     saved=true;
                 }
+            } else {
+                DBUG << "Not saving to mpd folder, mpd dir:" << mpdDir
+                     << "num parts:" << songDir.split(Utils::constDirSep, QString::SkipEmptyParts).count();
             }
+        } else {
+            DBUG << "Not saving to mpd folder - set to save in mpd?" << Settings::self()->storeBackdropsInMpdDir()
+                 << "isVa:" << currentSong.isVariousArtists() << "isStream:" << currentSong.isStream()
+                 << "isCdda:" << currentSong.isCdda()  << "mpd readable:" << MPDConnection::self()->getDetails().dirReadable;
         }
 
         if (!saved) {

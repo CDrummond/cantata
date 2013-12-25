@@ -187,6 +187,7 @@ MPDConnection::MPDConnection()
     qRegisterMetaType<QList<Playlist> >("QList<Playlist>");
     qRegisterMetaType<QList<quint32> >("QList<quint32>");
     qRegisterMetaType<QList<qint32> >("QList<qint32>");
+    qRegisterMetaType<QSet<qint32> >("QSet<qint32>");
     qRegisterMetaType<QAbstractSocket::SocketState >("QAbstractSocket::SocketState");
     qRegisterMetaType<MPDStatsValues>("MPDStatsValues");
     qRegisterMetaType<MPDStatusValues>("MPDStatusValues");

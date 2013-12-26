@@ -605,10 +605,12 @@ void ContextWidget::updateBackdrop()
         }
     }
 
-    QImage img(cacheFileName(currentArtist, false));
+    QString cacheName=cacheFileName(currentArtist, false);
+    QImage img(cacheName);
     if (img.isNull()) {
         getBackdrop();
     } else {
+        DBUG << "Use cache file:" << cacheName;
         updateImage(img);
         QWidget::update();
     }
@@ -984,8 +986,10 @@ void ContextWidget::downloadResponse()
         }
 
         if (!saved) {
-            QFile f(cacheFileName(currentArtist, true));
+            QString cacheName=cacheFileName(currentArtist, true);
+            QFile f(cacheName);
             if (f.open(QIODevice::WriteOnly)) {
+                DBUG << "Saved backdrop to (cache)" << cacheName << "for artist" << currentArtist << ", current song" << currentSong.file;
                 f.write(data);
                 f.close();
             }

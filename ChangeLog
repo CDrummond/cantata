@@ -15,6 +15,7 @@
 2. Improve internal HTTP security - only server files to MPD host, and only
    serve files in playqueue.
 3. Also remove CDDA files when Cantata exits.
+4. Improve error message if 'playlist_directory' does not exist.
 
 1.2.1
 -----

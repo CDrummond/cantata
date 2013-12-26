@@ -2719,6 +2719,9 @@ void MainWindow::editPlayQueueTags()
 #ifdef TAGLIB_FOUND
 void MainWindow::editTags(const QList<Song> &songs, bool isPlayQueue)
 {
+    if (songs.isEmpty() && isPlayQueue) {
+        MessageBox::error(this, i18n("Can only edit tags of songs within MPD's music collection."));
+    }
     if (songs.isEmpty() || TagEditor::instanceCount() || !canShowDialog()) {
         return;
     }

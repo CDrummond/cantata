@@ -128,11 +128,16 @@ QString MPDConnection::Response::getError(const QByteArray &command)
 
     if (!ok && data.size()>0) {
         int cmdEnd=data.indexOf("} ");
-        if (-1!=cmdEnd) {
+        if (-1==cmdEnd) {
             return i18n("Uknown")+QLatin1String(" (")+command+QLatin1Char(')');
         } else {
             cmdEnd+=2;
-            data=data.mid(cmdEnd, data.length()-(data.endsWith('\n') ? cmdEnd+1 : cmdEnd));
+            QString rv=data.mid(cmdEnd, data.length()-(data.endsWith('\n') ? cmdEnd+1 : cmdEnd));
+            if (data.contains("{listplaylists}")) {
+                // NOT: NOT transalted, as refers to config item
+                return QLatin1String("playlist_directory - ")+rv;
+            }
+            return rv;
         }
     }
     return data;

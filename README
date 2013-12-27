@@ -349,6 +349,13 @@ undoSteps=<Integer>
     undo/redo.
     Default is 10. (Values 0..20 are acceptable)
 
+mpdPoll=<Boolean>
+    If set to true, then MPD is polled every second to determine current song
+    position. The polling only occurs whilst playing (i.e. Cantata's position
+    slider is active). Normally this should not be needed, as Cantata uses
+    MPD's IDLE state to receive song changes from MPD.
+    Default is false.
+
 e.g.
 [General]
 iconTheme=oxygen
@@ -359,6 +366,7 @@ networkAccessEnabled=false
 albumViewLoadAll=true
 volumeStep=2
 undoSteps=20
+mpdPoll=true
 
 
 7. CUE Files

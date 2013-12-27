@@ -840,6 +840,11 @@ bool Settings::cacheScaledCovers()
     return GET_BOOL("cacheScaledCovers", true);
 }
 
+bool Settings::mpdPoll()
+{
+    return GET_BOOL("mpdPoll", false);
+}
+
 void Settings::removeConnectionDetails(const QString &v)
 {
     if (v==currentConnection()) {

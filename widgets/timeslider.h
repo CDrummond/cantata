@@ -73,6 +73,8 @@ public:
 Q_SIGNALS:
     void sliderReleased();
 
+    void mpdPoll();
+
 private Q_SLOTS:
     void updateTimes();
     void updatePos();
@@ -86,6 +88,7 @@ private:
     QTimer *timer;
     QTime startTime;
     int lastVal;
+    bool pollMpd;
 };
 
 #endif

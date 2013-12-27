@@ -8,6 +8,10 @@
 5. Add option to always collapse context into single pane.
 6. Option to have small sidebar at top or bottom.
 7. Scale context view backdrops.
+8. Add config item, mpdPoll, which when set to true will cause Cantata to poll
+   MPD every second whilst playing. This is useful for cases where Cantata
+   misses updates from MPD. This needs to be manually set in config file (see
+   README for details), as this is only a work-around for certain scenarios.
 
 1.2.2
 -----

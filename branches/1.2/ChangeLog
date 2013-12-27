@@ -5,6 +5,8 @@
    serve files in playqueue.
 3. Also remove CDDA files when Cantata exits.
 4. Improve error message if 'playlist_directory' does not exist.
+5. If icon theme does not have network-server, then use audio file icon for
+   HTTP server settings page.
 
 1.2.1
 -----

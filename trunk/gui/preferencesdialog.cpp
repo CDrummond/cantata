@@ -92,7 +92,11 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, const QStringList &hiddenP
     pageWidget->addPage(context, i18n("Context"), Icons::self()->contextIcon, i18n("Context View Settings"));
     if (http->haveMultipleInterfaces()) {
         http->load();
-        pageWidget->addPage(http, i18n("HTTP Server"), Icon("network-server"), i18n("HTTP Server Settings"));
+        Icon icon("network-server");
+        if (icon.isNull()) {
+            icon=Icons::self()->audioFileIcon;
+        }
+        pageWidget->addPage(http, i18n("HTTP Server"), icon, i18n("HTTP Server Settings"));
     } else {
         http->deleteLater();
         http=0;

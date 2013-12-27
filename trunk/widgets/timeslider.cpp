@@ -24,6 +24,7 @@
 #include "timeslider.h"
 #include "song.h"
 #include "settings.h"
+#include "mpdconnection.h"
 #include <QLabel>
 #include <QHBoxLayout>
 #include <QProxyStyle>
@@ -297,6 +298,7 @@ TimeSlider::TimeSlider(QWidget *p)
     : QWidget(p)
     , timer(0)
     , lastVal(0)
+    , pollMpd(Settings::self()->mpdPoll())
 {
     slider=new PosSlider(this);
     timeTaken=new TimeTakenLabel(this, slider);
@@ -310,6 +312,9 @@ TimeSlider::TimeSlider(QWidget *p)
     connect(slider, SIGNAL(sliderReleased()), this, SLOT(released()));
     connect(slider, SIGNAL(positionSet()), this, SIGNAL(sliderReleased()));
     connect(slider, SIGNAL(valueChanged(int)), this, SLOT(updateTimes()));
+    if (pollMpd) {
+        connect(this, SIGNAL(mpdPoll()), MPDConnection::self(), SLOT(getStatus()));
+    }
     setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
     clearTimes();
 }
@@ -387,6 +392,9 @@ void TimeSlider::updatePos()
 {
     int elapsed=(startTime.elapsed()/1000.0)+0.5;
     slider->setValue(lastVal+elapsed);
+    if (pollMpd) {
+        emit mpdPoll();
+    }
 }
 
 void TimeSlider::pressed()

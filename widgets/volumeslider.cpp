@@ -271,8 +271,6 @@ void VolumeSlider::updateMpdStatus()
 
     blockSignals(true);
     if (volume<0) {
-        setEnabled(false);
-        setToolTip(i18n("Volume Disabled"));
         setValue(0);
     } else {
         int unmuteVolume=-1;
@@ -286,6 +284,8 @@ void VolumeSlider::updateMpdStatus()
         setToolTip(unmuteVolume>0 ? i18n("Volume %1% (Muted)", volume) : i18n("Volume %1%", volume));
         setValue(volume);
     }
+    setVisible(volume>=0);
+    setEnabled(volume>=0);
     update();
     muteAction->setEnabled(isEnabled());
     StdActions::self()->increaseVolumeAction->setEnabled(isEnabled());

@@ -1,19 +1,21 @@
 ﻿1.3.0
 -----
-1. Add option to control startup-state; visible, hidden, or remembered from
-   previous run.
-2. Basic undo/redo support for playqueue.
-3. Search tab.
-4. Optionally save scaled covers (used in artist and albums views) to disk.
-5. Add option to always collapse context into single pane.
-6. Option to have small sidebar at top or bottom.
-7. Scale context view backdrops.
-8. Add config item, mpdPoll, which when set to true will cause Cantata to poll
-   MPD every second whilst playing. This is useful for cases where Cantata
-   misses updates from MPD. This needs to be manually set in config file (see
-   README for details), as this is only a work-around for certain scenarios.
-9. Use a timeout of 2 seconds per 100K bytes of data - therefore, Cantata will
-   wait longer to write the data of a large command, and read its response.
+ 1. Add option to control startup-state; visible, hidden, or remembered from
+    previous run.
+ 2. Basic undo/redo support for playqueue.
+ 3. Search tab.
+ 4. Optionally save scaled covers (used in artist and albums views) to disk.
+ 5. Add option to always collapse context into single pane.
+ 6. Option to have small sidebar at top or bottom.
+ 7. Scale context view backdrops.
+ 8. Add config item, mpdPoll, which when set to true will cause Cantata to poll
+    MPD every second whilst playing. This is useful for cases where Cantata
+    misses updates from MPD. This needs to be manually set in config file (see
+    README for details), as this is only a work-around for certain scenarios.
+ 9. Use a timeout of 2 seconds per 100K bytes of data - therefore, Cantata will
+    wait longer to write the data of a large command, and read its response.
+10. Hide volume control if MPD returns a negative value for volume - which
+    indicates MPD's volume mixer is disabled.
 
 1.2.2
 -----

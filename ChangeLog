@@ -12,6 +12,8 @@
    MPD every second whilst playing. This is useful for cases where Cantata
    misses updates from MPD. This needs to be manually set in config file (see
    README for details), as this is only a work-around for certain scenarios.
+9. Use a timeout of 2 seconds per 100K bytes of data - therefore, Cantata will
+   wait longer to write the data of a large command, and read its response.
 
 1.2.2
 -----

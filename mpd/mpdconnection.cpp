@@ -57,6 +57,21 @@ static const int constMaxReadAttempts=4;
 K_GLOBAL_STATIC(MPDConnection, conn)
 #endif
 
+static inline int socketTimeout(int dataSize)
+{
+    static const int constDataBlock=100000;
+    return ((dataSize/constDataBlock)+(dataSize%constDataBlock ? 1 : 0))*constSocketCommsTimeout;
+}
+
+static QByteArray log(const QByteArray &data)
+{
+    if (data.length()<256) {
+        return data;
+    } else {
+        return data.left(96) + "... ..." + data.right(96) + " (" + QByteArray::number(data.length()) + " bytes)";
+    }
+}
+
 MPDConnection * MPDConnection::self()
 {
     #ifdef ENABLE_KDE_SUPPORT
@@ -75,15 +90,14 @@ QByteArray MPDConnection::encodeName(const QString &name)
     return '\"'+name.toUtf8().replace("\\", "\\\\").replace("\"", "\\\"")+'\"';
 }
 
-static QByteArray readFromSocket(MpdSocket &socket)
+static QByteArray readFromSocket(MpdSocket &socket, int timeout=-1)
 {
     QByteArray data;
-
     while (QAbstractSocket::ConnectedState==socket.state()) {
         int attempt=0;
         while (0==socket.bytesAvailable() && QAbstractSocket::ConnectedState==socket.state()) {
             DBUG << (void *)(&socket) << "Waiting for read data." << attempt;
-            if (socket.waitForReadyRead(constSocketCommsTimeout)) {
+            if (socket.waitForReadyRead(timeout<constSocketCommsTimeout ? constSocketCommsTimeout : timeout)) {
                 break;
             }
             if (++attempt>=constMaxReadAttempts) {
@@ -99,18 +113,14 @@ static QByteArray readFromSocket(MpdSocket &socket)
             break;
         }
     }
-    if (data.size()>256) {
-        DBUG << (void *)(&socket) << "Read (bytes):" << data.size();
-    } else {
-        DBUG << (void *)(&socket) << "Read:" << data;
-    }
+    DBUG << (void *)(&socket) << "Read:" << log(data);
 
     return data;
 }
 
-static MPDConnection::Response readReply(MpdSocket &socket)
+static MPDConnection::Response readReply(MpdSocket &socket, int timeout=-1)
 {
-    QByteArray data = readFromSocket(socket);
+    QByteArray data = readFromSocket(socket, timeout);
     return MPDConnection::Response(data.endsWith("OK\n"), data);
 }
 
@@ -463,7 +473,7 @@ void MPDConnection::disconnectMpd()
 
 MPDConnection::Response MPDConnection::sendCommand(const QByteArray &command, bool emitErrors, bool retry)
 {
-    DBUG << (void *)(&sock) << "sendCommand:" << command << emitErrors << retry;
+    DBUG << (void *)(&sock) << "sendCommand:" << log(command) << emitErrors << retry;
 
     if (!isConnected()) {
         emit error(i18n("Failed to send command to %1 - not connected", details.description()), true);
@@ -487,8 +497,10 @@ MPDConnection::Response MPDConnection::sendCommand(const QByteArray &command, bo
         response=Response(false);
         sock.close();
     } else {
-        sock.waitForBytesWritten(constSocketCommsTimeout);
-        response=readReply(sock);
+        int timeout=socketTimeout(command.length());
+        DBUG << "Timeout (ms):" << timeout;
+        sock.waitForBytesWritten(timeout);
+        response=readReply(sock, timeout);
     }
 
     if (!response.ok) {
@@ -1054,7 +1066,7 @@ void MPDConnection::getTagTypes()
 void MPDConnection::idleDataReady()
 {
     DBUG << "idleDataReady";
-    if (idleSocket.bytesAvailable() == 0) {
+    if (0==idleSocket.bytesAvailable()) {
         return;
     }
     parseIdleReturn(readFromSocket(idleSocket));

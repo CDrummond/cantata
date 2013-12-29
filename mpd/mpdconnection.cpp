@@ -493,6 +493,7 @@ MPDConnection::Response MPDConnection::sendCommand(const QByteArray &command, bo
 
     Response response;
     if (-1==sock.write(command+"\n")) {
+        DBUG << "Failed to write";
         // If we fail to write, dont wait for bytes to be written!!
         response=Response(false);
         sock.close();
@@ -500,6 +501,7 @@ MPDConnection::Response MPDConnection::sendCommand(const QByteArray &command, bo
         int timeout=socketTimeout(command.length());
         DBUG << "Timeout (ms):" << timeout;
         sock.waitForBytesWritten(timeout);
+        DBUG << "Socket state after write:" << (int)sock.state();
         response=readReply(sock, timeout);
     }
 

@@ -845,6 +845,12 @@ bool Settings::mpdPoll()
     return GET_BOOL("mpdPoll", false);
 }
 
+int Settings::mpdListSize()
+{
+    int v=GET_INT("mpdListSize", 2000);
+    return RESTRICT(v, 100, 65535);
+}
+
 void Settings::removeConnectionDetails(const QString &v)
 {
     if (v==currentConnection()) {

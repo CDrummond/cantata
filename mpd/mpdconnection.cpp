@@ -52,7 +52,7 @@ void MPDConnection::enableDebug()
 
 static const int constSocketCommsTimeout=2000;
 static const int constMaxReadAttempts=4;
-static int maxFilesPerAddCommand=2000;
+static int maxFilesPerAddCommand=10000;
 
 #ifdef ENABLE_KDE_SUPPORT
 K_GLOBAL_STATIC(MPDConnection, conn)

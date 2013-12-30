@@ -847,7 +847,7 @@ bool Settings::mpdPoll()
 
 int Settings::mpdListSize()
 {
-    int v=GET_INT("mpdListSize", 2000);
+    int v=GET_INT("mpdListSize", 10000);
     return RESTRICT(v, 100, 65535);
 }
 

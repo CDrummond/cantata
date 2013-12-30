@@ -475,6 +475,8 @@ ItemView::ItemView(QWidget *p)
     , groupedView(0)
     , spinner(0)
     , msgOverlay(0)
+    , performedSearch(false)
+    , searchResetLevel(0)
 {
     setupUi(this);
     backAction = new QAction(i18n("Go Back"), this);
@@ -507,7 +509,7 @@ ItemView::ItemView(QWidget *p)
     treeView->installEventFilter(new ViewEventHandler(td, treeView));
     connect(searchWidget, SIGNAL(returnPressed()), this, SLOT(delaySearchItems()));
     connect(searchWidget, SIGNAL(textChanged(const QString)), this, SLOT(delaySearchItems()));
-    connect(searchWidget, SIGNAL(active(bool)), this, SIGNAL(searchIsActive(bool)));
+    connect(searchWidget, SIGNAL(active(bool)), this, SLOT(searchActive(bool)));
     connect(treeView, SIGNAL(itemsSelected(bool)), this, SIGNAL(itemsSelected(bool)));
     connect(treeView, SIGNAL(itemActivated(const QModelIndex &)), this, SLOT(itemActivated(const QModelIndex &)));
     connect(treeView, SIGNAL(doubleClicked(const QModelIndex &)), this, SIGNAL(doubleClicked(const QModelIndex &)));
@@ -827,6 +829,7 @@ void ItemView::showIndex(const QModelIndex &idx, bool scrollTo)
 
 void ItemView::focusSearch()
 {
+    performedSearch=false;
     searchWidget->activate();
 }
 
@@ -1087,13 +1090,42 @@ void ItemView::delaySearchItems()
         if (searchTimer) {
             searchTimer->stop();
         }
+        if (performedSearch) {
+            collapseToLevel();
+            performedSearch=false;
+        }
         emit searchItems();
     } else {
         if (!searchTimer) {
             searchTimer=new QTimer(this);
             searchTimer->setSingleShot(true);
-            connect(searchTimer, SIGNAL(timeout()), SIGNAL(searchItems()));
+            connect(searchTimer, SIGNAL(timeout()), this, SLOT(doSearch()));
         }
         searchTimer->start(500);
+    }
+}
+
+void ItemView::doSearch()
+{
+    performedSearch=true;
+    emit searchItems();
+}
+
+void ItemView::searchActive(bool a)
+{
+    emit searchIsActive(a);
+    if (!a && performedSearch) {
+        collapseToLevel();
+        performedSearch=false;
+    }
+}
+
+
+void ItemView::collapseToLevel()
+{
+    if (Mode_SimpleTree==mode || Mode_DetailedTree==mode) {
+        return treeView->collapseToLevel(searchResetLevel);
+    } else if(Mode_GroupedTree==mode) {
+        return groupedView->collapseToLevel(searchResetLevel);
     }
 }

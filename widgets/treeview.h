@@ -54,7 +54,9 @@ public:
     QModelIndexList selectedIndexes() const { return selectedIndexes(true); }
     QModelIndexList selectedIndexes(bool sorted) const;
     void expandAll(const QModelIndex &idx=QModelIndex());
+    void collapseToLevel(int level, const QModelIndex &idx=QModelIndex());
     virtual void expand(const QModelIndex &idx, bool singleOnly=false);
+    virtual void collapse(const QModelIndex &idx, bool singleOnly=false);
     virtual void setModel(QAbstractItemModel *m);
     bool checkBoxClicked(const QModelIndex &idx) const;
     void setUseSimpleDelegate();

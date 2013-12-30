@@ -276,6 +276,20 @@ void TreeView::expandAll(const QModelIndex &idx)
     }
 }
 
+void TreeView::collapseToLevel(int level, const QModelIndex &idx)
+{
+    quint32 count=model()->rowCount(idx);
+    if (level) {
+        for (quint32 i=0; i<count; ++i) {
+            collapseToLevel(level-1, model()->index(i, 0, idx));
+        }
+    } else {
+        for (quint32 i=0; i<count; ++i) {
+            collapse(model()->index(i, 0, idx));
+        }
+    }
+}
+
 void TreeView::expand(const QModelIndex &idx, bool singleOnly)
 {
     if (idx.isValid()) {
@@ -284,6 +298,19 @@ void TreeView::expand(const QModelIndex &idx, bool singleOnly)
             quint32 count=model()->rowCount(idx);
             for (quint32 i=0; i<count; ++i) {
                 expand(idx.child(i, 0));
+            }
+        }
+    }
+}
+
+void TreeView::collapse(const QModelIndex &idx, bool singleOnly)
+{
+    if (idx.isValid()) {
+        setExpanded(idx, false);
+        if (!singleOnly) {
+            quint32 count=model()->rowCount(idx);
+            for (quint32 i=0; i<count; ++i) {
+                collapse(idx.child(i, 0));
             }
         }
     }

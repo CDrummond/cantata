@@ -83,6 +83,7 @@ public:
     void dropEvent(QDropEvent *event);
     void collectionRemoved(quint32 key);
     void expand(const QModelIndex &idx, bool singleOnly=false);
+    void collapse(const QModelIndex &idx, bool singleOnly=false);
 
 public Q_SLOTS:
     void updateRows(const QModelIndex &parent);

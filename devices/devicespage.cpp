@@ -129,6 +129,7 @@ DevicesPage::DevicesPage(QWidget *p)
     proxy.setSourceModel(DevicesModel::self());
     view->setModel(&proxy);
     view->setRootIsDecorated(false);
+    view->setSearchResetLevel(1);
 }
 
 DevicesPage::~DevicesPage()

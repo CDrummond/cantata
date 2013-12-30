@@ -137,6 +137,7 @@ public:
     void setPermanentSearch();
     void setSearchCategories(const QList<QPair<QString, QString> > &categories);
     void setSearchCategory(const QString &id);
+    void setSearchResetLevel(int l) { searchResetLevel=l; }
 
 public Q_SLOTS:
     void focusSearch();
@@ -162,9 +163,12 @@ private Q_SLOTS:
     void itemClicked(const QModelIndex &index);
     void itemActivated(const QModelIndex &index);
     void delaySearchItems();
+    void doSearch();
+    void searchActive(bool a);
     void activateItem(const QModelIndex &index, bool emitRootSet=true);
 
 private:
+    void collapseToLevel();
     QAction * getAction(const QModelIndex &index);
 
 private:
@@ -182,6 +186,8 @@ private:
     Spinner *spinner;
     MessageOverlay *msgOverlay;
     QIcon bgndIcon;
+    bool performedSearch;
+    int searchResetLevel;
 };
 
 #endif

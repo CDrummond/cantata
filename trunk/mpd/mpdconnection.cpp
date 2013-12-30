@@ -507,7 +507,7 @@ MPDConnection::Response MPDConnection::sendCommand(const QByteArray &command, bo
     }
 
     if (!response.ok) {
-        DBUG << command << "failed";
+        DBUG << log(command) << "failed";
         if (response.data.isEmpty() && retry && QAbstractSocket::ConnectedState!=sock.state()) {
             // Try one more time...
             // This scenario, where socket seems to be closed during/after 'write' seems to occiu more often

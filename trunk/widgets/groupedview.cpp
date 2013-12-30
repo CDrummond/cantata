@@ -828,12 +828,26 @@ void GroupedView::expand(const QModelIndex &idx, bool singleOnly)
                     expand(idx.child(i, 0));
                 }
             }
-        }
-        else if (AlbumHeader==getType(idx)) {
+        } else if (AlbumHeader==getType(idx)) {
             quint16 indexKey=idx.data(GroupedView::Role_Key).toUInt();
             quint32 collection=idx.data(GroupedView::Role_CollectionId).toUInt();
             if (!isExpanded(indexKey, collection)) {
                 toggle(idx);
+            }
+        }
+    }
+}
+
+void GroupedView::collapse(const QModelIndex &idx, bool singleOnly)
+{
+    if (idx.isValid()) {
+        if (idx.data(GroupedView::Role_IsCollection).toBool()) {
+            setExpanded(idx, false);
+            if (!singleOnly) {
+                quint32 count=model()->rowCount(idx);
+                for (quint32 i=0; i<count; ++i) {
+                    collapse(idx.child(i, 0));
+                }
             }
         }
     }

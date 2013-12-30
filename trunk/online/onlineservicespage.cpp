@@ -116,6 +116,7 @@ OnlineServicesPage::OnlineServicesPage(QWidget *p)
 //    proxy.setDynamicSortFilter(false);
     view->setModel(&proxy);
     view->setRootIsDecorated(true);
+    view->setSearchResetLevel(1);
 }
 
 OnlineServicesPage::~OnlineServicesPage()

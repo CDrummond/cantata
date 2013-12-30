@@ -52,6 +52,7 @@ void MPDConnection::enableDebug()
 
 static const int constSocketCommsTimeout=2000;
 static const int constMaxReadAttempts=4;
+static const int constMaxFilesPerAddCommand=2000;
 
 #ifdef ENABLE_KDE_SUPPORT
 K_GLOBAL_STATIC(MPDConnection, conn)
@@ -563,7 +564,7 @@ void MPDConnection::add(const QStringList &files, quint32 pos, quint32 size, int
     add(files, pos, size, action, prioList);
 }
 
-void MPDConnection::add(const QStringList &files, quint32 pos, quint32 size, int action, const QList<quint8> &priority)
+void MPDConnection::add(const QStringList &origList, quint32 pos, quint32 size, int action, const QList<quint8> &priority)
 {
     toggleStopAfterCurrent(false);
     if (AddToEnd!=action) {
@@ -571,56 +572,74 @@ void MPDConnection::add(const QStringList &files, quint32 pos, quint32 size, int
         getStatus();
     }
 
-    QByteArray send = "command_list_begin\n";
-    int curSize = size;
-    int curPos = pos;
-//    bool addedFile=false;
-    bool havePlaylist=false;
-    bool usePrio=!priority.isEmpty() && canUsePriority() && (1==priority.count() || priority.count()==files.count());
-    quint8 singlePrio=usePrio && 1==priority.count() ? priority.at(0) : 0;
-    QStringList cStreamFiles;
-
-    for (int i = 0; i < files.size(); i++) {
-        QString fileName=files.at(i);
-        if (fileName.startsWith(QLatin1String("http://")) && fileName.contains(QLatin1String("cantata=song"))) {
-            cStreamFiles.append(fileName);
+    QList<QStringList> fileLists;
+    if (priority.count()<=1 && origList.count()>constMaxFilesPerAddCommand) {
+        int numChunks=(origList.count()/constMaxFilesPerAddCommand)+(origList.count()%constMaxFilesPerAddCommand ? 1 : 0);
+        for (int i=0; i<numChunks; ++i) {
+            fileLists.append(origList.mid(i*constMaxFilesPerAddCommand, constMaxFilesPerAddCommand));
         }
-        if (CueFile::isCue(fileName)) {
-            send += "load "+CueFile::getLoadLine(fileName)+"\n";
-        } else {
-            if (isPlaylist(fileName)) {
-                send+="load ";
-                havePlaylist=true;
-            } else {
-//                addedFile=true;
-                send += "add ";
-            }
-            send += encodeName(fileName)+"\n";
-        }
-        if (!havePlaylist) {
-            if (0!=size) {
-                send += "move "+QByteArray::number(curSize)+" "+QByteArray::number(curPos)+"\n";
-            }
-            if (usePrio && !havePlaylist) {
-                send += "prio "+QByteArray::number(singlePrio || i>=priority.count() ? singlePrio : priority.at(i))+" "+QByteArray::number(curPos)+" "+QByteArray::number(curPos)+"\n";
-            }
-        }
-        curSize++;
-        curPos++;
+    } else {
+        fileLists.append(origList);
     }
 
-    send += "command_list_end";
+    int curSize = size;
+    int curPos = pos;
+    //    bool addedFile=false;
+    bool havePlaylist=false;
+    bool usePrio=!priority.isEmpty() && canUsePriority() && (1==priority.count() || priority.count()==origList.count());
+    quint8 singlePrio=usePrio && 1==priority.count() ? priority.at(0) : 0;
+    QStringList cStreamFiles;
+    bool sentOk=false;
 
-    if (sendCommand(send).ok) {
+    foreach (const QStringList &files, fileLists) {
+        QByteArray send = "command_list_begin\n";
+
+        for (int i = 0; i < files.size(); i++) {
+            QString fileName=files.at(i);
+            if (fileName.startsWith(QLatin1String("http://")) && fileName.contains(QLatin1String("cantata=song"))) {
+                cStreamFiles.append(fileName);
+            }
+            if (CueFile::isCue(fileName)) {
+                send += "load "+CueFile::getLoadLine(fileName)+"\n";
+            } else {
+                if (isPlaylist(fileName)) {
+                    send+="load ";
+                    havePlaylist=true;
+                } else {
+                    //                addedFile=true;
+                    send += "add ";
+                }
+                send += encodeName(fileName)+"\n";
+            }
+            if (!havePlaylist) {
+                if (0!=size) {
+                    send += "move "+QByteArray::number(curSize)+" "+QByteArray::number(curPos)+"\n";
+                }
+                if (usePrio && !havePlaylist) {
+                    send += "prio "+QByteArray::number(singlePrio || i>=priority.count() ? singlePrio : priority.at(i))+" "+QByteArray::number(curPos)+" "+QByteArray::number(curPos)+"\n";
+                }
+            }
+            curSize++;
+            curPos++;
+        }
+
+        send += "command_list_end";
+        sentOk=sendCommand(send).ok;
+        if (!sentOk) {
+            break;
+        }
+    }
+
+    if (sentOk) {
         if (!cStreamFiles.isEmpty()) {
             emit cantataStreams(cStreamFiles);
         }
 
-        if (AddReplaceAndPlay==action /*&& addedFile */&& !files.isEmpty()) {
+        if (AddReplaceAndPlay==action /*&& addedFile */&& !origList.isEmpty()) {
             // Dont emit error if fail plays, might be that playlist was not loaded...
             sendCommand("play "+QByteArray::number(0), false);
         }
-        emit added(files);
+        emit added(origList);
     }
 }
 

@@ -340,6 +340,7 @@ void HttpSocket::readClient()
             qint32 readBytesTo=0;
             getRange(params, readBytesFrom, readBytesTo);
 
+            DBUG << "readBytesFrom" << readBytesFrom << "readBytesTo" << readBytesTo;
             if (q.hasQueryItem("cantata")) {
                 Song song=HttpServer::self()->decodeUrl(url);
 
@@ -446,7 +447,7 @@ void HttpSocket::readClient()
                                 if (!write(socket, buffer, bytesRead, stop) || f.atEnd()) {
                                     break;
                                 }
-                            } while ((readPos+bytesRead)<totalBytes && !stop && !terminated);
+                            } while (readPos<totalBytes && !stop && !terminated);
                         }
                     }
                 }

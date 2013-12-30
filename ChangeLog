@@ -18,6 +18,7 @@
     indicates MPD's volume mixer is disabled.
 11. When closing search widget, after performing a search, collapse all bar top
     level items.
+12. When adding files to playqueue, only add in batches of up to 2000 songs.
 
 1.2.2
 -----

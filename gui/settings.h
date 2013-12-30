@@ -205,6 +205,7 @@ public:
     QString searchCategory();
     bool cacheScaledCovers();
     bool mpdPoll();
+    int mpdListSize();
 
     void removeConnectionDetails(const QString &v);
     void saveConnectionDetails(const MPDConnectionDetails &v);

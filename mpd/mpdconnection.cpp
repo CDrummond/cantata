@@ -52,7 +52,7 @@ void MPDConnection::enableDebug()
 
 static const int constSocketCommsTimeout=2000;
 static const int constMaxReadAttempts=4;
-static const int constMaxFilesPerAddCommand=2000;
+static int maxFilesPerAddCommand=2000;
 
 #ifdef ENABLE_KDE_SUPPORT
 K_GLOBAL_STATIC(MPDConnection, conn)
@@ -212,6 +212,7 @@ MPDConnection::MPDConnection()
     #ifdef QT_QTDBUS_FOUND
     connect(PowerManagement::self(), SIGNAL(resuming()), this, SLOT(reconnect()));
     #endif
+    maxFilesPerAddCommand=Settings::self()->mpdListSize();
 }
 
 MPDConnection::~MPDConnection()
@@ -573,10 +574,10 @@ void MPDConnection::add(const QStringList &origList, quint32 pos, quint32 size, 
     }
 
     QList<QStringList> fileLists;
-    if (priority.count()<=1 && origList.count()>constMaxFilesPerAddCommand) {
-        int numChunks=(origList.count()/constMaxFilesPerAddCommand)+(origList.count()%constMaxFilesPerAddCommand ? 1 : 0);
+    if (priority.count()<=1 && origList.count()>maxFilesPerAddCommand) {
+        int numChunks=(origList.count()/maxFilesPerAddCommand)+(origList.count()%maxFilesPerAddCommand ? 1 : 0);
         for (int i=0; i<numChunks; ++i) {
-            fileLists.append(origList.mid(i*constMaxFilesPerAddCommand, constMaxFilesPerAddCommand));
+            fileLists.append(origList.mid(i*maxFilesPerAddCommand, maxFilesPerAddCommand));
         }
     } else {
         fileLists.append(origList);

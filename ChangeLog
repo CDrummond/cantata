@@ -19,6 +19,8 @@
 11. When closing search widget, after performing a search, collapse all bar top
     level items.
 12. When adding files to playqueue, only add in batches of up to 2000 songs.
+    This 'chunk size' may be altered by setting mpdListSize in Cantata's config
+    file - see README for details.
 
 1.2.2
 -----

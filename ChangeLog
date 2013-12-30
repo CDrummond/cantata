@@ -16,6 +16,8 @@
     wait longer to write the data of a large command, and read its response.
 10. Hide volume control if MPD returns a negative value for volume - which
     indicates MPD's volume mixer is disabled.
+11. When closing search widget, after performing a search, collapse all bar top
+    level items.
 
 1.2.2
 -----

@@ -113,6 +113,7 @@ StreamsPage::StreamsPage(QWidget *p)
     streamsProxy.setSourceModel(StreamsModel::self());
     view->setModel(&streamsProxy);
     view->setDeleteAction(StdActions::self()->removeAction);
+    view->setSearchResetLevel(1);
 
     searchView->setUniformRowHeights(true);
     searchView->addAction(StdActions::self()->replacePlayQueueAction);

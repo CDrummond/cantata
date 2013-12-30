@@ -359,7 +359,7 @@ mpdPoll=<Boolean>
 mpdListSize=<Integer>
     This config controls the maximum number of files sent in 1 chunk of an
     "add" command when adding files to the playqueue.
-    Default is 2000. (Values 100..65535 are acceptable)
+    Default is 10000. (Values 100..65535 are acceptable)
 
 e.g.
 [General]

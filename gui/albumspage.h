@@ -35,13 +35,6 @@ class AlbumsPage : public QWidget, public Ui::AlbumsPage
 {
     Q_OBJECT
 
-    enum CoverLoad
-    {
-        CL_LoadAsRequired,
-        CL_LoadAll,
-        CL_Loaded
-    };
-
 public:
     AlbumsPage(QWidget *p);
     virtual ~AlbumsPage();
@@ -78,10 +71,8 @@ public Q_SLOTS:
     void controlActions();
     void searchItems();
     void updateGenres(const QModelIndex &);
-    void albumsUpdated();
 
 private:
-    CoverLoad coverLoad;
     AlbumsProxyModel proxy;
 };
 

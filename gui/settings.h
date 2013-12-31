@@ -198,7 +198,6 @@ public:
     int maxCoverUpdatePerIteration();
     QStringList cueFileCodecs();
     bool networkAccessEnabled();
-    bool albumViewLoadAll();
     int volumeStep();
     StartupState startupState();
     int undoSteps();

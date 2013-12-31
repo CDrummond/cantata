@@ -124,7 +124,6 @@ public:
     void setEnabled(bool e);
     int albumSort() const;
     void setAlbumSort(int s);
-    void loadAllCovers();
 
 Q_SIGNALS:
     void updated();

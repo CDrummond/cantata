@@ -226,7 +226,7 @@ Song LibraryPage::coverRequest() const
 
 void LibraryPage::addSelectionToPlaylist(const QString &name, bool replace, quint8 priorty, bool randomAlbums)
 {
-    QStringList files=selectedFiles(true, randomAlbums);
+    QStringList files=selectedFiles(name.isEmpty(), randomAlbums);
 
     if (!files.isEmpty()) {
         if (name.isEmpty()) {

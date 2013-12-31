@@ -235,7 +235,7 @@ QStringList FolderPage::selectedFiles(bool allowPlaylists) const
 
 void FolderPage::addSelectionToPlaylist(const QString &name, bool replace, quint8 priorty)
 {
-    QStringList files=selectedFiles(true);
+    QStringList files=selectedFiles(name.isEmpty());
 
     if (!files.isEmpty()) {
         if (name.isEmpty()) {

@@ -538,23 +538,6 @@ void AlbumsModel::setAlbumSort(int s)
     }
 }
 
-void AlbumsModel::loadAllCovers()
-{
-    if (items.isEmpty()) {
-        return;
-    }
-    int iSize=iconSize();
-    if (!iSize) {
-        return;
-    }
-    foreach (AlbumItem *al, items) {
-        if (!al->coverRequested && Song::SingleTracks!=al->type) {
-            al->coverRequested=true;
-            al->getCover();
-        }
-    }
-}
-
 AlbumsModel::AlbumItem::AlbumItem(const QString &ar, const QString &al, quint16 y)
     : artist(ar)
     , album(al)

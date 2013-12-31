@@ -642,6 +642,7 @@ MainWindow::MainWindow(QWidget *parent)
     playQueue->addAction(editPlayQueueTagsAction);
     #endif
     //playQueue->addAction(copyTrackInfoAction);
+    playQueue->addAction(playQueueModel.removeDuplicatesAct());
     playQueue->tree()->installEventFilter(new DeleteKeyEventHandler(playQueue->tree(), removeFromPlayQueueAction));
     playQueue->list()->installEventFilter(new DeleteKeyEventHandler(playQueue->list(), removeFromPlayQueueAction));
     playQueue->setGrouped(Settings::self()->playQueueGrouped());

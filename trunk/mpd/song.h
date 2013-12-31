@@ -76,6 +76,7 @@ struct Song
     static const QString constCddaProtocol;
     static void storeAlbumYear(const Song &s);
     static int albumYear(const Song &s);
+    static void sortViaType(QList<Song> &songs);
 
     Song();
     Song(const Song &o) { *this=o; }

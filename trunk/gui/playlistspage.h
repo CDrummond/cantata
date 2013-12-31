@@ -74,6 +74,7 @@ public Q_SLOTS:
 private Q_SLOTS:
     void savePlaylist();
     void renamePlaylist();
+    void removeDuplicates();
     void itemDoubleClicked(const QModelIndex &index);
     void searchItems();
     void updated(const QModelIndex &index);
@@ -81,6 +82,7 @@ private Q_SLOTS:
 
 private:
     Action *renamePlaylistAction;
+    Action *removeDuplicatesAction;
     PlaylistsProxyModel proxy;
 };
 

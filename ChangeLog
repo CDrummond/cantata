@@ -33,6 +33,8 @@
 5. If icon theme does not have network-server, then use audio file icon for
    HTTP server settings page.
 6. Fix truncated files served from internal HTTP server.
+7. When adding songs to an existing play lists, dont allow play list files to
+   be added.
 
 1.2.1
 -----

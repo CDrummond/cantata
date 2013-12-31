@@ -21,6 +21,7 @@
 12. When adding files to playqueue, only add in batches of up to 2000 songs.
     This 'chunk size' may be altered by setting mpdListSize in Cantata's config
     file - see README for details.
+13. Add 'Remove dusplicates' functionality to play queue and play lists.
 
 1.2.2
 -----

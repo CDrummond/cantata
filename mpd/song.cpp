@@ -37,6 +37,7 @@
 #include <QSet>
 #include <QChar>
 #include <QLatin1Char>
+#include <QtAlgorithms>
 
 const QString Song::constCddaProtocol("cdda:/");
 
@@ -54,6 +55,49 @@ int Song::albumYear(const Song &s)
 {
     QMap<QString, quint16>::ConstIterator it=albumYears.find(s.albumKey());
     return it==albumYears.end() ? s.year : it.value();
+}
+
+static int songType(const Song &s)
+{
+    static QStringList extensions=QStringList() << QLatin1String(".flac")
+                                                << QLatin1String(".wav")
+                                                << QLatin1String(".dff")
+                                                << QLatin1String(".dsf")
+                                                << QLatin1String(".aac")
+                                                << QLatin1String(".m4a")
+                                                << QLatin1String(".m4b")
+                                                << QLatin1String(".m4p")
+                                                << QLatin1String(".mp4")
+                                                << QLatin1String(".ogg")
+                                                << QLatin1String(".opus")
+                                                << QLatin1String(".mp3")
+                                                << QLatin1String(".wma");
+
+    for (int i=0; i<extensions.count(); ++i) {
+        if (s.file.endsWith(extensions.at(i), Qt::CaseInsensitive)) {
+            return i;
+        }
+    }
+
+    if (s.isCdda()) {
+        return extensions.count()+2;
+    }
+    if (s.isStream()) {
+        return extensions.count()+3;
+    }
+    return extensions.count()+1;
+}
+
+static bool songTypeSort(const Song &s1, const Song &s2)
+{
+    int t1=songType(s1);
+    int t2=songType(s2);
+    return t1<t2 || (t1==t2 && s1.id<s2.id);
+}
+
+void Song::sortViaType(QList<Song> &songs)
+{
+    qSort(songs.begin(), songs.end(), songTypeSort);
 }
 
 static bool useComposerIfSet=false;

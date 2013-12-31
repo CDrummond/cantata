@@ -335,11 +335,6 @@ networkAccessEnabled=<Bool - true/false>
     Configure whether Cantata should be allowed to make networks requests - for
     accessing covers, etc. By default this is set to true.
 
-albumViewLoadAll=<Bool - true/false>
-    If set to true, then when the album view is shown it will request all covers
-    covers immediately - rather than waiting for the cover to be displayed.
-    Default is false.
-
 volumeStep=<Integer>
     Volume % increments. Used when mouse wheel is activated over volume control.
     Default is 5. (Values 1..20 are acceptable)
@@ -368,7 +363,6 @@ maxCoverFindPerIteration=5
 maxCoverUpdatePerIteration=5
 cueFileCodecs=GBK, big5-0
 networkAccessEnabled=false
-albumViewLoadAll=true
 volumeStep=2
 undoSteps=20
 mpdPoll=true

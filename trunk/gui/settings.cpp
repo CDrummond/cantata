@@ -808,11 +808,6 @@ bool Settings::networkAccessEnabled()
     return GET_BOOL("networkAccessEnabled", true);
 }
 
-bool Settings::albumViewLoadAll()
-{
-    return GET_BOOL("albumViewLoadAll", false);
-}
-
 int Settings::volumeStep()
 {
     int v=GET_INT("volumeStep", 5);

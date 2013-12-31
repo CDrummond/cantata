@@ -1299,10 +1299,10 @@ void MPDConnection::addToPlaylist(const QString &name, const QStringList &songs,
     if (!name.isEmpty()) {
         foreach (const QString &song, songs) {
             if (CueFile::isCue(song)) {
-                emit error(i18n("You cannot add parts of a cue sheet to a playlist!"));
+                emit error(i18n("You cannot add parts of a cue sheet to a playlist!")+QLatin1String(" (")+song+QLatin1Char(')'));
                 return;
             } else if (isPlaylist(song)) {
-                emit error(i18n("You cannot add a playlist to another playlist!"));
+                emit error(i18n("You cannot add a playlist to another playlist!")+QLatin1String(" (")+song+QLatin1Char(')'));
                 return;
             }
         }

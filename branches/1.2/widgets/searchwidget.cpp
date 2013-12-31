@@ -101,6 +101,7 @@ void SearchWidget::activate()
 {
     bool wasActive=widgetIsActive;
     widgetIsActive=true;
+    edit->selectAll();
     show();
     setFocus();
     if (wasActive!=widgetIsActive) {

@@ -41,6 +41,8 @@ PlaylistsPage::PlaylistsPage(QWidget *p)
 {
     setupUi(this);
     renamePlaylistAction = ActionCollection::get()->createAction("renameplaylist", i18n("Rename"), "edit-rename");
+    removeDuplicatesAction=new Action(i18n("Remove duplicates"), this);
+    removeDuplicatesAction->setEnabled(false);
     replacePlayQueue->setDefaultAction(StdActions::self()->replacePlayQueueAction);
     libraryUpdate->setDefaultAction(StdActions::self()->refreshAction);
     searchButton->setDefaultAction(StdActions::self()->searchAction);
@@ -56,6 +58,7 @@ PlaylistsPage::PlaylistsPage(QWidget *p)
     #endif
     view->addAction(renamePlaylistAction);
     view->addAction(StdActions::self()->removeAction);
+    view->addAction(removeDuplicatesAction);
     view->setUniformRowHeights(true);
     view->setAcceptDrops(true);
     view->setDragDropOverwriteMode(false);
@@ -77,6 +80,7 @@ PlaylistsPage::PlaylistsPage(QWidget *p)
     connect(this, SIGNAL(removeFromPlaylist(const QString &, const QList<quint32> &)), MPDConnection::self(), SLOT(removeFromPlaylist(const QString &, const QList<quint32> &)));
     connect(StdActions::self()->savePlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(savePlaylist()));
     connect(renamePlaylistAction, SIGNAL(triggered(bool)), this, SLOT(renamePlaylist()));
+    connect(removeDuplicatesAction, SIGNAL(triggered(bool)), this, SLOT(removeDuplicates()));
     connect(PlaylistsModel::self(), SIGNAL(updated(const QModelIndex &)), this, SLOT(updated(const QModelIndex &)));
     connect(PlaylistsModel::self(), SIGNAL(playlistRemoved(quint32)), view, SLOT(collectionRemoved(quint32)));
     QMenu *menu=new QMenu(this);
@@ -225,8 +229,12 @@ void PlaylistsPage::renamePlaylist()
     const QModelIndexList items = view->selectedIndexes(false); // Dont need sorted selection here...
 
     if (1==items.size()) {
-        QModelIndex sourceIndex = proxy.mapToSource(items.first());
-        QString name = PlaylistsModel::self()->data(sourceIndex, Qt::DisplayRole).toString();
+        QModelIndex index = proxy.mapToSource(items.first());
+        PlaylistsModel::Item *item=static_cast<PlaylistsModel::Item *>(index.internalPointer());
+        if (!item->isPlaylist()) {
+            return;
+        }
+        QString name = static_cast<PlaylistsModel::PlaylistItem *>(item)->name;
         QString newName = InputDialog::getText(i18n("Rename Playlist"), i18n("Enter new name for playlist:"), name, 0, this);
 
         if (!newName.isEmpty() && name!=newName) {
@@ -240,6 +248,41 @@ void PlaylistsPage::renamePlaylist()
                 }
             }
             emit renamePlaylist(name, newName);
+        }
+    }
+}
+
+void PlaylistsPage::removeDuplicates()
+{
+    const QModelIndexList items = view->selectedIndexes(false); // Dont need sorted selection here...
+
+    if (1==items.size()) {
+        QModelIndex index = proxy.mapToSource(items.first());
+        PlaylistsModel::Item *item=static_cast<PlaylistsModel::Item *>(index.internalPointer());
+        if (!item->isPlaylist()) {
+            return;
+        }
+
+        PlaylistsModel::PlaylistItem *pl=static_cast<PlaylistsModel::PlaylistItem *>(item);
+        QMap<QString, QList<Song> > map;
+        for (int i=0; i<pl->songs.count(); ++i) {
+            Song song=*(pl->songs.at(i));
+            song.id=i;
+            map[song.artistSong()].append(song);
+        }
+
+        QList<quint32> toRemove;
+        foreach (const QString &key, map.keys()) {
+            QList<Song> values=map.value(key);
+            if (values.size()>1) {
+                Song::sortViaType(values);
+                for (int i=1; i<values.count(); ++i) {
+                    toRemove.append(values.at(i).id);
+                }
+            }
+        }
+        if (!toRemove.isEmpty()) {
+            emit removeFromPlaylist(pl->name, toRemove);
         }
     }
 }
@@ -331,6 +374,7 @@ void PlaylistsPage::controlActions()
     }
 
     renamePlaylistAction->setEnabled(canRename);
+    removeDuplicatesAction->setEnabled(canRename);
     StdActions::self()->removeAction->setEnabled(enableActions);
     StdActions::self()->replacePlayQueueAction->setEnabled(enableActions);
     StdActions::self()->addToPlayQueueAction->setEnabled(enableActions);

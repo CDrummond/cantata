@@ -156,12 +156,16 @@ PlayQueueModel::PlayQueueModel(QObject *parent)
     new ModelTest(this, this);
     #endif
 
+    removeDuplicatesAction=new Action(i18n("Remove duplicates"), this);
+    removeDuplicatesAction->setEnabled(false);
     undoAction=ActionCollection::get()->createAction("playqueue-undo", i18n("Undo"), "edit-undo");
     undoAction->setShortcut(Qt::ControlModifier+Qt::Key_Z);
     redoAction=ActionCollection::get()->createAction("playqueue-redo", i18n("Redo"), "edit-redo");
     redoAction->setShortcut(Qt::ControlModifier+Qt::ShiftModifier+Qt::Key_Z);
     connect(undoAction, SIGNAL(triggered(bool)), this, SLOT(undo()));
     connect(redoAction, SIGNAL(triggered(bool)), this, SLOT(redo()));
+    connect(removeDuplicatesAction, SIGNAL(triggered(bool)), this, SLOT(removeDuplicates()));
+
     controlActions();
 }
 
@@ -728,6 +732,7 @@ void PlayQueueModel::setState(MPDState st)
 // Update playqueue with contents returned from MPD.
 void PlayQueueModel::update(const QList<Song> &songList)
 {
+    removeDuplicatesAction->setEnabled(songList.count()>1);
     QList<Song> prev;
     if (undoEnabled) {
         prev=songs;
@@ -977,6 +982,28 @@ void PlayQueueModel::controlActions()
     undoAction->setVisible(undoLimit>0);
     redoAction->setEnabled(!redoStack.isEmpty());
     redoAction->setVisible(undoLimit>0);
+}
+
+void PlayQueueModel::removeDuplicates()
+{
+    QMap<QString, QList<Song> > map;
+    foreach (const Song &song, songs) {
+        map[song.artistSong()].append(song);
+    }
+
+    QList<qint32> toRemove;
+    foreach (const QString &key, map.keys()) {
+        QList<Song> values=map.value(key);
+        if (values.size()>1) {
+            Song::sortViaType(values);
+            for (int i=1; i<values.count(); ++i) {
+                toRemove.append(values.at(i).id);
+            }
+        }
+    }
+    if (!toRemove.isEmpty()) {
+        emit removeSongs(toRemove);
+    }
 }
 
 void PlayQueueModel::undo()

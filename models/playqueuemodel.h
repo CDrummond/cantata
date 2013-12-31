@@ -111,6 +111,8 @@ public:
     void remove(const QList<int> &rowsToRemove);
     void crop(const QList<int> &rowsToKeep);
 
+    Action * removeDuplicatesAct() { return removeDuplicatesAction; }
+
     void enableUndo(bool e);
     Action * undoAct() { return undoAction; }
     Action * redoAct() { return redoAction; }
@@ -136,6 +138,7 @@ private Q_SLOTS:
     void updateDetails(const QList<Song> &updated);
     void undo();
     void redo();
+    void removeDuplicates();
 
 Q_SIGNALS:
     void stop(bool afterCurrent);
@@ -163,6 +166,7 @@ private:
     quint32 dropAdjust;
     bool stopAfterCurrent;
     qint32 stopAfterTrackId;
+    Action *removeDuplicatesAction;
 
     enum Command
     {

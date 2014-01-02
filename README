@@ -344,12 +344,11 @@ undoSteps=<Integer>
     undo/redo.
     Default is 10. (Values 0..20 are acceptable)
 
-mpdPoll=<Boolean>
-    If set to true, then MPD is polled every second to determine current song
-    position. The polling only occurs whilst playing (i.e. Cantata's position
-    slider is active). Normally this should not be needed, as Cantata uses
-    MPD's IDLE state to receive song changes from MPD.
-    Default is false.
+mpdPoll=<Integer>
+    Speicifed in seconds, this controls how often Cantata should poll MPD to
+    determine its current state whilst playing. Set to 0 to disable polling,
+    and rely on MPD's IDLE mechanism to determin MPD state changes.
+    Default is 0 (no polling). (Values 0..60 are acceptable)
 
 mpdListSize=<Integer>
     This config controls the maximum number of files sent in 1 chunk of an

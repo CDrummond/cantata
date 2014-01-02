@@ -298,6 +298,7 @@ TimeSlider::TimeSlider(QWidget *p)
     : QWidget(p)
     , timer(0)
     , lastVal(0)
+    , pollCount(0)
     , pollMpd(Settings::self()->mpdPoll())
 {
     slider=new PosSlider(this);
@@ -312,7 +313,7 @@ TimeSlider::TimeSlider(QWidget *p)
     connect(slider, SIGNAL(sliderReleased()), this, SLOT(released()));
     connect(slider, SIGNAL(positionSet()), this, SIGNAL(sliderReleased()));
     connect(slider, SIGNAL(valueChanged(int)), this, SLOT(updateTimes()));
-    if (pollMpd) {
+    if (pollMpd>0) {
         connect(this, SIGNAL(mpdPoll()), MPDConnection::self(), SLOT(getStatus()));
     }
     setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
@@ -329,6 +330,7 @@ void TimeSlider::startTimer()
     startTime.restart();
     lastVal=value();
     timer->start();
+    pollCount=0;
 }
 
 void TimeSlider::stopTimer()
@@ -336,6 +338,7 @@ void TimeSlider::stopTimer()
     if (timer) {
         timer->stop();
     }
+    pollCount=0;
 }
 
 void TimeSlider::setValue(int v)
@@ -392,8 +395,11 @@ void TimeSlider::updatePos()
 {
     int elapsed=(startTime.elapsed()/1000.0)+0.5;
     slider->setValue(lastVal+elapsed);
-    if (pollMpd) {
-        emit mpdPoll();
+    if (pollMpd>0) {
+        if (++pollCount>=pollMpd) {
+            pollCount=0;
+            emit mpdPoll();
+        }
     }
 }
 

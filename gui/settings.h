@@ -204,7 +204,7 @@ public:
     int undoSteps();
     QString searchCategory();
     bool cacheScaledCovers();
-    bool mpdPoll();
+    int mpdPoll();
     int mpdListSize();
 
     void removeConnectionDetails(const QString &v);

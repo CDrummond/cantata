@@ -53,28 +53,9 @@ The following options may be passed to CMake:
         Compile support for samba, sshfs, and local folder, devices.
         Default: OFF
 
-    -DENABLE_KDE=OFF
-        Link against KDE libraries, use KDE dialogs, etc.
-        Default: ON
-
-    -DENABLE_QT5=ON
-        Build against Qt5, not Qt4
-        Default: OFF
-
     -DENABLE_HTTP_STREAM_PLAYBACK=ON
         Enable support for playing back MPD HTTP streams via Phonon (Qt4) or
         QtMultiMedia (Qt5).
-        Default: OFF
-
-    -DENABLE_UDISKS2=ON
-        Build UDisks2 backend for solid-lite. (This is for Qt only builds,
-        KDE builds use KDE supplied Solid libraries).
-        Default: OFF
-
-    -DENABLE_PROXY_CONFIG=ON
-        Enable support for proxy settings in config dialog. If disabled,
-        system proxy settings are used.
-        NOTE: Applies to Qt builds only.
         Default: OFF
 
     -DENABLE_HTTPS_SUPPORT=ON
@@ -88,16 +69,39 @@ The following options may be passed to CMake:
         EXPERIMENTAL - CURRENTLY **NOT** WORKING!!!
         Default: OFF
         
-    -DENABLE_KWALLET=ON
-        Use KWallet with KDE builds.
-        Default: ON
-
     -DENABLE_UNCACHED_MTP=ON
         Open MTP devices in un-cached mode (faster)
         Default: ON
 
     -DENABLE_HTTP_SERVER=ON
         Enable usage of internal HTTP server for non-MPD file playback.
+        Default: ON
+
+
+    Specific to Qt-only builds::
+
+    -DENABLE_KDE=OFF
+        Link against KDE libraries, use KDE dialogs, etc.
+        Default: ON
+
+    -DENABLE_QT5=ON
+        Build against Qt5, not Qt4
+        Default: OFF
+
+    -DENABLE_UDISKS2=ON
+        Build UDisks2 backend for solid-lite. (This is for Qt only builds,
+        Default: OFF
+
+    -DENABLE_PROXY_CONFIG=ON
+        Enable support for proxy settings in config dialog. If disabled,
+        system proxy settings are used.
+        Default: OFF
+
+
+    KDE specficic:
+
+    -DENABLE_KWALLET=ON
+        Use KWallet to store MPD passwords..
         Default: ON
 
 

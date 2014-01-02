@@ -8,10 +8,11 @@
  5. Add option to always collapse context into single pane.
  6. Option to have small sidebar at top or bottom.
  7. Scale context view backdrops.
- 8. Add config item, mpdPoll, which when set to true will cause Cantata to poll
-    MPD every second whilst playing. This is useful for cases where Cantata
-    misses updates from MPD. This needs to be manually set in config file (see
-    README for details), as this is only a work-around for certain scenarios.
+ 8. Add a manual config item (mpdPoll) to control whether Cantata should poll
+    MPD for its current state whilst playing. Teh value is specified in
+    seconds. This is useful for cases where Cantata misses updates from MPD.
+    This is only a work-around for certain scenarios. Please see README for
+    more details.
  9. Use a timeout of 2 seconds per 100K bytes of data - therefore, Cantata will
     wait longer to write the data of a large command, and read its response.
 10. Hide volume control if MPD returns a negative value for volume - which

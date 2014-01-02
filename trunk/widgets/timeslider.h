@@ -88,7 +88,8 @@ private:
     QTimer *timer;
     QTime startTime;
     int lastVal;
-    bool pollMpd;
+    int pollCount;
+    int pollMpd;
 };
 
 #endif

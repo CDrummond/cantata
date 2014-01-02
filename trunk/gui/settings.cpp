@@ -844,9 +844,10 @@ bool Settings::cacheScaledCovers()
     return GET_BOOL("cacheScaledCovers", true);
 }
 
-bool Settings::mpdPoll()
+int Settings::mpdPoll()
 {
-    return GET_BOOL("mpdPoll", false);
+    int v=GET_INT("mpdPoll", 0);
+    return RESTRICT(v, 0, 60);
 }
 
 int Settings::mpdListSize()

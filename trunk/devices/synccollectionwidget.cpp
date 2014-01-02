@@ -35,6 +35,7 @@
 
 SyncCollectionWidget::SyncCollectionWidget(QWidget *parent, const QString &title, const QString &action, bool showCovers)
     : QWidget(parent)
+    , performedSearch(false)
     , searchTimer(0)
 {
     setupUi(this);
@@ -140,7 +141,11 @@ void SyncCollectionWidget::delaySearchItems()
         if (searchTimer) {
             searchTimer->stop();
         }
+        if (performedSearch) {
+            tree->collapseToLevel(0);
+        }
         searchItems();
+        performedSearch=false;
     } else {
         if (!searchTimer) {
             searchTimer=new QTimer(this);
@@ -158,6 +163,7 @@ void SyncCollectionWidget::searchItems()
     if (proxy->enabled() && !text.isEmpty()) {
         tree->expandAll();
     }
+    performedSearch=true;
 }
 
 void SyncCollectionWidget::expandAll()

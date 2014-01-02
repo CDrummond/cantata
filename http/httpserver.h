@@ -37,7 +37,9 @@ class QTimer;
 
 class HttpServer : public QObject
 {
+    #ifdef ENABLE_HTTP_SERVER
     Q_OBJECT
+    #endif
 
 public:
     static void enableDebug();
@@ -45,10 +47,10 @@ public:
 
     static HttpServer * self();
 
-    HttpServer();
     virtual ~HttpServer() { }
 
-    bool start();
+    #ifdef ENABLE_HTTP_SERVER
+    HttpServer();
     bool isAlive() const { return true; } // Started on-demamnd!
     bool forceUsage() const { return force; }
     void readConfig();
@@ -58,11 +60,25 @@ public:
     QByteArray encodeUrl(const QString &file);
     Song decodeUrl(const QUrl &url) const;
     Song decodeUrl(const QString &file) const;
+    #else
+    HttpServer() { }
+    bool isAlive() const { return false; } // Not used!
+    bool forceUsage() const { return false; }
+    void readConfig() { }
+    QString address() const { return QString(); }
+    bool isOurs(const QString &) const { return false; }
+    QByteArray encodeUrl(const Song &) { return QByteArray(); }
+    QByteArray encodeUrl(const QString &) { return QByteArray(); }
+    Song decodeUrl(const QUrl &) const { return Song(); }
+    Song decodeUrl(const QString &) const { return Song(); }
+    #endif
 
-public Q_SLOTS:
-    void stop();
+private:
+    #ifdef ENABLE_HTTP_SERVER
+    bool start();
 
 private Q_SLOTS:
+    void stop();
     void startCloseTimer();
     void mpdAddress(const QString &a);
     void cantataStreams(const QStringList &files);
@@ -80,6 +96,7 @@ private:
     QString mpdAddr;
     QSet<qint32> streamIds; // Currently playing MPD stream IDs
     QTimer *closeTimer;
+    #endif
 };
 
 #endif

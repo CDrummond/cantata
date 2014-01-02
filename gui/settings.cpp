@@ -645,7 +645,11 @@ QString Settings::httpInterface()
 
 bool Settings::alwaysUseHttp()
 {
+    #ifdef ENABLE_HTTP_SERVER
     return GET_BOOL("alwaysUseHttp", false);
+    #else
+    return false;
+    #endif
 }
 
 bool Settings::playQueueGrouped()

@@ -844,7 +844,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
-    playQueueModel.removeCantataStreams();
+    bool hadCantataStreams=playQueueModel.removeCantataStreams();
     Settings::self()->saveShowFullScreen(fullScreenAction->isChecked());
     if (!fullScreenAction->isChecked()) {
         Settings::self()->saveMainWindowSize(expandInterfaceAction->isChecked() ? size() : expandedSize);
@@ -882,6 +882,10 @@ MainWindow::~MainWindow()
     }
     if (Settings::self()->stopOnExit() || (fadeWhenStop() && StopState_Stopping==stopState)) {
         emit stop();
+        // Allow time for stop to be sent...
+        Utils::sleep();
+    } else if (hadCantataStreams) {
+        // Allow time for removal of cantata streams...
         Utils::sleep();
     }
     MPDConnection::self()->stop();

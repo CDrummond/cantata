@@ -106,7 +106,7 @@ public:
     void update(const QList<Song> &songList);
     void setStopAfterTrack(qint32 track);
     void clearStopAfterTrack() { setStopAfterTrack(-1); }
-    void removeCantataStreams();
+    bool removeCantataStreams();
     void removeAll();
     void remove(const QList<int> &rowsToRemove);
     void crop(const QList<int> &rowsToKeep);

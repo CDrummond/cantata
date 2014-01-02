@@ -68,6 +68,7 @@ private:
     void updateStats();
 
 private:
+    bool performedSearch;
     MusicLibraryModel *model;
     MusicLibraryProxyModel *proxy;
     QTimer *searchTimer;

@@ -923,7 +923,6 @@ void MainWindow::initSizes()
 void MainWindow::load(const QStringList &urls)
 {
     QStringList useable;
-    bool haveHttp=HttpServer::self()->isAlive();
 
     foreach (const QString &path, urls) {
         QUrl u(path);
@@ -935,8 +934,12 @@ void MainWindow::load(const QStringList &urls)
         #endif
         if (QLatin1String("http")==u.scheme()) {
             useable.append(u.toString());
-        } else if (haveHttp && (u.scheme().isEmpty() || QLatin1String("file")==u.scheme())) {
-            useable.append(HttpServer::self()->encodeUrl(u.path()));
+        } else if (u.scheme().isEmpty() || QLatin1String("file")==u.scheme()) {
+            if (!HttpServer::self()->forceUsage() && MPDConnection::self()->getDetails().isLocal()) {
+                useable.append(QLatin1String("file://")+u.path());
+            } else {
+                useable.append(HttpServer::self()->encodeUrl(u.path()));
+            }
         }
     }
     if (useable.count()) {

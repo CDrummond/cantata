@@ -159,6 +159,7 @@ public:
     int stopFadeDuration();
     int httpAllocatedPort();
     QString httpInterface();
+    bool alwaysUseHttp();
     bool playQueueGrouped();
     bool playQueueAutoExpand();
     bool playQueueStartClosed();

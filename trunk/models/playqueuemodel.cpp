@@ -465,13 +465,7 @@ Qt::ItemFlags PlayQueueModel::flags(const QModelIndex &index) const
  */
 QStringList PlayQueueModel::mimeTypes() const
 {
-    QStringList types;
-    types << constMoveMimeType;
-    types << constFileNameMimeType;
-    if (HttpServer::self()->isAlive()) {
-        types << constUriMimeType;
-    }
-    return types;
+    return QStringList() << constMoveMimeType << constFileNameMimeType << constUriMimeType;
 }
 
 /**
@@ -519,6 +513,7 @@ QMimeData *PlayQueueModel::mimeData(const QModelIndexList &indexes) const
  *
  * @return bool if we accest the drop
  */
+#include <QDebug>
 bool PlayQueueModel::dropMimeData(const QMimeData *data,
                                   Qt::DropAction action, int row, int /*column*/, const QModelIndex & /*parent*/)
 {
@@ -549,17 +544,20 @@ bool PlayQueueModel::dropMimeData(const QMimeData *data,
     } else if(data->hasFormat(constUriMimeType)/* && MPDConnection::self()->getDetails().isLocal()*/) {
         QStringList orig=decode(*data, constUriMimeType);
         QStringList useable;
-        bool haveHttp=HttpServer::self()->isAlive();
 
         foreach (QString u, orig) {
             if (u.startsWith(QLatin1String("http://"))) {
                 useable.append(u);
-            } else if (haveHttp && (u.startsWith('/') || u.startsWith(QLatin1String("file://")))) {
+            } else if (u.startsWith('/') || u.startsWith(QLatin1String("file://"))) {
                 if (u.startsWith(QLatin1String("file://"))) {
                     u=u.mid(7);
                 }
                 if (checkExtension(u)) {
-                    useable.append(HttpServer::self()->encodeUrl(QUrl::fromPercentEncoding(u.toUtf8())));
+                    if (!HttpServer::self()->forceUsage() && MPDConnection::self()->getDetails().isLocal()) {
+                        useable.append(QLatin1String("file://")+QUrl::fromPercentEncoding(u.toUtf8()));
+                    } else {
+                        useable.append(HttpServer::self()->encodeUrl(QUrl::fromPercentEncoding(u.toUtf8())));
+                    }
                 }
             }
         }

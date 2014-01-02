@@ -50,6 +50,7 @@ public:
 
     bool start();
     bool isAlive() const { return true; } // Started on-demamnd!
+    bool forceUsage() const { return force; }
     void readConfig();
     QString address() const;
     bool isOurs(const QString &url) const;
@@ -72,6 +73,7 @@ Q_SIGNALS:
     void terminateSocket();
 
 private:
+    bool force;
     Thread *thread;
     HttpSocket *socket;
 

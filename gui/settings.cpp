@@ -643,6 +643,11 @@ QString Settings::httpInterface()
     return GET_STRING("httpInterface", QString());
 }
 
+bool Settings::alwaysUseHttp()
+{
+    return GET_BOOL("alwaysUseHttp", false);
+}
+
 bool Settings::playQueueGrouped()
 {
     return GET_BOOL("playQueueGrouped", true);

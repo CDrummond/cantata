@@ -79,6 +79,7 @@ HttpServer::HttpServer()
     , socket(0)
     , closeTimer(0)
 {
+    force=Settings::self()->alwaysUseHttp();
     connect(MPDConnection::self(), SIGNAL(socketAddress(QString)), this, SLOT(mpdAddress(QString)));
     connect(MPDConnection::self(), SIGNAL(cantataStreams(QList<Song>,bool)), this, SLOT(cantataStreams(QList<Song>,bool)));
     connect(MPDConnection::self(), SIGNAL(cantataStreams(QStringList)), this, SLOT(cantataStreams(QStringList)));

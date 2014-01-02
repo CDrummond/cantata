@@ -37,6 +37,7 @@
    be added.
 8. If Ctrl-F is activated again whilst search widget is visible, then select
    all current text.
+9. When MPD seeks a Cantata HTTP stream, set the Content-Range header field.
 
 1.2.1
 -----

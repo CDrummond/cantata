@@ -113,16 +113,24 @@ static QString detectMimeType(const QString &file)
     return QString();
 }
 
-static void writeMimeType(const QString &mimeType, QTcpSocket *socket, qint32 size, bool allowSeek)
+static void writeMimeType(const QString &mimeType, QTcpSocket *socket, qint32 from, qint32 size, bool allowSeek)
 {
     if (!mimeType.isEmpty()) {
         QTextStream os(socket);
         os.setAutoDetectUnicode(true);
         if (allowSeek) {
-            os << "HTTP/1.0 200 OK"
-               << "\r\nAccept-Ranges: bytes"
-               << "\r\nContent-Length: " << QString::number(size)
-               << "\r\nContent-Type: " << mimeType << "\r\n\r\n";
+            if (0==from) {
+                os << "HTTP/1.0 200 OK"
+                   << "\r\nAccept-Ranges: bytes"
+                   << "\r\nContent-Length: " << QString::number(size)
+                   << "\r\nContent-Type: " << mimeType << "\r\n\r\n";
+            } else {
+                os << "HTTP/1.0 200 OK"
+                   << "\r\nAccept-Ranges: bytes"
+                   << "\r\nContent-Range: bytes " << QString::number(from) << "-" << QString::number(size-1) << "/" << QString::number(size)
+                   << "\r\nContent-Length: " << QString::number(size-from)
+                   << "\r\nContent-Type: " << mimeType << "\r\n\r\n";
+            }
             DBUG << mimeType << QString::number(size) << "Can seek";
         } else {
             os << "HTTP/1.0 200 OK"
@@ -376,7 +384,7 @@ void HttpSocket::readClient()
 //                            }
                             cdparanoia.seek(firstSector, SEEK_SET);
                             ok=true;
-                            writeMimeType(QLatin1String("audio/x-wav"), socket, totalSize+ExtractJob::constWavHeaderSize, false);
+                            writeMimeType(QLatin1String("audio/x-wav"), socket, readBytesFrom, totalSize+ExtractJob::constWavHeaderSize, false);
                             if (0==readBytesFrom) { // Only write header if we are not seeking...
                                 ExtractJob::writeWavHeader(*socket, totalSize);
                             }
@@ -421,7 +429,7 @@ void HttpSocket::readClient()
                     if (f.open(QIODevice::ReadOnly)) {                        
                         qint32 totalBytes = f.size();
 
-                        writeMimeType(detectMimeType(song.file), socket, totalBytes, true);
+                        writeMimeType(detectMimeType(song.file), socket, readBytesFrom, totalBytes, true);
                         ok=true;
                         static const int constChunkSize=32768;
                         char buffer[constChunkSize];

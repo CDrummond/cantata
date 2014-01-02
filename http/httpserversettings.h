@@ -28,7 +28,6 @@
 
 class HttpServerSettings : public QWidget, private Ui::HttpServerSettings
 {
-    Q_OBJECT
 public:
     HttpServerSettings(QWidget *p);
     virtual ~HttpServerSettings() { }
@@ -36,9 +35,6 @@ public:
     void load();
     void save();
     bool haveMultipleInterfaces() const;
-
-private Q_SLOTS:
-    void updateStatus();
 };
 
 #endif

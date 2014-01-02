@@ -259,6 +259,8 @@ HttpSocket::HttpSocket(const QString &iface, quint16 port)
         ifaceAddress=QLatin1String("127.0.0.1");
     }
 
+    DBUG << isListening() << ifaceAddress << serverPort();
+
     connect(MPDConnection::self(), SIGNAL(socketAddress(QString)), this, SLOT(mpdAddress(QString)));
     connect(MPDConnection::self(), SIGNAL(cantataStreams(QList<Song>,bool)), this, SLOT(cantataStreams(QList<Song>,bool)));
     connect(MPDConnection::self(), SIGNAL(cantataStreams(QStringList)), this, SLOT(cantataStreams(QStringList)));
@@ -293,7 +295,12 @@ bool HttpSocket::openPort(const QHostAddress &a, quint16 p)
 
 void HttpSocket::terminate()
 {
+    if (terminated) {
+        return;
+    }
+    DBUG;
     terminated=true;
+    close();
     deleteLater();
 }
 

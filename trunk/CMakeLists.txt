@@ -44,6 +44,7 @@ option(ENABLE_MUSICBRAINZ "Enable MusicBrianz libraries (either this or CDDB req
 option(ENABLE_PROXY_CONFIG "Enable proxy config in settings dialog" OFF)
 option(ENABLE_EXTERNAL_TAGS "Enable usage of external app for reading/writing tags (EXPERIMENTAL - NOT FULLY WORKING)" OFF)
 option(ENABLE_UNCACHED_MTP "Open MTP devices in un-cached mode (faster)" ON)
+option(ENABLE_HTTP_SERVER "Enable internal HTTP server to play non-MPD files" ON)
 
 if (ENABLE_QT5)
     set(ENABLE_KDE FALSE)
@@ -223,7 +224,7 @@ set(CANTATA_SRCS gui/application.cpp gui/main.cpp gui/initialsettingswizard.cpp 
     widgets/basicitemdelegate.cpp widgets/sizegrip.cpp widgets/sizewidget.cpp widgets/servicestatuslabel.cpp widgets/spacerwidget.cpp
     widgets/songdialog.cpp
     network/networkaccessmanager.cpp network/networkproxyfactory.cpp
-    http/httpserversettings.cpp http/httpserver.cpp http/httpsocket.cpp
+    http/httpserver.cpp
     devices/deviceoptions.cpp
     context/lyricsettings.cpp context/ultimatelyricsprovider.cpp context/ultimatelyrics.cpp context/lyricsdialog.cpp
     context/contextwidget.cpp context/view.cpp context/artistview.cpp context/albumview.cpp context/songview.cpp context/contextengine.cpp
@@ -247,7 +248,6 @@ set(CANTATA_MOC_HDRS
     widgets/playqueueview.h widgets/groupedview.h widgets/actionitemdelegate.h widgets/coverwidget.h widgets/volumeslider.h
     widgets/genrecombo.h widgets/toolbar.h widgets/searchwidget.h widgets/messageoverlay.h widgets/servicestatuslabel.h
     network/networkaccessmanager.h
-    http/httpserver.h http/httpsocket.h
     context/togglelist.h context/ultimatelyrics.h context/ultimatelyricsprovider.h context/lyricsdialog.h
     context/contextwidget.h context/artistview.h context/albumview.h context/songview.h context/view.h context/contextengine.h
     context/wikipediaengine.h context/wikipediasettings.h context/othersettings.h context/lastfmengine.h context/metaengine.h
@@ -261,6 +261,12 @@ set(CANTATA_UIS
     widgets/itemview.ui
     http/httpserversettings.ui
     online/onlineservicespage.ui online/onlinesettings.ui)
+
+if (ENABLE_HTTP_SERVER)
+    set(CANTATA_SRCS ${CANTATA_SRCS} http/httpserversettings.cpp http/httpsocket.cpp)
+    set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} http/httpserver.h http/httpsocket.h)
+    set(CANTATA_UIS ${CANTATA_UIS} http/httpserversettings.ui)
+endif (ENABLE_HTTP_SERVER)
 
 if (ENABLE_MODEL_TEST AND NOT ENABLE_KDE AND NOT ENABLE_QT5)
     set(QTLIBS ${QTLIBS} ${QT_QTTEST_LIBRARY})
@@ -619,7 +625,7 @@ if (TAGLIB_FOUND)
         endif (ENABLE_PROXY_CONFIG)
     endif (ENABLE_REMOTE_DEVICES OR ENABLE_HTTP_STREAM_PLAYBACK OR AUDIOCD_SUPPORT OR MTP_FOUND OR ENABLE_PROXY_CONFIG OR ENABLE_REPLAYGAIN_SUPPORT)
     
-    if (NOT TAGLIB_FOUND OR NOT MTP_FOUND OR NOT AUDIOCD_SUPPORT OR NOT ENABLE_REPLAYGAIN_SUPPORT OR NOT ENABLE_HTTP_STREAM_PLAYBACK OR NOT ENABLE_REMOTE_DEVICES OR (NOT ENABLE_PROXY_CONFIG AND NOT ENABLE_KDE))
+    if (NOT TAGLIB_FOUND OR NOT MTP_FOUND OR NOT AUDIOCD_SUPPORT OR NOT ENABLE_REPLAYGAIN_SUPPORT OR NOT ENABLE_HTTP_STREAM_PLAYBACK OR NOT ENABLE_REMOTE_DEVICES OR NOT ENABLE_HTTP_SERVER OR (NOT ENABLE_PROXY_CONFIG AND NOT ENABLE_KDE))
         message("      Disabled features:")
         if (NOT ENABLE_HTTP_STREAM_PLAYBACK)
             message("        - MPD HTTP stream playback (Phonon required for Qt4, QtMultiMedia for Qt5)")
@@ -639,7 +645,10 @@ if (TAGLIB_FOUND)
         if (NOT ENABLE_PROXY_CONFIG AND NOT ENABLE_KDE)
             message("        - Proxy configuration")
         endif (NOT ENABLE_PROXY_CONFIG AND NOT ENABLE_KDE)
-    endif (NOT TAGLIB_FOUND OR NOT MTP_FOUND OR NOT AUDIOCD_SUPPORT OR NOT ENABLE_REPLAYGAIN_SUPPORT OR NOT ENABLE_HTTP_STREAM_PLAYBACK OR NOT ENABLE_REMOTE_DEVICES OR (NOT ENABLE_PROXY_CONFIG AND NOT ENABLE_KDE))
+        if (NOT ENABLE_HTTP_SERVER)
+            message("        - Internal HTTP server (playback of AudioCDs, and songs from media files disabled)")
+        endif (NOT ENABLE_HTTP_SERVER)
+    endif (NOT TAGLIB_FOUND OR NOT MTP_FOUND OR NOT AUDIOCD_SUPPORT OR NOT ENABLE_REPLAYGAIN_SUPPORT OR NOT ENABLE_HTTP_STREAM_PLAYBACK OR NOT ENABLE_REMOTE_DEVICES OR NOT ENABLE_HTTP_SERVER OR (NOT ENABLE_PROXY_CONFIG AND NOT ENABLE_KDE))
 
     if (ENABLE_EXTERNAL_TAGS)
         message("      Tags will be read/written via an external helper app")
@@ -662,8 +671,11 @@ else (TAGLIB_FOUND)
         message("        - Remote device sync (EXPERIMENTAL) (taglib required)")
     endif (NOT WIN32 AND NOT APPLE)
     if (NOT ENABLE_REPLAYGAIN_SUPPORT)
-        message("        - ReplayGain calculation(taglib, and ffmpeg and/or mpg123 required)")
+        message("        - ReplayGain calculation (taglib, and ffmpeg and/or mpg123 required)")
     endif (NOT ENABLE_REPLAYGAIN_SUPPORT)
+    if (NOT ENABLE_HTTP_SERVER)
+        message("        - Internal HTTP server (playback of AudioCDs, and songs from media files disabled)")
+    endif (NOT ENABLE_HTTP_SERVER)
 
 endif (TAGLIB_FOUND)
 

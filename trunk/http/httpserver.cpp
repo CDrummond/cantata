@@ -73,6 +73,7 @@ HttpServer * HttpServer::self()
     #endif
 }
 
+#ifdef ENABLE_HTTP_SERVER
 HttpServer::HttpServer()
     : QObject(0)
     , thread(0)
@@ -361,3 +362,5 @@ void HttpServer::removedIds(const QSet<qint32> &ids)
         startCloseTimer();
     }
 }
+
+#endif

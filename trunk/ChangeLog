@@ -28,6 +28,7 @@
     file:/// URLs to MPD - i.e. dont use internal HTTP server. To foce usage of
     HTTP server - set alwaysUseHttp to true in Cantata's config file. Refer to
     README for more details.
+16. Add CMake option to disable building of internal HTTP server.
 
 1.2.2
 -----

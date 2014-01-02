@@ -937,7 +937,7 @@ void MainWindow::load(const QStringList &urls)
         } else if (u.scheme().isEmpty() || QLatin1String("file")==u.scheme()) {
             if (!HttpServer::self()->forceUsage() && MPDConnection::self()->getDetails().isLocal()) {
                 useable.append(QLatin1String("file://")+u.path());
-            } else {
+            } else if (HttpServer::self()->isAlive()) {
                 useable.append(HttpServer::self()->encodeUrl(u.path()));
             }
         }

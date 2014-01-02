@@ -80,7 +80,9 @@ private:
     StreamsSettings *streams;
     OnlineSettings *online;
     ContextSettings *context;
+    #ifdef ENABLE_HTTP_SERVER
     HttpServerSettings *http;
+    #endif
     #ifdef ENABLE_PROXY_CONFIG
     ProxySettings *proxy;
     #endif

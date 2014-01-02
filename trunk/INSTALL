@@ -96,6 +96,10 @@ The following options may be passed to CMake:
         Open MTP devices in un-cached mode (faster)
         Default: ON
 
+    -DENABLE_HTTP_SERVER=ON
+        Enable usage of internal HTTP server for non-MPD file playback.
+        Default: ON
+
 
     Windows specific:
 

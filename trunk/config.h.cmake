@@ -39,6 +39,7 @@
 #cmakedefine CDPARANOIA_HAS_CACHEMODEL_SIZE 1
 #cmakedefine QT_QTDBUS_FOUND 1
 #cmakedefine ENABLE_UNCACHED_MTP 1
+#cmakedefine ENABLE_HTTP_SERVER 1
 
 /*
  This is done via CMake add_defintions - as it controls SLOT generation in GtkProxyStyle

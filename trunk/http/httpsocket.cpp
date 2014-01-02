@@ -433,7 +433,7 @@ void HttpSocket::readClient()
 
                     QFile f(song.file);
 
-                    if (f.open(QIODevice::ReadOnly)) {                        
+                    if (f.open(QIODevice::ReadOnly)) {
                         qint32 totalBytes = f.size();
 
                         writeMimeType(detectMimeType(song.file), socket, readBytesFrom, totalBytes, true);
@@ -464,6 +464,8 @@ void HttpSocket::readClient()
                                 }
                             } while (readPos<totalBytes && !stop && !terminated);
                         }
+                    } else {
+                        DBUG << "Filed to open" << song.file;
                     }
                 }
             }

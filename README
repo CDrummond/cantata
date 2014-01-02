@@ -356,6 +356,12 @@ mpdListSize=<Integer>
     "add" command when adding files to the playqueue.
     Default is 10000. (Values 100..65535 are acceptable)
 
+alwaysUseHttp=<Boolean>
+    Set to 'true' to always serve non-MPD files via HTTP server. If set to
+    'false', then Cantata will only use its internal HTTP server for songs
+    from media devices, or when connected to MPD via a standard socket.
+    Default is false.
+
 e.g.
 [General]
 iconTheme=oxygen
@@ -367,6 +373,7 @@ volumeStep=2
 undoSteps=20
 mpdPoll=true
 mpdListSize=5000
+alwaysUseHttp=true
 
 
 7. CUE Files

@@ -125,8 +125,12 @@ Song PodcastService::fixPath(const Song &orig, bool) const
     song.setPodcastLocalPath(QString());
     song.setIsFromOnlineService(constName);
     if (!orig.podcastLocalPath().isEmpty() && QFile::exists(orig.podcastLocalPath())) {
-        song.file=orig.podcastLocalPath();
-        song.file=HttpServer::self()->encodeUrl(song);
+        if (!HttpServer::self()->forceUsage() && MPDConnection::self()->getDetails().isLocal()) {
+            song.file=QLatin1String("file://")+orig.podcastLocalPath();
+        } else {
+            song.file=orig.podcastLocalPath();
+            song.file=HttpServer::self()->encodeUrl(song);
+        }
         return song;
     }
     return encode(song);

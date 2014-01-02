@@ -271,7 +271,8 @@ Song MPDParseUtils::parseSong(const QByteArray &data, bool isPlayQueue)
                 if (song.title.isEmpty()) {
                     QStringList parts=QUrl(song.file).path().split('/');
                     if (!parts.isEmpty()) {
-                        song.file=parts.last();
+                        song.title=parts.last();
+                        song.fillEmptyFields();
                     }
                 }
             } else {

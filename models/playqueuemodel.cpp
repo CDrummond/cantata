@@ -555,7 +555,7 @@ bool PlayQueueModel::dropMimeData(const QMimeData *data,
                 if (checkExtension(u)) {
                     if (!HttpServer::self()->forceUsage() && MPDConnection::self()->getDetails().isLocal()) {
                         useable.append(QLatin1String("file://")+QUrl::fromPercentEncoding(u.toUtf8()));
-                    } else {
+                    } else if (HttpServer::self()->isAlive()) {
                         useable.append(HttpServer::self()->encodeUrl(QUrl::fromPercentEncoding(u.toUtf8())));
                     }
                 }

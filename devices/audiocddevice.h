@@ -26,6 +26,7 @@
 
 #include "device.h"
 #include "covers.h"
+#include "httpserver.h"
 #ifdef ENABLE_KDE_SUPPORT
 #include <solid/opticaldrive.h>
 #else
@@ -76,7 +77,7 @@ public:
     void saveOptions() { }
     QString subText() { return album; }
     quint32 totalTime();
-    bool canPlaySongs() const { return true; }
+    bool canPlaySongs() const { return HttpServer::self()->isAlive(); }
     QString albumName() const { return album; }
     QString albumArtist() const { return artist; }
     QString albumComposer() const { return composer; }

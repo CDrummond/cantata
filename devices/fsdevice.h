@@ -29,6 +29,7 @@
 #include "utils.h"
 #include "freespaceinfo.h"
 #include "musiclibraryitemroot.h"
+#include "httpserver.h"
 #include <QStringList>
 
 class Thread;
@@ -128,7 +129,7 @@ public:
     void saveCache();
     void removeCache();
     bool isStdFs() const { return true; }
-    bool canPlaySongs() const { return true; }
+    bool canPlaySongs() const { return HttpServer::self()->isAlive(); }
 
 Q_SIGNALS:
     // For talking to scanner...

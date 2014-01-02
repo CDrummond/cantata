@@ -24,39 +24,60 @@
 #ifndef _HTTP_SERVER_H
 #define _HTTP_SERVER_H
 
-#include <qglobal.h>
+#include <QObject>
 #include <QByteArray>
+#include <QSet>
 #include "song.h"
 #include "config.h"
 
 class HttpSocket;
 class Thread;
 class QUrl;
+class QTimer;
 
-class HttpServer
+class HttpServer : public QObject
 {
+    Q_OBJECT
+
 public:
     static void enableDebug();
     static bool debugEnabled();
 
     static HttpServer * self();
 
-    HttpServer() : thread(0), socket(0) { }
+    HttpServer();
     virtual ~HttpServer() { }
 
-    void stop();
-    bool isAlive() const;
-    bool readConfig();
+    bool start();
+    bool isAlive() const { return true; } // Started on-demamnd!
+    void readConfig();
     QString address() const;
     bool isOurs(const QString &url) const;
-    QByteArray encodeUrl(const Song &s) const;
-    QByteArray encodeUrl(const QString &file) const;
+    QByteArray encodeUrl(const Song &s);
+    QByteArray encodeUrl(const QString &file);
     Song decodeUrl(const QUrl &url) const;
     Song decodeUrl(const QString &file) const;
+
+public Q_SLOTS:
+    void stop();
+
+private Q_SLOTS:
+    void startCloseTimer();
+    void mpdAddress(const QString &a);
+    void cantataStreams(const QStringList &files);
+    void cantataStreams(const QList<Song> &songs, bool isUpdate);
+    void removedIds(const QSet<qint32> &ids);
+
+Q_SIGNALS:
+    void terminateSocket();
 
 private:
     Thread *thread;
     HttpSocket *socket;
+
+    QString mpdAddr;
+    QSet<qint32> streamIds; // Currently playing MPD stream IDs
+    QTimer *closeTimer;
 };
 
 #endif

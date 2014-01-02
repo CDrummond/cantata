@@ -26,7 +26,6 @@
 #include "localize.h"
 #include "httpserver.h"
 #include <QComboBox>
-#include <QTimer>
 #include <QNetworkInterface>
 
 static int isIfaceType(const QNetworkInterface &iface, const QString &prefix)
@@ -64,7 +63,6 @@ HttpServerSettings::HttpServerSettings(QWidget *p)
 {
     setupUi(this);
     initInterfaces(httpInterface);
-    updateStatus();
 }
 
 void HttpServerSettings::load()
@@ -87,14 +85,4 @@ void HttpServerSettings::save()
 {
     Settings::self()->saveHttpInterface(httpInterface->itemData(httpInterface->currentIndex()).toString());
     HttpServer::self()->readConfig();
-    QTimer::singleShot(250, this, SLOT(updateStatus()));
-}
-
-void HttpServerSettings::updateStatus()
-{
-    if (HttpServer::self()->isAlive()) {
-        status->setText(HttpServer::self()->address());
-    } else {
-        status->setText(i18n("Inactive"));
-    }
 }

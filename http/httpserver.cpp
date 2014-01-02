@@ -30,6 +30,7 @@
 #include "thread.h"
 #include <QFile>
 #include <QUrl>
+#include <QTimer>
 #if QT_VERSION >= 0x050000
 #include <QUrlQuery>
 #endif
@@ -72,51 +73,72 @@ HttpServer * HttpServer::self()
     #endif
 }
 
-void HttpServer::stop()
+HttpServer::HttpServer()
+    : QObject(0)
+    , thread(0)
+    , socket(0)
+    , closeTimer(0)
 {
-    if (socket) {
-        socket->terminate();
-        socket=0;
-    }
-
-    if (thread) {
-        thread->stop();
-        thread=0;
-    }
+    connect(MPDConnection::self(), SIGNAL(socketAddress(QString)), this, SLOT(mpdAddress(QString)));
+    connect(MPDConnection::self(), SIGNAL(cantataStreams(QList<Song>,bool)), this, SLOT(cantataStreams(QList<Song>,bool)));
+    connect(MPDConnection::self(), SIGNAL(cantataStreams(QStringList)), this, SLOT(cantataStreams(QStringList)));
+    connect(MPDConnection::self(), SIGNAL(removedIds(QSet<qint32>)), this, SLOT(removedIds(QSet<qint32>)));
 }
 
-bool HttpServer::readConfig()
+bool HttpServer::start()
 {
-    QString iface=Settings::self()->httpInterface();
+    if (closeTimer) {
+        DBUG << "stop close timer";
+        closeTimer->stop();
+    }
 
-    if (socket && socket->isListening() && iface==socket->configuredInterface()) {
+    if (socket) {
+        DBUG << "already open";
         return true;
     }
 
-    if (socket) {
-        socket->terminate();
-        socket=0;
-    }
-
-    if (thread) {
-        thread->stop();
-        thread=0;
-    }
-
+    DBUG << "open new socket";
     quint16 prevPort=Settings::self()->httpAllocatedPort();
-    thread=new Thread("HttpServer");
-    socket=new HttpSocket(iface, prevPort);
+    bool newThread=0==thread;
+    if (newThread) {
+        thread=new Thread("HttpServer");
+    }
+    socket=new HttpSocket(Settings::self()->httpInterface(), prevPort);
+    socket->mpdAddress(mpdAddr);
+    connect(this, SIGNAL(terminateSocket()), socket, SLOT(terminate()), Qt::QueuedConnection);
     if (socket->serverPort()!=prevPort) {
         Settings::self()->saveHttpAllocatedPort(socket->serverPort());
     }
     socket->moveToThread(thread);
-    thread->start();
-    return socket->isListening();
+    bool started=socket->isListening();
+    if (newThread) {
+        thread->start();
+    }
+    return started;
 }
 
-bool HttpServer::isAlive() const
+void HttpServer::stop()
 {
-    return socket && socket->isListening();
+    if (socket) {
+        DBUG;
+        emit terminateSocket();
+        socket=0;
+    }
+}
+
+void HttpServer::readConfig()
+{
+    QString iface=Settings::self()->httpInterface();
+
+    if (socket && socket->isListening() && iface==socket->configuredInterface()) {
+        return;
+    }
+
+    bool wasStarted=0!=socket;
+    stop();
+    if (wasStarted) {
+        start();
+    }
 }
 
 QString HttpServer::address() const
@@ -127,13 +149,13 @@ QString HttpServer::address() const
 
 bool HttpServer::isOurs(const QString &url) const
 {
-    return isAlive() ? url.startsWith(address()+"/") : false;
+    return 0!=socket ? url.startsWith(address()+"/") : false;
 }
 
-QByteArray HttpServer::encodeUrl(const Song &s) const
+QByteArray HttpServer::encodeUrl(const Song &s)
 {
     DBUG << "song" << s.file << isAlive();
-    if (!isAlive()) {
+    if (!start()) {
         return QByteArray();
     }
     #if QT_VERSION < 0x050000
@@ -186,7 +208,7 @@ QByteArray HttpServer::encodeUrl(const Song &s) const
     return url.toEncoded();
 }
 
-QByteArray HttpServer::encodeUrl(const QString &file) const
+QByteArray HttpServer::encodeUrl(const QString &file)
 {
     Song s;
     #ifdef Q_OS_WIN
@@ -283,4 +305,58 @@ Song HttpServer::decodeUrl(const QUrl &url) const
     }
 
     return s;
+}
+
+void HttpServer::startCloseTimer()
+{
+    if (!closeTimer) {
+        closeTimer=new QTimer(this);
+        closeTimer->setSingleShot(true);
+        connect(closeTimer, SIGNAL(timeout()), this, SLOT(stop()));
+    }
+    DBUG;
+    closeTimer->start(1000);
+}
+
+void HttpServer::mpdAddress(const QString &a)
+{
+    mpdAddr=a;
+}
+
+void HttpServer::cantataStreams(const QStringList &files)
+{
+    DBUG << files;
+    foreach (const QString &f, files) {
+        Song s=HttpServer::self()->decodeUrl(f);
+        if (s.isCantataStream() || s.isCdda()) {
+            start();
+            break;
+        }
+    }
+}
+
+void HttpServer::cantataStreams(const QList<Song> &songs, bool isUpdate)
+{
+    DBUG << isUpdate << songs.count();
+    if (!isUpdate) {
+        streamIds.clear();
+    }
+
+    foreach (const Song &s, songs) {
+        streamIds.insert(s.id);
+    }
+
+    if (streamIds.isEmpty()) {
+        startCloseTimer();
+    } else {
+        start();
+    }
+}
+
+void HttpServer::removedIds(const QSet<qint32> &ids)
+{
+    streamIds+=ids;
+    if (streamIds.isEmpty()) {
+        startCloseTimer();
+    }
 }

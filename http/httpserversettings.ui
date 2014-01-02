@@ -32,22 +32,6 @@
      <item row="1" column="1">
       <widget class="QComboBox" name="httpInterface"/>
      </item>
-     <item row="2" column="0">
-      <widget class="QLabel" name="label_3b">
-       <property name="text">
-        <string>Current URL:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="1">
-      <widget class="QLabel" name="status">
-       <property name="font">
-        <font>
-         <italic>true</italic>
-        </font>
-       </property>
-      </widget>
-     </item>
     </layout>
    </item>
    <item>

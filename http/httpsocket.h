@@ -41,10 +41,13 @@ public:
     HttpSocket(const QString &iface, quint16 port);
     virtual ~HttpSocket() { }
 
-    void terminate();
     void incomingConnection(int socket);
     QString address() const { return ifaceAddress; }
     QString configuredInterface() { return cfgInterface; }
+
+public Q_SLOTS:
+    void terminate();
+    void mpdAddress(const QString &a);
 
 private:
     bool openPort(const QHostAddress &a, quint16 p);
@@ -54,7 +57,6 @@ private:
 private Q_SLOTS:
     void readClient();
     void discardClient();
-    void mpdAddress(const QString &a);
     void cantataStreams(const QStringList &files);
     void cantataStreams(const QList<Song> &songs, bool isUpdate);
     void removedIds(const QSet<qint32> &ids);

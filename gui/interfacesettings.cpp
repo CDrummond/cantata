@@ -98,9 +98,13 @@ InterfaceSettings::InterfaceSettings(QWidget *p, const QStringList &hiddenPages)
 //    if (hiddenPages.contains(QLatin1String("DynamicPage"))) {
 //        enabledViews-=V_Dynamic;
 //    }
+    #ifdef ENABLE_STREAMS
     if (hiddenPages.contains(QLatin1String("StreamsPage"))) {
         enabledViews-=V_Streams;
     }
+    #else
+    enabledViews-=V_Streams;
+    #endif
     #ifdef ENABLE_ONLINE_SERVICES
     if (hiddenPages.contains(QLatin1String("OnlineServicesPage"))) {
         enabledViews-=V_Online;

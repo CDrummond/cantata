@@ -75,7 +75,9 @@
 #include "librarypage.h"
 #include "albumspage.h"
 #include "folderpage.h"
+#ifdef ENABLE_STREAMS
 #include "streamspage.h"
+#endif
 #include "searchpage.h"
 #include "gtkstyle.h"
 #ifdef ENABLE_DEVICES_SUPPORT
@@ -101,8 +103,8 @@
 #endif
 #endif
 #include "coverdialog.h"
-#include "streamsmodel.h"
 #include "streamdialog.h"
+#include "streamsmodel.h"
 #include "playlistspage.h"
 #include "fancytabwidget.h"
 #include "timeslider.h"
@@ -284,7 +286,9 @@ MainWindow::MainWindow(QWidget *parent)
     addAction(foldersTabAction = ActionCollection::get()->createAction("showfolderstab", i18n("Folders"), Icons::self()->foldersIcon));
     addAction(playlistsTabAction = ActionCollection::get()->createAction("showplayliststab", i18n("Playlists"), Icons::self()->playlistsIcon));
     addAction(dynamicTabAction = ActionCollection::get()->createAction("showdynamictab", i18n("Dynamic"), Icons::self()->dynamicIcon));
+    #ifdef ENABLE_STREAMS
     addAction(streamsTabAction = ActionCollection::get()->createAction("showstreamstab", i18n("Streams"), Icons::self()->streamsIcon));
+    #endif
     #ifdef ENABLE_ONLINE_SERVICES
     addAction(onlineTabAction = ActionCollection::get()->createAction("showonlinetab", i18n("Online"), Icons::self()->onlineIcon));
     #endif
@@ -328,7 +332,9 @@ MainWindow::MainWindow(QWidget *parent)
     foldersTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
     playlistsTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
     dynamicTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
+    #ifdef ENABLE_STREAMS
     streamsTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
+    #endif
     #ifdef ENABLE_ONLINE_SERVICES
     onlineTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
     #endif
@@ -359,7 +365,9 @@ MainWindow::MainWindow(QWidget *parent)
     folderPage = new FolderPage(this);
     playlistsPage = new PlaylistsPage(this);
     dynamicPage = new DynamicPage(this);
+    #ifdef ENABLE_STREAMS
     streamsPage = new StreamsPage(this);
+    #endif
     #ifdef ENABLE_ONLINE_SERVICES
     onlinePage = new OnlineServicesPage(this);
     #endif
@@ -402,7 +410,10 @@ MainWindow::MainWindow(QWidget *parent)
     tabWidget->AddTab(folderPage, TAB_ACTION(foldersTabAction), !hiddenPages.contains(folderPage->metaObject()->className()));
     tabWidget->AddTab(playlistsPage, TAB_ACTION(playlistsTabAction), !hiddenPages.contains(playlistsPage->metaObject()->className()));
     tabWidget->AddTab(dynamicPage, TAB_ACTION(dynamicTabAction), !hiddenPages.contains(dynamicPage->metaObject()->className()));
+    #ifdef ENABLE_STREAMS
     tabWidget->AddTab(streamsPage, TAB_ACTION(streamsTabAction), !hiddenPages.contains(streamsPage->metaObject()->className()));
+    streamsPage->setEnabled(!hiddenPages.contains(streamsPage->metaObject()->className()));
+    #endif
     #ifdef ENABLE_ONLINE_SERVICES
     tabWidget->AddTab(onlinePage, TAB_ACTION(onlineTabAction), !hiddenPages.contains(onlinePage->metaObject()->className()));
     onlinePage->setEnabled(!hiddenPages.contains(onlinePage->metaObject()->className()));
@@ -416,7 +427,6 @@ MainWindow::MainWindow(QWidget *parent)
                       !hiddenPages.contains(contextPage->metaObject()->className()));
     AlbumsModel::self()->setEnabled(!hiddenPages.contains(albumsPage->metaObject()->className()));
     folderPage->setEnabled(!hiddenPages.contains(folderPage->metaObject()->className()));
-    streamsPage->setEnabled(!hiddenPages.contains(streamsPage->metaObject()->className()));
     setPlaylistsEnabled(!hiddenPages.contains(playlistsPage->metaObject()->className()));
 
     autoHideSplitterAction=new QAction(i18n("Auto Hide"), this);
@@ -693,9 +703,11 @@ MainWindow::MainWindow(QWidget *parent)
     connect(&playQueueModel, SIGNAL(streamFetchStatus(QString)), playQueue, SLOT(streamFetchStatus(QString)));
     connect(playQueue, SIGNAL(cancelStreamFetch()), &playQueueModel, SLOT(cancelStreamFetch()));
     connect(playQueue, SIGNAL(itemsSelected(bool)), SLOT(playQueueItemsSelected(bool)));
+    #ifdef ENABLE_STREAMS
     connect(streamsPage, SIGNAL(add(const QStringList &, bool, quint8)), &playQueueModel, SLOT(addItems(const QStringList &, bool, quint8)));
     connect(streamsPage, SIGNAL(error(QString)), this, SLOT(showError(QString)));
     connect(streamsPage, SIGNAL(showPreferencesPage(QString)), this, SLOT(showPreferencesDialog(QString)));
+    #endif
     #ifdef ENABLE_ONLINE_SERVICES
     connect(onlinePage, SIGNAL(showPreferencesPage(QString)), this, SLOT(showPreferencesDialog(QString)));
     #endif
@@ -763,7 +775,9 @@ MainWindow::MainWindow(QWidget *parent)
     connect(foldersTabAction, SIGNAL(triggered(bool)), this, SLOT(showFoldersTab()));
     connect(playlistsTabAction, SIGNAL(triggered(bool)), this, SLOT(showPlaylistsTab()));
     connect(dynamicTabAction, SIGNAL(triggered(bool)), this, SLOT(showDynamicTab()));
+    #ifdef ENABLE_STREAMS
     connect(streamsTabAction, SIGNAL(triggered(bool)), this, SLOT(showStreamsTab()));
+    #endif
     #ifdef ENABLE_ONLINE_SERVICES
     connect(onlineTabAction, SIGNAL(triggered(bool)), this, SLOT(showOnlineTab()));
     #endif
@@ -881,10 +895,12 @@ MainWindow::~MainWindow()
     playQueue->saveHeader();
     Settings::self()->saveHiddenPages(tabWidget->hiddenPages());
     context->saveConfig();
+    #ifdef ENABLE_STREAMS
     streamsPage->save();
+    StreamsModel::self()->save();
+    #endif
     searchPage->save();
     positionSlider->saveConfig();
-    StreamsModel::self()->save();
     #ifdef ENABLE_ONLINE_SERVICES
     OnlineServicesModel::self()->save();
     OnlineServicesModel::self()->stop();
@@ -1177,7 +1193,9 @@ void MainWindow::showPreferencesDialog(const QString &page)
     PreferencesDialog *pref=new PreferencesDialog(this, tabWidget->hiddenPages());
     controlConnectionsMenu(false);
     connect(pref, SIGNAL(settingsSaved()), this, SLOT(updateSettings()));
+    #ifdef ENABLE_STREAMS
     connect(pref, SIGNAL(reloadStreams()), streamsPage, SLOT(refresh()));
+    #endif
     connect(pref, SIGNAL(destroyed()), SLOT(controlConnectionsMenu()));
     connect(this, SIGNAL(showPreferencesPage(QString)), pref, SLOT(showPage(QString)));
     pref->show();
@@ -1241,7 +1259,9 @@ void MainWindow::checkMpdDir()
     case PAGE_FOLDERS:   folderPage->controlActions();     break;
     case PAGE_PLAYLISTS: playlistsPage->controlActions();  break;
     case PAGE_DYNAMIC:   dynamicPage->controlActions();    break;
+    #ifdef ENABLE_STREAMS
     case PAGE_STREAMS:   streamsPage->controlActions();    break;
+    #endif
     #ifdef ENABLE_ONLINE_SERVICES
     case PAGE_ONLINE:    onlinePage->controlActions();     break;
     #endif
@@ -1361,7 +1381,9 @@ void MainWindow::readSettings()
     libraryPage->setView(Settings::self()->libraryView());
     MusicLibraryModel::self()->setUseArtistImages(Settings::self()->libraryArtistImage());
     playlistsPage->setView(Settings::self()->playlistsView());
+    #ifdef ENABLE_STREAMS
     streamsPage->setView(Settings::self()->streamsView());
+    #endif
     #ifdef ENABLE_ONLINE_SERVICES
     onlinePage->setView(Settings::self()->onlineView());
     #endif
@@ -2095,9 +2117,12 @@ void MainWindow::addToPlayQueue(bool replace, quint8 priority, bool randomAlbums
         folderPage->addSelectionToPlaylist(QString(), replace, priority);
     } else if (playlistsPage->isVisible()) {
         playlistsPage->addSelectionToPlaylist(replace, priority);
-    } else if (streamsPage->isVisible()) {
+    }
+    #ifdef ENABLE_STREAMS
+    else if (streamsPage->isVisible()) {
         streamsPage->addSelectionToPlaylist(replace, priority);
     }
+    #endif
     #ifdef ENABLE_ONLINE_SERVICES
     else if (onlinePage->isVisible()) {
         onlinePage->addSelectionToPlaylist(QString(), replace, priority);
@@ -2218,9 +2243,11 @@ void MainWindow::addStreamToPlayQueue()
     if (QDialog::Accepted==dlg.exec()) {
         QString url=dlg.url();
 
+        #ifdef ENABLE_STREAMS
         if (dlg.save()) {
             StreamsModel::self()->addToFavourites(url, dlg.name());
         }
+        #endif
         playQueueModel.addItems(QStringList() << StreamsModel::modifyUrl(url), false, 0);
     }
 }
@@ -2229,9 +2256,12 @@ void MainWindow::removeItems()
 {
     if (playlistsPage->isVisible()) {
         playlistsPage->removeItems();
-    } else if (streamsPage->isVisible()) {
+    }
+    #ifdef ENABLE_STREAMS
+    else if (streamsPage->isVisible()) {
         streamsPage->removeItems();
     }
+    #endif
 }
 
 void MainWindow::checkMpdAccessibility()
@@ -2434,6 +2464,7 @@ void MainWindow::currentTabChanged(int index)
     case PAGE_DYNAMIC:
         dynamicPage->controlActions();
         break;
+    #ifdef ENABLE_STREAMS
     case PAGE_STREAMS:
         if (!(loaded&TAB_STREAMS)) {
             loaded|=TAB_STREAMS;
@@ -2441,6 +2472,7 @@ void MainWindow::currentTabChanged(int index)
         }
         streamsPage->controlActions();
         break;
+    #endif
     #ifdef ENABLE_ONLINE_SERVICES
     case PAGE_ONLINE:
         onlinePage->controlActions();
@@ -2503,10 +2535,12 @@ void MainWindow::tabToggled(int index)
     case PAGE_PLAYLISTS:
         setPlaylistsEnabled(tabWidget->isEnabled(index));
         break;
+    #ifdef ENABLE_STREAMS
     case PAGE_STREAMS:
         streamsPage->setEnabled(!streamsPage->isEnabled());
         if (streamsPage->isEnabled() && loaded&TAB_STREAMS) loaded-=TAB_STREAMS;
         break;
+    #endif
     #ifdef ENABLE_ONLINE_SERVICES
     case PAGE_ONLINE:
         OnlineServicesModel::self()->setEnabled(!OnlineServicesModel::self()->isEnabled());
@@ -2549,8 +2583,10 @@ void MainWindow::toggleMonoIcons()
         tabWidget->SetIcon(PAGE_PLAYLISTS, playlistsTabAction->icon());
         dynamicTabAction->setIcon(Icons::self()->dynamicIcon);
         tabWidget->SetIcon(PAGE_DYNAMIC, dynamicTabAction->icon());
+        #ifdef ENABLE_STREAMS
         streamsTabAction->setIcon(Icons::self()->streamsIcon);
         tabWidget->SetIcon(PAGE_STREAMS, streamsTabAction->icon());
+        #endif
         #ifdef ENABLE_ONLINE_SERVICES
         onlineTabAction->setIcon(Icons::self()->onlineIcon);
         tabWidget->SetIcon(PAGE_ONLINE, onlineTabAction->icon());
@@ -2620,12 +2656,16 @@ void MainWindow::showPage(const QString &page, bool focusSearch)
         if (focusSearch) {
             dynamicPage->focusSearch();
         }
-    } else if (QLatin1String("streams")==p) {
+    }
+    #ifdef ENABLE_STREAMS
+    else if (QLatin1String("streams")==p) {
         showTab(MainWindow::PAGE_STREAMS);
         if (focusSearch) {
             streamsPage->focusSearch();
         }
-    } else if (QLatin1String("info")==p) {
+    }
+    #endif
+    else if (QLatin1String("info")==p) {
         if (songInfoAction->isCheckable()) {
             songInfoAction->setChecked(true);
         }
@@ -2682,7 +2722,9 @@ void MainWindow::goBack()
     case PAGE_ALBUMS:    albumsPage->goBack();     break;
     case PAGE_FOLDERS:   folderPage->goBack();     break;
     case PAGE_PLAYLISTS: playlistsPage->goBack();  break;
+    #ifdef ENABLE_STREAMS
     case PAGE_STREAMS:   streamsPage->goBack();    break;
+    #endif
     #ifdef ENABLE_ONLINE_SERVICES
     case PAGE_ONLINE:    onlinePage->goBack();     break;
     #endif
@@ -2704,9 +2746,12 @@ void MainWindow::showSearch()
         playlistsPage->focusSearch();
     } else if (dynamicPage->isVisible()) {
         dynamicPage->focusSearch();
-    } else if (streamsPage->isVisible()) {
+    }
+    #ifdef ENABLE_STREAMS
+    else if (streamsPage->isVisible()) {
         streamsPage->focusSearch();
     }
+    #endif
     #ifdef ENABLE_ONLINE_SERVICES
     else if (onlinePage->isVisible()) {
         onlinePage->focusSearch();
@@ -3002,7 +3047,9 @@ void MainWindow::updateActionToolTips()
     tabWidget->SetToolTip(PAGE_FOLDERS, foldersTabAction->toolTip());
     tabWidget->SetToolTip(PAGE_PLAYLISTS, playlistsTabAction->toolTip());
     tabWidget->SetToolTip(PAGE_DYNAMIC, dynamicTabAction->toolTip());
+    #ifdef ENABLE_STREAMS
     tabWidget->SetToolTip(PAGE_STREAMS, streamsTabAction->toolTip());
+    #endif
     #ifdef ENABLE_ONLINE_SERVICES
     tabWidget->SetToolTip(PAGE_ONLINE, onlineTabAction->toolTip());
     #endif

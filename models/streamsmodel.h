@@ -25,6 +25,9 @@
 #define STREAMSMODEL_H
 
 #include "actionmodel.h"
+#include "config.h"
+
+#ifdef ENABLE_STREAMS
 #include <QIcon>
 #include <QList>
 #include <QMap>
@@ -286,4 +289,13 @@ private:
     QList<Item *> hiddenCategories;
 };
 
+#else
+namespace StreamsModel
+{
+    extern const QString constPrefix;
+    extern QString modifyUrl(const QString &u,  bool addPrefix=true, const QString &name=QString());
+    extern bool validProtocol(const QString &file);
+}
+
+#endif // ENABLE_STREAMS
 #endif

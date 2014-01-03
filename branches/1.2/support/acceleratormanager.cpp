@@ -39,6 +39,7 @@
 #include <QStackedWidget>
 #include <QDockWidget>
 #include <QTextDocument>
+#include "pathrequester.h"
 
 //#include <kstandardaction.h>
 //#include <kdebug.h>
@@ -353,12 +354,10 @@ void AcceleratorManagerPrivate::manageWidget(QWidget *w, Item *item)
     return;
   }
 
-  #ifndef ENABLE_KDE_SUPPORT
-  if ( w->inherits("PathRequester") ) {
+  if ( qobject_cast<PathRequester*>(w) ) {
     traverseChildren(w, item);
     return;
   }
-  #endif
 
   // now treat 'ordinary' widgets
   QLabel *label =  qobject_cast<QLabel*>(w);
@@ -748,7 +747,6 @@ void AccelString::dump()
  * The weights probably need some tweaking so they make more sense.
 
  *********************************************************************/
-
 void AccelManagerAlgorithm::findAccelerators(AccelStringList &result, QString &used)
 {
   AccelStringList accel_strings = result;

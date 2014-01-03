@@ -2598,7 +2598,7 @@ void MainWindow::showPage(const QString &page, bool focusSearch)
             onlinePage->focusSearch();
         }
     }
-    #ifdef ENABLE_REPLAYGAIN_SUPPORT
+    #ifdef ENABLE_DEVICES_SUPPORT
     else if (QLatin1String("devices")==p) {
         showTab(MainWindow::PAGE_DEVICES);
         if (focusSearch) {

@@ -29,7 +29,7 @@
 #include <QDir>
 #include <QTemporaryFile>
 #include <QTimer>
-#ifndef Q_OS_WIN
+#ifdef ENABLE_DEVICES_SUPPORT
 #include "devicesmodel.h"
 #include "umsdevice.h"
 #ifdef MTP_FOUND
@@ -57,7 +57,7 @@
 #include "solid-lite/storagedrive.h"
 #include "solid-lite/opticaldisc.h"
 #endif // ENABLE_KDE_SUPPORT
-#endif // Q_OS_WIN
+#endif // ENABLE_DEVICES_SUPPORT
 
 void Device::moveDir(const QString &from, const QString &to, const QString &base, const QString &coverFile)
 {
@@ -145,7 +145,7 @@ Song Device::fixPath(const Song &orig, bool fullPath) const
     return s;
 }
 
-#ifndef Q_OS_WIN
+#ifdef ENABLE_DEVICES_SUPPORT
 
 #include <unistd.h>
 
@@ -351,4 +351,4 @@ void Device::updatePercentage(int pc)
     setStatusMessage(i18n("Updating (%1%)...", pc));
 }
 
-#endif // Q_OS_WIN
+#endif // ENABLE_DEVICES_SUPPORT

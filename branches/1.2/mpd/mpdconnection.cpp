@@ -500,9 +500,9 @@ MPDConnection::Response MPDConnection::sendCommand(const QByteArray &command, bo
         }
         if (emitErrors) {
             if ((command.startsWith("add ") || command.startsWith("command_list_begin\nadd ")) && -1!=command.indexOf("\"file:///")) {
-                if (details.isLocal() && response.data=="Permission denied") {
+                if (details.isLocal() && -1!=response.data.indexOf("Permission denied")) {
                     emit error(i18n("Failed to load. Please check user \"mpd\" has read permission."));
-                } else if (!details.isLocal() && response.data=="Access denied") {
+                } else if (!details.isLocal() && -1!=response.data.indexOf("Access denied")) {
                     emit error(i18n("Failed to load. MPD can only play local files if connected via a local socket."));
                 } else if (!response.getError(command).isEmpty()) {
                     emit error(i18n("MPD reported the following error: %1", response.getError(command)));

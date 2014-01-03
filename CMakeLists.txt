@@ -226,7 +226,7 @@ set(CANTATA_SRCS gui/application.cpp gui/main.cpp gui/initialsettingswizard.cpp 
     models/albumsmodel.cpp models/albumsproxymodel.cpp models/proxymodel.cpp models/actionmodel.cpp models/musiclibraryitem.cpp
     models/musicmodel.cpp models/multimusicmodel.cpp models/searchmodel.cpp models/streamsmodel.cpp
     mpd/mpdconnection.cpp mpd/mpdparseutils.cpp mpd/mpdstats.cpp mpd/mpdstatus.cpp mpd/song.cpp mpd/mpduser.cpp mpd/cuefile.cpp
-    streams/streamfetcher.cpp streams/streamdialog.cpp
+    streams/streamfetcher.cpp
     widgets/treeview.cpp widgets/listview.cpp widgets/itemview.cpp widgets/autohidingsplitter.cpp widgets/timeslider.cpp
     widgets/actionlabel.cpp widgets/playqueueview.cpp widgets/groupedview.cpp widgets/actionitemdelegate.cpp widgets/textbrowser.cpp
     widgets/coverwidget.cpp widgets/volumeslider.cpp widgets/icons.cpp widgets/genrecombo.cpp widgets/toolbar.cpp widgets/menubutton.cpp
@@ -247,7 +247,7 @@ set(CANTATA_MOC_HDRS
     models/musiclibrarymodel.h models/musiclibraryproxymodel.h models/playlistsmodel.h models/playlistsproxymodel.h models/playqueuemodel.h
     models/playqueueproxymodel.h models/dirviewmodel.h models/dirviewproxymodel.h models/albumsmodel.h models/actionmodel.h
     models/multimusicmodel.h models/searchmodel.h mpd/mpdconnection.h mpd/mpdstats.h mpd/mpdstatus.h
-    streams/streamfetcher.h streams/streamdialog.h
+    streams/streamfetcher.h
     widgets/treeview.h widgets/listview.h widgets/itemview.h widgets/autohidingsplitter.h widgets/timeslider.h widgets/actionlabel.h
     widgets/playqueueview.h widgets/groupedview.h widgets/actionitemdelegate.h widgets/coverwidget.h widgets/volumeslider.h
     widgets/genrecombo.h widgets/toolbar.h widgets/searchwidget.h widgets/messageoverlay.h widgets/servicestatuslabel.h
@@ -272,9 +272,9 @@ endif (ENABLE_DYNAMIC)
 
 if (ENABLE_STREAMS)
     set(CANTATA_SRCS ${CANTATA_SRCS} streams/streamspage.cpp streams/digitallyimportedsettings.cpp streams/streamssettings.cpp
-        streams/tar.cpp models/streamsproxymodel.cpp models/streamsearchmodel.cpp models/digitallyimported.cpp)
+        streams/streamdialog.cpp streams/tar.cpp models/streamsproxymodel.cpp models/streamsearchmodel.cpp models/digitallyimported.cpp)
     set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} streams/streamspage.h streams/digitallyimportedsettings.h
-        streams/streamssettings.h models/streamsmodel.h models/digitallyimported.h models/streamsearchmodel.h)
+        streams/streamssettings.h streams/streamdialog.h models/streamsmodel.h models/digitallyimported.h models/streamsearchmodel.h)
     set(CANTATA_UIS ${CANTATA_UIS} streams/streamspage.ui streams/digitallyimportedsettings.ui streams/streamssettings.ui)
 endif (ENABLE_STREAMS)
 

@@ -909,7 +909,8 @@ QWidgetStackAccelManager::QWidgetStackAccelManager(QStackedWidget *stack)
 
 bool QWidgetStackAccelManager::eventFilter ( QObject * watched, QEvent * e )
 {
-    if ( e->type() == QEvent::Show && qApp->activeWindow() ) {
+    // 'Paint' seems to be required for Cantata's PageWidget???
+    if ( (e->type() == QEvent::Show || e->type() == QEvent::Paint) && qApp->activeWindow() ) {
         AcceleratorManager::manage( qApp->activeWindow() );
         watched->removeEventFilter( this );
     }
@@ -924,7 +925,6 @@ void QWidgetStackAccelManager::currentChanged(int child)
         return;
     }
 
-    AcceleratorManager::manage( m_stack->parentWidget() ); // Aded for Cantata - not sure *why* this is needed...
     static_cast<QStackedWidget*>(parent())->widget(child)->installEventFilter( this );
 }
 

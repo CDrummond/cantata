@@ -51,8 +51,11 @@ bool BuddyLabel::event(QEvent *e)
 {
     if (QEvent::Shortcut==e->type()) {
         mouseReleaseEvent(0);
+        e->accept();
+        return true;
+    } else {
+        return QLabel::event(e);
     }
-    return QLabel::event(e);
 }
 
 void BuddyLabel::mouseReleaseEvent(QMouseEvent *)

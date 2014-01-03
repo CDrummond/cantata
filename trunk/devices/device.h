@@ -26,7 +26,7 @@
 
 #include "musiclibraryitemroot.h"
 #include "song.h"
-#ifndef Q_OS_WIN
+#ifdef ENABLE_DEVICES_SUPPORT
 #include "deviceoptions.h"
 #ifdef ENABLE_KDE_SUPPORT
 #include <solid/device.h>
@@ -51,7 +51,7 @@ class Device : public MusicLibraryItemRoot, public QObject
     Q_OBJECT
 
 public:
-    #ifndef Q_OS_WIN
+    #ifdef ENABLE_DEVICES_SUPPORT
     static const QLatin1String constNoCover;
     static const QLatin1String constEmbedCover;
     static Device * create(MusicModel *m, const QString &id);
@@ -92,7 +92,7 @@ public:
         AudioCd
     };
 
-    #ifdef Q_OS_WIN
+    #ifndef ENABLE_DEVICES_SUPPORT
     Device(MusicModel *m, const QString &name, const QString &id)
         : MusicLibraryItemRoot(name)
         , update(0)
@@ -159,7 +159,7 @@ public:
     virtual void removeCache() { }
     virtual bool isDevice() const { return true; }
 
-    #ifndef Q_OS_WIN
+    #ifdef ENABLE_DEVICES_SUPPORT
     void toggleGrouping();
     virtual void saveCache();
     const QString & id() const { return deviceId; }
@@ -178,9 +178,6 @@ public:
     virtual bool isStdFs() const { return false; }
     virtual QString subText() { return QString(); }
     QModelIndex index() const;
-    #endif
-
-    #if !defined Q_OS_WIN && !defined WIN32
     void updateStatus();
 
 public Q_SLOTS:
@@ -204,7 +201,7 @@ Q_SIGNALS:
     void updatedDetails(const QList<Song> &songs);
 
 protected:
-    #ifndef Q_OS_WIN
+    #ifdef ENABLE_DEVICES_SUPPORT
     DeviceOptions opts;
     bool configured;
     Solid::Device solidDev;

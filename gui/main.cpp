@@ -51,7 +51,9 @@
 #include "metaengine.h"
 #include "coverwidget.h"
 #include "backdropcreator.h"
+#ifdef ENABLE_DYNAMIC
 #include "dynamic.h"
+#endif
 #include "streamfetcher.h"
 #include "httpserver.h"
 #include "songdialog.h"
@@ -184,9 +186,11 @@ static void installDebugMessageHandler()
         if (dbg&Dbg_Context_Backdrop) {
             BackdropCreator::enableDebug();
         }
+        #ifdef ENABLE_DYNAMIC
         if (dbg&Dbg_Dynamic) {
             Dynamic::enableDebug();
         }
+        #endif
         if (dbg&Dbg_StreamFetching) {
             StreamFetcher::enableDebug();
         }

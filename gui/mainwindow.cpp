@@ -117,8 +117,10 @@
 #include "mountpoints.h"
 #include "gtkproxystyle.h"
 #endif
+#ifdef ENABLE_DYNAMIC
 #include "dynamicpage.h"
 #include "dynamic.h"
+#endif
 #include "messagewidget.h"
 #include "groupedview.h"
 #include "actionitemdelegate.h"
@@ -285,7 +287,9 @@ MainWindow::MainWindow(QWidget *parent)
     addAction(albumsTabAction = ActionCollection::get()->createAction("showalbumstab", i18n("Albums"), Icons::self()->albumsIcon));
     addAction(foldersTabAction = ActionCollection::get()->createAction("showfolderstab", i18n("Folders"), Icons::self()->foldersIcon));
     addAction(playlistsTabAction = ActionCollection::get()->createAction("showplayliststab", i18n("Playlists"), Icons::self()->playlistsIcon));
+    #ifdef ENABLE_DYNAMIC
     addAction(dynamicTabAction = ActionCollection::get()->createAction("showdynamictab", i18n("Dynamic"), Icons::self()->dynamicIcon));
+    #endif
     #ifdef ENABLE_STREAMS
     addAction(streamsTabAction = ActionCollection::get()->createAction("showstreamstab", i18n("Streams"), Icons::self()->streamsIcon));
     #endif
@@ -331,7 +335,9 @@ MainWindow::MainWindow(QWidget *parent)
     albumsTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
     foldersTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
     playlistsTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
+    #ifdef ENABLE_DYNAMIC
     dynamicTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
+    #endif
     #ifdef ENABLE_STREAMS
     streamsTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
     #endif
@@ -364,7 +370,9 @@ MainWindow::MainWindow(QWidget *parent)
     albumsPage = new AlbumsPage(this);
     folderPage = new FolderPage(this);
     playlistsPage = new PlaylistsPage(this);
+    #ifdef ENABLE_DYNAMIC
     dynamicPage = new DynamicPage(this);
+    #endif
     #ifdef ENABLE_STREAMS
     streamsPage = new StreamsPage(this);
     #endif
@@ -409,7 +417,9 @@ MainWindow::MainWindow(QWidget *parent)
     tabWidget->AddTab(albumsPage, TAB_ACTION(albumsTabAction), !hiddenPages.contains(albumsPage->metaObject()->className()));
     tabWidget->AddTab(folderPage, TAB_ACTION(foldersTabAction), !hiddenPages.contains(folderPage->metaObject()->className()));
     tabWidget->AddTab(playlistsPage, TAB_ACTION(playlistsTabAction), !hiddenPages.contains(playlistsPage->metaObject()->className()));
+    #ifdef ENABLE_DYNAMIC
     tabWidget->AddTab(dynamicPage, TAB_ACTION(dynamicTabAction), !hiddenPages.contains(dynamicPage->metaObject()->className()));
+    #endif
     #ifdef ENABLE_STREAMS
     tabWidget->AddTab(streamsPage, TAB_ACTION(streamsTabAction), !hiddenPages.contains(streamsPage->metaObject()->className()));
     streamsPage->setEnabled(!hiddenPages.contains(streamsPage->metaObject()->className()));
@@ -631,7 +641,9 @@ MainWindow::MainWindow(QWidget *parent)
 
     dynamicLabel->setVisible(false);
     stopDynamicButton->setVisible(false);
+    #ifdef ENABLE_DYNAMIC
     stopDynamicButton->setDefaultAction(Dynamic::self()->stopAct());
+    #endif
     StdActions::self()->addWithPriorityAction->setVisible(false);
     setPriorityAction->setVisible(false);
     setPriorityAction->setMenu(StdActions::self()->addWithPriorityAction->menu());
@@ -720,9 +732,11 @@ MainWindow::MainWindow(QWidget *parent)
     connect(MPDConnection::self(), SIGNAL(error(const QString &, bool)), SLOT(showError(const QString &, bool)));
     connect(MPDConnection::self(), SIGNAL(info(const QString &)), SLOT(showInformation(const QString &)));
     connect(MPDConnection::self(), SIGNAL(dirChanged()), SLOT(checkMpdDir()));
+    #ifdef ENABLE_DYNAMIC
     connect(Dynamic::self(), SIGNAL(error(const QString &)), SLOT(showError(const QString &)));
     connect(Dynamic::self(), SIGNAL(running(bool)), dynamicLabel, SLOT(setVisible(bool)));
     connect(Dynamic::self(), SIGNAL(running(bool)), this, SLOT(controlDynamicButton()));
+    #endif
     connect(StdActions::self()->refreshAction, SIGNAL(triggered(bool)), this, SLOT(refresh()));
     connect(StdActions::self()->refreshAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(update()));
     connect(connectAction, SIGNAL(triggered(bool)), this, SLOT(connectToMpd()));
@@ -774,7 +788,9 @@ MainWindow::MainWindow(QWidget *parent)
     connect(albumsTabAction, SIGNAL(triggered(bool)), this, SLOT(showAlbumsTab()));
     connect(foldersTabAction, SIGNAL(triggered(bool)), this, SLOT(showFoldersTab()));
     connect(playlistsTabAction, SIGNAL(triggered(bool)), this, SLOT(showPlaylistsTab()));
+    #ifdef ENABLE_DYNAMIC
     connect(dynamicTabAction, SIGNAL(triggered(bool)), this, SLOT(showDynamicTab()));
+    #endif
     #ifdef ENABLE_STREAMS
     connect(streamsTabAction, SIGNAL(triggered(bool)), this, SLOT(showStreamsTab()));
     #endif
@@ -912,9 +928,11 @@ MainWindow::~MainWindow()
                                         (Settings::SS_HideMainWindow==startupState) ) );
     Settings::self()->save(true);
     disconnect(MPDConnection::self(), 0, 0, 0);
+    #ifdef ENABLE_DYNAMIC
     if (Settings::self()->stopDynamizerOnExit()) {
         Dynamic::self()->stop();
     }
+    #endif
     if (Settings::self()->stopOnExit() || (fadeWhenStop() && StopState_Stopping==stopState)) {
         emit stop();
         // Allow time for stop to be sent...
@@ -1114,9 +1132,11 @@ void MainWindow::connectToMpd(const MPDConnectionDetails &details)
         playlistsPage->clear();
         playQueueModel.clear();
         searchPage->clear();
+        #ifdef ENABLE_DYNAMIC
         if (!MPDConnection::self()->getDetails().isEmpty() && details!=MPDConnection::self()->getDetails()) {
             Dynamic::self()->stop();
         }
+        #endif
         showInformation(i18n("Connecting to %1", details.description()));
         outputsAction->setVisible(false);
         if (CS_Init!=connectedState) {
@@ -1258,7 +1278,9 @@ void MainWindow::checkMpdDir()
     case PAGE_ALBUMS:    albumsPage->controlActions();     break;
     case PAGE_FOLDERS:   folderPage->controlActions();     break;
     case PAGE_PLAYLISTS: playlistsPage->controlActions();  break;
+    #ifdef ENABLE_DYNAMIC
     case PAGE_DYNAMIC:   dynamicPage->controlActions();    break;
+    #endif
     #ifdef ENABLE_STREAMS
     case PAGE_STREAMS:   streamsPage->controlActions();    break;
     #endif
@@ -1361,8 +1383,10 @@ void MainWindow::controlConnectionsMenu(bool enable)
 
 void MainWindow::controlDynamicButton()
 {
+    #ifdef ENABLE_DYNAMIC
     stopDynamicButton->setVisible(dynamicLabel->isVisible() && PAGE_DYNAMIC!=tabWidget->current_index());
     playQueueModel.enableUndo(!Dynamic::self()->isRunning());
+    #endif
 }
 
 void MainWindow::readSettings()
@@ -2079,9 +2103,12 @@ void MainWindow::promptClearPlayQueue()
 
 void MainWindow::clearPlayQueue()
 {
+    #ifdef ENABLE_DYNAMIC
     if (dynamicLabel->isVisible()) {
         Dynamic::self()->stop(true);
-    } else {
+    } else
+    #endif
+    {
         playQueueModel.removeAll();
     }
 }
@@ -2461,9 +2488,11 @@ void MainWindow::currentTabChanged(int index)
     case PAGE_PLAYLISTS:
         playlistsPage->controlActions();
         break;
+    #ifdef ENABLE_DYNAMIC
     case PAGE_DYNAMIC:
         dynamicPage->controlActions();
         break;
+    #endif
     #ifdef ENABLE_STREAMS
     case PAGE_STREAMS:
         if (!(loaded&TAB_STREAMS)) {
@@ -2581,8 +2610,10 @@ void MainWindow::toggleMonoIcons()
         tabWidget->SetIcon(PAGE_FOLDERS, foldersTabAction->icon());
         playlistsTabAction->setIcon(Icons::self()->playlistsIcon);
         tabWidget->SetIcon(PAGE_PLAYLISTS, playlistsTabAction->icon());
+        #ifdef ENABLE_DYNAMIC
         dynamicTabAction->setIcon(Icons::self()->dynamicIcon);
         tabWidget->SetIcon(PAGE_DYNAMIC, dynamicTabAction->icon());
+        #endif
         #ifdef ENABLE_STREAMS
         streamsTabAction->setIcon(Icons::self()->streamsIcon);
         tabWidget->SetIcon(PAGE_STREAMS, streamsTabAction->icon());
@@ -2651,12 +2682,15 @@ void MainWindow::showPage(const QString &page, bool focusSearch)
         if (focusSearch) {
             playlistsPage->focusSearch();
         }
-    } else if (QLatin1String("dynamic")==p) {
+    }
+    #ifdef ENABLE_DYNAMIC
+    else if (QLatin1String("dynamic")==p) {
         showTab(MainWindow::PAGE_DYNAMIC);
         if (focusSearch) {
             dynamicPage->focusSearch();
         }
     }
+    #endif
     #ifdef ENABLE_STREAMS
     else if (QLatin1String("streams")==p) {
         showTab(MainWindow::PAGE_STREAMS);
@@ -2704,7 +2738,11 @@ void MainWindow::showPage(const QString &page, bool focusSearch)
 
 void MainWindow::dynamicStatus(const QString &message)
 {
+    #ifdef ENABLE_DYNAMIC
     Dynamic::self()->helperMessage(message);
+    #else
+    Q_UNUSED(message)
+    #endif
 }
 
 void MainWindow::showTab(int page)
@@ -2744,9 +2782,12 @@ void MainWindow::showSearch()
         folderPage->focusSearch();
     } else if (playlistsPage->isVisible()) {
         playlistsPage->focusSearch();
-    } else if (dynamicPage->isVisible()) {
+    }
+    #ifdef ENABLE_DYNAMIC
+    else if (dynamicPage->isVisible()) {
         dynamicPage->focusSearch();
     }
+    #endif
     #ifdef ENABLE_STREAMS
     else if (streamsPage->isVisible()) {
         streamsPage->focusSearch();
@@ -3046,7 +3087,9 @@ void MainWindow::updateActionToolTips()
     tabWidget->SetToolTip(PAGE_ALBUMS, albumsTabAction->toolTip());
     tabWidget->SetToolTip(PAGE_FOLDERS, foldersTabAction->toolTip());
     tabWidget->SetToolTip(PAGE_PLAYLISTS, playlistsTabAction->toolTip());
+    #ifdef ENABLE_DYNAMIC
     tabWidget->SetToolTip(PAGE_DYNAMIC, dynamicTabAction->toolTip());
+    #endif
     #ifdef ENABLE_STREAMS
     tabWidget->SetToolTip(PAGE_STREAMS, streamsTabAction->toolTip());
     #endif

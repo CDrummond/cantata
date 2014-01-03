@@ -48,7 +48,9 @@ public:
     Icon folderIcon;
     Icon audioFileIcon;
     Icon playlistIcon;
+    #ifdef ENABLE_DYNAMIC
     Icon dynamicRuleIcon;
+    #endif
     Icon singleIcon;
     Icon consumeIcon;
     Icon repeatIcon;
@@ -78,7 +80,9 @@ public:
     Icon albumsIcon;
     Icon foldersIcon;
     Icon playlistsIcon;
+    #ifdef ENABLE_DYNAMIC
     Icon dynamicIcon;
+    #endif
     #ifdef ENABLE_STREAMS
     Icon streamsIcon;
     #endif

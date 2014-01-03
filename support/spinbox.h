@@ -70,6 +70,7 @@ public:
 };
 #else
 class SpinBoxButton;
+class QSpacerItem;
 
 class SpinBox : public QWidget
 {
@@ -91,7 +92,7 @@ public:
     int maximum() const { return spin->maximum(); }
     void setFocus() const { spin->setFocus(); }
     void setAllowEmpty() { spin->setAllowEmpty(); }
-    void setSizePolicy(QSizePolicy::Policy horizontal, QSizePolicy::Policy vertical) { spin->setSizePolicy(horizontal, vertical); }
+    void setSizePolicy(QSizePolicy::Policy horizontal, QSizePolicy::Policy vertical);
 
 Q_SIGNALS:
     void valueChanged(int v);
@@ -109,6 +110,7 @@ private:
     EmptySpinBox *spin;
     SpinBoxButton *incButton;
     SpinBoxButton *decButton;
+    QSpacerItem *spacer;
 };
 #endif // Q_WS_WIN
 

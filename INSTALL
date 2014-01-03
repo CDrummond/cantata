@@ -49,10 +49,6 @@ The following options may be passed to CMake:
         separated with a semicolon (";") e.g. -DCANTATA_TRANSLATIONS="es;pl"
         Default: all
 
-    -DENABLE_REMOTE_DEVICES=ON
-        Compile support for samba, sshfs, and local folder, devices.
-        Default: OFF
-
     -DENABLE_HTTP_STREAM_PLAYBACK=ON
         Enable support for playing back MPD HTTP streams via Phonon (Qt4) or
         QtMultiMedia (Qt5).
@@ -68,10 +64,6 @@ The following options may be passed to CMake:
         isoloate Cantata from TagLib crashes.
         EXPERIMENTAL - CURRENTLY **NOT** WORKING!!!
         Default: OFF
-        
-    -DENABLE_UNCACHED_MTP=ON
-        Open MTP devices in un-cached mode (faster)
-        Default: ON
 
     -DENABLE_HTTP_SERVER=ON
         Enable usage of internal HTTP server for non-MPD file playback.
@@ -88,21 +80,37 @@ The following options may be passed to CMake:
         Build against Qt5, not Qt4
         Default: OFF
 
-    -DENABLE_UDISKS2=ON
-        Build UDisks2 backend for solid-lite. (This is for Qt only builds,
-        Default: OFF
-
     -DENABLE_PROXY_CONFIG=ON
         Enable support for proxy settings in config dialog. If disabled,
         system proxy settings are used.
         Default: OFF
 
 
-    KDE specficic:
+    KDE specific:
 
     -DENABLE_KWALLET=ON
-        Use KWallet to store MPD passwords..
+        Use KWallet to store MPD passwords.
         Default: ON
+
+
+    Linux specific:
+
+    -DENABLE_UNCACHED_MTP=ON
+        Open MTP devices in un-cached mode (faster)
+        Default: ON
+
+    -DENABLE_DEVICES_SUPPORT=ON
+        Support external devices (UMS, MTP, AudioCD)
+        Default: ON
+
+    -DENABLE_REMOTE_DEVICES=ON
+        Support remote devices (accessed via sshfs, or samba). This is
+        EXPERIMENTAL - and requires ENABLE_DEVICES_SUPPORT to also be enabled.
+        Default: OFF
+
+    -DENABLE_UDISKS2=ON
+        Build UDisks2 backend for solid-lite. (Non-KDE builds only)
+        Default: OFF
 
 
     Windows specific:

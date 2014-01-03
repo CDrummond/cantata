@@ -77,6 +77,7 @@
 #include "folderpage.h"
 #ifdef ENABLE_STREAMS
 #include "streamspage.h"
+#include "streamdialog.h"
 #endif
 #include "searchpage.h"
 #include "gtkstyle.h"
@@ -103,7 +104,6 @@
 #endif
 #endif
 #include "coverdialog.h"
-#include "streamdialog.h"
 #include "streamsmodel.h"
 #include "playlistspage.h"
 #include "fancytabwidget.h"
@@ -2265,18 +2265,27 @@ void MainWindow::addToExistingStoredPlaylist(const QString &name, bool pq)
 
 void MainWindow::addStreamToPlayQueue()
 {
+    #ifdef ENABLE_STREAMS
     StreamDialog dlg(this, true);
 
     if (QDialog::Accepted==dlg.exec()) {
         QString url=dlg.url();
 
-        #ifdef ENABLE_STREAMS
         if (dlg.save()) {
             StreamsModel::self()->addToFavourites(url, dlg.name());
         }
-        #endif
         playQueueModel.addItems(QStringList() << StreamsModel::modifyUrl(url), false, 0);
     }
+    #else
+    QString url = InputDialog::getText(i18n("Stream URL"), i18n("Enter URL of stream:"), QString(), 0, this).trimmed();
+    if (!url.isEmpty()) {
+        if (!MPDConnection::self()->urlHandlers().contains(QUrl(url).scheme())) {
+            MessageBox::error(this, i18n("Invalid, or unsupported, URL!"));
+        } else {
+            playQueueModel.addItems(QStringList() << StreamsModel::modifyUrl(url), false, 0);
+        }
+    }
+    #endif
 }
 
 void MainWindow::removeItems()

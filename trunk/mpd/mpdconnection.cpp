@@ -530,6 +530,10 @@ MPDConnection::Response MPDConnection::sendCommand(const QByteArray &command, bo
                 }
             } else if (!response.getError(command).isEmpty()) {
                 emit error(i18n("MPD reported the following error: %1", response.getError(command)));
+            } else if ("listallinfo"==command && ver>=MPD_MAKE_VERSION(0,18,0)) {
+                disconnectFromMPD();
+                emit stateChanged(false);
+                emit error(i18n("Failed to load library. Please increase \"max_output_buffer_size\" in MPD's config file."));
             } else {
                 disconnectFromMPD();
                 emit stateChanged(false);

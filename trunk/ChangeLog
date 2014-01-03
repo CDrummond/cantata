@@ -30,6 +30,8 @@
     HTTP server - set alwaysUseHttp to true in Cantata's config file. Refer to
     README for more details.
 16. Add CMake option to disable building of internal HTTP server.
+17. If listallinfo fails with MPD 0.18.x then prompt user to check MPD's
+    max_output_buffer_size setting.
 
 1.2.2
 -----

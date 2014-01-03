@@ -353,6 +353,13 @@ void AcceleratorManagerPrivate::manageWidget(QWidget *w, Item *item)
     return;
   }
 
+  #ifndef ENABLE_KDE_SUPPORT
+  if ( w->inherits("PathRequester") ) {
+    traverseChildren(w, item);
+    return;
+  }
+  #endif
+
   // now treat 'ordinary' widgets
   QLabel *label =  qobject_cast<QLabel*>(w);
   if ( label  ) {

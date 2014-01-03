@@ -381,7 +381,9 @@ Icons::Icons()
     audioFileIcon=Icon("audio-x-generic");
     playlistIcon=Icon("view-media-playlist");
     folderIcon=Icon("inode-directory");
+    #ifdef ENABLE_DYNAMIC
     dynamicRuleIcon=Icon("media-playlist-shuffle");
+    #endif
     configureIcon=Icon("configure");
     connectIcon=Icon("dialog-ok");
     disconnectIcon=Icon("media-eject");
@@ -435,9 +437,11 @@ Icons::Icons()
             speakerIcon=Icon("gnome-volume-control");
         }
     }
+    #ifdef ENABLE_DYNAMIC
     if (dynamicRuleIcon.isNull()) {
         dynamicRuleIcon=Icon("text-x-generic");
     }
+    #endif
     if (playlistIcon.isNull()) {
         playlistIcon=Icon("audio-x-mp3-playlist");
         if (playlistIcon.isNull()) {
@@ -476,7 +480,9 @@ void Icons::initSidebarIcons()
         albumsIcon=loadSidebarIcon("albums", textCol, highlightedTexCol);
         foldersIcon=loadSidebarIcon("folders", textCol, highlightedTexCol);
         playlistsIcon=loadSidebarIcon("playlists", textCol, highlightedTexCol);
+        #ifdef ENABLE_DYNAMIC
         dynamicIcon=loadSidebarIcon("dynamic", textCol, highlightedTexCol);
+        #endif
         #ifdef ENABLE_STREAMS
         streamsIcon=loadSidebarIcon("streams", textCol, highlightedTexCol);
         #endif
@@ -494,7 +500,9 @@ void Icons::initSidebarIcons()
         albumsIcon=albumIcon;
         foldersIcon=Icon("inode-directory");
         playlistsIcon=playlistIcon;
+        #ifdef ENABLE_DYNAMIC
         dynamicIcon=dynamicRuleIcon;
+        #endif
         #ifdef ENABLE_STREAMS
         streamsIcon=radioStreamIcon;
         #endif

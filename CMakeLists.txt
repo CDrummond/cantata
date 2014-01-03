@@ -38,6 +38,7 @@ option(ENABLE_SPEEXDSP "Enable SpeexDSP libraries (used to speed-up replaygain c
 option(ENABLE_PROXY_CONFIG "Enable proxy config in settings dialog" OFF)
 option(ENABLE_EXTERNAL_TAGS "Enable usage of external app for reading/writing tags (EXPERIMENTAL - NOT FULLY WORKING)" OFF)
 option(ENABLE_HTTP_SERVER "Enable internal HTTP server to play non-MPD files" ON)
+option(ENABLE_DYNAMIC "Enable support for dynamic playlists" ON)
 option(ENABLE_STREAMS "Enable support for streams tab (to save favourite streams, and search for others)" ON)
 option(ENABLE_ONLINE_SERVICES "Enable support for online services (Jamendo, Magnatune, SoundCloud, and Podcasts)" ON)
 
@@ -225,7 +226,6 @@ set(CANTATA_SRCS gui/application.cpp gui/main.cpp gui/initialsettingswizard.cpp 
     models/albumsmodel.cpp models/albumsproxymodel.cpp models/proxymodel.cpp models/actionmodel.cpp models/musiclibraryitem.cpp
     models/musicmodel.cpp models/multimusicmodel.cpp models/searchmodel.cpp models/streamsmodel.cpp
     mpd/mpdconnection.cpp mpd/mpdparseutils.cpp mpd/mpdstats.cpp mpd/mpdstatus.cpp mpd/song.cpp mpd/mpduser.cpp mpd/cuefile.cpp
-    dynamic/dynamic.cpp dynamic/dynamicpage.cpp dynamic/dynamicproxymodel.cpp dynamic/dynamicruledialog.cpp dynamic/dynamicrulesdialog.cpp
     streams/streamfetcher.cpp streams/streamdialog.cpp
     widgets/treeview.cpp widgets/listview.cpp widgets/itemview.cpp widgets/autohidingsplitter.cpp widgets/timeslider.cpp
     widgets/actionlabel.cpp widgets/playqueueview.cpp widgets/groupedview.cpp widgets/actionitemdelegate.cpp widgets/textbrowser.cpp
@@ -247,7 +247,6 @@ set(CANTATA_MOC_HDRS
     models/musiclibrarymodel.h models/musiclibraryproxymodel.h models/playlistsmodel.h models/playlistsproxymodel.h models/playqueuemodel.h
     models/playqueueproxymodel.h models/dirviewmodel.h models/dirviewproxymodel.h models/albumsmodel.h models/actionmodel.h
     models/multimusicmodel.h models/searchmodel.h mpd/mpdconnection.h mpd/mpdstats.h mpd/mpdstatus.h
-    dynamic/dynamic.h dynamic/dynamicpage.h dynamic/dynamicruledialog.h dynamic/dynamicrulesdialog.h
     streams/streamfetcher.h streams/streamdialog.h
     widgets/treeview.h widgets/listview.h widgets/itemview.h widgets/autohidingsplitter.h widgets/timeslider.h widgets/actionlabel.h
     widgets/playqueueview.h widgets/groupedview.h widgets/actionitemdelegate.h widgets/coverwidget.h widgets/volumeslider.h
@@ -260,9 +259,16 @@ set(CANTATA_MOC_HDRS
 set(CANTATA_UIS
     gui/initialsettingswizard.ui gui/mainwindow.ui gui/folderpage.ui gui/librarypage.ui gui/albumspage.ui gui/playlistspage.ui
     gui/filesettings.ui gui/interfacesettings.ui gui/playbacksettings.ui gui/serversettings.ui gui/coverdialog.ui gui/searchpage.ui
-    dynamic/dynamicpage.ui dynamic/dynamicrule.ui dynamic/dynamicrules.ui
     context/togglelist.ui context/othersettings.ui
     widgets/itemview.ui)
+
+if (ENABLE_DYNAMIC)
+    set(CANTATA_SRCS ${CANTATA_SRCS} dynamic/dynamic.cpp dynamic/dynamicpage.cpp dynamic/dynamicproxymodel.cpp
+        dynamic/dynamicruledialog.cpp dynamic/dynamicrulesdialog.cpp)
+    set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} dynamic/dynamic.h dynamic/dynamicpage.h dynamic/dynamicruledialog.h
+        dynamic/dynamicrulesdialog.h)
+    set(CANTATA_UIS ${CANTATA_UIS} dynamic/dynamicpage.ui dynamic/dynamicrule.ui dynamic/dynamicrules.ui)
+endif (ENABLE_DYNAMIC)
 
 if (ENABLE_STREAMS)
     set(CANTATA_SRCS ${CANTATA_SRCS} streams/streamspage.cpp streams/digitallyimportedsettings.cpp streams/streamssettings.cpp
@@ -542,7 +548,9 @@ endif (ENABLE_HTTP_STREAM_PLAYBACK AND NOT ENABLE_QT5)
 if (WIN32 OR APPLE)
     # install(FILES mpd/mpd.conf.template DESTINATION ${CMAKE_INSTALL_PREFIX}/mpd)
 else (WIN32 OR APPLE)
-    install(PROGRAMS dynamic/cantata-dynamic DESTINATION ${CMAKE_INSTALL_PREFIX}/share/${CMAKE_PROJECT_NAME}/scripts)
+    if (ENABLE_DYNAMIC)
+        install(PROGRAMS dynamic/cantata-dynamic DESTINATION ${CMAKE_INSTALL_PREFIX}/share/${CMAKE_PROJECT_NAME}/scripts)
+    endif (ENABLE_DYNAMIC)
     install(FILES mpd/mpd.conf.template DESTINATION ${CMAKE_INSTALL_PREFIX}/share/${CMAKE_PROJECT_NAME}/mpd)
 
     if (MTP_FOUND)
@@ -650,7 +658,7 @@ if (TAGLIB_FOUND)
         endif (ENABLE_PROXY_CONFIG)
     endif (ENABLE_REMOTE_DEVICES OR ENABLE_HTTP_STREAM_PLAYBACK OR AUDIOCD_SUPPORT OR MTP_FOUND OR ENABLE_PROXY_CONFIG OR ENABLE_REPLAYGAIN_SUPPORT)
     
-    if (NOT TAGLIB_FOUND OR NOT MTP_FOUND OR NOT AUDIOCD_SUPPORT OR NOT ENABLE_REPLAYGAIN_SUPPORT OR NOT ENABLE_HTTP_STREAM_PLAYBACK OR NOT ENABLE_REMOTE_DEVICES OR NOT ENABLE_HTTP_SERVER OR NOT ENABLE_STREAMS OR NOT ENABLE_ONLINE_SERVICES OR (NOT ENABLE_PROXY_CONFIG AND NOT ENABLE_KDE))
+    if (NOT TAGLIB_FOUND OR NOT MTP_FOUND OR NOT AUDIOCD_SUPPORT OR NOT ENABLE_REPLAYGAIN_SUPPORT OR NOT ENABLE_HTTP_STREAM_PLAYBACK OR NOT ENABLE_REMOTE_DEVICES OR NOT ENABLE_HTTP_SERVER OR NOT ENABLE_DYNAMIC OR NOT ENABLE_STREAMS OR NOT ENABLE_ONLINE_SERVICES OR (NOT ENABLE_PROXY_CONFIG AND NOT ENABLE_KDE))
         message("      Disabled features:")
         if (NOT ENABLE_HTTP_STREAM_PLAYBACK)
             message("        - MPD HTTP stream playback (Phonon required for Qt4, QtMultiMedia for Qt5)")
@@ -673,13 +681,16 @@ if (TAGLIB_FOUND)
         if (NOT ENABLE_HTTP_SERVER)
             message("        - Internal HTTP server (playback of AudioCDs, and songs from media files disabled)")
         endif (NOT ENABLE_HTTP_SERVER)
+        if (NOT ENABLE_DYNAMIC)
+            message("        - Dynamic playlists")
+        endif (NOT ENABLE_DYNAMIC)
         if (NOT ENABLE_STREAMS)
             message("        - Steams tab (saving favourite streams, stream searching, etc)")
         endif (NOT ENABLE_STREAMS)
         if (NOT ENABLE_ONLINE_SERVICES)
             message("        - Online services (Jamendo, Magnatune, SoundCloud, and Podcasts)")
         endif (NOT ENABLE_ONLINE_SERVICES)
-    endif (NOT TAGLIB_FOUND OR NOT MTP_FOUND OR NOT AUDIOCD_SUPPORT OR NOT ENABLE_REPLAYGAIN_SUPPORT OR NOT ENABLE_HTTP_STREAM_PLAYBACK OR NOT ENABLE_REMOTE_DEVICES OR NOT ENABLE_HTTP_SERVER OR NOT ENABLE_STREAMS OR NOT ENABLE_ONLINE_SERVICES OR (NOT ENABLE_PROXY_CONFIG AND NOT ENABLE_KDE))
+    endif (NOT TAGLIB_FOUND OR NOT MTP_FOUND OR NOT AUDIOCD_SUPPORT OR NOT ENABLE_REPLAYGAIN_SUPPORT OR NOT ENABLE_HTTP_STREAM_PLAYBACK OR NOT ENABLE_REMOTE_DEVICES OR NOT ENABLE_HTTP_SERVER OR NOT ENABLE_DYNAMIC OR NOT ENABLE_STREAMS OR NOT ENABLE_ONLINE_SERVICES OR (NOT ENABLE_PROXY_CONFIG AND NOT ENABLE_KDE))
 
     if (ENABLE_EXTERNAL_TAGS)
         message("      Tags will be read/written via an external helper app")
@@ -707,6 +718,9 @@ else (TAGLIB_FOUND)
     if (NOT ENABLE_HTTP_SERVER)
         message("        - Internal HTTP server (playback of AudioCDs, and songs from media files disabled)")
     endif (NOT ENABLE_HTTP_SERVER)
+    if (NOT ENABLE_DYNAMIC)
+        message("        - Dynamic playlists")
+    endif (NOT ENABLE_DYNAMIC)
     if (NOT ENABLE_STREAMS)
         message("        - Steams tab (saving favourite streams, stream searching, etc)")
     endif (NOT ENABLE_STREAMS)

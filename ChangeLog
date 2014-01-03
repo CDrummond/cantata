@@ -32,7 +32,7 @@
 16. Add CMake option to disable building of internal HTTP server.
 17. If listallinfo fails with MPD 0.18.x then prompt user to check MPD's
     max_output_buffer_size setting.
-18. Add CMake option to disable streams, and online services support. Refer to
+18. Add CMake option to disable streams, dynamic, and online services. Refer to
     INSTALL file for details.
 
 1.2.2

@@ -116,6 +116,9 @@ public:
 
 SpinBox::SpinBox(QWidget *p)
     : QWidget(p)
+    , incButton(0)
+    , decButton(0)
+    , spacer(0)
 {
     QHBoxLayout *layout=new QHBoxLayout(this);
     layout->setContentsMargins(0, 0, 0, 0);
@@ -129,6 +132,8 @@ SpinBox::SpinBox(QWidget *p)
         layout->addWidget(spin);
         layout->addWidget(decButton);
         layout->addWidget(incButton);
+        spacer=new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum);
+        layout->addItem(spacer);
         connect(spin, SIGNAL(valueChanged(int)), SLOT(checkValue()));
         connect(decButton, SIGNAL(pressed()), SLOT(decPressed()));
         connect(incButton, SIGNAL(pressed()), SLOT(incPressed()));
@@ -157,6 +162,17 @@ void SpinBox::setValue(int v)
     spin->setValue(v);
     if (GtkStyle::mimicWidgets()) {
         checkValue();
+    }
+}
+
+void SpinBox::setSizePolicy(QSizePolicy::Policy horizontal, QSizePolicy::Policy vertical)
+{
+    spin->setSizePolicy(horizontal, vertical);
+    // If spin is set to expand, then we can remove our spacer...
+    if (QSizePolicy::MinimumExpanding==horizontal && spacer) {
+        layout()->removeItem(spacer);
+        delete spacer;
+        spacer=0;
     }
 }
 

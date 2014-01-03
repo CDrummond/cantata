@@ -26,7 +26,9 @@
 #include "settings.h"
 #include "icons.h"
 #include "interfacesettings.h"
+#ifdef ENABLE_STREAMS
 #include "streamssettings.h"
+#endif
 #ifdef ENABLE_ONLINE_SERVICES
 #include "onlinesettings.h"
 #endif
@@ -69,7 +71,6 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, const QStringList &hiddenP
     playback = new PlaybackSettings(0);
     files = new FileSettings(0);
     interface = new InterfaceSettings(0, hiddenPages);
-    streams = hiddenPages.contains(QLatin1String("StreamsPage")) ? 0 : new StreamsSettings(0);
     context = new ContextSettings(0);
     cache = new CacheSettings(0);
     server->load();
@@ -81,10 +82,13 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, const QStringList &hiddenP
     pageWidget->addPage(playback, i18n("Playback"), Icon("media-playback-start"), i18n("Playback Settings"));
     pageWidget->addPage(files, i18n("Files"), Icons::self()->filesIcon, i18n("File Settings"));
     pageWidget->addPage(interface, i18n("Interface"), Icon("preferences-other"), i18n("Interface Settings"));
+    #ifdef ENABLE_STREAMS
+    streams = hiddenPages.contains(QLatin1String("StreamsPage")) ? 0 : new StreamsSettings(0);
     if (streams) {
         pages.insert(QLatin1String("streams"), pageWidget->addPage(streams, i18n("Streams"), Icons::self()->radioStreamIcon, i18n("Streams Settings")));
         streams->load();
     }
+    #endif
     #ifdef ENABLE_ONLINE_SERVICES
     online = hiddenPages.contains(QLatin1String("OnlineServicesPage")) ? 0 : new OnlineSettings(0);
     if (online) {
@@ -154,9 +158,11 @@ void PreferencesDialog::writeSettings()
     playback->save();
     files->save();
     interface->save();
+    #ifdef ENABLE_STREAMS
     if (streams) {
         streams->save();
     }
+    #endif
     #ifdef ENABLE_ONLINE_SERVICES
     if (online) {
         online->save();

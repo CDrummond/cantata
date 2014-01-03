@@ -360,7 +360,9 @@ Icons::Icons()
     singleIcon=createSingleIcon(stdColor, highlightColor);
     consumeIcon=createConsumeIcon(stdColor, highlightColor);
     menuIcon=createMenuIcon(stdColor, highlightColor);
+    #ifdef ENABLE_STREAMS
     streamCategoryIcon=Icon(QLatin1String("oxygen")==Icon::currentTheme().toLower() ? "inode-directory" : "folder-music");
+    #endif
 
     #ifdef Q_OS_WIN
     QString iconFile=QCoreApplication::applicationDirPath()+"/icons/stream.png";
@@ -457,9 +459,11 @@ Icons::Icons()
     #endif // Q_OS_WIN && Q_OS_MAC
     #endif // ENABLE_KDE_SUPPORT
 
+    #ifdef ENABLE_STREAMS
     if (streamCategoryIcon.isNull()) {
         streamCategoryIcon=libraryIcon;
     }
+    #endif
 }
 
 void Icons::initSidebarIcons()
@@ -473,8 +477,12 @@ void Icons::initSidebarIcons()
         foldersIcon=loadSidebarIcon("folders", textCol, highlightedTexCol);
         playlistsIcon=loadSidebarIcon("playlists", textCol, highlightedTexCol);
         dynamicIcon=loadSidebarIcon("dynamic", textCol, highlightedTexCol);
+        #ifdef ENABLE_STREAMS
         streamsIcon=loadSidebarIcon("streams", textCol, highlightedTexCol);
+        #endif
+        #ifdef ENABLE_ONLINE_SERVICES
         onlineIcon=loadSidebarIcon("online", textCol, highlightedTexCol);
+        #endif
         infoSidebarIcon=loadSidebarIcon("info", textCol, highlightedTexCol);
         #ifdef ENABLE_DEVICES_SUPPORT
         devicesIcon=loadSidebarIcon("devices", textCol, highlightedTexCol);
@@ -487,8 +495,12 @@ void Icons::initSidebarIcons()
         foldersIcon=Icon("inode-directory");
         playlistsIcon=playlistIcon;
         dynamicIcon=dynamicRuleIcon;
+        #ifdef ENABLE_STREAMS
         streamsIcon=radioStreamIcon;
+        #endif
+        #ifdef ENABLE_ONLINE_SERVICES
         onlineIcon=Icon("applications-internet");
+        #endif
         if (QLatin1String("gnome")==Icon::currentTheme().toLower()) {
             QColor col=QApplication::palette().color(QPalette::Active, QPalette::ButtonText);
             infoSidebarIcon=loadSidebarIcon("info", col, col);

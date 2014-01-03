@@ -33,7 +33,13 @@
 #include "icons.h"
 #include "mpdconnection.h"
 #include "buddylabel.h"
+#include "config.h"
 
+#define REMOVE(w) \
+    w->setVisible(false); \
+    w->deleteLater(); \
+    w=0;
+    
 class NameValidator : public QValidator
 {
     public:
@@ -57,8 +63,10 @@ StreamDialog::StreamDialog(QWidget *parent, bool addToPlayQueue)
     layout->setMargin(0);
     if (addToPlayQueue) {
         urlEntry = new LineEdit(wid);
+        #ifdef ENABLE_STREAMS
         saveCombo=new QComboBox(wid);
         nameEntry = new LineEdit(wid);
+        #endif
     } else {
         nameEntry = new LineEdit(wid);
         urlEntry = new LineEdit(wid);
@@ -72,15 +80,20 @@ StreamDialog::StreamDialog(QWidget *parent, bool addToPlayQueue)
 
     int row=0;
 
+    
     if (addToPlayQueue) {
+        #ifdef ENABLE_STREAMS
         saveCombo->addItem(i18n("Just add to play queue, do not save"));
         saveCombo->addItem(i18n("Add to play queue, and save to favorites"));
         saveCombo->setCurrentIndex(0);
         saveCombo->setEnabled(StreamsModel::self()->isFavoritesWritable());
+        #endif
         layout->setWidget(row, QFormLayout::LabelRole, urlLabel);
         layout->setWidget(row++, QFormLayout::FieldRole, urlEntry);
+        #ifdef ENABLE_STREAMS
         layout->setWidget(row++, QFormLayout::FieldRole, saveCombo);
         connect(saveCombo, SIGNAL(activated(int)), SLOT(saveComboChanged()));
+        #endif
         setWidgetVisiblity();
     }
     layout->setWidget(row, QFormLayout::LabelRole, nameLabel);

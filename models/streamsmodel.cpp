@@ -22,13 +22,16 @@
  */
 
 #include "streamsmodel.h"
+#include "mpdconnection.h"
+#include "mpdparseutils.h"
+#include <QUrl>
+
+#ifdef ENABLE_STREAMS
 #include "icons.h"
 #include "networkaccessmanager.h"
 #include "localize.h"
 #include "qtplural.h"
 #include "utils.h"
-#include "mpdconnection.h"
-#include "mpdparseutils.h"
 #include "settings.h"
 #include "playqueuemodel.h"
 #include "itemview.h"
@@ -85,7 +88,6 @@ StreamsModel * StreamsModel::self()
     #endif
 }
 
-const QString StreamsModel::constPrefix=QLatin1String("cantata-");
 const QString StreamsModel::constSubDir=QLatin1String("streams");
 const QString StreamsModel::constCacheExt=QLatin1String(".xml.gz");
 
@@ -1025,17 +1027,6 @@ void StreamsModel::removeAllBookmarks(const QModelIndex &index)
 QModelIndex StreamsModel::favouritesIndex() const
 {
     return createIndex(root->children.indexOf(favourites), 0, (void *)favourites);
-}
-
-bool StreamsModel::validProtocol(const QString &file)
-{
-    QString scheme=QUrl(file).scheme();
-    return scheme.isEmpty() || MPDConnection::self()->urlHandlers().contains(scheme);
-}
-
-QString StreamsModel::modifyUrl(const QString &u, bool addPrefix, const QString &name)
-{
-    return MPDParseUtils::addStreamName(!addPrefix || !u.startsWith("http:") ? u : (constPrefix+u), name);
 }
 
 static QString addDiHash(const StreamsModel::Item *item)
@@ -1980,3 +1971,19 @@ QModelIndex StreamsModel::categoryIndex(const CategoryItem *cat) const
     int row=root->children.indexOf(const_cast<CategoryItem *>(cat));
     return -1==row ? QModelIndex() : createIndex(row, 0, (void *)cat);
 }
+
+#endif // ENABLE_STREAMS
+
+const QString StreamsModel::constPrefix=QLatin1String("cantata-");
+
+bool StreamsModel::validProtocol(const QString &file)
+{
+    QString scheme=QUrl(file).scheme();
+    return scheme.isEmpty() || MPDConnection::self()->urlHandlers().contains(scheme);
+}
+
+QString StreamsModel::modifyUrl(const QString &u, bool addPrefix, const QString &name)
+{
+    return MPDParseUtils::addStreamName(!addPrefix || !u.startsWith("http:") ? u : (constPrefix+u), name);
+}
+

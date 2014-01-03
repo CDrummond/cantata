@@ -62,7 +62,9 @@ class AlbumsPage;
 class FolderPage;
 class PlaylistsPage;
 class DynamicPage;
+#ifdef ENABLE_STREAMS
 class StreamsPage;
+#endif
 #ifdef ENABLE_ONLINE_SERVICES
 class OnlineServicesPage;
 #endif
@@ -125,7 +127,9 @@ public:
         PAGE_FOLDERS,
         PAGE_PLAYLISTS,
         PAGE_DYNAMIC,
+        #ifdef ENABLE_STREAMS
         PAGE_STREAMS,
+        #endif
         #ifdef ENABLE_ONLINE_SERVICES
         PAGE_ONLINE,
         #endif
@@ -245,7 +249,11 @@ public Q_SLOTS:
     void showFoldersTab() { showTab(PAGE_FOLDERS); }
     void showPlaylistsTab() { showTab(PAGE_PLAYLISTS); }
     void showDynamicTab() { showTab(PAGE_DYNAMIC); }
-    void showStreamsTab() { showTab(PAGE_STREAMS); }
+    void showStreamsTab() {
+        #ifdef ENABLE_STREAMS
+        showTab(PAGE_STREAMS);
+        #endif
+    }
     void showOnlineTab() {
         #ifdef ENABLE_ONLINE_SERVICES
         showTab(PAGE_ONLINE); 
@@ -348,7 +356,9 @@ private:
     Action *foldersTabAction;
     Action *playlistsTabAction;
     Action *dynamicTabAction;
+    #ifdef ENABLE_STREAMS
     Action *streamsTabAction;
+    #endif
     #ifdef ENABLE_ONLINE_SERVICES
     Action *onlineTabAction;
     #endif
@@ -377,7 +387,9 @@ private:
     FolderPage *folderPage;
     PlaylistsPage *playlistsPage;
     DynamicPage *dynamicPage;
+    #ifdef ENABLE_STREAMS
     StreamsPage *streamsPage;
+    #endif
     #ifdef ENABLE_ONLINE_SERVICES
     OnlineServicesPage *onlinePage;
     #endif

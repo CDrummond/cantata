@@ -38,6 +38,7 @@ option(ENABLE_SPEEXDSP "Enable SpeexDSP libraries (used to speed-up replaygain c
 option(ENABLE_PROXY_CONFIG "Enable proxy config in settings dialog" OFF)
 option(ENABLE_EXTERNAL_TAGS "Enable usage of external app for reading/writing tags (EXPERIMENTAL - NOT FULLY WORKING)" OFF)
 option(ENABLE_HTTP_SERVER "Enable internal HTTP server to play non-MPD files" ON)
+option(ENABLE_STREAMS "Enable support for streams tab (to save favourite streams, and search for others)" ON)
 option(ENABLE_ONLINE_SERVICES "Enable support for online services (Jamendo, Magnatune, SoundCloud, and Podcasts)" ON)
 
 if (NOT WIN32 AND NOT APPLE)
@@ -218,16 +219,14 @@ set(CANTATA_SRCS gui/application.cpp gui/main.cpp gui/initialsettingswizard.cpp 
     gui/settings.cpp gui/covers.cpp gui/filesettings.cpp gui/interfacesettings.cpp gui/playbacksettings.cpp 
     gui/serversettings.cpp gui/librarypage.cpp gui/albumspage.cpp gui/folderpage.cpp gui/playlistspage.cpp gui/trayitem.cpp
     gui/cachesettings.cpp gui/coverdialog.cpp gui/stdactions.cpp gui/searchpage.cpp
-    streams/streamspage.cpp streams/streamdialog.cpp streams/streamfetcher.cpp streams/digitallyimportedsettings.cpp
-    streams/streamssettings.cpp streams/tar.cpp
     models/musiclibraryitemroot.cpp models/musiclibraryitemartist.cpp models/musiclibraryitemalbum.cpp models/musiclibrarymodel.cpp
     models/musiclibraryproxymodel.cpp models/playlistsmodel.cpp models/playlistsproxymodel.cpp models/playqueuemodel.cpp
     models/playqueueproxymodel.cpp models/dirviewmodel.cpp models/dirviewproxymodel.cpp models/dirviewitem.cpp models/dirviewitemdir.cpp
-    models/streamsmodel.cpp models/streamsproxymodel.cpp models/albumsmodel.cpp models/albumsproxymodel.cpp models/proxymodel.cpp
-    models/actionmodel.cpp models/digitallyimported.cpp models/streamsearchmodel.cpp models/musiclibraryitem.cpp models/musicmodel.cpp
-    models/multimusicmodel.cpp models/searchmodel.cpp
+    models/albumsmodel.cpp models/albumsproxymodel.cpp models/proxymodel.cpp models/actionmodel.cpp models/musiclibraryitem.cpp
+    models/musicmodel.cpp models/multimusicmodel.cpp models/searchmodel.cpp models/streamsmodel.cpp
     mpd/mpdconnection.cpp mpd/mpdparseutils.cpp mpd/mpdstats.cpp mpd/mpdstatus.cpp mpd/song.cpp mpd/mpduser.cpp mpd/cuefile.cpp
     dynamic/dynamic.cpp dynamic/dynamicpage.cpp dynamic/dynamicproxymodel.cpp dynamic/dynamicruledialog.cpp dynamic/dynamicrulesdialog.cpp
+    streams/streamfetcher.cpp streams/streamdialog.cpp
     widgets/treeview.cpp widgets/listview.cpp widgets/itemview.cpp widgets/autohidingsplitter.cpp widgets/timeslider.cpp
     widgets/actionlabel.cpp widgets/playqueueview.cpp widgets/groupedview.cpp widgets/actionitemdelegate.cpp widgets/textbrowser.cpp
     widgets/coverwidget.cpp widgets/volumeslider.cpp widgets/icons.cpp widgets/genrecombo.cpp widgets/toolbar.cpp widgets/menubutton.cpp
@@ -245,12 +244,11 @@ set(CANTATA_MOC_HDRS
     gui/initialsettingswizard.h gui/mainwindow.h gui/settings.h gui/covers.h gui/folderpage.h gui/librarypage.h gui/albumspage.h
     gui/playlistspage.h gui/playbacksettings.h gui/serversettings.h gui/preferencesdialog.h gui/filesettings.h
     gui/interfacesettings.h gui/cachesettings.h gui/trayitem.h gui/coverdialog.h gui/searchpage.h
-    streams/streamspage.h streams/streamdialog.h streams/streamfetcher.h streams/digitallyimportedsettings.h streams/streamssettings.h
     models/musiclibrarymodel.h models/musiclibraryproxymodel.h models/playlistsmodel.h models/playlistsproxymodel.h models/playqueuemodel.h
-    models/playqueueproxymodel.h models/dirviewmodel.h models/dirviewproxymodel.h models/albumsmodel.h models/streamsmodel.h
-    models/actionmodel.h models/digitallyimported.h models/streamsearchmodel.h models/multimusicmodel.h models/searchmodel.h
-    mpd/mpdconnection.h mpd/mpdstats.h mpd/mpdstatus.h
+    models/playqueueproxymodel.h models/dirviewmodel.h models/dirviewproxymodel.h models/albumsmodel.h models/actionmodel.h
+    models/multimusicmodel.h models/searchmodel.h mpd/mpdconnection.h mpd/mpdstats.h mpd/mpdstatus.h
     dynamic/dynamic.h dynamic/dynamicpage.h dynamic/dynamicruledialog.h dynamic/dynamicrulesdialog.h
+    streams/streamfetcher.h streams/streamdialog.h
     widgets/treeview.h widgets/listview.h widgets/itemview.h widgets/autohidingsplitter.h widgets/timeslider.h widgets/actionlabel.h
     widgets/playqueueview.h widgets/groupedview.h widgets/actionitemdelegate.h widgets/coverwidget.h widgets/volumeslider.h
     widgets/genrecombo.h widgets/toolbar.h widgets/searchwidget.h widgets/messageoverlay.h widgets/servicestatuslabel.h
@@ -262,11 +260,17 @@ set(CANTATA_MOC_HDRS
 set(CANTATA_UIS
     gui/initialsettingswizard.ui gui/mainwindow.ui gui/folderpage.ui gui/librarypage.ui gui/albumspage.ui gui/playlistspage.ui
     gui/filesettings.ui gui/interfacesettings.ui gui/playbacksettings.ui gui/serversettings.ui gui/coverdialog.ui gui/searchpage.ui
-    streams/streamspage.ui streams/digitallyimportedsettings.ui streams/streamssettings.ui
     dynamic/dynamicpage.ui dynamic/dynamicrule.ui dynamic/dynamicrules.ui
     context/togglelist.ui context/othersettings.ui
-    widgets/itemview.ui
-    online/onlineservicespage.ui online/onlinesettings.ui)
+    widgets/itemview.ui)
+
+if (ENABLE_STREAMS)
+    set(CANTATA_SRCS ${CANTATA_SRCS} streams/streamspage.cpp streams/digitallyimportedsettings.cpp streams/streamssettings.cpp
+        streams/tar.cpp models/streamsproxymodel.cpp models/streamsearchmodel.cpp models/digitallyimported.cpp)
+    set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} streams/streamspage.h streams/digitallyimportedsettings.h
+        streams/streamssettings.h models/streamsmodel.h models/digitallyimported.h models/streamsearchmodel.h)
+    set(CANTATA_UIS ${CANTATA_UIS} streams/streamspage.ui streams/digitallyimportedsettings.ui streams/streamssettings.ui)
+endif (ENABLE_STREAMS)
 
 if (ENABLE_ONLINE_SERVICES)
     set(CANTATA_SRCS ${CANTATA_SRCS} online/onlineservicespage.cpp online/onlineservice.cpp online/jamendoservice.cpp
@@ -646,7 +650,7 @@ if (TAGLIB_FOUND)
         endif (ENABLE_PROXY_CONFIG)
     endif (ENABLE_REMOTE_DEVICES OR ENABLE_HTTP_STREAM_PLAYBACK OR AUDIOCD_SUPPORT OR MTP_FOUND OR ENABLE_PROXY_CONFIG OR ENABLE_REPLAYGAIN_SUPPORT)
     
-    if (NOT TAGLIB_FOUND OR NOT MTP_FOUND OR NOT AUDIOCD_SUPPORT OR NOT ENABLE_REPLAYGAIN_SUPPORT OR NOT ENABLE_HTTP_STREAM_PLAYBACK OR NOT ENABLE_REMOTE_DEVICES OR NOT ENABLE_HTTP_SERVER OR NOT ENABLE_ONLINE_SERVICES OR (NOT ENABLE_PROXY_CONFIG AND NOT ENABLE_KDE))
+    if (NOT TAGLIB_FOUND OR NOT MTP_FOUND OR NOT AUDIOCD_SUPPORT OR NOT ENABLE_REPLAYGAIN_SUPPORT OR NOT ENABLE_HTTP_STREAM_PLAYBACK OR NOT ENABLE_REMOTE_DEVICES OR NOT ENABLE_HTTP_SERVER OR NOT ENABLE_STREAMS OR NOT ENABLE_ONLINE_SERVICES OR (NOT ENABLE_PROXY_CONFIG AND NOT ENABLE_KDE))
         message("      Disabled features:")
         if (NOT ENABLE_HTTP_STREAM_PLAYBACK)
             message("        - MPD HTTP stream playback (Phonon required for Qt4, QtMultiMedia for Qt5)")
@@ -669,10 +673,13 @@ if (TAGLIB_FOUND)
         if (NOT ENABLE_HTTP_SERVER)
             message("        - Internal HTTP server (playback of AudioCDs, and songs from media files disabled)")
         endif (NOT ENABLE_HTTP_SERVER)
+        if (NOT ENABLE_STREAMS)
+            message("        - Steams tab (saving favourite streams, stream searching, etc)")
+        endif (NOT ENABLE_STREAMS)
         if (NOT ENABLE_ONLINE_SERVICES)
             message("        - Online services (Jamendo, Magnatune, SoundCloud, and Podcasts)")
         endif (NOT ENABLE_ONLINE_SERVICES)
-    endif (NOT TAGLIB_FOUND OR NOT MTP_FOUND OR NOT AUDIOCD_SUPPORT OR NOT ENABLE_REPLAYGAIN_SUPPORT OR NOT ENABLE_HTTP_STREAM_PLAYBACK OR NOT ENABLE_REMOTE_DEVICES OR NOT ENABLE_HTTP_SERVER OR NOT ENABLE_ONLINE_SERVICES OR (NOT ENABLE_PROXY_CONFIG AND NOT ENABLE_KDE))
+    endif (NOT TAGLIB_FOUND OR NOT MTP_FOUND OR NOT AUDIOCD_SUPPORT OR NOT ENABLE_REPLAYGAIN_SUPPORT OR NOT ENABLE_HTTP_STREAM_PLAYBACK OR NOT ENABLE_REMOTE_DEVICES OR NOT ENABLE_HTTP_SERVER OR NOT ENABLE_STREAMS OR NOT ENABLE_ONLINE_SERVICES OR (NOT ENABLE_PROXY_CONFIG AND NOT ENABLE_KDE))
 
     if (ENABLE_EXTERNAL_TAGS)
         message("      Tags will be read/written via an external helper app")
@@ -700,6 +707,9 @@ else (TAGLIB_FOUND)
     if (NOT ENABLE_HTTP_SERVER)
         message("        - Internal HTTP server (playback of AudioCDs, and songs from media files disabled)")
     endif (NOT ENABLE_HTTP_SERVER)
+    if (NOT ENABLE_STREAMS)
+        message("        - Steams tab (saving favourite streams, stream searching, etc)")
+    endif (NOT ENABLE_STREAMS)
     if (NOT ENABLE_ONLINE_SERVICES)
         message("        - Online services (Jamendo, Magnatune, SoundCloud, and Podcasts)")
     endif (NOT ENABLE_ONLINE_SERVICES)

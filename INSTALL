@@ -69,6 +69,11 @@ The following options may be passed to CMake:
         Enable usage of internal HTTP server for non-MPD file playback.
         Default: ON
 
+    -DENABLE_STREAMS=ON
+        Enable support for streams tab (saving favourite streams, listing
+        streams from providers, etc)
+        Default: ON
+
     -DENABLE_ONLINE_SERVICES=ON
         Enable support for online services (Jamendo, Magnatune, SoundCloud, and
         Podcasts)

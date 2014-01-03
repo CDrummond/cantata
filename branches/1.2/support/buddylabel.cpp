@@ -50,12 +50,12 @@ BuddyLabel::BuddyLabel(QWidget *p, QWidget *b)
 bool BuddyLabel::event(QEvent *e)
 {
     if (QEvent::Shortcut==e->type()) {
-        mouseReleaseEvent(0);
+        activateBuddy(false);
     }
     return QLabel::event(e);
 }
 
-void BuddyLabel::mouseReleaseEvent(QMouseEvent *)
+void BuddyLabel::activateBuddy(bool changeState)
 {
     if (buddy() && buddy()->isEnabled()) {
         #ifndef ENABLE_KDE_SUPPORT
@@ -77,12 +77,16 @@ void BuddyLabel::mouseReleaseEvent(QMouseEvent *)
 
         QCheckBox *cb=qobject_cast<QCheckBox*>(buddy());
         if (cb) {
-            cb->setChecked(!cb->isChecked());
+            if (changeState) {
+                cb->setChecked(!cb->isChecked());
+            }
             return;
         }
         QRadioButton *rb=qobject_cast<QRadioButton*>(buddy());
         if (rb) {
-            rb->setChecked(!rb->isChecked());
+            if (changeState) {
+                rb->setChecked(!rb->isChecked());
+            }
             return;
         }
         QComboBox *combo=qobject_cast<QComboBox*>(buddy());

@@ -38,7 +38,9 @@ class PlaybackSettings;
 class FileSettings;
 class InterfaceSettings;
 class StreamsSettings;
+#ifdef ENABLE_ONLINE_SERVICES
 class OnlineSettings;
+#endif
 class ContextSettings;
 class HttpServerSettings;
 struct MPDConnectionDetails;
@@ -78,7 +80,9 @@ private:
     FileSettings *files;
     InterfaceSettings *interface;
     StreamsSettings *streams;
+    #ifdef ENABLE_ONLINE_SERVICES
     OnlineSettings *online;
+    #endif
     ContextSettings *context;
     #ifdef ENABLE_HTTP_SERVER
     HttpServerSettings *http;

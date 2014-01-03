@@ -27,7 +27,9 @@
 #include "icons.h"
 #include "interfacesettings.h"
 #include "streamssettings.h"
+#ifdef ENABLE_ONLINE_SERVICES
 #include "onlinesettings.h"
+#endif
 #include "serversettings.h"
 #include "playbacksettings.h"
 #include "filesettings.h"
@@ -68,7 +70,6 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, const QStringList &hiddenP
     files = new FileSettings(0);
     interface = new InterfaceSettings(0, hiddenPages);
     streams = hiddenPages.contains(QLatin1String("StreamsPage")) ? 0 : new StreamsSettings(0);
-    online = hiddenPages.contains(QLatin1String("OnlineServicesPage")) ? 0 : new OnlineSettings(0);
     context = new ContextSettings(0);
     cache = new CacheSettings(0);
     server->load();
@@ -84,10 +85,13 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, const QStringList &hiddenP
         pages.insert(QLatin1String("streams"), pageWidget->addPage(streams, i18n("Streams"), Icons::self()->radioStreamIcon, i18n("Streams Settings")));
         streams->load();
     }
+    #ifdef ENABLE_ONLINE_SERVICES
+    online = hiddenPages.contains(QLatin1String("OnlineServicesPage")) ? 0 : new OnlineSettings(0);
     if (online) {
         pages.insert(QLatin1String("online"), pageWidget->addPage(online, i18n("Online"), Icon("applications-internet"), i18n("Online Providers")));
         online->load();
     }
+    #endif
     pageWidget->addPage(context, i18n("Context"), Icons::self()->contextIcon, i18n("Context View Settings"));
     #ifdef ENABLE_HTTP_SERVER
     http = new HttpServerSettings(0);
@@ -153,9 +157,11 @@ void PreferencesDialog::writeSettings()
     if (streams) {
         streams->save();
     }
+    #ifdef ENABLE_ONLINE_SERVICES
     if (online) {
         online->save();
     }
+    #endif
     #ifdef ENABLE_HTTP_SERVER
     if (http) {
         http->save();

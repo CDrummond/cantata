@@ -30,9 +30,11 @@
 #include "config.h"
 #include "deviceoptions.h"
 #include "thread.h"
+#ifdef ENABLE_ONLINE_SERVICES
 #include "soundcloudservice.h"
 #include "podcastservice.h"
 #include "onlineservicesmodel.h"
+#endif
 #ifdef TAGLIB_FOUND
 #include "tags.h"
 #endif
@@ -892,6 +894,7 @@ QPixmap * Covers::get(const Song &song, int size)
 
     if (!pix) {
         QImage img;
+        #ifdef ENABLE_ONLINE_SERVICES
         if (song.isFromOnlineService()) {
             if (SoundCloudService::constName==song.onlineService()) {
                 img=QImage(SoundCloudService::iconPath());
@@ -899,6 +902,7 @@ QPixmap * Covers::get(const Song &song, int size)
                 img=QImage(PodcastService::iconPath());
             }
         }
+        #endif
 
         if (img.isNull()) {
             img=findImage(song, false).img;
@@ -984,9 +988,11 @@ Covers::Image Covers::findImage(const Song &song, bool emitResult)
 Covers::Image Covers::locateImage(const Song &song)
 {
     DBUG_CLASS("Covers") << song.file << song.artist << song.albumartist << song.album << song.type;
+    #ifdef ENABLE_ONLINE_SERVICES
     if (Song::OnlineSvrTrack==song.type) {
         return OnlineServicesModel::self()->readImage(song);
     }
+    #endif
     bool isArtistImage=song.isArtistImageRequest();
     QString prevFileName=Covers::self()->getFilename(song, isArtistImage);
     if (!prevFileName.isEmpty()) {

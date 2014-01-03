@@ -61,9 +61,6 @@ const QLatin1String PlayQueueModel::constMoveMimeType("cantata/move");
 const QLatin1String PlayQueueModel::constFileNameMimeType("cantata/filename");
 const QLatin1String PlayQueueModel::constUriMimeType("text/uri-list");
 
-static const int constUndoStackSize = 20;
-static const int constUndoItemLimit = 500;
-
 static bool checkExtension(const QString &file)
 {
     static QSet<QString> constExtensions=QSet<QString>()

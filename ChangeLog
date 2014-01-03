@@ -34,8 +34,8 @@
 1.2.2
 -----
  1. Fix British English translation.
- 2. Improve internal HTTP security - only server files to MPD host, and only
-    serve files in playqueue.
+ 2. Improve internal HTTP security - only serve files to MPD host, and only
+    files in playqueue.
  3. Also remove CDDA files when Cantata exits.
  4. Improve error message if 'playlist_directory' does not exist.
  5. If icon theme does not have network-server, then use audio file icon for

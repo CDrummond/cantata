@@ -137,6 +137,15 @@ QVariant DevicesModel::data(const QModelIndex &index, int role) const
     MusicLibraryItem *item = static_cast<MusicLibraryItem *>(index.internalPointer());
 
     switch (role) {
+    case Qt::DisplayRole:
+        if (MusicLibraryItem::Type_Song==item->itemType()) {
+            MusicLibraryItemSong *song = static_cast<MusicLibraryItemSong *>(item);
+            if (MusicLibraryItem::Type_Root==song->parentItem()->itemType()) {
+                Device *dev=static_cast<Device *>(song->parentItem());
+                return song->song().trackAndTitleStr(Device::AudioCd!=dev->devType() || !song->song().albumartist.startsWith(dev->data()));
+            }
+        }
+        break;
     case ItemView::Role_SubText:
         if (MusicLibraryItem::Type_Root==item->itemType()) {
             Device *dev=static_cast<Device *>(item);

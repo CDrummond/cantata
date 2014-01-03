@@ -57,6 +57,8 @@
     start-up.
 13. Fix broken spinboxes in some dialogs with Gtk style.
 14. Correctly style treeview in CD details dialog.
+15. Only show artist name of CD track if it does not start with main CD artist.
+16. Show track numbers in CD listing.
 
 1.2.1
 -----

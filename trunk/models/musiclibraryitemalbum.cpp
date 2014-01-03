@@ -35,8 +35,10 @@
 #include "device.h"
 #include "utils.h"
 #endif
+#ifdef ENABLE_ONLINE_SERVICES
 #include "onlineservice.h"
 #include "onlineservicesmodel.h"
+#endif
 #include <QPixmap>
 #include <QApplication>
 #include <QFontMetrics>
@@ -255,6 +257,7 @@ const QPixmap & MusicLibraryItemAlbum::cover()
                 static_cast<Device *>(parentItem()->parentItem())->requestCover(song);
             }
             #endif
+            #ifdef ENABLE_ONLINE_SERVICES
             else if (root->isOnlineService()) {
                 img.img=OnlineServicesModel::self()->requestImage(static_cast<OnlineService *>(root)->id(), parentItem()->data(), data(), m_imageUrl);
                 // ONLINE: Image URL is encoded in song.name...
@@ -264,7 +267,9 @@ const QPixmap & MusicLibraryItemAlbum::cover()
 //                    song.type=Song::OnlineSvrTrack;
 //                }
 //                img=Covers::self()->requestImage(song);
-            } else {
+            }
+            #endif
+            else {
                 img=Covers::self()->requestImage(song);
             }
 

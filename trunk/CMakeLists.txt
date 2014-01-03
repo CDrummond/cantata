@@ -38,6 +38,8 @@ option(ENABLE_SPEEXDSP "Enable SpeexDSP libraries (used to speed-up replaygain c
 option(ENABLE_PROXY_CONFIG "Enable proxy config in settings dialog" OFF)
 option(ENABLE_EXTERNAL_TAGS "Enable usage of external app for reading/writing tags (EXPERIMENTAL - NOT FULLY WORKING)" OFF)
 option(ENABLE_HTTP_SERVER "Enable internal HTTP server to play non-MPD files" ON)
+option(ENABLE_ONLINE_SERVICES "Enable support for online services (Jamendo, Magnatune, SoundCloud, and Podcasts)" ON)
+
 if (NOT WIN32 AND NOT APPLE)
     option(ENABLE_OVERLAYSCROLLBARS "Enable support for overlay style scrollbars when using QGtkStyle (Linux only - EXPERIMENTAL - NOT FULLY WORKING!)" OFF)
     option(ENABLE_CDPARANOIA "Enable CDParanoia libraries (required for AudioCD support)" ON)
@@ -223,10 +225,7 @@ set(CANTATA_SRCS gui/application.cpp gui/main.cpp gui/initialsettingswizard.cpp 
     models/playqueueproxymodel.cpp models/dirviewmodel.cpp models/dirviewproxymodel.cpp models/dirviewitem.cpp models/dirviewitemdir.cpp
     models/streamsmodel.cpp models/streamsproxymodel.cpp models/albumsmodel.cpp models/albumsproxymodel.cpp models/proxymodel.cpp
     models/actionmodel.cpp models/digitallyimported.cpp models/streamsearchmodel.cpp models/musiclibraryitem.cpp models/musicmodel.cpp
-    models/multimusicmodel.cpp models/onlineservicesmodel.cpp models/musiclibraryitempodcast.cpp models/searchmodel.cpp
-    online/onlineservicespage.cpp online/onlineservice.cpp online/jamendoservice.cpp online/jamendosettingsdialog.cpp
-    online/magnatuneservice.cpp online/magnatunesettingsdialog.cpp online/soundcloudservice.cpp online/podcastservice.cpp
-    online/rssparser.cpp online/opmlparser.cpp online/podcastsearchdialog.cpp online/onlinesettings.cpp online/podcastsettingsdialog.cpp
+    models/multimusicmodel.cpp models/searchmodel.cpp
     mpd/mpdconnection.cpp mpd/mpdparseutils.cpp mpd/mpdstats.cpp mpd/mpdstatus.cpp mpd/song.cpp mpd/mpduser.cpp mpd/cuefile.cpp
     dynamic/dynamic.cpp dynamic/dynamicpage.cpp dynamic/dynamicproxymodel.cpp dynamic/dynamicruledialog.cpp dynamic/dynamicrulesdialog.cpp
     widgets/treeview.cpp widgets/listview.cpp widgets/itemview.cpp widgets/autohidingsplitter.cpp widgets/timeslider.cpp
@@ -249,11 +248,7 @@ set(CANTATA_MOC_HDRS
     streams/streamspage.h streams/streamdialog.h streams/streamfetcher.h streams/digitallyimportedsettings.h streams/streamssettings.h
     models/musiclibrarymodel.h models/musiclibraryproxymodel.h models/playlistsmodel.h models/playlistsproxymodel.h models/playqueuemodel.h
     models/playqueueproxymodel.h models/dirviewmodel.h models/dirviewproxymodel.h models/albumsmodel.h models/streamsmodel.h
-    models/actionmodel.h models/digitallyimported.h models/streamsearchmodel.h models/multimusicmodel.h models/onlineservicesmodel.h
-    models/searchmodel.h
-    online/onlineservice.h online/onlineservicespage.h online/jamendoservice.h online/magnatuneservice.h
-    online/magnatunesettingsdialog.h online/magnatuneservice.h online/magnatunesettingsdialog.h online/soundcloudservice.h
-    online/podcastservice.h online/podcastsearchdialog.h online/podcastsettingsdialog.h online/onlinesettings.h
+    models/actionmodel.h models/digitallyimported.h models/streamsearchmodel.h models/multimusicmodel.h models/searchmodel.h
     mpd/mpdconnection.h mpd/mpdstats.h mpd/mpdstatus.h
     dynamic/dynamic.h dynamic/dynamicpage.h dynamic/dynamicruledialog.h dynamic/dynamicrulesdialog.h
     widgets/treeview.h widgets/listview.h widgets/itemview.h widgets/autohidingsplitter.h widgets/timeslider.h widgets/actionlabel.h
@@ -272,6 +267,18 @@ set(CANTATA_UIS
     context/togglelist.ui context/othersettings.ui
     widgets/itemview.ui
     online/onlineservicespage.ui online/onlinesettings.ui)
+
+if (ENABLE_ONLINE_SERVICES)
+    set(CANTATA_SRCS ${CANTATA_SRCS} online/onlineservicespage.cpp online/onlineservice.cpp online/jamendoservice.cpp
+        online/jamendosettingsdialog.cpp online/magnatuneservice.cpp online/magnatunesettingsdialog.cpp online/soundcloudservice.cpp
+        online/podcastservice.cpp online/rssparser.cpp online/opmlparser.cpp online/podcastsearchdialog.cpp online/onlinesettings.cpp
+        online/podcastsettingsdialog.cpp models/onlineservicesmodel.cpp models/musiclibraryitempodcast.cpp)
+    set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} online/onlineservice.h online/onlineservicespage.h online/jamendoservice.h
+        online/magnatuneservice.h online/magnatunesettingsdialog.h online/magnatuneservice.h online/magnatunesettingsdialog.h
+        online/soundcloudservice.h online/podcastservice.h online/podcastsearchdialog.h online/podcastsettingsdialog.h
+        online/onlinesettings.h models/onlineservicesmodel.h)
+    set(CANTATA_UIS ${CANTATA_UIS} online/onlineservicespage.ui online/onlinesettings.ui)
+endif (ENABLE_ONLINE_SERVICES)
 
 if (ENABLE_HTTP_SERVER)
     set(CANTATA_SRCS ${CANTATA_SRCS} http/httpserversettings.cpp http/httpsocket.cpp)
@@ -639,7 +646,7 @@ if (TAGLIB_FOUND)
         endif (ENABLE_PROXY_CONFIG)
     endif (ENABLE_REMOTE_DEVICES OR ENABLE_HTTP_STREAM_PLAYBACK OR AUDIOCD_SUPPORT OR MTP_FOUND OR ENABLE_PROXY_CONFIG OR ENABLE_REPLAYGAIN_SUPPORT)
     
-    if (NOT TAGLIB_FOUND OR NOT MTP_FOUND OR NOT AUDIOCD_SUPPORT OR NOT ENABLE_REPLAYGAIN_SUPPORT OR NOT ENABLE_HTTP_STREAM_PLAYBACK OR NOT ENABLE_REMOTE_DEVICES OR NOT ENABLE_HTTP_SERVER OR (NOT ENABLE_PROXY_CONFIG AND NOT ENABLE_KDE))
+    if (NOT TAGLIB_FOUND OR NOT MTP_FOUND OR NOT AUDIOCD_SUPPORT OR NOT ENABLE_REPLAYGAIN_SUPPORT OR NOT ENABLE_HTTP_STREAM_PLAYBACK OR NOT ENABLE_REMOTE_DEVICES OR NOT ENABLE_HTTP_SERVER OR NOT ENABLE_ONLINE_SERVICES OR (NOT ENABLE_PROXY_CONFIG AND NOT ENABLE_KDE))
         message("      Disabled features:")
         if (NOT ENABLE_HTTP_STREAM_PLAYBACK)
             message("        - MPD HTTP stream playback (Phonon required for Qt4, QtMultiMedia for Qt5)")
@@ -662,7 +669,10 @@ if (TAGLIB_FOUND)
         if (NOT ENABLE_HTTP_SERVER)
             message("        - Internal HTTP server (playback of AudioCDs, and songs from media files disabled)")
         endif (NOT ENABLE_HTTP_SERVER)
-    endif (NOT TAGLIB_FOUND OR NOT MTP_FOUND OR NOT AUDIOCD_SUPPORT OR NOT ENABLE_REPLAYGAIN_SUPPORT OR NOT ENABLE_HTTP_STREAM_PLAYBACK OR NOT ENABLE_REMOTE_DEVICES OR NOT ENABLE_HTTP_SERVER OR (NOT ENABLE_PROXY_CONFIG AND NOT ENABLE_KDE))
+        if (NOT ENABLE_ONLINE_SERVICES)
+            message("        - Online services (Jamendo, Magnatune, SoundCloud, and Podcasts)")
+        endif (NOT ENABLE_ONLINE_SERVICES)
+    endif (NOT TAGLIB_FOUND OR NOT MTP_FOUND OR NOT AUDIOCD_SUPPORT OR NOT ENABLE_REPLAYGAIN_SUPPORT OR NOT ENABLE_HTTP_STREAM_PLAYBACK OR NOT ENABLE_REMOTE_DEVICES OR NOT ENABLE_HTTP_SERVER OR NOT ENABLE_ONLINE_SERVICES OR (NOT ENABLE_PROXY_CONFIG AND NOT ENABLE_KDE))
 
     if (ENABLE_EXTERNAL_TAGS)
         message("      Tags will be read/written via an external helper app")
@@ -690,7 +700,9 @@ else (TAGLIB_FOUND)
     if (NOT ENABLE_HTTP_SERVER)
         message("        - Internal HTTP server (playback of AudioCDs, and songs from media files disabled)")
     endif (NOT ENABLE_HTTP_SERVER)
-
+    if (NOT ENABLE_ONLINE_SERVICES)
+        message("        - Online services (Jamendo, Magnatune, SoundCloud, and Podcasts)")
+    endif (NOT ENABLE_ONLINE_SERVICES)
 endif (TAGLIB_FOUND)
 
 if (NOT CMAKE_SYSTEM_NAME MATCHES Linux)

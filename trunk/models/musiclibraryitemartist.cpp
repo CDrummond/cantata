@@ -38,8 +38,10 @@
 #include "device.h"
 #include "utils.h"
 #endif
+#ifdef ENABLE_ONLINE_SERVICES
 #include "onlineservice.h"
 #include "onlineservicesmodel.h"
+#endif
 
 bool MusicLibraryItemArtist::lessThan(const MusicLibraryItem *a, const MusicLibraryItem *b)
 {
@@ -164,9 +166,13 @@ const QPixmap & MusicLibraryItemArtist::cover()
             //#endif
             if (root && !root->useArtistImages()) {
                 // Not showing artist images in this model, so dont request any!
-            } else if (root && root->isOnlineService()) {
+            }
+            #ifdef ENABLE_ONLINE_SERVICES
+            else if (root && root->isOnlineService()) {
                 img.img=OnlineServicesModel::self()->requestImage(static_cast<OnlineService *>(parentItem())->id(), data(), QString(), m_imageUrl);
-            } else {
+            }
+            #endif
+            else {
                 img=Covers::self()->requestImage(song);
             }
 

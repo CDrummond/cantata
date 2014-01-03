@@ -36,7 +36,9 @@
 #include "settings.h"
 #include "basicitemdelegate.h"
 #include "streamsmodel.h"
+#ifdef ENABLE_ONLINE_SERVICES
 #include "podcastsearchdialog.h"
+#endif
 #include "squeezedtextlabel.h"
 #include <QLabel>
 #include <QPushButton>
@@ -262,9 +264,11 @@ CacheSettings::CacheSettings(QWidget *parent)
                   << "*"+ArtistView::constSimilarInfoExt << "*.json.gz" << "*.jpg" << "*.png", tree);
     new CacheItem(i18n("Album Information"), Utils::cacheDir(AlbumView::constCacheDir, false), QStringList() << "*"+AlbumView::constInfoExt << "*.jpg" << "*.png", tree);
     new CacheItem(i18n("Streams"), Utils::cacheDir(StreamsModel::constSubDir, false), QStringList() << "*"+StreamsModel::constCacheExt, tree);
+    #ifdef ENABLE_ONLINE_SERVICES
     new CacheItem(i18n("Jamendo"), Utils::cacheDir("jamendo", false), QStringList() << "*"+MusicLibraryModel::constLibraryCompressedExt << "*.jpg" << "*.png", tree);
     new CacheItem(i18n("Magnatune"), Utils::cacheDir("magnatune", false), QStringList() << "*"+MusicLibraryModel::constLibraryCompressedExt << "*.jpg" << "*.png", tree);
     new CacheItem(i18n("Podcast Directories"), Utils::cacheDir(PodcastSearchDialog::constCacheDir, false), QStringList() << "*"+PodcastSearchDialog::constExt, tree);
+    #endif
 
     for (int i=0; i<tree->topLevelItemCount(); ++i) {
         connect(static_cast<CacheItem *>(tree->topLevelItem(i)), SIGNAL(updated()), this, SLOT(updateSpace()));

@@ -21,13 +21,16 @@
  * Boston, MA 02110-1301, USA.
  */
 
+#include "config.h"
 #include "musiclibraryitemalbum.h"
 #include "musiclibraryitemartist.h"
 #include "musiclibraryitemsong.h"
 #include "musiclibraryitemroot.h"
+#ifdef ENABLE_ONLINE_SERVICES
 #include "musiclibraryitempodcast.h"
-#include "musicmodel.h"
 #include "onlineservice.h"
+#endif
+#include "musicmodel.h"
 #include "itemview.h"
 #include "localize.h"
 #include "qtplural.h"
@@ -106,12 +109,14 @@ QVariant MusicModel::data(const QModelIndex &index, int role) const
             MusicLibraryItemArtist *artist = static_cast<MusicLibraryItemArtist *>(item);
             return artist->isVarious() ? Icons::self()->variousArtistsIcon : Icons::self()->artistIcon;
         }
+        #ifdef ENABLE_ONLINE_SERVICES
         case MusicLibraryItem::Type_Podcast:
             if (MusicLibraryItemAlbum::CoverNone==MusicLibraryItemAlbum::currentCoverSize()) {
                 return Icons::self()->podcastIcon;
             } else {
                 return static_cast<MusicLibraryItemPodcast *>(item)->cover();
             }
+        #endif
         case MusicLibraryItem::Type_Album:
             if (MusicLibraryItemAlbum::CoverNone==MusicLibraryItemAlbum::currentCoverSize() || !root(item)->useAlbumImages()) {
                 return Icons::self()->albumIcon;
@@ -133,9 +138,11 @@ QVariant MusicModel::data(const QModelIndex &index, int role) const
             if (static_cast<MusicLibraryItemAlbum *>(song->parentItem())->isSingleTracks()) {
                 return song->song().artistSong();
             }
+            #ifdef ENABLE_ONLINE_SERVICES
             if (MusicLibraryItem::Type_Podcast==song->parentItem()->itemType()) {
                 return item->data();
             }
+            #endif
             return song->song().trackAndTitleStr(static_cast<MusicLibraryItemArtist *>(song->parentItem()->parentItem())->isVarious() &&
                                                  !Song::isVariousArtists(song->song().artist));
         } else if (MusicLibraryItem::Type_Album==item->itemType() && MusicLibraryItemAlbum::showDate() &&
@@ -145,6 +152,7 @@ QVariant MusicModel::data(const QModelIndex &index, int role) const
         return item->data();
     case Qt::ToolTipRole:
         if (MusicLibraryItem::Type_Song==item->itemType()) {
+            #ifdef ENABLE_ONLINE_SERVICES
             if (MusicLibraryItem::Type_Podcast==item->parentItem()->itemType()) {
                 return parentData(item)+data(index, Qt::DisplayRole).toString()+QLatin1String("<br/>")+
                        Song::formattedTime(static_cast<MusicLibraryItemSong *>(item)->time(), true)+
@@ -154,6 +162,7 @@ QVariant MusicModel::data(const QModelIndex &index, int role) const
                 return parentData(item)+data(index, Qt::DisplayRole).toString()+QLatin1String("<br/>")+
                        Song::formattedTime(static_cast<MusicLibraryItemSong *>(item)->time(), true);
             }
+            #endif
             return parentData(item)+data(index, Qt::DisplayRole).toString()+QLatin1String("<br/>")+
                    Song::formattedTime(static_cast<MusicLibraryItemSong *>(item)->time(), true)+
                    QLatin1String("<br/><small><i>")+static_cast<MusicLibraryItemSong *>(item)->song().file+QLatin1String("</i></small>");
@@ -224,8 +233,10 @@ QVariant MusicModel::data(const QModelIndex &index, int role) const
                 v.setValue<QPixmap>(static_cast<MusicLibraryItemArtist *>(item)->cover());
             }
             break;
+        #ifdef ENABLE_ONLINE_SERVICES
         case MusicLibraryItem::Type_Podcast:
             v.setValue<QPixmap>(static_cast<MusicLibraryItemPodcast *>(item)->cover());
+        #endif
         default:
             break;
         }

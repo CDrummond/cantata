@@ -101,9 +101,13 @@ InterfaceSettings::InterfaceSettings(QWidget *p, const QStringList &hiddenPages)
     if (hiddenPages.contains(QLatin1String("StreamsPage"))) {
         enabledViews-=V_Streams;
     }
+    #ifdef ENABLE_ONLINE_SERVICES
     if (hiddenPages.contains(QLatin1String("OnlineServicesPage"))) {
         enabledViews-=V_Online;
     }
+    #else
+    enabledViews-=V_Online;
+    #endif
     #ifdef ENABLE_DEVICES_SUPPORT
     if (hiddenPages.contains(QLatin1String("DevicesPage"))) {
         enabledViews-=V_Devices;
@@ -151,12 +155,11 @@ InterfaceSettings::InterfaceSettings(QWidget *p, const QStringList &hiddenPages)
         REMOVE(onlineView)
         REMOVE(onlineViewLabel)
     }
-    #ifdef ENABLE_DEVICES_SUPPORT
+
     if (enabledViews&V_Devices) {
         addViewTypes(devicesView);
     }
-    #endif
-    if (!(enabledViews&V_Devices)) {
+    else {
         REMOVE(devicesView)
         REMOVE(devicesViewLabel)
     }

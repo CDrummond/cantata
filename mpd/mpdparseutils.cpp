@@ -50,7 +50,9 @@
 #include "utils.h"
 #include "cuefile.h"
 #include "mpdconnection.h"
+#ifdef ENABLE_ONLINE_SERVICES
 #include "onlineservice.h"
+#endif
 
 #include <QDebug>
 static bool debugEnabled=false;
@@ -276,7 +278,10 @@ Song MPDParseUtils::parseSong(const QByteArray &data, bool isPlayQueue)
                     }
                 }
             } else {
-                if (!OnlineService::decode(song)) {
+                #ifdef ENABLE_ONLINE_SERVICES
+                if (!OnlineService::decode(song))
+                #endif
+                {
                     QString name=getAndRemoveStreamName(song.file);
                     if (!name.isEmpty()) {
                         song.name=name;

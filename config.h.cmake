@@ -18,6 +18,7 @@
 
 #cmakedefine ENABLE_DEVICES_SUPPORT 1
 #cmakedefine ENABLE_REMOTE_DEVICES 1
+#cmakedefine ENABLE_ONLINE_SERVICES 1
 #cmakedefine COMPLEX_TAGLIB_FILENAME 1
 #cmakedefine TAGLIB_FOUND 1
 #cmakedefine TAGLIB_EXTRAS_FOUND 1

@@ -372,7 +372,7 @@ bool PodcastService::processingUrl(const QUrl &url) const
 void PodcastService::addUrl(const QUrl &url, bool isNew)
 {
     setBusy(true);
-    NetworkJob *job=NetworkAccessManager::self()->get(QUrl(url));
+    NetworkJob *job=NetworkAccessManager::self()->get(url);
     connect(job, SIGNAL(finished()), this, SLOT(rssJobFinished()));
     job->setProperty(constNewFeedProperty, isNew);
     rssJobs.append(job);
@@ -455,7 +455,7 @@ void PodcastService::downloadEpisode(const MusicLibraryItemPodcast *podcast, con
 
     dest=Utils::fixPath(dest)+Utils::fixPath(encodeName(podcast->data()))+Utils::getFile(episode.toString());
     setBusy(true);
-    NetworkJob *job=NetworkAccessManager::self()->get(QUrl(episode));
+    NetworkJob *job=NetworkAccessManager::self()->get(episode);
     connect(job, SIGNAL(finished()), this, SLOT(downloadJobFinished()));
     connect(job, SIGNAL(readyRead()), this, SLOT(downloadReadyRead()));
     connect(job, SIGNAL(downloadPercent(int)), this, SLOT(downloadPercent(int)));

@@ -259,7 +259,6 @@ set(CANTATA_UIS
     dynamic/dynamicpage.ui dynamic/dynamicrule.ui dynamic/dynamicrules.ui
     context/togglelist.ui context/othersettings.ui
     widgets/itemview.ui
-    http/httpserversettings.ui
     online/onlineservicespage.ui online/onlinesettings.ui)
 
 if (ENABLE_HTTP_SERVER)

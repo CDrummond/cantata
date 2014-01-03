@@ -35,7 +35,9 @@
 #include "thread.h"
 #include "settings.h"
 #include "basicitemdelegate.h"
+#ifdef ENABLE_STREAMS
 #include "streamsmodel.h"
+#endif
 #ifdef ENABLE_ONLINE_SERVICES
 #include "podcastsearchdialog.h"
 #endif
@@ -263,7 +265,9 @@ CacheSettings::CacheSettings(QWidget *parent)
     new CacheItem(i18n("Artist Information"), Utils::cacheDir(ArtistView::constCacheDir, false), QStringList() << "*"+ArtistView::constInfoExt
                   << "*"+ArtistView::constSimilarInfoExt << "*.json.gz" << "*.jpg" << "*.png", tree);
     new CacheItem(i18n("Album Information"), Utils::cacheDir(AlbumView::constCacheDir, false), QStringList() << "*"+AlbumView::constInfoExt << "*.jpg" << "*.png", tree);
+    #ifdef ENABLE_STREAMS
     new CacheItem(i18n("Streams"), Utils::cacheDir(StreamsModel::constSubDir, false), QStringList() << "*"+StreamsModel::constCacheExt, tree);
+    #endif
     #ifdef ENABLE_ONLINE_SERVICES
     new CacheItem(i18n("Jamendo"), Utils::cacheDir("jamendo", false), QStringList() << "*"+MusicLibraryModel::constLibraryCompressedExt << "*.jpg" << "*.png", tree);
     new CacheItem(i18n("Magnatune"), Utils::cacheDir("magnatune", false), QStringList() << "*"+MusicLibraryModel::constLibraryCompressedExt << "*.jpg" << "*.png", tree);

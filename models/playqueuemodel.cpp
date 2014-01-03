@@ -589,9 +589,10 @@ void PlayQueueModel::addItems(const QStringList &items, int row, bool replace, q
 
 void PlayQueueModel::addFiles(const QStringList &filenames, int row, bool replace, quint8 priority)
 {
-    //Check for empty playlist
-    if (replace || songs.isEmpty()) {
+    if (replace) {
         emit filesAdded(filenames, 0, 0, MPDConnection::AddReplaceAndPlay, priority);
+    } else if (songs.isEmpty()) {
+         emit filesAdded(filenames, 0, 0, MPDConnection::AddToEnd, priority);
     } else if (row < 0) {
         emit filesAdded(filenames, songs.size(), songs.size(), MPDConnection::AddToEnd, priority);
     } else {

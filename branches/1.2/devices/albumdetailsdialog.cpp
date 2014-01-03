@@ -32,6 +32,7 @@
 #include "cdalbum.h"
 #include "icons.h"
 #include "coverdialog.h"
+#include "basicitemdelegate.h"
 #include <QMenu>
 #include <QItemDelegate>
 #include <QMouseEvent>
@@ -149,6 +150,7 @@ AlbumDetailsDialog::AlbumDetailsDialog(QWidget *parent)
     cover->setMaximumSize(size, size);
     setCover();
     cover->installEventFilter(this);
+    tracks->setItemDelegate(new BasicItemDelegate(tracks));
 }
 
 AlbumDetailsDialog::~AlbumDetailsDialog()

@@ -18,6 +18,8 @@
 11. Fix short-cuts in preferences dialog.
 12. Dont clear the playqueue when Cantata is passed a song as a commandline at
     start-up.
+13. Fix broken spinboxes in some dialogs with Gtk style.
+14. Correctly style treeview in CD details dialog.
 
 1.2.1
 -----

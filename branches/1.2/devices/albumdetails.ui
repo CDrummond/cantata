@@ -146,7 +146,7 @@
       <item>
        <widget class="QTreeWidget" name="tracks">
         <property name="alternatingRowColors">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
         <property name="rootIsDecorated">
          <bool>false</bool>

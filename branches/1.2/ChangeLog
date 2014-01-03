@@ -16,6 +16,8 @@
     This fixes seeking of FLAC files.
 10. Fix toggling of checkboxes via short-cut.
 11. Fix short-cuts in preferences dialog.
+12. Dont clear the playqueue when Cantata is passed a song as a commandline at
+    start-up.
 
 1.2.1
 -----

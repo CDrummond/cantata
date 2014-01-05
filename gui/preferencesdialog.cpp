@@ -35,7 +35,9 @@
 #include "serversettings.h"
 #include "playbacksettings.h"
 #include "filesettings.h"
+#ifdef ENABLE_HTTP_SERVER
 #include "httpserversettings.h"
+#endif
 #include "contextsettings.h"
 #include "cachesettings.h"
 #include "localize.h"

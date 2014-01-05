@@ -1,4 +1,7 @@
-﻿1.2.2
+﻿1.2.3
+-----
+
+1.2.2
 -----
  1. Fix British English translation.
  2. Improve internal HTTP security - only serve files to MPD host, and only

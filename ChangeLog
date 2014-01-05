@@ -34,6 +34,9 @@
     max_output_buffer_size setting.
 18. Add CMake option to disable streams, dynamic, and online services. Refer to
     INSTALL file for details.
+19. Don't use QKeySequence::Delete to detect delete key event for play queue,
+    instead check for no modifiers and the Delete key itself. Closing a
+    terminal with Ctrl-D seems to cause Cantata to see QKeySequence::Delete
 
 1.2.2
 -----

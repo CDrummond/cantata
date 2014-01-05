@@ -142,8 +142,12 @@ enum Tabs
 
 bool DeleteKeyEventHandler::eventFilter(QObject *obj, QEvent *event)
 {
-    if (view->hasFocus() && QEvent::KeyRelease==event->type() && static_cast<QKeyEvent *>(event)->matches(QKeySequence::Delete)) {
-        act->trigger();
+    if (view->hasFocus() && QEvent::KeyRelease==event->type()) {
+        QKeyEvent *keyEvent=static_cast<QKeyEvent *>(event);
+
+        if (Qt::NoModifier==keyEvent->modifiers() && Qt::Key_Delete==keyEvent->key()) {
+            act->trigger();
+        }
         return true;
     }
     return QObject::eventFilter(obj, event);

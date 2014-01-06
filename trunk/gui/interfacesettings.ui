@@ -58,37 +58,17 @@
          <item row="1" column="1">
           <widget class="QComboBox" name="libraryCoverSize"/>
          </item>
-         <item row="2" column="0">
-          <widget class="BuddyLabel" name="libraryArtistImageLabel">
+         <item row="2" column="0" colspan="2">
+          <widget class="QCheckBox" name="libraryArtistImage">
            <property name="text">
-            <string>Show artist images:</string>
-           </property>
-           <property name="buddy">
-            <cstring>libraryArtistImage</cstring>
+            <string>Show artist images</string>
            </property>
           </widget>
          </item>
-         <item row="2" column="1">
-          <widget class="OnOffButton" name="libraryArtistImage">
+         <item row="3" column="0" colspan="2">
+          <widget class="QCheckBox" name="libraryYear">
            <property name="text">
-            <string/>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="0">
-          <widget class="BuddyLabel" name="label_6">
-           <property name="text">
-            <string>Show album year:</string>
-           </property>
-           <property name="buddy">
-            <cstring>libraryYear</cstring>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="1">
-          <widget class="OnOffButton" name="libraryYear">
-           <property name="text">
-            <string/>
+            <string>Show album year</string>
            </property>
           </widget>
          </item>
@@ -218,20 +198,10 @@ within the folder of the current track, or within its parent folder. If no image
        <item row="0" column="1">
         <widget class="QComboBox" name="playlistsView"/>
        </item>
-       <item row="1" column="0">
-        <widget class="BuddyLabel" name="playListsStartClosedLabel">
+       <item row="1" column="0" colspan="2">
+        <widget class="QCheckBox" name="playListsStartClosed">
          <property name="text">
-          <string>Initially collapse albums:</string>
-         </property>
-         <property name="buddy">
-          <cstring>playListsStartClosed</cstring>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="OnOffButton" name="playListsStartClosed">
-         <property name="text">
-          <string/>
+          <string>Initially collapse albums</string>
          </property>
         </widget>
        </item>
@@ -331,78 +301,40 @@ within the folder of the current track, or within its parent folder. If no image
          </item>
         </widget>
        </item>
-       <item row="1" column="0">
-        <widget class="BuddyLabel" name="playQueueStartClosedLabel">
+       <item row="1" column="0" colspan="2">
+        <widget class="QCheckBox" name="playQueueStartClosed">
          <property name="text">
-          <string>Initially collapse albums:</string>
-         </property>
-         <property name="buddy">
-          <cstring>playQueueStartClosed</cstring>
+          <string>Initially collapse albums</string>
          </property>
         </widget>
        </item>
-       <item row="1" column="1">
-        <widget class="OnOffButton" name="playQueueStartClosed">
+       <item row="2" column="0" colspan="2">
+        <widget class="QCheckBox" name="playQueueAutoExpand">
          <property name="text">
-          <string/>
+          <string>Automatically expand current album</string>
          </property>
         </widget>
        </item>
-       <item row="2" column="0">
-        <widget class="BuddyLabel" name="playQueueAutoExpandLabel">
+       <item row="3" column="0" colspan="2">
+        <widget class="QCheckBox" name="playQueueScroll">
          <property name="text">
-          <string>Automatically expand current album:</string>
-         </property>
-         <property name="buddy">
-          <cstring>playQueueAutoExpand</cstring>
+          <string>Scroll to current track</string>
          </property>
         </widget>
        </item>
-       <item row="2" column="1">
-        <widget class="OnOffButton" name="playQueueAutoExpand">
+       <item row="4" column="0" colspan="2">
+        <widget class="QCheckBox" name="playQueueBackground">
          <property name="text">
-          <string/>
+          <string>Use current album cover as background</string>
          </property>
         </widget>
        </item>
-       <item row="3" column="0">
-        <widget class="BuddyLabel" name="playQueueScrollLabel">
+       <item row="5" column="0" colspan="2">
+        <widget class="QCheckBox" name="playQueueConfirmClear">
          <property name="text">
-          <string>Scroll to current track:</string>
-         </property>
-         <property name="buddy">
-          <cstring>playQueueScroll</cstring>
+          <string>Prompt before clearing</string>
          </property>
         </widget>
-       </item>
-       <item row="3" column="1">
-        <widget class="OnOffButton" name="playQueueScroll"/>
-       </item>
-       <item row="4" column="0">
-        <widget class="BuddyLabel" name="playQueueBackgroundLabel">
-         <property name="text">
-          <string>Use current album cover as background:</string>
-         </property>
-         <property name="buddy">
-          <cstring>playQueueBackground</cstring>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="1">
-        <widget class="OnOffButton" name="playQueueBackground"/>
-       </item>
-       <item row="5" column="0">
-        <widget class="BuddyLabel" name="playQueueConfirmClearLabel">
-         <property name="text">
-          <string>Prompt before clearing:</string>
-         </property>
-         <property name="buddy">
-          <cstring>playQueueConfirmClear</cstring>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="1">
-        <widget class="OnOffButton" name="playQueueConfirmClear"/>
        </item>
       </layout>
      </widget>
@@ -410,76 +342,76 @@ within the folder of the current track, or within its parent folder. If no image
       <attribute name="title">
        <string>External</string>
       </attribute>
-      <layout class="QFormLayout" name="formLayout_7">
-       <item row="0" column="0">
-        <widget class="BuddyLabel" name="label_10">
+      <layout class="QVBoxLayout" name="verticalLayout_5">
+       <item>
+        <widget class="QCheckBox" name="systemTrayPopup">
          <property name="text">
-          <string>Show icon in notification area:</string>
-         </property>
-         <property name="buddy">
-          <cstring>systemTrayCheckBox</cstring>
+          <string>Show popup messages when changing tracks</string>
          </property>
         </widget>
        </item>
-       <item row="0" column="1">
-        <widget class="OnOffButton" name="systemTrayCheckBox">
+       <item>
+        <widget class="QCheckBox" name="systemTrayCheckBox">
          <property name="enabled">
           <bool>true</bool>
          </property>
          <property name="text">
-          <string/>
+          <string>Show icon in notification area</string>
          </property>
         </widget>
        </item>
-       <item row="1" column="0">
-        <widget class="BuddyLabel" name="minimiseOnCloseLabel">
-         <property name="text">
-          <string>Minimize to notification area when closed:</string>
-         </property>
-         <property name="buddy">
-          <cstring>minimiseOnClose</cstring>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="OnOffButton" name="minimiseOnClose">
+       <item>
+        <widget class="QCheckBox" name="minimiseOnClose">
          <property name="enabled">
           <bool>true</bool>
          </property>
          <property name="text">
-          <string/>
+          <string>Minimize to notification area when closed</string>
          </property>
         </widget>
        </item>
-       <item row="2" column="0">
-        <widget class="BuddyLabel" name="startupStateLabel">
-         <property name="text">
-          <string>When Cantata is started:</string>
+       <item>
+        <widget class="QGroupBox" name="startupState">
+         <property name="title">
+          <string>On Start-up:</string>
          </property>
-         <property name="buddy">
-          <cstring>startupStateLabel</cstring>
-         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_4">
+          <item>
+           <widget class="QRadioButton" name="startupStateShow">
+            <property name="text">
+             <string>Show main window</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QRadioButton" name="startupStateHide">
+            <property name="text">
+             <string>Hide main window</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QRadioButton" name="startupStateRestore">
+            <property name="text">
+             <string>Restore previous state</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </widget>
        </item>
-       <item row="2" column="1">
-        <widget class="QComboBox" name="startupState"/>
-       </item>
-       <item row="3" column="0">
-        <widget class="BuddyLabel" name="label_11">
-         <property name="text">
-          <string>Show popup messages when changing tracks:</string>
+       <item>
+        <spacer name="verticalSpacer_3">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
          </property>
-         <property name="buddy">
-          <cstring>systemTrayPopup</cstring>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>90</height>
+          </size>
          </property>
-        </widget>
-       </item>
-       <item row="3" column="1">
-        <widget class="OnOffButton" name="systemTrayPopup">
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
+        </spacer>
        </item>
       </layout>
      </widget>
@@ -493,104 +425,6 @@ within the folder of the current track, or within its parent folder. If no image
          <property name="fieldGrowthPolicy">
           <enum>QFormLayout::ExpandingFieldsGrow</enum>
          </property>
-         <item row="0" column="0">
-          <widget class="BuddyLabel" name="label_7">
-           <property name="text">
-            <string>Group single track albums:</string>
-           </property>
-           <property name="buddy">
-            <cstring>groupSingle</cstring>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="OnOffButton" name="groupSingle">
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="0">
-          <widget class="BuddyLabel" name="useComposerLabel">
-           <property name="text">
-            <string>Group albums by composer:</string>
-           </property>
-           <property name="buddy">
-            <cstring>useComposer</cstring>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="1">
-          <widget class="OnOffButton" name="useComposer">
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="0">
-          <widget class="BuddyLabel" name="groupMultipleLabel">
-           <property name="text">
-            <string>Multiple artist albums:</string>
-           </property>
-           <property name="buddy">
-            <cstring>groupMultiple</cstring>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="1">
-          <widget class="QComboBox" name="groupMultiple"/>
-         </item>
-         <item row="3" column="0">
-          <widget class="BuddyLabel" name="cacheScaledCoversLabel">
-           <property name="text">
-            <string>Cache scaled covers:</string>
-           </property>
-           <property name="buddy">
-            <cstring>cacheScaledCovers</cstring>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="1">
-          <widget class="OnOffButton" name="cacheScaledCovers">
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="0">
-          <widget class="BuddyLabel" name="showDeleteActionLabel">
-           <property name="text">
-            <string>Show delete action in context menus:</string>
-           </property>
-           <property name="buddy">
-            <cstring>showDeleteAction</cstring>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="1">
-          <widget class="OnOffButton" name="showDeleteAction">
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
-         </item>
-         <item row="5" column="0">
-          <widget class="BuddyLabel" name="forceSingleClick_label">
-           <property name="text">
-            <string>Enforce single-click activation of items:</string>
-           </property>
-           <property name="buddy">
-            <cstring>forceSingleClick</cstring>
-           </property>
-          </widget>
-         </item>
-         <item row="5" column="1">
-          <widget class="OnOffButton" name="forceSingleClick">
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
-         </item>
          <item row="6" column="0">
           <widget class="BuddyLabel" name="langLabel">
            <property name="text">
@@ -603,6 +437,48 @@ within the folder of the current track, or within its parent folder. If no image
          </item>
          <item row="6" column="1">
           <widget class="QComboBox" name="lang"/>
+         </item>
+         <item row="0" column="0" colspan="2">
+          <widget class="QCheckBox" name="groupSingle">
+           <property name="text">
+            <string>Group single track albums</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0" colspan="2">
+          <widget class="QCheckBox" name="useComposer">
+           <property name="text">
+            <string>Group albums by composer</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0" colspan="2">
+          <widget class="QCheckBox" name="cacheScaledCovers">
+           <property name="text">
+            <string>Cache scaled covers</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0" colspan="2">
+          <widget class="QCheckBox" name="showDeleteAction">
+           <property name="text">
+            <string>Show delete action in context menus</string>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="0" colspan="2">
+          <widget class="QCheckBox" name="forceSingleClick">
+           <property name="text">
+            <string>Enforce single-click activation of items</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0" colspan="2">
+          <widget class="QCheckBox" name="groupMultiple">
+           <property name="text">
+            <string>Group multiple artist albums under 'Various Artists'</string>
+           </property>
+          </widget>
          </item>
         </layout>
        </item>
@@ -694,13 +570,9 @@ within the folder of the current track, or within its parent folder. If no image
    <extends>QLabel</extends>
    <header>statelabel.h</header>
   </customwidget>
-  <customwidget>
-   <class>OnOffButton</class>
-   <extends>QCheckBox</extends>
-   <header>onoffbutton.h</header>
-  </customwidget>
  </customwidgets>
  <tabstops>
+  <tabstop>tabWidget</tabstop>
   <tabstop>libraryView</tabstop>
   <tabstop>libraryCoverSize</tabstop>
   <tabstop>libraryArtistImage</tabstop>
@@ -718,14 +590,21 @@ within the folder of the current track, or within its parent folder. If no image
   <tabstop>playQueueStartClosed</tabstop>
   <tabstop>playQueueAutoExpand</tabstop>
   <tabstop>playQueueScroll</tabstop>
+  <tabstop>playQueueBackground</tabstop>
+  <tabstop>playQueueConfirmClear</tabstop>
+  <tabstop>systemTrayPopup</tabstop>
   <tabstop>systemTrayCheckBox</tabstop>
   <tabstop>minimiseOnClose</tabstop>
-  <tabstop>startupState</tabstop>
-  <tabstop>systemTrayPopup</tabstop>
+  <tabstop>startupStateShow</tabstop>
+  <tabstop>startupStateHide</tabstop>
+  <tabstop>startupStateRestore</tabstop>
   <tabstop>groupSingle</tabstop>
+  <tabstop>useComposer</tabstop>
   <tabstop>groupMultiple</tabstop>
+  <tabstop>cacheScaledCovers</tabstop>
   <tabstop>showDeleteAction</tabstop>
   <tabstop>forceSingleClick</tabstop>
+  <tabstop>lang</tabstop>
  </tabstops>
  <resources/>
  <connections/>

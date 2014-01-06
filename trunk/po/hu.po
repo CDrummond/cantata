@@ -2837,20 +2837,20 @@ msgid "Configure..."
 msgstr "Beállítás..."
 
 #: gui/shortcutssettingspage.cpp:95
-msgid "Use media keys to control Cantata:"
-msgstr "A médiagombok használata a Cantata vezérlésére:"
+msgid "Use media keys to control Cantata"
+msgstr "A médiagombok használata a Cantata vezérlésére"
 
 #: gui/shortcutssettingspage.cpp:106
-msgid "Use media keys, as configured in desktop settings, to control Cantata:"
+msgid "Use media keys, as configured in desktop settings, to control Cantata"
 msgstr ""
-"A médiagombok használata a Cantata vezérlésére asztalbeállítások szerint:"
+"A médiagombok használata a Cantata vezérlésére asztalbeállítások szerint"
 
 #: gui/shortcutssettingspage.cpp:107
 msgid ""
-"Use media keys, as configured in GNOME/Unity settings, to control Cantata:"
+"Use media keys, as configured in GNOME/Unity settings, to control Cantata"
 msgstr ""
 "A médiagombok használata a Cantata vezérlésére a GNOME/Unity beállításai "
-"szerint:"
+"szerint"
 
 #: gui/stdactions.cpp:55
 msgid "Previous Track"
@@ -3632,8 +3632,8 @@ msgid "Download episodes to:"
 msgstr "Részek letöltése ide:"
 
 #: online/podcastsettingsdialog.cpp:60
-msgid "Automatically download new episodes:"
-msgstr "Új részek automatikus letöltése::"
+msgid "Automatically download new episodes"
+msgstr "Új részek automatikus letöltése"
 
 #: online/podcastsettingsdialog.cpp:82
 msgid "Podcast Settings"
@@ -3678,20 +3678,20 @@ msgstr "Minden héten"
 #. i18n: file: context/othersettings.ui:19
 #. i18n: ectx: property (text), widget (BuddyLabel, contextBackdropLabel)
 #: po/rc.cpp:3 rc.cpp:3
-msgid "Use backdrop:"
-msgstr "Háttér használata:"
+msgid "Use backdrop"
+msgstr "Háttér használata"
 
 #. i18n: file: context/othersettings.ui:32
 #. i18n: ectx: property (text), widget (BuddyLabel, contextDarkBackgroundLabel)
 #: po/rc.cpp:6 rc.cpp:6
-msgid "Dark background:"
+msgid "Dark background"
 msgstr "Fekete háttér"
 
 #. i18n: file: context/othersettings.ui:45
 #. i18n: ectx: property (text), widget (BuddyLabel, wikipediaIntroOnlyLabel)
 #: po/rc.cpp:9 rc.cpp:9
-msgid "Only show basic wikipedia text:"
-msgstr "Csak az alapvető Wikipédia-szöveg mutatása:"
+msgid "Only show basic wikipedia text"
+msgstr "Csak az alapvető Wikipédia-szöveg mutatása"
 
 #. i18n: file: context/othersettings.ui:86
 #. i18n: ectx: property (text), widget (StateLabel, wikipediaIntroOnlyNote)
@@ -3767,8 +3767,8 @@ msgstr "(Beállítandó)"
 #. i18n: file: devices/actiondialog.ui:123
 #. i18n: ectx: property (text), widget (BuddyLabel, label_2)
 #: po/rc.cpp:37 rc.cpp:37
-msgid "Overwrite songs:"
-msgstr "Dalok felülírása:"
+msgid "Overwrite songs"
+msgstr "Dalok felülírása"
 
 #. i18n: file: devices/actiondialog.ui:150
 #. i18n: ectx: property (text), widget (QLabel, label_3)
@@ -3843,8 +3843,8 @@ msgstr "Lemez:"
 #. i18n: file: devices/albumdetails.ui:112
 #. i18n: ectx: property (text), widget (BuddyLabel, label_5)
 #: po/rc.cpp:73 rc.cpp:73
-msgid "Single artist:"
-msgstr "Szólista:"
+msgid "Single artist"
+msgstr "Szólista"
 
 #. i18n: file: devices/audiocdsettings.ui:20
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox)
@@ -3855,8 +3855,8 @@ msgstr "Album- és száminformációk visszakeresése"
 #. i18n: file: devices/audiocdsettings.ui:26
 #. i18n: ectx: property (text), widget (BuddyLabel, label_3)
 #: po/rc.cpp:91 rc.cpp:91
-msgid "Automatically lookup:"
-msgstr "Automatikus áttekintés:"
+msgid "Automatically lookup"
+msgstr "Automatikus áttekintés"
 
 #. i18n: file: devices/audiocdsettings.ui:39
 #. i18n: ectx: property (text), widget (BuddyLabel, cdLookupLabel)
@@ -3885,14 +3885,14 @@ msgstr "Audi kivonatolás"
 #. i18n: file: devices/audiocdsettings.ui:94
 #. i18n: ectx: property (text), widget (BuddyLabel, label_4)
 #: po/rc.cpp:106 rc.cpp:106
-msgid "Full paranoia mode (best quality):"
-msgstr "Teljes paranoia mód (legjobb minőség):"
+msgid "Full paranoia mode (best quality)"
+msgstr "Teljes paranoia mód (legjobb minőség)"
 
 #. i18n: file: devices/audiocdsettings.ui:107
 #. i18n: ectx: property (text), widget (BuddyLabel, label_5)
 #: po/rc.cpp:109 rc.cpp:109
-msgid "Never skip on read error:"
-msgstr "Olvasási hiba átlépése - soha:"
+msgid "Never skip on read error"
+msgstr "Olvasási hiba átlépése - soha"
 
 #. i18n: file: devices/devicepropertieswidget.ui:20
 #. i18n: ectx: property (text), widget (QLabel, remoteDeviceNote)
@@ -3944,20 +3944,20 @@ msgstr "Borító maximális mérete:"
 #. i18n: file: devices/devicepropertieswidget.ui:82
 #. i18n: ectx: property (text), widget (BuddyLabel, fixVariousArtistsLabel)
 #: po/rc.cpp:124 rc.cpp:124
-msgid "'Various Artists' workaround:"
-msgstr "'Vegyes előadók' munkakörnyezet:"
+msgid "'Various Artists' workaround"
+msgstr "'Vegyes előadók' munkakörnyezet"
 
 #. i18n: file: devices/devicepropertieswidget.ui:95
 #. i18n: ectx: property (text), widget (BuddyLabel, autoScanLabel)
 #: po/rc.cpp:127 rc.cpp:127
-msgid "Automatically scan music when attached:"
-msgstr "Csatlakozáskor zene automatikus keresése:"
+msgid "Automatically scan music when attached"
+msgstr "Csatlakozáskor zene automatikus keresése"
 
 #. i18n: file: devices/devicepropertieswidget.ui:108
 #. i18n: ectx: property (text), widget (BuddyLabel, useCacheLabel)
 #: po/rc.cpp:130 rc.cpp:130
-msgid "Use cache:"
-msgstr "Cache használata:"
+msgid "Use cache"
+msgstr "Cache használata"
 
 #. i18n: file: devices/devicepropertieswidget.ui:121
 #. i18n: ectx: property (text), widget (QLabel, defaultVolumeLabel)
@@ -3986,8 +3986,8 @@ msgstr "Fájlnevek"
 #. i18n: file: tags/trackorganiser.ui:112
 #. i18n: ectx: property (text), widget (BuddyLabel, label_3)
 #: po/rc.cpp:139 po/rc.cpp:828 rc.cpp:139 rc.cpp:828
-msgid "Use only ASCII characters:"
-msgstr "Csak ASCII-es karakterek használata:"
+msgid "Use only ASCII characters"
+msgstr "Csak ASCII-es karakterek használata"
 
 #. i18n: file: devices/devicepropertieswidget.ui:159
 #. i18n: ectx: property (text), widget (BuddyLabel, label_4)
@@ -3998,8 +3998,8 @@ msgstr "Csak ASCII-es karakterek használata:"
 #. i18n: file: tags/trackorganiser.ui:95
 #. i18n: ectx: property (text), widget (BuddyLabel, label_4)
 #: po/rc.cpp:142 po/rc.cpp:825 rc.cpp:142 rc.cpp:825
-msgid "Replace spaces with underscores:"
-msgstr "Szóközök cseréje aláhúzásra:"
+msgid "Replace spaces with underscores"
+msgstr "Szóközök cseréje aláhúzásra"
 
 #. i18n: file: devices/devicepropertieswidget.ui:176
 #. i18n: ectx: property (text), widget (BuddyLabel, label_5)
@@ -4010,8 +4010,8 @@ msgstr "Szóközök cseréje aláhúzásra:"
 #. i18n: file: tags/trackorganiser.ui:78
 #. i18n: ectx: property (text), widget (BuddyLabel, label_5)
 #: po/rc.cpp:145 po/rc.cpp:822 rc.cpp:145 rc.cpp:822
-msgid "Ignore 'The' in artist names:"
-msgstr "A 'The' elvetése az előadók nevében:"
+msgid "Ignore 'The' in artist names"
+msgstr "A 'The' elvetése az előadók nevében"
 
 #. i18n: file: devices/devicepropertieswidget.ui:193
 #. i18n: ectx: property (text), widget (BuddyLabel, label_6)
@@ -4034,8 +4034,8 @@ msgstr "Fájlnév-séma:"
 #. i18n: file: tags/trackorganiser.ui:129
 #. i18n: ectx: property (text), widget (BuddyLabel, label_2)
 #: po/rc.cpp:151 po/rc.cpp:831 rc.cpp:151 rc.cpp:831
-msgid "VFAT safe:"
-msgstr "VFAT tároló:"
+msgid "VFAT safe"
+msgstr "VFAT tároló"
 
 #. i18n: file: devices/devicepropertieswidget.ui:250
 #. i18n: ectx: property (title), widget (QGroupBox, transcoderFrame)
@@ -4046,8 +4046,8 @@ msgstr "Átkódolás"
 #. i18n: file: devices/devicepropertieswidget.ui:261
 #. i18n: ectx: property (text), widget (BuddyLabel, transcoderWhenDifferentLabel)
 #: po/rc.cpp:157 rc.cpp:157
-msgid "Only transcode if source file is of a different format:"
-msgstr "Átkódolás csak akkor, ha a forrásfájl eltérő formátumú:"
+msgid "Only transcode if source file is of a different format"
+msgstr "Átkódolás csak akkor, ha a forrásfájl eltérő formátumú"
 
 #. i18n: file: devices/filenameschemedialog.ui:29
 #. i18n: ectx: property (text), widget (QLabel, label_album_example)
@@ -4356,8 +4356,8 @@ msgstr "Évig"
 #. i18n: file: dynamic/dynamicrule.ui:149
 #. i18n: ectx: property (text), widget (BuddyLabel, label_5x)
 #: po/rc.cpp:322 rc.cpp:322
-msgid "Exact match:"
-msgstr "Pontos egyezés:"
+msgid "Exact match"
+msgstr "Pontos egyezés"
 
 #. i18n: file: dynamic/dynamicrule.ui:173
 #. i18n: ectx: property (text), item, widget (QComboBox, typeCombo)
@@ -4418,8 +4418,8 @@ msgstr "<html><head/><body><p>Helyi fájl hozzáadása</p></body></html>"
 #. i18n: file: gui/initialsettingswizard.ui:716
 #. i18n: ectx: property (text), widget (BuddyLabel, storeCoversInMpdDirLabel)
 #: po/rc.cpp:352 po/rc.cpp:442 rc.cpp:352 rc.cpp:442
-msgid "Save downloaded covers in music folder:"
-msgstr "Letöltött borítók mentése a zenekönyvtárban:"
+msgid "Save downloaded covers in music folder"
+msgstr "Letöltött borítók mentése a zenekönyvtárban"
 
 #. i18n: file: gui/filesettings.ui:35
 #. i18n: ectx: property (text), widget (BuddyLabel, label_4)
@@ -4430,8 +4430,8 @@ msgstr "Letöltött borítók mentése a zenekönyvtárban:"
 #. i18n: file: gui/initialsettingswizard.ui:729
 #. i18n: ectx: property (text), widget (BuddyLabel, storeLyricsInMpdDirLabel)
 #: po/rc.cpp:355 po/rc.cpp:445 rc.cpp:355 rc.cpp:445
-msgid "Save downloaded lyrics in music folder:"
-msgstr "Letöltött dalszövegek mentése a zenekönyvtárban:"
+msgid "Save downloaded lyrics in music folder"
+msgstr "Letöltött dalszövegek mentése a zenekönyvtárban"
 
 #. i18n: file: gui/filesettings.ui:52
 #. i18n: ectx: property (text), widget (BuddyLabel, storeBackdropsInMpdDirLabel)
@@ -4442,8 +4442,8 @@ msgstr "Letöltött dalszövegek mentése a zenekönyvtárban:"
 #. i18n: file: gui/initialsettingswizard.ui:746
 #. i18n: ectx: property (text), widget (BuddyLabel, storeBackdropsInMpdDirLabel)
 #: po/rc.cpp:358 po/rc.cpp:448 rc.cpp:358 rc.cpp:448
-msgid "Save downloaded backdrops in music folder:"
-msgstr "Letöltött hátterek mentése a a zenekönyvtárban:"
+msgid "Save downloaded backdrops in music folder"
+msgstr "Letöltött hátterek mentése a a zenekönyvtárban"
 
 #. i18n: file: gui/filesettings.ui:69
 #. i18n: ectx: property (text), widget (QLabel, label)
@@ -4454,8 +4454,8 @@ msgstr "Letöltött hátterek mentése a a zenekönyvtárban:"
 #. i18n: file: gui/initialsettingswizard.ui:763
 #. i18n: ectx: property (text), widget (QLabel, storeStreamsInMpdDirLabel)
 #: po/rc.cpp:361 po/rc.cpp:451 rc.cpp:361 rc.cpp:451
-msgid "Save list of favorite streams in music folder:"
-msgstr "Kedvenc stream-ek mentése a zenekönyvtárban:"
+msgid "Save list of favorite streams in music folder"
+msgstr "Kedvenc stream-ek mentése a zenekönyvtárban"
 
 #. i18n: file: gui/filesettings.ui:110
 #. i18n: ectx: property (text), widget (QLabel, label_2)
@@ -4778,14 +4778,14 @@ msgstr "Borítók:"
 #. i18n: file: gui/interfacesettings.ui:64
 #. i18n: ectx: property (text), widget (BuddyLabel, libraryArtistImageLabel)
 #: po/rc.cpp:478 rc.cpp:478
-msgid "Show artist images:"
-msgstr "Mutassa a művész képeit:"
+msgid "Show artist images"
+msgstr "Mutassa a művész képeit"
 
 #. i18n: file: gui/interfacesettings.ui:81
 #. i18n: ectx: property (text), widget (BuddyLabel, label_6)
 #: po/rc.cpp:481 rc.cpp:481
-msgid "Show album year:"
-msgstr "Mutassa az album évét:"
+msgid "Show album year"
+msgstr "Mutassa az album évét"
 
 #. i18n: file: gui/interfacesettings.ui:123
 #. i18n: ectx: property (text), widget (QLabel, label_8)
@@ -4838,8 +4838,8 @@ msgstr "Előadó/Év/Album"
 #. i18n: file: gui/interfacesettings.ui:337
 #. i18n: ectx: property (text), widget (BuddyLabel, playQueueStartClosedLabel)
 #: po/rc.cpp:515 po/rc.cpp:545 rc.cpp:515 rc.cpp:545
-msgid "Initially collapse albums:"
-msgstr "Induláskor az albumok becsukása:"
+msgid "Initially collapse albums"
+msgstr "Induláskor az albumok becsukása"
 
 #. i18n: file: gui/interfacesettings.ui:242
 #. i18n: ectx: attribute (title), widget (QWidget, tab_3)
@@ -4880,26 +4880,26 @@ msgstr "Táblázat"
 #. i18n: file: gui/interfacesettings.ui:354
 #. i18n: ectx: property (text), widget (BuddyLabel, playQueueAutoExpandLabel)
 #: po/rc.cpp:548 rc.cpp:548
-msgid "Automatically expand current album:"
-msgstr "Aktuális album automatikus kinyitása:"
+msgid "Automatically expand current album"
+msgstr "Aktuális album automatikus kinyitása"
 
 #. i18n: file: gui/interfacesettings.ui:371
 #. i18n: ectx: property (text), widget (BuddyLabel, playQueueScrollLabel)
 #: po/rc.cpp:551 rc.cpp:551
-msgid "Scroll to current track:"
-msgstr "Aktuális számhoz görgetés:"
+msgid "Scroll to current track"
+msgstr "Aktuális számhoz görgetés"
 
 #. i18n: file: gui/interfacesettings.ui:384
 #. i18n: ectx: property (text), widget (BuddyLabel, playQueueBackgroundLabel)
 #: po/rc.cpp:554 rc.cpp:554
-msgid "Use current album cover as background:"
-msgstr "Haználja az aktuális album borítóját háttérként:"
+msgid "Use current album cover as background"
+msgstr "Haználja az aktuális album borítóját háttérként"
 
 #. i18n: file: gui/interfacesettings.ui:397
 #. i18n: ectx: property (text), widget (BuddyLabel, playQueueConfirmClearLabel)
 #: po/rc.cpp:557 rc.cpp:557
-msgid "Prompt before clearing:"
-msgstr "Törlés előtt jelezzen:"
+msgid "Prompt before clearing"
+msgstr "Törlés előtt jelezzen"
 
 #. i18n: file: gui/interfacesettings.ui:411
 #. i18n: ectx: attribute (title), widget (QWidget, tab_7)
@@ -4910,20 +4910,20 @@ msgstr "Külső"
 #. i18n: file: gui/interfacesettings.ui:417
 #. i18n: ectx: property (text), widget (BuddyLabel, label_10)
 #: po/rc.cpp:563 rc.cpp:563
-msgid "Show icon in notification area:"
-msgstr "Ikonok mutatása az értesítési területen:"
+msgid "Show icon in notification area"
+msgstr "Ikonok mutatása az értesítési területen"
 
 #. i18n: file: gui/interfacesettings.ui:437
 #. i18n: ectx: property (text), widget (BuddyLabel, minimiseOnCloseLabel)
 #: po/rc.cpp:566 rc.cpp:566
-msgid "Minimize to notification area when closed:"
-msgstr "Bezárás az értesítési területre:"
+msgid "Minimize to notification area when closed"
+msgstr "Bezárás az értesítési területre"
 
 #. i18n: file: gui/interfacesettings.ui:457
 #. i18n: ectx: property (text), widget (BuddyLabel, label_11)
 #: po/rc.cpp:569 rc.cpp:569
-msgid "Show popup messages when changing tracks:"
-msgstr "Számváltáskor felugró üzenetek mutatása:"
+msgid "Show popup messages when changing tracks"
+msgstr "Számváltáskor felugró üzenetek mutatása"
 
 #. i18n: file: gui/interfacesettings.ui:475
 #. i18n: ectx: attribute (title), widget (QWidget, tab_4)
@@ -4934,32 +4934,32 @@ msgstr "Általános:"
 #. i18n: file: gui/interfacesettings.ui:486
 #. i18n: ectx: property (text), widget (BuddyLabel, label_7)
 #: po/rc.cpp:575 rc.cpp:575
-msgid "Group single track albums:"
-msgstr "Az egyszámos albumok csoportosítása:"
+msgid "Group single track albums"
+msgstr "Az egyszámos albumok csoportosítása"
 
 #. i18n: file: gui/interfacesettings.ui:503
 #. i18n: ectx: property (text), widget (BuddyLabel, useComposerLabel)
 #: po/rc.cpp:578 rc.cpp:578
-msgid "Group albums by composer:"
-msgstr "Albumok csoportosítása zeneszerző szerint:"
+msgid "Group albums by composer"
+msgstr "Albumok csoportosítása zeneszerző szerint"
 
 #. i18n: file: gui/interfacesettings.ui:520
 #. i18n: ectx: property (text), widget (BuddyLabel, groupMultipleLabel)
 #: po/rc.cpp:581 rc.cpp:581
-msgid "Multiple artist albums:"
-msgstr "Több előadós albumok:"
+msgid "Multiple artist albums"
+msgstr "Több előadós albumok"
 
 #. i18n: file: gui/interfacesettings.ui:533
 #. i18n: ectx: property (text), widget (BuddyLabel, showDeleteActionLabel)
 #: po/rc.cpp:584 rc.cpp:584
-msgid "Show delete action in context menus:"
-msgstr "Törlési művelet megjelenítése a helyi menükben:"
+msgid "Show delete action in context menus"
+msgstr "Törlési művelet megjelenítése a helyi menükben"
 
 #. i18n: file: gui/interfacesettings.ui:550
 #. i18n: ectx: property (text), widget (BuddyLabel, forceSingleClick_label)
 #: po/rc.cpp:587 rc.cpp:587
-msgid "Enforce single-click activation of items:"
-msgstr "Elemek egy-kattintásos aktiválása:"
+msgid "Enforce single-click activation of items"
+msgstr "Elemek egy-kattintásos aktiválása"
 
 #. i18n: file: gui/interfacesettings.ui:591
 #. i18n: ectx: property (text), widget (StateLabel, singleClickLabel)
@@ -5022,20 +5022,20 @@ msgstr "Megálláskor lekeverés:"
 #. i18n: file: gui/playbacksettings.ui:154
 #. i18n: ectx: property (text), widget (BuddyLabel, stopOnExitLabel)
 #: po/rc.cpp:623 rc.cpp:623
-msgid "Stop playback on exit:"
-msgstr "Kilépéskor a lejátszás megállítása:"
+msgid "Stop playback on exit"
+msgstr "Kilépéskor a lejátszás megállítása"
 
 #. i18n: file: gui/playbacksettings.ui:167
 #. i18n: ectx: property (text), widget (BuddyLabel, stopDynamizerOnExitLabel)
 #: po/rc.cpp:626 rc.cpp:626
-msgid "Stop dynamizer on exit:"
-msgstr "Kilépéskor a dinamizáló leállítása:"
+msgid "Stop dynamizer on exit"
+msgstr "Kilépéskor a dinamizáló leállítása"
 
 #. i18n: file: gui/playbacksettings.ui:184
 #. i18n: ectx: property (text), widget (BuddyLabel, inhibitSuspendLabel)
 #: po/rc.cpp:629 rc.cpp:629
-msgid "Inhibit suspend whilst playing:"
-msgstr "Lejátszás közbeni felfüggesztés megakadályozás:"
+msgid "Inhibit suspend whilst playing"
+msgstr "Lejátszás közbeni felfüggesztés megakadályozás"
 
 #. i18n: file: gui/playbacksettings.ui:217
 #. i18n: ectx: property (text), widget (QLabel, noteLabel)

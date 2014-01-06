@@ -94,7 +94,6 @@ DevicePropertiesWidget::DevicePropertiesWidget(QWidget *parent)
                                        "will check if 'Album Artist' and 'Artist' are both set to 'Various Artists'. If so, it "
                                        "will attempt to extract the real artist from the 'Title' tag, and remove the artist name "
                                        "from the 'Title' tag.</p>"));
-    fixVariousArtistsLabel->setToolTip(fixVariousArtists->toolTip());
 
     useCache->setToolTip(i18n("<p>If you enable this, then Cantata will create a cache of the device's music library. "
                               "This will help to speed up subsequent library scans (as the cache file will be used instead of "
@@ -102,7 +101,6 @@ DevicePropertiesWidget::DevicePropertiesWidget(QWidget *parent)
                               "the device's library, then this cache will become out-of-date. To rectify this, simply "
                               "click on the 'refresh' icon in the device list. This will cause the cache file to be removed, and "
                               "the contents of the device re-scanned.</p>"));
-    useCacheLabel->setToolTip(useCache->toolTip());
 
     if (qobject_cast<QTabWidget *>(parent)) {
         verticalLayout->setMargin(4);
@@ -190,21 +188,18 @@ void DevicePropertiesWidget::update(const QString &path, const DeviceOptions &op
         connect(fixVariousArtists, SIGNAL(stateChanged(int)), this, SLOT(checkSaveable()));
     } else {
         REMOVE(fixVariousArtists);
-        REMOVE(fixVariousArtistsLabel);
     }
     if (props&Prop_Cache) {
         useCache->setChecked(opts.useCache);
         connect(useCache, SIGNAL(stateChanged(int)), this, SLOT(checkSaveable()));
     } else {
         REMOVE(useCache);
-        REMOVE(useCacheLabel);
     }
     if (props&Prop_AutoScan) {
         autoScan->setChecked(opts.autoScan);
         connect(autoScan, SIGNAL(stateChanged(int)), this, SLOT(checkSaveable()));
     } else {
         REMOVE(autoScan);
-        REMOVE(autoScanLabel);
     }
 
     if (props&Prop_Transcoder || props&Prop_Encoder) {
@@ -214,14 +209,12 @@ void DevicePropertiesWidget::update(const QString &path, const DeviceOptions &op
             transcoderName->addItem(i18n("Do not transcode"), QString());
             transcoderName->setCurrentIndex(0);
             transcoderValue->setVisible(false);
-            transcoderWhenDifferentLabel->setVisible(false);
             transcoderWhenDifferent->setVisible(false);
             transcoderWhenDifferent->setChecked(opts.transcoderWhenDifferent);
             connect(transcoderWhenDifferent, SIGNAL(stateChanged(int)), this, SLOT(checkSaveable()));
         } else {
             transcoderFrame->setTitle(i18n("Encoder"));
             REMOVE(transcoderWhenDifferent);
-            REMOVE(transcoderWhenDifferentLabel);
         }
 
         QList<Encoders::Encoder> encs=Encoders::getAvailable();
@@ -301,14 +294,12 @@ void DevicePropertiesWidget::transcoderChanged()
         transcoderName->setToolTip(QString());
         transcoderValue->setVisible(false);
         if (transcoderWhenDifferent) {
-            transcoderWhenDifferentLabel->setVisible(false);
             transcoderWhenDifferent->setVisible(false);
         }
     } else {
         Encoders::Encoder enc=Encoders::getEncoder(codec);
         transcoderName->setToolTip(enc.description);
         if (transcoderWhenDifferent) {
-            transcoderWhenDifferentLabel->setVisible(true);
             transcoderWhenDifferent->setVisible(true);
         }
         if (enc.values.count()) {

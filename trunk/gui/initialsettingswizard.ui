@@ -15,7 +15,16 @@
   </property>
   <widget class="WizardPage" name="introPage">
    <layout class="QVBoxLayout" name="verticalLayout_4">
-    <property name="margin">
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
      <number>0</number>
     </property>
     <item>
@@ -278,7 +287,16 @@
   </widget>
   <widget class="WizardPage" name="connectionPage">
    <layout class="QVBoxLayout" name="verticalLayout_5">
-    <property name="margin">
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
      <number>0</number>
     </property>
     <item>
@@ -631,8 +649,8 @@
    </layout>
   </widget>
   <widget class="WizardPage" name="filesPage">
-   <layout class="QGridLayout" name="gridLayoutf">
-    <item row="0" column="0">
+   <layout class="QVBoxLayout" name="verticalLayout_2">
+    <item>
      <widget class="QLabel" name="label_6f">
       <property name="font">
        <font>
@@ -645,7 +663,7 @@
       </property>
      </widget>
     </item>
-    <item row="1" column="1">
+    <item>
      <spacer name="verticalSpacer_9f">
       <property name="orientation">
        <enum>Qt::Vertical</enum>
@@ -661,7 +679,20 @@
       </property>
      </spacer>
     </item>
-    <item row="3" column="0">
+    <item>
+     <widget class="QLabel" name="label_5f">
+      <property name="text">
+       <string>&lt;p&gt;Cantata will download missing covers, and lyrics, from the internet. Cantata also allows you to save a list of internet streams (e.g. Radio Stations) that you wish to be able to play.&lt;/p&gt;&lt;p&gt;For each of these, please confirm whether you wish Cantata to store the relevant files within the music folder, or within your personal cache/config folders.&lt;/p&gt;</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+      </property>
+      <property name="wordWrap">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item>
      <spacer name="verticalSpacer_7x">
       <property name="orientation">
        <enum>Qt::Vertical</enum>
@@ -677,137 +708,35 @@
       </property>
      </spacer>
     </item>
-    <item row="2" column="0" colspan="2">
-     <widget class="QLabel" name="label_5f">
+    <item>
+     <widget class="QCheckBox" name="storeCoversInMpdDir">
       <property name="text">
-       <string>&lt;p&gt;Cantata will download missing covers, and lyrics, from the internet. Cantata also allows you to save a list of internet streams (e.g. Radio Stations) that you wish to be able to play.&lt;/p&gt;&lt;p&gt;For each of these, please confirm whether you wish Cantata to store the relevant files within the music folder, or within your personal cache/config folders.&lt;/p&gt;</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-      </property>
-      <property name="wordWrap">
-       <bool>true</bool>
+       <string>Save downloaded covers in music folder</string>
       </property>
      </widget>
     </item>
-    <item row="10" column="0">
-     <spacer name="verticalSpacer_7f2">
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
-      </property>
-      <property name="sizeType">
-       <enum>QSizePolicy::Fixed</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>20</width>
-        <height>8</height>
-       </size>
-      </property>
-     </spacer>
-    </item>
-    <item row="4" column="0" colspan="2">
-     <layout class="QFormLayout" name="filesFormLayout">
-      <item row="0" column="0">
-       <widget class="BuddyLabel" name="storeCoversInMpdDirLabel">
-        <property name="text">
-         <string>Save downloaded covers in music folder:</string>
-        </property>
-        <property name="buddy">
-         <cstring>storeCoversInMpdDir</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="OnOffButton" name="storeCoversInMpdDir"/>
-      </item>
-      <item row="1" column="0">
-       <widget class="BuddyLabel" name="storeLyricsInMpdDirLabel">
-        <property name="text">
-         <string>Save downloaded lyrics in music folder:</string>
-        </property>
-        <property name="buddy">
-         <cstring>storeLyricsInMpdDir</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="OnOffButton" name="storeLyricsInMpdDir">
-        <property name="text">
-         <string/>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0">
-       <widget class="BuddyLabel" name="storeBackdropsInMpdDirLabel">
-        <property name="text">
-         <string>Save downloaded backdrops in music folder:</string>
-        </property>
-        <property name="buddy">
-         <cstring>storeBackdropsInMpdDir</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="OnOffButton" name="storeBackdropsInMpdDir">
-        <property name="text">
-         <string/>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0">
-       <widget class="BuddyLabel" name="storeStreamsInMpdDirLabel">
-        <property name="text">
-         <string>Save list of favorite streams in music folder:</string>
-        </property>
-        <property name="buddy">
-         <cstring>storeStreamsInMpdDir</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="1">
-       <widget class="OnOffButton" name="storeStreamsInMpdDir">
-        <property name="text">
-         <string/>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
-    <item row="11" column="0" colspan="2">
-     <widget class="QLabel" name="httpNote">
+    <item>
+     <widget class="QCheckBox" name="storeLyricsInMpdDir">
       <property name="text">
-       <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; The 'Music folder' is set to a HTTP address, and Cantata currently cannot upload files to external HTTP servers. Therefore, the above settings should be left disabled.&lt;/i&gt;</string>
-      </property>
-      <property name="wordWrap">
-       <bool>true</bool>
+       <string>Save downloaded lyrics in music folder</string>
       </property>
      </widget>
     </item>
-    <item row="12" column="0" colspan="2">
-     <spacer name="verticalSpacer_8f">
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>20</width>
-        <height>8</height>
-       </size>
-      </property>
-     </spacer>
-    </item>
-    <item row="7" column="0" colspan="2">
-     <widget class="QLabel" name="persNote">
+    <item>
+     <widget class="QCheckBox" name="storeBackdropsInMpdDir">
       <property name="text">
-       <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; If you elect to have Cantata store covers, or lyrics, within the music folder, and you do not have write access to this folder, then Cantata will revert to saving the files in your personal cache folder. However, for streams, if you do not have write access, then you will only be able to view (and play) the streams stored in the music folder, and not add (or edit) any streams. If you elect not to store streams within the music folder, then these will be saved in your local config folder - and will only be accessible to yourself.&lt;/i&gt;</string>
-      </property>
-      <property name="wordWrap">
-       <bool>true</bool>
+       <string>Save downloaded backdrops in music folder</string>
       </property>
      </widget>
     </item>
-    <item row="6" column="0">
+    <item>
+     <widget class="QCheckBox" name="storeStreamsInMpdDir">
+      <property name="text">
+       <string>Save list of favorite streams in music folder</string>
+      </property>
+     </widget>
+    </item>
+    <item>
      <spacer name="verticalSpacer_5x">
       <property name="orientation">
        <enum>Qt::Vertical</enum>
@@ -823,7 +752,17 @@
       </property>
      </spacer>
     </item>
-    <item row="8" column="0">
+    <item>
+     <widget class="QLabel" name="persNote">
+      <property name="text">
+       <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; If you elect to have Cantata store covers, or lyrics, within the music folder, and you do not have write access to this folder, then Cantata will revert to saving the files in your personal cache folder. However, for streams, if you do not have write access, then you will only be able to view (and play) the streams stored in the music folder, and not add (or edit) any streams. If you elect not to store streams within the music folder, then these will be saved in your local config folder - and will only be accessible to yourself.&lt;/i&gt;</string>
+      </property>
+      <property name="wordWrap">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item>
      <spacer name="verticalSpacer_7f2_2">
       <property name="orientation">
        <enum>Qt::Vertical</enum>
@@ -839,7 +778,7 @@
       </property>
      </spacer>
     </item>
-    <item row="9" column="0" colspan="2">
+    <item>
      <widget class="QLabel" name="persNote_2">
       <property name="text">
        <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; Cantata can only save backdrops and artist images within the music folder hierarchy if this is 2 levels deep. i.e. 'Artist/Album/Tracks'.&lt;/i&gt;</string>
@@ -848,6 +787,45 @@
        <bool>true</bool>
       </property>
      </widget>
+    </item>
+    <item>
+     <spacer name="verticalSpacer_7f2">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeType">
+       <enum>QSizePolicy::Fixed</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>8</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item>
+     <widget class="QLabel" name="httpNote">
+      <property name="text">
+       <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; The 'Music folder' is set to a HTTP address, and Cantata currently cannot upload files to external HTTP servers. Therefore, the above settings should be left disabled.&lt;/i&gt;</string>
+      </property>
+      <property name="wordWrap">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <spacer name="verticalSpacer_8f">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>8</height>
+       </size>
+      </property>
+     </spacer>
     </item>
    </layout>
   </widget>
@@ -973,11 +951,6 @@
    <extends>QLineEdit</extends>
    <header>pathrequester.h</header>
    <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>OnOffButton</class>
-   <extends>QCheckBox</extends>
-   <header>onoffbutton.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

@@ -37,6 +37,7 @@
 19. Don't use QKeySequence::Delete to detect delete key event for play queue,
     instead check for no-modifiers and the Delete key itself. Closing a
     terminal with Ctrl-D seems to cause Cantata to see QKeySequence::Delete
+20. Use &;copy for copyright symbol in text - beter than (c)
 
 1.2.2
 -----

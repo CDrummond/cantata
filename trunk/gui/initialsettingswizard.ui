@@ -756,7 +756,7 @@
        </widget>
       </item>
       <item row="3" column="0">
-       <widget class="QLabel" name="storeStreamsInMpdDirLabel">
+       <widget class="BuddyLabel" name="storeStreamsInMpdDirLabel">
         <property name="text">
          <string>Save list of favorite streams in music folder:</string>
         </property>

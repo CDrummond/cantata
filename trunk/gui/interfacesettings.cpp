@@ -488,5 +488,7 @@ void InterfaceSettings::enableStartupState()
 
 void InterfaceSettings::langChanged()
 {
+    #ifndef ENABLE_KDE_SUPPORT
     langNoteLabel->setOn(lang->itemData(lang->currentIndex()).toString()!=Settings::self()->lang());
+    #endif
 }

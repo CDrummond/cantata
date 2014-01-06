@@ -272,21 +272,8 @@ int main(int argc, char *argv[])
         return 0;
     }
 
-    // Translations
-    QString langEnv=qgetenv("CANTATA_LANG");
-    loadTranslation("qt", QLibraryInfo::location(QLibraryInfo::TranslationsPath), langEnv);
-    #ifdef Q_OS_WIN
-    loadTranslation("qt", app.applicationDirPath()+QLatin1String("/translations"), langEnv);
-    loadTranslation("qt", QDir::currentPath()+QLatin1String("/translations"), langEnv);
-    #endif
-    loadTranslation("cantata", app.applicationDirPath()+QLatin1String("/translations"), langEnv);
-    loadTranslation("cantata", QDir::currentPath()+QLatin1String("/translations"), langEnv);
-    #ifndef Q_OS_WIN
-    loadTranslation("cantata", INSTALL_PREFIX"/share/cantata/translations/", langEnv);
-    #endif
-
-      // Set the permissions on the config file on Unix - it can contain passwords
-      // for internet services so it's important that other users can't read it.
+    // Set the permissions on the config file on Unix - it can contain passwords
+    // for internet services so it's important that other users can't read it.
     // On Windows these are stored in the registry instead.
     #ifdef Q_OS_UNIX
     QSettings s;
@@ -302,6 +289,22 @@ int main(int argc, char *argv[])
     #endif
 
     installDebugMessageHandler();
+
+    // Translations
+    QString lang=qgetenv("CANTATA_LANG");
+    if (lang.isEmpty()) {
+        lang=Settings::self()->lang();
+    }
+    loadTranslation("qt", QLibraryInfo::location(QLibraryInfo::TranslationsPath), lang);
+    #ifdef Q_OS_WIN
+    loadTranslation("qt", app.applicationDirPath()+QLatin1String("/translations"), lang);
+    loadTranslation("qt", QDir::currentPath()+QLatin1String("/translations"), lang);
+    #endif
+    loadTranslation("cantata", app.applicationDirPath()+QLatin1String("/translations"), lang);
+    loadTranslation("cantata", QDir::currentPath()+QLatin1String("/translations"), lang);
+    #ifndef Q_OS_WIN
+    loadTranslation("cantata", INSTALL_PREFIX"/share/cantata/translations/", lang);
+    #endif
 
     if (Settings::self()->firstRun()) {
         InitialSettingsWizard wz;

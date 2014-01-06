@@ -206,6 +206,9 @@ public:
     bool cacheScaledCovers();
     int mpdPoll();
     int mpdListSize();
+    #ifndef ENABLE_KDE_SUPPORT
+    QString lang();
+    #endif
 
     void removeConnectionDetails(const QString &v);
     void saveConnectionDetails(const MPDConnectionDetails &v);
@@ -301,6 +304,9 @@ public:
     void saveStartupState(int v);
     void saveSearchCategory(const QString &v);
     void saveCacheScaledCovers(bool v);
+    #ifndef ENABLE_KDE_SUPPORT
+    void saveLang(const QString &v);
+    #endif
     void save(bool force=false);
     #if defined ENABLE_KDE_SUPPORT && defined ENABLE_KWALLET
     bool openWallet();

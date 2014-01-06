@@ -160,6 +160,7 @@ class FancyTabWidget : public QWidget {
 
 public:
     static void setup();
+    static int iconSize(bool large=true);
 
     FancyTabWidget(QWidget *parent, bool allowContext=true, bool drawBorder=false);
 

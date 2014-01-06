@@ -856,6 +856,13 @@ int Settings::mpdListSize()
     return RESTRICT(v, 100, 65535);
 }
 
+#ifndef ENABLE_KDE_SUPPORT
+QString Settings::lang()
+{
+    return GET_STRING("lang", QString());
+}
+#endif
+
 void Settings::removeConnectionDetails(const QString &v)
 {
     if (v==currentConnection()) {
@@ -1334,6 +1341,13 @@ void Settings::saveCacheScaledCovers(bool v)
 {
     SET_VALUE_MOD(cacheScaledCovers);
 }
+
+#ifndef ENABLE_KDE_SUPPORT
+void Settings::saveLang(const QString &v)
+{
+    SET_VALUE_MOD(lang);
+}
+#endif
 
 void Settings::save(bool force)
 {

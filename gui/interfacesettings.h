@@ -53,6 +53,10 @@ public:
     void load();
     void save();
 
+    #ifndef ENABLE_KDE_SUPPORT
+    void showEvent(QShowEvent *e);
+    #endif
+
 private Q_SLOTS:
     void libraryViewChanged();
     void libraryCoverSizeChanged();
@@ -62,9 +66,13 @@ private Q_SLOTS:
     void playQueueGroupedChanged();
     void forceSingleClickChanged();
     void enableStartupState();
+    void langChanged();
 
 private:
     int enabledViews;
+    #ifndef ENABLE_KDE_SUPPORT
+    bool loadedLangs;
+    #endif
 };
 
 #endif

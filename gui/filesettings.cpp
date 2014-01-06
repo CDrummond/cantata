@@ -23,7 +23,6 @@
 
 #include "filesettings.h"
 #include "settings.h"
-#include "onoffbutton.h"
 
 FileSettings::FileSettings(QWidget *p)
     : QWidget(p)

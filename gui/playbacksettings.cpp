@@ -63,7 +63,6 @@ PlaybackSettings::PlaybackSettings(QWidget *p)
     messageIcon->setMaximumSize(iconSize, iconSize);
     mpdConnectionStateChanged(MPDConnection::self()->isConnected());
     #ifdef Q_OS_WIN
-    REMOVE(inhibitSuspendLabel)
     REMOVE(inhibitSuspend)
     #endif
     outputsView->setVisible(outputsView->count()>1);

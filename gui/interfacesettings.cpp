@@ -26,7 +26,6 @@
 #include "itemview.h"
 #include "localize.h"
 #include "musiclibraryitemalbum.h"
-#include "onoffbutton.h"
 #include <QComboBox>
 #ifndef ENABLE_KDE_SUPPORT
 #include <QDir>
@@ -60,13 +59,6 @@ static void addViewTypes(QComboBox *box, bool iconMode=false, bool groupedTree=f
     if (iconMode) {
         box->addItem(i18n("Icon/List"), ItemView::Mode_IconTop);
     }
-}
-
-static void addStartupState(QComboBox *box)
-{
-    box->addItem(i18n("Show main window"), Settings::SS_ShowMainWindow);
-    box->addItem(i18n("Hide main window"), Settings::SS_HideMainWindow);
-    box->addItem(i18n("Restore previous state"), Settings::SS_Previous);
 }
 
 static void selectEntry(QComboBox *box, int v)
@@ -198,9 +190,6 @@ InterfaceSettings::InterfaceSettings(QWidget *p, const QStringList &hiddenPages)
         }
     }
 
-    groupMultiple->addItem(i18n("Grouped by \'Album Artist\'"));
-    groupMultiple->addItem(i18n("Grouped under \'Various Artists\'"));
-    addStartupState(startupState);
     if (enabledViews&V_Artists) {
         connect(libraryView, SIGNAL(currentIndexChanged(int)), SLOT(libraryViewChanged()));
         connect(libraryCoverSize, SIGNAL(currentIndexChanged(int)), SLOT(libraryCoverSizeChanged()));
@@ -215,10 +204,8 @@ InterfaceSettings::InterfaceSettings(QWidget *p, const QStringList &hiddenPages)
     connect(playQueueGrouped, SIGNAL(currentIndexChanged(int)), SLOT(playQueueGroupedChanged()));
     #ifndef ENABLE_DEVICES_SUPPORT
     REMOVE(showDeleteAction);
-    REMOVE(showDeleteActionLabel);
     #endif
     connect(systemTrayCheckBox, SIGNAL(toggled(bool)), minimiseOnClose, SLOT(setEnabled(bool)));
-    connect(systemTrayCheckBox, SIGNAL(toggled(bool)), minimiseOnCloseLabel, SLOT(setEnabled(bool)));
     connect(systemTrayCheckBox, SIGNAL(toggled(bool)), SLOT(enableStartupState()));
     connect(minimiseOnClose, SIGNAL(toggled(bool)), SLOT(enableStartupState()));
     connect(forceSingleClick, SIGNAL(toggled(bool)), SLOT(forceSingleClickChanged()));
@@ -257,7 +244,7 @@ void InterfaceSettings::load()
     }
     groupSingle->setChecked(Settings::self()->groupSingle());
     useComposer->setChecked(Settings::self()->useComposer());
-    groupMultiple->setCurrentIndex(Settings::self()->groupMultiple() ? 1 : 0);
+    groupMultiple->setChecked(Settings::self()->groupMultiple());
     #ifdef ENABLE_DEVICES_SUPPORT
     if (showDeleteAction) {
         showDeleteAction->setChecked(Settings::self()->showDeleteAction());
@@ -285,8 +272,12 @@ void InterfaceSettings::load()
     systemTrayPopup->setChecked(Settings::self()->showPopups());
     minimiseOnClose->setChecked(Settings::self()->minimiseOnClose());
     minimiseOnClose->setEnabled(systemTrayCheckBox->isChecked());
-    minimiseOnCloseLabel->setEnabled(systemTrayCheckBox->isChecked());
-    selectEntry(startupState, Settings::self()->startupState());
+    switch (Settings::self()->startupState()) {
+    case Settings::SS_ShowMainWindow: startupStateShow->setChecked(true); break;
+    case Settings::SS_HideMainWindow: startupStateHide->setChecked(true); break;
+    case Settings::SS_Previous: startupStateRestore->setChecked(true); break;
+    }
+
     enableStartupState();
     cacheScaledCovers->setChecked(Settings::self()->cacheScaledCovers());
 }
@@ -319,7 +310,7 @@ void InterfaceSettings::save()
     }
     Settings::self()->saveGroupSingle(groupSingle->isChecked());
     Settings::self()->saveUseComposer(useComposer->isChecked());
-    Settings::self()->saveGroupMultiple(1==groupMultiple->currentIndex());
+    Settings::self()->saveGroupMultiple(groupMultiple->isChecked());
     #ifdef ENABLE_DEVICES_SUPPORT
     if (showDeleteAction) {
         Settings::self()->saveShowDeleteAction(showDeleteAction->isChecked());
@@ -338,7 +329,13 @@ void InterfaceSettings::save()
     Settings::self()->saveUseSystemTray(systemTrayCheckBox->isChecked());
     Settings::self()->saveShowPopups(systemTrayPopup->isChecked());
     Settings::self()->saveMinimiseOnClose(minimiseOnClose->isChecked());
-    Settings::self()->saveStartupState(getValue(startupState));
+    if (startupStateShow->isChecked()) {
+        Settings::self()->saveStartupState(Settings::SS_ShowMainWindow);
+    } else if (startupStateHide->isChecked()) {
+        Settings::self()->saveStartupState(Settings::SS_HideMainWindow);
+    } else if (startupStateRestore->isChecked()) {
+        Settings::self()->saveStartupState(Settings::SS_Previous);
+    }
     Settings::self()->saveCacheScaledCovers(cacheScaledCovers->isChecked());
     #ifndef ENABLE_KDE_SUPPORT
     if (loadedLangs && lang) {
@@ -428,7 +425,6 @@ void InterfaceSettings::libraryViewChanged()
     bool isIcon=ItemView::Mode_IconTop==vt;
     bool isSimpleTree=ItemView::Mode_SimpleTree==vt;
     libraryArtistImage->setEnabled(!isIcon && !isSimpleTree);
-    libraryArtistImageLabel->setEnabled(libraryArtistImage->isEnabled());
     if (isIcon) {
         libraryArtistImage->setChecked(true);
     } else if (isSimpleTree) {
@@ -463,16 +459,13 @@ void InterfaceSettings::albumsCoverSizeChanged()
 void InterfaceSettings::playQueueGroupedChanged()
 {
     playQueueAutoExpand->setEnabled(1==playQueueGrouped->currentIndex());
-    playQueueAutoExpandLabel->setEnabled(1==playQueueGrouped->currentIndex());
     playQueueStartClosed->setEnabled(1==playQueueGrouped->currentIndex());
-    playQueueStartClosedLabel->setEnabled(1==playQueueGrouped->currentIndex());
 }
 
 void InterfaceSettings::playListsStyleChanged()
 {
     bool grouped=getValue(playlistsView)==ItemView::Mode_GroupedTree;
     playListsStartClosed->setEnabled(grouped);
-    playListsStartClosedLabel->setEnabled(grouped);
 }
 
 void InterfaceSettings::forceSingleClickChanged()
@@ -483,7 +476,6 @@ void InterfaceSettings::forceSingleClickChanged()
 void InterfaceSettings::enableStartupState()
 {
     startupState->setEnabled(systemTrayCheckBox->isChecked() && minimiseOnClose->isChecked());
-    startupStateLabel->setEnabled(startupState->isEnabled());
 }
 
 void InterfaceSettings::langChanged()

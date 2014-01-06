@@ -6,81 +6,50 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>576</width>
+    <width>569</width>
     <height>379</height>
    </rect>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
-   <property name="margin">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
     <number>0</number>
    </property>
    <item>
-    <layout class="QFormLayout" name="formLayout">
-     <item row="0" column="0">
-      <widget class="BuddyLabel" name="storeCoversInMpdDirLabel">
-       <property name="text">
-        <string>Save downloaded covers in music folder:</string>
-       </property>
-       <property name="buddy">
-        <cstring>storeCoversInMpdDir</cstring>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="OnOffButton" name="storeCoversInMpdDir"/>
-     </item>
-     <item row="1" column="0">
-      <widget class="BuddyLabel" name="label_4">
-       <property name="text">
-        <string>Save downloaded lyrics in music folder:</string>
-       </property>
-       <property name="buddy">
-        <cstring>storeLyricsInMpdDir</cstring>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="OnOffButton" name="storeLyricsInMpdDir">
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="0">
-      <widget class="BuddyLabel" name="storeBackdropsInMpdDirLabel">
-       <property name="text">
-        <string>Save downloaded backdrops in music folder:</string>
-       </property>
-       <property name="buddy">
-        <cstring>storeBackdropsInMpdDir</cstring>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="1">
-      <widget class="OnOffButton" name="storeBackdropsInMpdDir">
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="0">
-      <widget class="BuddyLabel" name="label">
-       <property name="text">
-        <string>Save list of favorite streams in music folder:</string>
-       </property>
-       <property name="buddy">
-        <cstring>storeStreamsInMpdDir</cstring>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="1">
-      <widget class="OnOffButton" name="storeStreamsInMpdDir">
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-     </item>
-    </layout>
+    <widget class="QCheckBox" name="storeCoversInMpdDir">
+     <property name="text">
+      <string>Save downloaded covers in music folder</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="storeLyricsInMpdDir">
+     <property name="text">
+      <string>Save downloaded lyrics in music folder</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="storeBackdropsInMpdDir">
+     <property name="text">
+      <string>Save downloaded backdrops in music folder</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="storeStreamsInMpdDir">
+     <property name="text">
+      <string>Save list of favorite streams in music folder</string>
+     </property>
+    </widget>
    </item>
    <item>
     <spacer name="verticalSpacer">
@@ -181,16 +150,6 @@
   </layout>
  </widget>
  <customwidgets>
-  <customwidget>
-   <class>BuddyLabel</class>
-   <extends>QLabel</extends>
-   <header>buddylabel.h</header>
-  </customwidget>
-  <customwidget>
-   <class>OnOffButton</class>
-   <extends>QCheckBox</extends>
-   <header>onoffbutton.h</header>
-  </customwidget>
   <customwidget>
    <class>StateLabel</class>
    <extends>QLabel</extends>

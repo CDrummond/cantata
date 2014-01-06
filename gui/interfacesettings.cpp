@@ -397,7 +397,7 @@ void InterfaceSettings::showEvent(QShowEvent *e)
         QString current = Settings::self()->lang();
         QStringList names = langMap.keys();
         qStableSort(names.begin(), names.end(), localeAwareCompare);
-        lang->addItem(i18n("System default", QString()));
+        lang->addItem(i18n("System default"), QString());
         lang->setCurrentIndex(0);
         foreach (const QString &name, names) {
             lang->addItem(name, langMap[name]);

@@ -94,6 +94,11 @@ void FancyTabWidget::setup()
     }
 }
 
+int FancyTabWidget::iconSize(bool large)
+{
+    return large ? largeIconSize : smallIconSize;
+}
+
 #if 0
 static QPainterPath createPath(const QRect &rect, double radius)
 {

@@ -2773,17 +2773,17 @@ msgid "Configure..."
 msgstr "설정..."
 
 #: gui/shortcutssettingspage.cpp:95
-msgid "Use media keys to control Cantata:"
-msgstr "미디어 키 사용함:"
+msgid "Use media keys to control Cantata"
+msgstr "미디어 키 사용함"
 
 #: gui/shortcutssettingspage.cpp:106
-msgid "Use media keys, as configured in desktop settings, to control Cantata:"
-msgstr "데스크톱 환경에서 설정된 미디어 키 사용함:"
+msgid "Use media keys, as configured in desktop settings, to control Cantata"
+msgstr "데스크톱 환경에서 설정된 미디어 키 사용함"
 
 #: gui/shortcutssettingspage.cpp:107
 msgid ""
-"Use media keys, as configured in GNOME/Unity settings, to control Cantata:"
-msgstr "그놈/유니티에서 설정된 미디어 키 사용함:"
+"Use media keys, as configured in GNOME/Unity settings, to control Cantata"
+msgstr "그놈/유니티에서 설정된 미디어 키 사용함"
 
 #: gui/stdactions.cpp:55
 msgid "Previous Track"
@@ -3561,8 +3561,8 @@ msgid "Download episodes to:"
 msgstr "에피소드 내려받기:"
 
 #: online/podcastsettingsdialog.cpp:60
-msgid "Automatically download new episodes:"
-msgstr "새로운 에피소드 자동 내려받기:"
+msgid "Automatically download new episodes"
+msgstr "새로운 에피소드 자동 내려받기"
 
 #: online/podcastsettingsdialog.cpp:82
 msgid "Podcast Settings"
@@ -3607,20 +3607,20 @@ msgstr "매주"
 #. i18n: file: context/othersettings.ui:19
 #. i18n: ectx: property (text), widget (BuddyLabel, contextBackdropLabel)
 #: po/rc.cpp:3 rc.cpp:3
-msgid "Use backdrop:"
-msgstr "배경 사용:"
+msgid "Use backdrop"
+msgstr "배경 사용"
 
 #. i18n: file: context/othersettings.ui:32
 #. i18n: ectx: property (text), widget (BuddyLabel, contextDarkBackgroundLabel)
 #: po/rc.cpp:6 rc.cpp:6
-msgid "Dark background:"
-msgstr "어두운 기본배경:"
+msgid "Dark background"
+msgstr "어두운 기본배경"
 
 #. i18n: file: context/othersettings.ui:45
 #. i18n: ectx: property (text), widget (BuddyLabel, wikipediaIntroOnlyLabel)
 #: po/rc.cpp:9 rc.cpp:9
-msgid "Only show basic wikipedia text:"
-msgstr "위키피디아 기본 본문만 보기:"
+msgid "Only show basic wikipedia text"
+msgstr "위키피디아 기본 본문만 보기"
 
 #. i18n: file: context/othersettings.ui:86
 #. i18n: ectx: property (text), widget (StateLabel, wikipediaIntroOnlyNote)
@@ -3693,8 +3693,8 @@ msgstr "(설정 필요)"
 #. i18n: file: devices/actiondialog.ui:123
 #. i18n: ectx: property (text), widget (BuddyLabel, label_2)
 #: po/rc.cpp:37 rc.cpp:37
-msgid "Overwrite songs:"
-msgstr "음악 덮어쓰기:"
+msgid "Overwrite songs"
+msgstr "음악 덮어쓰기"
 
 #. i18n: file: devices/actiondialog.ui:150
 #. i18n: ectx: property (text), widget (QLabel, label_3)
@@ -3769,8 +3769,8 @@ msgstr "디스크:"
 #. i18n: file: devices/albumdetails.ui:112
 #. i18n: ectx: property (text), widget (BuddyLabel, label_5)
 #: po/rc.cpp:73 rc.cpp:73
-msgid "Single artist:"
-msgstr "한 연주자:"
+msgid "Single artist"
+msgstr "한 연주자"
 
 #. i18n: file: devices/audiocdsettings.ui:20
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox)
@@ -3781,8 +3781,8 @@ msgstr "음반과 곡 정보검색"
 #. i18n: file: devices/audiocdsettings.ui:26
 #. i18n: ectx: property (text), widget (BuddyLabel, label_3)
 #: po/rc.cpp:91 rc.cpp:91
-msgid "Automatically lookup:"
-msgstr "자동찾기:"
+msgid "Automatically lookup"
+msgstr "자동찾기"
 
 #. i18n: file: devices/audiocdsettings.ui:39
 #. i18n: ectx: property (text), widget (BuddyLabel, cdLookupLabel)
@@ -3811,14 +3811,14 @@ msgstr "오디오추출"
 #. i18n: file: devices/audiocdsettings.ui:94
 #. i18n: ectx: property (text), widget (BuddyLabel, label_4)
 #: po/rc.cpp:106 rc.cpp:106
-msgid "Full paranoia mode (best quality):"
-msgstr "Paranoia 완전 기능 (최고품질):"
+msgid "Full paranoia mode (best quality)"
+msgstr "Paranoia 완전 기능 (최고품질)"
 
 #. i18n: file: devices/audiocdsettings.ui:107
 #. i18n: ectx: property (text), widget (BuddyLabel, label_5)
 #: po/rc.cpp:109 rc.cpp:109
-msgid "Never skip on read error:"
-msgstr "읽기오류 건너뛰지 않음:"
+msgid "Never skip on read error"
+msgstr "읽기오류 건너뛰지 않음"
 
 #. i18n: file: devices/devicepropertieswidget.ui:20
 #. i18n: ectx: property (text), widget (QLabel, remoteDeviceNote)
@@ -3870,20 +3870,20 @@ msgstr "최대 표지 크기:"
 #. i18n: file: devices/devicepropertieswidget.ui:82
 #. i18n: ectx: property (text), widget (BuddyLabel, fixVariousArtistsLabel)
 #: po/rc.cpp:124 rc.cpp:124
-msgid "'Various Artists' workaround:"
-msgstr "'여러 연주자' 해결:"
+msgid "'Various Artists' workaround"
+msgstr "'여러 연주자' 해결"
 
 #. i18n: file: devices/devicepropertieswidget.ui:95
 #. i18n: ectx: property (text), widget (BuddyLabel, autoScanLabel)
 #: po/rc.cpp:127 rc.cpp:127
-msgid "Automatically scan music when attached:"
-msgstr "연결되면 알아서 음악검색:"
+msgid "Automatically scan music when attached"
+msgstr "연결되면 알아서 음악검색"
 
 #. i18n: file: devices/devicepropertieswidget.ui:108
 #. i18n: ectx: property (text), widget (BuddyLabel, useCacheLabel)
 #: po/rc.cpp:130 rc.cpp:130
-msgid "Use cache:"
-msgstr "캐시 사용:"
+msgid "Use cache"
+msgstr "캐시 사용"
 
 #. i18n: file: devices/devicepropertieswidget.ui:121
 #. i18n: ectx: property (text), widget (QLabel, defaultVolumeLabel)
@@ -3912,8 +3912,8 @@ msgstr "파일이름"
 #. i18n: file: tags/trackorganiser.ui:112
 #. i18n: ectx: property (text), widget (BuddyLabel, label_3)
 #: po/rc.cpp:139 po/rc.cpp:828 rc.cpp:139 rc.cpp:828
-msgid "Use only ASCII characters:"
-msgstr "ASCII 문자만 표시:"
+msgid "Use only ASCII characters"
+msgstr "ASCII 문자만 표시"
 
 #. i18n: file: devices/devicepropertieswidget.ui:159
 #. i18n: ectx: property (text), widget (BuddyLabel, label_4)
@@ -3924,8 +3924,8 @@ msgstr "ASCII 문자만 표시:"
 #. i18n: file: tags/trackorganiser.ui:95
 #. i18n: ectx: property (text), widget (BuddyLabel, label_4)
 #: po/rc.cpp:142 po/rc.cpp:825 rc.cpp:142 rc.cpp:825
-msgid "Replace spaces with underscores:"
-msgstr "빈칸을 밑줄로 바꿈:"
+msgid "Replace spaces with underscores"
+msgstr "빈칸을 밑줄로 바꿈"
 
 #. i18n: file: devices/devicepropertieswidget.ui:176
 #. i18n: ectx: property (text), widget (BuddyLabel, label_5)
@@ -3936,8 +3936,8 @@ msgstr "빈칸을 밑줄로 바꿈:"
 #. i18n: file: tags/trackorganiser.ui:78
 #. i18n: ectx: property (text), widget (BuddyLabel, label_5)
 #: po/rc.cpp:145 po/rc.cpp:822 rc.cpp:145 rc.cpp:822
-msgid "Ignore 'The' in artist names:"
-msgstr "연주자 이름에 'The' 무시:"
+msgid "Ignore 'The' in artist names"
+msgstr "연주자 이름에 'The' 무시"
 
 #. i18n: file: devices/devicepropertieswidget.ui:193
 #. i18n: ectx: property (text), widget (BuddyLabel, label_6)
@@ -3960,8 +3960,8 @@ msgstr "파일이름 구성:"
 #. i18n: file: tags/trackorganiser.ui:129
 #. i18n: ectx: property (text), widget (BuddyLabel, label_2)
 #: po/rc.cpp:151 po/rc.cpp:831 rc.cpp:151 rc.cpp:831
-msgid "VFAT safe:"
-msgstr "안전한 VFAT:"
+msgid "VFAT safe"
+msgstr "안전한 VFAT"
 
 #. i18n: file: devices/devicepropertieswidget.ui:250
 #. i18n: ectx: property (title), widget (QGroupBox, transcoderFrame)
@@ -3972,8 +3972,8 @@ msgstr "변환"
 #. i18n: file: devices/devicepropertieswidget.ui:261
 #. i18n: ectx: property (text), widget (BuddyLabel, transcoderWhenDifferentLabel)
 #: po/rc.cpp:157 rc.cpp:157
-msgid "Only transcode if source file is of a different format:"
-msgstr "원본 파일이 다른 포맷일 때만 변환:"
+msgid "Only transcode if source file is of a different format"
+msgstr "원본 파일이 다른 포맷일 때만 변환"
 
 #. i18n: file: devices/filenameschemedialog.ui:29
 #. i18n: ectx: property (text), widget (QLabel, label_album_example)
@@ -4280,8 +4280,8 @@ msgstr "마지막 연도:"
 #. i18n: file: dynamic/dynamicrule.ui:149
 #. i18n: ectx: property (text), widget (BuddyLabel, label_5x)
 #: po/rc.cpp:322 rc.cpp:322
-msgid "Exact match:"
-msgstr "정확한 맞춤:"
+msgid "Exact match"
+msgstr "정확한 맞춤"
 
 #. i18n: file: dynamic/dynamicrule.ui:173
 #. i18n: ectx: property (text), item, widget (QComboBox, typeCombo)
@@ -4339,8 +4339,8 @@ msgstr "<html><head/><body><p>로컬 파일에 추가</p></body></html>"
 #. i18n: file: gui/initialsettingswizard.ui:716
 #. i18n: ectx: property (text), widget (BuddyLabel, storeCoversInMpdDirLabel)
 #: po/rc.cpp:352 po/rc.cpp:442 rc.cpp:352 rc.cpp:442
-msgid "Save downloaded covers in music folder:"
-msgstr "음악 폴더에 내려받은 표지 저장:"
+msgid "Save downloaded covers in music folder"
+msgstr "음악 폴더에 내려받은 표지 저장"
 
 #. i18n: file: gui/filesettings.ui:35
 #. i18n: ectx: property (text), widget (BuddyLabel, label_4)
@@ -4351,8 +4351,8 @@ msgstr "음악 폴더에 내려받은 표지 저장:"
 #. i18n: file: gui/initialsettingswizard.ui:729
 #. i18n: ectx: property (text), widget (BuddyLabel, storeLyricsInMpdDirLabel)
 #: po/rc.cpp:355 po/rc.cpp:445 rc.cpp:355 rc.cpp:445
-msgid "Save downloaded lyrics in music folder:"
-msgstr "음악 폴더에 내려받은 가사저장:"
+msgid "Save downloaded lyrics in music folder"
+msgstr "음악 폴더에 내려받은 가사저장"
 
 #. i18n: file: gui/filesettings.ui:52
 #. i18n: ectx: property (text), widget (BuddyLabel, storeBackdropsInMpdDirLabel)
@@ -4363,8 +4363,8 @@ msgstr "음악 폴더에 내려받은 가사저장:"
 #. i18n: file: gui/initialsettingswizard.ui:746
 #. i18n: ectx: property (text), widget (BuddyLabel, storeBackdropsInMpdDirLabel)
 #: po/rc.cpp:358 po/rc.cpp:448 rc.cpp:358 rc.cpp:448
-msgid "Save downloaded backdrops in music folder:"
-msgstr "음악 폴더에 내려받은 배경 저장:"
+msgid "Save downloaded backdrops in music folder"
+msgstr "음악 폴더에 내려받은 배경 저장"
 
 #. i18n: file: gui/filesettings.ui:69
 #. i18n: ectx: property (text), widget (QLabel, label)
@@ -4375,8 +4375,8 @@ msgstr "음악 폴더에 내려받은 배경 저장:"
 #. i18n: file: gui/initialsettingswizard.ui:763
 #. i18n: ectx: property (text), widget (QLabel, storeStreamsInMpdDirLabel)
 #: po/rc.cpp:361 po/rc.cpp:451 rc.cpp:361 rc.cpp:451
-msgid "Save list of favorite streams in music folder:"
-msgstr "음악 폴더에 즐겨찾기 스트림 항목 저장:"
+msgid "Save list of favorite streams in music folder"
+msgstr "음악 폴더에 즐겨찾기 스트림 항목 저장"
 
 #. i18n: file: gui/filesettings.ui:110
 #. i18n: ectx: property (text), widget (QLabel, label_2)
@@ -4680,14 +4680,14 @@ msgstr "표지:"
 #. i18n: file: gui/interfacesettings.ui:64
 #. i18n: ectx: property (text), widget (BuddyLabel, libraryArtistImageLabel)
 #: po/rc.cpp:478 rc.cpp:478
-msgid "Show artist images:"
-msgstr "연주자이미지 보기:"
+msgid "Show artist images"
+msgstr "연주자이미지 보기"
 
 #. i18n: file: gui/interfacesettings.ui:81
 #. i18n: ectx: property (text), widget (BuddyLabel, label_6)
 #: po/rc.cpp:481 rc.cpp:481
-msgid "Show album year:"
-msgstr "앨범연도 보기:"
+msgid "Show album year"
+msgstr "앨범연도 보기"
 
 #. i18n: file: gui/interfacesettings.ui:123
 #. i18n: ectx: property (text), widget (QLabel, label_8)
@@ -4738,8 +4738,8 @@ msgstr "연주자/연도/음반"
 #. i18n: file: gui/interfacesettings.ui:337
 #. i18n: ectx: property (text), widget (BuddyLabel, playQueueStartClosedLabel)
 #: po/rc.cpp:515 po/rc.cpp:545 rc.cpp:515 rc.cpp:545
-msgid "Initially collapse albums:"
-msgstr "처음에 음반 펼치지 않기:"
+msgid "Initially collapse albums"
+msgstr "처음에 음반 펼치지 않기"
 
 #. i18n: file: gui/interfacesettings.ui:242
 #. i18n: ectx: attribute (title), widget (QWidget, tab_3)
@@ -4780,26 +4780,26 @@ msgstr "항목으로 따로"
 #. i18n: file: gui/interfacesettings.ui:354
 #. i18n: ectx: property (text), widget (BuddyLabel, playQueueAutoExpandLabel)
 #: po/rc.cpp:548 rc.cpp:548
-msgid "Automatically expand current album:"
-msgstr "지금 음반을 자동으로 펼치기:"
+msgid "Automatically expand current album"
+msgstr "지금 음반을 자동으로 펼치기"
 
 #. i18n: file: gui/interfacesettings.ui:371
 #. i18n: ectx: property (text), widget (BuddyLabel, playQueueScrollLabel)
 #: po/rc.cpp:551 rc.cpp:551
-msgid "Scroll to current track:"
-msgstr "지금 곡으로 이동:"
+msgid "Scroll to current track"
+msgstr "지금 곡으로 이동"
 
 #. i18n: file: gui/interfacesettings.ui:384
 #. i18n: ectx: property (text), widget (BuddyLabel, playQueueBackgroundLabel)
 #: po/rc.cpp:554 rc.cpp:554
-msgid "Use current album cover as background:"
-msgstr "지금 음반 표지를 배경으로 사용:"
+msgid "Use current album cover as background"
+msgstr "지금 음반 표지를 배경으로 사용"
 
 #. i18n: file: gui/interfacesettings.ui:397
 #. i18n: ectx: property (text), widget (BuddyLabel, playQueueConfirmClearLabel)
 #: po/rc.cpp:557 rc.cpp:557
-msgid "Prompt before clearing:"
-msgstr "지우기 전에 물어보기:"
+msgid "Prompt before clearing"
+msgstr "지우기 전에 물어보기"
 
 #. i18n: file: gui/interfacesettings.ui:411
 #. i18n: ectx: attribute (title), widget (QWidget, tab_7)
@@ -4810,20 +4810,20 @@ msgstr "외부"
 #. i18n: file: gui/interfacesettings.ui:417
 #. i18n: ectx: property (text), widget (BuddyLabel, label_10)
 #: po/rc.cpp:563 rc.cpp:563
-msgid "Show icon in notification area:"
-msgstr "알림 영역에 아이콘 보이기:"
+msgid "Show icon in notification area"
+msgstr "알림 영역에 아이콘 보이기"
 
 #. i18n: file: gui/interfacesettings.ui:437
 #. i18n: ectx: property (text), widget (BuddyLabel, minimiseOnCloseLabel)
 #: po/rc.cpp:566 rc.cpp:566
-msgid "Minimize to notification area when closed:"
-msgstr "닫으면 알림 영역으로 최소화:"
+msgid "Minimize to notification area when closed"
+msgstr "닫으면 알림 영역으로 최소화"
 
 #. i18n: file: gui/interfacesettings.ui:457
 #. i18n: ectx: property (text), widget (BuddyLabel, label_11)
 #: po/rc.cpp:569 rc.cpp:569
-msgid "Show popup messages when changing tracks:"
-msgstr "곡이 바뀌면 팝업 표시:"
+msgid "Show popup messages when changing tracks"
+msgstr "곡이 바뀌면 팝업 표시"
 
 #. i18n: file: gui/interfacesettings.ui:475
 #. i18n: ectx: attribute (title), widget (QWidget, tab_4)
@@ -4834,32 +4834,32 @@ msgstr "일반"
 #. i18n: file: gui/interfacesettings.ui:486
 #. i18n: ectx: property (text), widget (BuddyLabel, label_7)
 #: po/rc.cpp:575 rc.cpp:575
-msgid "Group single track albums:"
-msgstr "한 곡 음반 묶기:"
+msgid "Group single track albums"
+msgstr "한 곡 음반 묶기"
 
 #. i18n: file: gui/interfacesettings.ui:503
 #. i18n: ectx: property (text), widget (BuddyLabel, useComposerLabel)
 #: po/rc.cpp:578 rc.cpp:578
-msgid "Group albums by composer:"
-msgstr "작곡가 음반 묶기:"
+msgid "Group albums by composer"
+msgstr "작곡가 음반 묶기"
 
 #. i18n: file: gui/interfacesettings.ui:520
 #. i18n: ectx: property (text), widget (BuddyLabel, groupMultipleLabel)
 #: po/rc.cpp:581 rc.cpp:581
-msgid "Multiple artist albums:"
-msgstr "여러 연주자 음반:"
+msgid "Multiple artist albums"
+msgstr "여러 연주자 음반"
 
 #. i18n: file: gui/interfacesettings.ui:533
 #. i18n: ectx: property (text), widget (BuddyLabel, showDeleteActionLabel)
 #: po/rc.cpp:584 rc.cpp:584
-msgid "Show delete action in context menus:"
-msgstr "메뉴에 지우기 보이기:"
+msgid "Show delete action in context menus"
+msgstr "메뉴에 지우기 보이기"
 
 #. i18n: file: gui/interfacesettings.ui:550
 #. i18n: ectx: property (text), widget (BuddyLabel, forceSingleClick_label)
 #: po/rc.cpp:587 rc.cpp:587
-msgid "Enforce single-click activation of items:"
-msgstr "한 번 클릭 사용:"
+msgid "Enforce single-click activation of items"
+msgstr "한 번 클릭 사용"
 
 #. i18n: file: gui/interfacesettings.ui:591
 #. i18n: ectx: property (text), widget (StateLabel, singleClickLabel)
@@ -4921,20 +4921,20 @@ msgstr "정지할 때 페이드아웃:"
 #. i18n: file: gui/playbacksettings.ui:154
 #. i18n: ectx: property (text), widget (BuddyLabel, stopOnExitLabel)
 #: po/rc.cpp:623 rc.cpp:623
-msgid "Stop playback on exit:"
-msgstr "빠져나가면 연주 정지:"
+msgid "Stop playback on exit"
+msgstr "빠져나가면 연주 정지"
 
 #. i18n: file: gui/playbacksettings.ui:167
 #. i18n: ectx: property (text), widget (BuddyLabel, stopDynamizerOnExitLabel)
 #: po/rc.cpp:626 rc.cpp:626
-msgid "Stop dynamizer on exit:"
-msgstr "빠져나가면 활동 정지:"
+msgid "Stop dynamizer on exit"
+msgstr "빠져나가면 활동 정지"
 
 #. i18n: file: gui/playbacksettings.ui:184
 #. i18n: ectx: property (text), widget (BuddyLabel, inhibitSuspendLabel)
 #: po/rc.cpp:629 rc.cpp:629
-msgid "Inhibit suspend whilst playing:"
-msgstr "연주 중에 절전기능 사용 않기:"
+msgid "Inhibit suspend whilst playing"
+msgstr "연주 중에 절전기능 사용 않기"
 
 #. i18n: file: gui/playbacksettings.ui:217
 #. i18n: ectx: property (text), widget (QLabel, noteLabel)

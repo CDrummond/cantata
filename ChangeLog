@@ -40,6 +40,8 @@
 20. Use &;copy for copyright symbol in text - beter than (c)
 21. Add config setting (for Qt only builds) to set language.
 22. Set cover-widget icon size to at least twice tab-widget large icon size.
+23. Remove usage of Gtk-style on-off button for Gtk style, and instead give
+    checkboxes better text and adjust config layout.
 
 1.2.2
 -----

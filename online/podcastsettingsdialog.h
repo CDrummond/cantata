@@ -25,9 +25,9 @@
 #define PODCAST_SETTINGS_DIALOG_H
 
 #include "dialog.h"
-#include "onoffbutton.h"
 
 class QComboBox;
+class QCheckBox;
 class PathRequester;
 
 class PodcastSettingsDialog : public Dialog
@@ -55,7 +55,7 @@ private:
     QComboBox *updateCombo;
     int origRssUpdate;
     PathRequester *downloadPath;
-    OnOffButton *autoDownload;
+    QCheckBox *autoDownload;
     QString origPodcastDownloadPath;
     bool origPodcastAutoDownload;
     int changed;

@@ -36,6 +36,7 @@
 #include <QComboBox>
 #include <QGroupBox>
 #include <QFormLayout>
+#include <QCheckBox>
 #include <QProcess>
 
 static const char * constMkEnabledVal="mk-enabled-val";
@@ -92,32 +93,21 @@ ShortcutsSettingsPage::ShortcutsSettingsPage(QWidget *p)
             connect(settingsButton, SIGNAL(clicked(bool)), SLOT(showGnomeSettings()));
             connect(mediaKeysIfaceCombo, SIGNAL(currentIndexChanged(int)), SLOT(mediaKeysIfaceChanged()));
         } else if (useQxt) {
-            QFormLayout *boxLay=new QFormLayout(box);
-            BuddyLabel *label=new BuddyLabel(i18n("Use media keys to control Cantata:"), box);
-            mediaKeysEnabled = new OnOffButton(box);
-            label->setBuddy(mediaKeysEnabled);
-            boxLay->setWidget(0, QFormLayout::LabelRole, label);
-            boxLay->setWidget(0, QFormLayout::FieldRole, mediaKeysEnabled);
+            QBoxLayout *boxLay=new QBoxLayout(QBoxLayout::LeftToRight, box);
+            mediaKeysEnabled = new QCheckBox(i18n("Use media keys to control Cantata"), box);
+            boxLay->addWidget(mediaKeysEnabled);
             mediaKeysEnabled->setProperty(constMkEnabledVal, (unsigned int)MediaKeys::QxtInterface);
         } else if (useDesktop) {
-            QFormLayout *boxLay=new QFormLayout(box);
+            QBoxLayout *boxLay=new QBoxLayout(QBoxLayout::LeftToRight, box);
             QWidget *controlWidget = new QWidget(box);
-            QBoxLayout *controlLay=new QBoxLayout(QBoxLayout::LeftToRight, controlWidget);
-            BuddyLabel *label=new BuddyLabel(isGnome
-                                                ? i18n("Use media keys, as configured in desktop settings, to control Cantata:")
-                                                : i18n("Use media keys, as configured in GNOME/Unity settings, to control Cantata:"), box);
-            mediaKeysEnabled = new OnOffButton(controlWidget);
+            mediaKeysEnabled = new QCheckBox(isGnome
+                                             ? i18n("Use media keys, as configured in desktop settings, to control Cantata")
+                                             : i18n("Use media keys, as configured in GNOME/Unity settings, to control Cantata"), controlWidget);
             settingsButton=new ToolButton(controlWidget);
             settingsButton->setToolTip(i18n("Configure..."));
             settingsButton->setIcon(Icons::self()->configureIcon);
-            label->setBuddy(mediaKeysEnabled);
-            label->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Preferred);
-            controlWidget->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Preferred);
-            controlLay->setMargin(0);
-            controlLay->addWidget(mediaKeysEnabled);
-            controlLay->addWidget(settingsButton);
-            boxLay->setWidget(0, QFormLayout::LabelRole, label);
-            boxLay->setWidget(0, QFormLayout::FieldRole, controlWidget);
+            boxLay->addWidget(mediaKeysEnabled);
+            boxLay->addWidget(settingsButton);
             mediaKeysEnabled->setProperty(constMkEnabledVal, (unsigned int)MediaKeys::GnomeInteface);
             connect(mediaKeysEnabled, SIGNAL(toggled(bool)), settingsButton, SLOT(setEnabled(bool)));
             connect(settingsButton, SIGNAL(clicked(bool)), SLOT(showGnomeSettings()));

@@ -25,11 +25,11 @@
 #define SHORTCUT_SETTINGS_PAGE_H
 
 #include <QWidget>
-#include "onoffbutton.h"
 
 class ShortcutsSettingsWidget;
 class QComboBox;
 class ToolButton;
+class QCheckBox;
 
 class ShortcutsSettingsPage : public QWidget
 {
@@ -49,7 +49,7 @@ private:
     ShortcutsSettingsWidget *shortcuts;
     QComboBox *mediaKeysIfaceCombo;
     ToolButton *settingsButton;
-    OnOffButton *mediaKeysEnabled;
+    QCheckBox *mediaKeysEnabled;
 };
 
 #endif

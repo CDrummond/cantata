@@ -23,7 +23,6 @@
 
 #include "othersettings.h"
 #include "settings.h"
-#include "onoffbutton.h"
 
 OtherSettings::OtherSettings(QWidget *p)
     : QWidget(p)

@@ -12,68 +12,32 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <layout class="QFormLayout" name="formLayout">
-     <item row="0" column="0">
-      <widget class="BuddyLabel" name="contextBackdropLabel">
-       <property name="text">
-        <string>Use backdrop:</string>
-       </property>
-       <property name="buddy">
-        <cstring>contextBackdrop</cstring>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="OnOffButton" name="contextBackdrop"/>
-     </item>
-     <item row="1" column="0">
-      <widget class="BuddyLabel" name="contextDarkBackgroundLabel">
-       <property name="text">
-        <string>Dark background:</string>
-       </property>
-       <property name="buddy">
-        <cstring>contextDarkBackground</cstring>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="OnOffButton" name="contextDarkBackground"/>
-     </item>
-     <item row="2" column="0">
-      <widget class="BuddyLabel" name="wikipediaIntroOnlyLabel">
-       <property name="text">
-        <string>Only show basic wikipedia text:</string>
-       </property>
-       <property name="buddy">
-        <cstring>wikipediaIntroOnly</cstring>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="1">
-      <widget class="OnOffButton" name="wikipediaIntroOnly">
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="0">
-      <widget class="BuddyLabel" name="contextAlwaysCollapsedLabel">
-       <property name="text">
-        <string>Always collapse into a single pane:</string>
-       </property>
-       <property name="buddy">
-        <cstring>contextAlwaysCollapsed</cstring>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="1">
-      <widget class="OnOffButton" name="contextAlwaysCollapsed">
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-     </item>
-    </layout>
+    <widget class="QCheckBox" name="contextBackdrop">
+     <property name="text">
+      <string>Use backdrop</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="contextDarkBackground">
+     <property name="text">
+      <string>Dark background</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="wikipediaIntroOnly">
+     <property name="text">
+      <string>Only show basic wikipedia text</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="contextAlwaysCollapsed">
+     <property name="text">
+      <string>Always collapse into a single pane</string>
+     </property>
+    </widget>
    </item>
    <item>
     <spacer name="verticalSpacer">
@@ -130,19 +94,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>BuddyLabel</class>
-   <extends>QLabel</extends>
-   <header>buddylabel.h</header>
-  </customwidget>
-  <customwidget>
    <class>StateLabel</class>
    <extends>QLabel</extends>
    <header>statelabel.h</header>
-  </customwidget>
-  <customwidget>
-   <class>OnOffButton</class>
-   <extends>QCheckBox</extends>
-   <header>onoffbutton.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

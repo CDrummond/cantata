@@ -28,6 +28,7 @@
 #include "localize.h"
 #include "utils.h"
 #include <QComboBox>
+#include <QCheckBox>
 #include <QFormLayout>
 
 static void setIndex(QComboBox *combo, int val)
@@ -57,15 +58,13 @@ PodcastSettingsDialog::PodcastSettingsDialog(QWidget *p)
     QFormLayout * lay=new QFormLayout(mw);
     BuddyLabel * updateLabel=new BuddyLabel(i18n("Check for new episodes:"), mw);
     BuddyLabel * downloadLabel=new BuddyLabel(i18n("Download episodes to:"), mw);
-    BuddyLabel * autoDownloadLabel=new BuddyLabel(i18n("Automatically download new episodes:"), mw);
 
     updateCombo = new QComboBox(this);
     updateLabel->setBuddy(updateCombo);
     downloadPath = new PathRequester(this);
     downloadLabel->setBuddy(downloadPath);
     downloadPath->setDirMode(true);
-    autoDownload = new OnOffButton(this);
-    autoDownloadLabel->setBuddy(autoDownload);
+    autoDownload = new QCheckBox(i18n("Automatically download new episodes"), this);
 
     int row=0;
     lay->setWidget(row, QFormLayout::LabelRole, updateLabel);
@@ -74,8 +73,7 @@ PodcastSettingsDialog::PodcastSettingsDialog(QWidget *p)
     lay->setWidget(row++, QFormLayout::FieldRole, downloadPath);
     lay->setWidget(row, QFormLayout::LabelRole, downloadLabel);
     lay->setWidget(row++, QFormLayout::FieldRole, downloadPath);
-    lay->setWidget(row, QFormLayout::LabelRole, autoDownloadLabel);
-    lay->setWidget(row++, QFormLayout::FieldRole, autoDownload);
+    lay->setWidget(row++, QFormLayout::SpanningRole, autoDownload);
 
     setButtons(Ok|Cancel);
     setMainWidget(mw);

@@ -131,6 +131,11 @@ ServerSettings::ServerSettings(QWidget *p)
     REMOVE(streamUrl)
     REMOVE(streamUrlNoteLabel)
     #endif
+    #ifndef ENABLE_DYNAMIC
+    REMOVE(dynamizerPort)
+    REMOVE(dynamizerPortLabel)
+    REMOVE(dynamizerNoteLabel)
+    #endif
 }
 
 void ServerSettings::load()
@@ -354,7 +359,9 @@ void ServerSettings::setDetails(const MPDConnectionDetails &details)
         port->setValue(details.port);
         password->setText(details.password);
         dir->setText(Utils::convertDirForDisplay(details.dir));
-        dynamizerPort->setValue(details.dynamizerPort);
+        if (dynamizerPort) {
+            dynamizerPort->setValue(details.dynamizerPort);
+        }
         coverName->setText(details.coverName);
         #ifdef ENABLE_HTTP_STREAM_PLAYBACK
         streamUrl->setText(details.streamUrl);
@@ -375,7 +382,7 @@ MPDConnectionDetails ServerSettings::getDetails() const
         details.port=port->value();
         details.password=password->text();
         details.dir=Utils::convertDirFromDisplay(dir->text());
-        details.dynamizerPort=dynamizerPort->value();
+        details.dynamizerPort=dynamizerPort ? dynamizerPort->value() : 0;
         details.coverName=coverName->text().trimmed();
         #ifdef ENABLE_HTTP_STREAM_PLAYBACK
         details.streamUrl=streamUrl->text().trimmed();

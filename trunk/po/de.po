@@ -1961,8 +1961,8 @@ msgid "A KDE client for MPD"
 msgstr "Ein KDE-Client für MPD"
 
 #: gui/main.cpp:154
-msgid "Copyright (c) 2011-2013 Craig Drummond"
-msgstr "Alle Rechte (c) 2011–2013 Craig Drummond"
+msgid "Copyright &copy; 2011-2013 Craig Drummond"
+msgstr "Alle Rechte &copy; 2011–2013 Craig Drummond"
 
 #: gui/main.cpp:158
 msgid "Craig Drummond"
@@ -2267,20 +2267,20 @@ msgstr "Über Cantata"
 #: gui/mainwindow.cpp:1462
 msgctxt "Qt-only"
 msgid ""
-"<b>Cantata %1</b><br/><br/>MPD client.<br/><br/>(c) Craig Drummond 2011-2013."
+"<b>Cantata %1</b><br/><br/>MPD client.<br/><br/>&copy; Craig Drummond 2011-2013."
 "<br/>Released under the <a href=\"http://www.gnu.org/licenses/gpl.html"
 "\">GPLv3</a>"
 msgstr ""
-"<b>Cantata %1</b><br/><br/>MPD-Client.<br/><br/>(c) Craig Drummond 2011–2013."
+"<b>Cantata %1</b><br/><br/>MPD-Client.<br/><br/>&copy; Craig Drummond 2011–2013."
 "<br/>Veröffentlicht unter der <a href=\"http://www.gnu.org/licenses/gpl.html"
 "\">GPLv3</a>"
 
 #: gui/mainwindow.cpp:1464
 msgid ""
-"Based upon <a href=\"http://qtmpc.lowblog.nl\">QtMPC</a> - (c) 2007-2010 The "
+"Based upon <a href=\"http://qtmpc.lowblog.nl\">QtMPC</a> - &copy; 2007-2010 The "
 "QtMPC Authors<br/>"
 msgstr ""
-"Basierend auf <a href=\"http://qtmpc.lowblog.nl\">QtMPC</a> – (c) 2007–2010 "
+"Basierend auf <a href=\"http://qtmpc.lowblog.nl\">QtMPC</a> – &copy; 2007–2010 "
 "Die "
 "QtMPC Authoren<br/>"
 

@@ -9,12 +9,12 @@
  6. Option to have small sidebar at top or bottom.
  7. Scale context view backdrops.
  8. Add a manual config item (mpdPoll) to control whether Cantata should poll
-    MPD for its current state whilst playing. Teh value is specified in
+    MPD for its current state whilst playing. The value is specified in
     seconds. This is useful for cases where Cantata misses updates from MPD.
     This is only a work-around for certain scenarios. Please see README for
     more details.
- 9. Use a timeout of 2 seconds per 100K bytes of data - therefore, Cantata will
-    wait longer to write the data of a large command, and read its response.
+ 9. When sending commands to MPD, and waiting for response, use a timeout of 2
+    seconds per 100K bytes of data.
 10. Hide volume control if MPD returns a negative value for volume - which
     indicates MPD's volume mixer is disabled.
 11. When closing search widget, after performing a search, collapse all bar top
@@ -27,7 +27,7 @@
     last Cantata stream is removed.
 15. If connected to MPD via a UNIX-domain socket, then send non-MPD files as
     file:/// URLs to MPD - i.e. dont use internal HTTP server. To force usage of
-    HTTP server - set alwaysUseHttp to true in Cantata's config file. Refer to
+    HTTP server, set alwaysUseHttp to true in Cantata's config file. Refer to
     README for more details.
 16. Add CMake option to disable building of internal HTTP server.
 17. If listallinfo fails with MPD 0.18.x then prompt user to check MPD's
@@ -35,7 +35,7 @@
 18. Add CMake option to disable streams, dynamic, and online services. Refer to
     INSTALL file for details.
 19. Don't use QKeySequence::Delete to detect delete key event for play queue,
-    instead check for no modifiers and the Delete key itself. Closing a
+    instead check for no-modifiers and the Delete key itself. Closing a
     terminal with Ctrl-D seems to cause Cantata to see QKeySequence::Delete
 
 1.2.2

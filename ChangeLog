@@ -39,6 +39,7 @@
     terminal with Ctrl-D seems to cause Cantata to see QKeySequence::Delete
 20. Use &;copy for copyright symbol in text - beter than (c)
 21. Add config setting (for Qt only builds) to set language.
+22. Set cover-widget icon size to at least twice tab-widget large icon size.
 
 1.2.2
 -----

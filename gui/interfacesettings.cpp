@@ -28,6 +28,12 @@
 #include "musiclibraryitemalbum.h"
 #include "onoffbutton.h"
 #include <QComboBox>
+#ifndef ENABLE_KDE_SUPPORT
+#include <QDir>
+#include <QMap>
+#include <QRegExp>
+#include <QSet>
+#endif
 
 #define REMOVE(w) \
     w->setVisible(false); \
@@ -80,6 +86,9 @@ static inline int getValue(QComboBox *box)
 
 InterfaceSettings::InterfaceSettings(QWidget *p, const QStringList &hiddenPages)
     : QWidget(p)
+    #ifndef ENABLE_KDE_SUPPORT
+    , loadedLangs(false)
+    #endif
 {
     int removeCount=0;
     enabledViews=V_All;
@@ -213,6 +222,11 @@ InterfaceSettings::InterfaceSettings(QWidget *p, const QStringList &hiddenPages)
     connect(systemTrayCheckBox, SIGNAL(toggled(bool)), SLOT(enableStartupState()));
     connect(minimiseOnClose, SIGNAL(toggled(bool)), SLOT(enableStartupState()));
     connect(forceSingleClick, SIGNAL(toggled(bool)), SLOT(forceSingleClickChanged()));
+    #ifdef ENABLE_KDE_SUPPORT
+    REMOVE(lang)
+    REMOVE(langLabel)
+    REMOVE(langNoteLabel)
+    #endif
 }
 
 void InterfaceSettings::load()
@@ -326,7 +340,83 @@ void InterfaceSettings::save()
     Settings::self()->saveMinimiseOnClose(minimiseOnClose->isChecked());
     Settings::self()->saveStartupState(getValue(startupState));
     Settings::self()->saveCacheScaledCovers(cacheScaledCovers->isChecked());
+    #ifndef ENABLE_KDE_SUPPORT
+    if (loadedLangs && lang) {
+        Settings::self()->saveLang(lang->itemData(lang->currentIndex()).toString());
+    }
+    #endif
 }
+
+#ifndef ENABLE_KDE_SUPPORT
+static bool localeAwareCompare(const QString &a, const QString &b)
+{
+    return a.localeAwareCompare(b) < 0;
+}
+
+static QSet<QString> translationCodes(const QString &dir)
+{
+    QSet<QString> codes;
+    QDir d(dir);
+    QStringList installed(d.entryList(QStringList() << "*.qm"));
+    QRegExp langRegExp("^cantata_(.*).qm$");
+    foreach (const QString &filename, installed) {
+        if (langRegExp.exactMatch(filename)) {
+            codes.insert(langRegExp.cap(1));
+        }
+    }
+    return codes;
+}
+
+void InterfaceSettings::showEvent(QShowEvent *e)
+{
+    if (!loadedLangs) {
+        loadedLangs=true;
+
+        QMap<QString, QString> langMap;
+        QSet<QString> transCodes;
+
+        transCodes+=translationCodes(qApp->applicationDirPath()+QLatin1String("/translations"));
+        transCodes+=translationCodes(QDir::currentPath()+QLatin1String("/translations"));
+        #ifndef Q_OS_WIN
+        transCodes+=translationCodes(INSTALL_PREFIX"/share/cantata/translations/");
+        #endif
+
+        foreach (const QString &code, transCodes) {
+            QString langName = QLocale::languageToString(QLocale(code).language());
+            #if QT_VERSION >= 0x040800
+            QString nativeName = QLocale(code).nativeLanguageName();
+            if (!nativeName.isEmpty()) {
+                langName = nativeName;
+            }
+            #endif
+            langMap[QString("%1 (%2)").arg(langName, code)] = code;
+        }
+
+        langMap["English (en)"] = "en";
+
+        QString current = Settings::self()->lang();
+        QStringList names = langMap.keys();
+        qStableSort(names.begin(), names.end(), localeAwareCompare);
+        lang->addItem(i18n("System default", QString()));
+        lang->setCurrentIndex(0);
+        foreach (const QString &name, names) {
+            lang->addItem(name, langMap[name]);
+            if (langMap[name]==current) {
+                lang->setCurrentIndex(lang->count()-1);
+            }
+        }
+
+        if (lang->count()<3) {
+            REMOVE(lang)
+            REMOVE(langLabel)
+            REMOVE(langNoteLabel)
+        } else {
+            connect(lang, SIGNAL(currentIndexChanged(int)), SLOT(langChanged()));
+        }
+    }
+    QWidget::showEvent(e);
+}
+#endif
 
 void InterfaceSettings::libraryViewChanged()
 {
@@ -394,4 +484,9 @@ void InterfaceSettings::enableStartupState()
 {
     startupState->setEnabled(systemTrayCheckBox->isChecked() && minimiseOnClose->isChecked());
     startupStateLabel->setEnabled(startupState->isEnabled());
+}
+
+void InterfaceSettings::langChanged()
+{
+    langNoteLabel->setOn(lang->itemData(lang->currentIndex()).toString()!=Settings::self()->lang());
 }

@@ -138,6 +138,7 @@ public:
     void setSearchCategories(const QList<QPair<QString, QString> > &categories);
     void setSearchCategory(const QString &id);
     void setSearchResetLevel(int l) { searchResetLevel=l; }
+    void setSearchIndex(const QModelIndex &idx) { searchIndex=idx; }
 
 public Q_SLOTS:
     void focusSearch();
@@ -188,6 +189,7 @@ private:
     QIcon bgndIcon;
     bool performedSearch;
     int searchResetLevel;
+    QModelIndex searchIndex;
 };
 
 #endif

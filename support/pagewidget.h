@@ -32,8 +32,11 @@ typedef KPageWidgetItem PageWidgetItem;
 
 class PageWidget : public KPageWidget
 {
+    Q_OBJECT
 public:
-    PageWidget(QWidget *p) : KPageWidget(p) { }
+    PageWidget(QWidget *p) : KPageWidget(p) {
+        connect(this, SIGNAL(currentPageChanged(KPageWidgetItem *, KPageWidgetItem *)), this, SIGNAL(currentPageChanged()));
+    }
     virtual ~PageWidget() { }
     PageWidgetItem * addPage(QWidget *widget, const QString &name, const Icon &icon, const QString &header) {
         PageWidgetItem *item=KPageWidget::addPage(widget, name);
@@ -42,6 +45,9 @@ public:
         adjustSize();
         return item;
     }
+
+Q_SIGNALS:
+    void currentPageChanged();
 };
 
 #else
@@ -65,6 +71,8 @@ private:
 
 class PageWidget : public QWidget
 {
+    Q_OBJECT
+
 public:
     PageWidget(QWidget *p);
     virtual ~PageWidget() { }
@@ -72,6 +80,9 @@ public:
     int count();
     PageWidgetItem * currentPage() const;
     void setCurrentPage(PageWidgetItem *item);
+
+Q_SIGNALS:
+    void currentPageChanged();
 
 private:
     QListWidget *list;

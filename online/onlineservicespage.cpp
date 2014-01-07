@@ -69,7 +69,7 @@ OnlineServicesPage::OnlineServicesPage(QWidget *p)
     connect(OnlineServicesModel::self(), SIGNAL(updated(QModelIndex)), this, SLOT(updated(QModelIndex)));
 //    connect(OnlineServicesModel::self(), SIGNAL(needToSort()), this, SLOT(sortList()));
     connect(OnlineServicesModel::self(), SIGNAL(busy(bool)), view, SLOT(showSpinner(bool)));
-    connect(OnlineServicesModel::self(), SIGNAL(providersChanged()), view, SLOT(closeSearch()));
+    connect(OnlineServicesModel::self(), SIGNAL(providersChanged()), this, SLOT(providersChanged()));
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
     connect(view, SIGNAL(searchItems()), this, SLOT(searchItems()));
     connect(view, SIGNAL(searchIsActive(bool)), this, SLOT(controlSearch(bool)));
@@ -333,6 +333,8 @@ void OnlineServicesPage::controlSearch(bool on)
         QModelIndex filterIndex=srv ? OnlineServicesModel::self()->serviceIndex(srv) : QModelIndex();
         proxy.setFilterItem(srv);
         proxy.update(QString(), QString());
+        view->setSearchIndex(filterIndex.isValid() ? proxy.mapFromSource(filterIndex) : QModelIndex());
+        view->setSearchResetLevel(filterIndex.isValid() ? 0 : 1);
         if (filterIndex.isValid()) {
             view->expand(proxy.mapFromSource(filterIndex), true);
         }
@@ -346,6 +348,8 @@ void OnlineServicesPage::controlSearch(bool on)
         proxy.setFilterItem(0);
         proxy.update(QString(), QString());
         view->setBackgroundImage(QIcon());
+        view->setSearchIndex(QModelIndex());
+        view->setSearchResetLevel(1);
     }
 }
 
@@ -777,6 +781,13 @@ void OnlineServicesPage::deleteDownloadedPodcast()
 void OnlineServicesPage::showPreferencesPage()
 {
     emit showPreferencesPage(QLatin1String("online"));
+}
+
+void OnlineServicesPage::providersChanged()
+{
+    view->setSearchIndex(QModelIndex());
+    view->setSearchResetLevel(1);
+    view->closeSearch();
 }
 
 void OnlineServicesPage::updated(const QModelIndex &idx)

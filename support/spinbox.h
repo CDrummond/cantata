@@ -92,7 +92,8 @@ public:
     int maximum() const { return spin->maximum(); }
     void setFocus() const { spin->setFocus(); }
     void setAllowEmpty() { spin->setAllowEmpty(); }
-    void setSizePolicy(QSizePolicy::Policy horizontal, QSizePolicy::Policy vertical);
+    void setSizePolicy(QSizePolicy p);
+    void setSizePolicy(QSizePolicy::Policy h, QSizePolicy::Policy v) { setSizePolicy(QSizePolicy(h, v)); }
 
 Q_SIGNALS:
     void valueChanged(int v);

@@ -165,11 +165,11 @@ void SpinBox::setValue(int v)
     }
 }
 
-void SpinBox::setSizePolicy(QSizePolicy::Policy horizontal, QSizePolicy::Policy vertical)
+void SpinBox::setSizePolicy(QSizePolicy p)
 {
-    spin->setSizePolicy(horizontal, vertical);
+    spin->setSizePolicy(p);
     // If spin is set to expand, then we can remove our spacer...
-    if (QSizePolicy::MinimumExpanding==horizontal && spacer) {
+    if (QSizePolicy::MinimumExpanding==p.horizontalPolicy() && spacer) {
         layout()->removeItem(spacer);
         delete spacer;
         spacer=0;

@@ -544,17 +544,17 @@ void CoverDialog::downloadJobFinished()
         QString host=reply->property(constHostProperty).toString();
         QString url=reply->url().toString();
         QByteArray data=reply->readAll();
-        FileType fileType=url.endsWith(".jpg") || url.endsWith(".jpeg") ? FT_Jpg : (url.endsWith(".png") ? FT_Png : FT_Other);
-        QImage img=QImage::fromData(data, FT_Jpg==fileType ? "JPG" : (FT_Png==fileType ? "PNG" : 0));
+        const char *format=Covers::imageFormat(data);
+        QImage img=QImage::fromData(data, format);
         if (!img.isNull()) {
             bool isLarge=reply->property(constThumbProperty).toString().isEmpty();
             QTemporaryFile *temp=0;
 
             if (isLarge || (reply->property(constThumbProperty).toString()==reply->property(constLargeProperty).toString())) {
-                temp=new QTemporaryFile(QDir::tempPath()+"/cantata_XXXXXX."+(FT_Jpg==fileType ? "jpg" : "png"));
+                temp=new QTemporaryFile(QDir::tempPath()+"/cantata_XXXXXX."+(format ? QString(QLatin1String(format)).toLower() : "png"));
 
                 if (temp->open()) {
-                    if (FT_Other==fileType) {
+                    if (!format) {
                         img.save(temp, "PNG");
                     } else {
                         temp->write(data);

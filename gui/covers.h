@@ -171,6 +171,9 @@ public:
     static QString fixArtist(const QString &artist);
     static QPixmap * getScaledCover(const QString &artist, const QString &album, int size);
     static bool saveScaledCover(const QImage &img, const QString &artist, const QString &album, int size);
+    static bool isJpg(const QByteArray &data);
+    static bool isPng(const QByteArray &data);
+    static const char * imageFormat(const QByteArray &data);
 
     Covers();
     void readConfig();

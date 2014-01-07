@@ -1120,12 +1120,11 @@ void ItemView::searchActive(bool a)
     }
 }
 
-
 void ItemView::collapseToLevel()
 {
     if (Mode_SimpleTree==mode || Mode_DetailedTree==mode) {
-        return treeView->collapseToLevel(searchResetLevel);
+        return treeView->collapseToLevel(searchResetLevel, searchIndex);
     } else if(Mode_GroupedTree==mode) {
-        return groupedView->collapseToLevel(searchResetLevel);
+        return groupedView->collapseToLevel(searchResetLevel, searchIndex);
     }
 }

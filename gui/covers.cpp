@@ -96,9 +96,9 @@ static bool canSaveTo(const QString &dir)
 
 static const QString typeFromRaw(const QByteArray &raw)
 {
-    if (raw.size()>9 && /*raw[0]==0xFF && raw[1]==0xD8 && raw[2]==0xFF*/ raw[6]=='J' && raw[7]=='F' && raw[8]=='I' && raw[9]=='F') {
+    if (Covers::isJpg((raw))) {
         return constExtensions[0];
-    } else if (raw.size()>4 && /*raw[0]==0x89 &&*/ raw[1]=='P' && raw[2]=='N' && raw[3]=='G') {
+    } else if (Covers::isPng(raw)) {
         return constExtensions[1];
     }
     return QString();
@@ -227,6 +227,21 @@ bool Covers::saveScaledCover(const QImage &img, const QString &artist, const QSt
     bool status=img.save(fileName);
     DBUG_CLASS("Covers") << artist << album << size << fileName << status;
     return status;
+}
+
+bool Covers::isJpg(const QByteArray &data)
+{
+    return data.size()>9 && /*data[0]==0xFF && data[1]==0xD8 && data[2]==0xFF*/ data[6]=='J' && data[7]=='F' && data[8]=='I' && data[9]=='F';
+}
+
+bool Covers::isPng(const QByteArray &data)
+{
+    return data.size()>4 && /*data[0]==0x89 &&*/ data[1]=='P' && data[2]=='N' && data[3]=='G';
+}
+
+const char * Covers::imageFormat(const QByteArray &data)
+{
+    return isJpg(data) ? "JPG" : (isPng(data) ? "PNG" : 0);
 }
 
 QString Covers::encodeName(QString name)
@@ -651,10 +666,8 @@ void CoverDownloader::jobFinished()
 
     if (it!=end) {
         QByteArray data=reply->ok() ? reply->readAll() : QByteArray();
-        QString url=reply->url().toString();
         Covers::Image img;
-        img.img= data.isEmpty() ? QImage() : QImage::fromData(data, url.endsWith(".jpg", Qt::CaseInsensitive) || url.endsWith(".jpeg", Qt::CaseInsensitive)
-                                                              ? "JPG" : (url.endsWith(".png", Qt::CaseInsensitive) ? "PNG" : 0));
+        img.img= data.isEmpty() ? QImage() : QImage::fromData(data, Covers::imageFormat(data));
         Job job=it.value();
 
         if (!img.img.isNull() && img.img.size().width()<32) {

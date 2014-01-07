@@ -279,7 +279,8 @@ void PodcastPage::imageJobFinished()
     if (imageSpinner) {
         imageSpinner->stop();
     }
-    QImage img=QImage::fromData(imageJob->readAll());
+    QByteArray data=imageJob->readAll();
+    QImage img=QImage::fromData(data, Covers::imageFormat(data));
     if (!img.isNull()) {
         if (img.width()>maxImageSize || img.height()>maxImageSize) {
             img=img.scaled(maxImageSize, maxImageSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);

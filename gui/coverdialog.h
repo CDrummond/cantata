@@ -89,12 +89,6 @@ public:
         DL_LargeSave
     };
 
-    enum FileType {
-        FT_Jpg,
-        FT_Png,
-        FT_Other
-    };
-
     CoverDialog(QWidget *parent);
     virtual ~CoverDialog();
 

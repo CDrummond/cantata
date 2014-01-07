@@ -38,6 +38,7 @@ class Spinner;
 class QTreeWidgetItem;
 class TextBrowser;
 class MessageWidget;
+class PageWidget;
 
 namespace OpmlParser
 {
@@ -54,6 +55,7 @@ public:
     
     const Icon & icon() const { return icn; }
     const QString & name() const { return pageName; }
+    QUrl currentRss() const;
 
 Q_SIGNALS:
     void rssSelected(const QUrl &url);
@@ -150,12 +152,14 @@ private Q_SLOTS:
     void showError(const QString &msg);
     void showInfo(const QString &msg);
     void msgWidgetVisible(bool v);
+    void pageChanged();
 
 private:
     void slotButtonClicked(int button);
 
 private:
     QUrl currentUrl;
+    PageWidget *pageWidget;
     MessageWidget *messageWidget;
     QWidget *spacer;
 };

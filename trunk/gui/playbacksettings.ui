@@ -47,7 +47,7 @@
         <item row="0" column="0">
          <widget class="BuddyLabel" name="crossfadingLabel">
           <property name="text">
-           <string>Crossfading:</string>
+           <string>Crossfade between tracks:</string>
           </property>
           <property name="buddy">
            <cstring>crossfading</cstring>
@@ -57,10 +57,13 @@
         <item row="0" column="1">
          <widget class="SpinBox" name="crossfading">
           <property name="suffix">
-           <string> seconds</string>
+           <string> s</string>
           </property>
           <property name="maximum">
            <number>20</number>
+          </property>
+          <property name="specialValueText">
+           <string>Do not crossfade</string>
           </property>
          </widget>
         </item>

@@ -2564,19 +2564,6 @@ msgstr ""
 msgid "Configure..."
 msgstr ""
 
-#: gui/shortcutssettingspage.cpp:95
-msgid "Use media keys to control Cantata"
-msgstr ""
-
-#: gui/shortcutssettingspage.cpp:106
-msgid "Use media keys, as configured in desktop settings, to control Cantata"
-msgstr ""
-
-#: gui/shortcutssettingspage.cpp:107
-msgid ""
-"Use media keys, as configured in GNOME/Unity settings, to control Cantata"
-msgstr ""
-
 #: gui/stdactions.cpp:55
 msgid "Previous Track"
 msgstr ""
@@ -3478,7 +3465,7 @@ msgstr ""
 #. i18n: file: devices/actiondialog.ui:123
 #. i18n: ectx: property (text), widget (BuddyLabel, label_2)
 #: po/rc.cpp:37 rc.cpp:37
-msgid "Overwrite songs"
+msgid "Overwrite songs:"
 msgstr ""
 
 #. i18n: file: devices/actiondialog.ui:150
@@ -3554,7 +3541,7 @@ msgstr ""
 #. i18n: file: devices/albumdetails.ui:112
 #. i18n: ectx: property (text), widget (BuddyLabel, label_5)
 #: po/rc.cpp:73 rc.cpp:73
-msgid "Single artist"
+msgid "Single artist:"
 msgstr ""
 
 #. i18n: file: devices/audiocdsettings.ui:20
@@ -3653,19 +3640,19 @@ msgstr ""
 #. i18n: file: devices/devicepropertieswidget.ui:82
 #. i18n: ectx: property (text), widget (BuddyLabel, fixVariousArtistsLabel)
 #: po/rc.cpp:124 rc.cpp:124
-msgid "'Various Artists' workaround"
+msgid "'Various Artists' workaround:"
 msgstr ""
 
 #. i18n: file: devices/devicepropertieswidget.ui:95
 #. i18n: ectx: property (text), widget (BuddyLabel, autoScanLabel)
 #: po/rc.cpp:127 rc.cpp:127
-msgid "Automatically scan music when attached"
+msgid "Automatically scan music when attached:"
 msgstr ""
 
 #. i18n: file: devices/devicepropertieswidget.ui:108
 #. i18n: ectx: property (text), widget (BuddyLabel, useCacheLabel)
 #: po/rc.cpp:130 rc.cpp:130
-msgid "Use cache"
+msgid "Use cache:"
 msgstr ""
 
 #. i18n: file: devices/devicepropertieswidget.ui:121
@@ -3695,7 +3682,7 @@ msgstr ""
 #. i18n: file: tags/trackorganiser.ui:112
 #. i18n: ectx: property (text), widget (BuddyLabel, label_3)
 #: po/rc.cpp:139 po/rc.cpp:828 rc.cpp:139 rc.cpp:828
-msgid "Use only ASCII characters"
+msgid "Use only ASCII characters:"
 msgstr ""
 
 #. i18n: file: devices/devicepropertieswidget.ui:159
@@ -3707,7 +3694,7 @@ msgstr ""
 #. i18n: file: tags/trackorganiser.ui:95
 #. i18n: ectx: property (text), widget (BuddyLabel, label_4)
 #: po/rc.cpp:142 po/rc.cpp:825 rc.cpp:142 rc.cpp:825
-msgid "Replace spaces with underscores"
+msgid "Replace spaces with underscores:"
 msgstr ""
 
 #. i18n: file: devices/devicepropertieswidget.ui:176
@@ -3719,7 +3706,7 @@ msgstr ""
 #. i18n: file: tags/trackorganiser.ui:78
 #. i18n: ectx: property (text), widget (BuddyLabel, label_5)
 #: po/rc.cpp:145 po/rc.cpp:822 rc.cpp:145 rc.cpp:822
-msgid "Ignore 'The' in artist names"
+msgid "Ignore 'The' in artist names:"
 msgstr ""
 
 #. i18n: file: devices/devicepropertieswidget.ui:193
@@ -3743,7 +3730,7 @@ msgstr ""
 #. i18n: file: tags/trackorganiser.ui:129
 #. i18n: ectx: property (text), widget (BuddyLabel, label_2)
 #: po/rc.cpp:151 po/rc.cpp:831 rc.cpp:151 rc.cpp:831
-msgid "VFAT safe"
+msgid "VFAT safe:"
 msgstr ""
 
 #. i18n: file: devices/devicepropertieswidget.ui:250
@@ -3755,7 +3742,7 @@ msgstr ""
 #. i18n: file: devices/devicepropertieswidget.ui:261
 #. i18n: ectx: property (text), widget (BuddyLabel, transcoderWhenDifferentLabel)
 #: po/rc.cpp:157 rc.cpp:157
-msgid "Only transcode if source file is of a different format"
+msgid "Only transcode if source file is of a different format:"
 msgstr ""
 
 #. i18n: file: devices/filenameschemedialog.ui:29
@@ -4406,13 +4393,13 @@ msgstr ""
 #. i18n: file: gui/interfacesettings.ui:64
 #. i18n: ectx: property (text), widget (BuddyLabel, libraryArtistImageLabel)
 #: po/rc.cpp:478 rc.cpp:478
-msgid "Show artist images"
+msgid "Show artist images:"
 msgstr ""
 
 #. i18n: file: gui/interfacesettings.ui:81
 #. i18n: ectx: property (text), widget (BuddyLabel, label_6)
 #: po/rc.cpp:481 rc.cpp:481
-msgid "Show album year"
+msgid "Show album year:"
 msgstr ""
 
 #. i18n: file: gui/interfacesettings.ui:123
@@ -4460,7 +4447,7 @@ msgstr ""
 #. i18n: file: gui/interfacesettings.ui:337
 #. i18n: ectx: property (text), widget (BuddyLabel, playQueueStartClosedLabel)
 #: po/rc.cpp:515 po/rc.cpp:545 rc.cpp:515 rc.cpp:545
-msgid "Initially collapse albums"
+msgid "Initially collapse albums:"
 msgstr ""
 
 #. i18n: file: gui/interfacesettings.ui:242
@@ -4502,25 +4489,25 @@ msgstr ""
 #. i18n: file: gui/interfacesettings.ui:354
 #. i18n: ectx: property (text), widget (BuddyLabel, playQueueAutoExpandLabel)
 #: po/rc.cpp:548 rc.cpp:548
-msgid "Automatically expand current album"
+msgid "Automatically expand current album:"
 msgstr ""
 
 #. i18n: file: gui/interfacesettings.ui:371
 #. i18n: ectx: property (text), widget (BuddyLabel, playQueueScrollLabel)
 #: po/rc.cpp:551 rc.cpp:551
-msgid "Scroll to current track"
+msgid "Scroll to current track:"
 msgstr ""
 
 #. i18n: file: gui/interfacesettings.ui:384
 #. i18n: ectx: property (text), widget (BuddyLabel, playQueueBackgroundLabel)
 #: po/rc.cpp:554 rc.cpp:554
-msgid "Use current album cover as background"
+msgid "Use current album cover as background:"
 msgstr ""
 
 #. i18n: file: gui/interfacesettings.ui:397
 #. i18n: ectx: property (text), widget (BuddyLabel, playQueueConfirmClearLabel)
 #: po/rc.cpp:557 rc.cpp:557
-msgid "Prompt before clearing"
+msgid "Prompt before clearing:"
 msgstr ""
 
 #. i18n: file: gui/interfacesettings.ui:411
@@ -4532,19 +4519,19 @@ msgstr ""
 #. i18n: file: gui/interfacesettings.ui:417
 #. i18n: ectx: property (text), widget (BuddyLabel, label_10)
 #: po/rc.cpp:563 rc.cpp:563
-msgid "Show icon in notification area"
+msgid "Show icon in notification area:"
 msgstr ""
 
 #. i18n: file: gui/interfacesettings.ui:437
 #. i18n: ectx: property (text), widget (BuddyLabel, minimiseOnCloseLabel)
 #: po/rc.cpp:566 rc.cpp:566
-msgid "Minimize to notification area when closed"
-msgstr "Minimise to notification area when closed"
+msgid "Minimize to notification area when closed:"
+msgstr "Minimise to notification area when closed:"
 
 #. i18n: file: gui/interfacesettings.ui:457
 #. i18n: ectx: property (text), widget (BuddyLabel, label_11)
 #: po/rc.cpp:569 rc.cpp:569
-msgid "Show popup messages when changing tracks"
+msgid "Show popup messages when changing tracks:"
 msgstr ""
 
 #. i18n: file: gui/interfacesettings.ui:475
@@ -4556,31 +4543,31 @@ msgstr ""
 #. i18n: file: gui/interfacesettings.ui:486
 #. i18n: ectx: property (text), widget (BuddyLabel, label_7)
 #: po/rc.cpp:575 rc.cpp:575
-msgid "Group single track albums"
+msgid "Group single track albums:"
 msgstr ""
 
 #. i18n: file: gui/interfacesettings.ui:503
 #. i18n: ectx: property (text), widget (BuddyLabel, useComposerLabel)
 #: po/rc.cpp:578 rc.cpp:578
-msgid "Group albums by composer"
+msgid "Group albums by composer:"
 msgstr ""
 
 #. i18n: file: gui/interfacesettings.ui:520
 #. i18n: ectx: property (text), widget (BuddyLabel, groupMultipleLabel)
 #: po/rc.cpp:581 rc.cpp:581
-msgid "Multiple artist albums"
+msgid "Multiple artist albums:"
 msgstr ""
 
 #. i18n: file: gui/interfacesettings.ui:533
 #. i18n: ectx: property (text), widget (BuddyLabel, showDeleteActionLabel)
 #: po/rc.cpp:584 rc.cpp:584
-msgid "Show delete action in context menus"
+msgid "Show delete action in context menus:"
 msgstr ""
 
 #. i18n: file: gui/interfacesettings.ui:550
 #. i18n: ectx: property (text), widget (BuddyLabel, forceSingleClick_label)
 #: po/rc.cpp:587 rc.cpp:587
-msgid "Enforce single-click activation of items"
+msgid "Enforce single-click activation of items:"
 msgstr ""
 
 #. i18n: file: gui/interfacesettings.ui:591
@@ -4642,19 +4629,19 @@ msgstr ""
 #. i18n: file: gui/playbacksettings.ui:154
 #. i18n: ectx: property (text), widget (BuddyLabel, stopOnExitLabel)
 #: po/rc.cpp:623 rc.cpp:623
-msgid "Stop playback on exit"
+msgid "Stop playback on exit:"
 msgstr ""
 
 #. i18n: file: gui/playbacksettings.ui:167
 #. i18n: ectx: property (text), widget (BuddyLabel, stopDynamizerOnExitLabel)
 #: po/rc.cpp:626 rc.cpp:626
-msgid "Stop dynamizer on exit"
-msgstr "Stop dynamiser on exit"
+msgid "Stop dynamizer on exit:"
+msgstr "Stop dynamiser on exit:"
 
 #. i18n: file: gui/playbacksettings.ui:184
 #. i18n: ectx: property (text), widget (BuddyLabel, inhibitSuspendLabel)
 #: po/rc.cpp:629 rc.cpp:629
-msgid "Inhibit suspend whilst playing"
+msgid "Inhibit suspend whilst playing:"
 msgstr ""
 
 #. i18n: file: gui/playbacksettings.ui:217

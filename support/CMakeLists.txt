@@ -1,7 +1,7 @@
 set(SUPPORT_SRCS action.cpp actioncollection.cpp fancytabwidget.cpp messagewidget.cpp icon.cpp buddylabel.cpp
     lineedit.cpp gtkstyle.cpp utils.cpp spinner.cpp messagebox.cpp inputdialog.cpp thread.cpp squeezedtextlabel.cpp)
 
-set(SUPPORT_MOC_HDRS action.h actioncollection.h fancytabwidget.h messagewidget.h inputdialog.h thread.h)
+set(SUPPORT_MOC_HDRS action.h actioncollection.h fancytabwidget.h messagewidget.h inputdialog.h thread.h pagewidget.h)
 
 if (NOT WIN32)
     set(SUPPORT_SRCS ${SUPPORT_SRCS} spinbox.cpp windowmanager.cpp gtkproxystyle.cpp combobox.cpp shortcuthandler.cpp)

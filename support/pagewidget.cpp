@@ -257,6 +257,7 @@ PageWidget::PageWidget(QWidget *p)
     list = new QListWidget(p);
     stack = new QStackedWidget(p);
     connect(list, SIGNAL(currentRowChanged(int)), stack, SLOT(setCurrentIndex(int)));
+    connect(stack, SIGNAL(currentChanged(int)), this, SIGNAL(currentPageChanged()));
     layout->addWidget(list);
     layout->addWidget(stack);
     layout->setMargin(0);

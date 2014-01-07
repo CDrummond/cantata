@@ -155,6 +155,12 @@ PodcastPage::PodcastPage(QWidget *p, const QString &n)
     updateText();
 }
 
+QUrl PodcastPage::currentRss() const
+{
+    QList<QTreeWidgetItem *> selection=tree->selectedItems();
+    return selection.isEmpty() ? QUrl() : selection.at(0)->data(0, UrlRole).toUrl();
+}
+
 void PodcastPage::fetch(const QUrl &url)
 {
     cancel();
@@ -515,7 +521,7 @@ PodcastSearchDialog::PodcastSearchDialog(QWidget *parent)
     layout->setMargin(0);
     layout->setSpacing(0);
 
-    PageWidget *pageWidget = new PageWidget(mainWidget);
+    pageWidget = new PageWidget(mainWidget);
     QList<PodcastPage *> pages;
 
     layout->addWidget(messageWidget);
@@ -562,6 +568,7 @@ PodcastSearchDialog::PodcastSearchDialog(QWidget *parent)
     }
     connect(OnlineServicesModel::self(), SIGNAL(podcastError(QString)), this, SLOT(showError(QString)));
     connect(messageWidget, SIGNAL(visible(bool)), SLOT(msgWidgetVisible(bool)));
+    connect(pageWidget, SIGNAL(currentPageChanged()), this, SLOT(pageChanged()));
     messageWidget->hide();
 }
 
@@ -591,6 +598,13 @@ void PodcastSearchDialog::showInfo(const QString &msg)
 void PodcastSearchDialog::msgWidgetVisible(bool v)
 {
     spacer->setFixedSize(spacer->width(), v ? spacer->width() : 0);
+}
+
+void PodcastSearchDialog::pageChanged()
+{
+    PageWidgetItem *pwi=pageWidget->currentPage();
+    PodcastPage *page=pwi ? qobject_cast<PodcastPage *>(pwi->widget()) : 0;
+    rssSelected(page ? page->currentRss() : QUrl());
 }
 
 void PodcastSearchDialog::slotButtonClicked(int button)

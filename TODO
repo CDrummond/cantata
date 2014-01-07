@@ -5,7 +5,6 @@
   - CMake scripts not working
 
 - Style
-  - Place SpinBox and OnOffButton in style?
   - Overlay scrollbars
     - Currently disabled (pass -DENABLE_OVERLAYSCROLLBARS=ON to cmake to enable)
     - Updating slider value when os-thumb moves is not 100% correct, and not
@@ -19,9 +18,6 @@
   - If radio stream is a playlist, Cantata currently only uses the 1st entry.
     Perhaps Cantata should loop over all entries until we find one that plays?
 
-- Online
-  - DAAP servers? (Online or devices? Online as its read-only?)
-
 - Devices
   - libMTP does not support album artist tag.
   - Port to MTP DBus service when this is released.
@@ -30,9 +26,10 @@
     - Cantata hangs if smb service is stopped before its un-mounted
   - Re-enable covers in sync dialog?
   - CD-Text?
-  - Fix time-remaining calculation.
-  - Seek support for AudioCDs
-  - Possible issues UDisks2, might not be able to get block device
+  - Fix time-remaining calculation in action dialog.
+  - Seek support for AudioCDs. Might be due to sending data as WAV
+    - MPD seems to send 1 seek to skip 44 bytes, then actual seek
+  - Possible issues wth UDisks2, might not be able to get block device
     (e.g. /dev/sr0)?
   - Playback from MTP devices.
 
@@ -57,5 +54,5 @@
   - mpdscribble management
   - mixramp tag calculation
   - mixramp MPD settings
-  - Combine 'Page' classes
+  - Create a base 'Page' class?
 

@@ -36,6 +36,7 @@
 #include <QMenu>
 #include <QItemDelegate>
 #include <QMouseEvent>
+#include <QSpinBox>
 
 enum Columns {
     COL_TRACK,
@@ -51,7 +52,7 @@ public:
     QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const {
         Q_UNUSED(option);
         if (COL_TRACK==index.column()) {
-            SpinBox *editor = new SpinBox(parent);
+            QSpinBox *editor = new QSpinBox(parent);
             editor->setMinimum(0);
             editor->setMaximum(500);
             return editor;
@@ -66,14 +67,14 @@ public:
 
     void setEditorData(QWidget *editor, const QModelIndex &index) const {
         if (COL_TRACK==index.column()) {
-            static_cast<SpinBox*>(editor)->setValue(index.model()->data(index, Qt::EditRole).toInt());
+            static_cast<QSpinBox*>(editor)->setValue(index.model()->data(index, Qt::EditRole).toInt());
         } else {
             static_cast<QLineEdit*>(editor)->setText(index.model()->data(index, Qt::EditRole).toString());
         }
     }
     void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const {
         if (COL_TRACK==index.column()) {
-            model->setData(index, static_cast<SpinBox*>(editor)->value(), Qt::EditRole);
+            model->setData(index, static_cast<QSpinBox*>(editor)->value(), Qt::EditRole);
         } else {
             model->setData(index, static_cast<QLineEdit*>(editor)->text().trimmed(), Qt::EditRole);
         }
@@ -139,8 +140,6 @@ AlbumDetailsDialog::AlbumDetailsDialog(QWidget *parent)
     toolsMenu->addAction(i18n("Adjust Track Numbers"), this, SLOT(adjustTrackNumbers()));
     setButtonMenu(User1, toolsMenu, InstantPopup);
     setButtonGuiItem(User1, GuiItem(i18n("Tools"), "tools-wizard"));
-    year->setAllowEmpty();
-    disc->setAllowEmpty();
     connect(singleArtist, SIGNAL(toggled(bool)), SLOT(hideArtistColumn(bool)));
     tracks->setItemDelegate(new EditorDelegate);
     resize(600, 600);

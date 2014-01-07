@@ -55,7 +55,7 @@
          </widget>
         </item>
         <item row="0" column="1">
-         <widget class="SpinBox" name="crossfading">
+         <widget class="QSpinBox" name="crossfading">
           <property name="suffix">
            <string> s</string>
           </property>
@@ -167,7 +167,7 @@
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="SpinBox" name="stopFadeDuration"/>
+       <widget class="QSpinBox" name="stopFadeDuration"/>
       </item>
       <item row="4" column="0">
        <spacer name="verticalSpacer_8">
@@ -239,11 +239,6 @@
    <class>BuddyLabel</class>
    <extends>QLabel</extends>
    <header>buddylabel.h</header>
-  </customwidget>
-  <customwidget>
-   <class>SpinBox</class>
-   <extends>QSpinBox</extends>
-   <header>spinbox.h</header>
   </customwidget>
   <customwidget>
    <class>UrlLabel</class>

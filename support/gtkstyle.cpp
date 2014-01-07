@@ -43,7 +43,6 @@
 #endif
 
 static bool usingGtkStyle=false;
-static bool useFullGtkStyle=false;
 
 static inline void setup()
 {
@@ -52,7 +51,6 @@ static inline void setup()
     if (!init) {
         init=true;
         usingGtkStyle=QApplication::style()->inherits("QGtkStyle");
-        useFullGtkStyle=usingGtkStyle && qgetenv("KDE_FULL_SESSION").isEmpty();
     }
     #endif
 }
@@ -61,12 +59,6 @@ bool GtkStyle::isActive()
 {
     setup();
     return usingGtkStyle;
-}
-
-bool GtkStyle::mimicWidgets()
-{
-    setup();
-    return useFullGtkStyle;
 }
 
 void GtkStyle::drawSelection(const QStyleOptionViewItemV4 &opt, QPainter *painter, double opacity)
@@ -255,11 +247,12 @@ void GtkStyle::applyTheme(QWidget *widget)
     if (widget && isActive()) {
         QString theme=GtkStyle::themeName().toLower();
         GtkProxyStyle::ScrollbarType sbType=GtkProxyStyle::SB_Standard;
+        bool touchStyleSpin=false;
         if (!theme.isEmpty()) {
             QFile cssFile(QLatin1String(INSTALL_PREFIX"/share/")+QCoreApplication::applicationName()+QLatin1String("/themes/")+theme+QLatin1String(".css"));
             if (cssFile.open(QFile::ReadOnly)) {
                 QString css=QLatin1String(cssFile.readAll());
-                QString header=css.left(100);
+                QString header=css.left(128);
                 qApp->setStyleSheet(css);
                 if (header.contains("drag:toolbar")) {
                     WindowManager *wm=new WindowManager(widget);
@@ -277,13 +270,16 @@ void GtkStyle::applyTheme(QWidget *widget)
                     sbType=GtkProxyStyle::SB_Thin;
                 }
                 #endif
+                if (header.contains("spinbox:touch")) {
+                    touchStyleSpin=true;
+                }
                 symbolicIcons=header.contains("symbolic-icons:true");
                 lightIcons=header.contains("light-icons:true");
                 QCoreApplication::setAttribute(Qt::AA_DontShowIconsInMenus);
             }
         }
         if (!gtkProxyStyle) {
-            gtkProxyStyle=new GtkProxyStyle(sbType);
+            gtkProxyStyle=new GtkProxyStyle(sbType, touchStyleSpin);
             qApp->setStyle(gtkProxyStyle);
         }
     }

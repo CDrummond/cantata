@@ -28,6 +28,9 @@
      <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="0" rowspan="2">
        <layout class="QFormLayout" name="formLayout">
+        <property name="fieldGrowthPolicy">
+         <enum>QFormLayout::ExpandingFieldsGrow</enum>
+        </property>
         <item row="0" column="0">
          <widget class="BuddyLabel" name="label">
           <property name="text">
@@ -91,7 +94,7 @@
          </widget>
         </item>
         <item row="4" column="1">
-         <widget class="SpinBox" name="year"/>
+         <widget class="EmptySpinBox" name="year"/>
         </item>
         <item row="5" column="0">
          <widget class="BuddyLabel" name="label_6">
@@ -104,7 +107,7 @@
          </widget>
         </item>
         <item row="5" column="1">
-         <widget class="SpinBox" name="disc"/>
+         <widget class="EmptySpinBox" name="disc"/>
         </item>
         <item row="6" column="0" colspan="2">
          <widget class="QCheckBox" name="singleArtist">
@@ -184,9 +187,9 @@
    <header>completioncombo.h</header>
   </customwidget>
   <customwidget>
-   <class>SpinBox</class>
+   <class>EmnptySpinBox</class>
    <extends>QSpinBox</extends>
-   <header>spinbox.h</header>
+   <header>emptyspinbox.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>

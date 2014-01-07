@@ -23,12 +23,12 @@
 
 #include "inputdialog.h"
 #include "gtkstyle.h"
-#include "spinbox.h"
 #include "lineedit.h"
 #include "dialog.h"
 #include "utils.h"
 #include <QLabel>
 #include <QBoxLayout>
+#include <QSpinBox>
 
 InputDialog::InputDialog(const QString &caption, const QString &label, const QString &value, QLineEdit::EchoMode echo, QWidget *parent)
     : Dialog(parent)
@@ -58,7 +58,7 @@ void InputDialog::init(bool intInput, const QString &caption, const QString &lab
     QBoxLayout *layout=new QBoxLayout(QBoxLayout::TopToBottom, wid);
 
     if (intInput) {
-        spin=new SpinBox(wid);
+        spin=new QSpinBox(wid);
         spin->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Preferred);
         setMinimumWidth(Utils::isHighDpi() ? 600 : 300);
     } else {

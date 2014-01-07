@@ -154,7 +154,7 @@
       </widget>
      </item>
      <item row="8" column="1">
-      <widget class="SpinBox" name="dateFromSpin">
+      <widget class="QSpinBox" name="dateFromSpin">
        <property name="minimumSize">
         <size>
          <width>72</width>
@@ -177,7 +177,7 @@
       </widget>
      </item>
      <item row="9" column="1">
-      <widget class="SpinBox" name="dateToSpin">
+      <widget class="QSpinBox" name="dateToSpin">
        <property name="minimumSize">
         <size>
          <width>72</width>
@@ -292,11 +292,6 @@
    <class>BuddyLabel</class>
    <extends>QLabel</extends>
    <header>buddylabel.h</header>
-  </customwidget>
-  <customwidget>
-   <class>SpinBox</class>
-   <extends>QSpinBox</extends>
-   <header>spinbox.h</header>
   </customwidget>
   <customwidget>
    <class>LineEdit</class>

@@ -21,27 +21,38 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef GTKSTYLE_H
-#define GTKSTYLE_H
+#ifndef EMPTYSPINBOX_H
+#define EMPTYSPINBOX_H
 
-#include <QStyleOption>
-class QPainter;
-class QWidget;
+#include <QSpinBox>
+#include <QFontMetrics>
 
-#include <QString>
-
-namespace GtkStyle
+class EmptySpinBox : public QSpinBox
 {
-    extern bool isActive();
-    extern void drawSelection(const QStyleOptionViewItemV4 &opt, QPainter *painter, double opacity);
-    extern QString themeName();
-    extern QString iconTheme();
-    extern void setThemeName(const QString &n);
-    extern void setIconTheme(const QString &n);
-    extern void applyTheme(QWidget *widget);
-    extern void cleanup();
-    extern bool useSymbolicIcons();
-    extern bool useLightIcons();
-}
+public:
+    EmptySpinBox(QWidget *parent)
+        : QSpinBox(parent)
+        {
+        setKeyboardTracking(true);
+        setMaximum(3000);
+    }
+
+    QSize sizeHint() const {
+        return QSpinBox::sizeHint()+QSize(fontMetrics().height()/2, 0);
+    }
+
+protected:
+    virtual QValidator::State validate(QString &input, int &pos) const {
+        return input.isEmpty() ? QValidator::Acceptable : QSpinBox::validate(input, pos);
+    }
+
+    virtual int valueFromText(const QString &text) const {
+        return text.isEmpty() ? minimum() : QSpinBox::valueFromText(text);
+    }
+
+    virtual QString textFromValue(int val) const {
+        return val==minimum() ? QString() : QSpinBox::textFromValue(val);
+    }
+};
 
 #endif

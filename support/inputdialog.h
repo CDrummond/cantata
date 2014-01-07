@@ -28,7 +28,7 @@
 #include "localize.h"
 #include "dialog.h"
 
-class SpinBox;
+class QSpinBox;
 class LineEdit;
 
 class InputDialog : public Dialog
@@ -58,7 +58,7 @@ private Q_SLOTS:
     void enableOkButton();
 
 private:
-    SpinBox *spin;
+    QSpinBox *spin;
     LineEdit *edit;
 };
 

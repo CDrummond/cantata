@@ -347,7 +347,7 @@ undoSteps=<Integer>
 mpdPoll=<Integer>
     Speicifed in seconds, this controls how often Cantata should poll MPD to
     determine its current state whilst playing. Set to 0 to disable polling,
-    and rely on MPD's IDLE mechanism to determin MPD state changes.
+    and rely on MPD's IDLE mechanism to determine MPD state changes.
     Default is 0 (no polling). (Values 0..60 are acceptable)
 
 mpdListSize=<Integer>

@@ -78,7 +78,7 @@
       <item row="4" column="0" colspan="2">
        <widget class="QCheckBox" name="cdAuto">
         <property name="text">
-         <string>Automatically lookup</string>
+         <string>Lookup information as soon as CD is inserted</string>
         </property>
        </widget>
       </item>

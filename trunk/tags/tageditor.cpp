@@ -130,9 +130,6 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
 
     QWidget *mainWidet = new QWidget(this);
     setupUi(mainWidet);
-    track->setAllowEmpty();
-    disc->setAllowEmpty();
-    year->setAllowEmpty();
     setMainWidget(mainWidet);
     ButtonCodes buttons=Ok|Cancel|Reset|User3;
     if (songs.count()>1) {

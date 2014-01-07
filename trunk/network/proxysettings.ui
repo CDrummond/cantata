@@ -81,7 +81,7 @@
     </widget>
    </item>
    <item row="3" column="1">
-    <widget class="SpinBox" name="proxyPort">
+    <widget class="QSpinBox" name="proxyPort">
      <property name="maximum">
       <number>65535</number>
      </property>
@@ -127,11 +127,6 @@
    <class>LineEdit</class>
    <extends>QLineEdit</extends>
    <header>lineedit.h</header>
-  </customwidget>
-  <customwidget>
-   <class>SpinBox</class>
-   <extends>QSpinBox</extends>
-   <header>spinbox.h</header>
   </customwidget>
   <customwidget>
    <class>BuddyLabel</class>

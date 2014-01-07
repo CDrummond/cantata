@@ -66,7 +66,7 @@
        </widget>
       </item>
       <item row="3" column="1">
-       <widget class="SpinBox" name="cddbPort">
+       <widget class="QSpinBox" name="cddbPort">
         <property name="minimum">
          <number>1</number>
         </property>
@@ -128,11 +128,6 @@
    <class>BuddyLabel</class>
    <extends>QLabel</extends>
    <header>buddylabel.h</header>
-  </customwidget>
-  <customwidget>
-   <class>SpinBox</class>
-   <extends>QSpinBox</extends>
-   <header>spinbox.h</header>
   </customwidget>
   <customwidget>
    <class>LineEdit</class>

@@ -46,7 +46,7 @@ public:
         #endif
     };
 
-    GtkProxyStyle(ScrollbarType sb);
+    GtkProxyStyle(ScrollbarType sb, bool styleSpin);
     ~GtkProxyStyle();
     QSize sizeFromContents(ContentsType type, const QStyleOption *option,  const QSize &size, const QWidget *widget) const;
     int styleHint(StyleHint hint, const QStyleOption *option, const QWidget *widget, QStyleHintReturn *returnData) const;
@@ -84,6 +84,7 @@ private:
 
     ScrollbarType sbarType;
     int sbarPlainViewWidth;
+    bool touchStyleSpin;
 
     #ifdef ENABLE_OVERLAYSCROLLBARS
     OsThumb *sbarThumb;

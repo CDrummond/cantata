@@ -108,7 +108,7 @@
     </widget>
    </item>
    <item row="6" column="1">
-    <widget class="SpinBox" name="track"/>
+    <widget class="EmptySpinBox" name="track"/>
    </item>
    <item row="7" column="0">
     <widget class="StateLabel" name="discLabel">
@@ -121,7 +121,7 @@
     </widget>
    </item>
    <item row="7" column="1">
-    <widget class="SpinBox" name="disc"/>
+    <widget class="EmptySpinBox" name="disc"/>
    </item>
    <item row="8" column="0">
     <widget class="StateLabel" name="genreLabel">
@@ -147,7 +147,7 @@
     </widget>
    </item>
    <item row="9" column="1">
-    <widget class="SpinBox" name="year"/>
+    <widget class="EmptySpinBox" name="year"/>
    </item>
   </layout>
   </item>
@@ -173,9 +173,9 @@
    <header>combobox.h</header>
   </customwidget>
   <customwidget>
-   <class>SpinBox</class>
-   <extends>SpinBox</extends>
-   <header>spinbox.h</header>
+   <class>EmptySpinBox</class>
+   <extends>QSpinBox</extends>
+   <header>emptyspinbox.h</header>
   </customwidget>
   <customwidget>
    <class>StateLabel</class>

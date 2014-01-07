@@ -50,11 +50,6 @@
    <header>lineedit.h</header>
   </customwidget>
   </customwidgets>
- <tabstops>
-  <tabstop>query</tabstop>
-  <tabstop>search</tabstop>
-  <tabstop>list</tabstop>
- </tabstops>
  <resources/>
  <connections/>
 </ui>

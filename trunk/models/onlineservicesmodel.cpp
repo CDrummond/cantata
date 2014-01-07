@@ -552,18 +552,18 @@ void OnlineServicesModel::imageDownloaded()
     }
 
     QString url=j->url().toString();
-    bool png=url.endsWith(".png", Qt::CaseInsensitive);
-    QImage img=QImage::fromData(data, png ? "PNG" : "JPG");
+    QImage img=QImage::fromData(data, Covers::imageFormat(data));
     if (img.isNull()) {
         DBUG << url << "null image";
         return;
     }
 
+    bool png=Covers::isPng(data);
     QString id=j->property(constIdProperty).toString();
     Song song;
     song.albumartist=song.artist=j->property(constArtistProperty).toString();
     song.album=j->property(constAlbumProperty).toString();
-    DBUG << "Got image" << id << song.artist << song.album;
+    DBUG << "Got image" << id << song.artist << song.album << png;
     OnlineService *srv=service(id);
     if (id==PodcastService::constName) {
         MusicLibraryItem *podcast=srv->childItem(song.artist);
@@ -599,21 +599,18 @@ void OnlineServicesModel::imageDownloaded()
                         ? Utils::cacheDir(id.toLower(), true)+Covers::encodeName(song.album.isEmpty() ? song.artist : (song.artist+" - "+song.album))+(png ? ".png" : ".jpg")
                         : cacheName);
 
-    if (maxSize>0 || !cacheName.isEmpty()) {
-        QImage img=QImage::fromData(data, png ? "PNG" : "JPG");
-        if (!img.isNull()) {
-            if (maxSize>32 && (img.width()>maxSize || img.height()>maxSize)) {
-                img=img.scaled(maxSize, maxSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
-            }
-            DBUG << "Saved scaled image to" << fileName << maxSize;
-            img.save(fileName);
-            if (!song.album.isEmpty()) {
-                song.track=1;
-                song.setKey();
-                Covers::self()->emitCoverUpdated(song, img, fileName);
-            }
-            return;
+    if (!img.isNull() && (maxSize>0 || !cacheName.isEmpty())) {
+        if (maxSize>32 && (img.width()>maxSize || img.height()>maxSize)) {
+            img=img.scaled(maxSize, maxSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
         }
+        DBUG << "Saved scaled image to" << fileName << maxSize;
+        img.save(fileName);
+        if (!song.album.isEmpty()) {
+            song.track=1;
+            song.setKey();
+            Covers::self()->emitCoverUpdated(song, img, fileName);
+        }
+        return;
     }
     QFile f(fileName);
     if (f.open(QIODevice::WriteOnly)) {

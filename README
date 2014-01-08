@@ -828,8 +828,6 @@ Cantata contains code/icons from:
     Quassel        - quassel-irc.org (Qt-only keyboard short-cut config support)
     Solid          - solid.kde.org (Device detection for Qt-only builds)
     Musique        - Copied code for Gtk theme detection
-    Ayatana Qt     - Overlay scrollbar code copied/modified from
-                     https://launchpad.net/ayatana-scrollbar-qt
     Asunder        - CDDB code
     libkcddb       - MusicBrainz code
     libebur128     - https://github.com/jiixyj/libebur128 (Replay gain

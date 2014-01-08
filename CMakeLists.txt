@@ -43,7 +43,6 @@ option(ENABLE_STREAMS "Enable support for streams tab (to save favourite streams
 option(ENABLE_ONLINE_SERVICES "Enable support for online services (Jamendo, Magnatune, SoundCloud, and Podcasts)" ON)
 
 if (NOT WIN32 AND NOT APPLE)
-    option(ENABLE_OVERLAYSCROLLBARS "Enable support for overlay style scrollbars when using QGtkStyle (Linux only - EXPERIMENTAL - NOT FULLY WORKING!)" OFF)
     option(ENABLE_CDPARANOIA "Enable CDParanoia libraries (required for AudioCD support)" ON)
     option(ENABLE_CDDB "Enable CDDB libraries (either this or MusicBrianz required for AudioCD support)" ON)
     option(ENABLE_MUSICBRAINZ "Enable MusicBrianz libraries (either this or CDDB required for AudioCD support)" ON)
@@ -194,10 +193,6 @@ if (NOT ENABLE_QT5 AND NOT WIN32 AND NOT APPLE)
 endif (NOT ENABLE_QT5 AND NOT WIN32 AND NOT APPLE)
 
 find_package(ZLIB REQUIRED)
-
-if (ENABLE_OVERLAYSCROLLBARS)
-    add_definitions(-DENABLE_OVERLAYSCROLLBARS)
-endif (ENABLE_OVERLAYSCROLLBARS)
 
 include_directories(${CMAKE_SOURCE_DIR}/gui ${CMAKE_SOURCE_DIR}/mpd ${CMAKE_SOURCE_DIR}/models ${CMAKE_SOURCE_DIR}/widgets
                      ${CMAKE_SOURCE_DIR}/network ${CMAKE_SOURCE_DIR}/dbus ${CMAKE_SOURCE_DIR}/http

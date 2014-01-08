@@ -32,9 +32,6 @@
 struct Dialog : public KDialog {
     Dialog(QWidget *parent, const QString &name=QString(), const QSize &defSize=QSize());
     virtual ~Dialog();
-    #ifdef ENABLE_OVERLAYSCROLLBARS
-    int exec();
-    #endif
 
     const QSize & configuredSize() const { return cfgSize; }
     void resize(int w, int h) { resize(QSize(w, h)); }
@@ -150,10 +147,6 @@ public:
     void setMainWidget(QWidget *widget);
     virtual void slotButtonClicked(int button);
     QWidget * mainWidget() { return mw; }
-
-    #ifdef ENABLE_OVERLAYSCROLLBARS
-    int exec();
-    #endif
 
     const QSize & configuredSize() const { return cfgSize; }
     void resize(int w, int h) { resize(QSize(w, h)); }

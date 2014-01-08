@@ -259,20 +259,10 @@ void GtkStyle::applyTheme(QWidget *widget)
                     wm->initialize(WindowManager::WM_DRAG_MENU_AND_TOOLBAR);
                     wm->registerWidgetAndChildren(widget);
                 }
-                #ifdef ENABLE_OVERLAYSCROLLBARS
-                if (header.contains("scrollbar:overlay")) {
-                    sbType=GtkProxyStyle::SB_Overlay;
-                } else if (header.contains("scrollbar:thin")) {
-                    sbType=GtkProxyStyle::SB_Thin;
-                }
-                #else
                 if (header.contains("scrollbar:overlay") || header.contains("scrollbar:thin")) {
                     sbType=GtkProxyStyle::SB_Thin;
                 }
-                #endif
-                if (header.contains("spinbox:touch")) {
-                    touchStyleSpin=true;
-                }
+                touchStyleSpin=header.contains("spinbox:touch");
                 symbolicIcons=header.contains("symbolic-icons:true");
                 lightIcons=header.contains("light-icons:true");
                 QCoreApplication::setAttribute(Qt::AA_DontShowIconsInMenus);
@@ -290,15 +280,6 @@ void GtkStyle::applyTheme(QWidget *widget)
         qApp->setStyle(plainProxyStyle);
     }
     #endif
-    #endif
-}
-
-void GtkStyle::cleanup()
-{
-    #if !defined Q_OS_WIN && !defined QT_NO_STYLE_GTK && defined ENABLE_OVERLAYSCROLLBARS
-    if (gtkProxyStyle) {
-        gtkProxyStyle->destroySliderThumb();
-    }
     #endif
 }
 

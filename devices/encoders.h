@@ -41,7 +41,7 @@ namespace Encoders
 
     struct Encoder {
         Encoder()
-            : defaultValueIndex(0) {
+            : defaultValueIndex(0), ffmpegValueMultiplier(0), transcoder(false) {
         }
         Encoder(const QString &n, const QString &d, const QString &t, const QString &e, const QString &a, const QString &c,
                 const QString &f, const QString &v, const QList<Setting> &vs, const QString &l, const QString &h, int def, int mult=1)

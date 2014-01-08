@@ -378,12 +378,12 @@ void TreeView::correctSelection()
     selectionModel()->select(s, QItemSelectionModel::SelectCurrent);
 }
 
-void TreeView::itemWasActivated(const QModelIndex &index)
-{
-    if (!forceSingleClick) {
-        setExpanded(index, !isExpanded(index));
-    }
-}
+//void TreeView::itemWasActivated(const QModelIndex &index)
+//{
+//    if (!forceSingleClick) {
+//        setExpanded(index, !isExpanded(index));
+//    }
+//}
 
 void TreeView::itemWasClicked(const QModelIndex &index)
 {

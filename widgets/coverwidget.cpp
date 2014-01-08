@@ -162,7 +162,7 @@ const QPixmap & CoverWidget::stdPixmap(bool stream)
         pix = (stream ? Icons::self()->streamIcon : Icons::self()->albumIcon).pixmap(iconSize, iconSize).scaled(s, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
 
         QString &file=stream ? noStreamCoverFileName : noCoverFileName;
-        if (stream &file.isEmpty()) {
+        if (stream && file.isEmpty()) {
             #ifdef Q_OS_WIN
             QString iconFile=QCoreApplication::applicationDirPath()+"/icons/stream.png";
             #else

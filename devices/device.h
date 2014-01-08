@@ -97,7 +97,8 @@ public:
         : MusicLibraryItemRoot(name)
         , update(0)
         , needToFixVa(false)
-        , jobAbortRequested(false) {
+        , jobAbortRequested(false)
+        , transcoding(false) {
         setUseArtistImages(false);
         setUseAlbumImages(true);
         Q_UNUSED(m)

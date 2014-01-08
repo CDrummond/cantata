@@ -186,7 +186,7 @@ public:
     static StreamsModel * self();
     static QString favouritesDir();
     static QString modifyUrl(const QString &u,  bool addPrefix=true, const QString &name=QString());
-    static bool validProtocol(const QString &file);
+//    static bool validProtocol(const QString &file);
 
     StreamsModel(QObject *parent = 0);
     ~StreamsModel();

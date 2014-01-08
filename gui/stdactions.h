@@ -30,7 +30,6 @@
 class StdActions
 {
 public:
-
     static StdActions *self();
 
     StdActions();
@@ -63,7 +62,6 @@ public:
     Action *replaygainAction;
     #endif
     #ifdef ENABLE_DEVICES_SUPPORT
-    Action *devicesTabAction;
     Action *copyToDeviceAction;
     Action *deleteSongsAction;
     #endif
@@ -72,5 +70,9 @@ public:
     Action *removeAction;
     Action *backAction;
     Action *searchAction;
+
+private:
+    StdActions(const StdActions &o);
+    StdActions & operator=(const StdActions &o);
 };
 #endif

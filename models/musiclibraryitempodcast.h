@@ -59,14 +59,14 @@ public:
     RssStatus loadRss(QNetworkReply *dev);
     bool save();
     bool setCover(const QImage &img, bool update=false) const;
-    const QPixmap & cover();
+    const QPixmap & cover() const;
     bool hasRealCover() const { return !m_coverIsDefault; }
     void remove(int row);
     void remove(MusicLibraryItemSong *i);
     Type itemType() const { return Type_Podcast; }
     const QUrl & imageUrl() const { return m_imageUrl; }
     void setImageUrl(const QString &u) { m_imageUrl=u; }
-    void clearImage();
+    void clearImage() const;
     const QUrl & rssUrl() const { return m_rssUrl; }
     void removeFiles();
     void setUnplayedCount();

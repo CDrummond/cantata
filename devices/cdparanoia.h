@@ -41,7 +41,7 @@ public:
 
     void setParanoiaMode(int mode);
     void setFullParanoiaMode(bool f) { setParanoiaMode(f ? 3 : 0); }
-    void setNeverSkip(bool b);
+//    void setNeverSkip(bool b);
     void setMaxRetries(int m) { maxRetries=m; }
 
     qint16 * read();
@@ -49,8 +49,8 @@ public:
 
     int firstSectorOfTrack(int track);
     int lastSectorOfTrack(int track);
-    int firstSectorOfDisc();
-    int lastSectorOfDisc();
+//    int firstSectorOfDisc();
+//    int lastSectorOfDisc();
     int length();
 
     int lengthOfTrack(int n);

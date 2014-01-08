@@ -578,7 +578,7 @@ void ItemView::setMode(Mode m)
             groupedView->setModel(0);
         }
         treeView->setHidden(false);
-        ((TreeDelegate *)treeView->itemDelegate())->setSimple(Mode_SimpleTree==mode);
+        static_cast<TreeDelegate *>(treeView->itemDelegate())->setSimple(Mode_SimpleTree==mode);
         itemModel->setRootIndex(QModelIndex());
         treeView->reset();
     } else if (Mode_GroupedTree==mode) {
@@ -650,7 +650,7 @@ void ItemView::setLevel(int l, bool haveChildren)
 //                listView->setAlternatingRowColors(false);
                 listView->setWordWrap(true);
                 listView->setDragDropMode(QAbstractItemView::DragOnly);
-                ((ActionItemDelegate *)listView->itemDelegate())->setLargeIcons(iconGridSize.width()>(ActionItemDelegate::constLargeActionIconSize*6));
+                static_cast<ActionItemDelegate *>(listView->itemDelegate())->setLargeIcons(iconGridSize.width()>(ActionItemDelegate::constLargeActionIconSize*6));
             }
         } else if(QListView::ListMode!=listView->viewMode()) {
             listView->setGridSize(listGridSize);
@@ -659,7 +659,7 @@ void ItemView::setLevel(int l, bool haveChildren)
 //            listView->setAlternatingRowColors(true);
             listView->setWordWrap(false);
             listView->setDragDropMode(QAbstractItemView::DragOnly);
-            ((ActionItemDelegate *)listView->itemDelegate())->setLargeIcons(false);
+            static_cast<ActionItemDelegate *>(listView->itemDelegate())->setLargeIcons(false);
         }
     }
 
@@ -754,7 +754,7 @@ void ItemView::setGridSize(const QSize &sz)
     iconGridSize=sz;
     if (Mode_IconTop==mode && 0==currentLevel) {
         listView->setGridSize(listGridSize);
-        ((ActionItemDelegate *)listView->itemDelegate())->setLargeIcons(iconGridSize.width()>(ActionItemDelegate::constLargeActionIconSize*6));
+        static_cast<ActionItemDelegate *>(listView->itemDelegate())->setLargeIcons(iconGridSize.width()>(ActionItemDelegate::constLargeActionIconSize*6));
     }
 }
 

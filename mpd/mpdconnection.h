@@ -205,7 +205,7 @@ public:
 public Q_SLOTS:
     void reconnect();
     void setDetails(const MPDConnectionDetails &d);
-    void disconnectMpd();
+//    void disconnectMpd();
     // Current Playlist
     void add(const QStringList &files, bool replace, quint8 priority);
     void add(const QStringList &files, quint32 pos, quint32 size, int action, quint8 priority);
@@ -229,7 +229,7 @@ public Q_SLOTS:
     void goToNext();
     void setPause(bool toggle);
     void play();
-    void startPlayingSong(quint32 song = 0);
+//    void startPlayingSong(quint32 song = 0);
     void startPlayingSongId(qint32 songId = 0);
     void goToPrevious();
     void setConsume(bool toggle);

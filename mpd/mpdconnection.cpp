@@ -63,7 +63,7 @@ K_GLOBAL_STATIC(MPDConnection, conn)
 static inline int socketTimeout(int dataSize)
 {
     static const int constDataBlock=100000;
-    return ((dataSize/constDataBlock)+(dataSize%constDataBlock ? 1 : 0))*constSocketCommsTimeout;
+    return ((dataSize/constDataBlock)+((dataSize%constDataBlock) ? 1 : 0))*constSocketCommsTimeout;
 }
 
 static QByteArray log(const QByteArray &data)
@@ -275,7 +275,7 @@ MPDConnection::ConnectionReturn MPDConnection::connectToMPD(MpdSocket &socket, b
             playQueueIds.clear();
             emit cantataStreams(QList<Song>(), false);
             int min, maj, patch;
-            if (3==sscanf(&(recvdata.constData()[7]), "%d.%d.%d", &maj, &min, &patch)) {
+            if (3==sscanf(&(recvdata.constData()[7]), "%3d.%3d.%3d", &maj, &min, &patch)) {
                 long v=((maj&0xFF)<<16)+((min&0xFF)<<8)+(patch&0xFF);
                 if (v!=ver) {
                     ver=v;
@@ -468,13 +468,13 @@ void MPDConnection::setDetails(const MPDConnectionDetails &d)
     }
 }
 
-void MPDConnection::disconnectMpd()
-{
-    if (State_Connected==state) {
-        disconnectFromMPD();
-        emit stateChanged(false);
-    }
-}
+//void MPDConnection::disconnectMpd()
+//{
+//    if (State_Connected==state) {
+//        disconnectFromMPD();
+//        emit stateChanged(false);
+//    }
+//}
 
 MPDConnection::Response MPDConnection::sendCommand(const QByteArray &command, bool emitErrors, bool retry)
 {
@@ -944,11 +944,11 @@ void MPDConnection::play()
     sendCommand("play");
 }
 
-void MPDConnection::startPlayingSong(quint32 song)
-{
-    toggleStopAfterCurrent(false);
-    sendCommand("play "+QByteArray::number(song));
-}
+//void MPDConnection::startPlayingSong(quint32 song)
+//{
+//    toggleStopAfterCurrent(false);
+//    sendCommand("play "+QByteArray::number(song));
+//}
 
 void MPDConnection::startPlayingSongId(qint32 songId)
 {

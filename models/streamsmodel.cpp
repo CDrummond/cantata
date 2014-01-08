@@ -1168,6 +1168,9 @@ void StreamsModel::jobFinished()
 
     if (jobs.contains(job)) {
         CategoryItem *cat=jobs[job];
+        if (!cat) {
+            return;
+        }
         cat->state=CategoryItem::Fetched;
         jobs.remove(job);
 
@@ -1194,7 +1197,7 @@ void StreamsModel::jobFinished()
                 }
             }
 
-            if (cat && cat->parent==root && cat->supportsBookmarks) {
+            if (cat->parent==root && cat->supportsBookmarks) {
                 QList<Item *> bookmarks=cat->loadBookmarks();
                 if (bookmarks.count()) {
                     CategoryItem *bookmarksCat=cat->getBookmarksCategory();
@@ -1976,11 +1979,11 @@ QModelIndex StreamsModel::categoryIndex(const CategoryItem *cat) const
 
 const QString StreamsModel::constPrefix=QLatin1String("cantata-");
 
-bool StreamsModel::validProtocol(const QString &file)
-{
-    QString scheme=QUrl(file).scheme();
-    return scheme.isEmpty() || MPDConnection::self()->urlHandlers().contains(scheme);
-}
+//bool StreamsModel::validProtocol(const QString &file)
+//{
+//    QString scheme=QUrl(file).scheme();
+//    return scheme.isEmpty() || MPDConnection::self()->urlHandlers().contains(scheme);
+//}
 
 QString StreamsModel::modifyUrl(const QString &u, bool addPrefix, const QString &name)
 {

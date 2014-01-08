@@ -58,11 +58,11 @@ public:
     Type itemType() const { return Type_Artist; }
     static void clearDefaultCover();
     bool setCover(const QImage &img, bool update=false) const;
-    const QPixmap & cover();
+    const QPixmap & cover() const;
     bool hasRealCover() const { return !m_coverIsDefault; }
     const QString & imageUrl() const { return m_imageUrl; }
     void setImageUrl(const QString &u) { m_imageUrl=u; }
-    void clearImages();
+    void clearImages() const;
     // 'data' could be 'Composer' if we are set to use that, but need to save real artist...
     const QString & actualArtist() const { return m_actualArtist; }
 

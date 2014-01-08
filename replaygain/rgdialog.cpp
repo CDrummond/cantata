@@ -71,11 +71,6 @@ enum Columns
 
 static int iCount=0;
 
-static inline QString createAlbumName(const Song &s)
-{
-    return s.albumArtist()+QLatin1String(" - ")+s.album;
-}
-
 int RgDialog::instanceCount()
 {
     return iCount;

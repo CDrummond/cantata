@@ -215,12 +215,12 @@ public:
     };
 
     void AddTab(QWidget *tab, const QIcon &icon, const QString &label, const QString &tt=QString(), bool enabled=true);
-    void InsertTab(QWidget *tab, const QIcon &icon, const QString &label, const QString &tt=QString(), bool enabled=true);
-    void RemoveTab(QWidget *tab);
-    int IndexOf(QWidget *tab);
-    void AddSpacer(int size = 40);
-    void SetBackgroundPixmap(const QPixmap& pixmap);
-    void AddBottomWidget(QWidget* widget);
+//    void InsertTab(QWidget *tab, const QIcon &icon, const QString &label, const QString &tt=QString(), bool enabled=true);
+//    void RemoveTab(QWidget *tab);
+//    int IndexOf(QWidget *tab);
+//    void AddSpacer(int size = 40);
+//    void SetBackgroundPixmap(const QPixmap& pixmap);
+//    void AddBottomWidget(QWidget* widget);
     int current_index() const;
     QWidget * currentWidget() const;
     bool isEnabled(int index) const { return index>=0 && index<items_.count() ? items_[index].enabled_ : false; }
@@ -269,7 +269,7 @@ private:
 
     QWidget* tab_bar_;
     QStackedWidget* stack_;
-    QPixmap background_pixmap_;
+//    QPixmap background_pixmap_;
     QWidget* side_widget_;
     QVBoxLayout* side_layout_;
     QVBoxLayout* top_layout_;

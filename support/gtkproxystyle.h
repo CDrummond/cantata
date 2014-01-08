@@ -27,10 +27,6 @@
 #include <QProxyStyle>
 #include "config.h"
 
-#ifdef ENABLE_OVERLAYSCROLLBARS
-class QScrollBar;
-class OsThumb;
-#endif
 class ShortcutHandler;
 
 class GtkProxyStyle : public QProxyStyle
@@ -41,9 +37,6 @@ public:
     enum ScrollbarType {
         SB_Standard,
         SB_Thin
-        #ifdef ENABLE_OVERLAYSCROLLBARS
-        , SB_Overlay
-        #endif
     };
 
     GtkProxyStyle(ScrollbarType sb, bool styleSpin);
@@ -53,10 +46,6 @@ public:
     int pixelMetric(PixelMetric metric, const QStyleOption *option, const QWidget *widget) const;
     QRect subControlRect(ComplexControl control, const QStyleOptionComplex *option, SubControl subControl, const QWidget *widget) const;
     void drawComplexControl(ComplexControl control, const QStyleOptionComplex *option, QPainter *painter, const QWidget *widget) const;
-    #ifdef ENABLE_OVERLAYSCROLLBARS
-    bool eventFilter(QObject *object, QEvent *event);
-    void destroySliderThumb();
-    #endif
 
     void polish(QWidget *widget);
     void polish(QPalette &pal);
@@ -64,36 +53,11 @@ public:
     void unpolish(QWidget *widget);
     void unpolish(QApplication *app);
 
-#ifdef ENABLE_OVERLAYSCROLLBARS
-private Q_SLOTS:
-    void objectDestroyed(QObject *);
-    void sbarThumbMoved(const QPoint &point);
-    void sbarPageUp();
-    void sbarPageDown();
-    void sbarThumbHiding();
-    void sbarThumbShowing();
-
-private:
-    QRect sbarGetSliderRect() const;
-    void sbarUpdateOffset();
-    bool usePlainScrollbars(const QWidget *widget) const;
-#endif
-
 private:
     ShortcutHandler *shortcutHander;
-
     ScrollbarType sbarType;
     int sbarPlainViewWidth;
     bool touchStyleSpin;
-
-    #ifdef ENABLE_OVERLAYSCROLLBARS
-    OsThumb *sbarThumb;
-    int sbarWidth;
-    int sbarAreaWidth;
-    int sbarOffset;
-    int sbarLastPos;
-    QScrollBar *sbarThumbTarget;
-    #endif
 };
 
 #endif

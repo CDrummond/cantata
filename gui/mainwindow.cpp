@@ -1105,7 +1105,6 @@ void MainWindow::closeEvent(QCloseEvent *event)
             event->ignore();
         }
     } else {
-        GtkStyle::cleanup();
         MAIN_WINDOW_BASE_CLASS::closeEvent(event);
     }
 }

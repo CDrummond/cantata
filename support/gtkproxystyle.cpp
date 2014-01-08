@@ -24,9 +24,6 @@
 #include "gtkproxystyle.h"
 #include "gtkstyle.h"
 #include "shortcuthandler.h"
-#ifdef ENABLE_OVERLAYSCROLLBARS
-#include "osthumb.h"
-#endif
 #ifndef ENABLE_KDE_SUPPORT
 #include "acceleratormanager.h"
 #endif
@@ -51,24 +48,6 @@ static const char * constAccelProp="catata-accel";
 #endif
 static const double constSpinButtonRatio=1.25;
 
-//static bool revertQGtkStyleOverlayMod()
-//{
-//    // TODO: This is not working. ubuntu_gtk_set_use_overlay_scrollbar is found, and called.
-//    // But, Gtk filechooser STILL has non-overlay scrollbars!!!
-//    typedef void (*SetUseOsFn) (int);
-//    // enforce the "0" suffix, so we'll open libgtk-x11-2.0.so.0
-//    QLibrary libgtk(QLatin1String("gtk-x11-2.0"), 0, 0);
-//    SetUseOsFn setUseOsFn = (SetUseOsFn)libgtk.resolve("ubuntu_gtk_set_use_overlay_scrollbar");
-
-//    if (setUseOsFn) {
-//        setUseOsFn(!0);
-//        qputenv("LIBOVERLAY_SCROLLBAR", "override-blacklist");
-//        return true;
-//    }
-//    return false;
-//}
-
-
 static bool isOnCombo(const QWidget *w)
 {
     return w && (qobject_cast<const QComboBox *>(w) || isOnCombo(w->parentWidget()));
@@ -76,14 +55,6 @@ static bool isOnCombo(const QWidget *w)
 
 GtkProxyStyle::GtkProxyStyle(ScrollbarType sb, bool styleSpin)
     : QProxyStyle()
-    #ifdef ENABLE_OVERLAYSCROLLBARS
-    , sbarThumb(0)
-    , sbarWidth(-1)
-    , sbarAreaWidth(-1)
-    , sbarOffset(0xffffffff)
-    , sbarLastPos(-1)
-    , sbarThumbTarget(0)
-    #endif
 {
     shortcutHander=new ShortcutHandler(this);
 
@@ -101,28 +72,11 @@ GtkProxyStyle::GtkProxyStyle(ScrollbarType sb, bool styleSpin)
     if (SB_Standard!=sbarType) {
         int fh=QApplication::fontMetrics().height();
         sbarPlainViewWidth=fh/1.75;
-
-        #ifdef ENABLE_OVERLAYSCROLLBARS
-        if (SB_Overlay==sbarType && Qt::LeftToRight==QApplication::layoutDirection()) { //  && revertQGtkStyleOverlayMod()) {
-            sbarWidth=qMax(fh/5, 3);
-            sbarAreaWidth=sbarWidth*6;
-            sbarThumb=new OsThumb();
-            sbarThumb->setVisible(false);
-            connect(sbarThumb, SIGNAL(thumbDragged(QPoint)), SLOT(sbarThumbMoved(QPoint)));
-            connect(sbarThumb, SIGNAL(pageUp()), SLOT(sbarPageUp()));
-            connect(sbarThumb, SIGNAL(pageDown()), SLOT(sbarPageDown()));
-            connect(sbarThumb, SIGNAL(hiding()), SLOT(sbarThumbHiding()));
-            connect(sbarThumb, SIGNAL(showing()),SLOT(sbarThumbShowing()));
-        }
-        #endif
     }
 }
 
 GtkProxyStyle::~GtkProxyStyle()
 {
-    #ifdef ENABLE_OVERLAYSCROLLBARS
-    destroySliderThumb();
-    #endif
 }
 
 QSize GtkProxyStyle::sizeFromContents(ContentsType type, const QStyleOption *option,  const QSize &size, const QWidget *widget) const
@@ -196,11 +150,7 @@ int GtkProxyStyle::styleHint(StyleHint hint, const QStyleOption *option, const Q
 int GtkProxyStyle::pixelMetric(PixelMetric metric, const QStyleOption *option, const QWidget *widget) const
 {
     if (SB_Standard!=sbarType && PM_ScrollBarExtent==metric) {
-        #ifdef ENABLE_OVERLAYSCROLLBARS
-        return !sbarThumb || usePlainScrollbars(widget) ? sbarPlainViewWidth : sbarWidth;
-        #else
         return sbarPlainViewWidth;
-        #endif
     }
     return baseStyle()->pixelMetric(metric, option, widget);
 }
@@ -366,92 +316,32 @@ void GtkProxyStyle::drawComplexControl(ComplexControl control, const QStyleOptio
             QRect r=option->rect;
             QRect slider=subControlRect(control, option, SC_ScrollBarSlider, widget);
             painter->save();
-            #ifdef ENABLE_OVERLAYSCROLLBARS
-            bool usePlain=!sbarThumb || usePlainScrollbars(widget);
-            #else
-            bool usePlain=true;
-            #endif
 
-            if (usePlain) {
-                #if 0
-                QLinearGradient grad(r.topLeft(), Qt::Horizontal==sb->orientation ? r.bottomLeft() : r.topRight());
-                QColor col=option->palette.base().color();
-                grad.setColorAt(0, col.darker(110));
-                grad.setColorAt(1, col.darker(102));
-                painter->fillRect(r, grad);
-                #else
-                if (widget && widget->property(constOnCombo).toBool()) {
-                    painter->fillRect(r, option->palette.background());
-                } else if (!widget || widget->testAttribute(Qt::WA_OpaquePaintEvent)) {
-                    painter->fillRect(r, option->palette.base());
-                }
-                #endif
+            if (widget && widget->property(constOnCombo).toBool()) {
+                painter->fillRect(r, option->palette.background());
+            } else if (!widget || widget->testAttribute(Qt::WA_OpaquePaintEvent)) {
+                painter->fillRect(r, option->palette.base());
             }
-            #ifdef ENABLE_OVERLAYSCROLLBARS
-            else {
-                painter->fillRect(r, usePlain ? option->palette.base() : option->palette.background());
-                const QAbstractItemView *v=view(widget);
-                if (v && qobject_cast<const QTreeView *>(v) && ((const QTreeView *)v)->header()&& ((const QTreeView *)v)->header()->isVisible()) {
-                    QStyleOptionHeader ho;
-                    ho.rect=QRect(r.x()+r.width()-(sbarWidth), r.y(), sbarWidth, ((const QTreeView *)v)->header()->height());
-                    ho.state=option->state;
-                    ho.palette=option->palette;
-                    painter->save();
-                    drawControl(CE_Header, &ho, painter, ((const QTreeView *)v)->header());
-                    painter->restore();
-                }
-            }
-            #endif
+
             if (slider.isValid()) {
-                if (usePlain) {
-                    bool inactive=!(sb->activeSubControls&SC_ScrollBarSlider && (option->state&State_MouseOver || option->state&State_Sunken));
-                    int adjust=inactive ? 3 : 1;
-                    painter->setRenderHint(QPainter::Antialiasing, true);
-                    if (Qt::Horizontal==sb->orientation) {
-                        slider.adjust(1, adjust, -1, -adjust);
-                    } else {
-                        slider.adjust(adjust, 1, -adjust, -1);
-                    }
-                    int dimension=(Qt::Horizontal==sb->orientation ? slider.height() : slider.width());
-                    QPainterPath path=buildPath(QRectF(slider.x()+0.5, slider.y()+0.5, slider.width()-1, slider.height()-1),
-                                                dimension>6 ? (dimension/4.0) : (dimension/8.0));
-                    QColor col(option->palette.highlight().color());
-                    if (!(option->state&State_Active)) {
-                        col=col.darker(115);
-                    }
-                    painter->fillPath(path, col);
-                    painter->setPen(col);
-                    painter->drawPath(path);
+                bool inactive=!(sb->activeSubControls&SC_ScrollBarSlider && (option->state&State_MouseOver || option->state&State_Sunken));
+                int adjust=inactive ? 3 : 1;
+                painter->setRenderHint(QPainter::Antialiasing, true);
+                if (Qt::Horizontal==sb->orientation) {
+                    slider.adjust(1, adjust, -1, -adjust);
+                } else {
+                    slider.adjust(adjust, 1, -adjust, -1);
                 }
-                #ifdef ENABLE_OVERLAYSCROLLBARS
-                else {
-                    QRect toThumb;
-                    QPalette::ColorGroup cg=option->palette.currentColorGroup();
-                    if (sbarThumb && sbarThumbTarget && sbarThumbTarget==widget && sbarThumb->isVisible()) {
-                        QPoint p=sbarThumbTarget->mapFromGlobal(sbarThumb->pos())+QPoint(1, 1);
-                        if (Qt::Horizontal==sb->orientation) {
-                            if (p.x()<slider.x()) {
-                                toThumb=QRect(p.x(), slider.y(), slider.x()-p.x(), slider.width());
-                            } else if (p.x()>(slider.x()+slider.width())) {
-                                toThumb=QRect(slider.x()+slider.width(), slider.x(), p.x()-(slider.y()+slider.width()), slider.width());
-                            }
-                        } else {
-                            if (p.y()<slider.y()) {
-                                toThumb=QRect(slider.x(), p.y(), slider.width(), slider.y()-p.y());
-                            } else if (p.y()>(slider.y()+slider.height())) {
-                                toThumb=QRect(slider.x(), slider.y()+slider.height(), slider.width(), p.y()-(slider.y()+slider.height()));
-                            }
-                        }
-                        cg=QPalette::Active;
-                    }
-                    if (toThumb.isValid()) {
-                        QColor col(option->palette.color(cg, QPalette::Text));
-                        col.setAlphaF(0.35);
-                        painter->fillRect(toThumb, col);
-                    }
-                    painter->fillRect(slider, option->palette.color(cg, QPalette::Highlight));
+                int dimension=(Qt::Horizontal==sb->orientation ? slider.height() : slider.width());
+                QPainterPath path=buildPath(QRectF(slider.x()+0.5, slider.y()+0.5, slider.width()-1, slider.height()-1),
+                                            dimension>6 ? (dimension/4.0) : (dimension/8.0));
+                QColor col(option->palette.highlight().color());
+                if (!(option->state&State_Active)) {
+                    col=col.darker(115);
                 }
-                #endif
+                painter->fillPath(path, col);
+                painter->setPen(col);
+                painter->drawPath(path);
             }
 
             painter->restore();
@@ -515,23 +405,6 @@ void GtkProxyStyle::drawComplexControl(ComplexControl control, const QStyleOptio
     baseStyle()->drawComplexControl(control, option, painter, widget);
 }
 
-#ifdef ENABLE_OVERLAYSCROLLBARS
-static inline void addEventFilter(QObject *object, QObject *filter)
-{
-    object->removeEventFilter(filter);
-    object->installEventFilter(filter);
-}
-
-void GtkProxyStyle::destroySliderThumb()
-{
-    if (sbarThumb) {
-        sbarThumb->setVisible(false);
-        sbarThumb->deleteLater();
-        sbarThumb=0;
-    }
-}
-#endif
-
 inline void addEventFilter(QObject *object, QObject *filter)
 {
     object->removeEventFilter(filter);
@@ -540,23 +413,9 @@ inline void addEventFilter(QObject *object, QObject *filter)
 
 void GtkProxyStyle::polish(QWidget *widget)
 {
-    #ifdef ENABLE_OVERLAYSCROLLBARS
-    if (SB_Overlay==sbarType && sbarThumb && widget && qobject_cast<QAbstractScrollArea *>(widget) && qstrcmp(widget->metaObject()->className(), "QComboBoxListView")) {
-        addEventFilter(widget, this);
-        widget->setAttribute(Qt::WA_Hover, true);
-    } else if (SB_Standard!=sbarType && usePlainScrollbars(widget)) {
-        widget->setAttribute(Qt::WA_Hover, true);
-    }
-    #else
-
-//    TODO: Why was this here?? Should it not have just been for QScrollBars???
-//    if (SB_Standard!=sbarType) {
-//        widget->setAttribute(Qt::WA_Hover, true);
-//    }
     if (SB_Standard!=sbarType && qobject_cast<QScrollBar *>(widget) && isOnCombo(widget)) {
         widget->setProperty(constOnCombo, true);
     }
-    #endif
 
     #ifndef ENABLE_KDE_SUPPORT
     if (widget && qobject_cast<QMenu *>(widget) && !widget->property(constAccelProp).isValid()) {
@@ -580,16 +439,6 @@ void GtkProxyStyle::polish(QApplication *app)
 
 void GtkProxyStyle::unpolish(QWidget *widget)
 {
-    #ifdef ENABLE_OVERLAYSCROLLBARS
-    if (SB_Overlay==sbarType && sbarThumb && widget) {
-        if (qobject_cast<QAbstractScrollArea *>(widget) && qstrcmp(widget->metaObject()->className(), "QComboBoxListView")) {
-            widget->removeEventFilter(this);
-        }
-        if (sbarThumb && sbarThumbTarget==widget) {
-            sbarThumb->hide();
-        }
-    }
-    #endif
     baseStyle()->unpolish(widget);
 }
 
@@ -598,218 +447,3 @@ void GtkProxyStyle::unpolish(QApplication *app)
     app->removeEventFilter(shortcutHander);
     baseStyle()->unpolish(app);
 }
-
-#ifdef ENABLE_OVERLAYSCROLLBARS
-bool GtkProxyStyle::eventFilter(QObject *object, QEvent *event)
-{
-    if (SB_Overlay==sbarType) {
-        switch (event->type()) {
-        case QEvent::HoverMove:
-            if (object && qobject_cast<QAbstractScrollArea *>(object)) {
-                QHoverEvent *he=(QHoverEvent *)event;
-                QAbstractScrollArea *a=(QAbstractScrollArea *)object;
-                QScrollBar *bar=0;
-                if (a->horizontalScrollBar() && a->horizontalScrollBar()->isVisible() && he->pos().y()>(a->height()-sbarAreaWidth)) {
-                    bar=a->horizontalScrollBar();
-                }
-
-                if (a->verticalScrollBar() && a->verticalScrollBar()->isVisible() && he->pos().x()>(a->width()-sbarAreaWidth)) {
-                    bar=a->verticalScrollBar();
-                }
-
-                if (bar) {
-                    if (sbarThumbTarget!=bar) {
-                        if (sbarThumbTarget) {
-                            disconnect(bar, SIGNAL(destroyed(QObject *)), this, SLOT(objectDestroyed(QObject *)));
-                        }
-                        sbarThumbTarget=bar;
-                        connect(bar, SIGNAL(destroyed(QObject *)), this, SLOT(objectDestroyed(QObject *)));
-                    }
-
-                    if (!sbarThumb->isVisible() || bar->orientation()!=sbarThumb->orientation()) {
-                        sbarThumb->setOrientation(bar->orientation());
-                        QPoint global=a->mapToGlobal(QPoint(Qt::Vertical==bar->orientation() ? a->width()-sbarWidth-1 : 0, Qt::Vertical==bar->orientation() ? 0 : a->height()-sbarWidth-1));
-                        int toXPos=global.x();
-                        int toYPos=global.y();
-
-                        if (Qt::Vertical==bar->orientation()) {
-                            int thumbSize = sbarThumb->height();
-                            toYPos = a->mapToGlobal(he->pos()).y() - sbarThumb->height() / 2;
-                            int minYPos = global.y();
-                            int maxYPos = global.y() + a->height() - thumbSize;
-
-                            sbarThumb->setMaximum(maxYPos);
-                            sbarThumb->setMinimum(minYPos);
-
-                            if (toYPos < minYPos) {
-                                toYPos = minYPos;
-                            }
-                            if (toYPos > maxYPos) {
-                                toYPos = maxYPos;
-                            }
-                            if (QApplication::desktop() && toXPos+sbarThumb->width()>QApplication::desktop()->width()) {
-                                toXPos=global.x()-(sbarThumb->width()-sbarWidth);
-                            }
-                        } else {
-                            int thumbSize = sbarThumb->height();
-                            toXPos = a->mapToGlobal(he->pos()).x() - sbarThumb->width() / 2;
-                            int minXPos = global.x();
-                            int maxXPos = global.x() + a->width() - thumbSize;
-
-                            sbarThumb->setMaximum(maxXPos);
-                            sbarThumb->setMinimum(minXPos);
-
-                            if (toXPos < minXPos) {
-                                toXPos = minXPos;
-                            }
-                            if (toXPos > maxXPos) {
-                                toXPos = maxXPos;
-                            }
-
-                            if (QApplication::desktop() && toYPos+sbarThumb->height()>QApplication::desktop()->height()) {
-                                toYPos=global.y()-(sbarThumb->height()-sbarWidth);
-                            }
-                        }
-                        sbarThumb->move(toXPos, toYPos);
-                        sbarThumb->show();
-                        sbarUpdateOffset();
-                    }
-                } else {
-                    sbarThumb->hide();
-                }
-            }
-            break;
-        case QEvent::Resize:
-        case QEvent::Move:
-            if (sbarThumb && sbarThumb->isVisible() && object && qobject_cast<QAbstractScrollArea *>(object)) {
-                sbarThumb->hide();
-            }
-            break;
-        case QEvent::WindowDeactivate:
-            if (sbarThumb && sbarThumb->isVisible()) {
-                sbarThumb->hide();
-            }
-        default:
-            break;
-        }
-    }
-
-    return baseStyle()->eventFilter(object, event);
-}
-
-void GtkProxyStyle::objectDestroyed(QObject *obj)
-{
-    if (obj==sbarThumbTarget) {
-        disconnect(sbarThumbTarget, SIGNAL(destroyed(QObject *)), this, SLOT(objectDestroyed(QObject *)));
-        sbarThumbTarget=0;
-    }
-}
-
-void GtkProxyStyle::sbarThumbMoved(const QPoint &point)
-{
-    if (sbarThumbTarget) {
-        bool v=Qt::Vertical==sbarThumbTarget->orientation();
-        if (-1!=sbarLastPos && sbarLastPos==(v ? point.y() : point.x())) {
-            return;
-        }
-        QPoint global=point-sbarThumbTarget->mapToGlobal(QPoint(0, 0))-QPoint(1, 1);
-        int value=sbarThumbTarget->value();
-        QRect sliderThumbRect=sbarGetSliderRect();
-        QRect osThumbRect=QRect(sbarThumb->x(), sbarThumb->y(), sbarThumb->width(), sbarThumb->height());
-        int adjust=osThumbRect.contains(sliderThumbRect) ? 0 : sbarOffset;
-
-        if (v) {
-            sbarThumbTarget->setValue(sliderValueFromPosition(sbarThumbTarget->minimum(), sbarThumbTarget->maximum(), global.y() -adjust,
-                                                              sbarThumbTarget->height() - sbarThumb->height()));
-            sbarLastPos=point.y();
-        } else {
-            sbarThumbTarget->setValue(sliderValueFromPosition(sbarThumbTarget->minimum(), sbarThumbTarget->maximum(), global.x() -adjust,
-                                                              sbarThumbTarget->width() - sbarThumb->width()));
-            sbarLastPos=point.x();
-        }
-        if (value==sbarThumbTarget->value()) {
-            sbarThumbTarget->update();
-        }
-    }
-}
-
-void GtkProxyStyle::sbarPageUp()
-{
-    if (sbarThumbTarget) {
-        sbarThumbTarget->setValue(sbarThumbTarget->value() - sbarThumbTarget->pageStep());
-
-        if (sbarThumbTarget->value() < sbarThumbTarget->minimum()) {
-            sbarThumbTarget->setValue(sbarThumbTarget->minimum());
-        }
-        sbarUpdateOffset();
-    }
-}
-
-void GtkProxyStyle::sbarPageDown()
-{
-    if (sbarThumbTarget) {
-        sbarThumbTarget->setValue(sbarThumbTarget->value() + sbarThumbTarget->pageStep());
-
-        if (sbarThumbTarget->value() > sbarThumbTarget->maximum()) {
-            sbarThumbTarget->setValue(sbarThumbTarget->maximum());
-        }
-        sbarUpdateOffset();
-    }
-}
-
-void GtkProxyStyle::sbarThumbHiding()
-{
-    if (sbarThumbTarget) {
-        sbarThumbTarget->update();
-    }
-    sbarLastPos=-1;
-}
-
-void GtkProxyStyle::sbarThumbShowing()
-{
-    if (sbarThumbTarget) {
-        sbarThumbTarget->update();
-    }
-}
-
-QRect GtkProxyStyle::sbarGetSliderRect() const
-{
-    QStyleOptionSlider opt;
-    opt.initFrom(sbarThumbTarget);
-    opt.subControls = QStyle::SC_None;
-    opt.activeSubControls = QStyle::SC_None;
-    opt.orientation = sbarThumbTarget->orientation();
-    opt.minimum = sbarThumbTarget->minimum();
-    opt.maximum = sbarThumbTarget->maximum();
-    opt.sliderPosition = sbarThumbTarget->sliderPosition();
-    opt.sliderValue = sbarThumbTarget->value();
-    opt.singleStep = sbarThumbTarget->singleStep();
-    opt.pageStep = sbarThumbTarget->pageStep();
-    opt.upsideDown = sbarThumbTarget->invertedAppearance();
-    if (Qt::Horizontal==sbarThumbTarget->orientation()) {
-        opt.state |= QStyle::State_Horizontal;
-    }
-
-    QRect slider=subControlRect(CC_ScrollBar, &opt, SC_ScrollBarSlider, sbarThumbTarget);
-    QPoint gpos=sbarThumbTarget->mapToGlobal(slider.topLeft())-QPoint(1, 1);
-    return QRect(gpos.x(), gpos.y(), slider.width(), slider.height());
-}
-
-void GtkProxyStyle::sbarUpdateOffset()
-{
-    QRect sr=sbarGetSliderRect();
-
-    if (Qt::Vertical==sbarThumbTarget->orientation()) {
-        sbarOffset=sbarThumb->pos().y()-sr.y();
-    } else {
-        sbarOffset=sbarThumb->pos().x()-sr.x();
-    }
-}
-
-bool GtkProxyStyle::usePlainScrollbars(const QWidget *widget) const
-{
-    return SB_Thin==sbarType || !widget || 0==qstrcmp(widget->metaObject()->className(), "QWebView") ||
-           (widget && widget->parentWidget() && widget->parentWidget()->parentWidget() &&
-            0==qstrcmp(widget->parentWidget()->parentWidget()->metaObject()->className(), "QComboBoxListView"));
-}
-#endif

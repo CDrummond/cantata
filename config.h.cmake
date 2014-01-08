@@ -44,10 +44,5 @@
 #cmakedefine ENABLE_UNCACHED_MTP 1
 #cmakedefine ENABLE_HTTP_SERVER 1
 
-/*
- This is done via CMake add_defintions - as it controls SLOT generation in GtkProxyStyle
- - hence adding _XXX
-*/
-#cmakedefine ENABLE_OVERLAYSCROLLBARS_XXX 1
 #endif
 

@@ -209,6 +209,7 @@ public:
     #ifndef ENABLE_KDE_SUPPORT
     QString lang();
     #endif
+    bool alwaysUseLsInfo();
 
     void removeConnectionDetails(const QString &v);
     void saveConnectionDetails(const MPDConnectionDetails &v);

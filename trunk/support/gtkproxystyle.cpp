@@ -295,7 +295,7 @@ static void drawLine(QPainter *painter, QColor col, const QPoint &start, const Q
 
 static void drawSpinButton(QPainter *painter, QRect rect, QColor &col, bool isPlus)
 {
-    int length=rect.height()/4;
+    int length=(rect.height()/4)-1;
     int lineWidth=(rect.height()-6)<32 ? 2 : 4;
 
     if (length<lineWidth) {

@@ -1,8 +1,11 @@
 =0.8=
 [http://code.google.com/p/cantata/downloads/detail?name=cantata-0.8.1.tar.bz 0.8.1 Source Code]
+
 [https://code.google.com/p/cantata/downloads/detail?name=cantata-0.8.0-windows.zip 0.8.0 Windows]
+
 [http://code.google.com/p/cantata/downloads/detail?name=cantata-0.8.0.tar.bz 0.8.0 Source Code]
 
 =0.7=
 [http://code.google.com/p/cantata/downloads/detail?name=cantata-0.7.1.tar.bz 0.7.1 Source Code]
+
 [http://code.google.com/p/cantata/downloads/detail?name=cantata-0.7.0.tar.bz 0.7.0 Source Code]

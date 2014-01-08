@@ -148,12 +148,6 @@ void OnlineServicesPage::clear()
     view->setLevel(0);
 }
 
-QString OnlineServicesPage::activeService() const
-{
-    OnlineService *srv=activeSrv();
-    return srv ? srv->id() : QString();
-}
-
 OnlineService * OnlineServicesPage::activeSrv() const
 {
     const QModelIndexList selected = view->selectedIndexes(false); // Dont need sorted selection here...
@@ -465,12 +459,12 @@ void OnlineServicesPage::refreshService()
     if (MusicLibraryItem::Type_Root==item->itemType()) {
         OnlineService *srv=static_cast<OnlineService *>(item);
 
-        if (srv->isLoaded() && srv->childCount()>0 &&
-                MessageBox::No==MessageBox::questionYesNo(this, i18n("Re-download music listing for %1?", srv->id()), i18n("Re-download"),
-                                                          GuiItem(i18n("Re-download")), StdGuiItem::cancel())) {
-            return;
-        }
         if (srv) {
+            if (srv->isLoaded() && srv->childCount()>0 &&
+                    MessageBox::No==MessageBox::questionYesNo(this, i18n("Re-download music listing for %1?", srv->id()), i18n("Re-download"),
+                                                              GuiItem(i18n("Re-download")), StdGuiItem::cancel())) {
+                return;
+            }
             srv->reload(0==srv->childCount());
         }
     }

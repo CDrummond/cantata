@@ -84,9 +84,9 @@ struct MpdDefaults
 
     void read() {
         QFile f("/etc/mpd.conf");
-        int details=0;
 
         if (f.open(QIODevice::ReadOnly|QIODevice::Text)) {
+            int details=0;
             while (!f.atEnd()) {
                 QString line = f.readLine().trimmed();
                 if (line.startsWith('#')) {

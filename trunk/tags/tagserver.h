@@ -35,6 +35,10 @@ public:
     int process();
 
 private:
+    TagServer(const TagServer &);
+    TagServer & operator=(const TagServer &o);
+
+private:
     QFile *in;
     QFile *out;
 };

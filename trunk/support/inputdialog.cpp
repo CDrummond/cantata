@@ -67,7 +67,7 @@ void InputDialog::init(bool intInput, const QString &caption, const QString &lab
         setMinimumWidth(Utils::isHighDpi() ? 700 : 350);
     }
     layout->addWidget(new QLabel(label, wid));
-    layout->addWidget(intInput ? (QWidget *)spin : (QWidget *)edit);
+    layout->addWidget(intInput ? static_cast<QWidget *>(spin) : static_cast<QWidget *>(edit));
     layout->setMargin(0);
 
     setCaption(caption);

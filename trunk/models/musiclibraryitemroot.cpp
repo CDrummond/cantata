@@ -805,7 +805,7 @@ const MusicLibraryItem * MusicLibraryItemRoot::findSong(const Song &s) const
             }
         }
     } else {
-        MusicLibraryItemArtist *artistItem = ((MusicLibraryItemRoot *)this)->artist(s, false);
+        MusicLibraryItemArtist *artistItem = const_cast<MusicLibraryItemRoot *>(this)->artist(s, false);
         if (artistItem) {
             MusicLibraryItemAlbum *albumItem = artistItem->album(s, false);
             if (albumItem) {

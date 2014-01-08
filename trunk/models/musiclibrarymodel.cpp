@@ -119,26 +119,26 @@ void MusicLibraryModel::convertCache(const QString &compressedName)
     }
 }
 
-void MusicLibraryModel::cleanCache()
-{
-    QSet<QString> existing;
-    QList<MPDConnectionDetails> connections=Settings::self()->allConnections();
-    foreach (const MPDConnectionDetails &conn, connections) {
-        QString withPort=cacheFileName(conn);
-        QString withoutPort=cacheFileName(conn, false);
-        if (withPort!=withoutPort) {
-            existing.insert(withoutPort);
-        }
-        existing.insert(withPort);
-    }
-    QDir dir(Utils::cacheDir(constLibraryCache));
-    QFileInfoList files=dir.entryInfoList(QStringList() << "*"+constLibraryExt << "*"+constLibraryCompressedExt, QDir::Files);
-    foreach (const QFileInfo &file, files) {
-        if (!existing.contains(file.fileName())) {
-            QFile::remove(file.absoluteFilePath());
-        }
-    }
-}
+//void MusicLibraryModel::cleanCache()
+//{
+//    QSet<QString> existing;
+//    QList<MPDConnectionDetails> connections=Settings::self()->allConnections();
+//    foreach (const MPDConnectionDetails &conn, connections) {
+//        QString withPort=cacheFileName(conn);
+//        QString withoutPort=cacheFileName(conn, false);
+//        if (withPort!=withoutPort) {
+//            existing.insert(withoutPort);
+//        }
+//        existing.insert(withPort);
+//    }
+//    QDir dir(Utils::cacheDir(constLibraryCache));
+//    QFileInfoList files=dir.entryInfoList(QStringList() << "*"+constLibraryExt << "*"+constLibraryCompressedExt, QDir::Files);
+//    foreach (const QFileInfo &file, files) {
+//        if (!existing.contains(file.fileName())) {
+//            QFile::remove(file.absoluteFilePath());
+//        }
+//    }
+//}
 
 MusicLibraryModel::MusicLibraryModel(QObject *parent, bool isMpdModel, bool isCheckable)
     : MusicModel(parent)
@@ -531,39 +531,39 @@ bool MusicLibraryModel::update(const QSet<Song> &songs)
     return updatedSongs;
 }
 
-void MusicLibraryModel::uncheckAll()
-{
-    if (!checkable) {
-        return;
-    }
+//void MusicLibraryModel::uncheckAll()
+//{
+//    if (!checkable) {
+//        return;
+//    }
 
-    foreach (MusicLibraryItem *artist, rootItem->childItems()) {
-        MusicLibraryItemArtist *artistItem=static_cast<MusicLibraryItemArtist *>(artist);
-        QModelIndex artistIndex=index(artistItem->row(), 0, QModelIndex());
+//    foreach (MusicLibraryItem *artist, rootItem->childItems()) {
+//        MusicLibraryItemArtist *artistItem=static_cast<MusicLibraryItemArtist *>(artist);
+//        QModelIndex artistIndex=index(artistItem->row(), 0, QModelIndex());
 
-        foreach (MusicLibraryItem *album, artistItem->childItems()) {
-            MusicLibraryItemAlbum *albumItem=static_cast<MusicLibraryItemAlbum *>(album);
-            QModelIndex albumIndex=index(albumItem->row(), 0, artistIndex);
+//        foreach (MusicLibraryItem *album, artistItem->childItems()) {
+//            MusicLibraryItemAlbum *albumItem=static_cast<MusicLibraryItemAlbum *>(album);
+//            QModelIndex albumIndex=index(albumItem->row(), 0, artistIndex);
 
-            foreach (MusicLibraryItem *song, albumItem->childItems()) {
-                if (Qt::Unchecked!=song->checkState()) {
-                    song->setCheckState(Qt::Unchecked);
-                    QModelIndex songIndex=index(song->row(), 0, albumIndex);
-                    emit dataChanged(songIndex, songIndex);
-                }
-            }
-            if (Qt::Unchecked!=albumItem->checkState()) {
-                albumItem->setCheckState(Qt::Unchecked);
-                emit dataChanged(albumIndex, albumIndex);
-            }
-        }
-        if (Qt::Unchecked!=artistItem->checkState()) {
-            artistItem->setCheckState(Qt::Unchecked);
-            emit dataChanged(artistIndex, artistIndex);
-        }
-    }
-    emit checkedSongs(QSet<Song>());
-}
+//            foreach (MusicLibraryItem *song, albumItem->childItems()) {
+//                if (Qt::Unchecked!=song->checkState()) {
+//                    song->setCheckState(Qt::Unchecked);
+//                    QModelIndex songIndex=index(song->row(), 0, albumIndex);
+//                    emit dataChanged(songIndex, songIndex);
+//                }
+//            }
+//            if (Qt::Unchecked!=albumItem->checkState()) {
+//                albumItem->setCheckState(Qt::Unchecked);
+//                emit dataChanged(albumIndex, albumIndex);
+//            }
+//        }
+//        if (Qt::Unchecked!=artistItem->checkState()) {
+//            artistItem->setCheckState(Qt::Unchecked);
+//            emit dataChanged(artistIndex, artistIndex);
+//        }
+//    }
+//    emit checkedSongs(QSet<Song>());
+//}
 
 void MusicLibraryModel::toggleGrouping()
 {

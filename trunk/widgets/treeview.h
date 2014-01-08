@@ -65,7 +65,7 @@ public:
 
 private Q_SLOTS:
     void correctSelection();
-    void itemWasActivated(const QModelIndex &index);
+//    void itemWasActivated(const QModelIndex &index);
     void itemWasClicked(const QModelIndex &index);
 
 Q_SIGNALS:

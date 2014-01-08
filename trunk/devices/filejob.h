@@ -40,6 +40,7 @@ public:
     static FileThread * self();
 
     FileThread();
+    ~FileThread();
     void addJob(FileJob *job);
     void stop();
 private:

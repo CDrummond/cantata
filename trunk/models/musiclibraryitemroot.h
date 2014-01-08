@@ -90,7 +90,7 @@ public:
     quint32 fromXML(QXmlStreamReader &reader, const QDateTime &date=QDateTime(), const QString &baseFolder=QString(), MusicLibraryProgressMonitor *prog=0);
     Type itemType() const { return Type_Root; }
     void add(const QSet<Song> &songs);
-    bool supportsAlbumArtistTag() { return supportsAlbumArtist; }
+    bool supportsAlbumArtistTag() const { return supportsAlbumArtist; }
     void setSupportsAlbumArtistTag(bool s) { supportsAlbumArtist=s; }
     bool useAlbumImages() const { return albumImages; }
     void setUseAlbumImages(bool a) { albumImages=a; }

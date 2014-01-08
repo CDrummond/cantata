@@ -55,6 +55,11 @@ FileThread::FileThread()
 {
 }
 
+FileThread::~FileThread()
+{
+    stop();
+}
+
 void FileThread::addJob(FileJob *job)
 {
     if (!thread) {

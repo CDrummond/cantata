@@ -48,7 +48,7 @@ public:
     DirViewItem * parent() const { return m_parentItem; }
     virtual int childCount() const { return 0; }
     virtual DirViewItem * child(int) const { return 0; }
-    QString fullName();
+    QString fullName() const;
     const QString & data() const { return m_name; }
     const QString & name() const { return m_name; }
     virtual Type type() const=0;

@@ -36,7 +36,7 @@ class AlbumScanner : public Job
 
 public:
     struct Values {
-        Values() : ok(false) { }
+        Values() : gain(0.0), peak(0.0), ok(false) { }
         double gain;
         double peak;
         bool ok;

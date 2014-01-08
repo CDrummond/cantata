@@ -250,11 +250,7 @@ QRect GtkProxyStyle::subControlRect(ComplexControl control, const QStyleOptionCo
                 }
                 break;
             case SC_ScrollBarGroove:
-                if (horizontal) {
-                    ret=QRect(0, 0, sb->rect.width(), sb->rect.height());
-                } else {
-                    ret=QRect(0, 0, sb->rect.width(), sb->rect.height());
-                }
+                ret=QRect(0, 0, sb->rect.width(), sb->rect.height());
                 break;
             case SC_ScrollBarSlider:
                 if (horizontal) {

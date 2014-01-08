@@ -89,11 +89,11 @@ void CdParanoia::setParanoiaMode(int mode)
     }
 }
 
-void CdParanoia::setNeverSkip(bool b)
-{
-    neverSkip = b;
-    setParanoiaMode(paranoiaMode);
-}
+//void CdParanoia::setNeverSkip(bool b)
+//{
+//    neverSkip = b;
+//    setParanoiaMode(paranoiaMode);
+//}
 
 qint16 * CdParanoia::read()
 {
@@ -115,15 +115,15 @@ int CdParanoia::lastSectorOfTrack(int track)
     return paranoia ? cdda_track_lastsector(drive, track) : -1;
 }
 
-int CdParanoia::firstSectorOfDisc()
-{
-    return paranoia ? cdda_disc_firstsector(drive) : -1;
-}
+//int CdParanoia::firstSectorOfDisc()
+//{
+//    return paranoia ? cdda_disc_firstsector(drive) : -1;
+//}
 
-int CdParanoia::lastSectorOfDisc()
-{
-    return paranoia ? cdda_disc_lastsector(drive) : -1;
-}
+//int CdParanoia::lastSectorOfDisc()
+//{
+//    return paranoia ? cdda_disc_lastsector(drive) : -1;
+//}
 
 void CdParanoia::reset()
 {

@@ -65,7 +65,7 @@ public:
     static QString membershipStr(MemberShip f, bool trans=false);
     static QString downloadTypeStr(DownloadType f, bool trans=false);
 
-    MagnatuneService(MusicModel *m) : OnlineService(m, constName), membership(MB_None) { }
+    MagnatuneService(MusicModel *m) : OnlineService(m, constName), membership(MB_None), download(DL_Mp3) { }
 
     Song fixPath(const Song &orig, bool) const;
     void createLoader();

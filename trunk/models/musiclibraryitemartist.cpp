@@ -103,7 +103,7 @@ bool MusicLibraryItemArtist::setCover(const QImage &img, bool update) const
     return false;
 }
 
-const QPixmap & MusicLibraryItemArtist::cover()
+const QPixmap & MusicLibraryItemArtist::cover() const
 {
     if (m_coverIsDefault) {
         if (largeImages()) {
@@ -188,7 +188,7 @@ const QPixmap & MusicLibraryItemArtist::cover()
     return *m_cover;
 }
 
-void MusicLibraryItemArtist::clearImages()
+void MusicLibraryItemArtist::clearImages() const
 {
     if (!m_coverIsDefault) {
         m_coverIsDefault=true;

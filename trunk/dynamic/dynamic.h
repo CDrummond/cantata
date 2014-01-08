@@ -68,7 +68,7 @@ public:
         Control
     };
 
-    static Command toCommand(const QString &cmd);
+//    static Command toCommand(const QString &cmd);
     static QString toString(Command cmd);
     static void enableDebug();
 

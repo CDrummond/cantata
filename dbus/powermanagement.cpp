@@ -75,7 +75,7 @@ void PowerManagement::setInhibitSuspend(bool i)
     if (i==inhibitSuspendWhilstPlaying) {
         return;
     }
-    i=inhibitSuspendWhilstPlaying;
+    inhibitSuspendWhilstPlaying=i;
 
     if (inhibitSuspendWhilstPlaying) {
         connect(MPDStatus::self(), SIGNAL(updated()), this, SLOT(mpdStatusUpdated()));

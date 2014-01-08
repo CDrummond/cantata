@@ -49,6 +49,7 @@ static const char * constOnCombo="on-combo";
 #ifndef ENABLE_KDE_SUPPORT
 static const char * constAccelProp="catata-accel";
 #endif
+static const double constSpinButtonRatio=1.25;
 
 //static bool revertQGtkStyleOverlayMod()
 //{
@@ -140,7 +141,36 @@ QSize GtkProxyStyle::sizeFromContents(ContentsType type, const QStyleOption *opt
             }
         }
     } else if (touchStyleSpin && CT_SpinBox==type) {
-        sz += QSize(0, 2);
+        if (const QStyleOptionSpinBox *spinBox = qstyleoption_cast<const QStyleOptionSpinBox *>(option)) {
+            if (QAbstractSpinBox::NoButtons!=spinBox->buttonSymbols) {
+                sz += QSize(0, 2);
+                #if QT_VERSION >= 0x050000
+                // Qt5 does not seem to be taking special value, or suffix, into account when calculatng width...
+                if (widget && qobject_cast<const QSpinBox *>(widget)) {
+                    const QSpinBox *spin=static_cast<const QSpinBox *>(widget);
+                    QString special=spin->specialValueText();
+                    int minWidth=0;
+                    if (!special.isEmpty()) {
+                        minWidth=option->fontMetrics.width(special+QLatin1String(" "));
+                    }
+
+                    QString suffix=spin->suffix();
+                    if (!suffix.isEmpty()) {
+                        minWidth=qMax(option->fontMetrics.width(QString::number(spin->minimum())+suffix), minWidth);
+                        minWidth=qMax(option->fontMetrics.width(QString::number(spin->maximum())+suffix), minWidth);
+                    }
+                    if (minWidth>0) {
+                        int buttonWidth=sz.height()*constSpinButtonRatio;
+                        int frameWidth=baseStyle()->pixelMetric(QStyle::PM_DefaultFrameWidth, option, 0);
+                        minWidth=((minWidth+(buttonWidth+frameWidth)*2)*1.05)+0.5;
+                        if (sz.width()<minWidth) {
+                            sz.setWidth(minWidth);
+                        }
+                    }
+                }
+                #endif
+            }
+        }
     }
     return sz;
 }
@@ -247,7 +277,7 @@ QRect GtkProxyStyle::subControlRect(ComplexControl control, const QStyleOptionCo
             if (QAbstractSpinBox::NoButtons!=spinBox->buttonSymbols) {
                 int border=2;
                 int internalHeight=spinBox->rect.height()-(border*2);
-                int internalWidth=internalHeight*1.25;
+                int internalWidth=internalHeight*constSpinButtonRatio;
                 switch (subControl) {
                 case SC_SpinBoxUp:
                     return Qt::LeftToRight==spinBox->direction

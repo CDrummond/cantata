@@ -28,6 +28,7 @@
 #define MPD_PARSE_UTILS_H
 
 #include <QString>
+#include <QSet>
 
 struct Song;
 class Playlist;
@@ -60,7 +61,8 @@ namespace MPDParseUtils
     extern void setGroupSingle(bool g);
     extern bool groupMultiple();
     extern void setGroupMultiple(bool g);
-    extern MusicLibraryItemRoot * parseLibraryItems(const QByteArray &data, const QString &mpdDir, long mpdVersion);
+    extern void parseLibraryItems(const QByteArray &data, const QString &mpdDir, long mpdVersion,
+                                  MusicLibraryItemRoot *rootItem, bool parsePlaylists=true, QSet<QString> *childDirs=0);
     extern DirViewItemRoot * parseDirViewItems(const QByteArray &data);
     extern QList<Output> parseOuputs(const QByteArray &data);
     extern QString addStreamName(const QString &url, const QString &name);

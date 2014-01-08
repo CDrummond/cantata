@@ -250,11 +250,17 @@ QRect GtkProxyStyle::subControlRect(ComplexControl control, const QStyleOptionCo
                 int internalWidth=internalHeight*1.25;
                 switch (subControl) {
                 case SC_SpinBoxUp:
-                    return QRect(spinBox->rect.width()-(internalWidth+border), border, internalWidth, internalHeight);
+                    return Qt::LeftToRight==spinBox->direction
+                                ? QRect(spinBox->rect.width()-(internalWidth+border), border, internalWidth, internalHeight)
+                                : QRect(border, border, internalWidth, internalHeight);
                 case SC_SpinBoxDown:
-                    return QRect(spinBox->rect.width()-((internalWidth*2)+border), border, internalWidth, internalHeight);
+                    return Qt::LeftToRight==spinBox->direction
+                                ? QRect(spinBox->rect.width()-((internalWidth*2)+border), border, internalWidth, internalHeight)
+                                : QRect(internalWidth+border, border, internalWidth, internalHeight);
                 case SC_SpinBoxEditField:
-                    return QRect(border, border, spinBox->rect.width()-((internalWidth*2)+border), internalHeight);
+                    return Qt::LeftToRight==spinBox->direction
+                            ? QRect(border, border, spinBox->rect.width()-((internalWidth*2)+border), internalHeight)
+                            : QRect(((internalWidth*2)+border), border, spinBox->rect.width()-((internalWidth*2)+border), internalHeight);
                 case SC_SpinBoxFrame:
                     return spinBox->rect;
                 default:
@@ -443,8 +449,13 @@ void GtkProxyStyle::drawComplexControl(ComplexControl control, const QStyleOptio
                 QRect plusRect=subControlRect(CC_SpinBox, spinBox, SC_SpinBoxUp, widget);
                 QRect minusRect=subControlRect(CC_SpinBox, spinBox, SC_SpinBoxDown, widget);
                 QColor col(spinBox->palette.foreground().color());
-                drawLine(painter, col, plusRect.topLeft(), plusRect.bottomLeft());
-                drawLine(painter, col, minusRect.topLeft(), minusRect.bottomLeft());
+                if (Qt::LeftToRight==spinBox->direction) {
+                    drawLine(painter, col, plusRect.topLeft(), plusRect.bottomLeft());
+                    drawLine(painter, col, minusRect.topLeft(), minusRect.bottomLeft());
+                } else {
+                    drawLine(painter, col, plusRect.topRight(), plusRect.bottomRight());
+                    drawLine(painter, col, minusRect.topRight(), minusRect.bottomRight());
+                }
 
                 if (option->state&State_Sunken) {
                     QRect fillRect;

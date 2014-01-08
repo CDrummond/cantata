@@ -38,7 +38,7 @@ void OnlineDevice::copySongTo(const Song &s, const QString &baseDir, const QStri
         return;
     }
 
-    overWrite=overWrite;
+    overWrite=overwrite;
     lastProg=-1;
     currentMpdDir=baseDir;
     currentDestFile=baseDir+musicPath;

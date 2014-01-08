@@ -637,36 +637,36 @@ void FancyTabWidget::AddTab(QWidget* tab, const QIcon& icon, const QString& labe
   setMinimumWidth(128);
 }
 
-void FancyTabWidget::InsertTab(QWidget* tab, const QIcon& icon, const QString& label, const QString &tt, bool enabled) {
-  stack_->insertWidget(0, tab);
-  items_.prepend(Item(icon, label, tt, enabled));
-  setMinimumWidth(128);
-  Recreate();
-}
+//void FancyTabWidget::InsertTab(QWidget* tab, const QIcon& icon, const QString& label, const QString &tt, bool enabled) {
+//  stack_->insertWidget(0, tab);
+//  items_.prepend(Item(icon, label, tt, enabled));
+//  setMinimumWidth(128);
+//  Recreate();
+//}
 
-void FancyTabWidget::RemoveTab(QWidget *tab)
-{
-  int idx=stack_->indexOf(tab);
-  if (idx>-1 && idx<items_.count()) {
-    stack_->removeWidget(tab);
-    items_.takeAt(idx);
-    Recreate();
-  }
-}
+//void FancyTabWidget::RemoveTab(QWidget *tab)
+//{
+//  int idx=stack_->indexOf(tab);
+//  if (idx>-1 && idx<items_.count()) {
+//    stack_->removeWidget(tab);
+//    items_.takeAt(idx);
+//    Recreate();
+//  }
+//}
 
-int FancyTabWidget::IndexOf(QWidget *tab)
-{
-  return stack_->indexOf(tab);
-}
+//int FancyTabWidget::IndexOf(QWidget *tab)
+//{
+//  return stack_->indexOf(tab);
+//}
 
-void FancyTabWidget::AddSpacer(int size) {
-  items_ << Item(size);
-}
+//void FancyTabWidget::AddSpacer(int size) {
+//  items_ << Item(size);
+//}
 
-void FancyTabWidget::SetBackgroundPixmap(const QPixmap& pixmap) {
-  background_pixmap_ = pixmap;
-  update();
-}
+//void FancyTabWidget::SetBackgroundPixmap(const QPixmap& pixmap) {
+//  background_pixmap_ = pixmap;
+//  update();
+//}
 
 static void drawFadedLine(QPainter *p, const QRect &r, const QColor &col)
 {
@@ -782,9 +782,9 @@ void FancyTabWidget::ShowWidget(int index) {
   emit CurrentChanged(idx);
 }
 
-void FancyTabWidget::AddBottomWidget(QWidget* widget) {
-  top_layout_->addWidget(widget);
-}
+//void FancyTabWidget::AddBottomWidget(QWidget* widget) {
+//  top_layout_->addWidget(widget);
+//}
 
 void FancyTabWidget::SetMode(Mode mode) {
   if(mode==mode_) {

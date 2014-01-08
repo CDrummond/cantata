@@ -102,7 +102,7 @@ void ComboBox::showPopup()
         // Hide scrollers - these look ugly...
         foreach (QObject *c, view()->parentWidget()->children()) {
             if (0==qstrcmp("QComboBoxPrivateScroller", c->metaObject()->className())) {
-                ((QWidget *)c)->setMaximumHeight(0);
+                static_cast<QWidget *>(c)->setMaximumHeight(0);
             }
         }
         #endif

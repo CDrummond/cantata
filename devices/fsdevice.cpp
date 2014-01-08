@@ -66,6 +66,7 @@ MusicScanner::MusicScanner()
     , stopRequested(false)
     , count(0)
     , lastUpdate(0)
+    , lastCacheProg(-1)
 {
     thread=new Thread(metaObject()->className());
     moveToThread(thread);

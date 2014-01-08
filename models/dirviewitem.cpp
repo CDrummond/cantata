@@ -26,7 +26,7 @@
 
 #include "dirviewitem.h"
 
-QString DirViewItem::fullName()
+QString DirViewItem::fullName() const
 {
     QString fn = m_name;
     DirViewItem *item = parent();

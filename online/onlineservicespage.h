@@ -41,7 +41,6 @@ public:
 
     void setEnabled(bool e);
     void clear();
-    QString activeService() const;
     QStringList selectedFiles() const;
     QList<Song> selectedSongs() const;
     void addSelectionToPlaylist(const QString &name=QString(), bool replace=false, quint8 priorty=0);

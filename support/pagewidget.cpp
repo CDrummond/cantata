@@ -58,6 +58,7 @@ class PageWidgetItemDelegate : public QAbstractItemDelegate
 public:
     PageWidgetItemDelegate(QObject *parent)
         : QAbstractItemDelegate(parent)
+        , underMouse(false)
     {
         int height=QApplication::fontMetrics().height();
         iconSize=height>22 ? Icon::stdSize(height*2.5) : 32;

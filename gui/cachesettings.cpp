@@ -215,7 +215,7 @@ void CacheTree::showEvent(QShowEvent *e)
 {
     if (!calculated) {
         for (int i=0; i<topLevelItemCount(); ++i) {
-            ((CacheItem *)topLevelItem(i))->calculate();
+            static_cast<CacheItem *>(topLevelItem(i))->calculate();
         }
         calculated=true;
     }
@@ -297,7 +297,7 @@ void CacheSettings::controlButton()
 {
     button->setEnabled(false);
     for (int i=0; i<tree->topLevelItemCount(); ++i) {
-        CacheItem *item=(CacheItem *)tree->topLevelItem(i);
+        CacheItem *item=static_cast<CacheItem *>(tree->topLevelItem(i));
 
         if (item->isSelected() && !item->isEmpty()) {
             button->setEnabled(true);
@@ -310,7 +310,7 @@ void CacheSettings::deleteAll()
 {
     QList<CacheItem *> toDelete;
     for (int i=0; i<tree->topLevelItemCount(); ++i) {
-        CacheItem *item=(CacheItem *)tree->topLevelItem(i);
+        CacheItem *item=static_cast<CacheItem *>(tree->topLevelItem(i));
 
         if (item->isSelected() && !item->isEmpty()) {
             toDelete.append(item);

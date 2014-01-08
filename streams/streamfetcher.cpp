@@ -163,6 +163,10 @@ static QString parse(const QByteArray &data)
 StreamFetcher::StreamFetcher(QObject *p)
     : QObject(p)
     , job(0)
+    , row(0)
+    , replacePlayQueue(true)
+    , prio(0)
+    , redirects(0)
 {
 }
 

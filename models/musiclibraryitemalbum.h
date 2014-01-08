@@ -65,7 +65,7 @@ public:
     virtual ~MusicLibraryItemAlbum();
 
     bool setCover(const QImage &img, bool update=false) const;
-    const QPixmap & cover();
+    const QPixmap & cover() const;
     bool hasRealCover() const { return !m_coverIsDefault; }
     quint32 year() const { return m_year; }
     quint32 totalTime();
@@ -89,7 +89,7 @@ public:
     void setImageUrl(const QString &u) { m_imageUrl=u; }
     bool updateYear();
     bool containsArtist(const QString &a);
-    void clearImage();
+    void clearImage() const;
     // Return orignal album name. If we are grouping by composer, then album will appear as "Album (Artist)"
     const QString & originalName() const { return m_originalName; }
 

@@ -252,7 +252,7 @@ bool MusicLibraryItemPodcast::setCover(const QImage &img, bool update) const
     return false;
 }
 
-const QPixmap & MusicLibraryItemPodcast::cover()
+const QPixmap & MusicLibraryItemPodcast::cover() const
 {
     if (m_coverIsDefault) {
         if (largeImages()) {
@@ -309,7 +309,7 @@ void MusicLibraryItemPodcast::remove(MusicLibraryItemSong *i)
     }
 }
 
-void MusicLibraryItemPodcast::clearImage()
+void MusicLibraryItemPodcast::clearImage() const
 {
     if (!m_coverIsDefault) {
         m_coverIsDefault=true;

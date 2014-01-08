@@ -50,7 +50,7 @@ public:
     static MusicLibraryModel * self();
 
     static void convertCache(const QString &compressedName);
-    static void cleanCache();
+//    static void cleanCache();
 
     MusicLibraryModel(QObject *parent=0, bool isMpdModel=true, bool isCheckable=false);
     ~MusicLibraryModel();
@@ -83,7 +83,7 @@ public:
         { rootItem->getDetails(artists, albumArtists, composers, albums, genres); }
     QSet<QString> getAlbumArtists();
     bool update(const QSet<Song> &songs);
-    void uncheckAll();
+//    void uncheckAll();
     bool useAlbumImages() const { return rootItem->useAlbumImages(); }
     void setUseAlbumImages(bool a) { rootItem->setUseAlbumImages(a); }
     bool useArtistImages() const { return rootItem->useArtistImages(); }

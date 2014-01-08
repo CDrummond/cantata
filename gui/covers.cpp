@@ -364,10 +364,10 @@ Covers * Covers::self()
     #endif
 }
 
-bool Covers::isCoverFile(const QString &file)
-{
-    return standardNames().contains(file);
-}
+//bool Covers::isCoverFile(const QString &file)
+//{
+//    return standardNames().contains(file);
+//}
 
 static bool fExists(const QString &dir, const QString &file)
 {

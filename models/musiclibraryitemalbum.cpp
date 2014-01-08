@@ -193,7 +193,7 @@ bool MusicLibraryItemAlbum::setCover(const QImage &img, bool update) const
     return false;
 }
 
-const QPixmap & MusicLibraryItemAlbum::cover()
+const QPixmap & MusicLibraryItemAlbum::cover() const
 {
     if (m_coverIsDefault) {
         if (largeImages()) {
@@ -251,14 +251,14 @@ const QPixmap & MusicLibraryItemAlbum::cover()
                 // Not showing album images in this model, so dont request any!
             }
             #ifdef ENABLE_DEVICES_SUPPORT
-            else if (root->isDevice()) {
+            else if (root && root->isDevice()) {
                 // This item is in the devices model, so get cover from device...
                 song.id=firstSong->song().id;
                 static_cast<Device *>(parentItem()->parentItem())->requestCover(song);
             }
             #endif
             #ifdef ENABLE_ONLINE_SERVICES
-            else if (root->isOnlineService()) {
+            else if (root && root->isOnlineService()) {
                 img.img=OnlineServicesModel::self()->requestImage(static_cast<OnlineService *>(root)->id(), parentItem()->data(), data(), m_imageUrl);
                 // ONLINE: Image URL is encoded in song.name...
 //                if (!m_imageUrl.isEmpty()) {
@@ -470,7 +470,7 @@ bool MusicLibraryItemAlbum::containsArtist(const QString &a)
     return m_artists.contains(a);
 }
 
-void MusicLibraryItemAlbum::clearImage()
+void MusicLibraryItemAlbum::clearImage() const
 {
     if (!m_coverIsDefault) {
         m_coverIsDefault=true;

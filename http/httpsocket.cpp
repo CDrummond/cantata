@@ -318,7 +318,7 @@ void HttpSocket::readClient()
         return;
     }
 
-    QTcpSocket *socket = (QTcpSocket*)sender();
+    QTcpSocket *socket = static_cast<QTcpSocket *>(sender());
     if (socket->canReadLine()) {
         QList<QByteArray> tokens = split(socket->readLine()); // QRegExp("[ \r\n][ \r\n]*"));
         if (tokens.length()>=2 && "GET"==tokens[0]) {
@@ -438,11 +438,8 @@ void HttpSocket::readClient()
 
                         writeMimeType(detectMimeType(song.file), socket, readBytesFrom, totalBytes, true);
                         ok=true;
-                        static const int constChunkSize=32768;
-                        char buffer[constChunkSize];
                         qint32 readPos = 0;
                         qint32 bytesRead = 0;
-                        bool stop=false;
 
                         if (0!=readBytesFrom) {
                             if (!f.seek(readBytesFrom)) {
@@ -456,6 +453,9 @@ void HttpSocket::readClient()
                         }
 
                         if (ok) {
+                            static const int constChunkSize=32768;
+                            char buffer[constChunkSize];
+                            bool stop=false;
                             do {
                                 bytesRead = f.read(buffer, constChunkSize);
                                 readPos+=bytesRead;
@@ -485,10 +485,8 @@ void HttpSocket::readClient()
 
 void HttpSocket::discardClient()
 {
-    QTcpSocket *socket = (QTcpSocket*)sender();
-    socket->deleteLater();
+    static_cast<QTcpSocket *>(sender())->deleteLater();
 }
-
 
 void HttpSocket::mpdAddress(const QString &a)
 {

@@ -383,7 +383,7 @@ CoverDialog::CoverDialog(QWidget *parent)
     QFont f(list->font());
     QFontMetrics origFm(f);
     iSize=origFm.height()*7;
-    iSize=((iSize/10)*10)+(iSize%10 ? 10 : 0);
+    iSize=((iSize/10)*10)+((iSize%10) ? 10 : 0);
     f.setPointSizeF(f.pointSizeF()*0.75);
     QFontMetrics fm(f);
     list->setFont(f);
@@ -619,14 +619,14 @@ void CoverDialog::showImage(QListWidgetItem *item)
         return;
     }
 
-    CoverItem *cover=(CoverItem *)item;
+    CoverItem *cover=static_cast<CoverItem *>(item);
 
     if (CoverItem::Type_Existing==cover->type()) {
         previewDialog()->downloading(cover->url());
-        previewDialog()->showImage(((ExistingCover *)cover)->image(), cover->url());
+        previewDialog()->showImage(static_cast<ExistingCover *>(cover)->image(), cover->url());
     } else if (CoverItem::Type_Local==cover->type()) {
         previewDialog()->downloading(cover->url());
-        previewDialog()->showImage(((LocalCover *)cover)->image(), cover->url());
+        previewDialog()->showImage(static_cast<LocalCover *>(cover)->image(), cover->url());
     } else {
         previewDialog()->downloading(cover->url());
         NetworkJob *j=downloadImage(cover->url(), DL_LargePreview);
@@ -667,7 +667,7 @@ void CoverDialog::sendQuery()
         QList<CoverItem *> keep;
 
         while (list->count()) {
-            CoverItem *item=(CoverItem *)list->takeItem(0);
+            CoverItem *item=static_cast<CoverItem *>(list->takeItem(0));
             if (CoverItem::Type_Existing==item->type() || CoverItem::Type_Local==item->type()) {
                 keep.append(item);
             } else {
@@ -765,7 +765,7 @@ void CoverDialog::sendDiscoGsQuery(const QString &fixedQuery, int page)
 void CoverDialog::checkStatus()
 {
     QList<QListWidgetItem*> items=list->selectedItems();
-    enableButtonOk(1==items.size() && CoverItem::Type_Existing!=((CoverItem *)items.at(0))->type());
+    enableButtonOk(1==items.size() && CoverItem::Type_Existing!=static_cast<CoverItem *>(items.at(0))->type());
 }
 
 void CoverDialog::cancelQuery()
@@ -825,8 +825,7 @@ void CoverDialog::menuRequested(const QPoint &pos)
     removeAction->setEnabled(!items.isEmpty());
     if (removeAction->isEnabled()) {
         foreach (QListWidgetItem *i, items) {
-            CoverItem *c=(CoverItem *)i;
-            if (CoverItem::Type_Existing==c->type()) {
+            if (CoverItem::Type_Existing==static_cast<CoverItem *>(i)->type()) {
                 removeAction->setEnabled(false);
             }
         }
@@ -1140,9 +1139,9 @@ void CoverDialog::slotButtonClicked(int button)
     case Ok: {
         QList<QListWidgetItem*> items=list->selectedItems();
         if (1==items.size()) {
-            CoverItem *cover=(CoverItem *)items.at(0);
+            CoverItem *cover=static_cast<CoverItem *>(items.at(0));
             if (CoverItem::Type_Local==cover->type()) {
-                if (saveCover(cover->url(), ((LocalCover *)cover)->image())) {
+                if (saveCover(cover->url(), static_cast<LocalCover *>(cover)->image())) {
                     accept();
                 }
             } else if (CoverItem::Type_Existing!=cover->type()) {

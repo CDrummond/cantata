@@ -292,7 +292,7 @@ size_t FfmpegInput::readFrames()
         return 0;
     }
 
-    size_t bufferPosition = 0, numberRead;
+    size_t bufferPosition=0, numberRead=0;
 
     while (handle->currentBytes < BUFFER_SIZE) {
         numberRead = readOnePacket();

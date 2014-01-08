@@ -67,21 +67,22 @@ static const QString constMusicFolder=QLatin1String("Music");
 
 static int progressMonitor(uint64_t const processed, uint64_t const total, void const * const data)
 {
-    ((MtpConnection *)data)->emitProgress((int)(((processed*1.0)/(total*1.0)*100.0)+0.5));
-    return ((MtpConnection *)data)->abortRequested() ? -1 : 0;
+    const MtpConnection *con=static_cast<const MtpConnection *>(data);
+    const_cast<MtpConnection *>(con)->emitProgress((int)(((processed*1.0)/(total*1.0)*100.0)+0.5));
+    return con->abortRequested() ? -1 : 0;
 }
 
 static int trackListMonitor(uint64_t const processed, uint64_t const total, void const * const data)
 {
-    Q_UNUSED(total)
-    ((MtpConnection *)data)->trackListProgress(((processed*100.0)/(total*1.0))+0.5);
-    return ((MtpConnection *)data)->abortRequested() ? -1 : 0;
+    const MtpConnection *con=static_cast<const MtpConnection *>(data);
+    const_cast<MtpConnection *>(con)->trackListProgress(((processed*100.0)/(total*1.0))+0.5);
+    return con->abortRequested() ? -1 : 0;
 }
 
 static uint16_t fileReceiver(void *params, void *priv, uint32_t sendlen, unsigned char *data, uint32_t *putlen)
 {
     Q_UNUSED(params)
-    QByteArray *byteData=(QByteArray *)priv;
+    QByteArray *byteData=static_cast<QByteArray *>(priv);
     (*byteData)+=QByteArray((char *)data, (int)sendlen);
     *putlen = sendlen;
     return LIBMTP_HANDLER_RETURN_OK;

@@ -33,7 +33,7 @@ class OnlineDevice : public Device
     Q_OBJECT
 
 public:
-    OnlineDevice() : Device(0, QString(), QString()), lastProg(-1), job(0) { }
+    OnlineDevice() : Device(0, QString(), QString()), lastProg(-1), overWrite(false), job(0) { }
     virtual ~OnlineDevice() { }
 
     bool isConnected() const { return true; }

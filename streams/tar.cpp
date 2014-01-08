@@ -27,6 +27,7 @@
 Tar::Tar(const QString &fileName)
     : file(fileName)
     , compressor(0)
+    , dev(0)
 {
 }
 
@@ -63,7 +64,7 @@ static const qint64 constHeaderLen=512;
 
 static qint64 roundUp(qint64 sz)
 {
-    return ((sz/constHeaderLen)*constHeaderLen)+(sz%constHeaderLen ? constHeaderLen : 0);
+    return ((sz/constHeaderLen)*constHeaderLen)+((sz%constHeaderLen) ? constHeaderLen : 0);
 }
 
 struct TarHeader
@@ -78,9 +79,7 @@ static unsigned int octStrToInt(char *ch, unsigned int size)
 {
     unsigned int val = 0;
     while (size > 0){
-        if (ch) {
-            val = (val * 8) + (*ch - '0');
-        }
+        val = (val * 8) + (*ch - '0');
         ch++;
         size--;
     }

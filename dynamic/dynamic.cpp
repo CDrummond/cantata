@@ -81,31 +81,31 @@ static const QString constStatusStateResp=QLatin1String("STATE:");
 static const QString constStatusRuleResp=QLatin1String("RULES:");
 static const QString constUpdateRequiredResp=QLatin1String("UPDATE_REQUIRED");
 
-Dynamic::Command Dynamic::toCommand(const QString &cmd)
-{
-    if (constIdCmd==cmd) {
-        return Id;
-    }
-    if (constListCmd==cmd) {
-        return List;
-    }
-    if (constStatusCmd==cmd) {
-        return Status;
-    }
-    if (constSaveCmd==cmd) {
-        return Save;
-    }
-    if (constDeleteCmd==cmd) {
-        return Del;
-    }
-    if (constSetActiveCmd==cmd) {
-        return SetActive;
-    }
-    if (constControlCmd==cmd) {
-        return Control;
-    }
-    return Unknown;
-}
+//Dynamic::Command Dynamic::toCommand(const QString &cmd)
+//{
+//    if (constIdCmd==cmd) {
+//        return Id;
+//    }
+//    if (constListCmd==cmd) {
+//        return List;
+//    }
+//    if (constStatusCmd==cmd) {
+//        return Status;
+//    }
+//    if (constSaveCmd==cmd) {
+//        return Save;
+//    }
+//    if (constDeleteCmd==cmd) {
+//        return Del;
+//    }
+//    if (constSetActiveCmd==cmd) {
+//        return SetActive;
+//    }
+//    if (constControlCmd==cmd) {
+//        return Control;
+//    }
+//    return Unknown;
+//}
 
 QString Dynamic::toString(Command cmd)
 {

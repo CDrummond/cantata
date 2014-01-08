@@ -29,6 +29,9 @@
       <string>Album and Track Information Retrieval</string>
      </property>
      <layout class="QFormLayout" name="formLayout">
+      <property name="fieldGrowthPolicy">
+       <enum>QFormLayout::ExpandingFieldsGrow</enum>
+      </property>
       <item row="1" column="0">
        <widget class="BuddyLabel" name="cdLookupLabel">
         <property name="text">

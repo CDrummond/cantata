@@ -299,7 +299,7 @@ static void drawLine(QPainter *painter, QColor col, const QPoint &start, const Q
     painter->drawLine(start, end);
 }
 
-static void drawSpinButton(QPainter *painter, QRect rect, QColor &col, bool isPlus)
+static void drawSpinButton(QPainter *painter, QRect rect, const QColor &col, bool isPlus)
 {
     int length=(rect.height()/4)-1;
     int lineWidth=(rect.height()-6)<32 ? 2 : 4;
@@ -471,8 +471,13 @@ void GtkProxyStyle::drawComplexControl(ComplexControl control, const QStyleOptio
                         painter->fillRect(fillRect.adjusted(1, 2, -1, -2), col);
                     }
                 }
-                drawSpinButton(painter, plusRect, col, true);
-                drawSpinButton(painter, minusRect, col, false);
+
+                drawSpinButton(painter, plusRect,
+                               spinBox->palette.color(spinBox->state&State_Enabled && (spinBox->stepEnabled&QAbstractSpinBox::StepUpEnabled)
+                                ? QPalette::Current : QPalette::Disabled, QPalette::Text), true);
+                drawSpinButton(painter, minusRect,
+                               spinBox->palette.color(spinBox->state&State_Enabled && (spinBox->stepEnabled&QAbstractSpinBox::StepDownEnabled)
+                                ? QPalette::Current : QPalette::Disabled, QPalette::Text), false);
                 return;
             }
         }

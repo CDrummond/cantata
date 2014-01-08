@@ -39,8 +39,6 @@ PlaybackSettings::PlaybackSettings(QWidget *p)
     : QWidget(p)
 {
     setupUi(this);
-    stopFadeDuration->setSpecialValueText(i18n("Do not fadeout"));
-    stopFadeDuration->setSuffix(i18n(" ms"));
     stopFadeDuration->setRange(Settings::MinFade, Settings::MaxFade);
     stopFadeDuration->setSingleStep(100);
 

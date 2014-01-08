@@ -23,22 +23,6 @@
 
 #include "dialog.h"
 
-#ifdef ENABLE_OVERLAYSCROLLBARS
-int Dialog::exec()
-{
-    QWidget *win=parentWidget() ? parentWidget()->window() : 0;
-    bool wasGl=win ? win->testAttribute(Qt::WA_GroupLeader) : false;
-    if (win && !wasGl) {
-        win->setAttribute(Qt::WA_GroupLeader, true);
-    }
-    int rv=QDialog::exec();
-    if (win && !wasGl) {
-        win->setAttribute(Qt::WA_GroupLeader, false);
-    }
-    return rv;
-}
-#endif
-
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KGlobal>
 #include <KDE/KConfig>

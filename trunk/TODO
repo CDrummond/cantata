@@ -4,16 +4,6 @@
 - Windows port
   - CMake scripts not working
 
-- Style
-  - Overlay scrollbars
-    - Currently disabled (pass -DENABLE_OVERLAYSCROLLBARS=ON to cmake to enable)
-    - Updating slider value when os-thumb moves is not 100% correct, and not
-      consistent with Gtk
-    - Does not work for modal dialogs, or combo popups. (Probably due to not
-      having parent and modal event loop)
-    - Cant seem to re-enable Gtk2 overly scrollbars for actual Gtk dialogs.
-  - Using (any!) stylesheet causes pixel error in tabs
-
 - Streams
   - If radio stream is a playlist, Cantata currently only uses the 1st entry.
     Perhaps Cantata should loop over all entries until we find one that plays?

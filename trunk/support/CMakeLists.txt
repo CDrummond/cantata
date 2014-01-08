@@ -6,11 +6,6 @@ set(SUPPORT_MOC_HDRS action.h actioncollection.h fancytabwidget.h messagewidget.
 if (NOT WIN32)
     set(SUPPORT_SRCS ${SUPPORT_SRCS} windowmanager.cpp gtkproxystyle.cpp combobox.cpp shortcuthandler.cpp)
     set(SUPPORT_MOC_HDRS ${SUPPORT_MOC_HDRS} windowmanager.h gtkproxystyle.h shortcuthandler.h)
-    if (ENABLE_OVERLAYSCROLLBARS)
-        add_definitions(-DENABLE_OVERLAYSCROLLBARS)
-        set(SUPPORT_SRCS ${SUPPORT_SRCS} osthumb.cpp)
-        set(SUPPORT_MOC_HDRS ${SUPPORT_MOC_HDRS} osthumb.h)
-    endif (ENABLE_OVERLAYSCROLLBARS)
     add_subdirectory(themes)
 endif (NOT WIN32)
 

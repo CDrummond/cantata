@@ -24,7 +24,7 @@ Table of Contents
 
 Cantata is a graphical client for MPD. It contains the following features:
 
- 1. Support for Qt4, Qt5, and KDE builds.
+ 1. Support for Qt4, Qt5, Windows, and KDE builds.
  2. Multiple MPD collections.
  3. Highly customisable layout.
  4. Songs grouped by album in play queue.
@@ -35,15 +35,17 @@ Cantata is a graphical client for MPD. It contains the following features:
     installed)
  9. Dynamic playlists.
 10. Online services; Jamendo, Magnatune, SoundCloud, and Podcasts.
-11. Radio stream support - wth the ability to search for streams via TuneIn.
+11. Radio stream support - wth the ability to search for streams via TuneIn or
+    ShoutCast.
 12. USB-Mass-Storage and MTP device support. (Linux only, and if relevant
     libraries installed)
 13. Audio CD ripping and playback. (Linux only, and if relevant libraries
     installed)
-14. Playback of non-MPD songs, via simple in-built HTTP server.
+14. Playback of non-MPD songs - via simple in-built HTTP server if connected
+    to MPD via a standard socket.
 15. MPRISv2 DBUS interface.
-16. Support for KDE global shortcuts (KDE builds), and GNOME media keys
-    (Linux only)
+16. Support for KDE global shortcuts (KDE builds), GNOME media keys
+    (Linux only), and standard media keys (via Qxt)
 17. Ubuntu/ambiance theme integration - including dragging of window via
     toolbar.
 
@@ -51,6 +53,23 @@ Cantata started off as a fork of QtMPC, mainly to provide better KDE
 integration - by using KDE libraries/classes wherever possible. However, the
 code (and user interface) is now *very* different to that of QtMPC, and both
 KDE and Qt (Linux) builds have the same feature set.
+
+Unlike most other MPD clients, Cantata caches a copy of the MPD music library.
+This is so that it can create a proper hierarchy of artists and albums (where
+Cantata will use the AlbumArtist tag if found, otherwise it will fallback to
+the Artist tag), to provide album counts, tracks counts, etc in the browser
+views and tooltips, and also to help with copying songs to/from devices.
+
+This cache is updated only when MPD indicates that its version of the collection
+is different to Cantatas. If you press the 'Refresh Database' button in either
+the artist, albums, folders, or playlists views, then this cache is deleted and
+recreated with the response from MPD.
+
+By default, Cantata will use the "listallinfo" command to retrieve the music
+collection. However, it has been noted that MPD 0.18 requires more memory for
+the collection details (due to MPD now reading more information), this may
+cause the "listallinfo" command to fail. If it does, Cantata (as of v1.3.0)
+will fallback to recursively calling "lsinfo" for each MPD folder.
 
 
 2. Dependencies
@@ -88,13 +107,13 @@ such as MPDroid, GMPC, etc.
 
 To report bugs please visit http://code.google.com/p/cantata
 
-When reporting a bug, please mention that Cantata version number, the Cantata
+When reporting a bug, please mention the Cantata version number, the Cantata
 build type (Linux/KDE, Linux/Qt, Windows), any cmake options you specified
 (other than the defaults listed at the top of the INSTALL file), and the
 version of MPD you are using.
 
 Please DO NOT attach images to the bug page - as the attachement quota is almost
-full. Insted, please provide links top any relevant screenshots.
+full. Instead, please provide links to any relevant screenshots.
 
 
 4. Translations
@@ -156,85 +175,102 @@ translatable strings and update current translations.
 
 When displaying covers, Cantata will load album covers in the following order:
 
+...if configured to 'Cache scaled covers', Cantata will check its scaled-covers
+   cache folder (~/.cache/cantata/covers-scaled/SIZE) for:
+
+ 1. ${albumArtist}/${album}.jpg
+
 ...if MPD folder exists, is not specified as a http URL, and is readable, then
    cantata will look for the following within the folder containing the song:
 
- 1. ${configuredName}.jpg - if set
- 2. ${configuredName}.png - if set
- 3. cover.jpg
- 4. cover.png
- 5. AlbumArt.jpg
- 6. AlbumArt.png
- 7. folder.jpg
- 8. folder.png
- 9. ${file}.jpg - e.g. "01 Wibble.mp3" -> "01 Wibble.jpg"
-10. ${file}.png
-11. ${albumArtist} - ${album}.jpg
-12. ${albumArtist} - ${album}.png
-13. ${album}.jpg
-14. ${album}.png
-15. Image embedded within current song's tags.
-16. ANY other jpg, or png
+ 2. ${configuredName}.jpg - if set
+ 3. ${configuredName}.png - if set
+ 4. cover.jpg
+ 5. cover.png
+ 6. AlbumArt.jpg
+ 7. AlbumArt.png
+ 8. folder.jpg
+ 9. folder.png
+10. ${file}.jpg - e.g. "01 Wibble.mp3" -> "01 Wibble.jpg"
+11. ${file}.png
+12. ${albumArtist} - ${album}.jpg
+13. ${albumArtist} - ${album}.png
+14. ${album}.jpg
+15. ${album}.png
+16. Image embedded within current song's tags.
+17. ANY other jpg, or png
 
 ...then Cantata will check its cache folder (~/.cache/cantata/covers), for :
 
-17. ${albumArtist}/${album}.jpg
-18. ${albumArtist}/${album}.png
+18. ${albumArtist}/${album}.jpg
+19. ${albumArtist}/${album}.png
 
 ...if compiled for Linux
 
-19. Matching Amarok cover
-20. Matching Clementine cover
+20. Matching Amarok cover
+21. Matching Clementine cover
 
 ...if the MPD folder was specified as a http URL
 
-21. ${url}/${dirFromFile}/cover.jpg
+22. ${url}/${dirFromFile}/cover.jpg
     - or ${url}/${dirFromFile}/${configuredName}.jpg (if set)
-22. ${url}/${dirFromFile}/cover.png
+23. ${url}/${dirFromFile}/cover.png
     - or ${url}/${dirFromFile}/${configuredName}.png (if set)
 
 ...lastly
 
-23. Query last.fm using ${albumArtist} and ${album}. Cantata will attempt to
+24. Query last.fm using ${albumArtist} and ${album}. Cantata will attempt to
     download the image specified with the "extralarge" size.
 
 Downloaded images will be saved as ${configuredName}.jpg/png (if set), or
 cover.jpg/png, within the song folder if possible. If not, then they will be
 saved in Cantata's cache folder.
 
+If configured to 'Cache scaled covers', then the resized cover (as displayed)
+will be saved as a JPG within covers-scaled.
+
 
 For artist images:
+
+...if configured to 'Cache scaled covers', Cantata will check its scaled-covers
+   cache folder (~/.cache/cantata/covers-scaled/SIZE) for:
+
+ 1. ${albumArtist}.jpg
 
 ...if MPD folder exists, is not specified as a http URL, and is readable, then
    cantata will look for the following within the folder containing the song:
 
-1. ${albumArtist}.jpg
-2. ${albumArtist}.png
-3. artist.jpg
-4. artist.png
+ 2. ${albumArtist}.jpg
+ 3. ${albumArtist}.png
+ 4. artist.jpg
+ 5. artist.png
 
 ...the above will be repeated for the parent folder
 
 ...then Cantata will check its cache folder (~/.cache/cantata/covers), for :
 
-5. ${albumArtist}.jpg
-6. ${albumArtist}.png
+ 6. ${albumArtist}.jpg
+ 7. ${albumArtist}.png
 
 ...if the MPD folder was specified as a http URL
 
-7. ${url}/${dirFromFile}/artist.jpg
-8. ${url}/${dirFromFile}/artist.png
+ 8. ${url}/${dirFromFile}/artist.jpg
+ 9. ${url}/${dirFromFile}/artist.png
  
 ...the above will be repeated for the parent folder
 
 ...lastly
 
-9. Query last.fm using ${albumArtist}. Cantata will attempt to download the
-   image specified with the "extralarge" size.
+10. Query last.fm using ${albumArtist}. Cantata will attempt to download the
+    image specified with the "extralarge" size.
 
 Downloaded images will be saved as artist.jpg/png, within the artist folder
 if the folder heirarchy is 2 levels (artist/album/) and the user has write
 permissions. If not, then they will be saved in Cantata's cache folder.
+
+If configured to 'Cache scaled covers', then the resized cover (as displayed) 
+will be saved as a JPG within covers-scaled.
+
 
 For context view backdrops:
 
@@ -277,7 +313,7 @@ Cantata contains a few advanced config items, for which there is currently no
 graphical way to control the setting. For these, you will need to edit
 Cantata's config by hand - whilst Cantata is NOT running!
 
-Under Linux, the Cantata config file will be either:
+Under Linux, the Cantata config file will be:
     Qt builds:  ~/.config/cantata/cantata.conf  ( Current User )
                 /etc/xdg/cantata.conf           ( All Users    )
     KDE builds: ~/.kde/share/config/cantatarc   ( Current User )
@@ -286,7 +322,7 @@ Under Linux, the Cantata config file will be either:
 The following config items should be added to the "[General]" section.
 
 iconTheme=<Icon theme name>
-    For Qt-only, Linux builds, this allows you to force cantata to use the
+    For Qt-only Linux builds, this allows you to force cantata to use the
     configured icon theme. This config is empty by default, and Cantata uses
     the system configured icon theme.
     
@@ -367,7 +403,7 @@ alwaysUseLsInfo=<Boolean>
     more memory), and if it does Cantata will fall back to calling
     "lsinfo <dir>" for each directory. Setting this config item to true will
     cause Cantata to always use this alternative method.
-   Default is false.
+    Default is false.
 
 e.g.
 [General]
@@ -409,7 +445,7 @@ Cantata's CUE file support originates from.))
 
 NOTE: If Cantata cannot access the CUE file (as MPD is running on a remote host,
 or you have not configured the music folder correctly, etc.) then Cantata will
-add the CUE File to album track listing.
+add the CUE File to the album's track listing.
 
 
 8. Streams
@@ -803,7 +839,7 @@ C:\Users\USERNAME\AppData\Local\mpd\cantata\cache\cantata.log
 To disable logging to file, and log to the terminal instead, use a negative
 number. e.g. CANTATA_DEBUG=-4
 
-With windows builds, it is probably easier to ser the env var from a DOS
+With windows builds, it is probably easier to set the env var from a DOS
 command prompt box. e.g.:
 
     1. Run cmd.exe from start menu.
@@ -834,6 +870,8 @@ Cantata contains code/icons from:
                      calculation)
     QJson          - JSON parser, taken from https://github.com/flavio/qjson
     IcoMoon        - http://icomoon.io/#icons (Monochrome sidebar icons)
+    Qxt            - Multi-media key support
+    QtSolutions    - QtIOCompressor, and QtSingleApplication
 
 
 15. Windows

@@ -33,8 +33,9 @@
 #include "icons.h"
 #include "coverdialog.h"
 #include "basicitemdelegate.h"
+#include "lineedit.h"
 #include <QMenu>
-#include <QItemDelegate>
+#include <QStyledItemDelegate>
 #include <QMouseEvent>
 #include <QSpinBox>
 
@@ -44,10 +45,10 @@ enum Columns {
     COL_TITLE
 };
 
-class EditorDelegate : public QItemDelegate
+class EditorDelegate : public BasicItemDelegate
 {
 public:
-    EditorDelegate(QObject *parent=0) : QItemDelegate(parent) { }
+    EditorDelegate(QObject *parent=0) : BasicItemDelegate(parent) { }
 
     QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const {
         Q_UNUSED(option);
@@ -57,26 +58,27 @@ public:
             editor->setMaximum(500);
             return editor;
         } else {
-            return new QLineEdit(parent);
+            parent->setProperty("cantata-delegate", true);
+            return new LineEdit(parent);
         }
     }
 
     QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const {
-        return QItemDelegate::sizeHint(option, index)+QSize(0, 4);
+        return QStyledItemDelegate::sizeHint(option, index)+QSize(0, 4);
     }
 
     void setEditorData(QWidget *editor, const QModelIndex &index) const {
         if (COL_TRACK==index.column()) {
             static_cast<QSpinBox*>(editor)->setValue(index.model()->data(index, Qt::EditRole).toInt());
         } else {
-            static_cast<QLineEdit*>(editor)->setText(index.model()->data(index, Qt::EditRole).toString());
+            static_cast<LineEdit*>(editor)->setText(index.model()->data(index, Qt::EditRole).toString());
         }
     }
     void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const {
         if (COL_TRACK==index.column()) {
             model->setData(index, static_cast<QSpinBox*>(editor)->value(), Qt::EditRole);
         } else {
-            model->setData(index, static_cast<QLineEdit*>(editor)->text().trimmed(), Qt::EditRole);
+            model->setData(index, static_cast<LineEdit*>(editor)->text().trimmed(), Qt::EditRole);
         }
     }
 
@@ -141,7 +143,6 @@ AlbumDetailsDialog::AlbumDetailsDialog(QWidget *parent)
     setButtonMenu(User1, toolsMenu, InstantPopup);
     setButtonGuiItem(User1, GuiItem(i18n("Tools"), "tools-wizard"));
     connect(singleArtist, SIGNAL(toggled(bool)), SLOT(hideArtistColumn(bool)));
-    tracks->setItemDelegate(new EditorDelegate);
     resize(600, 600);
 
     int size=fontMetrics().height()*5;
@@ -149,7 +150,7 @@ AlbumDetailsDialog::AlbumDetailsDialog(QWidget *parent)
     cover->setMaximumSize(size, size);
     setCover();
     cover->installEventFilter(this);
-    tracks->setItemDelegate(new BasicItemDelegate(tracks));
+    tracks->setItemDelegate(new EditorDelegate(tracks));
 }
 
 AlbumDetailsDialog::~AlbumDetailsDialog()

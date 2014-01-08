@@ -337,6 +337,7 @@ private:
     void parseIdleReturn(const QByteArray &data);
     bool doMoveInPlaylist(const QString &name, const QList<quint32> &items, quint32 pos, quint32 size);
     void toggleStopAfterCurrent(bool afterCurrent);
+    bool listDirInfo(const QString &dir, MusicLibraryItemRoot *root);
 
 private:
     Thread *thread;

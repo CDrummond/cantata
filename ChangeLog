@@ -30,8 +30,8 @@
     HTTP server, set alwaysUseHttp to true in Cantata's config file. Refer to
     README for more details.
 16. Add CMake option to disable building of internal HTTP server.
-17. If listallinfo fails with MPD 0.18.x then prompt user to check MPD's
-    max_output_buffer_size setting.
+17. If listallinfo fails, then attempt to retrieve music listing via lsinfo
+    calls on each folder.
 18. Add CMake option to disable streams, dynamic, and online services. Refer to
     INSTALL file for details.
 19. Don't use QKeySequence::Delete to detect delete key event for play queue,

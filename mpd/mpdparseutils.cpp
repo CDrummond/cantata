@@ -409,10 +409,10 @@ void MPDParseUtils::setGroupMultiple(bool g)
     groupMultipleArtists=g;
 }
 
-MusicLibraryItemRoot * MPDParseUtils::parseLibraryItems(const QByteArray &data, const QString &mpdDir, long mpdVersion)
+void MPDParseUtils::parseLibraryItems(const QByteArray &data, const QString &mpdDir, long mpdVersion,
+                                      MusicLibraryItemRoot *rootItem, bool parsePlaylists, QSet<QString> *childDirs)
 {
     bool canSplitCue=mpdVersion>=MPD_MAKE_VERSION(0,17,0);
-    MusicLibraryItemRoot * const rootItem = new MusicLibraryItemRoot;
     QByteArray currentItem;
     QList<QByteArray> lines = data.split('\n');
     int amountOfLines = lines.size();
@@ -422,9 +422,13 @@ MusicLibraryItemRoot * MPDParseUtils::parseLibraryItems(const QByteArray &data, 
     QString unknown=i18n("Unknown");
 
     for (int i = 0; i < amountOfLines; i++) {
-        currentItem += lines.at(i);
+        QByteArray line=lines.at(i);
+        if (childDirs && line.startsWith("directory: ")) {
+            childDirs->insert(QString::fromUtf8(line.remove(0, 11)));
+        }
+        currentItem += line;
         currentItem += "\n";
-        if (i == lines.size() - 1 || lines.at(i + 1).startsWith("file:") || lines.at(i + 1).startsWith("playlist:")) {
+        if (i == amountOfLines - 1 || lines.at(i + 1).startsWith("file:") || lines.at(i + 1).startsWith("playlist:")) {
             Song currentSong = parseSong(currentItem, false);
             currentItem.clear();
             if (currentSong.file.isEmpty()) {
@@ -432,6 +436,11 @@ MusicLibraryItemRoot * MPDParseUtils::parseLibraryItems(const QByteArray &data, 
             }
 
             if (Song::Playlist==currentSong.type) {
+                // lsinfo / will return all stored playlists - but this is deprecated.
+                if (!parsePlaylists) {
+                    continue;
+                }
+
                 MusicLibraryItemAlbum *prevAlbum=albumItem;
                 QString prevSongFile=songItem ? songItem->file() : QString();
                 QList<Song> cueSongs; // List of songs from cue file
@@ -603,10 +612,10 @@ MusicLibraryItemRoot * MPDParseUtils::parseLibraryItems(const QByteArray &data, 
             albumItem->addGenre(currentSong.genre);
             artistItem->addGenre(currentSong.genre);
             rootItem->addGenre(currentSong.genre);
+        } else if (childDirs) {
+
         }
     }
-    rootItem->applyGrouping();
-    return rootItem;
 }
 
 DirViewItemRoot * MPDParseUtils::parseDirViewItems(const QByteArray &data)

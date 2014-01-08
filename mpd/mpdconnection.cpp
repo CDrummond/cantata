@@ -26,6 +26,7 @@
 
 #include "mpdconnection.h"
 #include "mpdparseutils.h"
+#include "musiclibraryitemroot.h"
 #include "mpduser.h"
 #include "localize.h"
 #include "utils.h"
@@ -53,6 +54,7 @@ void MPDConnection::enableDebug()
 static const int constSocketCommsTimeout=2000;
 static const int constMaxReadAttempts=4;
 static int maxFilesPerAddCommand=10000;
+static bool alwaysUseLsInfo=false;
 
 #ifdef ENABLE_KDE_SUPPORT
 K_GLOBAL_STATIC(MPDConnection, conn)
@@ -213,6 +215,7 @@ MPDConnection::MPDConnection()
     connect(PowerManagement::self(), SIGNAL(resuming()), this, SLOT(reconnect()));
     #endif
     maxFilesPerAddCommand=Settings::self()->mpdListSize();
+    alwaysUseLsInfo=Settings::self()->alwaysUseLsInfo();
 }
 
 MPDConnection::~MPDConnection()
@@ -530,11 +533,11 @@ MPDConnection::Response MPDConnection::sendCommand(const QByteArray &command, bo
                 }
             } else if (!response.getError(command).isEmpty()) {
                 emit error(i18n("MPD reported the following error: %1", response.getError(command)));
-            } else if ("listallinfo"==command && ver>=MPD_MAKE_VERSION(0,18,0)) {
+            } /*else if ("listallinfo"==command && ver>=MPD_MAKE_VERSION(0,18,0)) {
                 disconnectFromMPD();
                 emit stateChanged(false);
                 emit error(i18n("Failed to load library. Please increase \"max_output_buffer_size\" in MPD's config file."));
-            } else {
+            } */ else {
                 disconnectFromMPD();
                 emit stateChanged(false);
                 emit error(i18n("Failed to send command. Disconnected from %1", details.description()), true);
@@ -1207,24 +1210,29 @@ void MPDConnection::update()
  * Database commands
  */
 
-/**
- * Get all files in the playlist with detailed info (artist, album,
- * title, time etc).
- */
 void MPDConnection::loadLibrary()
 {
     emit updatingLibrary();
-    Response response=sendCommand("listallinfo");
+    Response response=alwaysUseLsInfo ? Response(false) : sendCommand("listallinfo", false);
+    MusicLibraryItemRoot *root=0;
     if (response.ok) {
-        emit musicLibraryUpdated(MPDParseUtils::parseLibraryItems(response.data, details.dir, ver), dbUpdate);
+        root = new MusicLibraryItemRoot;
+        MPDParseUtils::parseLibraryItems(response.data, details.dir, ver, root);
+    } else { // MPD >=0.18 can fail listallinfo for large DBs, so get info dir by dir...
+        root = new MusicLibraryItemRoot;
+        if (!listDirInfo("/", root)) {
+            delete root;
+            root=0;
+        }
+    }
+
+    if (root) {
+        root->applyGrouping();
+        emit musicLibraryUpdated(root, dbUpdate);
     }
     emit updatedLibrary();
 }
 
-/**
-* Get all the files and dir in the mpdmusic dir.
-*
-*/
 void MPDConnection::loadFolders()
 {
     emit updatingFileList();
@@ -1448,6 +1456,24 @@ void MPDConnection::toggleStopAfterCurrent(bool afterCurrent)
             }
         }
         emit stopAfterCurrentChanged(stopAfterCurrent);
+    }
+}
+
+bool MPDConnection::listDirInfo(const QString &dir, MusicLibraryItemRoot *root)
+{
+    bool topLevel="/"==dir;
+    Response response=sendCommand(topLevel ? "lsinfo /" : ("lsinfo "+encodeName(dir)));
+    if (response.ok) {
+        QSet<QString> childDirs;
+        MPDParseUtils::parseLibraryItems(response.data, details.dir, ver, root, !topLevel, &childDirs);
+        foreach (const QString &child, childDirs) {
+            if (!listDirInfo(child, root)) {
+                return false;
+            }
+        }
+        return true;
+    } else {
+        return false;
     }
 }
 

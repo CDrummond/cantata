@@ -863,6 +863,11 @@ QString Settings::lang()
 }
 #endif
 
+bool Settings::alwaysUseLsInfo()
+{
+    return GET_BOOL("alwaysUseLsInfo", false);
+}
+
 void Settings::removeConnectionDetails(const QString &v)
 {
     if (v==currentConnection()) {

@@ -361,6 +361,14 @@ alwaysUseHttp=<Boolean>
     from media devices, or when connected to MPD via a standard socket.
     Default is false.
 
+alwaysUseLsInfo=<Boolean>
+    By default, Cantata uses MPD's listallinfo command to retrieve the whole
+    music collection. This can fail (especially with MPD 0.18.x which needs
+    more memory), and if it does Cantata will fall back to calling
+    "lsinfo <dir>" for each directory. Setting this config item to true will
+    cause Cantata to always use this alternative method.
+   Default is false.
+
 e.g.
 [General]
 iconTheme=oxygen
@@ -373,6 +381,7 @@ undoSteps=20
 mpdPoll=true
 mpdListSize=5000
 alwaysUseHttp=true
+alwaysUseLsInfo=true
 
 
 7. CUE Files

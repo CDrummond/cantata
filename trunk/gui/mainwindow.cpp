@@ -974,8 +974,9 @@ void MainWindow::initSizes()
     int tabSize=tabWidget->tabSize().width();
     if ((cwSize<tabSize && (tabSize-cwSize)<(tabSize/3)) || (cwSize>tabSize && (cwSize-tabSize)<(cwSize/3))) {
         cwSize=tabSize;
+    } else {
+        cwSize=qMax(cwSize, FancyTabWidget::iconSize()*2);
     }
-    cwSize=qMax(cwSize, FancyTabWidget::iconSize()*2);
 
     coverWidget->setMinimumSize(cwSize, cwSize);
     coverWidget->setMaximumSize(cwSize, cwSize);

@@ -256,7 +256,7 @@ void MusicLibraryItemRoot::getDetails(QSet<QString> &artists, QSet<QString> &alb
             if (!s.genre.isEmpty()) {
                 genres.insert(s.genre);
             }
-        } else {
+        } else if (MusicLibraryItem::Type_Artist==child->itemType()) {
             foreach (const MusicLibraryItem *album, static_cast<const MusicLibraryItemContainer *>(child)->childItems()) {
                 foreach (const MusicLibraryItem *song, static_cast<const MusicLibraryItemContainer *>(album)->childItems()) {
                     const Song &s=static_cast<const MusicLibraryItemSong *>(song)->song();

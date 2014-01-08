@@ -29,18 +29,10 @@
 #endif
 #include <QComboBox>
 #include <QSpinBox>
-#include <QToolBar>
-#include <QAbstractScrollArea>
-#include <QAbstractItemView>
-#include <QTreeView>
-#include <QHeaderView>
 #include <QScrollBar>
 #include <QMenu>
 #include <QApplication>
-#include <QHoverEvent>
 #include <QPainter>
-#include <QDesktopWidget>
-#include <QLibrary>
 
 static const char * constOnCombo="on-combo";
 #ifndef ENABLE_KDE_SUPPORT
@@ -51,6 +43,61 @@ static const double constSpinButtonRatio=1.25;
 static bool isOnCombo(const QWidget *w)
 {
     return w && (qobject_cast<const QComboBox *>(w) || isOnCombo(w->parentWidget()));
+}
+
+static QPainterPath buildPath(const QRectF &r, double radius)
+{
+    QPainterPath path;
+    double diameter(radius*2);
+
+    path.moveTo(r.x()+r.width(), r.y()+r.height()-radius);
+    path.arcTo(r.x()+r.width()-diameter, r.y(), diameter, diameter, 0, 90);
+    path.arcTo(r.x(), r.y(), diameter, diameter, 90, 90);
+    path.arcTo(r.x(), r.y()+r.height()-diameter, diameter, diameter, 180, 90);
+    path.arcTo(r.x()+r.width()-diameter, r.y()+r.height()-diameter, diameter, diameter, 270, 90);
+    return path;
+}
+
+static void drawLine(QPainter *painter, QColor col, const QPoint &start, const QPoint &end)
+{
+    QLinearGradient grad(start, end);
+    col.setAlphaF(0.0);
+    grad.setColorAt(0, col);
+    col.setAlphaF(0.25);
+    grad.setColorAt(0.25, col);
+    grad.setColorAt(0.8, col);
+    col.setAlphaF(0.0);
+    grad.setColorAt(1, col);
+    painter->setPen(QPen(QBrush(grad), 1));
+    painter->drawLine(start, end);
+}
+
+static void drawSpinButton(QPainter *painter, QRect rect, const QColor &col, bool isPlus)
+{
+    int length=(rect.height()/4)-1;
+    int lineWidth=(rect.height()-6)<32 ? 2 : 4;
+
+    if (length<lineWidth) {
+        length=lineWidth;
+    }
+    painter->save();
+    painter->setRenderHint(QPainter::Antialiasing, false);
+    painter->setPen(QPen(col, lineWidth));
+
+    rect.adjust(1, 1, 1, 1);
+    painter->drawLine(rect.x()+((rect.width()/2)-(length+1)), rect.y()+((rect.height()-lineWidth)/2),
+                      rect.x()+((rect.width()/2)+(length-1)), rect.y()+((rect.height()-lineWidth)/2));
+    if (isPlus) {
+        painter->drawLine(rect.x()+((rect.width()-lineWidth)/2), rect.y()+((rect.height()/2)-(length+1)),
+                          rect.x()+((rect.width()-lineWidth)/2), rect.y()+((rect.height()/2)+(length-1)));
+    }
+    painter->restore();
+}
+
+static inline void addEventFilter(QObject *object, QObject *filter)
+{
+    object->removeEventFilter(filter);
+    object->installEventFilter(filter);
 }
 
 GtkProxyStyle::GtkProxyStyle(ScrollbarType sb, bool styleSpin)
@@ -252,63 +299,6 @@ QRect GtkProxyStyle::subControlRect(ComplexControl control, const QStyleOptionCo
     return baseStyle()->subControlRect(control, option, subControl, widget);
 }
 
-static QPainterPath buildPath(const QRectF &r, double radius)
-{
-    QPainterPath path;
-    double diameter(radius*2);
-
-    path.moveTo(r.x()+r.width(), r.y()+r.height()-radius);
-    path.arcTo(r.x()+r.width()-diameter, r.y(), diameter, diameter, 0, 90);
-    path.arcTo(r.x(), r.y(), diameter, diameter, 90, 90);
-    path.arcTo(r.x(), r.y()+r.height()-diameter, diameter, diameter, 180, 90);
-    path.arcTo(r.x()+r.width()-diameter, r.y()+r.height()-diameter, diameter, diameter, 270, 90);
-    return path;
-}
-
-static void drawLine(QPainter *painter, QColor col, const QPoint &start, const QPoint &end)
-{
-    QLinearGradient grad(start, end);
-    col.setAlphaF(0.0);
-    grad.setColorAt(0, col);
-    col.setAlphaF(0.25);
-    grad.setColorAt(0.25, col);
-    grad.setColorAt(0.8, col);
-    col.setAlphaF(0.0);
-    grad.setColorAt(1, col);
-    painter->setPen(QPen(QBrush(grad), 1));
-    painter->drawLine(start, end);
-}
-
-static void drawSpinButton(QPainter *painter, QRect rect, const QColor &col, bool isPlus)
-{
-    int length=(rect.height()/4)-1;
-    int lineWidth=(rect.height()-6)<32 ? 2 : 4;
-
-    if (length<lineWidth) {
-        length=lineWidth;
-    }
-    painter->save();
-    painter->setRenderHint(QPainter::Antialiasing, false);
-    painter->setPen(QPen(col, lineWidth));
-
-    rect.adjust(1, 1, 1, 1);
-    painter->drawLine(rect.x()+((rect.width()/2)-(length+1)), rect.y()+((rect.height()-lineWidth)/2),
-                      rect.x()+((rect.width()/2)+(length-1)), rect.y()+((rect.height()-lineWidth)/2));
-    if (isPlus) {
-        painter->drawLine(rect.x()+((rect.width()-lineWidth)/2), rect.y()+((rect.height()/2)-(length+1)),
-                          rect.x()+((rect.width()-lineWidth)/2), rect.y()+((rect.height()/2)+(length-1)));
-    }
-    painter->restore();
-}
-
-const QAbstractItemView * view(const QWidget *w) {
-    if (!w) {
-        return 0;
-    }
-    const QAbstractItemView *v=qobject_cast<const QAbstractItemView *>(w);
-    return v ? v : view(w->parentWidget());
-}
-
 void GtkProxyStyle::drawComplexControl(ComplexControl control, const QStyleOptionComplex *option, QPainter *painter, const QWidget *widget) const
 {
     if (SB_Standard!=sbarType && CC_ScrollBar==control) {
@@ -403,12 +393,6 @@ void GtkProxyStyle::drawComplexControl(ComplexControl control, const QStyleOptio
         }
     }
     baseStyle()->drawComplexControl(control, option, painter, widget);
-}
-
-inline void addEventFilter(QObject *object, QObject *filter)
-{
-    object->removeEventFilter(filter);
-    object->installEventFilter(filter);
 }
 
 void GtkProxyStyle::polish(QWidget *widget)

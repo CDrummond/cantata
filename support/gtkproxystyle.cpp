@@ -424,9 +424,22 @@ void GtkProxyStyle::drawComplexControl(ComplexControl control, const QStyleOptio
     } else if (touchStyleSpin && CC_SpinBox==control) {
         if (const QStyleOptionSpinBox *spinBox = qstyleoption_cast<const QStyleOptionSpinBox *>(option)) {
             if (QAbstractSpinBox::NoButtons!=spinBox->buttonSymbols) {
-                QStyleOptionSpinBox sp=*spinBox;
-                sp.buttonSymbols=QAbstractSpinBox::NoButtons;
-                baseStyle()->drawComplexControl(control, &sp, painter, widget);
+
+                // Use PE_FrameLineEdit to draw border, as QGtkStyle corrupts focus settings
+                // if its asked to draw a QSpinBox with no buttons that has focus.
+                QStyleOptionFrameV2 opt;
+                opt.state=spinBox->state;
+                opt.state|=State_Sunken;
+                opt.rect=spinBox->rect;
+                opt.palette=spinBox->palette;
+                opt.lineWidth=baseStyle()->pixelMetric(QStyle::PM_DefaultFrameWidth, option, 0);
+                opt.midLineWidth=0;
+                opt.fontMetrics=spinBox->fontMetrics;
+                opt.direction=spinBox->direction;
+                opt.type=QStyleOption::SO_Default;
+                opt.version=1;
+                baseStyle()->drawPrimitive(PE_FrameLineEdit, &opt, painter, 0);
+
                 QRect plusRect=subControlRect(CC_SpinBox, spinBox, SC_SpinBoxUp, widget);
                 QRect minusRect=subControlRect(CC_SpinBox, spinBox, SC_SpinBoxDown, widget);
                 QColor col(spinBox->palette.foreground().color());
@@ -449,16 +462,6 @@ void GtkProxyStyle::drawComplexControl(ComplexControl control, const QStyleOptio
                 }
                 drawSpinButton(painter, plusRect, col, true);
                 drawSpinButton(painter, minusRect, col, false);
-
-                if (sp.state&State_HasFocus) {
-                    // QGtkStyle has a bug where it does not reset focus flags if spinbutton has no buttons.
-                    // So, get style to draw a normal spinbutton into a nul painter - this resets the flags!
-                    QPainter p;
-                    QStyleOption opt;
-                    opt.rect=QRect(0, 0, 16, 16);
-                    opt.state=State_HasFocus;
-                    baseStyle()->drawPrimitive(PE_FrameLineEdit, &opt, &p, 0);
-                }
                 return;
             }
         }

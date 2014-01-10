@@ -636,34 +636,12 @@ void ContextWidget::getBackdrop()
     cancel();
     if (artistsCreatedBackdropsFor.contains(currentArtist)) {
         createBackdrop();
-    } else /*if (useHtBackdrops) {
-        getHtBackdrop();
-    } else*/ if (useFanArt) {
+    } else if (useFanArt) {
         getFanArtBackdrop();
     } else {
         getDiscoGsImage();
     }
 }
-
-//void ContextWidget::getHtBackdrop()
-//{
-//    QUrl url("http://htbackdrops.com/api/"+constHtbApiKey+"/searchXML");
-//    #if QT_VERSION < 0x050000
-//    QUrl &q=url;
-//    #else
-//    QUrlQuery q;
-//    #endif
-
-//    q.addQueryItem(QLatin1String("keywords"), fixArtist(currentArtist));
-//    q.addQueryItem(QLatin1String("default_operator"), QLatin1String("and"));
-//    q.addQueryItem(QLatin1String("fields"), QLatin1String("title"));
-//    #if QT_VERSION >= 0x050000
-//    url.setQuery(q);
-//    #endif
-//    job=NetworkAccessManager::self()->get(url, 5000);
-//    DBUG << url.toString();
-//    connect(job, SIGNAL(finished()), this, SLOT(htBackdropsResponse()));
-//}
 
 void ContextWidget::getFanArtBackdrop()
 {
@@ -715,57 +693,6 @@ void ContextWidget::getDiscoGsImage()
     DBUG << url.toString();
     connect(job, SIGNAL(finished()), this, SLOT(discoGsResponse()));
 }
-
-//void ContextWidget::htBackdropsResponse()
-//{
-//    NetworkJob *reply = getReply(sender());
-//    if (!reply) {
-//        return;
-//    }
-
-//    DBUG << "status" << reply->error() << reply->errorString();
-
-//    QString id;
-//    if (reply->ok()) {
-//        QXmlStreamReader xml(reply);
-//        while (!xml.atEnd() && !xml.hasError() && id.isEmpty()) {
-//            xml.readNext();
-//            if (xml.isStartElement() && QLatin1String("search")==xml.name()) {
-//                while (xml.readNextStartElement() && id.isEmpty()) {
-//                    if (xml.isStartElement() && QLatin1String("images")==xml.name()) {
-//                        while (xml.readNextStartElement() && id.isEmpty()) {
-//                            if (xml.isStartElement() && QLatin1String("image")==xml.name()) {
-//                                while (xml.readNextStartElement() && id.isEmpty()) {
-//                                    if (xml.isStartElement() && QLatin1String("id")==xml.name()) {
-//                                        id=xml.readElementText();
-//                                    } else {
-//                                        xml.skipCurrentElement();
-//                                    }
-//                                }
-//                            } else {
-//                                xml.skipCurrentElement();
-//                            }
-//                        }
-//                    } else {
-//                        xml.skipCurrentElement();
-//                    }
-//                }
-//            }
-//        }
-//    } else if (NetworkJob::OperationCanceledError==reply->error()) {
-//        // We timed out, someting wrong with htbackdrops? Jsut use auto-generated backdrops for now...
-//        useHtBackdrops=false;
-//    }
-
-//    if (id.isEmpty()) {
-//        getDiscoGsImage();
-//    } else {
-//        QUrl url("http://htbackdrops.com/api/"+constHtbApiKey+"/download/"+id+"/fullsize");
-//        job=NetworkAccessManager::self()->get(url);
-//        DBUG << url.toString();
-//        connect(job, SIGNAL(finished()), this, SLOT(downloadResponse()));
-//    }
-//}
 
 void ContextWidget::musicbrainzResponse()
 {

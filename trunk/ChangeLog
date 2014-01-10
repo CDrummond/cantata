@@ -3,7 +3,7 @@
  1. Add option to control startup-state; visible, hidden, or remembered from
     previous run.
  2. Basic undo/redo support for playqueue.
- 3. Search tab.
+ 3. Search tab. Hidden by default, enable via context menu.
  4. Optionally save scaled covers (used in artist and albums views) to disk.
  5. Add option to always collapse context into single pane.
  6. Option to have small sidebar at top or bottom.

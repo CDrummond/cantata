@@ -28,6 +28,7 @@
 #include <QPainter>
 #include <QPaintEvent>
 #include <QTimer>
+#include <QApplication>
 
 MessageOverlay::MessageOverlay(QObject *p)
     : QWidget(0)
@@ -109,7 +110,7 @@ void MessageOverlay::paintEvent(QPaintEvent *)
     int pad=r.height()/4;
     rf.adjust(pad, pad, cancelButton->isVisible() ? -((pad*2)+cancelButton->width()) : -pad, -pad);
 
-    QFont fnt(font());
+    QFont fnt(QApplication::font());
     fnt.setBold(true);
     QFontMetrics fm(fnt);
     col=palette().color(QPalette::WindowText);

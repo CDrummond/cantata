@@ -74,8 +74,8 @@ LibraryPage::LibraryPage(QWidget *p)
     connect(this, SIGNAL(add(const QStringList &, bool, quint8)), MPDConnection::self(), SLOT(add(const QStringList &, bool, quint8)));
     connect(this, SIGNAL(addSongsToPlaylist(const QString &, const QStringList &)), MPDConnection::self(), SLOT(addToPlaylist(const QString &, const QStringList &)));
     connect(genreCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(searchItems()));
-    connect(MPDConnection::self(), SIGNAL(updatingLibrary()), view, SLOT(showSpinner()));
-    connect(MPDConnection::self(), SIGNAL(updatedLibrary()), view, SLOT(hideSpinner()));
+    connect(MPDConnection::self(), SIGNAL(updatingLibrary()), this, SLOT(showSpinner()));
+    connect(MPDConnection::self(), SIGNAL(updatedLibrary()), this, SLOT(hideSpinner()));
     connect(MusicLibraryModel::self(), SIGNAL(updateGenres(const QSet<QString> &)), genreCombo, SLOT(update(const QSet<QString> &)));
     connect(this, SIGNAL(loadLibrary()), MPDConnection::self(), SLOT(loadLibrary()));
     connect(view, SIGNAL(itemsSelected(bool)), this, SLOT(controlActions()));
@@ -122,7 +122,6 @@ void LibraryPage::refresh()
     view->setLevel(0);
 
     if (!MusicLibraryModel::self()->fromXML()) {
-        view->showSpinner();
         emit loadLibrary();
     }
 }
@@ -407,4 +406,16 @@ void LibraryPage::controlActions()
         }
     }
     StdActions::self()->addRandomToPlayQueueAction->setEnabled(allowRandomAlbum);
+}
+
+void LibraryPage::showSpinner()
+{
+    view->showSpinner();
+    view->showMessage(i18n("Loading..."), -1);
+}
+
+void LibraryPage::hideSpinner()
+{
+    view->hideSpinner();
+    view->showMessage(QString(), 0);
 }

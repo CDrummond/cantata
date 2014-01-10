@@ -71,6 +71,8 @@ public Q_SLOTS:
     void controlActions();
     void searchItems();
     void updateGenres(const QModelIndex &);
+    void showSpinner();
+    void hideSpinner();
 
 private:
     AlbumsProxyModel proxy;

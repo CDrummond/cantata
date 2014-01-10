@@ -74,6 +74,8 @@ public Q_SLOTS:
     void searchItems();
     void controlActions();
     void updateGenres(const QModelIndex &);
+    void showSpinner();
+    void hideSpinner();
 
 private:
     MusicLibraryProxyModel proxy;

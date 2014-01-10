@@ -64,7 +64,6 @@ public:
     static void enableDebug();
 
     static const QLatin1String constCacheDir;
-//    static const QLatin1String constHtbApiKey;
     static const QLatin1String constFanArtApiKey;
 
     ContextWidget(QWidget *parent=0);
@@ -88,7 +87,6 @@ Q_SIGNALS:
     void createBackdrop(const QString &artist, const QList<Song> &songs);
 
 private Q_SLOTS:
-//    void htBackdropsResponse();
     void musicbrainzResponse();
     void fanArtResponse();
     void discoGsResponse();
@@ -103,7 +101,6 @@ private:
     void cancel();
     void updateBackdrop();
     void getBackdrop();
-//    void getHtBackdrop();
     void getFanArtBackdrop();
     void getMusicbrainzId(const QString &artist);
     void getDiscoGsImage();
@@ -116,7 +113,6 @@ private:
     bool alwaysCollapsed;
     bool drawBackdrop;
     bool darkBackground;
-//    bool useHtBackdrops;
     bool useFanArt;
     bool albumCoverBackdrop;
     Song currentSong;

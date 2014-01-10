@@ -491,7 +491,7 @@
         <item>
          <widget class="QLabel" name="musicFolderNoteLabel">
           <property name="text">
-           <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; The 'Music folder' setting is used to lookup cover-art, lyrics, etc.&lt;/i&gt;</string>
+           <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; The 'Music folder' setting is used to lookup cover-art, lyrics, etc. If you're MPD instance is on a remote host, you may set this to a HTTP URL.&lt;/i&gt;</string>
           </property>
           <property name="wordWrap">
            <bool>true</bool>
@@ -805,9 +805,9 @@
      </spacer>
     </item>
     <item>
-     <widget class="QLabel" name="httpNote">
+     <widget class="StateLabel" name="httpNote">
       <property name="text">
-       <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; The 'Music folder' is set to a HTTP address, and Cantata currently cannot upload files to external HTTP servers. Therefore, the above settings should be left disabled.&lt;/i&gt;</string>
+       <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; The 'Music folder' is set to a HTTP address, and Cantata currently cannot upload files to external HTTP servers. Therefore, the above settings should be left un-checked.&lt;/i&gt;</string>
       </property>
       <property name="wordWrap">
        <bool>true</bool>
@@ -863,7 +863,7 @@
     <item row="2" column="0" colspan="2">
      <widget class="QLabel" name="label_5">
       <property name="text">
-       <string>Cantata is now configured! If you wish to further configure Cantata (to add extra MPD hosts, etc) then Canta's configuration dialog may be accessed from the menu triggered by the button in the top-right of Cantata's main window.</string>
+       <string>Cantata is now configured! If you wish to further configure Cantata (to add extra MPD hosts, etc) then Canta's configuration dialog may be accessed from the menu triggered by the button in the top-right of Cantata's main window. Also, right-clicking on the sidebar in Cantata's main window will produce a context menu, allowing you customise how this is displayed, and what features are available.</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -946,6 +946,11 @@
    <extends>QLineEdit</extends>
    <header>pathrequester.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>StateLabel</class>
+   <extends>QLabel</extends>
+   <header>statelabel.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

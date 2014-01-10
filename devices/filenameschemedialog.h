@@ -43,21 +43,11 @@ Q_SIGNALS:
 private Q_SLOTS:
     void showHelp();
     void enableOkButton();
-    void insertAlbumArtist();
-    void insertComposer();
-    void insertAlbumTitle();
-    void insertTrackArtist();
-    void insertTrackTitle();
-    void insertTrackArtistAndTitle();
-    void insertTrackNumber();
-    void insertCdNumber();
-    void insertGenre();
-    void insertYear();
+    void insertVariable();
     void updateExample();
 
 private:
     void slotButtonClicked(int button);
-    void insert(const QString &str);
 
 private:
     DeviceOptions origOpts;

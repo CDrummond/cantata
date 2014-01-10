@@ -6,12 +6,21 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>378</width>
-    <height>155</height>
+    <width>504</width>
+    <height>180</height>
    </rect>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <property name="margin">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
     <number>0</number>
    </property>
    <item row="0" column="0" colspan="5">
@@ -66,6 +75,9 @@
    </item>
    <item row="4" column="0">
     <widget class="QPushButton" name="albumArtist">
+     <property name="toolTip">
+      <string>The artist of the album. For most albums, this will be the same as the &lt;i&gt;Track Artist.&lt;/i&gt; For compilations, this will often be &lt;i&gt;Various Artists.&lt;/i&gt;</string>
+     </property>
      <property name="text">
       <string>Album Artist</string>
      </property>
@@ -73,6 +85,9 @@
    </item>
    <item row="4" column="1">
     <widget class="QPushButton" name="albumTitle">
+     <property name="toolTip">
+      <string>The name of the album.</string>
+     </property>
      <property name="text">
       <string>Album Title</string>
      </property>
@@ -80,6 +95,9 @@
    </item>
    <item row="4" column="2">
     <widget class="QPushButton" name="composer">
+     <property name="toolTip">
+      <string>The composer.</string>
+     </property>
      <property name="text">
       <string>Composer</string>
      </property>
@@ -87,6 +105,9 @@
    </item>
    <item row="4" column="3">
     <widget class="QPushButton" name="trackArtist">
+     <property name="toolTip">
+      <string>The artist of each track.</string>
+     </property>
      <property name="text">
       <string>Track Artist</string>
      </property>
@@ -94,6 +115,9 @@
    </item>
    <item row="4" column="4">
     <widget class="QPushButton" name="trackTitle">
+     <property name="toolTip">
+      <string>The track title (without &lt;i&gt;Track Artist&lt;/i&gt;).</string>
+     </property>
      <property name="text">
       <string>Track Title</string>
      </property>
@@ -113,6 +137,9 @@
        <height>16777215</height>
       </size>
      </property>
+     <property name="toolTip">
+      <string>The track title (with &lt;i&gt;Track Artist&lt;/i&gt;, if different to &lt;i&gt;Album Artist&lt;/i&gt;).</string>
+     </property>
      <property name="text">
       <string>Track Title (+Artist)</string>
      </property>
@@ -120,6 +147,9 @@
    </item>
    <item row="5" column="1">
     <widget class="QPushButton" name="trackNo">
+     <property name="toolTip">
+      <string>The track number.</string>
+     </property>
      <property name="text">
       <string>Track #</string>
      </property>
@@ -127,6 +157,9 @@
    </item>
    <item row="5" column="2">
     <widget class="QPushButton" name="cdNo">
+     <property name="toolTip">
+      <string>The album number of a multi-album album. Often compilations consist of several albums.</string>
+     </property>
      <property name="text">
       <string>CD #</string>
      </property>
@@ -134,6 +167,9 @@
    </item>
    <item row="5" column="3">
     <widget class="QPushButton" name="year">
+     <property name="toolTip">
+      <string>The year of the album's release.</string>
+     </property>
      <property name="text">
       <string>Year</string>
      </property>
@@ -141,6 +177,9 @@
    </item>
    <item row="5" column="4">
     <widget class="QPushButton" name="genre">
+     <property name="toolTip">
+      <string>The genre of the album.</string>
+     </property>
      <property name="text">
       <string>Genre</string>
      </property>

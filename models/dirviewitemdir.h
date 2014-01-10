@@ -38,8 +38,10 @@ public:
     int childCount() const { return m_childItems.count(); }
     DirViewItem * child(int row) const { return m_childItems.value(row); }
     DirViewItem * child(const QString &name) const { return m_indexes.contains(name) ? m_childItems.value(m_indexes[name]) : 0; }
+    const QList<DirViewItem *> & childItems() const { return m_childItems; }
     DirViewItem * createDirectory(const QString &dirName);
     DirViewItem * insertFile(const QString &fileName);
+    void add(DirViewItem *i);
     void insertFile(const QStringList &path);
     void remove(DirViewItem *dir);
     bool hasChild(const QString &name) { return m_indexes.contains(name); }

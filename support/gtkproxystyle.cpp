@@ -58,38 +58,19 @@ static QPainterPath buildPath(const QRectF &r, double radius)
     return path;
 }
 
-static void drawLine(QPainter *painter, QColor col, const QPoint &start, const QPoint &end)
+static void drawSpinButton(QPainter *painter, const QRect &r, const QColor &col, bool isPlus)
 {
-    QLinearGradient grad(start, end);
-    col.setAlphaF(0.0);
-    grad.setColorAt(0, col);
-    col.setAlphaF(0.25);
-    grad.setColorAt(0.25, col);
-    grad.setColorAt(0.8, col);
-    col.setAlphaF(0.0);
-    grad.setColorAt(1, col);
-    painter->setPen(QPen(QBrush(grad), 1));
-    painter->drawLine(start, end);
-}
-
-static void drawSpinButton(QPainter *painter, QRect rect, const QColor &col, bool isPlus)
-{
-    int length=(rect.height()/4)-1;
-    int lineWidth=(rect.height()-6)<32 ? 2 : 4;
-
-    if (length<lineWidth) {
-        length=lineWidth;
+    int length=r.height()*0.6;
+    int lineWidth=length<24 ? 2 : 4;
+    if (length%2) {
+        length++;
     }
+
     painter->save();
     painter->setRenderHint(QPainter::Antialiasing, false);
-    painter->setPen(QPen(col, lineWidth));
-
-    rect.adjust(1, 1, 1, 1);
-    painter->drawLine(rect.x()+((rect.width()/2)-(length+1)), rect.y()+((rect.height()-lineWidth)/2),
-                      rect.x()+((rect.width()/2)+(length-1)), rect.y()+((rect.height()-lineWidth)/2));
+    painter->fillRect(r.x()+((r.width()-length)/2), r.y()+((r.height()-lineWidth)/2), length, lineWidth, col);
     if (isPlus) {
-        painter->drawLine(rect.x()+((rect.width()-lineWidth)/2), rect.y()+((rect.height()/2)-(length+1)),
-                          rect.x()+((rect.width()-lineWidth)/2), rect.y()+((rect.height()/2)+(length-1)));
+        painter->fillRect(r.x()+((r.width()-lineWidth)/2), r.y()+((r.height()-length)/2), lineWidth, length, col);
     }
     painter->restore();
 }
@@ -144,7 +125,7 @@ QSize GtkProxyStyle::sizeFromContents(ContentsType type, const QStyleOption *opt
     } else if (touchStyleSpin && CT_SpinBox==type) {
         if (const QStyleOptionSpinBox *spinBox = qstyleoption_cast<const QStyleOptionSpinBox *>(option)) {
             if (QAbstractSpinBox::NoButtons!=spinBox->buttonSymbols) {
-                sz += QSize(0, 2);
+                sz += QSize(0, 1);
                 #if QT_VERSION >= 0x050000
                 // Qt5 does not seem to be taking special value, or suffix, into account when calculatng width...
                 if (widget && qobject_cast<const QSpinBox *>(widget)) {
@@ -354,13 +335,15 @@ void GtkProxyStyle::drawComplexControl(ComplexControl control, const QStyleOptio
 
                 QRect plusRect=subControlRect(CC_SpinBox, spinBox, SC_SpinBoxUp, widget);
                 QRect minusRect=subControlRect(CC_SpinBox, spinBox, SC_SpinBoxDown, widget);
-                QColor col(spinBox->palette.foreground().color());
+                QColor separatorColor(spinBox->palette.foreground().color());
+                separatorColor.setAlphaF(0.15);
+                painter->setPen(separatorColor);
                 if (Qt::LeftToRight==spinBox->direction) {
-                    drawLine(painter, col, plusRect.topLeft(), plusRect.bottomLeft());
-                    drawLine(painter, col, minusRect.topLeft(), minusRect.bottomLeft());
+                    painter->drawLine(plusRect.topLeft(), plusRect.bottomLeft());
+                    painter->drawLine(minusRect.topLeft(), minusRect.bottomLeft());
                 } else {
-                    drawLine(painter, col, plusRect.topRight(), plusRect.bottomRight());
-                    drawLine(painter, col, minusRect.topRight(), minusRect.bottomRight());
+                    painter->drawLine(plusRect.topRight(), plusRect.bottomRight());
+                    painter->drawLine(minusRect.topRight(), minusRect.bottomRight());
                 }
 
                 if (option->state&State_Sunken) {
@@ -374,7 +357,7 @@ void GtkProxyStyle::drawComplexControl(ComplexControl control, const QStyleOptio
                     if (!fillRect.isEmpty()) {
                         QColor col=spinBox->palette.highlight().color();
                         col.setAlphaF(0.1);
-                        painter->fillRect(fillRect.adjusted(1, 2, -1, -2), col);
+                        painter->fillRect(fillRect.adjusted(1, 1, -1, -1), col);
                     }
                 }
 

@@ -657,11 +657,9 @@ QString Utils::cacheDir(const QString &sub, bool create)
     #endif
 }
 
-void Utils::moveFile(const QString &from, const QString &to)
+bool Utils::moveFile(const QString &from, const QString &to)
 {
-    if (!from.isEmpty() && !to.isEmpty() && from!=to && QFile::exists(from) && !QFile::exists(to)) {
-        QFile::rename(from, to);
-    }
+    return !from.isEmpty() && !to.isEmpty() && from!=to && QFile::exists(from) && !QFile::exists(to) && QFile::rename(from, to);
 }
 
 void Utils::moveDir(const QString &from, const QString &to)

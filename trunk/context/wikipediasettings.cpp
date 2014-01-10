@@ -38,19 +38,34 @@
 #include <QXmlStreamReader>
 #include <QFile>
 
-static const QString constFileName=QLatin1String("wikipedia-available.xml.gz");
+static const QString constOldFileName=QLatin1String("wikipedia-available.xml.gz");
+static const QString constFileName=QLatin1String("languages.xml.gz");
+
+QString WikipediaSettings::constSubDir=QLatin1String("wikipedia");
 
 static QString localeFile()
 {
-    return Utils::dataDir(QString(), true)+constFileName;
+    return Utils::cacheDir(WikipediaSettings::constSubDir, true)+constFileName;
 }
 
-// Move files from previous ~/.config/cantata to ~/.local/share/cantata
+// Move files from previous ~/.config/cantata or ~/.local/share/cantata to ~/.cache/cantata/wikipedia
 static void moveToNewLocation()
 {
     #if !defined Q_OS_WIN && !defined Q_OS_MAC // Not required for windows - as already stored in data location!
-    // Can't reliable check version here, as migh tnot have opened the wiki settings before version was changed...
-    Utils::moveFile(Utils::configDir(QString())+constFileName, Utils::dataDir(QString(), true)+constFileName);
+    QString oldLocation1=Utils::configDir(QString())+constOldFileName;
+    QString oldLocation2=Utils::dataDir(QString())+constOldFileName;
+    QString newLocation=localeFile();
+    bool moved=false;
+    if (oldLocation2!=constOldFileName && QFile::exists(oldLocation2) && Utils::moveFile(oldLocation2, newLocation)) {
+        moved=true;
+    }
+    if (oldLocation1!=constOldFileName && QFile::exists(oldLocation1)) {
+        if (moved) {
+            QFile::remove(oldLocation1);
+        } else {
+            Utils::moveFile(oldLocation1, newLocation);
+        }
+    }
     #endif
 }
 

@@ -63,6 +63,8 @@ class WikipediaSettings : public ToggleList
     };
 
 public:
+    static QString constSubDir;
+
     WikipediaSettings(QWidget *p);
     virtual ~WikipediaSettings();
     

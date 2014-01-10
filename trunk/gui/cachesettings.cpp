@@ -27,6 +27,7 @@
 #include "albumview.h"
 #include "songview.h"
 #include "contextwidget.h"
+#include "wikipediasettings.h"
 #include "covers.h"
 #include "musiclibrarymodel.h"
 #include "utils.h"
@@ -274,6 +275,7 @@ CacheSettings::CacheSettings(QWidget *parent)
     new CacheItem(i18n("Magnatune"), Utils::cacheDir("magnatune", false), QStringList() << "*"+MusicLibraryModel::constLibraryCompressedExt << "*.jpg" << "*.png", tree);
     new CacheItem(i18n("Podcast Directories"), Utils::cacheDir(PodcastSearchDialog::constCacheDir, false), QStringList() << "*"+PodcastSearchDialog::constExt, tree);
     #endif
+    new CacheItem(i18n("Wikipedia Languages"), Utils::cacheDir(WikipediaSettings::constSubDir, false), QStringList() << "*.xml.gz", tree);
 
     for (int i=0; i<tree->topLevelItemCount(); ++i) {
         connect(static_cast<CacheItem *>(tree->topLevelItem(i)), SIGNAL(updated()), this, SLOT(updateSpace()));

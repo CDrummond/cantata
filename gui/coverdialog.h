@@ -43,6 +43,7 @@ class QWheelEvent;
 class CoverItem;
 class ExistingCover;
 class Spinner;
+class MessageOverlay;
 class QAction;
 class QMenu;
 
@@ -127,6 +128,7 @@ private:
     bool saveCover(const QString &src, const QImage &img);
     void dragEnterEvent(QDragEnterEvent *event);
     void dropEvent(QDropEvent *event);
+    void setSearching(bool s);
 
 private:
     Song song;
@@ -141,6 +143,7 @@ private:
     bool isArtist;
     int iSize;
     Spinner *spinner;
+    MessageOverlay *msgOverlay;
     int page;
     QMenu *menu;
     QAction *showAction;

@@ -30,6 +30,7 @@
 #include "mpdconnection.h"
 #include "utils.h"
 #include "spinner.h"
+#include "messageoverlay.h"
 #include "icon.h"
 #include "qjson/parser.h"
 #include "config.h"
@@ -65,7 +66,6 @@
 #include <QXmlStreamReader>
 #include <QDomDocument>
 #include <QDomElement>
-#include <QDebug>
 
 static int iCount=0;
 static const int constMaxTempFiles=20;
@@ -360,6 +360,7 @@ CoverDialog::CoverDialog(QWidget *parent)
     , saving(false)
     , isArtist(false)
     , spinner(0)
+    , msgOverlay(0)
     , page(0)
     , menu(0)
     , showAction(0)
@@ -376,7 +377,6 @@ CoverDialog::CoverDialog(QWidget *parent)
     connect(list, SIGNAL(itemSelectionChanged()), SLOT(checkStatus()));
     connect(search, SIGNAL(clicked()), SLOT(sendQuery()));
     connect(query, SIGNAL(returnPressed()), SLOT(sendQuery()));
-    connect(cancelButton, SIGNAL(clicked()), SLOT(cancelQuery()));
     connect(addFileButton, SIGNAL(clicked()), SLOT(addLocalFile()));
     connect(list, SIGNAL(customContextMenuRequested(const QPoint&)), SLOT(menuRequested(const QPoint&)));
 
@@ -406,9 +406,6 @@ CoverDialog::CoverDialog(QWidget *parent)
     list->setSortingEnabled(false);
 
     addFileButton->setIcon(Icon("document-open"));
-    cancelButton->setIcon(Icon("stop"));
-    cancelButton->setEnabled(false);
-    cancelButton->setAutoRaise(true);
     addFileButton->setAutoRaise(true);
     setAcceptDrops(true);
 }
@@ -444,8 +441,9 @@ void CoverDialog::show(const Song &s, const Covers::Image &current)
         list->addItem(existing);
     }
     query->setText(isArtist ? song.albumartist : QString(song.album+" "+song.albumArtist()));
-    sendQuery();
+    adjustSize();
     Dialog::show();
+    sendQuery();
 }
 
 static const char * constHostProperty="host";
@@ -482,43 +480,13 @@ void CoverDialog::queryJobFinished()
         }
     }
     reply->deleteLater();
-    if (spinner && currentQuery.isEmpty()) {
-        spinner->stop();
+    if (currentQuery.isEmpty()) {
+        setSearching(false);
     }
 }
 
 void CoverDialog::insertItem(CoverItem *item)
 {
-    /*
-    int pos=0;
-    for (; pos<list->count(); ++pos) {
-        CoverItem *c=(CoverItem *)list->item(pos);
-        if (c->key()<item->key()) {
-            break;
-        }
-    }
-
-    qWarning() << "INSERT" << pos << item->key();
-    list->insertItem(pos, item);
-
-    for (; pos<list->count(); ++pos) {
-        CoverItem *c=(CoverItem *)list->item(pos);
-        qWarning() << "...      " << pos << c->key();
-    }*/
-
-    /*
-    QMultiMap<int, CoverItem *> sortItems;
-    for (int pos=0; pos<list->count(); ++pos) {
-        CoverItem *i=(CoverItem *)list->item(pos);
-        sortItems.insert(i->key(), i);
-    }
-    sortItems.insert(item->key(), item);
-    QList<CoverItem *> coverItems = sortItems.values();
-
-    foreach (CoverItem *i, coverItems) {
-        list->addItem(i);
-    }
-    */
     list->addItem(item);
     if (CoverItem::Type_Local==item->type()) {
         list->scrollToItem(item);
@@ -607,9 +575,8 @@ void CoverDialog::downloadJobFinished()
         MessageBox::error(this, i18n("Failed to download image!"));
     }
     reply->deleteLater();
-    if (spinner && currentQuery.isEmpty()) {
-        spinner->stop();
-        cancelButton->setEnabled(false);
+    if (currentQuery.isEmpty()) {
+        setSearching(false);
     }
 }
 
@@ -684,17 +651,11 @@ void CoverDialog::sendQuery()
         cancelQuery();
     }
 
-
-    if (!spinner) {
-        spinner=new Spinner(this);
-        spinner->setWidget(list->viewport());
-    }
-    spinner->start();
-    cancelButton->setEnabled(true);
     currentQueryString=fixedQuery;
     sendLastFmQuery(fixedQuery, page);
     sendGoogleQuery(fixedQuery, page);
     sendDiscoGsQuery(fixedQuery, page);
+    setSearching(true);
 }
 
 void CoverDialog::sendLastFmQuery(const QString &fixedQuery, int page)
@@ -780,11 +741,7 @@ void CoverDialog::cancelQuery()
         job->deleteLater();
     }
     currentQuery.clear();
-
-    if (spinner) {
-        spinner->stop();
-    }
-    cancelButton->setEnabled(false);
+    setSearching(false);
 }
 
 void CoverDialog::addLocalFile()
@@ -1274,5 +1231,28 @@ void CoverDialog::dropEvent(QDropEvent *event)
                 }
             }
         }
+    }
+}
+
+void CoverDialog::setSearching(bool s)
+{
+    if (!spinner && !s) {
+        return;
+    }
+    if (!spinner) {
+        spinner=new Spinner(this);
+        spinner->setWidget(list->viewport());
+    }
+    if (!msgOverlay) {
+        msgOverlay=new MessageOverlay(this);
+        msgOverlay->setWidget(list->viewport());
+        connect(msgOverlay, SIGNAL(cancel()), SLOT(cancelQuery()));
+    }
+    if (s) {
+        spinner->start();
+        msgOverlay->setText(i18n("Searching..."));
+    } else {
+        spinner->stop();
+        msgOverlay->setText(QString());
     }
 }

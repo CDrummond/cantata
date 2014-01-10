@@ -18,27 +18,20 @@
     <widget class="LineEdit" name="query"/>
    </item>
    <item row="0" column="1">
-    <widget class="QToolButton" name="cancelButton">
-     <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Cancel current query&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="2">
     <widget class="QPushButton" name="search">
      <property name="text">
       <string>Search</string>
      </property>
     </widget>
    </item>
-   <item row="0" column="3">
+   <item row="0" column="2">
     <widget class="QToolButton" name="addFileButton">
      <property name="toolTip">
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Add a local file&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
     </widget>
    </item>
-   <item row="1" column="0" colspan="4">
+   <item row="1" column="0" colspan="3">
     <widget class="QListWidget" name="list"/>
    </item>
   </layout>

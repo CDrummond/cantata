@@ -53,6 +53,12 @@ void DirViewItemDir::insertFile(const QStringList &path)
     }
 }
 
+void DirViewItemDir::add(DirViewItem *i)
+{
+    m_indexes.insert(i->name(), m_childItems.count());
+    m_childItems.append(i);
+}
+
 void DirViewItemDir::remove(DirViewItem *dir)
 {
     int index=m_childItems.indexOf(dir);

@@ -287,7 +287,7 @@ Q_SIGNALS:
     void storedPlayListUpdated();
     void outputsUpdated(const QList<Output> &outputs);
     void musicLibraryUpdated(MusicLibraryItemRoot *root, QDateTime dbUpdate);
-    void dirViewUpdated(DirViewItemRoot *root);
+    void dirViewUpdated(DirViewItemRoot *root, QDateTime dbUpdate);
     void playlistsRetrieved(const QList<Playlist> &data);
     void playlistInfoRetrieved(const QString &name, const QList<Song> &songs);
     void playlistRenamed(const QString &from, const QString &to);

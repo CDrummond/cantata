@@ -28,8 +28,11 @@
 
 #include <QList>
 #include <QModelIndex>
+#include <QDateTime>
 #include "dirviewitemroot.h"
 #include "actionmodel.h"
+
+class QXmlStreamWriter;
 
 class DirViewModel : public ActionModel
 {
@@ -54,17 +57,23 @@ public:
     void removeFileFromList(const QString &file);
     bool isEnabled() const { return enabled; }
     void setEnabled(bool e);
+    void removeCache();
+    void toXML();
+    bool fromXML();
 
 public Q_SLOTS:
-    void updateDirView(DirViewItemRoot *newroot);
+    void updateDirView(DirViewItemRoot *newroot, const QDateTime &dbUpdate=QDateTime(), bool fromFile=false);
 
 private:
+    void toXML(const DirViewItem *item, QXmlStreamWriter &writer);
+    quint32 fromXML(QIODevice *dev, const QDateTime &dt, DirViewItemRoot *root);
     void addFileToList(const QStringList &parts, const QModelIndex &parent, DirViewItemDir *dir);
     void removeFileFromList(const QStringList &parts, const QModelIndex &parent, DirViewItemDir *dir);
     void getFiles(DirViewItem *item, QStringList &filenames, bool allowPlaylists) const;
 
 private:
     DirViewItemRoot *rootItem;
+    QDateTime databaseTime;
     bool enabled;
 };
 

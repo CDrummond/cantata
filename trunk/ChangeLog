@@ -45,6 +45,8 @@
 24. Better control over 'Subscribe' button in podcast search dialog.
 25. When downloading images, dont use extension to determine file format,
     instead look JFIF and PNG in first few data bytes.
+26. Cache folder listing as well as music listing. This cache is removed if
+    the folder view is removed.
 
 1.2.2
 -----

@@ -75,6 +75,8 @@ public Q_SLOTS:
     void controlActions();
     void itemDoubleClicked(const QModelIndex &);
     void openFileManager();
+    void showSpinner();
+    void hideSpinner();
 
 private:
     QStringList walk(QModelIndex rootItem);

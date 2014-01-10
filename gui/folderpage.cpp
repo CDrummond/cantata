@@ -81,6 +81,8 @@ FolderPage::FolderPage(QWidget *p)
     #ifndef Q_OS_WIN
     connect(browseAction, SIGNAL(triggered(bool)), this, SLOT(openFileManager()));
     #endif
+    connect(MPDConnection::self(), SIGNAL(updatingFileList()), this, SLOT(showSpinner()));
+    connect(MPDConnection::self(), SIGNAL(updatedFileList()), this, SLOT(hideSpinner()));
 }
 
 FolderPage::~FolderPage()
@@ -95,13 +97,9 @@ void FolderPage::setEnabled(bool e)
 
     DirViewModel::self()->setEnabled(e);
     if (e) {
-        connect(MPDConnection::self(), SIGNAL(updatingFileList()), view, SLOT(showSpinner()));
-        connect(MPDConnection::self(), SIGNAL(updatedFileList()), view, SLOT(hideSpinner()));
         refresh();
     } else {
         loaded=false;
-        disconnect(MPDConnection::self(), SIGNAL(updatingFileList()), view, SLOT(showSpinner()));
-        disconnect(MPDConnection::self(), SIGNAL(updatedFileList()), view, SLOT(hideSpinner()));
     }
 }
 
@@ -109,7 +107,6 @@ void FolderPage::refresh()
 {
     view->setLevel(0);
     if (DirViewModel::self()->isEnabled() && isVisible() && !DirViewModel::self()->fromXML()) {
-        view->showSpinner();
         emit loadFolders();
         loaded=true;
     }
@@ -295,4 +292,16 @@ QStringList FolderPage::walk(QModelIndex rootItem)
         }
     }
     return files;
+}
+
+void FolderPage::showSpinner()
+{
+    view->showSpinner();
+    view->showMessage(i18n("Loading..."), -1);
+}
+
+void FolderPage::hideSpinner()
+{
+    view->hideSpinner();
+    view->showMessage(QString(), 0);
 }

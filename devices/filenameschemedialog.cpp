@@ -143,6 +143,10 @@ void FilenameSchemeDialog::updateExample()
 {
     QString saveScheme=origOpts.scheme;
     origOpts.scheme=pattern->text();
-    example->setText(origOpts.createFilename(exampleSong)+QLatin1String(".mp3"));
+    QString exampleStr=origOpts.createFilename(exampleSong);
+    if (!exampleStr.endsWith(QLatin1String(".mp3"))) {
+        exampleStr+=QLatin1String(".mp3");
+    }
+    example->setText(exampleStr);
     origOpts.scheme=saveScheme;
 }

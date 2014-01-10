@@ -75,8 +75,8 @@ AlbumsPage::AlbumsPage(QWidget *p)
     connect(view, SIGNAL(searchItems()), this, SLOT(searchItems()));
     connect(view, SIGNAL(itemsSelected(bool)), this, SLOT(controlActions()));
     connect(view, SIGNAL(rootIndexSet(QModelIndex)), this, SLOT(updateGenres(QModelIndex)));
-    connect(MPDConnection::self(), SIGNAL(updatingLibrary()), view, SLOT(showSpinner()));
-    connect(MPDConnection::self(), SIGNAL(updatedLibrary()), view, SLOT(hideSpinner()));
+    connect(MPDConnection::self(), SIGNAL(updatingLibrary()), this, SLOT(showSpinner()));
+    connect(MPDConnection::self(), SIGNAL(updatedLibrary()), this, SLOT(hideSpinner()));
 }
 
 AlbumsPage::~AlbumsPage()
@@ -278,4 +278,16 @@ void AlbumsPage::controlActions()
         }
     }
     StdActions::self()->addRandomToPlayQueueAction->setEnabled(allowRandomAlbum);
+}
+
+void AlbumsPage::showSpinner()
+{
+    view->showSpinner();
+    view->showMessage(i18n("Loading..."), -1);
+}
+
+void AlbumsPage::hideSpinner()
+{
+    view->hideSpinner();
+    view->showMessage(QString(), 0);
 }

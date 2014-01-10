@@ -112,7 +112,7 @@ build type (Linux/KDE, Linux/Qt, Windows), any cmake options you specified
 (other than the defaults listed at the top of the INSTALL file), and the
 version of MPD you are using.
 
-Please DO NOT attach images to the bug page - as the attachement quota is almost
+Please DO NOT attach images to the bug page - as the attachment quota is almost
 full. Instead, please provide links to any relevant screenshots.
 
 
@@ -158,7 +158,7 @@ Creating a new translation
 --------------------------
 
 To generate a new translation for Cantata, please just copy cantata.pot (in the
-po folder) to whetever letter code your language uses (e.g. es.po for Spanish).
+po folder) to whatever letter code your language uses (e.g. es.po for Spanish).
 Then edit this new file to add the translations.
 
 Please DO NOT use any tools to manually generate the translations from
@@ -265,7 +265,7 @@ For artist images:
     image specified with the "extralarge" size.
 
 Downloaded images will be saved as artist.jpg/png, within the artist folder
-if the folder heirarchy is 2 levels (artist/album/) and the user has write
+if the folder hierarchy is 2 levels (artist/album/) and the user has write
 permissions. If not, then they will be saved in Cantata's cache folder.
 
 If configured to 'Cache scaled covers', then the resized cover (as displayed) 
@@ -330,7 +330,7 @@ maxCoverFindPerIteration=<Integer>
     Controls the maximum number of covers that will attempted to be located per
     UI event loop iteration. This is set to 5 by default. Increasing this will
     cause more covers to be loaded in the main UI thread - which will speed up
-    loading, but might make the UI apear to block. Reducing this should reduce
+    loading, but might make the UI appear to block. Reducing this should reduce
     lag when scrolling the Albums view. (Values 0..20 are acceptable)
 
 maxCoverUpdatePerIteration=<Integer>
@@ -381,7 +381,7 @@ undoSteps=<Integer>
     Default is 10. (Values 0..20 are acceptable)
 
 mpdPoll=<Integer>
-    Speicifed in seconds, this controls how often Cantata should poll MPD to
+    Specified in seconds, this controls how often Cantata should poll MPD to
     determine its current state whilst playing. Set to 0 to disable polling,
     and rely on MPD's IDLE mechanism to determine MPD state changes.
     Default is 0 (no polling). (Values 0..60 are acceptable)
@@ -433,15 +433,15 @@ If the CUE file references an audio file that does not exist in the MPD music
 folder, then the CUE file contents will NOT be used.
 
 There is no reliable way for Cantata to ascertain the text encoding that a CUE
-file uses - so, for portabiity, it would be best if your CUE files used UTF-8
+file uses - so, for portability, it would be best if your CUE files used UTF-8
 encoding. When loading a CUE file, Cantata will attempt to load the file as if
 it was UTF-8 encoded, if this fails it will try with the "System" codec. You may
-add to this list of ecodings to try by using the 'cueFileCodecs' config item (as
-detailed in section 6 above). If Cantata fails with all configured encodings,
-then it will 'peek' at the 1st 1k bytes, and ask Qt to see if it can determine
-the encoding - and fallback to UTF-8 otherwise. (This 'peek'ing and fallback was
-how Cantata behaved in pre 1.2 versions - and is how Clementine behaves (where
-Cantata's CUE file support originates from.))
+add to this list of encodings to try by using the 'cueFileCodecs' config item
+(as detailed in section 6 above). If Cantata fails with all configured
+encodings, then it will 'peek' at the 1st 1k bytes, and ask Qt to see if it can
+determine the encoding - and fallback to UTF-8 otherwise. (This 'peek'ing and
+fallback was how Cantata behaved in pre 1.2 versions - and is how Clementine
+behaves (where Cantata's CUE file support originates from.))
 
 NOTE: If Cantata cannot access the CUE file (as MPD is running on a remote host,
 or you have not configured the music folder correctly, etc.) then Cantata will
@@ -676,8 +676,8 @@ GetId
             PORT:<udp port>
 
     This should be the first call that a client makes to the dyanmizer. The
-    ID that is returned should then be used to confirm that UDP mutlicast
-    messages originateed from this instance. Both GROUP and PORT can then be
+    ID that is returned should then be used to confirm that UDP multicast
+    messages originated from this instance. Both GROUP and PORT can then be
     used to open a socket to listen for messages.
 
 GetStatus
@@ -788,7 +788,7 @@ The Cantata source folder contains the following structure:
     po         - Translations
     replaygain - ReplayGain calculation
     streams    - Internet radio streams
-    support    - Generic classes that /may/ be usefull to other projects.
+    support    - Generic classes that /may/ be useful to other projects.
                  Mainly used for Qt/KDE and Gtk support.
     tags       - Tag reading, editing, etc.
     widgets    - Widgets that are probably Cantata specific.

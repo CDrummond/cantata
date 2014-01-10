@@ -26,8 +26,8 @@
 14. Only start internal HTTP server when required, and stop 1 second after
     last Cantata stream is removed.
 15. If connected to MPD via a UNIX-domain socket, then send non-MPD files as
-    file:/// URLs to MPD - i.e. dont use internal HTTP server. To force usage of
-    HTTP server, set alwaysUseHttp to true in Cantata's config file. Refer to
+    file:/// URLs to MPD - i.e. don't use internal HTTP server. To force usage
+    of HTTP server, set alwaysUseHttp to true in Cantata's config file. Refer to
     README for more details.
 16. Add CMake option to disable building of internal HTTP server.
 17. If listallinfo fails, then attempt to retrieve music listing via lsinfo
@@ -37,13 +37,13 @@
 19. Don't use QKeySequence::Delete to detect delete key event for play queue,
     instead check for no-modifiers and the Delete key itself. Closing a
     terminal with Ctrl-D seems to cause Cantata to see QKeySequence::Delete
-20. Use &;copy for copyright symbol in text - beter than (c)
+20. Use &;copy for copyright symbol in text - better than (c)
 21. Add config setting (for Qt only builds) to set language.
 22. Set cover-widget icon size to at least twice tab-widget large icon size.
 23. Remove usage of Gtk-style on-off button for Gtk style, and instead give
     checkboxes better text and adjust config layout.
 24. Better control over 'Subscribe' button in podcast search dialog.
-25. When downloading images, dont use extension to determine file format,
+25. When downloading images, don't use extension to determine file format,
     instead look JFIF and PNG in first few data bytes.
 26. Cache folder listing as well as music listing. This cache is removed if
     the folder view is removed.
@@ -58,7 +58,7 @@
  5. If icon theme does not have network-server, then use audio file icon for
     HTTP server settings page.
  6. Fix truncated files served from internal HTTP server.
- 7. When adding songs to an existing play lists, dont allow play list files to
+ 7. When adding songs to an existing play lists, don't allow play list files to
     be added.
  8. If Ctrl-F is activated again whilst search widget is visible, then select
     all current text.
@@ -66,7 +66,7 @@
     This fixes seeking of FLAC files.
 10. Fix toggling of checkboxes via short-cut.
 11. Fix short-cuts in preferences dialog.
-12. Dont clear the playqueue when Cantata is passed a song as a commandline at
+12. Don't clear the playqueue when Cantata is passed a song as a commandline at
     start-up.
 13. Fix broken spinboxes in some dialogs with Gtk style.
 14. Correctly style treeview in CD details dialog.
@@ -118,7 +118,7 @@
 16. Initial MacOS port - thanks to Ian Scott
 17. Podcast support.
 18. Add config page to determine list of online providers.
-19. If 'Basic'/'Personal' is selected in intitial settings wizard, then enable
+19. If 'Basic'/'Personal' is selected in initial settings wizard, then enable
     'stop playback' and 'stop dynamizer' options.
 20. Store data under XDG_DATA_HOME (~/.local/share) Any existing files will be
     copied to the new location. NOTE: This is not backwards compatible, so if
@@ -151,7 +151,7 @@
 35. Only show config pages, and tabs, that are relevant to the enabled views.
 36. Show action short-cuts in tooltips.
 37. When filtering (i.e. searching) Jamendo, Maganatue, and stream providers
-    (apart from TuneIn and ShoutCast), then dont hide items from other
+    (apart from TuneIn and ShoutCast), then don't hide items from other
     services - but only filter the ones on the filtering service.
 38. Also read Jamendo genre's from album tag.
 39. Modify message-widget so that it uses a squeezed-text label. Because of
@@ -166,7 +166,7 @@
 44. When setting window title, use full-text from track/artist labels, and not
     the squeezed text!
 45. Hungarian translation - thanks to Török Árpád
-46. When displaying tag editor, track orgainiser, or replay gain dialogs, check
+46. When displaying tag editor, track organiser, or replay gain dialogs, check
     that the song files can be accessed. (For speed reasons, only the 1st few
     files are checked)
 47. Add a config item to control volume step - no config UI, see README for
@@ -198,7 +198,7 @@
     and track count to be actioned.
 60. If playlists page is disabled, then hide 'Add to playlist' actions and hide
     playqueue save button.
-61. Dont load folder list until view is visible.
+61. Don't load folder list until view is visible.
 62. Add 'Cancel' to context-view context menus - cancels current fetch job.
 63. Correctly update tooltips when removing a short-cut from an action.
 64. Instantiate network proxy factory when network access manager is
@@ -297,7 +297,7 @@
  6. Don't use https for context view searches.
  7. Work-around Windows and QJson issue.
  8. Remove cantata prefix when showing status message about fetching streams.
- 9. When adding streams that have a name assinged, but no path, then add a
+ 9. When adding streams that have a name assigned, but no path, then add a
     trailing slash.
 10. Fix 'Add Stream URL' action in builds where device support is disabled.
 
@@ -354,7 +354,7 @@
 33. Automatic accelator assignment for Qt builds.
 34. Add cmake check to see if TagLib has id3version in MPEG save.
 35. RTL fixes.
-36. For Qt4 linux builds, use system QJson if found.
+36. For Qt4 Linux builds, use system QJson if found.
 37. Remove amazon cover fetching - required API key that Cantata never really
     had.
 38. Add debug logging. Please see README for details.
@@ -369,7 +369,7 @@
 43. Fix retrieval of covers in albums view for multiple-artist albums when
     these are configured to be grouped under "Various Artists"
 44. Refresh albums view when multiple-artist grouping is changed.
-45. Add context menu to replygain and file organizer dialogs to remove items
+45. Add context menu to replaygain and file organizer dialogs to remove items
     from list.
 46. Also use discogs for artist images in cover dialog.
 47. Fix invalid covers showing for online services.
@@ -395,13 +395,13 @@
 59. Remove proxy config from settings, and always use system proxy.
     To re-enable proxy settings pass -DENABLE_PROXY_CONFIG=ON to cmake.
 60. Copy Qt5 Linux system proxy code for Qt4 builds.
-61. Add option to draw curent album cover as backdrop to play queue.
+61. Add option to draw current album cover as backdrop to play queue.
 62. Add 'Copy Songs To Device' action to playlists page.
 63. Embed pre-rendered PNG versions of cantata icon, to help with Qt5 builds
     on systems that do not have the Qt SVG icon engine installed.
 64. Simplify streams page. Remove user-categories, instead have a set of
     predefined top-level items; Favourites (user streams), TuneIn, IceCast,
-    ShoutCast, SomaFM, Digitially Imported, Jazz Radio, Rock Radio, Sky.fm, and
+    ShoutCast, SomaFM, Digitally Imported, Jazz Radio, Rock Radio, Sky.fm, and
     Listen Live.
 65. Search for streams via TuneIn.
 66. Place search fields on bottom of views, and hide by default. Show when
@@ -411,7 +411,7 @@
     will list each track as a separate entry in the artists and albums views.
 69. When loading a stream into the playqueue, show a status message at the
     bottom - allowing the loading to be cancelled.
-70. If stream is not an audiocd stream, and the total time is known, then enable
+70. If stream is not an AudioCD stream, and the total time is known, then enable
     the position slider.
 71. Allow seeking in cantata HTTP streams.
 72. Default to enabling use of media keys under GNOME/Unity.
@@ -420,7 +420,7 @@
 75. Always use QNetworkAccessManager - as KIO is not thread safe :-(
 76. Update copy of Solid to KDE4.10.5.
 77. Provide Faience CSS theme.
-78. Click on time label to toggle between shwowing current time and time
+78. Click on time label to toggle between showing current time and time
     remaining.
 79. Use tooltip to display position that will be jumped to if mouse is pressed
     on time slider.
@@ -445,7 +445,7 @@
 10. Fix AudioCD playback.
 11. Remove time remaining from action dialog - its not accurate enough to be
     meaningful.
-12. Fix detection of whether streams file is writable or not.
+12. Fix detection of whether streams file is writeable or not.
 
 1.0.2.1
 -------
@@ -543,7 +543,7 @@
  39. Add option to save streams in MPD folder.
  40. GZip compress streams files.
  41. When reading cache (either MPD, or device), and the grouping (single
-     tracks, or multiple artists) has changed - then dont do a rescan, just
+     tracks, or multiple artists) has changed - then don't do a rescan, just
      re-do the grouping.
  42. If we are using QGtkStyle and this is set to Ambiance or Radiance, then
      apply a corresponding stylesheet to the toolbar - and allow window to be
@@ -561,7 +561,7 @@
      file as well.
  49. Allow streams to have multiple genres.
  50. Custom menu icon - more like the one used in chrome.
- 51. Use "-symbolic" icons for Qt-only linux builds with ambiance theme.
+ 51. Use "-symbolic" icons for Qt-only Linux builds with ambiance theme.
  52. If replacing playqueue with a stream, then start playing when added.
  53. Fix restoring of alternate size. e.g. fix restore of collapsed size if
      started expanded - and vice versa.
@@ -599,7 +599,7 @@
      indicates that the files should be renamed.
  72. Add extra option to filescheme dialog - "Track Artist (+Title)". This is
      intended to be used with Various Artist albums - so that the filename can
-     also contain the track arist, if this is different to the album artist.
+     also contain the track artist, if this is different to the album artist.
  73. Expand device when connected.
  74. Basic support for extracting music from audio CDs
  75. Update copy of Solid to KDE4.10.1 - adds Udisks2 support.
@@ -712,10 +712,10 @@
     icons, and use alternatives.
 13. Use a random icon that matches the repeat icon better.
 14. Draw the consume icon in code, so that it matches random and repeat better.
-15. Add a ON/OFF style checkbox for linux builds when NOT run under KDE, and
+15. Add a ON/OFF style checkbox for Linux builds when NOT run under KDE, and
     using QGtkStyle.
 16. Add a custom spinbox to closer match Gtk3's large button spinbox style.
-    Only for linux builds NOT run under KDE, and using QGtkStyle.
+    Only for Linux builds NOT run under KDE, and using QGtkStyle.
 17. Add 'Show Window' action to Linux builds - so that we have a way of
     restoring the Cantata window from the Unity menubar.
 18. Use freedesktop.org notifications for Qt-only Linux builds.
@@ -746,7 +746,7 @@
 34. Remove option to enable/disable MPRIS interface, and always have enabled.
 35. Disable Phonon stream playback support by default. Currently not all
     Phonon backends seem to work reliably, and there can be delays between
-    pressing a button (e.g. start) and the action occuring (due to buffering?).
+    pressing a button (e.g. start) and the action occurring (due to buffering?).
     To re-enable pass -DENABLE_PHONON=ON to cmake.
 36. Handle UTF-8 playlist names.
 37. Sort selected playqueue indexes before adding to stored playlist.
@@ -795,7 +795,7 @@
 60. Add search line-edits, and expand/collapse all, to sync dialog.
 61. Add a 1 pixel border around large cover in top-left corner.
 62. When refresh button is pressed send an update and stats request to MPD.
-63. Hard-code black background and gray text for cover widget tooltip.
+63. Hard-code black background and grey text for cover widget tooltip.
 64. Ignore quit action if we have open dialogs.
 65. Fix crash when copying items to devices after a rescan has been performed.
 66. Use UPower (Linux/Qt) to detect when being resumed, and if so reconnect to
@@ -1033,7 +1033,7 @@
  6. Better, less hacky, workaround for QAbstractItemView shift-select bug
     (https://bugreports.qt-project.org/browse/QTBUG-18009). Thanks to Spitfire
     from qtcentre.org forums for fix.
- 7. Add a 'search' action (Ctrl-F) that will move focus to curent tab's search
+ 7. Add a 'search' action (Ctrl-F) that will move focus to current tab's search
     field - or to play queue search field (if play queue has focus).
  8. Add 'Raise' support to MPRIS interface.
  9. Added a cantata-specific dbus interface with 'showPage(page, focusSearch)'
@@ -1070,10 +1070,10 @@
     set to not autoscan.
 23. Fix detection of some UMS devices that are already mounted at startup.
 24. Load library view covers in separate thread, as per albums view.
-25. Add expandAll (Ctrl +) / collpseAll (Ctrl -) actions to expand/collapse all
+25. Add expandAll (Ctrl +) / collapseAll (Ctrl -) actions to expand/collapse all
     items of currently focused treeview.
 26. Emit dataChanged() for all album header items that match the album
-    currently being expanded/collpased in the groupedview.
+    currently being expanded/collapsed in the groupedview.
 27. Add a basic 'sync' dialog. Shows two lists; left has songs that are only in
     library, right has songs that are only on device. Each has a 'Copy to'
     action. When songs are copied, the lists are updated to show the remaining
@@ -1089,7 +1089,7 @@
 33. Limit downloaded covers to a max of 600x600 pixels.
 34. Don't update 'current song' details when playqueue is updated - the current
     song is updated by other means. As we now use 'plchangesposid' to speed
-    updates, we dont always have the full song info when playqueue is updated.
+    updates, we don't always have the full song info when playqueue is updated.
     This fixes a bug where the cover widget sometimes gets reset to empty.
 35. When updating a non-MTP device, prompt the user as to whether to perform
     a partial scan (only new songs are scanned), or a full scan (where all songs
@@ -1102,7 +1102,7 @@
     provider. This allows all providers to be checked. Thanks to Martin
     Blumenstingl for the patch.
 38. Fix copying track from MTP devices.
-39. When performing a custom lyrics search, and we have no current song, dont
+39. When performing a custom lyrics search, and we have no current song, don't
     attempt to save the file to MPDs music folder (there is no valid filename).
 40. When adding items to playqueue, only start to play if playqueue was
     previously empty.
@@ -1163,9 +1163,9 @@
 31. Add dialog where user can specify artist and title to fetch lyrics - useful
     if automatic fetching fails.
 32. Fix crash in albums model when library updated after albums removed.
-33. Fix filetype resolver so that we dont attempt to read tags from video files
+33. Fix filetype resolver so that we don't attempt to read tags from video files
     (asf/wmv/mp4v) - these seem to crash TagLib.
-34. When using MPRISv2 interface, dont attempt to play a song if the playqueue
+34. When using MPRISv2 interface, don't attempt to play a song if the playqueue
     is empty!
 35. Use SH_ItemView_ActivateItemOnSingleClick to detect single click mode in Qt
     build.
@@ -1278,7 +1278,7 @@
 26. Remove 'Copy Track Info' from play queue context menu - functionality is
     available via Ctrl-C
 27. Fix streams export.
-28. Save/restore maximised state when collpasing/expanding interface.
+28. Save/restore maximised state when collapsing/expanding interface.
 29. Add 'copy to device', etc, actions to folders page.
 30. Incremental update of folder page items.
 31. Use current style for position slider.
@@ -1301,7 +1301,7 @@
  3. When changing name of playlist, show the original name in the line-edit.
  4. Fix adding songs with spaces in their filenames to stored playlists
  5. When we receive an updated signal from MPD, refresh library view.
- 6. When disaplying songs of various artists albums, show as 'track number -
+ 6. When displaying songs of various artists albums, show as 'track number -
     artist - song'
  7. German translation - thanks to Lutz Lüttke
  8. Rename 'Update Database' action to 'Refresh', as the current view is now

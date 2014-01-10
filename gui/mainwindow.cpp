@@ -1170,6 +1170,7 @@ void MainWindow::streamUrl(const QString &u)
 void MainWindow::refresh()
 {
     MusicLibraryModel::self()->removeCache();
+    DirViewModel::self()->removeCache();
     emit getStats(true);
 }
 

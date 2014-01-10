@@ -1238,7 +1238,7 @@ void MPDConnection::loadFolders()
     emit updatingFileList();
     Response response=sendCommand("listall");
     if (response.ok) {
-        emit dirViewUpdated(MPDParseUtils::parseDirViewItems(response.data));
+        emit dirViewUpdated(MPDParseUtils::parseDirViewItems(response.data), dbUpdate);
     }
     emit updatedFileList();
 }

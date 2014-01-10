@@ -107,8 +107,8 @@ void FolderPage::setEnabled(bool e)
 
 void FolderPage::refresh()
 {
-    if (DirViewModel::self()->isEnabled() && isVisible()) {
-        view->setLevel(0);
+    view->setLevel(0);
+    if (DirViewModel::self()->isEnabled() && isVisible() && !DirViewModel::self()->fromXML()) {
         view->showSpinner();
         emit loadFolders();
         loaded=true;
@@ -125,7 +125,9 @@ void FolderPage::showEvent(QShowEvent *e)
     view->focusView();
     QWidget::showEvent(e);
     if (!loaded) {
-        emit loadFolders();
+        if (!DirViewModel::self()->fromXML()) {
+            emit loadFolders();
+        }
         loaded=true;
     }
 }

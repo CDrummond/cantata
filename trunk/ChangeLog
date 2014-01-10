@@ -48,6 +48,7 @@
 26. Cache folder listing as well as music listing. This cache is removed if
     the folder view is removed.
 27. Also search Spotify, iTunes, and Deezer for images in cover dialog.
+28. Fix filename scheme help table.
 
 1.2.2
 -----

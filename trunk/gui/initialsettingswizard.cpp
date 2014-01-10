@@ -108,6 +108,7 @@ InitialSettingsWizard::InitialSettingsWizard(QWidget *p)
         sz+=QSize(sz.height()*(highDpi ? 0.4 : 0.25), -(sz.height()*(highDpi ? 0.1 : 0.25)));
     }
     resize(sz);
+    httpNote->setOn(true);
 }
 
 InitialSettingsWizard::~InitialSettingsWizard()
@@ -173,8 +174,13 @@ void InitialSettingsWizard::pageChanged(int p)
             storeCoversInMpdDir->setChecked(false);
             storeLyricsInMpdDir->setChecked(false);
             storeStreamsInMpdDir->setChecked(false);
+            storeBackdropsInMpdDir->setChecked(false);
             httpNote->setVisible(true);
         } else {
+            storeCoversInMpdDir->setChecked(Settings::self()->storeCoversInMpdDir());
+            storeLyricsInMpdDir->setChecked(Settings::self()->storeLyricsInMpdDir());
+            storeStreamsInMpdDir->setChecked(Settings::self()->storeStreamsInMpdDir());
+            storeBackdropsInMpdDir->setChecked(Settings::self()->storeBackdropsInMpdDir());
             httpNote->setVisible(false);
         }
     }

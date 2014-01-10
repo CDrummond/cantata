@@ -93,16 +93,7 @@ bool canUse(int w, int h)
 class CoverItem : public QListWidgetItem
 {
 public:
-    enum Type {
-        Type_Existing,
-        Type_Local,
-        Type_LastFm,
-        Type_Google,
-        Type_Discogs,
-        Type_CoverArtArchive
-    };
-
-    CoverItem(const QString &u, const QString &tu, QListWidget *parent)
+    CoverItem(const QString &u, const QString &tu, const QImage &img, const QString &text, QListWidget *parent, int w=-1, int h=-1, int sz=-1)
         : QListWidgetItem(parent)
         , imgUrl(u)
         , thmbUrl(tu)
@@ -110,15 +101,21 @@ public:
         setSizeHint(parent->gridSize());
         setTextAlignment(Qt::AlignHCenter | Qt::AlignTop);
         setToolTip(u);
+        if (!img.isNull()) {
+            setImage(img);
+        }
+        if (sz>0) {
+            setText(i18nc("name\nwidth x height (file size)", "%1\n%2 x %3 (%4)", text, w, h, Utils::formatByteSize(sz)));
+        } else if (w>0 && h>0) {
+            setText(i18nc("name\nwidth x height", "%1\n%2 x %3", text, w, h));
+        } else {
+            setText(text);
+        }
     }
-    virtual quint32 key() const =0;
-    virtual Type type() const =0;
     const QString & url() const { return imgUrl; }
     const QString & thumbUrl() const { return thmbUrl; }
-
-    //bool operator<(const CoverItem &o) const {
-    //    return key()<o.key();
-    //}
+    virtual bool isLocal() const { return false; }
+    virtual bool isExisting() const { return false; }
 
 protected:
     void setImage(const QImage &img) {
@@ -142,108 +139,81 @@ protected:
     QListWidget *list;
 };
 
-class LastFmCover : public CoverItem
+class ExistingCover : public CoverItem
 {
 public:
-    LastFmCover(const QString &u, const QString &tu, const QImage &img, QListWidget *parent)
-        : CoverItem(u, tu, parent) {
-        setImage(img);
-        setText(i18n("Last.fm"));
+    ExistingCover(const Covers::Image &i, QListWidget *parent)
+        : CoverItem(i.fileName, QString(), i.img, i18n("Current Cover"), parent, i.img.width(), i.img.height(), QFileInfo(i.fileName).size())
+        , img(i.img) {
+        QFont f(font());
+        f.setBold((true));
+        setFont(f);
     }
-
-    quint32 key() const { return 0xFFFFFFFD; }
-    Type type()  const { return Type_LastFm; }
+    bool isExisting() const { return true; }
+    const QImage & image() const { return img; }
+private:
+    QImage img;
 };
 
 class LocalCover : public CoverItem
 {
 public:
     LocalCover(const QString &u, const QImage &i, QListWidget *parent)
-        : CoverItem(u, QString(), parent)
-        , img(i) {
-        setImage(i);
-        setText(i18nc("name\nwidth x height (file size)", "%1\n%2 x %3 (%4)",
-                Utils::getFile(u), img.width(), img.height(), Utils::formatByteSize(QFileInfo(u).size())));
-    }
-
-    quint32 key() const { return 0xFFFFFFFE; }
-    Type type()  const { return Type_Local; }
+        : CoverItem(u, QString(), i, Utils::getFile(u), parent, img.width(), img.height(), QFileInfo(u).size())
+        , img(i) { }
+    bool isLocal() const { return true; }
     const QImage & image() const { return img; }
 private:
     QImage img;
+};
+
+class LastFmCover : public CoverItem
+{
+public:
+    LastFmCover(const QString &u, const QString &tu, const QImage &img, QListWidget *parent)
+        : CoverItem(u, tu, img, QLatin1String("Last.fm"), parent) { }
 };
 
 class GoogleCover : public CoverItem
 {
 public:
     GoogleCover(const QString &u, const QString &tu, const QImage &img, int w, int h, int size, QListWidget *parent)
-        : CoverItem(u, tu, parent)
-        , width(w)
-        , height(h) {
-        setImage(img);
-        setText(i18nc("Google\nwidth x height (file size)", "Google\n%1 x %2 (%3)", width, height, Utils::formatByteSize(size*1024)));
-    }
-
-    quint32 key() const { return width*height; }
-    Type type()  const { return Type_Google; }
-
-private:
-    int width;
-    int height;
+        : CoverItem(u, tu, img, QLatin1String("Google"), parent, w, h, size*1024) { }
 };
 
 class DiscogsCover : public CoverItem
 {
 public:
     DiscogsCover(const QString &u, const QString &tu, const QImage &img, int w, int h, QListWidget *parent)
-        : CoverItem(u, tu, parent)
-        , width(w)
-        , height(h) {
-        setImage(img);
-        setText(width>10 && height>10
-                    ? i18nc("Discogs\nwidth x height", "Discogs\n%1 x %2", width, height)
-                    : QLatin1String("Discogs"));
-    }
-
-    quint32 key() const { return width*height; }
-    Type type()  const { return Type_Discogs; }
-private:
-    int width;
-    int height;
+        : CoverItem(u, tu, img, QLatin1String("Discogs"), parent, w, h) { }
 };
 
 class CoverArtArchiveCover : public CoverItem
 {
 public:
     CoverArtArchiveCover(const QString &u, const QString &tu, const QImage &img, QListWidget *parent)
-        : CoverItem(u, tu, parent)  {
-        setImage(img);
-        setText("coverartarchive.org");
-    }
-
-    quint32 key() const { return 0xFFFFFFFC; }
-    Type type()  const { return Type_CoverArtArchive; }
+        : CoverItem(u, tu, img, i18n("CoverArt Archive"), parent)  { }
 };
 
-class ExistingCover : public CoverItem
+class DeezerCover : public CoverItem
 {
 public:
-    ExistingCover(const Covers::Image &i, QListWidget *parent)
-        : CoverItem(i.fileName, QString(), parent)
-        , img(i) {
-        setImage(img.img);
-        QFont f(font());
-        f.setBold((true));
-        setFont(f);
-        setText(i18nc("Current Cover\nwidth x height", "Current Cover\n%1 x %2", img.img.width(), img.img.height()));
-    }
+    DeezerCover(const QString &u, const QString &tu, const QImage &img, QListWidget *parent)
+        : CoverItem(u, tu, img, QLatin1String("Deezer"), parent)  { }
+};
 
-    quint32 key() const { return 0xFFFFFFFF; }
-    Type type()  const { return Type_Existing; }
-    const QImage & image() const { return img.img; }
+class SpotifyCover : public CoverItem
+{
+public:
+    SpotifyCover(const QString &u, const QString &tu, const QImage &img, QListWidget *parent)
+        : CoverItem(u, tu, img, QLatin1String("Spotify"), parent, 640, 640)  { }
+};
 
-private:
-    Covers::Image img;
+class ITunesCover : public CoverItem
+{
+public:
+    ITunesCover(const QString &u, const QString &tu, const QImage &img, QListWidget *parent)
+        : CoverItem(u, tu, img, QLatin1String("iTunes"), parent, 600, 600)  { }
 };
 
 CoverPreview::CoverPreview(QWidget *p)
@@ -457,6 +427,9 @@ static const char * constLastFmHost="ws.audioscrobbler.com";
 static const char * constGoogleHost="images.google.com";
 static const char * constDiscogsHost="api.discogs.com";
 static const char * constCoverArtArchiveHost="coverartarchive.org";
+static const char * constSpotifyHost="ws.spotify.com";
+static const char * constITunesHost="itunes.apple.com";
+static const char * constDeezerHost="api.deezer.com";
 
 void CoverDialog::queryJobFinished()
 {
@@ -477,6 +450,12 @@ void CoverDialog::queryJobFinished()
             parseDiscogsQueryResponse(resp);
         } else if (constCoverArtArchiveHost==host) {
             parseCoverArtArchiveQueryResponse(resp);
+        } else if (constSpotifyHost==host) {
+            parseSpotifyQueryResponse(resp);
+        } else if (constITunesHost==host) {
+            parseITunesQueryResponse(resp);
+        } else if (constDeezerHost==host) {
+            parseDeezerQueryResponse(resp);
         }
     }
     reply->deleteLater();
@@ -488,7 +467,7 @@ void CoverDialog::queryJobFinished()
 void CoverDialog::insertItem(CoverItem *item)
 {
     list->addItem(item);
-    if (CoverItem::Type_Local==item->type()) {
+    if (item->isLocal()) {
         list->scrollToItem(item);
         list->setItemSelected(item, true);
     }
@@ -562,6 +541,12 @@ void CoverDialog::downloadJobFinished()
                                           reply->property(constHeightProperty).toInt(), list);
                 } else if (constCoverArtArchiveHost==host) {
                     item=new CoverArtArchiveCover(reply->property(constLargeProperty).toString(), url, img, list);
+                } else if (constSpotifyHost==host) {
+                    item=new SpotifyCover(reply->property(constLargeProperty).toString(), url, img, list);
+                } else if (constITunesHost==host) {
+                    item=new ITunesCover(reply->property(constLargeProperty).toString(), url, img, list);
+                } else if (constDeezerHost==host) {
+                    item=new DeezerCover(reply->property(constLargeProperty).toString(), url, img, list);
                 }
                 if (item) {
                     insertItem(item);
@@ -588,10 +573,10 @@ void CoverDialog::showImage(QListWidgetItem *item)
 
     CoverItem *cover=static_cast<CoverItem *>(item);
 
-    if (CoverItem::Type_Existing==cover->type()) {
+    if (cover->isExisting()) {
         previewDialog()->downloading(cover->url());
         previewDialog()->showImage(static_cast<ExistingCover *>(cover)->image(), cover->url());
-    } else if (CoverItem::Type_Local==cover->type()) {
+    } else if (cover->isLocal()) {
         previewDialog()->downloading(cover->url());
         previewDialog()->showImage(static_cast<LocalCover *>(cover)->image(), cover->url());
     } else {
@@ -635,7 +620,7 @@ void CoverDialog::sendQuery()
 
         while (list->count()) {
             CoverItem *item=static_cast<CoverItem *>(list->takeItem(0));
-            if (CoverItem::Type_Existing==item->type() || CoverItem::Type_Local==item->type()) {
+            if (item->isExisting() || item->isLocal()) {
                 keep.append(item);
             } else {
                 currentUrls.remove(item->url());
@@ -655,6 +640,11 @@ void CoverDialog::sendQuery()
     sendLastFmQuery(fixedQuery, page);
     sendGoogleQuery(fixedQuery, page);
     sendDiscoGsQuery(fixedQuery, page);
+    if (page==0) {
+        sendSpotifyQuery(fixedQuery);
+        sendITunesQuery(fixedQuery);
+        sendDeezerQuery(fixedQuery);
+    }
     setSearching(true);
 }
 
@@ -723,10 +713,77 @@ void CoverDialog::sendDiscoGsQuery(const QString &fixedQuery, int page)
     sendQueryRequest(url);
 }
 
+void CoverDialog::sendSpotifyQuery(const QString &fixedQuery)
+{
+    #ifdef ENABLE_HTTPS_SUPPORT
+    QUrl url;
+    #if QT_VERSION < 0x050000
+    QUrl &query=url;
+    #else
+    QUrlQuery query;
+    #endif
+    url.setScheme("http");
+    url.setHost(constSpotifyHost);
+    url.setPath(isArtist ? "/search/1/artist.json" : "/search/1/album.json");
+    query.addQueryItem("q", fixedQuery);
+    #if QT_VERSION >= 0x050000
+    url.setQuery(query);
+    #endif
+    sendQueryRequest(url);
+    #else
+    Q_UNUSED(fixedQuery)
+    #endif
+}
+
+void CoverDialog::sendITunesQuery(const QString &fixedQuery)
+{
+    if (isArtist) { // TODO???
+        return;
+    }
+
+    QUrl url;
+    #if QT_VERSION < 0x050000
+    QUrl &query=url;
+    #else
+    QUrlQuery query;
+    #endif
+    url.setScheme("http");
+    url.setHost(constITunesHost);
+    url.setPath("/search");
+    query.addQueryItem("term", fixedQuery);
+    query.addQueryItem("limit", QString::number(10));
+    query.addQueryItem("media", "music");
+    query.addQueryItem("entity", "album");
+    #if QT_VERSION >= 0x050000
+    url.setQuery(query);
+    #endif
+    sendQueryRequest(url);
+}
+
+void CoverDialog::sendDeezerQuery(const QString &fixedQuery)
+{
+    QUrl url;
+    #if QT_VERSION < 0x050000
+    QUrl &query=url;
+    #else
+    QUrlQuery query;
+    #endif
+    url.setScheme("http");
+    url.setHost(constDeezerHost);
+    url.setPath(isArtist ? "/search/artist" : "/search/album");
+    query.addQueryItem("q", fixedQuery);
+    query.addQueryItem("nb_items", QString::number(10));
+    query.addQueryItem("output", "json");
+    #if QT_VERSION >= 0x050000
+    url.setQuery(query);
+    #endif
+    sendQueryRequest(url);
+}
+
 void CoverDialog::checkStatus()
 {
     QList<QListWidgetItem*> items=list->selectedItems();
-    enableButtonOk(1==items.size() && CoverItem::Type_Existing!=static_cast<CoverItem *>(items.at(0))->type());
+    enableButtonOk(1==items.size() && !static_cast<CoverItem *>(items.at(0))->isExisting());
 }
 
 void CoverDialog::cancelQuery()
@@ -782,7 +839,7 @@ void CoverDialog::menuRequested(const QPoint &pos)
     removeAction->setEnabled(!items.isEmpty());
     if (removeAction->isEnabled()) {
         foreach (QListWidgetItem *i, items) {
-            if (CoverItem::Type_Existing==static_cast<CoverItem *>(i)->type()) {
+            if (static_cast<CoverItem *>(i)->isExisting()) {
                 removeAction->setEnabled(false);
             }
         }
@@ -868,6 +925,29 @@ NetworkJob * CoverDialog::downloadImage(const QString &url, DownloadType dlType)
     return j;
 }
 
+void CoverDialog::downloadThumbnail(const QString &thumbUrl, const QString &largeUrl, const QString &host, int w, int h, int sz)
+{
+    if (thumbUrl.isEmpty() || largeUrl.isEmpty()) {
+        return;
+    }
+
+    NetworkJob *j=downloadImage(thumbUrl, DL_Thumbnail);
+    if (j) {
+        j->setProperty(constThumbProperty, thumbUrl);
+        j->setProperty(constLargeProperty, largeUrl);
+        j->setProperty(constHostProperty, host);
+        if (w>0) {
+            j->setProperty(constWidthProperty, w);
+        }
+        if (h>0) {
+            j->setProperty(constHeightProperty, h);
+        }
+        if (sz>0) {
+            j->setProperty(constSizeProperty, sz);
+        }
+    }
+}
+
 typedef QMap<QString, QString> SizeMap;
 void CoverDialog::parseLstFmQueryResponse(const QByteArray &resp)
 {
@@ -925,15 +1005,7 @@ void CoverDialog::parseLstFmQueryResponse(const QByteArray &resp)
                 break;
             }
         }
-
-        if (!largeUrl.isEmpty() && !thumbUrl.isEmpty()) {
-            NetworkJob *j=downloadImage(thumbUrl, DL_Thumbnail);
-            if (j) {
-                j->setProperty(constHostProperty, constLastFmHost);
-                j->setProperty(constLargeProperty, largeUrl);
-                j->setProperty(constThumbProperty, thumbUrl);
-            }
-        }
+        downloadThumbnail(thumbUrl, largeUrl, constLastFmHost);
     }
 
     foreach (const QString &id, musibBrainzIds) {
@@ -966,19 +1038,7 @@ void CoverDialog::parseGoogleQueryResponse(const QByteArray &resp)
         int width=url.queryItemValue("w").toInt();
         int height=url.queryItemValue("h").toInt();
         if (canUse(width, height)) {
-            QString largeUrl=url.queryItemValue("imgurl");
-            QString thumbUrl=rx.cap(2);
-            if (!thumbUrl.isEmpty() && !largeUrl.isEmpty()) {
-                NetworkJob *j=downloadImage(thumbUrl, DL_Thumbnail);
-                if (j) {
-                    j->setProperty(constHostProperty, constGoogleHost);
-                    j->setProperty(constLargeProperty, largeUrl);
-                    j->setProperty(constThumbProperty, thumbUrl);
-                    j->setProperty(constWidthProperty, width);
-                    j->setProperty(constHeightProperty, height);
-                    j->setProperty(constSizeProperty, url.queryItemValue("sz").toInt());
-                }
-            }
+            downloadThumbnail(rx.cap(2), url.queryItemValue("imgurl"), constGoogleHost, width, height, url.queryItemValue("sz").toInt());
         }
         pos += rx.matchedLength();
     }
@@ -1020,13 +1080,7 @@ void CoverDialog::parseDiscogsQueryResponse(const QByteArray &resp)
                         } else if (isArtist && rm.contains("thumb")) {
                             QString thumbUrl=rm["thumb"].toString();
                             if (thumbUrl.contains("/image/A-150-")) {
-                                QString largeUrl=thumbUrl.replace("image/A-150-", "/image/A-");
-                                NetworkJob *j=downloadImage(thumbUrl, DL_Thumbnail);
-                                if (j) {
-                                    j->setProperty(constHostProperty, constDiscogsHost);
-                                    j->setProperty(constLargeProperty, largeUrl);
-                                    j->setProperty(constThumbProperty, thumbUrl);
-                                }
+                                downloadThumbnail(thumbUrl, QString(thumbUrl).replace("image/A-150-", "/image/A-"), constDiscogsHost);
                             }
                         }
                     }
@@ -1040,18 +1094,8 @@ void CoverDialog::parseDiscogsQueryResponse(const QByteArray &resp)
                     QVariantMap im=i.toMap();
                     if (im.contains("uri") && im.contains("uri150") && im.contains("width") && im.contains("height") &&
                         canUse(im["width"].toString().toInt(), im["height"].toString().toInt())) {
-                        QString thumbUrl=im["uri150"].toString();
-                        QString largeUrl=im["uri"].toString();
-                        if (!thumbUrl.isEmpty() && !largeUrl.isEmpty()) {
-                            NetworkJob *j=downloadImage(thumbUrl, DL_Thumbnail);
-                            if (j) {
-                                j->setProperty(constHostProperty, constDiscogsHost);
-                                j->setProperty(constLargeProperty, largeUrl);
-                                j->setProperty(constThumbProperty, thumbUrl);
-                                j->setProperty(constWidthProperty, im["width"].toString().toInt());
-                                j->setProperty(constHeightProperty, im["height"].toString().toInt());
-                            }
-                        }
+                        downloadThumbnail(im["uri150"].toString(), im["uri"].toString(), constDiscogsHost,
+                                          im["width"].toString().toInt(), im["height"].toString().toInt());
                     }
                 }
             }
@@ -1077,14 +1121,72 @@ void CoverDialog::parseCoverArtArchiveQueryResponse(const QByteArray &resp)
                 } else if (thumb.contains("large")) {
                     thumbUrl=thumb["large"].toString();
                 }
-                if (!thumbUrl.isEmpty() && !largeUrl.isEmpty()) {
-                    NetworkJob *j=downloadImage(thumbUrl, DL_Thumbnail);
-                    if (j) {
-                        j->setProperty(constHostProperty, constCoverArtArchiveHost);
-                        j->setProperty(constLargeProperty, largeUrl);
-                        j->setProperty(constThumbProperty, thumbUrl);
+                downloadThumbnail(thumbUrl, largeUrl, constCoverArtArchiveHost);
+            }
+        }
+    }
+}
+
+void CoverDialog::parseSpotifyQueryResponse(const QByteArray &resp)
+{
+    QJson::Parser parser;
+    bool ok=false;
+    QVariantMap parsed=parser.parse(resp, &ok).toMap();
+    if (ok) {
+        if (parsed.contains("info")) { // Initial query response...
+            const QString key=QLatin1String(isArtist ? "artists" : "albums");
+            const QString href=QLatin1String("spotify:")+QLatin1String(isArtist ? "artist:" : "album:");
+            const QString baseUrl=QLatin1String("https://embed.spotify.com/oembed/?url=http://open.spotify.com/")+QLatin1String(isArtist ? "artist/" : "album/");
+            if (parsed.contains(key)) {
+                QVariantList results=parsed[key].toList();
+                foreach (const QVariant &res, results) {
+                    QVariantMap item=res.toMap();
+                    if (item.contains("href")) {
+                        QString url=item["href"].toString();
+                        if (url.contains(href)) {
+                            url=baseUrl+url.remove(href);
+                            sendQueryRequest(QUrl(url), constSpotifyHost);
+                        }
                     }
                 }
+            }
+        } else if (parsed.contains("provider_url") && parsed.contains("thumbnail_url")) { // Response to query above
+            QString thumbUrl=parsed["thumbnail_url"].toString();
+            downloadThumbnail(thumbUrl, QString(thumbUrl).replace("/cover/", "/640/"), constSpotifyHost);
+        }
+    }
+}
+
+void CoverDialog::parseITunesQueryResponse(const QByteArray &resp)
+{
+    QJson::Parser parser;
+    bool ok=false;
+    QVariantMap parsed=parser.parse(resp, &ok).toMap();
+    if (ok && parsed.contains("results")) {
+        QVariantList results=parsed["results"].toList();
+        foreach (const QVariant &res, results) {
+            QVariantMap item=res.toMap();
+            if (item.contains("artworkUrl100")) {
+                QString thumbUrl=item["artworkUrl100"].toString();
+                downloadThumbnail(thumbUrl, QString(thumbUrl).replace("100x100", "600x600"), constITunesHost);
+            }
+        }
+    }
+}
+
+void CoverDialog::parseDeezerQueryResponse(const QByteArray &resp)
+{
+    const QString key=QLatin1String(isArtist ? "picture" : "cover");
+    QJson::Parser parser;
+    bool ok=false;
+    QVariantMap parsed=parser.parse(resp, &ok).toMap();
+    if (ok && parsed.contains("data")) {
+        QVariantList results=parsed["data"].toList();
+        foreach (const QVariant &res, results) {
+            QVariantMap item=res.toMap();
+            if (item.contains(key)) {
+                QString thumbUrl=item[key].toString();
+                downloadThumbnail(thumbUrl, thumbUrl+"&size=big", constDeezerHost);
             }
         }
     }
@@ -1097,11 +1199,11 @@ void CoverDialog::slotButtonClicked(int button)
         QList<QListWidgetItem*> items=list->selectedItems();
         if (1==items.size()) {
             CoverItem *cover=static_cast<CoverItem *>(items.at(0));
-            if (CoverItem::Type_Local==cover->type()) {
+            if (cover->isLocal()) {
                 if (saveCover(cover->url(), static_cast<LocalCover *>(cover)->image())) {
                     accept();
                 }
-            } else if (CoverItem::Type_Existing!=cover->type()) {
+            } else if (!cover->isExisting()) {
                 NetworkJob *j=downloadImage(cover->url(), DL_LargeSave);
                 if (j) {
                     j->setProperty(constLargeProperty, cover->url());

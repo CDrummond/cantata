@@ -476,7 +476,31 @@ int Settings::albumSort()
 
 int Settings::sidebar()
 {
-    return GET_INT("sidebar", (int)(FancyTabWidget::Mode_LargeSidebar));
+    if (version()<CANTATA_MAKE_VERSION(1, 2, 52)) {
+        switch (GET_INT("sidebar", 1)) {
+        default:
+        case 1: return FancyTabWidget::Side|FancyTabWidget::Large;
+        case 2: return FancyTabWidget::Side|FancyTabWidget::Small;
+        case 3: return FancyTabWidget::Side|FancyTabWidget::Tab;
+        case 4: return FancyTabWidget::Top|FancyTabWidget::Tab;
+        case 5: return FancyTabWidget::Top|FancyTabWidget::Tab|FancyTabWidget::IconOnly;
+        case 6: return FancyTabWidget::Bot|FancyTabWidget::Tab;
+        case 7: return FancyTabWidget::Bot|FancyTabWidget::Tab|FancyTabWidget::IconOnly;
+        case 8: return FancyTabWidget::Side|FancyTabWidget::Large|FancyTabWidget::IconOnly;
+        case 9: return FancyTabWidget::Side|FancyTabWidget::Small|FancyTabWidget::IconOnly;
+        case 10: return FancyTabWidget::Side|FancyTabWidget::Tab|FancyTabWidget::IconOnly;
+        case 11: return FancyTabWidget::Bot|FancyTabWidget::Large;
+        case 12: return FancyTabWidget::Bot|FancyTabWidget::Large|FancyTabWidget::IconOnly;
+        case 13: return FancyTabWidget::Top|FancyTabWidget::Large;
+        case 14: return FancyTabWidget::Top|FancyTabWidget::Large|FancyTabWidget::IconOnly;
+        case 15: return FancyTabWidget::Bot|FancyTabWidget::Small;
+        case 16: return FancyTabWidget::Bot|FancyTabWidget::Small|FancyTabWidget::IconOnly;
+        case 17: return FancyTabWidget::Top|FancyTabWidget::Small;
+        case 18: return FancyTabWidget::Top|FancyTabWidget::Small|FancyTabWidget::IconOnly;
+        }
+    } else {
+        return GET_INT("sidebar", (int)(FancyTabWidget::Side|FancyTabWidget::Large));
+    }
 }
 
 bool Settings::libraryYear()

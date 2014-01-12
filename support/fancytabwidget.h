@@ -54,6 +54,7 @@ class QSignalMapper;
 class QStackedWidget;
 class QStatusBar;
 class QVBoxLayout;
+class QActionGroup;
 
 namespace Core {
 namespace Internal {
@@ -137,10 +138,10 @@ public:
     int iconSize() const { return m_iconSize; }
     QSize tabSizeHint() const;
 
-signals:
+Q_SIGNALS:
     void currentChanged(int);
 
-public slots:
+public Q_SLOTS:
     void emitCurrentIndex();
 
 private:
@@ -164,35 +165,14 @@ public:
 
     FancyTabWidget(QWidget *parent, bool allowContext=true, bool drawBorder=false);
 
-    // Values are persisted - only add to the end
-    enum Mode {
-        Mode_None = 0,
-
-        Mode_LargeSidebar = 1,
-        Mode_SmallSidebar = 2,
-        //Mode_Tabs = 3,
-        //Mode_IconOnlyTabs = 4,
-        //Mode_PlainSidebar = 5,
-        Mode_SideTabs = 3,
-        Mode_TopTabs = 4,
-        Mode_IconOnlyTopTabs = 5,
-        Mode_BotTabs = 6,
-        Mode_IconOnlyBotTabs = 7,
-        Mode_IconOnlyLargeSidebar = 8,
-        Mode_IconOnlySmallSidebar = 9,
-        Mode_IconOnlySideTabs = 10,
-
-        Mode_BottomBar = 11,
-        Mode_IconOnlyBottomBar = 12,
-
-        Mode_TopBar = 13,
-        Mode_IconOnlyTopBar = 14,
-
-        Mode_SmallBottomBar = 15,
-        Mode_IconOnlySmallBottomBar = 16,
-
-        Mode_SmallTopBar = 17,
-        Mode_IconOnlySmallTopBar = 18
+    enum Style {
+        Side     = 0x0001,
+        Top      = 0x0002,
+        Bot      = 0x0004,
+        Large    = 0x0010,
+        Small    = 0x0020,
+        Tab      = 0x0040,
+        IconOnly = 0x0100
     };
 
     struct Item {
@@ -227,7 +207,7 @@ public:
     QWidget * widget(int index) const;
     int count() const;
     int visibleCount() const;
-    Mode mode() const { return mode_; }
+    int style() const { return style_; }
     void addMenuAction(QAction *a) { removeMenuAction(a); otherActions.append(a); }
     void removeMenuAction(QAction *a) { otherActions.removeAll(a); }
     QSize tabSize() const;
@@ -238,33 +218,32 @@ public:
     void Recreate();
     QStringList hiddenPages() const;
 
-public slots:
+public Q_SLOTS:
     void SetCurrentIndex(int index);
-    void SetMode(Mode mode);
-    void SetMode(int mode) { SetMode(Mode(mode)); }
+    void setStyle(int s);
     void ToggleTab(int tab, bool show);
 
-signals:
+Q_SIGNALS:
     void CurrentChanged(int index);
-    void ModeChanged(FancyTabWidget::Mode mode);
+    void styleChanged(int style);
     void TabToggled(int index);
 
 protected:
     void paintEvent(QPaintEvent *event);
     void contextMenuEvent(QContextMenuEvent* e);
 
-private slots:
-    void SetMode();
+private Q_SLOTS:
+    void setStyle();
     void ShowWidget(int index);
     void ToggleTab();
 
 private:
     void MakeTabBar(QTabBar::Shape shape, bool text, bool icons, bool fancy);
-    void AddMenuItem(QActionGroup* group,  const QString& text, Mode mode, Mode iconMode);
+    QAction * createAction(QActionGroup* group,  const QString& text, int s);
     int TabToIndex(int tab) const;
     int IndexToTab(int index) const { return index>=0 && index<items_.count() ? items_[index].index_ : 0; }
 
-    Mode mode_;
+    int style_;
     QList<Item> items_;
 
     QWidget* tab_bar_;
@@ -283,6 +262,9 @@ private:
     bool allowContext_;
     bool drawBorder_;
 
+    QActionGroup *styleGroup;
+    QActionGroup *positionGroup;
+    QList<QAction *> styleActions;
     QList<QAction *> otherActions;
     QList<QAction *> otherStyleActions;
 };

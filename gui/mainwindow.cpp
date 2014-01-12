@@ -467,7 +467,7 @@ MainWindow::MainWindow(QWidget *parent)
         tabWidget->ToggleTab(PAGE_CONTEXT, false);
     }
 
-    tabWidget->SetMode(FancyTabWidget::Mode_LargeSidebar);
+    tabWidget->setStyle(FancyTabWidget::Side|FancyTabWidget::Large);
     initSizes();
 
     expandInterfaceAction->setCheckable(true);
@@ -536,7 +536,7 @@ MainWindow::MainWindow(QWidget *parent)
     MusicLibraryItemAlbum::setCoverSize((MusicLibraryItemAlbum::CoverSize)Settings::self()->libraryCoverSize());
     MusicLibraryItemAlbum::setShowDate(Settings::self()->libraryYear());
     AlbumsModel::setCoverSize((MusicLibraryItemAlbum::CoverSize)Settings::self()->albumsCoverSize());
-    tabWidget->SetMode((FancyTabWidget::Mode)Settings::self()->sidebar());
+    tabWidget->setStyle(Settings::self()->sidebar());
     expandedSize=Settings::self()->mainWindowSize();
     collapsedSize=Settings::self()->mainWindowCollapsedSize();
 
@@ -857,7 +857,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(tabWidget, SIGNAL(CurrentChanged(int)), this, SLOT(currentTabChanged(int)));
     connect(tabWidget, SIGNAL(TabToggled(int)), this, SLOT(tabToggled(int)));
-    connect(tabWidget, SIGNAL(ModeChanged(FancyTabWidget::Mode)), this, SLOT(sidebarModeChanged()));
+    connect(tabWidget, SIGNAL(styleChanged(int)), this, SLOT(sidebarModeChanged()));
     connect(messageWidget, SIGNAL(visible(bool)), this, SLOT(messageWidgetVisibility(bool)));
 
     toggleSplitterAutoHide();
@@ -910,7 +910,7 @@ MainWindow::~MainWindow()
         Settings::self()->saveShowPlaylist(expandInterfaceAction->isChecked());
     }
     Settings::self()->saveSplitterAutoHide(autoHideSplitterAction->isChecked());
-    Settings::self()->saveSidebar((int)(tabWidget->mode()));
+    Settings::self()->saveSidebar(tabWidget->style());
     Settings::self()->savePage(tabWidget->currentWidget()->metaObject()->className());
     playQueue->saveHeader();
     Settings::self()->saveHiddenPages(tabWidget->hiddenPages());
@@ -2356,9 +2356,9 @@ void MainWindow::copyTrackInfo()
 
 int MainWindow::calcMinHeight()
 {
-    if (FancyTabWidget::Mode_LargeSidebar==tabWidget->mode()) {
+    if (tabWidget->style()==(FancyTabWidget::Side|FancyTabWidget::Large)) {
         return coverWidget->height()+(tabWidget->visibleCount()*(32+fontMetrics().height()+4));
-    } else if (FancyTabWidget::Mode_IconOnlyLargeSidebar==tabWidget->mode()) {
+    } else if (tabWidget->style()==(FancyTabWidget::Side|FancyTabWidget::Large|FancyTabWidget::IconOnly)) {
         return coverWidget->height()+(tabWidget->visibleCount()*(32+6));
     }
     return 256;

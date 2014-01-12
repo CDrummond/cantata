@@ -572,7 +572,7 @@ QStringList Settings::hiddenPages()
 {
     QStringList def=QStringList() << "PlayQueuePage" << "FolderPage" << "SearchPage" << "ContextPage";
     QStringList config=GET_STRINGLIST("hiddenPages", def);
-    if (ver<CANTATA_MAKE_VERSION(1, 2, 51) && !config.contains("SearchPage")) {
+    if (version()<CANTATA_MAKE_VERSION(1, 2, 51) && !config.contains("SearchPage")) {
         config.append("SearchPage");
     }
     return config;

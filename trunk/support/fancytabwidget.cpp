@@ -600,7 +600,7 @@ void FancyTabBar::setCurrentIndex(int index) {
 
 FancyTabWidget::FancyTabWidget(QWidget* parent, bool allowContext, bool drawBorder)
   : QWidget(parent),
-    mode_(Mode_None),
+    style_(Large|Side),
     tab_bar_(NULL),
     stack_(new QStackedWidget(this)),
     side_widget_(new QWidget),
@@ -786,8 +786,8 @@ void FancyTabWidget::ShowWidget(int index) {
 //  top_layout_->addWidget(widget);
 //}
 
-void FancyTabWidget::SetMode(Mode mode) {
-  if(mode==mode_) {
+void FancyTabWidget::setStyle(int s) {
+  if(s==style_) {
       return;
   }
   // Remove previous tab bar
@@ -795,34 +795,21 @@ void FancyTabWidget::SetMode(Mode mode) {
   tab_bar_ = NULL;
 
 //   use_background_ = false;
-
   // Create new tab bar
-  switch (mode) {
-    case Mode_None:
-    default:
-//       qDebug() << "Unknown fancy tab mode" << mode;
-      // fallthrough
-
-    case Mode_TopBar:
-    case Mode_IconOnlyTopBar:
-    case Mode_BottomBar:
-    case Mode_IconOnlyBottomBar:
-    case Mode_IconOnlySmallSidebar:
-    case Mode_IconOnlySmallBottomBar:
-    case Mode_IconOnlySmallTopBar:
-    case Mode_IconOnlyLargeSidebar:
-    case Mode_LargeSidebar: {
-      FancyTabBar* bar = new FancyTabBar(this, drawBorder_, Mode_LargeSidebar==mode || Mode_BottomBar==mode || Mode_TopBar==mode,
-                                         Mode_IconOnlySmallSidebar==mode || Mode_IconOnlySmallBottomBar==mode || Mode_IconOnlySmallTopBar==mode
-                                            ? smallIconSize : largeIconSize,
-                                         Mode_BottomBar==mode || Mode_IconOnlyBottomBar==mode || Mode_IconOnlySmallBottomBar==mode
-                                            ? FancyTabBar::Bot
-                                            : Mode_TopBar==mode || Mode_IconOnlyTopBar==mode || Mode_IconOnlySmallTopBar==mode
-                                                ? FancyTabBar::Top
-                                                : FancyTabBar::Side);
-      if (Mode_BottomBar==mode || Mode_IconOnlyBottomBar==mode || Mode_IconOnlySmallBottomBar==mode) {
+  if (s&Tab || (s&Small && !(s&IconOnly))) {
+      if (s&Side) {
+          MakeTabBar(Qt::RightToLeft==QApplication::layoutDirection() ? QTabBar::RoundedEast : QTabBar::RoundedWest, !(s&IconOnly), true, s&Small);
+      } else if (s&Top) {
+          MakeTabBar(QTabBar::RoundedNorth, !(s&IconOnly), true, s&Small);
+      } else if (s&Bot) {
+          MakeTabBar(QTabBar::RoundedSouth, !(s&IconOnly), true, s&Small);
+      }
+  } else {
+      FancyTabBar* bar = new FancyTabBar(this, drawBorder_, !(s&IconOnly), s&Small ? smallIconSize : largeIconSize,
+                                         s&Side ? FancyTabBar::Side : (s&Top ? FancyTabBar::Top : FancyTabBar::Bot));
+      if (s&Bot) {
         top_layout_->insertWidget(1, bar);
-      } else if (Mode_TopBar==mode || Mode_IconOnlyTopBar==mode || Mode_IconOnlySmallTopBar==mode) {
+      } else if (s&Top) {
         top_layout_->insertWidget(0, bar);
       } else {
         side_layout_->insertWidget(0, bar);
@@ -846,58 +833,11 @@ void FancyTabWidget::SetMode(Mode mode) {
 
       bar->setCurrentIndex(IndexToTab(stack_->currentIndex()));
       connect(bar, SIGNAL(currentChanged(int)), SLOT(ShowWidget(int)));
-
-//       use_background_ = true;
-
-      break;
-    }
-
-//    case Mode_Tabs:
-//      MakeTabBar(QTabBar::RoundedNorth, true, false, false);
-//      break;
-
-    case Mode_IconOnlyTopTabs:
-      MakeTabBar(QTabBar::RoundedNorth, false, true, false);
-      break;
-
-    case Mode_TopTabs:
-      MakeTabBar(QTabBar::RoundedNorth, true, true, false);
-      break;
-
-    case Mode_IconOnlyBotTabs:
-      MakeTabBar(QTabBar::RoundedSouth, false, true, false);
-      break;
-
-    case Mode_BotTabs:
-      MakeTabBar(QTabBar::RoundedSouth, true, true, false);
-      break;
-
-    case Mode_SmallSidebar:
-      MakeTabBar(QTabBar::RoundedWest, true, true, true);
-      break;
-
-    case Mode_SmallBottomBar:
-      MakeTabBar(QTabBar::RoundedSouth, true, true, true);
-      break;
-
-    case Mode_SmallTopBar:
-      MakeTabBar(QTabBar::RoundedNorth, true, true, true);
-      break;
-
-//    case Mode_PlainSidebar:
-    case Mode_SideTabs:
-      MakeTabBar(Qt::RightToLeft==QApplication::layoutDirection() ? QTabBar::RoundedEast : QTabBar::RoundedWest, true, true, false);
-      break;
-
-    case Mode_IconOnlySideTabs:
-      MakeTabBar(Qt::RightToLeft==QApplication::layoutDirection() ? QTabBar::RoundedEast : QTabBar::RoundedWest, false, true, false);
-      break;
   }
-
   tab_bar_->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
 
-  mode_ = mode;
-  emit ModeChanged(mode);
+  style_ = s;
+  emit styleChanged(s);
   update();
 }
 
@@ -923,15 +863,16 @@ void FancyTabWidget::contextMenuEvent(QContextMenuEvent* e) {
   }
 
   // Check we are over tab space...
-  if (Mode_BottomBar==mode_ || Mode_IconOnlyBottomBar==mode_ || Mode_SmallBottomBar==mode_ || Mode_IconOnlySmallBottomBar==mode_) {
+  /*
+  if (Mode_BottomBar==style_ || Mode_IconOnlyBottomBar==style_ || Mode_SmallBottomBar==style_ || Mode_IconOnlySmallBottomBar==style_) {
       if (e->pos().y()<=(side_widget_->pos().y()+(side_widget_->height()-tab_bar_->height()))) {
         return;
       }
-  } else if (Mode_TopBar==mode_ || Mode_IconOnlyTopBar==mode_ || Mode_SmallTopBar==mode_ || Mode_IconOnlySmallTopBar==mode_) {
+  } else if (Mode_TopBar==style_ || Mode_IconOnlyTopBar==style_ || Mode_SmallTopBar==style_ || Mode_IconOnlySmallTopBar==style_) {
       if (e->pos().y()>(side_widget_->pos().y()+tab_bar_->height())) {
         return;
       }
-  } else if (Mode_IconOnlyTopTabs!=mode_ && Mode_TopTabs!=mode_ && Mode_IconOnlyBotTabs!=mode_ && Mode_BotTabs!=mode_){
+  } else if (Mode_IconOnlyTopTabs!=style_ && Mode_TopTabs!=style_ && Mode_IconOnlyBotTabs!=style_ && Mode_BotTabs!=style_){
       if (Qt::RightToLeft==QApplication::layoutDirection()) {
           if (e->pos().x()<=side_widget_->pos().x()) {
             return;
@@ -942,6 +883,7 @@ void FancyTabWidget::contextMenuEvent(QContextMenuEvent* e) {
   } else if (QApplication::widgetAt(e->globalPos())!=tab_bar_) {
       return;
   }
+  */
   if (!menu_) {
     menu_ = new QMenu(this);
 
@@ -959,38 +901,31 @@ void FancyTabWidget::contextMenuEvent(QContextMenuEvent* e) {
     }
     menu_->addSeparator();
 
-    QActionGroup* group = new QActionGroup(this);
-    QMenu *modeMenu=new QMenu(this);
-    QAction *modeAct;
-    QAction *iconOnlyAct;
-    iconOnlyAct=new QAction(i18n("Icons Only"), this);
-    modeAct=new QAction(i18n("Style"), this);
-    AddMenuItem(group, i18n("Large Sidebar"), Mode_LargeSidebar, Mode_IconOnlyLargeSidebar);
-    AddMenuItem(group, i18n("Small Sidebar"), Mode_SmallSidebar, Mode_IconOnlySmallSidebar);
-    AddMenuItem(group, i18n("Large Top Bar"), Mode_TopBar, Mode_IconOnlyTopBar);
-    AddMenuItem(group, i18n("Small Top Bar"), Mode_SmallTopBar, Mode_IconOnlySmallTopBar);
-    AddMenuItem(group, i18n("Large Bottom Bar"), Mode_BottomBar, Mode_IconOnlyBottomBar);
-    AddMenuItem(group, i18n("Small Bottom Bar"), Mode_SmallBottomBar, Mode_IconOnlySmallBottomBar);
-    AddMenuItem(group, i18n("Tabs On Side"), Mode_SideTabs, Mode_IconOnlySideTabs);
-    AddMenuItem(group, i18n("Tabs On Top"), Mode_TopTabs, Mode_IconOnlyTopTabs);
-    AddMenuItem(group, i18n("Tabs On Bottom"), Mode_BotTabs, Mode_IconOnlyBotTabs);
-    modeMenu->addActions(group->actions());
-    iconOnlyAct->setCheckable(true);
-    iconOnlyAct->setChecked(Mode_IconOnlyLargeSidebar==mode_ || Mode_IconOnlySmallSidebar==mode_ ||
-                            Mode_IconOnlySideTabs==mode_ || Mode_IconOnlyTopTabs==mode_ ||
-                            Mode_IconOnlyBotTabs==mode_ || Mode_IconOnlyTopBar==mode_ ||
-                            Mode_IconOnlyBottomBar==mode_ || Mode_IconOnlySmallTopBar==mode_ ||
-                            Mode_IconOnlySmallBottomBar==mode_);
-    iconOnlyAct->setData(0);
-    connect(iconOnlyAct, SIGNAL(triggered()), this, SLOT(SetMode()));
-    modeMenu->addSeparator();
-    modeMenu->addAction(iconOnlyAct);
+    styleGroup = new QActionGroup(this);
+    positionGroup = new QActionGroup(this);
+    QMenu *styleMenu=new QMenu(this);
+    QMenu *positionMenu=new QMenu(this);
+    QAction *styleAct=new QAction(i18n("Style"), this);
+    QAction *positionAct=new QAction(i18n("Position"), this);
+    createAction(styleGroup, i18n("Large"), Large);
+    createAction(styleGroup, i18n("Small"), Small);
+    createAction(styleGroup, i18n("Tabs"), Tab);
+    createAction(positionGroup, i18n("Side"), Side);
+    createAction(positionGroup, i18n("Top"), Top);
+    createAction(positionGroup, i18n("Bottom"), Bot);
+    styleMenu->addActions(styleGroup->actions());
+    positionMenu->addActions(positionGroup->actions());
+    styleMenu->addSeparator();
+    styleMenu->addAction(createAction(0, i18n("Icons Only"), IconOnly));
     foreach (QAction *a, otherStyleActions) {
-      modeMenu->addAction(a);
+      styleMenu->addAction(a);
     }
-    modeAct->setMenu(modeMenu);
-    modeAct->setData(-1);
-    menu_->addAction(modeAct);
+    styleAct->setMenu(styleMenu);
+    styleAct->setData(-1);
+    menu_->addAction(styleAct);
+    positionAct->setMenu(positionMenu);
+    positionAct->setData(-1);
+    menu_->addAction(positionAct);
     foreach (QAction *a, otherActions) {
       menu_->addAction(a);
     }
@@ -1006,66 +941,30 @@ void FancyTabWidget::contextMenuEvent(QContextMenuEvent* e) {
   menu_->popup(e->globalPos());
 }
 
-void FancyTabWidget::AddMenuItem(QActionGroup* group, const QString& text, Mode mode, Mode iconMode) {
-  QAction* action = group->addAction(text);
+QAction* FancyTabWidget::createAction(QActionGroup* group, const QString& text, int s) {
+  QAction* action = group ? group->addAction(text) : new QAction(text, this);
   action->setCheckable(true);
-  action->setData(mode);
-  connect(action, SIGNAL(triggered()), this, SLOT(SetMode()));
+  action->setData(s);
+  connect(action, SIGNAL(triggered()), this, SLOT(setStyle()));
 
-  if (mode == mode_ || iconMode==mode_) {
+  if (style_&s) {
     action->setChecked(true);
   }
+  styleActions.append(action);
+  return action;
 }
 
-void FancyTabWidget::SetMode()
+void FancyTabWidget::setStyle()
 {
     QAction *act=qobject_cast<QAction *>(sender());
 
-    if (act) {
-        int data=act->data().toInt();
-
-        if (0==data) {
-            switch (mode_) {
-            case Mode_LargeSidebar:         SetMode(Mode_IconOnlyLargeSidebar); break;
-            case Mode_SmallSidebar:         SetMode(Mode_IconOnlySmallSidebar); break;
-            case Mode_SideTabs:             SetMode(Mode_IconOnlySideTabs); break;
-            case Mode_TopTabs:              SetMode(Mode_IconOnlyTopTabs); break;
-            case Mode_IconOnlyTopTabs:      SetMode(Mode_TopTabs); break;
-            case Mode_BotTabs:              SetMode(Mode_IconOnlyBotTabs); break;
-            case Mode_IconOnlyBotTabs:      SetMode(Mode_BotTabs); break;
-            case Mode_IconOnlyLargeSidebar: SetMode(Mode_LargeSidebar); break;
-            case Mode_IconOnlySmallSidebar: SetMode(Mode_SmallSidebar); break;
-            case Mode_IconOnlySideTabs:     SetMode(Mode_SideTabs); break;
-            case Mode_BottomBar:            SetMode(Mode_IconOnlyBottomBar); break;
-            case Mode_IconOnlyBottomBar:    SetMode(Mode_BottomBar); break;
-            case Mode_SmallBottomBar:       SetMode(Mode_IconOnlySmallBottomBar); break;
-            case Mode_IconOnlySmallBottomBar:SetMode(Mode_SmallBottomBar); break;
-            case Mode_SmallTopBar:          SetMode(Mode_IconOnlySmallTopBar); break;
-            case Mode_IconOnlySmallTopBar:  SetMode(Mode_SmallTopBar); break;
-            case Mode_TopBar:               SetMode(Mode_IconOnlyTopBar); break;
-            case Mode_IconOnlyTopBar:       SetMode(Mode_TopBar); break;
-            default: break;
-            }
-        } else {
-            bool iconOnly=Mode_IconOnlyLargeSidebar==mode_ || Mode_IconOnlySmallSidebar==mode_ ||
-                          Mode_IconOnlySideTabs==mode_ || Mode_IconOnlyTopTabs==mode_ ||
-                          Mode_IconOnlyBotTabs==mode_ || Mode_IconOnlyBottomBar==mode_ ||
-                          Mode_IconOnlyTopBar==mode_ || Mode_IconOnlySmallBottomBar==mode_ ||
-                          Mode_IconOnlySmallTopBar==mode_;
-            switch (data) {
-            case Mode_LargeSidebar: SetMode(iconOnly ? Mode_IconOnlyLargeSidebar : Mode_LargeSidebar); break;
-            case Mode_SmallSidebar: SetMode(iconOnly ? Mode_IconOnlySmallSidebar : Mode_SmallSidebar); break;
-            case Mode_SideTabs:     SetMode(iconOnly ? Mode_IconOnlySideTabs : Mode_SideTabs); break;
-            case Mode_TopTabs:      SetMode(iconOnly ? Mode_IconOnlyTopTabs : Mode_TopTabs); break;
-            case Mode_BotTabs:      SetMode(iconOnly ? Mode_IconOnlyBotTabs : Mode_BotTabs); break;
-            case Mode_BottomBar:    SetMode(iconOnly ? Mode_IconOnlyBottomBar : Mode_BottomBar); break;
-            case Mode_TopBar:       SetMode(iconOnly ? Mode_IconOnlyTopBar : Mode_TopBar); break;
-            case Mode_SmallBottomBar:SetMode(iconOnly ? Mode_IconOnlySmallBottomBar : Mode_SmallBottomBar); break;
-            case Mode_SmallTopBar:  SetMode(iconOnly ? Mode_IconOnlySmallTopBar : Mode_SmallTopBar); break;
-            default: break;
-            }
-        }
+    if (!act) {
+        return;
     }
+    int newStyle=act->isChecked() ? act->data().toInt() : 0;
+    int mask=act->data().toInt()&0x000F ? 0xFFF0 : (act->data().toInt()&0x00F0 ? 0xFF0F : 0xF0FF);
+    newStyle|=style_&mask;
+    setStyle(newStyle);
 }
 
 void FancyTabWidget::MakeTabBar(QTabBar::Shape shape, bool text, bool icons, bool fancy) {
@@ -1164,9 +1063,9 @@ void FancyTabWidget::SetToolTip(int index, const QString &tt)
 
 void FancyTabWidget::Recreate()
 {
-    Mode m=mode_;
-    mode_=Mode_None;
-    SetMode(m);
+    int s=style_;
+    style_=0;
+    setStyle(s);
 }
 
 QStringList FancyTabWidget::hiddenPages() const

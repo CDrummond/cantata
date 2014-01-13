@@ -597,10 +597,9 @@ void FancyTabBar::setCurrentIndex(int index) {
 //////
 // FancyTabWidget
 //////
-
 FancyTabWidget::FancyTabWidget(QWidget* parent, bool allowContext, bool drawBorder)
   : QWidget(parent),
-    style_(Large|Side),
+    style_(0),
     tab_bar_(NULL),
     stack_(new QStackedWidget(this)),
     side_widget_(new QWidget),
@@ -629,6 +628,7 @@ FancyTabWidget::FancyTabWidget(QWidget* parent, bool allowContext, bool drawBord
   main_layout->addWidget(side_widget_);
   main_layout->addLayout(top_layout_);
   setLayout(main_layout);
+  setStyle(Side|Large);
 }
 
 void FancyTabWidget::AddTab(QWidget* tab, const QIcon& icon, const QString& label, const QString &tt, bool enabled) {
@@ -796,24 +796,27 @@ void FancyTabWidget::setStyle(int s) {
 
 //   use_background_ = false;
   // Create new tab bar
-  if (s&Tab || (s&Small && !(s&IconOnly))) {
-      if (s&Side) {
-          MakeTabBar(Qt::RightToLeft==QApplication::layoutDirection() ? QTabBar::RoundedEast : QTabBar::RoundedWest, !(s&IconOnly), true, s&Small);
-      } else if (s&Top) {
-          MakeTabBar(QTabBar::RoundedNorth, !(s&IconOnly), true, s&Small);
-      } else if (s&Bot) {
-          MakeTabBar(QTabBar::RoundedSouth, !(s&IconOnly), true, s&Small);
+  if (Tab==(s&Style_Mask) || (Small==(s&Style_Mask) && !(s&IconOnly))) {
+      switch (s&Position_Mask) {
+      default:
+      case Side:
+          MakeTabBar(Qt::RightToLeft==QApplication::layoutDirection() ? QTabBar::RoundedEast : QTabBar::RoundedWest, !(s&IconOnly), true, Small==(s&Style_Mask));
+          break;
+      case Top:
+          MakeTabBar(QTabBar::RoundedNorth, !(s&IconOnly), true, Small==(s&Style_Mask)); break;
+      case Bot:
+          MakeTabBar(QTabBar::RoundedSouth, !(s&IconOnly), true, Small==(s&Style_Mask)); break;
       }
   } else {
-      FancyTabBar* bar = new FancyTabBar(this, drawBorder_, !(s&IconOnly), s&Small ? smallIconSize : largeIconSize,
-                                         s&Side ? FancyTabBar::Side : (s&Top ? FancyTabBar::Top : FancyTabBar::Bot));
-      if (s&Bot) {
-        top_layout_->insertWidget(1, bar);
-      } else if (s&Top) {
-        top_layout_->insertWidget(0, bar);
-      } else {
-        side_layout_->insertWidget(0, bar);
+      FancyTabBar* bar = new FancyTabBar(this, drawBorder_, !(s&IconOnly), Small==(s&Style_Mask) ? smallIconSize : largeIconSize,
+                                         Side==(s&Position_Mask) ? FancyTabBar::Side : (Top==(s&Position_Mask) ? FancyTabBar::Top : FancyTabBar::Bot));
+      switch (s&Position_Mask) {
+      default:
+      case Side: side_layout_->insertWidget(0, bar); break;
+      case Bot:  top_layout_->insertWidget(1, bar); break;
+      case Top:  top_layout_->insertWidget(0, bar); break;
       }
+
       tab_bar_ = bar;
 
       int index=0;
@@ -947,7 +950,8 @@ QAction* FancyTabWidget::createAction(QActionGroup* group, const QString& text, 
   action->setData(s);
   connect(action, SIGNAL(triggered()), this, SLOT(setStyle()));
 
-  if (style_&s) {
+  int mask=s&Position_Mask ? Position_Mask : (s&Style_Mask ? Style_Mask : Options_Mask);
+  if (s==(style_&mask)) {
     action->setChecked(true);
   }
   styleActions.append(action);
@@ -961,8 +965,10 @@ void FancyTabWidget::setStyle()
     if (!act) {
         return;
     }
-    int newStyle=act->isChecked() ? act->data().toInt() : 0;
-    int mask=act->data().toInt()&0x000F ? 0xFFF0 : (act->data().toInt()&0x00F0 ? 0xFF0F : 0xF0FF);
+    int s=act->data().toInt();
+    int newStyle=act->isChecked() ? s : 0;
+    // TODO: below WONT work if we have more than 1 option...
+    int mask=0xFFFF-(s&Position_Mask ? Position_Mask : (s&Style_Mask ? Style_Mask : Options_Mask));
     newStyle|=style_&mask;
     setStyle(newStyle);
 }

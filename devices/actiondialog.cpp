@@ -582,11 +582,14 @@ void ActionDialog::doNext()
                                                                GuiItem(i18n("Calculate")), StdGuiItem::no())) {
                     RgDialog *dlg=new RgDialog(pw);
                     QList<Song> songs;
+                    DeviceOptions opts;
+                    opts.load(MPDConnectionDetails::configGroupName(MPDConnection::self()->getDetails().name), true);
+                    Encoders::Encoder encoder=Encoders::getEncoder(opts.transcoderCodec);
 
                     foreach (const Song &s, actionedSongs) {
                         if (albumsWithoutRgTags.contains(s.album)) {
                             Song song=s;
-                            song.file=namingOptions.createFilename(s);
+                            song.file=encoder.changeExtension(namingOptions.createFilename(s));
                             songs.append(song);
                         }
                     }

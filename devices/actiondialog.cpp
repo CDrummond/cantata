@@ -711,7 +711,7 @@ void ActionDialog::configure(const QString &udi)
             connect(dlg, SIGNAL(cancelled()), SLOT(saveProperties()));
         }
         dlg->setCaption(i18n("Local Music Library Properties"));
-        dlg->show(MPDConnection::self()->getDetails().dir, namingOptions, DevicePropertiesWidget::Prop_Basic|(sourceIsAudioCd ? DevicePropertiesWidget::Prop_Encoder : 0));
+        dlg->show(MPDConnection::self()->getDetails().dir, namingOptions, DevicePropertiesWidget::Prop_Basic|DevicePropertiesWidget::Prop_FileName|(sourceIsAudioCd ? DevicePropertiesWidget::Prop_Encoder : 0));
         connect(dlg, SIGNAL(destroyed()), SLOT(controlInfoLabel()));
     } else {
         Device *dev=DevicesModel::self()->device(udi);

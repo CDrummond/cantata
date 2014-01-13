@@ -206,23 +206,23 @@ QString GtkStyle::iconTheme()
     #endif
 }
 
-//extern void GtkStyle::setThemeName(const QString &n)
-//{
-//    #if defined Q_OS_WIN || defined QT_NO_STYLE_GTK
-//    Q_UNUSED(n)
-//    #else
-//    themeNameSetting=n;
-//    #endif
-//}
+extern void GtkStyle::setThemeName(const QString &n)
+{
+    #if defined Q_OS_WIN || defined QT_NO_STYLE_GTK
+    Q_UNUSED(n)
+    #else
+    themeNameSetting=n;
+    #endif
+}
 
-//extern void GtkStyle::setIconTheme(const QString &n)
-//{
-//    #if defined Q_OS_WIN || defined QT_NO_STYLE_GTK
-//    Q_UNUSED(n)
-//    #else
-//    iconThemeSetting=n;
-//    #endif
-//}
+extern void GtkStyle::setIconTheme(const QString &n)
+{
+    #if defined Q_OS_WIN || defined QT_NO_STYLE_GTK
+    Q_UNUSED(n)
+    #else
+    iconThemeSetting=n;
+    #endif
+}
 
 #if !defined Q_OS_WIN && !defined QT_NO_STYLE_GTK
 static GtkProxyStyle *gtkProxyStyle=0;

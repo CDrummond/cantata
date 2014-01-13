@@ -50,6 +50,8 @@
 27. Also search Spotify, iTunes, and Deezer for images in cover dialog.
 28. Fix filename scheme help table.
 29. Allow to specify filename scheme when copying to library.
+30. Before calling ReplyGain after ripping CD, need to convert filenames to
+    destination suffix.
 
 1.2.2
 -----

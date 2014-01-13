@@ -168,11 +168,17 @@ public:
     enum Style {
         Side     = 0x0001,
         Top      = 0x0002,
-        Bot      = 0x0004,
+        Bot      = 0x0003,
+
         Large    = 0x0010,
         Small    = 0x0020,
-        Tab      = 0x0040,
-        IconOnly = 0x0100
+        Tab      = 0x0030,
+
+        IconOnly = 0x0100,
+
+        Position_Mask = 0x000F,
+        Style_Mask    = 0x00F0,
+        Options_Mask  = 0x0F00
     };
 
     struct Item {

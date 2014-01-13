@@ -466,8 +466,6 @@ MainWindow::MainWindow(QWidget *parent)
     } else {
         tabWidget->ToggleTab(PAGE_CONTEXT, false);
     }
-
-    tabWidget->setStyle(FancyTabWidget::Side|FancyTabWidget::Large);
     initSizes();
 
     expandInterfaceAction->setCheckable(true);

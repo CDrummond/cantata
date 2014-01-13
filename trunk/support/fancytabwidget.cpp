@@ -866,27 +866,34 @@ void FancyTabWidget::contextMenuEvent(QContextMenuEvent* e) {
   }
 
   // Check we are over tab space...
-  /*
-  if (Mode_BottomBar==style_ || Mode_IconOnlyBottomBar==style_ || Mode_SmallBottomBar==style_ || Mode_IconOnlySmallBottomBar==style_) {
-      if (e->pos().y()<=(side_widget_->pos().y()+(side_widget_->height()-tab_bar_->height()))) {
-        return;
-      }
-  } else if (Mode_TopBar==style_ || Mode_IconOnlyTopBar==style_ || Mode_SmallTopBar==style_ || Mode_IconOnlySmallTopBar==style_) {
-      if (e->pos().y()>(side_widget_->pos().y()+tab_bar_->height())) {
-        return;
-      }
-  } else if (Mode_IconOnlyTopTabs!=style_ && Mode_TopTabs!=style_ && Mode_IconOnlyBotTabs!=style_ && Mode_BotTabs!=style_){
-      if (Qt::RightToLeft==QApplication::layoutDirection()) {
-          if (e->pos().x()<=side_widget_->pos().x()) {
-            return;
-          }
-      } else if (e->pos().x()>=side_widget_->rect().right()) {
+  if (Tab==(style_&Style_Mask)) {
+      if (QApplication::widgetAt(e->globalPos())!=tab_bar_) {
           return;
       }
-  } else if (QApplication::widgetAt(e->globalPos())!=tab_bar_) {
-      return;
   }
-  */
+  else {
+      switch (style_&Position_Mask) {
+      case Bot:
+          if (e->pos().y()<=(side_widget_->pos().y()+(side_widget_->height()-tab_bar_->height()))) {
+              return;
+          }
+          break;
+      case Top:
+          if (e->pos().y()>(side_widget_->pos().y()+tab_bar_->height())) {
+              return;
+          }
+          break;
+      default:
+          if (Qt::RightToLeft==QApplication::layoutDirection()) {
+              if (e->pos().x()<=side_widget_->pos().x()) {
+                  return;
+              }
+          } else if (e->pos().x()>=side_widget_->rect().right()) {
+              return;
+          }
+      }
+  }
+
   if (!menu_) {
     menu_ = new QMenu(this);
 

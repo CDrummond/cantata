@@ -49,6 +49,7 @@
     the folder view is removed.
 27. Also search Spotify, iTunes, and Deezer for images in cover dialog.
 28. Fix filename scheme help table.
+29. Allow to specify filename scheme when copying to library.
 
 1.2.2
 -----

@@ -36,8 +36,8 @@ namespace GtkStyle
     extern void drawSelection(const QStyleOptionViewItemV4 &opt, QPainter *painter, double opacity);
     extern QString themeName();
     extern QString iconTheme();
-//    extern void setThemeName(const QString &n);
-//    extern void setIconTheme(const QString &n);
+    extern void setThemeName(const QString &n);
+    extern void setIconTheme(const QString &n);
     extern void applyTheme(QWidget *widget);
     extern bool useSymbolicIcons();
     extern bool useLightIcons();

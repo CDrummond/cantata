@@ -6,7 +6,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 set(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_CURRENT_SOURCE_DIR}/README")
 set(CPACK_GENERATOR "DEB;RPM;TBZ2")
-set(DEBIAN_PACKAGE_DESCRIPTION "Qt4/KDE4 Client for MPD")
+set(DEBIAN_PACKAGE_DESCRIPTION "Qt/KDE Client for MPD")
 set(DEBIAN_PACKAGE_SECTION "kde4")
 set(CPACK_SOURCE_GENERATOR "TBZ2")
 set(CPACK_PACKAGE_VERSION_MAJOR "1")
@@ -675,7 +675,7 @@ endif ((ENABLE_DEVICES_SUPPORT AND ENABLE_REMOTE_DEVICES) OR ENABLE_HTTP_STREAM_
 
 if (NOT CMAKE_SYSTEM_NAME MATCHES Linux)
     message("-----------------------------------------------------------------------------")
-    message("-- You NEED to have the Oxygen icons installed!!.")
+    message("-- You NEED to have the Oxygen icons installed!!!")
     message("-----------------------------------------------------------------------------")
     message("")
 endif (NOT CMAKE_SYSTEM_NAME MATCHES Linux)

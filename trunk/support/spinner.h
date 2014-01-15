@@ -32,6 +32,7 @@ public:
     bool isActive() const { return active; }
     void start();
     void stop();
+    void setWidget(QWidget *widget);
 
 private:
     bool active;

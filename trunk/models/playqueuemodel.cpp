@@ -153,7 +153,7 @@ PlayQueueModel::PlayQueueModel(QObject *parent)
     new ModelTest(this, this);
     #endif
 
-    removeDuplicatesAction=new Action(i18n("Remove duplicates"), this);
+    removeDuplicatesAction=new Action(i18n("Remove Duplicates"), this);
     removeDuplicatesAction->setEnabled(false);
     undoAction=ActionCollection::get()->createAction("playqueue-undo", i18n("Undo"), "edit-undo");
     undoAction->setShortcut(Qt::ControlModifier+Qt::Key_Z);

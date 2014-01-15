@@ -1343,11 +1343,11 @@ void CoverDialog::setSearching(bool s)
     }
     if (!spinner) {
         spinner=new Spinner(this);
-        spinner->setWidget(list->viewport());
+        spinner->setWidget(list);
     }
     if (!msgOverlay) {
         msgOverlay=new MessageOverlay(this);
-        msgOverlay->setWidget(list->viewport());
+        msgOverlay->setWidget(list);
         connect(msgOverlay, SIGNAL(cancel()), SLOT(cancelQuery()));
     }
     if (s) {

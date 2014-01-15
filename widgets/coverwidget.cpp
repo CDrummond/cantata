@@ -209,7 +209,21 @@ void CoverWidget::update(const Song &s)
                 coverFileName=cImg.fileName;
                 emit coverImage(cImg.img);
                 emit coverFile(cImg.fileName);
-                emit albumCover(cImg.img);
+                if (current.isFromOnlineService()) {
+                    if (coverFileName.startsWith(
+                        #ifdef Q_OS_WIN
+                        QCoreApplication::applicationDirPath()+"/icons/";
+                        #else
+                        QString(INSTALL_PREFIX"/share/")+QCoreApplication::applicationName()+"/icons/"
+                        #endif
+                                )) {
+                        emit albumCover(QImage());
+                    } else {
+                        emit albumCover(cImg.img);
+                    }
+                } else {
+                    emit albumCover(cImg.img);
+                }
             } else {
                 // We ned to set the image here, so that TrayItem gets the correct 'noCover' image
                 // ...but if Covers does eventually download a cover, we dont want valid->noCover->valid

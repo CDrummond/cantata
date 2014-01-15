@@ -23,9 +23,9 @@
 
 #include "spinner.h"
 #include <QApplication>
+#include <QAbstractItemView>
 
 #ifdef ENABLE_KDE_SUPPORT
-#include <QAbstractItemView>
 
 Spinner::Spinner(QObject *p, bool inMiddle)
     : KPixmapSequenceOverlayPainter(p)
@@ -60,21 +60,28 @@ void Spinner::setWidget(QWidget *widget)
 #include <QPainter>
 #include <QPaintEvent>
 #include <QTimer>
+#include <QScrollBar>
 #include "utils.h"
 
 Spinner::Spinner(QObject *p, bool inMiddle)
     : QWidget(0)
     , timer(0)
-    , space(Utils::isHighDpi() ? 28 : 14)
+    , space(Utils::isHighDpi() ? 8 : 4)
     , value(0)
     , active(false)
     , central(inMiddle)
+    , onView(false)
 {
     Q_UNUSED(p)
     int size=fontMetrics().height()*1.5;
     setVisible(false);
     setMinimumSize(size, size);
     setMaximumSize(size, size);
+}
+void Spinner::setWidget(QWidget *widget)
+{
+    setParent(widget);
+    onView=qobject_cast<QAbstractItemView *>(widget);
 }
 
 void Spinner::start()
@@ -131,12 +138,17 @@ void Spinner::timeout()
 
 void Spinner::setPosition()
 {
+    QWidget *pw=parentWidget();
+    int hSpace=space+(onView && pw && static_cast<QAbstractItemView *>(pw)->verticalScrollBar() &&
+                      static_cast<QAbstractItemView *>(pw)->verticalScrollBar()->isVisible()
+                      ? static_cast<QAbstractItemView *>(pw)->verticalScrollBar()->width()+2 : 0);
+
     QPoint current=pos();
     QPoint desired=central
                     ? QPoint((parentWidget()->size().width()-size().width())/2, (parentWidget()->size().height()-size().height())/2)
                     : Qt::RightToLeft==QApplication::layoutDirection()
-                        ? QPoint(space, space)
-                        : QPoint(parentWidget()->size().width()-(size().width()+space), space);
+                        ? QPoint(hSpace, space)
+                        : QPoint(parentWidget()->size().width()-(size().width()+hSpace), space);
 
     if (current!=desired) {
         move(desired);

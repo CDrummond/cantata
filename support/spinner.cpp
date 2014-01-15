@@ -94,7 +94,7 @@ void Spinner::start()
         timer=new QTimer(this);
         connect(timer, SIGNAL(timeout()), this, SLOT(timeout()));
     }
-    timer->start(100);
+    timer->start(75);
 }
 
 void Spinner::stop()

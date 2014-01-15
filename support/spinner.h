@@ -48,7 +48,7 @@ public:
     Spinner(QObject *p, bool inMiddle=false);
     virtual ~Spinner() { }
 
-    void setWidget(QWidget *widget) { setParent(widget); }
+    void setWidget(QWidget *widget);
     void start();
     void stop();
     void paintEvent(QPaintEvent *event);
@@ -66,5 +66,6 @@ private:
     int value;
     bool active;
     bool central;
+    bool onView;
 };
 #endif

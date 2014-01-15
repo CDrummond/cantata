@@ -62,7 +62,7 @@ int PreferencesDialog::instanceCount()
     return iCount;
 }
 
-PreferencesDialog::PreferencesDialog(QWidget *parent, const QStringList &hiddenPages)
+PreferencesDialog::PreferencesDialog(QWidget *parent)
     : Dialog(parent, "PreferencesDialog")
 {
     iCount++;
@@ -72,7 +72,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, const QStringList &hiddenP
     server = new ServerSettings(0);
     playback = new PlaybackSettings(0);
     files = new FileSettings(0);
-    interface = new InterfaceSettings(0, hiddenPages);
+    interface = new InterfaceSettings(0);
     context = new ContextSettings(0);
     cache = new CacheSettings(0);
     server->load();
@@ -85,18 +85,14 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, const QStringList &hiddenP
     pageWidget->addPage(files, i18n("Files"), Icons::self()->filesIcon, i18n("File Settings"));
     pageWidget->addPage(interface, i18n("Interface"), Icon("preferences-other"), i18n("Interface Settings"));
     #ifdef ENABLE_STREAMS
-    streams = hiddenPages.contains(QLatin1String("StreamsPage")) ? 0 : new StreamsSettings(0);
-    if (streams) {
-        pages.insert(QLatin1String("streams"), pageWidget->addPage(streams, i18n("Streams"), Icons::self()->radioStreamIcon, i18n("Streams Settings")));
-        streams->load();
-    }
+    streams = new StreamsSettings(0);
+    pages.insert(QLatin1String("streams"), pageWidget->addPage(streams, i18n("Streams"), Icons::self()->radioStreamIcon, i18n("Streams Settings")));
+    streams->load();
     #endif
     #ifdef ENABLE_ONLINE_SERVICES
-    online = hiddenPages.contains(QLatin1String("OnlineServicesPage")) ? 0 : new OnlineSettings(0);
-    if (online) {
-        pages.insert(QLatin1String("online"), pageWidget->addPage(online, i18n("Online"), Icon("applications-internet"), i18n("Online Providers")));
-        online->load();
-    }
+    online = new OnlineSettings(0);
+    pages.insert(QLatin1String("online"), pageWidget->addPage(online, i18n("Online"), Icon("applications-internet"), i18n("Online Providers")));
+    online->load();
     #endif
     pageWidget->addPage(context, i18n("Context"), Icons::self()->contextIcon, i18n("Context View Settings"));
     #ifdef ENABLE_HTTP_SERVER
@@ -161,14 +157,10 @@ void PreferencesDialog::writeSettings()
     files->save();
     interface->save();
     #ifdef ENABLE_STREAMS
-    if (streams) {
-        streams->save();
-    }
+    streams->save();
     #endif
     #ifdef ENABLE_ONLINE_SERVICES
-    if (online) {
-        online->save();
-    }
+    online->save();
     #endif
     #ifdef ENABLE_HTTP_SERVER
     if (http) {

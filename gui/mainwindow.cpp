@@ -439,6 +439,7 @@ MainWindow::MainWindow(QWidget *parent)
     tabWidget->AddTab(searchPage, TAB_ACTION(searchTabAction), !hiddenPages.contains(searchPage->metaObject()->className()));
     tabWidget->AddTab(contextPage, Icons::self()->infoSidebarIcon, i18n("Info"), songInfoAction->text(),
                       !hiddenPages.contains(contextPage->metaObject()->className()));
+    tabWidget->Recreate();
     AlbumsModel::self()->setEnabled(!hiddenPages.contains(albumsPage->metaObject()->className()));
     folderPage->setEnabled(!hiddenPages.contains(folderPage->metaObject()->className()));
     setPlaylistsEnabled(!hiddenPages.contains(playlistsPage->metaObject()->className()));
@@ -911,7 +912,6 @@ MainWindow::~MainWindow()
     Settings::self()->saveSidebar(tabWidget->style());
     Settings::self()->savePage(tabWidget->currentWidget()->metaObject()->className());
     playQueue->saveHeader();
-    Settings::self()->saveHiddenPages(tabWidget->hiddenPages());
     context->saveConfig();
     #ifdef ENABLE_STREAMS
     streamsPage->save();
@@ -1214,7 +1214,7 @@ void MainWindow::showPreferencesDialog(const QString &page)
     if (PreferencesDialog::instanceCount() || !canShowDialog()) {
         return;
     }
-    PreferencesDialog *pref=new PreferencesDialog(this, tabWidget->hiddenPages());
+    PreferencesDialog *pref=new PreferencesDialog(this);
     controlConnectionsMenu(false);
     connect(pref, SIGNAL(settingsSaved()), this, SLOT(updateSettings()));
     #ifdef ENABLE_STREAMS
@@ -1430,6 +1430,7 @@ void MainWindow::readSettings()
     MediaKeys::self()->load();
     #endif
     context->readConfig();
+    tabWidget->setHiddenPages(Settings::self()->hiddenPages());
 }
 
 void MainWindow::updateSettings()

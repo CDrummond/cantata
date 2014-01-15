@@ -59,7 +59,7 @@ class PreferencesDialog : public Dialog
 public:
     static int instanceCount();
 
-    PreferencesDialog(QWidget *parent, const QStringList &hiddenPages);
+    PreferencesDialog(QWidget *parent);
     virtual ~PreferencesDialog();
 
 private:

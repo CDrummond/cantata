@@ -251,6 +251,8 @@ Song MPDParseUtils::parseSong(const QByteArray &data, bool isPlayQueue)
         song.genre = i18n("Unknown");
     }
 
+    QString origFile=song.file;
+
     #ifdef ENABLE_HTTP_SERVER
     if (!song.file.isEmpty() && song.file.startsWith("http") && HttpServer::self()->isOurs(song.file)) {
         song.type=Song::CantataStream;
@@ -297,6 +299,9 @@ Song MPDParseUtils::parseSong(const QByteArray &data, bool isPlayQueue)
         }
     }
     if (isPlayQueue) {
+        // HTTP server, and OnlineServices, modify the path. But this then messes up
+        // undo/restore of playqueue. Therefore, set path back to original value...
+        song.file=origFile;
         song.setKey();
     }
     return song;

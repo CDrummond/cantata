@@ -402,15 +402,15 @@ void CoverDialog::show(const Song &s, const Covers::Image &current)
         return;
     }
     if (isArtist) {
-        setCaption(song.albumartist);
+        setCaption(i18n("'%1' Artist Image", song.albumartist));
     } else {
-        setCaption(i18nc("Album by Artist", "%1 by %2", song.album, song.albumArtist()));
+        setCaption(i18nc("'Artist - Album' Album Cover", "'%1 - %2' Album Cover", song.albumArtist(), song.album));
     }
     if (!img.img.isNull()) {
         existing=new ExistingCover(isArtist ? Covers::Image(cropImage(img.img, true), img.fileName) : img, list);
         list->addItem(existing);
     }
-    query->setText(isArtist ? song.albumartist : QString(song.album+" "+song.albumArtist()));
+    query->setText(isArtist ? song.albumartist : QString(song.albumArtist()+QLatin1String(" ")+song.album));
     adjustSize();
     Dialog::show();
     sendQuery();

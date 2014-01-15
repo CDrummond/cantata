@@ -50,10 +50,12 @@ void Spinner::stop()
 #include <QPainter>
 #include <QPaintEvent>
 #include <QTimer>
+#include "utils.h"
 
 Spinner::Spinner(QObject *p, bool inMiddle)
     : QWidget(0)
     , timer(0)
+    , space(Utils::isHighDpi() ? 28 : 14)
     , value(0)
     , active(false)
     , central(inMiddle)
@@ -121,8 +123,8 @@ void Spinner::setPosition()
     QPoint desired=central
                     ? QPoint((parentWidget()->size().width()-size().width())/2, (parentWidget()->size().height()-size().height())/2)
                     : Qt::RightToLeft==QApplication::layoutDirection()
-                        ? QPoint(4, 4)
-                        : QPoint(parentWidget()->size().width()-(size().width()+4), 4);
+                        ? QPoint(space, space)
+                        : QPoint(parentWidget()->size().width()-(size().width()+space), space);
 
     if (current!=desired) {
         move(desired);

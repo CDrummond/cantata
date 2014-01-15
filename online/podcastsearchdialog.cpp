@@ -145,9 +145,9 @@ PodcastPage::PodcastPage(QWidget *p, const QString &n)
     tree->header()->setVisible(false);
     text=new TextBrowser(this);
     spinner=new Spinner(this);
-    spinner->setWidget(tree->viewport());
+    spinner->setWidget(tree);
     imageSpinner=new Spinner(this);
-    imageSpinner->setWidget(text->viewport());
+    imageSpinner->setWidget(text);
     connect(tree, SIGNAL(itemSelectionChanged()), SLOT(selectionChanged()));
     tree->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
     text->setOpenLinks(false);

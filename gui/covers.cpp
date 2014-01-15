@@ -1168,6 +1168,23 @@ Covers::Image Covers::requestImage(const Song &song, bool urgent)
 {
     DBUG << song.file << song.artist << song.albumartist << song.album;
 
+    #ifdef ENABLE_ONLINE_SERVICES
+    if (urgent && song.isFromOnlineService()) {
+        Covers::Image img;
+        if (SoundCloudService::constName==song.onlineService()) {
+            img.fileName=SoundCloudService::iconPath();
+        } else if (PodcastService::constName==song.onlineService()) {
+            img.fileName=PodcastService::iconPath();
+        }
+        if (!img.fileName.isEmpty()) {
+            img.img=QImage(img.fileName);
+            if (!img.img.isNull()) {
+                return img;
+            }
+        }
+    }
+    #endif
+
     QString key=song.isArtistImageRequest() ? artistKey(song) : albumKey(song);
     if (currentImageRequests.contains(key)) {
         return Covers::Image();

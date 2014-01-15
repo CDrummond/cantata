@@ -32,7 +32,7 @@
 #if QT_VERSION < 0x050000
 #include <QToolBar>
 #else
-// QMacNativeToolBar requres Qt Mac Extras to be installed on Qt 5.0 and 5.1.
+// QMacNativeToolBar requres Qt Macf Extras to be installed on Qt 5.0 and 5.1.
 #include <QMacNativeToolBar>
 #endif
 #endif
@@ -1114,6 +1114,7 @@ void MainWindow::playQueueItemsSelected(bool s)
     bool haveItems=rc>0;
     bool singleSelection=1==playQueue->selectedIndexes(false).count(); // Dont need sorted selection here...
     removeFromPlayQueueAction->setEnabled(s && haveItems);
+    setPriorityAction->setEnabled(s && haveItems);
     locateTrackAction->setEnabled(singleSelection);
     copyTrackInfoAction->setEnabled(s && haveItems);
     cropPlayQueueAction->setEnabled(playQueue->haveUnSelectedItems() && haveItems);

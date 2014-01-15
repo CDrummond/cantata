@@ -116,6 +116,7 @@ struct Song
     bool isCdda() const { return Cdda==type; }
     QString albumKey() const { return albumArtist()+QLatin1Char(':')+album; }
     bool isCueFile() const { return Playlist==type && file.endsWith(QLatin1String(".cue"), Qt::CaseInsensitive); }
+    QString basicArtist() const;
 
     // We pass 'Song' around to cover requester. When we want the artist image, and not album image,
     // then we blank certain fields to indicate this!
@@ -124,10 +125,12 @@ struct Song
         album=artist=QString();
         size=track=0;
     }
-
     bool isArtistImageRequest() const { return album.isEmpty() && artist.isEmpty() && !albumartist.isEmpty() && 0==size && 0==track; }
 
-    QString basicArtist() const;
+    //
+    // The following sections contain various 'hacks' - where fields of Song are abused for other
+    // purposes. This is to kee the overall size of Song lower, as its used all over the place...
+    //
 
     // podcast functions...
     bool hasBeenPlayed() const { return 0!=id; }

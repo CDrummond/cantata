@@ -213,6 +213,20 @@ int PlayQueueModel::rowCount(const QModelIndex &idx) const
     return idx.isValid() ? 0 : songs.size();
 }
 
+static QString basicPath(const Song &song)
+{
+    #ifdef ENABLE_HTTP_SERVER
+    if (song.isCantataStream()) {
+        Song mod=HttpServer::self()->decodeUrl(song.file);
+        if (!mod.file.isEmpty()) {
+            return mod.file;
+        }
+    }
+    #endif
+    int marker=song.file.indexOf(QLatin1Char('#'));
+    return -1==marker ? song.file : song.file.left(marker);
+}
+
 QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
 {
     if (Qt::SizeHintRole!=role && (!index.isValid() || index.row() >= songs.size())) {
@@ -348,7 +362,7 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
         const Song &song = songs.at(index.row());
         switch (index.column()) {
         case COL_TITLE:
-            return song.title.isEmpty() ? song.file : song.title;
+            return song.title.isEmpty() ? Utils::getFile(basicPath(song)) : song.title;
         case COL_ARTIST:
             return song.artist.isEmpty() ? i18n("Unknown") : song.artist;
         case COL_ALBUM:
@@ -379,14 +393,14 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
     case Qt::ToolTipRole: {
         Song s=songs.at(index.row());
         if (s.album.isEmpty() && s.isStream()) {
-            return s.file;
+            return basicPath(s);
         } else {
             return s.albumArtist()+QLatin1String("<br/>")+
                    s.album+(s.year>0 ? (QLatin1String(" (")+QString::number(s.year)+QChar(')')) : QString())+QLatin1String("<br/>")+
                    s.trackAndTitleStr(Song::isVariousArtists(s.albumArtist()))+QLatin1String("<br/>")+
                    Song::formattedTime(s.time)+QLatin1String("<br/>")+
                    (s.priority>0 ? i18n("<b>(Priority: %1)</b>", s.priority)+QLatin1String("<br/>") : QString())+
-                   QLatin1String("<small><i>")+s.file+QLatin1String("</i></small>");
+                   QLatin1String("<small><i>")+basicPath(s)+QLatin1String("</i></small>");
         }
     }
     case Qt::TextAlignmentRole:
@@ -510,7 +524,6 @@ QMimeData *PlayQueueModel::mimeData(const QModelIndexList &indexes) const
  *
  * @return bool if we accest the drop
  */
-#include <QDebug>
 bool PlayQueueModel::dropMimeData(const QMimeData *data,
                                   Qt::DropAction action, int row, int /*column*/, const QModelIndex & /*parent*/)
 {

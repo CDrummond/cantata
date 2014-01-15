@@ -609,13 +609,13 @@ void ItemView::setMode(Mode m)
 
     stackedWidget->setCurrentIndex(Mode_SimpleTree==mode || Mode_DetailedTree==mode || Mode_GroupedTree==mode ? 0 : 1);
     if (spinner) {
-        spinner->setWidget(view()->viewport());
+        spinner->setWidget(view());
         if (spinner->isActive()) {
             spinner->start();
         }
     }
     if (msgOverlay) {
-        msgOverlay->setWidget(view()->viewport());
+        msgOverlay->setWidget(view());
     }
 
     if (!oldBgndIcon.isNull()) {
@@ -908,7 +908,7 @@ void ItemView::showMessage(const QString &message, int timeout)
 {
     if (!msgOverlay) {
         msgOverlay=new MessageOverlay(this);
-        msgOverlay->setWidget(view()->viewport());
+        msgOverlay->setWidget(view());
     }
     msgOverlay->setText(message, timeout, false);
 }
@@ -966,7 +966,7 @@ void ItemView::showSpinner(bool v)
         if (!spinner) {
             spinner=new Spinner(this);
         }
-        spinner->setWidget(view()->viewport());
+        spinner->setWidget(view());
         spinner->start();
     } else {
         hideSpinner();

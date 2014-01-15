@@ -255,13 +255,13 @@ void PlayQueueView::setGrouped(bool g)
         grouped=g;
         setCurrentWidget(grouped ? static_cast<QWidget *>(groupedView) : static_cast<QWidget *>(treeView));
         if (spinner) {
-            spinner->setWidget(view()->viewport());
+            spinner->setWidget(view());
             if (spinner->isActive()) {
                 spinner->start();
             }
         }
         if (msgOverlay) {
-            msgOverlay->setWidget(view()->viewport());
+            msgOverlay->setWidget(view());
         }
     }
 }
@@ -402,7 +402,7 @@ void PlayQueueView::showSpinner()
     if (!spinner) {
         spinner=new Spinner(this);
     }
-    spinner->setWidget(view()->viewport());
+    spinner->setWidget(view());
     spinner->start();
 }
 
@@ -475,7 +475,7 @@ void PlayQueueView::streamFetchStatus(const QString &msg)
 {
     if (!msgOverlay) {
         msgOverlay=new MessageOverlay(this);
-        msgOverlay->setWidget(view()->viewport());
+        msgOverlay->setWidget(view());
         connect(msgOverlay, SIGNAL(cancel()), SIGNAL(cancelStreamFetch()));
         connect(msgOverlay, SIGNAL(cancel()), SLOT(hideSpinner()));
     }

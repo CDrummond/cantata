@@ -222,6 +222,7 @@ public:
     void SetIcon(int index, const QIcon &icon);
     void SetToolTip(int index, const QString &tt);
     void Recreate();
+    void setHiddenPages(const QStringList &hidden);
     QStringList hiddenPages() const;
 
 public Q_SLOTS:

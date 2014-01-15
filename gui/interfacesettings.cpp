@@ -76,139 +76,97 @@ static inline int getValue(QComboBox *box)
     return box->itemData(box->currentIndex()).toInt();
 }
 
-InterfaceSettings::InterfaceSettings(QWidget *p, const QStringList &hiddenPages)
+static const char * constPageProperty="cantata-page";
+
+InterfaceSettings::InterfaceSettings(QWidget *p)
     : QWidget(p)
     #ifndef ENABLE_KDE_SUPPORT
     , loadedLangs(false)
     #endif
 {
-    int removeCount=0;
-    enabledViews=V_All;
-    if (hiddenPages.contains(QLatin1String("LibraryPage"))) {
-        enabledViews-=V_Artists;
-    }
-    if (hiddenPages.contains(QLatin1String("AlbumsPage"))) {
-        enabledViews-=V_Albums;
-    }
-    if (hiddenPages.contains(QLatin1String("FolderPage"))) {
-        enabledViews-=V_Folders;
-    }
-    if (hiddenPages.contains(QLatin1String("PlaylistsPage"))) {
-        enabledViews-=V_Playlists;
-    }
-//    if (hiddenPages.contains(QLatin1String("DynamicPage"))) {
-//        enabledViews-=V_Dynamic;
-//    }
-    #ifdef ENABLE_STREAMS
-    if (hiddenPages.contains(QLatin1String("StreamsPage"))) {
-        enabledViews-=V_Streams;
-    }
-    #else
-    enabledViews-=V_Streams;
-    #endif
-    #ifdef ENABLE_ONLINE_SERVICES
-    if (hiddenPages.contains(QLatin1String("OnlineServicesPage"))) {
-        enabledViews-=V_Online;
-    }
-    #else
-    enabledViews-=V_Online;
-    #endif
-    #ifdef ENABLE_DEVICES_SUPPORT
-    if (hiddenPages.contains(QLatin1String("DevicesPage"))) {
-        enabledViews-=V_Devices;
-    }
-    #else
-    enabledViews-=V_Devices;
-    #endif
-
     setupUi(this);
-    if (enabledViews&V_Artists) {
-        addImageSizes(libraryCoverSize);
-        addViewTypes(libraryView, true);
-    } else {
-        tabWidget->removeTab(0);
-        removeCount++;
-    }
-    if (enabledViews&V_Albums) {
-        addImageSizes(albumsCoverSize);
-        addViewTypes(albumsView, true);
-    } else {
-        tabWidget->removeTab(1-removeCount);
-        removeCount++;
-    }
-    if (enabledViews&V_Folders) {
-        addViewTypes(folderView);
-    }  else {
-        REMOVE(folderView)
-        REMOVE(folderViewLabel)
-    }
-    if (enabledViews&V_Playlists) {
-        addViewTypes(playlistsView, false, true);
-    } else {
-        tabWidget->removeTab(2-removeCount);
-        removeCount++;
-    }
-    if (enabledViews&V_Streams) {
-        addViewTypes(streamsView);
-    } else {
-        REMOVE(streamsView)
-        REMOVE(streamsViewLabel)
-    }
-    if (enabledViews&V_Online) {
-        addViewTypes(onlineView);
-    } else {
-        REMOVE(onlineView)
-        REMOVE(onlineViewLabel)
-    }
+    addImageSizes(libraryCoverSize);
+    addViewTypes(libraryView, true);
+    addImageSizes(albumsCoverSize);
+    addViewTypes(albumsView, true);
+    addViewTypes(folderView);
+    addViewTypes(playlistsView, false, true);
 
-    if (enabledViews&V_Devices) {
-        addViewTypes(devicesView);
-    }
-    else {
-        REMOVE(devicesView)
-        REMOVE(devicesViewLabel)
-    }
+    sbPlayQueueView->setProperty(constPageProperty, "PlayQueuePage");
+    sbArtistsView->setProperty(constPageProperty, "LibraryPage");
+    sbAlbumsView->setProperty(constPageProperty, "AlbumsPage");
+    sbFoldersView->setProperty(constPageProperty, "FolderPage");
+    sbPlaylistsView->setProperty(constPageProperty, "PlaylistsPage");
+    sbSearchView->setProperty(constPageProperty, "SearchPage");
+    sbInfoView->setProperty(constPageProperty, "ContextPage");
 
-    int otherViewCount=(enabledViews&V_Folders ? 1 : 0)+(enabledViews&V_Streams ? 1 : 0)+(enabledViews&V_Online ? 1 : 0)+(enabledViews&V_Devices ? 1 : 0);
-
-    if (0==otherViewCount) {
-        tabWidget->removeTab(3-removeCount);
-        removeCount++;
-    } else if (1==otherViewCount) {
-        if (enabledViews&V_Folders) {
-            tabWidget->setTabText(3-removeCount, i18n("Folders"));
-            folderViewLabel->setText(i18n("Style:"));
-        } else if (enabledViews&V_Streams) {
-            tabWidget->setTabText(3-removeCount, i18n("Streams"));
-            streamsViewLabel->setText(i18n("Style:"));
-        } else if (enabledViews&V_Online) {
-            tabWidget->setTabText(3-removeCount, i18n("Online"));
-            onlineViewLabel->setText(i18n("Style:"));
-        } else if (enabledViews&V_Devices) {
-            tabWidget->setTabText(3-removeCount, i18n("Devices"));
-            devicesViewLabel->setText(i18n("Style:"));
-        }
-    }
-
-    if (enabledViews&V_Artists) {
-        connect(libraryView, SIGNAL(currentIndexChanged(int)), SLOT(libraryViewChanged()));
-        connect(libraryCoverSize, SIGNAL(currentIndexChanged(int)), SLOT(libraryCoverSizeChanged()));
-    }
-    if (enabledViews&V_Albums) {
-        connect(albumsView, SIGNAL(currentIndexChanged(int)), SLOT(albumsViewChanged()));
-        connect(albumsCoverSize, SIGNAL(currentIndexChanged(int)), SLOT(albumsCoverSizeChanged()));
-    }
-    if (enabledViews&V_Playlists) {
-        connect(playlistsView, SIGNAL(currentIndexChanged(int)), SLOT(playListsStyleChanged()));
-    }
-    connect(playQueueGrouped, SIGNAL(currentIndexChanged(int)), SLOT(playQueueGroupedChanged()));
-    #ifndef ENABLE_DEVICES_SUPPORT
-    REMOVE(showDeleteAction);
+    #ifdef ENABLE_DYNAMIC
+    sbDynamicView->setProperty(constPageProperty, "DynamicPage");
+    #else
+    REMOVE(sbDynamicView)
     #endif
+    #ifdef ENABLE_STREAMS
+    addViewTypes(streamsView);
+    sbStreamsView->setProperty(constPageProperty, "StreamsPage");
+    #else
+    REMOVE(streamsView)
+    REMOVE(streamsViewLabel)
+    REMOVE(sbStreamsView)
+    #endif
+
+    #ifdef ENABLE_ONLINE_SERVICES
+    addViewTypes(onlineView);
+    sbOnlineView->setProperty(constPageProperty, "OnlineServicesPage");
+    #else
+    REMOVE(onlineView)
+    REMOVE(onlineViewLabel)
+    REMOVE(sbOnlineView)
+    #endif
+
+    #ifdef ENABLE_DEVICES_SUPPORT
+    addViewTypes(devicesView);
+    sbDevicesView->setProperty(constPageProperty, "DevicesPage");
+    #else
+    REMOVE(devicesView)
+    REMOVE(devicesViewLabel)
+    REMOVE(showDeleteAction)
+    REMOVE(sbDevicesView)
+    #endif
+
+    #if !defined ENABLE_STREAMS && !defined ENABLE_ONLINE_SERVICES && !defined ENABLE_DEVICES_SUPPORT
+    tabWidget->setTabText(4, i18n("Folders"));
+    folderViewLabel->setText(i18n("Style:"));
+    #endif
+
+    connect(libraryView, SIGNAL(currentIndexChanged(int)), SLOT(libraryViewChanged()));
+    connect(libraryCoverSize, SIGNAL(currentIndexChanged(int)), SLOT(libraryCoverSizeChanged()));
+    connect(albumsView, SIGNAL(currentIndexChanged(int)), SLOT(albumsViewChanged()));
+    connect(albumsCoverSize, SIGNAL(currentIndexChanged(int)), SLOT(albumsCoverSizeChanged()));
+    connect(playQueueGrouped, SIGNAL(currentIndexChanged(int)), SLOT(playQueueGroupedChanged()));
     connect(systemTrayCheckBox, SIGNAL(toggled(bool)), minimiseOnClose, SLOT(setEnabled(bool)));
     connect(systemTrayCheckBox, SIGNAL(toggled(bool)), SLOT(enableStartupState()));
     connect(minimiseOnClose, SIGNAL(toggled(bool)), SLOT(enableStartupState()));
     connect(forceSingleClick, SIGNAL(toggled(bool)), SLOT(forceSingleClickChanged()));
+    connect(sbPlayQueueView, SIGNAL(toggled(bool)), SLOT(ensureMinOneView()));
+    connect(sbArtistsView, SIGNAL(toggled(bool)), SLOT(ensureMinOneView()));
+    connect(sbAlbumsView, SIGNAL(toggled(bool)), SLOT(ensureMinOneView()));
+    connect(sbFoldersView, SIGNAL(toggled(bool)), SLOT(ensureMinOneView()));
+    connect(sbPlaylistsView, SIGNAL(toggled(bool)), SLOT(ensureMinOneView()));
+    connect(sbSearchView, SIGNAL(toggled(bool)), SLOT(ensureMinOneView()));
+    connect(sbInfoView, SIGNAL(toggled(bool)), SLOT(ensureMinOneView()));
+    #ifdef ENABLE_DYNAMIC
+    connect(sbDynamicView, SIGNAL(toggled(bool)), SLOT(ensureMinOneView()));
+    #endif
+    #ifdef ENABLE_STREAMS
+    connect(sbStreamsView, SIGNAL(toggled(bool)), SLOT(ensureMinOneView()));
+    #endif
+    #ifdef ENABLE_ONLINE_SERVICES
+    connect(sbOnlineView, SIGNAL(toggled(bool)), SLOT(ensureMinOneView()));
+    #endif
+    #ifdef ENABLE_DEVICES_SUPPORT
+    connect(sbDevicesView, SIGNAL(toggled(bool)), SLOT(ensureMinOneView()));
+    #endif
+
     #ifdef ENABLE_KDE_SUPPORT
     REMOVE(lang)
     REMOVE(langLabel)
@@ -218,40 +176,28 @@ InterfaceSettings::InterfaceSettings(QWidget *p, const QStringList &hiddenPages)
 
 void InterfaceSettings::load()
 {
-    if (enabledViews&V_Artists) {
-        libraryArtistImage->setChecked(Settings::self()->libraryArtistImage());
-        selectEntry(libraryView, Settings::self()->libraryView());
-        libraryCoverSize->setCurrentIndex(Settings::self()->libraryCoverSize());
-        libraryYear->setChecked(Settings::self()->libraryYear());
-    }
-    if (enabledViews&V_Albums) {
-        selectEntry(albumsView, Settings::self()->albumsView());
-        albumsCoverSize->setCurrentIndex(Settings::self()->albumsCoverSize());
-        albumSort->setCurrentIndex(Settings::self()->albumSort());
-    }
-    if (enabledViews&V_Folders) {
-        selectEntry(folderView, Settings::self()->folderView());
-    }
-    if (enabledViews&V_Playlists) {
-        selectEntry(playlistsView, Settings::self()->playlistsView());
-        playListsStartClosed->setChecked(Settings::self()->playListsStartClosed());
-    }
-    if (enabledViews&V_Streams) {
-        selectEntry(streamsView, Settings::self()->streamsView());
-    }
-    if (enabledViews&V_Online) {
-        selectEntry(onlineView, Settings::self()->onlineView());
-    }
+    libraryArtistImage->setChecked(Settings::self()->libraryArtistImage());
+    selectEntry(libraryView, Settings::self()->libraryView());
+    libraryCoverSize->setCurrentIndex(Settings::self()->libraryCoverSize());
+    libraryYear->setChecked(Settings::self()->libraryYear());
+    selectEntry(albumsView, Settings::self()->albumsView());
+    albumsCoverSize->setCurrentIndex(Settings::self()->albumsCoverSize());
+    albumSort->setCurrentIndex(Settings::self()->albumSort());
+    selectEntry(folderView, Settings::self()->folderView());
+    selectEntry(playlistsView, Settings::self()->playlistsView());
+    playListsStartClosed->setChecked(Settings::self()->playListsStartClosed());
+    #ifdef ENABLE_STREAMS
+    selectEntry(streamsView, Settings::self()->streamsView());
+    #endif
+    #ifdef ENABLE_ONLINE_SERVICES
+    selectEntry(onlineView, Settings::self()->onlineView());
+    #endif
     groupSingle->setChecked(Settings::self()->groupSingle());
     useComposer->setChecked(Settings::self()->useComposer());
     groupMultiple->setChecked(Settings::self()->groupMultiple());
     #ifdef ENABLE_DEVICES_SUPPORT
-    if (showDeleteAction) {
-        showDeleteAction->setChecked(Settings::self()->showDeleteAction());
-    }
-    if (devicesView) {
-        selectEntry(devicesView, Settings::self()->devicesView());
-    }
+    showDeleteAction->setChecked(Settings::self()->showDeleteAction());
+    selectEntry(devicesView, Settings::self()->devicesView());
     #endif
     playQueueGrouped->setCurrentIndex(Settings::self()->playQueueGrouped() ? 1 : 0);
     playQueueAutoExpand->setChecked(Settings::self()->playQueueAutoExpand());
@@ -259,13 +205,9 @@ void InterfaceSettings::load()
     playQueueScroll->setChecked(Settings::self()->playQueueScroll());
     playQueueBackground->setChecked(Settings::self()->playQueueBackground());
     playQueueConfirmClear->setChecked(Settings::self()->playQueueConfirmClear());
-    if (enabledViews&V_Albums) {
-        albumsViewChanged();
-        albumsCoverSizeChanged();
-    }
-    if (enabledViews&V_Playlists) {
-        playListsStyleChanged();
-    }
+    albumsViewChanged();
+    albumsCoverSizeChanged();
+    playListsStyleChanged();
     playQueueGroupedChanged();
     forceSingleClick->setChecked(Settings::self()->forceSingleClick());
     systemTrayCheckBox->setChecked(Settings::self()->useSystemTray());
@@ -280,44 +222,39 @@ void InterfaceSettings::load()
 
     enableStartupState();
     cacheScaledCovers->setChecked(Settings::self()->cacheScaledCovers());
+
+    QStringList hiddenPages=Settings::self()->hiddenPages();
+    foreach (QObject *child, viewsTab->children()) {
+        if (qobject_cast<QCheckBox *>(child) && !hiddenPages.contains(child->property(constPageProperty).toString())) {
+            static_cast<QCheckBox *>(child)->setChecked(true);
+        }
+    }
 }
 
 void InterfaceSettings::save()
 {
-    if (enabledViews&V_Artists) {
-        Settings::self()->saveLibraryArtistImage(libraryArtistImage->isChecked());
-        Settings::self()->saveLibraryView(getValue(libraryView));
-        Settings::self()->saveLibraryCoverSize(libraryCoverSize->currentIndex());
-        Settings::self()->saveLibraryYear(libraryYear->isChecked());
-    }
-    if (enabledViews&V_Albums) {
-        Settings::self()->saveAlbumsView(getValue(albumsView));
-        Settings::self()->saveAlbumsCoverSize(albumsCoverSize->currentIndex());
-        Settings::self()->saveAlbumSort(albumSort->currentIndex());
-    }
-    if (enabledViews&V_Folders) {
-        Settings::self()->saveFolderView(getValue(folderView));
-    }
-    if (enabledViews&V_Playlists) {
-        Settings::self()->savePlaylistsView(getValue(playlistsView));
-        Settings::self()->savePlayListsStartClosed(playListsStartClosed->isChecked());
-    }
-    if (enabledViews&V_Streams) {
-        Settings::self()->saveStreamsView(getValue(streamsView));
-    }
-    if (enabledViews&V_Online) {
-        Settings::self()->saveOnlineView(getValue(onlineView));
-    }
+    Settings::self()->saveLibraryArtistImage(libraryArtistImage->isChecked());
+    Settings::self()->saveLibraryView(getValue(libraryView));
+    Settings::self()->saveLibraryCoverSize(libraryCoverSize->currentIndex());
+    Settings::self()->saveLibraryYear(libraryYear->isChecked());
+    Settings::self()->saveAlbumsView(getValue(albumsView));
+    Settings::self()->saveAlbumsCoverSize(albumsCoverSize->currentIndex());
+    Settings::self()->saveAlbumSort(albumSort->currentIndex());
+    Settings::self()->saveFolderView(getValue(folderView));
+    Settings::self()->savePlaylistsView(getValue(playlistsView));
+    Settings::self()->savePlayListsStartClosed(playListsStartClosed->isChecked());
+    #ifdef ENABLE_STREAMS
+    Settings::self()->saveStreamsView(getValue(streamsView));
+    #endif
+    #ifdef ENABLE_ONLINE_SERVICES
+    Settings::self()->saveOnlineView(getValue(onlineView));
+    #endif
     Settings::self()->saveGroupSingle(groupSingle->isChecked());
     Settings::self()->saveUseComposer(useComposer->isChecked());
     Settings::self()->saveGroupMultiple(groupMultiple->isChecked());
     #ifdef ENABLE_DEVICES_SUPPORT
-    if (showDeleteAction) {
-        Settings::self()->saveShowDeleteAction(showDeleteAction->isChecked());
-    }
-    if (enabledViews&V_Devices) {
-        Settings::self()->saveDevicesView(getValue(devicesView));
-    }
+    Settings::self()->saveShowDeleteAction(showDeleteAction->isChecked());
+    Settings::self()->saveDevicesView(getValue(devicesView));
     #endif
     Settings::self()->savePlayQueueGrouped(1==playQueueGrouped->currentIndex());
     Settings::self()->savePlayQueueAutoExpand(playQueueAutoExpand->isChecked());
@@ -342,6 +279,14 @@ void InterfaceSettings::save()
         Settings::self()->saveLang(lang->itemData(lang->currentIndex()).toString());
     }
     #endif
+
+    QStringList hiddenPages;
+    foreach (QObject *child, viewsTab->children()) {
+        if (qobject_cast<QCheckBox *>(child) && !static_cast<QCheckBox *>(child)->isChecked()) {
+            hiddenPages.append(child->property(constPageProperty).toString());
+        }
+    }
+    Settings::self()->saveHiddenPages(hiddenPages);
 }
 
 #ifndef ENABLE_KDE_SUPPORT
@@ -483,4 +428,14 @@ void InterfaceSettings::langChanged()
     #ifndef ENABLE_KDE_SUPPORT
     langNoteLabel->setOn(lang->itemData(lang->currentIndex()).toString()!=Settings::self()->lang());
     #endif
+}
+
+void InterfaceSettings::ensureMinOneView()
+{
+    foreach (QObject *child, viewsTab->children()) {
+        if (qobject_cast<QCheckBox *>(child) && static_cast<QCheckBox *>(child)->isChecked()) {
+            return;
+        }
+    }
+    sbArtistsView->setChecked(true);
 }

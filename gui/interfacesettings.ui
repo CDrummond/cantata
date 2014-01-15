@@ -22,6 +22,171 @@
      <property name="movable">
       <bool>false</bool>
      </property>
+     <widget class="QWidget" name="viewsTab">
+      <attribute name="title">
+       <string>Views</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="viewsLayout">
+       <item>
+        <widget class="QLabel" name="viewsLabel">
+         <property name="text">
+          <string>&lt;i&gt;Select which views you would like to have visible:&lt;/i&gt;</string>
+         </property>
+         <property name="wordWrap">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="sbPlayQueueView">
+         <property name="text">
+          <string>Play queue</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="sbArtistsView">
+         <property name="text">
+          <string>Artists</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="sbAlbumsView">
+         <property name="text">
+          <string>Albums</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="sbFoldersView">
+         <property name="text">
+          <string>Folders</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="sbPlaylistsView">
+         <property name="text">
+          <string>Playlists</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="sbDynamicView">
+         <property name="text">
+          <string>Dynamic</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="sbStreamsView">
+         <property name="text">
+          <string>Streams</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="sbOnlineView">
+         <property name="text">
+          <string>Online</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="sbDevicesView">
+         <property name="text">
+          <string>Devices</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="sbSearchView">
+         <property name="text">
+          <string>Search</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="sbInfoView">
+         <property name="text">
+          <string>Info</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_xx">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>4</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="StateLabel" name="sbPlayQueueLabel">
+         <property name="text">
+          <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; By default, the play queue appears to the side of the other views. If you enable the option above, then it will be merged into the sidebar as per other views.&lt;/i&gt;</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+         </property>
+         <property name="wordWrap">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_x">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>4</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="StateLabel" name="sbInfoLabel">
+         <property name="text">
+         <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; By default, the 'Info' (current song information) view is accessible by pressing its icon in the main toolbar. If you enable the option above, then it will be merged into the sidebar as per other views.&lt;/i&gt;</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+         </property>
+         <property name="wordWrap">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_y">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>16</width>
+           <height>16</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
      <widget class="QWidget" name="tab">
       <attribute name="title">
        <string>Artists</string>

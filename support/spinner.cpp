@@ -25,6 +25,7 @@
 #include <QApplication>
 
 #ifdef ENABLE_KDE_SUPPORT
+#include <QAbstractItemView>
 
 Spinner::Spinner(QObject *p, bool inMiddle)
     : KPixmapSequenceOverlayPainter(p)
@@ -44,6 +45,15 @@ void Spinner::stop()
 {
      active=false;
      KPixmapSequenceOverlayPainter::stop();
+}
+
+void Spinner::setWidget(QWidget *widget)
+{
+    if (qobject_cast<QAbstractItemView *>(widget)) {
+        KPixmapSequenceOverlayPainter::setWidget(static_cast<QAbstractItemView *>(widget)->viewport());
+    } else {
+        KPixmapSequenceOverlayPainter::setWidget(widget);
+    }
 }
 
 #else

@@ -71,7 +71,7 @@ Spinner::Spinner(QObject *p, bool inMiddle)
     , central(inMiddle)
 {
     Q_UNUSED(p)
-    int size=fontMetrics().height()*2;
+    int size=fontMetrics().height()*1.5;
     setVisible(false);
     setMinimumSize(size, size);
     setMaximumSize(size, size);
@@ -104,6 +104,8 @@ static const int constSpinnerSteps=64;
 void Spinner::paintEvent(QPaintEvent *event)
 {
     static const int constParts=8;
+
+    int lineWidth(Utils::isHighDpi() ? 4 : 2);
     QPainter p(this);
     QRectF rectangle(1.5, 1.5, size().width()-3, size().height()-3);
     QColor col(palette().color(QPalette::Text));
@@ -112,7 +114,7 @@ void Spinner::paintEvent(QPaintEvent *event)
     double size=(360*16)/(2.0*constParts);
     for (int i=0; i<constParts; ++i) {
         col.setAlphaF((constParts-i)/(1.0*constParts));
-        p.setPen(QPen(col, 2));
+        p.setPen(QPen(col, lineWidth));
         p.drawArc(rectangle, (((constSpinnerSteps-value)*1.0)/(constSpinnerSteps*1.0)*360*16)+(i*2.0*size), size);
     }
     p.end();

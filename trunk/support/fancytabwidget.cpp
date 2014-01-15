@@ -787,7 +787,7 @@ void FancyTabWidget::ShowWidget(int index) {
 //}
 
 void FancyTabWidget::setStyle(int s) {
-  if(s==style_) {
+  if(s==style_ && tab_bar_) {
       return;
   }
   // Remove previous tab bar
@@ -897,19 +897,19 @@ void FancyTabWidget::contextMenuEvent(QContextMenuEvent* e) {
   if (!menu_) {
     menu_ = new QMenu(this);
 
-    int idx=0;
-    foreach (const Item& item, items_) {
-        if (Item::Type_Tab==item.type_) {
-            QAction* action = menu_->addAction(item.tab_icon_, item.tab_label_);
-            action->setCheckable(true);
-            action->setChecked(item.enabled_);
-            action->setData(idx);
-            Action::initIcon(action);
-            connect(action, SIGNAL(triggered()), this, SLOT(ToggleTab()));
-        }
-        idx++;
-    }
-    menu_->addSeparator();
+//    int idx=0;
+//    foreach (const Item& item, items_) {
+//        if (Item::Type_Tab==item.type_) {
+//            QAction* action = menu_->addAction(item.tab_icon_, item.tab_label_);
+//            action->setCheckable(true);
+//            action->setChecked(item.enabled_);
+//            action->setData(idx);
+//            Action::initIcon(action);
+//            connect(action, SIGNAL(triggered()), this, SLOT(ToggleTab()));
+//        }
+//        idx++;
+//    }
+//    menu_->addSeparator();
 
     styleGroup = new QActionGroup(this);
     positionGroup = new QActionGroup(this);
@@ -1079,6 +1079,39 @@ void FancyTabWidget::Recreate()
     int s=style_;
     style_=0;
     setStyle(s);
+}
+
+void FancyTabWidget::setHiddenPages(const QStringList &hidden)
+{
+    QSet<QString> h=hidden.toSet();
+    if (h==hiddenPages().toSet()) {
+        return;
+    }
+    bool needToRecreate=false;
+    bool needToSetCurrent=false;
+    for (int i=0; i<count(); ++i) {
+        QWidget *w=widget(i);
+        if (w && items_[i].enabled_==hidden.contains(w->metaObject()->className())) {
+            items_[i].enabled_=!items_[i].enabled_;
+            emit TabToggled(i);
+            needToRecreate=true;
+            if (i==current_index()) {
+                needToSetCurrent=true;
+            }
+        }
+    }
+    if (needToRecreate) {
+        Recreate();
+    }
+    if (needToSetCurrent) {
+        for (int i=0; i<count(); ++i) {
+            QWidget *w=widget(i);
+            if (w && items_[i].enabled_) {
+                SetCurrentIndex(i);
+                break;
+            }
+        }
+    }
 }
 
 QStringList FancyTabWidget::hiddenPages() const

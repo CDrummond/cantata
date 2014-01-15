@@ -61,6 +61,7 @@ private:
 
 private:
     QTimer *timer;
+    int space;
     int value;
     bool active;
     bool central;

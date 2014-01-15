@@ -52,6 +52,8 @@
 29. Allow to specify filename scheme when copying to library.
 30. Before calling ReplyGain after ripping CD, need to convert filenames to
     destination suffix.
+31. Use Podcasts and SoundCloud icons in cover widget, and song notification,
+    for relevant tracks.
 
 1.2.2
 -----

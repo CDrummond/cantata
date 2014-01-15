@@ -251,7 +251,7 @@ Song MPDParseUtils::parseSong(const QByteArray &data, bool isPlayQueue)
         song.genre = i18n("Unknown");
     }
 
-    #ifdef TAGLIB_FOUND
+    #ifdef ENABLE_HTTP_SERVER
     if (!song.file.isEmpty() && song.file.startsWith("http") && HttpServer::self()->isOurs(song.file)) {
         song.type=Song::CantataStream;
         Song mod=HttpServer::self()->decodeUrl(song.file);

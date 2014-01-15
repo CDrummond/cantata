@@ -374,6 +374,14 @@ void GtkProxyStyle::drawComplexControl(ComplexControl control, const QStyleOptio
     baseStyle()->drawComplexControl(control, option, painter, widget);
 }
 
+void GtkProxyStyle::drawPrimitive(PrimitiveElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget) const
+{
+    if (PE_PanelScrollAreaCorner==element && SB_Thin==sbarType && option) {
+        painter->fillRect(option->rect, option->palette.brush(QPalette::Base));
+    } else {
+        baseStyle()->drawPrimitive(element, option, painter, widget);
+    }
+}
 void GtkProxyStyle::polish(QWidget *widget)
 {
     if (SB_Standard!=sbarType && qobject_cast<QScrollBar *>(widget) && isOnCombo(widget)) {

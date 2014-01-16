@@ -2097,8 +2097,8 @@ msgstr "Un cliente de MPD para KDE"
 
 #: gui/main.cpp:216
 #, fuzzy
-msgid "Copyright &copy; 2011–2014 Craig Drummond"
-msgstr "Derechos de autor &copy; 2011-2014 Craig Drummond"
+msgid "&copy; 2011–2014 Craig Drummond"
+msgstr ""
 
 #: gui/main.cpp:220
 msgid "Craig Drummond"
@@ -2385,11 +2385,11 @@ msgstr "Acerca de Cantata"
 #: gui/mainwindow.cpp:1448
 msgctxt "Qt-only"
 msgid ""
-"<b>Cantata %1</b><br/><br/>MPD client.<br/><br/>&copy; Craig Drummond 2011-2014."
+"<b>Cantata %1</b><br/><br/>MPD client.<br/><br/>&copy; 2011–2014 Craig Drummond"
 "<br/>Released under the <a href=\"http://www.gnu.org/licenses/gpl.html"
 "\">GPLv3</a>"
 msgstr ""
-"<b>Cantata %1</b><br/><br/>MPD client.<br/><br/>&copy; Craig Drummond 2011-2014."
+"<b>Cantata %1</b><br/><br/>MPD client.<br/><br/>&copy; 2011–2014 Craig Drummond"
 "<br/>Publicado bajo la licencia <a href=\"http://www.gnu.org/licenses/gpl."
 "html\">GPLv3</a>"
 

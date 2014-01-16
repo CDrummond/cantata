@@ -32,6 +32,7 @@
 #include <QSet>
 #include <QMetaType>
 #include "config.h"
+#include "utils.h"
 
 struct Song
 {
@@ -112,6 +113,7 @@ struct Song
     static QString capitalize(const QString &s);
     bool capitalise();
     bool isStream() const { return Stream==type || CantataStream==type; }
+    bool isNonMPD() const { return isStream() || OnlineSvrTrack==type || Cdda==type || (!file.isEmpty() && file.startsWith(Utils::constDirSep)); }
     bool isCantataStream() const { return CantataStream==type; }
     bool isCdda() const { return Cdda==type; }
     QString albumKey() const { return albumArtist()+QLatin1Char(':')+album; }

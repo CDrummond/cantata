@@ -240,28 +240,36 @@ For artist images:
 ...if MPD folder exists, is not specified as a http URL, and is readable, then
    cantata will look for the following within the folder containing the song:
 
- 2. ${albumArtist}.jpg
- 3. ${albumArtist}.png
+ 2. ${basicArtist}.jpg
+ 3. ${basicArtist}.png
  4. artist.jpg
  5. artist.png
 
 ...the above will be repeated for the parent folder
 
+...if song is from a Various Artists album, or file is a non-MPD file, then
+   cantata will look for the following within the MPD root folder:
+
+ 6. ${basicArtist}/${basicArtist}.jpg
+ 7. ${basicArtist}/${basicArtist}.png
+ 8. ${basicArtist}/artist.jpg
+ 9. ${basicArtist}/artist.png
+
 ...then Cantata will check its cache folder (~/.cache/cantata/covers), for :
 
- 6. ${albumArtist}.jpg
- 7. ${albumArtist}.png
+10. ${albumArtist}.jpg
+11. ${albumArtist}.png
 
 ...if the MPD folder was specified as a http URL
 
- 8. ${url}/${dirFromFile}/artist.jpg
- 9. ${url}/${dirFromFile}/artist.png
+12. ${url}/${dirFromFile}/artist.jpg
+13. ${url}/${dirFromFile}/artist.png
  
 ...the above will be repeated for the parent folder
 
 ...lastly
 
-10. Query last.fm using ${albumArtist}. Cantata will attempt to download the
+14. Query last.fm using ${albumArtist}. Cantata will attempt to download the
     image specified with the "extralarge" size.
 
 Downloaded images will be saved as artist.jpg/png, within the artist folder
@@ -274,36 +282,44 @@ will be saved as a JPG within covers-scaled.
 
 For context view backdrops:
 
-...if MPD folder exists, is not specified as a http URL, and is readable, then
-   cantata will look for the following within the folder containing the song:
+...if MPD folder exists, is not specified as a http URL, and is readable, OR
+   the song's filename starts with '/', then cantata will look for the
+   following within the folder containing the song:
 
-1. ${currentArtist}-backdrop.jpg
-2. ${currentArtist}-backdrop.png
-3. backdrop.jpg
-4. backdrop.png
+ 1. ${currentArtist}-backdrop.jpg
+ 2. ${currentArtist}-backdrop.png
+ 3. backdrop.jpg
+ 4. backdrop.png
 
 ...the above will be repeated for the parent folder
 
+...if song is from a Various Artists album, or file is a non-MPD file, then
+   cantata will look for the following within the MPD root folder:
+
+ 5. ${currentArtist}/${currentArtist}-backdrop.jpg
+ 6. ${currentArtist}/${currentArtist}-backdrop.png
+ 7. ${currentArtist}/backdrop.jpg
+ 8. ${currentArtist}/backdrop.png
+
 ...then Cantata will check its cache folder (~/.cache/cantata/backdrops), for :
 
-5. ${currentArtist}.jpg
-6. ${currentArtist}.png
+ 9. ${currentArtist}.jpg
 
 ...internet services:
 
-7. MusizBrainz is queried for an artist ID. If returned, this artist ID is used
-   to locate a cover from fanart.tv
-8. Download image from discogs
+10. MusizBrainz is queried for an artist ID. If returned, this artist ID is used
+    to locate a cover from fanart.tv
+11. Download image from discogs
 
 ...lastly:
 
-9. If all the above fails, a backdrop is created from all the album covers
-   featuring the artist.
+12. If all the above fails, a backdrop is created from all the album covers
+    featuring the artist.
 
 Downloaded images will be saved as backdrop.jpg, within the artist folder
-if the current song is not from a Various Artists album, the folder heirarchy is
-2 levels (artist/album/) and the user has write permissions. If not, then they
-will be saved in Cantata's cache folder.
+if the current song is not from a Various Artists album, the file is from MPD,
+the folder heirarchy is 2 levels (artist/album/), and the user has write
+permissions. If not, then they will be saved in Cantata's cache folder.
 
 
 6. Advanced Config Items

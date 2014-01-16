@@ -54,6 +54,8 @@ private Q_SLOTS:
     void enableStartupState();
     void langChanged();
     void ensureMinOneView();
+    void sbAutoHideChanged();
+    void sbPlayQueueViewChanged();
 
 private:
     #ifndef ENABLE_KDE_SUPPORT

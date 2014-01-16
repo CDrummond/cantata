@@ -22,154 +22,212 @@
      <property name="movable">
       <bool>false</bool>
      </property>
-     <widget class="QWidget" name="viewsTab">
+     <widget class="QWidget" name="sidebarTab">
       <attribute name="title">
-       <string>Views</string>
+       <string>Sidebar</string>
       </attribute>
-      <layout class="QVBoxLayout" name="viewsLayout">
+      <layout class="QVBoxLayout" name="sidebarLayout">
        <item>
-        <widget class="QLabel" name="viewsLabel">
-         <property name="text">
-          <string>&lt;i&gt;Select which views you would like to have visible:&lt;/i&gt;</string>
+        <widget class="QGroupBox" name="viewsGroup">
+         <property name="title">
+          <string>Views:</string>
          </property>
-         <property name="wordWrap">
-          <bool>true</bool>
-         </property>
+         <layout class="QGridLayout" name="viewsLayout">
+          <item row="0" column="0">
+           <widget class="QCheckBox" name="sbPlayQueueView">
+            <property name="text">
+             <string>Play queue</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QCheckBox" name="sbArtistsView">
+            <property name="text">
+             <string>Artists</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QCheckBox" name="sbAlbumsView">
+            <property name="text">
+             <string>Albums</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QCheckBox" name="sbFoldersView">
+            <property name="text">
+             <string>Folders</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QCheckBox" name="sbPlaylistsView">
+            <property name="text">
+             <string>Playlists</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="0">
+           <widget class="QCheckBox" name="sbDynamicView">
+            <property name="text">
+             <string>Dynamic</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QCheckBox" name="sbStreamsView">
+            <property name="text">
+             <string>Streams</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QCheckBox" name="sbOnlineView">
+            <property name="text">
+             <string>Online</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QCheckBox" name="sbDevicesView">
+            <property name="text">
+             <string>Devices</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QCheckBox" name="sbSearchView">
+            <property name="text">
+             <string>Search</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="QCheckBox" name="sbInfoView">
+            <property name="text">
+             <string>Info</string>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="0">
+           <spacer name="verticalSpacer_xx">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Fixed</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>4</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="7" column="0" colspan="2">
+           <widget class="StateLabel" name="sbPlayQueueLabel">
+            <property name="text">
+             <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; By default, the play queue appears to the side of the other views. If you enable the option above, then it will be merged into the sidebar as per other views.&lt;/i&gt;</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="8" column="0">
+           <spacer name="verticalSpacer_x">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Fixed</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>4</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="9" column="0" colspan="2">
+           <widget class="StateLabel" name="sbInfoLabel">
+            <property name="text">
+             <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; By default, the 'Info' (current song information) view is accessible by pressing its icon in the main toolbar. If you enable the option above, then it will be merged into the sidebar as per other views.&lt;/i&gt;</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </widget>
        </item>
        <item>
-        <widget class="QCheckBox" name="sbPlayQueueView">
-         <property name="text">
-          <string>Play queue</string>
+        <widget class="QGroupBox" name="optionsGroup">
+         <property name="title">
+          <string>Options:</string>
          </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QCheckBox" name="sbArtistsView">
-         <property name="text">
-          <string>Artists</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QCheckBox" name="sbAlbumsView">
-         <property name="text">
-          <string>Albums</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QCheckBox" name="sbFoldersView">
-         <property name="text">
-          <string>Folders</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QCheckBox" name="sbPlaylistsView">
-         <property name="text">
-          <string>Playlists</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QCheckBox" name="sbDynamicView">
-         <property name="text">
-          <string>Dynamic</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QCheckBox" name="sbStreamsView">
-         <property name="text">
-          <string>Streams</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QCheckBox" name="sbOnlineView">
-         <property name="text">
-          <string>Online</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QCheckBox" name="sbDevicesView">
-         <property name="text">
-          <string>Devices</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QCheckBox" name="sbSearchView">
-         <property name="text">
-          <string>Search</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QCheckBox" name="sbInfoView">
-         <property name="text">
-          <string>Info</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <spacer name="verticalSpacer_xx">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Fixed</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>4</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item>
-        <widget class="StateLabel" name="sbPlayQueueLabel">
-         <property name="text">
-          <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; By default, the play queue appears to the side of the other views. If you enable the option above, then it will be merged into the sidebar as per other views.&lt;/i&gt;</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-         </property>
-         <property name="wordWrap">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <spacer name="verticalSpacer_x">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Fixed</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>4</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item>
-        <widget class="StateLabel" name="sbInfoLabel">
-         <property name="text">
-         <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; By default, the 'Info' (current song information) view is accessible by pressing its icon in the main toolbar. If you enable the option above, then it will be merged into the sidebar as per other views.&lt;/i&gt;</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-         </property>
-         <property name="wordWrap">
-          <bool>true</bool>
-         </property>
+         <layout class="QFormLayout" name="styleLayout">
+          <property name="fieldGrowthPolicy">
+           <enum>QFormLayout::ExpandingFieldsGrow</enum>
+          </property>
+          <item row="0" column="0">
+           <widget class="BuddyLabel" name="sbStyleLabel">
+            <property name="text">
+             <string>Style:</string>
+            </property>
+            <property name="buddy">
+             <cstring>sbStyle</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QComboBox" name="sbStyle"/>
+          </item>
+          <item row="1" column="0">
+           <widget class="BuddyLabel" name="sbPositionLabel">
+            <property name="text">
+             <string>Position:</string>
+            </property>
+            <property name="buddy">
+             <cstring>sbPosition</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QComboBox" name="sbPosition"/>
+          </item>
+          <item row="2" column="0" colspan="2">
+           <widget class="QCheckBox" name="sbIconsOnly">
+            <property name="text">
+             <string>Only show icons, no text</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0" colspan="2">
+           <widget class="QCheckBox" name="sbMonoIcons">
+            <property name="text">
+             <string>Use monochrome icons</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0" colspan="2">
+           <widget class="QCheckBox" name="sbAutoHide">
+            <property name="text">
+             <string>Auto-hide</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </widget>
        </item>
        <item>

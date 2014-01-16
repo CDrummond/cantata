@@ -26,6 +26,7 @@
 #include "itemview.h"
 #include "localize.h"
 #include "musiclibraryitemalbum.h"
+#include "fancytabwidget.h"
 #include <QComboBox>
 #ifndef ENABLE_KDE_SUPPORT
 #include <QDir>
@@ -172,6 +173,15 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     REMOVE(langLabel)
     REMOVE(langNoteLabel)
     #endif
+
+    sbStyle->addItem(i18n("Large"), FancyTabWidget::Large);
+    sbStyle->addItem(i18n("Small"), FancyTabWidget::Small);
+    sbStyle->addItem(i18n("Tab-bar"), FancyTabWidget::Tab);
+    sbPosition->addItem(Qt::LeftToRight==layoutDirection() ? i18n("Left") : i18n("Right"), FancyTabWidget::Side);
+    sbPosition->addItem(i18n("Top"), FancyTabWidget::Top);
+    sbPosition->addItem(i18n("Bottom"), FancyTabWidget::Bot);
+    connect(sbAutoHide, SIGNAL(toggled(bool)), SLOT(sbAutoHideChanged()));
+    connect(sbPlayQueueView, SIGNAL(toggled(bool)), SLOT(sbPlayQueueViewChanged()));
 }
 
 void InterfaceSettings::load()
@@ -224,11 +234,19 @@ void InterfaceSettings::load()
     cacheScaledCovers->setChecked(Settings::self()->cacheScaledCovers());
 
     QStringList hiddenPages=Settings::self()->hiddenPages();
-    foreach (QObject *child, viewsTab->children()) {
+    foreach (QObject *child, viewsGroup->children()) {
         if (qobject_cast<QCheckBox *>(child) && !hiddenPages.contains(child->property(constPageProperty).toString())) {
             static_cast<QCheckBox *>(child)->setChecked(true);
         }
     }
+    int sidebar=Settings::self()->sidebar();
+    selectEntry(sbStyle, sidebar&FancyTabWidget::Style_Mask);
+    selectEntry(sbPosition, sidebar&FancyTabWidget::Position_Mask);
+    sbIconsOnly->setChecked(sidebar&FancyTabWidget::IconOnly);
+    sbMonoIcons->setChecked(Settings::self()->monoSidebarIcons());
+    sbAutoHide->setChecked(Settings::self()->splitterAutoHide());
+    sbAutoHideChanged();
+    sbPlayQueueViewChanged();
 }
 
 void InterfaceSettings::save()
@@ -281,12 +299,19 @@ void InterfaceSettings::save()
     #endif
 
     QStringList hiddenPages;
-    foreach (QObject *child, viewsTab->children()) {
+    foreach (QObject *child, viewsGroup->children()) {
         if (qobject_cast<QCheckBox *>(child) && !static_cast<QCheckBox *>(child)->isChecked()) {
             hiddenPages.append(child->property(constPageProperty).toString());
         }
     }
     Settings::self()->saveHiddenPages(hiddenPages);
+    int sidebar=getValue(sbStyle)|getValue(sbPosition);
+    if (sbIconsOnly->isChecked()) {
+        sidebar|=FancyTabWidget::IconOnly;
+    }
+    Settings::self()->saveSidebar(sidebar);
+    Settings::self()->saveMonoSidebarIcons(sbMonoIcons->isChecked());
+    Settings::self()->saveSplitterAutoHide(sbAutoHide->isChecked());
 }
 
 #ifndef ENABLE_KDE_SUPPORT
@@ -432,10 +457,24 @@ void InterfaceSettings::langChanged()
 
 void InterfaceSettings::ensureMinOneView()
 {
-    foreach (QObject *child, viewsTab->children()) {
+    foreach (QObject *child, viewsGroup->children()) {
         if (qobject_cast<QCheckBox *>(child) && static_cast<QCheckBox *>(child)->isChecked()) {
             return;
         }
     }
     sbArtistsView->setChecked(true);
+}
+
+void InterfaceSettings::sbAutoHideChanged()
+{
+    if (sbAutoHide->isChecked()) {
+        sbPlayQueueView->setChecked(false);
+    }
+}
+
+void InterfaceSettings::sbPlayQueueViewChanged()
+{
+    if (sbPlayQueueView->isChecked()) {
+        sbAutoHide->setChecked(false);
+    }
 }

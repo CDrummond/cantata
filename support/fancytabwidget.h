@@ -47,14 +47,12 @@
 
 //#include <boost/scoped_ptr.hpp>
 
-class QActionGroup;
 class QMenu;
 class QPainter;
 class QSignalMapper;
 class QStackedWidget;
 class QStatusBar;
 class QVBoxLayout;
-class QActionGroup;
 
 namespace Core {
 namespace Internal {
@@ -214,11 +212,7 @@ public:
     int count() const;
     int visibleCount() const;
     int style() const { return style_; }
-    void addMenuAction(QAction *a) { removeMenuAction(a); otherActions.append(a); }
-    void removeMenuAction(QAction *a) { otherActions.removeAll(a); }
     QSize tabSize() const;
-    void addStyleAction(QAction *a) { removeMenuAction(a); otherStyleActions.append(a); }
-    void removeStyleAction(QAction *a) { otherStyleActions.removeAll(a); }
     void SetIcon(int index, const QIcon &icon);
     void SetToolTip(int index, const QString &tt);
     void Recreate();
@@ -237,16 +231,12 @@ Q_SIGNALS:
 
 protected:
     void paintEvent(QPaintEvent *event);
-    void contextMenuEvent(QContextMenuEvent* e);
 
 private Q_SLOTS:
-    void setStyle();
     void ShowWidget(int index);
-    void ToggleTab();
 
 private:
     void MakeTabBar(QTabBar::Shape shape, bool text, bool icons, bool fancy);
-    QAction * createAction(QActionGroup* group,  const QString& text, int s);
     int TabToIndex(int tab) const;
     int IndexToTab(int index) const { return index>=0 && index<items_.count() ? items_[index].index_ : 0; }
 
@@ -268,12 +258,6 @@ private:
     QScopedPointer<FancyTabProxyStyle> proxy_style_;
     bool allowContext_;
     bool drawBorder_;
-
-    QActionGroup *styleGroup;
-    QActionGroup *positionGroup;
-    QList<QAction *> styleActions;
-    QList<QAction *> otherActions;
-    QList<QAction *> otherStyleActions;
 };
 
 } // namespace Internal

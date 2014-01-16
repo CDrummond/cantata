@@ -71,7 +71,7 @@ int TagEditor::instanceCount()
 TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
                      const QSet<QString> &existingArtists, const QSet<QString> &existingAlbumArtists, const QSet<QString> &existingComposers,
                      const QSet<QString> &existingAlbums, const QSet<QString> &existingGenres, const QString &udi)
-    : SongDialog(parent, "TagEditor", QSize(500, 200))
+    : SongDialog(parent)
     #ifdef ENABLE_DEVICES_SUPPORT
     , deviceUdi(udi)
     #endif
@@ -274,6 +274,12 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
     connect(year, SIGNAL(valueChanged(int)), SLOT(checkChanged()));
     connect(trackName, SIGNAL(activated(int)), SLOT(setIndex(int)));
     connect(this, SIGNAL(update()), MPDConnection::self(), SLOT(update()));
+    adjustSize();
+    int w=600*(Utils::isHighDpi() ? 2 : 1);
+    if (width()<w) {
+        resize(w, height());
+    }
+    setMaximumHeight(height());
 }
 
 TagEditor::~TagEditor()

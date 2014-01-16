@@ -40,7 +40,6 @@
 #include "action.h"
 #include "utils.h"
 #include <QHBoxLayout>
-#include <QMenu>
 #include <QMouseEvent>
 #include <QPainter>
 #include <QSplitter>
@@ -606,7 +605,6 @@ FancyTabWidget::FancyTabWidget(QWidget* parent, bool allowContext, bool drawBord
     side_layout_(new QVBoxLayout),
     top_layout_(new QVBoxLayout),
 //     use_background_(false),
-    menu_(NULL),
     proxy_style_(new FancyTabProxyStyle),
     allowContext_(allowContext),
     drawBorder_(drawBorder)
@@ -852,134 +850,6 @@ void FancyTabWidget::ToggleTab(int tab, bool show) {
     }
 }
 
-void FancyTabWidget::ToggleTab() {
-    QAction *act=qobject_cast<QAction *>(sender());
-
-    if (act) {
-        ToggleTab(act->data().toInt(), act->isChecked());
-    }
-}
-
-void FancyTabWidget::contextMenuEvent(QContextMenuEvent* e) {
-  if (!allowContext_) {
-      return;
-  }
-
-  // Check we are over tab space...
-  if (Tab==(style_&Style_Mask)) {
-      if (QApplication::widgetAt(e->globalPos())!=tab_bar_) {
-          return;
-      }
-  }
-  else {
-      switch (style_&Position_Mask) {
-      case Bot:
-          if (e->pos().y()<=(side_widget_->pos().y()+(side_widget_->height()-tab_bar_->height()))) {
-              return;
-          }
-          break;
-      case Top:
-          if (e->pos().y()>(side_widget_->pos().y()+tab_bar_->height())) {
-              return;
-          }
-          break;
-      default:
-          if (Qt::RightToLeft==QApplication::layoutDirection()) {
-              if (e->pos().x()<=side_widget_->pos().x()) {
-                  return;
-              }
-          } else if (e->pos().x()>=side_widget_->rect().right()) {
-              return;
-          }
-      }
-  }
-
-  if (!menu_) {
-    menu_ = new QMenu(this);
-
-//    int idx=0;
-//    foreach (const Item& item, items_) {
-//        if (Item::Type_Tab==item.type_) {
-//            QAction* action = menu_->addAction(item.tab_icon_, item.tab_label_);
-//            action->setCheckable(true);
-//            action->setChecked(item.enabled_);
-//            action->setData(idx);
-//            Action::initIcon(action);
-//            connect(action, SIGNAL(triggered()), this, SLOT(ToggleTab()));
-//        }
-//        idx++;
-//    }
-//    menu_->addSeparator();
-
-    styleGroup = new QActionGroup(this);
-    positionGroup = new QActionGroup(this);
-    QMenu *styleMenu=new QMenu(this);
-    QMenu *positionMenu=new QMenu(this);
-    QAction *styleAct=new QAction(i18n("Style"), this);
-    QAction *positionAct=new QAction(i18n("Position"), this);
-    createAction(styleGroup, i18n("Large"), Large);
-    createAction(styleGroup, i18n("Small"), Small);
-    createAction(styleGroup, i18n("Tabs"), Tab);
-    createAction(positionGroup, i18n("Side"), Side);
-    createAction(positionGroup, i18n("Top"), Top);
-    createAction(positionGroup, i18n("Bottom"), Bot);
-    styleMenu->addActions(styleGroup->actions());
-    positionMenu->addActions(positionGroup->actions());
-    styleMenu->addSeparator();
-    styleMenu->addAction(createAction(0, i18n("Icons Only"), IconOnly));
-    foreach (QAction *a, otherStyleActions) {
-      styleMenu->addAction(a);
-    }
-    styleAct->setMenu(styleMenu);
-    styleAct->setData(-1);
-    menu_->addAction(styleAct);
-    positionAct->setMenu(positionMenu);
-    positionAct->setData(-1);
-    menu_->addAction(positionAct);
-    foreach (QAction *a, otherActions) {
-      menu_->addAction(a);
-    }
-  }
-
-  foreach (QAction *act, menu_->actions()) {
-      if (act->data().toInt()==stack_->currentIndex()) {
-          act->setEnabled(false);
-      } else {
-          act->setEnabled(true);
-      }
-  }
-  menu_->popup(e->globalPos());
-}
-
-QAction* FancyTabWidget::createAction(QActionGroup* group, const QString& text, int s) {
-  QAction* action = group ? group->addAction(text) : new QAction(text, this);
-  action->setCheckable(true);
-  action->setData(s);
-  connect(action, SIGNAL(triggered()), this, SLOT(setStyle()));
-
-  int mask=s&Position_Mask ? Position_Mask : (s&Style_Mask ? Style_Mask : Options_Mask);
-  if (s==(style_&mask)) {
-    action->setChecked(true);
-  }
-  styleActions.append(action);
-  return action;
-}
-
-void FancyTabWidget::setStyle()
-{
-    QAction *act=qobject_cast<QAction *>(sender());
-
-    if (!act) {
-        return;
-    }
-    int s=act->data().toInt();
-    int newStyle=act->isChecked() ? s : 0;
-    // TODO: below WONT work if we have more than 1 option...
-    int mask=0xFFFF-(s&Position_Mask ? Position_Mask : (s&Style_Mask ? Style_Mask : Options_Mask));
-    newStyle|=style_&mask;
-    setStyle(newStyle);
-}
-
 void FancyTabWidget::MakeTabBar(QTabBar::Shape shape, bool text, bool icons, bool fancy) {
   QTabBar* bar = new QTabBar(this);
   bar->setShape(shape);
@@ -1051,10 +921,6 @@ void FancyTabWidget::SetIcon(int index, const QIcon &icon)
 {
     if (index>0 && index<items_.count()) {
         items_[index].tab_icon_=icon;
-    }
-    if (menu_) {
-        menu_->deleteLater();
-        menu_=0;
     }
 }
 

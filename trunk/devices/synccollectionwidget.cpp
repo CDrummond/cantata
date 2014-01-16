@@ -39,7 +39,7 @@ SyncCollectionWidget::SyncCollectionWidget(QWidget *parent, const QString &title
     , searchTimer(0)
 {
     setupUi(this);
-    groupBox->setTitle(title);
+    titleLabel->setText(title);
     button->setText(action);
     button->setEnabled(false);
 

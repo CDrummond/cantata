@@ -586,8 +586,9 @@ void ContextWidget::updateBackdrop()
     }
 
     if (!currentSong.isStream() && MPDConnection::self()->getDetails().dirReadable) {
-        QString dirName=MPDConnection::self()->getDetails().dir;
-        if (!dirName.isEmpty() && !dirName.startsWith(QLatin1String("http:/"))) {
+        bool localNonMpd=currentSong.file.startsWith(Utils::constDirSep);
+        QString dirName=localNonMpd ? QString() : MPDConnection::self()->getDetails().dir;
+        if (localNonMpd || (!dirName.isEmpty() && !dirName.startsWith(QLatin1String("http:/")))) {
             dirName+=Utils::getDir(currentSong.file);
             QString encoded=Covers::encodeName(currentArtist);
             QStringList names=QStringList() << encoded+"-"+constBackdropName+".jpg" << encoded+"-"+constBackdropName+".png"
@@ -895,8 +896,8 @@ void ContextWidget::downloadResponse()
         updateImage(img);
         bool saved=false;
 
-        if (Settings::self()->storeBackdropsInMpdDir() && !currentSong.isVariousArtists() && !currentSong.isStream() &&
-            !currentSong.isCdda() && MPDConnection::self()->getDetails().dirReadable) {
+        if (Settings::self()->storeBackdropsInMpdDir() && !currentSong.isVariousArtists() &&
+            !currentSong.isNonMPD() && MPDConnection::self()->getDetails().dirReadable) {
             QString mpdDir=MPDConnection::self()->getDetails().dir;
             QString songDir=Utils::getDir(currentSong.file);
             if (!mpdDir.isEmpty() && 2==songDir.split(Utils::constDirSep, QString::SkipEmptyParts).count()) {
@@ -916,8 +917,8 @@ void ContextWidget::downloadResponse()
             }
         } else {
             DBUG << "Not saving to mpd folder - set to save in mpd?" << Settings::self()->storeBackdropsInMpdDir()
-                 << "isVa:" << currentSong.isVariousArtists() << "isStream:" << currentSong.isStream()
-                 << "isCdda:" << currentSong.isCdda()  << "mpd readable:" << MPDConnection::self()->getDetails().dirReadable;
+                 << "isVa:" << currentSong.isVariousArtists() << "isNonMPD:" << currentSong.isNonMPD()
+                 << "mpd readable:" << MPDConnection::self()->getDetails().dirReadable;
         }
 
         if (!saved) {

@@ -1194,8 +1194,8 @@ bool MainWindow::canShowDialog()
 
 void MainWindow::showPreferencesDialog(const QString &page)
 {
-    if (PreferencesDialog::instanceCount() && !page.isEmpty()) {
-        emit showPreferencesPage(page);
+    if (PreferencesDialog::instanceCount()) {
+        emit showPreferencesPage(page.isEmpty() ? "collection" : page);
     }
     if (PreferencesDialog::instanceCount() || !canShowDialog()) {
         return;

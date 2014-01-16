@@ -45,9 +45,10 @@ DigitallyImportedSettings::DigitallyImportedSettings(QWidget *parent)
     connect(loginButton, SIGNAL(clicked()), this, SLOT(login()));
     connect(DigitallyImported::self(), SIGNAL(loginStatus(bool,QString)), SLOT(loginStatus(bool,QString)));
 
-    adjustSize();
     int h=fontMetrics().height();
-    resize(h*35, height());
+    user->setMinimumWidth(h*20);
+    adjustSize();
+    setMinimumSize(size());
 }
 
 void DigitallyImportedSettings::show()

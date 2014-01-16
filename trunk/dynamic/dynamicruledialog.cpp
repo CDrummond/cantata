@@ -30,7 +30,7 @@ static const int constMaxDate=2100;
 static const QChar constDateSep('-');
 
 DynamicRuleDialog::DynamicRuleDialog(QWidget *parent)
-    : Dialog(parent, "DynamicRuleDialog")
+    : Dialog(parent)
     , addingRules(false)
 {
     QWidget *mainWidet = new QWidget(this);
@@ -90,6 +90,15 @@ DynamicRuleDialog::DynamicRuleDialog(QWidget *parent)
     artistText->setFocus();
     errorLabel->setVisible(false);
     errorLabel->setStyleSheet(QLatin1String("QLabel{color:red;}"));
+    adjustSize();
+    int h=height();
+    int w=width();
+    int minW=500*(Utils::isHighDpi() ? 2 : 1);
+    setMinimumWidth(minW);
+    setMinimumHeight(h);
+    if (w<minW) {
+        resize(minW, h);
+    }
 }
 
 DynamicRuleDialog::~DynamicRuleDialog()

@@ -444,18 +444,6 @@ MainWindow::MainWindow(QWidget *parent)
     folderPage->setEnabled(!hiddenPages.contains(folderPage->metaObject()->className()));
     setPlaylistsEnabled(!hiddenPages.contains(playlistsPage->metaObject()->className()));
 
-    autoHideSplitterAction=new QAction(i18n("Auto Hide"), this);
-    autoHideSplitterAction->setCheckable(true);
-    autoHideSplitterAction->setChecked(Settings::self()->splitterAutoHide());
-    tabWidget->addMenuAction(autoHideSplitterAction);
-    connect(autoHideSplitterAction, SIGNAL(toggled(bool)), this, SLOT(toggleSplitterAutoHide()));
-
-    monoIconsAction=new QAction(i18n("Monochrome Icons"), this);
-    monoIconsAction->setCheckable(true);
-    monoIconsAction->setChecked(Settings::self()->monoSidebarIcons());
-    tabWidget->addStyleAction(monoIconsAction);
-    connect(monoIconsAction, SIGNAL(toggled(bool)), this, SLOT(toggleMonoIcons()));
-
     if (playQueueInSidebar) {
         tabToggled(PAGE_PLAYQUEUE);
     } else {
@@ -859,7 +847,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(tabWidget, SIGNAL(styleChanged(int)), this, SLOT(sidebarModeChanged()));
     connect(messageWidget, SIGNAL(visible(bool)), this, SLOT(messageWidgetVisibility(bool)));
 
-    toggleSplitterAutoHide();
     readSettings();
     updateConnectionsMenu();
     fadeStop=Settings::self()->stopFadeDuration()>Settings::MinFade;
@@ -908,8 +895,6 @@ MainWindow::~MainWindow()
         }
         Settings::self()->saveShowPlaylist(expandInterfaceAction->isChecked());
     }
-    Settings::self()->saveSplitterAutoHide(autoHideSplitterAction->isChecked());
-    Settings::self()->saveSidebar(tabWidget->style());
     Settings::self()->savePage(tabWidget->currentWidget()->metaObject()->className());
     playQueue->saveHeader();
     context->saveConfig();
@@ -1432,6 +1417,9 @@ void MainWindow::readSettings()
     #endif
     context->readConfig();
     tabWidget->setHiddenPages(Settings::self()->hiddenPages());
+    tabWidget->setStyle(Settings::self()->sidebar());
+    toggleMonoIcons();
+    toggleSplitterAutoHide();
 }
 
 void MainWindow::updateSettings()
@@ -2535,8 +2523,7 @@ void MainWindow::tabToggled(int index)
     switch (index) {
     case PAGE_PLAYQUEUE:
         if (tabWidget->isEnabled(index)) {
-            autoHideSplitterAction->setVisible(false);
-            splitter->setAutohidable(0, autoHideSplitterAction->isChecked() && !tabWidget->isEnabled(PAGE_PLAYQUEUE));
+            splitter->setAutohidable(0, Settings::self()->splitterAutoHide() && !tabWidget->isEnabled(PAGE_PLAYQUEUE));
             playQueueWidget->setParent(playQueuePage);
             playQueuePage->layout()->addWidget(playQueueWidget);
             playQueueWidget->setVisible(true);
@@ -2545,8 +2532,7 @@ void MainWindow::tabToggled(int index)
             playQueuePage->layout()->removeWidget(playQueueWidget);
             playQueueWidget->setParent(splitter);
             playQueueWidget->setVisible(true);
-            autoHideSplitterAction->setVisible(true);
-            splitter->setAutohidable(0, autoHideSplitterAction->isChecked() && !tabWidget->isEnabled(PAGE_PLAYQUEUE));
+            splitter->setAutohidable(0, Settings::self()->splitterAutoHide() && !tabWidget->isEnabled(PAGE_PLAYQUEUE));
             int spacing=Utils::layoutSpacing(this);
             playQueueSpacer->changeSize(spacing, spacing, QSizePolicy::Fixed, QSizePolicy::Fixed);
         }
@@ -2604,16 +2590,16 @@ void MainWindow::tabToggled(int index)
 
 void MainWindow::toggleSplitterAutoHide()
 {
-    bool ah=autoHideSplitterAction->isChecked() && !tabWidget->isEnabled(PAGE_PLAYQUEUE);
-    splitter->setAutoHideEnabled(ah);
-    splitter->setAutohidable(0, ah);
+    bool ah=Settings::self()->splitterAutoHide();
+    if (splitter->isAutoHideEnabled()!=ah) {
+        splitter->setAutoHideEnabled(ah);
+        splitter->setAutohidable(0, ah);
+    }
 }
 
 void MainWindow::toggleMonoIcons()
 {
-    bool mono=monoIconsAction->isChecked();
-    if (mono!=Settings::self()->monoSidebarIcons()) {
-        Settings::self()->saveMonoSidebarIcons(mono);
+    if (Settings::self()->monoSidebarIcons()!=Icons::self()->monoSidebarIcons()) {
         Icons::self()->initSidebarIcons();
         showPlayQueueAction->setIcon(Icons::self()->playqueueIcon);
         tabWidget->SetIcon(PAGE_PLAYQUEUE, showPlayQueueAction->icon());

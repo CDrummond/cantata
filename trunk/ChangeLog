@@ -55,8 +55,7 @@
 31. Use Podcasts and SoundCloud icons in cover widget, and song notification,
     for relevant tracks.
 32. Fix displaying of disc and track numbers for online services.
-33. Move configuring of enabled views into main interface section of settings
-    dialog.
+33. Move sidebar settings into settings dialog.
 
 1.2.2
 -----

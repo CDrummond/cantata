@@ -384,8 +384,6 @@ private:
     Action *serverInfoAction;
     Action *clearPlayQueueAction;
     Action *cancelAction;
-    QAction *autoHideSplitterAction;
-    QAction *monoIconsAction;
     TrayItem *trayItem;
     QPoint lastPos;
     QSize expandedSize;

@@ -470,9 +470,16 @@ Icons::Icons()
     #endif
 }
 
+static bool monoSb=true;
+bool Icons::monoSidebarIcons()
+{
+    return monoSb;
+}
+
 void Icons::initSidebarIcons()
 {
     if (Settings::self()->monoSidebarIcons()) {
+        monoSb=true;
         QColor textCol=QApplication::palette().color(QPalette::Active, QPalette::ButtonText);
         QColor highlightedTexCol=QApplication::palette().color(QPalette::Active, QPalette::HighlightedText);
         playqueueIcon=loadSidebarIcon("playqueue", textCol, highlightedTexCol);
@@ -495,6 +502,7 @@ void Icons::initSidebarIcons()
         #endif
         searchTabIcon=loadSidebarIcon("search", textCol, highlightedTexCol);
     } else {
+        monoSb=false;
         playqueueIcon=Icon("media-playback-start");
         artistsIcon=artistIcon;
         albumsIcon=albumIcon;

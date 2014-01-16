@@ -154,7 +154,7 @@ QVariantMap Mpris::Metadata() const {
             metadataMap.insert("xesam:contentCreated", QString("%04d").arg(currentSong.year));
         }
         if (!currentSong.file.isEmpty()) {
-            if (currentSong.isStream()) {
+            if (currentSong.isNonMPD()) {
                 metadataMap.insert("xesam:url", currentSong.file);
             } else if (MPDConnection::self()->getDetails().dirReadable) {
                 QString mpdDir=MPDConnection::self()->getDetails().dir;

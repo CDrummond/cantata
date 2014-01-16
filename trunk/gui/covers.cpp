@@ -732,7 +732,7 @@ QString CoverDownloader::saveImg(const Job &job, const QImage &img, const QByteA
     }
 
     if (job.isArtist) {
-        if (saveInMpdDir && canSaveTo(job.dir)) {
+        if (saveInMpdDir && !job.song.isNonMPD() && canSaveTo(job.dir)) {
             QString mpdDir=MPDConnection::self()->getDetails().dir;
             if (!mpdDir.isEmpty() && job.dir.startsWith(mpdDir) && 2==job.dir.mid(mpdDir.length()).split(Utils::constDirSep, QString::SkipEmptyParts).count()) {
                 QDir d(job.dir);
@@ -755,7 +755,7 @@ QString CoverDownloader::saveImg(const Job &job, const QImage &img, const QByteA
         }
     } else {
         // Try to save as cover.jpg in album dir...
-        if (saveInMpdDir && canSaveTo(job.dir)) {
+        if (saveInMpdDir && !job.song.isNonMPD() && canSaveTo(job.dir)) {
             QString coverName=Covers::albumFileName(job.song);
             savedName=save(mimeType, extension, job.dir+coverName, img, raw);
             if (!savedName.isEmpty()) {

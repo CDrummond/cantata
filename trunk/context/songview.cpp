@@ -265,7 +265,7 @@ void SongView::abort()
 
         text->setText(QString());
         // Set lyrics file anyway - so that editing is enabled!
-        lyricsFile=Settings::self()->storeLyricsInMpdDir()
+        lyricsFile=Settings::self()->storeLyricsInMpdDir() && !currentSong.isNonMPD()
                 ? mpdFilePath(currentSong)
                 : cacheFile(currentSong.artist, currentSong.title);
         setMode(Mode_Display);
@@ -315,7 +315,7 @@ void SongView::update(const Song &s, bool force)
             currentProvider=-1;
         }
 
-        if (!MPDConnection::self()->getDetails().dir.isEmpty() && !song.file.isEmpty() && !song.isStream()) {
+        if (!MPDConnection::self()->getDetails().dir.isEmpty() && !song.file.isEmpty() && !song.isNonMPD()) {
             QString songFile=song.file;
 
             if (song.isCantataStream()) {
@@ -421,7 +421,7 @@ void SongView::lyricsReady(int id, QString lyrics)
         } else {
             text->setText(fixNewLines(plain));
             lyricsFile=QString();
-            if (! ( Settings::self()->storeLyricsInMpdDir() &&
+            if (! ( Settings::self()->storeLyricsInMpdDir() && !currentSong.isNonMPD() &&
                     saveFile(mpdFilePath(currentSong))) ) {
                 saveFile(cacheFile(currentSong.artist, currentSong.title, true));
             }
@@ -446,7 +446,7 @@ bool SongView::saveFile(const QString &fileName)
 
 QString SongView::mpdFileName() const
 {
-    return currentSong.file.isEmpty() || MPDConnection::self()->getDetails().dir.isEmpty() || currentSong.isStream()
+    return currentSong.file.isEmpty() || MPDConnection::self()->getDetails().dir.isEmpty() || currentSong.isNonMPD()
             ? QString() : mpdFilePath(currentSong);
 }
 
@@ -466,7 +466,7 @@ void SongView::getLyrics()
         text->setText(QString());
         currentProvider=-1;
         // Set lyrics file anyway - so that editing is enabled!
-        lyricsFile=Settings::self()->storeLyricsInMpdDir()
+        lyricsFile=Settings::self()->storeLyricsInMpdDir() && !currentSong.isNonMPD()
                 ? mpdFilePath(currentSong)
                 : cacheFile(currentSong.artist, currentSong.title);
         setMode(Mode_Display);

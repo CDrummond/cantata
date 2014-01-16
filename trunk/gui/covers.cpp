@@ -747,7 +747,7 @@ QString CoverDownloader::saveImg(const Job &job, const QImage &img, const QByteA
 
         QString dir = Utils::cacheDir(Covers::constCoverDir);
         if (!dir.isEmpty()) {
-            savedName=save(mimeType, extension, dir+Covers::encodeName(job.song.albumartist), img, raw);
+            savedName=save(mimeType, extension, dir+Covers::encodeName(job.song.basicArtist()), img, raw);
             if (!savedName.isEmpty()) {
                 DBUG << job.song.file << savedName;
                 return savedName;
@@ -1047,7 +1047,8 @@ Covers::Image Covers::locateImage(const Song &song)
 
         if (isArtistImage) {
             QString artistFile=artistFileName(song);
-            QStringList names=QStringList() << song.albumartist+".jpg" << song.albumartist+".png" << artistFile+".jpg" << artistFile+".png";
+            QString basicArtist=song.basicArtist();
+            QStringList names=QStringList() << basicArtist+".jpg" << basicArtist+".png" << artistFile+".jpg" << artistFile+".png";
             for (int level=0; level<2; ++level) {
                 foreach (const QString &fileName, names) {
                     if (QFile::exists(dirName+fileName)) {
@@ -1062,6 +1063,25 @@ Covers::Image Covers::locateImage(const Song &song)
                 QDir d(dirName);
                 d.cdUp();
                 dirName=Utils::fixPath(d.absolutePath());
+            }
+
+            // For various artists tracks, or for non-MPD files, see if we have a matching backdrop in MPD.
+            // e.g. artist=Wibble, look for $mpdDir/Wibble/backdrop.png
+            if (song.isVariousArtists() || song.isNonMPD()) {
+                dirName=MPDConnection::self()->getDetails().dirReadable ? MPDConnection::self()->getDetails().dir : QString();
+                if (!dirName.isEmpty() && !dirName.startsWith(QLatin1String("http:/"))) {
+                    dirName+=basicArtist+Utils::constDirSep;
+                    foreach (const QString &fileName, names) {
+                        if (QFile::exists(dirName+fileName)) {
+                            QImage img(dirName+fileName);
+
+                            if (!img.isNull()) {
+                                DBUG_CLASS("Covers") << "Got artist image" << QString(dirName+fileName);
+                                return Image(img, dirName+fileName);
+                            }
+                        }
+                    }
+                }
             }
         } else {
             QStringList names;

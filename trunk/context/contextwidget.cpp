@@ -585,17 +585,19 @@ void ContextWidget::updateBackdrop()
         return;
     }
 
-    if (!currentSong.isStream() && MPDConnection::self()->getDetails().dirReadable) {
+    QString encoded=Covers::encodeName(currentArtist);
+    QStringList names=QStringList() << encoded+"-"+constBackdropName+".jpg" << encoded+"-"+constBackdropName+".png"
+                                    << constBackdropName+".jpg" << constBackdropName+".png";
+
+    if (!currentSong.isStream()) {
         bool localNonMpd=currentSong.file.startsWith(Utils::constDirSep);
         QString dirName=localNonMpd ? QString() : MPDConnection::self()->getDetails().dir;
-        if (localNonMpd || (!dirName.isEmpty() && !dirName.startsWith(QLatin1String("http:/")))) {
+        if (localNonMpd || (!dirName.isEmpty() && !dirName.startsWith(QLatin1String("http:/")) && MPDConnection::self()->getDetails().dirReadable)) {
             dirName+=Utils::getDir(currentSong.file);
-            QString encoded=Covers::encodeName(currentArtist);
-            QStringList names=QStringList() << encoded+"-"+constBackdropName+".jpg" << encoded+"-"+constBackdropName+".png"
-                                            << constBackdropName+".jpg" << constBackdropName+".png";
+
             for (int level=0; level<2; ++level) {
                 foreach (const QString &fileName, names) {
-                    DBUG << "Checking file" << QString(dirName+fileName);
+                    DBUG << "Checking file(1)" << QString(dirName+fileName);
                     if (QFile::exists(dirName+fileName)) {
                         QImage img(dirName+fileName);
 
@@ -610,6 +612,28 @@ void ContextWidget::updateBackdrop()
                 QDir d(dirName);
                 d.cdUp();
                 dirName=Utils::fixPath(d.absolutePath());
+            }
+        }
+    }
+
+    // For various artists tracks, or for non-MPD files, see if we have a matching backdrop in MPD.
+    // e.g. artist=Wibble, look for $mpdDir/Wibble/backdrop.png
+    if (currentSong.isVariousArtists() || currentSong.isNonMPD()) {
+        QString dirName=MPDConnection::self()->getDetails().dirReadable ? MPDConnection::self()->getDetails().dir : QString();
+        if (!dirName.isEmpty() && !dirName.startsWith(QLatin1String("http:/"))) {
+            dirName+=currentArtist+Utils::constDirSep;
+            foreach (const QString &fileName, names) {
+                DBUG << "Checking file(2)" << QString(dirName+fileName);
+                if (QFile::exists(dirName+fileName)) {
+                    QImage img(dirName+fileName);
+
+                    if (!img.isNull()) {
+                        DBUG << "Got backdrop from" << QString(dirName+fileName);
+                        updateImage(img);
+                        QWidget::update();
+                        return;
+                    }
+                }
             }
         }
     }

@@ -69,6 +69,8 @@ public:
     void setOrientation(Qt::Orientation o);
     int value() const;
     void saveConfig();
+    void setEnabled(bool e) { slider->setEnabled(e); }
+    bool isEnabled() const { return slider->isEnabled(); }
 
 Q_SIGNALS:
     void sliderReleased();

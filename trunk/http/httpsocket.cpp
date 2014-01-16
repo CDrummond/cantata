@@ -378,8 +378,8 @@ void HttpSocket::readClient()
                             int lastSector = cdparanoia.lastSectorOfTrack(song.id);
                             qint32 totalSize = ((lastSector-firstSector)+1)*CD_FRAMESIZE_RAW;
                             int count = 0;
+                            bool writeHeader=0==readBytesFrom; // Only write header if we are not seeking...
 //                            int bytesToDiscard = 0; // Number of bytes to discard in first read sector due to range request in HTTP header
-
 //                            if (readBytesFrom>=ExtractJob::constWavHeaderSize) {
 //                                readBytesFrom-=ExtractJob::constWavHeaderSize;
 //                            }
@@ -392,7 +392,7 @@ void HttpSocket::readClient()
                             cdparanoia.seek(firstSector, SEEK_SET);
                             ok=true;
                             writeMimeType(QLatin1String("audio/x-wav"), socket, readBytesFrom, totalSize+ExtractJob::constWavHeaderSize, false);
-                            if (0==readBytesFrom) { // Only write header if we are not seeking...
+                            if (writeHeader) {
                                 ExtractJob::writeWavHeader(*socket, totalSize);
                             }
                             bool stop=false;

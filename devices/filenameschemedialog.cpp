@@ -28,7 +28,7 @@
 
 static const char * constVariableProperty="cantata-var";
 FilenameSchemeDialog::FilenameSchemeDialog(QWidget *parent)
-    : Dialog(parent, "FilenameSchemeDialog")
+    : Dialog(parent)
 {
     setButtons(Ok|Cancel);
     setCaption(i18n("Filename Scheme"));
@@ -69,6 +69,8 @@ FilenameSchemeDialog::FilenameSchemeDialog(QWidget *parent)
     exampleSong.disc=2;
     exampleSong.year=2001;
     exampleSong.file="wibble.mp3";
+    adjustSize();
+    setMaximumHeight(height());
 }
 
 void FilenameSchemeDialog::show(const DeviceOptions &opts)

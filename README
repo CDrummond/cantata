@@ -35,14 +35,14 @@ Cantata is a graphical client for MPD. It contains the following features:
     installed)
  9. Dynamic playlists.
 10. Online services; Jamendo, Magnatune, SoundCloud, and Podcasts.
-11. Radio stream support - wth the ability to search for streams via TuneIn or
+11. Radio stream support - with the ability to search for streams via TuneIn or
     ShoutCast.
 12. USB-Mass-Storage and MTP device support. (Linux only, and if relevant
     libraries installed)
 13. Audio CD ripping and playback. (Linux only, and if relevant libraries
     installed)
 14. Playback of non-MPD songs - via simple in-built HTTP server if connected
-    to MPD via a standard socket.
+    to MPD via a standard socket, otherwise filepath is sent to MPD.
 15. MPRISv2 DBUS interface.
 16. Support for KDE global shortcuts (KDE builds), GNOME media keys
     (Linux only), and standard media keys (via Qxt)
@@ -61,7 +61,7 @@ the Artist tag), to provide album counts, tracks counts, etc in the browser
 views and tooltips, and also to help with copying songs to/from devices.
 
 This cache is updated only when MPD indicates that its version of the collection
-is different to Cantatas. If you press the 'Refresh Database' button in either
+is different to Cantata's. If you press the 'Refresh Database' button in either
 the artist, albums, folders, or playlists views, then this cache is deleted and
 recreated with the response from MPD.
 

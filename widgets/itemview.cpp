@@ -375,11 +375,11 @@ public:
             }
             QRect r(option.rect);
             r.adjust(4, 0, -4, 0);
-            QPixmap pix=index.data(Qt::DecorationRole).value<QIcon>().pixmap(treeDecorationSize, treeDecorationSize);
+            QPixmap pix=noIcons ? QPixmap() : index.data(Qt::DecorationRole).value<QIcon>().pixmap(treeDecorationSize, treeDecorationSize);
             if (gtk && pix.isNull()) {
                 QVariant image = index.data(ItemView::Role_Image);
                 if (!image.isNull()) {
-                    pix = QVariant::Pixmap==image.type() ? image.value<QPixmap>() : image.value<QIcon>().pixmap(listDecorationSize, listDecorationSize);
+                    pix = QVariant::Pixmap==image.type() ? image.value<QPixmap>() : noIcons ? QPixmap() : image.value<QIcon>().pixmap(listDecorationSize, listDecorationSize);
                 }
             }
             if (!pix.isNull()) {
@@ -431,8 +431,10 @@ public:
     }
 
     void setSimple(bool s) { simpleStyle=s; }
+    void setNoIcons(bool n) { noIcons=n; }
 
     bool simpleStyle;
+    bool noIcons;
 };
 
 ItemView::Mode ItemView::toMode(const QString &str)
@@ -459,6 +461,7 @@ QString ItemView::modeStr(Mode m)
     switch (m) {
     default:
     case Mode_SimpleTree:   return QLatin1String("simpletree");
+    case Mode_BasicTree:    return QLatin1String("basictree");
     case Mode_DetailedTree: return QLatin1String("detailedtree");
     case Mode_List:         return QLatin1String("list");
     case Mode_IconTop:      return QLatin1String("icontop");
@@ -555,7 +558,7 @@ void ItemView::addAction(QAction *act)
 
 void ItemView::setMode(Mode m)
 {
-    if (m<0 || m>Mode_GroupedTree || (Mode_GroupedTree==m && !groupedView)) {
+    if (m<0 || m>=Mode_Count || (Mode_GroupedTree==m && !groupedView)) {
         m=Mode_SimpleTree;
     }
 
@@ -570,7 +573,7 @@ void ItemView::setMode(Mode m)
 
     mode=m;
     searchWidget->setText(QString());
-    if (Mode_SimpleTree==mode || Mode_DetailedTree==mode) {
+    if (usingTreeView()) {
         treeView->setModel(itemModel);
         listView->setModel(0);
         if (groupedView) {
@@ -578,7 +581,8 @@ void ItemView::setMode(Mode m)
             groupedView->setModel(0);
         }
         treeView->setHidden(false);
-        static_cast<TreeDelegate *>(treeView->itemDelegate())->setSimple(Mode_SimpleTree==mode);
+        static_cast<TreeDelegate *>(treeView->itemDelegate())->setSimple(Mode_SimpleTree==mode || Mode_BasicTree==mode);
+        static_cast<TreeDelegate *>(treeView->itemDelegate())->setNoIcons(Mode_BasicTree==mode);
         itemModel->setRootIndex(QModelIndex());
         treeView->reset();
     } else if (Mode_GroupedTree==mode) {
@@ -607,7 +611,7 @@ void ItemView::setMode(Mode m)
         }
     }
 
-    stackedWidget->setCurrentIndex(Mode_SimpleTree==mode || Mode_DetailedTree==mode || Mode_GroupedTree==mode ? 0 : 1);
+    stackedWidget->setCurrentIndex(mode<=Mode_GroupedTree ? 0 : 1);
     if (spinner) {
         spinner->setWidget(view());
         if (spinner->isActive()) {
@@ -625,7 +629,7 @@ void ItemView::setMode(Mode m)
 
 QModelIndexList ItemView::selectedIndexes(bool sorted) const
 {
-    if (Mode_SimpleTree==mode || Mode_DetailedTree==mode) {
+    if (usingTreeView()) {
         return treeView->selectedIndexes(sorted);
     } else if (Mode_GroupedTree==mode) {
         return groupedView->selectedIndexes(sorted);
@@ -682,7 +686,7 @@ void ItemView::setLevel(int l, bool haveChildren)
 
 QAbstractItemView * ItemView::view() const
 {
-    if (Mode_SimpleTree==mode || Mode_DetailedTree==mode) {
+    if (usingTreeView()) {
         return treeView;
     } else if(Mode_GroupedTree==mode) {
         return groupedView;
@@ -760,7 +764,7 @@ void ItemView::setGridSize(const QSize &sz)
 
 void ItemView::update()
 {
-    if (Mode_SimpleTree==mode || Mode_DetailedTree==mode) {
+    if (usingTreeView()) {
         treeView->update();
     } else if (Mode_GroupedTree==mode) {
         groupedView->update();
@@ -780,7 +784,7 @@ void ItemView::setDeleteAction(QAction *act)
 
 void ItemView::showIndex(const QModelIndex &idx, bool scrollTo)
 {
-    if (Mode_SimpleTree==mode || Mode_DetailedTree==mode) {
+    if (usingTreeView()) {
         QModelIndex i=idx;
         while (i.isValid()) {
             treeView->setExpanded(i, true);
@@ -888,7 +892,7 @@ void ItemView::updateRows(const QModelIndex &idx)
 
 void ItemView::expandAll(const QModelIndex &index)
 {
-    if (Mode_SimpleTree==mode || Mode_DetailedTree==mode) {
+    if (usingTreeView()) {
         treeView->expandAll(index);
     } else if (Mode_GroupedTree==mode && groupedView) {
         groupedView->expandAll(index);
@@ -897,7 +901,7 @@ void ItemView::expandAll(const QModelIndex &index)
 
 void ItemView::expand(const QModelIndex &index, bool singleOnly)
 {
-    if (Mode_SimpleTree==mode || Mode_DetailedTree==mode) {
+    if (usingTreeView()) {
         treeView->expand(index, singleOnly);
     } else if (Mode_GroupedTree==mode && groupedView) {
         groupedView->expand(index, singleOnly);
@@ -916,7 +920,7 @@ void ItemView::showMessage(const QString &message, int timeout)
 void ItemView::setBackgroundImage(const QIcon &icon)
 {
     bgndIcon=icon;
-    if (Mode_SimpleTree==mode || Mode_DetailedTree==mode) {
+    if (usingTreeView()) {
         treeView->setBackgroundImage(bgndIcon);
     } else if (Mode_GroupedTree==mode && groupedView) {
         groupedView->setBackgroundImage(bgndIcon);
@@ -927,7 +931,7 @@ void ItemView::setBackgroundImage(const QIcon &icon)
 
 bool ItemView::isAnimated() const
 {
-    if (Mode_SimpleTree==mode || Mode_DetailedTree==mode) {
+    if (usingTreeView()) {
         return treeView->isAnimated();
     }
     if (Mode_GroupedTree==mode && groupedView) {
@@ -938,7 +942,7 @@ bool ItemView::isAnimated() const
 
 void ItemView::setAnimated(bool a)
 {
-    if (Mode_SimpleTree==mode || Mode_DetailedTree==mode) {
+    if (usingTreeView()) {
         treeView->setAnimated(a);
     } else if (Mode_GroupedTree==mode && groupedView) {
         groupedView->setAnimated(a);
@@ -989,7 +993,7 @@ void ItemView::collectionRemoved(quint32 key)
 
 void ItemView::backActivated()
 {
-    if (Mode_SimpleTree==mode || Mode_DetailedTree==mode || Mode_GroupedTree==mode || 0==currentLevel) {
+    if (!usingListView() || 0==currentLevel) {
         return;
     }
     setLevel(currentLevel-1);
@@ -1009,7 +1013,7 @@ void ItemView::backActivated()
 
 void ItemView::homeActivated()
 {
-    if (Mode_SimpleTree==mode || Mode_DetailedTree==mode || Mode_GroupedTree==mode || 0==currentLevel) {
+    if (!usingListView() || 0==currentLevel) {
         return;
     }
     setLevel(0);
@@ -1020,7 +1024,7 @@ void ItemView::homeActivated()
 
 void ItemView::setExpanded(const QModelIndex &idx, bool exp)
 {
-    if (Mode_SimpleTree==mode || Mode_DetailedTree==mode) {
+    if (usingTreeView()) {
         treeView->setExpanded(idx, exp);
     }
 }
@@ -1058,7 +1062,7 @@ void ItemView::activateItem(const QModelIndex &index, bool emitRootSet)
         return;
     }
 
-    if (Mode_SimpleTree==mode || Mode_DetailedTree==mode) {
+    if (usingTreeView()) {
         treeView->setExpanded(index, !treeView->isExpanded(index));
     } else if (Mode_GroupedTree==mode) {
         if (!index.parent().isValid()) {
@@ -1122,7 +1126,7 @@ void ItemView::searchActive(bool a)
 
 void ItemView::collapseToLevel()
 {
-    if (Mode_SimpleTree==mode || Mode_DetailedTree==mode) {
+    if (usingTreeView()) {
         return treeView->collapseToLevel(searchResetLevel, searchIndex);
     } else if(Mode_GroupedTree==mode) {
         return groupedView->collapseToLevel(searchResetLevel, searchIndex);

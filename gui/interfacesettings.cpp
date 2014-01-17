@@ -51,6 +51,7 @@ static void addImageSizes(QComboBox *box)
 
 static void addViewTypes(QComboBox *box, bool iconMode=false, bool groupedTree=false)
 {
+    box->addItem(i18n("Basic Tree (No Icons)"), ItemView::Mode_BasicTree);
     box->addItem(i18n("Simple Tree"), ItemView::Mode_SimpleTree);
     box->addItem(i18n("Detailed Tree"), ItemView::Mode_DetailedTree);
     if (groupedTree) {

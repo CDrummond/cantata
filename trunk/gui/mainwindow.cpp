@@ -28,16 +28,14 @@
 #include <QString>
 #include <QTimer>
 #include <QClipboard>
-#ifdef Q_OS_MAC
-#if QT_VERSION < 0x050000
 #include <QToolBar>
-#else
+#if defined Q_OS_MAC && QT_VERSION >= 0x050000
 // QMacNativeToolBar requres Qt Macf Extras to be installed on Qt 5.0 and 5.1.
 #include <QMacNativeToolBar>
 #endif
-#endif
 #include <QDialogButtonBox>
 #include <QTextStream>
+#include <QProxyStyle>
 #include <cstdlib>
 #ifdef ENABLE_KDE_SUPPORT
 #include <kdeversion.h>
@@ -167,6 +165,18 @@ static int nextKey(int &key)
     return k;
 }
 
+class ToolBarProxyStyle : public QProxyStyle
+{
+public:
+    ToolBarProxyStyle() : QProxyStyle() { setBaseStyle(qApp->style()); }
+    int pixelMetric(PixelMetric pm, const QStyleOption *o = 0, const QWidget *w = 0) const {
+        if (PM_ToolBarFrameWidth==pm || PM_ToolBarItemSpacing==pm || PM_ToolBarItemMargin==pm) {
+            return 0;
+        }
+        return baseStyle()->pixelMetric(pm, o, w);
+    }
+};
+
 MainWindow::MainWindow(QWidget *parent)
     : MAIN_WINDOW_BASE_CLASS(parent)
     , loaded(0)
@@ -213,25 +223,30 @@ MainWindow::MainWindow(QWidget *parent)
     MPDParseUtils::setGroupMultiple(Settings::self()->groupMultiple());
     Song::setUseComposer(Settings::self()->useComposer());
 
-    #ifdef Q_OS_MAC
-    #if QT_VERSION < 0x050000
-    setUnifiedTitleAndToolBarOnMac(true);
-    QToolBar *topToolBar = addToolBar("ToolBar");
-    #else
+    #ifndef Q_OS_WIN
+    #if defined Q_OS_MAC && QT_VERSION>=0x050000
     QMacNativeToolBar *topToolBar = new QMacNativeToolBar(this);
     topToolBar->showInWindowForWidget(this);
+    #else
+    setUnifiedTitleAndToolBarOnMac(true);
+    QToolBar *topToolBar = addToolBar("ToolBar");
     #endif
     toolbar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    topToolBar->addWidget(toolbar); 
-    #else
-    GtkStyle::applyTheme(toolbar);
+    topToolBar->addWidget(toolbar);
+    topToolBar->setMovable(false);
+    topToolBar->setContextMenuPolicy(Qt::NoContextMenu);
+    #ifndef Q_OS_MAC
+    GtkStyle::applyTheme(topToolBar);
     #endif
+    topToolBar->setStyle(new ToolBarProxyStyle);
+    #endif
+
     Icons::self()->self()->initToolbarIcons(artistLabel->palette().color(QPalette::Foreground), GtkStyle::useLightIcons());
     Icons::self()->initSidebarIcons();
     menuButton->setIcon(Icons::self()->toolbarMenuIcon);
     menuButton->setAlignedMenu(mainMenu);
 
-    // With ambiance (which has a drak toolbar) we need a gap between the toolbar and the earch fields. But, in the context view we dont
+    // With ambiance (which has a dark toolbar) we need a gap between the toolbar and the views. But, in the context view we dont
     // want a gap - as this looks odd with a background. To workaround this, the tabwidget and playqueue sides of the splitter have a
     // spacer added. The size of this needs to be controllable by the style - so we do this here...
     int spacing=Utils::layoutSpacing(this);

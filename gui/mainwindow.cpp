@@ -2369,13 +2369,7 @@ int MainWindow::calcMinHeight()
 
 int MainWindow::calcCompactHeight()
 {
-    int spacing=Utils::layoutSpacing(this);
-    // For some reason height is always larger than it needs to be - so fix this to cover height +4
-    return qMax(qMax(playPauseTrackButton->height(),
-                         trackLabel->height()+artistLabel->height()+spacing)+
-                         positionSlider->height(),
-                    coverWidget->height())+
-           (messageWidget->isActive() ? (messageWidget->sizeHint().height()+spacing) : 0);
+    return toolbar->height()+(messageWidget->isActive() ? (messageWidget->sizeHint().height()+Utils::layoutSpacing(this)) : 0);
 }
 
 void MainWindow::expandOrCollapse(bool saveCurrentSize)

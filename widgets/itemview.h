@@ -71,10 +71,13 @@ public:
     enum Mode
     {
         Mode_SimpleTree,
+        Mode_BasicTree,
         Mode_DetailedTree,
+
+        Mode_GroupedTree,
+
         Mode_List,
         Mode_IconTop,
-        Mode_GroupedTree,
 
         Mode_Count
     };
@@ -139,6 +142,10 @@ public:
     void setSearchCategory(const QString &id);
     void setSearchResetLevel(int l) { searchResetLevel=l; }
     void setSearchIndex(const QModelIndex &idx) { searchIndex=idx; }
+
+private:
+    bool usingTreeView() const { return mode<=Mode_DetailedTree; }
+    bool usingListView() const { return mode>=Mode_List; }
 
 public Q_SLOTS:
     void focusSearch();

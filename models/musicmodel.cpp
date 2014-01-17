@@ -226,16 +226,23 @@ QVariant MusicModel::data(const QModelIndex &index, int role) const
         QVariant v;
         switch (item->itemType()) {
         case MusicLibraryItem::Type_Album:
-            v.setValue<QPixmap>(static_cast<MusicLibraryItemAlbum *>(item)->cover());
-            break;
+            if (MusicLibraryItemAlbum::CoverNone==MusicLibraryItemAlbum::currentCoverSize()) {
+                return Icons::self()->albumIcon;
+            } else {
+                return static_cast<MusicLibraryItemAlbum *>(item)->cover();
+            }
         case MusicLibraryItem::Type_Artist:
             if (static_cast<MusicLibraryItemRoot *>(item->parentItem())->useArtistImages()) {
-                v.setValue<QPixmap>(static_cast<MusicLibraryItemArtist *>(item)->cover());
+                return static_cast<MusicLibraryItemArtist *>(item)->cover();
             }
             break;
         #ifdef ENABLE_ONLINE_SERVICES
         case MusicLibraryItem::Type_Podcast:
-            v.setValue<QPixmap>(static_cast<MusicLibraryItemPodcast *>(item)->cover());
+            if (MusicLibraryItemAlbum::CoverNone==MusicLibraryItemAlbum::currentCoverSize()) {
+                return Icons::self()->podcastIcon;
+            } else {
+                return static_cast<MusicLibraryItemPodcast *>(item)->cover();
+            }
         #endif
         default:
             break;

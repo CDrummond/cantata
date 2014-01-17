@@ -6,7 +6,7 @@ KDE4
 
 1. mkdir build
 2. cd build
-3. cmake .. -DCMAKE_INSTALL_PREFIX=`kde4-config --prefix` -DCMAKE_BUILD_TYPE=Release
+3. cmake ..
 4. make
 5. sudo make install
 
@@ -16,7 +16,7 @@ Qt4
 
 1. mkdir build
 2. cd build
-3. cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Release -DENABLE_KDE=OFF
+3. cmake .. -DENABLE_KDE=OFF
 4. make
 5. sudo make install
 
@@ -26,7 +26,7 @@ Qt5
 
 1. mkdir build
 2. cd build
-3. cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Release -DENABLE_KDE=OFF -DENABLE_QT5=ON
+3. cmake .. -DENABLE_KDE=OFF -DENABLE_QT5=ON
 4. make
 5. sudo make install
 

@@ -60,6 +60,9 @@
     but only images, and not icons, will be shown.
 35. Europe and Canada regions in ListenLive are not re-loadable (as they are
     read from listenlive.xml)
+36. Set CMake defaults if not supplied on commandline; set prefix to /usr for
+    Qt only Linux builds, path to `kde4-config --prefix` for KDE4 builds, and
+    set build type to Release
 
 1.2.2
 -----

@@ -587,7 +587,7 @@ StreamsModel::StreamsModel(QObject *parent)
     root->children.append(new DiCategoryItem(constRockRadioUrl, i18n("RockRadio.com"), root, getIcon("rockradio"), "rockradio"));
     root->children.append(new DiCategoryItem(constSkyFmUrl, i18n("Sky.fm"), root, getIcon("skyfm"), "skyfm"));
     favourites=new FavouritesCategoryItem(constFavouritesUrl, i18n("Favorites"), root, getIcon("favourites"));
-    listenLive=new ListenLiveCategoryItem(i18n("Listen Live"), root, getIcon("listenlive"));
+    listenLive=new ListenLiveCategoryItem(i18n("Listen Live"), root, false, getIcon("listenlive"));
     listenLive->configName="listenlive";
     root->children.append(listenLive);
     root->children.append(favourites);
@@ -1881,7 +1881,7 @@ void StreamsModel::buildListenLive(const QModelIndex &index)
                                                              region, QIcon(), cache));
                 } else if (QLatin1String("region")==doc.name()) {
                     prevRegion=region;
-                    region=new ListenLiveCategoryItem(doc.attributes().value("name").toString(), prevRegion);
+                    region=new ListenLiveCategoryItem(doc.attributes().value("name").toString(), prevRegion, false);
                     region->state=CategoryItem::Fetched;
                     prevRegion->children.append(region);
                 }
@@ -1989,4 +1989,3 @@ QString StreamsModel::modifyUrl(const QString &u, bool addPrefix, const QString 
 {
     return MPDParseUtils::addStreamName(!addPrefix || !u.startsWith("http:") ? u : (constPrefix+u), name);
 }
-

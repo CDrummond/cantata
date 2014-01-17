@@ -58,6 +58,8 @@
 33. Move sidebar settings into settings dialog.
 34. Add new view style "Basic Tree (No Icons)". This is as per the simple tree,
     but only images, and not icons, will be shown.
+35. Europe and Canada regions in ListenLive are not re-loadable (as they are
+    read from listenlive.xml)
 
 1.2.2
 -----

@@ -136,9 +136,12 @@ public:
 
     struct ListenLiveCategoryItem : public CategoryItem
     {
-        ListenLiveCategoryItem(const QString &n, CategoryItem *p, const QIcon &i=QIcon())
-            : CategoryItem(QLatin1String("-"), n, p, i) { }
+        ListenLiveCategoryItem(const QString &n, CategoryItem *p, bool r=true, const QIcon &i=QIcon())
+            : CategoryItem(QLatin1String("-"), n, p, i), reloadable(r) { }
         void removeCache();
+        bool canReload() const { return reloadable; }
+    private:
+        bool reloadable;
     };
 
     struct DiCategoryItem : public CategoryItem

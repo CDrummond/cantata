@@ -1,47 +1,37 @@
 /* drag:toolbar scrollbar:overlay spinbox:touch*/
-QToolBar,
-ToolBar {
+QToolBar {
   background-color: #dfd7d0;
   border: 0px;
 }
 
-QToolBar:active,
-ToolBar:active {
+QToolBar:active {
   background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,  stop: 0 #d5cdc6, stop: 1 #efe7e0);
   border: 0px;
 }
 
 QToolBar QToolButton,
-QToolBar QLabel,
-ToolBar QToolButton,
-ToolBar QLabel {
+QToolBar QLabel {
   color: #6c6c6c;
 }
 
 QToolBar QToolButton,
-QToolBar QLabel:active,
-ToolBar QToolButton,
-ToolBar QLabel:active {
+QToolBar QLabel:active {
   color: #3c3c3c;
 }
 
-QToolBar QToolButton,
-ToolBar QToolButton {
+QToolBar QToolButton {
   background: transparent;
   border: 1px outset transparent;
 }
 
-QToolBar QToolButton:hover,
-ToolBar QToolButton:hover {
+QToolBar QToolButton:hover {
   background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #efe7e0, stop: 1 #cfc7c0);
   border-radius: 5px;
   border: 1px solid #afa7a0;
 }
 
 QToolBar QToolButton:pressed,
-QToolBar QToolButton:checked,
-ToolBar QToolButton:pressed,
-ToolBar QToolButton:checked {
+QToolBar QToolButton:checked {
   background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #cfc7c0, stop: 1 #dfd7d0);
   border-radius: 5px;
   border: 1px solid #afa7a0;

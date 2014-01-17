@@ -1031,6 +1031,7 @@ void MainWindow::showError(const QString &message, bool showActions)
     } else {
         messageWidget->removeAllActions();
     }
+    QApplication::alert(this);
 }
 
 void MainWindow::showInformation(const QString &message)

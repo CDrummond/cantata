@@ -66,6 +66,8 @@
 37. Place Cantata's 'toolbar' within a QToolBar - so that the style's toolbar
     look is preserved, and styles that can drag window via toolbar (e.g.
     QtCurve) still work.
+38. Call QApplication::alert() when showing errors - this causes taskbar entry
+    to be marked.
 
 1.2.2
 -----

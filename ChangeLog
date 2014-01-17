@@ -68,6 +68,7 @@
     QtCurve) still work.
 38. Call QApplication::alert() when showing errors - this causes taskbar entry
     to be marked.
+39. Read lyrics from LYRICS tag for FLAC, Opus, Vorbis, and Speex files.
 
 1.2.2
 -----

@@ -527,7 +527,7 @@ static TagLib::String readVorbisTag(TagLib::Ogg::XiphComment *tag, const char *f
     return TagLib::String();
 }
 
-static void readVorbisCommentTags(TagLib::Ogg::XiphComment *tag, Song *song, ReplayGain *rg, QImage *img)
+static void readVorbisCommentTags(TagLib::Ogg::XiphComment *tag, Song *song, ReplayGain *rg, QImage *img, QString *lyrics)
 {
     if (song) {
         TagLib::String str=readVorbisTag(tag, "ALBUMARTIST");
@@ -561,6 +561,13 @@ static void readVorbisCommentTags(TagLib::Ogg::XiphComment *tag, Song *song, Rep
             if (img->isNull()) {
                 img->loadFromData(data); // not base64??
             }
+        }
+    }
+
+    if (lyrics) {
+        TagLib::String str=readVorbisTag(tag, "LYRICS");
+        if (str.isEmpty()) {
+            *lyrics=tString2QString(str);
         }
     }
 }
@@ -813,25 +820,25 @@ static void readTags(const TagLib::FileRef fileref, Song *song, ReplayGain *rg, 
         }
     } else if (TagLib::Ogg::Vorbis::File *file = dynamic_cast< TagLib::Ogg::Vorbis::File * >(fileref.file()))  {
         if (file->tag()) {
-            readVorbisCommentTags(file->tag(), song, rg, img);
+            readVorbisCommentTags(file->tag(), song, rg, img, lyrics);
         }
     } else if (TagLib::Ogg::FLAC::File *file = dynamic_cast< TagLib::Ogg::FLAC::File * >(fileref.file())) {
         if (file->tag()) {
-            readVorbisCommentTags(file->tag(), song, rg, img);
+            readVorbisCommentTags(file->tag(), song, rg, img, lyrics);
         }
     } else if (TagLib::Ogg::Speex::File *file = dynamic_cast< TagLib::Ogg::Speex::File * >(fileref.file())) {
         if (file->tag()) {
-            readVorbisCommentTags(file->tag(), song, rg, img);
+            readVorbisCommentTags(file->tag(), song, rg, img, lyrics);
         }
     #ifdef TAGLIB_OPUS_FOUND
     } else if (TagLib::Ogg::Opus::File *file = dynamic_cast< TagLib::Ogg::Opus::File * >(fileref.file())) {
         if (file->tag()) {
-            readVorbisCommentTags(file->tag(), song, rg, img);
+            readVorbisCommentTags(file->tag(), song, rg, img, lyrics);
         }
     #endif
     } else if (TagLib::FLAC::File *file = dynamic_cast< TagLib::FLAC::File * >(fileref.file())) {
         if (file->xiphComment()) {
-            readVorbisCommentTags(file->xiphComment(), song, rg, img);
+            readVorbisCommentTags(file->xiphComment(), song, rg, img, lyrics);
             #if (TAGLIB_MAJOR_VERSION > 1) || (TAGLIB_MAJOR_VERSION == 1 && TAGLIB_MINOR_VERSION >= 7)
             if (img && img->isNull()) {
                 readFlacPicture(file->pictureList(), img);

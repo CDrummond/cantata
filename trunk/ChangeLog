@@ -56,6 +56,8 @@
     for relevant tracks.
 32. Fix displaying of disc and track numbers for online services.
 33. Move sidebar settings into settings dialog.
+34. Add new view style "Basic Tree (No Icons)". This is as per the simple tree,
+    but only images, and not icons, will be shown.
 
 1.2.2
 -----

@@ -63,6 +63,9 @@
 36. Set CMake defaults if not supplied on commandline; set prefix to /usr for
     Qt only Linux builds, path to `kde4-config --prefix` for KDE4 builds, and
     set build type to Release
+37. Place Cantata's 'toolbar' within a QToolBar - so that the style's toolbar
+    look is preserved, and styles that can drag window via toolbar (e.g.
+    QtCurve) still work.
 
 1.2.2
 -----

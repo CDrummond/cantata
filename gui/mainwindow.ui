@@ -27,7 +27,7 @@
     <number>0</number>
    </property>
    <item>
-    <widget class="ToolBar" name="toolbar" native="true">
+    <widget class="QWidget" name="toolbar" native="true">
      <layout class="QGridLayout" name="gridLayout_2">
       <property name="leftMargin">
        <number>0</number>
@@ -378,11 +378,6 @@
    <class>SqueezedTextLabel</class>
    <extends>QLabel</extends>
    <header>squeezedtextlabel.h</header>
-  </customwidget>
-  <customwidget>
-   <class>ToolBar</class>
-   <extends>QWidget</extends>
-   <header>toolbar.h</header>
   </customwidget>
   <customwidget>
    <class>PlayQueueView</class>

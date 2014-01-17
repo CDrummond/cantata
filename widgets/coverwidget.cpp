@@ -212,7 +212,7 @@ void CoverWidget::update(const Song &s)
                 if (current.isFromOnlineService()) {
                     if (coverFileName.startsWith(
                         #ifdef Q_OS_WIN
-                        QCoreApplication::applicationDirPath()+"/icons/";
+                        QCoreApplication::applicationDirPath()+"/icons/"
                         #else
                         QString(INSTALL_PREFIX"/share/")+QCoreApplication::applicationName()+"/icons/"
                         #endif

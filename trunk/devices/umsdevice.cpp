@@ -66,9 +66,7 @@ void UmsDevice::toggle()
 {
     if (solidDev.isValid() && access && access->isValid()) {
         if (access->isAccessible()) {
-            if (scanner) {
-                scanner->stop();
-            }
+            stopScanner();
             access->teardown();
         } else {
             access->setup();

@@ -566,7 +566,7 @@ static void readVorbisCommentTags(TagLib::Ogg::XiphComment *tag, Song *song, Rep
 
     if (lyrics) {
         TagLib::String str=readVorbisTag(tag, "LYRICS");
-        if (str.isEmpty()) {
+        if (!str.isEmpty()) {
             *lyrics=tString2QString(str);
         }
     }

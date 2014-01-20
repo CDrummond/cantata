@@ -227,7 +227,7 @@
         </spacer>
        </item>
        <item>
-        <widget class="QLabel" name="errorText"/>
+        <widget class="SplitLabelWidget" name="errorText"/>
        </item>
       </layout>
      </widget>
@@ -275,7 +275,7 @@
         </spacer>
        </item>
        <item>
-        <widget class="QLabel" name="skipText"/>
+        <widget class="SplitLabelWidget" name="skipText"/>
        </item>
       </layout>
      </widget>
@@ -323,20 +323,7 @@
         </spacer>
        </item>
        <item row="0" column="2">
-        <widget class="QLabel" name="progressLabel">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="text">
-          <string>TextLabel</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-         </property>
-        </widget>
+        <widget class="SplitLabelWidget" name="progressLabel"/>
        </item>
        <item row="1" column="0" colspan="3">
         <widget class="QProgressBar" name="progressBar">
@@ -366,6 +353,11 @@
    <class>UrlLabel</class>
    <extends>QLabel</extends>
    <header>urllabel.h</header>
+  </customwidget>
+  <customwidget>
+   <class>SplitLabelWidget</class>
+   <extends>QLabel</extends>
+   <header>splitlabelwidget.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>

@@ -439,7 +439,7 @@ if (TAGLIB_FOUND)
         endif (CDDB_FOUND OR MUSICBRAINZ5_FOUND)
 
         set(CANTATA_SRCS ${CANTATA_SRCS} devices/devicespage.cpp devices/filejob.cpp
-                devices/device.cpp devices/fsdevice.cpp devices/umsdevice.cpp
+                devices/device.cpp devices/fsdevice.cpp devices/umsdevice.cpp devices/splitlabelwidget.cpp
                 models/devicesmodel.cpp devices/actiondialog.cpp devices/devicepropertieswidget.cpp
                 devices/devicepropertiesdialog.cpp devices/encoders.cpp devices/freespaceinfo.cpp
                 devices/transcodingjob.cpp devices/valueslider.cpp devices/syncdialog.cpp devices/synccollectionwidget.cpp

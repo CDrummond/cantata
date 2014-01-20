@@ -43,6 +43,36 @@ class NetworkJob;
 class QStackedWidget;
 class QComboBox;
 class QImage;
+class QToolButton;
+class QButtonGroup;
+class QWheelEvent;
+
+class ViewSelector : public QWidget
+{
+    Q_OBJECT
+public:
+    ViewSelector(QWidget *p);
+    virtual ~ViewSelector() { }
+    void addItem(const QString &label, const QVariant &data);
+    QVariant itemData(int index) const;
+    int count() { return buttons.count(); }
+    int currentIndex() const;
+    void setCurrentIndex(int index);
+
+private:
+    void wheelEvent(QWheelEvent *ev);
+    void paintEvent(QPaintEvent *ev);
+
+private Q_SLOTS:
+    void buttonActivated();
+
+Q_SIGNALS:
+    void activated(int);
+
+private:
+    QButtonGroup *group;
+    QList<QToolButton *> buttons;
+};
 
 class ThinSplitter : public QSplitter
 {
@@ -130,7 +160,7 @@ private:
     bool isWide;
     QStackedWidget *stack;
     ThinSplitter *splitter;
-    QComboBox *viewCombo;
+    ViewSelector *viewSelector;
     BackdropCreator *creator;
 //    QString backdropText;
     QSet<QString> backdropAlbums;

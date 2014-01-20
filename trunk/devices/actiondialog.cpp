@@ -504,7 +504,7 @@ Device * ActionDialog::getDevice(const QString &udi, bool logErrors)
     }
 
     if (isVisible()) {
-        setPage(PAGE_ERROR, error);
+        setPage(PAGE_ERROR, QList<QPair<QString, QString> >(), error);
     } else {
         MessageBox::error(parentWidget(), error);
     }
@@ -638,53 +638,52 @@ void ActionDialog::actionStatus(int status, bool copiedCover)
         }
         break;
     case Device::FileExists:
-        setPage(PAGE_SKIP, i18n("The destination filename already exists!<hr/>%1", formatSong(currentSong, true)));
+        setPage(PAGE_SKIP, formatSong(currentSong, true), i18n("The destination filename already exists!"));
         break;
     case Device::SongExists:
-        setPage(PAGE_SKIP, i18n("Song already exists!<hr/>%1", formatSong(currentSong)));
+        setPage(PAGE_SKIP, formatSong(currentSong), i18n("Song already exists!"));
         break;
     case Device::SongDoesNotExist:
-        setPage(PAGE_SKIP, i18n("Song does not exist!<hr/>%1", formatSong(currentSong)));
+        setPage(PAGE_SKIP, formatSong(currentSong), i18n("Song does not exist!"));
         break;
     case Device::DirCreationFaild:
-        setPage(PAGE_SKIP, i18n("Failed to create destination folder!<br/>Please check you have sufficient permissions.<hr/>%1", formatSong(currentSong, true)));
+        setPage(PAGE_SKIP, formatSong(currentSong, true), i18n("Failed to create destination folder!<br/>Please check you have sufficient permissions."));
         break;
     case Device::SourceFileDoesNotExist:
-        setPage(PAGE_SKIP, i18n("Source file no longer exists?<br/><br/<hr/>%1", formatSong(currentSong, true)));
+        setPage(PAGE_SKIP, formatSong(currentSong, true), i18n("Source file no longer exists?"));
         break;
     case Device::Failed:
-        setPage(PAGE_SKIP, Copy==mode ? i18n("Failed to copy.<hr/>%1", formatSong(currentSong))
-                                      : i18n("Failed to delete.<hr/>%1", formatSong(currentSong)));
+        setPage(PAGE_SKIP, formatSong(currentSong), Copy==mode ? i18n("Failed to copy.") : i18n("Failed to delete."));
         break;
     case Device::NotConnected:
-        setPage(PAGE_ERROR, i18n("Not connected to device.<hr/>%1", formatSong(currentSong)));
+        setPage(PAGE_ERROR, formatSong(currentSong), i18n("Not connected to device."));
         break;
     case Device::CodecNotAvailable:
-        setPage(PAGE_ERROR, i18n("Selected codec is not available.<hr/>%1", formatSong(currentSong)));
+        setPage(PAGE_ERROR, formatSong(currentSong), i18n("Selected codec is not available."));
         break;
     case Device::TranscodeFailed:
-        setPage(PAGE_SKIP, i18n("Transcoding failed.<br/><br/<hr/>%1", formatSong(currentSong)));
+        setPage(PAGE_SKIP, formatSong(currentSong), i18n("Transcoding failed."));
         break;
     case Device::FailedToCreateTempFile:
-        setPage(PAGE_ERROR, i18n("Failed to create temporary file.<br/>(Required for transcoding to MTP devices.)<hr/>%1", formatSong(currentSong)));
+        setPage(PAGE_ERROR, formatSong(currentSong), i18n("Failed to create temporary file.<br/>(Required for transcoding to MTP devices.)"));
         break;
     case Device::ReadFailed:
-        setPage(PAGE_SKIP, i18n("Failed to read source file.<br/><br/<hr/>%1", formatSong(currentSong)));
+        setPage(PAGE_SKIP, formatSong(currentSong), i18n("Failed to read source file."));
         break;
     case Device::WriteFailed:
-        setPage(PAGE_SKIP, i18n("Failed to write to destination file.<br/><br/<hr/>%1", formatSong(currentSong)));
+        setPage(PAGE_SKIP, formatSong(currentSong), i18n("Failed to write to destination file."));
         break;
     case Device::NoSpace:
-        setPage(PAGE_SKIP, i18n("No space left on device.<br/><br/<hr/>%1", formatSong(currentSong)));
+        setPage(PAGE_SKIP, formatSong(currentSong), i18n("No space left on device."));
         break;
     case Device::FailedToUpdateTags:
-        setPage(PAGE_SKIP, i18n("Failed to update metadata.<br/><br/<hr/>%1", formatSong(currentSong)));
+        setPage(PAGE_SKIP, formatSong(currentSong), i18n("Failed to update metadata."));
         break;
     case Device::DownloadFailed:
-        setPage(PAGE_SKIP, i18n("Failed to download track.<br/><br/<hr/>%1", formatSong(currentSong)));
+        setPage(PAGE_SKIP, formatSong(currentSong), i18n("Failed to download track."));
         break;
     case Device::FailedToLockDevice:
-        setPage(PAGE_ERROR, i18n("Failed to lock device.<hr/>%1", formatSong(currentSong)));
+        setPage(PAGE_ERROR, formatSong(currentSong), i18n("Failed to lock device."));
         break;
     case Device::Cancelled:
         break;
@@ -739,7 +738,7 @@ void ActionDialog::saveProperties()
     mpdConfigured=true;
 }
 
-void ActionDialog::setPage(int page, const QString &msg)
+void ActionDialog::setPage(int page, const QList<QPair<QString, QString> > &msg, const QString &header)
 {
     stack->setCurrentIndex(page);
 
@@ -754,8 +753,8 @@ void ActionDialog::setPage(int page, const QString &msg)
             break;
         case PAGE_SKIP:
             actionLabel->stopAnimation();
-            skipText->setText(i18n("<b>Error</b><br/>")+msg);
-            skipText->setToolTip(formatSong(currentSong, true));
+            skipText->setText(msg, QLatin1String("<b>")+i18n("Error")+QLatin1String("</b><br/>")+header+
+                              (header.isEmpty() ? QString() : QLatin1String("<br/><br/>")));
             if (songsToAction.count()) {
                 setButtons(Cancel|User1|User2|User3);
                 setButtonText(User1, i18n("Skip"));
@@ -768,29 +767,26 @@ void ActionDialog::setPage(int page, const QString &msg)
         case PAGE_ERROR:
             actionLabel->stopAnimation();
             stack->setCurrentIndex(PAGE_ERROR);
-            errorText->setText(i18n("<b>Error</b><br/>")+msg);
-            errorText->setToolTip(formatSong(currentSong, true));
+            errorText->setText(msg, QLatin1String("<b>")+i18n("Error")+QLatin1String("</b><br/>")+header+
+                               (header.isEmpty() ? QString() : QLatin1String("<br/><br/>")));
             setButtons(Cancel);
             break;
     }
 }
 
-QString ActionDialog::formatSong(const Song &s, bool showFiles, bool showTime)
+QList<QPair<QString, QString> > ActionDialog::formatSong(const Song &s, bool showFiles, bool showTime)
 {
-    QString str("<table>");
-    str+=i18n("<tr><td align=\"right\">Artist:</td><td>%1</td></tr>"
-              "<tr><td align=\"right\">Album:</td><td>%2</td></tr>"
-              "<tr><td align=\"right\">Track:</td><td>%3</td></tr>",
-              s.albumArtist(), s.album, s.trackAndTitleStr(Song::isVariousArtists(s.albumArtist()) && !Song::isVariousArtists(s.artist)));
+    QList<QPair<QString, QString> > str;
+    str.append(QPair<QString, QString>(i18n("Artist:"), s.albumArtist()));
+    str.append(QPair<QString, QString>(i18n("Album:"), s.album));
+    str.append(QPair<QString, QString>(i18n("Track:"), s.trackAndTitleStr(Song::isVariousArtists(s.albumArtist()) && !Song::isVariousArtists(s.artist))));
 
     if (showFiles) {
         if (Copy==mode) {
-            str+=i18n("<tr><td align=\"right\">Source file:</td><td>%1</td></tr>"
-                      "<tr><td align=\"right\">Destination file:</td><td>%2</td></tr>",
-                      DevicesModel::fixDevicePath(s.file), DevicesModel::fixDevicePath(destFile));
-
+            str.append(QPair<QString, QString>(i18n("Source file:"), DevicesModel::fixDevicePath(s.file)));
+            str.append(QPair<QString, QString>(i18n("Destination file:"), DevicesModel::fixDevicePath(destFile)));
         } else {
-            str+=i18n("<tr><td align=\"right\">File:</td><td>%1</td></tr>", DevicesModel::fixDevicePath(s.file));
+            str.append(QPair<QString, QString>(i18n("File:"), DevicesModel::fixDevicePath(s.file)));
         }
     }
 
@@ -805,14 +801,13 @@ QString ActionDialog::formatSong(const Song &s, bool showFiles, bool showTime)
             quint64 timeRemaining=((taken/percent)-taken)/1000.0;
             estimate=i18nc("time (Estimated)", "%1 (Estimated)", Song::formattedTime(timeRemaining>0 ? timeRemaining : 0));
         }
-
-        str+=i18n("<tr><i><td align=\"right\"><i>Time remaining:</i></td><td><i>%5</i></td></i></tr>", estimate);
+        str.append(QPair<QString, QString>(i18n("Time remaining:"), estimate);
     }
     #else
     Q_UNUSED(showTime)
     #endif
     
-    return str+"</table>";
+    return str;
 }
 
 bool ActionDialog::refreshLibrary()

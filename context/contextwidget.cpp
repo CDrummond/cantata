@@ -33,11 +33,13 @@
 #include "wikipediaengine.h"
 #include "localize.h"
 #include "backdropcreator.h"
+#include "sizewidget.h"
+#include "gtkstyle.h"
 #include "qjson/parser.h"
 #include <QHBoxLayout>
 #include <QGridLayout>
 #include <QSpacerItem>
-#include <QPainter>
+#include <QStylePainter>
 #if QT_VERSION >= 0x050000
 #include <QUrlQuery>
 #endif
@@ -48,11 +50,14 @@
 #ifndef SCALE_CONTEXT_BGND
 #include <QDesktopWidget>
 #endif
-#include <QComboBox>
 #include <QStackedWidget>
 #include <QAction>
 #include <QPair>
 #include <QImage>
+#include <QToolButton>
+#include <QStyleOptionToolButton>
+#include <QButtonGroup>
+#include <QWheelEvent>
 #include <qglobal.h>
 
 #include <QDebug>
@@ -82,6 +87,199 @@ static QImage setOpacity(const QImage &orig)
         bits[i+3] = constBgndOpacity*255;
     }
     return img;
+}
+
+#define SIMPLE_VSB
+
+class ViewSelectorButton : public QToolButton
+{
+public:
+    ViewSelectorButton(QWidget *p) : QToolButton(p) { }
+    void paintEvent(QPaintEvent *ev)
+    {
+        Q_UNUSED(ev)
+        QStylePainter painter(this);
+        QStyleOptionToolButton opt;
+        initStyleOption(&opt);
+        bool isOn=opt.state&QStyle::State_On;
+        bool isMo=opt.state&QStyle::State_MouseOver;
+        if (isOn || isMo) {
+            #ifdef SIMPLE_VSB
+            QColor col=palette().highlight().color();
+            col.setAlphaF(isMo && !isOn ? 0.15 : 0.35);
+            painter.fillRect(rect().adjusted(0, 1, 0, 0), col);
+            #else
+            QStyleOptionViewItemV4 styleOpt;
+            styleOpt.palette=opt.palette;
+            styleOpt.rect=rect().adjusted(0, 1, 0, 0);
+            styleOpt.state=opt.state;
+            styleOpt.state&=~(QStyle::State_Selected|QStyle::State_MouseOver);
+            styleOpt.state|=QStyle::State_Selected|QStyle::State_Enabled;
+            styleOpt.viewItemPosition = QStyleOptionViewItemV4::OnlyOne;
+            styleOpt.showDecorationSelected=true;
+
+            if (GtkStyle::isActive()) {
+                GtkStyle::drawSelection(styleOpt, &painter, isMo && !isOn ? 0.15 : 1.0);
+            } else {
+                if (isMo && !isOn) {
+                    QColor col(styleOpt.palette.highlight().color());
+                    col.setAlphaF(0.15);
+                    styleOpt.palette.setColor(styleOpt.palette.currentColorGroup(), QPalette::Highlight, col);
+                }
+                style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &styleOpt, &painter, 0);
+            }
+            #endif
+        }
+        opt.state&=~(QStyle::State_Sunken|QStyle::State_On);
+        painter.drawControl(QStyle::CE_ToolButtonLabel, opt);
+        int alignment = Qt::AlignCenter | Qt::TextShowMnemonic;
+        if (!style()->styleHint(QStyle::SH_UnderlineShortcut, &opt, this)) {
+            alignment |= Qt::TextHideMnemonic;
+        }
+        #ifdef SIMPLE_VSB
+        painter.drawItemText(rect(), alignment, opt.palette, true, opt.text, QPalette::Text);
+        #else
+        if (isOn) {
+            opt.state|=QStyle::State_Selected;
+        }
+        painter.drawItemText(rect(), alignment, opt.palette, true, opt.text, isOn ? QPalette::HighlightedText : QPalette::Text);
+        #endif
+    }
+};
+
+static const char *constDataProp="view-data";
+
+ViewSelector::ViewSelector(QWidget *p)
+    : QWidget(p)
+{
+    group=new QButtonGroup(this);
+    setFixedHeight(SizeWidget::standardHeight());
+}
+
+void ViewSelector::addItem(const QString &label, const QVariant &data)
+{
+    QHBoxLayout *l;
+    if (buttons.isEmpty()) {
+        l = new QHBoxLayout(this);
+        l->setMargin(0);
+        l->setSpacing(0);
+    } else {
+        l=static_cast<QHBoxLayout *>(layout());
+    }
+    QToolButton *button=new ViewSelectorButton(this);
+    button->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+    button->setAutoRaise(true);
+    button->setText(label);
+    button->setCheckable(true);
+    button->setProperty(constDataProp, data);
+    connect(button, SIGNAL(toggled(bool)), this, SLOT(buttonActivated()));
+    buttons.append(button);
+    group->addButton(button);
+    l->addWidget(button);
+}
+
+void ViewSelector::buttonActivated()
+{
+    QToolButton *button=qobject_cast<QToolButton *>(sender());
+    if (!button) {
+        return;
+    }
+
+    if (button->isChecked()) {
+        QFont f(font());
+        f.setBold(true);
+        button->setFont(f);
+        emit activated(buttons.indexOf(button));
+    } else {
+        button->setFont(font());
+    }
+}
+
+QVariant ViewSelector::itemData(int index) const
+{
+    return index>=0 && index<buttons.count() ? buttons.at(index)->property(constDataProp) : QVariant();
+}
+
+int ViewSelector::currentIndex() const
+{
+    for (int i=0; i<buttons.count(); ++i) {
+        if (buttons.at(i)->isChecked()) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+void ViewSelector::setCurrentIndex(int index)
+{
+    QFont f(font());
+    for (int i=0; i<buttons.count(); ++i) {
+        QToolButton *btn=buttons.at(i);
+        bool wasChecked=btn->isChecked();
+        btn->setChecked(i==index);
+        if (i==index) {
+            QFont bf(f);
+            bf.setBold(true);
+            btn->setFont(bf);
+            emit activated(i);
+        } else if (wasChecked) {
+            btn->setFont(f);
+        }
+    }
+}
+
+void ViewSelector::wheelEvent(QWheelEvent *ev)
+{
+    int numDegrees = ev->delta() / 8;
+    int numSteps = numDegrees / 15;
+    if (numSteps > 0) {
+        for (int i = 0; i < numSteps; ++i) {
+            int index=currentIndex();
+            setCurrentIndex(index==count()-1 ? 0 : index+1);
+        }
+    } else {
+        for (int i = 0; i > numSteps; --i) {
+            int index=currentIndex();
+            setCurrentIndex(index==0 ? count()-1 : index-1);
+        }
+    }
+}
+
+static void drawFadedLine(QPainter *p, const QRect &r, const QColor &col)
+{
+    QPoint start(r.x(), r.y());
+    QPoint end(r.x()+r.width()-1, r.y()+r.height()-1);
+    QLinearGradient grad(start, end);
+    QColor c(col);
+    c.setAlphaF(0.45);
+    QColor fade(c);
+    const int fadeSize=Utils::isHighDpi() ? 64 : 32;
+    double fadePos=1.0-((r.width()-(fadeSize*2))/(r.width()*1.0));
+
+    fade.setAlphaF(0.0);
+    if(fadePos>=0 && fadePos<=1.0) {
+        grad.setColorAt(0, fade);
+        grad.setColorAt(fadePos, c);
+    } else {
+        grad.setColorAt(0, c);
+    }
+    if(fadePos>=0 && fadePos<=1.0) {
+        grad.setColorAt(1.0-fadePos, c);
+        grad.setColorAt(1, fade);
+    } else {
+        grad.setColorAt(1, c);
+    }
+    p->setPen(QPen(QBrush(grad), 1));
+    p->drawLine(start, end);
+}
+
+void ViewSelector::paintEvent(QPaintEvent *ev)
+{
+    QWidget::paintEvent(ev);
+    QPainter p(this);
+    QRect r=rect();
+    r.setHeight(1);
+    drawFadedLine(&p, r, palette().foreground().color());
 }
 
 static QColor splitterColor;
@@ -183,6 +381,7 @@ void ThinSplitter::reset()
 ContextWidget::ContextWidget(QWidget *parent)
     : QWidget(parent)
     , job(0)
+    , alwaysCollapsed(false)
     , drawBackdrop(true)
     , darkBackground(false)
 //    , useHtBackdrops(0!=constHtbApiKey.latin1())
@@ -192,7 +391,7 @@ ContextWidget::ContextWidget(QWidget *parent)
     , isWide(false)
     , stack(0)
     , splitter(0)
-    , viewCombo(0)
+    , viewSelector(0)
     , creator(0)
 {
     animator.setPropertyName("fade");
@@ -261,7 +460,7 @@ void ContextWidget::setWide(bool w)
         l->setMargin(0);
         if (stack) {
             stack->setVisible(false);
-            viewCombo->setVisible(false);
+            viewSelector->setVisible(false);
             stack->removeWidget(artist);
             stack->removeWidget(album);
             stack->removeWidget(song);
@@ -307,18 +506,18 @@ void ContextWidget::setWide(bool w)
         if (!stack) {
             stack=new QStackedWidget(this);
         }
-        if (!viewCombo) {
-            viewCombo=new QComboBox(this);
-            viewCombo->addItem(i18n("Artist Information"), "artist");
-            viewCombo->addItem(i18n("Album Information"), "album");
-            viewCombo->addItem(i18n("Lyrics"), "song");
-            connect(viewCombo, SIGNAL(activated(int)), stack, SLOT(setCurrentIndex(int)));
+        if (!viewSelector) {
+            viewSelector=new ViewSelector(this);
+            viewSelector->addItem(i18n("&Artist"), "artist");
+            viewSelector->addItem(i18n("Al&bum"), "album");
+            viewSelector->addItem(i18n("&Lyrics"), "song");
+            connect(viewSelector, SIGNAL(activated(int)), stack, SLOT(setCurrentIndex(int)));
         }
         if (splitter) {
             splitter->setVisible(false);
         }
         stack->setVisible(true);
-        viewCombo->setVisible(true);
+        viewSelector->setVisible(true);
         artist->setParent(stack);
         album->setParent(stack);
         song->setParent(stack);
@@ -327,12 +526,12 @@ void ContextWidget::setWide(bool w)
         stack->addWidget(song);
         l->addItem(new QSpacerItem(m, m, QSizePolicy::Fixed, QSizePolicy::Fixed), 0, 0, 1, 1);
         l->addWidget(stack, 0, 1, 1, 1);
-        l->addWidget(viewCombo, 1, 0, 1, 2);
+        l->addWidget(viewSelector, 1, 0, 1, 2);
         QString lastSaved=Settings::self()->contextSlimPage();
         if (!lastSaved.isEmpty()) {
-            for (int i=0; i<viewCombo->count(); ++i) {
-                if (viewCombo->itemData(i).toString()==lastSaved) {
-                    viewCombo->setCurrentIndex(i);
+            for (int i=0; i<viewSelector->count(); ++i) {
+                if (viewSelector->itemData(i).toString()==lastSaved) {
+                    viewSelector->setCurrentIndex(i);
                     stack->setCurrentIndex(i);
                     break;
                 }
@@ -367,8 +566,8 @@ void ContextWidget::readConfig()
 void ContextWidget::saveConfig()
 {
     Settings::self()->saveContextZoom(artist->getZoom());
-    if (viewCombo) {
-        Settings::self()->saveContextSlimPage(viewCombo->itemData(viewCombo->currentIndex()).toString());
+    if (viewSelector) {
+        Settings::self()->saveContextSlimPage(viewSelector->itemData(viewSelector->currentIndex()).toString());
     }
     if (splitter) {
         Settings::self()->saveContextSplitterState(splitter->saveState());
@@ -439,9 +638,9 @@ void ContextWidget::paintEvent(QPaintEvent *e)
     QPainter p(this);
     QRect r(rect());
 
-    if (!isWide && viewCombo) {
+    if (!isWide && viewSelector) {
         int space=2; // fontMetrics().height()/4;
-        r.adjust(0, 0, 0, -(viewCombo->rect().height()+space));
+        r.adjust(0, 0, 0, -(viewSelector->rect().height()+space));
     }
     if (darkBackground) {
         p.fillRect(r, palette().background().color());

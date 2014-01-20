@@ -33,6 +33,9 @@
 #ifdef QT_QTDBUS_FOUND
 #include <QDBusMessage>
 #endif
+#include <QList>
+#include <QPair>
+
 class SongListDialog;
 
 class ActionDialog : public Dialog, Ui::ActionDialog
@@ -82,8 +85,8 @@ private:
     void configure(const QString &udi);
     void init(const QString &srcUdi, const QString &dstUdi, const QList<Song> &songs, Mode m);
     void slotButtonClicked(int button);
-    void setPage(int page, const QString &msg=QString());
-    QString formatSong(const Song &s, bool showFiles=false, bool showTime=false);
+    void setPage(int page, const QList<QPair<QString, QString> > &msg=QList<QPair<QString, QString> >(), const QString &header=QString());
+    QList<QPair<QString, QString> > formatSong(const Song &s, bool showFiles=false, bool showTime=false);
     bool refreshLibrary();
     void removeSong(const Song &s);
     void cleanDirs();

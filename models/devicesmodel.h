@@ -70,6 +70,7 @@ public:
     #endif
 
 public Q_SLOTS:
+    void setCover(const Song &song, const QImage &img, const QString &file);
     void setCover(const Song &song, const QImage &img);
     void deviceAdded(const QString &udi);
     void deviceRemoved(const QString &udi);

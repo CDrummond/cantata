@@ -250,8 +250,10 @@ void DevicesModel::setEnabled(bool e)
     if (enabled) {
         connect(Solid::DeviceNotifier::instance(), SIGNAL(deviceAdded(const QString &)), this, SLOT(deviceAdded(const QString &)));
         connect(Solid::DeviceNotifier::instance(), SIGNAL(deviceRemoved(const QString &)), this, SLOT(deviceRemoved(const QString &)));
-//        connect(Covers::self(), SIGNAL(cover(const Song &, const QImage &, const QString &)),
-//                this, SLOT(setCover(const Song &, const QImage &, const QString &)));
+        #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
+        connect(Covers::self(), SIGNAL(cover(const Song &, const QImage &, const QString &)),
+                this, SLOT(setCover(const Song &, const QImage &, const QString &)));
+        #endif
         // Call loadLocal via a timer, so that upon Cantata start-up model is loaded into view before we try and expand items!
         QTimer::singleShot(0, this, SIGNAL(loadLocal()));
         connect(MountPoints::self(), SIGNAL(updated()), this, SLOT(mountsChanged()));
@@ -274,8 +276,10 @@ void DevicesModel::stop()
 
     disconnect(Solid::DeviceNotifier::instance(), SIGNAL(deviceAdded(const QString &)), this, SLOT(deviceAdded(const QString &)));
     disconnect(Solid::DeviceNotifier::instance(), SIGNAL(deviceRemoved(const QString &)), this, SLOT(deviceRemoved(const QString &)));
-//        disconnect(Covers::self(), SIGNAL(cover(const Song &, const QImage &, const QString &)),
-//                   this, SLOT(setCover(const Song &, const QImage &, const QString &)));
+    #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
+    disconnect(Covers::self(), SIGNAL(cover(const Song &, const QImage &, const QString &)),
+               this, SLOT(setCover(const Song &, const QImage &, const QString &)));
+    #endif
     disconnect(MountPoints::self(), SIGNAL(updated()), this, SLOT(mountsChanged()));
     #if defined ENABLE_REMOTE_DEVICES
     unmountRemote();
@@ -286,6 +290,25 @@ Device * DevicesModel::device(const QString &udi)
 {
     int idx=indexOf(udi);
     return idx<0 ? 0 : static_cast<Device *>(collections.at(idx));
+}
+
+void DevicesModel::setCover(const Song &song, const QImage &img, const QString &file)
+{
+    #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
+    if (song.isCdda()) {
+        int idx=indexOf(song.title);
+        if (idx>=0) {
+            Device *dev=static_cast<Device *>(collections.at(idx));
+            if (Device::AudioCd==dev->devType()) {
+                static_cast<AudioCdDevice *>(dev)->setCover(song, img, file);
+            }
+        }
+    }
+    #else
+    Q_UNUSED(song)
+    Q_UNUSED(img)
+    Q_UNUSED(file)
+    #endif
 }
 
 void DevicesModel::setCover(const Song &song, const QImage &img)

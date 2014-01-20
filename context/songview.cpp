@@ -205,8 +205,8 @@ void SongView::cancel()
 
 void SongView::del()
 {
-    if (MessageBox::No==MessageBox::warningYesNo(this, i18n("Delete lyrics file?"), i18n("Cancel"),
-                                                 StdGuiItem::del(), StdGuiItem::discard())) {
+    if (MessageBox::No==MessageBox::warningYesNo(this, i18n("Delete lyrics file?"), i18n("Delete File"),
+                                                 StdGuiItem::del(), StdGuiItem::cancel())) {
         return;
     }
 

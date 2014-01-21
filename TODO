@@ -1,7 +1,7 @@
 - Qt5 port
   - Fix raising of mainwindow via dbus. (Qt5 no longer has QX11Info)
-  - Qt 5.2's QLineEdit has clearbutton functionality. If compiled against Qt5.2
-    then Cantata should use native QLineEdit.
+  - Qt 5.2's QLineEdit has clearbutton functionality. Rherefore, Cantata should
+    just use QLineEdit for Qt>=5.2
   - After KDE Frameworks 5 is released, add CMake option to use system Solid
     libraries.
 
@@ -12,7 +12,7 @@
   - Port to Qt5. With Qt5.2 use QWinThumbnailToolButton 
 
 - MacOS port
-  - Initial work imported into 1.2.0, however no builds we ever released. No
+  - Initial work imported into 1.2.0, however no builds were ever released. No
     idea if this still compiles or not!
  
 - Streams

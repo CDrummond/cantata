@@ -116,7 +116,7 @@ struct Song
     bool isNonMPD() const { return isStream() || OnlineSvrTrack==type || Cdda==type || (!file.isEmpty() && file.startsWith(Utils::constDirSep)); }
     bool isCantataStream() const { return CantataStream==type; }
     bool isCdda() const { return Cdda==type; }
-    QString albumKey() const { return albumArtist()+QLatin1Char(':')+album; }
+    QString albumKey() const { return albumArtist()+QLatin1Char(':')+album+QLatin1Char(':')+QString::number(disc); }
     bool isCueFile() const { return Playlist==type && file.endsWith(QLatin1String(".cue"), Qt::CaseInsensitive); }
     QString basicArtist() const;
 

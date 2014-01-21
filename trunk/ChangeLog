@@ -71,6 +71,8 @@
 39. Read lyrics from LYRICS tag for FLAC, Opus, Vorbis, and Speex files.
 40. Be consistent with other players, and dont show disc number in list.
 41. As per Amarok, split albums into discs in grouped playqueue view.
+42. Fix some Mopidy 0.18 issues; cover and lyrics retrieval, folders view
+    loading.
 
 1.2.2
 -----

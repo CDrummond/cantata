@@ -28,7 +28,16 @@
 #include "dirviewitemfile.h"
 #include <QStringList>
 
-DirViewItem * DirViewItemDir::createDirectory(const QString &dirName)
+DirViewItemDir * DirViewItemDir::getDirectory(const QString &dirName, bool create)
+{
+    DirViewItem *item=child(dirName);
+    if (item && Type_Dir==item->type()) {
+        return static_cast<DirViewItemDir *>(item);
+    }
+    return create ? createDirectory(dirName) : 0;
+}
+
+DirViewItemDir * DirViewItemDir::createDirectory(const QString &dirName)
 {
     DirViewItemDir *dir = new DirViewItemDir(dirName, this);
     m_indexes.insert(dirName, m_childItems.count());
@@ -36,9 +45,9 @@ DirViewItem * DirViewItemDir::createDirectory(const QString &dirName)
     return dir;
 }
 
-DirViewItem * DirViewItemDir::insertFile(const QString &fileName)
+DirViewItem * DirViewItemDir::insertFile(const QString &fileName, const QString &fullPath)
 {
-    DirViewItemFile *file = new DirViewItemFile(fileName, this);
+    DirViewItemFile *file = new DirViewItemFile(fileName, fullPath, this);
     m_indexes.insert(fileName, m_childItems.count());
     m_childItems.append(file);
     return file;
@@ -47,7 +56,7 @@ DirViewItem * DirViewItemDir::insertFile(const QString &fileName)
 void DirViewItemDir::insertFile(const QStringList &path)
 {
     if (1==path.count()) {
-        insertFile(path[0]);
+        insertFile(path[0], QString());
     } else {
         static_cast<DirViewItemDir *>(createDirectory(path[0]))->insertFile(path.mid(1));
     }

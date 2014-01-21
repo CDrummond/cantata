@@ -38,7 +38,7 @@ public:
         CueSheet
     };
 
-    DirViewItemFile(const QString &name, DirViewItem *parent) : DirViewItem(name, parent) {
+    DirViewItemFile(const QString &name, const QString &p, DirViewItem *parent) : DirViewItem(name, parent), path(p) {
         fType=MPDConnection::isPlaylist(name)
                 ? name.endsWith(QLatin1String(".cue"), Qt::CaseInsensitive)
                     ? CueSheet
@@ -48,8 +48,12 @@ public:
     virtual ~DirViewItemFile() { }
     Type type() const { return Type_File;  }
     FileType fileType() const { return fType; }
+    QString fullName() const { return path.isEmpty() ? DirViewItem::fullName() : path; }
+    const QString & filePath() const { return path; }
+
 private:
     FileType fType;
+    QString path;
 };
 
 #endif

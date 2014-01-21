@@ -39,8 +39,9 @@ public:
     DirViewItem * child(int row) const { return m_childItems.value(row); }
     DirViewItem * child(const QString &name) const { return m_indexes.contains(name) ? m_childItems.value(m_indexes[name]) : 0; }
     const QList<DirViewItem *> & childItems() const { return m_childItems; }
-    DirViewItem * createDirectory(const QString &dirName);
-    DirViewItem * insertFile(const QString &fileName);
+    DirViewItemDir * getDirectory(const QString &dirName, bool create);
+    DirViewItemDir * createDirectory(const QString &dirName);
+    DirViewItem * insertFile(const QString &fileName, const QString &fullPath);
     void add(DirViewItem *i);
     void insertFile(const QStringList &path);
     void remove(DirViewItem *dir);

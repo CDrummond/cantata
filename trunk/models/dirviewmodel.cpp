@@ -245,6 +245,7 @@ static QLatin1String constTopTag("CantataFolders");
 static const QString constVersionAttribute=QLatin1String("version");
 static const QString constDateAttribute=QLatin1String("date");
 static const QString constNameAttribute=QLatin1String("name");
+static const QString constPathAttribute=QLatin1String("path");
 static const QString constDirTag=QLatin1String("dir");
 static const QString constFileTag=QLatin1String("file");
 
@@ -303,6 +304,11 @@ void DirViewModel::toXML(const DirViewItem *item, QXmlStreamWriter &writer)
         foreach (const DirViewItem *i, static_cast<const DirViewItemDir *>(item)->childItems()) {
             toXML(i, writer);
         }
+    } else {
+         const DirViewItemFile *f=static_cast<const DirViewItemFile *>(item);
+         if (!f->filePath().isEmpty()) {
+             writer.writeAttribute(constPathAttribute, f->filePath());
+         }
     }
     writer.writeEndElement();
 }
@@ -361,7 +367,8 @@ quint32 DirViewModel::fromXML(QIODevice *dev, const QDateTime &dt, DirViewItemRo
                 dirStack.append(currentDir);
                 currentDir=dir;
             } else if (constFileTag==element) {
-                currentDir->add(new DirViewItemFile(attributes.value(constNameAttribute).toString(), currentDir));
+                currentDir->add(new DirViewItemFile(attributes.value(constNameAttribute).toString(),
+                                                    attributes.value(constPathAttribute).toString(), currentDir));
             } else {
                 return 0;
             }

@@ -1462,7 +1462,7 @@ void MPDConnection::toggleStopAfterCurrent(bool afterCurrent)
 bool MPDConnection::listDirInfo(const QString &dir, MusicLibraryItemRoot *root)
 {
     bool topLevel="/"==dir;
-    Response response=sendCommand(topLevel ? "lsinfo /" : ("lsinfo "+encodeName(dir)));
+    Response response=sendCommand(topLevel ? "lsinfo" : ("lsinfo "+encodeName(dir)));
     if (response.ok) {
         QSet<QString> childDirs;
         MPDParseUtils::parseLibraryItems(response.data, details.dir, ver, root, !topLevel, &childDirs);

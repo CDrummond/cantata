@@ -191,9 +191,10 @@ void TrackOrganiser::updateView()
     foreach (const Song &s, origSongs) {
         QString modified=opts.createFilename(s);
         //different=different||(modified!=s.file);
-        bool diff=modified!=s.file;
+        QString orig=s.filePath();
+        bool diff=modified!=orig;
         different|=diff;
-        QTreeWidgetItem *item=new QTreeWidgetItem(files, QStringList() << s.file << modified);
+        QTreeWidgetItem *item=new QTreeWidgetItem(files, QStringList() << orig << modified);
         if (diff) {
             item->setFont(0, f);
             item->setFont(1, f);
@@ -252,8 +253,9 @@ void TrackOrganiser::renameFile()
     #endif
         musicFolder=MPDConnection::self()->getDetails().dir;
 
-    if (modified!=s.file) {
-        QString source=musicFolder+s.file;
+    QString orig=s.filePath();
+    if (modified!=orig) {
+        QString source=musicFolder+orig;
         QString dest=musicFolder+modified;
         bool skip=false;
         if (!QFile::exists(source)) {
@@ -364,7 +366,11 @@ void TrackOrganiser::renameFile()
             item->setFont(0, font());
             item->setFont(1, font());
             Song to=s;
-            to.file=modified;
+            if (s.file.startsWith(Song::constMopidyLocal)) {
+                to.file=Song::encodePath(to.file);
+            } else {
+                to.file=modified;
+            }
             origSongs.replace(index, to);
             updated=true;
 

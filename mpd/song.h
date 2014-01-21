@@ -80,6 +80,7 @@ struct Song
     static int albumYear(const Song &s);
     static void sortViaType(QList<Song> &songs);
     static QString decodePath(const QString &file);
+    static QString encodePath(const QString &file);
 
     Song();
     Song(const Song &o) { *this=o; }

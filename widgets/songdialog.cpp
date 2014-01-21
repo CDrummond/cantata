@@ -41,9 +41,10 @@ bool SongDialog::songsOk(const QList<Song> &songs, const QString &base, bool isM
     QWidget *wid=isVisible() ? this : parentWidget();
     int checked=0;
     foreach (const Song &s, songs) {
-        DBUG << "Checking dir:" << base << " song:" << s.file << " file:" << QString(base+s.file);
-        if (!QFile::exists(base+s.file)) {
-            DBUG << QString(base+s.file) << "does not exist";
+        QString file=s.filePath();
+        DBUG << "Checking dir:" << base << " song:" << file << " file:" << QString(base+file);
+        if (!QFile::exists(base+file)) {
+            DBUG << QString(base+file) << "does not exist";
             if (isMpd) {
                 MessageBox::error(wid, i18n("<p>Cannot access song files!<br/><br/>"
                                             "Please check Cantata's \"Music folder\" setting, and MPD's \"music_directory\" setting.</p>"));

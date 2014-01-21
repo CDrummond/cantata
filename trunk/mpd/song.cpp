@@ -408,13 +408,13 @@ QString Song::artistSong() const
 
 QString Song::trackAndTitleStr(bool addArtist) const
 {
-    if (isFromOnlineService()) {
-        return (disc>0 && disc!=constOnlineDiscId ? (QString::number(disc)+QLatin1Char('.')) : QString())+
-               (track>0 ? (track>9 ? QString::number(track) : (QLatin1Char('0')+QString::number(track))) : QString())+
-               QLatin1Char(' ')+(addArtist ? artistSong() : title);
-    }
-    return (disc>0 ? (QString::number(disc)+QLatin1Char('.')) : QString())+
-           (track>9 ? QString::number(track) : (QLatin1Char('0')+QString::number(track)))+
+//    if (isFromOnlineService()) {
+//        return (disc>0 && disc!=constOnlineDiscId ? (QString::number(disc)+QLatin1Char('.')) : QString())+
+//               (track>0 ? (track>9 ? QString::number(track) : (QLatin1Char('0')+QString::number(track))) : QString())+
+//               QLatin1Char(' ')+(addArtist ? artistSong() : title);
+//    }
+    return //(disc>0 ? (QString::number(disc)+QLatin1Char('.')) : QString())+
+           (track>0 ? (track>9 ? QString::number(track) : (QLatin1Char('0')+QString::number(track))) : QString())+
            QLatin1Char(' ')+(addArtist ? artistSong() : title);
 }
 

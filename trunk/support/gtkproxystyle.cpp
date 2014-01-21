@@ -60,11 +60,13 @@ static QPainterPath buildPath(const QRectF &r, double radius)
 
 static void drawSpinButton(QPainter *painter, const QRect &r, const QColor &col, bool isPlus)
 {
-    int length=r.height()*0.6;
+    int length=r.height()*0.5;
     int lineWidth=length<24 ? 2 : 4;
-    if (length%2) {
+    if (length<(lineWidth*2)) {
+        length=lineWidth*2;
+    } else if (length%2) {
         length++;
-    }
+    } 
 
     painter->save();
     painter->setRenderHint(QPainter::Antialiasing, false);

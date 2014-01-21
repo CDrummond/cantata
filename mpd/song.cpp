@@ -42,7 +42,8 @@
 
 static const quint8 constOnlineDiscId=0xEE;
 
-const QString Song::constCddaProtocol("cdda:/");
+const QString Song::constCddaProtocol=QLatin1String("cdda:/");
+const QString Song::constMopidyLocal=QLatin1String("local:track:");
 
 // When displaying albums, we use the 1st track's year as the year of the album.
 // The map below stores the mapping from artist+album to year.
@@ -101,6 +102,11 @@ static bool songTypeSort(const Song &s1, const Song &s2)
 void Song::sortViaType(QList<Song> &songs)
 {
     qSort(songs.begin(), songs.end(), songTypeSort);
+}
+
+QString Song::decodePath(const QString &file)
+{
+    return file.startsWith(constMopidyLocal) ? QUrl(file.mid(constMopidyLocal.length())).path() : file;
 }
 
 static bool useComposerIfSet=false;
@@ -510,12 +516,6 @@ QString Song::basicArtist() const
         }
     }
     return artist;
-}
-
-QString Song::filePath() const
-{
-    static const QString constMopidyLocal=QLatin1String("local:track:");
-    return file.startsWith(constMopidyLocal) ? QUrl(file.mid(constMopidyLocal.length())).path() : file;
 }
 
 bool Song::isFromOnlineService() const

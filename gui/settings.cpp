@@ -499,7 +499,7 @@ int Settings::sidebar()
         case 18: return FancyTabWidget::Top|FancyTabWidget::Small|FancyTabWidget::IconOnly;
         }
     } else {
-        return GET_INT("sidebar", (int)(FancyTabWidget::Side|FancyTabWidget::Large));
+        return GET_INT("sidebar", (int)(FancyTabWidget::Side|FancyTabWidget::Large))&FancyTabWidget::All_Mask;
     }
 }
 

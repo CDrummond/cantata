@@ -69,12 +69,12 @@ QByteArray CueFile::getLoadLine(const QString &str)
     #endif
 
     if (q.hasQueryItem("pos")) {
-        QString pos=q.queryItemValue("pos");
+        int pos=q.queryItemValue("pos").toInt();
         QString path=u.path();
         if (path.startsWith("/")) {
             path=path.mid(1);
         }
-        return MPDConnection::encodeName(path)+" "+pos.toLatin1()+":"+QString::number(pos.toInt()+1).toLatin1();
+        return MPDConnection::encodeName(path)+" "+MPDConnection::quote(pos)+":"+MPDConnection::quote(pos+1);
     }
     return MPDConnection::encodeName(str);
 }

@@ -524,28 +524,37 @@ MPDConnection::Response MPDConnection::sendCommand(const QByteArray &command, bo
             return sendCommand(command, emitErrors, false);
         }
         if (emitErrors) {
-            if ((command.startsWith("add ") || command.startsWith("command_list_begin\nadd ")) && -1!=command.indexOf("\"file:///")) {
-                if (details.isLocal() && -1!=response.data.indexOf("Permission denied")) {
-                    emit error(i18n("Failed to load. Please check user \"mpd\" has read permission."));
-                } else if (!details.isLocal() && -1!=response.data.indexOf("Access denied")) {
-                    emit error(i18n("Failed to load. MPD can only play local files if connected via a local socket."));
+            bool emitError=true;
+            // Mopidy returns "incorrect arguments" for commands it does not support. The docs state that crossfade and replaygain mode
+            // setting commands are not supported. So, if we get this error then just ignore it.
+            if ((command.startsWith("crossfade ") || command.startsWith("replay_gain_mode ")) &&
+                "incorrect arguments"==response.getError(command)) {
+                emitError=false;
+            }
+            if (emitError) {
+                if ((command.startsWith("add ") || command.startsWith("command_list_begin\nadd ")) && -1!=command.indexOf("\"file:///")) {
+                    if (details.isLocal() && -1!=response.data.indexOf("Permission denied")) {
+                        emit error(i18n("Failed to load. Please check user \"mpd\" has read permission."));
+                    } else if (!details.isLocal() && -1!=response.data.indexOf("Access denied")) {
+                        emit error(i18n("Failed to load. MPD can only play local files if connected via a local socket."));
+                    } else if (!response.getError(command).isEmpty()) {
+                        emit error(i18n("MPD reported the following error: %1", response.getError(command)));
+                    } else {
+                        disconnectFromMPD();
+                        emit stateChanged(false);
+                        emit error(i18n("Failed to send command. Disconnected from %1", details.description()), true);
+                    }
                 } else if (!response.getError(command).isEmpty()) {
                     emit error(i18n("MPD reported the following error: %1", response.getError(command)));
-                } else {
+                } /*else if ("listallinfo"==command && ver>=MPD_MAKE_VERSION(0,18,0)) {
+                    disconnectFromMPD();
+                    emit stateChanged(false);
+                    emit error(i18n("Failed to load library. Please increase \"max_output_buffer_size\" in MPD's config file."));
+                } */ else {
                     disconnectFromMPD();
                     emit stateChanged(false);
                     emit error(i18n("Failed to send command. Disconnected from %1", details.description()), true);
                 }
-            } else if (!response.getError(command).isEmpty()) {
-                emit error(i18n("MPD reported the following error: %1", response.getError(command)));
-            } /*else if ("listallinfo"==command && ver>=MPD_MAKE_VERSION(0,18,0)) {
-                disconnectFromMPD();
-                emit stateChanged(false);
-                emit error(i18n("Failed to load library. Please increase \"max_output_buffer_size\" in MPD's config file."));
-            } */ else {
-                disconnectFromMPD();
-                emit stateChanged(false);
-                emit error(i18n("Failed to send command. Disconnected from %1", details.description()), true);
             }
         }
     }

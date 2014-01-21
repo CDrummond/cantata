@@ -191,7 +191,7 @@ MPDStatusValues MPDParseUtils::parseStatus(const QByteArray &data)
     return v;
 }
 
-Song MPDParseUtils::parseSong(const QByteArray &data, bool isPlayQueue)
+Song MPDParseUtils::parseSong(const QByteArray &data, Location location)
 {
     Song song;
     QString tmpData = QString::fromUtf8(data.constData());
@@ -298,7 +298,7 @@ Song MPDParseUtils::parseSong(const QByteArray &data, bool isPlayQueue)
             song.fillEmptyFields();
         }
     }
-    if (isPlayQueue) {
+    if (Library!=location) {
         // HTTP server, and OnlineServices, modify the path. But this then messes up
         // undo/restore of playqueue. Therefore, set path back to original value...
         song.file=origFile;
@@ -307,7 +307,7 @@ Song MPDParseUtils::parseSong(const QByteArray &data, bool isPlayQueue)
     return song;
 }
 
-QList<Song> MPDParseUtils::parseSongs(const QByteArray &data)
+QList<Song> MPDParseUtils::parseSongs(const QByteArray &data, Location location)
 {
     QList<Song> songs;
     QByteArray line;
@@ -322,7 +322,7 @@ QList<Song> MPDParseUtils::parseSongs(const QByteArray &data)
         }
         line += "\n";
         if (i == lines.size() - 1 || lines.at(i + 1).startsWith("file:")) {
-            Song song=parseSong(line, true);
+            Song song=parseSong(line, location);
             songs.append(song);
             line.clear();
         }
@@ -434,7 +434,7 @@ void MPDParseUtils::parseLibraryItems(const QByteArray &data, const QString &mpd
         currentItem += line;
         currentItem += "\n";
         if (i == amountOfLines - 1 || lines.at(i + 1).startsWith("file:") || lines.at(i + 1).startsWith("playlist:")) {
-            Song currentSong = parseSong(currentItem, false);
+            Song currentSong = parseSong(currentItem, Library);
             currentItem.clear();
             if (currentSong.file.isEmpty()) {
                 continue;

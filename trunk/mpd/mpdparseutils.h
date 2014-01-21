@@ -50,11 +50,18 @@ namespace MPDParseUtils
         qint32 id;
         quint32 pos;
     };
+
+    enum Location {
+        Library,
+        Platlist,
+        PlayQueue
+    };
+
     extern QList<Playlist> parsePlaylists(const QByteArray &data);
     extern MPDStatsValues parseStats(const QByteArray &data);
     extern MPDStatusValues parseStatus(const QByteArray &data);
-    extern Song parseSong(const QByteArray &data, bool isPlayQueue);
-    extern QList<Song> parseSongs(const QByteArray &data);
+    extern Song parseSong(const QByteArray &data, Location location);
+    extern QList<Song> parseSongs(const QByteArray &data, Location location);
     extern QList<IdPos> parseChanges(const QByteArray &data);
     extern QStringList parseList(const QByteArray &data, const QLatin1String &key);
     extern bool groupSingle();

@@ -173,6 +173,7 @@ public:
     };
 
     static MPDConnection * self();
+    static QByteArray quote(int val);
     static QByteArray encodeName(const QString &name);
 
     struct Response {

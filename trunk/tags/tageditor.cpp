@@ -751,7 +751,8 @@ bool TagEditor::applyUpdates()
             continue;
         }
 
-        switch(Tags::update(baseDir+orig.file, orig, edit)) {
+        QString file=orig.filePath();
+        switch(Tags::update(baseDir+file, orig, edit)) {
         case Tags::Update_Modified:
             #ifdef ENABLE_DEVICES_SUPPORT
             if (!deviceUdi.isEmpty()) {
@@ -768,20 +769,20 @@ bool TagEditor::applyUpdates()
                 }
             }
             updatedSongs.append(edit);
-            if (!renameFiles && orig.file!=opts.createFilename(edit)) {
+            if (!renameFiles && file!=opts.createFilename(edit)) {
                 renameFiles=true;
             }
             break;
         case Tags::Update_Failed:
-            failed.append(orig.file);
+            failed.append(file);
             break;
         #ifdef ENABLE_EXTERNAL_TAGS
         case Tags::Update_Timedout:
-            failed.append(i18nc("filename (Timeout)", "%1 (Timeout)", orig.file));
+            failed.append(i18nc("filename (Timeout)", "%1 (Timeout)", file));
             someTimedout=true;
             break;
         case Tags::Update_BadFile:
-            failed.append(i18nc("filename (Corrupt tags?)", "%1 (Corrupt tags?)", orig.file));
+            failed.append(i18nc("filename (Corrupt tags?)", "%1 (Corrupt tags?)", file));
             break;
         #endif
         default:

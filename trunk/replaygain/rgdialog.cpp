@@ -329,7 +329,7 @@ void RgDialog::createScanner(const QList<int> &indexes)
 {
     QMap<int, QString> fileMap;
     foreach (int i, indexes) {
-        fileMap[i]=base+origSongs.at(i).file;
+        fileMap[i]=base+origSongs.at(i).filePath();
     }
 
     AlbumScanner *s=new AlbumScanner(fileMap);
@@ -404,17 +404,18 @@ bool RgDialog::saveTags()
     QMap<int, Tags::ReplayGain>::ConstIterator end=tagsToSave.constEnd();
 
     for (; it!=end; ++it) {
-        switch (Tags::updateReplaygain(base+origSongs.at(it.key()).file, it.value())) {
+        QString filePath=origSongs.at(it.key()).filePath();
+        switch (Tags::updateReplaygain(base+filePath, it.value())) {
         case Tags::Update_Failed:
-            failed.append(origSongs.at(it.key()).file);
+            failed.append(filePath);
             break;
         #ifdef ENABLE_EXTERNAL_TAGS
         case Tags::Update_Timedout:
-            failed.append(i18nc("filename (Timeout)", "%1 (Timeout)", origSongs.at(it.key()).file));
+            failed.append(i18nc("filename (Timeout)", "%1 (Timeout)", filePath));
             someTimedout=true;
             break;
         case Tags::Update_BadFile:
-            failed.append(i18nc("filename (Corrupt tags?)", "%1 (Corrupt tags?)", origSongs.at(it.key()).file));
+            failed.append(i18nc("filename (Corrupt tags?)", "%1 (Corrupt tags?)", filePath));
             break;
         #endif
         default:

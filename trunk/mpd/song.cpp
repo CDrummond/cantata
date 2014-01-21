@@ -109,6 +109,11 @@ QString Song::decodePath(const QString &file)
     return file.startsWith(constMopidyLocal) ? QUrl(file.mid(constMopidyLocal.length())).path() : file;
 }
 
+QString Song::encodePath(const QString &file)
+{
+    return constMopidyLocal+QString(QUrl::toPercentEncoding(file));
+}
+
 static bool useComposerIfSet=false;
 
 bool Song::useComposer()

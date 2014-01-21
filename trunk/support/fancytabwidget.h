@@ -176,7 +176,8 @@ public:
 
         Position_Mask = 0x000F,
         Style_Mask    = 0x00F0,
-        Options_Mask  = 0x0F00
+        Options_Mask  = 0x0100,
+        All_Mask      = Position_Mask|Style_Mask|Options_Mask
     };
 
     struct Item {

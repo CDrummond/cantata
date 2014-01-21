@@ -71,7 +71,7 @@ static inline QString mpdFilePath(const QString &songFile)
 
 static inline QString mpdFilePath(const Song &song)
 {
-    return mpdFilePath(song.file);
+    return mpdFilePath(song.filePath());
 }
 
 static inline QString fixNewLines(const QString &o)
@@ -316,7 +316,7 @@ void SongView::update(const Song &s, bool force)
         }
 
         if (!MPDConnection::self()->getDetails().dir.isEmpty() && !song.file.isEmpty() && !song.isNonMPD()) {
-            QString songFile=song.file;
+            QString songFile=song.filePath();
 
             if (song.isCantataStream()) {
                 #if QT_VERSION < 0x050000
@@ -333,7 +333,7 @@ void SongView::update(const Song &s, bool force)
             if (MPDConnection::self()->getDetails().dir.startsWith(QLatin1String("http:/"))) {
                 QUrl url(mpdLyrics);
                 job=NetworkAccessManager::self()->get(url);
-                job->setProperty("file", songFile);
+                job->setProperty("file", song.file);
                 connect(job, SIGNAL(finished()), this, SLOT(downloadFinished()));
                 return;
             } else {

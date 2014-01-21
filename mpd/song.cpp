@@ -38,6 +38,7 @@
 #include <QChar>
 #include <QLatin1Char>
 #include <QtAlgorithms>
+#include <QUrl>
 
 static const quint8 constOnlineDiscId=0xEE;
 
@@ -509,6 +510,12 @@ QString Song::basicArtist() const
         }
     }
     return artist;
+}
+
+QString Song::filePath() const
+{
+    static const QString constMopidyLocal=QLatin1String("local:track:");
+    return file.startsWith(constMopidyLocal) ? QUrl(file.mid(constMopidyLocal.length())).path() : file;
 }
 
 bool Song::isFromOnlineService() const

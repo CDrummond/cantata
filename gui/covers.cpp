@@ -495,11 +495,12 @@ void CoverDownloader::download(const Song &song)
     }
 
     QString dirName;
-    bool haveAbsPath=song.file.startsWith(Utils::constDirSep);
+    QString fileName=song.filePath();
+    bool haveAbsPath=fileName.startsWith(Utils::constDirSep);
 
     if (haveAbsPath || !MPDConnection::self()->getDetails().dir.isEmpty()) {
-        dirName=song.file.endsWith(Utils::constDirSep) ? (haveAbsPath ? QString() : MPDConnection::self()->getDetails().dir)+song.file
-                                        : Utils::getDir((haveAbsPath ? QString() : MPDConnection::self()->getDetails().dir)+song.file);
+        dirName=fileName.endsWith(Utils::constDirSep) ? (haveAbsPath ? QString() : MPDConnection::self()->getDetails().dir)+fileName
+                                                      : Utils::getDir((haveAbsPath ? QString() : MPDConnection::self()->getDetails().dir)+fileName);
     }
 
     Job job(song, dirName, isArtistImage);
@@ -517,7 +518,7 @@ bool CoverDownloader::downloadViaHttp(Job &job, JobType type)
     bool isArtistImage=job.song.isArtistImageRequest();
     QString coverName=isArtistImage ? Covers::artistFileName(job.song) : Covers::albumFileName(job.song);
     coverName+=constExtensions[JobHttpJpg==type ? 0 : 1];
-    QString dir=Utils::getDir(job.song.file);
+    QString dir=Utils::getDir(job.filePath);
     if (isArtistImage) {
         if (job.level) {
             QStringList parts=dir.split(Utils::constDirSep, QString::SkipEmptyParts);
@@ -722,7 +723,7 @@ QString CoverDownloader::saveImg(const Job &job, const QImage &img, const QByteA
     if (job.song.isCdda()) {
         QString dir = Utils::cacheDir(Covers::constCddaCoverDir, true);
         if (!dir.isEmpty()) {
-            savedName=save(mimeType, extension, dir+job.song.file.mid(7), img, raw);
+            savedName=save(mimeType, extension, dir+job.filePath.mid(7), img, raw);
             if (!savedName.isEmpty()) {
                 DBUG << job.song.file << savedName;
                 return savedName;
@@ -1025,9 +1026,9 @@ Covers::Image Covers::locateImage(const Song &song)
         }
     }
 
-    QString songFile=song.file;
+    QString songFile=song.filePath();
     QString dirName;
-    bool haveAbsPath=song.file.startsWith(Utils::constDirSep);
+    bool haveAbsPath=songFile.startsWith(Utils::constDirSep);
 
     if (song.isCantataStream()) {
         #if QT_VERSION < 0x050000
@@ -1039,7 +1040,7 @@ Covers::Image Covers::locateImage(const Song &song)
         songFile=u.hasQueryItem("file") ? u.queryItemValue("file") : QString();
     }
 
-    if (!songFile.isEmpty() && !song.file.startsWith(("http:/")) &&
+    if (!songFile.isEmpty() && !songFile.startsWith(("http:/")) &&
         (haveAbsPath || (!MPDConnection::self()->getDetails().dir.isEmpty() && !MPDConnection::self()->getDetails().dir.startsWith(QLatin1String("http://")) ) ) ) {
         dirName=songFile.endsWith(Utils::constDirSep) ? (haveAbsPath ? QString() : MPDConnection::self()->getDetails().dir)+songFile
                                        : Utils::getDir((haveAbsPath ? QString() : MPDConnection::self()->getDetails().dir)+songFile);
@@ -1093,7 +1094,7 @@ Covers::Image Covers::locateImage(const Song &song)
             }
             names << standardNames();
             for (int e=0; constExtensions[e]; ++e) {
-                names+=Utils::changeExtension(Utils::getFile(song.file), constExtensions[e]);
+                names+=Utils::changeExtension(Utils::getFile(songFile), constExtensions[e]);
             }
             for (int e=0; constExtensions[e]; ++e) {
                 names+=song.albumArtist()+QLatin1String(" - ")+song.album+constExtensions[e];
@@ -1113,7 +1114,7 @@ Covers::Image Covers::locateImage(const Song &song)
             }
 
             #ifdef TAGLIB_FOUND
-            QString fileName=haveAbsPath ? song.file : (MPDConnection::self()->getDetails().dir+songFile);
+            QString fileName=haveAbsPath ? songFile : (MPDConnection::self()->getDetails().dir+songFile);
             if (QFile::exists(fileName)) {
                 QImage img(Tags::readImage(fileName));
                 if (!img.isNull()) {

@@ -59,8 +59,9 @@ public:
     struct Job
     {
         Job(const Song &s, const QString &d, bool a=false)
-            : song(s), dir(d), isArtist(a), type(JobLastFm), level(0) { }
+            : song(s), filePath(s.filePath()), dir(d), isArtist(a), type(JobLastFm), level(0) { }
         Song song;
+        QString filePath;
         QString dir;
         bool isArtist;
         JobType type;

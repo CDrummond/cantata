@@ -754,7 +754,7 @@ void MPDConnection::currentSong()
 {
     Response response=sendCommand("currentsong");
     if (response.ok) {
-        emit currentSongUpdated(MPDParseUtils::parseSong(response.data, true));
+        emit currentSongUpdated(MPDParseUtils::parseSong(response.data, MPDParseUtils::PlayQueue));
     }
 }
 
@@ -822,7 +822,7 @@ void MPDConnection::playListChanges()
                         playListInfo();
                         return;
                     }
-                    Song s=MPDParseUtils::parseSong(response.data, true);
+                    Song s=MPDParseUtils::parseSong(response.data, MPDParseUtils::PlayQueue);
                     s.id=idp.id;
 //                     s.pos=idp.pos;
                     songs.append(s);
@@ -875,7 +875,7 @@ void MPDConnection::playListInfo()
     Response response=sendCommand("playlistinfo");
     if (response.ok) {
         lastUpdatePlayQueueVersion=lastStatusPlayQueueVersion;
-        QList<Song> songs=MPDParseUtils::parseSongs(response.data);
+        QList<Song> songs=MPDParseUtils::parseSongs(response.data, MPDParseUtils::PlayQueue);
         playQueueIds.clear();
         streamIds.clear();
 
@@ -1265,7 +1265,7 @@ void MPDConnection::playlistInfo(const QString &name)
 {
     Response response=sendCommand("listplaylistinfo "+encodeName(name));
     if (response.ok) {
-        emit playlistInfoRetrieved(name, MPDParseUtils::parseSongs(response.data));
+        emit playlistInfoRetrieved(name, MPDParseUtils::parseSongs(response.data, MPDParseUtils::Platlist));
     }
 }
 
@@ -1392,7 +1392,7 @@ void MPDConnection::search(const QString &field, const QString &value, int id)
     QList<Song> songs;
     Response response=sendCommand("search "+field.toLatin1()+" "+encodeName(value));
     if (response.ok) {
-        songs=MPDParseUtils::parseSongs(response.data);
+        songs=MPDParseUtils::parseSongs(response.data, MPDParseUtils::Library);
         qSort(songs);
     }
     emit searchResponse(id, songs);

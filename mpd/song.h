@@ -119,6 +119,7 @@ struct Song
     QString albumKey() const { return albumArtist()+QLatin1Char(':')+album+QLatin1Char(':')+QString::number(disc); }
     bool isCueFile() const { return Playlist==type && file.endsWith(QLatin1String(".cue"), Qt::CaseInsensitive); }
     QString basicArtist() const;
+    QString filePath() const;
 
     // We pass 'Song' around to cover requester. When we want the artist image, and not album image,
     // then we blank certain fields to indicate this!

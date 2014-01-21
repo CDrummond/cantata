@@ -69,6 +69,7 @@
 38. Call QApplication::alert() when showing errors - this causes taskbar entry
     to be marked.
 39. Read lyrics from LYRICS tag for FLAC, Opus, Vorbis, and Speex files.
+40. Be consistent with other players, and dont show disc number in list.
 
 1.2.2
 -----

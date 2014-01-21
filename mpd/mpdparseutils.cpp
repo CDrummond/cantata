@@ -626,41 +626,42 @@ void MPDParseUtils::parseLibraryItems(const QByteArray &data, const QString &mpd
 DirViewItemRoot * MPDParseUtils::parseDirViewItems(const QByteArray &data)
 {
     QList<QByteArray> lines = data.split('\n');
-    DirViewItemRoot * rootItem = new DirViewItemRoot;
-    DirViewItem * currentDir = rootItem;
-    QStringList currentDirList;
+    DirViewItemRoot *rootItem = new DirViewItemRoot;
+    DirViewItemDir *dir=rootItem;
+    QString currentDirPath;
 
     int amountOfLines = lines.size();
     for (int i = 0; i < amountOfLines; i++) {
         QString line = QString::fromUtf8(lines.at(i));
+        QString path;
 
         if (line.startsWith("file: ")) {
-            line.remove(0, 6);
-            QStringList parts = line.split("/");
-            static_cast<DirViewItemDir *>(currentDir)->insertFile(parts.at(parts.size() - 1));
+            path=line.remove(0, 6);
         } else if (line.startsWith("playlist: ")) {
-            line.remove(0, 10);
-            QStringList parts = line.split("/");
-            static_cast<DirViewItemDir *>(currentDir)->insertFile(parts.at(parts.size() - 1));
-        } else if (line.startsWith("directory: ")) {
-            line.remove(0, 11);
-            QStringList parts = line.split("/");
+            path=line.remove(0, 10);
+        }
 
-            /* Check how much matches */
-            int depth = 0;
-            for (int j = 0; j < currentDirList.size() && j < parts.size(); j++) {
-                if (currentDirList.at(j) != parts.at(j)) {
-                    break;
+        if (!path.isEmpty()) {
+            QString mopidyPath;
+            bool isMopidy=path.startsWith(Song::constMopidyLocal);
+            if (isMopidy) {
+                mopidyPath=path;
+                path=Song::decodePath(path);
+            }
+            int last=path.lastIndexOf(Utils::constDirSep);
+            QString dirPath=-1==last ? QString() : path.left(last-1);
+            QStringList parts=path.split("/");
+
+            if (dirPath!=currentDirPath) {
+                currentDirPath=dirPath;
+                dir=rootItem;
+                if (parts.length()>1) {
+                    for (int i=0; i<parts.length()-1; ++i) {
+                        dir=dir->getDirectory(parts.at(i), true);
+                    }
                 }
-                depth++;
             }
-
-            for (int j = currentDirList.size(); j > depth; j--) {
-                currentDir = currentDir->parent();
-            }
-
-            currentDir = static_cast<DirViewItemDir *>(currentDir)->createDirectory(parts.at(parts.size() - 1));
-            currentDirList = parts;
+            dir->insertFile(parts.last(), mopidyPath);
         }
     }
 

@@ -75,9 +75,11 @@ struct Song
     quint16 key;
 
     static const QString constCddaProtocol;
+    static const QString constMopidyLocal;
     static void storeAlbumYear(const Song &s);
     static int albumYear(const Song &s);
     static void sortViaType(QList<Song> &songs);
+    static QString decodePath(const QString &file);
 
     Song();
     Song(const Song &o) { *this=o; }
@@ -119,7 +121,7 @@ struct Song
     QString albumKey() const { return albumArtist()+QLatin1Char(':')+album+QLatin1Char(':')+QString::number(disc); }
     bool isCueFile() const { return Playlist==type && file.endsWith(QLatin1String(".cue"), Qt::CaseInsensitive); }
     QString basicArtist() const;
-    QString filePath() const;
+    QString filePath() const { return decodePath(file); }
 
     // We pass 'Song' around to cover requester. When we want the artist image, and not album image,
     // then we blank certain fields to indicate this!

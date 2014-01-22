@@ -1977,7 +1977,7 @@ QModelIndex StreamsModel::categoryIndex(const CategoryItem *cat) const
 
 #endif // ENABLE_STREAMS
 
-const QString StreamsModel::constPrefix=QLatin1String("cantata-");
+const QString StreamsModel::constPrefix=QLatin1String("cantata-stream-");
 
 //bool StreamsModel::validProtocol(const QString &file)
 //{

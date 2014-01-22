@@ -49,12 +49,15 @@ int TrackOrganiser::instanceCount()
     return iCount;
 }
 
-TrackOrganiser::TrackOrganiser(QWidget *parent)
+TrackOrganiser::TrackOrganiser(QWidget *parent, bool showMopidyWarning)
     : SongDialog(parent, "TrackOrganiser",  QSize(800, 500))
     , schemeDlg(0)
+    , autoSkip(false)
+    , paused(false)
+    , updated(false)
+    , warnIfMopidy(showMopidyWarning)
 {
     iCount++;
-    updated=false;
     setButtons(Ok|Cancel);
     setCaption(i18n("Organize Files"));
     setAttribute(Qt::WA_DeleteOnClose);
@@ -428,6 +431,14 @@ void TrackOrganiser::removeItems()
 void TrackOrganiser::finish(bool ok)
 {
     if (updated) {
+        if (warnIfMopidy && MPDConnection::self()->isMopdidy()) {
+            MessageBox::information(this, i18n("Cantata has detected that you are connected to a Mopidy Client.\n\n"
+                                               "In order for Mopidy to notice the changes you have made, you will need "
+                                               "to manually update its database. After this, restart Cantata."));
+            MusicLibraryModel::self()->removeCache();
+            DirViewModel::self()->removeCache();
+        }
+
         if (deviceUdi.isEmpty()) {
             emit update();
         }

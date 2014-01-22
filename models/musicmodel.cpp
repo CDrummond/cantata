@@ -165,7 +165,7 @@ QVariant MusicModel::data(const QModelIndex &index, int role) const
             #endif
             return parentData(item)+data(index, Qt::DisplayRole).toString()+QLatin1String("<br/>")+
                    Song::formattedTime(static_cast<MusicLibraryItemSong *>(item)->time(), true)+
-                   QLatin1String("<br/><small><i>")+static_cast<MusicLibraryItemSong *>(item)->song().file+QLatin1String("</i></small>");
+                   QLatin1String("<br/><small><i>")+static_cast<MusicLibraryItemSong *>(item)->song().filePath()+QLatin1String("</i></small>");
         }
         return parentData(item)+
                 (0==item->childCount()

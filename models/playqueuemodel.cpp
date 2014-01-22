@@ -223,8 +223,9 @@ static QString basicPath(const Song &song)
         }
     }
     #endif
-    int marker=song.file.indexOf(QLatin1Char('#'));
-    return -1==marker ? song.file : song.file.left(marker);
+    QString path=song.filePath();
+    int marker=path.indexOf(QLatin1Char('#'));
+    return -1==marker ? path : path.left(marker);
 }
 
 QVariant PlayQueueModel::data(const QModelIndex &index, int role) const

@@ -53,7 +53,7 @@ public:
     QStringList filenames(const QModelIndexList &indexes, bool allowPlaylists) const;
     QMimeData *mimeData(const QModelIndexList &indexes) const;
     void clear();
-    void addFileToList(const QString &file);
+    void addFileToList(const QString &file, const QString &mopidyPath);
     void removeFileFromList(const QString &file);
     bool isEnabled() const { return enabled; }
     void setEnabled(bool e);
@@ -67,7 +67,7 @@ public Q_SLOTS:
 private:
     void toXML(const DirViewItem *item, QXmlStreamWriter &writer);
     quint32 fromXML(QIODevice *dev, const QDateTime &dt, DirViewItemRoot *root);
-    void addFileToList(const QStringList &parts, const QModelIndex &parent, DirViewItemDir *dir);
+    void addFileToList(const QStringList &parts, const QModelIndex &parent, DirViewItemDir *dir, const QString &mopidyPath);
     void removeFileFromList(const QStringList &parts, const QModelIndex &parent, DirViewItemDir *dir);
     void getFiles(DirViewItem *item, QStringList &filenames, bool allowPlaylists) const;
 

@@ -42,10 +42,14 @@
   - Possible issues wth UDisks2, might not be able to get block device
     (e.g. /dev/sr0)?
   - Playback from MTP devices.
-  - When copy TO a Mopidy instance, should encode file path. However, not sure
-    how to detect current MPD is Mopidy? Also, Mopdiy does not implement the
-    "update" command - so users will need to manually update anyway!
 
+- Mopdiy
+  - Currently does not send valid DB date time (always 0). Users will need to
+    force Cantata to update.
+  - Does not support 'update' command
+  - If the response of a stats call is all 0, then we assume the connection is
+    to a Mopdiy server. Therefore, when adding files (from devices) these are
+    encoded.
 
 - Lyrics
   - Add support for reading via tags in mp4, flac, and ogg files.

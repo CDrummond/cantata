@@ -366,7 +366,9 @@ void TrackOrganiser::renameFile()
             item->setFont(0, font());
             item->setFont(1, font());
             Song to=s;
+            QString origPath;
             if (s.file.startsWith(Song::constMopidyLocal)) {
+                origPath=to.file;
                 to.file=Song::encodePath(to.file);
             } else {
                 to.file=modified;
@@ -376,8 +378,9 @@ void TrackOrganiser::renameFile()
 
             if (deviceUdi.isEmpty()) {
                 MusicLibraryModel::self()->updateSongFile(s, to);
-                DirViewModel::self()->removeFileFromList(s.file);
-                DirViewModel::self()->addFileToList(to.file);
+                DirViewModel::self()->removeFileFromList(s.file);                
+                DirViewModel::self()->addFileToList(origPath.isEmpty() ? to.file : origPath,
+                                                    origPath.isEmpty() ? QString() : to.file);
             }
             #ifdef ENABLE_DEVICES_SUPPORT
             else {

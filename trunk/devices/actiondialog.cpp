@@ -539,7 +539,7 @@ void ActionDialog::doNext()
                     }
                     QString fileName=namingOptions.createFilename(copy);
                     destFile=MPDConnection::self()->getDetails().dir+fileName;
-                    dev->copySongTo(currentSong, MPDConnection::self()->getDetails().dir, fileName, overwrite->isChecked(), !copiedCovers.contains(Utils::getDir(destFile)));
+                    dev->copySongTo(currentSong, fileName, overwrite->isChecked(), !copiedCovers.contains(Utils::getDir(destFile)));
                 }
             }
         } else {

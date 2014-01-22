@@ -149,7 +149,7 @@ public:
     virtual void configure(QWidget *) { }
     virtual QString path() const =0;
     virtual void addSong(const Song &s, bool overwrite, bool copyCover)=0;
-    virtual void copySongTo(const Song &s, const QString &baseDir, const QString &musicPath, bool overwrite, bool copyCover)=0;
+    virtual void copySongTo(const Song &s, const QString &musicPath, bool overwrite, bool copyCover)=0;
     virtual void removeSong(const Song &s)=0;
     virtual void cleanDirs(const QSet<QString> &dirs)=0;
     virtual void requestCover(const Song &) { }
@@ -211,7 +211,6 @@ protected:
     #endif
     MusicLibraryItemRoot *update;
     QString currentDestFile;
-    QString currentMpdDir;
     QString statusMsg;
     bool needToFixVa;
     bool jobAbortRequested;

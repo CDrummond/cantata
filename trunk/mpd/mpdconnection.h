@@ -202,6 +202,7 @@ public:
     static bool isPlaylist(const QString &file);
     int unmuteVolume() { return unmuteVol; }
     bool isMuted() { return -1!=unmuteVol; }
+    bool isMopdidy() const { return mopidy; }
 
 public Q_SLOTS:
     void reconnect();
@@ -372,6 +373,7 @@ private:
     qint32 currentSongId;
     quint32 songPos; // USe for stop-after-current when we only have 1 songin playqueue!
     int unmuteVol;
+    bool mopidy;
 };
 
 #endif

@@ -529,7 +529,7 @@ MPDConnection::Response MPDConnection::sendCommand(const QByteArray &command, bo
             bool emitError=true;
             // Mopidy returns "incorrect arguments" for commands it does not support. The docs state that crossfade and replaygain mode
             // setting commands are not supported. So, if we get this error then just ignore it.
-            if ((command.startsWith("crossfade ") || command.startsWith("replay_gain_mode ")) &&
+            if (mopidy && (command.startsWith("crossfade ") || command.startsWith("replay_gain_mode ")) &&
                 "incorrect arguments"==response.getError(command)) {
                 emitError=false;
             }

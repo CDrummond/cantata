@@ -253,7 +253,7 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
             trackName->insertItem(trackName->count(), i18n("All tracks"));
             first=false;
         } else {
-            trackName->insertItem(trackName->count(), s.file);
+            trackName->insertItem(trackName->count(), s.filePath());
         }
     }
     connect(title, SIGNAL(textChanged(const QString &)), SLOT(checkChanged()));
@@ -577,13 +577,13 @@ void TagEditor::updateTrackName(int index, bool edited)
         if (isAll) {
             trackName->setItemText(index, i18n("All tracks [modified]"));
         } else {
-            trackName->setItemText(index, i18n("%1 [modified]", original.at(index).file));
+            trackName->setItemText(index, i18n("%1 [modified]", original.at(index).filePath()));
         }
     } else {
         if (isAll) {
             trackName->setItemText(index, i18n("All tracks"));
         } else {
-            trackName->setItemText(index, original.at(index).file);
+            trackName->setItemText(index, original.at(index).filePath());
         }
     }
 }

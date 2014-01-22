@@ -285,7 +285,7 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
                    si->parent->album+(year>0 ? (QLatin1String(" (")+QString::number(year)+QChar(')')) : QString())+QLatin1String("<br/>")+
                    data(index, Qt::DisplayRole).toString()+QLatin1String("<br/>")+
                    Song::formattedTime(si->time, true)+QLatin1String("<br/>")+
-                   QLatin1String("<small><i>")+si->file+QLatin1String("</i></small>");
+                   QLatin1String("<small><i>")+si->filePath()+QLatin1String("</i></small>");
         }
         case Qt::DisplayRole:
             if (Song::Playlist==si->type) {

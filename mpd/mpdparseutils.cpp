@@ -320,7 +320,7 @@ Song MPDParseUtils::parseSong(const QByteArray &data, Location location)
         // HTTP server, and OnlineServices, modify the path. But this then messes up
         // undo/restore of playqueue. Therefore, set path back to original value...
         song.file=origFile;
-        song.setKey();
+        song.setKey(location);
     }
     return song;
 }

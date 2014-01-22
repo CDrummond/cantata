@@ -1064,7 +1064,7 @@ void MPDConnection::getStats(bool andUpdate)
         MPDStatsValues stats=MPDParseUtils::parseStats(response.data);
         dbUpdate=stats.dbUpdate;
         mopidy=0==stats.artists && 0==stats.albums && 0==stats.songs &&
-               0==stats.uptime && 0==stats.playtime && 0==dbUpdate.toTime_t();
+               0==stats.uptime && 0==stats.playtime && 0==stats.dbPlaytime && 0==dbUpdate.toTime_t();
         emit statsUpdated(stats);
     }
 }

@@ -191,6 +191,19 @@ MPDStatusValues MPDParseUtils::parseStatus(const QByteArray &data)
     return v;
 }
 
+static QSet<QString> constStdProtocols=QSet<QString>() << QLatin1String("http://")
+                                                       << QLatin1String("https://")
+                                                       << QLatin1String("mms://")
+                                                       << QLatin1String("mmsh://")
+                                                       << QLatin1String("mmst://")
+                                                       << QLatin1String("mmsu://")
+                                                       << QLatin1String("gopher://")
+                                                       << QLatin1String("rtp://")
+                                                       << QLatin1String("rtsp://")
+                                                       << QLatin1String("rtmp://")
+                                                       << QLatin1String("rtmpt://")
+                                                       << QLatin1String("rtmps://");
+
 Song MPDParseUtils::parseSong(const QByteArray &data, Location location)
 {
     Song song;
@@ -266,7 +279,12 @@ Song MPDParseUtils::parseSong(const QByteArray &data, Location location)
     if (song.file.contains(Song::constCddaProtocol)) {
         song.type=Song::Cdda;
     } else if (song.file.contains("://")) {
-        song.type=Song::Stream;
+        foreach (const QString &protocol, constStdProtocols) {
+            if (song.file.startsWith(protocol)) {
+                song.type=Song::Stream;
+                break;
+            }
+        }
     }
 
     if (!song.file.isEmpty()) {

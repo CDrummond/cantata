@@ -42,6 +42,10 @@
   - Possible issues wth UDisks2, might not be able to get block device
     (e.g. /dev/sr0)?
   - Playback from MTP devices.
+  - When copy TO a Mopidy instance, should encode file path. However, not sure
+    how to detect current MPD is Mopidy? Also, Mopdiy does not implement the
+    "update" command - so users will need to manually update anyway!
+
 
 - Lyrics
   - Add support for reading via tags in mp4, flac, and ogg files.

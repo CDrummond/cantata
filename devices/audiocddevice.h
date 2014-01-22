@@ -67,7 +67,7 @@ public:
     void stop();
     QString path() const { return devPath; }
     void addSong(const Song &, bool, bool) { }
-    void copySongTo(const Song &s, const QString &baseDir, const QString &musicPath, bool overwrite, bool copyCover);
+    void copySongTo(const Song &s, const QString &musicPath, bool overwrite, bool copyCover);
     void removeSong(const Song &) { }
     void cleanDirs(const QSet<QString> &) { }
     double usedCapacity() { return 1.0; }

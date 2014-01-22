@@ -405,10 +405,14 @@ void DirViewModel::updateDirView(DirViewItemRoot *newroot, const QDateTime &dbUp
         QSet<QString> added=updateFiles-currentFiles;
 
         foreach (const QString &s, added) {
-            addFileToList(s);
+            if (s.startsWith(Song::constMopidyLocal)) {
+                addFileToList(Song::decodePath(s), s);
+            } else {
+                addFileToList(s, QString());
+            }
         }
         foreach (const QString &s, removed) {
-            removeFileFromList(s);
+            removeFileFromList(Song::decodePath(s));
         }
         updatedListing=!added.isEmpty() || !removed.isEmpty();
     } else {
@@ -435,12 +439,12 @@ void DirViewModel::updateDirView(DirViewItemRoot *newroot, const QDateTime &dbUp
     }
 }
 
-void DirViewModel::addFileToList(const QString &file)
+void DirViewModel::addFileToList(const QString &file, const QString &mopidyPath)
 {
     if (!enabled) {
         return;
     }
-    addFileToList(file.split('/'), QModelIndex(), rootItem);
+    addFileToList(file.split('/'), QModelIndex(), rootItem, mopidyPath);
 }
 
 void DirViewModel::removeFileFromList(const QString &file)
@@ -451,7 +455,7 @@ void DirViewModel::removeFileFromList(const QString &file)
     removeFileFromList(file.split('/'), QModelIndex(), rootItem);
 }
 
-void DirViewModel::addFileToList(const QStringList &parts, const QModelIndex &parent, DirViewItemDir *dir)
+void DirViewModel::addFileToList(const QStringList &parts, const QModelIndex &parent, DirViewItemDir *dir, const QString &mopidyPath)
 {
     if (0==parts.count()) {
         return;
@@ -462,11 +466,11 @@ void DirViewModel::addFileToList(const QStringList &parts, const QModelIndex &pa
     DirViewItem *child=dir->child(p);
     if (child) {
         if (DirViewItem::Type_Dir==child->type()) {
-            addFileToList(parts.mid(1), index(dir->indexOf(child), 0, parent), static_cast<DirViewItemDir *>(child));
+            addFileToList(parts.mid(1), index(dir->indexOf(child), 0, parent), static_cast<DirViewItemDir *>(child), mopidyPath);
         }
     } else {
         beginInsertRows(parent, dir->childCount(), dir->childCount());
-        dir->insertFile(parts);
+        dir->insertFile(parts, mopidyPath);
         endInsertRows();
     }
 }

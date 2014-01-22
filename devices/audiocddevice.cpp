@@ -235,7 +235,7 @@ void AudioCdDevice::stop()
 {
 }
 
-void AudioCdDevice::copySongTo(const Song &s, const QString &baseDir, const QString &musicPath, bool overwrite, bool copyCover)
+void AudioCdDevice::copySongTo(const Song &s, const QString &musicPath, bool overwrite, bool copyCover)
 {
     jobAbortRequested=false;
     if (!isConnected()) {
@@ -267,9 +267,8 @@ void AudioCdDevice::copySongTo(const Song &s, const QString &baseDir, const QStr
     }
 
     QString source=device;
-    currentMpdDir=baseDir;
+    QString baseDir=MPDConnection::self()->getDetails().dir;
     currentDestFile=encoder.changeExtension(baseDir+musicPath);
-
     QDir dir(Utils::getDir(currentDestFile));
     if (!dir.exists() && !Utils::createWorldReadableDir(dir.absolutePath(), baseDir)) {
         emit actionStatus(DirCreationFaild);
@@ -320,13 +319,19 @@ void AudioCdDevice::copySongToResult(int status)
     if (Ok!=status) {
         emit actionStatus(status);
     } else {
-        currentSong.file=currentDestFile.mid(currentMpdDir.length());
+        currentSong.file=currentDestFile.mid(MPDConnection::self()->getDetails().dir.length());
+        QString origPath;
+        if (MPDConnection::self()->isMopdidy()) {
+            origPath=currentSong.file;
+            currentSong.file=Song::encodePath(currentSong.file);
+        }
         if (needToFixVa) {
             currentSong.revertVariousArtists();
         }
         Utils::setFilePerms(currentDestFile);
         MusicLibraryModel::self()->addSongToList(currentSong);
-        DirViewModel::self()->addFileToList(currentSong.file);
+        DirViewModel::self()->addFileToList(origPath.isEmpty() ? currentSong.file : origPath,
+                                            origPath.isEmpty() ? QString() : currentSong.file);
         emit actionStatus(Ok, job && job->coverCopied());
     }
 }

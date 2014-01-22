@@ -53,12 +53,12 @@ DirViewItem * DirViewItemDir::insertFile(const QString &fileName, const QString 
     return file;
 }
 
-void DirViewItemDir::insertFile(const QStringList &path)
+void DirViewItemDir::insertFile(const QStringList &path, const QString &fullPath)
 {
     if (1==path.count()) {
-        insertFile(path[0], QString());
+        insertFile(path[0], fullPath);
     } else {
-        static_cast<DirViewItemDir *>(createDirectory(path[0]))->insertFile(path.mid(1));
+        static_cast<DirViewItemDir *>(createDirectory(path[0]))->insertFile(path.mid(1), fullPath);
     }
 }
 

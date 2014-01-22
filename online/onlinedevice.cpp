@@ -23,15 +23,18 @@
 
 #include "onlinedevice.h"
 #include "musiclibrarymodel.h"
+#include "dirviewmodel.h"
 #include "utils.h"
 #include "networkaccessmanager.h"
+#include "mpdconnection.h"
 #include <QDir>
 
-void OnlineDevice::copySongTo(const Song &s, const QString &baseDir, const QString &musicPath, bool overwrite, bool copyCover)
+void OnlineDevice::copySongTo(const Song &s, const QString &musicPath, bool overwrite, bool copyCover)
 {
     Q_UNUSED(copyCover)
 
     jobAbortRequested=false;
+    QString baseDir=MPDConnection::self()->getDetails().dir;
     QString dest(baseDir+musicPath);
     if (!overwrite && (MusicLibraryModel::self()->songExists(s) || QFile::exists(dest))) {
         emit actionStatus(SongExists);
@@ -40,8 +43,8 @@ void OnlineDevice::copySongTo(const Song &s, const QString &baseDir, const QStri
 
     overWrite=overwrite;
     lastProg=-1;
-    currentMpdDir=baseDir;
     currentDestFile=baseDir+musicPath;
+    currentSong=s;
 
     QDir dir(Utils::getDir(dest));
     if (!dir.exists() && !Utils::createWorldReadableDir(dir.absolutePath(), baseDir)) {
@@ -75,6 +78,17 @@ void OnlineDevice::downloadFinished()
         QFile f(currentDestFile);
         if (f.open(QIODevice::WriteOnly)) {
             f.write(reply->readAll());
+
+            currentSong.file=currentDestFile.mid(MPDConnection::self()->getDetails().dir.length());
+            QString origPath;
+            if (MPDConnection::self()->isMopdidy()) {
+                origPath=currentSong.file;
+                currentSong.file=Song::encodePath(currentSong.file);
+            }
+            Utils::setFilePerms(currentDestFile);
+            MusicLibraryModel::self()->addSongToList(currentSong);
+            DirViewModel::self()->addFileToList(origPath.isEmpty() ? currentSong.file : origPath,
+                                                origPath.isEmpty() ? QString() : currentSong.file);
             emit actionStatus(Ok);
         } else {
             emit actionStatus(WriteFailed);

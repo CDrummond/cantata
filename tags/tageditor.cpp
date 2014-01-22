@@ -806,10 +806,17 @@ bool TagEditor::applyUpdates()
             emit update();
         }
 
+        if (MPDConnection::self()->isMopdidy()) {
+            MessageBox::information(this, i18n("Cantata has detected that you are connected to a Mopidy Client.\n\n"
+                                               "In order for Mopidy to notice the changes you have made, you will need "
+                                               "to manually update its database. After this, restart Cantata."));
+            MusicLibraryModel::self()->removeCache();
+        }
+
         if (renameFiles &&
             MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Would you also like to rename your song files, so as to match your tags?"),
                                                        i18n("Rename Files"), GuiItem(i18n("Rename")), StdGuiItem::cancel())) {
-            TrackOrganiser *dlg=new TrackOrganiser(parentWidget());
+            TrackOrganiser *dlg=new TrackOrganiser(parentWidget(), false);
             dlg->show(updatedSongs, udi);
         }
     }

@@ -420,12 +420,13 @@ void DirViewModel::updateDirView(DirViewItemRoot *newroot, const QDateTime &dbUp
         updatedListing=true;
     }
 
-    // MPD proxy DB plugin does not provide a datetime for the DB. Therefore, just use current datetime
-    // so that we dont keep requesting DB listing each time Cantata starts...
+    // MPD proxy DB plugin (MPD < 0.18.5) does not provide a datetime for the DB. Also, Mopidy
+    // returns 0 for the database time (which equates to 1am Jan 1st 1970!). Therefore, in these
+    // cases we just use current datetime so that we dont keep requesting DB listing each time
+    // Cantata starts...
     //
-    // Users of this plugin will have to force Cantata to refresh :-(
-    //
-    if (!databaseTime.isValid() && !dbUpdate.isValid()) {
+    // Mopidy users, and users of the proxy DB plugin, will have to force Cantata to refresh :-(
+    if ((!databaseTime.isValid() && !dbUpdate.isValid()) || (databaseTime.date().year()<2000 && dbUpdate.date().year()<2000)) {
         databaseTime=QDateTime::currentDateTime();
     }
 

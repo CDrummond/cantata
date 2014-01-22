@@ -1224,10 +1224,11 @@ void CoverDialog::slotButtonClicked(int button)
 
 bool CoverDialog::saveCover(const QString &src, const QImage &img)
 {
+    QString filePath=song.filePath();
     if (song.isCdda()) {
         QString dir = Utils::cacheDir(Covers::constCddaCoverDir, true);
         if (!dir.isEmpty()) {
-            QString destName=dir+song.file.mid(7)+src.mid(src.length()-4);
+            QString destName=dir+filePath.mid(7)+src.mid(src.length()-4);
             if (QFile::exists(destName)) {
                 QFile::remove(destName);
             }
@@ -1256,11 +1257,11 @@ bool CoverDialog::saveCover(const QString &src, const QImage &img)
     bool saveInMpd=Settings::self()->storeCoversInMpdDir();
 
     if (saveInMpd) {
-        bool haveAbsPath=song.file.startsWith('/');
+        bool haveAbsPath=filePath.startsWith('/');
         mpdDir=MPDConnection::self()->getDetails().dir;
         if (haveAbsPath || !mpdDir.isEmpty()) {
-            dirName=song.file.endsWith('/') ? (haveAbsPath ? QString() : mpdDir)+song.file
-                                            : Utils::getDir((haveAbsPath ? QString() : mpdDir)+song.file);
+            dirName=filePath.endsWith('/') ? (haveAbsPath ? QString() : mpdDir)+filePath
+                                            : Utils::getDir((haveAbsPath ? QString() : mpdDir)+filePath);
         }
     }
 

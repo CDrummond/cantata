@@ -304,24 +304,36 @@ void Song::fillEmptyFields()
     }
 }
 
-void Song::setKey()
+struct KeyStore
 {
-    static quint16 currentKey=0;
-    static QMap<QString, quint16> keys;
+    KeyStore() : currentKey(0) { }
+    quint16 currentKey;
+    QMap<QString, quint16> keys;
+};
 
+static QMap<int, KeyStore> storeMap;
+
+void Song::clearKeyStore(int location)
+{
+    storeMap.remove(location);
+}
+
+void Song::setKey(int location)
+{
     if (isStream() && !isCantataStream()) {
         key=0;
         return;
     }
 
+    KeyStore &store=storeMap[location];
     QString songKey(albumKey());
-    QMap<QString, quint16>::ConstIterator it=keys.find(songKey);
-    if (it!=keys.end()) {
+    QMap<QString, quint16>::ConstIterator it=store.keys.find(songKey);
+    if (it!=store.keys.end()) {
         key=it.value();
     } else {
-        currentKey++; // Key 0 is for streams, so we need to increment before setting...
-        keys.insert(songKey, currentKey);
-        key=currentKey;
+        store.currentKey++; // Key 0 is for streams, so we need to increment before setting...
+        store.keys.insert(songKey, store.currentKey);
+        key=store.currentKey;
     }
 }
 

@@ -607,7 +607,7 @@ void OnlineServicesModel::imageDownloaded()
         img.save(fileName);
         if (!song.album.isEmpty()) {
             song.track=1;
-            song.setKey();
+            //song.setKey();
             Covers::self()->emitCoverUpdated(song, img, fileName);
         }
         return;
@@ -618,7 +618,7 @@ void OnlineServicesModel::imageDownloaded()
         f.write(data);
         if (!song.album.isEmpty()) {
             song.track=1;
-            song.setKey();
+            //song.setKey();
             Covers::self()->emitCoverUpdated(song, img, fileName);
         }
     }

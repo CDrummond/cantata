@@ -530,7 +530,7 @@ void ActionDialog::doNext()
                 performingAction=true;
                 if (copyToDev) {
                     destFile=dev->path()+dev->options().createFilename(currentSong);
-                    currentSong.file=MPDConnection::self()->getDetails().dir+currentSong.file;
+                    currentSong.file=MPDConnection::self()->getDetails().dir+currentSong.filePath();
                     dev->addSong(currentSong, overwrite->isChecked(), !copiedCovers.contains(Utils::getDir(destFile)));
                 } else {
                     Song copy=currentSong;
@@ -783,10 +783,10 @@ QList<QPair<QString, QString> > ActionDialog::formatSong(const Song &s, bool sho
 
     if (showFiles) {
         if (Copy==mode) {
-            str.append(QPair<QString, QString>(i18n("Source file:"), DevicesModel::fixDevicePath(s.file)));
+            str.append(QPair<QString, QString>(i18n("Source file:"), DevicesModel::fixDevicePath(s.filePath())));
             str.append(QPair<QString, QString>(i18n("Destination file:"), DevicesModel::fixDevicePath(destFile)));
         } else {
-            str.append(QPair<QString, QString>(i18n("File:"), DevicesModel::fixDevicePath(s.file)));
+            str.append(QPair<QString, QString>(i18n("File:"), DevicesModel::fixDevicePath(s.filePath())));
         }
     }
 

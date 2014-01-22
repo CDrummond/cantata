@@ -43,6 +43,9 @@ public:
     void showEvent(QShowEvent *e);
     #endif
 
+private:
+    void addView(const QString &v, const QString &prop);
+
 private Q_SLOTS:
     void libraryViewChanged();
     void libraryCoverSizeChanged();
@@ -53,9 +56,8 @@ private Q_SLOTS:
     void forceSingleClickChanged();
     void enableStartupState();
     void langChanged();
-    void ensureMinOneView();
+    void viewItemChanged(QListWidgetItem *changedItem);
     void sbAutoHideChanged();
-    void sbPlayQueueViewChanged();
 
 private:
     #ifndef ENABLE_KDE_SUPPORT

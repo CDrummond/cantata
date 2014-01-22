@@ -1426,7 +1426,7 @@ void MtpDevice::addSong(const Song &s, bool overwrite, bool copyCover)
     emit putSong(currentSong, needToFixVa, opts, overwrite, copyCover);
 }
 
-void MtpDevice::copySongTo(const Song &s, const QString &baseDir, const QString &musicPath, bool overwrite, bool copyCover)
+void MtpDevice::copySongTo(const Song &s, const QString &musicPath, bool overwrite, bool copyCover)
 {
     jobAbortRequested=false;
     transcoding=false;
@@ -1454,7 +1454,7 @@ void MtpDevice::copySongTo(const Song &s, const QString &baseDir, const QString 
         return;
     }
 
-    currentMpdDir=baseDir;
+    QString baseDir=MPDConnection::self()->getDetails().dir;
     currentDestFile=baseDir+musicPath;
     QDir dir(Utils::getDir(currentDestFile));
     if (!dir.exists() && !Utils::createWorldReadableDir(dir.absolutePath(), baseDir)) {
@@ -1570,13 +1570,19 @@ void MtpDevice::getSongStatus(bool ok, bool copiedCover)
     if (!ok) {
         emit actionStatus(Failed);
     } else {
-        currentSong.file=currentDestFile.mid(currentMpdDir.length());
+        currentSong.file=currentDestFile.mid(MPDConnection::self()->getDetails().dir.length());
+        QString origPath;
+        if (MPDConnection::self()->isMopdidy()) {
+            origPath=currentSong.file;
+            currentSong.file=Song::encodePath(currentSong.file);
+        }
         if (needToFixVa) {
             currentSong.revertVariousArtists();
         }
         Utils::setFilePerms(currentDestFile);
         MusicLibraryModel::self()->addSongToList(currentSong);
-        DirViewModel::self()->addFileToList(currentSong.file);
+        DirViewModel::self()->addFileToList(origPath.isEmpty() ? currentSong.file : origPath,
+                                            origPath.isEmpty() ? QString() : currentSong.file);
         emit actionStatus(Ok, copiedCover);
     }
 }

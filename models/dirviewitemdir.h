@@ -43,7 +43,7 @@ public:
     DirViewItemDir * createDirectory(const QString &dirName);
     DirViewItem * insertFile(const QString &fileName, const QString &fullPath);
     void add(DirViewItem *i);
-    void insertFile(const QStringList &path);
+    void insertFile(const QStringList &path, const QString &fullPath);
     void remove(DirViewItem *dir);
     bool hasChild(const QString &name) { return m_indexes.contains(name); }
     QSet<QString> allFiles() const;

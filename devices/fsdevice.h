@@ -120,7 +120,7 @@ public:
     QString path() const { return audioFolder; }
     QString coverFile() const { return opts.coverName; }
     void addSong(const Song &s, bool overwrite, bool copyCover);
-    void copySongTo(const Song &s, const QString &baseDir, const QString &musicPath, bool overwrite, bool copyCover);
+    void copySongTo(const Song &s, const QString &musicPath, bool overwrite, bool copyCover);
     void removeSong(const Song &s);
     void cleanDirs(const QSet<QString> &dirs);
     void requestCover(const Song &s);

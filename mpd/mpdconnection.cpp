@@ -201,6 +201,7 @@ MPDConnection::MPDConnection()
     , currentSongId(-1)
     , songPos(0)
     , unmuteVol(-1)
+    , mopidy(false)
 {
     qRegisterMetaType<Song>("Song");
     qRegisterMetaType<Output>("Output");
@@ -433,6 +434,7 @@ void MPDConnection::setDetails(const MPDConnectionDetails &d)
         DBUG << "call connectToMPD";
         unmuteVol=-1;
         toggleStopAfterCurrent(false);
+        mopidy=false;
         if (isUser) {
             MPDUser::self()->start();
         }
@@ -1061,6 +1063,8 @@ void MPDConnection::getStats(bool andUpdate)
     if (response.ok) {
         MPDStatsValues stats=MPDParseUtils::parseStats(response.data);
         dbUpdate=stats.dbUpdate;
+        mopidy=0==stats.artists && 0==stats.albums && 0==stats.songs &&
+               0==stats.uptime && 0==stats.playtime && 0==dbUpdate.toTime_t();
         emit statsUpdated(stats);
     }
 }

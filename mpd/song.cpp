@@ -111,7 +111,7 @@ QString Song::decodePath(const QString &file)
 
 QString Song::encodePath(const QString &file)
 {
-    return constMopidyLocal+QString(QUrl::toPercentEncoding(file));
+    return constMopidyLocal+QString(QUrl::toPercentEncoding(file, "/"));
 }
 
 static bool useComposerIfSet=false;

@@ -81,6 +81,7 @@ struct Song
     static void sortViaType(QList<Song> &songs);
     static QString decodePath(const QString &file);
     static QString encodePath(const QString &file);
+    static void clearKeyStore(int location);
 
     Song();
     Song(const Song &o) { *this=o; }
@@ -94,7 +95,7 @@ struct Song
     void guessTags();
     void revertGuessedTags();
     void fillEmptyFields();
-    void setKey();
+    void setKey(int location);
     virtual void clear();
     #ifndef CANTATA_NO_SONG_TIME_FUNCTION
     static QString formattedTime(quint32 seconds, bool zeroIsUnknown=false);

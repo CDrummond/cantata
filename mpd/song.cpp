@@ -106,7 +106,7 @@ void Song::sortViaType(QList<Song> &songs)
 
 QString Song::decodePath(const QString &file)
 {
-    return file.startsWith(constMopidyLocal) ? QUrl(file.mid(constMopidyLocal.length())).path() : file;
+    return file.startsWith(constMopidyLocal) ? QUrl::fromPercentEncoding(file.mid(constMopidyLocal.length()).toLatin1()) : file;
 }
 
 QString Song::encodePath(const QString &file)

@@ -27,6 +27,7 @@
 #include "localize.h"
 #include "musiclibraryitemalbum.h"
 #include "fancytabwidget.h"
+#include "basicitemdelegate.h"
 #include <QComboBox>
 #ifndef ENABLE_KDE_SUPPORT
 #include <QDir>
@@ -78,8 +79,6 @@ static inline int getValue(QComboBox *box)
     return box->itemData(box->currentIndex()).toInt();
 }
 
-static const char * constPageProperty="cantata-page";
-
 InterfaceSettings::InterfaceSettings(QWidget *p)
     : QWidget(p)
     #ifndef ENABLE_KDE_SUPPORT
@@ -94,46 +93,38 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     addViewTypes(folderView);
     addViewTypes(playlistsView, false, true);
 
-    sbPlayQueueView->setProperty(constPageProperty, "PlayQueuePage");
-    sbArtistsView->setProperty(constPageProperty, "LibraryPage");
-    sbAlbumsView->setProperty(constPageProperty, "AlbumsPage");
-    sbFoldersView->setProperty(constPageProperty, "FolderPage");
-    sbPlaylistsView->setProperty(constPageProperty, "PlaylistsPage");
-    sbSearchView->setProperty(constPageProperty, "SearchPage");
-    sbInfoView->setProperty(constPageProperty, "ContextPage");
-
+    addView(i18n("Play queue"), QLatin1String("PlayQueuePage"));
+    addView(i18n("Artists"), QLatin1String("LibraryPage"));
+    addView(i18n("Albums"), QLatin1String("AlbumsPage"));
+    addView(i18n("Folders"), QLatin1String("FolderPage"));
+    addView(i18n("Playlists"), QLatin1String("PlaylistsPage"));
     #ifdef ENABLE_DYNAMIC
-    sbDynamicView->setProperty(constPageProperty, "DynamicPage");
-    #else
-    REMOVE(sbDynamicView)
+    addView(i18n("Dynamic Playlists"), QLatin1String("DynamicPage"));
     #endif
     #ifdef ENABLE_STREAMS
     addViewTypes(streamsView);
-    sbStreamsView->setProperty(constPageProperty, "StreamsPage");
+    addView(i18n("Streams (e.g. Radio Stations)"), QLatin1String("StreamsPage"));
     #else
     REMOVE(streamsView)
     REMOVE(streamsViewLabel)
-    REMOVE(sbStreamsView)
     #endif
-
     #ifdef ENABLE_ONLINE_SERVICES
     addViewTypes(onlineView);
-    sbOnlineView->setProperty(constPageProperty, "OnlineServicesPage");
+    addView(i18n("Online Services - Jamendo, Maganatune, SoundCloud, and Podcasts"), QLatin1String("OnlineServicesPage"));
     #else
     REMOVE(onlineView)
     REMOVE(onlineViewLabel)
-    REMOVE(sbOnlineView)
     #endif
-
     #ifdef ENABLE_DEVICES_SUPPORT
     addViewTypes(devicesView);
-    sbDevicesView->setProperty(constPageProperty, "DevicesPage");
+    addView(i18n("Devices - UMS, MTP (e.g. Android), and AudioCDs"), QLatin1String("DevicesPage"));
     #else
     REMOVE(devicesView)
     REMOVE(devicesViewLabel)
     REMOVE(showDeleteAction)
-    REMOVE(sbDevicesView)
     #endif
+    addView(i18n("Search (via MPD)"), QLatin1String("SearchPage"));
+    addView(i18n("Info - Current song information (artist, album, and lyrics)"), QLatin1String("ContextPage"));
 
     #if !defined ENABLE_STREAMS && !defined ENABLE_ONLINE_SERVICES && !defined ENABLE_DEVICES_SUPPORT
     tabWidget->setTabText(4, i18n("Folders"));
@@ -149,25 +140,7 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     connect(systemTrayCheckBox, SIGNAL(toggled(bool)), SLOT(enableStartupState()));
     connect(minimiseOnClose, SIGNAL(toggled(bool)), SLOT(enableStartupState()));
     connect(forceSingleClick, SIGNAL(toggled(bool)), SLOT(forceSingleClickChanged()));
-    connect(sbPlayQueueView, SIGNAL(toggled(bool)), SLOT(ensureMinOneView()));
-    connect(sbArtistsView, SIGNAL(toggled(bool)), SLOT(ensureMinOneView()));
-    connect(sbAlbumsView, SIGNAL(toggled(bool)), SLOT(ensureMinOneView()));
-    connect(sbFoldersView, SIGNAL(toggled(bool)), SLOT(ensureMinOneView()));
-    connect(sbPlaylistsView, SIGNAL(toggled(bool)), SLOT(ensureMinOneView()));
-    connect(sbSearchView, SIGNAL(toggled(bool)), SLOT(ensureMinOneView()));
-    connect(sbInfoView, SIGNAL(toggled(bool)), SLOT(ensureMinOneView()));
-    #ifdef ENABLE_DYNAMIC
-    connect(sbDynamicView, SIGNAL(toggled(bool)), SLOT(ensureMinOneView()));
-    #endif
-    #ifdef ENABLE_STREAMS
-    connect(sbStreamsView, SIGNAL(toggled(bool)), SLOT(ensureMinOneView()));
-    #endif
-    #ifdef ENABLE_ONLINE_SERVICES
-    connect(sbOnlineView, SIGNAL(toggled(bool)), SLOT(ensureMinOneView()));
-    #endif
-    #ifdef ENABLE_DEVICES_SUPPORT
-    connect(sbDevicesView, SIGNAL(toggled(bool)), SLOT(ensureMinOneView()));
-    #endif
+    connect(views, SIGNAL(itemChanged(QListWidgetItem*)), SLOT(viewItemChanged(QListWidgetItem*)));
 
     #ifdef ENABLE_KDE_SUPPORT
     REMOVE(lang)
@@ -182,7 +155,7 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     sbPosition->addItem(i18n("Top"), FancyTabWidget::Top);
     sbPosition->addItem(i18n("Bottom"), FancyTabWidget::Bot);
     connect(sbAutoHide, SIGNAL(toggled(bool)), SLOT(sbAutoHideChanged()));
-    connect(sbPlayQueueView, SIGNAL(toggled(bool)), SLOT(sbPlayQueueViewChanged()));
+    views->setItemDelegate(new BasicItemDelegate(views));
 }
 
 void InterfaceSettings::load()
@@ -235,10 +208,9 @@ void InterfaceSettings::load()
     cacheScaledCovers->setChecked(Settings::self()->cacheScaledCovers());
 
     QStringList hiddenPages=Settings::self()->hiddenPages();
-    foreach (QObject *child, viewsGroup->children()) {
-        if (qobject_cast<QCheckBox *>(child) && !hiddenPages.contains(child->property(constPageProperty).toString())) {
-            static_cast<QCheckBox *>(child)->setChecked(true);
-        }
+    for (int i=0; i<views->count(); ++i) {
+        QListWidgetItem *v=views->item(i);
+        v->setCheckState(hiddenPages.contains(v->data(Qt::UserRole).toString()) ? Qt::Unchecked : Qt::Checked);
     }
     int sidebar=Settings::self()->sidebar();
     selectEntry(sbStyle, sidebar&FancyTabWidget::Style_Mask);
@@ -247,7 +219,7 @@ void InterfaceSettings::load()
     sbMonoIcons->setChecked(Settings::self()->monoSidebarIcons());
     sbAutoHide->setChecked(Settings::self()->splitterAutoHide());
     sbAutoHideChanged();
-    sbPlayQueueViewChanged();
+    viewItemChanged(views->item(0));
 }
 
 void InterfaceSettings::save()
@@ -300,9 +272,10 @@ void InterfaceSettings::save()
     #endif
 
     QStringList hiddenPages;
-    foreach (QObject *child, viewsGroup->children()) {
-        if (qobject_cast<QCheckBox *>(child) && !static_cast<QCheckBox *>(child)->isChecked()) {
-            hiddenPages.append(child->property(constPageProperty).toString());
+    for (int i=0; i<views->count(); ++i) {
+        QListWidgetItem *v=views->item(i);
+        if (Qt::Unchecked==v->checkState()) {
+            hiddenPages.append(v->data(Qt::UserRole).toString());
         }
     }
     Settings::self()->saveHiddenPages(hiddenPages);
@@ -386,6 +359,13 @@ void InterfaceSettings::showEvent(QShowEvent *e)
 }
 #endif
 
+void InterfaceSettings::addView(const QString &v, const QString &prop)
+{
+    QListWidgetItem *item=new QListWidgetItem(v, views);
+    item->setCheckState(Qt::Unchecked);
+    item->setData(Qt::UserRole, prop);
+}
+
 void InterfaceSettings::libraryViewChanged()
 {
     int vt=getValue(libraryView);
@@ -456,26 +436,29 @@ void InterfaceSettings::langChanged()
     #endif
 }
 
-void InterfaceSettings::ensureMinOneView()
+void InterfaceSettings::viewItemChanged(QListWidgetItem *changedItem)
 {
-    foreach (QObject *child, viewsGroup->children()) {
-        if (qobject_cast<QCheckBox *>(child) && static_cast<QCheckBox *>(child)->isChecked()) {
+    // Ensure we have at least 1 view checked...
+    for (int i=0; i<views->count(); ++i) {
+        QListWidgetItem *v=views->item(i);
+        if (Qt::Checked==v->checkState()) {
             return;
         }
     }
-    sbArtistsView->setChecked(true);
+
+    views->item(1)->setCheckState(Qt::Checked);
+
+    // If this is the playqueue that has been toggled, then control auto-hide
+    // i.e. can't auto-hide if playqueue is in sidebar
+    if (Qt::Checked==changedItem->checkState() && changedItem==views->item(0)) {
+        sbAutoHide->setChecked(false);
+    }
 }
 
 void InterfaceSettings::sbAutoHideChanged()
 {
     if (sbAutoHide->isChecked()) {
-        sbPlayQueueView->setChecked(false);
+        views->item(0)->setCheckState(Qt::Unchecked);
     }
 }
 
-void InterfaceSettings::sbPlayQueueViewChanged()
-{
-    if (sbPlayQueueView->isChecked()) {
-        sbAutoHide->setChecked(false);
-    }
-}

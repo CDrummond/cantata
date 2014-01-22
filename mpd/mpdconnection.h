@@ -193,7 +193,7 @@ public:
     const MPDConnectionDetails & getDetails() const { return details; }
     void setDirReadable() { details.setDirReadable(); }
     bool isConnected() const { return State_Connected==state; }
-    bool canUsePriority() const { return ver>=MPD_MAKE_VERSION(0, 17, 0); }
+    bool canUsePriority() const { return ver>=MPD_MAKE_VERSION(0, 17, 0) && !mopidy; }
     const QSet<QString> & urlHandlers() const { return handlers; }
     const QSet<QString> & tags() const { return tagTypes; }
     bool composerTagSupported() const { return tagTypes.contains(QLatin1String("Composer")); }

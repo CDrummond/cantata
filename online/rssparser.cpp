@@ -133,7 +133,7 @@ static Episode parseEpisode(QXmlStreamReader &reader)
     return ep;
 }
 
-Channel RssParser::parse(QIODevice *dev)
+Channel RssParser::parse(QIODevice *dev, bool getEpisodes, bool getDescription)
 {
     Channel ch;
     QXmlStreamReader reader(dev);
@@ -152,13 +152,17 @@ Channel RssParser::parse(QIODevice *dev)
                     } else {
                         ch.image=parseImage(reader);
                     }
-                } else if (QLatin1String("item")==name) {
+                } else if (getEpisodes && QLatin1String("item")==name) {
                     Episode ep=parseEpisode(reader);
                     if (!ep.name.isEmpty() && !ep.url.isEmpty()) {
                         ch.episodes.append(ep);
                     } else if (ep.video) {
                         ch.video=true;
                     }
+                } else if (getDescription && QLatin1String("description")==name && ch.description.isEmpty()) {
+                    ch.description=reader.readElementText();
+                } else if (getDescription && QLatin1String("summary")==name && ch.description.isEmpty() && constITunesNameSpace==reader.namespaceUri()) {
+                    ch.description=reader.readElementText();
                 } else {
                     consumeCurrentElement(reader);
                 }

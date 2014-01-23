@@ -51,11 +51,12 @@ struct Channel
     QString name;
     QUrl image;
     QList<Episode> episodes;
+    QString description;
     bool video;
     bool isValid() const { return !name.isEmpty(); }
 };
 
-Channel parse(QIODevice *dev);
+Channel parse(QIODevice *dev, bool getEpisodes=true, bool getDescription=false);
 
 }
 

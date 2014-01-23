@@ -136,6 +136,27 @@ private:
     QUrl url;
 };
 
+class PodcastUrlPage : public PodcastPage
+{
+    Q_OBJECT
+public:
+    PodcastUrlPage(QWidget *p);
+    virtual ~PodcastUrlPage() { }
+
+    void showEvent(QShowEvent *e);
+
+private:
+    void parseResonse(QIODevice *dev);
+
+private Q_SLOTS:
+    void loadUrl();
+
+protected:
+    LineEdit *urlEntry;
+    QPushButton *loadButton;
+    QUrl currentUrl;
+};
+
 class PodcastSearchDialog : public Dialog
 {
     Q_OBJECT

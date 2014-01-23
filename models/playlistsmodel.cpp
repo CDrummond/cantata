@@ -214,26 +214,29 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
         case GroupedView::Role_Status:
             return (int)GroupedView::State_Default;
         case Qt::DisplayRole:
-            return pl->name;
+            return pl->visibleName();
         case Qt::ToolTipRole:
             if (!pl->loaded) {
                 pl->loaded=true;
                 emit playlistInfo(pl->name);
             }
             return 0==pl->songs.count()
-                ? pl->name
-                : pl->name+"\n"+
+                ? pl->visibleName()
+                : pl->visibleName()+"\n"+
                     #ifdef ENABLE_KDE_SUPPORT
                     i18np("1 Track (%2)", "%1 Tracks (%2)", pl->songs.count(), Song::formattedTime(pl->totalTime()));
                     #else
                     QTP_TRACKS_DURATION_STR(pl->songs.count(), Song::formattedTime(pl->totalTime()));
                     #endif
         case Qt::DecorationRole:
-            return Icons::self()->playlistIcon;
+            return pl->isSmartPlaylist ? Icons::self()->dynamicRuleIcon : Icons::self()->playlistIcon;
         case ItemView::Role_SubText:
             if (!pl->loaded) {
                 pl->loaded=true;
                 emit playlistInfo(pl->name);
+            }
+            if (pl->isSmartPlaylist) {
+                return i18n("Smart Playlist");
             }
             #ifdef ENABLE_KDE_SUPPORT
             return i18np("1 Track (%2)", "%1 Tracks (%2)", pl->songs.count(), Song::formattedTime(pl->totalTime()));
@@ -600,7 +603,7 @@ void PlaylistsModel::setPlaylists(const QList<Playlist> &playlists)
 
             if (pl && pl->lastModified<p.lastModified) {
                 pl->lastModified=p.lastModified;
-                if (pl->loaded) {
+                if (pl->loaded && !pl->isSmartPlaylist) {
                     emit playlistInfo(pl->name);
                 }
             }
@@ -795,7 +798,9 @@ void PlaylistsModel::updateItemMenu()
     itemMenu->addAction(newAction);
     QStringList names;
     foreach (const PlaylistItem *p, items) {
-        names << p->name;
+        if (!p->isSmartPlaylist) {
+            names << p->name;
+        }
     }
     qSort(names.begin(), names.end(), PlaylistsProxyModel::compareNames);
     foreach (const QString &n, names) {
@@ -849,6 +854,18 @@ quint32 PlaylistsModel::allocateKey()
     }
 
     return 0xFFFFFFFF;
+}
+
+PlaylistsModel::PlaylistItem::PlaylistItem(const Playlist &pl, quint32 k)
+    : name(pl.name)
+    , time(0)
+    , key(k)
+    , lastModified(pl.lastModified)
+{
+    loaded=isSmartPlaylist=MPDConnection::self()->isMopdidy() && name.startsWith("Smart Playlist:");
+    if (isSmartPlaylist) {
+        shortName=name.mid(16);
+    }
 }
 
 PlaylistsModel::PlaylistItem::~PlaylistItem()

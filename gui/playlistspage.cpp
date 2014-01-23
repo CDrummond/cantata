@@ -169,15 +169,17 @@ void PlaylistsPage::removeItems()
 
             if(realIndex.isValid()) {
                 PlaylistsModel::Item *item=static_cast<PlaylistsModel::Item *>(realIndex.internalPointer());
-                if(item->isPlaylist()) {
+                if (item->isPlaylist()) {
                     PlaylistsModel::PlaylistItem *pl=static_cast<PlaylistsModel::PlaylistItem *>(item);
-                    remPlaylists.insert(pl->name);
+                    if (!pl->isSmartPlaylist) {
+                        remPlaylists.insert(pl->name);
+                    }
                     if (remSongs.contains(pl->name)) {
                         remSongs.remove(pl->name);
                     }
                 } else {
                     PlaylistsModel::SongItem *song=static_cast<PlaylistsModel::SongItem *>(item);
-                    if (!remPlaylists.contains(song->parent->name)) {
+                    if (!song->parent->isSmartPlaylist && !remPlaylists.contains(song->parent->name)) {
                         remSongs[song->parent->name].append(song->parent->songs.indexOf(song));
                     }
                 }
@@ -362,25 +364,44 @@ void PlaylistsPage::addSelectionToDevice(const QString &udi)
 void PlaylistsPage::controlActions()
 {
     QModelIndexList selected=view->selectedIndexes(false); // Dont need sorted selection here...
-    bool canRename=false;
     bool enableActions=selected.count()>0;
+    bool allSmartPlaylists=false;
+    bool canRename=false;
 
     if (1==selected.count()) {
         QModelIndex index = proxy.mapToSource(selected.first());
         PlaylistsModel::Item *item=static_cast<PlaylistsModel::Item *>(index.internalPointer());
-        if (item && item->isPlaylist()) {
-            canRename=true;
+        if (item) {
+            if (item->isPlaylist()) {
+                if (static_cast<PlaylistsModel::PlaylistItem *>(item)->isSmartPlaylist) {
+                    allSmartPlaylists=true;
+                } else {
+                    canRename=true;
+                }
+            } else if (static_cast<PlaylistsModel::SongItem *>(item)->parent->isSmartPlaylist) {
+                allSmartPlaylists=true;
+            }
+        }
+    } else if (selected.count()<=200) {
+        allSmartPlaylists=true;
+        foreach (const QModelIndex &index, selected) {
+            PlaylistsModel::Item *item=static_cast<PlaylistsModel::Item *>(proxy.mapToSource(index).internalPointer());
+            if (item && (item->isPlaylist() ? !static_cast<PlaylistsModel::PlaylistItem *>(item)->isSmartPlaylist
+                                            : static_cast<PlaylistsModel::SongItem *>(item)->parent->isSmartPlaylist)) {
+                allSmartPlaylists=false;
+                break;
+            }
         }
     }
 
     renamePlaylistAction->setEnabled(canRename);
-    removeDuplicatesAction->setEnabled(canRename);
-    StdActions::self()->removeAction->setEnabled(enableActions);
+    removeDuplicatesAction->setEnabled(enableActions && !allSmartPlaylists);
+    StdActions::self()->removeAction->setEnabled(enableActions && !allSmartPlaylists);
     StdActions::self()->replacePlayQueueAction->setEnabled(enableActions);
     StdActions::self()->addToPlayQueueAction->setEnabled(enableActions);
     StdActions::self()->addWithPriorityAction->setEnabled(enableActions);
     #ifdef ENABLE_DEVICES_SUPPORT
-    StdActions::self()->copyToDeviceAction->setEnabled(enableActions);
+    StdActions::self()->copyToDeviceAction->setEnabled(enableActions && !allSmartPlaylists);
     #endif
     menuButton->controlState();
 }

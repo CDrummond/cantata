@@ -44,7 +44,6 @@ PlaylistsPage::PlaylistsPage(QWidget *p)
     removeDuplicatesAction=new Action(i18n("Remove Duplicates"), this);
     removeDuplicatesAction->setEnabled(false);
     replacePlayQueue->setDefaultAction(StdActions::self()->replacePlayQueueAction);
-    libraryUpdate->setDefaultAction(StdActions::self()->refreshAction);
     connect(genreCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(searchItems()));
     connect(PlaylistsModel::self(), SIGNAL(updateGenres(const QSet<QString> &)), genreCombo, SLOT(update(const QSet<QString> &)));
 

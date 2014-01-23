@@ -40,7 +40,6 @@ FolderPage::FolderPage(QWidget *p)
     setupUi(this);
     addToPlayQueue->setDefaultAction(StdActions::self()->addToPlayQueueAction);
     replacePlayQueue->setDefaultAction(StdActions::self()->replacePlayQueueAction);
-    libraryUpdate->setDefaultAction(StdActions::self()->refreshAction);
     #ifndef Q_OS_WIN
     browseAction = ActionCollection::get()->createAction("openfilemanager", i18n("Open In File Manager"), "system-file-manager");
     #endif

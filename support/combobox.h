@@ -44,8 +44,6 @@ public:
     virtual ~ComboBox() { }
 
     void setEditable(bool editable);
-
-private:
     void showPopup();
     void hidePopup();
 

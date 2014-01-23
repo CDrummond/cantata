@@ -75,6 +75,8 @@
     loading.
 43. Mpodiy seems to require integer parameters to be quoted.
 44. Only react to back or home action is listviews if view is visible!
+45. Dont allow buttons in main widow to recieve focus.
+46. Use Ctrl+G as short-cut to show genre combo popup.
 
 1.2.2
 -----

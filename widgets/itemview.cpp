@@ -1122,6 +1122,9 @@ void ItemView::searchActive(bool a)
         collapseToLevel();
         performedSearch=false;
     }
+    if (!a) {
+        view()->setFocus();
+    }
 }
 
 void ItemView::collapseToLevel()

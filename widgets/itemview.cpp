@@ -118,7 +118,9 @@ public:
             // Use same calculation as in LibraryPage/AlbumsPage...
             return QSize(imageSize+8, imageSize+(QApplication::fontMetrics().height()*2.5));
         } else {
-            bool oneLine = index.data(ItemView::Role_SubText).toString().isEmpty();
+            // TODO: Any poit to checking one-line here? All models return sub-text...
+            //       Thisngs will be quicker if we dont call SubText here...
+            bool oneLine = false ; // index.data(ItemView::Role_SubText).toString().isEmpty();
             bool showCapacity = !index.data(ItemView::Role_CapacityText).toString().isEmpty();
             int textHeight = QApplication::fontMetrics().height()*(oneLine ? 1 : 2);
 

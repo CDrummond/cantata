@@ -219,6 +219,7 @@ public Q_SLOTS:
     void setPosition();
     void searchPlayQueue();
     void realSearchPlayQueue();
+    void playQueueSearchActivated(bool a);
     void updatePlayQueue(const QList<Song> &songs);
     void updateCurrentSong(const Song &song);
     void scrollPlayQueue();

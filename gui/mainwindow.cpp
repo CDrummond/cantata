@@ -765,6 +765,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(StdActions::self()->backAction, SIGNAL(triggered(bool)), this, SLOT(goBack()));
     connect(playQueueSearchWidget, SIGNAL(returnPressed()), this, SLOT(searchPlayQueue()));
     connect(playQueueSearchWidget, SIGNAL(textChanged(const QString)), this, SLOT(searchPlayQueue()));
+    connect(playQueueSearchWidget, SIGNAL(active(bool)), this, SLOT(playQueueSearchActivated(bool)));
     connect(playQueue, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(playQueueItemActivated(const QModelIndex &)));
     connect(StdActions::self()->removeAction, SIGNAL(triggered(bool)), this, SLOT(removeItems()));
     connect(StdActions::self()->addToPlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(addToPlayQueue()));
@@ -1776,6 +1777,13 @@ void MainWindow::realSearchPlayQueue()
         QModelIndex idx=playQueueProxyModel.mapFromSource(playQueueModel.index(playQueueModel.currentSongRow(), 0));
         playQueue->updateRows(idx.row(), current.key, autoScrollPlayQueue && playQueueProxyModel.isEmpty() && MPDState_Playing==MPDStatus::self()->state());
         scrollPlayQueue();
+    }
+}
+
+void MainWindow::playQueueSearchActivated(bool a)
+{
+    if (!a) {
+        playQueue->setFocus();
     }
 }
 

@@ -1122,7 +1122,7 @@ void ItemView::searchActive(bool a)
         collapseToLevel();
         performedSearch=false;
     }
-    if (!a) {
+    if (!a && view()->isVisible()) {
         view()->setFocus();
     }
 }

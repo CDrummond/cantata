@@ -24,9 +24,13 @@
 #include "genrecombo.h"
 #include "toolbutton.h"
 #include "localize.h"
+#include "actioncollection.h"
+#include "action.h"
 
 // Max number of items before we try to force a scrollbar in popup menu...
 static const int constPopupItemCount=32;
+
+static Action *action=0;
 
 GenreCombo::GenreCombo(QWidget *p)
      : ComboBox(p)
@@ -34,6 +38,13 @@ GenreCombo::GenreCombo(QWidget *p)
     setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
     update(QSet<QString>());
     setEditable(false);
+    setFocusPolicy(Qt::NoFocus);
+    if (!action) {
+        action=ActionCollection::get()->createAction("genrefilter", i18n("Filter On Genre"), 0);
+        action->setShortcut(Qt::ControlModifier+Qt::Key_G);
+    }
+    addAction(action);
+    connect(action, SIGNAL(triggered()), SLOT(showEntries()));
 }
 
 void GenreCombo::update(const QSet<QString> &g)
@@ -90,6 +101,13 @@ void GenreCombo::update(const QSet<QString> &g)
     // If we are 'hidden' then we need to ingore mouse events - so that these get passed to parent widget.
     // The Oxygen's window drag still functions...
     setAttribute(Qt::WA_TransparentForMouseEvents, count()<2);
+}
+
+void GenreCombo::showEntries()
+{
+    if (isVisible()) {
+        showPopup();
+    }
 }
 
 void GenreCombo::paintEvent(QPaintEvent *e)

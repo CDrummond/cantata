@@ -581,6 +581,8 @@ MainWindow::MainWindow(QWidget *parent)
     serverInfoAction=ActionCollection::get()->createAction("mpdinfo", i18n("Server information..."), "network-server");
     connect(serverInfoAction, SIGNAL(triggered(bool)),this, SLOT(showServerInfo()));
     serverInfoAction->setEnabled(Settings::self()->firstRun());
+    refreshDbAction = ActionCollection::get()->createAction("refresh", i18n("Refresh Database"), "view-refresh");
+    doDbRefreshAction = new Action(refreshDbAction->icon(), i18n("Refresh"), this);
     #ifdef ENABLE_KDE_SUPPORT
     mainMenu->addAction(prefAction);
     shortcutsAction=static_cast<Action *>(KStandardAction::keyBindings(this, SLOT(configureShortcuts()), ActionCollection::get()));
@@ -595,6 +597,7 @@ MainWindow::MainWindow(QWidget *parent)
     #endif
     connect(prefAction, SIGNAL(triggered(bool)),this, SLOT(showPreferencesDialog()));
     mainMenu->addAction(prefAction);
+    mainMenu->addAction(refreshDbAction);
     mainMenu->addSeparator();
     mainMenu->addAction(StdActions::self()->searchAction);
     mainMenu->addSeparator();
@@ -611,6 +614,7 @@ MainWindow::MainWindow(QWidget *parent)
     if (Utils::Unity==Utils::currentDe()) {
     #endif
         QMenu *menu=new QMenu(i18n("&File"), this);
+        menu->addAction(refreshDbAction);
         menu->addAction(quitAction);
         menuBar()->addMenu(menu);
         menu=new QMenu(i18n("&Edit"), this);
@@ -745,8 +749,10 @@ MainWindow::MainWindow(QWidget *parent)
     connect(Dynamic::self(), SIGNAL(running(bool)), dynamicLabel, SLOT(setVisible(bool)));
     connect(Dynamic::self(), SIGNAL(running(bool)), this, SLOT(controlDynamicButton()));
     #endif
-    connect(StdActions::self()->refreshAction, SIGNAL(triggered(bool)), this, SLOT(refresh()));
-    connect(StdActions::self()->refreshAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(update()));
+    connect(refreshDbAction, SIGNAL(triggered(bool)), this, SLOT(refreshDbPromp()));
+    connect(doDbRefreshAction, SIGNAL(toggled(bool)), this, SLOT(refreshDb()));
+    connect(doDbRefreshAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(update()));
+    connect(doDbRefreshAction, SIGNAL(triggered(bool)), messageWidget, SLOT(animatedHide()));
     connect(connectAction, SIGNAL(triggered(bool)), this, SLOT(connectToMpd()));
     connect(StdActions::self()->prevTrackAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(goToPrevious()));
     connect(StdActions::self()->nextTrackAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(goToNext()));
@@ -1171,7 +1177,21 @@ void MainWindow::streamUrl(const QString &u)
     #endif
 }
 
-void MainWindow::refresh()
+void MainWindow::refreshDbPromp()
+{
+    if (Settings::self()->playQueueConfirmClear()) {
+        if (QDialogButtonBox::GnomeLayout==style()->styleHint(QStyle::SH_DialogButtonLayout)) {
+            messageWidget->setActions(QList<QAction*>() << cancelAction << doDbRefreshAction);
+        } else {
+            messageWidget->setActions(QList<QAction*>() << doDbRefreshAction << cancelAction);
+        }
+        messageWidget->setWarning(i18n("Refresh MPD Database?"), false);
+    } else {
+        clearPlayQueue();
+    }
+}
+
+void MainWindow::refreshDb()
 {
     MusicLibraryModel::self()->removeCache();
     DirViewModel::self()->removeCache();

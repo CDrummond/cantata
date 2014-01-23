@@ -1782,7 +1782,7 @@ void MainWindow::realSearchPlayQueue()
 
 void MainWindow::playQueueSearchActivated(bool a)
 {
-    if (!a) {
+    if (!a && playQueue->isVisible()) {
         playQueue->setFocus();
     }
 }

@@ -291,8 +291,6 @@ MainWindow::MainWindow(QWidget *parent)
     repeatPlayQueueAction = ActionCollection::get()->createAction("repeatplaylist", i18n("Repeat"), Icons::self()->repeatIcon);
     singlePlayQueueAction = ActionCollection::get()->createAction("singleplaylist", i18n("Single"), Icons::self()->singleIcon, i18n("When 'Single' is activated, playback is stopped after current song, or song is repeated if 'Repeat' is enabled."));
     consumePlayQueueAction = ActionCollection::get()->createAction("consumeplaylist", i18n("Consume"), Icons::self()->consumeIcon, i18n("When consume is activated, a song is removed from the play queue after it has been played."));
-    searchPlayQueueAction = ActionCollection::get()->createAction("searchplaylist", i18n("Search Play Queue"), Icons::self()->searchIcon);
-    searchPlayQueueAction->setShortcut(Qt::ControlModifier+Qt::ShiftModifier+Qt::Key_F);
     setPriorityAction = ActionCollection::get()->createAction("setprio", i18n("Set Priority"), Icon("favorites"));
     #ifdef ENABLE_HTTP_STREAM_PLAYBACK
     streamPlayAction = ActionCollection::get()->createAction("streamplay", i18n("Play Stream"));
@@ -408,7 +406,6 @@ MainWindow::MainWindow(QWidget *parent)
     addStreamToPlayQueueAction->setEnabled(false);
     clearPlayQueueButton->setDefaultAction(promptClearPlayQueueAction);
     savePlayQueueButton->setDefaultAction(StdActions::self()->savePlayQueueAction);
-    searchPlayQueueButton->setDefaultAction(searchPlayQueueAction);
     randomButton->setDefaultAction(randomPlayQueueAction);
     repeatButton->setDefaultAction(repeatPlayQueueAction);
     singleButton->setDefaultAction(singlePlayQueueAction);
@@ -599,6 +596,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(prefAction, SIGNAL(triggered(bool)),this, SLOT(showPreferencesDialog()));
     mainMenu->addAction(prefAction);
     mainMenu->addSeparator();
+    mainMenu->addAction(StdActions::self()->searchAction);
+    mainMenu->addSeparator();
     Action *aboutAction=ActionCollection::get()->createAction("about", i18nc("Qt-only", "About Cantata..."), Icons::self()->appIcon);
     connect(aboutAction, SIGNAL(triggered(bool)),this, SLOT(showAboutDialog()));
     mainMenu->addAction(serverInfoAction);
@@ -613,6 +612,9 @@ MainWindow::MainWindow(QWidget *parent)
     #endif
         QMenu *menu=new QMenu(i18n("&File"), this);
         menu->addAction(quitAction);
+        menuBar()->addMenu(menu);
+        menu=new QMenu(i18n("&Edit"), this);
+        menu->addAction(StdActions::self()->searchAction);
         menuBar()->addMenu(menu);
         menu=new QMenu(i18n("&Settings"), this);
         menu->addAction(expandInterfaceAction);
@@ -807,7 +809,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(searchTabAction, SIGNAL(triggered(bool)), this, SLOT(showSearchTab()));
     addAction(StdActions::self()->searchAction); // Weird, but if I dont add thiis action, it does not work!!!!
     connect(StdActions::self()->searchAction, SIGNAL(triggered(bool)), SLOT(showSearch()));
-    connect(searchPlayQueueAction, SIGNAL(triggered(bool)), playQueueSearchWidget, SLOT(activate()));
     connect(expandAllAction, SIGNAL(triggered(bool)), this, SLOT(expandAll()));
     connect(collapseAllAction, SIGNAL(triggered(bool)), this, SLOT(collapseAll()));
     #ifdef ENABLE_DEVICES_SUPPORT
@@ -2793,7 +2794,9 @@ void MainWindow::goBack()
 
 void MainWindow::showSearch()
 {
-    if (context->isVisible()) {
+    if (playQueue->hasFocus()) {
+         playQueueSearchWidget->activate();
+    } else if (context->isVisible()) {
         context->search();
     } else if (libraryPage->isVisible()) {
         libraryPage->focusSearch();
@@ -3136,6 +3139,7 @@ void MainWindow::controlPlaylistActions()
     StdActions::self()->addToStoredPlaylistAction->setVisible(enable);
     StdActions::self()->savePlayQueueAction->setVisible(enable);
     savePlayQueueButton->setVisible(enable);
+    midSpacer->setVisible(enable);
     addPlayQueueToStoredPlaylistAction->setVisible(enable);
 }
 

@@ -295,7 +295,7 @@ bool CoverWidget::event(QEvent *event)
         break;
     }
     case QEvent::MouseButtonPress:
-        if (Qt::LeftButton==static_cast<QMouseEvent *>(event)->button()) {
+        if (Qt::LeftButton==static_cast<QMouseEvent *>(event)->button() && Qt::NoModifier==static_cast<QMouseEvent *>(event)->modifiers()) {
             pressed=true;
         }
         break;

@@ -26,6 +26,7 @@
 #include "localize.h"
 #include "actioncollection.h"
 #include "action.h"
+#include <QEvent>
 
 // Max number of items before we try to force a scrollbar in popup menu...
 static const int constPopupItemCount=32;
@@ -117,4 +118,12 @@ void GenreCombo::paintEvent(QPaintEvent *e)
     } else {
         QWidget::paintEvent(e);
     }
+}
+
+bool GenreCombo::event(QEvent *event)
+{
+    if (QEvent::ToolTip==event->type() && toolTip()!=action->toolTip()) {
+        setToolTip(action->toolTip());
+    }
+    return ComboBox::event(event);
 }

@@ -37,6 +37,7 @@ public:
     const QSet<QString> & entries() const { return genres; }
 
     void paintEvent(QPaintEvent *e);
+    bool event(QEvent *event);
 
 public Q_SLOTS:
     void update(const QSet<QString> &g);

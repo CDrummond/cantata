@@ -66,7 +66,6 @@ public:
     Action *deleteSongsAction;
     #endif
     Action *setCoverAction;
-    Action *refreshAction;
     Action *removeAction;
     Action *backAction;
     Action *searchAction;

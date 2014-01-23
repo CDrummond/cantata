@@ -1085,6 +1085,7 @@ void MainWindow::mpdConnectionStateChanged(bool connected)
         MPDStatus dummyStatus;
         updateStatus(&dummyStatus);
     }
+    controlPlaylistActions();
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *event)
@@ -3126,10 +3127,16 @@ void MainWindow::updateActionToolTips()
 void MainWindow::setPlaylistsEnabled(bool e)
 {
     PlaylistsModel::self()->setEnabled(e);
-    StdActions::self()->addToStoredPlaylistAction->setVisible(PlaylistsModel::self()->isEnabled());
-    StdActions::self()->savePlayQueueAction->setVisible(PlaylistsModel::self()->isEnabled());
-    savePlayQueueButton->setVisible(PlaylistsModel::self()->isEnabled());
-    addPlayQueueToStoredPlaylistAction->setVisible(PlaylistsModel::self()->isEnabled());
+    controlPlaylistActions();
+}
+
+void MainWindow::controlPlaylistActions()
+{
+    bool enable=!MPDConnection::self()->isMopdidy() && PlaylistsModel::self()->isEnabled();
+    StdActions::self()->addToStoredPlaylistAction->setVisible(enable);
+    StdActions::self()->savePlayQueueAction->setVisible(enable);
+    savePlayQueueButton->setVisible(enable);
+    addPlayQueueToStoredPlaylistAction->setVisible(enable);
 }
 
 #if !defined Q_OS_WIN && !defined Q_OS_MAC && QT_VERSION < 0x050000

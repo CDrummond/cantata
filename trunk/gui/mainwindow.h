@@ -319,6 +319,7 @@ private:
     void updateNextTrack(int nextTrackId);
     void updateActionToolTips();
     void setPlaylistsEnabled(bool e);
+    void controlPlaylistActions();
 
 private:
     int loaded;

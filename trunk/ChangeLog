@@ -87,6 +87,7 @@
     and find in playqueue. Action depends upon which view has focus.
 51. Remove refresh buttons in status bar, and place into main menu. Also,
    prompt for confirmation before perforing refresh.
+52. Combine podcast subscribe and search dialogs.
 
 1.2.2
 -----

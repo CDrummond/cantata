@@ -59,7 +59,6 @@ OnlineServicesPage::OnlineServicesPage(QWidget *p)
     view->addAction(StdActions::self()->addWithPriorityAction);
     view->addAction(StdActions::self()->addToStoredPlaylistAction);
     downloadAction = ActionCollection::get()->createAction("downloadtolibrary", i18n("Download To Library"), "go-down");
-    podcastSearchAction = ActionCollection::get()->createAction("podcastsearch", i18n("Search For Podcasts"), "edit-find");
     downloadPodcastAction = ActionCollection::get()->createAction("downloadpodcast", i18n("Download Podcast Episodes"), "go-down");
     deleteDownloadedPodcastAction = ActionCollection::get()->createAction("deletedownloadedpodcast", i18n("Delete Downloaded Podcast Episodes"), "edit-delete");
     connect(this, SIGNAL(add(const QStringList &, bool, quint8)), MPDConnection::self(), SLOT(add(const QStringList &, bool, quint8)));
@@ -81,7 +80,6 @@ OnlineServicesPage::OnlineServicesPage(QWidget *p)
     connect(OnlineServicesModel::self()->subscribeAct(), SIGNAL(triggered()), this, SLOT(subscribe()));
     connect(OnlineServicesModel::self()->unSubscribeAct(), SIGNAL(triggered()), this, SLOT(unSubscribe()));
     connect(OnlineServicesModel::self()->refreshSubscriptionAct(), SIGNAL(triggered()), this, SLOT(refreshSubscription()));
-    connect(podcastSearchAction, SIGNAL(triggered()), this, SLOT(searchForPodcasts()));
     connect(downloadAction, SIGNAL(triggered()), this, SLOT(download()));
     connect(downloadPodcastAction, SIGNAL(triggered()), this, SLOT(downloadPodcast()));
     connect(deleteDownloadedPodcastAction, SIGNAL(triggered()), this, SLOT(deleteDownloadedPodcast()));
@@ -92,7 +90,6 @@ OnlineServicesPage::OnlineServicesPage(QWidget *p)
     QAction *sep=new QAction(this);
     sep->setSeparator(true);
     menu->addAction(sep);
-    menu->addAction(podcastSearchAction);
     menu->addAction(OnlineServicesModel::self()->subscribeAct());
     menu->addAction(OnlineServicesModel::self()->unSubscribeAct());
     menu->addAction(OnlineServicesModel::self()->refreshSubscriptionAct());
@@ -105,7 +102,6 @@ OnlineServicesPage::OnlineServicesPage(QWidget *p)
 
     view->addAction(downloadAction);
     view->addAction(sep);
-    view->addAction(podcastSearchAction);
     view->addAction(OnlineServicesModel::self()->subscribeAct());
     view->addAction(OnlineServicesModel::self()->unSubscribeAct());
     view->addAction(OnlineServicesModel::self()->refreshSubscriptionAct());
@@ -419,11 +415,9 @@ void OnlineServicesPage::controlActions()
     deleteDownloadedPodcastAction->setEnabled(canUnSubscribe);
     deleteDownloadedPodcastAction->setVisible(canUnSubscribe);
     OnlineServicesModel::self()->subscribeAct()->setEnabled(canSubscribe && 1==selected.count());
-    podcastSearchAction->setVisible(canSubscribe && 1==selected.count());
     OnlineServicesModel::self()->unSubscribeAct()->setEnabled(canUnSubscribe && 1==selected.count());
     OnlineServicesModel::self()->refreshSubscriptionAct()->setEnabled((canUnSubscribe || canSubscribe) && 1==selected.count());
     OnlineServicesModel::self()->refreshAct()->setEnabled(canRefresh && 1==selected.count());
-    podcastSearchAction->setEnabled(canSubscribe && 1==selected.count());
     downloadAction->setVisible(!srvSelected && canDownload && !selected.isEmpty() && 1==services.count());
     downloadAction->setEnabled(!srvSelected && canDownload && !selected.isEmpty() && 1==services.count());
     StdActions::self()->addToPlayQueueAction->setEnabled(!srvSelected && !selected.isEmpty());
@@ -519,37 +513,9 @@ void OnlineServicesPage::download()
 
 void OnlineServicesPage::subscribe()
 {
-    const QModelIndexList selected = view->selectedIndexes(false); // Dont need sorted selection here...
-    if (1!=selected.size()) {
-        return;
-    }
-
-    MusicLibraryItem *item=static_cast<MusicLibraryItem *>(proxy.mapToSource(selected.first()).internalPointer());
-    if (MusicLibraryItem::Type_Root==item->itemType() && PodcastService::constName==static_cast<MusicLibraryItemRoot *>(item)->id()) {
-        PodcastService *srv=static_cast<PodcastService *>(item);
-        bool ok=false;
-        QString url=InputDialog::getText(i18n("Subscribe to Podcast"), i18n("Enter podcast URL:"), QString(), &ok, this);
-
-        if (url.isEmpty() || !ok) {
-            return;
-        }
-
-        QUrl u(PodcastService::fixUrl(url));
-
-        if (!PodcastService::isUrlOk(u)) {
-            MessageBox::error(this, i18n("Invalid URL!"));
-            return;
-        }
-
-        if (srv->subscribedToUrl(u)) {
-            MessageBox::error(this, i18n("You are already subscribed to this URL!"));
-            return;
-        }
-        if (srv->processingUrl(u)) {
-            MessageBox::error(this, i18n("Already downloading this URL!"));
-            return;
-        }
-        srv->addUrl(u);
+    if (0==PodcastSearchDialog::instanceCount()) {
+        PodcastSearchDialog *dlg=new PodcastSearchDialog(this);
+        dlg->show();
     }
 }
 
@@ -622,14 +588,6 @@ void OnlineServicesPage::refreshSubscription()
     }
 
     srv->refreshSubscription(item);
-}
-
-void OnlineServicesPage::searchForPodcasts()
-{
-    if (0==PodcastSearchDialog::instanceCount()) {
-        PodcastSearchDialog *dlg=new PodcastSearchDialog(this);
-        dlg->show();
-    }
 }
 
 static QString format(const QMap<MusicLibraryItemPodcast *, QList<MusicLibraryItemPodcastEpisode *> > &urls)

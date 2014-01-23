@@ -70,16 +70,16 @@ QList<Playlist> MPDParseUtils::parsePlaylists(const QByteArray &data)
     int amountOfLines = lines.size();
 
     for (int i = 0; i < amountOfLines; i++) {
-        QList<QByteArray> tokens = lines.at(i).split(':');
+        QString line(QString::fromUtf8(lines.at(i)));
 
-        if (tokens.at(0) == "playlist") {
+        if (line.startsWith(QLatin1String("playlist:"))) {
             Playlist playlist;
-            playlist.name = QString::fromUtf8(tokens.at(1)).simplified();
+            playlist.name = line.mid(10);
             i++;
-            tokens = lines.at(i).split(':');
+            line=QString::fromUtf8(lines.at(i));
 
-            if (tokens.at(0) == "Last-Modified") {
-                playlist.lastModified=QDateTime::fromString(tokens.at(1).trimmed()+':'+tokens.at(2)+':'+tokens.at(3), Qt::ISODate);
+            if (line.startsWith(QLatin1String("Last-Modified"))) {
+                playlist.lastModified=QDateTime::fromString(line.mid(15), Qt::ISODate);
                 playlists.append(playlist);
             }
         }
@@ -396,7 +396,7 @@ QStringList MPDParseUtils::parseList(const QByteArray &data, const QLatin1String
     int keyLen=QString(key).length();
 
     for (int i = 0; i < amountOfLines; i++) {
-        QString item(lines.at(i));
+        QString item(QString::fromUtf8(lines.at(i)));
         // Skip the "OK" line, this is NOT a valid item!!!
         if (QLatin1String("OK")==item) {
             continue;

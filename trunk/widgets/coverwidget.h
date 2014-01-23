@@ -63,7 +63,7 @@ private:
     const QPixmap & stdPixmap(bool stream);
     void update(const QImage &i);
     void update(const QPixmap &pix);
-    bool eventFilter(QObject *object, QEvent *event);
+    bool event(QEvent *event);
     void resizeEvent(QResizeEvent *e);
 //     void paintEvent(QPaintEvent *e);
     #ifndef Q_OS_WIN

@@ -234,7 +234,7 @@ MainWindow::MainWindow(QWidget *parent)
     toolbar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     topToolBar->addWidget(toolbar);
     topToolBar->setMovable(false);
-    topToolBar->setContextMenuPolicy(Qt::NoContextMenu);
+    topToolBar->setContextMenuPolicy(Qt::PreventContextMenu);
     #ifndef Q_OS_MAC
     GtkStyle::applyTheme(topToolBar);
     #endif

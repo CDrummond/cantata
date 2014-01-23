@@ -225,7 +225,7 @@ private:
     QSet<QString> currentImageRequests;
     QList<Song> queue;
     QSet<int> cacheSizes;
-    QCache<quint32, QPixmap> cache;
+    QCache<QString, QPixmap> cache;
     QMap<QString, QString> filenames;
     CoverDownloader *downloader;
     CoverLocator *locator;

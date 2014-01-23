@@ -49,9 +49,7 @@ public:
     Icon folderIcon;
     Icon audioFileIcon;
     Icon playlistIcon;
-    #ifdef ENABLE_DYNAMIC
-    Icon dynamicRuleIcon;
-    #endif
+    Icon dynamicRuleIcon; // Alsu used for Mopidy smart playlists...
     Icon singleIcon;
     Icon consumeIcon;
     Icon repeatIcon;

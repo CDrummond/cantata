@@ -59,16 +59,19 @@ public:
 
     struct PlaylistItem : public Item
     {
-        PlaylistItem(quint32 k) : loaded(false), time(0), key(k) { }
-        PlaylistItem(const Playlist &pl, quint32 k) : name(pl.name), loaded(false), time(0), key(k), lastModified(pl.lastModified) { }
+        PlaylistItem(quint32 k) : loaded(false), isSmartPlaylist(false), time(0), key(k) { }
+        PlaylistItem(const Playlist &pl, quint32 k);
         virtual ~PlaylistItem();
         bool isPlaylist() { return true; }
         void updateGenres();
         SongItem * getSong(const Song &song, int offset);
         void clearSongs();
         quint32 totalTime();
+        const QString & visibleName() const { return shortName.isEmpty() ? name : shortName; }
         QString name;
+        QString shortName;
         bool loaded;
+        bool isSmartPlaylist;
         QList<SongItem *> songs;
         QSet<QString> genres;
         quint32 time;

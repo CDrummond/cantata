@@ -993,7 +993,7 @@ void ItemView::collectionRemoved(quint32 key)
 
 void ItemView::backActivated()
 {
-    if (!usingListView() || 0==currentLevel) {
+    if (!usingListView() || 0==currentLevel || !isVisible()) {
         return;
     }
     setLevel(currentLevel-1);
@@ -1013,7 +1013,7 @@ void ItemView::backActivated()
 
 void ItemView::homeActivated()
 {
-    if (!usingListView() || 0==currentLevel) {
+    if (!usingListView() || 0==currentLevel || !isVisible()) {
         return;
     }
     setLevel(0);

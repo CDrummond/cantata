@@ -37,6 +37,7 @@ ToolButton::ToolButton(QWidget *parent)
     #ifdef Q_OS_MAC
     setStyleSheet("QToolButton {border: 0}");
     #endif
+    setFocusPolicy(Qt::NoFocus);
 }
 
 void ToolButton::paintEvent(QPaintEvent *e)

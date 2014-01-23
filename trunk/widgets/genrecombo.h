@@ -41,6 +41,9 @@ public:
 public Q_SLOTS:
     void update(const QSet<QString> &g);
 
+private Q_SLOTS:
+    void showEntries();
+
 private:
     QSet<QString> genres;
 };

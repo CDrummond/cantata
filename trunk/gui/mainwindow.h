@@ -206,7 +206,8 @@ public Q_SLOTS:
     void connectToMpd();
     void connectToMpd(const MPDConnectionDetails &details);
     void streamUrl(const QString &u);
-    void refresh();
+    void refreshDbPromp();
+    void refreshDb();
     #ifndef ENABLE_KDE_SUPPORT
     void showAboutDialog();
     #endif
@@ -329,6 +330,8 @@ private:
     PlayQueueProxyModel playQueueProxyModel;
     bool autoScrollPlayQueue;
     Action *prefAction;
+    Action *refreshDbAction;
+    Action *doDbRefreshAction;
     #ifdef ENABLE_KDE_SUPPORT
     Action *shortcutsAction;
     #endif

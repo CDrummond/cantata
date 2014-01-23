@@ -39,7 +39,6 @@ AlbumsPage::AlbumsPage(QWidget *p)
     setupUi(this);
     addToPlayQueue->setDefaultAction(StdActions::self()->addToPlayQueueAction);
     replacePlayQueue->setDefaultAction(StdActions::self()->replacePlayQueueAction);
-    libraryUpdate->setDefaultAction(StdActions::self()->refreshAction);
 
     view->addAction(StdActions::self()->addToPlayQueueAction);
     view->addAction(StdActions::self()->addRandomToPlayQueueAction);

@@ -85,7 +85,6 @@ StdActions::StdActions()
     deleteSongsAction = ActionCollection::get()->createAction("deletesongs", i18n("Delete Songs"), "edit-delete");
     #endif
     setCoverAction = ActionCollection::get()->createAction("setcover", i18n("Set Image"));
-    refreshAction = ActionCollection::get()->createAction("refresh", i18n("Refresh Database"), "view-refresh");
     backAction = ActionCollection::get()->createAction("back", i18n("Back"), "go-previous");
     backAction->setShortcut(QKeySequence::Back);
     removeAction = ActionCollection::get()->createAction("removeitems", i18n("Remove"), "list-remove");

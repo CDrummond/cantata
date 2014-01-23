@@ -78,6 +78,7 @@
 45. Dont allow buttons in main widow to recieve focus.
 46. Use Ctrl+G as short-cut to show genre combo popup.
 47. Re-focus view when search closed.
+48. Fix handling of playlists with a colon in their name.
 
 1.2.2
 -----

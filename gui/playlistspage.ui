@@ -50,9 +50,6 @@
       <widget class="ToolButton" name="libraryUpdate"/>
      </item>
      <item>
-      <widget class="ToolButton" name="searchButton"/>
-     </item>
-     <item>
       <widget class="GenreCombo" name="genreCombo"/>
      </item>
      <item>

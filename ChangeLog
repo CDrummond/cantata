@@ -83,6 +83,8 @@
     playlist - e.g. don't try to display song count, don't try to load songs
     in playlists view, use sub text 'Smart Playlist' (and fix playlist name),
     and don't allow saving to these playlsts.
+50. Remove find buttons in status bar, and use Ctrl-F for both find in views
+    and find in playqueue. Action depends upon which view has focus.
 
 1.2.2
 -----

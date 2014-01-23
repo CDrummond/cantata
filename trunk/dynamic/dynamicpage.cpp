@@ -41,7 +41,6 @@ DynamicPage::DynamicPage(QWidget *p)
     addAction = ActionCollection::get()->createAction("adddynamic", i18n("Add Dynamic Rules"), "document-new");
     editAction = ActionCollection::get()->createAction("editdynamic", i18n("Edit Dynamic Rules"), Icons::self()->editIcon);
     removeAction = ActionCollection::get()->createAction("removedynamic", i18n("Remove Dynamic Rules"), "list-remove");
-    searchButton->setDefaultAction(StdActions::self()->searchAction);
     toggleAction = new Action(this);
 
     refreshBtn->setDefaultAction(refreshAction);

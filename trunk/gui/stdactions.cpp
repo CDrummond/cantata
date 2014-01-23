@@ -89,7 +89,7 @@ StdActions::StdActions()
     backAction = ActionCollection::get()->createAction("back", i18n("Back"), "go-previous");
     backAction->setShortcut(QKeySequence::Back);
     removeAction = ActionCollection::get()->createAction("removeitems", i18n("Remove"), "list-remove");
-    searchAction = ActionCollection::get()->createAction("search", i18n("Search"), "edit-find");
+    searchAction = ActionCollection::get()->createAction("search", i18n("Find"), "edit-find");
     searchAction->setShortcut(Qt::ControlModifier+Qt::Key_F);
 
     addToStoredPlaylistAction->setMenu(PlaylistsModel::self()->menu());

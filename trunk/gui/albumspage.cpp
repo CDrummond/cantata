@@ -40,7 +40,6 @@ AlbumsPage::AlbumsPage(QWidget *p)
     addToPlayQueue->setDefaultAction(StdActions::self()->addToPlayQueueAction);
     replacePlayQueue->setDefaultAction(StdActions::self()->replacePlayQueueAction);
     libraryUpdate->setDefaultAction(StdActions::self()->refreshAction);
-    searchButton->setDefaultAction(StdActions::self()->searchAction);
 
     view->addAction(StdActions::self()->addToPlayQueueAction);
     view->addAction(StdActions::self()->addRandomToPlayQueueAction);

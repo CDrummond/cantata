@@ -72,7 +72,11 @@
          <number>0</number>
         </property>
         <item>
-         <widget class="ToolButton" name="prevTrackButton"/>
+         <widget class="ToolButton" name="prevTrackButton">
+          <property name="focusPolicy">
+           <enum>Qt::NoFocus</enum>
+          </property>
+         </widget>
         </item>
         <item>
          <widget class="ToolButton" name="playPauseTrackButton"/>
@@ -346,10 +350,7 @@
            </widget>
           </item>
           <item>
-           <widget class="SpacerWidget" name="horizontalSpacer_4b" native="true"/>
-          </item>
-          <item>
-           <widget class="ToolButton" name="searchPlayQueueButton"/>
+           <widget class="SpacerWidget" name="midSpacer" native="true"/>
           </item>
           <item>
            <widget class="ToolButton" name="savePlayQueueButton"/>

@@ -143,7 +143,6 @@ CoverWidget::CoverWidget(QWidget *parent)
 {
     connect(Covers::self(), SIGNAL(cover(const Song &, const QImage &, const QString &)), SLOT(coverRetrieved(const Song &, const QImage &, const QString &)));
     connect(Covers::self(), SIGNAL(coverUpdated(const Song &, const QImage &, const QString &)), SLOT(coverRetrieved(const Song &, const QImage &, const QString &)));
-    installEventFilter(this);
     QTimer::singleShot(0, this, SLOT(init())); // Need to do this after constructed, so that size is set....
     setStyleSheet(QString("QLabel {border: %1px solid transparent} QToolTip {background-color:#111111; color: #DDDDDD}").arg(constBorder));
 }
@@ -267,7 +266,7 @@ void CoverWidget::coverRetrieved(const Song &s, const QImage &img, const QString
     }
 }
 
-bool CoverWidget::eventFilter(QObject *object, QEvent *event)
+bool CoverWidget::event(QEvent *event)
 {
     switch(event->type()) {
     case QEvent::ToolTip: {
@@ -309,7 +308,7 @@ bool CoverWidget::eventFilter(QObject *object, QEvent *event)
     default:
         break;
     }
-    return QObject::eventFilter(object, event);
+    return QLabel::event(event);
 }
 
 void CoverWidget::resizeEvent(QResizeEvent *e)

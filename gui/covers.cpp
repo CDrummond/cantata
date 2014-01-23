@@ -892,9 +892,9 @@ void Covers::stop()
     #endif
 }
 
-static inline quint32 cacheKey(const Song &song, int size)
+static inline QString cacheKey(const Song &song, int size)
 {
-    return (song.key<<16)+(size&0xffffff);
+    return albumKey(song)+QString::number(size);
 }
 
 QPixmap * Covers::get(const Song &song, int size)
@@ -903,7 +903,7 @@ QPixmap * Covers::get(const Song &song, int size)
         return 0;
     }
 
-    quint32 key=cacheKey(song, size);
+    QString key=cacheKey(song, size);
     QPixmap *pix(cache.object(key));
 
     if (!pix) {
@@ -961,7 +961,7 @@ void Covers::clearCache(const Song &song, const QImage &img, bool dummyEntriesOn
     bool hadDummy=false;
     bool hadEntries=false;
     foreach (int s, cacheSizes) {
-        quint32 key=cacheKey(song, s);
+        QString key=cacheKey(song, s);
         QPixmap *pix(cache.object(key));
 
         if (pix && (!dummyEntriesOnly || pix->width()<2)) {

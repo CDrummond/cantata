@@ -74,6 +74,7 @@
 42. Fix some Mopidy 0.18 issues; cover and lyrics retrieval, folders view
     loading.
 43. Mpodiy seems to require integer parameters to be quoted.
+44. Only react to back or home action is listviews if view is visible!
 
 1.2.2
 -----

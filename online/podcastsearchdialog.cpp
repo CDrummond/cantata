@@ -36,6 +36,8 @@
 #include "action.h"
 #include "textbrowser.h"
 #include "messagewidget.h"
+#include "rssparser.h"
+#include <QLabel>
 #include <QPushButton>
 #include <QTreeWidget>
 #include <QGridLayout>
@@ -57,6 +59,7 @@ static int iCount=0;
 
 static QCache<QUrl, QImage> imageCache(200*1024);
 static int maxImageSize=-1;
+static const char * constOrigUrlProperty="orig-url";
 
 enum Roles {
     IsPodcastRole = Qt::UserRole,
@@ -174,7 +177,8 @@ void PodcastPage::fetchImage(const QUrl &url)
 {
     cancelImage();
     imageSpinner->start();
-    imageJob=NetworkAccessManager::self()->get(url);
+    imageJob=NetworkAccessManager::self()->get(url, 5000);
+    imageJob->setProperty(constOrigUrlProperty, url);
     connect(imageJob, SIGNAL(finished()), this, SLOT(imageJobFinished()));
 }
 
@@ -285,7 +289,7 @@ void PodcastPage::imageJobFinished()
         if (img.width()>maxImageSize || img.height()>maxImageSize) {
             img=img.scaled(maxImageSize, maxImageSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
         }
-        imageCache.insert(imageJob->url(), new QImage(img), img.byteCount());
+        imageCache.insert(imageJob->property(constOrigUrlProperty).toUrl(), new QImage(img), img.byteCount());
         updateText();
     }
     imageJob=0;
@@ -500,6 +504,76 @@ void OpmlBrowsePage::addPodcast(const OpmlParser::Podcast &pod, QTreeWidgetItem 
     PodcastPage::addPodcast(pod.name, pod.url, pod.image, pod.description, pod.htmlUrl, p);
 }
 
+PodcastUrlPage::PodcastUrlPage(QWidget *p)
+    : PodcastPage(p, i18n("URL"))
+{
+    QBoxLayout *searchLayout=new QBoxLayout(QBoxLayout::LeftToRight);
+    QBoxLayout *viewLayout=new QBoxLayout(QBoxLayout::LeftToRight);
+    QBoxLayout *mainLayout=new QBoxLayout(QBoxLayout::TopToBottom, this);
+    searchLayout->setMargin(0);
+    viewLayout->setMargin(0);
+    mainLayout->setMargin(0);
+    urlEntry=new LineEdit(p);
+    urlEntry->setPlaceholderText(i18n("Enter podcast URL..."));
+    loadButton=new QPushButton(i18n("Load"), p);
+    QWidget::setTabOrder(urlEntry, loadButton);
+    QWidget::setTabOrder(loadButton, tree);
+    searchLayout->addWidget(urlEntry);
+    searchLayout->addWidget(loadButton);
+    viewLayout->addWidget(tree, 1);
+    viewLayout->addWidget(text, 0);
+    mainLayout->addWidget(new QLabel(i18n("Enter podcast URL below, and press 'Load'"), this));
+    mainLayout->addLayout(searchLayout);
+    mainLayout->addLayout(viewLayout);
+    connect(urlEntry, SIGNAL(returnPressed()), SLOT(loadUrl()));
+    connect(loadButton, SIGNAL(clicked()), SLOT(loadUrl()));
+    icn.addFile(":podcasts");
+}
+
+void PodcastUrlPage::showEvent(QShowEvent *e)
+{
+    urlEntry->setFocus();
+    QWidget::showEvent(e);
+}
+
+void PodcastUrlPage::loadUrl()
+{
+    QString text=urlEntry->text().trimmed();
+    if (text.isEmpty()) {
+        return;
+    }
+
+    QUrl url(PodcastService::fixUrl(text));
+    if (url==currentUrl) {
+        return;
+    }
+
+    if (!PodcastService::isUrlOk(url)) {
+        emit error(i18n("Invalid URL!"));
+    } else {
+        currentUrl=url;
+        fetch(url);
+    }
+}
+
+void PodcastUrlPage::parseResonse(QIODevice *dev)
+{
+    if (!dev) {
+        emit error(i18n("Failed to fetch podcast!"));
+        return;
+    }
+    RssParser::Channel ch=RssParser::parse(dev, false, true);
+    if (!ch.isValid()) {
+        emit error(i18n("Failed to parse podcast."));
+        return;
+    }
+    if (!ch.isValid()) {
+        emit error(i18n("Cantata only supports audio podcasts! The URL entered contains only video podcasts."));
+        return;
+    }
+    addPodcast(ch.name, currentUrl, ch.image, ch.description, QString(), 0);
+}
+
 int PodcastSearchDialog::instanceCount()
 {
     return iCount;
@@ -528,6 +602,10 @@ PodcastSearchDialog::PodcastSearchDialog(QWidget *parent)
     layout->addWidget(messageWidget);
     layout->addWidget(spacer);
     layout->addWidget(pageWidget);
+
+    PodcastUrlPage *urlPage=new PodcastUrlPage(pageWidget);
+    pageWidget->addPage(urlPage, i18n("Enter URL"), urlPage->icon(), i18n("Manual podcast URL"));
+    pages << urlPage;
 
     ITunesSearchPage *itunes=new ITunesSearchPage(pageWidget);
     pageWidget->addPage(itunes, i18n("Search %1", itunes->name()), itunes->icon(), i18n("Search for podcasts on %1", itunes->name()));

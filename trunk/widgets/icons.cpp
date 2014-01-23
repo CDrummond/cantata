@@ -381,9 +381,7 @@ Icons::Icons()
     audioFileIcon=Icon("audio-x-generic");
     playlistIcon=Icon("view-media-playlist");
     folderIcon=Icon("inode-directory");
-    #ifdef ENABLE_DYNAMIC
     dynamicRuleIcon=Icon("media-playlist-shuffle");
-    #endif
     configureIcon=Icon("configure");
     connectIcon=Icon("dialog-ok");
     disconnectIcon=Icon("media-eject");

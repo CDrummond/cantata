@@ -79,6 +79,10 @@
 46. Use Ctrl+G as short-cut to show genre combo popup.
 47. Re-focus view when search closed.
 48. Fix handling of playlists with a colon in their name.
+49. If Mopidy playlist starts with "Smart Playlist:" then treat as a 'smart'
+    playlist - e.g. don't try to display song count, don't try to load songs
+    in playlists view, use sub text 'Smart Playlist' (and fix playlist name),
+    and don't allow saving to these playlsts.
 
 1.2.2
 -----

@@ -89,6 +89,8 @@
    prompt for confirmation before perforing refresh.
 52. Combine podcast subscribe and search dialogs.
 53. Add option to NOT download covers from last.fm
+54. Add menu to cover dialog, so that user can control which services are
+    queried.
 
 1.2.2
 -----

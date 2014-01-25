@@ -31,6 +31,7 @@
 #include "covers.h"
 #include <QSet>
 #include <QList>
+#include <QMap>
 
 class NetworkJob;
 class QUrl;
@@ -110,6 +111,7 @@ private Q_SLOTS:
     void menuRequested(const QPoint &pos);
     void showImage();
     void removeImages();
+    void updateProviders();
 
 private:
     void sendLastFmQuery(const QString &fixedQuery, int page);
@@ -124,7 +126,7 @@ private:
     void downloadThumbnail(const QString &thumbUrl, const QString &largeUrl, const QString &host, int w=-1, int h=-1, int sz=-1);
     void clearTempFiles();
     void sendQueryRequest(const QUrl &url, const QString &host=QString());
-    void parseLstFmQueryResponse(const QByteArray &resp);
+    void parseLastFmQueryResponse(const QByteArray &resp);
     void parseGoogleQueryResponse(const QByteArray &resp);
     void parseDiscogsQueryResponse(const QByteArray &resp);
     void parseCoverArtArchiveQueryResponse(const QByteArray &resp);
@@ -136,11 +138,14 @@ private:
     void dragEnterEvent(QDragEnterEvent *event);
     void dropEvent(QDropEvent *event);
     void setSearching(bool s);
+    void addProvider(QMenu *mnu, const QString &name, int bit, int value);
 
 private:
+    int enabledProviders;
     Song song;
     ExistingCover *existing;
     QString currentQueryString;
+    int currentQueryProviders;
     QSet<NetworkJob *> currentQuery;
     QSet<QString> currentUrls;
     QSet<QString> currentLocalCovers;
@@ -155,6 +160,7 @@ private:
     QMenu *menu;
     QAction *showAction;
     QAction *removeAction;
+    QMap<int, QAction *> providers;
 };
 
 #endif

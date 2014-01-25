@@ -217,7 +217,7 @@ When displaying covers, Cantata will load album covers in the following order:
 23. ${url}/${dirFromFile}/cover.png
     - or ${url}/${dirFromFile}/${configuredName}.png (if set)
 
-...lastly
+...lastly, if user has enabled downloading via last.fm
 
 24. Query last.fm using ${albumArtist} and ${album}. Cantata will attempt to
     download the image specified with the "extralarge" size.
@@ -267,7 +267,7 @@ For artist images:
  
 ...the above will be repeated for the parent folder
 
-...lastly
+...lastly, if user has enabled downloading via last.fm
 
 14. Query last.fm using ${albumArtist}. Cantata will attempt to download the
     image specified with the "extralarge" size.

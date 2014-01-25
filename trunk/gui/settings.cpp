@@ -719,7 +719,7 @@ int Settings::playQueueBackgroundOpacity()
 int Settings::playQueueBackgroundBlur()
 {
     int v=GET_INT("playQueueBackgroundBlur", 0);
-    return RESTRICT(v, 0, 10);
+    return RESTRICT(v, 0, 20);
 }
 
 QString Settings::playQueueBackgroundFile()

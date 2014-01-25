@@ -167,7 +167,7 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     #ifdef ENABLE_KDE_SUPPORT
     playQueueBackgroundFile->setFilter("image/jpeg image/png");
     #else
-    playQueueBackgroundFile->setFilter(i18n("Images (*.jpg *.png)"));
+    playQueueBackgroundFile->setFilter(i18n("Images (*.png *.jpg)"));
     #endif
     int labelWidth=qMax(fontMetrics().width(QLatin1String("100%")), fontMetrics().width(i18nc("pixels", "10px")));
     playQueueBackgroundOpacityLabel->setFixedWidth(labelWidth);

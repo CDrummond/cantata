@@ -47,6 +47,8 @@ K_GLOBAL_STATIC(Settings, instance)
 #include <QDir>
 #include <qglobal.h>
 
+#define RESTRICT(VAL, MIN_VAL, MAX_VAL) (VAL<MIN_VAL ? MIN_VAL : (VAL>MAX_VAL ? MAX_VAL : VAL))
+
 Settings * Settings::self()
 {
     #ifdef ENABLE_KDE_SUPPORT
@@ -700,9 +702,29 @@ bool Settings::playQueueScroll()
     return GET_BOOL("playQueueScroll", true);
 }
 
-bool Settings::playQueueBackground()
+int Settings::playQueueBackground()
 {
-    return GET_BOOL("playQueueBackground", false);
+    if (version()<CANTATA_MAKE_VERSION(1, 0, 53)) {
+        return GET_BOOL("playQueueBackground", false) ? 1 : 1;
+    }
+    return  GET_INT("playQueueBackground", 0);
+}
+
+int Settings::playQueueBackgroundOpacity()
+{
+    int v=GET_INT("playQueueBackgroundOpacity", 15);
+    return RESTRICT(v, 0, 100);
+}
+
+int Settings::playQueueBackgroundBlur()
+{
+    int v=GET_INT("playQueueBackgroundBlur", 0);
+    return RESTRICT(v, 0, 10);
+}
+
+QString Settings::playQueueBackgroundFile()
+{
+    return GET_STRING("playQueueBackgroundFile", QString());
 }
 
 bool Settings::playQueueConfirmClear()
@@ -798,8 +820,6 @@ bool Settings::inhibitSuspend()
     return GET_BOOL("inhibitSuspend", false);
 }
 #endif
-
-#define RESTRICT(VAL, MIN_VAL, MAX_VAL) (VAL<MIN_VAL ? MIN_VAL : (VAL>MAX_VAL ? MAX_VAL : VAL))
 
 int Settings::rssUpdate()
 {
@@ -1250,9 +1270,24 @@ void Settings::savePlayQueueScroll(bool v)
     SET_VALUE_MOD(playQueueScroll)
 }
 
-void Settings::savePlayQueueBackground(bool v)
+void Settings::savePlayQueueBackground(int v)
 {
     SET_VALUE_MOD(playQueueBackground)
+}
+
+void Settings::savePlayQueueBackgroundOpacity(int v)
+{
+    SET_VALUE_MOD(playQueueBackgroundOpacity)
+}
+
+void Settings::savePlayQueueBackgroundBlur(int v)
+{
+    SET_VALUE_MOD(playQueueBackgroundBlur)
+}
+
+void Settings::savePlayQueueBackgroundFile(const QString &v)
+{
+    SET_VALUE_MOD(playQueueBackgroundFile)
 }
 
 void Settings::savePlayQueueConfirmClear(bool v)

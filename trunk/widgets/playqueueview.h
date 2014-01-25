@@ -81,9 +81,18 @@ class PlayQueueView : public QStackedWidget
     Q_PROPERTY(float fade READ fade WRITE setFade)
 
 public:
+    enum BackgroundImage {
+        BI_None,
+        BI_Cover,
+        BI_Custom
+    };
+
     PlayQueueView(QWidget *parent=0);
     virtual ~PlayQueueView();
 
+    // Returns true if background cover needs to be updated...
+    bool readConfig();
+    void saveConfig();
     void initHeader() { treeView->initHeader(); }
     void saveHeader();
     void setGrouped(bool g);
@@ -115,8 +124,6 @@ public:
     QList<Song> selectedSongs() const;
     float fade() { return fadeValue; }
     void setFade(float value);
-    void setUseCoverAsBackgrond(bool u);
-    bool useCoverAsBackground() const { return useCoverAsBgnd; }
     void updatePalette();
 
 public Q_SLOTS:
@@ -139,13 +146,16 @@ private:
     Spinner *spinner;
     MessageOverlay *msgOverlay;
 
-    bool useCoverAsBgnd;
+    BackgroundImage backgroundImageType;
     QPropertyAnimation animator;
     QImage curentCover;
     QPixmap curentBackground;
     QPixmap previousBackground;
     QSize lastBgndSize;
     double fadeValue;
+    int backgroundOpacity;
+    int backgroundBlur;
+    QString customBackgroundFile;
     friend class PlayQueueGroupedView;
     friend class PlayQueueTreeView;
 };

@@ -91,6 +91,8 @@
 53. Add option to NOT download covers from last.fm
 54. Add menu to cover dialog, so that user can control which services are
     queried.
+55. Add option to use a custom image as playqueue background.
+56. Add option to specify blur and opacity of playqueue background image.
 
 1.2.2
 -----

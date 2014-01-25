@@ -571,19 +571,6 @@ within the folder of the current track, or within its parent folder. If no image
          <property name="fieldGrowthPolicy">
           <enum>QFormLayout::ExpandingFieldsGrow</enum>
          </property>
-         <item row="6" column="0">
-          <widget class="BuddyLabel" name="langLabel">
-           <property name="text">
-            <string>Language:</string>
-           </property>
-           <property name="buddy">
-            <cstring>lang</cstring>
-           </property>
-          </widget>
-         </item>
-         <item row="6" column="1">
-          <widget class="QComboBox" name="lang"/>
-         </item>
          <item row="0" column="0" colspan="2">
           <widget class="QCheckBox" name="groupSingle">
            <property name="text">
@@ -598,33 +585,53 @@ within the folder of the current track, or within its parent folder. If no image
            </property>
           </widget>
          </item>
-         <item row="3" column="0" colspan="2">
-          <widget class="QCheckBox" name="cacheScaledCovers">
-           <property name="text">
-            <string>Cache scaled covers</string>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="0" colspan="2">
-          <widget class="QCheckBox" name="showDeleteAction">
-           <property name="text">
-            <string>Show delete action in context menus</string>
-           </property>
-          </widget>
-         </item>
-         <item row="5" column="0" colspan="2">
-          <widget class="QCheckBox" name="forceSingleClick">
-           <property name="text">
-            <string>Enforce single-click activation of items</string>
-           </property>
-          </widget>
-         </item>
          <item row="2" column="0" colspan="2">
           <widget class="QCheckBox" name="groupMultiple">
            <property name="text">
             <string>Group multiple artist albums under 'Various Artists'</string>
            </property>
           </widget>
+         </item>
+         <item row="3" column="0" colspan="2">
+          <widget class="QCheckBox" name="fetchCovers">
+           <property name="text">
+            <string>Fetch missing covers from Last.fm</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0" colspan="2">
+          <widget class="QCheckBox" name="cacheScaledCovers">
+           <property name="text">
+            <string>Cache scaled covers</string>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="0" colspan="2">
+          <widget class="QCheckBox" name="showDeleteAction">
+           <property name="text">
+            <string>Show delete action in context menus</string>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="0" colspan="2">
+          <widget class="QCheckBox" name="forceSingleClick">
+           <property name="text">
+            <string>Enforce single-click activation of items</string>
+           </property>
+          </widget>
+         </item>
+         <item row="7" column="0">
+          <widget class="BuddyLabel" name="langLabel">
+           <property name="text">
+            <string>Language:</string>
+           </property>
+           <property name="buddy">
+            <cstring>lang</cstring>
+           </property>
+          </widget>
+         </item>
+         <item row="7" column="1">
+          <widget class="QComboBox" name="lang"/>
          </item>
         </layout>
        </item>

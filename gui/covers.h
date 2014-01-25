@@ -89,6 +89,7 @@ private Q_SLOTS:
     void jobFinished();
 
 private:
+    void failed(const Job &job);
     QString saveImg(const Job &job, const QImage &img, const QByteArray &raw);
     QHash<NetworkJob *, Job>::Iterator findJob(const Job &job);
 

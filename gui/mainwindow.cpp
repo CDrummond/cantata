@@ -232,6 +232,7 @@ MainWindow::MainWindow(QWidget *parent)
     QToolBar *topToolBar = addToolBar("ToolBar");
     #endif
     toolbar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    topToolBar->setObjectName("MainToolBar");
     topToolBar->addWidget(toolbar);
     topToolBar->setMovable(false);
     topToolBar->setContextMenuPolicy(Qt::PreventContextMenu);

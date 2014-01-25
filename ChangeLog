@@ -74,7 +74,7 @@
 42. Fix some Mopidy 0.18 issues; cover and lyrics retrieval, folders view
     loading.
 43. Mpodiy seems to require integer parameters to be quoted.
-44. Only react to back or home action is listviews if view is visible!
+44. Only react to back or home action in listviews if view is visible!
 45. Dont allow buttons in main widow to recieve focus.
 46. Use Ctrl+G as short-cut to show genre combo popup.
 47. Re-focus view when search closed.
@@ -86,7 +86,7 @@
 50. Remove find buttons in status bar, and use Ctrl-F for both find in views
     and find in playqueue. Action depends upon which view has focus.
 51. Remove refresh buttons in status bar, and place into main menu. Also,
-   prompt for confirmation before perforing refresh.
+    prompt for confirmation before performing refresh.
 52. Combine podcast subscribe and search dialogs.
 53. Add option to NOT download covers from last.fm
 54. Add menu to cover dialog, so that user can control which services are

@@ -872,6 +872,11 @@ bool Settings::cacheScaledCovers()
     return GET_BOOL("cacheScaledCovers", true);
 }
 
+bool Settings::fetchCovers()
+{
+    return GET_BOOL("fetchCovers", true);
+}
+
 int Settings::mpdPoll()
 {
     int v=GET_INT("mpdPoll", 0);
@@ -1373,6 +1378,11 @@ void Settings::saveSearchCategory(const QString &v)
 void Settings::saveCacheScaledCovers(bool v)
 {
     SET_VALUE_MOD(cacheScaledCovers);
+}
+
+void Settings::saveFetchCovers(bool v)
+{
+    SET_VALUE_MOD(fetchCovers);
 }
 
 #ifndef ENABLE_KDE_SUPPORT

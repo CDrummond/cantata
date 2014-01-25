@@ -164,7 +164,11 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     playQueueBackground_cover->setProperty(constValueProperty, PlayQueueView::BI_Cover);
     playQueueBackground_custom->setProperty(constValueProperty, PlayQueueView::BI_Custom);
     playQueueBackgroundFile->setDirMode(false);
+    #ifdef ENABLE_KDE_SUPPORT
+    playQueueBackgroundFile->setFilter("image/jpeg image/png");
+    #else
     playQueueBackgroundFile->setFilter(i18n("Images (*.jpg *.png)"));
+    #endif
     int labelWidth=qMax(fontMetrics().width(QLatin1String("100%")), fontMetrics().width(i18nc("pixels", "10px")));
     playQueueBackgroundOpacityLabel->setFixedWidth(labelWidth);
     playQueueBackgroundBlurLabel->setFixedWidth(labelWidth);

@@ -268,7 +268,7 @@ bool PlayQueueView::readConfig()
         if (BI_None==origType) {
             updatePalette();
         }
-        if (backgroundOpacity!=origOpacity || backgroundBlur!=origBlur || origCustomBackgroundFile!=customBackgroundFile) {
+        if (origType!=backgroundImageType || backgroundOpacity!=origOpacity || backgroundBlur!=origBlur || origCustomBackgroundFile!=customBackgroundFile) {
             setImage(QImage(customBackgroundFile));
         }
         break;

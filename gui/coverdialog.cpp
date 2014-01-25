@@ -32,6 +32,7 @@
 #include "spinner.h"
 #include "messageoverlay.h"
 #include "icon.h"
+#include "icons.h"
 #include "qjson/parser.h"
 #include "config.h"
 #include <QVBoxLayout>
@@ -66,6 +67,9 @@
 #include <QXmlStreamReader>
 #include <QDomDocument>
 #include <QDomElement>
+#include <QDebug>
+
+#define DBUG if (Covers::debugEnabled()) qWarning() << "CoverDialog" << __FUNCTION__
 
 static int iCount=0;
 static const int constMaxTempFiles=20;
@@ -89,6 +93,18 @@ bool canUse(int w, int h)
 {
     return w>90 && h>90 && (w==h || (h<=(w*1.1) && w<=(h*1.1)));
 }
+
+enum Providers {
+    Prov_LastFm   = 0x0001,
+    Prov_Google   = 0x0002,
+    Prov_DiscoGs  = 0x0004,
+    Prov_CoverArt = 0x0008,
+    Prov_Deezer   = 0x0010,
+    Prov_Spotify  = 0x0020,
+    Prov_ITunes   = 0x0040,
+
+    Prov_All      = 0x007F
+};
 
 class CoverItem : public QListWidgetItem
 {
@@ -326,6 +342,7 @@ void CoverPreview::wheelEvent(QWheelEvent *event)
 CoverDialog::CoverDialog(QWidget *parent)
     : Dialog(parent, "CoverDialog")
     , existing(0)
+    , currentQueryProviders(0)
     , preview(0)
     , saving(false)
     , isArtist(false)
@@ -336,6 +353,14 @@ CoverDialog::CoverDialog(QWidget *parent)
     , showAction(0)
     , removeAction(0)
 {
+    #ifdef ENABLE_KDE_SUPPORT
+    KConfigGroup cfg(KGlobal::config(), !isMpd || group.isEmpty() || KGlobal::config()->hasGroup(group) ? group : constMpdGroup);
+    #else
+    QSettings cfg;
+    cfg.beginGroup("CoverDialog");
+    #endif
+    enabledProviders=GET_INT("enabledProviders", Prov_All);
+
     iCount++;
     QWidget *mainWidet = new QWidget(this);
     setupUi(mainWidet);
@@ -377,11 +402,33 @@ CoverDialog::CoverDialog(QWidget *parent)
 
     addFileButton->setIcon(Icon("document-open"));
     addFileButton->setAutoRaise(true);
+
+    configureButton->setIcon(Icons::self()->configureIcon);
+    configureButton->setAutoRaise(true);
+
+    QMenu *configMenu=new QMenu(configureButton);
+    addProvider(configMenu, QLatin1String("Last.fm"), Prov_LastFm, enabledProviders);
+    addProvider(configMenu, i18n("CoverArt Archive"), Prov_CoverArt, enabledProviders);
+    addProvider(configMenu, QLatin1String("Google"), Prov_Google, enabledProviders);
+    addProvider(configMenu, QLatin1String("Discogs"), Prov_DiscoGs, enabledProviders);
+    addProvider(configMenu, QLatin1String("Deezer"), Prov_Deezer, enabledProviders);
+    addProvider(configMenu, QLatin1String("Spotify"), Prov_Spotify, enabledProviders);
+    addProvider(configMenu, QLatin1String("iTunes"), Prov_ITunes, enabledProviders);
+    configureButton->setMenu(configMenu);
+    configureButton->setPopupMode(QToolButton::InstantPopup);
     setAcceptDrops(true);
 }
 
 CoverDialog::~CoverDialog()
 {
+    #ifdef ENABLE_KDE_SUPPORT
+    KConfigGroup cfg(KGlobal::config(), !isMpd || group.isEmpty() || KGlobal::config()->hasGroup(group) ? group : constMpdGroup);
+    #else
+    QSettings cfg;
+    cfg.beginGroup("CoverDialog");
+    #endif
+    SET_VALUE("enabledProviders", enabledProviders);
+
     iCount--;
     cancelQuery();
     clearTempFiles();
@@ -434,16 +481,21 @@ static const char * constDeezerHost="api.deezer.com";
 void CoverDialog::queryJobFinished()
 {
     NetworkJob *reply=qobject_cast<NetworkJob *>(sender());
-    if (!reply || !currentQuery.contains(reply)) {
+    if (!reply) {
+        return;
+    }
+    reply->deleteLater();
+    if (!currentQuery.contains(reply)) {
         return;
     }
 
+    DBUG << reply->origUrl().toString() << reply->ok();
     currentQuery.remove(reply);
     if (reply->ok()) {
         QString host=reply->property(constHostProperty).toString();
         QByteArray resp=reply->readAll();
         if (constLastFmHost==host) {
-            parseLstFmQueryResponse(resp);
+            parseLastFmQueryResponse(resp);
         } else if (constGoogleHost==host) {
             parseGoogleQueryResponse(resp);
         } else if (constDiscogsHost==host) {
@@ -458,7 +510,6 @@ void CoverDialog::queryJobFinished()
             parseDeezerQueryResponse(resp);
         }
     }
-    reply->deleteLater();
     if (currentQuery.isEmpty()) {
         setSearching(false);
     }
@@ -476,7 +527,11 @@ void CoverDialog::insertItem(CoverItem *item)
 void CoverDialog::downloadJobFinished()
 {
     NetworkJob *reply=qobject_cast<NetworkJob *>(sender());
-    if (!reply || !currentQuery.contains(reply)) {
+    if (!reply) {
+        return;
+    }
+    reply->deleteLater();
+    if (!currentQuery.contains(reply)) {
         return;
     }
 
@@ -486,6 +541,7 @@ void CoverDialog::downloadJobFinished()
         saving=false;
     }
 
+    DBUG << reply->origUrl().toString() << reply->ok();
     currentQuery.remove(reply);
     if (reply->ok()) {
         QString host=reply->property(constHostProperty).toString();
@@ -559,7 +615,6 @@ void CoverDialog::downloadJobFinished()
         }
         MessageBox::error(this, i18n("Failed to download image!"));
     }
-    reply->deleteLater();
     if (currentQuery.isEmpty()) {
         setSearching(false);
     }
@@ -609,7 +664,7 @@ void CoverDialog::sendQuery()
         return;
     }
 
-    if (currentQueryString==fixedQuery) {
+    if (currentQueryString==fixedQuery && enabledProviders==currentQueryProviders) {
         page++;
     } else {
         page=0;
@@ -637,15 +692,28 @@ void CoverDialog::sendQuery()
     }
 
     currentQueryString=fixedQuery;
-    sendLastFmQuery(fixedQuery, page);
-    sendGoogleQuery(fixedQuery, page);
-    sendDiscoGsQuery(fixedQuery, page);
-    if (page==0) {
-        sendSpotifyQuery(fixedQuery);
-        sendITunesQuery(fixedQuery);
-        sendDeezerQuery(fixedQuery);
+    if (enabledProviders&Prov_LastFm) {
+        sendLastFmQuery(fixedQuery, page);
     }
-    setSearching(true);
+    if (enabledProviders&Prov_Google) {
+        sendGoogleQuery(fixedQuery, page);
+    }
+    if (enabledProviders&Prov_DiscoGs) {
+        sendDiscoGsQuery(fixedQuery, page);
+    }
+    if (page==0) {
+        if (enabledProviders&Prov_Spotify) {
+            sendSpotifyQuery(fixedQuery);
+        }
+        if (enabledProviders&Prov_ITunes) {
+            sendITunesQuery(fixedQuery);
+        }
+        if (enabledProviders&Prov_Deezer) {
+            sendDeezerQuery(fixedQuery);
+        }
+    }
+    currentQueryProviders=enabledProviders;
+    setSearching(!currentQuery.isEmpty());
 }
 
 void CoverDialog::sendLastFmQuery(const QString &fixedQuery, int page)
@@ -863,6 +931,27 @@ void CoverDialog::removeImages()
     }
 }
 
+void CoverDialog::updateProviders()
+{
+    QAction *s=qobject_cast<QAction *>(sender());
+    enabledProviders=0;
+
+    if (s) {
+        if (Prov_LastFm==s->data().toUInt() && !s->isChecked()) {
+            providers[Prov_CoverArt]->setChecked(false);
+        } else if (Prov_CoverArt==s->data().toUInt() && s->isChecked()) {
+            providers[Prov_LastFm]->setChecked(true);
+        }
+    }
+
+    foreach (const QAction *act, configureButton->menu()->actions()) {
+        if (act->isChecked()) {
+            enabledProviders|=act->data().toUInt();
+        }
+    }
+    DBUG << enabledProviders;
+}
+
 void CoverDialog::clearTempFiles()
 {
     foreach (QTemporaryFile *file, tempFiles) {
@@ -873,6 +962,7 @@ void CoverDialog::clearTempFiles()
 
 void CoverDialog::sendQueryRequest(const QUrl &url, const QString &host)
 {
+    DBUG << url.toString();
     NetworkJob *j=NetworkAccessManager::self()->get(QNetworkRequest(url));
     j->setProperty(constHostProperty, host.isEmpty() ? url.host() : host);
     j->setProperty(constTypeProperty, (int)DL_Query);
@@ -882,6 +972,7 @@ void CoverDialog::sendQueryRequest(const QUrl &url, const QString &host)
 
 NetworkJob * CoverDialog::downloadImage(const QString &url, DownloadType dlType)
 {
+    DBUG << url << dlType;
     if (DL_Thumbnail==dlType) {
         if (currentUrls.contains(url)) {
             return 0;
@@ -949,7 +1040,7 @@ void CoverDialog::downloadThumbnail(const QString &thumbUrl, const QString &larg
 }
 
 typedef QMap<QString, QString> SizeMap;
-void CoverDialog::parseLstFmQueryResponse(const QByteArray &resp)
+void CoverDialog::parseLastFmQueryResponse(const QByteArray &resp)
 {
     bool inSection=false;
     QXmlStreamReader doc(resp);
@@ -1008,12 +1099,14 @@ void CoverDialog::parseLstFmQueryResponse(const QByteArray &resp)
         downloadThumbnail(thumbUrl, largeUrl, constLastFmHost);
     }
 
-    foreach (const QString &id, musibBrainzIds) {
-        QUrl coverartUrl;
-        coverartUrl.setScheme("http");
-        coverartUrl.setHost(constCoverArtArchiveHost);
-        coverartUrl.setPath("/release/"+id);
-        sendQueryRequest(coverartUrl);
+    if (enabledProviders&Prov_CoverArt) {
+        foreach (const QString &id, musibBrainzIds) {
+            QUrl coverartUrl;
+            coverartUrl.setScheme("http");
+            coverartUrl.setHost(constCoverArtArchiveHost);
+            coverartUrl.setPath("/release/"+id);
+            sendQueryRequest(coverartUrl);
+        }
     }
 }
 
@@ -1358,4 +1451,14 @@ void CoverDialog::setSearching(bool s)
         spinner->stop();
         msgOverlay->setText(QString());
     }
+}
+
+void CoverDialog::addProvider(QMenu *mnu, const QString &name, int bit, int value)
+{
+    QAction *act=mnu->addAction(name);
+    act->setData(bit);
+    act->setCheckable(true);
+    act->setChecked(value&bit);
+    connect(act, SIGNAL(toggled(bool)), this, SLOT(updateProviders()));
+    providers.insert(bit, act);
 }

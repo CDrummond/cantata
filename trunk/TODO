@@ -23,8 +23,8 @@
 
 - Online services
   - GPodder support?
-  - DAPP servers?
-  - Subsonic server?
+  - DAAP servers?
+  - Subsonic server? Mopidy can be used to access SubSonic.
 
 - Devices
   - libMTP does not support album artist tag. Cantata contains some

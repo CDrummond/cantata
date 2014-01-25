@@ -86,6 +86,7 @@ const QLatin1String Covers::constArtistImage("artist");
 
 static const char * constExtensions[]={".jpg", ".png", 0};
 static bool saveInMpdDir=true;
+static bool fetchCovers=true;
 static QString constCoverInTagPrefix=QLatin1String("{tag}");
 
 static bool canSaveTo(const QString &dir)
@@ -507,8 +508,10 @@ void CoverDownloader::download(const Song &song)
 
     if (!MPDConnection::self()->getDetails().dir.isEmpty() && MPDConnection::self()->getDetails().dir.startsWith(QLatin1String("http://"))) {
         downloadViaHttp(job, JobHttpJpg);
-    } else {
+    } else if (fetchCovers) {
         downloadViaLastFm(job);
+    } else {
+        failed(job);
     }
 }
 
@@ -635,19 +638,7 @@ void CoverDownloader::lastFmCallFinished()
             DBUG << "download" << u.toString();
             jobs.insert(j, job);
         } else {
-            if (job.isArtist) {
-                DBUG << "Failed to download artist image";
-                emit artistImage(job.song, QImage(), QString());
-            } else {
-                #if defined Q_OS_WIN
-                DBUG << "Failed to download cover image";
-                emit cover(job.song, QImage(), QString());
-                #else
-                DBUG << "Failed to download cover image - try other app";
-                Covers::Image img=otherAppCover(job);
-                emit cover(job.song, img.img, img.fileName);
-                #endif
-            }
+            failed(job);
         }
     }
     reply->deleteLater();
@@ -682,8 +673,10 @@ void CoverDownloader::jobFinished()
                     job.level=0;
                     downloadViaHttp(job, JobHttpPng);
                 }
-            } else if (JobHttpPng==job.type && (!job.level || !downloadViaHttp(job, JobHttpPng))) {
+            } else if (fetchCovers && JobHttpPng==job.type && (!job.level || !downloadViaHttp(job, JobHttpPng))) {
                 downloadViaLastFm(job);
+            } else {
+                failed(job);
             }
         } else {
             if (!img.img.isNull()) {
@@ -712,6 +705,23 @@ void CoverDownloader::jobFinished()
     }
 
     reply->deleteLater();
+}
+
+void CoverDownloader::failed(const Job &job)
+{
+    if (job.isArtist) {
+        DBUG << "failed to download artist image";
+        emit artistImage(job.song, QImage(), QString());
+    } else {
+        #if defined Q_OS_WIN
+        DBUG << "Failed to download cover image";
+        emit cover(job.song, QImage(), QString());
+        #else
+        DBUG << "failed to download cover image - try other app";
+        Covers::Image img=otherAppCover(job);
+        emit cover(job.song, img.img, img.fileName);
+        #endif
+    }
 }
 
 QString CoverDownloader::saveImg(const Job &job, const QImage &img, const QByteArray &raw)
@@ -878,6 +888,7 @@ void Covers::readConfig()
 {
     saveInMpdDir=Settings::self()->storeCoversInMpdDir();
     cacheScaledCovers=Settings::self()->cacheScaledCovers();
+    fetchCovers=Settings::self()->fetchCovers();
 }
 
 void Covers::stop()

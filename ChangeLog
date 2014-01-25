@@ -88,6 +88,7 @@
 51. Remove refresh buttons in status bar, and place into main menu. Also,
    prompt for confirmation before perforing refresh.
 52. Combine podcast subscribe and search dialogs.
+53. Add option to NOT download covers from last.fm
 
 1.2.2
 -----

@@ -689,11 +689,7 @@ MainWindow::MainWindow(QWidget *parent)
     playQueue->addAction(playQueueModel.removeDuplicatesAct());
     playQueue->tree()->installEventFilter(new DeleteKeyEventHandler(playQueue->tree(), removeFromPlayQueueAction));
     playQueue->list()->installEventFilter(new DeleteKeyEventHandler(playQueue->list(), removeFromPlayQueueAction));
-    playQueue->setGrouped(Settings::self()->playQueueGrouped());
-    playQueue->setAutoExpand(Settings::self()->playQueueAutoExpand());
-    playQueue->setStartClosed(Settings::self()->playQueueStartClosed());
-    playQueue->setUseCoverAsBackgrond(Settings::self()->playQueueBackground());
-
+    playQueue->readConfig();
     playlistsPage->setStartClosed(Settings::self()->playListsStartClosed());
 
     connect(StdActions::self()->addPrioHighestAction, SIGNAL(triggered(bool)), this, SLOT(addWithPriority()));
@@ -919,7 +915,7 @@ MainWindow::~MainWindow()
         Settings::self()->saveShowPlaylist(expandInterfaceAction->isChecked());
     }
     Settings::self()->savePage(tabWidget->currentWidget()->metaObject()->className());
-    playQueue->saveHeader();
+    playQueue->saveConfig();
     context->saveConfig();
     #ifdef ENABLE_STREAMS
     streamsPage->save();
@@ -1534,11 +1530,7 @@ void MainWindow::updateSettings()
 
     bool wasAutoExpand=playQueue->isAutoExpand();
     bool wasStartClosed=playQueue->isStartClosed();
-    bool wasShowingCover=playQueue->useCoverAsBackground();
-    playQueue->setAutoExpand(Settings::self()->playQueueAutoExpand());
-    playQueue->setStartClosed(Settings::self()->playQueueStartClosed());
-    playQueue->setUseCoverAsBackgrond(Settings::self()->playQueueBackground());
-    if (!wasShowingCover && playQueue->useCoverAsBackground() && coverWidget->isValid()) {
+    if (playQueue->readConfig() && coverWidget->isValid()) {
         playQueue->setImage(coverWidget->image());
     }
 

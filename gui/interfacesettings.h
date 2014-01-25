@@ -58,6 +58,9 @@ private Q_SLOTS:
     void langChanged();
     void viewItemChanged(QListWidgetItem *changedItem);
     void sbAutoHideChanged();
+    void setPlayQueueBackgroundOpacityLabel();
+    void setPlayQueueBackgroundBlurLabel();
+    void enablePlayQueueBackgroundOptions();
 
 private:
     #ifndef ENABLE_KDE_SUPPORT

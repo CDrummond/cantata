@@ -807,7 +807,7 @@ bool TagEditor::applyUpdates()
         }
 
         if (MPDConnection::self()->isMopdidy()) {
-            MessageBox::information(this, i18n("Cantata has detected that you are connected to a Mopidy Client.\n\n"
+            MessageBox::information(this, i18n("Cantata has detected that you are connected to a Mopidy server.\n\n"
                                                "In order for Mopidy to notice the changes you have made, you will need "
                                                "to manually update its database. After this, restart Cantata."));
             MusicLibraryModel::self()->removeCache();

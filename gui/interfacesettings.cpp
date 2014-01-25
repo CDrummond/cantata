@@ -28,6 +28,8 @@
 #include "musiclibraryitemalbum.h"
 #include "fancytabwidget.h"
 #include "basicitemdelegate.h"
+#include "playqueueview.h"
+#include "pathrequester.h"
 #include <QComboBox>
 #ifndef ENABLE_KDE_SUPPORT
 #include <QDir>
@@ -78,6 +80,8 @@ static inline int getValue(QComboBox *box)
 {
     return box->itemData(box->currentIndex()).toInt();
 }
+
+static const char * constValueProperty="value";
 
 InterfaceSettings::InterfaceSettings(QWidget *p)
     : QWidget(p)
@@ -156,6 +160,19 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     sbPosition->addItem(i18n("Bottom"), FancyTabWidget::Bot);
     connect(sbAutoHide, SIGNAL(toggled(bool)), SLOT(sbAutoHideChanged()));
     views->setItemDelegate(new BasicItemDelegate(views));
+    playQueueBackground_none->setProperty(constValueProperty, PlayQueueView::BI_None);
+    playQueueBackground_cover->setProperty(constValueProperty, PlayQueueView::BI_Cover);
+    playQueueBackground_custom->setProperty(constValueProperty, PlayQueueView::BI_Custom);
+    playQueueBackgroundFile->setDirMode(false);
+    playQueueBackgroundFile->setFilter(i18n("Images (*.jpg *.png)"));
+    int labelWidth=qMax(fontMetrics().width(QLatin1String("100%")), fontMetrics().width(i18nc("pixels", "10px")));
+    playQueueBackgroundOpacityLabel->setFixedWidth(labelWidth);
+    playQueueBackgroundBlurLabel->setFixedWidth(labelWidth);
+    connect(playQueueBackgroundOpacity, SIGNAL(valueChanged(int)), SLOT(setPlayQueueBackgroundOpacityLabel()));
+    connect(playQueueBackgroundBlur, SIGNAL(valueChanged(int)), SLOT(setPlayQueueBackgroundBlurLabel()));
+    connect(playQueueBackground_none, SIGNAL(toggled(bool)), SLOT(enablePlayQueueBackgroundOptions()));
+    connect(playQueueBackground_cover, SIGNAL(toggled(bool)), SLOT(enablePlayQueueBackgroundOptions()));
+    connect(playQueueBackground_custom, SIGNAL(toggled(bool)), SLOT(enablePlayQueueBackgroundOptions()));
 }
 
 void InterfaceSettings::load()
@@ -187,7 +204,15 @@ void InterfaceSettings::load()
     playQueueAutoExpand->setChecked(Settings::self()->playQueueAutoExpand());
     playQueueStartClosed->setChecked(Settings::self()->playQueueStartClosed());
     playQueueScroll->setChecked(Settings::self()->playQueueScroll());
-    playQueueBackground->setChecked(Settings::self()->playQueueBackground());
+
+    int pqBgnd=Settings::self()->playQueueBackground();
+    playQueueBackground_none->setChecked(pqBgnd==playQueueBackground_none->property(constValueProperty).toInt());
+    playQueueBackground_cover->setChecked(pqBgnd==playQueueBackground_cover->property(constValueProperty).toInt());
+    playQueueBackground_custom->setChecked(pqBgnd==playQueueBackground_custom->property(constValueProperty).toInt());
+    playQueueBackgroundOpacity->setValue(Settings::self()->playQueueBackgroundOpacity());
+    playQueueBackgroundBlur->setValue(Settings::self()->playQueueBackgroundBlur());
+    playQueueBackgroundFile->setText(Settings::self()->playQueueBackgroundFile());
+
     playQueueConfirmClear->setChecked(Settings::self()->playQueueConfirmClear());
     albumsViewChanged();
     albumsCoverSizeChanged();
@@ -221,6 +246,9 @@ void InterfaceSettings::load()
     sbAutoHide->setChecked(Settings::self()->splitterAutoHide());
     sbAutoHideChanged();
     viewItemChanged(views->item(0));
+    setPlayQueueBackgroundOpacityLabel();
+    setPlayQueueBackgroundBlurLabel();
+    enablePlayQueueBackgroundOptions();
 }
 
 void InterfaceSettings::save()
@@ -252,7 +280,18 @@ void InterfaceSettings::save()
     Settings::self()->savePlayQueueAutoExpand(playQueueAutoExpand->isChecked());
     Settings::self()->savePlayQueueStartClosed(playQueueStartClosed->isChecked());
     Settings::self()->savePlayQueueScroll(playQueueScroll->isChecked());
-    Settings::self()->savePlayQueueBackground(playQueueBackground->isChecked());
+
+    if (playQueueBackground_none->isChecked()) {
+        Settings::self()->savePlayQueueBackground(playQueueBackground_none->property(constValueProperty).toInt());
+    } else if (playQueueBackground_cover->isChecked()) {
+        Settings::self()->savePlayQueueBackground(playQueueBackground_cover->property(constValueProperty).toInt());
+    } else if (playQueueBackground_custom->isChecked()) {
+        Settings::self()->savePlayQueueBackground(playQueueBackground_custom->property(constValueProperty).toInt());
+    }
+    Settings::self()->savePlayQueueBackgroundOpacity(playQueueBackgroundOpacity->value());
+    Settings::self()->savePlayQueueBackgroundBlur(playQueueBackgroundBlur->value());
+    Settings::self()->savePlayQueueBackgroundFile(playQueueBackgroundFile->text().trimmed());
+
     Settings::self()->savePlayQueueConfirmClear(playQueueConfirmClear->isChecked());
     Settings::self()->saveForceSingleClick(forceSingleClick->isChecked());
     Settings::self()->saveUseSystemTray(systemTrayCheckBox->isChecked());
@@ -464,3 +503,20 @@ void InterfaceSettings::sbAutoHideChanged()
     }
 }
 
+void InterfaceSettings::setPlayQueueBackgroundOpacityLabel()
+{
+    playQueueBackgroundOpacityLabel->setText(i18nc("value%", "%1%", playQueueBackgroundOpacity->value()));
+}
+
+void InterfaceSettings::setPlayQueueBackgroundBlurLabel()
+{
+    playQueueBackgroundBlurLabel->setText(i18nc("pixels", "%1px", playQueueBackgroundBlur->value()));
+}
+
+void InterfaceSettings::enablePlayQueueBackgroundOptions()
+{
+    playQueueBackgroundOpacity->setEnabled(!playQueueBackground_none->isChecked());
+    playQueueBackgroundOpacityLabel->setEnabled(playQueueBackgroundOpacity->isEnabled());
+    playQueueBackgroundBlur->setEnabled(playQueueBackgroundOpacity->isEnabled());
+    playQueueBackgroundBlurLabel->setEnabled(playQueueBackgroundOpacity->isEnabled());
+}

@@ -39,6 +39,9 @@
 #include <QApplication>
 #include <qglobal.h>
 
+// Exported by QtGui
+void qt_blurImage(QPainter *p, QImage &blurImage, qreal radius, bool quality, bool alphaOnly, int transposed = 0);
+
 PlayQueueTreeView::PlayQueueTreeView(PlayQueueView *parent)
     : TreeView(parent, true)
     , view(parent)
@@ -207,7 +210,9 @@ PlayQueueView::PlayQueueView(QWidget *parent)
     : QStackedWidget(parent)
     , spinner(0)
     , msgOverlay(0)
-    , useCoverAsBgnd(false)
+    , backgroundImageType(BI_None)
+    , backgroundOpacity(15)
+    , backgroundBlur(0)
 {
     groupedView=new PlayQueueGroupedView(this);
     groupedView->setIndentation(0);
@@ -231,7 +236,47 @@ PlayQueueView::~PlayQueueView()
 {
 }
 
-void PlayQueueView::saveHeader()
+bool PlayQueueView::readConfig()
+{
+    int origOpacity=backgroundOpacity;
+    int origBlur=backgroundBlur;
+    QString origCustomBackgroundFile=customBackgroundFile;
+    BackgroundImage origType=backgroundImageType;
+    setAutoExpand(Settings::self()->playQueueAutoExpand());
+    setStartClosed(Settings::self()->playQueueStartClosed());
+    backgroundImageType=(BackgroundImage)Settings::self()->playQueueBackground();
+    backgroundOpacity=Settings::self()->playQueueBackgroundOpacity();
+    backgroundBlur=Settings::self()->playQueueBackgroundBlur();
+    customBackgroundFile=Settings::self()->playQueueBackgroundFile();
+    setGrouped(Settings::self()->playQueueGrouped());
+    switch (backgroundImageType) {
+    case BI_None:
+        if (origType!=backgroundImageType) {
+            updatePalette();
+            previousBackground=QPixmap();
+            curentCover=QImage();
+            curentBackground=QPixmap();
+            view()->viewport()->update();
+        }
+        break;
+    case BI_Cover:
+        if (BI_None==origType) {
+            updatePalette();
+        }
+        return origType!=backgroundImageType || backgroundOpacity!=origOpacity || backgroundBlur!=origBlur;
+   case BI_Custom:
+        if (BI_None==origType) {
+            updatePalette();
+        }
+        if (backgroundOpacity!=origOpacity || backgroundBlur!=origBlur || origCustomBackgroundFile!=customBackgroundFile) {
+            setImage(QImage(customBackgroundFile));
+        }
+        break;
+    }
+    return false;
+}
+
+void PlayQueueView::saveConfig()
 {
     if (treeView==currentWidget()) {
         treeView->saveHeader();
@@ -424,27 +469,11 @@ void PlayQueueView::setFade(float value)
     }
 }
 
-void PlayQueueView::setUseCoverAsBackgrond(bool u)
-{
-    if (u==useCoverAsBgnd) {
-        return;
-    }
-    useCoverAsBgnd=u;
-    updatePalette();
-
-    if (!u) {
-        previousBackground=QPixmap();
-        curentCover=QImage();
-        curentBackground=QPixmap();
-        view()->viewport()->update();
-    }
-}
-
 void PlayQueueView::updatePalette()
 {
     QPalette pal=palette();
 
-    if (useCoverAsBgnd) {
+    if (BI_None!=backgroundImageType) {
         pal.setColor(QPalette::Base, Qt::transparent);
     }
 
@@ -456,11 +485,29 @@ void PlayQueueView::updatePalette()
 
 void PlayQueueView::setImage(const QImage &img)
 {
-    if (!useCoverAsBgnd) {
+    if (BI_None==backgroundImageType || (sender() && BI_Custom==backgroundImageType)) {
         return;
     }
     previousBackground=curentBackground;
-    curentCover=img.isNull() ? QImage() : TreeView::setOpacity(img);
+    if (img.isNull() || QImage::Format_ARGB32==img.format()) {
+        curentCover = img;
+    } else {
+        curentCover = img.convertToFormat(QImage::Format_ARGB32);
+    }
+    if (!curentCover.isNull()) {
+        if (backgroundOpacity<100) {
+            curentCover=TreeView::setOpacity(curentCover, (backgroundOpacity*1.0)/100.0);
+        }
+        if (backgroundBlur>0) {
+            QImage blurred(curentCover.size(), QImage::Format_ARGB32_Premultiplied);
+            blurred.fill(Qt::transparent);
+            QPainter painter(&blurred);
+            qt_blurImage(&painter, curentCover, backgroundBlur, true, false);
+            painter.end();
+            curentCover = blurred;
+        }
+    }
+
     curentBackground=QPixmap();
     animator.stop();
     if (isVisible()) {
@@ -484,7 +531,7 @@ void PlayQueueView::streamFetchStatus(const QString &msg)
 
 void PlayQueueView::drawBackdrop(QWidget *widget, const QSize &size)
 {
-    if (!useCoverAsBgnd) {
+    if (BI_None==backgroundImageType) {
         return;
     }
 

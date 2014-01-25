@@ -164,7 +164,10 @@ public:
     bool playQueueAutoExpand();
     bool playQueueStartClosed();
     bool playQueueScroll();
-    bool playQueueBackground();
+    int playQueueBackground();
+    int playQueueBackgroundOpacity();
+    int playQueueBackgroundBlur();
+    QString playQueueBackgroundFile();
     bool playQueueConfirmClear();
     bool playListsStartClosed();
     #ifdef ENABLE_HTTP_STREAM_PLAYBACK
@@ -272,7 +275,10 @@ public:
     void savePlayQueueAutoExpand(bool v);
     void savePlayQueueStartClosed(bool v);
     void savePlayQueueScroll(bool v);
-    void savePlayQueueBackground(bool v);
+    void savePlayQueueBackground(int v);
+    void savePlayQueueBackgroundOpacity(int v);
+    void savePlayQueueBackgroundBlur(int v);
+    void savePlayQueueBackgroundFile(const QString &v);
     void savePlayQueueConfirmClear(bool v);
     void savePlayListsStartClosed(bool v);
     #ifdef ENABLE_HTTP_STREAM_PLAYBACK

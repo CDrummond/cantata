@@ -11,7 +11,16 @@
    </rect>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
-   <property name="margin">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
     <number>0</number>
    </property>
    <item>
@@ -469,17 +478,157 @@ within the folder of the current track, or within its parent folder. If no image
         </widget>
        </item>
        <item row="4" column="0" colspan="2">
-        <widget class="QCheckBox" name="playQueueBackground">
-         <property name="text">
-          <string>Use current album cover as background</string>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="0" colspan="2">
         <widget class="QCheckBox" name="playQueueConfirmClear">
          <property name="text">
           <string>Prompt before clearing</string>
          </property>
+        </widget>
+       </item>
+       <item row="5" column="0" colspan="2">
+        <widget class="QGroupBox" name="groupBox">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="title">
+          <string>Background Image</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout">
+          <item row="0" column="0" colspan="3">
+           <widget class="QRadioButton" name="playQueueBackground_none">
+            <property name="text">
+             <string>None</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0" colspan="3">
+           <widget class="QRadioButton" name="playQueueBackground_cover">
+            <property name="text">
+             <string>Current album cover</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0" colspan="2">
+           <widget class="QRadioButton" name="playQueueBackground_custom">
+            <property name="text">
+             <string>Custom image:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="2">
+           <widget class="PathRequester" name="playQueueBackgroundFile">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="label_4b">
+            <property name="text">
+             <string>Blur:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1" colspan="2">
+           <layout class="QHBoxLayout" name="playQueueBackgroundBlurLayout">
+            <property name="margin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QSlider" name="playQueueBackgroundBlur">
+              <property name="maximum">
+               <number>10</number>
+              </property>
+              <property name="pageStep">
+               <number>1</number>
+              </property>
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="tickPosition">
+               <enum>QSlider::TicksBelow</enum>
+              </property>
+              <property name="tickInterval">
+               <number>1</number>
+              </property>
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="playQueueBackgroundBlurLabel">
+              <property name="text">
+               <string>10px</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item row="4" column="0">
+           <widget class="QLabel" name="label_4">
+            <property name="text">
+             <string>Opacity:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1" colspan="2">
+           <layout class="QHBoxLayout" name="playQueueBackgroundOpacityLayout">
+            <property name="margin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QSlider" name="playQueueBackgroundOpacity">
+              <property name="maximum">
+               <number>100</number>
+              </property>
+              <property name="pageStep">
+               <number>10</number>
+              </property>
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="tickPosition">
+               <enum>QSlider::TicksBelow</enum>
+              </property>
+              <property name="tickInterval">
+               <number>10</number>
+              </property>
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="playQueueBackgroundOpacityLabel">
+              <property name="text">
+               <string>40%</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
         </widget>
        </item>
       </layout>
@@ -723,42 +872,30 @@ within the folder of the current track, or within its parent folder. If no image
    <extends>QLabel</extends>
    <header>statelabel.h</header>
   </customwidget>
+  <customwidget>
+   <class>PathRequester</class>
+   <extends>QLineEdit</extends>
+   <header>pathrequester.h</header>
+   <container>1</container>
+  </customwidget>
  </customwidgets>
- <tabstops>
-  <tabstop>tabWidget</tabstop>
-  <tabstop>libraryView</tabstop>
-  <tabstop>libraryCoverSize</tabstop>
-  <tabstop>libraryArtistImage</tabstop>
-  <tabstop>libraryYear</tabstop>
-  <tabstop>albumsView</tabstop>
-  <tabstop>albumsCoverSize</tabstop>
-  <tabstop>albumSort</tabstop>
-  <tabstop>playlistsView</tabstop>
-  <tabstop>playListsStartClosed</tabstop>
-  <tabstop>folderView</tabstop>
-  <tabstop>streamsView</tabstop>
-  <tabstop>onlineView</tabstop>
-  <tabstop>devicesView</tabstop>
-  <tabstop>playQueueGrouped</tabstop>
-  <tabstop>playQueueStartClosed</tabstop>
-  <tabstop>playQueueAutoExpand</tabstop>
-  <tabstop>playQueueScroll</tabstop>
-  <tabstop>playQueueBackground</tabstop>
-  <tabstop>playQueueConfirmClear</tabstop>
-  <tabstop>systemTrayPopup</tabstop>
-  <tabstop>systemTrayCheckBox</tabstop>
-  <tabstop>minimiseOnClose</tabstop>
-  <tabstop>startupStateShow</tabstop>
-  <tabstop>startupStateHide</tabstop>
-  <tabstop>startupStateRestore</tabstop>
-  <tabstop>groupSingle</tabstop>
-  <tabstop>useComposer</tabstop>
-  <tabstop>groupMultiple</tabstop>
-  <tabstop>cacheScaledCovers</tabstop>
-  <tabstop>showDeleteAction</tabstop>
-  <tabstop>forceSingleClick</tabstop>
-  <tabstop>lang</tabstop>
- </tabstops>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>playQueueBackground_custom</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>playQueueBackgroundFile</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>89</x>
+     <y>262</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>271</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

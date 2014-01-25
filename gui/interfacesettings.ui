@@ -545,7 +545,7 @@ within the folder of the current track, or within its parent folder. If no image
             <item>
              <widget class="QSlider" name="playQueueBackgroundBlur">
               <property name="maximum">
-               <number>10</number>
+               <number>20</number>
               </property>
               <property name="pageStep">
                <number>1</number>

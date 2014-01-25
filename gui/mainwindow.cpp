@@ -583,6 +583,7 @@ MainWindow::MainWindow(QWidget *parent)
     serverInfoAction->setEnabled(Settings::self()->firstRun());
     refreshDbAction = ActionCollection::get()->createAction("refresh", i18n("Refresh Database"), "view-refresh");
     doDbRefreshAction = new Action(refreshDbAction->icon(), i18n("Refresh"), this);
+    refreshDbAction->setEnabled(false);
     #ifdef ENABLE_KDE_SUPPORT
     mainMenu->addAction(prefAction);
     shortcutsAction=static_cast<Action *>(KStandardAction::keyBindings(this, SLOT(configureShortcuts()), ActionCollection::get()));
@@ -1057,8 +1058,8 @@ void MainWindow::messageWidgetVisibility(bool v)
 
 void MainWindow::mpdConnectionStateChanged(bool connected)
 {
-    serverInfoAction->setEnabled(connected);
-    serverInfoAction->setVisible(!MPDConnection::self()->isMopdidy());
+    serverInfoAction->setEnabled(connected && !MPDConnection::self()->isMopdidy());
+    refreshDbAction->setEnabled(connected && !MPDConnection::self()->isMopdidy());
     addStreamToPlayQueueAction->setEnabled(connected);
     if (connected) {
         messageWidget->hide();

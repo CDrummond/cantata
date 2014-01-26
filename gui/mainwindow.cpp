@@ -2183,7 +2183,7 @@ void MainWindow::addToPlayQueue(bool replace, quint8 priority, bool randomAlbums
     } else if (folderPage->isVisible()) {
         folderPage->addSelectionToPlaylist(QString(), replace, priority);
     } else if (playlistsPage->isVisible()) {
-        playlistsPage->addSelectionToPlaylist(replace, priority);
+        playlistsPage->addSelectionToPlaylist(QString(), replace, priority);
     }
     #ifdef ENABLE_STREAMS
     else if (streamsPage->isVisible()) {
@@ -2300,6 +2300,8 @@ void MainWindow::addToExistingStoredPlaylist(const QString &name, bool pq)
         albumsPage->addSelectionToPlaylist(name);
     } else if (folderPage->isVisible()) {
         folderPage->addSelectionToPlaylist(name);
+    } else if (playlistsPage->isVisible()) {
+        playlistsPage->addSelectionToPlaylist(name);
     }
 }
 

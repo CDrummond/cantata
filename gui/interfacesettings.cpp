@@ -253,6 +253,7 @@ void InterfaceSettings::load()
     setPlayQueueBackgroundOpacityLabel();
     setPlayQueueBackgroundBlurLabel();
     enablePlayQueueBackgroundOptions();
+    libraryViewChanged();
 }
 
 void InterfaceSettings::save()
@@ -419,7 +420,7 @@ void InterfaceSettings::libraryViewChanged()
     }
 
     bool isIcon=ItemView::Mode_IconTop==vt;
-    bool isSimpleTree=ItemView::Mode_SimpleTree==vt;
+    bool isSimpleTree=ItemView::Mode_SimpleTree==vt || ItemView::Mode_BasicTree==vt;
     libraryArtistImage->setEnabled(!isIcon && !isSimpleTree);
     if (isIcon) {
         libraryArtistImage->setChecked(true);

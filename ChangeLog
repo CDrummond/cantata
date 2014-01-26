@@ -96,6 +96,7 @@
 57. If list view has focus, pressing Backspace will navigate back.
 58. Fix albumsview cover size when set to a tree style and Cantata is
     restarted.
+59. Add 'Add To Playlist' menu item to playlists page.
 
 1.2.2
 -----

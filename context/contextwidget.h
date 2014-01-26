@@ -100,14 +100,13 @@ public:
 
     void readConfig();
     void saveConfig();
-    void useBackdrop(bool u);
     void useDarkBackground(bool u);
     void update(const Song &s);
     void showEvent(QShowEvent *e);
     void paintEvent(QPaintEvent *e);
     float fade() { return fadeValue; }
     void setFade(float value);
-    void updateImage(const QImage &img, bool created=false);
+    void updateImage(QImage img, bool created=false);
     void search();
 
 Q_SIGNALS:
@@ -141,7 +140,10 @@ private:
 private:
     NetworkJob *job;
     bool alwaysCollapsed;
-    bool drawBackdrop;
+    int backdropType;
+    int backdropOpacity;
+    int backdropBlur;
+    QString customBackdropFile;
     bool darkBackground;
     bool useFanArt;
     bool albumCoverBackdrop;

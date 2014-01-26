@@ -139,7 +139,10 @@ public:
     QStringList lyricProviders();
     QStringList wikipediaLangs();
     bool wikipediaIntroOnly();
-    bool contextBackdrop();
+    int contextBackdrop();
+    int contextBackdropOpacity();
+    int contextBackdropBlur();
+    QString contextBackdropFile();
     bool contextDarkBackground();
     int contextZoom();
     QString contextSlimPage();
@@ -252,7 +255,10 @@ public:
     void saveLyricProviders(const QStringList &v);
     void saveWikipediaLangs(const QStringList &v);
     void saveWikipediaIntroOnly(bool v);
-    void saveContextBackdrop(bool v);
+    void saveContextBackdrop(int v);
+    void saveContextBackdropOpacity(int v);
+    void saveContextBackdropBlur(int v);
+    void saveContextBackdropFile(const QString &v);
     void saveContextDarkBackground(bool v);
     void saveContextZoom(int v);
     void saveContextSlimPage(const QString &v);

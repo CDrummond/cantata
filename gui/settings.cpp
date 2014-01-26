@@ -563,9 +563,29 @@ bool Settings::wikipediaIntroOnly()
     return GET_BOOL("wikipediaIntroOnly", true);
 }
 
-bool Settings::contextBackdrop()
+int Settings::contextBackdrop()
 {
-    return GET_BOOL("contextBackdrop", true);
+    if (version()<CANTATA_MAKE_VERSION(1, 0, 53)) {
+        return GET_BOOL("contextBackdrop", true) ? 1 : 1;
+    }
+    return  GET_INT("contextBackdrop", 1);
+}
+
+int Settings::contextBackdropOpacity()
+{
+    int v=GET_INT("contextBackdropOpacity", 15);
+    return RESTRICT(v, 0, 100);
+}
+
+int Settings::contextBackdropBlur()
+{
+    int v=GET_INT("contextBackdropBlur", 0);
+    return RESTRICT(v, 0, 20);
+}
+
+QString Settings::contextBackdropFile()
+{
+    return GET_STRING("contextBackdropFile", QString());
 }
 
 bool Settings::contextDarkBackground()
@@ -1170,9 +1190,24 @@ void Settings::saveWikipediaIntroOnly(bool v)
     SET_VALUE_MOD(wikipediaIntroOnly)
 }
 
-void Settings::saveContextBackdrop(bool v)
+void Settings::saveContextBackdrop(int v)
 {
     SET_VALUE_MOD(contextBackdrop)
+}
+
+void Settings::saveContextBackdropOpacity(int v)
+{
+    SET_VALUE_MOD(contextBackdropOpacity)
+}
+
+void Settings::saveContextBackdropBlur(int v)
+{
+    SET_VALUE_MOD(contextBackdropBlur)
+}
+
+void Settings::saveContextBackdropFile(const QString &v)
+{
+    SET_VALUE_MOD(contextBackdropFile)
 }
 
 void Settings::saveContextDarkBackground(bool v)

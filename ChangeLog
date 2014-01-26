@@ -91,12 +91,14 @@
 53. Add option to NOT download covers from last.fm
 54. Add menu to cover dialog, so that user can control which services are
     queried.
-55. Add option to use a custom image as playqueue background.
-56. Add option to specify blur and opacity of playqueue background image.
-57. If list view has focus, pressing Backspace will navigate back.
-58. Fix albumsview cover size when set to a tree style and Cantata is
+55. Add option to use a custom image as context view backdrop.
+56. Add option to specify blur and opacity of context view backdrop image.
+57. Add option to use a custom image as playqueue background.
+58. Add option to specify blur and opacity of playqueue background image.
+59. If list view has focus, pressing Backspace will navigate back.
+60. Fix albumsview cover size when set to a tree style and Cantata is
     restarted.
-59. Add 'Add To Playlist' menu item to playlists page.
+61. Add 'Add To Playlist' menu item to playlists page.
 
 1.2.2
 -----

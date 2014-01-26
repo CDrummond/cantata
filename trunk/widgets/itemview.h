@@ -40,8 +40,12 @@ class Icon;
 
 class ViewEventHandler : public QObject
 {
+    Q_OBJECT
 public:
     ViewEventHandler(ActionItemDelegate *d, QAbstractItemView *v);
+
+Q_SIGNALS:
+    void escPressed();
 
 protected:
     bool eventFilter(QObject *obj, QEvent *event);

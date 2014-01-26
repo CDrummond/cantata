@@ -85,6 +85,7 @@ void AlbumsPage::setView(int v)
 {
     setItemSize(v);
     view->setMode((ItemView::Mode)v);
+    AlbumsModel::self()->setIconMode(ItemView::Mode_IconTop==v);
 }
 
 void AlbumsPage::showEvent(QShowEvent *e)

@@ -456,7 +456,11 @@ int Settings::onlineView()
 
 bool Settings::libraryArtistImage()
 {
-    return GET_BOOL("libraryArtistImage", false);
+    if (GET_BOOL("libraryArtistImage", false)) {
+        int view=libraryView();
+        return ItemView::Mode_SimpleTree!=view && ItemView::Mode_BasicTree!=view;
+    }
+    return false;
 }
 
 int Settings::libraryCoverSize()

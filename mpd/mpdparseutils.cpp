@@ -44,7 +44,7 @@
 #include "song.h"
 #include "output.h"
 #include "covers.h"
-#ifdef TAGLIB_FOUND
+#ifdef ENABLE_HTTP_SERVER
 #include "httpserver.h"
 #endif
 #include "utils.h"

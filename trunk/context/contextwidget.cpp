@@ -36,6 +36,8 @@
 #include "sizewidget.h"
 #include "gtkstyle.h"
 #include "qjson/parser.h"
+#include "playqueueview.h"
+#include "treeview.h"
 #include <QHBoxLayout>
 #include <QGridLayout>
 #include <QSpacerItem>
@@ -60,6 +62,9 @@
 #include <QWheelEvent>
 #include <qglobal.h>
 
+// Exported by QtGui
+void qt_blurImage(QPainter *p, QImage &blurImage, qreal radius, bool quality, bool alphaOnly, int transposed = 0);
+
 #include <QDebug>
 static bool debugEnabled=false;
 #define DBUG if (debugEnabled) qWarning() << metaObject()->className() << __FUNCTION__
@@ -77,16 +82,6 @@ static const double constBgndOpacity=0.15;
 static QString cacheFileName(const QString &artist, bool createDir)
 {
     return Utils::cacheDir(ContextWidget::constCacheDir, createDir)+Covers::encodeName(artist)+".jpg";
-}
-
-static QImage setOpacity(const QImage &orig)
-{
-    QImage img=QImage::Format_ARGB32==orig.format() ? orig : orig.convertToFormat(QImage::Format_ARGB32);
-    uchar *bits = img.bits();
-    for (int i = 0; i < img.height()*img.bytesPerLine(); i+=4) {
-        bits[i+3] = constBgndOpacity*255;
-    }
-    return img;
 }
 
 #define SIMPLE_VSB
@@ -382,7 +377,7 @@ ContextWidget::ContextWidget(QWidget *parent)
     : QWidget(parent)
     , job(0)
     , alwaysCollapsed(false)
-    , drawBackdrop(true)
+    , backdropType(true)
     , darkBackground(false)
 //    , useHtBackdrops(0!=constHtbApiKey.latin1())
     , useFanArt(0!=constFanArtApiKey.latin1())
@@ -553,7 +548,41 @@ void ContextWidget::resizeEvent(QResizeEvent *e)
 
 void ContextWidget::readConfig()
 {
-    useBackdrop(Settings::self()->contextBackdrop());
+    int origOpacity=backdropOpacity;
+    int origBlur=backdropBlur;
+    QString origCustomBackdropFile=customBackdropFile;
+    int origType=backdropType;
+    backdropType=Settings::self()->contextBackdrop();
+    backdropOpacity=Settings::self()->contextBackdropOpacity();
+    backdropBlur=Settings::self()->contextBackdropBlur();
+    customBackdropFile=Settings::self()->contextBackdropFile();
+    switch (backdropType) {
+    case PlayQueueView::BI_None:
+        if (origType!=backdropType && isVisible() && !currentArtist.isEmpty()) {
+            updateArtist=currentArtist;
+            currentArtist.clear();
+            updateBackdrop();
+            QWidget::update();
+        }
+        break;
+    case PlayQueueView::BI_Cover:
+        if (origType!=backdropType || backdropOpacity!=origOpacity || backdropBlur!=origBlur) {
+            if (isVisible() && !currentArtist.isEmpty()) {
+                updateArtist=currentArtist;
+                currentArtist.clear();
+                updateBackdrop();
+                QWidget::update();
+            }
+        }
+        break;
+   case PlayQueueView::BI_Custom:
+        if (origType!=backdropType || backdropOpacity!=origOpacity || backdropBlur!=origBlur || origCustomBackdropFile!=customBackdropFile) {            
+            updateImage(QImage(customBackdropFile), true);
+            artistsCreatedBackdropsFor.clear();
+        }
+        break;
+    }
+
     useDarkBackground(Settings::self()->contextDarkBackground());
     WikipediaEngine::setIntroOnly(Settings::self()->wikipediaIntroOnly());
     bool wasCollpased=stack && stack->isVisible();
@@ -571,19 +600,6 @@ void ContextWidget::saveConfig()
     }
     if (splitter) {
         Settings::self()->saveContextSplitterState(splitter->saveState());
-    }
-}
-
-void ContextWidget::useBackdrop(bool u)
-{
-    if (u!=drawBackdrop) {
-        drawBackdrop=u;
-        if (isVisible() && !currentArtist.isEmpty()) {
-            updateArtist=currentArtist;
-            currentArtist.clear();
-            updateBackdrop();
-            QWidget::update();
-        }
     }
 }
 
@@ -627,7 +643,7 @@ void ContextWidget::useDarkBackground(bool u)
 void ContextWidget::showEvent(QShowEvent *e)
 {
     setWide(width()>minWidth && !alwaysCollapsed);
-    if (drawBackdrop) {
+    if (backdropType) {
         updateBackdrop();
     }
     QWidget::showEvent(e);
@@ -645,7 +661,7 @@ void ContextWidget::paintEvent(QPaintEvent *e)
     if (darkBackground) {
         p.fillRect(r, palette().background().color());
     }
-    if (drawBackdrop) {
+    if (backdropType) {
         if (!oldBackdrop.isNull()) {
             if (!qFuzzyCompare(fadeValue, qreal(0.0))) {
                 p.setOpacity(1.0-fadeValue);
@@ -688,7 +704,7 @@ void ContextWidget::setFade(float value)
     }
 }
 
-void ContextWidget::updateImage(const QImage &img, bool created)
+void ContextWidget::updateImage(QImage img, bool created)
 {
     DBUG << img.isNull() << currentBackdrop.isNull();
 //    backdropText=currentArtist;
@@ -702,7 +718,18 @@ void ContextWidget::updateImage(const QImage &img, bool created)
         return;
     }
     if (!img.isNull()) {
-        currentBackdrop=QPixmap::fromImage(setOpacity(img));
+        if (backdropOpacity<100) {
+            img=TreeView::setOpacity(img, (backdropOpacity*1.0)/100.0);
+        }
+        if (backdropBlur>0) {
+            QImage blurred(img.size(), QImage::Format_ARGB32_Premultiplied);
+            blurred.fill(Qt::transparent);
+            QPainter painter(&blurred);
+            qt_blurImage(&painter, img, backdropBlur, true, false);
+            painter.end();
+            img = blurred;
+        }
+        currentBackdrop=QPixmap::fromImage(img);
     }
     albumCoverBackdrop=created;
     resizeBackdrop();
@@ -741,7 +768,7 @@ void ContextWidget::update(const Song &s)
     currentSong=s;
 
     updateArtist=Covers::fixArtist(sng.basicArtist());
-    if (isVisible() && drawBackdrop) {
+    if (isVisible() && PlayQueueView::BI_Cover==backdropType) {
         updateBackdrop();
     }
 }

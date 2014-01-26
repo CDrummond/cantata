@@ -39,6 +39,9 @@ public:
 
 private Q_SLOTS:
     void toggleWikiNote();
+    void setContextBackdropOpacityLabel();
+    void setContextBackdropBlurLabel();
+    void enableContextBackdropOptions();
 };
 
 #endif

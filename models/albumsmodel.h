@@ -43,8 +43,7 @@ public:
     static void setCoverSize(MusicLibraryItemAlbum::CoverSize size);
     static int iconSize();
     static void setItemSize(const QSize &sz);
-    static void setUseLibrarySizes(bool u);
-    static bool useLibrarySizes();
+    static void setIconMode(bool u);
 
     enum Sort
     {

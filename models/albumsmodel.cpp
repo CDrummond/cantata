@@ -77,33 +77,25 @@ AlbumsModel * AlbumsModel::self()
 static MusicLibraryItemAlbum::CoverSize coverSize=MusicLibraryItemAlbum::CoverMedium;
 static QPixmap *theDefaultIcon=0;
 static QSize itemSize;
-static bool useLibraryCoverSizes=false;
+static bool iconMode=true;
 
 int AlbumsModel::iconSize()
 {
-    return MusicLibraryItemAlbum::iconSize(coverSize, !useLibraryCoverSizes);
+    return MusicLibraryItemAlbum::iconSize(coverSize, iconMode);
 }
 
 static int stdIconSize()
 {
-    if (useLibraryCoverSizes) {
-        return MusicLibraryItemAlbum::iconSize(coverSize);
-    }
-    return 128;
+    return iconMode ? 128 : MusicLibraryItemAlbum::iconSize(coverSize);
 }
 
-void AlbumsModel::setUseLibrarySizes(bool u)
+void AlbumsModel::setIconMode(bool u)
 {
-    if (useLibraryCoverSizes!=u && theDefaultIcon) {
+    if (iconMode!=u && theDefaultIcon) {
         delete theDefaultIcon;
         theDefaultIcon=0;
     }
-    useLibraryCoverSizes=u;
-}
-
-bool AlbumsModel::useLibrarySizes()
-{
-    return useLibraryCoverSizes;
+    iconMode=u;
 }
 
 MusicLibraryItemAlbum::CoverSize AlbumsModel::currentCoverSize()

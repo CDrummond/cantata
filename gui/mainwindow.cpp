@@ -1460,6 +1460,12 @@ void MainWindow::readSettings()
     toggleSplitterAutoHide();
 }
 
+bool diffCoverSize(int a, int b)
+{
+    return (a==ItemView::Mode_IconTop && b!=ItemView::Mode_IconTop) ||
+           (a!=ItemView::Mode_IconTop && b==ItemView::Mode_IconTop);
+}
+
 void MainWindow::updateSettings()
 {
     int stopFadeDuration=Settings::self()->stopFadeDuration();
@@ -1470,15 +1476,15 @@ void MainWindow::updateSettings()
 
     connectToMpd();
     Settings::self()->save();
-    bool useLibSizeForAl=Settings::self()->albumsView()!=ItemView::Mode_IconTop;
-    bool diffLibCovers=((int)MusicLibraryItemAlbum::currentCoverSize())!=Settings::self()->libraryCoverSize();
+    bool diffLibCovers=((int)MusicLibraryItemAlbum::currentCoverSize())!=Settings::self()->libraryCoverSize() ||
+                       diffCoverSize(Settings::self()->libraryView(), libraryPage->viewMode());
     bool diffLibArtistImages=diffLibCovers ||
                        (libraryPage->viewMode()==ItemView::Mode_IconTop && Settings::self()->libraryView()!=ItemView::Mode_IconTop) ||
                        (libraryPage->viewMode()!=ItemView::Mode_IconTop && Settings::self()->libraryView()==ItemView::Mode_IconTop) ||
                        Settings::self()->libraryArtistImage()!=MusicLibraryModel::self()->useArtistImages();
     bool diffAlCovers=((int)AlbumsModel::currentCoverSize())!=Settings::self()->albumsCoverSize() ||
                       albumsPage->viewMode()!=Settings::self()->albumsView() ||
-                      useLibSizeForAl!=AlbumsModel::useLibrarySizes();
+                      diffCoverSize(Settings::self()->albumsView(), albumsPage->viewMode());
     bool diffLibYear=MusicLibraryItemAlbum::showDate()!=Settings::self()->libraryYear();
     bool diffGrouping=MPDParseUtils::groupSingle()!=Settings::self()->groupSingle() ||
                       MPDParseUtils::groupMultiple()!=Settings::self()->groupMultiple() ||
@@ -1500,7 +1506,6 @@ void MainWindow::updateSettings()
         AlbumsModel::setCoverSize((MusicLibraryItemAlbum::CoverSize)Settings::self()->albumsCoverSize());
     }
 
-    AlbumsModel::setUseLibrarySizes(useLibSizeForAl);
     if (diffAlCovers || diffGrouping) {
         albumsPage->setView(albumsPage->viewMode());
         albumsPage->clear();

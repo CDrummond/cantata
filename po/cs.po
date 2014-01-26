@@ -1,14 +1,14 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 #
-# Pavel Fric <pavelfric@seznam.cz>, 2011, 2012, 2013.
+# Pavel Fric <pavelfric@seznam.cz>, 2011, 2012, 2013, 2014.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-11-14 20:26+0000\n"
-"PO-Revision-Date: 2013-11-22 22:25+0100\n"
-"Last-Translator: Pavel Fric <pavelfric@seznam.cz>\n"
+"PO-Revision-Date: 2014-01-26 18:01+0100\n"
+"Last-Translator: Pavel\n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
@@ -703,10 +703,6 @@ msgstr "%1 - %2 (%3)"
 #: devices/device.cpp:346
 msgid "Updating (%1)..."
 msgstr "Obnovuje se (%1)..."
-
-#: devices/device.cpp:351
-msgid "Updating (%1%)..."
-msgstr "Obnovuje se (%1%)..."
 
 #: devices/devicepropertiesdialog.cpp:32
 #: devices/remotedevicepropertiesdialog.cpp:40
@@ -2097,8 +2093,8 @@ msgid "A KDE client for MPD"
 msgstr "KDE klient pro MPD"
 
 #: gui/main.cpp:216
-msgid "&copy; 2011–2014 Craig Drummond"
-msgstr ""
+msgid "Copyright © 2011–2013 Craig Drummond"
+msgstr "Autorské právo © 2011-2013 Craig Drummond"
 
 #: gui/main.cpp:220
 msgid "Craig Drummond"
@@ -2286,7 +2282,7 @@ msgstr "Upravit značky písně"
 #. i18n: ectx: attribute (title), widget (QWidget, tab_5)
 #: gui/mainwindow.cpp:277 po/rc.cpp:533 rc.cpp:533
 msgid "Play Queue"
-msgstr "Přehrát pořadí"
+msgstr "Přehrávaná řada"
 
 #. i18n: file: gui/interfacesettings.ui:27
 #. i18n: ectx: attribute (title), widget (QWidget, tab)
@@ -2369,7 +2365,7 @@ msgid ""
 "\n"
 "Quiting now will abort all downloads."
 msgstr ""
-"Záznamy se nyní stahují.\n"
+"Zvukové záznamy se nyní stahují.\n"
 "\n"
 "Pokud bude stahování přerušeno "
 "nyní, budou zrušena všechna stahování."
@@ -2386,20 +2382,20 @@ msgstr "O programu Cantata"
 #: gui/mainwindow.cpp:1448
 msgctxt "Qt-only"
 msgid ""
-"<b>Cantata %1</b><br/><br/>MPD client.<br/><br/>&copy; 2011–2014 Craig Drummond"
+"<b>Cantata %1</b><br/><br/>MPD client.<br/><br/>© Craig Drummond 2011-2013."
 "<br/>Released under the <a href=\"http://www.gnu.org/licenses/gpl.html"
 "\">GPLv3</a>"
 msgstr ""
-"<b>Cantata %1</b><br/><br/>Klient pro MPD.<br/><br/>&copy; 2011–2014 Craig Drummond"
-"<br/>Vydáno pod <a href=\"http://www.gnu.org/licenses/gpl.html"
+"<b>Cantata %1</b><br/><br/>Klient pro MPD.<br/><br/>© Craig Drummond "
+"2011-2013.<br/>Vydáno pod <a href=\"http://www.gnu.org/licenses/gpl.html"
 "\">GPLv3</a>"
 
 #: gui/mainwindow.cpp:1450
 msgid ""
-"Based upon <a href=\"http://qtmpc.lowblog.nl\">QtMPC</a> - &copy; 2007-2010 The "
+"Based upon <a href=\"http://qtmpc.lowblog.nl\">QtMPC</a> - © 2007-2010 The "
 "QtMPC Authors<br/>"
 msgstr ""
-"<a href=\"http://qtmpc.lowblog.nl\">QtMPC</a> - &copy; 2007-2010  Autoři QtMPC<br/"
+"<a href=\"http://qtmpc.lowblog.nl\">QtMPC</a> - © 2007-2010  Autoři QtMPC<br/"
 ">"
 
 #: gui/mainwindow.cpp:1451
@@ -2855,6 +2851,23 @@ msgstr ""
 msgid "Configure..."
 msgstr "Nastavit..."
 
+#: gui/shortcutssettingspage.cpp:95
+msgid "Use media keys to control Cantata:"
+msgstr "Používat multimediální klávesy pro ovládání Cantaty:"
+
+#: gui/shortcutssettingspage.cpp:106
+msgid "Use media keys, as configured in desktop settings, to control Cantata:"
+msgstr ""
+"Používat multimediální klávesy, jak jsou nastaveny v nastavení pracovního "
+"prostředí, pro ovládání Cantaty:"
+
+#: gui/shortcutssettingspage.cpp:107
+msgid ""
+"Use media keys, as configured in GNOME/Unity settings, to control Cantata:"
+msgstr ""
+"Používat multimediální klávesy, jak jsou nastaveny v nastavení GNOME/Unity, "
+"pro ovládání Cantaty:"
+
 #: gui/stdactions.cpp:55
 msgid "Previous Track"
 msgstr "Předchozí skladba"
@@ -2993,7 +3006,7 @@ msgstr "Bezdrátové (%1)"
 
 #: http/httpserversettings.cpp:53
 msgid "First active interface"
-msgstr "První činné rozhraní"
+msgstr "První činné"
 
 #: http/httpserversettings.cpp:98
 msgid "Inactive"
@@ -3465,7 +3478,7 @@ msgstr "Stáhnout do knihovny"
 
 #: online/onlineservicespage.cpp:62 online/podcastsearchdialog.cpp:554
 msgid "Search For Podcasts"
-msgstr "Hledat záznamy"
+msgstr "Hledat zvukové záznamy"
 
 #: online/onlineservicespage.cpp:63
 msgid "Download Podcast Episodes"
@@ -3490,7 +3503,7 @@ msgstr "Přihlásit se k odběru záznamu"
 
 #: online/onlineservicespage.cpp:532
 msgid "Enter podcast URL:"
-msgstr "Zadejte adresu záznamu (URL):"
+msgstr "Zadejte adresu zvukového záznamu (URL):"
 
 #: online/onlineservicespage.cpp:541
 msgid "Invalid URL!"
@@ -3510,7 +3523,7 @@ msgstr "Odhlásit odběr z <b>%1</b>?"
 
 #: online/onlineservicespage.cpp:600
 msgid "Refresh all podcast listings?"
-msgstr "Obnovit všechny soupisy záznamů?"
+msgstr "Obnovit všechny soupisy zvukových záznamů?"
 
 #: online/onlineservicespage.cpp:621
 msgid "Refresh episode listing from <b>%1</b>?"
@@ -3518,19 +3531,19 @@ msgstr "Obnovit soupis dílů z <b>%1</b>?"
 
 #: online/onlineservicespage.cpp:695
 msgid "All selected podcasts have already been downloaded!"
-msgstr "Všechny vybrané záznamy již byly staženy!"
+msgstr "Všechny vybrané zvukové záznamy již byly staženy!"
 
 #: online/onlineservicespage.cpp:699
 msgid "Do you wish to download the following podcast episode?"
-msgstr "Chcete stáhnout následující díl záznamu?"
+msgstr "Chcete stáhnout následující díl zvukového záznamu?"
 
 #: online/onlineservicespage.cpp:702
 msgid "Do you wish to download the following podcast episodes?"
-msgstr "Chcete stáhnout následující díly záznamu?"
+msgstr "Chcete stáhnout následující díly zvukového záznamu?"
 
 #: online/onlineservicespage.cpp:705
 msgid "Do you wish to download the selected podcast episodes?"
-msgstr "Chcete stáhnout vybrané díly záznamu?"
+msgstr "Chcete stáhnout vybrané díly zvukového záznamu?"
 
 #: online/onlineservicespage.cpp:753
 msgid "All selected downloaded podcast episodes have already been deleted!"
@@ -3539,17 +3552,17 @@ msgstr "Všechny vybrané stažené díly záznamu již byly smazány!"
 #: online/onlineservicespage.cpp:757
 msgid ""
 "Do you wish to delete the downloaded file of the following podcast episode?"
-msgstr "Chcete smazat stažený soubor následujícího dílu záznamu?"
+msgstr "Chcete smazat stažený soubor následujícího dílu zvukového záznamu?"
 
 #: online/onlineservicespage.cpp:760
 msgid ""
 "Do you wish to the delete downloaded files of the following podcast episodes?"
-msgstr "Chcete smazat stažené soubory následujících dílů záznamu?"
+msgstr "Chcete smazat stažené soubory následujících dílů zvukového záznamu?"
 
 #: online/onlineservicespage.cpp:763
 msgid ""
 "Do you wish to the delete downloaded files of the selected podcast episodes?"
-msgstr "Chcete smazat stažené soubory vybraných dílů záznamu?"
+msgstr "Chcete smazat stažené soubory vybraných dílů zvukového záznamu?"
 
 #: online/podcastsearchdialog.cpp:243
 msgid "RSS:"
@@ -3573,7 +3586,7 @@ msgstr "Zadat hledaný pojem..."
 
 #: online/podcastsearchdialog.cpp:372
 msgid "Failed to fetch podcasts from %1"
-msgstr "Nepodařilo se natáhnout záznamy z %1"
+msgstr "Nepodařilo se natáhnout zvukové záznamy z %1"
 
 #: online/podcastsearchdialog.cpp:378
 msgid "There was a problem parsing the response from %1"
@@ -3597,7 +3610,7 @@ msgstr "Hledat %1"
 
 #: online/podcastsearchdialog.cpp:526 online/podcastsearchdialog.cpp:530
 msgid "Search for podcasts on %1"
-msgstr "Hledat záznamy na %1"
+msgstr "Hledat zvukové záznamy na %1"
 
 #: online/podcastsearchdialog.cpp:543
 msgid "Browse %1"
@@ -3605,7 +3618,7 @@ msgstr "Procházet %1"
 
 #: online/podcastsearchdialog.cpp:543
 msgid "Browse %1 podcasts"
-msgstr "Procházet %1 záznamů"
+msgstr "Procházet %1 zvukových záznamů"
 
 #: online/podcastsearchdialog.cpp:602
 msgid "Subscription added"
@@ -3640,8 +3653,8 @@ msgid "Download episodes to:"
 msgstr "Stáhnout díly do:"
 
 #: online/podcastsettingsdialog.cpp:60
-msgid "Automatically download new episodes"
-msgstr "Stáhnout nové díly automaticky"
+msgid "Automatically download new episodes:"
+msgstr "Stáhnout nové díly automaticky:"
 
 #: online/podcastsettingsdialog.cpp:82
 msgid "Podcast Settings"
@@ -3686,20 +3699,20 @@ msgstr "Každý týden"
 #. i18n: file: context/othersettings.ui:19
 #. i18n: ectx: property (text), widget (BuddyLabel, contextBackdropLabel)
 #: po/rc.cpp:3 rc.cpp:3
-msgid "Use backdrop"
-msgstr "Použít pozadí"
+msgid "Use backdrop:"
+msgstr "Použít pozadí:"
 
 #. i18n: file: context/othersettings.ui:32
 #. i18n: ectx: property (text), widget (BuddyLabel, contextDarkBackgroundLabel)
 #: po/rc.cpp:6 rc.cpp:6
-msgid "Dark background"
-msgstr "Tmavé pozadí"
+msgid "Dark background:"
+msgstr "Tmavé pozadí:"
 
 #. i18n: file: context/othersettings.ui:45
 #. i18n: ectx: property (text), widget (BuddyLabel, wikipediaIntroOnlyLabel)
 #: po/rc.cpp:9 rc.cpp:9
-msgid "Only show basic wikipedia text"
-msgstr "Ukázat jen základní text"
+msgid "Only show basic wikipedia text:"
+msgstr "Ukázat jen základní text:"
 
 #. i18n: file: context/othersettings.ui:86
 #. i18n: ectx: property (text), widget (StateLabel, wikipediaIntroOnlyNote)
@@ -3715,7 +3728,7 @@ msgid ""
 msgstr ""
 "<i><b>POZNÁMKA:</b> Cantata neukazuje stránky na Wikipedii celé (s obrázky, "
 "odkazy atd.), místo toho ukazuje ořezanou verzi. Toto ořezání není vždy 100 "
-"% přesné, z tohoto důvodu bude Cantata ve výchozím nastavení ukazovat jen "
+"% přesné. Z tohoto důvodu bude Cantata ve výchozím nastavení ukazovat jen "
 "základní úvod ke každému článku. Pokud bude vaší volbou zobrazení úplného "
 "článku, potom se mohou objevit chyby ve zpracování. Také budete muset "
 "odstranit všechny články, jež jsou nyní uloženy ve vyrovnávací paměti "
@@ -3858,13 +3871,13 @@ msgstr "Umělec písně:"
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox)
 #: po/rc.cpp:88 rc.cpp:88
 msgid "Album and Track Information Retrieval"
-msgstr "Vyhledání o albu a skladbě"
+msgstr "Vyhledání informací o albu a skladbě"
 
 #. i18n: file: devices/audiocdsettings.ui:26
 #. i18n: ectx: property (text), widget (BuddyLabel, label_3)
 #: po/rc.cpp:91 rc.cpp:91
-msgid "Automatically lookup"
-msgstr "Automaticky vyhledat"
+msgid "Automatically lookup:"
+msgstr "Automaticky vyhledat:"
 
 #. i18n: file: devices/audiocdsettings.ui:39
 #. i18n: ectx: property (text), widget (BuddyLabel, cdLookupLabel)
@@ -3893,14 +3906,14 @@ msgstr "Vytažení zvuku"
 #. i18n: file: devices/audiocdsettings.ui:94
 #. i18n: ectx: property (text), widget (BuddyLabel, label_4)
 #: po/rc.cpp:106 rc.cpp:106
-msgid "Full paranoia mode (best quality)"
-msgstr "Úplný režim paranoia (nejlepší kvalita)"
+msgid "Full paranoia mode (best quality):"
+msgstr "Úplný režim paranoia (nejlepší kvalita):"
 
 #. i18n: file: devices/audiocdsettings.ui:107
 #. i18n: ectx: property (text), widget (BuddyLabel, label_5)
 #: po/rc.cpp:109 rc.cpp:109
-msgid "Never skip on read error"
-msgstr "Nikdy nepřeskakovat při chybě čtení"
+msgid "Never skip on read error:"
+msgstr "Nikdy nepřeskakovat při chybě čtení:"
 
 #. i18n: file: devices/devicepropertieswidget.ui:20
 #. i18n: ectx: property (text), widget (QLabel, remoteDeviceNote)
@@ -4364,8 +4377,8 @@ msgstr "Do roku:"
 #. i18n: file: dynamic/dynamicrule.ui:149
 #. i18n: ectx: property (text), widget (BuddyLabel, label_5x)
 #: po/rc.cpp:322 rc.cpp:322
-msgid "Exact match"
-msgstr "Přesná shoda"
+msgid "Exact match:"
+msgstr "Přesná shoda:"
 
 #. i18n: file: dynamic/dynamicrule.ui:173
 #. i18n: ectx: property (text), item, widget (QComboBox, typeCombo)
@@ -4427,8 +4440,8 @@ msgstr "<html><head/><body><p>Přidat místní soubor</p></body></html>"
 #. i18n: file: gui/initialsettingswizard.ui:716
 #. i18n: ectx: property (text), widget (BuddyLabel, storeCoversInMpdDirLabel)
 #: po/rc.cpp:352 po/rc.cpp:442 rc.cpp:352 rc.cpp:442
-msgid "Save downloaded covers in music folder"
-msgstr "Uložit stažené obaly ve složce s hudbou"
+msgid "Save downloaded covers in music folder:"
+msgstr "Uložit stažené obaly ve složce s hudbou:"
 
 #. i18n: file: gui/filesettings.ui:35
 #. i18n: ectx: property (text), widget (BuddyLabel, label_4)
@@ -4439,8 +4452,8 @@ msgstr "Uložit stažené obaly ve složce s hudbou"
 #. i18n: file: gui/initialsettingswizard.ui:729
 #. i18n: ectx: property (text), widget (BuddyLabel, storeLyricsInMpdDirLabel)
 #: po/rc.cpp:355 po/rc.cpp:445 rc.cpp:355 rc.cpp:445
-msgid "Save downloaded lyrics in music folder"
-msgstr "Uložit stažená slova písně ve složce s hudbou"
+msgid "Save downloaded lyrics in music folder:"
+msgstr "Uložit stažená slova písně ve složce s hudbou:"
 
 #. i18n: file: gui/filesettings.ui:52
 #. i18n: ectx: property (text), widget (BuddyLabel, storeBackdropsInMpdDirLabel)
@@ -4451,8 +4464,8 @@ msgstr "Uložit stažená slova písně ve složce s hudbou"
 #. i18n: file: gui/initialsettingswizard.ui:746
 #. i18n: ectx: property (text), widget (BuddyLabel, storeBackdropsInMpdDirLabel)
 #: po/rc.cpp:358 po/rc.cpp:448 rc.cpp:358 rc.cpp:448
-msgid "Save downloaded backdrops in music folder"
-msgstr "Uložit stažená pozadí ve složce s hudbou"
+msgid "Save downloaded backdrops in music folder:"
+msgstr "Uložit stažená pozadí ve složce s hudbou:"
 
 #. i18n: file: gui/filesettings.ui:69
 #. i18n: ectx: property (text), widget (QLabel, label)
@@ -4463,8 +4476,8 @@ msgstr "Uložit stažená pozadí ve složce s hudbou"
 #. i18n: file: gui/initialsettingswizard.ui:763
 #. i18n: ectx: property (text), widget (QLabel, storeStreamsInMpdDirLabel)
 #: po/rc.cpp:361 po/rc.cpp:451 rc.cpp:361 rc.cpp:451
-msgid "Save list of favorite streams in music folder"
-msgstr "Uložit seznam oblíbených proudů ve složce s hudbou"
+msgid "Save list of favorite streams in music folder:"
+msgstr "Uložit seznam oblíbených proudů ve složce s hudbou:"
 
 #. i18n: file: gui/filesettings.ui:110
 #. i18n: ectx: property (text), widget (QLabel, label_2)
@@ -4847,7 +4860,7 @@ msgstr "Umělec/Rok/Album"
 #. i18n: ectx: property (text), widget (BuddyLabel, playQueueStartClosedLabel)
 #: po/rc.cpp:515 po/rc.cpp:545 rc.cpp:515 rc.cpp:545
 msgid "Initially collapse albums:"
-msgstr "Nejprve složit alba:"
+msgstr "Nejprve alba složit:"
 
 #. i18n: file: gui/interfacesettings.ui:242
 #. i18n: ectx: attribute (title), widget (QWidget, tab_3)
@@ -5135,7 +5148,7 @@ msgid ""
 "will use a default of <code>cover</code> </i>"
 msgstr ""
 "<i><b>POZNÁMKA:</b> Pokud není nastaveno žádné nastavení pro název souboru s "
-"obalem, pak bude Cantata používat výchozí<code>obal</code> </i>"
+"obalem, pak bude Cantata používat výchozí <code>obal</code> </i>"
 
 #. i18n: file: http/httpserversettings.ui:25
 #. i18n: ectx: property (text), widget (BuddyLabel, label_5)
@@ -5165,7 +5178,7 @@ msgstr ""
 "podávání jiných souborů MPD. Nicméně toto bude pracovat, jen když Cantata "
 "běží.<br/><br/>\n"
 "<b>POZNÁMKA:</b> Pokud zvolíte pro síťové rozhraní místní smyčku, potom "
-"<b>musí</b> být MPD rovněž na tom to počítači.</i>"
+"<b>musí</b> být MPD rovněž na tomto počítači.</i>"
 
 #. i18n: file: network/proxysettings.ui:26
 #. i18n: ectx: property (text), widget (BuddyLabel, modeLabel)
@@ -5677,7 +5690,7 @@ msgid "Failed to remove streams folder!"
 msgstr "Nepodařilo se odstranit složku s proudy!"
 
 #: support/dialog.cpp:89
-msgid "&OK"
+msgid "&Ok"
 msgstr "&OK"
 
 #: support/dialog.cpp:90

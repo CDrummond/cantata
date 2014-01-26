@@ -81,6 +81,14 @@ bool ViewEventHandler::eventFilter(QObject *obj, QEvent *event)
             view->viewport()->update();
         }
     }
+
+    if (view->hasFocus() && QEvent::KeyRelease==event->type()) {
+        QKeyEvent *keyEvent=static_cast<QKeyEvent *>(event);
+        if (Qt::Key_Backspace==keyEvent->key() && Qt::NoModifier==keyEvent->modifiers()) {
+            emit escPressed();
+        }
+    }
+
     return QObject::eventFilter(obj, event);
 }
 
@@ -510,7 +518,8 @@ ItemView::ItemView(QWidget *p)
     TreeDelegate *td=new TreeDelegate(treeView);
     listView->setItemDelegate(ld);
     treeView->setItemDelegate(td);
-    listView->installEventFilter(new ViewEventHandler(ld, listView));
+    ViewEventHandler *listViewEventHandler=new ViewEventHandler(ld, listView);
+    listView->installEventFilter(listViewEventHandler);
     treeView->installEventFilter(new ViewEventHandler(td, treeView));
     connect(searchWidget, SIGNAL(returnPressed()), this, SLOT(delaySearchItems()));
     connect(searchWidget, SIGNAL(textChanged(const QString)), this, SLOT(delaySearchItems()));
@@ -525,6 +534,7 @@ ItemView::ItemView(QWidget *p)
     connect(listView, SIGNAL(clicked(const QModelIndex &)),  this, SLOT(itemClicked(const QModelIndex &)));
     connect(backAction, SIGNAL(triggered(bool)), this, SLOT(backActivated()));
     connect(homeAction, SIGNAL(triggered(bool)), this, SLOT(homeActivated()));
+    connect(listViewEventHandler, SIGNAL(escPressed()), this, SLOT(backActivated()));
     searchWidget->setVisible(false);
 }
 

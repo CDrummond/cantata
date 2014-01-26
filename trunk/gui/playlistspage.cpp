@@ -51,6 +51,7 @@ PlaylistsPage::PlaylistsPage(QWidget *p)
     view->addAction(StdActions::self()->addToPlayQueueAction);
     view->addAction(StdActions::self()->replacePlayQueueAction);
     view->addAction(StdActions::self()->addWithPriorityAction);
+    view->addAction(StdActions::self()->addToStoredPlaylistAction);
     #ifdef ENABLE_DEVICES_SUPPORT
     view->addAction(StdActions::self()->copyToDeviceAction);
     #endif
@@ -71,6 +72,7 @@ PlaylistsPage::PlaylistsPage(QWidget *p)
     connect(view, SIGNAL(searchItems()), this, SLOT(searchItems()));
     connect(view, SIGNAL(rootIndexSet(QModelIndex)), this, SLOT(updateGenres(QModelIndex)));
     //connect(this, SIGNAL(add(const QStringList &)), MPDConnection::self(), SLOT(add(const QStringList &)));
+    connect(this, SIGNAL(addSongsToPlaylist(const QString &, const QStringList &)), MPDConnection::self(), SLOT(addToPlaylist(const QString &, const QStringList &)));
     connect(this, SIGNAL(loadPlaylist(const QString &, bool)), MPDConnection::self(), SLOT(loadPlaylist(const QString &, bool)));
     connect(this, SIGNAL(removePlaylist(const QString &)), MPDConnection::self(), SLOT(removePlaylist(const QString &)));
     connect(this, SIGNAL(savePlaylist(const QString &)), MPDConnection::self(), SLOT(savePlaylist(const QString &)));
@@ -140,9 +142,9 @@ void PlaylistsPage::clear()
 //    return PlaylistsModel::self()->filenames(mapped, true);
 //}
 
-void PlaylistsPage::addSelectionToPlaylist(bool replace, quint8 priorty)
+void PlaylistsPage::addSelectionToPlaylist(const QString &name, bool replace, quint8 priorty)
 {
-    addItemsToPlayQueue(view->selectedIndexes(), replace, priorty);
+    addItemsToPlayList(view->selectedIndexes(), name, replace, priorty);
 }
 
 void PlaylistsPage::setView(int mode)
@@ -298,11 +300,11 @@ void PlaylistsPage::itemDoubleClicked(const QModelIndex &index)
         || !static_cast<PlaylistsModel::Item *>(proxy.mapToSource(index).internalPointer())->isPlaylist()) {
         QModelIndexList indexes;
         indexes.append(index);
-        addItemsToPlayQueue(indexes, false);
+        addItemsToPlayList(indexes, QString(), false);
     }
 }
 
-void PlaylistsPage::addItemsToPlayQueue(const QModelIndexList &indexes, bool replace, quint8 priorty)
+void PlaylistsPage::addItemsToPlayList(const QModelIndexList &indexes, const QString &name, bool replace, quint8 priorty)
 {
     if (indexes.isEmpty()) {
         return;
@@ -310,7 +312,7 @@ void PlaylistsPage::addItemsToPlayQueue(const QModelIndexList &indexes, bool rep
 
     // If we only have 1 item selected, see if it is a playlist. If so, we might be able to
     // just ask MPD to load it...
-    if (1==indexes.count() && 0==priorty) {
+    if (name.isEmpty() && 1==indexes.count() && 0==priorty) {
         QModelIndex idx=proxy.mapToSource(*(indexes.begin()));
         PlaylistsModel::Item *item=static_cast<PlaylistsModel::Item *>(idx.internalPointer());
 
@@ -321,13 +323,27 @@ void PlaylistsPage::addItemsToPlayQueue(const QModelIndexList &indexes, bool rep
     }
 
     QModelIndexList mapped;
+    bool checkNames=!name.isEmpty();
     foreach (const QModelIndex &idx, indexes) {
-        mapped.append(proxy.mapToSource(idx));
+        QModelIndex m=proxy.mapToSource(idx);
+        if (checkNames) {
+            PlaylistsModel::Item *item=static_cast<PlaylistsModel::Item *>(m.internalPointer());
+            if ( (item->isPlaylist() && static_cast<PlaylistsModel::PlaylistItem *>(item)->name==name) ||
+                 (!item->isPlaylist() && static_cast<PlaylistsModel::SongItem *>(item)->parent->name==name) ) {
+                MessageBox::error(this, i18n("Cannot add songs from '%1' to '%2'", name, name));
+                return;
+            }
+        }
+        mapped.append(m);
     }
 
     QStringList files=PlaylistsModel::self()->filenames(mapped);
     if (!files.isEmpty()) {
-        emit add(files, replace, priorty);
+        if (name.isEmpty()) {
+            emit add(files, replace, priorty);
+        } else {
+            emit addSongsToPlaylist(name, files);
+        }
         view->clearSelection();
     }
 }
@@ -398,6 +414,7 @@ void PlaylistsPage::controlActions()
     StdActions::self()->replacePlayQueueAction->setEnabled(enableActions);
     StdActions::self()->addToPlayQueueAction->setEnabled(enableActions);
     StdActions::self()->addWithPriorityAction->setEnabled(enableActions);
+    StdActions::self()->addToStoredPlaylistAction->setEnabled(enableActions);
     #ifdef ENABLE_DEVICES_SUPPORT
     StdActions::self()->copyToDeviceAction->setEnabled(enableActions && !allSmartPlaylists);
     #endif

@@ -43,7 +43,7 @@ public:
     void refresh();
     void clear();
     //QStringList selectedFiles() const;
-    void addSelectionToPlaylist(bool replace, quint8 priorty=0);
+    void addSelectionToPlaylist(const QString &name=QString(), bool replace=false, quint8 priorty=0);
     void setView(int mode);
     void focusSearch() { view->focusSearch(); }
     void goBack() { view->backActivated(); }
@@ -62,10 +62,11 @@ Q_SIGNALS:
     void removeFromPlaylist(const QString &name, const QList<quint32> &positions);
 
     void add(const QStringList &files, bool replace, quint8 priorty);
+    void addSongsToPlaylist(const QString &name, const QStringList &files);
     void addToDevice(const QString &from, const QString &to, const QList<Song> &songs);
 
 private:
-    void addItemsToPlayQueue(const QModelIndexList &indexes, bool replace, quint8 priorty=0);
+    void addItemsToPlayList(const QModelIndexList &indexes, const QString &name, bool replace, quint8 priorty=0);
 
 public Q_SLOTS:
     void removeItems();

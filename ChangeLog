@@ -93,6 +93,7 @@
     queried.
 55. Add option to use a custom image as playqueue background.
 56. Add option to specify blur and opacity of playqueue background image.
+57. If list view has focus, pressing Backspace will navigate back.
 
 1.2.2
 -----

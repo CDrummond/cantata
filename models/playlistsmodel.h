@@ -42,6 +42,18 @@ class PlaylistsModel : public ActionModel
     Q_OBJECT
 
 public:
+    enum Columns
+    {
+        COL_TITLE,
+        COL_ARTIST,
+        COL_ALBUM,
+        COL_YEAR,
+        COL_GENRE,
+        COL_LENGTH,
+
+        COL_COUNT
+    };
+
     struct Item
     {
         virtual bool isPlaylist() = 0;
@@ -80,17 +92,18 @@ public:
     };
 
     static PlaylistsModel * self();
+    static QString headerText(int col);
 
     PlaylistsModel(QObject *parent = 0);
     ~PlaylistsModel();
-    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
+    int columnCount(const QModelIndex &parent = QModelIndex()) const { Q_UNUSED(parent); return multiCol ? COL_COUNT : 1; }
     bool canFetchMore(const QModelIndex &index) const;
     void fetchMore(const QModelIndex &index);
     bool hasChildren(const QModelIndex &parent = QModelIndex()) const;
-    int columnCount(const QModelIndex&) const { return 1; }
     QModelIndex parent(const QModelIndex &index) const;
     QModelIndex index(int row, int col, const QModelIndex &parent) const;
+    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
     QVariant data(const QModelIndex &, int) const;
     bool setData(const QModelIndex &index, const QVariant &value, int role);
     Qt::ItemFlags flags(const QModelIndex &index) const;
@@ -108,6 +121,7 @@ public:
     QMenu * menu() { return itemMenu; }
     const QSet<QString> & genres() { return plGenres; }
     static QString strippedText(QString s);
+    void setMultiColumn(bool m) { multiCol=m; }
 
 Q_SIGNALS:
     // These are for communicating with MPD object (which is in its own thread, so need to talk via signal/slots)
@@ -140,6 +154,7 @@ private:
 
 private:
     bool enabled;
+    bool multiCol;
     QList<PlaylistItem *> items;
     QSet<quint32> usedKeys;
     QSet<QString> plGenres;

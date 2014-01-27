@@ -52,7 +52,7 @@ static void addImageSizes(QComboBox *box)
     box->addItem(i18n("Extra Large"), MusicLibraryItemAlbum::CoverExtraLarge);
 }
 
-static void addViewTypes(QComboBox *box, bool iconMode=false, bool groupedTree=false)
+static void addViewTypes(QComboBox *box, bool iconMode=false, bool groupedTree=false, bool table=false)
 {
     box->addItem(i18n("Basic Tree (No Icons)"), ItemView::Mode_BasicTree);
     box->addItem(i18n("Simple Tree"), ItemView::Mode_SimpleTree);
@@ -63,6 +63,9 @@ static void addViewTypes(QComboBox *box, bool iconMode=false, bool groupedTree=f
     box->addItem(i18n("List"), ItemView::Mode_List);
     if (iconMode) {
         box->addItem(i18n("Icon/List"), ItemView::Mode_IconTop);
+    }
+    if (table) {
+        box->addItem(i18n("Table"), ItemView::Mode_Table);
     }
 }
 
@@ -95,7 +98,7 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     addImageSizes(albumsCoverSize);
     addViewTypes(albumsView, true);
     addViewTypes(folderView);
-    addViewTypes(playlistsView, false, true);
+    addViewTypes(playlistsView, false, true, true);
 
     addView(i18n("Play queue"), QLatin1String("PlayQueuePage"));
     addView(i18n("Artists"), QLatin1String("LibraryPage"));

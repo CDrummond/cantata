@@ -108,6 +108,7 @@ public:
     bool showPlaylist();
     bool showFullScreen();
     QByteArray playQueueHeaderState();
+    QByteArray playlistHeaderState();
     QByteArray splitterState();
     bool splitterAutoHide();
     QSize mainWindowSize();
@@ -226,6 +227,7 @@ public:
     void saveStopOnExit(bool v);
     void saveStopDynamizerOnExit(bool v);
     void savePlayQueueHeaderState(const QByteArray &v);
+    void savePlaylistHeaderState(const QByteArray &v);
     void saveSplitterState(const QByteArray &v);
     void saveSplitterAutoHide(bool v);
     void saveMainWindowSize(const QSize &v);

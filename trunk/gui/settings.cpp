@@ -342,6 +342,11 @@ QByteArray Settings::playQueueHeaderState()
     return GET_BYTE_ARRAY("playQueueHeaderState");
 }
 
+QByteArray Settings::playlistHeaderState()
+{
+    return GET_BYTE_ARRAY("playlistHeaderState");
+}
+
 QByteArray Settings::splitterState()
 {
     return GET_BYTE_ARRAY("splitterState");
@@ -1032,6 +1037,11 @@ void Settings::saveShowFullScreen(bool v)
 void Settings::savePlayQueueHeaderState(const QByteArray &v)
 {
     SET_VALUE_MOD(playQueueHeaderState)
+}
+
+void Settings::savePlaylistHeaderState(const QByteArray &v)
+{
+    SET_VALUE_MOD(playlistHeaderState)
 }
 
 void Settings::saveSplitterState(const QByteArray &v)

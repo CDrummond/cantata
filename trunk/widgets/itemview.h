@@ -25,6 +25,7 @@
 #define ITEMVIEW_H
 
 #include "ui_itemview.h"
+#include "treeview.h"
 #include <QMap>
 #include <QList>
 #include <QPair>
@@ -67,6 +68,15 @@ private:
     QAction *act;
 };
 
+class TableView : public TreeView
+{
+public:
+    TableView(QWidget *p) : TreeView(p, false) { }
+    virtual ~TableView() { }
+    virtual void initHeader() =0;
+    virtual void saveHeader() =0;
+};
+
 class ItemView : public QWidget, public Ui::ItemView
 {
     Q_OBJECT
@@ -79,6 +89,8 @@ public:
         Mode_DetailedTree,
 
         Mode_GroupedTree,
+
+        Mode_Table,
 
         Mode_List,
         Mode_IconTop,
@@ -107,6 +119,7 @@ public:
     virtual ~ItemView();
 
     void allowGroupedView();
+    void allowTableView(TableView *v);
     void addAction(QAction *act);
     void setMode(Mode m);
     Mode viewMode() const { return mode; }
@@ -195,6 +208,7 @@ private:
     QSize iconGridSize;
     QSize listGridSize;
     GroupedView *groupedView;
+    TableView *tableView;
     Spinner *spinner;
     MessageOverlay *msgOverlay;
     QIcon bgndIcon;

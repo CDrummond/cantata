@@ -420,7 +420,7 @@ public:
                 if (text.count()>1) {
                     int mainWidth=textMetrics.width(str);
                     text.takeFirst();
-                    str=text.join(" - ");
+                    str=text.join(" -tableView ");
                     textRect=QRect(r.x()+(mainWidth+8), r.y()+((r.height()-textHeight)/2), r.width()-(mainWidth+8), textHeight);
                     if (textRect.width()>4) {
                         str = textMetrics.elidedText(str, Qt::ElideRight, textRect.width(), QPalette::WindowText);
@@ -476,6 +476,7 @@ QString ItemView::modeStr(Mode m)
     case Mode_List:         return QLatin1String("list");
     case Mode_IconTop:      return QLatin1String("icontop");
     case Mode_GroupedTree:  return QLatin1String("grouped");
+    case Mode_Table:        return QLatin1String("table");
     }
 }
 
@@ -486,6 +487,7 @@ ItemView::ItemView(QWidget *p)
     , currentLevel(0)
     , mode(Mode_SimpleTree)
     , groupedView(0)
+    , tableView(0)
     , spinner(0)
     , msgOverlay(0)
     , performedSearch(false)
@@ -559,6 +561,22 @@ void ItemView::allowGroupedView()
     }
 }
 
+void ItemView::allowTableView(TableView *v)
+{
+    if (!tableView) {
+        tableView=v;
+        tableView->setParent(stackedWidget);
+        // Some styles, eg Cleanlooks/Plastique require that we explicitly set mouse tracking on the treeview.
+        tableView->setAttribute(Qt::WA_MouseTracking, true);
+        tableView->installEventFilter(new ViewEventHandler(qobject_cast<ActionItemDelegate *>(tableView->itemDelegate()), tableView));
+        treeLayout->addWidget(tableView);
+        connect(tableView, SIGNAL(itemsSelected(bool)), this, SIGNAL(itemsSelected(bool)));
+        connect(tableView, SIGNAL(itemActivated(const QModelIndex &)), this, SLOT(itemActivated(const QModelIndex &)));
+        connect(tableView, SIGNAL(doubleClicked(const QModelIndex &)), this, SIGNAL(doubleClicked(const QModelIndex &)));
+        connect(tableView, SIGNAL(clicked(const QModelIndex &)), this, SLOT(itemClicked(const QModelIndex &)));
+    }
+}
+
 void ItemView::addAction(QAction *act)
 {
     treeView->addAction(act);
@@ -566,11 +584,14 @@ void ItemView::addAction(QAction *act)
     if (groupedView) {
         groupedView->addAction(act);
     }
+    if (tableView) {
+        tableView->addAction(act);
+    }
 }
 
 void ItemView::setMode(Mode m)
 {
-    if (m<0 || m>=Mode_Count || (Mode_GroupedTree==m && !groupedView)) {
+    if (m<0 || m>=Mode_Count || (Mode_GroupedTree==m && !groupedView) || (Mode_Table==m && !tableView)) {
         m=Mode_SimpleTree;
     }
 
@@ -586,12 +607,17 @@ void ItemView::setMode(Mode m)
     mode=m;
     searchWidget->setText(QString());
     if (usingTreeView()) {
-        treeView->setModel(itemModel);
         listView->setModel(0);
         if (groupedView) {
             groupedView->setHidden(true);
             groupedView->setModel(0);
         }
+        if (tableView) {
+            tableView->saveHeader();
+            tableView->setHidden(true);
+            tableView->setModel(0);
+        }
+        treeView->setModel(itemModel);
         treeView->setHidden(false);
         static_cast<TreeDelegate *>(treeView->itemDelegate())->setSimple(Mode_SimpleTree==mode || Mode_BasicTree==mode);
         static_cast<TreeDelegate *>(treeView->itemDelegate())->setNoIcons(Mode_BasicTree==mode);
@@ -600,14 +626,35 @@ void ItemView::setMode(Mode m)
     } else if (Mode_GroupedTree==mode) {
         treeView->setModel(0);
         listView->setModel(0);
+        if (tableView) {
+            tableView->saveHeader();
+            tableView->setHidden(true);
+            tableView->setModel(0);
+        }
         groupedView->setHidden(false);
         treeView->setHidden(true);
         groupedView->setModel(itemModel);
+        itemModel->setRootIndex(QModelIndex());
+    } else if (Mode_Table==mode) {
+        treeView->setModel(0);
+        listView->setModel(0);
+        if (groupedView) {
+            groupedView->setHidden(true);
+            groupedView->setModel(0);
+        }
+        tableView->setHidden(false);
+        treeView->setHidden(true);
+        tableView->setModel(itemModel);
+        tableView->initHeader();
         itemModel->setRootIndex(QModelIndex());
     } else {
         treeView->setModel(0);
         if (groupedView) {
             groupedView->setModel(0);
+        }
+        if (tableView) {
+            tableView->saveHeader();
+            tableView->setModel(0);
         }
         listView->setModel(itemModel);
         setLevel(0);
@@ -623,7 +670,7 @@ void ItemView::setMode(Mode m)
         }
     }
 
-    stackedWidget->setCurrentIndex(mode<=Mode_GroupedTree ? 0 : 1);
+    stackedWidget->setCurrentIndex(mode<=Mode_Table ? 0 : 1);
     if (spinner) {
         spinner->setWidget(view());
         if (spinner->isActive()) {
@@ -645,6 +692,8 @@ QModelIndexList ItemView::selectedIndexes(bool sorted) const
         return treeView->selectedIndexes(sorted);
     } else if (Mode_GroupedTree==mode) {
         return groupedView->selectedIndexes(sorted);
+    } else if (Mode_Table==mode) {
+        return tableView->selectedIndexes(sorted);
     }
     return listView->selectedIndexes(sorted);
 }
@@ -702,6 +751,8 @@ QAbstractItemView * ItemView::view() const
         return treeView;
     } else if(Mode_GroupedTree==mode) {
         return groupedView;
+    } else if(Mode_Table==mode) {
+        return tableView;
     } else {
         return listView;
     }
@@ -745,6 +796,9 @@ void ItemView::setAcceptDrops(bool v)
     if (groupedView) {
         groupedView->setAcceptDrops(v);
     }
+    if (tableView) {
+        tableView->setAcceptDrops(v);
+    }
 }
 
 void ItemView::setDragDropOverwriteMode(bool v)
@@ -754,6 +808,9 @@ void ItemView::setDragDropOverwriteMode(bool v)
     if (groupedView) {
         groupedView->setDragDropOverwriteMode(v);
     }
+    if (tableView) {
+        tableView->setDragDropOverwriteMode(v);
+    }
 }
 
 void ItemView::setDragDropMode(QAbstractItemView::DragDropMode v)
@@ -762,6 +819,9 @@ void ItemView::setDragDropMode(QAbstractItemView::DragDropMode v)
     treeView->setDragDropMode(v);
     if (groupedView) {
         groupedView->setDragDropMode(v);
+    }
+    if (tableView) {
+        tableView->setDragDropMode(v);
     }
 }
 
@@ -780,6 +840,8 @@ void ItemView::update()
         treeView->update();
     } else if (Mode_GroupedTree==mode) {
         groupedView->update();
+    } else if (Mode_Table==mode) {
+        tableView->update();
     } else {
         listView->update();
     }
@@ -791,6 +853,9 @@ void ItemView::setDeleteAction(QAction *act)
     treeView->installEventFilter(new DeleteKeyEventHandler(treeView, act));
     if (groupedView) {
         groupedView->installEventFilter(new DeleteKeyEventHandler(groupedView, act));
+    }
+    if (tableView) {
+        tableView->installEventFilter(new DeleteKeyEventHandler(tableView, act));
     }
 }
 
@@ -813,6 +878,15 @@ void ItemView::showIndex(const QModelIndex &idx, bool scrollTo)
         }
         if (scrollTo) {
             groupedView->scrollTo(idx, QAbstractItemView::PositionAtTop);
+        }
+    } else if (Mode_Table==mode) {
+        QModelIndex i=idx;
+        while (i.isValid()) {
+            tableView->setExpanded(i, true);
+            i=i.parent();
+        }
+        if (scrollTo) {
+            tableView->scrollTo(idx, QAbstractItemView::PositionAtTop);
         }
     } else {
         if (idx.parent().isValid()) {
@@ -908,6 +982,8 @@ void ItemView::expandAll(const QModelIndex &index)
         treeView->expandAll(index);
     } else if (Mode_GroupedTree==mode && groupedView) {
         groupedView->expandAll(index);
+    } else if (Mode_Table==mode && tableView) {
+        tableView->expandAll(index);
     }
 }
 
@@ -917,6 +993,8 @@ void ItemView::expand(const QModelIndex &index, bool singleOnly)
         treeView->expand(index, singleOnly);
     } else if (Mode_GroupedTree==mode && groupedView) {
         groupedView->expand(index, singleOnly);
+    } else if (Mode_Table==mode && tableView) {
+        tableView->expand(index, singleOnly);
     }
 }
 
@@ -936,6 +1014,8 @@ void ItemView::setBackgroundImage(const QIcon &icon)
         treeView->setBackgroundImage(bgndIcon);
     } else if (Mode_GroupedTree==mode && groupedView) {
         groupedView->setBackgroundImage(bgndIcon);
+    } else if (Mode_Table==mode && tableView) {
+        tableView->setBackgroundImage(bgndIcon);
     } else if (Mode_List==mode || Mode_IconTop==mode) {
         listView->setBackgroundImage(bgndIcon);
     }
@@ -949,6 +1029,9 @@ bool ItemView::isAnimated() const
     if (Mode_GroupedTree==mode && groupedView) {
         return groupedView->isAnimated();
     }
+    if (Mode_Table==mode && tableView) {
+        return tableView->isAnimated();
+    }
     return false;
 }
 
@@ -958,6 +1041,8 @@ void ItemView::setAnimated(bool a)
         treeView->setAnimated(a);
     } else if (Mode_GroupedTree==mode && groupedView) {
         groupedView->setAnimated(a);
+    } else if (Mode_Table==mode && tableView) {
+        tableView->setAnimated(a);
     }
 }
 
@@ -1080,6 +1165,10 @@ void ItemView::activateItem(const QModelIndex &index, bool emitRootSet)
         if (!index.parent().isValid()) {
             groupedView->setExpanded(index, !groupedView->TreeView::isExpanded(index));
         }
+    } else if (Mode_Table==mode) {
+        if (!index.parent().isValid()) {
+            tableView->setExpanded(index, !tableView->TreeView::isExpanded(index));
+        }
     } else if (index.isValid() && index.child(0, 0).isValid() && index!=listView->rootIndex()) {
         prevTopIndex=listView->indexAt(QPoint(8, 8));
         if (qobject_cast<QSortFilterProxyModel *>(listView->model())) {
@@ -1145,5 +1234,7 @@ void ItemView::collapseToLevel()
         return treeView->collapseToLevel(searchResetLevel, searchIndex);
     } else if(Mode_GroupedTree==mode) {
         return groupedView->collapseToLevel(searchResetLevel, searchIndex);
+    } else if(Mode_Table==mode) {
+        return tableView->collapseToLevel(searchResetLevel, searchIndex);
     }
 }

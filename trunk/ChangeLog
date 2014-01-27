@@ -99,6 +99,7 @@
 60. Fix albumsview cover size when set to a tree style and Cantata is
     restarted.
 61. Add 'Add To Playlist' menu item to playlists page.
+62. Add 'Table' style view for playlists.
 
 1.2.2
 -----

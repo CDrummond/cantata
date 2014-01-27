@@ -26,7 +26,7 @@
 #include <QStyle>
 #include <QStyledItemDelegate>
 
-static void drawLine(QPainter *p, const QRect &r, const QColor &color, bool fadeStart, bool fadeEnd)
+void BasicItemDelegate::drawLine(QPainter *p, const QRect &r, const QColor &color, bool fadeStart, bool fadeEnd)
 {
     static const double constAlpha=0.1;
     QColor col(color);

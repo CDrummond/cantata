@@ -26,6 +26,7 @@
 #include "mpdstatus.h"
 #include "song.h"
 #include "actionitemdelegate.h"
+#include "basicitemdelegate.h"
 #include "itemview.h"
 #include "config.h"
 #include "localize.h"
@@ -441,7 +442,7 @@ public:
         if (mouseOver) {
             drawIcons(painter, option.rect, true, rtl, AlbumHeader==type || isCollection ? AP_HBottom : AP_HMiddle, index);
         }
-        drawDivider(painter, option.rect, col);
+        BasicItemDelegate::drawLine(painter, option.rect, col);
         painter->restore();
     }
 

@@ -27,9 +27,11 @@
 #include <QModelIndex>
 #include <QMimeData>
 #include <QMenu>
+#include <QFont>
 #include "config.h"
 #include "playlistsmodel.h"
 #include "playlistsproxymodel.h"
+#include "playqueuemodel.h"
 #include "itemview.h"
 #include "qtplural.h"
 #include "groupedview.h"
@@ -44,10 +46,26 @@ K_GLOBAL_STATIC(PlaylistsModel, instance)
 #include "mpdconnection.h"
 #include "playqueuemodel.h"
 #include "icons.h"
+#ifdef ENABLE_HTTP_SERVER
+#include "httpserver.h"
+#endif
 
 #if defined ENABLE_MODEL_TEST
 #include "modeltest.h"
 #endif
+
+QString PlaylistsModel::headerText(int col)
+{
+    switch (col) {
+    case COL_TITLE:  return PlayQueueModel::headerText(PlayQueueModel::COL_TITLE);
+    case COL_ARTIST: return PlayQueueModel::headerText(PlayQueueModel::COL_ARTIST);
+    case COL_ALBUM:  return PlayQueueModel::headerText(PlayQueueModel::COL_ALBUM);
+    case COL_LENGTH: return PlayQueueModel::headerText(PlayQueueModel::COL_LENGTH);
+    case COL_YEAR:   return PlayQueueModel::headerText(PlayQueueModel::COL_YEAR);
+    case COL_GENRE:  return PlayQueueModel::headerText(PlayQueueModel::COL_GENRE);
+    default:         return QString();
+    }
+}
 
 PlaylistsModel * PlaylistsModel::self()
 {
@@ -68,6 +86,7 @@ PlaylistsModel * PlaylistsModel::self()
 PlaylistsModel::PlaylistsModel(QObject *parent)
     : ActionModel(parent)
     , enabled(true)
+    , multiCol(false)
     , itemMenu(0)
     , dropAdjust(0)
 {
@@ -93,11 +112,6 @@ PlaylistsModel::~PlaylistsModel()
 {
     itemMenu->deleteLater();
     itemMenu=0;
-}
-
-QVariant PlaylistsModel::headerData(int /*section*/, Qt::Orientation /*orientation*/, int /*role*/) const
-{
-    return QVariant();
 }
 
 int PlaylistsModel::rowCount(const QModelIndex &index) const
@@ -179,10 +193,47 @@ QModelIndex PlaylistsModel::index(int row, int col, const QModelIndex &parent) c
     return row<items.count() ? createIndex(row, col, items.at(row)) : QModelIndex();
 }
 
+QVariant PlaylistsModel::headerData(int section, Qt::Orientation orientation, int role) const
+{
+    if (Qt::Horizontal==orientation) {
+        if (Qt::DisplayRole==role) {
+            return headerText(section);
+        } else if (Qt::TextAlignmentRole==role) {
+            switch (section) {
+            case COL_TITLE:
+            case COL_ARTIST:
+            case COL_ALBUM:
+            case COL_GENRE:
+            default:
+                return int(Qt::AlignVCenter|Qt::AlignLeft);
+            case COL_LENGTH:
+            case COL_YEAR:
+                return int(Qt::AlignVCenter|Qt::AlignRight);
+            }
+        }
+    }
+
+    return QVariant();
+}
+
 QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
 {
     if (!index.isValid()) {
         return QVariant();
+    }
+
+    if (Qt::TextAlignmentRole==role) {
+        switch (index.column()) {
+        case COL_TITLE:
+        case COL_ARTIST:
+        case COL_ALBUM:
+        case COL_GENRE:
+        default:
+            return int(Qt::AlignVCenter|Qt::AlignLeft);
+        case COL_LENGTH:
+        case COL_YEAR:
+            return int(Qt::AlignVCenter|Qt::AlignRight);
+        }
     }
 
     Item *item=static_cast<Item *>(index.internalPointer());
@@ -213,7 +264,30 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
         case GroupedView::Role_CurrentStatus:
         case GroupedView::Role_Status:
             return (int)GroupedView::State_Default;
+        case Qt::FontRole:
+            if (multiCol) {
+                QFont font;
+                font.setBold(true);
+                return font;
+            }
+            return QVariant();
         case Qt::DisplayRole:
+            if (multiCol) {
+                switch (index.column()) {
+                case COL_TITLE:
+                    return pl->visibleName();
+                case COL_ARTIST:
+                case COL_ALBUM:
+                    return QVariant();
+                case COL_LENGTH:
+                    return pl->loaded ? Song::formattedTime(pl->totalTime()) : QVariant();
+                case COL_YEAR:
+                case COL_GENRE:
+                    return QVariant();
+                default:
+                    break;
+                }
+            }
             return pl->visibleName();
         case Qt::ToolTipRole:
             if (!pl->loaded) {
@@ -229,7 +303,7 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
                     QTP_TRACKS_DURATION_STR(pl->songs.count(), Song::formattedTime(pl->totalTime()));
                     #endif
         case Qt::DecorationRole:
-            return pl->isSmartPlaylist ? Icons::self()->dynamicRuleIcon : Icons::self()->playlistIcon;
+            return multiCol ? QVariant() : (pl->isSmartPlaylist ? Icons::self()->dynamicRuleIcon : Icons::self()->playlistIcon);
         case ItemView::Role_SubText:
             if (!pl->loaded) {
                 pl->loaded=true;
@@ -305,6 +379,26 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
         case GroupedView::Role_Status:
             return (int)GroupedView::State_Default;
         case Qt::DisplayRole:
+            if (multiCol) {
+                switch (index.column()) {
+                case COL_TITLE:
+                    return s->trackAndTitleStr(Song::isVariousArtists(s->albumArtist()));
+                case COL_ARTIST:
+                    return s->artist.isEmpty() ? i18n("Unknown") : s->artist;
+                case COL_ALBUM:
+                    return s->album.isEmpty() && !s->name.isEmpty() && s->isStream() ? s->name : s->album;
+                case COL_LENGTH:
+                    return Song::formattedTime(s->time);
+                case COL_YEAR:
+                    if (s->year <= 0)
+                        return QVariant();
+                    return s->year;
+                case COL_GENRE:
+                    return s->genre;
+                default:
+                    break;
+                }
+            }
         case Qt::ToolTipRole: {
             QString text=s->entryName();
 
@@ -318,7 +412,7 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
             return text;
         }
         case Qt::DecorationRole:
-            return s->title.isEmpty() ? Icons::self()->streamIcon : Icons::self()->audioFileIcon;
+            return multiCol ? QVariant() : (s->title.isEmpty() ? Icons::self()->streamIcon : Icons::self()->audioFileIcon);
         case ItemView::Role_MainText:
             return s->title.isEmpty() ? s->file : s->title;
         case ItemView::Role_SubText:

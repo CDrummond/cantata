@@ -31,10 +31,124 @@
 #include "stdactions.h"
 #include "actioncollection.h"
 #include "mpdconnection.h"
+#include "settings.h"
 #include <QMenu>
 #ifndef ENABLE_KDE_SUPPORT
 #include <QStyle>
 #endif
+
+static inline void setResizeMode(QHeaderView *hdr, int idx, QHeaderView::ResizeMode mode)
+{
+    #if QT_VERSION < 0x050000
+    hdr->setResizeMode(idx, mode);
+    #else
+    hdr->setSectionResizeMode(idx, mode);
+    #endif
+}
+
+static inline void setResizeMode(QHeaderView *hdr, QHeaderView::ResizeMode mode)
+{
+    #if QT_VERSION < 0x050000
+    hdr->setResizeMode(mode);
+    #else
+    hdr->setSectionResizeMode(mode);
+    #endif
+}
+
+PlaylistTableView::PlaylistTableView(QWidget *p)
+    : TableView(p)
+    , menu(0)
+{
+    setContextMenuPolicy(Qt::CustomContextMenu);
+    setAcceptDrops(true);
+    setDragDropOverwriteMode(false);
+    setDragDropMode(QAbstractItemView::DragDrop);
+    setSelectionMode(QAbstractItemView::ExtendedSelection);
+    setDropIndicatorShown(true);
+    setUniformRowHeights(true);
+    setUseSimpleDelegate();
+}
+
+void PlaylistTableView::initHeader()
+{
+    if (!model()) {
+        return;
+    }
+
+    QHeaderView *hdr=header();
+    if (!menu) {
+        QFont f(font());
+        f.setBold(true);
+        QFontMetrics fm(f);
+        setResizeMode(hdr, QHeaderView::Interactive);
+        hdr->setContextMenuPolicy(Qt::CustomContextMenu);
+        hdr->resizeSection(PlaylistsModel::COL_YEAR, fm.width("99999"));
+        setResizeMode(hdr, PlaylistsModel::COL_TITLE, QHeaderView::Stretch);
+        setResizeMode(hdr, PlaylistsModel::COL_ARTIST, QHeaderView::Interactive);
+        setResizeMode(hdr, PlaylistsModel::COL_ALBUM, QHeaderView::Interactive);
+        setResizeMode(hdr, PlaylistsModel::COL_GENRE, QHeaderView::Interactive);
+        setResizeMode(hdr, PlaylistsModel::COL_LENGTH, QHeaderView::ResizeToContents);
+        setResizeMode(hdr, PlaylistsModel::COL_YEAR, QHeaderView::Fixed);
+        hdr->setStretchLastSection(false);
+        connect(hdr, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showMenu()));
+    }
+
+    //Restore state
+    QByteArray state=Settings::self()->playlistHeaderState();
+    QList<int> hideAble;
+    hideAble << PlaylistsModel::COL_YEAR << PlaylistsModel::COL_GENRE;
+
+    //Restore
+    if (state.isEmpty()) {
+        hdr->setSectionHidden(PlaylistsModel::COL_YEAR, true);
+        hdr->setSectionHidden(PlaylistsModel::COL_GENRE, true);
+    } else {
+        hdr->restoreState(state);
+
+        foreach (int col, hideAble) {
+            if (hdr->isSectionHidden(col) || 0==hdr->sectionSize(col)) {
+                hdr->setSectionHidden(col, true);
+            }
+        }
+    }
+
+    if (!menu) {
+        menu = new QMenu(this);
+
+        foreach (int col, hideAble) {
+            QAction *act=new QAction(PlaylistsModel::headerText(col), menu);
+            act->setCheckable(true);
+            act->setChecked(!hdr->isSectionHidden(col));
+            menu->addAction(act);
+            act->setData(col);
+            connect(act, SIGNAL(toggled(bool)), this, SLOT(toggleHeaderItem(bool)));
+        }
+    }
+}
+
+void PlaylistTableView::saveHeader()
+{
+    if (menu && model()) {
+        Settings::self()->savePlaylistHeaderState(header()->saveState());
+    }
+}
+
+void PlaylistTableView::showMenu()
+{
+    menu->exec(QCursor::pos());
+}
+
+void PlaylistTableView::toggleHeaderItem(bool visible)
+{
+    QAction *act=qobject_cast<QAction *>(sender());
+
+    if (act) {
+        int index=act->data().toInt();
+        if (-1!=index) {
+            header()->setSectionHidden(index, !visible);
+        }
+    }
+}
 
 PlaylistsPage::PlaylistsPage(QWidget *p)
     : QWidget(p)
@@ -48,6 +162,7 @@ PlaylistsPage::PlaylistsPage(QWidget *p)
     connect(PlaylistsModel::self(), SIGNAL(updateGenres(const QSet<QString> &)), genreCombo, SLOT(update(const QSet<QString> &)));
 
     view->allowGroupedView();
+    view->allowTableView(new PlaylistTableView(this));
     view->addAction(StdActions::self()->addToPlayQueueAction);
     view->addAction(StdActions::self()->replacePlayQueueAction);
     view->addAction(StdActions::self()->addWithPriorityAction);
@@ -150,6 +265,7 @@ void PlaylistsPage::addSelectionToPlaylist(const QString &name, bool replace, qu
 void PlaylistsPage::setView(int mode)
 {
     //bool diff=view->viewMode()!=mode;
+    PlaylistsModel::self()->setMultiColumn(ItemView::Mode_Table==mode);
     view->setMode((ItemView::Mode)mode);
     //if (diff) {
     //    clear();

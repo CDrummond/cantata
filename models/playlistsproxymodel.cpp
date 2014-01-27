@@ -89,9 +89,3 @@ bool PlaylistsProxyModel::lessThan(const QModelIndex &left, const QModelIndex &r
 
     return false;
 }
-
-int PlaylistsProxyModel::columnCount(const QModelIndex &parent) const
-{
-    Q_UNUSED(parent)
-    return PlaylistsModel::self()->columnCount(QModelIndex());
-}

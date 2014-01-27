@@ -102,7 +102,7 @@ VolumeSlider::VolumeSlider(QWidget *p)
     setStyle(new ProxyStyle());
     setStyleSheet(QString("QSlider::groove:horizontal {border: 0px;} "
                           "QSlider::sub-page:horizontal {border: 0px;} "
-                          "QSlider::handle:horizontal {width: 1px; height:%1px; margin:0;}").arg(h));
+                          "QSlider::handle:horizontal {width: 0px; height:0px; margin:0;}"));
     textCol=clampColor(palette().color(QPalette::Active, QPalette::Text));
     generatePixmaps();
 }

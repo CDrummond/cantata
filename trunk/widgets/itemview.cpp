@@ -619,6 +619,7 @@ void ItemView::setMode(Mode m)
             tableView->saveHeader();
             tableView->setHidden(true);
             tableView->setModel(0);
+            tableView->resize(16, tableView->height());
         }
         treeView->setModel(itemModel);
         treeView->setHidden(false);
@@ -633,12 +634,14 @@ void ItemView::setMode(Mode m)
             tableView->saveHeader();
             tableView->setHidden(true);
             tableView->setModel(0);
+            tableView->resize(16, tableView->height());
         }
         groupedView->setHidden(false);
         treeView->setHidden(true);
         groupedView->setModel(itemModel);
         itemModel->setRootIndex(QModelIndex());
     } else if (Mode_Table==mode) {
+        int w=view()->width();
         treeView->setModel(0);
         listView->setModel(0);
         if (groupedView) {
@@ -650,6 +653,7 @@ void ItemView::setMode(Mode m)
         tableView->setModel(itemModel);
         tableView->initHeader();
         itemModel->setRootIndex(QModelIndex());
+        tableView->resize(w, tableView->height());
     } else {
         treeView->setModel(0);
         if (groupedView) {
@@ -658,6 +662,7 @@ void ItemView::setMode(Mode m)
         if (tableView) {
             tableView->saveHeader();
             tableView->setModel(0);
+            tableView->resize(16, tableView->height());
         }
         listView->setModel(itemModel);
         setLevel(0);

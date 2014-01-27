@@ -27,6 +27,7 @@
 #include "covers.h"
 #include "proxymodel.h"
 #include "actionitemdelegate.h"
+#include "basicitemdelegate.h"
 #include "actionmodel.h"
 #include "localize.h"
 #include "icon.h"
@@ -329,7 +330,7 @@ public:
             drawIcons(painter, AP_VTop==actionPos ? r2 : r, true, rtl, actionPos, index);
         }
         if (!iconMode) {
-            drawDivider(painter, option.rect, color);
+            BasicItemDelegate::drawLine(painter, option.rect, color);
         }
         painter->restore();
     }
@@ -439,8 +440,8 @@ public:
         if ((option.state & QStyle::State_MouseOver)) {
             drawIcons(painter, option.rect, true, rtl, AP_HMiddle, index);
         }
-        drawDivider(painter, option.rect, option.palette.color(active ? QPalette::Active : QPalette::Inactive,
-                                                               selected ? QPalette::HighlightedText : QPalette::Text));
+        BasicItemDelegate::drawLine(painter, option.rect, option.palette.color(active ? QPalette::Active : QPalette::Inactive,
+                                                                               selected ? QPalette::HighlightedText : QPalette::Text));
     }
 
     void setSimple(bool s) { simpleStyle=s; }
@@ -449,6 +450,62 @@ public:
     bool simpleStyle;
     bool noIcons;
 };
+
+#if 0
+// NOTE: was to be used for table style playlists page, but actions overlap text in last column :-(
+class TableDelegate : public ActionItemDelegate
+{
+public:
+    TableDelegate(QAbstractItemView *p)
+        : ActionItemDelegate(p)
+    {
+    }
+
+    virtual ~TableDelegate()
+    {
+    }
+
+    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
+    {
+        if (!index.isValid()) {
+            return;
+        }
+        bool selected=option.state&QStyle::State_Selected;
+        bool active=option.state&QStyle::State_Active;
+        QStyledItemDelegate::paint(painter, option, index);
+        QColor col(option.palette.color(active ? QPalette::Active : QPalette::Inactive,
+                                        selected ? QPalette::HighlightedText : QPalette::Text));
+
+
+        if (4==option.version) {
+            bool drawActions=false;
+            const QStyleOptionViewItemV4 &v4=(QStyleOptionViewItemV4 &)option;
+
+            switch (v4.viewItemPosition) {
+            case QStyleOptionViewItemV4::Beginning:
+                BasicItemDelegate::drawLine(painter, option.rect, col, true, false);
+                break;
+            case QStyleOptionViewItemV4::Middle:
+                BasicItemDelegate::drawLine(painter, option.rect, col, false, false);
+                break;
+            case QStyleOptionViewItemV4::End:
+                BasicItemDelegate::drawLine(painter, option.rect, col, false, true);
+                drawActions=true;
+                break;
+            case QStyleOptionViewItemV4::Invalid:
+            case QStyleOptionViewItemV4::OnlyOne:
+                drawActions=true;
+                BasicItemDelegate::drawLine(painter, option.rect, col, true, true);
+            }
+            if (drawActions && underMouse && option.state&QStyle::State_MouseOver) {
+                drawIcons(painter, option.rect, true, Qt::RightToLeft==QApplication::layoutDirection(), AP_HMiddle, index);
+            }
+        } else {
+            BasicItemDelegate::drawLine(painter, option.rect, col, false, false);
+        }
+    }
+};
+#endif
 
 ItemView::Mode ItemView::toMode(const QString &str)
 {
@@ -568,6 +625,7 @@ void ItemView::allowTableView(TableView *v)
 {
     if (!tableView) {
         tableView=v;
+//        tableView->setItemDelegate(new TableDelegate(v));
         tableView->setParent(stackedWidget);
         // Some styles, eg Cleanlooks/Plastique require that we explicitly set mouse tracking on the treeview.
         tableView->setAttribute(Qt::WA_MouseTracking, true);

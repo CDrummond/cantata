@@ -64,6 +64,7 @@ ViewEventHandler::ViewEventHandler(ActionItemDelegate *d, QAbstractItemView *v)
     : QObject(v)
     , delegate(d)
     , view(v)
+    , interceptBackspace(qobject_cast<ListView *>(view))
 {
 }
 
@@ -82,10 +83,12 @@ bool ViewEventHandler::eventFilter(QObject *obj, QEvent *event)
         }
     }
 
-    if (view->hasFocus() && QEvent::KeyRelease==event->type()) {
-        QKeyEvent *keyEvent=static_cast<QKeyEvent *>(event);
-        if (Qt::Key_Backspace==keyEvent->key() && Qt::NoModifier==keyEvent->modifiers()) {
-            emit escPressed();
+    if (interceptBackspace && view->hasFocus()) {
+        if (QEvent::KeyPress==event->type()) {
+            QKeyEvent *keyEvent=static_cast<QKeyEvent *>(event);
+            if (Qt::Key_Backspace==keyEvent->key() && Qt::NoModifier==keyEvent->modifiers()) {
+                emit escPressed();
+            }
         }
     }
 

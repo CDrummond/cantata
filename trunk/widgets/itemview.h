@@ -54,6 +54,7 @@ protected:
 protected:
     ActionItemDelegate *delegate;
     QAbstractItemView *view;
+    bool interceptBackspace;
 };
 
 class ListViewEventHandler : public ViewEventHandler

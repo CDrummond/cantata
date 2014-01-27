@@ -540,6 +540,8 @@ QString ItemView::modeStr(Mode m)
     }
 }
 
+static const char *constPageProp="page";
+
 ItemView::ItemView(QWidget *p)
     : QWidget(p)
     , searchTimer(0)
@@ -607,13 +609,18 @@ ItemView::~ItemView()
 void ItemView::allowGroupedView()
 {
     if (!groupedView) {
-        groupedView=new GroupedView(stackedWidget);
+        QWidget *page = new QWidget();
+        QVBoxLayout *pageLayout = new QVBoxLayout(page);
+        pageLayout->setContentsMargins(0, 0, 0, 0);
+        groupedView=new GroupedView(page);
+        pageLayout->addWidget(groupedView);
+        stackedWidget->addWidget(page);
+        groupedView->setProperty(constPageProp, stackedWidget->count()-1);
         // Some styles, eg Cleanlooks/Plastique require that we explicitly set mouse tracking on the treeview.
         groupedView->setAttribute(Qt::WA_MouseTracking, true);
         groupedView->installEventFilter(new ViewEventHandler(qobject_cast<ActionItemDelegate *>(groupedView->itemDelegate()), groupedView));
         groupedView->setAutoExpand(false);
         groupedView->setMultiLevel(true);
-        treeLayout->addWidget(groupedView);
         connect(groupedView, SIGNAL(itemsSelected(bool)), this, SIGNAL(itemsSelected(bool)));
         connect(groupedView, SIGNAL(itemActivated(const QModelIndex &)), this, SLOT(itemActivated(const QModelIndex &)));
         connect(groupedView, SIGNAL(doubleClicked(const QModelIndex &)), this, SIGNAL(doubleClicked(const QModelIndex &)));
@@ -625,12 +632,17 @@ void ItemView::allowTableView(TableView *v)
 {
     if (!tableView) {
         tableView=v;
+        QWidget *page = new QWidget();
+        QVBoxLayout *pageLayout = new QVBoxLayout(page);
+        pageLayout->setContentsMargins(0, 0, 0, 0);
+        tableView->setParent(page);
+        pageLayout->addWidget(tableView);
+        stackedWidget->addWidget(page);
+        tableView->setProperty(constPageProp, stackedWidget->count()-1);
 //        tableView->setItemDelegate(new TableDelegate(v));
-        tableView->setParent(stackedWidget);
         // Some styles, eg Cleanlooks/Plastique require that we explicitly set mouse tracking on the treeview.
         tableView->setAttribute(Qt::WA_MouseTracking, true);
-        tableView->installEventFilter(new ViewEventHandler(qobject_cast<ActionItemDelegate *>(tableView->itemDelegate()), tableView));
-        treeLayout->addWidget(tableView);
+//        tableView->installEventFilter(new ViewEventHandler(0, tableView));
         connect(tableView, SIGNAL(itemsSelected(bool)), this, SIGNAL(itemsSelected(bool)));
         connect(tableView, SIGNAL(itemActivated(const QModelIndex &)), this, SLOT(itemActivated(const QModelIndex &)));
         connect(tableView, SIGNAL(doubleClicked(const QModelIndex &)), this, SIGNAL(doubleClicked(const QModelIndex &)));
@@ -667,17 +679,15 @@ void ItemView::setMode(Mode m)
 
     mode=m;
     searchWidget->setText(QString());
+    int stackIndex=0;
     if (usingTreeView()) {
         listView->setModel(0);
         if (groupedView) {
-            groupedView->setHidden(true);
             groupedView->setModel(0);
         }
         if (tableView) {
             tableView->saveHeader();
-            tableView->setHidden(true);
             tableView->setModel(0);
-            tableView->resize(16, tableView->height());
         }
         treeView->setModel(itemModel);
         treeView->setHidden(false);
@@ -690,20 +700,18 @@ void ItemView::setMode(Mode m)
         listView->setModel(0);
         if (tableView) {
             tableView->saveHeader();
-            tableView->setHidden(true);
             tableView->setModel(0);
-            tableView->resize(16, tableView->height());
         }
         groupedView->setHidden(false);
         treeView->setHidden(true);
         groupedView->setModel(itemModel);
         itemModel->setRootIndex(QModelIndex());
+        stackIndex=groupedView->property(constPageProp).toInt();
     } else if (Mode_Table==mode) {
         int w=view()->width();
         treeView->setModel(0);
         listView->setModel(0);
         if (groupedView) {
-            groupedView->setHidden(true);
             groupedView->setModel(0);
         }
         tableView->setHidden(false);
@@ -712,7 +720,9 @@ void ItemView::setMode(Mode m)
         tableView->initHeader();
         itemModel->setRootIndex(QModelIndex());
         tableView->resize(w, tableView->height());
+        stackIndex=tableView->property(constPageProp).toInt();
     } else {
+        stackIndex=1;
         treeView->setModel(0);
         if (groupedView) {
             groupedView->setModel(0);
@@ -720,7 +730,6 @@ void ItemView::setMode(Mode m)
         if (tableView) {
             tableView->saveHeader();
             tableView->setModel(0);
-            tableView->resize(16, tableView->height());
         }
         listView->setModel(itemModel);
         setLevel(0);
@@ -736,7 +745,7 @@ void ItemView::setMode(Mode m)
         }
     }
 
-    stackedWidget->setCurrentIndex(mode<=Mode_Table ? 0 : 1);
+    stackedWidget->setCurrentIndex(stackIndex);
     if (spinner) {
         spinner->setWidget(view());
         if (spinner->isActive()) {

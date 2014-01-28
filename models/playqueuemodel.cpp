@@ -369,8 +369,9 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
         case COL_ALBUM:
             return song.album.isEmpty() && !song.name.isEmpty() && song.isStream() ? song.name : song.album;
         case COL_TRACK:
-            if (song.track <= 0)
+            if (song.track <= 0) {
                 return QVariant();
+            }
             return song.track;
         case COL_LENGTH:
             return Song::formattedTime(song.time);
@@ -379,8 +380,9 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
                 return QVariant();
             return song.disc;
         case COL_YEAR:
-            if (song.year <= 0)
+            if (song.year <= 0) {
                 return QVariant();
+            }
             return song.year;
         case COL_GENRE:
             return song.genre;

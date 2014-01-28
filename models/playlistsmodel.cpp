@@ -390,8 +390,9 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
                 case COL_LENGTH:
                     return Song::formattedTime(s->time);
                 case COL_YEAR:
-                    if (s->year <= 0)
+                    if (s->year <= 0) {
                         return QVariant();
+                    }
                     return s->year;
                 case COL_GENRE:
                     return s->genre;

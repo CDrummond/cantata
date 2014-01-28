@@ -1,6 +1,6 @@
 - Qt5 port
   - Fix raising of mainwindow via dbus. (Qt5 no longer has QX11Info)
-  - Qt 5.2's QLineEdit has clearbutton functionality. Rherefore, Cantata should
+  - Qt 5.2's QLineEdit has clearbutton functionality. Therefore, Cantata should
     just use QLineEdit for Qt>=5.2
   - After KDE Frameworks 5 is released, add CMake option to use system Solid
     libraries.
@@ -8,7 +8,7 @@
 - Windows port
   - CMake scripts not working
   - Build QtNetwork with SSL support? libeay32.dll and libssl32.dll will also
-    need to be supplied with instaler.
+    need to be supplied with installer.
   - Port to Qt5. With Qt5.2 use QWinThumbnailToolButton 
 
 - MacOS port
@@ -38,8 +38,8 @@
   - CD-Text?
   - Fix time-remaining calculation in action dialog.
   - Seek support for AudioCDs. Initial implementation works sometimes, but
-    other times the song is re-started. Not in build due to beeing too flakey.
-  - Possible issues wth UDisks2, might not be able to get block device
+    other times the song is re-started. Not in build due to being too flaky.
+  - Possible issues with UDisks2, might not be able to get block device
     (e.g. /dev/sr0)?
   - Playback from MTP devices.
 

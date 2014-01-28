@@ -105,6 +105,7 @@
 63. Clicking on title in list/icon view navigates back.
 64. Bundle own copy of symblic media icons - so that these can be recoloured
     to match current theme.
+64. Fix searches containing more than 4 words.
 
 1.2.2
 -----

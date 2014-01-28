@@ -62,6 +62,7 @@ public:
     void setUseSimpleDelegate();
     void setBackgroundImage(const QIcon &icon);
     void paintEvent(QPaintEvent *e);
+    void setForceSingleColumn(bool f) { forceSingleColumn=f; }
 
 private Q_SLOTS:
     void correctSelection();
@@ -73,6 +74,7 @@ Q_SIGNALS:
     void itemActivated(const QModelIndex &index); // Only emitted if view is set to single-click
 
 private:
+    bool forceSingleColumn;
     bool alwaysAllowMenu;
     QPixmap bgnd;
 };

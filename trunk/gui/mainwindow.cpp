@@ -165,6 +165,7 @@ static int nextKey(int &key)
     return k;
 }
 
+#ifndef Q_OS_WIN
 class ToolBarProxyStyle : public QProxyStyle
 {
 public:
@@ -176,6 +177,7 @@ public:
         return baseStyle()->pixelMetric(pm, o, w);
     }
 };
+#endif
 
 MainWindow::MainWindow(QWidget *parent)
     : MAIN_WINDOW_BASE_CLASS(parent)
@@ -227,10 +229,10 @@ MainWindow::MainWindow(QWidget *parent)
     #if defined Q_OS_MAC && QT_VERSION>=0x050000
     QMacNativeToolBar *topToolBar = new QMacNativeToolBar(this);
     topToolBar->showInWindowForWidget(this);
-    #else
+    #else // defined Q_OS_MAC && QT_VERSION>=0x050000
     setUnifiedTitleAndToolBarOnMac(true);
     QToolBar *topToolBar = addToolBar("ToolBar");
-    #endif
+    #endif // defined Q_OS_MAC && QT_VERSION>=0x050000
     toolbar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     topToolBar->setObjectName("MainToolBar");
     topToolBar->addWidget(toolbar);
@@ -238,9 +240,9 @@ MainWindow::MainWindow(QWidget *parent)
     topToolBar->setContextMenuPolicy(Qt::PreventContextMenu);
     #ifndef Q_OS_MAC
     GtkStyle::applyTheme(topToolBar);
-    #endif
+    #endif // Q_OS_MAC
     topToolBar->setStyle(new ToolBarProxyStyle);
-    #endif
+    #endif // Q_OS_WIN
 
     Icons::self()->self()->initToolbarIcons(artistLabel->palette().color(QPalette::Foreground), GtkStyle::useLightIcons());
     Icons::self()->initSidebarIcons();

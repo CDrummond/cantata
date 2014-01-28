@@ -574,6 +574,9 @@ ItemView::ItemView(QWidget *p)
     sep->setSeparator(true);
     listView->addAction(sep);
     Icon::init(backButton);
+    Icon::init(homeButton);
+    title->installEventFilter(this);
+    title->setAttribute(Qt::WA_Hover, true);
     treeView->setPageDefaults();
     // Some styles, eg Cleanlooks/Plastique require that we explicitly set mouse tracking on the treeview.
     treeView->setAttribute(Qt::WA_MouseTracking);
@@ -1134,6 +1137,36 @@ void ItemView::setSearchCategories(const QList<QPair<QString, QString> > &catego
 void ItemView::setSearchCategory(const QString &id)
 {
     searchWidget->setCategory(id);
+}
+
+bool ItemView::eventFilter(QObject *o, QEvent *e)
+{
+    if (o==title) {
+        static const char * constPressesProperty="pressed";
+        switch (e->type()) {
+        case QEvent::MouseButtonPress:
+            if (Qt::NoModifier==static_cast<QMouseEvent *>(e)->modifiers() && Qt::LeftButton==static_cast<QMouseEvent *>(e)->button()) {
+                title->setProperty(constPressesProperty, true);
+            }
+            break;
+        case QEvent::MouseButtonRelease:
+            if (title->property(constPressesProperty).toBool()) {
+                backActivated();
+            }
+            title->setProperty(constPressesProperty, false);
+            break;
+        case QEvent::HoverEnter: {
+            QColor col=palette().highlight().color();
+            title->setStyleSheet(QString("QLabel { color : rgb(%1, %2, %3); }").arg(col.red()).arg(col.green()).arg(col.blue()));
+            break;
+        }
+        case QEvent::HoverLeave:
+            title->setStyleSheet(QString());
+        default:
+            break;
+        }
+    }
+    return QWidget::eventFilter(o, e);
 }
 
 void ItemView::showSpinner(bool v)

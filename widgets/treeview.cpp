@@ -90,6 +90,7 @@ bool TreeView::getForceSingleClick()
 
 TreeView::TreeView(QWidget *parent, bool menuAlwaysAllowed)
         : QTreeView(parent)
+        , forceSingleColumn(false)
         , alwaysAllowMenu(menuAlwaysAllowed)
 {
     setDragEnabled(true);
@@ -121,6 +122,7 @@ void TreeView::setPageDefaults()
     setDragDropMode(QAbstractItemView::DragOnly);
     setSortingEnabled(true);
     setAnimated(true);
+    forceSingleColumn=true;
 }
 
 void TreeView::setExpandOnClick()
@@ -356,6 +358,16 @@ void TreeView::setModel(QAbstractItemModel *m)
 {
     QAbstractItemModel *old=model();
     QTreeView::setModel(m);
+
+    if (forceSingleColumn && m) {
+        int columnCount=m->columnCount();
+        if (columnCount>1) {
+            QHeaderView *hdr=header();
+            for (int i=1; i<columnCount; ++i) {
+                hdr->setSectionHidden(i, true);
+            }
+        }
+    }
 
     if (old) {
         disconnect(old, SIGNAL(layoutChanged()), this, SLOT(correctSelection()));

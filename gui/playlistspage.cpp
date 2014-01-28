@@ -162,7 +162,7 @@ PlaylistsPage::PlaylistsPage(QWidget *p)
     connect(PlaylistsModel::self(), SIGNAL(updateGenres(const QSet<QString> &)), genreCombo, SLOT(update(const QSet<QString> &)));
 
     view->allowGroupedView();
-    view->allowTableView(new PlaylistTableView(this));
+    view->allowTableView(new PlaylistTableView(view));
     view->addAction(StdActions::self()->addToPlayQueueAction);
     view->addAction(StdActions::self()->replacePlayQueueAction);
     view->addAction(StdActions::self()->addWithPriorityAction);
@@ -273,15 +273,8 @@ void PlaylistsPage::addSelectionToPlaylist(const QString &name, bool replace, qu
 void PlaylistsPage::setView(int mode)
 {
     //bool diff=view->viewMode()!=mode;
-    bool needToReset=ItemView::Mode_Table==view->viewMode() || ItemView::Mode_Table==mode;
-    if (needToReset) {
-        proxy.setSourceModel(0);
-    }
     PlaylistsModel::self()->setMultiColumn(ItemView::Mode_Table==mode);
     view->setMode((ItemView::Mode)mode);
-    if (needToReset) {
-        proxy.setSourceModel(PlaylistsModel::self());
-    }
     //if (diff) {
     //    clear();
     //    refresh();

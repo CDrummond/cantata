@@ -43,6 +43,7 @@
 #cmakedefine QT_QTDBUS_FOUND 1
 #cmakedefine ENABLE_UNCACHED_MTP 1
 #cmakedefine ENABLE_HTTP_SERVER 1
+#cmakedefine ENABLE_MODEL_TEST 1
 
 #endif
 

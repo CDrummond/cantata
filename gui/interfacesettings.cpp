@@ -408,6 +408,13 @@ void InterfaceSettings::showEvent(QShowEvent *e)
 }
 #endif
 
+void InterfaceSettings::showPage(const QString &page)
+{
+    if (QLatin1String("sidebar")==page) {
+        tabWidget->setCurrentIndex(0);
+    }
+}
+
 void InterfaceSettings::addView(const QString &v, const QString &prop)
 {
     QListWidgetItem *item=new QListWidgetItem(v, views);

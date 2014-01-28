@@ -83,7 +83,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
     pages.insert(QLatin1String("collection"), pageWidget->addPage(server, i18n("Collection"), Icons::self()->libraryIcon, i18n("Collection Settings")));
     pageWidget->addPage(playback, i18n("Playback"), Icon("media-playback-start"), i18n("Playback Settings"));
     pageWidget->addPage(files, i18n("Files"), Icons::self()->filesIcon, i18n("File Settings"));
-    pageWidget->addPage(interface, i18n("Interface"), Icon("preferences-other"), i18n("Interface Settings"));
+    pages.insert(QLatin1String("interface"), pageWidget->addPage(interface, i18n("Interface"), Icon("preferences-other"), i18n("Interface Settings")));
     #ifdef ENABLE_STREAMS
     streams = new StreamsSettings(0);
     pages.insert(QLatin1String("streams"), pageWidget->addPage(streams, i18n("Streams"), Icons::self()->radioStreamIcon, i18n("Streams Settings")));
@@ -144,8 +144,12 @@ PreferencesDialog::~PreferencesDialog()
 
 void PreferencesDialog::showPage(const QString &page)
 {
-    if (pages.contains(page)) {
-        pageWidget->setCurrentPage(pages[page]);
+    QStringList parts=page.split(QLatin1Char(':'));
+    if (pages.contains(parts.at(0))) {
+        pageWidget->setCurrentPage(pages[parts.at(0)]);
+        if (parts.count()>1 && qobject_cast<InterfaceSettings *>(pages[parts.at(0)]->widget())) {
+            static_cast<InterfaceSettings *>(pages[parts.at(0)]->widget())->showPage(parts.at(1));
+        }
     }
 }
 

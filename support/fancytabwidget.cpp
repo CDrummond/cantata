@@ -52,6 +52,7 @@
 #include <QAnimationGroup>
 #include <QPropertyAnimation>
 #include <QSignalMapper>
+#include <QMenu>
 
 static inline int sidebarSpacing(bool withText)
 {
@@ -605,6 +606,7 @@ FancyTabWidget::FancyTabWidget(QWidget* parent, bool allowContext, bool drawBord
     side_layout_(new QVBoxLayout),
     top_layout_(new QVBoxLayout),
 //     use_background_(false),
+    menu_(0),
     proxy_style_(new FancyTabProxyStyle),
     allowContext_(allowContext),
     drawBorder_(drawBorder)
@@ -783,6 +785,49 @@ void FancyTabWidget::ShowWidget(int index) {
 //void FancyTabWidget::AddBottomWidget(QWidget* widget) {
 //  top_layout_->addWidget(widget);
 //}
+
+void FancyTabWidget::contextMenuEvent(QContextMenuEvent* e) {
+  if (!allowContext_) {
+      return;
+  }
+
+  // Check we are over tab space...
+  if (Tab==(style_&Style_Mask)) {
+      if (QApplication::widgetAt(e->globalPos())!=tab_bar_) {
+          return;
+      }
+  }
+  else {
+      switch (style_&Position_Mask) {
+      case Bot:
+          if (e->pos().y()<=(side_widget_->pos().y()+(side_widget_->height()-tab_bar_->height()))) {
+              return;
+          }
+          break;
+      case Top:
+          if (e->pos().y()>(side_widget_->pos().y()+tab_bar_->height())) {
+              return;
+          }
+          break;
+      default:
+          if (Qt::RightToLeft==QApplication::layoutDirection()) {
+              if (e->pos().x()<=side_widget_->pos().x()) {
+                  return;
+              }
+          } else if (e->pos().x()>=side_widget_->rect().right()) {
+              return;
+          }
+      }
+  }
+
+  if (!menu_) {
+    menu_ = new QMenu(this);
+    QAction *act=new QAction(i18n("Configure..."), this);
+    connect(act, SIGNAL(triggered()), SIGNAL(configRequested()));
+    menu_->addAction(act);
+  }
+  menu_->popup(e->globalPos());
+}
 
 void FancyTabWidget::setStyle(int s) {
   if(s==style_ && tab_bar_) {

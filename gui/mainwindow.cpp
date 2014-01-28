@@ -868,6 +868,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(tabWidget, SIGNAL(CurrentChanged(int)), this, SLOT(currentTabChanged(int)));
     connect(tabWidget, SIGNAL(TabToggled(int)), this, SLOT(tabToggled(int)));
     connect(tabWidget, SIGNAL(styleChanged(int)), this, SLOT(sidebarModeChanged()));
+    connect(tabWidget, SIGNAL(configRequested()), this, SLOT(showSidebarPreferencesPage()));
     connect(messageWidget, SIGNAL(visible(bool)), this, SLOT(messageWidgetVisibility(bool)));
 
     readSettings();
@@ -1230,6 +1231,11 @@ bool MainWindow::canShowDialog()
         return false;
     }
     return true;
+}
+
+void MainWindow::showSidebarPreferencesPage()
+{
+    showPreferencesDialog("interface:sidebar");
 }
 
 void MainWindow::showPreferencesDialog(const QString &page)

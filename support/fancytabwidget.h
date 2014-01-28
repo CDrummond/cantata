@@ -229,6 +229,7 @@ Q_SIGNALS:
     void CurrentChanged(int index);
     void styleChanged(int style);
     void TabToggled(int index);
+    void configRequested();
 
 protected:
     void paintEvent(QPaintEvent *event);
@@ -237,6 +238,7 @@ private Q_SLOTS:
     void ShowWidget(int index);
 
 private:
+    void contextMenuEvent(QContextMenuEvent* e);
     void MakeTabBar(QTabBar::Shape shape, bool text, bool icons, bool fancy);
     int TabToIndex(int tab) const;
     int IndexToTab(int index) const { return index>=0 && index<items_.count() ? items_[index].index_ : 0; }

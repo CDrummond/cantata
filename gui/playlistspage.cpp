@@ -210,6 +210,14 @@ PlaylistsPage::~PlaylistsPage()
 {
 }
 
+void PlaylistsPage::saveConfig()
+{
+    PlaylistTableView *tv=qobject_cast<PlaylistTableView *>(view->view());
+    if (tv) {
+        tv->saveHeader();
+    }
+}
+
 void PlaylistsPage::showEvent(QShowEvent *e)
 {
     view->focusView();

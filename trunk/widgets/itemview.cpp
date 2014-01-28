@@ -612,12 +612,8 @@ ItemView::~ItemView()
 void ItemView::allowGroupedView()
 {
     if (!groupedView) {
-        QWidget *page = new QWidget();
-        QVBoxLayout *pageLayout = new QVBoxLayout(page);
-        pageLayout->setContentsMargins(0, 0, 0, 0);
-        groupedView=new GroupedView(page);
-        pageLayout->addWidget(groupedView);
-        stackedWidget->addWidget(page);
+        groupedView=new GroupedView(stackedWidget);
+        stackedWidget->addWidget(groupedView);
         groupedView->setProperty(constPageProp, stackedWidget->count()-1);
         // Some styles, eg Cleanlooks/Plastique require that we explicitly set mouse tracking on the treeview.
         groupedView->setAttribute(Qt::WA_MouseTracking, true);
@@ -635,12 +631,8 @@ void ItemView::allowTableView(TableView *v)
 {
     if (!tableView) {
         tableView=v;
-        QWidget *page = new QWidget();
-        QVBoxLayout *pageLayout = new QVBoxLayout(page);
-        pageLayout->setContentsMargins(0, 0, 0, 0);
-        tableView->setParent(page);
-        pageLayout->addWidget(tableView);
-        stackedWidget->addWidget(page);
+        tableView->setParent(stackedWidget);
+        stackedWidget->addWidget(tableView);
         tableView->setProperty(constPageProp, stackedWidget->count()-1);
 //        tableView->setItemDelegate(new TableDelegate(v));
         // Some styles, eg Cleanlooks/Plastique require that we explicitly set mouse tracking on the treeview.

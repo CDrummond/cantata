@@ -284,6 +284,10 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
                 case COL_ALBUM:
                     return QVariant();
                 case COL_LENGTH:
+                    if (!pl->loaded) {
+                        pl->loaded=true;
+                        emit playlistInfo(pl->name);
+                    }
                     return pl->loaded ? Song::formattedTime(pl->totalTime()) : QVariant();
                 case COL_YEAR:
                 case COL_GENRE:

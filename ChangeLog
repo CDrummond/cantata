@@ -103,6 +103,8 @@
 61. Add 'Add To Playlist' menu item to playlists page.
 62. Add 'Table' style view for playlists.
 63. Clicking on title in list/icon view navigates back.
+64. Bundle own copy of symblic media icons - so that these can be recoloured
+    to match current theme.
 
 1.2.2
 -----

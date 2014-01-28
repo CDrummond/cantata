@@ -308,7 +308,7 @@ static Icon createRecolourableIcon(const QString &name, const QColor &stdColor, 
 static QColor stdColor;
 static QColor highlightColor;
 
-static void updateSidebarIcon(Icon &i, const QString &name, const QColor &color, QIcon::Mode mode)
+static void updateMonSvgIcon(Icon &i, const QString &type, const QString &name, const QColor &color, QIcon::Mode mode)
 {
     QColor adjusted=color;
     int darkValue=constDarkValue;
@@ -327,12 +327,12 @@ static void updateSidebarIcon(Icon &i, const QString &name, const QColor &color,
     }
 
     if (darkValue==constDarkValue && isVeryDark(adjusted)) {
-        i.addFile(":sidebar-"+name+"-dark", QSize(), mode);
+        i.addFile(":"+type+"-"+name+"-dark", QSize(), mode);
     } else if (lightValue==constLightValue && isVeryLight(adjusted)) {
-        i.addFile(":sidebar-"+name+"-light", QSize(), mode);
+        i.addFile(":"+type+"-"+name+"-light", QSize(), mode);
     } else { // Neither black nor white, so we need to recolour...
         Icon std;
-        std.addFile(":sidebar-"+name+"-dark", QSize(), mode);
+        std.addFile(":"+type+"-"+name+"-dark", QSize(), mode);
         // Now recolour the icon!
         QList<int> sizes=QList<int>() << 16 << 22 << 32 << 48 << 64;
         QColor col=clampColor(adjusted, constDarkLimit, darkValue, constLightLimit, lightValue);
@@ -344,14 +344,24 @@ static void updateSidebarIcon(Icon &i, const QString &name, const QColor &color,
     }
 }
 
-static Icon loadSidebarIcon(const QString &name, const QColor &normal, const QColor &selected)
+static Icon loadMonoSvgIcon(const QString &type, const QString &name, const QColor &normal, const QColor &selected)
 {
     Icon i;
-    updateSidebarIcon(i, name, normal, QIcon::Normal);
+    updateMonSvgIcon(i, type, name, normal, QIcon::Normal);
     if (normal!=selected) {
-        updateSidebarIcon(i, name, selected, QIcon::Selected);
+        updateMonSvgIcon(i, type, name, selected, QIcon::Selected);
     }
     return i;
+}
+
+static Icon loadSidebarIcon(const QString &name, const QColor &normal, const QColor &selected)
+{
+    return loadMonoSvgIcon(QLatin1String("sidebar"), name, normal, selected);
+}
+
+static Icon loadMediaIcon(const QString &name, const QColor &normal, const QColor &selected)
+{
+    return loadMonoSvgIcon(QLatin1String("media"), name, normal, selected);
 }
 
 Icons::Icons()
@@ -480,25 +490,25 @@ void Icons::initSidebarIcons()
         monoSb=true;
         QColor textCol=QApplication::palette().color(QPalette::Active, QPalette::ButtonText);
         QColor highlightedTexCol=QApplication::palette().color(QPalette::Active, QPalette::HighlightedText);
-        playqueueIcon=loadSidebarIcon("playqueue", textCol, highlightedTexCol);
-        artistsIcon=loadSidebarIcon("artists", textCol, highlightedTexCol);
-        albumsIcon=loadSidebarIcon("albums", textCol, highlightedTexCol);
-        foldersIcon=loadSidebarIcon("folders", textCol, highlightedTexCol);
-        playlistsIcon=loadSidebarIcon("playlists", textCol, highlightedTexCol);
+        playqueueIcon=loadSidebarIcon(QLatin1String("playqueue"), textCol, highlightedTexCol);
+        artistsIcon=loadSidebarIcon(QLatin1String("artists"), textCol, highlightedTexCol);
+        albumsIcon=loadSidebarIcon(QLatin1String("albums"), textCol, highlightedTexCol);
+        foldersIcon=loadSidebarIcon(QLatin1String("folders"), textCol, highlightedTexCol);
+        playlistsIcon=loadSidebarIcon(QLatin1String("playlists"), textCol, highlightedTexCol);
         #ifdef ENABLE_DYNAMIC
-        dynamicIcon=loadSidebarIcon("dynamic", textCol, highlightedTexCol);
+        dynamicIcon=loadSidebarIcon(QLatin1String("dynamic"), textCol, highlightedTexCol);
         #endif
         #ifdef ENABLE_STREAMS
-        streamsIcon=loadSidebarIcon("streams", textCol, highlightedTexCol);
+        streamsIcon=loadSidebarIcon(QLatin1String("streams"), textCol, highlightedTexCol);
         #endif
         #ifdef ENABLE_ONLINE_SERVICES
-        onlineIcon=loadSidebarIcon("online", textCol, highlightedTexCol);
+        onlineIcon=loadSidebarIcon(QLatin1String("online"), textCol, highlightedTexCol);
         #endif
-        infoSidebarIcon=loadSidebarIcon("info", textCol, highlightedTexCol);
+        infoSidebarIcon=loadSidebarIcon(QLatin1String("info"), textCol, highlightedTexCol);
         #ifdef ENABLE_DEVICES_SUPPORT
-        devicesIcon=loadSidebarIcon("devices", textCol, highlightedTexCol);
+        devicesIcon=loadSidebarIcon(QLatin1String("devices"), textCol, highlightedTexCol);
         #endif
-        searchTabIcon=loadSidebarIcon("search", textCol, highlightedTexCol);
+        searchTabIcon=loadSidebarIcon(QLatin1String("search"), textCol, highlightedTexCol);
     } else {
         monoSb=false;
         playqueueIcon=Icon("media-playback-start");
@@ -577,13 +587,14 @@ void Icons::initToolbarIcons(const QColor &color, bool forceLight)
     }
 
     #if !defined Q_OS_WIN && !defined Q_OS_MAC
-    if (light && GtkStyle::useSymbolicIcons()) {
-        toolbarPrevIcon=Icon("media-skip-backward-symbolic");
-        toolbarPlayIcon=Icon("media-playback-start-symbolic");
-        toolbarPauseIcon=Icon("media-playback-pause-symbolic");
-        toolbarStopIcon=Icon("media-playback-stop-symbolic");
-        toolbarNextIcon=Icon("media-skip-forward-symbolic");
-        QColor col(196, 196, 196);
+    if (GtkStyle::useSymbolicIcons()) {
+        bool rtl=Qt::RightToLeft==QApplication::layoutDirection();
+        QColor col=light ? QColor(Qt::white) : color;
+        toolbarPrevIcon=loadMediaIcon(QLatin1String(rtl ? "prev-rtl" : "prev"), col, col);
+        toolbarPlayIcon=loadMediaIcon(QLatin1String(rtl ? "play-rtl" : "play"), col, col);
+        toolbarPauseIcon=loadMediaIcon(QLatin1String("pause"), col, col);
+        toolbarStopIcon=loadMediaIcon(QLatin1String("stop"), col, col);
+        toolbarNextIcon=loadMediaIcon(QLatin1String(rtl ? "next-rtl" : "next"), col, col);
         infoIcon=loadSidebarIcon("info", col, col);
     } else
     #endif

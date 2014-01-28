@@ -303,7 +303,7 @@ void MusicLibraryItemRoot::toXML(const QString &filename, const QDateTime &date,
     }
 
     // If saving device cache, and we have NO items, then remove cache file...
-    if (0==childCount() && date==QDateTime()) {
+    if (0==childCount() && date.date().year()<2000) {
         if (QFile::exists(filename)) {
             QFile::remove(filename);
         }

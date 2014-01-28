@@ -116,6 +116,10 @@ PlaylistsModel::~PlaylistsModel()
 
 int PlaylistsModel::rowCount(const QModelIndex &index) const
 {
+    if (index.column()>0) {
+        return 0;
+    }
+
     if (!index.isValid()) {
         return items.size();
     }

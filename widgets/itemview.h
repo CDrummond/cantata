@@ -164,6 +164,7 @@ public:
 private:
     bool usingTreeView() const { return mode<=Mode_DetailedTree; }
     bool usingListView() const { return mode>=Mode_List; }
+    bool eventFilter(QObject *o, QEvent *e);
 
 public Q_SLOTS:
     void focusSearch();

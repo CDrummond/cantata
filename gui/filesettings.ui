@@ -105,7 +105,7 @@
    <item>
     <widget class="QLabel" name="persNote_2">
      <property name="text">
-      <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; Cantata can only save backdrops and artist images within the music folder hierarchy if this is 2 levels deep. i.e. 'Artist/Album/Tracks'.&lt;/i&gt;</string>
+      <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; Cantata can only save backdrops and artist images within the music folder hierarchy if this is 2 levels deep. (i.e. 'Artist/Album/Tracks')&lt;/i&gt;</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>

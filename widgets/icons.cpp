@@ -308,7 +308,7 @@ static Icon createRecolourableIcon(const QString &name, const QColor &stdColor, 
 static QColor stdColor;
 static QColor highlightColor;
 
-static void updateMonSvgIcon(Icon &i, const QString &type, const QString &name, const QColor &color, QIcon::Mode mode)
+static void updateMonoSvgIcon(Icon &i, const QString &type, const QString &name, const QColor &color, QIcon::Mode mode)
 {
     QColor adjusted=color;
     int darkValue=constDarkValue;
@@ -347,9 +347,9 @@ static void updateMonSvgIcon(Icon &i, const QString &type, const QString &name, 
 static Icon loadMonoSvgIcon(const QString &type, const QString &name, const QColor &normal, const QColor &selected)
 {
     Icon i;
-    updateMonSvgIcon(i, type, name, normal, QIcon::Normal);
+    updateMonoSvgIcon(i, type, name, normal, QIcon::Normal);
     if (normal!=selected) {
-        updateMonSvgIcon(i, type, name, selected, QIcon::Selected);
+        updateMonoSvgIcon(i, type, name, selected, QIcon::Selected);
     }
     return i;
 }
@@ -359,10 +359,12 @@ static Icon loadSidebarIcon(const QString &name, const QColor &normal, const QCo
     return loadMonoSvgIcon(QLatin1String("sidebar"), name, normal, selected);
 }
 
+#if !defined Q_OS_WIN && !defined Q_OS_MAC
 static Icon loadMediaIcon(const QString &name, const QColor &normal, const QColor &selected)
 {
     return loadMonoSvgIcon(QLatin1String("media"), name, normal, selected);
 }
+#endif
 
 Icons::Icons()
 {

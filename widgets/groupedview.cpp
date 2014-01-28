@@ -467,6 +467,7 @@ GroupedView::GroupedView(QWidget *parent, bool isPlayQueue)
     setHeaderHidden(true);
     setRootIsDecorated(false);
     setSelectionBehavior(SelectRows);
+    setForceSingleColumn(true);
     connect(this, SIGNAL(clicked(const QModelIndex &)), this, SLOT(itemClicked(const QModelIndex &)));
     setStyleSheet("QTreeView::branch { border: 0px; }");
     GroupedViewDelegate *delegate=new GroupedViewDelegate(this);

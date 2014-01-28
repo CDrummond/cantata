@@ -254,8 +254,7 @@ static quint32 constVersion=1;
 void DirViewModel::toXML()
 {
     QString filename=cacheFileName();
-    // If saving device cache, and we have NO items, then remove cache file...
-    if ((!rootItem || 0==rootItem->childCount()) && databaseTime==QDateTime()) {
+    if ((!rootItem || 0==rootItem->childCount()) && databaseTime.date().year()<2000) {
         if (QFile::exists(filename)) {
             QFile::remove(filename);
         }
@@ -398,6 +397,7 @@ void DirViewModel::updateDirView(DirViewItemRoot *newroot, const QDateTime &dbUp
         incremental=false;
     }
 
+    databaseTime=dbUpdate;
     if (incremental) {
         QSet<QString> currentFiles=rootItem->allFiles();
         QSet<QString> updateFiles=newroot->allFiles();

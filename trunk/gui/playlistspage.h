@@ -57,6 +57,7 @@ public:
     PlaylistsPage(QWidget *p);
     virtual ~PlaylistsPage();
 
+    void saveConfig();
     void setStartClosed(bool sc);
     bool isStartClosed();
     void updateRows();

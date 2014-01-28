@@ -67,6 +67,7 @@ PlaylistTableView::PlaylistTableView(QWidget *p)
     setDropIndicatorShown(true);
     setUniformRowHeights(true);
     setUseSimpleDelegate();
+    setIndentation(fontMetrics().width(QLatin1String("XX")));
 }
 
 void PlaylistTableView::initHeader()

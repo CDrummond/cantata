@@ -19,7 +19,7 @@
     indicates MPD's volume mixer is disabled.
 11. When closing search widget, after performing a search, collapse all bar top
     level items.
-12. When adding files to playqueue, only add in batches of up to 2000 songs.
+12. When adding files to playqueue, only add in batches of up to 10000 songs.
     This 'chunk size' may be altered by setting mpdListSize in Cantata's config
     file - see README for details.
 13. Add 'Remove duplicates' functionality to play queue and play lists.
@@ -31,7 +31,8 @@
     README for more details.
 16. Add CMake option to disable building of internal HTTP server.
 17. If listallinfo fails, then attempt to retrieve music listing via lsinfo
-    calls on each folder.
+    calls on each folder. Usage of lsinfo may be forced by setting
+    alwaysUseLsInfo in Cantata's config file - see README for details.
 18. Add CMake option to disable streams, dynamic, and online services. Refer to
     INSTALL file for details.
 19. Don't use QKeySequence::Delete to detect delete key event for play queue,
@@ -44,18 +45,19 @@
     checkboxes better text and adjust config layout.
 24. Better control over 'Subscribe' button in podcast search dialog.
 25. When downloading images, don't use extension to determine file format,
-    instead look JFIF and PNG in first few data bytes.
+    instead look for JFIF and PNG in first few data bytes.
 26. Cache folder listing as well as music listing. This cache is removed if
     the folder view is removed.
 27. Also search Spotify, iTunes, and Deezer for images in cover dialog.
 28. Fix filename scheme help table.
 29. Allow to specify filename scheme when copying to library.
-30. Before calling ReplyGain after ripping CD, need to convert filenames to
-    destination suffix.
+30. Before calling ReplyGain after ripping CD, convert filenames to destination
+    suffix.
 31. Use Podcasts and SoundCloud icons in cover widget, and song notification,
     for relevant tracks.
 32. Fix displaying of disc and track numbers for online services.
-33. Move sidebar settings into settings dialog.
+33. Move sidebar settings into settings dialog. Sdebar menu now jsut contains
+    a 'Configure...' entry which opens settings dialog at relevent page.
 34. Add new view style "Basic Tree (No Icons)". This is as per the simple tree,
     but only images, and not icons, will be shown.
 35. Europe and Canada regions in ListenLive are not re-loadable (as they are
@@ -75,7 +77,7 @@
     loading.
 43. Mpodiy seems to require integer parameters to be quoted.
 44. Only react to back or home action in listviews if view is visible!
-45. Dont allow buttons in main widow to recieve focus.
+45. Don't allow buttons in main widow to recieve focus.
 46. Use Ctrl+G as short-cut to show genre combo popup.
 47. Re-focus view when search closed.
 48. Fix handling of playlists with a colon in their name.
@@ -100,7 +102,7 @@
     restarted.
 61. Add 'Add To Playlist' menu item to playlists page.
 62. Add 'Table' style view for playlists.
-63. Clicking on title list/icon view navigates back.
+63. Clicking on title in list/icon view navigates back.
 
 1.2.2
 -----

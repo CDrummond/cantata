@@ -318,7 +318,7 @@ For context view backdrops:
 
 Downloaded images will be saved as backdrop.jpg, within the artist folder
 if the current song is not from a Various Artists album, the file is from MPD,
-the folder heirarchy is 2 levels (artist/album/), and the user has write
+the folder hierarchy is 2 levels (artist/album/), and the user has write
 permissions. If not, then they will be saved in Cantata's cache folder.
 
 
@@ -455,7 +455,7 @@ it was UTF-8 encoded, if this fails it will try with the "System" codec. You may
 add to this list of encodings to try by using the 'cueFileCodecs' config item
 (as detailed in section 6 above). If Cantata fails with all configured
 encodings, then it will 'peek' at the 1st 1k bytes, and ask Qt to see if it can
-determine the encoding - and fallback to UTF-8 otherwise. (This 'peek'ing and
+determine the encoding - and fallback to UTF-8 otherwise. (This peeking and
 fallback was how Cantata behaved in pre 1.2 versions - and is how Clementine
 behaves (where Cantata's CUE file support originates from.))
 
@@ -800,7 +800,7 @@ The Cantata source folder contains the following structure:
     models     - Most models, apart from dynamic playlist and shortcut models
     mpd        - MPD related classes; connection, status, song, etc.
     network    - Generic Network classes (and proxy support for Qt builds)
-    online     - Jamendo, Magantune, and SoundCloud
+    online     - Jamendo, Magantune, SoundCloud, and Podcasts
     po         - Translations
     replaygain - ReplayGain calculation
     streams    - Internet radio streams

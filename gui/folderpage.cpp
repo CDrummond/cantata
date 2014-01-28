@@ -104,9 +104,13 @@ void FolderPage::setEnabled(bool e)
 void FolderPage::refresh()
 {
     view->setLevel(0);
-    if (DirViewModel::self()->isEnabled() && isVisible() && !DirViewModel::self()->fromXML()) {
-        emit loadFolders();
-        loaded=true;
+    if (DirViewModel::self()->isEnabled()) {
+        if (!isVisible()) {
+            loaded=false; // Refresh called for, but we are not currently visible...
+        } else if (!DirViewModel::self()->fromXML()) {
+            emit loadFolders();
+            loaded=true;
+        }
     }
 }
 

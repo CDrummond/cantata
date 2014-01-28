@@ -420,7 +420,7 @@ QSet<QString> MusicLibraryModel::getAlbumArtists()
     }
     return a;
 }
-#include <QDebug>
+
 void MusicLibraryModel::updateMusicLibrary(MusicLibraryItemRoot *newroot, QDateTime dbUpdate, bool fromFile)
 {
     if (!mpdModel || (databaseTime.isValid() && databaseTime >= dbUpdate)) {
@@ -439,14 +439,13 @@ void MusicLibraryModel::updateMusicLibrary(MusicLibraryItemRoot *newroot, QDateT
         incremental=false;
     }
 
+    databaseTime = dbUpdate;
     if (incremental) {
         updatedSongs=update(newroot->allSongs());
         delete newroot;
-        databaseTime = dbUpdate;
     } else {
         const MusicLibraryItemRoot *oldRoot = rootItem;
         beginResetModel();
-        databaseTime = dbUpdate;
         rootItem = newroot;
         rootItem->setModel(this);
         rootItem->setLargeImages(oldRoot->useLargeImages());

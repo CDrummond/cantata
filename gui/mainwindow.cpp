@@ -921,6 +921,7 @@ MainWindow::~MainWindow()
     }
     Settings::self()->savePage(tabWidget->currentWidget()->metaObject()->className());
     playQueue->saveConfig();
+    playlistsPage->saveConfig();
     context->saveConfig();
     #ifdef ENABLE_STREAMS
     streamsPage->save();

@@ -78,7 +78,7 @@ bool ProxyModel::update(const QString &txt, const QString &genre)
     bool wasEmpty=isEmpty();
     filterStrings = text.split(' ', QString::SkipEmptyParts, Qt::CaseInsensitive);
     unmatchedStrings = 0;
-    const int n = qMin(filterStrings.count(), (int)sizeof(uint));
+    const int n = qMin(filterStrings.count(), (int)(sizeof(uint)*8));
     for ( int i = 0; i < n; ++i ) {
         unmatchedStrings |= (1<<i);
     }

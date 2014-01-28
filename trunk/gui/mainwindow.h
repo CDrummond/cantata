@@ -198,6 +198,7 @@ public Q_SLOTS:
     void messageWidgetVisibility(bool v);
     void mpdConnectionStateChanged(bool connected);
     void playQueueItemsSelected(bool s);
+    void showSidebarPreferencesPage();
     void showPreferencesDialog(const QString &page=QString());
     void quit();
     void updateSettings();

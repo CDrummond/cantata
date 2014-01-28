@@ -42,6 +42,7 @@ public:
     #ifndef ENABLE_KDE_SUPPORT
     void showEvent(QShowEvent *e);
     #endif
+    void showPage(const QString &page);
 
 private:
     void addView(const QString &v, const QString &prop);

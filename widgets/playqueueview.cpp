@@ -32,6 +32,7 @@
 #include "spinner.h"
 #include "messageoverlay.h"
 #include "stretchheaderview.h"
+#include "basicitemdelegate.h"
 #include <QHeaderView>
 #include <QMenu>
 #include <QAction>
@@ -42,6 +43,68 @@
 
 // Exported by QtGui
 void qt_blurImage(QPainter *p, QImage &blurImage, qreal radius, bool quality, bool alphaOnly, int transposed = 0);
+
+
+class PlayQueueTreeViewItemDelegate : public QStyledItemDelegate
+{
+public:
+    PlayQueueTreeViewItemDelegate(QObject *p) : QStyledItemDelegate(p) { }
+    virtual ~PlayQueueTreeViewItemDelegate() { }
+    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
+    {
+        if (!index.isValid()) {
+            return;
+        }
+
+        bool selected=option.state&QStyle::State_Selected;
+        bool active=option.state&QStyle::State_Active;
+        QColor col(option.palette.color(active ? QPalette::Active : QPalette::Inactive,
+                                        selected ? QPalette::HighlightedText : QPalette::Text));
+
+        if (4==option.version) {
+            const QStyleOptionViewItemV4 &v4=(QStyleOptionViewItemV4 &)option;
+            QIcon icon;
+
+            if (QStyleOptionViewItemV4::Beginning==v4.viewItemPosition) {
+                icon=index.data(PlayQueueView::Role_Decoration).value<QIcon>();
+            }
+            QSize decorSize;
+            if (!icon.isNull()) {
+                decorSize = icon.actualSize(option.decorationSize);
+            }
+
+            if (decorSize.isEmpty()) {
+                QStyledItemDelegate::paint(painter, option, index);
+            } else {
+                QStyleOptionViewItemV4 opt=v4;
+                int width=decorSize.width()+(Utils::isHighDpi() ? 8 : 4);
+                opt.rect.adjust(width, 0, 0, 0);
+                QStyledItemDelegate::paint(painter, opt, index);
+
+                QPixmap pix=icon.pixmap(decorSize);
+                painter->drawPixmap(option.rect.x()+((width-pix.width())/2), option.rect.y()+((option.rect.height()-pix.height())/2), pix);
+            }
+
+            switch (v4.viewItemPosition) {
+            case QStyleOptionViewItemV4::Beginning:
+                BasicItemDelegate::drawLine(painter, option.rect, col, true, false);
+                break;
+            case QStyleOptionViewItemV4::Middle:
+                BasicItemDelegate::drawLine(painter, option.rect, col, false, false);
+                break;
+            case QStyleOptionViewItemV4::End:
+                BasicItemDelegate::drawLine(painter, option.rect, col, false, true);
+                break;
+            case QStyleOptionViewItemV4::Invalid:
+            case QStyleOptionViewItemV4::OnlyOne:
+                BasicItemDelegate::drawLine(painter, option.rect, col, true, true);
+            }
+        } else {
+            QStyledItemDelegate::paint(painter, option, index);
+            BasicItemDelegate::drawLine(painter, option.rect, col, false, false);
+        }
+    }
+};
 
 PlayQueueTreeView::PlayQueueTreeView(PlayQueueView *parent)
     : TreeView(parent, true)
@@ -59,10 +122,8 @@ PlayQueueTreeView::PlayQueueTreeView(PlayQueueView *parent)
     setDropIndicatorShown(true);
     setRootIsDecorated(false);
     setUniformRowHeights(true);
-    setUseSimpleDelegate();
-    StretchHeaderView *hdr=new StretchHeaderView(Qt::Horizontal, this);
-    hdr->setMinimumSectionSize(fontMetrics().width("999"));
-    setHeader(hdr);
+    setItemDelegate(new PlayQueueTreeViewItemDelegate(this));
+    setHeader(new StretchHeaderView(Qt::Horizontal, this));
 }
 
 PlayQueueTreeView::~PlayQueueTreeView()
@@ -101,12 +162,11 @@ void PlayQueueTreeView::initHeader()
     if (!menu) {
         hdr->SetStretchEnabled(true);
         hdr->setContextMenuPolicy(Qt::CustomContextMenu);
-        hdr->SetColumnWidth(PlayQueueModel::COL_STATUS, 0.025);
-        hdr->SetColumnWidth(PlayQueueModel::COL_TRACK, 0.025);
+        hdr->SetColumnWidth(PlayQueueModel::COL_TRACK, 0.075);
         hdr->SetColumnWidth(PlayQueueModel::COL_DISC, 0.03);
-        hdr->SetColumnWidth(PlayQueueModel::COL_TITLE, 0.305);
-        hdr->SetColumnWidth(PlayQueueModel::COL_ARTIST, 0.2);
-        hdr->SetColumnWidth(PlayQueueModel::COL_ALBUM, 0.2);
+        hdr->SetColumnWidth(PlayQueueModel::COL_TITLE, 0.3);
+        hdr->SetColumnWidth(PlayQueueModel::COL_ARTIST, 0.27);
+        hdr->SetColumnWidth(PlayQueueModel::COL_ALBUM, 0.27);
         hdr->SetColumnWidth(PlayQueueModel::COL_LENGTH, 0.05);
         hdr->SetColumnWidth(PlayQueueModel::COL_YEAR, 0.05);
         hdr->SetColumnWidth(PlayQueueModel::COL_GENRE, 0.1);
@@ -138,10 +198,7 @@ void PlayQueueTreeView::initHeader()
                                          << PlayQueueModel::COL_DISC << PlayQueueModel::COL_YEAR << PlayQueueModel::COL_GENRE
                                          << PlayQueueModel::COL_PRIO;
         foreach (int col, hideAble) {
-            QString text=PlayQueueModel::COL_TRACK==col
-                            ? i18n("Track")
-                            : PlayQueueModel::headerText(col);
-            QAction *act=new QAction(text, menu);
+            QAction *act=new QAction(PlayQueueModel::headerText(col), menu);
             act->setCheckable(true);
             act->setChecked(!hdr->isSectionHidden(col));
             menu->addAction(act);

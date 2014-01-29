@@ -47,7 +47,6 @@ public:
 
     enum Columns
     {
-        COL_STATUS,
         COL_TRACK,
         COL_DISC,
         COL_TITLE,

@@ -27,6 +27,7 @@
 #include "localize.h"
 #include "playqueuemodel.h"
 #include "groupedview.h"
+#include "playqueueview.h"
 #include "mpdconnection.h"
 #include "mpdparseutils.h"
 #include "mpdstats.h"
@@ -101,11 +102,10 @@ QStringList PlayQueueModel::decode(const QMimeData &mimeData, const QString &mim
 QString PlayQueueModel::headerText(int col)
 {
     switch (col) {
-    case COL_STATUS: return QString();
     case COL_TITLE:  return i18n("Title");
     case COL_ARTIST: return i18n("Artist");
     case COL_ALBUM:  return i18n("Album");
-    case COL_TRACK:  return i18nc("Track Number (#)", "#");
+    case COL_TRACK:  return i18n("Track");
     case COL_LENGTH: return i18n("Length");
     case COL_DISC:   return i18n("Disc");
     case COL_YEAR:   return i18n("Year");
@@ -194,7 +194,6 @@ QVariant PlayQueueModel::headerData(int section, Qt::Orientation orientation, in
             case COL_GENRE:
             default:
                 return int(Qt::AlignVCenter|Qt::AlignLeft);
-            case COL_STATUS:
             case COL_TRACK:
             case COL_LENGTH:
             case COL_DISC:
@@ -414,7 +413,6 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
         case COL_GENRE:
         default:
             return int(Qt::AlignVCenter|Qt::AlignLeft);
-        case COL_STATUS:
         case COL_TRACK:
         case COL_LENGTH:
         case COL_DISC:
@@ -422,27 +420,19 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
         case COL_PRIO:
             return int(Qt::AlignVCenter|Qt::AlignRight);
         }
-    case Qt::DecorationRole:
-        if (COL_STATUS==index.column()) {
-            qint32 id=songs.at(index.row()).id;
-            if (id==currentSongId) {
-                switch (mpdState) {
-                case MPDState_Inactive:
-                case MPDState_Stopped: return Icon("media-playback-stop");
-                case MPDState_Playing: return Icon(stopAfterCurrent ? "media-playback-stop" : "media-playback-start");
-                case MPDState_Paused:  return Icon("media-playback-pause");
-                }
-            } else if (-1!=id && id==stopAfterTrackId) {
-                return Icon("media-playback-stop");
+    case PlayQueueView::Role_Decoration: {
+        qint32 id=songs.at(index.row()).id;
+        if (id==currentSongId) {
+            switch (mpdState) {
+            case MPDState_Inactive:
+            case MPDState_Stopped: return Icon("media-playback-stop");
+            case MPDState_Playing: return Icon(stopAfterCurrent ? "media-playback-stop" : "media-playback-start");
+            case MPDState_Paused:  return Icon("media-playback-pause");
             }
+        } else if (-1!=id && id==stopAfterTrackId) {
+            return Icon("media-playback-stop");
         }
         break;
-    case Qt::SizeHintRole: {
-        static int sz=-1;
-        if (-1==sz) {
-            sz=Icon::stdSize(QApplication::fontMetrics().height()*1.2)*1.125;
-        }
-        return QSize(sz, sz);
     }
     default:
         break;

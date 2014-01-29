@@ -37,7 +37,6 @@
 class QAbstractItemModel;
 class QAction;
 class QItemSelectionModel;
-class QHeaderView;
 class QModelIndex;
 class QMenu;
 class Spinner;
@@ -115,7 +114,6 @@ public:
     bool haveUnSelectedItems();
     void setCurrentIndex(const QModelIndex &idx) { view()->setCurrentIndex(idx); }
     void clearSelection();
-    QHeaderView * header();
     QAbstractItemView * tree() const;
     QAbstractItemView * list() const;
     QAbstractItemView * view() const;

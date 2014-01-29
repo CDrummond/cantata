@@ -56,7 +56,7 @@
 31. Use Podcasts and SoundCloud icons in cover widget, and song notification,
     for relevant tracks.
 32. Fix displaying of disc and track numbers for online services.
-33. Move sidebar settings into settings dialog. Sdebar menu now jsut contains
+33. Move sidebar settings into settings dialog. Sidebar menu now jsut contains
     a 'Configure...' entry which opens settings dialog at relevent page.
 34. Add new view style "Basic Tree (No Icons)". This is as per the simple tree,
     but only images, and not icons, will be shown.
@@ -106,6 +106,7 @@
 64. Bundle own copy of symblic media icons - so that these can be recoloured
     to match current theme.
 64. Fix searches containing more than 4 words.
+65. Use stretch header class from Clementine for table style views.
 
 1.2.2
 -----

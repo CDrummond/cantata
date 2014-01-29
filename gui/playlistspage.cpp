@@ -32,28 +32,11 @@
 #include "actioncollection.h"
 #include "mpdconnection.h"
 #include "settings.h"
+#include "stretchheaderview.h"
 #include <QMenu>
 #ifndef ENABLE_KDE_SUPPORT
 #include <QStyle>
 #endif
-
-static inline void setResizeMode(QHeaderView *hdr, int idx, QHeaderView::ResizeMode mode)
-{
-    #if QT_VERSION < 0x050000
-    hdr->setResizeMode(idx, mode);
-    #else
-    hdr->setSectionResizeMode(idx, mode);
-    #endif
-}
-
-static inline void setResizeMode(QHeaderView *hdr, QHeaderView::ResizeMode mode)
-{
-    #if QT_VERSION < 0x050000
-    hdr->setResizeMode(mode);
-    #else
-    hdr->setSectionResizeMode(mode);
-    #endif
-}
 
 PlaylistTableView::PlaylistTableView(QWidget *p)
     : TableView(p)
@@ -68,6 +51,9 @@ PlaylistTableView::PlaylistTableView(QWidget *p)
     setUniformRowHeights(true);
     setUseSimpleDelegate();
     setIndentation(fontMetrics().width(QLatin1String("XX")));
+    StretchHeaderView *hdr=new StretchHeaderView(Qt::Horizontal, this);
+    hdr->setMinimumSectionSize(fontMetrics().width("999"));
+    setHeader(hdr);
 }
 
 void PlaylistTableView::initHeader()
@@ -76,46 +62,44 @@ void PlaylistTableView::initHeader()
         return;
     }
 
-    QHeaderView *hdr=header();
+    StretchHeaderView *hdr=qobject_cast<StretchHeaderView *>(header());
     if (!menu) {
-        QFont f(font());
-        f.setBold(true);
-        QFontMetrics fm(f);
-        setResizeMode(hdr, QHeaderView::Interactive);
+        hdr->SetStretchEnabled(true);
         hdr->setContextMenuPolicy(Qt::CustomContextMenu);
-        hdr->resizeSection(PlaylistsModel::COL_YEAR, fm.width("99999"));
-        setResizeMode(hdr, PlaylistsModel::COL_TITLE, QHeaderView::Stretch);
-        setResizeMode(hdr, PlaylistsModel::COL_ARTIST, QHeaderView::Interactive);
-        setResizeMode(hdr, PlaylistsModel::COL_ALBUM, QHeaderView::Interactive);
-        setResizeMode(hdr, PlaylistsModel::COL_GENRE, QHeaderView::Interactive);
-        setResizeMode(hdr, PlaylistsModel::COL_LENGTH, QHeaderView::ResizeToContents);
-        setResizeMode(hdr, PlaylistsModel::COL_YEAR, QHeaderView::Fixed);
-        hdr->setStretchLastSection(false);
+        hdr->SetColumnWidth(PlaylistsModel::COL_TITLE, 0.4);
+        hdr->SetColumnWidth(PlaylistsModel::COL_ARTIST, 0.15);
+        hdr->SetColumnWidth(PlaylistsModel::COL_ALBUM, 0.15);
+        hdr->SetColumnWidth(PlaylistsModel::COL_LENGTH, 0.125);
+        hdr->SetColumnWidth(PlaylistsModel::COL_YEAR, 0.05);
+        hdr->SetColumnWidth(PlaylistsModel::COL_GENRE, 0.125);
+        hdr->setMovable(true);
         connect(hdr, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showMenu()));
     }
 
     //Restore state
-    QByteArray state=Settings::self()->playlistHeaderState();
+    QByteArray state;
+    if (Settings::self()->version()>=CANTATA_MAKE_VERSION(1, 2, 54)) {
+        state=Settings::self()->playlistHeaderState();
+    }
     QList<int> hideAble;
     hideAble << PlaylistsModel::COL_YEAR << PlaylistsModel::COL_GENRE;
 
     //Restore
     if (state.isEmpty()) {
-        hdr->setSectionHidden(PlaylistsModel::COL_YEAR, true);
-        hdr->setSectionHidden(PlaylistsModel::COL_GENRE, true);
+        hdr->HideSection(PlaylistsModel::COL_YEAR);
+        hdr->HideSection(PlaylistsModel::COL_GENRE);
     } else {
-        hdr->restoreState(state);
-
-        foreach (int col, hideAble) {
-            if (hdr->isSectionHidden(col) || 0==hdr->sectionSize(col)) {
-                hdr->setSectionHidden(col, true);
-            }
-        }
+        hdr->RestoreState(state);
     }
 
     if (!menu) {
         menu = new QMenu(this);
-
+        QAction *stretch=new QAction(i18n("Stretch Columns To Fit Window"), this);
+        stretch->setCheckable(true);
+        stretch->setChecked(hdr->is_stretch_enabled());
+        connect(stretch, SIGNAL(toggled(bool)), hdr, SLOT(SetStretchEnabled(bool)));
+        menu->addAction(stretch);
+        menu->addSeparator();
         foreach (int col, hideAble) {
             QAction *act=new QAction(PlaylistsModel::headerText(col), menu);
             act->setCheckable(true);
@@ -130,7 +114,7 @@ void PlaylistTableView::initHeader()
 void PlaylistTableView::saveHeader()
 {
     if (menu && model()) {
-        Settings::self()->savePlaylistHeaderState(header()->saveState());
+        Settings::self()->savePlaylistHeaderState(qobject_cast<StretchHeaderView *>(header())->SaveState());
     }
 }
 
@@ -146,7 +130,7 @@ void PlaylistTableView::toggleHeaderItem(bool visible)
     if (act) {
         int index=act->data().toInt();
         if (-1!=index) {
-            header()->setSectionHidden(index, !visible);
+            qobject_cast<StretchHeaderView *>(header())->SetSectionHidden(index, !visible);
         }
     }
 }

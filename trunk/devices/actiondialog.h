@@ -76,6 +76,7 @@ private Q_SLOTS:
     void cacheSaved();
     void controlInfoLabel();
     void showSongs();
+    void showMopidyMessage();
 
 private:
     void hideSongs();

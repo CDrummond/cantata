@@ -74,6 +74,7 @@ private Q_SLOTS:
     void updateEdited(bool isFromAll=false);
     void setSong(const Song &s);
     void setIndex(int idx);
+    void showMopidyMessage();
 
 private:
     QString baseDir;

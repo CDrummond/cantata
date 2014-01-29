@@ -55,6 +55,11 @@
 #include <QDBusConnection>
 #endif
 
+#define REMOVE(w) \
+    w->setVisible(false); \
+    w->deleteLater(); \
+    w=0
+
 static int iCount=0;
 
 int ActionDialog::instanceCount()
@@ -173,6 +178,15 @@ void ActionDialog::showSongs()
         songDialog=new SongListDialog(this);
     }
     songDialog->show();
+}
+
+void ActionDialog::showMopidyMessage()
+{
+    MessageBox::information(this, i18n("Cantata has detected that you are connected to a Mopidy server.\n\n"
+                                       "Currently it is not possible for Cantata to force Mopidy to refresh its local "
+                                       "music listing. Therefore, you will need to stop Cantata, manually refresh "
+                                       "Mopidy's database, and restart Cantata for any changes to be active."),
+                            QLatin1String("Mopidy"));
 }
 
 void ActionDialog::hideSongs()
@@ -369,6 +383,12 @@ void ActionDialog::init(const QString &srcUdi, const QString &dstUdi, const QLis
     albumsWithoutRgTags.clear();
     #endif
     updateUnity(false);
+
+    if ((Remove==m && srcUdi.isEmpty()) || (Copy==m && !srcUdi.isEmpty())) {
+        connect(mopidyNote, SIGNAL(leftClickedUrl()), SLOT(showMopidyMessage()));
+    } else {
+        REMOVE(mopidyNote);
+    }
 }
 
 void ActionDialog::slotButtonClicked(int button)

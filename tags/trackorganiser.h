@@ -43,7 +43,7 @@ class TrackOrganiser : public SongDialog, Ui::TrackOrganiser
 public:
     static int instanceCount();
 
-    TrackOrganiser(QWidget *parent, bool showMopidyWarning=true);
+    TrackOrganiser(QWidget *parent);
     virtual ~TrackOrganiser();
 
     void show(const QList<Song> &songs, const QString &udi);
@@ -59,6 +59,7 @@ private Q_SLOTS:
     void renameFile();
     void controlRemoveAct();
     void removeItems();
+    void showMopidyMessage();
 
 private:
     void slotButtonClicked(int button);
@@ -77,7 +78,6 @@ private:
     bool autoSkip;
     bool paused;
     bool updated;
-    bool warnIfMopidy;
     DeviceOptions opts;
 };
 

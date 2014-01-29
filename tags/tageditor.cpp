@@ -104,10 +104,12 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
         return;
     }
 
+    bool isMopidy=false;
     #ifdef ENABLE_DEVICES_SUPPORT
     if (deviceUdi.isEmpty()) {
         baseDir=MPDConnection::self()->getDetails().dir;
         composerSupport=MPDConnection::self()->composerTagSupported();
+        isMopidy=MPDConnection::self()->isMopdidy();
     } else {
         Device *dev=getDevice(udi, parentWidget());
 
@@ -121,6 +123,7 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
     #else
     baseDir=MPDConnection::self()->getDetails().dir;
     composerSupport=MPDConnection::self()->composerTagSupported();
+    isMopidy=MPDConnection::self()->isMopdidy();
     #endif
     qSort(original);
 
@@ -130,6 +133,11 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
 
     QWidget *mainWidet = new QWidget(this);
     setupUi(mainWidet);
+    if (isMopidy) {
+        connect(mopidyNote, SIGNAL(leftClickedUrl()), SLOT(showMopidyMessage()));
+    } else {
+        REMOVE(mopidyNote);
+    }
     setMainWidget(mainWidet);
     ButtonCodes buttons=Ok|Cancel|Reset|User3;
     if (songs.count()>1) {
@@ -700,6 +708,15 @@ void TagEditor::setIndex(int idx)
     updating=false;
 }
 
+void TagEditor::showMopidyMessage()
+{
+    MessageBox::information(this, i18n("Cantata has detected that you are connected to a Mopidy server.\n\n"
+                                       "Currently it is not possible for Cantata to force Mopidy to refresh its local "
+                                       "music listing. Therefore, you will need to stop Cantata, manually refresh "
+                                       "Mopidy's database, and restart Cantata for any changes to be active."),
+                            QLatin1String("Mopidy"));
+}
+
 bool TagEditor::applyUpdates()
 {
     bool skipFirst=original.count()>1;
@@ -806,17 +823,10 @@ bool TagEditor::applyUpdates()
             emit update();
         }
 
-        if (MPDConnection::self()->isMopdidy()) {
-            MessageBox::information(this, i18n("Cantata has detected that you are connected to a Mopidy server.\n\n"
-                                               "In order for Mopidy to notice the changes you have made, you will need "
-                                               "to manually update its database. After this, restart Cantata."));
-            MusicLibraryModel::self()->removeCache();
-        }
-
         if (renameFiles &&
             MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Would you also like to rename your song files, so as to match your tags?"),
                                                        i18n("Rename Files"), GuiItem(i18n("Rename")), StdGuiItem::cancel())) {
-            TrackOrganiser *dlg=new TrackOrganiser(parentWidget(), false);
+            TrackOrganiser *dlg=new TrackOrganiser(parentWidget());
             dlg->show(updatedSongs, udi);
         }
     }

@@ -152,6 +152,13 @@
   </layout>
   </item>
   <item>
+   <widget class="UrlLabel" name="mopidyNote">
+    <property name="text" stdset="0">
+     <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; Connected to a Mopidy server (manual update required).&lt;/i&gt;</string>
+    </property>
+   </widget>
+  </item>
+  <item>
    <widget class="QProgressBar" name="progress"/>
    </item>
   </layout>
@@ -181,6 +188,11 @@
    <class>StateLabel</class>
    <extends>QLabel</extends>
    <header>statelabel.h</header>
+  </customwidget>
+  <customwidget>
+   <class>UrlLabel</class>
+   <extends>QLabel</extends>
+   <header>urllabel.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>

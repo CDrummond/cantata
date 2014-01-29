@@ -77,14 +77,7 @@ void PlaylistTableView::initHeader()
     }
 
     //Restore state
-    QByteArray state;
-    if (Settings::self()->version()>=CANTATA_MAKE_VERSION(1, 2, 54)) {
-        state=Settings::self()->playlistHeaderState();
-    }
-    QList<int> hideAble;
-    hideAble << PlaylistsModel::COL_YEAR << PlaylistsModel::COL_GENRE;
-
-    //Restore
+    QByteArray state=Settings::self()->playlistHeaderState();
     if (state.isEmpty()) {
         hdr->HideSection(PlaylistsModel::COL_YEAR);
         hdr->HideSection(PlaylistsModel::COL_GENRE);
@@ -100,6 +93,7 @@ void PlaylistTableView::initHeader()
         connect(stretch, SIGNAL(toggled(bool)), hdr, SLOT(SetStretchEnabled(bool)));
         menu->addAction(stretch);
         menu->addSeparator();
+        QList<int> hideAble=QList<int>() << PlaylistsModel::COL_YEAR << PlaylistsModel::COL_GENRE;
         foreach (int col, hideAble) {
             QAction *act=new QAction(PlaylistsModel::headerText(col), menu);
             act->setCheckable(true);

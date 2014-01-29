@@ -1148,8 +1148,9 @@ bool ItemView::eventFilter(QObject *o, QEvent *e)
             title->setProperty(constPressesProperty, false);
             break;
         case QEvent::HoverEnter: {
-            QColor col=palette().highlight().color();
-            title->setStyleSheet(QString("QLabel { color : rgb(%1, %2, %3); }").arg(col.red()).arg(col.green()).arg(col.blue()));
+            QColor bgnd=palette().highlight().color();
+            title->setStyleSheet(QString("QLabel{background:rgb(%1,%2,%3,48);}")
+                                 .arg(bgnd.red()).arg(bgnd.green()).arg(bgnd.blue()));
             break;
         }
         case QEvent::HoverLeave:
@@ -1279,7 +1280,9 @@ void ItemView::activateItem(const QModelIndex &index, bool emitRootSet)
         if (text.isEmpty()) {
             text=index.data(Qt::DisplayRole).toString();
         }
-        title->setText(text);
+        // Add padding so that text is not right on border of label widget.
+        // This spacing makes the mouse-over background change look nicer.
+        title->setText(QLatin1String("  ")+text);
         listView->setRootIndex(index);
         itemModel->setRootIndex(index);
         if (emitRootSet) {

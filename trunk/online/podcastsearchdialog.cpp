@@ -636,7 +636,7 @@ PodcastSearchDialog::PodcastSearchDialog(QWidget *parent)
         connect(p, SIGNAL(error(QString)), SLOT(showError(QString)));
     }
 
-    setCaption(i18n("Search For Podcasts"));
+    setCaption(i18n("Add Podcast Subscription"));
     setMainWidget(mainWidget);
     setAttribute(Qt::WA_DeleteOnClose);
     enableButton(User1, false);

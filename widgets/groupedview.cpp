@@ -252,7 +252,7 @@ public:
                     track=streamText(song, trackTitle);
                 }
             } else if (isEmpty) {
-                title=i18n("Unknown");
+                title=Song::unknown();
                 track=trackTitle;
             } else if (song.album.isEmpty()) {
                 title=song.artistOrComposer();

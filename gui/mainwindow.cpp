@@ -1925,7 +1925,7 @@ void MainWindow::updateCurrentSong(const Song &song)
     coverWidget->update(current);
 
     if (current.isStream() && !current.isCantataStream() && !current.isCdda()) {
-        trackLabel->setText(current.name.isEmpty() ? i18n("Unknown") : current.name);
+        trackLabel->setText(current.name.isEmpty() ? Song::unknown() : current.name);
         if (current.artist.isEmpty() && current.title.isEmpty() && !current.name.isEmpty()) {
             artistLabel->setText(i18n("(Stream)"));
         } else {
@@ -1938,7 +1938,7 @@ void MainWindow::updateCurrentSong(const Song &song)
             trackLabel->setText(current.title);
         }
         if (current.album.isEmpty() && current.artist.isEmpty()) {
-            artistLabel->setText(trackLabel->fullText().isEmpty() ? QString() : i18n("Unknown"));
+            artistLabel->setText(trackLabel->fullText().isEmpty() ? QString() : Song::unknown());
         } else if (current.album.isEmpty()) {
             artistLabel->setText(current.artist);
         } else {

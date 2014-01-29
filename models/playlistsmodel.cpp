@@ -392,7 +392,7 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
                 case COL_TITLE:
                     return s->trackAndTitleStr(Song::isVariousArtists(s->albumArtist()));
                 case COL_ARTIST:
-                    return s->artist.isEmpty() ? i18n("Unknown") : s->artist;
+                    return s->artist.isEmpty() ? Song::unknown() : s->artist;
                 case COL_ALBUM:
                     return s->album.isEmpty() && !s->name.isEmpty() && s->isStream() ? s->name : s->album;
                 case COL_LENGTH:

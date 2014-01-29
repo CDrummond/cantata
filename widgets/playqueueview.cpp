@@ -116,16 +116,7 @@ void PlayQueueTreeView::initHeader()
     }
 
     //Restore state
-    QByteArray state;
-    if (Settings::self()->version()>=CANTATA_MAKE_VERSION(1, 2, 54)) {
-        state=Settings::self()->playQueueHeaderState();
-    }
-
-    QList<int> hideAble;
-    hideAble << PlayQueueModel::COL_TRACK << PlayQueueModel::COL_ALBUM << PlayQueueModel::COL_LENGTH
-             << PlayQueueModel::COL_DISC << PlayQueueModel::COL_YEAR << PlayQueueModel::COL_GENRE << PlayQueueModel::COL_PRIO;
-
-    //Restore
+    QByteArray state=Settings::self()->playQueueHeaderState();
     if (state.isEmpty()) {
         hdr->HideSection(PlayQueueModel::COL_YEAR);
         hdr->HideSection(PlayQueueModel::COL_DISC);
@@ -143,6 +134,9 @@ void PlayQueueTreeView::initHeader()
         connect(stretch, SIGNAL(toggled(bool)), hdr, SLOT(SetStretchEnabled(bool)));
         menu->addAction(stretch);
         menu->addSeparator();
+        QList<int> hideAble=QList<int>() << PlayQueueModel::COL_TRACK << PlayQueueModel::COL_ALBUM << PlayQueueModel::COL_LENGTH
+                                         << PlayQueueModel::COL_DISC << PlayQueueModel::COL_YEAR << PlayQueueModel::COL_GENRE
+                                         << PlayQueueModel::COL_PRIO;
         foreach (int col, hideAble) {
             QString text=PlayQueueModel::COL_TRACK==col
                             ? i18n("Track")

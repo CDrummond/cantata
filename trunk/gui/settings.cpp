@@ -336,7 +336,7 @@ bool Settings::showFullScreen()
 
 QByteArray Settings::playQueueHeaderState()
 {
-    if (version()<CANTATA_MAKE_VERSION(1, 0, 53)) {
+    if (version()<CANTATA_MAKE_VERSION(1, 2, 54)) {
         return QByteArray();
     }
     return GET_BYTE_ARRAY("playQueueHeaderState");
@@ -344,6 +344,9 @@ QByteArray Settings::playQueueHeaderState()
 
 QByteArray Settings::playlistHeaderState()
 {
+    if (version()<CANTATA_MAKE_VERSION(1, 2, 54)) {
+        return QByteArray();
+    }
     return GET_BYTE_ARRAY("playlistHeaderState");
 }
 

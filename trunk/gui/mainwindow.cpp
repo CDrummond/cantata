@@ -589,8 +589,11 @@ MainWindow::MainWindow(QWidget *parent)
     refreshDbAction->setEnabled(false);
     #ifdef ENABLE_KDE_SUPPORT
     mainMenu->addAction(prefAction);
+    mainMenu->addAction(refreshDbAction);
     shortcutsAction=static_cast<Action *>(KStandardAction::keyBindings(this, SLOT(configureShortcuts()), ActionCollection::get()));
     mainMenu->addAction(shortcutsAction);
+    mainMenu->addSeparator();
+    mainMenu->addAction(StdActions::self()->searchAction);
     mainMenu->addSeparator();
     mainMenu->addAction(serverInfoAction);
     mainMenu->addMenu(helpMenu());

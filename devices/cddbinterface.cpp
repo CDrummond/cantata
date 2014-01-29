@@ -140,7 +140,7 @@ void CddbInterface::readDisc()
         emit error(i18n("Failed to open CD device"));
         return;
     }
-    QByteArray unknown=i18n("Unknown").toUtf8();
+    QByteArray unknown=Song::unknown().toUtf8();
 
     #if defined(__FreeBSD__) || defined(__FreeBSD_kernel__)
     struct ioc_toc_header th;

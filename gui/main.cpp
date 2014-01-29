@@ -41,6 +41,7 @@
 #include "settings.h"
 #include "initialsettingswizard.h"
 #include "mainwindow.h"
+#include "song.h"
 
 // To enable debug...
 #include "mpdconnection.h"
@@ -303,6 +304,7 @@ int main(int argc, char *argv[])
     loadTranslation("cantata", INSTALL_PREFIX"/share/cantata/translations/", lang);
     #endif
 
+    Song::initTranslations();
     if (Settings::self()->firstRun()) {
         InitialSettingsWizard wz;
         if (QDialog::Rejected==wz.exec()) {

@@ -29,7 +29,6 @@
 #include <QStringList>
 #include <QUrl>
 #include <QFile>
-#include "localize.h"
 #include "dirviewitemroot.h"
 #include "dirviewitemdir.h"
 #include "dirviewitemfile.h"
@@ -261,7 +260,7 @@ Song MPDParseUtils::parseSong(const QByteArray &data, Location location)
     }
 
     if (Song::Playlist!=song.type && song.genre.isEmpty()) {
-        song.genre = i18n("Unknown");
+        song.genre = Song::unknown();
     }
 
     QString origFile=song.file;
@@ -442,7 +441,6 @@ void MPDParseUtils::parseLibraryItems(const QByteArray &data, const QString &mpd
     MusicLibraryItemArtist *artistItem = 0;
     MusicLibraryItemAlbum *albumItem = 0;
     MusicLibraryItemSong *songItem = 0;
-    QString unknown=i18n("Unknown");
 
     for (int i = 0; i < amountOfLines; i++) {
         QByteArray line=lines.at(i);
@@ -482,7 +480,7 @@ void MPDParseUtils::parseLibraryItems(const QByteArray &data, const QString &mpd
                     } else DBUG << "Parsed cue file, songs:" << cueSongs.count() << "files:" << cueFiles;
                 }
                 if (cueParseStatus &&
-                    (cueFiles.count()<cueSongs.count() || (albumItem && albumItem->data()==unknown && albumItem->parentItem()->data()==unknown))) {
+                    (cueFiles.count()<cueSongs.count() || (albumItem && albumItem->data()==Song::unknown() && albumItem->parentItem()->data()==Song::unknown()))) {
 
                     bool canUseThisCueFile=true;
                     foreach (const Song &s, cueSongs) {

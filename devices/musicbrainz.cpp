@@ -199,10 +199,9 @@ void MusicBrainz::readDisc()
     #endif
     close(fd);
 
-    QString unknown(i18n("Unknown"));
-    initial.name=unknown;
-    initial.artist=unknown;
-    initial.genre=unknown;
+    initial.name=Song::unknown();
+    initial.artist=Song::unknown();
+    initial.genre=Song::unknown();
     initial.isDefault=true;
 
     if (tracks.count()>1) {
@@ -215,7 +214,7 @@ void MusicBrainz::readDisc()
             Song s;
             s.track=i+1;
             s.title=i18n("Track %1", s.track).toUtf8();
-            s.artist=unknown;
+            s.artist=Song::unknown();
             s.albumartist=initial.artist;
             s.album=initial.name;
             s.id=s.track;
@@ -321,7 +320,7 @@ void MusicBrainz::lookup(bool full)
                                 album.disc=medium->Position();
                             }
                             album.artist=artistFromCreditList(fullRelease->ArtistCredit());
-                            album.genre=i18n("Unknown");
+                            album.genre=Song::unknown();
 
                             QString date = QString::fromUtf8(fullRelease->Date().c_str());
                             QRegExp yearRe("^(\\d{4,4})(-\\d{1,2}-\\d{1,2})?$");

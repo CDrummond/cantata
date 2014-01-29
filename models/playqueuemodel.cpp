@@ -365,7 +365,7 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
         case COL_TITLE:
             return song.title.isEmpty() ? Utils::getFile(basicPath(song)) : song.title;
         case COL_ARTIST:
-            return song.artist.isEmpty() ? i18n("Unknown") : song.artist;
+            return song.artist.isEmpty() ? Song::unknown() : song.artist;
         case COL_ALBUM:
             return song.album.isEmpty() && !song.name.isEmpty() && song.isStream() ? song.name : song.album;
         case COL_TRACK:

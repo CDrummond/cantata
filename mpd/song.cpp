@@ -45,6 +45,24 @@ static const quint8 constOnlineDiscId=0xEE;
 const QString Song::constCddaProtocol=QLatin1String("cantata-cdda:/");
 const QString Song::constMopidyLocal=QLatin1String("local:track:");
 
+static QString unknownStr;
+static QString variousArtistsStr;
+const QString & Song::unknown()
+{
+    return unknownStr;
+}
+
+const QString & Song::variousArtists()
+{
+    return variousArtistsStr;
+}
+
+void Song::initTranslations()
+{
+    unknownStr=i18n("Unknown");
+    variousArtistsStr=i18n("Various Artists");
+}
+
 // When displaying albums, we use the 1st track's year as the year of the album.
 // The map below stores the mapping from artist+album to year.
 // This way the grouped view can find this quickly...
@@ -283,24 +301,22 @@ void Song::guessTags()
 
 void Song::revertGuessedTags()
 {
-    title=artist=album=i18n("Unknown");
+    title=artist=album=unknownStr;
 }
 
 void Song::fillEmptyFields()
 {
-    QString unknown=i18n("Unknown");
-
     if (artist.isEmpty()) {
-        artist = unknown;
+        artist = unknownStr;
     }
     if (album.isEmpty()) {
-        album = unknown;
+        album = unknownStr;
     }
     if (title.isEmpty()) {
-        title = unknown;
+        title = unknownStr;
     }
     if (genre.isEmpty()) {
-        genre = unknown;
+        genre = unknownStr;
     }
 }
 
@@ -339,9 +355,7 @@ void Song::setKey(int location)
 
 bool Song::isUnknown() const
 {
-    QString unknown=i18n("Unknown");
-
-    return (artist.isEmpty() || artist==unknown) && (album.isEmpty() || album==unknown) && (title.isEmpty() || title==unknown);
+    return (artist.isEmpty() || artist==unknownStr) && (album.isEmpty() || album==unknownStr) && (title.isEmpty() || title==unknownStr);
 }
 
 void Song::clear()
@@ -366,7 +380,7 @@ void Song::clear()
 QString Song::formattedTime(quint32 seconds, bool zeroIsUnknown)
 {
     if (0==seconds && zeroIsUnknown) {
-        return i18n("Unknown");
+        return unknownStr;
     }
 
     static const quint32 constHour=60*60;
@@ -444,7 +458,7 @@ QString Song::trackAndTitleStr(bool addArtist) const
 
 bool Song::isVariousArtists(const QString &str)
 {
-    return QLatin1String("Various Artists")==str || i18n("Various Artists")==str;
+    return QLatin1String("Various Artists")==str || variousArtistsStr==str;
 }
 
 bool Song::fixVariousArtists()

@@ -75,10 +75,9 @@ void MusicLibraryItemRoot::groupSingleTracks()
     for (; it!=m_childItems.end(); ) {
         if (various!=(*it) && static_cast<MusicLibraryItemArtist *>(*it)->allSingleTrack()) {
             if (!various) {
-                QString artist=i18n("Various Artists");
-                QHash<QString, int>::ConstIterator it=m_indexes.find(artist);
+                QHash<QString, int>::ConstIterator it=m_indexes.find(Song::variousArtists());
                 if (m_indexes.end()==it) {
-                    various=new MusicLibraryItemArtist(artist, QString(), this);
+                    various=new MusicLibraryItemArtist(Song::variousArtists(), QString(), this);
                     created=true;
                 } else {
                     various=static_cast<MusicLibraryItemArtist *>(m_childItems.at(*it));
@@ -114,20 +113,19 @@ void MusicLibraryItemRoot::groupMultipleArtists()
     QList<MusicLibraryItem *>::iterator it=m_childItems.begin();
     MusicLibraryItemArtist *various=0;
     bool created=false;
-    QString va=i18n("Various Artists");
-    bool checkDiffVaString=va!=QLatin1String("Various Artists");
+    bool checkDiffVaString=Song::variousArtists()!=QLatin1String("Various Artists");
 
     // When grouping multiple artists - if 'Various Artists' is spelt different in curernt language, then we also need to place
     // items by 'Various Artists' into i18n('Various Artists')
     for (; it!=m_childItems.end(); ) {
         if (various!=(*it) && (!static_cast<MusicLibraryItemArtist *>(*it)->isVarious() ||
-                               (checkDiffVaString && static_cast<MusicLibraryItemArtist *>(*it)->isVarious() && va!=(*it)->data())) ) {
+                               (checkDiffVaString && static_cast<MusicLibraryItemArtist *>(*it)->isVarious() && Song::variousArtists()!=(*it)->data())) ) {
             QList<MusicLibraryItem *> mutipleAlbums=static_cast<MusicLibraryItemArtist *>(*it)->mutipleArtistAlbums();
             if (mutipleAlbums.count()) {
                 if (!various) {
-                    QHash<QString, int>::ConstIterator it=m_indexes.find(va);
+                    QHash<QString, int>::ConstIterator it=m_indexes.find(Song::variousArtists());
                     if (m_indexes.end()==it) {
-                        various=new MusicLibraryItemArtist(va, QString(), this);
+                        various=new MusicLibraryItemArtist(Song::variousArtists(), QString(), this);
                         created=true;
                     } else {
                         various=static_cast<MusicLibraryItemArtist *>(m_childItems.at(*it));
@@ -168,7 +166,7 @@ void MusicLibraryItemRoot::groupMultipleArtists()
 bool MusicLibraryItemRoot::isFromSingleTracks(const Song &s) const
 {
     if (!isFlat && (supportsAlbumArtist && !s.file.isEmpty())) {
-        QHash<QString, int>::ConstIterator it=m_indexes.find(i18n("Various Artists"));
+        QHash<QString, int>::ConstIterator it=m_indexes.find(Song::variousArtists());
 
         if (m_indexes.end()!=it) {
             return static_cast<MusicLibraryItemArtist *>(m_childItems.at(*it))->isFromSingleTracks(s);
@@ -359,7 +357,6 @@ void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, const QDateTime &date
     quint64 total=0;
     quint64 count=0;
     writer.writeStartDocument();
-    QString unknown=i18n("Unknown");
 
     //Start with the document
     writer.writeStartElement(constTopTag);
@@ -407,7 +404,7 @@ void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, const QDateTime &date
             writer.writeStartElement(constAlbumElement);
             writer.writeAttribute(constNameAttribute, album->originalName().isEmpty() ? album->data() : album->originalName());
             writer.writeAttribute(constYearAttribute, QString::number(album->year()));
-            if (!albumGenre.isEmpty() && albumGenre!=unknown) {
+            if (!albumGenre.isEmpty() && albumGenre!=Song::unknown()) {
                 writer.writeAttribute(constGenreAttribute, albumGenre);
             }
             if (album->isSingleTracks()) {
@@ -449,7 +446,7 @@ void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, const QDateTime &date
                     writer.writeAttribute(constComposerAttribute, track->song().composer);
                 }
 //                 writer.writeAttribute("id", QString::number(track->song().id));
-                if (!track->song().genre.isEmpty() && track->song().genre!=albumGenre && track->song().genre!=unknown) {
+                if (!track->song().genre.isEmpty() && track->song().genre!=albumGenre && track->song().genre!=Song::unknown()) {
                     writer.writeAttribute(constGenreAttribute, track->song().genre);
                 }
                 if (album->isSingleTracks()) {
@@ -517,7 +514,6 @@ quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime 
     MusicLibraryItemAlbum *albumItem = 0;
     Song song;
     quint32 xmlDate=0;
-    QString unknown=i18n("Unknown");
     quint64 total=0;
     quint64 count=0;
     bool gs=MPDParseUtils::groupSingle();
@@ -601,7 +597,7 @@ quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime 
                     QString genre=attributes.value(constGenreAttribute).toString();
                     if (genre.isEmpty() ) {
                         if (song.genre.isEmpty()) {
-                            song.genre=unknown;
+                            song.genre=Song::unknown();
                         }
                     } else {
                         song.genre=genre;
@@ -830,7 +826,7 @@ bool MusicLibraryItemRoot::songExists(const Song &s) const
 
     if (!s.isVariousArtists()) {
         Song mod(s);
-        mod.albumartist=i18n("Various Artists");
+        mod.albumartist=Song::variousArtists();
         if (MPDParseUtils::groupMultiple()) {
             song=findSong(mod);
             if (song) {
@@ -1014,7 +1010,7 @@ QString MusicLibraryItemRoot::artistName(const Song &s)
     if (Song::Standard==s.type || (Song::Playlist==s.type && !s.albumArtist().isEmpty())) {
         return s.artistOrComposer();
     }
-    return i18n("Various Artists");
+    return Song::variousArtists();
 }
 
 QString MusicLibraryItemRoot::songArtist(const Song &s) const

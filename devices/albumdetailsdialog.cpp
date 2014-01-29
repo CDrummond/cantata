@@ -334,8 +334,6 @@ Song AlbumDetailsDialog::toSong(QTreeWidgetItem *i, const CdAlbum &album)
 
 CdAlbum AlbumDetailsDialog::getAlbum() const
 {
-    static QString unknown=i18n("Unknown");
-
     CdAlbum cdAlbum;
     cdAlbum.artist=artist->text().trimmed();
     cdAlbum.composer=composer->text().trimmed();
@@ -344,10 +342,10 @@ CdAlbum AlbumDetailsDialog::getAlbum() const
     cdAlbum.year=year->value();
     cdAlbum.genre=genre->text().trimmed();
     if (cdAlbum.artist.isEmpty()) {
-        cdAlbum.artist=unknown;
+        cdAlbum.artist=Song::unknown();
     }
     if (cdAlbum.name.isEmpty()) {
-        cdAlbum.name=unknown;
+        cdAlbum.name=Song::unknown();
     }
     return cdAlbum;
 }

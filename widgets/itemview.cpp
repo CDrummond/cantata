@@ -906,15 +906,7 @@ void ItemView::setGridSize(const QSize &sz)
 
 void ItemView::update()
 {
-    if (usingTreeView()) {
-        treeView->update();
-    } else if (Mode_GroupedTree==mode) {
-        groupedView->update();
-    } else if (Mode_Table==mode) {
-        tableView->update();
-    } else {
-        listView->update();
-    }
+    view()->update();
 }
 
 void ItemView::setDeleteAction(QAction *act)
@@ -931,32 +923,15 @@ void ItemView::setDeleteAction(QAction *act)
 
 void ItemView::showIndex(const QModelIndex &idx, bool scrollTo)
 {
-    if (usingTreeView()) {
+    if (usingTreeView() || Mode_GroupedTree==mode || Mode_Table==mode) {
+        TreeView *v=static_cast<TreeView *>(view());
         QModelIndex i=idx;
         while (i.isValid()) {
-            treeView->setExpanded(i, true);
+            v->setExpanded(i, true);
             i=i.parent();
         }
         if (scrollTo) {
-            treeView->scrollTo(idx, QAbstractItemView::PositionAtTop);
-        }
-    } else if (Mode_GroupedTree==mode) {
-        QModelIndex i=idx;
-        while (i.isValid()) {
-            groupedView->setExpanded(i, true);
-            i=i.parent();
-        }
-        if (scrollTo) {
-            groupedView->scrollTo(idx, QAbstractItemView::PositionAtTop);
-        }
-    } else if (Mode_Table==mode) {
-        QModelIndex i=idx;
-        while (i.isValid()) {
-            tableView->setExpanded(i, true);
-            i=i.parent();
-        }
-        if (scrollTo) {
-            tableView->scrollTo(idx, QAbstractItemView::PositionAtTop);
+            v->scrollTo(idx, QAbstractItemView::PositionAtTop);
         }
     } else {
         if (idx.parent().isValid()) {
@@ -1333,11 +1308,7 @@ void ItemView::searchActive(bool a)
 
 void ItemView::collapseToLevel()
 {
-    if (usingTreeView()) {
-        return treeView->collapseToLevel(searchResetLevel, searchIndex);
-    } else if(Mode_GroupedTree==mode) {
-        return groupedView->collapseToLevel(searchResetLevel, searchIndex);
-    } else if(Mode_Table==mode) {
-        return tableView->collapseToLevel(searchResetLevel, searchIndex);
+    if (usingTreeView() || Mode_GroupedTree==mode || Mode_Table==mode) {
+        static_cast<TreeView *>(view())->collapseToLevel(searchResetLevel, searchIndex);
     }
 }

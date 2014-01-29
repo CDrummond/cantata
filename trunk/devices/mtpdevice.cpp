@@ -349,7 +349,6 @@ void MtpConnection::updateLibrary()
     QMap<QString, MtpAlbum> albumMap;
     QMap<uint32_t, MtpFolder> folders;
     bool getAlbumArtistFromPath=dev->options().scheme.startsWith(DeviceOptions::constAlbumArtist+QChar('/')+DeviceOptions::constAlbumTitle+QChar('/'));
-    QString va=i18n("Various Artists");
     #endif
     #ifdef TIME_MTP_OPERATIONS
     qWarning() << "Tracks update:" << timer.elapsed();
@@ -386,7 +385,7 @@ void MtpConnection::updateLibrary()
             if (folderParts.length()>=3) {
                 MtpFolder folder(folderParts.at(1), folderParts.at(2));
                 folders.insert(track->parent_id, folder);
-                if (folder.album==s.album && (folder.artist==QLatin1String("Various Artists") || folder.artist==va)) {
+                if (folder.album==s.album && Song::isVariousArtists(folder.artist)) {
                     s.albumartist=folder.artist;
                 }
             }
@@ -465,7 +464,7 @@ void MtpConnection::updateLibrary()
                     foreach (const QString &artist, (*it).artists) {
                         if (!artist.contains(shortestArtist)) {
                             // Found an artist that did not contain 'shortestArtist', so use 'Various Artists' for album artist
-                            albumArtist=!f.artist.isEmpty() && f.album==it.key() ? f.artist : i18n("Various Artists");
+                            albumArtist=!f.artist.isEmpty() && f.album==it.key() ? f.artist : Song::variousArtists();
                             break;
                         }
                     }

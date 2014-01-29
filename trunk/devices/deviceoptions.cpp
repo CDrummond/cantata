@@ -357,7 +357,7 @@ QString DeviceOptions::createFilename(const Song &s) const
     }
     path.replace(constTrackNumber, track);
     path.replace(constCdNumber, copy.disc<1 ? QLatin1String("") : QString::number(copy.disc));
-    path.replace(constGenre, copy.genre.isEmpty() ? i18n("Unknown") : copy.genre);
+    path.replace(constGenre, copy.genre.isEmpty() ? Song::unknown() : copy.genre);
     path.replace(constYear, copy.year<1 ? QLatin1String("") : QString::number(copy.year));
 
     // For songs about to be downloaded from streams, we hide the filetype in genre...

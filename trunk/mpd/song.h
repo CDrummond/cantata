@@ -74,6 +74,9 @@ struct Song
     // Only used in PlayQueue/PlayLists...
     quint16 key;
 
+    static const QString & unknown();
+    static const QString & variousArtists();
+    static void initTranslations();
     static const QString constCddaProtocol;
     static const QString constMopidyLocal;
     static void storeAlbumYear(const Song &s);

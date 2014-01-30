@@ -379,10 +379,12 @@ public:
         bool rtl = Qt::RightToLeft==QApplication::layoutDirection();
         bool selected=option.state&QStyle::State_Selected;
         bool active=option.state&QStyle::State_Active;
+        bool mouseOver=underMouse && option.state&QStyle::State_MouseOver;
+
         if (!gtk && 1==text.count()) {
             QStyledItemDelegate::paint(painter, option, index);
         } else {
-            if ((option.state&QStyle::State_MouseOver) && gtk) {
+            if (mouseOver && gtk) {
                 GtkStyle::drawSelection(option, painter, selected ? 0.75 : 0.25);
             } else {
                 QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &option, painter, 0L);
@@ -437,7 +439,7 @@ public:
             }
         }
 
-        if ((option.state & QStyle::State_MouseOver)) {
+        if (mouseOver) {
             drawIcons(painter, option.rect, true, rtl, AP_HMiddle, index);
         }
         BasicItemDelegate::drawLine(painter, option.rect, option.palette.color(active ? QPalette::Active : QPalette::Inactive,

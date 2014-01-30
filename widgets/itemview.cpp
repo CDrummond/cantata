@@ -1126,7 +1126,7 @@ bool ItemView::eventFilter(QObject *o, QEvent *e)
             break;
         case QEvent::HoverEnter: {
             QColor bgnd=palette().highlight().color();
-            title->setStyleSheet(QString("QLabel{background:rgb(%1,%2,%3,48);}")
+            title->setStyleSheet(QString("QLabel{background:rgb(%1,%2,%3,38);}")
                                  .arg(bgnd.red()).arg(bgnd.green()).arg(bgnd.blue()));
             break;
         }

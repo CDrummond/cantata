@@ -54,6 +54,7 @@
 #if defined ENABLE_HTTP_STREAM_PLAYBACK && QT_VERSION < 0x050000
 #include <phonon/audiooutput.h>
 #endif
+#include "thread.h"
 #include "trayitem.h"
 #include "messagebox.h"
 #include "inputdialog.h"
@@ -934,7 +935,6 @@ MainWindow::~MainWindow()
     positionSlider->saveConfig();
     #ifdef ENABLE_ONLINE_SERVICES
     OnlineServicesModel::self()->save();
-    OnlineServicesModel::self()->stop();
     #endif
     Settings::self()->saveForceSingleClick(TreeView::getForceSingleClick());
     Settings::StartupState startupState=Settings::self()->startupState();
@@ -956,15 +956,13 @@ MainWindow::~MainWindow()
         // Allow time for removal of cantata streams...
         Utils::sleep();
     }
-    MPDConnection::self()->stop();
-    Covers::self()->stop();
     #ifdef ENABLE_DEVICES_SUPPORT
-    FileThread::self()->stop();
     DevicesModel::self()->stop();
     #endif
     #ifndef ENABLE_KDE_SUPPORT
     MediaKeys::self()->stop();
     #endif
+    ThreadCleaner::self()->stopAll();
 }
 
 void MainWindow::initSizes()

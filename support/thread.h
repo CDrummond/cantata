@@ -26,18 +26,31 @@
 
 #include <QThread>
 
-// ThreadCleaner *needs* to resde in the GUI thread. When a 'Thread' is created it will connect
+// ThreadCleaner *needs* to reside in the GUI thread. When a 'Thread' is created it will connect
 // its finished signal to threadFinished(), this then calls deleteLater() to ensure that the
 // thread is finished before it is deleted - and is deleted in the gui thread.
+class Thread;
 class ThreadCleaner : public QObject
 {
     Q_OBJECT
 public:
+    static void enableDebug();
     static ThreadCleaner * self();
     ThreadCleaner() { }
     ~ThreadCleaner() { }
+
+    // This function must *ONLY* be called from GUI thread...
+    void stopAll();
+
 public Q_SLOTS:
     void threadFinished();
+
+private:
+    void add(Thread *thread);
+
+private:
+    QList<Thread *> threads;
+    friend class Thread;
 };
 
 class Thread : public QThread

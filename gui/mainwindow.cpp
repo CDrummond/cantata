@@ -1184,16 +1184,12 @@ void MainWindow::streamUrl(const QString &u)
 
 void MainWindow::refreshDbPromp()
 {
-    if (Settings::self()->playQueueConfirmClear()) {
-        if (QDialogButtonBox::GnomeLayout==style()->styleHint(QStyle::SH_DialogButtonLayout)) {
-            messageWidget->setActions(QList<QAction*>() << cancelAction << doDbRefreshAction);
-        } else {
-            messageWidget->setActions(QList<QAction*>() << doDbRefreshAction << cancelAction);
-        }
-        messageWidget->setWarning(i18n("Refresh MPD Database?"), false);
+    if (QDialogButtonBox::GnomeLayout==style()->styleHint(QStyle::SH_DialogButtonLayout)) {
+        messageWidget->setActions(QList<QAction*>() << cancelAction << doDbRefreshAction);
     } else {
-        clearPlayQueue();
+        messageWidget->setActions(QList<QAction*>() << doDbRefreshAction << cancelAction);
     }
+    messageWidget->setWarning(i18n("Refresh MPD Database?"), false);
 }
 
 void MainWindow::refreshDb()

@@ -33,6 +33,11 @@ public:
     BasicItemDelegate(QObject *p);
     virtual ~BasicItemDelegate();
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
+private:
+    bool eventFilter(QObject *object, QEvent *event);
+private:
+    bool trackMouse;
+    bool underMouse;
 };
 
 #endif

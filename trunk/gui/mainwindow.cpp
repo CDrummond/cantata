@@ -2061,12 +2061,6 @@ void MainWindow::updateStatus(MPDStatus * const status)
             StdActions::self()->prevTrackAction->setEnabled(status->playlistLength()>1);
         }
         positionSlider->startTimer();
-
-        #ifdef ENABLE_KDE_SUPPORT
-        trayItem->setIconByName(Icons::self()->toolbarPlayIcon.name());
-        #else
-        trayItem->setIcon(Icons::self()->toolbarPlayIcon);
-        #endif
         break;
     case MPDState_Inactive:
     case MPDState_Stopped:
@@ -2088,12 +2082,6 @@ void MainWindow::updateStatus(MPDStatus * const status)
         }
         current.id=0;
         updateWindowTitle();
-
-        #ifdef ENABLE_KDE_SUPPORT
-        trayItem->setIconByName("cantata");
-        #else
-        trayItem->setIcon(Icons::self()->appIcon);
-        #endif
         trayItem->setToolTip("cantata", i18n("Cantata"), "<i>Playback stopped</i>");
         positionSlider->stopTimer();
         break;
@@ -2108,11 +2096,6 @@ void MainWindow::updateStatus(MPDStatus * const status)
         enableStopActions(0!=status->playlistLength());
         StdActions::self()->nextTrackAction->setEnabled(status->playlistLength()>1);
         StdActions::self()->prevTrackAction->setEnabled(status->playlistLength()>1);
-        #ifdef ENABLE_KDE_SUPPORT
-        trayItem->setIconByName(Icons::self()->toolbarPauseIcon.name());
-        #else
-        trayItem->setIcon(Icons::self()->toolbarPauseIcon);
-        #endif
         positionSlider->stopTimer();
         break;
     default:

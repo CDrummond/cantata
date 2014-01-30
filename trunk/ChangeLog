@@ -107,6 +107,7 @@
     to match current theme.
 64. Fix searches containing more than 4 words.
 65. Use stretch header class from Clementine for table style views.
+66. Dont change tray icon to play state - consistent with other apps.
 
 1.2.2
 -----

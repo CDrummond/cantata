@@ -52,8 +52,8 @@ PlaylistTableView::PlaylistTableView(QWidget *p)
     setUseSimpleDelegate();
     setIndentation(fontMetrics().width(QLatin1String("XX")));
     StretchHeaderView *hdr=new StretchHeaderView(Qt::Horizontal, this);
-    hdr->setMinimumSectionSize(fontMetrics().width("999"));
     setHeader(hdr);
+    connect(hdr, SIGNAL(StretchEnabledChanged(bool)), SLOT(stretchToggled(bool)));
 }
 
 void PlaylistTableView::initHeader()
@@ -65,6 +65,7 @@ void PlaylistTableView::initHeader()
     StretchHeaderView *hdr=qobject_cast<StretchHeaderView *>(header());
     if (!menu) {
         hdr->SetStretchEnabled(true);
+        stretchToggled(true);
         hdr->setContextMenuPolicy(Qt::CustomContextMenu);
         hdr->SetColumnWidth(PlaylistsModel::COL_TITLE, 0.4);
         hdr->SetColumnWidth(PlaylistsModel::COL_ARTIST, 0.15);
@@ -127,6 +128,11 @@ void PlaylistTableView::toggleHeaderItem(bool visible)
             qobject_cast<StretchHeaderView *>(header())->SetSectionHidden(index, !visible);
         }
     }
+}
+
+void PlaylistTableView::stretchToggled(bool e)
+{
+    setHorizontalScrollBarPolicy(e ? Qt::ScrollBarAlwaysOff : Qt::ScrollBarAsNeeded);
 }
 
 PlaylistsPage::PlaylistsPage(QWidget *p)

@@ -84,5 +84,8 @@
 <file alias="addradio32.png">icons/hi32-action-cantata-radiostream-add.png</file>
 <file alias="addradio48.png">icons/hi48-action-cantata-radiostream-add.png</file>
 
+<file alias="trayicon-mono-light">icons/trayicon-mono-light.svg</file>
+<file alias="trayicon-mono-dark">icons/trayicon-mono-dark.svg</file>
+
 </qresource>
 </RCC>

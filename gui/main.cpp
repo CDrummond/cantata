@@ -42,6 +42,7 @@
 #include "initialsettingswizard.h"
 #include "mainwindow.h"
 #include "song.h"
+#include "thread.h"
 
 // To enable debug...
 #include "mpdconnection.h"
@@ -60,9 +61,6 @@
 #include "songdialog.h"
 #include "networkaccessmanager.h"
 #include "ultimatelyricsprovider.h"
-#ifdef ENABLE_EXTERNAL_TAGS
-#include "tagclient.h"
-#endif
 
 #include <QMutex>
 #include <QMutexLocker>
@@ -147,10 +145,9 @@ enum Debug {
     Dbg_SongDialogs       = 0x0800,
     Dbg_NetworkAccess     = 0x1000,
     Dbg_Context_Lyrics    = 0x2000,
+    Dbg_Threads           = 0x4000,
 
-    Dbg_TagHelper         = 0x4000,
     // NOTE: MUST UPDATE Dbg_All IF ADD NEW ITEMS!!!
-
     Dbg_All               = 0x7FFF
 };
 
@@ -207,11 +204,9 @@ static void installDebugMessageHandler()
         if (dbg&Dbg_Context_Lyrics) {
             UltimateLyricsProvider::enableDebug();
         }
-        #ifdef ENABLE_EXTERNAL_TAGS
-        if (dbg&Dbg_TagHelper) {
-            TagClient::enableDebug();
+        if (dbg&Dbg_Threads) {
+            ThreadCleaner::enableDebug();
         }
-        #endif
         if (dbg&Dbg_All && logToFile) {
             #if QT_VERSION < 0x050000
             qInstallMsgHandler(cantataQtMsgHandler);
@@ -303,6 +298,9 @@ int main(int argc, char *argv[])
     #ifndef Q_OS_WIN
     loadTranslation("cantata", INSTALL_PREFIX"/share/cantata/translations/", lang);
     #endif
+
+    // Ensure ThreadCleaner is in GUI thread...
+    ThreadCleaner::self();
 
     Song::initTranslations();
     if (Settings::self()->firstRun()) {

@@ -22,11 +22,27 @@
  */
 
 #include "thread.h"
-//#include <QDebug>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KGlobal>
 K_GLOBAL_STATIC(ThreadCleaner, instance)
 #endif
+#include <QCoreApplication>
+#include <QDebug>
+#include <signal.h>
+#include <unistd.h>
+
+static bool debugEnabled=false;
+#define DBUG if (debugEnabled) qWarning() << metaObject()->className() << __FUNCTION__
+void ThreadCleaner::enableDebug()
+{
+    debugEnabled=true;
+}
+
+static void segvHandler(int i)
+{
+    if (debugEnabled) qWarning() << "SEGV handler called";
+    _exit(i);
+}
 
 ThreadCleaner * ThreadCleaner::self()
 {
@@ -41,22 +57,60 @@ ThreadCleaner * ThreadCleaner::self()
     #endif
 }
 
+void ThreadCleaner::stopAll()
+{
+    DBUG << "Remaining threads:" << threads.count();
+    foreach (Thread *thread, threads) {
+        DBUG << "Cleanup" << thread->objectName();
+        disconnect(thread, SIGNAL(finished()), this, SLOT(threadFinished()));
+    }
+
+    foreach (Thread *thread, threads) {
+        thread->stop();
+    }
+
+    QList<Thread *> stillRunning;
+    foreach (Thread *thread, threads) {
+        if (thread->wait(250)) {
+            delete thread;
+        } else {
+            stillRunning.append(thread);
+            DBUG << "Failed to close" << thread->objectName();
+        }
+    }
+
+    // Terminate any still running threads...
+    signal(SIGSEGV, segvHandler); // Ignore SEGV in case a thread throws an error...
+    foreach (Thread *thread, stillRunning) {
+        thread->terminate();
+    }
+}
+
 void ThreadCleaner::threadFinished()
 {
-    QThread *thread=qobject_cast<QThread *>(sender());
+    Thread *thread=qobject_cast<Thread *>(sender());
     if (thread) {
         thread->deleteLater();
+        threads.removeAll(thread);
+        DBUG << "Thread finished" << thread->objectName() << "Total threads:" << threads.count();
     }
+}
+
+void ThreadCleaner::add(Thread *thread)
+{
+    threads.append(thread);
+    connect(thread, SIGNAL(finished()), this, SLOT(threadFinished()));
+    DBUG << "Thread created" << thread->objectName() << "Total threads:" << threads.count();
 }
 
 Thread::Thread(const QString &name, QObject *p)
     : QThread(p)
 {
     setObjectName(name);
-    connect(this, SIGNAL(finished()), ThreadCleaner::self(), SLOT(threadFinished()));
+    ThreadCleaner::self()->add(this);
 }
 
 Thread::~Thread()
 {
-//    qWarning() << objectName() << "destroyed";
+    DBUG << objectName() << "destroyed";
 }

@@ -446,12 +446,12 @@ within the folder of the current track, or within its parent folder. If no image
         <widget class="QComboBox" name="playQueueGrouped">
          <item>
           <property name="text">
-           <string>Table</string>
+           <string>Grouped Albums</string>
           </property>
          </item>
          <item>
           <property name="text">
-           <string>Grouped Albums</string>
+           <string>Table</string>
           </property>
          </item>
         </widget>

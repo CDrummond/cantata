@@ -84,6 +84,7 @@ static inline int getValue(QComboBox *box)
     return box->itemData(box->currentIndex()).toInt();
 }
 
+static const int constPlayQueueGrouped=0;
 static const char * constValueProperty="value";
 
 InterfaceSettings::InterfaceSettings(QWidget *p)
@@ -207,7 +208,7 @@ void InterfaceSettings::load()
     showDeleteAction->setChecked(Settings::self()->showDeleteAction());
     selectEntry(devicesView, Settings::self()->devicesView());
     #endif
-    playQueueGrouped->setCurrentIndex(Settings::self()->playQueueGrouped() ? 1 : 0);
+    playQueueGrouped->setCurrentIndex(Settings::self()->playQueueGrouped() ? 0 : 1);
     playQueueAutoExpand->setChecked(Settings::self()->playQueueAutoExpand());
     playQueueStartClosed->setChecked(Settings::self()->playQueueStartClosed());
     playQueueScroll->setChecked(Settings::self()->playQueueScroll());
@@ -284,7 +285,7 @@ void InterfaceSettings::save()
     Settings::self()->saveShowDeleteAction(showDeleteAction->isChecked());
     Settings::self()->saveDevicesView(getValue(devicesView));
     #endif
-    Settings::self()->savePlayQueueGrouped(1==playQueueGrouped->currentIndex());
+    Settings::self()->savePlayQueueGrouped(constPlayQueueGrouped==playQueueGrouped->currentIndex());
     Settings::self()->savePlayQueueAutoExpand(playQueueAutoExpand->isChecked());
     Settings::self()->savePlayQueueStartClosed(playQueueStartClosed->isChecked());
     Settings::self()->savePlayQueueScroll(playQueueScroll->isChecked());
@@ -465,8 +466,8 @@ void InterfaceSettings::albumsCoverSizeChanged()
 
 void InterfaceSettings::playQueueGroupedChanged()
 {
-    playQueueAutoExpand->setEnabled(1==playQueueGrouped->currentIndex());
-    playQueueStartClosed->setEnabled(1==playQueueGrouped->currentIndex());
+    playQueueAutoExpand->setEnabled(constPlayQueueGrouped==playQueueGrouped->currentIndex());
+    playQueueStartClosed->setEnabled(constPlayQueueGrouped==playQueueGrouped->currentIndex());
 }
 
 void InterfaceSettings::playListsStyleChanged()

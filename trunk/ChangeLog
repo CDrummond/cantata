@@ -108,6 +108,8 @@
 64. Fix searches containing more than 4 words.
 65. Use stretch header class from Clementine for table style views.
 66. Dont change tray icon to play state - consistent with other apps.
+67. Use mono system tray icon underUnity if icon theme is ubuntu-mono-light or
+    ubuntu-mono-dark.
 
 1.2.2
 -----

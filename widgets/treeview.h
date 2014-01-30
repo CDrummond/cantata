@@ -40,6 +40,7 @@ public:
     static void setForceSingleClick(bool v);
     static bool getForceSingleClick();
     static QModelIndexList sortIndexes(const QModelIndexList &list);
+    static void drag(Qt::DropActions supportedActions, QAbstractItemView *view, const QModelIndexList &items);
 
     TreeView(QWidget *parent=0, bool menuAlwaysAllowed=false);
     virtual ~TreeView();
@@ -49,7 +50,7 @@ public:
     void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
     bool haveSelectedItems() const;
     bool haveUnSelectedItems() const;
-    void startDrag(Qt::DropActions supportedActions);
+    void startDrag(Qt::DropActions supportedActions) { drag(supportedActions, this, selectedIndexes()); }
     void mouseReleaseEvent(QMouseEvent *event);
     QModelIndexList selectedIndexes() const { return selectedIndexes(true); }
     QModelIndexList selectedIndexes(bool sorted) const;

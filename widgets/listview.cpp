@@ -35,8 +35,8 @@
 #include <QPaintEvent>
 
 ListView::ListView(QWidget *parent)
-        : QListView(parent)
-        , menu(0)
+    : QListView(parent)
+    , menu(0)
 {
     setDragEnabled(true);
     setContextMenuPolicy(Qt::NoContextMenu);
@@ -71,37 +71,6 @@ bool ListView::haveUnSelectedItems() const
 {
     // Dont need the sorted type of 'selectedIndexes' here...
     return selectionModel() && selectionModel()->selectedIndexes().count()!=model()->rowCount();
-}
-
-void ListView::startDrag(Qt::DropActions supportedActions)
-{
-    QModelIndexList indexes = selectedIndexes();
-    if (indexes.count() > 0) {
-        QMimeData *data = model()->mimeData(indexes);
-        if (!data) {
-            return;
-        }
-        QDrag *drag = new QDrag(this);
-        drag->setMimeData(data);
-        QPixmap pix;
-
-        if (1==indexes.count()) {
-            QVariant var=model()->data(indexes.first(), ItemView::Role_Image);
-            QImage img=var.value<QImage>();
-            if (img.isNull()) {
-                pix=var.value<QPixmap>();
-            } else {
-                pix=QPixmap::fromImage(img);
-            }
-        }
-        int pixSize=Utils::isHighDpi() ? 64 : 32;
-        if (pix.isNull()) {
-            drag->setPixmap(Icons::self()->audioFileIcon.pixmap(pixSize, pixSize));
-        } else {
-            drag->setPixmap(pix.width()<pixSize ? pix : pix.scaled(QSize(pixSize, pixSize), Qt::KeepAspectRatio, Qt::SmoothTransformation));
-        }
-        drag->start(supportedActions);
-    }
 }
 
 void ListView::mouseReleaseEvent(QMouseEvent *event)

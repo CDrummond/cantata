@@ -26,6 +26,7 @@
 
 #include <QListView>
 #include <QPixmap>
+#include "treeview.h"
 
 class QIcon;
 
@@ -41,7 +42,7 @@ public:
     void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
     bool haveSelectedItems() const;
     bool haveUnSelectedItems() const;
-    void startDrag(Qt::DropActions supportedActions);
+    void startDrag(Qt::DropActions supportedActions) { TreeView::drag(supportedActions, this, selectedIndexes()); }
     void mouseReleaseEvent(QMouseEvent *event);
     QModelIndexList selectedIndexes() const { return selectedIndexes(false); }
     QModelIndexList selectedIndexes(bool sorted) const;

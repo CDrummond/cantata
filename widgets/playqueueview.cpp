@@ -44,11 +44,10 @@
 // Exported by QtGui
 void qt_blurImage(QPainter *p, QImage &blurImage, qreal radius, bool quality, bool alphaOnly, int transposed = 0);
 
-
-class PlayQueueTreeViewItemDelegate : public QStyledItemDelegate
+class PlayQueueTreeViewItemDelegate : public BasicItemDelegate
 {
 public:
-    PlayQueueTreeViewItemDelegate(QObject *p) : QStyledItemDelegate(p) { }
+    PlayQueueTreeViewItemDelegate(QObject *p) : BasicItemDelegate(p) { }
     virtual ~PlayQueueTreeViewItemDelegate() { }
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
     {
@@ -56,53 +55,16 @@ public:
             return;
         }
 
-        bool selected=option.state&QStyle::State_Selected;
-        bool active=option.state&QStyle::State_Active;
-        QColor col(option.palette.color(active ? QPalette::Active : QPalette::Inactive,
-                                        selected ? QPalette::HighlightedText : QPalette::Text));
-
-        if (4==option.version) {
-            const QStyleOptionViewItemV4 &v4=(QStyleOptionViewItemV4 &)option;
-            QIcon icon;
-
-            if (QStyleOptionViewItemV4::Beginning==v4.viewItemPosition) {
-                icon=index.data(PlayQueueView::Role_Decoration).value<QIcon>();
+        QStyleOptionViewItemV4 v4((QStyleOptionViewItemV4 &)option);
+        if (QStyleOptionViewItemV4::Beginning==v4.viewItemPosition) {
+            v4.icon=index.data(PlayQueueView::Role_Decoration).value<QIcon>();
+            if (!v4.icon.isNull()) {
+                v4.features |= QStyleOptionViewItemV2::HasDecoration;
+                v4.decorationSize=v4.icon.actualSize(option.decorationSize, QIcon::Normal, QIcon::Off);
             }
-            QSize decorSize;
-            if (!icon.isNull()) {
-                decorSize = icon.actualSize(option.decorationSize);
-            }
-
-            if (decorSize.isEmpty()) {
-                QStyledItemDelegate::paint(painter, option, index);
-            } else {
-                QStyleOptionViewItemV4 opt=v4;
-                int width=decorSize.width()+(Utils::isHighDpi() ? 8 : 4);
-                opt.rect.adjust(width, 0, 0, 0);
-                QStyledItemDelegate::paint(painter, opt, index);
-
-                QPixmap pix=icon.pixmap(decorSize);
-                painter->drawPixmap(option.rect.x()+((width-pix.width())/2), option.rect.y()+((option.rect.height()-pix.height())/2), pix);
-            }
-
-            switch (v4.viewItemPosition) {
-            case QStyleOptionViewItemV4::Beginning:
-                BasicItemDelegate::drawLine(painter, option.rect, col, true, false);
-                break;
-            case QStyleOptionViewItemV4::Middle:
-                BasicItemDelegate::drawLine(painter, option.rect, col, false, false);
-                break;
-            case QStyleOptionViewItemV4::End:
-                BasicItemDelegate::drawLine(painter, option.rect, col, false, true);
-                break;
-            case QStyleOptionViewItemV4::Invalid:
-            case QStyleOptionViewItemV4::OnlyOne:
-                BasicItemDelegate::drawLine(painter, option.rect, col, true, true);
-            }
-        } else {
-            QStyledItemDelegate::paint(painter, option, index);
-            BasicItemDelegate::drawLine(painter, option.rect, col, false, false);
         }
+
+        BasicItemDelegate::paint(painter, v4, index);
     }
 };
 

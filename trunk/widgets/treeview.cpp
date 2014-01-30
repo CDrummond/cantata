@@ -89,9 +89,9 @@ bool TreeView::getForceSingleClick()
 }
 
 TreeView::TreeView(QWidget *parent, bool menuAlwaysAllowed)
-        : QTreeView(parent)
-        , forceSingleColumn(false)
-        , alwaysAllowMenu(menuAlwaysAllowed)
+    : QTreeView(parent)
+    , forceSingleColumn(false)
+    , alwaysAllowMenu(menuAlwaysAllowed)
 {
     setDragEnabled(true);
     setContextMenuPolicy(Qt::NoContextMenu);
@@ -153,20 +153,19 @@ bool TreeView::haveUnSelectedItems() const
     return selectionModel() && selectionModel()->selectedIndexes().count()!=model()->rowCount();
 }
 
-void TreeView::startDrag(Qt::DropActions supportedActions)
+void TreeView::drag(Qt::DropActions supportedActions, QAbstractItemView *view, const QModelIndexList &items)
 {
-    QModelIndexList indexes = selectedIndexes();
-    if (indexes.count() > 0) {
-        QMimeData *data = model()->mimeData(indexes);
+    if (items.count() > 0) {
+        QMimeData *data = view->model()->mimeData(items);
         if (!data) {
             return;
         }
-        QDrag *drag = new QDrag(this);
+        QDrag *drag = new QDrag(view);
         drag->setMimeData(data);
         QPixmap pix;
 
-        if (1==indexes.count()) {
-            QVariant var=model()->data(indexes.first(), ItemView::Role_Image);
+        if (1==items.count()) {
+            QVariant var=view->model()->data(items.first(), ItemView::Role_Image);
             QImage img=var.value<QImage>();
             if (img.isNull()) {
                 pix=var.value<QPixmap>();

@@ -45,6 +45,7 @@ public:
 private Q_SLOTS:
     void showMenu();
     void toggleHeaderItem(bool visible);
+    void stretchToggled(bool e);
 
 private:
     QMenu *menu;

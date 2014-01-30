@@ -85,7 +85,9 @@ PlayQueueTreeView::PlayQueueTreeView(PlayQueueView *parent)
     setRootIsDecorated(false);
     setUniformRowHeights(true);
     setItemDelegate(new PlayQueueTreeViewItemDelegate(this));
-    setHeader(new StretchHeaderView(Qt::Horizontal, this));
+    StretchHeaderView *hdr=new StretchHeaderView(Qt::Horizontal, this);
+    setHeader(hdr);
+    connect(hdr, SIGNAL(StretchEnabledChanged(bool)), SLOT(stretchToggled(bool)));
 }
 
 PlayQueueTreeView::~PlayQueueTreeView()
@@ -123,6 +125,7 @@ void PlayQueueTreeView::initHeader()
     StretchHeaderView *hdr=qobject_cast<StretchHeaderView *>(header());
     if (!menu) {
         hdr->SetStretchEnabled(true);
+        stretchToggled(true);
         hdr->setContextMenuPolicy(Qt::CustomContextMenu);
         hdr->SetColumnWidth(PlayQueueModel::COL_TRACK, 0.075);
         hdr->SetColumnWidth(PlayQueueModel::COL_DISC, 0.03);
@@ -192,6 +195,11 @@ void PlayQueueTreeView::toggleHeaderItem(bool visible)
             qobject_cast<StretchHeaderView *>(header())->SetSectionHidden(index, !visible);
         }
     }
+}
+
+void PlayQueueTreeView::stretchToggled(bool e)
+{
+    setHorizontalScrollBarPolicy(e ? Qt::ScrollBarAlwaysOff : Qt::ScrollBarAsNeeded);
 }
 
 PlayQueueView::PlayQueueView(QWidget *parent)

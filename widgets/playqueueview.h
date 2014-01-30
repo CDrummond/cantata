@@ -58,6 +58,7 @@ private Q_SLOTS:
     void showMenu();
     void toggleHeaderItem(bool visible);
     void paintEvent(QPaintEvent *e);
+    void stretchToggled(bool e);
 
 private:
     PlayQueueView *view;

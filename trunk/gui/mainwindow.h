@@ -168,8 +168,6 @@ Q_SIGNALS:
     void play();
     void stop(bool afterCurrent=false);
     void getStatus();
-    void getStats(bool andUpdate);
-    void updateMpd();
     void playListInfo();
     void currentSong();
     void setSeekId(qint32, quint32);
@@ -208,7 +206,6 @@ public Q_SLOTS:
     void connectToMpd(const MPDConnectionDetails &details);
     void streamUrl(const QString &u);
     void refreshDbPromp();
-    void refreshDb();
     #ifndef ENABLE_KDE_SUPPORT
     void showAboutDialog();
     #endif

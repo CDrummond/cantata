@@ -81,6 +81,8 @@ FolderPage::FolderPage(QWidget *p)
     #endif
     connect(MPDConnection::self(), SIGNAL(updatingFileList()), this, SLOT(showSpinner()));
     connect(MPDConnection::self(), SIGNAL(updatedFileList()), this, SLOT(hideSpinner()));
+    connect(MPDConnection::self(), SIGNAL(updatingDatabase()), this, SLOT(showSpinner()));
+    connect(MPDConnection::self(), SIGNAL(updatedDatabase()), this, SLOT(hideSpinner()));
 }
 
 FolderPage::~FolderPage()
@@ -299,7 +301,7 @@ QStringList FolderPage::walk(QModelIndex rootItem)
 void FolderPage::showSpinner()
 {
     view->showSpinner();
-    view->showMessage(i18n("Loading..."), -1);
+    view->showMessage(i18n("Updating..."), -1);
 }
 
 void FolderPage::hideSpinner()

@@ -74,6 +74,8 @@ LibraryPage::LibraryPage(QWidget *p)
     connect(genreCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(searchItems()));
     connect(MPDConnection::self(), SIGNAL(updatingLibrary()), this, SLOT(showSpinner()));
     connect(MPDConnection::self(), SIGNAL(updatedLibrary()), this, SLOT(hideSpinner()));
+    connect(MPDConnection::self(), SIGNAL(updatingDatabase()), this, SLOT(showSpinner()));
+    connect(MPDConnection::self(), SIGNAL(updatedDatabase()), this, SLOT(hideSpinner()));
     connect(MusicLibraryModel::self(), SIGNAL(updateGenres(const QSet<QString> &)), genreCombo, SLOT(update(const QSet<QString> &)));
     connect(this, SIGNAL(loadLibrary()), MPDConnection::self(), SLOT(loadLibrary()));
     connect(view, SIGNAL(itemsSelected(bool)), this, SLOT(controlActions()));
@@ -409,7 +411,7 @@ void LibraryPage::controlActions()
 void LibraryPage::showSpinner()
 {
     view->showSpinner();
-    view->showMessage(i18n("Loading..."), -1);
+    view->showMessage(i18n("Updating..."), -1);
 }
 
 void LibraryPage::hideSpinner()

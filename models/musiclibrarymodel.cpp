@@ -145,6 +145,7 @@ MusicLibraryModel::MusicLibraryModel(QObject *parent, bool isMpdModel, bool isCh
     , mpdModel(isMpdModel)
     , checkable(isCheckable)
     , rootItem(new MusicLibraryItemRoot)
+    , databaseTimeReliable(true)
 {
     if (mpdModel)
     {
@@ -463,6 +464,7 @@ void MusicLibraryModel::updateMusicLibrary(MusicLibraryItemRoot *newroot, QDateT
     //
     // Mopidy users, and users of the proxy DB plugin, will have to force Cantata to refresh :-(
     if ((!databaseTime.isValid() && !dbUpdate.isValid()) || (databaseTime.date().year()<2000 && dbUpdate.date().year()<2000)) {
+        databaseTimeReliable=false; // See note in updatingMpd()
         databaseTime=QDateTime::currentDateTime();
     }
 
@@ -472,6 +474,18 @@ void MusicLibraryModel::updateMusicLibrary(MusicLibraryItemRoot *newroot, QDateT
 
     AlbumsModel::self()->update(rootItem);
     emit updateGenres(rootItem->genres());
+}
+
+void MusicLibraryModel::updatingMpd()
+{
+    // MPD/Mopidy is being updated. If MPD's database-time is not reliable (as is the case for older proxy DBs, and Mopidy)
+    // then we set the databaseTime to NOW when updated. This means we will miss any updates. So, for these scenarios, when
+    // a users presses 'Refresh Database' in Cantata's main window, we need to reset our view of the databaseTime to null, s
+    // that we update. This does mean that we will ALWAYS fetch the whole listing - but we have n oway of knowing if it changed
+    // or not :-(
+    if (!databaseTimeReliable) {
+        removeCache();
+    }
 }
 
 bool MusicLibraryModel::update(const QSet<Song> &songs)

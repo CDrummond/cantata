@@ -63,6 +63,7 @@ public:
 
 public Q_SLOTS:
     void updateDirView(DirViewItemRoot *newroot, const QDateTime &dbUpdate=QDateTime(), bool fromFile=false);
+    void updatingMpd();
 
 private:
     void toXML(const DirViewItem *item, QXmlStreamWriter &writer);
@@ -74,6 +75,7 @@ private:
 private:
     DirViewItemRoot *rootItem;
     QDateTime databaseTime;
+    bool databaseTimeReliable;
     bool enabled;
 };
 

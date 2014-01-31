@@ -715,8 +715,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(this, SIGNAL(play()), MPDConnection::self(), SLOT(play()));
     connect(this, SIGNAL(stop(bool)), MPDConnection::self(), SLOT(stopPlaying(bool)));
     connect(this, SIGNAL(getStatus()), MPDConnection::self(), SLOT(getStatus()));
-    connect(this, SIGNAL(getStats(bool)), MPDConnection::self(), SLOT(getStats(bool)));
-    connect(this, SIGNAL(updateMpd()), MPDConnection::self(), SLOT(update()));
     connect(this, SIGNAL(playListInfo()), MPDConnection::self(), SLOT(playListInfo()));
     connect(this, SIGNAL(currentSong()), MPDConnection::self(), SLOT(currentSong()));
     connect(this, SIGNAL(setSeekId(qint32, quint32)), MPDConnection::self(), SLOT(setSeekId(qint32, quint32)));
@@ -754,9 +752,10 @@ MainWindow::MainWindow(QWidget *parent)
     connect(Dynamic::self(), SIGNAL(running(bool)), this, SLOT(controlDynamicButton()));
     #endif
     connect(refreshDbAction, SIGNAL(triggered(bool)), this, SLOT(refreshDbPromp()));
-    connect(doDbRefreshAction, SIGNAL(toggled(bool)), this, SLOT(refreshDb()));
     connect(doDbRefreshAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(update()));
     connect(doDbRefreshAction, SIGNAL(triggered(bool)), messageWidget, SLOT(animatedHide()));
+    connect(doDbRefreshAction, SIGNAL(triggered(bool)), MusicLibraryModel::self(), SLOT(updatingMpd()));
+    connect(doDbRefreshAction, SIGNAL(triggered(bool)), DirViewModel::self(), SLOT(updatingMpd()));
     connect(connectAction, SIGNAL(triggered(bool)), this, SLOT(connectToMpd()));
     connect(StdActions::self()->prevTrackAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(goToPrevious()));
     connect(StdActions::self()->nextTrackAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(goToNext()));
@@ -1188,13 +1187,6 @@ void MainWindow::refreshDbPromp()
         messageWidget->setActions(QList<QAction*>() << doDbRefreshAction << cancelAction);
     }
     messageWidget->setWarning(i18n("Refresh MPD Database?"), false);
-}
-
-void MainWindow::refreshDb()
-{
-    MusicLibraryModel::self()->removeCache();
-    DirViewModel::self()->removeCache();
-    emit getStats(true);
 }
 
 #ifdef ENABLE_KDE_SUPPORT

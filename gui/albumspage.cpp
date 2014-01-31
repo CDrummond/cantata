@@ -75,6 +75,8 @@ AlbumsPage::AlbumsPage(QWidget *p)
     connect(view, SIGNAL(rootIndexSet(QModelIndex)), this, SLOT(updateGenres(QModelIndex)));
     connect(MPDConnection::self(), SIGNAL(updatingLibrary()), this, SLOT(showSpinner()));
     connect(MPDConnection::self(), SIGNAL(updatedLibrary()), this, SLOT(hideSpinner()));
+    connect(MPDConnection::self(), SIGNAL(updatingDatabase()), this, SLOT(showSpinner()));
+    connect(MPDConnection::self(), SIGNAL(updatedDatabase()), this, SLOT(hideSpinner()));
 }
 
 AlbumsPage::~AlbumsPage()
@@ -282,7 +284,7 @@ void AlbumsPage::controlActions()
 void AlbumsPage::showSpinner()
 {
     view->showSpinner();
-    view->showMessage(i18n("Loading..."), -1);
+    view->showMessage(i18n("Updating..."), -1);
 }
 
 void AlbumsPage::hideSpinner()

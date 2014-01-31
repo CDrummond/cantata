@@ -104,6 +104,7 @@ public Q_SLOTS:
     void setArtistImage(const Song &song, const QImage &img, bool update=false);
     void setCover(const Song &song, const QImage &img, const QString &file);
     void updateCover(const Song &song, const QImage &img, const QString &file);
+    void updatingMpd();
 
 Q_SIGNALS:
 //     void updated(const MusicLibraryItemRoot *root);
@@ -119,6 +120,7 @@ private:
     bool checkable;
     MusicLibraryItemRoot *rootItem;
     QDateTime databaseTime;
+    bool databaseTimeReliable;
 };
 
 #endif

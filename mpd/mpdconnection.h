@@ -250,7 +250,7 @@ public Q_SLOTS:
     void enableOutput(int id, bool enable);
 
     // Miscellaneous
-    void getStats(bool andUpdate=false);
+    void getStats();
     void getStatus();
     void getUrlHandlers();
     void getTagTypes();
@@ -295,7 +295,8 @@ Q_SIGNALS:
     void playlistRenamed(const QString &from, const QString &to);
     void removedFromPlaylist(const QString &name, const QList<quint32> &positions);
     void movedInPlaylist(const QString &name, const QList<quint32> &items, quint32 pos);
-    void databaseUpdated();
+    void updatingDatabase();
+    void updatedDatabase();
     void playlistLoaded(const QString &playlist);
     void added(const QStringList &files);
     void replayGain(const QString &);

@@ -379,7 +379,7 @@ void MPDConnection::reconnect()
     switch (connectToMPD()) {
     case Success:
         getStatus();
-        getStats(false);
+        getStats();
         getUrlHandlers();
         getTagTypes();
         playListInfo();
@@ -441,7 +441,7 @@ void MPDConnection::setDetails(const MPDConnectionDetails &d)
         switch (connectToMPD()) {
         case Success:
             getStatus();
-            getStats(false);
+            getStats();
             getUrlHandlers();
             getTagTypes();
             emit stateChanged(true);
@@ -1057,9 +1057,9 @@ void MPDConnection::clearStopAfter()
     toggleStopAfterCurrent(false);
 }
 
-void MPDConnection::getStats(bool andUpdate)
+void MPDConnection::getStats()
 {
-    Response response=sendCommand(andUpdate ? "command_list_begin\nupdate\nstats\ncommand_list_end" : "stats");
+    Response response=sendCommand("stats");
     if (response.ok) {
         MPDStatsValues stats=MPDParseUtils::parseStats(response.data);
         dbUpdate=stats.dbUpdate;
@@ -1175,11 +1175,11 @@ void MPDConnection::parseIdleReturn(const QByteArray &data)
     bool statusUpdated=false;
     foreach(const QByteArray &line, lines) {
         if (line == "changed: database") {
-            getStats(false);
+            getStats();
             playListInfo();
             playListUpdated=true;
         } else if (line == "changed: update") {
-            emit databaseUpdated();
+            emit updatedDatabase();
         } else if (line == "changed: stored_playlist") {
             emit storedPlayListUpdated();
         } else if (line == "changed: playlist") {
@@ -1218,7 +1218,9 @@ void MPDConnection::enableOutput(int id, bool enable)
  */
 void MPDConnection::update()
 {
-    sendCommand("update");
+    if (sendCommand("update").ok) {
+        emit updatingDatabase();
+    }
 }
 
 /*

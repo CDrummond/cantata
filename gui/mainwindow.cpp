@@ -1041,6 +1041,9 @@ void MainWindow::showError(const QString &message, bool showActions)
     } else {
         messageWidget->removeAllActions();
     }
+    if (!message.isEmpty()) {
+        expand();;
+    }
     QApplication::alert(this);
 }
 
@@ -1187,6 +1190,7 @@ void MainWindow::refreshDbPromp()
         messageWidget->setActions(QList<QAction*>() << doDbRefreshAction << cancelAction);
     }
     messageWidget->setWarning(i18n("Refresh MPD Database?"), false);
+    expand();;
 }
 
 #ifdef ENABLE_KDE_SUPPORT
@@ -1203,6 +1207,14 @@ void MainWindow::saveShortcuts()
     ActionCollection::get()->writeSettings();
 }
 #endif
+
+void MainWindow::expand()
+{
+    if (!expandInterfaceAction->isChecked()) {
+        expandInterfaceAction->setChecked(true);
+        expandOrCollapse();
+    }
+}
 
 bool MainWindow::canShowDialog()
 {
@@ -2117,6 +2129,7 @@ void MainWindow::promptClearPlayQueue()
             messageWidget->setActions(QList<QAction*>() << clearPlayQueueAction << cancelAction);
         }
         messageWidget->setWarning(i18n("Remove all songs from play queue?"), false);
+        expand();;
     } else {
         clearPlayQueue();
     }
@@ -2753,11 +2766,7 @@ void MainWindow::showPage(const QString &page, bool focusSearch)
     } else if (QLatin1String("search")==p) {
         showTab(MainWindow::PAGE_SEARCH);
     }
-
-    if (!expandInterfaceAction->isChecked()) {
-        expandInterfaceAction->setChecked(true);
-        expandOrCollapse();
-    }
+    expand();
 }
 
 void MainWindow::dynamicStatus(const QString &message)

@@ -136,7 +136,11 @@ void PlayQueueTreeView::initHeader()
         hdr->SetColumnWidth(PlayQueueModel::COL_YEAR, 0.05);
         hdr->SetColumnWidth(PlayQueueModel::COL_GENRE, 0.1);
         hdr->SetColumnWidth(PlayQueueModel::COL_PRIO, 0.015);
+        #if QT_VERSION >= 0x050000
+        hdr->setSectionsMovable(true);
+        #else
         hdr->setMovable(true);
+        #endif
         connect(hdr, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showMenu()));
     }
 

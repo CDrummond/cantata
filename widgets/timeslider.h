@@ -41,7 +41,7 @@ public:
 
     void showEvent(QShowEvent *e);
     void updateStyleSheet();
-    bool event(QEvent *e);
+    void mouseMoveEvent(QMouseEvent *e);
     void wheelEvent(QWheelEvent *ev);
     void setRange(int min, int max);
 

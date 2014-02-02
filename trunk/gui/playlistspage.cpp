@@ -73,7 +73,11 @@ void PlaylistTableView::initHeader()
         hdr->SetColumnWidth(PlaylistsModel::COL_LENGTH, 0.125);
         hdr->SetColumnWidth(PlaylistsModel::COL_YEAR, 0.05);
         hdr->SetColumnWidth(PlaylistsModel::COL_GENRE, 0.125);
+        #if QT_VERSION >= 0x050000
+        hdr->setSectionsMovable(true);
+        #else
         hdr->setMovable(true);
+        #endif
         connect(hdr, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showMenu()));
     }
 

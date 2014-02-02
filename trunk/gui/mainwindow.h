@@ -299,6 +299,7 @@ public Q_SLOTS:
     void controlDynamicButton();
 
 private:
+    void expand();
     bool canShowDialog();
     void enableStopActions(bool enable);
     void updateStatus(MPDStatus * const status);

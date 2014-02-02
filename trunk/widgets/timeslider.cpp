@@ -32,6 +32,7 @@
 #include <QApplication>
 #include <QMouseEvent>
 #include <QSlider>
+#include <QToolTip>
 
 class ProxyStyle : public QProxyStyle
 {
@@ -189,6 +190,7 @@ PosSlider::PosSlider(QWidget *p)
     setMinimumHeight(h);
     setMaximumHeight(h);
     updateStyleSheet();
+    setMouseTracking(true);
 }
 
 void PosSlider::showEvent(QShowEvent *e)
@@ -227,17 +229,15 @@ void PosSlider::updateStyleSheet()
     setStyleSheet(inactiveStyleSheet);
 }
 
-bool PosSlider::event(QEvent *e)
+void PosSlider::mouseMoveEvent(QMouseEvent *e)
 {
-    if (QEvent::ToolTip==e->type() && maximum()!=minimum()) {
-        QHelpEvent *he = dynamic_cast<QHelpEvent *>(e);
-        if (he) {
-            qreal pc = (qreal)he->x()/(qreal)width();
-            setToolTip(Song::formattedTime(maximum()*pc));
-        }
+    if (maximum()!=minimum()) {
+        qreal pc = (qreal)e->pos().x()/(qreal)width();
+        QPoint pos(e->pos().x(), Utils::isHighDpi() ? -80 : -40);
+        QToolTip::showText(mapToGlobal(pos), Song::formattedTime(maximum()*pc), this, rect());
     }
 
-    return QSlider::event(e);
+    QSlider::mouseMoveEvent(e);
 }
 
 void PosSlider::wheelEvent(QWheelEvent *ev)

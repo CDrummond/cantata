@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-11-14 20:26+0000\n"
-"PO-Revision-Date: 2014-01-26 18:01+0100\n"
+"PO-Revision-Date: 2014-02-01 09:58+0100\n"
 "Last-Translator: Pavel\n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
 "Language: cs\n"
@@ -1729,7 +1729,7 @@ msgstr ""
 "ale ne z alba Abc', budete potřebovat následující: <ul><li>Zahrnout Umělec "
 "alba=Wibble</li><li>Vyloučit Album=Abc</li></ul>Poté co byl vytvořen soubor "
 "písní vhodných k použití, Cantata náhodně vybere písně tak, udržela řadu "
-"přehrávaných skladeb naplněnou 10 záznamy.</p>"
+"skladeb k přehrání naplněnou 10 záznamy.</p>"
 
 #: dynamic/dynamicrulesdialog.cpp:309
 msgid "Failed to save %1"
@@ -2260,7 +2260,7 @@ msgstr ""
 
 #: gui/mainwindow.cpp:267
 msgid "Search Play Queue"
-msgstr "Prohledat řadu přehrávaných skladeb"
+msgstr "Prohledat řadu skladeb k přehrání"
 
 #: gui/mainwindow.cpp:269
 msgid "Set Priority"
@@ -2282,7 +2282,7 @@ msgstr "Upravit značky písně"
 #. i18n: ectx: attribute (title), widget (QWidget, tab_5)
 #: gui/mainwindow.cpp:277 po/rc.cpp:533 rc.cpp:533
 msgid "Play Queue"
-msgstr "Přehrávaná řada"
+msgstr "Řada"
 
 #. i18n: file: gui/interfacesettings.ui:27
 #. i18n: ectx: attribute (title), widget (QWidget, tab)
@@ -2898,7 +2898,7 @@ msgstr "Uložit jako"
 
 #: gui/stdactions.cpp:64
 msgid "Add To Play Queue"
-msgstr "Přidat do řady přehrávaných skladeb"
+msgstr "Přidat do řady skladeb k přehrání"
 
 #: gui/stdactions.cpp:65
 msgid "Add Albums In Random Order"
@@ -2906,7 +2906,7 @@ msgstr "Přidat alba v náhodném pořadí"
 
 #: gui/stdactions.cpp:66
 msgid "Replace Play Queue"
-msgstr "Nahradit řadu přehrávaných skladeb"
+msgstr "Nahradit řadu skladeb k přehrání"
 
 #: gui/stdactions.cpp:67
 msgid "Add With Priority"
@@ -5531,11 +5531,11 @@ msgstr "Adresa (URL):"
 
 #: streams/streamdialog.cpp:76
 msgid "Just add to play queue, do not save"
-msgstr "Pouze přidat do řady přehrávaných skladeb, neukládat"
+msgstr "Pouze přidat do řady skladeb k přehrání, neukládat"
 
 #: streams/streamdialog.cpp:77
 msgid "Add to play queue, and save to favorites"
-msgstr "Přidat do řady přehrávaných skladeb a uložit do oblíbených"
+msgstr "Přidat do řady skladeb k přehrání a uložit do oblíbených"
 
 #: streams/streamdialog.cpp:94
 msgid "Add Stream"

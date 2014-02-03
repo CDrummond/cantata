@@ -1,4 +1,4 @@
-/* drag:toolbar scrollbar:overlay symbolic-icons:true spinbox:touch*/
+/* drag:toolbar scrollbar:overlay symbolic-icons:#3d434f spinbox:touch*/
 QToolBar#MainToolBar {
   background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,  stop: 0 #ececec, stop: 1 #d2d2d2);
   border: 0px;

@@ -71,9 +71,8 @@ public:
         if (e!=visible) {
             visible=e;
             QLabel::setEnabled(e);
-            if (e) {
-                setStyleSheet(QString());
-            } else {
+            setStyleSheet(QString());
+            if (!e) {
                 QColor col=palette().text().color();
                 setStyleSheet(QString("QLabel { color : rgba(%1, %2, %3, %4); }").arg(col.red()).arg(col.green()).arg(col.blue()).arg(128));
             }

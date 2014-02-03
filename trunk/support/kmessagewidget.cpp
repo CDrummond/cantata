@@ -214,6 +214,19 @@ int KMsgWidgetPrivate::bestContentHeight() const
     return height;
 }
 
+#ifdef ENABLE_KDE_SUPPORT
+void KMsgWidgetPrivate::updateAnimationDuration()
+{
+    if (!(KGlobalSettings::graphicEffectsLevel() & KGlobalSettings::SimpleAnimationEffects)) {
+        if (1!=timeLine->duration()) {
+            timeLine->setDuration(1);
+        }
+    } else if (500!=timeLine->duration()) {
+        timeLine->setDuration(500);
+    }
+}
+#endif
+
 //---------------------------------------------------------------------
 // KMsgWidget
 //---------------------------------------------------------------------
@@ -434,10 +447,11 @@ void KMsgWidget::removeAction(QAction* action)
 void KMsgWidget::animatedShow()
 {
     #ifdef ENABLE_KDE_SUPPORT
-    if (!(KGlobalSettings::graphicEffectsLevel() & KGlobalSettings::SimpleAnimationEffects)) {
-        show();
-        return;
-    }
+    //if (!(KGlobalSettings::graphicEffectsLevel() & KGlobalSettings::SimpleAnimationEffects)) {
+    //    show();
+    //    return;
+    //}
+    d->updateAnimationDuration();
     #endif
 
     if (isVisible()) {
@@ -460,10 +474,11 @@ void KMsgWidget::animatedShow()
 void KMsgWidget::animatedHide()
 {
     #ifdef ENABLE_KDE_SUPPORT
-    if (!(KGlobalSettings::graphicEffectsLevel() & KGlobalSettings::SimpleAnimationEffects)) {
-        hide();
-        return;
-    }
+    //if (!(KGlobalSettings::graphicEffectsLevel() & KGlobalSettings::SimpleAnimationEffects)) {
+    //    hide();
+    //    return;
+    //}
+    d->updateAnimationDuration();
     #endif
 
     if (!isVisible()) {

@@ -196,6 +196,9 @@ public:
     void slotTimeLineChanged(qreal);
     void slotTimeLineFinished();
     int bestContentHeight() const;
+    #ifdef ENABLE_KDE_SUPPORT
+    void updateAnimationDuration();
+    #endif
 };
 
 #endif /* KMESSAGEWIDGET_H */

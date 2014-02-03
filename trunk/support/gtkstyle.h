@@ -40,7 +40,7 @@ namespace GtkStyle
     extern void setIconTheme(const QString &n);
     extern void applyTheme(QWidget *widget);
     extern bool useSymbolicIcons();
-    extern bool useLightIcons();
+    extern QColor symbolicColor();
 }
 
 #endif

@@ -69,7 +69,7 @@ static const int constHeightStep=2;
 static QColor clampColor(const QColor &col)
 {
     static const int constMin=64;
-    static const int constMax=196;
+    static const int constMax=240;
 
     if (col.value()<constMin) {
         return QColor(constMin, constMin, constMin);

@@ -1,4 +1,4 @@
-/* drag:toolbar scrollbar:overlay symbolic-icons:true spinbox:touch*/
+/* drag:toolbar scrollbar:overlay symbolic-icons:#3c3c3c spinbox:touch*/
 QToolBar#MainToolBar {
   background-color: #dfd7d0;
   border: 0px;

@@ -245,7 +245,7 @@ MainWindow::MainWindow(QWidget *parent)
     topToolBar->setStyle(new ToolBarProxyStyle);
     #endif // Q_OS_WIN
 
-    Icons::self()->self()->initToolbarIcons(artistLabel->palette().color(QPalette::Foreground), GtkStyle::useLightIcons());
+    Icons::self()->initToolbarIcons(toolbar->palette().color(QPalette::Foreground));
     Icons::self()->initSidebarIcons();
     menuButton->setIcon(Icons::self()->toolbarMenuIcon);
     menuButton->setAlignedMenu(mainMenu);
@@ -500,7 +500,7 @@ MainWindow::MainWindow(QWidget *parent)
     } else if (repeatButton->iconSize().height()>=22) {
         controlIconSize=playbackIconSize=32;
         controlButtonSize=36;
-    } else if (QLatin1String("oxygen")!=Icon::currentTheme().toLower() || (GtkStyle::isActive() && GtkStyle::useLightIcons())) {
+    } else if (QLatin1String("oxygen")!=Icon::currentTheme().toLower() || (GtkStyle::isActive() && GtkStyle::useSymbolicIcons())) {
         // Oxygen does not have 24x24 icons, and media players seem to use scaled 28x28 icons...
         // But, if the theme does have media icons at 24x24 use these - as they will be sharper...
         playbackIconSize=24==Icons::self()->toolbarPlayIcon.actualSize(QSize(24, 24)).width() ? 24 : 28;

@@ -57,25 +57,25 @@ static QList<int> constStdSizes=QList<int>() << 16 << 22 << 32 << 48;
 static const double constDisabledOpacity=0.5;
 static const int constShadeFactor=75;
 
+static const int constDarkLimit=80;
+static const int constDarkValue=64;
+static const int constLightLimit=240;
+static const int constLightValue=240;
+
 static bool inline isLight(const QColor &col)
 {
     return col.red()>100 && col.blue()>100 && col.green()>100;
 }
 
-static bool inline isVeryLight(const QColor &col, int limit=200)
+static bool inline isVeryLight(const QColor &col, int limit=constLightValue)
 {
     return col.red()>=limit && col.blue()>=limit && col.green()>=limit;
 }
 
-static bool inline isVeryDark(const QColor &col, int limit=80)
+static bool inline isVeryDark(const QColor &col, int limit=constDarkValue)
 {
     return col.red()<limit && col.blue()<limit && col.green()<limit;
 }
-
-static const int constDarkLimit=80;
-static const int constDarkValue=64;
-static const int constLightLimit=240;
-static const int constLightValue=240;
 
 static QColor clampColor(const QColor &color, int darkLimit=constDarkLimit, int darkValue=constDarkValue,
                          int lightLimit=constLightLimit, int lightValue=constLightValue)
@@ -310,32 +310,31 @@ static QColor highlightColor;
 
 static void updateMonoSvgIcon(Icon &i, const QString &type, const QString &name, const QColor &color, QIcon::Mode mode)
 {
-    QColor adjusted=color;
     int darkValue=constDarkValue;
     int lightValue=constLightValue;
 
-    if (isVeryDark(adjusted)) {
+    if (isVeryDark(color)) {
         QColor bgnd=QApplication::palette().color(QPalette::Active, QPalette::Background);
         if (bgnd.value()<224) {
             darkValue=48;
         }
-    } else if (isVeryLight(adjusted)) {
+    } else if (isVeryLight(color)) {
         QColor bgnd=QApplication::palette().color(QPalette::Active, QPalette::Background);
         if (bgnd.value()<224) {
             lightValue=232;
         }
     }
 
-    if (darkValue==constDarkValue && isVeryDark(adjusted)) {
+    if (darkValue==constDarkValue && isVeryDark(color)) {
         i.addFile(":"+type+"-"+name+"-dark", QSize(), mode);
-    } else if (lightValue==constLightValue && isVeryLight(adjusted)) {
+    } else if (lightValue==constLightValue && isVeryLight(color)) {
         i.addFile(":"+type+"-"+name+"-light", QSize(), mode);
     } else { // Neither black nor white, so we need to recolour...
         Icon std;
         std.addFile(":"+type+"-"+name+"-dark", QSize(), mode);
         // Now recolour the icon!
         QList<int> sizes=QList<int>() << 16 << 22 << 32 << 48 << 64;
-        QColor col=clampColor(adjusted, constDarkLimit, darkValue, constLightLimit, lightValue);
+        QColor col=clampColor(color, constDarkLimit, darkValue, constLightLimit, lightValue);
         foreach (int s, sizes) {
             QImage img=std.pixmap(s, s, mode).toImage().convertToFormat(QImage::Format_ARGB32);
             recolourPix(img, col);
@@ -576,34 +575,36 @@ static void setDisabledOpacity(Icon &icon)
 #define setDisabledOpacity(A) ;
 #endif
 
-void Icons::initToolbarIcons(const QColor &color, bool forceLight)
+void Icons::initToolbarIcons(const QColor &toolbarText)
 {
-    bool light=forceLight || isLight(color);
-
-    if (light) {
-        QColor col(Qt::white);
-        QColor highlight(col.darker(constShadeFactor));
-        toolbarMenuIcon=createMenuIcon(col, highlight);
-    } else {
-        toolbarMenuIcon=menuIcon;
-    }
-
     #if !defined Q_OS_WIN && !defined Q_OS_MAC
     if (GtkStyle::useSymbolicIcons()) {
         bool rtl=Qt::RightToLeft==QApplication::layoutDirection();
-        QColor col=light ? QColor(Qt::white) : color;
+        QColor col=GtkStyle::symbolicColor();
         toolbarPrevIcon=loadMediaIcon(QLatin1String(rtl ? "prev-rtl" : "prev"), col, col);
         toolbarPlayIcon=loadMediaIcon(QLatin1String(rtl ? "play-rtl" : "play"), col, col);
         toolbarPauseIcon=loadMediaIcon(QLatin1String("pause"), col, col);
         toolbarStopIcon=loadMediaIcon(QLatin1String("stop"), col, col);
         toolbarNextIcon=loadMediaIcon(QLatin1String(rtl ? "next-rtl" : "next"), col, col);
         infoIcon=loadSidebarIcon("info", col, col);
+        if (col==stdColor) {
+            toolbarMenuIcon=menuIcon;
+        } else {
+            toolbarMenuIcon=createMenuIcon(col, col.darker(constShadeFactor));
+        }
     } else
     #endif
+    {
+        if (toolbarText==stdColor) {
+            toolbarMenuIcon=menuIcon;
+        } else {
+            toolbarMenuIcon=createMenuIcon(toolbarText, toolbarText.darker(constShadeFactor));
+        }
         if (QLatin1String("gnome")==Icon::currentTheme().toLower()) {
             QColor col=QApplication::palette().color(QPalette::Active, QPalette::ButtonText);
             infoIcon=loadSidebarIcon("info", col, col);
         }
+    }
 
     if (infoIcon.isNull()) {
         infoIcon=Icon("dialog-information");

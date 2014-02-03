@@ -37,7 +37,7 @@ public:
     Icons();
     bool monoSidebarIcons();
     void initSidebarIcons();
-    void initToolbarIcons(const QColor &color, bool forceLight=false);
+    void initToolbarIcons(const QColor &toolbarText);
     #ifndef ENABLE_KDE_SUPPORT
     Icon appIcon;
     Icon shortcutsIcon;

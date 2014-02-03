@@ -231,7 +231,7 @@ static GtkProxyStyle *gtkProxyStyle=0;
 static ProxyStyle *plainProxyStyle=0;
 #endif
 static bool symbolicIcons=false;
-static bool lightIcons=false;
+static QColor symbolicIconColor(0, 0, 0);
 
 void GtkStyle::applyTheme(QWidget *widget)
 {
@@ -263,8 +263,12 @@ void GtkStyle::applyTheme(QWidget *widget)
                     sbType=GtkProxyStyle::SB_Thin;
                 }
                 touchStyleSpin=header.contains("spinbox:touch");
-                symbolicIcons=header.contains("symbolic-icons:true");
-                lightIcons=header.contains("light-icons:true");
+                const QString symKey=QLatin1String("symbolic-icons:#");
+                int pos=header.indexOf(symKey);
+                if (pos>0 && pos+6<header.length()) {
+                    symbolicIcons=true;
+                    symbolicIconColor=QColor(header.mid(pos+symKey.length()-1, 7));
+                }
                 QCoreApplication::setAttribute(Qt::AA_DontShowIconsInMenus);
             }
         }
@@ -288,7 +292,7 @@ bool GtkStyle::useSymbolicIcons()
     return symbolicIcons;
 }
 
-bool GtkStyle::useLightIcons()
+QColor GtkStyle::symbolicColor()
 {
-    return lightIcons;
+    return symbolicIconColor;
 }

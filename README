@@ -813,6 +813,9 @@ The Cantata source folder contains the following structure:
 Cantata's SVG icons have been 'cleaned' using:
   scour --strip-xml-prolog --indent=none -i in.svg -o out.svg
 
+Symbolc media icons are taken from gnome icon theme, but have been scaled with
+  rsvg-convert -a -w 128 -f svg in.svg -o out.svg
+
 
 13. Debug Logging
 =================

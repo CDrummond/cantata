@@ -75,7 +75,6 @@ TrayItem::TrayItem(MainWindow *p)
 {
 }
 
-#include <QDebug>
 void TrayItem::setup()
 {
     if (!Settings::self()->useSystemTray()) {
@@ -95,26 +94,11 @@ void TrayItem::setup()
         return;
     }
 
-    Icon icon;
-    #if !defined Q_OS_WIN32 && !defined Q_OS_MAC
-    if (Utils::Unity==Utils::currentDe()) {
-        if (QLatin1String("ubuntu-mono-dark")==QIcon::themeName()) {
-            icon.addFile(":trayicon-mono-light");
-        } else if (QLatin1String("ubuntu-mono-light")==QIcon::themeName()) {
-            icon.addFile(":trayicon-mono-dark");
-        }
-    }
-    #endif
-
     #ifdef ENABLE_KDE_SUPPORT
     trayItem = new KStatusNotifierItem(this);
     trayItem->setCategory(KStatusNotifierItem::ApplicationStatus);
     trayItem->setTitle(i18n("Cantata"));
-    if (icon.isNull()) {
-        trayItem->setIconByName("cantata");
-    } else {
-        trayItem->setIconByPixmap(icon);
-    }
+    trayItem->setIconByName("cantata");
     trayItem->setToolTip("cantata", i18n("Cantata"), QString());
 
     trayItemMenu = new KMenu(0);
@@ -149,6 +133,16 @@ void TrayItem::setup()
     trayItemMenu->addSeparator();
     trayItemMenu->addAction(mw->quitAction);
     trayItem->setContextMenu(trayItemMenu);
+    Icon icon;
+    #if !defined Q_OS_WIN32 && !defined Q_OS_MAC
+    if (Utils::Unity==Utils::currentDe()) {
+        if (QLatin1String("ubuntu-mono-dark")==QIcon::themeName()) {
+            icon.addFile(":trayicon-mono-light");
+        } else if (QLatin1String("ubuntu-mono-light")==QIcon::themeName()) {
+            icon.addFile(":trayicon-mono-dark");
+        }
+    }
+    #endif
     trayItem->setIcon(icon.isNull() ? Icons::self()->appIcon : icon);
     trayItem->setToolTip(i18n("Cantata"));
     trayItem->show();

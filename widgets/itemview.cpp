@@ -636,9 +636,7 @@ void ItemView::allowTableView(TableView *v)
         tableView->setParent(stackedWidget);
         stackedWidget->addWidget(tableView);
         tableView->setProperty(constPageProp, stackedWidget->count()-1);
-//        tableView->setItemDelegate(new TableDelegate(v));
         // Some styles, eg Cleanlooks/Plastique require that we explicitly set mouse tracking on the treeview.
-        tableView->setAttribute(Qt::WA_MouseTracking, true);
 //        tableView->installEventFilter(new ViewEventHandler(0, tableView));
         connect(tableView, SIGNAL(itemsSelected(bool)), this, SIGNAL(itemsSelected(bool)));
         connect(tableView, SIGNAL(itemActivated(const QModelIndex &)), this, SLOT(itemActivated(const QModelIndex &)));

@@ -184,9 +184,10 @@ QModelIndex PlayQueueModel::parent(const QModelIndex &idx) const
 QVariant PlayQueueModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
     if (Qt::Horizontal==orientation) {
-        if (Qt::DisplayRole==role) {
+        switch (role) {
+        case Qt::DisplayRole:
             return headerText(section);
-        } else if (Qt::TextAlignmentRole==role) {
+        case Qt::TextAlignmentRole:
             switch (section) {
             case COL_TITLE:
             case COL_ARTIST:
@@ -201,6 +202,22 @@ QVariant PlayQueueModel::headerData(int section, Qt::Orientation orientation, in
             case COL_PRIO:
                 return int(Qt::AlignVCenter|Qt::AlignRight);
             }
+        case TableView::Role_Hideable:
+            return COL_YEAR==section || COL_DISC==section || COL_GENRE==section || COL_PRIO==section? true : false;
+        case TableView::Role_Width:
+            switch (section) {
+            case COL_TRACK:  return 0.075;
+            case COL_DISC:   return 0.03;
+            case COL_TITLE:  return 0.3;
+            case COL_ARTIST: return 0.27;
+            case COL_ALBUM:  return 0.27;
+            case COL_LENGTH: return 0.05;
+            case COL_YEAR:   return 0.05;
+            case COL_GENRE:  return 0.1;
+            case COL_PRIO:   return 0.015;
+            }
+        default:
+            break;
         }
     }
 

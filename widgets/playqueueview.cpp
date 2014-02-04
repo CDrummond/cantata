@@ -31,11 +31,7 @@
 #include "localize.h"
 #include "spinner.h"
 #include "messageoverlay.h"
-#include "stretchheaderview.h"
 #include "basicitemdelegate.h"
-#include <QHeaderView>
-#include <QMenu>
-#include <QAction>
 #include <QFile>
 #include <QPainter>
 #include <QApplication>
@@ -69,29 +65,14 @@ public:
 };
 
 PlayQueueTreeView::PlayQueueTreeView(PlayQueueView *parent)
-    : TreeView(parent, true)
+    : TableView(QLatin1String("playQueue"), parent, true)
     , view(parent)
-    , menu(0)
 {
-    setContextMenuPolicy(Qt::CustomContextMenu);
-    setAcceptDrops(true);
-    setDragDropOverwriteMode(false);
-    setDragDropMode(QAbstractItemView::DragDrop);
-    setSelectionMode(QAbstractItemView::ExtendedSelection);
     setIndentation(0);
     setItemsExpandable(false);
     setExpandsOnDoubleClick(false);
-    setDropIndicatorShown(true);
     setRootIsDecorated(false);
-    setUniformRowHeights(true);
     setItemDelegate(new PlayQueueTreeViewItemDelegate(this));
-    StretchHeaderView *hdr=new StretchHeaderView(Qt::Horizontal, this);
-    setHeader(hdr);
-    connect(hdr, SIGNAL(StretchEnabledChanged(bool)), SLOT(stretchToggled(bool)));
-}
-
-PlayQueueTreeView::~PlayQueueTreeView()
-{
 }
 
 void PlayQueueTreeView::paintEvent(QPaintEvent *e)
@@ -114,96 +95,6 @@ void PlayQueueGroupedView::paintEvent(QPaintEvent *e)
 {
     view->drawBackdrop(viewport(), size());
     GroupedView::paintEvent(e);
-}
-
-void PlayQueueTreeView::initHeader()
-{
-    if (!model()) {
-        return;
-    }
-
-    StretchHeaderView *hdr=qobject_cast<StretchHeaderView *>(header());
-    if (!menu) {
-        hdr->SetStretchEnabled(true);
-        stretchToggled(true);
-        hdr->setContextMenuPolicy(Qt::CustomContextMenu);
-        hdr->SetColumnWidth(PlayQueueModel::COL_TRACK, 0.075);
-        hdr->SetColumnWidth(PlayQueueModel::COL_DISC, 0.03);
-        hdr->SetColumnWidth(PlayQueueModel::COL_TITLE, 0.3);
-        hdr->SetColumnWidth(PlayQueueModel::COL_ARTIST, 0.27);
-        hdr->SetColumnWidth(PlayQueueModel::COL_ALBUM, 0.27);
-        hdr->SetColumnWidth(PlayQueueModel::COL_LENGTH, 0.05);
-        hdr->SetColumnWidth(PlayQueueModel::COL_YEAR, 0.05);
-        hdr->SetColumnWidth(PlayQueueModel::COL_GENRE, 0.1);
-        hdr->SetColumnWidth(PlayQueueModel::COL_PRIO, 0.015);
-        #if QT_VERSION >= 0x050000
-        hdr->setSectionsMovable(true);
-        #else
-        hdr->setMovable(true);
-        #endif
-        connect(hdr, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showMenu()));
-    }
-
-    //Restore state
-    QByteArray state=Settings::self()->playQueueHeaderState();
-    if (state.isEmpty()) {
-        hdr->HideSection(PlayQueueModel::COL_YEAR);
-        hdr->HideSection(PlayQueueModel::COL_DISC);
-        hdr->HideSection(PlayQueueModel::COL_GENRE);
-        hdr->HideSection(PlayQueueModel::COL_PRIO);
-    } else {
-        hdr->RestoreState(state);
-    }
-
-    if (!menu) {
-        menu = new QMenu(this);
-        QAction *stretch=new QAction(i18n("Stretch Columns To Fit Window"), this);
-        stretch->setCheckable(true);
-        stretch->setChecked(hdr->is_stretch_enabled());
-        connect(stretch, SIGNAL(toggled(bool)), hdr, SLOT(SetStretchEnabled(bool)));
-        menu->addAction(stretch);
-        menu->addSeparator();
-        QList<int> hideAble=QList<int>() << PlayQueueModel::COL_TRACK << PlayQueueModel::COL_ALBUM << PlayQueueModel::COL_LENGTH
-                                         << PlayQueueModel::COL_DISC << PlayQueueModel::COL_YEAR << PlayQueueModel::COL_GENRE
-                                         << PlayQueueModel::COL_PRIO;
-        foreach (int col, hideAble) {
-            QAction *act=new QAction(PlayQueueModel::headerText(col), menu);
-            act->setCheckable(true);
-            act->setChecked(!hdr->isSectionHidden(col));
-            menu->addAction(act);
-            act->setData(col);
-            connect(act, SIGNAL(toggled(bool)), this, SLOT(toggleHeaderItem(bool)));
-        }
-    }
-}
-
-void PlayQueueTreeView::saveHeader()
-{
-    if (menu && model()) {
-        Settings::self()->savePlayQueueHeaderState(qobject_cast<StretchHeaderView *>(header())->SaveState());
-    }
-}
-
-void PlayQueueTreeView::showMenu()
-{
-    menu->exec(QCursor::pos());
-}
-
-void PlayQueueTreeView::toggleHeaderItem(bool visible)
-{
-    QAction *act=qobject_cast<QAction *>(sender());
-
-    if (act) {
-        int index=act->data().toInt();
-        if (-1!=index) {
-            qobject_cast<StretchHeaderView *>(header())->SetSectionHidden(index, !visible);
-        }
-    }
-}
-
-void PlayQueueTreeView::stretchToggled(bool e)
-{
-    setHorizontalScrollBarPolicy(e ? Qt::ScrollBarAlwaysOff : Qt::ScrollBarAsNeeded);
 }
 
 PlayQueueView::PlayQueueView(QWidget *parent)

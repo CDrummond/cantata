@@ -44,7 +44,7 @@ public:
     };
 
     enum Roles {
-        Role_Key = Qt::UserRole+512,
+        Role_Key = Qt::UserRole+200,
         Role_Id,
         Role_Song,
         Role_AlbumDuration,

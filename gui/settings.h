@@ -107,8 +107,7 @@ public:
     QList<MPDConnectionDetails> allConnections();
     bool showPlaylist();
     bool showFullScreen();
-    QByteArray playQueueHeaderState();
-    QByteArray playlistHeaderState();
+    QByteArray headerState(const QString &key);
     QByteArray splitterState();
     bool splitterAutoHide();
     QSize mainWindowSize();
@@ -226,8 +225,7 @@ public:
     void saveShowFullScreen(bool v);
     void saveStopOnExit(bool v);
     void saveStopDynamizerOnExit(bool v);
-    void savePlayQueueHeaderState(const QByteArray &v);
-    void savePlaylistHeaderState(const QByteArray &v);
+    void saveHeaderState(const QString &key, const QByteArray &v);
     void saveSplitterState(const QByteArray &v);
     void saveSplitterAutoHide(bool v);
     void saveMainWindowSize(const QSize &v);

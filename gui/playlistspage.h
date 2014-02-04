@@ -26,29 +26,16 @@
 
 #include "ui_playlistspage.h"
 #include "playlistsproxymodel.h"
-#include "itemview.h"
+#include "tableview.h"
 #include "config.h"
 
 class Action;
 
 class PlaylistTableView : public TableView
 {
-    Q_OBJECT
-
 public:
     PlaylistTableView(QWidget *p);
     virtual ~PlaylistTableView() { }
-
-    void initHeader();
-    void saveHeader();
-
-private Q_SLOTS:
-    void showMenu();
-    void toggleHeaderItem(bool visible);
-    void stretchToggled(bool e);
-
-private:
-    QMenu *menu;
 };
 
 class PlaylistsPage : public QWidget, public Ui::PlaylistsPage

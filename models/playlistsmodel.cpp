@@ -35,6 +35,7 @@
 #include "itemview.h"
 #include "qtplural.h"
 #include "groupedview.h"
+#include "tableview.h"
 #include "localize.h"
 #include "utils.h"
 #ifdef ENABLE_KDE_SUPPORT
@@ -200,9 +201,10 @@ QModelIndex PlaylistsModel::index(int row, int col, const QModelIndex &parent) c
 QVariant PlaylistsModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
     if (Qt::Horizontal==orientation) {
-        if (Qt::DisplayRole==role) {
+        switch (role) {
+        case Qt::DisplayRole:
             return headerText(section);
-        } else if (Qt::TextAlignmentRole==role) {
+        case Qt::TextAlignmentRole:
             switch (section) {
             case COL_TITLE:
             case COL_ARTIST:
@@ -214,6 +216,19 @@ QVariant PlaylistsModel::headerData(int section, Qt::Orientation orientation, in
             case COL_YEAR:
                 return int(Qt::AlignVCenter|Qt::AlignRight);
             }
+        case TableView::Role_Hideable:
+            return COL_YEAR==section || COL_GENRE==section ? true : false;
+        case TableView::Role_Width:
+            switch (section) {
+            case COL_TITLE:  return 0.4;
+            case COL_ARTIST: return 0.15;
+            case COL_ALBUM:  return 0.15;
+            case COL_YEAR:   return 0.05;
+            case COL_GENRE:  return 0.125;
+            case COL_LENGTH: return 0.125;
+            }
+        default:
+            break;
         }
     }
 

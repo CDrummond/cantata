@@ -260,7 +260,7 @@ set(CANTATA_SRCS gui/application.cpp gui/main.cpp gui/initialsettingswizard.cpp 
     widgets/coverwidget.cpp widgets/volumeslider.cpp widgets/icons.cpp widgets/genrecombo.cpp widgets/menubutton.cpp
     widgets/toolbutton.cpp widgets/wizardpage.cpp widgets/statuslabel.cpp widgets/searchwidget.cpp widgets/messageoverlay.cpp
     widgets/basicitemdelegate.cpp widgets/sizegrip.cpp widgets/sizewidget.cpp widgets/servicestatuslabel.cpp widgets/spacerwidget.cpp
-    widgets/songdialog.cpp widgets/stretchheaderview.cpp
+    widgets/songdialog.cpp widgets/stretchheaderview.cpp widgets/tableview.cpp
     network/networkaccessmanager.cpp network/networkproxyfactory.cpp
     http/httpserver.cpp
     devices/deviceoptions.cpp
@@ -279,6 +279,7 @@ set(CANTATA_MOC_HDRS
     widgets/treeview.h widgets/listview.h widgets/itemview.h widgets/autohidingsplitter.h widgets/timeslider.h widgets/actionlabel.h
     widgets/playqueueview.h widgets/groupedview.h widgets/actionitemdelegate.h widgets/coverwidget.h widgets/volumeslider.h
     widgets/genrecombo.h widgets/searchwidget.h widgets/messageoverlay.h widgets/servicestatuslabel.h widgets/stretchheaderview.h
+    widgets/tableview.h
     network/networkaccessmanager.h
     context/togglelist.h context/ultimatelyrics.h context/ultimatelyricsprovider.h context/lyricsdialog.h
     context/contextwidget.h context/artistview.h context/albumview.h context/songview.h context/view.h context/contextengine.h

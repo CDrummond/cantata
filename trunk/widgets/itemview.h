@@ -38,6 +38,7 @@ class GroupedView;
 class ActionItemDelegate;
 class MessageOverlay;
 class Icon;
+class TableView;
 
 class ViewEventHandler : public QObject
 {
@@ -69,15 +70,6 @@ private:
     QAction *act;
 };
 
-class TableView : public TreeView
-{
-public:
-    TableView(QWidget *p) : TreeView(p, false) { }
-    virtual ~TableView() { }
-    virtual void initHeader() =0;
-    virtual void saveHeader() =0;
-};
-
 class ItemView : public QWidget, public Ui::ItemView
 {
     Q_OBJECT
@@ -101,7 +93,7 @@ public:
 
     enum Role
     {
-        Role_ImageSize = Qt::UserRole+256,
+        Role_ImageSize = Qt::UserRole+100,
         Role_MainText,
         Role_SubText,
         Role_TitleText,

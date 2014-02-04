@@ -30,7 +30,7 @@
 #include <QPixmap>
 #include <QImage>
 #include <QPropertyAnimation>
-#include "treeview.h"
+#include "tableview.h"
 #include "groupedview.h"
 #include "song.h"
 
@@ -43,26 +43,14 @@ class Spinner;
 class PlayQueueView;
 class MessageOverlay;
 
-class PlayQueueTreeView : public TreeView
+class PlayQueueTreeView : public TableView
 {
-    Q_OBJECT
-
 public:
     PlayQueueTreeView(PlayQueueView *p);
-    virtual ~PlayQueueTreeView();
-
-    void initHeader();
-    void saveHeader();
-
-private Q_SLOTS:
-    void showMenu();
-    void toggleHeaderItem(bool visible);
+    virtual ~PlayQueueTreeView() { }
     void paintEvent(QPaintEvent *e);
-    void stretchToggled(bool e);
-
 private:
     PlayQueueView *view;
-    QMenu *menu;
 };
 
 class PlayQueueGroupedView : public GroupedView
@@ -88,7 +76,7 @@ public:
     };
 
     enum Role {
-        Role_Decoration = Qt::UserRole+768
+        Role_Decoration = Qt::UserRole+300
     };
 
     PlayQueueView(QWidget *parent=0);

@@ -334,20 +334,12 @@ bool Settings::showFullScreen()
     return GET_BOOL("showFullScreen", false);
 }
 
-QByteArray Settings::playQueueHeaderState()
+QByteArray Settings::headerState(const QString &key)
 {
     if (version()<CANTATA_MAKE_VERSION(1, 2, 54)) {
         return QByteArray();
     }
-    return GET_BYTE_ARRAY("playQueueHeaderState");
-}
-
-QByteArray Settings::playlistHeaderState()
-{
-    if (version()<CANTATA_MAKE_VERSION(1, 2, 54)) {
-        return QByteArray();
-    }
-    return GET_BYTE_ARRAY("playlistHeaderState");
+    return GET_BYTE_ARRAY(key+"HeaderState");
 }
 
 QByteArray Settings::splitterState()
@@ -1037,14 +1029,13 @@ void Settings::saveShowFullScreen(bool v)
     SET_VALUE_MOD(showFullScreen)
 }
 
-void Settings::savePlayQueueHeaderState(const QByteArray &v)
+void Settings::saveHeaderState(const QString &key, const QByteArray &v)
 {
-    SET_VALUE_MOD(playQueueHeaderState)
-}
-
-void Settings::savePlaylistHeaderState(const QByteArray &v)
-{
-    SET_VALUE_MOD(playlistHeaderState)
+    QByteArray current=headerState(key);
+    if (current!=v) {
+        modified=true;
+        SET_VALUE(key+"HeaderState", v);
+    }
 }
 
 void Settings::saveSplitterState(const QByteArray &v)

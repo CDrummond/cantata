@@ -1234,7 +1234,7 @@ void MPDConnection::loadLibrary()
     MusicLibraryItemRoot *root=0;
     if (response.ok) {
         root = new MusicLibraryItemRoot;
-        MPDParseUtils::parseLibraryItems(response.data, details.dir, ver, root);
+        MPDParseUtils::parseLibraryItems(response.data, details.dir, ver, mopidy, root);
     } else { // MPD >=0.18 can fail listallinfo for large DBs, so get info dir by dir...
         root = new MusicLibraryItemRoot;
         if (!listDirInfo("/", root)) {
@@ -1255,7 +1255,7 @@ void MPDConnection::loadFolders()
     emit updatingFileList();
     Response response=sendCommand("listall");
     if (response.ok) {
-        emit dirViewUpdated(MPDParseUtils::parseDirViewItems(response.data), dbUpdate);
+        emit dirViewUpdated(MPDParseUtils::parseDirViewItems(response.data, mopidy), dbUpdate);
     }
     emit updatedFileList();
 }
@@ -1482,7 +1482,7 @@ bool MPDConnection::listDirInfo(const QString &dir, MusicLibraryItemRoot *root)
     Response response=sendCommand(topLevel ? "lsinfo" : ("lsinfo "+encodeName(dir)));
     if (response.ok) {
         QSet<QString> childDirs;
-        MPDParseUtils::parseLibraryItems(response.data, details.dir, ver, root, !topLevel, &childDirs);
+        MPDParseUtils::parseLibraryItems(response.data, details.dir, ver, mopidy, root, !topLevel, &childDirs);
         foreach (const QString &child, childDirs) {
             if (!listDirInfo(child, root)) {
                 return false;

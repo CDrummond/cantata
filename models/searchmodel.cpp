@@ -112,7 +112,7 @@ QVariant SearchModel::data(const QModelIndex &index, int role) const
         return text;
     }
     case ItemView::Role_MainText:
-        return song->title.isEmpty() ? song->file : song->title;
+        return song->title.isEmpty() ? song->file : song->trackAndTitleStr();
     case ItemView::Role_SubText:
         return song->artist+QLatin1String(" - ")+song->album;
     default:

@@ -27,8 +27,8 @@
 #include "ui_searchpage.h"
 #include "song.h"
 #include "config.h"
-#include "proxymodel.h"
 #include "searchmodel.h"
+#include "searchproxymodel.h"
 
 class Action;
 
@@ -75,7 +75,7 @@ private:
 
     State state;
     SearchModel model;
-    ProxyModel proxy;
+    SearchProxyModel proxy;
 };
 
 #endif

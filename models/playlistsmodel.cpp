@@ -303,7 +303,7 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
                         pl->loaded=true;
                         emit playlistInfo(pl->name);
                     }
-                    return pl->loaded ? Song::formattedTime(pl->totalTime()) : QVariant();
+                    return pl->loaded && !pl->isSmartPlaylist ? Song::formattedTime(pl->totalTime()) : QVariant();
                 case COL_YEAR:
                 case COL_GENRE:
                     return QVariant();

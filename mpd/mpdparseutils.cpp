@@ -432,7 +432,8 @@ void MPDParseUtils::setGroupMultiple(bool g)
 }
 
 void MPDParseUtils::parseLibraryItems(const QByteArray &data, const QString &mpdDir, long mpdVersion,
-                                      MusicLibraryItemRoot *rootItem, bool parsePlaylists, QSet<QString> *childDirs)
+                                      bool isMopidy, MusicLibraryItemRoot *rootItem, bool parsePlaylists,
+                                      QSet<QString> *childDirs)
 {
     bool canSplitCue=mpdVersion>=MPD_MAKE_VERSION(0,17,0);
     QByteArray currentItem;
@@ -452,7 +453,7 @@ void MPDParseUtils::parseLibraryItems(const QByteArray &data, const QString &mpd
         if (i == amountOfLines - 1 || lines.at(i + 1).startsWith("file:") || lines.at(i + 1).startsWith("playlist:")) {
             Song currentSong = parseSong(currentItem, Library);
             currentItem.clear();
-            if (currentSong.file.isEmpty()) {
+            if (currentSong.file.isEmpty() || (isMopidy && !currentSong.file.startsWith(Song::constMopidyLocal))) {
                 continue;
             }
 
@@ -639,7 +640,7 @@ void MPDParseUtils::parseLibraryItems(const QByteArray &data, const QString &mpd
     }
 }
 
-DirViewItemRoot * MPDParseUtils::parseDirViewItems(const QByteArray &data)
+DirViewItemRoot * MPDParseUtils::parseDirViewItems(const QByteArray &data, bool isMopidy)
 {
     QList<QByteArray> lines = data.split('\n');
     DirViewItemRoot *rootItem = new DirViewItemRoot;
@@ -656,10 +657,9 @@ DirViewItemRoot * MPDParseUtils::parseDirViewItems(const QByteArray &data)
         } else if (line.startsWith("playlist: ")) {
             path=line.remove(0, 10);
         }
-
-        if (!path.isEmpty()) {
+        qWarning() << path << isMopidy << path.startsWith(Song::constMopidyLocal);
+        if (!path.isEmpty() && (!isMopidy || path.startsWith(Song::constMopidyLocal))) {
             QString mopidyPath;
-            bool isMopidy=path.startsWith(Song::constMopidyLocal);
             if (isMopidy) {
                 mopidyPath=path;
                 path=Song::decodePath(path);

@@ -942,7 +942,7 @@ void MPDConnection::goToNext()
 
 static inline QByteArray value(bool b)
 {
-    return b ? "1" : "0";
+    return MPDConnection::quote(b ? 1 : 0);
 }
 
 void MPDConnection::setPause(bool toggle)

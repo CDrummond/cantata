@@ -252,7 +252,7 @@ set(CANTATA_SRCS gui/application.cpp gui/main.cpp gui/initialsettingswizard.cpp 
     models/musiclibraryproxymodel.cpp models/playlistsmodel.cpp models/playlistsproxymodel.cpp models/playqueuemodel.cpp
     models/playqueueproxymodel.cpp models/dirviewmodel.cpp models/dirviewproxymodel.cpp models/dirviewitem.cpp models/dirviewitemdir.cpp
     models/albumsmodel.cpp models/albumsproxymodel.cpp models/proxymodel.cpp models/actionmodel.cpp models/musiclibraryitem.cpp
-    models/musicmodel.cpp models/multimusicmodel.cpp models/searchmodel.cpp models/streamsmodel.cpp
+    models/musicmodel.cpp models/multimusicmodel.cpp models/searchmodel.cpp models/streamsmodel.cpp models/searchproxymodel.cpp
     mpd/mpdconnection.cpp mpd/mpdparseutils.cpp mpd/mpdstats.cpp mpd/mpdstatus.cpp mpd/song.cpp mpd/mpduser.cpp mpd/cuefile.cpp
     streams/streamfetcher.cpp
     widgets/treeview.cpp widgets/listview.cpp widgets/itemview.cpp widgets/autohidingsplitter.cpp widgets/timeslider.cpp

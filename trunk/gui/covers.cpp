@@ -1051,6 +1051,30 @@ Covers::Image Covers::locateImage(const Song &song)
         songFile=u.hasQueryItem("file") ? u.queryItemValue("file") : QString();
     }
 
+    QStringList coverFileNames;
+    if (isArtistImage) {
+        QString artistFile=artistFileName(song);
+        QString basicArtist=song.basicArtist();
+        coverFileNames=QStringList() << basicArtist+".jpg" << basicArtist+".png" << artistFile+".jpg" << artistFile+".png";
+    } else {
+        QString mpdCover=albumFileName(song);
+        if (!mpdCover.isEmpty()) {
+            for (int e=0; constExtensions[e]; ++e) {
+                coverFileNames << mpdCover+constExtensions[e];
+            }
+        }
+        coverFileNames << standardNames();
+        for (int e=0; constExtensions[e]; ++e) {
+            coverFileNames+=Utils::changeExtension(Utils::getFile(songFile), constExtensions[e]);
+        }
+        for (int e=0; constExtensions[e]; ++e) {
+            coverFileNames+=song.albumArtist()+QLatin1String(" - ")+song.album+constExtensions[e];
+        }
+        for (int e=0; constExtensions[e]; ++e) {
+            coverFileNames+=song.album+constExtensions[e];
+        }
+    }
+
     if (!songFile.isEmpty() && !songFile.startsWith(("http:/")) &&
         (haveAbsPath || (!MPDConnection::self()->getDetails().dir.isEmpty() && !MPDConnection::self()->getDetails().dir.startsWith(QLatin1String("http://")) ) ) ) {
         dirName=songFile.endsWith(Utils::constDirSep) ? (haveAbsPath ? QString() : MPDConnection::self()->getDetails().dir)+songFile
@@ -1058,14 +1082,11 @@ Covers::Image Covers::locateImage(const Song &song)
 
 
         if (isArtistImage) {
-            QString artistFile=artistFileName(song);
             QString basicArtist=song.basicArtist();
-            QStringList names=QStringList() << basicArtist+".jpg" << basicArtist+".png" << artistFile+".jpg" << artistFile+".png";
             for (int level=0; level<2; ++level) {
-                foreach (const QString &fileName, names) {
+                foreach (const QString &fileName, coverFileNames) {
                     if (QFile::exists(dirName+fileName)) {
                         QImage img(dirName+fileName);
-
                         if (!img.isNull()) {
                             DBUG_CLASS("Covers") << "Got artist image" << QString(dirName+fileName);
                             return Image(img, dirName+fileName);
@@ -1083,10 +1104,9 @@ Covers::Image Covers::locateImage(const Song &song)
                 dirName=MPDConnection::self()->getDetails().dirReadable ? MPDConnection::self()->getDetails().dir : QString();
                 if (!dirName.isEmpty() && !dirName.startsWith(QLatin1String("http:/"))) {
                     dirName+=basicArtist+Utils::constDirSep;
-                    foreach (const QString &fileName, names) {
+                    foreach (const QString &fileName, coverFileNames) {
                         if (QFile::exists(dirName+fileName)) {
                             QImage img(dirName+fileName);
-
                             if (!img.isNull()) {
                                 DBUG_CLASS("Covers") << "Got artist image" << QString(dirName+fileName);
                                 return Image(img, dirName+fileName);
@@ -1096,27 +1116,9 @@ Covers::Image Covers::locateImage(const Song &song)
                 }
             }
         } else {
-            QStringList names;
-            QString mpdCover=albumFileName(song);
-            if (!mpdCover.isEmpty()) {
-                for (int e=0; constExtensions[e]; ++e) {
-                    names << mpdCover+constExtensions[e];
-                }
-            }
-            names << standardNames();
-            for (int e=0; constExtensions[e]; ++e) {
-                names+=Utils::changeExtension(Utils::getFile(songFile), constExtensions[e]);
-            }
-            for (int e=0; constExtensions[e]; ++e) {
-                names+=song.albumArtist()+QLatin1String(" - ")+song.album+constExtensions[e];
-            }
-            for (int e=0; constExtensions[e]; ++e) {
-                names+=song.album+constExtensions[e];
-            }
-            foreach (const QString &fileName, names) {
+            foreach (const QString &fileName, coverFileNames) {
                 if (QFile::exists(dirName+fileName)) {
                     QImage img(dirName+fileName);
-
                     if (!img.isNull()) {
                         DBUG_CLASS("Covers") << "Got cover image" << QString(dirName+fileName);
                         return Image(img, dirName+fileName);
@@ -1138,7 +1140,6 @@ Covers::Image Covers::locateImage(const Song &song)
             QStringList files=QDir(dirName).entryList(QStringList() << QLatin1String("*.jpg") << QLatin1String("*.png"), QDir::Files|QDir::Readable);
             foreach (const QString &fileName, files) {
                 QImage img(dirName+fileName);
-
                 if (!img.isNull()) {
                     DBUG_CLASS("Covers") << "Got cover image" << QString(dirName+fileName);
                     return Image(img, dirName+fileName);
@@ -1150,6 +1151,25 @@ Covers::Image Covers::locateImage(const Song &song)
     QString artist=encodeName(song.albumArtist());
 
     if (isArtistImage) {
+        // For non-MPD tracks, see if we actually have a saved MPD cover...
+        if (MPDConnection::self()->getDetails().dirReadable) {
+            QString songDir=encodeName(song.albumArtist())+Utils::constDirSep;
+            if (!song.file.startsWith(songDir)) {
+                QString dirName=MPDConnection::self()->getDetails().dir+songDir;
+                if (QDir(dirName).exists()) {
+                    foreach (const QString &fileName, coverFileNames) {
+                        if (QFile::exists(dirName+fileName)) {
+                            QImage img(dirName+fileName);
+                            if (!img.isNull()) {
+                                DBUG_CLASS("Covers") << "Got artist image" << QString(dirName+fileName);
+                                return Image(img, dirName+fileName);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        // Check if cover is already cached
         QString dir(Utils::cacheDir(constCoverDir, false));
         for (int e=0; constExtensions[e]; ++e) {
             if (QFile::exists(dir+artist+constExtensions[e])) {
@@ -1162,6 +1182,24 @@ Covers::Image Covers::locateImage(const Song &song)
         }
     } else {
         QString album=encodeName(song.album);
+        // For non-MPD tracks, see if we actually have a saved MPD cover...
+        if (MPDConnection::self()->getDetails().dirReadable) {
+            QString songDir=encodeName(song.albumArtist())+Utils::constDirSep+album+Utils::constDirSep;
+            if (!song.file.startsWith(songDir)) {
+                QString dirName=MPDConnection::self()->getDetails().dir+songDir;
+                if (QDir(dirName).exists()) {
+                    foreach (const QString &fileName, coverFileNames) {
+                        if (QFile::exists(dirName+fileName)) {
+                            QImage img(dirName+fileName);
+                            if (!img.isNull()) {
+                                DBUG_CLASS("Covers") << "Got cover image" << QString(dirName+fileName);
+                                return Image(img, dirName+fileName);
+                            }
+                        }
+                    }
+                }
+            }
+        }
         // Check if cover is already cached
         QString dir(Utils::cacheDir(constCoverDir+artist, false));
         for (int e=0; constExtensions[e]; ++e) {

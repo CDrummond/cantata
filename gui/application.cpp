@@ -27,6 +27,8 @@
 #include <KDE/KCmdLineArgs>
 #include <KDE/KStartupInfo>
 #include "initialsettingswizard.h"
+#include "thread.h"
+#include "song.h"
 #else
 #include <QIcon>
 #ifdef Q_OS_WIN
@@ -81,6 +83,9 @@ int Application::newInstance() {
             w->showNormal();
         }
     } else {
+        // Ensure ThreadCleaner is in GUI thread...
+        ThreadCleaner::self();
+        Song::initTranslations();
         if (Settings::self()->firstRun()) {
             InitialSettingsWizard wz;
             if (QDialog::Rejected==wz.exec()) {

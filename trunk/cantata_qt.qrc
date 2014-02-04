@@ -7,5 +7,9 @@
 <file alias="cantata32.png">icons/cantata32.png</file>
 <file alias="cantata48.png">icons/cantata48.png</file>
 <file alias="cantata64.png">icons/cantata64.png</file>
+
+<file alias="trayicon-mono-light">icons/trayicon-mono-light.svg</file>
+<file alias="trayicon-mono-dark">icons/trayicon-mono-dark.svg</file>
+
 </qresource>
 </RCC>

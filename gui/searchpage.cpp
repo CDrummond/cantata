@@ -29,6 +29,20 @@
 #include "utils.h"
 #include "icon.h"
 #include "qtplural.h"
+#include "tableview.h"
+
+class SearchTableView : public TableView
+{
+public:
+    SearchTableView(QWidget *p)
+        : TableView(QLatin1String("search"), p)
+    {
+        setUseSimpleDelegate();
+        setIndentation(0);
+    }
+
+    virtual ~SearchTableView() { }
+};
 
 SearchPage::SearchPage(QWidget *p)
     : QWidget(p)
@@ -40,6 +54,7 @@ SearchPage::SearchPage(QWidget *p)
     addToPlayQueue->setDefaultAction(StdActions::self()->addToPlayQueueAction);
     replacePlayQueue->setDefaultAction(StdActions::self()->replacePlayQueueAction);
 
+    view->allowTableView(new SearchTableView(view));
     view->addAction(StdActions::self()->addToPlayQueueAction);
     view->addAction(StdActions::self()->addRandomToPlayQueueAction);
     view->addAction(StdActions::self()->replacePlayQueueAction);
@@ -79,9 +94,13 @@ void SearchPage::showEvent(QShowEvent *e)
     QWidget::showEvent(e);
 }
 
-void SearchPage::save()
+void SearchPage::saveConfig()
 {
     Settings::self()->saveSearchCategory(view->searchCategory());
+    TableView *tv=qobject_cast<TableView *>(view->view());
+    if (tv) {
+        tv->saveHeader();
+    }
 }
 
 void SearchPage::refresh()
@@ -92,6 +111,12 @@ void SearchPage::refresh()
 void SearchPage::clear()
 {
     model.clear();
+}
+
+void SearchPage::setView(int mode)
+{
+    view->setMode((ItemView::Mode)mode);
+    model.setMultiColumn(ItemView::Mode_Table==mode);
 }
 
 QStringList SearchPage::selectedFiles(bool allowPlaylists) const

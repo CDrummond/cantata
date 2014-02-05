@@ -26,17 +26,9 @@
 
 #include "ui_playlistspage.h"
 #include "playlistsproxymodel.h"
-#include "tableview.h"
 #include "config.h"
 
 class Action;
-
-class PlaylistTableView : public TableView
-{
-public:
-    PlaylistTableView(QWidget *p);
-    virtual ~PlaylistTableView() { }
-};
 
 class PlaylistsPage : public QWidget, public Ui::PlaylistsPage
 {

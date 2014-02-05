@@ -657,7 +657,6 @@ DirViewItemRoot * MPDParseUtils::parseDirViewItems(const QByteArray &data, bool 
         } else if (line.startsWith("playlist: ")) {
             path=line.remove(0, 10);
         }
-        qWarning() << path << isMopidy << path.startsWith(Song::constMopidyLocal);
         if (!path.isEmpty() && (!isMopidy || path.startsWith(Song::constMopidyLocal))) {
             QString mopidyPath;
             if (isMopidy) {

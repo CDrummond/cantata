@@ -1220,6 +1220,14 @@ void MPDConnection::update()
 {
     if (sendCommand("update").ok) {
         emit updatingDatabase();
+
+        if (isMopdidy()) {
+            // Mopidy does not support MPD's update command. So, when user presses update DB, what we
+            // do instead is clear library/dir caches, then when response to getStats is received,
+            // library/dir should get refreshed...
+            emit updatedDatabase(); // Emit thi to stop any spinners...
+            getStats();
+        }
     }
 }
 

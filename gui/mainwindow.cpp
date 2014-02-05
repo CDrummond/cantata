@@ -1067,7 +1067,7 @@ void MainWindow::messageWidgetVisibility(bool v)
 void MainWindow::mpdConnectionStateChanged(bool connected)
 {
     serverInfoAction->setEnabled(connected && !MPDConnection::self()->isMopdidy());
-    refreshDbAction->setEnabled(connected && !MPDConnection::self()->isMopdidy());
+    refreshDbAction->setEnabled(connected);
     addStreamToPlayQueueAction->setEnabled(connected);
     if (connected) {
         messageWidget->hide();

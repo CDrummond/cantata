@@ -92,7 +92,7 @@ bool OnlineMusicLoader::readFromCache()
 {
     if (!cache.isEmpty() && QFile::exists(cache)) {
         emit status(i18n("Reading cache"), 0);
-        if (library->fromXML(cache, QDateTime(), QString(), this)) {
+        if (library->fromXML(cache, QDateTime(), 0, QString(), this)) {
             if (!stopRequested) {
                 fixLibrary();
                 emit status(i18n("Updating display"), -100);

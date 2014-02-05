@@ -75,7 +75,7 @@ private:
 private:
     DirViewItemRoot *rootItem;
     QDateTime databaseTime;
-    bool databaseTimeReliable;
+    bool databaseTimeUnreliable;
     bool enabled;
 };
 

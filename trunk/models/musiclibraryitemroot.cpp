@@ -294,7 +294,7 @@ void MusicLibraryItemRoot::updateSongFile(const Song &from, const Song &to)
 static quint32 constVersion=8;
 static QLatin1String constTopTag("CantataLibrary");
 
-void MusicLibraryItemRoot::toXML(const QString &filename, const QDateTime &date, MusicLibraryProgressMonitor *prog) const
+void MusicLibraryItemRoot::toXML(const QString &filename, const QDateTime &date, bool dateUnreliable, MusicLibraryProgressMonitor *prog) const
 {
     if (isFlat) {
         return;
@@ -316,7 +316,7 @@ void MusicLibraryItemRoot::toXML(const QString &filename, const QDateTime &date,
     }
 
     QXmlStreamWriter writer(&compressor);
-    toXML(writer, date, prog);
+    toXML(writer, date, dateUnreliable, prog);
     compressor.close();
 }
 
@@ -338,6 +338,7 @@ static const QString constFileAttribute=QLatin1String("file");
 static const QString constPlaylistAttribute=QLatin1String("playlist");
 static const QString constGuessedAttribute=QLatin1String("guessed");
 static const QString constDateAttribute=QLatin1String("date");
+static const QString constDateUnreliableAttribute=QLatin1String("dateUnreliable");
 static const QString constVersionAttribute=QLatin1String("version");
 static const QString constGroupSingleAttribute=QLatin1String("groupSingle");
 static const QString constGroupMultipleAttribute=QLatin1String("groupMultiple");
@@ -348,7 +349,7 @@ static const QString constImageAttribute=QLatin1String("img");
 static const QString constnumTracksAttribute=QLatin1String("numTracks");
 static const QString constTrueValue=QLatin1String("true");
 
-void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, const QDateTime &date, MusicLibraryProgressMonitor *prog) const
+void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, const QDateTime &date, bool dateUnreliable, MusicLibraryProgressMonitor *prog) const
 {
     if (isFlat) {
         return;
@@ -362,6 +363,9 @@ void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, const QDateTime &date
     writer.writeStartElement(constTopTag);
     writer.writeAttribute(constVersionAttribute, QString::number(constVersion));
     writer.writeAttribute(constDateAttribute, QString::number(date.toTime_t()));
+    if (dateUnreliable) {
+        writer.writeAttribute(constDateUnreliableAttribute, constTrueValue);
+    }
     if (MPDParseUtils::groupSingle()) {
         writer.writeAttribute(constGroupSingleAttribute, constTrueValue);
     }
@@ -477,7 +481,7 @@ void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, const QDateTime &date
     writer.writeEndDocument();
 }
 
-quint32 MusicLibraryItemRoot::fromXML(const QString &filename, const QDateTime &date, const QString &baseFolder, MusicLibraryProgressMonitor *prog)
+quint32 MusicLibraryItemRoot::fromXML(const QString &filename, const QDateTime &date, bool *dateUnreliable, const QString &baseFolder, MusicLibraryProgressMonitor *prog)
 {
     if (isFlat) {
         return 0;
@@ -494,9 +498,8 @@ quint32 MusicLibraryItemRoot::fromXML(const QString &filename, const QDateTime &
     if (!compressor.open(QIODevice::ReadOnly)) {
         return 0;
     }
-
     QXmlStreamReader reader(&compressor);
-    quint32 rv=fromXML(reader, date, baseFolder, prog);
+    quint32 rv=fromXML(reader, date, dateUnreliable, baseFolder, prog);
     compressor.close();
     #ifdef TIME_XML_FILE_LOADING
     qWarning() << filename << timer.elapsed();
@@ -504,7 +507,7 @@ quint32 MusicLibraryItemRoot::fromXML(const QString &filename, const QDateTime &
     return rv;
 }
 
-quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime &date, const QString &baseFolder, MusicLibraryProgressMonitor *prog)
+quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime &date, bool *dateUnreliable, const QString &baseFolder, MusicLibraryProgressMonitor *prog)
 {
     if (isFlat) {
         return 0;
@@ -538,12 +541,14 @@ quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime 
                 gs = constTrueValue==attributes.value(constGroupSingleAttribute).toString();
                 gm = constTrueValue==attributes.value(constGroupMultipleAttribute).toString();
                 bool uc = constTrueValue==attributes.value(constUseComposerAttribute).toString();
-
                 if ( version < constVersion || uc!=Song::useComposer() || (date.isValid() && xmlDate < date.toTime_t())) {
                     return 0;
                 }
                 if (prog) {
                     total=attributes.value(constnumTracksAttribute).toString().toUInt();
+                }
+                if (dateUnreliable) {
+                    *dateUnreliable=constTrueValue==attributes.value(constDateUnreliableAttribute).toString();
                 }
             } else if (constArtistElement==element) {
                 QString actual=attributes.value(constActualAttribute).toString();

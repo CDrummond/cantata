@@ -86,7 +86,7 @@ void MusicScanner::scan(const QString &folder, const QString &cacheFile, bool re
         MusicLibraryItemRoot *lib=new MusicLibraryItemRoot;
         MusicLibraryModel::convertCache(cacheFile);
         readProgress(0.0);
-        if (lib->fromXML(cacheFile, QDateTime(), folder)) {
+        if (lib->fromXML(cacheFile, QDateTime(), 0, folder)) {
             lib->applyGrouping();
             if (!stopRequested) {
                 emit libraryUpdated(lib);

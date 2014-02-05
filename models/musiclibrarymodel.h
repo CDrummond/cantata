@@ -120,7 +120,7 @@ private:
     bool checkable;
     MusicLibraryItemRoot *rootItem;
     QDateTime databaseTime;
-    bool databaseTimeReliable;
+    bool databaseTimeUnreliable;
 };
 
 #endif

@@ -145,7 +145,7 @@ MusicLibraryModel::MusicLibraryModel(QObject *parent, bool isMpdModel, bool isCh
     , mpdModel(isMpdModel)
     , checkable(isCheckable)
     , rootItem(new MusicLibraryItemRoot)
-    , databaseTimeReliable(true)
+    , databaseTimeUnreliable(false)
 {
     if (mpdModel)
     {
@@ -463,13 +463,15 @@ void MusicLibraryModel::updateMusicLibrary(MusicLibraryItemRoot *newroot, QDateT
     // Cantata starts...
     //
     // Mopidy users, and users of the proxy DB plugin, will have to force Cantata to refresh :-(
+    if (!fromFile) {
+        databaseTimeUnreliable=!dbUpdate.isValid() || dbUpdate.date().year()<2000; // See note in updatingMpd()
+    }
     if ((!databaseTime.isValid() && !dbUpdate.isValid()) || (databaseTime.date().year()<2000 && dbUpdate.date().year()<2000)) {
-        databaseTimeReliable=false; // See note in updatingMpd()
         databaseTime=QDateTime::currentDateTime();
     }
 
     if ((updatedSongs || needToUpdate) && (!fromFile && (needToSave || needToUpdate))) {
-        rootItem->toXML(cacheFileName(), databaseTime);
+        rootItem->toXML(cacheFileName(), databaseTime, databaseTimeUnreliable);
     }
 
     AlbumsModel::self()->update(rootItem);
@@ -483,7 +485,7 @@ void MusicLibraryModel::updatingMpd()
     // a users presses 'Refresh Database' in Cantata's main window, we need to reset our view of the databaseTime to null, s
     // that we update. This does mean that we will ALWAYS fetch the whole listing - but we have n oway of knowing if it changed
     // or not :-(
-    if (!databaseTimeReliable) {
+    if (databaseTimeUnreliable) {
         removeCache();
     }
 }
@@ -583,7 +585,7 @@ void MusicLibraryModel::toggleGrouping()
 {
     beginResetModel();
     rootItem->toggleGrouping();
-    rootItem->toXML(cacheFileName(), databaseTime);
+    rootItem->toXML(cacheFileName(), databaseTime, databaseTimeUnreliable);
     endResetModel();
     if (mpdModel) {
         AlbumsModel::self()->update(rootItem);
@@ -711,12 +713,11 @@ bool MusicLibraryModel::fromXML()
 
     convertCache(cacheFileName());
     MusicLibraryItemRoot *root=new MusicLibraryItemRoot;
-    quint32 date=root->fromXML(cacheFileName(), MPDStats::self()->dbUpdate());
+    quint32 date=root->fromXML(cacheFileName(), MPDStats::self()->dbUpdate(), &databaseTimeUnreliable);
     if (!date) {
         delete root;
         return false;
     }
-
     QDateTime dt;
     dt.setTime_t(date);
     updateMusicLibrary(root, dt, true);

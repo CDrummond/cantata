@@ -86,7 +86,7 @@ DirViewModel * DirViewModel::self()
 DirViewModel::DirViewModel(QObject *parent)
     : ActionModel(parent)
     , rootItem(new DirViewItemRoot)
-    , databaseTimeReliable(true)
+    , databaseTimeUnreliable(false)
     , enabled(false)
 {
 }
@@ -245,10 +245,12 @@ void DirViewModel::clear()
 static QLatin1String constTopTag("CantataFolders");
 static const QString constVersionAttribute=QLatin1String("version");
 static const QString constDateAttribute=QLatin1String("date");
+static const QString constDateUnreliableAttribute=QLatin1String("dateUnreliable");
 static const QString constNameAttribute=QLatin1String("name");
 static const QString constPathAttribute=QLatin1String("path");
 static const QString constDirTag=QLatin1String("dir");
 static const QString constFileTag=QLatin1String("file");
+static const QString constTrueValue=QLatin1String("true");
 
 static quint32 constVersion=1;
 
@@ -275,6 +277,9 @@ void DirViewModel::toXML()
     writer.writeStartElement(constTopTag);
     writer.writeAttribute(constVersionAttribute, QString::number(constVersion));
     writer.writeAttribute(constDateAttribute, QString::number(databaseTime.toTime_t()));
+    if (databaseTimeUnreliable) {
+        writer.writeAttribute(constDateUnreliableAttribute, constTrueValue);
+    }
 
     if (rootItem) {
         foreach (const DirViewItem *i, rootItem->childItems()) {
@@ -357,10 +362,10 @@ quint32 DirViewModel::fromXML(QIODevice *dev, const QDateTime &dt, DirViewItemRo
             if (constTopTag == element) {
                 quint32 version = attributes.value(constVersionAttribute).toString().toUInt();
                 xmlDate = attributes.value(constDateAttribute).toString().toUInt();
-
                 if ( version < constVersion || (dt.isValid() && xmlDate < dt.toTime_t())) {
                     return 0;
                 }
+                databaseTimeUnreliable=constTrueValue==attributes.value(constDateUnreliableAttribute).toString();
             } else if (constDirTag==element) {
                 DirViewItemDir *dir=new DirViewItemDir(attributes.value(constNameAttribute).toString(), currentDir);
                 currentDir->add(dir);
@@ -431,8 +436,10 @@ void DirViewModel::updateDirView(DirViewItemRoot *newroot, const QDateTime &dbUp
     // Cantata starts...
     //
     // Mopidy users, and users of the proxy DB plugin, will have to force Cantata to refresh :-(
+    if (!fromFile) {
+        databaseTimeUnreliable=!dbUpdate.isValid() || dbUpdate.date().year()<2000; // See note in updatingMpd()
+    }
     if ((!databaseTime.isValid() && !dbUpdate.isValid()) || (databaseTime.date().year()<2000 && dbUpdate.date().year()<2000)) {
-        databaseTimeReliable=false; // See note in updatingMpd()
         databaseTime=QDateTime::currentDateTime();
     }
 
@@ -448,7 +455,7 @@ void DirViewModel::updatingMpd()
     // a users presses 'Refresh Database' in Cantata's main window, we need to reset our view of the databaseTime to null, s
     // that we update. This does mean that we will ALWAYS fetch the whole listing - but we have n oway of knowing if it changed
     // or not :-(
-    if (!databaseTimeReliable) {
+    if (databaseTimeUnreliable) {
         removeCache();
     }
 }

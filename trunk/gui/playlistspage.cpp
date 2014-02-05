@@ -31,17 +31,24 @@
 #include "stdactions.h"
 #include "actioncollection.h"
 #include "mpdconnection.h"
+#include "tableview.h"
 #include <QMenu>
 #ifndef ENABLE_KDE_SUPPORT
 #include <QStyle>
 #endif
 
-PlaylistTableView::PlaylistTableView(QWidget *p)
-    : TableView(QLatin1String("playlist"), p)
+class PlaylistTableView : public TableView
 {
-    setUseSimpleDelegate();
-    setIndentation(fontMetrics().width(QLatin1String("XX")));
-}
+public:
+    PlaylistTableView(QWidget *p)
+        : TableView(QLatin1String("playlist"), p)
+    {
+        setUseSimpleDelegate();
+        setIndentation(fontMetrics().width(QLatin1String("XX")));
+    }
+
+    virtual ~PlaylistTableView() { }
+};
 
 PlaylistsPage::PlaylistsPage(QWidget *p)
     : QWidget(p)

@@ -158,6 +158,7 @@ public:
     bool showDeleteAction();
     int devicesView();
     #endif
+    int searchView();
     int version();
     int stopFadeDuration();
     int httpAllocatedPort();
@@ -274,6 +275,7 @@ public:
     void saveShowDeleteAction(bool v);
     void saveDevicesView(int v);
     #endif
+    void saveSearchView(int v);
     void saveStopFadeDuration(int v);
     void saveHttpAllocatedPort(int v);
     void saveHttpInterface(const QString &v);

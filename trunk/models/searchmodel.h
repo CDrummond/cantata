@@ -33,13 +33,30 @@ class SearchModel : public ActionModel
     Q_OBJECT
 
 public:
+
+    enum Columns
+    {
+        COL_TRACK,
+        COL_DISC,
+        COL_TITLE,
+        COL_ARTIST,
+        COL_ALBUM,
+        COL_LENGTH,
+        COL_YEAR,
+        COL_GENRE,
+
+        COL_COUNT
+    };
+
+    static QString headerText(int col);
+
     SearchModel(QObject *parent = 0);
     ~SearchModel();
     QModelIndex index(int, int, const QModelIndex & = QModelIndex()) const;
     QModelIndex parent(const QModelIndex &) const;
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
-    int columnCount(const QModelIndex &) const;
+    int columnCount(const QModelIndex &) const { return COL_COUNT; }
     QVariant data(const QModelIndex &, int) const;
     Qt::ItemFlags flags(const QModelIndex &index) const;
 
@@ -51,7 +68,8 @@ public:
     void refresh();
     void clear();
     void search(const QString &key, const QString &value);
- 
+    void setMultiColumn(bool m) { multiCol=m; }
+
 Q_SIGNALS:
     void searching();
     void searched();
@@ -67,6 +85,7 @@ private:
     const Song * toSong(const QModelIndex &index) const { return index.isValid() ? static_cast<const Song *>(index.internalPointer()) : 0; }
 
 private:
+    bool multiCol;
     QList<Song> songList;
     int currentId;
     QString currentKey;

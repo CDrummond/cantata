@@ -663,6 +663,11 @@ int Settings::devicesView()
 }
 #endif
 
+int Settings::searchView()
+{
+    return ItemView::toMode(GET_STRING("searchView", ItemView::modeStr(ItemView::Mode_List)));
+}
+
 int Settings::version()
 {
     if (-1==ver) {
@@ -1272,6 +1277,11 @@ void Settings::saveDevicesView(int v)
     SET_ITEMVIEW_MODE_VALUE_MOD(devicesView)
 }
 #endif
+
+void Settings::saveSearchView(int v)
+{
+    SET_ITEMVIEW_MODE_VALUE_MOD(searchView)
+}
 
 void Settings::saveStopFadeDuration(int v)
 {

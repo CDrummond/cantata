@@ -930,7 +930,7 @@ MainWindow::~MainWindow()
     streamsPage->save();
     StreamsModel::self()->save();
     #endif
-    searchPage->save();
+    searchPage->saveConfig();
     positionSlider->saveConfig();
     #ifdef ENABLE_ONLINE_SERVICES
     OnlineServicesModel::self()->save();
@@ -1453,6 +1453,7 @@ void MainWindow::readSettings()
     #ifdef ENABLE_DEVICES_SUPPORT
     devicesPage->setView(Settings::self()->devicesView());
     #endif
+    searchPage->setView(Settings::self()->searchView());
     trayItem->setup();
     autoScrollPlayQueue=Settings::self()->playQueueScroll();
     updateWindowTitle();

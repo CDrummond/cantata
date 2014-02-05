@@ -24,6 +24,7 @@
 #include "searchmodel.h"
 #include "icons.h"
 #include "itemview.h"
+#include "tableview.h"
 #include "localize.h"
 #include "qtplural.h"
 #include "mpdconnection.h"
@@ -40,8 +41,24 @@
 #include "modeltest.h"
 #endif
 
+QString SearchModel::headerText(int col)
+{
+    switch (col) {
+    case COL_TRACK:  return PlayQueueModel::headerText(PlayQueueModel::COL_TRACK);
+    case COL_DISC:   return PlayQueueModel::headerText(PlayQueueModel::COL_DISC);
+    case COL_TITLE:  return PlayQueueModel::headerText(PlayQueueModel::COL_TITLE);
+    case COL_ARTIST: return PlayQueueModel::headerText(PlayQueueModel::COL_ARTIST);
+    case COL_ALBUM:  return PlayQueueModel::headerText(PlayQueueModel::COL_ALBUM);
+    case COL_LENGTH: return PlayQueueModel::headerText(PlayQueueModel::COL_LENGTH);
+    case COL_YEAR:   return PlayQueueModel::headerText(PlayQueueModel::COL_YEAR);
+    case COL_GENRE:  return PlayQueueModel::headerText(PlayQueueModel::COL_GENRE);
+    default:         return QString();
+    }
+}
+
 SearchModel::SearchModel(QObject *parent)
     : ActionModel(parent)
+    , multiCol(false)
     , currentId(0)
 {
     connect(this, SIGNAL(search(QString,QString,int)), MPDConnection::self(), SLOT(search(QString,QString,int)));
@@ -68,19 +85,50 @@ QModelIndex SearchModel::parent(const QModelIndex &index) const
     return QModelIndex();
 }
 
-QVariant SearchModel::headerData(int /*section*/, Qt::Orientation /*orientation*/, int /*role*/) const
+QVariant SearchModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
+    if (Qt::Horizontal==orientation) {
+        switch (role) {
+        case Qt::DisplayRole:
+            return headerText(section);
+        case Qt::TextAlignmentRole:
+            switch (section) {
+            case COL_TITLE:
+            case COL_ARTIST:
+            case COL_ALBUM:
+            case COL_GENRE:
+            default:
+                return int(Qt::AlignVCenter|Qt::AlignLeft);
+            case COL_TRACK:
+            case COL_LENGTH:
+            case COL_DISC:
+            case COL_YEAR:
+                return int(Qt::AlignVCenter|Qt::AlignRight);
+            }
+        case TableView::Role_Hideable:
+            return COL_YEAR==section || COL_DISC==section || COL_GENRE==section ? true : false;
+        case TableView::Role_Width:
+            switch (section) {
+            case COL_TRACK:  return 0.075;
+            case COL_DISC:   return 0.03;
+            case COL_TITLE:  return 0.3;
+            case COL_ARTIST: return 0.27;
+            case COL_ALBUM:  return 0.27;
+            case COL_LENGTH: return 0.05;
+            case COL_YEAR:   return 0.05;
+            case COL_GENRE:  return 0.115;
+            }
+        default:
+            break;
+        }
+    }
     return QVariant();
 }
+
 
 int SearchModel::rowCount(const QModelIndex &parent) const
 {
     return parent.isValid() ? 0 : songList.count();
-}
-
-int SearchModel::columnCount(const QModelIndex &) const
-{
-    return 1;
 }
 
 QVariant SearchModel::data(const QModelIndex &index, int role) const
@@ -93,12 +141,61 @@ QVariant SearchModel::data(const QModelIndex &index, int role) const
     
     switch (role) {
     case Qt::DecorationRole:
+        if (multiCol) {
+            return QVariant();
+        }
         return Song::Playlist==song->type
                 ? Icons::self()->playlistIcon
                 : song->isStream()
                   ? Icons::self()->streamIcon
                   : Icons::self()->audioFileIcon;
+    case Qt::TextAlignmentRole:
+        switch (index.column()) {
+        case COL_TITLE:
+        case COL_ARTIST:
+        case COL_ALBUM:
+        case COL_GENRE:
+        default:
+            return int(Qt::AlignVCenter|Qt::AlignLeft);
+        case COL_TRACK:
+        case COL_LENGTH:
+        case COL_DISC:
+        case COL_YEAR:
+            return int(Qt::AlignVCenter|Qt::AlignRight);
+        }
     case Qt::DisplayRole:
+        if (multiCol) {
+            switch (index.column()) {
+            case COL_TITLE:
+                return song->title.isEmpty() ? Utils::getFile(song->file) : song->title;
+            case COL_ARTIST:
+                return song->artist.isEmpty() ? Song::unknown() : song->artist;
+            case COL_ALBUM:
+                return song->album.isEmpty() && !song->name.isEmpty() && song->isStream() ? song->name : song->album;
+            case COL_TRACK:
+                if (song->track <= 0) {
+                    return QVariant();
+                }
+                return song->track;
+            case COL_LENGTH:
+                return Song::formattedTime(song->time);
+            case COL_DISC:
+                if (song->disc <= 0) {
+                    return QVariant();
+                }
+                return song->disc;
+            case COL_YEAR:
+                if (song->year <= 0) {
+                    return QVariant();
+                }
+                return song->year;
+            case COL_GENRE:
+                return song->genre;
+            default:
+                break;
+            }
+            break;
+        }
     case Qt::ToolTipRole: {
         QString text=song->entryName();
 

@@ -519,9 +519,6 @@ MainWindow::MainWindow(QWidget *parent)
         b->setFixedSize(QSize(playbackButtonSize, playbackButtonSize));
     }
 
-    trackLabel->setText(QString());
-    artistLabel->setText(QString());
-
     expandInterfaceAction->setChecked(Settings::self()->showPlaylist());
     fullScreenAction->setEnabled(expandInterfaceAction->isChecked());
     if (fullScreenAction->isEnabled()) {

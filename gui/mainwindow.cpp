@@ -1289,25 +1289,8 @@ void MainWindow::checkMpdDir()
         editPlayQueueTagsAction->setEnabled(MPDConnection::self()->getDetails().dirReadable);
     }
     #endif
-    switch (tabWidget->current_index()) {
-    #if defined ENABLE_DEVICES_SUPPORT && defined TAGLIB_FOUND
-    case PAGE_DEVICES:   devicesPage->controlActions();    break;
-    #endif
-    case PAGE_LIBRARY:   libraryPage->controlActions();    break;
-    case PAGE_ALBUMS:    albumsPage->controlActions();     break;
-    case PAGE_FOLDERS:   folderPage->controlActions();     break;
-    case PAGE_PLAYLISTS: playlistsPage->controlActions();  break;
-    #ifdef ENABLE_DYNAMIC
-    case PAGE_DYNAMIC:   dynamicPage->controlActions();    break;
-    #endif
-    #ifdef ENABLE_STREAMS
-    case PAGE_STREAMS:   streamsPage->controlActions();    break;
-    #endif
-    #ifdef ENABLE_ONLINE_SERVICES
-    case PAGE_ONLINE:    onlinePage->controlActions();     break;
-    #endif
-    case PAGE_SEARCH:    searchPage->controlActions();     break;
-    default:                                               break;
+    if (currentPage) {
+        currentPage->controlActions();
     }
 }
 

@@ -424,8 +424,8 @@ void PlaylistsPage::controlActions()
         allSmartPlaylists=true;
         foreach (const QModelIndex &index, selected) {
             PlaylistsModel::Item *item=static_cast<PlaylistsModel::Item *>(proxy.mapToSource(index).internalPointer());
-            if (item && (item->isPlaylist() ? !static_cast<PlaylistsModel::PlaylistItem *>(item)->isSmartPlaylist
-                                            : static_cast<PlaylistsModel::SongItem *>(item)->parent->isSmartPlaylist)) {
+            if (item && !(item->isPlaylist() ? static_cast<PlaylistsModel::PlaylistItem *>(item)->isSmartPlaylist
+                                             : static_cast<PlaylistsModel::SongItem *>(item)->parent->isSmartPlaylist)) {
                 allSmartPlaylists=false;
                 break;
             }

@@ -183,7 +183,6 @@ Q_SIGNALS:
 public Q_SLOTS:
     void showError(const QString &message, bool showActions=false);
     void showInformation(const QString &message);
-    void showPage(int page, bool showSearch);
     void dynamicStatus(const QString &message);
     void hideWindow();
     void restoreWindow();

@@ -241,7 +241,6 @@ public Q_SLOTS:
     void checkMpdAccessibility();
     void cropPlayQueue();
     void updatePlayQueueStats(int songs, quint32 time);
-    void copyTrackInfo();
     void expandOrCollapse(bool saveCurrentSize=true);
     void showSongInfo();
     void fullScreen();
@@ -343,7 +342,6 @@ private:
     Action *removeFromPlayQueueAction;
     Action *addPlayQueueToStoredPlaylistAction;
     Action *promptClearPlayQueueAction;
-    Action *copyTrackInfoAction;
     Action *cropPlayQueueAction;
     Action *shufflePlayQueueAction;
     Action *shufflePlayQueueAlbumsAction;

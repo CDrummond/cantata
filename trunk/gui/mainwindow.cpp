@@ -51,9 +51,6 @@
 #include "localize.h"
 #include "qtplural.h"
 #include "mainwindow.h"
-#if defined ENABLE_HTTP_STREAM_PLAYBACK && QT_VERSION < 0x050000
-#include <phonon/audiooutput.h>
-#endif
 #include "thread.h"
 #include "trayitem.h"
 #include "messagebox.h"
@@ -128,6 +125,9 @@
 #include "action.h"
 #include "actioncollection.h"
 #include "stdactions.h"
+#ifdef ENABLE_HTTP_STREAM_PLAYBACK
+#include "httpstream.h"
+#endif
 #ifdef Q_OS_WIN
 static void raiseWindow(QWidget *w);
 #endif
@@ -186,6 +186,9 @@ MainWindow::MainWindow(QWidget *parent)
     , lastState(MPDState_Inactive)
     , lastSongId(-1)
     , autoScrollPlayQueue(true)
+    #ifdef ENABLE_HTTP_STREAM_PLAYBACK
+    , httpStream(new HttpStream(this))
+    #endif
     , currentPage(0)
     #ifdef QT_QTDBUS_FOUND
     , mpris(0)
@@ -201,10 +204,6 @@ MainWindow::MainWindow(QWidget *parent)
     , origVolume(0)
     , lastVolume(0)
     , stopState(StopState_None)
-    #ifdef ENABLE_HTTP_STREAM_PLAYBACK
-    , httpStreamEnabled(false)
-    , httpStream(0)
-    #endif
 {
     QPoint p=pos();
     ActionCollection::setMainWidget(this);
@@ -481,6 +480,8 @@ MainWindow::MainWindow(QWidget *parent)
     consumePlayQueueAction->setCheckable(true);
     #ifdef ENABLE_HTTP_STREAM_PLAYBACK
     streamPlayAction->setCheckable(true);
+    streamPlayAction->setChecked(false);
+    streamPlayAction->setVisible(false);
     #endif
 
     songInfoButton->setDefaultAction(songInfoAction);
@@ -528,10 +529,6 @@ MainWindow::MainWindow(QWidget *parent)
     repeatPlayQueueAction->setChecked(false);
     singlePlayQueueAction->setChecked(false);
     consumePlayQueueAction->setChecked(false);
-    #ifdef ENABLE_HTTP_STREAM_PLAYBACK
-    streamPlayAction->setChecked(false);
-    streamPlayAction->setVisible(false);
-    #endif
 
     MusicLibraryItemAlbum::setCoverSize((MusicLibraryItemAlbum::CoverSize)Settings::self()->libraryCoverSize());
     MusicLibraryItemAlbum::setShowDate(Settings::self()->libraryYear());
@@ -764,8 +761,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(singlePlayQueueAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(setSingle(bool)));
     connect(consumePlayQueueAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(setConsume(bool)));
     #ifdef ENABLE_HTTP_STREAM_PLAYBACK
-    connect(streamPlayAction, SIGNAL(triggered(bool)), this, SLOT(toggleStream(bool)));
-    connect(MPDConnection::self(), SIGNAL(streamUrl(QString)), SLOT(streamUrl(QString)));
+    connect(streamPlayAction, SIGNAL(triggered(bool)), httpStream, SLOT(setEnabled(bool)));
     #endif
     connect(StdActions::self()->backAction, SIGNAL(triggered(bool)), this, SLOT(goBack()));
     connect(playQueueSearchWidget, SIGNAL(returnPressed()), this, SLOT(searchPlayQueue()));
@@ -1155,17 +1151,6 @@ void MainWindow::connectToMpd(const MPDConnectionDetails &details)
 void MainWindow::connectToMpd()
 {
     connectToMpd(Settings::self()->connectionDetails());
-}
-
-void MainWindow::streamUrl(const QString &u)
-{
-    #ifdef ENABLE_HTTP_STREAM_PLAYBACK
-    streamPlayAction->setVisible(!u.isEmpty());
-    streamPlayAction->setChecked(streamPlayAction->isVisible() && Settings::self()->playStream());
-    toggleStream(streamPlayAction->isChecked(), u);
-    #else
-    Q_UNUSED(u)
-    #endif
 }
 
 void MainWindow::refreshDbPromp()
@@ -1588,53 +1573,6 @@ void MainWindow::showServerInfo()
                             i18n("Server Information"));
 }
 
-void MainWindow::toggleStream(bool s, const QString &url)
-{
-    #ifdef ENABLE_HTTP_STREAM_PLAYBACK
-    MPDStatus * const status = MPDStatus::self();
-    httpStreamEnabled = s;
-    if (!s){
-        if (httpStream) {
-            httpStream->stop();
-        }
-    } else {
-        static const char *constUrlProperty="url";
-        if (httpStream && httpStream->property(constUrlProperty).toString()!=url) {
-            httpStream->stop();
-            httpStream->deleteLater();
-            httpStream=0;
-        }
-        if (httpStream) {
-            switch (status->state()) {
-            case MPDState_Playing:
-                httpStream->play();
-                break;
-            case MPDState_Inactive:
-            case MPDState_Stopped:
-                httpStream->stop();
-            break;
-            case MPDState_Paused:
-                httpStream->pause();
-            default:
-            break;
-            }
-        } else {
-            #if QT_VERSION < 0x050000
-            httpStream=new Phonon::MediaObject(this);
-            Phonon::createPath(httpStream, new Phonon::AudioOutput(Phonon::MusicCategory, this));
-            httpStream->setCurrentSource(url);
-            #else
-            httpStream=new QMediaPlayer(this);
-            httpStream->setMedia(QUrl(url));
-            #endif
-            httpStream->setProperty(constUrlProperty, url);
-        }
-    }
-    #else
-    Q_UNUSED(s) Q_UNUSED(url)
-    #endif
-}
-
 void MainWindow::enableStopActions(bool enable)
 {
     StdActions::self()->stopAfterCurrentTrackAction->setEnabled(enable);
@@ -2003,11 +1941,6 @@ void MainWindow::updateStatus(MPDStatus * const status)
     playQueueModel.setState(status->state());
     switch (status->state()) {
     case MPDState_Playing:
-        #ifdef ENABLE_HTTP_STREAM_PLAYBACK
-        if (httpStreamEnabled && httpStream) {
-            httpStream->play();
-        }
-        #endif
         StdActions::self()->playPauseTrackAction->setIcon(Icons::self()->toolbarPauseIcon);
         StdActions::self()->playPauseTrackAction->setEnabled(0!=status->playlistLength());
         //playPauseTrackButton->setChecked(false);
@@ -2020,11 +1953,6 @@ void MainWindow::updateStatus(MPDStatus * const status)
         break;
     case MPDState_Inactive:
     case MPDState_Stopped:
-        #ifdef ENABLE_HTTP_STREAM_PLAYBACK
-        if (httpStreamEnabled && httpStream) {
-            httpStream->stop();
-        }
-        #endif
         StdActions::self()->playPauseTrackAction->setIcon(Icons::self()->toolbarPlayIcon);
         StdActions::self()->playPauseTrackAction->setEnabled(0!=status->playlistLength());
         enableStopActions(false);
@@ -2042,20 +1970,13 @@ void MainWindow::updateStatus(MPDStatus * const status)
         positionSlider->stopTimer();
         break;
     case MPDState_Paused:
-        #ifdef ENABLE_HTTP_STREAM_PLAYBACK
-        if (httpStreamEnabled && httpStream) {
-            httpStream->pause();
-        }
-        #endif
         StdActions::self()->playPauseTrackAction->setIcon(Icons::self()->toolbarPlayIcon);
         StdActions::self()->playPauseTrackAction->setEnabled(0!=status->playlistLength());
         enableStopActions(0!=status->playlistLength());
         StdActions::self()->nextTrackAction->setEnabled(status->playlistLength()>1);
         StdActions::self()->prevTrackAction->setEnabled(status->playlistLength()>1);
         positionSlider->stopTimer();
-        break;
     default:
-        qDebug("Invalid state");
         break;
     }
 

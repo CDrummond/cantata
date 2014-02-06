@@ -2629,48 +2629,15 @@ void MainWindow::locateAlbum(const QString &artist, const QString &album)
     libraryPage->showAlbum(artist, album);
 }
 
-void MainWindow::showPage(const QString &page, bool focusSearch)
+void MainWindow::showPage(int page, bool focusSearch)
 {
-    QString p=page.toLower();
-    if (QLatin1String("library")==p || QLatin1String("artists")==p) {
-        showTab(MainWindow::PAGE_LIBRARY);
-    } else if (QLatin1String("albums")==p) {
-        showTab(MainWindow::PAGE_ALBUMS);
-    } else if (QLatin1String("folders")==p) {
-        showTab(MainWindow::PAGE_FOLDERS);
-    } else if (QLatin1String("playlists")==p) {
-        showTab(MainWindow::PAGE_PLAYLISTS);
-    }
-    #ifdef ENABLE_DYNAMIC
-    else if (QLatin1String("dynamic")==p) {
-        showTab(MainWindow::PAGE_DYNAMIC);
-    }
-    #endif
-    #ifdef ENABLE_STREAMS
-    else if (QLatin1String("streams")==p) {
-        showTab(MainWindow::PAGE_STREAMS);
-    }
-    #endif
-    else if (QLatin1String("info")==p) {
+    if (PAGE_CONTEXT==page) {
         if (songInfoAction->isCheckable()) {
             songInfoAction->setChecked(true);
         }
         showSongInfo();
-    }
-    #ifdef ENABLE_ONLINE_SERVICES
-    else if (QLatin1String("online")==p) {
-        showTab(MainWindow::PAGE_ONLINE);
-    }
-    #endif
-    #ifdef ENABLE_DEVICES_SUPPORT
-    else if (QLatin1String("devices")==p) {
-        showTab(MainWindow::PAGE_DEVICES);
-    }
-    #endif
-    else if (tabWidget->isEnabled(PAGE_PLAYQUEUE) && QLatin1String("playqueue")==p) {
-        showTab(MainWindow::PAGE_PLAYQUEUE);
-    } else if (QLatin1String("search")==p) {
-        showTab(MainWindow::PAGE_SEARCH);
+    } else if (page>=0 && page<PAGE_CONTEXT) {
+        showTab(page);
     }
     if (focusSearch) {
         currentPage->focusSearch();

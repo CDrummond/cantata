@@ -4,7 +4,7 @@
 <node>
   <interface name="com.googlecode.cantata">
     <method name="showPage">
-        <arg type="s" name="page" direction="in"/>
+        <arg type="i" name="page" direction="in"/>
         <arg type="b" name="focusSearch" direction="in"/>
     </method>
     <method name="showError">

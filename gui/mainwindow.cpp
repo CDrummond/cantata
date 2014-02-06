@@ -2168,7 +2168,6 @@ void MainWindow::updatePlayQueueStats(int songs, quint32 time)
         playQueueStatsLabel->setText(QString());
         return;
     }
-
     #ifdef ENABLE_KDE_SUPPORT
     playQueueStatsLabel->setText(i18np("1 Track (%2)", "%1 Tracks (%2)", songs, Utils::formatDuration(time)));
     #else
@@ -2285,11 +2284,6 @@ void MainWindow::currentTabChanged(int index)
 {
     controlDynamicButton();
     switch(index) {
-    #ifdef ENABLE_DEVICES_SUPPORT
-    case PAGE_DEVICES: // Need library to be loaded to check if song exists...
-        currentPage=devicesPage;
-        break;
-    #endif
     case PAGE_LIBRARY:
     case PAGE_ALBUMS: // Albums shares refresh with library...
         if (!(loaded&TAB_LIBRARY)) {
@@ -2332,10 +2326,16 @@ void MainWindow::currentTabChanged(int index)
         currentPage=onlinePage;
         break;
     #endif
+    #ifdef ENABLE_DEVICES_SUPPORT
+    case PAGE_DEVICES:
+        currentPage=devicesPage;
+        break;
+    #endif
     case PAGE_SEARCH:
         currentPage=searchPage;
         break;
     default:
+        currentPage=0;
         break;
     }
     if (currentPage) {
@@ -2559,11 +2559,7 @@ void MainWindow::editTags(const QList<Song> &songs, bool isPlayQueue)
     if (songs.isEmpty() || TagEditor::instanceCount() || !canShowDialog()) {
         return;
     }
-    QSet<QString> artists;
-    QSet<QString> albumArtists;
-    QSet<QString> composers;
-    QSet<QString> albums;
-    QSet<QString> genres;
+    QSet<QString> artists, albumArtists, composers, albums, genres;
     QString udi;
     #ifdef ENABLE_DEVICES_SUPPORT
     if (!isPlayQueue && currentPage==devicesPage) {
@@ -2684,7 +2680,6 @@ void MainWindow::replayGain()
             }
         }
         #endif
-
         RgDialog *dlg=new RgDialog(this);
         dlg->show(songs, udi);
     }
@@ -2792,9 +2787,7 @@ void MainWindow::restoreWindow()
     showNormal();
     activateWindow();
     #if !defined Q_OS_WIN && !defined Q_OS_MAC && QT_VERSION < 0x050000
-    // This section seems to be required for compiz...
-    // ...without this, when 'qdbus com.googlecode.cantata /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Raise' is used
-    // the Unity launcher item is highlighted, but the window is not shown!
+    // This section seems to be required for compiz, so that MPRIS.Raise actually shows the window, and not jsut highlight launcher.
     static const Atom constNetActive=XInternAtom(QX11Info::display(), "_NET_ACTIVE_WINDOW", False);
     QX11Info info;
     XEvent xev;
@@ -2815,7 +2808,7 @@ void MainWindow::restoreWindow()
 }
 
 #ifdef Q_OS_WIN
-// This is down here, because windows.h includes ALL windows stuff - and we get conflics with MessageBox :-(
+// This is down here, because windows.h includes ALL windows stuff - and we get conflicts with MessageBox :-(
 #include <windows.h>
 static void raiseWindow(QWidget *w)
 {

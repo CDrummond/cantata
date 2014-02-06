@@ -3,10 +3,6 @@
 
 <node>
   <interface name="com.googlecode.cantata">
-    <method name="showPage">
-        <arg type="i" name="page" direction="in"/>
-        <arg type="b" name="focusSearch" direction="in"/>
-    </method>
     <method name="showError">
         <arg type="s" name="error" direction="in"/>
     </method>

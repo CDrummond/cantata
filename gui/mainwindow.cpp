@@ -2564,22 +2564,6 @@ void MainWindow::locateAlbum(const QString &artist, const QString &album)
     libraryPage->showAlbum(artist, album);
 }
 
-void MainWindow::showPage(int page, bool focusSearch)
-{
-    if (PAGE_CONTEXT==page) {
-        if (songInfoAction->isCheckable()) {
-            songInfoAction->setChecked(true);
-        }
-        showSongInfo();
-    } else if (page>=0 && page<PAGE_CONTEXT) {
-        showTab(page);
-    }
-    if (focusSearch) {
-        currentPage->focusSearch();
-    }
-    expand();
-}
-
 void MainWindow::dynamicStatus(const QString &message)
 {
     #ifdef ENABLE_DYNAMIC

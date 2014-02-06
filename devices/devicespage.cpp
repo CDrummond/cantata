@@ -203,8 +203,9 @@ QStringList DevicesPage::playableUrls() const
     return DevicesModel::self()->playableUrls(mapped);
 }
 
-QList<Song> DevicesPage::selectedSongs() const
+QList<Song> DevicesPage::selectedSongs(bool allowPlaylists) const
 {
+    Q_UNUSED(allowPlaylists)
     QModelIndexList selected = view->selectedIndexes();
     if (selected.isEmpty()) {
         return QList<Song>();

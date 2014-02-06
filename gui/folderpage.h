@@ -51,6 +51,7 @@ public:
     void clear();
     QStringList selectedFiles(bool allowPlaylists=false) const;
     QList<Song> selectedSongs(EmptySongMod esMod, bool allowPlaylists=false) const;
+    QList<Song> selectedSongs(bool allowPlaylists=false) const { return selectedSongs(ES_None, allowPlaylists); }
     void addSelectionToPlaylist(const QString &name=QString(), bool replace=false, quint8 priorty=0, bool randomAlbums=false);
     #ifdef ENABLE_DEVICES_SUPPORT
     void addSelectionToDevice(const QString &udi);

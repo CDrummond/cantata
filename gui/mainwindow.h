@@ -150,9 +150,9 @@ public:
     MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
-    int mpdVolume() const;
-    int currentTrackPosition() const;
-    QString coverFile() const;
+    int mpdVolume() const { return volumeSlider->value(); }
+    int currentTrackPosition() const { return positionSlider->value(); }
+    QString coverFile() const { return coverWidget->fileName(); }
 
 protected:
     void keyPressEvent(QKeyEvent *event);
@@ -197,7 +197,7 @@ public Q_SLOTS:
     void messageWidgetVisibility(bool v);
     void mpdConnectionStateChanged(bool connected);
     void playQueueItemsSelected(bool s);
-    void showSidebarPreferencesPage();
+    void showSidebarPreferencesPage() { showPreferencesDialog("interface:sidebar"); }
     void showPreferencesDialog(const QString &page=QString());
     void quit();
     void updateSettings();
@@ -228,18 +228,18 @@ public Q_SLOTS:
     void playQueueItemActivated(const QModelIndex &);
     void promptClearPlayQueue();
     void clearPlayQueue();
-    void removeFromPlayQueue();
-    void replacePlayQueue();
-    void addToPlayQueue();
-    void addRandomToPlayQueue();
+    void removeFromPlayQueue() { playQueueModel.remove(playQueueProxyModel.mapToSourceRows(playQueue->selectedIndexes())); }
+    void replacePlayQueue() { addToPlayQueue(true); }
+    void addToPlayQueue() { addToPlayQueue(false); }
+    void addRandomToPlayQueue() { addToPlayQueue(false, 0, true); }
     void addWithPriority();
     void addToNewStoredPlaylist();
-    void addToExistingStoredPlaylist(const QString &name);
+    void addToExistingStoredPlaylist(const QString &name) { addToExistingStoredPlaylist(name, playQueue->hasFocus()); }
     void addToExistingStoredPlaylist(const QString &name, bool pq);
     void addStreamToPlayQueue();
     void removeItems();
     void checkMpdAccessibility();
-    void cropPlayQueue();
+    void cropPlayQueue() { playQueueModel.crop(playQueueProxyModel.mapToSourceRows(playQueue->selectedIndexes())); }
     void updatePlayQueueStats(int songs, quint32 time);
     void expandOrCollapse(bool saveCurrentSize=true);
     void showSongInfo();
@@ -310,12 +310,12 @@ private:
     #ifdef TAGLIB_FOUND
     void editTags(const QList<Song> &songs, bool isPlayQueue);
     #endif
-    bool currentIsStream() const;
+    bool currentIsStream() const { return playQueueModel.rowCount() && -1!=current.id && current.isStream(); }
     void updateWindowTitle();
     void startVolumeFade(/*bool stop*/);
     void stopVolumeFade();
-    void showTab(int page);
-    bool fadeWhenStop() const;
+    void showTab(int page) { tabWidget->SetCurrentIndex(page); }
+    bool fadeWhenStop() const { return fadeStop && volumeSlider->isEnabled(); }
     void updateNextTrack(int nextTrackId);
     void updateActionToolTips();
     void setPlaylistsEnabled(bool e);

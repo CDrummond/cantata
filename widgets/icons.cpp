@@ -54,8 +54,6 @@ Icons * Icons::self()
 }
 
 static QList<int> constStdSizes=QList<int>() << 16 << 22 << 32 << 48;
-static const double constDisabledOpacity=0.5;
-static const int constShadeFactor=75;
 
 static const int constDarkLimit=80;
 static const int constDarkValue=64;
@@ -151,6 +149,8 @@ static QPainterPath buildPath(const QRectF &r, double radius)
 
 static QPixmap createMenuIconPixmap(int size, QColor col, double opacity=1.0)
 {
+    static const int constShadeFactor=75;
+
     QPixmap pix(size, size);
     pix.fill(Qt::transparent);
     QPainter p(&pix);
@@ -194,50 +194,37 @@ static QPixmap createMenuIconPixmap(int size, QColor col, double opacity=1.0)
     return pix;
 }
 
-static void calcIconColors(QColor &stdColor, QColor &highlightColor)
+static QColor calcIconColor()
 {
     QColor bgnd=QApplication::palette().color(QPalette::Active, QPalette::Background);
     QColor text=QApplication::palette().color(QPalette::Active, QPalette::ButtonText);
-    stdColor=clampColor(text, constDarkLimit, bgnd.value()<224 ? 32 : 48);
-    highlightColor=isLight(stdColor) ? stdColor.lighter(constShadeFactor) : stdColor.darker(constShadeFactor);
+    return clampColor(text, constDarkLimit, bgnd.value()<224 ? 32 : 48);
 }
 
-static Icon createSingleIcon(const QColor &stdColor, const QColor &highlightColor)
+static Icon createSingleIcon(const QColor &stdColor)
 {
     Icon icon;
-
     foreach (int s, constStdSizes) {
         icon.addPixmap(createSingleIconPixmap(s, stdColor));
-        icon.addPixmap(createSingleIconPixmap(s, stdColor, constDisabledOpacity), QIcon::Disabled);
-        icon.addPixmap(createSingleIconPixmap(s, highlightColor), QIcon::Active);
     }
-
     return icon;
 }
 
-static Icon createConsumeIcon(const QColor &stdColor, const QColor &highlightColor)
+static Icon createConsumeIcon(const QColor &stdColor)
 {
     Icon icon;
-
     foreach (int s, constStdSizes) {
         icon.addPixmap(createConsumeIconPixmap(s, stdColor));
-        icon.addPixmap(createConsumeIconPixmap(s, stdColor, constDisabledOpacity), QIcon::Disabled);
-        icon.addPixmap(createConsumeIconPixmap(s, highlightColor), QIcon::Active);
     }
-
     return icon;
 }
 
-static Icon createMenuIcon(const QColor &stdColor, const QColor &highlightColor)
+static Icon createMenuIcon(const QColor &stdColor)
 {
     Icon icon;
-
     foreach (int s, constStdSizes) {
         icon.addPixmap(createMenuIconPixmap(s, stdColor));
-        icon.addPixmap(createMenuIconPixmap(s, stdColor, constDisabledOpacity), QIcon::Disabled);
-        icon.addPixmap(createMenuIconPixmap(s, highlightColor), QIcon::Active);
     }
-
     return icon;
 }
 
@@ -285,7 +272,7 @@ static QPixmap recolour(const QImage &img, const QColor &col, double opacity=1.0
     return QPixmap::fromImage(i);
 }
 
-static Icon createRecolourableIcon(const QString &name, const QColor &stdColor, const QColor &highlightColor)
+static Icon createRecolourableIcon(const QString &name, const QColor &stdColor)
 {
     if (QColor(Qt::black)==stdColor) {
         // Text colour is black, so is icon, therefore no need to recolour!!!
@@ -298,15 +285,10 @@ static Icon createRecolourableIcon(const QString &name, const QColor &stdColor, 
         QImage img(QChar(':')+name+QString::number(s));
         if (!img.isNull()) {
             icon.addPixmap(recolour(img, stdColor));
-            icon.addPixmap(recolour(img, stdColor, constDisabledOpacity), QIcon::Disabled);
-            icon.addPixmap(recolour(img, highlightColor), QIcon::Active);
         }
     }
     return icon;
 }
-
-static QColor stdColor;
-static QColor highlightColor;
 
 static void updateMonoSvgIcon(Icon &i, const QString &type, const QString &name, const QColor &color, QIcon::Mode mode)
 {
@@ -359,18 +341,50 @@ static Icon loadSidebarIcon(const QString &name, const QColor &normal, const QCo
 }
 
 #if !defined Q_OS_WIN && !defined Q_OS_MAC
+static void setDisabledOpacity(Icon &icon)
+{
+    static const double constDisabledOpacity=0.5;
+    Icon copy;
+    for (int i=0; i<2; ++i) {
+        QIcon::State state=(QIcon::State)i;
+        for (int j=0; j<4; ++j) {
+            QIcon::Mode mode=(QIcon::Mode)j;
+            QList<int> sizes=constStdSizes;
+            foreach (const int sz, sizes) {
+                if (QIcon::Disabled==mode) {
+                    QPixmap pix=icon.pixmap(QSize(sz, sz), QIcon::Normal, state);
+                    if (!pix.isNull()) {
+                        QPixmap dis(sz, sz);
+                        dis.fill(Qt::transparent);
+                        QPainter p(&dis);
+                        p.setOpacity(constDisabledOpacity);
+                        p.drawPixmap(0, 0, pix);
+                        p.end();
+                        copy.addPixmap(dis, mode, state);
+                    }
+                } else {
+                    copy.addPixmap(icon.pixmap(QSize(sz, sz), mode, state), mode, state);
+                }
+            }
+        }
+    }
+    icon=copy;
+}
+
 static Icon loadMediaIcon(const QString &name, const QColor &normal, const QColor &selected)
 {
-    return loadMonoSvgIcon(QLatin1String("media"), name, normal, selected);
+    Icon icon=loadMonoSvgIcon(QLatin1String("media"), name, normal, selected);
+    setDisabledOpacity(icon);
+    return icon;
 }
 #endif
 
 Icons::Icons()
 {
-    calcIconColors(stdColor, highlightColor);
-    singleIcon=createSingleIcon(stdColor, highlightColor);
-    consumeIcon=createConsumeIcon(stdColor, highlightColor);
-    menuIcon=createMenuIcon(stdColor, highlightColor);
+    QColor stdColor=calcIconColor();
+    singleIcon=createSingleIcon(stdColor);
+    consumeIcon=createConsumeIcon(stdColor);
+    menuIcon=createMenuIcon(stdColor);
     #ifdef ENABLE_STREAMS
     streamCategoryIcon=Icon(QLatin1String("oxygen")==Icon::currentTheme().toLower() ? "inode-directory" : "folder-music");
     #endif
@@ -400,8 +414,8 @@ Icons::Icons()
     editIcon=Icon("document-edit");
     searchIcon=Icon("edit-find");
     clearListIcon=Icon("edit-clear-list");
-    repeatIcon=createRecolourableIcon("repeat", stdColor, highlightColor);
-    shuffleIcon=createRecolourableIcon("shuffle", stdColor, highlightColor);
+    repeatIcon=createRecolourableIcon("repeat", stdColor);
+    shuffleIcon=createRecolourableIcon("shuffle", stdColor);
     filesIcon=Icon("document-multiple");
     cancelIcon=Icon("dialog-cancel");
     importIcon=Icon("document-import");
@@ -539,44 +553,9 @@ void Icons::initSidebarIcons()
     }
 }
 
-#if !defined ENABLE_KDE_SUPPORT && !defined Q_OS_WIN && !defined Q_OS_MAC // FIXME -- needed?
-// For some reason, the -symbolic icons on Ubuntu have a lighter colour when disabled!
-// This looks odd to me, so base the disabled icon on the enabled version but with opacity
-// set to default value...
-static void setDisabledOpacity(Icon &icon)
-{
-    Icon copy;
-    for (int i=0; i<2; ++i) {
-        QIcon::State state=(QIcon::State)i;
-        for (int j=0; j<4; ++j) {
-            QIcon::Mode mode=(QIcon::Mode)j;
-            QList<int> sizes=constStdSizes;
-            foreach (const int sz, sizes) {
-                if (QIcon::Disabled==mode) {
-                    QPixmap pix=icon.pixmap(QSize(sz, sz), QIcon::Normal, state);
-                    if (!pix.isNull()) {
-                        QPixmap dis(sz, sz);
-                        dis.fill(Qt::transparent);
-                        QPainter p(&dis);
-                        p.setOpacity(constDisabledOpacity);
-                        p.drawPixmap(0, 0, pix);
-                        p.end();
-                        copy.addPixmap(dis, mode, state);
-                    }
-                } else {
-                    copy.addPixmap(icon.pixmap(QSize(sz, sz), mode, state), mode, state);
-                }
-            }
-        }
-    }
-    icon=copy;
-}
-#else
-#define setDisabledOpacity(A) ;
-#endif
-
 void Icons::initToolbarIcons(const QColor &toolbarText)
 {
+    QColor stdColor=calcIconColor();
     #if !defined Q_OS_WIN && !defined Q_OS_MAC
     if (GtkStyle::useSymbolicIcons()) {
         bool rtl=Qt::RightToLeft==QApplication::layoutDirection();
@@ -590,7 +569,7 @@ void Icons::initToolbarIcons(const QColor &toolbarText)
         if (col==stdColor) {
             toolbarMenuIcon=menuIcon;
         } else {
-            toolbarMenuIcon=createMenuIcon(col, col.darker(constShadeFactor));
+            toolbarMenuIcon=createMenuIcon(col);
         }
     } else
     #endif
@@ -598,7 +577,7 @@ void Icons::initToolbarIcons(const QColor &toolbarText)
         if (toolbarText==stdColor) {
             toolbarMenuIcon=menuIcon;
         } else {
-            toolbarMenuIcon=createMenuIcon(toolbarText, toolbarText.darker(constShadeFactor));
+            toolbarMenuIcon=createMenuIcon(toolbarText);
         }
         if (QLatin1String("gnome")==Icon::currentTheme().toLower()) {
             QColor col=QApplication::palette().color(QPalette::Active, QPalette::ButtonText);
@@ -620,27 +599,17 @@ void Icons::initToolbarIcons(const QColor &toolbarText)
 
     if (toolbarPrevIcon.isNull()) {
         toolbarPrevIcon=Icon::getMediaIcon("media-skip-backward");
-    } else {
-        setDisabledOpacity(toolbarPrevIcon);
     }
     if (toolbarPlayIcon.isNull()) {
         toolbarPlayIcon=Icon::getMediaIcon("media-playback-start");
-    } else {
-        setDisabledOpacity(toolbarPlayIcon);
     }
     if (toolbarPauseIcon.isNull()) {
         toolbarPauseIcon=Icon::getMediaIcon("media-playback-pause");
-    } else {
-        setDisabledOpacity(toolbarPauseIcon);
     }
     if (toolbarStopIcon.isNull()) {
         toolbarStopIcon=Icon::getMediaIcon("media-playback-stop");
-    } else {
-        setDisabledOpacity(toolbarStopIcon);
     }
     if (toolbarNextIcon.isNull()) {
         toolbarNextIcon=Icon::getMediaIcon("media-skip-forward");
-    } else {
-        setDisabledOpacity(toolbarNextIcon);
     }
 }

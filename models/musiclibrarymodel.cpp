@@ -155,6 +155,7 @@ MusicLibraryModel::MusicLibraryModel(QObject *parent, bool isMpdModel, bool isCh
                 this, SLOT(setCover(const Song &, const QImage &, const QString &)));
         connect(Covers::self(), SIGNAL(coverUpdated(const Song &, const QImage &, const QString &)),
                 this, SLOT(updateCover(const Song &, const QImage &, const QString &)));
+        connect(MPDConnection::self(), SIGNAL(updatingDatabase()), this, SLOT(updatingMpd()));
         connect(MPDConnection::self(), SIGNAL(musicLibraryUpdated(MusicLibraryItemRoot *, QDateTime)),
                 this, SLOT(updateMusicLibrary(MusicLibraryItemRoot *, QDateTime)));
     }

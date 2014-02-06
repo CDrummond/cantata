@@ -2590,9 +2590,7 @@ void MainWindow::organiseFiles()
     }
 
     QList<Song> songs;
-    if (currentPage==folderPage) {
-        songs=folderPage->selectedSongs(FolderPage::ES_None);
-    } else if (currentPage) {
+    if (currentPage) {
         songs=currentPage->selectedSongs();
     }
 

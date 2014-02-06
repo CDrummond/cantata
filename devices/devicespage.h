@@ -46,7 +46,7 @@ public:
     void clear();
     QString activeFsDeviceUdi() const;
     QStringList playableUrls() const;
-    QList<Song> selectedSongs() const;
+    QList<Song> selectedSongs(bool allowPlaylists=false) const;
     void addSelectionToPlaylist(const QString &name=QString(), bool replace=false, quint8 priorty=0, bool randomAlbums=false);
     void setView(int v) { view->setMode((ItemView::Mode)v); }
     void focusSearch() { view->focusSearch(); }

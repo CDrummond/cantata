@@ -49,7 +49,7 @@ public:
     void focusSearch() { view->focusSearch(); }
     void goBack() { view->backActivated(); }
     #ifdef ENABLE_DEVICES_SUPPORT
-    QList<Song> selectedSongs() const;
+    QList<Song> selectedSongs(bool allowPlaylists=false) const;
     void addSelectionToDevice(const QString &udi);
     #endif
     void showEvent(QShowEvent *e);

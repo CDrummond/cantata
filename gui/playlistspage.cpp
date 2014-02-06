@@ -374,8 +374,9 @@ void PlaylistsPage::addItemsToPlayList(const QModelIndexList &indexes, const QSt
 }
 
 #ifdef ENABLE_DEVICES_SUPPORT
-QList<Song> PlaylistsPage::selectedSongs() const
+QList<Song> PlaylistsPage::selectedSongs(bool allowPlaylists) const
 {
+    Q_UNUSED(allowPlaylists)
     QModelIndexList selected = view->selectedIndexes();
 
     if (selected.isEmpty()) {

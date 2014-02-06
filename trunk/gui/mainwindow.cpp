@@ -754,8 +754,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(refreshDbAction, SIGNAL(triggered(bool)), this, SLOT(refreshDbPromp()));
     connect(doDbRefreshAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(update()));
     connect(doDbRefreshAction, SIGNAL(triggered(bool)), messageWidget, SLOT(animatedHide()));
-    connect(doDbRefreshAction, SIGNAL(triggered(bool)), MusicLibraryModel::self(), SLOT(updatingMpd()));
-    connect(doDbRefreshAction, SIGNAL(triggered(bool)), DirViewModel::self(), SLOT(updatingMpd()));
     connect(connectAction, SIGNAL(triggered(bool)), this, SLOT(connectToMpd()));
     connect(StdActions::self()->prevTrackAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(goToPrevious()));
     connect(StdActions::self()->nextTrackAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(goToNext()));

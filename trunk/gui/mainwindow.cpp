@@ -2297,6 +2297,8 @@ void MainWindow::addToExistingStoredPlaylist(const QString &name, bool pq)
         folderPage->addSelectionToPlaylist(name);
     } else if (playlistsPage->isVisible()) {
         playlistsPage->addSelectionToPlaylist(name);
+    } else if (searchPage->isVisible()) {
+        searchPage->addSelectionToPlaylist(name);
     }
 }
 

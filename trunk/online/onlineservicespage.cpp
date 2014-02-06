@@ -190,8 +190,9 @@ QStringList OnlineServicesPage::selectedFiles() const
     return OnlineServicesModel::self()->filenames(mapped);
 }
 
-QList<Song> OnlineServicesPage::selectedSongs() const
+QList<Song> OnlineServicesPage::selectedSongs(bool allowPlaylists) const
 {
+    Q_UNUSED(allowPlaylists)
     QModelIndexList selected = view->selectedIndexes();
     if (selected.isEmpty()) {
         return QList<Song>();

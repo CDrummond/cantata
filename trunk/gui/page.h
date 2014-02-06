@@ -29,6 +29,8 @@
 class Page
 {
 public:
+    Page() { }
+    virtual ~Page() { }
     virtual Song coverRequest() const { return Song(); }
     virtual QList<Song> selectedSongs(bool allowPlaylists=false) const { Q_UNUSED(allowPlaylists) return QList<Song>(); }
     virtual void addSelectionToPlaylist(const QString &name=QString(), bool replace=false, quint8 priorty=0, bool randomAlbums=false) {

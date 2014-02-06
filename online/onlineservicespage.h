@@ -27,11 +27,12 @@
 #include "ui_onlineservicespage.h"
 #include "onlineservice.h"
 #include "musiclibraryproxymodel.h"
+#include "page.h"
 
 class Action;
 class QAction;
 
-class OnlineServicesPage : public QWidget, public Ui::OnlineServicesPage
+class OnlineServicesPage : public QWidget, public Ui::OnlineServicesPage, public Page
 {
     Q_OBJECT
 
@@ -43,7 +44,7 @@ public:
     void clear();
     QStringList selectedFiles() const;
     QList<Song> selectedSongs() const;
-    void addSelectionToPlaylist(const QString &name=QString(), bool replace=false, quint8 priorty=0);
+    void addSelectionToPlaylist(const QString &name=QString(), bool replace=false, quint8 priorty=0, bool randomAlbums=false);
     void setView(int v) { view->setMode((ItemView::Mode)v); }
     void focusSearch() { view->focusSearch(); }
     void goBack() { view->backActivated(); }

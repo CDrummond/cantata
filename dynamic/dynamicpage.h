@@ -26,10 +26,11 @@
 
 #include "ui_dynamicpage.h"
 #include "dynamicproxymodel.h"
+#include "page.h"
 
 class Action;
 
-class DynamicPage : public QWidget, public Ui::DynamicPage
+class DynamicPage : public QWidget, public Ui::DynamicPage, public Page
 {
     Q_OBJECT
 

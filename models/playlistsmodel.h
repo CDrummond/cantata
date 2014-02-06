@@ -144,6 +144,7 @@ private Q_SLOTS:
     void movedInPlaylist(const QString &name, const QList<quint32> &idx, quint32 pos);
     void emitAddToExisting();
     void playlistRenamed(const QString &from, const QString &to);
+    void mpdConnectionStateChanged(bool connected);
 
 private:
     void updateGenreList();

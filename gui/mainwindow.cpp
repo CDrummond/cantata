@@ -186,6 +186,7 @@ MainWindow::MainWindow(QWidget *parent)
     , lastState(MPDState_Inactive)
     , lastSongId(-1)
     , autoScrollPlayQueue(true)
+    , currentPage(0)
     #ifdef QT_QTDBUS_FOUND
     , mpris(0)
     #endif
@@ -244,6 +245,7 @@ MainWindow::MainWindow(QWidget *parent)
     #endif // Q_OS_MAC
     topToolBar->setStyle(new ToolBarProxyStyle);
     #endif // Q_OS_WIN
+    topToolBar->ensurePolished();
 
     Icons::self()->initToolbarIcons(toolbar->palette().color(QPalette::Foreground));
     Icons::self()->initSidebarIcons();
@@ -875,7 +877,6 @@ MainWindow::MainWindow(QWidget *parent)
     readSettings();
     updateConnectionsMenu();
     fadeStop=Settings::self()->stopFadeDuration()>Settings::MinFade;
-    //playlistsPage->refresh();
     #ifdef QT_QTDBUS_FOUND
     mpris=new Mpris(this);
     connect(coverWidget, SIGNAL(coverFile(const QString &)), mpris, SLOT(updateCurrentCover(const QString &)));
@@ -887,13 +888,8 @@ MainWindow::MainWindow(QWidget *parent)
         move(p.isNull() ? QPoint(96, 96) : p);
     }
 
-    // If this is the first run, then the wizard will have done the MPD connection. But this will not have loaded the model!
-    // So, we need to load this now - which is done in currentTabChanged()
-    if (Settings::self()->firstRun() ||
-        (PAGE_LIBRARY!=tabWidget->current_index() && PAGE_ALBUMS!=tabWidget->current_index() &&
-         PAGE_FOLDERS!=tabWidget->current_index() && PAGE_PLAYLISTS!=tabWidget->current_index())) {
-        currentTabChanged(tabWidget->current_index());
-    }
+    currentTabChanged(tabWidget->current_index());
+
     if (Settings::self()->firstRun() && MPDConnection::self()->isConnected()) {
         mpdConnectionStateChanged(true);
     }
@@ -1985,7 +1981,6 @@ void MainWindow::updateStats()
         albumsPage->goTop();
         libraryPage->refresh();
         folderPage->refresh();
-        playlistsPage->refresh();
     }
 }
 
@@ -2169,33 +2164,9 @@ void MainWindow::addRandomToPlayQueue()
 void MainWindow::addToPlayQueue(bool replace, quint8 priority, bool randomAlbums)
 {
     playQueueSearchWidget->clear();
-    if (libraryPage->isVisible()) {
-        libraryPage->addSelectionToPlaylist(QString(), replace, priority, randomAlbums);
-    } else if (albumsPage->isVisible()) {
-        albumsPage->addSelectionToPlaylist(QString(), replace, priority, randomAlbums);
-    } else if (folderPage->isVisible()) {
-        folderPage->addSelectionToPlaylist(QString(), replace, priority);
-    } else if (playlistsPage->isVisible()) {
-        playlistsPage->addSelectionToPlaylist(QString(), replace, priority);
+    if (currentPage) {
+        currentPage->addSelectionToPlaylist(QString(), replace, priority, randomAlbums);
     }
-    #ifdef ENABLE_STREAMS
-    else if (streamsPage->isVisible()) {
-        streamsPage->addSelectionToPlaylist(replace, priority);
-    }
-    #endif
-    #ifdef ENABLE_ONLINE_SERVICES
-    else if (onlinePage->isVisible()) {
-        onlinePage->addSelectionToPlaylist(QString(), replace, priority);
-    }
-    #endif
-    else if (searchPage->isVisible()) {
-        searchPage->addSelectionToPlaylist(QString(), replace, priority);
-    }
-    #ifdef ENABLE_DEVICES_SUPPORT
-    else if (devicesPage->isVisible()) {
-        devicesPage->addSelectionToPlaylist(QString(), replace, priority);
-    }
-    #endif
 }
 
 void MainWindow::addWithPriority()
@@ -2287,16 +2258,8 @@ void MainWindow::addToExistingStoredPlaylist(const QString &name, bool pq)
         if (!files.isEmpty()) {
             emit addSongsToPlaylist(name, files);
         }
-    } else if (libraryPage->isVisible()) {
-        libraryPage->addSelectionToPlaylist(name);
-    } else if (albumsPage->isVisible()) {
-        albumsPage->addSelectionToPlaylist(name);
-    } else if (folderPage->isVisible()) {
-        folderPage->addSelectionToPlaylist(name);
-    } else if (playlistsPage->isVisible()) {
-        playlistsPage->addSelectionToPlaylist(name);
-    } else if (searchPage->isVisible()) {
-        searchPage->addSelectionToPlaylist(name);
+    } else if (currentPage) {
+        currentPage->addSelectionToPlaylist(name);
     }
 }
 
@@ -2327,14 +2290,9 @@ void MainWindow::addStreamToPlayQueue()
 
 void MainWindow::removeItems()
 {
-    if (playlistsPage->isVisible()) {
-        playlistsPage->removeItems();
+    if (currentPage) {
+        currentPage->removeItems();
     }
-    #ifdef ENABLE_STREAMS
-    else if (streamsPage->isVisible()) {
-        streamsPage->removeItems();
-    }
-    #endif
 }
 
 void MainWindow::checkMpdAccessibility()
@@ -2501,7 +2459,7 @@ void MainWindow::currentTabChanged(int index)
     switch(index) {
     #ifdef ENABLE_DEVICES_SUPPORT
     case PAGE_DEVICES: // Need library to be loaded to check if song exists...
-        devicesPage->controlActions();
+        currentPage=devicesPage;
         break;
     #endif
     case PAGE_LIBRARY:
@@ -2512,10 +2470,9 @@ void MainWindow::currentTabChanged(int index)
             libraryPage->refresh();
         }
         if (PAGE_LIBRARY==index) {
-            libraryPage->controlActions();
+            currentPage=libraryPage;
         } else {
-//             AlbumsModel::self()->getCovers();
-            albumsPage->controlActions();
+            currentPage=albumsPage;
         }
         break;
     case PAGE_FOLDERS:
@@ -2523,14 +2480,14 @@ void MainWindow::currentTabChanged(int index)
             loaded|=TAB_FOLDERS;
             folderPage->refresh();
         }
-        folderPage->controlActions();
+        currentPage=folderPage;
         break;
     case PAGE_PLAYLISTS:
-        playlistsPage->controlActions();
+        currentPage=playlistsPage;
         break;
     #ifdef ENABLE_DYNAMIC
     case PAGE_DYNAMIC:
-        dynamicPage->controlActions();
+        currentPage=dynamicPage;
         break;
     #endif
     #ifdef ENABLE_STREAMS
@@ -2539,19 +2496,22 @@ void MainWindow::currentTabChanged(int index)
             loaded|=TAB_STREAMS;
             streamsPage->refresh();
         }
-        streamsPage->controlActions();
+        currentPage=streamsPage;
         break;
     #endif
     #ifdef ENABLE_ONLINE_SERVICES
     case PAGE_ONLINE:
-        onlinePage->controlActions();
+        currentPage=onlinePage;
         break;
     #endif
     case PAGE_SEARCH:
-        searchPage->controlActions();
+        currentPage=searchPage;
         break;
     default:
         break;
+    }
+    if (currentPage) {
+        currentPage->controlActions();
     }
 }
 
@@ -2702,39 +2662,21 @@ void MainWindow::showPage(const QString &page, bool focusSearch)
     QString p=page.toLower();
     if (QLatin1String("library")==p || QLatin1String("artists")==p) {
         showTab(MainWindow::PAGE_LIBRARY);
-        if (focusSearch) {
-            libraryPage->focusSearch();
-        }
     } else if (QLatin1String("albums")==p) {
         showTab(MainWindow::PAGE_ALBUMS);
-        if (focusSearch) {
-            albumsPage->focusSearch();
-        }
     } else if (QLatin1String("folders")==p) {
         showTab(MainWindow::PAGE_FOLDERS);
-        if (focusSearch) {
-            folderPage->focusSearch();
-        }
     } else if (QLatin1String("playlists")==p) {
         showTab(MainWindow::PAGE_PLAYLISTS);
-        if (focusSearch) {
-            playlistsPage->focusSearch();
-        }
     }
     #ifdef ENABLE_DYNAMIC
     else if (QLatin1String("dynamic")==p) {
         showTab(MainWindow::PAGE_DYNAMIC);
-        if (focusSearch) {
-            dynamicPage->focusSearch();
-        }
     }
     #endif
     #ifdef ENABLE_STREAMS
     else if (QLatin1String("streams")==p) {
         showTab(MainWindow::PAGE_STREAMS);
-        if (focusSearch) {
-            streamsPage->focusSearch();
-        }
     }
     #endif
     else if (QLatin1String("info")==p) {
@@ -2746,26 +2688,20 @@ void MainWindow::showPage(const QString &page, bool focusSearch)
     #ifdef ENABLE_ONLINE_SERVICES
     else if (QLatin1String("online")==p) {
         showTab(MainWindow::PAGE_ONLINE);
-        if (focusSearch) {
-            onlinePage->focusSearch();
-        }
     }
     #endif
     #ifdef ENABLE_DEVICES_SUPPORT
     else if (QLatin1String("devices")==p) {
         showTab(MainWindow::PAGE_DEVICES);
-        if (focusSearch) {
-            devicesPage->focusSearch();
-        }
     }
     #endif
     else if (tabWidget->isEnabled(PAGE_PLAYQUEUE) && QLatin1String("playqueue")==p) {
         showTab(MainWindow::PAGE_PLAYQUEUE);
-        if (focusSearch) {
-            playQueueSearchWidget->setFocus();
-        }
     } else if (QLatin1String("search")==p) {
         showTab(MainWindow::PAGE_SEARCH);
+    }
+    if (focusSearch) {
+        currentPage->focusSearch();
     }
     expand();
 }
@@ -2786,21 +2722,8 @@ void MainWindow::showTab(int page)
 
 void MainWindow::goBack()
 {
-    switch (tabWidget->current_index()) {
-    #if defined ENABLE_DEVICES_SUPPORT && defined TAGLIB_FOUND
-    case PAGE_DEVICES:   devicesPage->goBack();    break;
-    #endif
-    case PAGE_LIBRARY:   libraryPage->goBack();    break;
-    case PAGE_ALBUMS:    albumsPage->goBack();     break;
-    case PAGE_FOLDERS:   folderPage->goBack();     break;
-    case PAGE_PLAYLISTS: playlistsPage->goBack();  break;
-    #ifdef ENABLE_STREAMS
-    case PAGE_STREAMS:   streamsPage->goBack();    break;
-    #endif
-    #ifdef ENABLE_ONLINE_SERVICES
-    case PAGE_ONLINE:    onlinePage->goBack();     break;
-    #endif
-    default:                                       break;
+    if (currentPage) {
+        currentPage->goBack();
     }
 }
 
@@ -2810,36 +2733,9 @@ void MainWindow::showSearch()
          playQueueSearchWidget->activate();
     } else if (context->isVisible()) {
         context->search();
-    } else if (libraryPage->isVisible()) {
-        libraryPage->focusSearch();
-    } else if (albumsPage->isVisible()) {
-        albumsPage->focusSearch();
-    } else if (folderPage->isVisible()) {
-        folderPage->focusSearch();
-    } else if (playlistsPage->isVisible()) {
-        playlistsPage->focusSearch();
-    }
-    #ifdef ENABLE_DYNAMIC
-    else if (dynamicPage->isVisible()) {
-        dynamicPage->focusSearch();
-    }
-    #endif
-    #ifdef ENABLE_STREAMS
-    else if (streamsPage->isVisible()) {
-        streamsPage->focusSearch();
-    }
-    #endif
-    #ifdef ENABLE_ONLINE_SERVICES
-    else if (onlinePage->isVisible()) {
-        onlinePage->focusSearch();
-    }
-    #endif
-    #ifdef ENABLE_DEVICES_SUPPORT
-    else if (devicesPage->isVisible()) {
-        devicesPage->focusSearch();
-    }
-    #endif
-    else if (playQueuePage->isVisible()) {
+    } else if (currentPage) {
+        currentPage->focusSearch();
+    } else if (playQueuePage->isVisible()) {
         playQueueSearchWidget->activate();
     }
 }
@@ -2869,18 +2765,11 @@ void MainWindow::editTags()
 {
     #ifdef TAGLIB_FOUND
     QList<Song> songs;
-    if (libraryPage->isVisible()) {
-        songs=libraryPage->selectedSongs();
-    } else if (albumsPage->isVisible()) {
-        songs=albumsPage->selectedSongs();
-    } else if (folderPage->isVisible()) {
+    if (currentPage==folderPage) {
         songs=folderPage->selectedSongs(FolderPage::ES_FillEmpty);
+    } else if (currentPage) {
+        songs=currentPage->selectedSongs();
     }
-    #ifdef ENABLE_DEVICES_SUPPORT
-    else if (devicesPage->isVisible()) {
-        songs=devicesPage->selectedSongs();
-    }
-    #endif
     editTags(songs, false);
     #endif
 }
@@ -2908,7 +2797,7 @@ void MainWindow::editTags(const QList<Song> &songs, bool isPlayQueue)
     QSet<QString> genres;
     QString udi;
     #ifdef ENABLE_DEVICES_SUPPORT
-    if (!isPlayQueue && devicesPage->isVisible()) {
+    if (!isPlayQueue && currentPage==devicesPage) {
         DevicesModel::self()->getDetails(artists, albumArtists, composers, albums, genres);
         udi=devicesPage->activeFsDeviceUdi();
         if (udi.isEmpty()) {
@@ -2932,23 +2821,16 @@ void MainWindow::organiseFiles()
     }
 
     QList<Song> songs;
-    if (libraryPage->isVisible()) {
-        songs=libraryPage->selectedSongs();
-    } else if (albumsPage->isVisible()) {
-        songs=albumsPage->selectedSongs();
-    } else if (folderPage->isVisible()) {
+    if (currentPage==folderPage) {
         songs=folderPage->selectedSongs(FolderPage::ES_None);
+    } else if (currentPage) {
+        songs=currentPage->selectedSongs();
     }
-    #ifdef ENABLE_DEVICES_SUPPORT
-    else if (devicesPage->isVisible()) {
-        songs=devicesPage->selectedSongs();
-    }
-    #endif
 
     if (!songs.isEmpty()) {
         QString udi;
         #ifdef ENABLE_DEVICES_SUPPORT
-        if (devicesPage->isVisible()) {
+        if (currentPage==devicesPage) {
             udi=devicesPage->activeFsDeviceUdi();
             if (udi.isEmpty()) {
                 return;
@@ -2965,16 +2847,8 @@ void MainWindow::organiseFiles()
 void MainWindow::addToDevice(const QString &udi)
 {
     #ifdef ENABLE_DEVICES_SUPPORT
-    if (libraryPage->isVisible()) {
-        libraryPage->addSelectionToDevice(udi);
-    } else if (albumsPage->isVisible()) {
-        albumsPage->addSelectionToDevice(udi);
-    } else if (folderPage->isVisible()) {
-        folderPage->addSelectionToDevice(udi);
-    } else if (playlistsPage->isVisible()) {
-        playlistsPage->addSelectionToDevice(udi);
-    } else if (searchPage->isVisible()) {
-        searchPage->addSelectionToDevice(udi);
+    if (currentPage) {
+        currentPage->addSelectionToDevice(udi);
     }
     #else
     Q_UNUSED(udi)
@@ -2987,14 +2861,8 @@ void MainWindow::deleteSongs()
     if (!StdActions::self()->deleteSongsAction->isVisible()) {
         return;
     }
-    if (libraryPage->isVisible()) {
-        libraryPage->deleteSongs();
-    } else if (albumsPage->isVisible()) {
-        albumsPage->deleteSongs();
-    } else if (folderPage->isVisible()) {
-        folderPage->deleteSongs();
-    } else if (devicesPage->isVisible()) {
-        devicesPage->deleteSongs();
+    if (currentPage) {
+        currentPage->deleteSongs();
     }
     #endif
 }
@@ -3033,23 +2901,16 @@ void MainWindow::replayGain()
     }
 
     QList<Song> songs;
-    if (libraryPage->isVisible()) {
-        songs=libraryPage->selectedSongs();
-    } else if (albumsPage->isVisible()) {
-        songs=albumsPage->selectedSongs();
-    } else if (folderPage->isVisible()) {
+    if (currentPage==folderPage) {
         songs=folderPage->selectedSongs(FolderPage::ES_GuessTags);
+    } else if (currentPage) {
+        songs=currentPage->selectedSongs();
     }
-    #ifdef ENABLE_DEVICES_SUPPORT
-    else if (devicesPage->isVisible()) {
-        songs=devicesPage->selectedSongs();
-    }
-    #endif
 
     if (!songs.isEmpty()) {
         QString udi;
         #ifdef ENABLE_DEVICES_SUPPORT
-        if (devicesPage->isVisible()) {
+        if (currentPage==devicesPage) {
             udi=devicesPage->activeFsDeviceUdi();
             if (udi.isEmpty()) {
                 return;
@@ -3070,10 +2931,8 @@ void MainWindow::setCover()
     }
 
     Song song;
-    if (libraryPage->isVisible()) {
-        song=libraryPage->coverRequest();
-    } else if (albumsPage->isVisible()) {
-        song=albumsPage->coverRequest();
+    if (currentPage) {
+        song=currentPage->coverRequest();
     }
 
     if (!song.isEmpty()) {

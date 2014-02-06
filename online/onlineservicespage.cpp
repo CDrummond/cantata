@@ -214,8 +214,9 @@ QList<Song> OnlineServicesPage::selectedSongs() const
     return OnlineServicesModel::self()->songs(mapped);
 }
 
-void OnlineServicesPage::addSelectionToPlaylist(const QString &name, bool replace, quint8 priorty)
+void OnlineServicesPage::addSelectionToPlaylist(const QString &name, bool replace, quint8 priorty, bool randomAlbums)
 {
+    Q_UNUSED(randomAlbums)
     QStringList files=selectedFiles();
 
     if (!files.isEmpty()) {

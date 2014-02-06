@@ -26,11 +26,11 @@
 
 #include "ui_librarypage.h"
 #include "musiclibraryproxymodel.h"
-#include "config.h"
+#include "page.h"
 
 class Action;
 
-class LibraryPage : public QWidget, public Ui::LibraryPage
+class LibraryPage : public QWidget, public Ui::LibraryPage, public Page
 {
     Q_OBJECT
 

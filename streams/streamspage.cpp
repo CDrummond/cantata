@@ -179,8 +179,10 @@ void StreamsPage::save()
     StreamsModel::self()->saveFavourites(true);
 }
 
-void StreamsPage::addSelectionToPlaylist(bool replace, quint8 priorty)
+void StreamsPage::addSelectionToPlaylist(const QString &name, bool replace, quint8 priorty, bool randomAlbums)
 {
+    Q_UNUSED(name)
+    Q_UNUSED(randomAlbums)
     addItemsToPlayQueue(itemView()->selectedIndexes(), replace, priorty);
 }
 

@@ -236,8 +236,9 @@ QStringList FolderPage::selectedFiles(bool allowPlaylists) const
     return DirViewModel::self()->filenames(mapped, allowPlaylists);
 }
 
-void FolderPage::addSelectionToPlaylist(const QString &name, bool replace, quint8 priorty)
+void FolderPage::addSelectionToPlaylist(const QString &name, bool replace, quint8 priorty, bool randomAlbums)
 {
+    Q_UNUSED(randomAlbums)
     QStringList files=selectedFiles(name.isEmpty());
 
     if (!files.isEmpty()) {

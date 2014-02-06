@@ -27,11 +27,11 @@
 #include "ui_folderpage.h"
 #include "dirviewmodel.h"
 #include "dirviewproxymodel.h"
-#include "config.h"
+#include "page.h"
 
 class Action;
 
-class FolderPage : public QWidget, public Ui::FolderPage
+class FolderPage : public QWidget, public Ui::FolderPage, public Page
 {
     Q_OBJECT
 public:
@@ -51,7 +51,7 @@ public:
     void clear();
     QStringList selectedFiles(bool allowPlaylists=false) const;
     QList<Song> selectedSongs(EmptySongMod esMod, bool allowPlaylists=false) const;
-    void addSelectionToPlaylist(const QString &name=QString(), bool replace=false, quint8 priorty=0);
+    void addSelectionToPlaylist(const QString &name=QString(), bool replace=false, quint8 priorty=0, bool randomAlbums=false);
     #ifdef ENABLE_DEVICES_SUPPORT
     void addSelectionToDevice(const QString &udi);
     void deleteSongs();

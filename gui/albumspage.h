@@ -26,12 +26,12 @@
 
 #include "ui_albumspage.h"
 #include "albumsproxymodel.h"
-#include "config.h"
+#include "page.h"
 
 class Action;
 class MusicLibraryItemRoot;
 
-class AlbumsPage : public QWidget, public Ui::AlbumsPage
+class AlbumsPage : public QWidget, public Ui::AlbumsPage, public Page
 {
     Q_OBJECT
 

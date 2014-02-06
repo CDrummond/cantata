@@ -26,11 +26,11 @@
 
 #include "ui_playlistspage.h"
 #include "playlistsproxymodel.h"
-#include "config.h"
+#include "page.h"
 
 class Action;
 
-class PlaylistsPage : public QWidget, public Ui::PlaylistsPage
+class PlaylistsPage : public QWidget, public Ui::PlaylistsPage, public Page
 {
     Q_OBJECT
 public:
@@ -44,7 +44,7 @@ public:
     void refresh();
     void clear();
     //QStringList selectedFiles() const;
-    void addSelectionToPlaylist(const QString &name=QString(), bool replace=false, quint8 priorty=0);
+    void addSelectionToPlaylist(const QString &name=QString(), bool replace=false, quint8 priorty=0, bool randomAlbums=false);
     void setView(int mode);
     void focusSearch() { view->focusSearch(); }
     void goBack() { view->backActivated(); }

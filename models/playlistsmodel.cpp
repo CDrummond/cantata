@@ -91,6 +91,7 @@ PlaylistsModel::PlaylistsModel(QObject *parent)
     , itemMenu(0)
     , dropAdjust(0)
 {
+    connect(MPDConnection::self(), SIGNAL(stateChanged(bool)), SLOT(mpdConnectionStateChanged(bool)));
     connect(MPDConnection::self(), SIGNAL(playlistsRetrieved(const QList<Playlist> &)), this, SLOT(setPlaylists(const QList<Playlist> &)));
     connect(MPDConnection::self(), SIGNAL(playlistInfoRetrieved(const QString &, const QList<Song> &)), this, SLOT(playlistInfoRetrieved(const QString &, const QList<Song> &)));
     connect(MPDConnection::self(), SIGNAL(removedFromPlaylist(const QString &, const QList<quint32> &)),
@@ -903,6 +904,15 @@ void PlaylistsModel::playlistRenamed(const QString &from, const QString &to)
     if (pl) {
         pl->name=to;
         updateItemMenu();
+    }
+}
+
+void PlaylistsModel::mpdConnectionStateChanged(bool connected)
+{
+    if (!connected) {
+        clear();
+    } else {
+        getPlaylists();
     }
 }
 

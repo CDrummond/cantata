@@ -281,7 +281,6 @@ MainWindow::MainWindow(QWidget *parent)
     stopAfterTrackAction = ActionCollection::get()->createAction("stopaftertrack", i18n("Stop After Track"), Icons::self()->toolbarStopIcon);
     addPlayQueueToStoredPlaylistAction = ActionCollection::get()->createAction("addpqtostoredplaylist", i18n("Add To Stored Playlist"), Icons::self()->playlistIcon);
     removeFromPlayQueueAction = ActionCollection::get()->createAction("removefromplaylist", i18n("Remove From Play Queue"), "list-remove");
-    copyTrackInfoAction = ActionCollection::get()->createAction("copytrackinfo", i18n("Copy Track Info"));
     cropPlayQueueAction = ActionCollection::get()->createAction("cropplaylist", i18n("Crop"));
     shufflePlayQueueAction = ActionCollection::get()->createAction("shuffleplaylist", i18n("Shuffle Tracks"));
     shufflePlayQueueAlbumsAction = ActionCollection::get()->createAction("shuffleplaylistalbums", i18n("Shuffle Albums"));
@@ -348,7 +347,6 @@ MainWindow::MainWindow(QWidget *parent)
     StdActions::self()->stopAfterCurrentTrackAction->setGlobalShortcut(KShortcut());
     #endif
 
-    copyTrackInfoAction->setShortcut(QKeySequence::Copy);
     expandAllAction->setShortcut(Qt::ControlModifier+Qt::Key_Plus);
     collapseAllAction->setShortcut(Qt::ControlModifier+Qt::Key_Minus);
 
@@ -695,7 +693,6 @@ MainWindow::MainWindow(QWidget *parent)
     #ifdef TAGLIB_FOUND
     playQueue->addAction(editPlayQueueTagsAction);
     #endif
-    //playQueue->addAction(copyTrackInfoAction);
     playQueue->addAction(playQueueModel.removeDuplicatesAct());
     playQueue->tree()->installEventFilter(new DeleteKeyEventHandler(playQueue->tree(), removeFromPlayQueueAction));
     playQueue->list()->installEventFilter(new DeleteKeyEventHandler(playQueue->list(), removeFromPlayQueueAction));
@@ -785,7 +782,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(removeFromPlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(removeFromPlayQueue()));
     connect(promptClearPlayQueueAction, SIGNAL(triggered(bool)), playQueueSearchWidget, SLOT(clear()));
     connect(promptClearPlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(promptClearPlayQueue()));
-    connect(copyTrackInfoAction, SIGNAL(triggered(bool)), this, SLOT(copyTrackInfo()));
     connect(cropPlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(cropPlayQueue()));
     connect(shufflePlayQueueAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(shuffle()));
     connect(shufflePlayQueueAlbumsAction, SIGNAL(triggered(bool)), &playQueueModel, SLOT(shuffleAlbums()));
@@ -1126,7 +1122,6 @@ void MainWindow::playQueueItemsSelected(bool s)
     removeFromPlayQueueAction->setEnabled(s && haveItems);
     setPriorityAction->setEnabled(s && haveItems);
     locateTrackAction->setEnabled(singleSelection);
-    copyTrackInfoAction->setEnabled(s && haveItems);
     cropPlayQueueAction->setEnabled(playQueue->haveUnSelectedItems() && haveItems);
     shufflePlayQueueAction->setEnabled(rc>1);
     shufflePlayQueueAlbumsAction->setEnabled(rc>1);
@@ -2318,29 +2313,6 @@ void MainWindow::updatePlayQueueStats(int songs, quint32 time)
     #else
     playQueueStatsLabel->setText(QTP_TRACKS_DURATION_STR(songs, Utils::formatDuration(time)));
     #endif
-}
-
-void MainWindow::copyTrackInfo()
-{
-    const QModelIndexList items = playQueue->selectedIndexes();
-
-    if (items.isEmpty()) {
-        return;
-    }
-
-    QString txt;
-    QTextStream str(&txt);
-
-    foreach (const QModelIndex &idx, items) {
-        Song s = playQueueModel.getSongByRow(playQueueProxyModel.mapToSource(idx).row());
-        if (!s.isEmpty()) {
-            if (!txt.isEmpty()) {
-                str << QChar('\n');
-            }
-            str << s.format();
-        }
-    }
-    QApplication::clipboard()->setText(txt);
 }
 
 int MainWindow::calcMinHeight()

@@ -115,6 +115,7 @@
     displayed in message widget.
 70. Hack-around issue with message widget not appearing in KDE builds when
     KDE's animations are disabled.
+71. Remove 'copy track info' functionality, I see no need for this!
 
 1.2.2
 -----

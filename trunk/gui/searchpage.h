@@ -25,14 +25,13 @@
 #define SEARCHPAGE_H
 
 #include "ui_searchpage.h"
-#include "song.h"
-#include "config.h"
+#include "page.h"
 #include "searchmodel.h"
 #include "searchproxymodel.h"
 
 class Action;
 
-class SearchPage : public QWidget, public Ui::SearchPage
+class SearchPage : public QWidget, public Ui::SearchPage, public Page
 {
     Q_OBJECT
 
@@ -46,7 +45,7 @@ public:
     void setView(int mode);
     QStringList selectedFiles(bool allowPlaylists=false) const;
     QList<Song> selectedSongs(bool allowPlaylists=false) const;
-    void addSelectionToPlaylist(const QString &name=QString(), bool replace=false, quint8 priorty=0);
+    void addSelectionToPlaylist(const QString &name=QString(), bool replace=false, quint8 priorty=0, bool randomAlbums=false);
     #ifdef ENABLE_DEVICES_SUPPORT
     void addSelectionToDevice(const QString &udi);
     #endif

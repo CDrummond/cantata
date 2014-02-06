@@ -235,8 +235,9 @@ QList<Song> DevicesPage::selectedSongs() const
     return DevicesModel::self()->songs(mapped);
 }
 
-void DevicesPage::addSelectionToPlaylist(const QString &name, bool replace, quint8 priorty)
+void DevicesPage::addSelectionToPlaylist(const QString &name, bool replace, quint8 priorty, bool randomAlbums)
 {
+    Q_UNUSED(randomAlbums)
     QStringList files=playableUrls();
 
     if (!files.isEmpty()) {

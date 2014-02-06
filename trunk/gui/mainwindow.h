@@ -57,6 +57,7 @@
 class Action;
 class ActionCollection;
 class MainWindow;
+class Page;
 class LibraryPage;
 class AlbumsPage;
 class FolderPage;
@@ -121,7 +122,7 @@ class MainWindow : public MAIN_WINDOW_BASE_CLASS, private Ui::MainWindow
     Q_OBJECT
 
 public:
-    enum Page
+    enum Pages
     {
         PAGE_PLAYQUEUE,
         PAGE_LIBRARY,
@@ -393,6 +394,7 @@ private:
     QSize expandedSize;
     QSize collapsedSize;
     Song current;
+    Page *currentPage;
     QWidget *playQueuePage;
     LibraryPage *libraryPage;
     AlbumsPage *albumsPage;

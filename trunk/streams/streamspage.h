@@ -28,12 +28,13 @@
 #include "streamsproxymodel.h"
 #include "streamsearchmodel.h"
 #include "streamsmodel.h"
+#include "page.h"
 
 class Action;
 class QAction;
 class QNetworkReply;
 
-class StreamsPage : public QWidget, public Ui::StreamsPage
+class StreamsPage : public QWidget, public Ui::StreamsPage, public Page
 {
     Q_OBJECT
 
@@ -44,7 +45,7 @@ public:
     void setEnabled(bool e);
     bool isEnabled() const { return enabled; }
     void save();
-    void addSelectionToPlaylist(bool replace, quint8 priorty=0);
+    void addSelectionToPlaylist(const QString &name=QString(), bool replace=false, quint8 priorty=0, bool randomAlbums=false);
     void setView(int v) { view->setMode((ItemView::Mode)v); searchView->setMode((ItemView::Mode)v); }
     void focusSearch() { view->focusSearch(); searchView->focusSearch(); }
     void goBack() { itemView()->backActivated(); }

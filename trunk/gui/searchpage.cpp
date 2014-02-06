@@ -149,8 +149,9 @@ QList<Song> SearchPage::selectedSongs(bool allowPlaylists) const
     return model.songs(mapped, allowPlaylists);
 }
 
-void SearchPage::addSelectionToPlaylist(const QString &name, bool replace, quint8 priorty)
+void SearchPage::addSelectionToPlaylist(const QString &name, bool replace, quint8 priorty, bool randomAlbums)
 {
+    Q_UNUSED(randomAlbums)
     QStringList files=selectedFiles(true);
 
     if (!files.isEmpty()) {

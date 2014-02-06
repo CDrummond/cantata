@@ -104,10 +104,12 @@ void DirViewModel::setEnabled(bool e)
     enabled=e;
 
     if (enabled) {
+        connect(MPDConnection::self(), SIGNAL(updatingDatabase()), this, SLOT(updatingMpd()));
         connect(MPDConnection::self(), SIGNAL(dirViewUpdated(DirViewItemRoot *, const QDateTime &)), this, SLOT(updateDirView(DirViewItemRoot *, const QDateTime &)));
     } else {
         clear();
         removeCache();
+        disconnect(MPDConnection::self(), SIGNAL(updatingDatabase()), this, SLOT(updatingMpd()));
         disconnect(MPDConnection::self(), SIGNAL(dirViewUpdated(DirViewItemRoot *, const QDateTime &)), this, SLOT(updateDirView(DirViewItemRoot *, const QDateTime &)));
     }
 }

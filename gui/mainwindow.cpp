@@ -1224,11 +1224,6 @@ bool MainWindow::canShowDialog()
     return true;
 }
 
-void MainWindow::showSidebarPreferencesPage()
-{
-    showPreferencesDialog("interface:sidebar");
-}
-
 void MainWindow::showPreferencesDialog(const QString &page)
 {
     if (PreferencesDialog::instanceCount()) {
@@ -1720,11 +1715,6 @@ void MainWindow::stopVolumeFade()
     }
 }
 
-int MainWindow::mpdVolume() const
-{
-    return volumeSlider->value();
-}
-
 void MainWindow::setMpdVolume(int v)
 {
     if (-1==v) {
@@ -1843,11 +1833,6 @@ void MainWindow::updatePlayQueue(const QList<Song> &songs)
     }
     playQueueItemsSelected(playQueue->haveSelectedItems());
     updateNextTrack(MPDStatus::self()->nextSongId());
-}
-
-bool MainWindow::currentIsStream() const
-{
-    return playQueueModel.rowCount() && -1!=current.id && current.isStream();
 }
 
 void MainWindow::updateWindowTitle()
@@ -2136,26 +2121,6 @@ void MainWindow::clearPlayQueue()
     }
 }
 
-void MainWindow::removeFromPlayQueue()
-{
-    playQueueModel.remove(playQueueProxyModel.mapToSourceRows(playQueue->selectedIndexes()));
-}
-
-void MainWindow::replacePlayQueue()
-{
-    addToPlayQueue(true);
-}
-
-void MainWindow::addToPlayQueue()
-{
-    addToPlayQueue(false);
-}
-
-void MainWindow::addRandomToPlayQueue()
-{
-    addToPlayQueue(false, 0, true);
-}
-
 void MainWindow::addToPlayQueue(bool replace, quint8 priority, bool randomAlbums)
 {
     playQueueSearchWidget->clear();
@@ -2228,11 +2193,6 @@ void MainWindow::addToNewStoredPlaylist()
         }
         break;
     }
-}
-
-void MainWindow::addToExistingStoredPlaylist(const QString &name)
-{
-    addToExistingStoredPlaylist(name, playQueue->hasFocus());
 }
 
 void MainWindow::addToExistingStoredPlaylist(const QString &name, bool pq)
@@ -2418,11 +2378,6 @@ void MainWindow::sidebarModeChanged()
     if (expandInterfaceAction->isChecked()) {
         setMinimumHeight(calcMinHeight());
     }
-}
-
-void MainWindow::cropPlayQueue()
-{
-    playQueueModel.crop(playQueueProxyModel.mapToSourceRows(playQueue->selectedIndexes()));
 }
 
 void MainWindow::currentTabChanged(int index)
@@ -2654,11 +2609,6 @@ void MainWindow::dynamicStatus(const QString &message)
     #endif
 }
 
-void MainWindow::showTab(int page)
-{
-    tabWidget->SetCurrentIndex(page);
-}
-
 void MainWindow::goBack()
 {
     if (currentPage) {
@@ -2677,11 +2627,6 @@ void MainWindow::showSearch()
     } else if (playQueuePage->isVisible()) {
         playQueueSearchWidget->activate();
     }
-}
-
-bool MainWindow::fadeWhenStop() const
-{
-    return fadeStop && volumeSlider->isEnabled();
 }
 
 void MainWindow::expandAll()
@@ -2878,16 +2823,6 @@ void MainWindow::setCover()
         CoverDialog *dlg=new CoverDialog(this);
         dlg->show(song);
     }
-}
-
-int MainWindow::currentTrackPosition() const
-{
-    return positionSlider->value();
-}
-
-QString MainWindow::coverFile() const
-{
-    return coverWidget->fileName();
 }
 
 void MainWindow::updateNextTrack(int nextTrackId)

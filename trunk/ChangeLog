@@ -116,7 +116,7 @@
 70. Hack-around issue with message widget not appearing in KDE builds when
     KDE's animations are disabled.
 71. Remove 'copy track info' functionality, I see no need for this!
-72. Make showPage take an integer, and not page name. 
+72. Remove showPage dbus function.
 
 1.2.2
 -----

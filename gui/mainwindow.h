@@ -46,13 +46,6 @@
 #include "mpdconnection.h"
 #include "song.h"
 #include "config.h"
-#ifdef ENABLE_HTTP_STREAM_PLAYBACK
-#if QT_VERSION < 0x050000
-#include <phonon/mediaobject.h>
-#else
-#include <QtMultimedia/QMediaPlayer>
-#endif
-#endif
 
 class Action;
 class ActionCollection;
@@ -85,6 +78,7 @@ class QActionGroup;
 class QDateTime;
 class TrayItem;
 class GtkProxyStyle;
+class HttpStream;
 
 // Dummy classes so that when class name is saved to the config file, we get a more meaningful name than QWidget!!!
 class PlayQueuePage : public QWidget
@@ -204,13 +198,11 @@ public Q_SLOTS:
     void changeConnection();
     void connectToMpd();
     void connectToMpd(const MPDConnectionDetails &details);
-    void streamUrl(const QString &u);
     void refreshDbPromp();
     #ifndef ENABLE_KDE_SUPPORT
     void showAboutDialog();
     #endif
     void showServerInfo();
-    void toggleStream(bool s, const QString &url=QString());
     void stopPlayback();
     void stopAfterCurrentTrack();
     void stopAfterTrack();
@@ -352,6 +344,7 @@ private:
     Action *searchPlayQueueAction;
     Action *setPriorityAction;
     #ifdef ENABLE_HTTP_STREAM_PLAYBACK
+    HttpStream *httpStream;
     Action *streamPlayAction;
     #endif
     Action *expandInterfaceAction;
@@ -442,14 +435,6 @@ private:
     int origVolume;
     int lastVolume;
     StopState stopState;
-    #ifdef ENABLE_HTTP_STREAM_PLAYBACK
-    bool httpStreamEnabled;
-    #if QT_VERSION < 0x050000
-    Phonon::MediaObject *httpStream;
-    #else
-    QMediaPlayer *httpStream;
-    #endif
-    #endif
     friend class CoverEventHandler;
     friend class TrayItem;
 };

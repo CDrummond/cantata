@@ -34,7 +34,7 @@
 #include <QFile>
 #include <QTimer>
 #include <QVariant>
-#include <QCoreApplication>
+#include <QApplication>
 #include <QFile>
 
 static QString encode(const QImage &img)
@@ -300,7 +300,7 @@ bool CoverWidget::event(QEvent *event)
         }
         break;
     case QEvent::MouseButtonRelease:
-        if (pressed && Qt::LeftButton==static_cast<QMouseEvent *>(event)->button()) {
+        if (pressed && Qt::LeftButton==static_cast<QMouseEvent *>(event)->button() && !QApplication::overrideCursor()) {
             emit clicked();
         }
         pressed=false;

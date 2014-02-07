@@ -81,6 +81,7 @@ SearchPage::SearchPage(QWidget *p)
     view->setPermanentSearch();
     setSearchCategories();
     view->setSearchCategory(Settings::self()->searchCategory());
+    view->hideBackAction();
     statsUpdated(0, 0);
 }
 

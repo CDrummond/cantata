@@ -44,7 +44,6 @@
 QString SearchModel::headerText(int col)
 {
     switch (col) {
-    case COL_TRACK:  return PlayQueueModel::headerText(PlayQueueModel::COL_TRACK);
     case COL_DISC:   return PlayQueueModel::headerText(PlayQueueModel::COL_DISC);
     case COL_TITLE:  return PlayQueueModel::headerText(PlayQueueModel::COL_TITLE);
     case COL_ARTIST: return PlayQueueModel::headerText(PlayQueueModel::COL_ARTIST);
@@ -99,7 +98,6 @@ QVariant SearchModel::headerData(int section, Qt::Orientation orientation, int r
             case COL_GENRE:
             default:
                 return int(Qt::AlignVCenter|Qt::AlignLeft);
-            case COL_TRACK:
             case COL_LENGTH:
             case COL_DISC:
             case COL_YEAR:
@@ -109,9 +107,8 @@ QVariant SearchModel::headerData(int section, Qt::Orientation orientation, int r
             return COL_YEAR==section || COL_DISC==section || COL_GENRE==section ? true : false;
         case TableView::Role_Width:
             switch (section) {
-            case COL_TRACK:  return 0.075;
             case COL_DISC:   return 0.03;
-            case COL_TITLE:  return 0.3;
+            case COL_TITLE:  return 0.375;
             case COL_ARTIST: return 0.27;
             case COL_ALBUM:  return 0.27;
             case COL_LENGTH: return 0.05;
@@ -157,7 +154,6 @@ QVariant SearchModel::data(const QModelIndex &index, int role) const
         case COL_GENRE:
         default:
             return int(Qt::AlignVCenter|Qt::AlignLeft);
-        case COL_TRACK:
         case COL_LENGTH:
         case COL_DISC:
         case COL_YEAR:
@@ -167,16 +163,11 @@ QVariant SearchModel::data(const QModelIndex &index, int role) const
         if (multiCol) {
             switch (index.column()) {
             case COL_TITLE:
-                return song->title.isEmpty() ? Utils::getFile(song->file) : song->title;
+                return song->title.isEmpty() ? Utils::getFile(song->file) : song->trackAndTitleStr(Song::isVariousArtists(song->albumArtist()));;
             case COL_ARTIST:
                 return song->artist.isEmpty() ? Song::unknown() : song->artist;
             case COL_ALBUM:
                 return song->album.isEmpty() && !song->name.isEmpty() && song->isStream() ? song->name : song->album;
-            case COL_TRACK:
-                if (song->track <= 0) {
-                    return QVariant();
-                }
-                return song->track;
             case COL_LENGTH:
                 return Song::formattedTime(song->time);
             case COL_DISC:

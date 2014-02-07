@@ -514,7 +514,7 @@ QImage OnlineServicesModel::requestImage(const QString &id, const QString &artis
     }
 
     QString imageUrl=url;
-    // Jamendo image URL is jsut the album ID!
+    // Jamendo image URL is just the album ID!
     if (!imageUrl.isEmpty() && !imageUrl.startsWith("http:/") && imageUrl.length()<15 && id==JamendoService::constName) {
         imageUrl=JamendoService::imageUrl(imageUrl);
         DBUG << "Built jamendo url" << imageUrl;

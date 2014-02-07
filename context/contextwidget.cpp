@@ -617,7 +617,7 @@ void ContextWidget::useDarkBackground(bool u)
             QColor linkVisited(164, 164, 164);
             pal.setColor(QPalette::Window, dark);
             pal.setColor(QPalette::Base, dark);
-            // Dont globally change window/button text - else this can mess up scrollbar buttons
+            // Dont globally change window/button text - because this can mess up scrollbar buttons
             // with some styles (e.g. plastique)
 //            pal.setColor(QPalette::WindowText, light);
 //            pal.setColor(QPalette::ButtonText, light);

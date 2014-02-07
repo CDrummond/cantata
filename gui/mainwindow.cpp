@@ -808,7 +808,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(onlineTabAction, SIGNAL(triggered(bool)), this, SLOT(showOnlineTab()));
     #endif
     connect(searchTabAction, SIGNAL(triggered(bool)), this, SLOT(showSearchTab()));
-    addAction(StdActions::self()->searchAction); // Weird, but if I dont add thiis action, it does not work!!!!
     connect(StdActions::self()->searchAction, SIGNAL(triggered(bool)), SLOT(showSearch()));
     connect(expandAllAction, SIGNAL(triggered(bool)), this, SLOT(expandAll()));
     connect(collapseAllAction, SIGNAL(triggered(bool)), this, SLOT(collapseAll()));
@@ -2236,7 +2235,7 @@ void MainWindow::expandOrCollapse(bool saveCurrentSize)
             showMaximized();
         }
     } else {
-        // Widths also sometimes expands, so make sure this is no larger than it was before...
+        // Width also sometimes expands, so make sure this is no larger than it was before...
         collapsedSize=QSize(collapsedSize.isValid() ? collapsedSize.width() : (size().width()>prevWidth ? prevWidth : size().width()), compactHeight);
         resize(collapsedSize);
         setFixedHeight(size().height());

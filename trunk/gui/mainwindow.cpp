@@ -33,6 +33,9 @@
 // QMacNativeToolBar requres Qt Macf Extras to be installed on Qt 5.0 and 5.1.
 #include <QMacNativeToolBar>
 #endif
+#if QT_VERSION >= 0x050000
+#include <QProcess>
+#endif
 #include <QDialogButtonBox>
 #include <QTextStream>
 #include <QProxyStyle>
@@ -2786,8 +2789,9 @@ void MainWindow::restoreWindow()
     raise();
     showNormal();
     activateWindow();
-    #if !defined Q_OS_WIN && !defined Q_OS_MAC && QT_VERSION < 0x050000
-    // This section seems to be required for compiz, so that MPRIS.Raise actually shows the window, and not jsut highlight launcher.
+    #if !defined Q_OS_WIN && !defined Q_OS_MAC
+    // This section seems to be required for compiz, so that MPRIS.Raise actually shows the window, and not just highlight launcher.
+    #if QT_VERSION < 0x050000
     static const Atom constNetActive=XInternAtom(QX11Info::display(), "_NET_ACTIVE_WINDOW", False);
     QX11Info info;
     XEvent xev;
@@ -2801,7 +2805,16 @@ void MainWindow::restoreWindow()
     xev.xclient.data.l[0] = 2;
     xev.xclient.data.l[1] = xev.xclient.data.l[2] = xev.xclient.data.l[3] = xev.xclient.data.l[4] = 0;
     XSendEvent(QX11Info::display(), QX11Info::appRootWindow(info.screen()), False, SubstructureRedirectMask|SubstructureNotifyMask, &xev);
-    #endif
+    #else // QT_VERSION < 0x050000
+    QString wmctrl=Utils::findExe(QLatin1String("wmctrl"));
+    if (!wmctrl.isEmpty()) {
+        if (wasHidden) {
+            QApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
+        }
+        QProcess::execute(wmctrl, QStringList() << QLatin1String("-i") << QLatin1String("-a") << QString::number(effectiveWinId()));
+    }
+    #endif // QT_VERSION < 0x050000
+    #endif // !defined Q_OS_WIN && !defined Q_OS_MAC
     if (wasHidden && !lastPos.isNull()) {
         move(lastPos);
     }

@@ -1106,6 +1106,12 @@ void ItemView::setSearchCategory(const QString &id)
     searchWidget->setCategory(id);
 }
 
+void ItemView::hideBackAction()
+{
+    backAction->setEnabled(false);
+    backAction->setVisible(false);
+}
+
 bool ItemView::eventFilter(QObject *o, QEvent *e)
 {
     if (o==title) {

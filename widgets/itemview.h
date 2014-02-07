@@ -152,6 +152,7 @@ public:
     void setSearchCategory(const QString &id);
     void setSearchResetLevel(int l) { searchResetLevel=l; }
     void setSearchIndex(const QModelIndex &idx) { searchIndex=idx; }
+    void hideBackAction();
 
 private:
     bool usingTreeView() const { return mode<=Mode_DetailedTree; }

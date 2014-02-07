@@ -117,6 +117,7 @@
     KDE's animations are disabled.
 71. Remove 'copy track info' functionality, I see no need for this!
 72. Remove showPage dbus function.
+73. Use wmctrl for Qt5 builds, to raise window under compiz.
 
 1.2.2
 -----

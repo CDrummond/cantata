@@ -100,6 +100,7 @@ TreeView::TreeView(QWidget *parent, bool menuAlwaysAllowed)
     setAlternatingRowColors(false);
     setSelectionMode(QAbstractItemView::ExtendedSelection);
     setSelectionBehavior(QAbstractItemView::SelectRows);
+    setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
     // Treeview does not seem to need WA_MouseTracking set, even with QGtkStyle items still
     // highlight under mouse. And enabling WA_MouseTracking here seems to cause drag-n-drop
     // errors if an item is dragged onto playqueue whilst playqueue has a selected item!

@@ -45,6 +45,7 @@ ListView::ListView(QWidget *parent)
     setAlternatingRowColors(false);
     setUniformItemSizes(true);
     setAttribute(Qt::WA_MouseTracking);
+    setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
     connect(this, SIGNAL(customContextMenuRequested(const QPoint &)), SLOT(showCustomContextMenu(const QPoint &)));
 }
 

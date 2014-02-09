@@ -122,6 +122,7 @@
     been set. Fixes the case, with Qt5 builds, where a drag is started on the
     cover widget causes interface to expand/collapse.
 75. Change views to scroll-per-pixel.
+76. Dont allow expanding, or collapsing, if maximised.
 
 1.2.2
 -----

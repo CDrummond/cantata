@@ -2194,9 +2194,13 @@ int MainWindow::calcCompactHeight()
 
 void MainWindow::expandOrCollapse(bool saveCurrentSize)
 {
-    if (isFullScreen()) {
+    if (isFullScreen() || isMaximized()) {
+        if (!expandInterfaceAction->isChecked()) {
+            expandInterfaceAction->setChecked(true);
+        }
         return;
     }
+
     static bool lastMax=false;
 
     bool showing=expandInterfaceAction->isChecked();

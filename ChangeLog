@@ -121,6 +121,7 @@
 74. Dont react to mouse-release event in coverwidget if an override cursor has
     been set. Fixes the case, with Qt5 builds, where a drag is started on the
     cover widget causes interface to expand/collapse.
+75. Change views to scroll-per-pixel.
 
 1.2.2
 -----

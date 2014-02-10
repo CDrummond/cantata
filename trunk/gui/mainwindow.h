@@ -311,6 +311,10 @@ private:
     void updateActionToolTips();
     void setPlaylistsEnabled(bool e);
     void controlPlaylistActions();
+    void startContextTimer();
+
+private Q_SLOTS:
+    void toggleContext();
 
 private:
     int loaded;
@@ -413,6 +417,8 @@ private:
     #if !defined Q_OS_WIN && !defined Q_OS_MAC
     QTimer *mpdAccessibilityTimer;
     #endif
+    QTimer *contextTimer;
+    int contextSwitchTime;
 
     enum ConnState {
         CS_Init,

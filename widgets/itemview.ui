@@ -18,6 +18,9 @@
     <number>2</number>
    </property>
    <item>
+    <widget class="SearchWidget" name="searchWidget"/>
+   </item>
+   <item>
     <widget class="QStackedWidget" name="stackedWidget">
      <property name="currentIndex">
       <number>0</number>
@@ -55,9 +58,6 @@
       </layout>
      </widget>
     </widget>
-   </item>
-   <item>
-    <widget class="SearchWidget" name="searchWidget"/>
    </item>
   </layout>
  </widget>

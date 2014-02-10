@@ -261,10 +261,10 @@
          </spacer>
         </item>
         <item>
-         <widget class="PlayQueueView" name="playQueue"/>
+         <widget class="SearchWidget" name="playQueueSearchWidget"/>
         </item>
         <item>
-         <widget class="SearchWidget" name="playQueueSearchWidget"/>
+         <widget class="PlayQueueView" name="playQueue"/>
         </item>
         <item>
          <layout class="QHBoxLayout" name="hlayout">

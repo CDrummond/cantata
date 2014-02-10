@@ -44,6 +44,7 @@
 #cmakedefine ENABLE_UNCACHED_MTP 1
 #cmakedefine ENABLE_HTTP_SERVER 1
 #cmakedefine ENABLE_MODEL_TEST 1
+#cmakedefine USE_SYSTEM_MENU_ICON
 
 #endif
 

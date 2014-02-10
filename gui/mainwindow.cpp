@@ -511,11 +511,22 @@ MainWindow::MainWindow(QWidget *parent)
         // But, if the theme does have media icons at 24x24 use these - as they will be sharper...
         playbackIconSize=24==Icons::self()->toolbarPlayIcon.actualSize(QSize(24, 24)).width() ? 24 : 28;
     }
+    #ifdef USE_SYSTEM_MENU_ICON
+    if (GtkStyle::isActive() && GtkStyle::useSymbolicIcons()) {
+        controlIconSize=22==controlIconSize ? 16 : 32==controlIconSize ? 22 : 32;
+    }
+    #endif
+    stopTrackButton->setHideMenuIndicator(true);
     int playbackButtonSize=28==playbackIconSize ? 34 : controlButtonSize;
     foreach (QToolButton *b, controlBtns) {
         b->setAutoRaise(true);
         b->setToolButtonStyle(Qt::ToolButtonIconOnly);
         b->setIconSize(QSize(controlIconSize, controlIconSize));
+        #ifdef USE_SYSTEM_MENU_ICON
+        if (b==menuButton && !GtkStyle::isActive()) {
+            b->setFixedHeight(controlButtonSize);
+        } else
+        #endif
         b->setFixedSize(QSize(controlButtonSize, controlButtonSize));
     }
     foreach (QToolButton *b, playbackBtns) {

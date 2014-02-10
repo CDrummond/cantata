@@ -34,8 +34,10 @@ public:
     QSize sizeHint() const;
     void setMenu(QMenu *m);
     void paintEvent(QPaintEvent *e);
+    void setHideMenuIndicator(bool h) { hideMenuIndicator=h; }
 
 private:
+    bool hideMenuIndicator;
     mutable QSize sh;
 };
 

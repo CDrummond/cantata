@@ -109,6 +109,12 @@ The following options may be passed to CMake:
 
     Linux specific:
 
+    -DUSE_SYSTEM_MENU_ICON=ON
+        Use standard menu icon, as opposed to Cantata's chrome/firefox 3 line
+        menu icon. Under certain Gtk themes (Ambiance, Radiance, etc) this will
+        use a symbolic 16px icon.
+        Default: ON
+
     -DENABLE_UNCACHED_MTP=ON
         Open MTP devices in un-cached mode (faster)
         Default: ON

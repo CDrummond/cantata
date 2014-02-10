@@ -180,7 +180,7 @@ void MusicLibraryItemAlbum::setCoverImage(const QImage &img) const
     QImage scaled=img.scaled(QSize(size, size), Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
     m_cover = new QPixmap(QPixmap::fromImage(scaled));
     m_coverIsDefault=false;
-    Covers::saveScaledCover(scaled, parentItem()->data(), QString(), size);
+    Covers::saveScaledCover(scaled, parentItem()->data(), data(), size);
 }
 
 bool MusicLibraryItemAlbum::setCover(const QImage &img, bool update) const

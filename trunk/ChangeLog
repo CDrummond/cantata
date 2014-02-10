@@ -123,6 +123,8 @@
     cover widget causes interface to expand/collapse.
 75. Change views to scroll-per-pixel.
 76. Dont allow expanding, or collapsing, if maximised.
+77. Remove embedding of pre-rendered Cantata icons. Cantata requires the SVG
+    icon plugin, so users must have this installed.
 
 1.2.2
 -----

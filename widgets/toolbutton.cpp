@@ -24,6 +24,7 @@
 #include "toolbutton.h"
 #include "icon.h"
 #include "gtkstyle.h"
+#include "config.h"
 #include <QMenu>
 #include <QStylePainter>
 #include <QStyleOptionToolButton>
@@ -31,6 +32,11 @@
 
 ToolButton::ToolButton(QWidget *parent)
     : QToolButton(parent)
+    #ifdef USE_SYSTEM_MENU_ICON
+    , hideMenuIndicator(GtkStyle::isActive())
+    #else
+    , hideMenuIndicator(true)
+    #endif
 {
     Icon::init(this);
     setAutoRaise(true);
@@ -47,13 +53,15 @@ void ToolButton::paintEvent(QPaintEvent *e)
     QStylePainter p(this);
     QStyleOptionToolButton opt;
     initStyleOption(&opt);
-    opt.features=QStyleOptionToolButton::None;
+    if (hideMenuIndicator) {
+        opt.features=QStyleOptionToolButton::None;
+    }
     if (opt.state&QStyle::State_MouseOver && this!=QApplication::widgetAt(QCursor::pos())) {
         opt.state&=~QStyle::State_MouseOver;
     }
     p.drawComplexControl(QStyle::CC_ToolButton, opt);
     #else
-    if (menu()) {
+    if (menu() && hideMenuIndicator) {
         QStylePainter p(this);
         QStyleOptionToolButton opt;
         initStyleOption(&opt);
@@ -67,6 +75,10 @@ void ToolButton::paintEvent(QPaintEvent *e)
 
 QSize ToolButton::sizeHint() const
 {
+    if (!hideMenuIndicator) {
+        return QToolButton::sizeHint();
+    }
+
     if (sh.isValid()) {
         return sh;
     }

@@ -218,6 +218,7 @@ public:
     QString lang();
     #endif
     bool alwaysUseLsInfo();
+    int contextSwitchTime();
 
     void removeConnectionDetails(const QString &v);
     void saveConnectionDetails(const MPDConnectionDetails &v);
@@ -324,6 +325,7 @@ public:
     #ifndef ENABLE_KDE_SUPPORT
     void saveLang(const QString &v);
     #endif
+    void saveContextSwitchTime(int v);
     void save(bool force=false);
     #if defined ENABLE_KDE_SUPPORT && defined ENABLE_KWALLET
     bool openWallet();

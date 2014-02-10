@@ -950,6 +950,12 @@ bool Settings::alwaysUseLsInfo()
     return GET_BOOL("alwaysUseLsInfo", false);
 }
 
+int Settings::contextSwitchTime()
+{
+    int v=GET_INT("contextSwitchTime", 0);
+    return RESTRICT(v, 0, 5000);
+}
+
 void Settings::removeConnectionDetails(const QString &v)
 {
     if (v==currentConnection()) {
@@ -1479,6 +1485,11 @@ void Settings::saveLang(const QString &v)
     SET_VALUE_MOD(lang);
 }
 #endif
+
+void Settings::saveContextSwitchTime(int v)
+{
+    SET_VALUE_MOD(contextSwitchTime);
+}
 
 void Settings::save(bool force)
 {

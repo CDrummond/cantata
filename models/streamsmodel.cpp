@@ -1536,6 +1536,17 @@ struct ListenLiveStream {
         }
     }
 
+    const QString bitrateStr() const { return QString("%1kb/s").arg(bitrate); }
+    const QString formatStr() const {
+        switch (format) {
+        case MP3: return QLatin1String("MP3 ")+bitrateStr();
+        case AAC: return QLatin1String("AAC ")+bitrateStr();
+        case OGG: return QLatin1String("OGG ")+bitrateStr();
+        case WMA: return QLatin1String("WMA ")+bitrateStr();
+        default: return bitrateStr();
+        }
+    }
+
     QString url;
     Format format;
     unsigned int bitrate;
@@ -1625,26 +1636,39 @@ QList<StreamsModel::Item *> StreamsModel::parseListenLiveResponse(QIODevice *dev
             } else if ("</tr>"==line) {
                 if (entry.streams.count()) {
                     qSort(entry.streams);
-                    QString name;
-                    QString url=entry.streams.at(0).url;
-
-                    if (QLatin1String("National")==entry.location || entry.name.endsWith("("+entry.location+")")) {
-                        name=entry.name;
-                    } else if (entry.name.endsWith(")")) {
-                        name=entry.name.left(entry.name.length()-1)+", "+entry.location+")";
-                    } else {
-                        name=entry.name+" ("+entry.location+")";
-                    }
-
-                    if (!names.contains(name) && !name.isEmpty() && url.contains("://")) {
-                        QStringList stationGenres=fixGenres(entry.comment);
-                        if (stationGenres.isEmpty()) {
-                            stationGenres.append(i18n("Other"));
+                    bool multiple=entry.streams.count()>1;
+                    foreach (const ListenLiveStream &stream, entry.streams) {
+                        if (!stream.url.contains("://")) {
+                            continue;
                         }
-                        foreach (const QString &g, stationGenres) {
-                            genres[g].append(new Item(url, name, cat));
+                        QString name;
+
+                        if (QLatin1String("National")==entry.location || entry.name.endsWith(QLatin1Char('(')+entry.location+QLatin1Char(')'))) {
+                            name=entry.name;
+                        } else if (entry.name.endsWith(QLatin1Char(')'))) {
+                            name=entry.name.left(entry.name.length()-1)+QLatin1String(", ")+entry.location+QLatin1Char(')');
+                        } else {
+                            name=entry.name+QLatin1String(" (")+entry.location+QLatin1Char(')');
                         }
-                        names.insert(name);
+
+                        if (!name.isEmpty() && multiple) {
+                            if (name.endsWith(QLatin1Char(')'))) {
+                                name=name.left(name.length()-1)+QLatin1String(", ");
+                            } else {
+                                name+=QLatin1String(" (");
+                            }
+                            name+=stream.formatStr()+QLatin1Char(')');
+                        }
+                        if (!names.contains(name) && !name.isEmpty()) {
+                            QStringList stationGenres=fixGenres(entry.comment);
+                            if (stationGenres.isEmpty()) {
+                                stationGenres.append(i18n("Other"));
+                            }
+                            foreach (const QString &g, stationGenres) {
+                                genres[g].append(new Item(stream.url, name, cat));
+                            }
+                            names.insert(name);
+                        }
                     }
                 }
             }

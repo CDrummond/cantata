@@ -125,6 +125,8 @@
 76. Dont allow expanding, or collapsing, if maximised.
 77. Remove embedding of pre-rendered Cantata icons. Cantata requires the SVG
     icon plugin, so users must have this installed.
+78. Use system menu icon for Linux builds. To revert to previous 3-line style
+    icon pass -DUSE_SYSTEM_MENU_ICON=OFF to cmake.
 
 1.2.2
 -----

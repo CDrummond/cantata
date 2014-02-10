@@ -134,6 +134,7 @@ static QPixmap createConsumeIconPixmap(int size, const QColor &col, double opaci
     return pix;
 }
 
+#ifndef USE_SYSTEM_MENU_ICON
 static QPainterPath buildPath(const QRectF &r, double radius)
 {
     QPainterPath path;
@@ -193,6 +194,7 @@ static QPixmap createMenuIconPixmap(int size, QColor col, double opacity=1.0)
     p.end();
     return pix;
 }
+#endif
 
 static QColor calcIconColor()
 {
@@ -219,6 +221,7 @@ static Icon createConsumeIcon(const QColor &stdColor)
     return icon;
 }
 
+#ifndef USE_SYSTEM_MENU_ICON
 static Icon createMenuIcon(const QColor &stdColor)
 {
     Icon icon;
@@ -227,6 +230,7 @@ static Icon createMenuIcon(const QColor &stdColor)
     }
     return icon;
 }
+#endif
 
 static void recolourPix(QImage &img, const QColor &col, double opacity=1.0)
 {
@@ -384,7 +388,12 @@ Icons::Icons()
     QColor stdColor=calcIconColor();
     singleIcon=createSingleIcon(stdColor);
     consumeIcon=createConsumeIcon(stdColor);
+    #ifdef USE_SYSTEM_MENU_ICON
+    menuIcon=Icon("applications-system");
+    #else
     menuIcon=createMenuIcon(stdColor);
+    #endif
+
     #ifdef ENABLE_STREAMS
     streamCategoryIcon=Icon(QLatin1String("oxygen")==Icon::currentTheme().toLower() ? "inode-directory" : "folder-music");
     #endif
@@ -551,6 +560,9 @@ void Icons::initSidebarIcons()
 
 void Icons::initToolbarIcons(const QColor &toolbarText)
 {
+    #ifdef USE_SYSTEM_MENU_ICON
+    Q_UNUSED(toolbarText)
+    #endif
     QColor stdColor=calcIconColor();
     #if !defined Q_OS_WIN && !defined Q_OS_MAC
     if (GtkStyle::useSymbolicIcons()) {
@@ -562,19 +574,28 @@ void Icons::initToolbarIcons(const QColor &toolbarText)
         toolbarStopIcon=loadMediaIcon(QLatin1String("stop"), col, col);
         toolbarNextIcon=loadMediaIcon(QLatin1String(rtl ? "next-rtl" : "next"), col, col);
         infoIcon=loadSidebarIcon("info", col, col);
+        #ifdef USE_SYSTEM_MENU_ICON
+        toolbarMenuIcon=loadMonoSvgIcon(QLatin1String("menu"), QLatin1String("icon"), col, col);
+        menuIcon=loadMonoSvgIcon(QLatin1String("menu"), QLatin1String("icon"), stdColor, stdColor);
+        #else
         if (col==stdColor) {
             toolbarMenuIcon=menuIcon;
         } else {
             toolbarMenuIcon=createMenuIcon(col);
         }
+        #endif
     } else
     #endif
     {
+        #ifdef USE_SYSTEM_MENU_ICON
+        toolbarMenuIcon=menuIcon;
+        #else
         if (toolbarText==stdColor) {
             toolbarMenuIcon=menuIcon;
         } else {
             toolbarMenuIcon=createMenuIcon(toolbarText);
         }
+        #endif
         if (QLatin1String("gnome")==Icon::currentTheme().toLower()) {
             QColor col=QApplication::palette().color(QPalette::Active, QPalette::ButtonText);
             infoIcon=loadSidebarIcon("info", col, col);

@@ -431,10 +431,6 @@ Icons::Icons()
     variousArtistsIcon=Icon::create("va", QList<int>() << 16 << 22 << 32 << 48 << 64 << 128);
     artistIcon=Icon::create("artist", QList<int>() << 16 << 22 << 32 << 48 << 64 << 128);
     #ifndef ENABLE_KDE_SUPPORT
-    QList<int> appSizes=QList<int>() << 16 << 22 << 24 << 32 << 48 << 64;
-    foreach (int s, appSizes) {
-        appIcon.addFile(QString(":cantata%1.png").arg(s), QSize(s, s));
-    }
     appIcon.addFile(":cantata.svg");
 
     shortcutsIcon=Icon("preferences-desktop-keyboard");

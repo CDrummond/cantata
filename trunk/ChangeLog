@@ -129,6 +129,7 @@
     icon pass -DUSE_SYSTEM_MENU_ICON=OFF to cmake.
 79. When downloading, and parsing, ListLive streams, if a station has more than
     1 stream then list all streams - adding format and bitrate
+80. Move search fields back to the top of views.
 
 1.2.2
 -----

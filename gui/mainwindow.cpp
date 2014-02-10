@@ -201,6 +201,8 @@ MainWindow::MainWindow(QWidget *parent)
     #if !defined Q_OS_WIN && !defined Q_OS_MAC
     , mpdAccessibilityTimer(0)
     #endif
+    , contextTimer(0)
+    , contextSwitchTime(0)
     , connectedState(CS_Init)
     , stopAfterCurrent(false)
     , volumeFade(0)
@@ -1420,6 +1422,14 @@ void MainWindow::readSettings()
     tabWidget->setStyle(Settings::self()->sidebar());
     toggleMonoIcons();
     toggleSplitterAutoHide();
+    if (contextSwitchTime!=Settings::self()->contextSwitchTime()) {
+        contextSwitchTime=Settings::self()->contextSwitchTime();
+        if (0==contextSwitchTime && contextTimer) {
+            contextTimer->stop();
+            contextTimer->deleteLater();
+            contextTimer=0;
+        }
+    }
 }
 
 bool diffCoverSize(int a, int b)
@@ -1987,6 +1997,10 @@ void MainWindow::updateStatus(MPDStatus * const status)
         (MPDState_Inactive==lastState || (MPDState_Stopped==lastState && MPDState_Playing==status->state()) || lastSongId != status->songId())) {
         emit currentSong();
     }
+    if (status->state()!=lastState && (MPDState_Playing==status->state() || MPDState_Stopped==status->state())) {
+        startContextTimer();
+    }
+
     // Update status info
     lastState = status->state();
     lastSongId = status->songId();
@@ -2770,6 +2784,28 @@ void MainWindow::controlPlaylistActions()
     savePlayQueueButton->setVisible(enable);
     midSpacer->setVisible(enable);
     addPlayQueueToStoredPlaylistAction->setVisible(enable);
+}
+
+void MainWindow::startContextTimer()
+{
+    if (!contextSwitchTime) {
+        return;
+    }
+    if (!contextTimer) {
+        contextTimer=new QTimer(this);
+        contextTimer->setSingleShot(true);
+        connect(contextTimer, SIGNAL(timeout()), this, SLOT(toggleContext()));
+    }
+    contextTimer->start(contextSwitchTime);
+}
+
+void MainWindow::toggleContext()
+{
+    if ( songInfoButton->isVisible() &&
+         ( (MPDState_Playing==MPDStatus::self()->state() && !songInfoAction->isChecked()) ||
+           (MPDState_Stopped==MPDStatus::self()->state() && songInfoAction->isChecked()) ) ) {
+        songInfoAction->trigger();
+    }
 }
 
 #if !defined Q_OS_WIN && !defined Q_OS_MAC && QT_VERSION < 0x050000

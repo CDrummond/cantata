@@ -169,7 +169,7 @@ msgstr "%1%"
 #, c-format
 msgctxt "pixels"
 msgid "%1px"
-msgstr "%1 px"
+msgstr "%1px"
 
 #: context/songview.cpp:90
 msgid "Refresh Lyrics"

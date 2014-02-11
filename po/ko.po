@@ -160,13 +160,13 @@ msgstr "10픽셀"
 #: context/othersettings.cpp:102 gui/interfacesettings.cpp:524
 msgctxt "value%"
 msgid "%1%"
-msgstr "%1"
+msgstr "%1%"
 
 #: context/othersettings.cpp:107 gui/interfacesettings.cpp:529
 #, c-format
 msgctxt "pixels"
 msgid "%1px"
-msgstr "%1화소"
+msgstr "%1px"
 
 #: context/songview.cpp:90
 msgid "Refresh Lyrics"
@@ -1723,7 +1723,7 @@ msgstr "음반표지"
 
 #: gui/cachesettings.cpp:264
 msgid "Scaled Covers"
-msgstr "비율 음반표지"
+msgstr "비율표지"
 
 #: gui/cachesettings.cpp:265
 msgid "Backdrops"
@@ -5250,7 +5250,7 @@ msgstr "음반표지가 없으면 Last.fm에서 가져오기"
 #. i18n: ectx: property (text), widget (QCheckBox, cacheScaledCovers)
 #: po/rc.cpp:721 rc.cpp:721
 msgid "Cache scaled covers"
-msgstr "비율 음반표지 캐시"
+msgstr "비율표지 캐시"
 
 #. i18n: file: gui/interfacesettings.ui:761
 #. i18n: ectx: property (text), widget (QCheckBox, showDeleteAction)

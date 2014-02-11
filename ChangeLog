@@ -108,8 +108,10 @@
 64. Fix searches containing more than 4 words.
 65. Use stretch header class from Clementine for table style views.
 66. Dont change tray icon to play state - consistent with other apps.
-67. Use mono system tray icon under Unity if icon theme is ubuntu-mono-light or
-    ubuntu-mono-dark. (Qt-only builds)
+67. For Linux builds, if systray.svg file exists in
+    $prefix/share/cantata/icons/$iconTheme, then this will be used as the
+    system tray icon. Currently Cantata supplies 2 mono SVGs - one for
+    ubuntu-mono-dark and one for ubuntu-mono-light.
 68. Show time-slider position tooltip immediately.
 69. Expand interface if it is collpased, and an error or question is to be
     displayed in message widget.

@@ -94,11 +94,16 @@ void TrayItem::setup()
         return;
     }
 
+    #if !defined Q_OS_WIN32 && !defined Q_OS_MAC
+    QString iconFile=QLatin1String(INSTALL_PREFIX"/share/")+QCoreApplication::applicationName()+QLatin1String("/icons/")+QIcon::themeName()+
+                     QLatin1String("/systray.svg");
+    #endif
+
     #ifdef ENABLE_KDE_SUPPORT
     trayItem = new KStatusNotifierItem(this);
     trayItem->setCategory(KStatusNotifierItem::ApplicationStatus);
     trayItem->setTitle(i18n("Cantata"));
-    trayItem->setIconByName("cantata");
+    trayItem->setIconByName(!iconFile.isEmpty() && QFile::exists(iconFile) ? iconFile : QLatin1String("cantata"));
     trayItem->setToolTip("cantata", i18n("Cantata"), QString());
 
     trayItemMenu = new KMenu(0);
@@ -135,12 +140,8 @@ void TrayItem::setup()
     trayItem->setContextMenu(trayItemMenu);
     Icon icon;
     #if !defined Q_OS_WIN32 && !defined Q_OS_MAC
-    if (Utils::Unity==Utils::currentDe()) {
-        if (QLatin1String("ubuntu-mono-dark")==QIcon::themeName()) {
-            icon.addFile(":trayicon-mono-light");
-        } else if (QLatin1String("ubuntu-mono-light")==QIcon::themeName()) {
-            icon.addFile(":trayicon-mono-dark");
-        }
+    if (QFile::exists(iconFile)) {
+        icon.addFile(iconFile);
     }
     #endif
     trayItem->setIcon(icon.isNull() ? Icons::self()->appIcon : icon);

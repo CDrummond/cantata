@@ -41,7 +41,7 @@ void LineEdit::setReadOnly(bool e)
     }
 }
 
-#ifndef ENABLE_KDE_SUPPORT
+#if !defined ENABLE_KDE_SUPPORT && QT_VERSION < 0x050200
 
 /****************************************************************************
 **
@@ -57,7 +57,7 @@ void LineEdit::setReadOnly(bool e)
 #include <QToolButton>
 #include <QStyle>
 #include <QComboBox>
-#include <QDebug>
+
 LineEdit::LineEdit(QWidget *parent)
     : QLineEdit(parent)
 {
@@ -88,7 +88,7 @@ LineEdit::LineEdit(QWidget *parent)
     }
 }
 
-void LineEdit::resizeEvent(QResizeEvent *)
+void LineEdit::resizeEvent(QResizeEvent *e)
 {
     QSize sz = clearButton->sizeHint();
     int frameWidth = style()->pixelMetric(QStyle::PM_DefaultFrameWidth);
@@ -97,9 +97,10 @@ void LineEdit::resizeEvent(QResizeEvent *)
     } else {
         clearButton->move(rect().right() - frameWidth - sz.width(), (rect().bottom() + 1 - sz.height()) / 2);
     }
+    QLineEdit::resizeEvent(e);
 }
 
-void LineEdit::updateCloseButton(const QString& text)
+void LineEdit::updateCloseButton(const QString &text)
 {
     clearButton->setVisible(!isReadOnly() && !text.isEmpty());
 }

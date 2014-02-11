@@ -31,6 +31,7 @@
 #include <QSpinBox>
 #include <QScrollBar>
 #include <QMenu>
+#include <QToolBar>
 #include <QApplication>
 #include <QPainter>
 
@@ -83,8 +84,9 @@ static inline void addEventFilter(QObject *object, QObject *filter)
     object->installEventFilter(filter);
 }
 
-GtkProxyStyle::GtkProxyStyle(ScrollbarType sb, bool styleSpin)
+GtkProxyStyle::GtkProxyStyle(ScrollbarType sb, bool styleSpin, const QMap<QString, QString> &c)
     : QProxyStyle()
+    , css(c)
 {
     shortcutHander=new ShortcutHandler(this);
 
@@ -127,7 +129,9 @@ QSize GtkProxyStyle::sizeFromContents(ContentsType type, const QStyleOption *opt
     } else if (touchStyleSpin && CT_SpinBox==type) {
         if (const QStyleOptionSpinBox *spinBox = qstyleoption_cast<const QStyleOptionSpinBox *>(option)) {
             if (QAbstractSpinBox::NoButtons!=spinBox->buttonSymbols) {
-                sz += QSize(0, 1);
+                if (0==sz.height()%2) {
+                    sz += QSize(0, 1);
+                }
                 #if QT_VERSION >= 0x050000
                 // Qt5 does not seem to be taking special value, or suffix, into account when calculatng width...
                 if (widget && qobject_cast<const QSpinBox *>(widget)) {
@@ -138,14 +142,13 @@ QSize GtkProxyStyle::sizeFromContents(ContentsType type, const QStyleOption *opt
                         minWidth=option->fontMetrics.width(special+QLatin1String(" "));
                     }
 
-                    QString suffix=spin->suffix();
-                    if (!suffix.isEmpty()) {
-                        minWidth=qMax(option->fontMetrics.width(QString::number(spin->minimum())+suffix), minWidth);
-                        minWidth=qMax(option->fontMetrics.width(QString::number(spin->maximum())+suffix), minWidth);
-                    }
+                    QString suffix=spin->suffix()+QLatin1String(" ");
+                    minWidth=qMax(option->fontMetrics.width(QString::number(spin->minimum())+suffix), minWidth);
+                    minWidth=qMax(option->fontMetrics.width(QString::number(spin->maximum())+suffix), minWidth);
+
                     if (minWidth>0) {
-                        int buttonWidth=sz.height()*constSpinButtonRatio;
                         int frameWidth=baseStyle()->pixelMetric(QStyle::PM_DefaultFrameWidth, option, 0);
+                        int buttonWidth=(sz.height()-(frameWidth*2))*constSpinButtonRatio;
                         minWidth=((minWidth+(buttonWidth+frameWidth)*2)*1.05)+0.5;
                         if (sz.width()<minWidth) {
                             sz.setWidth(minWidth);
@@ -319,7 +322,6 @@ void GtkProxyStyle::drawComplexControl(ComplexControl control, const QStyleOptio
     } else if (touchStyleSpin && CC_SpinBox==control) {
         if (const QStyleOptionSpinBox *spinBox = qstyleoption_cast<const QStyleOptionSpinBox *>(option)) {
             if (QAbstractSpinBox::NoButtons!=spinBox->buttonSymbols) {
-
                 // Use PE_FrameLineEdit to draw border, as QGtkStyle corrupts focus settings
                 // if its asked to draw a QSpinBox with no buttons that has focus.
                 QStyleOptionFrameV2 opt;
@@ -384,6 +386,7 @@ void GtkProxyStyle::drawPrimitive(PrimitiveElement element, const QStyleOption *
         baseStyle()->drawPrimitive(element, option, painter, widget);
     }
 }
+
 void GtkProxyStyle::polish(QWidget *widget)
 {
     if (SB_Standard!=sbarType && qobject_cast<QScrollBar *>(widget) && isOnCombo(widget)) {
@@ -396,6 +399,20 @@ void GtkProxyStyle::polish(QWidget *widget)
         widget->setProperty(constAccelProp, true);
     }
     #endif
+
+    // Apply CSS only to particular widgets. With Qt5.2 if we apply CSS to whole application, then QStyleSheetStyle does
+    // NOT call sizeFromContents for spinboxes :-(
+    if (widget->styleSheet().isEmpty()) {
+        QMap<QString, QString>::ConstIterator it=css.end();
+        if (qobject_cast<QToolBar *>(widget)) {
+            it=css.find(QLatin1String(widget->metaObject()->className())+QLatin1Char('#')+widget->objectName());
+        } else if (qobject_cast<QMenu *>(widget)) {
+            it=css.find(QLatin1String(widget->metaObject()->className()));
+        }
+        if (css.end()!=it) {
+            widget->setStyleSheet(it.value());
+        }
+    }
     baseStyle()->polish(widget);
 }
 

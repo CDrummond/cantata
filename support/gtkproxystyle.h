@@ -25,6 +25,7 @@
 #define GTKPROXYSTYLE_H
 
 #include <QProxyStyle>
+#include <QMap>
 #include "config.h"
 
 class ShortcutHandler;
@@ -39,7 +40,7 @@ public:
         SB_Thin
     };
 
-    GtkProxyStyle(ScrollbarType sb, bool styleSpin);
+    GtkProxyStyle(ScrollbarType sb, bool styleSpin, const QMap<QString, QString> &c);
     ~GtkProxyStyle();
     QSize sizeFromContents(ContentsType type, const QStyleOption *option,  const QSize &size, const QWidget *widget) const;
     int styleHint(StyleHint hint, const QStyleOption *option, const QWidget *widget, QStyleHintReturn *returnData) const;
@@ -59,6 +60,7 @@ private:
     ScrollbarType sbarType;
     int sbarPlainViewWidth;
     bool touchStyleSpin;
+    QMap<QString, QString> css;
 };
 
 #endif

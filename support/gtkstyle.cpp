@@ -248,33 +248,47 @@ void GtkStyle::applyTheme(QWidget *widget)
         QString theme=GtkStyle::themeName().toLower();
         GtkProxyStyle::ScrollbarType sbType=GtkProxyStyle::SB_Standard;
         bool touchStyleSpin=false;
+        QMap<QString, QString> css;
+        WindowManager *wm=0;
         if (!theme.isEmpty()) {
             QFile cssFile(QLatin1String(INSTALL_PREFIX"/share/")+QCoreApplication::applicationName()+QLatin1String("/themes/")+theme+QLatin1String(".css"));
-            if (cssFile.open(QFile::ReadOnly)) {
-                QString css=QLatin1String(cssFile.readAll());
-                QString header=css.left(128);
-                qApp->setStyleSheet(css);
-                if (header.contains("drag:toolbar")) {
-                    WindowManager *wm=new WindowManager(widget);
-                    wm->initialize(WindowManager::WM_DRAG_MENU_AND_TOOLBAR);
-                    wm->registerWidgetAndChildren(widget);
-                }
-                if (header.contains("scrollbar:overlay") || header.contains("scrollbar:thin")) {
-                    sbType=GtkProxyStyle::SB_Thin;
-                }
-                touchStyleSpin=header.contains("spinbox:touch");
+            if (cssFile.open(QFile::ReadOnly|QFile::Text)) {
                 const QString symKey=QLatin1String("symbolic-icons:#");
-                int pos=header.indexOf(symKey);
-                if (pos>0 && pos+6<header.length()) {
-                    symbolicIcons=true;
-                    symbolicIconColor=QColor(header.mid(pos+symKey.length()-1, 7));
+
+                while (!cssFile.atEnd()) {
+                    QString line = cssFile.readLine().trimmed();
+                    if (line.isEmpty()) {
+                        continue;
+                    }
+                    if (line.startsWith(QLatin1String("/*"))) {
+                        if (!wm && line.contains("drag:toolbar")) {
+                            wm=new WindowManager(widget);
+                            wm->initialize(WindowManager::WM_DRAG_MENU_AND_TOOLBAR);
+                            wm->registerWidgetAndChildren(widget);
+                        }
+                        if (line.contains("scrollbar:overlay") || line.contains("scrollbar:thin")) {
+                            sbType=GtkProxyStyle::SB_Thin;
+                        }
+                        touchStyleSpin=line.contains("spinbox:touch");
+                        int pos=line.indexOf(symKey);
+                        if (pos>0 && pos+6<line.length()) {
+                            symbolicIcons=true;
+                            symbolicIconColor=QColor(line.mid(pos+symKey.length()-1, 7));
+                        }
+                    } else {
+                        int space=line.indexOf(' ');
+                        if (space>2) {
+                            QString key=line.left(space);
+                            css.insert(line.left(space), line);
+                        }
+                    }
                 }
-                QCoreApplication::setAttribute(Qt::AA_DontShowIconsInMenus);
             }
         }
         if (!gtkProxyStyle) {
-            gtkProxyStyle=new GtkProxyStyle(sbType, touchStyleSpin);
+            gtkProxyStyle=new GtkProxyStyle(sbType, touchStyleSpin, css);
             qApp->setStyle(gtkProxyStyle);
+            QCoreApplication::setAttribute(Qt::AA_DontShowIconsInMenus);
         }
     }
 

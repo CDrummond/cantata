@@ -22,6 +22,10 @@
         install(FILES cantata32.png DESTINATION ${CMAKE_INSTALL_PREFIX}/share/icons/hicolor/32x32/apps RENAME cantata.png)
         install(FILES cantata48.png DESTINATION ${CMAKE_INSTALL_PREFIX}/share/icons/hicolor/48x48/apps RENAME cantata.png)
         install(FILES cantata64.png DESTINATION ${CMAKE_INSTALL_PREFIX}/share/icons/hicolor/64x64/apps RENAME cantata.png)
+
+        install(FILES trayicon-mono-dark.svg DESTINATION ${CMAKE_INSTALL_PREFIX}/share/${CMAKE_PROJECT_NAME}/icons/ubuntu-mono-light RENAME systray.svg)
+        install(FILES trayicon-mono-light.svg DESTINATION ${CMAKE_INSTALL_PREFIX}/share/${CMAKE_PROJECT_NAME}/icons/ubuntu-mono-dark RENAME systray.svg)
+
         update_iconcache()
     endif (UNIX AND NOT APPLE)
 #endif (ENABLE_KDE_SUPPORT)

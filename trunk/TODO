@@ -1,5 +1,4 @@
 - Qt5 port
-  - Fix raising of mainwindow via dbus. (Qt5 no longer has QX11Info)
   - After KDE Frameworks 5 is released, add CMake option to use system Solid
     libraries.
 

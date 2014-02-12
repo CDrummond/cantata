@@ -58,7 +58,6 @@
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KStandardDirs>
 #include <KDE/KGlobal>
-#include <KDE/KTemporaryFile>
 #include <QApplication>
 K_GLOBAL_STATIC(Covers, instance)
 #endif

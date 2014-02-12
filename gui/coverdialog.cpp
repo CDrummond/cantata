@@ -567,6 +567,10 @@ void CoverDialog::downloadJobFinished()
                         last->remove();
                         delete last;
                     }
+                    if (temp->size()<=0) {
+                        delete temp;
+                        temp=0;
+                    }
                     temp->setProperty(constLargeProperty, reply->property(constLargeProperty));
                     tempFiles.prepend(temp);
                 } else {

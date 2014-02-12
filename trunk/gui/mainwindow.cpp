@@ -664,6 +664,7 @@ MainWindow::MainWindow(QWidget *parent)
         menu->addAction(aboutAction);
         #endif
         menuBar()->addMenu(menu);
+        QTimer::singleShot(0, this, SLOT(hideMenuBar()));
     #if !defined Q_OS_MAC
     }
     #endif
@@ -2816,6 +2817,14 @@ void MainWindow::toggleContext()
          ( (MPDState_Playing==MPDStatus::self()->state() && !songInfoAction->isChecked()) ||
            (MPDState_Stopped==MPDStatus::self()->state() && songInfoAction->isChecked()) ) ) {
         songInfoAction->trigger();
+    }
+}
+
+void MainWindow::hideMenuBar()
+{
+    // For Qt builds that have not been modified for dbus-menu, we need to hide the actual menubar!
+    if (menuBar()) {
+        menuBar()->setVisible(false);
     }
 }
 

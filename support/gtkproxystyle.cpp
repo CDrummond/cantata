@@ -129,9 +129,9 @@ QSize GtkProxyStyle::sizeFromContents(ContentsType type, const QStyleOption *opt
     } else if (touchStyleSpin && CT_SpinBox==type) {
         if (const QStyleOptionSpinBox *spinBox = qstyleoption_cast<const QStyleOptionSpinBox *>(option)) {
             if (QAbstractSpinBox::NoButtons!=spinBox->buttonSymbols) {
-                if (0==sz.height()%2) {
-                    sz += QSize(0, 1);
-                }
+                #if QT_VERSION < 0x050200
+                sz += QSize(0, 1);
+                #endif
                 #if QT_VERSION >= 0x050000
                 // Qt5 does not seem to be taking special value, or suffix, into account when calculatng width...
                 if (widget && qobject_cast<const QSpinBox *>(widget)) {

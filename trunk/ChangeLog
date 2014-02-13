@@ -132,8 +132,8 @@
 79. When downloading, and parsing, ListLive streams, if a station has more than
     1 stream then list all streams - adding format and bitrate
 80. Move search fields back to the top of views.
-81. Check sizes of temporary files after write, to ensure data is written. This
-    fixes an issue where sometimes 0 byte files were written from CoverDialog.
+81. Close temporary files after write, to ensure data is written. This fixes an
+    issue where sometimes 0 byte files were written from CoverDialog.
 
 1.2.2
 -----

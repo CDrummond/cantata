@@ -858,11 +858,6 @@ static QTemporaryFile * saveImageToTemp(const QImage &img, const QString &name)
     }
     img.save(temp);
     temp->close();
-    if (temp->size()<=0) {
-        temp->remove();
-        delete temp;
-        temp=0;
-    }
     return temp;
 }
 

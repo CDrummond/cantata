@@ -984,9 +984,7 @@ void MainWindow::initSizes()
     } else {
         cwSize=qMax(cwSize, FancyTabWidget::iconSize()*2);
     }
-
-    coverWidget->setMinimumSize(cwSize, cwSize);
-    coverWidget->setMaximumSize(cwSize, cwSize);
+    coverWidget->setFixedSize(cwSize, cwSize);
 }
 
 void MainWindow::load(const QStringList &urls)

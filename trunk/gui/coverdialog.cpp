@@ -567,6 +567,7 @@ void CoverDialog::downloadJobFinished()
                         last->remove();
                         delete last;
                     }
+                    temp->close();
                     if (temp->size()<=0) {
                         delete temp;
                         temp=0;

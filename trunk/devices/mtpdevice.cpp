@@ -857,6 +857,7 @@ static QTemporaryFile * saveImageToTemp(const QImage &img, const QString &name)
         temp=new QTemporaryFile(QDir::tempPath()+"/cantata_XXXXXX");
     }
     img.save(temp);
+    temp->close();
     if (temp->size()<=0) {
         temp->remove();
         delete temp;

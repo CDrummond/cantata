@@ -232,24 +232,27 @@ MainWindow::MainWindow(QWidget *parent)
     Song::setUseComposer(Settings::self()->useComposer());
 
     #ifndef Q_OS_WIN
-    #if defined Q_OS_MAC && QT_VERSION>=0x050000
-    QMacNativeToolBar *topToolBar = new QMacNativeToolBar(this);
-    topToolBar->showInWindowForWidget(this);
-    #else // defined Q_OS_MAC && QT_VERSION>=0x050000
-    setUnifiedTitleAndToolBarOnMac(true);
-    QToolBar *topToolBar = addToolBar("ToolBar");
-    #endif // defined Q_OS_MAC && QT_VERSION>=0x050000
-    toolbar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    topToolBar->setObjectName("MainToolBar");
-    topToolBar->addWidget(toolbar);
-    topToolBar->setMovable(false);
-    topToolBar->setContextMenuPolicy(Qt::PreventContextMenu);
-    #ifndef Q_OS_MAC
-    GtkStyle::applyTheme(topToolBar);
-    #endif // Q_OS_MAC
-    topToolBar->setStyle(new ToolBarProxyStyle);
+    QSet<QString> basicThemes=QSet<QString>() << QLatin1String("QPlastiqueStyle") << QLatin1String("QCleanlooksStyle") << QLatin1String("QWindowsStyle") << QLatin1String("QFusionStyle");
+    if (!style() || !basicThemes.contains(style()->metaObject()->className())) {
+        #if defined Q_OS_MAC && QT_VERSION>=0x050000
+        QMacNativeToolBar *topToolBar = new QMacNativeToolBar(this);
+        topToolBar->showInWindowForWidget(this);
+        #else // defined Q_OS_MAC && QT_VERSION>=0x050000
+        setUnifiedTitleAndToolBarOnMac(true);
+        QToolBar *topToolBar = addToolBar("ToolBar");
+        #endif // defined Q_OS_MAC && QT_VERSION>=0x050000
+        toolbar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+        topToolBar->setObjectName("MainToolBar");
+        topToolBar->addWidget(toolbar);
+        topToolBar->setMovable(false);
+        topToolBar->setContextMenuPolicy(Qt::PreventContextMenu);
+        #ifndef Q_OS_MAC
+        GtkStyle::applyTheme(topToolBar);
+        #endif // Q_OS_MAC
+        topToolBar->setStyle(new ToolBarProxyStyle);
+        topToolBar->ensurePolished();
+    }
     #endif // Q_OS_WIN
-    topToolBar->ensurePolished();
 
     Icons::self()->initToolbarIcons(toolbar->palette().color(QPalette::Foreground));
     Icons::self()->initSidebarIcons();

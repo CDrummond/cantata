@@ -270,7 +270,7 @@ QTemporaryFile * Device::copySongToTemp(Song &song)
         if (QFile::exists(temp->fileName())) {
             QFile::remove(temp->fileName()); // Copy will *not* overwrite file!
         }
-        if (!QFile::copy(song.file, temp->fileName()) || temp->size()<=0) {
+        if (!QFile::copy(song.file, temp->fileName())) {
             temp->remove();
             delete temp;
             temp=0;

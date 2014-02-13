@@ -90,12 +90,14 @@ ShortcutsSettingsPage::ShortcutsSettingsPage(QWidget *p)
             settingsButton->setToolTip(i18n("Configure..."));
             settingsButton->setIcon(Icons::self()->configureIcon);
             boxLay->addWidget(settingsButton);
+            boxLay->addItem(new QSpacerItem(0, 1, QSizePolicy::MinimumExpanding, QSizePolicy::Fixed));
             connect(settingsButton, SIGNAL(clicked(bool)), SLOT(showGnomeSettings()));
             connect(mediaKeysIfaceCombo, SIGNAL(currentIndexChanged(int)), SLOT(mediaKeysIfaceChanged()));
         } else if (useQxt) {
             QBoxLayout *boxLay=new QBoxLayout(QBoxLayout::LeftToRight, box);
             mediaKeysEnabled = new QCheckBox(i18n("Use media keys to control Cantata"), box);
             boxLay->addWidget(mediaKeysEnabled);
+            boxLay->addItem(new QSpacerItem(0, 1, QSizePolicy::MinimumExpanding, QSizePolicy::Fixed));
             mediaKeysEnabled->setProperty(constMkEnabledVal, (unsigned int)MediaKeys::QxtInterface);
         } else if (useDesktop) {
             QBoxLayout *boxLay=new QBoxLayout(QBoxLayout::LeftToRight, box);
@@ -108,6 +110,7 @@ ShortcutsSettingsPage::ShortcutsSettingsPage(QWidget *p)
             settingsButton->setIcon(Icons::self()->configureIcon);
             boxLay->addWidget(mediaKeysEnabled);
             boxLay->addWidget(settingsButton);
+            boxLay->addItem(new QSpacerItem(0, 1, QSizePolicy::MinimumExpanding, QSizePolicy::Fixed));
             mediaKeysEnabled->setProperty(constMkEnabledVal, (unsigned int)MediaKeys::GnomeInteface);
             connect(mediaKeysEnabled, SIGNAL(toggled(bool)), settingsButton, SLOT(setEnabled(bool)));
             connect(settingsButton, SIGNAL(clicked(bool)), SLOT(showGnomeSettings()));

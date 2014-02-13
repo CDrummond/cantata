@@ -5140,8 +5140,8 @@ msgstr "Panel boczny"
 #. i18n: file: gui/interfacesettings.ui:42
 #. i18n: ectx: property (title), widget (QGroupBox, viewsGroup)
 #: po/rc.cpp:539 rc.cpp:539
-msgid "Views:"
-msgstr "Widok:"
+msgid "Views"
+msgstr "Widok"
 
 #. i18n: file: gui/interfacesettings.ui:48
 #. i18n: ectx: property (text), widget (QLabel, label_2)
@@ -5176,8 +5176,8 @@ msgstr ""
 #. i18n: file: gui/interfacesettings.ui:122
 #. i18n: ectx: property (title), widget (QGroupBox, optionsGroup)
 #: po/rc.cpp:551 rc.cpp:551
-msgid "Options:"
-msgstr "Opcje:"
+msgid "Options"
+msgstr "Opcje"
 
 #. i18n: file: gui/interfacesettings.ui:144
 #. i18n: ectx: property (text), widget (BuddyLabel, sbPositionLabel)
@@ -5359,8 +5359,8 @@ msgstr "Minimalizuj do tacki systemowej przy zamykaniu"
 #. i18n: file: gui/interfacesettings.ui:671
 #. i18n: ectx: property (title), widget (QGroupBox, startupState)
 #: po/rc.cpp:694 rc.cpp:694
-msgid "On Start-up:"
-msgstr "Przy uruchomieniu:"
+msgid "On Start-up"
+msgstr "Przy uruchomieniu"
 
 #. i18n: file: gui/interfacesettings.ui:677
 #. i18n: ectx: property (text), widget (QRadioButton, startupStateShow)

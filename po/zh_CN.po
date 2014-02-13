@@ -4911,7 +4911,7 @@ msgstr "大侧边栏"
 #. i18n: file: gui/interfacesettings.ui:42
 #. i18n: ectx: property (title), widget (QGroupBox, viewsGroup)
 #: po/rc.cpp:539 rc.cpp:539
-msgid "Views:"
+msgid "Views"
 msgstr ""
 
 #. i18n: file: gui/interfacesettings.ui:48
@@ -4942,8 +4942,8 @@ msgstr ""
 #. i18n: ectx: property (title), widget (QGroupBox, optionsGroup)
 #: po/rc.cpp:551 rc.cpp:551
 #, fuzzy
-msgid "Options:"
-msgstr "选项:"
+msgid "Options"
+msgstr "选项"
 
 #. i18n: file: gui/interfacesettings.ui:144
 #. i18n: ectx: property (text), widget (BuddyLabel, sbPositionLabel)
@@ -5131,7 +5131,7 @@ msgstr "最小化到托盘:"
 #. i18n: file: gui/interfacesettings.ui:671
 #. i18n: ectx: property (title), widget (QGroupBox, startupState)
 #: po/rc.cpp:694 rc.cpp:694
-msgid "On Start-up:"
+msgid "On Start-up"
 msgstr ""
 
 #. i18n: file: gui/interfacesettings.ui:677

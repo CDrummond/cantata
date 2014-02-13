@@ -39,7 +39,7 @@
        <item>
         <widget class="QGroupBox" name="viewsGroup">
          <property name="title">
-          <string>Views:</string>
+          <string>Views</string>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_6">
           <item>
@@ -119,7 +119,7 @@
        <item>
         <widget class="QGroupBox" name="optionsGroup">
          <property name="title">
-          <string>Options:</string>
+          <string>Options</string>
          </property>
          <layout class="QFormLayout" name="styleLayout">
           <property name="fieldGrowthPolicy">
@@ -668,7 +668,7 @@ within the folder of the current track, or within its parent folder. If no image
        <item>
         <widget class="QGroupBox" name="startupState">
          <property name="title">
-          <string>On Start-up:</string>
+          <string>On Start-up</string>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_4">
           <item>

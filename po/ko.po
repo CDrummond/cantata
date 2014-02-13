@@ -4979,8 +4979,8 @@ msgstr "옆줄"
 #. i18n: file: gui/interfacesettings.ui:42
 #. i18n: ectx: property (title), widget (QGroupBox, viewsGroup)
 #: po/rc.cpp:539 rc.cpp:539
-msgid "Views:"
-msgstr "보기:"
+msgid "Views"
+msgstr "보기"
 
 #. i18n: file: gui/interfacesettings.ui:48
 #. i18n: ectx: property (text), widget (QLabel, label_2)
@@ -5014,8 +5014,8 @@ msgstr ""
 #. i18n: file: gui/interfacesettings.ui:122
 #. i18n: ectx: property (title), widget (QGroupBox, optionsGroup)
 #: po/rc.cpp:551 rc.cpp:551
-msgid "Options:"
-msgstr "선택:"
+msgid "Options"
+msgstr "선택"
 
 #. i18n: file: gui/interfacesettings.ui:144
 #. i18n: ectx: property (text), widget (BuddyLabel, sbPositionLabel)
@@ -5195,8 +5195,8 @@ msgstr "닫으면 알림 영역으로 최소화"
 #. i18n: file: gui/interfacesettings.ui:671
 #. i18n: ectx: property (title), widget (QGroupBox, startupState)
 #: po/rc.cpp:694 rc.cpp:694
-msgid "On Start-up:"
-msgstr "시작할 때:"
+msgid "On Start-up"
+msgstr "시작할 때"
 
 #. i18n: file: gui/interfacesettings.ui:677
 #. i18n: ectx: property (text), widget (QRadioButton, startupStateShow)

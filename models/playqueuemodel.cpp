@@ -573,7 +573,7 @@ bool PlayQueueModel::dropMimeData(const QMimeData *data,
                     u=u.mid(7);
                 }
                 if (checkExtension(u)) {
-                    if (!HttpServer::self()->forceUsage() && MPDConnection::self()->getDetails().isLocal()) {
+                    if (!HttpServer::self()->forceUsage() && MPDConnection::self()->getDetails().isLocal() && !u.startsWith(QLatin1String("/media/"))) {
                         useable.append(QLatin1String("file://")+QUrl::fromPercentEncoding(u.toUtf8()));
                     } else if (HttpServer::self()->isAlive()) {
                         useable.append(HttpServer::self()->encodeUrl(QUrl::fromPercentEncoding(u.toUtf8())));

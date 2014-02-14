@@ -343,11 +343,10 @@ void HttpSocket::readClient()
                 return;
             }
 
-            #if QT_VERSION < 0x050000
             QUrl url(QUrl::fromEncoded(tokens[1]));
+            #if QT_VERSION < 0x050000
             QUrl &q=url;
             #else
-            QUrl url(QUrl::fromEncoded(tokens[1]));
             QUrlQuery q(url);
             #endif
             bool ok=false;

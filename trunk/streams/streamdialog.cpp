@@ -56,14 +56,12 @@ StreamDialog::StreamDialog(QWidget *parent, bool addToPlayQueue)
     QFormLayout *layout = new QFormLayout(wid);
 
     layout->setMargin(0);
+    urlEntry = new LineEdit(wid);
     if (addToPlayQueue) {
-        urlEntry = new LineEdit(wid);
         saveCombo=new QComboBox(wid);
-        nameEntry = new LineEdit(wid);
-    } else {
-        nameEntry = new LineEdit(wid);
-        urlEntry = new LineEdit(wid);
     }
+    nameEntry = new LineEdit(wid);
+
     nameEntry->setValidator(new NameValidator(this));
     statusText = new QLabel(this);
 
@@ -72,23 +70,19 @@ StreamDialog::StreamDialog(QWidget *parent, bool addToPlayQueue)
     BuddyLabel *urlLabel=new BuddyLabel(i18n("URL:"), wid, urlEntry);
 
     int row=0;
+    layout->setWidget(row, QFormLayout::LabelRole, urlLabel);
+    layout->setWidget(row++, QFormLayout::FieldRole, urlEntry);
     if (addToPlayQueue) {
         saveCombo->addItem(i18n("Just add to play queue, do not save"));
         saveCombo->addItem(i18n("Add to play queue, and save to favorites"));
         saveCombo->setCurrentIndex(0);
         saveCombo->setEnabled(StreamsModel::self()->isFavoritesWritable());
-        layout->setWidget(row, QFormLayout::LabelRole, urlLabel);
-        layout->setWidget(row++, QFormLayout::FieldRole, urlEntry);
         layout->setWidget(row++, QFormLayout::FieldRole, saveCombo);
         connect(saveCombo, SIGNAL(activated(int)), SLOT(saveComboChanged()));
         setWidgetVisiblity();
     }
     layout->setWidget(row, QFormLayout::LabelRole, nameLabel);
     layout->setWidget(row++, QFormLayout::FieldRole, nameEntry);
-    if (!addToPlayQueue) {
-        layout->setWidget(row, QFormLayout::LabelRole, urlLabel);
-        layout->setWidget(row++, QFormLayout::FieldRole, urlEntry);
-    }
 
     layout->setWidget(row++, QFormLayout::SpanningRole, statusText);
     setCaption(i18n("Add Stream"));
@@ -97,11 +91,7 @@ StreamDialog::StreamDialog(QWidget *parent, bool addToPlayQueue)
     enableButton(Ok, false);
     connect(nameEntry, SIGNAL(textChanged(const QString &)), SLOT(changed()));
     connect(urlEntry, SIGNAL(textChanged(const QString &)), SLOT(changed()));
-    if (addToPlayQueue) {
-        urlEntry->setFocus();
-    } else {
-        nameEntry->setFocus();
-    }
+    urlEntry->setFocus();
     resize(400, 100);
 }
 

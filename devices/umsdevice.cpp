@@ -31,6 +31,7 @@
 #include <QFile>
 #include <QFileInfo>
 #include <QTextStream>
+#include <QDebug>
 
 static const QLatin1String constSettingsFile("/.is_audio_player");
 static const QLatin1String constMusicFolderKey("audio_folder");
@@ -39,6 +40,11 @@ UmsDevice::UmsDevice(MusicModel *m, Solid::Device &dev)
     : FsDevice(m, dev)
     , access(dev.as<Solid::StorageAccess>())
 {
+    QStringList udiParts=dev.udi().split(QLatin1Char('/'), QString::SkipEmptyParts);
+
+    if (udiParts.length()>1) {
+        setData(data()+QLatin1String(" (")+udiParts.last()+QLatin1Char(')'));
+    }
     spaceInfo.setPath(access->filePath());
     setup();
 }

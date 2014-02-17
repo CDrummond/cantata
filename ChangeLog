@@ -135,8 +135,10 @@
 81. Close temporary files after write, to ensure data is written. This fixes an
     issue where sometimes 0 byte files were written from CoverDialog.
 82. Use same order (URL, name) for both add stream-URL dialogs.
-83. For UMS devices, add device (in brackets) after name. Should help devices
-    with multiple partitions.
+83. For UMS devices, add device and size (in brackets) after name. Should help
+    devices with multiple partitions.
+84. Use WindowText, and not ButtonText, colour for mono icons - fixes wrong
+    colour being used with Bespin style.
 
 1.2.2
 -----

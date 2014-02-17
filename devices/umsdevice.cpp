@@ -31,7 +31,11 @@
 #include <QFile>
 #include <QFileInfo>
 #include <QTextStream>
-#include <QDebug>
+#ifdef ENABLE_KDE_SUPPORT
+#include <solid/storagedrive.h>
+#else
+#include "solid-lite/storagedrive.h"
+#endif
 
 static const QLatin1String constSettingsFile("/.is_audio_player");
 static const QLatin1String constMusicFolderKey("audio_folder");
@@ -40,12 +44,20 @@ UmsDevice::UmsDevice(MusicModel *m, Solid::Device &dev)
     : FsDevice(m, dev)
     , access(dev.as<Solid::StorageAccess>())
 {
-    QStringList udiParts=dev.udi().split(QLatin1Char('/'), QString::SkipEmptyParts);
-
-    if (udiParts.length()>1) {
-        setData(data()+QLatin1String(" (")+udiParts.last()+QLatin1Char(')'));
-    }
     spaceInfo.setPath(access->filePath());
+
+    QString details=QLatin1String(" (")+Utils::formatByteSize(spaceInfo.size());
+
+    QStringList udiParts=dev.udi().split(QLatin1Char('/'), QString::SkipEmptyParts);
+    if (udiParts.length()>1) {
+        details+=QLatin1String(" - ")+udiParts.last();
+    }
+
+    if (!details.isEmpty()) {
+        details+=QLatin1Char(')');
+    }
+
+    setData(data()+details);
     setup();
 }
 

@@ -211,6 +211,7 @@ private:
     QString serial;
     unsigned int busNum;
     unsigned int devNum;
+    QString defaultName;
     friend class MtpConnection;
 };
 

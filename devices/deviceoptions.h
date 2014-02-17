@@ -68,7 +68,7 @@ struct DeviceOptions {
         return vfatSafe==o.vfatSafe && asciiOnly==o.asciiOnly && ignoreThe==o.ignoreThe &&
                 replaceSpaces==o.replaceSpaces && scheme==o.scheme
                 #ifdef ENABLE_DEVICES_SUPPORT
-                && coverMaxSize==o.coverMaxSize && coverName==o.coverName
+                && coverMaxSize==o.coverMaxSize && coverName==o.coverName && name==o.name
                 && fixVariousArtists==o.fixVariousArtists && useCache==o.useCache &&
                 transcoderCodec==o.transcoderCodec && autoScan==o.autoScan && volumeId==o.volumeId &&
                 (transcoderCodec.isEmpty() || (transcoderValue==o.transcoderValue && transcoderWhenDifferent==o.transcoderWhenDifferent))
@@ -100,6 +100,7 @@ struct DeviceOptions {
     bool transcoderWhenDifferent;
     bool useCache;
     bool autoScan;
+    QString name;
     QString coverName;
     unsigned int coverMaxSize;
     QString volumeId;

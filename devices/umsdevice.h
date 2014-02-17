@@ -58,6 +58,7 @@ private Q_SLOTS:
     void saveProperties(const QString &newPath, const DeviceOptions &opts);
 
 private:
+    QString defaultName;
     Solid::StorageAccess *access;
     QStringList unusedParams;
 };

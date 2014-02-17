@@ -172,6 +172,20 @@ void ActionDialog::controlInfoLabel(Device *dev)
     }
 }
 
+void ActionDialog::deviceRenamed()
+{
+    Device *dev=getDevice(sourceUdi.isEmpty() ? destUdi : sourceUdi);
+    if (!dev) {
+        return;
+    }
+
+    if (Remove==mode || (Copy==mode && !sourceUdi.isEmpty())) {
+        sourceLabel->setText(QLatin1String("<b>")+dev->data()+QLatin1String("</b>"));
+    } else {
+        destinationLabel->setText(QLatin1String("<b>")+dev->data()+QLatin1String("</b>"));
+    }
+}
+
 void ActionDialog::showSongs()
 {
     if (!songDialog) {
@@ -740,6 +754,7 @@ void ActionDialog::configure(const QString &udi)
         if (dev) {
             dev->configure(this);
             connect(dev, SIGNAL(configurationChanged()), SLOT(controlInfoLabel()));
+            connect(dev, SIGNAL(renamed()), SLOT(deviceRenamed()));
         }
     }
 }

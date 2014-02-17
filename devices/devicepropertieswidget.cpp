@@ -123,6 +123,13 @@ void DevicePropertiesWidget::update(const QString &path, const DeviceOptions &op
             albumCovers->insertItems(0, QStringList() << noCoverText << embedCoverText);
         }
     }
+    if (props&Prop_Name) {
+        name->setText(opts.name);
+        connect(name, SIGNAL(textChanged(const QString &)), SLOT(checkSaveable()));
+    } else {
+        REMOVE(name)
+        REMOVE(nameLabel)
+    }
     if (props&Prop_FileName) {
         filenameScheme->setText(opts.scheme);
         vfatSafe->setChecked(opts.vfatSafe);
@@ -352,6 +359,9 @@ void DevicePropertiesWidget::configureFilenameScheme()
 DeviceOptions DevicePropertiesWidget::settings()
 {
     DeviceOptions opts;
+    if (name) {
+        opts.name=name->text().trimmed();
+    }
     if (filenameScheme) {
         opts.scheme=filenameScheme->text().trimmed();
     }

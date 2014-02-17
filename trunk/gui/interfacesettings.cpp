@@ -100,6 +100,8 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     addViewTypes(albumsView, true);
     addViewTypes(folderView);
     addViewTypes(playlistsView, false, true, true);
+    searchView->addItem(i18n("List"), ItemView::Mode_List);
+    searchView->addItem(i18n("Table"), ItemView::Mode_Table);
 
     addView(i18n("Play queue"), QLatin1String("PlayQueuePage"));
     addView(i18n("Artists"), QLatin1String("LibraryPage"));
@@ -208,6 +210,8 @@ void InterfaceSettings::load()
     showDeleteAction->setChecked(Settings::self()->showDeleteAction());
     selectEntry(devicesView, Settings::self()->devicesView());
     #endif
+    selectEntry(searchView, Settings::self()->searchView());
+
     playQueueGrouped->setCurrentIndex(Settings::self()->playQueueGrouped() ? 0 : 1);
     playQueueAutoExpand->setChecked(Settings::self()->playQueueAutoExpand());
     playQueueStartClosed->setChecked(Settings::self()->playQueueStartClosed());
@@ -285,6 +289,7 @@ void InterfaceSettings::save()
     Settings::self()->saveShowDeleteAction(showDeleteAction->isChecked());
     Settings::self()->saveDevicesView(getValue(devicesView));
     #endif
+    Settings::self()->saveSearchView(getValue(searchView));
     Settings::self()->savePlayQueueGrouped(constPlayQueueGrouped==playQueueGrouped->currentIndex());
     Settings::self()->savePlayQueueAutoExpand(playQueueAutoExpand->isChecked());
     Settings::self()->savePlayQueueStartClosed(playQueueStartClosed->isChecked());

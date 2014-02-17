@@ -236,6 +236,7 @@ void DeviceOptions::load(const QString &group, bool isMpd)
     if (!isMpd) {
         useCache=GET_BOOL("useCache", useCache);
         fixVariousArtists=GET_BOOL("fixVariousArtists", fixVariousArtists);
+        name=GET_STRING("name", name);
         coverName=GET_STRING("coverFileName", coverName);
         coverMaxSize=GET_INT("coverMaxSize", coverMaxSize);
         volumeId=GET_STRING("volumeId", volumeId);
@@ -267,6 +268,7 @@ void DeviceOptions::save(const QString &group, bool isMpd, bool saveTrans, bool 
     if (!isMpd) {
         SET_VALUE("useCache", useCache);
         SET_VALUE("fixVariousArtists", fixVariousArtists);
+        SET_VALUE("name", name);
         SET_VALUE("coverFileName", coverName);
         SET_VALUE("coverMaxSize", coverMaxSize);
         SET_VALUE("volumeId", volumeId);

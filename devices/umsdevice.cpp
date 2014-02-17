@@ -39,6 +39,7 @@
 
 static const QLatin1String constSettingsFile("/.is_audio_player");
 static const QLatin1String constMusicFolderKey("audio_folder");
+static const QLatin1String constCollectionNameKey("collection_name");
 
 UmsDevice::UmsDevice(MusicModel *m, Solid::Device &dev)
     : FsDevice(m, dev)
@@ -57,7 +58,8 @@ UmsDevice::UmsDevice(MusicModel *m, Solid::Device &dev)
         details+=QLatin1Char(')');
     }
 
-    setData(data()+details);
+    defaultName=data()+details;
+    setData(defaultName);
     setup();
 }
 
@@ -141,8 +143,9 @@ void UmsDevice::setup()
 
     QFile file(path+constSettingsFile);
     QString audioFolderSetting;
+    QString n=data();
+    bool haveOpts=FsDevice::readOpts(path+constCantataSettingsFile, opts, false);
 
-    opts=DeviceOptions();
     if (file.open(QIODevice::ReadOnly|QIODevice::Text)) {
         configured=true;
         QTextStream in(&file);
@@ -167,13 +170,14 @@ void UmsDevice::setup()
                 opts.ignoreThe = QLatin1String("true")==line.section('=', 1, 1);
             } else if (line.startsWith(constReplaceSpacesKey+"="))  {
                 opts.replaceSpaces = QLatin1String("true")==line.section('=', 1, 1);
+            } else if (line.startsWith(constCollectionNameKey+"="))  {
+                opts.name = line.section('=', 1, 1).trimmed();
             } else {
                 unusedParams+=line;
             }
         }
     }
 
-    bool haveOpts=FsDevice::readOpts(path+constCantataSettingsFile, opts, false);
     if (!configured) {
         configured=haveOpts;
     }
@@ -205,6 +209,10 @@ void UmsDevice::setup()
     } else {
         setStatusMessage(i18n("Not Scanned"));
     }
+    if (!opts.name.isEmpty() && opts.name!=n) {
+        setData(opts.name);
+        emit renamed();
+    }
 }
 
 void UmsDevice::configure(QWidget *parent)
@@ -218,7 +226,11 @@ void UmsDevice::configure(QWidget *parent)
     if (!configured) {
         connect(dlg, SIGNAL(cancelled()), SLOT(saveProperties()));
     }
-    dlg->show(audioFolder, opts,
+    DeviceOptions o=opts;
+    if (o.name.isEmpty()) {
+        o.name=data();
+    }
+    dlg->show(audioFolder, o,
               qobject_cast<ActionDialog *>(parent) ? (DevicePropertiesWidget::Prop_All-DevicePropertiesWidget::Prop_Folder)
                                                    : DevicePropertiesWidget::Prop_All);
 }
@@ -268,6 +280,9 @@ void UmsDevice::saveOptions()
         if (opts.replaceSpaces!=def.replaceSpaces) {
             out << constReplaceSpacesKey << '=' << toString(opts.replaceSpaces) << '\n';
         }
+        if (!opts.name.isEmpty() && opts.name!=defaultName) {
+            out << constCollectionNameKey << '=' << opts.name << '\n';
+        }
 
         foreach (const QString &u, unusedParams) {
             out << u << '\n';
@@ -283,8 +298,13 @@ void UmsDevice::saveProperties(const QString &newPath, const DeviceOptions &newO
     }
 
     configured=true;
+    QString newName=newOpts.name.isEmpty() ? defaultName : newOpts.name;
+    bool diffName=opts.name!=newName;
     bool diffCacheSettings=opts.useCache!=newOpts.useCache;
     opts=newOpts;
+    if (diffName) {
+        setData(newName);
+    }
     if (diffCacheSettings) {
         if (opts.useCache) {
             saveCache();
@@ -306,5 +326,8 @@ void UmsDevice::saveProperties(const QString &newPath, const DeviceOptions &newO
 
     if (oldPath!=audioFolder) {
         rescan(); // Path changed, so we can ignore cache...
+    }
+    if (diffName) {
+        emit renamed();
     }
 }

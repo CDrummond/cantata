@@ -1300,6 +1300,10 @@ MtpDevice::MtpDevice(MusicModel *m, Solid::Device &dev)
     opts.fixVariousArtists=false;
     opts.coverName=constMtpDefaultCover;
     QTimer::singleShot(0, this, SLOT(rescan(bool)));
+    defaultName=data();
+    if (!opts.name.isEmpty()) {
+        setData(opts.name);
+    }
 }
 
 MtpDevice::~MtpDevice()
@@ -1317,6 +1321,10 @@ void MtpDevice::deviceDetails(const QString &s)
         QSettings cfg;
         #endif
         configured=HAS_GROUP(configKey);
+        if (!opts.name.isEmpty() && opts.name!=defaultName) {
+            setData(opts.name);
+            emit renamed();
+        }
     }
 }
 
@@ -1344,7 +1352,11 @@ void MtpDevice::configure(QWidget *parent)
     if (!configured) {
         connect(dlg, SIGNAL(cancelled()), SLOT(saveProperties()));
     }
-    dlg->show(QString(), opts, connection->getStorageList(), DevicePropertiesWidget::Prop_CoversAll|DevicePropertiesWidget::Prop_Va|DevicePropertiesWidget::Prop_Transcoder);
+    DeviceOptions o=opts;
+    if (o.name.isEmpty()) {
+        o.name=data();
+    }
+    dlg->show(QString(), o, connection->getStorageList(), DevicePropertiesWidget::Prop_Name|DevicePropertiesWidget::Prop_CoversAll|DevicePropertiesWidget::Prop_Va|DevicePropertiesWidget::Prop_Transcoder);
 }
 
 void MtpDevice::rescan(bool full)
@@ -1648,8 +1660,17 @@ void MtpDevice::saveProperties(const QString &, const DeviceOptions &newOpts)
     if (configured && opts==newOpts) {
         return;
     }
+
+    QString newName=newOpts.name.isEmpty() ? defaultName : newOpts.name;
+    bool diffName=opts.name!=newName;
     opts=newOpts;
+    if (diffName) {
+        setData(newName);
+    }
     saveProperties();
+    if (diffName) {
+        emit renamed();
+    }
 }
 
 void MtpDevice::saveProperties()

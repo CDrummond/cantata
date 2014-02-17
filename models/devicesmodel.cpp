@@ -441,6 +441,7 @@ void DevicesModel::addLocalDevice(const QString &udi)
         connect(dev, SIGNAL(invalid(QList<Song>)), SIGNAL(invalid(QList<Song>)));
         connect(dev, SIGNAL(updatedDetails(QList<Song>)), SIGNAL(updatedDetails(QList<Song>)));
         connect(dev, SIGNAL(play(QList<Song>)), SLOT(play(QList<Song>)));
+        connect(dev, SIGNAL(renamed()), this, SLOT(updateItemMenu()));
         #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
         if (Device::AudioCd==dev->devType()) {
             connect(static_cast<AudioCdDevice *>(dev), SIGNAL(matches(const QString &, const QList<CdAlbum> &)),

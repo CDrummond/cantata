@@ -199,7 +199,7 @@ static QPixmap createMenuIconPixmap(int size, QColor col, double opacity=1.0)
 static QColor calcIconColor()
 {
     QColor bgnd=QApplication::palette().color(QPalette::Active, QPalette::Background);
-    QColor text=QApplication::palette().color(QPalette::Active, QPalette::ButtonText);
+    QColor text=QApplication::palette().color(QPalette::Active, QPalette::WindowText);
     return clampColor(text, constDarkLimit, bgnd.value()<224 ? 32 : 48);
 }
 
@@ -508,7 +508,7 @@ void Icons::initSidebarIcons()
 {
     if (Settings::self()->monoSidebarIcons()) {
         monoSb=true;
-        QColor textCol=QApplication::palette().color(QPalette::Active, QPalette::ButtonText);
+        QColor textCol=QApplication::palette().color(QPalette::Active, QPalette::WindowText);
         QColor highlightedTexCol=QApplication::palette().color(QPalette::Active, QPalette::HighlightedText);
         playqueueIcon=loadSidebarIcon(QLatin1String("playqueue"), textCol, highlightedTexCol);
         artistsIcon=loadSidebarIcon(QLatin1String("artists"), textCol, highlightedTexCol);
@@ -546,7 +546,7 @@ void Icons::initSidebarIcons()
         onlineIcon=Icon("applications-internet");
         #endif
         if (QLatin1String("gnome")==Icon::currentTheme().toLower()) {
-            QColor col=QApplication::palette().color(QPalette::Active, QPalette::ButtonText);
+            QColor col=QApplication::palette().color(QPalette::Active, QPalette::WindowText);
             infoSidebarIcon=loadSidebarIcon("info", col, col);
         } else {
             infoSidebarIcon=Icon("dialog-information");
@@ -597,7 +597,7 @@ void Icons::initToolbarIcons(const QColor &toolbarText)
         }
         #endif
         if (QLatin1String("gnome")==Icon::currentTheme().toLower()) {
-            QColor col=QApplication::palette().color(QPalette::Active, QPalette::ButtonText);
+            QColor col=QApplication::palette().color(QPalette::Active, QPalette::WindowText);
             infoIcon=loadSidebarIcon("info", col, col);
         }
     }
@@ -608,7 +608,7 @@ void Icons::initToolbarIcons(const QColor &toolbarText)
 
     #if !defined ENABLE_KDE_SUPPORT && !defined Q_OS_WIN && !defined Q_OS_MAC
     if (QLatin1String("gnome")==Icon::currentTheme().toLower()) {
-        QColor col=QApplication::palette().color(QPalette::Active, QPalette::ButtonText);
+        QColor col=QApplication::palette().color(QPalette::Active, QPalette::WindowText);
         contextIcon=loadSidebarIcon("info", col, col);
     } else
     #endif

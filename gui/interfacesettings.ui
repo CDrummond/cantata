@@ -11,16 +11,7 @@
    </rect>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
-   <property name="leftMargin">
-    <number>0</number>
-   </property>
-   <property name="topMargin">
-    <number>0</number>
-   </property>
-   <property name="rightMargin">
-    <number>0</number>
-   </property>
-   <property name="bottomMargin">
+   <property name="margin">
     <number>0</number>
    </property>
    <item>
@@ -422,6 +413,16 @@ within the folder of the current track, or within its parent folder. If no image
        <item row="3" column="1">
         <widget class="QComboBox" name="devicesView"/>
        </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="label_5">
+         <property name="text">
+          <string>Search view style:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1">
+        <widget class="QComboBox" name="searchView"/>
+       </item>
       </layout>
      </widget>
      <widget class="QWidget" name="tab_5">
@@ -519,14 +520,14 @@ within the folder of the current track, or within its parent folder. If no image
           </item>
           <item row="2" column="2">
            <widget class="PathRequester" name="playQueueBackgroundFile">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
             <property name="sizePolicy">
              <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
-            </property>
-            <property name="enabled">
-             <bool>false</bool>
             </property>
            </widget>
           </item>
@@ -544,6 +545,9 @@ within the folder of the current track, or within its parent folder. If no image
             </property>
             <item>
              <widget class="QSlider" name="playQueueBackgroundBlur">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
               <property name="maximum">
                <number>20</number>
               </property>
@@ -559,21 +563,18 @@ within the folder of the current track, or within its parent folder. If no image
               <property name="tickInterval">
                <number>1</number>
               </property>
-              <property name="enabled">
-               <bool>false</bool>
-              </property>
              </widget>
             </item>
             <item>
              <widget class="QLabel" name="playQueueBackgroundBlurLabel">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
               <property name="text">
                <string>10px</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-              </property>
-              <property name="enabled">
-               <bool>false</bool>
               </property>
              </widget>
             </item>
@@ -593,6 +594,9 @@ within the folder of the current track, or within its parent folder. If no image
             </property>
             <item>
              <widget class="QSlider" name="playQueueBackgroundOpacity">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
               <property name="maximum">
                <number>100</number>
               </property>
@@ -608,21 +612,18 @@ within the folder of the current track, or within its parent folder. If no image
               <property name="tickInterval">
                <number>10</number>
               </property>
-              <property name="enabled">
-               <bool>false</bool>
-              </property>
              </widget>
             </item>
             <item>
              <widget class="QLabel" name="playQueueBackgroundOpacityLabel">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
               <property name="text">
                <string>40%</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-              </property>
-              <property name="enabled">
-               <bool>false</bool>
               </property>
              </widget>
             </item>

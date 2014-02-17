@@ -75,6 +75,7 @@ private Q_SLOTS:
     void jobPercent(int percent);
     void cacheSaved();
     void controlInfoLabel();
+    void deviceRenamed();
     void showSongs();
     void showMopidyMessage();
 

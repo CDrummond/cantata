@@ -200,6 +200,7 @@ Q_SIGNALS:
     void invalid(const QList<Song> &songs);
     void play(const QList<Song> &songs);
     void updatedDetails(const QList<Song> &songs);
+    void renamed();
 
 protected:
     #ifdef ENABLE_DEVICES_SUPPORT

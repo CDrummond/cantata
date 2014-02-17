@@ -30,6 +30,19 @@
       <enum>QFormLayout::ExpandingFieldsGrow</enum>
      </property>
      <item row="0" column="0">
+      <widget class="BuddyLabel" name="nameLabel">
+       <property name="text">
+        <string>Name:</string>
+       </property>
+       <property name="buddy">
+        <cstring>name</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="LineEdit" name="name"/>
+     </item>
+     <item row="1" column="0">
       <widget class="BuddyLabel" name="musicFolderLabel">
        <property name="text">
         <string>Music folder:</string>
@@ -39,10 +52,10 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
+     <item row="1" column="1">
       <widget class="PathRequester" name="musicFolder"/>
      </item>
-     <item row="1" column="0">
+     <item row="2" column="0">
       <widget class="BuddyLabel" name="albumCoversLabel">
        <property name="text">
         <string>Copy album covers as:</string>
@@ -52,14 +65,14 @@
        </property>
       </widget>
      </item>
-     <item row="1" column="1">
+     <item row="2" column="1">
       <widget class="QComboBox" name="albumCovers">
        <property name="editable">
         <bool>true</bool>
        </property>
       </widget>
      </item>
-     <item row="2" column="0">
+     <item row="3" column="0">
       <widget class="BuddyLabel" name="coverMaxSizeLabel">
        <property name="text">
         <string>Maximum cover size:</string>
@@ -69,38 +82,38 @@
        </property>
       </widget>
      </item>
-     <item row="2" column="1">
+     <item row="3" column="1">
       <widget class="QComboBox" name="coverMaxSize">
        <property name="editable">
         <bool>false</bool>
        </property>
       </widget>
      </item>
-     <item row="3" column="1">
+     <item row="4" column="1">
       <widget class="QComboBox" name="defaultVolume"/>
      </item>
-     <item row="3" column="0">
+     <item row="4" column="0">
       <widget class="QLabel" name="defaultVolumeLabel">
        <property name="text">
         <string>Default volume:</string>
        </property>
       </widget>
      </item>
-     <item row="4" column="0" colspan="2">
+     <item row="5" column="0" colspan="2">
       <widget class="QCheckBox" name="fixVariousArtists">
        <property name="text">
         <string>'Various Artists' workaround</string>
        </property>
       </widget>
      </item>
-     <item row="5" column="0" colspan="2">
+     <item row="6" column="0" colspan="2">
       <widget class="QCheckBox" name="autoScan">
        <property name="text">
         <string>Automatically scan music when attached</string>
        </property>
       </widget>
      </item>
-     <item row="6" column="0" colspan="2">
+     <item row="7" column="0" colspan="2">
       <widget class="QCheckBox" name="useCache">
        <property name="text">
         <string>Use cache</string>

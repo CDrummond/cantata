@@ -84,7 +84,6 @@ public Q_SLOTS:
     void mountsChanged();
 
 private:
-    void updateItemMenu();
     void addLocalDevice(const QString &udi);
     #ifdef ENABLE_REMOTE_DEVICES
     void loadRemote();
@@ -103,6 +102,7 @@ Q_SIGNALS:
 private Q_SLOTS:
     void play(const QList<Song> &songs);
     void loadLocal();
+    void updateItemMenu();
 
 private:
     QSet<QString> volumes;

@@ -647,7 +647,7 @@ void RemoteFsDevice::configure(QWidget *parent)
         connect(dlg, SIGNAL(cancelled()), SLOT(saveProperties()));
     }
     dlg->show(opts, details,
-              DevicePropertiesWidget::Prop_All-(DevicePropertiesWidget::Prop_Folder+DevicePropertiesWidget::Prop_AutoScan),
+              DevicePropertiesWidget::Prop_All-(DevicePropertiesWidget::Prop_Name+DevicePropertiesWidget::Prop_Folder+DevicePropertiesWidget::Prop_AutoScan),
               false, isConnected());
 }
 

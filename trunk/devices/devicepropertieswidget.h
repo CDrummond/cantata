@@ -37,18 +37,19 @@ public:
     enum Properties {
         Prop_Basic       = 0x0000,
 
-        Prop_Folder      = 0x0001,
-        Prop_FileName    = 0x0002,
-        Prop_CoversAll   = 0x0004,
-        Prop_CoversBasic = 0x0008,
-        Prop_Va          = 0x0010,
-        Prop_Transcoder  = 0x0020,
-        Prop_Cache       = 0x0040,
-        Prop_AutoScan    = 0x0080,
+        Prop_Name        = 0x0001,
+        Prop_Folder      = 0x0002,
+        Prop_FileName    = 0x0004,
+        Prop_CoversAll   = 0x0008,
+        Prop_CoversBasic = 0x0010,
+        Prop_Va          = 0x0020,
+        Prop_Transcoder  = 0x0040,
+        Prop_Cache       = 0x0080,
+        Prop_AutoScan    = 0x0100,
 
-        Prop_Encoder     = 0x0100,
+        Prop_Encoder     = 0x0200,
 
-        Prop_All         = 0x01FF
+        Prop_All         = 0x02FF
     };
     DevicePropertiesWidget(QWidget *parent);
     virtual ~DevicePropertiesWidget() { }

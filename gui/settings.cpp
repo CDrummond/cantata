@@ -613,6 +613,13 @@ bool Settings::contextAlwaysCollapsed()
     return GET_BOOL("contextAlwaysCollapsed", false);
 }
 
+
+int Settings::contextSwitchTime()
+{
+    int v=GET_INT("contextSwitchTime", 0);
+    return RESTRICT(v, 0, 5000);
+}
+
 QString Settings::page()
 {
     return GET_STRING("page", QString());
@@ -950,12 +957,6 @@ bool Settings::alwaysUseLsInfo()
     return GET_BOOL("alwaysUseLsInfo", false);
 }
 
-int Settings::contextSwitchTime()
-{
-    int v=GET_INT("contextSwitchTime", 0);
-    return RESTRICT(v, 0, 5000);
-}
-
 void Settings::removeConnectionDetails(const QString &v)
 {
     if (v==currentConnection()) {
@@ -1250,6 +1251,11 @@ void Settings::saveContextAlwaysCollapsed(bool v)
     SET_VALUE_MOD(contextAlwaysCollapsed)
 }
 
+void Settings::saveContextSwitchTime(int v)
+{
+    SET_VALUE_MOD(contextSwitchTime);
+}
+
 void Settings::savePage(const QString &v)
 {
     SET_VALUE_MOD(page)
@@ -1485,11 +1491,6 @@ void Settings::saveLang(const QString &v)
     SET_VALUE_MOD(lang);
 }
 #endif
-
-void Settings::saveContextSwitchTime(int v)
-{
-    SET_VALUE_MOD(contextSwitchTime);
-}
 
 void Settings::save(bool force)
 {

@@ -7,11 +7,14 @@
     <x>0</x>
     <y>0</y>
     <width>658</width>
-    <height>384</height>
+    <height>450</height>
    </rect>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
-   <item>
+  <layout class="QFormLayout" name="formLayout">
+   <property name="fieldGrowthPolicy">
+    <enum>QFormLayout::ExpandingFieldsGrow</enum>
+   </property>
+   <item row="0" column="0" colspan="2">
     <widget class="QGroupBox" name="groupBox">
      <property name="sizePolicy">
       <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
@@ -158,28 +161,54 @@
      </layout>
     </widget>
    </item>
-   <item>
+   <item row="1" column="0">
+    <widget class="BuddyLabel" name="contextSwitchTimeLabel">
+     <property name="text">
+      <string>Automatically switch to view after:</string>
+     </property>
+     <property name="buddy">
+      <cstring>contextSwitchTime</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QSpinBox" name="contextSwitchTime">
+     <property name="specialValueText">
+      <string>Do not auto-switch</string>
+     </property>
+     <property name="suffix">
+      <string> ms</string>
+     </property>
+     <property name="maximum">
+      <number>5000</number>
+     </property>
+     <property name="singleStep">
+      <number>500</number>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0" colspan="2">
     <widget class="QCheckBox" name="contextDarkBackground">
      <property name="text">
       <string>Dark background</string>
      </property>
     </widget>
    </item>
-   <item>
+   <item row="3" column="0" colspan="2">
     <widget class="QCheckBox" name="wikipediaIntroOnly">
      <property name="text">
       <string>Only show basic wikipedia text</string>
      </property>
     </widget>
    </item>
-   <item>
+   <item row="4" column="0" colspan="2">
     <widget class="QCheckBox" name="contextAlwaysCollapsed">
      <property name="text">
       <string>Always collapse into a single pane</string>
      </property>
     </widget>
    </item>
-   <item>
+   <item row="5" column="1">
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -195,7 +224,7 @@
      </property>
     </spacer>
    </item>
-   <item>
+   <item row="6" column="0" colspan="2">
     <widget class="StateLabel" name="wikipediaIntroOnlyNote">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
@@ -214,7 +243,7 @@
      </property>
     </widget>
    </item>
-   <item>
+   <item row="7" column="1">
     <spacer name="verticalSpacer_2">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -233,6 +262,11 @@
   </layout>
  </widget>
  <customwidgets>
+ <customwidget>
+  <class>BuddyLabel</class>
+  <extends>QLabel</extends>
+  <header>buddylabel.h</header>
+ </customwidget>
   <customwidget>
    <class>StateLabel</class>
    <extends>QLabel</extends>

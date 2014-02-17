@@ -67,6 +67,7 @@ void OtherSettings::load()
     contextBackdropOpacity->setValue(Settings::self()->contextBackdropOpacity());
     contextBackdropBlur->setValue(Settings::self()->contextBackdropBlur());
     contextBackdropFile->setText(Settings::self()->contextBackdropFile());
+    contextSwitchTime->setValue(Settings::self()->contextSwitchTime());
 
     toggleWikiNote();
     setContextBackdropOpacityLabel();
@@ -90,6 +91,7 @@ void OtherSettings::save()
     Settings::self()->saveContextBackdropOpacity(contextBackdropOpacity->value());
     Settings::self()->saveContextBackdropBlur(contextBackdropBlur->value());
     Settings::self()->saveContextBackdropFile(contextBackdropFile->text().trimmed());
+    Settings::self()->saveContextSwitchTime(contextSwitchTime->value());
 }
 
 void OtherSettings::toggleWikiNote()

@@ -148,6 +148,7 @@ public:
     QString contextSlimPage();
     QByteArray contextSplitterState();
     bool contextAlwaysCollapsed();
+    int contextSwitchTime();
     QString page();
     QStringList hiddenPages();
     #ifndef ENABLE_KDE_SUPPORT
@@ -218,7 +219,6 @@ public:
     QString lang();
     #endif
     bool alwaysUseLsInfo();
-    int contextSwitchTime();
 
     void removeConnectionDetails(const QString &v);
     void saveConnectionDetails(const MPDConnectionDetails &v);
@@ -266,6 +266,7 @@ public:
     void saveContextSlimPage(const QString &v);
     void saveContextSplitterState(const QByteArray &v);
     void saveContextAlwaysCollapsed(bool v);
+    void saveContextSwitchTime(int v);
     void savePage(const QString &v);
     void saveHiddenPages(const QStringList &v);
     #ifndef ENABLE_KDE_SUPPORT
@@ -325,7 +326,6 @@ public:
     #ifndef ENABLE_KDE_SUPPORT
     void saveLang(const QString &v);
     #endif
-    void saveContextSwitchTime(int v);
     void save(bool force=false);
     #if defined ENABLE_KDE_SUPPORT && defined ENABLE_KWALLET
     bool openWallet();

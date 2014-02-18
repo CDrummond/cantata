@@ -131,7 +131,8 @@
     been set. Fixes the case, with Qt5 builds, where a drag is started on the
     cover widget causes interface to expand/collapse.
 75. Change views to scroll-per-pixel.
-76. Dont allow expanding, or collapsing, if maximised.
+76. Dont allow expanding, or collapsing, if maximised or mesasge widget is
+    visible.
 77. Remove embedding of pre-rendered Cantata icons. Cantata requires the SVG
     icon plugin, so users must have this installed.
 78. Use system menu icon for Linux builds. To revert to previous 3-line style

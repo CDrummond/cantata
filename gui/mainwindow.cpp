@@ -1042,7 +1042,7 @@ void MainWindow::showError(const QString &message, bool showActions)
         messageWidget->removeAllActions();
     }
     if (!message.isEmpty()) {
-        expand();;
+        expand();
     }
     QApplication::alert(this);
 }
@@ -1178,7 +1178,7 @@ void MainWindow::refreshDbPromp()
         messageWidget->setActions(QList<QAction*>() << doDbRefreshAction << cancelAction);
     }
     messageWidget->setWarning(i18n("Refresh MPD Database?"), false);
-    expand();;
+    expand();
 }
 
 #ifdef ENABLE_KDE_SUPPORT
@@ -2033,7 +2033,7 @@ void MainWindow::promptClearPlayQueue()
             messageWidget->setActions(QList<QAction*>() << clearPlayQueueAction << cancelAction);
         }
         messageWidget->setWarning(i18n("Remove all songs from play queue?"), false);
-        expand();;
+        expand();
     } else {
         clearPlayQueue();
     }
@@ -2221,10 +2221,8 @@ int MainWindow::calcCompactHeight()
 
 void MainWindow::expandOrCollapse(bool saveCurrentSize)
 {
-    if (isFullScreen() || isMaximized()) {
-        if (!expandInterfaceAction->isChecked()) {
-            expandInterfaceAction->setChecked(true);
-        }
+    if (!expandInterfaceAction->isChecked() && (isFullScreen() || isMaximized() || messageWidget->isVisible())) {
+        expandInterfaceAction->setChecked(true);
         return;
     }
 

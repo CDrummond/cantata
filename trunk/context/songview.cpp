@@ -40,11 +40,14 @@
 #include "networkaccessmanager.h"
 #include "textbrowser.h"
 #include "stdactions.h"
+#include "mpdstatus.h"
 #include <QFile>
 #include <QDir>
 #include <QFileInfo>
 #include <QMenu>
 #include <QTextStream>
+#include <QTimer>
+#include <QScrollBar>
 #if QT_VERSION >= 0x050000
 #include <QUrlQuery>
 #endif
@@ -81,18 +84,24 @@ static inline QString fixNewLines(const QString &o)
 
 SongView::SongView(QWidget *p)
     : View(p)
+    , scrollTimer(0)
+    , songPos(0)
     , currentProvider(-1)
     , currentRequest(0)
     , mode(Mode_Display)
     , job(0)
     , currentProv(0)
 {
+    scrollAction = ActionCollection::get()->createAction("scrolllyrics", i18n("Scroll Lyrics"), "go-down");
     refreshAction = ActionCollection::get()->createAction("refreshlyrics", i18n("Refresh Lyrics"), "view-refresh");
     editAction = ActionCollection::get()->createAction("editlyrics", i18n("Edit Lyrics"), Icons::self()->editIcon);
     saveAction = ActionCollection::get()->createAction("savelyrics", i18n("Save Lyrics"), "document-save");
     cancelAction = ActionCollection::get()->createAction("canceleditlyrics", i18n("Cancel Editing Lyrics"), Icons::self()->cancelIcon);
     delAction = ActionCollection::get()->createAction("dellyrics", i18n("Delete Lyrics File"), "edit-delete");
 
+    scrollAction->setCheckable(true);
+    scrollAction->setChecked(Settings::self()->contextAutoScroll());
+    connect(scrollAction, SIGNAL(toggled(bool)), SLOT(toggleScroll()));
     connect(refreshAction, SIGNAL(triggered()), SLOT(update()));
     connect(editAction, SIGNAL(triggered()), SLOT(edit()));
     connect(saveAction, SIGNAL(triggered()), SLOT(save()));
@@ -105,6 +114,7 @@ SongView::SongView(QWidget *p)
     setMode(Mode_Blank);
     setStandardHeader(i18n("Lyrics"));
     clear();
+    toggleScroll();
 }
 
 SongView::~SongView()
@@ -131,6 +141,11 @@ void SongView::update()
         QFile::remove(cacheName);
     }
     update(currentSong, true);
+}
+
+void SongView::saveConfig()
+{
+    Settings::self()->saveContextAutoScroll(scrollAction->isChecked());
 }
 
 void SongView::search()
@@ -228,6 +243,7 @@ void SongView::showContextMenu(const QPoint &pos)
        break;
    case Mode_Display:
        menu->addSeparator();
+       menu->addAction(scrollAction);
        menu->addAction(refreshAction);
        menu->addAction(StdActions::self()->searchAction);
        menu->addSeparator();
@@ -248,6 +264,69 @@ void SongView::showContextMenu(const QPoint &pos)
 
    menu->exec(text->mapToGlobal(pos));
    delete menu;
+}
+
+void SongView::toggleScroll()
+{
+    if (scrollAction->isChecked()) {
+        scrollTimer=new QTimer(this);
+        scrollTimer->setSingleShot(false);
+        scrollTimer->setInterval(1000);
+        connect(MPDStatus::self(), SIGNAL(updated()), this, SLOT(songPosition()));
+        connect(scrollTimer, SIGNAL(timeout()), this, SLOT(scroll()));
+        scroll();
+    } else {
+        disconnect(MPDStatus::self(), SIGNAL(updated()), this, SLOT(songPosition()));
+        if (scrollTimer) {
+            connect(scrollTimer, SIGNAL(timeout()), this, SLOT(scroll()));
+            scrollTimer->stop();
+        }
+    }
+}
+
+void SongView::songPosition()
+{
+    if (scrollTimer) {
+        songPos=MPDStatus::self()->timeElapsed();
+        scroll();
+    }
+}
+
+void SongView::scroll()
+{
+    if (Mode_Display==mode && scrollAction->isChecked() && scrollTimer) {
+        QScrollBar *bar=text->verticalScrollBar();
+
+        if (bar && bar->isSliderDown()) {
+            scrollTimer->stop();
+            return;
+        }
+        if (MPDStatus::self()->timeTotal()<=0) {
+            scrollTimer->stop();
+            return;
+        }
+        if (MPDState_Playing==MPDStatus::self()->state()) {
+            if (!scrollTimer->isActive()) {
+                scrollTimer->start();
+            }
+        } else {
+            scrollTimer->stop();
+        }
+
+        if (MPDStatus::self()->guessedElapsed()>=MPDStatus::self()->timeTotal()) {
+            if (scrollTimer) {
+                scrollTimer->stop();
+            }
+            return;
+        }
+
+        if (bar->isVisible()) {
+            int newSliderPosition =
+                        MPDStatus::self()->guessedElapsed() * (bar->maximum() + bar->pageStep()) / MPDStatus::self()->timeTotal() -
+                        bar->pageStep() / 2;
+            bar->setSliderPosition(newSliderPosition);
+        }
+    }
 }
 
 void SongView::abort()
@@ -488,6 +567,13 @@ void SongView::setMode(Mode m)
     editAction->setEnabled(editable);
     delAction->setEnabled(editable && !MPDConnection::self()->getDetails().dir.isEmpty() && QFile::exists(mpdFilePath(currentSong)));
     setEditable(Mode_Edit==m);
+    if (scrollAction->isChecked()) {
+        if (Mode_Display==mode) {
+            scroll();
+        } else if (scrollTimer) {
+            scrollTimer->stop();
+        }
+    }
 }
 
 bool SongView::setLyricsFromFile(const QString &filePath)

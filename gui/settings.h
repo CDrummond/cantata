@@ -149,6 +149,7 @@ public:
     QByteArray contextSplitterState();
     bool contextAlwaysCollapsed();
     int contextSwitchTime();
+    bool contextAutoScroll();
     QString page();
     QStringList hiddenPages();
     #ifndef ENABLE_KDE_SUPPORT
@@ -267,6 +268,7 @@ public:
     void saveContextSplitterState(const QByteArray &v);
     void saveContextAlwaysCollapsed(bool v);
     void saveContextSwitchTime(int v);
+    void saveContextAutoScroll(bool v);
     void savePage(const QString &v);
     void saveHiddenPages(const QStringList &v);
     #ifndef ENABLE_KDE_SUPPORT

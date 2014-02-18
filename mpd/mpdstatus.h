@@ -116,6 +116,11 @@ public:
     const QString & error() const { return values.error; }
     MPDStatusValues getValues() const { return values; }
 
+    // Cantata does not poll MPD for current position, but instead used a timer
+    // This timer will update its value here - so this can be used elsewhere...
+    void setGuessedElapsed(qint32 v) { guessed=v; }
+    qint32 guessedElapsed() const { return guessed; }
+
 public Q_SLOTS:
     void update(const MPDStatusValues &v);
 
@@ -127,6 +132,7 @@ private:
     MPDStatus& operator=(const MPDStatus& other);
 
 private:
+    qint32 guessed;
     MPDStatusValues values;
 };
 

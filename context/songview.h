@@ -31,6 +31,7 @@ class UltimateLyricsProvider;
 class QImage;
 class Action;
 class NetworkJob;
+class QTimer;
 
 class SongView : public View
 {
@@ -50,6 +51,7 @@ public:
     ~SongView();
 
     void update(const Song &s, bool force=false);
+    void saveConfig();
 
 Q_SIGNALS:
     void providersUpdated();
@@ -64,6 +66,11 @@ public Q_SLOTS:
     void cancel();
     void del();
     void showContextMenu(const QPoint &pos);
+
+private Q_SLOTS:
+    void toggleScroll();
+    void songPosition();
+    void scroll();
 
 private:
     void abort();
@@ -84,8 +91,11 @@ private:
     bool setLyricsFromFile(const QString &filePath);
 
 private:
+    QTimer *scrollTimer;
+    qint32 songPos;
     int currentProvider;
     int currentRequest;
+    Action *scrollAction;
     Action *refreshAction;
     Action *searchAction;
     Action *editAction;

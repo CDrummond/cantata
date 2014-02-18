@@ -4,6 +4,7 @@
 2. Allow to use table-view for earch results.
 3. Add option to auto-switch to context view X seconds after playback starts,
    and switch back X seconds after stopped.
+4. Add option to auto-scroll lyrics - accessed via context-menu in lyrics view.
 
 1.3.0
 -----

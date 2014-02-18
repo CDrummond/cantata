@@ -4370,7 +4370,9 @@ msgstr "이름:"
 
 #. i18n: file: devices/remotedevicepropertieswidget.ui:60
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox)
-#: po/rc.cpp:266 rc.cpp:266
+#. i18n: file: gui/interfacesettings.ui:122
+#. i18n: ectx: property (title), widget (QGroupBox, optionsGroup)
+#: po/rc.cpp:266 rc.cpp:266 po/rc.cpp:551 rc.cpp:551
 msgid "Options"
 msgstr "선택"
 
@@ -5010,12 +5012,6 @@ msgstr ""
 "<i><b>참고:</b> 기본적으로 '정보'(지금 곡 정보) 보기는 주 메뉴의 아이콘을 "
 "누르면 사용할 수 있습니다. 위를 선택한 경우에는, 다른 보기처럼 옆막대에 합쳐"
 "집니다.</i>"
-
-#. i18n: file: gui/interfacesettings.ui:122
-#. i18n: ectx: property (title), widget (QGroupBox, optionsGroup)
-#: po/rc.cpp:551 rc.cpp:551
-msgid "Options"
-msgstr "선택"
 
 #. i18n: file: gui/interfacesettings.ui:144
 #. i18n: ectx: property (text), widget (BuddyLabel, sbPositionLabel)

@@ -4496,7 +4496,9 @@ msgstr "Nazwa:"
 
 #. i18n: file: devices/remotedevicepropertieswidget.ui:60
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox)
-#: po/rc.cpp:266 rc.cpp:266
+#. i18n: file: gui/interfacesettings.ui:122
+#. i18n: ectx: property (title), widget (QGroupBox, optionsGroup)
+#: po/rc.cpp:266 rc.cpp:266 po/rc.cpp:551 rc.cpp:551
 msgid "Options"
 msgstr "Opcje"
 
@@ -5172,12 +5174,6 @@ msgstr ""
 "<i><b>UWAGA:</b> Domyślnie widok \"Informacje\" jest dostępny przez ikonę na "
 "głównym pasku narzędziowym. Po zaznaczeniu powyższej opcji, zostanie on"
 "umieszczony na pasku bocznym, tak jak inne widoki.</i>"
-
-#. i18n: file: gui/interfacesettings.ui:122
-#. i18n: ectx: property (title), widget (QGroupBox, optionsGroup)
-#: po/rc.cpp:551 rc.cpp:551
-msgid "Options"
-msgstr "Opcje"
 
 #. i18n: file: gui/interfacesettings.ui:144
 #. i18n: ectx: property (text), widget (BuddyLabel, sbPositionLabel)

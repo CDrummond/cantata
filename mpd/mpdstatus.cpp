@@ -41,5 +41,6 @@ MPDStatus::MPDStatus()
 void MPDStatus::update(const MPDStatusValues &v)
 {
     values=v;
+    setGuessedElapsed(v.timeElapsed);
     emit updated();
 }

@@ -67,7 +67,7 @@ qlonglong Mpris::Position() const
 {
     // Cant use MPDStatus, as we dont poll for track position, but use a timer instead!
     //return MPDStatus::self()->timeElapsed();
-    return convertTime(mw->currentTrackPosition());
+    return convertTime(MPDStatus::self()->guessedElapsed());
 }
 
 void Mpris::updateStatus()

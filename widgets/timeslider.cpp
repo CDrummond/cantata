@@ -394,6 +394,7 @@ void TimeSlider::updatePos()
 {
     int elapsed=(startTime.elapsed()/1000.0)+0.5;
     slider->setValue(lastVal+elapsed);
+    MPDStatus::self()->setGuessedElapsed(lastVal+elapsed);
     if (pollMpd>0) {
         if (++pollCount>=pollMpd) {
             pollCount=0;

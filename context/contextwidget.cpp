@@ -601,6 +601,7 @@ void ContextWidget::saveConfig()
     if (splitter) {
         Settings::self()->saveContextSplitterState(splitter->saveState());
     }
+    song->saveConfig();
 }
 
 void ContextWidget::useDarkBackground(bool u)

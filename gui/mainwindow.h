@@ -145,8 +145,6 @@ public:
     ~MainWindow();
 
     int mpdVolume() const { return volumeSlider->value(); }
-    int currentTrackPosition() const { return positionSlider->value(); }
-    QString coverFile() const { return coverWidget->fileName(); }
 
 protected:
     void keyPressEvent(QKeyEvent *event);

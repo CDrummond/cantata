@@ -620,6 +620,11 @@ int Settings::contextSwitchTime()
     return RESTRICT(v, 0, 5000);
 }
 
+bool Settings::contextAutoScroll()
+{
+    return GET_BOOL("contextAutoScroll", false);
+}
+
 QString Settings::page()
 {
     return GET_STRING("page", QString());
@@ -1254,6 +1259,11 @@ void Settings::saveContextAlwaysCollapsed(bool v)
 void Settings::saveContextSwitchTime(int v)
 {
     SET_VALUE_MOD(contextSwitchTime);
+}
+
+void Settings::saveContextAutoScroll(bool v)
+{
+    SET_VALUE_MOD(contextAutoScroll);
 }
 
 void Settings::savePage(const QString &v)

@@ -4472,7 +4472,9 @@ msgstr "Název:"
 
 #. i18n: file: devices/remotedevicepropertieswidget.ui:60
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox)
-#: po/rc.cpp:266 rc.cpp:266
+#. i18n: file: gui/interfacesettings.ui:122
+#. i18n: ectx: property (title), widget (QGroupBox, optionsGroup)
+#: po/rc.cpp:266 rc.cpp:266 po/rc.cpp:551 rc.cpp:551
 msgid "Options"
 msgstr "Volby"
 
@@ -5142,12 +5144,6 @@ msgstr ""
 "o nynější skladbě) zpřístupněn stisknutím ikony pro něj v hlavním "
 "nástrojovém pruhu. Pokud povolíte volbu výše, bude sloučena do "
 "postranního panelu k jiným pohledům.</i>"
-
-#. i18n: file: gui/interfacesettings.ui:122
-#. i18n: ectx: property (title), widget (QGroupBox, optionsGroup)
-#: po/rc.cpp:551 rc.cpp:551
-msgid "Options"
-msgstr "Volby"
 
 #. i18n: file: gui/interfacesettings.ui:144
 #. i18n: ectx: property (text), widget (BuddyLabel, sbPositionLabel)

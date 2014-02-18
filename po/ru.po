@@ -4553,7 +4553,9 @@ msgstr "Имя:"
 
 #. i18n: file: devices/remotedevicepropertieswidget.ui:60
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox)
-#: po/rc.cpp:266 rc.cpp:266
+#. i18n: file: gui/interfacesettings.ui:122
+#. i18n: ectx: property (title), widget (QGroupBox, optionsGroup)
+#: po/rc.cpp:266 rc.cpp:266 po/rc.cpp:551 rc.cpp:551
 msgid "Options"
 msgstr "Параметры"
 
@@ -5215,13 +5217,6 @@ msgid ""
 "accessible by pressing its icon in the main toolbar. If you enable the "
 "option above, then it will be merged into the sidebar as per other views.</i>"
 msgstr ""
-
-#. i18n: file: gui/interfacesettings.ui:122
-#. i18n: ectx: property (title), widget (QGroupBox, optionsGroup)
-#: po/rc.cpp:551 rc.cpp:551
-#, fuzzy
-msgid "Options"
-msgstr "Параметры"
 
 #. i18n: file: gui/interfacesettings.ui:144
 #. i18n: ectx: property (text), widget (BuddyLabel, sbPositionLabel)

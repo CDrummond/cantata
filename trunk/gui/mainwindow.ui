@@ -28,7 +28,10 @@
    </property>
    <item>
     <widget class="QWidget" name="toolbar" native="true">
-     <layout class="QGridLayout" name="gridLayout_2">
+     <layout class="QHBoxLayout" name="toolbarLayout">
+      <property name="spacing">
+       <number>0</number>
+      </property>
       <property name="leftMargin">
        <number>0</number>
       </property>
@@ -41,116 +44,88 @@
       <property name="bottomMargin">
        <number>0</number>
       </property>
-      <property name="verticalSpacing">
-       <number>0</number>
-      </property>
-      <item row="0" column="0" rowspan="2">
-       <widget class="CoverWidget" name="coverWidget">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>64</width>
-          <height>64</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>76</width>
-          <height>76</height>
-         </size>
-        </property>
-       </widget>
+      <item>
+       <widget class="ToolButton" name="prevTrackButton"/>
+      </item>
+      <item>
+       <widget class="ToolButton" name="playPauseTrackButton"/>
+      </item>
+      <item>
+       <widget class="ToolButton" name="stopTrackButton"/>
+      </item>
+      <item>
+       <widget class="ToolButton" name="nextTrackButton"/>
       </item>
       <item row="0" column="1">
-       <layout class="QHBoxLayout" name="controlLayout_2">
-        <property name="spacing">
-         <number>0</number>
-        </property>
+       <layout class="QVBoxLayout" name="middleLayout">
         <item>
-         <widget class="ToolButton" name="prevTrackButton">
-          <property name="focusPolicy">
-           <enum>Qt::NoFocus</enum>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="ToolButton" name="playPauseTrackButton"/>
-        </item>
-        <item>
-         <widget class="ToolButton" name="stopTrackButton"/>
-        </item>
-        <item>
-         <widget class="ToolButton" name="nextTrackButton"/>
-        </item>
-       </layout>
-      </item>
-      <item row="0" column="2">
-       <layout class="QVBoxLayout" name="detailsLayout">
-        <item>
-         <widget class="SqueezedTextLabel" name="trackLabel">
-          <property name="font">
-           <font>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="SqueezedTextLabel" name="artistLabel">
-          <property name="alignment">
-           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item row="0" column="3">
-       <layout class="QHBoxLayout" name="horizontalLayout_4">
-        <property name="spacing">
-         <number>0</number>
-        </property>
-        <item>
-         <widget class="VolumeSlider" name="volumeSlider"/>
-        </item>
-        <item>
-         <spacer name="volumeSliderSpacer">
+         <spacer name="trackLabelSpacer">
           <property name="orientation">
-           <enum>Qt::Horizontal</enum>
+           <enum>Qt::Vertical</enum>
           </property>
           <property name="sizeType">
            <enum>QSizePolicy::Fixed</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
-            <width>4</width>
-            <height>4</height>
+            <width>6</width>
+            <height>6</height>
            </size>
           </property>
          </spacer>
         </item>
         <item>
-         <widget class="ToolButton" name="songInfoButton"/>
+         <widget class="SqueezedTextLabel" name="trackLabel">
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+            <horstretch>2</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+         </widget>
         </item>
         <item>
-         <widget class="MenuButton" name="menuButton"/>
+         <widget class="TimeSlider" name="positionSlider">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+            <horstretch>2</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+         </widget>
         </item>
        </layout>
       </item>
-      <item row="1" column="1" colspan="3">
-       <widget class="TimeSlider" name="positionSlider">
+      <item>
+       <widget class="VolumeSlider" name="volumeSlider"/>
+      </item>
+      <item>
+       <spacer name="volumeSliderSpacer">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
-       </widget>
+        <property name="sizeType">
+         <enum>QSizePolicy::Fixed</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>4</width>
+          <height>4</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="ToolButton" name="songInfoButton"/>
+      </item>
+      <item>
+       <widget class="MenuButton" name="menuButton"/>
       </item>
      </layout>
     </widget>
@@ -407,11 +382,6 @@
    <extends>QSplitter</extends>
    <header>autohidingsplitter.h</header>
    <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>CoverWidget</class>
-   <extends>QLabel</extends>
-   <header>coverwidget.h</header>
   </customwidget>
   <customwidget>
    <class>MenuButton</class>

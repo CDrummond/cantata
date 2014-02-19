@@ -21,35 +21,17 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include "coverwidget.h"
+#include "currentcover.h"
 #include "covers.h"
 #include "config.h"
-#include "localize.h"
 #include "icons.h"
-#include <QPixmap>
-#include <QPainter>
-#include <QBuffer>
-#include <QEvent>
-#include <QResizeEvent>
+#include "utils.h"
 #include <QFile>
-#include <QTimer>
-#include <QVariant>
-#include <QApplication>
-#include <QFile>
+#include <QCoreApplication>
+#ifdef ENABLE_KDE_SUPPORT
+K_GLOBAL_STATIC(Covers, instance)
+#endif
 
-static QString encode(const QImage &img)
-{
-    QByteArray bytes;
-    QBuffer buffer(&bytes);
-    buffer.open(QIODevice::WriteOnly);
-    QImage copy(img);
-
-    if (copy.size().width()>Covers::constMaxSize.width() || copy.size().height()>Covers::constMaxSize.height()) {
-        copy=copy.scaled(Covers::constMaxSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
-    }
-    copy.save(&buffer, "PNG");
-    return QString("<img src=\"data:image/png;base64,%1\">").arg(QString(buffer.data().toBase64()));
-}
 
 #ifndef Q_OS_WIN
 static void themes(const QString &theme, QStringList &iconThemes)
@@ -82,14 +64,14 @@ static void themes(const QString &theme, QStringList &iconThemes)
     }
 }
 
-void CoverWidget::initIconThemes()
+void CurrentCover::initIconThemes()
 {
     if (iconThemes.isEmpty()) {
         themes(Icon::currentTheme(), iconThemes);
     }
 }
 
-QString CoverWidget::findIcon(const QStringList &names)
+QString CurrentCover::findIcon(const QStringList &names)
 {
     initIconThemes();
     QList<int> sizes=QList<int>() << 256 << 128 << 64 << 48 << 32 << 24 << 22;
@@ -133,32 +115,40 @@ QString CoverWidget::findIcon(const QStringList &names)
 }
 #endif
 
-const int CoverWidget::constBorder=1;
+CurrentCover * CurrentCover::self()
+{
+    #ifdef ENABLE_KDE_SUPPORT
+    return instance;
+    #else
+    static CurrentCover *instance=0;
+    if(!instance) {
+        instance=new CurrentCover;
+    }
+    return instance;
+    #endif
+}
 
-CoverWidget::CoverWidget(QWidget *parent)
-    : QLabel(parent)
+CurrentCover::CurrentCover()
+    : QObject(0)
+    , enabled(true)
     , empty(true)
     , valid(false)
-    , pressed(false)
 {
     connect(Covers::self(), SIGNAL(cover(const Song &, const QImage &, const QString &)), SLOT(coverRetrieved(const Song &, const QImage &, const QString &)));
     connect(Covers::self(), SIGNAL(coverUpdated(const Song &, const QImage &, const QString &)), SLOT(coverRetrieved(const Song &, const QImage &, const QString &)));
-    QTimer::singleShot(0, this, SLOT(init())); // Need to do this after constructed, so that size is set....
-    setStyleSheet(QString("QLabel {border: %1px solid transparent} QToolTip {background-color:#111111; color: #DDDDDD}").arg(constBorder));
 }
 
-CoverWidget::~CoverWidget()
+CurrentCover::~CurrentCover()
 {
 }
 
-const QPixmap & CoverWidget::stdPixmap(bool stream)
+const QImage & CurrentCover::stdImage(bool stream)
 {
-    QPixmap &pix=stream ? noStreamCover : noCover;
+    QImage &img=stream ? noStreamCover : noCover;
 
-    if (pix.isNull()) {
-        QSize s=size()-QSize(constBorder*2, constBorder*2);
-        int iconSize=s.width()<=128 ? 128 : 256;
-        pix = (stream ? Icons::self()->streamIcon : Icons::self()->albumIcon).pixmap(iconSize, iconSize).scaled(s, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+    if (img.isNull()) {
+        int iconSize=Utils::isHighDpi() ? 256 : 128;
+        img = (stream ? Icons::self()->streamIcon : Icons::self()->albumIcon).pixmap(iconSize, iconSize).toImage();
 
         QString &file=stream ? noStreamCoverFileName : noCoverFileName;
         if (stream && file.isEmpty()) {
@@ -177,26 +167,23 @@ const QPixmap & CoverWidget::stdPixmap(bool stream)
         }
         #endif
     }
-    return pix;
+    return img;
 }
 
-void CoverWidget::update(const QImage &i)
+void CurrentCover::setEnabled(bool e)
 {
-    setPixmap(QPixmap::fromImage(i).scaled(size()-QSize(constBorder*2, constBorder*2), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
-    img=i;
-    empty=false;
+    enabled=e;
+    if (!enabled) {
+        current=Song();
+    }
 }
 
-void CoverWidget::update(const QPixmap &p)
+void CurrentCover::update(const Song &s)
 {
-    QSize pixSize=size()-QSize(constBorder*2, constBorder*2);
-    setPixmap(p.size()==pixSize ? p : p.scaled(pixSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
-    img=p.toImage();
-    empty=true;
-}
+    if (!enabled) {
+        return;
+    }
 
-void CoverWidget::update(const Song &s)
-{
     if (s.albumArtist()!=current.albumArtist() || s.album!=current.album || s.isStream()!=current.isStream()) {
         current=s;
         bool isStream=current.isStream() && !current.isCantataStream() && !current.isCdda();
@@ -204,10 +191,10 @@ void CoverWidget::update(const Song &s)
             Covers::Image cImg=Covers::self()->requestImage(s, true);
             valid=!cImg.img.isNull();
             if (valid) {
-                update(cImg.img);
                 coverFileName=cImg.fileName;
-                emit coverImage(cImg.img);
+                img=cImg.img;
                 emit coverFile(cImg.fileName);
+                emit coverImage(cImg.img);
                 if (current.isFromOnlineService()) {
                     if (coverFileName.startsWith(
                         #ifdef Q_OS_WIN
@@ -216,127 +203,43 @@ void CoverWidget::update(const Song &s)
                         QString(INSTALL_PREFIX"/share/")+QCoreApplication::applicationName()+"/icons/"
                         #endif
                                 )) {
-                        emit albumCover(QImage());
+                        emit coverImage(QImage());
                     } else {
-                        emit albumCover(cImg.img);
+                        emit coverImage(cImg.img);
                     }
                 } else {
-                    emit albumCover(cImg.img);
+                    emit coverImage(cImg.img);
                 }
             } else {
-                // We ned to set the image here, so that TrayItem gets the correct 'noCover' image
+                // We need to set the image here, so that TrayItem gets the correct 'noCover' image
                 // ...but if Covers does eventually download a cover, we dont want valid->noCover->valid
-                img=stdPixmap(false).toImage();
+                img=stdImage(false);
             }
         } else {
             valid=true;
-            update(stdPixmap(isStream));
             coverFileName=isStream ? noStreamCoverFileName : noCoverFileName;
-            img=isStream ? noStreamCover.toImage() : noCover.toImage();
-            emit coverImage(img);
+            img=isStream ? noStreamCover : noCover;
             emit coverFile(coverFileName);
-            emit albumCover(QImage());
+            emit coverImage(QImage());
         }
     }
 }
 
-void CoverWidget::init()
-{
-    update(stdPixmap(false));
-}
-
-void CoverWidget::coverRetrieved(const Song &s, const QImage &img, const QString &file)
+void CurrentCover::coverRetrieved(const Song &s, const QImage &img, const QString &file)
 {
     if (!s.isArtistImageRequest() && s.albumArtist()==current.albumArtist() && s.album==current.album) {
         valid=!img.isNull();
         if (valid) {
-            update(img);
             coverFileName=file;
-            emit coverImage(img);
             emit coverFile(file);
-            emit albumCover(img);
+            emit coverImage(img);
         } else {
             bool stream=current.isStream() && !current.isCdda();
-            update(stdPixmap(stream));
             coverFileName=stream ? noStreamCoverFileName : noCoverFileName;
-            emit coverImage(QImage());
             emit coverFile(coverFileName);
-            emit albumCover(QImage());
+            emit coverImage(QImage());
         }
     }
 }
 
-bool CoverWidget::event(QEvent *event)
-{
-    switch(event->type()) {
-    case QEvent::ToolTip: {
-        if (current.isEmpty() || (current.isStream() && !current.isCantataStream() && !current.isCdda())) {
-            setToolTip(QString());
-            break;
-        }
-        QString toolTip=QLatin1String("<table>");
 
-        if (Song::useComposer() && !current.composer.isEmpty() && current.composer!=current.albumArtist()) {
-            toolTip+=i18n("<tr><td align=\"right\"><b>Composer:</b></td><td>%1</td></tr>", current.composer);
-        }
-        toolTip+=i18n("<tr><td align=\"right\"><b>Artist:</b></td><td>%1</td></tr>"
-                      "<tr><td align=\"right\"><b>Album:</b></td><td>%2</td></tr>"
-                      "<tr><td align=\"right\"><b>Year:</b></td><td>%3</td></tr>", current.albumArtist(), current.album, QString::number(current.year));
-        toolTip+="</table>";
-        if (!img.isNull()) {
-            if (img.size().width()>Covers::constMaxSize.width() || img.size().height()>Covers::constMaxSize.height() ||
-                coverFileName.isEmpty() || !QFile::exists(coverFileName)) {
-                toolTip+=QString("<br/>%1").arg(encode(img));
-            } else {
-                toolTip+=QString("<br/><img src=\"%1\"/>").arg(coverFileName);
-            }
-        }
-        setToolTip(toolTip);
-        break;
-    }
-    case QEvent::MouseButtonPress:
-        if (Qt::LeftButton==static_cast<QMouseEvent *>(event)->button() && Qt::NoModifier==static_cast<QMouseEvent *>(event)->modifiers()) {
-            pressed=true;
-        }
-        break;
-    case QEvent::MouseButtonRelease:
-        if (pressed && Qt::LeftButton==static_cast<QMouseEvent *>(event)->button() && !QApplication::overrideCursor()) {
-            emit clicked();
-        }
-        pressed=false;
-        break;
-    default:
-        break;
-    }
-    return QLabel::event(event);
-}
-
-void CoverWidget::resizeEvent(QResizeEvent *e)
-{
-    int sz=qMax(e->size().width(), e->size().height());
-    resize(sz, sz);
-}
-
-// This commented out section draws a rounded cover - but all other covers are square, so not
-// sure if I want this or not...
-// static QPainterPath buildPath(const QRectF &r, double radius)
-// {
-//     QPainterPath path;
-//     double diameter(radius*2);
-//
-//     path.moveTo(r.x()+r.width(), r.y()+r.height()-radius);
-//     path.arcTo(r.x()+r.width()-diameter, r.y(), diameter, diameter, 0, 90);
-//     path.arcTo(r.x(), r.y(), diameter, diameter, 90, 90);
-//     path.arcTo(r.x(), r.y()+r.height()-diameter, diameter, diameter, 180, 90);
-//     path.arcTo(r.x()+r.width()-diameter, r.y()+r.height()-diameter, diameter, diameter, 270, 90);
-//     return path;
-// }
-
-// void CoverWidget::paintEvent(QPaintEvent *e)
-// {
-//     QLabel::paintEvent(e);
-//     QPainter painter(this);
-//     painter.setRenderHint(QPainter::Antialiasing);
-//     painter.setBrushOrigin(QPoint(constBorder, constBorder));
-//     painter.fillPath(buildPath(QRectF(0.5, 0.5, bgnd.width()-1, bgnd.height()-1), width()>128 ? 5.0 : 4.0), bgnd);
-// }

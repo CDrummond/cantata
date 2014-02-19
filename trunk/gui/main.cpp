@@ -51,7 +51,6 @@
 #include "wikipediaengine.h"
 #include "lastfmengine.h"
 #include "metaengine.h"
-#include "coverwidget.h"
 #include "backdropcreator.h"
 #ifdef ENABLE_DYNAMIC
 #include "dynamic.h"

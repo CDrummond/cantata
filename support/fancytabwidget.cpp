@@ -332,6 +332,12 @@ FancyTabBar::FancyTabBar(QWidget *parent, bool hasBorder, bool text, int iSize, 
     , m_pos(pos)
     , m_iconSize(iSize)
 {
+    QFont f(font());
+    if (f.pointSizeF()>=8) {
+        f.setPointSizeF(f.pointSizeF()*0.85);
+        setFont(f);
+    }
+
     setAttribute(Qt::WA_Hover, true);
     setFocusPolicy(Qt::NoFocus);
     setMouseTracking(true); // Needed for hover events
@@ -381,15 +387,16 @@ QSize FancyTab::sizeHint() const {
 QSize FancyTabBar::tabSizeHint() const
 {
     int spacing = sidebarSpacing(m_showText);
+    int minWidth = spacing+(m_iconSize*1.75);
     if (m_showText) {
         QFontMetrics fm(font());
         int maxTw=0;
         foreach (FancyTab *tab, m_tabs) {
             maxTw=qMax(maxTw, tab->sizeHint().width());
         }
-        return QSize(qMax(m_iconSize + spacing, maxTw), m_iconSize + spacing + fm.height());
+        return QSize(qMax(qMax(m_iconSize + spacing, minWidth), maxTw), m_iconSize + spacing + fm.height());
     } else {
-        return QSize(m_iconSize + spacing, m_iconSize + spacing);
+        return QSize(qMax(m_iconSize + spacing, minWidth), m_iconSize + spacing);
     }
 }
 

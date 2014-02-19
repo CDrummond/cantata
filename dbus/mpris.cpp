@@ -26,10 +26,8 @@
 #include "playeradaptor.h"
 #include "rootadaptor.h"
 #include "config.h"
+#include "currentcover.h"
 #include "mainwindow.h"
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KWindowSystem>
-#endif
 
 static inline qlonglong convertTime(int t)
 {
@@ -38,9 +36,8 @@ static inline qlonglong convertTime(int t)
 
 static QString mprisPath;
 
-Mpris::Mpris(MainWindow *p)
+Mpris::Mpris(QObject *p)
     : QObject(p)
-    , mw(p)
     , pos(-1)
 {
     QDBusConnection::sessionBus().registerService("org.mpris.MediaPlayer2.cantata");
@@ -61,6 +58,7 @@ Mpris::Mpris(MainWindow *p)
         mprisPath.replace(".", "/");
         mprisPath="/"+mprisPath+"/Track/%1";
     }
+    connect(CurrentCover::self(), SIGNAL(coverFile(const QString &)), this, SLOT(updateCurrentCover(const QString &)));
 }
 
 qlonglong Mpris::Position() const
@@ -173,12 +171,7 @@ QVariantMap Mpris::Metadata() const {
 
 void Mpris::Raise()
 {
-    #ifdef ENABLE_KDE_SUPPORT
-    mw->show();
-    KWindowSystem::forceActiveWindow(mw->effectiveWinId());
-    #else
-    mw->restoreWindow();
-    #endif
+    emit showMainWindow();
 }
 
 void Mpris::signalUpdate(const QString &property, const QVariant &value)

@@ -185,7 +185,6 @@ public Q_SLOTS:
     #endif
     void setMpdVolume(int v);
     void songLoaded();
-    void messageWidgetVisibility(bool v);
     void mpdConnectionStateChanged(bool connected);
     void playQueueItemsSelected(bool s);
     void showSidebarPreferencesPage() { showPreferencesDialog("interface:sidebar"); }
@@ -230,10 +229,8 @@ public Q_SLOTS:
     void checkMpdAccessibility();
     void cropPlayQueue() { playQueueModel.crop(playQueueProxyModel.mapToSourceRows(playQueue->selectedIndexes())); }
     void updatePlayQueueStats(int songs, quint32 time);
-    void expandOrCollapse(bool saveCurrentSize=true);
     void showSongInfo();
     void fullScreen();
-    void sidebarModeChanged();
     void currentTabChanged(int index);
     void tabToggled(int index);
     void showPlayQueue() { showTab(PAGE_PLAYQUEUE); }
@@ -288,13 +285,10 @@ public Q_SLOTS:
     void controlDynamicButton();
 
 private:
-    void expand();
     bool canShowDialog();
     void enableStopActions(bool enable);
     void updateStatus(MPDStatus * const status);
     void readSettings();
-    int calcMinHeight();
-    int calcCompactHeight();
     void addToPlayQueue(bool replace, quint8 priority=0, bool randomAlbums=false);
     #ifdef TAGLIB_FOUND
     void editTags(const QList<Song> &songs, bool isPlayQueue);
@@ -310,6 +304,8 @@ private:
     void setPlaylistsEnabled(bool e);
     void controlPlaylistActions();
     void startContextTimer();
+    void setNoTrack(bool none);
+    void calcMinHeight();
 
 private Q_SLOTS:
     void toggleContext();
@@ -350,7 +346,6 @@ private:
     HttpStream *httpStream;
     Action *streamPlayAction;
     #endif
-    Action *expandInterfaceAction;
     Action *songInfoAction;
     Action *fullScreenAction;
     Action *quitAction;
@@ -384,8 +379,6 @@ private:
     Action *cancelAction;
     TrayItem *trayItem;
     QPoint lastPos;
-    QSize expandedSize;
-    QSize collapsedSize;
     Song current;
     Page *currentPage;
     QWidget *playQueuePage;

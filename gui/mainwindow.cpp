@@ -47,6 +47,7 @@
 #include <KDE/KMenuBar>
 #include <KDE/KMenu>
 #include <KDE/KShortcutsDialog>
+#include <KDE/KWindowSystem>
 #else
 #include <QMenuBar>
 #include "mediakeys.h"
@@ -60,6 +61,7 @@
 #include "inputdialog.h"
 #include "playlistsmodel.h"
 #include "covers.h"
+#include "currentcover.h"
 #include "preferencesdialog.h"
 #include "mpdconnection.h"
 #include "mpdstats.h"
@@ -169,20 +171,6 @@ static int nextKey(int &key)
     return k;
 }
 
-#ifndef Q_OS_WIN
-class ToolBarProxyStyle : public QProxyStyle
-{
-public:
-    ToolBarProxyStyle() : QProxyStyle() { setBaseStyle(qApp->style()); }
-    int pixelMetric(PixelMetric pm, const QStyleOption *o = 0, const QWidget *w = 0) const {
-        if (PM_ToolBarFrameWidth==pm || PM_ToolBarItemSpacing==pm || PM_ToolBarItemMargin==pm) {
-            return 0;
-        }
-        return baseStyle()->pixelMetric(pm, o, w);
-    }
-};
-#endif
-
 MainWindow::MainWindow(QWidget *parent)
     : MAIN_WINDOW_BASE_CLASS(parent)
     , loaded(0)
@@ -232,26 +220,22 @@ MainWindow::MainWindow(QWidget *parent)
     Song::setUseComposer(Settings::self()->useComposer());
 
     #ifndef Q_OS_WIN
-    QSet<QString> basicThemes=QSet<QString>() << QLatin1String("QPlastiqueStyle") << QLatin1String("QCleanlooksStyle") << QLatin1String("QWindowsStyle") << QLatin1String("QFusionStyle");
-    if (!style() || !basicThemes.contains(style()->metaObject()->className())) {
-        #if defined Q_OS_MAC && QT_VERSION>=0x050000
-        QMacNativeToolBar *topToolBar = new QMacNativeToolBar(this);
-        topToolBar->showInWindowForWidget(this);
-        #else // defined Q_OS_MAC && QT_VERSION>=0x050000
-        setUnifiedTitleAndToolBarOnMac(true);
-        QToolBar *topToolBar = addToolBar("ToolBar");
-        #endif // defined Q_OS_MAC && QT_VERSION>=0x050000
-        toolbar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-        topToolBar->setObjectName("MainToolBar");
-        topToolBar->addWidget(toolbar);
-        topToolBar->setMovable(false);
-        topToolBar->setContextMenuPolicy(Qt::PreventContextMenu);
-        #ifndef Q_OS_MAC
-        GtkStyle::applyTheme(topToolBar);
-        #endif // Q_OS_MAC
-        topToolBar->setStyle(new ToolBarProxyStyle);
-        topToolBar->ensurePolished();
-    }
+    #if defined Q_OS_MAC && QT_VERSION>=0x050000
+    QMacNativeToolBar *topToolBar = new QMacNativeToolBar(this);
+    topToolBar->showInWindowForWidget(this);
+    #else // defined Q_OS_MAC && QT_VERSION>=0x050000
+    setUnifiedTitleAndToolBarOnMac(true);
+    QToolBar *topToolBar = addToolBar("ToolBar");
+    #endif // defined Q_OS_MAC && QT_VERSION>=0x050000
+    toolbar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    topToolBar->setObjectName("MainToolBar");
+    topToolBar->addWidget(toolbar);
+    topToolBar->setMovable(false);
+    topToolBar->setContextMenuPolicy(Qt::PreventContextMenu);
+    #ifndef Q_OS_MAC
+    GtkStyle::applyTheme(topToolBar);
+    #endif // Q_OS_MAC
+    topToolBar->ensurePolished();
     #endif // Q_OS_WIN
 
     Icons::self()->initToolbarIcons(toolbar->palette().color(QPalette::Foreground));
@@ -266,8 +250,8 @@ MainWindow::MainWindow(QWidget *parent)
     if (tabWidgetSpacer->minimumSize().height()!=spacing) {
         tabWidgetSpacer->changeSize(spacing, spacing, QSizePolicy::Fixed, QSizePolicy::Fixed);
         playQueueSpacer->changeSize(spacing, spacing, QSizePolicy::Fixed, QSizePolicy::Fixed);
+        trackLabelSpacer->changeSize(spacing, spacing, QSizePolicy::Fixed, QSizePolicy::Fixed);
     }
-    detailsLayout->setSpacing(spacing);
 
     #ifdef ENABLE_KDE_SUPPORT
     prefAction=static_cast<Action *>(KStandardAction::preferences(this, SLOT(showPreferencesDialog()), ActionCollection::get()));
@@ -293,7 +277,6 @@ MainWindow::MainWindow(QWidget *parent)
     shufflePlayQueueAlbumsAction = ActionCollection::get()->createAction("shuffleplaylistalbums", i18n("Shuffle Albums"));
     addStreamToPlayQueueAction = ActionCollection::get()->createAction("addstreamtoplayqueue", i18n("Add Stream URL"), Icons::self()->addRadioStreamIcon);
     promptClearPlayQueueAction = ActionCollection::get()->createAction("clearplaylist", i18n("Clear"), Icons::self()->clearListIcon);
-    expandInterfaceAction = ActionCollection::get()->createAction("expandinterface", i18n("Expanded Interface"), "view-media-playlist");
     songInfoAction = ActionCollection::get()->createAction("showsonginfo", i18n("Show Current Song Information"), Icons::self()->infoIcon);
     songInfoAction->setShortcut(Qt::Key_F12);
     songInfoAction->setCheckable(true);
@@ -480,7 +463,6 @@ MainWindow::MainWindow(QWidget *parent)
     }
     initSizes();
 
-    expandInterfaceAction->setCheckable(true);
     fullScreenAction->setCheckable(true);
     randomPlayQueueAction->setCheckable(true);
     repeatPlayQueueAction->setCheckable(true);
@@ -539,8 +521,6 @@ MainWindow::MainWindow(QWidget *parent)
         b->setFixedSize(QSize(playbackButtonSize, playbackButtonSize));
     }
 
-    expandInterfaceAction->setChecked(Settings::self()->showPlaylist());
-    fullScreenAction->setEnabled(expandInterfaceAction->isChecked());
     if (fullScreenAction->isEnabled()) {
         fullScreenAction->setChecked(Settings::self()->showFullScreen());
     }
@@ -553,8 +533,6 @@ MainWindow::MainWindow(QWidget *parent)
     MusicLibraryItemAlbum::setShowDate(Settings::self()->libraryYear());
     AlbumsModel::setCoverSize((MusicLibraryItemAlbum::CoverSize)Settings::self()->albumsCoverSize());
     tabWidget->setStyle(Settings::self()->sidebar());
-    expandedSize=Settings::self()->mainWindowSize();
-    collapsedSize=Settings::self()->mainWindowCollapsedSize();
 
     #ifdef ENABLE_KDE_SUPPORT
     setupGUI(KXmlGuiWindow::Keys);
@@ -565,16 +543,9 @@ MainWindow::MainWindow(QWidget *parent)
         resize(playPauseTrackButton->width()*25, playPauseTrackButton->height()*18);
         splitter->setSizes(QList<int>() << width*0.4 << width*0.6);
     } else {
-        if (expandInterfaceAction->isChecked()) {
-            if (!expandedSize.isEmpty() && expandedSize.width()>0) {
-                resize(expandedSize);
-                expandOrCollapse(false);
-            }
-        } else {
-            if (!collapsedSize.isEmpty() && collapsedSize.width()>0) {
-                resize(collapsedSize);
-                expandOrCollapse(false);
-            }
+        QSize sz=Settings::self()->mainWindowSize();
+        if (!sz.isEmpty() && sz.width()>0) {
+            resize(sz);
         }
         if (!playQueueInSidebar) {
             QByteArray state=Settings::self()->splitterState();
@@ -587,7 +558,6 @@ MainWindow::MainWindow(QWidget *parent)
         }
     }
 
-    mainMenu->addAction(expandInterfaceAction);
     mainMenu->addAction(songInfoAction);
     mainMenu->addAction(fullScreenAction);
     mainMenu->addAction(connectionsAction);
@@ -642,7 +612,6 @@ MainWindow::MainWindow(QWidget *parent)
         menu->addAction(StdActions::self()->searchAction);
         menuBar()->addMenu(menu);
         menu=new QMenu(i18n("&Settings"), this);
-        menu->addAction(expandInterfaceAction);
         menu->addAction(songInfoAction);
         menu->addAction(fullScreenAction);
         menu->addAction(connectionsAction);
@@ -798,7 +767,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(cropPlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(cropPlayQueue()));
     connect(shufflePlayQueueAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(shuffle()));
     connect(shufflePlayQueueAlbumsAction, SIGNAL(triggered(bool)), &playQueueModel, SLOT(shuffleAlbums()));
-    connect(expandInterfaceAction, SIGNAL(triggered(bool)), this, SLOT(expandOrCollapse()));
     connect(songInfoAction, SIGNAL(triggered(bool)), this, SLOT(showSongInfo()));
     connect(fullScreenAction, SIGNAL(triggered(bool)), this, SLOT(fullScreen()));
     #ifdef TAGLIB_FOUND
@@ -856,8 +824,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(PlaylistsModel::self(), SIGNAL(addToNew()), this, SLOT(addToNewStoredPlaylist()));
     connect(PlaylistsModel::self(), SIGNAL(addToExisting(const QString &)), this, SLOT(addToExistingStoredPlaylist(const QString &)));
     connect(playlistsPage, SIGNAL(add(const QStringList &, bool, quint8)), &playQueueModel, SLOT(addItems(const QStringList &, bool, quint8)));
-    connect(coverWidget, SIGNAL(clicked()), expandInterfaceAction, SLOT(trigger()));
-    connect(coverWidget, SIGNAL(albumCover(QImage)), playQueue, SLOT(setImage(QImage)));
     #if !defined Q_OS_WIN && !defined Q_OS_MAC
     connect(MountPoints::self(), SIGNAL(updated()), SLOT(checkMpdAccessibility()));
     #endif
@@ -878,16 +844,14 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(tabWidget, SIGNAL(CurrentChanged(int)), this, SLOT(currentTabChanged(int)));
     connect(tabWidget, SIGNAL(TabToggled(int)), this, SLOT(tabToggled(int)));
-    connect(tabWidget, SIGNAL(styleChanged(int)), this, SLOT(sidebarModeChanged()));
     connect(tabWidget, SIGNAL(configRequested()), this, SLOT(showSidebarPreferencesPage()));
-    connect(messageWidget, SIGNAL(visible(bool)), this, SLOT(messageWidgetVisibility(bool)));
 
     readSettings();
     updateConnectionsMenu();
     fadeStop=Settings::self()->stopFadeDuration()>Settings::MinFade;
     #ifdef QT_QTDBUS_FOUND
     mpris=new Mpris(this);
-    connect(coverWidget, SIGNAL(coverFile(const QString &)), mpris, SLOT(updateCurrentCover(const QString &)));
+    connect(mpris, SIGNAL(showMainWindow()), this, SLOT(restoreWindow()));
     #endif
     ActionCollection::get()->readSettings();
 
@@ -905,6 +869,8 @@ MainWindow::MainWindow(QWidget *parent)
     MediaKeys::self()->load();
     #endif
     updateActionToolTips();
+    setNoTrack(true);
+    calcMinHeight();
 }
 
 MainWindow::~MainWindow()
@@ -912,17 +878,13 @@ MainWindow::~MainWindow()
     bool hadCantataStreams=playQueueModel.removeCantataStreams();
     Settings::self()->saveShowFullScreen(fullScreenAction->isChecked());
     if (!fullScreenAction->isChecked()) {
-        Settings::self()->saveMainWindowSize(expandInterfaceAction->isChecked() ? size() : expandedSize);
-        Settings::self()->saveMainWindowCollapsedSize(expandInterfaceAction->isChecked() ? collapsedSize : size());
+        Settings::self()->saveMainWindowSize(size());
     }
     #ifdef ENABLE_HTTP_STREAM_PLAYBACK
     Settings::self()->savePlayStream(streamPlayAction->isVisible() && streamPlayAction->isChecked());
     #endif
-    if (!fullScreenAction->isChecked()) {
-        if (!tabWidget->isEnabled(PAGE_PLAYQUEUE)) {
-            Settings::self()->saveSplitterState(splitter->saveState());
-        }
-        Settings::self()->saveShowPlaylist(expandInterfaceAction->isChecked());
+    if (!fullScreenAction->isChecked() &&!tabWidget->isEnabled(PAGE_PLAYQUEUE)) {
+        Settings::self()->saveSplitterState(splitter->saveState());
     }
     Settings::self()->savePage(tabWidget->currentWidget()->metaObject()->className());
     playQueue->saveConfig();
@@ -973,21 +935,6 @@ void MainWindow::initSizes()
     GroupedView::setup();
     ActionItemDelegate::setup();
     MusicLibraryItemAlbum::setup();
-
-    // Calculate size for cover widget...
-    int spacing=Utils::layoutSpacing(this);
-    playPauseTrackButton->adjustSize();
-    trackLabel->adjustSize();
-    artistLabel->adjustSize();
-    positionSlider->adjustSize();
-    int cwSize=qMax(playPauseTrackButton->height(), trackLabel->height()+artistLabel->height()+spacing)+positionSlider->height()+spacing;
-    int tabSize=tabWidget->tabSize().width();
-    if (abs(cwSize-tabSize)<=16) {
-        cwSize=tabSize;
-    } else {
-        cwSize=qMax(cwSize, FancyTabWidget::iconSize()*2);
-    }
-    coverWidget->setFixedSize(cwSize, cwSize);
 }
 
 void MainWindow::load(const QStringList &urls)
@@ -1041,9 +988,6 @@ void MainWindow::showError(const QString &message, bool showActions)
     } else {
         messageWidget->removeAllActions();
     }
-    if (!message.isEmpty()) {
-        expand();
-    }
     QApplication::alert(this);
 }
 
@@ -1051,17 +995,6 @@ void MainWindow::showInformation(const QString &message)
 {
     messageWidget->setInformation(message);
     messageWidget->removeAllActions();
-}
-
-void MainWindow::messageWidgetVisibility(bool v)
-{
-    Q_UNUSED(v)
-    if (!expandInterfaceAction->isChecked()) {
-        int prevWidth=width();
-        int compactHeight=calcCompactHeight();
-        setFixedHeight(compactHeight);
-        resize(prevWidth, compactHeight);
-    }
 }
 
 void MainWindow::mpdConnectionStateChanged(bool connected)
@@ -1178,7 +1111,6 @@ void MainWindow::refreshDbPromp()
         messageWidget->setActions(QList<QAction*>() << doDbRefreshAction << cancelAction);
     }
     messageWidget->setWarning(i18n("Refresh MPD Database?"), false);
-    expand();
 }
 
 #ifdef ENABLE_KDE_SUPPORT
@@ -1195,14 +1127,6 @@ void MainWindow::saveShortcuts()
     ActionCollection::get()->writeSettings();
 }
 #endif
-
-void MainWindow::expand()
-{
-    if (!expandInterfaceAction->isChecked()) {
-        expandInterfaceAction->setChecked(true);
-        expandOrCollapse();
-    }
-}
 
 bool MainWindow::canShowDialog()
 {
@@ -1395,6 +1319,7 @@ void MainWindow::controlDynamicButton()
 
 void MainWindow::readSettings()
 {
+    CurrentCover::self()->setEnabled(Settings::self()->showPopups() || 0!=Settings::self()->playQueueBackground());
     checkMpdDir();
     Covers::self()->readConfig();
     HttpServer::self()->readConfig();
@@ -1433,6 +1358,7 @@ void MainWindow::readSettings()
     context->readConfig();
     tabWidget->setHiddenPages(Settings::self()->hiddenPages());
     tabWidget->setStyle(Settings::self()->sidebar());
+    calcMinHeight();
     toggleMonoIcons();
     toggleSplitterAutoHide();
     if (contextSwitchTime!=Settings::self()->contextSwitchTime()) {
@@ -1522,8 +1448,8 @@ void MainWindow::updateSettings()
 
     bool wasAutoExpand=playQueue->isAutoExpand();
     bool wasStartClosed=playQueue->isStartClosed();
-    if (playQueue->readConfig() && coverWidget->isValid()) {
-        playQueue->setImage(coverWidget->image());
+    if (playQueue->readConfig() && CurrentCover::self()->isValid()) {
+        playQueue->setImage(CurrentCover::self()->image());
     }
 
     if (Settings::self()->playQueueGrouped()!=playQueue->isGrouped() ||
@@ -1778,32 +1704,21 @@ void MainWindow::updatePlayQueue(const QList<Song> &songs)
     updateNextTrack(MPDStatus::self()->nextSongId());
 }
 
+static const char * constBasicProp="basic";
+
 void MainWindow::updateWindowTitle()
 {
     MPDStatus * const status = MPDStatus::self();
-    bool stopped=MPDState_Stopped==status->state() || MPDState_Inactive==status->state();
     bool multipleConnections=connectionsAction->isVisible();
     QString connection=MPDConnection::self()->getDetails().getName();
+    QString title=trackLabel->fullText().isEmpty() ? QString() : trackLabel->property(constBasicProp).toString();
 
-    if (stopped) {
+    if (MPDState_Stopped==status->state() || MPDState_Inactive==status->state() || title.isEmpty()) {
         setWindowTitle(multipleConnections ? i18n("Cantata (%1)", connection) : "Cantata");
-    } else if (current.isStream() && !current.isCantataStream() && !current.isCdda()) {
-        setWindowTitle(multipleConnections
-                        ? i18nc("track :: Cantata (connection)", "%1 :: Cantata (%2)", trackLabel->fullText(), connection)
-                        : i18nc("track :: Cantata", "%1 :: Cantata", trackLabel->fullText()));
-    } else if (current.artist.isEmpty()) {
-        if (trackLabel->fullText().isEmpty()) {
-            setWindowTitle(multipleConnections ? i18n("Cantata (%1)", connection) : "Cantata");
-        } else {
-            setWindowTitle(multipleConnections
-                            ? i18nc("track :: Cantata (connection)", "%1 :: Cantata (%2)", trackLabel->fullText(), connection)
-                            : i18nc("track :: Cantata", "%1 :: Cantata", trackLabel->fullText()));
-        }
     } else {
         setWindowTitle(multipleConnections
-                        ? i18nc("track - artist :: Cantata (connection)", "%1 - %2 :: Cantata (%3)",
-                                trackLabel->fullText(), current.artist, connection)
-                        : i18nc("track - artist :: Cantata", "%1 - %2 :: Cantata", trackLabel->fullText(), current.artist));
+                        ? i18nc("title :: Cantata (connection)", "%1 :: Cantata (%2)", title, connection)
+                        : i18nc("title :: Cantata", "%1 :: Cantata", title));
     }
 }
 
@@ -1841,34 +1756,36 @@ void MainWindow::updateCurrentSong(const Song &song)
         current.time=MPDStatus::self()->timeTotal();
     }
     positionSlider->setEnabled(-1!=current.id && !current.isCdda() && (!currentIsStream() || current.time>5));
-    coverWidget->update(current);
+    CurrentCover::self()->update(current);
 
     if (current.isStream() && !current.isCantataStream() && !current.isCdda()) {
         trackLabel->setText(current.name.isEmpty() ? Song::unknown() : current.name);
-        if (current.artist.isEmpty() && current.title.isEmpty() && !current.name.isEmpty()) {
-            artistLabel->setText(i18n("(Stream)"));
-        } else {
-            artistLabel->setText(current.artist.isEmpty() ? current.title : i18nc("title - artist", "%1 - %2", current.artist, current.title));
-        }
+//        if (current.artist.isEmpty() && current.title.isEmpty() && !current.name.isEmpty()) {
+//            trackLabel->setText(current.name.isEmpty() ? Song::unknown() : current.name);
+//        } else {
+//            artistLabel->setText(current.artist.isEmpty() ? current.title : i18nc("title - artist", "%1 - %2", current.artist, current.title));
+//        }
+        trackLabel->setProperty(constBasicProp, trackLabel->fullText());
     } else {
-        if (current.title.isEmpty() && current.artist.isEmpty() && (!current.name.isEmpty() || !current.file.isEmpty())) {
-            trackLabel->setText(current.name.isEmpty() ? current.file : current.name);
-        } else {
-            trackLabel->setText(current.title);
-        }
-        if (current.album.isEmpty() && current.artist.isEmpty()) {
-            artistLabel->setText(trackLabel->fullText().isEmpty() ? QString() : Song::unknown());
-        } else if (current.album.isEmpty()) {
-            artistLabel->setText(current.artist);
-        } else {
+        QString title=
+                current.title.isEmpty() && current.artist.isEmpty() && (!current.name.isEmpty() || !current.file.isEmpty())
+                    ? current.name.isEmpty() ? current.file : current.name
+                    : current.title;
+
+        if (!current.album.isEmpty() && !current.artist.isEmpty()) {
             QString album=current.album;
             quint16 year=Song::albumYear(current);
             if (year>0) {
                 album+=QString(" (%1)").arg(year);
             }
-            artistLabel->setText(i18nc("artist - album", "%1 - %2", current.artist, album));
+            trackLabel->setText(i18nc("Track by Artist on Album", "%1 by %2 on %3", title, current.artist, album));
+            trackLabel->setProperty(constBasicProp, i18nc("track - artist", "%1 - %2", title, current.artist));
+        } else {
+            trackLabel->setText(title);
+            trackLabel->setProperty(constBasicProp, trackLabel->fullText());
         }
     }
+    setNoTrack(trackLabel->fullText().isEmpty());
 
     bool isPlaying=MPDState_Playing==MPDStatus::self()->state();
     playQueueModel.updateCurrentSong(current.id);
@@ -1984,10 +1901,9 @@ void MainWindow::updateStatus(MPDStatus * const status)
         StdActions::self()->nextTrackAction->setEnabled(false);
         StdActions::self()->prevTrackAction->setEnabled(false);
         if (!StdActions::self()->playPauseTrackAction->isEnabled()) {
-            trackLabel->setText(QString());
-            artistLabel->setText(QString());
+            setNoTrack(true);
             current=Song();
-            coverWidget->update(current);
+            CurrentCover::self()->update(current);
         }
         current.id=0;
         updateWindowTitle();
@@ -2033,7 +1949,6 @@ void MainWindow::promptClearPlayQueue()
             messageWidget->setActions(QList<QAction*>() << clearPlayQueueAction << cancelAction);
         }
         messageWidget->setWarning(i18n("Remove all songs from play queue?"), false);
-        expand();
     } else {
         clearPlayQueue();
     }
@@ -2204,80 +2119,6 @@ void MainWindow::updatePlayQueueStats(int songs, quint32 time)
     #endif
 }
 
-int MainWindow::calcMinHeight()
-{
-    if (tabWidget->style()==(FancyTabWidget::Side|FancyTabWidget::Large)) {
-        return coverWidget->height()+(tabWidget->visibleCount()*(32+fontMetrics().height()+4));
-    } else if (tabWidget->style()==(FancyTabWidget::Side|FancyTabWidget::Large|FancyTabWidget::IconOnly)) {
-        return coverWidget->height()+(tabWidget->visibleCount()*(32+6));
-    }
-    return 256;
-}
-
-int MainWindow::calcCompactHeight()
-{
-    return toolbar->height()+(messageWidget->isActive() ? (messageWidget->sizeHint().height()+Utils::layoutSpacing(this)) : 0);
-}
-
-void MainWindow::expandOrCollapse(bool saveCurrentSize)
-{
-    if (!expandInterfaceAction->isChecked() && (isFullScreen() || isMaximized() || messageWidget->isVisible())) {
-        expandInterfaceAction->setChecked(true);
-        return;
-    }
-
-    static bool lastMax=false;
-
-    bool showing=expandInterfaceAction->isChecked();
-    QPoint p(isVisible() ? pos() : QPoint());
-    int compactHeight=0;
-
-    if (!showing) {
-        setMinimumHeight(0);
-        lastMax=isMaximized();
-        if (saveCurrentSize) {
-            expandedSize=size();
-        }
-        compactHeight=calcCompactHeight();
-    } else {
-        if (saveCurrentSize) {
-            collapsedSize=size();
-        }
-        setMinimumHeight(calcMinHeight());
-        setMaximumHeight(QWIDGETSIZE_MAX);
-    }
-    int prevWidth=size().width();
-    stack->setVisible(showing);
-    if (!showing) {
-        setWindowState(windowState()&~Qt::WindowMaximized);
-    }
-    QApplication::processEvents();
-    adjustSize();
-
-    if (showing) {
-        bool adjustWidth=size().width()!=expandedSize.width();
-        bool adjustHeight=size().height()!=expandedSize.height();
-        if (adjustWidth || adjustHeight) {
-            resize(adjustWidth ? expandedSize.width() : size().width(), adjustHeight ? expandedSize.height() : size().height());
-        }
-        if (lastMax) {
-            showMaximized();
-        }
-    } else {
-        // Width also sometimes expands, so make sure this is no larger than it was before...
-        collapsedSize=QSize(collapsedSize.isValid() ? collapsedSize.width() : (size().width()>prevWidth ? prevWidth : size().width()), compactHeight);
-        resize(collapsedSize);
-        setFixedHeight(size().height());
-    }
-    if (!p.isNull()) {
-        move(p);
-    }
-
-    fullScreenAction->setEnabled(showing);
-    songInfoButton->setVisible(songInfoAction->isCheckable() && showing);
-    songInfoAction->setEnabled(showing);
-}
-
 void MainWindow::showSongInfo()
 {
     if (songInfoAction->isCheckable()) {
@@ -2289,25 +2130,10 @@ void MainWindow::showSongInfo()
 
 void MainWindow::fullScreen()
 {
-    if (expandInterfaceAction->isChecked()) {
-        if (isFullScreen()) {
-            showNormal();
-            expandInterfaceAction->setEnabled(true);
-            connect(coverWidget, SIGNAL(clicked()), expandInterfaceAction, SLOT(trigger()));
-        } else {
-            showFullScreen();
-            expandInterfaceAction->setEnabled(false);
-            disconnect(coverWidget, SIGNAL(clicked()), expandInterfaceAction, SLOT(trigger()));
-        }
+    if (isFullScreen()) {
+        showNormal();
     } else {
-        fullScreenAction->setChecked(false);
-    }
-}
-
-void MainWindow::sidebarModeChanged()
-{
-    if (expandInterfaceAction->isChecked()) {
-        setMinimumHeight(calcMinHeight());
+        showFullScreen();
     }
 }
 
@@ -2441,7 +2267,6 @@ void MainWindow::tabToggled(int index)
     default:
         break;
     }
-    sidebarModeChanged();
 }
 
 void MainWindow::toggleSplitterAutoHide()
@@ -2810,6 +2635,32 @@ void MainWindow::startContextTimer()
     contextTimer->start(contextSwitchTime);
 }
 
+void MainWindow::setNoTrack(bool none)
+{
+    if (none) {
+        trackLabel->setProperty(constBasicProp, QString());
+        trackLabel->setText(i18n("No Song"));
+        QColor col=trackLabel->palette().text().color();
+        trackLabel->setStyleSheet(QString("QLabel { color : rgba(%1, %2, %3, %4); }").arg(col.red()).arg(col.green()).arg(col.blue()).arg(128));
+    } else if (!trackLabel->styleSheet().isEmpty()) {
+        trackLabel->setStyleSheet(QString());
+    }
+}
+
+void MainWindow::calcMinHeight()
+{
+    int minH=0;
+    if (tabWidget->style()&FancyTabWidget::Side && tabWidget->style()&FancyTabWidget::Large) {
+        minH=toolbar->height()+(tabWidget->visibleCount()*(tabWidget->tabSize().height()+6));
+    } else {
+        minH=Utils::isHighDpi() ? 512 : 256;
+    }
+    setMinimumHeight(minH);
+    if (height()<minH) {
+        resize(width(), minH);
+    }
+}
+
 void MainWindow::toggleContext()
 {
     if ( songInfoButton->isVisible() &&
@@ -2876,6 +2727,9 @@ void MainWindow::restoreWindow()
     if (wasHidden && !lastPos.isNull()) {
         move(lastPos);
     }
+    #ifdef ENABLE_KDE_SUPPORT
+    KWindowSystem::forceActiveWindow(effectiveWinId());
+    #endif
 }
 
 #ifdef Q_OS_WIN

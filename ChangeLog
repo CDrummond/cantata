@@ -6,6 +6,10 @@
    and switch back X seconds after stopped.
 4. Add option to auto-scroll lyrics - accessed via context-menu in lyrics view.
 5. Use smaller font for sizebar.
+6. Remove corner cover widget.
+7. Remove collapsing of interface.
+8. Move position label inbetween controls.
+9. Use only 1 line for song details.
 
 1.3.0
 -----

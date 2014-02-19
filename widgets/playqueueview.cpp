@@ -24,6 +24,7 @@
 #include "playqueueview.h"
 #include "playqueuemodel.h"
 #include "covers.h"
+#include "currentcover.h"
 #include "groupedview.h"
 #include "treeview.h"
 #include "settings.h"
@@ -121,6 +122,7 @@ PlayQueueView::PlayQueueView(QWidget *parent)
 
     animator.setPropertyName("fade");
     animator.setTargetObject(this);
+    connect(CurrentCover::self(), SIGNAL(coverImage(QImage)), this, SLOT(setImage(QImage)));
 }
 
 PlayQueueView::~PlayQueueView()

@@ -105,13 +105,11 @@ public:
     QString currentConnection();
     MPDConnectionDetails connectionDetails(const QString &name=Settings::self()->currentConnection());
     QList<MPDConnectionDetails> allConnections();
-    bool showPlaylist();
     bool showFullScreen();
     QByteArray headerState(const QString &key);
     QByteArray splitterState();
     bool splitterAutoHide();
     QSize mainWindowSize();
-    QSize mainWindowCollapsedSize();
     bool useSystemTray();
     bool minimiseOnClose();
     bool showPopups();
@@ -224,7 +222,6 @@ public:
     void removeConnectionDetails(const QString &v);
     void saveConnectionDetails(const MPDConnectionDetails &v);
     void saveCurrentConnection(const QString &v);
-    void saveShowPlaylist(bool v);
     void saveShowFullScreen(bool v);
     void saveStopOnExit(bool v);
     void saveStopDynamizerOnExit(bool v);
@@ -232,7 +229,6 @@ public:
     void saveSplitterState(const QByteArray &v);
     void saveSplitterAutoHide(bool v);
     void saveMainWindowSize(const QSize &v);
-    void saveMainWindowCollapsedSize(const QSize &v);
     void saveUseSystemTray(bool v);
     void saveMinimiseOnClose(bool v);
     void saveShowPopups(bool v);

@@ -33,7 +33,6 @@
 #include "stdactions.h"
 
 class QDBusObjectPath;
-class MainWindow;
 
 class Mpris : public QObject
 {
@@ -66,7 +65,7 @@ class Mpris : public QObject
     Q_PROPERTY( QStringList SupportedUriSchemes READ SupportedUriSchemes )
 
 public:
-    Mpris(MainWindow *p);
+    Mpris(QObject *p);
     virtual ~Mpris() { }
 
     // org.mpris.MediaPlayer2.Player
@@ -156,6 +155,8 @@ Q_SIGNALS:
     void setSeekId(qint32 songId, quint32 time);
     void setVolume(int vol);
 
+    void showMainWindow();
+
 public Q_SLOTS:
     void updateCurrentCover(const QString &fileName);
 
@@ -167,7 +168,6 @@ private:
     void signalUpdate(const QVariantMap &map);
 
 private:
-    MainWindow *mw;
     MPDStatusValues status;
     QString currentCover;
     Song currentSong;

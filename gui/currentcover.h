@@ -21,25 +21,25 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef COVERWIDGET_H
-#define COVERWIDGET_H
+#ifndef CURRENT_COVERW_H
+#define CURRENT_COVERW_H
 
-#include <QLabel>
+#include <QObject>
 #include <QImage>
 #include "song.h"
 
 class QPixmap;
 
-class CoverWidget : public QLabel
+class CurrentCover : public QObject
 {
     Q_OBJECT
 
 public:
-    static const int constBorder;
+    static CurrentCover * self();
+    CurrentCover();
+    virtual ~CurrentCover();
 
-    CoverWidget(QWidget *p);
-    virtual ~CoverWidget();
-
+    void setEnabled(bool e);
     void update(const Song &s);
     const Song & song() const { return current; }
     bool isEmpty() const { return empty; }
@@ -48,40 +48,28 @@ public:
     const QImage &image() const { return img; }
 
 Q_SIGNALS:
-    // coverImage /might/ contain the default images, if no cover was found
     void coverImage(const QImage &img);
-    // albumCover will only ever contain a valid cover, or a null image
-    void albumCover(const QImage &img);
     void coverFile(const QString &name);
-    void clicked();
 
 private Q_SLOTS:
-    void init();
     void coverRetrieved(const Song &s, const QImage &img, const QString &file);
 
 private:
-    const QPixmap & stdPixmap(bool stream);
-    void update(const QImage &i);
-    void update(const QPixmap &pix);
-    bool event(QEvent *event);
-    void resizeEvent(QResizeEvent *e);
-//     void paintEvent(QPaintEvent *e);
+    const QImage & stdImage(bool stream);
     #ifndef Q_OS_WIN
     void initIconThemes();
     QString findIcon(const QStringList &names);
     #endif
 
 private:
+    bool enabled;
     bool empty;
     bool valid;
-    bool pressed;
     Song current;
-    QString tipText;
     mutable QImage img;
-//     mutable QPixmap bgnd;
     QString coverFileName;
-    QPixmap noStreamCover;
-    QPixmap noCover;
+    QImage noStreamCover;
+    QImage noCover;
     QString noStreamCoverFileName;
     QString noCoverFileName;
     #ifndef Q_OS_WIN

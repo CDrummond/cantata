@@ -383,7 +383,17 @@ void MtpConnection::updateLibrary()
         if (getAlbumArtistFromPath) {
             QStringList folderParts=(*folder).path.split('/', QString::SkipEmptyParts);
             if (folderParts.length()>=3) {
-                MtpFolder folder(folderParts.at(1), folderParts.at(2));
+                // Path should be "Music/$AlbumArtist/$Album"
+                int artistPath=1;
+                int albumPath=2;
+                // BubleUPNP will download to "Music/Artist/$AlbumArtist/$Album" if it is configured to
+                // download to "Music" and "Preserve folder structure" (At least this is the folder structure
+                // from MiniDLNA...)
+                if (folderParts.length()>=4 && QLatin1String("Artist")==folderParts..at(1)) {
+                    artistPath++;
+                    albumPath++;
+                }
+                MtpFolder folder(folderParts.at(artistPath), folderParts.at(albumPath));
                 folders.insert(track->parent_id, folder);
                 if (folder.album==s.album && Song::isVariousArtists(folder.artist)) {
                     s.albumartist=folder.artist;

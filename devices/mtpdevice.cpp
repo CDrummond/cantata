@@ -408,7 +408,7 @@ void MtpConnection::updateLibrary()
         #ifdef MTP_TRACKNUMBER_FROM_FILENAME
         if (0==s.track) {
             int space=trackFilename.indexOf(' ');
-            if (space>0) {
+            if (space>0 && space<=3) {
                 s.track=trackFilename.mid(0, space).toInt();
             }
         }

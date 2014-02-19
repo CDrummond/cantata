@@ -206,25 +206,24 @@ void PosSlider::updateStyleSheet()
     int lineWidth=maximumHeight()>12 ? 2 : 1;
 
     QString boderFormat=QLatin1String("QSlider::groove:horizontal { border: %1px solid rgba(%2, %3, %4, %5); "
-                                      "background: transparent; "
-                                      "border-radius: %6px } ");
+                                      "background: solid rgba(%6, %7, %8, %9); "
+                                      "border-radius: %10px } ");
     QString fillFormat=QLatin1String("QSlider::")+QLatin1String(Qt::RightToLeft==layoutDirection() ? "add" : "sub")+
             QLatin1String("-page:horizontal {border: %1px solid rgb(%2, %3, %4); "
-                          "background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 rgb(%5, %6, %7), stop:1 rgb(%8, %9, %10)); "
-                          "border-radius: %11px; margin: %12px;}");
+                          "background: solid rgb(%5, %6, %7); "
+                          "border-radius: %8px; margin: %9px;}");
     QLabel lbl(parentWidget());
     lbl.ensurePolished();
     QColor textColor=lbl.palette().text().color();
     int alpha=textColor.value()<32 ? 96 : 64;
-    QColor fillBorder=QApplication::palette().highlight().color();
-    QColor fillTop=fillBorder.lighter(120);
-    QColor fillBot=fillBorder.lighter(80);
+    QColor fill=QApplication::palette().highlight().color();
 
-    inactiveStyleSheet=boderFormat.arg(lineWidth).arg(textColor.red()).arg(textColor.green()).arg(textColor.blue()).arg(alpha/2).arg(lineWidth*2);
-    activeStyleSheet=boderFormat.arg(lineWidth).arg(textColor.red()).arg(textColor.green()).arg(textColor.blue()).arg(alpha).arg(lineWidth*2);
-    activeStyleSheet+=fillFormat.arg(lineWidth).arg(fillBorder.red()).arg(fillBorder.green()).arg(fillBorder.blue())
-            .arg(fillTop.red()).arg(fillTop.green()).arg(fillTop.blue())
-            .arg(fillBot.red()).arg(fillBot.green()).arg(fillBot.blue()).arg(lineWidth).arg(lineWidth*2);
+    inactiveStyleSheet=boderFormat.arg(lineWidth).arg(textColor.red()).arg(textColor.green()).arg(textColor.blue()).arg(alpha/2)
+                       .arg(textColor.red()).arg(textColor.green()).arg(textColor.blue()).arg(alpha/8).arg(lineWidth*2);
+    activeStyleSheet=boderFormat.arg(lineWidth).arg(textColor.red()).arg(textColor.green()).arg(textColor.blue()).arg(alpha)
+                     .arg(textColor.red()).arg(textColor.green()).arg(textColor.blue()).arg(alpha/4).arg(lineWidth*2);
+    activeStyleSheet+=fillFormat.arg(lineWidth).arg(fill.red()).arg(fill.green()).arg(fill.blue())
+                      .arg(fill.red()).arg(fill.green()).arg(fill.blue()).arg(lineWidth).arg(lineWidth*2);
     setStyleSheet(inactiveStyleSheet);
 }
 

@@ -387,16 +387,15 @@ QSize FancyTab::sizeHint() const {
 QSize FancyTabBar::tabSizeHint() const
 {
     int spacing = sidebarSpacing(m_showText);
-    int minWidth = spacing+(m_iconSize*1.75);
     if (m_showText) {
         QFontMetrics fm(font());
         int maxTw=0;
         foreach (FancyTab *tab, m_tabs) {
             maxTw=qMax(maxTw, tab->sizeHint().width());
         }
-        return QSize(qMax(qMax(m_iconSize + spacing, minWidth), maxTw), m_iconSize + spacing + fm.height());
+        return QSize(qMax(m_iconSize + spacing, maxTw), m_iconSize + spacing + fm.height());
     } else {
-        return QSize(qMax(m_iconSize + spacing, minWidth), m_iconSize + spacing);
+        return QSize(m_iconSize + spacing, m_iconSize + spacing);
     }
 }
 

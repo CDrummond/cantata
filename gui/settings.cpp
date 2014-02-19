@@ -324,11 +324,6 @@ QString Settings::iconTheme()
 }
 #endif
 
-bool Settings::showPlaylist()
-{
-    return GET_BOOL("showPlaylist", true);
-}
-
 bool Settings::showFullScreen()
 {
     return GET_BOOL("showFullScreen", false);
@@ -355,11 +350,6 @@ bool Settings::splitterAutoHide()
 QSize Settings::mainWindowSize()
 {
     return GET_SIZE("mainWindowSize");
-}
-
-QSize Settings::mainWindowCollapsedSize()
-{
-    return GET_SIZE("mainWindowCollapsedSize");
 }
 
 bool Settings::useSystemTray()
@@ -1036,11 +1026,6 @@ void Settings::saveCurrentConnection(const QString &v)
     SET_VALUE_MOD(currentConnection)
 }
 
-void Settings::saveShowPlaylist(bool v)
-{
-    SET_VALUE_MOD(showPlaylist)
-}
-
 void Settings::saveShowFullScreen(bool v)
 {
     SET_VALUE_MOD(showFullScreen)
@@ -1068,11 +1053,6 @@ void Settings::saveSplitterAutoHide(bool v)
 void Settings::saveMainWindowSize(const QSize &v)
 {
     SET_VALUE_MOD(mainWindowSize)
-}
-
-void Settings::saveMainWindowCollapsedSize(const QSize &v)
-{
-    SET_VALUE_MOD(mainWindowCollapsedSize)
 }
 
 void Settings::saveUseSystemTray(bool v)

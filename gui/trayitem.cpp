@@ -37,6 +37,7 @@
 #include "song.h"
 #include "stdactions.h"
 #include "utils.h"
+#include "currentcover.h"
 
 class VolumeSliderEventHandler : public QObject
 {
@@ -212,8 +213,8 @@ void TrayItem::songChanged(const Song &song, bool isPlaying)
                 trayItem->setToolTip("cantata", i18n("Cantata"), text);
 
                 // Use the cover as icon pixmap.
-                if (mw->coverWidget->isValid()) {
-                    QPixmap *coverPixmap = const_cast<QPixmap*>(mw->coverWidget->pixmap());
+                if (CurrentCover::self()->isValid()) {
+                    QPixmap *coverPixmap = const_cast<QPixmap*>(CurrentCover::self()->pixmap());
                     if (coverPixmap) {
                         trayItem->setToolTipIconByPixmap(*coverPixmap);
                     }
@@ -233,7 +234,7 @@ void TrayItem::songChanged(const Song &song, bool isPlaying)
                 if (!notification) {
                     notification=new Notify(this);
                 }
-                notification->show(i18n("Now playing"), text, mw->coverWidget->image());
+                notification->show(i18n("Now playing"), text, CurrentCover::self()->image());
             }
             #endif
         } else if (trayItem) {

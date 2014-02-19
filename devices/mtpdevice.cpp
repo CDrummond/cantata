@@ -58,7 +58,12 @@
 #include <QElapsedTimer>
 #endif
 
+// Enable the following #define to have Cantata attempt to ascertain the AlbumArtist tag by
+// looking at the file path
 #define MTP_FAKE_ALBUMARTIST_SUPPORT
+
+// Enable the following #define to have Cantata attempt to ascertain the tracks's track number
+// from its filename. This will only be done if the device returns '0' as the track number.
 #define MTP_TRACKNUMBER_FROM_FILENAME
 
 static const QLatin1String constMtpDefaultCover("AlbumArt.jpg");
@@ -243,7 +248,6 @@ struct MtpFolder {
     QString artist;
     QString album;
 };
-
 #endif
 
 struct Path {
@@ -383,13 +387,13 @@ void MtpConnection::updateLibrary()
         if (getAlbumArtistFromPath) {
             QStringList folderParts=(*folder).path.split('/', QString::SkipEmptyParts);
             if (folderParts.length()>=3) {
-                // Path should be "Music/$AlbumArtist/$Album"
+                // Path should be "Music/${AlbumArtist}/${Album}"
                 int artistPath=1;
                 int albumPath=2;
-                // BubleUPNP will download to "Music/Artist/$AlbumArtist/$Album" if it is configured to
+                // BubbleUPNP will download to "Music/Artist/${AlbumArtist}/${Album}" if it is configured to
                 // download to "Music" and "Preserve folder structure" (At least this is the folder structure
                 // from MiniDLNA...)
-                if (folderParts.length()>=4 && QLatin1String("Artist")==folderParts..at(1)) {
+                if (folderParts.length()>=4 && QLatin1String("Artist")==folderParts.at(1)) {
                     artistPath++;
                     albumPath++;
                 }
@@ -468,8 +472,8 @@ void MtpConnection::updateLibrary()
                 // by X artists - in which case we proceeed no further.
                 if (!duplicateTrackNumbers) {
                     MtpFolder &f=folders[(*it).folder];
-                    // Now, check to see if all artists contain 'shortesArtist'. If so then use 'shortesArtist' as the album
-                    // artist. This ir probably due to songs which have artist set to '${artist} and somebodyelse'
+                    // Now, check to see if all artists contain 'shortestArtist'. If so then use 'shortestArtist' as the album
+                    // artist. This is probably due to songs which have artist set to '${artist} and somebodyelse'
                     QString albumArtist=shortestArtist;
                     foreach (const QString &artist, (*it).artists) {
                         if (!artist.contains(shortestArtist)) {

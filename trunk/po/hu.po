@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-02-02 20:02+0000\n"
-"PO-Revision-Date: 2013-11-15 18:43+0100\n"
+"PO-Revision-Date: 2014-02-19 09:41+0100\n"
 "Last-Translator: Török Árpád <torar@freemail.hu>\n"
 "Language-Team: Hungarian <kde-l10n-hu@kde.org>\n"
 "Language: hu\n"
@@ -72,16 +72,14 @@ msgid "Reset Spacing"
 msgstr "Szüneteket alaphelyzetbe"
 
 #: context/contextwidget.cpp:506
-#, fuzzy
 msgid "&Artist"
 msgstr "Előadó"
 
 #: context/contextwidget.cpp:507
 msgid "Al&bum"
-msgstr ""
+msgstr "Al&bum"
 
 #: context/contextwidget.cpp:508
-#, fuzzy
 msgid "&Lyrics"
 msgstr "Dalszövegek"
 
@@ -158,19 +156,18 @@ msgstr "Képek (*.png *.jpg)"
 #: context/othersettings.cpp:47 gui/interfacesettings.cpp:176
 msgctxt "pixels"
 msgid "10px"
-msgstr ""
+msgstr "10px"
 
 #: context/othersettings.cpp:102 gui/interfacesettings.cpp:524
-#, fuzzy
 msgctxt "value%"
 msgid "%1%"
-msgstr "%1 %2%"
+msgstr "%1%"
 
 #: context/othersettings.cpp:107 gui/interfacesettings.cpp:529
 #, c-format
 msgctxt "pixels"
 msgid "%1px"
-msgstr ""
+msgstr "%1px"
 
 #: context/songview.cpp:90
 msgid "Refresh Lyrics"
@@ -249,9 +246,8 @@ msgid "Delete lyrics file?"
 msgstr "Törölöd a dalszöveg fájlt."
 
 #: context/songview.cpp:208
-#, fuzzy
 msgid "Delete File"
-msgstr "Fájl-választás"
+msgstr "Fájl törlése"
 
 #: context/songview.cpp:462
 msgid "Fetching lyrics via %1"
@@ -329,6 +325,11 @@ msgid ""
 "local music listing. Therefore, you will need to stop Cantata, manually "
 "refresh Mopidy's database, and restart Cantata for any changes to be active."
 msgstr ""
+"A Cantata észlelte, hogy egy Mopidy szerverhez csatlakozol.\n"
+"\n"
+"A Cantata nem tudja kényszeríteni a Mopidy-t a helyi zenetár frissítésére. "
+"Ehhez le kell állítanod a Cantata-t, kézzel frissíteni a Mopidy adatbázisát "
+"és újraindítani a Cantata-t a változtatások aktiválása érdekében."
 
 #: devices/actiondialog.cpp:211 devices/synccollectionwidget.cpp:274
 msgid "Artists:%1, Albums:%2, Songs:%3"
@@ -446,97 +447,80 @@ msgid "Calculate"
 msgstr "Számítás"
 
 #: devices/actiondialog.cpp:661
-#, fuzzy
 msgid "The destination filename already exists!"
-msgstr "A cél fájlnév már létezik!<hr/>%1"
+msgstr "A cél fájlnéve már létezik!<hr/>%1"
 
 #: devices/actiondialog.cpp:664
-#, fuzzy
 msgid "Song already exists!"
-msgstr "A dal már létezik!<hr/>%1"
+msgstr "A dal már létezik!"
 
 #: devices/actiondialog.cpp:667
-#, fuzzy
 msgid "Song does not exist!"
-msgstr "A dal nem létezik!<hr/>%1"
+msgstr "A dal nem létezik!"
 
 #: devices/actiondialog.cpp:670
-#, fuzzy
 msgid ""
 "Failed to create destination folder!<br/>Please check you have sufficient "
 "permissions."
 msgstr ""
-"Nem sikerült létrehozni a cél könyvtárat!<br/>Ellenőrizd a jogosultságod "
+"Nem sikerült létrehozni a célkönyvtárat!<br/>Ellenőrizd a jogosultságod "
 "szintjét.<hr/>%1"
 
 #: devices/actiondialog.cpp:673
-#, fuzzy
 msgid "Source file no longer exists?"
-msgstr "A forrás fájl már nem létezik?<br/><br/<hr/>%1"
+msgstr "A forrásfájl már nem létezik?<br/><br/<hr/>%1"
 
 #: devices/actiondialog.cpp:676
-#, fuzzy
 msgid "Failed to copy."
-msgstr "Nem sikerült másolni.<hr/>%1"
+msgstr "Nem sikerült másolni."
 
 #: devices/actiondialog.cpp:676
-#, fuzzy
 msgid "Failed to delete."
-msgstr "Nem sikerült törölni.<hr/>%1"
+msgstr "Nem sikerült törölni."
 
 #: devices/actiondialog.cpp:679
-#, fuzzy
 msgid "Not connected to device."
-msgstr "Nincs csatlakoztatva az eszközhöz.<hr/>%1"
+msgstr "Nincs csatlakoztatva az eszközhöz."
 
 #: devices/actiondialog.cpp:682
-#, fuzzy
 msgid "Selected codec is not available."
-msgstr "A kiválasztott codec nem elérhető.<hr/>%1"
+msgstr "A kiválasztott codec nem elérhető."
 
 #: devices/actiondialog.cpp:685
-#, fuzzy
 msgid "Transcoding failed."
-msgstr "Átkódolás"
+msgstr "Átkódolás sikertelen."
 
 #: devices/actiondialog.cpp:688
-#, fuzzy
 msgid ""
 "Failed to create temporary file.<br/>(Required for transcoding to MTP "
 "devices.)"
 msgstr ""
 "Nem sikerült létrehozni az átmeneti fájlt.<br/>(MTP eszközre átkódoláshoz "
-"kell.)<hr/>%1"
+"kell.)"
 
 #: devices/actiondialog.cpp:691
-#, fuzzy
 msgid "Failed to read source file."
-msgstr "Nem sikerül olvasni a forrás fájlt. <br/><br/<hr/>%1"
+msgstr "Nem sikerül olvasni a forrásfájlt. <br/><br/<hr/>%1"
 
 #: devices/actiondialog.cpp:694
-#, fuzzy
 msgid "Failed to write to destination file."
-msgstr "Nem sikerül írni a cél fájlt.<br/><br/<hr/>%1"
+msgstr "Nem sikerül írni a célfájlba.<br/><br/<hr/>%1"
 
 #: devices/actiondialog.cpp:697
-#, fuzzy
 msgid "No space left on device."
-msgstr "Nem maradt hely az eszközön.<br/><br/<hr/>%1"
+msgstr "Nem maradt hely az eszközön."
 
 #: devices/actiondialog.cpp:700
-#, fuzzy
 msgid "Failed to update metadata."
-msgstr "Nem sikerült frissíteni a metaadatokat.<br/><br/<hr/>%1"
+msgstr "Nem sikerült frissíteni a metaadatokat."
 
 #: devices/actiondialog.cpp:703
-#, fuzzy
 msgid "Failed to download track."
-msgstr "Letöltés sikertelen"
+msgstr "A szám letöltése sikertelen."
 
 #: devices/actiondialog.cpp:706
-#, fuzzy
 msgid "Failed to lock device."
-msgstr "Nem sikerült zárolni az eszközt.<hr/>%1"
+msgstr "Nem sikerült zárolni az eszközt."
 
 #: devices/actiondialog.cpp:735
 msgid "Local Music Library Properties"
@@ -585,17 +569,15 @@ msgstr "Szám:"
 
 #: devices/actiondialog.cpp:806
 msgid "Source file:"
-msgstr ""
+msgstr "Forrás fájl:"
 
 #: devices/actiondialog.cpp:807
-#, fuzzy
 msgid "Destination file:"
-msgstr "Célformátum:"
+msgstr "Célfájl:"
 
 #: devices/actiondialog.cpp:809 gui/searchpage.cpp:207
-#, fuzzy
 msgid "File:"
-msgstr "&Fájl"
+msgstr "Fájl:"
 
 #: devices/actiondialog.cpp:815 gui/cachesettings.cpp:179
 #: gui/cachesettings.cpp:235
@@ -609,7 +591,7 @@ msgstr "%1 (Becsült)"
 
 #: devices/actiondialog.cpp:824
 msgid "Time remaining:"
-msgstr ""
+msgstr "Hátralévő idő:"
 
 #: devices/actiondialog.cpp:847 devices/fsdevice.cpp:762
 #: online/onlineservice.cpp:140 online/onlineservice.cpp:166
@@ -1300,12 +1282,11 @@ msgstr ""
 "lecserélésre kerülnek."
 
 #: devices/filenameschemedialog.cpp:123
-#, fuzzy
 msgid ""
 "<tr><th><em>Variable</em></th><th><em>Button</em></th><th><em>Description</"
 "em></th></tr>"
 msgstr ""
-"<tr><th><em>Gomb</em></th><th><em>Változó</em></th><th><em>Leírás</em></th></"
+"<tr><th><em>Változó</em></th><th><em>Gomb</em></th><th><em>Leírás</em></th></"
 "tr>"
 
 #: devices/fsdevice.cpp:675 gui/albumspage.cpp:287 gui/folderpage.cpp:304
@@ -1761,7 +1742,6 @@ msgid "Total space used: %1"
 msgstr "Teljes felhasznált terület: %1"
 
 #: gui/cachesettings.cpp:250
-#, fuzzy
 msgid ""
 "Cantata caches a local copy of the MPD listing to speed up loading of the "
 "music library. Cantata might also have cached covers, lyrics, or artist "
@@ -1770,11 +1750,11 @@ msgid ""
 "not save these items there). Below is a summary of Cantata's current cache "
 "usage."
 msgstr ""
-"Hogy a zenekönyvtár feltöltését gyorsítsa, a Cantata az MPD listájából helyi "
-"másolatot olvas be. A cache be tehet borítókat, vagy dalszövegeket is, "
-"amennyiben ezek letöltésre kerültek, de az MPD-könyvtárába nem menthetők "
-"(vagy azért, mert a Cantata nem éri el, vagy a Cantata-t úgy állítottad be, "
-"hogy ne mentse azokat oda). Alább olvasható a Cantata cache használatáról "
+"A Cantata az MPD listájából a cache-ba másolatot készít a zenekönyvtár "
+"gyorsabb betöltésére. A Cantata a borítókat, dalszövegeket, vagy előadói "
+"képeket is tárolhatja ideiglenesen, ha ezek letöltötte, de az MPD "
+"könyvtárába nem menthetők (mivel a Cantata nem éri el, vagy úgy állítottad "
+"be, hogy ne mentse azokat oda). Lent olvasható a Cantata cache használatáról "
 "egy összegzés."
 
 #: gui/cachesettings.cpp:263
@@ -1782,18 +1762,16 @@ msgid "Covers"
 msgstr "Borítók"
 
 #: gui/cachesettings.cpp:264
-#, fuzzy
 msgid "Scaled Covers"
-msgstr "Borítók"
+msgstr "Méretarányos borítók"
 
 #: gui/cachesettings.cpp:265
 msgid "Backdrops"
 msgstr "Hátterek"
 
 #: gui/cachesettings.cpp:271
-#, fuzzy
 msgid "Stream Listings"
-msgstr "Hangfolyam beállításai"
+msgstr "Hangfolyamok (stream-ek) listája"
 
 #: gui/cachesettings.cpp:274
 msgid "Jamendo"
@@ -1835,7 +1813,6 @@ msgstr ""
 "%2 x %3 (%4)"
 
 #: gui/coverdialog.cpp:126
-#, fuzzy
 msgctxt ""
 "name\n"
 "width x height"
@@ -1844,18 +1821,15 @@ msgid ""
 "%2 x %3"
 msgstr ""
 "%1\n"
-"%2 x %3 (%4)"
+"%2 x %3"
 
 #: gui/coverdialog.cpp:162
-#, fuzzy
 msgid "Current Cover"
-msgstr ""
-"Jelenlegi borító\n"
-"%1 x %2"
+msgstr "Aktuális borító"
 
 #: gui/coverdialog.cpp:211 gui/coverdialog.cpp:411
 msgid "CoverArt Archive"
-msgstr ""
+msgstr "CoverArt archívum"
 
 #: gui/coverdialog.cpp:242
 msgid "Image"
@@ -1887,14 +1861,13 @@ msgstr ""
 "i></p>"
 
 #: gui/coverdialog.cpp:452
-#, fuzzy
 msgid "'%1' Artist Image"
-msgstr "%1 Előadók"
+msgstr "%1 Előadó képe"
 
 #: gui/coverdialog.cpp:454
 msgctxt "'Artist - Album' Album Cover"
 msgid "'%1 - %2' Album Cover"
-msgstr ""
+msgstr "'%1 - %2' Album borító"
 
 #: gui/coverdialog.cpp:582
 msgid ""
@@ -2022,7 +1995,7 @@ msgstr "Nagyon nagy"
 
 #: gui/interfacesettings.cpp:57
 msgid "Basic Tree (No Icons)"
-msgstr ""
+msgstr "Alap fastruktúra (nincs ikon)"
 
 #: gui/interfacesettings.cpp:58
 msgid "Simple Tree"
@@ -2053,7 +2026,6 @@ msgid "Table"
 msgstr "Táblázat"
 
 #: gui/interfacesettings.cpp:104
-#, fuzzy
 msgid "Play queue"
 msgstr "Sor lejátszása"
 
@@ -2077,30 +2049,29 @@ msgid "Playlists"
 msgstr "Lejátszási listák"
 
 #: gui/interfacesettings.cpp:110
-#, fuzzy
 msgid "Dynamic Playlists"
-msgstr "Dinamikus lejátszási lista indítása"
+msgstr "Dinamikus lejátszási lista"
 
 #: gui/interfacesettings.cpp:114
-#, fuzzy
 msgid "Streams (e.g. Radio Stations)"
-msgstr "Hangfolyam beállításai"
+msgstr "Hangfolyam (stream-ek, pl. rádióállomások)"
 
 #: gui/interfacesettings.cpp:121
 msgid "Online Services - Jamendo, Maganatune, SoundCloud, and Podcasts"
 msgstr ""
+"Online szolgáltatások -  Jamendo, Maganatune, SoundCloud és podcast-ok."
 
 #: gui/interfacesettings.cpp:128
 msgid "Devices - UMS, MTP (e.g. Android), and AudioCDs"
-msgstr ""
+msgstr "Eszközök - UMS, MPT (pl. Android) és hang CD-k."
 
 #: gui/interfacesettings.cpp:134
 msgid "Search (via MPD)"
-msgstr ""
+msgstr "Keresés (MPD-n keresztül)"
 
 #: gui/interfacesettings.cpp:135
 msgid "Info - Current song information (artist, album, and lyrics)"
-msgstr ""
+msgstr "Infó. - a jelenlegi szám adatai (előadó, album és dalszöveg)"
 
 #. i18n: file: gui/interfacesettings.ui:131
 #. i18n: ectx: property (text), widget (BuddyLabel, sbStyleLabel)
@@ -2130,30 +2101,27 @@ msgstr "Stílus:"
 
 #: gui/interfacesettings.cpp:161
 msgid "Tab-bar"
-msgstr ""
+msgstr "Lapsáv (fülek)"
 
 #: gui/interfacesettings.cpp:162
 msgid "Left"
-msgstr ""
+msgstr "Bal"
 
 #: gui/interfacesettings.cpp:162
 msgid "Right"
-msgstr ""
+msgstr "Jobb"
 
 #: gui/interfacesettings.cpp:163
-#, fuzzy
 msgid "Top"
-msgstr "Felső sáv"
+msgstr "Felső"
 
 #: gui/interfacesettings.cpp:164
-#, fuzzy
 msgid "Bottom"
-msgstr "Alsó sáv"
+msgstr "Alsó"
 
 #: gui/interfacesettings.cpp:391
-#, fuzzy
 msgid "System default"
-msgstr "Alapbeállítások alkalmazása"
+msgstr "Rendszer alapbeállítása"
 
 #: gui/main.cpp:224 gui/mainwindow.cpp:2075 gui/trayitem.cpp:112
 #: gui/trayitem.cpp:118 gui/trayitem.cpp:153 gui/trayitem.cpp:217
@@ -2168,7 +2136,7 @@ msgstr "KDE kliens az MPD-nek"
 
 #: gui/main.cpp:227
 msgid "&copy; 2011–2014 Craig Drummond"
-msgstr ""
+msgstr "&copy; 2011–2014 Craig Drummond"
 
 #: gui/main.cpp:231
 msgid "Craig Drummond"
@@ -2413,7 +2381,6 @@ msgid "&File"
 msgstr "&Fájl"
 
 #: gui/mainwindow.cpp:628
-#, fuzzy
 msgid "&Edit"
 msgstr "Szerkesztés"
 
@@ -2435,9 +2402,8 @@ msgid "Connecting to %1"
 msgstr "Csatlakozás ehhez %1"
 
 #: gui/mainwindow.cpp:1189
-#, fuzzy
 msgid "Refresh MPD Database?"
-msgstr "Adatbázis-frissítés"
+msgstr "Adatbázist frissítsem?"
 
 #: gui/mainwindow.cpp:1257
 msgid ""
@@ -2459,7 +2425,6 @@ msgid "About Cantata"
 msgstr "Cantata névjegye"
 
 #: gui/mainwindow.cpp:1578
-#, fuzzy
 msgctxt "Qt-only"
 msgid ""
 "<b>Cantata %1</b><br/><br/>MPD client.<br/><br/>&copy; 2011–2014 Craig "
@@ -2468,7 +2433,7 @@ msgid ""
 msgstr ""
 "<b>Cantata %1</b><br/><br/>MPD kliens.<br/><br/>&copy; 2011–2014 Craig "
 "Drummond<br/>Kiadva <a href=\"http://www.gnu.org/licenses/gpl.html\">GPLv3 "
-"alatt</a>"
+"szerint.</a>"
 
 #: gui/mainwindow.cpp:1580
 msgid ""
@@ -2505,19 +2470,18 @@ msgstr ""
 "\">FanArt.tv</a>"
 
 #: gui/mainwindow.cpp:1594
-#, fuzzy
 msgid ""
 "<tr><td colspan=\"2\"><b>Server</b></td></tr><tr><td align=\"right"
 "\">Protocol&nbsp;version:&nbsp;</td><td>%1.%2.%3</td></tr><tr><td align="
 "\"right\">Uptime:&nbsp;</td><td>%4</td></tr><tr><td align=\"right"
 "\">Time&nbsp;playing:&nbsp;</td><td>%5</td></tr>"
 msgstr ""
-"<tr><td colspan=\"2\"><b>Szerver</b></td></tr><tr><td align=\"right\">Verzió:"
-"</td><td>%1.%2.%3</td></tr><tr><td align=\"right\">Feltöltés ideje:</td><td>"
-"%4</td></tr><tr><td align=\"right\">Lejátszási idő:</td><td>%5</td></tr>"
+"<tr><td colspan=\"2\"><b>Szerver</b></td></tr><tr><td align=\"right"
+"\">Protocol&nbsp;verzió:&nbsp;</td><td>%1.%2.%3</td></tr><tr><td align="
+"\"right\">Bekapcsolva:&nbsp;</td><td>%4</td></tr><tr><td align=\"right"
+"\">Idő&nbsp;játszva:&nbsp;</td><td>%5</td></tr>"
 
 #: gui/mainwindow.cpp:1602
-#, fuzzy
 msgid ""
 "<tr><td colspan=\"2\"><b>Database</b></td></tr><tr><td align=\"right"
 "\">Artists:&nbsp;</td><td>%1</td></tr><tr><td align=\"right\">Albums:&nbsp;</"
@@ -2528,11 +2492,12 @@ msgid ""
 "table></p>"
 msgstr ""
 "<tr><td colspan=\"2\"><b>Adatbázis</b></td></tr><tr><td align=\"right"
-"\">Előadók:</td><td>%1</td></tr><tr><td align=\"right\">Albumok:</td><td>%2</"
-"td></tr><tr><td align=\"right\">Dalok:</td><td>%3</td></tr><tr><td align="
-"\"right\">URL-címek:</td><td>%4</td></tr><tr><td align=\"right\">Teljes időn:"
-"</td><td>%5</td></tr><tr><td align=\"right\">Utolsó frissítés:</td><td>%6</"
-"td></tr></table></p>"
+"\">Előadó:&nbsp;</td><td>%1</td></tr><tr><td align=\"right\">Albumok:&nbsp;</"
+"td><td>%2</td></tr><tr><td align=\"right\">Dalok:&nbsp;</td><td>%3</td></"
+"tr><tr><td align=\"right\">URL&nbsp;handlers:&nbsp;</td><td>%4</td></"
+"tr><tr><td align=\"right\">Teljes&nbsp;időtartam:&nbsp;</td><td>%5</td></"
+"tr><tr><td align=\"right\">Utolsó&nbsp;frissítés:&nbsp;</td><td>%6</td></"
+"tr></table></p>"
 
 #: gui/mainwindow.cpp:1611
 msgid "Server Information"
@@ -2611,21 +2576,20 @@ msgid "Existing Playlist"
 msgstr "Létező lejátszási lista"
 
 #: gui/mainwindow.cpp:2303
-#, fuzzy
 msgid "Stream URL"
-msgstr "Stream URL hozzáadása"
+msgstr "Stream URL-je"
 
 #: gui/mainwindow.cpp:2303
 msgid "Enter URL of stream:"
-msgstr ""
+msgstr "A stream URL-je:"
 
 #: gui/mainwindow.cpp:2306
 msgid "Invalid, or unsupported, URL!"
-msgstr ""
+msgstr "Érvénytelen, vagy nem támogatott URL!"
 
 #: gui/mainwindow.cpp:2889
 msgid "Can only edit tags of songs within MPD's music collection."
-msgstr ""
+msgstr "Csak az MPD zenetárában található dalok címkéi szerkeszthetők."
 
 #. i18n: file: devices/albumdetails.ui:158
 #. i18n: ectx: property (text), widget (QTreeWidget, tracks)
@@ -2682,16 +2646,15 @@ msgstr ""
 
 #: gui/playlistspage.cpp:95 widgets/playqueueview.cpp:160
 msgid "Stretch Columns To Fit Window"
-msgstr ""
+msgstr "Oszlop igazítás az ablakhoz illeszkedéshez"
 
 #: gui/playlistspage.cpp:146 tags/tageditor.cpp:828 tags/trackorganiser.cpp:72
 msgid "Rename"
 msgstr "Átnevezés"
 
 #: gui/playlistspage.cpp:147 models/playqueuemodel.cpp:156
-#, fuzzy
 msgid "Remove Duplicates"
-msgstr "Lejátszási lista eltávolítása"
+msgstr "Másolatok eltávolítása"
 
 #: gui/playlistspage.cpp:309
 msgid ""
@@ -2723,7 +2686,7 @@ msgstr "Adj új nevet a lejátszási listának:"
 
 #: gui/playlistspage.cpp:446
 msgid "Cannot add songs from '%1' to '%2'"
-msgstr ""
+msgstr "A dalok innen '%1'nem adhatók ide '%2'"
 
 #: gui/preferencesdialog.cpp:83
 msgid "Collection Settings"
@@ -2857,18 +2820,16 @@ msgid "Genre:"
 msgstr "Műfaj:"
 
 #: gui/searchpage.cpp:206
-#, fuzzy
 msgid "Date:"
-msgstr "Dátum"
+msgstr "Dátum:"
 
 #: gui/searchpage.cpp:208
 msgid "Any:"
-msgstr ""
+msgstr "Bármely:"
 
 #: gui/searchpage.cpp:215
-#, fuzzy
 msgid "No tracks found."
-msgstr "Nem találtam eszközt"
+msgstr "Számokat nem találtam."
 
 #: gui/serversettings.cpp:87
 msgid ""
@@ -3111,7 +3072,7 @@ msgstr "Vissza"
 
 #: gui/stdactions.cpp:91
 msgid "Find"
-msgstr ""
+msgstr "Keres"
 
 #: gui/trayitem.cpp:210
 msgctxt "Song on Album"
@@ -3316,9 +3277,8 @@ msgid "New Playlist..."
 msgstr "Új lejátszási lista..."
 
 #: models/playlistsmodel.cpp:321
-#, fuzzy
 msgid "Smart Playlist"
-msgstr "Lejátszási lista"
+msgstr "Okos lejátszási lista"
 
 #: models/playqueuemodel.cpp:109
 msgid "Length"
@@ -3336,11 +3296,11 @@ msgstr "Év"
 
 #: models/playqueuemodel.cpp:158
 msgid "Undo"
-msgstr ""
+msgstr "Visszavon"
 
 #: models/playqueuemodel.cpp:160
 msgid "Redo"
-msgstr ""
+msgstr "Újra végrehajt"
 
 #: models/playqueuemodel.cpp:404
 msgid "<b>(Priority: %1)</b>"
@@ -3372,7 +3332,7 @@ msgstr "SomaFM"
 
 #: models/streamsmodel.cpp:584
 msgid "Radio GFM"
-msgstr ""
+msgstr "Rádió GFM"
 
 #: models/streamsmodel.cpp:585
 msgid "Digitally Imported"
@@ -3732,44 +3692,39 @@ msgid "Failed to parse directory listing"
 msgstr "Könyvtárlista elemzése sikertelen"
 
 #: online/podcastsearchdialog.cpp:508
-#, fuzzy
 msgid "URL"
-msgstr "URL:"
+msgstr "URL"
 
 #: online/podcastsearchdialog.cpp:517
-#, fuzzy
 msgid "Enter podcast URL..."
-msgstr "Írd be a podcast URL-jét:"
+msgstr "Írd be a podcast URL-jét..."
 
 #: online/podcastsearchdialog.cpp:518
 msgid "Load"
-msgstr ""
+msgstr "Betölt"
 
 #: online/podcastsearchdialog.cpp:525
 msgid "Enter podcast URL below, and press 'Load'"
-msgstr ""
+msgstr "Írd be a podcast URL-jét és 'Betölt' gombot nyomd le."
 
 #: online/podcastsearchdialog.cpp:552
 msgid "Invalid URL!"
 msgstr "Érvénytelen URL!"
 
 #: online/podcastsearchdialog.cpp:562
-#, fuzzy
 msgid "Failed to fetch podcast!"
-msgstr "Nem sikerült podcast-ot letölteni erről %1"
+msgstr "Nem sikerült podcast-ot letölteni"
 
 #: online/podcastsearchdialog.cpp:567
-#, fuzzy
 msgid "Failed to parse podcast."
-msgstr "Elemzés sikertelen"
+msgstr "A podcast elemzése sikertelen"
 
 #: online/podcastsearchdialog.cpp:571
-#, fuzzy
 msgid ""
 "Cantata only supports audio podcasts! The URL entered contains only video "
 "podcasts."
 msgstr ""
-"A Cantata csak audio podcast-ok lejátszását támogatja! A(z) %1 csak videó "
+"A Cantata csak audio podcast-ok lejátszását támogatja! Az URL csak videó "
 "podcast-okat tartalmaz."
 
 #: online/podcastsearchdialog.cpp:589
@@ -3777,14 +3732,12 @@ msgid "Subscribe"
 msgstr "Feliratkozás"
 
 #: online/podcastsearchdialog.cpp:607
-#, fuzzy
 msgid "Enter URL"
-msgstr "Írd be a podcast URL-jét:"
+msgstr "Írd be a URL-t:"
 
 #: online/podcastsearchdialog.cpp:607
-#, fuzzy
 msgid "Manual podcast URL"
-msgstr "Írd be a podcast URL-jét:"
+msgstr "Podcast kézi URL"
 
 #: online/podcastsearchdialog.cpp:611 online/podcastsearchdialog.cpp:615
 msgid "Search %1"
@@ -3803,9 +3756,8 @@ msgid "Browse %1 podcasts"
 msgstr "A(z) %1 podcast-ok böngészése"
 
 #: online/podcastsearchdialog.cpp:639
-#, fuzzy
 msgid "Add Podcast Subscription"
-msgstr "Előfizetés hozzáadása"
+msgstr "Podcast leírásának hozzáadása"
 
 #: online/podcastsearchdialog.cpp:695
 msgid "Subscription added"
@@ -3895,14 +3847,13 @@ msgstr "Minden héten"
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox)
 #: po/rc.cpp:3 po/rc.cpp:657 rc.cpp:3 rc.cpp:657
 msgid "Background Image"
-msgstr ""
+msgstr "Háttérkép"
 
 #. i18n: file: context/othersettings.ui:36
 #. i18n: ectx: property (text), widget (QRadioButton, contextBackdrop_artist)
 #: po/rc.cpp:9 rc.cpp:9
-#, fuzzy
 msgid "Artist image"
-msgstr "Mutassa a művész képeit:"
+msgstr "A művész képe"
 
 #. i18n: file: context/othersettings.ui:43
 #. i18n: ectx: property (text), widget (QRadioButton, contextBackdrop_custom)
@@ -3913,9 +3864,8 @@ msgstr "Mutassa a művész képeit:"
 #. i18n: file: gui/interfacesettings.ui:516
 #. i18n: ectx: property (text), widget (QRadioButton, playQueueBackground_custom)
 #: po/rc.cpp:12 po/rc.cpp:666 rc.cpp:12 rc.cpp:666
-#, fuzzy
 msgid "Custom image:"
-msgstr "Egyéni:"
+msgstr "Egyéni kép:"
 
 #. i18n: file: context/othersettings.ui:63
 #. i18n: ectx: property (text), widget (QLabel, label_4b)
@@ -3927,7 +3877,7 @@ msgstr "Egyéni:"
 #. i18n: ectx: property (text), widget (QLabel, label_4b)
 #: po/rc.cpp:15 po/rc.cpp:669 rc.cpp:15 rc.cpp:669
 msgid "Blur:"
-msgstr ""
+msgstr "Elmosás:"
 
 #. i18n: file: context/othersettings.ui:100
 #. i18n: ectx: property (text), widget (QLabel, contextBackdropBlurLabel)
@@ -3939,7 +3889,7 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QLabel, playQueueBackgroundBlurLabel)
 #: po/rc.cpp:18 po/rc.cpp:672 rc.cpp:18 rc.cpp:672
 msgid "10px"
-msgstr ""
+msgstr "10px"
 
 #. i18n: file: context/othersettings.ui:112
 #. i18n: ectx: property (text), widget (QLabel, label_4)
@@ -3951,7 +3901,7 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QLabel, label_4)
 #: po/rc.cpp:21 po/rc.cpp:675 rc.cpp:21 rc.cpp:675
 msgid "Opacity:"
-msgstr ""
+msgstr "Áttetszőség:"
 
 #. i18n: file: context/othersettings.ui:149
 #. i18n: ectx: property (text), widget (QLabel, contextBackdropOpacityLabel)
@@ -3964,7 +3914,7 @@ msgstr ""
 #: po/rc.cpp:25 po/rc.cpp:679 rc.cpp:25 rc.cpp:679
 #, no-c-format
 msgid "40%"
-msgstr ""
+msgstr "40%"
 
 #. i18n: file: context/othersettings.ui:164
 #. i18n: ectx: property (text), widget (QCheckBox, contextDarkBackground)
@@ -3982,7 +3932,7 @@ msgstr "Csak az alapvető Wikipédia-szöveg mutatása"
 #. i18n: ectx: property (text), widget (QCheckBox, contextAlwaysCollapsed)
 #: po/rc.cpp:34 rc.cpp:34
 msgid "Always collapse into a single pane"
-msgstr ""
+msgstr "Mindig csukd össze egyetlen táblába"
 
 #. i18n: file: context/othersettings.ui:207
 #. i18n: ectx: property (text), widget (StateLabel, wikipediaIntroOnlyNote)
@@ -4065,9 +4015,8 @@ msgstr "Célformátum:"
 #. i18n: file: devices/actiondialog.ui:163
 #. i18n: ectx: property (text), widget (QCheckBox, overwrite)
 #: po/rc.cpp:74 rc.cpp:74
-#, fuzzy
 msgid "Overwrite songs"
-msgstr "Dalok felülírása:"
+msgstr "Dalok felülírása"
 
 #. i18n: file: devices/actiondialog.ui:170
 #. i18n: ectx: property (text), widget (QLabel, songCountLabel)
@@ -4091,6 +4040,8 @@ msgstr "Másolandó:"
 msgid ""
 "<i><b>NOTE:</b> Connected to a Mopidy server (manual update required).</i>"
 msgstr ""
+"<i><b>Megjegyzés:</b> Mopidy szerverhez kapcsolódva (kézi frissítés "
+"szükséges).</i>"
 
 #. i18n: file: devices/albumdetails.ui:26
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox)
@@ -4119,9 +4070,8 @@ msgstr "Lemez:"
 #. i18n: file: devices/albumdetails.ui:115
 #. i18n: ectx: property (text), widget (QCheckBox, singleArtist)
 #: po/rc.cpp:104 rc.cpp:104
-#, fuzzy
 msgid "Single artist"
-msgstr "Szólista:"
+msgstr "Egyetlen előadó:"
 
 #. i18n: file: devices/audiocdsettings.ui:29
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox)
@@ -4151,7 +4101,7 @@ msgstr "CDDB Port:"
 #. i18n: ectx: property (text), widget (QCheckBox, cdAuto)
 #: po/rc.cpp:131 rc.cpp:131
 msgid "Lookup information as soon as CD is inserted"
-msgstr ""
+msgstr "Információk keresése a CD beillesztése után"
 
 #. i18n: file: devices/audiocdsettings.ui:94
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox_2)
@@ -4227,23 +4177,20 @@ msgstr "Alaphangerő:"
 #. i18n: file: devices/devicepropertieswidget.ui:92
 #. i18n: ectx: property (text), widget (QCheckBox, fixVariousArtists)
 #: po/rc.cpp:158 rc.cpp:158
-#, fuzzy
 msgid "'Various Artists' workaround"
-msgstr "'Vegyes előadók' munkakörnyezet:"
+msgstr "'Válogatás' munkakörnyezet:"
 
 #. i18n: file: devices/devicepropertieswidget.ui:99
 #. i18n: ectx: property (text), widget (QCheckBox, autoScan)
 #: po/rc.cpp:161 rc.cpp:161
-#, fuzzy
 msgid "Automatically scan music when attached"
-msgstr "Csatlakozáskor zene automatikus keresése:"
+msgstr "Zene automatikus keresése csatlakoztatáskor"
 
 #. i18n: file: devices/devicepropertieswidget.ui:106
 #. i18n: ectx: property (text), widget (QCheckBox, useCache)
 #: po/rc.cpp:164 rc.cpp:164
-#, fuzzy
 msgid "Use cache"
-msgstr "Cache használata:"
+msgstr "Cache használata"
 
 #. i18n: file: devices/devicepropertieswidget.ui:115
 #. i18n: ectx: property (title), widget (QGroupBox, filenamesGroupBox)
@@ -4278,9 +4225,8 @@ msgstr "Fájlnév-séma:"
 #. i18n: file: tags/trackorganiser.ui:71
 #. i18n: ectx: property (text), widget (QCheckBox, vfatSafe)
 #: po/rc.cpp:173 po/rc.cpp:977 rc.cpp:173 rc.cpp:977
-#, fuzzy
 msgid "VFAT safe"
-msgstr "VFAT tároló:"
+msgstr "VFAT tároló"
 
 #. i18n: file: devices/devicepropertieswidget.ui:168
 #. i18n: ectx: property (text), widget (QCheckBox, asciiOnly)
@@ -4291,9 +4237,8 @@ msgstr "VFAT tároló:"
 #. i18n: file: tags/trackorganiser.ui:78
 #. i18n: ectx: property (text), widget (QCheckBox, asciiOnly)
 #: po/rc.cpp:176 po/rc.cpp:980 rc.cpp:176 rc.cpp:980
-#, fuzzy
 msgid "Use only ASCII characters"
-msgstr "Csak ASCII-es karakterek használata:"
+msgstr "Kizárólag ASCII-es karakterek használata"
 
 #. i18n: file: devices/devicepropertieswidget.ui:175
 #. i18n: ectx: property (text), widget (QCheckBox, replaceSpaces)
@@ -4304,9 +4249,8 @@ msgstr "Csak ASCII-es karakterek használata:"
 #. i18n: file: tags/trackorganiser.ui:85
 #. i18n: ectx: property (text), widget (QCheckBox, replaceSpaces)
 #: po/rc.cpp:179 po/rc.cpp:983 rc.cpp:179 rc.cpp:983
-#, fuzzy
 msgid "Replace spaces with underscores"
-msgstr "Szóközök cseréje aláhúzásra:"
+msgstr "Szóközök cseréje aláhúzásra"
 
 #. i18n: file: devices/devicepropertieswidget.ui:182
 #. i18n: ectx: property (text), widget (QCheckBox, ignoreThe)
@@ -4317,9 +4261,8 @@ msgstr "Szóközök cseréje aláhúzásra:"
 #. i18n: file: tags/trackorganiser.ui:92
 #. i18n: ectx: property (text), widget (QCheckBox, ignoreThe)
 #: po/rc.cpp:182 po/rc.cpp:986 rc.cpp:182 rc.cpp:986
-#, fuzzy
 msgid "Ignore 'The' in artist names"
-msgstr "A 'The' elvetése az előadók nevében:"
+msgstr "A 'The' elvetése az előadók nevében"
 
 #. i18n: file: devices/devicepropertieswidget.ui:192
 #. i18n: ectx: property (title), widget (QGroupBox, transcoderFrame)
@@ -4330,9 +4273,8 @@ msgstr "Átkódolás"
 #. i18n: file: devices/devicepropertieswidget.ui:201
 #. i18n: ectx: property (text), widget (QCheckBox, transcoderWhenDifferent)
 #: po/rc.cpp:188 rc.cpp:188
-#, fuzzy
 msgid "Only transcode if source file is of a different format"
-msgstr "Átkódolás csak akkor, ha a forrásfájl eltérő formátumú:"
+msgstr "Átkódolás csak akkor, ha a forrásfájl eltérő formátumú"
 
 #. i18n: file: devices/filenameschemedialog.ui:38
 #. i18n: ectx: property (text), widget (QLabel, label_album_example)
@@ -4349,15 +4291,14 @@ msgstr "A fájlnév-sémákról"
 #. i18n: file: devices/filenameschemedialog.ui:79
 #. i18n: ectx: property (toolTip), widget (QPushButton, albumArtist)
 #: po/rc.cpp:197 rc.cpp:197
-#, fuzzy
 msgid ""
 "The artist of the album. For most albums, this will be the same as the "
 "<i>Track Artist.</i> For compilations, this will often be <i>Various Artists."
 "</i>"
 msgstr ""
-"<tr><td>%albumartist%</td><td>%1</td><td>Az album előadója. Az albumok "
-"többségében ugyan az, mint a <i>Szám előadója.</i> A válogatások esetében ez "
-"többnyire <i>Vegyes előadók.</i> lesz. </td></tr>"
+"Az album előadója. A legtöbb album esetén, ez ugyanaz, mint a <i>Szám "
+"előadója</i>. Válogatások esetén ez többnyire <i>Válogatott előadók</i>-at "
+"jelent."
 
 #. i18n: file: devices/filenameschemedialog.ui:82
 #. i18n: ectx: property (text), widget (QPushButton, albumArtist)
@@ -4369,7 +4310,7 @@ msgstr "Album előadója"
 #. i18n: ectx: property (toolTip), widget (QPushButton, albumTitle)
 #: po/rc.cpp:203 rc.cpp:203
 msgid "The name of the album."
-msgstr ""
+msgstr "Az album címe."
 
 #. i18n: file: devices/filenameschemedialog.ui:92
 #. i18n: ectx: property (text), widget (QPushButton, albumTitle)
@@ -4380,15 +4321,14 @@ msgstr "Album címe"
 #. i18n: file: devices/filenameschemedialog.ui:99
 #. i18n: ectx: property (toolTip), widget (QPushButton, composer)
 #: po/rc.cpp:209 rc.cpp:209
-#, fuzzy
 msgid "The composer."
-msgstr "Zeneszerző"
+msgstr "Zeneszerző."
 
 #. i18n: file: devices/filenameschemedialog.ui:109
 #. i18n: ectx: property (toolTip), widget (QPushButton, trackArtist)
 #: po/rc.cpp:215 rc.cpp:215
 msgid "The artist of each track."
-msgstr ""
+msgstr "Az egyes számok előadói."
 
 #. i18n: file: devices/filenameschemedialog.ui:112
 #. i18n: ectx: property (text), widget (QPushButton, trackArtist)
@@ -4399,11 +4339,8 @@ msgstr "Szám előadója"
 #. i18n: file: devices/filenameschemedialog.ui:119
 #. i18n: ectx: property (toolTip), widget (QPushButton, trackTitle)
 #: po/rc.cpp:221 rc.cpp:221
-#, fuzzy
 msgid "The track title (without <i>Track Artist</i>)."
-msgstr ""
-"<tr><td>%title%</td><td>%1</td><td>A szám címe (a <i>Szám előadója</i> "
-"nélkül).</td></tr>"
+msgstr "A szám címe (a <i>Szám előadója</i> nélkül)."
 
 #. i18n: file: devices/filenameschemedialog.ui:122
 #. i18n: ectx: property (text), widget (QPushButton, trackTitle)
@@ -4414,13 +4351,12 @@ msgstr "Szám címe"
 #. i18n: file: devices/filenameschemedialog.ui:141
 #. i18n: ectx: property (toolTip), widget (QPushButton, trackArtistAndTitle)
 #: po/rc.cpp:227 rc.cpp:227
-#, fuzzy
 msgid ""
 "The track title (with <i>Track Artist</i>, if different to <i>Album Artist</"
 "i>)."
 msgstr ""
-"<tr><td>%artistandtitle%</td><td>%1</td><td>A szám címe (a <i>Szám "
-"előadójával</i>, ha az eltér az <i>Album előadójától</i>).</td></tr>"
+"A szám címe (a <i>Szám előadója</i>-val, ha az eltér az más, mint az<i>Album "
+"előadója</i>)."
 
 #. i18n: file: devices/filenameschemedialog.ui:144
 #. i18n: ectx: property (text), widget (QPushButton, trackArtistAndTitle)
@@ -4431,9 +4367,8 @@ msgstr "Szám címe (+Artist)"
 #. i18n: file: devices/filenameschemedialog.ui:151
 #. i18n: ectx: property (toolTip), widget (QPushButton, trackNo)
 #: po/rc.cpp:233 rc.cpp:233
-#, fuzzy
 msgid "The track number."
-msgstr "Szám sorszáma:"
+msgstr "Szám sorszáma"
 
 #. i18n: file: devices/filenameschemedialog.ui:154
 #. i18n: ectx: property (text), widget (QPushButton, trackNo)
@@ -4444,13 +4379,12 @@ msgstr "Szám #"
 #. i18n: file: devices/filenameschemedialog.ui:161
 #. i18n: ectx: property (toolTip), widget (QPushButton, cdNo)
 #: po/rc.cpp:239 rc.cpp:239
-#, fuzzy
 msgid ""
 "The album number of a multi-album album. Often compilations consist of "
 "several albums."
 msgstr ""
-"<tr><td>%discnumber%</td><td>%1</td><td>Többlemezes album esetén a lemez "
-"sorszáma. A válogatások sokszor több lemezből állnak.</td></tr>"
+"Többlemezes albumban a lemez sorszáma. A válogatások sokszor több lemezből "
+"állnak."
 
 #. i18n: file: devices/filenameschemedialog.ui:164
 #. i18n: ectx: property (text), widget (QPushButton, cdNo)
@@ -4462,13 +4396,13 @@ msgstr "CD #"
 #. i18n: ectx: property (toolTip), widget (QPushButton, year)
 #: po/rc.cpp:245 rc.cpp:245
 msgid "The year of the album's release."
-msgstr ""
+msgstr "Az album kiadásának éve."
 
 #. i18n: file: devices/filenameschemedialog.ui:181
 #. i18n: ectx: property (toolTip), widget (QPushButton, genre)
 #: po/rc.cpp:251 rc.cpp:251
 msgid "The genre of the album."
-msgstr ""
+msgstr "Az album műfaja."
 
 #. i18n: file: devices/remotedevicepropertieswidget.ui:17
 #. i18n: ectx: property (text), widget (QLabel, connectionNote)
@@ -4758,7 +4692,7 @@ msgstr ""
 #. i18n: ectx: property (toolTip), widget (QToolButton, addFileButton)
 #: po/rc.cpp:407 rc.cpp:407
 msgid "Add a local file"
-msgstr ""
+msgstr "Helyi fájl hozzáadása."
 
 #. i18n: file: gui/filesettings.ui:29
 #. i18n: ectx: property (text), widget (QCheckBox, storeCoversInMpdDir)
@@ -4838,6 +4772,9 @@ msgid ""
 "music folder hierarchy if this is 2 levels deep. (i.e. 'Artist/Album/Tracks')"
 "</i>"
 msgstr ""
+"<i><b>Megjegyzés:</b>A Cantata csak a zenekönyvtár szerkezetén belül, "
+"legfeljebb 2 szint mélységig képes háttereket és előadói képeket menteni. "
+"(azaz 'Előadó/Album/szám')</i>"
 
 #. i18n: file: gui/filesettings.ui:140
 #. i18n: ectx: property (text), widget (StateLabel, streamLocationNote)
@@ -4996,14 +4933,14 @@ msgstr "Host (vagy helyi csatlakozó):"
 #. i18n: file: gui/initialsettingswizard.ui:494
 #. i18n: ectx: property (text), widget (QLabel, musicFolderNoteLabel)
 #: po/rc.cpp:485 rc.cpp:485
-#, fuzzy
 msgid ""
 "<i><b>NOTE:</b> The 'Music folder' setting is used to lookup cover-art, "
 "lyrics, etc. If you're MPD instance is on a remote host, you may set this to "
 "a HTTP URL.</i>"
 msgstr ""
 "<i><b>Megjegyzés:</b> a 'Zenekönyvtár' beállításait borítóképek, dalszövegek "
-"stb. keresésére használja.</i>"
+"stb. keresésére használja. Haz MPD-d távoli kiszolgálón van, akkor ez HTTP "
+"URL-re állítható.</i>"
 
 #. i18n: file: gui/initialsettingswizard.ui:520
 #. i18n: ectx: property (text), widget (QLabel, socketNoteLabel)
@@ -5086,19 +5023,21 @@ msgid ""
 "music folder hierarchy if this is 2 levels deep. i.e. 'Artist/Album/Tracks'."
 "</i>"
 msgstr ""
+"<i><b>Megjegyzés:</b>A Cantata csak a zenekönyvtár szerkezetén belül, "
+"legfeljebb 2 szint mélységig képes háttereket és előadói képeket menteni, "
+"azaz 'Előadó/Album/szám'.</i>"
 
 #. i18n: file: gui/initialsettingswizard.ui:810
 #. i18n: ectx: property (text), widget (StateLabel, httpNote)
 #: po/rc.cpp:524 rc.cpp:524
-#, fuzzy
 msgid ""
 "<i><b>NOTE:</b> The 'Music folder' is set to a HTTP address, and Cantata "
 "currently cannot upload files to external HTTP servers. Therefore, the above "
 "settings should be left un-checked.</i>"
 msgstr ""
-"<i><b>Megjegyzés:</b> aA 'Zenekönyvtár' HTTP címre mutat, miközben a Cantata "
-"pillanatnyilag nem tud fájlokat feltölteni külső HTTP szerverekre. Emiatt a "
-"fenti beállításokat ki kell kapcsolni.</i>"
+"<i><b>Megjegyzés:</b>A 'Zenekönyvtár' HTTP címre mutat, miközben a Cantata "
+"pillanatnyilag nem tud fájlokat feltölteni külső HTTP szerverekre. Ezért a "
+"fenti beállítások maradjanak kijelöletlenül.</i>"
 
 #. i18n: file: gui/initialsettingswizard.ui:843
 #. i18n: ectx: property (text), widget (QLabel, label_6)
@@ -5138,21 +5077,20 @@ msgstr ""
 #. i18n: file: gui/interfacesettings.ui:36
 #. i18n: ectx: attribute (title), widget (QWidget, sidebarTab)
 #: po/rc.cpp:536 rc.cpp:536
-#, fuzzy
 msgid "Sidebar"
-msgstr "Nagy oldalsáv"
+msgstr "Oldalsáv"
 
 #. i18n: file: gui/interfacesettings.ui:42
 #. i18n: ectx: property (title), widget (QGroupBox, viewsGroup)
 #: po/rc.cpp:539 rc.cpp:539
 msgid "Views"
-msgstr ""
+msgstr "Nézetek"
 
 #. i18n: file: gui/interfacesettings.ui:48
 #. i18n: ectx: property (text), widget (QLabel, label_2)
 #: po/rc.cpp:542 rc.cpp:542
 msgid "Use the checkboxes below to configure the list of active views."
-msgstr ""
+msgstr "Az aktív nézetek beállítására használd a lenti jelölő gombokat."
 
 #. i18n: file: gui/interfacesettings.ui:77
 #. i18n: ectx: property (text), widget (StateLabel, sbPlayQueueLabel)
@@ -5162,6 +5100,9 @@ msgid ""
 "views. If you enable the option above, then it will be merged into the "
 "sidebar as per other views.</i>"
 msgstr ""
+"<i><b>Megjegyzés:</b>Alapbeállításban a lejátszási sor a többi nézet mellett "
+"jelenik meg. Ha a fenti opciót engedélyezed, akkor a többi nézethez "
+"hasonlóan bekerül az oldalsávba.</i>"
 
 #. i18n: file: gui/interfacesettings.ui:106
 #. i18n: ectx: property (text), widget (StateLabel, sbInfoLabel)
@@ -5171,32 +5112,32 @@ msgid ""
 "accessible by pressing its icon in the main toolbar. If you enable the "
 "option above, then it will be merged into the sidebar as per other views.</i>"
 msgstr ""
+"<i><b>Megjegyzés:</b> Alapbeállításban az 'Infó'-nézet (aktuális szám "
+"információi) a fő eszközsávon lévő ikon lenyomása után válik elérhetővé. Ha "
+"az opciót aktiválod, akkor a többi nézethez hasonlóan belekerül az "
+"oldalsávba.</i>"
 
 #. i18n: file: gui/interfacesettings.ui:144
 #. i18n: ectx: property (text), widget (BuddyLabel, sbPositionLabel)
 #: po/rc.cpp:557 rc.cpp:557
-#, fuzzy
 msgid "Position:"
-msgstr "Gyűjtemény:"
+msgstr "Pozíció:"
 
 #. i18n: file: gui/interfacesettings.ui:157
 #. i18n: ectx: property (text), widget (QCheckBox, sbIconsOnly)
 #: po/rc.cpp:560 rc.cpp:560
-#, fuzzy
 msgid "Only show icons, no text"
-msgstr "Csak az alapvető Wikipédia-szöveg mutatása"
+msgstr "Csak ikonok mutatása, szöveg nélkül"
 
 #. i18n: file: gui/interfacesettings.ui:164
 #. i18n: ectx: property (text), widget (QCheckBox, sbMonoIcons)
 #: po/rc.cpp:563 rc.cpp:563
-#, fuzzy
 msgid "Use monochrome icons"
-msgstr "Fekete-fehér ikonok"
+msgstr "Fekete-fehér ikonok alkalmazása"
 
 #. i18n: file: gui/interfacesettings.ui:171
 #. i18n: ectx: property (text), widget (QCheckBox, sbAutoHide)
 #: po/rc.cpp:566 rc.cpp:566
-#, fuzzy
 msgid "Auto-hide"
 msgstr "Automatikus elrejtés"
 
@@ -5215,33 +5156,28 @@ msgstr "Borítók:"
 #. i18n: file: gui/interfacesettings.ui:219
 #. i18n: ectx: property (text), widget (QCheckBox, libraryArtistImage)
 #: po/rc.cpp:578 rc.cpp:578
-#, fuzzy
 msgid "Show artist images"
-msgstr "Mutassa a művész képeit:"
+msgstr "Mutassa a művész képeit"
 
 #. i18n: file: gui/interfacesettings.ui:226
 #. i18n: ectx: property (text), widget (QCheckBox, libraryYear)
 #: po/rc.cpp:581 rc.cpp:581
-#, fuzzy
 msgid "Show album year"
-msgstr "Mutassa az album évét:"
+msgstr "Mutassa az album évét"
 
 #. i18n: file: gui/interfacesettings.ui:258
 #. i18n: ectx: property (text), widget (QLabel, label_8)
 #: po/rc.cpp:584 rc.cpp:584
-#, fuzzy
 msgid ""
 "<i><b>NOTE:</b> When looking for artist images, Cantata will look for either "
 "artist.jpg, artist.png, 'Artist'.jpg, or 'Artist'.png,\n"
 "within the folder of the current track, or within its parent folder. If no "
 "image is found, Cantata will attempt to download one.</i>"
 msgstr ""
-"<i><b>Megjegyzés:</b> amikor előadó képét keresi, Cantata előadó.jpg,-t és "
-"előadó.png-t, vagy 'Előadó.jpg',-t illetve 'Előadó.png'-t egyaránt keres.\n"
+"<i><b>Megjegyzés:</b> amikor előadó képét keresi, a Cantata előadó.jpg,-t, "
+"'Előadó'.jpg-t, vagy 'Előadó.png',-t keres \n"
 "a jelenlegi szám könyvtárában, vagy annak szülő könyvtárában. Ha nem talál "
-"képet, a Cantata megpróbál letölteni egyet. A megjelenített kép le lesz "
-"vágva (vagy lent/fent, vagy bal/jobb oldalon), hogy megfelelő kép jelenjen "
-"meg.</i>"
+"képet, a Cantata megpróbál letölteni egyet.</i>"
 
 #. i18n: file: gui/interfacesettings.ui:307
 #. i18n: ectx: property (text), widget (BuddyLabel, label_5x)
@@ -5276,9 +5212,8 @@ msgstr "Előadó/Év/Album"
 #. i18n: file: gui/interfacesettings.ui:462
 #. i18n: ectx: property (text), widget (QCheckBox, playQueueStartClosed)
 #: po/rc.cpp:615 po/rc.cpp:645 rc.cpp:615 rc.cpp:645
-#, fuzzy
 msgid "Initially collapse albums"
-msgstr "Induláskor az albumok becsukása:"
+msgstr "Induláskor az albumok becsukása"
 
 #. i18n: file: gui/interfacesettings.ui:367
 #. i18n: ectx: attribute (title), widget (QWidget, tab_3)
@@ -5313,30 +5248,26 @@ msgstr "Eszköznézet stílusa:"
 #. i18n: file: gui/interfacesettings.ui:469
 #. i18n: ectx: property (text), widget (QCheckBox, playQueueAutoExpand)
 #: po/rc.cpp:648 rc.cpp:648
-#, fuzzy
 msgid "Automatically expand current album"
-msgstr "Aktuális album automatikus kinyitása:"
+msgstr "Aktuális album automatikus megnyitása"
 
 #. i18n: file: gui/interfacesettings.ui:476
 #. i18n: ectx: property (text), widget (QCheckBox, playQueueScroll)
 #: po/rc.cpp:651 rc.cpp:651
-#, fuzzy
 msgid "Scroll to current track"
-msgstr "Aktuális számhoz görgetés:"
+msgstr "Aktuális számhoz görgetés"
 
 #. i18n: file: gui/interfacesettings.ui:483
 #. i18n: ectx: property (text), widget (QCheckBox, playQueueConfirmClear)
 #: po/rc.cpp:654 rc.cpp:654
-#, fuzzy
 msgid "Prompt before clearing"
-msgstr "Törlés előtt jelezzen:"
+msgstr "Törlés előtt jelezzen"
 
 #. i18n: file: gui/interfacesettings.ui:509
 #. i18n: ectx: property (text), widget (QRadioButton, playQueueBackground_cover)
 #: po/rc.cpp:663 rc.cpp:663
-#, fuzzy
 msgid "Current album cover"
-msgstr "Másolja az albumborítókat mint:"
+msgstr "Aktuális album borítója"
 
 #. i18n: file: gui/interfacesettings.ui:638
 #. i18n: ectx: attribute (title), widget (QWidget, tab_7)
@@ -5347,48 +5278,44 @@ msgstr "Külső"
 #. i18n: file: gui/interfacesettings.ui:644
 #. i18n: ectx: property (text), widget (QCheckBox, systemTrayPopup)
 #: po/rc.cpp:685 rc.cpp:685
-#, fuzzy
 msgid "Show popup messages when changing tracks"
-msgstr "Számváltáskor felugró üzenetek mutatása:"
+msgstr "A számok váltáskor legyen felugró üzenet"
 
 #. i18n: file: gui/interfacesettings.ui:654
 #. i18n: ectx: property (text), widget (QCheckBox, systemTrayCheckBox)
 #: po/rc.cpp:688 rc.cpp:688
-#, fuzzy
 msgid "Show icon in notification area"
-msgstr "Ikonok mutatása az értesítési területen:"
+msgstr "Ikon megjelenítése az értesítési területen"
 
 #. i18n: file: gui/interfacesettings.ui:664
 #. i18n: ectx: property (text), widget (QCheckBox, minimiseOnClose)
 #: po/rc.cpp:691 rc.cpp:691
-#, fuzzy
 msgid "Minimize to notification area when closed"
-msgstr "Bezárás az értesítési területre:"
+msgstr "Bezáráskor az értesítési területre csukja össze"
 
 #. i18n: file: gui/interfacesettings.ui:671
 #. i18n: ectx: property (title), widget (QGroupBox, startupState)
 #: po/rc.cpp:694 rc.cpp:694
-msgid "On Start-up"
-msgstr ""
+msgid "On Start-up:"
+msgstr "Indításkor:"
 
 #. i18n: file: gui/interfacesettings.ui:677
 #. i18n: ectx: property (text), widget (QRadioButton, startupStateShow)
 #: po/rc.cpp:697 rc.cpp:697
-#, fuzzy
 msgid "Show main window"
-msgstr "Ablak mutatása"
+msgstr "A fő menüt mutassa"
 
 #. i18n: file: gui/interfacesettings.ui:684
 #. i18n: ectx: property (text), widget (QRadioButton, startupStateHide)
 #: po/rc.cpp:700 rc.cpp:700
 msgid "Hide main window"
-msgstr ""
+msgstr "A fő ablak elrejtése"
 
 #. i18n: file: gui/interfacesettings.ui:691
 #. i18n: ectx: property (text), widget (QRadioButton, startupStateRestore)
 #: po/rc.cpp:703 rc.cpp:703
 msgid "Restore previous state"
-msgstr ""
+msgstr "Az előző állapot helyreállítása"
 
 #. i18n: file: gui/interfacesettings.ui:715
 #. i18n: ectx: attribute (title), widget (QWidget, tab_4)
@@ -5399,55 +5326,50 @@ msgstr "Általános:"
 #. i18n: file: gui/interfacesettings.ui:726
 #. i18n: ectx: property (text), widget (QCheckBox, groupSingle)
 #: po/rc.cpp:709 rc.cpp:709
-#, fuzzy
 msgid "Group single track albums"
-msgstr "Az egyszámos albumok csoportosítása:"
+msgstr "Az egyszámos albumokat csoportosítsa"
 
 #. i18n: file: gui/interfacesettings.ui:733
 #. i18n: ectx: property (text), widget (QCheckBox, useComposer)
 #: po/rc.cpp:712 rc.cpp:712
-#, fuzzy
 msgid "Group albums by composer"
-msgstr "Albumok csoportosítása zeneszerző szerint:"
+msgstr "Albumok csoportosítása zeneszerző szerint"
 
 #. i18n: file: gui/interfacesettings.ui:740
 #. i18n: ectx: property (text), widget (QCheckBox, groupMultiple)
 #: po/rc.cpp:715 rc.cpp:715
-#, fuzzy
 msgid "Group multiple artist albums under 'Various Artists'"
-msgstr "'Vegyes előadók' alatt csoportosítva"
+msgstr "A vegyes előadói albumokat a 'Válogatások' alatt csoportosítsa"
 
 #. i18n: file: gui/interfacesettings.ui:747
 #. i18n: ectx: property (text), widget (QCheckBox, fetchCovers)
 #: po/rc.cpp:718 rc.cpp:718
 msgid "Fetch missing covers from Last.fm"
-msgstr ""
+msgstr "A hiányzó borítók letöltése a Last.fm-ről"
 
 #. i18n: file: gui/interfacesettings.ui:754
 #. i18n: ectx: property (text), widget (QCheckBox, cacheScaledCovers)
 #: po/rc.cpp:721 rc.cpp:721
 msgid "Cache scaled covers"
-msgstr ""
+msgstr "Méretarányos borítók cache-be"
 
 #. i18n: file: gui/interfacesettings.ui:761
 #. i18n: ectx: property (text), widget (QCheckBox, showDeleteAction)
 #: po/rc.cpp:724 rc.cpp:724
-#, fuzzy
 msgid "Show delete action in context menus"
-msgstr "Törlési művelet megjelenítése a helyi menükben:"
+msgstr "Törlési művelet megjelenítése a helyi menükben"
 
 #. i18n: file: gui/interfacesettings.ui:768
 #. i18n: ectx: property (text), widget (QCheckBox, forceSingleClick)
 #: po/rc.cpp:727 rc.cpp:727
-#, fuzzy
 msgid "Enforce single-click activation of items"
-msgstr "Elemek egy-kattintásos aktiválása:"
+msgstr "Elemek egy-kattintásos aktiválását alkalmazza"
 
 #. i18n: file: gui/interfacesettings.ui:775
 #. i18n: ectx: property (text), widget (BuddyLabel, langLabel)
 #: po/rc.cpp:730 rc.cpp:730
 msgid "Language:"
-msgstr ""
+msgstr "Nyelv:"
 
 #. i18n: file: gui/interfacesettings.ui:806
 #. i18n: ectx: property (text), widget (StateLabel, singleClickLabel)
@@ -5462,13 +5384,12 @@ msgstr ""
 #. i18n: file: gui/interfacesettings.ui:835
 #. i18n: ectx: property (text), widget (StateLabel, langNoteLabel)
 #: po/rc.cpp:736 rc.cpp:736
-#, fuzzy
 msgid ""
 "<i><b>NOTE:</b> Changing the language setting will require a re-start of "
 "Cantata.</i>"
 msgstr ""
-"<i><b>Megjegyzés:</b> az 'Elemek egy-kattintásos aktiválása' "
-"engedélyezésekor a Cantata újraindítása szükséges.</i>"
+"<i><b>Megjegyzés:</b>a nyelvi beállítások változtatása esetén a Cantata "
+"újraindítása szükséges.</i>"
 
 #. i18n: file: gui/mainwindow.ui:298
 #. i18n: ectx: property (text), widget (QLabel, dynamicLabel)
@@ -5491,23 +5412,20 @@ msgstr " ms"
 #. i18n: file: gui/playbacksettings.ui:58
 #. i18n: ectx: property (text), widget (QCheckBox, stopOnExit)
 #: po/rc.cpp:754 rc.cpp:754
-#, fuzzy
 msgid "Stop playback on exit"
-msgstr "Kilépéskor a lejátszás megállítása:"
+msgstr "Kilépéskor a lejátszás megállítása"
 
 #. i18n: file: gui/playbacksettings.ui:65
 #. i18n: ectx: property (text), widget (QCheckBox, stopDynamizerOnExit)
 #: po/rc.cpp:757 rc.cpp:757
-#, fuzzy
 msgid "Stop dynamizer on exit"
-msgstr "Kilépéskor a dinamizáló leállítása:"
+msgstr "Kilépéskor a dinamizáló leállítása"
 
 #. i18n: file: gui/playbacksettings.ui:72
 #. i18n: ectx: property (text), widget (QCheckBox, inhibitSuspend)
 #: po/rc.cpp:760 rc.cpp:760
-#, fuzzy
 msgid "Inhibit suspend whilst playing"
-msgstr "Lejátszás közbeni felfüggesztés megakadályozás:"
+msgstr "Lejátszás közbeni felfüggesztés megakadályozás"
 
 #. i18n: file: gui/playbacksettings.ui:95
 #. i18n: ectx: property (text), widget (QLabel, noteLabel)
@@ -5531,14 +5449,13 @@ msgstr "Kimenet"
 #. i18n: ectx: property (text), widget (BuddyLabel, crossfadingLabel)
 #: po/rc.cpp:772 rc.cpp:772
 msgid "Crossfade between tracks:"
-msgstr ""
+msgstr "Átúsztatás a számok között"
 
 #. i18n: file: gui/playbacksettings.ui:139
 #. i18n: ectx: property (suffix), widget (QSpinBox, crossfading)
 #: po/rc.cpp:775 rc.cpp:775
-#, fuzzy
 msgid " s"
-msgstr " ms"
+msgstr "s"
 
 #. i18n: file: gui/playbacksettings.ui:152
 #. i18n: ectx: property (text), widget (BuddyLabel, replayGainLabel)
@@ -5556,7 +5473,7 @@ msgstr "A lejátszási szintről"
 #. i18n: ectx: property (text), widget (QLabel, outputsViewLabel)
 #: po/rc.cpp:787 rc.cpp:787
 msgid "Use the checkboxes below to control the active outputs."
-msgstr ""
+msgstr "Az aktív kimenet beállítására használd az lenti kijelölő gombokat."
 
 #. i18n: file: gui/serversettings.ui:35
 #. i18n: ectx: property (text), widget (QLabel, label)
@@ -5685,6 +5602,7 @@ msgstr "SOCKS Proxy"
 #: po/rc.cpp:869 rc.cpp:869
 msgid "Use the checkboxes below to configure the list of active services."
 msgstr ""
+"Az aktív szolgáltatások beállítására használd az lenti kijelölő gombokat."
 
 #. i18n: file: streams/digitallyimportedsettings.ui:29
 #. i18n: ectx: property (text), widget (QLabel, label)
@@ -5758,6 +5676,7 @@ msgstr ""
 #: po/rc.cpp:908 rc.cpp:908
 msgid "Use the checkboxes below to configure the list of active providers."
 msgstr ""
+"Az aktív szolgáltatók beállítására használd az lenti kijelölő gombokat."
 
 #. i18n: file: streams/streamssettings.ui:47
 #. i18n: ectx: property (text), widget (QPushButton, configureButton)
@@ -6386,7 +6305,7 @@ msgstr ""
 
 #: widgets/genrecombo.cpp:44
 msgid "Filter On Genre"
-msgstr ""
+msgstr "Műfaj szerinti szűrés"
 
 #: widgets/genrecombo.cpp:66
 msgid "All Genres"

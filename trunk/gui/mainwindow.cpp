@@ -982,7 +982,7 @@ void MainWindow::initSizes()
     positionSlider->adjustSize();
     int cwSize=qMax(playPauseTrackButton->height(), trackLabel->height()+artistLabel->height()+spacing)+positionSlider->height()+spacing;
     int tabSize=tabWidget->tabSize().width();
-    if ((cwSize<tabSize && (tabSize-cwSize)<(tabSize/3)) || (cwSize>tabSize && (cwSize-tabSize)<(cwSize/3))) {
+    if (abs(cwSize-tabSize)<=16) {
         cwSize=tabSize;
     } else {
         cwSize=qMax(cwSize, FancyTabWidget::iconSize()*2);

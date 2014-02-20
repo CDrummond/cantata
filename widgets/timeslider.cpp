@@ -231,7 +231,7 @@ void PosSlider::mouseMoveEvent(QMouseEvent *e)
 {
     if (maximum()!=minimum()) {
         qreal pc = (qreal)e->pos().x()/(qreal)width();
-        QPoint pos(e->pos().x(), Utils::isHighDpi() ? -80 : -40);
+        QPoint pos(e->pos().x(), height());
         QToolTip::showText(mapToGlobal(pos), Song::formattedTime(maximum()*pc), this, rect());
     }
 

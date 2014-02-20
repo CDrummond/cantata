@@ -292,7 +292,11 @@ void GtkProxyStyle::drawComplexControl(ComplexControl control, const QStyleOptio
             if (widget && widget->property(constOnCombo).toBool()) {
                 painter->fillRect(r, option->palette.background());
             } else if (!widget || widget->testAttribute(Qt::WA_OpaquePaintEvent)) {
-                painter->fillRect(r, option->palette.base());
+                if (option->palette.base().color()==Qt::transparent) {
+                    painter->fillRect(r, QApplication::palette().color(QPalette::Base));
+                } else {
+                    painter->fillRect(r, option->palette.base());
+                }
             }
 
             if (slider.isValid()) {

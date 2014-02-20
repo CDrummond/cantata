@@ -63,6 +63,7 @@ class FancyTabProxyStyle : public QProxyStyle {
 public:
     void drawPrimitive(PrimitiveElement element, const QStyleOption *option, QPainter *p, const QWidget *widget) const;
     void drawControl(ControlElement element, const QStyleOption *option, QPainter *p, const QWidget *widget) const;
+    int styleHint(StyleHint hint, const QStyleOption *option, const QWidget *widget, QStyleHintReturn *returnData) const;
     void polish(QWidget* widget);
     void polish(QApplication* app);
     void polish(QPalette& palette);

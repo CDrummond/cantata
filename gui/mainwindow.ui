@@ -110,7 +110,7 @@
        </layout>
       </item>
       <item row="0" column="6">
-       <spacer name="spacerx">
+       <spacer name="spacery">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>

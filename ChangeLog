@@ -155,6 +155,7 @@
 85. Fix corrupted scrollbar background in views with a background image when
     Gtk style is used.
 86. Dont draw tab-bar frame when using small sidebar style.
+87. If using small sidebar on top, or bottom, then centre-align tabs.
 
 1.2.2
 -----

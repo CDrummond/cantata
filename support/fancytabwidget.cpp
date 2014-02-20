@@ -146,6 +146,17 @@ void FancyTabProxyStyle::drawPrimitive(PrimitiveElement element, const QStyleOpt
     }
 }
 
+int FancyTabProxyStyle::styleHint(StyleHint hint, const QStyleOption *option, const QWidget *widget, QStyleHintReturn *returnData) const
+{
+    if (SH_TabBar_Alignment==hint && widget && qobject_cast<const QTabBar *>(widget)) {
+        QTabBar::Shape shape=static_cast<const QTabBar *>(widget)->shape();
+        if (QTabBar::RoundedNorth==shape || QTabBar::RoundedSouth==shape) {
+            return (int)Qt::AlignCenter;
+        }
+    }
+    return QProxyStyle::styleHint(hint, option, widget, returnData);
+}
+
 void FancyTabProxyStyle::drawControl(ControlElement element, const QStyleOption *option, QPainter *p, const QWidget *widget) const
 {
 

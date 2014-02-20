@@ -1,14 +1,14 @@
 ﻿1.4.0
 -----
 1. Allow setting of custom device name for UMS and MTP devices.
-2. Allow to use table-view for earch results.
+2. Allow to use table-view for search results.
 3. Add option to auto-switch to context view X seconds after playback starts,
    and switch back X seconds after stopped.
 4. Add option to auto-scroll lyrics - accessed via context-menu in lyrics view.
 5. Use smaller font for sizebar.
 6. Remove corner cover widget.
 7. Remove collapsing of interface.
-8. Move position label inbetween controls.
+8. Move position slider inbetween controls.
 
 1.3.0
 -----

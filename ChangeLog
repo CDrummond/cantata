@@ -152,6 +152,8 @@
     devices with multiple partitions.
 84. Use WindowText, and not ButtonText, colour for mono icons - fixes wrong
     colour being used with Bespin style.
+85. Fix corrupted scrollbar background in views with a background image when
+    Gtk style is used.
 
 1.2.2
 -----

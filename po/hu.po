@@ -2135,8 +2135,8 @@ msgid "A KDE client for MPD"
 msgstr "KDE kliens az MPD-nek"
 
 #: gui/main.cpp:227
-msgid "&copy; 2011–2014 Craig Drummond"
-msgstr "&copy; 2011–2014 Craig Drummond"
+msgid "&copy; 2011-2014 Craig Drummond"
+msgstr "&copy; 2011-2014 Craig Drummond"
 
 #: gui/main.cpp:231
 msgid "Craig Drummond"
@@ -2427,11 +2427,11 @@ msgstr "Cantata névjegye"
 #: gui/mainwindow.cpp:1578
 msgctxt "Qt-only"
 msgid ""
-"<b>Cantata %1</b><br/><br/>MPD client.<br/><br/>&copy; 2011–2014 Craig "
+"<b>Cantata %1</b><br/><br/>MPD client.<br/><br/>&copy; 2011-2014 Craig "
 "Drummond<br/>Released under the <a href=\"http://www.gnu.org/licenses/gpl."
 "html\">GPLv3</a>"
 msgstr ""
-"<b>Cantata %1</b><br/><br/>MPD kliens.<br/><br/>&copy; 2011–2014 Craig "
+"<b>Cantata %1</b><br/><br/>MPD kliens.<br/><br/>&copy; 2011-2014 Craig "
 "Drummond<br/>Kiadva <a href=\"http://www.gnu.org/licenses/gpl.html\">GPLv3 "
 "szerint.</a>"
 

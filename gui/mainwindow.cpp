@@ -1710,14 +1710,12 @@ void MainWindow::updatePlayQueue(const QList<Song> &songs)
     updateNextTrack(MPDStatus::self()->nextSongId());
 }
 
-static const char * constBasicProp="basic";
-
 void MainWindow::updateWindowTitle()
 {
     MPDStatus * const status = MPDStatus::self();
     bool multipleConnections=connectionsAction->isVisible();
     QString connection=MPDConnection::self()->getDetails().getName();
-    QString title=trackLabel->fullText().isEmpty() ? QString() : trackLabel->property(constBasicProp).toString();
+    QString title=i18n("No Song")==trackLabel->fullText() ? QString() : trackLabel->fullText();
 
     if (MPDState_Stopped==status->state() || MPDState_Inactive==status->state() || title.isEmpty()) {
         setWindowTitle(multipleConnections ? i18n("Cantata (%1)", connection) : "Cantata");
@@ -1771,24 +1769,13 @@ void MainWindow::updateCurrentSong(const Song &song)
 //        } else {
 //            artistLabel->setText(current.artist.isEmpty() ? current.title : i18nc("title - artist", "%1 - %2", current.artist, current.title));
 //        }
-        trackLabel->setProperty(constBasicProp, trackLabel->fullText());
     } else {
-        QString title=
-                current.title.isEmpty() && current.artist.isEmpty() && (!current.name.isEmpty() || !current.file.isEmpty())
-                    ? current.name.isEmpty() ? current.file : current.name
-                    : current.title;
-
-        if (!current.album.isEmpty() && !current.artist.isEmpty()) {
-            QString album=current.album;
-            quint16 year=Song::albumYear(current);
-            if (year>0) {
-                album+=QString(" (%1)").arg(year);
-            }
-            trackLabel->setText(i18nc("Track by Artist on Album", "%1 by %2 on %3", title, current.artist, album));
-            trackLabel->setProperty(constBasicProp, i18nc("track - artist", "%1 - %2", title, current.artist));
+        if (!current.title.isEmpty() && !current.artist.isEmpty()) {
+            trackLabel->setText(current.artistSong());
         } else {
-            trackLabel->setText(title);
-            trackLabel->setProperty(constBasicProp, trackLabel->fullText());
+            trackLabel->setText(current.title.isEmpty() && current.artist.isEmpty() && (!current.name.isEmpty() || !current.file.isEmpty())
+                                   ? current.name.isEmpty() ? current.file : current.name
+                                   : current.title);
         }
     }
     setNoTrack(trackLabel->fullText().isEmpty());
@@ -2644,7 +2631,6 @@ void MainWindow::startContextTimer()
 void MainWindow::setNoTrack(bool none)
 {
     if (none) {
-        trackLabel->setProperty(constBasicProp, QString());
         trackLabel->setText(i18n("No Song"));
         QColor col=trackLabel->palette().text().color();
         trackLabel->setStyleSheet(QString("QLabel { color : rgba(%1, %2, %3, %4); }").arg(col.red()).arg(col.green()).arg(col.blue()).arg(128));

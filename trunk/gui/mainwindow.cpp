@@ -2653,11 +2653,14 @@ void MainWindow::startContextTimer()
 void MainWindow::setNoTrack(bool none)
 {
     if (none) {
-        trackLabel->setText(i18n("No Song"));
+        trackLabel->setText(QLatin1String("Cantata"));
+        artistLabel->setText(i18n("Not Playing"));
         QColor col=trackLabel->palette().text().color();
         trackLabel->setStyleSheet(QString("QLabel { color : rgba(%1, %2, %3, %4); }").arg(col.red()).arg(col.green()).arg(col.blue()).arg(128));
+        artistLabel->setStyleSheet(trackLabel->styleSheet());
     } else if (!trackLabel->styleSheet().isEmpty()) {
         trackLabel->setStyleSheet(QString());
+        artistLabel->setStyleSheet(trackLabel->styleSheet());
     }
 }
 

@@ -215,8 +215,8 @@ void CurrentCover::update(const Song &s)
             }
         } else {
             valid=true;
+            img=stdImage(isStream);
             coverFileName=isStream ? noStreamCoverFileName : noCoverFileName;
-            img=isStream ? noStreamCover : noCover;
             emit coverFile(coverFileName);
             emit coverImage(QImage());
         }

@@ -525,7 +525,8 @@ MainWindow::MainWindow(QWidget *parent)
     }
 
     ensurePolished();
-    int edgeWidth=qMax(prevTrackButton->width()*4, (menuButton->width()*2)+volumeSliderSpacer->geometry().width()+volumeSlider->width());
+    int edgeWidth=qMax(prevTrackButton->width()*4, menuButton->sizeHint().width()+songInfoButton->width()+
+                                                   volumeSliderSpacer->sizeHint().width()+volumeSlider->width());
     toolbarSpacerA->setFixedSize(edgeWidth, 0);
     toolbarSpacerB->setFixedSize(edgeWidth, 0);
 

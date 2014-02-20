@@ -139,9 +139,15 @@ static void drawIcon(const QIcon &icon, const QRect &r, QPainter *p, const QSize
     p->drawPixmap(r.x()+(r.width()-px.width())/2.0, r.y()+(r.height()-px.height())/2.0, px.width(), px.height(), px);
 }
 
-void FancyTabProxyStyle::drawControl(
-    ControlElement element, const QStyleOption* option,
-    QPainter* p, const QWidget* widget) const {
+void FancyTabProxyStyle::drawPrimitive(PrimitiveElement element, const QStyleOption *option, QPainter *p, const QWidget *widget) const
+{
+    if (PE_FrameTabBarBase!=element) {
+        QProxyStyle::drawPrimitive(element, option, p, widget);
+    }
+}
+
+void FancyTabProxyStyle::drawControl(ControlElement element, const QStyleOption *option, QPainter *p, const QWidget *widget) const
+{
 
   const QStyleOptionTabV3* v_opt = qstyleoption_cast<const QStyleOptionTabV3*>(option);
 

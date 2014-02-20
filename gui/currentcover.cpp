@@ -32,7 +32,6 @@
 K_GLOBAL_STATIC(Covers, instance)
 #endif
 
-
 #ifndef Q_OS_WIN
 static void themes(const QString &theme, QStringList &iconThemes)
 {
@@ -194,7 +193,6 @@ void CurrentCover::update(const Song &s)
                 coverFileName=cImg.fileName;
                 img=cImg.img;
                 emit coverFile(cImg.fileName);
-                emit coverImage(cImg.img);
                 if (current.isFromOnlineService()) {
                     if (coverFileName.startsWith(
                         #ifdef Q_OS_WIN

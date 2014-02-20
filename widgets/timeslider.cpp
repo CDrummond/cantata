@@ -63,7 +63,7 @@ public:
         , slider(s)
         , visible(true)
     {
-        setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Fixed);
+        setFixedWidth(fontMetrics().width(QLatin1String("-")+constEmptyTime));
     }
 
     void setEnabled(bool e)
@@ -105,7 +105,6 @@ public:
         : TimeLabel(p, s)
     {
         setAlignment((Qt::RightToLeft==layoutDirection() ? Qt::AlignLeft : Qt::AlignRight)|Qt::AlignVCenter);
-        setMinimumWidth(fontMetrics().width(constEmptyTime));
     }
     virtual ~TimeTakenLabel() { }
 
@@ -125,7 +124,6 @@ public:
     {
         setAttribute(Qt::WA_Hover, true);
         setAlignment((Qt::RightToLeft==layoutDirection() ? Qt::AlignRight : Qt::AlignLeft)|Qt::AlignVCenter);
-        setMinimumWidth(fontMetrics().width(QLatin1String("-")+constEmptyTime));
     }
 
     virtual ~RemainingTimeLabel() { }

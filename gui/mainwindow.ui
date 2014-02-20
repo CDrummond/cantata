@@ -28,8 +28,11 @@
    </property>
    <item>
     <widget class="QWidget" name="toolbar" native="true">
-     <layout class="QHBoxLayout" name="toolbarLayout">
-      <property name="spacing">
+     <layout class="QGridLayout" name="toolbarLayout">
+      <property name="verticalSpacing">
+       <number>0</number>
+      </property>
+      <property name="horizontalSpacing">
        <number>0</number>
       </property>
       <property name="leftMargin">
@@ -44,19 +47,19 @@
       <property name="bottomMargin">
        <number>0</number>
       </property>
-      <item>
+      <item row="0" column="0">
        <widget class="ToolButton" name="prevTrackButton"/>
       </item>
-      <item>
+      <item row="0" column="1">
        <widget class="ToolButton" name="playPauseTrackButton"/>
       </item>
-      <item>
+      <item row="0" column="2">
        <widget class="ToolButton" name="stopTrackButton"/>
       </item>
-      <item>
+      <item row="0" column="3">
        <widget class="ToolButton" name="nextTrackButton"/>
       </item>
-      <item row="0" column="1">
+      <item row="0" column="4">
        <layout class="QVBoxLayout" name="middleLayout">
         <item>
          <spacer name="trackLabelSpacer">
@@ -102,10 +105,10 @@
         </item>
        </layout>
       </item>
-      <item>
+      <item row="0" column="5">
        <widget class="VolumeSlider" name="volumeSlider"/>
       </item>
-      <item>
+      <item row="0" column="6">
        <spacer name="volumeSliderSpacer">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
@@ -121,11 +124,17 @@
         </property>
        </spacer>
       </item>
-      <item>
+      <item row="0" column="7">
        <widget class="ToolButton" name="songInfoButton"/>
       </item>
-      <item>
+      <item row="0" column="8">
        <widget class="MenuButton" name="menuButton"/>
+      </item>
+      <item row="1" column="0" colspan="4">
+       <widget class="QWidget" name="toolbarSpacerA"/>
+      </item>
+      <item row="1" column="5" colspan="4">
+       <widget class="QWidget" name="toolbarSpacerB"/>
       </item>
      </layout>
     </widget>

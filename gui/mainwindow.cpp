@@ -524,6 +524,12 @@ MainWindow::MainWindow(QWidget *parent)
     if (fullScreenAction->isEnabled()) {
         fullScreenAction->setChecked(Settings::self()->showFullScreen());
     }
+
+    ensurePolished();
+    int edgeWidth=qMax(prevTrackButton->width()*4, (menuButton->width()*2)+volumeSliderSpacer->geometry().width()+volumeSlider->width());
+    toolbarSpacerA->setFixedSize(edgeWidth, 0);
+    toolbarSpacerB->setFixedSize(edgeWidth, 0);
+
     randomPlayQueueAction->setChecked(false);
     repeatPlayQueueAction->setChecked(false);
     singlePlayQueueAction->setChecked(false);

@@ -525,10 +525,7 @@ MainWindow::MainWindow(QWidget *parent)
     }
 
     ensurePolished();
-    int edgeWidth=qMax(prevTrackButton->width()*4, menuButton->sizeHint().width()+songInfoButton->width()+
-                                                   volumeSliderSpacer->sizeHint().width()+volumeSlider->width());
-    toolbarSpacerA->setFixedSize(edgeWidth, 0);
-    toolbarSpacerB->setFixedSize(edgeWidth, 0);
+    adjustToolbarSpacers();
 
     randomPlayQueueAction->setChecked(false);
     repeatPlayQueueAction->setChecked(false);
@@ -2250,6 +2247,7 @@ void MainWindow::tabToggled(int index)
             songInfoButton->setVisible(true);
             songInfoAction->setCheckable(true);
         }
+        adjustToolbarSpacers();
         break;
     case PAGE_LIBRARY:
         locateTrackAction->setVisible(tabWidget->isEnabled(index));
@@ -2675,6 +2673,14 @@ void MainWindow::calcMinHeight()
     if (height()<minH) {
         resize(width(), minH);
     }
+}
+
+void MainWindow::adjustToolbarSpacers()
+{
+    int edgeWidth=qMax(prevTrackButton->width()*4, menuButton->sizeHint().width()+(songInfoButton->isVisible() ? songInfoButton->width() : 0)+
+                                                   volumeSliderSpacer->sizeHint().width()+volumeSlider->width());
+    toolbarSpacerA->setFixedSize(edgeWidth, 0);
+    toolbarSpacerB->setFixedSize(edgeWidth, 0);
 }
 
 void MainWindow::toggleContext()

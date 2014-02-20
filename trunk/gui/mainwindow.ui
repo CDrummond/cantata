@@ -82,12 +82,6 @@
           <property name="alignment">
            <set>Qt::AlignCenter</set>
           </property>
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
-            <horstretch>2</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
          </widget>
         </item>
         <item>

@@ -306,6 +306,7 @@ private:
     void startContextTimer();
     void setNoTrack(bool none);
     void calcMinHeight();
+    void adjustToolbarSpacers();
 
 private Q_SLOTS:
     void toggleContext();

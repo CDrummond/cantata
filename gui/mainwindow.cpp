@@ -250,7 +250,6 @@ MainWindow::MainWindow(QWidget *parent)
     if (tabWidgetSpacer->minimumSize().height()!=spacing) {
         tabWidgetSpacer->changeSize(spacing, spacing, QSizePolicy::Fixed, QSizePolicy::Fixed);
         playQueueSpacer->changeSize(spacing, spacing, QSizePolicy::Fixed, QSizePolicy::Fixed);
-        trackLabelSpacer->changeSize(spacing, spacing, QSizePolicy::Fixed, QSizePolicy::Fixed);
     }
 
     #ifdef ENABLE_KDE_SUPPORT
@@ -1713,16 +1712,29 @@ void MainWindow::updatePlayQueue(const QList<Song> &songs)
 void MainWindow::updateWindowTitle()
 {
     MPDStatus * const status = MPDStatus::self();
+    bool stopped=MPDState_Stopped==status->state() || MPDState_Inactive==status->state();
     bool multipleConnections=connectionsAction->isVisible();
     QString connection=MPDConnection::self()->getDetails().getName();
-    QString title=i18n("No Song")==trackLabel->fullText() ? QString() : trackLabel->fullText();
 
-    if (MPDState_Stopped==status->state() || MPDState_Inactive==status->state() || title.isEmpty()) {
+    if (stopped) {
         setWindowTitle(multipleConnections ? i18n("Cantata (%1)", connection) : "Cantata");
+    } else if (current.isStream() && !current.isCantataStream() && !current.isCdda()) {
+        setWindowTitle(multipleConnections
+                        ? i18nc("track :: Cantata (connection)", "%1 :: Cantata (%2)", trackLabel->fullText(), connection)
+                        : i18nc("track :: Cantata", "%1 :: Cantata", trackLabel->fullText()));
+    } else if (current.artist.isEmpty()) {
+        if (trackLabel->fullText().isEmpty()) {
+            setWindowTitle(multipleConnections ? i18n("Cantata (%1)", connection) : "Cantata");
+        } else {
+            setWindowTitle(multipleConnections
+                            ? i18nc("track :: Cantata (connection)", "%1 :: Cantata (%2)", trackLabel->fullText(), connection)
+                            : i18nc("track :: Cantata", "%1 :: Cantata", trackLabel->fullText()));
+        }
     } else {
         setWindowTitle(multipleConnections
-                        ? i18nc("title :: Cantata (connection)", "%1 :: Cantata (%2)", title, connection)
-                        : i18nc("title :: Cantata", "%1 :: Cantata", title));
+                        ? i18nc("track - artist :: Cantata (connection)", "%1 - %2 :: Cantata (%3)",
+                                trackLabel->fullText(), current.artist, connection)
+                        : i18nc("track - artist :: Cantata", "%1 - %2 :: Cantata", trackLabel->fullText(), current.artist));
     }
 }
 
@@ -1764,21 +1776,32 @@ void MainWindow::updateCurrentSong(const Song &song)
 
     if (current.isStream() && !current.isCantataStream() && !current.isCdda()) {
         trackLabel->setText(current.name.isEmpty() ? Song::unknown() : current.name);
-//        if (current.artist.isEmpty() && current.title.isEmpty() && !current.name.isEmpty()) {
-//            trackLabel->setText(current.name.isEmpty() ? Song::unknown() : current.name);
-//        } else {
-//            artistLabel->setText(current.artist.isEmpty() ? current.title : i18nc("title - artist", "%1 - %2", current.artist, current.title));
-//        }
-    } else {
-        if (!current.title.isEmpty() && !current.artist.isEmpty()) {
-            trackLabel->setText(current.artistSong());
+        if (current.artist.isEmpty() && current.title.isEmpty() && !current.name.isEmpty()) {
+            artistLabel->setText(i18n("(Stream)"));
         } else {
-            trackLabel->setText(current.title.isEmpty() && current.artist.isEmpty() && (!current.name.isEmpty() || !current.file.isEmpty())
-                                   ? current.name.isEmpty() ? current.file : current.name
-                                   : current.title);
+            artistLabel->setText(current.artist.isEmpty() ? current.title : i18nc("title - artist", "%1 - %2", current.artist, current.title));
+        }
+    } else {
+        if (current.title.isEmpty() && current.artist.isEmpty() && (!current.name.isEmpty() || !current.file.isEmpty())) {
+            trackLabel->setText(current.name.isEmpty() ? current.file : current.name);
+        } else {
+            trackLabel->setText(current.title);
+        }
+        if (current.album.isEmpty() && current.artist.isEmpty()) {
+            artistLabel->setText(trackLabel->fullText().isEmpty() ? QString() : Song::unknown());
+        } else if (current.album.isEmpty()) {
+            artistLabel->setText(current.artist);
+        } else {
+            QString album=current.album;
+            quint16 year=Song::albumYear(current);
+            if (year>0) {
+                album+=QString(" (%1)").arg(year);
+            }
+            artistLabel->setText(i18nc("artist - album", "%1 - %2", current.artist, album));
         }
     }
-    setNoTrack(trackLabel->fullText().isEmpty());
+
+    setNoTrack(trackLabel->fullText().isEmpty() && artistLabel->fullText().isEmpty());
 
     bool isPlaying=MPDState_Playing==MPDStatus::self()->state();
     playQueueModel.updateCurrentSong(current.id);

@@ -100,9 +100,25 @@
        </layout>
       </item>
       <item row="0" column="5">
-       <widget class="VolumeSlider" name="volumeSlider"/>
+       <spacer name="spacerx">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Preferred</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>2</height>
+         </size>
+        </property>
+       </spacer>
       </item>
       <item row="0" column="6">
+       <widget class="VolumeSlider" name="volumeSlider"/>
+      </item>
+      <item row="0" column="7">
        <spacer name="volumeSliderSpacer">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
@@ -118,16 +134,16 @@
         </property>
        </spacer>
       </item>
-      <item row="0" column="7">
+      <item row="0" column="8">
        <widget class="ToolButton" name="songInfoButton"/>
       </item>
-      <item row="0" column="8">
+      <item row="0" column="9">
        <widget class="MenuButton" name="menuButton"/>
       </item>
       <item row="1" column="0" colspan="4">
        <widget class="QWidget" name="toolbarSpacerA"/>
       </item>
-      <item row="1" column="5" colspan="4">
+      <item row="1" column="5" colspan="5">
        <widget class="QWidget" name="toolbarSpacerB"/>
       </item>
      </layout>

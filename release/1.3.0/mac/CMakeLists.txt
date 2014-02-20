@@ -1,0 +1,7 @@
+set(MACOSX_BUNDLE_RESOURCES "${CMAKE_BINARY_DIR}/cantata.app/Contents/Resources")
+
+install(FILES ${MACOSX_BUNDLE_ICON_FILE} DESTINATION ${MACOSX_BUNDLE_RESOURCES})
+
+if (CANTATA_OXYGEN_DIR)
+    add_subdirectory(icons)
+endif (CANTATA_OXYGEN_DIR)

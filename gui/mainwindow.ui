@@ -29,10 +29,7 @@
    <item>
     <widget class="QWidget" name="toolbar" native="true">
      <layout class="QGridLayout" name="toolbarLayout">
-      <property name="verticalSpacing">
-       <number>0</number>
-      </property>
-      <property name="horizontalSpacing">
+      <property name="spacing">
        <number>0</number>
       </property>
       <property name="leftMargin">
@@ -60,6 +57,22 @@
        <widget class="ToolButton" name="nextTrackButton"/>
       </item>
       <item row="0" column="4">
+       <spacer name="spacerx">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Preferred</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>2</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="0" column="5">
        <layout class="QVBoxLayout" name="middleLayout">
         <item>
          <widget class="SqueezedTextLabel" name="trackLabel">
@@ -96,7 +109,7 @@
         </item>
        </layout>
       </item>
-      <item row="0" column="5">
+      <item row="0" column="6">
        <spacer name="spacerx">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
@@ -112,10 +125,10 @@
         </property>
        </spacer>
       </item>
-      <item row="0" column="6">
+      <item row="0" column="7">
        <widget class="VolumeSlider" name="volumeSlider"/>
       </item>
-      <item row="0" column="7">
+      <item row="0" column="8">
        <spacer name="volumeSliderSpacer">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
@@ -131,16 +144,16 @@
         </property>
        </spacer>
       </item>
-      <item row="0" column="8">
+      <item row="0" column="9">
        <widget class="ToolButton" name="songInfoButton"/>
       </item>
-      <item row="0" column="9">
+      <item row="0" column="10">
        <widget class="MenuButton" name="menuButton"/>
       </item>
-      <item row="1" column="0" colspan="4">
+      <item row="1" column="0" colspan="5">
        <widget class="QWidget" name="toolbarSpacerA"/>
       </item>
-      <item row="1" column="5" colspan="5">
+      <item row="1" column="6" colspan="5">
        <widget class="QWidget" name="toolbarSpacerB"/>
       </item>
      </layout>

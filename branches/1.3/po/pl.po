@@ -2171,8 +2171,8 @@ msgid "A KDE client for MPD"
 msgstr "Klient KDE dla odtwarzacza MPD "
 
 #: gui/main.cpp:227
-msgid "&copy; 2011–2014 Craig Drummond"
-msgstr "&copy; 2011–2014 Craig Drummond"
+msgid "&copy; 2011-2014 Craig Drummond"
+msgstr "&copy; 2011-2014 Craig Drummond"
 
 #: gui/main.cpp:231
 msgid "Craig Drummond"
@@ -2465,11 +2465,11 @@ msgstr "O programie Cantata"
 #: gui/mainwindow.cpp:1578
 msgctxt "Qt-only"
 msgid ""
-"<b>Cantata %1</b><br/><br/>MPD client.<br/><br/>&copy; 2011–2014 Craig "
+"<b>Cantata %1</b><br/><br/>MPD client.<br/><br/>&copy; 2011-2014 Craig "
 "Drummond<br/>Released under the <a href=\"http://www.gnu.org/licenses/gpl."
 "html\">GPLv3</a>"
 msgstr ""
-"<b>Cantata %1</b><br/><br/>Klient MPD.<br/><br/>&copy; 2011–2014 Craig "
+"<b>Cantata %1</b><br/><br/>Klient MPD.<br/><br/>&copy; 2011-2014 Craig "
 "Drummond<br/>Wydano na warunkach licencji <a href=\"http://www.gnu.org/"
 "licenses/gpl.html\">GPLv3</a>"
 
@@ -4496,9 +4496,7 @@ msgstr "Nazwa:"
 
 #. i18n: file: devices/remotedevicepropertieswidget.ui:60
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox)
-#. i18n: file: gui/interfacesettings.ui:122
-#. i18n: ectx: property (title), widget (QGroupBox, optionsGroup)
-#: po/rc.cpp:266 rc.cpp:266 po/rc.cpp:551 rc.cpp:551
+#: po/rc.cpp:266 rc.cpp:266
 msgid "Options"
 msgstr "Opcje"
 
@@ -5174,6 +5172,12 @@ msgstr ""
 "<i><b>UWAGA:</b> Domyślnie widok \"Informacje\" jest dostępny przez ikonę na "
 "głównym pasku narzędziowym. Po zaznaczeniu powyższej opcji, zostanie on"
 "umieszczony na pasku bocznym, tak jak inne widoki.</i>"
+
+#. i18n: file: gui/interfacesettings.ui:122
+#. i18n: ectx: property (title), widget (QGroupBox, optionsGroup)
+#: po/rc.cpp:551 rc.cpp:551
+msgid "Options"
+msgstr "Opcje"
 
 #. i18n: file: gui/interfacesettings.ui:144
 #. i18n: ectx: property (text), widget (BuddyLabel, sbPositionLabel)

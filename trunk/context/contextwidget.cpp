@@ -132,12 +132,12 @@ public:
             alignment |= Qt::TextHideMnemonic;
         }
         #ifdef SIMPLE_VSB
-        painter.drawItemText(rect(), alignment, opt.palette, true, opt.text, QPalette::Text);
+        painter.drawItemText(rect(), alignment, opt.palette, true, opt.text, QPalette::WindowText);
         #else
         if (isOn) {
             opt.state|=QStyle::State_Selected;
         }
-        painter.drawItemText(rect(), alignment, opt.palette, true, opt.text, isOn ? QPalette::HighlightedText : QPalette::Text);
+        painter.drawItemText(rect(), alignment, opt.palette, true, opt.text, isOn ? QPalette::HighlightedText : QPalette::WindowText);
         #endif
     }
 };

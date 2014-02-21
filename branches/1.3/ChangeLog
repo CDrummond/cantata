@@ -1,4 +1,9 @@
-﻿1.3.0.1
+﻿1.3.1
+-----
+1. Fix collapsed context-view selector buttons text when using a dark
+   background.
+
+1.3.0.1
 -------
 1. Fix duplicate translations - causes KDE builds to fail.
 

@@ -313,6 +313,7 @@ private Q_SLOTS:
     void hideMenuBar();
 
 private:
+    int prevPage;
     int loaded;
     MPDState lastState;
     qint32 lastSongId;

@@ -4362,7 +4362,7 @@ msgstr "名称:"
 #. i18n: ectx: property (title), widget (QGroupBox, optionsGroup)
 #: po/rc.cpp:266 rc.cpp:266 po/rc.cpp:551 rc.cpp:551
 msgid "Options"
-msgstr "选项:"
+msgstr "选项"
 
 #. i18n: file: devices/remotedevicepropertieswidget.ui:88
 #. i18n: ectx: property (text), widget (BuddyLabel, portLabel_2)

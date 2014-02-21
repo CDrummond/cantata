@@ -1,4 +1,8 @@
-﻿1.3.0
+﻿1.3.0.1
+-------
+1. Fix duplicate translations - cuases KDE builds to fail.
+
+1.3.0
 -----
  1. Add option to control startup-state; visible, hidden, or remembered from
     previous run.

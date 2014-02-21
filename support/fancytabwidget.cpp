@@ -351,7 +351,7 @@ FancyTabBar::FancyTabBar(QWidget *parent, bool hasBorder, bool text, int iSize, 
 {
     QFont f(font());
     if (f.pointSizeF()>=8) {
-        f.setPointSizeF(f.pointSizeF()*0.85);
+        f.setPointSizeF(f.pointSizeF()*0.8);
         setFont(f);
     }
 

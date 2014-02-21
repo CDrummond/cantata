@@ -173,6 +173,7 @@ static int nextKey(int &key)
 
 MainWindow::MainWindow(QWidget *parent)
     : MAIN_WINDOW_BASE_CLASS(parent)
+    , prevPage(-1)
     , loaded(0)
     , lastState(MPDState_Inactive)
     , lastSongId(-1)
@@ -2153,6 +2154,7 @@ void MainWindow::fullScreen()
 
 void MainWindow::currentTabChanged(int index)
 {
+    prevPage=index;
     controlDynamicButton();
     switch(index) {
     case PAGE_LIBRARY:
@@ -2688,10 +2690,17 @@ void MainWindow::adjustToolbarSpacers()
 
 void MainWindow::toggleContext()
 {
-    if ( songInfoButton->isVisible() &&
-         ( (MPDState_Playing==MPDStatus::self()->state() && !songInfoAction->isChecked()) ||
-           (MPDState_Stopped==MPDStatus::self()->state() && songInfoAction->isChecked()) ) ) {
-        songInfoAction->trigger();
+    if ( songInfoButton->isVisible()) {
+         if ( (MPDState_Playing==MPDStatus::self()->state() && !songInfoAction->isChecked()) ||
+               (MPDState_Stopped==MPDStatus::self()->state() && songInfoAction->isChecked()) ) {
+            songInfoAction->trigger();
+         }
+    } else if (MPDState_Playing==MPDStatus::self()->state() && PAGE_CONTEXT!=tabWidget->current_index()) {
+        int pp=prevPage;
+        showTab(PAGE_CONTEXT);
+        prevPage=pp;
+    } else if (MPDState_Stopped==MPDStatus::self()->state() && PAGE_CONTEXT==tabWidget->current_index() && -1!=prevPage) {
+        showTab(prevPage);
     }
 }
 

@@ -213,11 +213,8 @@ void TrayItem::songChanged(const Song &song, bool isPlaying)
                 trayItem->setToolTip("cantata", i18n("Cantata"), text);
 
                 // Use the cover as icon pixmap.
-                if (CurrentCover::self()->isValid()) {
-                    QPixmap *coverPixmap = const_cast<QPixmap*>(CurrentCover::self()->pixmap());
-                    if (coverPixmap) {
-                        trayItem->setToolTipIconByPixmap(*coverPixmap);
-                    }
+                if (CurrentCover::self()->isValid() && !CurrentCover::self()->image().isNull()) {
+                    trayItem->setToolTipIconByPixmap(QPixmap::fromImage(CurrentCover::self()->image()));
                 }
                 #elif defined Q_OS_WIN
                 trayItem->setToolTip(i18n("Cantata")+"\n\n"+text);

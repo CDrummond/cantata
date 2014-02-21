@@ -29,7 +29,7 @@
 #include <QFile>
 #include <QCoreApplication>
 #ifdef ENABLE_KDE_SUPPORT
-K_GLOBAL_STATIC(Covers, instance)
+K_GLOBAL_STATIC(CurrentCover, instance)
 #endif
 
 #ifndef Q_OS_WIN

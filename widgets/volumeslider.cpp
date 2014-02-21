@@ -149,7 +149,7 @@ void VolumeSlider::paintEvent(QPaintEvent *)
     bool reverse=Qt::RightToLeft==layoutDirection();
     QPainter p(this);
     bool muted=MPDConnection::self()->isMuted();
-    if (muted) {
+    if (muted || !isEnabled()) {
         p.setOpacity(0.25);
     }
 
@@ -284,7 +284,6 @@ void VolumeSlider::updateMpdStatus()
         setToolTip(unmuteVolume>0 ? i18n("Volume %1% (Muted)", volume) : i18n("Volume %1%", volume));
         setValue(volume);
     }
-    setVisible(volume>=0);
     setEnabled(volume>=0);
     update();
     muteAction->setEnabled(isEnabled());

@@ -10,6 +10,7 @@ if (NOT WIN32)
 endif (NOT WIN32)
 
 if (ENABLE_KDE_SUPPORT)
+    include_directories(${KDE4_INCLUDES})
     # macro_ensure_version("4.7.0" ${KDE_VERSION} KDE_VERSION_47)
     # if (NOT KDE_VERSION_47)
         set(SUPPORT_SRCS ${SUPPORT_SRCS} kmessagewidget.cpp)

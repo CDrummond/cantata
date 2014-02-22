@@ -755,6 +755,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(consumePlayQueueAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(setConsume(bool)));
     #ifdef ENABLE_HTTP_STREAM_PLAYBACK
     connect(streamPlayAction, SIGNAL(triggered(bool)), httpStream, SLOT(setEnabled(bool)));
+    connect(MPDConnection::self(), SIGNAL(streamUrl(QString)), SLOT(streamUrl(QString)));
     #endif
     connect(StdActions::self()->backAction, SIGNAL(triggered(bool)), this, SLOT(goBack()));
     connect(playQueueSearchWidget, SIGNAL(returnPressed()), this, SLOT(searchPlayQueue()));
@@ -1105,6 +1106,17 @@ void MainWindow::connectToMpd(const MPDConnectionDetails &details)
 void MainWindow::connectToMpd()
 {
     connectToMpd(Settings::self()->connectionDetails());
+}
+
+void MainWindow::streamUrl(const QString &u)
+{
+    #ifdef ENABLE_HTTP_STREAM_PLAYBACK
+    streamPlayAction->setVisible(!u.isEmpty());
+    streamPlayAction->setChecked(streamPlayAction->isVisible() && Settings::self()->playStream());
+    httpStream->setEnabled(streamPlayAction->isChecked());
+    #else
+    Q_UNUSED(u)
+    #endif
 }
 
 void MainWindow::refreshDbPromp()

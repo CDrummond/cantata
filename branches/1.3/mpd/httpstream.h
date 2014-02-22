@@ -49,6 +49,7 @@ private Q_SLOTS:
     
 private:
     bool enabled;
+    int state;
     #if QT_VERSION < 0x050000
     Phonon::MediaObject *player;
     #else

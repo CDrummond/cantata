@@ -92,7 +92,6 @@ void TrackScanner::init()
     #ifdef FFMPEG_FOUND
     FfmpegInput::init();
     #endif
-    ebur128_init_static(constEbur128Mode);
 }
 
 TrackScanner::TrackScanner(int i)

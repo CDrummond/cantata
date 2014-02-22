@@ -195,6 +195,7 @@ public Q_SLOTS:
     void changeConnection();
     void connectToMpd();
     void connectToMpd(const MPDConnectionDetails &details);
+    void streamUrl(const QString &u);
     void refreshDbPromp();
     #ifndef ENABLE_KDE_SUPPORT
     void showAboutDialog();

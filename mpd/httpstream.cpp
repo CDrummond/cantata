@@ -31,6 +31,7 @@
 HttpStream::HttpStream(QObject *p)
     : QObject(p)
     , enabled(false)
+    , state(MPDState_Inactive)
     , player(0)
 {
 }
@@ -40,10 +41,12 @@ void HttpStream::setEnabled(bool e)
     if (e==enabled) {
         return;
     }
-    
+   
+    enabled=e; 
     if (enabled) {
         connect(MPDConnection::self(), SIGNAL(streamUrl(QString)), this, SLOT(streamUrl(QString)));
         connect(MPDStatus::self(), SIGNAL(updated()), this, SLOT(updateStatus()));
+        streamUrl(MPDConnection::self()->getDetails().streamUrl);
     } else {
         disconnect(MPDConnection::self(), SIGNAL(streamUrl(QString)), this, SLOT(streamUrl(QString)));
         disconnect(MPDStatus::self(), SIGNAL(updated()), this, SLOT(updateStatus()));
@@ -62,7 +65,20 @@ void HttpStream::streamUrl(const QString &url)
         player->deleteLater();
         player=0;
     }
+    if (!url.isEmpty() && !player) {
+        #if QT_VERSION < 0x050000
+        player=new Phonon::MediaObject(this);
+        Phonon::createPath(player, new Phonon::AudioOutput(Phonon::MusicCategory, this));
+        player->setCurrentSource(url);
+        #else
+        player=new QMediaPlayer(this);
+        player->setMedia(QUrl(url));
+        #endif
+        player->setProperty(constUrlProperty, url);
+    }
+
     if (player) {
+        state=status->state();
         switch (status->state()) {
         case MPDState_Playing:
             player->play();
@@ -76,16 +92,8 @@ void HttpStream::streamUrl(const QString &url)
         default:
         break;
         }
-    } else if (!url.isEmpty()) {
-        #if QT_VERSION < 0x050000
-        player=new Phonon::MediaObject(this);
-        Phonon::createPath(player, new Phonon::AudioOutput(Phonon::MusicCategory, this));
-        player->setCurrentSource(url);
-        #else
-        player=new QMediaPlayer(this);
-        player->setMedia(QUrl(url));
-        #endif
-        player->setProperty(constUrlProperty, url);
+    } else {
+        state=MPDState_Inactive;
     }
 }
 
@@ -94,7 +102,14 @@ void HttpStream::updateStatus()
     if (!player) {
         return;
     }
-    switch (MPDStatus::self()->state()) {
+
+    MPDStatus * const status = MPDStatus::self();
+    if (status->state()==state) {
+        return;
+    }
+
+    state=status->state();
+    switch (status->state()) {
     case MPDState_Playing:
         player->play();
         break;

@@ -1,16 +1,17 @@
 ﻿1.4.0
 -----
-1. Allow setting of custom device name for UMS and MTP devices.
-2. Allow to use table-view for search results.
-3. Add option to auto-switch to context view X seconds after playback starts,
-   and switch back X seconds after stopped.
-4. Add option to auto-scroll lyrics - accessed via context-menu in lyrics view.
-5. Use smaller font for sizebar.
-6. Remove corner cover widget.
-7. Remove collapsing of interface.
-8. Move position slider inbetween controls.
-9. If volume control is disabled (as MPD returns negative volume), then make
-   control semi-transparent, and don't just hide.
+ 1. Allow setting of custom device name for UMS and MTP devices.
+ 2. Allow to use table-view for search results.
+ 3. Add option to auto-switch to context view X seconds after playback starts,
+    and switch back X seconds after stopped.
+ 4. Add option to auto-scroll lyrics - accessed via context-menu in lyrics view.
+ 5. Use smaller font for sizebar.
+ 6. Remove corner cover widget.
+ 7. Remove collapsing of interface.
+ 8. Move position slider inbetween controls.
+ 9. If volume control is disabled (as MPD returns negative volume), then make
+    control semi-transparent, and don't just hide.
+10. Use system libedbur128 if found.
 
 1.3.1
 -----

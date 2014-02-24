@@ -2694,7 +2694,8 @@ void MainWindow::calcMinHeight()
 
 void MainWindow::adjustToolbarSpacers()
 {
-    int edgeWidth=qMax(prevTrackButton->width()*4, menuButton->sizeHint().width()+(songInfoButton->isVisible() ? songInfoButton->width() : 0)+
+    int menuWidth=GtkStyle::isActive() ? menuButton->width() : menuButton->sizeHint().width();
+    int edgeWidth=qMax(prevTrackButton->width()*4, menuWidth+(songInfoAction->isCheckable() ? songInfoButton->width() : 0)+
                                                    volumeSliderSpacer->sizeHint().width()+volumeSlider->width());
     toolbarSpacerA->setFixedSize(edgeWidth, 0);
     toolbarSpacerB->setFixedSize(edgeWidth, 0);

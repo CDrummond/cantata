@@ -34,7 +34,6 @@
 #cmakedefine MPG123_FOUND 1
 #cmakedefine CDDB_FOUND 1
 #cmakedefine MUSICBRAINZ5_FOUND 1
-#cmakedefine USE_SPEEX_RESAMPLER 1
 #cmakedefine ENABLE_REPLAYGAIN_SUPPORT 1
 #cmakedefine TAGLIB_CAN_SAVE_ID3VER 1
 #cmakedefine ENABLE_PROXY_CONFIG 1

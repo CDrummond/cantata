@@ -27,7 +27,7 @@
   #include "use_speex.h" /* or define USE_SPEEX_RESAMPLER manually */
 #endif
 #else
-#include "config.h"
+#include "ebur128-config.h"
 #endif
 
 #ifdef USE_SPEEX_RESAMPLER

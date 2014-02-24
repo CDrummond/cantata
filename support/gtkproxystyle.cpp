@@ -30,6 +30,7 @@
 #include <QComboBox>
 #include <QSpinBox>
 #include <QScrollBar>
+#include <QAbstractScrollArea>
 #include <QMenu>
 #include <QToolBar>
 #include <QApplication>
@@ -288,9 +289,8 @@ void GtkProxyStyle::drawComplexControl(ComplexControl control, const QStyleOptio
             QRect r=option->rect;
             QRect slider=subControlRect(control, option, SC_ScrollBarSlider, widget);
             painter->save();
-
             if (widget && widget->property(constOnCombo).toBool()) {
-                painter->fillRect(r, option->palette.background());
+                painter->fillRect(r, QApplication::palette().color(QPalette::Background)); // option->palette.background());
             } else if (!widget || widget->testAttribute(Qt::WA_OpaquePaintEvent)) {
                 if (option->palette.base().color()==Qt::transparent) {
                     painter->fillRect(r, QApplication::palette().color(QPalette::Base));
@@ -393,8 +393,22 @@ void GtkProxyStyle::drawPrimitive(PrimitiveElement element, const QStyleOption *
 
 void GtkProxyStyle::polish(QWidget *widget)
 {
-    if (SB_Standard!=sbarType && qobject_cast<QScrollBar *>(widget) && isOnCombo(widget)) {
-        widget->setProperty(constOnCombo, true);
+    if (SB_Standard!=sbarType) {
+        if (qobject_cast<QScrollBar *>(widget)) {
+            if (isOnCombo(widget)) {
+                widget->setProperty(constOnCombo, true);
+            }
+        } else if (qobject_cast<QAbstractScrollArea *>(widget) && widget->inherits("QComboBoxListView")) {
+            QAbstractScrollArea *sa=static_cast<QAbstractScrollArea *>(widget);
+            QWidget *sb=sa->horizontalScrollBar();
+            if (sb) {
+                sb->setProperty(constOnCombo, true);
+            }
+            sb=sa->verticalScrollBar();
+            if (sb) {
+                sb->setProperty(constOnCombo, true);
+            }
+        }
     }
 
     #ifndef ENABLE_KDE_SUPPORT

@@ -4,6 +4,7 @@
    background.
 2. Apply some Fedora patches.
 3. Fix MPD HTTP stream playback.
+4. Fix painting of Gtk thin scrollbar style on comboboxes.
 
 1.3.0.1
 -------

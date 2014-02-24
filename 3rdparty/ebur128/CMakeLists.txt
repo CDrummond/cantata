@@ -2,6 +2,7 @@ include(MacroLogFeature)
 find_package(SPEEXDSP)
 macro_log_feature(SPEEXDSP_FOUND "SpeexDSP" "Used to speedup/improve ReplayGain calculation." "http://www.speex.org")
 set(USE_SPEEX_RESAMPLER ${SPEEXDSP_FOUND})
+configure_file(ebur128-config.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/ebur128-config.h)
 
 macro(ebur128_check_for_sse)
     # check for SSE extensions

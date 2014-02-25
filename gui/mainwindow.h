@@ -305,7 +305,6 @@ private:
     void setPlaylistsEnabled(bool e);
     void controlPlaylistActions();
     void startContextTimer();
-    void setNoTrack(bool none);
     void calcMinHeight();
     void adjustToolbarSpacers();
 

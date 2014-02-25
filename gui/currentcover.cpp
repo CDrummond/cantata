@@ -185,8 +185,7 @@ void CurrentCover::update(const Song &s)
 
     if (s.albumArtist()!=current.albumArtist() || s.album!=current.album || s.isStream()!=current.isStream()) {
         current=s;
-        bool isStream=current.isStream() && !current.isCantataStream() && !current.isCdda();
-        if (!s.albumArtist().isEmpty() && !s.album.isEmpty() && !isStream) {
+        if (!s.albumArtist().isEmpty() && !s.album.isEmpty() && !current.isStandardStream()) {
             Covers::Image cImg=Covers::self()->requestImage(s, true);
             valid=!cImg.img.isNull();
             if (valid) {
@@ -215,8 +214,8 @@ void CurrentCover::update(const Song &s)
             }
         } else {
             valid=true;
-            img=stdImage(isStream);
-            coverFileName=isStream ? noStreamCoverFileName : noCoverFileName;
+            img=stdImage(current.isStandardStream());
+            coverFileName=current.isStandardStream() ? noStreamCoverFileName : noCoverFileName;
             emit coverFile(coverFileName);
             emit coverImage(QImage());
         }
@@ -232,8 +231,7 @@ void CurrentCover::coverRetrieved(const Song &s, const QImage &img, const QStrin
             emit coverFile(file);
             emit coverImage(img);
         } else {
-            bool stream=current.isStream() && !current.isCdda();
-            coverFileName=stream ? noStreamCoverFileName : noCoverFileName;
+            coverFileName=current.isStandardStream() ? noStreamCoverFileName : noCoverFileName;
             emit coverFile(coverFileName);
             emit coverImage(QImage());
         }

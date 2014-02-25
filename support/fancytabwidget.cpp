@@ -487,11 +487,6 @@ void FancyTabBar::paintTab(QPainter *painter, int tabIndex, bool gtkStyle) const
     QRect rect = tabRect(tabIndex);
     bool selected = (tabIndex == m_currentIndex);
 
-    switch (m_pos) {
-    case Side: rect.adjust(2, 0, -2, 0);
-    case Top:  rect.adjust(0, 0, 0, -1); break;
-    case Bot:  rect.adjust(0, 2, 0, 0); break;
-    }
     QStyleOptionViewItemV4 styleOpt;
     styleOpt.initFrom(this);
     styleOpt.state&=~(QStyle::State_Selected|QStyle::State_MouseOver);

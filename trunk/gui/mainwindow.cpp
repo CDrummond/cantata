@@ -2393,12 +2393,12 @@ void MainWindow::goBack()
 void MainWindow::showSearch()
 {
     if (playQueue->hasFocus()) {
-         playQueueSearchWidget->activate();
+        playQueueSearchWidget->activate();
     } else if (context->isVisible()) {
         context->search();
-    } else if (currentPage) {
+    } else if (currentPage && splitter->sizes().at(0)>0) {
         currentPage->focusSearch();
-    } else if (playQueuePage->isVisible()) {
+    } else if (playQueuePage->isVisible() || playQueue->isVisible()) {
         playQueueSearchWidget->activate();
     }
 }

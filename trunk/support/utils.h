@@ -30,6 +30,7 @@
 #include <QString>
 #include <QLatin1Char>
 #include <QDir>
+#include <QFont>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KGlobal>
 #include <KDE/KLocale>
@@ -45,8 +46,8 @@ class QWidget;
 
 namespace Utils
 {
-    extern QLatin1Char constDirSep;
-    extern QLatin1String constDirSepStr;
+    extern const QLatin1Char constDirSep;
+    extern const QLatin1String constDirSepStr;
     extern const char * constDirSepCharStr;
 
     inline bool equal(double d1, double d2, double precision=0.0001)
@@ -104,6 +105,8 @@ namespace Utils
     extern void touchFile(const QString &fileName);
     extern bool isDirReadable(const QString &dir);
 
+    extern double smallFontFactor(const QFont &f);
+    extern QFont smallFont(QFont f);
     extern int layoutSpacing(QWidget *w);
     extern bool isHighDpi();
 

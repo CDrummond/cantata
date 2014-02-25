@@ -57,6 +57,22 @@
        <widget class="ToolButton" name="nextTrackButton"/>
       </item>
       <item row="0" column="4">
+       <spacer name="toolbarFixedSpacerFixedA">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Fixed</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>6</width>
+          <height>2</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="0" column="5">
        <spacer name="spacerx">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
@@ -72,7 +88,7 @@
         </property>
        </spacer>
       </item>
-      <item row="0" column="5">
+      <item row="0" column="6">
        <layout class="QVBoxLayout" name="middleLayout">
         <item>
          <widget class="SqueezedTextLabel" name="trackLabel">
@@ -109,7 +125,7 @@
         </item>
        </layout>
       </item>
-      <item row="0" column="6">
+      <item row="0" column="7">
        <spacer name="spacery">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
@@ -125,10 +141,26 @@
         </property>
        </spacer>
       </item>
-      <item row="0" column="7">
+      <item row="0" column="8">
+       <spacer name="toolbarFixedSpacerFixedB">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Fixed</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>6</width>
+          <height>2</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="0" column="9">
        <widget class="VolumeSlider" name="volumeSlider"/>
       </item>
-      <item row="0" column="8">
+      <item row="0" column="10">
        <spacer name="volumeSliderSpacer">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
@@ -144,16 +176,16 @@
         </property>
        </spacer>
       </item>
-      <item row="0" column="9">
+      <item row="0" column="11">
        <widget class="ToolButton" name="songInfoButton"/>
       </item>
-      <item row="0" column="10">
+      <item row="0" column="12">
        <widget class="MenuButton" name="menuButton"/>
       </item>
-      <item row="1" column="0" colspan="5">
+      <item row="1" column="0" colspan="6">
        <widget class="QWidget" name="toolbarSpacerA"/>
       </item>
-      <item row="1" column="6" colspan="5">
+      <item row="1" column="7" colspan="6">
        <widget class="QWidget" name="toolbarSpacerB"/>
       </item>
      </layout>

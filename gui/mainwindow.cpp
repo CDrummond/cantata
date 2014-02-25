@@ -1713,7 +1713,7 @@ void MainWindow::updatePlayQueue(const QList<Song> &songs)
         updateCurrentSong(songs.at(0));
     } else*/ if (0==songs.count()) {
         updateCurrentSong(Song());
-    } else if (current.isStream()) {
+    } else if (current.isStandardStream()) {
         // Check to see if it has been updated...
         Song pqSong=playQueueModel.getSongByRow(playQueueModel.currentSongRow());
         if (pqSong.artist!=current.artist || pqSong.album!=current.album || pqSong.name!=current.name || pqSong.title!=current.title || pqSong.year!=current.year) {
@@ -1733,7 +1733,7 @@ void MainWindow::updateWindowTitle()
 
     if (stopped) {
         setWindowTitle(multipleConnections ? i18n("Cantata (%1)", connection) : "Cantata");
-    } else if (current.isStream() && !current.isCantataStream() && !current.isCdda()) {
+    } else if (current.isStandardStream()) {
         setWindowTitle(multipleConnections
                         ? i18nc("track :: Cantata (connection)", "%1 :: Cantata (%2)", trackLabel->fullText(), connection)
                         : i18nc("track :: Cantata", "%1 :: Cantata", trackLabel->fullText()));
@@ -1789,7 +1789,7 @@ void MainWindow::updateCurrentSong(const Song &song)
     positionSlider->setEnabled(-1!=current.id && !current.isCdda() && (!currentIsStream() || current.time>5));
     CurrentCover::self()->update(current);
 
-    if (current.isStream() && !current.isCantataStream() && !current.isCdda()) {
+    if (current.isStandardStream()) {
         trackLabel->setText(current.name.isEmpty() ? Song::unknown() : current.name);
         if (current.artist.isEmpty() && current.title.isEmpty() && !current.name.isEmpty()) {
             artistLabel->setText(i18n("(Stream)"));
@@ -2657,7 +2657,7 @@ void MainWindow::controlPlaylistActions()
 
 void MainWindow::startContextTimer()
 {
-    if (!contextSwitchTime) {
+    if (!contextSwitchTime || current.isStandardStream()) {
         return;
     }
     if (!contextTimer) {

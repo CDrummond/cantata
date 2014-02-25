@@ -120,6 +120,7 @@ struct Song
     static QString capitalize(const QString &s);
     bool capitalise();
     bool isStream() const { return Stream==type || CantataStream==type; }
+    bool isStandardStream() const { return Stream==type; }
     bool isNonMPD() const { return isStream() || OnlineSvrTrack==type || Cdda==type || (!file.isEmpty() && file.startsWith(Utils::constDirSep)); }
     bool isCantataStream() const { return CantataStream==type; }
     bool isCdda() const { return Cdda==type; }

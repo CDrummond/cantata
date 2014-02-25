@@ -98,14 +98,14 @@ QByteArray MPDConnection::encodeName(const QString &name)
     return '\"'+name.toUtf8().replace("\\", "\\\\").replace("\"", "\\\"")+'\"';
 }
 
-static QByteArray readFromSocket(MpdSocket &socket, int timeout=-1)
+static QByteArray readFromSocket(MpdSocket &socket)
 {
     QByteArray data;
     while (QAbstractSocket::ConnectedState==socket.state()) {
         int attempt=0;
         while (0==socket.bytesAvailable() && QAbstractSocket::ConnectedState==socket.state()) {
             DBUG << (void *)(&socket) << "Waiting for read data." << attempt;
-            if (socket.waitForReadyRead(timeout<constSocketCommsTimeout ? constSocketCommsTimeout : timeout)) {
+            if (socket.waitForReadyRead()) {
                 break;
             }
             if (++attempt>=constMaxReadAttempts) {
@@ -126,9 +126,9 @@ static QByteArray readFromSocket(MpdSocket &socket, int timeout=-1)
     return data;
 }
 
-static MPDConnection::Response readReply(MpdSocket &socket, int timeout=-1)
+static MPDConnection::Response readReply(MpdSocket &socket)
 {
-    QByteArray data = readFromSocket(socket, timeout);
+    QByteArray data = readFromSocket(socket);
     return MPDConnection::Response(data.endsWith("OK\n"), data);
 }
 
@@ -514,7 +514,7 @@ MPDConnection::Response MPDConnection::sendCommand(const QByteArray &command, bo
         DBUG << "Timeout (ms):" << timeout;
         sock.waitForBytesWritten(timeout);
         DBUG << "Socket state after write:" << (int)sock.state();
-        response=readReply(sock, timeout);
+        response=readReply(sock);
     }
 
     if (!response.ok) {

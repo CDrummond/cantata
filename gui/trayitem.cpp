@@ -199,14 +199,11 @@ void TrayItem::songChanged(const Song &song, bool isPlaying)
                         ? !song.title.isEmpty() && !song.name.isEmpty()
                         : !song.title.isEmpty() && !song.artist.isEmpty() && !song.album.isEmpty();
         if (useable) {
-            QString album=song.album.isEmpty() ? song.name : song.album;
-            QString text=song.artist.isEmpty()
-                            ? song.time<=0
-                              ? i18nc("Song on Album", "%1 on %2", song.title, album)
-                              : i18nc("Song on Album (track duration)", "%1 on %2 (%3)", song.title, album, Song::formattedTime(song.time))
-                            : song.time<=0
-                                ? i18nc("Song by Artist on Album", "%1 by %2 on %3", song.title, song.artist, album)
-                                : i18nc("Song by Artist on Album (track duration)", "%1 by %2 on %3 (%4)", song.title, song.artist, album, Song::formattedTime(song.time));
+            QString text=song.describe();
+            if (song.time>0) {
+                text+=QLatin1String(" (")+Song::formattedTime(song.time)+QLatin1Char(')');
+            }
+
             if (trayItem) {
                 #ifdef ENABLE_KDE_SUPPORT
                 trayItem->setToolTip("cantata", i18n("Cantata"), text);

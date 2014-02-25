@@ -878,7 +878,6 @@ MainWindow::MainWindow(QWidget *parent)
     MediaKeys::self()->load();
     #endif
     updateActionToolTips();
-    setNoTrack(true);
     calcMinHeight();
 }
 
@@ -1726,31 +1725,31 @@ void MainWindow::updatePlayQueue(const QList<Song> &songs)
 
 void MainWindow::updateWindowTitle()
 {
-    MPDStatus * const status = MPDStatus::self();
-    bool stopped=MPDState_Stopped==status->state() || MPDState_Inactive==status->state();
+//    MPDStatus * const status = MPDStatus::self();
+//    bool stopped=MPDState_Stopped==status->state() || MPDState_Inactive==status->state();
     bool multipleConnections=connectionsAction->isVisible();
     QString connection=MPDConnection::self()->getDetails().getName();
 
-    if (stopped) {
+//    if (stopped) {
         setWindowTitle(multipleConnections ? i18n("Cantata (%1)", connection) : "Cantata");
-    } else if (current.isStandardStream()) {
-        setWindowTitle(multipleConnections
-                        ? i18nc("track :: Cantata (connection)", "%1 :: Cantata (%2)", trackLabel->fullText(), connection)
-                        : i18nc("track :: Cantata", "%1 :: Cantata", trackLabel->fullText()));
-    } else if (current.artist.isEmpty()) {
-        if (trackLabel->fullText().isEmpty()) {
-            setWindowTitle(multipleConnections ? i18n("Cantata (%1)", connection) : "Cantata");
-        } else {
-            setWindowTitle(multipleConnections
-                            ? i18nc("track :: Cantata (connection)", "%1 :: Cantata (%2)", trackLabel->fullText(), connection)
-                            : i18nc("track :: Cantata", "%1 :: Cantata", trackLabel->fullText()));
-        }
-    } else {
-        setWindowTitle(multipleConnections
-                        ? i18nc("track - artist :: Cantata (connection)", "%1 - %2 :: Cantata (%3)",
-                                trackLabel->fullText(), current.artist, connection)
-                        : i18nc("track - artist :: Cantata", "%1 - %2 :: Cantata", trackLabel->fullText(), current.artist));
-    }
+//    } else if (current.isStandardStream()) {
+//        setWindowTitle(multipleConnections
+//                        ? i18nc("track :: Cantata (connection)", "%1 :: Cantata (%2)", trackLabel->fullText(), connection)
+//                        : i18nc("track :: Cantata", "%1 :: Cantata", trackLabel->fullText()));
+//    } else if (current.artist.isEmpty()) {
+//        if (trackLabel->fullText().isEmpty()) {
+//            setWindowTitle(multipleConnections ? i18n("Cantata (%1)", connection) : "Cantata");
+//        } else {
+//            setWindowTitle(multipleConnections
+//                            ? i18nc("track :: Cantata (connection)", "%1 :: Cantata (%2)", trackLabel->fullText(), connection)
+//                            : i18nc("track :: Cantata", "%1 :: Cantata", trackLabel->fullText()));
+//        }
+//    } else {
+//        setWindowTitle(multipleConnections
+//                        ? i18nc("track - artist :: Cantata (connection)", "%1 - %2 :: Cantata (%3)",
+//                                trackLabel->fullText(), current.artist, connection)
+//                        : i18nc("track - artist :: Cantata", "%1 - %2 :: Cantata", trackLabel->fullText(), current.artist));
+//    }
 }
 
 void MainWindow::updateCurrentSong(const Song &song)
@@ -1789,35 +1788,7 @@ void MainWindow::updateCurrentSong(const Song &song)
     positionSlider->setEnabled(-1!=current.id && !current.isCdda() && (!currentIsStream() || current.time>5));
     CurrentCover::self()->update(current);
 
-    if (current.isStandardStream()) {
-        trackLabel->setText(current.name.isEmpty() ? Song::unknown() : current.name);
-        if (current.artist.isEmpty() && current.title.isEmpty() && !current.name.isEmpty()) {
-            artistLabel->setText(i18n("(Stream)"));
-        } else {
-            artistLabel->setText(current.artist.isEmpty() ? current.title : i18nc("title - artist", "%1 - %2", current.artist, current.title));
-        }
-    } else {
-        if (current.title.isEmpty() && current.artist.isEmpty() && (!current.name.isEmpty() || !current.file.isEmpty())) {
-            trackLabel->setText(current.name.isEmpty() ? current.file : current.name);
-        } else {
-            trackLabel->setText(current.title);
-        }
-        if (current.album.isEmpty() && current.artist.isEmpty()) {
-            artistLabel->setText(trackLabel->fullText().isEmpty() ? QString() : Song::unknown());
-        } else if (current.album.isEmpty()) {
-            artistLabel->setText(current.artist);
-        } else {
-            QString album=current.album;
-            quint16 year=Song::albumYear(current);
-            if (year>0) {
-                album+=QString(" (%1)").arg(year);
-            }
-            artistLabel->setText(i18nc("artist - album", "%1 - %2", current.artist, album));
-        }
-    }
-
-    setNoTrack(trackLabel->fullText().isEmpty() && artistLabel->fullText().isEmpty());
-
+    trackLabel->update(current);
     bool isPlaying=MPDState_Playing==MPDStatus::self()->state();
     playQueueModel.updateCurrentSong(current.id);
     QModelIndex idx=playQueueProxyModel.mapFromSource(playQueueModel.index(playQueueModel.currentSongRow(), 0));
@@ -1932,8 +1903,8 @@ void MainWindow::updateStatus(MPDStatus * const status)
         StdActions::self()->nextTrackAction->setEnabled(false);
         StdActions::self()->prevTrackAction->setEnabled(false);
         if (!StdActions::self()->playPauseTrackAction->isEnabled()) {
-            setNoTrack(true);
             current=Song();
+            trackLabel->update(current);
             CurrentCover::self()->update(current);
         }
         current.id=0;
@@ -2666,20 +2637,6 @@ void MainWindow::startContextTimer()
         connect(contextTimer, SIGNAL(timeout()), this, SLOT(toggleContext()));
     }
     contextTimer->start(contextSwitchTime);
-}
-
-void MainWindow::setNoTrack(bool none)
-{
-    if (none) {
-        trackLabel->setText(QLatin1String("Cantata"));
-        artistLabel->setText(i18n("Not Playing"));
-        QColor col=trackLabel->palette().text().color();
-        trackLabel->setStyleSheet(QString("QLabel { color : rgba(%1, %2, %3, %4); }").arg(col.red()).arg(col.green()).arg(col.blue()).arg(128));
-        artistLabel->setStyleSheet(trackLabel->styleSheet());
-    } else if (!trackLabel->styleSheet().isEmpty()) {
-        trackLabel->setStyleSheet(QString());
-        artistLabel->setStyleSheet(trackLabel->styleSheet());
-    }
 }
 
 void MainWindow::calcMinHeight()

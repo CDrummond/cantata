@@ -45,8 +45,6 @@
 #include <QScopedPointer>
 #include <QStringList>
 
-//#include <boost/scoped_ptr.hpp>
-
 class QMenu;
 class QPainter;
 class QSignalMapper;
@@ -109,7 +107,7 @@ public:
         Side, Top, Bot
     };
 
-    FancyTabBar(QWidget *parent, bool hasBorder, bool text, int iSize, Pos pos);
+    FancyTabBar(QWidget *parent, bool text, int iSize, Pos pos);
     ~FancyTabBar();
 
     void paintEvent(QPaintEvent *event);
@@ -144,12 +142,9 @@ public Q_SLOTS:
     void emitCurrentIndex();
 
 private:
-    static const int m_rounding;
-    static const int m_textPadding;
     int m_currentIndex;
     QList<FancyTab*> m_tabs;
     QTimer m_triggerTimer;
-    bool m_hasBorder : 1;
     bool m_showText : 1;
     Pos m_pos : 2;
     int m_iconSize;
@@ -162,7 +157,7 @@ public:
     static void setup();
     static int iconSize(bool large=true);
 
-    FancyTabWidget(QWidget *parent, bool allowContext=true, bool drawBorder=false);
+    FancyTabWidget(QWidget *parent, bool allowContext=true);
 
     enum Style {
         Side     = 0x0001,
@@ -201,12 +196,6 @@ public:
     };
 
     void AddTab(QWidget *tab, const QIcon &icon, const QString &label, const QString &tt=QString(), bool enabled=true);
-//    void InsertTab(QWidget *tab, const QIcon &icon, const QString &label, const QString &tt=QString(), bool enabled=true);
-//    void RemoveTab(QWidget *tab);
-//    int IndexOf(QWidget *tab);
-//    void AddSpacer(int size = 40);
-//    void SetBackgroundPixmap(const QPixmap& pixmap);
-//    void AddBottomWidget(QWidget* widget);
     int current_index() const;
     QWidget * currentWidget() const;
     bool isEnabled(int index) const { return index>=0 && index<items_.count() ? items_[index].enabled_ : false; }
@@ -232,9 +221,6 @@ Q_SIGNALS:
     void TabToggled(int index);
     void configRequested();
 
-protected:
-    void paintEvent(QPaintEvent *event);
-
 private Q_SLOTS:
     void ShowWidget(int index);
 
@@ -244,24 +230,17 @@ private:
     int TabToIndex(int tab) const;
     int IndexToTab(int index) const { return index>=0 && index<items_.count() ? items_[index].index_ : 0; }
 
+private:
     int style_;
     QList<Item> items_;
-
     QWidget* tab_bar_;
     QStackedWidget* stack_;
-//    QPixmap background_pixmap_;
     QWidget* side_widget_;
     QVBoxLayout* side_layout_;
     QVBoxLayout* top_layout_;
-
-    //   bool use_background_;
-
     QMenu* menu_;
-
-    //boost::scoped_ptr<FancyTabProxyStyle> proxy_style_;
     QScopedPointer<FancyTabProxyStyle> proxy_style_;
     bool allowContext_;
-    bool drawBorder_;
 };
 
 } // namespace Internal

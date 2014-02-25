@@ -23,6 +23,8 @@
 5. When waiting for replies from MPD, use Qt's standard timeout value of 30s.
    While the socket is still connected, Cantata will wait up to 4 times the
    timeout value. Therefore, the actual timeout has increased to 2minutes!
+6. If a sidebar view has focus, but sidebar is collapsed, then find action
+   should activate playqueue search widget.
 
 1.3.0.1
 -------

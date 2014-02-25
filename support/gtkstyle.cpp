@@ -104,9 +104,9 @@ void GtkStyle::drawSelection(const QStyleOptionViewItemV4 &opt, QPainter *painte
 }
 
 #if !defined Q_OS_WIN && !defined QT_NO_STYLE_GTK
-// For some reason, dconf does not seem to terminate correclty when run under some desktops (e.g. KDE)
-// Destrying the QProcess seems to block, causing the app to appear to hang before starting.
-// So, create QProcess on the heap - and only wait 100ms for response. Connect finished to deleteLater
+// For some reason, dconf does not seem to terminate correctly when run under some desktops (e.g. KDE)
+// Destroying the QProcess seems to block, causing the app to appear to hang before starting.
+// So, create QProcess on the heap - and only wait 1.5s for response. Connect finished to deleteLater
 // so that the object is destroyed.
 static QString runProc(const QString &cmd, const QStringList &args)
 {
@@ -114,7 +114,7 @@ static QString runProc(const QString &cmd, const QStringList &args)
     process->start(cmd, args);
     QObject::connect(process, SIGNAL(finished(int)), process, SLOT(deleteLater()));
 
-    if (process->waitForFinished(1000)) {
+    if (process->waitForFinished(1500)) {
         QString resp = process->readAllStandardOutput();
         resp = resp.trimmed();
         resp.remove('\'');

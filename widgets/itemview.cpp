@@ -140,7 +140,7 @@ public:
                 imageSize=constDevImageSize;
             }
             return QSize(qMax(64, imageSize) + (constBorder * 2),
-                         qMax(textHeight, imageSize) + (constBorder*2) + (int)((showCapacity ? textHeight*0.8 : 0)+0.5));
+                         qMax(textHeight, imageSize) + (constBorder*2) + (int)((showCapacity ? textHeight*Utils::smallFontFactor(QApplication::font()) : 0)+0.5));
         }
     }
 
@@ -279,8 +279,7 @@ public:
             painter->setFont(textFont);
             painter->drawText(textRect, text, textOpt);
         } else {
-            QFont childFont(QApplication::font());
-            childFont.setPointSizeF(childFont.pointSizeF()*0.8);
+            QFont childFont(Utils::smallFont(QApplication::font()));
             QFontMetrics childMetrics(childFont);
             QRect childRect;
 

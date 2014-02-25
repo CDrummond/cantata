@@ -307,12 +307,7 @@ FancyTabBar::FancyTabBar(QWidget *parent, bool text, int iSize, Pos pos)
     , m_pos(pos)
     , m_iconSize(iSize)
 {
-    QFont f(font());
-    if (f.pointSizeF()>=8) {
-        f.setPointSizeF(f.pointSizeF()*0.8);
-        setFont(f);
-    }
-
+    setFont(Utils::smallFont(font()));
     setAttribute(Qt::WA_Hover, true);
     setFocusPolicy(Qt::NoFocus);
     setMouseTracking(true); // Needed for hover events

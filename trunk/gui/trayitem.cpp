@@ -195,8 +195,7 @@ void TrayItem::trayItemClicked(QSystemTrayIcon::ActivationReason reason)
 void TrayItem::songChanged(const Song &song, bool isPlaying)
 {
     if (Settings::self()->showPopups() || trayItem) {
-        bool isStream=song.isStream() && !song.isCdda() && !song.isCantataStream();
-        bool useable=isStream
+        bool useable=song.isStandardStream()
                         ? !song.title.isEmpty() && !song.name.isEmpty()
                         : !song.title.isEmpty() && !song.artist.isEmpty() && !song.album.isEmpty();
         if (useable) {

@@ -106,7 +106,7 @@ void AlbumView::refresh()
 
 void AlbumView::update(const Song &song, bool force)
 {
-    if (song.isStream() && !song.isCantataStream() && !song.isCdda() && song.album.isEmpty() && !song.name.isEmpty() && song.name!=currentSong.name) {
+    if (song.isStandardStream() && song.album.isEmpty() && !song.name.isEmpty() && song.name!=currentSong.name) {
         currentSong=song;
         clearDetails();
         setHeader(song.name);

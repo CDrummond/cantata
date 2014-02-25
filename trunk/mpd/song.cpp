@@ -336,7 +336,7 @@ void Song::clearKeyStore(int location)
 
 void Song::setKey(int location)
 {
-    if (isStream() && !isCantataStream()) {
+    if (isStandardStream()) {
         key=0;
         return;
     }

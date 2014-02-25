@@ -50,8 +50,8 @@
 #include <sys/types.h>
 #include <utime.h>
 
-QLatin1Char Utils::constDirSep('/');
-QLatin1String Utils::constDirSepStr("/");
+const QLatin1Char Utils::constDirSep('/');
+const QLatin1String Utils::constDirSepStr("/");
 const char * Utils::constDirSepCharStr="/";
 
 static const QLatin1String constHttp("http://");
@@ -317,7 +317,7 @@ void Utils::msleep(int msecs)
 #endif // Q_WS_WIN
 
 // kstandarddirs.h
-extern bool Utils::makeDir(const QString &dir, int mode)
+bool Utils::makeDir(const QString &dir, int mode)
 {
     // we want an absolute path
     if (QDir::isRelativePath(dir)) {
@@ -744,7 +744,28 @@ bool Utils::isDirReadable(const QString &dir)
     #endif
 }
 
-extern int Utils::layoutSpacing(QWidget *w)
+double Utils::smallFontFactor(const QFont &f)
+{
+    double sz=f.pointSizeF();
+    if (sz<7.0) {
+        return 1.0;
+    }
+    if (sz<8.5) {
+        return 0.9;
+    }
+    if (sz<9.0) {
+        return 0.85;
+    }
+    return 0.8;
+}
+
+QFont Utils::smallFont(QFont f)
+{
+    f.setPointSizeF(f.pointSizeF()*smallFontFactor(f));
+    return f;
+}
+
+int Utils::layoutSpacing(QWidget *w)
 {
     int spacing=(w ? w->style() : qApp->style())->layoutSpacing(QSizePolicy::DefaultType, QSizePolicy::DefaultType, Qt::Vertical);
     if (spacing<0) {
@@ -753,7 +774,7 @@ extern int Utils::layoutSpacing(QWidget *w)
     return spacing;
 }
 
-extern bool Utils::isHighDpi()
+bool Utils::isHighDpi()
 {
     static int fontHeight=-1;
     if (-1==fontHeight) {

@@ -252,6 +252,10 @@ MainWindow::MainWindow(QWidget *parent)
         tabWidgetSpacer->changeSize(spacing, spacing, QSizePolicy::Fixed, QSizePolicy::Fixed);
         playQueueSpacer->changeSize(spacing, spacing, QSizePolicy::Fixed, QSizePolicy::Fixed);
     }
+    if (toolbarFixedSpacerFixedA->minimumSize().width()!=spacing) {
+        toolbarFixedSpacerFixedA->changeSize(spacing, 2, QSizePolicy::Fixed, QSizePolicy::Fixed);
+        toolbarFixedSpacerFixedB->changeSize(spacing, 2, QSizePolicy::Fixed, QSizePolicy::Fixed);
+    }
 
     #ifdef ENABLE_KDE_SUPPORT
     prefAction=static_cast<Action *>(KStandardAction::preferences(this, SLOT(showPreferencesDialog()), ActionCollection::get()));

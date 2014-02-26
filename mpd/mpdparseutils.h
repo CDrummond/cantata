@@ -31,12 +31,12 @@
 #include <QSet>
 
 struct Song;
-class Playlist;
+struct Playlist;
+struct Output;
+struct MPDStatsValues;
+struct MPDStatusValues;
 class DirViewItemRoot;
 class MusicLibraryItemRoot;
-class Output;
-class MPDStatsValues;
-class MPDStatusValues;
 
 namespace MPDParseUtils
 {

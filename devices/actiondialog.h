@@ -48,6 +48,9 @@ class ActionDialog : public Dialog, Ui::ActionDialog
         Remove
     };
 
+    typedef QPair<QString, QString> StringPair;
+    typedef QList<StringPair> StringPairList;
+
 public:
     static int instanceCount();
 
@@ -87,8 +90,8 @@ private:
     void configure(const QString &udi);
     void init(const QString &srcUdi, const QString &dstUdi, const QList<Song> &songs, Mode m);
     void slotButtonClicked(int button);
-    void setPage(int page, const QList<QPair<QString, QString> > &msg=QList<QPair<QString, QString> >(), const QString &header=QString());
-    QList<QPair<QString, QString> > formatSong(const Song &s, bool showFiles=false, bool showTime=false);
+    void setPage(int page, const StringPairList &msg=StringPairList(), const QString &header=QString());
+    StringPairList formatSong(const Song &s, bool showFiles=false, bool showTime=false);
     bool refreshLibrary();
     void removeSong(const Song &s);
     void cleanDirs();

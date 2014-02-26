@@ -560,12 +560,16 @@ QString Song::describe(bool withMarkup) const
     }
 
     return withMarkup
-            ?   artist.isEmpty()
-                ?  i18nc("Song on Album", "<b>%1</b> on <b>%2</b>", title, albumText)
-                :  i18nc("Song by Artist on Album", "<b>%1</b> by <b>%2</b> on <b>%3</b>", title, artist, albumText)
-            : artist.isEmpty()
-                ?  i18nc("Song on Album", "%1 on %2", title, album)
-                :  i18nc("Song by Artist on Album", "%1 by %2 on %3", title, artist, albumText);
+            ? title.isEmpty()
+                ? QLatin1String("<b>")+albumText+QLatin1String("</b>")
+                : artist.isEmpty()
+                    ? i18nc("Song on Album", "<b>%1</b> on <b>%2</b>", title, albumText)
+                    : i18nc("Song by Artist on Album", "<b>%1</b> by <b>%2</b> on <b>%3</b>", title, artist, albumText)
+            : title.isEmpty()
+                ? albumText
+                : artist.isEmpty()
+                    ? i18nc("Song on Album", "%1 on %2", title, album)
+                    : i18nc("Song by Artist on Album", "%1 by %2 on %3", title, artist, albumText);
 }
 
 bool Song::isFromOnlineService() const

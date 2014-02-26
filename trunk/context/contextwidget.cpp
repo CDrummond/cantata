@@ -730,7 +730,11 @@ void ContextWidget::updateImage(QImage img, bool created)
             painter.end();
             img = blurred;
         }
+        #ifdef SCALE_CONTEXT_BGND
+        currentImage=img;
+        #else
         currentBackdrop=QPixmap::fromImage(img);
+        #endif
     }
     albumCoverBackdrop=created;
     resizeBackdrop();
@@ -1209,9 +1213,9 @@ void ContextWidget::createBackdrop()
 void ContextWidget::resizeBackdrop()
 {
     #ifdef SCALE_CONTEXT_BGND
-    if (!currentBackdrop.isNull() && !albumCoverBackdrop && currentBackdrop.width()!=width()) {
-        QSize sz(width(), width()*currentBackdrop.height()/currentBackdrop.width());
-        currentBackdrop=currentBackdrop.scaled(sz, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    if (!albumCoverBackdrop && !currentImage.isNull() &&( currentBackdrop.isNull() || (!currentBackdrop.isNull() && currentBackdrop.width()!=width()))) {
+        QSize sz(width(), width()*currentImage.height()/currentImage.width());
+        currentBackdrop = QPixmap::fromImage(currentImage.scaled(sz, Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation));
     }
     #else
     if (!currentBackdrop.isNull() && !albumCoverBackdrop) {

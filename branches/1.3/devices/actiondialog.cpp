@@ -524,7 +524,7 @@ Device * ActionDialog::getDevice(const QString &udi, bool logErrors)
     }
 
     if (isVisible()) {
-        setPage(PAGE_ERROR, QList<QPair<QString, QString> >(), error);
+        setPage(PAGE_ERROR, StringPairList(), error);
     } else {
         MessageBox::error(parentWidget(), error);
     }
@@ -758,7 +758,7 @@ void ActionDialog::saveProperties()
     mpdConfigured=true;
 }
 
-void ActionDialog::setPage(int page, const QList<QPair<QString, QString> > &msg, const QString &header)
+void ActionDialog::setPage(int page, const StringPairList &msg, const QString &header)
 {
     stack->setCurrentIndex(page);
 
@@ -794,19 +794,19 @@ void ActionDialog::setPage(int page, const QList<QPair<QString, QString> > &msg,
     }
 }
 
-QList<QPair<QString, QString> > ActionDialog::formatSong(const Song &s, bool showFiles, bool showTime)
+ActionDialog::StringPairList ActionDialog::formatSong(const Song &s, bool showFiles, bool showTime)
 {
-    QList<QPair<QString, QString> > str;
-    str.append(QPair<QString, QString>(i18n("Artist:"), s.albumArtist()));
-    str.append(QPair<QString, QString>(i18n("Album:"), s.album));
-    str.append(QPair<QString, QString>(i18n("Track:"), s.trackAndTitleStr(Song::isVariousArtists(s.albumArtist()) && !Song::isVariousArtists(s.artist))));
+    StringPairList str;
+    str.append(StringPair(i18n("Artist:"), s.albumArtist()));
+    str.append(StringPair(i18n("Album:"), s.album));
+    str.append(StringPair(i18n("Track:"), s.trackAndTitleStr(Song::isVariousArtists(s.albumArtist()) && !Song::isVariousArtists(s.artist))));
 
     if (showFiles) {
         if (Copy==mode) {
-            str.append(QPair<QString, QString>(i18n("Source file:"), DevicesModel::fixDevicePath(s.filePath())));
-            str.append(QPair<QString, QString>(i18n("Destination file:"), DevicesModel::fixDevicePath(destFile)));
+            str.append(StringPair(i18n("Source file:"), DevicesModel::fixDevicePath(s.filePath())));
+            str.append(StringPair(i18n("Destination file:"), DevicesModel::fixDevicePath(destFile)));
         } else {
-            str.append(QPair<QString, QString>(i18n("File:"), DevicesModel::fixDevicePath(s.filePath())));
+            str.append(StringPair(i18n("File:"), DevicesModel::fixDevicePath(s.filePath())));
         }
     }
 
@@ -821,7 +821,7 @@ QList<QPair<QString, QString> > ActionDialog::formatSong(const Song &s, bool sho
             quint64 timeRemaining=((taken/percent)-taken)/1000.0;
             estimate=i18nc("time (Estimated)", "%1 (Estimated)", Song::formattedTime(timeRemaining>0 ? timeRemaining : 0));
         }
-        str.append(QPair<QString, QString>(i18n("Time remaining:"), estimate);
+        str.append(StringPair(i18n("Time remaining:"), estimate);
     }
     #else
     Q_UNUSED(showTime)

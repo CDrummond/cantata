@@ -201,7 +201,7 @@ void TrayItem::songChanged(const Song &song, bool isPlaying)
         if (useable) {
             QString text=song.describe();
             if (song.time>0) {
-                text+=QLatin1String(" (")+Song::formattedTime(song.time)+QLatin1Char(')');
+                text+=QLatin1String(" - ")+Song::formattedTime(song.time);
             }
 
             if (trayItem) {

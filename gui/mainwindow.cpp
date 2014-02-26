@@ -1725,19 +1725,19 @@ void MainWindow::updatePlayQueue(const QList<Song> &songs)
 
 void MainWindow::updateWindowTitle()
 {
-    MPDStatus * const status = MPDStatus::self();
-    bool stopped=MPDState_Stopped==status->state() || MPDState_Inactive==status->state();
+//    MPDStatus * const status = MPDStatus::self();
+//    bool stopped=MPDState_Stopped==status->state() || MPDState_Inactive==status->state();
     bool multipleConnections=connectionsAction->isVisible();
     QString connection=MPDConnection::self()->getDetails().getName();
-    QString description=stopped ? QString() : current.basicDescription();
+//    QString description=stopped ? QString() : current.basicDescription();
 
-    if (stopped || description.isEmpty()) {
+//    if (stopped || description.isEmpty()) {
         setWindowTitle(multipleConnections ? i18n("Cantata (%1)", connection) : "Cantata");
-    } else {
-        setWindowTitle(multipleConnections
-                        ? i18nc("track :: Cantata (connection)", "%1 :: Cantata (%2)", description, connection)
-                        : i18nc("track :: Cantata", "%1 :: Cantata", description));
-    }
+//    } else {
+//        setWindowTitle(multipleConnections
+//                        ? i18nc("track :: Cantata (connection)", "%1 :: Cantata (%2)", description, connection)
+//                        : i18nc("track :: Cantata", "%1 :: Cantata", description));
+//    }
 }
 
 void MainWindow::updateCurrentSong(const Song &song)
@@ -1782,7 +1782,7 @@ void MainWindow::updateCurrentSong(const Song &song)
     QModelIndex idx=playQueueProxyModel.mapFromSource(playQueueModel.index(playQueueModel.currentSongRow(), 0));
     playQueue->updateRows(idx.row(), current.key, autoScrollPlayQueue && playQueueProxyModel.isEmpty() && isPlaying);
     scrollPlayQueue();
-    updateWindowTitle();
+//    updateWindowTitle();
     context->update(current);
     trayItem->songChanged(song, isPlaying);
 }
@@ -1896,7 +1896,7 @@ void MainWindow::updateStatus(MPDStatus * const status)
             CurrentCover::self()->update(current);
         }
         current.id=0;
-        updateWindowTitle();
+//        updateWindowTitle();
         trayItem->setToolTip("cantata", i18n("Cantata"), "<i>Playback stopped</i>");
         positionSlider->stopTimer();
         break;

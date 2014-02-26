@@ -125,19 +125,23 @@ public:
             }
             #endif
         }
-        opt.state&=~(QStyle::State_Sunken|QStyle::State_On);
-        painter.drawControl(QStyle::CE_ToolButtonLabel, opt);
+
         int alignment = Qt::AlignCenter | Qt::TextShowMnemonic;
         if (!style()->styleHint(QStyle::SH_UnderlineShortcut, &opt, this)) {
             alignment |= Qt::TextHideMnemonic;
         }
+
+        QString text=opt.text;
+        if (fontMetrics().width(text)>rect().width()) {
+            text=fontMetrics().elidedText(text, Qt::RightToLeft==layoutDirection() ? Qt::ElideLeft : Qt::ElideRight, rect().width());
+        }
         #ifdef SIMPLE_VSB
-        painter.drawItemText(rect(), alignment, opt.palette, true, opt.text, QPalette::WindowText);
+        painter.drawItemText(rect(), alignment, opt.palette, true, text, QPalette::WindowText);
         #else
         if (isOn) {
             opt.state|=QStyle::State_Selected;
         }
-        painter.drawItemText(rect(), alignment, opt.palette, true, opt.text, isOn ? QPalette::HighlightedText : QPalette::WindowText);
+        painter.drawItemText(rect(), alignment, opt.palette, true, text, isOn ? QPalette::HighlightedText : QPalette::WindowText);
         #endif
     }
 };

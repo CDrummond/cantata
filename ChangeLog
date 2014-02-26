@@ -27,6 +27,7 @@
 6. If a sidebar view has focus, but sidebar is collapsed, then find action
    should activate playqueue search widget.
 7. FreeBSD 1.0 compile fixes.
+8. Fix scaling of context view background when size of view changes.
 
 1.3.0.1
 -------

@@ -148,6 +148,9 @@ private:
     bool useFanArt;
     bool albumCoverBackdrop;
     Song currentSong;
+    #ifdef SCALE_CONTEXT_BGND
+    QImage currentImage;
+    #endif
     QPixmap oldBackdrop;
     QPixmap currentBackdrop;
     QString currentArtist;

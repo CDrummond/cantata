@@ -572,6 +572,17 @@ QString Song::describe(bool withMarkup) const
                     : i18nc("Song by Artist on Album", "%1 by %2 on %3", title, artist, albumText);
 }
 
+QString Song::basicDescription() const
+{
+    return isStandardStream()
+            ? name
+            : title.isEmpty()
+                ? QString()
+                : artist.isEmpty()
+                    ? title
+                    : i18nc("track - artist", "%1 - %2", title, artist);
+}
+
 bool Song::isFromOnlineService() const
 {
     return constOnlineDiscId==disc && (isCantataStream() || file.startsWith("http://")) && albumartist==album;

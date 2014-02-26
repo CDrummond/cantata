@@ -52,7 +52,6 @@ private:
     void elideText();
 
 private:
-    bool empty;
     QString text;
     QString plainText;
     QFontMetrics boldMetrics;

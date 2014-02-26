@@ -40,17 +40,17 @@ SongLabel::SongLabel(QWidget *p)
 
     elideMode=rtl ? Qt::ElideLeft : Qt::ElideRight;
     setAlignment(Qt::AlignCenter);
-    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     setTextInteractionFlags(Qt::NoTextInteraction);
     update(Song());
+    ensurePolished();
+    setFixedHeight(height());
 }
 
 void SongLabel::update(const Song &song)
 {
-    empty=song.isEmpty();
-    if (empty) {
-        plainText=i18n("Not Playing");
-        text="<i>"+plainText+"</i>";
+    if (song.isEmpty()) {
+        plainText=text=QString();
     } else {
         plainText=song.describe(false);
         text=song.describe(true);
@@ -65,11 +65,11 @@ void SongLabel::calcTagPositions()
 {
     int pos=0;
     int adjust=0;
-    while (-1!=(pos=text.indexOf(empty ? "<i>" : "<b>", pos))) {
+    while (-1!=(pos=text.indexOf("<b>", pos))) {
         open.append(pos-adjust);
         adjust+=3;
         pos+=3;
-        pos=text.indexOf(empty ? "</i>" : "</b>", pos);
+        pos=text.indexOf("</b>", pos);
         if (pos>adjust) {
             close.append(pos-adjust);
             adjust+=4;
@@ -100,14 +100,14 @@ void SongLabel::elideText()
                 int o=open.at(i)+adjust;
                 if (o<elided.length()-3) {
                     if (0==o) {
-                        elided=(empty ? "<i>" : "<b>")+elided;
+                        elided=("<b>")+elided;
                     } else {
-                        elided=elided.left(o)+(empty ? "<i>" : "<b>")+elided.mid(o);
+                        elided=elided.left(o)+("<b>")+elided.mid(o);
                     }
                     adjust+=3;
                     int c=close.at(i)+adjust;
                     if (c<elided.length()-3) {
-                        elided=elided.left(c)+(empty ? "</i>" : "</b>")+elided.mid(c);
+                        elided=elided.left(c)+("</b>")+elided.mid(c);
                         adjust+=4;
                     } else {
                         break;

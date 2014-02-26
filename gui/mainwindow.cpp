@@ -1725,31 +1725,19 @@ void MainWindow::updatePlayQueue(const QList<Song> &songs)
 
 void MainWindow::updateWindowTitle()
 {
-//    MPDStatus * const status = MPDStatus::self();
-//    bool stopped=MPDState_Stopped==status->state() || MPDState_Inactive==status->state();
+    MPDStatus * const status = MPDStatus::self();
+    bool stopped=MPDState_Stopped==status->state() || MPDState_Inactive==status->state();
     bool multipleConnections=connectionsAction->isVisible();
     QString connection=MPDConnection::self()->getDetails().getName();
+    QString description=stopped ? QString() : current.basicDescription();
 
-//    if (stopped) {
+    if (stopped || description.isEmpty()) {
         setWindowTitle(multipleConnections ? i18n("Cantata (%1)", connection) : "Cantata");
-//    } else if (current.isStandardStream()) {
-//        setWindowTitle(multipleConnections
-//                        ? i18nc("track :: Cantata (connection)", "%1 :: Cantata (%2)", trackLabel->fullText(), connection)
-//                        : i18nc("track :: Cantata", "%1 :: Cantata", trackLabel->fullText()));
-//    } else if (current.artist.isEmpty()) {
-//        if (trackLabel->fullText().isEmpty()) {
-//            setWindowTitle(multipleConnections ? i18n("Cantata (%1)", connection) : "Cantata");
-//        } else {
-//            setWindowTitle(multipleConnections
-//                            ? i18nc("track :: Cantata (connection)", "%1 :: Cantata (%2)", trackLabel->fullText(), connection)
-//                            : i18nc("track :: Cantata", "%1 :: Cantata", trackLabel->fullText()));
-//        }
-//    } else {
-//        setWindowTitle(multipleConnections
-//                        ? i18nc("track - artist :: Cantata (connection)", "%1 - %2 :: Cantata (%3)",
-//                                trackLabel->fullText(), current.artist, connection)
-//                        : i18nc("track - artist :: Cantata", "%1 - %2 :: Cantata", trackLabel->fullText(), current.artist));
-//    }
+    } else {
+        setWindowTitle(multipleConnections
+                        ? i18nc("track :: Cantata (connection)", "%1 :: Cantata (%2)", description, connection)
+                        : i18nc("track :: Cantata", "%1 :: Cantata", description));
+    }
 }
 
 void MainWindow::updateCurrentSong(const Song &song)

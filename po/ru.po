@@ -5537,23 +5537,20 @@ msgstr " мс"
 #. i18n: file: gui/playbacksettings.ui:58
 #. i18n: ectx: property (text), widget (QCheckBox, stopOnExit)
 #: po/rc.cpp:754 rc.cpp:754
-#, fuzzy
 msgid "Stop playback on exit"
-msgstr "Остановить воспроизведение при выходе из программы:"
+msgstr "Остановить воспроизведение при выходе из программы"
 
 #. i18n: file: gui/playbacksettings.ui:65
 #. i18n: ectx: property (text), widget (QCheckBox, stopDynamizerOnExit)
 #: po/rc.cpp:757 rc.cpp:757
-#, fuzzy
 msgid "Stop dynamizer on exit"
-msgstr "Остановить dynamizer при выходе из программы:"
+msgstr "Остановить dynamizer при выходе из программы"
 
 #. i18n: file: gui/playbacksettings.ui:72
 #. i18n: ectx: property (text), widget (QCheckBox, inhibitSuspend)
 #: po/rc.cpp:760 rc.cpp:760
-#, fuzzy
 msgid "Inhibit suspend whilst playing"
-msgstr "Блокировать активацию ждущего режима во время проигрывания:"
+msgstr "Блокировать активацию ждущего режима во время проигрывания"
 
 #. i18n: file: gui/playbacksettings.ui:95
 #. i18n: ectx: property (text), widget (QLabel, noteLabel)

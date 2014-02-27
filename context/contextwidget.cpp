@@ -38,6 +38,7 @@
 #include "qjson/parser.h"
 #include "playqueueview.h"
 #include "treeview.h"
+#include "thinsplitterhandle.h"
 #include <QHBoxLayout>
 #include <QGridLayout>
 #include <QSpacerItem>
@@ -281,85 +282,22 @@ void ViewSelector::paintEvent(QPaintEvent *ev)
     drawFadedLine(&p, r, palette().foreground().color());
 }
 
-static QColor splitterColor;
-
-class ThinSplitterHandle : public QSplitterHandle
-{
-public:
-    ThinSplitterHandle(Qt::Orientation orientation, ThinSplitter *parent)
-        : QSplitterHandle(orientation, parent)
-        , underMouse(false)
-    {
-        setMask(QRegion(contentsRect()));
-        setAttribute(Qt::WA_MouseNoMask, true);
-        setAttribute(Qt::WA_OpaquePaintEvent, false);
-        setAttribute(Qt::WA_MouseTracking, true);
-        QAction *act=new QAction(i18n("Reset Spacing"), this);
-        addAction(act);
-        connect(act, SIGNAL(triggered(bool)), parent, SLOT(reset()));
-        setContextMenuPolicy(Qt::ActionsContextMenu);
-        size=Utils::isHighDpi() ? 4 : 2;
-    }
-
-    void resizeEvent(QResizeEvent *event)
-    {
-        if (Qt::Horizontal==orientation()) {
-            setContentsMargins(size, 0, size, 0);
-        } else {
-            setContentsMargins(0, size, 0, size);
-        }
-        setMask(QRegion(contentsRect()));
-        QSplitterHandle::resizeEvent(event);
-    }
-
-    void paintEvent(QPaintEvent *event)
-    {
-        if (underMouse) {
-            QColor col(splitterColor);
-            QPainter p(this);
-            col.setAlphaF(0.75);
-            p.fillRect(event->rect().adjusted(1, 0, -1, 0), col);
-            col.setAlphaF(0.25);
-            p.fillRect(event->rect(), col);
-        }
-    }
-
-    bool event(QEvent *event)
-    {
-        switch(event->type()) {
-        case QEvent::Enter:
-        case QEvent::HoverEnter:
-            underMouse = true;
-            update();
-            break;
-        case QEvent::ContextMenu:
-        case QEvent::Leave:
-        case QEvent::HoverLeave:
-            underMouse = false;
-            update();
-            break;
-        default:
-            break;
-        }
-
-        return QWidget::event(event);
-    }
-
-    bool underMouse;
-    int size;
-};
-
 ThinSplitter::ThinSplitter(QWidget *parent)
     : QSplitter(parent)
 {
-    setHandleWidth(3);
     setChildrenCollapsible(false);
     setOrientation(Qt::Horizontal);
+    resetAct=new QAction(i18n("Reset Spacing"), this);
+    connect(resetAct, SIGNAL(triggered(bool)), this, SLOT(reset()));
+    setHandleWidth(1);
 }
 
 QSplitterHandle * ThinSplitter::createHandle()
 {
-    return new ThinSplitterHandle(orientation(), this);
+    ThinSplitterHandle *handle=new ThinSplitterHandle(orientation(), this);
+    handle->addAction(resetAct);
+    handle->setContextMenuPolicy(Qt::ActionsContextMenu);
+    return handle;
 }
 
 void ThinSplitter::reset()
@@ -412,7 +350,6 @@ ContextWidget::ContextWidget(QWidget *parent)
     readConfig();
     setZoom();
     setWide(true);
-    splitterColor=palette().text().color();
 
     #ifndef SCALE_CONTEXT_BGND
     QDesktopWidget *dw=QApplication::desktop();
@@ -631,11 +568,9 @@ void ContextWidget::useDarkBackground(bool u)
             pal.setColor(QPalette::LinkVisited, linkVisited);
             prevLinkColor=appLinkColor;
             linkCol=pal.color(QPalette::Link);
-            splitterColor=light;
         } else {
             linkCol=appLinkColor;
             prevLinkColor=QColor(240, 240, 240);
-            splitterColor=pal.text().color();
         }
         setPalette(pal);
         artist->setPal(pal, linkCol, prevLinkColor);

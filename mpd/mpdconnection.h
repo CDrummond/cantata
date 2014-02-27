@@ -32,6 +32,7 @@
 #include <QHostAddress>
 #include <QDateTime>
 #include <QStringList>
+#include <QSet>
 #include "mpdstats.h"
 #include "mpdstatus.h"
 #include "song.h"
@@ -261,6 +262,7 @@ public Q_SLOTS:
 
     // Admin
     void update();
+    void update(const QSet<QString> &dirs);
 
     // Playlists
 //     void listPlaylist(const QString &name);

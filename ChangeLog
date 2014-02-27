@@ -13,7 +13,7 @@
     hide it but make it semi-transparent instead.
 10. Use system libebur128 if found.
 11. Use single line to show current song details.
-12. Dont show song details in titlebar - this only duplicates info that is
+12. Don't show song details in titlebar - this only duplicates info that is
     already clearly visible in the main window.
 
 1.3.1
@@ -28,7 +28,7 @@
    timeout value. Therefore, the actual timeout has increased to 2minutes!
 6. If a sidebar view has focus, but sidebar is collapsed, then find action
    should activate playqueue search widget.
-7. FreeBSD 1.0 compile fixes.
+7. FreeBSD 10 compile fixes.
 8. Fix scaling of context view background when size of view changes.
 9. Elide text of context view selector buttons, if insufficient space.
 
@@ -113,7 +113,7 @@
 41. As per Amarok, split albums into discs in grouped playqueue view.
 42. Fix some Mopidy 0.18 issues; cover and lyrics retrieval, folders view
     loading.
-43. Mpodiy seems to require all parameters to be quoted.
+43. Mopidy seems to require all parameters to be quoted.
 44. Only react to back or home action in listviews if view is visible!
 45. Don't allow buttons in main widow to recieve focus.
 46. Use Ctrl+G as short-cut to show genre combo popup.
@@ -622,8 +622,8 @@
   7. Allow editing of tags, and replaygain calculation, of files from folder
      view which do not contain tags.
   8. Merge 'External Settings' into 'Interface Settings'
-  9. Add option to embed covers when copying songs to devices. (ID3v2, mp4,
-     and vorbis comment tag types only) 
+  9. Add option to embed covers when copying songs to devices. (ID3v2, MP4,
+     and Vorbis comment tag types only)
  10. Add a simple system dbus helper to allow user mounts of samba shares. This
      is intended to allow Cantata to connect to an Android device via Droid NAS.
      Requires cantata be built with remote device support.

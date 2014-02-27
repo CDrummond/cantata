@@ -213,6 +213,7 @@ MPDConnection::MPDConnection()
     qRegisterMetaType<QList<qint32> >("QList<qint32>");
     qRegisterMetaType<QList<quint8> >("QList<quint8>");
     qRegisterMetaType<QSet<qint32> >("QSet<qint32>");
+    qRegisterMetaType<QSet<QString> >("QSet<QString>");
     qRegisterMetaType<QAbstractSocket::SocketState >("QAbstractSocket::SocketState");
     qRegisterMetaType<MPDStatsValues>("MPDStatsValues");
     qRegisterMetaType<MPDStatusValues>("MPDStatusValues");
@@ -1225,7 +1226,28 @@ void MPDConnection::update()
             // Mopidy does not support MPD's update command. So, when user presses update DB, what we
             // do instead is clear library/dir caches, then when response to getStats is received,
             // library/dir should get refreshed...
-            emit updatedDatabase(); // Emit thi to stop any spinners...
+            emit updatedDatabase(); // Emit this to stop any spinners...
+            getStats();
+        }
+    }
+}
+
+void MPDConnection::update(const QSet<QString> &dirs)
+{
+    QByteArray send = "command_list_begin\n";
+    foreach (const QString &d, dirs) {
+        send += "update "+encodeName(d.endsWith('/') ? d.left(d.length()-1) : d)+"\n";
+    }
+    send += "command_list_end";
+
+    if (sendCommand(send).ok) {
+        emit updatingDatabase();
+
+        if (isMopdidy()) {
+            // Mopidy does not support MPD's update command. So, when user presses update DB, what we
+            // do instead is clear library/dir caches, then when response to getStats is received,
+            // library/dir should get refreshed...
+            emit updatedDatabase(); // Emit this to stop any spinners...
             getStats();
         }
     }

@@ -281,7 +281,7 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
     connect(genre, SIGNAL(editTextChanged(const QString &)), SLOT(checkChanged()));
     connect(year, SIGNAL(valueChanged(int)), SLOT(checkChanged()));
     connect(trackName, SIGNAL(activated(int)), SLOT(setIndex(int)));
-    connect(this, SIGNAL(update()), MPDConnection::self(), SLOT(update()));
+    connect(this, SIGNAL(update(QSet<QString>)), MPDConnection::self(), SLOT(update(QSet<QString>)));
     adjustSize();
     int w=600*(Utils::isHighDpi() ? 2 : 1);
     if (width()<w) {
@@ -739,6 +739,7 @@ bool TagEditor::applyUpdates()
     int toSave=editedIndexes.count();
     bool renameFiles=false;
     QList<Song> updatedSongs;
+    QSet<QString> modifiedDirs;
 
     saving=true;
     enableButton(Ok, false);
@@ -786,6 +787,7 @@ bool TagEditor::applyUpdates()
                 }
             }
             updatedSongs.append(edit);
+            modifiedDirs.insert(Utils::getDir(file));
             if (!renameFiles && file!=opts.createFilename(edit)) {
                 renameFiles=true;
             }
@@ -820,7 +822,7 @@ bool TagEditor::applyUpdates()
         #endif
         {
 //             MusicLibraryModel::self()->removeCache();
-            emit update();
+            emit update(modifiedDirs);
         }
 
         if (renameFiles &&

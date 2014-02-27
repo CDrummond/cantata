@@ -4904,9 +4904,8 @@ msgstr ""
 #. i18n: file: gui/interfacesettings.ui:664
 #. i18n: ectx: property (text), widget (QCheckBox, minimiseOnClose)
 #: po/rc.cpp:691 rc.cpp:691
-#, fuzzy
 msgid "Minimize to notification area when closed"
-msgstr "Minimise to notification area when closed:"
+msgstr "Minimise to notification area when closed"
 
 #. i18n: file: gui/interfacesettings.ui:671
 #. i18n: ectx: property (title), widget (QGroupBox, startupState)
@@ -5023,16 +5022,14 @@ msgstr ""
 #. i18n: file: gui/playbacksettings.ui:58
 #. i18n: ectx: property (text), widget (QCheckBox, stopOnExit)
 #: po/rc.cpp:754 rc.cpp:754
-#, fuzzy
 msgid "Stop playback on exit"
-msgstr "Stop dynamiser on exit:"
+msgstr "Stop playback on exit"
 
 #. i18n: file: gui/playbacksettings.ui:65
 #. i18n: ectx: property (text), widget (QCheckBox, stopDynamizerOnExit)
 #: po/rc.cpp:757 rc.cpp:757
-#, fuzzy
 msgid "Stop dynamizer on exit"
-msgstr "Stop dynamiser on exit:"
+msgstr "Stop dynamiser on exit"
 
 #. i18n: file: gui/playbacksettings.ui:72
 #. i18n: ectx: property (text), widget (QCheckBox, inhibitSuspend)

@@ -18,7 +18,7 @@
 13. After editing files in tag editor, editing in track organizer, adding new
     files, or removing exisint files, only ask MPD to update folders that have
     changed.
-14. Remove spac between toolbar and views.
+14. Remove space between toolbar and views, and reduce spacing elsewhere.
 
 1.3.1
 -----

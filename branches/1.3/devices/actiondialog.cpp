@@ -384,7 +384,7 @@ void ActionDialog::init(const QString &srcUdi, const QString &dstUdi, const QLis
     #endif
     updateUnity(false);
 
-    if ((Remove==m && srcUdi.isEmpty()) || (Copy==m && !srcUdi.isEmpty())) {
+    if (((Remove==m && srcUdi.isEmpty()) || (Copy==m && !srcUdi.isEmpty())) && MPDConnection::self()->isMopdidy()) {
         connect(mopidyNote, SIGNAL(leftClickedUrl()), SLOT(showMopidyMessage()));
     } else {
         REMOVE(mopidyNote);

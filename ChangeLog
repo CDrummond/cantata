@@ -37,6 +37,7 @@
  8. Fix scaling of context view background when size of view changes.
  9. Elide text of context view selector buttons, if insufficient space.
 10. Only show mopidy note in copy/remove dialog if connected to mopidy.
+11. Fix broken en_GB translation.
 
 1.3.0.1
 -------

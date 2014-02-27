@@ -5522,16 +5522,14 @@ msgstr " ms"
 #. i18n: file: gui/playbacksettings.ui:58
 #. i18n: ectx: property (text), widget (QCheckBox, stopOnExit)
 #: po/rc.cpp:754 rc.cpp:754
-#, fuzzy
 msgid "Stop playback on exit"
-msgstr "Detener reproducción al cerrar:"
+msgstr "Detener reproducción al cerrar"
 
 #. i18n: file: gui/playbacksettings.ui:65
 #. i18n: ectx: property (text), widget (QCheckBox, stopDynamizerOnExit)
 #: po/rc.cpp:757 rc.cpp:757
-#, fuzzy
 msgid "Stop dynamizer on exit"
-msgstr "Detener el modo dinámico al cerrar:"
+msgstr "Detener el modo dinámico al cerrar"
 
 #. i18n: file: gui/playbacksettings.ui:72
 #. i18n: ectx: property (text), widget (QCheckBox, inhibitSuspend)

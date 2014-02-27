@@ -213,22 +213,6 @@
          <number>0</number>
         </property>
         <item>
-         <spacer name="tabWidgetSpacer">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeType">
-           <enum>QSizePolicy::Fixed</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>6</width>
-            <height>6</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item>
          <widget class="FancyTabWidget" name="tabWidget">
           <property name="minimumSize">
            <size>
@@ -263,22 +247,6 @@
         <property name="bottomMargin">
          <number>0</number>
         </property>
-        <item>
-         <spacer name="playQueueSpacer">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeType">
-           <enum>QSizePolicy::Fixed</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>6</width>
-            <height>6</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
         <item>
          <widget class="SearchWidget" name="playQueueSearchWidget"/>
         </item>

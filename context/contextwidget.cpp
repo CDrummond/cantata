@@ -258,7 +258,7 @@ ThinSplitter::ThinSplitter(QWidget *parent)
     setOrientation(Qt::Horizontal);
     resetAct=new QAction(i18n("Reset Spacing"), this);
     connect(resetAct, SIGNAL(triggered(bool)), this, SLOT(reset()));
-    setHandleWidth(1);
+    setHandleWidth(0);
 }
 
 QSplitterHandle * ThinSplitter::createHandle()

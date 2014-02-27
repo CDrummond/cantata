@@ -73,7 +73,7 @@ AutohidingSplitter::AutohidingSplitter(Qt::Orientation orientation, QWidget *par
     autohideAnimation->setEasingCurve(QEasingCurve::Linear);
     //connect(this, SIGNAL(splitterMoved(int, int)), this, SLOT(updateAfterSplitterMoved(int, int)));
     setMinimumWidth(32);
-    setHandleWidth(1);
+    setHandleWidth(0);
 }
 
 AutohidingSplitter::AutohidingSplitter(QWidget *parent)

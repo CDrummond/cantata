@@ -62,7 +62,7 @@ public:
 
 Q_SIGNALS:
     // These are for communicating with MPD object (which is in its own thread, so need to talk via signal/slots)
-    void update();
+    void update(const QSet<QString> &dirs);
 
     void completed();
 
@@ -108,6 +108,7 @@ private:
     QList<Song> actionedSongs;
     QSet<QString> dirsToClean;
     QSet<QString> copiedCovers;
+    QSet<QString> modifiedMpdDirs;
     unsigned long count;
     #ifdef ACTION_DIALOG_SHOW_TIME_REMAINING
     double totalTime; // Time of all songs

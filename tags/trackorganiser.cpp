@@ -70,7 +70,7 @@ TrackOrganiser::TrackOrganiser(QWidget *parent)
     setMainWidget(mainWidet);
     configFilename->setIcon(Icons::self()->configureIcon);
     setButtonGuiItem(Ok, GuiItem(i18n("Rename"), "edit-rename"));
-    connect(this, SIGNAL(update()), MPDConnection::self(), SLOT(update()));
+    connect(this, SIGNAL(update(QSet<QString>)), MPDConnection::self(), SLOT(update(QSet<QString>)));
     progress->setVisible(false);
     files->setItemDelegate(new BasicItemDelegate(files));
     files->setAlternatingRowColors(false);
@@ -239,6 +239,7 @@ void TrackOrganiser::startRename()
     #endif
         opts.save(MPDConnectionDetails::configGroupName(MPDConnection::self()->getDetails().name), true);
 
+    modifiedDirs.clear();
     QTimer::singleShot(100, this, SLOT(renameFile()));
 }
 
@@ -361,6 +362,8 @@ void TrackOrganiser::renameFile()
             if (QFile::exists(lyricsSource) && !QFile::exists(lyricsDest)) {
                 QFile::rename(lyricsSource, lyricsDest);
             }
+            modifiedDirs.insert(Utils::getDir(orig));
+            modifiedDirs.insert(Utils::getDir(modified));
         }
 
         if (!skip) {
@@ -452,7 +455,7 @@ void TrackOrganiser::finish(bool ok)
 {
     if (updated) {
         if (deviceUdi.isEmpty()) {
-            emit update();
+            emit update(modifiedDirs);
         }
         #ifdef ENABLE_DEVICES_SUPPORT
         else {

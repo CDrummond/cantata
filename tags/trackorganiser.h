@@ -32,6 +32,7 @@
 #else
 #include "deviceoptions.h"
 #endif
+#include <QSet>
 
 class FilenameSchemeDialog;
 class Action;
@@ -50,7 +51,7 @@ public:
 
 Q_SIGNALS:
     // These are for communicating with MPD object (which is in its own thread, so need to talk via signal/slots)
-    void update();
+    void update(const QSet<QString> &dirs);
 
 private Q_SLOTS:
     void configureFilenameScheme();
@@ -74,6 +75,7 @@ private:
     QList<Song> origSongs;
     QString deviceUdi;
     Action *removeAct;
+    QSet<QString> modifiedDirs;
     int index;
     bool autoSkip;
     bool paused;

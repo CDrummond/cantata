@@ -122,7 +122,7 @@ ViewSelector::ViewSelector(QWidget *p)
     : QWidget(p)
 {
     group=new QButtonGroup(this);
-    setFixedHeight(SizeWidget::standardHeight());
+    setFixedHeight(SizeWidget::standardHeight()+1); // So that faded line is at same position as bottom of views...
 }
 
 void ViewSelector::addItem(const QString &label, const QVariant &data)

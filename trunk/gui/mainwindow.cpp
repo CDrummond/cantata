@@ -244,14 +244,7 @@ MainWindow::MainWindow(QWidget *parent)
     menuButton->setIcon(Icons::self()->toolbarMenuIcon);
     menuButton->setAlignedMenu(mainMenu);
 
-    // With ambiance (which has a dark toolbar) we need a gap between the toolbar and the views. But, in the context view we dont
-    // want a gap - as this looks odd with a background. To workaround this, the tabwidget and playqueue sides of the splitter have a
-    // spacer added. The size of this needs to be controllable by the style - so we do this here...
     int spacing=Utils::layoutSpacing(this);
-    if (tabWidgetSpacer->minimumSize().height()!=spacing) {
-        tabWidgetSpacer->changeSize(spacing, spacing, QSizePolicy::Fixed, QSizePolicy::Fixed);
-        playQueueSpacer->changeSize(spacing, spacing, QSizePolicy::Fixed, QSizePolicy::Fixed);
-    }
     if (toolbarFixedSpacerFixedA->minimumSize().width()!=spacing) {
         toolbarFixedSpacerFixedA->changeSize(spacing, 2, QSizePolicy::Fixed, QSizePolicy::Fixed);
         toolbarFixedSpacerFixedB->changeSize(spacing, 2, QSizePolicy::Fixed, QSizePolicy::Fixed);
@@ -2200,14 +2193,11 @@ void MainWindow::tabToggled(int index)
             playQueueWidget->setParent(playQueuePage);
             playQueuePage->layout()->addWidget(playQueueWidget);
             playQueueWidget->setVisible(true);
-            playQueueSpacer->changeSize(0, 0, QSizePolicy::Fixed, QSizePolicy::Fixed);
         } else {
             playQueuePage->layout()->removeWidget(playQueueWidget);
             playQueueWidget->setParent(splitter);
             playQueueWidget->setVisible(true);
             splitter->setAutohidable(0, Settings::self()->splitterAutoHide() && !tabWidget->isEnabled(PAGE_PLAYQUEUE));
-            int spacing=Utils::layoutSpacing(this);
-            playQueueSpacer->changeSize(spacing, spacing, QSizePolicy::Fixed, QSizePolicy::Fixed);
         }
         playQueue->updatePalette();
         break;

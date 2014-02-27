@@ -8,9 +8,9 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-02-02 20:02+0000\n"
-"PO-Revision-Date: 2014-01-11 06:22+0100\n"
-"Last-Translator: Ronny Liefert\n"
-"Language-Team: German <kde-i18n-de@kde.org>\n"
+"PO-Revision-Date: 2014-02-24 04:52+0100\n"
+"Last-Translator: Markus Slopianka <kamikazow@web.de>\n"
+"Language-Team: German <kde-i18n-doc@kde.org>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -74,18 +74,16 @@ msgid "Reset Spacing"
 msgstr "Abstand zurücksetzen"
 
 #: context/contextwidget.cpp:506
-#, fuzzy
 msgid "&Artist"
-msgstr "Künstler"
+msgstr "&Künstler"
 
 #: context/contextwidget.cpp:507
 msgid "Al&bum"
-msgstr ""
+msgstr "Al&bum"
 
 #: context/contextwidget.cpp:508
-#, fuzzy
 msgid "&Lyrics"
-msgstr "Texte"
+msgstr "&Texte"
 
 #: context/lastfmengine.cpp:63
 msgid "Read more on last.fm"
@@ -160,19 +158,18 @@ msgstr "Bilder (*.png *.jpg)"
 #: context/othersettings.cpp:47 gui/interfacesettings.cpp:176
 msgctxt "pixels"
 msgid "10px"
-msgstr ""
+msgstr "10px"
 
 #: context/othersettings.cpp:102 gui/interfacesettings.cpp:524
-#, fuzzy
 msgctxt "value%"
 msgid "%1%"
-msgstr "%1 %2%"
+msgstr "%1%"
 
 #: context/othersettings.cpp:107 gui/interfacesettings.cpp:529
 #, c-format
 msgctxt "pixels"
 msgid "%1px"
-msgstr ""
+msgstr "%1px"
 
 #: context/songview.cpp:90
 msgid "Refresh Lyrics"
@@ -453,17 +450,17 @@ msgstr "Berechne"
 #: devices/actiondialog.cpp:661
 #, fuzzy
 msgid "The destination filename already exists!"
-msgstr "Der Dateiname existiert bereits.<hr/>%1"
+msgstr "Der Dateiname existiert bereits."
 
 #: devices/actiondialog.cpp:664
 #, fuzzy
 msgid "Song already exists!"
-msgstr "Lied existiert bereits.<hr/>%1"
+msgstr "Lied existiert bereits."
 
 #: devices/actiondialog.cpp:667
 #, fuzzy
 msgid "Song does not exist!"
-msgstr "Titel existiert nicht.<hr/>%1"
+msgstr "Titel existiert nicht."
 
 #: devices/actiondialog.cpp:670
 #, fuzzy
@@ -472,32 +469,32 @@ msgid ""
 "permissions."
 msgstr ""
 "Fehler beim Erstellen des Ordners auf Zielgerät.<br/>Bitte überprüfen Sie "
-"auf vorhandene Berechtigung.<hr/>%1"
+"auf vorhandene Berechtigung."
 
 #: devices/actiondialog.cpp:673
 #, fuzzy
 msgid "Source file no longer exists?"
-msgstr "Quelldatei nicht mehr verfügbar?<br/><br/<hr/>%1"
+msgstr "Quelldatei nicht mehr verfügbar?<br/><br/"
 
 #: devices/actiondialog.cpp:676
 #, fuzzy
 msgid "Failed to copy."
-msgstr "Fehler beim Kopieren.<hr/>%1"
+msgstr "Fehler beim Kopieren."
 
 #: devices/actiondialog.cpp:676
 #, fuzzy
 msgid "Failed to delete."
-msgstr "Fehler beim Erstellen.<hr/>%1"
+msgstr "Fehler beim Erstellen."
 
 #: devices/actiondialog.cpp:679
 #, fuzzy
 msgid "Not connected to device."
-msgstr "Nicht zum Gerät verbunden.<hr/>%1"
+msgstr "Nicht zum Gerät verbunden."
 
 #: devices/actiondialog.cpp:682
 #, fuzzy
 msgid "Selected codec is not available."
-msgstr "Ausgewählter Codec ist nicht vorhanden.<hr/>%1"
+msgstr "Ausgewählter Codec ist nicht vorhanden."
 
 #: devices/actiondialog.cpp:685
 #, fuzzy
@@ -511,27 +508,27 @@ msgid ""
 "devices.)"
 msgstr ""
 "Fehler beim Erstellen einer temporären Datei.<br/>(Benötigt zum Umwandeln "
-"für MTP-Geräte.)<hr/>%1"
+"für MTP-Geräte.)"
 
 #: devices/actiondialog.cpp:691
 #, fuzzy
 msgid "Failed to read source file."
-msgstr "Fehler beim Lesen der Quelldatei.<br/><br/<hr/>%1"
+msgstr "Fehler beim Lesen der Quelldatei."
 
 #: devices/actiondialog.cpp:694
 #, fuzzy
 msgid "Failed to write to destination file."
-msgstr "Fehler beim Erstellen der Zieldatei<br/>%1"
+msgstr "Fehler beim Erstellen der Zieldatei."
 
 #: devices/actiondialog.cpp:697
 #, fuzzy
 msgid "No space left on device."
-msgstr "Kein Platz auf Gerät mehr verfügbar<br/><br/<hr/>%1"
+msgstr "Kein Platz auf Gerät mehr verfügbar."
 
 #: devices/actiondialog.cpp:700
 #, fuzzy
 msgid "Failed to update metadata."
-msgstr "Fehler beim Aktualisieren der Metadaten.<hr/>%1"
+msgstr "Fehler beim Aktualisieren der Metadaten."
 
 #: devices/actiondialog.cpp:703
 #, fuzzy
@@ -541,7 +538,7 @@ msgstr "Fehler beim Herunterladen"
 #: devices/actiondialog.cpp:706
 #, fuzzy
 msgid "Failed to lock device."
-msgstr "Fehler beim Verriegeln des Gerätes.<hr/>%1"
+msgstr "Fehler beim Verriegeln des Gerätes."
 
 #: devices/actiondialog.cpp:735
 msgid "Local Music Library Properties"
@@ -589,9 +586,8 @@ msgid "Track:"
 msgstr "Stück:"
 
 #: devices/actiondialog.cpp:806
-#, fuzzy
 msgid "Source file:"
-msgstr "Quelle: %1"
+msgstr "Quelldatei:"
 
 #: devices/actiondialog.cpp:807
 #, fuzzy
@@ -599,9 +595,8 @@ msgid "Destination file:"
 msgstr "Zielformat:"
 
 #: devices/actiondialog.cpp:809 gui/searchpage.cpp:207
-#, fuzzy
 msgid "File:"
-msgstr "&Datei"
+msgstr "Datei:"
 
 #: devices/actiondialog.cpp:815 gui/cachesettings.cpp:179
 #: gui/cachesettings.cpp:235
@@ -1299,7 +1294,7 @@ msgstr "Wibble"
 #: devices/filenameschemedialog.cpp:64
 msgctxt "Example composer"
 msgid "Vivaldi"
-msgstr ""
+msgstr "Vivaldi"
 
 #: devices/filenameschemedialog.cpp:65
 msgctxt "Example album"
@@ -1849,7 +1844,6 @@ msgstr ""
 "%2 x %3 (%4)"
 
 #: gui/coverdialog.cpp:126
-#, fuzzy
 msgctxt ""
 "name\n"
 "width x height"
@@ -1858,7 +1852,7 @@ msgid ""
 "%2 x %3"
 msgstr ""
 "%1\n"
-"%2 x %3 (%4)"
+"%2 x %3"
 
 #: gui/coverdialog.cpp:162
 #, fuzzy
@@ -2879,18 +2873,16 @@ msgid "Genre:"
 msgstr "Genre:"
 
 #: gui/searchpage.cpp:206
-#, fuzzy
 msgid "Date:"
-msgstr "Datum"
+msgstr "Datum:"
 
 #: gui/searchpage.cpp:208
 msgid "Any:"
 msgstr ""
 
 #: gui/searchpage.cpp:215
-#, fuzzy
 msgid "No tracks found."
-msgstr "Keine Texte gefunden"
+msgstr "Keine Texte gefunden."
 
 #: gui/serversettings.cpp:87
 msgid ""
@@ -3031,9 +3023,8 @@ msgstr ""
 #: gui/shortcutssettingspage.cpp:90 gui/shortcutssettingspage.cpp:107
 #: online/onlineservicespage.cpp:99 streams/streamspage.cpp:99
 #: support/fancytabwidget.cpp:825
-#, fuzzy
 msgid "Configure..."
-msgstr "Einstellungen"
+msgstr "Einstellungen…"
 
 #: gui/stdactions.cpp:55
 msgid "Previous Track"
@@ -3283,35 +3274,30 @@ msgstr[1] "%1 Alben"
 #: models/musicmodel.cpp:209
 msgid "1 Episode"
 msgid_plural "%1 Episodes"
-msgstr[0] ""
+msgstr[0] "Eine Episode"
 msgstr[1] ""
 
 #. i18n: file: online/onlinesettings.ui:47
 #. i18n: ectx: property (text), widget (QPushButton, configureButton)
 #: models/onlineservicesmodel.cpp:91 po/rc.cpp:872 rc.cpp:872
-#, fuzzy
 msgid "Configure Service"
-msgstr "Geräteeinstellungen"
+msgstr "Dienst einrichten"
 
 #: models/onlineservicesmodel.cpp:92
-#, fuzzy
 msgid "Refresh Service"
-msgstr "Aktualisiere Gerät"
+msgstr "Aktualisiere Dienst"
 
 #: models/onlineservicesmodel.cpp:93
-#, fuzzy
 msgid "Add Subscription"
-msgstr "Keine Abonnements"
+msgstr "Abonnements hinzufügen"
 
 #: models/onlineservicesmodel.cpp:94
-#, fuzzy
 msgid "Remove Subscription"
-msgstr "Keine Abonnements"
+msgstr "Abonnement entfernen"
 
 #: models/onlineservicesmodel.cpp:95
-#, fuzzy
 msgid "Refresh Subscription"
-msgstr "Keine Abonnements"
+msgstr "Abonnement aktualisieren"
 
 #: models/onlineservicesmodel.cpp:145
 msgid "Last Search:%1"
@@ -3329,16 +3315,14 @@ msgstr "Benutzen Sie die Suche, um Stücke zu finden"
 #: models/onlineservicesmodel.cpp:174
 msgid "1 Podcast"
 msgid_plural "%1 Podcasts"
-msgstr[0] ""
+msgstr[0] "Ein Podcast"
 msgstr[1] ""
 
 #: models/onlineservicesmodel.cpp:185
-#, fuzzy
 msgid "(Downloading: %1%)"
-msgstr "Download %1"
+msgstr "(Lädt herunter: %1%)"
 
 #: models/onlineservicesmodel.cpp:243
-#, fuzzy
 msgctxt "podcast name (num unplayed episodes)"
 msgid "%1 (%2)"
 msgstr "%1 (%2)"
@@ -3348,9 +3332,8 @@ msgid "New Playlist..."
 msgstr "Neue Wiedergabeliste…"
 
 #: models/playlistsmodel.cpp:321
-#, fuzzy
 msgid "Smart Playlist"
-msgstr "Leere Wiedergabeliste"
+msgstr "Intelligente Wiedergabeliste"
 
 #: models/playqueuemodel.cpp:109
 msgid "Length"
@@ -3735,16 +3718,15 @@ msgstr ""
 
 #: online/podcastsearchdialog.cpp:253
 msgid "RSS:"
-msgstr ""
+msgstr "RSS:"
 
 #: online/podcastsearchdialog.cpp:255
 msgid "Website:"
 msgstr ""
 
 #: online/podcastsearchdialog.cpp:262
-#, fuzzy
 msgid "Podcast details"
-msgstr "Verbindungdetails"
+msgstr "Podcastdetails"
 
 #: online/podcastsearchdialog.cpp:262
 msgid "Select a podcast to display its details"
@@ -3755,9 +3737,8 @@ msgid "Enter search term..."
 msgstr ""
 
 #: online/podcastsearchdialog.cpp:383
-#, fuzzy
 msgid "Failed to fetch podcasts from %1"
-msgstr "Fehler beim Beenden der Verbindung von \"%1\""
+msgstr "Fehler beim Herunterladen des Podcasts von %1"
 
 #: online/podcastsearchdialog.cpp:389
 msgid "There was a problem parsing the response from %1"
@@ -3774,9 +3755,8 @@ msgid "Failed to parse directory listing"
 msgstr "Fehler beim Analysieren der heruntergeladenen Stückliste"
 
 #: online/podcastsearchdialog.cpp:508
-#, fuzzy
 msgid "URL"
-msgstr "URL:"
+msgstr "URL"
 
 #: online/podcastsearchdialog.cpp:517
 msgid "Enter podcast URL..."
@@ -3824,9 +3804,8 @@ msgid "Manual podcast URL"
 msgstr ""
 
 #: online/podcastsearchdialog.cpp:611 online/podcastsearchdialog.cpp:615
-#, fuzzy
 msgid "Search %1"
-msgstr "Suche %1:"
+msgstr "Suche %1"
 
 #: online/podcastsearchdialog.cpp:611 online/podcastsearchdialog.cpp:615
 msgid "Search for podcasts on %1"
@@ -3856,7 +3835,7 @@ msgstr ""
 
 #: online/podcastservice.cpp:103
 msgid "Podcasts"
-msgstr ""
+msgstr "Podcasts"
 
 #: online/podcastservice.cpp:288
 msgid "Cantata only supports audio podcasts! %1 contains only video podcasts."
@@ -3981,7 +3960,7 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QLabel, playQueueBackgroundBlurLabel)
 #: po/rc.cpp:18 po/rc.cpp:672 rc.cpp:18 rc.cpp:672
 msgid "10px"
-msgstr ""
+msgstr "10px"
 
 #. i18n: file: context/othersettings.ui:112
 #. i18n: ectx: property (text), widget (QLabel, label_4)
@@ -4006,7 +3985,7 @@ msgstr ""
 #: po/rc.cpp:25 po/rc.cpp:679 rc.cpp:25 rc.cpp:679
 #, no-c-format
 msgid "40%"
-msgstr ""
+msgstr "40%"
 
 #. i18n: file: context/othersettings.ui:164
 #. i18n: ectx: property (text), widget (QCheckBox, contextDarkBackground)
@@ -4284,9 +4263,8 @@ msgstr "Automatisch nach Musik suchen, wenn verbunden wird:"
 #. i18n: file: devices/devicepropertieswidget.ui:106
 #. i18n: ectx: property (text), widget (QCheckBox, useCache)
 #: po/rc.cpp:164 rc.cpp:164
-#, fuzzy
 msgid "Use cache"
-msgstr "Benutzer Zwischenspeicher:"
+msgstr "Benutze Zwischenspeicher"
 
 #. i18n: file: devices/devicepropertieswidget.ui:115
 #. i18n: ectx: property (title), widget (QGroupBox, filenamesGroupBox)
@@ -4334,9 +4312,8 @@ msgstr "VFAT sichern:"
 #. i18n: file: tags/trackorganiser.ui:78
 #. i18n: ectx: property (text), widget (QCheckBox, asciiOnly)
 #: po/rc.cpp:176 po/rc.cpp:980 rc.cpp:176 rc.cpp:980
-#, fuzzy
 msgid "Use only ASCII characters"
-msgstr "Nur ASCII-Zeichen verwenden:"
+msgstr "Nur ASCII-Zeichen verwenden"
 
 #. i18n: file: devices/devicepropertieswidget.ui:175
 #. i18n: ectx: property (text), widget (QCheckBox, replaceSpaces)
@@ -5478,7 +5455,7 @@ msgstr "Erzwinge Einzelklick zur Aktivierung"
 #. i18n: ectx: property (text), widget (BuddyLabel, langLabel)
 #: po/rc.cpp:730 rc.cpp:730
 msgid "Language:"
-msgstr ""
+msgstr "Sprache:"
 
 #. i18n: file: gui/interfacesettings.ui:806
 #. i18n: ectx: property (text), widget (StateLabel, singleClickLabel)
@@ -6230,7 +6207,7 @@ msgstr "&Anwenden"
 
 #: support/dialog.cpp:80
 msgid "&Close"
-msgstr "&Schließen"
+msgstr "S&chließen"
 
 #: support/dialog.cpp:82
 msgid "&Overwrite"
@@ -6246,7 +6223,7 @@ msgstr "&Fortsetzen"
 
 #: support/dialog.cpp:85
 msgid "&Delete"
-msgstr "&Lösche"
+msgstr "&Löschen"
 
 #: support/dialog.cpp:86
 msgid "&Stop"
@@ -6407,7 +6384,7 @@ msgstr "Umbenennen der Dateien abbrechen?"
 #: tags/trackorganiser.cpp:279
 #, fuzzy
 msgid "Source file does not exist!<br/>%1"
-msgstr "Titel existiert nicht.<hr/>%1"
+msgstr "Titel existiert nicht.<br/>%1"
 
 #: tags/trackorganiser.cpp:298
 msgid "Destination file already exists!<br/>%1"
@@ -6465,7 +6442,7 @@ msgstr "Gehe zur Übersicht"
 
 #: widgets/menubutton.cpp:39
 msgid "Menu"
-msgstr ""
+msgstr "Menü"
 
 #: widgets/searchwidget.cpp:63
 msgid "Search..."
@@ -6476,9 +6453,8 @@ msgid "Close Search Bar"
 msgstr "Schließe Suchleiste"
 
 #: widgets/servicestatuslabel.cpp:43
-#, fuzzy
 msgid "Logged into %1"
-msgstr "Eingeloggt"
+msgstr "Angemeldet bei %1"
 
 #: widgets/servicestatuslabel.cpp:44
 #, fuzzy
@@ -6600,34 +6576,34 @@ msgstr "%1 Regeln"
 #: ../gui/qtplural.h:58
 msgctxt "Singular"
 msgid "1 Podcast"
-msgstr ""
+msgstr "Ein Podcast"
 
 #: ../gui/qtplural.h:59
 #, qt-format
 msgctxt "Plural (N!=1)"
 msgid "%1 Podcasts"
-msgstr ""
+msgstr "%1 Podcasts"
 
 #: ../gui/qtplural.h:62
 msgctxt "Singular"
 msgid "1 Episode"
-msgstr ""
+msgstr "Eine Episode"
 
 #: ../gui/qtplural.h:63
-#, fuzzy, qt-format
+#, qt-format
 msgctxt "Plural (N!=1)"
 msgid "%1 Episodes"
-msgstr "%1 Einträge"
+msgstr "%1 Episoden"
 
-#~ msgid "Transcoding failed.<br/><br/<hr/>%1"
-#~ msgstr "Fehler beim Umwandeln.<br/><br/<hr/>%1"
+#~ msgid "Transcoding failed.<br/><br/"
+#~ msgstr "Fehler beim Umwandeln.<br/><br/"
 
 #~ msgid ""
-#~ "Failed to download track - too many redirects encountered.<br/><br/<hr/>%1"
-#~ msgstr "Fehler beim Download – zu viele Umleitungen.<br/><br/<hr/>%1"
+#~ "Failed to download track - too many redirects encountered.<br/><br/"
+#~ msgstr "Fehler beim Download – zu viele Umleitungen.<br/><br/"
 
-#~ msgid "Failed to download track.<br/><br/<hr/>%1"
-#~ msgstr "Fehler beim Herunterladen des Stückes.<hr/>%1"
+#~ msgid "Failed to download track.<br/><br/"
+#~ msgstr "Fehler beim Herunterladen des Stückes."
 
 #~ msgid "<b>Error</b><br/>"
 #~ msgstr "<b>Fehler</b><br/>"

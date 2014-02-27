@@ -254,7 +254,7 @@ static const QString constDirTag=QLatin1String("dir");
 static const QString constFileTag=QLatin1String("file");
 static const QString constTrueValue=QLatin1String("true");
 
-static quint32 constVersion=1;
+static quint32 constVersion=2;
 
 void DirViewModel::toXML()
 {

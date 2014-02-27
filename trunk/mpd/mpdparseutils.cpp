@@ -664,7 +664,7 @@ DirViewItemRoot * MPDParseUtils::parseDirViewItems(const QByteArray &data, bool 
                 path=Song::decodePath(path);
             }
             int last=path.lastIndexOf(Utils::constDirSep);
-            QString dirPath=-1==last ? QString() : path.left(last-1);
+            QString dirPath=-1==last ? QString() : path.left(last);
             QStringList parts=path.split("/");
 
             if (dirPath!=currentDirPath) {

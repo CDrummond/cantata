@@ -31,6 +31,7 @@
 #include <QSpinBox>
 #include <QScrollBar>
 #include <QAbstractScrollArea>
+#include <QAbstractItemView>
 #include <QMenu>
 #include <QToolBar>
 #include <QApplication>
@@ -85,14 +86,14 @@ static inline void addEventFilter(QObject *object, QObject *filter)
     object->installEventFilter(filter);
 }
 
-GtkProxyStyle::GtkProxyStyle(ScrollbarType sb, bool styleSpin, const QMap<QString, QString> &c)
+GtkProxyStyle::GtkProxyStyle(ScrollbarType sb, bool styleSpin, const QMap<QString, QString> &c, bool modView)
     : QProxyStyle()
+    , sbarType(sb)
+    , touchStyleSpin(styleSpin)
+    , modViewFrame(modView)
     , css(c)
 {
     shortcutHander=new ShortcutHandler(this);
-
-    sbarType=sb;
-    touchStyleSpin=styleSpin;
 
     if (SB_Standard!=sbarType) {
         QByteArray env=qgetenv("LIBOVERLAY_SCROLLBAR");
@@ -388,6 +389,15 @@ void GtkProxyStyle::drawPrimitive(PrimitiveElement element, const QStyleOption *
         painter->fillRect(option->rect, option->palette.brush(QPalette::Base));
     } else {
         baseStyle()->drawPrimitive(element, option, painter, widget);
+        if (modViewFrame && PE_Frame==element && widget && widget->property(GtkStyle::constHideFrameProp).isValid()) {
+            const QRect &r=option->rect;
+            painter->setPen(QPen(option->palette.color(QPalette::Base), 1));
+            if (Qt::LeftToRight==option->direction) {
+                painter->drawLine(r.topRight()+QPoint(0, 1), r.bottomRight()+QPoint(0, -1));
+            } else {
+                painter->drawLine(r.topLeft()+QPoint(0, 1), r.bottomLeft()+QPoint(0, -1));
+            }
+        }
     }
 }
 

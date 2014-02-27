@@ -586,6 +586,8 @@ ItemView::ItemView(QWidget *p)
     TreeDelegate *td=new TreeDelegate(treeView);
     listView->setItemDelegate(ld);
     treeView->setItemDelegate(td);
+    listView->setProperty(GtkStyle::constHideFrameProp, true);
+    treeView->setProperty(GtkStyle::constHideFrameProp, true);
     ViewEventHandler *listViewEventHandler=new ViewEventHandler(ld, listView);
     listView->installEventFilter(listViewEventHandler);
     treeView->installEventFilter(new ViewEventHandler(td, treeView));
@@ -625,6 +627,7 @@ void ItemView::allowGroupedView()
         connect(groupedView, SIGNAL(itemActivated(const QModelIndex &)), this, SLOT(itemActivated(const QModelIndex &)));
         connect(groupedView, SIGNAL(doubleClicked(const QModelIndex &)), this, SIGNAL(doubleClicked(const QModelIndex &)));
         connect(groupedView, SIGNAL(clicked(const QModelIndex &)), this, SLOT(itemClicked(const QModelIndex &)));
+        groupedView->setProperty(GtkStyle::constHideFrameProp, true);
     }
 }
 
@@ -641,6 +644,7 @@ void ItemView::allowTableView(TableView *v)
         connect(tableView, SIGNAL(itemActivated(const QModelIndex &)), this, SLOT(itemActivated(const QModelIndex &)));
         connect(tableView, SIGNAL(doubleClicked(const QModelIndex &)), this, SIGNAL(doubleClicked(const QModelIndex &)));
         connect(tableView, SIGNAL(clicked(const QModelIndex &)), this, SLOT(itemClicked(const QModelIndex &)));
+        tableView->setProperty(GtkStyle::constHideFrameProp, true);
     }
 }
 

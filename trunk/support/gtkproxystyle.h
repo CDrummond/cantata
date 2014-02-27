@@ -40,7 +40,7 @@ public:
         SB_Thin
     };
 
-    GtkProxyStyle(ScrollbarType sb, bool styleSpin, const QMap<QString, QString> &c);
+    GtkProxyStyle(ScrollbarType sb, bool styleSpin, const QMap<QString, QString> &c, bool modView);
     ~GtkProxyStyle();
     QSize sizeFromContents(ContentsType type, const QStyleOption *option,  const QSize &size, const QWidget *widget) const;
     int styleHint(StyleHint hint, const QStyleOption *option, const QWidget *widget, QStyleHintReturn *returnData) const;
@@ -60,6 +60,7 @@ private:
     ScrollbarType sbarType;
     int sbarPlainViewWidth;
     bool touchStyleSpin;
+    bool modViewFrame;
     QMap<QString, QString> css;
 };
 

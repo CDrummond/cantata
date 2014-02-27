@@ -233,6 +233,8 @@ static ProxyStyle *plainProxyStyle=0;
 static bool symbolicIcons=false;
 static QColor symbolicIconColor(0, 0, 0);
 
+const char * GtkStyle::constHideFrameProp="hide-frame";
+
 void GtkStyle::applyTheme(QWidget *widget)
 {
     #if defined Q_OS_WIN || defined QT_NO_STYLE_GTK
@@ -248,6 +250,7 @@ void GtkStyle::applyTheme(QWidget *widget)
         QString theme=GtkStyle::themeName().toLower();
         GtkProxyStyle::ScrollbarType sbType=GtkProxyStyle::SB_Standard;
         bool touchStyleSpin=false;
+        bool modViewFrame=false;
         QMap<QString, QString> css;
         WindowManager *wm=0;
         if (!theme.isEmpty()) {
@@ -270,6 +273,7 @@ void GtkStyle::applyTheme(QWidget *widget)
                             sbType=GtkProxyStyle::SB_Thin;
                         }
                         touchStyleSpin=line.contains("spinbox:touch");
+                        modViewFrame=line.contains("modview:true");
                         int pos=line.indexOf(symKey);
                         if (pos>0 && pos+6<line.length()) {
                             symbolicIcons=true;
@@ -286,7 +290,7 @@ void GtkStyle::applyTheme(QWidget *widget)
             }
         }
         if (!gtkProxyStyle) {
-            gtkProxyStyle=new GtkProxyStyle(sbType, touchStyleSpin, css);
+            gtkProxyStyle=new GtkProxyStyle(sbType, touchStyleSpin, css, modViewFrame);
             qApp->setStyle(gtkProxyStyle);
             QCoreApplication::setAttribute(Qt::AA_DontShowIconsInMenus);
         }

@@ -32,6 +32,8 @@ class QWidget;
 
 namespace GtkStyle
 {
+    extern const char * constHideFrameProp;
+
     extern bool isActive();
     extern void drawSelection(const QStyleOptionViewItemV4 &opt, QPainter *painter, double opacity);
     extern QString themeName();

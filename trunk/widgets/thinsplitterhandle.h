@@ -34,7 +34,7 @@ public:
 
     void resizeEvent(QResizeEvent *event);
     void paintEvent(QPaintEvent *) { }
-    QSize sizeHint() const { return QSize(1, 1); }
+    QSize sizeHint() const { return QSize(0, 0); }
 
 private:
     void updateMask();

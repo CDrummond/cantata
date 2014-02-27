@@ -83,6 +83,9 @@ public:
 
 public Q_SLOTS:
     void reset();
+
+private:
+    QAction *resetAct;
 };
 
 class ContextWidget : public QWidget

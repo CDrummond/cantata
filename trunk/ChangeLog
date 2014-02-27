@@ -19,6 +19,7 @@
     files, or removing exisint files, only ask MPD to update folders that have
     changed.
 14. Remove space between toolbar and views, and reduce spacing elsewhere.
+15. Reduce splitter width betwen playqueue and views to 1 pixel.
 
 1.3.1
 -----

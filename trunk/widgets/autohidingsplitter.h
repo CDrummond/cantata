@@ -26,8 +26,7 @@
 #define AUTOHIDINGSPLITTER_H
 
 #include "config.h"
-#include <QSplitter>
-
+#include "thinsplitterhandle.h"
 #include <QList>
 #include <QQueue>
 #include <QVariantAnimation>
@@ -38,12 +37,12 @@ Q_DECLARE_METATYPE(QList<int>)
 
 class SplitterSizeAnimation;
 
-class AutohidingSplitterHandle : public QSplitterHandle
+class AutohidingSplitterHandle : public ThinSplitterHandle
 {
     Q_OBJECT
 
 public:
-    AutohidingSplitterHandle(Qt::Orientation orientation, QSplitter *parent) : QSplitterHandle(orientation, parent) { }
+    AutohidingSplitterHandle(Qt::Orientation orientation, QSplitter *parent) : ThinSplitterHandle(orientation, parent) { }
     virtual ~AutohidingSplitterHandle() { }
 
 Q_SIGNALS:

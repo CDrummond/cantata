@@ -259,7 +259,7 @@ set(CANTATA_SRCS gui/application.cpp gui/main.cpp gui/initialsettingswizard.cpp 
     widgets/volumeslider.cpp widgets/icons.cpp widgets/genrecombo.cpp widgets/menubutton.cpp
     widgets/toolbutton.cpp widgets/wizardpage.cpp widgets/statuslabel.cpp widgets/searchwidget.cpp widgets/messageoverlay.cpp
     widgets/basicitemdelegate.cpp widgets/sizegrip.cpp widgets/sizewidget.cpp widgets/servicestatuslabel.cpp widgets/spacerwidget.cpp
-    widgets/songdialog.cpp widgets/stretchheaderview.cpp widgets/tableview.cpp widgets/songlabel.cpp
+    widgets/songdialog.cpp widgets/stretchheaderview.cpp widgets/tableview.cpp widgets/songlabel.cpp widgets/thinsplitterhandle.cpp
     network/networkaccessmanager.cpp network/networkproxyfactory.cpp
     http/httpserver.cpp
     devices/deviceoptions.cpp

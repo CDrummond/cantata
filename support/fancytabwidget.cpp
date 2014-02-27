@@ -565,7 +565,7 @@ FancyTabWidget::FancyTabWidget(QWidget* parent, bool allowContext)
 
     QHBoxLayout* main_layout = new QHBoxLayout;
     main_layout->setMargin(0);
-    main_layout->setSpacing(1);
+    main_layout->setSpacing(0);
     main_layout->addWidget(side_widget_);
     main_layout->addLayout(top_layout_);
     setLayout(main_layout);

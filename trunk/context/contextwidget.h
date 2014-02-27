@@ -170,7 +170,6 @@ private:
     ThinSplitter *splitter;
     ViewSelector *viewSelector;
     BackdropCreator *creator;
-//    QString backdropText;
     QSet<QString> backdropAlbums;
     #ifndef SCALE_CONTEXT_BGND
     QSize minBackdropSize;

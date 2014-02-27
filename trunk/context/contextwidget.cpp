@@ -85,8 +85,6 @@ static QString cacheFileName(const QString &artist, bool createDir)
     return Utils::cacheDir(ContextWidget::constCacheDir, createDir)+Covers::encodeName(artist)+".jpg";
 }
 
-#define SIMPLE_VSB
-
 class ViewSelectorButton : public QToolButton
 {
 public:
@@ -100,31 +98,9 @@ public:
         bool isOn=opt.state&QStyle::State_On;
         bool isMo=opt.state&QStyle::State_MouseOver;
         if (isOn || isMo) {
-            #ifdef SIMPLE_VSB
             QColor col=palette().highlight().color();
             col.setAlphaF(isMo && !isOn ? 0.15 : 0.35);
             painter.fillRect(rect().adjusted(0, 1, 0, 0), col);
-            #else
-            QStyleOptionViewItemV4 styleOpt;
-            styleOpt.palette=opt.palette;
-            styleOpt.rect=rect().adjusted(0, 1, 0, 0);
-            styleOpt.state=opt.state;
-            styleOpt.state&=~(QStyle::State_Selected|QStyle::State_MouseOver);
-            styleOpt.state|=QStyle::State_Selected|QStyle::State_Enabled;
-            styleOpt.viewItemPosition = QStyleOptionViewItemV4::OnlyOne;
-            styleOpt.showDecorationSelected=true;
-
-            if (GtkStyle::isActive()) {
-                GtkStyle::drawSelection(styleOpt, &painter, isMo && !isOn ? 0.15 : 1.0);
-            } else {
-                if (isMo && !isOn) {
-                    QColor col(styleOpt.palette.highlight().color());
-                    col.setAlphaF(0.15);
-                    styleOpt.palette.setColor(styleOpt.palette.currentColorGroup(), QPalette::Highlight, col);
-                }
-                style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &styleOpt, &painter, 0);
-            }
-            #endif
         }
 
         int alignment = Qt::AlignCenter | Qt::TextShowMnemonic;
@@ -136,14 +112,7 @@ public:
         if (fontMetrics().width(text)>rect().width()) {
             text=fontMetrics().elidedText(text, Qt::RightToLeft==layoutDirection() ? Qt::ElideLeft : Qt::ElideRight, rect().width());
         }
-        #ifdef SIMPLE_VSB
         painter.drawItemText(rect(), alignment, opt.palette, true, text, QPalette::WindowText);
-        #else
-        if (isOn) {
-            opt.state|=QStyle::State_Selected;
-        }
-        painter.drawItemText(rect(), alignment, opt.palette, true, text, isOn ? QPalette::HighlightedText : QPalette::WindowText);
-        #endif
     }
 };
 
@@ -321,7 +290,6 @@ ContextWidget::ContextWidget(QWidget *parent)
     , alwaysCollapsed(false)
     , backdropType(true)
     , darkBackground(false)
-//    , useHtBackdrops(0!=constHtbApiKey.latin1())
     , useFanArt(0!=constFanArtApiKey.latin1())
     , albumCoverBackdrop(false)
     , fadeValue(0)
@@ -424,12 +392,6 @@ void ContextWidget::setWide(bool w)
         } else if (!state.isEmpty()) {
             splitter->restoreState(state);
         }
-//        l->addWidget(album);
-//        l->addWidget(song);
-        //    layout->addItem(new QSpacerItem(m, m, QSizePolicy::Fixed, QSizePolicy::Fixed));
-//        l->setStretch(1, 1);
-//        l->setStretch(2, 1);
-//        l->setStretch(3, 1);
     } else {
         if (layout()) {
             delete layout();
@@ -617,16 +579,6 @@ void ContextWidget::paintEvent(QPaintEvent *e)
             #endif
             p.fillRect(r, QBrush(currentBackdrop));
         }
-//        if (!backdropText.isEmpty() && isWide) {
-//            int pad=fontMetrics().height()*2;
-//            QFont f("Sans", font().pointSize()*12);
-//            f.setBold(true);
-//            p.setFont(f);
-//            p.setOpacity(0.15);
-//            QTextOption textOpt(Qt::AlignBottom|(Qt::RightToLeft==layoutDirection() ? Qt::AlignRight : Qt::AlignLeft));
-//            textOpt.setWrapMode(QTextOption::NoWrap);
-//            p.drawText(QRect(pad, pad, width(), height()-(2*pad)), backdropText, textOpt);
-//        }
     }
     if (!darkBackground) {
         QWidget::paintEvent(e);
@@ -647,7 +599,6 @@ void ContextWidget::setFade(float value)
 void ContextWidget::updateImage(QImage img, bool created)
 {
     DBUG << img.isNull() << currentBackdrop.isNull();
-//    backdropText=currentArtist;
     oldBackdrop=currentBackdrop;
     currentBackdrop=QPixmap();
     animator.stop();

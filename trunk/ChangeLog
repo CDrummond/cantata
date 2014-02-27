@@ -16,7 +16,7 @@
 12. Don't show song details in titlebar - this only duplicates info that is
     already clearly visible in the main window.
 13. After editing files in tag editor, editing in track organizer, adding new
-    files, or removing exisint files, only ask MPD to update folders that have
+    files, or removing existing files, only ask MPD to update folders that have
     changed.
 14. Remove space between toolbar and views, and reduce spacing elsewhere.
 15. Use a 0-pixel splitter between playqueue and views.

@@ -41,6 +41,7 @@
 12. Fix folder-view path parsing. If two folders only differed in the last
     character then Cantata would have placed the contents of the second
     into the listing of the first.
+13. Explicitly link to pthread.
 
 1.3.0.1
 -------

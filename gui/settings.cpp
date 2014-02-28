@@ -627,6 +627,10 @@ QStringList Settings::hiddenPages()
     if (version()<CANTATA_MAKE_VERSION(1, 2, 51) && !config.contains("SearchPage")) {
         config.append("SearchPage");
     }
+    // If splitter auto-hide is enabled, then playqueue cannot be in sidebar!
+    if (splitterAutoHide() && !config.contains("PlayQueuePage")) {
+        config << "PlayQueuePage";
+    }
     return config;
 }
 

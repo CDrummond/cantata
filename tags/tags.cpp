@@ -892,7 +892,7 @@ static void readTags(const TagLib::FileRef fileref, Song *song, ReplayGain *rg, 
     }
 }
 
-static bool writeTags(const TagLib::FileRef fileref, const Song &from, const Song &to, const RgTags &rg, const QByteArray &img)
+static bool writeTags(const TagLib::FileRef fileref, const Song &from, const Song &to, const RgTags &rg, const QByteArray &img, bool saveComment)
 {
     bool changed=false;
     TagLib::Tag *tag=fileref.tag();
@@ -919,6 +919,10 @@ static bool writeTags(const TagLib::FileRef fileref, const Song &from, const Son
         }
         if (from.year!=to.year) {
             tag->setYear(to.year);
+            changed=true;
+        }
+        if (saveComment && from.comment()!=to.comment()) {
+            tag->setComment(qString2TString(to.comment()));
             changed=true;
         }
     }
@@ -1046,9 +1050,16 @@ QString readLyrics(const QString &fileName)
     return lyrics;
 }
 
-static Update update(const TagLib::FileRef fileref, const Song &from, const Song &to, const RgTags &rg, const QByteArray &img, int id3Ver=-1)
+QString readComment(const QString &fileName)
 {
-    if (writeTags(fileref, from, to, rg, img)) {
+    LOCK_MUTEX
+    TagLib::FileRef fileref = getFileRef(fileName);
+    return fileref.isNull() ? QString() : tString2QString(fileref.tag()->comment());
+}
+
+static Update update(const TagLib::FileRef fileref, const Song &from, const Song &to, const RgTags &rg, const QByteArray &img, int id3Ver=-1, bool saveComment=false)
+{
+    if (writeTags(fileref, from, to, rg, img, saveComment)) {
         TagLib::MPEG::File *mpeg=dynamic_cast<TagLib::MPEG::File *>(fileref.file());
         if (mpeg) {
             TagLib::ID3v1::Tag *v1=mpeg->ID3v1Tag(false);
@@ -1095,11 +1106,11 @@ Update updateArtistAndTitle(const QString &fileName, const Song &song)
     return fileref.file()->save() ? Update_Modified : Update_Failed;
 }
 
-Update update(const QString &fileName, const Song &from, const Song &to, int id3Ver)
+Update update(const QString &fileName, const Song &from, const Song &to, int id3Ver, bool saveComment)
 {
     LOCK_MUTEX
     TagLib::FileRef fileref = getFileRef(fileName);
-    return fileref.isNull() ? Update_Failed : update(fileref, from, to, RgTags(), QByteArray(), id3Ver);
+    return fileref.isNull() ? Update_Failed : update(fileref, from, to, RgTags(), QByteArray(), id3Ver, saveComment);
 }
 
 ReplayGain readReplaygain(const QString &fileName)

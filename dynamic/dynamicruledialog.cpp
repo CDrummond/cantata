@@ -42,6 +42,7 @@ DynamicRuleDialog::DynamicRuleDialog(QWidget *parent)
 
     connect(artistText, SIGNAL(textChanged(const QString &)), SLOT(enableOkButton()));
     connect(composerText, SIGNAL(textChanged(const QString &)), SLOT(enableOkButton()));
+    connect(commentText, SIGNAL(textChanged(const QString &)), SLOT(enableOkButton()));
     connect(similarArtistsText, SIGNAL(textChanged(const QString &)), SLOT(enableOkButton()));
     connect(albumArtistText, SIGNAL(textChanged(const QString &)), SLOT(enableOkButton()));
     connect(albumText, SIGNAL(textChanged(const QString &)), SLOT(enableOkButton()));
@@ -85,6 +86,8 @@ DynamicRuleDialog::DynamicRuleDialog(QWidget *parent)
     genreText->clear();
     genreText->insertItems(0, strings);
 
+    commentText->clear();
+
     dateFromSpin->setRange(constMinDate-1, constMaxDate);
     dateToSpin->setRange(constMinDate-1, constMaxDate);
     artistText->setFocus();
@@ -113,6 +116,7 @@ bool DynamicRuleDialog::edit(const Dynamic::Rule &rule, bool isAdd)
     similarArtistsText->setText(rule[Dynamic::constSimilarArtistsKey]);
     albumArtistText->setText(rule[Dynamic::constAlbumArtistKey]);
     composerText->setText(rule[Dynamic::constComposerKey]);
+    commentText->setText(rule[Dynamic::constCommentKey]);
     albumText->setText(rule[Dynamic::constAlbumKey]);
     titleText->setText(rule[Dynamic::constTitleKey]);
     genreText->setText(rule[Dynamic::constGenreKey]);
@@ -162,6 +166,9 @@ Dynamic::Rule DynamicRuleDialog::rule() const
     if (!composer().isEmpty()) {
         r.insert(Dynamic::constComposerKey, composer());
     }
+    if (!comment().isEmpty()) {
+        r.insert(Dynamic::constCommentKey, comment());
+    }
     if (!album().isEmpty()) {
         r.insert(Dynamic::constAlbumKey, album());
     }
@@ -203,7 +210,7 @@ void DynamicRuleDialog::enableOkButton()
     bool haveTo=dateTo>=constMinDate && dateTo<=constMaxDate && dateTo!=dateFrom;
     bool enable=(!haveFrom || !haveTo || (dateTo>=dateFrom && (dateTo-dateFrom)<=constMaxDateRange)) &&
                 (haveFrom || haveTo || !artist().isEmpty() || !similarArtists().isEmpty() || !albumArtist().isEmpty() ||
-                 !composer().isEmpty() || !album().isEmpty() || !title().isEmpty() || !genre().isEmpty());
+                 !composer().isEmpty() || !comment().isEmpty() || !album().isEmpty() || !title().isEmpty() || !genre().isEmpty());
 
     errorLabel->setVisible(false);
     if (!enable && haveFrom && haveTo) {

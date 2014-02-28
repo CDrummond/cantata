@@ -89,10 +89,12 @@ private:
     bool haveArtists;
     bool haveAlbumArtists;
     bool haveComposers;
+    bool haveComments;
     bool haveAlbums;
     bool haveGenres;
     bool saving;
     bool composerSupport;
+    bool commentSupport;
 };
 
 #endif

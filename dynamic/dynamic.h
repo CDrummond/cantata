@@ -87,6 +87,7 @@ public:
     static const QString constSimilarArtistsKey;
     static const QString constAlbumArtistKey;
     static const QString constComposerKey;
+    static const QString constCommentKey;
     static const QString constAlbumKey;
     static const QString constTitleKey;
     static const QString constGenreKey;

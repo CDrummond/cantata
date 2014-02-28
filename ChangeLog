@@ -44,6 +44,8 @@
     character then Cantata would have placed the contents of the second
     into the listing of the first.
 13. Explicitly link to pthread.
+14. Do not allow 'auto-hide sidebar' and 'playqueue in sidebar' to be active at
+    the same time.
 
 1.3.0.1
 -------

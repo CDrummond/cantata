@@ -500,6 +500,12 @@ void InterfaceSettings::langChanged()
 
 void InterfaceSettings::viewItemChanged(QListWidgetItem *changedItem)
 {
+    // If this is the playqueue that has been toggled, then control auto-hide
+    // i.e. can't auto-hide if playqueue is in sidebar
+    if (Qt::Checked==changedItem->checkState() && changedItem==views->item(0)) {
+        sbAutoHide->setChecked(false);
+    }
+
     // Ensure we have at least 1 view checked...
     for (int i=0; i<views->count(); ++i) {
         QListWidgetItem *v=views->item(i);
@@ -509,12 +515,6 @@ void InterfaceSettings::viewItemChanged(QListWidgetItem *changedItem)
     }
 
     views->item(1)->setCheckState(Qt::Checked);
-
-    // If this is the playqueue that has been toggled, then control auto-hide
-    // i.e. can't auto-hide if playqueue is in sidebar
-    if (Qt::Checked==changedItem->checkState() && changedItem==views->item(0)) {
-        sbAutoHide->setChecked(false);
-    }
 }
 
 void InterfaceSettings::sbAutoHideChanged()

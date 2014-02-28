@@ -186,6 +186,9 @@
          <property name="text" stdset="0">
           <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; Connected to a Mopidy server (manual update required).&lt;/i&gt;</string>
          </property>
+         <property name="textInteractionFlags">
+          <set>Qt::NoTextInteraction</set>
+         </property>
         </widget>
        </item>
       </layout>

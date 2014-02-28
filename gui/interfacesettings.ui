@@ -73,6 +73,9 @@
             <property name="wordWrap">
              <bool>true</bool>
             </property>
+            <property name="textInteractionFlags">
+             <set>Qt::NoTextInteraction</set>
+            </property>
            </widget>
           </item>
           <item>
@@ -101,6 +104,9 @@
             </property>
             <property name="wordWrap">
              <bool>true</bool>
+            </property>
+            <property name="textInteractionFlags">
+             <set>Qt::NoTextInteraction</set>
             </property>
            </widget>
           </item>
@@ -253,6 +259,9 @@ within the folder of the current track, or within its parent folder. If no image
          </property>
          <property name="wordWrap">
           <bool>true</bool>
+         </property>
+         <property name="textInteractionFlags">
+          <set>Qt::NoTextInteraction</set>
          </property>
         </widget>
        </item>
@@ -812,6 +821,9 @@ within the folder of the current track, or within its parent folder. If no image
          <property name="wordWrap">
           <bool>true</bool>
          </property>
+         <property name="textInteractionFlags">
+          <set>Qt::NoTextInteraction</set>
+         </property>
         </widget>
        </item>
        <item>
@@ -840,6 +852,9 @@ within the folder of the current track, or within its parent folder. If no image
          </property>
          <property name="wordWrap">
           <bool>true</bool>
+         </property>
+         <property name="textInteractionFlags">
+          <set>Qt::NoTextInteraction</set>
          </property>
         </widget>
        </item>

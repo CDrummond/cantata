@@ -46,7 +46,7 @@ public:
 
 SearchPage::SearchPage(QWidget *p)
     : QWidget(p)
-    , state(Initial)
+    , state(0)
     , model(this)
     , proxy(this)
 {
@@ -211,26 +211,30 @@ void SearchPage::controlActions()
 
 void SearchPage::setSearchCategories()
 {
-    bool composerSupported=MPDConnection::self()->composerTagSupported();
+    int newState=(MPDConnection::self()->composerTagSupported() ? State_ComposerSupported : 0)|
+                 (MPDConnection::self()->commentTagSupported() ? State_CommmentSupported : 0);
 
-    if ( (composerSupported && ComposerSupported==state) || (!composerSupported && ComposerNotSupported==state)) {
+    if (state==newState) {
         // No changes to be made!
         return;
     }
 
-    state=composerSupported ? ComposerSupported : ComposerNotSupported;
+    state=newState;
     QList<QPair<QString, QString> > categories;
 
     categories << QPair<QString, QString>(i18n("Artist:"), QLatin1String("artist"));
 
-    if (composerSupported) {
+    if (state&State_ComposerSupported) {
         categories << QPair<QString, QString>(i18n("Composer:"), QLatin1String("composer"));
     }
 
     categories << QPair<QString, QString>(i18n("Album:"), QLatin1String("album"))
                << QPair<QString, QString>(i18n("Title:"), QLatin1String("title"))
-               << QPair<QString, QString>(i18n("Genre:"), QLatin1String("genre"))
-               << QPair<QString, QString>(i18n("Date:"), QLatin1String("date"))
+               << QPair<QString, QString>(i18n("Genre:"), QLatin1String("genre"));
+    if (state&State_CommmentSupported) {
+        categories << QPair<QString, QString>(i18n("Comment:"), QLatin1String("comment"));
+    }
+    categories << QPair<QString, QString>(i18n("Date:"), QLatin1String("date"))
                << QPair<QString, QString>(i18n("File:"), QLatin1String("file"))
                << QPair<QString, QString>(i18n("Any:"), QLatin1String("any"));
     view->setSearchCategories(categories);

@@ -22,6 +22,8 @@
 15. Use a 0-pixel splitter between playqueue and views.
 16. Set 'no interaction' flag on more lables, so that Oxygen's window drag core
     works on these.
+17. Add support for comments. These are read directly from the song file when
+    the tag-editor is used, and they are NOT saved in Cantata's cache file.
 
 1.3.1
 -----

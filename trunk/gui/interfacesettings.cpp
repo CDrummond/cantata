@@ -103,7 +103,7 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     searchView->addItem(i18n("List"), ItemView::Mode_List);
     searchView->addItem(i18n("Table"), ItemView::Mode_Table);
 
-    addView(i18n("Play queue"), QLatin1String("PlayQueuePage"));
+    addView(i18n("Play Queue"), QLatin1String("PlayQueuePage"));
     addView(i18n("Artists"), QLatin1String("LibraryPage"));
     addView(i18n("Albums"), QLatin1String("AlbumsPage"));
     addView(i18n("Folders"), QLatin1String("FolderPage"));

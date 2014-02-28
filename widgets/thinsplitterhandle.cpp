@@ -23,11 +23,12 @@
  
 #include "thinsplitterhandle.h"
 #include "utils.h"
+#include <QResizeEvent>
 
 ThinSplitterHandle::ThinSplitterHandle(Qt::Orientation orientation, QSplitter *parent)
     : QSplitterHandle(orientation, parent)
 {
-    size=Utils::isHighDpi() ? 8 : 4;
+    sz=Utils::isHighDpi() ? 8 : 4;
     updateMask();
     setAttribute(Qt::WA_MouseNoMask, true);
 }
@@ -35,18 +36,18 @@ ThinSplitterHandle::ThinSplitterHandle(Qt::Orientation orientation, QSplitter *p
 void ThinSplitterHandle::resizeEvent(QResizeEvent *event)
 {
     updateMask();
-    QSplitterHandle::resizeEvent(event);
+    if (event->size()!=size()) {
+        QSplitterHandle::resizeEvent(event);
+    }
 }
 
 void ThinSplitterHandle::updateMask()
 {
     if (Qt::Horizontal==orientation()) {
-        setContentsMargins(size, 0, size, 0);
-        setMask(QRegion(contentsRect().adjusted(-size, 0, size, 0)));
+        setContentsMargins(sz, 0, sz, 0);
+        setMask(QRegion(contentsRect().adjusted(-sz, 0, sz, 0)));
     } else {
-        setContentsMargins(0, size, 0, size);
-        setMask(QRegion(contentsRect().adjusted(0, -size, 0, size)));
+        setContentsMargins(0, sz, 0, sz);
+        setMask(QRegion(contentsRect().adjusted(0, -sz, 0, sz)));
     }
 }
-
-

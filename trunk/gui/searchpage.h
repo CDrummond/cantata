@@ -68,12 +68,11 @@ public Q_SLOTS:
 private:
     enum State
     {
-        Initial,
-        ComposerSupported,
-        ComposerNotSupported
+        State_ComposerSupported=0x01,
+        State_CommmentSupported=0x02
     };
 
-    State state;
+    int state;
     SearchModel model;
     SearchProxyModel proxy;
 };

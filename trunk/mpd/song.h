@@ -145,6 +145,10 @@ struct Song
     // purposes. This is to kee the overall size of Song lower, as its used all over the place...
     //
 
+    // TagEditor...
+    const QString comment() const { return name; }
+    void setComment(const QString &v) { name=v; }
+
     // podcast functions...
     bool hasBeenPlayed() const { return 0!=id; }
     void setPlayed(bool p) { id=p ? 1 : 0; }

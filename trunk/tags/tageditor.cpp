@@ -48,17 +48,23 @@
     w->deleteLater(); \
     w=0;
 
-static bool equalTags(const Song &a, const Song &b, bool compareCommon, bool composerSupport)
+//
+// NOTE: Cantata does NOT read, and store, comments from MPD. For comment support, Cantata will read these from the files when the tag editor is opened
+//       These are placed into the Song's 'name' field (as this is not currently used in this editor)
+//
+static bool equalTags(const Song &a, const Song &b, bool compareCommon, bool composerSupport, bool commentSupport)
 {
     return (compareCommon || a.track==b.track) && a.year==b.year && a.disc==b.disc &&
            a.artist==b.artist && a.genre==b.genre && a.album==b.album &&
-           a.albumartist==b.albumartist && (!composerSupport || a.composer==b.composer) && (compareCommon || a.title==b.title);
+           a.albumartist==b.albumartist && (!composerSupport || a.composer==b.composer) && (!commentSupport || a.comment()==b.comment()) && (compareCommon || a.title==b.title);
 }
 
-static void setString(QString &str, const QString &v, bool skipEmpty) {
+static bool setString(QString &str, const QString &v, bool skipEmpty) {
     if (!skipEmpty || !v.isEmpty()) {
         str=v;
+        return true;
     }
+    return false;
 }
 
 static int iCount=0;
@@ -80,35 +86,20 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
     , haveArtists(false)
     , haveAlbumArtists(false)
     , haveComposers(false)
+    , haveComments(false)
     , haveAlbums(false)
     , haveGenres(false)
     , saving(false)
-    , composerSupport(true)
+    , composerSupport(false)
+    , commentSupport(false)
 {
     iCount++;
-    foreach (const Song &s, songs) {
-        if (CueFile::isCue(s.file)) {
-            continue;
-        }
-        if (s.guessed) {
-            Song song(s);
-            song.revertGuessedTags();
-            original.append(song);
-        } else {
-            original.append(s);
-        }
-    }
-
-    if (original.isEmpty()) {
-        deleteLater();
-        return;
-    }
-
     bool isMopidy=false;
     #ifdef ENABLE_DEVICES_SUPPORT
     if (deviceUdi.isEmpty()) {
         baseDir=MPDConnection::self()->getDetails().dir;
         composerSupport=MPDConnection::self()->composerTagSupported();
+        commentSupport=MPDConnection::self()->commentTagSupported();
         isMopidy=MPDConnection::self()->isMopdidy();
     } else {
         Device *dev=getDevice(udi, parentWidget());
@@ -123,8 +114,29 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
     #else
     baseDir=MPDConnection::self()->getDetails().dir;
     composerSupport=MPDConnection::self()->composerTagSupported();
+    commentSupport=MPDConnection::self()->commentTagSupported();
     isMopidy=MPDConnection::self()->isMopdidy();
     #endif
+
+    foreach (const Song &s, songs) {
+        if (CueFile::isCue(s.file)) {
+            continue;
+        }
+        Song song(s);
+        if (s.guessed) {
+            song.revertGuessedTags();
+        }
+        song.setComment(commentSupport ? Tags::readComment(baseDir+s.file) : QString());
+        if (commentSupport && !haveComments && !song.comment().isEmpty()) {
+            haveComments=true;
+        }
+        original.append(song);
+    }
+
+    if (original.isEmpty()) {
+        deleteLater();
+        return;
+    }
     qSort(original);
 
     if (!songsOk(original, baseDir, udi.isEmpty())) {
@@ -186,6 +198,14 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
         REMOVE(composerLabel)
     }
 
+    if (commentSupport) {
+        comment->clear();
+        composer->insertItems(0, strings);
+    } else {
+        REMOVE(comment)
+        REMOVE(commentLabel)
+    }
+
     strings=existingAlbums.toList();
     strings.sort();
     album->clear();
@@ -206,6 +226,7 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
         QSet<QString> songAlbums;
         QSet<QString> songGenres;
         QSet<QString> songComposers;
+        QSet<QString> songComments;
         QSet<int> songYears;
         QSet<int> songDiscs;
 
@@ -222,13 +243,17 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
             if (!s.genre.isEmpty()) {
                 songGenres.insert(s.genre);
             }
-            if (!s.composer.isEmpty()) {
+            if (composerSupport && !s.composer.isEmpty()) {
                 songComposers.insert(s.composer);
+            }
+            if (commentSupport && !s.comment().isEmpty()) {
+                songComments.insert(s.comment());
             }
             songYears.insert(s.year);
             songDiscs.insert(s.disc);
             if (songArtists.count()>1 && songAlbumArtists.count()>1 && songAlbums.count()>1 &&
-                songGenres.count()>1 && songYears.count()>1 && songDiscs.count()>1 && songComposers.count()>=1) {
+                songGenres.count()>1 && songYears.count()>1 && songDiscs.count()>1 &&
+                (!composerSupport || songComposers.count()>=1) && (!commentSupport || songComments.count()>=1)) {
                 break;
             }
         }
@@ -238,6 +263,7 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
         all.track=0;
         all.artist=1==songArtists.count() ? *(songArtists.begin()) : QString();
         all.composer=1==songComposers.count() ? *(songComposers.begin()) : QString();
+        all.setComment(1==songComments.count() ? *(songComments.begin()) : QString());
         all.albumartist=1==songAlbumArtists.count() ? *(songAlbumArtists.begin()) : QString();
         all.album=1==songAlbums.count() ? *(songAlbums.begin()) : QString();
         all.genre=1==songGenres.count() ? *(songGenres.begin()) : QString();
@@ -272,6 +298,9 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
     if (composerSupport) {
         connect(composer, SIGNAL(activated(int)), SLOT(checkChanged()));
         connect(composer, SIGNAL(editTextChanged(const QString &)), SLOT(checkChanged()));
+    }
+    if (commentSupport) {
+        connect(comment, SIGNAL(textChanged(const QString &)), SLOT(checkChanged()));
     }
     connect(album, SIGNAL(activated(int)), SLOT(checkChanged()));
     connect(album, SIGNAL(editTextChanged(const QString &)), SLOT(checkChanged()));
@@ -309,7 +338,12 @@ void TagEditor::fillSong(Song &s, bool isAll, bool skipEmpty) const
     if (composerSupport) {
         setString(s.composer, composer->text().trimmed(), skipEmpty && (!haveAll || all.composer.isEmpty()));
     }
-
+    if (commentSupport) {
+        QString str;
+        if (setString(str, comment->text().trimmed(), skipEmpty && (!haveAll || all.composer.isEmpty()))) {
+            s.setComment(str);
+        }
+    }
     if (!isAll) {
         s.track=track->value();
     }
@@ -329,6 +363,9 @@ void TagEditor::setPlaceholderTexts()
         albumArtist->setPlaceholderText(all.albumartist.isEmpty() && haveAlbumArtists ? various : QString());
         if (composerSupport) {
             composer->setPlaceholderText(all.composer.isEmpty() && haveComposers ? various : QString());
+        }
+        if (commentSupport) {
+            comment->setPlaceholderText(all.comment().isEmpty() && haveComments ? various : QString());
         }
         genre->setPlaceholderText(all.genre.isEmpty() && haveGenres ? various : QString());
     }
@@ -352,6 +389,9 @@ void TagEditor::setLabelStates()
     artistLabel->setOn(o.artist!=e.artist);
     if (composerSupport) {
         composerLabel->setOn(o.composer!=e.composer);
+    }
+    if (commentSupport) {
+        commentLabel->setOn(o.comment()!=e.comment());
     }
     albumArtistLabel->setOn(o.albumartist!=e.albumartist);
     albumLabel->setOn(o.album!=e.album);
@@ -600,7 +640,7 @@ void TagEditor::updateEditedStatus(int index)
 {
     bool isAll=0==index && original.count()>1;
     Song s=edited.at(index);
-    if (equalTags(s, original.at(index), isAll, composerSupport)) {
+    if (equalTags(s, original.at(index), isAll, composerSupport, commentSupport)) {
         if (editedIndexes.contains(index)) {
             editedIndexes.remove(index);
             updateTrackName(index, false);
@@ -633,6 +673,9 @@ void TagEditor::updateEdited(bool isFromAll)
         if (composerSupport && all.composer.isEmpty() && s.composer.isEmpty() && !o.composer.isEmpty()) {
             s.composer=o.composer;
         }
+        if (commentSupport && all.comment().isEmpty() && s.comment().isEmpty() && !o.comment().isEmpty()) {
+            s.setComment(o.comment());
+        }
         if (all.album.isEmpty() && s.album.isEmpty() && !o.album.isEmpty()) {
             s.album=o.album;
         }
@@ -641,7 +684,7 @@ void TagEditor::updateEdited(bool isFromAll)
         }
     }
 
-    if (equalTags(s, original.at(currentSongIndex), isFromAll || isAll, composerSupport)) {
+    if (equalTags(s, original.at(currentSongIndex), isFromAll || isAll, composerSupport, commentSupport)) {
         if (editedIndexes.contains(currentSongIndex)) {
             editedIndexes.remove(currentSongIndex);
             updateTrackName(currentSongIndex, false);
@@ -663,6 +706,9 @@ void TagEditor::setSong(const Song &s)
     albumArtist->setText(s.albumartist);
     if (composerSupport) {
         composer->setText(s.composer);
+    }
+    if (commentSupport) {
+        comment->setText(s.comment());
     }
     album->setText(s.album);
     track->setValue(s.track);
@@ -765,12 +811,12 @@ bool TagEditor::applyUpdates()
         }
         Song orig=original.at(idx);
         Song edit=edited.at(idx);
-        if (equalTags(orig, edit, false, composerSupport)) {
+        if (equalTags(orig, edit, false, composerSupport, commentSupport)) {
             continue;
         }
 
         QString file=orig.filePath();
-        switch(Tags::update(baseDir+file, orig, edit)) {
+        switch(Tags::update(baseDir+file, orig, edit, -1, commentSupport)) {
         case Tags::Update_Modified:
             #ifdef ENABLE_DEVICES_SUPPORT
             if (!deviceUdi.isEmpty()) {

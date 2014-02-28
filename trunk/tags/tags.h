@@ -80,8 +80,9 @@ namespace Tags
     extern Song read(const QString &fileName);
     extern QImage readImage(const QString &fileName);
     extern QString readLyrics(const QString &fileName);
+    extern QString readComment(const QString &fileName);
     extern Update updateArtistAndTitle(const QString &fileName, const Song &song);
-    extern Update update(const QString &fileName, const Song &from, const Song &to, int id3Ver=-1);
+    extern Update update(const QString &fileName, const Song &from, const Song &to, int id3Ver=-1, bool saveComment=false);
     extern ReplayGain readReplaygain(const QString &fileName);
     extern Update updateReplaygain(const QString &fileName, const ReplayGain &rg);
     extern Update embedImage(const QString &fileName, const QByteArray &cover);

@@ -143,6 +143,7 @@ const QString Dynamic::constArtistKey=QLatin1String("Artist");
 const QString Dynamic::constSimilarArtistsKey=QLatin1String("SimilarArtists");
 const QString Dynamic::constAlbumArtistKey=QLatin1String("AlbumArtist");
 const QString Dynamic::constComposerKey=QLatin1String("Composer");
+const QString Dynamic::constCommentKey=QLatin1String("Comment");
 const QString Dynamic::constAlbumKey=QLatin1String("Album");
 const QString Dynamic::constTitleKey=QLatin1String("Title");
 const QString Dynamic::constGenreKey=QLatin1String("Genre");

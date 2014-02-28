@@ -89,5 +89,8 @@ if (FFMPEG_FOUND OR MPG123_FOUND)
         target_link_libraries(cantata-replaygain ${SPEEXDSP_LIBRARIES})
     endif (SPEEXDSP_FOUND)
     target_link_libraries(cantata-replaygain ${QTCORELIBS})
+    if (UNIX AND NOT APPLE)
+        target_link_libraries(cantata-replaygain -lpthread)
+    endif (UNIX AND NOT APPLE)
 endif (FFMPEG_FOUND OR MPG123_FOUND)
 

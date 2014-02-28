@@ -659,6 +659,7 @@ add_definitions(-DQT_NO_DEBUG_OUTPUT)
 
 if (UNIX AND NOT APPLE)
     install(FILES cantata.desktop DESTINATION ${XDG_APPS_INSTALL_DIR})
+    target_link_libraries(cantata -lpthread)
 endif (UNIX AND NOT APPLE)
 
 configure_file(config.h.cmake ${CMAKE_BINARY_DIR}/config.h)

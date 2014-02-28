@@ -40,7 +40,7 @@ private:
     void updateMask();
 
 private:
-    int size;
+    int sz;
 };
 
 #endif

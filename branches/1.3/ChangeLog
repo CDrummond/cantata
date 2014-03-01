@@ -2,6 +2,10 @@
 -----
 1. In cover/artist dialog, when attempting to save an image into Cantata's
    cache folder - ensure the 'covers' sub-folder is created.
+2. When saving artist image from cover dialog, if set to save in MPD folder and
+   song's path does not have 2 folder elements then save in cache folder.
+   Cantata will only save artist images, and backdrops, in MPD folder if the
+   folder structure is (e.g.) Artist/Album/Track.mp3
 
 1.3.1
 -----

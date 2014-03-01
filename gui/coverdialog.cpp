@@ -1360,12 +1360,10 @@ bool CoverDialog::saveCover(const QString &src, const QImage &img)
     }
 
     if (isArtist) {
-        if (saveInMpd) {
-            if (!mpdDir.isEmpty() && dirName.startsWith(mpdDir) && 2==dirName.mid(mpdDir.length()).split('/', QString::SkipEmptyParts).count()) {
-                QDir d(dirName);
-                d.cdUp();
-                destName=d.absolutePath()+'/'+Covers::artistFileName(song)+src.mid(src.length()-4);
-            }
+        if (saveInMpd && !mpdDir.isEmpty() && dirName.startsWith(mpdDir) && 2==dirName.mid(mpdDir.length()).split('/', QString::SkipEmptyParts).count()) {
+            QDir d(dirName);
+            d.cdUp();
+            destName=d.absolutePath()+'/'+Covers::artistFileName(song)+src.mid(src.length()-4);
         } else {
             destName=Utils::cacheDir(Covers::constCoverDir, true)+Covers::encodeName(song.albumartist)+src.mid(src.length()-4);
         }

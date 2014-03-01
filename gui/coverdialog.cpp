@@ -1367,7 +1367,7 @@ bool CoverDialog::saveCover(const QString &src, const QImage &img)
                 destName=d.absolutePath()+'/'+Covers::artistFileName(song)+src.mid(src.length()-4);
             }
         } else {
-            destName=Utils::cacheDir(Covers::constCoverDir)+Covers::encodeName(song.albumartist)+src.mid(src.length()-4);
+            destName=Utils::cacheDir(Covers::constCoverDir, true)+Covers::encodeName(song.albumartist)+src.mid(src.length()-4);
         }
     } else {
         if (saveInMpd) {

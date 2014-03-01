@@ -1,0 +1,10 @@
+[Desktop Entry]
+X-KDE-Solid-Predicate=OpticalDisc.availableContent & 'Audio'
+Type=Service
+Actions=Play;
+X-KDE-Priority=TopLevel
+
+[Desktop Action Play]
+Name=Play Audio CD with Cantata
+Icon=cantata
+Exec=cantata cdda://?dev=%d

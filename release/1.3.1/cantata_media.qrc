@@ -1,0 +1,20 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource>
+<file alias="media-next-dark">icons/media-next-dark.svg</file>
+<file alias="media-next-rtl-dark">icons/media-next-rtl-dark.svg</file>
+<file alias="media-pause-dark">icons/media-pause-dark.svg</file>
+<file alias="media-play-dark">icons/media-play-dark.svg</file>
+<file alias="media-play-rtl-dark">icons/media-play-rtl-dark.svg</file>
+<file alias="media-prev-dark">icons/media-prev-dark.svg</file>
+<file alias="media-prev-rtl-dark">icons/media-prev-rtl-dark.svg</file>
+<file alias="media-stop-dark">icons/media-stop-dark.svg</file>
+<file alias="media-next-light">icons/media-next-light.svg</file>
+<file alias="media-next-rtl-light">icons/media-next-rtl-light.svg</file>
+<file alias="media-pause-light">icons/media-pause-light.svg</file>
+<file alias="media-play-light">icons/media-play-light.svg</file>
+<file alias="media-play-rtl-light">icons/media-play-rtl-light.svg</file>
+<file alias="media-prev-light">icons/media-prev-light.svg</file>
+<file alias="media-prev-rtl-light">icons/media-prev-rtl-light.svg</file>
+<file alias="media-stop-light">icons/media-stop-light.svg</file>
+</qresource>
+</RCC>

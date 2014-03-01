@@ -1,0 +1,90 @@
+- Qt5 port
+  - After KDE Frameworks 5 is released, add CMake option to use system Solid
+    libraries.
+
+- Windows port
+  - CMake scripts not working
+  - Build QtNetwork with SSL support? libeay32.dll and libssl32.dll will also
+    need to be supplied with installer.
+  - Port to Qt5. With Qt5.2 use QWinThumbnailToolButton 
+
+- MacOS port
+  - Initial work imported into 1.2.0, however no builds were ever released. No
+    idea if this still compiles or not!
+ 
+- Streams
+  - If radio stream is a playlist, Cantata currently only uses the 1st entry.
+    Perhaps Cantata should loop over all entries until we find one that plays?
+  - last.fm streams?
+  - Move service json/xml response parsing into perl helper scripts?
+
+- Online services
+  - GPodder support?
+  - DAAP servers?
+  - Subsonic server? Mopidy can be used to access SubSonic.
+
+- Devices
+  - libMTP does not support album artist tag. Cantata contains some
+    work-arounds for this (such as guessing the album-artist tag via the folder
+    structure, etc). These should be removed if libMTP ever supports album
+    artist.
+  - Port to MTP DBus service when this is released.
+  - RemoteFsDevices
+    - Cantata hangs if smb service is stopped before its un-mounted
+  - Re-enable covers in sync dialog?
+  - CD-Text?
+  - Fix time-remaining calculation in action dialog.
+  - Seek support for AudioCDs. Initial implementation works sometimes, but
+    other times the song is re-started. Not in build due to being too flaky.
+  - Possible issues with UDisks2, might not be able to get block device
+    (e.g. /dev/sr0)?
+  - Playback from MTP devices.
+
+- Mopdiy
+  - Currently does not send valid DB date time (always 0). Users will need to
+    force Cantata to update.
+  - Does not support 'update' command
+  - If the response of a stats call is all 0, then we assume the connection is
+    to a Mopdiy server. Therefore, when adding files (from devices) these are
+    encoded.
+
+- Lyrics
+  - Add support for reading via tags in mp4, flac, and ogg files.
+
+- PlayQueue
+  - Move code out of MainWindow class.
+  - Add copy to device to context menu?
+    - Will need to be careful that songs are not from device
+    - Also, check that songs are not streams!
+  - When adding songs to playqueue, if a filter is active (genre, or text) then
+    we should only add songs that pass the filter
+    - Affects; Artists, Albums, Folders (text only), Playlists, Online, Devices,
+      Streams (text only)
+    - Would need to put the device/artist/album expansion code within proxy
+      models
+      - then we call filenames()/songs() on the proxy.
+    - NOT 100% sure. - as the items show #tracks, etc. If we are only going to
+      add so many tracks then this would also need to be updated. (As well as
+      tooltips). Again, this would need to be in the proxy model.
+
+- Cue files
+  - How to (reliably) determine duration of last track?
+
+- MPD Stream playback
+  - Playback functionality needs to handle URL change when connection changes.
+
+- General
+  - Ratings (use KRatingWidget?)
+    - Not sure, would need support in cantata-dynamic
+  - mpdscribble management
+  - mixramp tag calculation
+  - mixramp MPD settings
+    - Does MPD need to be restarted to change settings?
+  - Create a base 'Page' class?
+  - Reduce memory usage - use QCache for artists and albums models?
+
+- Bugs
+  - Jamendo search sometimes causes crash (not seen for a while)
+  - Handle font (High DPI detection) and palette changes in custom widgets
+    (Volume control, time slider, etc)
+

@@ -8,9 +8,9 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-02-02 20:02+0000\n"
-"PO-Revision-Date: 2014-02-24 04:52+0100\n"
+"PO-Revision-Date: 2014-03-02 02:35+0100\n"
 "Last-Translator: Markus Slopianka <kamikazow@web.de>\n"
-"Language-Team: German <kde-i18n-doc@kde.org>\n"
+"Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1659,7 +1659,7 @@ msgstr ""
 
 #: dynamic/dynamicrulesdialog.cpp:68
 msgid "SimilarArtists"
-msgstr "Ähnliche Künstler:"
+msgstr "Ähnliche Künstler"
 
 #: dynamic/dynamicrulesdialog.cpp:70
 msgid "AlbumArtist"
@@ -2061,9 +2061,8 @@ msgid "Table"
 msgstr "Tabelle"
 
 #: gui/interfacesettings.cpp:104
-#, fuzzy
 msgid "Play queue"
-msgstr "Spiele Warteschlange ab"
+msgstr "Warteschlange"
 
 #. i18n: file: gui/interfacesettings.ui:182
 #. i18n: ectx: attribute (title), widget (QWidget, tab)
@@ -2367,7 +2366,7 @@ msgstr "Bearbeite Tags"
 #. i18n: ectx: attribute (title), widget (QWidget, tab_5)
 #: gui/mainwindow.cpp:306 po/rc.cpp:633 rc.cpp:633
 msgid "Play Queue"
-msgstr "Spiele Warteschlange ab"
+msgstr "Warteschlange"
 
 #: gui/mainwindow.cpp:312
 msgid "Dynamic"

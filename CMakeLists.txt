@@ -580,6 +580,12 @@ else (ENABLE_KDE)
     endif (NOT ENABLE_QT5 AND NOT APPLE AND NOT WIN32)
 endif (ENABLE_KDE)
 
+if (WIN32)
+    install(FILES context/ultimate_providers.xml DESTINATION ${CMAKE_INSTALL_PREFIX}/lyrics/)
+else (WIN32)
+    install(FILES context/ultimate_providers.xml DESTINATION ${CMAKE_INSTALL_PREFIX}/share/${CMAKE_PROJECT_NAME}/lyrics/)
+endif (WIN32)
+
 if (ENABLE_HTTP_STREAM_PLAYBACK AND NOT ENABLE_QT5)
     target_link_libraries(cantata ${PHONON_LIBS})
     include_directories(${PHONON_INCLUDES})

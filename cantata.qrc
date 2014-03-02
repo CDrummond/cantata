@@ -1,6 +1,5 @@
 <!DOCTYPE RCC><RCC version="1.0">
 <qresource>
-<file alias="lyrics.xml">context/ultimate_providers.xml</file>
 <file alias="weblinks.xml">context/weblinks.xml</file>
 <file alias="listenlive.xml">streams/listenlive.xml</file>
 

@@ -24,6 +24,9 @@
     works on these.
 17. Add support for comments. These are read directly from the song file when
     the tag-editor is used, and they are NOT saved in Cantata's cache file.
+18. Install Cantata's list of lyrics providers to INSTALL/share/cantata/lyrics
+19. Read lyrics providers from each .xml file in ~/.local/share/cantata/lyrics,
+    and INSTALL/share/cantata/lyrics
 
 1.3.2
 -----

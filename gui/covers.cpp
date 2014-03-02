@@ -755,7 +755,7 @@ QString CoverDownloader::saveImg(const Job &job, const QImage &img, const QByteA
             }
         }
 
-        QString dir = Utils::cacheDir(Covers::constCoverDir);
+        QString dir = Utils::cacheDir(Covers::constCoverDir, true);
         if (!dir.isEmpty()) {
             savedName=save(mimeType, extension, dir+Covers::encodeName(job.song.basicArtist()), img, raw);
             if (!savedName.isEmpty()) {
@@ -775,7 +775,7 @@ QString CoverDownloader::saveImg(const Job &job, const QImage &img, const QByteA
         }
 
         // Could not save with album, save in cache dir...
-        QString dir = Utils::cacheDir(Covers::constCoverDir+Covers::encodeName(job.song.albumArtist()));
+        QString dir = Utils::cacheDir(Covers::constCoverDir+Covers::encodeName(job.song.albumArtist()), true);
         if (!dir.isEmpty()) {
             savedName=save(mimeType, extension, dir+Covers::encodeName(job.song.album), img, raw);
             if (!savedName.isEmpty()) {

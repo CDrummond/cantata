@@ -570,6 +570,12 @@ static inline void addFile(DirViewItem *item, QStringList &insertInto, QStringLi
     }
 }
 
+
+static bool lessThan(const QString &left, const QString &right)
+{
+    return left.compare(right, Qt::CaseInsensitive) < 0;
+}
+
 void DirViewModel::getFiles(DirViewItem *item, QStringList &filenames, bool allowPlaylists) const
 {
     if (!item) {
@@ -591,7 +597,7 @@ void DirViewModel::getFiles(DirViewItem *item, QStringList &filenames, bool allo
                 }
             }
 
-            qSort(dirFiles);
+            qSort(dirFiles.begin(), dirFiles.end(), lessThan);
             filenames+=dirFiles;
         }
         default:

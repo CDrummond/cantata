@@ -531,7 +531,7 @@ bool Song::capitalise()
 
 QString Song::basicArtist() const
 {
-    if (!albumartist.isEmpty() && !artist.isEmpty() && albumartist.length()<artist.length() && artist.startsWith(albumartist)) {
+    if (!albumartist.isEmpty() && (artist.isEmpty() || (albumartist.length()<artist.length() && artist.startsWith(albumartist)))) {
         return albumartist;
     }
 

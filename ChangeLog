@@ -37,6 +37,8 @@
    Cantata will only save artist images, and backdrops, in MPD folder if the
    folder structure is (e.g.) Artist/Album/Track.mp3
 3. Use case-insensitive sort of folder view items when adding to playqueue.
+4. When determining the 'basic' artist of a track, if albumartist is set and
+   artist is not, then use albumartist.
 
 1.3.1
 -----

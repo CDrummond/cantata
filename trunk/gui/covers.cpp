@@ -473,8 +473,8 @@ const QStringList & Covers::standardNames()
 }
 
 CoverDownloader::CoverDownloader()
+    : manager(0)
 {
-    manager=new NetworkAccessManager(this);
     thread=new Thread(metaObject()->className());
     moveToThread(thread);
     thread->start();
@@ -541,7 +541,7 @@ bool CoverDownloader::downloadViaHttp(Job &job, JobType type)
     #endif
 
     job.type=type;
-    NetworkJob *j=manager->get(u);
+    NetworkJob *j=network()->get(u);
     connect(j, SIGNAL(finished()), this, SLOT(jobFinished()));
     jobs.insert(j, job);
     DBUG << u.toString();
@@ -568,7 +568,7 @@ void CoverDownloader::downloadViaLastFm(Job &job)
     url.setQuery(query);
     #endif
 
-    NetworkJob *j = manager->get(url);
+    NetworkJob *j = network()->get(url);
     connect(j, SIGNAL(finished()), this, SLOT(lastFmCallFinished()));
     job.type=JobLastFm;
     jobs.insert(j, job);
@@ -632,7 +632,7 @@ void CoverDownloader::lastFmCallFinished()
             #else
             u=QUrl(url);
             #endif
-            NetworkJob *j=manager->get(QNetworkRequest(u));
+            NetworkJob *j=network()->get(QNetworkRequest(u));
             connect(j, SIGNAL(finished()), this, SLOT(jobFinished()));
             DBUG << "download" << u.toString();
             jobs.insert(j, job);
@@ -800,6 +800,14 @@ QHash<NetworkJob *, CoverDownloader::Job>::Iterator CoverDownloader::findJob(con
     }
 
     return end;
+}
+
+NetworkAccessManager * CoverDownloader::network()
+{
+    if (!manager) {
+        manager=new NetworkAccessManager(this);
+    }
+    return manager;
 }
 
 CoverLocator::CoverLocator()

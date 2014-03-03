@@ -956,6 +956,24 @@ bool Settings::alwaysUseLsInfo()
     return GET_BOOL("alwaysUseLsInfo", false);
 }
 
+bool Settings::showMenubar()
+{
+    return GET_BOOL("showMenubar", false);
+}
+
+int Settings::menu()
+{
+    #if defined Q_OS_WIN
+    int def=MC_Button;
+    #elif defined Q_OS_MAC
+    int def=MC_Bar;
+    #else
+    int def=Utils::Gnome==Utils::currentDe() ? MC_Button : Utils::Unity==Utils::currentDe() ? MC_Bar : (MC_Bar|MC_Button);
+    #endif
+    int v=GET_INT("menu", def)&(MC_Bar|MC_Button);
+    return 0==v ? MC_Bar : v;
+}
+
 void Settings::removeConnectionDetails(const QString &v)
 {
     if (v==currentConnection()) {
@@ -1485,6 +1503,11 @@ void Settings::saveLang(const QString &v)
     SET_VALUE_MOD(lang);
 }
 #endif
+
+void Settings::saveShowMenubar(bool v)
+{
+    SET_VALUE_MOD(showMenubar);
+}
 
 void Settings::save(bool force)
 {

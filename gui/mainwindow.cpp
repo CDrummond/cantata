@@ -253,7 +253,7 @@ MainWindow::MainWindow(QWidget *parent)
     #else
     setWindowIcon(Icons::self()->appIcon);
 
-    prefAction=ActionCollection::get()->createAction("configure", i18n("Configure Cantata..."), Icons::self()->configureIcon);
+    prefAction=ActionCollection::get()->createAction("configure", Utils::KDE==Utils::currentDe() ? i18n("Configure Cantata...") : i18n("Preferences"), Icons::self()->configureIcon);
     #ifdef Q_OS_MAC
     prefAction->setMenuRole(QAction::PreferencesRole);
     #endif
@@ -622,24 +622,35 @@ MainWindow::MainWindow(QWidget *parent)
     if (menuCfg&Settings::MC_Bar) {
         QMenu *menu=new QMenu(i18n("&Music"), this);
         menu->addAction(refreshDbAction);
+        menu->addSeparator();
+        menu->addAction(connectionsAction);
+        menu->addAction(outputsAction);
+        #ifdef ENABLE_HTTP_STREAM_PLAYBACK
+        menu->addAction(streamPlayAction);
+        #endif
+        menu->addSeparator();
         menu->addAction(quitAction);
         menuBar()->addMenu(menu);
         menu=new QMenu(i18n("&Edit"), this);
         menu->addAction(StdActions::self()->searchAction);
+        if (Utils::KDE!=Utils::currentDe()) {
+            menu->addSeparator();
+            #ifdef ENABLE_KDE_SUPPORT
+            menu->addAction(shortcutsAction);
+            #endif
+            menu->addAction(prefAction);
+        }
         menuBar()->addMenu(menu);
-        menu=new QMenu(i18n("&Control"), this);
-        menu->addAction(StdActions::self()->playPauseTrackAction);
-        menu->addAction(StdActions::self()->stopPlaybackAction);
-        menu->addAction(StdActions::self()->stopAfterCurrentTrackAction);
-        menu->addSeparator();
-        menu->addAction(StdActions::self()->nextTrackAction);
-        menu->addAction(StdActions::self()->prevTrackAction);
-        menu->addSeparator();
-        menu->addAction(repeatPlayQueueAction);
-        menu->addAction(singlePlayQueueAction);
-        menu->addAction(randomPlayQueueAction);
-        menu->addAction(consumePlayQueueAction);
-        menuBar()->addMenu(menu);
+        if (Utils::KDE!=Utils::currentDe()) {
+            menu=new QMenu(i18n("&View"), this);
+            if (showMenuAction) {
+                menu->addAction(showMenuAction);
+            }
+            menu->addAction(songInfoAction);
+            menu->addSeparator();
+            menu->addAction(fullScreenAction);
+            menuBar()->addMenu(menu);
+        }
         menu=new QMenu(i18n("&Queue"), this);
         menu->addAction(promptClearPlayQueueAction);
         menu->addAction(StdActions::self()->savePlayQueueAction);
@@ -649,23 +660,20 @@ MainWindow::MainWindow(QWidget *parent)
         menu->addAction(shufflePlayQueueAction);
         menu->addAction(shufflePlayQueueAlbumsAction);
         menuBar()->addMenu(menu);
-        menu=new QMenu(i18n("&Settings"), this);
-        menu->addAction(songInfoAction);
-        menu->addAction(fullScreenAction);
-        menu->addAction(connectionsAction);
-        menu->addAction(outputsAction);
-        #ifdef ENABLE_HTTP_STREAM_PLAYBACK
-        menu->addAction(streamPlayAction);
-        #endif
-        menu->addSeparator();
-        #ifdef ENABLE_KDE_SUPPORT
-        menu->addAction(shortcutsAction);
-        #endif
-        menu->addAction(prefAction);
-        if (showMenuAction) {
-            menu->addAction(showMenuAction);
+        if (Utils::KDE==Utils::currentDe()) {
+            menu=new QMenu(i18n("&Settings"), this);
+            if (showMenuAction) {
+                menu->addAction(showMenuAction);
+            }
+            menu->addAction(fullScreenAction);
+            menu->addAction(songInfoAction);
+            menu->addSeparator();
+            #ifdef ENABLE_KDE_SUPPORT
+            menu->addAction(shortcutsAction);
+            #endif
+            menu->addAction(prefAction);
+            menuBar()->addMenu(menu);
         }
-        menuBar()->addMenu(menu);
         menu=new QMenu(i18n("&Help"), this);
         menu->addAction(serverInfoAction);
         #ifdef ENABLE_KDE_SUPPORT

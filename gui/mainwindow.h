@@ -151,6 +151,7 @@ protected:
     void closeEvent(QCloseEvent *event);
 
 private:
+    void addMenuAction(QMenu *menu, Action *action);
     void initSizes();
     void setupTrayIcon();
 

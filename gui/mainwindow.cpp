@@ -211,8 +211,6 @@ MainWindow::MainWindow(QWidget *parent)
     QWidget *widget = new QWidget(this);
     setupUi(widget);
     setCentralWidget(widget);
-    QMenu *mainMenu=new QMenu(this);
-
     messageWidget->hide();
 
     // Need to set these values here, as used in library/device loading...
@@ -241,8 +239,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     Icons::self()->initToolbarIcons(toolbar->palette().color(QPalette::Foreground));
     Icons::self()->initSidebarIcons();
-    menuButton->setIcon(Icons::self()->toolbarMenuIcon);
-    menuButton->setAlignedMenu(mainMenu);
 
     int spacing=Utils::layoutSpacing(this);
     if (toolbarFixedSpacerFixedA->minimumSize().width()!=spacing) {
@@ -256,13 +252,26 @@ MainWindow::MainWindow(QWidget *parent)
     #else
     setWindowIcon(Icons::self()->appIcon);
 
+    prefAction=ActionCollection::get()->createAction("configure", i18n("Configure Cantata..."), Icons::self()->configureIcon);
+    #ifdef Q_OS_MAC
+    prefAction->setMenuRole(QAction::PreferencesRole);
+    #endif
+    connect(prefAction, SIGNAL(triggered(bool)),this, SLOT(showPreferencesDialog()));
     quitAction = ActionCollection::get()->createAction("quit", i18n("Quit"), "application-exit");
     connect(quitAction, SIGNAL(triggered(bool)), this, SLOT(quit()));
     quitAction->setShortcut(QKeySequence::Quit);
+    Action *aboutAction=ActionCollection::get()->createAction("about", i18nc("Qt-only", "About Cantata..."), Icons::self()->appIcon);
+    connect(aboutAction, SIGNAL(triggered(bool)),this, SLOT(showAboutDialog()));
     #endif // ENABLE_KDE_SUPPORT
     restoreAction = ActionCollection::get()->createAction("showwindow", i18n("Show Window"));
     connect(restoreAction, SIGNAL(triggered(bool)), this, SLOT(restoreWindow()));
 
+    serverInfoAction=ActionCollection::get()->createAction("mpdinfo", i18n("Server information..."), "network-server");
+    connect(serverInfoAction, SIGNAL(triggered(bool)),this, SLOT(showServerInfo()));
+    serverInfoAction->setEnabled(Settings::self()->firstRun());
+    refreshDbAction = ActionCollection::get()->createAction("refresh", i18n("Refresh Database"), "view-refresh");
+    doDbRefreshAction = new Action(refreshDbAction->icon(), i18n("Refresh"), this);
+    refreshDbAction->setEnabled(false);
     connectAction = ActionCollection::get()->createAction("connect", i18n("Connect"), Icons::self()->connectIcon);
     connectionsAction = ActionCollection::get()->createAction("connections", i18n("Collection"), "network-server");
     outputsAction = ActionCollection::get()->createAction("outputs", i18n("Outputs"), Icons::self()->speakerIcon);
@@ -559,6 +568,7 @@ MainWindow::MainWindow(QWidget *parent)
         }
     }
 
+    QMenu *mainMenu=new QMenu(this);
     mainMenu->addAction(songInfoAction);
     mainMenu->addAction(fullScreenAction);
     mainMenu->addAction(connectionsAction);
@@ -566,12 +576,6 @@ MainWindow::MainWindow(QWidget *parent)
     #ifdef ENABLE_HTTP_STREAM_PLAYBACK
     mainMenu->addAction(streamPlayAction);
     #endif
-    serverInfoAction=ActionCollection::get()->createAction("mpdinfo", i18n("Server information..."), "network-server");
-    connect(serverInfoAction, SIGNAL(triggered(bool)),this, SLOT(showServerInfo()));
-    serverInfoAction->setEnabled(Settings::self()->firstRun());
-    refreshDbAction = ActionCollection::get()->createAction("refresh", i18n("Refresh Database"), "view-refresh");
-    doDbRefreshAction = new Action(refreshDbAction->icon(), i18n("Refresh"), this);
-    refreshDbAction->setEnabled(false);
     #ifdef ENABLE_KDE_SUPPORT
     mainMenu->addAction(prefAction);
     mainMenu->addAction(refreshDbAction);
@@ -583,23 +587,18 @@ MainWindow::MainWindow(QWidget *parent)
     mainMenu->addAction(serverInfoAction);
     mainMenu->addMenu(helpMenu());
     #else
-    prefAction=ActionCollection::get()->createAction("configure", i18n("Configure Cantata..."), Icons::self()->configureIcon);
-    #ifdef Q_OS_MAC
-    prefAction->setMenuRole(QAction::PreferencesRole);
-    #endif
-    connect(prefAction, SIGNAL(triggered(bool)),this, SLOT(showPreferencesDialog()));
     mainMenu->addAction(prefAction);
     mainMenu->addAction(refreshDbAction);
     mainMenu->addSeparator();
     mainMenu->addAction(StdActions::self()->searchAction);
     mainMenu->addSeparator();
-    Action *aboutAction=ActionCollection::get()->createAction("about", i18nc("Qt-only", "About Cantata..."), Icons::self()->appIcon);
-    connect(aboutAction, SIGNAL(triggered(bool)),this, SLOT(showAboutDialog()));
     mainMenu->addAction(serverInfoAction);
     mainMenu->addAction(aboutAction);
     #endif
     mainMenu->addSeparator();
     mainMenu->addAction(quitAction);
+    menuButton->setIcon(Icons::self()->toolbarMenuIcon);
+    menuButton->setAlignedMenu(mainMenu);
 
     #if !defined Q_OS_WIN
     #if !defined Q_OS_MAC
@@ -2658,10 +2657,12 @@ void MainWindow::toggleContext()
 
 void MainWindow::hideMenuBar()
 {
-    // For Qt builds that have not been modified for dbus-menu, we need to hide the actual menubar!
-    if (menuBar()) {
+    #if !defined Q_OS_WIN && !defined Q_OS_MAC
+    if (Utils::Unity==Utils::currentDe()) {
+        // For Qt builds that have not been modified for dbus-menu, we need to hide the actual menubar!
         menuBar()->setVisible(false);
     }
+    #endif
 }
 
 #if !defined Q_OS_WIN && !defined Q_OS_MAC && QT_VERSION < 0x050000

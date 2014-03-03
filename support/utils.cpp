@@ -794,7 +794,7 @@ Utils::Desktop Utils::currentDe()
             de=Unity;
         } else if ("kde"==desktop) {
             de=KDE;
-        } else if ("gnome"==desktop) {
+        } else if ("gnome"==desktop || "pantheon"==desktop) {
             de=Gnome;
         } else {
             QByteArray kde=qgetenv("KDE_FULL_SESSION");

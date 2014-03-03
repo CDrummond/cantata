@@ -878,7 +878,7 @@
     <item row="2" column="0" colspan="2">
      <widget class="QLabel" name="label_5">
       <property name="text">
-       <string>Cantata is now configured! If you wish to further configure Cantata (to add extra MPD hosts, etc) then Canta's configuration dialog may be accessed from the menu triggered by the button in the top-right of Cantata's main window.</string>
+       <string>Cantata is now configured!&lt;br/&gt;&lt;br/&gt;Cantata's configuration dialog maybe used to customise Cantata's appearance, as well as to add extra MPD hosts, etc.</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>

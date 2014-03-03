@@ -108,6 +108,7 @@ InitialSettingsWizard::InitialSettingsWizard(QWidget *p)
         sz+=QSize(sz.height()*(highDpi ? 0.4 : 0.25), -(sz.height()*(highDpi ? 0.1 : 0.25)));
     }
     resize(sz);
+    setMinimumSize(sz);
     httpNote->setOn(true);
 }
 

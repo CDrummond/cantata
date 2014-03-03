@@ -621,68 +621,68 @@ MainWindow::MainWindow(QWidget *parent)
 
     if (menuCfg&Settings::MC_Bar) {
         QMenu *menu=new QMenu(i18n("&Music"), this);
-        menu->addAction(refreshDbAction);
+        addMenuAction(menu, refreshDbAction);
         menu->addSeparator();
-        menu->addAction(connectionsAction);
-        menu->addAction(outputsAction);
+        addMenuAction(menu, connectionsAction);
+        addMenuAction(menu, outputsAction);
         #ifdef ENABLE_HTTP_STREAM_PLAYBACK
-        menu->addAction(streamPlayAction);
+        addMenuAction(menu, streamPlayAction);
         #endif
         menu->addSeparator();
-        menu->addAction(quitAction);
+        addMenuAction(menu, quitAction);
         menuBar()->addMenu(menu);
         menu=new QMenu(i18n("&Edit"), this);
-        menu->addAction(StdActions::self()->searchAction);
+        addMenuAction(menu, StdActions::self()->searchAction);
         if (Utils::KDE!=Utils::currentDe()) {
             menu->addSeparator();
             #ifdef ENABLE_KDE_SUPPORT
-            menu->addAction(shortcutsAction);
+            addMenuAction(menu, shortcutsAction);
             #endif
-            menu->addAction(prefAction);
+            addMenuAction(menu, prefAction);
         }
         menuBar()->addMenu(menu);
         if (Utils::KDE!=Utils::currentDe()) {
             menu=new QMenu(i18n("&View"), this);
             if (showMenuAction) {
-                menu->addAction(showMenuAction);
+                addMenuAction(menu, showMenuAction);
             }
-            menu->addAction(songInfoAction);
+            addMenuAction(menu, songInfoAction);
             menu->addSeparator();
-            menu->addAction(fullScreenAction);
+            addMenuAction(menu, fullScreenAction);
             menuBar()->addMenu(menu);
         }
         menu=new QMenu(i18n("&Queue"), this);
-        menu->addAction(promptClearPlayQueueAction);
-        menu->addAction(StdActions::self()->savePlayQueueAction);
+        addMenuAction(menu, promptClearPlayQueueAction);
+        addMenuAction(menu, StdActions::self()->savePlayQueueAction);
         menu->addSeparator();
-        menu->addAction(addStreamToPlayQueueAction);
+        addMenuAction(menu, addStreamToPlayQueueAction);
         menu->addSeparator();
-        menu->addAction(shufflePlayQueueAction);
-        menu->addAction(shufflePlayQueueAlbumsAction);
+        addMenuAction(menu, shufflePlayQueueAction);
+        addMenuAction(menu, shufflePlayQueueAlbumsAction);
         menuBar()->addMenu(menu);
         if (Utils::KDE==Utils::currentDe()) {
             menu=new QMenu(i18n("&Settings"), this);
             if (showMenuAction) {
-                menu->addAction(showMenuAction);
+                addMenuAction(menu, showMenuAction);
             }
-            menu->addAction(fullScreenAction);
-            menu->addAction(songInfoAction);
+            addMenuAction(menu, fullScreenAction);
+            addMenuAction(menu, songInfoAction);
             menu->addSeparator();
             #ifdef ENABLE_KDE_SUPPORT
-            menu->addAction(shortcutsAction);
+            addMenuAction(menu, shortcutsAction);
             #endif
-            menu->addAction(prefAction);
+            addMenuAction(menu, prefAction);
             menuBar()->addMenu(menu);
         }
         menu=new QMenu(i18n("&Help"), this);
-        menu->addAction(serverInfoAction);
+        addMenuAction(menu, serverInfoAction);
         #ifdef ENABLE_KDE_SUPPORT
         menu->addSeparator();
         foreach (QAction *act, helpMenu()->actions()) {
-            menu->addAction(act);
+            addMenuAction(menu, act);
         }
         #else
-        menu->addAction(aboutAction);
+        addMenuAction(menu, aboutAction);
         #endif
         menuBar()->addMenu(menu);
         if (Utils::Unity==Utils::currentDe()) {
@@ -983,6 +983,12 @@ MainWindow::~MainWindow()
     MediaKeys::self()->stop();
     #endif
     ThreadCleaner::self()->stopAll();
+}
+
+void MainWindow::addMenuAction(QMenu *menu, Action *action)
+{
+    menu->addAction(action);
+    addAction(action); // Bind action to window, so that it works when fullscreen!
 }
 
 void MainWindow::initSizes()

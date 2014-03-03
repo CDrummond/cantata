@@ -178,6 +178,7 @@ MainWindow::MainWindow(QWidget *parent)
     , lastState(MPDState_Inactive)
     , lastSongId(-1)
     , autoScrollPlayQueue(true)
+    , showMenuAction(0)
     #ifdef ENABLE_HTTP_STREAM_PLAYBACK
     , httpStream(new HttpStream(this))
     #endif
@@ -568,42 +569,57 @@ MainWindow::MainWindow(QWidget *parent)
         }
     }
 
-    QMenu *mainMenu=new QMenu(this);
-    mainMenu->addAction(songInfoAction);
-    mainMenu->addAction(fullScreenAction);
-    mainMenu->addAction(connectionsAction);
-    mainMenu->addAction(outputsAction);
-    #ifdef ENABLE_HTTP_STREAM_PLAYBACK
-    mainMenu->addAction(streamPlayAction);
+    int menuCfg=Settings::self()->menu();
+    #ifndef Q_OS_MAC
+    if (Utils::Unity!=Utils::currentDe() && menuCfg&Settings::MC_Bar && menuCfg&Settings::MC_Button) {
+        showMenuAction=ActionCollection::get()->createAction("showmenubar", i18n("Show Menubar"));
+        showMenuAction->setShortcut(Qt::ControlModifier+Qt::Key_M);
+        showMenuAction->setCheckable(true);
+    }
     #endif
-    #ifdef ENABLE_KDE_SUPPORT
-    mainMenu->addAction(prefAction);
-    mainMenu->addAction(refreshDbAction);
-    shortcutsAction=static_cast<Action *>(KStandardAction::keyBindings(this, SLOT(configureShortcuts()), ActionCollection::get()));
-    mainMenu->addAction(shortcutsAction);
-    mainMenu->addSeparator();
-    mainMenu->addAction(StdActions::self()->searchAction);
-    mainMenu->addSeparator();
-    mainMenu->addAction(serverInfoAction);
-    mainMenu->addMenu(helpMenu());
-    #else
-    mainMenu->addAction(prefAction);
-    mainMenu->addAction(refreshDbAction);
-    mainMenu->addSeparator();
-    mainMenu->addAction(StdActions::self()->searchAction);
-    mainMenu->addSeparator();
-    mainMenu->addAction(serverInfoAction);
-    mainMenu->addAction(aboutAction);
-    #endif
-    mainMenu->addSeparator();
-    mainMenu->addAction(quitAction);
-    menuButton->setIcon(Icons::self()->toolbarMenuIcon);
-    menuButton->setAlignedMenu(mainMenu);
 
-    #if !defined Q_OS_WIN
-    #if !defined Q_OS_MAC
-    if (Utils::Unity==Utils::currentDe()) {
-    #endif
+    if (menuCfg&Settings::MC_Button) {
+        QMenu *mainMenu=new QMenu(this);
+        mainMenu->addAction(songInfoAction);
+        mainMenu->addAction(fullScreenAction);
+        mainMenu->addAction(connectionsAction);
+        mainMenu->addAction(outputsAction);
+        #ifdef ENABLE_HTTP_STREAM_PLAYBACK
+        mainMenu->addAction(streamPlayAction);
+        #endif
+        if (showMenuAction) {
+            mainMenu->addAction(showMenuAction);
+        }
+        #ifdef ENABLE_KDE_SUPPORT
+        mainMenu->addAction(prefAction);
+        mainMenu->addAction(refreshDbAction);
+        shortcutsAction=static_cast<Action *>(KStandardAction::keyBindings(this, SLOT(configureShortcuts()), ActionCollection::get()));
+        mainMenu->addAction(shortcutsAction);
+        mainMenu->addSeparator();
+        mainMenu->addAction(StdActions::self()->searchAction);
+        mainMenu->addSeparator();
+        mainMenu->addAction(serverInfoAction);
+        mainMenu->addMenu(helpMenu());
+        #else
+        mainMenu->addAction(prefAction);
+        mainMenu->addAction(refreshDbAction);
+        mainMenu->addSeparator();
+        mainMenu->addAction(StdActions::self()->searchAction);
+        mainMenu->addSeparator();
+        mainMenu->addAction(serverInfoAction);
+        mainMenu->addAction(aboutAction);
+        #endif
+        mainMenu->addSeparator();
+        mainMenu->addAction(quitAction);
+        menuButton->setIcon(Icons::self()->toolbarMenuIcon);
+        menuButton->setAlignedMenu(mainMenu);
+    } else {
+        menuButton->deleteLater();
+        menuButton=0;
+        adjustToolbarSpacers();
+    }
+
+    if (menuCfg&Settings::MC_Bar) {
         QMenu *menu=new QMenu(i18n("&File"), this);
         menu->addAction(refreshDbAction);
         menu->addAction(quitAction);
@@ -624,6 +640,9 @@ MainWindow::MainWindow(QWidget *parent)
         menu->addAction(shortcutsAction);
         #endif
         menu->addAction(prefAction);
+        if (showMenuAction) {
+            menu->addAction(showMenuAction);
+        }
         menuBar()->addMenu(menu);
         menu=new QMenu(i18n("&Help"), this);
         menu->addAction(serverInfoAction);
@@ -636,11 +655,16 @@ MainWindow::MainWindow(QWidget *parent)
         menu->addAction(aboutAction);
         #endif
         menuBar()->addMenu(menu);
-        QTimer::singleShot(0, this, SLOT(hideMenuBar()));
-    #if !defined Q_OS_MAC
+        if (Utils::Unity==Utils::currentDe()) {
+            QTimer::singleShot(0, this, SLOT(hideMenubar()));
+        }
     }
-    #endif
-    #endif
+
+    if (showMenuAction) {
+        showMenuAction->setChecked(Settings::self()->showMenubar());
+        connect(showMenuAction, SIGNAL(toggled(bool)), this, SLOT(toggleMenubar()));
+        toggleMenubar();
+    }
 
     dynamicLabel->setVisible(false);
     stopDynamicButton->setVisible(false);
@@ -875,6 +899,9 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
+    if (showMenuAction) {
+        Settings::self()->saveShowMenubar(showMenuAction->isChecked());
+    }
     bool hadCantataStreams=playQueueModel.removeCantataStreams();
     Settings::self()->saveShowFullScreen(fullScreenAction->isChecked());
     if (!fullScreenAction->isChecked()) {
@@ -2632,7 +2659,7 @@ void MainWindow::calcMinHeight()
 
 void MainWindow::adjustToolbarSpacers()
 {
-    int menuWidth=GtkStyle::isActive() ? menuButton->width() : menuButton->sizeHint().width();
+    int menuWidth=menuButton && menuButton->isVisible() ? (GtkStyle::isActive() ? menuButton->width() : menuButton->sizeHint().width()) : 0;
     int edgeWidth=qMax(prevTrackButton->width()*4, menuWidth+(songInfoAction->isCheckable() ? songInfoButton->width() : 0)+
                                                    volumeSliderSpacer->sizeHint().width()+volumeSlider->width());
     toolbarSpacerA->setFixedSize(edgeWidth, 0);
@@ -2655,13 +2682,20 @@ void MainWindow::toggleContext()
     }
 }
 
-void MainWindow::hideMenuBar()
+void MainWindow::toggleMenubar()
+{
+    if (showMenuAction && menuButton) {
+        menuButton->setVisible(!showMenuAction->isChecked());
+        menuBar()->setVisible(showMenuAction->isChecked());
+        adjustToolbarSpacers();
+    }
+}
+
+void MainWindow::hideMenubar()
 {
     #if !defined Q_OS_WIN && !defined Q_OS_MAC
-    if (Utils::Unity==Utils::currentDe()) {
-        // For Qt builds that have not been modified for dbus-menu, we need to hide the actual menubar!
-        menuBar()->setVisible(false);
-    }
+    // For Qt builds that have not been modified for dbus-menu, we need to hide the actual menubar!
+    menuBar()->setVisible(false);
     #endif
 }
 

@@ -421,6 +421,14 @@ alwaysUseLsInfo=<Boolean>
     cause Cantata to always use this alternative method.
     Default is false.
 
+menu=<Integer>
+    Controls usage of menubar and menu button. If set to 1 then a menubar is
+    used. If set to 2 then a menu button is used. If set to 3 then both the
+    menubar and menu button are used - and there will be a menu item to toggle
+    between menubar and menu button. NOTE: This menu item is not present when
+    run under Unity or MacOS - as these always have a menubar - in which case
+    menu=3 will cause both a menubar and menu button to be present.
+
 e.g.
 [General]
 iconTheme=oxygen
@@ -434,6 +442,7 @@ mpdPoll=true
 mpdListSize=5000
 alwaysUseHttp=true
 alwaysUseLsInfo=true
+menu=3
 
 
 7. CUE Files

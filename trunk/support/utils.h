@@ -110,7 +110,6 @@ namespace Utils
     extern int layoutSpacing(QWidget *w);
     extern bool isHighDpi();
 
-    #if !defined Q_OS_WIN32 && !defined Q_OS_MAC
     enum Desktop {
         KDE,
         Gnome,
@@ -118,7 +117,6 @@ namespace Utils
         Other
     };
     extern Desktop currentDe();
-    #endif
 }
 
 #endif

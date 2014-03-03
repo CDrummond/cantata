@@ -43,3 +43,7 @@ endif (ENABLE_QT5)
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR} ${QTINCLUDES})
 add_library(support STATIC ${SUPPORT_MOC_SRCS} ${SUPPORT_SRCS} ${SUPPORT_UI_HDRS})
+
+if (X11_FOUND)
+    target_link_libraries(support ${X11_LIBRARIES})
+endif (X11_FOUND)

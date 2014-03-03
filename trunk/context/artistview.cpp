@@ -334,7 +334,10 @@ void ArtistView::setBio()
     }
 
     if (!webLinks.isEmpty()) {
-        html+=View::subHeader(i18n("Web Links"))+QLatin1String("<ul>")+QString(webLinks).replace("${artist}", currentSong.artist)+QLatin1String("</ul>");
+        QString artist=currentSong.artist;
+        artist.replace(QLatin1Char('&'), QLatin1String("%26"));
+        artist.replace(QLatin1Char('?'), QLatin1String("%3f"));
+        html+=View::subHeader(i18n("Web Links"))+QLatin1String("<ul>")+QString(webLinks).replace("${artist}", artist)+QLatin1String("</ul>");
     }
 
     setHtml(html);

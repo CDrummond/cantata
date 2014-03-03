@@ -92,6 +92,7 @@ private:
     void failed(const Job &job);
     QString saveImg(const Job &job, const QImage &img, const QByteArray &raw);
     QHash<NetworkJob *, Job>::Iterator findJob(const Job &job);
+    NetworkAccessManager * network();
 
 private:
     QHash<NetworkJob *, Job> jobs;

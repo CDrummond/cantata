@@ -97,6 +97,12 @@ public:
         SS_Previous
     };
 
+    enum MenuControl
+    {
+        MC_Bar = 0x01,
+        MC_Button = 0x02
+    };
+
     static Settings *self();
 
     Settings();
@@ -218,6 +224,8 @@ public:
     QString lang();
     #endif
     bool alwaysUseLsInfo();
+    bool showMenubar();
+    int menu();
 
     void removeConnectionDetails(const QString &v);
     void saveConnectionDetails(const MPDConnectionDetails &v);
@@ -324,6 +332,7 @@ public:
     #ifndef ENABLE_KDE_SUPPORT
     void saveLang(const QString &v);
     #endif
+    void saveShowMenubar(bool v);
     void save(bool force=false);
     #if defined ENABLE_KDE_SUPPORT && defined ENABLE_KWALLET
     bool openWallet();

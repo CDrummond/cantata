@@ -310,7 +310,8 @@ private:
 
 private Q_SLOTS:
     void toggleContext();
-    void hideMenuBar();
+    void toggleMenubar();
+    void hideMenubar();
 
 private:
     int prevPage;
@@ -320,6 +321,7 @@ private:
     PlayQueueModel playQueueModel;
     PlayQueueProxyModel playQueueProxyModel;
     bool autoScrollPlayQueue;
+    Action *showMenuAction;
     Action *prefAction;
     Action *refreshDbAction;
     Action *doDbRefreshAction;

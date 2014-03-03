@@ -39,6 +39,8 @@
 3. Use case-insensitive sort of folder view items when adding to playqueue.
 4. When determining the 'basic' artist of a track, if albumartist is set and
    artist is not, then use albumartist.
+5. For the web-links in the context view, replace ampersand and question mark
+   characters in artist names with the relevant URL encoding.
 
 1.3.1
 -----

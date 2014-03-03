@@ -620,12 +620,34 @@ MainWindow::MainWindow(QWidget *parent)
     }
 
     if (menuCfg&Settings::MC_Bar) {
-        QMenu *menu=new QMenu(i18n("&File"), this);
+        QMenu *menu=new QMenu(i18n("&Music"), this);
         menu->addAction(refreshDbAction);
         menu->addAction(quitAction);
         menuBar()->addMenu(menu);
         menu=new QMenu(i18n("&Edit"), this);
         menu->addAction(StdActions::self()->searchAction);
+        menuBar()->addMenu(menu);
+        menu=new QMenu(i18n("&Control"), this);
+        menu->addAction(StdActions::self()->playPauseTrackAction);
+        menu->addAction(StdActions::self()->stopPlaybackAction);
+        menu->addAction(StdActions::self()->stopAfterCurrentTrackAction);
+        menu->addSeparator();
+        menu->addAction(StdActions::self()->nextTrackAction);
+        menu->addAction(StdActions::self()->prevTrackAction);
+        menu->addSeparator();
+        menu->addAction(repeatPlayQueueAction);
+        menu->addAction(singlePlayQueueAction);
+        menu->addAction(randomPlayQueueAction);
+        menu->addAction(consumePlayQueueAction);
+        menuBar()->addMenu(menu);
+        menu=new QMenu(i18n("&Queue"), this);
+        menu->addAction(promptClearPlayQueueAction);
+        menu->addAction(StdActions::self()->savePlayQueueAction);
+        menu->addSeparator();
+        menu->addAction(addStreamToPlayQueueAction);
+        menu->addSeparator();
+        menu->addAction(shufflePlayQueueAction);
+        menu->addAction(shufflePlayQueueAlbumsAction);
         menuBar()->addMenu(menu);
         menu=new QMenu(i18n("&Settings"), this);
         menu->addAction(songInfoAction);

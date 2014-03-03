@@ -875,20 +875,12 @@ void CoverLocator::locate()
 Covers::Covers()
     : retrieved(0)
     , cache(300000)
+    , downloader(0)
+    , locator(0)
     , countResetTimer(0)
 {
     maxPerLoopIteration=Settings::self()->maxCoverUpdatePerIteration();
     maxFindPerLoopIteration=Settings::self()->maxCoverFindPerIteration();
-
-    qRegisterMetaType<LocatedCover>("LocatedCover");
-    qRegisterMetaType<QList<LocatedCover> >("QList<LocatedCover>");
-    downloader=new CoverDownloader();
-    locator=new CoverLocator();
-    connect(this, SIGNAL(download(Song)), downloader, SLOT(download(Song)), Qt::QueuedConnection);
-    connect(downloader, SIGNAL(artistImage(Song,QImage,QString)), this, SLOT(artistImageDownloaded(Song,QImage,QString)), Qt::QueuedConnection);
-    connect(downloader, SIGNAL(cover(Song,QImage,QString)), this, SLOT(coverDownloaded(Song,QImage,QString)), Qt::QueuedConnection);
-    connect(locator, SIGNAL(located(QList<LocatedCover>)), this, SLOT(located(QList<LocatedCover>)), Qt::QueuedConnection);
-    connect(this, SIGNAL(locate(Song)), locator, SLOT(locate(Song)), Qt::QueuedConnection);
 }
 
 void Covers::readConfig()
@@ -900,11 +892,17 @@ void Covers::readConfig()
 
 void Covers::stop()
 {
-    disconnect(downloader, SIGNAL(artistImage(Song,QImage,QString)), this, SLOT(artistImageDownloaded(Song,QImage,QString)));
-    disconnect(downloader, SIGNAL(cover(Song,QImage,QString)), this, SLOT(coverDownloaded(Song,QImage,QString)));
-    downloader->stop();
-    disconnect(locator, SIGNAL(located(QList<LocatedCover>)), this, SLOT(located(QList<LocatedCover>)));
-    locator->stop();
+    if (downloader) {
+        disconnect(downloader, SIGNAL(artistImage(Song,QImage,QString)), this, SLOT(artistImageDownloaded(Song,QImage,QString)));
+        disconnect(downloader, SIGNAL(cover(Song,QImage,QString)), this, SLOT(coverDownloaded(Song,QImage,QString)));
+        downloader->stop();
+        downloader=0;
+    }
+    if (locator) {
+        disconnect(locator, SIGNAL(located(QList<LocatedCover>)), this, SLOT(located(QList<LocatedCover>)));
+        locator->stop();
+        locator=0;
+    }
     #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
     cleanCdda();
     #endif
@@ -947,7 +945,7 @@ QPixmap * Covers::get(const Song &song, int size)
         } else {
             // Attempt to download cover...
             if (Song::OnlineSvrTrack!=song.type) {
-                emit download(song);
+                tryToDownload(song);
             }
             // Create a dummy pixmap so that we dont keep on stating files that do not exist!
             pix=new QPixmap(1, 1);
@@ -1002,6 +1000,29 @@ void Covers::clearCache(const Song &song, const QImage &img, bool dummyEntriesOn
     if (hadEntries && !dummyEntriesOnly) {
         emit coverRetrieved(song);
     }
+}
+
+void Covers::tryToLocate(const Song &song)
+{
+    if (!locator) {
+        qRegisterMetaType<LocatedCover>("LocatedCover");
+        qRegisterMetaType<QList<LocatedCover> >("QList<LocatedCover>");
+        locator=new CoverLocator();
+        connect(locator, SIGNAL(located(QList<LocatedCover>)), this, SLOT(located(QList<LocatedCover>)), Qt::QueuedConnection);
+        connect(this, SIGNAL(locate(Song)), locator, SLOT(locate(Song)), Qt::QueuedConnection);
+    }
+    emit locate(song);
+}
+
+void Covers::tryToDownload(const Song &song)
+{
+    if (!downloader) {
+        downloader=new CoverDownloader();
+        connect(this, SIGNAL(download(Song)), downloader, SLOT(download(Song)), Qt::QueuedConnection);
+        connect(downloader, SIGNAL(artistImage(Song,QImage,QString)), this, SLOT(artistImageDownloaded(Song,QImage,QString)), Qt::QueuedConnection);
+        connect(downloader, SIGNAL(cover(Song,QImage,QString)), this, SLOT(coverDownloaded(Song,QImage,QString)), Qt::QueuedConnection);
+    }
+    emit download(song);
 }
 
 Covers::Image Covers::findImage(const Song &song, bool emitResult)
@@ -1269,7 +1290,7 @@ Covers::Image Covers::requestImage(const Song &song, bool urgent)
 
     if (retrieved>=maxFindPerLoopIteration && !urgent) {
         currentImageRequests.insert(key);
-        emit locate(song);
+        tryToLocate(song);
         return Covers::Image();
     }
 
@@ -1278,7 +1299,7 @@ Covers::Image Covers::requestImage(const Song &song, bool urgent)
     if (img.img.isNull() && Song::OnlineSvrTrack!=song.type) {
         DBUG << song.file << song.artist << song.albumartist << song.album << "Need to download";
         currentImageRequests.insert(key);
-        emit download(song);
+        tryToDownload(song);
     }
 
     // We only want to read X files per QEventLoop iteratation. The above takes care of this, and any
@@ -1309,7 +1330,7 @@ void Covers::located(const QList<LocatedCover> &covers)
                 gotAlbumCover(cvr.song, cvr.img, cvr.fileName);
             }
         } else {
-            emit download(cvr.song);
+            tryToDownload(cvr.song);
         }
     }
     retrieved-=covers.size();

@@ -216,6 +216,8 @@ private Q_SLOTS:
     void artistImageDownloaded(const Song &song, const QImage &img, const QString &file);
 
 private:
+    void tryToLocate(const Song &song);
+    void tryToDownload(const Song &song);
     Image findImage(const Song &song, bool emitResult);
     void clearCache(const Song &song, const QImage &img, bool dummyEntriesOnly);
     void gotAlbumCover(const Song &song, const QImage &img, const QString &fileName, bool emitResult=true);

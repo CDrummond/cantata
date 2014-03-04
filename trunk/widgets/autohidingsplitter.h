@@ -45,6 +45,8 @@ public:
     AutohidingSplitterHandle(Qt::Orientation orientation, QSplitter *parent) : ThinSplitterHandle(orientation, parent) { }
     virtual ~AutohidingSplitterHandle() { }
 
+    QSize sizeHint() const;
+
 Q_SIGNALS:
     void hoverStarted();
     void hoverFinished();

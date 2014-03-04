@@ -23,12 +23,18 @@
  */
 
 #include "autohidingsplitter.h"
+#include "gtkstyle.h"
 #include <QSplitterHandle>
 #include <QTimer>
 #include <QChildEvent>
 #include <QResizeEvent>
 #include <QComboBox>
 #include <QMenu>
+
+QSize AutohidingSplitterHandle::sizeHint() const
+{
+    return GtkStyle::isActive() ? QSize(0, 0) : QSize(1, 1);
+}
 
 class SplitterSizeAnimation:public QVariantAnimation
 {
@@ -73,7 +79,7 @@ AutohidingSplitter::AutohidingSplitter(Qt::Orientation orientation, QWidget *par
     autohideAnimation->setEasingCurve(QEasingCurve::Linear);
     //connect(this, SIGNAL(splitterMoved(int, int)), this, SLOT(updateAfterSplitterMoved(int, int)));
     setMinimumWidth(32);
-    setHandleWidth(0);
+    setHandleWidth(GtkStyle::isActive() ? 0 : 1);
 }
 
 AutohidingSplitter::AutohidingSplitter(QWidget *parent)

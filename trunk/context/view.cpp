@@ -73,6 +73,7 @@ View::View(QWidget *parent)
     header->setWordWrap(true);
     header->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
     text->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
+    text->setFrameShape(QFrame::NoFrame);
 
     layout->addItem(new QSpacerItem(1, layout->spacing(), QSizePolicy::Fixed, QSizePolicy::Fixed));
     layout->addWidget(header);
@@ -162,7 +163,6 @@ void View::hideSpinner()
 void View::setEditable(bool e)
 {
     text->setReadOnly(!e);
-    text->setFrameShape(e ? QFrame::StyledPanel : QFrame::NoFrame);
     text->viewport()->setAutoFillBackground(e);
 }
 

@@ -251,6 +251,7 @@ MainWindow::MainWindow(QWidget *parent)
     #ifdef ENABLE_KDE_SUPPORT
     prefAction=static_cast<Action *>(KStandardAction::preferences(this, SLOT(showPreferencesDialog()), ActionCollection::get()));
     quitAction=static_cast<Action *>(KStandardAction::quit(this, SLOT(quit()), ActionCollection::get()));
+    shortcutsAction=static_cast<Action *>(KStandardAction::keyBindings(this, SLOT(configureShortcuts()), ActionCollection::get()));
     #else
     setWindowIcon(Icons::self()->appIcon);
 
@@ -599,7 +600,6 @@ MainWindow::MainWindow(QWidget *parent)
         #ifdef ENABLE_KDE_SUPPORT
         mainMenu->addAction(prefAction);
         mainMenu->addAction(refreshDbAction);
-        shortcutsAction=static_cast<Action *>(KStandardAction::keyBindings(this, SLOT(configureShortcuts()), ActionCollection::get()));
         mainMenu->addAction(shortcutsAction);
         mainMenu->addSeparator();
         mainMenu->addAction(StdActions::self()->searchAction);

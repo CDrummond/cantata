@@ -988,7 +988,7 @@ MainWindow::~MainWindow()
     ThreadCleaner::self()->stopAll();
 }
 
-void MainWindow::addMenuAction(QMenu *menu, Action *action)
+void MainWindow::addMenuAction(QMenu *menu, QAction *action)
 {
     menu->addAction(action);
     addAction(action); // Bind action to window, so that it works when fullscreen!

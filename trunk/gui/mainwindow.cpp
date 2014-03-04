@@ -48,6 +48,7 @@
 #include <KDE/KMenu>
 #include <KDE/KShortcutsDialog>
 #include <KDE/KWindowSystem>
+#include <KDE/KToggleAction>
 #else
 #include <QMenuBar>
 #include "mediakeys.h"
@@ -572,9 +573,14 @@ MainWindow::MainWindow(QWidget *parent)
     int menuCfg=Settings::self()->menu();
     #ifndef Q_OS_MAC
     if (Utils::Unity!=Utils::currentDe() && menuCfg&Settings::MC_Bar && menuCfg&Settings::MC_Button) {
+        #ifdef ENABLE_KDE_SUPPORT
+        showMenuAction=KStandardAction::showMenubar(this, SLOT(toggleMenubar()), ActionCollection::get());
+        #else
         showMenuAction=ActionCollection::get()->createAction("showmenubar", i18n("Show Menubar"));
         showMenuAction->setShortcut(Qt::ControlModifier+Qt::Key_M);
         showMenuAction->setCheckable(true);
+        connect(showMenuAction, SIGNAL(toggled(bool)), this, SLOT(toggleMenubar()));
+        #endif
     }
     #endif
 
@@ -695,7 +701,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     if (showMenuAction) {
         showMenuAction->setChecked(Settings::self()->showMenubar());
-        connect(showMenuAction, SIGNAL(toggled(bool)), this, SLOT(toggleMenubar()));
         toggleMenubar();
     }
 

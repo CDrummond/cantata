@@ -47,6 +47,9 @@
 #include "song.h"
 #include "config.h"
 
+#ifdef ENABLE_KDE_SUPPORT
+class KToggleAction;
+#endif
 class Action;
 class ActionCollection;
 class MainWindow;
@@ -322,7 +325,11 @@ private:
     PlayQueueModel playQueueModel;
     PlayQueueProxyModel playQueueProxyModel;
     bool autoScrollPlayQueue;
+    #ifdef ENABLE_KDE_SUPPORT
+    KToggleAction *showMenuAction;
+    #else
     Action *showMenuAction;
+    #endif
     Action *prefAction;
     Action *refreshDbAction;
     Action *doDbRefreshAction;

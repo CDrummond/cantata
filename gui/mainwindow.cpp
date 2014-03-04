@@ -642,6 +642,7 @@ MainWindow::MainWindow(QWidget *parent)
         addMenuAction(menu, playQueueModel.redoAct());
         menu->addSeparator();
         addMenuAction(menu, StdActions::self()->searchAction);
+        #ifndef ENABLE_KDE_SUPPORT
         if (Utils::KDE!=Utils::currentDe()) {
             menu->addSeparator();
             #ifdef ENABLE_KDE_SUPPORT
@@ -649,6 +650,7 @@ MainWindow::MainWindow(QWidget *parent)
             #endif
             addMenuAction(menu, prefAction);
         }
+        #endif
         menuBar()->addMenu(menu);
         if (Utils::KDE!=Utils::currentDe()) {
             menu=new QMenu(i18n("&View"), this);
@@ -669,7 +671,10 @@ MainWindow::MainWindow(QWidget *parent)
         addMenuAction(menu, shufflePlayQueueAction);
         addMenuAction(menu, shufflePlayQueueAlbumsAction);
         menuBar()->addMenu(menu);
-        if (Utils::KDE==Utils::currentDe()) {
+        #ifndef ENABLE_KDE_SUPPORT
+        if (Utils::KDE==Utils::currentDe())
+        #endif
+        {
             menu=new QMenu(i18n("&Settings"), this);
             if (showMenuAction) {
                 addMenuAction(menu, showMenuAction);

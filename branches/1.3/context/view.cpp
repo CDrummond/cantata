@@ -89,6 +89,7 @@ View::View(QWidget *parent)
     }
 
     cancelJobAction=new Action(Icons::self()->cancelIcon, i18n("Cancel"), this);
+    cancelJobAction->setEnabled(false);
     connect(cancelJobAction, SIGNAL(triggered()), SLOT(abort()));
 }
 

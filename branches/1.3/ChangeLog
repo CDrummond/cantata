@@ -14,6 +14,7 @@
 6. Use CMake to locate X11 libraries and headers.
 7. Set minimum size for initial settings wizard.
 8. If buddy of a checkbox or radio is clicked, then toggle check or radio.
+9. Disable context-view cancel actions until a job is created.
 
 1.3.1
 -----

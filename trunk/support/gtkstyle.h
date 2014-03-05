@@ -41,6 +41,7 @@ namespace GtkStyle
     extern void setThemeName(const QString &n);
     extern void setIconTheme(const QString &n);
     extern void applyTheme(QWidget *widget);
+    extern void registerWidget(QWidget *widget);
     extern bool useSymbolicIcons();
     extern QColor symbolicColor();
 }

@@ -226,6 +226,7 @@ extern void GtkStyle::setIconTheme(const QString &n)
 
 #if !defined Q_OS_WIN && !defined QT_NO_STYLE_GTK
 static GtkProxyStyle *gtkProxyStyle=0;
+static WindowManager *wm=0;
 #endif
 #ifndef ENABLE_KDE_SUPPORT
 static ProxyStyle *plainProxyStyle=0;
@@ -252,7 +253,6 @@ void GtkStyle::applyTheme(QWidget *widget)
         bool touchStyleSpin=false;
         bool modViewFrame=false;
         QMap<QString, QString> css;
-        WindowManager *wm=0;
         if (!theme.isEmpty()) {
             QFile cssFile(QLatin1String(INSTALL_PREFIX"/share/")+QCoreApplication::applicationName()+QLatin1String("/themes/")+theme+QLatin1String(".css"));
             if (cssFile.open(QFile::ReadOnly|QFile::Text)) {
@@ -302,6 +302,17 @@ void GtkStyle::applyTheme(QWidget *widget)
         qApp->setStyle(plainProxyStyle);
     }
     #endif
+    #endif
+}
+
+void GtkStyle::registerWidget(QWidget *widget)
+{
+    #if defined Q_OS_WIN || defined QT_NO_STYLE_GTK
+    Q_UNUSED(widget)
+    #else
+    if (widget && wm) {
+        wm->registerWidgetAndChildren(widget);
+    }
     #endif
 }
 

@@ -315,7 +315,6 @@ private:
 private Q_SLOTS:
     void toggleContext();
     void toggleMenubar();
-    void hideMenubar();
 
 private:
     int prevPage;

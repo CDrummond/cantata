@@ -53,7 +53,7 @@ public:
     }
 };
 
-static const QLatin1String constEmptyTime("0:00:00");
+static const QLatin1String constEmptyTime("00:00");
 
 class TimeLabel : public QLabel
 {
@@ -61,16 +61,23 @@ public:
     TimeLabel(QWidget *p, QSlider *s)
         : QLabel(p)
         , slider(s)
+        , largeTime(false)
         , visible(true)
     {
         setFixedWidth(fontMetrics().width(QLatin1String("-")+constEmptyTime));
     }
 
-    void setEnabled(bool e)
+    void setRange(int min, int max)
     {
+        bool e=min!=max;
         if (e!=visible) {
             visible=e;
             QLabel::setEnabled(e);
+        }
+        bool large=e && max>=(60*60);
+        if (largeTime!=large) {
+            setFixedWidth(fontMetrics().width(QLatin1String("-")+(large ? QLatin1String("0:") : QString()+constEmptyTime)));
+            largeTime=large;
         }
     }
 
@@ -86,7 +93,7 @@ public:
         if (visible) {
             updateTimeDisplay();
         } else {
-            setText(constEmptyTime);
+            setText(largeTime ? QLatin1String("0:") : QString()+constEmptyTime);
         }
     }
 
@@ -95,6 +102,7 @@ private:
 
 protected:
     QSlider *slider;
+    bool largeTime;
     bool visible;
 };
 
@@ -350,8 +358,8 @@ void TimeSlider::setValue(int v)
 void TimeSlider::setRange(int min, int max)
 {
     slider->setRange(min, max);
-    timeTaken->setEnabled(min!=max);
-    timeLeft->setEnabled(min!=max);
+    timeTaken->setRange(min, max);
+    timeLeft->setRange(min, max);
     updateTimes();
 }
 
@@ -360,8 +368,8 @@ void TimeSlider::clearTimes()
     stopTimer();
     lastVal=0;
     slider->setRange(0, 0);
-    timeTaken->setEnabled(false);
-    timeLeft->setEnabled(false);
+    timeTaken->setRange(0, 0);
+    timeLeft->setRange(0, 0);
     timeTaken->updateTime();
     timeLeft->updateTime();
 }

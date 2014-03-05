@@ -19,7 +19,7 @@
     files, or removing existing files, only ask MPD to update folders that have
     changed.
 14. Remove space between toolbar and views, and reduce spacing elsewhere.
-15. Use a 0-pixel splitter between playqueue and views.
+15. Use a thin splitter between playqueue and views.
 16. Set 'no interaction' flag on more lables, so that Oxygen's window drag core
     works on these.
 17. Add support for comments. These are read directly from the song file when

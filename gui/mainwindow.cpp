@@ -699,6 +699,7 @@ MainWindow::MainWindow(QWidget *parent)
         addMenuAction(menu, aboutAction);
         #endif
         menuBar()->addMenu(menu);
+        GtkStyle::registerWidget(menuBar());
     }
 
     if (showMenuAction) {

@@ -28,8 +28,11 @@ bool ProxyModel::matchesFilter(const Song &s) const
     QStringList strings;
 
     strings << s.albumArtist();
-    if (s.albumartist!=s.artist) {
+    if (!s.albumartist.isEmpty() && s.albumartist!=s.artist) {
         strings << s.artist;
+    }
+    if (!s.composer.isEmpty() && s.composer!=s.artist && s.composer!=s.albumartist) {
+        strings << s.composer;
     }
     strings << s.title << s.album;
     return matchesFilter(strings);

@@ -699,9 +699,6 @@ MainWindow::MainWindow(QWidget *parent)
         addMenuAction(menu, aboutAction);
         #endif
         menuBar()->addMenu(menu);
-        if (Utils::Unity==Utils::currentDe()) {
-            QTimer::singleShot(0, this, SLOT(hideMenubar()));
-        }
     }
 
     if (showMenuAction) {
@@ -2738,14 +2735,6 @@ void MainWindow::toggleMenubar()
         menuBar()->setVisible(showMenuAction->isChecked());
         adjustToolbarSpacers();
     }
-}
-
-void MainWindow::hideMenubar()
-{
-    #if !defined Q_OS_WIN && !defined Q_OS_MAC
-    // For Qt builds that have not been modified for dbus-menu, we need to hide the actual menubar!
-    menuBar()->setVisible(false);
-    #endif
 }
 
 #if !defined Q_OS_WIN && !defined Q_OS_MAC && QT_VERSION < 0x050000

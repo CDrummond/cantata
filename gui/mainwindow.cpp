@@ -2164,15 +2164,21 @@ void MainWindow::checkMpdAccessibility()
 
 void MainWindow::updatePlayQueueStats(int songs, quint32 time)
 {
-    if (0==time) {
+    if (0==songs) {
         playQueueStatsLabel->setText(QString());
-        return;
+    } else if (0==time) {
+        #ifdef ENABLE_KDE_SUPPORT
+        playQueueStatsLabel->setText(i18np("1 Track", "%1 Tracks", songs, Utils::formatDuration(time)));
+        #else
+        playQueueStatsLabel->setText(QTP_TRACKS_STR(songs));
+        #endif
+    } else {
+        #ifdef ENABLE_KDE_SUPPORT
+        playQueueStatsLabel->setText(i18np("1 Track (%2)", "%1 Tracks (%2)", songs, Utils::formatDuration(time)));
+        #else
+        playQueueStatsLabel->setText(QTP_TRACKS_DURATION_STR(songs, Utils::formatDuration(time)));
+        #endif
     }
-    #ifdef ENABLE_KDE_SUPPORT
-    playQueueStatsLabel->setText(i18np("1 Track (%2)", "%1 Tracks (%2)", songs, Utils::formatDuration(time)));
-    #else
-    playQueueStatsLabel->setText(QTP_TRACKS_DURATION_STR(songs, Utils::formatDuration(time)));
-    #endif
 }
 
 void MainWindow::showSongInfo()

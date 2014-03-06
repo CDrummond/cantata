@@ -302,7 +302,7 @@ private:
     void updateWindowTitle();
     void startVolumeFade(/*bool stop*/);
     void stopVolumeFade();
-    void showTab(int page) { tabWidget->SetCurrentIndex(page); }
+    void showTab(int page) { tabWidget->setCurrentIndex(page); }
     bool fadeWhenStop() const { return fadeStop && volumeSlider->isEnabled(); }
     void updateNextTrack(int nextTrackId);
     void updateActionToolTips();

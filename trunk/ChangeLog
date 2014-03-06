@@ -58,6 +58,8 @@
 11. Fix enabling of "Initially collapse albums" in playlists settings tab.
 12. Fix grouped playlist view initial state when set to initially collapse
     albums.
+13. Fix calculating size of song files when copying off a device that has been
+    previously scanned, and its contents cached.
 
 1.3.1
 -----

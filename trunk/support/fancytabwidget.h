@@ -52,32 +52,32 @@ class QStackedWidget;
 class QStatusBar;
 class QVBoxLayout;
 
-namespace Core {
-namespace Internal {
-
-class FancyTabProxyStyle : public QProxyStyle {
+class FancyTabProxyStyle : public QProxyStyle
+{
     Q_OBJECT
 
 public:
     void drawPrimitive(PrimitiveElement element, const QStyleOption *option, QPainter *p, const QWidget *widget) const;
     void drawControl(ControlElement element, const QStyleOption *option, QPainter *p, const QWidget *widget) const;
     int styleHint(StyleHint hint, const QStyleOption *option, const QWidget *widget, QStyleHintReturn *returnData) const;
-    void polish(QWidget* widget);
-    void polish(QApplication* app);
-    void polish(QPalette& palette);
+    void polish(QWidget *widget);
+    void polish(QApplication *app);
+    void polish(QPalette &palette);
 
 protected:
-    bool eventFilter(QObject* o, QEvent* e);
+    bool eventFilter(QObject *o, QEvent *e);
 };
 
 class FancyTabBar;
-class FancyTab : public QWidget{
+class FancyTab : public QWidget
+{
     Q_OBJECT
 
     Q_PROPERTY(float fader READ fader WRITE setFader)
+
 public:
     FancyTab(FancyTabBar *tabbar);
-    float fader() { return m_fader; }
+    float fader() { return faderValue; }
     void setFader(float value);
 
     QSize sizeHint() const;
@@ -95,7 +95,7 @@ protected:
 private:
     QPropertyAnimation animator;
     FancyTabBar *tabbar;
-    float m_fader;
+    float faderValue;
 };
 
 class FancyTabBar : public QWidget
@@ -104,7 +104,9 @@ class FancyTabBar : public QWidget
 
 public:
     enum Pos {
-        Side, Top, Bot
+        Side,
+        Top,
+        Bot
     };
 
     FancyTabBar(QWidget *parent, bool text, int iSize, Pos pos);
@@ -113,26 +115,26 @@ public:
     void paintEvent(QPaintEvent *event);
     void paintTab(QPainter *painter, int tabIndex, bool gtkStyle) const;
     void mousePressEvent(QMouseEvent *);
-    bool validIndex(int index) const { return index >= 0 && index < m_tabs.count(); }
+    bool validIndex(int index) const { return index >= 0 && index < tabs.count(); }
 
     QSize sizeHint() const;
     QSize minimumSizeHint() const;
 
     void addTab(const QIcon &icon, const QString &label, const QString &tt);
     void addSpacer(int size = 40);
-    void removeTab(int index) { delete m_tabs.takeAt(index); }
+    void removeTab(int index) { delete tabs.takeAt(index); }
     void setCurrentIndex(int index);
-    int currentIndex() const { return m_currentIndex; }
+    int currentIndex() const { return currentIdx; }
 
-    void setTabToolTip(int index, const QString& toolTip);
+    void setTabToolTip(int index, const QString &toolTip);
     QString tabToolTip(int index) const;
 
-    QIcon tabIcon(int index) const {return m_tabs.at(index)->icon; }
-    QString tabText(int index) const { return m_tabs.at(index)->text; }
-    int count() const {return m_tabs.count(); }
+    QIcon tabIcon(int index) const {return tabs.at(index)->icon; }
+    QString tabText(int index) const { return tabs.at(index)->text; }
+    int count() const {return tabs.count(); }
     QRect tabRect(int index) const;
-    bool showText() const { return m_showText; }
-    int iconSize() const { return m_iconSize; }
+    bool showText() const { return withText; }
+    int iconSize() const { return icnSize; }
     QSize tabSizeHint() const;
 
 Q_SIGNALS:
@@ -142,22 +144,23 @@ public Q_SLOTS:
     void emitCurrentIndex();
 
 private:
-    int m_currentIndex;
-    QList<FancyTab*> m_tabs;
-    QTimer m_triggerTimer;
-    bool m_showText : 1;
-    Pos m_pos : 2;
-    int m_iconSize;
+    int currentIdx;
+    QList<FancyTab*> tabs;
+    QTimer triggerTimer;
+    bool withText : 1;
+    Pos pos : 2;
+    int icnSize;
 };
 
-class FancyTabWidget : public QWidget {
+class FancyTabWidget : public QWidget
+{
     Q_OBJECT
 
 public:
     static void setup();
     static int iconSize(bool large=true);
 
-    FancyTabWidget(QWidget *parent, bool allowContext=true);
+    FancyTabWidget(QWidget *parent, bool allowContextMenu=true);
 
     enum Style {
         Side     = 0x0001,
@@ -177,79 +180,72 @@ public:
     };
 
     struct Item {
-        Item(const QIcon& icon, const QString& label, const QString &tt, bool enabled)
-            : type_(Type_Tab), tab_label_(label), tab_tooltip_(tt), tab_icon_(icon), spacer_size_(0), enabled_(enabled), index_(-1) {}
-        Item(int size) : type_(Type_Spacer), spacer_size_(size), enabled_(true), index_(-1) {}
+        Item(const QIcon &icon, const QString &label, const QString &tt, bool en)
+            : type(Type_Tab), tabLabel(label), tabTooltip(tt), tabIcon(icon), spacerSize(0), enabled(en), index(-1) {}
+        Item(int size) : type(Type_Spacer), spacerSize(size), enabled(true), index(-1) {}
 
         enum Type {
             Type_Tab,
             Type_Spacer
         };
 
-        Type type_;
-        QString tab_label_;
-        QString tab_tooltip_;
-        QIcon tab_icon_;
-        int spacer_size_;
-        bool enabled_;
-        int index_;
+        Type type;
+        QString tabLabel;
+        QString tabTooltip;
+        QIcon tabIcon;
+        int spacerSize;
+        bool enabled;
+        int index;
     };
 
-    void AddTab(QWidget *tab, const QIcon &icon, const QString &label, const QString &tt=QString(), bool enabled=true);
-    int current_index() const;
+    void addTab(QWidget *tab, const QIcon &icon, const QString &label, const QString &tt=QString(), bool enabled=true);
+    int currentIndex() const;
     QWidget * currentWidget() const;
-    bool isEnabled(int index) const { return index>=0 && index<items_.count() ? items_[index].enabled_ : false; }
+    bool isEnabled(int index) const { return index>=0 && index<items.count() ? items[index].enabled : false; }
     QWidget * widget(int index) const;
     int count() const;
     int visibleCount() const;
-    int style() const { return style_; }
+    int style() const { return styleSetting; }
     QSize tabSize() const;
-    void SetIcon(int index, const QIcon &icon);
-    void SetToolTip(int index, const QString &tt);
-    void Recreate();
+    void setIcon(int index, const QIcon &icon);
+    void setToolTip(int index, const QString &tt);
+    void recreate();
     void setHiddenPages(const QStringList &hidden);
     QStringList hiddenPages() const;
 
 public Q_SLOTS:
-    void SetCurrentIndex(int index);
+    void setCurrentIndex(int index);
     void setStyle(int s);
-    void ToggleTab(int tab, bool show);
+    void toggleTab(int tab, bool show);
 
 Q_SIGNALS:
-    void CurrentChanged(int index);
-    void styleChanged(int style);
-    void TabToggled(int index);
+    void currentChanged(int index);
+    void styleChanged(int styleSetting);
+    void tabToggled(int index);
     void configRequested();
 
 private Q_SLOTS:
-    void ShowWidget(int index);
+    void showWidget(int index);
 
 private:
-    void contextMenuEvent(QContextMenuEvent* e);
-    void MakeTabBar(QTabBar::Shape shape, bool text, bool icons, bool fancy);
-    int TabToIndex(int tab) const;
-    int IndexToTab(int index) const { return index>=0 && index<items_.count() ? items_[index].index_ : 0; }
+    void contextMenuEvent(QContextMenuEvent *e);
+    void makeTabBar(QTabBar::Shape shape, bool text, bool icons, bool fancy);
+    int tabToIndex(int tab) const;
+    int IndexToTab(int index) const { return index>=0 && index<items.count() ? items[index].index : 0; }
 
 private:
-    int style_;
-    QList<Item> items_;
-    QWidget* tab_bar_;
-    QStackedWidget* stack_;
-    QWidget* side_widget_;
-    QVBoxLayout* side_layout_;
-    QVBoxLayout* top_layout_;
-    QMenu* menu_;
-    QScopedPointer<FancyTabProxyStyle> proxy_style_;
-    bool allowContext_;
+    int styleSetting;
+    QList<Item> items;
+    QWidget *tabBar;
+    QStackedWidget *stack_;
+    QWidget *sideWidget;
+    QVBoxLayout *sideLayout;
+    QVBoxLayout *topLayout;
+    QMenu *menu;
+    QScopedPointer<FancyTabProxyStyle> proxyStyle;
+    bool allowContext;
 };
 
-} // namespace Internal
-} // namespace Core
-
 Q_DECLARE_METATYPE(QPropertyAnimation*);
-
-using Core::Internal::FancyTab;
-using Core::Internal::FancyTabBar;
-using Core::Internal::FancyTabWidget;
 
 #endif // FANCYTABWIDGET_H

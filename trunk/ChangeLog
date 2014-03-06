@@ -54,6 +54,7 @@
  8. If buddy of a checkbox or radio is clicked, then toggle check or radio.
  9. Disable context-view cancel actions until a job is created.
 10. When searching models, also search composer field.
+11. Fix enabling of "Initially collapse albums" in playlists settings tab.
 
 1.3.1
 -----

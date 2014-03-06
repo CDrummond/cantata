@@ -49,13 +49,10 @@
     encoded.
 
 - Lyrics
-  - Add support for reading via tags in mp4, flac, and ogg files.
+  - Add support for reading via tags in mp4 files.
 
 - PlayQueue
   - Move code out of MainWindow class.
-  - Add copy to device to context menu?
-    - Will need to be careful that songs are not from device
-    - Also, check that songs are not streams!
   - When adding songs to playqueue, if a filter is active (genre, or text) then
     we should only add songs that pass the filter
     - Affects; Artists, Albums, Folders (text only), Playlists, Online, Devices,
@@ -63,15 +60,12 @@
     - Would need to put the device/artist/album expansion code within proxy
       models
       - then we call filenames()/songs() on the proxy.
-    - NOT 100% sure. - as the items show #tracks, etc. If we are only going to
+    - NOT 100% sure - as the items show #tracks, etc. If we are only going to
       add so many tracks then this would also need to be updated. (As well as
       tooltips). Again, this would need to be in the proxy model.
 
 - Cue files
   - How to (reliably) determine duration of last track?
-
-- MPD Stream playback
-  - Playback functionality needs to handle URL change when connection changes.
 
 - General
   - Ratings (use KRatingWidget?)

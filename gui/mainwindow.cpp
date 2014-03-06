@@ -431,30 +431,30 @@ MainWindow::MainWindow(QWidget *parent)
     }
     layout=new QBoxLayout(QBoxLayout::TopToBottom, contextPage);
     layout->setContentsMargins(0, 0, 0, 0);
-    tabWidget->AddTab(playQueuePage, TAB_ACTION(showPlayQueueAction), playQueueInSidebar);
-    tabWidget->AddTab(libraryPage, TAB_ACTION(libraryTabAction), !hiddenPages.contains(libraryPage->metaObject()->className()));
-    tabWidget->AddTab(albumsPage, TAB_ACTION(albumsTabAction), !hiddenPages.contains(albumsPage->metaObject()->className()));
-    tabWidget->AddTab(folderPage, TAB_ACTION(foldersTabAction), !hiddenPages.contains(folderPage->metaObject()->className()));
-    tabWidget->AddTab(playlistsPage, TAB_ACTION(playlistsTabAction), !hiddenPages.contains(playlistsPage->metaObject()->className()));
+    tabWidget->addTab(playQueuePage, TAB_ACTION(showPlayQueueAction), playQueueInSidebar);
+    tabWidget->addTab(libraryPage, TAB_ACTION(libraryTabAction), !hiddenPages.contains(libraryPage->metaObject()->className()));
+    tabWidget->addTab(albumsPage, TAB_ACTION(albumsTabAction), !hiddenPages.contains(albumsPage->metaObject()->className()));
+    tabWidget->addTab(folderPage, TAB_ACTION(foldersTabAction), !hiddenPages.contains(folderPage->metaObject()->className()));
+    tabWidget->addTab(playlistsPage, TAB_ACTION(playlistsTabAction), !hiddenPages.contains(playlistsPage->metaObject()->className()));
     #ifdef ENABLE_DYNAMIC
-    tabWidget->AddTab(dynamicPage, TAB_ACTION(dynamicTabAction), !hiddenPages.contains(dynamicPage->metaObject()->className()));
+    tabWidget->addTab(dynamicPage, TAB_ACTION(dynamicTabAction), !hiddenPages.contains(dynamicPage->metaObject()->className()));
     #endif
     #ifdef ENABLE_STREAMS
-    tabWidget->AddTab(streamsPage, TAB_ACTION(streamsTabAction), !hiddenPages.contains(streamsPage->metaObject()->className()));
+    tabWidget->addTab(streamsPage, TAB_ACTION(streamsTabAction), !hiddenPages.contains(streamsPage->metaObject()->className()));
     streamsPage->setEnabled(!hiddenPages.contains(streamsPage->metaObject()->className()));
     #endif
     #ifdef ENABLE_ONLINE_SERVICES
-    tabWidget->AddTab(onlinePage, TAB_ACTION(onlineTabAction), !hiddenPages.contains(onlinePage->metaObject()->className()));
+    tabWidget->addTab(onlinePage, TAB_ACTION(onlineTabAction), !hiddenPages.contains(onlinePage->metaObject()->className()));
     onlinePage->setEnabled(!hiddenPages.contains(onlinePage->metaObject()->className()));
     #endif
     #ifdef ENABLE_DEVICES_SUPPORT
-    tabWidget->AddTab(devicesPage, TAB_ACTION(devicesTabAction), !hiddenPages.contains(devicesPage->metaObject()->className()));
+    tabWidget->addTab(devicesPage, TAB_ACTION(devicesTabAction), !hiddenPages.contains(devicesPage->metaObject()->className()));
     DevicesModel::self()->setEnabled(!hiddenPages.contains(devicesPage->metaObject()->className()));
     #endif
-    tabWidget->AddTab(searchPage, TAB_ACTION(searchTabAction), !hiddenPages.contains(searchPage->metaObject()->className()));
-    tabWidget->AddTab(contextPage, Icons::self()->infoSidebarIcon, i18n("Info"), songInfoAction->text(),
+    tabWidget->addTab(searchPage, TAB_ACTION(searchTabAction), !hiddenPages.contains(searchPage->metaObject()->className()));
+    tabWidget->addTab(contextPage, Icons::self()->infoSidebarIcon, i18n("Info"), songInfoAction->text(),
                       !hiddenPages.contains(contextPage->metaObject()->className()));
-    tabWidget->Recreate();
+    tabWidget->recreate();
     AlbumsModel::self()->setEnabled(!hiddenPages.contains(albumsPage->metaObject()->className()));
     folderPage->setEnabled(!hiddenPages.contains(folderPage->metaObject()->className()));
     setPlaylistsEnabled(!hiddenPages.contains(playlistsPage->metaObject()->className()));
@@ -462,13 +462,13 @@ MainWindow::MainWindow(QWidget *parent)
     if (playQueueInSidebar) {
         tabToggled(PAGE_PLAYQUEUE);
     } else {
-        tabWidget->SetCurrentIndex(PAGE_LIBRARY);
+        tabWidget->setCurrentIndex(PAGE_LIBRARY);
     }
 
     if (contextInSidebar) {
         tabToggled(PAGE_CONTEXT);
     } else {
-        tabWidget->ToggleTab(PAGE_CONTEXT, false);
+        tabWidget->toggleTab(PAGE_CONTEXT, false);
     }
     initSizes();
 
@@ -903,13 +903,13 @@ MainWindow::MainWindow(QWidget *parent)
     QString page=Settings::self()->page();
     for (int i=0; i<tabWidget->count(); ++i) {
         if (tabWidget->widget(i)->metaObject()->className()==page) {
-            tabWidget->SetCurrentIndex(i);
+            tabWidget->setCurrentIndex(i);
             break;
         }
     }
 
-    connect(tabWidget, SIGNAL(CurrentChanged(int)), this, SLOT(currentTabChanged(int)));
-    connect(tabWidget, SIGNAL(TabToggled(int)), this, SLOT(tabToggled(int)));
+    connect(tabWidget, SIGNAL(currentChanged(int)), this, SLOT(currentTabChanged(int)));
+    connect(tabWidget, SIGNAL(tabToggled(int)), this, SLOT(tabToggled(int)));
     connect(tabWidget, SIGNAL(configRequested()), this, SLOT(showSidebarPreferencesPage()));
 
     readSettings();
@@ -926,7 +926,7 @@ MainWindow::MainWindow(QWidget *parent)
         move(p.isNull() ? QPoint(96, 96) : p);
     }
 
-    currentTabChanged(tabWidget->current_index());
+    currentTabChanged(tabWidget->currentIndex());
 
     if (Settings::self()->firstRun() && MPDConnection::self()->isConnected()) {
         mpdConnectionStateChanged(true);
@@ -1083,7 +1083,7 @@ void MainWindow::mpdConnectionStateChanged(bool connected)
             emit outputs();
             if (CS_Init!=connectedState) {
                 loaded=(loaded&TAB_STREAMS);
-                currentTabChanged(tabWidget->current_index());
+                currentTabChanged(tabWidget->currentIndex());
             }
             connectedState=CS_Connected;
             StdActions::self()->addWithPriorityAction->setVisible(MPDConnection::self()->canUsePriority());
@@ -1397,7 +1397,7 @@ void MainWindow::controlConnectionsMenu(bool enable)
 void MainWindow::controlDynamicButton()
 {
     #ifdef ENABLE_DYNAMIC
-    stopDynamicButton->setVisible(dynamicLabel->isVisible() && PAGE_DYNAMIC!=tabWidget->current_index());
+    stopDynamicButton->setVisible(dynamicLabel->isVisible() && PAGE_DYNAMIC!=tabWidget->currentIndex());
     playQueueModel.enableUndo(!Dynamic::self()->isRunning());
     #endif
 }
@@ -2338,35 +2338,35 @@ void MainWindow::toggleMonoIcons()
     if (Settings::self()->monoSidebarIcons()!=Icons::self()->monoSidebarIcons()) {
         Icons::self()->initSidebarIcons();
         showPlayQueueAction->setIcon(Icons::self()->playqueueIcon);
-        tabWidget->SetIcon(PAGE_PLAYQUEUE, showPlayQueueAction->icon());
+        tabWidget->setIcon(PAGE_PLAYQUEUE, showPlayQueueAction->icon());
         libraryTabAction->setIcon(Icons::self()->artistsIcon);
-        tabWidget->SetIcon(PAGE_LIBRARY, libraryTabAction->icon());
+        tabWidget->setIcon(PAGE_LIBRARY, libraryTabAction->icon());
         albumsTabAction->setIcon(Icons::self()->albumsIcon);
-        tabWidget->SetIcon(PAGE_ALBUMS, albumsTabAction->icon());
+        tabWidget->setIcon(PAGE_ALBUMS, albumsTabAction->icon());
         foldersTabAction->setIcon(Icons::self()->foldersIcon);
-        tabWidget->SetIcon(PAGE_FOLDERS, foldersTabAction->icon());
+        tabWidget->setIcon(PAGE_FOLDERS, foldersTabAction->icon());
         playlistsTabAction->setIcon(Icons::self()->playlistsIcon);
-        tabWidget->SetIcon(PAGE_PLAYLISTS, playlistsTabAction->icon());
+        tabWidget->setIcon(PAGE_PLAYLISTS, playlistsTabAction->icon());
         #ifdef ENABLE_DYNAMIC
         dynamicTabAction->setIcon(Icons::self()->dynamicIcon);
-        tabWidget->SetIcon(PAGE_DYNAMIC, dynamicTabAction->icon());
+        tabWidget->setIcon(PAGE_DYNAMIC, dynamicTabAction->icon());
         #endif
         #ifdef ENABLE_STREAMS
         streamsTabAction->setIcon(Icons::self()->streamsIcon);
-        tabWidget->SetIcon(PAGE_STREAMS, streamsTabAction->icon());
+        tabWidget->setIcon(PAGE_STREAMS, streamsTabAction->icon());
         #endif
         #ifdef ENABLE_ONLINE_SERVICES
         onlineTabAction->setIcon(Icons::self()->onlineIcon);
-        tabWidget->SetIcon(PAGE_ONLINE, onlineTabAction->icon());
+        tabWidget->setIcon(PAGE_ONLINE, onlineTabAction->icon());
         #endif
-        tabWidget->SetIcon(PAGE_CONTEXT, Icons::self()->infoSidebarIcon);
+        tabWidget->setIcon(PAGE_CONTEXT, Icons::self()->infoSidebarIcon);
         #ifdef ENABLE_DEVICES_SUPPORT
         devicesTabAction->setIcon(Icons::self()->devicesIcon);
-        tabWidget->SetIcon(PAGE_DEVICES, devicesTabAction->icon());
+        tabWidget->setIcon(PAGE_DEVICES, devicesTabAction->icon());
         #endif
         searchTabAction->setIcon(Icons::self()->searchTabIcon);
-        tabWidget->SetIcon(PAGE_SEARCH, searchTabAction->icon());
-        tabWidget->Recreate();
+        tabWidget->setIcon(PAGE_SEARCH, searchTabAction->icon());
+        tabWidget->recreate();
     }
 }
 
@@ -2640,25 +2640,25 @@ void MainWindow::updateNextTrack(int nextTrackId)
 void MainWindow::updateActionToolTips()
 {
     ActionCollection::get()->updateToolTips();
-    tabWidget->SetToolTip(PAGE_PLAYQUEUE, showPlayQueueAction->toolTip());
-    tabWidget->SetToolTip(PAGE_LIBRARY, libraryTabAction->toolTip());
-    tabWidget->SetToolTip(PAGE_ALBUMS, albumsTabAction->toolTip());
-    tabWidget->SetToolTip(PAGE_FOLDERS, foldersTabAction->toolTip());
-    tabWidget->SetToolTip(PAGE_PLAYLISTS, playlistsTabAction->toolTip());
+    tabWidget->setToolTip(PAGE_PLAYQUEUE, showPlayQueueAction->toolTip());
+    tabWidget->setToolTip(PAGE_LIBRARY, libraryTabAction->toolTip());
+    tabWidget->setToolTip(PAGE_ALBUMS, albumsTabAction->toolTip());
+    tabWidget->setToolTip(PAGE_FOLDERS, foldersTabAction->toolTip());
+    tabWidget->setToolTip(PAGE_PLAYLISTS, playlistsTabAction->toolTip());
     #ifdef ENABLE_DYNAMIC
-    tabWidget->SetToolTip(PAGE_DYNAMIC, dynamicTabAction->toolTip());
+    tabWidget->setToolTip(PAGE_DYNAMIC, dynamicTabAction->toolTip());
     #endif
     #ifdef ENABLE_STREAMS
-    tabWidget->SetToolTip(PAGE_STREAMS, streamsTabAction->toolTip());
+    tabWidget->setToolTip(PAGE_STREAMS, streamsTabAction->toolTip());
     #endif
     #ifdef ENABLE_ONLINE_SERVICES
-    tabWidget->SetToolTip(PAGE_ONLINE, onlineTabAction->toolTip());
+    tabWidget->setToolTip(PAGE_ONLINE, onlineTabAction->toolTip());
     #endif
     #ifdef ENABLE_DEVICES_SUPPORT
-    tabWidget->SetToolTip(PAGE_DEVICES, devicesTabAction->toolTip());
+    tabWidget->setToolTip(PAGE_DEVICES, devicesTabAction->toolTip());
     #endif
-    tabWidget->SetToolTip(PAGE_SEARCH, searchTabAction->toolTip());
-    tabWidget->SetToolTip(PAGE_CONTEXT, songInfoAction->toolTip());
+    tabWidget->setToolTip(PAGE_SEARCH, searchTabAction->toolTip());
+    tabWidget->setToolTip(PAGE_CONTEXT, songInfoAction->toolTip());
 }
 
 void MainWindow::setPlaylistsEnabled(bool e)
@@ -2720,11 +2720,11 @@ void MainWindow::toggleContext()
                (MPDState_Stopped==MPDStatus::self()->state() && songInfoAction->isChecked()) ) {
             songInfoAction->trigger();
          }
-    } else if (MPDState_Playing==MPDStatus::self()->state() && PAGE_CONTEXT!=tabWidget->current_index()) {
+    } else if (MPDState_Playing==MPDStatus::self()->state() && PAGE_CONTEXT!=tabWidget->currentIndex()) {
         int pp=prevPage;
         showTab(PAGE_CONTEXT);
         prevPage=pp;
-    } else if (MPDState_Stopped==MPDStatus::self()->state() && PAGE_CONTEXT==tabWidget->current_index() && -1!=prevPage) {
+    } else if (MPDState_Stopped==MPDStatus::self()->state() && PAGE_CONTEXT==tabWidget->currentIndex() && -1!=prevPage) {
         showTab(prevPage);
     }
 }

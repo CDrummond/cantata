@@ -212,9 +212,9 @@ void TrayItem::songChanged(const Song &song, bool isPlaying)
                 if (CurrentCover::self()->isValid() && !CurrentCover::self()->image().isNull()) {
                     trayItem->setToolTipIconByPixmap(QPixmap::fromImage(CurrentCover::self()->image()));
                 }
-                #elif defined Q_OS_WIN
+                #elif defined Q_OS_WIN || !defined QT_QTDBUS_FOUND
                 trayItem->setToolTip(i18n("Cantata")+"\n\n"+text);
-                // The pure Qt implementation needs both, the tray icon and the setting checked.
+                // The pure Qt implementation needs both the tray icon and the setting checked.
                 if (Settings::self()->showPopups() && isPlaying) {
                     trayItem->showMessage(i18n("Cantata"), text, QSystemTrayIcon::Information, 5000);
                 }

@@ -35,7 +35,7 @@
 21. Most songs will be less than 1 hr long, so by default we only need to
     reserve space for -MM:SS at each side of position slider. If song duration
     is longer than 1hr, then this is increased to -H:MM:SS
-22. Show numbe rof tracks under playqueue, even if total time is 0.
+22. Show number of tracks under playqueue, even if total time is 0.
 
 1.3.2
 -----

@@ -486,8 +486,12 @@ void GroupedView::setModel(QAbstractItemModel *model)
 {
     TreeView::setModel(model);
     if (model) {
+        if (startClosed) {
+            updateCollectionRows();
+        }
         connect(Covers::self(), SIGNAL(coverRetrieved(const Song &)), this, SLOT(coverRetrieved(const Song &)));
     } else {
+        controlledAlbums.clear();
         disconnect(Covers::self(), SIGNAL(coverRetrieved(const Song &)), this, SLOT(coverRetrieved(const Song &)));
     }
 }
@@ -522,6 +526,9 @@ void GroupedView::setStartClosed(bool sc)
     }
     controlledAlbums.clear();
     startClosed=sc;
+    if (startClosed) {
+        updateCollectionRows();
+    }
 }
 
 void GroupedView::updateRows(qint32 row, quint16 curAlbum, bool scroll, const QModelIndex &parent)

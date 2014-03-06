@@ -17,6 +17,8 @@
  9. Disable context-view cancel actions until a job is created.
 10. When searching models, also search composer field.
 11. Fix enabling of "Initially collapse albums" in playlists settings tab.
+12. Fix grouped playlist view initial state when set to initially collapse
+    albums.
 
 1.3.1
 -----

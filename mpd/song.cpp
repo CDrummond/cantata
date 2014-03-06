@@ -568,7 +568,7 @@ QString Song::describe(bool withMarkup) const
             : title.isEmpty()
                 ? albumText
                 : artist.isEmpty()
-                    ? i18nc("Song on Album", "%1 on %2", title, album)
+                    ? i18nc("Song on Album", "%1 on %2", title, albumText)
                     : i18nc("Song by Artist on Album", "%1 by %2 on %3", title, artist, albumText);
 }
 

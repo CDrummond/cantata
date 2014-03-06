@@ -336,6 +336,8 @@ void AudioCdDevice::copySongToResult(int status)
     }
 }
 
+static const int constBytesPerSecond=44100*4;
+
 void AudioCdDevice::setDetails(const CdAlbum &a)
 {
     bool differentAlbum=album!=a.name || artist!=a.artist;
@@ -349,8 +351,9 @@ void AudioCdDevice::setDetails(const CdAlbum &a)
     disc=a.disc;
     update=new MusicLibraryItemRoot();
     int totalDuration=0;
-    foreach (const Song &s, a.tracks) {
+    foreach (Song s, a.tracks) {
         totalDuration+=s.time;
+        s.size=s.time*constBytesPerSecond;
         update->append(new MusicLibraryItemSong(s, update));
     }
     setStatusMessage(QString());

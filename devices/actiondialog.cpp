@@ -251,7 +251,9 @@ void ActionDialog::copy(const QString &srcUdi, const QString &dstUdi, const QLis
     #endif
     foreach (const Song &s, songsToAction) {
         quint32 size=s.size;
-        if (0==size) {
+        if (sourceIsAudioCd) {
+            size/=18; // Just guess at a compression ratio... ~18x ~=80kbps MP3
+        } else if (0==size) {
             if (srcUdi.isEmpty()) {
                 size=QFileInfo(MPDConnection::self()->getDetails().dir+s.file).size();
             } else if (QFile::exists(dev->path()+s.file)) { // FS device...

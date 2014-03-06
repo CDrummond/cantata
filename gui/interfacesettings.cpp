@@ -145,6 +145,7 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     connect(libraryCoverSize, SIGNAL(currentIndexChanged(int)), SLOT(libraryCoverSizeChanged()));
     connect(albumsView, SIGNAL(currentIndexChanged(int)), SLOT(albumsViewChanged()));
     connect(albumsCoverSize, SIGNAL(currentIndexChanged(int)), SLOT(albumsCoverSizeChanged()));
+    connect(playlistsView, SIGNAL(currentIndexChanged(int)), SLOT(playlistsViewChanged()));
     connect(playQueueGrouped, SIGNAL(currentIndexChanged(int)), SLOT(playQueueGroupedChanged()));
     connect(systemTrayCheckBox, SIGNAL(toggled(bool)), minimiseOnClose, SLOT(setEnabled(bool)));
     connect(systemTrayCheckBox, SIGNAL(toggled(bool)), SLOT(enableStartupState()));
@@ -228,7 +229,7 @@ void InterfaceSettings::load()
     playQueueConfirmClear->setChecked(Settings::self()->playQueueConfirmClear());
     albumsViewChanged();
     albumsCoverSizeChanged();
-    playListsStyleChanged();
+    playlistsViewChanged();
     playQueueGroupedChanged();
     forceSingleClick->setChecked(Settings::self()->forceSingleClick());
     systemTrayCheckBox->setChecked(Settings::self()->useSystemTray());
@@ -475,7 +476,7 @@ void InterfaceSettings::playQueueGroupedChanged()
     playQueueStartClosed->setEnabled(constPlayQueueGrouped==playQueueGrouped->currentIndex());
 }
 
-void InterfaceSettings::playListsStyleChanged()
+void InterfaceSettings::playlistsViewChanged()
 {
     bool grouped=getValue(playlistsView)==ItemView::Mode_GroupedTree;
     playListsStartClosed->setEnabled(grouped);

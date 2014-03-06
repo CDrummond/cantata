@@ -23,6 +23,7 @@
     previously scanned, and its contents cached.
 14. When copying from a CD, check that we have enough space for track that was
     encoded with a 1:18 ratio. Just a sanity check really.
+15. Fix song notification mem-leak (Linux only).
 
 1.3.1
 -----

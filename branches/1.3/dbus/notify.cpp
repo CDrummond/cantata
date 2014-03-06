@@ -113,6 +113,7 @@ void Notify::show(const QString &title, const QString &text, const QImage &img)
 void Notify::callFinished(QDBusPendingCallWatcher *watcher)
 {
     QDBusPendingReply<uint> reply = *watcher;
+    watcher->deleteLater();
     if (reply.isError()) {
         return;
     }
@@ -123,4 +124,3 @@ void Notify::callFinished(QDBusPendingCallWatcher *watcher)
         lastTime = QDateTime::currentDateTime();
     }
 }
-

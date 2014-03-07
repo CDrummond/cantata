@@ -129,7 +129,7 @@ PlayQueueView::~PlayQueueView()
 {
 }
 
-bool PlayQueueView::readConfig()
+void PlayQueueView::readConfig()
 {
     int origOpacity=backgroundOpacity;
     int origBlur=backgroundBlur;
@@ -150,13 +150,19 @@ bool PlayQueueView::readConfig()
             curentCover=QImage();
             curentBackground=QPixmap();
             view()->viewport()->update();
+            if (!CurrentCover::self()->image().isNull()) {
+                setImage(CurrentCover::self()->image());
+            }
         }
         break;
     case BI_Cover:
         if (BI_None==origType) {
             updatePalette();
         }
-        return origType!=backgroundImageType || backgroundOpacity!=origOpacity || backgroundBlur!=origBlur;
+        if ((origType!=backgroundImageType || backgroundOpacity!=origOpacity || backgroundBlur!=origBlur) && !CurrentCover::self()->image().isNull()) {
+            setImage(CurrentCover::self()->image());
+        }
+        break;
    case BI_Custom:
         if (BI_None==origType) {
             updatePalette();
@@ -166,7 +172,6 @@ bool PlayQueueView::readConfig()
         }
         break;
     }
-    return false;
 }
 
 void PlayQueueView::saveConfig()

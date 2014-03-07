@@ -1533,9 +1533,7 @@ void MainWindow::updateSettings()
 
     bool wasAutoExpand=playQueue->isAutoExpand();
     bool wasStartClosed=playQueue->isStartClosed();
-    if (playQueue->readConfig() && CurrentCover::self()->isValid()) {
-        playQueue->setImage(CurrentCover::self()->image());
-    }
+    playQueue->readConfig();
 
     if (Settings::self()->playQueueGrouped()!=playQueue->isGrouped() ||
         (playQueue->isGrouped() && (wasAutoExpand!=playQueue->isAutoExpand() || wasStartClosed!=playQueue->isStartClosed())) ) {

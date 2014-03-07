@@ -462,18 +462,14 @@ void ContextWidget::readConfig()
     switch (backdropType) {
     case PlayQueueView::BI_None:
         if (origType!=backdropType && isVisible() && !currentArtist.isEmpty()) {
-            updateArtist=currentArtist;
-            currentArtist.clear();
-            updateBackdrop();
+            updateBackdrop(true);
             QWidget::update();
         }
         break;
     case PlayQueueView::BI_Cover:
         if (origType!=backdropType || backdropOpacity!=origOpacity || backdropBlur!=origBlur) {
             if (isVisible() && !currentArtist.isEmpty()) {
-                updateArtist=currentArtist;
-                currentArtist.clear();
-                updateBackdrop();
+                updateBackdrop(true);
                 QWidget::update();
             }
         }
@@ -692,10 +688,10 @@ void ContextWidget::cancel()
     }
 }
 
-void ContextWidget::updateBackdrop()
+void ContextWidget::updateBackdrop(bool force)
 {
-    DBUG << updateArtist << currentArtist << currentSong.file;
-    if (updateArtist==currentArtist) {
+    DBUG << updateArtist << currentArtist << currentSong.file << force;
+    if (!force && updateArtist==currentArtist) {
         return;
     }
     currentArtist=updateArtist;

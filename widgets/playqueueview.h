@@ -83,7 +83,7 @@ public:
     virtual ~PlayQueueView();
 
     // Returns true if background cover needs to be updated...
-    bool readConfig();
+    void readConfig();
     void saveConfig();
     void initHeader() { treeView->initHeader(); }
     void saveHeader();

@@ -150,6 +150,7 @@ private:
     bool darkBackground;
     bool useFanArt;
     bool albumCoverBackdrop;
+    bool oldIsAlbumCoverBackdrop;
     Song currentSong;
     #ifdef SCALE_CONTEXT_BGND
     QImage currentImage;

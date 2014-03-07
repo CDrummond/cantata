@@ -386,6 +386,7 @@ ContextWidget::ContextWidget(QWidget *parent)
 //    , useHtBackdrops(0!=constHtbApiKey.latin1())
     , useFanArt(0!=constFanArtApiKey.latin1())
     , albumCoverBackdrop(false)
+    , oldIsAlbumCoverBackdrop(false)
     , fadeValue(0)
     , isWide(false)
     , stack(0)
@@ -670,6 +671,11 @@ void ContextWidget::paintEvent(QPaintEvent *e)
             if (!qFuzzyCompare(fadeValue, qreal(0.0))) {
                 p.setOpacity(1.0-fadeValue);
             }
+            #ifdef SCALE_CONTEXT_BGND
+            if (!oldIsAlbumCoverBackdrop && oldBackdrop.height()<height()) {
+                p.drawPixmap(0, (height()-oldBackdrop.height())/2, oldBackdrop);
+            } else
+            #endif
             p.fillRect(r, QBrush(oldBackdrop));
         }
         if (!currentBackdrop.isNull()) {
@@ -703,6 +709,7 @@ void ContextWidget::setFade(float value)
         fadeValue = value;
         if (qFuzzyCompare(fadeValue, qreal(1.0))) {
             oldBackdrop=QPixmap();
+            oldIsAlbumCoverBackdrop=false;
         }
         QWidget::update();
     }
@@ -713,6 +720,7 @@ void ContextWidget::updateImage(QImage img, bool created)
     DBUG << img.isNull() << currentBackdrop.isNull();
 //    backdropText=currentArtist;
     oldBackdrop=currentBackdrop;
+    oldIsAlbumCoverBackdrop=albumCoverBackdrop;
     currentBackdrop=QPixmap();
     animator.stop();
     if (img.isNull()) {

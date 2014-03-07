@@ -131,7 +131,7 @@ private:
     void resizeEvent(QResizeEvent *e);
     bool eventFilter(QObject *o, QEvent *e);
     void cancel();
-    void updateBackdrop();
+    void updateBackdrop(bool force=false);
     void getBackdrop();
     void getFanArtBackdrop();
     void getMusicbrainzId(const QString &artist);

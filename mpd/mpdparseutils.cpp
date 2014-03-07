@@ -61,25 +61,85 @@ void MPDParseUtils::enableDebug()
     debugEnabled=true;
 }
 
+static const QByteArray constTimeKey("Time: ");
+static const QByteArray constAlbumKey("Album: ");
+static const QByteArray constArtistKey("Artist: ");
+static const QByteArray constAlbumArtistKey("AlbumArtist: ");
+static const QByteArray constComposerKey("Composer: ");
+static const QByteArray constTitleKey("Title: ");
+static const QByteArray constTrackKey("Track: ");
+static const QByteArray constIdKey("Id: ");
+static const QByteArray constDiscKey("Disc: ");
+static const QByteArray constDateKey("Date: ");
+static const QByteArray constGenreKey("Genre: ");
+static const QByteArray constNameKey("Name: ");
+static const QByteArray constPriorityKey("Prio: ");
+static const QByteArray constFileKey("file: ");
+static const QByteArray constPlaylistKey("playlist: ");
+static const QByteArray constDirectoryKey("directory: ");
+static const QByteArray constOutputIdKey("outputid: ");
+static const QByteArray constOutputNameKey("outputname: ");
+static const QByteArray constOutputEnabledKey("outputenabled: ");
+static const QByteArray constChangePosKey("cpos");
+static const QByteArray constChangeIdKey("Id");
+static const QByteArray constLastModifiedKey("Last-Modified: ");
+static const QByteArray constStatsArtistsKey("artists: ");
+static const QByteArray constStatsAlbumsKey("albums: ");
+static const QByteArray constStatsSongsKey("songs: ");
+static const QByteArray constStatsUptimeKey("uptime: ");
+static const QByteArray constStatsPlaytimeKey("playtime: ");
+static const QByteArray constStatsDbPlaytimeKey("db_playtime: ");
+static const QByteArray constStatsDbUpdateKey("db_update: ");
+
+static const QByteArray constStatusVolumeKey("volume: ");
+static const QByteArray constStatusConsumeKey("consume: ");
+static const QByteArray constStatusRepeatKey("repeat: ");
+static const QByteArray constStatusSingleKey("single: ");
+static const QByteArray constStatusRandomKey("random: ");
+static const QByteArray constStatusPlaylistKey("playlist: ");
+static const QByteArray constStatusPlaylistLengthKey("playlistlength: ");
+static const QByteArray constStatusCrossfadeKey("xfade: ");
+static const QByteArray constStatusStateKey("state: ");
+static const QByteArray constStatusSongKey("song: ");
+static const QByteArray constStatusSongIdKey("songid: ");
+static const QByteArray constStatusNextSongKey("nextsong: ");
+static const QByteArray constStatusNextSongIdKey("nextsongid: ");
+static const QByteArray constStatusTimeKey("time: ");
+static const QByteArray constStatusBitrateKey("bitrate: ");
+static const QByteArray constStatusAudioKey("audio: ");
+static const QByteArray constStatusUpdatingDbKey("updating_db: ");
+static const QByteArray constStatusErrorKey("error: ");
+
+static const QByteArray constOkValue("OK");
+static const QByteArray constSetValue("1");
+static const QByteArray constPlayValue("play");
+static const QByteArray constStopValue("stop");
+
+static const QString constProtocol=QLatin1String("://");
+static const QString constHttpProtocol=QLatin1String("http://");
+
+static inline bool toBool(const QByteArray &v) { return v==constSetValue; }
+
 QList<Playlist> MPDParseUtils::parsePlaylists(const QByteArray &data)
 {
     QList<Playlist> playlists;
     QList<QByteArray> lines = data.split('\n');
-
     int amountOfLines = lines.size();
 
     for (int i = 0; i < amountOfLines; i++) {
-        QString line(QString::fromUtf8(lines.at(i)));
+        const QByteArray &line=lines.at(i);
 
-        if (line.startsWith(QLatin1String("playlist:"))) {
+        if (line.startsWith(constPlaylistKey)) {
             Playlist playlist;
-            playlist.name = line.mid(10);
+            playlist.name = QString::fromUtf8(line.mid(constPlaylistKey.length()));
             i++;
-            line=QString::fromUtf8(lines.at(i));
 
-            if (line.startsWith(QLatin1String("Last-Modified"))) {
-                playlist.lastModified=QDateTime::fromString(line.mid(15), Qt::ISODate);
-                playlists.append(playlist);
+            if (i < amountOfLines) {
+                const QByteArray &line=lines.at(i);
+                if (line.startsWith(constLastModifiedKey)) {
+                    playlist.lastModified=QDateTime::fromString(QString::fromUtf8(line.mid(constLastModifiedKey.length())), Qt::ISODate);
+                    playlists.append(playlist);
+                }
             }
         }
     }
@@ -91,26 +151,22 @@ MPDStatsValues MPDParseUtils::parseStats(const QByteArray &data)
 {
     MPDStatsValues v;
     QList<QByteArray> lines = data.split('\n');
-    QList<QByteArray> tokens;
-    int amountOfLines = lines.size();
 
-    for (int i = 0; i < amountOfLines; i++) {
-        tokens = lines.at(i).split(':');
-
-        if (tokens.at(0) == "artists") {
-            v.artists=tokens.at(1).toUInt();
-        } else if (tokens.at(0) == "albums") {
-            v.albums=tokens.at(1).toUInt();
-        } else if (tokens.at(0) == "songs") {
-            v.songs=tokens.at(1).toUInt();
-        } else if (tokens.at(0) == "uptime") {
-            v.uptime=tokens.at(1).toUInt();
-        } else if (tokens.at(0) == "playtime") {
-            v.playtime=tokens.at(1).toUInt();
-        } else if (tokens.at(0) == "db_playtime") {
-            v.dbPlaytime=tokens.at(1).toUInt();
-        } else if (tokens.at(0) == "db_update") {
-            v.dbUpdate.setTime_t(tokens.at(1).toUInt());
+    foreach (const QByteArray &line, lines) {
+        if (line.startsWith(constStatsArtistsKey)) {
+            v.artists=line.mid(constStatsArtistsKey.length()).toUInt();
+        } else if (line.startsWith(constStatsAlbumsKey)) {
+            v.albums=line.mid(constStatsAlbumsKey.length()).toUInt();
+        } else if (line.startsWith(constStatsSongsKey)) {
+            v.songs=line.mid(constStatsSongsKey.length()).toUInt();
+        } else if (line.startsWith(constStatsUptimeKey)) {
+            v.uptime=line.mid(constStatsUptimeKey.length()).toUInt();
+        } else if (line.startsWith(constStatsPlaytimeKey)) {
+            v.playtime=line.mid(constStatsPlaytimeKey.length()).toUInt();
+        } else if (line.startsWith(constStatsDbPlaytimeKey)) {
+            v.dbPlaytime=line.mid(constStatsDbPlaytimeKey.length()).toUInt();
+        } else if (line.startsWith(constStatsDbUpdateKey)) {
+            v.dbUpdate.setTime_t(line.mid(constStatsDbUpdateKey.length()).toUInt());
         }
     }
     return v;
@@ -120,67 +176,59 @@ MPDStatusValues MPDParseUtils::parseStatus(const QByteArray &data)
 {
     MPDStatusValues v;
     QList<QByteArray> lines = data.split('\n');
-    QList<QByteArray> tokens;
-    int amountOfLines = lines.size();
 
-    for (int i = 0; i < amountOfLines; i++) {
-        tokens = lines.at(i).split(':');
-
-        if (tokens.at(0) == "volume") {
-            v.volume=tokens.at(1).toInt();
-        } else if (tokens.at(0) == "consume") {
-            v.consume=tokens.at(1).trimmed() == "1";
-        } else if (tokens.at(0) == "repeat") {
-            v.repeat=tokens.at(1).trimmed() == "1";
-        } else if (tokens.at(0) == "single") {
-            v.single=tokens.at(1).trimmed() == "1";
-        } else if (tokens.at(0) == "random") {
-            v.random=tokens.at(1).trimmed() == "1";
-        } else if (tokens.at(0) == "playlist") {
-            v.playlist=tokens.at(1).toUInt();
-        } else if (tokens.at(0) == "playlistlength") {
-            v.playlistLength=tokens.at(1).toInt();
-        } else if (tokens.at(0) == "xfade") {
-            v.crossFade=tokens.at(1).toInt();
-        } else if (tokens.at(0) == "state") {
-            if (tokens.at(1).contains("play")) {
+    foreach (const QByteArray &line, lines) {
+        if (line.startsWith(constStatusVolumeKey)) {
+            v.volume=line.mid(constStatusVolumeKey.length()).toInt();
+        } else if (line.startsWith(constStatusConsumeKey)) {
+            v.consume=toBool(line.mid(constStatusConsumeKey.length()));
+        } else if (line.startsWith(constStatusRepeatKey)) {
+            v.repeat=toBool(line.mid(constStatusRepeatKey.length()));
+        } else if (line.startsWith(constStatusSingleKey)) {
+            v.single=toBool(line.mid(constStatusSingleKey.length()));
+        } else if (line.startsWith(constStatusRandomKey)) {
+            v.random=toBool(line.mid(constStatusRandomKey.length()));
+        } else if (line.startsWith(constStatusPlaylistKey)) {
+            v.playlist=line.mid(constStatusPlaylistKey.length()).toUInt();
+        } else if (line.startsWith(constStatusPlaylistLengthKey)) {
+            v.playlistLength=line.mid(constStatusPlaylistLengthKey.length()).toInt();
+        } else if (line.startsWith(constStatusCrossfadeKey)) {
+            v.crossFade=line.mid(constStatusCrossfadeKey.length()).toInt();
+        } else if (line.startsWith(constStatusStateKey)) {
+            QByteArray value=line.mid(constStatusStateKey.length());
+            if (constPlayValue==value) {
                 v.state=MPDState_Playing;
-            } else if (tokens.at(1).contains("stop")) {
+            } else if (constStopValue==value) {
                 v.state=MPDState_Stopped;
             } else {
                 v.state=MPDState_Paused;
             }
-        } else if (tokens.at(0) == "song") {
-            v.song=tokens.at(1).toInt();
-        } else if (tokens.at(0) == "songid") {
-            v.songId=tokens.at(1).toInt();
-        } else if (tokens.at(0) == "nextsong") {
-            v.nextSong=tokens.at(1).toInt();
-        } else if (tokens.at(0) == "nextsongid") {
-            v.nextSongId=tokens.at(1).toInt();
-        } else if (tokens.at(0) == "time") {
-            v.timeElapsed=tokens.at(1).toInt();
-            v.timeTotal=tokens.at(2).toInt();
-        } else if (tokens.at(0) == "bitrate") {
-            v.bitrate=tokens.at(1).toUInt();
-        } else if (tokens.at(0) == "audio") {
-        } else if (tokens.at(0) == "updating_db") {
-            v.updatingDb=tokens.at(1).toInt();
-        } else if (tokens.at(0) == "error") {
-            // For errors, we dont really want to split by ':' !!!
-            QString line=lines.at(i);
-            int pos=line.indexOf(": ");
-            if (pos>0) {
-                v.error=line.mid(pos+2);
-            } else {
-                v.error=tokens.at(1);
+        } else if (line.startsWith(constStatusSongKey)) {
+            v.song=line.mid(constStatusSongKey.length()).toInt();
+        } else if (line.startsWith(constStatusSongIdKey)) {
+            v.songId=line.mid(constStatusSongIdKey.length()).toInt();
+        } else if (line.startsWith(constStatusNextSongKey)) {
+            v.nextSong=line.mid(constStatusNextSongKey.length()).toInt();
+        } else if (line.startsWith(constStatusNextSongIdKey)) {
+            v.nextSongId=line.mid(constStatusNextSongIdKey.length()).toInt();
+        } else if (line.startsWith(constStatusTimeKey)) {
+            QList<QByteArray> values=line.mid(constStatusTimeKey.length()).split(':');
+            if (values.length()>1) {
+                v.timeElapsed=values.at(0).toInt();
+                v.timeTotal=values.at(1).toInt();
             }
-
+        } else if (line.startsWith(constStatusBitrateKey)) {
+            v.bitrate=line.mid(constStatusBitrateKey.length()).toUInt();
+        } else if (line.startsWith(constStatusAudioKey)) {
+        } else if (line.startsWith(constStatusUpdatingDbKey)) {
+            v.updatingDb=line.mid(constStatusUpdatingDbKey.length()).toInt();
+        } else if (line.startsWith(constStatusErrorKey)) {
+            v.error=QString::fromUtf8(line.mid(constStatusErrorKey.length()));
             // If we are reporting a stream error, remove any stream name added by Cantata...
-            int start=v.error.indexOf(QLatin1String("\"http://"));
+            int start=v.error.indexOf(constHttpProtocol);
             if (start>0) {
                 int end=v.error.indexOf(QChar('\"'), start+6);
-                pos=v.error.indexOf(QChar('#'), start+6);
+                int pos=v.error.indexOf(QChar('#'), start+6);
                 if (pos>start && pos<end) {
                     v.error=v.error.left(pos)+v.error.mid(end);
                 }
@@ -203,59 +251,47 @@ static QSet<QString> constStdProtocols=QSet<QString>() << QLatin1String("http://
                                                        << QLatin1String("rtmpt://")
                                                        << QLatin1String("rtmps://");
 
-Song MPDParseUtils::parseSong(const QByteArray &data, Location location)
+Song MPDParseUtils::parseSong(const QList<QByteArray> &lines, Location location)
 {
     Song song;
-    QString tmpData = QString::fromUtf8(data.constData());
-    QStringList lines = tmpData.split('\n');
-    QStringList tokens;
-    QString element;
-    QString value;
-    int amountOfLines = lines.size();
-
-    for (int i = 0; i < amountOfLines; i++) {
-        tokens = lines.at(i).split(':');
-        element = tokens.takeFirst();
-        value = tokens.join(":");
-        value = value.trimmed();
-        if (element == QLatin1String("file")) {
-            song.file = value;
-        } else if (element == QLatin1String("Time") ){
-            song.time = value.toUInt();
-        } else if (element == QLatin1String("Album")) {
-            song.album = value;
-        } else if (element == QLatin1String("Artist")) {
-            song.artist = value;
-        } else if (element == QLatin1String("AlbumArtist")) {
-            song.albumartist = value;
-        } else if (element == QLatin1String("Composer")) {
-            song.composer = value;
-        } else if (element == QLatin1String("Title")) {
-            song.title = value;
-        } else if (element == QLatin1String("Track")) {
-            song.track = value.split("/").at(0).toInt();
-//         } else if (element == QLatin1String("Pos")) {
-//             song.pos = value.toInt();
-        } else if (element == QLatin1String("Id")) {
-            song.id = value.toUInt();
-        } else if (element == QLatin1String("Disc")) {
-            song.disc = value.split("/").at(0).toUInt();
-        } else if (element == QLatin1String("Date")) {
+    foreach (const QByteArray &line, lines) {
+        if (line.startsWith(constFileKey)) {
+            song.file = QString::fromUtf8(line.mid(constFileKey.length()));
+        } else if (line.startsWith(constTimeKey) ){
+            song.time = line.mid(constTimeKey.length()).toUInt();
+        } else if (line.startsWith(constAlbumKey)) {
+            song.album = QString::fromUtf8(line.mid(constAlbumKey.length()));
+        } else if (line.startsWith(constArtistKey)) {
+            song.artist = QString::fromUtf8(line.mid(constArtistKey.length()));
+        } else if (line.startsWith(constAlbumArtistKey)) {
+            song.albumartist = QString::fromUtf8(line.mid(constAlbumArtistKey.length()));
+        } else if (line.startsWith(constComposerKey)) {
+            song.composer = QString::fromUtf8(line.mid(constComposerKey.length()));
+        } else if (line.startsWith(constTitleKey)) {
+            song.title =QString::fromUtf8(line.mid(constTitleKey.length()));
+        } else if (line.startsWith(constTrackKey)) {
+            song.track = line.mid(constTrackKey.length()).split('/').at(0).toInt();
+        } else if (line.startsWith(constIdKey)) {
+            song.id = line.mid(constIdKey.length()).toUInt();
+        } else if (line.startsWith(constDiscKey)) {
+            song.disc = line.mid(constDiscKey.length()).split('/').at(0).toInt();
+        } else if (line.startsWith(constDateKey)) {
+            QByteArray value=line.mid(constDateKey.length());
             if (value.length()>4) {
                 song.year = value.left(4).toUInt();
             } else {
                 song.year = value.toUInt();
             }
-        } else if (element == QLatin1String("Genre")) {
-            song.genre = value;
-        }  else if (element == QLatin1String("Name")) {
-            song.name = value;
-        } else if (element == QLatin1String("playlist")) {
-            song.file = value;
+        } else if (line.startsWith(constGenreKey)) {
+            song.genre = QString::fromUtf8(line.mid(constGenreKey.length()));
+        }  else if (line.startsWith(constNameKey)) {
+            song.name = QString::fromUtf8(line.mid(constNameKey.length()));
+        } else if (line.startsWith(constPlaylistKey)) {
+            song.file = QString::fromUtf8(line.mid(constPlaylistKey.length()));
             song.title=Utils::getFile(song.file);
             song.type=Song::Playlist;
-        }  else if (element == QLatin1String("Prio")) {
-            song.priority = value.toUInt();
+        }  else if (line.startsWith(constPriorityKey)) {
+            song.priority = line.mid(constPriorityKey.length()).toUInt();
         }
     }
 
@@ -266,7 +302,7 @@ Song MPDParseUtils::parseSong(const QByteArray &data, Location location)
     QString origFile=song.file;
 
     #ifdef ENABLE_HTTP_SERVER
-    if (!song.file.isEmpty() && song.file.startsWith("http") && HttpServer::self()->isOurs(song.file)) {
+    if (!song.file.isEmpty() && song.file.startsWith(constHttpProtocol) && HttpServer::self()->isOurs(song.file)) {
         song.type=Song::CantataStream;
         Song mod=HttpServer::self()->decodeUrl(song.file);
         if (!mod.title.isEmpty()) {
@@ -277,7 +313,7 @@ Song MPDParseUtils::parseSong(const QByteArray &data, Location location)
     #endif
     if (song.file.contains(Song::constCddaProtocol)) {
         song.type=Song::Cdda;
-    } else if (song.file.contains("://")) {
+    } else if (song.file.contains(constProtocol)) {
         foreach (const QString &protocol, constStdProtocols) {
             if (song.file.startsWith(protocol)) {
                 song.type=Song::Stream;
@@ -327,21 +363,25 @@ Song MPDParseUtils::parseSong(const QByteArray &data, Location location)
 QList<Song> MPDParseUtils::parseSongs(const QByteArray &data, Location location)
 {
     QList<Song> songs;
-    QByteArray line;
+    QList<QByteArray> currentItem;
     QList<QByteArray> lines = data.split('\n');
     int amountOfLines = lines.size();
 
     for (int i = 0; i < amountOfLines; i++) {
-        line += lines.at(i);
+        const QByteArray &line=lines.at(i);
         // Skip the "OK" line, this is NOT a song!!!
-        if ("OK"==line) {
+        if (constOkValue==line) {
             continue;
         }
-        line += "\n";
-        if (i == lines.size() - 1 || lines.at(i + 1).startsWith("file:")) {
-            Song song=parseSong(line, location);
-            songs.append(song);
-            line.clear();
+        if (!line.isEmpty()) {
+            currentItem.append(line);
+        }
+        if (i == lines.size() - 1 || lines.at(i + 1).startsWith(constFileKey)) {
+            Song song=parseSong(currentItem, location);
+            if (!song.file.isEmpty()) {
+                songs.append(song);
+            }
+            currentItem.clear();
         }
     }
 
@@ -357,9 +397,9 @@ QList<MPDParseUtils::IdPos> MPDParseUtils::parseChanges(const QByteArray &data)
     bool foundCpos=false;
 
     for (int i = 0; i < amountOfLines; i++) {
-        QByteArray line = lines.at(i);
+        const QByteArray &line = lines.at(i);
         // Skip the "OK" line, this is NOT a song!!!
-        if ("OK"==line || line.length()<1) {
+        if (constOkValue==line || line.length()<1) {
             continue;
         }
         QList<QByteArray> tokens = line.split(':');
@@ -368,13 +408,13 @@ QList<MPDParseUtils::IdPos> MPDParseUtils::parseChanges(const QByteArray &data)
         }
         QByteArray element = tokens.takeFirst();
         QByteArray value = tokens.takeFirst();
-        if (element == "cpos") {
+        if (constChangePosKey==element) {
             if (foundCpos) {
                 return QList<IdPos>();
             }
             foundCpos=true;
             cpos = value.toInt();
-        } else if (element == "Id") {
+        } else if (constChangeIdKey==element) {
             if (!foundCpos) {
                 return QList<IdPos>();
             }
@@ -387,21 +427,19 @@ QList<MPDParseUtils::IdPos> MPDParseUtils::parseChanges(const QByteArray &data)
     return changes;
 }
 
-QStringList MPDParseUtils::parseList(const QByteArray &data, const QLatin1String &key)
+QStringList MPDParseUtils::parseList(const QByteArray &data, const QByteArray &key)
 {
     QStringList items;
     QList<QByteArray> lines = data.split('\n');
-    int amountOfLines = lines.size();
-    int keyLen=QString(key).length();
+    int keyLen=key.length();
 
-    for (int i = 0; i < amountOfLines; i++) {
-        QString item(QString::fromUtf8(lines.at(i)));
+    foreach (const QByteArray &line, lines) {
         // Skip the "OK" line, this is NOT a valid item!!!
-        if (QLatin1String("OK")==item) {
+        if (constOkValue==line) {
             continue;
         }
-        if (item.startsWith(key)) {
-            items.append(item.mid(keyLen).replace("://", ""));
+        if (line.startsWith(key)) {
+            items.append(QString::fromUtf8(line.mid(keyLen).replace("://", "")));
         }
     }
 
@@ -436,7 +474,7 @@ void MPDParseUtils::parseLibraryItems(const QByteArray &data, const QString &mpd
                                       QSet<QString> *childDirs)
 {
     bool canSplitCue=mpdVersion>=MPD_MAKE_VERSION(0,17,0);
-    QByteArray currentItem;
+    QList<QByteArray> currentItem;
     QList<QByteArray> lines = data.split('\n');
     int amountOfLines = lines.size();
     MusicLibraryItemArtist *artistItem = 0;
@@ -444,13 +482,12 @@ void MPDParseUtils::parseLibraryItems(const QByteArray &data, const QString &mpd
     MusicLibraryItemSong *songItem = 0;
 
     for (int i = 0; i < amountOfLines; i++) {
-        QByteArray line=lines.at(i);
-        if (childDirs && line.startsWith("directory: ")) {
-            childDirs->insert(QString::fromUtf8(line.remove(0, 11)));
+        const QByteArray &line=lines.at(i);
+        if (childDirs && line.startsWith(constDirectoryKey)) {
+            childDirs->insert(QString::fromUtf8(line.mid(constDirectoryKey.length())));
         }
-        currentItem += line;
-        currentItem += "\n";
-        if (i == amountOfLines - 1 || lines.at(i + 1).startsWith("file:") || lines.at(i + 1).startsWith("playlist:")) {
+        currentItem.append(line);
+        if (i == amountOfLines - 1 || lines.at(i + 1).startsWith(constFileKey) || lines.at(i + 1).startsWith(constPlaylistKey)) {
             Song currentSong = parseSong(currentItem, Library);
             currentItem.clear();
             if (currentSong.file.isEmpty() || (isMopidy && !currentSong.file.startsWith(Song::constMopidyLocal))) {
@@ -634,9 +671,8 @@ void MPDParseUtils::parseLibraryItems(const QByteArray &data, const QString &mpd
             albumItem->addGenre(currentSong.genre);
             artistItem->addGenre(currentSong.genre);
             rootItem->addGenre(currentSong.genre);
-        } else if (childDirs) {
-
-        }
+        }/* else if (childDirs) {
+        }*/
     }
 }
 
@@ -647,15 +683,13 @@ DirViewItemRoot * MPDParseUtils::parseDirViewItems(const QByteArray &data, bool 
     DirViewItemDir *dir=rootItem;
     QString currentDirPath;
 
-    int amountOfLines = lines.size();
-    for (int i = 0; i < amountOfLines; i++) {
-        QString line = QString::fromUtf8(lines.at(i));
+    foreach (const QByteArray &line, lines) {
         QString path;
 
-        if (line.startsWith("file: ")) {
-            path=line.remove(0, 6);
-        } else if (line.startsWith("playlist: ")) {
-            path=line.remove(0, 10);
+        if (line.startsWith(constFileKey)) {
+            path=QString::fromUtf8(line.mid(constFileKey.length()));
+        } else if (line.startsWith(constPlaylistKey)) {
+            path=QString::fromUtf8(line.mid(constPlaylistKey.length()));
         }
         if (!path.isEmpty() && (!isMopidy || path.startsWith(Song::constMopidyLocal))) {
             QString mopidyPath;
@@ -687,19 +721,28 @@ QList<Output> MPDParseUtils::parseOuputs(const QByteArray &data)
 {
     QList<Output> outputs;
     QList<QByteArray> lines = data.split('\n');
+    Output output;
 
-    for (int i = 0; i < lines.size();) {
-        if (lines.at(i) == "OK") {
+    foreach (const QByteArray &line, lines) {
+        if (constOkValue==line) {
             break;
         }
 
-        quint8 id = lines.at(i).mid(10).toInt();
-        QString name = QString(lines.at(i + 1).mid(12));
-        bool enabled = lines.at(i + 2).mid(15).toInt() == 0 ? false : true;
+        if (line.startsWith(constOutputIdKey)) {
+            if (!output.name.isEmpty()) {
+                outputs << output;
+                output.name=QString();
+            }
+            output.id=line.mid(constOutputIdKey.length()).toUInt();
+        } else if (line.startsWith(constOutputNameKey)) {
+            output.name=line.mid(constOutputNameKey.length());
+        } else if (line.startsWith(constOutputEnabledKey)) {
+            output.enabled=toBool(line.mid(constOutputEnabledKey.length()));
+        }
+    }
 
-        outputs << Output(id, enabled, name);
-
-        i += 3;
+    if (!output.name.isEmpty()) {
+        outputs << output;
     }
 
     return outputs;

@@ -60,10 +60,11 @@ namespace MPDParseUtils
     extern QList<Playlist> parsePlaylists(const QByteArray &data);
     extern MPDStatsValues parseStats(const QByteArray &data);
     extern MPDStatusValues parseStatus(const QByteArray &data);
-    extern Song parseSong(const QByteArray &data, Location location);
+    extern Song parseSong(const QList<QByteArray> &lines, Location location);
+    inline Song parseSong(const QByteArray &data, Location location) { return parseSong(data.split('\n'), location); }
     extern QList<Song> parseSongs(const QByteArray &data, Location location);
     extern QList<IdPos> parseChanges(const QByteArray &data);
-    extern QStringList parseList(const QByteArray &data, const QLatin1String &key);
+    extern QStringList parseList(const QByteArray &data, const QByteArray &key);
     extern bool groupSingle();
     extern void setGroupSingle(bool g);
     extern bool groupMultiple();

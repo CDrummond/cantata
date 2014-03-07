@@ -56,6 +56,20 @@ static const int constMaxReadAttempts=4;
 static int maxFilesPerAddCommand=10000;
 static bool alwaysUseLsInfo=false;
 
+static const QByteArray constOkValue("OK");
+static const QByteArray constOkMpdValue("OK MPD");
+static const QByteArray constOkNlValue("OK\n");
+static const QByteArray constAckValue("ACK");
+static const QByteArray constIdleChangedKey("changed: ");
+static const QByteArray constIdleDbValue("database");
+static const QByteArray constIdleUpdateValue("update");
+static const QByteArray constIdleStoredPlaylistValue("stored_playlist");
+static const QByteArray constIdlePlaylistValue("playlist");
+static const QByteArray constIdlePlayerValue("player");
+static const QByteArray constIdleMixerValue("mixer");
+static const QByteArray constIdleOptionsValue("options");
+static const QByteArray constIdleOutputValue("output");
+
 #ifdef ENABLE_KDE_SUPPORT
 K_GLOBAL_STATIC(MPDConnection, conn)
 #endif
@@ -117,7 +131,7 @@ static QByteArray readFromSocket(MpdSocket &socket)
 
         data.append(socket.readAll());
 
-        if (data.endsWith("OK\n") || data.startsWith("OK") || data.startsWith("ACK")) {
+        if (data.endsWith(constOkNlValue) || data.startsWith(constOkValue) || data.startsWith(constAckValue)) {
             break;
         }
     }
@@ -129,7 +143,7 @@ static QByteArray readFromSocket(MpdSocket &socket)
 static MPDConnection::Response readReply(MpdSocket &socket)
 {
     QByteArray data = readFromSocket(socket);
-    return MPDConnection::Response(data.endsWith("OK\n"), data);
+    return MPDConnection::Response(data.endsWith(constOkNlValue), data);
 }
 
 MPDConnection::Response::Response(bool o, const QByteArray &d)
@@ -274,7 +288,7 @@ MPDConnection::ConnectionReturn MPDConnection::connectToMPD(MpdSocket &socket, b
                 return Failed;
             }
 
-            if (recvdata.startsWith("OK MPD")) {
+            if (recvdata.startsWith(constOkMpdValue)) {
                 DBUG << (void *)(&socket) << "Received identification string";
             }
 
@@ -1091,7 +1105,7 @@ void MPDConnection::getUrlHandlers()
 {
     Response response=sendCommand("urlhandlers");
     if (response.ok) {
-        handlers=MPDParseUtils::parseList(response.data, QLatin1String("handler: ")).toSet();
+        handlers=MPDParseUtils::parseList(response.data, QByteArray("handler: ")).toSet();
     }
 }
 
@@ -1099,7 +1113,7 @@ void MPDConnection::getTagTypes()
 {
     Response response=sendCommand("tagtypes");
     if (response.ok) {
-        tagTypes=MPDParseUtils::parseList(response.data, QLatin1String("tagtype: ")).toSet();
+        tagTypes=MPDParseUtils::parseList(response.data, QByteArray("tagtype: ")).toSet();
     }
 }
 
@@ -1150,7 +1164,7 @@ void MPDConnection::parseIdleReturn(const QByteArray &data)
 {
     DBUG << "parseIdleReturn:" << data;
 
-    Response response(data.endsWith("OK\n"), data);
+    Response response(data.endsWith(constOkNlValue), data);
     if (response.ok) {
         DBUG << (void *)(&idleSocket) << "write idle";
         idleSocket.write("idle\n");
@@ -1175,28 +1189,27 @@ void MPDConnection::parseIdleReturn(const QByteArray &data)
     bool playListUpdated=false;
     bool statusUpdated=false;
     foreach(const QByteArray &line, lines) {
-        if (line == "changed: database") {
-            getStats();
-            playListInfo();
-            playListUpdated=true;
-        } else if (line == "changed: update") {
-            emit updatedDatabase();
-        } else if (line == "changed: stored_playlist") {
-            emit storedPlayListUpdated();
-        } else if (line == "changed: playlist") {
-            if (!playListUpdated) {
-                playListChanges();
+        if (line.startsWith(constIdleChangedKey)) {
+            QByteArray value=line.mid(constIdleChangedKey.length());
+            if (constIdleDbValue==value) {
+                getStats();
+                playListInfo();
+                playListUpdated=true;
+            } else if (constIdleUpdateValue==value) {
+                emit updatedDatabase();
+            } else if (constIdleStoredPlaylistValue==value) {
+                emit storedPlayListUpdated();
+            } else if (constIdlePlaylistValue==value) {
+                if (!playListUpdated) {
+                    playListChanges();
+                }
+            } else if (!statusUpdated && (constIdlePlayerValue==value || constIdleMixerValue==value || constIdleOptionsValue==value)) {
+                getStatus();
+                getReplayGain();
+                statusUpdated=true;
+            } else if (constIdleOutputValue==value) {
+                outputs();
             }
-        } else if (!statusUpdated && (line == "changed: player" || line == "changed: mixer" || line == "changed: options")) {
-            getStatus();
-            getReplayGain();
-            statusUpdated=true;
-        } else if (line == "changed: output") {
-            outputs();
-        } else if (line == "OK" || line.startsWith("OK MPD ") || line.isEmpty()) {
-            ;
-        } else {
-            DBUG << "Unknown command in idle return: " << line;
         }
     }
 }

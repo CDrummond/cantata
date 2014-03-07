@@ -26,6 +26,8 @@
 15. Fix song notification mem-leak (Linux only).
 16. When transitioning between backdrops in cover view, draw old at correct
     position.
+17. Dont load library twice at start-up when cache has been deleted current tab
+    is artists or albums.
 
 1.3.1
 -----

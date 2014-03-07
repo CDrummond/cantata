@@ -2202,19 +2202,22 @@ void MainWindow::currentTabChanged(int index)
     prevPage=index;
     controlDynamicButton();
     switch(index) {
-    case PAGE_LIBRARY:
-    case PAGE_ALBUMS: // Albums shares refresh with library...
-        if (!(loaded&TAB_LIBRARY)) {
-            loaded|=TAB_LIBRARY;
-            albumsPage->goTop();
-            libraryPage->refresh();
-        }
-        if (PAGE_LIBRARY==index) {
-            currentPage=libraryPage;
-        } else {
-            currentPage=albumsPage;
-        }
-        break;
+// NOTE:  I dont think this is actually required, a library is always loaded - not just when tab changed
+//    case PAGE_LIBRARY:
+//    case PAGE_ALBUMS: // Albums shares refresh with library...
+//        if (!(loaded&TAB_LIBRARY) && isVisible()) {
+//            loaded|=TAB_LIBRARY;
+//            albumsPage->goTop();
+//            libraryPage->refresh();
+//        }
+//        if (PAGE_LIBRARY==index) {
+//            currentPage=libraryPage;
+//        } else {
+//            currentPage=albumsPage;
+//        }
+//        break;
+    case PAGE_LIBRARY:   currentPage=libraryPage;   break;
+    case PAGE_ALBUMS:    currentPage=albumsPage;    break;
     case PAGE_FOLDERS:
         if (!(loaded&TAB_FOLDERS)) {
             loaded|=TAB_FOLDERS;
@@ -2222,13 +2225,9 @@ void MainWindow::currentTabChanged(int index)
         }
         currentPage=folderPage;
         break;
-    case PAGE_PLAYLISTS:
-        currentPage=playlistsPage;
-        break;
+    case PAGE_PLAYLISTS: currentPage=playlistsPage; break;
     #ifdef ENABLE_DYNAMIC
-    case PAGE_DYNAMIC:
-        currentPage=dynamicPage;
-        break;
+    case PAGE_DYNAMIC:   currentPage=dynamicPage;   break;
     #endif
     #ifdef ENABLE_STREAMS
     case PAGE_STREAMS:
@@ -2240,21 +2239,13 @@ void MainWindow::currentTabChanged(int index)
         break;
     #endif
     #ifdef ENABLE_ONLINE_SERVICES
-    case PAGE_ONLINE:
-        currentPage=onlinePage;
-        break;
+    case PAGE_ONLINE:    currentPage=onlinePage;    break;
     #endif
     #ifdef ENABLE_DEVICES_SUPPORT
-    case PAGE_DEVICES:
-        currentPage=devicesPage;
-        break;
+    case PAGE_DEVICES:   currentPage=devicesPage;   break;
     #endif
-    case PAGE_SEARCH:
-        currentPage=searchPage;
-        break;
-    default:
-        currentPage=0;
-        break;
+    case PAGE_SEARCH:    currentPage=searchPage;    break;
+    default:             currentPage=0;             break;
     }
     if (currentPage) {
         currentPage->controlActions();

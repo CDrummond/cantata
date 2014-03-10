@@ -39,6 +39,8 @@
 23. Enable song notifications n Linux builds without QtDBus.
 24. Speed-up MPD response parsing, by only converting strings to UTF-8 when
     required.
+25. In Albums view, always show album name as main text and artist as sub-text
+    regardless of chosen sort.
 
 1.3.2
 -----

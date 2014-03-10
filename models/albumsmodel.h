@@ -49,7 +49,7 @@ public:
     {
         Sort_AlbumArtist,
         Sort_ArtistAlbum,
-        Sort_ArtistAlbumYear
+        Sort_ArtistYearAlbum
     };
 
     enum Columnms
@@ -81,7 +81,6 @@ public:
         bool isAlbum() { return true; }
         void clearSongs();
         void setSongs(MusicLibraryItemAlbum *ai);
-        void setName();
         quint32 trackCount();
         quint32 totalTime();
         void updateStats();
@@ -91,7 +90,6 @@ public:
         const SongItem *getCueFile() const;
         QString artist;
         QString album;
-        QString name;
         quint16 year;
         QList<SongItem *> songs;
         QSet<QString> genres;

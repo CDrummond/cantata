@@ -239,7 +239,7 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
         case Qt::ToolTipRole: {
             quint32 year=al->songs.count() ? al->songs.at(0)->year : 0;
             return 0==al->songs.count()
-                ? al->name
+                ? QString()
                 : (year>0 ? QString("%1\n%2 (%3)\n").arg(al->artist).arg(al->album).arg(QString::number(year)) : QString("%1\n%2\n").arg(al->artist).arg(al->album))+
                     #ifdef ENABLE_KDE_SUPPORT
                     i18np("1 Track (%2)", "%1 Tracks (%2)", al->trackCount(), Song::formattedTime(al->totalTime(), true));
@@ -248,14 +248,13 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
                     #endif
         }
         case Qt::DisplayRole:
-            return al->name;
+            return al->album;
         case ItemView::Role_MainText:
-            return Sort_AlbumArtist==sortAlbums ? al->album : al->artist;
-        case ItemView::Role_ImageSize: {
+            return al->album;
+        case ItemView::Role_ImageSize:
             return iconSize();
-        }
         case ItemView::Role_SubText:
-            return Sort_AlbumArtist==sortAlbums ? al->artist : al->album;
+            return al->artist;
         case ItemView::Role_TitleText:
             return i18nc("Album by Artist", "%1 by %2", al->album, al->artist);
         case Qt::SizeHintRole:
@@ -523,9 +522,6 @@ void AlbumsModel::setAlbumSort(int s)
     if (s!=sortAlbums) {
         beginResetModel();
         sortAlbums=s;
-        foreach (AlbumItem *a, items) {
-            a->setName();
-        }
         endResetModel();
     }
 }
@@ -540,7 +536,6 @@ AlbumsModel::AlbumItem::AlbumItem(const QString &ar, const QString &al, quint16 
     , numTracks(0)
     , time(0)
 {
-    setName();
 }
 
 AlbumsModel::AlbumItem::~AlbumItem()
@@ -551,15 +546,20 @@ AlbumsModel::AlbumItem::~AlbumItem()
 
 bool AlbumsModel::AlbumItem::operator<(const AlbumItem &o) const
 {
-    if (AlbumsModel::Sort_ArtistAlbumYear==sortAlbums) {
+    switch (sortAlbums) {
+    default:
+    case Sort_AlbumArtist:  {
+        int compare=album.localeAwareCompare(o.album);
+        return compare<0 || (0==compare && artist.localeAwareCompare(o.artist)<0);
+    }
+    case Sort_ArtistAlbum: {
         int compare=artist.localeAwareCompare(o.artist);
-        if (0==compare) {
-            return year<o.year || (year==o.year && album.localeAwareCompare(o.album)<0);
-        } else {
-            return compare<0;
-        }
-    } else {
-        return name.localeAwareCompare(o.name)<0;
+        return compare<0 || (0==compare && album.localeAwareCompare(o.album)<0);
+    }
+    case Sort_ArtistYearAlbum: {
+        int compare=artist.localeAwareCompare(o.artist);
+        return compare<0 || (0==compare && (year<o.year || (year==o.year && album.localeAwareCompare(o.album)<0)));
+    }
     }
 }
 
@@ -575,13 +575,6 @@ void AlbumsModel::AlbumItem::setSongs(MusicLibraryItemAlbum *ai)
     foreach (MusicLibraryItem *item, ai->childItems()) {
         songs.append(new SongItem(static_cast<MusicLibraryItemSong*>(item)->song(), this));
     }
-}
-
-void AlbumsModel::AlbumItem::setName()
-{
-    name=AlbumsModel::Sort_AlbumArtist==sortAlbums
-            ? (album+QLatin1String(" - ")+artist)
-            : (artist+QLatin1String(" - ")+album);
 }
 
 quint32 AlbumsModel::AlbumItem::trackCount()

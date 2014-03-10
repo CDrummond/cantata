@@ -396,28 +396,6 @@ QString Song::formattedTime(quint32 seconds, bool zeroIsUnknown)
 }
 #endif
 
-/*
- * Genarate a string with song info.
- * Currently in this format:
- * artist - [album -][#.] song
- */
-QString Song::format()
-{
-    QString s = artist + " - ";
-
-    if (!album.isEmpty()) {
-        s += album + " - ";
-    }
-
-    if (track != 0) {
-        s += QString::number(track) + ". ";
-    }
-
-    s += title;
-
-    return s;
-}
-
 QString Song::entryName() const
 {
     if (title.isEmpty()) {

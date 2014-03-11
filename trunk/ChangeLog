@@ -8,7 +8,7 @@
  5. Use smaller font for sidebar.
  6. Remove corner cover widget.
  7. Remove collapsing of interface.
- 8. Move position slider inbetween controls.
+ 8. Move position slider in-between controls.
  9. If volume control is disabled (as MPD returns negative volume), then don't
     hide it but make it semi-transparent instead.
 10. Use system libebur128 if found.
@@ -76,7 +76,7 @@
 15. Fix song notification mem-leak (Linux only).
 16. When transitioning between backdrops in cover view, draw old at correct
     position.
-17. Dont load library twice at start-up when cache has been deleted current tab
+17. Don't load library twice at start-up when cache has been deleted current tab
     is artists or albums.
 
 1.3.1
@@ -216,7 +216,7 @@
     to match current theme.
 64. Fix searches containing more than 4 words.
 65. Use stretch header class from Clementine for table style views.
-66. Dont change tray icon to play state - consistent with other apps.
+66. Don't change tray icon to play state - consistent with other apps.
 67. For Linux builds, if systray.svg file exists in
     $prefix/share/cantata/icons/$iconTheme, then this will be used as the
     system tray icon. Currently Cantata supplies 2 mono SVGs - one for
@@ -229,11 +229,11 @@
 71. Remove 'copy track info' functionality, I see no need for this!
 72. Remove showPage dbus function.
 73. Use wmctrl to raise window under compiz for Qt5 builds.
-74. Dont react to mouse-release event in coverwidget if an override cursor has
+74. Don't react to mouse-release event in coverwidget if an override cursor has
     been set. Fixes the case, with Qt5 builds, where a drag is started on the
     cover widget causes interface to expand/collapse.
 75. Change views to scroll-per-pixel.
-76. Dont allow expanding, or collapsing, if maximised or mesasge widget is
+76. Don't allow expanding, or collapsing, if maximised or mesasge widget is
     visible.
 77. Remove embedding of pre-rendered Cantata icons. Cantata requires the SVG
     icon plugin, so users must have this installed.
@@ -251,7 +251,7 @@
     colour being used with Bespin style.
 85. Fix corrupted scrollbar background in views with a background image when
     Gtk style is used.
-86. Dont draw tab-bar frame when using small sidebar style.
+86. Don't draw tab-bar frame when using small sidebar style.
 87. If using small sidebar on top, or bottom, then centre-align tabs.
 
 1.2.2

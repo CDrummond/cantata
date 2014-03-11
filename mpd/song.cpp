@@ -334,6 +334,11 @@ void Song::clearKeyStore(int location)
     storeMap.remove(location);
 }
 
+QString Song::displayAlbum(const QString &albumName, quint16 albumYear)
+{
+    return albumYear>0 ? albumName+QLatin1String(" (")+QString::number(albumYear)+QLatin1Char(')') : albumName;
+}
+
 void Song::setKey(int location)
 {
     if (isStandardStream()) {
@@ -529,13 +534,7 @@ QString Song::basicArtist() const
 
 QString Song::describe(bool withMarkup) const
 {
-    QString albumText=album.isEmpty() ? name : album;
-    if (!album.isEmpty()) {
-        quint16 y=Song::albumYear(*this);
-        if (y>0) {
-            albumText+=QString(" (%1)").arg(y);
-        }
-    }
+    QString albumText=album.isEmpty() ? name : displayAlbum(album, Song::albumYear(*this));
 
     return withMarkup
             ? title.isEmpty()

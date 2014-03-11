@@ -220,7 +220,7 @@
          <item row="3" column="0" colspan="2">
           <widget class="QCheckBox" name="libraryYear">
            <property name="text">
-            <string>Show album year</string>
+            <string>Sort albums by year</string>
            </property>
           </widget>
          </item>

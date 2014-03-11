@@ -126,6 +126,11 @@ QVariant MusicModel::data(const QModelIndex &index, int role) const
         case MusicLibraryItem::Type_Song: return Song::Playlist==static_cast<MusicLibraryItemSong *>(item)->song().type ? Icons::self()->playlistIcon : Icons::self()->audioFileIcon;
         default: return QVariant();
         }
+    case ItemView::Role_BriefMainText:
+        if (MusicLibraryItem::Type_Album==item->itemType()) {
+            return item->data();
+        }
+    case ItemView::Role_MainText:
     case Qt::DisplayRole:
         if (MusicLibraryItem::Type_Song==item->itemType()) {
             MusicLibraryItemSong *song = static_cast<MusicLibraryItemSong *>(item);
@@ -145,11 +150,8 @@ QVariant MusicModel::data(const QModelIndex &index, int role) const
             #endif
             return song->song().trackAndTitleStr(static_cast<MusicLibraryItemArtist *>(song->parentItem()->parentItem())->isVarious() &&
                                                  !Song::isVariousArtists(song->song().artist));
-        } else if (MusicLibraryItem::Type_Album==item->itemType() && MusicLibraryItemAlbum::showDate() &&
-                  static_cast<MusicLibraryItemAlbum *>(item)->year()>0) {
-            return QString::number(static_cast<MusicLibraryItemAlbum *>(item)->year())+QLatin1String(" - ")+item->data();
         }
-        return item->data();
+        return item->displayData();
     case Qt::ToolTipRole:
         if (MusicLibraryItem::Type_Song==item->itemType()) {
             #ifdef ENABLE_ONLINE_SERVICES
@@ -169,8 +171,8 @@ QVariant MusicModel::data(const QModelIndex &index, int role) const
         }
         return parentData(item)+
                 (0==item->childCount()
-                    ? item->data()
-                    : (item->data()+"<br/>"+data(index, ItemView::Role_SubText).toString()));
+                    ? item->displayData()
+                    : (item->displayData()+"<br/>"+data(index, ItemView::Role_SubText).toString()));
     case ItemView::Role_ImageSize: {
         const MusicLibraryItemRoot *r=root(item);
         if (MusicLibraryItem::Type_Song!=item->itemType() && !MusicLibraryItemAlbum::itemSize().isNull()) { // icon/list style view...

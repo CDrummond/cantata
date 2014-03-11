@@ -257,24 +257,14 @@ public:
                 title=song.artistOrComposer();
                 track=song.trackAndTitleStr(song.isVariousArtists());
             } else {
-                quint16 year=Song::albumYear(song);
-
-                if (year>0) {
-                    if (song.isFromOnlineService()) {
-                        title=i18nc("album (albumYear)", "%1 (%2)", song.album, QString::number(year));
-                    } else {
-                        title=i18nc("artist - album (albumYear)", "%1 - %2 (%3)", song.artistOrComposer(), song.albumName(), QString::number(year));
-                    }
-                    if (Song::useComposer()) {
-                        while (title.contains(") (")) {
-                            title=title.replace(") (", ", ");
-                        }
-                    }
+                if (song.isFromOnlineService()) {
+                    title=Song::displayAlbum(song.album, Song::albumYear(song));
                 } else {
-                    if (song.isFromOnlineService()) {
-                        title=song.album;
-                    } else {
-                        title=i18nc("artist - album", "%1 - %2", song.artistOrComposer(), song.albumName());
+                    title=song.artistOrComposer()+QLatin1String(" - ")+Song::displayAlbum(song.album, Song::albumYear(song));
+                }
+                if (Song::useComposer()) {
+                    while (title.contains(") (")) {
+                        title=title.replace(") (", ", ");
                     }
                 }
                 track=song.trackAndTitleStr(song.isVariousArtists());

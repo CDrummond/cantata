@@ -88,6 +88,7 @@ public:
         void setCover(const QImage &img);
         bool isSingleTracks() const { return Song::SingleTracks==type; }
         const SongItem *getCueFile() const;
+        QString albumDisplay() const { return Song::displayAlbum(album, year); }
         QString artist;
         QString album;
         quint16 year;

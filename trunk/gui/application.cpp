@@ -79,9 +79,7 @@ int Application::newInstance() {
     }
 
     if (w) {
-        if (!w->isVisible()) {
-            w->showNormal();
-        }
+        w->restoreWindow();
     } else {
         // Ensure ThreadCleaner is in GUI thread...
         ThreadCleaner::self();
@@ -275,6 +273,8 @@ bool Application::start()
         return true;
     }
     loadFiles();
+    // ...and activate window!
+    QDBusConnection::sessionBus().send(QDBusMessage::createMethodCall("com.googlecode.cantata", "/org/mpris/MediaPlayer2", "", "Raise"));
     return false;
 }
 
@@ -289,7 +289,7 @@ void Application::setupIconTheme()
     }
 
     // BUG:130 Some non-DE environments (IceWM, etc) seem to set theme to HiColor, and this has missing
-    // icons. So cehck for a themed icon,if the current theme does not have this - then see if oxygen
+    // icons. So check for a themed icon, if the current theme does not have this - then see if oxygen
     // or gnome icon themes are installed, and set theme to one of those.
     if (!QIcon::hasThemeIcon("document-save-as")) {
         QStringList themes=QStringList() << QLatin1String("oxygen") << QLatin1String("gnome");

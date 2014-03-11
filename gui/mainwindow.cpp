@@ -1961,7 +1961,7 @@ void MainWindow::updateStatus(MPDStatus * const status)
         }
         current.id=0;
 //        updateWindowTitle();
-        trayItem->setToolTip("cantata", i18n("Cantata"), "<i>Playback stopped</i>");
+        trayItem->setToolTip("cantata", i18n("Cantata"), QLatin1String("<i>")+i18n("Playback stopped")+QLatin1String("</i>"));
         positionSlider->stopTimer();
         break;
     case MPDState_Paused:

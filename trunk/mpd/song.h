@@ -85,6 +85,7 @@ struct Song
     static QString decodePath(const QString &file);
     static QString encodePath(const QString &file);
     static void clearKeyStore(int location);
+    static QString displayAlbum(const QString &albumName, quint16 albumYear);
 
     Song();
     Song(const Song &o) { *this=o; }
@@ -127,6 +128,7 @@ struct Song
     bool isCueFile() const { return Playlist==type && file.endsWith(QLatin1String(".cue"), Qt::CaseInsensitive); }
     QString basicArtist() const;
     QString filePath() const { return decodePath(file); }
+    QString displayAlbum() const { return displayAlbum(album, year); }
     QString describe(bool withMarkup=false) const;
 //    QString basicDescription() const;
 

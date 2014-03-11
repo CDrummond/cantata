@@ -56,14 +56,15 @@ public:
     static int iconSize(bool iconMode=false);
     static void setItemSize(const QSize &sz);
     static QSize itemSize();
-    static void setShowDate(bool sd);
-    static bool showDate();
+    static void setSortByDate(bool sd);
+    static bool sortByDate();
 
     static bool lessThan(const MusicLibraryItem *a, const MusicLibraryItem *b);
 
     MusicLibraryItemAlbum(const QString &data, QString original, quint32 year, MusicLibraryItemContainer *parent);
     virtual ~MusicLibraryItemAlbum();
 
+    QString displayData() const { return Song::displayAlbum(m_itemData, m_year); }
     bool setCover(const QImage &img, bool update=false) const;
     const QPixmap & cover() const;
     bool hasRealCover() const { return !m_coverIsDefault; }

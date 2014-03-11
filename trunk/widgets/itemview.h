@@ -95,6 +95,7 @@ public:
     {
         Role_ImageSize = Qt::UserRole+100,
         Role_MainText,
+        Role_BriefMainText,
         Role_SubText,
         Role_TitleText,
         Role_Image,

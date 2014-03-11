@@ -61,7 +61,7 @@ public:
 
 private:
     void wheelEvent(QWheelEvent *ev);
-    void paintEvent(QPaintEvent *ev);
+    void paintEvent(QPaintEvent *);
 
 private Q_SLOTS:
     void buttonActivated();

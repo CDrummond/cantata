@@ -67,7 +67,7 @@ Q_SIGNALS:
     void deleteSongs(const QString &from, const QList<Song> &songs);
 
 public Q_SLOTS:
-    void itemActivated(const QModelIndex &);
+    void itemDoubleClicked(const QModelIndex &);
     void controlActions();
     void searchItems();
     void updateGenres(const QModelIndex &);

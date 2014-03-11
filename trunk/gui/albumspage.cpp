@@ -72,6 +72,7 @@ AlbumsPage::AlbumsPage(QWidget *p)
     connect(genreCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(searchItems()));
     connect(view, SIGNAL(searchItems()), this, SLOT(searchItems()));
     connect(view, SIGNAL(itemsSelected(bool)), this, SLOT(controlActions()));
+    connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
     connect(view, SIGNAL(rootIndexSet(QModelIndex)), this, SLOT(updateGenres(QModelIndex)));
     connect(MPDConnection::self(), SIGNAL(updatingLibrary()), this, SLOT(showSpinner()));
     connect(MPDConnection::self(), SIGNAL(updatedLibrary()), this, SLOT(hideSpinner()));
@@ -219,7 +220,7 @@ void AlbumsPage::deleteSongs()
 }
 #endif
 
-void AlbumsPage::itemActivated(const QModelIndex &)
+void AlbumsPage::itemDoubleClicked(const QModelIndex &)
 {
     if (1==view->selectedIndexes(false).size()) {//doubleclick should only have one selected item
         addSelectionToPlaylist();

@@ -183,6 +183,11 @@ void MusicLibraryItemAlbum::setCoverImage(const QImage &img) const
     Covers::saveScaledCover(scaled, parentItem()->data(), data(), size);
 }
 
+QString MusicLibraryItemAlbum::displayData(bool full) const
+{
+    return dateSort || full ? Song::displayAlbum(m_itemData, m_year) : m_itemData;
+}
+
 bool MusicLibraryItemAlbum::setCover(const QImage &img, bool update) const
 {
     if ((update || m_coverIsDefault) && !img.isNull()) {

@@ -45,6 +45,7 @@
 27. Be consistent with displaying year's of albums - year is shown in brackets
     after album name.
 28. Only show album year in non-icon view.
+29. Only show album year in browsers.
 
 1.3.3
 -----

@@ -171,8 +171,8 @@ QVariant MusicModel::data(const QModelIndex &index, int role) const
         }
         return parentData(item)+
                 (0==item->childCount()
-                    ? item->displayData()
-                    : (item->displayData()+"<br/>"+data(index, ItemView::Role_SubText).toString()));
+                    ? item->displayData(true)
+                    : (item->displayData(true)+"<br/>"+data(index, ItemView::Role_SubText).toString()));
     case ItemView::Role_ImageSize: {
         const MusicLibraryItemRoot *r=root(item);
         if (MusicLibraryItem::Type_Song!=item->itemType() && !MusicLibraryItemAlbum::itemSize().isNull()) { // icon/list style view...

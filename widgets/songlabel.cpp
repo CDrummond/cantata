@@ -52,8 +52,8 @@ void SongLabel::update(const Song &song)
     if (song.isEmpty()) {
         plainText=text=QString();
     } else {
-        plainText=song.describe(false);
-        text=song.describe(true);
+        plainText=song.describe(false, false);
+        text=song.describe(true, false);
     }
 
     open.clear();

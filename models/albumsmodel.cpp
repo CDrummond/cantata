@@ -248,10 +248,12 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
                       );
         case Qt::DisplayRole:
             return al->album;
+        case ItemView::Role_MainText:
+            if (Sort_ArtistYearAlbum==sortAlbums) {
+                return al->albumDisplay();
+            }
         case ItemView::Role_BriefMainText:
             return al->album;
-        case ItemView::Role_MainText:
-            return al->albumDisplay();
         case ItemView::Role_ImageSize:
             return iconSize();
         case ItemView::Role_SubText:

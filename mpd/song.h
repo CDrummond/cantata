@@ -129,7 +129,7 @@ struct Song
     QString basicArtist() const;
     QString filePath() const { return decodePath(file); }
     QString displayAlbum() const { return displayAlbum(album, year); }
-    QString describe(bool withMarkup=false) const;
+    QString describe(bool withMarkup=false, bool withYear=true) const;
 //    QString basicDescription() const;
 
     // We pass 'Song' around to cover requester. When we want the artist image, and not album image,

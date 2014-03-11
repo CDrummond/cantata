@@ -54,7 +54,7 @@ public:
     void setRow(int r) const { m_row=r+1; }
     int columnCount() const { return 1; }
     const QString & data() const { return m_itemData; }
-    virtual QString displayData() const { return m_itemData; }
+    virtual QString displayData(bool full=false) const { Q_UNUSED(full) return m_itemData; }
     void setData(const QString &d) { m_itemData=d; }
     void setParent(MusicLibraryItemContainer *p);
     Qt::CheckState checkState() const { return m_checkState; }

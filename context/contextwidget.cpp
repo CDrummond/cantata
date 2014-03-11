@@ -58,7 +58,6 @@
 #include <QPair>
 #include <QImage>
 #include <QToolButton>
-#include <QStyleOptionToolButton>
 #include <QButtonGroup>
 #include <QWheelEvent>
 #include <qglobal.h>
@@ -92,27 +91,22 @@ public:
     void paintEvent(QPaintEvent *ev)
     {
         Q_UNUSED(ev)
-        QStylePainter painter(this);
-        QStyleOptionToolButton opt;
-        initStyleOption(&opt);
-        bool isOn=opt.state&QStyle::State_On;
-        bool isMo=opt.state&QStyle::State_MouseOver;
-        if (isOn || isMo) {
-            QColor col=palette().highlight().color();
-            col.setAlphaF(isMo && !isOn ? 0.15 : 0.35);
-            painter.fillRect(rect().adjusted(0, 1, 0, 0), col);
+        QPainter painter(this);
+        QString txt=text();
+
+        txt.replace("&", "");
+        QFont f(font());
+        if (isChecked()) {
+            f.setBold(true);
+        }
+        QFontMetrics fm(f);
+        if (fm.width(txt)>rect().width()) {
+            txt=fm.elidedText(txt, Qt::RightToLeft==layoutDirection() ? Qt::ElideLeft : Qt::ElideRight, rect().width());
         }
 
-        int alignment = Qt::AlignCenter | Qt::TextShowMnemonic;
-        if (!style()->styleHint(QStyle::SH_UnderlineShortcut, &opt, this)) {
-            alignment |= Qt::TextHideMnemonic;
-        }
-
-        QString text=opt.text;
-        if (fontMetrics().width(text)>rect().width()) {
-            text=fontMetrics().elidedText(text, Qt::RightToLeft==layoutDirection() ? Qt::ElideLeft : Qt::ElideRight, rect().width());
-        }
-        painter.drawItemText(rect(), alignment, opt.palette, true, text, QPalette::WindowText);
+        painter.setFont(f);
+        painter.setPen(palette().color(!isChecked() && underMouse() ? QPalette::Highlight : QPalette::Text));
+        painter.drawText(rect(), Qt::AlignCenter, txt);
     }
 };
 
@@ -150,17 +144,8 @@ void ViewSelector::addItem(const QString &label, const QVariant &data)
 void ViewSelector::buttonActivated()
 {
     QToolButton *button=qobject_cast<QToolButton *>(sender());
-    if (!button) {
-        return;
-    }
-
-    if (button->isChecked()) {
-        QFont f(font());
-        f.setBold(true);
-        button->setFont(f);
+    if (button && button->isChecked()) {
         emit activated(buttons.indexOf(button));
-    } else {
-        button->setFont(font());
     }
 }
 
@@ -187,9 +172,6 @@ void ViewSelector::setCurrentIndex(int index)
         bool wasChecked=btn->isChecked();
         btn->setChecked(i==index);
         if (i==index) {
-            QFont bf(f);
-            bf.setBold(true);
-            btn->setFont(bf);
             emit activated(i);
         } else if (wasChecked) {
             btn->setFont(f);
@@ -244,11 +226,11 @@ static void drawFadedLine(QPainter *p, const QRect &r, const QColor &col)
 
 void ViewSelector::paintEvent(QPaintEvent *ev)
 {
-    QWidget::paintEvent(ev);
+    Q_UNUSED(ev)
     QPainter p(this);
     QRect r=rect();
     r.setHeight(1);
-    drawFadedLine(&p, r, palette().foreground().color());
+    drawFadedLine(&p, r, palette().text().color());
 }
 
 ThinSplitter::ThinSplitter(QWidget *parent)
@@ -410,6 +392,7 @@ void ContextWidget::setWide(bool w)
             viewSelector->addItem(i18n("&Artist"), "artist");
             viewSelector->addItem(i18n("Al&bum"), "album");
             viewSelector->addItem(i18n("&Lyrics"), "song");
+            viewSelector->setPalette(palette());
             connect(viewSelector, SIGNAL(activated(int)), stack, SLOT(setCurrentIndex(int)));
         }
         if (splitter) {
@@ -535,6 +518,9 @@ void ContextWidget::useDarkBackground(bool u)
         artist->setPal(pal, linkCol, prevLinkColor);
         album->setPal(pal, linkCol, prevLinkColor);
         song->setPal(pal, linkCol, prevLinkColor);
+        if (viewSelector) {
+            viewSelector->setPalette(pal);
+        }
         QWidget::update();
     }
 }
@@ -553,10 +539,6 @@ void ContextWidget::paintEvent(QPaintEvent *e)
     QPainter p(this);
     QRect r(rect());
 
-    if (!isWide && viewSelector) {
-        int space=2; // fontMetrics().height()/4;
-        r.adjust(0, 0, 0, -(viewSelector->rect().height()+space));
-    }
     if (darkBackground) {
         p.fillRect(r, palette().background().color());
     }

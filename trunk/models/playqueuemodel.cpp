@@ -392,8 +392,9 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
         case COL_LENGTH:
             return Song::formattedTime(song.time);
         case COL_DISC:
-            if (song.disc <= 0)
+            if (song.disc <= 0) {
                 return QVariant();
+            }
             return song.disc;
         case COL_YEAR:
             if (song.year <= 0) {

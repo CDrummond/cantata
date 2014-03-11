@@ -415,7 +415,7 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
             return basicPath(s);
         } else {
             return s.albumArtist()+QLatin1String("<br/>")+
-                   s.album+(s.year>0 ? (QLatin1String(" (")+QString::number(s.year)+QChar(')')) : QString())+QLatin1String("<br/>")+
+                   s.displayAlbum()+QLatin1String("<br/>")+
                    s.trackAndTitleStr(Song::isVariousArtists(s.albumArtist()))+QLatin1String("<br/>")+
                    Song::formattedTime(s.time)+QLatin1String("<br/>")+
                    (s.priority>0 ? i18n("<b>(Priority: %1)</b>", s.priority)+QLatin1String("<br/>") : QString())+

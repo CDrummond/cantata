@@ -46,7 +46,7 @@
 static MusicLibraryItemAlbum::CoverSize coverSize=MusicLibraryItemAlbum::CoverNone;
 static QPixmap *theDefaultIcon=0;
 static QPixmap *theDefaultLargeIcon=0;
-static bool useDate=false;
+static bool dateSort=false;
 static QSize iconItemSize;
 
 static inline int adjust(int v)
@@ -127,14 +127,14 @@ void MusicLibraryItemAlbum::setCoverSize(MusicLibraryItemAlbum::CoverSize size)
     }
 }
 
-void MusicLibraryItemAlbum::setShowDate(bool sd)
+void MusicLibraryItemAlbum::setSortByDate(bool sd)
 {
-    useDate=sd;
+    dateSort=sd;
 }
 
-bool MusicLibraryItemAlbum::showDate()
+bool MusicLibraryItemAlbum::sortByDate()
 {
-    return useDate;
+    return dateSort;
 }
 
 bool MusicLibraryItemAlbum::lessThan(const MusicLibraryItem *a, const MusicLibraryItem *b)
@@ -146,7 +146,7 @@ bool MusicLibraryItemAlbum::lessThan(const MusicLibraryItem *a, const MusicLibra
         return aa->isSingleTracks() > ab->isSingleTracks();
     }
 
-    if (!MusicLibraryItemAlbum::showDate() || aa->year()==ab->year()) {
+    if (!MusicLibraryItemAlbum::sortByDate() || aa->year()==ab->year()) {
         return aa->data().localeAwareCompare(ab->data())<0;
     }
     return aa->year()<ab->year();

@@ -236,21 +236,22 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
             }
             return *theDefaultIcon;
         }
-        case Qt::ToolTipRole: {
-            quint32 year=al->songs.count() ? al->songs.at(0)->year : 0;
+        case Qt::ToolTipRole:
             return 0==al->songs.count()
-                ? QString()
-                : (year>0 ? QString("%1\n%2 (%3)\n").arg(al->artist).arg(al->album).arg(QString::number(year)) : QString("%1\n%2\n").arg(al->artist).arg(al->album))+
-                    #ifdef ENABLE_KDE_SUPPORT
-                    i18np("1 Track (%2)", "%1 Tracks (%2)", al->trackCount(), Song::formattedTime(al->totalTime(), true));
-                    #else
-                    QTP_TRACKS_DURATION_STR(al->trackCount(), Song::formattedTime(al->totalTime(), true));
-                    #endif
-        }
+                    ? QString()
+                    : (al->artist+QLatin1Char('\n')+al->albumDisplay()+QLatin1Char('\n')+
+                        #ifdef ENABLE_KDE_SUPPORT
+                        i18np("1 Track (%2)", "%1 Tracks (%2)", al->trackCount(), Song::formattedTime(al->totalTime(), true))
+                        #else
+                        QTP_TRACKS_DURATION_STR(al->trackCount(), Song::formattedTime(al->totalTime(), true))
+                        #endif
+                      );
         case Qt::DisplayRole:
             return al->album;
-        case ItemView::Role_MainText:
+        case ItemView::Role_BriefMainText:
             return al->album;
+        case ItemView::Role_MainText:
+            return al->albumDisplay();
         case ItemView::Role_ImageSize:
             return iconSize();
         case ItemView::Role_SubText:

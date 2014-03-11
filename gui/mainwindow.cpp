@@ -543,7 +543,7 @@ MainWindow::MainWindow(QWidget *parent)
     consumePlayQueueAction->setChecked(false);
 
     MusicLibraryItemAlbum::setCoverSize((MusicLibraryItemAlbum::CoverSize)Settings::self()->libraryCoverSize());
-    MusicLibraryItemAlbum::setShowDate(Settings::self()->libraryYear());
+    MusicLibraryItemAlbum::setSortByDate(Settings::self()->libraryYear());
     AlbumsModel::setCoverSize((MusicLibraryItemAlbum::CoverSize)Settings::self()->albumsCoverSize());
     tabWidget->setStyle(Settings::self()->sidebar());
 
@@ -1481,7 +1481,7 @@ void MainWindow::updateSettings()
     bool diffAlCovers=((int)AlbumsModel::currentCoverSize())!=Settings::self()->albumsCoverSize() ||
                       albumsPage->viewMode()!=Settings::self()->albumsView() ||
                       diffCoverSize(Settings::self()->albumsView(), albumsPage->viewMode());
-    bool diffLibYear=MusicLibraryItemAlbum::showDate()!=Settings::self()->libraryYear();
+    bool diffLibYear=MusicLibraryItemAlbum::sortByDate()!=Settings::self()->libraryYear();
     bool diffGrouping=MPDParseUtils::groupSingle()!=Settings::self()->groupSingle() ||
                       MPDParseUtils::groupMultiple()!=Settings::self()->groupMultiple() ||
                       Song::useComposer()!=Settings::self()->useComposer();
@@ -1496,7 +1496,7 @@ void MainWindow::updateSettings()
         MusicLibraryItemAlbum::setCoverSize((MusicLibraryItemAlbum::CoverSize)Settings::self()->libraryCoverSize());
     }
     if (diffLibYear) {
-        MusicLibraryItemAlbum::setShowDate(Settings::self()->libraryYear());
+        MusicLibraryItemAlbum::setSortByDate(Settings::self()->libraryYear());
     }
     if (diffAlCovers) {
         AlbumsModel::setCoverSize((MusicLibraryItemAlbum::CoverSize)Settings::self()->albumsCoverSize());

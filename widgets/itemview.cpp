@@ -154,6 +154,7 @@ public:
         bool selected=option.state&QStyle::State_Selected;
         bool active=option.state&QStyle::State_Active;
         bool drawBgnd=true;
+        bool iconMode = view && QListView::IconMode==view->viewMode();
         QStyleOptionViewItemV4 opt(option);
         opt.showDecorationSelected=true;
 
@@ -174,7 +175,10 @@ public:
 
         QString capacityText=index.data(ItemView::Role_CapacityText).toString();
         bool showCapacity = !capacityText.isEmpty();
-        QString text = index.data(ItemView::Role_MainText).toString();
+        QString text = iconMode ? index.data(ItemView::Role_BriefMainText).toString() : QString();
+        if (text.isEmpty()) {
+            text=index.data(ItemView::Role_MainText).toString();
+        }
         if (text.isEmpty()) {
             text=index.data(Qt::DisplayRole).toString();
         }
@@ -193,7 +197,6 @@ public:
                                                                               Qt::KeepAspectRatio, Qt::SmoothTransformation))
                             : image.value<QIcon>().pixmap(listDecorationSize, listDecorationSize);
         bool oneLine = childText.isEmpty();
-        bool iconMode = view && QListView::IconMode==view->viewMode();
         ActionPos actionPos = iconMode ? AP_VTop : AP_HMiddle;
         bool rtl = Qt::RightToLeft==QApplication::layoutDirection();
 

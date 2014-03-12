@@ -443,7 +443,7 @@ void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, const QDateTime &date
                     writer.writeAttribute(constArtistAttribute, track->song().artist);
                     wroteArtist=true;
                 }
-                if (track->song().albumartist!=artistName) {
+                if (supportsAlbumArtist && track->song().albumartist!=artistName) {
                     writer.writeAttribute(constAlbumArtistAttribute, track->song().albumartist);
                 }
                 if (!track->song().composer.isEmpty()) {
@@ -614,12 +614,14 @@ quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime 
                     } else {
                         song.artist=artistItem->actualArtist();
                     }
-                    if (attributes.hasAttribute(constAlbumArtistAttribute)) {
-                        song.albumartist=attributes.value(constAlbumArtistAttribute).toString();
-                    } else if (artistItem->actualArtist().isEmpty()) {
-                        song.albumartist=artistItem->data();
-                    } else {
-                        song.albumartist=artistItem->actualArtist();
+                    if (supportsAlbumArtist) {
+                        if (attributes.hasAttribute(constAlbumArtistAttribute)) {
+                            song.albumartist=attributes.value(constAlbumArtistAttribute).toString();
+                        } else if (artistItem->actualArtist().isEmpty()) {
+                            song.albumartist=artistItem->data();
+                        } else {
+                            song.albumartist=artistItem->actualArtist();
+                        }
                     }
                     song.composer=attributes.value(constComposerAttribute).toString();
 

@@ -209,11 +209,12 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
             return ActionModel::data(index, role);
         case ItemView::Role_Image:
         case Qt::DecorationRole: {
-            if (al->cover) {
-                return *(al->cover);
+            QPixmap *pix=al->cover();
+            if (pix) {
+                return *pix;
             }
-            int iSize=iconSize();
 
+            int iSize=iconSize();
             if (Qt::DecorationRole==role && 0==iSize) {
                 return Icons::self()->albumIcon;
             }
@@ -226,13 +227,6 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
                 }
                 theDefaultIcon = new QPixmap(Icons::self()->albumIcon.pixmap(stdSize, stdSize)
                                             .scaled(QSize(cSize, cSize), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
-            }
-            if (!al->coverRequested && iSize && Song::SingleTracks!=al->type) {
-                al->coverRequested=true;
-                al->getCover();
-                if (al->cover) {
-                    return *(al->cover);
-                }
             }
             return *theDefaultIcon;
         }
@@ -377,7 +371,6 @@ void AlbumsModel::update(const MusicLibraryItemRoot *root)
 
     for (; it!=end; ++it) {
         (*it)->updated=false;
-        //(*it)->coverRequested=false;
     }
 
     for (int i = 0; i < root->childCount(); i++) {
@@ -467,7 +460,7 @@ void AlbumsModel::setCover(const Song &song, const QImage &img, const QString &f
 
     for (int row=0; it!=end; ++it, ++row) {
         if ((*it)->artist==artist && (*it)->album==album) {
-            if (!(*it)->cover || update) {
+            if ((*it)->coverRequested || update) {
                 (*it)->setCover(img);
                 QModelIndex idx=index(row, 0, QModelIndex());
                 emit dataChanged(idx, idx);
@@ -488,7 +481,6 @@ void AlbumsModel::clear()
     qDeleteAll(items);
     items.clear();
     endResetModel();
-//     coversRequested=false;
 }
 
 void AlbumsModel::setEnabled(bool e)
@@ -533,7 +525,6 @@ AlbumsModel::AlbumItem::AlbumItem(const QString &ar, const QString &al, quint16 
     : artist(ar)
     , album(al)
     , year(y)
-    , cover(0)
     , updated(false)
     , coverRequested(false)
     , numTracks(0)
@@ -544,7 +535,6 @@ AlbumsModel::AlbumItem::AlbumItem(const QString &ar, const QString &al, quint16 
 AlbumsModel::AlbumItem::~AlbumItem()
 {
     clearSongs();
-    delete cover;
 }
 
 bool AlbumsModel::AlbumItem::operator<(const AlbumItem &o) const
@@ -605,51 +595,49 @@ void AlbumsModel::AlbumItem::updateStats()
     }
 }
 
-void AlbumsModel::AlbumItem::getCover()
+QPixmap * AlbumsModel::AlbumItem::cover()
 {
     if (Song::SingleTracks!=type && songs.count()) {
-        cover=Covers::getScaledCover(artist, album, iconSize());
-        if (cover) {
-            return;
+        QPixmap *pix=Covers::getScaledCover(artist, album, iconSize());
+        if (pix) {
+            return pix;
         }
 
-        SongItem *firstSong=songs.first();
-        Song s;
-        if (Song::MultipleArtists==type) {  // Then Cantata has placed this album under 'Various Artists' but the actual album as a different AlbumArtist tag
-            s.artist=firstSong->albumArtist();
-        } else {
-            s.artist=firstSong->artist;
-            s.albumartist=Song::useComposer() && !firstSong->composer.isEmpty()
-                            ? firstSong->albumArtist() : artist;
-        }
-        s.album=album;
-        s.year=year;
-        s.file=firstSong->file;
-        s.type=type;
-        s.composer=firstSong->composer;
-        Covers::Image img=Covers::self()->requestImage(s);
-        if (!img.img.isNull()) {
-            setCover(img.img);
+        if (!coverRequested) {
+            SongItem *firstSong=songs.first();
+            Song s;
+            if (Song::MultipleArtists==type) {  // Then Cantata has placed this album under 'Various Artists' but the actual album as a different AlbumArtist tag
+                s.artist=firstSong->albumArtist();
+            } else {
+                s.artist=firstSong->artist;
+                s.albumartist=Song::useComposer() && !firstSong->composer.isEmpty()
+                        ? firstSong->albumArtist() : artist;
+            }
+            s.album=album;
+            s.year=year;
+            s.file=firstSong->file;
+            s.type=type;
+            s.composer=firstSong->composer;
+            Covers::Image img=Covers::self()->requestImage(s);
+            if (img.img.isNull()) {
+                coverRequested=true;
+            } else {
+                return setCover(img.img);
+            }
         }
     }
+
+    return 0;
 }
 
-void AlbumsModel::AlbumItem::setCover(const QImage &img)
+QPixmap * AlbumsModel::AlbumItem::setCover(const QImage &img)
 {
-    if (cover) {
-        delete cover;
-    }
-
+    coverRequested=false;
     if (Song::SingleTracks!=type && songs.count() && !img.isNull()) {
         int size=iconSize();
-        QImage scaled=img.scaled(QSize(size, size), Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-        Covers::saveScaledCover(scaled, artist, album, size);
-        cover=new QPixmap(QPixmap::fromImage(scaled));
-        return;
+        return Covers::saveScaledCover(img.scaled(QSize(size, size), Qt::IgnoreAspectRatio, Qt::SmoothTransformation), artist, album, size);
     }
-
-    int size=iconSize();
-    cover=new QPixmap(QPixmap::fromImage(img.scaled(QSize(size, size), Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
+    return 0;
 }
 
 const AlbumsModel::SongItem *AlbumsModel::AlbumItem::getCueFile() const

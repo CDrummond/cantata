@@ -46,6 +46,8 @@
     after album name.
 28. Only show album year in non-icon view.
 29. Only show album year in browsers.
+30. Reduce memory usage, by storing album covers in a cache - and using this
+    for display.
 
 1.3.3
 -----

@@ -75,7 +75,6 @@
   - mixramp MPD settings
     - Does MPD need to be restarted to change settings?
   - Create a base 'Page' class?
-  - Reduce memory usage - use QCache for artists and albums models?
 
 - Bugs
   - Jamendo search sometimes causes crash (not seen for a while)

@@ -84,8 +84,8 @@ public:
         quint32 trackCount();
         quint32 totalTime();
         void updateStats();
-        void getCover();
-        void setCover(const QImage &img);
+        QPixmap *cover();
+        QPixmap *setCover(const QImage &img);
         bool isSingleTracks() const { return Song::SingleTracks==type; }
         const SongItem *getCueFile() const;
         QString albumDisplay() const { return Song::displayAlbum(album, year); }
@@ -94,7 +94,6 @@ public:
         quint16 year;
         QList<SongItem *> songs;
         QSet<QString> genres;
-        QPixmap *cover;
         bool updated;
         bool coverRequested;
         Song::Type type;

@@ -251,12 +251,3 @@ QStringList MultiMusicModel::filenames(const QModelIndexList &indexes, bool play
     }
     return fnames;
 }
-
-void MultiMusicModel::clearImages()
-{
-    beginResetModel();
-    foreach (MusicLibraryItemRoot *c, collections) {
-        c->clearImages();
-    }
-    endResetModel();
-}

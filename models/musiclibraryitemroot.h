@@ -111,7 +111,6 @@ public:
     bool updateSong(const Song &orig, const Song &edit);
     void addSongToList(const Song &s);
     void removeSongFromList(const Song &s);
-    void clearImages();
     static QString artistName(const Song &s);
 
 protected:

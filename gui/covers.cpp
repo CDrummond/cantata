@@ -54,6 +54,7 @@
 #include <QFont>
 #include <QXmlStreamReader>
 #include <QTimer>
+#include <QCache>
 
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KStandardDirs>
@@ -87,6 +88,9 @@ static const char * constExtensions[]={".jpg", ".png", 0};
 static bool saveInMpdDir=true;
 static bool fetchCovers=true;
 static QString constCoverInTagPrefix=QLatin1String("{tag}");
+
+static QSet<int> cacheSizes;
+static QCache<QString, QPixmap> cache(4*1024*1024);
 
 static bool canSaveTo(const QString &dir)
 {
@@ -140,14 +144,35 @@ static QString save(const QString &mimeType, const QString &extension, const QSt
     return QString();
 }
 
+static inline QString albumKey(const QString &artist, const QString &album)
+{
+    return "{"+artist+"}{"+album+"}";
+}
+
 static inline QString albumKey(const Song &s)
 {
-    return "{"+s.albumArtist()+"}{"+s.album+"}";
+    return albumKey(s.albumArtist(), s.album);
+}
+
+static inline QString artistKey(const QString &artist)
+{
+    return "{"+artist+"}";
 }
 
 static inline QString artistKey(const Song &s)
 {
-    return "{"+s.albumArtist()+"}";
+    return artistKey(s);
+}
+
+static inline QString cacheKey(const Song &song, int size)
+{
+    return (song.isArtistImageRequest() ? artistKey(song) : albumKey(song))+QString::number(size);
+}
+
+
+static inline QString cacheKey(const QString &artist, const QString &album, int size)
+{
+    return (album.isEmpty() ? artistKey(artist) : albumKey(artist, album))+QString::number(size);
 }
 
 static const QLatin1String constScaledFormat(".jpg");
@@ -201,32 +226,41 @@ static void clearScaledCache(const Song &song)
 
 QPixmap * Covers::getScaledCover(const QString &artist, const QString &album, int size)
 {
-    if (!cacheScaledCovers) {
-        return 0;
-    }
-
-    DBUG_CLASS("Covers") << artist << album << size;
-    QString cache=getScaledCoverName(artist, album, size, true);
-    if (!cache.isEmpty() && QFile::exists(cache)) {
-        QImage img(cache);
-        if (!img.isNull() && (img.width()==size || img.height()==size)) {
-            DBUG_CLASS("Covers") << artist << album << size << "scaled cover found";
-            return new QPixmap(QPixmap::fromImage(img));
+//    DBUG_CLASS("Covers") << artist << album << size;
+    QString key=cacheKey(artist, album, size);
+    QPixmap *pix(cache.object(key));
+    if (!pix && cacheScaledCovers) {
+        QString fileName=getScaledCoverName(artist, album, size, false);
+        if (!fileName.isEmpty() && QFile::exists(fileName)) {
+            QImage img(fileName);
+            if (!img.isNull() && (img.width()==size || img.height()==size)) {
+                DBUG_CLASS("Covers") << artist << album << size << "scaled cover found" << fileName;
+                pix=new QPixmap(QPixmap::fromImage(img));
+                cache.insert(key, pix, pix->width()*pix->height()*(pix->depth()/8));
+            }
         }
+
+        if (!pix) {
+            // Create a dummy pixmap so that we dont keep on stating files that do not exist!
+            pix=new QPixmap(1, 1);
+            cache.insert(key, pix, 4);
+        }
+        cacheSizes.insert(size);
     }
-    return 0;
+    return pix && pix->width()>1 ? pix : 0;
 }
 
-bool Covers::saveScaledCover(const QImage &img, const QString &artist, const QString &album, int size)
+QPixmap * Covers::saveScaledCover(const QImage &img, const QString &artist, const QString &album, int size)
 {
-    if (!cacheScaledCovers) {
-        return false;
+    if (cacheScaledCovers) {
+        QString fileName=getScaledCoverName(artist, album, size, true);
+        bool status=img.save(fileName);
+        DBUG_CLASS("Covers") << artist << album << size << fileName << status;
     }
-
-    QString fileName=getScaledCoverName(artist, album, size, true);
-    bool status=img.save(fileName);
-    DBUG_CLASS("Covers") << artist << album << size << fileName << status;
-    return status;
+    QPixmap *pix=new QPixmap(QPixmap::fromImage(img));
+    cache.insert(cacheKey(artist, album, size), pix, pix->width()*pix->height()*(pix->depth()/8));
+    cacheSizes.insert(size);
+    return pix;
 }
 
 bool Covers::isJpg(const QByteArray &data)
@@ -874,7 +908,6 @@ void CoverLocator::locate()
 
 Covers::Covers()
     : retrieved(0)
-    , cache(300000)
     , downloader(0)
     , locator(0)
     , countResetTimer(0)
@@ -908,28 +941,13 @@ void Covers::stop()
     #endif
 }
 
-static inline QString cacheKey(const Song &song, int size)
-{
-    return (song.isArtistImageRequest() ? artistKey(song) : albumKey(song))+QString::number(size);
-}
-
 QPixmap * Covers::get(const Song &song, int size)
 {
     if (song.isUnknown()) {
         return 0;
     }
 
-    QString key=cacheKey(song, size);
-    QPixmap *pix(cache.object(key));
-
-    if (!pix) {
-        pix=getScaledCover(song.albumArtist(), song.album, size);
-        if (pix) {
-            cacheSizes.insert(size);
-            cache.insert(key, pix, size);
-            return pix;
-        }
-    }
+    QPixmap *pix=getScaledCover(song.albumArtist(), song.album, size);
 
     if (!pix) {
         QImage img;
@@ -947,23 +965,19 @@ QPixmap * Covers::get(const Song &song, int size)
             img=findImage(song, false).img;
         }
 
-        cacheSizes.insert(size);
         if (!img.isNull()) {
-            QImage scaled=img.scaled(size, size, Qt::KeepAspectRatio, Qt::SmoothTransformation);
-            saveScaledCover(scaled, song.albumArtist(), song.album, size);
-            pix=new QPixmap(QPixmap::fromImage(scaled));
+            pix=saveScaledCover(img.scaled(size, size, Qt::KeepAspectRatio, Qt::SmoothTransformation), song.albumArtist(), song.album, size);
         }
 
-        if (pix) {
-            cache.insert(key, pix, pix->width()*pix->height()*(pix->depth()/8));
-        } else {
+        if (!pix) {
             // Attempt to download cover...
             if (Song::OnlineSvrTrack!=song.type) {
                 tryToDownload(song);
             }
             // Create a dummy pixmap so that we dont keep on stating files that do not exist!
             pix=new QPixmap(1, 1);
-            cache.insert(key, pix, 4);
+            cache.insert(cacheKey(song, size), pix, 4);
+            cacheSizes.insert(size);
         }
     }
 

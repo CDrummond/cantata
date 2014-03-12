@@ -209,13 +209,13 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
             return ActionModel::data(index, role);
         case ItemView::Role_Image:
         case Qt::DecorationRole: {
-            QPixmap *pix=al->cover();
-            if (pix) {
-                return *pix;
-            }
-
             int iSize=iconSize();
-            if (Qt::DecorationRole==role && 0==iSize) {
+            if (iSize) {
+                QPixmap *pix=al->cover();
+                if (pix) {
+                    return *pix;
+                }
+            } else if (Qt::DecorationRole==role) {
                 return Icons::self()->albumIcon;
             }
 

@@ -198,7 +198,6 @@ QList<Song> OnlineServicesPage::selectedSongs(bool allowPlaylists) const
         return QList<Song>();
     }
 
-    QString name;
     QModelIndexList mapped;
     foreach (const QModelIndex &idx, selected) {
         QModelIndex index = proxy.mapToSource(idx);

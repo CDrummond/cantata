@@ -54,6 +54,7 @@
 1. If Cantata is started whilst an instance is also running, raise window of
    current instance. (Linux only fix)
 2. Add song to playqueue from albums page when double-clicked.
+3. Fix display of online-service track album-artist in copy dialog.
 
 1.3.2
 -----

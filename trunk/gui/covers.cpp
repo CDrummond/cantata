@@ -226,6 +226,9 @@ static void clearScaledCache(const Song &song)
 
 QPixmap * Covers::getScaledCover(const QString &artist, const QString &album, int size)
 {
+    if (size<4) {
+        return 0;
+    }
 //    DBUG_CLASS("Covers") << artist << album << size;
     QString key=cacheKey(artist, album, size);
     QPixmap *pix(cache.object(key));
@@ -252,6 +255,10 @@ QPixmap * Covers::getScaledCover(const QString &artist, const QString &album, in
 
 QPixmap * Covers::saveScaledCover(const QImage &img, const QString &artist, const QString &album, int size)
 {
+    if (size<4) {
+        return 0;
+    }
+
     if (cacheScaledCovers) {
         QString fileName=getScaledCoverName(artist, album, size, true);
         bool status=img.save(fileName);

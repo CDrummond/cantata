@@ -910,7 +910,7 @@ void Covers::stop()
 
 static inline QString cacheKey(const Song &song, int size)
 {
-    return albumKey(song)+QString::number(size);
+    return (song.isArtistImageRequest() ? artistKey(song) : albumKey(song))+QString::number(size);
 }
 
 QPixmap * Covers::get(const Song &song, int size)
@@ -921,6 +921,15 @@ QPixmap * Covers::get(const Song &song, int size)
 
     QString key=cacheKey(song, size);
     QPixmap *pix(cache.object(key));
+
+    if (!pix) {
+        pix=getScaledCover(song.albumArtist(), song.album, size);
+        if (pix) {
+            cacheSizes.insert(size);
+            cache.insert(key, pix, size);
+            return pix;
+        }
+    }
 
     if (!pix) {
         QImage img;
@@ -940,7 +949,12 @@ QPixmap * Covers::get(const Song &song, int size)
 
         cacheSizes.insert(size);
         if (!img.isNull()) {
-            pix=new QPixmap(QPixmap::fromImage(img.scaled(size, size, Qt::KeepAspectRatio, Qt::SmoothTransformation)));
+            QImage scaled=img.scaled(size, size, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+            saveScaledCover(scaled, song.albumArtist(), song.album, size);
+            pix=new QPixmap(QPixmap::fromImage(scaled));
+        }
+
+        if (pix) {
             cache.insert(key, pix, pix->width()*pix->height()*(pix->depth()/8));
         } else {
             // Attempt to download cover...
@@ -988,8 +1002,10 @@ void Covers::clearCache(const Song &song, const QImage &img, bool dummyEntriesOn
             cache.remove(key);
 
             if (!img.isNull()) {
-                pix=new QPixmap(QPixmap::fromImage(img.scaled(s, s, Qt::KeepAspectRatio, Qt::SmoothTransformation)));
+                QImage scaled=img.scaled(s, s, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+                pix=new QPixmap(QPixmap::fromImage(scaled));
                 cache.insert(key, pix, pix->width()*pix->height()*(pix->depth()/8));
+                saveScaledCover(scaled, song.albumArtist(), song.album, s);
             }
         }
     }

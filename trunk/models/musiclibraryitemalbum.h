@@ -67,7 +67,7 @@ public:
     QString displayData(bool full=false) const;
     bool setCover(const QImage &img, bool update=false) const;
     const QPixmap & cover() const;
-    bool hasRealCover() const { return !m_coverIsDefault; }
+    bool hasRealCover() const { return !m_coverRequested; }
     quint32 year() const { return m_year; }
     quint32 totalTime();
     quint32 trackCount();
@@ -90,12 +90,11 @@ public:
     void setImageUrl(const QString &u) { m_imageUrl=u; }
     bool updateYear();
     bool containsArtist(const QString &a);
-    void clearImage() const;
     // Return orignal album name. If we are grouping by composer, then album will appear as "Album (Artist)"
     const QString & originalName() const { return m_originalName; }
 
 private:
-    void setCoverImage(const QImage &img) const;
+    QPixmap *setCoverImage(const QImage &img) const;
     void setYear(const MusicLibraryItemSong *song);
     bool largeImages() const;
     void updateStats();
@@ -107,8 +106,7 @@ private:
     quint32 m_totalTime;
     quint32 m_numTracks;
     QString m_originalName;
-    mutable bool m_coverIsDefault;
-    mutable QPixmap *m_cover;
+    mutable bool m_coverRequested;
     Song::Type m_type;
     QSet<QString> m_singleTrackFiles;
     QString m_imageUrl;

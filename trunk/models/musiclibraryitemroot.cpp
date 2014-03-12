@@ -1001,15 +1001,6 @@ void MusicLibraryItemRoot::removeSongFromList(const Song &s)
     }
 }
 
-void MusicLibraryItemRoot::clearImages()
-{
-    foreach (MusicLibraryItem *i, m_childItems) {
-        if (MusicLibraryItem::Type_Artist==i->itemType()) {
-            static_cast<MusicLibraryItemArtist *>(i)->clearImages();
-        }
-    }
-}
-
 QString MusicLibraryItemRoot::artistName(const Song &s)
 {
     if (Song::Standard==s.type || (Song::Playlist==s.type && !s.albumArtist().isEmpty())) {

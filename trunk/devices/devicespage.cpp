@@ -254,7 +254,6 @@ void DevicesPage::addSelectionToPlaylist(const QString &name, bool replace, quin
 void DevicesPage::refresh()
 {
     view->setLevel(0);
-    DevicesModel::self()->clearImages();
     if (ItemView::Mode_SimpleTree==view->viewMode() || ItemView::Mode_DetailedTree==view->viewMode()) {
         for (int i=0; i<DevicesModel::self()->rowCount(QModelIndex()); ++i) {
             view->setExpanded(proxy.mapFromSource(DevicesModel::self()->index(i, 0, QModelIndex())));

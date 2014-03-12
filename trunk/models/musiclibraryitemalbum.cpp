@@ -45,7 +45,6 @@
 
 static MusicLibraryItemAlbum::CoverSize coverSize=MusicLibraryItemAlbum::CoverNone;
 static QPixmap *theDefaultIcon=0;
-static QPixmap *theDefaultLargeIcon=0;
 static bool dateSort=false;
 static QSize iconItemSize;
 
@@ -118,10 +117,6 @@ void MusicLibraryItemAlbum::setCoverSize(MusicLibraryItemAlbum::CoverSize size)
             delete theDefaultIcon;
             theDefaultIcon=0;
         }
-        if (theDefaultLargeIcon) {
-            delete theDefaultLargeIcon;
-            theDefaultLargeIcon=0;
-        }
         MusicLibraryItemArtist::clearDefaultCover();
         coverSize=size;
     }
@@ -160,27 +155,21 @@ MusicLibraryItemAlbum::MusicLibraryItemAlbum(const QString &data, QString origin
     , m_totalTime(0)
     , m_numTracks(0)
     , m_originalName(original!=data ? original : QString())
-    , m_coverIsDefault(false)
-    , m_cover(0)
+    , m_coverRequested(false)
     , m_type(Song::Standard)
 {
 }
 
 MusicLibraryItemAlbum::~MusicLibraryItemAlbum()
 {
-    delete m_cover;
 }
 
-void MusicLibraryItemAlbum::setCoverImage(const QImage &img) const
+QPixmap * MusicLibraryItemAlbum::setCoverImage(const QImage &img) const
 {
-    if (m_cover) {
-        delete m_cover;
-    }
     int size=iconSize(largeImages());
     QImage scaled=img.scaled(QSize(size, size), Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-    m_cover = new QPixmap(QPixmap::fromImage(scaled));
-    m_coverIsDefault=false;
-    Covers::saveScaledCover(scaled, parentItem()->data(), data(), size);
+    m_coverRequested=false;
+    return Covers::saveScaledCover(scaled, parentItem()->data(), data(), size);
 }
 
 QString MusicLibraryItemAlbum::displayData(bool full) const
@@ -190,51 +179,23 @@ QString MusicLibraryItemAlbum::displayData(bool full) const
 
 bool MusicLibraryItemAlbum::setCover(const QImage &img, bool update) const
 {
-    if ((update || m_coverIsDefault) && !img.isNull()) {
+    if ((update || m_coverRequested) && !img.isNull()) {
         setCoverImage(img);
         return true;
     }
-
     return false;
 }
 
 const QPixmap & MusicLibraryItemAlbum::cover() const
 {
-    if (m_coverIsDefault) {
-        if (largeImages()) {
-            if (theDefaultLargeIcon) {
-                return *theDefaultLargeIcon;
-            }
-        } else if (theDefaultIcon) {
-            return *theDefaultIcon;
+    int iSize=iconSize(largeImages());
+    if (Song::SingleTracks!=m_type && parentItem() && iSize && childCount()) {
+        QPixmap *pix=Covers::getScaledCover(parentItem()->data(), data(), iSize);
+        if (pix) {
+            return *pix;
         }
-    }
 
-    if (!m_cover) {
-        bool useLarge=largeImages();
-        int iSize=iconSize(useLarge);
-
-        if ((useLarge && !theDefaultLargeIcon) || (!useLarge && !theDefaultIcon)) {
-            int cSize=iSize;
-            if (0==cSize) {
-                cSize=22;
-            }
-            if (useLarge) {
-                theDefaultLargeIcon = new QPixmap(Icons::self()->albumIcon.pixmap(cSize, cSize)
-                                                 .scaled(QSize(cSize, cSize), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
-            } else {
-                theDefaultIcon = new QPixmap(Icons::self()->albumIcon.pixmap(cSize, cSize)
-                                            .scaled(QSize(cSize, cSize), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
-            }
-        }
-        m_coverIsDefault = true;
-        if (Song::SingleTracks!=m_type && parentItem() && iSize && childCount()) {
-            m_cover=Covers::getScaledCover(parentItem()->data(), data(), iSize);
-            if (m_cover) {
-                m_coverIsDefault=false;
-                return *m_cover;
-            }
-
+        if (!m_coverRequested) {
             MusicLibraryItemSong *firstSong=static_cast<MusicLibraryItemSong*>(childItem(0));
             Song song;
             if (Song::MultipleArtists==m_type) { // Then Cantata has placed this album under 'Various Artists' but the actual album as a different AlbumArtist tag
@@ -242,7 +203,7 @@ const QPixmap & MusicLibraryItemAlbum::cover() const
             } else {
                 song.artist=firstSong->song().artist;
                 song.albumartist=Song::useComposer() && !firstSong->song().composer.isEmpty()
-                                    ? firstSong->song().albumArtist() : parentItem()->data();
+                        ? firstSong->song().albumArtist() : parentItem()->data();
             }
             song.album=Song::useComposer() ? firstSong->song().album : m_itemData;
             song.year=m_year;
@@ -251,7 +212,8 @@ const QPixmap & MusicLibraryItemAlbum::cover() const
             song.composer=firstSong->song().composer;
             Covers::Image img;
             MusicLibraryItemRoot *root=parentItem() && parentItem()->parentItem() && MusicLibraryItem::Type_Root==parentItem()->parentItem()->itemType()
-                                        ? static_cast<MusicLibraryItemRoot *>(parentItem()->parentItem()) : 0;
+                    ? static_cast<MusicLibraryItemRoot *>(parentItem()->parentItem()) : 0;
+            m_coverRequested=true;
             if (root && !root->useAlbumImages()) {
                 // Not showing album images in this model, so dont request any!
             }
@@ -266,12 +228,12 @@ const QPixmap & MusicLibraryItemAlbum::cover() const
             else if (root && root->isOnlineService()) {
                 img.img=OnlineServicesModel::self()->requestImage(static_cast<OnlineService *>(root)->id(), parentItem()->data(), data(), m_imageUrl);
                 // ONLINE: Image URL is encoded in song.name...
-//                if (!m_imageUrl.isEmpty()) {
-//                    song.name=m_imageUrl;
-//                    song.title=parentItem()->parentItem()->data().toLower();
-//                    song.type=Song::OnlineSvrTrack;
-//                }
-//                img=Covers::self()->requestImage(song);
+                //                if (!m_imageUrl.isEmpty()) {
+                //                    song.name=m_imageUrl;
+                //                    song.title=parentItem()->parentItem()->data().toLower();
+                //                    song.type=Song::OnlineSvrTrack;
+                //                }
+                //                img=Covers::self()->requestImage(song);
             }
             #endif
             else {
@@ -279,14 +241,27 @@ const QPixmap & MusicLibraryItemAlbum::cover() const
             }
 
             if (!img.img.isNull()) {
-                setCoverImage(img.img);
-                return *m_cover;
+                pix=setCoverImage(img.img);
+                if (pix) {
+                    return *pix;
+                }
             }
         }
-        return useLarge ? *theDefaultLargeIcon : *theDefaultIcon;
     }
 
-    return *m_cover;
+    int cSize=iSize;
+    if (0==cSize) {
+        cSize=22;
+    }
+
+    if (!theDefaultIcon || theDefaultIcon->width()!=cSize) {
+        if (theDefaultIcon) {
+            delete theDefaultIcon;
+        }
+        theDefaultIcon = new QPixmap(Icons::self()->albumIcon.pixmap(cSize, cSize)
+                                     .scaled(QSize(cSize, cSize), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+    }
+    return *theDefaultIcon;
 }
 
 quint32 MusicLibraryItemAlbum::totalTime()
@@ -473,18 +448,6 @@ bool MusicLibraryItemAlbum::containsArtist(const QString &a)
     }
 
     return m_artists.contains(a);
-}
-
-void MusicLibraryItemAlbum::clearImage() const
-{
-    if (!m_coverIsDefault) {
-        m_coverIsDefault=true;
-        delete m_cover;
-        m_cover=0;
-        if (theDefaultIcon) {
-            m_cover=theDefaultIcon;
-        }
-    }
 }
 
 void MusicLibraryItemAlbum::setYear(const MusicLibraryItemSong *song)

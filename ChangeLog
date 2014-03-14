@@ -52,6 +52,10 @@
 32. Use MPD status to detemien when to show, and hide, "Updating..." message.
 33. Ignore mouse-events on message-overlay if cancel button is hidden.
 34. Update copy of QJson to 0.8.1
+35. Speed up building list of songs - by only checking if file has already
+    been added, not song.
+36. After scanning replay gain, show original tag values in tooltips if
+    different to those calculated.
 
 1.3.3
 -----

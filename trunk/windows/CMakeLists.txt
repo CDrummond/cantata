@@ -1,6 +1,6 @@
 configure_file(cantata.iss.cmake ${CMAKE_CURRENT_BINARY_DIR}/cantata.iss)
-install(FILES Cantata.README Qt4.LICENSE.LGPL_V2 Qt4.README TagLib.README DESTINATION ${CMAKE_INSTALL_PREFIX})
-install(FILES ../LICENSE DESTINATION ${CMAKE_INSTALL_PREFIX} RENAME Cantata.LICENSE)
+install(FILES "Cantata README.txt"  "Qt4 README.txt"  "Qt License (LGPL V2).txt"  "TagLib README.txt" DESTINATION ${CMAKE_INSTALL_PREFIX})
+install(FILES ../LICENSE DESTINATION ${CMAKE_INSTALL_PREFIX} RENAME "Cantata License (GPL V3).txt")
 
 # Qt translation files...
 file(GLOB qt_trans ${QT_TRANSLATIONS_DIR}/qt_*.qm)

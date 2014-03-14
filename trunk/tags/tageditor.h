@@ -65,6 +65,7 @@ private:
     void closeEvent(QCloseEvent *event);
 
 private Q_SLOTS:
+    void readComments();
     void applyVa();
     void revertVa();
     void setAlbumArtistFromArtist();

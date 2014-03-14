@@ -6,7 +6,7 @@
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License version 2.1, as published by the Free Software Foundation.
- *
+ * 
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -26,50 +26,57 @@
 
 #include <ctype.h>
 
-#include <QDebug>
-#include <QRegExp>
+#include <QtCore/QDebug>
+#include <QtCore/QRegExp>
 
 #include <cassert>
 
+
 JSonScanner::JSonScanner(QIODevice* io)
-    : m_allowSpecialNumbers(false),
-      m_io (io),
-      m_criticalError(false)
+  : m_allowSpecialNumbers(false),
+    m_io (io),
+    m_criticalError(false),
+    m_C_locale(QLocale::C)
+{
+
+}
+
+JSonScanner::~JSonScanner()
 {
 }
 
 void JSonScanner::allowSpecialNumbers(bool allow) {
-    m_allowSpecialNumbers = allow;
+  m_allowSpecialNumbers = allow;
 }
 
 int JSonScanner::yylex(YYSTYPE* yylval, yy::location *yylloc) {
-    m_yylval = yylval;
-    m_yylloc = yylloc;
-    m_yylloc->step();
-    int result = yylex();
-
-    if (m_criticalError) {
-        return -1;
-    }
-
-    return result;
+  m_yylval = yylval;
+  m_yylloc = yylloc;
+  m_yylloc->step();
+  int result = yylex();
+  
+  if (m_criticalError) {
+    return -1;
+  }
+  
+  return result;
 }
 
 int JSonScanner::LexerInput(char* buf, int max_size) {
-    if (!m_io->isOpen()) {
-        qCritical() << "JSonScanner::yylex - io device is not open";
-        m_criticalError = true;
-        return 0;
-    }
-
-    int readBytes = m_io->read(buf, max_size);
-    if(readBytes < 0) {
-        qCritical() << "JSonScanner::yylex - error while reading from io device";
-        m_criticalError = true;
-        return 0;
-    }
-
-    return readBytes;
+  if (!m_io->isOpen()) {
+    qCritical() << "JSonScanner::yylex - io device is not open";
+    m_criticalError = true;
+    return 0;
+  }
+  
+  int readBytes = m_io->read(buf, max_size);
+  if(readBytes < 0) {
+    qCritical() << "JSonScanner::yylex - error while reading from io device";
+    m_criticalError = true;
+    return 0;
+  }
+  
+  return readBytes;
 }
 
 

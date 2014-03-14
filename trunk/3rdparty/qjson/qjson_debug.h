@@ -22,7 +22,7 @@
 #ifndef QJSON_DEBUG_H
 #define QJSON_DEBUG_H
 
-#include <QDebug>
+#include <QtCore/QDebug>
 
 // define qjsonDebug()
 #ifdef QJSON_VERBOSE_DEBUG_OUTPUT

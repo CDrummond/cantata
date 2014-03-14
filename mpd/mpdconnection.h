@@ -378,6 +378,7 @@ private:
     quint32 songPos; // USe for stop-after-current when we only have 1 songin playqueue!
     int unmuteVol;
     bool mopidy;
+    bool isUpdatingDb;
 };
 
 #endif

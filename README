@@ -355,6 +355,12 @@ maxCoverUpdatePerIteration=<Integer>
     displayed. This config controls the number of covers that are sent in one
     batch. The default is again 5. (Values 1..20 are acceptable)
 
+coverCacheSize=<Integer>
+    Cantata stores scaled versions of covers in a cache in memory, to reduce
+    memory usage and/or disk acicess. This setting controls the maximum size
+    (in megabytes) that Cantata will use for this cache. The default is 4
+    (Values 1..512 are acceptable)
+
 cueFileCodecs=<Comma separated list of codecs>
     List of extra text codecs to try when loading CUE files. UTF-8 and System
     default are tried first, and then the entries from this config are tried.
@@ -434,6 +440,7 @@ e.g.
 iconTheme=oxygen
 maxCoverFindPerIteration=5
 maxCoverUpdatePerIteration=5
+coverCacheSize=4
 cueFileCodecs=GBK, big5-0
 networkAccessEnabled=false
 volumeStep=2

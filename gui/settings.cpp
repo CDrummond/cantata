@@ -890,6 +890,12 @@ int Settings::maxCoverUpdatePerIteration()
     return RESTRICT(v, 1, 20);
 }
 
+int Settings::coverCacheSize()
+{
+    int v=GET_INT("coverCacheSize", 4);
+    return RESTRICT(v, 1, 512);
+}
+
 QStringList Settings::cueFileCodecs()
 {
     return GET_STRINGLIST("cueFileCodecs", QStringList());

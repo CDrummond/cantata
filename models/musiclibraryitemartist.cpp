@@ -91,7 +91,7 @@ bool MusicLibraryItemArtist::setCover(const QImage &img, bool update) const
             scaled=scaled.copy((scaled.width()-size)/2, 0, size, size);
         }
         m_coverRequested=false;
-        Covers::saveScaledCover(scaled, data(), QString(), size);
+        Covers::self()->saveScaledCover(scaled, data(), QString(), size);
         return true;
     }
 
@@ -116,7 +116,7 @@ const QPixmap & MusicLibraryItemArtist::cover() const
         return *theVariousArtistsIcon;
     }
 
-    QPixmap *pix=Covers::getScaledCover(data(), QString(), iSize);
+    QPixmap *pix=Covers::self()->getScaledCover(data(), QString(), iSize);
     if (pix) {
         return *pix;
     }
@@ -160,8 +160,7 @@ const QPixmap & MusicLibraryItemArtist::cover() const
 
         if (!img.img.isNull()) {
             setCover(img.img);
-            m_coverRequested=false;
-            pix=Covers::getScaledCover(data(), QString(), iSize);
+            pix=Covers::self()->getScaledCover(data(), QString(), iSize);
             if (pix) {
                 return *pix;
             }
@@ -291,4 +290,6 @@ bool MusicLibraryItemArtist::largeImages() const
 {
     return m_parentItem && Type_Root==m_parentItem->itemType() &&
            static_cast<MusicLibraryItemRoot *>(m_parentItem)->useLargeImages();
+}
+Images();
 }

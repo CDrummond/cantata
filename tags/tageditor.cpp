@@ -41,7 +41,7 @@
 #include <QCoreApplication>
 #include <QEventLoop>
 #include <QDir>
-#include <QDebug>
+#include <QTimer>
 
 #define REMOVE(w) \
     w->setVisible(false); \
@@ -125,10 +125,6 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
         Song song(s);
         if (s.guessed) {
             song.revertGuessedTags();
-        }
-        song.setComment(commentSupport ? Tags::readComment(baseDir+s.file) : QString());
-        if (commentSupport && !haveComments && !song.comment().isEmpty()) {
-            haveComments=true;
         }
         original.append(song);
     }
@@ -317,6 +313,9 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
         resize(w, height());
     }
     setMaximumHeight(height());
+    if (commentSupport) {
+        QTimer::singleShot(0, this, SLOT(readComments()));
+    }
 }
 
 TagEditor::~TagEditor()
@@ -399,6 +398,28 @@ void TagEditor::setLabelStates()
     discLabel->setOn(o.disc!=e.disc);
     genreLabel->setOn(o.genre!=e.genre);
     yearLabel->setOn(o.year!=e.year);
+}
+
+void TagEditor::readComments()
+{
+    progress->setVisible(true);
+    progress->setRange(0, original.count());
+
+    for (int i=0; i<original.count(); ++i) {
+        progress->setValue(i);
+        if (i && 0==i%10) {
+            QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
+        }
+
+        Song song=original.at(i);
+        QString comment=Tags::readComment(baseDir+song.file);
+        if (!!comment.isEmpty()) {
+            song.setComment(comment);
+            original.replace(i, song);
+            haveComments=true;
+        }
+    }
+    progress->setVisible(false);
 }
 
 void TagEditor::applyVa()

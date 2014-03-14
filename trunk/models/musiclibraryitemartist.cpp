@@ -90,8 +90,10 @@ bool MusicLibraryItemArtist::setCover(const QImage &img, bool update) const
         if (scaled.width()>size || scaled.height()>size) {
             scaled=scaled.copy((scaled.width()-size)/2, 0, size, size);
         }
-        m_coverRequested=false;
-        Covers::self()->saveScaledCover(scaled, data(), QString(), size);
+        if (Covers::self()->saveScaledCover(scaled, data(), QString(), size)) {
+            m_coverRequested=false;
+        }
+
         return true;
     }
 

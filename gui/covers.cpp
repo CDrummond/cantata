@@ -1125,7 +1125,11 @@ Covers::Image Covers::locateImage(const Song &song)
                 coverFileNames << mpdCover+constExtensions[e];
             }
         }
-        coverFileNames << standardNames();
+        if (!mpdCover.isEmpty()) {
+            for (int e=0; constExtensions[e]; ++e) {
+                coverFileNames << mpdCover+constExtensions[e];
+            }
+        }
         for (int e=0; constExtensions[e]; ++e) {
             coverFileNames+=Utils::changeExtension(Utils::getFile(songFile), constExtensions[e]);
         }

@@ -65,6 +65,7 @@ void MessageOverlay::setText(const QString &txt, int timeout, bool allowCancel)
 
     text=txt;
     cancelButton->setVisible(allowCancel);
+    setAttribute(Qt::WA_TransparentForMouseEvents, !allowCancel);
     setVisible(!text.isEmpty());
     if (!text.isEmpty()) {
         setSizeAndPosition();
@@ -100,8 +101,8 @@ void MessageOverlay::paintEvent(QPaintEvent *)
     QColor borderCol=palette().color(QPalette::Highlight).darker(120);
     QColor col=palette().color(QPalette::Window);
     QPainterPath path=buildPath(rf, r.height()/4.0);
-    borderCol.setAlphaF(0.9);
-    col.setAlphaF(0.85);
+    borderCol.setAlphaF(0.8);
+    col.setAlphaF(0.7);
     p.setRenderHint(QPainter::Antialiasing, true);
     p.fillPath(path, col);
     p.setPen(QPen(borderCol, qMax(2, r.height()/16)));

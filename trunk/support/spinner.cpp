@@ -77,7 +77,9 @@ Spinner::Spinner(QObject *p, bool inMiddle)
     setVisible(false);
     setMinimumSize(size, size);
     setMaximumSize(size, size);
+    setAttribute(Qt::WA_TransparentForMouseEvents, true);
 }
+
 void Spinner::setWidget(QWidget *widget)
 {
     setParent(widget);

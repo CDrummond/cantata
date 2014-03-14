@@ -49,6 +49,8 @@
 30. Reduce memory usage, by storing album covers in a cache - and using this
     for display.
 31. Only save albumartist tag in XML cache file if library supports this tag.
+32. Use MPD status to detemien when to show, and hide, "Updating..." message.
+33. Ignore mouse-events on message-overlay if cancel button is hidden.
 
 1.3.3
 -----

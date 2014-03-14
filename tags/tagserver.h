@@ -24,23 +24,25 @@
 #ifndef TAG_SERVER_H
 #define TAG_SERVER_H
 
-class QFile;
+#include <QObject>
 
-class TagServer
+class QLocalSocket;
+
+class TagServer : public QObject
 {
+    Q_OBJECT
+
 public:
-    TagServer();
+    TagServer(const QString &sockName);
     ~TagServer();
 
-    int process();
+private Q_SLOTS:
+    void process();
+    void checkParent();
 
 private:
-    TagServer(const TagServer &);
-    TagServer & operator=(const TagServer &o);
-
-private:
-    QFile *in;
-    QFile *out;
+    QString socketName;
+    QLocalSocket *socket;
 };
 
 #endif

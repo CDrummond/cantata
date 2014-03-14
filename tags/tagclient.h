@@ -36,14 +36,17 @@ namespace Tags
 namespace TagClient
 {
     extern void enableDebug();
+    extern void stop();
     extern Song read(const QString &fileName);
     extern QImage readImage(const QString &fileName);
     extern QString readLyrics(const QString &fileName);
+    extern QString readComment(const QString &fileName);
     extern int updateArtistAndTitle(const QString &fileName, const Song &song);
-    extern int update(const QString &fileName, const Song &from, const Song &to, int id3Ver);
+    extern int update(const QString &fileName, const Song &from, const Song &to, int id3Ver, bool saveComment);
     extern Tags::ReplayGain readReplaygain(const QString &fileName);
     extern int updateReplaygain(const QString &fileName, const Tags::ReplayGain &rg);
     extern int embedImage(const QString &fileName, const QByteArray &cover);
+    extern QString oggMimeType(const QString &fileName);
 }
 
 #endif

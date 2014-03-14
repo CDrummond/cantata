@@ -26,67 +26,86 @@
 #include <QDataStream>
 #include <QVariant>
 #include <QCoreApplication>
-#include <QFile>
+#include <QLocalServer>
+#include <QLocalSocket>
+#include <QTimer>
+#include <sys/types.h>
+#include <signal.h>
+#include <unistd.h>
 
-TagServer::TagServer()
+TagServer::TagServer(const QString &sockName)
+    : socketName(sockName)
 {
-    in=new QFile(0);
-    in->open(stdin, QIODevice::ReadOnly);
-    out=new QFile(0);
-    out->open(stdout, QIODevice::WriteOnly);
+    socket=new QLocalSocket(this);
+    socket->connectToServer(socketName);
+    connect(socket, SIGNAL(readyRead()), SLOT(process()));
+    connect(socket, SIGNAL(disconnected()), qApp, SLOT(quit()));
+    QTimer *timer=new QTimer(this);
+    timer->setSingleShot(false);
+    timer->start(5000);
+    connect(timer, SIGNAL(timeout()), SLOT(checkParent()));
 }
 
 TagServer::~TagServer()
 {
-    delete in;
-    delete out;
 }
 
-int TagServer::process()
+void TagServer::process()
 {
-    while (in->isReadable() && out->isWritable()) {
+    if (socket->bytesAvailable()) {
+        QByteArray message=socket->readAll();
+        QByteArray response;
+        QDataStream inStream(message);
+        QDataStream outStream(&response, QIODevice::WriteOnly);
         QString request;
         QString fileName;
-        QDataStream inStream(in);
-        QDataStream outStream(out);
 
         inStream >> request >> fileName;
 
         if (QLatin1String("read")==request) {
             outStream << Tags::read(fileName);
-            out->flush();
         } else if (QLatin1String("readImage")==request) {
             outStream << Tags::readImage(fileName);
-            out->flush();
         } else if (QLatin1String("readLyrics")==request) {
             outStream << Tags::readLyrics(fileName);
-            out->flush();
+        } else if (QLatin1String("readComment")==request) {
+            outStream << Tags::readComment(fileName);
         } else if (QLatin1String("updateArtistAndTitle")==request) {
             Song song;
             outStream << (int)Tags::updateArtistAndTitle(fileName, song);
-            out->flush();
         } else if (QLatin1String("update")==request) {
             Song from;
             Song to;
             int id3Ver;
-            inStream >> from >> to >> id3Ver;
-            outStream << (int)Tags::update(fileName, from, to, id3Ver);
-            out->flush();
+            bool saveComment;
+            inStream >> from >> to >> id3Ver >> saveComment;
+            outStream << (int)Tags::update(fileName, from, to, id3Ver, saveComment);
         } else if (QLatin1String("readReplaygain")==request) {
             Tags::ReplayGain rg=Tags::readReplaygain(fileName);
             outStream << rg;
-            out->flush();
         } else if (QLatin1String("updateReplaygain")==request) {
             Tags::ReplayGain rg;
             inStream >> rg;
             outStream << (int)Tags::updateReplaygain(fileName, rg);
-            out->flush();
         } else if (QLatin1String("embedImage")==request) {
             QByteArray cover;
             inStream >> cover;
             outStream << (int)Tags::embedImage(fileName, cover);
-            out->flush();
+        } else if (QLatin1String("oggMimeType")==request) {
+            outStream << Tags::oggMimeType(fileName);
+        } else {
+            qApp->exit();
+        }
+        if (!response.isEmpty()) {
+            socket->write(response);
         }
     }
-    return 0;
+}
+
+void TagServer::checkParent()
+{
+    // If parent process (Cantata) has terminated, then we need to exit...
+    if (0!=::kill(getppid(), 0)) {
+        qApp->exit();
+    }
 }

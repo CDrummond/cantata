@@ -68,15 +68,19 @@ namespace Tags
     };
 
     #if defined ENABLE_EXTERNAL_TAGS && !defined CANTATA_TAG_SERVER
+    inline void stop() { TagClient::stop(); }
     inline Song read(const QString &fileName) { return TagClient::read(fileName); }
     inline QImage readImage(const QString &fileName) { return TagClient::readImage(fileName); }
     inline QString readLyrics(const QString &fileName) { return TagClient::readLyrics(fileName); }
+    inline QString readComment(const QString &fileName) { return TagClient::readComment(fileName); }
     inline Update updateArtistAndTitle(const QString &fileName, const Song &song) { return (Update)TagClient::updateArtistAndTitle(fileName, song); }
-    inline Update update(const QString &fileName, const Song &from, const Song &to, int id3Ver=-1) { return (Update)TagClient::update(fileName, from, to, id3Ver); }
+    inline Update update(const QString &fileName, const Song &from, const Song &to, int id3Ver=-1, bool saveComment=false) { return (Update)TagClient::update(fileName, from, to, id3Ver, saveComment); }
     inline ReplayGain readReplaygain(const QString &fileName) { return TagClient::readReplaygain(fileName); }
     inline Update updateReplaygain(const QString &fileName, const ReplayGain &rg) { return (Update)TagClient::updateReplaygain(fileName, rg); }
     inline Update embedImage(const QString &fileName, const QByteArray &cover) { return (Update)TagClient::embedImage(fileName, cover); }
+    inline QString oggMimeType(const QString &fileName) { return TagClient::oggMimeType(fileName); }
     #else
+    inline void stop() { }
     extern Song read(const QString &fileName);
     extern QImage readImage(const QString &fileName);
     extern QString readLyrics(const QString &fileName);

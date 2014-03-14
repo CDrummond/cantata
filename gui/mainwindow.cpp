@@ -930,6 +930,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     if (Settings::self()->firstRun() && MPDConnection::self()->isConnected()) {
         mpdConnectionStateChanged(true);
+        updateStats();
     }
     #ifndef ENABLE_KDE_SUPPORT
     MediaKeys::self()->load();

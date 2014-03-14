@@ -54,7 +54,6 @@
 #include <QFont>
 #include <QXmlStreamReader>
 #include <QTimer>
-#include <QCache>
 
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KStandardDirs>
@@ -88,9 +87,6 @@ static const char * constExtensions[]={".jpg", ".png", 0};
 static bool saveInMpdDir=true;
 static bool fetchCovers=true;
 static QString constCoverInTagPrefix=QLatin1String("{tag}");
-
-static QSet<int> cacheSizes;
-static QCache<QString, QPixmap> cache(4*1024*1024);
 
 static bool canSaveTo(const QString &dir)
 {
@@ -222,52 +218,6 @@ static void clearScaledCache(const Song &song)
             }
         }
     }
-}
-
-QPixmap * Covers::getScaledCover(const QString &artist, const QString &album, int size)
-{
-    if (size<4) {
-        return 0;
-    }
-//    DBUG_CLASS("Covers") << artist << album << size;
-    QString key=cacheKey(artist, album, size);
-    QPixmap *pix(cache.object(key));
-    if (!pix && cacheScaledCovers) {
-        QString fileName=getScaledCoverName(artist, album, size, false);
-        if (!fileName.isEmpty() && QFile::exists(fileName)) {
-            QImage img(fileName);
-            if (!img.isNull() && (img.width()==size || img.height()==size)) {
-                DBUG_CLASS("Covers") << artist << album << size << "scaled cover found" << fileName;
-                pix=new QPixmap(QPixmap::fromImage(img));
-                cache.insert(key, pix, pix->width()*pix->height()*(pix->depth()/8));
-            }
-        }
-
-        if (!pix) {
-            // Create a dummy pixmap so that we dont keep on stating files that do not exist!
-            pix=new QPixmap(1, 1);
-            cache.insert(key, pix, 4);
-        }
-        cacheSizes.insert(size);
-    }
-    return pix && pix->width()>1 ? pix : 0;
-}
-
-QPixmap * Covers::saveScaledCover(const QImage &img, const QString &artist, const QString &album, int size)
-{
-    if (size<4) {
-        return 0;
-    }
-
-    if (cacheScaledCovers) {
-        QString fileName=getScaledCoverName(artist, album, size, true);
-        bool status=img.save(fileName);
-        DBUG_CLASS("Covers") << artist << album << size << fileName << status;
-    }
-    QPixmap *pix=new QPixmap(QPixmap::fromImage(img));
-    cache.insert(cacheKey(artist, album, size), pix, pix->width()*pix->height()*(pix->depth()/8));
-    cacheSizes.insert(size);
-    return pix;
 }
 
 bool Covers::isJpg(const QByteArray &data)
@@ -921,6 +871,7 @@ Covers::Covers()
 {
     maxPerLoopIteration=Settings::self()->maxCoverUpdatePerIteration();
     maxFindPerLoopIteration=Settings::self()->maxCoverFindPerIteration();
+    cache.setMaxCost(Settings::self()->coverCacheSize()*1024*1024);
 }
 
 void Covers::readConfig()
@@ -946,6 +897,52 @@ void Covers::stop()
     #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
     cleanCdda();
     #endif
+}
+
+QPixmap * Covers::getScaledCover(const QString &artist, const QString &album, int size)
+{
+    if (size<4) {
+        return 0;
+    }
+//    DBUG_CLASS("Covers") << artist << album << size;
+    QString key=cacheKey(artist, album, size);
+    QPixmap *pix(cache.object(key));
+    if (!pix && cacheScaledCovers) {
+        QString fileName=getScaledCoverName(artist, album, size, false);
+        if (!fileName.isEmpty() && QFile::exists(fileName)) {
+            QImage img(fileName);
+            if (!img.isNull() && (img.width()==size || img.height()==size)) {
+                DBUG_CLASS("Covers") << artist << album << size << "scaled cover found" << fileName;
+                pix=new QPixmap(QPixmap::fromImage(img));
+                cache.insert(key, pix, pix->width()*pix->height()*(pix->depth()/8));
+            }
+        }
+
+        if (!pix) {
+            // Create a dummy pixmap so that we dont keep on stating files that do not exist!
+            pix=new QPixmap(1, 1);
+            cache.insert(key, pix, 4);
+        }
+        cacheSizes.insert(size);
+    }
+    return pix && pix->width()>1 ? pix : 0;
+}
+
+QPixmap * Covers::saveScaledCover(const QImage &img, const QString &artist, const QString &album, int size)
+{
+    if (size<4) {
+        return 0;
+    }
+
+    if (cacheScaledCovers) {
+        QString fileName=getScaledCoverName(artist, album, size, true);
+        bool status=img.save(fileName);
+        DBUG_CLASS("Covers") << artist << album << size << fileName << status;
+    }
+    QPixmap *pix=new QPixmap(QPixmap::fromImage(img));
+    cache.insert(cacheKey(artist, album, size), pix, pix->width()*pix->height()*(pix->depth()/8));
+    cacheSizes.insert(size);
+    return pix;
 }
 
 QPixmap * Covers::get(const Song &song, int size)

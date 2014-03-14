@@ -598,7 +598,7 @@ void AlbumsModel::AlbumItem::updateStats()
 QPixmap * AlbumsModel::AlbumItem::cover()
 {
     if (Song::SingleTracks!=type && songs.count()) {
-        QPixmap *pix=Covers::getScaledCover(artist, album, iconSize());
+        QPixmap *pix=Covers::self()->getScaledCover(artist, album, iconSize());
         if (pix) {
             return pix;
         }
@@ -635,7 +635,7 @@ QPixmap * AlbumsModel::AlbumItem::setCover(const QImage &img)
     coverRequested=false;
     if (Song::SingleTracks!=type && songs.count() && !img.isNull()) {
         int size=iconSize();
-        return Covers::saveScaledCover(img.scaled(QSize(size, size), Qt::IgnoreAspectRatio, Qt::SmoothTransformation), artist, album, size);
+        return Covers::self()->saveScaledCover(img.scaled(QSize(size, size), Qt::IgnoreAspectRatio, Qt::SmoothTransformation), artist, album, size);
     }
     return 0;
 }

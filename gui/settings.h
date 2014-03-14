@@ -210,6 +210,7 @@ public:
     bool podcastAutoDownload();
     int maxCoverFindPerIteration();
     int maxCoverUpdatePerIteration();
+    int coverCacheSize();
     QStringList cueFileCodecs();
     bool networkAccessEnabled();
     int volumeStep();

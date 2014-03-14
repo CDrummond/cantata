@@ -57,7 +57,7 @@ struct MPDStatusValues {
         , samplerate(0)
         , bits(0)
         , channels(0)
-        , updatingDb(0) {
+        , updatingDb(-1) {
     }
     qint8 volume;
     bool consume;

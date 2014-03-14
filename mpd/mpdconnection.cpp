@@ -192,7 +192,7 @@ QString MPDConnectionDetails::description() const
     if (hostname.startsWith('/')) {
         return i18nc("name (host)", "\"%1\"", getName());
     } else {
-        return i18nc("name (host:port)", "\"%1\" (%2:%3)", getName(), hostname, port);
+        return i18nc("name (host:port)", "\"%1\" (%2:%3)", getName(), hostname, QString::number(port)); // USe QString::number to prevent KDE's i18n converting 6600 to 6,600!
     }
 }
 

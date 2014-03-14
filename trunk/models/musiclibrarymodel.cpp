@@ -743,18 +743,20 @@ QStringList MusicLibraryModel::filenames(const QModelIndexList &indexes, bool al
     return fnames;
 }
 
-static inline void addSong(const MusicLibraryItem *song, QList<Song> &insertInto, QList<Song> &checkAgainst, bool allowPlaylists)
+static inline void addSong(const MusicLibraryItem *song, QList<Song> &insertInto, QSet<QString> &checkAgainst, bool allowPlaylists)
 {
     if (MusicLibraryItem::Type_Song==song->itemType() &&
         (allowPlaylists || Song::Playlist!=static_cast<const MusicLibraryItemSong*>(song)->song().type) &&
-        !checkAgainst.contains(static_cast<const MusicLibraryItemSong*>(song)->song())) {
+        !checkAgainst.contains(static_cast<const MusicLibraryItemSong*>(song)->file())) {
         insertInto << static_cast<const MusicLibraryItemSong*>(song)->song();
+        checkAgainst << static_cast<const MusicLibraryItemSong*>(song)->file();
     }
 }
 
 QList<Song> MusicLibraryModel::songs(const QModelIndexList &indexes, bool allowPlaylists) const
 {
     QList<Song> songs;
+    QSet<QString> files;
 
     foreach(QModelIndex index, indexes) {
         const MusicLibraryItem *item = static_cast<MusicLibraryItem *>(index.internalPointer());
@@ -769,10 +771,10 @@ QList<Song> MusicLibraryModel::songs(const QModelIndexList &indexes, bool allowP
                 QList<Song> albumSongs;
                 const MusicLibraryItemSong *cue=allowPlaylists ? static_cast<const MusicLibraryItemAlbum *>(i)->getCueFile() : 0;
                 if (cue) {
-                    addSong(cue, albumSongs, songs, true);
+                    addSong(cue, albumSongs, files, true);
                 } else {
                     foreach (const MusicLibraryItem *song, static_cast<const MusicLibraryItemContainer *>(i)->childItems()) {
-                        addSong(song, albumSongs, songs, false);
+                        addSong(song, albumSongs, files, false);
                     }
                 }
                 qSort(albumSongs);
@@ -784,10 +786,10 @@ QList<Song> MusicLibraryModel::songs(const QModelIndexList &indexes, bool allowP
             QList<Song> albumSongs;
             const MusicLibraryItemSong *cue=allowPlaylists ? static_cast<const MusicLibraryItemAlbum *>(item)->getCueFile() : 0;
             if (cue) {
-                addSong(cue, albumSongs, songs, true);
+                addSong(cue, albumSongs, files, true);
             } else {
                 foreach (const MusicLibraryItem *song, static_cast<const MusicLibraryItemContainer *>(item)->childItems()) {
-                    addSong(song, albumSongs, songs, false);
+                    addSong(song, albumSongs, files, false);
                 }
             }
             qSort(albumSongs);
@@ -795,7 +797,7 @@ QList<Song> MusicLibraryModel::songs(const QModelIndexList &indexes, bool allowP
             break;
         }
         case MusicLibraryItem::Type_Song:
-            addSong(item, songs, songs, allowPlaylists);
+            addSong(item, songs, files, allowPlaylists);
             break;
         default:
             break;

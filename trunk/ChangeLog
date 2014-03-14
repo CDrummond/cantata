@@ -58,6 +58,8 @@
    current instance. (Linux only fix)
 2. Add song to playqueue from albums page when double-clicked.
 3. Fix display of online-service track album-artist in copy dialog.
+4. Ensure library is loaded the very first time Cantata is run (ie. after
+   connected to MPD via initial settings wizard).
 
 1.3.2
 -----

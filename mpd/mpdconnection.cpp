@@ -216,6 +216,7 @@ MPDConnection::MPDConnection()
     , songPos(0)
     , unmuteVol(-1)
     , mopidy(false)
+    , isUpdatingDb(false)
 {
     qRegisterMetaType<Song>("Song");
     qRegisterMetaType<Output>("Output");
@@ -452,6 +453,10 @@ void MPDConnection::setDetails(const MPDConnectionDetails &d)
         mopidy=false;
         if (isUser) {
             MPDUser::self()->start();
+        }
+        if (isUpdatingDb) {
+            isUpdatingDb=false;
+            emit updatingDatabase(); // Stop any spinners...
         }
         switch (connectToMPD()) {
         case Success:
@@ -1097,6 +1102,13 @@ void MPDConnection::getStatus()
             toggleStopAfterCurrent(false);
         }
         currentSongId=sv.songId;
+        if (!isUpdatingDb && -1!=sv.updatingDb) {
+            isUpdatingDb=true;
+            emit updatingDatabase();
+        } else if (isUpdatingDb && -1==sv.updatingDb) {
+            isUpdatingDb=false;
+            emit updatedDatabase();
+        }
         emit statusUpdated(sv);
     }
 }
@@ -1193,10 +1205,11 @@ void MPDConnection::parseIdleReturn(const QByteArray &data)
             QByteArray value=line.mid(constIdleChangedKey.length());
             if (constIdleDbValue==value) {
                 getStats();
+                getStatus();
                 playListInfo();
                 playListUpdated=true;
             } else if (constIdleUpdateValue==value) {
-                emit updatedDatabase();
+                getStatus();
             } else if (constIdleStoredPlaylistValue==value) {
                 emit storedPlayListUpdated();
             } else if (constIdlePlaylistValue==value) {
@@ -1233,13 +1246,10 @@ void MPDConnection::enableOutput(int id, bool enable)
 void MPDConnection::update()
 {
     if (sendCommand("update").ok) {
-        emit updatingDatabase();
-
         if (isMopdidy()) {
             // Mopidy does not support MPD's update command. So, when user presses update DB, what we
             // do instead is clear library/dir caches, then when response to getStats is received,
             // library/dir should get refreshed...
-            emit updatedDatabase(); // Emit this to stop any spinners...
             getStats();
         }
     }
@@ -1254,13 +1264,10 @@ void MPDConnection::update(const QSet<QString> &dirs)
     send += "command_list_end";
 
     if (sendCommand(send).ok) {
-        emit updatingDatabase();
-
         if (isMopdidy()) {
             // Mopidy does not support MPD's update command. So, when user presses update DB, what we
             // do instead is clear library/dir caches, then when response to getStats is received,
             // library/dir should get refreshed...
-            emit updatedDatabase(); // Emit this to stop any spinners...
             getStats();
         }
     }

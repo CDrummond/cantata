@@ -87,6 +87,7 @@ InitialSettingsWizard::InitialSettingsWizard(QWidget *p)
     basic->setChecked(false); //singleUserSupported);
     advanced->setChecked(true); // !singleUserSupported);
 
+    #ifndef Q_OS_WIN
     QSize sz=size();
     // Adjust size for high-DPI setups...
     bool highDpi=fontMetrics().height()>20;
@@ -109,6 +110,7 @@ InitialSettingsWizard::InitialSettingsWizard(QWidget *p)
     }
     resize(sz);
     setMinimumSize(sz);
+    #endif
     httpNote->setOn(true);
 }
 

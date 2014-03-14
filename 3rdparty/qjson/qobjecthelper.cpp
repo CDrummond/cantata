@@ -22,9 +22,9 @@
 
 #include "qobjecthelper.h"
 
-#include <QMetaObject>
-#include <QMetaProperty>
-#include <QObject>
+#include <QtCore/QMetaObject>
+#include <QtCore/QMetaProperty>
+#include <QtCore/QObject>
 
 using namespace QJson;
 

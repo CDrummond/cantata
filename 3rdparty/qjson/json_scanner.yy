@@ -28,7 +28,12 @@
 %{
   #include "json_scanner.h"
   #include "json_parser.hh"
-  
+
+  #if defined(_WIN32) && !defined(__MINGW32__)
+  #define strtoll _strtoi64
+  #define strtoull _strtoui64
+  #endif
+
   #define YY_USER_INIT if(m_allowSpecialNumbers) { \
     BEGIN(ALLOW_SPECIAL_NUMBERS); \
   }
@@ -97,8 +102,9 @@ null          {
 
 -?(([0-9])|([1-9][0-9]+))(\.[0-9]+)?([Ee][+\-]?[0-9]+)? {
                 m_yylloc->columns(yyleng);
-                *m_yylval = QVariant(strtod(yytext, NULL));
-                if (errno == ERANGE) {
+                bool ok;
+                *m_yylval = QVariant(m_C_locale.toDouble(QLatin1String(yytext),&ok));
+                if (!ok) {
                     qCritical() << "Number is out of range: " << yytext;
                     return yy::json_parser::token::INVALID;
                 }

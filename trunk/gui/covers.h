@@ -31,6 +31,7 @@
 #include <QImage>
 #include <QPixmap>
 #include <QMutex>
+#include <QCache>
 #include "song.h"
 #include "config.h"
 
@@ -171,8 +172,6 @@ public:
     static QString albumFileName(const Song &song);
     static QString artistFileName(const Song &song);
     static QString fixArtist(const QString &artist);
-    static QPixmap * getScaledCover(const QString &artist, const QString &album, int size);
-    static QPixmap *saveScaledCover(const QImage &img, const QString &artist, const QString &album, int size);
     static bool isJpg(const QByteArray &data);
     static bool isPng(const QByteArray &data);
     static const char * imageFormat(const QByteArray &data);
@@ -181,6 +180,8 @@ public:
     void readConfig();
     void stop();
 
+    QPixmap * getScaledCover(const QString &artist, const QString &album, int size);
+    QPixmap * saveScaledCover(const QImage &img, const QString &artist, const QString &album, int size);
     // Get cover image of specified size. If this is not found 0 will be returned, and the cover
     // will be downloaded.
     QPixmap * get(const Song &song, int size);
@@ -227,6 +228,8 @@ private:
     int retrieved;
     QSet<QString> currentImageRequests;
     QList<Song> queue;
+    QSet<int> cacheSizes;
+    QCache<QString, QPixmap> cache;
     QMap<QString, QString> filenames;
     CoverDownloader *downloader;
     CoverLocator *locator;

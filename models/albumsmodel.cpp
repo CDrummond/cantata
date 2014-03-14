@@ -314,6 +314,8 @@ QStringList AlbumsModel::filenames(const QModelIndexList &indexes, bool allowPla
 QList<Song> AlbumsModel::songs(const QModelIndexList &indexes, bool allowPlaylists) const
 {
     QList<Song> songs;
+    QSet<QString> files;
+
     foreach(QModelIndex index, indexes) {
         Item *item=static_cast<Item *>(index.internalPointer());
 
@@ -321,20 +323,23 @@ QList<Song> AlbumsModel::songs(const QModelIndexList &indexes, bool allowPlaylis
             QList<Song> albumSongs;
             const SongItem *cue=allowPlaylists ? static_cast<AlbumItem*>(item)->getCueFile() : 0;
             if (cue) {
-                if (!songs.contains(*cue)) {
+                if (!files.contains(cue->file)) {
                     albumSongs << *cue;
+                    files << cue->file;
                 }
             } else {
                 foreach (const SongItem *s, static_cast<AlbumItem*>(item)->songs) {
-                    if ((/*allowPlaylists || */Song::Playlist!=s->type) && !songs.contains(*s)) {
+                    if ((/*allowPlaylists || */Song::Playlist!=s->type) && !files.contains(s->file)) {
                         albumSongs << *s;
+                        files << s->file;
                     }
                 }
             }
             qSort(albumSongs);
             songs << albumSongs;
-        } else if ((allowPlaylists || Song::Playlist!=static_cast<SongItem*>(item)->type) && !songs.contains(*static_cast<SongItem*>(item))) {
+        } else if ((allowPlaylists || Song::Playlist!=static_cast<SongItem*>(item)->type) && !files.contains(static_cast<SongItem*>(item)->file)) {
             songs << *static_cast<SongItem*>(item);
+            files << static_cast<SongItem*>(item)->file;
         }
     }
     return songs;

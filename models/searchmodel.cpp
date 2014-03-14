@@ -231,10 +231,12 @@ QStringList SearchModel::filenames(const QModelIndexList &indexes, bool allowPla
 QList<Song> SearchModel::songs(const QModelIndexList &indexes, bool allowPlaylists) const
 {
     QList<Song> list;
+    QSet<QString> files;
     foreach(QModelIndex index, indexes) {
         Song *song=static_cast<Song *>(index.internalPointer());
-        if ((allowPlaylists || Song::Playlist!=song->type) && !list.contains(*song)) {
+        if ((allowPlaylists || Song::Playlist!=song->type) && !files.contains(song->file)) {
             list << *song;
+            files << song->file;
         }
     }
     return list;

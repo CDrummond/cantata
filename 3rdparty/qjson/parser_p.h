@@ -24,8 +24,8 @@
 
 #include "parser.h"
 
-#include <QString>
-#include <QVariant>
+#include <QtCore/QString>
+#include <QtCore/QVariant>
 
 class JSonScanner;
 
@@ -41,10 +41,11 @@ namespace QJson {
       ParserPrivate();
       ~ParserPrivate();
 
+      void reset();
+
       void setError(QString errorMsg, int line);
 
       JSonScanner* m_scanner;
-      bool m_negate;
       bool m_error;
       int m_errorLine;
       QString m_errorMsg;

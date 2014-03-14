@@ -5,7 +5,7 @@
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License version 2.1, as published by the Free Software Foundation.
- *
+ * 
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -21,8 +21,9 @@
 #ifndef _JSON_SCANNER
 #define _JSON_SCANNER
 
-#include <QIODevice>
-#include <QVariant>
+#include <QtCore/QIODevice>
+#include <QtCore/QVariant>
+#include <QtCore/QLocale>
 
 #define YYSTYPE QVariant
 
@@ -33,28 +34,33 @@
 
 #include "parser_p.h"
 
+
+
 namespace yy {
-class location;
-int yylex(YYSTYPE *yylval, yy::location *yylloc, QJson::ParserPrivate* driver);
+  class location;
+  int yylex(YYSTYPE *yylval, yy::location *yylloc, QJson::ParserPrivate* driver);
 }
 
 class JSonScanner : public yyFlexLexer
 {
-public:
-    explicit JSonScanner(QIODevice* io);
-    void allowSpecialNumbers(bool allow);
+    public:
+        explicit JSonScanner(QIODevice* io);
+        ~JSonScanner();
 
-    int yylex(YYSTYPE* yylval, yy::location *yylloc);
-    int yylex();
-    int LexerInput(char* buf, int max_size);
-protected:
-    bool m_allowSpecialNumbers;
-    QIODevice* m_io;
+        void allowSpecialNumbers(bool allow);
 
-    YYSTYPE* m_yylval;
-    yy::location* m_yylloc;
-    bool m_criticalError;
-    QString m_currentString;
+        int yylex(YYSTYPE* yylval, yy::location *yylloc);
+        int yylex();
+        int LexerInput(char* buf, int max_size);
+    protected:
+        bool m_allowSpecialNumbers;
+        QIODevice* m_io;
+
+        YYSTYPE* m_yylval;
+        yy::location* m_yylloc;
+        bool m_criticalError;
+        QString m_currentString;
+        QLocale m_C_locale;
 };
 
 #endif

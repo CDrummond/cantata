@@ -1,10 +1,17 @@
 include_directories(${QTINCLUDES} ${TAGLIB_INCLUDES} ${CMAKE_SOURCE_DIR}/tags)
 set(CANTATA_TAGS_SRCS main.cpp tagserver.cpp tags.cpp filetyperesolver.cpp ../mpd/song.cpp)
+set(CANTATA_TAGS_MOC_HDRS tagserver.h)
 
 if (ENABLE_KDE_SUPPORT)
     kde4_add_executable(cantata-tags ${CANTATA_TAGS_SRCS} ${CANTATA_TAGS_MOC_SRCS})
     install(TARGETS cantata-tags RUNTIME DESTINATION lib/cantata)
 else (ENABLE_KDE_SUPPORT)
+    if (ENABLE_QT5)
+        QT5_WRAP_CPP(CANTATA_TAGS_MOC_SRCS ${CANTATA_TAGS_MOC_HDRS})
+    else (ENABLE_QT5)
+        QT4_WRAP_CPP(CANTATA_TAGS_MOC_SRCS ${CANTATA_TAGS_MOC_HDRS})
+    endif (ENABLE_QT5)
+
     if (WIN32)
         set(CMAKE_BUILD_TYPE "Release")
         ADD_EXECUTABLE(cantata-tags WIN32 ${CANTATA_TAGS_SRCS} ${CANTATA_TAGS_MOC_SRCS})

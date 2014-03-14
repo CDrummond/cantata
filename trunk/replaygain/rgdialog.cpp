@@ -530,18 +530,22 @@ void RgDialog::scannerDone()
                 bool diffAlbum=false;
                 if (!Utils::equal(t.trackGain, updatedTags.trackGain, 0.01)) {
                     item->setFont(COL_TRACKGAIN, italic);
+                    item->setToolTip(COL_TRACKGAIN, i18n("Original: %1 dB", formatNumber(t.trackGain, 2)));
                     diff=true;
                 }
                 if (!Utils::equal(t.trackPeak, updatedTags.trackPeak, 0.000001)) {
                     item->setFont(COL_TRACKPEAK, italic);
+                    item->setToolTip(COL_TRACKPEAK, i18n("Original: %1", formatNumber(t.trackPeak, 6)));
                     diff=true;
                 }
                 if (!Utils::equal(t.albumGain, updatedTags.albumGain, 0.01)) {
                     item->setFont(COL_ALBUMGAIN, italic);
+                    item->setToolTip(COL_ALBUMGAIN, i18n("Original: %1 dB", formatNumber(t.albumGain, 2)));
                     diffAlbum=true;
                 }
                 if (!Utils::equal(t.albumPeak, updatedTags.albumPeak, 0.000001)) {
                     item->setFont(COL_ALBUMPEAK, italic);
+                    item->setToolTip(COL_ALBUMPEAK, i18n("Original: %1", formatNumber(t.albumPeak, 6)));
                     diffAlbum=true;
                 }
                 if (diff || diffAlbum) {

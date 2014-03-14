@@ -291,5 +291,3 @@ bool MusicLibraryItemArtist::largeImages() const
     return m_parentItem && Type_Root==m_parentItem->itemType() &&
            static_cast<MusicLibraryItemRoot *>(m_parentItem)->useLargeImages();
 }
-Images();
-}

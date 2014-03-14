@@ -168,8 +168,11 @@ QPixmap * MusicLibraryItemAlbum::setCoverImage(const QImage &img) const
 {
     int size=iconSize(largeImages());
     QImage scaled=img.scaled(QSize(size, size), Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-    m_coverRequested=false;
-    return Covers::self()->saveScaledCover(scaled, parentItem()->data(), data(), size);
+    QPixmap *pix=Covers::self()->saveScaledCover(scaled, parentItem()->data(), data(), size);
+    if (pix) {
+        m_coverRequested=false;
+    }
+    return pix;
 }
 
 QString MusicLibraryItemAlbum::displayData(bool full) const

@@ -632,10 +632,12 @@ QPixmap * AlbumsModel::AlbumItem::cover()
 
 QPixmap * AlbumsModel::AlbumItem::setCover(const QImage &img)
 {
-    coverRequested=false;
     if (Song::SingleTracks!=type && songs.count() && !img.isNull()) {
         int size=iconSize();
-        return Covers::self()->saveScaledCover(img.scaled(QSize(size, size), Qt::IgnoreAspectRatio, Qt::SmoothTransformation), artist, album, size);
+        QPixmap *pix=Covers::self()->saveScaledCover(img.scaled(QSize(size, size), Qt::IgnoreAspectRatio, Qt::SmoothTransformation), artist, album, size);
+        if (pix) {
+            coverRequested=false;
+        }
     }
     return 0;
 }

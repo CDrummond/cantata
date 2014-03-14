@@ -244,5 +244,6 @@ foreach(ICON ${OXYGEN_ICONS})
     install(FILES ${CANTATA_OXYGEN_DIR}/${ICON} DESTINATION ${CMAKE_INSTALL_PREFIX}/icons/oxygen/${ICON_PATH})
 endforeach(ICON ${OXYGEN_ICONS})
 install(FILES index.theme DESTINATION ${CMAKE_INSTALL_PREFIX}/icons/oxygen)
-install(FILES "LICENSE.Creative Common Attribution-ShareAlike 3.0 License.html" LICENSE.LGPL_V3 README DESTINATION ${CMAKE_INSTALL_PREFIX}/icons)
-
+install(FILES "LICENSE.Creative Common Attribution-ShareAlike 3.0 License.html" DESTINATION ${CMAKE_INSTALL_PREFIX}/icons/oxygen RENAME "Oxygen License (Creative Common Attribution-ShareAlike 3.0).html")
+install(FILES LICENSE.LGPL_V3 DESTINATION ${CMAKE_INSTALL_PREFIX}/icons/oxygen RENAME "Oxygen License (LGPL V3).txt")
+install(FILES README DESTINATION ${CMAKE_INSTALL_PREFIX}/icons/oxygen RENAME "Oxygen README.txt")

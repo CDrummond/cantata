@@ -1088,9 +1088,8 @@ void MainWindow::mpdConnectionStateChanged(bool connected)
             connectedState=CS_Connected;
             StdActions::self()->addWithPriorityAction->setVisible(MPDConnection::self()->canUsePriority());
             setPriorityAction->setVisible(StdActions::self()->addWithPriorityAction->isVisible());
-        } else {
-            updateWindowTitle();
         }
+        updateWindowTitle();
     } else {
         loaded=(loaded&TAB_STREAMS);
         libraryPage->clear();

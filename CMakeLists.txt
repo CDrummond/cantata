@@ -630,7 +630,7 @@ else (WIN32 OR APPLE)
 endif (WIN32 OR APPLE)
 
 if (QJSON_FOUND)
-    message("-- Using supplied libqjson")
+    message("-- Using system libqjson")
     include_directories(${QJSON_INCLUDE_DIR})
     target_link_libraries(cantata ${QJSON_LIBRARIES})
 else (QJSON_FOUND)

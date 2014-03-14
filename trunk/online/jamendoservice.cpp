@@ -32,9 +32,23 @@
 #include <QXmlStreamReader>
 
 #ifdef TAGLIB_FOUND
+
+#ifdef ENABLE_EXTERNAL_TAGS
+#include <taglib/tstring.h>
+#include <taglib/id3v1genres.h>
+#include <QTextCodec>
+static QString id3Genre(int id)
+{
+    static QTextCodec *codec = QTextCodec::codecForName("UTF-8");
+    // Clementine: In theory, genre 0 is "blues"; in practice it's invalid.
+    return 0==id ? QString() : codec->toUnicode(TagLib::ID3v1::genre(id).toCString(true)).trimmed();
+}
+#else
 #include "tags.h"
 using namespace Tags;
-#else
+#endif
+
+#else // TAGLIB_FOUND
 static QString id3Genre(int id)
 {
     // Clementine: In theory, genre 0 is "blues"; in practice it's invalid.

@@ -22,10 +22,15 @@
  */
 
 #include <QCoreApplication>
+#include <QStringList>
 #include "tagserver.h"
 
 int main(int argc, char *argv[])
 {
-    TagServer server;
-    return server.process();
+    QCoreApplication app(argc, argv);
+    if (2==app.arguments().length()) {
+        new TagServer(app.arguments().at(1));
+        return app.exec();
+    }
+    return 0;
 }

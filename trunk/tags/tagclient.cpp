@@ -29,7 +29,10 @@
 #include <QProcess>
 #include <QDataStream>
 #include <QApplication>
-#include <signal.h>
+#include <QLocalSocket>
+#include <QLocalServer>
+#include <sys/types.h>
+#include <unistd.h>
 
 #include <QDebug>
 static bool debugEnabled=false;
@@ -42,30 +45,13 @@ void TagClient::enableDebug()
 
 static void stopHelper();
 
-static void signalHandler(int signum)
-{
-    stopHelper();
-    exit(signum);
-}
-
 static struct TagClientClose { ~TagClientClose() { stopHelper(); } } closer;
 
 static const int constMaxWait=5000;
 static QMutex mutex;
 static QProcess *proc=0;
-
-static void init()
-{
-    static bool initialised=false;
-    if (!initialised) {
-        // Need to stop helper if Cantata crashes...
-        QList<int> sig=QList<int>() << SIGINT << SIGILL << SIGTRAP << SIGTRAP << SIGABRT << SIGBUS << SIGFPE << SIGSEGV << SIGTERM;
-        foreach (int s, sig) {
-            signal(s, signalHandler);
-        }
-        initialised=true;
-    }
-}
+static QLocalServer *server=0;
+static QLocalSocket *socket=0;
 
 enum ReadStatus {
     Read_Ok,
@@ -74,51 +60,72 @@ enum ReadStatus {
     Read_Error
 };
 
-static bool running()
-{
-    return proc && QProcess::Running==proc->state() && proc->isOpen();
-}
+static inline bool isRunning() { return proc && QProcess::Running==proc->state() && socket && QLocalSocket::ConnectedState==socket->state(); }
 
 static void stopHelper()
 {
-    if (!proc) {
-        return;
+    if (socket) {
+        DBUG << "socket" << (void *)socket;
+        socket->flush();
+        socket->close();
+        socket->deleteLater();
+//        delete socket;
+        socket=0;
     }
-    DBUG << (void *)proc;
-    QProcess *p=proc;
-
-    proc=0;
-    if (p) {
-        p->terminate();
-        p->kill();
-        p->deleteLater();
+    if (server) {
+        DBUG << "server" << (void *)server;
+        server->close();
+        server->deleteLater();
+//        delete server;
+        server=0;
+    }
+    if (proc) {
+        DBUG << "process" << (void *)proc;
+        proc->terminate();
+        proc->kill();
+        proc->deleteLater();
+//        delete proc;
+        proc=0;
     }
 }
 
 static bool startHelper()
 {
     DBUG << (void *)proc;
-    if (!running()) {
-        init();
+    if (!isRunning()) {
         stopHelper();
+        DBUG << "create server";
+        QString name="cantata-tags-"+QString::number(getpid());
+        QLocalServer::removeServer(name);
+        server=new QLocalServer;
+        bool l=server->listen(name);
+        DBUG << "Listening on" << server->fullServerName() << l;
+
         for (int i=0; i<5; ++i) { // Max5 start attempts...
             DBUG << "start process";
             proc=new QProcess;
-            proc->setProcessChannelMode(QProcess::SeparateChannels);
-            proc->setReadChannel(QProcess::StandardOutput);
             #ifdef Q_OS_WIN
-            proc->start(qApp->applicationDirPath()+"/cantata-tags.exe");
+            proc->start(qApp->applicationDirPath()+"/cantata-tags.exe", QStringList() << server->fullServerName());
             #else
-            proc->start(INSTALL_PREFIX"/lib/cantata/cantata-tags");
+            proc->start(INSTALL_PREFIX"/lib/cantata/cantata-tags", QStringList() << server->fullServerName());
             #endif
             if (proc->waitForStarted(constMaxWait)) {
-                DBUG << "started";
-                return true;
+                DBUG << "process started, on pid" << proc->pid() << "- wait for helper to connect";
+                if (server->waitForNewConnection(constMaxWait)) {
+                    socket=server->nextPendingConnection();
+                }
+                if (socket) {
+                    DBUG << "connected to helper" << (void *)socket << (int)socket->state() << socket->isValid() << socket->isOpen() << socket->isReadable() << socket->isWritable();
+                    return true;
+                } else {
+                    DBUG << "helper did not connect";
+                }
             } else {
-                DBUG << "failed to start";
-                stopHelper();
+                DBUG << "Failed to start process";
             }
         }
+        DBUG << "failed to start";
+        stopHelper();
         return false;
     }
     return true;
@@ -127,19 +134,26 @@ static bool startHelper()
 static ReadStatus readReply(QByteArray &data)
 {
     DBUG << (void *)proc;
-    if (!running()) {
+    if (!isRunning()) {
         DBUG << "not running?";
+        if (socket) DBUG << "SOCK STATE" << (int)socket->state();
         stopHelper();
         return Read_Closed;
     }
-    if (proc->waitForReadyRead(constMaxWait)) {
-        data=proc->readAllStandardOutput();
+    if (socket->waitForReadyRead(constMaxWait)) {
+        data=socket->readAll();
         DBUG << "read reply, bytes:" << data.length();
         return data.isEmpty() ? Read_Error : Read_Ok;
     }
-    DBUG << "wait for read failed " << running() << (proc ? (int)proc->state() : 12345);
+    DBUG << "wait for read failed " << isRunning() << (proc ? (int)proc->state() : 12345);
     stopHelper();
-    return !running() ? Read_Closed : Read_Timeout;
+    return !isRunning() ? Read_Closed : Read_Timeout;
+}
+
+void TagClient::stop()
+{
+    QMutexLocker locker(&mutex);
+    stopHelper();
 }
 
 Song TagClient::read(const QString &fileName)
@@ -147,9 +161,12 @@ Song TagClient::read(const QString &fileName)
     QMutexLocker locker(&mutex);
     Song resp;
     if (startHelper()) {
-        QDataStream outStream(proc);
-        DBUG << __FUNCTION__ << fileName;
+        DBUG << fileName;
+        QByteArray message;
+        QDataStream outStream(&message, QIODevice::WriteOnly);
         outStream << QString(__FUNCTION__) << fileName;
+        socket->write(message);
+
         QByteArray data;
         if (Read_Ok==readReply(data)) {
             QDataStream inStream(data);
@@ -164,9 +181,12 @@ QImage TagClient::readImage(const QString &fileName)
     QMutexLocker locker(&mutex);
     QImage resp;
     if (startHelper()) {
-        QDataStream outStream(proc);
-        DBUG << __FUNCTION__ << fileName;
+        DBUG << fileName;
+        QByteArray message;
+        QDataStream outStream(&message, QIODevice::WriteOnly);
         outStream << QString(__FUNCTION__) << fileName;
+        socket->write(message);
+
         QByteArray data;
         if (Read_Ok==readReply(data)) {
             QDataStream inStream(data);
@@ -181,9 +201,32 @@ QString TagClient::readLyrics(const QString &fileName)
     QMutexLocker locker(&mutex);
     QString resp;
     if (startHelper()) {
-        QDataStream outStream(proc);
-        DBUG << __FUNCTION__ << fileName;
+        DBUG << fileName;
+        QByteArray message;
+        QDataStream outStream(&message, QIODevice::WriteOnly);
         outStream << QString(__FUNCTION__) << fileName;
+        socket->write(message);
+
+        QByteArray data;
+        if (Read_Ok==readReply(data)) {
+            QDataStream inStream(data);
+            inStream >> resp;
+        }
+    }
+    return resp;
+}
+
+QString TagClient::readComment(const QString &fileName)
+{
+    QMutexLocker locker(&mutex);
+    QString resp;
+    if (startHelper()) {
+        DBUG << fileName << (void *)socket << (int)socket->state() << socket->isValid() << socket->isOpen() << socket->isReadable() << socket->isWritable();
+        QByteArray message;
+        QDataStream outStream(&message, QIODevice::WriteOnly);
+        outStream << QString(__FUNCTION__) << fileName;
+        socket->write(message);
+
         QByteArray data;
         if (Read_Ok==readReply(data)) {
             QDataStream inStream(data);
@@ -198,9 +241,12 @@ int TagClient::updateArtistAndTitle(const QString &fileName, const Song &song)
     QMutexLocker locker(&mutex);
     int resp=Tags::Update_Failed;
     if (startHelper()) {
-        QDataStream outStream(proc);
-        DBUG << __FUNCTION__ << fileName;
+        DBUG << fileName;
+        QByteArray message;
+        QDataStream outStream(&message, QIODevice::WriteOnly);
         outStream << QString(__FUNCTION__) << fileName << song;
+        socket->write(message);
+
         QByteArray data;
         ReadStatus readStatus=readReply(data);
         if (Read_Ok==readStatus) {
@@ -213,14 +259,17 @@ int TagClient::updateArtistAndTitle(const QString &fileName, const Song &song)
     return resp;
 }
 
-int TagClient::update(const QString &fileName, const Song &from, const Song &to, int id3Ver)
+int TagClient::update(const QString &fileName, const Song &from, const Song &to, int id3Ver, bool saveComment)
 {
     QMutexLocker locker(&mutex);
     int resp=Tags::Update_Failed;
     if (startHelper()) {
-        QDataStream outStream(proc);
-        DBUG << __FUNCTION__ << fileName;
-        outStream << QString(__FUNCTION__) << fileName << from << to << id3Ver;
+        DBUG << fileName;
+        QByteArray message;
+        QDataStream outStream(&message, QIODevice::WriteOnly);
+        outStream << QString(__FUNCTION__) << fileName << from << to << id3Ver << saveComment;
+        socket->write(message);
+
         QByteArray data;
         ReadStatus readStatus=readReply(data);
         if (Read_Ok==readStatus) {
@@ -237,10 +286,12 @@ Tags::ReplayGain TagClient::readReplaygain(const QString &fileName)
 {
     QMutexLocker locker(&mutex);
     Tags::ReplayGain resp;
-    if (startHelper()) {
-        QDataStream outStream(proc);
-        DBUG << __FUNCTION__ << fileName;
+    if (startHelper()) {       
+        QByteArray message;
+        QDataStream outStream(&message, QIODevice::WriteOnly);
         outStream << QString(__FUNCTION__) << fileName;
+        socket->write(message);
+
         QByteArray data;
         if (Read_Ok==readReply(data)) {
             QDataStream inStream(data);
@@ -255,9 +306,13 @@ int TagClient::updateReplaygain(const QString &fileName, const Tags::ReplayGain 
     QMutexLocker locker(&mutex);
     int resp=Tags::Update_Failed;
     if (startHelper()) {
-        QDataStream outStream(proc);
-        DBUG << __FUNCTION__ << fileName;
+        DBUG << fileName;
+        QByteArray message;
+        QDataStream outStream(&message, QIODevice::WriteOnly);
         outStream << QString(__FUNCTION__) << fileName << rg;
+        socket->write(message);
+
+
         QByteArray data;
         ReadStatus readStatus=readReply(data);
         if (Read_Ok==readStatus) {
@@ -275,9 +330,12 @@ int TagClient::embedImage(const QString &fileName, const QByteArray &cover)
     QMutexLocker locker(&mutex);
     int resp=Tags::Update_Failed;
     if (startHelper()) {
-        QDataStream outStream(proc);
-        DBUG << __FUNCTION__ << fileName;
+        DBUG << fileName;
+        QByteArray message;
+        QDataStream outStream(&message, QIODevice::WriteOnly);
         outStream << QString(__FUNCTION__) << fileName << cover;
+        socket->write(message);
+
         QByteArray data;
         ReadStatus readStatus=readReply(data);
         if (Read_Ok==readStatus) {
@@ -285,6 +343,26 @@ int TagClient::embedImage(const QString &fileName, const QByteArray &cover)
             inStream >> resp;
         } else {
             resp=Read_Timeout==readStatus ? Tags::Update_Timedout : Tags::Update_BadFile;
+        }
+    }
+    return resp;
+}
+
+QString TagClient::oggMimeType(const QString &fileName)
+{
+    QMutexLocker locker(&mutex);
+    QString resp;
+    if (startHelper()) {
+        DBUG << fileName;
+        QByteArray message;
+        QDataStream outStream(&message, QIODevice::WriteOnly);
+        outStream << QString(__FUNCTION__) << fileName;
+        socket->write(message);
+
+        QByteArray data;
+        if (Read_Ok==readReply(data)) {
+            QDataStream inStream(data);
+            inStream >> resp;
         }
     }
     return resp;

@@ -26,6 +26,7 @@
 #include "utils.h"
 #include "localize.h"
 #include "settings.h"
+#include "globalstatic.h"
 #include <QTextStream>
 #include <QProcess>
 #include <QDir>
@@ -36,10 +37,6 @@
 #include <signal.h>
 #if defined Q_OS_WIN
 #include <QDesktopServices>
-#endif
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KGlobal>
-K_GLOBAL_STATIC(MPDUser, instance)
 #endif
 
 const QString MPDUser::constName=QLatin1String("-");
@@ -56,18 +53,7 @@ QString MPDUser::translatedName()
     return i18n("Personal");
 }
 
-MPDUser * MPDUser::self()
-{
-    #ifdef ENABLE_KDE_SUPPORT
-    return instance;
-    #else
-    static MPDUser *instance=0;
-    if(!instance) {
-        instance=new MPDUser;
-    }
-    return instance;
-    #endif
-}
+GLOBAL_STATIC(MPDUser, instance)
 
 MPDUser::MPDUser()
 {

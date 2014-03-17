@@ -22,12 +22,10 @@
  */
 
 #include "powermanagement.h"
-
+#include "globalstatic.h"
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/Solid/PowerManagement>
-#include <KDE/KGlobal>
 #include <kdeversion.h>
-K_GLOBAL_STATIC(PowerManagement, instance)
 #else
 #include "inhibitinterface.h"
 #include "policyagentinterface.h"
@@ -36,18 +34,7 @@ K_GLOBAL_STATIC(PowerManagement, instance)
 #include "localize.h"
 #include "mpdstatus.h"
 
-PowerManagement * PowerManagement::self()
-{
-    #ifdef ENABLE_KDE_SUPPORT
-    return instance;
-    #else
-    static PowerManagement *instance=0;
-    if(!instance) {
-        instance=new PowerManagement;
-    }
-    return instance;
-    #endif
-}
+GLOBAL_STATIC(PowerManagement, instance)
 
 PowerManagement::PowerManagement()
     : inhibitSuspendWhilstPlaying(false)

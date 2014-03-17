@@ -23,10 +23,7 @@
 
 #include "jobcontroller.h"
 #include "thread.h"
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KGlobal>
-K_GLOBAL_STATIC(JobController, instance)
-#endif
+#include "globalstatic.h"
 
 Job::Job()
     : abortRequested(false)
@@ -66,18 +63,7 @@ void StandardJob::stop()
     deleteLater();
 }
 
-JobController * JobController::self()
-{
-    #ifdef ENABLE_KDE_SUPPORT
-    return instance;
-    #else
-    static JobController *instance=0;
-    if(!instance) {
-        instance=new JobController;
-    }
-    return instance;
-    #endif
-}
+GLOBAL_STATIC(JobController, instance)
 
 JobController::JobController()
     : maxActive(1)

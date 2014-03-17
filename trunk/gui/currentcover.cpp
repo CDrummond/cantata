@@ -26,11 +26,9 @@
 #include "config.h"
 #include "icons.h"
 #include "utils.h"
+#include "globalstatic.h"
 #include <QFile>
 #include <QCoreApplication>
-#ifdef ENABLE_KDE_SUPPORT
-K_GLOBAL_STATIC(CurrentCover, instance)
-#endif
 
 #ifndef Q_OS_WIN
 static void themes(const QString &theme, QStringList &iconThemes)
@@ -114,18 +112,7 @@ QString CurrentCover::findIcon(const QStringList &names)
 }
 #endif
 
-CurrentCover * CurrentCover::self()
-{
-    #ifdef ENABLE_KDE_SUPPORT
-    return instance;
-    #else
-    static CurrentCover *instance=0;
-    if(!instance) {
-        instance=new CurrentCover;
-    }
-    return instance;
-    #endif
-}
+GLOBAL_STATIC(CurrentCover, instance)
 
 CurrentCover::CurrentCover()
     : QObject(0)

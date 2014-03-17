@@ -29,6 +29,7 @@
 #include "mpdparseutils.h"
 #include "utils.h"
 #include "mediakeys.h"
+#include "globalstatic.h"
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KGlobal>
 #include <KDE/KConfig>
@@ -38,8 +39,6 @@
 #include <QApplication>
 #include <QWidget>
 #include <QTimer>
-
-K_GLOBAL_STATIC(Settings, instance)
 #else
 #include "mediakeys.h"
 #endif
@@ -49,18 +48,7 @@ K_GLOBAL_STATIC(Settings, instance)
 
 #define RESTRICT(VAL, MIN_VAL, MAX_VAL) (VAL<MIN_VAL ? MIN_VAL : (VAL>MAX_VAL ? MAX_VAL : VAL))
 
-Settings * Settings::self()
-{
-    #ifdef ENABLE_KDE_SUPPORT
-    return instance;
-    #else
-    static Settings *instance=0;
-    if (!instance) {
-        instance=new Settings;
-    }
-    return instance;
-    #endif
-}
+GLOBAL_STATIC(Settings, instance)
 
 struct MpdDefaults
 {

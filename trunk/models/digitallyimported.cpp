@@ -26,13 +26,10 @@
 #include "networkaccessmanager.h"
 #include "qjson/parser.h"
 #include "localize.h"
+#include "globalstatic.h"
 #include <QNetworkRequest>
 #include <QTime>
 #include <QTimer>
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KGlobal>
-K_GLOBAL_STATIC(DigitallyImported, instance)
-#endif
 
 static const char * constDiGroup="DigitallyImported";
 static const QStringList constPremiumValues=QStringList() << QLatin1String("premium_high") << QLatin1String("premium_medium") << QLatin1String("premium");
@@ -41,18 +38,7 @@ const QString DigitallyImported::constApiUserName=QLatin1String("ephemeron");
 const QString DigitallyImported::constApiPassword=QLatin1String("dayeiph0ne@pp");
 const QString DigitallyImported::constPublicValue=QLatin1String("public3");
 
-DigitallyImported * DigitallyImported::self()
-{
-    #ifdef ENABLE_KDE_SUPPORT
-    return instance;
-    #else
-    static DigitallyImported *instance=0;
-    if(!instance) {
-        instance=new DigitallyImported;
-    }
-    return instance;
-    #endif
-}
+GLOBAL_STATIC(DigitallyImported, instance)
 
 DigitallyImported::DigitallyImported()
     : job(0)

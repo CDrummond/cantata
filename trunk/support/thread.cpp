@@ -22,10 +22,7 @@
  */
 
 #include "thread.h"
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KGlobal>
-K_GLOBAL_STATIC(ThreadCleaner, instance)
-#endif
+#include "globalstatic.h"
 #include <QCoreApplication>
 #include <QDebug>
 #include <signal.h>
@@ -44,18 +41,7 @@ static void segvHandler(int i)
     _exit(i);
 }
 
-ThreadCleaner * ThreadCleaner::self()
-{
-    #ifdef ENABLE_KDE_SUPPORT
-    return instance;
-    #else
-    static ThreadCleaner *instance=0;
-    if(!instance) {
-        instance=new ThreadCleaner;
-    }
-    return instance;
-    #endif
-}
+GLOBAL_STATIC(ThreadCleaner, instance)
 
 void ThreadCleaner::stopAll()
 {

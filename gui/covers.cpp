@@ -157,7 +157,7 @@ static inline QString artistKey(const QString &artist)
 
 static inline QString artistKey(const Song &s)
 {
-    return artistKey(s);
+    return artistKey(s.albumArtist());
 }
 
 static inline QString cacheKey(const Song &song, int size)

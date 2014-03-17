@@ -103,9 +103,7 @@ void SoundCloudService::setSearch(const QString &searchTerm)
 void SoundCloudService::cancelAll()
 {
     if (job) {
-        disconnect(job, SIGNAL(finished()), this, SLOT(jobFinished()));
-        job->abort();
-        job->deleteLater();
+        job->cancelAndDelete();
         job=0;
     }
     setBusy(false);

@@ -120,12 +120,14 @@ void AlbumView::update(const Song &song, bool force)
     if (song.isEmpty() || song.albumArtist().isEmpty() || song.album.isEmpty()) {
         currentSong=song;
         clearDetails();
+        abort();
         return;
     }
 
     if (force || song.albumArtist()!=currentSong.albumArtist() || song.album!=currentSong.album) {
         currentSong=song;
         currentArtist=currentSong.basicArtist();
+        abort();
         if (!isVisible()) {
             needToUpdate=true;
             return;

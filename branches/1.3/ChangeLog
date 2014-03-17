@@ -6,6 +6,7 @@
 3. Fix display of online-service track album-artist in copy dialog.
 4. Ensure library is loaded the very first time Cantata is run (ie. after
    connected to MPD via initial settings wizard).
+5. When song is updated in context view, abort any current network jobs.
 
 1.3.2
 -----

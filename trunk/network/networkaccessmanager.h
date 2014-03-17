@@ -44,13 +44,12 @@ class NetworkJob : public QObject
     Q_OBJECT
 
 public:
-    NetworkJob(NetworkAccessManager *p, const QUrl &u);
     NetworkJob(QNetworkReply *j);
     virtual ~NetworkJob();
 
     QNetworkReply * actualJob() const { return job; }
 
-    void abort() { if (job) job->abort(); }
+    void cancelAndDelete();
     bool open(QIODevice::OpenMode mode) { return job && job->open(mode); }
     void close() { if (job) job->close(); }
 
@@ -80,10 +79,16 @@ private Q_SLOTS:
     void handleReadyRead();
 
 private:
+    NetworkJob(NetworkAccessManager *p, const QUrl &u);
+    void cancelJob();
+
+private:
     int numRedirects;
     int lastDownloadPc;
     QNetworkReply *job;
     QUrl origU;
+
+    friend class NetworkAccessManager;
 };
 
 class NetworkAccessManager : public BASE_NETWORK_ACCESS_MANAGER

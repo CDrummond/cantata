@@ -778,6 +778,9 @@ void ContextWidget::update(const Song &s)
         }
     }
 
+    if (s.albumArtist()!=currentSong.albumArtist()) {
+        cancel();
+    }
     artist->update(sng);
     album->update(sng);
     song->update(sng);
@@ -808,7 +811,7 @@ bool ContextWidget::eventFilter(QObject *o, QEvent *e)
 void ContextWidget::cancel()
 {
     if (job) {
-        job->deleteLater();
+        job->cancelAndDelete();
         job=0;
     }
 }

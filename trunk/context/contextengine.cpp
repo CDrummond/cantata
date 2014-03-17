@@ -61,7 +61,7 @@ QStringList ContextEngine::fixQuery(const QStringList &query) const
 void ContextEngine::cancel()
 {
     if (job) {
-        job->deleteLater();
+        job->cancelAndDelete();
         job=0;
     }
 }

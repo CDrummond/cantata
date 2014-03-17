@@ -177,8 +177,7 @@ void PodcastService::cancelAll()
 {
     foreach (NetworkJob *j, rssJobs) {
         disconnect(j, SIGNAL(finished()), this, SLOT(rssJobFinished()));
-        j->abort();
-        j->deleteLater();
+        j->cancelAndDelete();
     }
     rssJobs.clear();
     setBusy(!rssJobs.isEmpty() || !downloadJobs.isEmpty());
@@ -483,11 +482,7 @@ void PodcastService::cancelDownload(const QUrl &url)
 
 void PodcastService::cancelDownload(NetworkJob *job)
 {
-    disconnect(job, SIGNAL(finished()), this, SLOT(downloadJobFinished()));
-    disconnect(job, SIGNAL(readyRead()), this, SLOT(downloadReadyRead()));
-    disconnect(job, SIGNAL(downloadPercent(int)), this, SLOT(downloadPercent(int)));
-    job->abort();
-    job->deleteLater();
+    job->cancelAndDelete();
 
     QString dest=job->property(constDestProperty).toString();
     QString partial=dest.isEmpty() ? QString() : QString(dest+constPartialExt);

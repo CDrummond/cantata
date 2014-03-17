@@ -186,8 +186,7 @@ void PodcastPage::cancel()
 {
     spinner->stop();
     if (job) {
-        disconnect(job, SIGNAL(finished()), this, SLOT(jobFinished()));
-        job->deleteLater();
+        job->cancelAndDelete();
         job=0;
     }
 }
@@ -196,8 +195,7 @@ void PodcastPage::cancelImage()
 {
     imageSpinner->stop();
     if (imageJob) {
-        disconnect(imageJob, SIGNAL(finished()), this, SLOT(imageJobFinished()));
-        imageJob->deleteLater();
+        imageJob->cancelAndDelete();
         imageJob=0;
     }
 }

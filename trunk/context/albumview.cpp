@@ -107,6 +107,7 @@ void AlbumView::refresh()
 void AlbumView::update(const Song &song, bool force)
 {
     if (song.isStandardStream() && song.album.isEmpty() && !song.name.isEmpty() && song.name!=currentSong.name) {
+        abort();
         currentSong=song;
         clearDetails();
         setHeader(song.name);
@@ -120,12 +121,14 @@ void AlbumView::update(const Song &song, bool force)
     if (song.isEmpty() || song.albumArtist().isEmpty() || song.album.isEmpty()) {
         currentSong=song;
         clearDetails();
+        abort();
         return;
     }
 
     if (force || song.albumArtist()!=currentSong.albumArtist() || song.album!=currentSong.album) {
         currentSong=song;
         currentArtist=currentSong.basicArtist();
+        abort();
         if (!isVisible()) {
             needToUpdate=true;
             return;

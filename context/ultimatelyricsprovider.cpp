@@ -283,11 +283,7 @@ void UltimateLyricsProvider::abort()
     QHash<NetworkJob *, int>::ConstIterator end(requests.constEnd());
 
     for (; it!=end; ++it) {
-        disconnect(it.key(), SIGNAL(finished()), this, SLOT(lyricsFetched()));
-        disconnect(it.key(), SIGNAL(finished()), this, SLOT(wikiMediaSearchResponse()));
-        disconnect(it.key(), SIGNAL(finished()), this, SLOT(wikiMediaLyricsFetched()));
-        it.key()->deleteLater();
-        it.key()->close();
+        it.key()->cancelAndDelete();
     }
     requests.clear();
     songs.clear();

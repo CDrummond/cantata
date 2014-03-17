@@ -134,6 +134,7 @@ void ArtistView::update(const Song &s, bool force)
         currentSong=s;
         engine->cancel();
         clear();
+        abort();
         return;
     }
 
@@ -143,6 +144,7 @@ void ArtistView::update(const Song &s, bool force)
 
     if (artistChanged) {
         artistAlbumsFirstTracks.clear();
+        abort();
     }
     if (!isVisible()) {
         if (artistChanged) {
@@ -370,8 +372,7 @@ void ArtistView::abort()
 {
     engine->cancel();
     if (currentSimilarJob) {
-        disconnect(currentSimilarJob, SIGNAL(finished()), this, SLOT(handleSimilarReply()));
-        currentSimilarJob->abort();
+        currentSimilarJob->cancelAndDelete();
         currentSimilarJob=0;
     }
     hideSpinner();

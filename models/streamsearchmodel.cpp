@@ -334,9 +334,7 @@ void StreamSearchModel::cancelAll()
     if (!jobs.isEmpty()) {
         QList<NetworkJob *> jobList=jobs.keys();
         foreach (NetworkJob *j, jobList) {
-            j->abort();
-            j->deleteLater();
-            disconnect(j, SIGNAL(finished()), this, SLOT(jobFinished()));
+            j->cancelAndDelete();
         }
         jobs.clear();
         emit loaded();

@@ -858,13 +858,7 @@ void CoverDialog::checkStatus()
 void CoverDialog::cancelQuery()
 {
     foreach (NetworkJob *job, currentQuery) {
-        if (DL_Query==job->property(constTypeProperty).toInt()) {
-            disconnect(job, SIGNAL(finished()), this, SLOT(queryJobFinished()));
-        } else {
-            disconnect(job, SIGNAL(finished()), this, SLOT(downloadJobFinished()));
-        }
-        job->close();
-        job->deleteLater();
+        job->cancelAndDelete();
     }
     currentQuery.clear();
     setSearching(false);

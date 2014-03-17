@@ -611,7 +611,7 @@ QPixmap * AlbumsModel::AlbumItem::cover()
         if (!coverRequested) {
             SongItem *firstSong=songs.first();
             Song s;
-            if (Song::MultipleArtists==type) {  // Then Cantata has placed this album under 'Various Artists' but the actual album as a different AlbumArtist tag
+            if (Song::MultipleArtists==type) {  // Then Cantata has placed this album under 'Various Artists' but the actual album has a different AlbumArtist tag
                 s.artist=firstSong->albumArtist();
             } else {
                 s.artist=firstSong->artist;
@@ -637,14 +637,15 @@ QPixmap * AlbumsModel::AlbumItem::cover()
 
 QPixmap * AlbumsModel::AlbumItem::setCover(const QImage &img)
 {
+    QPixmap *pix=0;
     if (Song::SingleTracks!=type && songs.count() && !img.isNull()) {
         int size=iconSize();
-        QPixmap *pix=Covers::self()->saveScaledCover(img.scaled(QSize(size, size), Qt::IgnoreAspectRatio, Qt::SmoothTransformation), artist, album, size);
+        pix=Covers::self()->saveScaledCover(img.scaled(QSize(size, size), Qt::IgnoreAspectRatio, Qt::SmoothTransformation), artist, album, size);
         if (pix) {
             coverRequested=false;
         }
     }
-    return 0;
+    return pix;
 }
 
 const AlbumsModel::SongItem *AlbumsModel::AlbumItem::getCueFile() const

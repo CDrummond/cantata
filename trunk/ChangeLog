@@ -20,7 +20,7 @@
     changed.
 14. Remove space between toolbar and views, and reduce spacing elsewhere.
 15. Use a thin splitter between playqueue and views.
-16. Set 'no interaction' flag on more labels, so that Oxygen's window drag core
+16. Set 'no interaction' flag on more labels, so that Oxygen's window drag code
     works on these.
 17. Add support for comments. These are read directly from the song file when
     the tag-editor is used, and they are NOT saved in Cantata's cache file.
@@ -36,20 +36,21 @@
     reserve space for -MM:SS at each side of position slider. If song duration
     is longer than 1hr, then this is increased to -H:MM:SS
 22. Show number of tracks under playqueue, even if total time is 0.
-23. Enable song notifications n Linux builds without QtDBus.
+23. Enable song notifications in Linux builds without QtDBus.
 24. Speed-up MPD response parsing, by only converting strings to UTF-8 when
     required.
 25. In Albums view, always show album name as main text and artist as sub-text
     regardless of chosen sort.
-26. When context view is collpased, draw background over selector buttons.
-27. Be consistent with displaying year's of albums - year is shown in brackets
+26. When context view is collapsed, draw background over selector buttons.
+27. Be consistent with displaying years of albums - year is shown in brackets
     after album name.
 28. Only show album year in non-icon view.
 29. Only show album year in browsers.
 30. Reduce memory usage, by storing album covers in a cache - and using this
-    for display.
+    for display. Size of cache can be controlled by config item, see README for
+    details.
 31. Only save albumartist tag in XML cache file if library supports this tag.
-32. Use MPD status to detemien when to show, and hide, "Updating..." message.
+32. Use MPD status to determine when to show, and hide, "Updating..." message.
 33. Ignore mouse-events on message-overlay if cancel button is hidden.
 34. Update copy of QJson to 0.8.1
 35. Speed up building list of songs - by only checking if file has already

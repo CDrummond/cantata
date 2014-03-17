@@ -1324,13 +1324,12 @@ Covers::Image Covers::requestImage(const Song &song, bool urgent)
         return Covers::Image();
     }
 
-    if (retrieved>=maxFindPerLoopIteration && !urgent) {
+    if ((0==maxFindPerLoopIteration || retrieved>=maxFindPerLoopIteration) && !urgent) {
         currentImageRequests.insert(key);
         tryToLocate(song);
         return Covers::Image();
     }
 
-    retrieved++;
     Image img=findImage(song, false);
     if (img.img.isNull() && Song::OnlineSvrTrack!=song.type) {
         DBUG << song.file << song.artist << song.albumartist << song.album << "Need to download";
@@ -1338,16 +1337,19 @@ Covers::Image Covers::requestImage(const Song &song, bool urgent)
         tryToDownload(song);
     }
 
-    // We only want to read X files per QEventLoop iteratation. The above takes care of this, and any
-    // extra requests are handled via the 'emit locate' However, after the QEVentLoop, we want to reset
-    // this count back to 0. To do this, create a QTimer with a timout of 0 seconds. This should fire
-    // immediately after the current QEventLoop event.
-    if (!countResetTimer) {
-        countResetTimer=new QTimer(this);
-        countResetTimer->setSingleShot(true);
-        connect(countResetTimer, SIGNAL(timeout()), SLOT(clearCount()), Qt::QueuedConnection);
+    if (0!=maxFindPerLoopIteration) {
+        retrieved++;
+        // We only want to read X files per QEventLoop iteratation. The above takes care of this, and any
+        // extra requests are handled via the 'emit locate' However, after the QEventLoop, we want to reset
+        // this count back to 0. To do this, create a QTimer with a timout of 0 seconds. This should fire
+        // immediately after the current QEventLoop event.
+        if (!countResetTimer) {
+            countResetTimer=new QTimer(this);
+            countResetTimer->setSingleShot(true);
+            connect(countResetTimer, SIGNAL(timeout()), SLOT(clearCount()), Qt::QueuedConnection);
+        }
+        countResetTimer->start(0);
     }
-    countResetTimer->start(0);
     return fix(img);
 }
 
@@ -1368,10 +1370,6 @@ void Covers::located(const QList<LocatedCover> &covers)
         } else {
             tryToDownload(cvr.song);
         }
-    }
-    retrieved-=covers.size();
-    if (retrieved<0) {
-        retrieved=0;
     }
 }
 

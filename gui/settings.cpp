@@ -892,7 +892,7 @@ int Settings::maxCoverUpdatePerIteration()
 
 int Settings::coverCacheSize()
 {
-    int v=GET_INT("coverCacheSize", 4);
+    int v=GET_INT("coverCacheSize", 10);
     return RESTRICT(v, 1, 512);
 }
 

@@ -30,9 +30,7 @@
 #include "mpduser.h"
 #include "localize.h"
 #include "utils.h"
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KGlobal>
-#endif
+#include "globalstatic.h"
 #include <QApplication>
 #include <QStringList>
 #include <QTimer>
@@ -70,10 +68,6 @@ static const QByteArray constIdleMixerValue("mixer");
 static const QByteArray constIdleOptionsValue("options");
 static const QByteArray constIdleOutputValue("output");
 
-#ifdef ENABLE_KDE_SUPPORT
-K_GLOBAL_STATIC(MPDConnection, conn)
-#endif
-
 static inline int socketTimeout(int dataSize)
 {
     static const int constDataBlock=100000;
@@ -89,18 +83,7 @@ static QByteArray log(const QByteArray &data)
     }
 }
 
-MPDConnection * MPDConnection::self()
-{
-    #ifdef ENABLE_KDE_SUPPORT
-    return conn;
-    #else
-    static MPDConnection *conn=0;
-    if (!conn) {
-        conn=new MPDConnection;
-    }
-    return conn;
-    #endif
-}
+GLOBAL_STATIC(MPDConnection, instance)
 
 QByteArray MPDConnection::quote(int val)
 {

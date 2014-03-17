@@ -43,6 +43,7 @@
 #include "qtiocompressor/qtiocompressor.h"
 #include "utils.h"
 #include "config.h"
+#include "globalstatic.h"
 #include <QModelIndex>
 #include <QString>
 #include <QSet>
@@ -58,35 +59,16 @@
 #if QT_VERSION >= 0x050000
 #include <QUrlQuery>
 #endif
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KGlobal>
-K_GLOBAL_STATIC(StreamsModel, instance)
-#endif
 #if defined Q_OS_WIN
 #include <QDesktopServices>
 #endif
 #include <stdio.h>
 #include <time.h>
-
 #if defined ENABLE_MODEL_TEST
 #include "modeltest.h"
 #endif
 
-StreamsModel * StreamsModel::self()
-{
-    #ifdef ENABLE_KDE_SUPPORT
-    return instance;
-    #else
-    static StreamsModel *instance=0;
-    if(!instance) {
-        instance=new StreamsModel;
-        #if defined ENABLE_MODEL_TEST
-        new ModelTest(instance, instance);
-        #endif
-    }
-    return instance;
-    #endif
-}
+GLOBAL_STATIC(StreamsModel, instance)
 
 const QString StreamsModel::constSubDir=QLatin1String("streams");
 const QString StreamsModel::constCacheExt=QLatin1String(".xml.gz");
@@ -607,6 +589,9 @@ StreamsModel::StreamsModel(QObject *parent)
             }
         }
     }
+    #if defined ENABLE_MODEL_TEST
+    new ModelTest(this, this);
+    #endif
 }
 
 StreamsModel::~StreamsModel()

@@ -27,28 +27,13 @@
 #include "songview.h"
 #include "covers.h"
 #include "thread.h"
+#include "globalstatic.h"
 #include <QFile>
 #include <QTimer>
 #include <QTemporaryFile>
 #include <QDebug>
 
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KGlobal>
-K_GLOBAL_STATIC(FileThread, instance)
-#endif
-
-FileThread * FileThread::self()
-{
-    #ifdef ENABLE_KDE_SUPPORT
-    return instance;
-    #else
-    static FileThread *instance=0;
-    if(!instance) {
-        instance=new FileThread;
-    }
-    return instance;
-    #endif
-}
+GLOBAL_STATIC(FileThread, instance)
 
 FileThread::FileThread()
     : thread(0)

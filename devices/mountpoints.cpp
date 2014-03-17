@@ -22,26 +22,12 @@
  */
 
 #include "mountpoints.h"
+#include "globalstatic.h"
 #include <QSocketNotifier>
 #include <QFile>
 #include <QStringList>
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KGlobal>
-K_GLOBAL_STATIC(MountPoints, instance)
-#endif
 
-MountPoints * MountPoints::self()
-{
-    #ifdef ENABLE_KDE_SUPPORT
-    return instance;
-    #else
-    static MountPoints *instance=0;
-    if(!instance) {
-        instance=new MountPoints;
-    }
-    return instance;
-    #endif
-}
+GLOBAL_STATIC(MountPoints, instance)
 
 MountPoints::MountPoints()
     : token(0)

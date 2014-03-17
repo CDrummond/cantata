@@ -38,6 +38,7 @@
 #ifdef TAGLIB_FOUND
 #include "tags.h"
 #endif
+#include "globalstatic.h"
 #include <QFile>
 #include <QDir>
 #include <QCryptographicHash>
@@ -54,13 +55,12 @@
 #include <QFont>
 #include <QXmlStreamReader>
 #include <QTimer>
-
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KStandardDirs>
-#include <KDE/KGlobal>
 #include <QApplication>
-K_GLOBAL_STATIC(Covers, instance)
 #endif
+
+GLOBAL_STATIC(Covers, instance)
 
 #include <QDebug>
 static bool debugIsEnabled=false;
@@ -345,19 +345,6 @@ static Covers::Image otherAppCover(const CoverDownloader::Job &job)
 #endif
 
 const QSize Covers::constMaxSize(600, 600);
-
-Covers * Covers::self()
-{
-    #ifdef ENABLE_KDE_SUPPORT
-    return instance;
-    #else
-    static Covers *instance=0;
-    if(!instance) {
-        instance=new Covers;
-    }
-    return instance;
-    #endif
-}
 
 //bool Covers::isCoverFile(const QString &file)
 //{

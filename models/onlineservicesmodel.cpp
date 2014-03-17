@@ -50,37 +50,19 @@
 #include "actioncollection.h"
 #include "networkaccessmanager.h"
 #include "settings.h"
+#include "globalstatic.h"
 #include <QStringList>
 #include <QMimeData>
 #include <QFile>
 #include <QDir>
 #include <QDebug>
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KGlobal>
-K_GLOBAL_STATIC(OnlineServicesModel, instance)
-#endif
-
 #if defined ENABLE_MODEL_TEST
 #include "modeltest.h"
 #endif
 
 QString OnlineServicesModel::constUdiPrefix("online-service://");
 
-OnlineServicesModel * OnlineServicesModel::self()
-{
-    #ifdef ENABLE_KDE_SUPPORT
-    return instance;
-    #else
-    static OnlineServicesModel *instance=0;
-    if(!instance) {
-        instance=new OnlineServicesModel;
-        #if defined ENABLE_MODEL_TEST
-        new ModelTest(instance, instance);
-        #endif
-    }
-    return instance;
-    #endif
-}
+GLOBAL_STATIC(OnlineServicesModel, instance)
 
 OnlineServicesModel::OnlineServicesModel(QObject *parent)
     : MultiMusicModel(parent)
@@ -94,6 +76,9 @@ OnlineServicesModel::OnlineServicesModel(QObject *parent)
     unSubscribeAction = ActionCollection::get()->createAction("unsubscribeonlineservice", i18n("Remove Subscription"), "list-remove");
     refreshSubscriptionAction = ActionCollection::get()->createAction("refreshsubscription", i18n("Refresh Subscription"), "view-refresh");
     load();
+    #if defined ENABLE_MODEL_TEST
+    new ModelTest(this, this);
+    #endif
 }
 
 OnlineServicesModel::~OnlineServicesModel()

@@ -43,6 +43,7 @@
 #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
 #include "audiocddevice.h"
 #endif
+#include "globalstatic.h"
 #include <QMenu>
 #include <QStringList>
 #include <QMimeData>
@@ -58,7 +59,6 @@
 #include <solid/storagedrive.h>
 #include <solid/storagevolume.h>
 #include <solid/opticaldisc.h>
-K_GLOBAL_STATIC(DevicesModel, instance)
 #else
 #include "solid-lite/device.h"
 #include "solid-lite/deviceinterface.h"
@@ -69,7 +69,6 @@ K_GLOBAL_STATIC(DevicesModel, instance)
 #include "solid-lite/storagevolume.h"
 #include "solid-lite/opticaldisc.h"
 #endif
-
 #if defined ENABLE_MODEL_TEST
 #include "modeltest.h"
 #endif
@@ -91,21 +90,7 @@ QString DevicesModel::fixDevicePath(const QString &path)
     return path;
 }
 
-DevicesModel * DevicesModel::self()
-{
-    #ifdef ENABLE_KDE_SUPPORT
-    return instance;
-    #else
-    static DevicesModel *instance=0;
-    if(!instance) {
-        instance=new DevicesModel;
-        #if defined ENABLE_MODEL_TEST
-        new ModelTest(instance, instance);
-        #endif
-    }
-    return instance;
-    #endif
-}
+GLOBAL_STATIC(DevicesModel, instance)
 
 DevicesModel::DevicesModel(QObject *parent)
     : MultiMusicModel(parent)
@@ -122,6 +107,9 @@ DevicesModel::DevicesModel(QObject *parent)
     #endif
     updateItemMenu();
     connect(this, SIGNAL(add(const QStringList &, bool, quint8)), MPDConnection::self(), SLOT(add(const QStringList &, bool, quint8)));
+    #if defined ENABLE_MODEL_TEST
+    new ModelTest(this, this);
+    #endif
 }
 
 DevicesModel::~DevicesModel()

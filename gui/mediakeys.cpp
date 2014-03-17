@@ -31,22 +31,9 @@
 #include "multimediakeysinterface.h"
 #include "stdactions.h"
 #include "settings.h"
-#ifdef ENABLE_KDE_SUPPORT
-K_GLOBAL_STATIC(MediaKeys, instance)
-#endif
+#include "globalstatic.h"
 
-MediaKeys * MediaKeys::self()
-{
-    #ifdef ENABLE_KDE_SUPPORT
-    return instance;
-    #else
-    static MediaKeys *instance=0;
-    if(!instance) {
-        instance=new MediaKeys;
-    }
-    return instance;
-    #endif
-}
+GLOBAL_STATIC(MediaKeys, instance)
 
 QString MediaKeys::toString(InterfaceType i)
 {

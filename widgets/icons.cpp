@@ -24,6 +24,7 @@
 #include "icons.h"
 #include "config.h"
 #include "settings.h"
+#include "globalstatic.h"
 #include <QApplication>
 #include <QPixmap>
 #include <QFont>
@@ -36,22 +37,7 @@
 #include "gtkstyle.h"
 #endif
 
-#ifdef ENABLE_KDE_SUPPORT
-K_GLOBAL_STATIC(Icons, instance)
-#endif
-
-Icons * Icons::self()
-{
-    #ifdef ENABLE_KDE_SUPPORT
-    return instance;
-    #else
-    static Icons *instance=0;
-    if(!instance) {
-        instance=new Icons;
-    }
-    return instance;
-    #endif
-}
+GLOBAL_STATIC(Icons, instance)
 
 static QList<int> constStdSizes=QList<int>() << 16 << 22 << 32 << 48;
 

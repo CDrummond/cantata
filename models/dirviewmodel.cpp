@@ -46,13 +46,9 @@
 #include "config.h"
 #include "utils.h"
 #include "qtiocompressor/qtiocompressor.h"
-
+#include "globalstatic.h"
 #if defined ENABLE_MODEL_TEST
 #include "modeltest.h"
-#endif
-
-#ifdef ENABLE_KDE_SUPPORT
-K_GLOBAL_STATIC(DirViewModel, instance)
 #endif
 
 static const QLatin1String constCacheName("-folder-listing");
@@ -67,21 +63,7 @@ static QString cacheFileName()
     return Utils::cacheDir(MusicLibraryModel::constLibraryCache)+fileName;
 }
 
-DirViewModel * DirViewModel::self()
-{
-    #ifdef ENABLE_KDE_SUPPORT
-    return instance;
-    #else
-    static DirViewModel *instance=0;
-    if(!instance) {
-        instance=new DirViewModel;
-        #if defined ENABLE_MODEL_TEST
-        new ModelTest(instance, instance);
-        #endif
-    }
-    return instance;
-    #endif
-}
+GLOBAL_STATIC(DirViewModel, instance)
 
 DirViewModel::DirViewModel(QObject *parent)
     : ActionModel(parent)
@@ -89,6 +71,9 @@ DirViewModel::DirViewModel(QObject *parent)
     , databaseTimeUnreliable(false)
     , enabled(false)
 {
+    #if defined ENABLE_MODEL_TEST
+    new ModelTest(this, this);
+    #endif
 }
 
 DirViewModel::~DirViewModel()

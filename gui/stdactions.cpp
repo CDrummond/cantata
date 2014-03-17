@@ -31,24 +31,10 @@
 #endif
 #include "icon.h"
 #include "icons.h"
+#include "globalstatic.h"
 #include <QMenu>
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KGlobal>
-K_GLOBAL_STATIC(StdActions, instance)
-#endif
 
-StdActions * StdActions::self()
-{
-    #ifdef ENABLE_KDE_SUPPORT
-    return instance;
-    #else
-    static StdActions *instance=0;
-    if(!instance) {
-        instance=new StdActions;
-    }
-    return instance;
-    #endif
-}
+GLOBAL_STATIC(StdActions, instance)
 
 StdActions::StdActions()
 {

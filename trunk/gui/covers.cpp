@@ -171,7 +171,7 @@ static inline QString cacheKey(const QString &artist, const QString &album, int 
     return (album.isEmpty() ? artistKey(artist) : albumKey(artist, album))+QString::number(size);
 }
 
-static const QLatin1String constScaledFormat(".jpg");
+static const QLatin1String constScaledFormat(".png");
 static bool cacheScaledCovers=true;
 
 static QString getScaledCoverName(const QString &artist, const QString &album, int size, bool createDir)
@@ -201,20 +201,24 @@ static void clearScaledCache(const Song &song)
     QStringList sizeDirNames=d.entryList(QStringList() << "*", QDir::Dirs|QDir::NoDotAndDotDot);
 
     if (artistImage) {
-        QString fileName=Covers::encodeName(song.artist)+constScaledFormat;
-        foreach (const QString &sizeDirName, sizeDirNames) {
-            QString fname=dirName+sizeDirName+QLatin1Char('/')+fileName;
-            if (QFile::exists(fname)) {
-                QFile::remove(fname);
+        for (int i=0; constExtensions[i]; ++i) {
+            QString fileName=Covers::encodeName(song.artist)+constExtensions[i];
+            foreach (const QString &sizeDirName, sizeDirNames) {
+                QString fname=dirName+sizeDirName+QLatin1Char('/')+fileName;
+                if (QFile::exists(fname)) {
+                    QFile::remove(fname);
+                }
             }
         }
     } else {
         QString subDir=Covers::encodeName(song.artist);
-        QString fileName=Covers::encodeName(song.album)+constScaledFormat;
-        foreach (const QString &sizeDirName, sizeDirNames) {
-            QString fname=dirName+sizeDirName+QLatin1Char('/')+subDir+QLatin1Char('/')+fileName;
-            if (QFile::exists(fname)) {
-                QFile::remove(fname);
+        for (int i=0; constExtensions[i]; ++i) {
+            QString fileName=Covers::encodeName(song.album)+constExtensions[i];
+            foreach (const QString &sizeDirName, sizeDirNames) {
+                QString fname=dirName+sizeDirName+QLatin1Char('/')+subDir+QLatin1Char('/')+fileName;
+                if (QFile::exists(fname)) {
+                    QFile::remove(fname);
+                }
             }
         }
     }
@@ -909,12 +913,19 @@ QPixmap * Covers::getScaledCover(const QString &artist, const QString &album, in
     QPixmap *pix(cache.object(key));
     if (!pix && cacheScaledCovers) {
         QString fileName=getScaledCoverName(artist, album, size, false);
-        if (!fileName.isEmpty() && QFile::exists(fileName)) {
-            QImage img(fileName);
-            if (!img.isNull() && (img.width()==size || img.height()==size)) {
-                DBUG_CLASS("Covers") << artist << album << size << "scaled cover found" << fileName;
-                pix=new QPixmap(QPixmap::fromImage(img));
-                cache.insert(key, pix, pix->width()*pix->height()*(pix->depth()/8));
+        if (!fileName.isEmpty()) {
+            if (QFile::exists(fileName)) {
+                QImage img(fileName, "PNG");
+                if (!img.isNull() && (img.width()==size || img.height()==size)) {
+                    DBUG_CLASS("Covers") << artist << album << size << "scaled cover found" << fileName;
+                    pix=new QPixmap(QPixmap::fromImage(img));
+                    cache.insert(key, pix, pix->width()*pix->height()*(pix->depth()/8));
+                }
+            } else { // Remove any previous JPG scaled cover...
+                fileName=Utils::changeExtension(fileName, ".jpg");
+                if (QFile::exists(fileName)) {
+                    QFile::remove(fileName);
+                }
             }
         }
 
@@ -936,7 +947,7 @@ QPixmap * Covers::saveScaledCover(const QImage &img, const QString &artist, cons
 
     if (cacheScaledCovers) {
         QString fileName=getScaledCoverName(artist, album, size, true);
-        bool status=img.save(fileName);
+        bool status=img.save(fileName, "PNG");
         DBUG_CLASS("Covers") << artist << album << size << fileName << status;
     }
     QPixmap *pix=new QPixmap(QPixmap::fromImage(img));

@@ -332,7 +332,6 @@ public:
             QRect textRect(r.x(), r.y(), r.width()-(rtl ? (4*constBorder) : totalDurationWidth), textHeight);
             QFont tf(f);
             tf.setBold(true);
-            tf.setItalic(true);
             title = QFontMetrics(tf).elidedText(title, Qt::ElideRight, textRect.width(), QPalette::WindowText);
             painter->setFont(tf);
             painter->drawText(textRect, title, textOpt);

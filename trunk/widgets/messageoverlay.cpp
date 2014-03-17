@@ -101,8 +101,7 @@ void MessageOverlay::paintEvent(QPaintEvent *)
     QColor borderCol=palette().color(QPalette::Highlight).darker(120);
     QColor col=palette().color(QPalette::Window);
     QPainterPath path=buildPath(rf, r.height()/4.0);
-    borderCol.setAlphaF(0.8);
-    col.setAlphaF(0.7);
+    col.setAlphaF(0.8);
     p.setRenderHint(QPainter::Antialiasing, true);
     p.fillPath(path, col);
     p.setPen(QPen(borderCol, qMax(2, r.height()/16)));

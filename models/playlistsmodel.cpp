@@ -38,10 +38,7 @@
 #include "tableview.h"
 #include "localize.h"
 #include "utils.h"
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KGlobal>
-K_GLOBAL_STATIC(PlaylistsModel, instance)
-#endif
+#include "globalstatic.h"
 #include "mpdparseutils.h"
 #include "mpdstats.h"
 #include "mpdconnection.h"
@@ -68,21 +65,7 @@ QString PlaylistsModel::headerText(int col)
     }
 }
 
-PlaylistsModel * PlaylistsModel::self()
-{
-    #ifdef ENABLE_KDE_SUPPORT
-    return instance;
-    #else
-    static PlaylistsModel *instance=0;
-    if(!instance) {
-        instance=new PlaylistsModel;
-        #if defined ENABLE_MODEL_TEST
-        new ModelTest(instance, instance);
-        #endif
-    }
-    return instance;
-    #endif
-}
+GLOBAL_STATIC(PlaylistsModel, instance)
 
 PlaylistsModel::PlaylistsModel(QObject *parent)
     : ActionModel(parent)
@@ -108,6 +91,9 @@ PlaylistsModel::PlaylistsModel(QObject *parent)
     connect(newAction, SIGNAL(triggered(bool)), this, SIGNAL(addToNew()));
     Action::initIcon(newAction);
     updateItemMenu();
+    #if defined ENABLE_MODEL_TEST
+    new ModelTest(this, this);
+    #endif
 }
 
 PlaylistsModel::~PlaylistsModel()

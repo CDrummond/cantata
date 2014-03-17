@@ -29,9 +29,7 @@
 #include <QFile>
 #include "localize.h"
 #include "qtplural.h"
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KGlobal>
-#endif
+#include "globalstatic.h"
 #include "albumsmodel.h"
 #include "settings.h"
 #include "musiclibraryitemsong.h"
@@ -47,32 +45,13 @@
 #include "icons.h"
 #include "utils.h"
 #include "config.h"
-
 #if defined ENABLE_MODEL_TEST
 #include "modeltest.h"
 #endif
 
 static int sortAlbums=AlbumsModel::Sort_AlbumArtist;
 
-#ifdef ENABLE_KDE_SUPPORT
-K_GLOBAL_STATIC(AlbumsModel, instance)
-#endif
-
-AlbumsModel * AlbumsModel::self()
-{
-    #ifdef ENABLE_KDE_SUPPORT
-    return instance;
-    #else
-    static AlbumsModel *instance=0;
-    if(!instance) {
-        instance=new AlbumsModel;
-        #if defined ENABLE_MODEL_TEST
-        new ModelTest(instance, instance);
-        #endif
-    }
-    return instance;
-    #endif
-}
+GLOBAL_STATIC(AlbumsModel, instance)
 
 static MusicLibraryItemAlbum::CoverSize coverSize=MusicLibraryItemAlbum::CoverMedium;
 static QPixmap *theDefaultIcon=0;
@@ -124,6 +103,9 @@ AlbumsModel::AlbumsModel(QObject *parent)
     , enabled(false)
 //     , coversRequested(false)
 {
+    #if defined ENABLE_MODEL_TEST
+    new ModelTest(this, this);
+    #endif
 }
 
 AlbumsModel::~AlbumsModel()

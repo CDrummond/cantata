@@ -28,15 +28,12 @@
 #endif
 #include "settings.h"
 #include "thread.h"
+#include "globalstatic.h"
 #include <QFile>
 #include <QUrl>
 #include <QTimer>
 #if QT_VERSION >= 0x050000
 #include <QUrlQuery>
-#endif
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KGlobal>
-K_GLOBAL_STATIC(HttpServer, instance)
 #endif
 
 #include <QDebug>
@@ -60,18 +57,7 @@ bool HttpServer::debugEnabled()
     return debugIsEnabled;
 }
 
-HttpServer * HttpServer::self()
-{
-    #ifdef ENABLE_KDE_SUPPORT
-    return instance;
-    #else
-    static HttpServer *instance=0;
-    if(!instance) {
-        instance=new HttpServer;
-    }
-    return instance;
-    #endif
-}
+GLOBAL_STATIC(HttpServer, instance)
 
 #ifdef ENABLE_HTTP_SERVER
 HttpServer::HttpServer()

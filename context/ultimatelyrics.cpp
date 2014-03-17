@@ -24,19 +24,18 @@
 #include "ultimatelyrics.h"
 #include "ultimatelyricsprovider.h"
 #include "settings.h"
+#include "globalstatic.h"
 #include <QCoreApplication>
 #include <QDir>
 #include <QFile>
 #include <QFileInfoList>
 #include <QXmlStreamReader>
 #include <QSet>
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KGlobal>
-K_GLOBAL_STATIC(UltimateLyrics, instance)
-#endif
 #if defined Q_OS_WIN
 #include <QDesktopServices>
 #endif
+
+GLOBAL_STATIC(UltimateLyrics, instance)
 
 static bool compareLyricProviders(const UltimateLyricsProvider *a, const UltimateLyricsProvider *b)
 {
@@ -108,19 +107,6 @@ static UltimateLyricsProvider * parseProvider(QXmlStreamReader *reader)
         }
     }
     return scraper;
-}
-
-UltimateLyrics * UltimateLyrics::self()
-{
-    #ifdef ENABLE_KDE_SUPPORT
-    return instance;
-    #else
-    static UltimateLyrics *instance=0;
-    if(!instance) {
-        instance=new UltimateLyrics;
-    }
-    return instance;
-    #endif
 }
 
 void UltimateLyrics::release()

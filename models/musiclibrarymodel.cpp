@@ -42,6 +42,7 @@
 #include "icons.h"
 #include "stdactions.h"
 #include "qtiocompressor/qtiocompressor.h"
+#include "globalstatic.h"
 #include <QCommonStyle>
 #include <QFile>
 #include <QTimer>
@@ -50,33 +51,11 @@
 #include <QDir>
 #include <QMimeData>
 #include <QStringList>
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KGlobal>
-#endif
-
 #if defined ENABLE_MODEL_TEST
 #include "modeltest.h"
 #endif
 
-#ifdef ENABLE_KDE_SUPPORT
-K_GLOBAL_STATIC(MusicLibraryModel, instance)
-#endif
-
-MusicLibraryModel * MusicLibraryModel::self()
-{
-    #ifdef ENABLE_KDE_SUPPORT
-    return instance;
-    #else
-    static MusicLibraryModel *instance=0;
-    if(!instance) {
-        instance=new MusicLibraryModel;
-        #if defined ENABLE_MODEL_TEST
-        new ModelTest(instance, instance);
-        #endif
-    }
-    return instance;
-    #endif
-}
+GLOBAL_STATIC(MusicLibraryModel, instance)
 
 const QLatin1String MusicLibraryModel::constLibraryCache("library/");
 const QLatin1String MusicLibraryModel::constLibraryExt(".xml");
@@ -160,6 +139,9 @@ MusicLibraryModel::MusicLibraryModel(QObject *parent, bool isMpdModel, bool isCh
                 this, SLOT(updateMusicLibrary(MusicLibraryItemRoot *, QDateTime)));
     }
     rootItem->setModel(this);
+    #if defined ENABLE_MODEL_TEST
+    new ModelTest(this, this);
+    #endif
 }
 
 MusicLibraryModel::~MusicLibraryModel()

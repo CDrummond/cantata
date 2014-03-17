@@ -32,10 +32,7 @@
 #include "localize.h"
 #include "qtplural.h"
 #include "actioncollection.h"
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KGlobal>
-K_GLOBAL_STATIC(Dynamic, instance)
-#endif
+#include "globalstatic.h"
 #include <QDir>
 #include <QFile>
 #include <QTextStream>
@@ -50,7 +47,6 @@ K_GLOBAL_STATIC(Dynamic, instance)
 #endif
 #include <signal.h>
 #include <stdio.h>
-
 #if defined ENABLE_MODEL_TEST
 #include "modeltest.h"
 #endif
@@ -122,21 +118,7 @@ QString Dynamic::toString(Command cmd)
     return QString();
 }
 
-Dynamic * Dynamic::self()
-{
-    #ifdef ENABLE_KDE_SUPPORT
-    return instance;
-    #else
-    static Dynamic *instance=0;
-    if(!instance) {
-        instance=new Dynamic;
-        #if defined ENABLE_MODEL_TEST
-        new ModelTest(instance, instance);
-        #endif
-    }
-    return instance;
-    #endif
-}
+GLOBAL_STATIC(Dynamic, instance)
 
 const QString Dynamic::constRuleKey=QLatin1String("Rule");
 const QString Dynamic::constArtistKey=QLatin1String("Artist");
@@ -215,6 +197,9 @@ Dynamic::Dynamic()
     QTimer::singleShot(500, this, SLOT(checkHelper()));
     startAction = ActionCollection::get()->createAction("startdynamic", i18n("Start Dynamic Playlist"), "media-playback-start");
     stopAction = ActionCollection::get()->createAction("stopdynamic", i18n("Stop Dynamic Mode"), "process-stop");
+    #if defined ENABLE_MODEL_TEST
+    new ModelTest(this, this);
+    #endif
 }
 
 QVariant Dynamic::headerData(int, Qt::Orientation, int) const

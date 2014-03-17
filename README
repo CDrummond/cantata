@@ -358,7 +358,7 @@ maxCoverUpdatePerIteration=<Integer>
 coverCacheSize=<Integer>
     Cantata stores scaled versions of covers in a cache in memory, to reduce
     memory usage and/or disk acicess. This setting controls the maximum size
-    (in megabytes) that Cantata will use for this cache. The default is 4
+    (in megabytes) that Cantata will use for this cache. The default is 10
     (Values 1..512 are acceptable)
 
 cueFileCodecs=<Comma separated list of codecs>
@@ -440,7 +440,7 @@ e.g.
 iconTheme=oxygen
 maxCoverFindPerIteration=5
 maxCoverUpdatePerIteration=5
-coverCacheSize=4
+coverCacheSize=10
 cueFileCodecs=GBK, big5-0
 networkAccessEnabled=false
 volumeStep=2

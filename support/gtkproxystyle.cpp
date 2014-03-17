@@ -391,7 +391,11 @@ void GtkProxyStyle::drawPrimitive(PrimitiveElement element, const QStyleOption *
         baseStyle()->drawPrimitive(element, option, painter, widget);
         if (modViewFrame && PE_Frame==element && widget && widget->property(GtkStyle::constHideFrameProp).isValid()) {
             const QRect &r=option->rect;
-            painter->setPen(QPen(option->palette.color(QPalette::Base), 1));
+            if (option->palette.base().color()==Qt::transparent) {
+                painter->setPen(QPen(QApplication::palette().color(QPalette::Base), 1));
+            } else {
+                painter->setPen(QPen(option->palette.base(), 1));
+            }
             if (Qt::LeftToRight==option->direction) {
                 painter->drawLine(r.topRight()+QPoint(0, 1), r.bottomRight()+QPoint(0, -1));
             } else {

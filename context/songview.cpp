@@ -332,9 +332,7 @@ void SongView::scroll()
 void SongView::abort()
 {
     if (job) {
-        connect(job, SIGNAL(finished()), this, SLOT(downloadFinished()));
-        job->abort();
-        job->deleteLater();
+        job->cancelAndDelete();
         job=0;
     }
     currentProvider=-1;
@@ -361,12 +359,16 @@ void SongView::update(const Song &s, bool force)
     if (s.isEmpty() || s.title.isEmpty() || s.artist.isEmpty()) {
         currentSong=s;
         clear();
+        abort();
         return;
     }
 
     Song song(s);
     bool songChanged = song.artist!=currentSong.artist || song.title!=currentSong.title;
 
+    if (songChanged) {
+        abort();
+    }
     if (!isVisible()) {
         if (songChanged) {
             needToUpdate=true;

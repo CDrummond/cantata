@@ -239,12 +239,9 @@ void StreamFetcher::cancel()
     data.clear();
     current=QString();
     if (job) {
-        disconnect(job, SIGNAL(readyRead()), this, SLOT(dataReady()));
-        disconnect(job, SIGNAL(finished()), this, SLOT(jobFinished()));
-        job->abort();
-        job->deleteLater();
+        job->cancelAndDelete();
+        job=0;
     }
-    job=0;
     emit status(QString());
 }
 
@@ -253,12 +250,8 @@ void StreamFetcher::dataReady()
     data+=job->readAll();
 
     if (data.count()>constMaxData) {
-        NetworkJob *thisJob=job;
-        disconnect(thisJob, SIGNAL(readyRead()), this, SLOT(dataReady()));
-        disconnect(thisJob, SIGNAL(finished()), this, SLOT(jobFinished()));
-        jobFinished(thisJob);
-        thisJob->abort();
-        thisJob->deleteLater();
+        job->cancelAndDelete();
+        job=0;
     }
 }
 

@@ -24,10 +24,12 @@
 #include "networkaccessmanager.h"
 #include "networkproxyfactory.h"
 #include "settings.h"
-#include "config.h"
-#include "globalstatic.h"
 #include <QTimerEvent>
 #include <QTimer>
+#ifdef ENABLE_KDE_SUPPORT
+#include <KDE/KGlobal>
+K_GLOBAL_STATIC(NetworkAccessManager, instance)
+#endif
 
 #include <QDebug>
 static bool debugEnabled=false;
@@ -169,7 +171,18 @@ void NetworkJob::handleReadyRead()
     emit readyRead();
 }
 
-GLOBAL_STATIC(NetworkAccessManager, instance)
+NetworkAccessManager * NetworkAccessManager::self()
+{
+    #ifdef ENABLE_KDE_SUPPORT
+    return instance;
+    #else
+    static NetworkAccessManager *instance=0;
+    if (!instance) {
+        instance=new NetworkAccessManager;
+    }
+    return instance;
+    #endif
+}
 
 NetworkAccessManager::NetworkAccessManager(QObject *parent)
     : BASE_NETWORK_ACCESS_MANAGER(parent)

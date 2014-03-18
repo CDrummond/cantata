@@ -54,7 +54,7 @@ public:
     void mouseReleaseEvent(QMouseEvent *event);
     QModelIndexList selectedIndexes() const { return selectedIndexes(true); }
     QModelIndexList selectedIndexes(bool sorted) const;
-    void expandAll(const QModelIndex &idx=QModelIndex());
+    void expandAll(const QModelIndex &idx=QModelIndex(), bool singleLevelOnly=false);
     void collapseToLevel(int level, const QModelIndex &idx=QModelIndex());
     virtual void expand(const QModelIndex &idx, bool singleOnly=false);
     virtual void collapse(const QModelIndex &idx, bool singleOnly=false);

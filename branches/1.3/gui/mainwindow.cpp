@@ -329,8 +329,8 @@ MainWindow::MainWindow(QWidget *parent)
     addAction(devicesTabAction = ActionCollection::get()->createAction("showdevicestab", i18n("Devices"), Icons::self()->devicesIcon));
     #endif
     addAction(searchTabAction = ActionCollection::get()->createAction("showsearchtab", i18n("Search"), Icons::self()->searchTabIcon));
-    expandAllAction = ActionCollection::get()->createAction("expandall", i18n("Expand All"));
-    collapseAllAction = ActionCollection::get()->createAction("collapseall", i18n("Collapse All"));
+    addAction(expandAllAction = ActionCollection::get()->createAction("expandall", i18n("Expand All")));
+    addAction(collapseAllAction = ActionCollection::get()->createAction("collapseall", i18n("Collapse All")));
     clearPlayQueueAction = ActionCollection::get()->createAction("confimclearplaylist", i18n("Remove All Songs"), Icons::self()->clearListIcon);
     clearPlayQueueAction->setShortcut(Qt::AltModifier+Qt::Key_Return);
     cancelAction = ActionCollection::get()->createAction("cancel", i18n("Cancel"), Icons::self()->cancelIcon);
@@ -2552,8 +2552,8 @@ void MainWindow::showSearch()
 void MainWindow::expandAll()
 {
     QWidget *f=QApplication::focusWidget();
-    if (f && qobject_cast<QTreeView *>(f) && !qobject_cast<GroupedView *>(f)) {
-        static_cast<QTreeView *>(f)->expandAll();
+    if (f && qobject_cast<TreeView *>(f) && !qobject_cast<GroupedView *>(f)) {
+        static_cast<TreeView *>(f)->expandAll(QModelIndex(), true);
     }
 }
 

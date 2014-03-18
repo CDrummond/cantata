@@ -72,6 +72,8 @@
 4. Ensure library is loaded the very first time Cantata is run (ie. after
    connected to MPD via initial settings wizard).
 5. When song is updated in context view, abort any current network jobs.
+6. Fix expand all / collapse all actions. Expand all will only expand 1 level
+   for main browsers.
 
 1.3.2
 -----

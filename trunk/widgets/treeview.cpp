@@ -270,11 +270,11 @@ QModelIndexList TreeView::sortIndexes(const QModelIndexList &list)
     return sorted;
 }
 
-void TreeView::expandAll(const QModelIndex &idx)
+void TreeView::expandAll(const QModelIndex &idx, bool singleLevelOnly)
 {
     quint32 count=model()->rowCount(idx);
     for (quint32 i=0; i<count; ++i) {
-        expand(model()->index(i, 0, idx));
+        expand(model()->index(i, 0, idx), singleLevelOnly);
     }
 }
 

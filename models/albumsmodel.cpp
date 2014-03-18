@@ -462,6 +462,22 @@ void AlbumsModel::updateCover(const Song &song, const QImage &img, const QString
     setCover(song, img, file, true);
 }
 
+void AlbumsModel::coverLoaded(const QString &ar, const QString &al, int s)
+{
+    if (s==iconSize()) {
+        QList<AlbumItem *>::Iterator it=items.begin();
+        QList<AlbumItem *>::Iterator end=items.end();
+
+        for (int row=0; it!=end; ++it, ++row) {
+            if ((*it)->artist==ar && (*it)->album==al) {
+                QModelIndex idx=index(row, 0, QModelIndex());
+                emit dataChanged(idx, idx);
+                return;
+            }
+        }
+    }
+}
+
 void AlbumsModel::clear()
 {
     beginResetModel();
@@ -482,6 +498,8 @@ void AlbumsModel::setEnabled(bool e)
                 this, SLOT(setCover(const Song &, const QImage &, const QString &)));
         connect(Covers::self(), SIGNAL(coverUpdated(const Song &, const QImage &, const QString &)),
                 this, SLOT(updateCover(const Song &, const QImage &, const QString &)));
+        connect(Covers::self(), SIGNAL(loaded(QString,QString,int)),
+                this, SLOT(coverLoaded(QString,QString,int)));
 //         connect(MusicLibraryModel::self(), SIGNAL(updated(const MusicLibraryItemRoot *)), AlbumsModel::self(), SLOT(update(const MusicLibraryItemRoot *)));
         update(MusicLibraryModel::self()->root());
     } else {
@@ -490,6 +508,8 @@ void AlbumsModel::setEnabled(bool e)
                     this, SLOT(setCover(const Song&, const QImage &, const QString &)));
         disconnect(Covers::self(), SIGNAL(coverUpdated(const Song &, const QImage &, const QString &)),
                    this, SLOT(updateCover(const Song &, const QImage &, const QString &)));
+        disconnect(Covers::self(), SIGNAL(loaded(QString,QString,int)),
+                   this, SLOT(coverLoaded(QString,QString,int)));
 //         disconnect(MusicLibraryModel::self(), SIGNAL(updated(const MusicLibraryItemRoot *)), AlbumsModel::self(), SLOT(update(const MusicLibraryItemRoot *)));
     }
 }
@@ -585,31 +605,36 @@ void AlbumsModel::AlbumItem::updateStats()
 QPixmap * AlbumsModel::AlbumItem::cover()
 {
     if (Song::SingleTracks!=type && songs.count()) {
-        QPixmap *pix=Covers::self()->getScaledCover(artist, album, iconSize());
+        bool fileExists=false;
+        QPixmap *pix=Covers::self()->getScaledCover(artist, album, iconSize(), &fileExists);
         if (pix) {
             return pix;
         }
 
         if (!coverRequested) {
-            SongItem *firstSong=songs.first();
-            Song s;
-            if (Song::MultipleArtists==type) {  // Then Cantata has placed this album under 'Various Artists' but the actual album has a different AlbumArtist tag
-                s.artist=firstSong->albumArtist();
-            } else {
-                s.artist=firstSong->artist;
-                s.albumartist=Song::useComposer() && !firstSong->composer.isEmpty()
-                        ? firstSong->albumArtist() : artist;
-            }
-            s.album=album;
-            s.year=year;
-            s.file=firstSong->file;
-            s.type=type;
-            s.composer=firstSong->composer;
-            Covers::Image img=Covers::self()->requestImage(s);
-            if (img.img.isNull()) {
+            if (fileExists) {
                 coverRequested=true;
             } else {
-                return setCover(img.img);
+                SongItem *firstSong=songs.first();
+                Song s;
+                if (Song::MultipleArtists==type) {  // Then Cantata has placed this album under 'Various Artists' but the actual album has a different AlbumArtist tag
+                    s.artist=firstSong->albumArtist();
+                } else {
+                    s.artist=firstSong->artist;
+                    s.albumartist=Song::useComposer() && !firstSong->composer.isEmpty()
+                            ? firstSong->albumArtist() : artist;
+                }
+                s.album=album;
+                s.year=year;
+                s.file=firstSong->file;
+                s.type=type;
+                s.composer=firstSong->composer;
+                Covers::Image img=Covers::self()->requestImage(s);
+                if (img.img.isNull()) {
+                    coverRequested=true;
+                } else {
+                    return setCover(img.img);
+                }
             }
         }
     }

@@ -249,7 +249,6 @@ Q_SIGNALS:
     void coverRetrieved(const Song &song);
 
 private Q_SLOTS:
-    void clearCount();
     void located(const QList<LocatedCover> &covers);
     void loaded(const QList<LoadedCover> &covers);
     void coverDownloaded(const Song &song, const QImage &img, const QString &file);
@@ -266,7 +265,6 @@ private:
     QString getFilename(const Song &s, bool isArtist);
 
 private:
-    int retrieved;
     QSet<QString> currentImageRequests;
     QList<Song> queue;
     QSet<int> cacheSizes;
@@ -276,7 +274,6 @@ private:
     CoverLocator *locator;
     CoverLoader *loader;
     QMutex mutex;
-    QTimer *countResetTimer;
 };
 
 #endif

@@ -866,16 +866,10 @@ bool Settings::podcastAutoDownload()
     return GET_BOOL("podcastAutoDownload", false);
 }
 
-int Settings::maxCoverFindPerIteration()
-{
-    int v=GET_INT("maxCoverFindPerIteration", 5);
-    return RESTRICT(v, 0, 20);
-}
-
 int Settings::maxCoverUpdatePerIteration()
 {
-    int v=GET_INT("maxCoverUpdatePerIteration", 5);
-    return RESTRICT(v, 1, 20);
+    int v=GET_INT("maxCoverUpdatePerIteration", 10);
+    return RESTRICT(v, 1, 50);
 }
 
 int Settings::coverCacheSize()

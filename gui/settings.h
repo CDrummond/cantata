@@ -208,7 +208,6 @@ public:
     QDateTime lastRssUpdate();
     QString podcastDownloadPath();
     bool podcastAutoDownload();
-    int maxCoverFindPerIteration();
     int maxCoverUpdatePerIteration();
     int coverCacheSize();
     QStringList cueFileCodecs();

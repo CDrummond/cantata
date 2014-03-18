@@ -136,6 +136,41 @@ private:
     QList<Song> queue;
 };
 
+struct LoadedCover
+{
+    LoadedCover(const QString &ar=QString(), const QString &al=QString(), int s=0, QPixmap *p=0)
+        : artist(ar), album(al), size(s), pix(p) { }
+    QString artist;
+    QString album;
+    int size;
+    QPixmap *pix;
+};
+
+class CoverLoader : public QObject
+{
+    Q_OBJECT
+public:
+    CoverLoader();
+    ~CoverLoader() { }
+
+    void stop();
+
+Q_SIGNALS:
+    void loaded(const QList<LoadedCover> &covers);
+
+public Q_SLOTS:
+    void load(const QString &ar, const QString &al, int s);
+    void load();
+
+private:
+    void startTimer(int interval);
+
+private:
+    Thread *thread;
+    QTimer *timer;
+    QList<LoadedCover> queue;
+};
+
 class Covers : public QObject
 {
     Q_OBJECT
@@ -180,7 +215,9 @@ public:
     void readConfig();
     void stop();
 
-    QPixmap * getScaledCover(const QString &artist, const QString &album, int size);
+    // If 'fileExists' is passed in, then this will be set to true if the file exists, and the cover will be loaded
+    // in a non-UI thread. If 'fileExists' is not passed in, then cover is loaded in current thread.
+    QPixmap * getScaledCover(const QString &artist, const QString &album, int size, bool *fileExists=0);
     QPixmap * saveScaledCover(const QImage &img, const QString &artist, const QString &album, int size);
     // Get cover image of specified size. If this is not found 0 will be returned, and the cover
     // will be downloaded.
@@ -204,6 +241,8 @@ public:
 Q_SIGNALS:
     void download(const Song &s);
     void locate(const Song &s);
+    void load(const QString &ar, const QString &al, int s);
+    void loaded(const QString &ar, const QString &al, int s);
     void cover(const Song &song, const QImage &img, const QString &file);
     void coverUpdated(const Song &song, const QImage &img, const QString &file);
     void artistImage(const Song &song, const QImage &img, const QString &file);
@@ -212,12 +251,14 @@ Q_SIGNALS:
 private Q_SLOTS:
     void clearCount();
     void located(const QList<LocatedCover> &covers);
+    void loaded(const QList<LoadedCover> &covers);
     void coverDownloaded(const Song &song, const QImage &img, const QString &file);
     void artistImageDownloaded(const Song &song, const QImage &img, const QString &file);
 
 private:
     void tryToLocate(const Song &song);
     void tryToDownload(const Song &song);
+    void loadCover(const QString &artist, const QString &album, int size);
     Image findImage(const Song &song, bool emitResult);
     void clearCache(const Song &song, const QImage &img, bool dummyEntriesOnly);
     void gotAlbumCover(const Song &song, const QImage &img, const QString &fileName, bool emitResult=true);
@@ -233,6 +274,7 @@ private:
     QMap<QString, QString> filenames;
     CoverDownloader *downloader;
     CoverLocator *locator;
+    CoverLoader *loader;
     QMutex mutex;
     QTimer *countResetTimer;
 };

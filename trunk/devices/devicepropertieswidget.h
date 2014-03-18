@@ -53,11 +53,11 @@ public:
     };
     DevicePropertiesWidget(QWidget *parent);
     virtual ~DevicePropertiesWidget() { }
-    void update(const QString &path, const DeviceOptions &opts, const QList<DeviceStorage> &storage, int props);
+    void update(const QString &path, const DeviceOptions &opts, const QList<DeviceStorage> &storage, int props, int disabledProps);
     DeviceOptions settings();
     bool isModified() const { return modified; }
     bool isSaveable() const { return saveable; }
-    QString music() const { return musicFolder ? Utils::convertDirFromDisplay(musicFolder->text()) : origMusicFolder; }
+    QString music() const { return musicFolder && musicFolder->isEnabled() ? Utils::convertDirFromDisplay(musicFolder->text()) : origMusicFolder; }
     QString cover() const;
     void showRemoteConnectionNote(bool v) { remoteDeviceNote->setVisible(v); }
 

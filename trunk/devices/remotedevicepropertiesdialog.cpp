@@ -53,7 +53,7 @@ RemoteDevicePropertiesDialog::RemoteDevicePropertiesDialog(QWidget *parent)
     setMainWidget(tab);
 }
 
-void RemoteDevicePropertiesDialog::show(const DeviceOptions &opts, const RemoteFsDevice::Details &det, int props, bool create, bool isConnected)
+void RemoteDevicePropertiesDialog::show(const DeviceOptions &opts, const RemoteFsDevice::Details &det, int props, int disabledProps, bool create, bool isConnected)
 {
     isCreate=create;
     if (isCreate) {
@@ -67,7 +67,7 @@ void RemoteDevicePropertiesDialog::show(const DeviceOptions &opts, const RemoteF
     }
     devProp->setEnabled(!create && isConnected);
     devProp->showRemoteConnectionNote(!isConnected);
-    devProp->update(QString(), opts, QList<DeviceStorage>(), props);
+    devProp->update(QString(), opts, QList<DeviceStorage>(), props, disabledProps);
     remoteProp->update(det, create, isConnected);
     connect(devProp, SIGNAL(updated()), SLOT(enableOkButton()));
     connect(remoteProp, SIGNAL(updated()), SLOT(enableOkButton()));

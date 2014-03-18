@@ -60,6 +60,8 @@
 37. Don't use italic text for grouped view headers.
 38. Save scaled covers as PNG files.
 39. Use Q_GLOBAL_STATIC for Qt4.8, and Qt>=5.1 Qt-only builds.
+40. Show music folder location in device properties dialog when called from
+    copy/delete dialog - just dont allow setting to be changed.
 
 1.3.3
 -----

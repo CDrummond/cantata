@@ -112,7 +112,7 @@ DevicePropertiesWidget::DevicePropertiesWidget(QWidget *parent)
     w->deleteLater(); \
     w=0;
 
-void DevicePropertiesWidget::update(const QString &path, const DeviceOptions &opts, const QList<DeviceStorage> &storage, int props)
+void DevicePropertiesWidget::update(const QString &path, const DeviceOptions &opts, const QList<DeviceStorage> &storage, int props, int disabledProps)
 {
     bool allowCovers=(props&Prop_CoversAll)||(props&Prop_CoversBasic);
     albumCovers->clear();
@@ -150,6 +150,9 @@ void DevicePropertiesWidget::update(const QString &path, const DeviceOptions &op
     if (props&Prop_Folder) {
         musicFolder->setText(Utils::convertDirForDisplay(path));
         connect(musicFolder, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
+        if (disabledProps&Prop_Folder) {
+            musicFolder->setDisabled(true);
+        }
     } else {
         REMOVE(musicFolder);
         REMOVE(musicFolderLabel);
@@ -332,7 +335,7 @@ void DevicePropertiesWidget::albumCoversChanged()
 void DevicePropertiesWidget::checkSaveable()
 {
     DeviceOptions opts=settings();
-    bool checkFolder=musicFolder ? musicFolder->isVisible() : false;
+    bool checkFolder=musicFolder ? musicFolder->isEnabled() : false;
 
     modified=opts!=origOpts;
     if (!modified && checkFolder) {
@@ -359,7 +362,7 @@ void DevicePropertiesWidget::configureFilenameScheme()
 DeviceOptions DevicePropertiesWidget::settings()
 {
     DeviceOptions opts;
-    if (name) {
+    if (name && name->isEnabled()) {
         opts.name=name->text().trimmed();
     }
     if (filenameScheme) {

@@ -37,9 +37,9 @@ DevicePropertiesDialog::DevicePropertiesDialog(QWidget *parent)
     setMainWidget(devProp);
 }
 
-void DevicePropertiesDialog::show(const QString &path, const DeviceOptions &opts, const QList<DeviceStorage> &storage, int props)
+void DevicePropertiesDialog::show(const QString &path, const DeviceOptions &opts, const QList<DeviceStorage> &storage, int props, int disabledProps)
 {
-    devProp->update(path, opts, storage, props);
+    devProp->update(path, opts, storage, props, disabledProps);
     connect(devProp, SIGNAL(updated()), SLOT(enableOkButton()));
     Dialog::show();
     enableButtonOk(false);

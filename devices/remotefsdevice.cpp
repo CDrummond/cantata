@@ -648,7 +648,7 @@ void RemoteFsDevice::configure(QWidget *parent)
     }
     dlg->show(opts, details,
               DevicePropertiesWidget::Prop_All-(DevicePropertiesWidget::Prop_Name+DevicePropertiesWidget::Prop_Folder+DevicePropertiesWidget::Prop_AutoScan),
-              false, isConnected());
+              0, false, isConnected());
 }
 
 bool RemoteFsDevice::canPlaySongs() const

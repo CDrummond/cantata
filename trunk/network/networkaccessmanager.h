@@ -80,7 +80,9 @@ private Q_SLOTS:
 
 private:
     NetworkJob(NetworkAccessManager *p, const QUrl &u);
+    void connectJob();
     void cancelJob();
+    void abortJob();
 
 private:
     int numRedirects;

@@ -844,15 +844,12 @@ void CoverLocator::locate(const Song &s)
 // To improve responsiveness of views, we only process a max of X images per even loop iteration.
 // If more images are asked for, we place these into a list, and get them on the next iteration
 // of the loop. This way things appear smoother.
-static int maxPerLoopIteration=5;
-
-// Max number of 'findImage' per iteration - these are done in GUI thread, so keep small...
-static int maxFindPerLoopIteration=5;
+static int maxCoverUpdatePerIteration=10;
 
 void CoverLocator::locate()
 {
     QList<Song> toDo;
-    for (int i=0; i<maxPerLoopIteration && !queue.isEmpty(); ++i) {
+    for (int i=0; i<maxCoverUpdatePerIteration && !queue.isEmpty(); ++i) {
         toDo.append(queue.takeFirst());
     }
     if (toDo.isEmpty()) {
@@ -906,7 +903,7 @@ void CoverLoader::load(const QString &ar, const QString &al, int s)
 void CoverLoader::load()
 {
     QList<LoadedCover> toDo;
-    for (int i=0; i<maxPerLoopIteration && !queue.isEmpty(); ++i) {
+    for (int i=0; i<maxCoverUpdatePerIteration && !queue.isEmpty(); ++i) {
         toDo.append(queue.takeFirst());
     }
     if (toDo.isEmpty()) {
@@ -929,14 +926,11 @@ void CoverLoader::load()
 }
 
 Covers::Covers()
-    : retrieved(0)
-    , downloader(0)
+    : downloader(0)
     , locator(0)
     , loader(0)
-    , countResetTimer(0)
 {
-    maxPerLoopIteration=Settings::self()->maxCoverUpdatePerIteration();
-    maxFindPerLoopIteration=Settings::self()->maxCoverFindPerIteration();
+    maxCoverUpdatePerIteration=Settings::self()->maxCoverUpdatePerIteration();
     cache.setMaxCost(Settings::self()->coverCacheSize()*1024*1024);
 }
 
@@ -1414,7 +1408,7 @@ Covers::Image Covers::requestImage(const Song &song, bool urgent)
         return Covers::Image();
     }
 
-    if ((0==maxFindPerLoopIteration || retrieved>=maxFindPerLoopIteration) && !urgent) {
+    if (!urgent) {
         currentImageRequests.insert(key);
         tryToLocate(song);
         return Covers::Image();
@@ -1427,25 +1421,7 @@ Covers::Image Covers::requestImage(const Song &song, bool urgent)
         tryToDownload(song);
     }
 
-    if (0!=maxFindPerLoopIteration) {
-        retrieved++;
-        // We only want to read X files per QEventLoop iteratation. The above takes care of this, and any
-        // extra requests are handled via the 'emit locate' However, after the QEventLoop, we want to reset
-        // this count back to 0. To do this, create a QTimer with a timout of 0 seconds. This should fire
-        // immediately after the current QEventLoop event.
-        if (!countResetTimer) {
-            countResetTimer=new QTimer(this);
-            countResetTimer->setSingleShot(true);
-            connect(countResetTimer, SIGNAL(timeout()), SLOT(clearCount()), Qt::QueuedConnection);
-        }
-        countResetTimer->start(0);
-    }
     return fix(img);
-}
-
-void Covers::clearCount()
-{
-    retrieved=0;
 }
 
 void Covers::located(const QList<LocatedCover> &covers)

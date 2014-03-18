@@ -56,6 +56,29 @@ NetworkJob::NetworkJob(QNetworkReply *j)
     , job(j)
 {
     origU=j->url();
+    connectJob();
+    DBUG << (void *)this << (void *)job;
+}
+
+NetworkJob::~NetworkJob()
+{
+    DBUG << (void *)this << (void *)job;
+    cancelJob();
+}
+
+void NetworkJob::cancelAndDelete()
+{
+    DBUG << (void *)this << (void *)job;
+    cancelJob();
+    deleteLater();
+}
+
+void NetworkJob::connectJob()
+{
+    if (!job) {
+        return;
+    }
+
     connect(job, SIGNAL(finished()), this, SLOT(jobFinished()));
     connect(job, SIGNAL(readyRead()), this, SLOT(handleReadyRead()));
     connect(job, SIGNAL(error(QNetworkReply::NetworkError)), this, SIGNAL(error(QNetworkReply::NetworkError)));
@@ -64,19 +87,9 @@ NetworkJob::NetworkJob(QNetworkReply *j)
     connect(job, SIGNAL(destroyed(QObject *)), this, SLOT(jobDestroyed(QObject *)));
 }
 
-NetworkJob::~NetworkJob()
-{
-    cancelJob();
-}
-
-void NetworkJob::cancelAndDelete()
-{
-    cancelJob();
-    deleteLater();
-}
-
 void NetworkJob::cancelJob()
 {
+    DBUG << (void *)this << (void *)job;
     if (job) {
         disconnect(job, SIGNAL(finished()), this, SLOT(jobFinished()));
         disconnect(job, SIGNAL(readyRead()), this, SLOT(handleReadyRead()));
@@ -91,8 +104,17 @@ void NetworkJob::cancelJob()
     }
 }
 
+void NetworkJob::abortJob()
+{
+    DBUG << (void *)this << (void *)job;
+    if (job) {
+        job->abort();
+    }
+}
+
 void NetworkJob::jobFinished()
 {
+    DBUG << (void *)this << (void *)job;
     if (!job) {
         emit finished();
     }
@@ -104,10 +126,11 @@ void NetworkJob::jobFinished()
 
     QVariant redirect = j->header(QNetworkRequest::LocationHeader);
     if (redirect.isValid() && ++numRedirects<constMaxRedirects) {
-        job=static_cast<BASE_NETWORK_ACCESS_MANAGER *>(j->manager())->get(QNetworkRequest(redirect.toUrl()));
-        DBUG << j->url().toString() << "redirected to" << job->url().toString();
-        connect(job, SIGNAL(finished()), this, SLOT(jobFinished()));
-        j->deleteLater();
+        QNetworkReply *newJob=static_cast<BASE_NETWORK_ACCESS_MANAGER *>(j->manager())->get(QNetworkRequest(redirect.toUrl()));
+        DBUG << j->url().toString() << "redirected to" << newJob->url().toString();
+        cancelJob();
+        job=newJob;
+        connectJob();
         return;
     }
 
@@ -117,6 +140,7 @@ void NetworkJob::jobFinished()
 
 void NetworkJob::jobDestroyed(QObject *o)
 {
+    DBUG << (void *)this << (void *)job;
     if (o==job) {
         job=0;
     }
@@ -134,6 +158,7 @@ void NetworkJob::downloadProg(qint64 bytesReceived, qint64 bytesTotal)
 
 void NetworkJob::handleReadyRead()
 {
+    DBUG << (void *)this << (void *)job;
     QNetworkReply *j=dynamic_cast<QNetworkReply *>(sender());
     if (!j || j!=job) {
         return;
@@ -193,7 +218,8 @@ NetworkJob * NetworkAccessManager::get(const QNetworkRequest &req, int timeout)
 
 void NetworkAccessManager::replyFinished()
 {
-    NetworkJob *job = qobject_cast<NetworkJob*>(sender());
+    NetworkJob *job = static_cast<NetworkJob*>(sender());
+    DBUG << (void *)job;
     if (timers.contains(job)) {
         killTimer(timers.take(job));
     }
@@ -202,7 +228,8 @@ void NetworkAccessManager::replyFinished()
 void NetworkAccessManager::timerEvent(QTimerEvent *e)
 {
     NetworkJob *job = timers.key(e->timerId());
+    DBUG << (void *)job;
     if (job) {
-        job->cancelAndDelete();
+        job->abortJob();
     }
 }

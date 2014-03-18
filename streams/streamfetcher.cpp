@@ -238,20 +238,26 @@ void StreamFetcher::cancel()
     row=0;
     data.clear();
     current=QString();
-    if (job) {
-        job->cancelAndDelete();
-        job=0;
-    }
+    cancelJob();
     emit status(QString());
 }
 
 void StreamFetcher::dataReady()
 {
+    NetworkJob *reply=qobject_cast<NetworkJob *>(sender());
+    if (reply!=job) {
+        return;
+    }
+
     data+=job->readAll();
 
     if (data.count()>constMaxData) {
-        job->cancelAndDelete();
-        job=0;
+        NetworkJob *thisJob=job;
+        jobFinished(thisJob);
+        // If jobFinished did not redirect, then we need to ensure job is cancelled.
+        if (thisJob==job) {
+            cancelJob();
+        }
     }
 }
 
@@ -278,6 +284,7 @@ void StreamFetcher::jobFinished(NetworkJob *reply)
                 current=u;
                 DBUG << "semi-redirect" << current;
                 data.clear();
+                cancelJob();
                 job=NetworkAccessManager::self()->get(u, constTimeout);
                 connect(job, SIGNAL(readyRead()), this, SLOT(dataReady()));
                 connect(job, SIGNAL(finished()), this, SLOT(jobFinished()));
@@ -296,4 +303,14 @@ void StreamFetcher::jobFinished(NetworkJob *reply)
         }
     }
     reply->deleteLater();
+}
+
+void StreamFetcher::cancelJob()
+{
+    if (job) {
+        disconnect(job, SIGNAL(readyRead()), this, SLOT(dataReady()));
+        disconnect(job, SIGNAL(finished()), this, SLOT(jobFinished()));
+        job->cancelAndDelete();
+        job=0;
+    }
 }

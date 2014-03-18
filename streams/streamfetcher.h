@@ -59,6 +59,7 @@ private Q_SLOTS:
 
 private:
     void jobFinished(NetworkJob *reply);
+    void cancelJob();
 
 private:
     NetworkJob *job;

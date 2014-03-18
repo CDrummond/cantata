@@ -38,7 +38,7 @@ class RemoteDevicePropertiesDialog : public Dialog
 
 public:
     RemoteDevicePropertiesDialog(QWidget *parent);
-    void show(const DeviceOptions &opts, const RemoteFsDevice::Details &det, int props, bool creating=false, bool isConnected=false);
+    void show(const DeviceOptions &opts, const RemoteFsDevice::Details &det, int props, int disabledProps=0, bool creating=false, bool isConnected=false);
 
 Q_SIGNALS:
     void updatedSettings(const DeviceOptions &opts, const RemoteFsDevice::Details &det);

@@ -230,9 +230,8 @@ void UmsDevice::configure(QWidget *parent)
     if (o.name.isEmpty()) {
         o.name=data();
     }
-    dlg->show(audioFolder, o,
-              qobject_cast<ActionDialog *>(parent) ? (DevicePropertiesWidget::Prop_All-DevicePropertiesWidget::Prop_Folder)
-                                                   : DevicePropertiesWidget::Prop_All);
+    dlg->show(audioFolder, o, DevicePropertiesWidget::Prop_All,
+              qobject_cast<ActionDialog *>(parent) ? DevicePropertiesWidget::Prop_Folder : 0);
 }
 
 void UmsDevice::saveProperties()

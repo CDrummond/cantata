@@ -36,8 +36,8 @@ class DevicePropertiesDialog : public Dialog
 
 public:
     DevicePropertiesDialog(QWidget *parent);
-    void show(const QString &path, const DeviceOptions &opts, int props) { show(path, opts, QList<DeviceStorage>(), props); }
-    void show(const QString &path, const DeviceOptions &opts, const QList<DeviceStorage> &storage, int props);
+    void show(const QString &path, const DeviceOptions &opts, int props, int disabledProps=0) { show(path, opts, QList<DeviceStorage>(), props, disabledProps); }
+    void show(const QString &path, const DeviceOptions &opts, const QList<DeviceStorage> &storage, int props, int disabledProps=0);
 
 Q_SIGNALS:
     void updatedSettings(const QString &path, const DeviceOptions &opts);

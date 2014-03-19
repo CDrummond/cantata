@@ -101,9 +101,6 @@ struct Song
     void fillEmptyFields();
     void setKey(int location);
     virtual void clear();
-    #ifndef CANTATA_NO_SONG_TIME_FUNCTION
-    static QString formattedTime(quint32 seconds, bool zeroIsUnknown=false);
-    #endif
     QString entryName() const;
     QString artistOrComposer() const;
     QString albumName() const;

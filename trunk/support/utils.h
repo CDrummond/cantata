@@ -94,6 +94,7 @@ namespace Utils
     extern QString formatByteSize(double size);
     #endif
     extern QString formatDuration(const quint32 totalseconds);
+    extern QString formatTime(const quint32 seconds, bool zeroIsUnknown=false);
 
     extern QString cleanPath(const QString &p);
     extern QString configDir(const QString &sub=QString(), bool create=false);

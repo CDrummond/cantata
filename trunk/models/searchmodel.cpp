@@ -169,7 +169,7 @@ QVariant SearchModel::data(const QModelIndex &index, int role) const
             case COL_ALBUM:
                 return song->album.isEmpty() && !song->name.isEmpty() && song->isStream() ? song->name : song->album;
             case COL_LENGTH:
-                return Song::formattedTime(song->time);
+                return Utils::formatTime(song->time);
             case COL_DISC:
                 if (song->disc <= 0) {
                     return QVariant();
@@ -193,7 +193,7 @@ QVariant SearchModel::data(const QModelIndex &index, int role) const
         if (Qt::ToolTipRole==role) {
             text=text.replace("\n", "<br/>");
             if (!song->title.isEmpty()) {
-                text+=QLatin1String("<br/>")+Song::formattedTime(song->time);
+                text+=QLatin1String("<br/>")+Utils::formatTime(song->time);
                 text+=QLatin1String("<br/><small><i>")+song->file+QLatin1String("</i></small>");
             }
         }

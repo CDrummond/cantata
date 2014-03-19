@@ -390,7 +390,7 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
             }
             return song.track;
         case COL_LENGTH:
-            return Song::formattedTime(song.time);
+            return Utils::formatTime(song.time);
         case COL_DISC:
             if (song.disc <= 0) {
                 return QVariant();
@@ -418,7 +418,7 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
             return s.albumArtist()+QLatin1String("<br/>")+
                    s.displayAlbum()+QLatin1String("<br/>")+
                    s.trackAndTitleStr(Song::isVariousArtists(s.albumArtist()))+QLatin1String("<br/>")+
-                   Song::formattedTime(s.time)+QLatin1String("<br/>")+
+                   Utils::formatTime(s.time)+QLatin1String("<br/>")+
                    (s.priority>0 ? i18n("<b>(Priority: %1)</b>", s.priority)+QLatin1String("<br/>") : QString())+
                    QLatin1String("<small><i>")+basicPath(s)+QLatin1String("</i></small>");
         }

@@ -1055,7 +1055,7 @@ void Covers::updateCache(const Song &song, const QImage &img, bool dummyEntriesO
             cache.remove(key);
             if (!img.isNull()) {
                 if (saveScaledCover(img.scaled(s, s, Qt::KeepAspectRatio, Qt::SmoothTransformation), song.albumArtist(), song.album, s)) {
-                    emit loaded(song.albumArtist(), song.album, s);
+                    emit loaded(song, s);
                 }
             }
         }
@@ -1416,7 +1416,7 @@ void Covers::loaded(const QList<LoadedCover> &covers)
         if (!cvr.img.isNull()) {
             cache.insert(cacheKey(cvr.song.albumArtist(), cvr.song.album, cvr.song.size), new QPixmap(QPixmap::fromImage(cvr.img)));
             cacheSizes.insert(cvr.song.size);
-            emit loaded(cvr.song.albumArtist(), cvr.song.album, cvr.song.size);
+            emit loaded(cvr.song, cvr.song.size);
         } else { // Failed to load a scaled cover, try locating non-scaled cover...
             tryToLocate(cvr.song);
         }
@@ -1462,7 +1462,7 @@ void Covers::gotAlbumCover(const Song &song, const QImage &img, const QString &f
         if (song.isSpecificSizeRequest()) {
             if (!img.isNull() && saveScaledCover(img.scaled(song.size, song.size, Qt::KeepAspectRatio, Qt::SmoothTransformation), song.albumArtist(), song.album, song.size)) {
                 DBUG << "loaded cover" << song.file << song.artist << song.albumartist << song.album << img.width() << img.height() << fileName << song.size;
-                emit loaded(song.albumArtist(), song.album, song.size);
+                emit loaded(song, song.size);
             }
         } else {
             DBUG << "emit cover" << song.file << song.artist << song.albumartist << song.album << img.width() << img.height() << fileName;
@@ -1484,7 +1484,7 @@ void Covers::gotArtistImage(const Song &song, const QImage &img, const QString &
         if (song.isSpecificSizeRequest()) {
             if (!img.isNull() && saveScaledCover(img.scaled(song.size, song.size, Qt::KeepAspectRatio, Qt::SmoothTransformation), song.albumArtist(), QString(), song.size)) {
                 DBUG << "loaded artistImage" << song.file << song.artist << song.albumartist << song.album << img.width() << img.height() << fileName << song.size;
-                emit loaded(song.albumArtist(), QString(), song.size);
+                emit loaded(song, song.size);
             }
         } else {
             DBUG << "emit artistImage" << song.file << song.artist << song.albumartist << song.album << img.width() << img.height() << fileName;

@@ -138,10 +138,10 @@ private:
 
 struct LoadedCover
 {
-    LoadedCover(const Song &sng=Song(), QPixmap *p=0)
-        : song(sng), pix(p) { }
+    LoadedCover(const Song &sng=Song(), const QImage &i=QImage())
+        : song(sng), img(i) { }
     Song song;
-    QPixmap *pix;
+    QImage img;
 };
 
 class CoverLoader : public QObject

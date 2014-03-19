@@ -22,7 +22,7 @@ else (ENABLE_KDE_SUPPORT)
     endif (WIN32)
 endif (ENABLE_KDE_SUPPORT)
 
-add_definitions(-DCANTATA_NO_SONG_TIME_FUNCTION -DCANTATA_TAG_SERVER)
+add_definitions(-DCANTATA_TAG_SERVER)
 target_link_libraries(cantata-tags ${TAGLIB_LIBRARIES} ${QTGUILIBS} ${QTCORELIBS} ${QTNETWORKLIBS})
 if (TAGLIB-EXTRAS_FOUND)
     target_link_libraries(cantata-tags ${TAGLIB-EXTRAS_LIBRARIES})

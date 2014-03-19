@@ -85,7 +85,6 @@ public:
         quint32 totalTime();
         void updateStats();
         QPixmap *cover();
-        QPixmap *setCover(const QImage &img);
         bool isSingleTracks() const { return Song::SingleTracks==type; }
         const SongItem *getCueFile() const;
         QString albumDisplay() const { return Song::displayAlbum(album, year); }
@@ -95,10 +94,10 @@ public:
         QList<SongItem *> songs;
         QSet<QString> genres;
         bool updated;
-        bool coverRequested;
         Song::Type type;
         quint32 numTracks;
         quint32 time;
+        Song coverSong;
     };
 
     static AlbumsModel * self();
@@ -126,7 +125,6 @@ Q_SIGNALS:
     void updated();
 
 public Q_SLOTS:
-    void setCover(const Song &song, const QImage &img, const QString &file, bool update=false);
     void updateCover(const Song &song, const QImage &img, const QString &file);
     void coverLoaded(const QString &ar, const QString &al, int s);
     void update(const MusicLibraryItemRoot *root);

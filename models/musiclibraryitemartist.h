@@ -59,9 +59,6 @@ public:
     static void clearDefaultCover();
     bool setCover(const QImage &img, bool update=false) const;
     const QPixmap & cover() const;
-    bool hasRealCover() const { return !m_coverRequested; }
-    const QString & imageUrl() const { return m_imageUrl; }
-    void setImageUrl(const QString &u) { m_imageUrl=u; }
     // 'data' could be 'Composer' if we are set to use that, but need to save real artist...
     const QString & actualArtist() const { return m_actualArtist; }
 
@@ -74,7 +71,6 @@ private:
     QString m_nonTheArtist;
     QString m_actualArtist;
     QHash<QString, int> m_indexes;
-    QString m_imageUrl;
 };
 
 #endif

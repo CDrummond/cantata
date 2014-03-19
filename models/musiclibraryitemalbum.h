@@ -67,7 +67,6 @@ public:
     QString displayData(bool full=false) const;
     bool setCover(const QImage &img, bool update=false) const;
     const QPixmap & cover() const;
-    bool hasRealCover() const { return !m_coverRequested; }
     quint32 year() const { return m_year; }
     quint32 totalTime();
     quint32 trackCount();

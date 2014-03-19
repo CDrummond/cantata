@@ -238,7 +238,7 @@ Q_SIGNALS:
     void download(const Song &s);
     void locate(const Song &s);
     void load(const Song &song);
-    void loaded(const QString &ar, const QString &al, int s);
+    void loaded(const Song &song, int s);
     void cover(const Song &song, const QImage &img, const QString &file);
     void coverUpdated(const Song &song, const QImage &img, const QString &file);
     void artistImage(const Song &song, const QImage &img, const QString &file);

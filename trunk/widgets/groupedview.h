@@ -87,7 +87,7 @@ public:
 
 public Q_SLOTS:
     void updateRows(const QModelIndex &parent);
-    void coverLoaded(const QString &albumArtist, const QString &album, int size);
+    void coverLoaded(const Song &song, int size);
 
 private Q_SLOTS:
     void itemClicked(const QModelIndex &index);

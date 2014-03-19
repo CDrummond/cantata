@@ -478,10 +478,10 @@ void GroupedView::setModel(QAbstractItemModel *model)
         if (startClosed) {
             updateCollectionRows();
         }
-        connect(Covers::self(), SIGNAL(loaded(QString,QString,int)), this, SLOT(coverLoaded(QString,QString,int)));
+        connect(Covers::self(), SIGNAL(loaded(Song,int)), this, SLOT(coverLoaded(Song,int)));
     } else {
         controlledAlbums.clear();
-        disconnect(Covers::self(), SIGNAL(loaded(QString,QString,int)), this, SLOT(coverLoaded(QString,QString,int)));
+        disconnect(Covers::self(), SIGNAL(loaded(Song,int)), this, SLOT(coverLoaded(Song,int)));
     }
 }
 
@@ -705,13 +705,15 @@ void GroupedView::dropEvent(QDropEvent *event)
     model()->setData(parent, 0, Role_DropAdjust);
 }
 
-void GroupedView::coverLoaded(const QString &albumArtist, const QString &album, int size)
+void GroupedView::coverLoaded(const Song &song, int size)
 {
-    if (filterActive || !isVisible() || size!=constCoverSize || album.isEmpty()) {
+    if (filterActive || !isVisible() || size!=constCoverSize || song.isArtistImageRequest()) {
         return;
     }
     quint32 count=model()->rowCount();
     quint16 lastKey=Song::constNullKey;
+    QString albumArtist=song.albumArtist();
+    QString album=song.album;
 
     for (quint32 i=0; i<count; ++i) {
         QModelIndex index=model()->index(i, 0);

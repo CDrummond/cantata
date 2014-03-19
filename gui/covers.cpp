@@ -1415,7 +1415,7 @@ void Covers::loaded(const QList<LoadedCover> &covers)
             cache.insert(cacheKey(cvr.song.albumArtist(), cvr.song.album, cvr.song.size), cvr.pix);
             cacheSizes.insert(cvr.song.size);
             emit loaded(cvr.song.albumArtist(), cvr.song.album, cvr.song.size);
-        } else { // Failed to load a scaked cover, try locating non-scaled cover...
+        } else { // Failed to load a scaled cover, try locating non-scaled cover...
             tryToLocate(cvr.song);
         }
     }

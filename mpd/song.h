@@ -129,6 +129,11 @@ struct Song
     QString describe(bool withMarkup=false, bool withYear=true) const;
 //    QString basicDescription() const;
 
+    //
+    // The following sections contain various 'hacks' - where fields of Song are abused for other
+    // purposes. This is to keep the overall size of Song lower, as its used all over the place...
+    //
+
     // We pass 'Song' around to cover requester. When we want the artist image, and not album image,
     // then we blank certain fields to indicate this!
     void setArtistImageRequest() {
@@ -138,16 +143,12 @@ struct Song
     }
     bool isArtistImageRequest() const { return album.isEmpty() && artist.isEmpty() && !albumartist.isEmpty() && 0==size && 0==track; }
 
+    // In Covers, the following is used to indicate that a specfic size is requested...
     void setSpecificSizeRequest(int sz) {
         size=track=id=sz;
-        disc=0xFA;
+        time=0xFFFF;
     }
-    bool isSpecificSizeRequest() const { return size>4 && size<1024 && 0xFA==disc && track==size && id==size; }
-
-    //
-    // The following sections contain various 'hacks' - where fields of Song are abused for other
-    // purposes. This is to kee the overall size of Song lower, as its used all over the place...
-    //
+    bool isSpecificSizeRequest() const { return size>4 && size<1024 && track==size && id==size && 0xFFFF==time; }
 
     // TagEditor...
     const QString comment() const { return name; }

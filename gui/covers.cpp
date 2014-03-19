@@ -1043,15 +1043,9 @@ QPixmap * Covers::get(const Song &song, int size)
             pix=saveScaledCover(img.scaled(size, size, Qt::KeepAspectRatio, Qt::SmoothTransformation), song.albumArtist(), song.album, size);
         }
 
-        if (!pix) {
+        if (!pix && Song::OnlineSvrTrack!=song.type) {
             // Attempt to download cover...
-            if (Song::OnlineSvrTrack!=song.type) {
-                tryToDownload(song);
-            }
-            // Create a dummy pixmap so that we dont keep on stating files that do not exist!
-            pix=new QPixmap(1, 1);
-            cache.insert(cacheKey(song, size), pix, 4);
-            cacheSizes.insert(size);
+            tryToDownload(song);
         }
     }
 

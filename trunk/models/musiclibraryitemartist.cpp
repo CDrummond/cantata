@@ -173,7 +173,7 @@ const QPixmap & MusicLibraryItemArtist::cover() const
         if (theDefaultIcon) {
             delete theDefaultIcon;
         }
-        theDefaultIcon = new QPixmap(Icons::self()->albumIcon.pixmap(cSize, cSize)
+        theDefaultIcon = new QPixmap(Icons::self()->artistIcon.pixmap(cSize, cSize)
                                      .scaled(QSize(cSize, cSize), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
     }
     return *theDefaultIcon;

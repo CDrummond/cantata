@@ -126,7 +126,7 @@ Q_SIGNALS:
 
 public Q_SLOTS:
     void updateCover(const Song &song, const QImage &img, const QString &file);
-    void coverLoaded(const QString &ar, const QString &al, int s);
+    void coverLoaded(const Song &song, int s);
     void update(const MusicLibraryItemRoot *root);
 
 private:

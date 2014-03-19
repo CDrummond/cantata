@@ -141,7 +141,7 @@ void MPDUser::setMusicFolder(const QString &folder)
     QStringList lines;
     if (cfgFile.open(QIODevice::ReadOnly|QIODevice::Text)) {
         while (!cfgFile.atEnd()) {
-            QString line = cfgFile.readLine();
+            QString line = QString::fromUtf8(cfgFile.readLine());
             if (line.startsWith(constMusicFolderKey)) {
                 lines.append(constMusicFolderKey+" \""+folder+"\"\n");
             } else {
@@ -203,7 +203,7 @@ void MPDUser::cleanup()
                                            << QLatin1String("state_file") << QLatin1String("sticker_file");
         QStringList dirKeys=QStringList() << constPlaylistsKey;
         while (!cfgFile.atEnd()) {
-            QString line = cfgFile.readLine();
+            QString line = QString::fromUtf8(cfgFile.readLine());
             foreach (const QString &key, fileKeys) {
                 if (line.startsWith(key)) {
                     QString file=readValue(line, key);
@@ -307,7 +307,7 @@ void MPDUser::init(bool create)
             QFile cfgFile(cfgName);
             if (cfgFile.open(QIODevice::ReadOnly|QIODevice::Text)) {
                 while (!cfgFile.atEnd() && (det.dir.isEmpty() || det.hostname.isEmpty() || pidFileName.isEmpty())) {
-                    QString line = cfgFile.readLine();
+                    QString line = QString::fromUtf8(cfgFile.readLine());
                     if (det.dir.isEmpty()) {
                         det.dir=Utils::fixPath(readValue(line, constMusicFolderKey));
                     }

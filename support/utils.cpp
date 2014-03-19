@@ -607,6 +607,24 @@ QString Utils::formatDuration(const quint32 totalseconds)
     #endif
 }
 
+QString Utils::formatTime(const quint32 seconds, bool zeroIsUnknown)
+{
+    if (0==seconds && zeroIsUnknown) {
+        return i18n("Unknown");
+    }
+
+    static const quint32 constHour=60*60;
+    if (seconds>constHour) {
+        return Utils::formatDuration(seconds);
+    }
+
+    QString result(QString::number(floor(seconds / 60.0))+QChar(':'));
+    if (seconds % 60 < 10) {
+        result += "0";
+    }
+    return result+QString::number(seconds % 60);
+}
+
 QString Utils::cleanPath(const QString &p)
 {
     QString path(p);

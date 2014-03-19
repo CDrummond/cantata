@@ -290,7 +290,7 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
                         pl->loaded=true;
                         emit playlistInfo(pl->name);
                     }
-                    return pl->loaded && !pl->isSmartPlaylist ? Song::formattedTime(pl->totalTime()) : QVariant();
+                    return pl->loaded && !pl->isSmartPlaylist ? Utils::formatTime(pl->totalTime()) : QVariant();
                 case COL_YEAR:
                 case COL_GENRE:
                     return QVariant();
@@ -308,9 +308,9 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
                 ? pl->visibleName()
                 : pl->visibleName()+"\n"+
                     #ifdef ENABLE_KDE_SUPPORT
-                    i18np("1 Track (%2)", "%1 Tracks (%2)", pl->songs.count(), Song::formattedTime(pl->totalTime()));
+                    i18np("1 Track (%2)", "%1 Tracks (%2)", pl->songs.count(), Utils::formatTime(pl->totalTime()));
                     #else
-                    QTP_TRACKS_DURATION_STR(pl->songs.count(), Song::formattedTime(pl->totalTime()));
+                    QTP_TRACKS_DURATION_STR(pl->songs.count(), Utils::formatTime(pl->totalTime()));
                     #endif
         case Qt::DecorationRole:
             return multiCol ? QVariant() : (pl->isSmartPlaylist ? Icons::self()->dynamicRuleIcon : Icons::self()->playlistIcon);
@@ -323,9 +323,9 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
                 return i18n("Smart Playlist");
             }
             #ifdef ENABLE_KDE_SUPPORT
-            return i18np("1 Track (%2)", "%1 Tracks (%2)", pl->songs.count(), Song::formattedTime(pl->totalTime()));
+            return i18np("1 Track (%2)", "%1 Tracks (%2)", pl->songs.count(), Utils::formatTime(pl->totalTime()));
             #else
-            return QTP_TRACKS_DURATION_STR(pl->songs.count(), Song::formattedTime(pl->totalTime()));
+            return QTP_TRACKS_DURATION_STR(pl->songs.count(), Utils::formatTime(pl->totalTime()));
             #endif
         default:
             return ActionModel::data(index, role);
@@ -398,7 +398,7 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
                 case COL_ALBUM:
                     return s->album.isEmpty() && !s->name.isEmpty() && s->isStream() ? s->name : s->album;
                 case COL_LENGTH:
-                    return Song::formattedTime(s->time);
+                    return Utils::formatTime(s->time);
                 case COL_YEAR:
                     if (s->year <= 0) {
                         return QVariant();
@@ -416,7 +416,7 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
             if (Qt::ToolTipRole==role) {
                 text=text.replace("\n", "<br/>");
                 if (!s->title.isEmpty()) {
-                    text+=QLatin1String("<br/>")+Song::formattedTime(s->time);
+                    text+=QLatin1String("<br/>")+Utils::formatTime(s->time);
                     text+=QLatin1String("<br/><small><i>")+s->file+QLatin1String("</i></small>");
                 }
             }

@@ -138,6 +138,12 @@ struct Song
     }
     bool isArtistImageRequest() const { return album.isEmpty() && artist.isEmpty() && !albumartist.isEmpty() && 0==size && 0==track; }
 
+    void setSpecificSizeRequest(int sz) {
+        size=track=id=sz;
+        disc=0xFA;
+    }
+    bool isSpecificSizeRequest() const { return size>4 && size<1024 && 0xFA==disc && track==size && id==size; }
+
     //
     // The following sections contain various 'hacks' - where fields of Song are abused for other
     // purposes. This is to kee the overall size of Song lower, as its used all over the place...

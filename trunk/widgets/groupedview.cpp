@@ -478,10 +478,10 @@ void GroupedView::setModel(QAbstractItemModel *model)
         if (startClosed) {
             updateCollectionRows();
         }
-        connect(Covers::self(), SIGNAL(coverRetrieved(const Song &)), this, SLOT(coverRetrieved(const Song &)));
+        connect(Covers::self(), SIGNAL(loaded(QString,QString,int)), this, SLOT(coverLoaded(QString,QString,int)));
     } else {
         controlledAlbums.clear();
-        disconnect(Covers::self(), SIGNAL(coverRetrieved(const Song &)), this, SLOT(coverRetrieved(const Song &)));
+        disconnect(Covers::self(), SIGNAL(loaded(QString,QString,int)), this, SLOT(coverLoaded(QString,QString,int)));
     }
 }
 
@@ -705,12 +705,11 @@ void GroupedView::dropEvent(QDropEvent *event)
     model()->setData(parent, 0, Role_DropAdjust);
 }
 
-void GroupedView::coverRetrieved(const Song &s)
+void GroupedView::coverLoaded(const QString &albumArtist, const QString &album, int size)
 {
-    if (filterActive || !isVisible()) {
+    if (filterActive || !isVisible() || size!=constCoverSize || album.isEmpty()) {
         return;
     }
-
     quint32 count=model()->rowCount();
     quint16 lastKey=Song::constNullKey;
 
@@ -720,17 +719,18 @@ void GroupedView::coverRetrieved(const Song &s)
             continue;
         }
         if (isMultiLevel && model()->hasChildren(index)) {
+            lastKey=Song::constNullKey;
             quint32 childCount=model()->rowCount(index);
             for (quint32 c=0; c<childCount; ++c) {
-                QModelIndex child=model()->index(i, 0, index);
+                QModelIndex child=model()->index(c, 0, index);
                 if (!child.isValid()) {
                     continue;
                 }
                 quint16 key=child.data(GroupedView::Role_Key).toUInt();
 
-                if (key!=lastKey && !isRowHidden(i, QModelIndex())) {
+                if (key!=lastKey && !isRowHidden(c, index)) {
                     Song song=child.data(GroupedView::Role_Song).value<Song>();
-                    if (song.albumArtist()==s.albumArtist() && song.album==s.album) {
+                    if (song.albumArtist()==albumArtist && song.album==album) {
                         dataChanged(child, child);
                     }
                 }
@@ -741,7 +741,7 @@ void GroupedView::coverRetrieved(const Song &s)
 
             if (key!=lastKey && !isRowHidden(i, QModelIndex())) {
                 Song song=index.data(GroupedView::Role_Song).value<Song>();
-                if (song.albumArtist()==s.albumArtist() && song.album==s.album) {
+                if (song.albumArtist()==albumArtist && song.album==album) {
                     dataChanged(index, index);
                 }
             }

@@ -894,9 +894,9 @@ void CoverLoader::startTimer(int interval)
     timer->start(interval);
 }
 
-void CoverLoader::load(const QString &ar, const QString &al, int s)
+void CoverLoader::load(const Song &song)
 {
-    queue.append(LoadedCover(ar, al, s));
+    queue.append(LoadedCover(song));
     startTimer(0);
 }
 
@@ -911,9 +911,8 @@ void CoverLoader::load()
     }
     QList<LoadedCover> covers;
     foreach (const LoadedCover &s, toDo) {
-        DBUG << s.artist << s.album << s.size;
-        QPixmap *pix=loadScaledCover(s.artist, s.album, s.size);
-        covers.append(LoadedCover(s.artist, s.album, s.size, pix));
+        DBUG << s.song.artist << s.song.album << s.song.size;
+        covers.append(LoadedCover(s.song, loadScaledCover(s.song.artist, s.song.album, s.song.size)));
     }
     if (!covers.isEmpty()) {
         DBUG << "loaded" << covers.count();
@@ -964,7 +963,9 @@ void Covers::stop()
     #endif
 }
 
-QPixmap * Covers::getScaledCover(const QString &artist, const QString &album, int size, bool *fileExists)
+static inline Song setSizeRequest(Song s, int size) { s.setSpecificSizeRequest(size); return s; }
+
+QPixmap * Covers::getScaledCover(const QString &artist, const QString &album, int size)
 {
     if (size<4) {
         return 0;
@@ -973,25 +974,13 @@ QPixmap * Covers::getScaledCover(const QString &artist, const QString &album, in
     QString key=cacheKey(artist, album, size);
     QPixmap *pix(cache.object(key));
     if (!pix && cacheScaledCovers) {
-        if (!fileExists) {
-            // Caller doed not request to know if file exists, so we need to try to load now
-            pix=loadScaledCover(artist, album, size);
-            if (pix) {
-                cache.insert(key, pix, pix->width()*pix->height()*(pix->depth()/8));
-            }
+        pix=loadScaledCover(artist, album, size);
+        if (pix) {
+            cache.insert(key, pix, pix->width()*pix->height()*(pix->depth()/8));
         } else {
-            // If file exists, inform caller, and load in non GUI thread
-            QString fileName=getScaledCoverName(artist, album, size, false);
-            *fileExists=QFile::exists(fileName);
-            if (*fileExists) {
-                loadCover(artist, album, size);
-            }
-        }
-
-        if (!pix) {
             // Create a dummy pixmap so that we dont keep on stating files that do not exist!
             pix=new QPixmap(1, 1);
-            cache.insert(key, pix, 4);
+            cache.insert(key, pix, 1);
         }
         cacheSizes.insert(size);
     }
@@ -1021,32 +1010,20 @@ QPixmap * Covers::get(const Song &song, int size)
         return 0;
     }
 
-    QPixmap *pix=getScaledCover(song.albumArtist(), song.album, size);
+    QString key=cacheKey(song, size);
+    QPixmap *pix(cache.object(key));
 
     if (!pix) {
-        QImage img;
-        #ifdef ENABLE_ONLINE_SERVICES
-        if (song.isFromOnlineService()) {
-            if (SoundCloudService::constName==song.onlineService()) {
-                img=QImage(SoundCloudService::iconPath());
-            } else if (PodcastService::constName==song.onlineService()) {
-                img=QImage(PodcastService::iconPath());
-            }
-        }
-        #endif
-
-        if (img.isNull()) {
-            img=findImage(song, false).img;
+        if (cacheScaledCovers) {
+            tryToLoad(setSizeRequest(song, size));
+        } else {
+            tryToLocate(setSizeRequest(song, size));
         }
 
-        if (!img.isNull()) {
-            pix=saveScaledCover(img.scaled(size, size, Qt::KeepAspectRatio, Qt::SmoothTransformation), song.albumArtist(), song.album, size);
-        }
-
-        if (!pix && Song::OnlineSvrTrack!=song.type) {
-            // Attempt to download cover...
-            tryToDownload(song);
-        }
+        // Create a dummy pixmap so that we dont keep on locating/loading/downloading files that do not exist!
+        pix=new QPixmap(1, 1);
+        cache.insert(key, pix, 1);
+        cacheSizes.insert(size);
     }
 
     return pix && pix->width()>1 ? pix : 0;
@@ -1055,7 +1032,7 @@ QPixmap * Covers::get(const Song &song, int size)
 void Covers::coverDownloaded(const Song &song, const QImage &img, const QString &file)
 {
     if (!img.isNull()) {
-        clearCache(song, img, true);
+        updateCache(song, img, true);
     }
     gotAlbumCover(song, img, file);
 }
@@ -1065,38 +1042,21 @@ void Covers::artistImageDownloaded(const Song &song, const QImage &img, const QS
     gotArtistImage(song, img, file);
 }
 
-// dummyEntriesOnly: If we have downloaded a cover, we can remove the dummy entry - so that
-//                   the next time get() is called, it can read the saved file!
-void Covers::clearCache(const Song &song, const QImage &img, bool dummyEntriesOnly)
+void Covers::updateCache(const Song &song, const QImage &img, bool dummyEntriesOnly)
 {
     clearScaledCache(song);
-    bool hadDummy=false;
-    bool hadEntries=false;
     foreach (int s, cacheSizes) {
         QString key=cacheKey(song, s);
         QPixmap *pix(cache.object(key));
 
         if (pix && (!dummyEntriesOnly || pix->width()<2)) {
-            if (!hadDummy) {
-                hadDummy=pix->width()<2;
-            }
-            hadEntries=true;
             cache.remove(key);
-
             if (!img.isNull()) {
-                QImage scaled=img.scaled(s, s, Qt::KeepAspectRatio, Qt::SmoothTransformation);
-                pix=new QPixmap(QPixmap::fromImage(scaled));
-                cache.insert(key, pix, pix->width()*pix->height()*(pix->depth()/8));
-                saveScaledCover(scaled, song.albumArtist(), song.album, s);
+                if (saveScaledCover(img.scaled(s, s, Qt::KeepAspectRatio, Qt::SmoothTransformation), song.albumArtist(), song.album, s)) {
+                    emit loaded(song.albumArtist(), song.album, s);
+                }
             }
         }
-    }
-
-    if (hadDummy && dummyEntriesOnly) {
-        emit coverRetrieved(song);
-    }
-    if (hadEntries && !dummyEntriesOnly) {
-        emit coverRetrieved(song);
     }
 }
 
@@ -1123,16 +1083,16 @@ void Covers::tryToDownload(const Song &song)
     emit download(song);
 }
 
-void Covers::loadCover(const QString &artist, const QString &album, int size)
+void Covers::tryToLoad(const Song &song)
 {
     if (!loader) {
         qRegisterMetaType<LoadedCover>("LoadedCover");
         qRegisterMetaType<QList<LoadedCover> >("QList<LoadedCover>");
         loader=new CoverLoader();
         connect(loader, SIGNAL(loaded(QList<LoadedCover>)), this, SLOT(loaded(QList<LoadedCover>)), Qt::QueuedConnection);
-        connect(this, SIGNAL(load(QString, QString, int)), loader, SLOT(load(QString, QString, int)), Qt::QueuedConnection);
+        connect(this, SIGNAL(load(Song)), loader, SLOT(load(Song)), Qt::QueuedConnection);
     }
-    emit load(artist, album, size);
+    emit load(song);
 }
 
 Covers::Image Covers::findImage(const Song &song, bool emitResult)
@@ -1152,6 +1112,21 @@ Covers::Image Covers::locateImage(const Song &song)
 {
     DBUG_CLASS("Covers") << song.file << song.artist << song.albumartist << song.album << song.type;
     #ifdef ENABLE_ONLINE_SERVICES
+    if (song.isFromOnlineService()) {
+        Covers::Image img;
+        if (SoundCloudService::constName==song.onlineService()) {
+            img.fileName=SoundCloudService::iconPath();
+        } else if (PodcastService::constName==song.onlineService()) {
+            img.fileName=PodcastService::iconPath();
+        }
+        if (!img.fileName.isEmpty()) {
+            img.img=QImage(img.fileName);
+            if (!img.img.isNull()) {
+                DBUG_CLASS("Covers") << song.onlineService();
+                return img;
+            }
+        }
+    }
     if (Song::OnlineSvrTrack==song.type) {
         return OnlineServicesModel::self()->readImage(song);
     }
@@ -1427,7 +1402,7 @@ void Covers::located(const QList<LocatedCover> &covers)
             } else {
                 gotAlbumCover(cvr.song, cvr.img, cvr.fileName);
             }
-        } else {
+        } else { // Failed to locate a cover, so try to download one...
             tryToDownload(cvr.song);
         }
     }
@@ -1437,15 +1412,18 @@ void Covers::loaded(const QList<LoadedCover> &covers)
 {
     foreach (const LoadedCover &cvr, covers) {
         if (cvr.pix) {
-            cache.insert(cacheKey(cvr.artist, cvr.album, cvr.size), cvr.pix);
-            emit loaded(cvr.artist, cvr.album, cvr.size);
+            cache.insert(cacheKey(cvr.song.albumArtist(), cvr.song.album, cvr.song.size), cvr.pix);
+            cacheSizes.insert(cvr.song.size);
+            emit loaded(cvr.song.albumArtist(), cvr.song.album, cvr.song.size);
+        } else { // Failed to load a scaked cover, try locating non-scaled cover...
+            tryToLocate(cvr.song);
         }
     }
 }
 
 void Covers::emitCoverUpdated(const Song &song, const QImage &img, const QString &file)
 {
-    clearCache(song, img, false);
+    updateCache(song, img, false);
     filenames[song.isArtistImageRequest() ? artistKey(song) : albumKey(song)]=file;
     emit coverUpdated(song, img, file);
 }
@@ -1479,8 +1457,15 @@ void Covers::gotAlbumCover(const Song &song, const QImage &img, const QString &f
         mutex.unlock();
     }
     if (emitResult) {
-        DBUG << "emit cover" << song.file << song.artist << song.albumartist << song.album << img.width() << img.height() << fileName;
-        emit cover(song, img, fileName.startsWith(constCoverInTagPrefix) ? QString() : fileName);
+        if (song.isSpecificSizeRequest()) {
+            if (!img.isNull() && saveScaledCover(img.scaled(song.size, song.size, Qt::KeepAspectRatio, Qt::SmoothTransformation), song.albumArtist(), song.album, song.size)) {
+                DBUG << "loaded cover" << song.file << song.artist << song.albumartist << song.album << img.width() << img.height() << fileName << song.size;
+                emit loaded(song.albumArtist(), song.album, song.size);
+            }
+        } else {
+            DBUG << "emit cover" << song.file << song.artist << song.albumartist << song.album << img.width() << img.height() << fileName;
+            emit cover(song, img, fileName.startsWith(constCoverInTagPrefix) ? QString() : fileName);
+        }
     }
 }
 
@@ -1494,8 +1479,15 @@ void Covers::gotArtistImage(const Song &song, const QImage &img, const QString &
         mutex.unlock();
     }
     if (emitResult) {
-        DBUG << "emit artistImage" << song.file << song.artist << song.albumartist << song.album << img.width() << img.height() << fileName;
-        emit artistImage(song, img, fileName.startsWith(constCoverInTagPrefix) ? QString() : fileName);
+        if (song.isSpecificSizeRequest()) {
+            if (!img.isNull() && saveScaledCover(img.scaled(song.size, song.size, Qt::KeepAspectRatio, Qt::SmoothTransformation), song.albumArtist(), QString(), song.size)) {
+                DBUG << "loaded artistImage" << song.file << song.artist << song.albumartist << song.album << img.width() << img.height() << fileName << song.size;
+                emit loaded(song.albumArtist(), QString(), song.size);
+            }
+        } else {
+            DBUG << "emit artistImage" << song.file << song.artist << song.albumartist << song.album << img.width() << img.height() << fileName;
+            emit artistImage(song, img, fileName.startsWith(constCoverInTagPrefix) ? QString() : fileName);
+        }
     }
 }
 

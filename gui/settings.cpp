@@ -78,7 +78,7 @@ struct MpdDefaults
         if (f.open(QIODevice::ReadOnly|QIODevice::Text)) {
             int details=0;
             while (!f.atEnd()) {
-                QString line = f.readLine().trimmed();
+                QString line = QString::fromUtf8(f.readLine()).trimmed();
                 if (line.startsWith('#')) {
                     continue;
                 } else if (!(details&DT_DIR) && line.startsWith(QLatin1String("music_directory"))) {

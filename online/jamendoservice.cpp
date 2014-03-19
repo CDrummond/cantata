@@ -231,9 +231,9 @@ void JamendoMusicLoader::parseArtist(QXmlStreamReader &xml)
                 artist=library->artist(s, true);
             } else if (artist && QLatin1String("album")==name) {
                 parseAlbum(artist, xml);
-            } else if (artist && QLatin1String("image")==name) {
+            } /*else if (artist && QLatin1String("image")==name) {
                 artist->setImageUrl(xml.readElementText().trimmed());
-            }
+            }*/
         } else if (xml.isEndElement() && QLatin1String("artist")==xml.name()) {
             break;
         }

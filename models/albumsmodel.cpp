@@ -217,9 +217,9 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
                     ? QString()
                     : (al->artist+QLatin1Char('\n')+al->albumDisplay()+QLatin1Char('\n')+
                         #ifdef ENABLE_KDE_SUPPORT
-                        i18np("1 Track (%2)", "%1 Tracks (%2)", al->trackCount(), Song::formattedTime(al->totalTime(), true))
+                        i18np("1 Track (%2)", "%1 Tracks (%2)", al->trackCount(), Utils::formatTime(al->totalTime(), true))
                         #else
-                        QTP_TRACKS_DURATION_STR(al->trackCount(), Song::formattedTime(al->totalTime(), true))
+                        QTP_TRACKS_DURATION_STR(al->trackCount(), Utils::formatTime(al->totalTime(), true))
                         #endif
                       );
         case Qt::DisplayRole:
@@ -254,7 +254,7 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
             return si->parent->artist+QLatin1String("<br/>")+
                    si->parent->album+(year>0 ? (QLatin1String(" (")+QString::number(year)+QChar(')')) : QString())+QLatin1String("<br/>")+
                    data(index, Qt::DisplayRole).toString()+QLatin1String("<br/>")+
-                   Song::formattedTime(si->time, true)+QLatin1String("<br/>")+
+                   Utils::formatTime(si->time, true)+QLatin1String("<br/>")+
                    QLatin1String("<small><i>")+si->filePath()+QLatin1String("</i></small>");
         }
         case Qt::DisplayRole:
@@ -268,7 +268,7 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
                 return si->trackAndTitleStr(Song::isVariousArtists(si->parent->artist) && !Song::isVariousArtists(si->artist));
             }
         case ItemView::Role_SubText:
-            return Song::formattedTime(si->time, true);
+            return Utils::formatTime(si->time, true);
         }
     }
 

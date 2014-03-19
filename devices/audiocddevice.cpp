@@ -358,9 +358,9 @@ void AudioCdDevice::setDetails(const CdAlbum &a)
     }
     setStatusMessage(QString());
     #ifdef ENABLE_KDE_SUPPORT
-    detailsString=i18np("1 Track (%2)", "%1 Tracks (%2)", a.tracks.count(), Song::formattedTime(totalDuration));
+    detailsString=i18np("1 Track (%2)", "%1 Tracks (%2)", a.tracks.count(), Utils::formatTime(totalDuration));
     #else
-    detailsString=QTP_TRACKS_DURATION_STR(a.tracks.count(), Song::formattedTime(totalDuration));
+    detailsString=QTP_TRACKS_DURATION_STR(a.tracks.count(), Utils::formatTime(totalDuration));
     #endif
     emit updating(id(), false);
     if (differentAlbum && !a.isDefault) {

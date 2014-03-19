@@ -221,7 +221,7 @@ public:
         }
         QString title;
         QString track;
-        QString duration=song.time>0 ? Song::formattedTime(song.time) : QString();
+        QString duration=song.time>0 ? Utils::formatTime(song.time) : QString();
         bool stream=!isCollection && song.isStandardStream();
         bool isEmpty=song.title.isEmpty() && song.artist.isEmpty() && !song.file.isEmpty();
         QString trackTitle=isEmpty
@@ -326,7 +326,7 @@ public:
                 r.adjust(constCoverSize+constBorder, 0, 0, 0);
             }
             int td=index.data(GroupedView::Role_AlbumDuration).toUInt();
-            QString totalDuration=td>0 ? Song::formattedTime(td) : QString();
+            QString totalDuration=td>0 ? Utils::formatTime(td) : QString();
             QRect duratioRect(r.x(), r.y(), r.width(), textHeight);
             int totalDurationWidth=fm.width(totalDuration)+8;
             QRect textRect(r.x(), r.y(), r.width()-(rtl ? (4*constBorder) : totalDurationWidth), textHeight);

@@ -118,7 +118,7 @@ public:
 
     virtual void updateTimeDisplay()
     {
-        setText(Song::formattedTime(slider->value()));
+        setText(Utils::formatTime(slider->value()));
     }
 };
 
@@ -176,7 +176,7 @@ public:
     {
         int value=showRemaining ? slider->maximum()-slider->value() : slider->maximum();
         QString prefix=showRemaining && value ? QLatin1String("-") : QString();
-        setText(prefix+Song::formattedTime(value));
+        setText(prefix+Utils::formatTime(value));
     }
 
 private:
@@ -240,7 +240,7 @@ void PosSlider::mouseMoveEvent(QMouseEvent *e)
     if (maximum()!=minimum()) {
         qreal pc = (qreal)e->pos().x()/(qreal)width();
         QPoint pos(e->pos().x(), height());
-        QToolTip::showText(mapToGlobal(pos), Song::formattedTime(maximum()*pc), this, rect());
+        QToolTip::showText(mapToGlobal(pos), Utils::formatTime(maximum()*pc), this, rect());
     }
 
     QSlider::mouseMoveEvent(e);

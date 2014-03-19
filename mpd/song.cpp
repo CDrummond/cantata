@@ -381,26 +381,6 @@ void Song::clear()
     type = Standard;
 }
 
-#ifndef CANTATA_NO_SONG_TIME_FUNCTION
-QString Song::formattedTime(quint32 seconds, bool zeroIsUnknown)
-{
-    if (0==seconds && zeroIsUnknown) {
-        return unknownStr;
-    }
-
-    static const quint32 constHour=60*60;
-    if (seconds>constHour) {
-        return Utils::formatDuration(seconds);
-    }
-
-    QString result(QString::number(floor(seconds / 60.0))+QChar(':'));
-    if (seconds % 60 < 10) {
-        result += "0";
-    }
-    return result+QString::number(seconds % 60);
-}
-#endif
-
 QString Song::entryName() const
 {
     if (title.isEmpty()) {

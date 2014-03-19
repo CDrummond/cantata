@@ -157,16 +157,16 @@ QVariant MusicModel::data(const QModelIndex &index, int role) const
             #ifdef ENABLE_ONLINE_SERVICES
             if (MusicLibraryItem::Type_Podcast==item->parentItem()->itemType()) {
                 return parentData(item)+data(index, Qt::DisplayRole).toString()+QLatin1String("<br/>")+
-                       Song::formattedTime(static_cast<MusicLibraryItemSong *>(item)->time(), true)+
+                       Utils::formatTime(static_cast<MusicLibraryItemSong *>(item)->time(), true)+
                        QLatin1String("<br/><small><i>")+static_cast<MusicLibraryItemPodcastEpisode *>(item)->published()+QLatin1String("</i></small>");
             }
             if (dynamic_cast<const OnlineService *>(root(item))) {
                 return parentData(item)+data(index, Qt::DisplayRole).toString()+QLatin1String("<br/>")+
-                       Song::formattedTime(static_cast<MusicLibraryItemSong *>(item)->time(), true);
+                       Utils::formatTime(static_cast<MusicLibraryItemSong *>(item)->time(), true);
             }
             #endif
             return parentData(item)+data(index, Qt::DisplayRole).toString()+QLatin1String("<br/>")+
-                   Song::formattedTime(static_cast<MusicLibraryItemSong *>(item)->time(), true)+
+                   Utils::formatTime(static_cast<MusicLibraryItemSong *>(item)->time(), true)+
                    QLatin1String("<br/><small><i>")+static_cast<MusicLibraryItemSong *>(item)->song().filePath()+QLatin1String("</i></small>");
         }
         return parentData(item)+
@@ -213,14 +213,14 @@ QVariant MusicModel::data(const QModelIndex &index, int role) const
             return QTP_EPISODES_STR(item->childCount());
             #endif
         case MusicLibraryItem::Type_Song:
-            return Song::formattedTime(static_cast<MusicLibraryItemSong *>(item)->time(), true);
+            return Utils::formatTime(static_cast<MusicLibraryItemSong *>(item)->time(), true);
         case MusicLibraryItem::Type_Album:
             #ifdef ENABLE_KDE_SUPPORT
             return i18np("1 Track (%2)", "%1 Tracks (%2)", static_cast<MusicLibraryItemAlbum *>(item)->trackCount(),
-                                                           Song::formattedTime(static_cast<MusicLibraryItemAlbum *>(item)->totalTime()));
+                                                           Utils::formatTime(static_cast<MusicLibraryItemAlbum *>(item)->totalTime()));
             #else
             return QTP_TRACKS_DURATION_STR(static_cast<MusicLibraryItemAlbum *>(item)->trackCount(),
-                                          Song::formattedTime(static_cast<MusicLibraryItemAlbum *>(item)->totalTime()));
+                                          Utils::formatTime(static_cast<MusicLibraryItemAlbum *>(item)->totalTime()));
             #endif
         default: return QVariant();
         }

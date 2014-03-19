@@ -1583,7 +1583,7 @@ QList<StreamsModel::Item *> StreamsModel::parseListenLiveResponse(QIODevice *dev
         ListenLiveStationEntry entry;
 
         while (!dev->atEnd()) {
-            QString line=dev->readLine().trimmed().replace("> <", "><").replace("<td><b><a href", "<td><a href")
+            QString line=QString::fromUtf8(dev->readLine()).trimmed().replace("> <", "><").replace("<td><b><a href", "<td><a href")
                                                   .replace("</b></a></b>", "</b></a>").replace("<br />", "<br/>")
                                                   .replace("</a> ,", "</a>,");
             if ("<tr>"==line) {

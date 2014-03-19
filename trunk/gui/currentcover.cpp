@@ -48,7 +48,7 @@ static void themes(const QString &theme, QStringList &iconThemes)
         QFile f(index);
         if (f.open(QIODevice::ReadOnly|QIODevice::Text)) {
             while (!f.atEnd()) {
-                QString line=f.readLine().trimmed().simplified();
+                QString line=QString::fromUtf8(f.readLine()).trimmed().simplified();
                 if (line.startsWith(key)) {
                     QStringList inherited=line.mid(key.length()).split(",", QString::SkipEmptyParts);
                     foreach (const QString &i, inherited) {

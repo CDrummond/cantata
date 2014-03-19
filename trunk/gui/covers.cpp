@@ -50,7 +50,7 @@
 #include <qglobal.h>
 #include <QIcon>
 #include <QImage>
-#include <QPixmap>
+#include <QImage>
 #include <QPainter>
 #include <QFont>
 #include <QXmlStreamReader>
@@ -223,16 +223,15 @@ static void clearScaledCache(const Song &song)
     }
 }
 
-static QPixmap * loadScaledCover(const QString &artist, const QString &album, int size)
+static QImage loadScaledCover(const QString &artist, const QString &album, int size)
 {
-    QPixmap *pix=0;
     QString fileName=getScaledCoverName(artist, album, size, false);
     if (!fileName.isEmpty()) {
         if (QFile::exists(fileName)) {
             QImage img(fileName, "PNG");
             if (!img.isNull() && (img.width()==size || img.height()==size)) {
                 DBUG_CLASS("Covers") << artist << album << size << "scaled cover found" << fileName;
-                pix=new QPixmap(QPixmap::fromImage(img));
+                return img;
             }
         } else { // Remove any previous JPG scaled cover...
             fileName=Utils::changeExtension(fileName, ".jpg");
@@ -241,7 +240,7 @@ static QPixmap * loadScaledCover(const QString &artist, const QString &album, in
             }
         }
     }
-    return pix;
+    return QImage();
 }
 
 bool Covers::isJpg(const QByteArray &data)
@@ -974,11 +973,14 @@ QPixmap * Covers::getScaledCover(const QString &artist, const QString &album, in
     QString key=cacheKey(artist, album, size);
     QPixmap *pix(cache.object(key));
     if (!pix && cacheScaledCovers) {
-        pix=loadScaledCover(artist, album, size);
+        QImage img=loadScaledCover(artist, album, size);
+        if (!img.isNull()) {
+            pix=new QPixmap(QPixmap::fromImage(img));
+        }
         if (pix) {
             cache.insert(key, pix, pix->width()*pix->height()*(pix->depth()/8));
         } else {
-            // Create a dummy pixmap so that we dont keep on stating files that do not exist!
+            // Create a dummy image so that we dont keep on stating files that do not exist!
             pix=new QPixmap(1, 1);
             cache.insert(key, pix, 1);
         }
@@ -1020,7 +1022,7 @@ QPixmap * Covers::get(const Song &song, int size)
             tryToLocate(setSizeRequest(song, size));
         }
 
-        // Create a dummy pixmap so that we dont keep on locating/loading/downloading files that do not exist!
+        // Create a dummy image so that we dont keep on locating/loading/downloading files that do not exist!
         pix=new QPixmap(1, 1);
         cache.insert(key, pix, 1);
         cacheSizes.insert(size);
@@ -1411,8 +1413,8 @@ void Covers::located(const QList<LocatedCover> &covers)
 void Covers::loaded(const QList<LoadedCover> &covers)
 {
     foreach (const LoadedCover &cvr, covers) {
-        if (cvr.pix) {
-            cache.insert(cacheKey(cvr.song.albumArtist(), cvr.song.album, cvr.song.size), cvr.pix);
+        if (!cvr.img.isNull()) {
+            cache.insert(cacheKey(cvr.song.albumArtist(), cvr.song.album, cvr.song.size), new QPixmap(QPixmap::fromImage(cvr.img)));
             cacheSizes.insert(cvr.song.size);
             emit loaded(cvr.song.albumArtist(), cvr.song.album, cvr.song.size);
         } else { // Failed to load a scaled cover, try locating non-scaled cover...

@@ -393,9 +393,6 @@ void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, const QDateTime &date
         const MusicLibraryItemArtist *artist = static_cast<const MusicLibraryItemArtist *>(a);
         writer.writeStartElement(constArtistElement);
         writer.writeAttribute(constNameAttribute, artist->data());
-        if (!artist->imageUrl().isEmpty()) {
-            writer.writeAttribute(constImageAttribute, artist->imageUrl());
-        }
         if (!artist->actualArtist().isEmpty()) {
             writer.writeAttribute(constActualAttribute, artist->actualArtist());
         }
@@ -560,10 +557,6 @@ quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime 
                     song.composer=attributes.value(constNameAttribute).toString();
                 }
                 artistItem = createArtist(song);
-                QString img = attributes.value(constImageAttribute).toString();
-                if (!img.isEmpty()) {
-                    artistItem->setImageUrl(img);
-                }
             } else if (constAlbumElement==element) {
                 song.album=attributes.value(constNameAttribute).toString();
                 song.year=attributes.value(constYearAttribute).toString().toUInt();

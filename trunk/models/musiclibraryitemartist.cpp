@@ -139,25 +139,24 @@ const QPixmap & MusicLibraryItemArtist::cover() const
         }
         MusicLibraryItemRoot *root=parentItem() && MusicLibraryItem::Type_Root==parentItem()->itemType()
                 ? static_cast<MusicLibraryItemRoot *>(parentItem()) : 0;
-        // NO ARTIST IMAGES FOR DEVICES!
-        //#ifdef ENABLE_DEVICES_SUPPORT
-        //if (root && root->isDevice()) {
-        //    // This item is in the devices model, so get cover from device...
-        //    song.id=firstSong->song().id;
-        //    static_cast<Device *>(root)->requestArtistImage(song);
-        //} else
-        //#endif
+
         m_coverRequested=true;
-        if (root && !root->useArtistImages()) {
-            // Not showing artist images in this model, so dont request any!
-        }
-        #ifdef ENABLE_ONLINE_SERVICES
-        else if (root && root->isOnlineService()) {
-            img.img=OnlineServicesModel::self()->requestImage(static_cast<OnlineService *>(parentItem())->id(), data(), QString(), m_imageUrl);
-        }
-        #endif
-        else {
-            img=Covers::self()->requestImage(song);
+        if (root && root->useArtistImages()) {
+//            #ifdef ENABLE_DEVICES_SUPPORT
+//            if (root->isDevice()) {
+//                // This item is in the devices model, so get cover from device...
+//                song.id=firstSong->song().id;
+//                static_cast<Device *>(root)->requestArtistImage(song);
+//            } else
+//            #endif
+//            #ifdef ENABLE_ONLINE_SERVICES
+//            if (root->isOnlineService()) {
+//                img.img=OnlineServicesModel::self()->requestImage(static_cast<OnlineService *>(parentItem())->id(), data(), QString(), m_imageUrl);
+//            } else
+//            #endif
+            {
+                img=Covers::self()->requestImage(song);
+            }
         }
 
         if (!img.img.isNull()) {

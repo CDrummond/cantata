@@ -434,7 +434,7 @@ void AlbumsModel::update(const MusicLibraryItemRoot *root)
     }
 }
 
-void AlbumsModel::setCover(const Song &song, const QImage &img, const QString &file, bool update)
+void AlbumsModel::updateCover(const Song &song, const QImage &img, const QString &file)
 {
     Q_UNUSED(file)
     if (img.isNull() || song.isArtistImageRequest() || song.isCdda()) {
@@ -447,19 +447,13 @@ void AlbumsModel::setCover(const Song &song, const QImage &img, const QString &f
 
     for (int row=0; it!=end; ++it, ++row) {
         if ((*it)->artist==artist && (*it)->album==album) {
-            if ((*it)->coverRequested || update) {
-                (*it)->setCover(img);
+            int size=iconSize();
+            if (Covers::self()->saveScaledCover(img.scaled(QSize(size, size), Qt::IgnoreAspectRatio, Qt::SmoothTransformation), artist, album, size)) {
                 QModelIndex idx=index(row, 0, QModelIndex());
                 emit dataChanged(idx, idx);
             }
-            return;
         }
     }
-}
-
-void AlbumsModel::updateCover(const Song &song, const QImage &img, const QString &file)
-{
-    setCover(song, img, file, true);
 }
 
 void AlbumsModel::coverLoaded(const QString &ar, const QString &al, int s)
@@ -472,7 +466,6 @@ void AlbumsModel::coverLoaded(const QString &ar, const QString &al, int s)
             if ((*it)->artist==ar && (*it)->album==al) {
                 QModelIndex idx=index(row, 0, QModelIndex());
                 emit dataChanged(idx, idx);
-                return;
             }
         }
     }
@@ -494,23 +487,17 @@ void AlbumsModel::setEnabled(bool e)
     enabled=e;
 
     if (enabled) {
-        connect(Covers::self(), SIGNAL(cover(const Song &, const QImage &, const QString &)),
-                this, SLOT(setCover(const Song &, const QImage &, const QString &)));
         connect(Covers::self(), SIGNAL(coverUpdated(const Song &, const QImage &, const QString &)),
                 this, SLOT(updateCover(const Song &, const QImage &, const QString &)));
         connect(Covers::self(), SIGNAL(loaded(QString,QString,int)),
                 this, SLOT(coverLoaded(QString,QString,int)));
-//         connect(MusicLibraryModel::self(), SIGNAL(updated(const MusicLibraryItemRoot *)), AlbumsModel::self(), SLOT(update(const MusicLibraryItemRoot *)));
         update(MusicLibraryModel::self()->root());
     } else {
         clear();
-        disconnect(Covers::self(), SIGNAL(cover(const Song &, const QImage &, const QString &)),
-                    this, SLOT(setCover(const Song&, const QImage &, const QString &)));
         disconnect(Covers::self(), SIGNAL(coverUpdated(const Song &, const QImage &, const QString &)),
                    this, SLOT(updateCover(const Song &, const QImage &, const QString &)));
         disconnect(Covers::self(), SIGNAL(loaded(QString,QString,int)),
                    this, SLOT(coverLoaded(QString,QString,int)));
-//         disconnect(MusicLibraryModel::self(), SIGNAL(updated(const MusicLibraryItemRoot *)), AlbumsModel::self(), SLOT(update(const MusicLibraryItemRoot *)));
     }
 }
 
@@ -533,7 +520,6 @@ AlbumsModel::AlbumItem::AlbumItem(const QString &ar, const QString &al, quint16 
     , album(al)
     , year(y)
     , updated(false)
-    , coverRequested(false)
     , numTracks(0)
     , time(0)
 {
@@ -605,54 +591,25 @@ void AlbumsModel::AlbumItem::updateStats()
 QPixmap * AlbumsModel::AlbumItem::cover()
 {
     if (Song::SingleTracks!=type && songs.count()) {
-        bool fileExists=false;
-        QPixmap *pix=Covers::self()->getScaledCover(artist, album, iconSize(), &fileExists);
-        if (pix) {
-            return pix;
-        }
-
-        if (!coverRequested) {
-            if (fileExists) {
-                coverRequested=true;
+        if (coverSong.isEmpty()) {
+            SongItem *firstSong=songs.first();
+            if (Song::MultipleArtists==type) {  // Then Cantata has placed this album under 'Various Artists' but the actual album has a different AlbumArtist tag
+                coverSong.artist=firstSong->albumArtist();
             } else {
-                SongItem *firstSong=songs.first();
-                Song s;
-                if (Song::MultipleArtists==type) {  // Then Cantata has placed this album under 'Various Artists' but the actual album has a different AlbumArtist tag
-                    s.artist=firstSong->albumArtist();
-                } else {
-                    s.artist=firstSong->artist;
-                    s.albumartist=Song::useComposer() && !firstSong->composer.isEmpty()
-                            ? firstSong->albumArtist() : artist;
-                }
-                s.album=album;
-                s.year=year;
-                s.file=firstSong->file;
-                s.type=type;
-                s.composer=firstSong->composer;
-                Covers::Image img=Covers::self()->requestImage(s);
-                if (img.img.isNull()) {
-                    coverRequested=true;
-                } else {
-                    return setCover(img.img);
-                }
+                coverSong.artist=firstSong->artist;
+                coverSong.albumartist=Song::useComposer() && !firstSong->composer.isEmpty()
+                        ? firstSong->albumArtist() : artist;
             }
+            coverSong.album=album;
+            coverSong.year=year;
+            coverSong.file=firstSong->file;
+            coverSong.type=type;
+            coverSong.composer=firstSong->composer;
         }
+        return Covers::self()->get(coverSong, iconSize());
     }
 
     return 0;
-}
-
-QPixmap * AlbumsModel::AlbumItem::setCover(const QImage &img)
-{
-    QPixmap *pix=0;
-    if (Song::SingleTracks!=type && songs.count() && !img.isNull()) {
-        int size=iconSize();
-        pix=Covers::self()->saveScaledCover(img.scaled(QSize(size, size), Qt::IgnoreAspectRatio, Qt::SmoothTransformation), artist, album, size);
-        if (pix) {
-            coverRequested=false;
-        }
-    }
-    return pix;
 }
 
 const AlbumsModel::SongItem *AlbumsModel::AlbumItem::getCueFile() const

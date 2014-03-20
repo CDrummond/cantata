@@ -432,6 +432,20 @@ void OnlineServicesModel::cancelAll()
     podcast->cancelAllJobs();
 }
 
+void OnlineServicesModel::resetModel()
+{
+    OnlineService *srv=service(PodcastService::constName);
+    if (srv) {
+        foreach (MusicLibraryItem *p, srv->childItems()) {
+            if (MusicLibraryItem::Type_Podcast==p->itemType()) {
+                MusicLibraryItemPodcast *pc=static_cast<MusicLibraryItemPodcast *>(p);
+                pc->clearImage();
+            }
+        }
+    }
+    reset();
+}
+
 static const char * constExtensions[]={".jpg", ".png", 0};
 static const char * constIdProperty="id";
 static const char * constArtistProperty="artist";

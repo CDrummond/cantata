@@ -80,7 +80,7 @@ private:
     void updateStats();
 
 private:
-    mutable bool m_coverIsDefault;
+    mutable bool m_coverRequested;
     mutable QPixmap *m_cover;
     QUrl m_imageUrl;
     QUrl m_rssUrl;

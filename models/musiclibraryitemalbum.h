@@ -65,7 +65,7 @@ public:
     virtual ~MusicLibraryItemAlbum();
 
     QString displayData(bool full=false) const;
-    bool setCover(const QImage &img, bool update=false) const;
+    QPixmap * saveToCache(const QImage &img) const;
     const QPixmap & cover() const;
     quint32 year() const { return m_year; }
     quint32 totalTime();
@@ -93,7 +93,6 @@ public:
     const QString & originalName() const { return m_originalName; }
 
 private:
-    QPixmap *setCoverImage(const QImage &img) const;
     void setYear(const MusicLibraryItemSong *song);
     bool largeImages() const;
     void updateStats();
@@ -106,6 +105,7 @@ private:
     quint32 m_numTracks;
     QString m_originalName;
     mutable bool m_coverRequested;
+    mutable Song m_coverSong;
     Song::Type m_type;
     QSet<QString> m_singleTrackFiles;
     QString m_imageUrl;

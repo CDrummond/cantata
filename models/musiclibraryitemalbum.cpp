@@ -164,29 +164,15 @@ MusicLibraryItemAlbum::~MusicLibraryItemAlbum()
 {
 }
 
-QPixmap * MusicLibraryItemAlbum::setCoverImage(const QImage &img) const
-{
-    int size=iconSize(largeImages());
-    QImage scaled=img.scaled(QSize(size, size), Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-    QPixmap *pix=Covers::self()->saveScaledCover(scaled, parentItem()->data(), data(), size);
-    if (pix) {
-        m_coverRequested=false;
-    }
-    return pix;
-}
-
 QString MusicLibraryItemAlbum::displayData(bool full) const
 {
     return dateSort || full ? Song::displayAlbum(m_itemData, m_year) : m_itemData;
 }
 
-bool MusicLibraryItemAlbum::setCover(const QImage &img, bool update) const
+QPixmap *MusicLibraryItemAlbum::saveToCache(const QImage &img) const
 {
-    if ((update || m_coverRequested) && !img.isNull()) {
-        setCoverImage(img);
-        return true;
-    }
-    return false;
+    int size=MusicLibraryItemAlbum::iconSize(largeImages());
+    return Covers::self()->saveScaledCover(img.scaled(size, size, Qt::KeepAspectRatio, Qt::SmoothTransformation), parentItem()->data(), data(), size);
 }
 
 const QPixmap & MusicLibraryItemAlbum::cover() const
@@ -222,7 +208,6 @@ const QPixmap & MusicLibraryItemAlbum::cover() const
             }
             #ifdef ENABLE_DEVICES_SUPPORT
             else if (root && root->isDevice()) {
-                // This item is in the devices model, so get cover from device...
                 song.id=firstSong->song().id;
                 static_cast<Device *>(parentItem()->parentItem())->requestCover(song);
             }
@@ -230,13 +215,6 @@ const QPixmap & MusicLibraryItemAlbum::cover() const
             #ifdef ENABLE_ONLINE_SERVICES
             else if (root && root->isOnlineService()) {
                 img.img=OnlineServicesModel::self()->requestImage(static_cast<OnlineService *>(root)->id(), parentItem()->data(), data(), m_imageUrl);
-                // ONLINE: Image URL is encoded in song.name...
-                //                if (!m_imageUrl.isEmpty()) {
-                //                    song.name=m_imageUrl;
-                //                    song.title=parentItem()->parentItem()->data().toLower();
-                //                    song.type=Song::OnlineSvrTrack;
-                //                }
-                //                img=Covers::self()->requestImage(song);
             }
             #endif
             else {
@@ -244,7 +222,7 @@ const QPixmap & MusicLibraryItemAlbum::cover() const
             }
 
             if (!img.img.isNull()) {
-                pix=setCoverImage(img.img);
+                pix=saveToCache(img.img);
                 if (pix) {
                     return *pix;
                 }

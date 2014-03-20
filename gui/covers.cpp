@@ -88,6 +88,18 @@ static bool saveInMpdDir=true;
 static bool fetchCovers=true;
 static QString constCoverInTagPrefix=QLatin1String("{tag}");
 
+static QImage scale(const Song &song, const QImage &img, int size)
+{
+    if (song.isArtistImageRequest()) {
+        QImage scaled=img.scaled(QSize(size, size), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation);
+        if (scaled.width()>size || scaled.height()>size) {
+            scaled=scaled.copy((scaled.width()-size)/2, 0, size, size);
+        }
+        return scaled;
+    }
+    return img.scaled(size, size, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+}
+
 static bool canSaveTo(const QString &dir)
 {
     QString mpdDir=MPDConnection::self()->getDetails().dir;
@@ -1054,7 +1066,7 @@ void Covers::updateCache(const Song &song, const QImage &img, bool dummyEntriesO
         if (pix && (!dummyEntriesOnly || pix->width()<2)) {
             cache.remove(key);
             if (!img.isNull()) {
-                if (saveScaledCover(img.scaled(s, s, Qt::KeepAspectRatio, Qt::SmoothTransformation), song.albumArtist(), song.album, s)) {
+                if (saveScaledCover(scale(song, img, s), song.albumArtist(), song.album, s)) {
                     emit loaded(song, s);
                 }
             }
@@ -1460,7 +1472,7 @@ void Covers::gotAlbumCover(const Song &song, const QImage &img, const QString &f
     }
     if (emitResult) {
         if (song.isSpecificSizeRequest()) {
-            if (!img.isNull() && saveScaledCover(img.scaled(song.size, song.size, Qt::KeepAspectRatio, Qt::SmoothTransformation), song.albumArtist(), song.album, song.size)) {
+            if (!img.isNull() && saveScaledCover(scale(song, img, song.size), song.albumArtist(), song.album, song.size)) {
                 DBUG << "loaded cover" << song.file << song.artist << song.albumartist << song.album << img.width() << img.height() << fileName << song.size;
                 emit loaded(song, song.size);
             }
@@ -1482,7 +1494,7 @@ void Covers::gotArtistImage(const Song &song, const QImage &img, const QString &
     }
     if (emitResult) {
         if (song.isSpecificSizeRequest()) {
-            if (!img.isNull() && saveScaledCover(img.scaled(song.size, song.size, Qt::KeepAspectRatio, Qt::SmoothTransformation), song.albumArtist(), QString(), song.size)) {
+            if (!img.isNull() && saveScaledCover(scale(song, img, song.size), song.albumArtist(), QString(), song.size)) {
                 DBUG << "loaded artistImage" << song.file << song.artist << song.albumartist << song.album << img.width() << img.height() << fileName << song.size;
                 emit loaded(song, song.size);
             }

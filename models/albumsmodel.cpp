@@ -434,28 +434,6 @@ void AlbumsModel::update(const MusicLibraryItemRoot *root)
     }
 }
 
-void AlbumsModel::updateCover(const Song &song, const QImage &img, const QString &file)
-{
-    Q_UNUSED(file)
-    if (img.isNull() || song.isArtistImageRequest() || song.isCdda()) {
-        return;
-    }
-    QList<AlbumItem *>::Iterator it=items.begin();
-    QList<AlbumItem *>::Iterator end=items.end();
-    QString artist=MusicLibraryItemRoot::artistName(song);
-    QString album=song.albumName();
-
-    for (int row=0; it!=end; ++it, ++row) {
-        if ((*it)->artist==artist && (*it)->album==album) {
-            int size=iconSize();
-            if (Covers::self()->saveScaledCover(img.scaled(QSize(size, size), Qt::IgnoreAspectRatio, Qt::SmoothTransformation), artist, album, size)) {
-                QModelIndex idx=index(row, 0, QModelIndex());
-                emit dataChanged(idx, idx);
-            }
-        }
-    }
-}
-
 void AlbumsModel::coverLoaded(const Song &song, int s)
 {
     if (s==iconSize() && !song.isArtistImageRequest()) {
@@ -489,17 +467,11 @@ void AlbumsModel::setEnabled(bool e)
     enabled=e;
 
     if (enabled) {
-        connect(Covers::self(), SIGNAL(coverUpdated(const Song &, const QImage &, const QString &)),
-                this, SLOT(updateCover(const Song &, const QImage &, const QString &)));
-        connect(Covers::self(), SIGNAL(loaded(Song,int)),
-                this, SLOT(coverLoaded(Song,int)));
+        connect(Covers::self(), SIGNAL(loaded(Song,int)), this, SLOT(coverLoaded(Song,int)));
         update(MusicLibraryModel::self()->root());
     } else {
         clear();
-        disconnect(Covers::self(), SIGNAL(coverUpdated(const Song &, const QImage &, const QString &)),
-                   this, SLOT(updateCover(const Song &, const QImage &, const QString &)));
-        disconnect(Covers::self(), SIGNAL(loaded(Song,int)),
-                   this, SLOT(coverLoaded(Song,int)));
+        disconnect(Covers::self(), SIGNAL(loaded(Song,int)), this, SLOT(coverLoaded(Song,int)));
     }
 }
 

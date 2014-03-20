@@ -137,11 +137,11 @@ struct Song
     // We pass 'Song' around to cover requester. When we want the artist image, and not album image,
     // then we blank certain fields to indicate this!
     void setArtistImageRequest() {
-        albumartist=albumArtist();
-        album=artist=QString();
-        size=track=0;
+        album=QString();
+        disc=priority=0xFF;
+        key=0xFFFF;
     }
-    bool isArtistImageRequest() const { return album.isEmpty() && artist.isEmpty() && !albumartist.isEmpty() && 0==size && 0==track; }
+    bool isArtistImageRequest() const { return 0xFF==disc && 0xFF==priority && 0xFFFF==key && album.isEmpty(); }
 
     // In Covers, the following is used to indicate that a specfic size is requested...
     void setSpecificSizeRequest(int sz) {

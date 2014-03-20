@@ -60,7 +60,6 @@ public:
     bool save();
     bool setCover(const QImage &img, bool update=false) const;
     const QPixmap & cover() const;
-    bool hasRealCover() const { return !m_coverIsDefault; }
     void remove(int row);
     void remove(MusicLibraryItemSong *i);
     Type itemType() const { return Type_Podcast; }
@@ -81,7 +80,7 @@ private:
     void updateStats();
 
 private:
-    mutable bool m_coverIsDefault;
+    mutable bool m_coverRequested;
     mutable QPixmap *m_cover;
     QUrl m_imageUrl;
     QUrl m_rssUrl;

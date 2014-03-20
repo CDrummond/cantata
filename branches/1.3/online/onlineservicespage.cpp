@@ -198,7 +198,6 @@ QList<Song> OnlineServicesPage::selectedSongs(bool allowPlaylists) const
         return QList<Song>();
     }
 
-    QString name;
     QModelIndexList mapped;
     foreach (const QModelIndex &idx, selected) {
         QModelIndex index = proxy.mapToSource(idx);
@@ -232,8 +231,9 @@ void OnlineServicesPage::addSelectionToPlaylist(const QString &name, bool replac
 
 void OnlineServicesPage::refresh()
 {
+    OnlineServicesModel::self()->resetModel();
     view->setLevel(0);
-    OnlineServicesModel::self()->clearImages();
+    expandPodcasts();
 }
 
 void OnlineServicesPage::itemDoubleClicked(const QModelIndex &)

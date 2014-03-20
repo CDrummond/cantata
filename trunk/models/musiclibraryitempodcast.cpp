@@ -42,7 +42,6 @@
 #include <QNetworkReply>
 
 static QPixmap *theDefaultIcon=0;
-static QPixmap *theDefaultLargeIcon=0;
 
 static QLatin1String constTopTag("podcast");
 static QLatin1String constImageAttribute("img");
@@ -78,7 +77,7 @@ static QString generateFileName(const QUrl &url, bool creatingNew)
 
 MusicLibraryItemPodcast::MusicLibraryItemPodcast(const QString &fileName, MusicLibraryItemContainer *parent)
     : MusicLibraryItemContainer(QString(), parent)
-    , m_coverIsDefault(false)
+    , m_coverRequested(false)
     , m_cover(0)
     , m_fileName(fileName)
     , m_unplayedEpisodeCount(0)
@@ -239,12 +238,12 @@ void MusicLibraryItemPodcast::setCoverImage(const QImage &img) const
     int size=MusicLibraryItemAlbum::iconSize(largeImages());
     QImage scaled=img.scaled(QSize(size, size), Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
     m_cover = new QPixmap(QPixmap::fromImage(scaled));
-    m_coverIsDefault=false;
+    m_coverRequested=false;
 }
 
 bool MusicLibraryItemPodcast::setCover(const QImage &img, bool update) const
 {
-    if ((update || m_coverIsDefault) && !img.isNull()) {
+    if ((update || m_coverRequested) && !img.isNull()) {
         setCoverImage(img);
         return true;
     }
@@ -254,34 +253,18 @@ bool MusicLibraryItemPodcast::setCover(const QImage &img, bool update) const
 
 const QPixmap & MusicLibraryItemPodcast::cover() const
 {
-    if (m_coverIsDefault) {
-        if (largeImages()) {
-            if (theDefaultLargeIcon) {
-                return *theDefaultLargeIcon;
-            }
-        } else if (theDefaultIcon) {
-            return *theDefaultIcon;
-        }
+    if (m_cover) {
+        return *m_cover;
     }
 
-    if (!m_cover) {
-        bool useLarge=largeImages();
-        int iSize=MusicLibraryItemAlbum::iconSize(useLarge);
+    int iSize=MusicLibraryItemAlbum::iconSize(largeImages());
+    int cSize=iSize;
+    if (0==cSize) {
+        cSize=22;
+    }
 
-        if ((useLarge && !theDefaultLargeIcon) || (!useLarge && !theDefaultIcon)) {
-            int cSize=iSize;
-            if (0==cSize) {
-                cSize=22;
-            }
-            if (useLarge) {
-                theDefaultLargeIcon = new QPixmap(Icons::self()->podcastIcon.pixmap(cSize, cSize)
-                                                 .scaled(QSize(cSize, cSize), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
-            } else {
-                theDefaultIcon = new QPixmap(Icons::self()->podcastIcon.pixmap(cSize, cSize)
-                                            .scaled(QSize(cSize, cSize), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
-            }
-        }
-        m_coverIsDefault = true;
+    if (!m_cover && !m_coverRequested) {
+        m_coverRequested = true;
         QImage img=OnlineServicesModel::self()->requestImage(static_cast<OnlineService *>(parentItem())->id(), data(), QString(), m_imageUrl.toString(), // ??
                                                              m_imageFile, 300);
 
@@ -289,10 +272,16 @@ const QPixmap & MusicLibraryItemPodcast::cover() const
             setCoverImage(img);
             return *m_cover;
         }
-        return useLarge ? *theDefaultLargeIcon : *theDefaultIcon;
     }
 
-    return *m_cover;
+    if (!theDefaultIcon || theDefaultIcon->width()!=cSize) {
+        if (theDefaultIcon) {
+            delete theDefaultIcon;
+        }
+        theDefaultIcon = new QPixmap(Icons::self()->podcastIcon.pixmap(cSize, cSize)
+                                     .scaled(QSize(cSize, cSize), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+    }
+    return *theDefaultIcon;
 }
 
 void MusicLibraryItemPodcast::remove(int row)
@@ -311,13 +300,9 @@ void MusicLibraryItemPodcast::remove(MusicLibraryItemSong *i)
 
 void MusicLibraryItemPodcast::clearImage() const
 {
-    if (!m_coverIsDefault) {
-        m_coverIsDefault=true;
+    if (m_cover) {
         delete m_cover;
         m_cover=0;
-        if (theDefaultIcon) {
-            m_cover=theDefaultIcon;
-        }
     }
 }
 

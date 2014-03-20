@@ -86,6 +86,7 @@ public:
     void deleteDownloadedPodcasts(MusicLibraryItemPodcast *pod, const QList<MusicLibraryItemPodcastEpisode *> &episodes);
     bool isDownloading() const;
     void cancelAll();
+    void resetModel();
     bool isHidden(OnlineService *srv) { return hiddenServices.contains(srv); }
 
     Covers::Image readImage(const Song &song);

@@ -76,6 +76,7 @@
 6. Fix expand all / collapse all actions. Expand all will only expand 1 level
    for main browsers.
 7. When reading lines from user mpd.conf file, read as utf-8.
+8. Reset devices and online-services models when artist-view cover size changes.
 
 1.3.2
 -----

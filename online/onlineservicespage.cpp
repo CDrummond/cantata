@@ -231,7 +231,9 @@ void OnlineServicesPage::addSelectionToPlaylist(const QString &name, bool replac
 
 void OnlineServicesPage::refresh()
 {
+    OnlineServicesModel::self()->resetModel();
     view->setLevel(0);
+    expandPodcasts();
 }
 
 void OnlineServicesPage::itemDoubleClicked(const QModelIndex &)

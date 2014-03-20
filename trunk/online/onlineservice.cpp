@@ -235,6 +235,7 @@ OnlineService::OnlineService(MusicModel *m, const QString &name)
 {
     setUseArtistImages(false); // Settings::self()->libraryArtistImage());
     setUseAlbumImages(true);
+    setLargeImages(false);
     m_model=m;
     icn.addFile(":"+name.toLower());
 }

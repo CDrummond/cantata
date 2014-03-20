@@ -128,12 +128,9 @@ MusicLibraryModel::MusicLibraryModel(QObject *parent, bool isMpdModel, bool isCh
 {
     if (mpdModel)
     {
-        connect(Covers::self(), SIGNAL(artistImage(const Song &, const QImage &, const QString &)),
-                this, SLOT(setArtistImage(const Song &, const QImage &)));
+        connect(Covers::self(), SIGNAL(loaded(Song,int)), this, SLOT(coverLoaded(Song,int)));
         connect(Covers::self(), SIGNAL(cover(const Song &, const QImage &, const QString &)),
                 this, SLOT(setCover(const Song &, const QImage &, const QString &)));
-        connect(Covers::self(), SIGNAL(coverUpdated(const Song &, const QImage &, const QString &)),
-                this, SLOT(updateCover(const Song &, const QImage &, const QString &)));
         connect(MPDConnection::self(), SIGNAL(updatingDatabase()), this, SLOT(updatingMpd()));
         connect(MPDConnection::self(), SIGNAL(musicLibraryUpdated(MusicLibraryItemRoot *, QDateTime)),
                 this, SLOT(updateMusicLibrary(MusicLibraryItemRoot *, QDateTime)));
@@ -630,35 +627,34 @@ QList<Song> MusicLibraryModel::getArtistAlbumsFirstTracks(const Song &song) cons
     return tracks;
 }
 
-void MusicLibraryModel::setArtistImage(const Song &song, const QImage &img, bool update)
+// Currently ONLY artist images are always loaded from non UI thread.
+void MusicLibraryModel::coverLoaded(const Song &song, int size)
 {
-    if (!rootItem->useArtistImages() || img.isNull() || MusicLibraryItemAlbum::CoverNone==MusicLibraryItemAlbum::currentCoverSize() ||
+    if (MusicLibraryItemAlbum::CoverNone==MusicLibraryItemAlbum::currentCoverSize() || size!=MusicLibraryItemAlbum::iconSize(rootItem->useLargeImages()) ||
+        //song.isCdda() || (song.isArtistImageRequest() && !rootItem->useArtistImages()) ||
+        song.isCdda() || !song.isArtistImageRequest() || !rootItem->useArtistImages() ||
         song.file.startsWith("http://") || song.name.startsWith("http://")) {
         return;
     }
-
-    MusicLibraryItemArtist *artistItem = rootItem->artist(song, false);
-    if (artistItem && artistItem->setCover(img, update)) {
-        QModelIndex idx=index(artistItem->row(), 0, QModelIndex());
-        emit dataChanged(idx, idx);
-    }
+    //if (song.isArtistImageRequest()) {
+        MusicLibraryItemArtist *artistItem = rootItem->artist(song, false);
+        if (artistItem) {
+            QModelIndex idx=index(artistItem->row(), 0, QModelIndex());
+            emit dataChanged(idx, idx);
+        }
+//    } else {
+//        MusicLibraryItemArtist *artistItem = rootItem->artist(song, false);
+//        if (artistItem) {
+//            MusicLibraryItemAlbum *albumItem = artistItem->album(song, false);
+//            if (albumItem) {
+//                QModelIndex idx=index(albumItem->row(), 0, index(artistItem->row(), 0, QModelIndex()));
+//                emit dataChanged(idx, idx);
+//            }
+//        }
+//    }
 }
 
 void MusicLibraryModel::setCover(const Song &song, const QImage &img, const QString &file)
-{
-    setCover(song, img, file, false);
-}
-
-void MusicLibraryModel::updateCover(const Song &song, const QImage &img, const QString &file)
-{
-    if (song.isArtistImageRequest()) {
-        setArtistImage(song, img, true);
-    } else {
-        setCover(song, img, file, true);
-    }
-}
-
-void MusicLibraryModel::setCover(const Song &song, const QImage &img, const QString &file, bool update)
 {
     Q_UNUSED(file)
     if (!rootItem->useAlbumImages() || img.isNull() || MusicLibraryItemAlbum::CoverNone==MusicLibraryItemAlbum::currentCoverSize() ||
@@ -669,7 +665,7 @@ void MusicLibraryModel::setCover(const Song &song, const QImage &img, const QStr
     MusicLibraryItemArtist *artistItem = rootItem->artist(song, false);
     if (artistItem) {
         MusicLibraryItemAlbum *albumItem = artistItem->album(song, false);
-        if (albumItem && albumItem->setCover(img, update)) {
+        if (albumItem && albumItem->saveToCache(img)) {
             QModelIndex idx=index(albumItem->row(), 0, index(artistItem->row(), 0, QModelIndex()));
             emit dataChanged(idx, idx);
         }

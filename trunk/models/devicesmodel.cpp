@@ -320,7 +320,7 @@ void DevicesModel::setCover(const Song &song, const QImage &img)
     MusicLibraryItemArtist *artistItem = dev->artist(song, false);
     if (artistItem) {
         MusicLibraryItemAlbum *albumItem = artistItem->album(song, false);
-        if (albumItem && albumItem->setCover(img)) {
+        if (albumItem && albumItem->saveToCache(img)) {
             QModelIndex idx=index(albumItem->row(), 0, index(artistItem->row(), 0, index(i, 0, QModelIndex())));
             emit dataChanged(idx, idx);
         }

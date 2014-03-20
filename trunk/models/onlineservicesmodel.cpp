@@ -571,23 +571,13 @@ void OnlineServicesModel::imageDownloaded()
             emit dataChanged(idx, idx);
 
         }
-    } else if (song.album.isEmpty()) {
-        if (srv->useArtistImages() && srv->id()==id) {
-            MusicLibraryItemArtist *artistItem = srv->artist(song, false);
-            if (artistItem && artistItem->setCover(img)) {
-                QModelIndex idx=index(artistItem->row(), 0, index(row(srv), 0, QModelIndex()));
+    } else if (!song.album.isEmpty() && srv->useAlbumImages() && !srv->isPodcasts() && srv->id()==id) {
+        MusicLibraryItemArtist *artistItem = srv->artist(song, false);
+        if (artistItem) {
+            MusicLibraryItemAlbum *albumItem = artistItem->album(song, false);
+            if (albumItem && albumItem->saveToCache(img)) {
+                QModelIndex idx=index(albumItem->row(), 0, index(artistItem->row(), 0, index(row(srv), 0, QModelIndex())));
                 emit dataChanged(idx, idx);
-            }
-        }
-    } else {
-        if (srv->useAlbumImages() && !srv->isPodcasts() && srv->id()==id) {
-            MusicLibraryItemArtist *artistItem = srv->artist(song, false);
-            if (artistItem) {
-                MusicLibraryItemAlbum *albumItem = artistItem->album(song, false);
-                if (albumItem && albumItem->setCover(img)) {
-                    QModelIndex idx=index(albumItem->row(), 0, index(artistItem->row(), 0, index(row(srv), 0, QModelIndex())));
-                    emit dataChanged(idx, idx);
-                }
             }
         }
     }

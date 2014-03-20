@@ -457,7 +457,7 @@ void CoverDialog::show(const Song &s, const Covers::Image &current)
         existing=new ExistingCover(isArtist ? Covers::Image(cropImage(img.img, true), img.fileName) : img, list);
         list->addItem(existing);
     }
-    query->setText(isArtist ? song.albumartist : QString(song.albumArtist()+QLatin1String(" ")+song.album));
+    query->setText(isArtist ? song.albumArtist() : QString(song.albumArtist()+QLatin1String(" ")+song.album));
     adjustSize();
     Dialog::show();
     sendQuery();

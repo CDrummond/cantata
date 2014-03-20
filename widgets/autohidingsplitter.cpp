@@ -30,10 +30,28 @@
 #include <QResizeEvent>
 #include <QComboBox>
 #include <QMenu>
+#include <QApplication>
+#include <QStyle>
+
+static int splitterSize(const QWidget *w)
+{
+    static int size=-1;
+    if (-1==size || !w || !w->isVisible()) {
+        if (qApp->style()->styleHint(QStyle::SH_ScrollView_FrameOnlyAroundContents)) {
+            int spacing=qApp->style()->pixelMetric(QStyle::PM_ScrollView_ScrollBarSpacing);
+            int splitterSize=qApp->style()->pixelMetric(QStyle::PM_SplitterWidth);
+            size=qMin(spacing+2, splitterSize);
+        } else {
+            size=GtkStyle::isActive() ? 0 : 1;
+        }
+    }
+    return size;
+}
 
 QSize AutohidingSplitterHandle::sizeHint() const
 {
-    return GtkStyle::isActive() ? QSize(0, 0) : QSize(1, 1);
+    int sz=splitterSize(this);
+    return QSize(sz, sz);
 }
 
 class SplitterSizeAnimation:public QVariantAnimation
@@ -79,7 +97,7 @@ AutohidingSplitter::AutohidingSplitter(Qt::Orientation orientation, QWidget *par
     autohideAnimation->setEasingCurve(QEasingCurve::Linear);
     //connect(this, SIGNAL(splitterMoved(int, int)), this, SLOT(updateAfterSplitterMoved(int, int)));
     setMinimumWidth(32);
-    setHandleWidth(GtkStyle::isActive() ? 0 : 1);
+    setHandleWidth(splitterSize(this));
 }
 
 AutohidingSplitter::AutohidingSplitter(QWidget *parent)

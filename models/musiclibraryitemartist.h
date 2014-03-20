@@ -31,11 +31,11 @@
 #include <QVariant>
 #include <QHash>
 #include "musiclibraryitem.h"
+#include "song.h"
 
 class QPixmap;
 class MusicLibraryItemRoot;
 class MusicLibraryItemAlbum;
-struct Song;
 
 class MusicLibraryItemArtist : public MusicLibraryItemContainer
 {
@@ -57,7 +57,6 @@ public:
     void updateIndexes();
     Type itemType() const { return Type_Artist; }
     static void clearDefaultCover();
-    bool setCover(const QImage &img, bool update=false) const;
     const QPixmap & cover() const;
     // 'data' could be 'Composer' if we are set to use that, but need to save real artist...
     const QString & actualArtist() const { return m_actualArtist; }
@@ -66,7 +65,7 @@ private:
     bool largeImages() const;
 
 private:
-    mutable bool m_coverRequested;
+    mutable Song m_coverSong;
     bool m_various;
     QString m_nonTheArtist;
     QString m_actualArtist;

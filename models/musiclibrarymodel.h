@@ -101,9 +101,8 @@ public:
 
 public Q_SLOTS:
     void updateMusicLibrary(MusicLibraryItemRoot * root, QDateTime dbUpdate = QDateTime(), bool fromFile = false);
-    void setArtistImage(const Song &song, const QImage &img, bool update=false);
+    void coverLoaded(const Song &song, int size);
     void setCover(const Song &song, const QImage &img, const QString &file);
-    void updateCover(const Song &song, const QImage &img, const QString &file);
     void updatingMpd();
 
 Q_SIGNALS:
@@ -112,7 +111,6 @@ Q_SIGNALS:
     void checkedSongs(const QSet<Song> &songs);
 
 private:
-    void setCover(const Song &song, const QImage &img, const QString &file, bool update);
     void setParentState(const QModelIndex &parent);
 
 private:

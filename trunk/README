@@ -178,7 +178,7 @@ When displaying covers, Cantata will load album covers in the following order:
 ...if configured to 'Cache scaled covers', Cantata will check its scaled-covers
    cache folder (~/.cache/cantata/covers-scaled/SIZE) for:
 
- 1. ${albumArtist}/${album}.jpg
+ 1. ${albumArtist}/${album}.png
 
 ...if MPD folder exists, is not specified as a http URL, and is readable, then
    cantata will look for the following within the folder containing the song:
@@ -227,7 +227,7 @@ cover.jpg/png, within the song folder if possible. If not, then they will be
 saved in Cantata's cache folder.
 
 If configured to 'Cache scaled covers', then the resized cover (as displayed)
-will be saved as a JPG within covers-scaled.
+will be saved as a PNG within covers-scaled.
 
 
 For artist images:
@@ -235,7 +235,7 @@ For artist images:
 ...if configured to 'Cache scaled covers', Cantata will check its scaled-covers
    cache folder (~/.cache/cantata/covers-scaled/SIZE) for:
 
- 1. ${albumArtist}.jpg
+ 1. ${albumArtist}.png
 
 ...if MPD folder exists, is not specified as a http URL, and is readable, then
    cantata will look for the following within the folder containing the song:
@@ -277,7 +277,7 @@ if the folder hierarchy is 2 levels (artist/album/) and the user has write
 permissions. If not, then they will be saved in Cantata's cache folder.
 
 If configured to 'Cache scaled covers', then the resized cover (as displayed) 
-will be saved as a JPG within covers-scaled.
+will be saved as a PNG within covers-scaled.
 
 
 For context view backdrops:

@@ -59,6 +59,7 @@ Q_SIGNALS:
 
 public Q_SLOTS:
     void artistImage(const Song &song, const QImage &i, const QString &f);
+    void artistImageUpdated(const Song &song, const QImage &i, const QString &f);
 
 private Q_SLOTS:
     void showContextMenu(const QPoint &pos);

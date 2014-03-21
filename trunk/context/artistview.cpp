@@ -86,6 +86,7 @@ ArtistView::ArtistView(QWidget *parent)
     connect(refreshAction, SIGNAL(triggered()), SLOT(refresh()));
     connect(engine, SIGNAL(searchResult(QString,QString)), this, SLOT(searchResponse(QString,QString)));
     connect(Covers::self(), SIGNAL(artistImage(Song,QImage,QString)), SLOT(artistImage(Song,QImage,QString)));
+    connect(Covers::self(), SIGNAL(coverUpdated(Song,QImage,QString)), SLOT(artistImageUpdated(Song,QImage,QString)));
     connect(text, SIGNAL(anchorClicked(QUrl)), SLOT(show(QUrl)));
     text->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(text, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showContextMenu(QPoint)));
@@ -165,6 +166,7 @@ void ArtistView::update(const Song &s, bool force)
             setHeader(currentSong.artist);
 
             Song s;
+            s.setArtistImageRequest();
             s.albumartist=currentSong.artist;
             if (!currentSong.isVariousArtists()) {
                 s.file=currentSong.file;
@@ -188,7 +190,15 @@ const QList<Song> & ArtistView::getArtistAlbumsFirstTracks()
 
 void ArtistView::artistImage(const Song &song, const QImage &i, const QString &f)
 {
-    if (song.albumartist==currentSong.artist && pic.isEmpty()) {
+    if (song.isArtistImageRequest() && song.albumartist==currentSong.artist && pic.isEmpty()) {
+        pic=createPicTag(i, f);
+        setBio();
+    }
+}
+
+void ArtistView::artistImageUpdated(const Song &song, const QImage &i, const QString &f)
+{
+    if (song.isArtistImageRequest() && song.albumartist==currentSong.artist) {
         pic=createPicTag(i, f);
         setBio();
     }

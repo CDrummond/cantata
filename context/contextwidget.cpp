@@ -25,6 +25,9 @@
 #include "artistview.h"
 #include "albumview.h"
 #include "songview.h"
+#ifdef ENABLE_ONLINE_SERVICES
+#include "onlineview.h"
+#endif
 #include "song.h"
 #include "utils.h"
 #include "covers.h"
@@ -278,17 +281,26 @@ ContextWidget::ContextWidget(QWidget *parent)
     , fadeValue(0)
     , isWide(false)
     , stack(0)
+    #ifdef ENABLE_ONLINE_SERVICES
+    , onlineContext(0)
+    #endif
     , splitter(0)
     , viewSelector(0)
     , creator(0)
 {
+    QHBoxLayout *layout=new QHBoxLayout(this);
+    mainStack=new QStackedWidget(this);
+    standardContext=new QWidget(mainStack);
+    mainStack->addWidget(standardContext);
+    layout->setMargin(0);
+    layout->addWidget(mainStack);
     animator.setPropertyName("fade");
     animator.setTargetObject(this);
 
     appLinkColor=QApplication::palette().color(QPalette::Link);
-    artist = new ArtistView(this);
-    album = new AlbumView(this);
-    song = new SongView(this);
+    artist = new ArtistView(standardContext);
+    album = new AlbumView(standardContext);
+    song = new SongView(standardContext);
     minWidth=album->picSize().width()*2.5;
 
     artist->addEventFilter(this);
@@ -338,11 +350,11 @@ void ContextWidget::setWide(bool w)
 
     isWide=w;
     if (w) {
-        if (layout()) {
-            delete layout();
+        if (standardContext->layout()) {
+            delete standardContext->layout();
         }
-        QHBoxLayout *l=new QHBoxLayout(this);
-        setLayout(l);
+        QHBoxLayout *l=new QHBoxLayout(standardContext);
+        standardContext->setLayout(l);
         int m=l->margin()/2;
         l->setMargin(0);
         if (stack) {
@@ -359,7 +371,7 @@ void ContextWidget::setWide(bool w)
         QByteArray state;
         bool resetSplitter=splitter;
         if (!splitter) {
-            splitter=new ThinSplitter(this);
+            splitter=new ThinSplitter(standardContext);
             state=Settings::self()->contextSplitterState();
         }
         l->addWidget(splitter);
@@ -376,19 +388,19 @@ void ContextWidget::setWide(bool w)
             splitter->restoreState(state);
         }
     } else {
-        if (layout()) {
-            delete layout();
+        if (standardContext->layout()) {
+            delete standardContext->layout();
         }
-        QGridLayout *l=new QGridLayout(this);
-        setLayout(l);
+        QGridLayout *l=new QGridLayout(standardContext);
+        standardContext->setLayout(l);
         int m=l->margin()/2;
         l->setMargin(0);
         l->setSpacing(0);
         if (!stack) {
-            stack=new QStackedWidget(this);
+            stack=new QStackedWidget(standardContext);
         }
         if (!viewSelector) {
-            viewSelector=new ViewSelector(this);
+            viewSelector=new ViewSelector(standardContext);
             viewSelector->addItem(i18n("&Artist"), "artist");
             viewSelector->addItem(i18n("Al&bum"), "album");
             viewSelector->addItem(i18n("&Lyrics"), "song");
@@ -646,6 +658,29 @@ void ContextWidget::update(const Song &s)
     if (s.albumArtist()!=currentSong.albumArtist()) {
         cancel();
     }
+
+    #ifdef ENABLE_ONLINE_SERVICES
+    if (Song::OnlineSvrTrack==sng.type) {
+        if (!onlineContext) {
+            QWidget *onlinePage=new QWidget(mainStack);
+            QHBoxLayout *onlineLayout=new QHBoxLayout(onlinePage);
+            int m=onlineLayout->margin()/2;
+            onlineLayout->setMargin(0);
+            onlineLayout->addItem(new QSpacerItem(m, m, QSizePolicy::Fixed, QSizePolicy::Fixed));
+            onlineContext=new OnlineView(onlinePage);
+            onlineLayout->addWidget(onlineContext);
+            mainStack->addWidget(onlinePage);
+        }
+        onlineContext->update(sng);
+        mainStack->setCurrentIndex(1);
+        updateArtist=QString();
+        if (isVisible() && PlayQueueView::BI_Cover==backdropType) {
+            updateBackdrop();
+        }
+        return;
+    }
+    mainStack->setCurrentIndex(0);
+    #endif
     artist->update(sng);
     album->update(sng);
     song->update(sng);

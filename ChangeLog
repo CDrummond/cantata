@@ -67,6 +67,7 @@
 43. When current song is from an online-service (Jamendo, Magnatune, etc) then
     only show cover and tite in context view. No attempt is made to get artist,
     album, or song information - as these are likely to fail anyway.
+44. Jamendo radio streams.
 
 1.3.3
 -----

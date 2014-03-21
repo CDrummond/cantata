@@ -50,6 +50,7 @@ Q_SIGNALS:
 
 public Q_SLOTS:
     void coverRetrieved(const Song &s, const QImage &img, const QString &file);
+    void coverUpdated(const Song &s, const QImage &img, const QString &file);
     void playSong(const QUrl &u);
 
 private Q_SLOTS:

@@ -1864,7 +1864,12 @@ bool StreamsModel::loadFavourites(const QString &fileName, const QModelIndex &in
 
 void StreamsModel::buildListenLive(const QModelIndex &index)
 {
-    QFile f(":listenlive.xml");
+    #ifdef Q_OS_WIN
+    QFile f(QCoreApplication::applicationDirPath()+"/streams/listenlive.xml");
+    #else
+    QFile f(INSTALL_PREFIX "/share/cantata/streams/listenlive.xml");
+    #endif
+
     if (f.open(QIODevice::ReadOnly)) {
         CategoryItem *top=new CategoryItem(QString());
         CategoryItem *region=top;

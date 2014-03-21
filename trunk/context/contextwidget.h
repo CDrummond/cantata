@@ -46,6 +46,9 @@ class QImage;
 class QToolButton;
 class QButtonGroup;
 class QWheelEvent;
+#ifdef ENABLE_ONLINE_SERVICES
+class OnlineView;
+#endif
 
 class ViewSelector : public QWidget
 {
@@ -167,7 +170,12 @@ private:
     QPropertyAnimation animator;
     int minWidth;
     bool isWide;
+    QStackedWidget *mainStack;
     QStackedWidget *stack;
+    QWidget *standardContext;
+    #ifdef ENABLE_ONLINE_SERVICES
+    OnlineView *onlineContext;
+    #endif
     ThinSplitter *splitter;
     ViewSelector *viewSelector;
     BackdropCreator *creator;

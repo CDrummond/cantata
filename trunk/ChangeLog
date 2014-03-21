@@ -64,6 +64,9 @@
     copy/delete dialog - just dont allow setting to be changed.
 41. Remove artist image support for online-services.
 42. Update context-view when artist, or album, image is updated.
+43. When current song is from an online-service (Jamendo, Magnatune, etc) then
+    only show cover and tite in context view. No attempt is made to get artist,
+    album, or song information - as these are likely to fail anyway.
 
 1.3.3
 -----

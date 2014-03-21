@@ -317,7 +317,8 @@ if (ENABLE_ONLINE_SERVICES)
     set(CANTATA_SRCS ${CANTATA_SRCS} online/onlineservicespage.cpp online/onlineservice.cpp online/jamendoservice.cpp
         online/jamendosettingsdialog.cpp online/magnatuneservice.cpp online/magnatunesettingsdialog.cpp online/soundcloudservice.cpp
         online/podcastservice.cpp online/rssparser.cpp online/opmlparser.cpp online/podcastsearchdialog.cpp online/onlinesettings.cpp
-        online/podcastsettingsdialog.cpp models/onlineservicesmodel.cpp models/musiclibraryitempodcast.cpp)
+        online/podcastsettingsdialog.cpp models/onlineservicesmodel.cpp models/musiclibraryitempodcast.cpp
+        context/onlineview.cpp)
     set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} online/onlineservice.h online/onlineservicespage.h online/jamendoservice.h
         online/magnatuneservice.h online/magnatunesettingsdialog.h online/magnatuneservice.h online/magnatunesettingsdialog.h
         online/soundcloudservice.h online/podcastservice.h online/podcastsearchdialog.h online/podcastsettingsdialog.h

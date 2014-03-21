@@ -356,7 +356,9 @@ void OnlineService::applyUpdate()
 
 void OnlineService::loaderError(const QString &msg)
 {
+    loaded=true;
     lProgress=0;
+    emit error(data()+QLatin1String(" - ")+msg);
     setStatusMessage(msg);
     stopLoader();
     setBusy(false);

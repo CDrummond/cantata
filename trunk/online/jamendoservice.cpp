@@ -327,7 +327,7 @@ QString JamendoService::imageUrl(const QString &id)
 
 void JamendoService::createLoader()
 {
-    loader=new JamendoMusicLoader(QUrl("http://img.jamendo.com/data/dbdump_artistalbumtrack.xml.gz"));
+    loader=new JamendoMusicLoader(QUrl("http://imgjam.com/data/dbdump_artistalbumtrack.xml.gz"));
 }
 
 Song JamendoService::fixPath(const Song &orig, bool) const

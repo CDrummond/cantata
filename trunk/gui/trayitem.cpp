@@ -199,9 +199,9 @@ void TrayItem::songChanged(const Song &song, bool isPlaying)
                         ? !song.title.isEmpty() && !song.name.isEmpty()
                         : !song.title.isEmpty() && !song.artist.isEmpty() && !song.album.isEmpty();
         if (useable) {
-            QString text=song.describe(false, false);
+            QString text=song.describe(false);
             if (song.time>0) {
-                text+=QLatin1String("  (")+Utils::formatTime(song.time)+QLatin1Char(')');
+                text+=QLatin1String(" - ")+Utils::formatTime(song.time);
             }
 
             if (trayItem) {

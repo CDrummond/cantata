@@ -258,15 +258,15 @@ public:
                 track=song.trackAndTitleStr(song.isVariousArtists());
             } else {
                 if (song.isFromOnlineService()) {
-                    title=song.album; // Song::displayAlbum(song.album, Song::albumYear(song));
+                    title=Song::displayAlbum(song.album, Song::albumYear(song));
                 } else {
-                    title=song.artistOrComposer()+QLatin1String(" - ")+song.album; // Song::displayAlbum(song.album, Song::albumYear(song));
+                    title=song.artistOrComposer()+QLatin1String(" - ")+Song::displayAlbum(song.album, Song::albumYear(song));
                 }
-//                if (Song::useComposer()) {
-//                    while (title.contains(") (")) {
-//                        title=title.replace(") (", ", ");
-//                    }
-//                }
+                if (Song::useComposer()) {
+                    while (title.contains(") (")) {
+                        title=title.replace(") (", ", ");
+                    }
+                }
                 track=song.trackAndTitleStr(song.isVariousArtists());
             }
         } else {

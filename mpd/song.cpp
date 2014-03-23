@@ -512,9 +512,9 @@ QString Song::basicArtist() const
     return artist;
 }
 
-QString Song::describe(bool withMarkup, bool withYear) const
+QString Song::describe(bool withMarkup) const
 {
-    QString albumText=album.isEmpty() ? name : (withYear ? displayAlbum(album, Song::albumYear(*this)) : album);
+    QString albumText=album.isEmpty() ? name : displayAlbum(album, Song::albumYear(*this));
 
     return withMarkup
             ? title.isEmpty()

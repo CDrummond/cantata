@@ -105,7 +105,7 @@ static bool startHelper()
             DBUG << "start process";
             proc=new QProcess;
             #ifdef Q_OS_WIN
-            proc->start(qApp->applicationDirPath()+"/cantata-tags.exe", QStringList() << server->fullServerName());
+            proc->start(qApp->applicationDirPath()+"/helpers/cantata-tags.exe", QStringList() << server->fullServerName());
             #else
             proc->start(INSTALL_PREFIX"/lib/cantata/cantata-tags", QStringList() << server->fullServerName());
             #endif

@@ -67,6 +67,8 @@
     album, or song information - as these are likely to fail anyway.
 42. Jamendo radio streams.
 43. Install listenlive.xml to Cantata folder, as opposed to embedding in app.
+44. Use an external-helper app to read/write tags - to isolate Cantata from
+    TagLib crashes.
 
 1.3.3
 -----

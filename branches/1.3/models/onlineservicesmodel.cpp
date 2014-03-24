@@ -458,7 +458,7 @@ void OnlineServicesModel::resetModel()
             }
         }
     }
-    reset();
+    ActionModel::resetModel();
 }
 
 static const char * constExtensions[]={".jpg", ".png", 0};

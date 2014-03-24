@@ -37,7 +37,7 @@ public:
     virtual ~ActionModel() { }
     
     virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
-    virtual void resetModel() { reset(); }
+    virtual void resetModel() { beginResetModel(); endResetModel(); }
 };
 
 Q_DECLARE_METATYPE(QList<Action *>)

@@ -49,6 +49,12 @@ The following options may be passed to CMake:
         separated with a semicolon (";") e.g. -DCANTATA_TRANSLATIONS="es;pl"
         Default: all
 
+    -DUSE_OLD_DBUS_TYPEDEF=ON
+        Some Qt4 builds still use com.trolltech.QtDBus.QtTypeName, whereas
+        newer ones use org.qtproject.QtDBus.QtTypeName. If you get build
+        failures such as "fatal error: playeradaptor.h: No such file or
+        directory" then try calling CMake with this option set to true.
+
     -DENABLE_HTTP_STREAM_PLAYBACK=ON
         Enable support for playing back MPD HTTP streams via Phonon (Qt4) or
         QtMultiMedia (Qt5).

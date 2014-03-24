@@ -404,22 +404,34 @@ void TagEditor::readComments()
 {
     progress->setVisible(true);
     progress->setRange(0, original.count());
+    bool haveMultiple=original.count()>1;
+    bool updated=false;
 
     for (int i=0; i<original.count(); ++i) {
-        progress->setValue(i);
+        progress->setValue(i+1);
         if (i && 0==i%10) {
             QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
         }
 
+        if (0==i && haveMultiple) {
+            continue;
+        }
         Song song=original.at(i);
         QString comment=Tags::readComment(baseDir+song.file);
-        if (!!comment.isEmpty()) {
+        if (!comment.isEmpty()) {
             song.setComment(comment);
             original.replace(i, song);
             haveComments=true;
+            updated=true;
         }
     }
+    if (updated) {
+        edited=original;
+    }
     progress->setVisible(false);
+    if (!haveMultiple) {
+        setSong(original.at(0));
+    }
 }
 
 void TagEditor::applyVa()

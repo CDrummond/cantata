@@ -312,7 +312,6 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
     if (width()<w) {
         resize(w, height());
     }
-    setMaximumHeight(height());
     if (commentSupport) {
         QTimer::singleShot(0, this, SLOT(readComments()));
     }

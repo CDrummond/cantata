@@ -54,14 +54,7 @@ namespace Utils
     {
         return (fabs(d1 - d2) < precision);
     }
-    inline int random(int max)
-    {
-        #ifdef Q_OS_WIN32
-        return ::rand()%max;
-        #else
-        return ::random()%max;
-        #endif
-    }
+    inline int random(int max=0) { return max ? (qrand()%max) : qrand(); }
 
     extern QString strippedText(QString s);
     extern QString stripAcceleratorMarkers(QString label);

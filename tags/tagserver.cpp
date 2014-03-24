@@ -53,6 +53,10 @@ TagServer::TagServer(const QString &sockName, int parent)
 
 TagServer::~TagServer()
 {
+    // Just in case Cantata has crashed, ensure we delete the socket...
+    if (!socketName.isEmpty()) {
+        QLocalServer::removeServer(socketName);
+    }
 }
 
 void TagServer::process()

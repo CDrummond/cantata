@@ -104,11 +104,16 @@ static bool startHelper()
         int currentPid=getpid();
         #endif
         DBUG << "create server";
-        QString name="cantata-tags-"+QString::number(currentPid);
-        QLocalServer::removeServer(name);
         server=new QLocalServer;
-        bool l=server->listen(name);
-        DBUG << "Listening on" << server->fullServerName() << l;
+
+        forever {
+            QString name="cantata-tags-"+QString::number(currentPid)+QLatin1Char('-')+QString::number(Utils::random());
+            QLocalServer::removeServer(name);
+            if (server->listen(name)) {
+                DBUG << "Listening on" << server->fullServerName();
+                break;
+            }
+        }
 
         for (int i=0; i<5; ++i) { // Max5 start attempts...
             DBUG << "start process";

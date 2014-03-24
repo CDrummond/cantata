@@ -41,7 +41,6 @@ private Q_SLOTS:
     void checkParent();
 
 private:
-    QString socketName;
     int parentPid;
     QLocalSocket *socket;
 };

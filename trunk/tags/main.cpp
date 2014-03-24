@@ -28,8 +28,8 @@
 int main(int argc, char *argv[])
 {
     QCoreApplication app(argc, argv);
-    if (2==app.arguments().length()) {
-        new TagServer(app.arguments().at(1));
+    if (3==app.arguments().length()) {
+        new TagServer(app.arguments().at(1), app.arguments().at(2).toInt());
         return app.exec();
     }
     return 0;

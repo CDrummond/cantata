@@ -33,7 +33,7 @@ class TagServer : public QObject
     Q_OBJECT
 
 public:
-    TagServer(const QString &sockName);
+    TagServer(const QString &sockName, int parent);
     ~TagServer();
 
 private Q_SLOTS:
@@ -42,6 +42,7 @@ private Q_SLOTS:
 
 private:
     QString socketName;
+    int parentPid;
     QLocalSocket *socket;
 };
 

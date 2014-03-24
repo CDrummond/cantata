@@ -863,6 +863,7 @@ The following debug values may be used:
     Network Access            4096
     Context lyrics            8192
     Threads                  16384
+    External Tags            32768
 
 These values may be combined to enable multiple output. e.g. to enable MPD and
 covers logging:

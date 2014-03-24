@@ -31,8 +31,12 @@
 #include <QApplication>
 #include <QLocalSocket>
 #include <QLocalServer>
+#ifdef Q_OS_WIN
+#include <windows.h>
+#else
 #include <sys/types.h>
 #include <unistd.h>
+#endif
 
 #include <QDebug>
 static bool debugEnabled=false;
@@ -51,7 +55,7 @@ static const int constMaxWait=5000;
 static QMutex mutex;
 static QProcess *proc=0;
 static QLocalServer *server=0;
-static QLocalSocket *socket=0;
+static QLocalSocket *sock=0;
 
 enum ReadStatus {
     Read_Ok,
@@ -60,17 +64,17 @@ enum ReadStatus {
     Read_Error
 };
 
-static inline bool isRunning() { return proc && QProcess::Running==proc->state() && socket && QLocalSocket::ConnectedState==socket->state(); }
+static inline bool isRunning() { return proc && QProcess::Running==proc->state() && sock && QLocalSocket::ConnectedState==sock->state(); }
 
 static void stopHelper()
 {
-    if (socket) {
-        DBUG << "socket" << (void *)socket;
-        socket->flush();
-        socket->close();
-        socket->deleteLater();
+    if (sock) {
+        DBUG << "socket" << (void *)sock;
+        sock->flush();
+        sock->close();
+        sock->deleteLater();
 //        delete socket;
-        socket=0;
+        sock=0;
     }
     if (server) {
         DBUG << "server" << (void *)server;
@@ -94,8 +98,13 @@ static bool startHelper()
     DBUG << (void *)proc;
     if (!isRunning()) {
         stopHelper();
+        #ifdef Q_OS_WIN
+        int currentPid=GetCurrentProcessId();
+        #else
+        int currentPid=getpid();
+        #endif
         DBUG << "create server";
-        QString name="cantata-tags-"+QString::number(getpid());
+        QString name="cantata-tags-"+QString::number(currentPid);
         QLocalServer::removeServer(name);
         server=new QLocalServer;
         bool l=server->listen(name);
@@ -105,16 +114,16 @@ static bool startHelper()
             DBUG << "start process";
             proc=new QProcess;
             #ifdef Q_OS_WIN
-            proc->start(qApp->applicationDirPath()+"/helpers/cantata-tags.exe", QStringList() << server->fullServerName());
+            proc->start(qApp->applicationDirPath()+"/helpers/cantata-tags.exe", QStringList() << server->fullServerName() << QString::number(currentPid));
             #else
-            proc->start(INSTALL_PREFIX"/lib/cantata/cantata-tags", QStringList() << server->fullServerName());
+            proc->start(INSTALL_PREFIX"/lib/cantata/cantata-tags", QStringList() << server->fullServerName() << QString::number(currentPid));
             #endif
             if (proc->waitForStarted(constMaxWait)) {
                 DBUG << "process started, on pid" << proc->pid() << "- wait for helper to connect";
                 if (server->waitForNewConnection(constMaxWait)) {
-                    socket=server->nextPendingConnection();
+                    sock=server->nextPendingConnection();
                 }
-                if (socket) {
+                if (sock) {
                     return true;
                 } else {
                     DBUG << "helper did not connect";
@@ -138,8 +147,8 @@ static ReadStatus readReply(QByteArray &data)
         stopHelper();
         return Read_Closed;
     }
-    if (socket->waitForReadyRead(constMaxWait)) {
-        data=socket->readAll();
+    if (sock->waitForReadyRead(constMaxWait)) {
+        data=sock->readAll();
         DBUG << "read reply, bytes:" << data.length();
         return data.isEmpty() ? Read_Error : Read_Ok;
     }
@@ -163,7 +172,7 @@ Song TagClient::read(const QString &fileName)
         QByteArray message;
         QDataStream outStream(&message, QIODevice::WriteOnly);
         outStream << QString(__FUNCTION__) << fileName;
-        socket->write(message);
+        sock->write(message);
 
         QByteArray data;
         if (Read_Ok==readReply(data)) {
@@ -183,7 +192,7 @@ QImage TagClient::readImage(const QString &fileName)
         QByteArray message;
         QDataStream outStream(&message, QIODevice::WriteOnly);
         outStream << QString(__FUNCTION__) << fileName;
-        socket->write(message);
+        sock->write(message);
 
         QByteArray data;
         if (Read_Ok==readReply(data)) {
@@ -203,7 +212,7 @@ QString TagClient::readLyrics(const QString &fileName)
         QByteArray message;
         QDataStream outStream(&message, QIODevice::WriteOnly);
         outStream << QString(__FUNCTION__) << fileName;
-        socket->write(message);
+        sock->write(message);
 
         QByteArray data;
         if (Read_Ok==readReply(data)) {
@@ -223,12 +232,13 @@ QString TagClient::readComment(const QString &fileName)
         QByteArray message;
         QDataStream outStream(&message, QIODevice::WriteOnly);
         outStream << QString(__FUNCTION__) << fileName;
-        socket->write(message);
+        sock->write(message);
 
         QByteArray data;
         if (Read_Ok==readReply(data)) {
             QDataStream inStream(data);
             inStream >> resp;
+            DBUG << "resp" << resp;
         }
     }
     return resp;
@@ -243,7 +253,7 @@ int TagClient::updateArtistAndTitle(const QString &fileName, const Song &song)
         QByteArray message;
         QDataStream outStream(&message, QIODevice::WriteOnly);
         outStream << QString(__FUNCTION__) << fileName << song;
-        socket->write(message);
+        sock->write(message);
 
         QByteArray data;
         ReadStatus readStatus=readReply(data);
@@ -266,7 +276,7 @@ int TagClient::update(const QString &fileName, const Song &from, const Song &to,
         QByteArray message;
         QDataStream outStream(&message, QIODevice::WriteOnly);
         outStream << QString(__FUNCTION__) << fileName << from << to << id3Ver << saveComment;
-        socket->write(message);
+        sock->write(message);
 
         QByteArray data;
         ReadStatus readStatus=readReply(data);
@@ -289,7 +299,7 @@ Tags::ReplayGain TagClient::readReplaygain(const QString &fileName)
         QByteArray message;
         QDataStream outStream(&message, QIODevice::WriteOnly);
         outStream << QString(__FUNCTION__) << fileName;
-        socket->write(message);
+        sock->write(message);
 
         QByteArray data;
         if (Read_Ok==readReply(data)) {
@@ -309,7 +319,7 @@ int TagClient::updateReplaygain(const QString &fileName, const Tags::ReplayGain 
         QByteArray message;
         QDataStream outStream(&message, QIODevice::WriteOnly);
         outStream << QString(__FUNCTION__) << fileName << rg;
-        socket->write(message);
+        sock->write(message);
 
         QByteArray data;
         ReadStatus readStatus=readReply(data);
@@ -332,7 +342,7 @@ int TagClient::embedImage(const QString &fileName, const QByteArray &cover)
         QByteArray message;
         QDataStream outStream(&message, QIODevice::WriteOnly);
         outStream << QString(__FUNCTION__) << fileName << cover;
-        socket->write(message);
+        sock->write(message);
 
         QByteArray data;
         ReadStatus readStatus=readReply(data);
@@ -355,7 +365,7 @@ QString TagClient::oggMimeType(const QString &fileName)
         QByteArray message;
         QDataStream outStream(&message, QIODevice::WriteOnly);
         outStream << QString(__FUNCTION__) << fileName;
-        socket->write(message);
+        sock->write(message);
 
         QByteArray data;
         if (Read_Ok==readReply(data)) {

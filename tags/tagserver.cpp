@@ -36,27 +36,35 @@
 #include <signal.h>
 #include <unistd.h>
 #endif
+#include <stdlib.h>
+
+static QString socketName;
+
+static void deleteSocket()
+{
+    // Just in case Cantata has crashed, ensure we delete the socket...
+    if (!socketName.isEmpty()) {
+        QLocalServer::removeServer(socketName);
+    }
+}
 
 TagServer::TagServer(const QString &sockName, int parent)
-    : socketName(sockName)
-    , parentPid(parent)
+    : parentPid(parent)
 {
     socket=new QLocalSocket(this);
-    socket->connectToServer(socketName);
+    socket->connectToServer(sockName);
     connect(socket, SIGNAL(readyRead()), SLOT(process()));
     connect(socket, SIGNAL(disconnected()), qApp, SLOT(quit()));
     QTimer *timer=new QTimer(this);
     timer->setSingleShot(false);
     timer->start(5000);
     connect(timer, SIGNAL(timeout()), SLOT(checkParent()));
+    socketName=sockName;
+    atexit(deleteSocket);
 }
 
 TagServer::~TagServer()
 {
-    // Just in case Cantata has crashed, ensure we delete the socket...
-    if (!socketName.isEmpty()) {
-        QLocalServer::removeServer(socketName);
-    }
 }
 
 void TagServer::process()

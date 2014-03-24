@@ -24,6 +24,7 @@
 #include "albumscanner.h"
 #include "config.h"
 #include <QProcess>
+#include <QApplication>
 #include <locale.h>
 
 AlbumScanner::AlbumScanner(const QMap<int, QString> &files)
@@ -53,7 +54,11 @@ void AlbumScanner::start()
         proc->setReadChannel(QProcess::StandardOutput);
         connect(proc, SIGNAL(finished(int)), this, SLOT(procFinished()));
         connect(proc, SIGNAL(readyReadStandardOutput()), this, SLOT(read()));
+        #ifdef Q_OS_WIN
+        proc->start(qApp->applicationDirPath()+"/helpers/cantata-replaygain.exe", fileNames, QProcess::ReadOnly);
+        #else
         proc->start(INSTALL_PREFIX"/lib/cantata/cantata-replaygain", fileNames, QProcess::ReadOnly);
+        #endif
     }
 }
 

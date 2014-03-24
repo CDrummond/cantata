@@ -115,7 +115,7 @@ namespace QJson {
     \sa Parser
     \sa Serializer
   */
-  class QJSON_EXPORT QObjectHelper {
+  class /*QJSON_EXPORT*/ QObjectHelper {
     public:
       QObjectHelper();
       ~QObjectHelper();

@@ -115,7 +115,6 @@ static bool startHelper()
                     socket=server->nextPendingConnection();
                 }
                 if (socket) {
-                    DBUG << "connected to helper" << (void *)socket << (int)socket->state() << socket->isValid() << socket->isOpen() << socket->isReadable() << socket->isWritable();
                     return true;
                 } else {
                     DBUG << "helper did not connect";
@@ -136,7 +135,6 @@ static ReadStatus readReply(QByteArray &data)
     DBUG << (void *)proc;
     if (!isRunning()) {
         DBUG << "not running?";
-        if (socket) DBUG << "SOCK STATE" << (int)socket->state();
         stopHelper();
         return Read_Closed;
     }
@@ -159,9 +157,9 @@ void TagClient::stop()
 Song TagClient::read(const QString &fileName)
 {
     QMutexLocker locker(&mutex);
+    DBUG << fileName;
     Song resp;
     if (startHelper()) {
-        DBUG << fileName;
         QByteArray message;
         QDataStream outStream(&message, QIODevice::WriteOnly);
         outStream << QString(__FUNCTION__) << fileName;
@@ -179,9 +177,9 @@ Song TagClient::read(const QString &fileName)
 QImage TagClient::readImage(const QString &fileName)
 {
     QMutexLocker locker(&mutex);
+    DBUG << fileName;
     QImage resp;
     if (startHelper()) {
-        DBUG << fileName;
         QByteArray message;
         QDataStream outStream(&message, QIODevice::WriteOnly);
         outStream << QString(__FUNCTION__) << fileName;
@@ -199,9 +197,9 @@ QImage TagClient::readImage(const QString &fileName)
 QString TagClient::readLyrics(const QString &fileName)
 {
     QMutexLocker locker(&mutex);
+    DBUG << fileName;
     QString resp;
     if (startHelper()) {
-        DBUG << fileName;
         QByteArray message;
         QDataStream outStream(&message, QIODevice::WriteOnly);
         outStream << QString(__FUNCTION__) << fileName;
@@ -219,9 +217,9 @@ QString TagClient::readLyrics(const QString &fileName)
 QString TagClient::readComment(const QString &fileName)
 {
     QMutexLocker locker(&mutex);
+    DBUG << fileName;
     QString resp;
     if (startHelper()) {
-        DBUG << fileName << (void *)socket << (int)socket->state() << socket->isValid() << socket->isOpen() << socket->isReadable() << socket->isWritable();
         QByteArray message;
         QDataStream outStream(&message, QIODevice::WriteOnly);
         outStream << QString(__FUNCTION__) << fileName;
@@ -239,9 +237,9 @@ QString TagClient::readComment(const QString &fileName)
 int TagClient::updateArtistAndTitle(const QString &fileName, const Song &song)
 {
     QMutexLocker locker(&mutex);
+    DBUG << fileName;
     int resp=Tags::Update_Failed;
     if (startHelper()) {
-        DBUG << fileName;
         QByteArray message;
         QDataStream outStream(&message, QIODevice::WriteOnly);
         outStream << QString(__FUNCTION__) << fileName << song;
@@ -262,9 +260,9 @@ int TagClient::updateArtistAndTitle(const QString &fileName, const Song &song)
 int TagClient::update(const QString &fileName, const Song &from, const Song &to, int id3Ver, bool saveComment)
 {
     QMutexLocker locker(&mutex);
+    DBUG << fileName;
     int resp=Tags::Update_Failed;
     if (startHelper()) {
-        DBUG << fileName;
         QByteArray message;
         QDataStream outStream(&message, QIODevice::WriteOnly);
         outStream << QString(__FUNCTION__) << fileName << from << to << id3Ver << saveComment;
@@ -285,8 +283,9 @@ int TagClient::update(const QString &fileName, const Song &from, const Song &to,
 Tags::ReplayGain TagClient::readReplaygain(const QString &fileName)
 {
     QMutexLocker locker(&mutex);
+    DBUG << fileName;
     Tags::ReplayGain resp;
-    if (startHelper()) {       
+    if (startHelper()) {
         QByteArray message;
         QDataStream outStream(&message, QIODevice::WriteOnly);
         outStream << QString(__FUNCTION__) << fileName;
@@ -304,14 +303,13 @@ Tags::ReplayGain TagClient::readReplaygain(const QString &fileName)
 int TagClient::updateReplaygain(const QString &fileName, const Tags::ReplayGain &rg)
 {
     QMutexLocker locker(&mutex);
+    DBUG << fileName;
     int resp=Tags::Update_Failed;
     if (startHelper()) {
-        DBUG << fileName;
         QByteArray message;
         QDataStream outStream(&message, QIODevice::WriteOnly);
         outStream << QString(__FUNCTION__) << fileName << rg;
         socket->write(message);
-
 
         QByteArray data;
         ReadStatus readStatus=readReply(data);
@@ -328,9 +326,9 @@ int TagClient::updateReplaygain(const QString &fileName, const Tags::ReplayGain 
 int TagClient::embedImage(const QString &fileName, const QByteArray &cover)
 {
     QMutexLocker locker(&mutex);
+    DBUG << fileName;
     int resp=Tags::Update_Failed;
     if (startHelper()) {
-        DBUG << fileName;
         QByteArray message;
         QDataStream outStream(&message, QIODevice::WriteOnly);
         outStream << QString(__FUNCTION__) << fileName << cover;
@@ -351,9 +349,9 @@ int TagClient::embedImage(const QString &fileName, const QByteArray &cover)
 QString TagClient::oggMimeType(const QString &fileName)
 {
     QMutexLocker locker(&mutex);
+    DBUG << fileName;
     QString resp;
     if (startHelper()) {
-        DBUG << fileName;
         QByteArray message;
         QDataStream outStream(&message, QIODevice::WriteOnly);
         outStream << QString(__FUNCTION__) << fileName;

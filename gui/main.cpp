@@ -60,6 +60,9 @@
 #include "songdialog.h"
 #include "networkaccessmanager.h"
 #include "ultimatelyricsprovider.h"
+#ifdef ENABLE_EXTERNAL_TAGS
+#include "tagclient.h"
+#endif
 
 #include <QMutex>
 #include <QMutexLocker>
@@ -145,9 +148,10 @@ enum Debug {
     Dbg_NetworkAccess     = 0x1000,
     Dbg_Context_Lyrics    = 0x2000,
     Dbg_Threads           = 0x4000,
+    Dbg_Tags              = 0x8000,
 
     // NOTE: MUST UPDATE Dbg_All IF ADD NEW ITEMS!!!
-    Dbg_All               = 0x7FFF
+    Dbg_All               = 0xFFFF
 };
 
 static void installDebugMessageHandler()
@@ -206,6 +210,11 @@ static void installDebugMessageHandler()
         if (dbg&Dbg_Threads) {
             ThreadCleaner::enableDebug();
         }
+        #ifdef ENABLE_EXTERNAL_TAGS
+        if (dbg&Dbg_Tags) {
+            TagClient::enableDebug();
+        }
+        #endif
         if (dbg&Dbg_All && logToFile) {
             #if QT_VERSION < 0x050000
             qInstallMsgHandler(cantataQtMsgHandler);

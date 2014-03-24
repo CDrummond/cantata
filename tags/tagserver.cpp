@@ -29,12 +29,17 @@
 #include <QLocalServer>
 #include <QLocalSocket>
 #include <QTimer>
+#ifdef Q_OS_WIN
+#include <windows.h>
+#else
 #include <sys/types.h>
 #include <signal.h>
 #include <unistd.h>
+#endif
 
-TagServer::TagServer(const QString &sockName)
+TagServer::TagServer(const QString &sockName, int parent)
     : socketName(sockName)
+    , parentPid(parent)
 {
     socket=new QLocalSocket(this);
     socket->connectToServer(socketName);
@@ -105,7 +110,13 @@ void TagServer::process()
 void TagServer::checkParent()
 {
     // If parent process (Cantata) has terminated, then we need to exit...
-    if (0!=::kill(getppid(), 0)) {
+    #ifdef Q_OS_WIN
+    if (0==OpenProcess(PROCESS_QUERY_INFORMATION, FALSE, parentPid)) {
         qApp->exit();
     }
+    #else
+    if (0!=::kill(parentPid, 0)) {
+        qApp->exit();
+    }
+    #endif
 }

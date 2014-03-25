@@ -305,7 +305,6 @@ private Q_SLOTS:
 
 private:
     bool isFirstRun;
-    bool modified;
     QTimer *timer;
     int ver;
     #if defined ENABLE_KDE_SUPPORT && defined ENABLE_KWALLET

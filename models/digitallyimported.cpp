@@ -41,8 +41,7 @@ const QString DigitallyImported::constPublicValue=QLatin1String("public3");
 GLOBAL_STATIC(DigitallyImported, instance)
 
 DigitallyImported::DigitallyImported()
-    : cfgChanged(false)
-    , job(0)
+    : job(0)
     , streamType(0)
     , timer(0)
 {
@@ -73,14 +72,8 @@ void DigitallyImported::logout()
         job->deleteLater();
         job=0;
     }
-    if (!listenHash.isEmpty()) {
-        listenHash=QString();
-        cfgChanged=true;
-    }
-    if (!expires.isNull()) {
-        expires=QDateTime();
-        cfgChanged=true;
-    }
+    listenHash=QString();
+    expires=QDateTime();
     controlTimer();
 }
 
@@ -120,10 +113,6 @@ void DigitallyImported::load()
 
 void DigitallyImported::save()
 {
-    if (!cfgChanged) {
-        return;
-    }
-
     Configuration cfg(constDiGroup);
 
     cfg.set("userName", userName);
@@ -131,32 +120,7 @@ void DigitallyImported::save()
     cfg.set("listenHash", listenHash);
     cfg.set("streamType", streamType);
     cfg.set("expires", expires.toString(Qt::ISODate));
-    cfgChanged=false;
     emit updated();
-}
-
-void DigitallyImported::setUser(const QString &u)
-{
-    if (userName!=u) {
-        cfgChanged=true;
-        userName=u;
-    }
-}
-
-void DigitallyImported::setPass(const QString &p)
-{
-    if (password!=p) {
-        cfgChanged=true;
-        password=p;
-    }
-}
-
-void DigitallyImported::setAudioType(int a)
-{
-    if (streamType!=a) {
-        cfgChanged=true;
-        streamType=a;
-    }
 }
 
 QString DigitallyImported::modifyUrl(const QString &u) const
@@ -227,7 +191,6 @@ void DigitallyImported::loginResponse()
     if (ex!=expires || lh!=listenHash) {
         expires=ex;
         listenHash=lh;
-        cfgChanged=true;
         save();
     }
     status=i18n("Logged in (expiry:%1)", expires.toString(Qt::ISODate));

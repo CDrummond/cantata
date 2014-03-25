@@ -30,7 +30,7 @@
 #include "itemview.h"
 #include "config.h"
 #include "localize.h"
-#include "qtplural.h"
+#include "plurals.h"
 #include "icons.h"
 #include "gtkstyle.h"
 #include <QStyledItemDelegate>
@@ -348,11 +348,7 @@ public:
 
             if (isCollection || !view->isExpanded(song.key, collection)) {
                 showTrackDuration=false;
-                #ifdef ENABLE_KDE_SUPPORT
-                track=i18np("1 Track", "%1 Tracks", index.data(GroupedView::Role_SongCount).toUInt());
-                #else
-                track=QTP_TRACKS_STR(index.data(GroupedView::Role_SongCount).toUInt());
-                #endif
+                track=Plurals::tracks(index.data(GroupedView::Role_SongCount).toUInt());
             }
         } else if (rtl) {
             r.adjust(0, 0, -(constBorder*4), 0);

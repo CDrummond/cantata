@@ -30,7 +30,7 @@
 #include "icons.h"
 #include "networkaccessmanager.h"
 #include "localize.h"
-#include "qtplural.h"
+#include "plurals.h"
 #include "utils.h"
 #include "settings.h"
 #include "playqueuemodel.h"
@@ -677,11 +677,7 @@ QVariant StreamsModel::data(const QModelIndex &index, int role) const
             case CategoryItem::Fetching:
                 return i18n("Loading...");
             default:
-                #ifdef ENABLE_KDE_SUPPORT
-                return i18np("1 Entry", "%1 Entries", cat->children.count());
-                #else
-                return QTP_ENTRIES_STR(cat->children.count());
-                #endif
+                return Plurals::entries(cat->children.count());
             }
         }
         break;

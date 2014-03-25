@@ -30,7 +30,7 @@
 #include "networkaccessmanager.h"
 #include "settings.h"
 #include "localize.h"
-#include "qtplural.h"
+#include "plurals.h"
 #include "actioncollection.h"
 #include "globalstatic.h"
 #include <QDir>
@@ -246,11 +246,7 @@ QVariant Dynamic::data(const QModelIndex &index, int role) const
     case Qt::DecorationRole:
         return IS_ACTIVE(entryList.at(index.row()).name) ? QIcon::fromTheme("media-playback-start") : Icons::self()->dynamicRuleIcon;
     case ItemView::Role_SubText: {
-        #ifdef ENABLE_KDE_SUPPORT
-        return i18np("1 Rule", "%1 Rules", entryList.at(index.row()).rules.count());
-        #else
-        return QTP_RULES_STR(entryList.at(index.row()).rules.count());
-        #endif
+        return Plurals::rules(entryList.at(index.row()).rules.count());
     }
     case ItemView::Role_Actions: {
         QVariant v;

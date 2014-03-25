@@ -42,7 +42,7 @@
 #include "itemview.h"
 #include "mpdparseutils.h"
 #include "localize.h"
-#include "qtplural.h"
+#include "plurals.h"
 #include "icons.h"
 #include "filejob.h"
 #include "utils.h"
@@ -148,18 +148,10 @@ QVariant OnlineServicesModel::data(const QModelIndex &index, int role) const
                 return i18n("Use search to locate tracks");
             }
             if (srv->isSearchBased()) {
-                #ifdef ENABLE_KDE_SUPPORT
-                return i18np("1 Track", "%1 Tracks", item->childCount());
-                #else
-                return QTP_TRACKS_STR(item->childCount());
-                #endif
+                return Plurals::tracks(item->childCount());
             }
             if (srv->isPodcasts()) {
-                #ifdef ENABLE_KDE_SUPPORT
-                return i18np("1 Podcast", "%1 Podcasts", item->childCount());
-                #else
-                return QTP_PODCASTS_STR(item->childCount());
-                #endif
+                return Plurals::podcasts(item->childCount());
             }
             break;
         }

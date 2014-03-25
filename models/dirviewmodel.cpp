@@ -32,7 +32,7 @@
 #include <QXmlStreamReader>
 #include <QXmlStreamWriter>
 #include "localize.h"
-#include "qtplural.h"
+#include "plurals.h"
 #include "dirviewmodel.h"
 #include "dirviewitem.h"
 #include "dirviewitemfile.h"
@@ -186,21 +186,11 @@ QVariant DirViewModel::data(const QModelIndex &index, int role) const
     case Qt::ToolTipRole:
         return 0==item->childCount()
             ? item->data()
-            : item->data()+"\n"+
-                #ifdef ENABLE_KDE_SUPPORT
-                i18np("1 Entry", "%1 Entries", item->childCount());
-                #else
-                QTP_ENTRIES_STR(item->childCount());
-                #endif
+            : item->data()+"\n"+Plurals::entries(item->childCount());
     case ItemView::Role_SubText:
         switch (item->type()) {
         case DirViewItem::Type_Dir:
-            #ifdef ENABLE_KDE_SUPPORT
-            return i18np("1 Entry", "%1 Entries", item->childCount());
-            #else
-            return QTP_ENTRIES_STR(item->childCount());
-            #endif
-            break;
+            return Plurals::entries(item->childCount());
         case DirViewItem::Type_File:
             switch (static_cast<DirViewItemFile *>(item)->fileType()) {
             case DirViewItemFile::Audio:    return i18n("Audio File");

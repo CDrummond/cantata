@@ -25,7 +25,7 @@
 #include "icons.h"
 #include "itemview.h"
 #include "localize.h"
-#include "qtplural.h"
+#include "plurals.h"
 #include "playqueuemodel.h"
 #include "networkaccessmanager.h"
 #include "stdactions.h"
@@ -121,11 +121,7 @@ QVariant StreamSearchModel::data(const QModelIndex &index, int role) const
             case StreamsModel::CategoryItem::Fetching:
                 return i18n("Loading...");
             default:
-                #ifdef ENABLE_KDE_SUPPORT
-                return i18np("1 Entry", "%1 Entries", cat->children.count());
-                #else
-                return QTP_ENTRIES_STR(cat->children.count());
-                #endif
+                return Plurals::entries(cat->children.count());
             }
         } else {
             return item->subText.isEmpty() ? QLatin1String("-") : item->subText;

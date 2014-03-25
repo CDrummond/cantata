@@ -36,9 +36,10 @@
 #include "transcodingjob.h"
 #include "utils.h"
 #include "mpdparseutils.h"
+#include "mpdconnection.h"
 #include "localize.h"
 #include "filejob.h"
-#include "settings.h"
+#include "configuration.h"
 #include "thread.h"
 #include <QTimer>
 #include <QDir>
@@ -1331,10 +1332,7 @@ void MtpDevice::deviceDetails(const QString &s)
         serial=s;
         QString configKey=cfgKey(solidDev, serial);
         opts.load(configKey);
-        #ifndef ENABLE_KDE_SUPPORT
-        QSettings cfg;
-        #endif
-        configured=HAS_GROUP(configKey);
+        configured=Configuration().hasGroup(configKey);
         if (!opts.name.isEmpty() && opts.name!=defaultName) {
             setData(opts.name);
             emit renamed();

@@ -22,7 +22,7 @@
  */
 
 #include "digitallyimported.h"
-#include "settings.h"
+#include "configuration.h"
 #include "networkaccessmanager.h"
 #include "qjson/parser.h"
 #include "localize.h"
@@ -41,7 +41,8 @@ const QString DigitallyImported::constPublicValue=QLatin1String("public3");
 GLOBAL_STATIC(DigitallyImported, instance)
 
 DigitallyImported::DigitallyImported()
-    : job(0)
+    : cfgChanged(false)
+    , job(0)
     , streamType(0)
     , timer(0)
 {
@@ -72,8 +73,14 @@ void DigitallyImported::logout()
         job->deleteLater();
         job=0;
     }
-    listenHash=QString();
-    expires=QDateTime();
+    if (!listenHash.isEmpty()) {
+        listenHash=QString();
+        cfgChanged=true;
+    }
+    if (!expires.isNull()) {
+        expires=QDateTime();
+        cfgChanged=true;
+    }
     controlTimer();
 }
 
@@ -88,17 +95,13 @@ void DigitallyImported::addAuthHeader(QNetworkRequest &req) const
 
 void DigitallyImported::load()
 {
-    #ifdef ENABLE_KDE_SUPPORT
-    KConfigGroup cfg(KGlobal::config(), constDiGroup);
-    #else
-    QSettings cfg;
-    cfg.beginGroup(constDiGroup);
-    #endif
-    userName=GET_STRING("userName", userName);
-    password=GET_STRING("password", password);
-    listenHash=GET_STRING("listenHash", listenHash);
-    streamType=GET_INT("streamType", streamType);
-    QString ex=GET_STRING("expires", QString());
+    Configuration cfg(constDiGroup);
+
+    userName=cfg.get("userName", userName);
+    password=cfg.get("password", password);
+    listenHash=cfg.get("listenHash", listenHash);
+    streamType=cfg.get("streamType", streamType);
+    QString ex=cfg.get("expires", QString());
 
     status=i18n("Not logged in");
     if (ex.isEmpty()) {
@@ -117,24 +120,43 @@ void DigitallyImported::load()
 
 void DigitallyImported::save()
 {
-    #ifdef ENABLE_KDE_SUPPORT
-    KConfigGroup cfg(KGlobal::config(), constDiGroup);
-    #else
-    QSettings cfg;
-    cfg.beginGroup(constDiGroup);
-    #endif
+    if (!cfgChanged) {
+        return;
+    }
 
-    SET_VALUE("userName", userName);
-    SET_VALUE("password", password);
-    SET_VALUE("listenHash", listenHash);
-    SET_VALUE("streamType", streamType);
-    SET_VALUE("expires", expires.toString(Qt::ISODate));
+    Configuration cfg(constDiGroup);
 
-    #ifndef ENABLE_KDE_SUPPORT
-    cfg.endGroup();
-    #endif
-    CFG_SYNC;
+    cfg.set("userName", userName);
+    cfg.set("password", password);
+    cfg.set("listenHash", listenHash);
+    cfg.set("streamType", streamType);
+    cfg.set("expires", expires.toString(Qt::ISODate));
+    cfgChanged=false;
     emit updated();
+}
+
+void DigitallyImported::setUser(const QString &u)
+{
+    if (userName!=u) {
+        cfgChanged=true;
+        userName=u;
+    }
+}
+
+void DigitallyImported::setPass(const QString &p)
+{
+    if (password!=p) {
+        cfgChanged=true;
+        password=p;
+    }
+}
+
+void DigitallyImported::setAudioType(int a)
+{
+    if (streamType!=a) {
+        cfgChanged=true;
+        streamType=a;
+    }
 }
 
 QString DigitallyImported::modifyUrl(const QString &u) const
@@ -205,6 +227,7 @@ void DigitallyImported::loginResponse()
     if (ex!=expires || lh!=listenHash) {
         expires=ex;
         listenHash=lh;
+        cfgChanged=true;
         save();
     }
     status=i18n("Logged in (expiry:%1)", expires.toString(Qt::ISODate));

@@ -24,7 +24,7 @@
 #include "deviceoptions.h"
 #include "song.h"
 #include "localize.h"
-#include "settings.h"
+#include "configuration.h"
 #include <QDir>
 #include <QUrl>
 #include <unistd.h>
@@ -209,85 +209,65 @@ static const QLatin1String constMpdGroup("mpd");
 
 bool DeviceOptions::isConfigured(const QString &group, bool isMpd)
 {
-    #ifdef ENABLE_KDE_SUPPORT
-    KConfigGroup grp(KGlobal::config(), !isMpd || group.isEmpty() || KGlobal::config()->hasGroup(group) ? group : constMpdGroup);
-    return grp.hasKey("scheme");
-    #else
-    QSettings cfg;
-    QString sep=group.isEmpty() ? QString() : ((-1==cfg.childGroups().indexOf(group) && isMpd ? constMpdGroup : group)+"/");
-    return cfg.contains(sep+"scheme");
-    #endif
+    Configuration grp(!isMpd || group.isEmpty() ? group : constMpdGroup);
+    return grp.hasEntry("scheme");
 }
 
 void DeviceOptions::load(const QString &group, bool isMpd)
 {
-    #ifdef ENABLE_KDE_SUPPORT
-    KConfigGroup cfg(KGlobal::config(), !isMpd || group.isEmpty() || KGlobal::config()->hasGroup(group) ? group : constMpdGroup);
-    #else
-    QSettings cfg;
-    cfg.beginGroup(!isMpd || group.isEmpty() || HAS_GROUP(group) ? group : constMpdGroup);
-    #endif
-    scheme=GET_STRING("scheme", scheme);
-    vfatSafe=GET_BOOL("vfatSafe", vfatSafe);
-    asciiOnly=GET_BOOL("asciiOnly", asciiOnly);
-    ignoreThe=GET_BOOL("ignoreThe", ignoreThe);
-    replaceSpaces=GET_BOOL("replaceSpaces", replaceSpaces);
+    Configuration cfg(!isMpd || group.isEmpty() ? group : constMpdGroup);
+    scheme=cfg.get("scheme", scheme);
+    vfatSafe=cfg.get("vfatSafe", vfatSafe);
+    asciiOnly=cfg.get("asciiOnly", asciiOnly);
+    ignoreThe=cfg.get("ignoreThe", ignoreThe);
+    replaceSpaces=cfg.get("replaceSpaces", replaceSpaces);
     #ifdef ENABLE_DEVICES_SUPPORT
     if (!isMpd) {
-        useCache=GET_BOOL("useCache", useCache);
-        fixVariousArtists=GET_BOOL("fixVariousArtists", fixVariousArtists);
-        name=GET_STRING("name", name);
-        coverName=GET_STRING("coverFileName", coverName);
-        coverMaxSize=GET_INT("coverMaxSize", coverMaxSize);
-        volumeId=GET_STRING("volumeId", volumeId);
+        useCache=cfg.get("useCache", useCache);
+        fixVariousArtists=cfg.get("fixVariousArtists", fixVariousArtists);
+        name=cfg.get("name", name);
+        coverName=cfg.get("coverFileName", coverName);
+        coverMaxSize=cfg.get("coverMaxSize", coverMaxSize);
+        volumeId=cfg.get("volumeId", volumeId);
         checkCoverSize();
     }
-    transcoderCodec=GET_STRING("transcoderCodec", (isMpd ? "lame" : transcoderCodec));
-    transcoderValue=GET_INT("transcoderValue", (isMpd ? 2 : transcoderValue));
-    transcoderWhenDifferent=GET_BOOL("transcoderWhenDifferent", transcoderWhenDifferent);
+    transcoderCodec=cfg.get("transcoderCodec", (isMpd ? "lame" : transcoderCodec));
+    transcoderValue=cfg.get("transcoderValue", (isMpd ? 2 : transcoderValue));
+    transcoderWhenDifferent=cfg.get("transcoderWhenDifferent", transcoderWhenDifferent);
     #endif
 }
 
 void DeviceOptions::save(const QString &group, bool isMpd, bool saveTrans, bool saveFileName) const
 {
-    #ifdef ENABLE_KDE_SUPPORT
-    KConfigGroup cfg(KGlobal::config(), !isMpd || group.isEmpty() || KGlobal::config()->hasGroup(group) ? group : constMpdGroup);
-    #else
-    QSettings cfg;
-    cfg.beginGroup(!isMpd || group.isEmpty() || HAS_GROUP(group) ? group : constMpdGroup);
-    #endif
+    Configuration cfg(!isMpd || group.isEmpty() ? group : constMpdGroup);
 
     if (saveFileName) {
-        SET_VALUE("scheme", scheme);
-        SET_VALUE("vfatSafe", vfatSafe);
-        SET_VALUE("asciiOnly", asciiOnly);
-        SET_VALUE("ignoreThe", ignoreThe);
-        SET_VALUE("replaceSpaces", replaceSpaces);
+        cfg.set("scheme", scheme);
+        cfg.set("vfatSafe", vfatSafe);
+        cfg.set("asciiOnly", asciiOnly);
+        cfg.set("ignoreThe", ignoreThe);
+        cfg.set("replaceSpaces", replaceSpaces);
     }
     #ifdef ENABLE_DEVICES_SUPPORT
     if (!isMpd) {
-        SET_VALUE("useCache", useCache);
-        SET_VALUE("fixVariousArtists", fixVariousArtists);
-        SET_VALUE("name", name);
-        SET_VALUE("coverFileName", coverName);
-        SET_VALUE("coverMaxSize", coverMaxSize);
-        SET_VALUE("volumeId", volumeId);
+        cfg.set("useCache", useCache);
+        cfg.set("fixVariousArtists", fixVariousArtists);
+        cfg.set("name", name);
+        cfg.set("coverFileName", coverName);
+        cfg.set("coverMaxSize", coverMaxSize);
+        cfg.set("volumeId", volumeId);
     }
     if (saveTrans) {
-        SET_VALUE("transcoderCodec", transcoderCodec);
-        SET_VALUE("transcoderValue", transcoderValue);
-        SET_VALUE("transcoderWhenDifferent", transcoderWhenDifferent);
+        cfg.set("transcoderCodec", transcoderCodec);
+        cfg.set("transcoderValue", transcoderValue);
+        cfg.set("transcoderWhenDifferent", transcoderWhenDifferent);
     }
     #else
     Q_UNUSED(saveTrans)
     #endif
-    CFG_SYNC;
 
-    #ifndef ENABLE_KDE_SUPPORT
-    cfg.endGroup();
-    #endif
-    if (isMpd && HAS_GROUP(constMpdGroup)) {
-        REMOVE_GROUP(constMpdGroup);
+    if (isMpd && cfg.hasGroup(constMpdGroup)) {
+        cfg.removeGroup(constMpdGroup);
     }
 }
 

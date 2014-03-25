@@ -27,7 +27,7 @@
 #include "musiclibraryitemalbum.h"
 #include "musiclibraryitemsong.h"
 #include "song.h"
-#include "settings.h"
+#include "configuration.h"
 #include "localize.h"
 #include <QXmlStreamReader>
 
@@ -196,33 +196,23 @@ static MagnatuneService::DownloadType toDownloadType(const QString &f)
 
 void MagnatuneService::loadConfig()
 {
-    #ifdef ENABLE_KDE_SUPPORT
-    KConfigGroup cfg(KGlobal::config(), constName);
-    #else
-    QSettings cfg;
-    cfg.beginGroup(constName);
-    #endif
-    membership=toMembership(GET_STRING("membership", membershipStr(membership)));
-    download=toDownloadType(GET_STRING("download", downloadTypeStr(download)));
-    username=GET_STRING("username", username);
-    password=GET_STRING("username", password);
+    Configuration cfg(constName);
+
+    membership=toMembership(cfg.get("membership", membershipStr(membership)));
+    download=toDownloadType(cfg.get("download", downloadTypeStr(download)));
+    username=cfg.get("username", username);
+    password=cfg.get("username", password);
 }
 
 void MagnatuneService::saveConfig()
 {
-    #ifdef ENABLE_KDE_SUPPORT
-    KConfigGroup cfg(KGlobal::config(), constName);
-    #else
-    QSettings cfg;
-    cfg.beginGroup(constName);
-    #endif
-    SET_VALUE("membership",  membershipStr(membership));
-    SET_VALUE("download",  downloadTypeStr(download));
-    SET_VALUE("username", username);
-    SET_VALUE("password", password);
-    cfg.sync();
-}
+    Configuration cfg(constName);
 
+    cfg.set("membership",  membershipStr(membership));
+    cfg.set("download",  downloadTypeStr(download));
+    cfg.set("username", username);
+    cfg.set("password", password);
+}
 
 void MagnatuneService::configure(QWidget *p)
 {

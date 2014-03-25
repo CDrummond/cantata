@@ -144,7 +144,6 @@ static Settings::StartupState getStartupState(const QString &str)
 
 Settings::Settings()
     : isFirstRun(false)
-    , modified(false)
     , timer(0)
     , ver(-1)
     #if defined ENABLE_KDE_SUPPORT && defined ENABLE_KWALLET
@@ -625,7 +624,6 @@ int Settings::devicesView()
 {
     if (version()<CANTATA_MAKE_VERSION(1, 0, 51)) {
         int v=cfg.get("devicesView", (int)ItemView::Mode_DetailedTree);
-        modified=true;
         cfg.set("devicesView", ItemView::modeStr((ItemView::Mode)v));
         return v;
     } else {
@@ -935,10 +933,6 @@ void Settings::removeConnectionDetails(const QString &v)
         saveCurrentConnection(QString());
     }
     cfg.removeGroup(MPDConnectionDetails::configGroupName(v));
-    #ifdef ENABLE_KDE_SUPPORT
-    KGlobal::config()->sync();
-    #endif
-    modified=true;
 }
 
 void Settings::saveConnectionDetails(const MPDConnectionDetails &v)
@@ -977,275 +971,265 @@ void Settings::saveConnectionDetails(const MPDConnectionDetails &v)
     cfg.set("streamUrl", v.streamUrl);
     #endif
     cfg.endGroup();
-    modified=true;
 }
-
-#define SET_VALUE_MOD(KEY) if (v!=KEY()) { modified=true; cfg.set(#KEY, v); }
-#define SET_ITEMVIEW_MODE_VALUE_MOD(KEY) if (v!=KEY()) { modified=true; cfg.set(#KEY, ItemView::modeStr((ItemView::Mode)v)); }
-#define SET_STARTUPSTATE_VALUE_MOD(KEY) if (v!=KEY()) { modified=true; cfg.set(#KEY, getStartupStateStr((StartupState)v)); }
 
 void Settings::saveCurrentConnection(const QString &v)
 {
-    SET_VALUE_MOD(currentConnection)
+    cfg.set("currentConnection", v);
 }
 
 void Settings::saveShowFullScreen(bool v)
 {
-    SET_VALUE_MOD(showFullScreen)
+    cfg.set("showFullScreen", v);
 }
 
 void Settings::saveHeaderState(const QString &key, const QByteArray &v)
 {
-    QByteArray current=headerState(key);
-    if (current!=v) {
-        modified=true;
-        cfg.set(key+"HeaderState", v);
-    }
+    cfg.set(key+"HeaderState", v);
 }
 
 void Settings::saveSplitterState(const QByteArray &v)
 {
-    SET_VALUE_MOD(splitterState)
+    cfg.set("splitterState", v);
 }
 
 void Settings::saveSplitterAutoHide(bool v)
 {
-    SET_VALUE_MOD(splitterAutoHide)
+    cfg.set("splitterAutoHide", v);
 }
 
 void Settings::saveMainWindowSize(const QSize &v)
 {
-    SET_VALUE_MOD(mainWindowSize)
+    cfg.set("mainWindowSize", v);
 }
 
 void Settings::saveUseSystemTray(bool v)
 {
-    SET_VALUE_MOD(useSystemTray)
+    cfg.set("useSystemTray", v);
 }
 
 void Settings::saveMinimiseOnClose(bool v)
 {
-    SET_VALUE_MOD(minimiseOnClose)
+    cfg.set("minimiseOnClose", v);
 }
 
 void Settings::saveShowPopups(bool v)
 {
-    SET_VALUE_MOD(showPopups)
+    cfg.set("showPopups", v);
 }
 
 void Settings::saveStopOnExit(bool v)
 {
-    SET_VALUE_MOD(stopOnExit)
+    cfg.set("stopOnExit", v);
 }
 
 void Settings::saveStopDynamizerOnExit(bool v)
 {
-    SET_VALUE_MOD(stopDynamizerOnExit)
+    cfg.set("stopDynamizerOnExit", v);
 }
 
 void Settings::saveStoreCoversInMpdDir(bool v)
 {
-    SET_VALUE_MOD(storeCoversInMpdDir)
+    cfg.set("storeCoversInMpdDir", v);
 }
 
 void Settings::saveStoreLyricsInMpdDir(bool v)
 {
-    SET_VALUE_MOD(storeLyricsInMpdDir)
+    cfg.set("storeLyricsInMpdDir", v);
 }
 
 void Settings::saveStoreStreamsInMpdDir(bool v)
 {
-    SET_VALUE_MOD(storeStreamsInMpdDir)
+    cfg.set("storeStreamsInMpdDir", v);
 }
-
 
 void Settings::saveStoreBackdropsInMpdDir(bool v)
 {
-    SET_VALUE_MOD(storeBackdropsInMpdDir)
+    cfg.set("storeBackdropsInMpdDir", v);
 }
 
 void Settings::saveLibraryView(int v)
 {
-    SET_ITEMVIEW_MODE_VALUE_MOD(libraryView)
+    cfg.set("libraryView", v);
 }
 
 void Settings::saveAlbumsView(int v)
 {
-    SET_ITEMVIEW_MODE_VALUE_MOD(albumsView)
+    cfg.set("albumsView", v);
 }
 
 void Settings::saveFolderView(int v)
 {
-    SET_ITEMVIEW_MODE_VALUE_MOD(folderView)
+    cfg.set("folderView", v);
 }
 
 void Settings::savePlaylistsView(int v)
 {
-    SET_ITEMVIEW_MODE_VALUE_MOD(playlistsView)
+    cfg.set("playlistsView", v);
 }
 
 void Settings::saveStreamsView(int v)
 {
-    SET_ITEMVIEW_MODE_VALUE_MOD(streamsView)
+    cfg.set("streamsView", v);
 }
 
 void Settings::saveOnlineView(int v)
 {
-    SET_ITEMVIEW_MODE_VALUE_MOD(onlineView)
+    cfg.set("onlineView", v);
 }
 
 void Settings::saveLibraryArtistImage(bool v)
 {
-    SET_VALUE_MOD(libraryArtistImage)
+    cfg.set("libraryArtistImage", v);
 }
 
 void Settings::saveLibraryCoverSize(int v)
 {
-    SET_VALUE_MOD(libraryCoverSize)
+    cfg.set("libraryCoverSize", v);
 }
 
 void Settings::saveAlbumsCoverSize(int v)
 {
-    SET_VALUE_MOD(albumsCoverSize)
+    cfg.set("albumsCoverSize", v);
 }
 
 void Settings::saveAlbumSort(int v)
 {
-    SET_VALUE_MOD(albumSort)
+    cfg.set("albumSort", v);
 }
 
 void Settings::saveSidebar(int v)
 {
-    SET_VALUE_MOD(sidebar)
+    cfg.set("sidebar", v);
 }
 
 void Settings::saveLibraryYear(bool v)
 {
-    SET_VALUE_MOD(libraryYear)
+    cfg.set("libraryYear", v);
 }
 
 void Settings::saveGroupSingle(bool v)
 {
-    SET_VALUE_MOD(groupSingle)
+    cfg.set("groupSingle", v);
 }
 
 void Settings::saveGroupMultiple(bool v)
 {
-    SET_VALUE_MOD(groupMultiple)
+    cfg.set("groupMultiple", v);
 }
 
 void Settings::saveUseComposer(bool v)
 {
-    SET_VALUE_MOD(useComposer)
+    cfg.set("useComposer", v);
 }
 
 void Settings::saveLyricProviders(const QStringList &v)
 {
-    SET_VALUE_MOD(lyricProviders)
+    cfg.set("lyricProviders", v);
 }
 
 void Settings::saveWikipediaLangs(const QStringList &v)
 {
-    SET_VALUE_MOD(wikipediaLangs)
+    cfg.set("wikipediaLangs", v);
 }
 
 void Settings::saveWikipediaIntroOnly(bool v)
 {
-    SET_VALUE_MOD(wikipediaIntroOnly)
+    cfg.set("wikipediaIntroOnly", v);
 }
 
 void Settings::saveContextBackdrop(int v)
 {
-    SET_VALUE_MOD(contextBackdrop)
+    cfg.set("contextBackdrop", v);
 }
 
 void Settings::saveContextBackdropOpacity(int v)
 {
-    SET_VALUE_MOD(contextBackdropOpacity)
+    cfg.set("contextBackdropOpacity", v);
 }
 
 void Settings::saveContextBackdropBlur(int v)
 {
-    SET_VALUE_MOD(contextBackdropBlur)
+    cfg.set("contextBackdropBlur", v);
 }
 
 void Settings::saveContextBackdropFile(const QString &v)
 {
-    SET_VALUE_MOD(contextBackdropFile)
+    cfg.set("contextBackdropFile", v);
 }
 
 void Settings::saveContextDarkBackground(bool v)
 {
-    SET_VALUE_MOD(contextDarkBackground)
+    cfg.set("contextDarkBackground", v);
 }
 
 void Settings::saveContextZoom(int v)
 {
-    SET_VALUE_MOD(contextZoom)
+    cfg.set("contextZoom", v);
 }
 
 void Settings::saveContextSlimPage(const QString &v)
 {
-    SET_VALUE_MOD(contextSlimPage)
+    cfg.set("contextSlimPage", v);
 }
 
 void Settings::saveContextSplitterState(const QByteArray &v)
 {
-    SET_VALUE_MOD(contextSplitterState)
+    cfg.set("contextSplitterState", v);
 }
 
 void Settings::saveContextAlwaysCollapsed(bool v)
 {
-    SET_VALUE_MOD(contextAlwaysCollapsed)
+    cfg.set("contextAlwaysCollapsed", v);
 }
 
 void Settings::saveContextSwitchTime(int v)
 {
-    SET_VALUE_MOD(contextSwitchTime);
+    cfg.set("contextSwitchTime", v);
 }
 
 void Settings::saveContextAutoScroll(bool v)
 {
-    SET_VALUE_MOD(contextAutoScroll);
+    cfg.set("contextAutoScroll", v);
 }
 
 void Settings::savePage(const QString &v)
 {
-    SET_VALUE_MOD(page)
+    cfg.set("page", v);
 }
 
 void Settings::saveHiddenPages(const QStringList &v)
 {
-    SET_VALUE_MOD(hiddenPages)
+    cfg.set("hiddenPages", v);
 }
 
 #ifndef ENABLE_KDE_SUPPORT
 void Settings::saveMediaKeysIface(const QString &v)
 {
-    SET_VALUE_MOD(mediaKeysIface)
+    cfg.set("mediaKeysIface", v);
 }
 #endif
 
 #ifdef ENABLE_DEVICES_SUPPORT
 void Settings::saveOverwriteSongs(bool v)
 {
-    SET_VALUE_MOD(overwriteSongs)
+    cfg.set("overwriteSongs", v);
 }
 
 void Settings::saveShowDeleteAction(bool v)
 {
-    SET_VALUE_MOD(showDeleteAction)
+    cfg.set("showDeleteAction", v);
 }
 
 void Settings::saveDevicesView(int v)
 {
-    SET_ITEMVIEW_MODE_VALUE_MOD(devicesView)
+    cfg.set("devicesView", v);
 }
 #endif
 
 void Settings::saveSearchView(int v)
 {
-    SET_ITEMVIEW_MODE_VALUE_MOD(searchView)
+    cfg.set("searchView", v);
 }
 
 void Settings::saveStopFadeDuration(int v)
@@ -1255,213 +1239,209 @@ void Settings::saveStopFadeDuration(int v)
     } else if (v>MaxFade) {
         v=MaxFade;
     }
-    SET_VALUE_MOD(stopFadeDuration)
+    cfg.set("stopFadeDuration", v);
 }
 
 void Settings::saveHttpAllocatedPort(int v)
 {
-    SET_VALUE_MOD(httpAllocatedPort)
+    cfg.set("httpAllocatedPort", v);
 }
 
 void Settings::saveHttpInterface(const QString &v)
 {
-    SET_VALUE_MOD(httpInterface)
+    cfg.set("httpInterface", v);
 }
 
 void Settings::savePlayQueueGrouped(bool v)
 {
-    SET_VALUE_MOD(playQueueGrouped)
+    cfg.set("playQueueGrouped", v);
 }
 
 void Settings::savePlayQueueAutoExpand(bool v)
 {
-    SET_VALUE_MOD(playQueueAutoExpand)
+    cfg.set("playQueueAutoExpand", v);
 }
 
 void Settings::savePlayQueueStartClosed(bool v)
 {
-    SET_VALUE_MOD(playQueueStartClosed)
+    cfg.set("playQueueStartClosed", v);
 }
 
 void Settings::savePlayQueueScroll(bool v)
 {
-    SET_VALUE_MOD(playQueueScroll)
+    cfg.set("playQueueScroll", v);
 }
 
 void Settings::savePlayQueueBackground(int v)
 {
-    SET_VALUE_MOD(playQueueBackground)
+    cfg.set("playQueueBackground", v);
 }
 
 void Settings::savePlayQueueBackgroundOpacity(int v)
 {
-    SET_VALUE_MOD(playQueueBackgroundOpacity)
+    cfg.set("playQueueBackgroundOpacity", v);
 }
 
 void Settings::savePlayQueueBackgroundBlur(int v)
 {
-    SET_VALUE_MOD(playQueueBackgroundBlur)
+    cfg.set("playQueueBackgroundBlur", v);
 }
 
 void Settings::savePlayQueueBackgroundFile(const QString &v)
 {
-    SET_VALUE_MOD(playQueueBackgroundFile)
+    cfg.set("playQueueBackgroundFile", v);
 }
 
 void Settings::savePlayQueueConfirmClear(bool v)
 {
-    SET_VALUE_MOD(playQueueConfirmClear);
+    cfg.set("playQueueConfirmClea", v);
 }
 
 void Settings::savePlayListsStartClosed(bool v)
 {
-    SET_VALUE_MOD(playListsStartClosed)
+    cfg.set("playListsStartClosed", v);
 }
 
 #ifdef ENABLE_HTTP_STREAM_PLAYBACK
 void Settings::savePlayStream(bool v)
 {
-    SET_VALUE_MOD(playStream)
+    cfg.set("playStream", v);
 }
 #endif
 
 #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
 void Settings::saveCdAuto(bool v)
 {
-    SET_VALUE_MOD(cdAuto)
+    cfg.set("cdAuto", v);
 }
 
 void Settings::saveParanoiaFull(bool v)
 {
-    SET_VALUE_MOD(paranoiaFull)
+    cfg.set("paranoiaFull", v);
 }
 
 void Settings::saveParanoiaNeverSkip(bool v)
 {
-    SET_VALUE_MOD(paranoiaNeverSkip)
+    cfg.set("paranoiaNeverSkip", v);
 }
 #endif
 
 #if defined CDDB_FOUND && defined MUSICBRAINZ5_FOUND
 void Settings::saveUseCddb(bool v)
 {
-    SET_VALUE_MOD(useCddb)
+    cfg.set("useCddb", v);
 }
 #endif
 
 #ifdef CDDB_FOUND
 void Settings::saveCddbHost(const QString &v)
 {
-    SET_VALUE_MOD(cddbHost)
+    cfg.set("cddbHost", v);
 }
 
 void Settings::saveCddbPort(int v)
 {
-    SET_VALUE_MOD(cddbPort)
+    cfg.set("cddbPort", v);
 }
 #endif
 
 void Settings::saveForceSingleClick(bool v)
 {
-    SET_VALUE_MOD(forceSingleClick)
+    cfg.set("forceSingleClick", v);
 }
 
 void Settings::saveStartHidden(bool v)
 {
-    SET_VALUE_MOD(startHidden);
+    cfg.set("startHidden", v);
 }
 
 void Settings::saveMonoSidebarIcons(bool v)
 {
-    SET_VALUE_MOD(monoSidebarIcons);
+    cfg.set("monoSidebarIcons", v);
 }
 
 void Settings::saveShowTimeRemaining(bool v)
 {
-    SET_VALUE_MOD(showTimeRemaining);
+    cfg.set("showTimeRemaining", v);
 }
 
 void Settings::saveHiddenStreamCategories(const QStringList &v)
 {
-    SET_VALUE_MOD(hiddenStreamCategories);
+    cfg.set("hiddenStreamCategories", v);
 }
 
 void Settings::saveHiddenOnlineProviders(const QStringList &v)
 {
-    SET_VALUE_MOD(hiddenOnlineProviders);
+    cfg.set("hiddenOnlineProviders", v);
 }
 
 #ifndef Q_OS_WIN32
 void Settings::saveInhibitSuspend(bool v)
 {
-    SET_VALUE_MOD(inhibitSuspend);
+    cfg.set("inhibitSuspend", v);
 }
 #endif
 
 void Settings::saveRssUpdate(int v)
 {
-    SET_VALUE_MOD(rssUpdate);
+    cfg.set("rssUpdate", v);
 }
 
 void Settings::saveLastRssUpdate(const QDateTime &v)
 {
-    SET_VALUE_MOD(lastRssUpdate);
+    cfg.set("lastRssUpdate", v);
 }
 
 void Settings::savePodcastDownloadPath(const QString &v)
 {
-    SET_VALUE_MOD(podcastDownloadPath);
+    cfg.set("podcastDownloadPath", v);
 }
 
 void Settings::savePodcastAutoDownload(bool v)
 {
-    SET_VALUE_MOD(podcastAutoDownload);
+    cfg.set("podcastAutoDownload", v);
 }
 
 void Settings::saveStartupState(int v)
 {
-    SET_STARTUPSTATE_VALUE_MOD(startupState);
+    cfg.set("startupState", v);
 }
 
 void Settings::saveSearchCategory(const QString &v)
 {
-    SET_VALUE_MOD(searchCategory);
+    cfg.set("searchCategory", v);
 }
 
 void Settings::saveCacheScaledCovers(bool v)
 {
-    SET_VALUE_MOD(cacheScaledCovers);
+    cfg.set("cacheScaledCovers", v);
 }
 
 void Settings::saveFetchCovers(bool v)
 {
-    SET_VALUE_MOD(fetchCovers);
+    cfg.set("fetchCovers", v);
 }
 
 #ifndef ENABLE_KDE_SUPPORT
 void Settings::saveLang(const QString &v)
 {
-    SET_VALUE_MOD(lang);
+    cfg.set("lang", v);
 }
 #endif
 
 void Settings::saveShowMenubar(bool v)
 {
-    SET_VALUE_MOD(showMenubar);
+    cfg.set("showMenubar", v);
 }
 
 void Settings::save(bool force)
 {
     if (force) {
         if (version()!=PACKAGE_VERSION || isFirstRun) {
-            modified=true;
             cfg.set("version", PACKAGE_VERSION_STRING);
             ver=PACKAGE_VERSION;
         }
-        if (modified) {
-            modified=false;
-            cfg.sync();
-        }
+        cfg.sync();
         if (timer) {
             timer->stop();
         }

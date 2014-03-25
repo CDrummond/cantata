@@ -54,9 +54,9 @@ public:
     const QString & pass() const { return password; }
     int audioType() const { return streamType; }
     const QDateTime & sessionExpiry() const { return expires; }
-    void setUser(const QString &u);
-    void setPass(const QString &p);
-    void setAudioType(int a);
+    void setUser(const QString &u) { userName=u; }
+    void setPass(const QString &p) { password=p; }
+    void setAudioType(int a) { streamType=a; }
 
     const QString & statusString() const { return status; }
 
@@ -78,7 +78,6 @@ private:
     void controlTimer();
 
 private:
-    bool cfgChanged;
     QNetworkReply *job;
     QString status;
     QString userName;

@@ -28,7 +28,7 @@
 #include "stdactions.h"
 #include "utils.h"
 #include "icon.h"
-#include "qtplural.h"
+#include "plurals.h"
 #include "tableview.h"
 
 class SearchTableView : public TableView
@@ -242,14 +242,5 @@ void SearchPage::setSearchCategories()
 
 void SearchPage::statsUpdated(int songs, quint32 time)
 {
-    if (0==songs) {
-        statsLabel->setText(i18n("No tracks found."));
-        return;
-    }
-
-    #ifdef ENABLE_KDE_SUPPORT
-    statsLabel->setText(i18np("1 Track (%2)", "%1 Tracks (%2)", songs, Utils::formatDuration(time)));
-    #else
-    statsLabel->setText(QTP_TRACKS_DURATION_STR(songs, Utils::formatDuration(time)));
-    #endif
+    statsLabel->setText(0==songs ? i18n("No tracks found.") : Plurals::tracksWithDuration(songs, Utils::formatDuration(time)));
 }

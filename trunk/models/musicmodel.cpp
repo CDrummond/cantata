@@ -33,7 +33,7 @@
 #include "musicmodel.h"
 #include "itemview.h"
 #include "localize.h"
-#include "qtplural.h"
+#include "plurals.h"
 #include "icons.h"
 #include "covers.h"
 #include <QStringList>
@@ -188,40 +188,19 @@ QVariant MusicModel::data(const QModelIndex &index, int role) const
             MusicLibraryItemRoot *collection=static_cast<MusicLibraryItemRoot *>(item);
 
             if (collection->flat()) {
-                #ifdef ENABLE_KDE_SUPPORT
-                return i18np("1 Track", "%1 Tracks", item->childCount());
-                #else
-                return QTP_TRACKS_STR(item->childCount());
-                #endif
+                return Plurals::tracks(item->childCount());
             }
-            #ifdef ENABLE_KDE_SUPPORT
-            return i18np("1 Artist", "%1 Artists", item->childCount());
-            #else
-            return QTP_ARTISTS_STR(item->childCount());
-            #endif
+            return Plurals::artists(item->childCount());
         }
         case MusicLibraryItem::Type_Artist:
-            #ifdef ENABLE_KDE_SUPPORT
-            return i18np("1 Album", "%1 Albums", item->childCount());
-            #else
-            return QTP_ALBUMS_STR(item->childCount());
-            #endif
+            return Plurals::albums(item->childCount());
         case MusicLibraryItem::Type_Podcast:
-            #ifdef ENABLE_KDE_SUPPORT
-            return i18np("1 Episode", "%1 Episodes", item->childCount());
-            #else
-            return QTP_EPISODES_STR(item->childCount());
-            #endif
+            return Plurals::episodes(item->childCount());
         case MusicLibraryItem::Type_Song:
             return Utils::formatTime(static_cast<MusicLibraryItemSong *>(item)->time(), true);
         case MusicLibraryItem::Type_Album:
-            #ifdef ENABLE_KDE_SUPPORT
-            return i18np("1 Track (%2)", "%1 Tracks (%2)", static_cast<MusicLibraryItemAlbum *>(item)->trackCount(),
-                                                           Utils::formatTime(static_cast<MusicLibraryItemAlbum *>(item)->totalTime()));
-            #else
-            return QTP_TRACKS_DURATION_STR(static_cast<MusicLibraryItemAlbum *>(item)->trackCount(),
-                                          Utils::formatTime(static_cast<MusicLibraryItemAlbum *>(item)->totalTime()));
-            #endif
+            return Plurals::tracksWithDuration(static_cast<MusicLibraryItemAlbum *>(item)->trackCount(),
+                                               Utils::formatTime(static_cast<MusicLibraryItemAlbum *>(item)->totalTime()));
         default: return QVariant();
         }
     case ItemView::Role_Image: {

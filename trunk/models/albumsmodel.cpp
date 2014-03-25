@@ -28,7 +28,7 @@
 #include <QPainter>
 #include <QFile>
 #include "localize.h"
-#include "qtplural.h"
+#include "plurals.h"
 #include "globalstatic.h"
 #include "albumsmodel.h"
 #include "settings.h"
@@ -216,12 +216,7 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
             return 0==al->songs.count()
                     ? QString()
                     : (al->artist+QLatin1Char('\n')+al->albumDisplay()+QLatin1Char('\n')+
-                        #ifdef ENABLE_KDE_SUPPORT
-                        i18np("1 Track (%2)", "%1 Tracks (%2)", al->trackCount(), Utils::formatTime(al->totalTime(), true))
-                        #else
-                        QTP_TRACKS_DURATION_STR(al->trackCount(), Utils::formatTime(al->totalTime(), true))
-                        #endif
-                      );
+                        Plurals::tracksWithDuration(al->trackCount(), Utils::formatTime(al->totalTime(), true)));
         case Qt::DisplayRole:
             return al->album;
         case ItemView::Role_MainText:

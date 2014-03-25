@@ -25,8 +25,6 @@
 #include "icons.h"
 #include "itemview.h"
 #include "tableview.h"
-#include "localize.h"
-#include "qtplural.h"
 #include "mpdconnection.h"
 #include "playqueuemodel.h"
 #include <QString>

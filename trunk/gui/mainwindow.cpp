@@ -54,7 +54,7 @@
 #include "mediakeys.h"
 #endif
 #include "localize.h"
-#include "qtplural.h"
+#include "plurals.h"
 #include "mainwindow.h"
 #include "thread.h"
 #include "trayitem.h"
@@ -2169,17 +2169,9 @@ void MainWindow::updatePlayQueueStats(int songs, quint32 time)
     if (0==songs) {
         playQueueStatsLabel->setText(QString());
     } else if (0==time) {
-        #ifdef ENABLE_KDE_SUPPORT
-        playQueueStatsLabel->setText(i18np("1 Track", "%1 Tracks", songs, Utils::formatDuration(time)));
-        #else
-        playQueueStatsLabel->setText(QTP_TRACKS_STR(songs));
-        #endif
+        playQueueStatsLabel->setText(Plurals::tracks(songs));
     } else {
-        #ifdef ENABLE_KDE_SUPPORT
-        playQueueStatsLabel->setText(i18np("1 Track (%2)", "%1 Tracks (%2)", songs, Utils::formatDuration(time)));
-        #else
-        playQueueStatsLabel->setText(QTP_TRACKS_DURATION_STR(songs, Utils::formatDuration(time)));
-        #endif
+        playQueueStatsLabel->setText(Plurals::tracksWithDuration(songs, Utils::formatDuration(time)));
     }
 }
 

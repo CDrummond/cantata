@@ -29,7 +29,7 @@
 #include "musicbrainz.h"
 #endif
 #include "localize.h"
-#include "qtplural.h"
+#include "plurals.h"
 #include "musiclibraryitemsong.h"
 #include "musiclibrarymodel.h"
 #include "dirviewmodel.h"
@@ -357,11 +357,7 @@ void AudioCdDevice::setDetails(const CdAlbum &a)
         update->append(new MusicLibraryItemSong(s, update));
     }
     setStatusMessage(QString());
-    #ifdef ENABLE_KDE_SUPPORT
-    detailsString=i18np("1 Track (%2)", "%1 Tracks (%2)", a.tracks.count(), Utils::formatTime(totalDuration));
-    #else
-    detailsString=QTP_TRACKS_DURATION_STR(a.tracks.count(), Utils::formatTime(totalDuration));
-    #endif
+    detailsString=Plurals::tracksWithDuration(a.tracks.count(), Utils::formatTime(totalDuration));
     emit updating(id(), false);
     if (differentAlbum && !a.isDefault) {
         Song s;

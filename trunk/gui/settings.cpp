@@ -46,8 +46,6 @@
 #include <QDir>
 #include <qglobal.h>
 
-#define RESTRICT(VAL, MIN_VAL, MAX_VAL) (VAL<MIN_VAL ? MIN_VAL : (VAL>MAX_VAL ? MAX_VAL : VAL))
-
 GLOBAL_STATIC(Settings, instance)
 
 struct MpdDefaults
@@ -149,17 +147,14 @@ Settings::Settings()
     , modified(false)
     , timer(0)
     , ver(-1)
-    #ifdef ENABLE_KDE_SUPPORT
-    , cfg(KGlobal::config(), "General")
-    #ifdef ENABLE_KWALLET
+    #if defined ENABLE_KDE_SUPPORT && defined ENABLE_KWALLET
     , wallet(0)
-    #endif
     #endif
 {
     // Only need to read system defaults if we have not previously been configured...
     if (version()<CANTATA_MAKE_VERSION(0, 8, 0)
-            ? GET_STRING("connectionHost", QString()).isEmpty()
-            : !HAS_GROUP(MPDConnectionDetails::configGroupName())) {
+            ? cfg.get("connectionHost", QString()).isEmpty()
+            : !cfg.hasGroup(MPDConnectionDetails::configGroupName())) {
         mpdDefaults.read();
     }
 }
@@ -173,16 +168,16 @@ Settings::~Settings()
 
 QString Settings::currentConnection()
 {
-    return GET_STRING("currentConnection", QString());
+    return cfg.get("currentConnection", QString());
 }
 
 MPDConnectionDetails Settings::connectionDetails(const QString &name)
 {
     MPDConnectionDetails details;
-    if (version()<CANTATA_MAKE_VERSION(0, 8, 0) || (name.isEmpty() && !HAS_GROUP(MPDConnectionDetails::configGroupName(name)))) {
-        details.hostname=GET_STRING("connectionHost", name.isEmpty() ? mpdDefaults.host : QString());
+    if (version()<CANTATA_MAKE_VERSION(0, 8, 0) || (name.isEmpty() && !cfg.hasGroup(MPDConnectionDetails::configGroupName(name)))) {
+        details.hostname=cfg.get("connectionHost", name.isEmpty() ? mpdDefaults.host : QString());
         #if defined ENABLE_KDE_SUPPORT && defined ENABLE_KWALLET
-        if (GET_BOOL("connectionPasswd", false)) {
+        if (cfg.get("connectionPasswd", false)) {
             if (openWallet()) {
                 wallet->readPassword("mpd", details.password);
             }
@@ -190,64 +185,49 @@ MPDConnectionDetails Settings::connectionDetails(const QString &name)
            details.password=mpdDefaults.passwd;
         }
         #else
-        details.password=GET_STRING("connectionPasswd", name.isEmpty() ? mpdDefaults.passwd : QString());
+        details.password=cfg.get("connectionPasswd", name.isEmpty() ? mpdDefaults.passwd : QString());
         #endif
-        details.port=GET_INT("connectionPort", name.isEmpty() ? mpdDefaults.port : 6600);
+        details.port=cfg.get("connectionPort", name.isEmpty() ? mpdDefaults.port : 6600);
         #ifdef Q_OS_WIN32
-        details.dir=Utils::fixPath(QDir::fromNativeSeparators(GET_STRING("mpdDir", mpdDefaults.dir)));
+        details.dir=Utils::fixPath(QDir::fromNativeSeparators(cfg.get("mpdDir", mpdDefaults.dir)));
         #else
-        details.dir=Utils::fixPath(GET_STRING("mpdDir", mpdDefaults.dir));
+        details.dir=Utils::fixPath(cfg.get("mpdDir", mpdDefaults.dir));
         #endif
         details.dynamizerPort=0;
     } else {
         QString n=MPDConnectionDetails::configGroupName(name);
         details.name=name;
-        if (!HAS_GROUP(n)) {
+        if (!cfg.hasGroup(n)) {
             details.name=QString();
             n=MPDConnectionDetails::configGroupName(details.name);
         }
-        if (HAS_GROUP(n)) {
-            #ifdef ENABLE_KDE_SUPPORT
-            KConfigGroup grp(KGlobal::config(), n);
-            details.hostname=CFG_GET_STRING(grp, "host", name.isEmpty() ? mpdDefaults.host : QString());
-            details.port=CFG_GET_INT(grp, "port", name.isEmpty() ? mpdDefaults.port : 6600);
-            details.dir=Utils::fixPath(CFG_GET_STRING(grp, "dir", name.isEmpty() ? mpdDefaults.dir : "/var/lib/mpd/music"));
-            #ifdef ENABLE_KWALLET
+        if (cfg.hasGroup(n)) {
+            cfg.beginGroup(n);
+            details.hostname=cfg.get("host", name.isEmpty() ? mpdDefaults.host : QString());
+            details.port=cfg.get("port", name.isEmpty() ? mpdDefaults.port : 6600);
+            #ifdef Q_OS_WIN32
+            details.dir=Utils::fixPath(QDir::fromNativeSeparators(cfg.get("dir", name.isEmpty() ? mpdDefaults.dir : "/var/lib/mpd/music")));
+            #else
+            details.dir=Utils::fixPath(cfg.get("dir", name.isEmpty() ? mpdDefaults.dir : "/var/lib/mpd/music"));
+            #endif
+            #if defined ENABLE_KDE_SUPPORT && defined ENABLE_KWALLET
             if (KWallet::Wallet::isEnabled()) {
-                if (CFG_GET_BOOL(grp, "passwd", false)) {
+                if (cfg.get("passwd", false)) {
                     if (openWallet()) {
                         wallet->readPassword(name.isEmpty() ? "mpd" : name, details.password);
                     }
                 } else if (name.isEmpty()) {
                     details.password=mpdDefaults.passwd;
                 }
-            } else 
+            } else
             #endif // ENABLE_KWALLET
-            {
-                details.password=CFG_GET_STRING(grp, "pass", name.isEmpty() ? mpdDefaults.passwd : QString());
-            }
-            details.dynamizerPort=CFG_GET_INT(grp, "dynamizerPort", 0);
-            details.coverName=CFG_GET_STRING(grp, "coverName", QString());
+            details.password=cfg.get("passwd", name.isEmpty() ? mpdDefaults.passwd : QString());
+            details.dynamizerPort=cfg.get("dynamizerPort", 0);
+            details.coverName=cfg.get("coverName", QString());
             #ifdef ENABLE_HTTP_STREAM_PLAYBACK
-            details.streamUrl=CFG_GET_STRING(grp, "streamUrl", QString());
-            #endif
-            #else // ENABLE_KDE_SUPPORT
-            cfg.beginGroup(n);
-            details.hostname=GET_STRING("host", name.isEmpty() ? mpdDefaults.host : QString());
-            details.port=GET_INT("port", name.isEmpty() ? mpdDefaults.port : 6600);
-            #ifdef Q_OS_WIN32
-            details.dir=Utils::fixPath(QDir::fromNativeSeparators(GET_STRING("dir", name.isEmpty() ? mpdDefaults.dir : "/var/lib/mpd/music")));
-            #else
-            details.dir=Utils::fixPath(GET_STRING("dir", name.isEmpty() ? mpdDefaults.dir : "/var/lib/mpd/music"));
-            #endif
-            details.password=GET_STRING("passwd", name.isEmpty() ? mpdDefaults.passwd : QString());
-            details.dynamizerPort=GET_INT("dynamizerPort", 0);
-            details.coverName=GET_STRING("coverName", QString());
-            #ifdef ENABLE_HTTP_STREAM_PLAYBACK
-            details.streamUrl=GET_STRING("streamUrl", QString());
+            details.streamUrl=cfg.get("streamUrl", QString());
             #endif
             cfg.endGroup();
-            #endif // ENABLE_KDE_SUPPORT
         } else {
             details.hostname=mpdDefaults.host;
             details.port=mpdDefaults.port;
@@ -273,7 +253,7 @@ QList<MPDConnectionDetails> Settings::allConnections()
     #endif
     QList<MPDConnectionDetails> connections;
     foreach (const QString &grp, groups) {
-        if (HAS_GROUP(grp) && grp.startsWith("Connection")) {
+        if (cfg.hasGroup(grp) && grp.startsWith("Connection")) {
             connections.append(connectionDetails(grp=="Connection" ? QString() : grp.mid(11)));
         }
     }
@@ -308,13 +288,13 @@ bool Settings::openWallet()
 #ifndef ENABLE_KDE_SUPPORT
 QString Settings::iconTheme()
 {
-    return GET_STRING("iconTheme", QString());
+    return cfg.get("iconTheme", QString());
 }
 #endif
 
 bool Settings::showFullScreen()
 {
-    return GET_BOOL("showFullScreen", false);
+    return cfg.get("showFullScreen", false);
 }
 
 QByteArray Settings::headerState(const QString &key)
@@ -322,57 +302,57 @@ QByteArray Settings::headerState(const QString &key)
     if (version()<CANTATA_MAKE_VERSION(1, 2, 54)) {
         return QByteArray();
     }
-    return GET_BYTE_ARRAY(key+"HeaderState");
+    return cfg.get(key+"HeaderState", QByteArray());
 }
 
 QByteArray Settings::splitterState()
 {
-    return GET_BYTE_ARRAY("splitterState");
+    return cfg.get("splitterState", QByteArray());
 }
 
 bool Settings::splitterAutoHide()
 {
-    return GET_BOOL("splitterAutoHide", false);
+    return cfg.get("splitterAutoHide", false);
 }
 
 QSize Settings::mainWindowSize()
 {
-    return GET_SIZE("mainWindowSize");
+    return cfg.get("mainWindowSize", QSize());
 }
 
 bool Settings::useSystemTray()
 {
-    return GET_BOOL("useSystemTray", false);
+    return cfg.get("useSystemTray", false);
 }
 
 bool Settings::minimiseOnClose()
 {
-    return GET_BOOL("minimiseOnClose", true);
+    return cfg.get("minimiseOnClose", true);
 }
 
 bool Settings::showPopups()
 {
-    return GET_BOOL("showPopups", false);
+    return cfg.get("showPopups", false);
 }
 
 bool Settings::stopOnExit()
 {
-    return GET_BOOL("stopOnExit", false);
+    return cfg.get("stopOnExit", false);
 }
 
 bool Settings::stopDynamizerOnExit()
 {
-    return GET_BOOL("stopDynamizerOnExit", false);
+    return cfg.get("stopDynamizerOnExit", false);
 }
 
 bool Settings::storeCoversInMpdDir()
 {
-    return GET_BOOL("storeCoversInMpdDir", true);
+    return cfg.get("storeCoversInMpdDir", true);
 }
 
 bool Settings::storeLyricsInMpdDir()
 {
-    return GET_BOOL("storeLyricsInMpdDir", true);
+    return cfg.get("storeLyricsInMpdDir", true);
 }
 
 bool Settings::storeStreamsInMpdDir()
@@ -382,31 +362,31 @@ bool Settings::storeStreamsInMpdDir()
     #else
     bool def=version()>=CANTATA_MAKE_VERSION(0, 9, 50);
     #endif
-    return GET_BOOL("storeStreamsInMpdDir", def);
+    return cfg.get("storeStreamsInMpdDir", def);
 }
 
 bool Settings::storeBackdropsInMpdDir()
 {
-    return GET_BOOL("storeBackdropsInMpdDir", false);
+    return cfg.get("storeBackdropsInMpdDir", false);
 }
 
 int Settings::libraryView()
 {
     int v=version();
     QString def=ItemView::modeStr(v<CANTATA_MAKE_VERSION(0, 9, 50) ? ItemView::Mode_SimpleTree : ItemView::Mode_DetailedTree);
-    return ItemView::toMode(GET_STRING("libraryView", def));
+    return ItemView::toMode(cfg.get("libraryView", def));
 }
 
 int Settings::albumsView()
 {
-    return ItemView::toMode(GET_STRING("albumsView", ItemView::modeStr(ItemView::Mode_IconTop)));
+    return ItemView::toMode(cfg.get("albumsView", ItemView::modeStr(ItemView::Mode_IconTop)));
 }
 
 int Settings::folderView()
 {
     int v=version();
     QString def=ItemView::modeStr(v<CANTATA_MAKE_VERSION(1, 0, 51) ? ItemView::Mode_SimpleTree : ItemView::Mode_DetailedTree);
-    return ItemView::toMode(GET_STRING("folderView", def));
+    return ItemView::toMode(cfg.get("folderView", def));
 }
 
 int Settings::playlistsView()
@@ -417,24 +397,24 @@ int Settings::playlistsView()
                                     : v<CANTATA_MAKE_VERSION(1, 0, 51)
                                         ? ItemView::Mode_GroupedTree
                                         : ItemView::Mode_DetailedTree);
-    return ItemView::toMode(GET_STRING("playlistsView", def));
+    return ItemView::toMode(cfg.get("playlistsView", def));
 }
 
 int Settings::streamsView()
 {
     int v=version();
     QString def=ItemView::modeStr(v<CANTATA_MAKE_VERSION(0, 9, 50) ? ItemView::Mode_SimpleTree : ItemView::Mode_DetailedTree);
-    return ItemView::toMode(GET_STRING("streamsView", def));
+    return ItemView::toMode(cfg.get("streamsView", def));
 }
 
 int Settings::onlineView()
 {
-    return ItemView::toMode(GET_STRING("onlineView", ItemView::modeStr(ItemView::Mode_DetailedTree)));
+    return ItemView::toMode(cfg.get("onlineView", ItemView::modeStr(ItemView::Mode_DetailedTree)));
 }
 
 bool Settings::libraryArtistImage()
 {
-    if (GET_BOOL("libraryArtistImage", false)) {
+    if (cfg.get("libraryArtistImage", false)) {
         int view=libraryView();
         return ItemView::Mode_SimpleTree!=view && ItemView::Mode_BasicTree!=view;
     }
@@ -443,25 +423,25 @@ bool Settings::libraryArtistImage()
 
 int Settings::libraryCoverSize()
 {
-    int size=GET_INT("libraryCoverSize", (int)(MusicLibraryItemAlbum::CoverMedium));
+    int size=cfg.get("libraryCoverSize", (int)(MusicLibraryItemAlbum::CoverMedium));
     return size>MusicLibraryItemAlbum::CoverExtraLarge || size<0 ? MusicLibraryItemAlbum::CoverMedium : size;
 }
 
 int Settings::albumsCoverSize()
 {
-    int size=GET_INT("albumsCoverSize", (int)(MusicLibraryItemAlbum::CoverMedium));
+    int size=cfg.get("albumsCoverSize", (int)(MusicLibraryItemAlbum::CoverMedium));
     return size>MusicLibraryItemAlbum::CoverExtraLarge || size<0 ? MusicLibraryItemAlbum::CoverMedium : size;
 }
 
 int Settings::albumSort()
 {
-    return GET_INT("albumSort", 0);
+    return cfg.get("albumSort", 0);
 }
 
 int Settings::sidebar()
 {
     if (version()<CANTATA_MAKE_VERSION(1, 2, 52)) {
-        switch (GET_INT("sidebar", 1)) {
+        switch (cfg.get("sidebar", 1)) {
         default:
         case 1: return FancyTabWidget::Side|FancyTabWidget::Large;
         case 2: return FancyTabWidget::Side|FancyTabWidget::Small;
@@ -483,28 +463,28 @@ int Settings::sidebar()
         case 18: return FancyTabWidget::Top|FancyTabWidget::Small|FancyTabWidget::IconOnly;
         }
     } else {
-        return GET_INT("sidebar", (int)(FancyTabWidget::Side|FancyTabWidget::Large))&FancyTabWidget::All_Mask;
+        return cfg.get("sidebar", (int)(FancyTabWidget::Side|FancyTabWidget::Large))&FancyTabWidget::All_Mask;
     }
 }
 
 bool Settings::libraryYear()
 {
-    return GET_BOOL("libraryYear", true);
+    return cfg.get("libraryYear", true);
 }
 
 bool Settings::groupSingle()
 {
-    return GET_BOOL("groupSingle", MPDParseUtils::groupSingle());
+    return cfg.get("groupSingle", MPDParseUtils::groupSingle());
 }
 
 bool Settings::groupMultiple()
 {
-    return GET_BOOL("groupMultiple", MPDParseUtils::groupMultiple());
+    return cfg.get("groupMultiple", MPDParseUtils::groupMultiple());
 }
 
 bool Settings::useComposer()
 {
-    return GET_BOOL("useComposer", Song::useComposer());
+    return cfg.get("useComposer", Song::useComposer());
 }
 
 QStringList Settings::lyricProviders()
@@ -527,91 +507,88 @@ QStringList Settings::lyricProviders()
         << "tekstowo.pl (POLISH)"
         << "vagalume.uol.com.br"
         << "vagalume.uol.com.br (PORTUGUESE)";
-    return GET_STRINGLIST("lyricProviders", def);
+    return cfg.get("lyricProviders", def);
 }
 
 QStringList Settings::wikipediaLangs()
 {
     QStringList def=QStringList() << "en:en";
-    return GET_STRINGLIST("wikipediaLangs", def);
+    return cfg.get("wikipediaLangs", def);
 }
 
 bool Settings::wikipediaIntroOnly()
 {
-    return GET_BOOL("wikipediaIntroOnly", true);
+    return cfg.get("wikipediaIntroOnly", true);
 }
 
 int Settings::contextBackdrop()
 {
     if (version()<CANTATA_MAKE_VERSION(1, 0, 53)) {
-        return GET_BOOL("contextBackdrop", true) ? 1 : 1;
+        return cfg.get("contextBackdrop", true) ? 1 : 1;
     }
-    return  GET_INT("contextBackdrop", 1);
+    return  cfg.get("contextBackdrop", 1);
 }
 
 int Settings::contextBackdropOpacity()
 {
-    int v=GET_INT("contextBackdropOpacity", 15);
-    return RESTRICT(v, 0, 100);
+    return cfg.get("contextBackdropOpacity", 15, 0, 100);
 }
 
 int Settings::contextBackdropBlur()
 {
-    int v=GET_INT("contextBackdropBlur", 0);
-    return RESTRICT(v, 0, 20);
+    return cfg.get("contextBackdropBlur", 0, 0, 20);
 }
 
 QString Settings::contextBackdropFile()
 {
-    return GET_STRING("contextBackdropFile", QString());
+    return cfg.get("contextBackdropFile", QString());
 }
 
 bool Settings::contextDarkBackground()
 {
-    return GET_BOOL("contextDarkBackground", false);
+    return cfg.get("contextDarkBackground", false);
 }
 
 int Settings::contextZoom()
 {
-    return GET_INT("contextZoom", 0);
+    return cfg.get("contextZoom", 0);
 }
 
 QString Settings::contextSlimPage()
 {
-    return GET_STRING("contextSlimPage", QString());
+    return cfg.get("contextSlimPage", QString());
 }
 
 QByteArray Settings::contextSplitterState()
 {
-    return GET_BYTE_ARRAY("contextSplitterState");
+    return cfg.get("contextSplitterState", QByteArray());
 }
 
 bool Settings::contextAlwaysCollapsed()
 {
-    return GET_BOOL("contextAlwaysCollapsed", false);
+    return cfg.get("contextAlwaysCollapsed", false);
 }
 
 
 int Settings::contextSwitchTime()
 {
-    int v=GET_INT("contextSwitchTime", 0);
-    return RESTRICT(v, 0, 5000);
+    return cfg.get("contextSwitchTime", 0, 0, 5000);
 }
 
 bool Settings::contextAutoScroll()
 {
-    return GET_BOOL("contextAutoScroll", false);
+    return cfg.get("contextAutoScroll", false);
 }
 
 QString Settings::page()
 {
-    return GET_STRING("page", QString());
+    return cfg.get("page", QString());
 }
 
 QStringList Settings::hiddenPages()
 {
     QStringList def=QStringList() << "PlayQueuePage" << "FolderPage" << "SearchPage" << "ContextPage";
-    QStringList config=GET_STRINGLIST("hiddenPages", def);
+    QStringList config=cfg.get("hiddenPages", def);
     if (version()<CANTATA_MAKE_VERSION(1, 2, 51) && !config.contains("SearchPage")) {
         config.append("SearchPage");
     }
@@ -626,9 +603,9 @@ QStringList Settings::hiddenPages()
 QString Settings::mediaKeysIface()
 {
     #if defined Q_OS_WIN
-    return GET_STRING("mediaKeysIface", MediaKeys::toString(MediaKeys::QxtInterface));
+    return cfg.get("mediaKeysIface", MediaKeys::toString(MediaKeys::QxtInterface));
     #else
-    return GET_STRING("mediaKeysIface", MediaKeys::toString(MediaKeys::GnomeInteface));
+    return cfg.get("mediaKeysIface", MediaKeys::toString(MediaKeys::GnomeInteface));
     #endif
 }
 #endif
@@ -636,42 +613,42 @@ QString Settings::mediaKeysIface()
 #ifdef ENABLE_DEVICES_SUPPORT
 bool Settings::overwriteSongs()
 {
-    return GET_BOOL("overwriteSongs", false);
+    return cfg.get("overwriteSongs", false);
 }
 
 bool Settings::showDeleteAction()
 {
-    return GET_BOOL("showDeleteAction", false);
+    return cfg.get("showDeleteAction", false);
 }
 
 int Settings::devicesView()
 {
     if (version()<CANTATA_MAKE_VERSION(1, 0, 51)) {
-        int v=GET_INT("devicesView", (int)ItemView::Mode_DetailedTree);
+        int v=cfg.get("devicesView", (int)ItemView::Mode_DetailedTree);
         modified=true;
-        SET_VALUE("devicesView", ItemView::modeStr((ItemView::Mode)v));
+        cfg.set("devicesView", ItemView::modeStr((ItemView::Mode)v));
         return v;
     } else {
-        return ItemView::toMode(GET_STRING("devicesView", ItemView::modeStr(ItemView::Mode_DetailedTree)));
+        return ItemView::toMode(cfg.get("devicesView", ItemView::modeStr(ItemView::Mode_DetailedTree)));
     }
 }
 #endif
 
 int Settings::searchView()
 {
-    return ItemView::toMode(GET_STRING("searchView", ItemView::modeStr(ItemView::Mode_List)));
+    return ItemView::toMode(cfg.get("searchView", ItemView::modeStr(ItemView::Mode_List)));
 }
 
 int Settings::version()
 {
     if (-1==ver) {
-        isFirstRun=!HAS_ENTRY("version");
-        QStringList parts=GET_STRING("version", QLatin1String(PACKAGE_VERSION_STRING)).split('.');
+        isFirstRun=!cfg.hasEntry("version");
+        QStringList parts=cfg.get("version", QLatin1String(PACKAGE_VERSION_STRING)).split('.');
         if (3==parts.size()) {
             ver=CANTATA_MAKE_VERSION(parts.at(0).toInt(), parts.at(1).toInt(), parts.at(2).toInt());
         } else {
             ver=PACKAGE_VERSION;
-            SET_VALUE("version", PACKAGE_VERSION);
+            cfg.set("version", PACKAGE_VERSION_STRING);
         }
     }
     return ver;
@@ -679,7 +656,7 @@ int Settings::version()
 
 int Settings::stopFadeDuration()
 {
-    int v=GET_INT("stopFadeDuration", (int)DefaultFade);
+    int v=cfg.get("stopFadeDuration", (int)DefaultFade);
     if (0!=v && (v<MinFade || v>MaxFade)) {
         v=DefaultFade;
     }
@@ -688,18 +665,18 @@ int Settings::stopFadeDuration()
 
 int Settings::httpAllocatedPort()
 {
-    return GET_INT("httpAllocatedPort", 0);
+    return cfg.get("httpAllocatedPort", 0);
 }
 
 QString Settings::httpInterface()
 {
-    return GET_STRING("httpInterface", QString());
+    return cfg.get("httpInterface", QString());
 }
 
 bool Settings::alwaysUseHttp()
 {
     #ifdef ENABLE_HTTP_SERVER
-    return GET_BOOL("alwaysUseHttp", false);
+    return cfg.get("alwaysUseHttp", false);
     #else
     return false;
     #endif
@@ -707,246 +684,236 @@ bool Settings::alwaysUseHttp()
 
 bool Settings::playQueueGrouped()
 {
-    return GET_BOOL("playQueueGrouped", true);
+    return cfg.get("playQueueGrouped", true);
 }
 
 bool Settings::playQueueAutoExpand()
 {
-    return GET_BOOL("playQueueAutoExpand", true);
+    return cfg.get("playQueueAutoExpand", true);
 }
 
 bool Settings::playQueueStartClosed()
 {
-    return GET_BOOL("playQueueStartClosed", false);
+    return cfg.get("playQueueStartClosed", false);
 }
 
 bool Settings::playQueueScroll()
 {
-    return GET_BOOL("playQueueScroll", true);
+    return cfg.get("playQueueScroll", true);
 }
 
 int Settings::playQueueBackground()
 {
     if (version()<CANTATA_MAKE_VERSION(1, 0, 53)) {
-        return GET_BOOL("playQueueBackground", false) ? 1 : 1;
+        return cfg.get("playQueueBackground", false) ? 1 : 1;
     }
-    return  GET_INT("playQueueBackground", 0);
+    return  cfg.get("playQueueBackground", 0);
 }
 
 int Settings::playQueueBackgroundOpacity()
 {
-    int v=GET_INT("playQueueBackgroundOpacity", 15);
-    return RESTRICT(v, 0, 100);
+    return cfg.get("playQueueBackgroundOpacity", 15, 0, 100);
 }
 
 int Settings::playQueueBackgroundBlur()
 {
-    int v=GET_INT("playQueueBackgroundBlur", 0);
-    return RESTRICT(v, 0, 20);
+    return cfg.get("playQueueBackgroundBlur", 0, 0, 20);
 }
 
 QString Settings::playQueueBackgroundFile()
 {
-    return GET_STRING("playQueueBackgroundFile", QString());
+    return cfg.get("playQueueBackgroundFile", QString());
 }
 
 bool Settings::playQueueConfirmClear()
 {
-    return GET_BOOL("playQueueConfirmClear", true);
+    return cfg.get("playQueueConfirmClear", true);
 }
 
 bool Settings::playListsStartClosed()
 {
-    return GET_BOOL("playListsStartClosed", true);
+    return cfg.get("playListsStartClosed", true);
 }
 
 #ifdef ENABLE_HTTP_STREAM_PLAYBACK
 bool Settings::playStream()
 {
-    return GET_BOOL("playStream", false);
+    return cfg.get("playStream", false);
 }
 #endif
 
 #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
 bool Settings::cdAuto()
 {
-    return GET_BOOL("cdAuto", true);
+    return cfg.get("cdAuto", true);
 }
 
 bool Settings::paranoiaFull()
 {
-    return GET_BOOL("paranoiaFull", true);
+    return cfg.get("paranoiaFull", true);
 }
 
 bool Settings::paranoiaNeverSkip()
 {
-    return GET_BOOL("paranoiaNeverSkip", true);
+    return cfg.get("paranoiaNeverSkip", true);
 }
 #endif
 
 #if defined CDDB_FOUND && defined MUSICBRAINZ5_FOUND
 bool Settings::useCddb()
 {
-    return GET_BOOL("useCddb", true);
+    return cfg.get("useCddb", true);
 }
 #endif
 
 #ifdef CDDB_FOUND
 QString Settings::cddbHost()
 {
-    return GET_STRING("cddbHost", QString("freedb.freedb.org"));
+    return cfg.get("cddbHost", QString("freedb.freedb.org"));
 }
 
 int Settings::cddbPort()
 {
-    return GET_INT("cddbPort", 8880);
+    return cfg.get("cddbPort", 8880);
 }
 #endif
 
 bool Settings::forceSingleClick()
 {
-    return GET_BOOL("forceSingleClick", true);
+    return cfg.get("forceSingleClick", true);
 }
 
 bool Settings::startHidden()
 {
-    return GET_BOOL("startHidden", false);
+    return cfg.get("startHidden", false);
 }
 
 bool Settings::monoSidebarIcons()
 {
     #ifdef Q_OS_WIN
-    return GET_BOOL("monoSidebarIcons", false);
+    return cfg.get("monoSidebarIcons", false);
     #else
-    return GET_BOOL("monoSidebarIcons", true);
+    return cfg.get("monoSidebarIcons", true);
     #endif
 }
 
 bool Settings::showTimeRemaining()
 {
-    return GET_BOOL("showTimeRemaining", false);
+    return cfg.get("showTimeRemaining", false);
 }
 
 QStringList Settings::hiddenStreamCategories()
 {
-    return GET_STRINGLIST("hiddenStreamCategories", QStringList());
+    return cfg.get("hiddenStreamCategories", QStringList());
 }
 
 QStringList Settings::hiddenOnlineProviders()
 {
-    return GET_STRINGLIST("hiddenOnlineProviders", QStringList());
+    return cfg.get("hiddenOnlineProviders", QStringList());
 }
 
 #ifndef Q_OS_WIN32
 bool Settings::inhibitSuspend()
 {
-    return GET_BOOL("inhibitSuspend", false);
+    return cfg.get("inhibitSuspend", false);
 }
 #endif
 
 int Settings::rssUpdate()
 {
-    static int constMax=7*24*60;
-    int v=GET_INT("rssUpdate", 0);
-    return RESTRICT(v, 0, constMax);
+    return cfg.get("rssUpdate", 0, 0, 7*24*60);
 }
 
 QDateTime Settings::lastRssUpdate()
 {
-    return GET_DATE_TIME("lastRssUpdate");
+    return cfg.get("lastRssUpdate", QDateTime());
 }
 
 QString Settings::podcastDownloadPath()
 {
-    return Utils::fixPath(GET_STRING("podcastDownloadPath", Utils::fixPath(QDir::homePath())+QLatin1String("Podcasts/")));
+    return Utils::fixPath(cfg.get("podcastDownloadPath", Utils::fixPath(QDir::homePath())+QLatin1String("Podcasts/")));
 }
 
 bool Settings::podcastAutoDownload()
 {
-    return GET_BOOL("podcastAutoDownload", false);
+    return cfg.get("podcastAutoDownload", false);
 }
 
 int Settings::maxCoverUpdatePerIteration()
 {
-    int v=GET_INT("maxCoverUpdatePerIteration", 10);
-    return RESTRICT(v, 1, 50);
+    return cfg.get("maxCoverUpdatePerIteration", 10, 1, 50);
 }
 
 int Settings::coverCacheSize()
 {
-    int v=GET_INT("coverCacheSize", 10);
-    return RESTRICT(v, 1, 512);
+    return cfg.get("coverCacheSize", 10, 1, 512);
 }
 
 QStringList Settings::cueFileCodecs()
 {
-    return GET_STRINGLIST("cueFileCodecs", QStringList());
+    return cfg.get("cueFileCodecs", QStringList());
 }
 
 bool Settings::networkAccessEnabled()
 {
-    return GET_BOOL("networkAccessEnabled", true);
+    return cfg.get("networkAccessEnabled", true);
 }
 
 int Settings::volumeStep()
 {
-    int v=GET_INT("volumeStep", 5);
-    return RESTRICT(v, 1, 20);
+    return cfg.get("volumeStep", 5, 1, 20);
 }
 
 Settings::StartupState Settings::startupState()
 {
-    return getStartupState(GET_STRING("startupState", getStartupStateStr(SS_Previous)));
+    return getStartupState(cfg.get("startupState", getStartupStateStr(SS_Previous)));
 }
 
 int Settings::undoSteps()
 {
-    int v=GET_INT("undoSteps", 10);
-    return RESTRICT(v, 0, 20);
+    return cfg.get("undoSteps", 10, 0, 20);
 }
 
 QString Settings::searchCategory()
 {
-    return GET_STRING("searchCategory", QString());
+    return cfg.get("searchCategory", QString());
 }
 
 bool Settings::cacheScaledCovers()
 {
-    return GET_BOOL("cacheScaledCovers", true);
+    return cfg.get("cacheScaledCovers", true);
 }
 
 bool Settings::fetchCovers()
 {
-    return GET_BOOL("fetchCovers", true);
+    return cfg.get("fetchCovers", true);
 }
 
 int Settings::mpdPoll()
 {
-    int v=GET_INT("mpdPoll", 0);
-    return RESTRICT(v, 0, 60);
+    return cfg.get("mpdPoll", 0, 0, 60);
 }
 
 int Settings::mpdListSize()
 {
-    int v=GET_INT("mpdListSize", 10000);
-    return RESTRICT(v, 100, 65535);
+    return cfg.get("mpdListSize", 10000, 100, 65535);
 }
 
 #ifndef ENABLE_KDE_SUPPORT
 QString Settings::lang()
 {
-    return GET_STRING("lang", QString());
+    return cfg.get("lang", QString());
 }
 #endif
 
 bool Settings::alwaysUseLsInfo()
 {
-    return GET_BOOL("alwaysUseLsInfo", false);
+    return cfg.get("alwaysUseLsInfo", false);
 }
 
 bool Settings::showMenubar()
 {
-    return GET_BOOL("showMenubar", false);
+    return cfg.get("showMenubar", false);
 }
 
 int Settings::menu()
@@ -958,7 +925,7 @@ int Settings::menu()
     #else
     int def=Utils::Gnome==Utils::currentDe() ? MC_Button : Utils::Unity==Utils::currentDe() ? MC_Bar : (MC_Bar|MC_Button);
     #endif
-    int v=GET_INT("menu", def)&(MC_Bar|MC_Button);
+    int v=cfg.get("menu", def)&(MC_Bar|MC_Button);
     return 0==v ? MC_Bar : v;
 }
 
@@ -967,7 +934,7 @@ void Settings::removeConnectionDetails(const QString &v)
     if (v==currentConnection()) {
         saveCurrentConnection(QString());
     }
-    REMOVE_GROUP(MPDConnectionDetails::configGroupName(v));
+    cfg.removeGroup(MPDConnectionDetails::configGroupName(v));
     #ifdef ENABLE_KDE_SUPPORT
     KGlobal::config()->sync();
     #endif
@@ -977,26 +944,21 @@ void Settings::removeConnectionDetails(const QString &v)
 void Settings::saveConnectionDetails(const MPDConnectionDetails &v)
 {
     if (v.name.isEmpty()) {
-        REMOVE_ENTRY("connectionHost");
-        REMOVE_ENTRY("connectionPasswd");
-        REMOVE_ENTRY("connectionPort");
-        REMOVE_ENTRY("mpdDir");
+        cfg.removeEntry("connectionHost");
+        cfg.removeEntry("connectionPasswd");
+        cfg.removeEntry("connectionPort");
+        cfg.removeEntry("mpdDir");
     }
 
     QString n=MPDConnectionDetails::configGroupName(v.name);
-    #ifdef ENABLE_KDE_SUPPORT
-    KConfigGroup grp(KGlobal::config(), n);
-    CFG_SET_VALUE(grp, "host", v.hostname);
-    CFG_SET_VALUE(grp, "port", (int)v.port);
-    CFG_SET_VALUE(grp, "dir", v.dir);
-    CFG_SET_VALUE(grp, "dynamizerPort", (int)v.dynamizerPort);
-    CFG_SET_VALUE(grp, "coverName", v.coverName);
-    #ifdef ENABLE_HTTP_STREAM_PLAYBACK
-    CFG_SET_VALUE(grp, "streamUrl", v.streamUrl);
-    #endif
-    #ifdef ENABLE_KWALLET
+
+    cfg.beginGroup(n);
+    cfg.set("host", v.hostname);
+    cfg.set("port", (int)v.port);
+    cfg.set("dir", v.dir);
+    #if defined ENABLE_KDE_SUPPORT && defined ENABLE_KWALLET
     if (KWallet::Wallet::isEnabled()) {
-        CFG_SET_VALUE(grp, "passwd", !v.password.isEmpty());
+        cfg.set("passwd", !v.password.isEmpty());
         QString walletEntry=v.name.isEmpty() ? "mpd" : v.name;
         if (v.password.isEmpty()) {
             if (wallet) {
@@ -1006,30 +968,21 @@ void Settings::saveConnectionDetails(const MPDConnectionDetails &v)
         else if (openWallet()) {
             wallet->writePassword(walletEntry, v.password);
         }
-    } else 
+    } else
     #endif // ENABLE_KWALLET
-    {
-        CFG_SET_VALUE(grp, "pass", v.password);
-    }
-    #else
-    cfg.beginGroup(n);
-    SET_VALUE("host", v.hostname);
-    SET_VALUE("port", (int)v.port);
-    SET_VALUE("dir", v.dir);
-    SET_VALUE("passwd", v.password);
-    SET_VALUE("dynamizerPort", (int)v.dynamizerPort);
-    SET_VALUE("coverName", v.coverName);
+    cfg.set("passwd", v.password);
+    cfg.set("dynamizerPort", (int)v.dynamizerPort);
+    cfg.set("coverName", v.coverName);
     #ifdef ENABLE_HTTP_STREAM_PLAYBACK
-    SET_VALUE("streamUrl", v.streamUrl);
+    cfg.set("streamUrl", v.streamUrl);
     #endif
     cfg.endGroup();
-    #endif
     modified=true;
 }
 
-#define SET_VALUE_MOD(KEY) if (v!=KEY()) { modified=true; SET_VALUE(#KEY, v); }
-#define SET_ITEMVIEW_MODE_VALUE_MOD(KEY) if (v!=KEY()) { modified=true; SET_VALUE(#KEY, ItemView::modeStr((ItemView::Mode)v)); }
-#define SET_STARTUPSTATE_VALUE_MOD(KEY) if (v!=KEY()) { modified=true; SET_VALUE(#KEY, getStartupStateStr((StartupState)v)); }
+#define SET_VALUE_MOD(KEY) if (v!=KEY()) { modified=true; cfg.set(#KEY, v); }
+#define SET_ITEMVIEW_MODE_VALUE_MOD(KEY) if (v!=KEY()) { modified=true; cfg.set(#KEY, ItemView::modeStr((ItemView::Mode)v)); }
+#define SET_STARTUPSTATE_VALUE_MOD(KEY) if (v!=KEY()) { modified=true; cfg.set(#KEY, getStartupStateStr((StartupState)v)); }
 
 void Settings::saveCurrentConnection(const QString &v)
 {
@@ -1046,7 +999,7 @@ void Settings::saveHeaderState(const QString &key, const QByteArray &v)
     QByteArray current=headerState(key);
     if (current!=v) {
         modified=true;
-        SET_VALUE(key+"HeaderState", v);
+        cfg.set(key+"HeaderState", v);
     }
 }
 
@@ -1502,12 +1455,12 @@ void Settings::save(bool force)
     if (force) {
         if (version()!=PACKAGE_VERSION || isFirstRun) {
             modified=true;
-            SET_VALUE("version", PACKAGE_VERSION_STRING);
+            cfg.set("version", PACKAGE_VERSION_STRING);
             ver=PACKAGE_VERSION;
         }
         if (modified) {
             modified=false;
-            CFG_SYNC;
+            cfg.sync();
         }
         if (timer) {
             timer->stop();

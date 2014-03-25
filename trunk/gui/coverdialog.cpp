@@ -353,13 +353,8 @@ CoverDialog::CoverDialog(QWidget *parent)
     , showAction(0)
     , removeAction(0)
 {
-    #ifdef ENABLE_KDE_SUPPORT
-    KConfigGroup cfg(KGlobal::config(), "CoverDialog");
-    #else
-    QSettings cfg;
-    cfg.beginGroup("CoverDialog");
-    #endif
-    enabledProviders=GET_INT("enabledProviders", (int)Prov_All);
+    Configuration cfg("CoverDialog");
+    enabledProviders=cfg.get("enabledProviders", (int)Prov_All);
 
     iCount++;
     QWidget *mainWidet = new QWidget(this);
@@ -421,13 +416,8 @@ CoverDialog::CoverDialog(QWidget *parent)
 
 CoverDialog::~CoverDialog()
 {
-    #ifdef ENABLE_KDE_SUPPORT
-    KConfigGroup cfg(KGlobal::config(), "CoverDialog");
-    #else
-    QSettings cfg;
-    cfg.beginGroup("CoverDialog");
-    #endif
-    SET_VALUE("enabledProviders", enabledProviders);
+    Configuration cfg("CoverDialog");
+    cfg.set("enabledProviders", enabledProviders);
 
     iCount--;
     cancelQuery();

@@ -22,45 +22,53 @@
  */
 
 #include "dialog.h"
+#include "configuration.h"
 
 #ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KGlobal>
-#include <KDE/KConfig>
-#include <KDE/KConfigGroup>
+#define DLG_BASE KDialog
+#else
+#define DLG_BASE QDialog
+#endif
 
 Dialog::Dialog(QWidget *parent, const QString &name, const QSize &defSize)
-    : KDialog(parent)
+    : DLG_BASE(parent)
+    #ifndef ENABLE_KDE_SUPPORT
+    , defButton(0)
+    , buttonTypes(0)
+    , mw(0)
+    , buttonBox(0)
+    , managedAccels(false)
+    #endif
 {
     if (!name.isEmpty()) {
         setObjectName(name);
-        KConfigGroup cfg(KGlobal::config(), name);
-        cfgSize=cfg.readEntry("size", QSize());
+        Configuration cfg(name);
+        cfgSize=cfg.get("size", QSize());
         if (!cfgSize.isEmpty()) {
-            KDialog::resize(cfgSize);
+            DLG_BASE::resize(cfgSize);
         } else if (!defSize.isEmpty()) {
-            KDialog::resize(defSize);
+            DLG_BASE::resize(defSize);
         }
-    }
-}
-
-Dialog::~Dialog()
-{
-    if (!objectName().isEmpty() && size()!=cfgSize) {
-        KConfigGroup cfg(KGlobal::config(), objectName());
-        cfg.writeEntry("size", size());
-        KGlobal::config()->sync();
     }
 }
 
 void Dialog::resize(const QSize &sz)
 {
     if (cfgSize.isEmpty()) {
-        KDialog::resize(sz);
+        QDialog::resize(sz);
         cfgSize=sz;
     }
 }
 
-#else
+Dialog::~Dialog()
+{
+    if (!objectName().isEmpty() && size()!=cfgSize) {
+        Configuration cfg(objectName());
+        cfg.set("size", size());
+    }
+}
+
+#ifndef ENABLE_KDE_SUPPORT
 #include "icon.h"
 #include "acceleratormanager.h"
 #include <QDialogButtonBox>
@@ -116,45 +124,6 @@ static QDialogButtonBox::StandardButton mapType(int btn) {
     case Dialog::Yes:    return QDialogButtonBox::Yes;
     case Dialog::Reset:  return QDialogButtonBox::Reset;
     default:             return QDialogButtonBox::NoButton;
-    }
-}
-
-Dialog::Dialog(QWidget *parent, const QString &name, const QSize &defSize)
-    : QDialog(parent)
-    , defButton(0)
-    , buttonTypes(0)
-    , mw(0)
-    , buttonBox(0)
-    , managedAccels(false)
-{
-    if (!name.isEmpty()) {
-        setObjectName(name);
-        QSettings cfg;
-        cfg.beginGroup(name);
-        cfgSize=cfg.contains("size") ? cfg.value("size").toSize() : QSize();
-        if (!cfgSize.isEmpty()) {
-            QDialog::resize(cfgSize);
-        } else if (!defSize.isEmpty()) {
-            QDialog::resize(defSize);
-        }
-    }
-}
-
-Dialog::~Dialog()
-{
-    if (!objectName().isEmpty() && size()!=cfgSize) {
-        QSettings cfg;
-        cfg.beginGroup(objectName());
-        cfg.setValue("size", size());
-        cfg.sync();
-    }
-}
-
-void Dialog::resize(const QSize &sz)
-{
-    if (cfgSize.isEmpty()) {
-        QDialog::resize(sz);
-        cfgSize=sz;
     }
 }
 

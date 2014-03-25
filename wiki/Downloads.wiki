@@ -3,6 +3,7 @@ As of January 14th 2014, google code no longer allows adding new downloads. Ther
 
 || *Version* || *Source Code* || *Windows* || *Released* || *Comment* ||
 || *1.3* || || || ||
+|| 1.3.3 || [https://drive.google.com/uc?export=download&id=0Bzghs6gQWi60ZUN1NThacGFrdFE cantata-1.3.3.tar.bz2] || [https://drive.google.com/uc?export=download&id=0Bzghs6gQWi60QllHeWZVUnVZVVE Cantata-1.3.3-Setup.exe] || 25 March 2014 || ||
 || 1.3.2 || [https://drive.google.com/uc?export=download&id=0Bzghs6gQWi60TFIwWHBWR1JhVHc cantata-1.3.2.tar.bz2] || [https://drive.google.com/uc?export=download&id=0Bzghs6gQWi60TkhxWXlyRDBkSkk Cantata-1.3.2-Setup.exe] || 9 March 2014 || ||
 || 1.3.1 || [https://drive.google.com/uc?export=download&id=0Bzghs6gQWi60YmdyaExDZUo4NGs cantata-1.3.1.tar.bz2] || [https://drive.google.com/uc?export=download&id=0Bzghs6gQWi60ZGhwRXdWZG5BYnc Cantata-1.3.1-Setup.exe] || 1 March 2014 || ||
 || 1.3.0.1 || [https://drive.google.com/uc?export=download&id=0Bzghs6gQWi60czZxNXJtdWllc0E cantata-1.3.0.1.tar.bz2] || || 21 February 2014 || Compile fix for KDE builds ||

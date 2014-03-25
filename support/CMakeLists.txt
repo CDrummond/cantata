@@ -1,5 +1,6 @@
 set(SUPPORT_SRCS action.cpp actioncollection.cpp fancytabwidget.cpp messagewidget.cpp icon.cpp buddylabel.cpp
-    lineedit.cpp gtkstyle.cpp utils.cpp spinner.cpp messagebox.cpp inputdialog.cpp thread.cpp squeezedtextlabel.cpp)
+    lineedit.cpp gtkstyle.cpp utils.cpp spinner.cpp messagebox.cpp inputdialog.cpp thread.cpp squeezedtextlabel.cpp
+    configuration.cpp)
 
 set(SUPPORT_MOC_HDRS action.h actioncollection.h fancytabwidget.h messagewidget.h inputdialog.h thread.h pagewidget.h)
 

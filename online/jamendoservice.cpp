@@ -27,7 +27,7 @@
 #include "musiclibraryitemalbum.h"
 #include "musiclibraryitemsong.h"
 #include "song.h"
-#include "settings.h"
+#include "configuration.h"
 #include "config.h"
 #include <QXmlStreamReader>
 
@@ -356,25 +356,14 @@ static JamendoService::Format toFormat(const QString &f)
 
 void JamendoService::loadConfig()
 {
-    #ifdef ENABLE_KDE_SUPPORT
-    KConfigGroup cfg(KGlobal::config(), constName);
-    #else
-    QSettings cfg;
-    cfg.beginGroup(constName);
-    #endif
-    format=toFormat(GET_STRING("format", formatStr(format)));
+    Configuration cfg(constName);
+    format=toFormat(cfg.get("format", formatStr(format)));
 }
 
 void JamendoService::saveConfig()
 {
-    #ifdef ENABLE_KDE_SUPPORT
-    KConfigGroup cfg(KGlobal::config(), constName);
-    #else
-    QSettings cfg;
-    cfg.beginGroup(constName);
-    #endif
-    SET_VALUE("format", formatStr(format));
-    cfg.sync();
+    Configuration cfg(constName);
+    cfg.set("format", formatStr(format));
 }
 
 void JamendoService::configure(QWidget *p)

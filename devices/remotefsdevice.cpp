@@ -30,7 +30,7 @@
 #include "utils.h"
 #include "httpserver.h"
 #include "localize.h"
-#include "settings.h"
+#include "configuration.h"
 #include "mountpoints.h"
 #include "mounterinterface.h"
 #include "avahi/avahi.h"
@@ -68,42 +68,32 @@ static QString mountPoint(const RemoteFsDevice::Details &details, bool create)
 
 void RemoteFsDevice::Details::load(const QString &group)
 {
-    #ifdef ENABLE_KDE_SUPPORT
-    KConfigGroup cfg(KGlobal::config(), constCfgPrefix+group);
-    #else
-    QSettings cfg;
-    cfg.beginGroup(constCfgPrefix+group);
-    #endif
+    Configuration cfg(constCfgPrefix+group);
     name=group;
-    QString u=GET_STRING("url", QString());
+    QString u=cfg.get("url", QString());
 
     if (u.isEmpty()) {
-        QString protocol=GET_STRING("protocol", QString());
-        QString host=GET_STRING("host", QString());
-        QString user=GET_STRING("user", QString());
-        QString path=GET_STRING("path", QString());
-        int port=GET_INT("port", 0);
+        QString protocol=cfg.get("protocol", QString());
+        QString host=cfg.get("host", QString());
+        QString user=cfg.get("user", QString());
+        QString path=cfg.get("path", QString());
+        int port=cfg.get("port", 0);
         u=(protocol.isEmpty() ? "file" : protocol+"://")+user+(!user.isEmpty() && !host.isEmpty() ? "@" : "")+host+(0==port ? "" : (":"+QString::number(port)))+path;
     }
     if (!u.isEmpty()) {
         url=QUrl(u);
     }
-    extraOptions=GET_STRING("extraOptions", QString());
-    configured=GET_BOOL("configured", configured);
+    extraOptions=cfg.get("extraOptions", QString());
+    configured=cfg.get("configured", configured);
 }
 
 void RemoteFsDevice::Details::save() const
 {
-    #ifdef ENABLE_KDE_SUPPORT
-    KConfigGroup cfg(KGlobal::config(), constCfgPrefix+name);
-    #else
-    QSettings cfg;
-    cfg.beginGroup(constCfgPrefix+name);
-    #endif
-    SET_VALUE("url", url.toString());
-    SET_VALUE("extraOptions", extraOptions);
-    SET_VALUE("configured", configured);
-    CFG_SYNC;
+    Configuration cfg(constCfgPrefix+name);
+
+    cfg.set("url", url.toString());
+    cfg.set("extraOptions", extraOptions);
+    cfg.set("configured", configured);
 }
 
 static inline bool isValid(const RemoteFsDevice::Details &d)
@@ -121,23 +111,16 @@ static inline bool isMountable(const RemoteFsDevice::Details &d)
 QList<Device *> RemoteFsDevice::loadAll(MusicModel *m)
 {
     QList<Device *> devices;
-    #ifdef ENABLE_KDE_SUPPORT
-    KConfigGroup cfg(KGlobal::config(), "General");
-    #else
-    QSettings cfg;
-    #endif
-    QStringList names=GET_STRINGLIST(constCfgKey, QStringList());
+    Configuration cfg;
+    QStringList names=cfg.get(constCfgKey, QStringList());
     foreach (const QString &n, names) {
         Details d;
         d.load(n);
         if (d.isEmpty()) {
-            REMOVE_GROUP(constCfgPrefix+n);
+            cfg.removeGroup(constCfgPrefix+n);
         } else if (isValid(d)) {
             devices.append(new RemoteFsDevice(m, d));
         }
-    }
-    if (devices.count()!=names.count()) {
-        CFG_SYNC;
     }
     return devices;
 }
@@ -147,17 +130,13 @@ Device * RemoteFsDevice::create(MusicModel *m, const DeviceOptions &options, con
     if (d.isEmpty()) {
         return 0;
     }
-    #ifdef ENABLE_KDE_SUPPORT
-    KConfigGroup cfg(KGlobal::config(), "General");
-    #else
-    QSettings cfg;
-    #endif
-    QStringList names=GET_STRINGLIST(constCfgKey, QStringList());
+    Configuration cfg;
+    QStringList names=cfg.get(constCfgKey, QStringList());
     if (names.contains(d.name)) {
         return 0;
     }
     names.append(d.name);
-    SET_VALUE(constCfgKey, names);
+    cfg.set(constCfgKey, names);
     d.save();
     if (isValid(d)) {
         return new RemoteFsDevice(m, options, d);
@@ -168,17 +147,12 @@ Device * RemoteFsDevice::create(MusicModel *m, const DeviceOptions &options, con
 void RemoteFsDevice::destroy(bool removeFromConfig)
 {
     if (removeFromConfig) {
-        #ifdef ENABLE_KDE_SUPPORT
-        KConfigGroup cfg(KGlobal::config(), "General");
-        #else
-        QSettings cfg;
-        #endif
-        QStringList names=GET_STRINGLIST(constCfgKey, QStringList());
+        Configuration cfg;
+        QStringList names=cfg.get(constCfgKey, QStringList());
         if (names.contains(details.name)) {
             names.removeAll(details.name);
-            REMOVE_GROUP(id());
-            SET_VALUE(constCfgKey, names);
-            CFG_SYNC;
+            cfg.removeGroup(id());
+            cfg.set(constCfgKey, names);
         }
     }
     stopScanner();
@@ -220,21 +194,16 @@ QString RemoteFsDevice::createUdi(const QString &n)
 
 void RemoteFsDevice::renamed(const QString &oldName, const QString &newName)
 {
-    #ifdef ENABLE_KDE_SUPPORT
-    KConfigGroup cfg(KGlobal::config(), "General");
-    #else
-    QSettings cfg;
-    #endif
-    QStringList names=GET_STRINGLIST(constCfgKey, QStringList());
+    Configuration cfg;
+    QStringList names=cfg.get(constCfgKey, QStringList());
     if (names.contains(oldName)) {
         names.removeAll(oldName);
-        REMOVE_GROUP(createUdi(oldName));
+        cfg.removeGroup(createUdi(oldName));
     }
     if (!names.contains(newName)) {
         names.append(newName);
     }
-    SET_VALUE(constCfgKey, names);
-    CFG_SYNC;
+    cfg.set(constCfgKey, names);
 }
 
 RemoteFsDevice::RemoteFsDevice(MusicModel *m, const DeviceOptions &options, const Details &d)

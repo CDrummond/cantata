@@ -119,6 +119,7 @@ void FolderPage::refresh()
 void FolderPage::clear()
 {
     DirViewModel::self()->clear();
+    loaded=false;
 }
 
 void FolderPage::showEvent(QShowEvent *e)

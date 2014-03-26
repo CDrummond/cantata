@@ -615,6 +615,10 @@ void MPDConnection::add(const QStringList &origList, quint32 pos, quint32 size, 
     QStringList cStreamFiles;
     bool sentOk=false;
 
+    if (usePrio && AddToEnd==action && 0==curPos) {
+        curPos=playQueueIds.size();
+    }
+
     foreach (const QStringList &files, fileLists) {
         QByteArray send = "command_list_begin\n";
 

@@ -25,7 +25,7 @@
 #include "acceleratormanager.h"
 #include <QMenu>
 
-static const char * constAccelProp="catata-accel";
+static const char * constAccelProp="managed-accel";
 
 void ProxyStyle::polish(QWidget *widget)
 {

@@ -220,7 +220,7 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
         case Qt::DisplayRole:
             return al->album;
         case Qt::FontRole:
-            if (dbUpdateVer && al->dbUpdateVer==dbUpdateVer) {
+            if (al->isNew) {
                 QFont f=ActionModel::data(index, role).value<QFont>();
                 f.setBold(true);
                 return f;
@@ -350,7 +350,6 @@ void AlbumsModel::update(const MusicLibraryItemRoot *root)
         return;
     }
 
-    dbUpdateVer=root->dbUpdateVersion();
     bool changesMade=false;
     bool resettingModel=items.isEmpty() || 0==root->childCount();
     if (resettingModel) {
@@ -395,8 +394,8 @@ void AlbumsModel::update(const MusicLibraryItemRoot *root)
                     (*it)->genres=albumItem->genres();
                     (*it)->updated=true;
                     found=true;
-                    if ((*it)->dbUpdateVer!=albumItem->dbUpdateVersion()) {
-                        (*it)->dbUpdateVer=albumItem->dbUpdateVersion();
+                    if ((*it)->isNew!=albumItem->isNew()) {
+                        (*it)->isNew=albumItem->isNew();
                         if (!resettingModel) {
                             QModelIndex albumIndex=index(items.indexOf(*it), 0, QModelIndex());
                             emit dataChanged(albumIndex, albumIndex);
@@ -413,7 +412,7 @@ void AlbumsModel::update(const MusicLibraryItemRoot *root)
                 a->genres=albumItem->genres();
                 a->updated=true;
                 a->type=albumItem->songType();
-                a->dbUpdateVer=albumItem->dbUpdateVersion();
+                a->isNew=albumItem->isNew();
                 if (!resettingModel) {
                     beginInsertRows(QModelIndex(), items.count(), items.count());
                 }
@@ -458,6 +457,18 @@ void AlbumsModel::coverLoaded(const Song &song, int s)
                 QModelIndex idx=index(row, 0, QModelIndex());
                 emit dataChanged(idx, idx);
             }
+        }
+    }
+}
+
+void AlbumsModel::clearNewState()
+{
+    for (int i=0; i<items.count(); ++i) {
+        AlbumItem *al=items.at(i);
+        if (al->isNew) {
+            al->isNew=false;
+            QModelIndex idx=index(i, 0, QModelIndex());
+            emit dataChanged(idx, idx);
         }
     }
 }
@@ -507,6 +518,7 @@ AlbumsModel::AlbumItem::AlbumItem(const QString &ar, const QString &al, quint16 
     , updated(false)
     , numTracks(0)
     , time(0)
+    , isNew(false)
 {
 }
 

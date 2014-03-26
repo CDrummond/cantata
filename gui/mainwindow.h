@@ -388,6 +388,7 @@ private:
     Action *serverInfoAction;
     Action *clearPlayQueueAction;
     Action *cancelAction;
+    Action *clearNewStateAction;
     TrayItem *trayItem;
     QPoint lastPos;
     Song current;

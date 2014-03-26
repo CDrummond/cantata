@@ -98,7 +98,7 @@ public:
         quint32 numTracks;
         quint32 time;
         Song coverSong;
-        quint32 dbUpdateVer;
+        bool isNew;
     };
 
     static AlbumsModel * self();
@@ -126,6 +126,7 @@ Q_SIGNALS:
     void updated();
 
 public Q_SLOTS:
+    void clearNewState();
     void coverLoaded(const Song &song, int s);
     void update(const MusicLibraryItemRoot *root);
 
@@ -133,7 +134,6 @@ private:
     bool enabled;
 //     bool coversRequested;
     mutable QList<AlbumItem *> items;
-    quint32 dbUpdateVer;
 };
 
 #endif

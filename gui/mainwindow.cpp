@@ -330,6 +330,11 @@ MainWindow::MainWindow(QWidget *parent)
     connect(cancelAction, SIGNAL(triggered(bool)), messageWidget, SLOT(animatedHide()));
     connect(clearPlayQueueAction, SIGNAL(triggered(bool)), messageWidget, SLOT(animatedHide()));
     connect(clearPlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(clearPlayQueue()));
+    clearNewStateAction = ActionCollection::get()->createAction("clearnewstate", i18n("Clear 'New' State Of Artist and Albums"));
+    connect(clearNewStateAction, SIGNAL(triggered(bool)), MusicLibraryModel::self(), SLOT(clearNewState()));
+    connect(clearNewStateAction, SIGNAL(triggered(bool)), AlbumsModel::self(), SLOT(clearNewState()));
+    connect(MusicLibraryModel::self(), SIGNAL(haveNewItems(bool)), clearNewStateAction, SLOT(setEnabled(bool)));
+    clearNewStateAction->setEnabled(false);
 
     StdActions::self()->playPauseTrackAction->setEnabled(false);
     StdActions::self()->nextTrackAction->setEnabled(false);
@@ -609,6 +614,7 @@ MainWindow::MainWindow(QWidget *parent)
         #else
         mainMenu->addAction(prefAction);
         mainMenu->addAction(refreshDbAction);
+        mainMenu->addAction(clearNewStateAction);
         mainMenu->addSeparator();
         mainMenu->addAction(StdActions::self()->searchAction);
         mainMenu->addSeparator();
@@ -640,6 +646,7 @@ MainWindow::MainWindow(QWidget *parent)
         menu=new QMenu(i18n("&Edit"), this);
         addMenuAction(menu, playQueueModel.undoAct());
         addMenuAction(menu, playQueueModel.redoAct());
+        addMenuAction(menu, clearNewStateAction);
         menu->addSeparator();
         addMenuAction(menu, StdActions::self()->searchAction);
         #ifndef ENABLE_KDE_SUPPORT

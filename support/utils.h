@@ -82,9 +82,11 @@ namespace Utils
     #ifdef ENABLE_KDE_SUPPORT
     inline QString findExe(const QString &appname, const QString &pathstr=QString()) { return KStandardDirs::findExe(appname, pathstr); }
     inline QString formatByteSize(double size) { return KGlobal::locale()->formatByteSize(size, 1); }
+    inline QString formatNumber(double number, int precision) { return KGlobal::locale()->formatNumber(number, precision); }
     #else
     extern QString findExe(const QString &appname, const QString &pathstr=QString());
     extern QString formatByteSize(double size);
+    inline QString formatNumber(double number, int precision) { return QString::number(number, 'f', precision); }
     #endif
     extern QString formatDuration(const quint32 totalseconds);
     extern QString formatTime(const quint32 seconds, bool zeroIsUnknown=false);

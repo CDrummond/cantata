@@ -38,14 +38,10 @@
 
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KGlobalSettings>
-#endif
-
-#ifdef ENABLE_KDE_SUPPORT
 #define SINGLE_CLICK KGlobalSettings::singleClick()
 #else
 #define SINGLE_CLICK style()->styleHint(QStyle::SH_ItemView_ActivateItemOnSingleClick, 0, this)
 #endif
-
 
 QImage TreeView::setOpacity(const QImage &orig, double opacity)
 {

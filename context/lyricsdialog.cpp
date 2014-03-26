@@ -26,9 +26,6 @@
 #include "icon.h"
 #include "lyricsdialog.h"
 #include "localize.h"
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KIconDialog>
-#endif
 
 LyricsDialog::LyricsDialog(const Song &s, QWidget *parent)
     : Dialog(parent)

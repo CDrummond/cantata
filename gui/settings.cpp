@@ -30,16 +30,10 @@
 #include "utils.h"
 #include "mediakeys.h"
 #include "globalstatic.h"
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KGlobal>
-#include <KDE/KConfig>
-#ifdef ENABLE_KWALLET
+#if defined ENABLE_KDE_SUPPORT && defined ENABLE_KWALLET
 #include <kwallet.h>
 #endif
-#include <QApplication>
-#include <QWidget>
-#include <QTimer>
-#else
+#ifndef ENABLE_KDE_SUPPORT
 #include "mediakeys.h"
 #endif
 #include <QFile>

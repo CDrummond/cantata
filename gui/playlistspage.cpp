@@ -33,7 +33,9 @@
 #include "mpdconnection.h"
 #include "tableview.h"
 #include <QMenu>
-#ifndef ENABLE_KDE_SUPPORT
+#ifdef ENABLE_KDE_SUPPORT
+#include <KDE/KGlobalSettings>
+#else
 #include <QStyle>
 #endif
 

@@ -152,6 +152,22 @@ static QString save(const QString &mimeType, const QString &extension, const QSt
     return QString();
 }
 
+static QImage loadImage(const QString &fileName)
+{
+    QImage img(fileName);
+    if (img.isNull()) {
+        // Failed to load, perhaps extension is wrong? If so try PNG for .jpg, and vice versa...
+        QFile f(fileName);
+        if (f.open(QIODevice::ReadOnly)) {
+            img.load(&f, fileName.endsWith(".jpg", Qt::CaseInsensitive) ? "PNG" : "JPG");
+            if (!img.isNull()) {
+                DBUG_CLASS("Covers") << fileName << "has wrong extension!";
+            }
+        }
+    }
+    return img;
+}
+
 static inline QString albumKey(const QString &artist, const QString &album)
 {
     return "{"+artist+"}{"+album+"}";
@@ -1134,7 +1150,7 @@ Covers::Image Covers::locateImage(const Song &song)
             img.fileName=PodcastService::iconPath();
         }
         if (!img.fileName.isEmpty()) {
-            img.img=QImage(img.fileName);
+            img.img=loadImage(img.fileName);
             if (!img.img.isNull()) {
                 DBUG_CLASS("Covers") << song.onlineService();
                 return img;
@@ -1153,7 +1169,7 @@ Covers::Image Covers::locateImage(const Song &song)
         if (prevFileName.startsWith(constCoverInTagPrefix)) {
             img=Tags::readImage(prevFileName.mid(constCoverInTagPrefix.length()));
         } else {
-            img=QImage(prevFileName);
+            img=loadImage(prevFileName);
         }
         #else
         QImage img(prevFileName);
@@ -1217,7 +1233,7 @@ Covers::Image Covers::locateImage(const Song &song)
             for (int level=0; level<2; ++level) {
                 foreach (const QString &fileName, coverFileNames) {
                     if (QFile::exists(dirName+fileName)) {
-                        QImage img(dirName+fileName);
+                        QImage img=loadImage(dirName+fileName);
                         if (!img.isNull()) {
                             DBUG_CLASS("Covers") << "Got artist image" << QString(dirName+fileName);
                             return Image(img, dirName+fileName);
@@ -1237,7 +1253,7 @@ Covers::Image Covers::locateImage(const Song &song)
                     dirName+=basicArtist+Utils::constDirSep;
                     foreach (const QString &fileName, coverFileNames) {
                         if (QFile::exists(dirName+fileName)) {
-                            QImage img(dirName+fileName);
+                            QImage img=loadImage(dirName+fileName);
                             if (!img.isNull()) {
                                 DBUG_CLASS("Covers") << "Got artist image" << QString(dirName+fileName);
                                 return Image(img, dirName+fileName);
@@ -1249,7 +1265,7 @@ Covers::Image Covers::locateImage(const Song &song)
         } else {
             foreach (const QString &fileName, coverFileNames) {
                 if (QFile::exists(dirName+fileName)) {
-                    QImage img(dirName+fileName);
+                    QImage img=loadImage(dirName+fileName);
                     if (!img.isNull()) {
                         DBUG_CLASS("Covers") << "Got cover image" << QString(dirName+fileName);
                         return Image(img, dirName+fileName);
@@ -1270,7 +1286,7 @@ Covers::Image Covers::locateImage(const Song &song)
 
             QStringList files=QDir(dirName).entryList(QStringList() << QLatin1String("*.jpg") << QLatin1String("*.png"), QDir::Files|QDir::Readable);
             foreach (const QString &fileName, files) {
-                QImage img(dirName+fileName);
+                QImage img=loadImage(dirName+fileName);
                 if (!img.isNull()) {
                     DBUG_CLASS("Covers") << "Got cover image" << QString(dirName+fileName);
                     return Image(img, dirName+fileName);
@@ -1290,7 +1306,7 @@ Covers::Image Covers::locateImage(const Song &song)
                 if (QDir(dirName).exists()) {
                     foreach (const QString &fileName, coverFileNames) {
                         if (QFile::exists(dirName+fileName)) {
-                            QImage img(dirName+fileName);
+                            QImage img=loadImage(dirName+fileName);
                             if (!img.isNull()) {
                                 DBUG_CLASS("Covers") << "Got artist image" << QString(dirName+fileName);
                                 return Image(img, dirName+fileName);
@@ -1304,7 +1320,7 @@ Covers::Image Covers::locateImage(const Song &song)
         QString dir(Utils::cacheDir(constCoverDir, false));
         for (int e=0; constExtensions[e]; ++e) {
             if (QFile::exists(dir+artist+constExtensions[e])) {
-                QImage img(dir+artist+constExtensions[e]);
+                QImage img=loadImage(dir+artist+constExtensions[e]);
                 if (!img.isNull()) {
                     DBUG_CLASS("Covers") << "Got cached artist image" << QString(dir+artist+constExtensions[e]);
                     return Image(img, dir+artist+constExtensions[e]);
@@ -1321,7 +1337,7 @@ Covers::Image Covers::locateImage(const Song &song)
                 if (QDir(dirName).exists()) {
                     foreach (const QString &fileName, coverFileNames) {
                         if (QFile::exists(dirName+fileName)) {
-                            QImage img(dirName+fileName);
+                            QImage img=loadImage(dirName+fileName);
                             if (!img.isNull()) {
                                 DBUG_CLASS("Covers") << "Got cover image" << QString(dirName+fileName);
                                 return Image(img, dirName+fileName);
@@ -1335,7 +1351,7 @@ Covers::Image Covers::locateImage(const Song &song)
         QString dir(Utils::cacheDir(constCoverDir+artist, false));
         for (int e=0; constExtensions[e]; ++e) {
             if (QFile::exists(dir+album+constExtensions[e])) {
-                QImage img(dir+album+constExtensions[e]);
+                QImage img=loadImage(dir+album+constExtensions[e]);
                 if (!img.isNull()) {
                     DBUG_CLASS("Covers") << "Got cached cover image" << QString(dir+album+constExtensions[e]);
                     return Image(img, dir+album+constExtensions[e]);
@@ -1378,7 +1394,7 @@ Covers::Image Covers::requestImage(const Song &song, bool urgent)
             img.fileName=PodcastService::iconPath();
         }
         if (!img.fileName.isEmpty()) {
-            img.img=QImage(img.fileName);
+            img.img=loadImage(img.fileName);
             if (!img.img.isNull()) {
                 return img;
             }

@@ -37,7 +37,6 @@
 #include <QProcess>
 #endif
 #include <QDialogButtonBox>
-#include <QTextStream>
 #include <QProxyStyle>
 #include <cstdlib>
 #ifdef ENABLE_KDE_SUPPORT
@@ -61,6 +60,7 @@
 #include "inputdialog.h"
 #include "playlistsmodel.h"
 #include "covers.h"
+#include "coverdialog.h"
 #include "currentcover.h"
 #include "preferencesdialog.h"
 #include "mpdconnection.h"
@@ -105,7 +105,6 @@
 #include "rgdialog.h"
 #endif
 #endif
-#include "coverdialog.h"
 #include "streamsmodel.h"
 #include "playlistspage.h"
 #include "fancytabwidget.h"
@@ -138,18 +137,10 @@
 static void raiseWindow(QWidget *w);
 #endif
 
-enum Tabs
-{
-    TAB_LIBRARY = 0x01,
-    TAB_FOLDERS = 0x02,
-    TAB_STREAMS = 0x04
-};
-
 bool DeleteKeyEventHandler::eventFilter(QObject *obj, QEvent *event)
 {
     if (view->hasFocus() && QEvent::KeyRelease==event->type()) {
         QKeyEvent *keyEvent=static_cast<QKeyEvent *>(event);
-
         if (Qt::NoModifier==keyEvent->modifiers() && Qt::Key_Delete==keyEvent->key()) {
             act->trigger();
         }
@@ -163,11 +154,8 @@ static int nextKey(int &key)
     int k=key;
     if (Qt::Key_0==key) {
         key=Qt::Key_A;
-    } else {
-        ++key;
-        if (Qt::Key_Colon==key) {
-            key=Qt::Key_0;
-        }
+    } else if (Qt::Key_Colon==++key) {
+        key=Qt::Key_0;
     }
     return k;
 }
@@ -175,7 +163,6 @@ static int nextKey(int &key)
 MainWindow::MainWindow(QWidget *parent)
     : MAIN_WINDOW_BASE_CLASS(parent)
     , prevPage(-1)
-    , loaded(0)
     , lastState(MPDState_Inactive)
     , lastSongId(-1)
     , autoScrollPlayQueue(true)
@@ -252,6 +239,11 @@ MainWindow::MainWindow(QWidget *parent)
     prefAction=static_cast<Action *>(KStandardAction::preferences(this, SLOT(showPreferencesDialog()), ActionCollection::get()));
     quitAction=static_cast<Action *>(KStandardAction::quit(this, SLOT(quit()), ActionCollection::get()));
     shortcutsAction=static_cast<Action *>(KStandardAction::keyBindings(this, SLOT(configureShortcuts()), ActionCollection::get()));
+    StdActions::self()->prevTrackAction->setGlobalShortcut(KShortcut(Qt::Key_MediaPrevious));
+    StdActions::self()->nextTrackAction->setGlobalShortcut(KShortcut(Qt::Key_MediaNext));
+    StdActions::self()->playPauseTrackAction->setGlobalShortcut(KShortcut(Qt::Key_MediaPlay));
+    StdActions::self()->stopPlaybackAction->setGlobalShortcut(KShortcut(Qt::Key_MediaStop));
+    StdActions::self()->stopAfterCurrentTrackAction->setGlobalShortcut(KShortcut());
     #else
     setWindowIcon(Icons::self()->appIcon);
 
@@ -298,6 +290,9 @@ MainWindow::MainWindow(QWidget *parent)
     setPriorityAction = ActionCollection::get()->createAction("setprio", i18n("Set Priority"), Icon("favorites"));
     #ifdef ENABLE_HTTP_STREAM_PLAYBACK
     streamPlayAction = ActionCollection::get()->createAction("streamplay", i18n("Play Stream"));
+    streamPlayAction->setCheckable(true);
+    streamPlayAction->setChecked(false);
+    streamPlayAction->setVisible(false);
     #endif
     locateTrackAction = ActionCollection::get()->createAction("locatetrack", i18n("Locate In Library"), "edit-find");
     #ifdef TAGLIB_FOUND
@@ -342,14 +337,6 @@ MainWindow::MainWindow(QWidget *parent)
     StdActions::self()->prevTrackAction->setEnabled(false);
     enableStopActions(false);
     volumeSlider->initActions();
-
-    #if defined ENABLE_KDE_SUPPORT
-    StdActions::self()->prevTrackAction->setGlobalShortcut(KShortcut(Qt::Key_MediaPrevious));
-    StdActions::self()->nextTrackAction->setGlobalShortcut(KShortcut(Qt::Key_MediaNext));
-    StdActions::self()->playPauseTrackAction->setGlobalShortcut(KShortcut(Qt::Key_MediaPlay));
-    StdActions::self()->stopPlaybackAction->setGlobalShortcut(KShortcut(Qt::Key_MediaStop));
-    StdActions::self()->stopAfterCurrentTrackAction->setGlobalShortcut(KShortcut());
-    #endif
 
     expandAllAction->setShortcut(Qt::ControlModifier+Qt::Key_Plus);
     collapseAllAction->setShortcut(Qt::ControlModifier+Qt::Key_Minus);
@@ -482,11 +469,6 @@ MainWindow::MainWindow(QWidget *parent)
     repeatPlayQueueAction->setCheckable(true);
     singlePlayQueueAction->setCheckable(true);
     consumePlayQueueAction->setCheckable(true);
-    #ifdef ENABLE_HTTP_STREAM_PLAYBACK
-    streamPlayAction->setCheckable(true);
-    streamPlayAction->setChecked(false);
-    streamPlayAction->setVisible(false);
-    #endif
 
     songInfoButton->setDefaultAction(songInfoAction);
     playQueueSearchWidget->setVisible(false);
@@ -1093,7 +1075,6 @@ void MainWindow::mpdConnectionStateChanged(bool connected)
             emit playListInfo();
             emit outputs();
             if (CS_Init!=connectedState) {
-                loaded=(loaded&TAB_STREAMS);
                 currentTabChanged(tabWidget->currentIndex());
             }
             connectedState=CS_Connected;
@@ -1102,7 +1083,6 @@ void MainWindow::mpdConnectionStateChanged(bool connected)
         }
         updateWindowTitle();
     } else {
-        loaded=(loaded&TAB_STREAMS);
         libraryPage->clear();
         albumsPage->clear();
         folderPage->clear();
@@ -1220,6 +1200,18 @@ void MainWindow::configureShortcuts()
 void MainWindow::saveShortcuts()
 {
     ActionCollection::get()->writeSettings();
+}
+#else
+void MainWindow::showAboutDialog()
+{
+    QMessageBox::about(this, i18nc("Qt-only", "About Cantata"),
+                       i18nc("Qt-only", "<b>Cantata %1</b><br/><br/>MPD client.<br/><br/>"
+                             "&copy; 2011-2014 Craig Drummond<br/>Released under the <a href=\"http://www.gnu.org/licenses/gpl.html\">GPLv3</a>", PACKAGE_VERSION_STRING)+
+                       QLatin1String("<br/><br/><i><small>")+i18n("Based upon <a href=\"http://qtmpc.lowblog.nl\">QtMPC</a> - &copy; 2007-2010 The QtMPC Authors<br/>")+
+                       i18nc("Qt-only", "Context view backdrops courtesy of <a href=\"http://www.fanart.tv\">FanArt.tv</a>")+QLatin1String("<br/>")+
+                       i18nc("Qt-only", "Context view metadata courtesy of <a href=\"http://www.wikipedia.org\">Wikipedia</a> and <a href=\"http://www.last.fm\">Last.fm</a>")+
+                       QLatin1String("<br/><br/>")+i18n("Please consider uploading your own music fan-art to <a href=\"http://www.fanart.tv\">FanArt.tv</a>")+
+                       QLatin1String("</small></i>"));
 }
 #endif
 
@@ -1527,7 +1519,6 @@ void MainWindow::updateSettings()
     if (diffLibCovers || diffLibYear || diffLibArtistImages || diffAlCovers) {
         libraryPage->clear();
         albumsPage->goTop();
-        loaded|=TAB_LIBRARY;
         libraryPage->refresh();
     }
     #if defined ENABLE_ONLINE_SERVICES || defined ENABLE_DEVICES_SUPPORT
@@ -1576,20 +1567,6 @@ void MainWindow::changeConnection()
         connectToMpd();
     }
 }
-
-#ifndef ENABLE_KDE_SUPPORT
-void MainWindow::showAboutDialog()
-{
-    QMessageBox::about(this, i18nc("Qt-only", "About Cantata"),
-                       i18nc("Qt-only", "<b>Cantata %1</b><br/><br/>MPD client.<br/><br/>"
-                             "&copy; 2011-2014 Craig Drummond<br/>Released under the <a href=\"http://www.gnu.org/licenses/gpl.html\">GPLv3</a>", PACKAGE_VERSION_STRING)+
-                       QLatin1String("<br/><br/><i><small>")+i18n("Based upon <a href=\"http://qtmpc.lowblog.nl\">QtMPC</a> - &copy; 2007-2010 The QtMPC Authors<br/>")+
-                       i18nc("Qt-only", "Context view backdrops courtesy of <a href=\"http://www.fanart.tv\">FanArt.tv</a>")+QLatin1String("<br/>")+
-                       i18nc("Qt-only", "Context view metadata courtesy of <a href=\"http://www.wikipedia.org\">Wikipedia</a> and <a href=\"http://www.last.fm\">Last.fm</a>")+
-                       QLatin1String("<br/><br/>")+i18n("Please consider uploading your own music fan-art to <a href=\"http://www.fanart.tv\">FanArt.tv</a>")+
-                       QLatin1String("</small></i>"));
-}
-#endif
 
 void MainWindow::showServerInfo()
 {
@@ -1643,7 +1620,6 @@ void MainWindow::stopAfterCurrentTrack()
 void MainWindow::stopAfterTrack()
 {
     QModelIndexList selected=playQueue->selectedIndexes(false); // Dont need sorted selection here...
-
     if (1==selected.count()) {
         QModelIndex idx=playQueueProxyModel.mapToSource(selected.first());
         playQueueModel.setStopAfterTrack(playQueueModel.getIdByRow(idx.row()));
@@ -1694,19 +1670,22 @@ void MainWindow::setMpdVolume(int v)
 
 void MainWindow::playPauseTrack()
 {
-    MPDStatus * const status = MPDStatus::self();
-
-    if (MPDState_Playing==status->state()) {
+    switch (MPDStatus::self()->state()) {
+    case MPDState_Playing:
         emit pause(true);
-    } else if (MPDState_Paused==status->state()) {
+        break;
+    case MPDState_Paused:
         stopVolumeFade();
         emit pause(false);
-    } else if (playQueueModel.rowCount()>0) {
-        stopVolumeFade();
-        if (-1!=playQueueModel.currentSong() && -1!=playQueueModel.currentSongRow()) {
-            emit startPlayingSongId(playQueueModel.currentSong());
-        } else {
-            emit play();
+        break;
+    default:
+        if (playQueueModel.rowCount()>0) {
+            stopVolumeFade();
+            if (-1!=playQueueModel.currentSong() && -1!=playQueueModel.currentSongRow()) {
+                emit startPlayingSongId(playQueueModel.currentSong());
+            } else {
+                emit play();
+            }
         }
     }
 }
@@ -1782,9 +1761,7 @@ void MainWindow::updatePlayQueue(const QList<Song> &songs)
         playQueue->scrollTo(playQueueProxyModel.mapFromSource(playQueueModel.index(topRow, 0)), QAbstractItemView::PositionAtTop);
     }
 
-    /*if (1==songs.count() && MPDState_Playing==MPDStatus::self()->state()) {
-        updateCurrentSong(songs.at(0));
-    } else*/ if (0==songs.count()) {
+    if (songs.isEmpty()) {
         updateCurrentSong(Song());
     } else if (current.isStandardStream()) {
         // Check to see if it has been updated...
@@ -1799,19 +1776,9 @@ void MainWindow::updatePlayQueue(const QList<Song> &songs)
 
 void MainWindow::updateWindowTitle()
 {
-//    MPDStatus * const status = MPDStatus::self();
-//    bool stopped=MPDState_Stopped==status->state() || MPDState_Inactive==status->state();
     bool multipleConnections=connectionsAction->isVisible();
     QString connection=MPDConnection::self()->getDetails().getName();
-//    QString description=stopped ? QString() : current.basicDescription();
-
-//    if (stopped || description.isEmpty()) {
-        setWindowTitle(multipleConnections ? i18n("Cantata (%1)", connection) : "Cantata");
-//    } else {
-//        setWindowTitle(multipleConnections
-//                        ? i18nc("track :: Cantata (connection)", "%1 :: Cantata (%2)", description, connection)
-//                        : i18nc("track :: Cantata", "%1 :: Cantata", description));
-//    }
+    setWindowTitle(multipleConnections ? i18n("Cantata (%1)", connection) : "Cantata");
 }
 
 void MainWindow::updateCurrentSong(const Song &song)
@@ -1856,7 +1823,6 @@ void MainWindow::updateCurrentSong(const Song &song)
     QModelIndex idx=playQueueProxyModel.mapFromSource(playQueueModel.index(playQueueModel.currentSongRow(), 0));
     playQueue->updateRows(idx.row(), current.key, autoScrollPlayQueue && playQueueProxyModel.isEmpty() && isPlaying);
     scrollPlayQueue();
-//    updateWindowTitle();
     context->update(current);
     trayItem->songChanged(song, isPlaying);
 }
@@ -1875,7 +1841,6 @@ void MainWindow::updateStats()
 {
     // Check if remote db is more recent than local one
     if (!MusicLibraryModel::self()->lastUpdate().isValid() || MPDStats::self()->dbUpdate() > MusicLibraryModel::self()->lastUpdate()) {
-        loaded|=TAB_LIBRARY|TAB_FOLDERS;
         if (!MusicLibraryModel::self()->lastUpdate().isValid()) {
             libraryPage->clear();
             //albumsPage->clear();
@@ -1949,7 +1914,6 @@ void MainWindow::updateStatus(MPDStatus * const status)
     case MPDState_Playing:
         StdActions::self()->playPauseTrackAction->setIcon(Icons::self()->toolbarPauseIcon);
         StdActions::self()->playPauseTrackAction->setEnabled(0!=status->playlistLength());
-        //playPauseTrackButton->setChecked(false);
         if (StopState_Stopping!=stopState) {
             enableStopActions(true);
             StdActions::self()->nextTrackAction->setEnabled(status->playlistLength()>1);
@@ -1970,7 +1934,6 @@ void MainWindow::updateStatus(MPDStatus * const status)
             CurrentCover::self()->update(current);
         }
         current.id=0;
-//        updateWindowTitle();
         trayItem->setToolTip("cantata", i18n("Cantata"), QLatin1String("<i>")+i18n("Playback stopped")+QLatin1String("</i>"));
         positionSlider->stopTimer();
         break;
@@ -2204,27 +2167,10 @@ void MainWindow::currentTabChanged(int index)
     prevPage=index;
     controlDynamicButton();
     switch(index) {
-// NOTE:  I dont think this is actually required, a library is always loaded - not just when tab changed
-//    case PAGE_LIBRARY:
-//    case PAGE_ALBUMS: // Albums shares refresh with library...
-//        if (!(loaded&TAB_LIBRARY) && isVisible()) {
-//            loaded|=TAB_LIBRARY;
-//            albumsPage->goTop();
-//            libraryPage->refresh();
-//        }
-//        if (PAGE_LIBRARY==index) {
-//            currentPage=libraryPage;
-//        } else {
-//            currentPage=albumsPage;
-//        }
-//        break;
     case PAGE_LIBRARY:   currentPage=libraryPage;   break;
     case PAGE_ALBUMS:    currentPage=albumsPage;    break;
     case PAGE_FOLDERS:
-        if (!(loaded&TAB_FOLDERS)) {
-            loaded|=TAB_FOLDERS;
-            folderPage->refresh();
-        }
+        folderPage->load();
         currentPage=folderPage;
         break;
     case PAGE_PLAYLISTS: currentPage=playlistsPage; break;
@@ -2233,10 +2179,6 @@ void MainWindow::currentTabChanged(int index)
     #endif
     #ifdef ENABLE_STREAMS
     case PAGE_STREAMS:
-        if (!(loaded&TAB_STREAMS)) {
-            loaded|=TAB_STREAMS;
-            streamsPage->refresh();
-        }
         currentPage=streamsPage;
         break;
     #endif
@@ -2294,7 +2236,6 @@ void MainWindow::tabToggled(int index)
         break;
     case PAGE_FOLDERS:
         folderPage->setEnabled(!folderPage->isEnabled());
-        if (folderPage->isEnabled() && loaded&TAB_FOLDERS) loaded-=TAB_FOLDERS;
         break;
     case PAGE_PLAYLISTS:
         setPlaylistsEnabled(tabWidget->isEnabled(index));
@@ -2302,7 +2243,6 @@ void MainWindow::tabToggled(int index)
     #ifdef ENABLE_STREAMS
     case PAGE_STREAMS:
         streamsPage->setEnabled(!streamsPage->isEnabled());
-        if (streamsPage->isEnabled() && loaded&TAB_STREAMS) loaded-=TAB_STREAMS;
         break;
     #endif
     #ifdef ENABLE_ONLINE_SERVICES

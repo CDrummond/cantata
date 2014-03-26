@@ -47,6 +47,7 @@ public:
 
     void setEnabled(bool e);
     bool isEnabled() const { return DirViewModel::self()->isEnabled(); }
+    void load() { if (!loaded) refresh(); }
     void refresh();
     void clear();
     QStringList selectedFiles(bool allowPlaylists=false) const;

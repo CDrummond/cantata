@@ -75,7 +75,7 @@ protected:
 class MusicLibraryItemContainer : public MusicLibraryItem
 {
 public:
-    MusicLibraryItemContainer(const QString &data, MusicLibraryItemContainer *parent) : MusicLibraryItem(data, parent), m_rowsSet(false) { }
+    MusicLibraryItemContainer(const QString &data, MusicLibraryItemContainer *parent) : MusicLibraryItem(data, parent), dbUpdateVer(0), m_rowsSet(false) { }
     virtual ~MusicLibraryItemContainer() { clear(); }
 
     virtual void append(MusicLibraryItem *i) { m_childItems.append(i); }
@@ -92,8 +92,11 @@ public:
     void resetRows();
     void clear();
     int indexOf(MusicLibraryItem *c) const { return m_childItems.indexOf(c); }
+    void setDbUpdateVersion(quint32 v) { dbUpdateVer=v; }
+    quint32 dbUpdateVersion() const { return dbUpdateVer; }
 
 protected:
+    quint32 dbUpdateVer;
     friend class MusicLibraryItem;
     QList<MusicLibraryItem *> m_childItems;
     QSet<QString> m_genres;

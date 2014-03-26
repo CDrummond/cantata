@@ -780,6 +780,10 @@ bool MusicLibraryItemRoot::update(const QSet<Song> &songs)
     QSet<Song> added=updateSongs-currentSongs;
 
     bool updatedSongs=added.count()||removed.count();
+
+    if (updatedSongs) {
+        dbUpdateVer++;
+    }
     foreach (const Song &s, removed) {
         removeSongFromList(s);
     }
@@ -918,7 +922,7 @@ void MusicLibraryItemRoot::addSongToList(const Song &s)
     }
     MusicLibraryItemAlbum *albumItem = artistItem->album(s, false);
     if (!albumItem) {
-        m_model->beginInsertRows(m_model->createIndex(childItems().indexOf(artistItem), 0, artistItem), artistItem->childCount(), artistItem->childCount());
+        m_model->beginInsertRows(m_model->createIndex(artistItem->row(), 0, artistItem), artistItem->childCount(), artistItem->childCount());
         albumItem = artistItem->createAlbum(s);
         m_model->endInsertRows();
     }
@@ -930,12 +934,18 @@ void MusicLibraryItemRoot::addSongToList(const Song &s)
         }
     }
 
-    m_model->beginInsertRows(m_model->createIndex(artistItem->childItems().indexOf(albumItem), 0, albumItem), albumItem->childCount(), albumItem->childCount());
+    m_model->beginInsertRows(m_model->createIndex(albumItem->row(), 0, albumItem), albumItem->childCount(), albumItem->childCount());
     MusicLibraryItemSong *songItem = new MusicLibraryItemSong(s, albumItem);
     albumItem->append(songItem);
     m_model->endInsertRows();
-    if (year!=albumItem->year()) {
-        QModelIndex idx=m_model->createIndex(artistItem->childItems().indexOf(albumItem), 0, albumItem);
+    if (artistItem->dbUpdateVersion()!=dbUpdateVer) {
+        artistItem->setDbUpdateVersion(dbUpdateVer);
+        QModelIndex idx=m_model->createIndex(artistItem->row(), 0, artistItem);
+        emit m_model->dataChanged(idx, idx);
+    }
+    if (albumItem->dbUpdateVersion()!=dbUpdateVer || year!=albumItem->year()) {
+        albumItem->setDbUpdateVersion(dbUpdateVer);
+        QModelIndex idx=m_model->createIndex(albumItem->row(), 0, albumItem);
         emit m_model->dataChanged(idx, idx);
     }
 }
@@ -969,7 +979,7 @@ void MusicLibraryItemRoot::removeSongFromList(const Song &s)
 
     if (1==artistItem->childCount() && 1==albumItem->childCount()) {
         // 1 album with 1 song - so remove whole artist
-        int row=m_childItems.indexOf(artistItem);
+        int row=artistItem->row();
         m_model->beginRemoveRows(index(), row, row);
         remove(artistItem);
         m_model->endRemoveRows();
@@ -978,20 +988,20 @@ void MusicLibraryItemRoot::removeSongFromList(const Song &s)
 
     if (1==albumItem->childCount()) {
         // multiple albums, but this album only has 1 song - remove album
-        int row=artistItem->childItems().indexOf(albumItem);
-        m_model->beginRemoveRows(m_model->createIndex(childItems().indexOf(artistItem), 0, artistItem), row, row);
+        int row=albumItem->row();
+        m_model->beginRemoveRows(m_model->createIndex(artistItem->row(), 0, artistItem), row, row);
         artistItem->remove(albumItem);
         m_model->endRemoveRows();
         return;
     }
 
     // Just remove particular song
-    m_model->beginRemoveRows(m_model->createIndex(artistItem->childItems().indexOf(albumItem), 0, albumItem), songRow, songRow);
+    m_model->beginRemoveRows(m_model->createIndex(albumItem->row(), 0, albumItem), songRow, songRow);
     quint32 year=albumItem->year();
     albumItem->remove(songRow);
     m_model->endRemoveRows();
     if (year!=albumItem->year()) {
-        QModelIndex idx=m_model->createIndex(artistItem->childItems().indexOf(albumItem), 0, albumItem);
+        QModelIndex idx=m_model->createIndex(albumItem->row(), 0, albumItem);
         emit m_model->dataChanged(idx, idx);
     }
 }

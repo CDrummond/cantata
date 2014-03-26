@@ -98,6 +98,7 @@ public:
         quint32 numTracks;
         quint32 time;
         Song coverSong;
+        quint32 dbUpdateVer;
     };
 
     static AlbumsModel * self();
@@ -132,6 +133,7 @@ private:
     bool enabled;
 //     bool coversRequested;
     mutable QList<AlbumItem *> items;
+    quint32 dbUpdateVer;
 };
 
 #endif

@@ -213,9 +213,8 @@ QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
 
     if (!checkable && Qt::FontRole==role) {
         MusicLibraryItem *item = static_cast<MusicLibraryItem *>(index.internalPointer());
-        if (rootItem->dbUpdateVersion() &&
-           (MusicLibraryItem::Type_Album==item->itemType() || MusicLibraryItem::Type_Artist==item->itemType()) &&
-           static_cast<MusicLibraryItemContainer *>(item)->dbUpdateVersion()==rootItem->dbUpdateVersion()) {
+        if ((MusicLibraryItem::Type_Album==item->itemType() || MusicLibraryItem::Type_Artist==item->itemType()) &&
+            static_cast<MusicLibraryItemContainer *>(item)->isNew()) {
             QFont f=MusicModel::data(index, role).value<QFont>();
             f.setBold(true);
             return f;
@@ -413,6 +412,38 @@ QSet<QString> MusicLibraryModel::getAlbumArtists()
     return a;
 }
 
+void MusicLibraryModel::checkForNewSongs()
+{
+    foreach (MusicLibraryItem *artist, rootItem->childItems()) {
+        MusicLibraryItemArtist *artistItem=static_cast<MusicLibraryItemArtist *>(artist);
+        if (artistItem->isNew()) {
+            emit haveNewItems(true);
+            return;
+        }
+    }
+}
+
+void MusicLibraryModel::clearNewState()
+{
+    foreach (MusicLibraryItem *artist, rootItem->childItems()) {
+        MusicLibraryItemArtist *artistItem=static_cast<MusicLibraryItemArtist *>(artist);
+        if (artistItem->isNew()) {
+            QModelIndex artistIndex=index(artistItem->row(), 0, QModelIndex());
+            foreach (MusicLibraryItem *album, artistItem->childItems()) {
+                MusicLibraryItemAlbum *albumItem=static_cast<MusicLibraryItemAlbum *>(album);
+                if (albumItem->isNew()) {
+                    albumItem->setIsNew(false);
+                    QModelIndex albumIndex=index(albumItem->row(), 0, artistIndex);
+                    emit dataChanged(albumIndex, albumIndex);
+                }
+            }
+            artistItem->setIsNew(false);
+            emit dataChanged(artistIndex, artistIndex);
+        }
+    }
+    emit haveNewItems(false);
+}
+
 void MusicLibraryModel::updateMusicLibrary(MusicLibraryItemRoot *newroot, QDateTime dbUpdate, bool fromFile)
 {
     if (!mpdModel || (databaseTime.isValid() && databaseTime >= dbUpdate)) {
@@ -434,6 +465,9 @@ void MusicLibraryModel::updateMusicLibrary(MusicLibraryItemRoot *newroot, QDateT
     databaseTime = dbUpdate;
     if (incremental) {
         updatedSongs=update(newroot->allSongs());
+        if (updatedSongs) {
+            checkForNewSongs();
+        }
         delete newroot;
     } else {
         const MusicLibraryItemRoot *oldRoot = rootItem;

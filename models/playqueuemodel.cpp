@@ -753,7 +753,7 @@ void PlayQueueModel::setState(MPDState st)
 void PlayQueueModel::update(const QList<Song> &songList)
 {
     if (songList.isEmpty()) {
-        Song::clearKeyStore(MPDParseUtils::PlayQueue);
+        Song::clearKeyStore(MPDParseUtils::Loc_PlayQueue);
     }
 
     removeDuplicatesAction->setEnabled(songList.count()>1);
@@ -1150,7 +1150,7 @@ void PlayQueueModel::updateDetails(const QList<Song> &updated)
         if (songMap.contains(current.file)) {
             Song updatedSong=songMap[current.file];
             updatedSong.id=current.id;
-            updatedSong.setKey(MPDParseUtils::PlayQueue);
+            updatedSong.setKey(MPDParseUtils::Loc_PlayQueue);
 
             if (updatedSong.name!=current.name || updatedSong.title!=current.title || updatedSong.artist!=current.artist) {
                 songs.replace(i, updatedSong);

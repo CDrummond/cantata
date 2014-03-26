@@ -100,17 +100,20 @@ public:
     QList<Song> getArtistAlbumsFirstTracks(const Song &song) const;
 
 public Q_SLOTS:
+    void clearNewState();
     void updateMusicLibrary(MusicLibraryItemRoot * root, QDateTime dbUpdate = QDateTime(), bool fromFile = false);
     void coverLoaded(const Song &song, int size);
     void setCover(const Song &song, const QImage &img, const QString &file);
     void updatingMpd();
 
 Q_SIGNALS:
+    void haveNewItems(bool);
 //     void updated(const MusicLibraryItemRoot *root);
     void updateGenres(const QSet<QString> &genres);
     void checkedSongs(const QSet<Song> &songs);
 
 private:
+    void checkForNewSongs();
     void setParentState(const QModelIndex &parent);
 
 private:

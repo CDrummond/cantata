@@ -781,9 +781,6 @@ bool MusicLibraryItemRoot::update(const QSet<Song> &songs)
 
     bool updatedSongs=added.count()||removed.count();
 
-    if (updatedSongs) {
-        dbUpdateVer++;
-    }
     foreach (const Song &s, removed) {
         removeSongFromList(s);
     }
@@ -919,12 +916,23 @@ void MusicLibraryItemRoot::addSongToList(const Song &s)
         m_model->beginInsertRows(index(), childCount(), childCount());
         artistItem = createArtist(s);
         m_model->endInsertRows();
+        artistItem->setIsNew(true);
+        QModelIndex idx=m_model->createIndex(artistItem->row(), 0, artistItem);
+        emit m_model->dataChanged(idx, idx);
     }
     MusicLibraryItemAlbum *albumItem = artistItem->album(s, false);
     if (!albumItem) {
         m_model->beginInsertRows(m_model->createIndex(artistItem->row(), 0, artistItem), artistItem->childCount(), artistItem->childCount());
         albumItem = artistItem->createAlbum(s);
         m_model->endInsertRows();
+        albumItem->setIsNew(true);
+        QModelIndex idx=m_model->createIndex(albumItem->row(), 0, albumItem);
+        emit m_model->dataChanged(idx, idx);
+        if (!artistItem->isNew()) {
+            artistItem->setIsNew(true);
+            QModelIndex idx=m_model->createIndex(artistItem->row(), 0, artistItem);
+            emit m_model->dataChanged(idx, idx);
+        }
     }
     quint32 year=albumItem->year();
     foreach (const MusicLibraryItem *songItem, albumItem->childItems()) {
@@ -938,13 +946,17 @@ void MusicLibraryItemRoot::addSongToList(const Song &s)
     MusicLibraryItemSong *songItem = new MusicLibraryItemSong(s, albumItem);
     albumItem->append(songItem);
     m_model->endInsertRows();
-    if (artistItem->dbUpdateVersion()!=dbUpdateVer) {
-        artistItem->setDbUpdateVersion(dbUpdateVer);
+
+    if (!artistItem->isNew()) {
+        artistItem->setIsNew(true);
         QModelIndex idx=m_model->createIndex(artistItem->row(), 0, artistItem);
         emit m_model->dataChanged(idx, idx);
     }
-    if (albumItem->dbUpdateVersion()!=dbUpdateVer || year!=albumItem->year()) {
-        albumItem->setDbUpdateVersion(dbUpdateVer);
+    if (!albumItem->isNew()) {
+        albumItem->setIsNew(true);
+        QModelIndex idx=m_model->createIndex(albumItem->row(), 0, albumItem);
+        emit m_model->dataChanged(idx, idx);
+    } else if (year!=albumItem->year()) {
         QModelIndex idx=m_model->createIndex(albumItem->row(), 0, albumItem);
         emit m_model->dataChanged(idx, idx);
     }

@@ -41,9 +41,6 @@
 #include "actioncollection.h"
 #include "inputdialog.h"
 #include "podcastsearchdialog.h"
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KGlobalSettings>
-#endif
 
 OnlineServicesPage::OnlineServicesPage(QWidget *p)
     : QWidget(p)

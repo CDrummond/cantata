@@ -40,10 +40,6 @@
 #include <QProcess>
 #include <QDir>
 #include <QFile>
-#ifdef ENABLE_KDE_SUPPORT
-#include <kmountpoint.h>
-#include <kde_file.h>
-#endif
 #include <stdio.h>
 #include <unistd.h>
 

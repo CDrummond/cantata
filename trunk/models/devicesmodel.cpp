@@ -49,8 +49,6 @@
 #include <QMimeData>
 #include <QTimer>
 #ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KIcon>
-#include <KDE/KGlobal>
 #include <solid/device.h>
 #include <solid/deviceinterface.h>
 #include <solid/devicenotifier.h>

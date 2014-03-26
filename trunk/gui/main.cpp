@@ -26,8 +26,6 @@
 #include <KDE/KUniqueApplication>
 #include <KDE/KAboutData>
 #include <KDE/KCmdLineArgs>
-#include <KDE/KStartupInfo>
-#include "contextwidget.h"
 #else
 #include <QTranslator>
 #include <QTextCodec>
@@ -63,6 +61,7 @@
 #ifdef ENABLE_EXTERNAL_TAGS
 #include "tagclient.h"
 #endif
+#include "contextwidget.h"
 
 #include <QMutex>
 #include <QMutexLocker>

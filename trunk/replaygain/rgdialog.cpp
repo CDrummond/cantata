@@ -45,18 +45,6 @@
 #include <QCloseEvent>
 #include <QCoreApplication>
 #include <QEventLoop>
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KLocale>
-#endif
-
-static inline QString formatNumber(double number, int precision)
-{
-    #ifdef ENABLE_KDE_SUPPORT
-    return KGlobal::locale()->formatNumber(number, precision);
-    #else
-    return QString::number(number, 'f', precision);
-    #endif
-}
 
 enum Columns
 {
@@ -510,15 +498,15 @@ void RgDialog::scannerDone()
             Tags::ReplayGain updatedTags(it.value().gain, s->albumValues().gain, it.value().peak, s->albumValues().peak);
             QTreeWidgetItem *item=view->topLevelItem(it.key());
             if (it.value().ok) {
-                item->setText(COL_TRACKGAIN, i18n("%1 dB", formatNumber(updatedTags.trackGain, 2)));
-                item->setText(COL_TRACKPEAK, formatNumber(updatedTags.trackPeak, 6));
+                item->setText(COL_TRACKGAIN, i18n("%1 dB", Utils::formatNumber(updatedTags.trackGain, 2)));
+                item->setText(COL_TRACKPEAK, Utils::formatNumber(updatedTags.trackPeak, 6));
             } else {
                 item->setText(COL_TRACKGAIN, i18n("Failed"));
                 item->setText(COL_TRACKPEAK, i18n("Failed"));
             }
             if (s->albumValues().ok) {
-                item->setText(COL_ALBUMGAIN, i18n("%1 dB", formatNumber(updatedTags.albumGain, 2)));
-                item->setText(COL_ALBUMPEAK, formatNumber(updatedTags.albumPeak, 6));
+                item->setText(COL_ALBUMGAIN, i18n("%1 dB", Utils::formatNumber(updatedTags.albumGain, 2)));
+                item->setText(COL_ALBUMPEAK, Utils::formatNumber(updatedTags.albumPeak, 6));
             } else {
                 item->setText(COL_ALBUMGAIN, i18n("Failed"));
                 item->setText(COL_ALBUMPEAK, i18n("Failed"));
@@ -530,22 +518,22 @@ void RgDialog::scannerDone()
                 bool diffAlbum=false;
                 if (!Utils::equal(t.trackGain, updatedTags.trackGain, 0.01)) {
                     item->setFont(COL_TRACKGAIN, italic);
-                    item->setToolTip(COL_TRACKGAIN, i18n("Original: %1 dB", formatNumber(t.trackGain, 2)));
+                    item->setToolTip(COL_TRACKGAIN, i18n("Original: %1 dB", Utils::formatNumber(t.trackGain, 2)));
                     diff=true;
                 }
                 if (!Utils::equal(t.trackPeak, updatedTags.trackPeak, 0.000001)) {
                     item->setFont(COL_TRACKPEAK, italic);
-                    item->setToolTip(COL_TRACKPEAK, i18n("Original: %1", formatNumber(t.trackPeak, 6)));
+                    item->setToolTip(COL_TRACKPEAK, i18n("Original: %1", Utils::formatNumber(t.trackPeak, 6)));
                     diff=true;
                 }
                 if (!Utils::equal(t.albumGain, updatedTags.albumGain, 0.01)) {
                     item->setFont(COL_ALBUMGAIN, italic);
-                    item->setToolTip(COL_ALBUMGAIN, i18n("Original: %1 dB", formatNumber(t.albumGain, 2)));
+                    item->setToolTip(COL_ALBUMGAIN, i18n("Original: %1 dB", Utils::formatNumber(t.albumGain, 2)));
                     diffAlbum=true;
                 }
                 if (!Utils::equal(t.albumPeak, updatedTags.albumPeak, 0.000001)) {
                     item->setFont(COL_ALBUMPEAK, italic);
-                    item->setToolTip(COL_ALBUMPEAK, i18n("Original: %1", formatNumber(t.albumPeak, 6)));
+                    item->setToolTip(COL_ALBUMPEAK, i18n("Original: %1", Utils::formatNumber(t.albumPeak, 6)));
                     diffAlbum=true;
                 }
                 if (diff || diffAlbum) {
@@ -600,10 +588,10 @@ void RgDialog::songTags(int index, Tags::ReplayGain tags)
             if (!item) {
                 return;
             }
-            item->setText(COL_TRACKGAIN, i18n("%1 dB", formatNumber(tags.trackGain, 2)));
-            item->setText(COL_TRACKPEAK, formatNumber(tags.trackPeak, 6));
-            item->setText(COL_ALBUMGAIN, i18n("%1 dB", formatNumber(tags.albumGain, 2)));
-            item->setText(COL_ALBUMPEAK, formatNumber(tags.albumPeak, 6));
+            item->setText(COL_TRACKGAIN, i18n("%1 dB", Utils::formatNumber(tags.trackGain, 2)));
+            item->setText(COL_TRACKPEAK, Utils::formatNumber(tags.trackPeak, 6));
+            item->setText(COL_ALBUMGAIN, i18n("%1 dB", Utils::formatNumber(tags.albumGain, 2)));
+            item->setText(COL_ALBUMPEAK, Utils::formatNumber(tags.albumPeak, 6));
         }
     }
 }

@@ -41,9 +41,6 @@
 #include <QPainter>
 #include <QAction>
 #include <QTimer>
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KGlobalSettings>
-#endif
 
 static int listDecorationSize=22;
 static int treeDecorationSize=16;

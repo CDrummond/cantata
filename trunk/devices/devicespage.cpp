@@ -35,9 +35,6 @@
 #include "action.h"
 #include "actioncollection.h"
 #include "stdactions.h"
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KGlobalSettings>
-#endif
 #ifdef ENABLE_REMOTE_DEVICES
 #include "remotedevicepropertiesdialog.h"
 #include "devicepropertieswidget.h"

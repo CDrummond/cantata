@@ -95,6 +95,12 @@ static void stopHelper()
 
 static bool startHelper()
 {
+    static int startCount=0;
+    if (!startCount) {
+        startCount=1;
+        qRegisterMetaType<QAbstractSocket::SocketError >("QAbstractSocket::SocketError");
+    }
+
     DBUG << (void *)proc;
     if (!isRunning()) {
         stopHelper();
@@ -107,35 +113,34 @@ static bool startHelper()
         server=new QLocalServer;
 
         forever {
-            QString name="cantata-tags-"+QString::number(currentPid)+QLatin1Char('-')+QString::number(Utils::random());
+            QString name="cantata-tags-"+QLatin1Char('-')+QString::number(startCount)+QString::number(currentPid)+QLatin1Char('-')+QString::number(Utils::random());
             QLocalServer::removeServer(name);
             if (server->listen(name)) {
                 DBUG << "Listening on" << server->fullServerName();
                 break;
             }
         }
+        startCount++;
 
-        for (int i=0; i<5; ++i) { // Max5 start attempts...
-            DBUG << "start process";
-            proc=new QProcess;
-            #ifdef Q_OS_WIN
-            proc->start(qApp->applicationDirPath()+"/helpers/cantata-tags.exe", QStringList() << server->fullServerName() << QString::number(currentPid));
-            #else
-            proc->start(INSTALL_PREFIX"/lib/cantata/cantata-tags", QStringList() << server->fullServerName() << QString::number(currentPid));
-            #endif
-            if (proc->waitForStarted(constMaxWait)) {
-                DBUG << "process started, on pid" << proc->pid() << "- wait for helper to connect";
-                if (server->waitForNewConnection(constMaxWait)) {
-                    sock=server->nextPendingConnection();
-                }
-                if (sock) {
-                    return true;
-                } else {
-                    DBUG << "helper did not connect";
-                }
-            } else {
-                DBUG << "Failed to start process";
+        DBUG << "start process";
+        proc=new QProcess;
+        #ifdef Q_OS_WIN
+        proc->start(qApp->applicationDirPath()+"/helpers/cantata-tags.exe", QStringList() << server->fullServerName() << QString::number(currentPid));
+        #else
+        proc->start(INSTALL_PREFIX"/lib/cantata/cantata-tags", QStringList() << server->fullServerName() << QString::number(currentPid));
+        #endif
+        if (proc->waitForStarted(constMaxWait)) {
+            DBUG << "process started, on pid" << proc->pid() << "- wait for helper to connect";
+            if (server->waitForNewConnection(constMaxWait)) {
+                sock=server->nextPendingConnection();
             }
+            if (sock) {
+                return true;
+            } else {
+                DBUG << "helper did not connect";
+            }
+        } else {
+            DBUG << "Failed to start process";
         }
         DBUG << "failed to start";
         stopHelper();
@@ -159,7 +164,7 @@ static ReadStatus readReply(QByteArray &data)
     }
     DBUG << "wait for read failed " << isRunning() << (proc ? (int)proc->state() : 12345);
     stopHelper();
-    return !isRunning() ? Read_Closed : Read_Timeout;
+    return Read_Timeout;
 }
 
 void TagClient::stop()

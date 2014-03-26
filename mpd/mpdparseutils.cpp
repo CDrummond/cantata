@@ -271,7 +271,7 @@ Song MPDParseUtils::parseSong(const QList<QByteArray> &lines, Location location)
             song.title =QString::fromUtf8(line.mid(constTitleKey.length()));
         } else if (line.startsWith(constTrackKey)) {
             song.track = line.mid(constTrackKey.length()).split('/').at(0).toInt();
-        } else if (line.startsWith(constIdKey)) {
+        } else if (Loc_Library!=location && line.startsWith(constIdKey)) {
             song.id = line.mid(constIdKey.length()).toUInt();
         } else if (line.startsWith(constDiscKey)) {
             song.disc = line.mid(constDiscKey.length()).split('/').at(0).toInt();
@@ -290,7 +290,7 @@ Song MPDParseUtils::parseSong(const QList<QByteArray> &lines, Location location)
             song.file = QString::fromUtf8(line.mid(constPlaylistKey.length()));
             song.title=Utils::getFile(song.file);
             song.type=Song::Playlist;
-        }  else if (line.startsWith(constPriorityKey)) {
+        } else if (Loc_PlayQueue==location && line.startsWith(constPriorityKey)) {
             song.priority = line.mid(constPriorityKey.length()).toUInt();
         }
     }
@@ -299,59 +299,63 @@ Song MPDParseUtils::parseSong(const QList<QByteArray> &lines, Location location)
         song.genre = Song::unknown();
     }
 
-    QString origFile=song.file;
+    if (Loc_Library==location) {
+        song.guessTags();
+        song.fillEmptyFields();
+    } else {
+        QString origFile=song.file;
 
-    #ifdef ENABLE_HTTP_SERVER
-    if (!song.file.isEmpty() && song.file.startsWith(constHttpProtocol) && HttpServer::self()->isOurs(song.file)) {
-        song.type=Song::CantataStream;
-        Song mod=HttpServer::self()->decodeUrl(song.file);
-        if (!mod.title.isEmpty()) {
-            mod.id=song.id;
-            song=mod;
-        }
-    } else
-    #endif
-    if (song.file.contains(Song::constCddaProtocol)) {
-        song.type=Song::Cdda;
-    } else if (song.file.contains(constProtocol)) {
-        foreach (const QString &protocol, constStdProtocols) {
-            if (song.file.startsWith(protocol)) {
-                song.type=Song::Stream;
-                break;
+        #ifdef ENABLE_HTTP_SERVER
+        if (!song.file.isEmpty() && song.file.startsWith(constHttpProtocol) && HttpServer::self()->isOurs(song.file)) {
+            song.type=Song::CantataStream;
+            Song mod=HttpServer::self()->decodeUrl(song.file);
+            if (!mod.title.isEmpty()) {
+                mod.id=song.id;
+                song=mod;
             }
-        }
-    }
+        } else
+        #endif
+            if (song.file.contains(Song::constCddaProtocol)) {
+                song.type=Song::Cdda;
+            } else if (song.file.contains(constProtocol)) {
+                foreach (const QString &protocol, constStdProtocols) {
+                    if (song.file.startsWith(protocol)) {
+                        song.type=Song::Stream;
+                        break;
+                    }
+                }
+            }
 
-    if (!song.file.isEmpty()) {
-        if (song.isStream()) {
-            if (song.isCantataStream()) {
-                if (song.title.isEmpty()) {
-                    QStringList parts=QUrl(song.file).path().split('/');
-                    if (!parts.isEmpty()) {
-                        song.title=parts.last();
-                        song.fillEmptyFields();
+
+        if (!song.file.isEmpty()) {
+            if (song.isStream()) {
+                if (song.isCantataStream()) {
+                    if (song.title.isEmpty()) {
+                        QStringList parts=QUrl(song.file).path().split('/');
+                        if (!parts.isEmpty()) {
+                            song.title=parts.last();
+                            song.fillEmptyFields();
+                        }
+                    }
+                } else {
+                    #ifdef ENABLE_ONLINE_SERVICES
+                    if (!OnlineService::decode(song))
+                    #endif
+                    {
+                        QString name=getAndRemoveStreamName(song.file);
+                        if (!name.isEmpty()) {
+                            song.name=name;
+                        }
+                        if (song.title.isEmpty() && song.name.isEmpty()) {
+                            song.title=Utils::getFile(QUrl(song.file).path());
+                        }
                     }
                 }
             } else {
-                #ifdef ENABLE_ONLINE_SERVICES
-                if (!OnlineService::decode(song))
-                #endif
-                {
-                    QString name=getAndRemoveStreamName(song.file);
-                    if (!name.isEmpty()) {
-                        song.name=name;
-                    }
-                    if (song.title.isEmpty() && song.name.isEmpty()) {
-                        song.title=Utils::getFile(QUrl(song.file).path());
-                    }
-                }
+                song.guessTags();
+                song.fillEmptyFields();
             }
-        } else {
-            song.guessTags();
-            song.fillEmptyFields();
         }
-    }
-    if (Library!=location) {
         // HTTP server, and OnlineServices, modify the path. But this then messes up
         // undo/restore of playqueue. Therefore, set path back to original value...
         song.file=origFile;
@@ -488,7 +492,7 @@ void MPDParseUtils::parseLibraryItems(const QByteArray &data, const QString &mpd
         }
         currentItem.append(line);
         if (i == amountOfLines - 1 || lines.at(i + 1).startsWith(constFileKey) || lines.at(i + 1).startsWith(constPlaylistKey)) {
-            Song currentSong = parseSong(currentItem, Library);
+            Song currentSong = parseSong(currentItem, Loc_Library);
             currentItem.clear();
             if (currentSong.file.isEmpty() || (isMopidy && !currentSong.file.startsWith(Song::constMopidyLocal))) {
                 continue;

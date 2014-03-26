@@ -210,6 +210,17 @@ QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
     if (checkable && Qt::CheckStateRole==role) {
         return static_cast<MusicLibraryItem *>(index.internalPointer())->checkState();
     }
+
+    if (!checkable && Qt::FontRole==role) {
+        MusicLibraryItem *item = static_cast<MusicLibraryItem *>(index.internalPointer());
+        if (rootItem->dbUpdateVersion() &&
+           (MusicLibraryItem::Type_Album==item->itemType() || MusicLibraryItem::Type_Artist==item->itemType()) &&
+           static_cast<MusicLibraryItemContainer *>(item)->dbUpdateVersion()==rootItem->dbUpdateVersion()) {
+            QFont f=MusicModel::data(index, role).value<QFont>();
+            f.setBold(true);
+            return f;
+        }
+    }
     return MusicModel::data(index, role);
 }
 

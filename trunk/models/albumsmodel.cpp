@@ -219,6 +219,13 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
                         Plurals::tracksWithDuration(al->trackCount(), Utils::formatTime(al->totalTime(), true)));
         case Qt::DisplayRole:
             return al->album;
+        case Qt::FontRole:
+            if (dbUpdateVer && al->dbUpdateVer==dbUpdateVer) {
+                QFont f=ActionModel::data(index, role).value<QFont>();
+                f.setBold(true);
+                return f;
+            }
+            break;
         case ItemView::Role_MainText:
             if (Sort_ArtistYearAlbum==sortAlbums) {
                 return al->albumDisplay();
@@ -343,6 +350,7 @@ void AlbumsModel::update(const MusicLibraryItemRoot *root)
         return;
     }
 
+    dbUpdateVer=root->dbUpdateVersion();
     bool changesMade=false;
     bool resettingModel=items.isEmpty() || 0==root->childCount();
     if (resettingModel) {
@@ -387,6 +395,13 @@ void AlbumsModel::update(const MusicLibraryItemRoot *root)
                     (*it)->genres=albumItem->genres();
                     (*it)->updated=true;
                     found=true;
+                    if ((*it)->dbUpdateVer!=albumItem->dbUpdateVersion()) {
+                        (*it)->dbUpdateVer=albumItem->dbUpdateVersion();
+                        if (!resettingModel) {
+                            QModelIndex albumIndex=index(items.indexOf(*it), 0, QModelIndex());
+                            emit dataChanged(albumIndex, albumIndex);
+                        }
+                    }
                     break;
                 }
             }
@@ -398,6 +413,7 @@ void AlbumsModel::update(const MusicLibraryItemRoot *root)
                 a->genres=albumItem->genres();
                 a->updated=true;
                 a->type=albumItem->songType();
+                a->dbUpdateVer=albumItem->dbUpdateVersion();
                 if (!resettingModel) {
                     beginInsertRows(QModelIndex(), items.count(), items.count());
                 }

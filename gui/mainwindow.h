@@ -30,8 +30,11 @@
 #include <qglobal.h>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KXmlGuiWindow>
+#define MAIN_WINDOW_BASE_CLASS KXmlGuiWindow
+class KToggleAction;
 #else
 #include <QMainWindow>
+#define MAIN_WINDOW_BASE_CLASS QMainWindow
 #endif
 #include <QMenu>
 #include <QProxyStyle>
@@ -47,9 +50,6 @@
 #include "song.h"
 #include "config.h"
 
-#ifdef ENABLE_KDE_SUPPORT
-class KToggleAction;
-#endif
 class Action;
 class ActionCollection;
 class MainWindow;
@@ -107,12 +107,6 @@ private:
     QAbstractItemView *view;
     QAction *act;
 };
-
-#ifdef ENABLE_KDE_SUPPORT
-#define MAIN_WINDOW_BASE_CLASS KXmlGuiWindow
-#else
-#define MAIN_WINDOW_BASE_CLASS QMainWindow
-#endif
 
 class MainWindow : public MAIN_WINDOW_BASE_CLASS, private Ui::MainWindow
 {
@@ -186,6 +180,8 @@ public Q_SLOTS:
     #ifdef ENABLE_KDE_SUPPORT
     void configureShortcuts();
     void saveShortcuts();
+    #else
+    void showAboutDialog();
     #endif
     void setMpdVolume(int v);
     void songLoaded();
@@ -201,9 +197,6 @@ public Q_SLOTS:
     void connectToMpd(const MPDConnectionDetails &details);
     void streamUrl(const QString &u);
     void refreshDbPromp();
-    #ifndef ENABLE_KDE_SUPPORT
-    void showAboutDialog();
-    #endif
     void showServerInfo();
     void stopPlayback();
     void stopAfterCurrentTrack();
@@ -318,7 +311,6 @@ private Q_SLOTS:
 
 private:
     int prevPage;
-    int loaded;
     MPDState lastState;
     qint32 lastSongId;
     PlayQueueModel playQueueModel;
@@ -326,15 +318,13 @@ private:
     bool autoScrollPlayQueue;
     #ifdef ENABLE_KDE_SUPPORT
     KToggleAction *showMenuAction;
+    Action *shortcutsAction;
     #else
     Action *showMenuAction;
     #endif
     Action *prefAction;
     Action *refreshDbAction;
     Action *doDbRefreshAction;
-    #ifdef ENABLE_KDE_SUPPORT
-    Action *shortcutsAction;
-    #endif
     Action *connectAction;
     Action *connectionsAction;
     Action *outputsAction;

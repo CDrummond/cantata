@@ -41,7 +41,6 @@
 #include <QProxyStyle>
 #include <cstdlib>
 #ifdef ENABLE_KDE_SUPPORT
-#include <kdeversion.h>
 #include <KDE/KApplication>
 #include <KDE/KStandardAction>
 #include <KDE/KMenuBar>

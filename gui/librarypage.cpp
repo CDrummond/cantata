@@ -34,10 +34,6 @@
 #include "settings.h"
 #include "stdactions.h"
 #include "utils.h"
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KLocale>
-#include <KDE/KGlobalSettings>
-#endif
 
 LibraryPage::LibraryPage(QWidget *p)
     : QWidget(p)

@@ -1050,32 +1050,32 @@ void Settings::saveStoreBackdropsInMpdDir(bool v)
 
 void Settings::saveLibraryView(int v)
 {
-    cfg.set("libraryView", v);
+    cfg.set("libraryView", ItemView::modeStr((ItemView::Mode)v));
 }
 
 void Settings::saveAlbumsView(int v)
 {
-    cfg.set("albumsView", v);
+    cfg.set("albumsView", ItemView::modeStr((ItemView::Mode)v));
 }
 
 void Settings::saveFolderView(int v)
 {
-    cfg.set("folderView", v);
+    cfg.set("folderView", ItemView::modeStr((ItemView::Mode)v));
 }
 
 void Settings::savePlaylistsView(int v)
 {
-    cfg.set("playlistsView", v);
+    cfg.set("playlistsView", ItemView::modeStr((ItemView::Mode)v));
 }
 
 void Settings::saveStreamsView(int v)
 {
-    cfg.set("streamsView", v);
+    cfg.set("streamsView", ItemView::modeStr((ItemView::Mode)v));
 }
 
 void Settings::saveOnlineView(int v)
 {
-    cfg.set("onlineView", v);
+    cfg.set("onlineView", ItemView::modeStr((ItemView::Mode)v));
 }
 
 void Settings::saveLibraryArtistImage(bool v)
@@ -1223,13 +1223,13 @@ void Settings::saveShowDeleteAction(bool v)
 
 void Settings::saveDevicesView(int v)
 {
-    cfg.set("devicesView", v);
+    cfg.set("devicesView", ItemView::modeStr((ItemView::Mode)v));
 }
 #endif
 
 void Settings::saveSearchView(int v)
 {
-    cfg.set("searchView", v);
+    cfg.set("searchView", ItemView::modeStr((ItemView::Mode)v));
 }
 
 void Settings::saveStopFadeDuration(int v)
@@ -1404,7 +1404,7 @@ void Settings::savePodcastAutoDownload(bool v)
 
 void Settings::saveStartupState(int v)
 {
-    cfg.set("startupState", v);
+    cfg.set("startupState", getStartupStateStr((StartupState)v));
 }
 
 void Settings::saveSearchCategory(const QString &v)

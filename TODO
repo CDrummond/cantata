@@ -21,7 +21,7 @@
 - Online services
   - GPodder support?
   - DAAP servers?
-  - Subsonic server? Mopidy can be used to access SubSonic.
+  - Subsonic servers? Mopidy can be used to access SubSonic.
 
 - Devices
   - libMTP does not support album artist tag. Cantata contains some
@@ -53,16 +53,6 @@
 
 - PlayQueue
   - Move code out of MainWindow class.
-  - When adding songs to playqueue, if a filter is active (genre, or text) then
-    we should only add songs that pass the filter
-    - Affects; Artists, Albums, Folders (text only), Playlists, Online, Devices,
-      Streams (text only)
-    - Would need to put the device/artist/album expansion code within proxy
-      models
-      - then we call filenames()/songs() on the proxy.
-    - NOT 100% sure - as the items show #tracks, etc. If we are only going to
-      add so many tracks then this would also need to be updated. (As well as
-      tooltips). Again, this would need to be in the proxy model.
 
 - Cue files
   - How to (reliably) determine duration of last track?
@@ -70,6 +60,9 @@
 - General
   - Ratings (use KRatingWidget?)
     - Not sure, would need support in cantata-dynamic
+    - MPD's 'stickers' could be used, but there is no way to query tag+value
+      you can only query for tracks that have tag. So, could query for all
+      tracks with tag=rating, but not tag=rating and value=4
   - mpdscribble management
   - mixramp tag calculation
   - mixramp MPD settings

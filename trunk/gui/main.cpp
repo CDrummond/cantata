@@ -306,10 +306,8 @@ int main(int argc, char *argv[])
     loadTranslation("cantata", INSTALL_PREFIX"/share/cantata/translations/", lang);
     #endif
 
-    // Ensure ThreadCleaner is in GUI thread...
-    ThreadCleaner::self();
+    Application::initObjects();
 
-    Song::initTranslations();
     if (Settings::self()->firstRun()) {
         InitialSettingsWizard wz;
         if (QDialog::Rejected==wz.exec()) {
@@ -325,6 +323,6 @@ int main(int argc, char *argv[])
         mw.show();
     }
     #endif // ENABLE_KDE_SUPPORT
-    Utils::initRand();
+
     return app.exec();
 }

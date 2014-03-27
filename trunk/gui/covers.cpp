@@ -721,12 +721,7 @@ void CoverDownloader::jobFinished()
                 emit artistImage(job.song, img.img, img.fileName);
             } else if (img.img.isNull()) {
                 DBUG << "failed to download cover image";
-                #if defined Q_OS_WIN
                 emit cover(job.song, QImage(), QString());
-                #else
-                img=otherAppCover(job);
-                emit cover(job.song, img.img, img.fileName);
-                #endif
             } else {
                 DBUG << "got cover image" << img.fileName;
                 emit cover(job.song, img.img, img.fileName);
@@ -743,14 +738,8 @@ void CoverDownloader::failed(const Job &job)
         DBUG << "failed to download artist image";
         emit artistImage(job.song, QImage(), QString());
     } else {
-        #if defined Q_OS_WIN
         DBUG << "Failed to download cover image";
         emit cover(job.song, QImage(), QString());
-        #else
-        DBUG << "failed to download cover image - try other app";
-        Covers::Image img=otherAppCover(job);
-        emit cover(job.song, img.img, img.fileName);
-        #endif
     }
 }
 

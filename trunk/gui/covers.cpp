@@ -1223,6 +1223,7 @@ Covers::Image Covers::locateImage(const Song &song)
             QString basicArtist=song.basicArtist();
             for (int level=0; level<2; ++level) {
                 foreach (const QString &fileName, coverFileNames) {
+                    DBUG_CLASS("Covers") << "Checking file" << QString(dirName+fileName);
                     if (QFile::exists(dirName+fileName)) {
                         QImage img=loadImage(dirName+fileName);
                         if (!img.isNull()) {
@@ -1243,6 +1244,7 @@ Covers::Image Covers::locateImage(const Song &song)
                 if (!dirName.isEmpty() && !dirName.startsWith(QLatin1String("http:/"))) {
                     dirName+=basicArtist+Utils::constDirSep;
                     foreach (const QString &fileName, coverFileNames) {
+                        DBUG_CLASS("Covers") << "Checking file" << QString(dirName+fileName);
                         if (QFile::exists(dirName+fileName)) {
                             QImage img=loadImage(dirName+fileName);
                             if (!img.isNull()) {
@@ -1255,6 +1257,7 @@ Covers::Image Covers::locateImage(const Song &song)
             }
         } else {
             foreach (const QString &fileName, coverFileNames) {
+                DBUG_CLASS("Covers") << "Checking file" << QString(dirName+fileName);
                 if (QFile::exists(dirName+fileName)) {
                     QImage img=loadImage(dirName+fileName);
                     if (!img.isNull()) {
@@ -1266,6 +1269,7 @@ Covers::Image Covers::locateImage(const Song &song)
 
             #ifdef TAGLIB_FOUND
             QString fileName=haveAbsPath ? songFile : (MPDConnection::self()->getDetails().dir+songFile);
+            DBUG_CLASS("Covers") << "Checking file" << fileName;
             if (QFile::exists(fileName)) {
                 QImage img(Tags::readImage(fileName));
                 if (!img.isNull()) {
@@ -1277,6 +1281,7 @@ Covers::Image Covers::locateImage(const Song &song)
 
             QStringList files=QDir(dirName).entryList(QStringList() << QLatin1String("*.jpg") << QLatin1String("*.png"), QDir::Files|QDir::Readable);
             foreach (const QString &fileName, files) {
+                DBUG_CLASS("Covers") << "Checking file" << QString(dirName+fileName);
                 QImage img=loadImage(dirName+fileName);
                 if (!img.isNull()) {
                     DBUG_CLASS("Covers") << "Got cover image" << QString(dirName+fileName);
@@ -1296,6 +1301,7 @@ Covers::Image Covers::locateImage(const Song &song)
                 QString dirName=MPDConnection::self()->getDetails().dir+songDir;
                 if (QDir(dirName).exists()) {
                     foreach (const QString &fileName, coverFileNames) {
+                        DBUG_CLASS("Covers") << "Checking file" << QString(dirName+fileName);
                         if (QFile::exists(dirName+fileName)) {
                             QImage img=loadImage(dirName+fileName);
                             if (!img.isNull()) {
@@ -1310,6 +1316,7 @@ Covers::Image Covers::locateImage(const Song &song)
         // Check if cover is already cached
         QString dir(Utils::cacheDir(constCoverDir, false));
         for (int e=0; constExtensions[e]; ++e) {
+            DBUG_CLASS("Covers") << "Checking cache file" << QString(dir+artist+constExtensions[e]);
             if (QFile::exists(dir+artist+constExtensions[e])) {
                 QImage img=loadImage(dir+artist+constExtensions[e]);
                 if (!img.isNull()) {
@@ -1327,6 +1334,7 @@ Covers::Image Covers::locateImage(const Song &song)
                 QString dirName=MPDConnection::self()->getDetails().dir+songDir;
                 if (QDir(dirName).exists()) {
                     foreach (const QString &fileName, coverFileNames) {
+                        DBUG_CLASS("Covers") << "Checking file" << QString(dirName+fileName);
                         if (QFile::exists(dirName+fileName)) {
                             QImage img=loadImage(dirName+fileName);
                             if (!img.isNull()) {
@@ -1341,6 +1349,7 @@ Covers::Image Covers::locateImage(const Song &song)
         // Check if cover is already cached
         QString dir(Utils::cacheDir(constCoverDir+artist, false));
         for (int e=0; constExtensions[e]; ++e) {
+            DBUG_CLASS("Covers") << "Checking cache file" << QString(dir+album+constExtensions[e]);
             if (QFile::exists(dir+album+constExtensions[e])) {
                 QImage img=loadImage(dir+album+constExtensions[e]);
                 if (!img.isNull()) {

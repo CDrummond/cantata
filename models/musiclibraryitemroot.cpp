@@ -883,7 +883,7 @@ bool MusicLibraryItemRoot::updateSong(const Song &orig, const Song &edit)
         }
         int songRow=0;
         foreach (MusicLibraryItem *song, albumItem->childItems()) {
-            if (static_cast<MusicLibraryItemSong *>(song)->song()==orig) {
+            if (static_cast<MusicLibraryItemSong *>(song)->song().file==orig.file) {
                 static_cast<MusicLibraryItemSong *>(song)->setSong(edit);
                 bool yearUpdated=orig.year!=edit.year && albumItem->updateYear();
                 if (orig.genre!=edit.genre) {

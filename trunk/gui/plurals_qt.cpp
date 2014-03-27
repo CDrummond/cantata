@@ -32,7 +32,7 @@ QString Plurals::tracks(int count)
 QString Plurals::tracksWithDuration(int count, const QString &duration)
 {
     return 1==count ? QObject::tr("1 Track (%1)", "Singular").arg(duration)
-                    : QObject::tr("%1 Tracks(%2)", "Plural (N!=1)").arg(count).arg(duration);
+                    : QObject::tr("%1 Tracks (%2)", "Plural (N!=1)").arg(count).arg(duration);
 }
     
 QString Plurals::albums(int count)
@@ -69,4 +69,3 @@ QString Plurals::episodes(int count)
 {
     return 1==count ? QObject::tr("1 Episode", "Singular") : QObject::tr("%1 Episodes", "Plural (N!=1)").arg(count);
 }
-

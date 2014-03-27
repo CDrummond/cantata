@@ -23,7 +23,9 @@
 
 #include "thread.h"
 #include "globalstatic.h"
+#include "utils.h"
 #include <QCoreApplication>
+#include <QtGlobal>
 #include <QDebug>
 #include <signal.h>
 #include <unistd.h>
@@ -99,4 +101,10 @@ Thread::Thread(const QString &name, QObject *p)
 Thread::~Thread()
 {
     DBUG << objectName() << "destroyed";
+}
+
+void Thread::run()
+{
+    Utils::initRand();
+    QThread::run();
 }

@@ -26,7 +26,7 @@
 
 #include <math.h>
 #include <sys/types.h>
-#include <qglobal.h>
+#include <QtGlobal>
 #include <QString>
 #include <QLatin1Char>
 #include <QDir>
@@ -40,6 +40,7 @@
 #ifdef Q_OS_WIN32
 #include <time.h>
 #endif
+#include <sys/time.h>
 
 class QString;
 class QWidget;
@@ -55,6 +56,7 @@ namespace Utils
         return (fabs(d1 - d2) < precision);
     }
     inline int random(int max=0) { return max ? (qrand()%max) : qrand(); }
+    inline void initRand() { timeval time; gettimeofday(&time, NULL); qsrand((time.tv_sec*1000)+(time.tv_usec/1000)); }
 
     extern QString strippedText(QString s);
     extern QString stripAcceleratorMarkers(QString label);

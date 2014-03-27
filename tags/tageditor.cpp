@@ -850,6 +850,7 @@ bool TagEditor::applyUpdates()
         QString file=orig.filePath();
         switch(Tags::update(baseDir+file, orig, edit, -1, commentSupport)) {
         case Tags::Update_Modified:
+            edit.setComment(QString());
             #ifdef ENABLE_DEVICES_SUPPORT
             if (!deviceUdi.isEmpty()) {
                 if (!dev->updateSong(orig, edit)) {

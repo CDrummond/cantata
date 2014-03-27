@@ -705,11 +705,6 @@ MainWindow::MainWindow(QWidget *parent)
     setPriorityAction->setVisible(false);
     setPriorityAction->setMenu(StdActions::self()->addWithPriorityAction->menu());
 
-    // Ensure these objects are created in the GUI thread...
-    MPDStatus::self();
-    MPDStats::self();
-    Tags::init();
-
     playQueueProxyModel.setSourceModel(&playQueueModel);
     playQueue->setModel(&playQueueProxyModel);
     playQueue->addAction(removeFromPlayQueueAction);

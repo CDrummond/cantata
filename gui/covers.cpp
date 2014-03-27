@@ -159,7 +159,9 @@ static QImage loadImage(const QString &fileName)
         // Failed to load, perhaps extension is wrong? If so try PNG for .jpg, and vice versa...
         QFile f(fileName);
         if (f.open(QIODevice::ReadOnly)) {
-            img.load(&f, fileName.endsWith(".jpg", Qt::CaseInsensitive) ? "PNG" : "JPG");
+            QByteArray header=f.read(10);
+            f.reset();
+            img.load(&f, typeFromRaw(header).toLatin1());
             if (!img.isNull()) {
                 DBUG_CLASS("Covers") << fileName << "has wrong extension!";
             }

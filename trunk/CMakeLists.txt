@@ -399,11 +399,10 @@ endif (WIN32 OR APPLE OR NOT TAGLIB_FOUND)
 set(CANTATA_RCS cantata.qrc)
 if (NOT WIN32 AND NOT APPLE)
     set(CANTATA_RCS ${CANTATA_RCS} cantata_media.qrc)
+    if (USE_SYSTEM_MENU_ICON)
+        set(CANTATA_RCS ${CANTATA_RCS} cantata_menu.qrc)
+    endif (USE_SYSTEM_MENU_ICON)
 endif (NOT WIN32 AND NOT APPLE)
-
-if (USE_SYSTEM_MENU_ICON)
-    set(CANTATA_RCS ${CANTATA_RCS} cantata_menu.qrc)
-endif (USE_SYSTEM_MENU_ICON)
 
 if (TAGLIB_FOUND)
     set(CANTATA_SRCS ${CANTATA_SRCS}

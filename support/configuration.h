@@ -31,6 +31,8 @@
 #include <QDateTime>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KConfigGroup>
+#include <KDE/KGlobal>
+#include <KDE/KConfig>
 #else
 #include <QSettings>
 #endif
@@ -63,14 +65,14 @@ public:
     void         set(const QString &key, const QByteArray &val)  { if (!hasEntry(key) || get(key, val)!=val) cfg->writeEntry(key, val); }
     void         set(const QString &key, const QSize &val)       { if (!hasEntry(key) || get(key, val)!=val) cfg->writeEntry(key, val); }
     void         set(const QString &key, const QDateTime &val)   { if (!hasEntry(key) || get(key, val)!=val) cfg->writeEntry(key, val); }
-    bool         hasGroup(const QString &grp)                    { return cfg->hasGroup(grp); }
-    void         removeGroup(const QString &grp)                 { cfg->deleteGroup(grp); }
+    bool         hasGroup(const QString &grp)                    { return KGlobal::config()->hasGroup(grp); }
+    void         removeGroup(const QString &grp)                 { KGlobal::config()->deleteGroup(grp); }
     bool         hasEntry(const QString &key)                    { return cfg->hasKey(key); }
     void         removeEntry(const QString &key)                 { cfg->deleteEntry(key); }
     void         beginGroup(const QString &group);
     void         endGroup();
     QStringList  childGroups()                                   { return cfg->groupList(); }
-    void         sync()                                          { cfg->sync(); }
+    void         sync()                                          { KGlobal::config()->sync(); }
     #else
     QString      get(const QString &key, const QString &def)     { return contains(key) ? value(key).toString() : def; }
     QStringList  get(const QString &key, const QStringList &def) { return contains(key) ? value(key).toStringList() : def; }

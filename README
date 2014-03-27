@@ -132,7 +132,7 @@ full. Instead, please provide links to any relevant screenshots.
 5. Translations
 ===============
 
-Becasue Cantata started out as a KDE4 application, the translation files are
+Because Cantata started out as a KDE4 application, the translation files are
 based upon KDE's i18n framework - these are located within the 'po' folder.
 
 Translations for Qt-only builds are created from the KDE translations using

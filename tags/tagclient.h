@@ -27,26 +27,64 @@
 #include "song.h"
 #include <QImage>
 #include <QString>
+#include <QMutex>
+#include <QSemaphore>
+
+class QLocalServer;
+class QLocalSocket;
+class QProcess;
+class Thread;
 
 namespace Tags
 {
     struct ReplayGain;
 }
 
-namespace TagClient
+class TagClient : public QObject
 {
-    extern void enableDebug();
-    extern void stop();
-    extern Song read(const QString &fileName);
-    extern QImage readImage(const QString &fileName);
-    extern QString readLyrics(const QString &fileName);
-    extern QString readComment(const QString &fileName);
-    extern int updateArtistAndTitle(const QString &fileName, const Song &song);
-    extern int update(const QString &fileName, const Song &from, const Song &to, int id3Ver, bool saveComment);
-    extern Tags::ReplayGain readReplaygain(const QString &fileName);
-    extern int updateReplaygain(const QString &fileName, const Tags::ReplayGain &rg);
-    extern int embedImage(const QString &fileName, const QByteArray &cover);
-    extern QString oggMimeType(const QString &fileName);
-}
+    Q_OBJECT
+
+public:
+    static void enableDebug();
+    static TagClient * self();
+
+    struct Reply
+    {
+        int status;
+        QByteArray data;
+    };
+
+    TagClient();
+    void stop();
+    Song read(const QString &fileName);
+    QImage readImage(const QString &fileName);
+    QString readLyrics(const QString &fileName);
+    QString readComment(const QString &fileName);
+    int updateArtistAndTitle(const QString &fileName, const Song &song);
+    int update(const QString &fileName, const Song &from, const Song &to, int id3Ver, bool saveComment);
+    Tags::ReplayGain readReplaygain(const QString &fileName);
+    int updateReplaygain(const QString &fileName, const Tags::ReplayGain &rg);
+    int embedImage(const QString &fileName, const QByteArray &cover);
+    QString oggMimeType(const QString &fileName);
+
+private:
+    bool helperIsRunning();
+    Reply sendMessage(const QByteArray &msg);
+    bool startHelper();
+
+private Q_SLOTS:
+    void stopHelper();
+    void sendMsg();
+
+private:
+    QMutex mutex;
+    QByteArray msgData;
+    int msgStatus;
+    Thread *thread;
+    QSemaphore sema;
+    QProcess *proc;
+    QLocalServer *server;
+    QLocalSocket *sock;
+};
 
 #endif

@@ -45,7 +45,27 @@
 #include "config.h"
 #include "mainwindow.h"
 #include "mpdconnection.h"
+#include "mpdstats.h"
+#include "mpdstatus.h"
+#include "thread.h"
+#ifdef ENABLE_EXTERNAL_TAGS
+#include "tagclient.h"
+#endif
 #include "gtkstyle.h"
+
+void Application::initObjects()
+{
+    // Ensure these objects are created in the GUI thread...
+    ThreadCleaner::self();
+    MPDStatus::self();
+    MPDStats::self();
+    #ifdef ENABLE_EXTERNAL_TAGS
+    TagClient::self();
+    #endif
+
+    Utils::initRand();
+    Song::initTranslations();
+}
 
 #ifdef ENABLE_KDE_SUPPORT
 #ifdef Q_WS_X11
@@ -81,9 +101,7 @@ int Application::newInstance() {
     if (w) {
         w->restoreWindow();
     } else {
-        // Ensure ThreadCleaner is in GUI thread...
-        ThreadCleaner::self();
-        Song::initTranslations();
+        initObjects();
         if (Settings::self()->firstRun()) {
             InitialSettingsWizard wz;
             if (QDialog::Rejected==wz.exec()) {

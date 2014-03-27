@@ -34,6 +34,7 @@ class Application : public KUniqueApplication
     Q_OBJECT
 
 public:
+    static void initObjects();
     #ifdef Q_WS_X11
     Application(Display *display, Qt::HANDLE visual, Qt::HANDLE colormap);
     #endif
@@ -55,6 +56,7 @@ class Application : public QtSingleApplication
     Q_OBJECT
 
 public:
+    static void initObjects();
     Application(int &argc, char **argv);
     virtual ~Application() { }
 
@@ -76,6 +78,7 @@ Q_SIGNALS:
 class Application : public QApplication
 {
 public:
+    static void initObjects();
     Application(int &argc, char **argv);
     virtual ~Application() { }
 
@@ -91,6 +94,7 @@ private:
 class Application : public QApplication
 {
 public:
+    static void initObjects();
     Application(int &argc, char **argv);
     virtual ~Application() { }
 

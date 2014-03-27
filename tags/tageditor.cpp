@@ -428,7 +428,9 @@ void TagEditor::readComments()
         edited=original;
     }
     progress->setVisible(false);
-    if (!haveMultiple) {
+    if (haveMultiple) {
+        setPlaceholderTexts();
+    } else {
         setSong(original.at(0));
     }
 }

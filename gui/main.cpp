@@ -325,6 +325,6 @@ int main(int argc, char *argv[])
         mw.show();
     }
     #endif // ENABLE_KDE_SUPPORT
-
+    Utils::initRand();
     return app.exec();
 }

@@ -60,6 +60,7 @@ public:
     Thread(const QString &name, QObject *p=0);
     virtual ~Thread();
 
+    virtual void run();
 public Q_SLOTS:
     void stop() { quit(); }
 };

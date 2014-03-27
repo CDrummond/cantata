@@ -708,6 +708,7 @@ MainWindow::MainWindow(QWidget *parent)
     // Ensure these objects are created in the GUI thread...
     MPDStatus::self();
     MPDStats::self();
+    Tags::init();
 
     playQueueProxyModel.setSourceModel(&playQueueModel);
     playQueue->setModel(&playQueueProxyModel);

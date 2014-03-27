@@ -22,10 +22,6 @@
  */
 
 #include "configuration.h"
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KGlobal>
-#include <KDE/KConfig>
-#endif
 
 QLatin1String Configuration::constMainGroup("General");
 

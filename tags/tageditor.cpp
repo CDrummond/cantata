@@ -876,15 +876,9 @@ bool TagEditor::applyUpdates()
         case Tags::Update_Failed:
             failed.append(file);
             break;
-        #ifdef ENABLE_EXTERNAL_TAGS
-        case Tags::Update_Timedout:
-            failed.append(i18nc("filename (Timeout)", "%1 (Timeout)", file));
-            someTimedout=true;
-            break;
         case Tags::Update_BadFile:
             failed.append(i18nc("filename (Corrupt tags?)", "%1 (Corrupt tags?)", file));
             break;
-        #endif
         default:
             break;
         }

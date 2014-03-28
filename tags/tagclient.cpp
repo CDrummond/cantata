@@ -58,7 +58,9 @@ void TagClient::enableDebug()
 GLOBAL_STATIC(TagClient, instance)
 
 TagClient::TagClient()
-    : msgStatus(Read_Ok)
+    : msgStatus(true)
+    , dataSize(0)
+    , awaitingResponse(false)
     , thread(0)
     , proc(0)
     , server(0)
@@ -86,7 +88,7 @@ Song TagClient::read(const QString &fileName)
     QDataStream outStream(&message, QIODevice::WriteOnly);
     outStream << QString(__FUNCTION__) << fileName;
     Reply reply=sendMessage(message);
-    if (Read_Ok==reply.status) {
+    if (reply.status) {
         QDataStream inStream(reply.data);
         inStream >> resp;
     }
@@ -101,7 +103,7 @@ QImage TagClient::readImage(const QString &fileName)
     QDataStream outStream(&message, QIODevice::WriteOnly);
     outStream << QString(__FUNCTION__) << fileName;
     Reply reply=sendMessage(message);
-    if (Read_Ok==reply.status) {
+    if (reply.status) {
         QDataStream inStream(reply.data);
         inStream >> resp;
     }
@@ -116,7 +118,7 @@ QString TagClient::readLyrics(const QString &fileName)
     QDataStream outStream(&message, QIODevice::WriteOnly);
     outStream << QString(__FUNCTION__) << fileName;
     Reply reply=sendMessage(message);
-    if (Read_Ok==reply.status) {
+    if (reply.status) {
         QDataStream inStream(reply.data);
         inStream >> resp;
     }
@@ -131,7 +133,7 @@ QString TagClient::readComment(const QString &fileName)
     QDataStream outStream(&message, QIODevice::WriteOnly);
     outStream << QString(__FUNCTION__) << fileName;
     Reply reply=sendMessage(message);
-    if (Read_Ok==reply.status) {
+    if (reply.status) {
         QDataStream inStream(reply.data);
         inStream >> resp;
     }
@@ -146,11 +148,11 @@ int TagClient::updateArtistAndTitle(const QString &fileName, const Song &song)
     QDataStream outStream(&message, QIODevice::WriteOnly);
     outStream << QString(__FUNCTION__) << fileName << song;
     Reply reply=sendMessage(message);
-    if (Read_Ok==reply.status) {
+    if (reply.status) {
         QDataStream inStream(reply.data);
         inStream >> resp;
     } else {
-        resp=Read_Timeout==reply.status ? Tags::Update_Timedout : Tags::Update_BadFile;
+        resp=Tags::Update_BadFile;
     }
     return resp;
 }
@@ -163,11 +165,11 @@ int TagClient::update(const QString &fileName, const Song &from, const Song &to,
     QDataStream outStream(&message, QIODevice::WriteOnly);
     outStream << QString(__FUNCTION__) << fileName << from << to << id3Ver << saveComment;
     Reply reply=sendMessage(message);
-    if (Read_Ok==reply.status) {
+    if (reply.status) {
         QDataStream inStream(reply.data);
         inStream >> resp;
     } else {
-        resp=Read_Timeout==reply.status ? Tags::Update_Timedout : Tags::Update_BadFile;
+        resp=Tags::Update_BadFile;
     }
     return resp;
 }
@@ -180,7 +182,7 @@ Tags::ReplayGain TagClient::readReplaygain(const QString &fileName)
     QDataStream outStream(&message, QIODevice::WriteOnly);
     outStream << QString(__FUNCTION__) << fileName;
     Reply reply=sendMessage(message);
-    if (Read_Ok==reply.status) {
+    if (reply.status) {
         QDataStream inStream(reply.data);
         inStream >> resp;
     }
@@ -195,11 +197,11 @@ int TagClient::updateReplaygain(const QString &fileName, const Tags::ReplayGain 
     QDataStream outStream(&message, QIODevice::WriteOnly);
     outStream << QString(__FUNCTION__) << fileName << rg;
     Reply reply=sendMessage(message);
-    if (Read_Ok==reply.status) {
+    if (reply.status) {
         QDataStream inStream(reply.data);
         inStream >> resp;
     } else {
-        resp=Read_Timeout==reply.status ? Tags::Update_Timedout : Tags::Update_BadFile;
+        resp=Tags::Update_BadFile;
     }
     return resp;
 }
@@ -212,11 +214,11 @@ int TagClient::embedImage(const QString &fileName, const QByteArray &cover)
     QDataStream outStream(&message, QIODevice::WriteOnly);
     outStream << QString(__FUNCTION__) << fileName << cover;
     Reply reply=sendMessage(message);
-    if (Read_Ok==reply.status) {
+    if (reply.status) {
         QDataStream inStream(reply.data);
         inStream >> resp;
     } else {
-        resp=Read_Timeout==reply.status ? Tags::Update_Timedout : Tags::Update_BadFile;
+        resp=Tags::Update_BadFile;
     }
     return resp;
 }
@@ -229,7 +231,7 @@ QString TagClient::oggMimeType(const QString &fileName)
     QDataStream outStream(&message, QIODevice::WriteOnly);
     outStream << QString(__FUNCTION__) << fileName;
     Reply reply=sendMessage(message);
-    if (Read_Ok==reply.status) {
+    if (reply.status) {
         QDataStream inStream(reply.data);
         inStream >> resp;
     }
@@ -239,12 +241,13 @@ QString TagClient::oggMimeType(const QString &fileName)
 TagClient::Reply TagClient::sendMessage(const QByteArray &msg)
 {
     QMutexLocker locker(&mutex);
-    msgData=msg;
+    data=msg;
     metaObject()->invokeMethod(this, "sendMsg", Qt::QueuedConnection);
     sema.acquire();
     TagClient::Reply reply;
     reply.status=msgStatus;
-    reply.data=msgData;
+    reply.data=data;
+    DBUG << "Message response - " << reply.status << reply.data.length();
     return reply;
 }
 
@@ -278,12 +281,16 @@ bool TagClient::startHelper()
         #else
         proc->start(INSTALL_PREFIX"/lib/cantata/cantata-tags", QStringList() << server->fullServerName() << QString::number(currentPid));
         #endif
+        connect(proc, SIGNAL(finished(int)), this, SLOT(helperClosed()));
         if (proc->waitForStarted(constMaxWait)) {
             DBUG << "Process started, on pid" << proc->pid() << "- wait for helper to connect";
             if (server->waitForNewConnection(constMaxWait)) {
                 sock=server->nextPendingConnection();
             }
             if (sock) {
+                DBUG << "Helper connected";
+                connect(sock, SIGNAL(readyRead()), this, SLOT(dataReady()));
+                connect(sock, SIGNAL(disconnected()), this, SLOT(helperClosed()));
                 return true;
             } else {
                 DBUG << "Helper did not connect";
@@ -302,6 +309,8 @@ void TagClient::stopHelper()
 {
     if (sock) {
         DBUG << "Socket" << (void *)sock;
+        disconnect(sock, SIGNAL(readyRead()), this, SLOT(dataReady()));
+        disconnect(sock, SIGNAL(disconnected()), this, SLOT(helperClosed()));
         sock->flush();
         sock->close();
         sock->deleteLater();
@@ -314,6 +323,7 @@ void TagClient::stopHelper()
         server=0;
     }
     if (proc) {
+        disconnect(proc, SIGNAL(finished(int)), this, SLOT(helperClosed()));
         DBUG << "Process" << (void *)proc;
         if (QProcess::NotRunning!=proc->state()) {
             proc->kill();
@@ -322,6 +332,7 @@ void TagClient::stopHelper()
         proc->deleteLater();
         proc=0;
     }
+    setStatus(false);
 }
 
 bool TagClient::helperIsRunning()
@@ -331,24 +342,63 @@ bool TagClient::helperIsRunning()
 
 void TagClient::sendMsg()
 {
+    DBUG;
     if (startHelper()) {
-        sock->write(msgData);
-        msgData.clear();
-        if (!helperIsRunning()) {
-            DBUG << "Not running?";
-            stopHelper();
-            msgStatus=Read_Closed;
-        } else if (sock->waitForReadyRead(constMaxWait)) {
-            msgData=sock->readAll();
-            DBUG << "Read reply, bytes:" << msgData.length();
-            msgStatus=msgData.isEmpty() ? Read_Error : Read_Ok;
-        } else {
-            DBUG << "Wait for read failed " << helperIsRunning() << (proc ? (int)proc->state() : 12345);
-            stopHelper();
-            msgStatus=Read_Timeout;
-        }
+        awaitingResponse=true; // In here because startHelper might call stopHelper, which call setStatus!
+        QDataStream stream(sock);
+        stream << qint32(data.length());
+        stream.writeRawData(data.data(), data.length());
+        sock->flush();
+        DBUG << "Message sent";
+        data.clear();
+        dataSize=0;
     } else {
-        msgStatus=Read_Closed;
+        awaitingResponse=true;
+        setStatus(false);
     }
-    sema.release();
+}
+
+void TagClient::dataReady()
+{
+    DBUG;
+    if (!awaitingResponse) {
+        DBUG << "Socket is ready to read, but not expecting any message!!!";
+        stopHelper();
+        return;
+    }
+
+    while (sock->bytesAvailable()) {
+        if (0==dataSize) {
+            QDataStream stream(sock);
+            stream >> dataSize;
+            DBUG << "Expecting" << dataSize << "bytes in response";
+            if (dataSize<=0) {
+                setStatus(false);
+                return;
+            }
+        }
+
+        data+=sock->read(dataSize-data.length());
+        if (data.length() == dataSize) {
+            DBUG << "Response fully received";
+            setStatus(true);
+            break;
+        }
+    }
+}
+
+void TagClient::helperClosed()
+{
+    DBUG;
+    setStatus(false);
+}
+
+void TagClient::setStatus(bool st)
+{
+    DBUG << st << awaitingResponse;
+    if (awaitingResponse) {
+        awaitingResponse=false;
+        msgStatus=st;
+        sema.release();
+    }
 }

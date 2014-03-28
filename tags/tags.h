@@ -60,11 +60,8 @@ namespace Tags
     {
         Update_Failed,
         Update_None,
-        Update_Modified
-        #ifdef ENABLE_EXTERNAL_TAGS
-        , Update_Timedout
-        , Update_BadFile
-        #endif
+        Update_Modified,
+        Update_BadFile
     };
 
     #if defined ENABLE_EXTERNAL_TAGS && !defined CANTATA_TAG_SERVER

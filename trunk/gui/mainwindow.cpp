@@ -641,6 +641,7 @@ MainWindow::MainWindow(QWidget *parent)
         }
         #endif
         menuBar()->addMenu(menu);
+        #ifndef ENABLE_KDE_SUPPORT
         if (Utils::KDE!=Utils::currentDe()) {
             menu=new QMenu(i18n("&View"), this);
             if (showMenuAction) {
@@ -651,6 +652,7 @@ MainWindow::MainWindow(QWidget *parent)
             addMenuAction(menu, fullScreenAction);
             menuBar()->addMenu(menu);
         }
+        #endif
         menu=new QMenu(i18n("&Queue"), this);
         addMenuAction(menu, promptClearPlayQueueAction);
         addMenuAction(menu, StdActions::self()->savePlayQueueAction);

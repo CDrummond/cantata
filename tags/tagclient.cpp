@@ -260,18 +260,18 @@ bool TagClient::startHelper()
         #else
         int currentPid=getpid();
         #endif
-        DBUG << "create server";
+        DBUG << "Create server";
         server=new QLocalServer(this);
 
         forever {
-            QString name="cantata-tags-"+QLatin1Char('-')+QString::number(currentPid)+QLatin1Char('-')+QString::number(Utils::random());
+            QString name="cantata-tags-"+QString::number(currentPid)+QLatin1Char('-')+QString::number(Utils::random());
             QLocalServer::removeServer(name);
             if (server->listen(name)) {
                 DBUG << "Listening on" << server->fullServerName();
                 break;
             }
         }
-        DBUG << "start process";
+        DBUG << "Start process";
         proc=new QProcess(this);
         #ifdef Q_OS_WIN
         proc->start(qApp->applicationDirPath()+"/helpers/cantata-tags.exe", QStringList() << server->fullServerName() << QString::number(currentPid));
@@ -279,19 +279,19 @@ bool TagClient::startHelper()
         proc->start(INSTALL_PREFIX"/lib/cantata/cantata-tags", QStringList() << server->fullServerName() << QString::number(currentPid));
         #endif
         if (proc->waitForStarted(constMaxWait)) {
-            DBUG << "process started, on pid" << proc->pid() << "- wait for helper to connect";
+            DBUG << "Process started, on pid" << proc->pid() << "- wait for helper to connect";
             if (server->waitForNewConnection(constMaxWait)) {
                 sock=server->nextPendingConnection();
             }
             if (sock) {
                 return true;
             } else {
-                DBUG << "helper did not connect";
+                DBUG << "Helper did not connect";
             }
         } else {
             DBUG << "Failed to start process";
         }
-        DBUG << "failed to start";
+        DBUG << "Failed to start";
         stopHelper();
         return false;
     }
@@ -301,20 +301,20 @@ bool TagClient::startHelper()
 void TagClient::stopHelper()
 {
     if (sock) {
-        DBUG << "socket" << (void *)sock;
+        DBUG << "Socket" << (void *)sock;
         sock->flush();
         sock->close();
         sock->deleteLater();
         sock=0;
     }
     if (server) {
-        DBUG << "server" << (void *)server;
+        DBUG << "Server" << (void *)server;
         server->close();
         server->deleteLater();
         server=0;
     }
     if (proc) {
-        DBUG << "process" << (void *)proc;
+        DBUG << "Process" << (void *)proc;
         if (QProcess::NotRunning!=proc->state()) {
             proc->kill();
             proc->waitForFinished();
@@ -335,15 +335,15 @@ void TagClient::sendMsg()
         sock->write(msgData);
         msgData.clear();
         if (!helperIsRunning()) {
-            DBUG << "not running?";
+            DBUG << "Not running?";
             stopHelper();
             msgStatus=Read_Closed;
         } else if (sock->waitForReadyRead(constMaxWait)) {
             msgData=sock->readAll();
-            DBUG << "read reply, bytes:" << msgData.length();
+            DBUG << "Read reply, bytes:" << msgData.length();
             msgStatus=msgData.isEmpty() ? Read_Error : Read_Ok;
         } else {
-            DBUG << "wait for read failed " << helperIsRunning() << (proc ? (int)proc->state() : 12345);
+            DBUG << "Wait for read failed " << helperIsRunning() << (proc ? (int)proc->state() : 12345);
             stopHelper();
             msgStatus=Read_Timeout;
         }

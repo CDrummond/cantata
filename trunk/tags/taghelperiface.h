@@ -21,8 +21,8 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef TAG_CLIENT_H
-#define TAG_CLIENT_H
+#ifndef TAG_HELPER_IFACE_H
+#define TAG_HELPER_IFACE_H
 
 #include "song.h"
 #include <QImage>
@@ -40,13 +40,13 @@ namespace Tags
     struct ReplayGain;
 }
 
-class TagClient : public QObject
+class TagHelperIface : public QObject
 {
     Q_OBJECT
 
 public:
     static void enableDebug();
-    static TagClient * self();
+    static TagHelperIface * self();
 
     struct Reply
     {
@@ -54,7 +54,7 @@ public:
         QByteArray data;
     };
 
-    TagClient();
+    TagHelperIface();
     void stop();
     Song read(const QString &fileName);
     QImage readImage(const QString &fileName);

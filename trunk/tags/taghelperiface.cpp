@@ -21,7 +21,7 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include "tagclient.h"
+#include "taghelperiface.h"
 #include "tags.h"
 #include "config.h"
 #include "globalstatic.h"
@@ -43,21 +43,14 @@
 static bool debugEnabled=false;
 #define DBUG if (debugEnabled) qWarning() << metaObject()->className() << QThread::currentThread()->objectName() << __FUNCTION__
 
-enum ReadStatus {
-    Read_Ok,
-    Read_Timeout,
-    Read_Closed,
-    Read_Error
-};
-
-void TagClient::enableDebug()
+void TagHelperIface::enableDebug()
 {
     debugEnabled=true;
 }
 
-GLOBAL_STATIC(TagClient, instance)
+GLOBAL_STATIC(TagHelperIface, instance)
 
-TagClient::TagClient()
+TagHelperIface::TagHelperIface()
     : msgStatus(true)
     , dataSize(0)
     , awaitingResponse(false)
@@ -72,7 +65,7 @@ TagClient::TagClient()
     thread->start();
 }
 
-void TagClient::stop()
+void TagHelperIface::stop()
 {
     if (thread) {
         thread->stop();
@@ -80,7 +73,7 @@ void TagClient::stop()
     }
 }
 
-Song TagClient::read(const QString &fileName)
+Song TagHelperIface::read(const QString &fileName)
 {
     DBUG << fileName;
     Song resp;
@@ -95,7 +88,7 @@ Song TagClient::read(const QString &fileName)
     return resp;
 }
 
-QImage TagClient::readImage(const QString &fileName)
+QImage TagHelperIface::readImage(const QString &fileName)
 {
     DBUG << fileName;
     QImage resp;
@@ -110,7 +103,7 @@ QImage TagClient::readImage(const QString &fileName)
     return resp;
 }
 
-QString TagClient::readLyrics(const QString &fileName)
+QString TagHelperIface::readLyrics(const QString &fileName)
 {
     DBUG << fileName;
     QString resp;
@@ -125,7 +118,7 @@ QString TagClient::readLyrics(const QString &fileName)
     return resp;
 }
 
-QString TagClient::readComment(const QString &fileName)
+QString TagHelperIface::readComment(const QString &fileName)
 {
     DBUG << fileName;
     QString resp;
@@ -140,7 +133,7 @@ QString TagClient::readComment(const QString &fileName)
     return resp;
 }
 
-int TagClient::updateArtistAndTitle(const QString &fileName, const Song &song)
+int TagHelperIface::updateArtistAndTitle(const QString &fileName, const Song &song)
 {
     DBUG << fileName;
     int resp=Tags::Update_Failed;
@@ -157,7 +150,7 @@ int TagClient::updateArtistAndTitle(const QString &fileName, const Song &song)
     return resp;
 }
 
-int TagClient::update(const QString &fileName, const Song &from, const Song &to, int id3Ver, bool saveComment)
+int TagHelperIface::update(const QString &fileName, const Song &from, const Song &to, int id3Ver, bool saveComment)
 {
     DBUG << fileName;
     int resp=Tags::Update_Failed;
@@ -174,7 +167,7 @@ int TagClient::update(const QString &fileName, const Song &from, const Song &to,
     return resp;
 }
 
-Tags::ReplayGain TagClient::readReplaygain(const QString &fileName)
+Tags::ReplayGain TagHelperIface::readReplaygain(const QString &fileName)
 {
     DBUG << fileName;
     Tags::ReplayGain resp;
@@ -189,7 +182,7 @@ Tags::ReplayGain TagClient::readReplaygain(const QString &fileName)
     return resp;
 }
 
-int TagClient::updateReplaygain(const QString &fileName, const Tags::ReplayGain &rg)
+int TagHelperIface::updateReplaygain(const QString &fileName, const Tags::ReplayGain &rg)
 {
     DBUG << fileName;
     int resp=Tags::Update_Failed;
@@ -206,7 +199,7 @@ int TagClient::updateReplaygain(const QString &fileName, const Tags::ReplayGain 
     return resp;
 }
 
-int TagClient::embedImage(const QString &fileName, const QByteArray &cover)
+int TagHelperIface::embedImage(const QString &fileName, const QByteArray &cover)
 {
     DBUG << fileName;
     int resp=Tags::Update_Failed;
@@ -223,7 +216,7 @@ int TagClient::embedImage(const QString &fileName, const QByteArray &cover)
     return resp;
 }
 
-QString TagClient::oggMimeType(const QString &fileName)
+QString TagHelperIface::oggMimeType(const QString &fileName)
 {
     DBUG << fileName;
     QString resp;
@@ -238,13 +231,13 @@ QString TagClient::oggMimeType(const QString &fileName)
     return resp;
 }
 
-TagClient::Reply TagClient::sendMessage(const QByteArray &msg)
+TagHelperIface::Reply TagHelperIface::sendMessage(const QByteArray &msg)
 {
     QMutexLocker locker(&mutex);
     data=msg;
     metaObject()->invokeMethod(this, "sendMsg", Qt::QueuedConnection);
     sema.acquire();
-    TagClient::Reply reply;
+    TagHelperIface::Reply reply;
     reply.status=msgStatus;
     reply.data=data;
     DBUG << "Message response - " << reply.status << reply.data.length();
@@ -253,7 +246,7 @@ TagClient::Reply TagClient::sendMessage(const QByteArray &msg)
 
 static const int constMaxWait=5000;
 
-bool TagClient::startHelper()
+bool TagHelperIface::startHelper()
 {
     DBUG << (void *)proc;
     if (!helperIsRunning()) {
@@ -305,7 +298,7 @@ bool TagClient::startHelper()
     return true;
 }
 
-void TagClient::stopHelper()
+void TagHelperIface::stopHelper()
 {
     if (sock) {
         DBUG << "Socket" << (void *)sock;
@@ -335,12 +328,12 @@ void TagClient::stopHelper()
     setStatus(false);
 }
 
-bool TagClient::helperIsRunning()
+bool TagHelperIface::helperIsRunning()
 {
     return proc && QProcess::Running==proc->state() && sock && QLocalSocket::ConnectedState==sock->state();
 }
 
-void TagClient::sendMsg()
+void TagHelperIface::sendMsg()
 {
     DBUG;
     if (startHelper()) {
@@ -358,7 +351,7 @@ void TagClient::sendMsg()
     }
 }
 
-void TagClient::dataReady()
+void TagHelperIface::dataReady()
 {
     DBUG;
     if (!awaitingResponse) {
@@ -387,13 +380,13 @@ void TagClient::dataReady()
     }
 }
 
-void TagClient::helperClosed()
+void TagHelperIface::helperClosed()
 {
     DBUG;
     setStatus(false);
 }
 
-void TagClient::setStatus(bool st)
+void TagHelperIface::setStatus(bool st)
 {
     DBUG << st << awaitingResponse;
     if (awaitingResponse) {

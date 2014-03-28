@@ -21,21 +21,21 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef TAG_SERVER_H
-#define TAG_SERVER_H
+#ifndef TAG_HELPER_H
+#define TAG_HELPER_H
 
 #include <QObject>
 #include <QByteArray>
 
 class QLocalSocket;
 
-class TagServer : public QObject
+class TagHelper : public QObject
 {
     Q_OBJECT
 
 public:
-    TagServer(const QString &sockName, int parent);
-    ~TagServer();
+    TagHelper(const QString &sockName, int parent);
+    ~TagHelper();
 
 private Q_SLOTS:
     void dataReady();

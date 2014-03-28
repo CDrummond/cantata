@@ -25,6 +25,7 @@
 #define TAG_SERVER_H
 
 #include <QObject>
+#include <QByteArray>
 
 class QLocalSocket;
 
@@ -37,12 +38,17 @@ public:
     ~TagServer();
 
 private Q_SLOTS:
-    void process();
+    void dataReady();
     void checkParent();
+
+private:
+    void process();
 
 private:
     int parentPid;
     QLocalSocket *socket;
+    qint32 dataSize;
+    QByteArray data;
 };
 
 #endif

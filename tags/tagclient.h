@@ -50,7 +50,7 @@ public:
 
     struct Reply
     {
-        int status;
+        bool status;
         QByteArray data;
     };
 
@@ -71,15 +71,20 @@ private:
     bool helperIsRunning();
     Reply sendMessage(const QByteArray &msg);
     bool startHelper();
+    void setStatus(bool st);
 
 private Q_SLOTS:
     void stopHelper();
     void sendMsg();
+    void dataReady();
+    void helperClosed();
 
 private:
     QMutex mutex;
-    QByteArray msgData;
-    int msgStatus;
+    QByteArray data;
+    bool msgStatus;
+    qint32 dataSize;
+    bool awaitingResponse;
     Thread *thread;
     QSemaphore sema;
     QProcess *proc;

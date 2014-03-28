@@ -397,15 +397,9 @@ bool RgDialog::saveTags()
         case Tags::Update_Failed:
             failed.append(filePath);
             break;
-        #ifdef ENABLE_EXTERNAL_TAGS
-        case Tags::Update_Timedout:
-            failed.append(i18nc("filename (Timeout)", "%1 (Timeout)", filePath));
-            someTimedout=true;
-            break;
         case Tags::Update_BadFile:
             failed.append(i18nc("filename (Corrupt tags?)", "%1 (Corrupt tags?)", filePath));
             break;
-        #endif
         default:
             break;
         }

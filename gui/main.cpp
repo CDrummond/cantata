@@ -59,7 +59,7 @@
 #include "networkaccessmanager.h"
 #include "ultimatelyricsprovider.h"
 #ifdef ENABLE_EXTERNAL_TAGS
-#include "tagclient.h"
+#include "taghelperiface.h"
 #endif
 #include "contextwidget.h"
 
@@ -211,7 +211,7 @@ static void installDebugMessageHandler()
         }
         #ifdef ENABLE_EXTERNAL_TAGS
         if (dbg&Dbg_Tags) {
-            TagClient::enableDebug();
+            TagHelperIface::enableDebug();
         }
         #endif
         if (dbg&Dbg_All && logToFile) {

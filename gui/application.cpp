@@ -49,7 +49,7 @@
 #include "mpdstatus.h"
 #include "thread.h"
 #ifdef ENABLE_EXTERNAL_TAGS
-#include "tagclient.h"
+#include "taghelperiface.h"
 #endif
 #include "gtkstyle.h"
 
@@ -60,7 +60,7 @@ void Application::initObjects()
     MPDStatus::self();
     MPDStats::self();
     #ifdef ENABLE_EXTERNAL_TAGS
-    TagClient::self();
+    TagHelperIface::self();
     #endif
 
     Utils::initRand();

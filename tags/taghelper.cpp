@@ -21,7 +21,7 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include "tagserver.h"
+#include "taghelper.h"
 #include "tags.h"
 #include <QDataStream>
 #include <QVariant>
@@ -58,7 +58,7 @@ static void deleteSocket()
     }
 }
 
-TagServer::TagServer(const QString &sockName, int parent)
+TagHelper::TagHelper(const QString &sockName, int parent)
     : parentPid(parent)
     , dataSize(0)
 {
@@ -74,11 +74,11 @@ TagServer::TagServer(const QString &sockName, int parent)
     atexit(deleteSocket);
 }
 
-TagServer::~TagServer()
+TagHelper::~TagHelper()
 {
 }
 
-void TagServer::dataReady()
+void TagHelper::dataReady()
 {
 //    log("Data ready - "+QString::number(dataSize));
     while (socket->bytesAvailable()) {
@@ -99,7 +99,7 @@ void TagServer::dataReady()
     }
 }
 
-void TagServer::checkParent()
+void TagHelper::checkParent()
 {
     // If parent process (Cantata) has terminated, then we need to exit...
     #ifdef Q_OS_WIN
@@ -113,7 +113,7 @@ void TagServer::checkParent()
     #endif
 }
 
-void TagServer::process()
+void TagHelper::process()
 {
     QByteArray response;
     QDataStream inStream(data);

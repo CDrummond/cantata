@@ -31,7 +31,7 @@
 #include <QMetaType>
 
 #if defined ENABLE_EXTERNAL_TAGS && !defined CANTATA_TAG_SERVER
-#include "tagclient.h"
+#include "taghelperiface.h"
 #endif
 
 namespace Tags
@@ -65,18 +65,18 @@ namespace Tags
     };
 
     #if defined ENABLE_EXTERNAL_TAGS && !defined CANTATA_TAG_SERVER
-    inline void init() { TagClient::self(); }
-    inline void stop() { TagClient::self()->stop(); }
-    inline Song read(const QString &fileName) { return TagClient::self()->read(fileName); }
-    inline QImage readImage(const QString &fileName) { return TagClient::self()->readImage(fileName); }
-    inline QString readLyrics(const QString &fileName) { return TagClient::self()->readLyrics(fileName); }
-    inline QString readComment(const QString &fileName) { return TagClient::self()->readComment(fileName); }
-    inline Update updateArtistAndTitle(const QString &fileName, const Song &song) { return (Update)TagClient::self()->updateArtistAndTitle(fileName, song); }
-    inline Update update(const QString &fileName, const Song &from, const Song &to, int id3Ver=-1, bool saveComment=false) { return (Update)TagClient::self()->update(fileName, from, to, id3Ver, saveComment); }
-    inline ReplayGain readReplaygain(const QString &fileName) { return TagClient::self()->readReplaygain(fileName); }
-    inline Update updateReplaygain(const QString &fileName, const ReplayGain &rg) { return (Update)TagClient::self()->updateReplaygain(fileName, rg); }
-    inline Update embedImage(const QString &fileName, const QByteArray &cover) { return (Update)TagClient::self()->embedImage(fileName, cover); }
-    inline QString oggMimeType(const QString &fileName) { return TagClient::self()->oggMimeType(fileName); }
+    inline void init() { TagHelperIface::self(); }
+    inline void stop() { TagHelperIface::self()->stop(); }
+    inline Song read(const QString &fileName) { return TagHelperIface::self()->read(fileName); }
+    inline QImage readImage(const QString &fileName) { return TagHelperIface::self()->readImage(fileName); }
+    inline QString readLyrics(const QString &fileName) { return TagHelperIface::self()->readLyrics(fileName); }
+    inline QString readComment(const QString &fileName) { return TagHelperIface::self()->readComment(fileName); }
+    inline Update updateArtistAndTitle(const QString &fileName, const Song &song) { return (Update)TagHelperIface::self()->updateArtistAndTitle(fileName, song); }
+    inline Update update(const QString &fileName, const Song &from, const Song &to, int id3Ver=-1, bool saveComment=false) { return (Update)TagHelperIface::self()->update(fileName, from, to, id3Ver, saveComment); }
+    inline ReplayGain readReplaygain(const QString &fileName) { return TagHelperIface::self()->readReplaygain(fileName); }
+    inline Update updateReplaygain(const QString &fileName, const ReplayGain &rg) { return (Update)TagHelperIface::self()->updateReplaygain(fileName, rg); }
+    inline Update embedImage(const QString &fileName, const QByteArray &cover) { return (Update)TagHelperIface::self()->embedImage(fileName, cover); }
+    inline QString oggMimeType(const QString &fileName) { return TagHelperIface::self()->oggMimeType(fileName); }
     #else
     inline void init() { }
     inline void stop() { }

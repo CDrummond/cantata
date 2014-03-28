@@ -1203,9 +1203,6 @@ Covers::Image Covers::locateImage(const Song &song)
             }
         }
         for (int e=0; constExtensions[e]; ++e) {
-            coverFileNames+=Utils::changeExtension(Utils::getFile(songFile), constExtensions[e]);
-        }
-        for (int e=0; constExtensions[e]; ++e) {
             coverFileNames+=song.albumArtist()+QLatin1String(" - ")+song.album+constExtensions[e];
         }
         for (int e=0; constExtensions[e]; ++e) {

@@ -204,35 +204,33 @@ When displaying covers, Cantata will load album covers in the following order:
  7. AlbumArt.png
  8. folder.jpg
  9. folder.png
-10. ${file}.jpg - e.g. "01 Wibble.mp3" -> "01 Wibble.jpg"
-11. ${file}.png
-12. ${albumArtist} - ${album}.jpg
-13. ${albumArtist} - ${album}.png
-14. ${album}.jpg
-15. ${album}.png
-16. Image embedded within current song's tags.
-17. ANY other jpg, or png
+10. ${albumArtist} - ${album}.jpg
+11. ${albumArtist} - ${album}.png
+12. ${album}.jpg
+13. ${album}.png
+14. Image embedded within current song's tags.
+15. ANY other jpg, or png
 
 ...then Cantata will check its cache folder (~/.cache/cantata/covers), for :
 
-18. ${albumArtist}/${album}.jpg
-19. ${albumArtist}/${album}.png
+16. ${albumArtist}/${album}.jpg
+17. ${albumArtist}/${album}.png
 
 ...if compiled for Linux
 
-20. Matching Amarok cover
-21. Matching Clementine cover
+18. Matching Amarok cover
+19. Matching Clementine cover
 
 ...if the MPD folder was specified as a http URL
 
-22. ${url}/${dirFromFile}/cover.jpg
+20. ${url}/${dirFromFile}/cover.jpg
     - or ${url}/${dirFromFile}/${configuredName}.jpg (if set)
-23. ${url}/${dirFromFile}/cover.png
+21. ${url}/${dirFromFile}/cover.png
     - or ${url}/${dirFromFile}/${configuredName}.png (if set)
 
 ...lastly, if user has enabled downloading via last.fm
 
-24. Query last.fm using ${albumArtist} and ${album}. Cantata will attempt to
+22. Query last.fm using ${albumArtist} and ${album}. Cantata will attempt to
     download the image specified with the "extralarge" size.
 
 Downloaded images will be saved as ${configuredName}.jpg/png (if set), or

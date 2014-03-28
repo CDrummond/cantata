@@ -23,13 +23,13 @@
 
 #include <QCoreApplication>
 #include <QStringList>
-#include "tagserver.h"
+#include "taghelper.h"
 
 int main(int argc, char *argv[])
 {
     QCoreApplication app(argc, argv);
     if (3==app.arguments().length()) {
-        new TagServer(app.arguments().at(1), app.arguments().at(2).toInt());
+        new TagHelper(app.arguments().at(1), app.arguments().at(2).toInt());
         return app.exec();
     }
     return 0;

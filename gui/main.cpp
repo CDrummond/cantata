@@ -226,6 +226,7 @@ static void installDebugMessageHandler()
 
 int main(int argc, char *argv[])
 {
+    QThread::currentThread()->setObjectName("GUI");
     #ifdef ENABLE_KDE_SUPPORT
     KAboutData aboutData(PACKAGE_NAME, 0,
                          ki18n("Cantata"), PACKAGE_VERSION_STRING,

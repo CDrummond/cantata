@@ -1197,9 +1197,9 @@ Covers::Image Covers::locateImage(const Song &song)
                 coverFileNames << mpdCover+constExtensions[e];
             }
         }
-        if (!mpdCover.isEmpty()) {
-            for (int e=0; constExtensions[e]; ++e) {
-                coverFileNames << mpdCover+constExtensions[e];
+        foreach (const QString &std, standardNames()) {
+            if (!coverFileNames.contains(std)) {
+                coverFileNames << std;
             }
         }
         for (int e=0; constExtensions[e]; ++e) {

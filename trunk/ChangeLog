@@ -27,9 +27,9 @@
 18. Install Cantata's list of lyrics providers to INSTALL/share/cantata/lyrics
 19. Read lyrics providers from each .xml file in ~/.local/share/cantata/lyrics,
     and INSTALL/share/cantata/lyrics
-20. Attempt to respect menubar usage of current desktop. For windows and Gnome,
+20. Attempt to respect menubar usage of current desktop. For Windows and Gnome,
     menu button is used, and menubar hidden. For Mac and Unity, menubar is
-    used, and menu button is hidden. For KDE, by default the menu button is
+    used, and menu button is hidden. For KDE Plasma, by default the menu button is
     used, and the menu bar hidden - but a menu entry is provided to toggle.
     This setting maybe overridden - see README for details.
 21. Most songs will be less than 1 hr long, so by default we only need to
@@ -73,7 +73,7 @@
     usage of OLD dbus XML files.
 46. If Cantata detects that an album, or artist, has new songs after updating
     MPD's DB, then the artist and album are drawn with bold text.
-47. When searching fot album covers, dont look for $songFile.png/jpg
+47. When searching for album covers, do not look for $songFile.png/jpg
 
 1.3.4
 -----
@@ -84,18 +84,18 @@
 1.3.3
 -----
  1. If Cantata is started whilst an instance is also running, raise window of
-    current instance. (Linux only fix)
+    current instance. (Linux-only fix)
  2. Add song to playqueue from albums page when double-clicked.
- 3. Fix display of online-service track album-artist in copy dialog.
+ 3. Fix display of online service track album-artist in copy dialog.
  4. Ensure library is loaded the very first time Cantata is run (ie. after
     connected to MPD via initial settings wizard).
  5. When song is updated in context view, abort any current network jobs.
  6. Fix expand all / collapse all actions. Expand all will only expand 1 level
     for main browsers.
- 7. When reading lines from user mpd.conf file, read as utf-8.
- 8. Reset devices and online-services models when artist-view cover size
+ 7. When reading lines from user mpd.conf file, read as UTF-8.
+ 8. Reset devices and online services models when artist view cover size
     changes.
- 9. If downloading online-service track listing fails, then stop loader and
+ 9. If downloading online service track listing fails, stop loader and
     show error.
 10. Use new location of Jamendo DB listing.
 

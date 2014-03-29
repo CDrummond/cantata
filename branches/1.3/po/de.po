@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-02-02 20:02+0000\n"
-"PO-Revision-Date: 2014-03-04 18:01+0100\n"
+"PO-Revision-Date: 2014-03-29 04:45+0100\n"
 "Last-Translator: Markus Slopianka <kamikazow@web.de>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de\n"
@@ -62,7 +62,7 @@ msgstr "Textanbieter"
 
 #: context/contextsettings.cpp:37 gui/cachesettings.cpp:278
 msgid "Wikipedia Languages"
-msgstr "Wikipedia Sprachen"
+msgstr "Wikipedia"
 
 #: context/contextsettings.cpp:38 models/streamsmodel.cpp:1388
 #: models/streamsmodel.cpp:1434 models/streamsmodel.cpp:1642
@@ -296,8 +296,8 @@ msgid ""
 "Choose the wikipedia languages you want to use when searching for artist and "
 "album information."
 msgstr ""
-"Bitte die Sprache von Wikipedia wählen welche für Künstlerinformationen und "
-"Albuminformationen benutzt werden soll"
+"Bitte wählen Sie die Sprache von Wikipedia, welche für Künstlerinformationen "
+"und Albuminformationen benutzt werden soll."
 
 #: context/wikipediasettings.cpp:115 models/streamsmodel.cpp:598
 #: online/podcastsearchdialog.cpp:404
@@ -597,9 +597,8 @@ msgid "%1 (Estimated)"
 msgstr "%1 (Erwartet)"
 
 #: devices/actiondialog.cpp:824
-#, fuzzy
 msgid "Time remaining:"
-msgstr "Abspielzeit:"
+msgstr "Verbleibende Zeit:"
 
 #: devices/actiondialog.cpp:847 devices/fsdevice.cpp:762
 #: online/onlineservice.cpp:140 online/onlineservice.cpp:166
@@ -2129,11 +2128,11 @@ msgstr ""
 
 #: gui/interfacesettings.cpp:162
 msgid "Left"
-msgstr ""
+msgstr "Links"
 
 #: gui/interfacesettings.cpp:162
 msgid "Right"
-msgstr ""
+msgstr "Rechts"
 
 #: gui/interfacesettings.cpp:163
 msgid "Top"
@@ -3702,7 +3701,7 @@ msgstr "RSS:"
 
 #: online/podcastsearchdialog.cpp:255
 msgid "Website:"
-msgstr ""
+msgstr "Webseite:"
 
 #: online/podcastsearchdialog.cpp:262
 msgid "Podcast details"
@@ -3901,9 +3900,8 @@ msgstr ""
 #. i18n: file: context/othersettings.ui:36
 #. i18n: ectx: property (text), widget (QRadioButton, contextBackdrop_artist)
 #: po/rc.cpp:9 rc.cpp:9
-#, fuzzy
 msgid "Artist image"
-msgstr "Zeige Künstlerbilder:"
+msgstr "Künstlerbilder"
 
 #. i18n: file: context/othersettings.ui:43
 #. i18n: ectx: property (text), widget (QRadioButton, contextBackdrop_custom)
@@ -5090,7 +5088,7 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QLabel, label_6)
 #: po/rc.cpp:527 rc.cpp:527
 msgid "Finished!"
-msgstr "Fertig!"
+msgstr "Fertig."
 
 #. i18n: file: gui/initialsettingswizard.ui:866
 #. i18n: ectx: property (text), widget (QLabel, label_5)
@@ -5172,7 +5170,7 @@ msgstr "Zeige nur Symbole, keinen Text"
 #. i18n: ectx: property (text), widget (QCheckBox, sbMonoIcons)
 #: po/rc.cpp:563 rc.cpp:563
 msgid "Use monochrome icons"
-msgstr "Monochrome Symbole"
+msgstr "Monochrome Symbolen nutzen"
 
 #. i18n: file: gui/interfacesettings.ui:171
 #. i18n: ectx: property (text), widget (QCheckBox, sbAutoHide)
@@ -5254,9 +5252,8 @@ msgstr "Künstler/Jahr/Album"
 #. i18n: file: gui/interfacesettings.ui:462
 #. i18n: ectx: property (text), widget (QCheckBox, playQueueStartClosed)
 #: po/rc.cpp:615 po/rc.cpp:645 rc.cpp:615 rc.cpp:645
-#, fuzzy
 msgid "Initially collapse albums"
-msgstr "Initially collapse albums:"
+msgstr "Alben standardmäßig einklappen"
 
 #. i18n: file: gui/interfacesettings.ui:367
 #. i18n: ectx: attribute (title), widget (QWidget, tab_3)
@@ -5511,7 +5508,7 @@ msgstr "Lautstärkeanpassung (ReplayGain):"
 #. i18n: ectx: property (text), widget (UrlLabel, aboutReplayGain)
 #: po/rc.cpp:784 rc.cpp:784
 msgid "About replay gain"
-msgstr "Über ReplayGain:"
+msgstr "Über ReplayGain"
 
 #. i18n: file: gui/playbacksettings.ui:204
 #. i18n: ectx: property (text), widget (QLabel, outputsViewLabel)
@@ -6245,7 +6242,7 @@ msgstr "%1 GiB"
 #: support/utils.cpp:602
 msgid "1 day %2"
 msgid_plural "%1 days %2"
-msgstr[0] "1 Tag %2"
+msgstr[0] "Ein Tag %2"
 msgstr[1] "%1 Tage %2"
 
 #: tags/tageditor.cpp:147

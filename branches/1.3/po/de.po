@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-02-02 20:02+0000\n"
-"PO-Revision-Date: 2014-03-29 04:45+0100\n"
+"PO-Revision-Date: 2014-03-29 06:26+0100\n"
 "Last-Translator: Markus Slopianka <kamikazow@web.de>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de\n"
@@ -1778,9 +1778,8 @@ msgid "Covers"
 msgstr "Cover"
 
 #: gui/cachesettings.cpp:264
-#, fuzzy
 msgid "Scaled Covers"
-msgstr "Setze Cover"
+msgstr "Skalierte Cover"
 
 #: gui/cachesettings.cpp:265
 msgid "Backdrops"
@@ -2387,7 +2386,7 @@ msgstr "Information"
 
 #: gui/mainwindow.cpp:585
 msgid "Server information..."
-msgstr "Serverinformation..."
+msgstr "Serverinformationen ..."
 
 #: gui/mainwindow.cpp:588
 msgid "Refresh Database"
@@ -2526,7 +2525,7 @@ msgstr ""
 
 #: gui/mainwindow.cpp:1611
 msgid "Server Information"
-msgstr "Serverinformation"
+msgstr "Serverinformationen"
 
 #: gui/mainwindow.cpp:1859 gui/mainwindow.cpp:1866
 msgid "Cantata (%1)"
@@ -5003,9 +5002,8 @@ msgid ""
 "<i><b>NOTE:</b> When using a local socket the full absolute path to the "
 "socket needs to be set. (Port number is not required.)</i>"
 msgstr ""
-"<i><b>Hinweis:</b>Wenn Sie einen lokalen Domain-Socket benutzen, müssen Sie "
-"den absoluten Pfad dorthin angeben. (Portnummer wird dann nicht benötigt.)</"
-"i>"
+"<i><b>Hinweis:</b> Wenn Sie einen lokalen Domain-Socket benutzen, müssen Sie "
+"den absoluten Pfad dorthin angeben. (Portnummer wird dann nicht benötigt.)</i>"
 
 #. i18n: file: gui/initialsettingswizard.ui:553
 #. i18n: ectx: property (text), widget (QLabel, label_13)
@@ -5170,13 +5168,13 @@ msgstr "Zeige nur Symbole, keinen Text"
 #. i18n: ectx: property (text), widget (QCheckBox, sbMonoIcons)
 #: po/rc.cpp:563 rc.cpp:563
 msgid "Use monochrome icons"
-msgstr "Monochrome Symbolen nutzen"
+msgstr "Monochrome Symbole"
 
 #. i18n: file: gui/interfacesettings.ui:171
 #. i18n: ectx: property (text), widget (QCheckBox, sbAutoHide)
 #: po/rc.cpp:566 rc.cpp:566
 msgid "Auto-hide"
-msgstr "Auto-hide"
+msgstr "Seitenleiste automatisch ausblenden"
 
 #. i18n: file: gui/interfacesettings.ui:206
 #. i18n: ectx: property (text), widget (BuddyLabel, label_5b)

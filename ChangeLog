@@ -29,8 +29,8 @@
     and INSTALL/share/cantata/lyrics
 20. Attempt to respect menubar usage of current desktop. For Windows and Gnome,
     menu button is used, and menubar hidden. For Mac and Unity, menubar is
-    used, and menu button is hidden. For KDE Plasma, by default the menu button is
-    used, and the menu bar hidden - but a menu entry is provided to toggle.
+    used, and menu button is hidden. For KDE Plasma, by default the menu button
+    is used, and the menu bar hidden - but a menu entry is provided to toggle.
     This setting maybe overridden - see README for details.
 21. Most songs will be less than 1 hr long, so by default we only need to
     reserve space for -MM:SS at each side of position slider. If song duration

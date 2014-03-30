@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-02-02 20:02+0000\n"
-"PO-Revision-Date: 2014-03-29 06:26+0100\n"
+"PO-Revision-Date: 2014-03-30 03:01+0200\n"
 "Last-Translator: Markus Slopianka <kamikazow@web.de>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de\n"
@@ -491,7 +491,6 @@ msgid "Transcoding failed."
 msgstr "Umwandeln fehlgeschlagen."
 
 #: devices/actiondialog.cpp:688
-#, fuzzy
 msgid ""
 "Failed to create temporary file.<br/>(Required for transcoding to MTP "
 "devices.)"
@@ -500,32 +499,26 @@ msgstr ""
 "für MTP-Geräte.)"
 
 #: devices/actiondialog.cpp:691
-#, fuzzy
 msgid "Failed to read source file."
 msgstr "Fehler beim Lesen der Quelldatei."
 
 #: devices/actiondialog.cpp:694
-#, fuzzy
 msgid "Failed to write to destination file."
 msgstr "Fehler beim Erstellen der Zieldatei."
 
 #: devices/actiondialog.cpp:697
-#, fuzzy
 msgid "No space left on device."
 msgstr "Kein Platz auf Gerät mehr verfügbar."
 
 #: devices/actiondialog.cpp:700
-#, fuzzy
 msgid "Failed to update metadata."
 msgstr "Fehler beim Aktualisieren der Metadaten."
 
 #: devices/actiondialog.cpp:703
-#, fuzzy
 msgid "Failed to download track."
 msgstr "Fehler beim Herunterladen"
 
 #: devices/actiondialog.cpp:706
-#, fuzzy
 msgid "Failed to lock device."
 msgstr "Fehler beim Verriegeln des Gerätes."
 
@@ -1115,7 +1108,6 @@ msgid ""
 msgstr ""
 
 #: devices/encoders.cpp:206
-#, fuzzy
 msgid ""
 "The bitrate is a measure of the quantity of data used to represent a second "
 "of the audio track.<br>The <b>Opus</b> encoder used by Cantata supports a <a "
@@ -1131,7 +1123,7 @@ msgid ""
 "anything above <b>256kb/s</b> is probably overkill."
 msgstr ""
 "Die Bitrate ist eine Einheit für die Menge an Daten, um eine Sekunde des "
-"Stückes darzustellen.<br>Der <b>MP3</b>-Encoder unterstützt <a href=http://"
+"Stückes darzustellen.<br>Der <b>Opus</b>-Encoder unterstützt <a href=http://"
 "de.wikipedia.org/wiki/Bitrate#Variable_Bitrate>Variable Bitraten (VBR)</a>,"
 "was bedeutet, dass der Bitraten-Wert eines Stückes basierend auf der "
 "Komplexität des Audio-Inhalts schwankt. Komplexere Abstände von Daten werden "
@@ -1139,9 +1131,9 @@ msgstr ""
 "zu einer insgesamt besseren Qualität und einer kleineren Datei als mit einer "
 "konstanten Bitrate über das gesamte Stück.<br> Die Bitraten-Einstellung mit "
 "dem Schieberegler ist nur eine grobe Schätzung der durchschnittlichen "
-"Bitrate des kodierten Stückes bei einem Qualitätswert.<br/><b>160kb/s</b> "
+"Bitrate des kodierten Stückes bei einem Qualitätswert.<br/><b>128kb/s</b> "
 "ist eine gute Wahl für Musikhörenauf einem tragbaren Player.<br/>Alles unter "
-"<b>120kb/s</b> könnte nicht zufriedenstellend sein alles über <b>205kb/s</b> "
+"<b>100kb/s</b> könnte nicht zufriedenstellend sein alles über <b>256kb/s</b> "
 "ist wahrscheinlich übertrieben."
 
 #: devices/encoders.cpp:223 devices/encoders.cpp:320
@@ -1783,7 +1775,7 @@ msgstr "Skalierte Cover"
 
 #: gui/cachesettings.cpp:265
 msgid "Backdrops"
-msgstr "Hintergrund"
+msgstr "Hintergrundbilder"
 
 #: gui/cachesettings.cpp:271
 #, fuzzy
@@ -1841,11 +1833,8 @@ msgstr ""
 "%2 x %3"
 
 #: gui/coverdialog.cpp:162
-#, fuzzy
 msgid "Current Cover"
-msgstr ""
-"Aktuelles Cover\n"
-"%1 x %2"
+msgstr "Aktuelles Cover"
 
 #: gui/coverdialog.cpp:211 gui/coverdialog.cpp:411
 msgid "CoverArt Archive"
@@ -2070,14 +2059,12 @@ msgid "Playlists"
 msgstr "Wiedergabelisten"
 
 #: gui/interfacesettings.cpp:110
-#, fuzzy
 msgid "Dynamic Playlists"
-msgstr "Starte dynamische Wiedergabeliste"
+msgstr "Dynamische Wiedergabelisten"
 
 #: gui/interfacesettings.cpp:114
-#, fuzzy
 msgid "Streams (e.g. Radio Stations)"
-msgstr "Radiostationen"
+msgstr "Streams (z. B. Radiostationen)"
 
 #: gui/interfacesettings.cpp:121
 msgid "Online Services - Jamendo, Maganatune, SoundCloud, and Podcasts"
@@ -2646,7 +2633,6 @@ msgstr ""
 "solange Cantata nicht mit MPD verbunden wird.</i>"
 
 #: gui/playbacksettings.cpp:171
-#, fuzzy
 msgid ""
 "<p>Replay Gain is a proposed standard published in 2001 to normalize the "
 "perceived loudness of computer audio formats such as MP3 and Ogg Vorbis. It "
@@ -2662,12 +2648,13 @@ msgstr ""
 "<p>Replay Gain ist ein vorgeschlagener Standard aus dem Jahr 2001, zur "
 "Normalisierung der wahrgenommene Lautstärke von Computer-Audio-Formaten wie "
 "MP3 und Ogg Vorbis. Sie arbeitet auf auf Basis von Track und Album und wird "
-"nun in einer wachsenden Anzahl von unterstütztenAbspieler unterstützt.</"
-"p><p>Die folgenden Einstellungen können gewählt werden:<ul><li><i>Nichts</i> "
-"– Kein ReplayGain wird hinzugefügt.</li><li><i>Stück</i> – Lautstärke wird "
+"nun in einer wachsenden Anzahl von Playern unterstützt.</"
+"p><p>Die folgenden Einstellungen können gewählt werden:<ul><li><i>Keine</i> "
+"– ReplayGain wird nicht hinzugefügt.</li><li><i>Stück</i> – Lautstärke wird "
 "eingestellt auf das Stück.</li><li><i>Album</i> – Lautstärke wird "
-"eingestellt auf das Album.</li><li><i>Auto</i> – Lautstärke wird eingestellt "
-"auf das Stück, wenn die zufällige Wiedergabe eingestellt ist. Sonst wird auf "
+"eingestellt auf das Album.</li><li><i>Automatisch</i> – Lautstärke wird auf "
+"das Stück eingestellt, wenn die zufällige Wiedergabe eingestellt ist. Sonst "
+"wird auf "
 "Album eingestellt.</li></ul></p>"
 
 #: gui/playlistspage.cpp:95 widgets/playqueueview.cpp:160
@@ -3006,11 +2993,11 @@ msgstr "Einstellungen…"
 
 #: gui/stdactions.cpp:55
 msgid "Previous Track"
-msgstr "Vorheriger Titel"
+msgstr "Vorheriges Stück"
 
 #: gui/stdactions.cpp:56
 msgid "Next Track"
-msgstr "Nächster Titel"
+msgstr "Nächstes Stück"
 
 #: gui/stdactions.cpp:57
 msgid "Play/Pause"
@@ -4117,9 +4104,8 @@ msgstr "Disk:"
 #. i18n: file: devices/albumdetails.ui:115
 #. i18n: ectx: property (text), widget (QCheckBox, singleArtist)
 #: po/rc.cpp:104 rc.cpp:104
-#, fuzzy
 msgid "Single artist"
-msgstr "Einzelner Künstler:"
+msgstr "Einzelner Künstler"
 
 #. i18n: file: devices/audiocdsettings.ui:29
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox)
@@ -4311,7 +4297,6 @@ msgstr "Ersetze Leerzeichen mit Unterstrichen:"
 #. i18n: file: tags/trackorganiser.ui:92
 #. i18n: ectx: property (text), widget (QCheckBox, ignoreThe)
 #: po/rc.cpp:182 po/rc.cpp:986 rc.cpp:182 rc.cpp:986
-#, fuzzy
 msgid "Ignore 'The' in artist names"
 msgstr "Ignoriere „The“ im Künstlernamen"
 
@@ -4324,9 +4309,8 @@ msgstr "Umwandeln"
 #. i18n: file: devices/devicepropertieswidget.ui:201
 #. i18n: ectx: property (text), widget (QCheckBox, transcoderWhenDifferent)
 #: po/rc.cpp:188 rc.cpp:188
-#, fuzzy
 msgid "Only transcode if source file is of a different format"
-msgstr "Nur umwandeln, wenn Quelldatei ein unterschiedliches Format besitzt:"
+msgstr "Nur umwandeln, wenn Quelldatei ein unterschiedliches Format besitzt"
 
 #. i18n: file: devices/filenameschemedialog.ui:38
 #. i18n: ectx: property (text), widget (QLabel, label_album_example)
@@ -4772,9 +4756,8 @@ msgstr "Speichere heruntergeladene Songtexte ins Musikverzeichnis"
 #. i18n: file: gui/initialsettingswizard.ui:728
 #. i18n: ectx: property (text), widget (QCheckBox, storeBackdropsInMpdDir)
 #: po/rc.cpp:419 po/rc.cpp:512 rc.cpp:419 rc.cpp:512
-#, fuzzy
 msgid "Save downloaded backdrops in music folder"
-msgstr "Speichere heruntergeladene Albencover ins Musikverzeichnis"
+msgstr "Speichere heruntergeladene Hintergrundbilder ins Musikverzeichnis"
 
 #. i18n: file: gui/filesettings.ui:50
 #. i18n: ectx: property (text), widget (QCheckBox, storeStreamsInMpdDir)
@@ -5400,9 +5383,8 @@ msgstr "Zeige Löschfunktion im Kontextmenü"
 #. i18n: file: gui/interfacesettings.ui:768
 #. i18n: ectx: property (text), widget (QCheckBox, forceSingleClick)
 #: po/rc.cpp:727 rc.cpp:727
-#, fuzzy
 msgid "Enforce single-click activation of items"
-msgstr "Erzwinge Einzelklick zur Aktivierung"
+msgstr "Erzwinge Einzelklick zur Aktivierung von Elementen"
 
 #. i18n: file: gui/interfacesettings.ui:775
 #. i18n: ectx: property (text), widget (BuddyLabel, langLabel)
@@ -5417,18 +5399,17 @@ msgid ""
 "<i><b>NOTE:</b> Changing the 'Enforce single-click activation of items' "
 "setting will require a re-start of Cantata.</i>"
 msgstr ""
-"<i><b>Hinweis:</b> Änderung von 'Erzwinge Einzelklick'-Einstellung benötigt "
-"einen Neustart von Cantata.</i>"
+"<i><b>Hinweis:</b> Zur Änderung der Einzelklick-Einstellung muss Cantata neu "
+"gestartet werden.</i>"
 
 #. i18n: file: gui/interfacesettings.ui:835
 #. i18n: ectx: property (text), widget (StateLabel, langNoteLabel)
 #: po/rc.cpp:736 rc.cpp:736
-#, fuzzy
 msgid ""
 "<i><b>NOTE:</b> Changing the language setting will require a re-start of "
 "Cantata.</i>"
 msgstr ""
-"<i><b>Hinweis:</b> Änderung von 'Erzwinge Einzelklick'-Einstellung benötigt "
+"<i><b>Hinweis:</b> Änderung Sprache benötigt "
 "einen Neustart von Cantata.</i>"
 
 #. i18n: file: gui/mainwindow.ui:298
@@ -6175,11 +6156,11 @@ msgstr "&Entfernen"
 
 #: support/dialog.cpp:88
 msgid "&Previous"
-msgstr "&Vorheriger"
+msgstr "&Vorheriges"
 
 #: support/dialog.cpp:89
 msgid "&Next"
-msgstr "&Nächster"
+msgstr "&Nächstes"
 
 #: support/inputdialog.h:51
 msgid "Password"

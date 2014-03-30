@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-02-02 20:02+0000\n"
-"PO-Revision-Date: 2014-03-30 03:01+0200\n"
+"PO-Revision-Date: 2014-03-30 03:53+0200\n"
 "Last-Translator: Markus Slopianka <kamikazow@web.de>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de\n"
@@ -2493,7 +2493,6 @@ msgstr ""
 "tr><tr><td align=\"right\">Zeit gespielt:</td><td>%5</td></tr>"
 
 #: gui/mainwindow.cpp:1602
-#, fuzzy
 msgid ""
 "<tr><td colspan=\"2\"><b>Database</b></td></tr><tr><td align=\"right"
 "\">Artists:&nbsp;</td><td>%1</td></tr><tr><td align=\"right\">Albums:&nbsp;</"
@@ -2504,11 +2503,13 @@ msgid ""
 "table></p>"
 msgstr ""
 "<tr><td colspan=\"2\"><b>Datenbank</b></td></tr><tr><td align=\"right"
-"\">Künstler:</td><td>%1</td></tr><tr><td align=\"right\">Alben:</td><td>%2</"
-"td></tr><tr><td align=\"right\">Songs:</td><td>%3</td></tr><tr><td align="
-"\"right\">URL handlers:</td><td>%4</td></tr><tr><td align=\"right\">Gesamte "
-"Laufzeit:</td><td>%5</td></tr><tr><td align=\"right\">Letzte Aktualisierung:"
-"</td><td>%6</td></tr></table></p>"
+"\">Künstler:&nbsp;</td><td>%1</td></tr><tr><td align=\"right\">Alben:&nbsp;</"
+"td><td>%2</td></tr><tr><td align=\"right\">Stücke:&nbsp;</td><td>%3</td></"
+"tr><tr><td align=\"right\">URL-Handlers:&nbsp;</td><td>%4</td></"
+"tr><tr><td align=\"right\">Gesamte&nbsp;Dauer:&nbsp;</td><td>%5</td></"
+"tr><tr><td align=\"right\">Letzte&nbsp;Aktualisierung:&nbsp;</td><td>%6</td><"
+"/tr></"
+"table></p>"
 
 #: gui/mainwindow.cpp:1611
 msgid "Server Information"
@@ -4284,9 +4285,8 @@ msgstr "Nur ASCII-Zeichen verwenden"
 #. i18n: file: tags/trackorganiser.ui:85
 #. i18n: ectx: property (text), widget (QCheckBox, replaceSpaces)
 #: po/rc.cpp:179 po/rc.cpp:983 rc.cpp:179 rc.cpp:983
-#, fuzzy
 msgid "Replace spaces with underscores"
-msgstr "Ersetze Leerzeichen mit Unterstrichen:"
+msgstr "Ersetze Leerzeichen mit Unterstrichen"
 
 #. i18n: file: devices/devicepropertieswidget.ui:182
 #. i18n: ectx: property (text), widget (QCheckBox, ignoreThe)
@@ -5186,7 +5186,6 @@ msgstr "Zeige Veröffentlichungsjahr des Albums"
 #. i18n: file: gui/interfacesettings.ui:258
 #. i18n: ectx: property (text), widget (QLabel, label_8)
 #: po/rc.cpp:584 rc.cpp:584
-#, fuzzy
 msgid ""
 "<i><b>NOTE:</b> When looking for artist images, Cantata will look for either "
 "artist.jpg, artist.png, 'Artist'.jpg, or 'Artist'.png,\n"
@@ -5196,9 +5195,7 @@ msgstr ""
 "<i><b>Hinweis:</b> Wenn nach Künstlerbildern gesucht wird, schaut Cantata "
 "nach 'Artist'.jpg oder 'Artist'.png\n"
 "im Ordner des aktuellen Titels oder im darüber liegenden Ordner. Ist kein "
-"Bild vorhanden, wird Cantata versuchen eines herunterzuladen. Wenn das Bild "
-"angezeigt wird, ist dieses bereits zugeschnitten auf (oben/unten oder links/"
-"rechts), um ein quadratisches Bild zu bekommen.</i>"
+"Bild vorhanden, wird Cantata versuchen eines herunterzuladen.</i>"
 
 #. i18n: file: gui/interfacesettings.ui:307
 #. i18n: ectx: property (text), widget (BuddyLabel, label_5x)
@@ -6068,10 +6065,9 @@ msgid "Cantata Streams (*.streams)"
 msgstr "Cantata-Streams (*.streams)"
 
 #: streams/streamssettings.cpp:144
-#, fuzzy
 msgid "A category named <b>%1</b> already exists!<br/>Overwrite?"
 msgstr ""
-"Eine Wiedergabeliste mit Namen <b>%1</b>existiert bereits.<br/> "
+"Eine Kategorie mit Namen <b>%1</b>existiert bereits.<br/> "
 "Überschreiben?"
 
 #: streams/streamssettings.cpp:150
@@ -6303,9 +6299,8 @@ msgid "Abort renaming of files?"
 msgstr "Umbenennen der Dateien abbrechen?"
 
 #: tags/trackorganiser.cpp:279
-#, fuzzy
 msgid "Source file does not exist!<br/>%1"
-msgstr "Titel existiert nicht.<br/>%1"
+msgstr "Quelldatei existiert nicht.<br/>%1"
 
 #: tags/trackorganiser.cpp:298
 msgid "Destination file already exists!<br/>%1"
@@ -6320,9 +6315,8 @@ msgid "Failed to rename %1 to %2"
 msgstr "Fehler beim Umbenennen %1 zu %2"
 
 #: widgets/coverwidget.cpp:280
-#, fuzzy
 msgid "<tr><td align=\"right\"><b>Composer:</b></td><td>%1</td></tr>"
-msgstr "<tr><td align=\"right\">Datei:</td><td>%1</td></tr>"
+msgstr "<tr><td align=\"right\">Komponist:</td><td>%1</td></tr>"
 
 #: widgets/coverwidget.cpp:282
 msgid ""

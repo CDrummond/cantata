@@ -562,20 +562,12 @@ ItemView::ItemView(QWidget *p)
     backButton->setDefaultAction(backAction);
     backAction->setShortcut(Qt::AltModifier+(Qt::LeftToRight==layoutDirection() ? Qt::Key_Left : Qt::Key_Right));
     Action::updateToolTip(backAction);
-    homeAction = new QAction(i18n("Go Home"), this);
-    homeAction->setIcon(Icon("go-home"));
-    homeButton->setDefaultAction(homeAction);
-    homeAction->setShortcut(Qt::AltModifier+Qt::Key_Up);
-    Action::updateToolTip(homeAction);
     listView->addAction(backAction);
-    listView->addAction(homeAction);
     listView->addDefaultAction(backAction);
-    listView->addDefaultAction(homeAction);
     QAction *sep=new QAction(this);
     sep->setSeparator(true);
     listView->addAction(sep);
     Icon::init(backButton);
-    Icon::init(homeButton);
     title->installEventFilter(this);
     title->setAttribute(Qt::WA_Hover, true);
     treeView->setPageDefaults();
@@ -603,7 +595,6 @@ ItemView::ItemView(QWidget *p)
     connect(listView, SIGNAL(doubleClicked(const QModelIndex &)), this, SIGNAL(doubleClicked(const QModelIndex &)));
     connect(listView, SIGNAL(clicked(const QModelIndex &)),  this, SLOT(itemClicked(const QModelIndex &)));
     connect(backAction, SIGNAL(triggered(bool)), this, SLOT(backActivated()));
-    connect(homeAction, SIGNAL(triggered(bool)), this, SLOT(homeActivated()));
     connect(listViewEventHandler, SIGNAL(escPressed()), this, SLOT(backActivated()));
     searchWidget->setVisible(false);
 }
@@ -776,8 +767,6 @@ void ItemView::setLevel(int l, bool haveChildren)
     int prev=currentLevel;
     currentLevel=l;
     backAction->setEnabled(0!=l);
-    homeAction->setEnabled(l>1);
-    homeAction->setVisible(l>1);
 
     if (Mode_IconTop==mode) {
         if (0==currentLevel || haveChildren) {
@@ -807,7 +796,6 @@ void ItemView::setLevel(int l, bool haveChildren)
 
     backButton->setVisible(currentLevel>0);
     title->setVisible(currentLevel>0);
-    homeButton->setVisible(currentLevel>1);
 
     if (currentLevel>0) {
         if (prev>currentLevel) {
@@ -1131,12 +1119,9 @@ bool ItemView::eventFilter(QObject *o, QEvent *e)
             }
             title->setProperty(constPressesProperty, false);
             break;
-        case QEvent::HoverEnter: {
-            QColor bgnd=palette().highlight().color();
-            title->setStyleSheet(QString("QLabel{background:rgb(%1,%2,%3,38);}")
-                                 .arg(bgnd.red()).arg(bgnd.green()).arg(bgnd.blue()));
+        case QEvent::HoverEnter:
+            title->setStyleSheet(QLatin1String("QLabel{color:palette(highlight);}"));
             break;
-        }
         case QEvent::HoverLeave:
             title->setStyleSheet(QString());
         default:
@@ -1191,17 +1176,6 @@ void ItemView::backActivated()
     } else {
         listView->scrollTo(prevTopIndex, QAbstractItemView::PositionAtTop);
     }
-}
-
-void ItemView::homeActivated()
-{
-    if (!usingListView() || 0==currentLevel || !isVisible()) {
-        return;
-    }
-    setLevel(0);
-    itemModel->setRootIndex(QModelIndex());
-    listView->setRootIndex(QModelIndex());
-    emit rootIndexSet(QModelIndex());
 }
 
 void ItemView::setExpanded(const QModelIndex &idx, bool exp)

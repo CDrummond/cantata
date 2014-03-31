@@ -41,6 +41,7 @@
 #include "globalstatic.h"
 #include <QFile>
 #include <QDir>
+#include <QCryptographicHash>
 #include <QUrl>
 #if QT_VERSION >= 0x050000
 #include <QUrlQuery>
@@ -54,6 +55,7 @@
 #include <QFont>
 #include <QXmlStreamReader>
 #include <QTimer>
+#include <QCoreApplication>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KStandardDirs>
 #include <QApplication>
@@ -318,10 +320,37 @@ QString Covers::artistFileName(const Song &song)
 
 QString Covers::fixArtist(const QString &artist)
 {
-    if (QLatin1String("AC-DC")==artist) {
-        return QLatin1String("AC/DC");
+    if (artist.isEmpty()) {
+        return artist;
     }
-    return artist;
+
+    static QMap<QString, QString> artistMap;
+    static bool initialised=false;
+    if (!initialised) {
+        initialised=true;
+        #ifdef Q_OS_WIN
+        QFile f(QCoreApplication::applicationDirPath()+"/streams/listenlive.xml");
+        #else
+        QFile f(INSTALL_PREFIX "/share/cantata/tags/fixes.xml");
+        #endif
+
+        if (f.open(QIODevice::ReadOnly)) {
+            QXmlStreamReader doc(&f);
+            while (!doc.atEnd()) {
+                doc.readNext();
+                if (doc.isStartElement() && QLatin1String("artist")==doc.name()) {
+                    QString from=doc.attributes().value("from").toString();
+                    QString to=doc.attributes().value("to").toString();
+                    if (!from.isEmpty() && !to.isEmpty() && from!=to) {
+                        artistMap.insert(from, to);
+                    }
+                }
+            }
+        }
+    }
+
+    QMap<QString, QString>::ConstIterator it=artistMap.find(artist);
+    return it==artistMap.constEnd() ? artist : it.value();
 }
 
 const QSize Covers::constMaxSize(600, 600);

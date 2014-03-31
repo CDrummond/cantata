@@ -217,22 +217,20 @@ void PosSlider::updateStyleSheet()
                                       "background: solid rgba(%6, %7, %8, %9); "
                                       "border-radius: %10px } ");
     QString fillFormat=QLatin1String("QSlider::")+QLatin1String(Qt::RightToLeft==layoutDirection() ? "add" : "sub")+
-            QLatin1String("-page:horizontal {border: %1px solid rgb(%2, %3, %4); "
-                          "background: solid rgb(%5, %6, %7); "
-                          "border-radius: %8px; margin: %9px;}");
+            QLatin1String("-page:horizontal {border: %1px solid palette(highlight); "
+                          "background: solid palette(highlight); "
+                          "border-radius: %2px; margin: %3px;}");
     QLabel lbl(parentWidget());
     lbl.ensurePolished();
-    QColor textColor=lbl.palette().text().color();
+    QColor textColor=lbl.palette().color(QPalette::Active, QPalette::Text);
     int alpha=textColor.value()<32 ? 96 : 64;
-    QColor fill=QApplication::palette().highlight().color();
 
     inactiveStyleSheet=boderFormat.arg(lineWidth).arg(textColor.red()).arg(textColor.green()).arg(textColor.blue()).arg(alpha/2)
                        .arg(textColor.red()).arg(textColor.green()).arg(textColor.blue()).arg(alpha/8).arg(lineWidth*2);
     activeStyleSheet=boderFormat.arg(lineWidth).arg(textColor.red()).arg(textColor.green()).arg(textColor.blue()).arg(alpha)
                      .arg(textColor.red()).arg(textColor.green()).arg(textColor.blue()).arg(alpha/4).arg(lineWidth*2);
-    activeStyleSheet+=fillFormat.arg(lineWidth).arg(fill.red()).arg(fill.green()).arg(fill.blue())
-                      .arg(fill.red()).arg(fill.green()).arg(fill.blue()).arg(lineWidth).arg(lineWidth*2);
-    setStyleSheet(inactiveStyleSheet);
+    activeStyleSheet+=fillFormat.arg(lineWidth).arg(lineWidth).arg(lineWidth*2);
+    setStyleSheet(isActive ? activeStyleSheet : inactiveStyleSheet);
 }
 
 void PosSlider::mouseMoveEvent(QMouseEvent *e)

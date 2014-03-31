@@ -24,11 +24,7 @@
 */
 
 #include "musicbrainz.h"
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KProtocolManager>
-#else
 #include "networkproxyfactory.h"
-#endif
 #include <QNetworkProxy>
 #include <QCryptographicHash>
 #include <cstdio>
@@ -250,15 +246,6 @@ void MusicBrainz::lookup(bool full)
 
     MusicBrainz5::CQuery Query("cantata-"PACKAGE_VERSION_STRING);
     QList<CdAlbum> m;
-
-    #ifdef ENABLE_KDE_SUPPORT
-    QString proxy=KProtocolManager::proxyFor("http");
-    if (!proxy.isEmpty()) {
-        QUrl url(proxy);
-        Query.SetProxyHost(url.host().toLatin1().constData());
-        Query.SetProxyPort(url.port());
-    }
-    #else
     QList<QNetworkProxy> proxies=NetworkProxyFactory::self()->queryProxy(QNetworkProxyQuery(QUrl("http://musicbrainz.org")));
     foreach (const QNetworkProxy &p, proxies) {
         if (QNetworkProxy::HttpProxy==p.type() && 0!=p.port()) {
@@ -267,7 +254,7 @@ void MusicBrainz::lookup(bool full)
             break;
         }
     }
-    #endif
+
     // Code adapted from libmusicbrainz/examples/cdlookup.cc
 
     try {
@@ -370,7 +357,7 @@ void MusicBrainz::lookup(bool full)
                                 }
                             }
 
-                            // Ensure we have the same number of tracks are read from disc!
+                            // Ensure we have the same number of tracks as read from disc!
                             if (album.tracks.count()<initial.tracks.count()) {
                                 for (int i=album.tracks.count(); i<initial.tracks.count(); ++i) {
                                     album.tracks.append(initial.tracks.at(i));

@@ -100,7 +100,6 @@
 #ifdef TAGLIB_FOUND
 #include "trackorganiser.h"
 #include "tageditor.h"
-#include "tags.h"
 #ifdef ENABLE_REPLAYGAIN_SUPPORT
 #include "rgdialog.h"
 #endif
@@ -981,9 +980,6 @@ MainWindow::~MainWindow()
     MediaKeys::self()->stop();
     #endif
     ThreadCleaner::self()->stopAll();
-    #ifdef TAGLIB_FOUND
-    Tags::stop();
-    #endif
 }
 
 void MainWindow::addMenuAction(QMenu *menu, QAction *action)

@@ -95,6 +95,7 @@ public Q_SLOTS:
     void delSong(const Song &song);
     void cleanDirs(const QSet<QString> &dirs);
     void getCover(const Song &song);
+    void stop();
 
 Q_SIGNALS:
     void statusMessage(const QString &message);

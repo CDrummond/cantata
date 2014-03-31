@@ -225,7 +225,7 @@ void PosSlider::updateStyleSheet()
     activeStyleSheet+=fillFormat.arg(lineWidth).arg(fillBorder.red()).arg(fillBorder.green()).arg(fillBorder.blue())
             .arg(fillTop.red()).arg(fillTop.green()).arg(fillTop.blue())
             .arg(fillBot.red()).arg(fillBot.green()).arg(fillBot.blue()).arg(lineWidth).arg(lineWidth*2);
-    setStyleSheet(inactiveStyleSheet);
+    setStyleSheet(isActive ? activeStyleSheet : inactiveStyleSheet);
 }
 
 void PosSlider::mouseMoveEvent(QMouseEvent *e)

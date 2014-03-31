@@ -3,6 +3,8 @@
 1. Fix adding songs to playqueue with priority when playqueue is not empty.
 2. When loading covers, if load fails, check to see if this is because of an
    incorrect extension. e.g. load a .jpg file with PNG type, and vice versa.
+3. Fix showing of time-slider when Cantata is started minimized to system tray
+   and MPD is playing.
 
 1.3.3
 -----

@@ -67,7 +67,6 @@ public:
     #endif
     Action *setCoverAction;
     Action *removeAction;
-    Action *backAction;
     Action *searchAction;
 
 private:

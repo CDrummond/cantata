@@ -47,7 +47,6 @@ public:
     void addSelectionToPlaylist(const QString &name=QString(), bool replace=false, quint8 priorty=0, bool randomAlbums=false);
     void setView(int mode);
     void focusSearch() { view->focusSearch(); }
-    void goBack() { view->backActivated(); }
     #ifdef ENABLE_DEVICES_SUPPORT
     QList<Song> selectedSongs(bool allowPlaylists=false) const;
     void addSelectionToDevice(const QString &udi);

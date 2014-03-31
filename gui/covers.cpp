@@ -41,7 +41,6 @@
 #include "globalstatic.h"
 #include <QFile>
 #include <QDir>
-#include <QCryptographicHash>
 #include <QUrl>
 #if QT_VERSION >= 0x050000
 #include <QUrlQuery>
@@ -324,74 +323,6 @@ QString Covers::fixArtist(const QString &artist)
     }
     return artist;
 }
-
-#if !defined Q_OS_WIN
-static QString xdgConfig()
-{
-    QString env = QString::fromLocal8Bit(qgetenv("XDG_CONFIG_HOME"));
-    return Utils::fixPath(env.isEmpty() ? QDir::homePath() + QLatin1String("/.config/") : env);
-}
-
-#ifndef ENABLE_KDE_SUPPORT
-static QString kdeHome()
-{
-    static QString kdeHomePath;
-    if (kdeHomePath.isEmpty()) {
-        kdeHomePath = QString::fromLocal8Bit(qgetenv("KDEHOME"));
-        if (kdeHomePath.isEmpty())  {
-            QDir homeDir(QDir::homePath());
-            QString kdeConfDir(QLatin1String("/.kde"));
-            if (homeDir.exists(QLatin1String(".kde4"))) {
-                kdeConfDir = QLatin1String("/.kde4");
-            }
-            kdeHomePath = QDir::homePath() + kdeConfDir;
-        }
-    }
-    return kdeHomePath;
-}
-#endif
-
-static Covers::Image otherAppCover(const CoverDownloader::Job &job)
-{
-    #ifdef ENABLE_KDE_SUPPORT
-    QString kdeDir=KGlobal::dirs()->localkdedir();
-    #else
-    QString kdeDir=kdeHome();
-    #endif
-    Covers::Image app;
-    app.fileName=kdeDir+QLatin1String("/share/apps/amarok/albumcovers/large/")+
-                 QCryptographicHash::hash(job.song.albumArtist().toLower().toLocal8Bit()+job.song.album.toLower().toLocal8Bit(),
-                                          QCryptographicHash::Md5).toHex();
-
-    app.img=QImage(app.fileName);
-
-    if (app.img.isNull()) {
-        app.fileName=xdgConfig()+QLatin1String("/Clementine/albumcovers/")+
-                     QCryptographicHash::hash(job.song.albumArtist().toLower().toUtf8()+job.song.album.toLower().toUtf8(),
-                                              QCryptographicHash::Sha1).toHex()+QLatin1String(".jpg");
-
-        app.img=QImage(app.fileName);
-    }
-
-    if (!app.img.isNull() && saveInMpdDir && canSaveTo(job.dir)) {
-        QFile f(app.fileName);
-        if (f.open(QIODevice::ReadOnly)) {
-            QByteArray raw=f.readAll();
-            if (!raw.isEmpty()) {
-                QString mimeType=typeFromRaw(raw);
-                QString savedName;
-                QString coverName=Covers::albumFileName(job.song);
-                savedName=save(mimeType, mimeType.isEmpty() ? constExtensions[0] : mimeType, job.dir+coverName, app.img, raw);
-                if (!savedName.isEmpty()) {
-                    app.fileName=savedName;
-                }
-            }
-        }
-    }
-
-    return app.img.isNull() ? Covers::Image() : app;
-}
-#endif
 
 const QSize Covers::constMaxSize(600, 600);
 
@@ -1355,17 +1286,6 @@ Covers::Image Covers::locateImage(const Song &song)
                 }
             }
         }
-
-        CoverDownloader::Job job(song, dirName);
-
-        #if !defined Q_OS_WIN
-        // See if amarok, or clementine, has it...
-        Image app=otherAppCover(job);
-        if (!app.img.isNull()) {
-            DBUG_CLASS("Covers") << "Got cover image (other app)" << app.fileName;
-            return app;
-        }
-        #endif
     }
 
     DBUG_CLASS("Covers") << "Failed to locate image";

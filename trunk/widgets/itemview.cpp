@@ -35,6 +35,8 @@
 #include "gtkstyle.h"
 #include "spinner.h"
 #include "messageoverlay.h"
+#include "action.h"
+#include "actioncollection.h"
 #include <QToolButton>
 #include <QStyle>
 #include <QStyleOptionViewItem>
@@ -542,6 +544,7 @@ QString ItemView::modeStr(Mode m)
 }
 
 static const char *constPageProp="page";
+static Action *backAction=0;
 
 ItemView::ItemView(QWidget *p)
     : QWidget(p)
@@ -557,10 +560,11 @@ ItemView::ItemView(QWidget *p)
     , searchResetLevel(0)
 {
     setupUi(this);
-    backAction = new QAction(i18n("Go Back"), this);
-    backAction->setIcon(Icon("go-previous"));
+    if (!backAction) {
+        backAction=ActionCollection::get()->createAction("itemview-goback", i18n("Go Back"), Icon("go-previous"));
+        backAction->setShortcut(Qt::AltModifier+(Qt::LeftToRight==layoutDirection() ? Qt::Key_Left : Qt::Key_Right));
+    }
     backButton->setDefaultAction(backAction);
-    backAction->setShortcut(Qt::AltModifier+(Qt::LeftToRight==layoutDirection() ? Qt::Key_Left : Qt::Key_Right));
     Action::updateToolTip(backAction);
     listView->addAction(backAction);
     listView->addDefaultAction(backAction);
@@ -766,7 +770,9 @@ void ItemView::setLevel(int l, bool haveChildren)
 {
     int prev=currentLevel;
     currentLevel=l;
-    backAction->setEnabled(0!=l);
+    if (isVisible()) {
+        backAction->setEnabled(0!=currentLevel);
+    }
 
     if (Mode_IconTop==mode) {
         if (0==currentLevel || haveChildren) {
@@ -1100,6 +1106,12 @@ void ItemView::setSearchCategory(const QString &id)
 void ItemView::hideBackAction()
 {
     listView->removeAction(backAction);
+}
+
+void ItemView::showEvent(QShowEvent *ev)
+{
+    QWidget::showEvent(ev);
+    backAction->setEnabled(0!=currentLevel);
 }
 
 bool ItemView::eventFilter(QObject *o, QEvent *e)

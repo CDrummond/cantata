@@ -76,6 +76,12 @@
 47. When searching for album covers, do not look for $songFile.png/jpg
 48. Hide track change popup setting if running under Linux and
     org.freedesktop.Notifications DBus service is not registered.
+49. Remove 'home' button from listviews - only ever max 2 levels deep (Artists,
+    Albums, Tracks), so no real need for button.
+50. When mouse-over listview title, use highlight colour for text (and not whole
+    background). This is more consistent with time-slider's time remaining
+    label.
+51. Make shortcut for 'Go Back' action changeable.
 
 1.3.4
 -----

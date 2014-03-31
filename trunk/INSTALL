@@ -63,6 +63,8 @@ The following options may be passed to CMake:
     -DENABLE_HTTPS_SUPPORT=ON
         Enable support for https URLs when querying last.fm, wikipedia,
         soundcloud, etc.
+        NOTE: If this is enabled for windows builds, then you will need
+        QtNetwork built with SSL support.
         Default: ON (OFF for windows)
 
     -DENABLE_EXTERNAL_TAGS=ON

@@ -158,8 +158,7 @@ public:
             break;
         case QEvent::HoverEnter:
             if (visible) {
-                QColor col=palette().highlight().color();
-                setStyleSheet(QString("QLabel { color : rgb(%1, %2, %3); }").arg(col.red()).arg(col.green()).arg(col.blue()));
+                setStyleSheet(QLatin1String("QLabel{color:palette(highlight);}"));
             }
             break;
         case QEvent::HoverLeave:

@@ -1388,7 +1388,6 @@ void MainWindow::controlConnectionsMenu(bool enable)
     if (enable) {
         updateConnectionsMenu();
     }
-
     foreach(QAction *act, connectionsAction->menu()->actions()) {
         act->setEnabled(enable);
     }
@@ -1981,12 +1980,11 @@ void MainWindow::promptClearPlayQueue()
 
 void MainWindow::clearPlayQueue()
 {
-    #ifdef ENABLE_DYNAMIC
     if (dynamicLabel->isVisible()) {
+        #ifdef ENABLE_DYNAMIC
         Dynamic::self()->stop(true);
-    } else
-    #endif
-    {
+        #endif
+    } else {
         playQueueModel.removeAll();
     }
 }
@@ -2048,13 +2046,10 @@ void MainWindow::addToNewStoredPlaylist()
         if (PlaylistsModel::self()->exists(name)) {
             switch(MessageBox::warningYesNoCancel(this, i18n("A playlist named <b>%1</b> already exists!<br/>Add to that playlist?", name),
                                                   i18n("Existing Playlist"))) {
-            case MessageBox::Cancel:
-                return;
-            case MessageBox::Yes:
-                break;
+            case MessageBox::Cancel:  return;
+            case MessageBox::Yes:     break;
             case MessageBox::No:
-            default:
-                continue;
+            default:                  continue;
             }
         }
 
@@ -2167,18 +2162,13 @@ void MainWindow::currentTabChanged(int index)
     switch(index) {
     case PAGE_LIBRARY:   currentPage=libraryPage;   break;
     case PAGE_ALBUMS:    currentPage=albumsPage;    break;
-    case PAGE_FOLDERS:
-        folderPage->load();
-        currentPage=folderPage;
-        break;
+    case PAGE_FOLDERS:   folderPage->load();  currentPage=folderPage; break;
     case PAGE_PLAYLISTS: currentPage=playlistsPage; break;
     #ifdef ENABLE_DYNAMIC
     case PAGE_DYNAMIC:   currentPage=dynamicPage;   break;
     #endif
     #ifdef ENABLE_STREAMS
-    case PAGE_STREAMS:
-        currentPage=streamsPage;
-        break;
+    case PAGE_STREAMS:   currentPage=streamsPage;   break;
     #endif
     #ifdef ENABLE_ONLINE_SERVICES
     case PAGE_ONLINE:    currentPage=onlinePage;    break;

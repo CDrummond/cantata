@@ -32,7 +32,6 @@
 
 class ProxyModel;
 class Spinner;
-class QAction;
 class QTimer;
 class GroupedView;
 class ActionItemDelegate;
@@ -154,6 +153,7 @@ public:
     void setSearchResetLevel(int l) { searchResetLevel=l; }
     void setSearchIndex(const QModelIndex &idx) { searchIndex=idx; }
     void hideBackAction();
+    void showEvent(QShowEvent *ev);
 
 private:
     bool usingTreeView() const { return mode<=Mode_DetailedTree; }
@@ -194,7 +194,6 @@ private:
 private:
     QTimer *searchTimer;
     ProxyModel *itemModel;
-    QAction *backAction;
     int currentLevel;
     Mode mode;
     QMap<int, QString> prevText;

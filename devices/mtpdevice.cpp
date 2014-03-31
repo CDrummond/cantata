@@ -113,8 +113,7 @@ MtpConnection::MtpConnection(MtpDevice *p)
 
 MtpConnection::~MtpConnection()
 {
-    disconnectFromDevice(false);
-    thread->stop();
+    stop();
 }
 
 MusicLibraryItemRoot * MtpConnection::takeLibrary()
@@ -1203,6 +1202,15 @@ void MtpConnection::getCover(const Song &song)
     }
 }
 
+void MtpConnection::stop()
+{
+    if (thread) {
+        disconnectFromDevice(false);
+        thread->stop();
+        thread=0;
+    }
+}
+
 #ifdef MTP_CLEAN_ALBUMS
 void MtpConnection::updateAlbums()
 {
@@ -1349,8 +1357,21 @@ void MtpDevice::stop()
 {
     jobAbortRequested=true;
     deleteTemp();
-    connection->deleteLater();
-    connection=0;
+    if (connection) {
+        metaObject()->invokeMethod(this, "stop", Qt::QueuedConnection);
+        disconnect(connection, SIGNAL(libraryUpdated()), this, SLOT(libraryUpdated()));
+        disconnect(connection, SIGNAL(progress(int)), this, SLOT(emitProgress(int)));
+        disconnect(connection, SIGNAL(putSongStatus(int, const QString &, bool, bool)), this, SLOT(putSongStatus(int, const QString &, bool, bool)));
+        disconnect(connection, SIGNAL(getSongStatus(bool, bool)), this, SLOT(getSongStatus(bool, bool)));
+        disconnect(connection, SIGNAL(delSongStatus(bool)), this, SLOT(delSongStatus(bool)));
+        disconnect(connection, SIGNAL(cleanDirsStatus(bool)), this, SLOT(cleanDirsStatus(bool)));
+        disconnect(connection, SIGNAL(statusMessage(const QString &)), this, SLOT(setStatusMessage(const QString &)));
+        disconnect(connection, SIGNAL(deviceDetails(const QString &)), this, SLOT(deviceDetails(const QString &)));
+        disconnect(connection, SIGNAL(updatePercentage(int)), this, SLOT(updatePercentage(int)));
+        disconnect(connection, SIGNAL(cover(const Song &, const QImage &)), this, SIGNAL(cover(const Song &, const QImage &)));
+        connection->deleteLater();
+        connection=0;
+    }
 }
 
 void MtpDevice::configure(QWidget *parent)

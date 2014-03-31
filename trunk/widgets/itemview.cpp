@@ -1099,8 +1099,7 @@ void ItemView::setSearchCategory(const QString &id)
 
 void ItemView::hideBackAction()
 {
-    backAction->setEnabled(false);
-    backAction->setVisible(false);
+    listView->removeAction(backAction);
 }
 
 bool ItemView::eventFilter(QObject *o, QEvent *e)

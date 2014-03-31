@@ -37,6 +37,10 @@
 #include <QRegExp>
 #include <QSet>
 #endif
+#ifdef QT_QTDBUS_FOUND
+#include <QDBusConnection>
+#include <QDBusConnectionInterface>
+#endif
 
 #define REMOVE(w) \
     w->setVisible(false); \
@@ -78,6 +82,7 @@ static void selectEntry(QComboBox *box, int v)
         }
     }
 }
+bool enableNotifications(true);
 
 static inline int getValue(QComboBox *box)
 {
@@ -93,6 +98,14 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     , loadedLangs(false)
     #endif
 {
+    #ifdef QT_QTDBUS_FOUND
+    // We have dbus, check that org.freedesktop.Notifications exists
+    bool enableNotifications=QDBusConnection::sessionBus().interface()->isServiceRegistered("org.freedesktop.Notifications");
+    #elif !defined Q_OS_WIN32 && !defined Q_OS_MAC
+    // Not mac, or windows, and no dbus => no notifications!
+    bool enableNotifications=false;
+    #endif
+
     setupUi(this);
     addImageSizes(libraryCoverSize);
     addViewTypes(libraryView, true);
@@ -184,6 +197,10 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     connect(playQueueBackground_none, SIGNAL(toggled(bool)), SLOT(enablePlayQueueBackgroundOptions()));
     connect(playQueueBackground_cover, SIGNAL(toggled(bool)), SLOT(enablePlayQueueBackgroundOptions()));
     connect(playQueueBackground_custom, SIGNAL(toggled(bool)), SLOT(enablePlayQueueBackgroundOptions()));
+
+    if (!enableNotifications) {
+        REMOVE(systemTrayPopup)
+    }
 }
 
 void InterfaceSettings::load()
@@ -233,7 +250,9 @@ void InterfaceSettings::load()
     playQueueGroupedChanged();
     forceSingleClick->setChecked(Settings::self()->forceSingleClick());
     systemTrayCheckBox->setChecked(Settings::self()->useSystemTray());
-    systemTrayPopup->setChecked(Settings::self()->showPopups());
+    if (systemTrayPopup) {
+        systemTrayPopup->setChecked(Settings::self()->showPopups());
+    }
     minimiseOnClose->setChecked(Settings::self()->minimiseOnClose());
     minimiseOnClose->setEnabled(systemTrayCheckBox->isChecked());
     switch (Settings::self()->startupState()) {
@@ -310,7 +329,9 @@ void InterfaceSettings::save()
     Settings::self()->savePlayQueueConfirmClear(playQueueConfirmClear->isChecked());
     Settings::self()->saveForceSingleClick(forceSingleClick->isChecked());
     Settings::self()->saveUseSystemTray(systemTrayCheckBox->isChecked());
-    Settings::self()->saveShowPopups(systemTrayPopup->isChecked());
+    if (systemTrayPopup) {
+        Settings::self()->saveShowPopups(systemTrayPopup->isChecked());
+    }
     Settings::self()->saveMinimiseOnClose(minimiseOnClose->isChecked());
     if (startupStateShow->isChecked()) {
         Settings::self()->saveStartupState(Settings::SS_ShowMainWindow);

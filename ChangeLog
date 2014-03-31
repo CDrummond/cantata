@@ -74,6 +74,8 @@
 46. If Cantata detects that an album, or artist, has new songs after updating
     MPD's DB, then the artist and album are drawn with bold text.
 47. When searching for album covers, do not look for $songFile.png/jpg
+48. Hide track change popup setting if running under Linux and
+    org.freedesktop.Notifications DBus service is not registered.
 
 1.3.4
 -----

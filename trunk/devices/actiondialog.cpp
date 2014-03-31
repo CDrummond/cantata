@@ -858,6 +858,7 @@ bool ActionDialog::refreshLibrary()
     if (!actionedSongs.isEmpty()) {
         if ( (Copy==mode && !sourceUdi.isEmpty()) ||
              (Remove==mode && sourceUdi.isEmpty()) ) {
+            MusicLibraryModel::self()->checkForNewSongs();
             AlbumsModel::self()->update(MusicLibraryModel::self()->root());
             emit update(modifiedMpdDirs);
         } else if ( (Copy==mode && sourceUdi.isEmpty()) ||

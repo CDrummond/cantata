@@ -45,8 +45,6 @@ class KToggleAction;
 #include "ui_mainwindow.h"
 #include "playqueuemodel.h"
 #include "playqueueproxymodel.h"
-#include "mpdstatus.h"
-#include "mpdconnection.h"
 #include "song.h"
 #include "config.h"
 
@@ -82,6 +80,9 @@ class QDateTime;
 class TrayItem;
 class GtkProxyStyle;
 class HttpStream;
+class MPDStatus;
+class MPDConnectionDetails;
+class Output;
 
 // Dummy classes so that when class name is saved to the config file, we get a more meaningful name than QWidget!!!
 class PlayQueuePage : public QWidget

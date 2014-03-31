@@ -216,21 +216,16 @@ When displaying covers, Cantata will load album covers in the following order:
 16. ${albumArtist}/${album}.jpg
 17. ${albumArtist}/${album}.png
 
-...if compiled for Linux
-
-18. Matching Amarok cover
-19. Matching Clementine cover
-
 ...if the MPD folder was specified as a http URL
 
-20. ${url}/${dirFromFile}/cover.jpg
+18. ${url}/${dirFromFile}/cover.jpg
     - or ${url}/${dirFromFile}/${configuredName}.jpg (if set)
-21. ${url}/${dirFromFile}/cover.png
+19. ${url}/${dirFromFile}/cover.png
     - or ${url}/${dirFromFile}/${configuredName}.png (if set)
 
 ...lastly, if user has enabled downloading via last.fm
 
-22. Query last.fm using ${albumArtist} and ${album}. Cantata will attempt to
+20. Query last.fm using ${albumArtist} and ${album}. Cantata will attempt to
     download the image specified with the "extralarge" size.
 
 Downloaded images will be saved as ${configuredName}.jpg/png (if set), or

@@ -82,6 +82,7 @@
     background). This is more consistent with time-slider's time remaining
     label.
 51. Make shortcut for 'Go Back' action changeable.
+52. Don't attempt to find Amarok or Clementine covers.
 
 1.3.4
 -----

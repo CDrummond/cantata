@@ -42,7 +42,6 @@ public:
     #endif
     virtual void focusSearch() { }
     virtual void removeItems() { }
-    virtual void goBack() { }
     virtual void controlActions() { }
 };
 

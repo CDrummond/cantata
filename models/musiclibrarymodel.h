@@ -98,6 +98,7 @@ public:
     QList<Song> getAlbumTracks(const Song &s) const;
     // Get 1 track from each album by artist - used to create context view backdrop!
     QList<Song> getArtistAlbumsFirstTracks(const Song &song) const;
+    void checkForNewSongs();
 
 public Q_SLOTS:
     void clearNewState();
@@ -113,7 +114,6 @@ Q_SIGNALS:
     void checkedSongs(const QSet<Song> &songs);
 
 private:
-    void checkForNewSongs();
     void setParentState(const QModelIndex &parent);
 
 private:

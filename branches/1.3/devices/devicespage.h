@@ -50,7 +50,6 @@ public:
     void addSelectionToPlaylist(const QString &name=QString(), bool replace=false, quint8 priorty=0, bool randomAlbums=false);
     void setView(int v) { view->setMode((ItemView::Mode)v); }
     void focusSearch() { view->focusSearch(); }
-    void goBack() { view->backActivated(); }
     void refresh();
     void showEvent(QShowEvent *e);
 

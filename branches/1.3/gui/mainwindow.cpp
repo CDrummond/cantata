@@ -784,7 +784,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(streamPlayAction, SIGNAL(triggered(bool)), httpStream, SLOT(setEnabled(bool)));
     connect(MPDConnection::self(), SIGNAL(streamUrl(QString)), SLOT(streamUrl(QString)));
     #endif
-    connect(StdActions::self()->backAction, SIGNAL(triggered(bool)), this, SLOT(goBack()));
     connect(playQueueSearchWidget, SIGNAL(returnPressed()), this, SLOT(searchPlayQueue()));
     connect(playQueueSearchWidget, SIGNAL(textChanged(const QString)), this, SLOT(searchPlayQueue()));
     connect(playQueueSearchWidget, SIGNAL(active(bool)), this, SLOT(playQueueSearchActivated(bool)));
@@ -2527,13 +2526,6 @@ void MainWindow::dynamicStatus(const QString &message)
     #else
     Q_UNUSED(message)
     #endif
-}
-
-void MainWindow::goBack()
-{
-    if (currentPage) {
-        currentPage->goBack();
-    }
 }
 
 void MainWindow::showSearch()

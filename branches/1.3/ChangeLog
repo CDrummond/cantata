@@ -5,6 +5,7 @@
    incorrect extension. e.g. load a .jpg file with PNG type, and vice versa.
 3. Fix showing of time-slider when Cantata is started minimized to system tray
    and MPD is playing.
+4. Remove ununsed 'Back' action.
 
 1.3.3
 -----

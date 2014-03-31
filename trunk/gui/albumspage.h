@@ -51,7 +51,6 @@ public:
     void setView(int v);
     ItemView::Mode viewMode() const { return view->viewMode(); }
     void focusSearch() { view->focusSearch(); }
-    void goBack() { view->backActivated(); }
     void goTop() { view->setLevel(0); }
     void showEvent(QShowEvent *e);
 

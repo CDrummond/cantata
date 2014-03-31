@@ -59,7 +59,6 @@ public:
     #endif
     void setView(int v) { view->setMode((ItemView::Mode)v); }
     void focusSearch() { view->focusSearch(); }
-    void goBack() { view->backActivated(); }
     void showEvent(QShowEvent *e);
 
 Q_SIGNALS:

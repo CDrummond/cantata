@@ -626,15 +626,13 @@ MainWindow::MainWindow(QWidget *parent)
         menu=new QMenu(i18n("&Edit"), this);
         addMenuAction(menu, playQueueModel.undoAct());
         addMenuAction(menu, playQueueModel.redoAct());
+        menu->addSeparator();
         addMenuAction(menu, clearNewStateAction);
         menu->addSeparator();
         addMenuAction(menu, StdActions::self()->searchAction);
         #ifndef ENABLE_KDE_SUPPORT
         if (Utils::KDE!=Utils::currentDe()) {
             menu->addSeparator();
-            #ifdef ENABLE_KDE_SUPPORT
-            addMenuAction(menu, shortcutsAction);
-            #endif
             addMenuAction(menu, prefAction);
         }
         #endif

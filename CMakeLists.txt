@@ -593,8 +593,10 @@ endif (X11_FOUND)
 
 if (WIN32)
     install(FILES context/ultimate_providers.xml DESTINATION ${CMAKE_INSTALL_PREFIX}/lyrics/)
+    install(FILES tags/fixes.xml DESTINATION ${CMAKE_INSTALL_PREFIX}/tags/)
 else (WIN32)
     install(FILES context/ultimate_providers.xml DESTINATION ${CMAKE_INSTALL_PREFIX}/share/${CMAKE_PROJECT_NAME}/lyrics/)
+    install(FILES tags/fixes.xml DESTINATION ${CMAKE_INSTALL_PREFIX}/share/${CMAKE_PROJECT_NAME}/tags/)
 endif (WIN32)
 
 if (ENABLE_HTTP_STREAM_PLAYBACK AND NOT ENABLE_QT5)

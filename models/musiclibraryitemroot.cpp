@@ -104,65 +104,6 @@ void MusicLibraryItemRoot::groupSingleTracks()
     }
 }
 
-void MusicLibraryItemRoot::groupMultipleArtists()
-{
-    if (!supportsAlbumArtist || isFlat) {
-        return;
-    }
-
-    QList<MusicLibraryItem *>::iterator it=m_childItems.begin();
-    MusicLibraryItemArtist *various=0;
-    bool created=false;
-    bool checkDiffVaString=Song::variousArtists()!=QLatin1String("Various Artists");
-
-    // When grouping multiple artists - if 'Various Artists' is spelt different in curernt language, then we also need to place
-    // items by 'Various Artists' into i18n('Various Artists')
-    for (; it!=m_childItems.end(); ) {
-        if (various!=(*it) && (!static_cast<MusicLibraryItemArtist *>(*it)->isVarious() ||
-                               (checkDiffVaString && static_cast<MusicLibraryItemArtist *>(*it)->isVarious() && Song::variousArtists()!=(*it)->data())) ) {
-            QList<MusicLibraryItem *> mutipleAlbums=static_cast<MusicLibraryItemArtist *>(*it)->mutipleArtistAlbums();
-            if (mutipleAlbums.count()) {
-                if (!various) {
-                    QHash<QString, int>::ConstIterator it=m_indexes.find(Song::variousArtists());
-                    if (m_indexes.end()==it) {
-                        various=new MusicLibraryItemArtist(Song::variousArtists(), QString(), this);
-                        created=true;
-                    } else {
-                        various=static_cast<MusicLibraryItemArtist *>(m_childItems.at(*it));
-                    }
-                }
-
-                foreach (MusicLibraryItem *i, mutipleAlbums) {
-                    i->setParent(various);
-                    static_cast<MusicLibraryItemAlbum *>(i)->setIsMultipleArtists();
-                }
-
-                if (0==(*it)->childCount()) {
-                    delete (*it);
-                    it=m_childItems.erase(it);
-                    continue;
-                } else {
-                    static_cast<MusicLibraryItemArtist *>(*it)->updateIndexes();
-                }
-            }
-        }
-        ++it;
-    }
-
-    if (various) {
-        various->updateIndexes();
-        m_indexes.clear();
-        if (created) {
-            m_childItems.append(various);
-        }
-        it=m_childItems.begin();
-        QList<MusicLibraryItem *>::iterator end=m_childItems.end();
-        for (int i=0; it!=end; ++it, ++i) {
-            m_indexes.insert((*it)->data(), i);
-        }
-    }
-}
-
 bool MusicLibraryItemRoot::isFromSingleTracks(const Song &s) const
 {
     if (!isFlat && (supportsAlbumArtist && !s.file.isEmpty())) {
@@ -341,7 +282,6 @@ static const QString constDateAttribute=QLatin1String("date");
 static const QString constDateUnreliableAttribute=QLatin1String("dateUnreliable");
 static const QString constVersionAttribute=QLatin1String("version");
 static const QString constGroupSingleAttribute=QLatin1String("groupSingle");
-static const QString constGroupMultipleAttribute=QLatin1String("groupMultiple");
 static const QString constUseComposerAttribute=QLatin1String("useComposer");
 static const QString constSingleTracksAttribute=QLatin1String("singleTracks");
 static const QString constMultipleArtistsAttribute=QLatin1String("multipleArtists");
@@ -368,9 +308,6 @@ void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, const QDateTime &date
     }
     if (MPDParseUtils::groupSingle()) {
         writer.writeAttribute(constGroupSingleAttribute, constTrueValue);
-    }
-    if (MPDParseUtils::groupMultiple()) {
-        writer.writeAttribute(constGroupMultipleAttribute, constTrueValue);
     }
     if (Song::useComposer()) {
         writer.writeAttribute(constUseComposerAttribute, constTrueValue);
@@ -410,8 +347,6 @@ void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, const QDateTime &date
             }
             if (album->isSingleTracks()) {
                 writer.writeAttribute(constSingleTracksAttribute, constTrueValue);
-            } else if (album->isMultipleArtists()) {
-                writer.writeAttribute(constMultipleArtistsAttribute, constTrueValue);
             }
             if (!album->imageUrl().isEmpty()) {
                 writer.writeAttribute(constImageAttribute, album->imageUrl());
@@ -420,7 +355,6 @@ void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, const QDateTime &date
 
             foreach (const MusicLibraryItem *t, album->childItems()) {
                 const MusicLibraryItemSong *track = static_cast<const MusicLibraryItemSong *>(t);
-                bool wroteArtist=false;
                 writer.writeEmptyElement(constTrackElement);
                 if (!track->song().title.isEmpty()) {
                     writer.writeAttribute(constNameAttribute, track->song().title);
@@ -438,7 +372,6 @@ void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, const QDateTime &date
                 }
                 if (!track->song().artist.isEmpty() && track->song().artist!=artistName) {
                     writer.writeAttribute(constArtistAttribute, track->song().artist);
-                    wroteArtist=true;
                 }
                 if (supportsAlbumArtist && track->song().albumartist!=artistName) {
                     writer.writeAttribute(constAlbumArtistAttribute, track->song().albumartist);
@@ -446,14 +379,11 @@ void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, const QDateTime &date
                 if (!track->song().composer.isEmpty()) {
                     writer.writeAttribute(constComposerAttribute, track->song().composer);
                 }
-//                 writer.writeAttribute("id", QString::number(track->song().id));
                 if (!track->song().genre.isEmpty() && track->song().genre!=albumGenre && track->song().genre!=Song::unknown()) {
                     writer.writeAttribute(constGenreAttribute, track->song().genre);
                 }
                 if (album->isSingleTracks()) {
                     writer.writeAttribute(constAlbumAttribute, track->song().album);
-                } else if (!wroteArtist && album->isMultipleArtists() && !track->song().artist.isEmpty() && track->song().artist!=artistName) {
-                    writer.writeAttribute(constArtistAttribute, track->song().artist);
                 }
                 if (Song::Playlist==track->song().type) {
                     writer.writeAttribute(constPlaylistAttribute, constTrueValue);
@@ -517,7 +447,7 @@ quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime 
     quint64 total=0;
     quint64 count=0;
     bool gs=MPDParseUtils::groupSingle();
-    bool gm=MPDParseUtils::groupMultiple();
+    bool gm=false;
     int percent=0;
     bool online=isOnlineService();
 
@@ -536,7 +466,7 @@ quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime 
                 quint32 version = attributes.value(constVersionAttribute).toString().toUInt();
                 xmlDate = attributes.value(constDateAttribute).toString().toUInt();
                 gs = constTrueValue==attributes.value(constGroupSingleAttribute).toString();
-                gm = constTrueValue==attributes.value(constGroupMultipleAttribute).toString();
+                gm = constTrueValue==attributes.value(constGroupSingleAttribute).toString();
                 bool uc = constTrueValue==attributes.value(constUseComposerAttribute).toString();
                 if ( version < constVersion || uc!=Song::useComposer() || (date.isValid() && xmlDate < date.toTime_t())) {
                     return 0;
@@ -572,9 +502,6 @@ quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime 
                 if (constTrueValue==attributes.value(constSingleTracksAttribute).toString()) {
                     albumItem->setIsSingleTracks();
                     song.type=Song::SingleTracks;
-                } else if (constTrueValue==attributes.value(constMultipleArtistsAttribute).toString()) {
-                    albumItem->setIsMultipleArtists();
-                    song.type=Song::MultipleArtists;
                 } else {
                     song.type=Song::Standard;
                 }
@@ -642,11 +569,6 @@ quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime 
                         if (!str.isEmpty()) {
                             song.album=str;
                         }
-                    } else if (albumItem->isMultipleArtists()) {
-                        str=attributes.value(constArtistAttribute).toString();
-                        if (!str.isEmpty()) {
-                            song.artist=str;
-                        }
                     }
 
                     song.fillEmptyFields();
@@ -675,17 +597,10 @@ quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime 
     }
 
     // Grouping has changed!
-    if (gs!=MPDParseUtils::groupSingle() || gm!=MPDParseUtils::groupMultiple()) {
-        if (gs && gm) {
-            // Now using both groupings, where previously we were using none.
-            // ...so, just apply grouping!
-            groupSingleTracks();
-            groupMultipleArtists();
-            updateGenres();
-        } else {
-            // Mixed grouping, so need to redo from scratch...
-            toggleGrouping();
-        }
+    // As of 1.4.0, Cantata no-longer groups multiple-artist albums under 'Various Artists' - so if this setting
+    // has been used, we need to undo it!
+    if (gs!=MPDParseUtils::groupSingle() || gm) {
+        toggleGrouping();
     }
 
     return xmlDate;
@@ -757,11 +672,8 @@ void MusicLibraryItemRoot::applyGrouping()
 {
     if (MPDParseUtils::groupSingle()) {
         groupSingleTracks();
+        updateGenres();
     }
-    if (MPDParseUtils::groupMultiple()) {
-        groupMultipleArtists();
-    }
-    updateGenres();
 }
 
 void MusicLibraryItemRoot::clearItems()
@@ -828,15 +740,6 @@ bool MusicLibraryItemRoot::songExists(const Song &s) const
     if (!s.isVariousArtists()) {
         Song mod(s);
         mod.albumartist=Song::variousArtists();
-        if (MPDParseUtils::groupMultiple()) {
-            song=findSong(mod);
-            if (song) {
-                Song sng=static_cast<const MusicLibraryItemSong *>(song)->song();
-                if (sng.albumArtist()==s.albumArtist()) {
-                    return true;
-                }
-            }
-        }
         if (MPDParseUtils::groupSingle()) {
             mod.album=i18n("Single Tracks");
             song=findSong(mod);

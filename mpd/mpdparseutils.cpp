@@ -451,7 +451,6 @@ QStringList MPDParseUtils::parseList(const QByteArray &data, const QByteArray &k
 }
 
 static bool groupSingleTracks=false;
-static bool groupMultipleArtists=false;
 
 bool MPDParseUtils::groupSingle()
 {
@@ -461,16 +460,6 @@ bool MPDParseUtils::groupSingle()
 void MPDParseUtils::setGroupSingle(bool g)
 {
     groupSingleTracks=g;
-}
-
-bool MPDParseUtils::groupMultiple()
-{
-    return groupMultipleArtists;
-}
-
-void MPDParseUtils::setGroupMultiple(bool g)
-{
-    groupMultipleArtists=g;
 }
 
 void MPDParseUtils::parseLibraryItems(const QByteArray &data, const QString &mpdDir, long mpdVersion,

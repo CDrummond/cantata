@@ -67,8 +67,6 @@ namespace MPDParseUtils
     extern QStringList parseList(const QByteArray &data, const QByteArray &key);
     extern bool groupSingle();
     extern void setGroupSingle(bool g);
-    extern bool groupMultiple();
-    extern void setGroupMultiple(bool g);
     extern void parseLibraryItems(const QByteArray &data, const QString &mpdDir, long mpdVersion,
                                   bool isMopidy, MusicLibraryItemRoot *rootItem, bool parsePlaylists=true,
                                   QSet<QString> *childDirs=0);

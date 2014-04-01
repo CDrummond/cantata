@@ -34,10 +34,8 @@
 #endif
 #include <libmtp.h>
 
-
 class MusicLibraryItemRoot;
 class Thread;
-class MtpDevice;
 class QTemporaryFile;
 
 class MtpConnection : public QObject
@@ -74,7 +72,7 @@ public:
         QString musicPath;
     };
 
-    MtpConnection(MtpDevice *p);
+    MtpConnection(unsigned int bus, unsigned int dev, bool aaSupport);
     virtual ~MtpConnection();
 
     bool isConnected() const { return 0!=device; }
@@ -84,12 +82,13 @@ public:
     QList<DeviceStorage> getStorageList() const;
     void emitProgress(int percent);
     void trackListProgress(int percent);
-    bool abortRequested() const;
+    void requestAbort(bool r) { abortRequested=r; }
+    bool abortWasRequested() const { return abortRequested; }
 
 public Q_SLOTS:
     void connectToDevice();
     void disconnectFromDevice(bool showStatus=true);
-    void updateLibrary();
+    void updateLibrary(const DeviceOptions &opts);
     void putSong(const Song &song, bool fixVa, const DeviceOptions &opts, bool overwrite, bool copyCover);
     void getSong(const Song &song, const QString &dest, bool fixVa, bool copyCover);
     void delSong(const Song &song);
@@ -148,8 +147,11 @@ private:
     QList<Storage> storage;
     uint64_t size;
     uint64_t used;
-    MtpDevice *dev;
     int lastListPercent;
+    bool abortRequested;
+    unsigned int busNum;
+    unsigned int devNum;
+    bool supprtAlbumArtistTag;
 };
 
 class MtpDevice : public Device
@@ -175,10 +177,11 @@ public:
     qint64 freeSpace();
     DevType devType() const { return Mtp; }
     void saveOptions();
+    void abortJob() { requestAbort(true); }
 
 Q_SIGNALS:
     // These are for talking to connection thread...
-    void updateLibrary();
+    void updateLibrary(const DeviceOptions &opts);
     void putSong(const Song &song, bool fixVa, const DeviceOptions &opts, bool overwrite, bool copyCover);
     void getSong(const Song &song, const QString &dest, bool fixVa, bool copyCover);
     void delSong(const Song &song);
@@ -202,6 +205,7 @@ private Q_SLOTS:
 
 private:
     void deleteTemp();
+    void requestAbort(bool r) { if (connection) connection->requestAbort(r); jobAbortRequested=r; }
 
 private:
     Solid::PortableMediaPlayer *pmp;
@@ -210,8 +214,6 @@ private:
     Song currentSong;
     bool mtpUpdating;
     QString serial;
-    unsigned int busNum;
-    unsigned int devNum;
     QString defaultName;
     friend class MtpConnection;
 };

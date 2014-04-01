@@ -378,17 +378,24 @@ bool MusicLibraryItemAlbum::detectIfIsMultipleArtists()
     }
 
     if (Song::Standard==m_type) {
-        QString artist;
         QString albumArtist;
+        QSet<QString> artists;
         foreach (MusicLibraryItem *track, m_childItems) {
-            if (artist.isEmpty()) {
-                artist=static_cast<MusicLibraryItemSong*>(track)->song().artist;
-                albumArtist=static_cast<MusicLibraryItemSong*>(track)->song().albumArtist();
-                if (artist==albumArtist) {
-                    albumArtist=QString();
+            if (albumArtist.isEmpty()) {
+                const QString &aa=static_cast<MusicLibraryItemSong*>(track)->song().albumartist;
+                if (!aa.isEmpty()) {
+                    albumArtist=aa;
                 }
-            } else if (static_cast<MusicLibraryItemSong*>(track)->song().artist!=artist &&
-                       (albumArtist.isEmpty() || !static_cast<MusicLibraryItemSong*>(track)->song().artist.startsWith(albumArtist))) {
+            }
+            artists.insert(static_cast<MusicLibraryItemSong*>(track)->song().artist);
+        }
+
+        if (1==artists.count()) {
+            return false;
+        }
+
+        foreach (MusicLibraryItem *track, m_childItems) {
+            if (!static_cast<MusicLibraryItemSong*>(track)->song().artist.startsWith(albumArtist)) {
                 m_type=Song::MultipleArtists;
                 break;
             }

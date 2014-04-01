@@ -470,11 +470,6 @@ bool Settings::groupSingle()
     return cfg.get("groupSingle", MPDParseUtils::groupSingle());
 }
 
-bool Settings::groupMultiple()
-{
-    return cfg.get("groupMultiple", MPDParseUtils::groupMultiple());
-}
-
 bool Settings::useComposer()
 {
     return cfg.get("useComposer", Song::useComposer());
@@ -1105,11 +1100,6 @@ void Settings::saveLibraryYear(bool v)
 void Settings::saveGroupSingle(bool v)
 {
     cfg.set("groupSingle", v);
-}
-
-void Settings::saveGroupMultiple(bool v)
-{
-    cfg.set("groupMultiple", v);
 }
 
 void Settings::saveUseComposer(bool v)

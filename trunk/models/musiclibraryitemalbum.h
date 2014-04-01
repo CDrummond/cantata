@@ -79,10 +79,7 @@ public:
     void remove(MusicLibraryItemSong *i);
     void removeAll(const QSet<QString> &fileNames);
     QMap<QString, Song> getSongs(const QSet<QString> &fileNames) const;
-    bool detectIfIsMultipleArtists();
-    bool isMultipleArtists() const { return Song::MultipleArtists==m_type; }
     Song::Type songType() const { return m_type; }
-    void setIsMultipleArtists();
     Type itemType() const { return Type_Album; }
     const MusicLibraryItemSong * getCueFile() const;
     const QString & imageUrl() const { return m_imageUrl; }

@@ -590,13 +590,9 @@ QPixmap * AlbumsModel::AlbumItem::cover()
     if (Song::SingleTracks!=type && songs.count()) {
         if (coverSong.isEmpty()) {
             SongItem *firstSong=songs.first();
-            if (Song::MultipleArtists==type) {  // Then Cantata has placed this album under 'Various Artists' but the actual album has a different AlbumArtist tag
-                coverSong.artist=firstSong->albumArtist();
-            } else {
-                coverSong.artist=firstSong->artist;
-                coverSong.albumartist=Song::useComposer() && !firstSong->composer.isEmpty()
-                        ? firstSong->albumArtist() : artist;
-            }
+            coverSong.artist=firstSong->artist;
+            coverSong.albumartist=Song::useComposer() && !firstSong->composer.isEmpty()
+                    ? firstSong->albumArtist() : artist;
             coverSong.album=album;
             coverSong.year=year;
             coverSong.file=firstSong->file;

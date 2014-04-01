@@ -110,9 +110,6 @@ void OnlineMusicLoader::fixLibrary()
     if (MPDParseUtils::groupSingle()) {
         library->groupSingleTracks();
     }
-    if (MPDParseUtils::groupMultiple()) {
-        library->groupMultipleArtists();
-    }
 }
 
 void OnlineMusicLoader::downloadFinished()

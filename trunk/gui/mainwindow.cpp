@@ -203,7 +203,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     // Need to set these values here, as used in library/device loading...
     MPDParseUtils::setGroupSingle(Settings::self()->groupSingle());
-    MPDParseUtils::setGroupMultiple(Settings::self()->groupMultiple());
     Song::setUseComposer(Settings::self()->useComposer());
 
     #ifndef Q_OS_WIN
@@ -1406,7 +1405,6 @@ void MainWindow::readSettings()
     StdActions::self()->deleteSongsAction->setVisible(Settings::self()->showDeleteAction());
     #endif
     MPDParseUtils::setGroupSingle(Settings::self()->groupSingle());
-    MPDParseUtils::setGroupMultiple(Settings::self()->groupMultiple());
     Song::setUseComposer(Settings::self()->useComposer());
     albumsPage->setView(Settings::self()->albumsView());
     AlbumsModel::self()->setAlbumSort(Settings::self()->albumSort());
@@ -1477,7 +1475,6 @@ void MainWindow::updateSettings()
                       diffCoverSize(Settings::self()->albumsView(), albumsPage->viewMode());
     bool diffLibYear=MusicLibraryItemAlbum::sortByDate()!=Settings::self()->libraryYear();
     bool diffGrouping=MPDParseUtils::groupSingle()!=Settings::self()->groupSingle() ||
-                      MPDParseUtils::groupMultiple()!=Settings::self()->groupMultiple() ||
                       Song::useComposer()!=Settings::self()->useComposer();
 
     readSettings();

@@ -471,12 +471,11 @@ void MtpConnection::updateLibrary(const DeviceOptions &opts)
                     break;
                 } else {
                     if (shortestArtist.isEmpty() || s->song().artist.length()<shortestArtist.length()) {
-                        shortestArtist=s->song().artist.length();
+                        shortestArtist=s->song().artist;
                     }
                     tracks.insert(s->track());
                 }
             }
-
             // If an album has mutiple tracks with the same track number, then we probably have X albums
             // by X artists - in which case we proceeed no further.
             if (!duplicateTrackNumbers) {

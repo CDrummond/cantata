@@ -448,7 +448,7 @@ void MtpConnection::updateLibrary()
                         break;
                     } else {
                         if (shortestArtist.isEmpty() || s->song().artist.length()<shortestArtist.length()) {
-                            shortestArtist=s->song().artist.length();
+                            shortestArtist=s->song().artist;
                         }
                         tracks.insert(s->track());
                     }

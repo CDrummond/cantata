@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>599</width>
-    <height>436</height>
+    <height>472</height>
    </rect>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
@@ -147,7 +147,11 @@
           </widget>
          </item>
          <item row="5" column="1">
-          <widget class="LineEdit" name="coverName"/>
+          <widget class="LineEdit" name="coverName">
+           <property name="toolTip">
+            <string>&lt;p&gt;Filename (without extension) to save downloaded covers as.&lt;br/&gt;If left blank 'cover' will be used.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;%artist% will be replaced with album artist of the current song, and %album% will be replaced with the album name.&lt;/i&gt;&lt;/p&gt;</string>
+           </property>
+          </widget>
          </item>
          <item row="6" column="0">
           <widget class="BuddyLabel" name="dynamizerPortLabel">

@@ -117,9 +117,6 @@ ServerSettings::ServerSettings(QWidget *p)
                                      "starting/stopping of this service. If this is not set, then Cantata will "
                                      "use a per-user instance of the dynamizer to facilitate dynamic playlists.</i>"));
     #endif
-
-    coverName->setToolTip(i18n("<p>Filename (without extension) to save downloaded covers as.<br/>If left blank 'cover' will be used.<br/><br/>"
-                               "<i>%artist% will be replaced with album artist of the current song, and %album% will be replaced with the album name.</i></p>"));
     basicCoverName->setToolTip(coverName->toolTip());
     basicCoverNameLabel->setToolTip(coverName->toolTip());
     coverNameLabel->setToolTip(coverName->toolTip());

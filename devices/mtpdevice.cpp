@@ -75,14 +75,14 @@ static int progressMonitor(uint64_t const processed, uint64_t const total, void 
 {
     const MtpConnection *con=static_cast<const MtpConnection *>(data);
     const_cast<MtpConnection *>(con)->emitProgress((int)(((processed*1.0)/(total*1.0)*100.0)+0.5));
-    return con->abortRequested() ? -1 : 0;
+    return con->abortWasRequested() ? -1 : 0;
 }
 
 static int trackListMonitor(uint64_t const processed, uint64_t const total, void const * const data)
 {
     const MtpConnection *con=static_cast<const MtpConnection *>(data);
     const_cast<MtpConnection *>(con)->trackListProgress(((processed*100.0)/(total*1.0))+0.5);
-    return con->abortRequested() ? -1 : 0;
+    return con->abortWasRequested() ? -1 : 0;
 }
 
 static uint16_t fileReceiver(void *params, void *priv, uint32_t sendlen, unsigned char *data, uint32_t *putlen)
@@ -94,14 +94,17 @@ static uint16_t fileReceiver(void *params, void *priv, uint32_t sendlen, unsigne
     return LIBMTP_HANDLER_RETURN_OK;
 }
 
-MtpConnection::MtpConnection(MtpDevice *p)
+MtpConnection::MtpConnection(unsigned int bus, unsigned int dev, bool aaSupport)
     : device(0)
     #ifdef MTP_CLEAN_ALBUMS
     , albums(0)
     #endif
     , library(0)
-    , dev(p)
     , lastListPercent(-1)
+    , abortRequested(false)
+    , busNum(bus)
+    , devNum(dev)
+    , supprtAlbumArtistTag(aaSupport)
 {
     size=0;
     used=0;
@@ -121,11 +124,6 @@ MusicLibraryItemRoot * MtpConnection::takeLibrary()
     MusicLibraryItemRoot *lib=library;
     library=0;
     return lib;
-}
-
-bool MtpConnection::abortRequested() const
-{
-    return dev->abortRequested();
 }
 
 void MtpConnection::emitProgress(int percent)
@@ -167,8 +165,8 @@ void MtpConnection::connectToDevice()
 
     LIBMTP_mtpdevice_t *mptDev=0;
     for (int i = 0; i < numDev; i++) {
-        if (0!=dev->busNum && 0!=dev->devNum) {
-            if (rawDevices[i].bus_location==dev->busNum && rawDevices[i].devnum==dev->devNum) {
+        if (0!=busNum && 0!=devNum) {
+            if (rawDevices[i].bus_location==busNum && rawDevices[i].devnum==devNum) {
                 #ifdef ENABLE_UNCACHED_MTP
                 mptDev = LIBMTP_Open_Raw_Device_Uncached(&rawDevices[i]);
                 #else
@@ -284,7 +282,7 @@ static Path decodePath(const QString &path)
     return p;
 }
 
-void MtpConnection::updateLibrary()
+void MtpConnection::updateLibrary(const DeviceOptions &opts)
 {
     if (!isConnected()) {
         connectToDevice();
@@ -308,6 +306,9 @@ void MtpConnection::updateLibrary()
     emit statusMessage(i18n("Updating folders..."));
     #ifdef ENABLE_UNCACHED_MTP
     updateFilesAndFolders();
+    if (abortRequested) {
+        return;
+    }
     #else
     updateFolders();
     #endif
@@ -346,19 +347,25 @@ void MtpConnection::updateLibrary()
         setMusicFolder(*store);
         storageNames[(*store).id]=(*store).description;
     }
+    if (abortRequested) {
+        return;
+    }
 
     MusicLibraryItemArtist *artistItem = 0;
     MusicLibraryItemAlbum *albumItem = 0;
     #ifdef MTP_FAKE_ALBUMARTIST_SUPPORT
     QMap<QString, MtpAlbum> albumMap;
     QMap<uint32_t, MtpFolder> folders;
-    bool getAlbumArtistFromPath=dev->options().scheme.startsWith(DeviceOptions::constAlbumArtist+QChar('/')+DeviceOptions::constAlbumTitle+QChar('/'));
+    bool getAlbumArtistFromPath=opts.scheme.startsWith(DeviceOptions::constAlbumArtist+QChar('/')+DeviceOptions::constAlbumTitle+QChar('/'));
     #endif
     #ifdef TIME_MTP_OPERATIONS
     qWarning() << "Tracks update:" << timer.elapsed();
     timer.restart();
     #endif
-    while (tracks && !abortRequested()) {
+    while (tracks) {
+        if (abortRequested) {
+            return;
+        }
         LIBMTP_track_t *track=tracks;
         tracks=tracks->next;
 
@@ -413,7 +420,7 @@ void MtpConnection::updateLibrary()
             }
         }
         #endif
-        if (!artistItem || (dev->supportsAlbumArtistTag() ? s.artistOrComposer()!=artistItem->data() : s.artist!=artistItem->data())) {
+        if (!artistItem || (supprtAlbumArtistTag ? s.artistOrComposer()!=artistItem->data() : s.artist!=artistItem->data())) {
             artistItem = library->artist(s);
         }
         if (!albumItem || albumItem->parentItem()!=artistItem || s.albumName()!=albumItem->data()) {
@@ -445,84 +452,88 @@ void MtpConnection::updateLibrary()
     qWarning() << "Tracks parse:" << timer.elapsed();
     timer.restart();
     #endif
-    if (!abortRequested()) {
-        #ifdef MTP_FAKE_ALBUMARTIST_SUPPORT
-        // Use Album map to determine 'AlbumArtist' tag for various artist albums, and
-        // albums that have tracks where artist is set to '${artist} and somebodyelse'
-        QMap<QString, MtpAlbum>::ConstIterator it=albumMap.constBegin();
-        QMap<QString, MtpAlbum>::ConstIterator end=albumMap.constEnd();
-        for (; it!=end; ++it) {
-            if ((*it).artists.count()>1) {
-                QSet<quint16> tracks;
-                QString shortestArtist;
-                bool duplicateTrackNumbers=false;
-                foreach (MusicLibraryItemSong *s, (*it).songs) {
-                    if (tracks.contains(s->track())) {
-                        duplicateTrackNumbers=true;
+    #ifdef MTP_FAKE_ALBUMARTIST_SUPPORT
+    // Use Album map to determine 'AlbumArtist' tag for various artist albums, and
+    // albums that have tracks where artist is set to '${artist} and somebodyelse'
+    QMap<QString, MtpAlbum>::ConstIterator it=albumMap.constBegin();
+    QMap<QString, MtpAlbum>::ConstIterator end=albumMap.constEnd();
+    for (; it!=end; ++it) {
+        if (abortRequested) {
+            return;
+        }
+        if ((*it).artists.count()>1) {
+            QSet<quint16> tracks;
+            QString shortestArtist;
+            bool duplicateTrackNumbers=false;
+            foreach (MusicLibraryItemSong *s, (*it).songs) {
+                if (tracks.contains(s->track())) {
+                    duplicateTrackNumbers=true;
+                    break;
+                } else {
+                    if (shortestArtist.isEmpty() || s->song().artist.length()<shortestArtist.length()) {
+                        shortestArtist=s->song().artist.length();
+                    }
+                    tracks.insert(s->track());
+                }
+            }
+
+            // If an album has mutiple tracks with the same track number, then we probably have X albums
+            // by X artists - in which case we proceeed no further.
+            if (!duplicateTrackNumbers) {
+                MtpFolder &f=folders[(*it).folder];
+                // Now, check to see if all artists contain 'shortestArtist'. If so then use 'shortestArtist' as the album
+                // artist. This is probably due to songs which have artist set to '${artist} and somebodyelse'
+                QString albumArtist=shortestArtist;
+                foreach (const QString &artist, (*it).artists) {
+                    if (!artist.contains(shortestArtist)) {
+                        // Found an artist that did not contain 'shortestArtist', so use 'Various Artists' for album artist
+                        albumArtist=!f.artist.isEmpty() && f.album==it.key() ? f.artist : Song::variousArtists();
                         break;
-                    } else {
-                        if (shortestArtist.isEmpty() || s->song().artist.length()<shortestArtist.length()) {
-                            shortestArtist=s->song().artist.length();
-                        }
-                        tracks.insert(s->track());
                     }
                 }
 
-                // If an album has mutiple tracks with the same track number, then we probably have X albums
-                // by X artists - in which case we proceeed no further.
-                if (!duplicateTrackNumbers) {
-                    MtpFolder &f=folders[(*it).folder];
-                    // Now, check to see if all artists contain 'shortestArtist'. If so then use 'shortestArtist' as the album
-                    // artist. This is probably due to songs which have artist set to '${artist} and somebodyelse'
-                    QString albumArtist=shortestArtist;
-                    foreach (const QString &artist, (*it).artists) {
-                        if (!artist.contains(shortestArtist)) {
-                            // Found an artist that did not contain 'shortestArtist', so use 'Various Artists' for album artist
-                            albumArtist=!f.artist.isEmpty() && f.album==it.key() ? f.artist : Song::variousArtists();
-                            break;
-                        }
+                // Now move songs to correct artist/album...
+                foreach (MusicLibraryItemSong *s, (*it).songs) {
+                    if (s->song().albumartist==albumArtist) {
+                        continue;
                     }
-
-                    // Now move songs to correct artist/album...
-                    foreach (MusicLibraryItemSong *s, (*it).songs) {
-                        if (s->song().albumartist==albumArtist) {
-                            continue;
-                        }
-                        Song song=s->song();
-                        song.albumartist=albumArtist;
-                        artistItem=library->artist(song);
-                        albumItem=artistItem->album(song);
-                        MusicLibraryItemSong *songItem = new MusicLibraryItemSong(song, albumItem);
-                        albumItem->append(songItem);
-                        albumItem->updateGenres();
-                        artistItem->updateGenres();
-                        MusicLibraryItemAlbum *prevAlbum=(MusicLibraryItemAlbum *)s->parentItem();
-                        prevAlbum->remove(s);
-                        if (0==prevAlbum->childCount()) {
-                            // Album no longer has any songs, so remove!
-                            MusicLibraryItemArtist *prevArtist=(MusicLibraryItemArtist *)prevAlbum->parentItem();
-                            prevArtist->remove(prevAlbum);
-                            if (0==prevArtist->childCount()) {
-                                // Artist no longer has any albums, so remove!
-                                library->remove(prevArtist);
-                            }
+                    Song song=s->song();
+                    song.albumartist=albumArtist;
+                    artistItem=library->artist(song);
+                    albumItem=artistItem->album(song);
+                    MusicLibraryItemSong *songItem = new MusicLibraryItemSong(song, albumItem);
+                    albumItem->append(songItem);
+                    albumItem->updateGenres();
+                    artistItem->updateGenres();
+                    MusicLibraryItemAlbum *prevAlbum=(MusicLibraryItemAlbum *)s->parentItem();
+                    prevAlbum->remove(s);
+                    if (0==prevAlbum->childCount()) {
+                        // Album no longer has any songs, so remove!
+                        MusicLibraryItemArtist *prevArtist=(MusicLibraryItemArtist *)prevAlbum->parentItem();
+                        prevArtist->remove(prevAlbum);
+                        if (0==prevArtist->childCount()) {
+                            // Artist no longer has any albums, so remove!
+                            library->remove(prevArtist);
                         }
                     }
                 }
             }
         }
-        #ifdef TIME_MTP_OPERATIONS
-        qWarning() << "AlbumArtist detection:" << timer.elapsed();
-        timer.restart();
-        #endif
-        #endif
-        library->applyGrouping();
-        #ifdef TIME_MTP_OPERATIONS
-        qWarning() << "Grouping:" << timer.elapsed();
-        qWarning() << "TOTAL update:" <<totalTimer.elapsed();
-        #endif
-        emit libraryUpdated();
     }
+    #ifdef TIME_MTP_OPERATIONS
+    qWarning() << "AlbumArtist detection:" << timer.elapsed();
+    timer.restart();
+    #endif
+    #endif
+    if (abortRequested) {
+        return;
+    }
+    library->applyGrouping();
+    #ifdef TIME_MTP_OPERATIONS
+    qWarning() << "Grouping:" << timer.elapsed();
+    qWarning() << "TOTAL update:" <<totalTimer.elapsed();
+    #endif
+    emit libraryUpdated();
 }
 
 void MtpConnection::setMusicFolder(Storage &store)
@@ -543,6 +554,9 @@ void MtpConnection::updateFilesAndFolders()
 {
     folderMap.clear();
     foreach (const Storage st, storage) {
+        if (abortRequested) {
+            return;
+        }
         listFolder(st.id, constRootFolder, 0);
     }
 }
@@ -551,7 +565,7 @@ void MtpConnection::listFolder(uint32_t storage, uint32_t parentDir, Folder *f)
 {
     LIBMTP_file_t *files=LIBMTP_Get_Files_And_Folders(device, storage, parentDir);
 
-    while (files) {
+    while (files && !abortRequested) {
         LIBMTP_file_t *file=files;
         files = files->next;
 
@@ -927,7 +941,7 @@ void MtpConnection::putSong(const Song &s, bool fixVa, const DeviceOptions &opts
 
         meta->parent_id=folderId=store.musicFolderId;
         meta->storage_id=store.id;
-        destName=store.musicPath+dev->opts.createFilename(song);
+        destName=store.musicPath+opts.createFilename(song);
         QStringList dirs=destName.split('/', QString::SkipEmptyParts);
         if (dirs.count()>1) {
             destName=dirs.takeLast();
@@ -1065,7 +1079,7 @@ void MtpConnection::getSong(const Song &song, const QString &dest, bool fixVa, b
     bool copiedSong=device && 0==LIBMTP_Get_File_To_File(device, song.id, dest.toUtf8(), &progressMonitor, this);
     bool copiedCover=false;
 
-    if (copiedSong && !abortRequested() && copyCover) {
+    if (copiedSong && !abortRequested && copyCover) {
         QString destDir=Utils::getDir(dest);
 
         if (QDir(destDir).entryList(QStringList() << QLatin1String("*.jpg") << QLatin1String("*.png"), QDir::Files|QDir::Readable).isEmpty()) {
@@ -1086,7 +1100,7 @@ void MtpConnection::getSong(const Song &song, const QString &dest, bool fixVa, b
         }
     }
 
-    if (copiedSong && fixVa && !abortRequested()) {
+    if (copiedSong && fixVa && !abortRequested) {
         Song s(song);
         Device::fixVariousArtists(dest, s, false);
     }
@@ -1286,8 +1300,6 @@ MtpDevice::MtpDevice(MusicModel *m, Solid::Device &dev)
     , pmp(dev.as<Solid::PortableMediaPlayer>())
     , tempFile(0)
     , mtpUpdating(false)
-    , busNum(0)
-    , devNum(0)
 {
     static bool registeredTypes=false;
     if (!registeredTypes) {
@@ -1297,14 +1309,16 @@ MtpDevice::MtpDevice(MusicModel *m, Solid::Device &dev)
     }
 
     Solid::GenericInterface *iface = dev.as<Solid::GenericInterface>();
+    unsigned int busNum(0);
+    unsigned int devNum(0);
     if (iface) {
         QMap<QString, QVariant> properties = iface->allProperties();
         busNum = properties.value(QLatin1String("BUSNUM")).toInt();
         devNum = properties.value(QLatin1String("DEVNUM")).toInt();
     }
 
-    connection=new MtpConnection(this);
-    connect(this, SIGNAL(updateLibrary()), connection, SLOT(updateLibrary()));
+    connection=new MtpConnection(busNum, devNum, supportsAlbumArtistTag());
+    connect(this, SIGNAL(updateLibrary(const DeviceOptions &)), connection, SLOT(updateLibrary(const DeviceOptions &)));
     connect(connection, SIGNAL(libraryUpdated()), this, SLOT(libraryUpdated()));
     connect(connection, SIGNAL(progress(int)), this, SLOT(emitProgress(int)));
     connect(this, SIGNAL(putSong(const Song &, bool, const DeviceOptions &, bool, bool)), connection, SLOT(putSong(const Song &, bool, const DeviceOptions &, bool, bool)));
@@ -1355,10 +1369,9 @@ bool MtpDevice::isConnected() const
 
 void MtpDevice::stop()
 {
-    jobAbortRequested=true;
+    abortJob();
     deleteTemp();
     if (connection) {
-        metaObject()->invokeMethod(this, "stop", Qt::QueuedConnection);
         disconnect(connection, SIGNAL(libraryUpdated()), this, SLOT(libraryUpdated()));
         disconnect(connection, SIGNAL(progress(int)), this, SLOT(emitProgress(int)));
         disconnect(connection, SIGNAL(putSongStatus(int, const QString &, bool, bool)), this, SLOT(putSongStatus(int, const QString &, bool, bool)));
@@ -1369,6 +1382,7 @@ void MtpDevice::stop()
         disconnect(connection, SIGNAL(deviceDetails(const QString &)), this, SLOT(deviceDetails(const QString &)));
         disconnect(connection, SIGNAL(updatePercentage(int)), this, SLOT(updatePercentage(int)));
         disconnect(connection, SIGNAL(cover(const Song &, const QImage &)), this, SIGNAL(cover(const Song &, const QImage &)));
+        metaObject()->invokeMethod(connection, "stop", Qt::QueuedConnection);
         connection->deleteLater();
         connection=0;
     }
@@ -1404,12 +1418,12 @@ void MtpDevice::rescan(bool full)
     }
     mtpUpdating=true;
     emit updating(solidDev.udi(), true);
-    emit updateLibrary();
+    emit updateLibrary(opts);
 }
 
 void MtpDevice::addSong(const Song &s, bool overwrite, bool copyCover)
 {
-    jobAbortRequested=false;
+    requestAbort(false);
     if (!isConnected()) {
         emit actionStatus(NotConnected);
         return;
@@ -1473,7 +1487,7 @@ void MtpDevice::addSong(const Song &s, bool overwrite, bool copyCover)
 
 void MtpDevice::copySongTo(const Song &s, const QString &musicPath, bool overwrite, bool copyCover)
 {
-    jobAbortRequested=false;
+    requestAbort(false);
     transcoding=false;
     if (!isConnected()) {
         emit actionStatus(NotConnected);
@@ -1513,7 +1527,7 @@ void MtpDevice::copySongTo(const Song &s, const QString &musicPath, bool overwri
 
 void MtpDevice::removeSong(const Song &s)
 {
-    jobAbortRequested=false;
+    requestAbort(false);
     if (!isConnected()) {
         emit actionStatus(NotConnected);
         return;
@@ -1530,7 +1544,7 @@ void MtpDevice::removeSong(const Song &s)
 
 void MtpDevice::cleanDirs(const QSet<QString> &dirs)
 {
-    jobAbortRequested=false;
+    requestAbort(false);
     if (!isConnected()) {
         emit actionStatus(NotConnected);
         return;
@@ -1540,7 +1554,7 @@ void MtpDevice::cleanDirs(const QSet<QString> &dirs)
 
 void MtpDevice::requestCover(const Song &song)
 {
-    jobAbortRequested=false;
+    requestAbort(false);
     if (isConnected()) {
         emit getCover(song);
     }

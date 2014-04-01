@@ -174,7 +174,7 @@ public:
     virtual void saveOptions()=0;
     const QString & statusMessage() const { return statusMsg; }
     bool isConfigured() { return configured; }
-    void abortJob() { jobAbortRequested=true; }
+    virtual void abortJob() { jobAbortRequested=true; }
     bool abortRequested() const { return jobAbortRequested; }
     virtual bool canPlaySongs() const { return false; }
     virtual bool supportsDisconnect() const { return false; }

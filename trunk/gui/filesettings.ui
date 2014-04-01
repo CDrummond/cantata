@@ -26,7 +26,7 @@
    <item>
     <widget class="QCheckBox" name="storeCoversInMpdDir">
      <property name="text">
-      <string>Save downloaded covers in music folder</string>
+      <string>Save downloaded covers, and artist images, in music folder</string>
      </property>
     </widget>
    </item>

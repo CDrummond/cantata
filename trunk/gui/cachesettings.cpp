@@ -247,8 +247,8 @@ CacheSettings::CacheSettings(QWidget *parent)
     layout->setMargin(0);
     int row=0;
     int col=0;
-    QLabel *label=new QLabel(i18n("Cantata caches a local copy of the MPD listing to speed up loading of the music library. Cantata might also have cached "
-                                  "covers, lyrics, or artist images, if these have been downloaded and could not be saved into the MPD folder (because "
+    QLabel *label=new QLabel(i18n("Cantata caches a local copy of the music listing to speed up loading of the library. Cantata might also have cached "
+                                  "covers, lyrics, or artist images, if these have been downloaded and could not be saved into the music folder (because "
                                   "Cantata cannot access it, or you have configured Cantata to not save these items there). Below is a summary of Cantata's "
                                   "current cache usage."), this);
     label->setWordWrap(true);

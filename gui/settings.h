@@ -95,7 +95,6 @@ public:
     int sidebar();
     bool libraryYear();
     bool groupSingle();
-    bool groupMultiple();
     bool useComposer();
     QStringList lyricProviders();
     QStringList wikipediaLangs();
@@ -214,7 +213,6 @@ public:
     void saveSidebar(int v);
     void saveLibraryYear(bool v);
     void saveGroupSingle(bool v);
-    void saveGroupMultiple(bool v);
     void saveUseComposer(bool v);
     void saveLyricProviders(const QStringList &v);
     void saveWikipediaLangs(const QStringList &v);

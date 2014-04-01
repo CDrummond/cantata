@@ -84,6 +84,7 @@
 51. Make shortcut for 'Go Back' action changeable.
 52. Don't attempt to find Amarok or Clementine covers.
 53. Dont hard-code artist name fixes, read from $install/tags/fixes.xml
+54. Remove grouping of multiple-artist albums under 'Various Artists'
 
 1.3.4
 -----

@@ -223,7 +223,6 @@ void InterfaceSettings::load()
     #endif
     groupSingle->setChecked(Settings::self()->groupSingle());
     useComposer->setChecked(Settings::self()->useComposer());
-    groupMultiple->setChecked(Settings::self()->groupMultiple());
     #ifdef ENABLE_DEVICES_SUPPORT
     showDeleteAction->setChecked(Settings::self()->showDeleteAction());
     selectEntry(devicesView, Settings::self()->devicesView());
@@ -304,7 +303,6 @@ void InterfaceSettings::save()
     #endif
     Settings::self()->saveGroupSingle(groupSingle->isChecked());
     Settings::self()->saveUseComposer(useComposer->isChecked());
-    Settings::self()->saveGroupMultiple(groupMultiple->isChecked());
     #ifdef ENABLE_DEVICES_SUPPORT
     Settings::self()->saveShowDeleteAction(showDeleteAction->isChecked());
     Settings::self()->saveDevicesView(getValue(devicesView));

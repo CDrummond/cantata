@@ -187,13 +187,10 @@ const QPixmap & MusicLibraryItemAlbum::cover() const
         if (!m_coverRequested) {
             MusicLibraryItemSong *firstSong=static_cast<MusicLibraryItemSong*>(childItem(0));
             Song song;
-            if (Song::MultipleArtists==m_type) { // Then Cantata has placed this album under 'Various Artists' but the actual album as a different AlbumArtist tag
-                song.artist=firstSong->song().albumArtist();
-            } else {
-                song.artist=firstSong->song().artist;
-                song.albumartist=Song::useComposer() && !firstSong->song().composer.isEmpty()
-                        ? firstSong->song().albumArtist() : parentItem()->data();
-            }
+            song.artist=firstSong->song().artist;
+            song.albumartist=Song::useComposer() && !firstSong->song().composer.isEmpty()
+                    ? firstSong->song().albumArtist() : parentItem()->data();
+
             song.album=Song::useComposer() ? firstSong->song().album : m_itemData;
             song.year=m_year;
             song.file=firstSong->file();
@@ -290,14 +287,6 @@ void MusicLibraryItemAlbum::setIsSingleTracks()
     m_type=Song::SingleTracks;
 }
 
-void MusicLibraryItemAlbum::setIsMultipleArtists()
-{
-    foreach (MusicLibraryItem *track, m_childItems) {
-        static_cast<MusicLibraryItemSong*>(track)->song().type=Song::MultipleArtists;
-    }
-    m_type=Song::MultipleArtists;
-}
-
 void MusicLibraryItemAlbum::append(MusicLibraryItem *i)
 {
     MusicLibraryItemSong *song=static_cast<MusicLibraryItemSong *>(i);
@@ -306,8 +295,6 @@ void MusicLibraryItemAlbum::append(MusicLibraryItem *i)
     if (Song::SingleTracks==m_type) {
         song->song().type=Song::SingleTracks;
         m_singleTrackFiles.insert(song->song().file);
-    } else if (Song::MultipleArtists==m_type) {
-        song->song().type=Song::MultipleArtists;
     }
     m_totalTime=0;
     m_artists.clear();
@@ -369,39 +356,6 @@ QMap<QString, Song> MusicLibraryItemAlbum::getSongs(const QSet<QString> &fileNam
     }
 
     return map;
-}
-
-bool MusicLibraryItemAlbum::detectIfIsMultipleArtists()
-{
-    if (m_childItems.count()<2) {
-        return false;
-    }
-
-    if (Song::Standard==m_type) {
-        QString albumArtist;
-        QSet<QString> artists;
-        foreach (MusicLibraryItem *track, m_childItems) {
-            if (albumArtist.isEmpty()) {
-                const QString &aa=static_cast<MusicLibraryItemSong*>(track)->song().albumartist;
-                if (!aa.isEmpty()) {
-                    albumArtist=aa;
-                }
-            }
-            artists.insert(static_cast<MusicLibraryItemSong*>(track)->song().artist);
-        }
-
-        if (1==artists.count()) {
-            return false;
-        }
-
-        foreach (MusicLibraryItem *track, m_childItems) {
-            if (!static_cast<MusicLibraryItemSong*>(track)->song().artist.startsWith(albumArtist)) {
-                m_type=Song::MultipleArtists;
-                break;
-            }
-        }
-    }
-    return Song::MultipleArtists==m_type;
 }
 
 const MusicLibraryItemSong * MusicLibraryItemAlbum::getCueFile() const

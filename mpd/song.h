@@ -43,13 +43,12 @@ struct Song
 
     enum Type {
         Standard        = 0,
-        MultipleArtists = 1,
-        SingleTracks    = 2,
-        Playlist        = 3,
-        Stream          = 4,
-        CantataStream   = 5,
-        Cdda            = 6,
-        OnlineSvrTrack  = 7
+        SingleTracks    = 1,
+        Playlist        = 2,
+        Stream          = 3,
+        CantataStream   = 4,
+        Cdda            = 5,
+        OnlineSvrTrack  = 6
     };
 
     qint32 id;

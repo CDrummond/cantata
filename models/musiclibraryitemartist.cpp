@@ -211,23 +211,6 @@ void MusicLibraryItemArtist::remove(MusicLibraryItemAlbum *album)
     resetRows();
 }
 
-QList<MusicLibraryItem *> MusicLibraryItemArtist::mutipleArtistAlbums()
-{
-    if (isVarious()) {
-        return m_childItems;
-    }
-
-    QList<MusicLibraryItem *> ma;
-    QList<MusicLibraryItem *>::iterator it=m_childItems.begin();
-    QList<MusicLibraryItem *>::iterator end=m_childItems.end();
-    for(; it!=end; ++it) {
-        if (static_cast<MusicLibraryItemAlbum *>(*it)->detectIfIsMultipleArtists()) {
-            ma.append(*it);
-        }
-    }
-    return ma;
-}
-
 void MusicLibraryItemArtist::updateIndexes()
 {
     m_indexes.clear();

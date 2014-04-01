@@ -735,12 +735,18 @@ within the folder of the current track, or within its parent folder. If no image
            <property name="text">
             <string>Group single track albums</string>
            </property>
+           <property name="toolTip">
+            <string>Place albums with only one track under 'Various Artists/Single Tracks'</string>
+           </property>
           </widget>
          </item>
          <item row="1" column="0" colspan="2">
           <widget class="QCheckBox" name="useComposer">
            <property name="text">
             <string>Group albums by composer</string>
+           </property>
+           <property name="toolTip">
+            <string>Use the 'Composer' tag, and not 'Artist' or 'Album Artist', to group albums.</string>
            </property>
           </widget>
          </item>

@@ -192,19 +192,25 @@
      <property name="text">
       <string>Dark background</string>
      </property>
+     <property name="toolTip">
+      <string>Darken background, and use white text, regardless of current color palette.</string>
+     </property>
     </widget>
    </item>
    <item row="3" column="0" colspan="2">
-    <widget class="QCheckBox" name="wikipediaIntroOnly">
+    <widget class="QCheckBox" name="contextAlwaysCollapsed">
      <property name="text">
-      <string>Only show basic wikipedia text</string>
+      <string>Always collapse into a single pane</string>
+     </property>
+     <property name="toolTip">
+      <string>Only show 'Artist', 'Album', or 'Lyrics' even if sufficient width to show all three.</string>
      </property>
     </widget>
    </item>
    <item row="4" column="0" colspan="2">
-    <widget class="QCheckBox" name="contextAlwaysCollapsed">
+    <widget class="QCheckBox" name="wikipediaIntroOnly">
      <property name="text">
-      <string>Always collapse into a single pane</string>
+      <string>Only show basic wikipedia text</string>
      </property>
     </widget>
    </item>

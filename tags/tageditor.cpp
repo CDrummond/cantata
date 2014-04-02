@@ -345,9 +345,13 @@ void TagEditor::fillSong(Song &s, bool isAll, bool skipEmpty) const
     if (!isAll) {
         s.track=track->value();
     }
-    s.disc=disc->value();
+    if (!isAll || 0!=disc->value()) {
+        s.disc=disc->value();
+    }
     setString(s.genre, genre->text().trimmed(), skipEmpty && (!haveAll || all.genre.isEmpty()));
-    s.year=year->value();
+    if (!isAll || 0!=year->value()) {
+        s.year=year->value();
+    }
 }
 
 void TagEditor::setPlaceholderTexts()

@@ -889,7 +889,7 @@ void CoverLoader::load()
     QList<LoadedCover> covers;
     foreach (const LoadedCover &s, toDo) {
         DBUG << s.song.artist << s.song.album << s.song.size;
-        covers.append(LoadedCover(s.song, loadScaledCover(s.song.artist, s.song.album, s.song.size)));
+        covers.append(LoadedCover(s.song, loadScaledCover(s.song.albumArtist(), s.song.album, s.song.size)));
     }
     if (!covers.isEmpty()) {
         DBUG << "loaded" << covers.count();

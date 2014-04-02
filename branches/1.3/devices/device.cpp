@@ -67,6 +67,13 @@ void Device::moveDir(const QString &from, const QString &to, const QString &base
         QList<QString> extraFiles;
         QSet<QString> others=Covers::standardNames().toSet();
         others << coverFile << "albumart.pamp";
+        if (!coverFile.isEmpty()) {
+            if (coverFile.endsWith(QLatin1String(".jpg"))) {
+                others << coverFile.left(coverFile.length()-4)+QLatin1String(".png");
+            } else if (coverFile.endsWith(QLatin1String(".png"))) {
+                others << coverFile.left(coverFile.length()-4)+QLatin1String(".jpg");
+            }
+        }
 
         foreach (const QFileInfo &info, entries) {
             if (info.isDir()) {

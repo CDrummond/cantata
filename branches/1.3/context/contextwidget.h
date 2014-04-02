@@ -93,6 +93,7 @@ class ContextWidget : public QWidget
 public:
     static void enableDebug();
 
+    static const QLatin1String constBackdropFileName;
     static const QLatin1String constCacheDir;
     static const QLatin1String constFanArtApiKey;
 

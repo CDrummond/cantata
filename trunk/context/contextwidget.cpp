@@ -76,7 +76,7 @@ void ContextWidget::enableDebug()
     debugEnabled=true;
 }
 
-static const QString constBackdropName=QLatin1String("backdrop");
+const QLatin1String ContextWidget::constBackdropFileName("backdrop");
 //const QLatin1String ContextWidget::constHtbApiKey(0); // API key required
 const QLatin1String ContextWidget::constFanArtApiKey("ee86404cb429fa27ac32a1a3c117b006");
 const QLatin1String ContextWidget::constCacheDir("backdrops/");
@@ -731,8 +731,8 @@ void ContextWidget::updateBackdrop(bool force)
     }
 
     QString encoded=Covers::encodeName(currentArtist);
-    QStringList names=QStringList() << encoded+"-"+constBackdropName+".jpg" << encoded+"-"+constBackdropName+".png"
-                                    << constBackdropName+".jpg" << constBackdropName+".png";
+    QStringList names=QStringList() << encoded+"-"+constBackdropFileName+".jpg" << encoded+"-"+constBackdropFileName+".png"
+                                    << constBackdropFileName+".jpg" << constBackdropFileName+".png";
 
     if (!currentSong.isStream()) {
         bool localNonMpd=currentSong.file.startsWith(Utils::constDirSep);
@@ -1072,7 +1072,7 @@ void ContextWidget::downloadResponse()
             if (!mpdDir.isEmpty() && 2==songDir.split(Utils::constDirSep, QString::SkipEmptyParts).count()) {
                 QDir d(mpdDir+songDir);
                 d.cdUp();
-                QString fileName=Utils::fixPath(d.absolutePath())+constBackdropName+".jpg";
+                QString fileName=Utils::fixPath(d.absolutePath())+constBackdropFileName+".jpg";
                 QFile f(fileName);
                 if (f.open(QIODevice::WriteOnly)) {
                     f.write(data);

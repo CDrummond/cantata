@@ -38,6 +38,8 @@
 #include "icons.h"
 #include "basicitemdelegate.h"
 #include "cuefile.h"
+#include "covers.h"
+#include "contextwidget.h"
 #include <QTimer>
 #include <QFile>
 #include <QDir>
@@ -368,17 +370,55 @@ void TrackOrganiser::renameFile()
 
         if (!skip) {
             QDir sDir(Utils::getDir(source));
+            QDir sArtistDir(sDir); sArtistDir.cdUp();
             QDir dDir(Utils::getDir(dest));
             #ifdef ENABLE_DEVICES_SUPPORT
             Device *dev=deviceUdi.isEmpty() ? 0 : getDevice();
             if (sDir.absolutePath()!=dDir.absolutePath()) {
-                Device::moveDir(sDir.absolutePath(), dDir.absolutePath(), musicFolder, dev ? dev->coverFile() : QString());
+                Device::moveDir(sDir.absolutePath(), dDir.absolutePath(), musicFolder, dev ? dev->coverFile()
+                                                                                           : QString(Covers::albumFileName(s)+QLatin1String(".jpg")));
             }
             #else
             if (sDir.absolutePath()!=dDir.absolutePath()) {
-                Device::moveDir(sDir.absolutePath(), dDir.absolutePath(), musicFolder, QString());
+                Device::moveDir(sDir.absolutePath(), dDir.absolutePath(), musicFolder,  QString(Covers::albumFileName(s)+QLatin1String(".jpg")));
             }
             #endif
+            QDir dArtistDir(dDir); dArtistDir.cdUp();
+
+            // Move any artist, or backdrop, image...
+            if (sArtistDir.exists() && dArtistDir.exists() && sArtistDir.absolutePath()!=sDir.absolutePath() && sArtistDir.absolutePath()!=dArtistDir.absolutePath()) {
+                QStringList artistImages;
+                QFileInfoList entries=sArtistDir.entryInfoList(QDir::Files|QDir::Dirs|QDir::NoDotAndDotDot);
+                QString artistImage=Covers::artistFileName(s);
+                QSet<QString> acceptable=QSet<QString>() << artistImage+QLatin1String(".jpg") << artistImage+QLatin1String(".png")
+                                                         << ContextWidget::constBackdropFileName+QLatin1String(".jpg")
+                                                         << ContextWidget::constBackdropFileName+QLatin1String(".png");
+
+                foreach (const QFileInfo &entry, entries) {
+                    if (entry.isDir() || !acceptable.contains(entry.fileName())) {
+                        artistImages.clear();
+                        break;
+                    } else {
+                        artistImages.append(entry.fileName());
+                    }
+                }
+                if (!artistImages.isEmpty()) {
+                    bool delDir=true;
+                    foreach (const QString &f, artistImages) {
+                        if (!QFile::rename(sArtistDir.absolutePath()+Utils::constDirSep+f, dArtistDir.absolutePath()+Utils::constDirSep+f)) {
+                            delDir=false;
+                            break;
+                        }
+                    }
+                    if (delDir) {
+                        QString dirName=sArtistDir.dirName();
+                        if (!dirName.isEmpty()) {
+                            sArtistDir.cdUp();
+                            sArtistDir.rmdir(dirName);
+                        }
+                    }
+                }
+            }
             item->setText(0, modified);
             item->setFont(0, font());
             item->setFont(1, font());

@@ -265,10 +265,6 @@ void DeviceOptions::save(const QString &group, bool isMpd, bool saveTrans, bool 
     #else
     Q_UNUSED(saveTrans)
     #endif
-
-    if (isMpd && cfg.hasGroup(constMpdGroup)) {
-        cfg.removeGroup(constMpdGroup);
-    }
 }
 
 QString DeviceOptions::clean(const QString &str) const

@@ -234,7 +234,7 @@ static quint32 constVersion=2;
 void DirViewModel::toXML()
 {
     QString filename=cacheFileName();
-    if ((!rootItem || 0==rootItem->childCount()) && databaseTime.date().year()<2000) {
+    if ((!rootItem || 0==rootItem->childCount()) && !MusicLibraryModel::validCacheDate(databaseTime)) {
         if (QFile::exists(filename)) {
             QFile::remove(filename);
         }
@@ -373,7 +373,7 @@ void DirViewModel::updateDirView(DirViewItemRoot *newroot, const QDateTime &dbUp
 
     bool incremental=enabled && rootItem->childCount() && newroot->childCount();
     bool updatedListing=false;
-    bool needToSave=!databaseTime.isValid() || (dbUpdate.isValid() && dbUpdate.date().year()>2000 && dbUpdate>databaseTime);
+    bool needToSave=!databaseTime.isValid() || (MusicLibraryModel::validCacheDate(dbUpdate) && dbUpdate>databaseTime);
 
     if (incremental && !QFile::exists(cacheFileName())) {
         incremental=false;
@@ -413,9 +413,9 @@ void DirViewModel::updateDirView(DirViewItemRoot *newroot, const QDateTime &dbUp
     //
     // Mopidy users, and users of the proxy DB plugin, will have to force Cantata to refresh :-(
     if (!fromFile) {
-        databaseTimeUnreliable=!dbUpdate.isValid() || dbUpdate.date().year()<2000; // See note in updatingMpd()
+        databaseTimeUnreliable=!MusicLibraryModel::validCacheDate(dbUpdate); // See note in updatingMpd()
     }
-    if ((!databaseTime.isValid() && !dbUpdate.isValid()) || (databaseTime.date().year()<2000 && dbUpdate.date().year()<2000)) {
+    if (!MusicLibraryModel::validCacheDate(databaseTime) && !MusicLibraryModel::validCacheDate(dbUpdate)) {
         databaseTime=QDateTime::currentDateTime();
     }
 

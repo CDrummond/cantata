@@ -138,6 +138,7 @@ public:
     bool playListsStartClosed();
     #ifdef ENABLE_HTTP_STREAM_PLAYBACK
     bool playStream();
+    bool stopHttpStreamOnPause();
     #endif
     #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
     bool cdAuto();
@@ -182,7 +183,6 @@ public:
     bool alwaysUseLsInfo();
     bool showMenubar();
     int menu();
-    bool stopHttpStreamOnPause();
 
     void removeConnectionDetails(const QString &v);
     void saveConnectionDetails(const MPDConnectionDetails &v);

@@ -36,11 +36,11 @@
 #include "messagebox.h"
 #include "localize.h"
 #include "icons.h"
-#include "mainwindow.h"
 #include "stdactions.h"
 #include "actioncollection.h"
 #include "inputdialog.h"
 #include "podcastsearchdialog.h"
+#include <QMenu>
 
 OnlineServicesPage::OnlineServicesPage(QWidget *p)
     : QWidget(p)

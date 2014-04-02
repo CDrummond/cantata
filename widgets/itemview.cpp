@@ -23,7 +23,7 @@
 
 #include "itemview.h"
 #include "groupedview.h"
-#include "mainwindow.h"
+#include "tableview.h"
 #include "covers.h"
 #include "proxymodel.h"
 #include "actionitemdelegate.h"
@@ -43,6 +43,7 @@
 #include <QPainter>
 #include <QAction>
 #include <QTimer>
+#include <QKeyEvent>
 
 static int listDecorationSize=22;
 static int treeDecorationSize=16;
@@ -92,6 +93,18 @@ bool ViewEventHandler::eventFilter(QObject *obj, QEvent *event)
         }
     }
 
+    return QObject::eventFilter(obj, event);
+}
+
+bool DeleteKeyEventHandler::eventFilter(QObject *obj, QEvent *event)
+{
+    if (view->hasFocus() && QEvent::KeyRelease==event->type()) {
+        QKeyEvent *keyEvent=static_cast<QKeyEvent *>(event);
+        if (Qt::NoModifier==keyEvent->modifiers() && Qt::Key_Delete==keyEvent->key()) {
+            act->trigger();
+        }
+        return true;
+    }
     return QObject::eventFilter(obj, event);
 }
 

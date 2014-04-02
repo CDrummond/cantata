@@ -22,10 +22,6 @@
  */
 
 #include "trayitem.h"
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KMenu>
-#include <QPixmap>
-#endif
 #ifdef QT_QTDBUS_FOUND
 #include "notify.h"
 #endif
@@ -38,6 +34,12 @@
 #include "stdactions.h"
 #include "utils.h"
 #include "currentcover.h"
+#ifdef ENABLE_KDE_SUPPORT
+#include <KDE/KMenu>
+#include <QPixmap>
+#endif
+#include <QWheelEvent>
+#include <QMenu>
 
 class VolumeSliderEventHandler : public QObject
 {

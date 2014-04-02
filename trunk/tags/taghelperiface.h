@@ -74,6 +74,7 @@ private:
     void setStatus(bool st);
 
 private Q_SLOTS:
+    void close();
     void stopHelper();
     void sendMsg();
     void dataReady();

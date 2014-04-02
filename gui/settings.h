@@ -182,6 +182,7 @@ public:
     bool alwaysUseLsInfo();
     bool showMenubar();
     int menu();
+    bool stopHttpStreamOnPause();
 
     void removeConnectionDetails(const QString &v);
     void saveConnectionDetails(const MPDConnectionDetails &v);

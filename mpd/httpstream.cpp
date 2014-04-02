@@ -24,6 +24,7 @@
 #include "httpstream.h"
 #include "mpdconnection.h"
 #include "mpdstatus.h"
+#include "settings.h"
 #if QT_VERSION < 0x050000
 #include <phonon/audiooutput.h>
 #endif
@@ -34,6 +35,7 @@ HttpStream::HttpStream(QObject *p)
     , state(MPDState_Inactive)
     , player(0)
 {
+    stopOnPause=Settings::self()->stopHttpStreamOnPause();
 }
 
 void HttpStream::setEnabled(bool e)
@@ -81,16 +83,26 @@ void HttpStream::streamUrl(const QString &url)
         state=status->state();
         switch (status->state()) {
         case MPDState_Playing:
-            player->play();
+            #if QT_VERSION < 0x050000
+            if (Phonon::PlayingState!=player->state()) {
+                player->play();
+            }
+            #else
+            if (QMediaPlayer::PlayingState!=player->state()) {
+                player->play();
+            }
+            #endif
             break;
         case MPDState_Inactive:
         case MPDState_Stopped:
             player->stop();
-        break;
+            break;
         case MPDState_Paused:
-            player->pause();
+            if (stopOnPause) {
+                player->stop();
+            }
         default:
-        break;
+            break;
         }
     } else {
         state=MPDState_Inactive;
@@ -111,14 +123,24 @@ void HttpStream::updateStatus()
     state=status->state();
     switch (status->state()) {
     case MPDState_Playing:
-        player->play();
+        #if QT_VERSION < 0x050000
+        if (Phonon::PlayingState!=player->state()) {
+            player->play();
+        }
+        #else
+        if (QMediaPlayer::PlayingState!=player->state()) {
+            player->play();
+        }
+        #endif
         break;
     case MPDState_Inactive:
     case MPDState_Stopped:
         player->stop();
         break;
     case MPDState_Paused:
-        player->pause();
+        if (stopOnPause) {
+            player->stop();
+        }
     default:
         break;
     }

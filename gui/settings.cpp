@@ -916,6 +916,11 @@ int Settings::menu()
     return 0==v ? MC_Bar : v;
 }
 
+void Settings::stopHttpStreamOnPause()
+{
+    return cfg.get("stopHttpStreamOnPause", true);
+}
+
 void Settings::removeConnectionDetails(const QString &v)
 {
     if (v==currentConnection()) {

@@ -435,6 +435,15 @@ menu=<Integer>
     run under Unity or MacOS - as these always have a menubar - in which case
     menu=3 will cause both a menubar and menu button to be present.
 
+stopHttpStreamOnPause=<Boolean>
+    If Cantata is playing MPD's HTTP output stream, then this controls what
+    should happen when paused. When MPD's HTTP stream is paused, MPD will
+    output silence over the stream. If this option is set to true, then
+    Cantata will disconnect from MPD's HTTP stream. (NOTE: This will mean that
+    there will be a delay when un-pausing). If set to false, Cantata will
+    continue toi play the 'silence' (NOTE: This will use more bandwidth).
+    Default is true.
+
 e.g.
 [General]
 iconTheme=oxygen
@@ -449,6 +458,7 @@ mpdListSize=5000
 alwaysUseHttp=true
 alwaysUseLsInfo=true
 menu=3
+stopHttpStreamOnPause=true
 
 
 8. CUE Files

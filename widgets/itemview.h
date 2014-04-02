@@ -69,6 +69,17 @@ private:
     QAction *act;
 };
 
+class DeleteKeyEventHandler : public QObject
+{
+public:
+    DeleteKeyEventHandler(QAbstractItemView *v, QAction *a) : QObject(v), view(v), act(a) { }
+protected:
+    bool eventFilter(QObject *obj, QEvent *event);
+private:
+    QAbstractItemView *view;
+    QAction *act;
+};
+
 class ItemView : public QWidget, public Ui::ItemView
 {
     Q_OBJECT

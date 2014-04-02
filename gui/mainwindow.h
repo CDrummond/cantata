@@ -36,10 +36,6 @@ class KToggleAction;
 #include <QMainWindow>
 #define MAIN_WINDOW_BASE_CLASS QMainWindow
 #endif
-#include <QMenu>
-#include <QProxyStyle>
-#include <QPixmap>
-#include <QMoveEvent>
 #include <QToolButton>
 #include <QStringList>
 #include "ui_mainwindow.h"
@@ -77,8 +73,8 @@ class QTimer;
 class QPropertyAnimation;
 class QActionGroup;
 class QDateTime;
+class QMenu;
 class TrayItem;
-class GtkProxyStyle;
 class HttpStream;
 class MPDStatus;
 class MPDConnectionDetails;
@@ -96,17 +92,6 @@ class ContextPage : public QWidget
     Q_OBJECT
 public:
     ContextPage(QWidget *p) : QWidget(p) { }
-};
-
-class DeleteKeyEventHandler : public QObject
-{
-public:
-    DeleteKeyEventHandler(QAbstractItemView *v, QAction *a) : QObject(v), view(v), act(a) { }
-protected:
-    bool eventFilter(QObject *obj, QEvent *event);
-private:
-    QAbstractItemView *view;
-    QAction *act;
 };
 
 class MainWindow : public MAIN_WINDOW_BASE_CLASS, private Ui::MainWindow
@@ -352,25 +337,8 @@ private:
     Action *quitAction;
     Action *restoreAction;
     Action *locateTrackAction;
-    Action *showPlayQueueAction;
-    Action *libraryTabAction;
-    Action *albumsTabAction;
-    Action *foldersTabAction;
-    Action *playlistsTabAction;
-    #ifdef ENABLE_DYNAMIC
-    Action *dynamicTabAction;
-    #endif
-    #ifdef ENABLE_STREAMS
-    Action *streamsTabAction;
-    #endif
-    #ifdef ENABLE_ONLINE_SERVICES
-    Action *onlineTabAction;
-    #endif
     #ifdef TAGLIB_FOUND
     Action *editPlayQueueTagsAction;
-    #endif
-    #ifdef ENABLE_DEVICES_SUPPORT
-    Action *devicesTabAction;
     #endif
     Action *searchTabAction;
     Action *expandAllAction;
@@ -383,29 +351,37 @@ private:
     QPoint lastPos;
     Song current;
     Page *currentPage;
+    Action *showPlayQueueAction;
     QWidget *playQueuePage;
+    Action *libraryTabAction;
     LibraryPage *libraryPage;
+    Action *albumsTabAction;
     AlbumsPage *albumsPage;
+    Action *foldersTabAction;
     FolderPage *folderPage;
+    Action *playlistsTabAction;
     PlaylistsPage *playlistsPage;
     #ifdef ENABLE_DYNAMIC
+    Action *dynamicTabAction;
     DynamicPage *dynamicPage;
     #endif
     #ifdef ENABLE_STREAMS
+    Action *streamsTabAction;
     StreamsPage *streamsPage;
     #endif
     #ifdef ENABLE_ONLINE_SERVICES
+    Action *onlineTabAction;
     OnlineServicesPage *onlinePage;
     #endif
     QWidget *contextPage;
     #ifdef ENABLE_DEVICES_SUPPORT
+    Action *devicesTabAction;
     DevicesPage *devicesPage;
     #endif
     SearchPage *searchPage;
-    #ifndef Q_OS_WIN
+    #ifdef QT_QTDBUS_FOUND
     Mpris *mpris;
-    GtkProxyStyle *gtkStyle;
-    #endif // Q_OS_WIN
+    #endif
     QTimer *statusTimer;
     QTimer *playQueueSearchTimer;
     #if !defined Q_OS_WIN && !defined Q_OS_MAC
@@ -413,29 +389,14 @@ private:
     #endif
     QTimer *contextTimer;
     int contextSwitchTime;
-
-    enum ConnState {
-        CS_Init,
-        CS_Connected,
-        CS_Disconnected
-    };
-
-    ConnState connectedState;
-
-    enum StopState {
-        StopState_None     = 0,
-        StopState_Stopping = 1
-//         StopState_Pausing  = 2
-    };
-
+    enum { CS_Init, CS_Connected, CS_Disconnected } connectedState;
     bool fadeStop;
     bool stopAfterCurrent;
     QPropertyAnimation *volumeFade;
     int volume;
     int origVolume;
     int lastVolume;
-    StopState stopState;
-    friend class CoverEventHandler;
+    enum { StopState_None, StopState_Stopping } stopState;
     friend class TrayItem;
 };
 

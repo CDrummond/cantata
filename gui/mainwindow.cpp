@@ -24,36 +24,9 @@
  * along with QtMPC.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QSet>
-#include <QString>
-#include <QTimer>
-#include <QClipboard>
-#include <QToolBar>
-#if defined Q_OS_MAC && QT_VERSION >= 0x050000
-// QMacNativeToolBar requres Qt Macf Extras to be installed on Qt 5.0 and 5.1.
-#include <QMacNativeToolBar>
-#endif
-#if QT_VERSION >= 0x050000
-#include <QProcess>
-#endif
-#include <QDialogButtonBox>
-#include <QProxyStyle>
-#include <cstdlib>
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KApplication>
-#include <KDE/KStandardAction>
-#include <KDE/KMenuBar>
-#include <KDE/KMenu>
-#include <KDE/KShortcutsDialog>
-#include <KDE/KWindowSystem>
-#include <KDE/KToggleAction>
-#else
-#include <QMenuBar>
-#include "mediakeys.h"
-#endif
+#include "mainwindow.h"
 #include "localize.h"
 #include "plurals.h"
-#include "mainwindow.h"
 #include "thread.h"
 #include "trayitem.h"
 #include "messagebox.h"
@@ -68,7 +41,6 @@
 #include "mpdstatus.h"
 #include "mpdparseutils.h"
 #include "settings.h"
-#include "config.h"
 #include "utils.h"
 #include "musiclibrarymodel.h"
 #include "musiclibraryitemartist.h"
@@ -116,7 +88,6 @@
 #endif
 #if !defined Q_OS_WIN && !defined Q_OS_MAC
 #include "mountpoints.h"
-#include "gtkproxystyle.h"
 #endif
 #ifdef ENABLE_DYNAMIC
 #include "dynamicpage.h"
@@ -136,18 +107,32 @@
 #ifdef Q_OS_WIN
 static void raiseWindow(QWidget *w);
 #endif
-
-bool DeleteKeyEventHandler::eventFilter(QObject *obj, QEvent *event)
-{
-    if (view->hasFocus() && QEvent::KeyRelease==event->type()) {
-        QKeyEvent *keyEvent=static_cast<QKeyEvent *>(event);
-        if (Qt::NoModifier==keyEvent->modifiers() && Qt::Key_Delete==keyEvent->key()) {
-            act->trigger();
-        }
-        return true;
-    }
-    return QObject::eventFilter(obj, event);
-}
+#include <QSet>
+#include <QString>
+#include <QTimer>
+#include <QToolBar>
+#if defined Q_OS_MAC && QT_VERSION >= 0x050000
+// QMacNativeToolBar requres Qt Mac Extras to be installed on Qt 5.0 and 5.1.
+#include <QMacNativeToolBar>
+#endif
+#if QT_VERSION >= 0x050000
+#include <QProcess>
+#endif
+#include <QDialogButtonBox>
+#include <QKeyEvent>
+#ifdef ENABLE_KDE_SUPPORT
+#include <KDE/KApplication>
+#include <KDE/KStandardAction>
+#include <KDE/KMenuBar>
+#include <KDE/KMenu>
+#include <KDE/KShortcutsDialog>
+#include <KDE/KWindowSystem>
+#include <KDE/KToggleAction>
+#else
+#include <QMenuBar>
+#include "mediakeys.h"
+#endif
+#include <cstdlib>
 
 static int nextKey(int &key)
 {
@@ -297,26 +282,10 @@ MainWindow::MainWindow(QWidget *parent)
     #ifdef TAGLIB_FOUND
     editPlayQueueTagsAction = ActionCollection::get()->createAction("editpqtags", i18n("Edit Song Tags"), "document-edit");
     #endif
-    addAction(showPlayQueueAction = ActionCollection::get()->createAction("showplayqueue", i18n("Play Queue"), Icons::self()->playqueueIcon));
-    addAction(libraryTabAction = ActionCollection::get()->createAction("showlibrarytab", i18n("Artists"), Icons::self()->artistsIcon));
-    addAction(albumsTabAction = ActionCollection::get()->createAction("showalbumstab", i18n("Albums"), Icons::self()->albumsIcon));
-    addAction(foldersTabAction = ActionCollection::get()->createAction("showfolderstab", i18n("Folders"), Icons::self()->foldersIcon));
-    addAction(playlistsTabAction = ActionCollection::get()->createAction("showplayliststab", i18n("Playlists"), Icons::self()->playlistsIcon));
-    #ifdef ENABLE_DYNAMIC
-    addAction(dynamicTabAction = ActionCollection::get()->createAction("showdynamictab", i18n("Dynamic"), Icons::self()->dynamicIcon));
-    #endif
-    #ifdef ENABLE_STREAMS
-    addAction(streamsTabAction = ActionCollection::get()->createAction("showstreamstab", i18n("Streams"), Icons::self()->streamsIcon));
-    #endif
-    #ifdef ENABLE_ONLINE_SERVICES
-    addAction(onlineTabAction = ActionCollection::get()->createAction("showonlinetab", i18n("Online"), Icons::self()->onlineIcon));
-    #endif
-    #ifdef ENABLE_DEVICES_SUPPORT
-    addAction(devicesTabAction = ActionCollection::get()->createAction("showdevicestab", i18n("Devices"), Icons::self()->devicesIcon));
-    #endif
-    addAction(searchTabAction = ActionCollection::get()->createAction("showsearchtab", i18n("Search"), Icons::self()->searchTabIcon));
     addAction(expandAllAction = ActionCollection::get()->createAction("expandall", i18n("Expand All")));
+    expandAllAction->setShortcut(Qt::ControlModifier+Qt::Key_Plus);
     addAction(collapseAllAction = ActionCollection::get()->createAction("collapseall", i18n("Collapse All")));
+    collapseAllAction->setShortcut(Qt::ControlModifier+Qt::Key_Minus);
     clearPlayQueueAction = ActionCollection::get()->createAction("confimclearplaylist", i18n("Remove All Songs"), Icons::self()->clearListIcon);
     clearPlayQueueAction->setShortcut(Qt::AltModifier+Qt::Key_Return);
     cancelAction = ActionCollection::get()->createAction("cancel", i18n("Cancel"), Icons::self()->cancelIcon);
@@ -337,29 +306,6 @@ MainWindow::MainWindow(QWidget *parent)
     enableStopActions(false);
     volumeSlider->initActions();
 
-    expandAllAction->setShortcut(Qt::ControlModifier+Qt::Key_Plus);
-    collapseAllAction->setShortcut(Qt::ControlModifier+Qt::Key_Minus);
-
-    int pageKey=Qt::Key_1;
-    showPlayQueueAction->setShortcut(Qt::ControlModifier+Qt::ShiftModifier+Qt::Key_Q);
-    libraryTabAction->setShortcut(Qt::ControlModifier+Qt::ShiftModifier+nextKey(pageKey));
-    albumsTabAction->setShortcut(Qt::ControlModifier+Qt::ShiftModifier+nextKey(pageKey));
-    foldersTabAction->setShortcut(Qt::ControlModifier+Qt::ShiftModifier+nextKey(pageKey));
-    playlistsTabAction->setShortcut(Qt::ControlModifier+Qt::ShiftModifier+nextKey(pageKey));
-    #ifdef ENABLE_DYNAMIC
-    dynamicTabAction->setShortcut(Qt::ControlModifier+Qt::ShiftModifier+nextKey(pageKey));
-    #endif
-    #ifdef ENABLE_STREAMS
-    streamsTabAction->setShortcut(Qt::ControlModifier+Qt::ShiftModifier+nextKey(pageKey));
-    #endif
-    #ifdef ENABLE_ONLINE_SERVICES
-    onlineTabAction->setShortcut(Qt::ControlModifier+Qt::ShiftModifier+nextKey(pageKey));
-    #endif
-    #ifdef ENABLE_DEVICES_SUPPORT
-    devicesTabAction->setShortcut(Qt::ControlModifier+Qt::ShiftModifier+nextKey(pageKey));
-    #endif // ENABLE_DEVICES_SUPPORT
-    searchTabAction->setShortcut(Qt::ControlModifier+Qt::ShiftModifier+nextKey(pageKey));
-
     connectionsAction->setMenu(new QMenu(this));
     connectionsGroup=new QActionGroup(connectionsAction->menu());
     outputsAction->setMenu(new QMenu(this));
@@ -377,24 +323,6 @@ MainWindow::MainWindow(QWidget *parent)
     stopTrackButton->setMenu(stopMenu);
     stopTrackButton->setPopupMode(QToolButton::DelayedPopup);
 
-    libraryPage = new LibraryPage(this);
-    albumsPage = new AlbumsPage(this);
-    folderPage = new FolderPage(this);
-    playlistsPage = new PlaylistsPage(this);
-    #ifdef ENABLE_DYNAMIC
-    dynamicPage = new DynamicPage(this);
-    #endif
-    #ifdef ENABLE_STREAMS
-    streamsPage = new StreamsPage(this);
-    #endif
-    #ifdef ENABLE_ONLINE_SERVICES
-    onlinePage = new OnlineServicesPage(this);
-    #endif
-    #ifdef ENABLE_DEVICES_SUPPORT
-    devicesPage = new DevicesPage(this);
-    #endif
-    searchPage = new SearchPage(this);
-
     promptClearPlayQueueAction->setEnabled(false);
     StdActions::self()->savePlayQueueAction->setEnabled(false);
     addStreamToPlayQueueAction->setEnabled(false);
@@ -404,8 +332,6 @@ MainWindow::MainWindow(QWidget *parent)
     repeatButton->setDefaultAction(repeatPlayQueueAction);
     singleButton->setDefaultAction(singlePlayQueueAction);
     consumeButton->setDefaultAction(consumePlayQueueAction);
-
-    #define TAB_ACTION(A) A->icon(), A->text(), A->text()
 
     QStringList hiddenPages=Settings::self()->hiddenPages();
     playQueuePage=new PlayQueuePage(this);
@@ -422,33 +348,86 @@ MainWindow::MainWindow(QWidget *parent)
     }
     layout=new QBoxLayout(QBoxLayout::TopToBottom, contextPage);
     layout->setContentsMargins(0, 0, 0, 0);
+
+    // Build sidebar...
+    #define TAB_ACTION(A) A->icon(), A->text(), A->text()
+    int sidebarPageShortcutKey=Qt::Key_1;
+    addAction(showPlayQueueAction = ActionCollection::get()->createAction("showplayqueue", i18n("Play Queue"), Icons::self()->playqueueIcon));
+    showPlayQueueAction->setShortcut(Qt::ControlModifier+Qt::ShiftModifier+Qt::Key_Q);
     tabWidget->addTab(playQueuePage, TAB_ACTION(showPlayQueueAction), playQueueInSidebar);
+    connect(showPlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(showPlayQueue()));
+    libraryPage = new LibraryPage(this);
+    addAction(libraryTabAction = ActionCollection::get()->createAction("showlibrarytab", i18n("Artists"), Icons::self()->artistsIcon));
+    libraryTabAction->setShortcut(Qt::ControlModifier+Qt::ShiftModifier+nextKey(sidebarPageShortcutKey));
     tabWidget->addTab(libraryPage, TAB_ACTION(libraryTabAction), !hiddenPages.contains(libraryPage->metaObject()->className()));
+    connect(libraryTabAction, SIGNAL(triggered(bool)), this, SLOT(showLibraryTab()));
+    albumsPage = new AlbumsPage(this);
+    addAction(albumsTabAction = ActionCollection::get()->createAction("showalbumstab", i18n("Albums"), Icons::self()->albumsIcon));
+    albumsTabAction->setShortcut(Qt::ControlModifier+Qt::ShiftModifier+nextKey(sidebarPageShortcutKey));
     tabWidget->addTab(albumsPage, TAB_ACTION(albumsTabAction), !hiddenPages.contains(albumsPage->metaObject()->className()));
+    connect(albumsTabAction, SIGNAL(triggered(bool)), this, SLOT(showAlbumsTab()));
+    AlbumsModel::self()->setEnabled(!hiddenPages.contains(albumsPage->metaObject()->className()));
+    folderPage = new FolderPage(this);
+    addAction(foldersTabAction = ActionCollection::get()->createAction("showfolderstab", i18n("Folders"), Icons::self()->foldersIcon));
+    foldersTabAction->setShortcut(Qt::ControlModifier+Qt::ShiftModifier+nextKey(sidebarPageShortcutKey));
     tabWidget->addTab(folderPage, TAB_ACTION(foldersTabAction), !hiddenPages.contains(folderPage->metaObject()->className()));
+    connect(foldersTabAction, SIGNAL(triggered(bool)), this, SLOT(showFoldersTab()));
+    folderPage->setEnabled(!hiddenPages.contains(folderPage->metaObject()->className()));
+    playlistsPage = new PlaylistsPage(this);
+    addAction(playlistsTabAction = ActionCollection::get()->createAction("showplayliststab", i18n("Playlists"), Icons::self()->playlistsIcon));
+    playlistsTabAction->setShortcut(Qt::ControlModifier+Qt::ShiftModifier+nextKey(sidebarPageShortcutKey));
     tabWidget->addTab(playlistsPage, TAB_ACTION(playlistsTabAction), !hiddenPages.contains(playlistsPage->metaObject()->className()));
+    connect(playlistsTabAction, SIGNAL(triggered(bool)), this, SLOT(showPlaylistsTab()));
+    setPlaylistsEnabled(!hiddenPages.contains(playlistsPage->metaObject()->className()));
     #ifdef ENABLE_DYNAMIC
+    dynamicPage = new DynamicPage(this);
+    addAction(dynamicTabAction = ActionCollection::get()->createAction("showdynamictab", i18n("Dynamic"), Icons::self()->dynamicIcon));
+    dynamicTabAction->setShortcut(Qt::ControlModifier+Qt::ShiftModifier+nextKey(sidebarPageShortcutKey));
     tabWidget->addTab(dynamicPage, TAB_ACTION(dynamicTabAction), !hiddenPages.contains(dynamicPage->metaObject()->className()));
+    connect(dynamicTabAction, SIGNAL(triggered(bool)), this, SLOT(showDynamicTab()));
+    connect(Dynamic::self(), SIGNAL(error(const QString &)), SLOT(showError(const QString &)));
+    connect(Dynamic::self(), SIGNAL(running(bool)), dynamicLabel, SLOT(setVisible(bool)));
+    connect(Dynamic::self(), SIGNAL(running(bool)), this, SLOT(controlDynamicButton()));
+    stopDynamicButton->setDefaultAction(Dynamic::self()->stopAct());
     #endif
     #ifdef ENABLE_STREAMS
+    streamsPage = new StreamsPage(this);
+    addAction(streamsTabAction = ActionCollection::get()->createAction("showstreamstab", i18n("Streams"), Icons::self()->streamsIcon));
+    streamsTabAction->setShortcut(Qt::ControlModifier+Qt::ShiftModifier+nextKey(sidebarPageShortcutKey));
     tabWidget->addTab(streamsPage, TAB_ACTION(streamsTabAction), !hiddenPages.contains(streamsPage->metaObject()->className()));
     streamsPage->setEnabled(!hiddenPages.contains(streamsPage->metaObject()->className()));
+    connect(streamsTabAction, SIGNAL(triggered(bool)), this, SLOT(showStreamsTab()));
+    connect(streamsPage, SIGNAL(add(const QStringList &, bool, quint8)), &playQueueModel, SLOT(addItems(const QStringList &, bool, quint8)));
+    connect(streamsPage, SIGNAL(error(QString)), this, SLOT(showError(QString)));
+    connect(streamsPage, SIGNAL(showPreferencesPage(QString)), this, SLOT(showPreferencesDialog(QString)));
     #endif
     #ifdef ENABLE_ONLINE_SERVICES
+    onlinePage = new OnlineServicesPage(this);
+    addAction(onlineTabAction = ActionCollection::get()->createAction("showonlinetab", i18n("Online"), Icons::self()->onlineIcon));
+    onlineTabAction->setShortcut(Qt::ControlModifier+Qt::ShiftModifier+nextKey(sidebarPageShortcutKey));
     tabWidget->addTab(onlinePage, TAB_ACTION(onlineTabAction), !hiddenPages.contains(onlinePage->metaObject()->className()));
     onlinePage->setEnabled(!hiddenPages.contains(onlinePage->metaObject()->className()));
+    connect(onlineTabAction, SIGNAL(triggered(bool)), this, SLOT(showOnlineTab()));
+    connect(onlinePage, SIGNAL(showPreferencesPage(QString)), this, SLOT(showPreferencesDialog(QString)));
+    connect(onlinePage, SIGNAL(addToDevice(const QString &, const QString &, const QList<Song> &)), SLOT(copyToDevice(const QString &, const QString &, const QList<Song> &)));
+    connect(OnlineServicesModel::self(), SIGNAL(error(const QString &)), this, SLOT(showError(const QString &)));
     #endif
     #ifdef ENABLE_DEVICES_SUPPORT
+    devicesPage = new DevicesPage(this);
+    addAction(devicesTabAction = ActionCollection::get()->createAction("showdevicestab", i18n("Devices"), Icons::self()->devicesIcon));
+    devicesTabAction->setShortcut(Qt::ControlModifier+Qt::ShiftModifier+nextKey(sidebarPageShortcutKey));
     tabWidget->addTab(devicesPage, TAB_ACTION(devicesTabAction), !hiddenPages.contains(devicesPage->metaObject()->className()));
     DevicesModel::self()->setEnabled(!hiddenPages.contains(devicesPage->metaObject()->className()));
+    connect(devicesTabAction, SIGNAL(triggered(bool)), this, SLOT(showDevicesTab()));
     #endif
+    searchPage = new SearchPage(this);
+    addAction(searchTabAction = ActionCollection::get()->createAction("showsearchtab", i18n("Search"), Icons::self()->searchTabIcon));
+    searchTabAction->setShortcut(Qt::ControlModifier+Qt::ShiftModifier+nextKey(sidebarPageShortcutKey));
+    connect(searchTabAction, SIGNAL(triggered(bool)), this, SLOT(showSearchTab()));
     tabWidget->addTab(searchPage, TAB_ACTION(searchTabAction), !hiddenPages.contains(searchPage->metaObject()->className()));
     tabWidget->addTab(contextPage, Icons::self()->infoSidebarIcon, i18n("Info"), songInfoAction->text(),
                       !hiddenPages.contains(contextPage->metaObject()->className()));
-    tabWidget->recreate();
-    AlbumsModel::self()->setEnabled(!hiddenPages.contains(albumsPage->metaObject()->className()));
-    folderPage->setEnabled(!hiddenPages.contains(folderPage->metaObject()->className()));
-    setPlaylistsEnabled(!hiddenPages.contains(playlistsPage->metaObject()->className()));
+    tabWidget->setStyle(Settings::self()->sidebar());
 
     if (playQueueInSidebar) {
         tabToggled(PAGE_PLAYQUEUE);
@@ -471,11 +450,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     songInfoButton->setDefaultAction(songInfoAction);
     playQueueSearchWidget->setVisible(false);
-    QList<QToolButton *> playbackBtns;
-    QList<QToolButton *> controlBtns;
-    playbackBtns << prevTrackButton << stopTrackButton << playPauseTrackButton << nextTrackButton;
-    controlBtns << menuButton << songInfoButton;
-
+    QList<QToolButton *> playbackBtns=QList<QToolButton *>() << prevTrackButton << stopTrackButton << playPauseTrackButton << nextTrackButton;
+    QList<QToolButton *> controlBtns=QList<QToolButton *>() << menuButton << songInfoButton;
     int playbackIconSize=28;
     int controlIconSize=22;
     int controlButtonSize=32;
@@ -531,7 +507,6 @@ MainWindow::MainWindow(QWidget *parent)
     MusicLibraryItemAlbum::setCoverSize((MusicLibraryItemAlbum::CoverSize)Settings::self()->libraryCoverSize());
     MusicLibraryItemAlbum::setSortByDate(Settings::self()->libraryYear());
     AlbumsModel::setCoverSize((MusicLibraryItemAlbum::CoverSize)Settings::self()->albumsCoverSize());
-    tabWidget->setStyle(Settings::self()->sidebar());
 
     #ifdef ENABLE_KDE_SUPPORT
     setupGUI(KXmlGuiWindow::Keys);
@@ -697,9 +672,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     dynamicLabel->setVisible(false);
     stopDynamicButton->setVisible(false);
-    #ifdef ENABLE_DYNAMIC
-    stopDynamicButton->setDefaultAction(Dynamic::self()->stopAct());
-    #endif
     StdActions::self()->addWithPriorityAction->setVisible(false);
     setPriorityAction->setVisible(false);
     setPriorityAction->setMenu(StdActions::self()->addWithPriorityAction->menu());
@@ -731,6 +703,21 @@ MainWindow::MainWindow(QWidget *parent)
     playQueue->readConfig();
     playlistsPage->setStartClosed(Settings::self()->playListsStartClosed());
 
+    #ifdef ENABLE_DEVICES_SUPPORT
+    connect(DevicesModel::self(), SIGNAL(addToDevice(const QString &)), this, SLOT(addToDevice(const QString &)));
+    connect(DevicesModel::self(), SIGNAL(error(const QString &)), this, SLOT(showError(const QString &)));
+    connect(libraryPage, SIGNAL(addToDevice(const QString &, const QString &, const QList<Song> &)), SLOT(copyToDevice(const QString &, const QString &, const QList<Song> &)));
+    connect(albumsPage, SIGNAL(addToDevice(const QString &, const QString &, const QList<Song> &)), SLOT(copyToDevice(const QString &, const QString &, const QList<Song> &)));
+    connect(folderPage, SIGNAL(addToDevice(const QString &, const QString &, const QList<Song> &)), SLOT(copyToDevice(const QString &, const QString &, const QList<Song> &)));
+    connect(playlistsPage, SIGNAL(addToDevice(const QString &, const QString &, const QList<Song> &)), SLOT(copyToDevice(const QString &, const QString &, const QList<Song> &)));
+    connect(devicesPage, SIGNAL(addToDevice(const QString &, const QString &, const QList<Song> &)), SLOT(copyToDevice(const QString &, const QString &, const QList<Song> &)));
+    connect(searchPage, SIGNAL(addToDevice(const QString &, const QString &, const QList<Song> &)), SLOT(copyToDevice(const QString &, const QString &, const QList<Song> &)));
+    connect(StdActions::self()->deleteSongsAction, SIGNAL(triggered(bool)), SLOT(deleteSongs()));
+    connect(devicesPage, SIGNAL(deleteSongs(const QString &, const QList<Song> &)), SLOT(deleteSongs(const QString &, const QList<Song> &)));
+    connect(libraryPage, SIGNAL(deleteSongs(const QString &, const QList<Song> &)), SLOT(deleteSongs(const QString &, const QList<Song> &)));
+    connect(albumsPage, SIGNAL(deleteSongs(const QString &, const QList<Song> &)), SLOT(deleteSongs(const QString &, const QList<Song> &)));
+    connect(folderPage, SIGNAL(deleteSongs(const QString &, const QList<Song> &)), SLOT(deleteSongs(const QString &, const QList<Song> &)));
+    #endif
     connect(StdActions::self()->addPrioHighestAction, SIGNAL(triggered(bool)), this, SLOT(addWithPriority()));
     connect(StdActions::self()->addPrioHighAction, SIGNAL(triggered(bool)), this, SLOT(addWithPriority()));
     connect(StdActions::self()->addPrioMediumAction, SIGNAL(triggered(bool)), this, SLOT(addWithPriority()));
@@ -760,14 +747,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(&playQueueModel, SIGNAL(streamFetchStatus(QString)), playQueue, SLOT(streamFetchStatus(QString)));
     connect(playQueue, SIGNAL(cancelStreamFetch()), &playQueueModel, SLOT(cancelStreamFetch()));
     connect(playQueue, SIGNAL(itemsSelected(bool)), SLOT(playQueueItemsSelected(bool)));
-    #ifdef ENABLE_STREAMS
-    connect(streamsPage, SIGNAL(add(const QStringList &, bool, quint8)), &playQueueModel, SLOT(addItems(const QStringList &, bool, quint8)));
-    connect(streamsPage, SIGNAL(error(QString)), this, SLOT(showError(QString)));
-    connect(streamsPage, SIGNAL(showPreferencesPage(QString)), this, SLOT(showPreferencesDialog(QString)));
-    #endif
-    #ifdef ENABLE_ONLINE_SERVICES
-    connect(onlinePage, SIGNAL(showPreferencesPage(QString)), this, SLOT(showPreferencesDialog(QString)));
-    #endif
     connect(MPDStats::self(), SIGNAL(updated()), this, SLOT(updateStats()));
     connect(MPDStatus::self(), SIGNAL(updated()), this, SLOT(updateStatus()));
     connect(MPDConnection::self(), SIGNAL(playlistUpdated(const QList<Song> &)), this, SLOT(updatePlayQueue(const QList<Song> &)));
@@ -777,11 +756,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(MPDConnection::self(), SIGNAL(error(const QString &, bool)), SLOT(showError(const QString &, bool)));
     connect(MPDConnection::self(), SIGNAL(info(const QString &)), SLOT(showInformation(const QString &)));
     connect(MPDConnection::self(), SIGNAL(dirChanged()), SLOT(checkMpdDir()));
-    #ifdef ENABLE_DYNAMIC
-    connect(Dynamic::self(), SIGNAL(error(const QString &)), SLOT(showError(const QString &)));
-    connect(Dynamic::self(), SIGNAL(running(bool)), dynamicLabel, SLOT(setVisible(bool)));
-    connect(Dynamic::self(), SIGNAL(running(bool)), this, SLOT(controlDynamicButton()));
-    #endif
     connect(refreshDbAction, SIGNAL(triggered(bool)), this, SLOT(refreshDbPromp()));
     connect(doDbRefreshAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(update()));
     connect(doDbRefreshAction, SIGNAL(triggered(bool)), messageWidget, SLOT(animatedHide()));
@@ -827,44 +801,9 @@ MainWindow::MainWindow(QWidget *parent)
     connect(context, SIGNAL(findAlbum(QString,QString)), this, SLOT(locateAlbum(QString,QString)));
     connect(context, SIGNAL(playSong(QString)), &playQueueModel, SLOT(playSong(QString)));
     connect(locateTrackAction, SIGNAL(triggered(bool)), this, SLOT(locateTrack()));
-    connect(showPlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(showPlayQueue()));
-    connect(libraryTabAction, SIGNAL(triggered(bool)), this, SLOT(showLibraryTab()));
-    connect(albumsTabAction, SIGNAL(triggered(bool)), this, SLOT(showAlbumsTab()));
-    connect(foldersTabAction, SIGNAL(triggered(bool)), this, SLOT(showFoldersTab()));
-    connect(playlistsTabAction, SIGNAL(triggered(bool)), this, SLOT(showPlaylistsTab()));
-    #ifdef ENABLE_DYNAMIC
-    connect(dynamicTabAction, SIGNAL(triggered(bool)), this, SLOT(showDynamicTab()));
-    #endif
-    #ifdef ENABLE_STREAMS
-    connect(streamsTabAction, SIGNAL(triggered(bool)), this, SLOT(showStreamsTab()));
-    #endif
-    #ifdef ENABLE_ONLINE_SERVICES
-    connect(onlineTabAction, SIGNAL(triggered(bool)), this, SLOT(showOnlineTab()));
-    #endif
-    connect(searchTabAction, SIGNAL(triggered(bool)), this, SLOT(showSearchTab()));
     connect(StdActions::self()->searchAction, SIGNAL(triggered(bool)), SLOT(showSearch()));
     connect(expandAllAction, SIGNAL(triggered(bool)), this, SLOT(expandAll()));
     connect(collapseAllAction, SIGNAL(triggered(bool)), this, SLOT(collapseAll()));
-    #ifdef ENABLE_DEVICES_SUPPORT
-    connect(devicesTabAction, SIGNAL(triggered(bool)), this, SLOT(showDevicesTab()));
-    connect(DevicesModel::self(), SIGNAL(addToDevice(const QString &)), this, SLOT(addToDevice(const QString &)));
-    connect(DevicesModel::self(), SIGNAL(error(const QString &)), this, SLOT(showError(const QString &)));
-    connect(libraryPage, SIGNAL(addToDevice(const QString &, const QString &, const QList<Song> &)), SLOT(copyToDevice(const QString &, const QString &, const QList<Song> &)));
-    connect(albumsPage, SIGNAL(addToDevice(const QString &, const QString &, const QList<Song> &)), SLOT(copyToDevice(const QString &, const QString &, const QList<Song> &)));
-    connect(folderPage, SIGNAL(addToDevice(const QString &, const QString &, const QList<Song> &)), SLOT(copyToDevice(const QString &, const QString &, const QList<Song> &)));
-    connect(playlistsPage, SIGNAL(addToDevice(const QString &, const QString &, const QList<Song> &)), SLOT(copyToDevice(const QString &, const QString &, const QList<Song> &)));
-    connect(devicesPage, SIGNAL(addToDevice(const QString &, const QString &, const QList<Song> &)), SLOT(copyToDevice(const QString &, const QString &, const QList<Song> &)));
-    #ifdef ENABLE_ONLINE_SERVICES
-    connect(onlinePage, SIGNAL(addToDevice(const QString &, const QString &, const QList<Song> &)), SLOT(copyToDevice(const QString &, const QString &, const QList<Song> &)));
-    connect(OnlineServicesModel::self(), SIGNAL(error(const QString &)), this, SLOT(showError(const QString &)));
-    #endif
-    connect(searchPage, SIGNAL(addToDevice(const QString &, const QString &, const QList<Song> &)), SLOT(copyToDevice(const QString &, const QString &, const QList<Song> &)));
-    connect(StdActions::self()->deleteSongsAction, SIGNAL(triggered(bool)), SLOT(deleteSongs()));
-    connect(devicesPage, SIGNAL(deleteSongs(const QString &, const QList<Song> &)), SLOT(deleteSongs(const QString &, const QList<Song> &)));
-    connect(libraryPage, SIGNAL(deleteSongs(const QString &, const QList<Song> &)), SLOT(deleteSongs(const QString &, const QList<Song> &)));
-    connect(albumsPage, SIGNAL(deleteSongs(const QString &, const QList<Song> &)), SLOT(deleteSongs(const QString &, const QList<Song> &)));
-    connect(folderPage, SIGNAL(deleteSongs(const QString &, const QList<Song> &)), SLOT(deleteSongs(const QString &, const QList<Song> &)));
-    #endif
     connect(addStreamToPlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(addStreamToPlayQueue()));
     connect(StdActions::self()->setCoverAction, SIGNAL(triggered(bool)), SLOT(setCover()));
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
@@ -954,8 +893,7 @@ MainWindow::~MainWindow()
     Settings::self()->saveForceSingleClick(TreeView::getForceSingleClick());
     Settings::StartupState startupState=Settings::self()->startupState();
     Settings::self()->saveStartHidden(trayItem->isActive() && Settings::self()->minimiseOnClose() &&
-                                      ( (isHidden() && Settings::SS_ShowMainWindow!=startupState) ||
-                                        (Settings::SS_HideMainWindow==startupState) ) );
+                                      ((isHidden() && Settings::SS_ShowMainWindow!=startupState) || (Settings::SS_HideMainWindow==startupState)));
     Settings::self()->save(true);
     disconnect(MPDConnection::self(), 0, 0, 0);
     #ifdef ENABLE_DYNAMIC
@@ -1450,10 +1388,9 @@ void MainWindow::readSettings()
     }
 }
 
-bool diffCoverSize(int a, int b)
+static inline bool diffCoverSize(int a, int b)
 {
-    return (a==ItemView::Mode_IconTop && b!=ItemView::Mode_IconTop) ||
-           (a!=ItemView::Mode_IconTop && b==ItemView::Mode_IconTop);
+    return (a==ItemView::Mode_IconTop && b!=ItemView::Mode_IconTop) || (a!=ItemView::Mode_IconTop && b==ItemView::Mode_IconTop);
 }
 
 void MainWindow::updateSettings()
@@ -1637,7 +1574,7 @@ void MainWindow::startVolumeFade()
 
 void MainWindow::stopVolumeFade()
 {
-    if (stopState) {
+    if (StopState_None!=stopState) {
         stopState=StopState_None;
         volumeFade->stop();
         setMpdVolume(-1);

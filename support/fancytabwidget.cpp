@@ -823,14 +823,14 @@ int FancyTabWidget::tabToIndex(int tab) const
 
 void FancyTabWidget::setIcon(int index, const QIcon &icon)
 {
-    if (index>0 && index<items.count()) {
+    if (index>-1 && index<items.count()) {
         items[index].tabIcon=icon;
     }
 }
 
 void FancyTabWidget::setToolTip(int index, const QString &tt)
 {
-    if (index>0 && index<items.count()) {
+    if (index>-1 && index<items.count()) {
         Item &item=items[index];
         item.tabTooltip=tt.isEmpty() ? item.tabLabel : tt;
 

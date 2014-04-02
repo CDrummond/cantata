@@ -96,6 +96,7 @@
 4. Remove ununsed 'Back' action.
 5. Don't treat albums with artists such as 'AlbumArtist ft Other' as multiple
    artist albums.
+6. Fix updating of playqueue sidebar tooltip and icon.
 
 1.3.3
 -----

@@ -890,21 +890,22 @@ bool TagEditor::applyUpdates()
     }
 
     if (updatedSongs.count()) {
-        #ifdef ENABLE_DEVICES_SUPPORT
-        if (!deviceUdi.isEmpty()) {
-            dev->saveCache();
-        } else
-        #endif
-        {
-//             MusicLibraryModel::self()->removeCache();
-            emit update(modifiedDirs);
-        }
-
+        // If we call tag-editor, no need to do MPD update - as this will be done from that dialog...
         if (renameFiles &&
             MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Would you also like to rename your song files, so as to match your tags?"),
                                                        i18n("Rename Files"), GuiItem(i18n("Rename")), StdGuiItem::cancel())) {
             TrackOrganiser *dlg=new TrackOrganiser(parentWidget());
-            dlg->show(updatedSongs, udi);
+            dlg->show(updatedSongs, udi, true, modifiedDirs);
+        } else {
+            #ifdef ENABLE_DEVICES_SUPPORT
+            if (!deviceUdi.isEmpty()) {
+                dev->saveCache();
+            } else
+            #endif
+            {
+            //             MusicLibraryModel::self()->removeCache();
+                emit update(modifiedDirs);
+            }
         }
     }
 

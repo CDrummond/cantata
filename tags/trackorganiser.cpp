@@ -62,6 +62,7 @@ TrackOrganiser::TrackOrganiser(QWidget *parent)
     , autoSkip(false)
     , paused(false)
     , updated(false)
+    , alwaysUpdate(false)
 {
     iCount++;
     setButtons(Ok|Cancel);
@@ -90,8 +91,13 @@ TrackOrganiser::~TrackOrganiser()
     iCount--;
 }
 
-void TrackOrganiser::show(const QList<Song> &songs, const QString &udi)
+void TrackOrganiser::show(const QList<Song> &songs, const QString &udi, bool forceUpdate, const QSet<QString> &prevModifiedDirs)
 {
+    modifiedDirs.clear();
+    // If we are called from the TagEditor dialog, then forceUpdate will be true and prevModifiedDirs will contain the dirs modifed
+    // by the tag-editor. This is so that we dont do 2 MPD updates (one from TagEditor, and one from here!)
+    modifiedDirs+=prevModifiedDirs;
+    alwaysUpdate=forceUpdate;
     foreach (const Song &s, songs) {
         if (!CueFile::isCue(s.file)) {
            origSongs.append(s);
@@ -100,6 +106,9 @@ void TrackOrganiser::show(const QList<Song> &songs, const QString &udi)
 
     if (origSongs.isEmpty()) {
         deleteLater();
+        if (alwaysUpdate) {
+            doUpdate();
+        }
         return;
     }
 
@@ -241,7 +250,6 @@ void TrackOrganiser::startRename()
     #endif
         opts.save(MPDConnectionDetails::configGroupName(MPDConnection::self()->getDetails().name), true);
 
-    modifiedDirs.clear();
     QTimer::singleShot(100, this, SLOT(renameFile()));
 }
 
@@ -435,7 +443,7 @@ void TrackOrganiser::renameFile()
 
             if (deviceUdi.isEmpty()) {
                 MusicLibraryModel::self()->updateSongFile(s, to);
-                DirViewModel::self()->removeFileFromList(s.file);                
+                DirViewModel::self()->removeFileFromList(s.file);
                 DirViewModel::self()->addFileToList(origPath.isEmpty() ? to.file : origPath,
                                                     origPath.isEmpty() ? QString() : to.file);
             }
@@ -491,20 +499,25 @@ void TrackOrganiser::showMopidyMessage()
                             QLatin1String("Mopidy"));
 }
 
+void TrackOrganiser::doUpdate()
+{
+    if (deviceUdi.isEmpty()) {
+        emit update(modifiedDirs);
+    }
+    #ifdef ENABLE_DEVICES_SUPPORT
+    else {
+        Device *dev=getDevice();
+        if (dev) {
+            dev->saveCache();
+        }
+    }
+    #endif
+}
+
 void TrackOrganiser::finish(bool ok)
 {
-    if (updated) {
-        if (deviceUdi.isEmpty()) {
-            emit update(modifiedDirs);
-        }
-        #ifdef ENABLE_DEVICES_SUPPORT
-        else {
-            Device *dev=getDevice();
-            if (dev) {
-                dev->saveCache();
-            }
-        }
-        #endif
+    if (updated || alwaysUpdate) {
+        doUpdate();
     }
     if (ok) {
         accept();

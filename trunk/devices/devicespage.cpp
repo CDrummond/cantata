@@ -26,7 +26,6 @@
 #include "musiclibraryitemartist.h"
 #include "musiclibraryitemalbum.h"
 #include "musiclibraryitemsong.h"
-#include "mainwindow.h"
 #include "devicesmodel.h"
 #include "settings.h"
 #include "messagebox.h"
@@ -54,6 +53,7 @@
 #include "albumdetailsdialog.h"
 #include "cddbselectiondialog.h"
 #endif
+#include <QMenu>
 
 DevicesPage::DevicesPage(QWidget *p)
     : QWidget(p)

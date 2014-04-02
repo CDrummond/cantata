@@ -47,7 +47,7 @@ public:
     TrackOrganiser(QWidget *parent);
     virtual ~TrackOrganiser();
 
-    void show(const QList<Song> &songs, const QString &udi);
+    void show(const QList<Song> &songs, const QString &udi, bool forceUpdate=false, const QSet<QString> &prevModifiedDirs=QSet<QString>());
 
 Q_SIGNALS:
     // These are for communicating with MPD object (which is in its own thread, so need to talk via signal/slots)
@@ -68,6 +68,7 @@ private:
     #ifdef ENABLE_DEVICES_SUPPORT
     Device * getDevice(QWidget *p=0);
     #endif
+    void doUpdate();
     void finish(bool ok);
 
 private:
@@ -80,6 +81,7 @@ private:
     bool autoSkip;
     bool paused;
     bool updated;
+    bool alwaysUpdate;
     DeviceOptions opts;
 };
 

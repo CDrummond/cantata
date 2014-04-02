@@ -916,7 +916,7 @@ int Settings::menu()
     return 0==v ? MC_Bar : v;
 }
 
-void Settings::stopHttpStreamOnPause()
+bool Settings::stopHttpStreamOnPause()
 {
     return cfg.get("stopHttpStreamOnPause", true);
 }

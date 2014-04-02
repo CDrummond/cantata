@@ -341,24 +341,24 @@ MainWindow::MainWindow(QWidget *parent)
     collapseAllAction->setShortcut(Qt::ControlModifier+Qt::Key_Minus);
 
     int pageKey=Qt::Key_1;
-    showPlayQueueAction->setShortcut(Qt::AltModifier+Qt::Key_Q);
-    libraryTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
-    albumsTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
-    foldersTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
-    playlistsTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
+    showPlayQueueAction->setShortcut(Qt::ControlModifier+Qt::ShiftModifier+Qt::Key_Q);
+    libraryTabAction->setShortcut(Qt::ControlModifier+Qt::ShiftModifier+nextKey(pageKey));
+    albumsTabAction->setShortcut(Qt::ControlModifier+Qt::ShiftModifier+nextKey(pageKey));
+    foldersTabAction->setShortcut(Qt::ControlModifier+Qt::ShiftModifier+nextKey(pageKey));
+    playlistsTabAction->setShortcut(Qt::ControlModifier+Qt::ShiftModifier+nextKey(pageKey));
     #ifdef ENABLE_DYNAMIC
-    dynamicTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
+    dynamicTabAction->setShortcut(Qt::ControlModifier+Qt::ShiftModifier+nextKey(pageKey));
     #endif
     #ifdef ENABLE_STREAMS
-    streamsTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
+    streamsTabAction->setShortcut(Qt::ControlModifier+Qt::ShiftModifier+nextKey(pageKey));
     #endif
     #ifdef ENABLE_ONLINE_SERVICES
-    onlineTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
+    onlineTabAction->setShortcut(Qt::ControlModifier+Qt::ShiftModifier+nextKey(pageKey));
     #endif
     #ifdef ENABLE_DEVICES_SUPPORT
-    devicesTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
+    devicesTabAction->setShortcut(Qt::ControlModifier+Qt::ShiftModifier+nextKey(pageKey));
     #endif // ENABLE_DEVICES_SUPPORT
-    searchTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
+    searchTabAction->setShortcut(Qt::ControlModifier+Qt::ShiftModifier+nextKey(pageKey));
 
     connectionsAction->setMenu(new QMenu(this));
     connectionsGroup=new QActionGroup(connectionsAction->menu());

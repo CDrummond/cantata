@@ -454,7 +454,7 @@ void MusicLibraryModel::updateMusicLibrary(MusicLibraryItemRoot *newroot, QDateT
     newroot->setUseAlbumImages(rootItem->useAlbumImages());
     newroot->setUseArtistImages(rootItem->useArtistImages());
     bool updatedSongs=false;
-    bool needToSave=!databaseTime.isValid() || (dbUpdate.isValid() && dbUpdate.date().year()>2000 && dbUpdate>databaseTime);
+    bool needToSave=!databaseTime.isValid() || (validCacheDate(dbUpdate) && dbUpdate>databaseTime);
     bool incremental=rootItem->childCount() && newroot->childCount();
 
     if (incremental && !QFile::exists(cacheFileName())) {
@@ -488,9 +488,9 @@ void MusicLibraryModel::updateMusicLibrary(MusicLibraryItemRoot *newroot, QDateT
     //
     // Mopidy users, and users of the proxy DB plugin, will have to force Cantata to refresh :-(
     if (!fromFile) {
-        databaseTimeUnreliable=!dbUpdate.isValid() || dbUpdate.date().year()<2000; // See note in updatingMpd()
+        databaseTimeUnreliable=!validCacheDate(dbUpdate); // See note in updatingMpd()
     }
-    if ((!databaseTime.isValid() && !dbUpdate.isValid()) || (databaseTime.date().year()<2000 && dbUpdate.date().year()<2000)) {
+    if (!validCacheDate(databaseTime) && !validCacheDate(dbUpdate)) {
         databaseTime=QDateTime::currentDateTime();
     }
 

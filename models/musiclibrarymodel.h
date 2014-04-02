@@ -51,6 +51,7 @@ public:
 
     static void convertCache(const QString &compressedName);
 //    static void cleanCache();
+    static bool validCacheDate(const QDateTime &dt) { return dt.isValid() && dt.date().year()>2000; }
 
     MusicLibraryModel(QObject *parent=0, bool isMpdModel=true, bool isCheckable=false);
     ~MusicLibraryModel();

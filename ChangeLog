@@ -87,6 +87,8 @@
 54. Remove grouping of multiple-artist albums under 'Various Artists'
 55. Change default sidebar shortcuts from 'Alt+' to 'Ctrl+Shift+' so as to
     avoid clashes with menubar.
+56. When TrackOrganizer is called after TagEditor, only perform MPD update
+    once.
 
 1.3.4
 -----

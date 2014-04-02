@@ -45,6 +45,7 @@
 #include "musiclibraryitemartist.h"
 #include "musiclibraryitemalbum.h"
 #include "musiclibraryitemsong.h"
+#include "mpdconnection.h"
 #include "localize.h"
 #ifdef ENABLE_KDE_SUPPORT
 #include <solid/portablemediaplayer.h>
@@ -79,14 +80,14 @@ void Device::moveDir(const QString &from, const QString &to, const QString &base
             if (info.isDir()) {
                 return;
             }
-            if (!others.contains(info.fileName())) {
+            if (!others.contains(info.fileName()) && !MPDConnection::isPlaylist(info.fileName())) {
                 return;
             }
             extraFiles.append(info.fileName());
         }
 
-        foreach (const QString &cf, extraFiles) {
-            if (!QFile::rename(from+'/'+cf, to+'/'+cf)) {
+        foreach (const QString &f, extraFiles) {
+            if (!QFile::rename(from+'/'+f, to+'/'+f)) {
                 return;
             }
         }

@@ -454,9 +454,8 @@ void MusicLibraryModel::updateMusicLibrary(MusicLibraryItemRoot *newroot, QDateT
     newroot->setUseAlbumImages(rootItem->useAlbumImages());
     newroot->setUseArtistImages(rootItem->useArtistImages());
     bool updatedSongs=false;
-    bool needToSave=dbUpdate>databaseTime;
+    bool needToSave=!databaseTime.isValid() || (dbUpdate.isValid() && dbUpdate.date().year()>2000 && dbUpdate>databaseTime);
     bool incremental=rootItem->childCount() && newroot->childCount();
-    bool needToUpdate=!databaseTime.isValid();
 
     if (incremental && !QFile::exists(cacheFileName())) {
         incremental=false;
@@ -495,7 +494,7 @@ void MusicLibraryModel::updateMusicLibrary(MusicLibraryItemRoot *newroot, QDateT
         databaseTime=QDateTime::currentDateTime();
     }
 
-    if ((updatedSongs || needToUpdate) && (!fromFile && (needToSave || needToUpdate))) {
+    if (needToSave || updatedSongs) {
         rootItem->toXML(cacheFileName(), databaseTime, databaseTimeUnreliable);
     }
 
@@ -507,8 +506,8 @@ void MusicLibraryModel::updatingMpd()
 {
     // MPD/Mopidy is being updated. If MPD's database-time is not reliable (as is the case for older proxy DBs, and Mopidy)
     // then we set the databaseTime to NOW when updated. This means we will miss any updates. So, for these scenarios, when
-    // a users presses 'Refresh Database' in Cantata's main window, we need to reset our view of the databaseTime to null, s
-    // that we update. This does mean that we will ALWAYS fetch the whole listing - but we have n oway of knowing if it changed
+    // a user presses 'Refresh Database' in Cantata's main window, we need to reset our view of the databaseTime to null, so
+    // that we update. This does mean that we will ALWAYS fetch the whole listing - but we have no way of knowing if it changed
     // or not :-(
     if (databaseTimeUnreliable) {
         removeCache();

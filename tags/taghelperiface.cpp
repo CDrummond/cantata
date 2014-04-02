@@ -59,7 +59,7 @@ TagHelperIface::TagHelperIface()
     , server(0)
     , sock(0)
 {
-    qRegisterMetaType<QAbstractSocket::SocketError >("QAbstractSocket::SocketError");
+    qRegisterMetaType<QAbstractSocket::SocketError>("QAbstractSocket::SocketError");
     thread=new Thread(metaObject()->className());
     moveToThread(thread);
     thread->start();
@@ -68,6 +68,11 @@ TagHelperIface::TagHelperIface()
 void TagHelperIface::stop()
 {
     if (thread) {
+        DBUG;
+        QMutexLocker locker(&mutex);
+        metaObject()->invokeMethod(this, "close", Qt::QueuedConnection);
+        sema.acquire();
+        DBUG << "Stop thread";
         thread->stop();
         thread=0;
     }
@@ -298,6 +303,13 @@ bool TagHelperIface::startHelper()
     return true;
 }
 
+void TagHelperIface::close()
+{
+    DBUG;
+    awaitingResponse=true;
+    stopHelper();
+}
+
 void TagHelperIface::stopHelper()
 {
     if (sock) {
@@ -320,7 +332,7 @@ void TagHelperIface::stopHelper()
         DBUG << "Process" << (void *)proc;
         if (QProcess::NotRunning!=proc->state()) {
             proc->kill();
-            proc->waitForFinished();
+            proc->waitForFinished(10);
         }
         proc->deleteLater();
         proc=0;
@@ -337,7 +349,7 @@ void TagHelperIface::sendMsg()
 {
     DBUG;
     if (startHelper()) {
-        awaitingResponse=true; // In here because startHelper might call stopHelper, which call setStatus!
+        awaitingResponse=true; // In here because startHelper might call stopHelper, which calls setStatus!
         QDataStream stream(sock);
         stream << qint32(data.length());
         stream.writeRawData(data.data(), data.length());

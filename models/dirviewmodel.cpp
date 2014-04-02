@@ -373,8 +373,7 @@ void DirViewModel::updateDirView(DirViewItemRoot *newroot, const QDateTime &dbUp
 
     bool incremental=enabled && rootItem->childCount() && newroot->childCount();
     bool updatedListing=false;
-    bool needToUpdate=!databaseTime.isValid();
-    bool needToSave=dbUpdate>databaseTime;
+    bool needToSave=!databaseTime.isValid() || (dbUpdate.isValid() && dbUpdate.date().year()>2000 && dbUpdate>databaseTime);
 
     if (incremental && !QFile::exists(cacheFileName())) {
         incremental=false;
@@ -420,7 +419,7 @@ void DirViewModel::updateDirView(DirViewItemRoot *newroot, const QDateTime &dbUp
         databaseTime=QDateTime::currentDateTime();
     }
 
-    if ((updatedListing || needToUpdate) && (!fromFile && (needToSave || needToUpdate))) {
+    if (needToSave || updatedListing) {
         toXML();
     }
 }
@@ -429,8 +428,8 @@ void DirViewModel::updatingMpd()
 {
     // MPD/Mopidy is being updated. If MPD's database-time is not reliable (as is the case for older proxy DBs, and Mopidy)
     // then we set the databaseTime to NOW when updated. This means we will miss any updates. So, for these scenarios, when
-    // a users presses 'Refresh Database' in Cantata's main window, we need to reset our view of the databaseTime to null, s
-    // that we update. This does mean that we will ALWAYS fetch the whole listing - but we have n oway of knowing if it changed
+    // a user presses 'Refresh Database' in Cantata's main window, we need to reset our view of the databaseTime to null, so
+    // that we update. This does mean that we will ALWAYS fetch the whole listing - but we have no way of knowing if it changed
     // or not :-(
     if (databaseTimeUnreliable) {
         removeCache();

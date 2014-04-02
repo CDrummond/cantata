@@ -179,19 +179,18 @@ const QPixmap & MusicLibraryItemAlbum::cover() const
 {
     int iSize=iconSize(largeImages());
     if (Song::SingleTracks!=m_type && parentItem() && iSize && childCount()) {
-        QPixmap *pix=Covers::self()->getScaledCover(parentItem()->data(), data(), iSize);
+        MusicLibraryItemSong *firstSong=static_cast<MusicLibraryItemSong*>(childItem(0));
+        Song song;
+        song.artist=firstSong->song().artist;
+        song.albumartist=Song::useComposer() && !firstSong->song().composer.isEmpty() ? firstSong->song().albumArtist() : parentItem()->data();
+        song.album=Song::useComposer() ? firstSong->song().album : m_itemData;
+
+        QPixmap *pix=Covers::self()->getScaledCover(song.albumArtist(), song.album, iSize);
         if (pix) {
             return *pix;
         }
 
         if (!m_coverRequested) {
-            MusicLibraryItemSong *firstSong=static_cast<MusicLibraryItemSong*>(childItem(0));
-            Song song;
-            song.artist=firstSong->song().artist;
-            song.albumartist=Song::useComposer() && !firstSong->song().composer.isEmpty()
-                    ? firstSong->song().albumArtist() : parentItem()->data();
-
-            song.album=Song::useComposer() ? firstSong->song().album : m_itemData;
             song.year=m_year;
             song.file=firstSong->file();
             song.type=m_type;

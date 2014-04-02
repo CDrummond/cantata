@@ -916,11 +916,6 @@ int Settings::menu()
     return 0==v ? MC_Bar : v;
 }
 
-bool Settings::stopHttpStreamOnPause()
-{
-    return cfg.get("stopHttpStreamOnPause", true);
-}
-
 void Settings::removeConnectionDetails(const QString &v)
 {
     if (v==currentConnection()) {
@@ -1295,6 +1290,11 @@ void Settings::savePlayListsStartClosed(bool v)
 void Settings::savePlayStream(bool v)
 {
     cfg.set("playStream", v);
+}
+
+bool Settings::stopHttpStreamOnPause()
+{
+    return cfg.get("stopHttpStreamOnPause", true);
 }
 #endif
 

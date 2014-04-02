@@ -284,9 +284,6 @@ void DeviceOptions::save(const QString &group, bool isMpd, bool saveTrans, bool 
     #ifndef ENABLE_KDE_SUPPORT
     cfg.endGroup();
     #endif
-    if (isMpd && HAS_GROUP(constMpdGroup)) {
-        REMOVE_GROUP(constMpdGroup);
-    }
 }
 
 QString DeviceOptions::clean(const QString &str) const

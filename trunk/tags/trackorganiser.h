@@ -61,8 +61,10 @@ private Q_SLOTS:
     void controlRemoveAct();
     void removeItems();
     void showMopidyMessage();
+    void setFilenameScheme(const QString &text);
 
 private:
+    void saveOptions();
     void slotButtonClicked(int button);
     void readOptions();
     #ifdef ENABLE_DEVICES_SUPPORT

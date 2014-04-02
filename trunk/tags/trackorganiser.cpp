@@ -191,7 +191,7 @@ void TrackOrganiser::configureFilenameScheme()
 {
     if (!schemeDlg) {
         schemeDlg=new FilenameSchemeDialog(this);
-        connect(schemeDlg, SIGNAL(scheme(const QString &)), filenameScheme, SLOT(setText(const QString &)));
+        connect(schemeDlg, SIGNAL(scheme(const QString &)), this, SLOT(setFilenameScheme(const QString &)));
     }
     readOptions();
     schemeDlg->show(opts);
@@ -238,17 +238,7 @@ void TrackOrganiser::startRename()
     enableButtonOk(false);
     index=0;
     paused=autoSkip=false;
-    readOptions();
-    #ifdef ENABLE_DEVICES_SUPPORT
-    if (!deviceUdi.isEmpty()) {
-        Device *dev=getDevice();
-        if (!dev) {
-            return;
-        }
-        dev->setOptions(opts);
-    } else
-    #endif
-        opts.save(MPDConnectionDetails::configGroupName(MPDConnection::self()->getDetails().name), true);
+    saveOptions();
 
     QTimer::singleShot(100, this, SLOT(renameFile()));
 }
@@ -497,6 +487,29 @@ void TrackOrganiser::showMopidyMessage()
                                        "music listing. Therefore, you will need to stop Cantata, manually refresh "
                                        "Mopidy's database, and restart Cantata for any changes to be active."),
                             QLatin1String("Mopidy"));
+}
+
+void TrackOrganiser::setFilenameScheme(const QString &text)
+{
+    if (filenameScheme->text()!=text) {
+        filenameScheme->setText(text);
+        saveOptions();
+    }
+}
+
+void TrackOrganiser::saveOptions()
+{
+    readOptions();
+    #ifdef ENABLE_DEVICES_SUPPORT
+    if (!deviceUdi.isEmpty()) {
+        Device *dev=getDevice();
+        if (!dev) {
+            return;
+        }
+        dev->setOptions(opts);
+    } else
+    #endif
+    opts.save(MPDConnectionDetails::configGroupName(MPDConnection::self()->getDetails().name), true);
 }
 
 void TrackOrganiser::doUpdate()

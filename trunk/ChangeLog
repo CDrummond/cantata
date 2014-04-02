@@ -104,6 +104,7 @@
 7. Add playqueue action to main window, so that shortcut works.
 8. When using track organizer, also try to move artist images, backdrop images,
    and playlist files.
+9. After altering filename scheme from track organizer, save settings.
 
 1.3.3
 -----

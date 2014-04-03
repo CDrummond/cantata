@@ -235,11 +235,11 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
         all.disc=1==songDiscs.count() ? *(songDiscs.begin()) : 0;
         original.prepend(all);
         artist->setFocus();
-        haveArtists=!songArtists.isEmpty();
-        haveAlbumArtists=!songAlbumArtists.isEmpty();
-        haveAlbums=!songAlbums.isEmpty();
-        haveGenres=!songGenres.isEmpty();
-        haveComposers=!songComposers.isEmpty();
+        haveArtists=songArtists.count()>1;
+        haveAlbumArtists=songAlbumArtists.count()>1;
+        haveAlbums=songAlbums.count()>1;
+        haveGenres=songGenres.count()>1;
+        haveComposers=songComposers.count()>1;
     } else {
         title->setFocus();
     }

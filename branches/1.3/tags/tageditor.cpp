@@ -210,25 +210,15 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
         QSet<int> songDiscs;
 
         foreach (const Song &s, original) {
-            if (!s.artist.isEmpty()) {
-                songArtists.insert(s.artist);
-            }
-            if (!s.albumartist.isEmpty()) {
-                songAlbumArtists.insert(s.albumartist);
-            }
-            if (!s.album.isEmpty()) {
-                songAlbums.insert(s.album);
-            }
-            if (!s.genre.isEmpty()) {
-                songGenres.insert(s.genre);
-            }
-            if (!s.composer.isEmpty()) {
-                songComposers.insert(s.composer);
-            }
+            songArtists.insert(s.artist);
+            songAlbumArtists.insert(s.albumartist);
+            songAlbums.insert(s.album);
+            songGenres.insert(s.genre);
+            songComposers.insert(s.composer);
             songYears.insert(s.year);
             songDiscs.insert(s.disc);
             if (songArtists.count()>1 && songAlbumArtists.count()>1 && songAlbums.count()>1 &&
-                songGenres.count()>1 && songYears.count()>1 && songDiscs.count()>1 && songComposers.count()>=1) {
+                songGenres.count()>1 && songYears.count()>1 && songDiscs.count()>1 && songComposers.count()>1) {
                 break;
             }
         }

@@ -200,45 +200,49 @@ int Song::compareTo(const Song &o) const
     if (type!=o.type) {
         return type<o.type ? -1 : 1;
     }
-    if (SingleTracks==type) {
-        int compare=artistSong().localeAwareCompare(artistSong());
-        if (0!=compare) {
-            return compare<0;
+
+    // For playlists, we only need to compare filename...
+    if (Playlist!=type) {
+        if (SingleTracks==type) {
+            int compare=artistSong().localeAwareCompare(artistSong());
+            if (0!=compare) {
+                return compare<0;
+            }
         }
-    }
 
-    int compare=artistOrComposer().localeAwareCompare(o.artistOrComposer());
+        int compare=artistOrComposer().localeAwareCompare(o.artistOrComposer());
 
-    if (0!=compare) {
-        return compare;
-    }
-    compare=album.localeAwareCompare(o.album);
-    if (0!=compare) {
-        return compare;
-    }
-    if (disc!=o.disc) {
-        return disc<o.disc ? -1 : 1;
-    }
-    if (track!=o.track) {
-        return track<o.track ? -1 : 1;
-    }
-    if (year!=o.year) {
-        return year<o.year ? -1 : 1;
-    }
-    compare=title.localeAwareCompare(o.title);
-    if (0!=compare) {
-        return compare;
-    }
-    compare=name.compare(o.name);
-    if (0!=compare) {
-        return compare;
-    }
-    compare=genre.compare(o.genre);
-    if (0!=compare) {
-        return compare;
-    }
-    if (time!=o.time) {
-        return time<o.time ? -1 : 1;
+        if (0!=compare) {
+            return compare;
+        }
+        compare=album.localeAwareCompare(o.album);
+        if (0!=compare) {
+            return compare;
+        }
+        if (disc!=o.disc) {
+            return disc<o.disc ? -1 : 1;
+        }
+        if (track!=o.track) {
+            return track<o.track ? -1 : 1;
+        }
+        if (year!=o.year) {
+            return year<o.year ? -1 : 1;
+        }
+        compare=title.localeAwareCompare(o.title);
+        if (0!=compare) {
+            return compare;
+        }
+        compare=name.compare(o.name);
+        if (0!=compare) {
+            return compare;
+        }
+        compare=genre.compare(o.genre);
+        if (0!=compare) {
+            return compare;
+        }
+        if (time!=o.time) {
+            return time<o.time ? -1 : 1;
+        }
     }
     return file.compare(o.file);
 }

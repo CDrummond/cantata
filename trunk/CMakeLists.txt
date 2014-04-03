@@ -407,15 +407,9 @@ if (NOT WIN32 AND NOT APPLE)
 endif (NOT WIN32 AND NOT APPLE)
 
 if (TAGLIB_FOUND)
-    set(CANTATA_SRCS ${CANTATA_SRCS}
-        tags/tageditor.cpp tags/trackorganiser.cpp
-        devices/filenameschemedialog.cpp)
-    set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS}
-        tags/tageditor.h tags/trackorganiser.h
-        devices/filenameschemedialog.h devices/device.h)
-    set(CANTATA_UIS ${CANTATA_UIS}
-        tags/tageditor.ui tags/trackorganiser.ui
-        devices/filenameschemedialog.ui)
+    set(CANTATA_SRCS ${CANTATA_SRCS}  tags/tageditor.cpp tags/trackorganiser.cpp devices/filenameschemedialog.cpp widgets/tagspinbox.cpp)
+    set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} tags/tageditor.h tags/trackorganiser.h devices/filenameschemedialog.h devices/device.h)
+    set(CANTATA_UIS ${CANTATA_UIS} tags/tageditor.ui tags/trackorganiser.ui devices/filenameschemedialog.ui)
 
     if (FFMPEG_FOUND OR MPG123_FOUND)
         include_directories(${CMAKE_SOURCE_DIR}/replaygain)

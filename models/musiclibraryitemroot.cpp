@@ -818,19 +818,15 @@ void MusicLibraryItemRoot::addSongToList(const Song &s)
     if (!artistItem) {
         m_model->beginInsertRows(index(), childCount(), childCount());
         artistItem = createArtist(s);
-        m_model->endInsertRows();
         artistItem->setIsNew(true);
-        QModelIndex idx=m_model->createIndex(artistItem->row(), 0, artistItem);
-        emit m_model->dataChanged(idx, idx);
+        m_model->endInsertRows();
     }
     MusicLibraryItemAlbum *albumItem = artistItem->album(s, false);
     if (!albumItem) {
         m_model->beginInsertRows(m_model->createIndex(artistItem->row(), 0, artistItem), artistItem->childCount(), artistItem->childCount());
         albumItem = artistItem->createAlbum(s);
-        m_model->endInsertRows();
         albumItem->setIsNew(true);
-        QModelIndex idx=m_model->createIndex(albumItem->row(), 0, albumItem);
-        emit m_model->dataChanged(idx, idx);
+        m_model->endInsertRows();
         if (!artistItem->isNew()) {
             artistItem->setIsNew(true);
             QModelIndex idx=m_model->createIndex(artistItem->row(), 0, artistItem);

@@ -55,5 +55,4 @@ void TagSpinBox::setVarious(bool v)
     }
     isVarious=v;
     lineEdit()->setPlaceholderText(isVarious ? variousText : QString());
-    update();
 }

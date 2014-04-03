@@ -23,6 +23,7 @@
 
 #include "tageditor.h"
 #include "tags.h"
+#include "tagspinbox.h"
 #include "musiclibrarymodel.h"
 #include "mpdconnection.h"
 #include "settings.h"
@@ -350,22 +351,20 @@ void TagEditor::fillSong(Song &s, bool isAll, bool skipEmpty) const
     }
 }
 
-void TagEditor::setPlaceholderTexts()
+void TagEditor::setVariousHint()
 {
-    QString various=i18n("(Various)");
-
     if(0==currentSongIndex && original.count()>1) {
         Song all=original.at(0);
-        artist->setPlaceholderText(all.artist.isEmpty() && haveArtists ? various : QString());
-        album->setPlaceholderText(all.album.isEmpty() && haveAlbums ? various : QString());
-        albumArtist->setPlaceholderText(all.albumartist.isEmpty() && haveAlbumArtists ? various : QString());
+        artist->setPlaceholderText(all.artist.isEmpty() && haveArtists ? TagSpinBox::variousStr() : QString());
+        album->setPlaceholderText(all.album.isEmpty() && haveAlbums ? TagSpinBox::variousStr() : QString());
+        albumArtist->setPlaceholderText(all.albumartist.isEmpty() && haveAlbumArtists ? TagSpinBox::variousStr() : QString());
         if (composerSupport) {
-            composer->setPlaceholderText(all.composer.isEmpty() && haveComposers ? various : QString());
+            composer->setPlaceholderText(all.composer.isEmpty() && haveComposers ? TagSpinBox::variousStr() : QString());
         }
         if (commentSupport) {
-            comment->setPlaceholderText(all.comment().isEmpty() && haveComments ? various : QString());
+            comment->setPlaceholderText(all.comment().isEmpty() && haveComments ? TagSpinBox::variousStr() : QString());
         }
-        genre->setPlaceholderText(all.genre.isEmpty() && haveGenres ? various : QString());
+        genre->setPlaceholderText(all.genre.isEmpty() && haveGenres ? TagSpinBox::variousStr() : QString());
         disc->setVarious(0==all.disc && haveDiscs);
         year->setVarious(0==all.year && haveYears);
     }
@@ -431,7 +430,7 @@ void TagEditor::readComments()
     }
     progress->setVisible(false);
     if (haveMultiple) {
-        setPlaceholderTexts();
+        setVariousHint();
     } else {
         setSong(original.at(0));
     }
@@ -783,7 +782,7 @@ void TagEditor::setIndex(int idx)
         enableButton(User1, !isMultiple && idx<(original.count()-1)); // Next
         enableButton(User2, !isMultiple && idx>1); // Prev
     }
-    setPlaceholderTexts();
+    setVariousHint();
     enableOkButton();
     trackName->setCurrentIndex(idx);
     setLabelStates();

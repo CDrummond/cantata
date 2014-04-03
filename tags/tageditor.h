@@ -53,7 +53,7 @@ Q_SIGNALS:
 private:
     void enableOkButton();
     void setLabelStates();
-    void setPlaceholderTexts();
+    void setVariousHint();
     void fillSong(Song &s, bool isAll, bool skipEmpty) const;
     void slotButtonClicked(int button);
     void updateTrackName(int index, bool edited);

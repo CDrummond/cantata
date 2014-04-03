@@ -458,9 +458,15 @@ bool MusicLibraryItemAlbum::updateYear()
 {
     quint32 currentYear=m_year;
     foreach (MusicLibraryItem *track, m_childItems) {
-        m_year=static_cast<MusicLibraryItemSong*>(track)->song().year;
-        if (m_year==currentYear) {
-            return false;
+        MusicLibraryItemSong *song=static_cast<MusicLibraryItemSong*>(track);
+        if (Song::Playlist!=song->song().type) {
+            m_year=song->song().year;
+            // Store which track/disc we obtained the year from!
+            m_yearOfTrack=song->track();
+            m_yearOfDisc=song->disc();
+            if (m_year==currentYear) {
+                return false;
+            }
         }
     }
     return true;
@@ -491,7 +497,8 @@ void MusicLibraryItemAlbum::clearImage() const
 
 void MusicLibraryItemAlbum::setYear(const MusicLibraryItemSong *song)
 {
-    if (m_childItems.isEmpty() || (m_yearOfDisc>song->disc() || (m_yearOfDisc==song->disc() && m_yearOfTrack>song->track()))) {
+    if (Song::Playlist!=song->song().type &&
+        (m_childItems.isEmpty() || (m_yearOfDisc>song->disc() || (m_yearOfDisc==song->disc() && m_yearOfTrack>song->track())))) {
         m_year=song->song().year;
         // Store which track/disc we obtained the year from!
         m_yearOfTrack=song->track();

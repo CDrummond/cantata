@@ -17,6 +17,7 @@
     zero.
 11. In tag-editor, when onbtaining values to use for 'All Tracks' entry, don't
     ignore empty fields.
+12. When determining album year, ignore playlist files!
 
 1.3.3
 -----

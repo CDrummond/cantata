@@ -89,6 +89,8 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
     , haveComments(false)
     , haveAlbums(false)
     , haveGenres(false)
+    , haveDiscs(false)
+    , haveYears(false)
     , saving(false)
     , composerSupport(false)
     , commentSupport(false)
@@ -259,11 +261,13 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
         all.disc=1==songDiscs.count() ? *(songDiscs.begin()) : 0;
         original.prepend(all);
         artist->setFocus();
-        haveArtists=!songArtists.isEmpty();
-        haveAlbumArtists=!songAlbumArtists.isEmpty();
-        haveAlbums=!songAlbums.isEmpty();
-        haveGenres=!songGenres.isEmpty();
-        haveComposers=!songComposers.isEmpty();
+        haveArtists=songArtists.isEmpty();
+        haveAlbumArtists=songAlbumArtists.isEmpty();
+        haveAlbums=songAlbums.isEmpty();
+        haveGenres=songGenres.isEmpty();
+        haveComposers=songComposers.isEmpty();
+        haveDiscs=songDiscs.isEmpty();
+        haveYears=songYears.isEmpty();
     } else {
         title->setFocus();
     }
@@ -362,6 +366,8 @@ void TagEditor::setPlaceholderTexts()
             comment->setPlaceholderText(all.comment().isEmpty() && haveComments ? various : QString());
         }
         genre->setPlaceholderText(all.genre.isEmpty() && haveGenres ? various : QString());
+        disc->setVarious(0==all.disc && haveDiscs);
+        year->setVarious(0==all.year && haveYears);
     }
 }
 

@@ -93,6 +93,8 @@ private:
     bool haveComments;
     bool haveAlbums;
     bool haveGenres;
+    bool haveDiscs;
+    bool haveYears;
     bool saving;
     bool composerSupport;
     bool commentSupport;

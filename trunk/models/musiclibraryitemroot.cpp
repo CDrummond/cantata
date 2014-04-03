@@ -764,7 +764,7 @@ bool MusicLibraryItemRoot::updateSong(const Song &orig, const Song &edit)
     if (isFlat) {
         int songRow=0;
         foreach (MusicLibraryItem *song, childItems()) {
-            if (static_cast<MusicLibraryItemSong *>(song)->song()==orig) {
+            if (static_cast<MusicLibraryItemSong *>(song)->song().file==orig.file) {
                 static_cast<MusicLibraryItemSong *>(song)->setSong(edit);
                 if (orig.genre!=edit.genre) {
                     updateGenres();
@@ -835,8 +835,7 @@ void MusicLibraryItemRoot::addSongToList(const Song &s)
     }
     quint32 year=albumItem->year();
     foreach (const MusicLibraryItem *songItem, albumItem->childItems()) {
-        const MusicLibraryItemSong *song=static_cast<const MusicLibraryItemSong *>(songItem);
-        if (song->track()==s.track && song->disc()==s.disc && song->data()==s.displayTitle()) {
+        if (static_cast<const MusicLibraryItemSong *>(songItem)->song().file==s.file) {
             return;
         }
     }
@@ -878,7 +877,7 @@ void MusicLibraryItemRoot::removeSongFromList(const Song &s)
     MusicLibraryItem *songItem=0;
     int songRow=0;
     foreach (MusicLibraryItem *song, albumItem->childItems()) {
-        if (static_cast<MusicLibraryItemSong *>(song)->song().title==s.title) {
+        if (static_cast<MusicLibraryItemSong *>(song)->song().file==s.file) {
             songItem=song;
             break;
         }

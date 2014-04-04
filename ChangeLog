@@ -15,78 +15,76 @@
 11. Use single line to show current song details.
 12. Don't show song details in titlebar - this only duplicates info that is
     already clearly visible in the main window.
-13. When TrackOrganizer is called after TagEditor, only perform MPD update
-    once.
-14. Remove space between toolbar and views, and reduce spacing elsewhere.
-15. Use a thin splitter between playqueue and views.
-16. Set 'no interaction' flag on more labels, so that Oxygen's window drag code
+13. Remove space between toolbar and views, and reduce spacing elsewhere.
+14. Use a thin splitter between playqueue and views.
+15. Set 'no interaction' flag on more labels, so that Oxygen's window drag code
     works on these.
-17. Add support for comments. These are read directly from the song file when
+16. Add support for comments. These are read directly from the song file when
     the tag-editor is used, and they are NOT saved in Cantata's cache file.
-18. Install Cantata's list of lyrics providers to INSTALL/share/cantata/lyrics
-19. Read lyrics providers from each .xml file in ~/.local/share/cantata/lyrics,
+17. Install Cantata's list of lyrics providers to INSTALL/share/cantata/lyrics
+18. Read lyrics providers from each .xml file in ~/.local/share/cantata/lyrics,
     and INSTALL/share/cantata/lyrics
-20. Attempt to respect menubar usage of current desktop. For Windows and Gnome,
+19. Attempt to respect menubar usage of current desktop. For Windows and Gnome,
     menu button is used, and menubar hidden. For Mac and Unity, menubar is
     used, and menu button is hidden. For KDE Plasma, by default the menu button
     is used, and the menu bar hidden - but a menu entry is provided to toggle.
     This setting maybe overridden - see README for details.
-21. Most songs will be less than 1 hr long, so by default we only need to
+20. Most songs will be less than 1 hr long, so by default we only need to
     reserve space for -MM:SS at each side of position slider. If song duration
     is longer than 1hr, then this is increased to -H:MM:SS
-22. Show number of tracks under playqueue, even if total time is 0.
-23. Enable song notifications in Linux builds without QtDBus.
-24. Speed-up MPD response parsing, by only converting strings to UTF-8 when
+21. Show number of tracks under playqueue, even if total time is 0.
+22. Enable song notifications in Linux builds without QtDBus.
+23. Speed-up MPD response parsing, by only converting strings to UTF-8 when
     required.
-25. In Albums view, always show album name as main text and artist as sub-text
+24. In Albums view, always show album name as main text and artist as sub-text
     regardless of chosen sort.
-26. When context view is collapsed, draw background over selector buttons.
-27. Be consistent with displaying years of albums - year is shown in brackets
+25. When context view is collapsed, draw background over selector buttons.
+26. Be consistent with displaying years of albums - year is shown in brackets
     after album name.
-28. Reduce memory usage, by storing album covers in a cache - and using this
+27. Reduce memory usage, by storing album covers in a cache - and using this
     for display. Size of cache can be controlled by config item, see README for
     details.
-29. Only save albumartist tag in XML cache file if library supports this tag.
-30. Use MPD status to determine when to show, and hide, "Updating..." message.
-31. Ignore mouse-events on message-overlay if cancel button is hidden.
-32. Update copy of QJson to 0.8.1
-33. Speed up building list of songs - by only checking if file has already
+28. Only save albumartist tag in XML cache file if library supports this tag.
+29. Use MPD status to determine when to show, and hide, "Updating..." message.
+30. Ignore mouse-events on message-overlay if cancel button is hidden.
+31. Update copy of QJson to 0.8.1
+32. Speed up building list of songs - by only checking if file has already
     been added, not song.
-34. After scanning replay gain, show original tag values in tooltips if
+33. After scanning replay gain, show original tag values in tooltips if
     different to those calculated.
-35. Don't use italic text for grouped view headers.
-36. Save scaled covers as PNG files.
-37. Use Q_GLOBAL_STATIC for Qt4.8, and Qt>=5.1 Qt-only builds.
-38. Show music folder location in device properties dialog when called from
+34. Don't use italic text for grouped view headers.
+35. Save scaled covers as PNG files.
+36. Use Q_GLOBAL_STATIC for Qt4.8, and Qt>=5.1 Qt-only builds.
+37. Show music folder location in device properties dialog when called from
     copy/delete dialog - just dont allow setting to be changed.
-39. Remove artist image support for online-services.
-40. Update context-view when artist, or album, image is updated.
-41. When current song is from an online-service (Jamendo, Magnatune, etc) then
+38. Remove artist image support for online-services.
+39. Update context-view when artist, or album, image is updated.
+40. When current song is from an online-service (Jamendo, Magnatune, etc) then
     only show cover and tite in context view. No attempt is made to get artist,
     album, or song information - as these are likely to fail anyway.
-42. Jamendo radio streams.
-43. Install listenlive.xml to Cantata folder, as opposed to embedding in app.
-44. Use an external-helper app to read/write tags - to isolate Cantata from
+41. Jamendo radio streams.
+42. Install listenlive.xml to Cantata folder, as opposed to embedding in app.
+43. Use an external-helper app to read/write tags - to isolate Cantata from
     TagLib crashes.
-45. Add -DUSE_OLD_DBUS_TYPEDEF=ON to CMake options. This can be used to force
+44. Add -DUSE_OLD_DBUS_TYPEDEF=ON to CMake options. This can be used to force
     usage of OLD dbus XML files.
-46. If Cantata detects that an album, or artist, has new songs after updating
+45. If Cantata detects that an album, or artist, has new songs after updating
     MPD's DB, then the artist and album are drawn with bold text.
-47. When searching for album covers, do not look for $songFile.png/jpg
-48. Hide track change popup setting if running under Linux and
+46. When searching for album covers, do not look for $songFile.png/jpg
+47. Hide track change popup setting if running under Linux and
     org.freedesktop.Notifications DBus service is not registered.
-49. Remove 'home' button from listviews - only ever max 2 levels deep (Artists,
+48. Remove 'home' button from listviews - only ever max 2 levels deep (Artists,
     Albums, Tracks), so no real need for button.
-50. When mouse-over listview title, use highlight colour for text (and not whole
+49. When mouse-over listview title, use highlight colour for text (and not whole
     background). This is more consistent with time-slider's time remaining
     label.
-51. Make shortcut for 'Go Back' action changeable.
-52. Don't attempt to find Amarok or Clementine covers.
-53. Don't hard-code artist name fixes, read from $install/tags/fixes.xml
-54. Remove grouping of multiple-artist albums under 'Various Artists'
-55. Change default sidebar shortcuts from 'Alt+' to 'Ctrl+Shift+' so as to
+50. Make shortcut for 'Go Back' action changeable.
+51. Don't attempt to find Amarok or Clementine covers.
+52. Don't hard-code artist name fixes, read from $install/tags/fixes.xml
+53. Remove grouping of multiple-artist albums under 'Various Artists'
+54. Change default sidebar shortcuts from 'Alt+' to 'Ctrl+Shift+' so as to
     avoid clashes with menubar.
-56. If compiled with MPD HTTP playback support, when MPD stream is paused then
+55. If compiled with MPD HTTP playback support, when MPD stream is paused then
     stop the Phonon/QMediaObject from playing. See README for config option
     on this.
 
@@ -112,6 +110,8 @@
 12. When determining album year, ignore playlist files!
 13. If MPD database is refreshed whilst listview is not at top level, then
     reset view to top level.
+14. When TrackOrganizer is called after TagEditor, only perform MPD update
+    once.
 
 1.3.3
 -----

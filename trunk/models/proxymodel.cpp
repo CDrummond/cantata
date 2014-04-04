@@ -54,6 +54,7 @@ bool ProxyModel::matchesFilter(const QStringList &strings) const
     foreach (const QString &str, strings) {
         QString candidate = str.simplified();
         QString basic;
+        bool useBasic=false;
 
         for (int i = 0; i < numStrings; ++i) {
             const QString &f=filterStrings.at(i);
@@ -70,10 +71,11 @@ bool ProxyModel::matchesFilter(const QStringList &strings) const
                     for (int i = 0; i < basic.size(); ++i) {
                         if (basic.at(i).decompositionTag() != QChar::NoDecomposition) {
                             basic[i] = basic[i].decomposition().at(0);
+                            useBasic=true;
                         }
                     }
                 }
-                if (basic.contains(f, Qt::CaseInsensitive)) {
+                if (useBasic && basic.contains(f, Qt::CaseInsensitive)) {
                     ums &= ~(1<<i);
                     if (0==ums) {
                         return true;

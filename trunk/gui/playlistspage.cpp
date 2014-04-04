@@ -143,7 +143,7 @@ void PlaylistsPage::updateRows()
 
 void PlaylistsPage::refresh()
 {
-    view->setLevel(0);
+    view->goToTop();
     PlaylistsModel::self()->getPlaylists();
 }
 

@@ -166,8 +166,8 @@ void StreamsPage::refresh()
 {
     if (enabled) {
         checkWritable();
-        view->setLevel(0);
-        searchView->setLevel(0);
+        view->goToTop();
+        searchView->goToTop();
         StreamsModel::self()->reloadFavourites();
         exportAction->setEnabled(StreamsModel::self()->rowCount()>0);
         view->expand(proxy->mapFromSource(StreamsModel::self()->favouritesIndex()), true);

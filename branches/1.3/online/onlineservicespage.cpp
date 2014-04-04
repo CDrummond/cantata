@@ -141,7 +141,7 @@ void OnlineServicesPage::showEvent(QShowEvent *e)
 void OnlineServicesPage::clear()
 {
     OnlineServicesModel::self()->clear();
-    view->setLevel(0);
+    view->goToTop();
 }
 
 OnlineService * OnlineServicesPage::activeSrv() const
@@ -232,7 +232,7 @@ void OnlineServicesPage::addSelectionToPlaylist(const QString &name, bool replac
 void OnlineServicesPage::refresh()
 {
     OnlineServicesModel::self()->resetModel();
-    view->setLevel(0);
+    view->goToTop();
     expandPodcasts();
 }
 

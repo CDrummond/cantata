@@ -141,7 +141,7 @@ void DevicesPage::showEvent(QShowEvent *e)
 void DevicesPage::clear()
 {
     DevicesModel::self()->clear();
-    view->setLevel(0);
+    view->goToTop();
 }
 
 QString DevicesPage::activeFsDeviceUdi() const
@@ -250,7 +250,7 @@ void DevicesPage::addSelectionToPlaylist(const QString &name, bool replace, quin
 
 void DevicesPage::refresh()
 {
-    view->setLevel(0);
+    view->goToTop();
     DevicesModel::self()->resetModel();
     if (ItemView::Mode_SimpleTree==view->viewMode() || ItemView::Mode_DetailedTree==view->viewMode()) {
         for (int i=0; i<DevicesModel::self()->rowCount(QModelIndex()); ++i) {

@@ -119,7 +119,7 @@ void LibraryPage::setItemSize(int v)
 
 void LibraryPage::refresh()
 {
-    view->setLevel(0);
+    view->goToTop();
 
     if (!MusicLibraryModel::self()->fromXML()) {
         emit loadLibrary();
@@ -129,7 +129,7 @@ void LibraryPage::refresh()
 void LibraryPage::clear()
 {
     MusicLibraryModel::self()->clear();
-    view->setLevel(0);
+    view->goToTop();
 }
 
 static inline QString nameKey(const QString &artist, const QString &album)

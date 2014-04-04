@@ -206,61 +206,102 @@ DeviceOptions::DeviceOptions()
 }
 
 static const QLatin1String constMpdGroup("mpd");
+static const QLatin1String constSchemeKey("scheme");
+static const QLatin1String constVFatKey("vfatSafe");
+static const QLatin1String constAsciiKey("asciiOnly");
+static const QLatin1String constIgnoreTheKey("ignoreThe");
+static const QLatin1String constSpacesKey("replaceSpaces");
+#ifdef ENABLE_DEVICES_SUPPORT
+static const QLatin1String constTransCodecKey("transcoderCodec");
+static const QLatin1String constTransValKey("transcoderValue");
+static const QLatin1String constTransIfDiffKey("transcoderWhenDifferent");
+#endif
+static const QLatin1String constUseCacheKey("useCache");
+static const QLatin1String constFixVaKey("fixVariousArtists");
+static const QLatin1String constNameKey("name");
+static const QLatin1String constCvrFileKey("coverFileName");
+static const QLatin1String constCvrMaxKey("coverMaxSize");
+static const QLatin1String constVolKey("volumeId");
 
 bool DeviceOptions::isConfigured(const QString &group, bool isMpd)
 {
-    Configuration grp(!isMpd || group.isEmpty() ? group : constMpdGroup);
-    return grp.hasEntry("scheme");
+    if (Configuration(group).hasEntry(constSchemeKey)) {
+        return true;
+    }
+    if (isMpd) {
+        return Configuration(constMpdGroup).hasEntry(constSchemeKey);
+    }
+    return false;
 }
 
 void DeviceOptions::load(const QString &group, bool isMpd)
 {
-    Configuration cfg(!isMpd || group.isEmpty() ? group : constMpdGroup);
-    scheme=cfg.get("scheme", scheme);
-    vfatSafe=cfg.get("vfatSafe", vfatSafe);
-    asciiOnly=cfg.get("asciiOnly", asciiOnly);
-    ignoreThe=cfg.get("ignoreThe", ignoreThe);
-    replaceSpaces=cfg.get("replaceSpaces", replaceSpaces);
-    #ifdef ENABLE_DEVICES_SUPPORT
-    if (!isMpd) {
-        useCache=cfg.get("useCache", useCache);
-        fixVariousArtists=cfg.get("fixVariousArtists", fixVariousArtists);
-        name=cfg.get("name", name);
-        coverName=cfg.get("coverFileName", coverName);
-        coverMaxSize=cfg.get("coverMaxSize", coverMaxSize);
-        volumeId=cfg.get("volumeId", volumeId);
-        checkCoverSize();
+    Configuration cfg(group);
+
+    if (isMpd && !cfg.hasEntry(constSchemeKey)) {
+        // Try old [mpd] group...
+        Configuration mpdGrp(constMpdGroup);
+        if (mpdGrp.hasEntry(constSchemeKey)) {
+            scheme=mpdGrp.get(constSchemeKey, scheme);
+            vfatSafe=mpdGrp.get(constVFatKey, vfatSafe);
+            asciiOnly=mpdGrp.get(constAsciiKey, asciiOnly);
+            ignoreThe=mpdGrp.get(constIgnoreTheKey, ignoreThe);
+            replaceSpaces=mpdGrp.get(constSpacesKey, replaceSpaces);
+            #ifdef ENABLE_DEVICES_SUPPORT
+            transcoderCodec=mpdGrp.get(constTransCodecKey, (isMpd ? "lame" : transcoderCodec));
+            transcoderValue=mpdGrp.get(constTransValKey, (isMpd ? 2 : transcoderValue));
+            transcoderWhenDifferent=mpdGrp.get(constTransIfDiffKey, transcoderWhenDifferent);
+            #endif
+            // Save these settings into new group, [mpd] is left for other connections...
+            save(group, true, true, true);
+        }
+    } else {
+        scheme=cfg.get(constSchemeKey, scheme);
+        vfatSafe=cfg.get(constVFatKey, vfatSafe);
+        asciiOnly=cfg.get(constAsciiKey, asciiOnly);
+        ignoreThe=cfg.get(constIgnoreTheKey, ignoreThe);
+        replaceSpaces=cfg.get(constSpacesKey, replaceSpaces);
+        #ifdef ENABLE_DEVICES_SUPPORT
+        if (!isMpd) {
+            useCache=cfg.get(constUseCacheKey, useCache);
+            fixVariousArtists=cfg.get(constFixVaKey, fixVariousArtists);
+            name=cfg.get(constNameKey, name);
+            coverName=cfg.get(constCvrFileKey, coverName);
+            coverMaxSize=cfg.get(constCvrMaxKey, coverMaxSize);
+            volumeId=cfg.get(constVolKey, volumeId);
+            checkCoverSize();
+        }
+        transcoderCodec=cfg.get(constTransCodecKey, (isMpd ? "lame" : transcoderCodec));
+        transcoderValue=cfg.get(constTransValKey, (isMpd ? 2 : transcoderValue));
+        transcoderWhenDifferent=cfg.get(constTransIfDiffKey, transcoderWhenDifferent);
+        #endif
     }
-    transcoderCodec=cfg.get("transcoderCodec", (isMpd ? "lame" : transcoderCodec));
-    transcoderValue=cfg.get("transcoderValue", (isMpd ? 2 : transcoderValue));
-    transcoderWhenDifferent=cfg.get("transcoderWhenDifferent", transcoderWhenDifferent);
-    #endif
 }
 
 void DeviceOptions::save(const QString &group, bool isMpd, bool saveTrans, bool saveFileName) const
 {
-    Configuration cfg(!isMpd || group.isEmpty() ? group : constMpdGroup);
+    Configuration cfg(group);
 
     if (saveFileName) {
-        cfg.set("scheme", scheme);
-        cfg.set("vfatSafe", vfatSafe);
-        cfg.set("asciiOnly", asciiOnly);
-        cfg.set("ignoreThe", ignoreThe);
-        cfg.set("replaceSpaces", replaceSpaces);
+        cfg.set(constSchemeKey, scheme);
+        cfg.set(constVFatKey, vfatSafe);
+        cfg.set(constAsciiKey, asciiOnly);
+        cfg.set(constIgnoreTheKey, ignoreThe);
+        cfg.set(constSpacesKey, replaceSpaces);
     }
     #ifdef ENABLE_DEVICES_SUPPORT
     if (!isMpd) {
-        cfg.set("useCache", useCache);
-        cfg.set("fixVariousArtists", fixVariousArtists);
-        cfg.set("name", name);
-        cfg.set("coverFileName", coverName);
-        cfg.set("coverMaxSize", coverMaxSize);
-        cfg.set("volumeId", volumeId);
+        cfg.set(constUseCacheKey, useCache);
+        cfg.set(constFixVaKey, fixVariousArtists);
+        cfg.set(constNameKey, name);
+        cfg.set(constCvrFileKey, coverName);
+        cfg.set(constCvrMaxKey, coverMaxSize);
+        cfg.set(constVolKey, volumeId);
     }
     if (saveTrans) {
-        cfg.set("transcoderCodec", transcoderCodec);
-        cfg.set("transcoderValue", transcoderValue);
-        cfg.set("transcoderWhenDifferent", transcoderWhenDifferent);
+        cfg.set(constTransCodecKey, transcoderCodec);
+        cfg.set(constTransValKey, transcoderValue);
+        cfg.set(constTransIfDiffKey, transcoderWhenDifferent);
     }
     #else
     Q_UNUSED(saveTrans)

@@ -76,7 +76,7 @@ public:
         }
         bool large=e && max>=(60*60);
         if (largeTime!=large) {
-            setFixedWidth(fontMetrics().width(QLatin1String("-")+(large ? QLatin1String("0:") : QString()+constEmptyTime)));
+            setFixedWidth(fontMetrics().width(QLatin1String("-")+(large ? QLatin1String("0:") : QString())+constEmptyTime));
             largeTime=large;
         }
     }

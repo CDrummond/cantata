@@ -15,7 +15,7 @@
  9. After altering filename scheme from track organizer, save settings.
 10. Don't set year or disc in tag editor for 'All Tracks' unless they are non
     zero.
-11. In tag-editor, when onbtaining values to use for 'All Tracks' entry, don't
+11. In tag-editor, when obtaining values to use for 'All Tracks' entry, don't
     ignore empty fields.
 12. When determining album year, ignore playlist files!
 13. If MPD database is refreshed whilst listview is not at top level, then

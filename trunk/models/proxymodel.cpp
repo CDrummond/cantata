@@ -22,6 +22,10 @@
  */
 
 #include "proxymodel.h"
+#include <QMap>
+#include <QString>
+#include <QLatin1String>
+#include <QChar>
 
 bool ProxyModel::matchesFilter(const Song &s) const
 {
@@ -47,20 +51,33 @@ bool ProxyModel::matchesFilter(const QStringList &strings) const
     uint ums = unmatchedStrings;
     int numStrings = filterStrings.count();
 
-    foreach (const QString &candidate /*str*/, strings) {
-//        QString candidate = str.simplified();
-
-//        for (int i = 0; i < candidate.size(); ++i) {
-//            if (candidate.at(i).decompositionTag() != QChar::NoDecomposition) {
-//                candidate[i] = candidate[i].decomposition().at(0);
-//            }
-//        }
+    foreach (const QString &str, strings) {
+        QString candidate = str.simplified();
+        QString basic;
 
         for (int i = 0; i < numStrings; ++i) {
-            if (candidate.contains(filterStrings.at(i), Qt::CaseInsensitive)) {
+            const QString &f=filterStrings.at(i);
+            // Try to match string as entered by user...
+            if (candidate.contains(f, Qt::CaseInsensitive)) {
                 ums &= ~(1<<i);
                 if (0==ums) {
                     return true;
+                }
+            } else {
+                // Try converting string to basic - e.g. remove umlauts, etc...
+                if (basic.isEmpty()) {
+                    basic = candidate;
+                    for (int i = 0; i < basic.size(); ++i) {
+                        if (basic.at(i).decompositionTag() != QChar::NoDecomposition) {
+                            basic[i] = basic[i].decomposition().at(0);
+                        }
+                    }
+                }
+                if (basic.contains(f, Qt::CaseInsensitive)) {
+                    ums &= ~(1<<i);
+                    if (0==ums) {
+                        return true;
+                    }
                 }
             }
         }

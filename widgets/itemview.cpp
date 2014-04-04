@@ -738,10 +738,7 @@ void ItemView::setMode(Mode m)
             tableView->setModel(0);
         }
         listView->setModel(itemModel);
-        setLevel(0);
-        listView->setRootIndex(QModelIndex());
-        itemModel->setRootIndex(QModelIndex());
-        emit rootIndexSet(QModelIndex());
+        goToTop();
         if (Mode_IconTop!=mode) {
             listView->setGridSize(listGridSize);
             listView->setViewMode(QListView::ListMode);
@@ -777,6 +774,14 @@ QModelIndexList ItemView::selectedIndexes(bool sorted) const
         return tableView->selectedIndexes(sorted);
     }
     return listView->selectedIndexes(sorted);
+}
+
+void ItemView::goToTop()
+{
+    setLevel(0);
+    itemModel->setRootIndex(QModelIndex());
+    listView->setRootIndex(QModelIndex());
+    emit rootIndexSet(QModelIndex());
 }
 
 void ItemView::setLevel(int l, bool haveChildren)

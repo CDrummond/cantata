@@ -127,7 +127,6 @@ public:
     void addAction(QAction *act);
     void setMode(Mode m);
     Mode viewMode() const { return mode; }
-    void setLevel(int level, bool haveChildren=true);
     QAbstractItemView * view() const;
     void setModel(ProxyModel *m);
     void clearSelection() { view()->selectionModel()->clearSelection(); }
@@ -165,8 +164,10 @@ public:
     void setSearchIndex(const QModelIndex &idx) { searchIndex=idx; }
     void hideBackAction();
     void showEvent(QShowEvent *ev);
+    void goToTop();
 
 private:
+    void setLevel(int level, bool haveChildren=true);
     bool usingTreeView() const { return mode<=Mode_DetailedTree; }
     bool usingListView() const { return mode>=Mode_List; }
     bool eventFilter(QObject *o, QEvent *e);

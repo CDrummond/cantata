@@ -15,9 +15,8 @@
 11. Use single line to show current song details.
 12. Don't show song details in titlebar - this only duplicates info that is
     already clearly visible in the main window.
-13. After editing files in tag editor, editing in track organizer, adding new
-    files, or removing existing files, only ask MPD to update folders that have
-    changed.
+13. When TrackOrganizer is called after TagEditor, only perform MPD update
+    once.
 14. Remove space between toolbar and views, and reduce spacing elsewhere.
 15. Use a thin splitter between playqueue and views.
 16. Set 'no interaction' flag on more labels, so that Oxygen's window drag code
@@ -87,9 +86,7 @@
 54. Remove grouping of multiple-artist albums under 'Various Artists'
 55. Change default sidebar shortcuts from 'Alt+' to 'Ctrl+Shift+' so as to
     avoid clashes with menubar.
-56. When TrackOrganizer is called after TagEditor, only perform MPD update
-    once.
-57. If compiled with MPD HTTP playback support, when MPD stream is paused then
+56. If compiled with MPD HTTP playback support, when MPD stream is paused then
     stop the Phonon/QMediaObject from playing. See README for config option
     on this.
 

@@ -136,8 +136,12 @@ void FilenameSchemeDialog::enableOkButton()
 void FilenameSchemeDialog::insertVariable()
 {
     QString text(pattern->text());
-    text.insert(pattern->cursorPosition(), sender()->property(constVariableProperty).toString());
+    QString insert=sender()->property(constVariableProperty).toString();
+    int pos=pattern->cursorPosition();
+    text.insert(pos, insert);
     pattern->setText(text);
+    pattern->setCursorPosition(pos+insert.length());
+    pattern->setFocus();
     updateExample();
 }
 

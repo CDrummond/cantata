@@ -62,6 +62,7 @@ TrackOrganiser::TrackOrganiser(QWidget *parent)
     , autoSkip(false)
     , paused(false)
     , updated(false)
+    , alwaysUpdate(false)
 {
     iCount++;
     setButtons(Ok|Cancel);
@@ -90,8 +91,11 @@ TrackOrganiser::~TrackOrganiser()
     iCount--;
 }
 
-void TrackOrganiser::show(const QList<Song> &songs, const QString &udi)
+void TrackOrganiser::show(const QList<Song> &songs, const QString &udi, bool forceUpdate)
 {
+    // If we are called from the TagEditor dialog, then forceUpdate will be true. This is so that we dont do 2
+    // MPD updates (one from TagEditor, and one from here!)
+    alwaysUpdate=forceUpdate;
     foreach (const Song &s, songs) {
         if (!CueFile::isCue(s.file)) {
            origSongs.append(s);
@@ -100,6 +104,9 @@ void TrackOrganiser::show(const QList<Song> &songs, const QString &udi)
 
     if (origSongs.isEmpty()) {
         deleteLater();
+        if (alwaysUpdate) {
+            doUpdate();
+        }
         return;
     }
 
@@ -501,20 +508,25 @@ void TrackOrganiser::saveOptions()
     opts.save(MPDConnectionDetails::configGroupName(MPDConnection::self()->getDetails().name), true);
 }
 
+void TrackOrganiser::doUpdate()
+{
+    if (deviceUdi.isEmpty()) {
+        emit update();
+    }
+    #ifdef ENABLE_DEVICES_SUPPORT
+    else {
+        Device *dev=getDevice();
+        if (dev) {
+            dev->saveCache();
+        }
+    }
+    #endif
+}
+
 void TrackOrganiser::finish(bool ok)
 {
-    if (updated) {
-        if (deviceUdi.isEmpty()) {
-            emit update();
-        }
-        #ifdef ENABLE_DEVICES_SUPPORT
-        else {
-            Device *dev=getDevice();
-            if (dev) {
-                dev->saveCache();
-            }
-        }
-        #endif
+    if (updated || alwaysUpdate) {
+        doUpdate();
     }
     if (ok) {
         accept();

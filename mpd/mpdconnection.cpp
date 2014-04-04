@@ -1242,28 +1242,9 @@ void MPDConnection::update()
     }
 }
 
-void MPDConnection::update(const QSet<QString> &dirs)
-{
-    QByteArray send = "command_list_begin\n";
-    foreach (const QString &d, dirs) {
-        send += "update "+encodeName(d.endsWith('/') ? d.left(d.length()-1) : d)+"\n";
-    }
-    send += "command_list_end";
-
-    if (sendCommand(send).ok) {
-        if (isMopdidy()) {
-            // Mopidy does not support MPD's update command. So, when user presses update DB, what we
-            // do instead is clear library/dir caches, then when response to getStats is received,
-            // library/dir should get refreshed...
-            getStats();
-        }
-    }
-}
-
 /*
  * Database commands
  */
-
 void MPDConnection::loadLibrary()
 {
     emit updatingLibrary();

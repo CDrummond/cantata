@@ -87,6 +87,8 @@
 55. If compiled with MPD HTTP playback support, when MPD stream is paused then
     stop the Phonon/QMediaObject from playing. See README for config option
     on this.
+56. When searching, search both with and without diaeresis, etc. e.g. both
+    Queensrÿche and Queensryche should match.
 
 1.3.4
 -----

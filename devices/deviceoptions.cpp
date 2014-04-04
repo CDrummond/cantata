@@ -67,7 +67,7 @@ static QString asciiPath(const QString &path)
     QString result = path;
     for (int i = 0; i < result.length(); i++) {
         QChar c = result[ i ];
-        if (c > QChar(0x7f) || c == QChar(0))  {
+        if (c > QChar(0x7f) || QChar(0)==c)  {
             c = '_';
         }
         result[ i ] = c;
@@ -79,7 +79,7 @@ QString vfatPath(const QString &path)
 {
     QString s = path;
 
-    if (QDir::separator() == '/') {// we are on *nix, \ is a valid character in file or directory names, NOT the dir separator
+    if ('/'==QDir::separator()) {// we are on *nix, \ is a valid character in file or directory names, NOT the dir separator
         s.replace('\\', '_');
     } else {
         s.replace('/', '_'); // on windows we have to replace / instead
@@ -88,12 +88,11 @@ QString vfatPath(const QString &path)
     for (int i = 0; i < s.length(); i++)  {
         QChar c = s[ i ];
         if (c < QChar(0x20) || c == QChar(0x7F) // 0x7F = 127 = DEL control character
-            || c=='*' || c=='?' || c=='<' || c=='>'
-            || c=='|' || c=='"' || c==':') {
+            || '*'==c || '?'==c || '<'==c || '>'==c || '|'==c || '"'==c || ':'==c) {
             c = '_';
-        } else if(c == '[') {
+        } else if ('['==c) {
             c = '(';
-        } else if (c == ']') {
+        } else if (']'==c) {
             c = ')';
         }
         s[ i ] = c;
@@ -101,23 +100,23 @@ QString vfatPath(const QString &path)
 
     /* beware of reserved device names */
     uint len = s.length();
-    if (len == 3 || (len > 3 && s[3] == '.')) {
+    if (3==len || (len > 3 && '.'==s[3])) {
         QString l = s.left(3).toLower();
-        if(l=="aux" || l=="con" || l=="nul" || l=="prn")
+        if ("aux"==l || "con"==l || "nul"==l || "prn"==l) {
             s = '_' + s;
-    } else if (len == 4 || (len > 4 && s[4] == '.'))  {
+        }
+    } else if (4==len || (len > 4 && '.'==s[4]))  {
         QString l = s.left(3).toLower();
         QString d = s.mid(3,1);
-        if ((l=="com" || l=="lpt") &&
-                (d=="0" || d=="1" || d=="2" || d=="3" || d=="4" ||
-                    d=="5" || d=="6" || d=="7" || d=="8" || d=="9")) {
+        if (("com"==l || "lpt"==l) &&
+                ("0"==d || "1"==d || "2"==d || "3"==d || "4"==d || "5"==d || "6"==d || "7"==d || "8"==d || "9"==d)) {
             s = '_' + s;
         }
     }
 
     // "clock$" is only allowed WITH extension, according to:
     // http://en.wikipedia.org/w/index.php?title=Filename&oldid=303934888#Comparison_of_file_name_limitations
-    if (QString::compare(s, "clock$", Qt::CaseInsensitive) == 0) {
+    if (0==QString::compare(s, "clock$", Qt::CaseInsensitive)) {
         s = '_' + s;
     }
 
@@ -126,19 +125,17 @@ QString vfatPath(const QString &path)
 
     /* whitespace at the end of folder/file names or extensions are bad */
     len = s.length();
-    if (s[len-1] == ' ') {
+    if (' '==s[len-1]) {
         s[len-1] = '_';
     }
 
     int extensionIndex = s.lastIndexOf('.'); // correct trailing spaces in file name itself
-    if ((s.length() > 1) &&  (extensionIndex > 0)) {
-        if(s.at(extensionIndex - 1) == ' ') {
-            s[extensionIndex - 1] = '_';
-        }
+    if (s.length()>1 && extensionIndex>0 && ' '==s.at(extensionIndex-1)) {
+        s[extensionIndex - 1] = '_';
     }
 
     for (int i = 1; i < s.length(); i++) {// correct trailing whitespace in folder names
-        if ((s.at(i) == QDir::separator()) && (s.at(i - 1) == ' ')) {
+        if ((s.at(i) == QDir::separator()) && ' '==s.at(i-1)) {
             s[i - 1] = '_';
         }
     }

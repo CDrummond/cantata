@@ -112,6 +112,8 @@
     reset view to top level.
 14. When TrackOrganizer is called after TagEditor, only perform MPD update
     once.
+15. When editing filename scheme, after inserting a variable set cursor
+    position to after newly inserted text and give focus back to line edit.
 
 1.3.3
 -----

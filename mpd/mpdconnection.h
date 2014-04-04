@@ -263,7 +263,6 @@ public Q_SLOTS:
 
     // Admin
     void update();
-    void update(const QSet<QString> &dirs);
 
     // Playlists
 //     void listPlaylist(const QString &name);

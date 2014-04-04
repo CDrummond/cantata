@@ -73,7 +73,7 @@ TrackOrganiser::TrackOrganiser(QWidget *parent)
     setMainWidget(mainWidet);
     configFilename->setIcon(Icons::self()->configureIcon);
     setButtonGuiItem(Ok, GuiItem(i18n("Rename"), "edit-rename"));
-    connect(this, SIGNAL(update(QSet<QString>)), MPDConnection::self(), SLOT(update(QSet<QString>)));
+    connect(this, SIGNAL(update()), MPDConnection::self(), SLOT(update()));
     progress->setVisible(false);
     files->setItemDelegate(new BasicItemDelegate(files));
     files->setAlternatingRowColors(false);
@@ -91,12 +91,10 @@ TrackOrganiser::~TrackOrganiser()
     iCount--;
 }
 
-void TrackOrganiser::show(const QList<Song> &songs, const QString &udi, bool forceUpdate, const QSet<QString> &prevModifiedDirs)
+void TrackOrganiser::show(const QList<Song> &songs, const QString &udi, bool forceUpdate)
 {
-    modifiedDirs.clear();
-    // If we are called from the TagEditor dialog, then forceUpdate will be true and prevModifiedDirs will contain the dirs modifed
-    // by the tag-editor. This is so that we dont do 2 MPD updates (one from TagEditor, and one from here!)
-    modifiedDirs+=prevModifiedDirs;
+    // If we are called from the TagEditor dialog, then forceUpdate will be true. This is so that we dont do 2
+    // MPD updates (one from TagEditor, and one from here!)
     alwaysUpdate=forceUpdate;
     foreach (const Song &s, songs) {
         if (!CueFile::isCue(s.file)) {
@@ -362,8 +360,6 @@ void TrackOrganiser::renameFile()
             if (QFile::exists(lyricsSource) && !QFile::exists(lyricsDest)) {
                 QFile::rename(lyricsSource, lyricsDest);
             }
-            modifiedDirs.insert(Utils::getDir(orig));
-            modifiedDirs.insert(Utils::getDir(modified));
         }
 
         if (!skip) {
@@ -515,7 +511,7 @@ void TrackOrganiser::saveOptions()
 void TrackOrganiser::doUpdate()
 {
     if (deviceUdi.isEmpty()) {
-        emit update(modifiedDirs);
+        emit update();
     }
     #ifdef ENABLE_DEVICES_SUPPORT
     else {

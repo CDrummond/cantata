@@ -303,7 +303,7 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
     connect(genre, SIGNAL(editTextChanged(const QString &)), SLOT(checkChanged()));
     connect(year, SIGNAL(valueChanged(int)), SLOT(checkChanged()));
     connect(trackName, SIGNAL(activated(int)), SLOT(setIndex(int)));
-    connect(this, SIGNAL(update(QSet<QString>)), MPDConnection::self(), SLOT(update(QSet<QString>)));
+    connect(this, SIGNAL(update()), MPDConnection::self(), SLOT(update()));
     adjustSize();
     int w=600*(Utils::isHighDpi() ? 2 : 1);
     if (width()<w) {
@@ -820,7 +820,6 @@ bool TagEditor::applyUpdates()
     int toSave=editedIndexes.count();
     bool renameFiles=false;
     QList<Song> updatedSongs;
-    QSet<QString> modifiedDirs;
 
     saving=true;
     enableButton(Ok, false);
@@ -869,7 +868,6 @@ bool TagEditor::applyUpdates()
                 }
             }
             updatedSongs.append(edit);
-            modifiedDirs.insert(Utils::getDir(file));
             if (!renameFiles && file!=opts.createFilename(edit)) {
                 renameFiles=true;
             }
@@ -896,7 +894,7 @@ bool TagEditor::applyUpdates()
             MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Would you also like to rename your song files, so as to match your tags?"),
                                                        i18n("Rename Files"), GuiItem(i18n("Rename")), StdGuiItem::cancel())) {
             TrackOrganiser *dlg=new TrackOrganiser(parentWidget());
-            dlg->show(updatedSongs, udi, true, modifiedDirs);
+            dlg->show(updatedSongs, udi, true);
         } else {
             #ifdef ENABLE_DEVICES_SUPPORT
             if (!deviceUdi.isEmpty()) {
@@ -905,7 +903,7 @@ bool TagEditor::applyUpdates()
             #endif
             {
             //             MusicLibraryModel::self()->removeCache();
-                emit update(modifiedDirs);
+                emit update();
             }
         }
     }

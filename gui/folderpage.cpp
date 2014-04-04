@@ -105,7 +105,7 @@ void FolderPage::setEnabled(bool e)
 
 void FolderPage::refresh()
 {
-    view->setLevel(0);
+    view->goToTop();
     if (DirViewModel::self()->isEnabled()) {
         if (!isVisible()) {
             loaded=false; // Refresh called for, but we are not currently visible...

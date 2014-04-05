@@ -53,6 +53,7 @@
 #include <QUrl>
 #include <QTimer>
 #include <QApplication>
+#include <QMenu>
 
 #if defined ENABLE_MODEL_TEST
 #include "modeltest.h"
@@ -61,6 +62,13 @@
 const QLatin1String PlayQueueModel::constMoveMimeType("cantata/move");
 const QLatin1String PlayQueueModel::constFileNameMimeType("cantata/filename");
 const QLatin1String PlayQueueModel::constUriMimeType("text/uri-list");
+
+static const char * constSortByKey="sort-by";
+static const QLatin1String constSortByArtistKey("artist");
+static const QLatin1String constSortByAlbumArtistKey("albumartist");
+static const QLatin1String constSortByAlbumKey("album");
+static const QLatin1String constSortByGenreKey("genre");
+static const QLatin1String constSortByYearKey("year");
 
 static bool checkExtension(const QString &file)
 {
@@ -163,6 +171,13 @@ PlayQueueModel::PlayQueueModel(QObject *parent)
     connect(redoAction, SIGNAL(triggered(bool)), this, SLOT(redo()));
     connect(removeDuplicatesAction, SIGNAL(triggered(bool)), this, SLOT(removeDuplicates()));
 
+    sortAction=new Action(i18n("Sort By"), this);
+    sortAction->setMenu(new QMenu(0));
+    addSortAction(i18n("Artist"), constSortByArtistKey);
+    addSortAction(i18n("Album Artist"), constSortByAlbumArtistKey);
+    addSortAction(i18n("Album"), constSortByAlbumKey);
+    addSortAction(i18n("Genre"), constSortByGenreKey);
+    addSortAction(i18n("Year"), constSortByYearKey);
     controlActions();
 }
 
@@ -1008,6 +1023,71 @@ void PlayQueueModel::controlActions()
     undoAction->setVisible(undoLimit>0);
     redoAction->setEnabled(!redoStack.isEmpty());
     redoAction->setVisible(undoLimit>0);
+}
+
+void PlayQueueModel::addSortAction(const QString &name, const QString &key)
+{
+    Action *action=new Action(name, sortAction);
+    action->setProperty(constSortByKey, key);
+    sortAction->menu()->addAction(action);
+    connect(action, SIGNAL(triggered(bool)), SLOT(sortBy()));
+}
+
+static bool artistSort(const Song &s1, const Song &s2)
+{
+    int c=s1.artist.localeAwareCompare(s2.artist);
+    return c<0 || (c==0 && s1<s2);
+}
+
+static bool albumArtistSort(const Song &s1, const Song &s2)
+{
+    int c=s1.albumArtist().localeAwareCompare(s2.albumArtist());
+    return c<0 || (c==0 && s1<s2);
+}
+
+static bool albumSort(const Song &s1, const Song &s2)
+{
+    int c=s1.album.localeAwareCompare(s2.album);
+    return c<0 || (c==0 && s1<s2);
+}
+
+static bool genreSort(const Song &s1, const Song &s2)
+{
+    int c=s1.genre.localeAwareCompare(s2.genre);
+    return c<0 || (c==0 && s1<s2);
+}
+
+static bool yearSort(const Song &s1, const Song &s2)
+{
+    return s1.year<s2.year || (s1.year==s2.year && s1<s2);
+}
+
+void PlayQueueModel::sortBy()
+{
+    Action *act=qobject_cast<Action *>(sender());
+    if (act) {
+        QString key=act->property(constSortByKey).toString();
+        QList<Song> copy=songs;
+        if (constSortByArtistKey==key) {
+            qSort(copy.begin(), copy.end(), artistSort);
+        } else if (constSortByAlbumArtistKey==key) {
+            qSort(copy.begin(), copy.end(), albumArtistSort);
+        } else if (constSortByAlbumKey==key) {
+            qSort(copy.begin(), copy.end(), albumSort);
+        } else if (constSortByGenreKey==key) {
+            qSort(copy.begin(), copy.end(), genreSort);
+        } else if (constSortByYearKey==key) {
+            qSort(copy.begin(), copy.end(), yearSort);
+        }
+        if (copy!=songs) {
+            QStringList files;
+            foreach (const Song &s, copy) {
+                files.append(s.file);
+            }
+
+            emit filesAdded(files, 0, 0, MPDState_Playing==MPDStatus::self()->state() ? MPDConnection::AddReplaceAndPlay : MPDConnection::AddAndReplace , 0);
+        }
+    }
 }
 
 void PlayQueueModel::removeDuplicates()

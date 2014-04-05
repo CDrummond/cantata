@@ -89,6 +89,8 @@
     on this.
 56. When searching, search both with and without diaeresis, etc. e.g. both
     Queensrÿche and Queensryche should match.
+57. Add 'Sort By' to playqueue context model - allowing to re-sort tracks by
+    artist, album artist, album, genre, or year.
 
 1.3.4
 -----

@@ -633,6 +633,7 @@ MainWindow::MainWindow(QWidget *parent)
         menu->addSeparator();
         addMenuAction(menu, shufflePlayQueueAction);
         addMenuAction(menu, shufflePlayQueueAlbumsAction);
+        addMenuAction(menu, playQueueModel.sortAct());
         menuBar()->addMenu(menu);
         #ifndef ENABLE_KDE_SUPPORT
         if (Utils::KDE==Utils::currentDe())
@@ -686,6 +687,7 @@ MainWindow::MainWindow(QWidget *parent)
     playQueue->addAction(cropPlayQueueAction);
     playQueue->addAction(shufflePlayQueueAction);
     playQueue->addAction(shufflePlayQueueAlbumsAction);
+    playQueue->addAction(playQueueModel.sortAct());
     playQueue->addAction(playQueueModel.undoAct());
     playQueue->addAction(playQueueModel.redoAct());
     Action *sep=new Action(this);
@@ -1064,6 +1066,7 @@ void MainWindow::playQueueItemsSelected(bool s)
     cropPlayQueueAction->setEnabled(playQueue->haveUnSelectedItems() && haveItems);
     shufflePlayQueueAction->setEnabled(rc>1);
     shufflePlayQueueAlbumsAction->setEnabled(rc>1);
+    playQueueModel.sortAct()->setEnabled(rc>1);
     #ifdef TAGLIB_FOUND
     editPlayQueueTagsAction->setEnabled(s && haveItems && MPDConnection::self()->getDetails().dirReadable);
     #endif

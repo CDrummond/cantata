@@ -111,6 +111,7 @@ public:
     void crop(const QList<int> &rowsToKeep);
 
     Action * removeDuplicatesAct() { return removeDuplicatesAction; }
+    Action *sortAct() { return sortAction; }
 
     void enableUndo(bool e);
     Action * undoAct() { return undoAction; }
@@ -120,6 +121,7 @@ public:
 private:
     void saveHistory(const QList<Song> &prevList);
     void controlActions();
+    void addSortAction(const QString &name, const QString &key);
 
 public Q_SLOTS:
     void addItems(const QStringList &items, int row, bool replace, quint8 priority);
@@ -132,6 +134,7 @@ public Q_SLOTS:
     void playSong(const QString &file);
 
 private Q_SLOTS:
+    void sortBy();
     void stopAfterCurrentChanged(bool afterCurrent);
     void remove(const QList<Song> &rem);
     void updateDetails(const QList<Song> &updated);
@@ -179,6 +182,7 @@ private:
     Command lastCommand;
     Action *undoAction;
     Action *redoAction;
+    Action *sortAction;
     QStack<UndoItem> undoStack;
     QStack<UndoItem> redoStack;
 };

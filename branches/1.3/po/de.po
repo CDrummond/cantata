@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-02-02 20:02+0000\n"
-"PO-Revision-Date: 2014-03-30 03:53+0200\n"
+"PO-Revision-Date: 2014-04-06 04:12+0200\n"
 "Last-Translator: Markus Slopianka <kamikazow@web.de>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de\n"
@@ -2416,7 +2416,7 @@ msgstr "Verbinde zu %1"
 
 #: gui/mainwindow.cpp:1189
 msgid "Refresh MPD Database?"
-msgstr "Aktualisiere MPD-Datenbank?"
+msgstr "Die MPD-Datenbank aktualisieren?"
 
 #: gui/mainwindow.cpp:1257
 msgid ""

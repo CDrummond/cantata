@@ -101,10 +101,11 @@ static QByteArray readFromSocket(MpdSocket &socket)
     while (QAbstractSocket::ConnectedState==socket.state()) {
         int attempt=0;
         while (0==socket.bytesAvailable() && QAbstractSocket::ConnectedState==socket.state()) {
-            DBUG << (void *)(&socket) << "Waiting for read data." << attempt;
+            DBUG << (void *)(&socket) << "Waiting for read data, attempt" << attempt;
             if (socket.waitForReadyRead()) {
                 break;
             }
+            DBUG << (void *)(&socket) << "Wait for read failed";
             if (++attempt>=constMaxReadAttempts) {
                 DBUG << "ERROR: Timedout waiting for response";
                 socket.close();
@@ -118,7 +119,7 @@ static QByteArray readFromSocket(MpdSocket &socket)
             break;
         }
     }
-    DBUG << (void *)(&socket) << "Read:" << log(data);
+    DBUG << (void *)(&socket) << "Read:" << log(data) << ", socket state:" << socket.state();
 
     return data;
 }
@@ -789,6 +790,7 @@ void MPDConnection::currentSong()
  */
 void MPDConnection::playListChanges()
 {
+    DBUG << lastUpdatePlayQueueVersion << playQueueIds.size();
     if (0==lastUpdatePlayQueueVersion || 0==playQueueIds.size()) {
         playListInfo();
         return;

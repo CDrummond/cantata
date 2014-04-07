@@ -110,6 +110,9 @@ public:
     void remove(const QList<int> &rowsToRemove);
     void crop(const QList<int> &rowsToKeep);
 
+    Action * shuffleTracksAct() { return shuffleTracksAction; }
+    Action * shuffleAlbumsAct() { return shuffleAlbumsAction; }
+
     Action * removeDuplicatesAct() { return removeDuplicatesAction; }
     Action *sortAct() { return sortAction; }
 
@@ -182,6 +185,8 @@ private:
     Command lastCommand;
     Action *undoAction;
     Action *redoAction;
+    Action *shuffleTracksAction;
+    Action *shuffleAlbumsAction;
     Action *sortAction;
     QStack<UndoItem> undoStack;
     QStack<UndoItem> redoStack;

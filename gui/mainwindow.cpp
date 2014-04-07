@@ -258,8 +258,6 @@ MainWindow::MainWindow(QWidget *parent)
     addPlayQueueToStoredPlaylistAction = ActionCollection::get()->createAction("addpqtostoredplaylist", i18n("Add To Stored Playlist"), Icons::self()->playlistIcon);
     removeFromPlayQueueAction = ActionCollection::get()->createAction("removefromplaylist", i18n("Remove From Play Queue"), "list-remove");
     cropPlayQueueAction = ActionCollection::get()->createAction("cropplaylist", i18n("Crop"));
-    shufflePlayQueueAction = ActionCollection::get()->createAction("shuffleplaylist", i18n("Shuffle Tracks"));
-    shufflePlayQueueAlbumsAction = ActionCollection::get()->createAction("shuffleplaylistalbums", i18n("Shuffle Albums"));
     addStreamToPlayQueueAction = ActionCollection::get()->createAction("addstreamtoplayqueue", i18n("Add Stream URL"), Icons::self()->addRadioStreamIcon);
     promptClearPlayQueueAction = ActionCollection::get()->createAction("clearplaylist", i18n("Clear"), Icons::self()->clearListIcon);
     songInfoAction = ActionCollection::get()->createAction("showsonginfo", i18n("Show Current Song Information"), Icons::self()->infoIcon);
@@ -631,8 +629,8 @@ MainWindow::MainWindow(QWidget *parent)
         menu->addSeparator();
         addMenuAction(menu, addStreamToPlayQueueAction);
         menu->addSeparator();
-        addMenuAction(menu, shufflePlayQueueAction);
-        addMenuAction(menu, shufflePlayQueueAlbumsAction);
+        addMenuAction(menu, playQueueModel.shuffleTracksAct());
+        addMenuAction(menu, playQueueModel.shuffleAlbumsAct());
         addMenuAction(menu, playQueueModel.sortAct());
         menuBar()->addMenu(menu);
         #ifndef ENABLE_KDE_SUPPORT
@@ -685,8 +683,8 @@ MainWindow::MainWindow(QWidget *parent)
     playQueue->addAction(addStreamToPlayQueueAction);
     playQueue->addAction(addPlayQueueToStoredPlaylistAction);
     playQueue->addAction(cropPlayQueueAction);
-    playQueue->addAction(shufflePlayQueueAction);
-    playQueue->addAction(shufflePlayQueueAlbumsAction);
+    playQueue->addAction(playQueueModel.shuffleTracksAct());
+    playQueue->addAction(playQueueModel.shuffleAlbumsAct());
     playQueue->addAction(playQueueModel.sortAct());
     playQueue->addAction(playQueueModel.undoAct());
     playQueue->addAction(playQueueModel.redoAct());
@@ -790,8 +788,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(promptClearPlayQueueAction, SIGNAL(triggered(bool)), playQueueSearchWidget, SLOT(clear()));
     connect(promptClearPlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(promptClearPlayQueue()));
     connect(cropPlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(cropPlayQueue()));
-    connect(shufflePlayQueueAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(shuffle()));
-    connect(shufflePlayQueueAlbumsAction, SIGNAL(triggered(bool)), &playQueueModel, SLOT(shuffleAlbums()));
     connect(songInfoAction, SIGNAL(triggered(bool)), this, SLOT(showSongInfo()));
     connect(fullScreenAction, SIGNAL(triggered(bool)), this, SLOT(fullScreen()));
     #ifdef TAGLIB_FOUND
@@ -1064,9 +1060,6 @@ void MainWindow::playQueueItemsSelected(bool s)
     setPriorityAction->setEnabled(s && haveItems);
     locateTrackAction->setEnabled(singleSelection);
     cropPlayQueueAction->setEnabled(playQueue->haveUnSelectedItems() && haveItems);
-    shufflePlayQueueAction->setEnabled(rc>1);
-    shufflePlayQueueAlbumsAction->setEnabled(rc>1);
-    playQueueModel.sortAct()->setEnabled(rc>1);
     #ifdef TAGLIB_FOUND
     editPlayQueueTagsAction->setEnabled(s && haveItems && MPDConnection::self()->getDetails().dirReadable);
     #endif

@@ -319,8 +319,6 @@ private:
     Action *addPlayQueueToStoredPlaylistAction;
     Action *promptClearPlayQueueAction;
     Action *cropPlayQueueAction;
-    Action *shufflePlayQueueAction;
-    Action *shufflePlayQueueAlbumsAction;
     Action *addStreamToPlayQueueAction;
     Action *randomPlayQueueAction;
     Action *repeatPlayQueueAction;

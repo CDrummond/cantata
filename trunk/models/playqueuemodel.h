@@ -109,16 +109,12 @@ public:
     void removeAll();
     void remove(const QList<int> &rowsToRemove);
     void crop(const QList<int> &rowsToKeep);
-
-    Action * shuffleTracksAct() { return shuffleTracksAction; }
-    Action * shuffleAlbumsAct() { return shuffleAlbumsAction; }
-
+    Action * shuffleAct() { return shuffleAction; }
     Action * removeDuplicatesAct() { return removeDuplicatesAction; }
-    Action *sortAct() { return sortAction; }
-
-    void enableUndo(bool e);
+    Action * sortAct() { return sortAction; }
     Action * undoAct() { return undoAction; }
     Action * redoAct() { return redoAction; }
+    void enableUndo(bool e);
     bool lastCommandWasUnodOrRedo() const { return Cmd_Other!=lastCommand; }
 
 private:
@@ -185,8 +181,7 @@ private:
     Command lastCommand;
     Action *undoAction;
     Action *redoAction;
-    Action *shuffleTracksAction;
-    Action *shuffleAlbumsAction;
+    Action *shuffleAction;
     Action *sortAction;
     QStack<UndoItem> undoStack;
     QStack<UndoItem> redoStack;

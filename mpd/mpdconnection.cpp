@@ -149,7 +149,7 @@ QString MPDConnection::Response::getError(const QByteArray &command)
             cmdEnd+=2;
             QString rv=data.mid(cmdEnd, data.length()-(data.endsWith('\n') ? cmdEnd+1 : cmdEnd));
             if (data.contains("{listplaylists}")) {
-                // NOT: NOT transalted, as refers to config item
+                // NOTE: NOT translated, as refers to config item
                 return QLatin1String("playlist_directory - ")+rv;
             }
             return rv;
@@ -175,7 +175,7 @@ QString MPDConnectionDetails::description() const
     if (hostname.startsWith('/')) {
         return i18nc("name (host)", "\"%1\"", getName());
     } else {
-        return i18nc("name (host:port)", "\"%1\" (%2:%3)", getName(), hostname, QString::number(port)); // USe QString::number to prevent KDE's i18n converting 6600 to 6,600!
+        return i18nc("name (host:port)", "\"%1\" (%2:%3)", getName(), hostname, QString::number(port)); // Use QString::number to prevent KDE's i18n converting 6600 to 6,600!
     }
 }
 
@@ -524,7 +524,7 @@ MPDConnection::Response MPDConnection::sendCommand(const QByteArray &command, bo
         DBUG << log(command) << "failed";
         if (response.data.isEmpty() && retry && QAbstractSocket::ConnectedState!=sock.state()) {
             // Try one more time...
-            // This scenario, where socket seems to be closed during/after 'write' seems to occiu more often
+            // This scenario, where socket seems to be closed during/after 'write' seems to occur more often
             // when dynamizer is running. However, simply reconnecting seems to resolve the issue.
             return sendCommand(command, emitErrors, false);
         }

@@ -171,10 +171,14 @@ PlayQueueModel::PlayQueueModel(QObject *parent)
     connect(redoAction, SIGNAL(triggered(bool)), this, SLOT(redo()));
     connect(removeDuplicatesAction, SIGNAL(triggered(bool)), this, SLOT(removeDuplicates()));
 
-    shuffleTracksAction = ActionCollection::get()->createAction("shuffleplaylist", i18n("Shuffle Tracks"));
-    shuffleAlbumsAction = ActionCollection::get()->createAction("shuffleplaylistalbums", i18n("Shuffle Albums"));
+    shuffleAction=new Action(i18n("Shuffle"), this);
+    shuffleAction->setMenu(new QMenu(0));
+    Action *shuffleTracksAction = new Action(i18n("Tracks"), shuffleAction);
+    Action *shuffleAlbumsAction = new Action(i18n("Albums"), shuffleAction);
     connect(shuffleTracksAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(shuffle()));
     connect(shuffleAlbumsAction, SIGNAL(triggered(bool)), this, SLOT(shuffleAlbums()));
+    shuffleAction->menu()->addAction(shuffleTracksAction);
+    shuffleAction->menu()->addAction(shuffleAlbumsAction);
 
     sortAction=new Action(i18n("Sort By"), this);
     sortAction->setMenu(new QMenu(0));
@@ -184,8 +188,7 @@ PlayQueueModel::PlayQueueModel(QObject *parent)
     addSortAction(i18n("Genre"), constSortByGenreKey);
     addSortAction(i18n("Year"), constSortByYearKey);
     controlActions();
-    shuffleTracksAction->setEnabled(false);
-    shuffleAlbumsAction->setEnabled(false);
+    shuffleAction->setEnabled(false);
     sortAction->setEnabled(false);
 }
 
@@ -859,8 +862,7 @@ void PlayQueueModel::update(const QList<Song> &songList)
     }
 
     saveHistory(prev);
-    shuffleTracksAction->setEnabled(songs.count()>1);
-    shuffleAlbumsAction->setEnabled(songs.count()>1);
+    shuffleAction->setEnabled(songs.count()>1);
     sortAction->setEnabled(songs.count()>1);
 }
 

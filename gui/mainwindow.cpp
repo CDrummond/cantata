@@ -629,8 +629,7 @@ MainWindow::MainWindow(QWidget *parent)
         menu->addSeparator();
         addMenuAction(menu, addStreamToPlayQueueAction);
         menu->addSeparator();
-        addMenuAction(menu, playQueueModel.shuffleTracksAct());
-        addMenuAction(menu, playQueueModel.shuffleAlbumsAct());
+        addMenuAction(menu, playQueueModel.shuffleAct());
         addMenuAction(menu, playQueueModel.sortAct());
         menuBar()->addMenu(menu);
         #ifndef ENABLE_KDE_SUPPORT
@@ -683,8 +682,7 @@ MainWindow::MainWindow(QWidget *parent)
     playQueue->addAction(addStreamToPlayQueueAction);
     playQueue->addAction(addPlayQueueToStoredPlaylistAction);
     playQueue->addAction(cropPlayQueueAction);
-    playQueue->addAction(playQueueModel.shuffleTracksAct());
-    playQueue->addAction(playQueueModel.shuffleAlbumsAct());
+    playQueue->addAction(playQueueModel.shuffleAct());
     playQueue->addAction(playQueueModel.sortAct());
     playQueue->addAction(playQueueModel.undoAct());
     playQueue->addAction(playQueueModel.redoAct());

@@ -46,7 +46,7 @@ public:
 
 SearchPage::SearchPage(QWidget *p)
     : QWidget(p)
-    , state(0)
+    , state(-1)
     , model(this)
     , proxy(this)
 {

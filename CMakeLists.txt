@@ -33,6 +33,7 @@ endif (WIN32)
 option(ENABLE_KDE "Enable KDE libraries" ON)
 option(ENABLE_KWALLET "Use KWallet in KDE builds" ON)
 option(ENABLE_QT5 "Build against Qt5" OFF)
+option(ENABLE_UBUNTU "Build for the Ubuntu SDK" OFF)
 option(ENABLE_FFMPEG "Enable ffmpeg/libav libraries (required for replaygain calculation)" ON)
 option(ENABLE_MPG123 "Enable mpg123 libraries (required for replaygain calculation)" ON)
 option(ENABLE_PROXY_CONFIG "Enable proxy config in settings dialog" OFF)
@@ -55,6 +56,30 @@ else (WIN32 OR APPLE)
     option(ENABLE_UNCACHED_MTP "Open MTP devices in un-cached mode (faster)" ON)
     option(USE_SYSTEM_MENU_ICON "Use system menu icon" ON)
 endif (WIN32 OR APPLE)
+
+if (ENABLE_UBUNTU)
+    set(ENABLE_QT5 ON)
+    set(ENABLE_DYNAMIC OFF)
+    set(ENABLE_STREAMS OFF)
+    set(ENABLE_ONLINE_SERVICES OFF)
+    set(ENABLE_TAGLIB OFF)
+    set(ENABLE_TAGLIB_EXTRAS OFF)
+    set(ENABLE_FFMPEG OFF)
+    set(ENABLE_MPG123 OFF)
+    set(ENABLE_EXTERNAL_TAGS OFF)
+    set(ENABLE_HTTP_SERVER OFF)
+    set(ENABLE_HTTPS_SUPPORT OFF)
+    set(ENABLE_CDPARANOIA OFF)
+    set(ENABLE_CDDB OFF)
+    set(ENABLE_MUSICBRAINZ OFF)
+    set(ENABLE_UDISKS2 OFF)
+    set(ENABLE_DEVICES_SUPPORT OFF)
+    set(ENABLE_REMOTE_DEVICES OFF)
+    set(ENABLE_MTP OFF)
+    set(ENABLE_UNCACHED_MTP OFF)
+    set(ENABLE_UNCACHED_MTP OFF)
+    set(USE_SYSTEM_MENU_ICON OFF)
+endif (ENABLE_UBUNTU)
 
 if (ENABLE_QT5)
     set(ENABLE_KDE OFF)
@@ -177,6 +202,7 @@ if (NOT MTP_FOUND)
 endif (NOT MTP_FOUND)
 
 if (ENABLE_QT5)
+    message(STATUS "Building the Qt5 version")
     find_package(Qt5Widgets REQUIRED)
     find_package(Qt5Xml REQUIRED)
     find_package(Qt5Network REQUIRED)
@@ -197,6 +223,11 @@ if (ENABLE_QT5)
         set(QTINCLUDES ${QTINCLUDES} ${Qt5DBus_INCLUDE_DIRS})
         add_definitions(${Qt5DBus_DEFINITIONS})
     endif (Qt5DBus_FOUND)
+    if (ENABLE_UBUNTU)
+        message(STATUS "Building the Ubuntu Components GUI")
+        find_package(Qt5Quick REQUIRED)
+        find_package(Qt5Qml REQUIRED)
+    endif (ENABLE_UBUNTU)
 else (ENABLE_QT5)
     find_package(Qt4 REQUIRED QtCore QtGui QtXml QtNetwork QtSvg)  # SVG only actually required for SVG icons...
     set(QTCORELIBS ${QT_QTCORE_LIBRARY})
@@ -252,8 +283,8 @@ if (MSVC)
    add_definitions(-EHsc)
 endif (MSVC)
 
-set(CANTATA_SRCS gui/application.cpp gui/main.cpp gui/initialsettingswizard.cpp gui/mainwindow.cpp gui/preferencesdialog.cpp
-    gui/settings.cpp gui/covers.cpp gui/filesettings.cpp gui/interfacesettings.cpp gui/playbacksettings.cpp 
+set(CANTATA_SRCS gui/application.cpp gui/initialsettingswizard.cpp gui/mainwindow.cpp gui/preferencesdialog.cpp
+    gui/settings.cpp gui/covers.cpp gui/filesettings.cpp gui/interfacesettings.cpp gui/playbacksettings.cpp
     gui/serversettings.cpp gui/librarypage.cpp gui/albumspage.cpp gui/folderpage.cpp gui/playlistspage.cpp gui/trayitem.cpp
     gui/cachesettings.cpp gui/coverdialog.cpp gui/stdactions.cpp gui/searchpage.cpp gui/currentcover.cpp
     models/musiclibraryitemroot.cpp models/musiclibraryitemartist.cpp models/musiclibraryitemalbum.cpp models/musiclibrarymodel.cpp
@@ -298,6 +329,19 @@ set(CANTATA_UIS
     gui/filesettings.ui gui/interfacesettings.ui gui/playbacksettings.ui gui/serversettings.ui gui/coverdialog.ui gui/searchpage.ui
     context/togglelist.ui context/othersettings.ui
     widgets/itemview.ui)
+
+
+if (ENABLE_UBUNTU)
+    set(UBUNTU_SRCS
+        ubuntu/main.cpp
+        ubuntu/backend/mpdbackend.cpp
+    )
+    set(UBUNTU_MOC_HDRS
+        ubuntu/backend/mpdbackend.h
+    )
+else (ENABLE_UBUNTU)
+    set(CANTATA_SRCS ${CANTATA_SRCS} gui/main.cpp)
+endif (ENABLE_UBUNTU)
 
 if (ENABLE_DYNAMIC)
     set(CANTATA_SRCS ${CANTATA_SRCS} dynamic/dynamic.cpp dynamic/dynamicpage.cpp dynamic/dynamicproxymodel.cpp
@@ -549,28 +593,40 @@ else (ENABLE_KDE)
         set(CANTATA_SRCS ${CANTATA_SRCS} gui/qxtmediakeys.cpp)
     endif (WIN32 OR APPLE OR NOT ENABLE_QT5)
 
-    if (WIN32)
-        set(CMAKE_BUILD_TYPE "Release")
-        ADD_EXECUTABLE(cantata WIN32 ${CANTATA_SRCS} ${CANTATA_MOC_SRCS} ${CANTATA_RC_SRCS} ${CANTATA_UI_HDRS} ${CANTATA_PO})
-        install(TARGETS cantata DESTINATION ${CMAKE_INSTALL_PREFIX})
-    elseif (APPLE)
-        ADD_EXECUTABLE(cantata MACOSX_BUNDLE ${CANTATA_SRCS} ${CANTATA_MOC_SRCS} ${CANTATA_RC_SRCS} ${CANTATA_UI_HDRS} ${CANTATA_PO})
-        #ADD_EXECUTABLE(cantata ${CANTATA_SRCS} ${CANTATA_MOC_SRCS} ${CANTATA_RC_SRCS} ${CANTATA_UI_HDRS} ${CANTATA_PO})
-        set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR})
-        set(MACOSX_BUNDLE_BUNDLE_NAME Cantata)
-        SET(MACOSX_BUNDLE_SHORT_VERSION_STRING ${CANATA_VERSION})
-        SET(MACOSX_BUNDLE_VERSION ${CANATA_VERSION})
-        SET(MACOSX_BUNDLE_LONG_VERSION_STRING ${CANTATA_VERSION_FULL})
-        set(MACOSX_BUNDLE_ICON_FILE "cantata.icns")
-        add_subdirectory(mac)
-        include(DeployQt4)
-        INSTALL_QT4_EXECUTABLE("cantata.app" "qjpeg;qsvg;qsvgicon")
-    else (WIN32)
-        ADD_EXECUTABLE(cantata ${CANTATA_SRCS} ${CANTATA_MOC_SRCS} ${CANTATA_RC_SRCS} ${CANTATA_UI_HDRS})
-        install(TARGETS cantata RUNTIME DESTINATION bin LIBRARY DESTINATION lib ARCHIVE DESTINATION lib)
-    endif (WIN32)
+    if (ENABLE_UBUNTU)
+        qt5_wrap_cpp(UBUNTU_MOC_SRCS ${UBUNTU_MOC_HDRS})
 
-    set(XDG_APPS_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}/share/applications")
+        add_executable(cantata ${CANTATA_SRCS} ${CANTATA_MOC_SRCS} ${CANTATA_RC_SRCS} ${CANTATA_UI_HDRS} ${CMAKE_CURRENT_SOURCE_DIR}/ubuntu ${UBUNTU_SRCS} ${UBUNTU_MOC_SRCS})
+
+#        set_property(TARGET cantata APPEND PROPERTY INCLUDE_DIRECTORIES
+#            ${QT_MKSPECS_DIR}/default ${CMAKE_CURRENT_SOURCE_DIR}/ubuntu ${UBUNTU_SRCS})
+
+        qt5_use_modules(cantata Network Core Qml Quick)
+    else (ENABLE_UBUNTU)
+        if (WIN32)
+            set(CMAKE_BUILD_TYPE "Release")
+            ADD_EXECUTABLE(cantata WIN32 ${CANTATA_SRCS} ${CANTATA_MOC_SRCS} ${CANTATA_RC_SRCS} ${CANTATA_UI_HDRS} ${CANTATA_PO})
+            install(TARGETS cantata DESTINATION ${CMAKE_INSTALL_PREFIX})
+        elseif (APPLE)
+            ADD_EXECUTABLE(cantata MACOSX_BUNDLE ${CANTATA_SRCS} ${CANTATA_MOC_SRCS} ${CANTATA_RC_SRCS} ${CANTATA_UI_HDRS} ${CANTATA_PO})
+            #ADD_EXECUTABLE(cantata ${CANTATA_SRCS} ${CANTATA_MOC_SRCS} ${CANTATA_RC_SRCS} ${CANTATA_UI_HDRS} ${CANTATA_PO})
+            set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR})
+            set(MACOSX_BUNDLE_BUNDLE_NAME Cantata)
+            SET(MACOSX_BUNDLE_SHORT_VERSION_STRING ${CANATA_VERSION})
+            SET(MACOSX_BUNDLE_VERSION ${CANATA_VERSION})
+            SET(MACOSX_BUNDLE_LONG_VERSION_STRING ${CANTATA_VERSION_FULL})
+            set(MACOSX_BUNDLE_ICON_FILE "cantata.icns")
+            add_subdirectory(mac)
+            include(DeployQt4)
+            INSTALL_QT4_EXECUTABLE("cantata.app" "qjpeg;qsvg;qsvgicon")
+        else (WIN32)
+            ADD_EXECUTABLE(cantata ${CANTATA_SRCS} ${CANTATA_MOC_SRCS} ${CANTATA_RC_SRCS} ${CANTATA_UI_HDRS})
+            install(TARGETS cantata RUNTIME DESTINATION bin LIBRARY DESTINATION lib ARCHIVE DESTINATION lib)
+        endif (WIN32)
+
+        set(XDG_APPS_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}/share/applications")
+
+    endif (ENABLE_UBUNTU)
 
     if (WIN32)
         add_subdirectory(3rdparty/qtsingleapplication)
@@ -579,6 +635,7 @@ else (ENABLE_KDE)
     if (WIN32 OR APPLE OR NOT ENABLE_QT5)
         target_link_libraries(cantata qxt)
     endif (WIN32 OR APPLE OR NOT ENABLE_QT5)
+
 endif (ENABLE_KDE)
 
 if (X11_FOUND)
@@ -665,7 +722,9 @@ endif (TAGLIB_FOUND)
 add_definitions(-DQT_NO_DEBUG_OUTPUT)
 
 if (UNIX AND NOT APPLE)
-    install(FILES cantata.desktop DESTINATION ${XDG_APPS_INSTALL_DIR})
+    if (NOT ENABLE_UBUNTU)
+        install(FILES cantata.desktop DESTINATION ${XDG_APPS_INSTALL_DIR})
+    endif (NOT ENABLE_UBUNTU)
     target_link_libraries(cantata -lpthread)
 endif (UNIX AND NOT APPLE)
 
@@ -675,7 +734,11 @@ if (ENABLE_KDE)
     message("-- Building KDE version")
 else (ENABLE_KDE)
     if (ENABLE_QT5)
-        message("-- Building Qt5 version")
+        if (ENABLE_UBUNTU)
+            message("-- Building Ubuntu version")
+        else (ENABLE_UBUNTU)
+            message("-- Building Qt5 version")
+        endif (ENABLE_UBUNTU)
     else (ENABLE_QT5)
         message("-- Building Qt4 version")
     endif (ENABLE_QT5)
@@ -731,3 +794,50 @@ if (ENABLE_MODEL_TEST AND NOT ENABLE_KDE AND NOT ENABLE_QT5)
     message("-----------------------------------------------------------------------------")
     message("")
 endif (ENABLE_MODEL_TEST AND NOT ENABLE_KDE AND NOT ENABLE_QT5)
+
+if (ENABLE_UBUNTU)
+    set(CANTATA_UBUNTU_PATH ${CMAKE_CURRENT_SOURCE_DIR}/ubuntu)
+    set(UBUNTU_QMLS
+        ${CANTATA_UBUNTU_PATH}/qml/cantata/main.qml
+        ${CANTATA_UBUNTU_PATH}/qml/cantata/AlbumPage.qml
+        ${CANTATA_UBUNTU_PATH}/qml/cantata/AboutPage.qml
+        ${CANTATA_UBUNTU_PATH}/qml/cantata/ArtistPage.qml
+        ${CANTATA_UBUNTU_PATH}/qml/cantata/CurrentlyPlayingPage.qml
+        ${CANTATA_UBUNTU_PATH}/qml/cantata/HostSettingsPage.qml
+        ${CANTATA_UBUNTU_PATH}/qml/cantata/ControlButtonsRow.qml
+    )
+    set(UBUNTU_TOOLBAR_ICONS
+        ${CANTATA_UBUNTU_PATH}/icons/toolbar/settings.svg
+        ${CANTATA_UBUNTU_PATH}/icons/toolbar/add.svg
+        ${CANTATA_UBUNTU_PATH}/icons/toolbar/help.svg
+        ${CANTATA_UBUNTU_PATH}/icons/toolbar/media-playback-start.svg
+        ${CANTATA_UBUNTU_PATH}/icons/toolbar/media-playback-start-light.svg
+        ${CANTATA_UBUNTU_PATH}/icons/toolbar/media-skip-backward.svg
+        ${CANTATA_UBUNTU_PATH}/icons/toolbar/media-skip-forward.svg
+        ${CANTATA_UBUNTU_PATH}/icons/toolbar/media-playback-pause.svg
+
+    )
+
+    #Make QML visible to QtCreator
+    add_custom_target(
+        components_QmlFiles
+        ALL SOURCES ${UBUNTU_QMLS}
+    )
+
+    file(COPY ${UBUNTU_QMLS} DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/ubuntu/qml/cantata)
+    file(COPY manifest.json cantata-ubuntu.json cantata-ubuntu.desktop DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+
+    file(COPY ${UBUNTU_TOOLBAR_ICONS} DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/ubuntu/icons/toolbar)
+    file(COPY ${CANTATA_UBUNTU_PATH}/icons/desktop/cantata.png DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/ubuntu/icons/desktop)
+
+    install(
+        DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/qml
+        DESTINATION share/cantata
+    )
+
+    install(
+        TARGETS cantata
+        RUNTIME DESTINATION bin
+    )
+
+endif (ENABLE_UBUNTU)

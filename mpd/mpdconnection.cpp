@@ -1028,7 +1028,7 @@ void MPDConnection::setSeekId(qint32 songId, quint32 time)
     }
 }
 
-void MPDConnection::setVolume(int vol)
+void MPDConnection::setVolume(int vol) //Range accepted by MPD: 0-100
 {
     if (vol>=0) {
         unmuteVol=-1;

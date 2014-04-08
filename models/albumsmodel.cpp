@@ -2,6 +2,7 @@
  * Cantata
  *
  * Copyright (c) 2011-2014 Craig Drummond <craig.p.drummond@gmail.com>
+ * Copyright (c) 2014 Niklas Wenzel <nikwen.developer@gmail.com>
  *
  * ----
  *
@@ -173,6 +174,14 @@ QModelIndex AlbumsModel::index(int row, int col, const QModelIndex &parent) cons
     }
 
     return row<items.count() ? createIndex(row, col, items.at(row)) : QModelIndex();
+}
+
+//Expose role names, so that they can be accessed via QML
+QHash<int, QByteArray> AlbumsModel::roleNames() const {
+    QHash<int, QByteArray> roles;
+    roles[Qt::DisplayRole] = "album";
+    roles[ItemView::Role_SubText] = "artist";
+    return roles;
 }
 
 QVariant AlbumsModel::data(const QModelIndex &index, int role) const
@@ -479,6 +488,10 @@ void AlbumsModel::clear()
     qDeleteAll(items);
     items.clear();
     endResetModel();
+
+    #ifdef ENABLE_UBUNTU //For displaying a message when there is no album
+    emit updated();
+    #endif
 }
 
 void AlbumsModel::setEnabled(bool e)

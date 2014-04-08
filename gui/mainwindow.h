@@ -162,7 +162,7 @@ public Q_SLOTS:
     void dynamicStatus(const QString &message);
     void hideWindow();
     void restoreWindow();
-    void load(const QStringList &urls);
+    void load(const QStringList &urls) { playQueueModel.load(urls); }
     #ifdef ENABLE_KDE_SUPPORT
     void configureShortcuts();
     void saveShortcuts();
@@ -170,7 +170,6 @@ public Q_SLOTS:
     void showAboutDialog();
     #endif
     void setMpdVolume(int v);
-    void songLoaded();
     void mpdConnectionStateChanged(bool connected);
     void playQueueItemsSelected(bool s);
     void showSidebarPreferencesPage() { showPreferencesDialog("interface:sidebar"); }

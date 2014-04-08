@@ -43,6 +43,9 @@
 #include "actioncollection.h"
 #ifdef ENABLE_DEVICES_SUPPORT
 #include "devicesmodel.h"
+#if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
+#include "audiocddevice.h"
+#endif
 #endif
 #include <QPalette>
 #include <QFont>
@@ -81,6 +84,30 @@ static bool checkExtension(const QString &file)
 
     int pos=file.lastIndexOf('.');
     return pos>1 ? constExtensions.contains(file.mid(pos+1).toLower()) : false;
+}
+
+static QStringList parseUrls(const QStringList &urls, bool percentEncoded)
+{
+    QStringList useable;
+    foreach (const QString &path, urls) {
+        QUrl u=percentEncoded ? QUrl::fromPercentEncoding(path.toUtf8()) : QUrl(path);
+        #if defined ENABLE_DEVICES_SUPPORT && (defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND)
+        QString cdDevice=AudioCdDevice::getDevice(u);
+        if (!cdDevice.isEmpty()) {
+            DevicesModel::self()->playCd(cdDevice);
+        } else
+        #endif
+        if (QLatin1String("http")==u.scheme()) {
+            useable.append(u.toString());
+        } else if ((u.scheme().isEmpty() || QLatin1String("file")==u.scheme()) && checkExtension(u.path())) {
+            if (!HttpServer::self()->forceUsage() && MPDConnection::self()->getDetails().isLocal()  && !u.path().startsWith(QLatin1String("/media/"))) {
+                useable.append(QLatin1String("file://")+u.path());
+            } else if (HttpServer::self()->isAlive()) {
+                useable.append(HttpServer::self()->encodeUrl(u.path()));
+            }
+        }
+    }
+    return useable;
 }
 
 void PlayQueueModel::encode(QMimeData &mimeData, const QString &mime, const QStringList &values)
@@ -589,31 +616,21 @@ bool PlayQueueModel::dropMimeData(const QMimeData *data,
         addItems(decode(*data, constFileNameMimeType), row, false, 0);
         return true;
     } else if(data->hasFormat(constUriMimeType)/* && MPDConnection::self()->getDetails().isLocal()*/) {
-        QStringList orig=decode(*data, constUriMimeType);
-        QStringList useable;
-
-        foreach (QString u, orig) {
-            if (u.startsWith(QLatin1String("http://"))) {
-                useable.append(u);
-            } else if (u.startsWith('/') || u.startsWith(QLatin1String("file://"))) {
-                if (u.startsWith(QLatin1String("file://"))) {
-                    u=u.mid(7);
-                }
-                if (checkExtension(u)) {
-                    if (!HttpServer::self()->forceUsage() && MPDConnection::self()->getDetails().isLocal() && !u.startsWith(QLatin1String("/media/"))) {
-                        useable.append(QLatin1String("file://")+QUrl::fromPercentEncoding(u.toUtf8()));
-                    } else if (HttpServer::self()->isAlive()) {
-                        useable.append(HttpServer::self()->encodeUrl(QUrl::fromPercentEncoding(u.toUtf8())));
-                    }
-                }
-            }
-        }
+        QStringList useable=parseUrls(decode(*data, constUriMimeType), true);
         if (useable.count()) {
             addItems(useable, row, false, 0);
             return true;
         }
     }
     return false;
+}
+
+void PlayQueueModel::load(const QStringList &urls)
+{
+    QStringList useable=parseUrls(urls, false);
+    if (useable.count()) {
+        addItems(useable, songs.count(), songs.isEmpty(), 0);
+    }
 }
 
 void PlayQueueModel::addItems(const QStringList &items, int row, bool replace, quint8 priority)

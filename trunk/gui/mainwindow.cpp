@@ -1688,6 +1688,7 @@ void MainWindow::updateCurrentSong(const Song &song)
         }
     }
 
+    CurrentCover::self()->update(current);
     #ifdef QT_QTDBUS_FOUND
     mpris->updateCurrentSong(current);
     #endif
@@ -1695,8 +1696,6 @@ void MainWindow::updateCurrentSong(const Song &song)
         current.time=MPDStatus::self()->timeTotal();
     }
     positionSlider->setEnabled(-1!=current.id && !current.isCdda() && (!currentIsStream() || current.time>5));
-    CurrentCover::self()->update(current);
-
     trackLabel->update(current);
     bool isPlaying=MPDState_Playing==MPDStatus::self()->state();
     playQueueModel.updateCurrentSong(current.id);

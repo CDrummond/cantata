@@ -832,6 +832,8 @@ The Cantata source folder contains the following structure:
     support    - Generic classes that /may/ be useful to other projects.
                  Mainly used for Qt/KDE and Gtk support.
     tags       - Tag reading, editing, etc.
+    ubuntu     - Convergent Ubuntu version (requires the Ubuntu SDK); 
+                 cmake option: -DENABLE_UBUNTU=ON
     widgets    - Widgets that are probably Cantata specific.
     windows    - Files relevant to creating the windows installer.
 
@@ -918,6 +920,10 @@ Cantata contains code/icons from:
     IcoMoon        - http://icomoon.io/#icons (Monochrome sidebar icons)
     Qxt            - Multi-media key support
     QtSolutions    - QtIOCompressor, and QtSingleApplication
+    Trojita        - http://quickgit.kde.org/?p=trojita.git (Template for the 
+                     Ubuntu CMake configuration)
+    sudoku-app     - https://code.launchpad.net/~sudoku-touch-dev/sudoku-app/trunk
+                     (Ubuntu about page)
 
 
 16. Windows

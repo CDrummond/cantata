@@ -5,7 +5,7 @@
     incorrect extension. e.g. load a .jpg file with PNG type, and vice versa.
  3. Fix showing of time-slider when Cantata is started minimized to system tray
     and MPD is playing.
- 4. Remove ununsed 'Back' action.
+ 4. Remove unused 'Back' action.
  5. Don't treat albums with artists such as 'AlbumArtist ft Other' as multiple
     artist albums.
  6. Fix updating of playqueue sidebar tooltip and icon.

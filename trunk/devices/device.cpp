@@ -25,6 +25,7 @@
 #include "device.h"
 #include "covers.h"
 #include "utils.h"
+#include "mpdconnection.h"
 #include <QBuffer>
 #include <QDir>
 #include <QTemporaryFile>
@@ -45,7 +46,6 @@
 #include "musiclibraryitemartist.h"
 #include "musiclibraryitemalbum.h"
 #include "musiclibraryitemsong.h"
-#include "mpdconnection.h"
 #include "localize.h"
 #ifdef ENABLE_KDE_SUPPORT
 #include <solid/portablemediaplayer.h>

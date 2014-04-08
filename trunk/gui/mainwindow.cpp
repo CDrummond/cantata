@@ -1651,7 +1651,6 @@ void MainWindow::updatePlayQueue(const QList<Song> &songs)
         }
     }
     playQueueItemsSelected(playQueue->haveSelectedItems());
-    updateNextTrack(MPDStatus::self()->nextSongId());
 }
 
 void MainWindow::updateWindowTitle()

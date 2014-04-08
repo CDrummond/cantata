@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-02-02 20:02+0000\n"
-"PO-Revision-Date: 2014-04-06 04:12+0200\n"
+"PO-Revision-Date: 2014-04-08 03:24+0200\n"
 "Last-Translator: Markus Slopianka <kamikazow@web.de>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de\n"
@@ -306,7 +306,7 @@ msgstr "Erneut Laden"
 
 #: dbus/powermanagement.cpp:96
 msgid "Cantata is playing a track"
-msgstr ""
+msgstr "Cantata spielt ein Stück ab"
 
 #: devices/actiondialog.cpp:83
 msgid "Songs To Be Copied"
@@ -2254,9 +2254,8 @@ msgid "Crop"
 msgstr "Abschneiden"
 
 #: gui/mainwindow.cpp:284
-#, fuzzy
 msgid "Shuffle Tracks"
-msgstr "Einzelne Lieder"
+msgstr "Zufällige Reihenfolge"
 
 #: gui/mainwindow.cpp:285
 #, fuzzy
@@ -4361,7 +4360,7 @@ msgstr ""
 #. i18n: ectx: property (toolTip), widget (QPushButton, trackArtist)
 #: po/rc.cpp:215 rc.cpp:215
 msgid "The artist of each track."
-msgstr ""
+msgstr "Der Künstler der jeweiligen Stücke"
 
 #. i18n: file: devices/filenameschemedialog.ui:112
 #. i18n: ectx: property (text), widget (QPushButton, trackArtist)
@@ -5466,7 +5465,7 @@ msgstr "Ausgabe"
 #. i18n: ectx: property (text), widget (BuddyLabel, crossfadingLabel)
 #: po/rc.cpp:772 rc.cpp:772
 msgid "Crossfade between tracks:"
-msgstr ""
+msgstr "Überblenden zwischen Stücken:"
 
 #. i18n: file: gui/playbacksettings.ui:139
 #. i18n: ectx: property (suffix), widget (QSpinBox, crossfading)
@@ -5814,7 +5813,7 @@ msgstr "Untersuche"
 
 #: replaygain/rgdialog.cpp:233
 msgid "Update ReplayGain tags in tracks?"
-msgstr "ReplayGain Tags in Dateien aktualisieren?"
+msgstr "ReplayGain-Informationen in den Stücken aktualisieren?"
 
 #: replaygain/rgdialog.cpp:233 replaygain/rgdialog.cpp:234
 msgid "Update Tags"

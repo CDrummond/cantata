@@ -722,8 +722,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(StdActions::self()->addPrioLowAction, SIGNAL(triggered(bool)), this, SLOT(addWithPriority()));
     connect(StdActions::self()->addPrioDefaultAction, SIGNAL(triggered(bool)), this, SLOT(addWithPriority()));
     connect(StdActions::self()->addPrioCustomAction, SIGNAL(triggered(bool)), this, SLOT(addWithPriority()));
-    connect(MPDConnection::self(), SIGNAL(playlistLoaded(const QString &)), SLOT(songLoaded()));
-    connect(MPDConnection::self(), SIGNAL(added(const QStringList &)), SLOT(songLoaded()));
     connect(MPDConnection::self(), SIGNAL(outputsUpdated(const QList<Output> &)), this, SLOT(outputsUpdated(const QList<Output> &)));
     connect(this, SIGNAL(enableOutput(int, bool)), MPDConnection::self(), SLOT(enableOutput(int, bool)));
     connect(this, SIGNAL(outputs()), MPDConnection::self(), SLOT(outputs()));
@@ -929,45 +927,6 @@ void MainWindow::initSizes()
     GroupedView::setup();
     ActionItemDelegate::setup();
     MusicLibraryItemAlbum::setup();
-}
-
-void MainWindow::load(const QStringList &urls)
-{
-    QStringList useable;
-
-    foreach (const QString &path, urls) {
-        QUrl u(path);
-        #if defined ENABLE_DEVICES_SUPPORT && (defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND)
-        QString cdDevice=AudioCdDevice::getDevice(u);
-        if (!cdDevice.isEmpty()) {
-            DevicesModel::self()->playCd(cdDevice);
-        } else
-        #endif
-        if (QLatin1String("http")==u.scheme()) {
-            useable.append(u.toString());
-        } else if (u.scheme().isEmpty() || QLatin1String("file")==u.scheme()) {
-            if (!HttpServer::self()->forceUsage() && MPDConnection::self()->getDetails().isLocal()  && !u.path().startsWith(QLatin1String("/media/"))) {
-                useable.append(QLatin1String("file://")+u.path());
-            } else if (HttpServer::self()->isAlive()) {
-                useable.append(HttpServer::self()->encodeUrl(u.path()));
-            }
-        }
-    }
-    if (useable.count()) {
-        playQueueModel.addItems(useable, playQueueModel.rowCount(), false, 0);
-    }
-}
-
-void MainWindow::songLoaded()
-{
-    // was song was loaded from commandline when empty...
-    bool isInitial=-1==playQueueModel.currentSong() && MPDState_Inactive==lastState && MPDState_Inactive==MPDStatus::self()->state();
-    if (MPDState_Stopped==MPDStatus::self()->state() || isInitial) {
-        stopVolumeFade();
-        if (isInitial) {
-            emit play();
-        }
-    }
 }
 
 void MainWindow::showError(const QString &message, bool showActions)

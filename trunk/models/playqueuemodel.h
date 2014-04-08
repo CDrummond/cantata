@@ -123,6 +123,7 @@ private:
     void addSortAction(const QString &name, const QString &key);
 
 public Q_SLOTS:
+    void load(const QStringList &urls);
     void addItems(const QStringList &items, int row, bool replace, quint8 priority);
     void addItems(const QStringList &items, bool replace, quint8 priority) { addItems(items, -1, replace, priority); }
     void addFiles(const QStringList &filenames, int row, bool replace, quint8 priority);

@@ -288,7 +288,6 @@ Q_SIGNALS:
     void playlistUpdated(const QList<Song> &songs);
     void statsUpdated(const MPDStatsValues &stats);
     void statusUpdated(const MPDStatusValues &status);
-    void storedPlayListUpdated();
     void outputsUpdated(const QList<Output> &outputs);
     void musicLibraryUpdated(MusicLibraryItemRoot *root, QDateTime dbUpdate);
     void dirViewUpdated(DirViewItemRoot *root, QDateTime dbUpdate);

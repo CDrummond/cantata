@@ -7,9 +7,6 @@
         CMakeLists.txt, README, and cantata.desktop  will need updating.
         dbus/com.googlecode.cantata.xml will also need renaming/updating.
 */
-#define CANTATA_REV_URL "com.googlecode.cantata"
-#define CANTATA_URL "cantata.googlecode.com"
-
 #define PACKAGE_NAME  "@PROJECT_NAME@"
 #define PACKAGE_VERSION CANTATA_MAKE_VERSION(@CPACK_PACKAGE_VERSION_MAJOR@, @CPACK_PACKAGE_VERSION_MINOR@, @CPACK_PACKAGE_VERSION_PATCH@)
 #define PACKAGE_STRING  PACKAGE_NAME" @CANTATA_VERSION_FULL@"
@@ -44,6 +41,14 @@
 #cmakedefine ENABLE_HTTP_SERVER 1
 #cmakedefine ENABLE_MODEL_TEST 1
 #cmakedefine USE_SYSTEM_MENU_ICON 1
+#cmakedefine ENABLE_UBUNTU 1
+
+#ifdef ENABLE_UBUNTU
+#define CANTATA_REV_URL "com.ubuntu.developer.nikwen.cantata-touch" //Sadly, it requires the com.ubuntu.developer.nikwen prefix to be published to the click store
+#else
+#define CANTATA_REV_URL "com.googlecode.cantata"
+#endif
+#define CANTATA_URL "cantata.googlecode.com"
 
 #endif
 

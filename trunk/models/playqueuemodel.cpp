@@ -2,6 +2,7 @@
  * Cantata
  *
  * Copyright (c) 2011-2014 Craig Drummond <craig.p.drummond@gmail.com>
+ * Copyright (c) 2014 Niklas Wenzel <nikwen.developer@gmail.com>
  *
  */
 /*
@@ -180,7 +181,7 @@ PlayQueueModel::PlayQueueModel(QObject *parent)
     connect(this, SIGNAL(clearEntries()), MPDConnection::self(), SLOT(clear()));
     connect(this, SIGNAL(addAndPlay(QString)), MPDConnection::self(), SLOT(addAndPlay(QString)));
     connect(this, SIGNAL(startPlayingSongId(qint32)), MPDConnection::self(), SLOT(startPlayingSongId(qint32)));
-    #ifdef ENABLE_DEVICES_SUPPORT
+    #ifdef ENABLE_DEVICES_SUPPORT //TODO: Problems here with devices support!!!
     connect(DevicesModel::self(), SIGNAL(invalid(QList<Song>)), SLOT(remove(QList<Song>)));
     connect(DevicesModel::self(), SIGNAL(updatedDetails(QList<Song>)), SLOT(updateDetails(QList<Song>)));
     #endif
@@ -188,6 +189,7 @@ PlayQueueModel::PlayQueueModel(QObject *parent)
     new ModelTest(this, this);
     #endif
 
+    #ifndef ENABLE_UBUNTU
     removeDuplicatesAction=new Action(i18n("Remove Duplicates"), this);
     removeDuplicatesAction->setEnabled(false);
     undoAction=ActionCollection::get()->createAction("playqueue-undo", i18n("Undo"), "edit-undo");
@@ -217,6 +219,7 @@ PlayQueueModel::PlayQueueModel(QObject *parent)
     controlActions();
     shuffleAction->setEnabled(false);
     sortAction->setEnabled(false);
+    #endif
 }
 
 PlayQueueModel::~PlayQueueModel()
@@ -295,6 +298,15 @@ static QString basicPath(const Song &song)
     QString path=song.filePath();
     int marker=path.indexOf(QLatin1Char('#'));
     return -1==marker ? path : path.left(marker);
+}
+
+//Expose role names, so that they can be accessed via QML
+QHash<int, QByteArray> PlayQueueModel::roleNames() const {
+    QHash<int, QByteArray> roles;
+    roles[QmlRole_Track] = "track";
+    roles[QmlRole_Title] = "title";
+    roles[QmlRole_Artist] = "artist";
+    return roles;
 }
 
 QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
@@ -504,6 +516,19 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
             return Icon("media-playback-stop");
         }
         break;
+    }
+    //Seperate roles for QML, as there is no support for different columns
+    case QmlRole_Track: {
+        Song s=songs.at(index.row());
+        return s.track;
+    }
+    case QmlRole_Title: {
+        Song s=songs.at(index.row());
+        return s.title;
+    }
+    case QmlRole_Artist: {
+        Song s=songs.at(index.row());
+        return s.artist;
     }
     default:
         break;
@@ -799,7 +824,9 @@ void PlayQueueModel::update(const QList<Song> &songList)
         Song::clearKeyStore(MPDParseUtils::Loc_PlayQueue);
     }
 
+    #ifndef ENABLE_UBUNTU
     removeDuplicatesAction->setEnabled(songList.count()>1);
+    #endif
     QList<Song> prev;
     if (undoEnabled) {
         prev=songs;
@@ -879,8 +906,10 @@ void PlayQueueModel::update(const QList<Song> &songList)
     }
 
     saveHistory(prev);
+    #ifndef ENABLE_UBUNTU
     shuffleAction->setEnabled(songs.count()>1);
     sortAction->setEnabled(songs.count()>1);
+    #endif
 }
 
 void PlayQueueModel::setStopAfterTrack(qint32 track)
@@ -1043,7 +1072,9 @@ void PlayQueueModel::saveHistory(const QList<Song> &prevList)
         }
     }
 
+    #ifndef ENABLE_UBUNTU
     controlActions();
+    #endif
     lastCommand=Cmd_Other;
 }
 

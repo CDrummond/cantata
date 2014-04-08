@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg id="svg3747" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" height="90" width="90" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/">
+ <metadata id="metadata3752">
+  <rdf:RDF>
+   <cc:Work rdf:about="">
+    <dc:format>image/svg+xml</dc:format>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:title/>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <g id="layer1" transform="translate(-144 -962.36)">
+  <g id="g4171" transform="translate(-198,611)">
+   <path id="path4175" style="color:#000000;fill:#808080" d="m372 369.36c7.3373 0 9 0 9 9.0978v35.804c0 9.0978-1.5348 9.0978-9 9.0979-7.4652 0.00005-9-0.00004-9-9.0979v-35.804c0-9.0978 1.6627-9.0978 9-9.0978z"/>
+   <path id="path4185" style="color:#000000;fill:#808080" d="m402 369.36c6.75 0 9 0 9 9.0978v35.804c0 9.0978-2.25 9.0978-9 9.0979-6.75 0.00005-9-0.00004-9-9.0979v-35.804c0-9.0978 2.25-9.0978 9-9.0978z"/>
+   <rect id="rect2986" style="color:#000000;fill:none" height="90" width="90" y="351.36" x="342"/>
+  </g>
+ </g>
+</svg>

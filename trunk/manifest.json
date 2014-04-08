@@ -1,0 +1,15 @@
+{
+    "name": "com.ubuntu.developer.nikwen.cantata-touch",
+    "framework": "ubuntu-sdk-14.04-qml-dev1",
+    "architecture": "armhf",
+    "hooks": {
+        "cantata": {
+            "apparmor": "cantata-ubuntu.json",
+            "desktop": "cantata-ubuntu.desktop"
+        }
+    },
+    "title": "Cantata",
+    "description": "MPD Client",
+    "maintainer": "Niklas Wenzel <nikwen.developer@gmail.com>",
+    "version": "0.1"
+}

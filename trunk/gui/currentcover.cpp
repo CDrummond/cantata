@@ -133,7 +133,11 @@ const QImage & CurrentCover::stdImage(bool stream)
     QImage &img=stream ? noStreamCover : noCover;
 
     if (img.isNull()) {
+        #ifdef ENABLE_UBUNTU
+        int iconSize=256;
+        #else
         int iconSize=Utils::isHighDpi() ? 256 : 128;
+        #endif
         img = (stream ? Icons::self()->streamIcon : Icons::self()->albumIcon).pixmap(iconSize, iconSize).toImage();
 
         QString &file=stream ? noStreamCoverFileName : noCoverFileName;

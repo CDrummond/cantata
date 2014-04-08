@@ -1,0 +1,13 @@
+[Desktop Entry]
+Version=0.1
+Type=Application
+Terminal=false
+X-Ubuntu-Touch=true
+Name=Cantata
+Icon=ubuntu/icons/desktop/cantata.png
+GenericName=MPD Client
+Exec=./cantata
+Categories=Qt;KDE;AudioVideo;Player;
+X-DBUS-StartupType=Unique
+X-DBUS-ServiceName=com.ubuntu.developer.nikwen.cantata-touch
+Keywords=Music;MPD;

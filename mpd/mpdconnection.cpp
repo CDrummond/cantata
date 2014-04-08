@@ -1200,7 +1200,7 @@ void MPDConnection::parseIdleReturn(const QByteArray &data)
             } else if (constIdleUpdateValue==value) {
                 getStatus();
             } else if (constIdleStoredPlaylistValue==value) {
-                emit storedPlayListUpdated();
+                listPlaylists();
             } else if (constIdlePlaylistValue==value) {
                 if (!playListUpdated) {
                     playListChanges();

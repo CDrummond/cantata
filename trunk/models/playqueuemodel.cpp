@@ -1222,9 +1222,9 @@ void PlayQueueModel::cancelStreamFetch()
 
 void PlayQueueModel::shuffleAlbums()
 {
-    QMap<quint32, QStringList> albums;
+    QMap<quint32, QList<Song> > albums;
     foreach (const Song &s, songs) {
-        albums[s.key].append(s.file);
+        albums[s.key].append(s);
     }
 
     QList<quint32> keys=albums.keys();
@@ -1235,8 +1235,10 @@ void PlayQueueModel::shuffleAlbums()
     QStringList files;
     while (!keys.isEmpty()) {
         quint32 key=keys.takeAt(Utils::random(keys.count()));
-        foreach (const QString &file, albums[key]) {
-            files.append(file);
+        QList<Song> albumSongs=albums[key];
+        qSort(albumSongs);
+        foreach (const Song &song, albumSongs) {
+            files.append(song.file);
         }
     }
 

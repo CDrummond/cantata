@@ -11,5 +11,5 @@
     "title": "Cantata",
     "description": "MPD Client for Ubuntu",
     "maintainer": "Niklas Wenzel <nikwen.developer@gmail.com>",
-    "version": "0.1.3"
+    "version": "0.1.4"
 }

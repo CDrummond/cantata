@@ -248,7 +248,8 @@ Page {
 
     Label {
         anchors.centerIn: playqueueListView
-        text: i18n.tr("No songs queued for playing");
+        text: i18n.tr("No songs queued for playing")
+        fontSize: "large"
         visible: backend.playQueueEmpty || !backend.isConnected
     }
 }

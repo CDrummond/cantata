@@ -36,7 +36,6 @@
 #include "thread.h"
 #include "ubuntu/backend/mpdbackend.h"
 #include "utils.h"
-#include "qdbusconnection.h"
 #include "albumsmodel.h"
 #include "playlistsmodel.h"
 #include "currentcover.h"

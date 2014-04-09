@@ -136,7 +136,8 @@ Page {
 
     Label {
         anchors.centerIn: parent
-        text: i18n.tr("No albums found");
+        text: i18n.tr("No albums found")
+        fontSize: "large"
         visible: !backend.albumsFound
     }
 }

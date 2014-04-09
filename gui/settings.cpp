@@ -363,6 +363,7 @@ bool Settings::storeBackdropsInMpdDir()
     return cfg.get("storeBackdropsInMpdDir", false);
 }
 
+#ifndef ENABLE_UBUNTU
 int Settings::libraryView()
 {
     int v=version();
@@ -404,13 +405,16 @@ int Settings::onlineView()
 {
     return ItemView::toMode(cfg.get("onlineView", ItemView::modeStr(ItemView::Mode_DetailedTree)));
 }
+#endif
 
 bool Settings::libraryArtistImage()
 {
+    #ifndef ENABLE_UBUNTU
     if (cfg.get("libraryArtistImage", false)) {
         int view=libraryView();
         return ItemView::Mode_SimpleTree!=view && ItemView::Mode_BasicTree!=view;
     }
+    #endif
     return false;
 }
 
@@ -587,7 +591,7 @@ QStringList Settings::hiddenPages()
     return config;
 }
 
-#ifndef ENABLE_KDE_SUPPORT
+#if !defined ENABLE_KDE_SUPPORT && !defined ENABLE_UBUNTU
 QString Settings::mediaKeysIface()
 {
     #if defined Q_OS_WIN
@@ -621,10 +625,12 @@ int Settings::devicesView()
 }
 #endif
 
+#ifndef ENABLE_UBUNTU
 int Settings::searchView()
 {
     return ItemView::toMode(cfg.get("searchView", ItemView::modeStr(ItemView::Mode_List)));
 }
+#endif
 
 int Settings::version()
 {
@@ -1037,6 +1043,7 @@ void Settings::saveStoreBackdropsInMpdDir(bool v)
     cfg.set("storeBackdropsInMpdDir", v);
 }
 
+#ifndef ENABLE_UBUNTU
 void Settings::saveLibraryView(int v)
 {
     cfg.set("libraryView", ItemView::modeStr((ItemView::Mode)v));
@@ -1066,6 +1073,7 @@ void Settings::saveOnlineView(int v)
 {
     cfg.set("onlineView", ItemView::modeStr((ItemView::Mode)v));
 }
+#endif
 
 void Settings::saveLibraryArtistImage(bool v)
 {
@@ -1187,7 +1195,7 @@ void Settings::saveHiddenPages(const QStringList &v)
     cfg.set("hiddenPages", v);
 }
 
-#ifndef ENABLE_KDE_SUPPORT
+#if !defined ENABLE_KDE_SUPPORT && !defined ENABLE_UBUNTU
 void Settings::saveMediaKeysIface(const QString &v)
 {
     cfg.set("mediaKeysIface", v);
@@ -1211,10 +1219,12 @@ void Settings::saveDevicesView(int v)
 }
 #endif
 
+#ifndef ENABLE_UBUNTU
 void Settings::saveSearchView(int v)
 {
     cfg.set("searchView", ItemView::modeStr((ItemView::Mode)v));
 }
+#endif
 
 void Settings::saveStopFadeDuration(int v)
 {

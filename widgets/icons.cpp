@@ -33,7 +33,7 @@
 #include <QDir>
 #include <QFile>
 #include <math.h>
-#if !defined Q_OS_WIN && !defined Q_OS_MAC
+#if !defined Q_OS_WIN && !defined Q_OS_MAC && !defined ENABLE_UBUNTU
 #include "gtkstyle.h"
 #endif
 
@@ -330,7 +330,7 @@ static Icon loadSidebarIcon(const QString &name, const QColor &normal, const QCo
     return loadMonoSvgIcon(QLatin1String("sidebar"), name, normal, selected);
 }
 
-#if !defined Q_OS_WIN && !defined Q_OS_MAC
+#if !defined Q_OS_WIN && !defined Q_OS_MAC && !defined ENABLE_UBUNTU
 static void setDisabledOpacity(Icon &icon)
 {
     static const double constDisabledOpacity=0.5;
@@ -429,7 +429,7 @@ Icons::Icons()
     appIcon.addFile(":cantata.svg");
 
     shortcutsIcon=Icon("preferences-desktop-keyboard");
-    #if !defined Q_OS_WIN && !defined Q_OS_MAC
+    #if !defined Q_OS_WIN && !defined Q_OS_MAC && !defined ENABLE_UBUNTU
     if (shortcutsIcon.isNull()) {
         shortcutsIcon=Icon("keyboard");
     }
@@ -550,7 +550,7 @@ void Icons::initToolbarIcons(const QColor &toolbarText)
     Q_UNUSED(toolbarText)
     #endif
     QColor stdColor=calcIconColor();
-    #if !defined Q_OS_WIN && !defined Q_OS_MAC
+    #if !defined Q_OS_WIN && !defined Q_OS_MAC && !defined ENABLE_UBUNTU
     if (GtkStyle::useSymbolicIcons()) {
         bool rtl=Qt::RightToLeft==QApplication::layoutDirection();
         QColor col=GtkStyle::symbolicColor();

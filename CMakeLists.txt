@@ -77,7 +77,6 @@ if (ENABLE_UBUNTU)
     set(ENABLE_REMOTE_DEVICES OFF)
     set(ENABLE_MTP OFF)
     set(ENABLE_UNCACHED_MTP OFF)
-    set(ENABLE_UNCACHED_MTP OFF)
     set(USE_SYSTEM_MENU_ICON OFF)
 endif (ENABLE_UBUNTU)
 
@@ -215,14 +214,17 @@ if (ENABLE_QT5)
     set(QTINCLUDES ${Qt5Widgets_INCLUDE_DIRS} ${Qt5Network_INCLUDE_DIRS} ${Qt5Xml_INCLUDE_DIRS} ${Qt5Core_INCLUDE_DIRS} ${Qt5Concurrent_INCLUDE_DIRS})
     add_definitions(${Qt5Widgets_DEFINITIONS} ${Qt5Network_DEFINITIONS} ${Qt5Xml_DEFINITIONS} ${Qt5Concurrent_DEFINITIONS})
     set(CMAKE_CXX_FLAGS "${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS}")
-    find_package(Qt5DBus)
-    macro_log_feature(Qt5DBus_FOUND "Qt5DBus" "DBus support." "http://qtproject.org")
-    if (Qt5DBus_FOUND)
-        set(QT_QTDBUS_FOUND 1) # required for config.h !!!
-        set(QTLIBS ${QTLIBS} ${Qt5DBus_LIBRARIES})
-        set(QTINCLUDES ${QTINCLUDES} ${Qt5DBus_INCLUDE_DIRS})
-        add_definitions(${Qt5DBus_DEFINITIONS})
-    endif (Qt5DBus_FOUND)
+    if (NOT ENABLE_UBUNTU)
+        # Does Ubuntu/Touch version need DBus?
+        find_package(Qt5DBus)
+        macro_log_feature(Qt5DBus_FOUND "Qt5DBus" "DBus support." "http://qtproject.org")
+            if (Qt5DBus_FOUND)
+            set(QT_QTDBUS_FOUND 1) # required for config.h !!!
+            set(QTLIBS ${QTLIBS} ${Qt5DBus_LIBRARIES})
+            set(QTINCLUDES ${QTINCLUDES} ${Qt5DBus_INCLUDE_DIRS})
+            add_definitions(${Qt5DBus_DEFINITIONS})
+        endif (Qt5DBus_FOUND)
+    endif (NOT ENABLE_UBUNTU)
     if (ENABLE_UBUNTU)
         message(STATUS "Building the Ubuntu Components GUI")
         find_package(Qt5Quick REQUIRED)
@@ -283,43 +285,51 @@ if (MSVC)
    add_definitions(-EHsc)
 endif (MSVC)
 
-set(CANTATA_SRCS gui/application.cpp gui/initialsettingswizard.cpp gui/mainwindow.cpp gui/preferencesdialog.cpp
-    gui/settings.cpp gui/covers.cpp gui/filesettings.cpp gui/interfacesettings.cpp gui/playbacksettings.cpp
-    gui/serversettings.cpp gui/librarypage.cpp gui/albumspage.cpp gui/folderpage.cpp gui/playlistspage.cpp gui/trayitem.cpp
-    gui/cachesettings.cpp gui/coverdialog.cpp gui/stdactions.cpp gui/searchpage.cpp gui/currentcover.cpp
+set(CANTATA_CORE_SRCS
+    gui/covers.cpp gui/currentcover.cpp gui/settings.cpp gui/stdactions.cpp
+    widgets/icons.cpp
     models/musiclibraryitemroot.cpp models/musiclibraryitemartist.cpp models/musiclibraryitemalbum.cpp models/musiclibrarymodel.cpp
     models/musiclibraryproxymodel.cpp models/playlistsmodel.cpp models/playlistsproxymodel.cpp models/playqueuemodel.cpp
     models/playqueueproxymodel.cpp models/dirviewmodel.cpp models/dirviewproxymodel.cpp models/dirviewitem.cpp models/dirviewitemdir.cpp
     models/albumsmodel.cpp models/albumsproxymodel.cpp models/proxymodel.cpp models/actionmodel.cpp models/musiclibraryitem.cpp
     models/musicmodel.cpp models/multimusicmodel.cpp models/searchmodel.cpp models/streamsmodel.cpp models/searchproxymodel.cpp
     mpd/mpdconnection.cpp mpd/mpdparseutils.cpp mpd/mpdstats.cpp mpd/mpdstatus.cpp mpd/song.cpp mpd/mpduser.cpp mpd/cuefile.cpp
+    network/networkaccessmanager.cpp network/networkproxyfactory.cpp
     streams/streamfetcher.cpp
+    devices/deviceoptions.cpp
+    http/httpserver.cpp)
+set(CANTATA_CORE_MOC_HDRS
+    gui/covers.h gui/currentcover.h gui/settings.h
+    models/musiclibrarymodel.h models/musiclibraryproxymodel.h models/playlistsmodel.h models/playlistsproxymodel.h models/playqueuemodel.h
+    models/playqueueproxymodel.h models/dirviewmodel.h models/dirviewproxymodel.h models/albumsmodel.h models/actionmodel.h
+    models/multimusicmodel.h models/searchmodel.h
+    mpd/mpdconnection.h mpd/mpdstats.h mpd/mpdstatus.h
+    network/networkaccessmanager.h
+    streams/streamfetcher.h)
+
+set(CANTATA_SRCS ${CANTATA_CORE_SRCS}
+    gui/application.cpp gui/initialsettingswizard.cpp gui/mainwindow.cpp gui/preferencesdialog.cpp
+    gui/filesettings.cpp gui/interfacesettings.cpp gui/playbacksettings.cpp
+    gui/serversettings.cpp gui/librarypage.cpp gui/albumspage.cpp gui/folderpage.cpp gui/playlistspage.cpp gui/trayitem.cpp
+    gui/cachesettings.cpp gui/coverdialog.cpp gui/searchpage.cpp
     widgets/treeview.cpp widgets/listview.cpp widgets/itemview.cpp widgets/autohidingsplitter.cpp widgets/timeslider.cpp
     widgets/actionlabel.cpp widgets/playqueueview.cpp widgets/groupedview.cpp widgets/actionitemdelegate.cpp widgets/textbrowser.cpp
-    widgets/volumeslider.cpp widgets/icons.cpp widgets/genrecombo.cpp widgets/menubutton.cpp
+    widgets/volumeslider.cpp widgets/genrecombo.cpp widgets/menubutton.cpp
     widgets/toolbutton.cpp widgets/wizardpage.cpp widgets/statuslabel.cpp widgets/searchwidget.cpp widgets/messageoverlay.cpp
     widgets/basicitemdelegate.cpp widgets/sizegrip.cpp widgets/sizewidget.cpp widgets/servicestatuslabel.cpp widgets/spacerwidget.cpp
     widgets/songdialog.cpp widgets/stretchheaderview.cpp widgets/tableview.cpp widgets/songlabel.cpp widgets/thinsplitterhandle.cpp
-    network/networkaccessmanager.cpp network/networkproxyfactory.cpp
-    http/httpserver.cpp
-    devices/deviceoptions.cpp
     context/lyricsettings.cpp context/ultimatelyricsprovider.cpp context/ultimatelyrics.cpp context/lyricsdialog.cpp
     context/contextwidget.cpp context/view.cpp context/artistview.cpp context/albumview.cpp context/songview.cpp context/contextengine.cpp
     context/wikipediaengine.cpp context/wikipediasettings.cpp context/othersettings.cpp context/contextsettings.cpp context/togglelist.cpp
     context/lastfmengine.cpp context/metaengine.cpp context/backdropcreator.cpp)
-set(CANTATA_MOC_HDRS
-    gui/initialsettingswizard.h gui/mainwindow.h gui/settings.h gui/covers.h gui/folderpage.h gui/librarypage.h gui/albumspage.h
+set(CANTATA_MOC_HDRS ${CANTATA_CORE_MOC_HDRS}
+    gui/initialsettingswizard.h gui/mainwindow.h gui/folderpage.h gui/librarypage.h gui/albumspage.h
     gui/playlistspage.h gui/playbacksettings.h gui/serversettings.h gui/preferencesdialog.h gui/filesettings.h
-    gui/interfacesettings.h gui/cachesettings.h gui/trayitem.h gui/coverdialog.h gui/searchpage.h gui/currentcover.h
-    models/musiclibrarymodel.h models/musiclibraryproxymodel.h models/playlistsmodel.h models/playlistsproxymodel.h models/playqueuemodel.h
-    models/playqueueproxymodel.h models/dirviewmodel.h models/dirviewproxymodel.h models/albumsmodel.h models/actionmodel.h
-    models/multimusicmodel.h models/searchmodel.h mpd/mpdconnection.h mpd/mpdstats.h mpd/mpdstatus.h
-    streams/streamfetcher.h
+    gui/interfacesettings.h gui/cachesettings.h gui/trayitem.h gui/coverdialog.h gui/searchpage.h
     widgets/treeview.h widgets/listview.h widgets/itemview.h widgets/autohidingsplitter.h widgets/timeslider.h widgets/actionlabel.h
     widgets/playqueueview.h widgets/groupedview.h widgets/actionitemdelegate.h widgets/volumeslider.h
     widgets/genrecombo.h widgets/searchwidget.h widgets/messageoverlay.h widgets/servicestatuslabel.h widgets/stretchheaderview.h
     widgets/tableview.h
-    network/networkaccessmanager.h
     context/togglelist.h context/ultimatelyrics.h context/ultimatelyricsprovider.h context/lyricsdialog.h
     context/contextwidget.h context/artistview.h context/albumview.h context/songview.h context/view.h context/contextengine.h
     context/wikipediaengine.h context/wikipediasettings.h context/othersettings.h context/lastfmengine.h context/metaengine.h
@@ -332,13 +342,8 @@ set(CANTATA_UIS
 
 
 if (ENABLE_UBUNTU)
-    set(UBUNTU_SRCS
-        ubuntu/main.cpp
-        ubuntu/backend/mpdbackend.cpp
-    )
-    set(UBUNTU_MOC_HDRS
-        ubuntu/backend/mpdbackend.h
-    )
+    set(UBUNTU_SRCS ${CANTATA_CORE_SRCS} ubuntu/main.cpp ubuntu/backend/mpdbackend.cpp gui/plurals_qt.cpp)
+    set(UBUNTU_MOC_HDRS ${CANTATA_CORE_MOC_HDRS} ubuntu/backend/mpdbackend.h)
 else (ENABLE_UBUNTU)
     set(CANTATA_SRCS ${CANTATA_SRCS} gui/main.cpp)
 endif (ENABLE_UBUNTU)
@@ -535,9 +540,13 @@ endif (ENABLE_PROXY_CONFIG)
 
 add_subdirectory(po)
 add_subdirectory(support)
-add_subdirectory(streams/icons)
-add_subdirectory(streams/providers)
-add_subdirectory(online/icons)
+if (ENABLE_STREAMS)
+    add_subdirectory(streams/icons)
+    add_subdirectory(streams/providers)
+endif (ENABLE_STREAMS)
+if (ENABLE_ONLINE_SERVICES)
+    add_subdirectory(online/icons)
+endif (ENABLE_ONLINE_SERVICES)
 
 if (ENABLE_KDE)
     include_directories(${KDE4_INCLUDES})
@@ -552,57 +561,57 @@ if (ENABLE_KDE)
     endif (NOT WIN32 AND NOT APPLE AND TAGLIB_FOUND AND ENABLE_REMOTE_DEVICES)
     install(TARGETS cantata ${INSTALL_TARGETS_DEFAULT_ARGS})
 else (ENABLE_KDE)
-    set(CANTATA_SRCS ${CANTATA_SRCS} gui/plurals_qt.cpp)
-    if (WIN32)
-        add_definitions(-DWIN32)
-        add_subdirectory(windows)
-        set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} gui/application.h)
-        if (NOT CANTATA_WINDOWS_INSTALLER_DEST)
-            set(CANTATA_WINDOWS_INSTALLER_DEST z:\ )
-        endif (NOT CANTATA_WINDOWS_INSTALLER_DEST)
-        if (MINGW)
-            # resource compilation for MinGW
-            ADD_CUSTOM_COMMAND(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/cantataico.o
-                                COMMAND windres.exe -I${CMAKE_CURRENT_SOURCE_DIR} -i${CMAKE_SOURCE_DIR}/windows/cantataico.rc
-                                    -o ${CMAKE_CURRENT_BINARY_DIR}/cantataico.o)
-            set(CANTATA_SRCS ${CANTATA_SRCS} ${CMAKE_CURRENT_BINARY_DIR}/cantataico.o)
-        else (MINGW)
-            set(CANTATA_SRCS ${CANTATA_SRCS} windows/cantataico.rc)
-        endif (MINGW)
-    endif (WIN32)
-
-    set(CANTATA_RCS ${CANTATA_RCS} cantata_qt.qrc)
-    set(CANTATA_SRCS ${CANTATA_SRCS} gui/shortcutssettingspage.cpp gui/mediakeys.cpp)
-    set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} gui/shortcutssettingspage.h gui/multimediakeysinterface.h)
-
-    if (ENABLE_QT5)
-        QT5_ADD_RESOURCES(CANTATA_RC_SRCS ${CANTATA_RCS})
-        QT5_WRAP_UI(CANTATA_UI_HDRS ${CANTATA_UIS})
-        QT5_WRAP_CPP(CANTATA_MOC_SRCS ${CANTATA_MOC_HDRS})
-    else (ENABLE_QT5)
-        qt4_add_resources(CANTATA_RC_SRCS ${CANTATA_RCS})
-        QT4_WRAP_UI(CANTATA_UI_HDRS ${CANTATA_UIS})
-        INCLUDE(${QT_USE_FILE})
-        QT4_WRAP_CPP(CANTATA_MOC_SRCS ${CANTATA_MOC_HDRS})
-    endif (ENABLE_QT5)
-
-    if (WIN32 OR APPLE OR NOT ENABLE_QT5)
-        add_definitions(-DQXT_STATIC)
-        add_subdirectory(3rdparty/qxt)
-        include_directories(${CMAKE_SOURCE_DIR}/3rdparty/qxt)
-        set(CANTATA_SRCS ${CANTATA_SRCS} gui/qxtmediakeys.cpp)
-    endif (WIN32 OR APPLE OR NOT ENABLE_QT5)
-
     if (ENABLE_UBUNTU)
         qt5_wrap_cpp(UBUNTU_MOC_SRCS ${UBUNTU_MOC_HDRS})
 
-        add_executable(cantata ${CANTATA_SRCS} ${CANTATA_MOC_SRCS} ${CANTATA_RC_SRCS} ${CANTATA_UI_HDRS} ${CMAKE_CURRENT_SOURCE_DIR}/ubuntu ${UBUNTU_SRCS} ${UBUNTU_MOC_SRCS})
+        add_executable(cantata ${CMAKE_CURRENT_SOURCE_DIR}/ubuntu ${UBUNTU_SRCS} ${UBUNTU_MOC_SRCS})
 
 #        set_property(TARGET cantata APPEND PROPERTY INCLUDE_DIRECTORIES
 #            ${QT_MKSPECS_DIR}/default ${CMAKE_CURRENT_SOURCE_DIR}/ubuntu ${UBUNTU_SRCS})
 
         qt5_use_modules(cantata Network Core Qml Quick)
     else (ENABLE_UBUNTU)
+        set(CANTATA_SRCS ${CANTATA_SRCS} gui/plurals_qt.cpp)
+        if (WIN32)
+            add_definitions(-DWIN32)
+            add_subdirectory(windows)
+            set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} gui/application.h)
+            if (NOT CANTATA_WINDOWS_INSTALLER_DEST)
+                set(CANTATA_WINDOWS_INSTALLER_DEST z:\ )
+            endif (NOT CANTATA_WINDOWS_INSTALLER_DEST)
+            if (MINGW)
+                # resource compilation for MinGW
+                ADD_CUSTOM_COMMAND(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/cantataico.o
+                                    COMMAND windres.exe -I${CMAKE_CURRENT_SOURCE_DIR} -i${CMAKE_SOURCE_DIR}/windows/cantataico.rc
+                                        -o ${CMAKE_CURRENT_BINARY_DIR}/cantataico.o)
+                set(CANTATA_SRCS ${CANTATA_SRCS} ${CMAKE_CURRENT_BINARY_DIR}/cantataico.o)
+            else (MINGW)
+                set(CANTATA_SRCS ${CANTATA_SRCS} windows/cantataico.rc)
+            endif (MINGW)
+        endif (WIN32)
+
+        set(CANTATA_RCS ${CANTATA_RCS} cantata_qt.qrc)
+        set(CANTATA_SRCS ${CANTATA_SRCS} gui/shortcutssettingspage.cpp gui/mediakeys.cpp)
+        set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} gui/shortcutssettingspage.h gui/multimediakeysinterface.h)
+
+        if (ENABLE_QT5)
+            QT5_ADD_RESOURCES(CANTATA_RC_SRCS ${CANTATA_RCS})
+            QT5_WRAP_UI(CANTATA_UI_HDRS ${CANTATA_UIS})
+            QT5_WRAP_CPP(CANTATA_MOC_SRCS ${CANTATA_MOC_HDRS})
+        else (ENABLE_QT5)
+            qt4_add_resources(CANTATA_RC_SRCS ${CANTATA_RCS})
+            QT4_WRAP_UI(CANTATA_UI_HDRS ${CANTATA_UIS})
+            INCLUDE(${QT_USE_FILE})
+            QT4_WRAP_CPP(CANTATA_MOC_SRCS ${CANTATA_MOC_HDRS})
+        endif (ENABLE_QT5)
+
+        if (WIN32 OR APPLE OR NOT ENABLE_QT5)
+            add_definitions(-DQXT_STATIC)
+            add_subdirectory(3rdparty/qxt)
+            include_directories(${CMAKE_SOURCE_DIR}/3rdparty/qxt)
+            set(CANTATA_SRCS ${CANTATA_SRCS} gui/qxtmediakeys.cpp)
+        endif (WIN32 OR APPLE OR NOT ENABLE_QT5)
+    
         if (WIN32)
             set(CMAKE_BUILD_TYPE "Release")
             ADD_EXECUTABLE(cantata WIN32 ${CANTATA_SRCS} ${CANTATA_MOC_SRCS} ${CANTATA_RC_SRCS} ${CANTATA_UI_HDRS} ${CANTATA_PO})
@@ -642,13 +651,15 @@ if (X11_FOUND)
     target_link_libraries(cantata ${X11_LIBRARIES})
 endif (X11_FOUND)
 
-if (WIN32)
-    install(FILES context/ultimate_providers.xml DESTINATION ${CMAKE_INSTALL_PREFIX}/lyrics/)
-    install(FILES tags/fixes.xml DESTINATION ${CMAKE_INSTALL_PREFIX}/tags/)
-else (WIN32)
-    install(FILES context/ultimate_providers.xml DESTINATION ${CMAKE_INSTALL_PREFIX}/share/${CMAKE_PROJECT_NAME}/lyrics/)
-    install(FILES tags/fixes.xml DESTINATION ${CMAKE_INSTALL_PREFIX}/share/${CMAKE_PROJECT_NAME}/tags/)
-endif (WIN32)
+if (ENABLE_STREAMS)
+    if (WIN32)
+        install(FILES context/ultimate_providers.xml DESTINATION ${CMAKE_INSTALL_PREFIX}/lyrics/)
+        install(FILES tags/fixes.xml DESTINATION ${CMAKE_INSTALL_PREFIX}/tags/)
+    else (WIN32)
+        install(FILES context/ultimate_providers.xml DESTINATION ${CMAKE_INSTALL_PREFIX}/share/${CMAKE_PROJECT_NAME}/lyrics/)
+        install(FILES tags/fixes.xml DESTINATION ${CMAKE_INSTALL_PREFIX}/share/${CMAKE_PROJECT_NAME}/tags/)
+    endif (WIN32)
+endif (ENABLE_STREAMS)
 
 if (ENABLE_HTTP_STREAM_PLAYBACK AND NOT ENABLE_QT5)
     target_link_libraries(cantata ${PHONON_LIBS})
@@ -661,7 +672,9 @@ else (WIN32 OR APPLE)
     if (ENABLE_DYNAMIC)
         install(PROGRAMS dynamic/cantata-dynamic DESTINATION ${CMAKE_INSTALL_PREFIX}/share/${CMAKE_PROJECT_NAME}/scripts)
     endif (ENABLE_DYNAMIC)
-    install(FILES mpd/mpd.conf.template DESTINATION ${CMAKE_INSTALL_PREFIX}/share/${CMAKE_PROJECT_NAME}/mpd)
+    if (NOT ENABLE_UBUNTU)
+        install(FILES mpd/mpd.conf.template DESTINATION ${CMAKE_INSTALL_PREFIX}/share/${CMAKE_PROJECT_NAME}/mpd)
+    endif (NOT ENABLE_UBUNTU)
 
     if (MTP_FOUND)
         target_link_libraries(cantata ${MTP_LIBRARIES})
@@ -698,7 +711,11 @@ endif (QJSON_FOUND)
 add_subdirectory(3rdparty/qtiocompressor)
 add_subdirectory(icons)
 
-target_link_libraries(cantata support qtiocompressor ${QTLIBS} ${ZLIB_LIBRARIES})
+if (ENABLE_UBUNTU)
+    target_link_libraries(cantata support-core qtiocompressor ${QTLIBS} ${ZLIB_LIBRARIES})
+else (ENABLE_UBUNTU)
+    target_link_libraries(cantata support support-core qtiocompressor ${QTLIBS} ${ZLIB_LIBRARIES})
+endif (ENABLE_UBUNTU)
 include_directories(${QTINCLUDES} ${ZLIB_INCLUDE_DIRS})
 
 if (TAGLIB_FOUND)

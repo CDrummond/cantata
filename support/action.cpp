@@ -21,6 +21,7 @@
  ***************************************************************************/
 
 #include "action.h"
+#include "config.h"
 #include "gtkstyle.h"
 #include <QApplication>
 #include <QKeySequence>
@@ -72,9 +73,11 @@ Action::Action(const QIcon &icon, const QString &text, QObject *parent, const QO
 
 void Action::initIcon(QAction *act)
 {
+    #ifndef ENABLE_UBUNTU
     if (GtkStyle::isActive() && act) {
         act->setIconVisibleInMenu(false);
     }
+    #endif
 }
 
 static const char *constPlainToolTipProperty="plain-tt";

@@ -49,8 +49,6 @@ int main(int argc, char *argv[])
     Utils::initRand();
     Song::initTranslations();
 
-//    QDBusConnection::sessionBus().registerService(CANTATA_REV_URL);
-
     // Ensure these objects are created in the GUI thread...
     ThreadCleaner::self();
     MPDStatus::self();

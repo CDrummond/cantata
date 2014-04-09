@@ -426,7 +426,9 @@ Icons::Icons()
     variousArtistsIcon=Icon::create("va", QList<int>() << 16 << 22 << 32 << 48 << 64 << 128);
     artistIcon=Icon::create("artist", QList<int>() << 16 << 22 << 32 << 48 << 64 << 128);
     #ifndef ENABLE_KDE_SUPPORT
+    #ifndef ENABLE_UBUNTU
     appIcon.addFile(":cantata.svg");
+    #endif
 
     shortcutsIcon=Icon("preferences-desktop-keyboard");
     #if !defined Q_OS_WIN && !defined Q_OS_MAC && !defined ENABLE_UBUNTU

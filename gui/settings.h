@@ -82,12 +82,14 @@ public:
     bool storeLyricsInMpdDir();
     bool storeStreamsInMpdDir();
     bool storeBackdropsInMpdDir();
+    #ifndef ENABLE_UBUNTU
     int libraryView();
     int albumsView();
     int folderView();
     int playlistsView();
     int streamsView();
     int onlineView();
+    #endif
     bool libraryArtistImage();
     int libraryCoverSize();
     int albumsCoverSize();
@@ -112,7 +114,7 @@ public:
     bool contextAutoScroll();
     QString page();
     QStringList hiddenPages();
-    #ifndef ENABLE_KDE_SUPPORT
+    #if !defined ENABLE_KDE_SUPPORT && !defined ENABLE_UBUNTU
     QString mediaKeysIface();
     #endif
     #ifdef ENABLE_DEVICES_SUPPORT
@@ -120,7 +122,9 @@ public:
     bool showDeleteAction();
     int devicesView();
     #endif
+    #ifndef ENABLE_UBUNTU
     int searchView();
+    #endif
     int version();
     int stopFadeDuration();
     int httpAllocatedPort();
@@ -201,12 +205,14 @@ public:
     void saveStoreLyricsInMpdDir(bool v);
     void saveStoreStreamsInMpdDir(bool v);
     void saveStoreBackdropsInMpdDir(bool v);
+    #ifndef ENABLE_UBUNTU
     void saveLibraryView(int v);
     void saveAlbumsView(int v);
     void saveFolderView(int v);
     void savePlaylistsView(int v);
     void saveStreamsView(int v);
     void saveOnlineView(int v);
+    #endif
     void saveLibraryArtistImage(bool v);
     void saveLibraryCoverSize(int v);
     void saveAlbumsCoverSize(int v);
@@ -231,7 +237,7 @@ public:
     void saveContextAutoScroll(bool v);
     void savePage(const QString &v);
     void saveHiddenPages(const QStringList &v);
-    #ifndef ENABLE_KDE_SUPPORT
+    #if !defined ENABLE_KDE_SUPPORT && !defined ENABLE_UBUNTU
     void saveMediaKeysIface(const QString &v);
     #endif
     #ifdef ENABLE_DEVICES_SUPPORT
@@ -239,7 +245,9 @@ public:
     void saveShowDeleteAction(bool v);
     void saveDevicesView(int v);
     #endif
+    #ifndef ENABLE_UBUNTU
     void saveSearchView(int v);
+    #endif
     void saveStopFadeDuration(int v);
     void saveHttpAllocatedPort(int v);
     void saveHttpInterface(const QString &v);

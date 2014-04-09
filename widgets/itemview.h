@@ -24,6 +24,25 @@
 #ifndef ITEMVIEW_H
 #define ITEMVIEW_H
 
+#include "config.h"
+
+#ifdef ENABLE_UBUNTU
+namespace ItemView
+{
+    enum Role
+    {
+        Role_ImageSize = Qt::UserRole+100,
+        Role_MainText,
+        Role_BriefMainText,
+        Role_SubText,
+        Role_TitleText,
+        Role_Image,
+        Role_Capacity,
+        Role_CapacityText,
+        Role_Actions
+    };
+}
+#else
 #include "ui_itemview.h"
 #include "treeview.h"
 #include <QMap>
@@ -221,5 +240,6 @@ private:
     int searchResetLevel;
     QModelIndex searchIndex;
 };
+#endif // ENABLE_UBUNTU
 
 #endif

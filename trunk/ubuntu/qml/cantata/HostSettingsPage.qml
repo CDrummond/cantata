@@ -36,6 +36,8 @@ Page {
     width: parent.width
     title: qsTr(i18n.tr("Settings %1")).arg(backend.isConnected?i18n.tr("(Connected)"):i18n.tr("(Not Connected)"))
 
+    property color textFieldColor: "#c2c2b8" //#f3f3e7 * 0.8 (#f3f3e7: label color)
+
     actions: [
         Action {
             id: backAction
@@ -107,7 +109,7 @@ Page {
 
         TextField {
             id: hostTextField
-            color: "#c2c2b8" //#f3f3e7 * 0.8 (#f3f3e7: label color)
+            color: textFieldColor
             anchors {
                 left: connectionDetailsColumn.left;
                 right: connectionDetailsColumn.right;
@@ -130,7 +132,7 @@ Page {
 
         TextField {
             id: portTextField
-            color: "#c2c2b8"
+            color: textFieldColor
             anchors {
                 left: connectionDetailsColumn.left;
                 right: connectionDetailsColumn.right;
@@ -153,7 +155,7 @@ Page {
 
         TextField {
             id: passwordTextField
-            color: "#c2c2b8"
+            color: textFieldColor
             anchors {
                 left: connectionDetailsColumn.left;
                 right: connectionDetailsColumn.right;

@@ -9,7 +9,7 @@
         }
     },
     "title": "Cantata",
-    "description": "MPD Client",
+    "description": "MPD Client for Ubuntu",
     "maintainer": "Niklas Wenzel <nikwen.developer@gmail.com>",
-    "version": "0.1.1"
+    "version": "0.1.2"
 }

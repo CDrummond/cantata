@@ -165,7 +165,7 @@ Page {
                     }
                     Label {
                         font.bold: true;
-                        text: "0.1.3"
+                        text: "0.1.4"
                     }
                 }
                 Row {

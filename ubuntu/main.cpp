@@ -43,6 +43,7 @@
 
 int main(int argc, char *argv[])
 {
+    QCoreApplication::setOrganizationName(CANTATA_REV_URL);
     QThread::currentThread()->setObjectName("GUI");
 
     Utils::initRand();
@@ -58,14 +59,6 @@ int main(int argc, char *argv[])
 
     MPDBackend backend;
 
-    QCoreApplication::setOrganizationName(CANTATA_REV_URL);
-
-    //Create data directory for the app if it does not exist yet
-    QString appDir = QDir::homePath() + QLatin1String("/.local/share/") + QCoreApplication::organizationName();
-    if (!QDir(appDir).exists()) {
-        QDir().mkdir(appDir);
-    }
-
     QGuiApplication app(argc, argv);
     qmlRegisterType<MPDBackend>("MPDBackend", 1, 0, "MPDBackend");
     QQuickView view;
@@ -76,7 +69,7 @@ int main(int argc, char *argv[])
     view.rootContext()->setContextProperty("playQueueModel", &backend.playQueueModel);
     view.rootContext()->setContextProperty("playQueueProxyModel", &backend.playQueueProxyModel);
     view.rootContext()->setContextProperty("currentCover", CurrentCover::self());
-    view.rootContext()->setContextProperty("appDir", appDir);
+    view.rootContext()->setContextProperty("appDir", Utils::dataDir(QString(), true));
     view.setResizeMode(QQuickView::SizeRootObjectToView);
     view.setSource(QUrl::fromLocalFile("ubuntu/qml/cantata/main.qml"));
     view.show();

@@ -50,6 +50,22 @@
 #include <sys/types.h>
 #include <utime.h>
 
+#ifdef ENABLE_UBUNTU
+
+// For Cantata touch, use rev-url for cache/config/data folders
+#ifdef CANTATA_REV_URL
+    #define FOLDER_NAME CANTATA_REV_URL
+#else
+    // TODO: **really** should be using this. But for some reason its blank????
+    #define QCoreApplication::organizationName()
+#endif
+
+#else
+
+#define FOLDER_NAME QCoreApplication::applicationName()
+
+#endif
+
 const QLatin1Char Utils::constDirSep('/');
 const QLatin1String Utils::constDirSepStr("/");
 const char * Utils::constDirSepCharStr="/";
@@ -651,7 +667,7 @@ QString Utils::configDir(const QString &sub, bool create)
     return userDir(QDesktopServices::storageLocation(QDesktopServices::DataLocation)+constDirSep, sub, create);
     #else
     QString env = qgetenv("XDG_CONFIG_HOME");
-    return userDir((env.isEmpty() ? QDir::homePath() + "/.config" : env) + constDirSep+QCoreApplication::applicationName()+constDirSep, sub, create);
+    return userDir((env.isEmpty() ? QDir::homePath() + "/.config" : env) + constDirSep+FOLDER_NAME+constDirSep, sub, create);
     #endif
 }
 
@@ -661,7 +677,7 @@ QString Utils::dataDir(const QString &sub, bool create)
     return userDir(QDesktopServices::storageLocation(QDesktopServices::DataLocation)+constDirSep, sub, create);
     #else
     QString env = qgetenv("XDG_DATA_HOME");
-    return userDir((env.isEmpty() ? QDir::homePath() + "/.local/share" : env) + constDirSep+QCoreApplication::applicationName()+constDirSep, sub, create);
+    return userDir((env.isEmpty() ? QDir::homePath() + "/.local/share" : env) + constDirSep+FOLDER_NAME+constDirSep, sub, create);
     #endif
 }
 
@@ -671,7 +687,7 @@ QString Utils::cacheDir(const QString &sub, bool create)
     return userDir(QDesktopServices::storageLocation(QDesktopServices::CacheLocation)+constDirSep, sub, create);
     #else
     QString env = qgetenv("XDG_CACHE_HOME");
-    return userDir((env.isEmpty() ? QDir::homePath() + "/.cache" : env) + constDirSep+QCoreApplication::applicationName()+constDirSep, sub, create);
+    return userDir((env.isEmpty() ? QDir::homePath() + "/.cache" : env) + constDirSep+FOLDER_NAME+constDirSep, sub, create);
     #endif
 }
 

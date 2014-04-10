@@ -69,8 +69,7 @@ int main(int argc, char *argv[])
     view.rootContext()->setContextProperty("currentCover", CurrentCover::self());
     view.rootContext()->setContextProperty("appDir", Utils::dataDir(QString(), true));
     view.setResizeMode(QQuickView::SizeRootObjectToView);
-    //view.setSource(QUrl("qrc:qml/cantata/main.qml"));
-    view.setSource(QUrl::fromLocalFile("ubuntu/qml/cantata/main.qml"));
+    view.setSource(QUrl("qrc:qml/cantata/main.qml"));
     view.show();
 
     AlbumsModel::self()->setEnabled(true);

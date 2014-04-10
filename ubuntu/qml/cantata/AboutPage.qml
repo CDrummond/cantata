@@ -44,8 +44,6 @@ Page {
         id: aboutTabLayout
         anchors.fill: parent
 
-        onCurrentLayoutChanged: console.log(currentLayout)
-
         layouts: [
 //            ConditionalLayout {
 //                id: conditionalLayout

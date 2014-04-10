@@ -563,7 +563,8 @@ if (ENABLE_KDE)
     endif (NOT WIN32 AND NOT APPLE AND TAGLIB_FOUND AND ENABLE_REMOTE_DEVICES)
     install(TARGETS cantata ${INSTALL_TARGETS_DEFAULT_ARGS})
 elseif (ENABLE_UBUNTU)
-    set(CANTATA_RCS ubuntu/ubuntu.qrc)
+    # TODO: Use qrc? For now files are copied to build folder
+    #set(CANTATA_RCS ubuntu/ubuntu.qrc)
     QT5_ADD_RESOURCES(CANTATA_RC_SRCS ${CANTATA_RCS})
     qt5_wrap_cpp(UBUNTU_MOC_SRCS ${UBUNTU_MOC_HDRS})
     add_executable(cantata ${CMAKE_CURRENT_SOURCE_DIR}/ubuntu ${UBUNTU_SRCS} ${UBUNTU_MOC_SRCS} ${CANTATA_RC_SRCS})
@@ -756,9 +757,44 @@ macro_display_feature_log()
 if (ENABLE_UBUNTU)
     #Make QML visible to QtCreator
     add_custom_target(components_QmlFiles ALL SOURCES ${UBUNTU_QMLS})
-    install(TARGETS cantata DESTINATION ${CMAKE_INSTALL_PREFIX})
-    # TODO: Rename ubuntu/manifest.json to ubuntu/manifest.json and get cmake to update version number
-    install(FILES icons/cantata.svg ubuntu/cantata-ubuntu.desktop ubuntu/cantata-ubuntu.json ubuntu/manifest.json DESTINATION ${CMAKE_INSTALL_PREFIX})
+
+# make install not workign with emulator builds?
+#
+#
+#    install(TARGETS cantata DESTINATION ${CMAKE_INSTALL_PREFIX})
+#    # TODO: Rename ubuntu/manifest.json to ubuntu/manifest.json and get cmake to update version number
+#    install(FILES icons/cantata.svg ubuntu/cantata-ubuntu.desktop ubuntu/cantata-ubuntu.json ubuntu/manifest.json DESTINATION ${CMAKE_INSTALL_PREFIX})
+
+
+# This is the original way of copying files to build folder...
+    set(CANTATA_UBUNTU_PATH ${CMAKE_CURRENT_SOURCE_DIR}/ubuntu)
+    set(UBUNTU_QMLS
+        ${CANTATA_UBUNTU_PATH}/qml/cantata/main.qml
+        ${CANTATA_UBUNTU_PATH}/qml/cantata/AlbumPage.qml
+        ${CANTATA_UBUNTU_PATH}/qml/cantata/AboutPage.qml
+        ${CANTATA_UBUNTU_PATH}/qml/cantata/ArtistPage.qml
+        ${CANTATA_UBUNTU_PATH}/qml/cantata/CurrentlyPlayingPage.qml
+        ${CANTATA_UBUNTU_PATH}/qml/cantata/HostSettingsPage.qml
+        ${CANTATA_UBUNTU_PATH}/qml/cantata/ControlButtonsRow.qml
+    )
+    set(UBUNTU_TOOLBAR_ICONS
+        ${CANTATA_UBUNTU_PATH}/icons/toolbar/settings.svg
+        ${CANTATA_UBUNTU_PATH}/icons/toolbar/add.svg
+        ${CANTATA_UBUNTU_PATH}/icons/toolbar/help.svg
+        ${CANTATA_UBUNTU_PATH}/icons/toolbar/media-playback-start.svg
+        ${CANTATA_UBUNTU_PATH}/icons/toolbar/media-playback-start-light.svg
+        ${CANTATA_UBUNTU_PATH}/icons/toolbar/media-skip-backward.svg
+        ${CANTATA_UBUNTU_PATH}/icons/toolbar/media-skip-forward.svg
+        ${CANTATA_UBUNTU_PATH}/icons/toolbar/media-playback-pause.svg
+    )
+
+    file(COPY ${UBUNTU_QMLS} DESTINATION ${CMAKE_BINARY_DIR}/ubuntu/qml/cantata)
+    file(COPY ubuntu/manifest.json ubuntu/cantata-ubuntu.json ubuntu/cantata-ubuntu.desktop DESTINATION ${CMAKE_BINARY_DIR})
+    file(COPY ${UBUNTU_TOOLBAR_ICONS} DESTINATION ${CMAKE_BINARY_DIR}/ubuntu/icons/toolbar)
+    file(COPY ${CMAKE_SOURCE_DIR}/ubuntu/icons/desktop/cantata.png DESTINATION ${CMAKE_BINARY_DIR}/ubuntu/icons/desktop)
+    install(DIRECTORY ${CMAKE_BINARY_DIR}/qml DESTINATION share/cantata)
+    install(TARGETS cantata RUNTIME DESTINATION bin)
+
 else (ENABLE_UBUNTU)
     if (NOT ENABLE_STREAMS OR NOT ENABLE_DYNAMIC OR NOT ENABLE_ONLINE_SERVICES OR (NOT ENABLE_DEVICES_SUPPORT AND NOT WIN32 AND NOT APPLE))
         message("-----------------------------------------------------------------------------")

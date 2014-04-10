@@ -116,7 +116,7 @@ Page {
                     width: Math.min(parent.width, maxWidth)/2
                     height: Math.min(parent.width, maxWidth)/2
                     image: Image {
-                        source: "../../icons/cantata.svg"
+                        source: "../../icons/desktop/cantata.png"
                         smooth: true
                         fillMode: Image.PreserveAspectFit
 

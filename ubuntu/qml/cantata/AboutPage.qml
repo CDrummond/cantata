@@ -30,8 +30,7 @@ import Ubuntu.Layouts 0.1
 
 Page {
     id: aboutPage
-
-    width: parent.width
+    anchors.fill: parent
     title: i18n.tr("About")
     visible: false
 
@@ -43,50 +42,224 @@ Page {
 
     Layouts {
         id: aboutTabLayout
-        width: parent.width
-        height: parent.height
+        anchors.fill: parent
+
+        onCurrentLayoutChanged: console.log(currentLayout)
+
         layouts: [
+//            ConditionalLayout {
+//                id: conditionalLayout
+//                name: "tablet"
+//                when: root.width > units.gu(80)
+//                Row {
+//                    anchors {
+//                        left: parent!=null?parent.left:conditionalLayout.left
+//                        leftMargin: root.width*0.1
+//                        top: parent!=null?parent.top:conditionalLayout.top
+//                        topMargin: root.height*0.2
+
+//                    }
+//                    spacing: units.gu(5)
+//                    ItemLayout {
+//                        item: "icon"
+//                        id: iconTabletItem
+//                        property real maxWidth: units.gu(80)
+//                        width: Math.min(parent.width, maxWidth)/2
+//                        height: Math.min(parent.width, maxWidth)/2
+
+//                    }
+//                    Column {
+//                        spacing: 1
+//                        ItemLayout {
+//                            item: "info"
+//                            width: aboutTabLayout.width*0.25
+//                            height: iconTabletItem.height*0.75
+//                        }
+//                        ItemLayout {
+//                            item: "link"
+//                            width: aboutTabLayout.width*0.25
+//                            height: units.gu(3)
+//                        }
+//                        ItemLayout {
+//                            item: "version"
+//                            width: aboutTabLayout.width*0.25
+//                            height: units.gu(2)
+//                        }
+//                        ItemLayout {
+//                            item: "year"
+//                            width: aboutTabLayout.width*0.25
+//                            height: units.gu(2)
+//                        }
+//                    }
+//                }
+//            },
             ConditionalLayout {
+                id: conditionalLayout
                 name: "tablet"
-                when: mainView.width > units.gu(80)
+                when: root.width > units.gu(80)
                 Row {
                     anchors {
-                        left: parent.left
-                        leftMargin: mainView.width*0.1
-                        top: parent.top
-                        topMargin: mainView.height*0.2
+                        left: parent!=null?parent.left:conditionalLayout.left
+                        leftMargin: root.width*0.1
+                        top: parent!=null?parent.top:conditionalLayout.top
+                        topMargin: root.height*0.2
 
                     }
                     spacing: units.gu(5)
-                    ItemLayout {
-                        item: "icon"
+
+                    UbuntuShape {
                         id: iconTabletItem
                         property real maxWidth: units.gu(80)
                         width: Math.min(parent.width, maxWidth)/2
                         height: Math.min(parent.width, maxWidth)/2
+                        image: Image {
+                            source: "../../icons/desktop/cantata.png"
+                            smooth: true
+                            fillMode: Image.PreserveAspectFit
 
+                        }
                     }
+
                     Column {
                         spacing: 1
-                        ItemLayout {
-                            item: "info"
+                        Grid {
+                            anchors.horizontalCenter: parent.horizontalCenter
+                            columns: 2
+                            rowSpacing: units.gu(2)
+                            columnSpacing: root.width/10
                             width: aboutTabLayout.width*0.25
                             height: iconTabletItem.height*0.75
+                            Label {
+                                text: i18n.tr("Author(s): ")
+
+                            }
+                            Label {
+                                font.bold: true;
+                                text: "Niklas Wenzel \nCraig Drummond \nSander Knopper \nRoeland Douma \nDaniel Selinger \nArmin Walland"
+                            }
+                            Label {
+                                text: i18n.tr("Contact: ")
+                            }
+                            Label {
+                                font.bold: true;
+                                text: "nikwen.developer@gmail.com"
+                            }
+
                         }
-                        ItemLayout {
-                            item: "link"
+                        Row {
+                            anchors.horizontalCenter: parent.horizontalCenter
                             width: aboutTabLayout.width*0.25
                             height: units.gu(3)
+                            Label {
+                                font.bold: true
+                                text: "<a href=\"https://cantata.googlecode.com\">https://cantata.googlecode.com</a>"
+                                onLinkActivated: Qt.openUrlExternally(link)
+                            }
                         }
-                        ItemLayout {
-                            item: "version"
+                        Row {
+                            anchors.horizontalCenter: parent.horizontalCenter
                             width: aboutTabLayout.width*0.25
                             height: units.gu(2)
+                            Label {
+                                text: i18n.tr("Version: ")
+                            }
+                            Label {
+                                font.bold: true;
+                                text: "0.1.7"
+                            }
                         }
-                        ItemLayout {
-                            item: "year"
+                        Row {
+                            anchors.horizontalCenter: parent.horizontalCenter
                             width: aboutTabLayout.width*0.25
                             height: units.gu(2)
+                            Label {
+                                font.bold: true;
+                                text: "2014"
+                            }
+                        }
+                    }
+                }
+            },
+            ConditionalLayout {
+                id: quickFixConditionalLayoutPhone
+                name: "phone"
+                when: root.width <= units.gu(80)
+
+                Flickable {
+                    id: flickable2
+                    anchors.fill: parent
+                    clip: true
+
+                    contentHeight: aboutColumn2.height + 2 * aboutColumn2.marginTop  + root.header.height //doubled marginTop to get the same margin at the bottom
+
+                    Column {
+                        id: aboutColumn2
+                        spacing: units.gu(3)
+                        width: parent.width
+                        property real marginTop: units.gu(6)
+                        y: marginTop + root.header.height
+
+                        UbuntuShape {
+                            property real maxWidth: units.gu(45)
+                            anchors.horizontalCenter: parent.horizontalCenter
+                            width: Math.min(parent.width, maxWidth)/2
+                            height: Math.min(parent.width, maxWidth)/2
+                            image: Image {
+                                source: "../../icons/desktop/cantata.png"
+                                smooth: true
+                                fillMode: Image.PreserveAspectFit
+
+                            }
+                        }
+
+                        Grid {
+                            anchors.horizontalCenter: parent.horizontalCenter
+                            columns: 2
+                            rowSpacing: units.gu(2)
+                            columnSpacing: root.width/10
+                            Label {
+                                text: i18n.tr("Author(s): ")
+
+                            }
+                            Label {
+                                font.bold: true;
+                                text: "Niklas Wenzel \nCraig Drummond \nSander Knopper \nRoeland Douma \nDaniel Selinger \nArmin Walland"
+                            }
+                            Label {
+                                text: i18n.tr("Contact: ")
+                            }
+                            Label {
+                                font.bold: true;
+                                text: "nikwen.developer@gmail.com"
+                            }
+
+                        }
+
+                        Row {
+                            id: homepage2
+                            anchors.horizontalCenter: parent.horizontalCenter
+                            Label {
+                                font.bold: true
+                                text: "<a href=\"https://cantata.googlecode.com\">https://cantata.googlecode.com</a>"
+                                onLinkActivated: Qt.openUrlExternally(link)
+                            }
+                        }
+                        Row {
+                            anchors.horizontalCenter: parent.horizontalCenter
+                            Label {
+                                text: i18n.tr("Version: ")
+                            }
+                            Label {
+                                font.bold: true;
+                                text: "0.1.7"
+                            }
+                        }
+                        Row {
+                            anchors.horizontalCenter: parent.horizontalCenter
+                            Label {
+                                font.bold: true;
+                                text: "2014"
+                            }
                         }
                     }
                 }
@@ -97,17 +270,17 @@ Page {
 
         Flickable {
             id: flickable
-            width: parent.width
-            height: parent.height
+            anchors.fill: parent
             clip: true
 
-            contentHeight: aboutColumn.height + 2 * aboutColumn.y //doubled y to get the same margin at the bottom
+            contentHeight: aboutColumn.height + 2 * aboutColumn.marginTop  + root.header.height //doubled marginTop to get the same margin at the bottom
 
             Column {
                 id: aboutColumn
                 spacing: units.gu(3)
                 width: parent.width
-                y: units.gu(6);
+                property real marginTop: units.gu(6)
+                y: marginTop + root.header.height
 
                 UbuntuShape {
                     Layouts.item: "icon"
@@ -178,8 +351,5 @@ Page {
                 }
             }
         }
-
-
-
     }
 }

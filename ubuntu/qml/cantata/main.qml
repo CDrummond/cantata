@@ -32,7 +32,7 @@ import Ubuntu.Components.ListItems 0.1 as ListItem
 MainView {
     id: root
     objectName: "mainView"
-    applicationName: "Cantata Touch"
+    applicationName: "com.ubuntu.developer.nikwen.cantata-touch"
  
     width: units.gu(100)
     height: units.gu(75)
@@ -43,7 +43,7 @@ MainView {
 
     PageStack {
         id: pageStack
-        height: parent.height
+        anchors.fill: parent
 
         Component.onCompleted: {
             push(albumPage) //Previously: tabs

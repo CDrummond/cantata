@@ -37,7 +37,8 @@ Ubuntu
 2. cd build
 3. cmake .. -DENABLE_UBUNTU=ON
 4. make
-5. click build .
+5. make install
+6. click build click
 
 
 CMake Options

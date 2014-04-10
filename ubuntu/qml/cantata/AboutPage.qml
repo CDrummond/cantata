@@ -165,7 +165,7 @@ Page {
                             }
                             Label {
                                 font.bold: true;
-                                text: "0.1.7"
+                                text: "0.1.8"
                             }
                         }
                         Row {
@@ -251,7 +251,7 @@ Page {
                             }
                             Label {
                                 font.bold: true;
-                                text: "0.1.7"
+                                text: "0.1.8"
                             }
                         }
                         Row {
@@ -338,7 +338,7 @@ Page {
                     }
                     Label {
                         font.bold: true;
-                        text: "0.1.7"
+                        text: "0.1.8"
                     }
                 }
                 Row {

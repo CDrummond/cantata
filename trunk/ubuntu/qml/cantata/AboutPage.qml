@@ -111,7 +111,7 @@ Page {
                         width: Math.min(parent.width, maxWidth)/2
                         height: Math.min(parent.width, maxWidth)/2
                         image: Image {
-                            source: "../../icons/desktop/cantata.png"
+                            source: "../../icons/cantata.svg"
                             smooth: true
                             fillMode: Image.PreserveAspectFit
 
@@ -203,7 +203,7 @@ Page {
                             width: Math.min(parent.width, maxWidth)/2
                             height: Math.min(parent.width, maxWidth)/2
                             image: Image {
-                                source: "../../icons/desktop/cantata.png"
+                                source: "../../icons/cantata.svg"
                                 smooth: true
                                 fillMode: Image.PreserveAspectFit
 
@@ -287,7 +287,7 @@ Page {
                     width: Math.min(parent.width, maxWidth)/2
                     height: Math.min(parent.width, maxWidth)/2
                     image: Image {
-                        source: "../../icons/desktop/cantata.png"
+                        source: "../../icons/cantata.svg"
                         smooth: true
                         fillMode: Image.PreserveAspectFit
 

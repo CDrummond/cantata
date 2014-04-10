@@ -765,35 +765,49 @@ if (ENABLE_UBUNTU)
 #    # TODO: Rename ubuntu/manifest.json to ubuntu/manifest.json and get cmake to update version number
 #    install(FILES icons/cantata.svg ubuntu/cantata-ubuntu.desktop ubuntu/cantata-ubuntu.json ubuntu/manifest.json DESTINATION ${CMAKE_INSTALL_PREFIX})
 
+    #install(DIRECTORY ${CMAKE_BINARY_DIR}/qml DESTINATION share/cantata)
+    #install(TARGETS cantata RUNTIME DESTINATION bin)
 
-# This is the original way of copying files to build folder...
-    set(CANTATA_UBUNTU_PATH ${CMAKE_CURRENT_SOURCE_DIR}/ubuntu)
+    set(UBUNTU_CLICK_FOLDER ${CMAKE_BINARY_DIR}/click/)
+    file(MAKE_DIRECTORY ${UBUNTU_CLICK_FOLDER})
+    file(MAKE_DIRECTORY ${UBUNTU_CLICK_FOLDER}/ubuntu/qml/cantata)
+    file(MAKE_DIRECTORY ${UBUNTU_CLICK_FOLDER}/ubuntu/icons/toolbar)
+    file(MAKE_DIRECTORY ${UBUNTU_CLICK_FOLDER}/ubuntu/icons/desktop)
+
     set(UBUNTU_QMLS
-        ${CANTATA_UBUNTU_PATH}/qml/cantata/main.qml
-        ${CANTATA_UBUNTU_PATH}/qml/cantata/AlbumPage.qml
-        ${CANTATA_UBUNTU_PATH}/qml/cantata/AboutPage.qml
-        ${CANTATA_UBUNTU_PATH}/qml/cantata/ArtistPage.qml
-        ${CANTATA_UBUNTU_PATH}/qml/cantata/CurrentlyPlayingPage.qml
-        ${CANTATA_UBUNTU_PATH}/qml/cantata/HostSettingsPage.qml
-        ${CANTATA_UBUNTU_PATH}/qml/cantata/ControlButtonsRow.qml
+        ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/main.qml
+        ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/AlbumPage.qml
+        ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/AboutPage.qml
+        ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/ArtistPage.qml
+        ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/CurrentlyPlayingPage.qml
+        ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/HostSettingsPage.qml
+        ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/ControlButtonsRow.qml
     )
-    set(UBUNTU_TOOLBAR_ICONS
-        ${CANTATA_UBUNTU_PATH}/icons/toolbar/settings.svg
-        ${CANTATA_UBUNTU_PATH}/icons/toolbar/add.svg
-        ${CANTATA_UBUNTU_PATH}/icons/toolbar/help.svg
-        ${CANTATA_UBUNTU_PATH}/icons/toolbar/media-playback-start.svg
-        ${CANTATA_UBUNTU_PATH}/icons/toolbar/media-playback-start-light.svg
-        ${CANTATA_UBUNTU_PATH}/icons/toolbar/media-skip-backward.svg
-        ${CANTATA_UBUNTU_PATH}/icons/toolbar/media-skip-forward.svg
-        ${CANTATA_UBUNTU_PATH}/icons/toolbar/media-playback-pause.svg
-    )
+    foreach (qmlFile ${UBUNTU_QMLS})
+    	add_custom_command(TARGET cantata COMMAND ln ARGS -f ${qmlFile} ${UBUNTU_CLICK_FOLDER}/ubuntu/qml/cantata)
+    endforeach (qmlFile ${UBUNTU_QMLS})
 
-    file(COPY ${UBUNTU_QMLS} DESTINATION ${CMAKE_BINARY_DIR}/ubuntu/qml/cantata)
-    file(COPY ubuntu/manifest.json ubuntu/cantata-ubuntu.json ubuntu/cantata-ubuntu.desktop DESTINATION ${CMAKE_BINARY_DIR})
-    file(COPY ${UBUNTU_TOOLBAR_ICONS} DESTINATION ${CMAKE_BINARY_DIR}/ubuntu/icons/toolbar)
-    file(COPY ${CMAKE_SOURCE_DIR}/ubuntu/icons/desktop/cantata.png DESTINATION ${CMAKE_BINARY_DIR}/ubuntu/icons/desktop)
-    install(DIRECTORY ${CMAKE_BINARY_DIR}/qml DESTINATION share/cantata)
-    install(TARGETS cantata RUNTIME DESTINATION bin)
+    set(UBUNTU_TOOLBAR_ICONS
+        ${CMAKE_SOURCE_DIR}/ubuntu/icons/toolbar/settings.svg
+        ${CMAKE_SOURCE_DIR}/ubuntu/icons/toolbar/add.svg
+        ${CMAKE_SOURCE_DIR}/ubuntu/icons/toolbar/help.svg
+        ${CMAKE_SOURCE_DIR}/ubuntu/icons/toolbar/media-playback-start.svg
+        ${CMAKE_SOURCE_DIR}/ubuntu/icons/toolbar/media-playback-start-light.svg
+        ${CMAKE_SOURCE_DIR}/ubuntu/icons/toolbar/media-skip-backward.svg
+        ${CMAKE_SOURCE_DIR}/ubuntu/icons/toolbar/media-skip-forward.svg
+        ${CMAKE_SOURCE_DIR}/ubuntu/icons/toolbar/media-playback-pause.svg
+    )
+    foreach (toolbarIcon ${UBUNTU_TOOLBAR_ICONS})
+    	add_custom_command(TARGET cantata COMMAND ln ARGS -f ${toolbarIcon} ${UBUNTU_CLICK_FOLDER}/ubuntu/icons/toolbar)
+    endforeach (toolbarIcon ${UBUNTU_TOOLBAR_ICONS})
+
+    add_custom_command(TARGET cantata COMMAND ln ARGS -f ${CMAKE_SOURCE_DIR}/ubuntu/icons/desktop/cantata.png ${UBUNTU_CLICK_FOLDER}/ubuntu/icons/desktop)
+    add_custom_command(TARGET cantata COMMAND ln ARGS -f ${CMAKE_BINARY_DIR}/cantata ${UBUNTU_CLICK_FOLDER})
+
+    set(UBUNTU_EXTRA ubuntu/manifest.json ubuntu/cantata-ubuntu.json ubuntu/cantata-ubuntu.desktop)
+    foreach (extraFile ${UBUNTU_EXTRA})
+    	add_custom_command(TARGET cantata COMMAND ln ARGS -f ${CMAKE_SOURCE_DIR}/${extraFile} ${UBUNTU_CLICK_FOLDER})
+    endforeach (extraFile ${UBUNTU_EXTRA})
 
 else (ENABLE_UBUNTU)
     if (NOT ENABLE_STREAMS OR NOT ENABLE_DYNAMIC OR NOT ENABLE_ONLINE_SERVICES OR (NOT ENABLE_DEVICES_SUPPORT AND NOT WIN32 AND NOT APPLE))

@@ -755,19 +755,6 @@ endif (ENABLE_KDE)
 macro_display_feature_log()
 
 if (ENABLE_UBUNTU)
-    #Make QML visible to QtCreator
-    add_custom_target(components_QmlFiles ALL SOURCES ${UBUNTU_QMLS})
-
-# make install not workign with emulator builds?
-#
-#
-#    install(TARGETS cantata DESTINATION ${CMAKE_INSTALL_PREFIX})
-#    # TODO: Rename ubuntu/manifest.json to ubuntu/manifest.json and get cmake to update version number
-#    install(FILES icons/cantata.svg ubuntu/cantata-ubuntu.desktop ubuntu/cantata-ubuntu.json ubuntu/manifest.json DESTINATION ${CMAKE_INSTALL_PREFIX})
-
-    #install(DIRECTORY ${CMAKE_BINARY_DIR}/qml DESTINATION share/cantata)
-    #install(TARGETS cantata RUNTIME DESTINATION bin)
-
     set(UBUNTU_CLICK_FOLDER ${CMAKE_BINARY_DIR}/click/)
     file(MAKE_DIRECTORY ${UBUNTU_CLICK_FOLDER})
     file(MAKE_DIRECTORY ${UBUNTU_CLICK_FOLDER}/ubuntu/qml/cantata)
@@ -786,6 +773,9 @@ if (ENABLE_UBUNTU)
     foreach (qmlFile ${UBUNTU_QMLS})
     	add_custom_command(TARGET cantata COMMAND ln ARGS -f ${qmlFile} ${UBUNTU_CLICK_FOLDER}/ubuntu/qml/cantata)
     endforeach (qmlFile ${UBUNTU_QMLS})
+
+    #Make QML visible to QtCreator
+    add_custom_target(components_QmlFiles ALL SOURCES ${UBUNTU_QMLS})
 
     set(UBUNTU_TOOLBAR_ICONS
         ${CMAKE_SOURCE_DIR}/ubuntu/icons/toolbar/settings.svg

@@ -112,7 +112,6 @@ public:
     int columnCount(const QModelIndex&) const { return 1; }
     QModelIndex parent(const QModelIndex &index) const;
     QModelIndex index(int row, int column, const QModelIndex &parent) const;
-    QHash<int, QByteArray> roleNames() const;
     QVariant data(const QModelIndex &, int) const;
     Qt::ItemFlags flags(const QModelIndex &index) const;
     QStringList filenames(const QModelIndexList &indexes, bool allowPlaylists=false) const;

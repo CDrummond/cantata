@@ -61,13 +61,6 @@ public:
         COL_COUNT
     };
 
-    //Seperate roles for QML, as there is no support for different columns
-    enum QmlRoles {
-        QmlRole_Track = Qt::UserRole+450,
-        QmlRole_Title,
-        QmlRole_Artist
-    };
-
     struct UndoItem
     {
         bool operator==(const UndoItem &o) const { return priority==o.priority && files==o.files; }
@@ -91,7 +84,9 @@ public:
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     int columnCount(const QModelIndex &) const { return COL_COUNT; }
+    #ifdef ENABLE_UBUNTU
     QHash<int, QByteArray> roleNames() const;
+    #endif
     QVariant data(const QModelIndex &, int) const;
     bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
     void updateCurrentSong(quint32 id);

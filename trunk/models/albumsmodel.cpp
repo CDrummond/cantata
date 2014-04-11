@@ -176,14 +176,6 @@ QModelIndex AlbumsModel::index(int row, int col, const QModelIndex &parent) cons
     return row<items.count() ? createIndex(row, col, items.at(row)) : QModelIndex();
 }
 
-//Expose role names, so that they can be accessed via QML
-QHash<int, QByteArray> AlbumsModel::roleNames() const {
-    QHash<int, QByteArray> roles;
-    roles[Qt::DisplayRole] = "album";
-    roles[ItemView::Role_SubText] = "artist";
-    return roles;
-}
-
 QVariant AlbumsModel::data(const QModelIndex &index, int role) const
 {
     if (!index.isValid()) {
@@ -236,9 +228,7 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
             }
             break;
         case ItemView::Role_MainText:
-            if (Sort_ArtistYearAlbum==sortAlbums) {
-                return al->albumDisplay();
-            }
+            return al->albumDisplay();
         case ItemView::Role_BriefMainText:
             return al->album;
         case ItemView::Role_ImageSize:

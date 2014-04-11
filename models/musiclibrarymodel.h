@@ -105,8 +105,10 @@ public Q_SLOTS:
     void clearNewState();
     void updateMusicLibrary(MusicLibraryItemRoot * root, QDateTime dbUpdate = QDateTime(), bool fromFile = false);
     void coverLoaded(const Song &song, int size);
-    void setCover(const Song &song, const QImage &img, const QString &file);
     void updatingMpd();
+    // Touch version...
+    void setArtistImage(const Song &song, const QImage &img, const QString &file);
+    void setCover(const Song &song, const QImage &img, const QString &file);
 
 Q_SIGNALS:
     void haveNewItems(bool);

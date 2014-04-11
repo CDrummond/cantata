@@ -65,8 +65,12 @@ public:
     virtual ~MusicLibraryItemAlbum();
 
     QString displayData(bool full=false) const;
+    #ifdef ENABLE_UBUNTU
+    const QString & cover() const;
+    #else
     QPixmap * saveToCache(const QImage &img) const;
     const QPixmap & cover() const;
+    #endif
     quint32 year() const { return m_year; }
     quint32 totalTime();
     quint32 trackCount();
@@ -88,7 +92,11 @@ public:
     bool containsArtist(const QString &a);
     // Return orignal album name. If we are grouping by composer, then album will appear as "Album (Artist)"
     const QString & originalName() const { return m_originalName; }
-
+    #ifdef ENABLE_UBUNTU
+    void setCover(const QString &c) { m_coverName=c; m_coverRequested=false; }
+    const QString & coverName() { return m_coverName; }
+    #endif
+    
 private:
     void setYear(const MusicLibraryItemSong *song);
     bool largeImages() const;
@@ -103,6 +111,9 @@ private:
     QString m_originalName;
     mutable bool m_coverRequested;
     mutable Song m_coverSong;
+    #ifdef ENABLE_UBUNTU
+    mutable QString m_coverName;
+    #endif
     Song::Type m_type;
     QSet<QString> m_singleTrackFiles;
     QString m_imageUrl;

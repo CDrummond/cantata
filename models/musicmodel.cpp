@@ -207,9 +207,12 @@ QVariant MusicModel::data(const QModelIndex &index, int role) const
         QVariant v;
         switch (item->itemType()) {
         case MusicLibraryItem::Type_Album:
+            #ifndef ENABLE_UBUNTU
             if (MusicLibraryItemAlbum::CoverNone==MusicLibraryItemAlbum::currentCoverSize()) {
                 return Icons::self()->albumIcon;
-            } else {
+            } else
+            #endif
+            {
                 return static_cast<MusicLibraryItemAlbum *>(item)->cover();
             }
         case MusicLibraryItem::Type_Artist:

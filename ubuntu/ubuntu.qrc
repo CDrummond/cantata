@@ -19,5 +19,8 @@
 <file>icons/toolbar/media-skip-forward.svg</file>
 <file>icons/toolbar/media-playback-pause.svg</file>
 <file alias="icons/cantata.svg">../icons/cantata.svg</file>
+<file alias="album.png">icons/items/album.png</file>
+<file alias="artist.png">../icons/view-media-artist128.png</file>
+<file alias="variousartists.png">../icons/hi128-action-cantata-view-media-artist-various.png</file>
 </qresource>
 </RCC>

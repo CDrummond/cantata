@@ -94,6 +94,7 @@ Page {
         delegate: ListItemDelegate {
             text: model.mainText
             subText: model.subText
+            icon: model.image
 //           progression: true //Removed due to the app showdown, will be implemented later
 
             //control: Row {

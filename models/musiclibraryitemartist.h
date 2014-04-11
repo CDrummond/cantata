@@ -56,15 +56,28 @@ public:
     void updateIndexes();
     Type itemType() const { return Type_Artist; }
     static void clearDefaultCover();
+    #ifdef ENABLE_UBUNTU
+    const QString & cover() const;
+    #else
     const QPixmap & cover() const;
+    #endif
     // 'data' could be 'Composer' if we are set to use that, but need to save real artist...
     const QString & actualArtist() const { return m_actualArtist; }
-
+    #ifdef ENABLE_UBUNTU
+    void setCover(const QString &c) { m_coverName=c; m_coverRequested=false; }
+    const QString & coverName() { return m_coverName; }
+    #endif
+ 
 private:
     bool largeImages() const;
 
 private:
+    #ifdef ENABLE_UBUNTU
+    mutable QString m_coverName;
+    mutable bool m_coverRequested;
+    #else
     mutable Song m_coverSong;
+    #endif
     bool m_various;
     QString m_nonTheArtist;
     QString m_actualArtist;

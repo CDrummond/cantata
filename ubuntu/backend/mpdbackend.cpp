@@ -28,7 +28,7 @@
 #include "albumsproxymodel.h"
 #include "currentcover.h"
 #include "covers.h"
-
+#include "localize.h"
 #include <QString>
 #include <QModelIndex>
 
@@ -195,6 +195,28 @@ void MPDBackend::updateCurrentSong(const Song &song)
 //            current.id=song.id;
 //        }
 //    }
+
+    if (current.isStream() && !current.isCantataStream() && !current.isCdda()) {
+        mainText=current.name.isEmpty() ? Song::unknown() : current.name;
+        if (current.artist.isEmpty() && current.title.isEmpty() && !current.name.isEmpty()) {
+            subText=i18n("(Stream)");
+        } else {
+            subText=current.artist.isEmpty() ? current.title : (current.artist+QLatin1String(" - ")+current.title);
+        }
+    } else {
+        if (current.title.isEmpty() && current.artist.isEmpty() && (!current.name.isEmpty() || !current.file.isEmpty())) {
+            mainText=current.name.isEmpty() ? current.file : current.name;
+        } else {
+            mainText=current.title;
+        }
+        if (current.album.isEmpty() && current.artist.isEmpty()) {
+            subText=mainText.isEmpty() ? QString() : Song::unknown();
+        } else if (current.album.isEmpty()) {
+            subText=current.artist;
+        } else {
+            subText=current.artist+QLatin1String(" - ")+current.displayAlbum();
+        }
+    }
 
 //    #ifdef QT_QTDBUS_FOUND
 //    mpris->updateCurrentSong(current);

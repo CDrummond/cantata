@@ -33,7 +33,6 @@ Page {
 
     width: parent.width
     title: i18n.tr("Albums")
-//    visible: false
 
     actions: [
         Action {
@@ -97,54 +96,50 @@ Page {
             icon: model.image
 //           progression: true //Removed due to the app showdown, will be implemented later
 
-            //control: Row {
-            //    spacing: units.gu(1)
+            Image {
+                width: units.gu(3)
+                height: units.gu(3)
+                smooth: true
+                source: "../../icons/toolbar/add.svg"
+                opacity: 0.9
 
-                Image {
-                    width: units.gu(3)
-                    height: units.gu(3)
-                    smooth: true
-                    source: "../../icons/toolbar/add.svg"
-                    opacity: 0.9
-
-                    anchors {
-                        right: parent.right
-                        rightMargin: units.gu(4)
-                        verticalCenter: parent.verticalCenter
-                    }
-
-                    MouseArea {
-                        onClicked: {
-                            backend.addAlbum(index, false)
-                            pageStack.push(currentlyPlayingPage)
-                        }
-                        anchors.fill: parent
-                        preventStealing: true
-                    }
+                anchors {
+                    right: parent.right
+                    rightMargin: units.gu(4)
+                    verticalCenter: parent.verticalCenter
                 }
-                Image {
-                    width: units.gu(3)
-                    height: units.gu(3)
-                    smooth: true
-                    source: "../../icons/toolbar/media-playback-start-light.svg"
-                    opacity: 0.9
 
-                    anchors {
-                        right: parent.right
-                        rightMargin: units.gu(0)
-                        verticalCenter: parent.verticalCenter
+                MouseArea {
+                    onClicked: {
+                        backend.addAlbum(index, false)
+                        pageStack.push(currentlyPlayingPage)
                     }
-
-                    MouseArea {
-                        onClicked: {
-                            backend.addAlbum(index, true)
-                            pageStack.push(currentlyPlayingPage)
-                        }
-                        anchors.fill: parent
-                        preventStealing: true
-                    }
+                    anchors.fill: parent
+                    preventStealing: true
                 }
-            //}
+            }
+            Image {
+                width: units.gu(3)
+                height: units.gu(3)
+                smooth: true
+                source: "../../icons/toolbar/media-playback-start-light.svg"
+                opacity: 0.9
+
+                anchors {
+                    right: parent.right
+                    rightMargin: units.gu(0)
+                    verticalCenter: parent.verticalCenter
+                }
+
+                MouseArea {
+                    onClicked: {
+                        backend.addAlbum(index, true)
+                        pageStack.push(currentlyPlayingPage)
+                    }
+                    anchors.fill: parent
+                    preventStealing: true
+                }
+            }
         }
     }
 

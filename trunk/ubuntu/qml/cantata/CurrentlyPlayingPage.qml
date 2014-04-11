@@ -81,6 +81,63 @@ Page {
                 onTriggered: PopupUtils.open(dialog)
             }
         }
+        ToolbarButton {
+            id: actionActionToolbarButton
+            //iconSource: Qt.resolvedUrl("../../icons/toolbar/help.svg")
+            action: Action {
+                text: i18n.tr("Actions")
+                onTriggered: PopupUtils.open(actionsPopoverComponent, actionActionToolbarButton)
+            }
+            visible: isPhone
+        }
+    }
+
+    Component {
+        id: actionsPopoverComponent
+
+        Popover {
+            id: actionsPopover
+
+            Column {
+                id: containerLayout
+                anchors {
+                    left: parent.left
+                    top: parent.top
+                    right: parent.right
+                }
+
+                ListItem.Header { text: i18n.tr("Volume") }
+                ListItem.Standard {
+                    anchors {
+                        left: parent.left
+                        right: parent.right
+                        leftMargin: units.gu(1)
+                        rightMargin: units.gu(1)
+                    }
+                    Slider {
+                        id: volumeSlider2
+                        width: parent.width
+                        live: false
+                        minimumValue: 0
+                        maximumValue: 100
+                        value: backend.mpdVolume
+
+                        onValueChanged: {
+                            backend.setMpdVolume(value)
+                        }
+
+                        Connections {
+                            target: backend
+                            onMpdVolumeChanged: volumeSlider2.value = backend.mpdVolume
+                        }
+
+                        function formatValue(v) {
+                            return Math.round(v) + "%"
+                        }
+                    }
+                }
+            }
+        }
     }
 
     Row {

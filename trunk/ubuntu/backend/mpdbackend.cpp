@@ -225,7 +225,10 @@ void MPDBackend::updateCurrentSong(const Song &song)
         current.time=MPDStatus::self()->timeTotal();
     }
 //    positionSlider->setEnabled(-1!=current.id && !current.isCdda() && (!currentIsStream() || current.time>5));
-    CurrentCover::self()->update(current);
+
+// TODO: Touch is not currently displaying covers - and 'current cover' i sonly required for playqueue or notifications.
+//       If update is called, this will cause a cove to be downloaded, and saved!
+//    CurrentCover::self()->update(current);
 
 //    trackLabel->update(current);
 //    bool isPlaying=MPDState_Playing==MPDStatus::self()->state();

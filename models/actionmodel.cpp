@@ -29,9 +29,21 @@ QVariant ActionModel::data(const QModelIndex &index, int role) const
 {
     QVariant v;
     Q_UNUSED(index)
+    #ifndef ENABLE_UBUNTU // Should touch version return a list of action names?
     if (ItemView::Role_Actions==role) {
         v.setValue<QList<Action *> >(QList<Action *>() << StdActions::self()->replacePlayQueueAction << StdActions::self()->addToPlayQueueAction);
     }
+    #endif
     return v;
 }
 
+#ifdef ENABLE_UBUNTU
+//Expose role names, so that they can be accessed via QML
+QHash<int, QByteArray> ActionModel::roleNames() const
+{
+    QHash<int, QByteArray> roles;
+    roles[ItemView::Role_MainText] = "mainText";
+    roles[ItemView::Role_SubText] = "subText";
+    return roles;
+}
+#endif

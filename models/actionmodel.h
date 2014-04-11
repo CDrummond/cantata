@@ -27,6 +27,7 @@
 #include <QAbstractItemModel>
 #include <QMetaType>
 #include "action.h"
+#include "config.h"
 
 class ActionModel : public QAbstractItemModel
 {
@@ -38,6 +39,9 @@ public:
     
     virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
     virtual void resetModel() { beginResetModel(); endResetModel(); }
+    #ifdef ENABLE_UBUNTU
+    QHash<int, QByteArray> roleNames() const;
+    #endif
 };
 
 Q_DECLARE_METATYPE(QList<Action *>)

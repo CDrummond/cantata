@@ -211,8 +211,9 @@ Page {
             bottomMargin: isPhone?0:(-units.gu(2))
         }
 
-        delegate: ListItem.Standard {
-            text: (track < 10 ? '0' : '') + track + " " + title + " (" + artist + ")"
+        delegate: ListItem.Subtitled {
+            text: model.mainText
+            subText: model.subText
             confirmRemoval: true
             removable: true
             onItemRemoved: {

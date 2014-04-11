@@ -333,9 +333,9 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
     #ifdef ENABLE_UBUNTU
     case ItemView::Role_MainText: {
         Song s=songs.at(index.row());
-        return s.title;
+        return s.title.isEmpty() ? s.file : s.trackAndTitleStr();
     }
-    case ItemView::Role_SubText:  {
+    case ItemView::Role_SubText: {
         Song s=songs.at(index.row());
         return s.artist+QLatin1String(" - ")+s.displayAlbum();
     }

@@ -49,6 +49,7 @@ bool PlayQueueProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sou
     return index.isValid() && matchesFilter(*static_cast<Song *>(index.internalPointer()));
 }
 
+#ifndef ENABLE_UBUNTU
 QMimeData *PlayQueueProxyModel::mimeData(const QModelIndexList &indexes) const
 {
     QModelIndexList sourceIndexes;
@@ -65,3 +66,4 @@ bool PlayQueueProxyModel::dropMimeData(const QMimeData *data, Qt::DropAction act
     const QModelIndex sourceIndex = mapToSource(index(row, column, parent));
     return sourceModel()->dropMimeData(data, action, sourceIndex.row(), sourceIndex.column(), sourceIndex.parent());
 }
+#endif

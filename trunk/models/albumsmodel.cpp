@@ -54,6 +54,7 @@ static int sortAlbums=AlbumsModel::Sort_AlbumArtist;
 
 GLOBAL_STATIC(AlbumsModel, instance)
 
+#ifndef ENABLE_UBUNTU
 static MusicLibraryItemAlbum::CoverSize coverSize=MusicLibraryItemAlbum::CoverMedium;
 static QPixmap *theDefaultIcon=0;
 static QSize itemSize;
@@ -98,6 +99,7 @@ void AlbumsModel::setCoverSize(MusicLibraryItemAlbum::CoverSize size)
         coverSize=size;
     }
 }
+#endif
 
 AlbumsModel::AlbumsModel(QObject *parent)
     : ActionModel(parent)
@@ -242,16 +244,19 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
             return al->albumDisplay();
         case ItemView::Role_BriefMainText:
             return al->album;
+        #ifndef ENABLE_UBUNTU
         case ItemView::Role_ImageSize:
             return iconSize();
-        case ItemView::Role_SubText:
-            return al->artist;
-        case ItemView::Role_TitleText:
-            return i18nc("Album by Artist", "%1 by %2", al->album, al->artist);
         case Qt::SizeHintRole:
             if (!itemSize.isNull()) {
                 return itemSize;
             }
+            break;
+        #endif
+        case ItemView::Role_SubText:
+            return al->artist;
+        case ItemView::Role_TitleText:
+            return i18nc("Album by Artist", "%1 by %2", al->album, al->artist);
         }
     } else {
         SongItem *si=static_cast<SongItem *>(item);
@@ -259,8 +264,10 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
         switch (role) {
         default:
             return ActionModel::data(index, role);
+        #ifndef ENABLE_UBUNTU
         case Qt::DecorationRole:
             return Song::Playlist==si->type ? Icons::self()->playlistIcon : Icons::self()->audioFileIcon;
+        #endif
         case Qt::ToolTipRole: {
             quint32 year=si->parent->songs.count() ? si->parent->songs.at(0)->year : 0;
             return si->parent->artist+QLatin1String("<br/>")+
@@ -339,6 +346,7 @@ QList<Song> AlbumsModel::songs(const QModelIndexList &indexes, bool allowPlaylis
     return songs;
 }
 
+#ifndef ENABLE_UBUNTU
 QMimeData * AlbumsModel::mimeData(const QModelIndexList &indexes) const
 {
     QMimeData *mimeData = new QMimeData();
@@ -353,6 +361,7 @@ QMimeData * AlbumsModel::mimeData(const QModelIndexList &indexes) const
     }
     return mimeData;
 }
+#endif
 
 void AlbumsModel::update(const MusicLibraryItemRoot *root)
 {
@@ -485,6 +494,10 @@ void AlbumsModel::setCover(const Song &song, const QImage &img, const QString &f
 
 void AlbumsModel::coverLoaded(const Song &song, int s)
 {
+    #ifdef ENABLE_UBUNTU
+    Q_UNUSED(song)
+    Q_UNUSED(s)
+    #else
     if (s==iconSize() && !song.isArtistImageRequest()) {
         QList<AlbumItem *>::Iterator it=items.begin();
         QList<AlbumItem *>::Iterator end=items.end();
@@ -498,6 +511,7 @@ void AlbumsModel::coverLoaded(const Song &song, int s)
             }
         }
     }
+    #endif
 }
 
 void AlbumsModel::clearNewState()

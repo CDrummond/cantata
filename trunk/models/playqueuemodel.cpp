@@ -66,6 +66,7 @@
 #include "modeltest.h"
 #endif
 
+#ifndef ENABLE_UBUNTU
 const QLatin1String PlayQueueModel::constMoveMimeType("cantata/move");
 const QLatin1String PlayQueueModel::constFileNameMimeType("cantata/filename");
 const QLatin1String PlayQueueModel::constUriMimeType("text/uri-list");
@@ -153,13 +154,16 @@ QString PlayQueueModel::headerText(int col)
     default:         return QString();
     }
 }
+#endif
 
 PlayQueueModel::PlayQueueModel(QObject *parent)
     : QAbstractItemModel(parent)
     , currentSongId(-1)
     , currentSongRowNum(-1)
     , mpdState(MPDState_Inactive)
+    #ifndef ENABLE_UBUNTU
     , dropAdjust(0)
+    #endif
     , stopAfterCurrent(false)
     , stopAfterTrackId(-1)
     , undoLimit(Settings::self()->undoSteps())
@@ -240,6 +244,7 @@ QModelIndex PlayQueueModel::parent(const QModelIndex &idx) const
     return QModelIndex();
 }
 
+#ifndef ENABLE_UBUNTU
 QVariant PlayQueueModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
     if (Qt::Horizontal==orientation) {
@@ -282,6 +287,7 @@ QVariant PlayQueueModel::headerData(int section, Qt::Orientation orientation, in
 
     return QVariant();
 }
+#endif
 
 int PlayQueueModel::rowCount(const QModelIndex &idx) const
 {
@@ -518,6 +524,7 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
         case COL_PRIO:
             return int(Qt::AlignVCenter|Qt::AlignRight);
         }
+    #ifndef ENABLE_UBUNTU
     case PlayQueueView::Role_Decoration: {
         qint32 id=songs.at(index.row()).id;
         if (id==currentSongId) {
@@ -532,6 +539,7 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
         }
         break;
     }
+    #endif
     default:
         break;
     }
@@ -539,6 +547,7 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
+#ifndef ENABLE_UBUNTU
 bool PlayQueueModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
     if (GroupedView::Role_DropAdjust==role) {
@@ -548,6 +557,7 @@ bool PlayQueueModel::setData(const QModelIndex &index, const QVariant &value, in
         return QAbstractItemModel::setData(index, value, role);
     }
 }
+#endif
 
 Qt::DropActions PlayQueueModel::supportedDropActions() const
 {
@@ -562,6 +572,7 @@ Qt::ItemFlags PlayQueueModel::flags(const QModelIndex &index) const
     return Qt::ItemIsDropEnabled;
 }
 
+#ifndef ENABLE_UBUNTU
 /**
  * @return A QStringList with the mimetypes we support
  */
@@ -651,13 +662,18 @@ bool PlayQueueModel::dropMimeData(const QMimeData *data,
     }
     return false;
 }
+#endif
 
 void PlayQueueModel::load(const QStringList &urls)
 {
+    #ifdef ENABLE_UBUNTU
+    Q_UNUSED(urls)
+    #else
     QStringList useable=parseUrls(urls, false);
     if (useable.count()) {
         addItems(useable, songs.count(), songs.isEmpty(), 0);
     }
+    #endif
 }
 
 void PlayQueueModel::addItems(const QStringList &items, int row, bool replace, quint8 priority)
@@ -995,7 +1011,9 @@ void PlayQueueModel::enableUndo(bool e)
         undoStack.clear();
         redoStack.clear();
     }
+    #ifndef ENABLE_UBUNTU
     controlActions();
+    #endif
 }
 
 static PlayQueueModel::UndoItem getState(const QList<Song> &songs)
@@ -1080,6 +1098,7 @@ void PlayQueueModel::saveHistory(const QList<Song> &prevList)
     lastCommand=Cmd_Other;
 }
 
+#ifndef ENABLE_UBUNTU
 void PlayQueueModel::controlActions()
 {
     undoAction->setEnabled(!undoStack.isEmpty());
@@ -1124,9 +1143,11 @@ static bool yearSort(const Song &s1, const Song &s2)
 {
     return s1.year<s2.year || (s1.year==s2.year && s1<s2);
 }
+#endif
 
 void PlayQueueModel::sortBy()
 {
+    #ifndef ENABLE_UBUNTU
     Action *act=qobject_cast<Action *>(sender());
     if (act) {
         QString key=act->property(constSortByKey).toString();
@@ -1151,6 +1172,7 @@ void PlayQueueModel::sortBy()
             emit filesAdded(files, 0, 0, MPDState_Playing==MPDStatus::self()->state() ? MPDConnection::AddReplaceAndPlay : MPDConnection::AddAndReplace , 0);
         }
     }
+    #endif
 }
 
 void PlayQueueModel::removeDuplicates()

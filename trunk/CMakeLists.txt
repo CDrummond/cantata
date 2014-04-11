@@ -288,8 +288,7 @@ if (MSVC)
 endif (MSVC)
 
 set(CANTATA_CORE_SRCS
-    gui/covers.cpp gui/currentcover.cpp gui/settings.cpp gui/stdactions.cpp
-    widgets/icons.cpp
+    gui/covers.cpp gui/currentcover.cpp gui/settings.cpp
     models/musiclibraryitemroot.cpp models/musiclibraryitemartist.cpp models/musiclibraryitemalbum.cpp models/musiclibrarymodel.cpp
     models/musiclibraryproxymodel.cpp models/playlistsmodel.cpp models/playlistsproxymodel.cpp models/playqueuemodel.cpp
     models/playqueueproxymodel.cpp models/dirviewmodel.cpp models/dirviewproxymodel.cpp models/dirviewitem.cpp models/dirviewitemdir.cpp
@@ -313,10 +312,10 @@ set(CANTATA_SRCS ${CANTATA_CORE_SRCS}
     gui/application.cpp gui/initialsettingswizard.cpp gui/mainwindow.cpp gui/preferencesdialog.cpp
     gui/filesettings.cpp gui/interfacesettings.cpp gui/playbacksettings.cpp
     gui/serversettings.cpp gui/librarypage.cpp gui/albumspage.cpp gui/folderpage.cpp gui/playlistspage.cpp gui/trayitem.cpp
-    gui/cachesettings.cpp gui/coverdialog.cpp gui/searchpage.cpp
+    gui/cachesettings.cpp gui/coverdialog.cpp gui/searchpage.cpp gui/stdactions.cpp
     widgets/treeview.cpp widgets/listview.cpp widgets/itemview.cpp widgets/autohidingsplitter.cpp widgets/timeslider.cpp
     widgets/actionlabel.cpp widgets/playqueueview.cpp widgets/groupedview.cpp widgets/actionitemdelegate.cpp widgets/textbrowser.cpp
-    widgets/volumeslider.cpp widgets/genrecombo.cpp widgets/menubutton.cpp
+    widgets/volumeslider.cpp widgets/genrecombo.cpp widgets/menubutton.cpp widgets/icons.cpp
     widgets/toolbutton.cpp widgets/wizardpage.cpp widgets/statuslabel.cpp widgets/searchwidget.cpp widgets/messageoverlay.cpp
     widgets/basicitemdelegate.cpp widgets/sizegrip.cpp widgets/sizewidget.cpp widgets/servicestatuslabel.cpp widgets/spacerwidget.cpp
     widgets/songdialog.cpp widgets/stretchheaderview.cpp widgets/tableview.cpp widgets/songlabel.cpp widgets/thinsplitterhandle.cpp

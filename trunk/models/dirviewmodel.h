@@ -51,7 +51,9 @@ public:
     QVariant data(const QModelIndex &, int) const;
     Qt::ItemFlags flags(const QModelIndex &index) const;
     QStringList filenames(const QModelIndexList &indexes, bool allowPlaylists) const;
+    #ifndef ENABLE_UBUNTU
     QMimeData *mimeData(const QModelIndexList &indexes) const;
+    #endif
     void clear();
     void addFileToList(const QString &file, const QString &mopidyPath);
     void removeFileFromList(const QString &file);

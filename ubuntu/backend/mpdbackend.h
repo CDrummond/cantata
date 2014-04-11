@@ -56,7 +56,7 @@ class MPDBackend : public QObject
     Q_PROPERTY(bool playQueueEmpty READ isPlayQueueEmpty NOTIFY onPlayQueueChanged)
     Q_PROPERTY(bool artistsFound READ getArtistsFound NOTIFY onArtistsModelChanged)
     Q_PROPERTY(bool albumsFound READ getAlbumsFound NOTIFY onAlbumsModelChanged)
-    Q_PROPERTY(bool playlistssFound READ getPlaylistsFound NOTIFY onPlaylistsModelChanged)
+    Q_PROPERTY(bool playlistsFound READ getPlaylistsFound NOTIFY onPlaylistsModelChanged)
 
 public:
     explicit MPDBackend(QObject *parent = 0);

@@ -33,7 +33,7 @@ Page {
 
     width: parent.width
     title: i18n.tr("Artists")
-    visible: false
+//    visible: false
 
     actions: [
         Action {

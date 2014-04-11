@@ -33,7 +33,7 @@ Page {
 
     width: parent.width
     title: i18n.tr("Playlists")
-    visible: false
+//    visible: false
 
     actions: [
         Action {

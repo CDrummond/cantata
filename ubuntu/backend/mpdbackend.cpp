@@ -92,6 +92,7 @@ MPDBackend::MPDBackend(QObject *parent) : QObject(parent)
     connect(this, SIGNAL(setVolume(int)), MPDConnection::self(), SLOT(setVolume(int)));
 
     connect(AlbumsModel::self(), SIGNAL(updated()), this, SLOT(albumsUpdated()));
+    //TODO: Create the same connections for Artists and Plalists here!!!
 
     MPDConnection::self()->start();
 }

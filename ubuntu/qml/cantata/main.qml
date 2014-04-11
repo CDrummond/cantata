@@ -46,52 +46,53 @@ MainView {
         anchors.fill: parent
 
         Component.onCompleted: {
-            push(albumPage) //Previously: tabs
+            push(tabsPage) //Previously: tabs
             push(hostSettingsPage)
         }
 
-        AlbumPage {
-            id: albumPage
-            visible: false
-        }
+//        AlbumPage {
+//            id: albumPage
+//            visible: false
+//        }
 
         //Won't be ready for the showdown
-//        Page {
-//            id: tabsPage
-//            visible: false
+        Page {
+            id: tabsPage
+            visible: false
+            anchors.fill: parent
 
-//            Tabs {
-//                id: tabs
+            Tabs {
+                id: tabs
+                anchors.fill: parent
 
-//                Tab {
-//                    id: albumsTab
-//                    title: i18n.tr("Albums")
+                Tab {
+                    id: albumsTab
+                    title: i18n.tr("Albums")
 
-//                    page: AlbumPage {
-//                        id: albumPage
-//                    }
-//                }
+                    page: AlbumPage {
+                        id: albumPage
+                    }
+                }
 
-//                Tab {
-//                    id: artistTab
-//                    title: i18n.tr("Artists")
+                Tab {
+                    id: artistTab
+                    title: i18n.tr("Artists")
 
-//                    page: ArtistPage {
-//                        id: artistPage
-//                    }
-//                }
-//            }
+                    page: ArtistPage {
+                        id: artistPage
+                    }
+                }
 
-//                Tab {
-//                    id: playlistsTab
-//                    title: i18n.tr("Playlists")
+                Tab {
+                    id: playlistsTab
+                    title: i18n.tr("Playlists")
 
-//                    page: PlaylistsPage {
-//                        id: playlistsPage
-//                    }
-//                }
-//            }
-//        }
+                    page: PlaylistsPage {
+                        id: playlistsPage
+                    }
+                }
+            }
+        }
 
         CurrentlyPlayingPage {
             id: currentlyPlayingPage
@@ -105,6 +106,4 @@ MainView {
             id: aboutPage
         }
     }
-
-
 }

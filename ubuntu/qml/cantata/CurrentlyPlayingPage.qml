@@ -84,11 +84,16 @@ Page {
 
             Label {
                 id: titleLabel
+                wrapMode: Text.NoWrap
+                elide: Text.ElideRight
                 text: backend.currentSongTitle
+                fontSize: "large"
             }
 
             Label {
                 id: artistLabel
+                wrapMode: Text.NoWrap
+                elide: Text.ElideRight
                 text: (backend.currentSongTitle != "")?backend.currentSongArtist + " - " + backend.currentSongAlbum + " (" + backend.currentSongYear + ")":"" //Previously: (!backend.playQueueEmpty && !backend.isStopped)
             }
         }
@@ -162,7 +167,8 @@ Page {
             id: titleLabel2
             width: parent.width
             text: backend.currentSongTitle
-            wrapMode: Text.WordWrap
+            wrapMode: Text.NoWrap
+            elide: Text.ElideRight
             horizontalAlignment: Text.AlignHCenter
             fontSize: "large"
         }
@@ -171,7 +177,8 @@ Page {
             id: artistLabel2
             width: parent.width
             text: (backend.currentSongTitle != "")?backend.currentSongArtist + " - " + backend.currentSongAlbum + " (" + backend.currentSongYear + ")":""
-            wrapMode: Text.WordWrap
+            wrapMode: Text.NoWrap
+            elide: Text.ElideRight
             horizontalAlignment: Text.AlignHCenter
         }
     }
@@ -211,7 +218,7 @@ Page {
             bottomMargin: isPhone?0:(-units.gu(2))
         }
 
-        delegate: ListItem.Subtitled {
+        delegate: ListItemDelegate {
             text: model.mainText
             subText: model.subText
             confirmRemoval: true

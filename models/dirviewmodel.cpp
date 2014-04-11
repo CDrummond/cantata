@@ -419,7 +419,7 @@ void DirViewModel::updateDirView(DirViewItemRoot *newroot, const QDateTime &dbUp
         databaseTime=QDateTime::currentDateTime();
     }
 
-    if (needToSave || updatedListing) {
+    if (!fromFile && (needToSave || updatedListing)) {
         toXML();
     }
 }

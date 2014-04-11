@@ -27,6 +27,7 @@
 import QtQuick 2.0
 import Ubuntu.Components 0.1
 import Ubuntu.Components.ListItems 0.1 as ListItem
+import Ubuntu.Components.Popups 0.1
 
 Page {
     id: currentlyPlayingPage
@@ -38,6 +39,24 @@ Page {
 
     property int buttonSize: isPhone?units.gu(6):units.gu(7)
 
+    Component {
+         id: dialog
+         Dialog {
+             id: dialogue
+             title: "Clear Play Queue?"
+             text: "Are you sure that you want to remove all items from the play queue?"
+             Button {
+                 text: "Cancel"
+                 onClicked: PopupUtils.close(dialogue)
+             }
+             Button {
+                 text: "Clear"
+                 color: UbuntuColors.orange
+                 onClicked: (backend.clearPlayQueue(), PopupUtils.close(dialogue))
+             }
+         }
+    }
+    
     actions: [
         Action {
             id: playPauseAction
@@ -59,7 +78,7 @@ Page {
             //iconSource: Qt.resolvedUrl("../../icons/toolbar/help.svg")
             action: Action {
                 text: i18n.tr("Clear")
-                onTriggered: backend.clearPlayQueue()
+                onTriggered: PopupUtils.open(dialog)
             }
         }
     }

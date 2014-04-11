@@ -91,12 +91,13 @@ Page {
         model: albumsProxyModel
         clip: true
 
-        delegate: ListItem.Standard {
-            text: model.album + " (" + model.artist + ")"
+        delegate: ListItem.Subtitled {
+            text: model.mainText
+            subText: model.subText
 //           progression: true //Removed due to the app showdown, will be implemented later
 
-            control: Row {
-                spacing: units.gu(1)
+            //control: Row {
+            //    spacing: units.gu(1)
 
                 Image {
                     width: units.gu(3)
@@ -104,6 +105,12 @@ Page {
                     smooth: true
                     source: "../../icons/toolbar/add.svg"
                     opacity: 0.9
+
+                    anchors {
+                        right: parent.right
+                        rightMargin: units.gu(0)
+                        verticalCenter: parent.verticalCenter
+                    }
 
                     MouseArea {
                         onClicked: {
@@ -121,6 +128,12 @@ Page {
                     source: "../../icons/toolbar/media-playback-start-light.svg"
                     opacity: 0.9
 
+                    anchors {
+                        right: parent.right
+                        rightMargin: units.gu(4)
+                        verticalCenter: parent.verticalCenter
+                    }
+
                     MouseArea {
                         onClicked: {
                             backend.addAlbum(index, true)
@@ -130,7 +143,7 @@ Page {
                         preventStealing: true
                     }
                 }
-            }
+            //}
         }
     }
 

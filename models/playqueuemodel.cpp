@@ -42,6 +42,9 @@
 #include "config.h"
 #include "action.h"
 #include "actioncollection.h"
+#ifdef ENABLE_UBUNTU
+#include "itemview.h"
+#endif
 #ifdef ENABLE_DEVICES_SUPPORT
 #include "devicesmodel.h"
 #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
@@ -300,14 +303,16 @@ static QString basicPath(const Song &song)
     return -1==marker ? path : path.left(marker);
 }
 
+#ifdef ENABLE_UBUNTU
 //Expose role names, so that they can be accessed via QML
-QHash<int, QByteArray> PlayQueueModel::roleNames() const {
+QHash<int, QByteArray> PlayQueueModel::roleNames() const
+{
     QHash<int, QByteArray> roles;
-    roles[QmlRole_Track] = "track";
-    roles[QmlRole_Title] = "title";
-    roles[QmlRole_Artist] = "artist";
+    roles[ItemView::Role_MainText] = "mainText";
+    roles[ItemView::Role_SubText] = "subText";
     return roles;
 }
+#endif
 
 QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
 {
@@ -325,6 +330,16 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
 //     }
 
     switch (role) {
+    #ifdef ENABLE_UBUNTU
+    case ItemView::Role_MainText: {
+        Song s=songs.at(index.row());
+        return s.title;
+    }
+    case ItemView::Role_SubText:  {
+        Song s=songs.at(index.row());
+        return s.artist+QLatin1String(" - ")+s.displayAlbum();
+    }
+    #endif
     case GroupedView::Role_IsCollection:
         return false;
     case GroupedView::Role_CollectionId:
@@ -516,19 +531,6 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
             return Icon("media-playback-stop");
         }
         break;
-    }
-    //Seperate roles for QML, as there is no support for different columns
-    case QmlRole_Track: {
-        Song s=songs.at(index.row());
-        return s.track;
-    }
-    case QmlRole_Title: {
-        Song s=songs.at(index.row());
-        return s.title;
-    }
-    case QmlRole_Artist: {
-        Song s=songs.at(index.row());
-        return s.artist;
     }
     default:
         break;

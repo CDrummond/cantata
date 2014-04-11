@@ -54,11 +54,17 @@ bool MusicLibraryItemArtist::lessThan(const MusicLibraryItem *a, const MusicLibr
     return aa->baseArtist().localeAwareCompare(ab->baseArtist())<0;
 }
 
+#ifdef ENABLE_UBUNTU
+static const QString constDefaultCover="qrc:/artist.png";
+static const QString constDefaultVariousCover="qrc:/variousartists.png";
+#else
 static QPixmap *theDefaultIcon=0;
 static QPixmap *theVariousArtistsIcon=0;
+#endif
 
 void MusicLibraryItemArtist::clearDefaultCover()
 {
+    #ifndef ENABLE_UBUNTU
     if (theDefaultIcon) {
         delete theDefaultIcon;
         theDefaultIcon=0;
@@ -67,10 +73,14 @@ void MusicLibraryItemArtist::clearDefaultCover()
         delete theVariousArtistsIcon;
         theVariousArtistsIcon=0;
     }
+    #endif
 }
 
 MusicLibraryItemArtist::MusicLibraryItemArtist(const QString &data, const QString &artistName, MusicLibraryItemContainer *parent)
     : MusicLibraryItemContainer(data, parent)
+    #ifdef ENABLE_UBUNTU
+    , m_coverRequested(false)
+    #endif
     , m_various(false)
     , m_actualArtist(artistName==data ? QString() : artistName)
 {
@@ -81,6 +91,37 @@ MusicLibraryItemArtist::MusicLibraryItemArtist(const QString &data, const QStrin
     }
 }
 
+#ifdef ENABLE_UBUNTU
+const QString & MusicLibraryItemArtist::cover() const
+{
+    if (m_various) {
+        return constDefaultVariousCover;
+    }
+    
+    if (m_coverName.isEmpty() && !m_coverRequested && childCount()) {
+        Song coverSong;
+        coverSong.albumartist=coverSong.title=m_itemData; // If title is empty, then Song::isUnknown() will be true!!!
+
+        MusicLibraryItemAlbum *firstAlbum=static_cast<MusicLibraryItemAlbum *>(childItem(0));
+        MusicLibraryItemSong *firstSong=firstAlbum ? static_cast<MusicLibraryItemSong *>(firstAlbum->childItem(0)) : 0;
+
+        if (firstSong) {
+            coverSong.file=firstSong->file();
+            if (Song::useComposer() && !firstSong->song().composer.isEmpty()) {
+                coverSong.albumartist=firstSong->song().albumArtist();
+            }
+        }
+        coverSong.setArtistImageRequest();
+        m_coverRequested=true;
+        m_coverName=Covers::self()->requestImage(coverSong).fileName;
+        if (!m_coverName.isEmpty()) {
+            m_coverRequested=false;
+        }
+    }
+
+    return m_coverName.isEmpty() ? constDefaultCover : m_coverName;
+}
+#else
 const QPixmap & MusicLibraryItemArtist::cover() const
 {
     int iSize=MusicLibraryItemAlbum::iconSize(largeImages());
@@ -128,6 +169,7 @@ const QPixmap & MusicLibraryItemArtist::cover() const
     }
     return *theDefaultIcon;
 }
+#endif
 
 MusicLibraryItemAlbum * MusicLibraryItemArtist::album(const Song &s, bool create)
 {

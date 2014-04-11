@@ -176,6 +176,10 @@ QModelIndex AlbumsModel::index(int row, int col, const QModelIndex &parent) cons
     return row<items.count() ? createIndex(row, col, items.at(row)) : QModelIndex();
 }
 
+#ifdef ENABLE_UBUNTU
+static const QString constDefaultCover="qrc:/album.png";
+#endif
+
 QVariant AlbumsModel::data(const QModelIndex &index, int role) const
 {
     if (!index.isValid()) {
@@ -190,6 +194,12 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
         switch (role) {
         default:
             return ActionModel::data(index, role);
+        #ifdef ENABLE_UBUNTU
+        case ItemView::Role_Image: {
+            QString cover=al->cover();
+            return cover.isEmpty() ? constDefaultCover : al->cover(); // TODO: Default cover file!
+        }
+        #else
         case ItemView::Role_Image:
         case Qt::DecorationRole: {
             int iSize=iconSize();
@@ -213,6 +223,7 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
             }
             return *theDefaultIcon;
         }
+        #endif
         case Qt::ToolTipRole:
             return 0==al->songs.count()
                     ? QString()
@@ -443,6 +454,35 @@ void AlbumsModel::update(const MusicLibraryItemRoot *root)
     }
 }
 
+void AlbumsModel::setCover(const Song &song, const QImage &img, const QString &file)
+{
+    #ifdef ENABLE_UBUNTU
+    if (img.isNull() || file.isEmpty()) {
+        return;
+    }
+    QList<AlbumItem *>::Iterator it=items.begin();
+    QList<AlbumItem *>::Iterator end=items.end();
+    QString artist=MusicLibraryItemRoot::artistName(song);
+    QString album=song.albumName();
+
+    for (int row=0; it!=end; ++it, ++row) {
+        if ((*it)->artist==artist && (*it)->album==album) {
+            if ((*it)->coverRequested) {
+                (*it)->coverFile=file;
+                (*it)->coverRequested=false;
+                QModelIndex idx=index(row, 0, QModelIndex());
+                emit dataChanged(idx, idx);
+            }
+            return;
+        }
+    }
+    #else
+    Q_UNUSED(song)
+    Q_UNUSED(img)
+    Q_UNUSED(file)
+    #endif
+}
+
 void AlbumsModel::coverLoaded(const Song &song, int s)
 {
     if (s==iconSize() && !song.isArtistImageRequest()) {
@@ -492,11 +532,21 @@ void AlbumsModel::setEnabled(bool e)
     enabled=e;
 
     if (enabled) {
+        #ifdef ENABLE_UBUNTU
+        connect(Covers::self(), SIGNAL(cover(const Song &, const QImage &, const QString &)),
+                this, SLOT(setCover(const Song &, const QImage &, const QString &)));
+        #else
         connect(Covers::self(), SIGNAL(loaded(Song,int)), this, SLOT(coverLoaded(Song,int)));
+        #endif
         update(MusicLibraryModel::self()->root());
     } else {
         clear();
+        #ifdef ENABLE_UBUNTU
+        disconnect(Covers::self(), SIGNAL(cover(const Song &, const QImage &, const QString &)),
+                   this, SLOT(setCover(const Song &, const QImage &, const QString &)));
+        #else
         disconnect(Covers::self(), SIGNAL(loaded(Song,int)), this, SLOT(coverLoaded(Song,int)));
+        #endif
     }
 }
 
@@ -522,6 +572,9 @@ AlbumsModel::AlbumItem::AlbumItem(const QString &ar, const QString &al, quint16 
     , numTracks(0)
     , time(0)
     , isNew(false)
+    #ifdef ENABLE_UBUNTU
+    , coverRequested(false)
+    #endif
 {
 }
 
@@ -588,6 +641,29 @@ void AlbumsModel::AlbumItem::updateStats()
     }
 }
 
+#ifdef ENABLE_UBUNTU
+QString AlbumsModel::AlbumItem::cover()
+{
+    if (Song::SingleTracks!=type && songs.count() && coverFile.isEmpty() && !coverRequested) {
+        SongItem *firstSong=songs.first();
+        coverSong.artist=firstSong->artist;
+        coverSong.albumartist=Song::useComposer() && !firstSong->composer.isEmpty()
+                ? firstSong->albumArtist() : artist;
+        coverSong.album=album;
+        coverSong.year=year;
+        coverSong.file=firstSong->file;
+        coverSong.type=type;
+        coverSong.composer=firstSong->composer;
+        coverRequested=true;
+        coverFile=Covers::self()->requestImage(coverSong).fileName;
+        if (!coverFile.isEmpty()) {
+            coverRequested=false;
+        }
+    }
+
+    return coverFile;
+}
+#else
 QPixmap * AlbumsModel::AlbumItem::cover()
 {
     if (Song::SingleTracks!=type && songs.count()) {
@@ -607,6 +683,7 @@ QPixmap * AlbumsModel::AlbumItem::cover()
 
     return 0;
 }
+#endif
 
 const AlbumsModel::SongItem *AlbumsModel::AlbumItem::getCueFile() const
 {

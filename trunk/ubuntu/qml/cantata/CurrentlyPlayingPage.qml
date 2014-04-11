@@ -75,7 +75,7 @@ Page {
         locked: root.width > units.gu(60) && opened //"&& opened": prevents the bar from being hidden and locked at the same time
         pageStack: pageStack
         ToolbarButton {
-            //iconSource: Qt.resolvedUrl("../../icons/toolbar/help.svg")
+            iconSource: Qt.resolvedUrl("../../icons/toolbar/clear.svg")
             action: Action {
                 text: i18n.tr("Clear")
                 onTriggered: PopupUtils.open(dialog)
@@ -83,7 +83,7 @@ Page {
         }
         ToolbarButton {
             id: actionActionToolbarButton
-            //iconSource: Qt.resolvedUrl("../../icons/toolbar/help.svg")
+            iconSource: Qt.resolvedUrl("../../icons/toolbar/navigation-menu.svg")
             action: Action {
                 text: i18n.tr("Actions")
                 onTriggered: PopupUtils.open(actionsPopoverComponent, actionActionToolbarButton)
@@ -114,25 +114,39 @@ Page {
                         leftMargin: units.gu(1)
                         rightMargin: units.gu(1)
                     }
-                    Slider {
-                        id: volumeSlider2
+                    Row {
                         width: parent.width
-                        live: false
-                        minimumValue: 0
-                        maximumValue: 100
-                        value: backend.mpdVolume
+                        spacing: units.gu(1)
 
-                        onValueChanged: {
-                            backend.setMpdVolume(value)
+                        Image {
+                            id: speakerImage
+                            height: units.gu(3)
+                            width: units.gu(3)
+                            smooth: true
+                            anchors.verticalCenter: parent.verticalCenter
+                            source: "../../icons/toolbar/speaker.svg"
                         }
 
-                        Connections {
-                            target: backend
-                            onMpdVolumeChanged: volumeSlider2.value = backend.mpdVolume
-                        }
+                        Slider {
+                            id: volumeSlider2
+                            width: parent.width - speakerImage.width - parent.spacing
+                            live: false
+                            minimumValue: 0
+                            maximumValue: 100
+                            value: backend.mpdVolume
 
-                        function formatValue(v) {
-                            return Math.round(v) + "%"
+                            onValueChanged: {
+                                backend.setMpdVolume(value)
+                            }
+
+                            Connections {
+                                target: backend
+                                onMpdVolumeChanged: volumeSlider2.value = backend.mpdVolume
+                            }
+
+                            function formatValue(v) {
+                                return Math.round(v) + "%"
+                            }
                         }
                     }
                 }

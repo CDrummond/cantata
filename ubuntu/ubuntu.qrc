@@ -1,9 +1,10 @@
 <!DOCTYPE RCC><RCC version="1.0">
 <qresource>
 <file>qml/cantata/main.qml</file>
-<file>qml/cantata/AlbumPage.qml</file>
 <file>qml/cantata/AboutPage.qml</file>
 <file>qml/cantata/ArtistPage.qml</file>
+<file>qml/cantata/AlbumPage.qml</file>
+<file>qml/cantata/PlaylistsPage.qml</file>
 <file>qml/cantata/CurrentlyPlayingPage.qml</file>
 <file>qml/cantata/HostSettingsPage.qml</file>
 <file>qml/cantata/ControlButtonsRow.qml</file>

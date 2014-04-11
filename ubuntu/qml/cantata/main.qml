@@ -64,7 +64,7 @@ MainView {
 //                id: tabs
 
 //                Tab {
-//                    id: albumTab
+//                    id: albumsTab
 //                    title: i18n.tr("Albums")
 
 //                    page: AlbumPage {
@@ -78,6 +78,16 @@ MainView {
 
 //                    page: ArtistPage {
 //                        id: artistPage
+//                    }
+//                }
+//            }
+
+//                Tab {
+//                    id: playlistsTab
+//                    title: i18n.tr("Playlists")
+
+//                    page: PlaylistsPage {
+//                        id: playlistsPage
 //                    }
 //                }
 //            }

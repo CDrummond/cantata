@@ -29,10 +29,10 @@ import Ubuntu.Components 0.1
 import Ubuntu.Components.ListItems 0.1 as ListItem
 
 Page {
-    id: artistPage
+    id: playlistsPage
 
     width: parent.width
-    title: i18n.tr("Artists")
+    title: i18n.tr("Playlists")
     visible: false
 
     actions: [
@@ -83,12 +83,12 @@ Page {
     }
 
     ListView {
-        id: artistListView
+        id: playlistListView
         anchors {
             fill: parent
             bottomMargin: isPhone?0:(-units.gu(2))
         }
-        model: artistsProxyModel
+        model: playlistsProxyModel
         clip: true
 
         delegate: ListItemDelegate {
@@ -103,29 +103,6 @@ Page {
                     width: units.gu(3)
                     height: units.gu(3)
                     smooth: true
-                    source: "../../icons/toolbar/add.svg"
-                    opacity: 0.9
-
-                    anchors {
-                        right: parent.right
-                        rightMargin: units.gu(0)
-                        verticalCenter: parent.verticalCenter
-                    }
-
-                    MouseArea {
-                        // TODO: Artist or album?
-                        //onClicked: {
-                        //    backend.addAlbum(index, false)
-                        //    pageStack.push(currentlyPlayingPage)
-                        //}
-                        anchors.fill: parent
-                        preventStealing: true
-                    }
-                }
-                Image {
-                    width: units.gu(3)
-                    height: units.gu(3)
-                    smooth: true
                     source: "../../icons/toolbar/media-playback-start-light.svg"
                     opacity: 0.9
 
@@ -136,11 +113,10 @@ Page {
                     }
 
                     MouseArea {
-                        // TODO: Artist or album?
-                        //onClicked: {
-                        //    backend.addAlbum(index, true)
-                        //    pageStack.push(currentlyPlayingPage)
-                        //}
+                        onClicked: {
+                            backend.loadPlaylist(index)
+                            pageStack.push(currentlyPlayingPage)
+                        }
                         anchors.fill: parent
                         preventStealing: true
                     }
@@ -151,8 +127,8 @@ Page {
 
     Label {
         anchors.centerIn: parent
-        text: i18n.tr("No artists found")
+        text: i18n.tr("No playlists found")
         fontSize: "large"
-        visible: !backend.artistsFound
+        visible: !backend.playlistsFound
     }
 }

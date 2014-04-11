@@ -29,9 +29,14 @@
 #include <QTimer>
 
 #include "mpdconnection.h"
+#include "albumsmodel.h"
+#include "musiclibrarymodel.h"
+#include "playlistsmodel.h"
 #include "playqueuemodel.h"
 #include "playqueueproxymodel.h"
+#include "musiclibraryproxymodel.h"
 #include "albumsproxymodel.h"
+#include "playlistsproxymodel.h"
 
 class MPDBackend : public QObject
 {
@@ -49,7 +54,9 @@ class MPDBackend : public QObject
 
     Q_PROPERTY(quint8 mpdVolume READ getMpdVolume WRITE setMpdVolume NOTIFY onMpdVolumeChanged)
     Q_PROPERTY(bool playQueueEmpty READ isPlayQueueEmpty NOTIFY onPlayQueueChanged)
+    Q_PROPERTY(bool artistsFound READ getArtistsFound NOTIFY onArtistsModelChanged)
     Q_PROPERTY(bool albumsFound READ getAlbumsFound NOTIFY onAlbumsModelChanged)
+    Q_PROPERTY(bool playlistssFound READ getPlaylistsFound NOTIFY onPlaylistsModelChanged)
 
 public:
     explicit MPDBackend(QObject *parent = 0);
@@ -72,8 +79,9 @@ public:
     Q_INVOKABLE quint8 getMpdVolume() { return MPDStatus::self()->volume(); }
     Q_INVOKABLE void setMpdVolume(quint8 volume);
     Q_INVOKABLE bool isPlayQueueEmpty() { return playQueueModel.rowCount() == 0; }
-    Q_INVOKABLE bool getAlbumsFound() { return AlbumsModel::self()->rowCount() != 0; }
-
+    Q_INVOKABLE bool getArtistsFound() { return MusicLibraryModel::self()->rowCount()>0; }
+    Q_INVOKABLE bool getAlbumsFound() { return AlbumsModel::self()->rowCount()>0; }
+    Q_INVOKABLE bool getPlaylistsFound() { return PlaylistsModel::self()->rowCount()>0; }
 
 Q_SIGNALS:
     void onConnectedChanged();
@@ -81,7 +89,9 @@ Q_SIGNALS:
     void onCurrentSongChanged();
     void onMpdVolumeChanged();
     void onPlayQueueChanged();
+    void onArtistsModelChanged();
     void onAlbumsModelChanged();
+    void onPlaylistsModelChanged();
 
 public Q_SLOTS:
     void onConnected(bool connected);
@@ -126,7 +136,9 @@ private:
 public: // WTF???
     PlayQueueModel playQueueModel;
     PlayQueueProxyModel playQueueProxyModel;
+    MusicLibraryProxyModel artistsProxyModel;
     AlbumsProxyModel albumsProxyModel;
+    PlaylistsProxyModel playlistsProxyModel;
 };
 
 #endif // MPDBACKEND_H

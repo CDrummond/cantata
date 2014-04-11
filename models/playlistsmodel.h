@@ -118,7 +118,7 @@ public:
     bool isEnabled() const { return enabled; }
     void setEnabled(bool e);
     bool exists(const QString &n) { return 0!=getPlaylist(n); }
-    QMenu * menu() { return itemMenu; }
+    QMenu * menu();
     const QSet<QString> & genres() { return plGenres; }
     static QString strippedText(QString s);
     void setMultiColumn(bool m) { multiCol=m; }
@@ -148,7 +148,7 @@ private Q_SLOTS:
 
 private:
     void updateGenreList();
-    void updateItemMenu();
+    void updateItemMenu(bool craete=false);
     PlaylistItem * getPlaylist(const QString &name);
     void clearPlaylists();
     quint32 allocateKey();

@@ -1,5 +1,5 @@
-set(SUPPORT_CORE_SRCS icon.cpp utils.cpp thread.cpp configuration.cpp action.cpp actioncollection.cpp)
-set(SUPPORT_CORE_MOC_HDRS thread.h action.h actioncollection.h)
+set(SUPPORT_CORE_SRCS utils.cpp thread.cpp configuration.cpp)
+set(SUPPORT_CORE_MOC_HDRS thread.h)
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR} ${QTINCLUDES})
 
@@ -12,10 +12,10 @@ endif (ENABLE_QT5)
 add_library(support-core STATIC ${SUPPORT_CORE_MOC_SRCS} ${SUPPORT_CORE_SRCS})
     
 if (NOT ENABLE_UBUNTU)
-    set(SUPPORT_SRCS fancytabwidget.cpp messagewidget.cpp buddylabel.cpp
+    set(SUPPORT_SRCS icon.cpp fancytabwidget.cpp messagewidget.cpp buddylabel.cpp action.cpp actioncollection.cpp
         lineedit.cpp gtkstyle.cpp spinner.cpp messagebox.cpp inputdialog.cpp thread.cpp squeezedtextlabel.cpp)
 
-    set(SUPPORT_MOC_HDRS fancytabwidget.h messagewidget.h inputdialog.h pagewidget.h)
+    set(SUPPORT_MOC_HDRS fancytabwidget.h messagewidget.h inputdialog.h pagewidget.h  action.h actioncollection.h)
 
     if (NOT WIN32)
         set(SUPPORT_SRCS ${SUPPORT_SRCS} windowmanager.cpp gtkproxystyle.cpp combobox.cpp shortcuthandler.cpp)

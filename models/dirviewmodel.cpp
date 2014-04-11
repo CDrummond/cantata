@@ -173,6 +173,7 @@ QVariant DirViewModel::data(const QModelIndex &index, int role) const
     DirViewItem *item = static_cast<DirViewItem *>(index.internalPointer());
 
     switch (role) {
+    #ifndef ENABLE_UBUNTU
     case Qt::DecorationRole: {
         if (item->type() == DirViewItem::Type_Dir) {
             return Icons::self()->folderIcon;
@@ -181,6 +182,7 @@ QVariant DirViewModel::data(const QModelIndex &index, int role) const
         }
         break;
     }
+    #endif
     case Qt::DisplayRole:
         return item->data();
     case Qt::ToolTipRole:
@@ -521,6 +523,7 @@ QStringList DirViewModel::filenames(const QModelIndexList &indexes, bool allowPl
     return fnames;
 }
 
+#ifndef ENABLE_UBUNTU
 QMimeData *DirViewModel::mimeData(const QModelIndexList &indexes) const
 {
     QMimeData *mimeData = new QMimeData();
@@ -535,6 +538,7 @@ QMimeData *DirViewModel::mimeData(const QModelIndexList &indexes) const
     }
     return mimeData;
 }
+#endif
 
 static inline void addFile(DirViewItem *item, QStringList &insertInto, QStringList &checkAgainst, bool allowPlaylists)
 {

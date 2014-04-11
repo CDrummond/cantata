@@ -96,6 +96,7 @@ QVariant MusicModel::data(const QModelIndex &index, int role) const
     MusicLibraryItem *item = static_cast<MusicLibraryItem *>(index.internalPointer());
 
     switch (role) {
+    #ifndef ENABLE_UBUNTU
     case Qt::DecorationRole:
         switch (item->itemType()) {
         case MusicLibraryItem::Type_Root: {
@@ -126,6 +127,7 @@ QVariant MusicModel::data(const QModelIndex &index, int role) const
         case MusicLibraryItem::Type_Song: return Song::Playlist==static_cast<MusicLibraryItemSong *>(item)->song().type ? Icons::self()->playlistIcon : Icons::self()->audioFileIcon;
         default: return QVariant();
         }
+    #endif
     case ItemView::Role_BriefMainText:
         if (MusicLibraryItem::Type_Album==item->itemType()) {
             return item->data();
@@ -173,6 +175,7 @@ QVariant MusicModel::data(const QModelIndex &index, int role) const
                 (0==item->childCount()
                     ? item->displayData(true)
                     : (item->displayData(true)+"<br/>"+data(index, ItemView::Role_SubText).toString()));
+    #ifndef ENABLE_UBUNTU
     case ItemView::Role_ImageSize: {
         const MusicLibraryItemRoot *r=root(item);
         if (MusicLibraryItem::Type_Song!=item->itemType() && !MusicLibraryItemAlbum::itemSize().isNull()) { // icon/list style view...
@@ -182,6 +185,7 @@ QVariant MusicModel::data(const QModelIndex &index, int role) const
         }
         break;
     }
+    #endif
     case ItemView::Role_SubText:
         switch (item->itemType()) {
         case MusicLibraryItem::Type_Root: {
@@ -238,6 +242,7 @@ QVariant MusicModel::data(const QModelIndex &index, int role) const
             return i18nc("Album by Artist", "%1 by %2", item->data(), item->parentItem()->data());
         }
         return item->data();
+    #ifndef ENABLE_UBUNTU
     case Qt::SizeHintRole: {
         const MusicLibraryItemRoot *r=root(item);
         if (!r->useArtistImages() && MusicLibraryItem::Type_Artist==item->itemType()) {
@@ -247,6 +252,7 @@ QVariant MusicModel::data(const QModelIndex &index, int role) const
             return MusicLibraryItemAlbum::itemSize();
         }
     }
+    #endif
     default:
         break;
     }

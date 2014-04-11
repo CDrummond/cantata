@@ -521,7 +521,7 @@ void MusicLibraryModel::updatingMpd()
 void MusicLibraryModel::setArtistImage(const Song &song, const QImage &img, const QString &file)
 {
     #ifdef ENABLE_UBUNTU
-    if (!rootItem->useArtistImages() || img.isNull() || file.isEmpty() || MusicLibraryItemAlbum::CoverNone==MusicLibraryItemAlbum::currentCoverSize() ||
+    if (!rootItem->useArtistImages() || img.isNull() || file.isEmpty() ||
         song.file.startsWith("http://") || song.name.startsWith("http://")) {
         return;
     }
@@ -699,7 +699,10 @@ QList<Song> MusicLibraryModel::getArtistAlbumsFirstTracks(const Song &song) cons
 // Currently ONLY artist images are always loaded from non UI thread.
 void MusicLibraryModel::coverLoaded(const Song &song, int size)
 {
-    if (MusicLibraryItemAlbum::CoverNone==MusicLibraryItemAlbum::currentCoverSize() || size!=MusicLibraryItemAlbum::iconSize(rootItem->useLargeImages()) ||
+    if (
+        #ifndef ENABLE_UBUNTU
+        MusicLibraryItemAlbum::CoverNone==MusicLibraryItemAlbum::currentCoverSize() || size!=MusicLibraryItemAlbum::iconSize(rootItem->useLargeImages()) ||
+        #endif
         //song.isCdda() || (song.isArtistImageRequest() && !rootItem->useArtistImages()) ||
         song.isCdda() || !song.isArtistImageRequest() || !rootItem->useArtistImages() ||
         song.file.startsWith("http://") || song.name.startsWith("http://")) {
@@ -726,7 +729,7 @@ void MusicLibraryModel::coverLoaded(const Song &song, int size)
 void MusicLibraryModel::setCover(const Song &song, const QImage &img, const QString &file)
 {
     #ifdef ENABLE_UBUNTU
-    if (!rootItem->useAlbumImages() || img.isNull() || file.isEmpty() || MusicLibraryItemAlbum::CoverNone==MusicLibraryItemAlbum::currentCoverSize() ||
+    if (!rootItem->useAlbumImages() || img.isNull() || file.isEmpty() ||
         song.isCdda() || song.file.startsWith("http:/") || song.name.startsWith("http:/")) {
         return;
     }
@@ -904,6 +907,7 @@ QList<Song> MusicLibraryModel::songs(const QStringList &filenames, bool insertNo
     return songs;
 }
 
+#ifndef ENABLE_UBUNTU
 /**
 * Convert the data at indexes into mimedata ready for transport
 *
@@ -924,3 +928,5 @@ QMimeData *MusicLibraryModel::mimeData(const QModelIndexList &indexes) const
     }
     return mimeData;
 }
+#endif
+

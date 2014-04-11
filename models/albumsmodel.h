@@ -40,11 +40,13 @@ class AlbumsModel : public ActionModel
     Q_OBJECT
 
 public:
+    #ifndef ENABLE_UBUNTU
     static MusicLibraryItemAlbum::CoverSize currentCoverSize();
     static void setCoverSize(MusicLibraryItemAlbum::CoverSize size);
     static int iconSize();
     static void setItemSize(const QSize &sz);
     static void setIconMode(bool u);
+    #endif
 
     enum Sort
     {
@@ -124,7 +126,9 @@ public:
     Qt::ItemFlags flags(const QModelIndex &index) const;
     QStringList filenames(const QModelIndexList &indexes, bool allowPlaylists=false) const;
     QList<Song> songs(const QModelIndexList &indexes, bool allowPlaylists=false) const;
+    #ifndef ENABLE_UBUNTU
     QMimeData * mimeData(const QModelIndexList &indexes) const;
+    #endif
     void clear();
     bool isEnabled() const { return enabled; }
     void setEnabled(bool e);

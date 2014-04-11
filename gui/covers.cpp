@@ -291,6 +291,12 @@ const char * Covers::imageFormat(const QByteArray &data)
 QString Covers::encodeName(QString name)
 {
     name.replace("/", "_");
+    #ifdef ENABLE_UBUNTU
+    // qrc:/ does not seem to like ?
+    name.replace("?", "_");
+    name.replace(":", "_");
+    name.replace("%", "_");
+    #endif
     return name;
 }
 

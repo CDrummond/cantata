@@ -108,7 +108,7 @@ Page {
 
                     anchors {
                         right: parent.right
-                        rightMargin: units.gu(4)
+                        rightMargin: units.gu(0)
                         verticalCenter: parent.verticalCenter
                     }
 

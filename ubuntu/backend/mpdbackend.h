@@ -43,10 +43,8 @@ class MPDBackend : public QObject
 
 
     //Information about current song
-    Q_PROPERTY(QString currentSongTitle READ getCurrentSongTitle NOTIFY onCurrentSongChanged)
-    Q_PROPERTY(QString currentSongAlbum READ getCurrentSongAlbum NOTIFY onCurrentSongChanged)
-    Q_PROPERTY(QString currentSongArtist READ getCurrentSongArtist NOTIFY onCurrentSongChanged)
-    Q_PROPERTY(quint16 currentSongYear READ getCurrentSongYear NOTIFY onCurrentSongChanged)
+    Q_PROPERTY(QString currentSongMainText READ getCurrentSongMainText NOTIFY onCurrentSongChanged)
+    Q_PROPERTY(QString currentSongSubText READ getCurrentSongSubText NOTIFY onCurrentSongChanged)
     Q_PROPERTY(quint32 currentSongPlayqueuePosition READ getCurrentSongPlayqueuePosition NOTIFY onCurrentSongChanged)
 
     Q_PROPERTY(quint8 mpdVolume READ getMpdVolume WRITE setMpdVolume NOTIFY onMpdVolumeChanged)
@@ -67,10 +65,8 @@ public:
     Q_INVOKABLE bool getIsStopped() { return MPDStatus::self()->state() == MPDState_Stopped; }
     Q_INVOKABLE bool getIsPaused() { return MPDStatus::self()->state() == MPDState_Paused; }
     Q_INVOKABLE void startPlayingSongAtPos(int index);
-    Q_INVOKABLE QString getCurrentSongTitle() { return current.title; }
-    Q_INVOKABLE QString getCurrentSongAlbum() { return current.album; }
-    Q_INVOKABLE QString getCurrentSongArtist() { return current.artist; }
-    Q_INVOKABLE quint16 getCurrentSongYear() { return current.year; }
+    Q_INVOKABLE QString getCurrentSongMainText() { return mainText; }
+    Q_INVOKABLE QString getCurrentSongSubText() { return subText; }
     Q_INVOKABLE quint32 getCurrentSongPlayqueuePosition() { return playQueueModel.currentSongRow(); }
     Q_INVOKABLE quint8 getMpdVolume() { return MPDStatus::self()->volume(); }
     Q_INVOKABLE void setMpdVolume(quint8 volume);
@@ -102,6 +98,8 @@ private:
     bool stopAfterCurrent;
 
     Song current;
+    QString mainText;
+    QString subText;
     QTimer *statusTimer;
 
 Q_SIGNALS:
@@ -123,11 +121,10 @@ Q_SIGNALS:
 private:
     void updateStatus(MPDStatus * const status);
 
-public:
+public: // WTF???
     PlayQueueModel playQueueModel;
     PlayQueueProxyModel playQueueProxyModel;
     AlbumsProxyModel albumsProxyModel;
-
 };
 
 #endif // MPDBACKEND_H

@@ -86,7 +86,7 @@ Page {
                 id: titleLabel
                 wrapMode: Text.NoWrap
                 elide: Text.ElideRight
-                text: backend.currentSongTitle
+                text: backend.currentSongMainText
                 fontSize: "large"
             }
 
@@ -94,7 +94,7 @@ Page {
                 id: artistLabel
                 wrapMode: Text.NoWrap
                 elide: Text.ElideRight
-                text: (backend.currentSongTitle != "")?backend.currentSongArtist + " - " + backend.currentSongAlbum + " (" + backend.currentSongYear + ")":"" //Previously: (!backend.playQueueEmpty && !backend.isStopped)
+                text: backend.currentSongSubText
             }
         }
     }
@@ -166,7 +166,7 @@ Page {
         Label {
             id: titleLabel2
             width: parent.width
-            text: backend.currentSongTitle
+            text: backend.currentSongMainText
             wrapMode: Text.NoWrap
             elide: Text.ElideRight
             horizontalAlignment: Text.AlignHCenter
@@ -176,7 +176,7 @@ Page {
         Label {
             id: artistLabel2
             width: parent.width
-            text: (backend.currentSongTitle != "")?backend.currentSongArtist + " - " + backend.currentSongAlbum + " (" + backend.currentSongYear + ")":""
+            text: backend.currentSongSubText
             wrapMode: Text.NoWrap
             elide: Text.ElideRight
             horizontalAlignment: Text.AlignHCenter

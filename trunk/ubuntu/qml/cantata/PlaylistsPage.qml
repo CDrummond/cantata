@@ -33,7 +33,6 @@ Page {
 
     width: parent.width
     title: i18n.tr("Playlists")
-//    visible: false
 
     actions: [
         Action {
@@ -96,32 +95,28 @@ Page {
             subText: model.subText
 //           progression: true //Removed due to the app showdown, will be implemented later
 
-            //control: Row {
-            //    spacing: units.gu(1)
+            Image {
+                width: units.gu(3)
+                height: units.gu(3)
+                smooth: true
+                source: "../../icons/toolbar/media-playback-start-light.svg"
+                opacity: 0.9
 
-                Image {
-                    width: units.gu(3)
-                    height: units.gu(3)
-                    smooth: true
-                    source: "../../icons/toolbar/media-playback-start-light.svg"
-                    opacity: 0.9
-
-                    anchors {
-                        right: parent.right
-                        rightMargin: units.gu(0)
-                        verticalCenter: parent.verticalCenter
-                    }
-
-                    MouseArea {
-                        onClicked: {
-                            backend.loadPlaylist(index)
-                            pageStack.push(currentlyPlayingPage)
-                        }
-                        anchors.fill: parent
-                        preventStealing: true
-                    }
+                anchors {
+                    right: parent.right
+                    rightMargin: units.gu(0)
+                    verticalCenter: parent.verticalCenter
                 }
-            //}
+
+                MouseArea {
+                    onClicked: {
+                        backend.loadPlaylist(index)
+                        pageStack.push(currentlyPlayingPage)
+                    }
+                    anchors.fill: parent
+                    preventStealing: true
+                }
+            }
         }
     }
 

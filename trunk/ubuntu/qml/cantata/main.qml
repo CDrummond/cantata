@@ -46,16 +46,10 @@ MainView {
         anchors.fill: parent
 
         Component.onCompleted: {
-            push(tabsPage) //Previously: tabs
+            push(tabsPage)
             push(hostSettingsPage)
         }
 
-//        AlbumPage {
-//            id: albumPage
-//            visible: false
-//        }
-
-        //Won't be ready for the showdown
         Page {
             id: tabsPage
             visible: false

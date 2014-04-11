@@ -44,7 +44,11 @@
 #include <QFontMetrics>
 
 static MusicLibraryItemAlbum::CoverSize coverSize=MusicLibraryItemAlbum::CoverNone;
+#ifdef ENABLE_UBUNTU
+static const QString constDefaultCover="qrc:/album.png";
+#else
 static QPixmap *theDefaultIcon=0;
+#endif
 static bool dateSort=false;
 static QSize iconItemSize;
 
@@ -113,10 +117,12 @@ MusicLibraryItemAlbum::CoverSize MusicLibraryItemAlbum::currentCoverSize()
 void MusicLibraryItemAlbum::setCoverSize(MusicLibraryItemAlbum::CoverSize size)
 {
     if (size!=coverSize) {
+        #ifndef ENABLE_UBUNTU
         if (theDefaultIcon) {
             delete theDefaultIcon;
             theDefaultIcon=0;
         }
+        #endif
         MusicLibraryItemArtist::clearDefaultCover();
         coverSize=size;
     }
@@ -169,6 +175,28 @@ QString MusicLibraryItemAlbum::displayData(bool full) const
     return dateSort || full ? Song::displayAlbum(m_itemData, m_year) : m_itemData;
 }
 
+#ifdef ENABLE_UBUNTU
+const QString & MusicLibraryItemAlbum::cover() const
+{
+    if (Song::SingleTracks!=m_type && m_coverName.isEmpty() && !m_coverRequested && childCount()) {
+        MusicLibraryItemSong *firstSong=static_cast<MusicLibraryItemSong*>(childItem(0));
+        Song song;
+        song.artist=firstSong->song().artist;
+        song.albumartist=Song::useComposer() && !firstSong->song().composer.isEmpty() ? firstSong->song().albumArtist() : parentItem()->data();
+        song.album=Song::useComposer() ? firstSong->song().album : m_itemData;
+        song.year=m_year;
+        song.file=firstSong->file();
+        song.type=m_type;
+        song.composer=firstSong->song().composer;
+        m_coverName=Covers::self()->requestImage(song).fileName;
+        if (!m_coverName.isEmpty()) {
+            m_coverRequested=false;
+        }
+    }
+
+    return m_coverName.isEmpty() ? constDefaultCover : m_coverName;
+}
+#else
 QPixmap *MusicLibraryItemAlbum::saveToCache(const QImage &img) const
 {
     int size=MusicLibraryItemAlbum::iconSize(largeImages());
@@ -240,6 +268,7 @@ const QPixmap & MusicLibraryItemAlbum::cover() const
     }
     return *theDefaultIcon;
 }
+#endif
 
 quint32 MusicLibraryItemAlbum::totalTime()
 {

@@ -85,7 +85,11 @@ public:
         quint32 trackCount();
         quint32 totalTime();
         void updateStats();
+        #ifdef ENABLE_UBUNTU
+        QString cover();
+        #else
         QPixmap *cover();
+        #endif
         bool isSingleTracks() const { return Song::SingleTracks==type; }
         const SongItem *getCueFile() const;
         QString albumDisplay() const { return Song::displayAlbum(album, year); }
@@ -100,6 +104,10 @@ public:
         quint32 time;
         Song coverSong;
         bool isNew;
+        #ifdef ENABLE_UBUNTU
+        QString coverFile;
+        bool coverRequested;
+        #endif
     };
 
     static AlbumsModel * self();
@@ -129,6 +137,8 @@ Q_SIGNALS:
 public Q_SLOTS:
     void clearNewState();
     void coverLoaded(const Song &song, int s);
+    // Touch version...
+    void setCover(const Song &song, const QImage &img, const QString &file);
     void update(const MusicLibraryItemRoot *root);
 
 private:

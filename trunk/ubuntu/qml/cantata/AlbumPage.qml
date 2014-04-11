@@ -91,7 +91,7 @@ Page {
         model: albumsProxyModel
         clip: true
 
-        delegate: ListItem.Subtitled {
+        delegate: ListItemDelegate {
             text: model.mainText
             subText: model.subText
 //           progression: true //Removed due to the app showdown, will be implemented later

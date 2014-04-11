@@ -494,7 +494,7 @@ void MusicLibraryModel::updateMusicLibrary(MusicLibraryItemRoot *newroot, QDateT
         databaseTime=QDateTime::currentDateTime();
     }
 
-    if (needToSave || updatedSongs) {
+    if (!fromFile && (needToSave || updatedSongs)) {
         rootItem->toXML(cacheFileName(), databaseTime, databaseTimeUnreliable);
     }
 

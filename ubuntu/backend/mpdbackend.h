@@ -125,7 +125,7 @@ Q_SIGNALS:
     void startPlayingSongId(qint32);
     void goToNextSong();
     void goToPreviousSong();
-    void updateLibrary();
+    void loadLibrary();
     void add(const QStringList &files, bool replace, quint8 priorty); //Album
     void setVolume(int volume);
     void clear();

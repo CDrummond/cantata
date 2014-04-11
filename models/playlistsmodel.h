@@ -103,22 +103,28 @@ public:
     bool hasChildren(const QModelIndex &parent = QModelIndex()) const;
     QModelIndex parent(const QModelIndex &index) const;
     QModelIndex index(int row, int col, const QModelIndex &parent) const;
-    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
     QVariant data(const QModelIndex &, int) const;
+    #ifndef ENABLE_UBUNTU
+    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
     bool setData(const QModelIndex &index, const QVariant &value, int role);
+    #endif
     Qt::ItemFlags flags(const QModelIndex &index) const;
     Qt::DropActions supportedDropActions() const;
     QStringList filenames(const QModelIndexList &indexes, bool filesOnly=false) const;
     QList<Song> songs(const QModelIndexList &indexes) const;
+    #ifndef ENABLE_UBUNTU
     QMimeData * mimeData(const QModelIndexList &indexes) const;
     bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int /*col*/, const QModelIndex &parent);
     QStringList mimeTypes() const;
+    #endif
     void getPlaylists();
     void clear();
     bool isEnabled() const { return enabled; }
     void setEnabled(bool e);
     bool exists(const QString &n) { return 0!=getPlaylist(n); }
+    #ifndef ENABLE_UBUNTU
     QMenu * menu();
+    #endif
     const QSet<QString> & genres() { return plGenres; }
     static QString strippedText(QString s);
     void setMultiColumn(bool m) { multiCol=m; }
@@ -159,9 +165,11 @@ private:
     QList<PlaylistItem *> items;
     QSet<quint32> usedKeys;
     QSet<QString> plGenres;
+    #ifndef ENABLE_UBUNTU
     QMenu *itemMenu;
     quint32 dropAdjust;
     QAction *newAction;
+    #endif
 };
 
 #endif

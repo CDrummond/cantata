@@ -49,6 +49,7 @@ public:
         CoverExtraLarge = 4
     };
 
+    #ifndef ENABLE_UBUNTU
     static void setup();
     static CoverSize currentCoverSize();
     static void setCoverSize(CoverSize size);
@@ -56,6 +57,7 @@ public:
     static int iconSize(bool iconMode=false);
     static void setItemSize(const QSize &sz);
     static QSize itemSize();
+    #endif
     static void setSortByDate(bool sd);
     static bool sortByDate();
 

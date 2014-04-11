@@ -64,7 +64,9 @@ public:
     QStringList filenames(const QModelIndexList &indexes, bool allowPlaylists=false) const;
     QList<Song> songs(const QModelIndexList &indexes, bool allowPlaylists=false) const;
     QList<Song> songs(const QStringList &filenames, bool insertNotFound=false) const;
+    #ifndef ENABLE_UBUNTU
     QMimeData *mimeData(const QModelIndexList &indexes) const;
+    #endif
     const MusicLibraryItemRoot * root() const { return rootItem; }
     const MusicLibraryItemRoot * root(const MusicLibraryItem *) const { return root(); }
     bool isFromSingleTracks(const Song &s) const { return rootItem->isFromSingleTracks(s); }

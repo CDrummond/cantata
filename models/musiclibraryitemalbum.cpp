@@ -50,6 +50,8 @@ static const QString constDefaultCover="qrc:/album.png";
 static QPixmap *theDefaultIcon=0;
 #endif
 static bool dateSort=false;
+
+#ifndef ENABLE_UBUNTU
 static QSize iconItemSize;
 
 static inline int adjust(int v)
@@ -117,16 +119,15 @@ MusicLibraryItemAlbum::CoverSize MusicLibraryItemAlbum::currentCoverSize()
 void MusicLibraryItemAlbum::setCoverSize(MusicLibraryItemAlbum::CoverSize size)
 {
     if (size!=coverSize) {
-        #ifndef ENABLE_UBUNTU
         if (theDefaultIcon) {
             delete theDefaultIcon;
             theDefaultIcon=0;
         }
-        #endif
         MusicLibraryItemArtist::clearDefaultCover();
         coverSize=size;
     }
 }
+#endif
 
 void MusicLibraryItemAlbum::setSortByDate(bool sd)
 {

@@ -69,6 +69,7 @@ public:
         QList<quint8> priority;
     };
 
+    #ifndef ENABLE_UBUNTU
     static const QLatin1String constMoveMimeType;
     static const QLatin1String constFileNameMimeType;
     static const QLatin1String constUriMimeType;
@@ -76,19 +77,24 @@ public:
     static void encode(QMimeData &mimeData, const QString &mime, const QStringList &values);
     static QStringList decode(const QMimeData &mimeData, const QString &mime);
     static QString headerText(int col);
+    #endif
 
     PlayQueueModel(QObject *parent = 0);
     ~PlayQueueModel();
     QModelIndex index(int row, int column, const QModelIndex &parent=QModelIndex()) const;
     QModelIndex parent(const QModelIndex &idx) const;
+    #ifndef ENABLE_UBUNTU
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+    #endif
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     int columnCount(const QModelIndex &) const { return COL_COUNT; }
     #ifdef ENABLE_UBUNTU
     QHash<int, QByteArray> roleNames() const;
     #endif
     QVariant data(const QModelIndex &, int) const;
+    #ifndef ENABLE_UBUNTU
     bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
+    #endif
     void updateCurrentSong(quint32 id);
     qint32 getIdByRow(qint32 row) const;
     qint32 getSongId(const QString &file) const;
@@ -98,9 +104,11 @@ public:
     Song getSongById(qint32 id) const;
     Qt::DropActions supportedDropActions() const;
     Qt::ItemFlags flags(const QModelIndex &index) const;
+    #ifndef ENABLE_UBUNTU
     QStringList mimeTypes() const;
     QMimeData *mimeData(const QModelIndexList &indexes) const;
     bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent);
+    #endif
     QStringList filenames();
     void clear();
     qint32 currentSong() const { return currentSongId; }
@@ -169,7 +177,9 @@ private:
     mutable qint32 currentSongRowNum;
     StreamFetcher *fetcher;
     MPDState mpdState;
+    #ifndef ENABLE_UBUNTU
     quint32 dropAdjust;
+    #endif
     bool stopAfterCurrent;
     qint32 stopAfterTrackId;
     Action *removeDuplicatesAction;

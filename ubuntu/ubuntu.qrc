@@ -1,26 +1,29 @@
-<!DOCTYPE RCC><RCC version="1.0">
-<qresource>
-<file>qml/cantata/main.qml</file>
-<file>qml/cantata/AboutPage.qml</file>
-<file>qml/cantata/ArtistPage.qml</file>
-<file>qml/cantata/AlbumPage.qml</file>
-<file>qml/cantata/PlaylistsPage.qml</file>
-<file>qml/cantata/CurrentlyPlayingPage.qml</file>
-<file>qml/cantata/HostSettingsPage.qml</file>
-<file>qml/cantata/ControlButtonsRow.qml</file>
-<file>qml/cantata/ListItemDelegate.qml</file>
-<file>qml/cantata/LabelVisual.qml</file>
-<file>icons/toolbar/settings.svg</file>
-<file>icons/toolbar/add.svg</file>
-<file>icons/toolbar/help.svg</file>
-<file>icons/toolbar/media-playback-start.svg</file>
-<file>icons/toolbar/media-playback-start-light.svg</file>
-<file>icons/toolbar/media-skip-backward.svg</file>
-<file>icons/toolbar/media-skip-forward.svg</file>
-<file>icons/toolbar/media-playback-pause.svg</file>
-<file alias="icons/cantata.svg">../icons/cantata.svg</file>
-<file alias="album.png">icons/items/album.png</file>
-<file alias="artist.png">../icons/view-media-artist128.png</file>
-<file alias="variousartists.png">../icons/hi128-action-cantata-view-media-artist-various.png</file>
-</qresource>
+<RCC>
+    <qresource prefix="/">
+        <file>qml/cantata/main.qml</file>
+        <file>qml/cantata/AboutPage.qml</file>
+        <file>qml/cantata/ArtistPage.qml</file>
+        <file>qml/cantata/AlbumPage.qml</file>
+        <file>qml/cantata/PlaylistsPage.qml</file>
+        <file>qml/cantata/CurrentlyPlayingPage.qml</file>
+        <file>qml/cantata/HostSettingsPage.qml</file>
+        <file>qml/cantata/ControlButtonsRow.qml</file>
+        <file>qml/cantata/ListItemDelegate.qml</file>
+        <file>qml/cantata/LabelVisual.qml</file>
+        <file>icons/toolbar/settings.svg</file>
+        <file>icons/toolbar/add.svg</file>
+        <file>icons/toolbar/help.svg</file>
+        <file>icons/toolbar/media-playback-start.svg</file>
+        <file>icons/toolbar/media-playback-start-light.svg</file>
+        <file>icons/toolbar/media-skip-backward.svg</file>
+        <file>icons/toolbar/media-skip-forward.svg</file>
+        <file>icons/toolbar/media-playback-pause.svg</file>
+        <file alias="icons/cantata.svg">../icons/cantata.svg</file>
+        <file alias="album.png">icons/items/album.png</file>
+        <file alias="artist.png">../icons/view-media-artist128.png</file>
+        <file alias="variousartists.png">../icons/hi128-action-cantata-view-media-artist-various.png</file>
+        <file>icons/toolbar/navigation-menu.svg</file>
+        <file>icons/toolbar/clear.svg</file>
+        <file>icons/toolbar/speaker.svg</file>
+    </qresource>
 </RCC>

@@ -36,6 +36,7 @@
 #include "thread.h"
 #include "ubuntu/backend/mpdbackend.h"
 #include "utils.h"
+#include "musiclibrarymodel.h"
 #include "albumsmodel.h"
 #include "playlistsmodel.h"
 #include "currentcover.h"
@@ -61,9 +62,13 @@ int main(int argc, char *argv[])
     qmlRegisterType<MPDBackend>("MPDBackend", 1, 0, "MPDBackend");
     QQuickView view;
     view.setMinimumSize(QSize(360, 540));
+    view.rootContext()->setContextProperty("artistsModel", MusicLibraryModel::self());
     view.rootContext()->setContextProperty("albumsModel", AlbumsModel::self());
+    view.rootContext()->setContextProperty("playlistsModel", PlaylistsModel::self());
     view.rootContext()->setContextProperty("backend", &backend);
+    view.rootContext()->setContextProperty("artistsProxyModel", &backend.artistsProxyModel);
     view.rootContext()->setContextProperty("albumsProxyModel", &backend.albumsProxyModel);
+    view.rootContext()->setContextProperty("playlistsProxyModel", &backend.playlistsProxyModel);
     view.rootContext()->setContextProperty("playQueueModel", &backend.playQueueModel);
     view.rootContext()->setContextProperty("playQueueProxyModel", &backend.playQueueProxyModel);
     view.rootContext()->setContextProperty("currentCover", CurrentCover::self());

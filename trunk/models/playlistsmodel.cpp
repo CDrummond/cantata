@@ -90,7 +90,6 @@ PlaylistsModel::PlaylistsModel(QObject *parent)
     newAction=new QAction(Icon("document-new"), i18n("New Playlist..."), this);
     connect(newAction, SIGNAL(triggered(bool)), this, SIGNAL(addToNew()));
     Action::initIcon(newAction);
-    updateItemMenu();
     #if defined ENABLE_MODEL_TEST
     new ModelTest(this, this);
     #endif
@@ -98,8 +97,10 @@ PlaylistsModel::PlaylistsModel(QObject *parent)
 
 PlaylistsModel::~PlaylistsModel()
 {
-    itemMenu->deleteLater();
-    itemMenu=0;
+    if (itemMenu) {
+        itemMenu->deleteLater();
+        itemMenu=0;
+    }
 }
 
 int PlaylistsModel::rowCount(const QModelIndex &index) const
@@ -277,6 +278,7 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
                 return font;
             }
             return QVariant();
+        case ItemView::Role_MainText:
         case Qt::DisplayRole:
             if (multiCol) {
                 switch (index.column()) {
@@ -418,7 +420,7 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
         case ItemView::Role_MainText:
             return s->title.isEmpty() ? s->file : s->title;
         case ItemView::Role_SubText:
-            return s->artist+QLatin1String(" - ")+s->album;
+            return s->artist+QLatin1String(" - ")+s->displayAlbum();
         default:
             return ActionModel::data(index, role);
         }
@@ -668,6 +670,14 @@ void PlaylistsModel::setEnabled(bool e)
     }
 }
 
+QMenu * PlaylistsModel::menu()
+{
+    if (!itemMenu) {
+        updateItemMenu(true);
+    }
+    return itemMenu;
+}
+
 void PlaylistsModel::setPlaylists(const QList<Playlist> &playlists)
 {
     if (items.isEmpty()) {
@@ -893,9 +903,12 @@ void PlaylistsModel::mpdConnectionStateChanged(bool connected)
     }
 }
 
-void PlaylistsModel::updateItemMenu()
+void PlaylistsModel::updateItemMenu(bool create)
 {
     if (!itemMenu) {
+        if (!create) {
+            return;
+        }
         itemMenu = new QMenu(0);
     }
 

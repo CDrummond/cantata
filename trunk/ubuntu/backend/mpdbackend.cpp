@@ -23,9 +23,6 @@
 
 #include "mpdbackend.h"
 #include "mpdconnection.h"
-#include "albumsmodel.h"
-#include "musiclibrarymodel.h"
-#include "albumsproxymodel.h"
 #include "currentcover.h"
 #include "covers.h"
 #include "localize.h"
@@ -46,7 +43,9 @@ MPDBackend::MPDBackend(QObject *parent) : QObject(parent)
     connect(MPDConnection::self(), SIGNAL(stateChanged(bool)), this, SLOT(onConnected(bool)));
 
     playQueueProxyModel.setSourceModel(&playQueueModel);
+    artistsProxyModel.setSourceModel(MusicLibraryModel::self());
     albumsProxyModel.setSourceModel(AlbumsModel::self());
+    playlistsProxyModel.setSourceModel(PlaylistsModel::self());
 
 //    connect(MPDConnection::self(), SIGNAL(outputsUpdated(const QList<Output> &)), this, SLOT(outputsUpdated(const QList<Output> &)));
 

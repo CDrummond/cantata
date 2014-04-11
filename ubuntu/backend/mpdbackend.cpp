@@ -38,7 +38,7 @@ MPDBackend::MPDBackend(QObject *parent) : QObject(parent)
 {
     connect(this, SIGNAL(goToNextSong()), MPDConnection::self(), SLOT(goToNext()));
     connect(this, SIGNAL(goToPreviousSong()), MPDConnection::self(), SLOT(goToPrevious()));
-    connect(this, SIGNAL(updateLibrary()), MPDConnection::self(), SLOT(loadLibrary()));
+    connect(this, SIGNAL(loadLibrary()), MPDConnection::self(), SLOT(loadLibrary()));
 
     connect(MPDConnection::self(), SIGNAL(stateChanged(bool)), this, SLOT(onConnected(bool)));
 
@@ -103,7 +103,7 @@ void MPDBackend::connectTo(QString hostname, quint16 port, QString password) {
     details.password = password;
     emit setDetails(details);
     MusicLibraryModel::self()->clear();
-    emit updateLibrary();
+    //emit loadLibrary();
 }
 
 void MPDBackend::playPause() {
@@ -245,17 +245,21 @@ void MPDBackend::updateCurrentSong(const Song &song)
 void MPDBackend::updateStats() //Does nothing right now...
 {
     // Check if remote db is more recent than local one
-//    if (!MusicLibraryModel::self()->lastUpdate().isValid() || MPDStats::self()->dbUpdate() > MusicLibraryModel::self()->lastUpdate()) {
-//        if (!MusicLibraryModel::self()->lastUpdate().isValid()) {
+    if (!MusicLibraryModel::self()->lastUpdate().isValid() || MPDStats::self()->dbUpdate() > MusicLibraryModel::self()->lastUpdate()) {
+        if (!MusicLibraryModel::self()->lastUpdate().isValid()) {
+            MusicLibraryModel::self()->clear();
 //            libraryPage->clear();
 //            //albumsPage->clear();
 //            folderPage->clear();
 //            playlistsPage->clear();
-//        }
+        }
+        if (!MusicLibraryModel::self()->fromXML()) {
+            emit loadLibrary();
+        }
 //        albumsPage->goTop();
 //        libraryPage->refresh();
 //        folderPage->refresh();
-//    }
+    }
 }
 
 void MPDBackend::updateStatus()
@@ -436,7 +440,8 @@ void MPDBackend::mpdConnectionStateChanged(bool connected)
 //        folderPage->clear();
 //        playlistsPage->clear();
         playQueueModel.clear();
-        AlbumsModel::self()->clear(); //Ubuntu specific
+        MusicLibraryModel::self()->clear();
+        //AlbumsModel::self()->clear(); //Ubuntu specific
 //        searchPage->clear();
         connectedState=CS_Disconnected;
 //        outputsAction->setVisible(false);

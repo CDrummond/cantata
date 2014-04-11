@@ -133,7 +133,7 @@ Q_SIGNALS:
 private:
     void updateStatus(MPDStatus * const status);
 
-public: // WTF???
+public:
     PlayQueueModel playQueueModel;
     PlayQueueProxyModel playQueueProxyModel;
     MusicLibraryProxyModel artistsProxyModel;

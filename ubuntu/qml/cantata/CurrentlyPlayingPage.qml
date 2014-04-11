@@ -55,6 +55,13 @@ Page {
         opened: true
         locked: root.width > units.gu(60) && opened //"&& opened": prevents the bar from being hidden and locked at the same time
         pageStack: pageStack
+        ToolbarButton {
+            //iconSource: Qt.resolvedUrl("../../icons/toolbar/help.svg")
+            action: Action {
+                text: i18n.tr("Clear")
+                onTriggered: backend.clearPlayQueue()
+            }
+        }
     }
 
     Row {

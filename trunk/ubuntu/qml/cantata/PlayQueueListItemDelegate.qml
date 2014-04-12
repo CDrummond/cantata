@@ -85,25 +85,29 @@ Empty {
      */
     property alias subText: subLabel.text
 
-    Image {
-        id: iconImage
-        width: units.gu(3)
-        height: units.gu(3)
-        smooth: true
-        source: "../../icons/toolbar/add.svg"
-        opacity: 0.9
+    property alias iconSource: iconImage.source
 
+    UbuntuShape {
+        id: iconShape
+        width: units.gu(5.5)
+        height: units.gu(5.5)
         anchors {
             left: parent.left
             leftMargin: units.gu(1)
             verticalCenter: parent.verticalCenter
+        }
+
+        image: Image {
+            id: iconImage
+            smooth: true
+            opacity: 0.9
         }
     }
 
     Item  {
         id: middleVisuals
         anchors {
-            left: iconImage.right
+            left: iconShape.right
             right: addImage.left
             leftMargin: units.gu(1)
             rightMargin: units.gu(1)

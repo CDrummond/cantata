@@ -669,7 +669,7 @@ QString AlbumsModel::AlbumItem::cover()
         coverSong.type=type;
         coverSong.composer=firstSong->composer;
         coverRequested=true;
-        coverFile=Covers::self()->requestImage(coverSong).fileName;
+        coverFile=Covers::self()->requestImage(coverSong, true).fileName;
         if (!coverFile.isEmpty()) {
             coverRequested=false;
         }

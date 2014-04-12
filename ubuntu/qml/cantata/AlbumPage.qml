@@ -94,54 +94,9 @@ Page {
         delegate: PlayQueueListItemDelegate {
             text: model.mainText
             subText: model.subText
-//            icon: model.image
+            iconSource: !(model.image.indexOf("qrc:") === 0)?"file:" + model.image:model.image
 //           progression: true //Removed due to the app showdown, will be implemented later
 
-//            Image {
-//                id: addImage
-//                width: units.gu(3)
-//                height: units.gu(3)
-//                smooth: true
-//                source: "../../icons/toolbar/add.svg"
-//                opacity: 0.9
-
-//                anchors {
-//                    right: parent.right
-//                    rightMargin: units.gu(4)
-//                    verticalCenter: parent.verticalCenter
-//                }
-
-//                MouseArea {
-//                    onClicked: {
-//                        backend.addAlbum(index, false)
-//                        pageStack.push(currentlyPlayingPage)
-//                    }
-//                    anchors.fill: parent
-//                    preventStealing: true
-//                }
-//            }
-//            Image {
-//                width: units.gu(3)
-//                height: units.gu(3)
-//                smooth: true
-//                source: "../../icons/toolbar/media-playback-start-light.svg"
-//                opacity: 0.9
-
-//                anchors {
-//                    right: parent.right
-//                    rightMargin: units.gu(0)
-//                    verticalCenter: parent.verticalCenter
-//                }
-
-//                MouseArea {
-//                    onClicked: {
-//                        backend.addAlbum(index, true)
-//                        pageStack.push(currentlyPlayingPage)
-//                    }
-//                    anchors.fill: parent
-//                    preventStealing: true
-//                }
-//            }
         }
     }
 

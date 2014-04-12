@@ -27,11 +27,12 @@
 import QtQuick 2.0
 import Ubuntu.Components 0.1
 import Ubuntu.Components.ListItems 0.1 as ListItem
+import 'qrc:/qml/cantata/'
 
 Page {
     id: albumPage
 
-    width: parent.width
+    anchors.fill: parent
     title: i18n.tr("Albums")
 
     actions: [
@@ -90,56 +91,57 @@ Page {
         model: albumsProxyModel
         clip: true
 
-        delegate: ListItemDelegate {
+        delegate: PlayQueueListItemDelegate {
             text: model.mainText
             subText: model.subText
-            icon: model.image
+//            icon: model.image
 //           progression: true //Removed due to the app showdown, will be implemented later
 
-            Image {
-                width: units.gu(3)
-                height: units.gu(3)
-                smooth: true
-                source: "../../icons/toolbar/add.svg"
-                opacity: 0.9
+//            Image {
+//                id: addImage
+//                width: units.gu(3)
+//                height: units.gu(3)
+//                smooth: true
+//                source: "../../icons/toolbar/add.svg"
+//                opacity: 0.9
 
-                anchors {
-                    right: parent.right
-                    rightMargin: units.gu(4)
-                    verticalCenter: parent.verticalCenter
-                }
+//                anchors {
+//                    right: parent.right
+//                    rightMargin: units.gu(4)
+//                    verticalCenter: parent.verticalCenter
+//                }
 
-                MouseArea {
-                    onClicked: {
-                        backend.addAlbum(index, false)
-                        pageStack.push(currentlyPlayingPage)
-                    }
-                    anchors.fill: parent
-                    preventStealing: true
-                }
-            }
-            Image {
-                width: units.gu(3)
-                height: units.gu(3)
-                smooth: true
-                source: "../../icons/toolbar/media-playback-start-light.svg"
-                opacity: 0.9
+//                MouseArea {
+//                    onClicked: {
+//                        backend.addAlbum(index, false)
+//                        pageStack.push(currentlyPlayingPage)
+//                    }
+//                    anchors.fill: parent
+//                    preventStealing: true
+//                }
+//            }
+//            Image {
+//                width: units.gu(3)
+//                height: units.gu(3)
+//                smooth: true
+//                source: "../../icons/toolbar/media-playback-start-light.svg"
+//                opacity: 0.9
 
-                anchors {
-                    right: parent.right
-                    rightMargin: units.gu(0)
-                    verticalCenter: parent.verticalCenter
-                }
+//                anchors {
+//                    right: parent.right
+//                    rightMargin: units.gu(0)
+//                    verticalCenter: parent.verticalCenter
+//                }
 
-                MouseArea {
-                    onClicked: {
-                        backend.addAlbum(index, true)
-                        pageStack.push(currentlyPlayingPage)
-                    }
-                    anchors.fill: parent
-                    preventStealing: true
-                }
-            }
+//                MouseArea {
+//                    onClicked: {
+//                        backend.addAlbum(index, true)
+//                        pageStack.push(currentlyPlayingPage)
+//                    }
+//                    anchors.fill: parent
+//                    preventStealing: true
+//                }
+//            }
         }
     }
 

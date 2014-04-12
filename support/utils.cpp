@@ -688,7 +688,7 @@ QString Utils::dataDir(const QString &sub, bool create)
 QString Utils::cacheDir(const QString &sub, bool create)
 {
     #ifdef ENABLE_UBUNTU
-    return userDir(QDir::homePath()+"/.local/share"+constDirSep+FOLDER_NAME+constDirSep+"config"+constDirSep, sub, create);
+    return userDir(QDir::homePath()+"/.local/share"+constDirSep+FOLDER_NAME+constDirSep+"cache"+constDirSep, sub, create);
     #elif defined Q_OS_WIN
     return userDir(QDesktopServices::storageLocation(QDesktopServices::CacheLocation)+constDirSep, sub, create);
     #else

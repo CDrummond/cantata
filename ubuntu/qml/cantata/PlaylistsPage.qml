@@ -27,6 +27,7 @@
 import QtQuick 2.0
 import Ubuntu.Components 0.1
 import Ubuntu.Components.ListItems 0.1 as ListItem
+import 'components'
 
 Page {
     id: playlistsPage
@@ -95,27 +96,12 @@ Page {
             subText: model.subText
 //           progression: true //Removed due to the app showdown, will be implemented later
 
-            Image {
-                width: units.gu(3)
-                height: units.gu(3)
-                smooth: true
-                source: "../../icons/toolbar/media-playback-start-light.svg"
-                opacity: 0.9
+            firstButtonImageSource: "../../icons/toolbar/media-playback-start-light.svg"
+            onFirstImageButtonClicked: loadPlaylist()
 
-                anchors {
-                    right: parent.right
-                    rightMargin: units.gu(0)
-                    verticalCenter: parent.verticalCenter
-                }
-
-                MouseArea {
-                    onClicked: {
-                        backend.loadPlaylist(index)
-                        pageStack.push(currentlyPlayingPage)
-                    }
-                    anchors.fill: parent
-                    preventStealing: true
-                }
+            function loadPlaylist() {
+                backend.loadPlaylist(index)
+                pageStack.push(currentlyPlayingPage)
             }
         }
     }

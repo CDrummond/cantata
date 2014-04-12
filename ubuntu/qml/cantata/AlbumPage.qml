@@ -91,7 +91,7 @@ Page {
         model: albumsProxyModel
         clip: true
 
-        delegate: PlayQueueListItemDelegate {
+        delegate: AlbumListItemDelegate {
             text: model.mainText
             subText: model.subText
             iconSource: !(model.image.indexOf("qrc:") === 0)?"file:" + model.image:model.image

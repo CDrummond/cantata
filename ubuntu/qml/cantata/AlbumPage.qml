@@ -97,6 +97,7 @@ Page {
             iconSource: !(model.image.indexOf("qrc:") === 0)?"file:" + model.image:model.image
 //           progression: true //Removed due to the app showdown, will be implemented later
 
+            onIconSourceChanged: console.log("Debug iconSource: " + iconSource)
         }
     }
 

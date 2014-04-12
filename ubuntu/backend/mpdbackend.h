@@ -83,6 +83,11 @@ public:
     Q_INVOKABLE bool getAlbumsFound() { return AlbumsModel::self()->rowCount()>0; }
     Q_INVOKABLE bool getPlaylistsFound() { return PlaylistsModel::self()->rowCount()>0; }
 
+    PlayQueueProxyModel * getPlayQueueProxyModel() { return &playQueueProxyModel; }
+    MusicLibraryProxyModel * getArtistsProxyModel() { return &artistsProxyModel; }
+    AlbumsProxyModel * getAlbumsProxyModel() { return &albumsProxyModel; }
+    PlaylistsProxyModel * getPlaylistsProxyModel() { return &playlistsProxyModel; }
+
 Q_SIGNALS:
     void onConnectedChanged();
     void onPlayingStatusChanged();
@@ -101,17 +106,6 @@ public Q_SLOTS:
     void updatePlayQueue(const QList<Song> &songs);
     void mpdConnectionStateChanged(bool connected);
     void albumsUpdated();
-
-private:
-    MPDState lastState;
-    qint32 lastSongId;
-    enum { CS_Init, CS_Connected, CS_Disconnected } connectedState;
-    bool stopAfterCurrent;
-
-    Song current;
-    QString mainText;
-    QString subText;
-    QTimer *statusTimer;
 
 Q_SIGNALS:
     // These are for communicating with MPD object (which is in its own thread, so need to talk via signal/slots)
@@ -133,7 +127,16 @@ Q_SIGNALS:
 private:
     void updateStatus(MPDStatus * const status);
 
-public:
+private:
+    MPDState lastState;
+    qint32 lastSongId;
+    enum { CS_Init, CS_Connected, CS_Disconnected } connectedState;
+    bool stopAfterCurrent;
+
+    Song current;
+    QString mainText;
+    QString subText;
+    QTimer *statusTimer;
     PlayQueueModel playQueueModel;
     PlayQueueProxyModel playQueueProxyModel;
     MusicLibraryProxyModel artistsProxyModel;

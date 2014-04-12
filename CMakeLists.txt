@@ -764,6 +764,7 @@ if (ENABLE_UBUNTU)
         ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/ControlButtonsRow.qml
         ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/ListItemDelegate.qml
         ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/LabelVisual.qml
+        ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/PlayQueueListItemDelegate.qml
     )
 
     #

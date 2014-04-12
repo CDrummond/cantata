@@ -25,5 +25,6 @@
         <file>icons/toolbar/navigation-menu.svg</file>
         <file>icons/toolbar/clear.svg</file>
         <file>icons/toolbar/speaker.svg</file>
+        <file>qml/cantata/PlayQueueListItemDelegate.qml</file>
     </qresource>
 </RCC>

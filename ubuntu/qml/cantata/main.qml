@@ -60,20 +60,20 @@ MainView {
                 anchors.fill: parent
 
                 Tab {
-                    id: albumsTab
-                    title: i18n.tr("Albums")
-
-                    page: AlbumPage {
-                        id: albumPage
-                    }
-                }
-
-                Tab {
                     id: artistTab
                     title: i18n.tr("Artists")
 
                     page: ArtistPage {
                         id: artistPage
+                    }
+                }
+
+                Tab {
+                    id: albumsTab
+                    title: i18n.tr("Albums")
+
+                    page: AlbumPage {
+                        id: albumPage
                     }
                 }
 

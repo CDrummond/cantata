@@ -44,16 +44,17 @@ Page {
          id: dialog
          Dialog {
              id: dialogue
-             title: "Clear Play Queue?"
-             text: "Are you sure that you want to remove all items from the play queue?"
+             title: i18n.tr("Clear Play Queue")
+
              Button {
-                 text: "Cancel"
-                 onClicked: PopupUtils.close(dialogue)
-             }
-             Button {
-                 text: "Clear"
+                 text: i18n.tr("Yes")
                  color: UbuntuColors.orange
                  onClicked: (backend.clearPlayQueue(), PopupUtils.close(dialogue))
+             }
+             Button {
+                 text: i18n.tr("No")
+                 color: UbuntuColors.coolGrey
+                 onClicked: PopupUtils.close(dialogue)
              }
          }
     }

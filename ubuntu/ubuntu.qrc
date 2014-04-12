@@ -8,8 +8,6 @@
         <file>qml/cantata/CurrentlyPlayingPage.qml</file>
         <file>qml/cantata/HostSettingsPage.qml</file>
         <file>qml/cantata/ControlButtonsRow.qml</file>
-        <file>qml/cantata/ListItemDelegate.qml</file>
-        <file>qml/cantata/LabelVisual.qml</file>
         <file>icons/toolbar/settings.svg</file>
         <file>icons/toolbar/add.svg</file>
         <file>icons/toolbar/help.svg</file>
@@ -25,6 +23,7 @@
         <file>icons/toolbar/navigation-menu.svg</file>
         <file>icons/toolbar/clear.svg</file>
         <file>icons/toolbar/speaker.svg</file>
-        <file>qml/cantata/AlbumListItemDelegate.qml</file>
+        <file>qml/cantata/components/LabelVisual.qml</file>
+        <file>qml/cantata/components/ListItemDelegate.qml</file>
     </qresource>
 </RCC>

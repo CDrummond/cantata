@@ -28,6 +28,7 @@ import QtQuick 2.0
 import Ubuntu.Components 0.1
 import Ubuntu.Components.ListItems 0.1 as ListItem
 import 'qrc:/qml/cantata/'
+import 'components'
 
 Page {
     id: albumPage
@@ -91,13 +92,25 @@ Page {
         model: albumsProxyModel
         clip: true
 
-        delegate: AlbumListItemDelegate {
+        delegate: ListItemDelegate {
+            id: delegate
             text: model.mainText
             subText: model.subText
             iconSource: !(model.image.indexOf("qrc:") === 0)?"file:" + model.image:model.image
+
+            firstButtonImageSource: "../../icons/toolbar/media-playback-start-light.svg"
+            secondButtonImageSource: "../../icons/toolbar/add.svg"
 //           progression: true //Removed due to the app showdown, will be implemented later
 
-            onIconSourceChanged: console.log("Debug iconSource: " + iconSource)
+//            onIconSourceChanged: console.log("Debug iconSource: " + iconSource)
+
+            onFirstImageButtonClicked: add(true)
+            onSecondImageButtonClicked: add(false)
+
+            function add(replace) {
+                backend.addAlbum(index, replace)
+                pageStack.push(currentlyPlayingPage)
+            }
         }
     }
 

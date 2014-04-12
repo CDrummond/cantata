@@ -28,6 +28,7 @@ import QtQuick 2.0
 import Ubuntu.Components 0.1
 import Ubuntu.Components.ListItems 0.1 as ListItem
 import Ubuntu.Components.Popups 0.1
+import 'components'
 
 Page {
     id: currentlyPlayingPage
@@ -316,6 +317,7 @@ Page {
         }
 
         delegate: ListItemDelegate {
+            id: delegate
             text: model.mainText
             subText: model.subText
             confirmRemoval: true
@@ -326,26 +328,14 @@ Page {
 
             onClicked: backend.startPlayingSongAtPos(index)
 
-            Image {
-                id: playIndicatorImage
-                source: "../../icons/toolbar/media-playback-start-light.svg"
-                width: units.gu(3)
-                height: units.gu(3)
-                opacity: 0.9
-                visible: index === backend.getCurrentSongPlayqueuePosition()
+            firstButtonImageSource: "../../icons/toolbar/media-playback-start-light.svg"
+            firstButtonShown: index === backend.getCurrentSongPlayqueuePosition()
 
-                anchors {
-                    right: parent.right
-                    rightMargin: units.gu(2)
-                    verticalCenter: parent.verticalCenter
-                }
+            Connections {
+                target: backend
 
-                Connections {
-                    target: backend
-
-                    onCurrentSongPlayqueuePositionChanged: {
-                        playIndicatorImage.visible = (index === backend.getCurrentSongPlayqueuePosition())
-                    }
+                onCurrentSongPlayqueuePositionChanged: {
+                    delegate.firstButtonShown = (index === backend.getCurrentSongPlayqueuePosition())
                 }
             }
         }

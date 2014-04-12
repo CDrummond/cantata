@@ -87,30 +87,42 @@ Empty {
 
     property alias iconSource: iconImage.source
 
+    property alias firstButtonImageSource: firstImage.source
+    property alias secondButtonImageSource: secondImage.source
+
+    signal firstImageButtonClicked()
+    signal secondImageButtonClicked()
+
+    property bool firstButtonShown: firstImage.source != ""
+    property bool secondButtonShown: secondImage.source != ""
+    property bool iconShown: iconImage.source != ""
+
     UbuntuShape {
         id: iconShape
         width: units.gu(5.5)
         height: units.gu(5.5)
         anchors {
             left: parent.left
-            leftMargin: units.gu(1)
+            leftMargin: units.gu(2)
             verticalCenter: parent.verticalCenter
         }
+        visible: iconShown
 
         image: Image {
             id: iconImage
             smooth: true
             opacity: 0.9
+            visible: iconShown
         }
     }
 
     Item  {
         id: middleVisuals
         anchors {
-            left: iconShape.right
-            right: addImage.left
-            leftMargin: units.gu(1)
-            rightMargin: units.gu(1)
+            left: iconShown?iconShape.right:parent.left
+            right: secondButtonShown?secondImage.left:(firstButtonShown?firstImage.left:parent.right)
+            leftMargin: units.gu(iconShown?1:2)
+            rightMargin: units.gu(firstButtonShown?1:2)
             verticalCenter: parent.verticalCenter
         }
         height: childrenRect.height + label.anchors.topMargin + subLabel.anchors.bottomMargin
@@ -138,48 +150,45 @@ Empty {
     }
 
     Image {
-        id: addImage
+        id: secondImage
         width: units.gu(3)
         height: units.gu(3)
         smooth: true
-        source: "../../icons/toolbar/add.svg"
         opacity: 0.9
+        visible: secondButtonShown
 
         anchors {
-            right: playImage.left
+            right: firstImage.left
             rightMargin: units.gu(1)
             verticalCenter: parent.verticalCenter
         }
 
         MouseArea {
-            onClicked: {
-                backend.addAlbum(index, false)
-                pageStack.push(currentlyPlayingPage)
-            }
+            id: secondTarget
+            onClicked: secondImageButtonClicked()
             anchors.fill: parent
             preventStealing: true
         }
     }
 
     Image {
-        id: playImage
+        id: firstImage
         width: units.gu(3)
         height: units.gu(3)
         smooth: true
-        source: "../../icons/toolbar/media-playback-start-light.svg"
         opacity: 0.9
+        visible: firstButtonShown
 
         anchors {
             right: parent.right
-            rightMargin: units.gu(1)
+            rightMargin: units.gu(2)
             verticalCenter: parent.verticalCenter
         }
 
         MouseArea {
-            onClicked: {
-                backend.addAlbum(index, true)
-                pageStack.push(currentlyPlayingPage)
-            }
+            id: firstTarget
+            onClicked: firstImageButtonClicked()
+
             anchors.fill: parent
             preventStealing: true
         }

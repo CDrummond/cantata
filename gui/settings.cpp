@@ -553,14 +553,13 @@ QString Settings::contextSlimPage()
 
 QByteArray Settings::contextSplitterState()
 {
-    return cfg.get("contextSplitterState", QByteArray());
+    return version()<CANTATA_MAKE_VERSION(1, 3, 51) ? QByteArray() : cfg.get("contextSplitterState", QByteArray());
 }
 
 bool Settings::contextAlwaysCollapsed()
 {
     return cfg.get("contextAlwaysCollapsed", false);
 }
-
 
 int Settings::contextSwitchTime()
 {

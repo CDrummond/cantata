@@ -92,5 +92,3 @@ void ThinSplitterHandle::updateMask()
         setMask(QRegion(contentsRect().adjusted(0, -sz, 0, sz)));
     }
 }
-
-bool underMouse;

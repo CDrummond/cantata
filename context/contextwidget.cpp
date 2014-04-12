@@ -239,7 +239,7 @@ void ViewSelector::paintEvent(QPaintEvent *ev)
 ThinSplitter::ThinSplitter(QWidget *parent)
     : QSplitter(parent)
 {
-    setChildrenCollapsible(false);
+    setChildrenCollapsible(true);
     setOrientation(Qt::Horizontal);
     resetAct=new QAction(i18n("Reset Spacing"), this);
     connect(resetAct, SIGNAL(triggered(bool)), this, SLOT(reset()));
@@ -251,6 +251,7 @@ QSplitterHandle * ThinSplitter::createHandle()
     ThinSplitterHandle *handle=new ThinSplitterHandle(orientation(), this);
     handle->addAction(resetAct);
     handle->setContextMenuPolicy(Qt::ActionsContextMenu);
+    handle->setHighlightUnderMouse();
     return handle;
 }
 

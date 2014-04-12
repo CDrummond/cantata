@@ -33,14 +33,18 @@ public:
     virtual ~ThinSplitterHandle() { }
 
     void resizeEvent(QResizeEvent *event);
-    void paintEvent(QPaintEvent *) { }
+    void paintEvent(QPaintEvent *event);
+    bool event(QEvent *event);
     QSize sizeHint() const { return QSize(0, 0); }
+    void setHighlightUnderMouse() { highlightUnderMouse=true; }
 
 private:
     void updateMask();
 
 private:
     int sz;
+    bool highlightUnderMouse;
+    bool underMouse;
 };
 
 #endif

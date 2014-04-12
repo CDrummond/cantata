@@ -24,9 +24,12 @@
 #include "thinsplitterhandle.h"
 #include "utils.h"
 #include <QResizeEvent>
+#include <QPainter>
 
 ThinSplitterHandle::ThinSplitterHandle(Qt::Orientation orientation, QSplitter *parent)
     : QSplitterHandle(orientation, parent)
+    , highlightUnderMouse(false)
+    , underMouse(false)
 {
     sz=Utils::isHighDpi() ? 8 : 4;
     updateMask();
@@ -41,6 +44,44 @@ void ThinSplitterHandle::resizeEvent(QResizeEvent *event)
     }
 }
 
+void ThinSplitterHandle::paintEvent(QPaintEvent *event)
+{
+    if (underMouse) {
+        QColor col(palette().highlight().color());
+        QPainter p(this);
+        int width=Utils::isHighDpi() ? 4 : 2;
+        QRect r=event->rect();
+        r=QRect(r.x()+((r.width()-width)/2), r.y(), width, r.height());
+        col.setAlphaF(0.5);
+        p.fillRect(r, col);
+        col.setAlphaF(0.1);
+        p.fillRect(r.adjusted(-(width/2), 0, width/2, 0), col);
+    }
+}
+
+bool ThinSplitterHandle::event(QEvent *event)
+{
+    if (highlightUnderMouse) {
+        switch(event->type()) {
+        case QEvent::Enter:
+        case QEvent::HoverEnter:
+            underMouse = true;
+            update();
+            break;
+        case QEvent::ContextMenu:
+        case QEvent::Leave:
+        case QEvent::HoverLeave:
+            underMouse = false;
+            update();
+            break;
+        default:
+            break;
+        }
+    }
+
+    return QWidget::event(event);
+}
+
 void ThinSplitterHandle::updateMask()
 {
     if (Qt::Horizontal==orientation()) {
@@ -51,3 +92,5 @@ void ThinSplitterHandle::updateMask()
         setMask(QRegion(contentsRect().adjusted(0, -sz, 0, sz)));
     }
 }
+
+bool underMouse;

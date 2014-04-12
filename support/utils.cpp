@@ -663,7 +663,9 @@ static QString userDir(const QString &mainDir, const QString &sub, bool create)
 
 QString Utils::configDir(const QString &sub, bool create)
 {
-    #if defined Q_OS_WIN
+    #ifdef ENABLE_UBUNTU
+    return userDir(QDir::homePath()+"/local/share"+constDirSep+FOLDER_NAME+constDirSep+"config"+constDirSep, sub, create);
+    #elif defined Q_OS_WIN
     return userDir(QDesktopServices::storageLocation(QDesktopServices::DataLocation)+constDirSep, sub, create);
     #else
     QString env = qgetenv("XDG_CONFIG_HOME");
@@ -673,7 +675,9 @@ QString Utils::configDir(const QString &sub, bool create)
 
 QString Utils::dataDir(const QString &sub, bool create)
 {
-    #if defined Q_OS_WIN
+    #ifdef ENABLE_UBUNTU
+    return userDir(QDir::homePath()+"/local/share"+constDirSep+FOLDER_NAME+constDirSep, sub, create);
+    #elif defined Q_OS_WIN
     return userDir(QDesktopServices::storageLocation(QDesktopServices::DataLocation)+constDirSep, sub, create);
     #else
     QString env = qgetenv("XDG_DATA_HOME");
@@ -683,15 +687,13 @@ QString Utils::dataDir(const QString &sub, bool create)
 
 QString Utils::cacheDir(const QString &sub, bool create)
 {
-    #if defined Q_OS_WIN
+    #ifdef ENABLE_UBUNTU
+    return userDir(QDir::homePath()+"/local/share"+constDirSep+FOLDER_NAME+constDirSep+"config"+constDirSep, sub, create);
+    #elif defined Q_OS_WIN
     return userDir(QDesktopServices::storageLocation(QDesktopServices::CacheLocation)+constDirSep, sub, create);
     #else
     QString env = qgetenv("XDG_CACHE_HOME");
-    #ifdef ENABLE_UBUNTU
-    return dataDir(".cache", create);
-    #else
     return userDir((env.isEmpty() ? QDir::homePath() + "/.cache" : env) + constDirSep+FOLDER_NAME+constDirSep, sub, create);
-    #endif
     #endif
 }
 

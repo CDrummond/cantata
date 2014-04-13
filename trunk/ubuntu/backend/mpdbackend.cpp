@@ -88,8 +88,8 @@ MPDBackend::MPDBackend(QObject *parent) : QObject(parent)
 
 
     connect(this, SIGNAL(add(const QStringList &, bool, quint8)), MPDConnection::self(), SLOT(add(const QStringList &, bool, quint8)));
-
     connect(this, SIGNAL(setVolume(int)), MPDConnection::self(), SLOT(setVolume(int)));
+    connect(this, SIGNAL(loadPlaylist(const QString &, bool)), MPDConnection::self(), SLOT(loadPlaylist(const QString &, bool)));
 
     connect(AlbumsModel::self(), SIGNAL(updated()), this, SLOT(albumsUpdated()));
     //TODO: Create the same connections for Artists and Plalists here!!!
@@ -153,12 +153,20 @@ void MPDBackend::albumsUpdated() {
 }
 
 void MPDBackend::addAlbum(int index, bool replace) {
-    QModelIndexList sourceIndexList;
-    sourceIndexList.append(albumsProxyModel.mapToSource(albumsProxyModel.index(index, 0)));
+    QModelIndexList sourceIndexList=QModelIndexList() << albumsProxyModel.mapToSource(albumsProxyModel.index(index, 0));
     QStringList fileNames = AlbumsModel::self()->filenames(sourceIndexList, false);
-
     if (!fileNames.isEmpty()) {
-        emit add(fileNames, replace, 1); //TODO: Priority? (last parameter)
+        emit add(fileNames, replace, 0);
+    }
+}
+
+void MPDBackend::loadPlaylist(int index) {
+    QModelIndex idx=playlistsProxyModel.mapToSource(playlistsProxyModel.index(index, 0));
+    if (idx.isValid()) {
+        PlaylistsModel::Item *i=static_cast<PlaylistsModel::Item *>(idx.internalPointer());
+        if (i->isPlaylist()) {
+            emit loadPlaylist(static_cast<PlaylistsModel::PlaylistItem*>(i)->name, true);
+        }
     }
 }
 

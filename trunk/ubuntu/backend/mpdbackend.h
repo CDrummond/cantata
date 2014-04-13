@@ -68,6 +68,7 @@ public:
     Q_INVOKABLE void clearPlayQueue() { emit clear(); }
     Q_INVOKABLE bool getIsConnected() { return MPDConnection::self()->isConnected(); }
     Q_INVOKABLE void addAlbum(int index, bool replace);
+    Q_INVOKABLE void loadPlaylist(int index);
     Q_INVOKABLE void removeFromPlayQueue(int index);
     Q_INVOKABLE bool getIsPlaying() { return MPDStatus::self()->state() == MPDState_Playing; }
     Q_INVOKABLE bool getIsStopped() { return MPDStatus::self()->state() == MPDState_Stopped; }
@@ -121,6 +122,7 @@ Q_SIGNALS:
     void goToPreviousSong();
     void loadLibrary();
     void add(const QStringList &files, bool replace, quint8 priorty); //Album
+    void loadPlaylist(const QString &name, bool replace);
     void setVolume(int volume);
     void clear();
 

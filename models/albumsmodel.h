@@ -95,7 +95,9 @@ public:
         bool isSingleTracks() const { return Song::SingleTracks==type; }
         const SongItem *getCueFile() const;
         QString albumDisplay() const { return Song::displayAlbum(album, year); }
+        const QString & sortArtist() const { return nonTheArtist.isEmpty() ? artist : nonTheArtist; }
         QString artist;
+        QString nonTheArtist;
         QString album;
         quint16 year;
         QList<SongItem *> songs;

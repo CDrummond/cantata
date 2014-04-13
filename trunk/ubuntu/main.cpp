@@ -188,6 +188,8 @@ int main(int argc, char *argv[])
     MPDStats::self();
     MPDConnection::self();
 
+    MusicLibraryModel::self()->setUseArtistImages(true); // TODO: Configurable?
+
     MPDBackend backend;
 
     QGuiApplication app(argc, argv);

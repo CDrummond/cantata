@@ -316,7 +316,6 @@ Page {
             left: parent.left
             right: parent.right
             bottom: parent.bottom
-            bottomMargin: isPhone?0:(-units.gu(2))
         }
 
         delegate: ListItemDelegate {

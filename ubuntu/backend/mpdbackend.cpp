@@ -26,6 +26,7 @@
 #include "currentcover.h"
 #include "covers.h"
 #include "localize.h"
+#include "plurals.h"
 #include <QString>
 #include <QModelIndex>
 
@@ -446,6 +447,14 @@ void MPDBackend::updatePlayQueue(const QList<Song> &songs)
 //    updateNextTrack(MPDStatus::self()->nextSongId());
 
     //Touch specific:
+
+    if (0==songs.count()) {
+        playQueueStatus=QString();
+    } else if (0==playQueueModel.totalTime()) {
+        playQueueStatus=Plurals::tracks(songs.count());
+    } else {
+       playQueueStatus=Plurals::tracksWithDuration(songs.count(), Utils::formatDuration(playQueueModel.totalTime()));
+    }
 
     emit onPlayQueueChanged();
 }

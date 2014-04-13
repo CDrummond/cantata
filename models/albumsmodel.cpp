@@ -276,6 +276,7 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
                    Utils::formatTime(si->time, true)+QLatin1String("<br/>")+
                    QLatin1String("<small><i>")+si->filePath()+QLatin1String("</i></small>");
         }
+        case ItemView::Role_MainText:
         case Qt::DisplayRole:
             if (Song::Playlist==si->type) {
                 return si->isCueFile() ? i18n("Cue Sheet") : i18n("Playlist");

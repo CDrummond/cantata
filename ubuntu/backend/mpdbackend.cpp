@@ -150,14 +150,19 @@ void MPDBackend::setMpdVolume(quint8 volume) {
 }
 
 void MPDBackend::artistsUpdated() {
+    // TODO: If we don't call sort here, the items ar eonly sorted string-wise. This
+    // means that 'Various Artists' is not placerd at the top, and "The XXX" is not sorted as "XXX"
+    artistsProxyModel.sort();
     emit onArtistsModelChanged();
 }
 
 void MPDBackend::albumsUpdated() {
+    //albumsProxyModel.sort();
     emit onAlbumsModelChanged();
 }
 
 void MPDBackend::playlistsUpdated() {
+    //playlistsProxyModel.sort();
     emit onPlaylistsModelChanged();
 }
 

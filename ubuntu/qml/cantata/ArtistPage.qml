@@ -92,9 +92,25 @@ Page {
         clip: true
 
         delegate: ListItemDelegate {
+            id: delegate
             text: model.mainText
             subText: model.subText
-//            progression: true //Removed due to the app showdown, will be implemented later
+            iconSource: !(model.image.indexOf("qrc:") === 0)?"file:" + model.image:model.image
+
+            firstButtonImageSource: "../../icons/toolbar/media-playback-start-light.svg"
+            secondButtonImageSource: "../../icons/toolbar/add.svg"
+//           progression: true //Removed due to the app showdown, will be implemented later
+
+//            onIconSourceChanged: console.log("Debug iconSource: " + iconSource)
+
+            onFirstImageButtonClicked: add(true)
+            onSecondImageButtonClicked: add(false)
+
+            function add(replace) {
+                // TODO: Artist or album?
+                //backend.addArtist(index, replace)
+                pageStack.push(currentlyPlayingPage)
+            }
         }
     }
 

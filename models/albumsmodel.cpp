@@ -590,6 +590,9 @@ AlbumsModel::AlbumItem::AlbumItem(const QString &ar, const QString &al, quint16 
     , coverRequested(false)
     #endif
 {
+    if (artist.startsWith(QLatin1String("The "))) {
+        nonTheArtist=artist.mid(4);
+    }
 }
 
 AlbumsModel::AlbumItem::~AlbumItem()
@@ -603,14 +606,14 @@ bool AlbumsModel::AlbumItem::operator<(const AlbumItem &o) const
     default:
     case Sort_AlbumArtist:  {
         int compare=album.localeAwareCompare(o.album);
-        return compare<0 || (0==compare && artist.localeAwareCompare(o.artist)<0);
+        return compare<0 || (0==compare && sortArtist().localeAwareCompare(o.sortArtist())<0);
     }
     case Sort_ArtistAlbum: {
-        int compare=artist.localeAwareCompare(o.artist);
+        int compare=sortArtist().localeAwareCompare(o.sortArtist());
         return compare<0 || (0==compare && album.localeAwareCompare(o.album)<0);
     }
     case Sort_ArtistYearAlbum: {
-        int compare=artist.localeAwareCompare(o.artist);
+        int compare=sortArtist().localeAwareCompare(o.sortArtist());
         return compare<0 || (0==compare && (year<o.year || (year==o.year && album.localeAwareCompare(o.album)<0)));
     }
     }

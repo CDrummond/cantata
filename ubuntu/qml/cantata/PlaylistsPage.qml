@@ -88,20 +88,26 @@ Page {
             fill: parent
             bottomMargin: isPhone?0:(-units.gu(2))
         }
-        model: playlistsProxyModel
         clip: true
 
-        delegate: ListItemDelegate {
-            text: model.mainText
-            subText: model.subText
+        model: VisualDataModel {
+            model: playlistsProxyModel
+            delegate: ListItemDelegate {
+                text: model.mainText
+                subText: model.subText
 //           progression: true //Removed due to the app showdown, will be implemented later
 
-            firstButtonImageSource: "../../icons/toolbar/media-playback-start-light.svg"
-            onFirstImageButtonClicked: loadPlaylist()
+                firstButtonImageSource: "../../icons/toolbar/media-playback-start-light.svg"
+                onFirstImageButtonClicked: loadPlaylist()
 
-            function loadPlaylist() {
-                backend.loadPlaylist(index)
-                pageStack.push(currentlyPlayingPage)
+                function loadPlaylist() {
+                    backend.loadPlaylist(index)
+                    pageStack.push(currentlyPlayingPage)
+                }
+
+                onClicked: {
+                    if (hasModelChildren) playlistListView.model.rootIndex = playlistListView.model.modelIndex(index)
+                }
             }
         }
     }

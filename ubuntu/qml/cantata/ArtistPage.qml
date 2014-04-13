@@ -88,28 +88,34 @@ Page {
             fill: parent
             bottomMargin: isPhone?0:(-units.gu(2))
         }
-        model: artistsProxyModel
         clip: true
 
-        delegate: ListItemDelegate {
-            id: delegate
-            text: model.mainText
-            subText: model.subText
-            iconSource: !(model.image.indexOf("qrc:") === 0)?"file:" + model.image:model.image
+        model: VisualDataModel {
+            model: artistsProxyModel
+            delegate: ListItemDelegate {
+                id: delegate
+                text: model.mainText
+                subText: model.subText
+                iconSource: hasModelChildren ? (!(model.image.indexOf("qrc:") === 0)?"file:" + model.image:model.image) : ""
 
-            firstButtonImageSource: "../../icons/toolbar/media-playback-start-light.svg"
-            secondButtonImageSource: "../../icons/toolbar/add.svg"
+                firstButtonImageSource: "../../icons/toolbar/media-playback-start-light.svg"
+                secondButtonImageSource: "../../icons/toolbar/add.svg"
 //           progression: true //Removed due to the app showdown, will be implemented later
 
 //            onIconSourceChanged: console.log("Debug iconSource: " + iconSource)
 
-            onFirstImageButtonClicked: add(true)
-            onSecondImageButtonClicked: add(false)
+                onFirstImageButtonClicked: add(true)
+                onSecondImageButtonClicked: add(false)
 
-            function add(replace) {
-                // TODO: Artist, album, or track?
-                backend.addArtist(index, replace)
-                pageStack.push(currentlyPlayingPage)
+                function add(replace) {
+                    // TODO: Artist, album, or track?
+                    backend.addArtist(index, replace)
+                    pageStack.push(currentlyPlayingPage)
+                }
+
+                onClicked: {
+                    if (hasModelChildren) artistListView.model.rootIndex = artistListView.model.modelIndex(index)
+                }
             }
         }
     }

@@ -504,6 +504,11 @@ void MusicLibraryModel::updateMusicLibrary(MusicLibraryItemRoot *newroot, QDateT
 
     AlbumsModel::self()->update(rootItem);
     emit updateGenres(rootItem->genres());
+    #ifdef ENABLE_UBUNTU
+    if (updatedSongs) {
+        emit updated();
+    }
+    #endif
 }
 
 void MusicLibraryModel::updatingMpd()

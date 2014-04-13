@@ -160,6 +160,7 @@ PlayQueueModel::PlayQueueModel(QObject *parent)
     : QAbstractItemModel(parent)
     , currentSongId(-1)
     , currentSongRowNum(-1)
+    , time(0)
     , mpdState(MPDState_Inactive)
     #ifndef ENABLE_UBUNTU
     , dropAdjust(0)
@@ -811,6 +812,7 @@ void PlayQueueModel::clear()
     currentSongId=-1;
     currentSongRowNum=0;
     stopAfterTrackId=-1;
+    time=0;
     endResetModel();
 }
 
@@ -864,7 +866,7 @@ void PlayQueueModel::update(const QList<Song> &songList)
             stopAfterTrackId=-1;
         }
     } else {
-        quint32 time = 0;
+        time = 0;
 
         QSet<qint32> removed=ids-newIds;
         foreach (qint32 id, removed) {
@@ -1229,8 +1231,7 @@ void PlayQueueModel::playSong(const QString &file)
 
 void PlayQueueModel::stats()
 {
-    quint32 time = 0;
-
+    time = 0;
     //Loop over all songs
     foreach(const Song &song, songs) {
         time += song.time;

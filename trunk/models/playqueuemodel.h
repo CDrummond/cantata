@@ -128,6 +128,7 @@ public:
     Action * redoAct() { return redoAction; }
     void enableUndo(bool e);
     bool lastCommandWasUnodOrRedo() const { return Cmd_Other!=lastCommand; }
+    qint32 totalTime() const { return time; }
 
 private:
     void saveHistory(const QList<Song> &prevList);
@@ -175,6 +176,7 @@ private:
     QSet<qint32> ids;
     qint32 currentSongId;
     mutable qint32 currentSongRowNum;
+    quint32 time;
     StreamFetcher *fetcher;
     MPDState mpdState;
     #ifndef ENABLE_UBUNTU

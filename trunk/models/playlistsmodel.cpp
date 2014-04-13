@@ -711,8 +711,14 @@ void PlaylistsModel::setPlaylists(const QList<Playlist> &playlists)
         }
         endResetModel();
         updateItemMenu();
+        #ifdef ENABLE_UBUNTU
+        emit updated();
+        #endif
     } else if (playlists.isEmpty()) {
         clear();
+        #ifdef ENABLE_UBUNTU
+        emit updated();
+        #endif
     } else {
         QModelIndex parent=QModelIndex();
         QSet<QString> existing;
@@ -765,6 +771,9 @@ void PlaylistsModel::setPlaylists(const QList<Playlist> &playlists)
 
         if (added.count() || removed.count()) {
             updateItemMenu();
+            #ifdef ENABLE_UBUNTU
+            emit updated();
+            #endif
         }
     }
 }

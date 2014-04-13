@@ -118,6 +118,9 @@ Q_SIGNALS:
     void updateGenres(const QSet<QString> &genres);
     void checkedSongs(const QSet<Song> &songs);
 
+    // Used in Touch variant only...
+    void updated();
+
 private:
     void setParentState(const QModelIndex &parent);
 

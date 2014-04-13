@@ -107,7 +107,9 @@ public Q_SLOTS:
     void updateStatus();
     void updatePlayQueue(const QList<Song> &songs);
     void mpdConnectionStateChanged(bool connected);
+    void artistsUpdated();
     void albumsUpdated();
+    void playlistsUpdated();
 
 Q_SIGNALS:
     // These are for communicating with MPD object (which is in its own thread, so need to talk via signal/slots)

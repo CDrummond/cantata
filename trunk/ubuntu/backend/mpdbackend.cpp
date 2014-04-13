@@ -152,6 +152,14 @@ void MPDBackend::albumsUpdated() {
     emit onAlbumsModelChanged();
 }
 
+void MPDBackend::addArtist(int index, bool replace) {
+    QModelIndexList sourceIndexList=QModelIndexList() << artistsProxyModel.mapToSource(artistsProxyModel.index(index, 0));
+    QStringList fileNames = MusicLibraryModel::self()->filenames(sourceIndexList, false);
+    if (!fileNames.isEmpty()) {
+        emit add(fileNames, replace, 0);
+    }
+}
+
 void MPDBackend::addAlbum(int index, bool replace) {
     QModelIndexList sourceIndexList=QModelIndexList() << albumsProxyModel.mapToSource(albumsProxyModel.index(index, 0));
     QStringList fileNames = AlbumsModel::self()->filenames(sourceIndexList, false);

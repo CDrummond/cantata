@@ -54,6 +54,7 @@ class MPDBackend : public QObject
 
     Q_PROPERTY(quint8 mpdVolume READ getMpdVolume WRITE setMpdVolume NOTIFY onMpdVolumeChanged)
     Q_PROPERTY(bool playQueueEmpty READ isPlayQueueEmpty NOTIFY onPlayQueueChanged)
+    Q_PROPERTY(QString playQueueStatus READ getPlayQueueStatus NOTIFY onPlayQueueChanged)
     Q_PROPERTY(bool artistsFound READ getArtistsFound NOTIFY onArtistsModelChanged)
     Q_PROPERTY(bool albumsFound READ getAlbumsFound NOTIFY onAlbumsModelChanged)
     Q_PROPERTY(bool playlistsFound READ getPlaylistsFound NOTIFY onPlaylistsModelChanged)
@@ -79,6 +80,7 @@ public:
     Q_INVOKABLE QString getCurrentSongSubText() { return subText; }
     Q_INVOKABLE quint32 getCurrentSongPlayqueuePosition() { return playQueueModel.currentSongRow(); }
     Q_INVOKABLE quint8 getMpdVolume() { return MPDStatus::self()->volume(); }
+    Q_INVOKABLE QString getPlayQueueStatus() { return playQueueStatus; }
     Q_INVOKABLE void setMpdVolume(quint8 volume);
     Q_INVOKABLE bool isPlayQueueEmpty() { return playQueueModel.rowCount() == 0; }
     Q_INVOKABLE bool getArtistsFound() { return MusicLibraryModel::self()->rowCount()>0; }
@@ -141,6 +143,7 @@ private:
     Song current;
     QString mainText;
     QString subText;
+    QString playQueueStatus;
     QTimer *statusTimer;
     PlayQueueModel playQueueModel;
     PlayQueueProxyModel playQueueProxyModel;

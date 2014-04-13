@@ -99,11 +99,12 @@ MPDBackend::MPDBackend(QObject *parent) : QObject(parent)
     MPDConnection::self()->start();
 }
 
-void MPDBackend::connectTo(QString hostname, quint16 port, QString password) {
+void MPDBackend::connectTo(QString hostname, quint16 port, QString password, QString folder) {
     MPDConnectionDetails details;
     details.hostname = hostname;
     details.port = port;
     details.password = password;
+    details.dir = folder.isEmpty() ? folder : Utils::fixPath(folder);
     emit setDetails(details);
     MusicLibraryModel::self()->clear();
     //emit loadLibrary();

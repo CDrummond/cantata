@@ -40,6 +40,8 @@ Page {
 
     property int buttonSize: isPhone?units.gu(6):units.gu(7)
 
+    property Popover actionsPopover;
+
     Component {
          id: dialog
          Dialog {
@@ -74,7 +76,7 @@ Page {
 
     tools: ToolbarItems {
         opened: true
-        locked: root.width > units.gu(60) && opened //"&& opened": prevents the bar from being hidden and locked at the same time
+        locked: (root.width > units.gu(60) && opened) || (actionsPopover != null && actionsPopover.visible) //"&& opened": prevents the bar from being hidden and locked at the same time
         pageStack: pageStack
         ToolbarButton {
             iconSource: Qt.resolvedUrl("../../icons/toolbar/clear.svg")
@@ -88,7 +90,7 @@ Page {
             iconSource: Qt.resolvedUrl("../../icons/toolbar/navigation-menu.svg")
             action: Action {
                 text: i18n.tr("Actions")
-                onTriggered: PopupUtils.open(actionsPopoverComponent, actionActionToolbarButton)
+                onTriggered: actionsPopover = PopupUtils.open(actionsPopoverComponent, actionActionToolbarButton)
             }
             visible: isPhone
         }

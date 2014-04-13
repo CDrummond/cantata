@@ -107,8 +107,8 @@ Page {
             onSecondImageButtonClicked: add(false)
 
             function add(replace) {
-                // TODO: Artist or album?
-                //backend.addArtist(index, replace)
+                // TODO: Artist, album, or track?
+                backend.addArtist(index, replace)
                 pageStack.push(currentlyPlayingPage)
             }
         }

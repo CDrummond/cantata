@@ -64,7 +64,8 @@ Page {
         defaults: {
             "host": "",
             "port": "",
-            "password": ""
+            "password": "",
+            "musicfolder": ""
         }
     }
 
@@ -86,6 +87,7 @@ Page {
             hostTextField.text = contents["host"]
             portTextField.text = contents["port"]
             passwordTextField.text = contents["password"]
+            musicfolderTextField.text = contents["musicfolder"]
         }
 
         function saveDataToU1db() {
@@ -93,6 +95,7 @@ Page {
             contents["host"] = hostTextField.text
             contents["port"] = portTextField.text
             contents["password"] = passwordTextField.text
+            contents["musicfolder"] = musicfolderTextField.text
             connectionDocument.contents = contents
         }
 
@@ -162,6 +165,7 @@ Page {
             }
 
             KeyNavigation.priority: KeyNavigation.BeforeItem
+            KeyNavigation.tab: musicfolderTextField
             KeyNavigation.backtab: portTextField
 
             echoMode: TextInput.Password
@@ -169,6 +173,30 @@ Page {
             onAccepted: { //Invoked when the enter key is pressed
                 connectButton.clicked()
             }
+        }
+
+        Label {
+            id: musicfolderLabel
+            text: i18n.tr("Music Folder:")
+            anchors {
+                left: connectionDetailsColumn.left;
+                right: connectionDetailsColumn.right;
+            }
+
+            fontSize: "medium"
+        }
+
+        TextField {
+            id: musicfolderTextField
+            color: textFieldColor
+            anchors {
+                left: connectionDetailsColumn.left;
+                right: connectionDetailsColumn.right;
+            }
+
+            KeyNavigation.priority: KeyNavigation.BeforeItem
+            KeyNavigation.backtab: passwordTextField
+            placeholderText: "http://HOST/music" // TODO: Update this when hostTextField changes?
         }
 
         Item {
@@ -196,6 +224,6 @@ Page {
     }
 
     function tryToConnect() {
-        backend.connectTo(hostTextField.text, (portTextField.text === "")?6600:portTextField.text, passwordTextField.text)
+        backend.connectTo(hostTextField.text, (portTextField.text === "")?6600:portTextField.text, passwordTextField.text, musicfolderTextField.text)
     }
 }

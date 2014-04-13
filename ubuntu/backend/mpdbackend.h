@@ -62,7 +62,7 @@ class MPDBackend : public QObject
 public:
     explicit MPDBackend(QObject *parent = 0);
 
-    Q_INVOKABLE void connectTo(QString hostname, quint16 port, QString password);
+    Q_INVOKABLE void connectTo(QString hostname, quint16 port, QString password, QString folder);
     Q_INVOKABLE void playPause();
     Q_INVOKABLE void nextSong();
     Q_INVOKABLE void previousSong();

@@ -91,8 +91,9 @@ MPDBackend::MPDBackend(QObject *parent) : QObject(parent)
     connect(this, SIGNAL(setVolume(int)), MPDConnection::self(), SLOT(setVolume(int)));
     connect(this, SIGNAL(loadPlaylist(const QString &, bool)), MPDConnection::self(), SLOT(loadPlaylist(const QString &, bool)));
 
+    connect(MusicLibraryModel::self(), SIGNAL(updated()), this, SLOT(artistsUpdated()));
     connect(AlbumsModel::self(), SIGNAL(updated()), this, SLOT(albumsUpdated()));
-    //TODO: Create the same connections for Artists and Plalists here!!!
+    connect(PlaylistsModel::self(), SIGNAL(updated()), this, SLOT(playlistsUpdated()));
 
     MPDConnection::self()->start();
 }
@@ -148,8 +149,16 @@ void MPDBackend::setMpdVolume(quint8 volume) {
     emit setVolume(volume);
 }
 
+void MPDBackend::artistsUpdated() {
+    emit onArtistsModelChanged();
+}
+
 void MPDBackend::albumsUpdated() {
     emit onAlbumsModelChanged();
+}
+
+void MPDBackend::playlistsUpdated() {
+    emit onPlaylistsModelChanged();
 }
 
 void MPDBackend::addArtist(int index, bool replace) {

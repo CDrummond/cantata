@@ -143,6 +143,9 @@ Q_SIGNALS:
     void updated(const QModelIndex &idx);
     void playlistRemoved(quint32 key);
 
+    // Used in Touch variant only...
+    void updated();
+
 private Q_SLOTS:
     void setPlaylists(const QList<Playlist> &playlists);
     void playlistInfoRetrieved(const QString &name, const QList<Song> &songs);

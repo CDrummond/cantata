@@ -2,6 +2,7 @@
 ** Cantata
 **
 ** Copyright (c) 2014 Niklas Wenzel <nikwen.developer@gmail.com>
+** Copyright (c) 2014 Craig Drummond <craig.p.drummond@gmail.com>
 **
 ** $QT_BEGIN_LICENSE:GPL$
 ** This program is free software; you can redistribute it and/or modify
@@ -88,26 +89,26 @@ Page {
             fill: parent
             bottomMargin: isPhone?0:(-units.gu(2))
         }
+        model: playlistsProxyModel
         clip: true
 
-        model: VisualDataModel {
-            model: playlistsProxyModel
-            delegate: ListItemDelegate {
-                text: model.mainText
-                subText: model.subText
-//           progression: true //Removed due to the app showdown, will be implemented later
+        delegate: ListItemDelegate {
+            text: model.mainText
+            subText: model.subText
+//       progression: true //Removed due to the app showdown, will be implemented later
 
-                firstButtonImageSource: "../../icons/toolbar/media-playback-start-light.svg"
-                onFirstImageButtonClicked: loadPlaylist()
+            firstButtonImageSource: "../../icons/toolbar/media-playback-start-light.svg"
+            onFirstImageButtonClicked: loadPlaylist()
 
-                function loadPlaylist() {
-                    backend.loadPlaylist(index)
-                    pageStack.push(currentlyPlayingPage)
-                }
+            function loadPlaylist() {
+                backend.loadPlaylist(index)
+                pageStack.push(currentlyPlayingPage)
+            }
 
-                onClicked: {
-                    if (hasModelChildren) playlistListView.model.rootIndex = playlistListView.model.modelIndex(index)
-                }
+            onClicked: {
+                playlistSongsPage.title = text
+                playlistSongsPage.init(index)
+                pageStack.push(playlistSongsPage)
             }
         }
     }

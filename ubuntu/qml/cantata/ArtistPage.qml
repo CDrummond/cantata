@@ -2,6 +2,7 @@
 ** Cantata
 **
 ** Copyright (c) 2014 Niklas Wenzel <nikwen.developer@gmail.com>
+** Copyright (c) 2014 Craig Drummond <craig.p.drummond@gmail.com>
 **
 ** $QT_BEGIN_LICENSE:GPL$
 ** This program is free software; you can redistribute it and/or modify
@@ -88,34 +89,33 @@ Page {
             fill: parent
             bottomMargin: isPhone?0:(-units.gu(2))
         }
+        model: artistsProxyModel
         clip: true
 
-        model: VisualDataModel {
-            model: artistsProxyModel
-            delegate: ListItemDelegate {
-                id: delegate
-                text: model.mainText
-                subText: model.subText
-                iconSource: hasModelChildren ? (!(model.image.indexOf("qrc:") === 0)?"file:" + model.image:model.image) : ""
+        delegate: ListItemDelegate {
+            id: delegate
+            text: model.mainText
+            subText: model.subText
+            iconSource: !(model.image.indexOf("qrc:") === 0)?"file:" + model.image:model.image
 
-                firstButtonImageSource: "../../icons/toolbar/media-playback-start-light.svg"
-                secondButtonImageSource: "../../icons/toolbar/add.svg"
-//           progression: true //Removed due to the app showdown, will be implemented later
+            firstButtonImageSource: "../../icons/toolbar/media-playback-start-light.svg"
+            secondButtonImageSource: "../../icons/toolbar/add.svg"
+//        progression: true //Removed due to the app showdown, will be implemented later
 
-//            onIconSourceChanged: console.log("Debug iconSource: " + iconSource)
+//        onIconSourceChanged: console.log("Debug iconSource: " + iconSource)
 
-                onFirstImageButtonClicked: add(true)
-                onSecondImageButtonClicked: add(false)
+            onFirstImageButtonClicked: add(true)
+            onSecondImageButtonClicked: add(false)
 
-                function add(replace) {
-                    // TODO: Artist, album, or track?
-                    backend.addArtist(index, replace)
-                    pageStack.push(currentlyPlayingPage)
-                }
+            function add(replace) {
+                backend.addArtist(index, replace)
+                pageStack.push(currentlyPlayingPage)
+            }
 
-                onClicked: {
-                    if (hasModelChildren) artistListView.model.rootIndex = artistListView.model.modelIndex(index)
-                }
+            onClicked: {
+                artistAlbumsPage.title = text
+                artistAlbumsPage.init(index)
+                pageStack.push(artistAlbumsPage)
             }
         }
     }

@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-02-02 20:02+0000\n"
-"PO-Revision-Date: 2014-04-08 03:24+0200\n"
+"PO-Revision-Date: 2014-04-14 19:32+0200\n"
 "Last-Translator: Markus Slopianka <kamikazow@web.de>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de\n"
@@ -267,7 +267,7 @@ msgstr "(Portugiesische Übersetzung)"
 
 #: context/view.cpp:91 gui/mainwindow.cpp:328 widgets/messageoverlay.cpp:44
 msgid "Cancel"
-msgstr "Abbruch"
+msgstr "Abbrechen"
 
 #: context/wikipediaengine.cpp:248
 msgid "Track listing"

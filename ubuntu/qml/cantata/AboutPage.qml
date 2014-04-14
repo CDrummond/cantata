@@ -128,12 +128,11 @@ Page {
                             width: aboutTabLayout.width*0.25
                             height: iconTabletItem.height*0.75
                             Label {
-                                text: i18n.tr("Author(s): ")
+                                text: i18n.tr("Authors: ")
 
                             }
                             Label {
-                                font.bold: true;
-                                text: "Niklas Wenzel \nCraig Drummond \nSander Knopper \nRoeland Douma \nDaniel Selinger \nArmin Walland"
+                                text: "<b>Niklas Wenzel<br/>Craig Drummond</b><br/>Sander Knopper<br/>Roeland Douma<br/>Daniel Selinger<br/>Armin Walland"
                             }
                             Label {
                                 text: i18n.tr("Contact: ")

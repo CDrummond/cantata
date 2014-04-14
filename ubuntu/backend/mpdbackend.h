@@ -2,6 +2,7 @@
  * Cantata
  *
  * Copyright (c) 2014 Niklas Wenzel <nikwen.developer@gmail.com>
+ * Copyright (c) 2014 Craig Drummond <craig.p.drummond@gmail.com>
  *
  * ----
  *
@@ -69,9 +70,12 @@ public:
     Q_INVOKABLE void clearPlayQueue() { emit clear(); }
     Q_INVOKABLE bool getIsConnected() { return MPDConnection::self()->isConnected(); }
     Q_INVOKABLE void addArtist(int index, bool replace);
+    Q_INVOKABLE void addArtistAlbum(int artist, int album, bool replace);
+    Q_INVOKABLE void addArtistAlbumSong(int artist, int album, int songIndex, bool replace);
     Q_INVOKABLE void addAlbum(int index, bool replace);
-    Q_INVOKABLE void addSong(int albumIndex, int songIndex, bool replace);
+    Q_INVOKABLE void addAlbumSong(int album, int song, bool replace);
     Q_INVOKABLE void loadPlaylist(int index);
+    Q_INVOKABLE void addPlaylistSong(int playlist, int song, bool replace);
     Q_INVOKABLE void removeFromPlayQueue(int index);
     Q_INVOKABLE bool getIsPlaying() { return MPDStatus::self()->state() == MPDState_Playing; }
     Q_INVOKABLE bool getIsStopped() { return MPDStatus::self()->state() == MPDState_Stopped; }
@@ -87,9 +91,6 @@ public:
     Q_INVOKABLE bool getArtistsFound() { return MusicLibraryModel::self()->rowCount()>0; }
     Q_INVOKABLE bool getAlbumsFound() { return AlbumsModel::self()->rowCount()>0; }
     Q_INVOKABLE bool getPlaylistsFound() { return PlaylistsModel::self()->rowCount()>0; }
-
-    Q_INVOKABLE QList<Song> getSongsAtAlbumProxyModelIndex(int index);
-    Q_INVOKABLE QStringList getSongsTitlesAtAlbumProxyModelIndex(int index);
 
     PlayQueueProxyModel * getPlayQueueProxyModel() { return &playQueueProxyModel; }
     MusicLibraryProxyModel * getArtistsProxyModel() { return &artistsProxyModel; }

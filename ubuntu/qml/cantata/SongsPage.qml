@@ -2,6 +2,7 @@
 ** Cantata
 **
 ** Copyright (c) 2014 Niklas Wenzel <nikwen.developer@gmail.com>
+** Copyright (c) 2014 Craig Drummond <craig.p.drummond@gmail.com>
 **
 ** $QT_BEGIN_LICENSE:GPL$
 ** This program is free software; you can redistribute it and/or modify
@@ -37,6 +38,12 @@ Page {
     visible: false
 
     property int albumsListRow: -1
+
+    function init(index) {
+        albumsListRow=index
+        songsListView.model.rootIndex = -1
+        songsListView.model.rootIndex = songsListView.model.modelIndex(index)
+    }
 
     actions: [
         Action {
@@ -91,28 +98,28 @@ Page {
             fill: parent
             bottomMargin: isPhone?0:(-units.gu(2))
         }
-        model: backend.getSongsTitlesAtAlbumProxyModelIndex(albumsListRow)
         clip: true
 
-        delegate: ListItemDelegate {
-            id: delegate
-            text: modelData
-//            text: model.mainText
-//            subText: model.subText
-//            iconSource: !(model.image.indexOf("qrc:") === 0)?"file:" + model.image:model.image
+        model: VisualDataModel {
+            model: albumsProxyModel
+            delegate: ListItemDelegate {
+                id: delegate
+                text: model.mainText
+                subText: model.subText
 
-            firstButtonImageSource: "../../icons/toolbar/media-playback-start-light.svg"
-            secondButtonImageSource: "../../icons/toolbar/add.svg"
-            // progression: true //Removed due to the app showdown, will be implemented later
+                firstButtonImageSource: "../../icons/toolbar/media-playback-start-light.svg"
+                secondButtonImageSource: "../../icons/toolbar/add.svg"
+                // progression: true //Removed due to the app showdown, will be implemented later
 
-            // onIconSourceChanged: console.log("Debug iconSource: " + iconSource)
+                // onIconSourceChanged: console.log("Debug iconSource: " + iconSource)
 
-            onFirstImageButtonClicked: add(true)
-            onSecondImageButtonClicked: add(false)
+                onFirstImageButtonClicked: add(true)
+                onSecondImageButtonClicked: add(false)
 
-            function add(replace) {
-                backend.addSong(albumsListRow, index, replace)
-                pageStack.push(currentlyPlayingPage)
+                function add(replace) {
+                    backend.addAlbumSong(albumsListRow, index, replace)
+                    pageStack.push(currentlyPlayingPage)
+                }
             }
         }
     }

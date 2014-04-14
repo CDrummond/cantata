@@ -127,7 +127,7 @@ public:
     QVariant data(const QModelIndex &, int) const;
     Qt::ItemFlags flags(const QModelIndex &index) const;
     QStringList filenames(const QModelIndexList &indexes, bool allowPlaylists=false) const;
-    QList<Song> songs(const QModelIndexList &indexes, bool allowPlaylists=false) const;
+    Q_INVOKABLE QList<Song> songs(const QModelIndexList &indexes, bool allowPlaylists=false) const;
     #ifndef ENABLE_UBUNTU
     QMimeData * mimeData(const QModelIndexList &indexes) const;
     #endif

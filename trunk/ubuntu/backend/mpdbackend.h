@@ -87,6 +87,9 @@ public:
     Q_INVOKABLE bool getAlbumsFound() { return AlbumsModel::self()->rowCount()>0; }
     Q_INVOKABLE bool getPlaylistsFound() { return PlaylistsModel::self()->rowCount()>0; }
 
+    Q_INVOKABLE QList<Song> getSongsAtAlbumProxyModelIndex(int index);
+    Q_INVOKABLE QStringList getSongsTitlesAtAlbumProxyModelIndex(int index);
+
     PlayQueueProxyModel * getPlayQueueProxyModel() { return &playQueueProxyModel; }
     MusicLibraryProxyModel * getArtistsProxyModel() { return &artistsProxyModel; }
     AlbumsProxyModel * getAlbumsProxyModel() { return &albumsProxyModel; }

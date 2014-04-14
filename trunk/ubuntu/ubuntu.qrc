@@ -25,5 +25,6 @@
         <file>icons/toolbar/speaker.svg</file>
         <file>qml/cantata/components/LabelVisual.qml</file>
         <file>qml/cantata/components/ListItemDelegate.qml</file>
+        <file>qml/cantata/SongsPage.qml</file>
     </qresource>
 </RCC>

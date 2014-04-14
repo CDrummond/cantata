@@ -31,10 +31,12 @@ import 'qrc:/qml/cantata/'
 import 'components'
 
 Page {
-    id: albumPage
+    id: songsPage
 
     anchors.fill: parent
-    title: i18n.tr("Albums")
+    visible: false
+
+    property int albumsListRow: -1
 
     actions: [
         Action {
@@ -57,6 +59,7 @@ Page {
     tools: ToolbarItems {
         opened: true
         locked: root.width > units.gu(60) && opened //"&& opened": prevents the bar from being hidden and locked at the same time
+//        pageStack: pageStack
 
         ToolbarButton {
             iconSource: Qt.resolvedUrl("../../icons/toolbar/media-playback-start.svg")
@@ -84,19 +87,20 @@ Page {
     }
 
     ListView {
-        id: albumListView
+        id: songsListView
         anchors {
             fill: parent
             bottomMargin: isPhone?0:(-units.gu(2))
         }
-        model: albumsProxyModel
+        model: backend.getSongsTitlesAtAlbumProxyModelIndex(albumsListRow)
         clip: true
 
         delegate: ListItemDelegate {
             id: delegate
-            text: model.mainText
-            subText: model.subText
-            iconSource: !(model.image.indexOf("qrc:") === 0)?"file:" + model.image:model.image
+            text: modelData
+//            text: model.mainText
+//            subText: model.subText
+//            iconSource: !(model.image.indexOf("qrc:") === 0)?"file:" + model.image:model.image
 
             firstButtonImageSource: "../../icons/toolbar/media-playback-start-light.svg"
             secondButtonImageSource: "../../icons/toolbar/add.svg"
@@ -104,26 +108,13 @@ Page {
 
             // onIconSourceChanged: console.log("Debug iconSource: " + iconSource)
 
-//            onFirstImageButtonClicked: add(true)
-//            onSecondImageButtonClicked: add(false)
+            onFirstImageButtonClicked: add(true)
+            onSecondImageButtonClicked: add(false)
 
-//            function add(replace) {
-//                backend.addAlbum(index, replace)
-//                pageStack.push(currentlyPlayingPage)
-//            }
-
-            onClicked: {
-                songsPage.title = text
-                songsPage.albumsListRow = index
-                pageStack.push(songsPage)
+            function add(replace) {
+                backend.addAlbum(index, replace)
+                pageStack.push(currentlyPlayingPage)
             }
         }
-    }
-
-    Label {
-        anchors.centerIn: parent
-        text: i18n.tr("No albums found")
-        fontSize: "large"
-        visible: !backend.albumsFound
     }
 }

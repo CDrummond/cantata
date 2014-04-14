@@ -28,7 +28,7 @@
     menu button is used, and menubar hidden. For Mac and Unity, menubar is
     used, and menu button is hidden. For KDE Plasma, by default the menu button
     is used, and the menu bar hidden - but a menu entry is provided to toggle.
-    This setting maybe overridden - see README for details.
+    This setting may be overridden - see README for details.
 20. Most songs will be less than 1 hr long, so by default we only need to
     reserve space for -MM:SS at each side of position slider. If song duration
     is longer than 1hr, then this is increased to -H:MM:SS

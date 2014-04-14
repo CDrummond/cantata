@@ -320,7 +320,6 @@ Page {
         id: playqueueListView
         clip: true
         model: playQueueProxyModel
-//        height: parent.height - playQueueLabel.height - (isPhone?(backend.playQueueEmpty?0:(buttonsRow2.height + currentSongInfoColumn2.height)):controlsRow.height) //Spacing fehlt in Phone???
 
         anchors {
             top: playQueueLabel.bottom

@@ -70,6 +70,7 @@ public:
     Q_INVOKABLE bool getIsConnected() { return MPDConnection::self()->isConnected(); }
     Q_INVOKABLE void addArtist(int index, bool replace);
     Q_INVOKABLE void addAlbum(int index, bool replace);
+    Q_INVOKABLE void addSong(int albumIndex, int songIndex, bool replace);
     Q_INVOKABLE void loadPlaylist(int index);
     Q_INVOKABLE void removeFromPlayQueue(int index);
     Q_INVOKABLE bool getIsPlaying() { return MPDStatus::self()->state() == MPDState_Playing; }

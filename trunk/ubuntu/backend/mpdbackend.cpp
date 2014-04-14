@@ -184,6 +184,15 @@ void MPDBackend::addAlbum(int index, bool replace) {
     }
 }
 
+void MPDBackend::addSong(int albumIndex, int songIndex, bool replace) {
+    QList<Song> songList = getSongsAtAlbumProxyModelIndex(albumIndex);
+    Song addedSong = songList.at(songIndex);
+    QString fileName = addedSong.file;
+
+    QStringList fileNames = QStringList() << fileName;
+    emit add(fileNames, replace, 0);
+}
+
 void MPDBackend::loadPlaylist(int index) {
     QModelIndex idx=playlistsProxyModel.mapToSource(playlistsProxyModel.index(index, 0));
     if (idx.isValid()) {

@@ -111,7 +111,7 @@ Page {
             onSecondImageButtonClicked: add(false)
 
             function add(replace) {
-                backend.addAlbum(index, replace)
+                backend.addSong(albumsListRow, index, replace)
                 pageStack.push(currentlyPlayingPage)
             }
         }

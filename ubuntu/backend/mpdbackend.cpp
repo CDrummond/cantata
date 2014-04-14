@@ -194,6 +194,23 @@ void MPDBackend::loadPlaylist(int index) {
     }
 }
 
+QList<Song> MPDBackend::getSongsAtAlbumProxyModelIndex(int index) {
+    if (index < 0) {
+        return QList<Song>();
+    }
+
+    return AlbumsModel::self()->songs(QModelIndexList() << albumsProxyModel.mapToSource(albumsProxyModel.index(index, 0)));
+}
+
+QStringList MPDBackend::getSongsTitlesAtAlbumProxyModelIndex(int index) {
+    QList<Song> songList = getSongsAtAlbumProxyModelIndex(index);
+    QStringList titleList;
+    for (int i = 0; i < songList.count(); i++) {
+        titleList << songList.at(i).title;
+    }
+    return titleList;
+}
+
 void MPDBackend::removeFromPlayQueue(int index) {
     QList<int> removeIndexList;
     removeIndexList << index;

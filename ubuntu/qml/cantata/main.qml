@@ -99,5 +99,9 @@ MainView {
         AboutPage {
             id: aboutPage
         }
+
+        SongsPage {
+            id: songsPage
+        }
     }
 }

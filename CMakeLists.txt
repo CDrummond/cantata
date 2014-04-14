@@ -762,6 +762,7 @@ if (ENABLE_UBUNTU)
         ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/CurrentlyPlayingPage.qml
         ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/HostSettingsPage.qml
         ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/ControlButtonsRow.qml
+        ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/SongsPage.qml
         ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/components/ListItemDelegate.qml
         ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/components/LabelVisual.qml
     )

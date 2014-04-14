@@ -309,10 +309,8 @@ Page {
         id: playQueueStatusLabel
         text: backend.playQueueStatus
         anchors {
-            top: isPhone?(buttonsRow2.visible?buttonsRow2.bottom:parent.top):controlsRow.bottom
+            top: playQueueLabel.top
             right: parent.right
-            topMargin: (isPhone)?units.gu(1):units.gu(2)
-            leftMargin: units.gu(1)
             rightMargin: units.gu(1)
         }
         visible: !backend.playQueueEmpty && backend.isConnected;

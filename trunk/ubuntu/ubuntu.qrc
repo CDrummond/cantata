@@ -26,5 +26,8 @@
         <file>qml/cantata/components/LabelVisual.qml</file>
         <file>qml/cantata/components/ListItemDelegate.qml</file>
         <file>qml/cantata/SongsPage.qml</file>
+        <file>qml/cantata/ArtistAlbumsPage.qml</file>
+        <file>qml/cantata/ArtistSongsPage.qml</file>
+        <file>qml/cantata/PlaylistSongsPage.qml</file>
     </qresource>
 </RCC>

@@ -1,7 +1,6 @@
 /*************************************************************************
 ** Cantata
 **
-** Copyright (c) 2014 Niklas Wenzel <nikwen.developer@gmail.com>
 ** Copyright (c) 2014 Craig Drummond <craig.p.drummond@gmail.com>
 **
 ** $QT_BEGIN_LICENSE:GPL$
@@ -32,10 +31,21 @@ import 'qrc:/qml/cantata/'
 import 'components'
 
 Page {
-    id: albumPage
+    id: artistSongsPage
 
     anchors.fill: parent
-    title: i18n.tr("Albums")
+    visible: false
+
+    property int artistRow: -1
+    property int albumRow: -1
+
+    function init(artist, album) {
+        artistRow=artist
+        albumRow=album
+        artistSongsListView.model.rootIndex = -1
+        artistSongsListView.model.rootIndex = artistSongsListView.model.modelIndex(artist)
+        artistSongsListView.model.rootIndex = artistSongsListView.model.modelIndex(album)
+    }
 
     actions: [
         Action {
@@ -85,46 +95,31 @@ Page {
     }
 
     ListView {
-        id: albumListView
+        id: artistSongsListView
         anchors {
             fill: parent
             bottomMargin: isPhone?0:(-units.gu(2))
         }
-        model: albumsProxyModel
         clip: true
 
-        delegate: ListItemDelegate {
-            id: delegate
-            text: model.mainText
-            subText: model.subText
-            iconSource: !(model.image.indexOf("qrc:") === 0)?"file:" + model.image:model.image
+        model: VisualDataModel {
+            model: artistsProxyModel
+            delegate: ListItemDelegate {
+                id: delegate
+                text: model.mainText
+                subText: model.subText
 
-            firstButtonImageSource: "../../icons/toolbar/media-playback-start-light.svg"
-            secondButtonImageSource: "../../icons/toolbar/add.svg"
-            // progression: true //Removed due to the app showdown, will be implemented later
+                firstButtonImageSource: "../../icons/toolbar/media-playback-start-light.svg"
+                secondButtonImageSource: "../../icons/toolbar/add.svg"
 
-            // onIconSourceChanged: console.log("Debug iconSource: " + iconSource)
+                onFirstImageButtonClicked: add(true)
+                onSecondImageButtonClicked: add(false)
 
-            onFirstImageButtonClicked: add(true)
-            onSecondImageButtonClicked: add(false)
-
-            function add(replace) {
-                backend.addAlbum(index, replace)
-                pageStack.push(currentlyPlayingPage)
-            }
-
-            onClicked: {
-                songsPage.title = text
-                songsPage.init(index)
-                pageStack.push(songsPage)
+                function add(replace) {
+                    backend.addArtistAlbumSong(artistRow, albumRow, index, replace)
+                    pageStack.push(currentlyPlayingPage)
+                }
             }
         }
-    }
-
-    Label {
-        anchors.centerIn: parent
-        text: i18n.tr("No albums found")
-        fontSize: "large"
-        visible: !backend.albumsFound
     }
 }

@@ -312,23 +312,7 @@ within the folder of the current track, or within its parent folder. If no image
         </widget>
        </item>
        <item row="2" column="1">
-        <widget class="QComboBox" name="albumSort">
-         <item>
-          <property name="text">
-           <string>Album/Artist</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Artist/Album</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Artist/Year/Album</string>
-          </property>
-         </item>
-        </widget>
+        <widget class="QComboBox" name="albumSort"/>
        </item>
       </layout>
      </widget>

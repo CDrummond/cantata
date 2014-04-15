@@ -432,7 +432,14 @@ int Settings::albumsCoverSize()
 
 int Settings::albumSort()
 {
-    return cfg.get("albumSort", 0);
+    if (version()<CANTATA_MAKE_VERSION(1, 3, 52)) {
+        switch (cfg.get("albumSort", 0)) {
+        case 0: return AlbumsModel::Sort_AlbumArtist;
+        case 1: return AlbumsModel::Sort_ArtistAlbum;
+        case 2: return AlbumsModel::Sort_ArtistYear;
+        }
+    }
+    return AlbumsModel::toSort(cfg.get("albumSort", AlbumsModel::sortStr(AlbumsModel::Sort_AlbumArtist)));
 }
 
 int Settings::sidebar()
@@ -1091,7 +1098,7 @@ void Settings::saveAlbumsCoverSize(int v)
 
 void Settings::saveAlbumSort(int v)
 {
-    cfg.set("albumSort", v);
+    cfg.set("albumSort", AlbumsModel::sortStr((AlbumsModel::Sort)v));
 }
 
 void Settings::saveSidebar(int v)

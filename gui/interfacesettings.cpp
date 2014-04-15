@@ -26,6 +26,7 @@
 #include "itemview.h"
 #include "localize.h"
 #include "musiclibraryitemalbum.h"
+#include "albumsmodel.h"
 #include "fancytabwidget.h"
 #include "basicitemdelegate.h"
 #include "playqueueview.h"
@@ -46,6 +47,16 @@
     w->setVisible(false); \
     w->deleteLater(); \
     w=0;
+
+static void addAlbumSorts(QComboBox *box)
+{
+    box->addItem(i18n("Album, Artist, Year"), AlbumsModel::Sort_AlbumArtist);
+    box->addItem(i18n("Album, Year, Artist"), AlbumsModel::Sort_AlbumYear);
+    box->addItem(i18n("Artist, Album, Year"), AlbumsModel::Sort_ArtistAlbum);
+    box->addItem(i18n("Artist, Year, Album"), AlbumsModel::Sort_ArtistYear);
+    box->addItem(i18n("Year, Album, Artist"), AlbumsModel::Sort_YearAlbum);
+    box->addItem(i18n("Year, Artist, Album"), AlbumsModel::Sort_YearArtist);
+}
 
 static void addImageSizes(QComboBox *box)
 {
@@ -115,6 +126,7 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     addViewTypes(playlistsView, false, true, true);
     searchView->addItem(i18n("List"), ItemView::Mode_List);
     searchView->addItem(i18n("Table"), ItemView::Mode_Table);
+    addAlbumSorts(albumSort);
 
     addView(i18n("Play Queue"), QLatin1String("PlayQueuePage"));
     addView(i18n("Artists"), QLatin1String("LibraryPage"));
@@ -211,7 +223,7 @@ void InterfaceSettings::load()
     libraryYear->setChecked(Settings::self()->libraryYear());
     selectEntry(albumsView, Settings::self()->albumsView());
     albumsCoverSize->setCurrentIndex(Settings::self()->albumsCoverSize());
-    albumSort->setCurrentIndex(Settings::self()->albumSort());
+    selectEntry(albumSort, Settings::self()->albumSort());
     selectEntry(folderView, Settings::self()->folderView());
     selectEntry(playlistsView, Settings::self()->playlistsView());
     playListsStartClosed->setChecked(Settings::self()->playListsStartClosed());
@@ -291,7 +303,7 @@ void InterfaceSettings::save()
     Settings::self()->saveLibraryYear(libraryYear->isChecked());
     Settings::self()->saveAlbumsView(getValue(albumsView));
     Settings::self()->saveAlbumsCoverSize(albumsCoverSize->currentIndex());
-    Settings::self()->saveAlbumSort(albumSort->currentIndex());
+    Settings::self()->saveAlbumSort(getValue(albumSort));
     Settings::self()->saveFolderView(getValue(folderView));
     Settings::self()->savePlaylistsView(getValue(playlistsView));
     Settings::self()->savePlayListsStartClosed(playListsStartClosed->isChecked());

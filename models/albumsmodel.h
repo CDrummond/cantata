@@ -51,9 +51,15 @@ public:
     enum Sort
     {
         Sort_AlbumArtist,
+        Sort_AlbumYear,
         Sort_ArtistAlbum,
-        Sort_ArtistYearAlbum
+        Sort_ArtistYear,
+        Sort_YearAlbum,
+        Sort_YearArtist
     };
+
+    static Sort toSort(const QString &str);
+    static QString sortStr(Sort m);
 
     enum Columnms
     {

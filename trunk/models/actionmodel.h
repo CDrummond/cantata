@@ -42,6 +42,7 @@ public:
     #ifdef ENABLE_UBUNTU
     QHash<int, QByteArray> roleNames() const;
     #endif
+    virtual QStringList filenames(const QModelIndexList &indexes, bool allowPlaylists=false) const { Q_UNUSED(indexes) Q_UNUSED(allowPlaylists) return QStringList(); }
 };
 
 Q_DECLARE_METATYPE(QList<Action *>)

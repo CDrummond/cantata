@@ -174,89 +174,42 @@ void MPDBackend::playlistsUpdated() {
     emit onPlaylistsModelChanged();
 }
 
-void MPDBackend::addArtist(int index, bool replace) {
-    if (index<0) {
-        return;
+void MPDBackend::add(const QString &modelName, const QVariant &rows, bool replace) {
+    ProxyModel *proxy=0;
+    ActionModel *model=0;
+    if ("artists"==modelName) {
+        proxy=&artistsProxyModel;
+        model=MusicLibraryModel::self();
+    } else if ("albums"==modelName) {
+        proxy=&albumsProxyModel;
+        model=AlbumsModel::self();
+    }  else if ("playlists"==modelName) {
+        proxy=&playlistsProxyModel;
+        model=PlaylistsModel::self();
     }
-    QModelIndex artistIndex=artistsProxyModel.index(index, 0);
-    if (!artistIndex.isValid()) {
-        return;
-    }
-    QStringList fileNames = MusicLibraryModel::self()->filenames(QModelIndexList() << artistsProxyModel.mapToSource(artistIndex), false);
-    if (!fileNames.isEmpty()) {
-        emit add(fileNames, replace, 0);
-    }
-}
 
-void MPDBackend::addArtistAlbum(int artist, int album, bool replace) {
-    if (artist<0 || album<0) {
-        return;
-    }
-    QModelIndex artistIndex=artistsProxyModel.index(artist, 0);
-    if (!artistIndex.isValid()) {
-        return;
-    }
-    QModelIndex albumIndex=artistsProxyModel.index(album, 0, artistIndex);
-    if (!albumIndex.isValid()) {
-        return;
-    }
-    QStringList fileNames = MusicLibraryModel::self()->filenames(QModelIndexList() << artistsProxyModel.mapToSource(albumIndex), false);
-    if (!fileNames.isEmpty()) {
-        emit add(fileNames, replace, 0);
-    }
-}
-
-void MPDBackend::addArtistAlbumSong(int artist, int album, int song, bool replace) {
-    if (artist<0 || album<0 || song<0) {
-        return;
-    }
-    QModelIndex artistIndex=artistsProxyModel.index(artist, 0);
-    if (!artistIndex.isValid()) {
-        return;
-    }
-    QModelIndex albumIndex=artistsProxyModel.index(album, 0, artistIndex);
-    if (!albumIndex.isValid()) {
-        return;
-    }
-    QModelIndex songIndex=artistsProxyModel.index(song, 0, albumIndex);
-    if (!songIndex.isValid()) {
-        return;
-    }
-    QStringList fileNames = MusicLibraryModel::self()->filenames(QModelIndexList() << artistsProxyModel.mapToSource(songIndex), false);
-    if (!fileNames.isEmpty()) {
-        emit add(fileNames, replace, 0);
-    }
-}
-
-void MPDBackend::addAlbum(int index, bool replace) {
-    if (index<0) {
-        return;
-    }
-    QModelIndex albumIndex=albumsProxyModel.index(index, 0);
-    if (!albumIndex.isValid()) {
-        return;
-    }
-    QStringList fileNames = AlbumsModel::self()->filenames(QModelIndexList() << albumsProxyModel.mapToSource(albumIndex), false);
-    if (!fileNames.isEmpty()) {
-        emit add(fileNames, replace, 0);
-    }
-}
-
-void MPDBackend::addAlbumSong(int album, int song, bool replace) {
-    if (album<0 || song<0) {
-        return;
-    }
-    QModelIndex albumIndex=albumsProxyModel.index(album, 0);
-    if (!albumIndex.isValid()) {
-        return;
-    }
-    QModelIndex songIndex=albumsProxyModel.index(song, 0, albumIndex);
-    if (!albumIndex.isValid()) {
-        return;
-    }
-    QStringList fileNames = AlbumsModel::self()->filenames(QModelIndexList() << albumsProxyModel.mapToSource(songIndex), false);
-    if (!fileNames.isEmpty()) {
-        emit add(fileNames, replace, 0);
+    if (model) {
+        QList<int> rowList;
+        if (QVariant::Int==rows.type()) {
+            rowList.append(rows.toInt());
+        } else if (QVariant::List==rows.type()) {
+            foreach (const QVariant &v, rows.toList()) {
+                rowList.append(v.toInt());
+            }
+        }
+        if (rowList.count()) {
+            QModelIndex idx;
+            foreach (int r, rowList) {
+                idx=proxy->index(r, 0, idx);
+                if (!idx.isValid()) {
+                    return;
+                }
+            }
+            QStringList fileNames = model->filenames(QModelIndexList() << proxy->mapToSource(idx), false);
+            if (!fileNames.isEmpty()) {
+                emit add(fileNames, replace, 0);
+            }
+        }
     }
 }
 
@@ -270,24 +223,6 @@ void MPDBackend::loadPlaylist(int index) {
         if (i->isPlaylist()) {
             emit loadPlaylist(static_cast<PlaylistsModel::PlaylistItem*>(i)->name, true);
         }
-    }
-}
-
-void MPDBackend::addPlaylistSong(int playlist, int song, bool replace) {
-    if (playlist<0 || song<0) {
-        return;
-    }
-    QModelIndex playlistIndex=playlistsProxyModel.index(playlist, 0);
-    if (!playlistIndex.isValid()) {
-        return;
-    }
-    QModelIndex songIndex=playlistsProxyModel.index(song, 0, playlistIndex);
-    if (!songIndex.isValid()) {
-        return;
-    }
-    QStringList fileNames = PlaylistsModel::self()->filenames(QModelIndexList() << playlistsProxyModel.mapToSource(songIndex));
-    if (!fileNames.isEmpty()) {
-        emit add(fileNames, replace, 0);
     }
 }
 

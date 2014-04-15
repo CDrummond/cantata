@@ -32,10 +32,8 @@ Page {
     id: settingsPage
 
     visible: false
-    width: parent.width
+    anchors.fill: parent
     title: i18n.tr("Settings")
-
-    property color textFieldColor: "#c2c2b8" //#f3f3e7 * 0.8 (#f3f3e7: label color)
 
     actions: [
         Action {
@@ -51,31 +49,37 @@ Page {
         pageStack: pageStack
     }
 
-    Column {
-        id: column
-        spacing: units.gu(1)
-        width: Math.round(parent.width / 1.3)
-        height: parent.height - parent.header.height
-        y: parent.header.height + units.gu(2)
-        anchors.horizontalCenter: parent.horizontalCenter
+    Flickable {
+        anchors.fill: parent
+        contentHeight: column.height
 
-        ListItem.Standard {
-            id: connectionSettingsLabel
-            text: i18n.tr("Connection")
-            onClicked: pageStack.push(hostSettingsPage)
-        }
+        Column {
+            id: column
+            width: parent.width
 
-        ListItem.Standard {
-            id: uiSettingsLabel
-            text: i18n.tr("UI")
-            onClicked: pageStack.push(uiSettingsPage)
-        }
+            ListItem.Standard {
+                id: connectionSettingsLabel
+                text: i18n.tr("Connection")
+                progression: true
+                onClicked: pageStack.push(hostSettingsPage)
+            }
 
-        ListItem.Standard {
-            id: playbackSettingsLabel
-            text: i18n.tr("Playback")
-            onClicked: pageStack.push(playbackSettingsPage)
+            ListItem.Standard {
+                id: uiSettingsLabel
+                text: i18n.tr("UI")
+                progression: true
+                onClicked: pageStack.push(uiSettingsPage)
+            }
+
+            ListItem.Standard {
+                id: playbackSettingsLabel
+                text: i18n.tr("Playback")
+                progression: true
+                onClicked: pageStack.push(playbackSettingsPage)
+            }
         }
     }
+
+
 }
 

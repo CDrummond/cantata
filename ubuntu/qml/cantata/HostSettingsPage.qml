@@ -84,10 +84,12 @@ Page {
 
         function fillWithU1dbData() {
             var contents = connectionDocument.contents
-            hostTextField.text = contents["host"]
-            portTextField.text = contents["port"]
-            passwordTextField.text = contents["password"]
-            musicfolderTextField.text = contents["musicfolder"]
+            if (typeof contents != "undefined") {
+                hostTextField.text = contents["host"]
+                portTextField.text = contents["port"]
+                passwordTextField.text = contents["password"]
+                musicfolderTextField.text = contents["musicfolder"]
+            }
         }
 
         function saveDataToU1db() {

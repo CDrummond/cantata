@@ -73,14 +73,14 @@ MainView {
                         emptyViewText: i18n.tr("No artists found")
 
                         function add(index, replace) {
-                            backend.addArtist(index, replace)
+                            backend.add("artists", index, replace)
                             pageStack.push(currentlyPlayingPage)
                         }
 
                         function onDelegateClicked(index, text) {
                             var component = Qt.createComponent("SubListViewPage.qml")
 
-                            var page = component.createObject(parent, {"model": model, "title": text, "types": ["song", "album"], "originalType": "artist"})
+                            var page = component.createObject(parent, {"model": model, "title": text, "modelName": "artists"})
                             page.init([index], 2)
                             pageStack.push(page)
                         }
@@ -100,14 +100,14 @@ MainView {
                         emptyViewText: i18n.tr("No albums found")
 
                         function add(index, replace) {
-                            backend.addAlbum(index, replace)
+                            backend.add("albums", index, replace)
                             pageStack.push(currentlyPlayingPage)
                         }
 
                         function onDelegateClicked(index, text) {
                             var component = Qt.createComponent("SubListViewPage.qml")
 
-                            var page = component.createObject(parent, {"model": model, "title": text, "types": ["song"], "originalType": "album"})
+                            var page = component.createObject(parent, {"model": model, "title": text, "modelName": "albums"})
                             page.init([index], 1)
                             pageStack.push(page)
                         }
@@ -134,7 +134,7 @@ MainView {
                         function onDelegateClicked(index, text) {
                             var component = Qt.createComponent("SubListViewPage.qml")
 
-                            var page = component.createObject(parent, {"model": model, "title": text, "types": ["song"], "originalType": "playlist"})
+                            var page = component.createObject(parent, {"model": model, "title": text, "modelName": "playlists"})
                             page.init([index], 1)
                             pageStack.push(page)
                         }

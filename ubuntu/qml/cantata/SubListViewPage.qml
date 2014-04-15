@@ -39,28 +39,19 @@ Page {
 
     property variant rows
     property int depth: -1
-    property variant types //inverse order!!!
-    property string originalType
+    property string modelName
     property alias model: visualDataModel.model
-    property bool showImage: types[depth - 1] === "album"
 
     function add(index, replace) {
-        if (types[depth - 1] === "song") {
-            if (originalType === "album") {
-                backend.addAlbumSong(rows[rows.length - 1], index, replace)
-                pageStack.push(currentlyPlayingPage)
-            } else if (originalType === "playlist") {
-                backend.addPlaylistSong(rows[rows.length - 1], index, replace)
-                pageStack.push(currentlyPlayingPage)
-            } else if (originalType === "artist") {
-                backend.addArtistAlbumSong(rows[rows.length - 2], rows[rows.length - 1], index, replace)
-                pageStack.push(currentlyPlayingPage)
-            }
-        } else if (types[depth - 1] === "album") {
-            if (originalType === "artist") {
-                backend.addArtistAlbum(rows[rows.length - 1], index, replace)
-                pageStack.push(currentlyPlayingPage)
-            }
+        var newRows = []
+        for (var i = 0; i < rows.length; i++) {
+            newRows[i] = rows[i]
+        }
+        newRows[rows.length] = index
+
+        backend.add(modelName, newRows, replace)
+        if (replace) {
+            pageStack.push(currentlyPlayingPage)
         }
     }
 
@@ -75,7 +66,7 @@ Page {
             var component = Qt.createComponent("SubListViewPage.qml")
 
             if (component.status == Component.Ready) {
-                var page = component.createObject(parent, {"model": model, "title": text, "types": types, "originalType": originalType})
+                var page = component.createObject(parent, {"model": model, "title": text, "modelName": modelName})
                 page.init(newRows, depth - 1)
                 pageStack.push(page)
             }

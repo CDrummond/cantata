@@ -121,11 +121,13 @@ public:
     void removeAll();
     void remove(const QList<int> &rowsToRemove);
     void crop(const QList<int> &rowsToKeep);
+    #ifndef ENABLE_UBUNTU
     Action * shuffleAct() { return shuffleAction; }
     Action * removeDuplicatesAct() { return removeDuplicatesAction; }
     Action * sortAct() { return sortAction; }
     Action * undoAct() { return undoAction; }
     Action * redoAct() { return redoAction; }
+    #endif
     void enableUndo(bool e);
     bool lastCommandWasUnodOrRedo() const { return Cmd_Other!=lastCommand; }
     qint32 totalTime() const { return time; }
@@ -179,12 +181,8 @@ private:
     quint32 time;
     StreamFetcher *fetcher;
     MPDState mpdState;
-    #ifndef ENABLE_UBUNTU
-    quint32 dropAdjust;
-    #endif
     bool stopAfterCurrent;
     qint32 stopAfterTrackId;
-    Action *removeDuplicatesAction;
 
     enum Command
     {
@@ -196,12 +194,16 @@ private:
     int undoLimit;
     bool undoEnabled;
     Command lastCommand;
+    QStack<UndoItem> undoStack;
+    QStack<UndoItem> redoStack;
+    #ifndef ENABLE_UBUNTU
+    quint32 dropAdjust;
+    Action *removeDuplicatesAction;
     Action *undoAction;
     Action *redoAction;
     Action *shuffleAction;
     Action *sortAction;
-    QStack<UndoItem> undoStack;
-    QStack<UndoItem> redoStack;
+    #endif
 };
 
 #endif

@@ -155,6 +155,7 @@ static QString save(const QString &mimeType, const QString &extension, const QSt
 static QImage loadImage(const QString &fileName)
 {
     QImage img(fileName);
+    #ifndef ENABLE_UBUNTU
     if (img.isNull()) {
         // Failed to load, perhaps extension is wrong? If so try PNG for .jpg, and vice versa...
         QFile f(fileName);
@@ -167,6 +168,7 @@ static QImage loadImage(const QString &fileName)
             }
         }
     }
+    #endif
     return img;
 }
 

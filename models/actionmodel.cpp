@@ -44,6 +44,7 @@ QHash<int, QByteArray> ActionModel::roleNames() const
     QHash<int, QByteArray> roles;
     roles[ItemView::Role_MainText] = "mainText";
     roles[ItemView::Role_SubText] = "subText";
+    roles[ItemView::Role_TitleText] = "titleText";
     roles[ItemView::Role_Image] = "image";
     return roles;
 }

@@ -53,7 +53,9 @@ class MPDBackend : public QObject
     Q_PROPERTY(QString currentSongSubText READ getCurrentSongSubText NOTIFY onCurrentSongChanged)
     Q_PROPERTY(quint32 currentSongPlayqueuePosition READ getCurrentSongPlayqueuePosition NOTIFY onCurrentSongChanged)
 
-    Q_PROPERTY(quint8 mpdVolume READ getMpdVolume WRITE setMpdVolume NOTIFY onMpdVolumeChanged)
+    Q_PROPERTY(bool isRandomOrder READ getIsRandomOrder WRITE setIsRandomOrder NOTIFY onMpdStatusChanged)
+    Q_PROPERTY(quint8 mpdVolume READ getMpdVolume WRITE setMpdVolume NOTIFY onMpdStatusChanged)
+
     Q_PROPERTY(bool playQueueEmpty READ isPlayQueueEmpty NOTIFY onPlayQueueChanged)
     Q_PROPERTY(QString playQueueStatus READ getPlayQueueStatus NOTIFY onPlayQueueChanged)
     Q_PROPERTY(bool artistsFound READ getArtistsFound NOTIFY onArtistsModelChanged)
@@ -91,6 +93,8 @@ public:
     Q_INVOKABLE bool getArtistsFound() { return MusicLibraryModel::self()->rowCount()>0; }
     Q_INVOKABLE bool getAlbumsFound() { return AlbumsModel::self()->rowCount()>0; }
     Q_INVOKABLE bool getPlaylistsFound() { return PlaylistsModel::self()->rowCount()>0; }
+    Q_INVOKABLE bool getIsRandomOrder() { return MPDStatus::self()->random(); }
+    Q_INVOKABLE void setIsRandomOrder(bool random);
 
     PlayQueueProxyModel * getPlayQueueProxyModel() { return &playQueueProxyModel; }
     MusicLibraryProxyModel * getArtistsProxyModel() { return &artistsProxyModel; }
@@ -101,11 +105,11 @@ Q_SIGNALS:
     void onConnectedChanged();
     void onPlayingStatusChanged();
     void onCurrentSongChanged();
-    void onMpdVolumeChanged();
     void onPlayQueueChanged();
     void onArtistsModelChanged();
     void onAlbumsModelChanged();
     void onPlaylistsModelChanged();
+    void onMpdStatusChanged();
 
 public Q_SLOTS:
     void onConnected(bool connected);
@@ -135,6 +139,7 @@ Q_SIGNALS:
     void loadPlaylist(const QString &name, bool replace);
     void setVolume(int volume);
     void clear();
+    void setRandomOrder(bool random);
 
 private:
     void updateStatus(MPDStatus * const status);

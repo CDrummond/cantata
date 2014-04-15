@@ -162,9 +162,6 @@ PlayQueueModel::PlayQueueModel(QObject *parent)
     , currentSongRowNum(-1)
     , time(0)
     , mpdState(MPDState_Inactive)
-    #ifndef ENABLE_UBUNTU
-    , dropAdjust(0)
-    #endif
     , stopAfterCurrent(false)
     , stopAfterTrackId(-1)
     #ifdef ENABLE_UBUNTU
@@ -174,6 +171,9 @@ PlayQueueModel::PlayQueueModel(QObject *parent)
     #endif
     , undoEnabled(undoLimit>0)
     , lastCommand(Cmd_Other)
+    #ifndef ENABLE_UBUNTU
+    , dropAdjust(0)
+    #endif
 {
     fetcher=new StreamFetcher(this);
     connect(this, SIGNAL(modelReset()), this, SLOT(stats()));

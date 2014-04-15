@@ -101,6 +101,30 @@ void AlbumsModel::setCoverSize(MusicLibraryItemAlbum::CoverSize size)
 }
 #endif
 
+AlbumsModel::Sort AlbumsModel::toSort(const QString &str)
+{
+    for (int i=0; i<=Sort_YearArtist; ++i) {
+        if (sortStr((Sort)i)==str) {
+            return (Sort)i;
+        }
+    }
+    return AlbumsModel::Sort_AlbumArtist;
+}
+
+QString AlbumsModel::sortStr(Sort m)
+{
+    switch (m) {
+    default:
+    case Sort_AlbumArtist: return QLatin1String("album-artist");
+    case Sort_AlbumYear:   return QLatin1String("album-year");
+    case Sort_ArtistAlbum: return QLatin1String("artist-album");
+    case Sort_ArtistYear:  return QLatin1String("artist-year");
+    case Sort_YearAlbum:   return QLatin1String("year-album");
+    case Sort_YearArtist:  return QLatin1String("year-artist");
+    }
+}
+
+
 AlbumsModel::AlbumsModel(QObject *parent)
     : ActionModel(parent)
     , enabled(false)
@@ -609,14 +633,30 @@ bool AlbumsModel::AlbumItem::operator<(const AlbumItem &o) const
         int compare=album.localeAwareCompare(o.album);
         return compare<0 || (0==compare && sortArtist().localeAwareCompare(o.sortArtist())<0);
     }
+    case Sort_AlbumYear: {
+        int compare=album.localeAwareCompare(o.album);
+        return compare<0 || (0==compare && (year<o.year || (year==o.year && sortArtist().localeAwareCompare(o.sortArtist())<0)));
+    }
     case Sort_ArtistAlbum: {
         int compare=sortArtist().localeAwareCompare(o.sortArtist());
         return compare<0 || (0==compare && album.localeAwareCompare(o.album)<0);
     }
-    case Sort_ArtistYearAlbum: {
+    case Sort_ArtistYear: {
         int compare=sortArtist().localeAwareCompare(o.sortArtist());
         return compare<0 || (0==compare && (year<o.year || (year==o.year && album.localeAwareCompare(o.album)<0)));
     }
+    case Sort_YearAlbum:
+        if (year==o.year) {
+            int compare=album.localeAwareCompare(o.album);
+            return compare<0 || (0==compare && sortArtist().localeAwareCompare(o.sortArtist())<0);
+        }
+        return year<o.year;
+    case Sort_YearArtist:
+        if (year==o.year) {
+            int compare=sortArtist().localeAwareCompare(o.sortArtist());
+            return compare<0 || (0==compare && album.localeAwareCompare(o.album)<0);
+        }
+        return year<o.year;
     }
 }
 

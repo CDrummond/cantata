@@ -167,7 +167,11 @@ PlayQueueModel::PlayQueueModel(QObject *parent)
     #endif
     , stopAfterCurrent(false)
     , stopAfterTrackId(-1)
+    #ifdef ENABLE_UBUNTU
+    , undoLimit(0)
+    #else
     , undoLimit(Settings::self()->undoSteps())
+    #endif
     , undoEnabled(undoLimit>0)
     , lastCommand(Cmd_Other)
 {

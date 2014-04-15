@@ -26,6 +26,7 @@
 
 import QtQuick 2.0
 import Ubuntu.Components 0.1
+import 'qrc:/qml/cantata'
 
 Row {
     id: buttonsRow
@@ -37,7 +38,7 @@ Row {
         width: currentlyPlayingPage.buttonSize
         height: currentlyPlayingPage.buttonSize
         smooth: true
-        source: "../../icons/toolbar/media-skip-backward.svg"
+        source: "../../../icons/toolbar/media-skip-backward.svg"
 
         MouseArea {
             onClicked: {
@@ -53,7 +54,7 @@ Row {
         width: currentlyPlayingPage.buttonSize
         height: currentlyPlayingPage.buttonSize
         smooth: true
-        source: backend.isPlaying?"../../icons/toolbar/media-playback-pause.svg":"../../icons/toolbar/media-playback-start.svg"
+        source: backend.isPlaying?"../../../icons/toolbar/media-playback-pause.svg":"../../../icons/toolbar/media-playback-start.svg"
 
         MouseArea {
             onClicked: {
@@ -69,7 +70,7 @@ Row {
         width: currentlyPlayingPage.buttonSize
         height: currentlyPlayingPage.buttonSize
         smooth: true
-        source: "../../icons/toolbar/media-skip-forward.svg"
+        source: "../../../icons/toolbar/media-skip-forward.svg"
 
         MouseArea {
             onClicked: {

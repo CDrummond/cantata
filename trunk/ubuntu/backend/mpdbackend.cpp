@@ -175,16 +175,31 @@ void MPDBackend::playlistsUpdated() {
 }
 
 void MPDBackend::addArtist(int index, bool replace) {
-    QModelIndexList sourceIndexList=QModelIndexList() << artistsProxyModel.mapToSource(artistsProxyModel.index(index, 0));
-    QStringList fileNames = MusicLibraryModel::self()->filenames(sourceIndexList, false);
+    if (index<0) {
+        return;
+    }
+    QModelIndex artistIndex=artistsProxyModel.mapToSource(artistsProxyModel.index(index, 0));
+    if (!artistIndex.isValid()) {
+        return;
+    }
+    QStringList fileNames = MusicLibraryModel::self()->filenames(QModelIndexList() << artistIndex, false);
     if (!fileNames.isEmpty()) {
         emit add(fileNames, replace, 0);
     }
 }
 
 void MPDBackend::addArtistAlbum(int artist, int album, bool replace) {
+    if (artist<0 || album<0) {
+        return;
+    }
     QModelIndex artistIndex=artistsProxyModel.mapToSource(artistsProxyModel.index(artist, 0));
+    if (!artistIndex.isValid()) {
+        return;
+    }
     QModelIndex albumIndex=MusicLibraryModel::self()->index(album, 0, artistIndex);
+    if (!albumIndex.isValid()) {
+        return;
+    }
     QStringList fileNames = MusicLibraryModel::self()->filenames(QModelIndexList() << albumIndex, false);
     if (!fileNames.isEmpty()) {
         emit add(fileNames, replace, 0);
@@ -192,9 +207,21 @@ void MPDBackend::addArtistAlbum(int artist, int album, bool replace) {
 }
 
 void MPDBackend::addArtistAlbumSong(int artist, int album, int song, bool replace) {
+    if (artist<0 || album<0 || song<0) {
+        return;
+    }
     QModelIndex artistIndex=artistsProxyModel.mapToSource(artistsProxyModel.index(artist, 0));
+    if (!artistIndex.isValid()) {
+        return;
+    }
     QModelIndex albumIndex=MusicLibraryModel::self()->index(album, 0, artistIndex);
+    if (!albumIndex.isValid()) {
+        return;
+    }
     QModelIndex songIndex=MusicLibraryModel::self()->index(song, 0, albumIndex);
+    if (!songIndex.isValid()) {
+        return;
+    }
     QStringList fileNames = MusicLibraryModel::self()->filenames(QModelIndexList() << songIndex, false);
     if (!fileNames.isEmpty()) {
         emit add(fileNames, replace, 0);
@@ -202,23 +229,41 @@ void MPDBackend::addArtistAlbumSong(int artist, int album, int song, bool replac
 }
 
 void MPDBackend::addAlbum(int index, bool replace) {
-    QModelIndexList sourceIndexList=QModelIndexList() << albumsProxyModel.mapToSource(albumsProxyModel.index(index, 0));
-    QStringList fileNames = AlbumsModel::self()->filenames(sourceIndexList, false);
+    if (index<0) {
+        return;
+    }
+    QModelIndex albumIndex=artistsProxyModel.mapToSource(albumsProxyModel.index(index, 0));
+    if (!albumIndex.isValid()) {
+        return;
+    }
+    QStringList fileNames = AlbumsModel::self()->filenames(QModelIndexList() << albumIndex, false);
     if (!fileNames.isEmpty()) {
         emit add(fileNames, replace, 0);
     }
 }
 
 void MPDBackend::addAlbumSong(int album, int song, bool replace) {
+    if (album<0 || song<0) {
+        return;
+    }
     QModelIndex albumIndex=albumsProxyModel.mapToSource(albumsProxyModel.index(album, 0));
+    if (!albumIndex.isValid()) {
+        return;
+    }
     QModelIndex songIndex=AlbumsModel::self()->index(song, 0, albumIndex);
-    QStringList fileNames = MusicLibraryModel::self()->filenames(QModelIndexList() << songIndex, false);
+    if (!albumIndex.isValid()) {
+        return;
+    }
+    QStringList fileNames = AlbumsModel::self()->filenames(QModelIndexList() << songIndex, false);
     if (!fileNames.isEmpty()) {
         emit add(fileNames, replace, 0);
     }
 }
 
 void MPDBackend::loadPlaylist(int index) {
+    if (index<0) {
+        return;
+    }
     QModelIndex idx=playlistsProxyModel.mapToSource(playlistsProxyModel.index(index, 0));
     if (idx.isValid()) {
         PlaylistsModel::Item *i=static_cast<PlaylistsModel::Item *>(idx.internalPointer());
@@ -229,8 +274,17 @@ void MPDBackend::loadPlaylist(int index) {
 }
 
 void MPDBackend::addPlaylistSong(int playlist, int song, bool replace) {
+    if (playlist<0 || song<0) {
+        return;
+    }
     QModelIndex playlistIndex=playlistsProxyModel.mapToSource(playlistsProxyModel.index(playlist, 0));
+    if (!playlistIndex.isValid()) {
+        return;
+    }
     QModelIndex songIndex=PlaylistsModel::self()->index(song, 0, playlistIndex);
+    if (!songIndex.isValid()) {
+        return;
+    }
     QStringList fileNames = PlaylistsModel::self()->filenames(QModelIndexList() << songIndex);
     if (!fileNames.isEmpty()) {
         emit add(fileNames, replace, 0);

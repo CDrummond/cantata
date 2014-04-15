@@ -112,7 +112,7 @@ Page {
             onFirstImageButtonClicked: listViewPage.add(index, true)
             onSecondImageButtonClicked: listViewPage.add(index, false)
 
-            onClicked: listViewPage.onDelegateClicked(index, text)
+            onClicked: listViewPage.onDelegateClicked(index, model.titleText)
         }
     }
 

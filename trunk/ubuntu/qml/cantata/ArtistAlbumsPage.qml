@@ -118,7 +118,7 @@ Page {
                 }
 
                 onClicked: {
-                    artistSongsPage.title = text
+                    artistSongsPage.title = titleText
                     artistSongsPage.init(artistRow, index)
                     pageStack.push(artistSongsPage)
                 }

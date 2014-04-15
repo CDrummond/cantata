@@ -71,13 +71,8 @@ public:
     Q_INVOKABLE void previousSong();
     Q_INVOKABLE void clearPlayQueue() { emit clear(); }
     Q_INVOKABLE bool getIsConnected() { return MPDConnection::self()->isConnected(); }
-    Q_INVOKABLE void addArtist(int index, bool replace);
-    Q_INVOKABLE void addArtistAlbum(int artist, int album, bool replace);
-    Q_INVOKABLE void addArtistAlbumSong(int artist, int album, int songIndex, bool replace);
-    Q_INVOKABLE void addAlbum(int index, bool replace);
-    Q_INVOKABLE void addAlbumSong(int album, int song, bool replace);
+    Q_INVOKABLE void add(const QString &modelName, const QVariant &rows, bool replace);
     Q_INVOKABLE void loadPlaylist(int index);
-    Q_INVOKABLE void addPlaylistSong(int playlist, int song, bool replace);
     Q_INVOKABLE void removeFromPlayQueue(int index);
     Q_INVOKABLE bool getIsPlaying() { return MPDStatus::self()->state() == MPDState_Playing; }
     Q_INVOKABLE bool getIsStopped() { return MPDStatus::self()->state() == MPDState_Stopped; }

@@ -49,7 +49,7 @@ MainView {
 
         Component.onCompleted: {
             push(tabsPage)
-            push(settingsPage)
+            push(hostSettingsPage)
         }
 
         Page {

@@ -29,5 +29,6 @@
         <file>qml/cantata/ArtistAlbumsPage.qml</file>
         <file>qml/cantata/ArtistSongsPage.qml</file>
         <file>qml/cantata/PlaylistSongsPage.qml</file>
+        <file>qml/cantata/ListViewPage.qml</file>
     </qresource>
 </RCC>

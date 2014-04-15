@@ -29,6 +29,7 @@ import QtQuick 2.0
 import Ubuntu.Components 0.1
 import Ubuntu.Components.ListItems 0.1 as ListItem
 import 'qrc:/qml/cantata/'
+//import 'components'
  
 MainView {
     id: root
@@ -64,8 +65,24 @@ MainView {
                     id: artistTab
                     title: i18n.tr("Artists")
 
-                    page: ArtistPage {
+                    page: ListViewPage {
                         id: artistPage
+
+                        model: artistsProxyModel
+
+                        emptyViewVisible: !backend.artistsFound
+                        emptyViewText: i18n.tr("No artists found")
+
+                        function add(index, replace) {
+                            backend.addArtist(index, replace)
+                            pageStack.push(currentlyPlayingPage)
+                        }
+
+                        function onDelegateClicked(index, text) {
+                            artistAlbumsPage.title = text
+                            artistAlbumsPage.init(index)
+                            pageStack.push(artistAlbumsPage)
+                        }
                     }
                 }
 
@@ -73,8 +90,24 @@ MainView {
                     id: albumsTab
                     title: i18n.tr("Albums")
 
-                    page: AlbumPage {
+                    page: ListViewPage {
                         id: albumPage
+
+                        model: albumsProxyModel
+
+                        emptyViewVisible: !backend.albumsFound
+                        emptyViewText: i18n.tr("No albums found")
+
+                        function add(index, replace) {
+                            backend.addAlbum(index, replace)
+                            pageStack.push(currentlyPlayingPage)
+                        }
+
+                        function onDelegateClicked(index, text) {
+                            songsPage.title = text
+                            songsPage.init(index)
+                            pageStack.push(songsPage)
+                        }
                     }
                 }
 
@@ -82,8 +115,24 @@ MainView {
                     id: playlistsTab
                     title: i18n.tr("Playlists")
 
-                    page: PlaylistsPage {
+                    page: ListViewPage { //TODO: Disable second button!!!
                         id: playlistsPage
+
+                        model: playlistsProxyModel
+
+                        emptyViewVisible: !backend.playlistsFound
+                        emptyViewText: i18n.tr("No playlists found")
+
+                        function add(index, replace) {
+                            backend.loadPlaylist(index)
+                            pageStack.push(currentlyPlayingPage)
+                        }
+
+                        function onDelegateClicked(index, text) {
+                            playlistSongsPage.title = text
+                            playlistSongsPage.init(index)
+                            pageStack.push(playlistSongsPage)
+                        }
                     }
                 }
             }

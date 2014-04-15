@@ -49,7 +49,7 @@ MainView {
 
         Component.onCompleted: {
             push(tabsPage)
-            push(hostSettingsPage)
+            push(settingsPage)
         }
 
         Page {
@@ -148,8 +148,20 @@ MainView {
             id: currentlyPlayingPage
         }
 
+        SettingsPage {
+            id: settingsPage
+        }
+
         HostSettingsPage {
             id: hostSettingsPage
+        }
+
+        UiSettingsPage {
+            id: uiSettingsPage
+        }
+
+        PlaybackSettingsPage {
+            id: playbackSettingsPage
         }
 
         AboutPage {

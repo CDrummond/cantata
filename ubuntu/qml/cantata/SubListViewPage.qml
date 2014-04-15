@@ -104,7 +104,7 @@ Page {
         Action {
             id: settingsAction
             text: i18n.tr("Settings")
-            onTriggered: pageStack.push(hostSettingsPage)
+            onTriggered: pageStack.push(settingsPage)
         },
         Action {
             id: aboutAction
@@ -129,7 +129,7 @@ Page {
             iconSource: Qt.resolvedUrl("../../icons/toolbar/settings.svg")
             action: Action {
                 text: i18n.tr("Settings")
-                onTriggered: pageStack.push(hostSettingsPage)
+                onTriggered: pageStack.push(settingsPage)
             }
         }
 

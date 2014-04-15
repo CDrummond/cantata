@@ -3,7 +3,10 @@
         <file>qml/cantata/main.qml</file>
         <file>qml/cantata/AboutPage.qml</file>
         <file>qml/cantata/CurrentlyPlayingPage.qml</file>
+        <file>qml/cantata/SettingsPage.qml</file>
         <file>qml/cantata/HostSettingsPage.qml</file>
+        <file>qml/cantata/UiSettingsPage.qml</file>
+        <file>qml/cantata/PlaybackSettingsPage.qml</file>
         <file>icons/toolbar/settings.svg</file>
         <file>icons/toolbar/add.svg</file>
         <file>icons/toolbar/help.svg</file>

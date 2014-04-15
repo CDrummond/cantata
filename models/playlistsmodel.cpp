@@ -289,6 +289,7 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
                 return font;
             }
             return QVariant();
+        case ItemView::Role_TitleText:
         case ItemView::Role_MainText:
         case Qt::DisplayRole:
             if (multiCol) {

@@ -70,10 +70,7 @@ Page {
             for (var i = 0; i < rows.length; i++) {
                 newRows[i] = rows[i]
             }
-            console.log(rows.length)
             newRows[rows.length] = index
-
-            console.log("new: " + newRows)
 
             var component = Qt.createComponent("SubListViewPage.qml")
 
@@ -89,7 +86,6 @@ Page {
         this.rows = rows
         this.depth = depth
         subListView.model.rootIndex = -1
-        console.log(this.rows)
         for (var i = 0; i < this.rows.length; i++) {
             subListView.model.rootIndex = subListView.model.modelIndex(this.rows[i])
         }

@@ -79,9 +79,11 @@ MainView {
                         }
 
                         function onDelegateClicked(index, text) {
-                            artistAlbumsPage.title = text
-                            artistAlbumsPage.init(index)
-                            pageStack.push(artistAlbumsPage)
+                            var component = Qt.createComponent("SubListViewPage.qml")
+
+                            var page = component.createObject(parent, {"model": model, "title": text, "types": ["song", "album"], "originalType": "artist"})
+                            page.init([index], 2)
+                            pageStack.push(page)
                         }
                     }
                 }
@@ -104,9 +106,11 @@ MainView {
                         }
 
                         function onDelegateClicked(index, text) {
-                            songsPage.title = text
-                            songsPage.init(index)
-                            pageStack.push(songsPage)
+                            var component = Qt.createComponent("SubListViewPage.qml")
+
+                            var page = component.createObject(parent, {"model": model, "title": text, "types": ["song"], "originalType": "album"})
+                            page.init([index], 1)
+                            pageStack.push(page)
                         }
                     }
                 }
@@ -129,9 +133,11 @@ MainView {
                         }
 
                         function onDelegateClicked(index, text) {
-                            playlistSongsPage.title = text
-                            playlistSongsPage.init(index)
-                            pageStack.push(playlistSongsPage)
+                            var component = Qt.createComponent("SubListViewPage.qml")
+
+                            var page = component.createObject(parent, {"model": model, "title": text, "types": ["song"], "originalType": "playlist"})
+                            page.init([index], 1)
+                            pageStack.push(page)
                         }
                     }
                 }
@@ -148,22 +154,6 @@ MainView {
 
         AboutPage {
             id: aboutPage
-        }
-
-        SongsPage {
-            id: songsPage
-        }
-
-        ArtistAlbumsPage {
-            id: artistAlbumsPage
-        }
-
-        ArtistSongsPage {
-            id: artistSongsPage
-        }
-
-        PlaylistSongsPage {
-            id: playlistSongsPage
         }
     }
 }

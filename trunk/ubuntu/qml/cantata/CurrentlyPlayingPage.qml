@@ -110,6 +110,43 @@ Page {
                     right: parent.right
                 }
 
+                ListItem.Header { text: i18n.tr("Playback") }
+                ListItem.Standard {
+                    Label {
+                        anchors {
+                            left: parent.left
+                            leftMargin: units.gu(1)
+                            verticalCenter: parent.verticalCenter
+                        }
+
+                        color: volumeHeader.color
+
+                        text: i18n.tr("Random")
+                    }
+
+                    CheckBox {
+                        id: randomCheckBox
+                        anchors {
+                            right: parent.right
+                            rightMargin: units.gu(1)
+                            verticalCenter: parent.verticalCenter
+                        }
+
+                        checked: backend.isRandomOrder
+
+                        Connections {
+                            target: backend
+                            onIsRandomOrderChanged: randomCheckBox.checked = backend.isRandomOrder
+                        }
+
+                        onTriggered: {
+                            if (checked !== backend.isRandomOrder) {
+                                backend.setIsRandomOrder(checked)
+                            }
+                        }
+                    }
+                }
+
                 ListItem.Header { text: i18n.tr("Volume") }
                 ListItem.Standard {
                     anchors {

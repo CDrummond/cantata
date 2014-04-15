@@ -91,6 +91,7 @@ MPDBackend::MPDBackend(QObject *parent) : QObject(parent)
 
     connect(this, SIGNAL(add(const QStringList &, bool, quint8)), MPDConnection::self(), SLOT(add(const QStringList &, bool, quint8)));
     connect(this, SIGNAL(setVolume(int)), MPDConnection::self(), SLOT(setVolume(int)));
+    connect(this, SIGNAL(setRandomOrder(bool)), MPDConnection::self(), SLOT(setRandom(bool)));
     connect(this, SIGNAL(loadPlaylist(const QString &, bool)), MPDConnection::self(), SLOT(loadPlaylist(const QString &, bool)));
 
     connect(MusicLibraryModel::self(), SIGNAL(updated()), this, SLOT(artistsUpdated()));
@@ -150,6 +151,10 @@ void MPDBackend::onConnected(bool connected) {
 
 void MPDBackend::setMpdVolume(quint8 volume) {
     emit setVolume(volume);
+}
+
+void MPDBackend::setIsRandomOrder(bool random) {
+    emit setRandomOrder(random);
 }
 
 void MPDBackend::artistsUpdated() {
@@ -448,7 +453,7 @@ void MPDBackend::updateStatus(MPDStatus * const status)
     //Touch specific:
 
     emit onPlayingStatusChanged();
-    emit onMpdVolumeChanged();
+    emit onMpdStatusChanged();
 }
 
 void MPDBackend::updatePlayQueue(const QList<Song> &songs)

@@ -34,7 +34,7 @@ Page {
 
     visible: false
     width: parent.width
-    title: qsTr(i18n.tr("Settings %1")).arg(backend.isConnected?i18n.tr("(Connected)"):i18n.tr("(Not Connected)"))
+    title: qsTr(i18n.tr("Connection %1")).arg(backend.isConnected?i18n.tr("(Connected)"):i18n.tr("(Not Connected)"))
 
     property color textFieldColor: "#c2c2b8" //#f3f3e7 * 0.8 (#f3f3e7: label color)
 
@@ -54,7 +54,7 @@ Page {
 
     U1db.Database {
         id: connectionDatabase
-        path: appDir + "/connectionU1DbDatabase"
+        path: appDir + "/u1db"
     }
     U1db.Document {
         id: connectionDocument

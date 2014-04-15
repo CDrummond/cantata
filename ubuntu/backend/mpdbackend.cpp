@@ -158,8 +158,8 @@ void MPDBackend::setIsRandomOrder(bool random) {
 }
 
 void MPDBackend::artistsUpdated() {
-    // TODO: If we don't call sort here, the items ar eonly sorted string-wise. This
-    // means that 'Various Artists' is not placerd at the top, and "The XXX" is not sorted as "XXX"
+    // TODO: If we don't call sort here, the items are only sorted string-wise. This
+    // means that 'Various Artists' is not placed at the top, and "The XXX" is not sorted as "XXX"
     artistsProxyModel.sort();
     emit onArtistsModelChanged();
 }

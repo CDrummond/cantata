@@ -757,16 +757,9 @@ if (ENABLE_UBUNTU)
     add_custom_target(components_QmlFiles ALL SOURCES 
         ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/main.qml
         ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/AboutPage.qml
-        ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/ArtistPage.qml
-        ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/AlbumPage.qml
-        ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/PlaylistsPage.qml
         ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/CurrentlyPlayingPage.qml
         ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/HostSettingsPage.qml
         ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/ControlButtonsRow.qml
-        ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/SongsPage.qml
-        ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/ArtistAlbumsPage.qml
-        ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/ArtistSongsPage.qml
-        ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/PlaylistSongsPage.qml
         ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/ListViewPage.qml
         ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/SubListViewPage.qml
         ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/components/ListItemDelegate.qml

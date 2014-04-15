@@ -380,6 +380,7 @@ Page {
             firstButtonImageSource: "../../icons/toolbar/media-playback-start-light.svg"
             firstButtonShown: index === backend.getCurrentSongPlayqueuePosition()
 
+/*
             Connections {
                 target: backend
 
@@ -387,6 +388,7 @@ Page {
                     delegate.firstButtonShown = (index === backend.getCurrentSongPlayqueuePosition())
                 }
             }
+*/
         }
     }
 

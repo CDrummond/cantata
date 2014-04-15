@@ -758,7 +758,10 @@ if (ENABLE_UBUNTU)
         ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/main.qml
         ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/AboutPage.qml
         ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/CurrentlyPlayingPage.qml
+        ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/SettingsPage.qml
         ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/HostSettingsPage.qml
+        ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/UiSettingsPage.qml
+        ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/PlaybackSettingsPage.qml
         ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/ListViewPage.qml
         ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/SubListViewPage.qml
         ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/components/ControlButtonsRow.qml

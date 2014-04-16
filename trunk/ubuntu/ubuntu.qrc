@@ -25,6 +25,7 @@
         <file>icons/toolbar/speaker.svg</file>
         <file>qml/cantata/components/LabelVisual.qml</file>
         <file>qml/cantata/components/ListItemDelegate.qml</file>
+        <file>qml/cantata/components/PlayQueueListItemDelegate.qml</file>
         <file>qml/cantata/ListViewPage.qml</file>
         <file>qml/cantata/SubListViewPage.qml</file>
         <file>qml/cantata/components/ControlButtonsRow.qml</file>

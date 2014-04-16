@@ -144,7 +144,7 @@ Page {
                 id: delegate
                 text: model.mainText
                 subText: model.subText
-//                iconSource: showImage?(!(model.image.indexOf("qrc:") === 0)?"file:" + model.image:model.image):""
+                iconSource: ""===model.image ? "" : (!(model.image.indexOf("qrc:") === 0)?"file:" + model.image:model.image)
 
                 firstButtonImageSource: "../../icons/toolbar/media-playback-start-light.svg"
                 secondButtonImageSource: "../../icons/toolbar/add.svg"

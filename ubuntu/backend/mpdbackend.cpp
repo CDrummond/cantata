@@ -188,6 +188,11 @@ void MPDBackend::playlistsUpdated() {
 }
 
 void MPDBackend::add(const QString &modelName, const QVariant &rows, bool replace) {
+    if (QVariant::Int==rows.type() && "playlists"==modelName) {
+        loadPlaylist(rows.toInt(), replace);
+        return;
+    }
+    
     ProxyModel *proxy=0;
     ActionModel *model=0;
     if ("artists"==modelName) {
@@ -229,7 +234,7 @@ void MPDBackend::add(const QString &modelName, const QVariant &rows, bool replac
     }
 }
 
-void MPDBackend::loadPlaylist(int index) {
+void MPDBackend::loadPlaylist(int index, bool replace) {
     if (index<0) {
         return;
     }
@@ -237,7 +242,7 @@ void MPDBackend::loadPlaylist(int index) {
     if (idx.isValid()) {
         PlaylistsModel::Item *i=static_cast<PlaylistsModel::Item *>(idx.internalPointer());
         if (i->isPlaylist()) {
-            emit loadPlaylist(static_cast<PlaylistsModel::PlaylistItem*>(i)->name, true);
+            emit loadPlaylist(static_cast<PlaylistsModel::PlaylistItem*>(i)->name, replace);
         }
     }
 }

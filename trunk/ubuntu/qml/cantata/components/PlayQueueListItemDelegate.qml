@@ -86,11 +86,10 @@ Empty {
     property alias subText: subLabel.text
     property alias timeText: timeLabel.text
     property alias iconSource: iconImage.source
-    property alias buttonImageSource: image.source
 
     signal buttonClicked()
 
-    property bool buttonShown: image.source != ""
+    property bool currentTrack: false
     property bool iconShown: iconImage.source != ""
 
     UbuntuShape {
@@ -116,9 +115,9 @@ Empty {
         id: middleVisuals
         anchors {
             left: iconShown?iconShape.right:parent.left
-            right: buttonShown?image.left:parent.right
+            right: currentTrack?image.left:parent.right
             leftMargin: units.gu(iconShown?1:2)
-            rightMargin: units.gu(buttonShown?1:2)
+            rightMargin: units.gu(currentTrack?1:2)
             verticalCenter: parent.verticalCenter
         }
         height: childrenRect.height + label.anchors.topMargin + subLabel.anchors.bottomMargin
@@ -160,7 +159,8 @@ Empty {
         height: units.gu(3)
         smooth: true
         opacity: 0.9
-        visible: buttonShown
+        visible: currentTrack
+        source: "../../../icons/toolbar/media-playback-start-light.svg"
 
         anchors {
             right: parent.right

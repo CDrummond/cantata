@@ -186,6 +186,17 @@ QVariant DirViewModel::data(const QModelIndex &index, int role) const
         break;
     }
     #endif
+    #ifdef ENABLE_UBUNTU
+    case ItemView::Role_TitleText:
+        switch (item->type()) {
+        case DirViewItem::Type_Dir:
+            return static_cast<DirViewItemDir *>(item)->fullName();
+        default:
+        case DirViewItem::Type_File:
+            return item->data();
+        }
+    #endif
+    case ItemView::Role_MainText:
     case Qt::DisplayRole:
         return item->data();
     case Qt::ToolTipRole:
@@ -427,6 +438,10 @@ void DirViewModel::updateDirView(DirViewItemRoot *newroot, const QDateTime &dbUp
     if (!fromFile && (needToSave || updatedListing)) {
         toXML();
     }
+
+    #ifdef ENABLE_UBUNTU
+    emit updated();
+    #endif
 }
 
 void DirViewModel::updatingMpd()

@@ -81,7 +81,7 @@ MainView {
                             var component = Qt.createComponent("SubListViewPage.qml")
 
                             var page = component.createObject(parent, {"model": model, "title": text, "modelName": "artists"})
-                            page.init([index], 2)
+                            page.init([index])
                             pageStack.push(page)
                         }
                     }
@@ -108,7 +108,34 @@ MainView {
                             var component = Qt.createComponent("SubListViewPage.qml")
 
                             var page = component.createObject(parent, {"model": model, "title": text, "modelName": "albums"})
-                            page.init([index], 1)
+                            page.init([index])
+                            pageStack.push(page)
+                        }
+                    }
+                }
+
+                Tab {
+                    id: foldersTab
+                    title: i18n.tr("Folders")
+
+                    page: ListViewPage {
+                        id: foldersPage
+
+                        model: foldersProxyModel
+
+                        emptyViewVisible: !backend.foldersFound
+                        emptyViewText: i18n.tr("No folders found")
+
+                        function add(index, replace) {
+                            backend.add("folders", index, replace)
+                            pageStack.push(currentlyPlayingPage)
+                        }
+
+                        function onDelegateClicked(index, text) {
+                            var component = Qt.createComponent("SubListViewPage.qml")
+
+                            var page = component.createObject(parent, {"model": model, "title": text, "modelName": "folders"})
+                            page.init([index])
                             pageStack.push(page)
                         }
                     }
@@ -135,7 +162,7 @@ MainView {
                             var component = Qt.createComponent("SubListViewPage.qml")
 
                             var page = component.createObject(parent, {"model": model, "title": text, "modelName": "playlists"})
-                            page.init([index], 1)
+                            page.init([index])
                             pageStack.push(page)
                         }
                     }

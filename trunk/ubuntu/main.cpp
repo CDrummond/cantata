@@ -200,6 +200,7 @@ int main(int argc, char *argv[])
     view.rootContext()->setContextProperty("backend", &backend);
     view.rootContext()->setContextProperty("artistsProxyModel", backend.getArtistsProxyModel());
     view.rootContext()->setContextProperty("albumsProxyModel", backend.getAlbumsProxyModel());
+    view.rootContext()->setContextProperty("foldersProxyModel", backend.getFoldersProxyModel());
     view.rootContext()->setContextProperty("playlistsProxyModel", backend.getPlaylistsProxyModel());
     view.rootContext()->setContextProperty("playQueueProxyModel", backend.getPlayQueueProxyModel());
     view.rootContext()->setContextProperty("currentCover", CurrentCover::self());
@@ -207,8 +208,5 @@ int main(int argc, char *argv[])
     view.setResizeMode(QQuickView::SizeRootObjectToView);
     view.setSource(QUrl("qrc:qml/cantata/main.qml"));
     view.show();
-
-    AlbumsModel::self()->setEnabled(true);
-
     return app.exec();
 }

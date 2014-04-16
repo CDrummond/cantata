@@ -36,12 +36,24 @@ Page {
 
     anchors.fill: parent
 
+    property string modelName
     property alias model: listView.model
     property alias emptyViewVisible: emptyLabel.visible
     property alias emptyViewText: emptyLabel.text
 
-    function add(index, replace) {} //needs to be overridden!!!
-    function onDelegateClicked(index, text) {} //needs to be overridden!!!
+    function add(index, replace) {
+        backend.add(modelName, index, replace)
+        if (replace) {
+            pageStack.push(currentlyPlayingPage)
+        }
+    }
+
+    function onDelegateClicked(index, text) {
+        var component = Qt.createComponent("SubListViewPage.qml")
+        var page = component.createObject(parent, {"model": model, "title": text, "modelName": modelName})
+        page.init([index])
+        pageStack.push(page)
+    }
 
     actions: [
         Action {

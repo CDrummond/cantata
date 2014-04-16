@@ -55,8 +55,8 @@ bool MusicLibraryItemArtist::lessThan(const MusicLibraryItem *a, const MusicLibr
 }
 
 #ifdef ENABLE_UBUNTU
-static const QString constDefaultCover="qrc:/artist.png";
-static const QString constDefaultVariousCover="qrc:/variousartists.png";
+static const QString constDefaultCover=QLatin1String("qrc:/artist.svg");
+static const QString constDefaultVariousCover=QLatin1String("qrc:/variousartists.svg");
 #else
 static QPixmap *theDefaultIcon=0;
 static QPixmap *theVariousArtistsIcon=0;

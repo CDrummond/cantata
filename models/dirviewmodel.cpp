@@ -164,6 +164,10 @@ int DirViewModel::columnCount(const QModelIndex &) const
     return 1;
 }
 
+#ifdef ENABLE_UBUNTU
+static const QString constFolderIcon=QLatin1String("qrc:/folder.svg");
+#endif
+
 QVariant DirViewModel::data(const QModelIndex &index, int role) const
 {
     if (!index.isValid()) {
@@ -175,12 +179,12 @@ QVariant DirViewModel::data(const QModelIndex &index, int role) const
     switch (role) {
     #ifdef ENABLE_UBUNTU
     case ItemView::Role_Image:
-        return QString();
+        return DirViewItem::Type_Dir==item->type() ? constFolderIcon : QString();
     #else
     case Qt::DecorationRole: {
-        if (item->type() == DirViewItem::Type_Dir) {
+        if (DirViewItem::Type_Dir==item->type()) {
             return Icons::self()->folderIcon;
-        } else if (item->type() == DirViewItem::Type_File) {
+        } else if (DirViewItem::Type_File==item->type()) {
             return DirViewItemFile::Audio!=static_cast<DirViewItemFile *>(item)->fileType() ? Icons::self()->playlistIcon : Icons::self()->audioFileIcon;
         }
         break;

@@ -203,7 +203,7 @@ QModelIndex AlbumsModel::index(int row, int col, const QModelIndex &parent) cons
 }
 
 #ifdef ENABLE_UBUNTU
-static const QString constDefaultCover="qrc:/album.png";
+static const QString constDefaultCover=QLatin1String("qrc:/album.svg");
 #endif
 
 QVariant AlbumsModel::data(const QModelIndex &index, int role) const

@@ -45,7 +45,7 @@
 
 static MusicLibraryItemAlbum::CoverSize coverSize=MusicLibraryItemAlbum::CoverNone;
 #ifdef ENABLE_UBUNTU
-static const QString constDefaultCover="qrc:/album.png";
+static const QString constDefaultCover=QLatin1String("qrc:/album.svg");
 #else
 static QPixmap *theDefaultIcon=0;
 #endif

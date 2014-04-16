@@ -288,7 +288,10 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
         switch (role) {
         default:
             return ActionModel::data(index, role);
-        #ifndef ENABLE_UBUNTU
+        #ifdef ENABLE_UBUNTU
+        case ItemView::Role_Image:
+            return QString();
+        #else
         case Qt::DecorationRole:
             return Song::Playlist==si->type ? Icons::self()->playlistIcon : Icons::self()->audioFileIcon;
         #endif

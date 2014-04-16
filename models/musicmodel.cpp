@@ -233,6 +233,9 @@ QVariant MusicModel::data(const QModelIndex &index, int role) const
             }
         #endif
         default:
+            #ifdef ENABLE_UBUNTU
+            return QString();
+            #endif
             break;
         }
         return v;

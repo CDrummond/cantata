@@ -173,7 +173,10 @@ QVariant DirViewModel::data(const QModelIndex &index, int role) const
     DirViewItem *item = static_cast<DirViewItem *>(index.internalPointer());
 
     switch (role) {
-    #ifndef ENABLE_UBUNTU
+    #ifdef ENABLE_UBUNTU
+    case ItemView::Role_Image:
+        return QString();
+    #else
     case Qt::DecorationRole: {
         if (item->type() == DirViewItem::Type_Dir) {
             return Icons::self()->folderIcon;

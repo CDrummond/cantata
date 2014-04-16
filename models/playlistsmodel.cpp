@@ -260,6 +260,10 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
         PlaylistItem *pl=static_cast<PlaylistItem *>(item);
 
         switch(role) {
+        #ifdef ENABLE_UBUNTU
+        case ItemView::Role_Image:
+            return QString();
+        #endif
         case GroupedView::Role_IsCollection:
             return true;
         case GroupedView::Role_CollectionId:
@@ -341,6 +345,10 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
         SongItem *s=static_cast<SongItem *>(item);
 
         switch (role) {
+        #ifdef ENABLE_UBUNTU
+        case ItemView::Role_Image:
+            return QString();
+        #endif
         case GroupedView::Role_IsCollection:
             return false;
         case GroupedView::Role_CollectionId:

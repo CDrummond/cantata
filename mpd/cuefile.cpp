@@ -194,6 +194,7 @@ static const QList<QTextCodec *> & codecList()
             codecs.append(codec);
         }
 
+        #ifndef ENABLE_UBUNTU
         QStringList configCodecs=Settings::self()->cueFileCodecs();
         foreach (const QString &cfg, configCodecs) {
             codec=QTextCodec::codecForName(cfg.toLatin1());
@@ -201,6 +202,7 @@ static const QList<QTextCodec *> & codecList()
                 codecs.append(codec);
             }
         }
+        #endif
     }
     return codecs;
 }

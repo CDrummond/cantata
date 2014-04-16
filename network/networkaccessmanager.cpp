@@ -174,7 +174,11 @@ GLOBAL_STATIC(NetworkAccessManager, instance)
 NetworkAccessManager::NetworkAccessManager(QObject *parent)
     : BASE_NETWORK_ACCESS_MANAGER(parent)
 {
+    #ifdef ENABLE_UBUNTU
+    enabled=true;
+    #else
     enabled=Settings::self()->networkAccessEnabled();
+    #endif
     //#ifdef ENABLE_KDE_SUPPORT
     // TODO: Not sure if NetworkProxyFactory is required if building KDE support
     // with KIO::Integration::AccessManager. But, as we dont use that anyway...

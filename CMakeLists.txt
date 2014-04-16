@@ -288,7 +288,7 @@ if (MSVC)
 endif (MSVC)
 
 set(CANTATA_CORE_SRCS
-    gui/covers.cpp gui/currentcover.cpp gui/settings.cpp
+    gui/covers.cpp gui/currentcover.cpp
     models/musiclibraryitemroot.cpp models/musiclibraryitemartist.cpp models/musiclibraryitemalbum.cpp models/musiclibrarymodel.cpp
     models/musiclibraryproxymodel.cpp models/playlistsmodel.cpp models/playlistsproxymodel.cpp models/playqueuemodel.cpp
     models/playqueueproxymodel.cpp models/dirviewmodel.cpp models/dirviewproxymodel.cpp models/dirviewitem.cpp models/dirviewitemdir.cpp
@@ -297,10 +297,9 @@ set(CANTATA_CORE_SRCS
     mpd/mpdconnection.cpp mpd/mpdparseutils.cpp mpd/mpdstats.cpp mpd/mpdstatus.cpp mpd/song.cpp mpd/cuefile.cpp
     network/networkaccessmanager.cpp network/networkproxyfactory.cpp
     streams/streamfetcher.cpp
-    devices/deviceoptions.cpp
     http/httpserver.cpp)
 set(CANTATA_CORE_MOC_HDRS
-    gui/covers.h gui/currentcover.h gui/settings.h
+    gui/covers.h gui/currentcover.h
     models/musiclibrarymodel.h models/musiclibraryproxymodel.h models/playlistsmodel.h models/playlistsproxymodel.h models/playqueuemodel.h
     models/playqueueproxymodel.h models/dirviewmodel.h models/dirviewproxymodel.h models/albumsmodel.h models/actionmodel.h
     models/multimusicmodel.h models/searchmodel.h
@@ -309,11 +308,11 @@ set(CANTATA_CORE_MOC_HDRS
     streams/streamfetcher.h)
 
 set(CANTATA_SRCS ${CANTATA_CORE_SRCS}
-    gui/application.cpp gui/initialsettingswizard.cpp gui/mainwindow.cpp gui/preferencesdialog.cpp
-    gui/filesettings.cpp gui/interfacesettings.cpp gui/playbacksettings.cpp
-    gui/serversettings.cpp gui/librarypage.cpp gui/albumspage.cpp gui/folderpage.cpp gui/playlistspage.cpp gui/trayitem.cpp
-    gui/cachesettings.cpp gui/coverdialog.cpp gui/searchpage.cpp gui/stdactions.cpp
+    gui/settings.cpp gui/application.cpp gui/initialsettingswizard.cpp gui/mainwindow.cpp gui/preferencesdialog.cpp
+    gui/filesettings.cpp gui/interfacesettings.cpp gui/playbacksettings.cpp gui/serversettings.cpp gui/librarypage.cpp gui/albumspage.cpp
+    gui/folderpage.cpp gui/playlistspage.cpp gui/trayitem.cpp gui/cachesettings.cpp gui/coverdialog.cpp gui/searchpage.cpp gui/stdactions.cpp
     mpd/mpduser.cpp
+    devices/deviceoptions.cpp
     widgets/treeview.cpp widgets/listview.cpp widgets/itemview.cpp widgets/autohidingsplitter.cpp widgets/timeslider.cpp
     widgets/actionlabel.cpp widgets/playqueueview.cpp widgets/groupedview.cpp widgets/actionitemdelegate.cpp widgets/textbrowser.cpp
     widgets/volumeslider.cpp widgets/genrecombo.cpp widgets/menubutton.cpp widgets/icons.cpp
@@ -325,9 +324,9 @@ set(CANTATA_SRCS ${CANTATA_CORE_SRCS}
     context/wikipediaengine.cpp context/wikipediasettings.cpp context/othersettings.cpp context/contextsettings.cpp context/togglelist.cpp
     context/lastfmengine.cpp context/metaengine.cpp context/backdropcreator.cpp)
 set(CANTATA_MOC_HDRS ${CANTATA_CORE_MOC_HDRS}
-    gui/initialsettingswizard.h gui/mainwindow.h gui/folderpage.h gui/librarypage.h gui/albumspage.h
-    gui/playlistspage.h gui/playbacksettings.h gui/serversettings.h gui/preferencesdialog.h gui/filesettings.h
-    gui/interfacesettings.h gui/cachesettings.h gui/trayitem.h gui/coverdialog.h gui/searchpage.h
+    gui/settings.h gui/initialsettingswizard.h gui/mainwindow.h gui/folderpage.h gui/librarypage.h gui/albumspage.h gui/playlistspage.h
+    gui/playbacksettings.h gui/serversettings.h gui/preferencesdialog.h gui/filesettings.h gui/interfacesettings.h gui/cachesettings.h
+    gui/trayitem.h gui/coverdialog.h gui/searchpage.h
     widgets/treeview.h widgets/listview.h widgets/itemview.h widgets/autohidingsplitter.h widgets/timeslider.h widgets/actionlabel.h
     widgets/playqueueview.h widgets/groupedview.h widgets/actionitemdelegate.h widgets/volumeslider.h
     widgets/genrecombo.h widgets/searchwidget.h widgets/messageoverlay.h widgets/servicestatuslabel.h widgets/stretchheaderview.h

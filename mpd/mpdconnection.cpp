@@ -226,8 +226,10 @@ MPDConnection::MPDConnection()
     #ifdef QT_QTDBUS_FOUND
     connect(PowerManagement::self(), SIGNAL(resuming()), this, SLOT(reconnect()));
     #endif
+    #ifndef ENABLE_UBUNTU
     maxFilesPerAddCommand=Settings::self()->mpdListSize();
     alwaysUseLsInfo=Settings::self()->alwaysUseLsInfo();
+    #endif
 }
 
 MPDConnection::~MPDConnection()

@@ -367,6 +367,7 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
         }
         Covers::self()->requestImage(s);
         covers.insert(s.key, QString());
+        coverRequests.insert(s.key, s);
         return constDefaultCover;
     }
     case Role_Time: {
@@ -869,6 +870,10 @@ void PlayQueueModel::update(const QList<Song> &songList)
 {
     if (songList.isEmpty()) {
         Song::clearKeyStore(MPDParseUtils::Loc_PlayQueue);
+        #ifdef ENABLE_UBUNTU
+        covers.clear();
+        coverRequests.clear();
+        #endif
     }
 
     #ifndef ENABLE_UBUNTU
@@ -964,6 +969,7 @@ void PlayQueueModel::update(const QList<Song> &songList)
     if (!removedKeys.isEmpty()) {
         foreach (quint16 k, removedKeys) {
             covers.remove(k);
+            coverRequests.remove(k);
         }
     }
     #else
@@ -1243,29 +1249,47 @@ void PlayQueueModel::setCover(const Song &song, const QImage &img, const QString
 {
     Q_UNUSED(img)
     #ifdef ENABLE_UBUNTU
-    if (song.key==Song::constNullKey || file.isEmpty()) {
+    if (file.isEmpty() || coverRequests.isEmpty()) {
         return;
     }
-    QMap<quint16, QString>::ConstIterator it=covers.find(song.key);
-    if (it!=covers.end() && it.value().isEmpty()) {
-        covers[song.key]="file://"+file;
-        int start=-1;
-        int end=-1;
-        for (int i=0; i<songs.size(); ++i) {
-            if (songs.at(i).key==song.key) {
-                if (-1==start) {
-                    start=end=i;
-                } else {
-                    end++;
+    Song s=song;
+    if (song.key==Song::constNullKey) {
+        // This request is not from the playqueue - but the album might be in the playqueue...
+        // So, see fi we have an outstandnig request for the album an dget its key...
+        QMap<quint16, Song>::ConstIterator it=coverRequests.constBegin();
+        QMap<quint16, Song>::ConstIterator end=coverRequests.constEnd();
+        for (; it!=end; ++it) {
+            if (song.albumArtist()==it.value().albumArtist() && song.album==it.value().album) {
+                s.key=it.key();
+                coverRequests.remove(it.key());
+                break;
+            }
+        }
+    }
+
+    if (s.key!=Song::constNullKey) {
+        QMap<quint16, QString>::ConstIterator it=covers.find(s.key);
+        if (it!=covers.end() && it.value().isEmpty()) {
+            coverRequests.remove(it.key());
+            covers[song.key]="file://"+file;
+            int start=-1;
+            int end=-1;
+            for (int i=0; i<songs.size(); ++i) {
+                if (songs.at(i).key==s.key) {
+                    if (-1==start) {
+                        start=end=i;
+                    } else {
+                        end++;
+                    }
+                } else if (-1!=end) {
+                    emit dataChanged(index(start, 0), index(end, columnCount(QModelIndex())-1));
+                    start=end=-1;
                 }
-            } else if (-1!=end) {
+            }
+            if (-1!=end) {
                 emit dataChanged(index(start, 0), index(end, columnCount(QModelIndex())-1));
                 start=end=-1;
             }
-        }
-        if (-1!=end) {
-            emit dataChanged(index(start, 0), index(end, columnCount(QModelIndex())-1));
-            start=end=-1;
         }
     }
     #else

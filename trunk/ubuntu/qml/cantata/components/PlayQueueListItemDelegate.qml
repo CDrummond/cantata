@@ -111,13 +111,35 @@ Empty {
         }
     }
 
+    Image {
+        id: image
+        width: units.gu(3)
+        height: units.gu(3)
+        smooth: true
+        opacity: 0.9
+        visible: currentTrack
+        source: "../../../icons/toolbar/media-playback-start-light.svg"
+
+        anchors {
+            left: parent.left
+            verticalCenter: parent.verticalCenter
+        }
+
+        MouseArea {
+            id: firstTarget
+            onClicked: buttonClicked()
+            anchors.fill: parent
+            preventStealing: true
+        }
+    }
+   
     Item  {
         id: middleVisuals
         anchors {
             left: iconShown?iconShape.right:parent.left
-            right: currentTrack?image.left:parent.right
+            right: parent.right
             leftMargin: units.gu(iconShown?1:2)
-            rightMargin: units.gu(currentTrack?1:2)
+            rightMargin: units.gu(2)
             verticalCenter: parent.verticalCenter
         }
         height: childrenRect.height + label.anchors.topMargin + subLabel.anchors.bottomMargin
@@ -125,6 +147,7 @@ Empty {
         LabelVisual {
             id: label
             selected: playQueueListItemDelegate.selected
+            font.bold: currentTrack
             anchors {
                 top: parent.top
                 left: parent.left
@@ -150,30 +173,6 @@ Empty {
                 top: subLabel.top
                 right: parent.right
             }
-        }
-    }
-
-    Image {
-        id: image
-        width: units.gu(3)
-        height: units.gu(3)
-        smooth: true
-        opacity: 0.9
-        visible: currentTrack
-        source: "../../../icons/toolbar/media-playback-start-light.svg"
-
-        anchors {
-            right: parent.right
-            rightMargin: units.gu(2)
-            verticalCenter: parent.verticalCenter
-        }
-
-        MouseArea {
-            id: firstTarget
-            onClicked: buttonClicked()
-
-            anchors.fill: parent
-            preventStealing: true
         }
     }
 }

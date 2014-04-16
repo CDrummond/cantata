@@ -200,6 +200,7 @@ private:
     QStack<UndoItem> redoStack;
     #ifdef ENABLE_UBUNTU
     mutable QMap<quint16, QString> covers;
+    mutable QMap<quint16, Song> coverRequests;
     #else
     quint32 dropAdjust;
     Action *removeDuplicatesAction;

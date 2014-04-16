@@ -16,9 +16,10 @@
         <file>icons/toolbar/media-skip-forward.svg</file>
         <file>icons/toolbar/media-playback-pause.svg</file>
         <file alias="icons/cantata.svg">../icons/cantata.svg</file>
-        <file alias="album.png">icons/items/album.png</file>
-        <file alias="artist.png">../icons/view-media-artist128.png</file>
-        <file alias="variousartists.png">../icons/hi128-action-cantata-view-media-artist-various.png</file>
+        <file alias="album.svg">icons/items/album.svg</file>
+        <file alias="artist.svg">icons/items/artist.svg</file>
+        <file alias="folder.svg">icons/items/folder.svg</file>
+        <file alias="variousartists.svg">icons/items/variousartists.svg</file>
         <file>icons/toolbar/navigation-menu.svg</file>
         <file>icons/toolbar/clear.svg</file>
         <file>icons/toolbar/speaker.svg</file>

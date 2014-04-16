@@ -2,6 +2,7 @@
 ** Cantata
 **
 ** Copyright (c) 2014 Niklas Wenzel <nikwen.developer@gmail.com>
+ * Copyright (c) 2014 Craig Drummond <craig.p.drummond@gmail.com>
 **
 ** $QT_BEGIN_LICENSE:GPL$
 ** This program is free software; you can redistribute it and/or modify
@@ -365,10 +366,11 @@ Page {
             bottom: parent.bottom
         }
 
-        delegate: ListItemDelegate {
+        delegate: PlayQueueListItemDelegate {
             id: delegate
             text: model.mainText
             subText: model.subText
+            timeText: model.time
             iconSource: model.image
             confirmRemoval: true
             removable: true
@@ -378,14 +380,14 @@ Page {
 
             onClicked: backend.startPlayingSongAtPos(index)
 
-            firstButtonImageSource: "../../icons/toolbar/media-playback-start-light.svg"
-            firstButtonShown: index === backend.getCurrentSongPlayqueuePosition()
+            buttonImageSource: "../../icons/toolbar/media-playback-start-light.svg"
+            buttonShown: index === backend.getCurrentSongPlayqueuePosition()
 
             Connections {
                 target: backend
 
                 onCurrentSongPlayqueuePositionChanged: {
-                    delegate.firstButtonShown = (index === backend.getCurrentSongPlayqueuePosition())
+                    delegate.buttonShown = (index === backend.getCurrentSongPlayqueuePosition())
                 }
             }
         }

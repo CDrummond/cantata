@@ -156,6 +156,8 @@ private Q_SLOTS:
     void undo();
     void redo();
     void removeDuplicates();
+    // Touch version...
+    void setCover(const Song &song, const QImage &img, const QString &file);
 
 Q_SIGNALS:
     void stop(bool afterCurrent);
@@ -196,7 +198,9 @@ private:
     Command lastCommand;
     QStack<UndoItem> undoStack;
     QStack<UndoItem> redoStack;
-    #ifndef ENABLE_UBUNTU
+    #ifdef ENABLE_UBUNTU
+    mutable QMap<quint16, QString> covers;
+    #else
     quint32 dropAdjust;
     Action *removeDuplicatesAction;
     Action *undoAction;

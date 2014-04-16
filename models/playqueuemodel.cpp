@@ -319,6 +319,9 @@ static QString basicPath(const Song &song)
 }
 
 #ifdef ENABLE_UBUNTU
+static const int Role_Time=Qt::UserRole+500;
+static const QString constDefaultCover=QLatin1String("qrc:/album.svg");
+
 //Expose role names, so that they can be accessed via QML
 QHash<int, QByteArray> PlayQueueModel::roleNames() const
 {
@@ -326,12 +329,9 @@ QHash<int, QByteArray> PlayQueueModel::roleNames() const
     roles[ItemView::Role_MainText] = "mainText";
     roles[ItemView::Role_SubText] = "subText";
     roles[ItemView::Role_Image] = "image";
+    roles[Role_Time] = "time";
     return roles;
 }
-#endif
-
-#ifdef ENABLE_UBUNTU
-static const QString constDefaultCover=QLatin1String("qrc:/album.svg");
 #endif
 
 QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
@@ -368,6 +368,10 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
         Covers::self()->requestImage(s);
         covers.insert(s.key, QString());
         return constDefaultCover;
+    }
+    case Role_Time: {
+        const Song &s=songs.at(index.row());
+        return Utils::formatTime(s.time);
     }
     #endif
     case GroupedView::Role_IsCollection:

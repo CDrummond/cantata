@@ -38,7 +38,6 @@ Page {
     visible: false
 
     property variant rows
-    property int depth: -1
     property string modelName
     property alias model: visualDataModel.model
 
@@ -56,26 +55,23 @@ Page {
     }
 
     function onDelegateClicked(index, text) {
-        if (depth > 1) {
-            var newRows = []
-            for (var i = 0; i < rows.length; i++) {
-                newRows[i] = rows[i]
-            }
-            newRows[rows.length] = index
+        var newRows = []
+        for (var i = 0; i < rows.length; i++) {
+            newRows[i] = rows[i]
+        }
+        newRows[rows.length] = index
 
-            var component = Qt.createComponent("SubListViewPage.qml")
+        var component = Qt.createComponent("SubListViewPage.qml")
 
-            if (component.status == Component.Ready) {
-                var page = component.createObject(parent, {"model": model, "title": text, "modelName": modelName})
-                page.init(newRows, depth - 1)
-                pageStack.push(page)
-            }
+        if (component.status == Component.Ready) {
+            var page = component.createObject(parent, {"model": model, "title": text, "modelName": modelName})
+            page.init(newRows)
+            pageStack.push(page)
         }
     }
 
-    function init(rows, depth) {
+    function init(rows) {
         this.rows = rows
-        this.depth = depth
         subListView.model.rootIndex = -1
         for (var i = 0; i < this.rows.length; i++) {
             subListView.model.rootIndex = subListView.model.modelIndex(this.rows[i])
@@ -155,7 +151,7 @@ Page {
                 onFirstImageButtonClicked: subListViewPage.add(index, true)
                 onSecondImageButtonClicked: subListViewPage.add(index, false)
 
-                onClicked: subListViewPage.onDelegateClicked(index, model.titleText)
+                onClicked: model.hasChildren ? subListViewPage.onDelegateClicked(index, model.titleText) : "";
             }
         }
     }

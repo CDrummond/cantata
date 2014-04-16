@@ -25,11 +25,19 @@
 #include "stdactions.h"
 #include "itemview.h"
 
+#ifdef ENABLE_UBUNTU
+static const int Role_HasChildren = Qt::UserRole+500;
+#endif
+
 QVariant ActionModel::data(const QModelIndex &index, int role) const
 {
     QVariant v;
+    #ifdef ENABLE_UBUNTU
+    if (Role_HasChildren==role) {
+        return rowCount(index)>0;
+    }
+    #else
     Q_UNUSED(index)
-    #ifndef ENABLE_UBUNTU // Should touch version return a list of action names?
     if (ItemView::Role_Actions==role) {
         v.setValue<QList<Action *> >(QList<Action *>() << StdActions::self()->replacePlayQueueAction << StdActions::self()->addToPlayQueueAction);
     }
@@ -46,6 +54,7 @@ QHash<int, QByteArray> ActionModel::roleNames() const
     roles[ItemView::Role_SubText] = "subText";
     roles[ItemView::Role_TitleText] = "titleText";
     roles[ItemView::Role_Image] = "image";
+    roles[Role_HasChildren] = "hasChildren";
     return roles;
 }
 #endif

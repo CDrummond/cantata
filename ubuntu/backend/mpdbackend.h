@@ -38,6 +38,8 @@
 #include "musiclibraryproxymodel.h"
 #include "albumsproxymodel.h"
 #include "playlistsproxymodel.h"
+#include "dirviewmodel.h"
+#include "dirviewproxymodel.h"
 
 class MPDBackend : public QObject
 {
@@ -60,6 +62,7 @@ class MPDBackend : public QObject
     Q_PROPERTY(QString playQueueStatus READ getPlayQueueStatus NOTIFY onPlayQueueChanged)
     Q_PROPERTY(bool artistsFound READ getArtistsFound NOTIFY onArtistsModelChanged)
     Q_PROPERTY(bool albumsFound READ getAlbumsFound NOTIFY onAlbumsModelChanged)
+    Q_PROPERTY(bool foldersFound READ getFoldersFound NOTIFY onFoldersModelChanged)
     Q_PROPERTY(bool playlistsFound READ getPlaylistsFound NOTIFY onPlaylistsModelChanged)
 
 public:
@@ -87,6 +90,7 @@ public:
     Q_INVOKABLE bool isPlayQueueEmpty() { return playQueueModel.rowCount() == 0; }
     Q_INVOKABLE bool getArtistsFound() { return MusicLibraryModel::self()->rowCount()>0; }
     Q_INVOKABLE bool getAlbumsFound() { return AlbumsModel::self()->rowCount()>0; }
+    Q_INVOKABLE bool getFoldersFound() { return DirViewModel::self()->rowCount()>0; }
     Q_INVOKABLE bool getPlaylistsFound() { return PlaylistsModel::self()->rowCount()>0; }
     Q_INVOKABLE bool getIsRandomOrder() { return MPDStatus::self()->random(); }
     Q_INVOKABLE void setIsRandomOrder(bool random);
@@ -94,6 +98,7 @@ public:
     PlayQueueProxyModel * getPlayQueueProxyModel() { return &playQueueProxyModel; }
     MusicLibraryProxyModel * getArtistsProxyModel() { return &artistsProxyModel; }
     AlbumsProxyModel * getAlbumsProxyModel() { return &albumsProxyModel; }
+    DirViewProxyModel * getFoldersProxyModel() { return &foldersProxyModel; }
     PlaylistsProxyModel * getPlaylistsProxyModel() { return &playlistsProxyModel; }
 
 Q_SIGNALS:
@@ -103,6 +108,7 @@ Q_SIGNALS:
     void onPlayQueueChanged();
     void onArtistsModelChanged();
     void onAlbumsModelChanged();
+    void onFoldersModelChanged();
     void onPlaylistsModelChanged();
     void onMpdStatusChanged();
 
@@ -115,6 +121,7 @@ public Q_SLOTS:
     void mpdConnectionStateChanged(bool connected);
     void artistsUpdated();
     void albumsUpdated();
+    void foldersUpdated();
     void playlistsUpdated();
 
 Q_SIGNALS:
@@ -129,6 +136,7 @@ Q_SIGNALS:
     void startPlayingSongId(qint32);
     void goToNextSong();
     void goToPreviousSong();
+    void loadFolders();
     void loadLibrary();
     void add(const QStringList &files, bool replace, quint8 priorty); // Songs
     void loadPlaylist(const QString &name, bool replace);
@@ -154,6 +162,7 @@ private:
     PlayQueueProxyModel playQueueProxyModel;
     MusicLibraryProxyModel artistsProxyModel;
     AlbumsProxyModel albumsProxyModel;
+    DirViewProxyModel foldersProxyModel;
     PlaylistsProxyModel playlistsProxyModel;
 };
 

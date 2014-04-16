@@ -41,12 +41,19 @@ MPDBackend::MPDBackend(QObject *parent) : QObject(parent)
     connect(this, SIGNAL(goToNextSong()), MPDConnection::self(), SLOT(goToNext()));
     connect(this, SIGNAL(goToPreviousSong()), MPDConnection::self(), SLOT(goToPrevious()));
     connect(this, SIGNAL(loadLibrary()), MPDConnection::self(), SLOT(loadLibrary()));
+    connect(this, SIGNAL(loadFolders()), MPDConnection::self(), SLOT(loadFolders()));
 
     connect(MPDConnection::self(), SIGNAL(stateChanged(bool)), this, SLOT(onConnected(bool)));
+
+    // TODO: These need to be confiurable vi QML UI!
+    AlbumsModel::self()->setEnabled(true);
+    DirViewModel::self()->setEnabled(true);
+    PlaylistsModel::self()->setEnabled(true);
 
     playQueueProxyModel.setSourceModel(&playQueueModel);
     artistsProxyModel.setSourceModel(MusicLibraryModel::self());
     albumsProxyModel.setSourceModel(AlbumsModel::self());
+    foldersProxyModel.setSourceModel(DirViewModel::self());
     playlistsProxyModel.setSourceModel(PlaylistsModel::self());
 
 //    connect(MPDConnection::self(), SIGNAL(outputsUpdated(const QList<Output> &)), this, SLOT(outputsUpdated(const QList<Output> &)));
@@ -96,6 +103,7 @@ MPDBackend::MPDBackend(QObject *parent) : QObject(parent)
 
     connect(MusicLibraryModel::self(), SIGNAL(updated()), this, SLOT(artistsUpdated()));
     connect(AlbumsModel::self(), SIGNAL(updated()), this, SLOT(albumsUpdated()));
+    connect(DirViewModel::self(), SIGNAL(updated()), this, SLOT(foldersUpdated()));
     connect(PlaylistsModel::self(), SIGNAL(updated()), this, SLOT(playlistsUpdated()));
 
     MPDConnection::self()->start();
@@ -157,20 +165,25 @@ void MPDBackend::setIsRandomOrder(bool random) {
     emit setRandomOrder(random);
 }
 
+// TODO: Why are the sorts required below? e.g. If we don't call sort, the items are only sorted string-wise. This
+// means that 'Various Artists' is not placed at the top, and "The XXX" is not sorted as "XXX"
 void MPDBackend::artistsUpdated() {
-    // TODO: If we don't call sort here, the items are only sorted string-wise. This
-    // means that 'Various Artists' is not placed at the top, and "The XXX" is not sorted as "XXX"
     artistsProxyModel.sort();
     emit onArtistsModelChanged();
 }
 
 void MPDBackend::albumsUpdated() {
-    //albumsProxyModel.sort();
+    albumsProxyModel.sort();
     emit onAlbumsModelChanged();
 }
 
+void MPDBackend::foldersUpdated() {
+    foldersProxyModel.sort();
+    emit onFoldersModelChanged();
+}
+
 void MPDBackend::playlistsUpdated() {
-    //playlistsProxyModel.sort();
+    playlistsProxyModel.sort();
     emit onPlaylistsModelChanged();
 }
 
@@ -183,9 +196,12 @@ void MPDBackend::add(const QString &modelName, const QVariant &rows, bool replac
     } else if ("albums"==modelName) {
         proxy=&albumsProxyModel;
         model=AlbumsModel::self();
-    }  else if ("playlists"==modelName) {
+    } else if ("playlists"==modelName) {
         proxy=&playlistsProxyModel;
         model=PlaylistsModel::self();
+    } else if ("folders"==modelName) {
+        proxy=&foldersProxyModel;
+        model=DirViewModel::self();
     }
 
     if (model) {
@@ -323,6 +339,9 @@ void MPDBackend::updateStats() //Does nothing right now...
         }
         if (!MusicLibraryModel::self()->fromXML()) {
             emit loadLibrary();
+        }
+        if (DirViewModel::self()->isEnabled() && !DirViewModel::self()->fromXML()) {
+            emit loadFolders();
         }
 //        albumsPage->goTop();
 //        libraryPage->refresh();

@@ -74,7 +74,7 @@ Page {
         spacing: units.gu(1)
         width: Math.round(parent.width / 1.3)
         height: parent.height - parent.header.height
-        y: parent.header.height + units.gu(2)
+        y: units.gu(2)
         anchors.horizontalCenter: parent.horizontalCenter
 
         Component.onCompleted: {

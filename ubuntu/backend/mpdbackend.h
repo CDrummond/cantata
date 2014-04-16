@@ -48,7 +48,9 @@ class MPDBackend : public QObject
     Q_PROPERTY(bool isPlaying READ getIsPlaying NOTIFY onPlayingStatusChanged)
     Q_PROPERTY(bool isStopped READ getIsStopped NOTIFY onPlayingStatusChanged)
     Q_PROPERTY(bool isPaused READ getIsPaused NOTIFY onPlayingStatusChanged)
-
+    Q_PROPERTY(int crossfade READ getCrossfade NOTIFY onPlayingStatusChanged)
+    Q_PROPERTY(QStringList outputs READ getOutputs NOTIFY outputsChanged)
+    Q_PROPERTY(QString replayGain READ getReplayGain NOTIFY replayGainChanged)
 
     //Information about current song
     Q_PROPERTY(QString currentSongMainText READ getCurrentSongMainText NOTIFY onCurrentSongChanged)
@@ -94,6 +96,11 @@ public:
     Q_INVOKABLE bool getPlaylistsFound() { return PlaylistsModel::self()->rowCount()>0; }
     Q_INVOKABLE bool getIsRandomOrder() { return MPDStatus::self()->random(); }
     Q_INVOKABLE void setIsRandomOrder(bool random);
+    Q_INVOKABLE void getPlaybackSettings();
+    Q_INVOKABLE void setPlaybackSettings(const QString &replayGain, int crossfade, const QStringList &outputs);
+    Q_INVOKABLE int getCrossfade() { return MPDStatus::self()->crossFade(); }
+    Q_INVOKABLE QStringList getOutputs () { return outputSettings; }
+    Q_INVOKABLE QString getReplayGain () { return replayGainSetting; }
 
     PlayQueueProxyModel * getPlayQueueProxyModel() { return &playQueueProxyModel; }
     MusicLibraryProxyModel * getArtistsProxyModel() { return &artistsProxyModel; }
@@ -111,6 +118,8 @@ Q_SIGNALS:
     void onFoldersModelChanged();
     void onPlaylistsModelChanged();
     void onMpdStatusChanged();
+    void outputsChanged();
+    void replayGainChanged();
 
 public Q_SLOTS:
     void onConnected(bool connected);
@@ -124,6 +133,10 @@ public Q_SLOTS:
     void foldersUpdated();
     void playlistsUpdated();
 
+private Q_SLOTS:
+    void outputsUpdated(const QList<Output> &outputs);
+    void replayGainUpdated(const QString &v);
+    
 Q_SIGNALS:
     // These are for communicating with MPD object (which is in its own thread, so need to talk via signal/slots)
     void setDetails(const MPDConnectionDetails &det);
@@ -143,6 +156,11 @@ Q_SIGNALS:
     void setVolume(int volume);
     void clear();
     void setRandomOrder(bool random);
+    void getReplayGainSetting();
+    void setReplayGain(const QString &);
+    void setCrossFade(int secs);
+    void getOutputSetting();
+    void enableOutput(int id, bool);
 
 private:
     void updateStatus(MPDStatus * const status);
@@ -157,6 +175,8 @@ private:
     QString mainText;
     QString subText;
     QString playQueueStatus;
+    QStringList outputSettings;
+    QString replayGainSetting;
     QTimer *statusTimer;
     PlayQueueModel playQueueModel;
     PlayQueueProxyModel playQueueProxyModel;

@@ -25,6 +25,7 @@
 *************************************************************************/
 
 import QtQuick 2.0
+//import QtQuick.Controls 1.1
 import Ubuntu.Components 0.1
 import Ubuntu.Components.ListItems 0.1 as ListItem
 import U1db 1.0 as U1db
@@ -35,8 +36,6 @@ Page {
     visible: false
     width: parent.width
     title: i18n.tr("UI Settings")
-
-    property color textFieldColor: "#c2c2b8" //#f3f3e7 * 0.8 (#f3f3e7: label color)
 
     actions: [
         Action {
@@ -62,16 +61,20 @@ Page {
         docId: 'ui'
         create: true
         defaults: {
-            "artistYear": true
+            "artistYear": true,
+            "albumSort": "album-artist",
+            "coverFetch": true,
+            "playQueueScroll": true,
+            "hiddenViews": ["folders"]
         }
     }
 
+    // TODO: Save settings??? How/when??
     Column {
         id: column
         spacing: units.gu(1)
-        width: Math.round(parent.width / 1.3)
         height: parent.height - parent.header.height
-        y: parent.header.height + units.gu(2)
+        y: units.gu(2)
         anchors.horizontalCenter: parent.horizontalCenter
 
         Component.onCompleted: {
@@ -79,25 +82,141 @@ Page {
         }
 
         function fillWithU1dbData() {
+            // TODO: albumSort and hiddenViews
             var contents = dbDocument.contents
-            //artistYear.checked = contents["artistYear"]
+            if (typeof contents != "undefined") {
+                artistYear.checked = contents["artistYear"]
+                coverFetch.checked = contents["coverFetch"]
+                playQueueScroll.checked = contents["playQueueScroll"]
+            } else {
+                artistYear.checked = true
+                coverFetch.checked = true
+                playQueueScroll.checked = true
+            }
         }
 
         function saveDataToU1db() {
             var contents = {};
-            //contents["artistYear"] = artistYear.isChecked
+            contents["artistYear"] = artistYear.isChecked
+            contents["coverFetch"] = coverFetch.isChecked
+            contents["playQueueScroll"] = playQueueScroll.isChecked
+            // TODO: albumSort and hiddenViews
             dbDocument.contents = contents
         }
 
-        Label {
-            id: todoLabel
-            text: i18n.tr("TODO!!!")
-            anchors {
-                left: column.left;
-                right: column.right;
+        Grid {
+            anchors.horizontalCenter: parent.horizontalCenter
+            columns: 2
+            rowSpacing: units.gu(2)
+            columnSpacing: parent.width/10
+            //width: aboutTabLayout.width*0.25
+            //height: iconTabletItem.height*0.75
+
+            Label {
+                id: playQueueScrollLabel
+                text: i18n.tr("Scroll play queue to active track:")
+                fontSize: "medium"
+            }
+        
+            CheckBox {
+                id: playQueueScroll
+                KeyNavigation.priority: KeyNavigation.BeforeItem
+                KeyNavigation.tab: coverFetch
             }
 
+            Label {
+                id: coverFetchLabel
+                text: i18n.tr("Fetch missing covers from last.fm:")
+                fontSize: "medium"
+            }
+        
+            CheckBox {
+                id: coverFetch
+                KeyNavigation.priority: KeyNavigation.BeforeItem
+                KeyNavigation.tab: artistYear
+                KeyNavigation.backtab: playQueueScroll
+            }
+            
+            Label {
+                id: artistYearLabel
+                text: i18n.tr("Sort albums in artists view by year:")
+                fontSize: "medium"
+            }
+        
+            CheckBox {
+                id: artistYear
+                KeyNavigation.priority: KeyNavigation.BeforeItem
+//                KeyNavigation.tab: viewCombo
+                KeyNavigation.backtab: coverFetch
+            }
+        }
+
+        Label {
+            id: albumSortLabel
+            text: i18n.tr("Sort albums in albums view by:")
             fontSize: "medium"
+        }
+        
+        Label {
+            id: todoLabel
+            text: "TODO: 13.10 does not have combo box"
+//            KeyNavigation.priority: KeyNavigation.BeforeItem
+//            KeyNavigation.backtab: artistYear
+        }
+        /*
+        ComboBox {
+            currentIndex: 2
+            model: ListModel {
+                id: cbItems
+                ListElement { text: i18n.tr("Album, Artist, Year") }
+                ListElement { text: i18n.tr("Album, Year, Artist") }
+                ListElement { text: i18n.tr("Artist, Album, Year") }
+                ListElement { text: i18n.tr("Artist, Year, Album") }
+                ListElement { text: i18n.tr("Year, Album, Artist") }
+                ListElement { text: i18n.tr("Year, Artist, Album") }
+            }
+        }
+        */
+        
+        
+        Label {
+            id: viewsLabel
+            text: i18n.tr("Enabled views:")
+        }
+        
+        Label {
+            id: todoV
+            text: i18n.tr("TODO: Why is my list not created???:")
+        }
+        ListView {
+                id: views
+                model: ListModel {
+                    id: cbItems
+                    ListElement { text: "Artists" }
+                    ListElement { text: "Albums" }
+                    }
+                /*
+                ListItem.Standard {
+                    id: viewArtists
+                    text: i18n.tr("Artists")
+                }
+                ListItem.Standard {
+                    id: viewAlbums
+                    text: i18n.tr("Albums")
+                }
+                ListItem.Standard {
+                    id: viewFolders
+                    text: i18n.tr("Folders")
+                }
+                ListItem.Standard {
+                    id: viewPlaylists
+                    text: i18n.tr("Playlists")
+                }
+                ListItem.Standard {
+                    id: viewStreams
+                    text: i18n.tr("Streams")
+                }
+                */
         }
     }
 }

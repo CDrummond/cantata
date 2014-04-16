@@ -223,7 +223,7 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
         #ifdef ENABLE_UBUNTU
         case ItemView::Role_Image: {
             QString cover=al->cover();
-            return cover.isEmpty() ? constDefaultCover : al->cover(); // TODO: Default cover file!
+            return cover.isEmpty() ? constDefaultCover : cover;
         }
         #else
         case ItemView::Role_Image:
@@ -505,7 +505,7 @@ void AlbumsModel::setCover(const Song &song, const QImage &img, const QString &f
     for (int row=0; it!=end; ++it, ++row) {
         if ((*it)->artist==artist && (*it)->album==album) {
             if ((*it)->coverRequested) {
-                (*it)->coverFile=file;
+                (*it)->coverFile="file://"+file;
                 (*it)->coverRequested=false;
                 QModelIndex idx=index(row, 0, QModelIndex());
                 emit dataChanged(idx, idx);
@@ -719,6 +719,7 @@ QString AlbumsModel::AlbumItem::cover()
         coverFile=Covers::self()->requestImage(coverSong).fileName;
         if (!coverFile.isEmpty()) {
             coverRequested=false;
+            coverFile="file://"+coverFile;
         }
     }
 

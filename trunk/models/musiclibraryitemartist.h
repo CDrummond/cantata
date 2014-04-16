@@ -64,7 +64,7 @@ public:
     // 'data' could be 'Composer' if we are set to use that, but need to save real artist...
     const QString & actualArtist() const { return m_actualArtist; }
     #ifdef ENABLE_UBUNTU
-    void setCover(const QString &c) { m_coverName=c; m_coverRequested=false; }
+    void setCover(const QString &c) { m_coverName="file://"+c; m_coverRequested=false; }
     const QString & coverName() { return m_coverName; }
     #endif
  

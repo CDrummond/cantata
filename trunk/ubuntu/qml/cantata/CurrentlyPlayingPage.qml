@@ -369,6 +369,7 @@ Page {
             id: delegate
             text: model.mainText
             subText: model.subText
+            iconSource: model.image
             confirmRemoval: true
             removable: true
             onItemRemoved: {

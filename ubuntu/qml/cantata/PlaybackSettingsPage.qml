@@ -25,6 +25,7 @@
 *************************************************************************/
 
 import QtQuick 2.0
+//import QtQuick.Controls 1.1
 import Ubuntu.Components 0.1
 import Ubuntu.Components.ListItems 0.1 as ListItem
 
@@ -54,23 +55,106 @@ Page {
     Column {
         id: column
         spacing: units.gu(1)
-        width: Math.round(parent.width / 1.3)
         height: parent.height - parent.header.height
-        y: parent.header.height + units.gu(2)
+        y: units.gu(2)
         anchors.horizontalCenter: parent.horizontalCenter
 
         Component.onCompleted: {
+            // TODO: Is this called each time page is made visible???
+            backend.getPlaybackSettings();
         }
 
         Label {
-            id: todoLabel
-            text: i18n.tr("TODO!!!")
+            id: crossfadeLabel
+            text: i18n.tr("Crossfade between tracks:")
             anchors {
                 left: column.left;
                 right: column.right;
             }
-
             fontSize: "medium"
+        }
+        
+        Label {
+            id: todo
+            text: "TODO: SpinBox - "+backend.crossfade
+            anchors {
+                left: column.left;
+                right: column.right;
+            }
+            fontSize: "medium"
+        }
+/*
+        SpinBox {
+            id: crossfade
+            anchors {
+                left: column.left;
+                right: column.right;
+            }
+            fontSize: "medium"
+            //KeyNavigation.priority: KeyNavigation.BeforeItem
+            //KeyNavigation.tab: replaygain
+        }
+*/
+
+        Label {
+            id: replaygainLabel
+            text: i18n.tr("ReplayGain:")
+            anchors {
+                left: column.left;
+                right: column.right;
+            }
+            fontSize: "medium"
+        }
+        
+        Label {
+            id: todo2
+            text: "TODO: ComboBox - "+backend.replayGain
+        }
+        /*
+        ComboBox {
+            currentIndex: 2
+            model: ListModel {
+                id: cbItems
+                ListElement { text: i18n.tr("None") }
+                ListElement { text: i18n.tr("Track") }
+                ListElement { text: i18n.tr("Album") }
+                ListElement { text: i18n.tr("Auto") }
+            }
+        }
+        */
+        
+        Label {
+            id: outputsLabel
+            text: i18n.tr("Outputs:")
+            anchors {
+                left: column.left;
+                right: column.right;
+            }
+            fontSize: "medium"
+        }
+        
+        Label {
+            id: todoV
+            text: i18n.tr("TODO: Want checkable list of outputs???:")
+        }
+        
+        ListView {
+            contentHeight: ouptutsColumn.height
+
+            Column {
+                id: ouptutsColumn
+                width: parent.width
+
+                ListItem.Standard {
+                    id: o1
+                    text: "Ouptut 1"
+                }
+
+                ListItem.Standard {
+                    id: o2
+                    text: "Ouptut 2"
+                }
+            }
         }
     }
 }

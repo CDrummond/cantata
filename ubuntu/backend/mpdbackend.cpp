@@ -56,8 +56,6 @@ MPDBackend::MPDBackend(QObject *parent) : QObject(parent)
     foldersProxyModel.setSourceModel(DirViewModel::self());
     playlistsProxyModel.setSourceModel(PlaylistsModel::self());
 
-//    connect(MPDConnection::self(), SIGNAL(outputsUpdated(const QList<Output> &)), this, SLOT(outputsUpdated(const QList<Output> &)));
-
 
 //    connect(this, SIGNAL(enableOutput(int, bool)), MPDConnection::self(), SLOT(enableOutput(int, bool)));
 //    connect(this, SIGNAL(outputs()), MPDConnection::self(), SLOT(outputs()));
@@ -71,6 +69,12 @@ MPDBackend::MPDBackend(QObject *parent) : QObject(parent)
     connect(this, SIGNAL(startPlayingSongId(qint32)), MPDConnection::self(), SLOT(startPlayingSongId(qint32)));
     connect(this, SIGNAL(setDetails(const MPDConnectionDetails &)), MPDConnection::self(), SLOT(setDetails(const MPDConnectionDetails &)));
     connect(this, SIGNAL(clear()), MPDConnection::self(), SLOT(clear()));
+    connect(this, SIGNAL(enableOutput(int, bool)), MPDConnection::self(), SLOT(enableOutput(int, bool)));
+    connect(this, SIGNAL(getOutputSetting()), MPDConnection::self(), SLOT(outputs()));
+    connect(this, SIGNAL(setReplayGain(const QString &)), MPDConnection::self(), SLOT(setReplayGain(const QString &)));
+    connect(this, SIGNAL(setCrossFade(int)), MPDConnection::self(), SLOT(setCrossFade(int)));
+    connect(this, SIGNAL(getReplayGainSetting()), MPDConnection::self(), SLOT(getReplayGain()));
+
 //    connect(this, SIGNAL(setPriority(const QList<qint32> &, quint8 )), MPDConnection::self(), SLOT(setPriority(const QList<qint32> &, quint8)));
 //    connect(this, SIGNAL(addSongsToPlaylist(const QString &, const QStringList &)), MPDConnection::self(), SLOT(addToPlaylist(const QString &, const QStringList &)));
 
@@ -83,7 +87,9 @@ MPDBackend::MPDBackend(QObject *parent) : QObject(parent)
     connect(MPDConnection::self(), SIGNAL(playlistUpdated(const QList<Song> &)), this, SLOT(updatePlayQueue(const QList<Song> &)));
     connect(MPDConnection::self(), SIGNAL(currentSongUpdated(const Song &)), this, SLOT(updateCurrentSong(const Song &)));
     connect(MPDConnection::self(), SIGNAL(stateChanged(bool)), SLOT(mpdConnectionStateChanged(bool)));
-
+    connect(MPDConnection::self(), SIGNAL(replayGain(QString)), SLOT(replayGainUpdated(QString)));
+    connect(MPDConnection::self(), SIGNAL(outputsUpdated(const QList<Output> &)), SLOT(outputsUpdated(const QList<Output> &)));
+        
 //    connect(MPDConnection::self(), SIGNAL(error(const QString &, bool)), SLOT(showError(const QString &, bool)));
 //    connect(MPDConnection::self(), SIGNAL(info(const QString &)), SLOT(showInformation(const QString &)));
 
@@ -165,6 +171,54 @@ void MPDBackend::setIsRandomOrder(bool random) {
     emit setRandomOrder(random);
 }
 
+void MPDBackend::getPlaybackSettings() {
+    emit getOutputSetting();
+    emit getReplayGainSetting();
+}
+
+void MPDBackend::setPlaybackSettings(const QString &replayGain, int crossfade, const QStringList &outputs) {
+    if (replayGain!=replayGainSetting) {
+        replayGainSetting=replayGain;
+        emit setReplayGain(replayGainSetting);
+    }
+    
+    if (MPDStatus::self()->crossFade()!=crossfade) {
+        emit setCrossFade(crossfade);
+    }
+    
+    if (outputs!=outputSettings) {
+        outputSettings=outputs;
+        foreach (const QString &o, outputs) {
+            QStringList parts=o.split(':');
+            if (parts.size()>2) {
+                bool enabled=parts.at(parts.size()-1)=="1";
+                int id=parts.at(parts.size()-2).toInt();
+                emit enableOutput(id, enabled);
+            }
+        }
+    }
+}
+
+void MPDBackend::outputsUpdated(const QList<Output> &outputs) {
+    QStringList setting;
+
+    foreach (const Output &o, outputs) {
+        setting.append(o.name+":"+o.id+":"+(o.enabled ? 1 : 0));
+    }
+    
+    if (setting!=outputSettings) {
+        outputSettings=setting;
+        emit outputsChanged();
+    }
+}
+
+void MPDBackend::replayGainUpdated(const QString &v) {
+    if (v!=replayGainSetting) {
+        replayGainSetting=v;
+        emit replayGainChanged();
+    }
+}
+    
 // TODO: Why are the sorts required below? e.g. If we don't call sort, the items are only sorted string-wise. This
 // means that 'Various Artists' is not placed at the top, and "The XXX" is not sorted as "XXX"
 void MPDBackend::artistsUpdated() {

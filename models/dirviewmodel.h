@@ -67,6 +67,9 @@ public Q_SLOTS:
     void updateDirView(DirViewItemRoot *newroot, const QDateTime &dbUpdate=QDateTime(), bool fromFile=false);
     void updatingMpd();
 
+Q_SIGNALS:
+    void updated();
+
 private:
     void toXML(const DirViewItem *item, QXmlStreamWriter &writer);
     quint32 fromXML(QIODevice *dev, const QDateTime &dt, DirViewItemRoot *root);

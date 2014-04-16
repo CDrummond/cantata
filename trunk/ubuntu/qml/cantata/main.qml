@@ -66,24 +66,10 @@ MainView {
 
                     page: ListViewPage {
                         id: artistPage
-
                         model: artistsProxyModel
-
+                        modelName: "artists"
                         emptyViewVisible: !backend.artistsFound
                         emptyViewText: i18n.tr("No artists found")
-
-                        function add(index, replace) {
-                            backend.add("artists", index, replace)
-                            pageStack.push(currentlyPlayingPage)
-                        }
-
-                        function onDelegateClicked(index, text) {
-                            var component = Qt.createComponent("SubListViewPage.qml")
-
-                            var page = component.createObject(parent, {"model": model, "title": text, "modelName": "artists"})
-                            page.init([index])
-                            pageStack.push(page)
-                        }
                     }
                 }
 
@@ -93,24 +79,10 @@ MainView {
 
                     page: ListViewPage {
                         id: albumPage
-
                         model: albumsProxyModel
-
+                        modelName: "albums"
                         emptyViewVisible: !backend.albumsFound
                         emptyViewText: i18n.tr("No albums found")
-
-                        function add(index, replace) {
-                            backend.add("albums", index, replace)
-                            pageStack.push(currentlyPlayingPage)
-                        }
-
-                        function onDelegateClicked(index, text) {
-                            var component = Qt.createComponent("SubListViewPage.qml")
-
-                            var page = component.createObject(parent, {"model": model, "title": text, "modelName": "albums"})
-                            page.init([index])
-                            pageStack.push(page)
-                        }
                     }
                 }
 
@@ -120,24 +92,10 @@ MainView {
 
                     page: ListViewPage {
                         id: foldersPage
-
                         model: foldersProxyModel
-
+                        modelName: "folders"
                         emptyViewVisible: !backend.foldersFound
                         emptyViewText: i18n.tr("No folders found")
-
-                        function add(index, replace) {
-                            backend.add("folders", index, replace)
-                            pageStack.push(currentlyPlayingPage)
-                        }
-
-                        function onDelegateClicked(index, text) {
-                            var component = Qt.createComponent("SubListViewPage.qml")
-
-                            var page = component.createObject(parent, {"model": model, "title": text, "modelName": "folders"})
-                            page.init([index])
-                            pageStack.push(page)
-                        }
                     }
                 }
 
@@ -145,26 +103,12 @@ MainView {
                     id: playlistsTab
                     title: i18n.tr("Playlists")
 
-                    page: ListViewPage { //TODO: Disable second button!!!
+                    page: ListViewPage {
                         id: playlistsPage
-
                         model: playlistsProxyModel
-
+                        modelName: "playlists"
                         emptyViewVisible: !backend.playlistsFound
                         emptyViewText: i18n.tr("No playlists found")
-
-                        function add(index, replace) {
-                            backend.loadPlaylist(index)
-                            pageStack.push(currentlyPlayingPage)
-                        }
-
-                        function onDelegateClicked(index, text) {
-                            var component = Qt.createComponent("SubListViewPage.qml")
-
-                            var page = component.createObject(parent, {"model": model, "title": text, "modelName": "playlists"})
-                            page.init([index])
-                            pageStack.push(page)
-                        }
                     }
                 }
             }

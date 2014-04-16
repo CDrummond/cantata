@@ -42,6 +42,7 @@
 #include "config.h"
 #include "action.h"
 #include "actioncollection.h"
+#include "covers.h"
 #ifdef ENABLE_UBUNTU
 #include "itemview.h"
 #endif
@@ -201,7 +202,10 @@ PlayQueueModel::PlayQueueModel(QObject *parent)
     new ModelTest(this, this);
     #endif
 
-    #ifndef ENABLE_UBUNTU
+    #ifdef ENABLE_UBUNTU
+    connect(Covers::self(), SIGNAL(cover(const Song &, const QImage &, const QString &)), this, 
+            SLOT(setCover(const Song &, const QImage &, const QString &)));
+    #else
     removeDuplicatesAction=new Action(i18n("Remove Duplicates"), this);
     removeDuplicatesAction->setEnabled(false);
     undoAction=ActionCollection::get()->createAction("playqueue-undo", i18n("Undo"), "edit-undo");
@@ -321,8 +325,13 @@ QHash<int, QByteArray> PlayQueueModel::roleNames() const
     QHash<int, QByteArray> roles;
     roles[ItemView::Role_MainText] = "mainText";
     roles[ItemView::Role_SubText] = "subText";
+    roles[ItemView::Role_Image] = "image";
     return roles;
 }
+#endif
+
+#ifdef ENABLE_UBUNTU
+static const QString constDefaultCover=QLatin1String("qrc:/album.svg");
 #endif
 
 QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
@@ -343,12 +352,22 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
     switch (role) {
     #ifdef ENABLE_UBUNTU
     case ItemView::Role_MainText: {
-        Song s=songs.at(index.row());
+        const Song &s=songs.at(index.row());
         return s.title.isEmpty() ? s.file : s.trackAndTitleStr();
     }
     case ItemView::Role_SubText: {
-        Song s=songs.at(index.row());
+        const Song &s=songs.at(index.row());
         return s.artist+QLatin1String(" - ")+s.displayAlbum();
+    }
+    case ItemView::Role_Image: {
+        Song s=songs.at(index.row());
+        QMap<quint16, QString>::ConstIterator it=covers.find(s.key);
+        if (it!=covers.constEnd()) {
+            return it.value().isEmpty() ? constDefaultCover : it.value();
+        }
+        Covers::self()->requestImage(s);
+        covers.insert(s.key, QString());
+        return constDefaultCover;
     }
     #endif
     case GroupedView::Role_IsCollection:
@@ -857,8 +876,14 @@ void PlayQueueModel::update(const QList<Song> &songList)
     }
 
     QSet<qint32> newIds;
+    #ifdef ENABLE_UBUNTU
+    QSet<quint16> currentKeys;
+    #endif
     foreach (const Song &s, songList) {
         newIds.insert(s.id);
+        #ifdef ENABLE_UBUNTU
+        currentKeys.insert(s.key);
+        #endif
     }
 
     if (songs.isEmpty() || songList.isEmpty()) {
@@ -930,7 +955,14 @@ void PlayQueueModel::update(const QList<Song> &songList)
     }
 
     saveHistory(prev);
-    #ifndef ENABLE_UBUNTU
+    #ifdef ENABLE_UBUNTU
+    QSet<quint16> removedKeys=covers.keys().toSet()-currentKeys;
+    if (!removedKeys.isEmpty()) {
+        foreach (quint16 k, removedKeys) {
+            covers.remove(k);
+        }
+    }
+    #else
     shuffleAction->setEnabled(songs.count()>1);
     sortAction->setEnabled(songs.count()>1);
     #endif
@@ -1201,6 +1233,41 @@ void PlayQueueModel::removeDuplicates()
     if (!toRemove.isEmpty()) {
         emit removeSongs(toRemove);
     }
+}
+
+void PlayQueueModel::setCover(const Song &song, const QImage &img, const QString &file)
+{
+    Q_UNUSED(img)
+    #ifdef ENABLE_UBUNTU
+    if (song.key==Song::constNullKey || file.isEmpty()) {
+        return;
+    }
+    QMap<quint16, QString>::ConstIterator it=covers.find(song.key);
+    if (it!=covers.end() && it.value().isEmpty()) {
+        covers[song.key]="file://"+file;
+        int start=-1;
+        int end=-1;
+        for (int i=0; i<songs.size(); ++i) {
+            if (songs.at(i).key==song.key) {
+                if (-1==start) {
+                    start=end=i;
+                } else {
+                    end++;
+                }
+            } else if (-1!=end) {
+                emit dataChanged(index(start, 0), index(end, columnCount(QModelIndex())-1));
+                start=end=-1;
+            }
+        }
+        if (-1!=end) {
+            emit dataChanged(index(start, 0), index(end, columnCount(QModelIndex())-1));
+            start=end=-1;
+        }
+    }
+    #else
+    Q_UNUSED(song)
+    Q_UNUSED(file)
+    #endif
 }
 
 void PlayQueueModel::undo()

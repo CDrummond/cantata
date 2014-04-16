@@ -307,12 +307,15 @@ QString Covers::albumFileName(const Song &song)
     QString coverName=MPDConnection::self()->getDetails().coverName;
     if (coverName.isEmpty()) {
         coverName=Covers::constFileName;
-    } else if (coverName.contains("%")) {
+    }
+    #ifndef ENABLE_UBUNTU
+    else if (coverName.contains("%")) {
         coverName.replace(DeviceOptions::constAlbumArtist, encodeName(song.albumArtist()));
         coverName.replace(DeviceOptions::constTrackArtist, encodeName(song.albumArtist()));
         coverName.replace(DeviceOptions::constAlbumTitle, encodeName(song.album));
         coverName.replace("%", "");
     }
+    #endif
     return coverName;
 }
 
@@ -914,16 +917,29 @@ Covers::Covers()
     , locator(0)
     , loader(0)
 {
+    #ifdef ENABLE_UBUNTU
+    cache.setMaxCost(20*1024*1024); // Not used?
+    cacheScaledCovers=false;
+    saveInMpdDir=false;
+    #else
     maxCoverUpdatePerIteration=Settings::self()->maxCoverUpdatePerIteration();
     cache.setMaxCost(Settings::self()->coverCacheSize()*1024*1024);
+    #endif
 }
 
+#ifdef ENABLE_UBUNTU
+void Covers::setFetchCovers(bool f)
+{
+    fetchCovers=f;
+}
+#else
 void Covers::readConfig()
 {
     saveInMpdDir=Settings::self()->storeCoversInMpdDir();
     cacheScaledCovers=Settings::self()->cacheScaledCovers();
     fetchCovers=Settings::self()->fetchCovers();
 }
+#endif
 
 void Covers::stop()
 {

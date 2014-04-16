@@ -365,10 +365,13 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
         if (it!=covers.constEnd()) {
             return it.value().isEmpty() ? constDefaultCover : it.value();
         }
-        Covers::self()->requestImage(s);
-        covers.insert(s.key, QString());
-        coverRequests.insert(s.key, s);
-        return constDefaultCover;
+        QString fileName=Covers::self()->requestImage(s).fileName;
+        covers.insert(s.key, fileName);
+        if (fileName.isEmpty()) {
+            coverRequests.insert(s.key, s);
+            return constDefaultCover;
+        }
+        return fileName;
     }
     case Role_Time: {
         const Song &s=songs.at(index.row());

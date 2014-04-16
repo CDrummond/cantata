@@ -210,7 +210,11 @@ public:
     static const char * imageFormat(const QByteArray &data);
 
     Covers();
+    #ifdef ENABLE_UBUNTU
+    void setFetchCovers(bool f);
+    #else
     void readConfig();
+    #endif
     void stop();
 
     QPixmap * getScaledCover(const QString &artist, const QString &album, int size);

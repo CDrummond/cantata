@@ -374,20 +374,17 @@ Page {
             iconSource: model.image
             confirmRemoval: true
             removable: true
+            currentTrack: index === backend.getCurrentSongPlayqueuePosition()
             onItemRemoved: {
                 backend.removeFromPlayQueue(index)
             }
 
             onClicked: backend.startPlayingSongAtPos(index)
 
-            buttonImageSource: "../../icons/toolbar/media-playback-start-light.svg"
-            buttonShown: index === backend.getCurrentSongPlayqueuePosition()
-
             Connections {
                 target: backend
-
                 onCurrentSongPlayqueuePositionChanged: {
-                    delegate.buttonShown = (index === backend.getCurrentSongPlayqueuePosition())
+                    delegate.currentTrack = (index === backend.getCurrentSongPlayqueuePosition())
                 }
             }
         }

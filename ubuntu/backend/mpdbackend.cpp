@@ -131,6 +131,30 @@ void MPDBackend::connectTo(QString hostname, quint16 port, QString password, QSt
     //emit loadLibrary();
 }
 
+void MPDBackend::enableAlbumsView(bool en) {
+    AlbumsModel::self()->setEnabled(en);
+}
+
+void MPDBackend::enableFoldersView(bool en) {
+    DirViewModel::self()->setEnabled(en);
+}
+
+void MPDBackend::enablePlaylistsView(bool en) {
+    PlaylistsModel::self()->setEnabled(en);
+}
+
+void MPDBackend::setArtistSortYear(bool s) {
+    MusicLibraryItemAlbum::setSortByDate(s);
+}
+
+void MPDBackend::setAlbumViewSort(int s) {
+    AlbumsModel::self()->setAlbumSort(s);
+}
+
+void MPDBackend::setCoverFetch(bool s) {
+    Covers::self()->setFetchCovers(s);
+}
+    
 void MPDBackend::playPause() {
     switch (MPDStatus::self()->state()) {
     case MPDState_Playing:

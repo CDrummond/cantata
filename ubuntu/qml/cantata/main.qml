@@ -107,6 +107,7 @@ MainView {
                         id: playlistsPage
                         model: playlistsProxyModel
                         modelName: "playlists"
+                        editable: true
                         emptyViewVisible: !backend.playlistsFound
                         emptyViewText: i18n.tr("No playlists found")
                     }

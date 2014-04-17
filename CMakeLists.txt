@@ -315,7 +315,7 @@ set(CANTATA_SRCS ${CANTATA_CORE_SRCS}
     devices/deviceoptions.cpp
     widgets/treeview.cpp widgets/listview.cpp widgets/itemview.cpp widgets/autohidingsplitter.cpp widgets/timeslider.cpp
     widgets/actionlabel.cpp widgets/playqueueview.cpp widgets/groupedview.cpp widgets/actionitemdelegate.cpp widgets/textbrowser.cpp
-    widgets/volumeslider.cpp widgets/genrecombo.cpp widgets/menubutton.cpp widgets/icons.cpp
+    widgets/volumeslider.cpp widgets/genrecombo.cpp widgets/menubutton.cpp widgets/icons.cpp widgets/flickcharm.cpp
     widgets/toolbutton.cpp widgets/wizardpage.cpp widgets/statuslabel.cpp widgets/searchwidget.cpp widgets/messageoverlay.cpp
     widgets/basicitemdelegate.cpp widgets/sizegrip.cpp widgets/sizewidget.cpp widgets/servicestatuslabel.cpp widgets/spacerwidget.cpp
     widgets/songdialog.cpp widgets/stretchheaderview.cpp widgets/tableview.cpp widgets/songlabel.cpp widgets/thinsplitterhandle.cpp
@@ -328,7 +328,7 @@ set(CANTATA_MOC_HDRS ${CANTATA_CORE_MOC_HDRS}
     gui/playbacksettings.h gui/serversettings.h gui/preferencesdialog.h gui/filesettings.h gui/interfacesettings.h gui/cachesettings.h
     gui/trayitem.h gui/coverdialog.h gui/searchpage.h
     widgets/treeview.h widgets/listview.h widgets/itemview.h widgets/autohidingsplitter.h widgets/timeslider.h widgets/actionlabel.h
-    widgets/playqueueview.h widgets/groupedview.h widgets/actionitemdelegate.h widgets/volumeslider.h
+    widgets/playqueueview.h widgets/groupedview.h widgets/actionitemdelegate.h widgets/volumeslider.h widgets/flickcharm.h
     widgets/genrecombo.h widgets/searchwidget.h widgets/messageoverlay.h widgets/servicestatuslabel.h widgets/stretchheaderview.h
     widgets/tableview.h
     context/togglelist.h context/ultimatelyrics.h context/ultimatelyricsprovider.h context/lyricsdialog.h

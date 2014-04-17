@@ -27,6 +27,7 @@
 #include "basicitemdelegate.h"
 #include "icon.h"
 #include "localize.h"
+#include "flickcharm.h"
 #include <QListWidget>
 
 enum Roles {
@@ -40,6 +41,7 @@ OnlineSettings::OnlineSettings(QWidget *p)
     setupUi(this);
     providers->setItemDelegate(new BasicItemDelegate(providers));
     providers->setSortingEnabled(true);
+    FlickCharm::self()->activateOn(providers);
     int iSize=Icon::stdSize(QApplication::fontMetrics().height()*1.25);
     providers->setIconSize(QSize(iSize, iSize));    
     connect(providers, SIGNAL(currentRowChanged(int)), SLOT(currentProviderChanged(int)));

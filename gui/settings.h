@@ -187,6 +187,7 @@ public:
     bool alwaysUseLsInfo();
     bool showMenubar();
     int menu();
+    bool touchFriendly();
 
     void removeConnectionDetails(const QString &v);
     void saveConnectionDetails(const MPDConnectionDetails &v);
@@ -297,6 +298,7 @@ public:
     void saveLang(const QString &v);
     #endif
     void saveShowMenubar(bool v);
+    void saveTouchFriendly(bool v);
     void save(bool force=false);
     #if defined ENABLE_KDE_SUPPORT && defined ENABLE_KWALLET
     bool openWallet();

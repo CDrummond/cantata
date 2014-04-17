@@ -49,8 +49,8 @@ void ActionItemDelegate::setup()
         constBorder=constActionIconSize>22 ? 2 : 1;
         constActionBorder=constActionIconSize>32 ? 6 : 4;
     } else {
-        constActionBorder=4;
-        constActionIconSize=16;
+        constActionBorder=Icon::touchFriendly() ? 6 : 4;
+        constActionIconSize=Icon::touchFriendly() ? 22 : 16;
         constLargeActionIconSize=22;
         constBorder=1;
     }
@@ -134,8 +134,11 @@ void ActionItemDelegate::drawIcons(QPainter *painter, const QRect &r, bool mouse
 {
     int iconSize=largeIcons ? constLargeActionIconSize : constActionIconSize;
     double opacity=painter->opacity();
+    double actionOpacity=opacity;
+    bool touch=Icon::touchFriendly();
     if (!mouseOver) {
-        painter->setOpacity(opacity*0.2);
+        actionOpacity=opacity*(touch ? 0.4 : 0.2);
+        painter->setOpacity(actionOpacity);
     }
 
     QRect actionRect=calcActionRect(rtl, actionPos, r);
@@ -145,8 +148,14 @@ void ActionItemDelegate::drawIcons(QPainter *painter, const QRect &r, bool mouse
         QPixmap pix=a->icon().pixmap(QSize(iconSize, iconSize));
         if (!pix.isNull() && actionRect.width()>=pix.width()/* && r.x()>=0 && r.y()>=0*/) {
             drawBgnd(painter, actionRect);
+            if (!mouseOver && touch) {
+                painter->setOpacity(opacity*0.75);
+            }
             painter->drawPixmap(actionRect.x()+(actionRect.width()-pix.width())/2,
                                 actionRect.y()+(actionRect.height()-pix.height())/2, pix);
+            if (!mouseOver && touch) {
+                painter->setOpacity(actionOpacity);
+            }
         }
         adjustActionRect(rtl, actionPos, actionRect, iconSize);
     }

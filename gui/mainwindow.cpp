@@ -450,8 +450,8 @@ MainWindow::MainWindow(QWidget *parent)
     playQueueSearchWidget->setVisible(false);
     QList<QToolButton *> playbackBtns=QList<QToolButton *>() << prevTrackButton << stopTrackButton << playPauseTrackButton << nextTrackButton;
     QList<QToolButton *> controlBtns=QList<QToolButton *>() << menuButton << songInfoButton;
-    int playbackIconSize=28;
-    int controlIconSize=22;
+    int playbackIconSize=Icon::touchFriendly() ? 32 : 28;
+    int controlIconSize=Icon::touchFriendly() ? 32 : 22;
     int controlButtonSize=32;
 
     if (repeatButton->iconSize().height()>=32) {
@@ -460,7 +460,7 @@ MainWindow::MainWindow(QWidget *parent)
     } else if (repeatButton->iconSize().height()>=22) {
         controlIconSize=playbackIconSize=32;
         controlButtonSize=36;
-    } else if (QLatin1String("oxygen")!=Icon::currentTheme().toLower() || (GtkStyle::isActive() && GtkStyle::useSymbolicIcons())) {
+    } else if (!Icon::touchFriendly() && (QLatin1String("oxygen")!=Icon::currentTheme().toLower() || (GtkStyle::isActive() && GtkStyle::useSymbolicIcons()))) {
         // Oxygen does not have 24x24 icons, and media players seem to use scaled 28x28 icons...
         // But, if the theme does have media icons at 24x24 use these - as they will be sharper...
         playbackIconSize=24==Icons::self()->toolbarPlayIcon.actualSize(QSize(24, 24)).width() ? 24 : 28;
@@ -471,7 +471,7 @@ MainWindow::MainWindow(QWidget *parent)
     }
     #endif
     stopTrackButton->setHideMenuIndicator(true);
-    int playbackButtonSize=28==playbackIconSize ? 34 : controlButtonSize;
+    int playbackButtonSize=Icon::touchFriendly() && 32==playbackIconSize ? 40 : (28==playbackIconSize ? 34 : controlButtonSize);
     foreach (QToolButton *b, controlBtns) {
         b->setAutoRaise(true);
         b->setToolButtonStyle(Qt::ToolButtonIconOnly);

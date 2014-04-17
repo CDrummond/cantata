@@ -37,6 +37,7 @@ Page {
     anchors.fill: parent
     visible: false
 
+    property bool editable: false
     property variant rows
     property string modelName
     property alias model: visualDataModel.model
@@ -54,6 +55,16 @@ Page {
         }
     }
 
+    function remove(index) {
+        var newRows = []
+        for (var i = 0; i < rows.length; i++) {
+            newRows[i] = rows[i]
+        }
+        newRows[rows.length] = index
+
+        backend.remove(modelName, newRows)
+    }
+    
     function onDelegateClicked(index, text) {
         var newRows = []
         for (var i = 0; i < rows.length; i++) {
@@ -141,7 +152,9 @@ Page {
                 text: model.mainText
                 subText: model.subText
                 iconSource: model.image
-
+                confirmRemoval: true
+                removable: subListViewPage.editable
+            
                 firstButtonImageSource: "../../icons/toolbar/media-playback-start-light.svg"
                 secondButtonImageSource: "../../icons/toolbar/add.svg"
                 // progression: true //Removed due to the app showdown, will be implemented later
@@ -152,6 +165,7 @@ Page {
                 onSecondImageButtonClicked: subListViewPage.add(index, false)
 
                 onClicked: model.hasChildren ? subListViewPage.onDelegateClicked(index, model.titleText) : "";
+                onItemRemoved: subListViewPage.remove(index)
             }
         }
     }

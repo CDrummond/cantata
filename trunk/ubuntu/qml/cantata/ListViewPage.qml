@@ -37,6 +37,7 @@ Page {
     anchors.fill: parent
 
     property string modelName
+    property bool editable: false
     property alias model: listView.model
     property alias emptyViewVisible: emptyLabel.visible
     property alias emptyViewText: emptyLabel.text
@@ -48,10 +49,15 @@ Page {
         }
     }
 
+    function remove(index) {
+        backend.remove(modelName, index)
+    }
+
     function onDelegateClicked(index, text) {
         var component = Qt.createComponent("SubListViewPage.qml")
         var page = component.createObject(parent, {"model": model, "title": text, "modelName": modelName})
         page.init([index])
+        page.editable=editable
         pageStack.push(page)
     }
 
@@ -115,6 +121,8 @@ Page {
             text: model.mainText
             subText: model.subText
             iconSource: model.image
+            confirmRemoval: true
+            removable: listViewPage.editable
 
             firstButtonImageSource: "../../icons/toolbar/media-playback-start-light.svg"
             secondButtonImageSource: "../../icons/toolbar/add.svg"
@@ -125,6 +133,7 @@ Page {
             onSecondImageButtonClicked: listViewPage.add(index, false)
 
             onClicked: listViewPage.onDelegateClicked(index, model.titleText)
+            onItemRemoved: listViewPage.remove(index)
         }
     }
 

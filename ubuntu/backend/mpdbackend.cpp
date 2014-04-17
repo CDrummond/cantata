@@ -105,7 +105,12 @@ MPDBackend::MPDBackend(QObject *parent) : QObject(parent)
     connect(this, SIGNAL(add(const QStringList &, bool, quint8)), MPDConnection::self(), SLOT(add(const QStringList &, bool, quint8)));
     connect(this, SIGNAL(setVolume(int)), MPDConnection::self(), SLOT(setVolume(int)));
     connect(this, SIGNAL(setRandomOrder(bool)), MPDConnection::self(), SLOT(setRandom(bool)));
+    connect(this, SIGNAL(addSongsToPlaylist(const QString &, const QStringList &)), MPDConnection::self(), SLOT(addToPlaylist(const QString &, const QStringList &)));
     connect(this, SIGNAL(loadPlaylist(const QString &, bool)), MPDConnection::self(), SLOT(loadPlaylist(const QString &, bool)));
+    connect(this, SIGNAL(removePlaylist(const QString &)), MPDConnection::self(), SLOT(removePlaylist(const QString &)));
+    connect(this, SIGNAL(renamePlaylist(const QString &, const QString &)), MPDConnection::self(), SLOT(renamePlaylist(const QString &, const QString &)));
+    connect(this, SIGNAL(removeFromPlaylist(const QString &, const QList<quint32> &)), MPDConnection::self(), SLOT(removeFromPlaylist(const QString &, const QList<quint32> &)));
+
 
     connect(MusicLibraryModel::self(), SIGNAL(updated()), this, SLOT(artistsUpdated()));
     connect(AlbumsModel::self(), SIGNAL(updated()), this, SLOT(albumsUpdated()));
@@ -283,6 +288,40 @@ void MPDBackend::add(const QString &modelName, const QVariant &rows, bool replac
             QStringList fileNames = model->filenames(QModelIndexList() << proxy->mapToSource(idx), false);
             if (!fileNames.isEmpty()) {
                 emit add(fileNames, replace, 0);
+            }
+        }
+    }
+}
+
+void MPDBackend::remove(const QString &modelName, const QVariant &rows) {
+    if ("playlists"!=modelName) {
+        return;
+    }
+    
+    if (QVariant::Int==rows.type()) {
+        QModelIndex index=playlistsProxyModel.index(rows.toInt(), 0);
+        if (index.isValid()) {
+            index=playlistsProxyModel.mapToSource(index);
+            if (index.isValid() && static_cast<PlaylistsModel::Item *>(index.internalPointer())->isPlaylist()) {
+                emit removePlaylist(static_cast<PlaylistsModel::PlaylistItem*>(index.internalPointer())->name);
+            }
+        }
+    } else if (QVariant::List==rows.type()) {
+        QVariantList rowList=rows.toList();
+        if (2==rowList.count()) {
+            QModelIndex playListIndex=playlistsProxyModel.index(rowList.at(0).toInt(), 0);
+            if (playListIndex.isValid()) {
+                QModelIndex songIndex=playlistsProxyModel.index(rowList.at(1).toInt(), 0, playListIndex);
+                if (songIndex.isValid()) {
+                    playListIndex=playlistsProxyModel.mapToSource(playListIndex);
+                    songIndex=playlistsProxyModel.mapToSource(songIndex);
+                    if (playListIndex.isValid() && songIndex.isValid() &&
+                        static_cast<PlaylistsModel::Item *>(playListIndex.internalPointer())->isPlaylist() &&
+                        !static_cast<PlaylistsModel::Item *>(songIndex.internalPointer())->isPlaylist()) {
+                        emit removeFromPlaylist(static_cast<PlaylistsModel::PlaylistItem*>(playListIndex.internalPointer())->name,
+                                                QList<quint32>() << songIndex.row());
+                    }
+                }
             }
         }
     }

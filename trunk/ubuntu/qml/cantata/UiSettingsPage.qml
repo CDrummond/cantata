@@ -70,153 +70,141 @@ Page {
     }
 
     // TODO: Save settings??? How/when??
-    Column {
-        id: column
-        spacing: units.gu(1)
-        height: parent.height - parent.header.height
-        y: units.gu(2)
-        anchors.horizontalCenter: parent.horizontalCenter
-
-        Component.onCompleted: {
-            fillWithU1dbData()
-        }
-
-        function fillWithU1dbData() {
-            // TODO: albumSort and hiddenViews
-            var contents = dbDocument.contents
-            if (typeof contents != "undefined") {
-                artistYear.checked = contents["artistYear"]
-                coverFetch.checked = contents["coverFetch"]
-                playQueueScroll.checked = contents["playQueueScroll"]
-            } else {
-                artistYear.checked = true
-                coverFetch.checked = true
-                playQueueScroll.checked = true
-            }
-        }
-
-        function saveDataToU1db() {
-            var contents = {};
-            contents["artistYear"] = artistYear.isChecked
-            contents["coverFetch"] = coverFetch.isChecked
-            contents["playQueueScroll"] = playQueueScroll.isChecked
-            // TODO: albumSort and hiddenViews
-            dbDocument.contents = contents
-        }
-
-        Grid {
+    Flickable {
+        anchors.fill: parent
+        contentHeight: column.height
+        Column {
+            id: column
+            spacing: units.gu(1)
+            //height: parent.height - parent.header.height
+            y: units.gu(2)
             anchors.horizontalCenter: parent.horizontalCenter
-            columns: 2
-            rowSpacing: units.gu(2)
-            columnSpacing: parent.width/10
-            //width: aboutTabLayout.width*0.25
-            //height: iconTabletItem.height*0.75
 
-            Label {
-                id: playQueueScrollLabel
-                text: i18n.tr("Scroll play queue to active track:")
-                fontSize: "medium"
-            }
-        
-            CheckBox {
-                id: playQueueScroll
-                KeyNavigation.priority: KeyNavigation.BeforeItem
-                KeyNavigation.tab: coverFetch
+            Component.onCompleted: {
+                fillWithU1dbData()
             }
 
-            Label {
-                id: coverFetchLabel
-                text: i18n.tr("Fetch missing covers from last.fm:")
-                fontSize: "medium"
-            }
+            function fillWithU1dbData() {
+                // TODO: albumSort and hiddenViews
+                var contents = dbDocument.contents
+                if (typeof contents != "undefined") {
+                    artistYear.checked = contents["artistYear"]
+                    coverFetch.checked = contents["coverFetch"]
+                    playQueueScroll.checked = contents["playQueueScroll"]
+                } else {
+                    artistYear.checked = true
+                    coverFetch.checked = true
+                    playQueueScroll.checked = true
+                }
+          }
+
+           function saveDataToU1db() {
+               var contents = {};
+               contents["artistYear"] = artistYear.isChecked
+               contents["coverFetch"] = coverFetch.isChecked
+               contents["playQueueScroll"] = playQueueScroll.isChecked
+               // TODO: albumSort and hiddenViews
+               dbDocument.contents = contents
+           }
+
+           Grid {
+               anchors.horizontalCenter: parent.horizontalCenter
+               columns: 2
+               rowSpacing: units.gu(2)
+               columnSpacing: parent.width/10
+               //width: aboutTabLayout.width*0.25
+               //height: iconTabletItem.height*0.75
+
+               Label {
+                   id: playQueueScrollLabel
+                   text: i18n.tr("Scroll play queue to active track:")
+                   fontSize: "medium"
+               }
         
-            CheckBox {
-                id: coverFetch
-                KeyNavigation.priority: KeyNavigation.BeforeItem
-                KeyNavigation.tab: artistYear
-                KeyNavigation.backtab: playQueueScroll
-            }
+               CheckBox {
+                   id: playQueueScroll
+                   KeyNavigation.priority: KeyNavigation.BeforeItem
+                   KeyNavigation.tab: coverFetch
+               }
+
+               Label {
+                   id: coverFetchLabel
+                   text: i18n.tr("Fetch missing covers from last.fm:")
+                   fontSize: "medium"
+               }
+        
+               CheckBox {
+                   id: coverFetch
+                   KeyNavigation.priority: KeyNavigation.BeforeItem
+                   KeyNavigation.tab: artistYear
+                   KeyNavigation.backtab: playQueueScroll
+               }
             
-            Label {
-                id: artistYearLabel
-                text: i18n.tr("Sort albums in artists view by year:")
-                fontSize: "medium"
-            }
+               Label {
+                   id: artistYearLabel
+                   text: i18n.tr("Sort albums in artists view by year:")
+                   fontSize: "medium"
+               }
+       
+               CheckBox {
+                   id: artistYear
+                   KeyNavigation.priority: KeyNavigation.BeforeItem
+                   KeyNavigation.tab: albumsView
+                   KeyNavigation.backtab: coverFetch
+               }
+            
+               Label {
+                   id: albumsViewLabel
+                   text: i18n.tr("Show albums view:")
+                   fontSize: "medium"
+               }
         
-            CheckBox {
-                id: artistYear
+               CheckBox {
+                       id: albumsView
+                   KeyNavigation.priority: KeyNavigation.BeforeItem
+                   KeyNavigation.tab: foldersView
+                   KeyNavigation.backtab: coverFetch
+               }
+                   
+               Label {
+                   id: foldersViewLabel
+                   text: i18n.tr("Show folders view:")
+                   fontSize: "medium"
+               }
+        
+               CheckBox {
+                       id: foldersView
+                   KeyNavigation.priority: KeyNavigation.BeforeItem
+                   KeyNavigation.tab: albumSort
+                   KeyNavigation.backtab: playlistsView
+               }
+            
+               Label {
+                   id: playlistsViewLabel
+                   text: i18n.tr("Show playlists view:")
+                   fontSize: "medium"
+               }
+       
+               CheckBox {
+                   id: playlistsView
+                   KeyNavigation.priority: KeyNavigation.BeforeItem
+                   KeyNavigation.tab: albumSort
+                   KeyNavigation.backtab: foldersView
+               }
+           }
+           OptionSelector {
+                    id: albumSort
+                         text: i18n.tr("Sort albums in albums view by:")
+                            model: [ i18n.tr("Album, Artist, Year"),
+                             i18n.tr("Album, Year, Artist"),
+                             i18n.tr("Artist, Album, Year"),
+                             i18n.tr("Artist, Year, Album"),
+                             i18n.tr("Year, Album, Artist"),
+                             i18n.tr("Year, Artist, Album") ]
+                selectedIndex: 2
                 KeyNavigation.priority: KeyNavigation.BeforeItem
-//                KeyNavigation.tab: viewCombo
-                KeyNavigation.backtab: coverFetch
+                KeyNavigation.backtab: foldersView
             }
-        }
-
-        Label {
-            id: albumSortLabel
-            text: i18n.tr("Sort albums in albums view by:")
-            fontSize: "medium"
-        }
-        
-        Label {
-            id: todoLabel
-            text: "TODO: 13.10 does not have combo box"
-//            KeyNavigation.priority: KeyNavigation.BeforeItem
-//            KeyNavigation.backtab: artistYear
-        }
-        /*
-        ComboBox {
-            currentIndex: 2
-            model: ListModel {
-                id: cbItems
-                ListElement { text: i18n.tr("Album, Artist, Year") }
-                ListElement { text: i18n.tr("Album, Year, Artist") }
-                ListElement { text: i18n.tr("Artist, Album, Year") }
-                ListElement { text: i18n.tr("Artist, Year, Album") }
-                ListElement { text: i18n.tr("Year, Album, Artist") }
-                ListElement { text: i18n.tr("Year, Artist, Album") }
-            }
-        }
-        */
-        
-        
-        Label {
-            id: viewsLabel
-            text: i18n.tr("Enabled views:")
-        }
-        
-        Label {
-            id: todoV
-            text: i18n.tr("TODO: Why is my list not created???:")
-        }
-        ListView {
-                id: views
-                model: ListModel {
-                    id: cbItems
-                    ListElement { text: "Artists" }
-                    ListElement { text: "Albums" }
-                    }
-                /*
-                ListItem.Standard {
-                    id: viewArtists
-                    text: i18n.tr("Artists")
-                }
-                ListItem.Standard {
-                    id: viewAlbums
-                    text: i18n.tr("Albums")
-                }
-                ListItem.Standard {
-                    id: viewFolders
-                    text: i18n.tr("Folders")
-                }
-                ListItem.Standard {
-                    id: viewPlaylists
-                    text: i18n.tr("Playlists")
-                }
-                ListItem.Standard {
-                    id: viewStreams
-                    text: i18n.tr("Streams")
-                }
-                */
         }
     }
 }

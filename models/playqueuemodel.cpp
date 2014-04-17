@@ -893,9 +893,6 @@ void PlayQueueModel::update(const QList<Song> &songList)
     #endif
     foreach (const Song &s, songList) {
         newIds.insert(s.id);
-        #ifdef ENABLE_UBUNTU
-        currentKeys.insert(s.key);
-        #endif
     }
 
     if (songs.isEmpty() || songList.isEmpty()) {
@@ -906,6 +903,12 @@ void PlayQueueModel::update(const QList<Song> &songList)
         if (songList.isEmpty()) {
             stopAfterTrackId=-1;
         }
+        
+        #ifdef ENABLE_UBUNTU
+        foreach (const Song &s, songs) {
+            currentKeys.insert(s.key);
+        }
+        #endif
     } else {
         time = 0;
 
@@ -929,18 +932,30 @@ void PlayQueueModel::update(const QList<Song> &songList)
                 if (-1==existingPos) {
                     beginInsertRows(QModelIndex(), i, i);
                     songs.insert(i, s);
+                    #ifdef ENABLE_UBUNTU
+                    currentKeys.insert(s.key);
+                    #endif
                     endInsertRows();
                 } else {
                     beginMoveRows(QModelIndex(), existingPos, existingPos, QModelIndex(), i>existingPos ? i+1 : i);
                     Song old=songs.takeAt(existingPos);
 //                     old.pos=s.pos;
                     songs.insert(i, isEmpty ? old : s);
+                    #ifdef ENABLE_UBUNTU
+                    currentKeys.insert(isEmpty ? old.key : s.key);
+                    #endif
                     endMoveRows();
                 }
             } else if (isEmpty) {
                 s=curentSongAtPos;
+                #ifdef ENABLE_UBUNTU
+                currentKeys.insert(s.key);
+                #endif
             } else {
                 s.key=curentSongAtPos.key;
+                #ifdef ENABLE_UBUNTU
+                currentKeys.insert(s.key);
+                #endif
                 songs.replace(i, s);
                 if (s.name!=curentSongAtPos.name || s.title!=curentSongAtPos.title || s.artist!=curentSongAtPos.artist) {
                     emit dataChanged(index(i, 0), index(i, columnCount(QModelIndex())-1));
@@ -1255,30 +1270,31 @@ void PlayQueueModel::setCover(const Song &song, const QImage &img, const QString
     if (file.isEmpty() || coverRequests.isEmpty()) {
         return;
     }
-    Song s=song;
-    if (song.key==Song::constNullKey) {
-        // This request is not from the playqueue - but the album might be in the playqueue...
-        // So, see fi we have an outstandnig request for the album an dget its key...
-        QMap<quint16, Song>::ConstIterator it=coverRequests.constBegin();
-        QMap<quint16, Song>::ConstIterator end=coverRequests.constEnd();
-        for (; it!=end; ++it) {
-            if (song.albumArtist()==it.value().albumArtist() && song.album==it.value().album) {
-                s.key=it.key();
-                coverRequests.remove(it.key());
-                break;
-            }
+    
+    // In case of multi-disc albums we will have multiple 'keys' mapped to a single artist+album combo.
+    // Therefore, we need to find all keys that have this mapping.
+    //
+    // Also, library and albums models might have requested the cover at the same time as playqueue, in which
+    // case the incomming song would have no key set
+    QList<quint16> keys;
+    QMap<quint16, Song>::ConstIterator it=coverRequests.constBegin();
+    QMap<quint16, Song>::ConstIterator end=coverRequests.constEnd();
+    for (; it!=end; ++it) {
+        if (song.albumArtist()==it.value().albumArtist() && song.album==it.value().album) {
+            keys.append(it.key());
         }
     }
 
-    if (s.key!=Song::constNullKey) {
-        QMap<quint16, QString>::ConstIterator it=covers.find(s.key);
+    foreach (quint16 key, keys) {
+        coverRequests.remove(key);
+        QMap<quint16, QString>::ConstIterator it=covers.find(key);
         if (it!=covers.end() && it.value().isEmpty()) {
             coverRequests.remove(it.key());
-            covers[song.key]="file://"+file;
+            covers[key]="file://"+file;
             int start=-1;
             int end=-1;
             for (int i=0; i<songs.size(); ++i) {
-                if (songs.at(i).key==s.key) {
+                if (songs.at(i).key==key) {
                     if (-1==start) {
                         start=end=i;
                     } else {

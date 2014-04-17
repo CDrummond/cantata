@@ -45,7 +45,7 @@ MPDBackend::MPDBackend(QObject *parent) : QObject(parent)
 
     connect(MPDConnection::self(), SIGNAL(stateChanged(bool)), this, SLOT(onConnected(bool)));
 
-    // TODO: These need to be confiurable vi QML UI!
+    // TODO: These need to be confiurable via QML UI!
     AlbumsModel::self()->setEnabled(true);
     DirViewModel::self()->setEnabled(true);
     PlaylistsModel::self()->setEnabled(true);
@@ -89,7 +89,7 @@ MPDBackend::MPDBackend(QObject *parent) : QObject(parent)
     connect(MPDConnection::self(), SIGNAL(stateChanged(bool)), SLOT(mpdConnectionStateChanged(bool)));
     connect(MPDConnection::self(), SIGNAL(replayGain(QString)), SLOT(replayGainUpdated(QString)));
     connect(MPDConnection::self(), SIGNAL(outputsUpdated(const QList<Output> &)), SLOT(outputsUpdated(const QList<Output> &)));
-        
+
 //    connect(MPDConnection::self(), SIGNAL(error(const QString &, bool)), SLOT(showError(const QString &, bool)));
 //    connect(MPDConnection::self(), SIGNAL(info(const QString &)), SLOT(showInformation(const QString &)));
 
@@ -181,11 +181,11 @@ void MPDBackend::setPlaybackSettings(const QString &replayGain, int crossfade, c
         replayGainSetting=replayGain;
         emit setReplayGain(replayGainSetting);
     }
-    
+
     if (MPDStatus::self()->crossFade()!=crossfade) {
         emit setCrossFade(crossfade);
     }
-    
+
     if (outputs!=outputSettings) {
         outputSettings=outputs;
         foreach (const QString &o, outputs) {
@@ -205,7 +205,7 @@ void MPDBackend::outputsUpdated(const QList<Output> &outputs) {
     foreach (const Output &o, outputs) {
         setting.append(o.name+":"+o.id+":"+(o.enabled ? 1 : 0));
     }
-    
+
     if (setting!=outputSettings) {
         outputSettings=setting;
         emit outputsChanged();
@@ -218,7 +218,7 @@ void MPDBackend::replayGainUpdated(const QString &v) {
         emit replayGainChanged();
     }
 }
-    
+
 // TODO: Why are the sorts required below? e.g. If we don't call sort, the items are only sorted string-wise. This
 // means that 'Various Artists' is not placed at the top, and "The XXX" is not sorted as "XXX"
 void MPDBackend::artistsUpdated() {
@@ -246,7 +246,7 @@ void MPDBackend::add(const QString &modelName, const QVariant &rows, bool replac
         loadPlaylist(rows.toInt(), replace);
         return;
     }
-    
+
     ProxyModel *proxy=0;
     ActionModel *model=0;
     if ("artists"==modelName) {
@@ -366,7 +366,7 @@ void MPDBackend::updateCurrentSong(const Song &song)
     }
 //    positionSlider->setEnabled(-1!=current.id && !current.isCdda() && (!currentIsStream() || current.time>5));
 
-// TODO: Touch is not currently displaying covers - and 'current cover' i sonly required for playqueue or notifications.
+// TODO: Touch is not currently displaying covers - and 'current cover' is only required for playqueue or notifications.
 //       If update is called, this will cause a cove to be downloaded, and saved!
 //    CurrentCover::self()->update(current);
 

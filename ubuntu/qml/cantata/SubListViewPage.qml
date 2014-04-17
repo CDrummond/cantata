@@ -42,41 +42,31 @@ Page {
     property string modelName
     property alias model: visualDataModel.model
 
-    function add(index, replace) {
+    function hierarchy(index) {
         var newRows = []
         for (var i = 0; i < rows.length; i++) {
             newRows[i] = rows[i]
         }
         newRows[rows.length] = index
-
-        backend.add(modelName, newRows, replace)
+        return newRows
+    }
+    
+    function add(index, replace) {
+        backend.add(modelName, hierarchy(index), replace)
         if (replace) {
             pageStack.push(currentlyPlayingPage)
         }
     }
 
     function remove(index) {
-        var newRows = []
-        for (var i = 0; i < rows.length; i++) {
-            newRows[i] = rows[i]
-        }
-        newRows[rows.length] = index
-
-        backend.remove(modelName, newRows)
+        backend.remove(modelName, hierarchy(index))
     }
     
     function onDelegateClicked(index, text) {
-        var newRows = []
-        for (var i = 0; i < rows.length; i++) {
-            newRows[i] = rows[i]
-        }
-        newRows[rows.length] = index
-
         var component = Qt.createComponent("SubListViewPage.qml")
-
         if (component.status == Component.Ready) {
             var page = component.createObject(parent, {"model": model, "title": text, "modelName": modelName})
-            page.init(newRows)
+            page.init(hierarchy(index))
             pageStack.push(page)
         }
     }

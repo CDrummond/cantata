@@ -678,13 +678,13 @@ void ItemView::setMode(Mode m)
         return;
     }
 
+    searchWidget->setText(QString());
     QIcon oldBgndIcon=bgndIcon;
     if (!bgndIcon.isNull()) {
         setBackgroundImage(QIcon());
     }
 
     mode=m;
-    searchWidget->setText(QString());
     int stackIndex=0;
     if (usingTreeView()) {
         listView->setModel(0);

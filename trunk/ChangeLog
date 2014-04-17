@@ -94,6 +94,7 @@
 58. When sorting albums view, also ignore "The " at start of artist names, as
     per artists view.
 59. Add more sort options to albums view.
+60. Fix crash when chaging view mode whilst search is active.
 
 1.3.4
 -----

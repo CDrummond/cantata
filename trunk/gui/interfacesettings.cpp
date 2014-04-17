@@ -176,6 +176,7 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     connect(systemTrayCheckBox, SIGNAL(toggled(bool)), SLOT(enableStartupState()));
     connect(minimiseOnClose, SIGNAL(toggled(bool)), SLOT(enableStartupState()));
     connect(forceSingleClick, SIGNAL(toggled(bool)), SLOT(forceSingleClickChanged()));
+    connect(touchFriendly, SIGNAL(toggled(bool)), SLOT(touchFriendlyChanged()));
     connect(views, SIGNAL(itemChanged(QListWidgetItem*)), SLOT(viewItemChanged(QListWidgetItem*)));
 
     #ifdef ENABLE_KDE_SUPPORT
@@ -260,6 +261,7 @@ void InterfaceSettings::load()
     playlistsViewChanged();
     playQueueGroupedChanged();
     forceSingleClick->setChecked(Settings::self()->forceSingleClick());
+    touchFriendly->setChecked(Settings::self()->touchFriendly());
     systemTrayCheckBox->setChecked(Settings::self()->useSystemTray());
     if (systemTrayPopup) {
         systemTrayPopup->setChecked(Settings::self()->showPopups());
@@ -338,6 +340,7 @@ void InterfaceSettings::save()
 
     Settings::self()->savePlayQueueConfirmClear(playQueueConfirmClear->isChecked());
     Settings::self()->saveForceSingleClick(forceSingleClick->isChecked());
+    Settings::self()->saveTouchFriendly(touchFriendly->isChecked());
     Settings::self()->saveUseSystemTray(systemTrayCheckBox->isChecked());
     if (systemTrayPopup) {
         Settings::self()->saveShowPopups(systemTrayPopup->isChecked());
@@ -516,6 +519,11 @@ void InterfaceSettings::playlistsViewChanged()
 void InterfaceSettings::forceSingleClickChanged()
 {
     singleClickLabel->setOn(forceSingleClick->isChecked()!=Settings::self()->forceSingleClick());
+}
+
+void InterfaceSettings::touchFriendlyChanged()
+{
+    touchFriendlyNoteLabel->setOn(touchFriendly->isChecked()!=Settings::self()->touchFriendly());
 }
 
 void InterfaceSettings::enableStartupState()

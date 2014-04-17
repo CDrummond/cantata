@@ -55,6 +55,7 @@ private Q_SLOTS:
     void playlistsViewChanged();
     void playQueueGroupedChanged();
     void forceSingleClickChanged();
+    void touchFriendlyChanged();
     void enableStartupState();
     void langChanged();
     void viewItemChanged(QListWidgetItem *changedItem);

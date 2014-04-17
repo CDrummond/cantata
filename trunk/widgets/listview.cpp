@@ -27,6 +27,7 @@
 #include "config.h"
 #include "icons.h"
 #include "utils.h"
+#include "flickcharm.h"
 #include <QMimeData>
 #include <QDrag>
 #include <QMouseEvent>
@@ -47,6 +48,7 @@ ListView::ListView(QWidget *parent)
     setAttribute(Qt::WA_MouseTracking);
     setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
     connect(this, SIGNAL(customContextMenuRequested(const QPoint &)), SLOT(showCustomContextMenu(const QPoint &)));
+    FlickCharm::self()->activateOn(this);
 }
 
 ListView::~ListView()

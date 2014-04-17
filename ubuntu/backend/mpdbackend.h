@@ -71,6 +71,12 @@ public:
     explicit MPDBackend(QObject *parent = 0);
 
     Q_INVOKABLE void connectTo(QString hostname, quint16 port, QString password, QString folder);
+    Q_INVOKABLE void enableAlbumsView(bool en);
+    Q_INVOKABLE void enableFoldersView(bool en);
+    Q_INVOKABLE void enablePlaylistsView(bool en);
+    Q_INVOKABLE void setArtistSortYear(bool s);
+    Q_INVOKABLE void setAlbumViewSort(int s);
+    Q_INVOKABLE void setCoverFetch(bool s);
     Q_INVOKABLE void playPause();
     Q_INVOKABLE void nextSong();
     Q_INVOKABLE void previousSong();

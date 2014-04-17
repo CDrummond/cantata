@@ -32,6 +32,7 @@
 #include "icons.h"
 #include "buddylabel.h"
 #include "utils.h"
+#include "flickcharm.h"
 #include <QBoxLayout>
 #include <QComboBox>
 #include <QGroupBox>
@@ -55,6 +56,7 @@ ShortcutsSettingsPage::ShortcutsSettingsPage(QWidget *p)
     shortcuts = new ShortcutsSettingsWidget(map, this);
     shortcuts->view()->setAlternatingRowColors(false);
     shortcuts->view()->setItemDelegate(new BasicItemDelegate(shortcuts->view()));
+    FlickCharm::self()->activateOn(shortcuts->view());
     lay->addWidget(shortcuts);
 
     #if !defined Q_OS_WIN && !defined Q_OS_MAC

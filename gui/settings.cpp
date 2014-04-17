@@ -928,6 +928,11 @@ int Settings::menu()
     return 0==v ? MC_Bar : v;
 }
 
+bool Settings::touchFriendly()
+{
+    return cfg.get("touchFriendly", false);
+}
+
 void Settings::removeConnectionDetails(const QString &v)
 {
     if (v==currentConnection()) {
@@ -1437,6 +1442,11 @@ void Settings::saveLang(const QString &v)
 void Settings::saveShowMenubar(bool v)
 {
     cfg.set("showMenubar", v);
+}
+
+void Settings::saveTouchFriendly(bool v)
+{
+    cfg.set("touchFriendly", v);
 }
 
 void Settings::save(bool force)

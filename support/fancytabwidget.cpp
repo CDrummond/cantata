@@ -84,7 +84,7 @@ void FancyTabWidget::setup()
         }
     } else {
         largeIconSize=32;
-        smallIconSize=16;
+        smallIconSize=Icon::touchFriendly() ? 22 : 16;
     }
 }
 

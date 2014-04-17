@@ -30,6 +30,7 @@
 #include "messagebox.h"
 #include "utils.h"
 #include "digitallyimportedsettings.h"
+#include "flickcharm.h"
 #include <QListWidget>
 #include <QFileInfo>
 #ifdef ENABLE_KDE_SUPPORT
@@ -65,6 +66,7 @@ StreamsSettings::StreamsSettings(QWidget *p)
     setupUi(this);
     categories->setItemDelegate(new BasicItemDelegate(categories));
     categories->setSortingEnabled(true);
+    FlickCharm::self()->activateOn(categories);
     int iSize=Icon::stdSize(QApplication::fontMetrics().height()*1.25);
     categories->setIconSize(QSize(iSize, iSize));
     connect(categories, SIGNAL(currentRowChanged(int)), SLOT(currentCategoryChanged(int)));

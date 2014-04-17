@@ -27,6 +27,7 @@
 #include "config.h"
 #include "basicitemdelegate.h"
 #include "utils.h"
+#include "flickcharm.h"
 #include <QMouseEvent>
 #include <QPaintEvent>
 #include <QPainter>
@@ -106,6 +107,7 @@ TreeView::TreeView(QWidget *parent, bool menuAlwaysAllowed)
     if (SINGLE_CLICK) {
         connect(this, SIGNAL(activated(const QModelIndex &)), this, SIGNAL(itemActivated(const QModelIndex &)));
     }
+    FlickCharm::self()->activateOn(this);
 }
 
 TreeView::~TreeView()

@@ -29,7 +29,7 @@
 #include <QList>
 #include <QSet>
 
-class Song;
+struct Song;
 class QHostAddress;
 class QTcpSocket;
 

@@ -29,7 +29,7 @@
 #include <QList>
 
 class QResizeEvent;
-class Song;
+struct Song;
 
 class SongLabel : public QLabel
 {

@@ -124,6 +124,8 @@ Page {
             confirmRemoval: true
             removable: listViewPage.editable
 
+            progression: true //TODO: Get value from model
+
             firstButtonImageSource: "../../icons/toolbar/media-playback-start-light.svg"
             secondButtonImageSource: "../../icons/toolbar/add.svg"
 

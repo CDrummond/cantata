@@ -52,10 +52,12 @@ Page {
     Flickable {
         anchors.fill: parent
         contentHeight: column.height
+        clip: true
 
         Column {
             id: column
             width: parent.width
+            height: childrenRect.height
 
             ListItem.Standard {
                 id: connectionSettingsLabel

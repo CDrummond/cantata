@@ -25,7 +25,6 @@
 *************************************************************************/
 
 import QtQuick 2.0
-//import QtQuick.Controls 1.1
 import Ubuntu.Components 0.1
 import Ubuntu.Components.ListItems 0.1 as ListItem
 import U1db 1.0 as U1db
@@ -34,7 +33,7 @@ Page {
     id: uiSettingsPage
 
     visible: false
-    width: parent.width
+    anchors.fill: parent
     title: i18n.tr("UI Settings")
 
     actions: [
@@ -72,12 +71,14 @@ Page {
     // TODO: Save settings??? How/when??
     Flickable {
         anchors.fill: parent
+        clip: true
+
         contentHeight: column.height
+
         Column {
             id: column
             spacing: units.gu(1)
-            //height: parent.height - parent.header.height
-            y: units.gu(2)
+            height: childrenRect.height
             anchors.horizontalCenter: parent.horizontalCenter
 
             Component.onCompleted: {
@@ -96,114 +97,127 @@ Page {
                     coverFetch.checked = true
                     playQueueScroll.checked = true
                 }
-          }
+            }
 
-           function saveDataToU1db() {
-               var contents = {};
-               contents["artistYear"] = artistYear.isChecked
-               contents["coverFetch"] = coverFetch.isChecked
-               contents["playQueueScroll"] = playQueueScroll.isChecked
-               // TODO: albumSort and hiddenViews
-               dbDocument.contents = contents
-           }
+            function saveDataToU1db() {
+                var contents = {};
+                contents["artistYear"] = artistYear.isChecked
+                contents["coverFetch"] = coverFetch.isChecked
+                contents["playQueueScroll"] = playQueueScroll.isChecked
+                // TODO: albumSort and hiddenViews
+                dbDocument.contents = contents
+            }
 
-           Grid {
-               anchors.horizontalCenter: parent.horizontalCenter
-               columns: 2
-               rowSpacing: units.gu(2)
-               columnSpacing: parent.width/10
-               //width: aboutTabLayout.width*0.25
-               //height: iconTabletItem.height*0.75
+            Item { //TODO: Find better solution
+                id: topSpacer
+                height: units.gu(2)
+                width: parent.width
+            }
 
-               Label {
-                   id: playQueueScrollLabel
-                   text: i18n.tr("Scroll play queue to active track:")
-                   fontSize: "medium"
-               }
-        
-               CheckBox {
-                   id: playQueueScroll
-                   KeyNavigation.priority: KeyNavigation.BeforeItem
-                   KeyNavigation.tab: coverFetch
-               }
+            Grid {
+                anchors.horizontalCenter: parent.horizontalCenter
+                columns: 2
+                rowSpacing: units.gu(2)
+                columnSpacing: parent.width/10
+                height: childrenRect.height
+                //width: aboutTabLayout.width*0.25
+                //height: iconTabletItem.height*0.75
 
-               Label {
-                   id: coverFetchLabel
-                   text: i18n.tr("Fetch missing covers from last.fm:")
-                   fontSize: "medium"
-               }
-        
-               CheckBox {
-                   id: coverFetch
-                   KeyNavigation.priority: KeyNavigation.BeforeItem
-                   KeyNavigation.tab: artistYear
-                   KeyNavigation.backtab: playQueueScroll
-               }
-            
-               Label {
-                   id: artistYearLabel
-                   text: i18n.tr("Sort albums in artists view by year:")
-                   fontSize: "medium"
-               }
-       
-               CheckBox {
-                   id: artistYear
-                   KeyNavigation.priority: KeyNavigation.BeforeItem
-                   KeyNavigation.tab: albumsView
-                   KeyNavigation.backtab: coverFetch
-               }
-            
-               Label {
-                   id: albumsViewLabel
-                   text: i18n.tr("Show albums view:")
-                   fontSize: "medium"
-               }
-        
-               CheckBox {
-                       id: albumsView
-                   KeyNavigation.priority: KeyNavigation.BeforeItem
-                   KeyNavigation.tab: foldersView
-                   KeyNavigation.backtab: coverFetch
-               }
-                   
-               Label {
-                   id: foldersViewLabel
-                   text: i18n.tr("Show folders view:")
-                   fontSize: "medium"
-               }
-        
-               CheckBox {
-                       id: foldersView
-                   KeyNavigation.priority: KeyNavigation.BeforeItem
-                   KeyNavigation.tab: albumSort
-                   KeyNavigation.backtab: playlistsView
-               }
-            
-               Label {
-                   id: playlistsViewLabel
-                   text: i18n.tr("Show playlists view:")
-                   fontSize: "medium"
-               }
-       
-               CheckBox {
-                   id: playlistsView
-                   KeyNavigation.priority: KeyNavigation.BeforeItem
-                   KeyNavigation.tab: albumSort
-                   KeyNavigation.backtab: foldersView
-               }
-           }
-           OptionSelector {
-                    id: albumSort
-                         text: i18n.tr("Sort albums in albums view by:")
-                            model: [ i18n.tr("Album, Artist, Year"),
-                             i18n.tr("Album, Year, Artist"),
-                             i18n.tr("Artist, Album, Year"),
-                             i18n.tr("Artist, Year, Album"),
-                             i18n.tr("Year, Album, Artist"),
-                             i18n.tr("Year, Artist, Album") ]
+                Label {
+                    id: playQueueScrollLabel
+                    text: i18n.tr("Scroll play queue to active track:")
+                    fontSize: "medium"
+                }
+
+                CheckBox {
+                    id: playQueueScroll
+                    KeyNavigation.priority: KeyNavigation.BeforeItem
+                    KeyNavigation.tab: coverFetch
+                }
+
+                Label {
+                    id: coverFetchLabel
+                    text: i18n.tr("Fetch missing covers from last.fm:")
+                    fontSize: "medium"
+                }
+
+                CheckBox {
+                    id: coverFetch
+                    KeyNavigation.priority: KeyNavigation.BeforeItem
+                    KeyNavigation.tab: artistYear
+                    KeyNavigation.backtab: playQueueScroll
+                }
+
+                Label {
+                    id: artistYearLabel
+                    text: i18n.tr("Sort albums in artists view by year:")
+                    fontSize: "medium"
+                }
+
+                CheckBox {
+                    id: artistYear
+                    KeyNavigation.priority: KeyNavigation.BeforeItem
+                    KeyNavigation.tab: albumsView
+                    KeyNavigation.backtab: coverFetch
+                }
+
+                Label {
+                    id: albumsViewLabel
+                    text: i18n.tr("Show albums view:")
+                    fontSize: "medium"
+                }
+
+                CheckBox {
+                    id: albumsView
+                    KeyNavigation.priority: KeyNavigation.BeforeItem
+                    KeyNavigation.tab: foldersView
+                    KeyNavigation.backtab: coverFetch
+                }
+
+                Label {
+                    id: foldersViewLabel
+                    text: i18n.tr("Show folders view:")
+                    fontSize: "medium"
+                }
+
+                CheckBox {
+                    id: foldersView
+                    KeyNavigation.priority: KeyNavigation.BeforeItem
+                    KeyNavigation.tab: albumSort
+                    KeyNavigation.backtab: playlistsView
+                }
+
+                Label {
+                    id: playlistsViewLabel
+                    text: i18n.tr("Show playlists view:")
+                    fontSize: "medium"
+                }
+
+                CheckBox {
+                    id: playlistsView
+                    KeyNavigation.priority: KeyNavigation.BeforeItem
+                    KeyNavigation.tab: albumSort
+                    KeyNavigation.backtab: foldersView
+                }
+            }
+            OptionSelector {
+                id: albumSort
+                text: i18n.tr("Sort albums in albums view by:")
+                model: [ i18n.tr("Album, Artist, Year"),
+                    i18n.tr("Album, Year, Artist"),
+                    i18n.tr("Artist, Album, Year"),
+                    i18n.tr("Artist, Year, Album"),
+                    i18n.tr("Year, Album, Artist"),
+                    i18n.tr("Year, Artist, Album") ]
                 selectedIndex: 2
                 KeyNavigation.priority: KeyNavigation.BeforeItem
                 KeyNavigation.backtab: foldersView
+            }
+
+            Item { //TODO: Find better solution
+                id: bottomSpacer
+                height: units.gu(2)
+                width: parent.width
             }
         }
     }

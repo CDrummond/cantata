@@ -137,16 +137,22 @@ void Application::mwDestroyed(QObject *obj)
     }
 }
 
-#elif defined Q_OS_WIN
+#elif defined Q_OS_WIN || Q_OS_MAC
 Application::Application(int &argc, char **argv)
     : QtSingleApplication(argc, argv)
 {
     connect(this, SIGNAL(messageReceived(const QString &)), SLOT(message(const QString &)));
+    #if defined Q_OS_WIN2
     connect(this, SIGNAL(reconnect()), MPDConnection::self(), SLOT(reconnect()));
+    #endif
 }
 
 static void setupIconTheme()
 {
+    #ifdef Q_OS_MAC
+    //QIcon::setThemeSearchPaths(QStringList(QCoreApplication::applicationDirPath() + "/../Resources/icons"));
+    QIcon::setThemeName(QLatin1String("oxygen"));
+    #else
     QString cfgTheme=Settings::self()->iconTheme();
     if (!cfgTheme.isEmpty()) {
         QIcon::setThemeName(cfgTheme);
@@ -163,8 +169,10 @@ static void setupIconTheme()
             }
         }
     }
+    #endif
 }
 
+#if defined Q_OS_WIN2
 bool Application::winEventFilter(MSG *msg, long *result)
 {
     if (msg && WM_POWERBROADCAST==msg->message && PBT_APMRESUMEAUTOMATIC==msg->wParam) {
@@ -172,6 +180,7 @@ bool Application::winEventFilter(MSG *msg, long *result)
     }
     return QCoreApplication::winEventFilter(msg, result);
 }
+#endif
 
 bool Application::start()
 {
@@ -199,53 +208,6 @@ void Application::message(const QString &msg)
     if (mw) {
         mw->restoreWindow();
     }
-}
-
-void Application::loadFiles()
-{
-    QStringList args(arguments());
-    if (args.count()>1) {
-        args.takeAt(0);
-        load(args);
-    }
-}
-
-void Application::load(const QStringList &files)
-{
-    if (files.isEmpty()) {
-        return;
-    }
-
-    QStringList urls;
-    foreach (const QString &f, files) {
-        urls.append(f);
-    }
-    if (!urls.isEmpty()) {
-        MainWindow *mw=qobject_cast<MainWindow *>(activationWindow());
-        if (mw) {
-            mw->load(urls);
-        }
-    }
-}
-
-#elif defined Q_OS_MAC
-Application::Application(int &argc, char **argv)
-    : QApplication(argc, argv)
-{
-    connect(this, SIGNAL(messageReceived(const QString &)), SLOT(message(const QString &)));
-    connect(this, SIGNAL(reconnect()), MPDConnection::self(), SLOT(reconnect()));
-}
-
-void Application::setupIconTheme()
-{
-    //QIcon::setThemeSearchPaths(QStringList(QCoreApplication::applicationDirPath() + "/../Resources/icons"));
-    QIcon::setThemeName(QLatin1String("oxygen"));
-}
-
-bool Application::start()
-{
-    setupIconTheme();
-    return true;
 }
 
 void Application::loadFiles()

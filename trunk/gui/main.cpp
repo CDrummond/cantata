@@ -316,7 +316,7 @@ int main(int argc, char *argv[])
         }
     }
     MainWindow mw;
-    #if !defined Q_OS_MAC
+    #if defined Q_OS_WIN || defined Q_OS_MAC
     app.setActivationWindow(&mw);
     #endif // !defined Q_OS_MAC
     app.loadFiles();

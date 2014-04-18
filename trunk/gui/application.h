@@ -49,7 +49,7 @@ private Q_SLOTS:
 private:
     MainWindow *w;
 };
-#elif defined Q_OS_WIN || defined WIN32   // moc does not seem to see Q_OS_WIN, but will see WIN32 :-(
+#elif defined Q_OS_WIN || defined WIN32 || Q_OS_MAC || defined __APPLE__   // moc does not seem to see Q_OS_WIN/Q_OS_MAC,, but will see WIN32/__APPLE__ :-(
 #include "qtsingleapplication/qtsingleapplication.h"
 class Application : public QtSingleApplication
 {
@@ -60,7 +60,9 @@ public:
     Application(int &argc, char **argv);
     virtual ~Application() { }
 
+    #if defined Q_OS_WIN || defined WIN32
     bool winEventFilter(MSG *msg, long *result);
+    #endif
     bool start();
     void loadFiles();
 
@@ -73,22 +75,6 @@ private Q_SLOTS:
 Q_SIGNALS:
     void reconnect();
 };
-#elif defined Q_OS_MAC || defined __APPLE__   // moc does not seem to see Q_OS_MAC, but will see __APPLE__ :-(
-#include <QApplication>
-class Application : public QApplication
-{
-public:
-    static void initObjects();
-    Application(int &argc, char **argv);
-    virtual ~Application() { }
-
-    bool start();
-    void loadFiles();
-    void setupIconTheme();
-
-private:
-    void load(const QStringList &files);
-};
 #else
 #include <QApplication>
 class Application : public QApplication
@@ -100,7 +86,6 @@ public:
 
     bool start();
     void loadFiles();
-    void setActivationWindow(QWidget *) { }
     void setupIconTheme();
 };
 #endif

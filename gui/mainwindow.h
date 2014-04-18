@@ -77,8 +77,8 @@ class QMenu;
 class TrayItem;
 class HttpStream;
 class MPDStatus;
-class MPDConnectionDetails;
-class Output;
+struct MPDConnectionDetails;
+struct Output;
 
 // Dummy classes so that when class name is saved to the config file, we get a more meaningful name than QWidget!!!
 class PlayQueuePage : public QWidget

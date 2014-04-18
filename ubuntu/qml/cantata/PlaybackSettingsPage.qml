@@ -55,12 +55,14 @@ Page {
     Column {
         id: column
         spacing: units.gu(1)
-        height: parent.height - parent.header.height
-        y: units.gu(2)
-        anchors.horizontalCenter: parent.horizontalCenter
+        anchors {
+            top: parent.top
+            topMargin: units.gu(2)
+            horizontalCenter: parent.horizontalCenter
+        }
 
         Component.onCompleted: {
-            // TODO: Is this called each time page is made visible???
+            // TODO: Is this called each time page is made visible??? - Nope, it's called when the component is created
             backend.getPlaybackSettings();
         }
 

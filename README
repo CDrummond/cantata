@@ -17,6 +17,7 @@ Table of Contents
 14. Debug Logging
 15. Credits
 16. Windows
+17. Mac OSX
 
 
 
@@ -968,4 +969,37 @@ TagLib
 
 Windows version of taglib was built from TagLib 1.8, using the following cmake command:
     cmake .. -G "MinGW Makefiles" -DWITH_ASF=1 -DWITH_MP4=1 -DCMAKE_INSTALL_PREFIX=z:\dev\taglib
+
+
+17. Mac OSX
+===========
+
+The following steps are used to compile Cantata, and create the OS X application
+bundle.
+
+1. Install Homebrew and use it to install the packages qt, cmake, oxygen-icons,
+   and ffmpeg.
+2. Open a terminal window in the source directory and run the following
+   commands, replacing <user> with your local username:
+
+  Create the build directory:
+
+    mkdir build
+    cd build
+    cmake .. -DENABLE_KDE=OFF
+    make
+
+  Make the .app bundle:
+
+    sudo make install
+
+  Fix permissions on the .app bundle:
+
+    sudo chown -R <user>:staff cantata.app/
+
+  Copy icons to the .app bundle (assuming oxygen-icons was installed to default
+  location):
+
+    mkdir cantata.app/Contents/Resources/icons
+    cp -r /usr/local/share/icons/oxygen cantata.app/Contents/Resources/icons
 

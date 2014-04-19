@@ -183,7 +183,7 @@ Empty {
 
         anchors {
             right: listItemDelegate.progression?progressionImage.right:parent.right
-            rightMargin: listItemDelegate.progression?units.gu(4):units.gu(2)
+            rightMargin: listItemDelegate.progression?units.gu(3.5):units.gu(2)
             verticalCenter: parent.verticalCenter
         }
 
@@ -198,18 +198,15 @@ Empty {
 
     Image {
         id: progressionImage
-        width: units.gu(3)
-        height: units.gu(3)
+        anchors {
+            verticalCenter: parent.verticalCenter
+            right: parent.right
+            rightMargin: units.gu(2)
+        }
 
         opacity: enabled ? 1.0 : 0.5
-
-        source: "../../../icons/toolbar/chevron.svg"
+        source: "../../../icons/toolbar/chevron.png"
 
         visible: listItemDelegate.progression
-        anchors {
-            right: parent.right
-            rightMargin: units.gu(1)
-            verticalCenter: parent.verticalCenter
-        }
     }
 }

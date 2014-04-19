@@ -122,6 +122,41 @@ Page {
 
                         color: volumeHeader.color
 
+                        text: i18n.tr("Repeat")
+                    }
+
+                    CheckBox {
+                        id: repeatCheckBox
+                        anchors {
+                            right: parent.right
+                            rightMargin: units.gu(1)
+                            verticalCenter: parent.verticalCenter
+                        }
+
+                        checked: backend.isRepeating
+
+                        Connections {
+                            target: backend
+                            onIsRepeatingChanged: repeatCheckBox.checked = backend.isRepeating
+                        }
+
+                        onTriggered: {
+                            if (checked !== backend.isRepeating) {
+                                backend.setIsRepeating(checked)
+                            }
+                        }
+                    }
+                }
+                ListItem.Standard {
+                    Label {
+                        anchors {
+                            left: parent.left
+                            leftMargin: units.gu(1)
+                            verticalCenter: parent.verticalCenter
+                        }
+
+                        color: volumeHeader.color
+
                         text: i18n.tr("Random")
                     }
 
@@ -148,7 +183,11 @@ Page {
                     }
                 }
 
-                ListItem.Header { text: i18n.tr("Volume") }
+                ListItem.Header {
+                    id: volumeHeader
+                    text: i18n.tr("Volume")
+                }
+
                 ListItem.Standard {
                     anchors {
                         left: parent.left

@@ -1299,7 +1299,7 @@ void Settings::savePlayQueueBackgroundFile(const QString &v)
 
 void Settings::savePlayQueueConfirmClear(bool v)
 {
-    cfg.set("playQueueConfirmClea", v);
+    cfg.set("playQueueConfirmClear", v);
 }
 
 void Settings::savePlayListsStartClosed(bool v)

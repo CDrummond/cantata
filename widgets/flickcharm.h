@@ -1,43 +1,25 @@
 /****************************************************************************
- **
- ** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
- ** Contact: http://www.qt-project.org/legal
- **
- ** This file is part of the demos of the Qt Toolkit.
- **
- ** $QT_BEGIN_LICENSE:LGPL$
- ** Commercial License Usage
- ** Licensees holding valid commercial Qt licenses may use this file in
- ** accordance with the commercial license agreement provided with the
- ** Software or, alternatively, in accordance with the terms contained in
- ** a written agreement between you and Digia.  For licensing terms and
- ** conditions see http://qt.digia.com/licensing.  For further information
- ** use the contact form at http://qt.digia.com/contact-us.
- **
- ** GNU Lesser General Public License Usage
- ** Alternatively, this file may be used under the terms of the GNU Lesser
- ** General Public License version 2.1 as published by the Free Software
- ** Foundation and appearing in the file LICENSE.LGPL included in the
- ** packaging of this file.  Please review the following information to
- ** ensure the GNU Lesser General Public License version 2.1 requirements
- ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
- **
- ** In addition, as a special exception, Digia gives you certain additional
- ** rights.  These rights are described in the Digia Qt LGPL Exception
- ** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
- **
- ** GNU General Public License Usage
- ** Alternatively, this file may be used under the terms of the GNU
- ** General Public License version 3.0 as published by the Free Software
- ** Foundation and appearing in the file LICENSE.GPL included in the
- ** packaging of this file.  Please review the following information to
- ** ensure the GNU General Public License version 3.0 requirements will be
- ** met: http://www.gnu.org/copyleft/gpl.html.
- **
- **
- ** $QT_END_LICENSE$
- **
- ****************************************************************************/
+**
+** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Contact: Qt Software Information (qt-info@nokia.com)
+**
+** This file is part of the Graphics Dojo project on Qt Labs.
+**
+** This file may be used under the terms of the GNU General Public
+** License version 2.0 or 3.0 as published by the Free Software Foundation
+** and appearing in the file LICENSE.GPL included in the packaging of
+** this file.  Please review the following information to ensure GNU
+** General Public Licensing requirements will be met:
+** http://www.fsf.org/licensing/licenses/info/GPLv2.html and
+** http://www.gnu.org/copyleft/gpl.html.
+**
+** If you are unsure which license is appropriate for your use, please
+** contact the sales department at qt-sales@nokia.com.
+**
+** This file is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE
+** WARRANTY OF DESIGN, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+**
+****************************************************************************/
 
 #ifndef FLICKCHARM_H
 #define FLICKCHARM_H
@@ -52,6 +34,7 @@ class FlickCharm: public QObject
     Q_OBJECT
 public:
     static FlickCharm *self();
+
     FlickCharm(QObject *parent = 0);
     ~FlickCharm();
     void activateOn(QWidget *widget);

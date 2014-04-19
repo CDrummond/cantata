@@ -137,7 +137,7 @@ void Application::mwDestroyed(QObject *obj)
     }
 }
 
-#elif defined Q_OS_WIN || Q_OS_MAC
+#elif defined Q_OS_WIN || defined Q_OS_MAC
 Application::Application(int &argc, char **argv)
     : QtSingleApplication(argc, argv)
 {

@@ -172,7 +172,7 @@ static void setupIconTheme()
     #endif
 }
 
-#if defined Q_OS_WIN2
+#if defined Q_OS_WIN
 bool Application::winEventFilter(MSG *msg, long *result)
 {
     if (msg && WM_POWERBROADCAST==msg->message && PBT_APMRESUMEAUTOMATIC==msg->wParam) {

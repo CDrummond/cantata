@@ -450,8 +450,8 @@ MainWindow::MainWindow(QWidget *parent)
     playQueueSearchWidget->setVisible(false);
     QList<QToolButton *> playbackBtns=QList<QToolButton *>() << prevTrackButton << stopTrackButton << playPauseTrackButton << nextTrackButton;
     QList<QToolButton *> controlBtns=QList<QToolButton *>() << menuButton << songInfoButton;
-    int playbackIconSize=Icon::touchFriendly() ? 32 : 28;
-    int controlIconSize=Icon::touchFriendly() ? 32 : 22;
+    int playbackIconSize=28;
+    int controlIconSize=22;
     int controlButtonSize=32;
 
     if (repeatButton->iconSize().height()>=32) {
@@ -460,7 +460,7 @@ MainWindow::MainWindow(QWidget *parent)
     } else if (repeatButton->iconSize().height()>=22) {
         controlIconSize=playbackIconSize=32;
         controlButtonSize=36;
-    } else if (!Icon::touchFriendly() && (QLatin1String("oxygen")!=Icon::currentTheme().toLower() || (GtkStyle::isActive() && GtkStyle::useSymbolicIcons()))) {
+    } else if (QLatin1String("oxygen")!=Icon::currentTheme().toLower() || (GtkStyle::isActive() && GtkStyle::useSymbolicIcons())) {
         // Oxygen does not have 24x24 icons, and media players seem to use scaled 28x28 icons...
         // But, if the theme does have media icons at 24x24 use these - as they will be sharper...
         playbackIconSize=24==Icons::self()->toolbarPlayIcon.actualSize(QSize(24, 24)).width() ? 24 : 28;
@@ -471,23 +471,24 @@ MainWindow::MainWindow(QWidget *parent)
     }
     #endif
     stopTrackButton->setHideMenuIndicator(true);
-    int playbackButtonSize=Icon::touchFriendly() && 32==playbackIconSize ? 40 : (28==playbackIconSize ? 34 : controlButtonSize);
+    int playbackButtonSize=28==playbackIconSize ? 34 : controlButtonSize;
+    int buttonPad=Icon::touchFriendly() ? 4 : 0;
     foreach (QToolButton *b, controlBtns) {
         b->setAutoRaise(true);
         b->setToolButtonStyle(Qt::ToolButtonIconOnly);
-        b->setIconSize(QSize(controlIconSize, controlIconSize));
         #ifdef USE_SYSTEM_MENU_ICON
         if (b==menuButton && !GtkStyle::isActive()) {
             b->setFixedHeight(controlButtonSize);
         } else
         #endif
-        b->setFixedSize(QSize(controlButtonSize, controlButtonSize));
+        b->setFixedSize(QSize(controlButtonSize+buttonPad, controlButtonSize+buttonPad));
+        b->setIconSize(QSize(controlIconSize, controlIconSize));
     }
     foreach (QToolButton *b, playbackBtns) {
         b->setAutoRaise(true);
         b->setToolButtonStyle(Qt::ToolButtonIconOnly);
+        b->setFixedSize(QSize(playbackButtonSize+buttonPad, playbackButtonSize+buttonPad));
         b->setIconSize(QSize(playbackIconSize, playbackIconSize));
-        b->setFixedSize(QSize(playbackButtonSize, playbackButtonSize));
     }
 
     if (fullScreenAction->isEnabled()) {

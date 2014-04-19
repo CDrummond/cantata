@@ -49,7 +49,7 @@ private Q_SLOTS:
 private:
     MainWindow *w;
 };
-#elif defined Q_OS_WIN || defined WIN32 || Q_OS_MAC || defined __APPLE__   // moc does not seem to see Q_OS_WIN/Q_OS_MAC,, but will see WIN32/__APPLE__ :-(
+#elif defined Q_OS_WIN || defined WIN32 || defined Q_OS_MAC || defined __APPLE__   // moc does not seem to see Q_OS_WIN/Q_OS_MAC,, but will see WIN32/__APPLE__ :-(
 #include "qtsingleapplication/qtsingleapplication.h"
 class Application : public QtSingleApplication
 {

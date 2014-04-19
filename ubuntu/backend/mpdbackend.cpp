@@ -105,6 +105,7 @@ MPDBackend::MPDBackend(QObject *parent) : QObject(parent)
     connect(this, SIGNAL(add(const QStringList &, bool, quint8)), MPDConnection::self(), SLOT(add(const QStringList &, bool, quint8)));
     connect(this, SIGNAL(setVolume(int)), MPDConnection::self(), SLOT(setVolume(int)));
     connect(this, SIGNAL(setRandomOrder(bool)), MPDConnection::self(), SLOT(setRandom(bool)));
+    connect(this, SIGNAL(setRepeating(bool)), MPDConnection::self(), SLOT(setRepeat(bool)));
     connect(this, SIGNAL(loadPlaylist(const QString &, bool)), MPDConnection::self(), SLOT(loadPlaylist(const QString &, bool)));
     connect(this, SIGNAL(removePlaylist(const QString &)), MPDConnection::self(), SLOT(removePlaylist(const QString &)));
     connect(this, SIGNAL(renamePlaylist(const QString &, const QString &)), MPDConnection::self(), SLOT(renamePlaylist(const QString &, const QString &)));
@@ -197,6 +198,10 @@ void MPDBackend::setMpdVolume(quint8 volume) {
 
 void MPDBackend::setIsRandomOrder(bool random) {
     emit setRandomOrder(random);
+}
+
+void MPDBackend::setIsRepeating(bool repeating) {
+    emit setRepeating(repeating);
 }
 
 void MPDBackend::getPlaybackSettings() {

@@ -58,6 +58,7 @@ class MPDBackend : public QObject
     Q_PROPERTY(quint32 currentSongPlayqueuePosition READ getCurrentSongPlayqueuePosition NOTIFY onCurrentSongChanged)
 
     Q_PROPERTY(bool isRandomOrder READ getIsRandomOrder WRITE setIsRandomOrder NOTIFY onMpdStatusChanged)
+    Q_PROPERTY(bool isRepeating READ getIsRepeating WRITE setIsRepeating NOTIFY onMpdStatusChanged)
     Q_PROPERTY(quint8 mpdVolume READ getMpdVolume WRITE setMpdVolume NOTIFY onMpdStatusChanged)
 
     Q_PROPERTY(bool playQueueEmpty READ isPlayQueueEmpty NOTIFY onPlayQueueChanged)
@@ -103,6 +104,8 @@ public:
     Q_INVOKABLE bool getPlaylistsFound() { return PlaylistsModel::self()->rowCount()>0; }
     Q_INVOKABLE bool getIsRandomOrder() { return MPDStatus::self()->random(); }
     Q_INVOKABLE void setIsRandomOrder(bool random);
+    Q_INVOKABLE bool getIsRepeating() { return MPDStatus::self()->repeat(); }
+    Q_INVOKABLE void setIsRepeating(bool repeating);
     Q_INVOKABLE void getPlaybackSettings();
     Q_INVOKABLE void setPlaybackSettings(const QString &replayGain, int crossfade, const QStringList &outputs);
     Q_INVOKABLE int getCrossfade() { return MPDStatus::self()->crossFade(); }
@@ -167,6 +170,7 @@ Q_SIGNALS:
     void setVolume(int volume);
     void clear();
     void setRandomOrder(bool random);
+    void setRepeating(bool repeat);
     void getReplayGainSetting();
     void setReplayGain(const QString &);
     void setCrossFade(int secs);

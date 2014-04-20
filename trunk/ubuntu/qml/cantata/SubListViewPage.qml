@@ -147,9 +147,7 @@ Page {
             
                 firstButtonImageSource: "../../icons/toolbar/media-playback-start-light.svg"
                 secondButtonImageSource: "../../icons/toolbar/add.svg"
-                // progression: true //Removed due to the app showdown, will be implemented later
-
-                // onIconSourceChanged: console.log("Debug iconSource: " + iconSource)
+                progression: model.hasChildren
 
                 onFirstImageButtonClicked: subListViewPage.add(index, true)
                 onSecondImageButtonClicked: subListViewPage.add(index, false)

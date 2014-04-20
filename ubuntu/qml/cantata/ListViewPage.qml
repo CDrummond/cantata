@@ -124,12 +124,10 @@ Page {
             confirmRemoval: true
             removable: listViewPage.editable
 
-            progression: true //TODO: Get value from model
+            progression: true
 
             firstButtonImageSource: "../../icons/toolbar/media-playback-start-light.svg"
             secondButtonImageSource: "../../icons/toolbar/add.svg"
-
-            // progression: true //Removed due to the app showdown, will be implemented later
 
             onFirstImageButtonClicked: listViewPage.add(index, true)
             onSecondImageButtonClicked: listViewPage.add(index, false)

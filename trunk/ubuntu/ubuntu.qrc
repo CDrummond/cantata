@@ -3,10 +3,6 @@
         <file>qml/cantata/main.qml</file>
         <file>qml/cantata/AboutPage.qml</file>
         <file>qml/cantata/CurrentlyPlayingPage.qml</file>
-        <file>qml/cantata/SettingsPage.qml</file>
-        <file>qml/cantata/HostSettingsPage.qml</file>
-        <file>qml/cantata/UiSettingsPage.qml</file>
-        <file>qml/cantata/PlaybackSettingsPage.qml</file>
         <file>icons/toolbar/settings.svg</file>
         <file>icons/toolbar/add.svg</file>
         <file>icons/toolbar/help.svg</file>
@@ -30,9 +26,13 @@
         <file>qml/cantata/SubListViewPage.qml</file>
         <file>qml/cantata/components/ControlButtonsRow.qml</file>
         <file>icons/toolbar/chevron@27.png</file>
-        <file>qml/cantata/SettingsCategories.qml</file>
-        <file>qml/cantata/HostSettingsContent.qml</file>
-        <file>qml/cantata/UiSettingsContent.qml</file>
-        <file>qml/cantata/PlaybackSettingsContent.qml</file>
+        <file>qml/cantata/settings/HostSettingsContent.qml</file>
+        <file>qml/cantata/settings/HostSettingsPage.qml</file>
+        <file>qml/cantata/settings/PlaybackSettingsContent.qml</file>
+        <file>qml/cantata/settings/PlaybackSettingsPage.qml</file>
+        <file>qml/cantata/settings/SettingsCategories.qml</file>
+        <file>qml/cantata/settings/SettingsPage.qml</file>
+        <file>qml/cantata/settings/UiSettingsContent.qml</file>
+        <file>qml/cantata/settings/UiSettingsPage.qml</file>
     </qresource>
 </RCC>

@@ -24,7 +24,7 @@
 #include "sizewidget.h"
 #include "genrecombo.h"
 #include "toolbutton.h"
-#include <QIcon>
+#include "icons.h"
 
 static int stdHeight=-1;
 
@@ -33,12 +33,19 @@ int SizeWidget::standardHeight()
     if (-1==stdHeight)
     {
         GenreCombo combo(0);
+        combo.move(65535, 65535);
+        combo.update(QSet<QString>());
         combo.ensurePolished();
+        combo.setVisible(true);
         ToolButton tb(0);
+        tb.move(65535, 65535);
         tb.setToolButtonStyle(Qt::ToolButtonIconOnly);
-        tb.setIcon(QIcon::fromTheme("ok"));
+        tb.setIcon(Icons::self()->albumIcon);
         tb.ensurePolished();
-        stdHeight=qMax(tb.sizeHint().height(), combo.sizeHint().height());
+        tb.setVisible(true);
+        int sh=qMax(tb.sizeHint().height(), combo.sizeHint().height());
+        int s=qMax(tb.size().height(), combo.size().height());
+        stdHeight=s>sh && s<(sh*1.5) ? s: sh;
     }
 
     return stdHeight;
@@ -47,6 +54,6 @@ int SizeWidget::standardHeight()
 SizeWidget::SizeWidget(QWidget *parent)
     : QWidget(parent)
 {
-    setFixedHeight(stdHeight);
+    setFixedHeight(standardHeight());
     setFixedWidth(0);
 }

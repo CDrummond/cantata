@@ -124,7 +124,7 @@ Page {
             confirmRemoval: true
             removable: listViewPage.editable
 
-            progression: true
+            progression: model.hasChildren;
 
             firstButtonImageSource: "../../icons/toolbar/media-playback-start-light.svg"
             secondButtonImageSource: "../../icons/toolbar/add.svg"
@@ -132,7 +132,7 @@ Page {
             onFirstImageButtonClicked: listViewPage.add(index, true)
             onSecondImageButtonClicked: listViewPage.add(index, false)
 
-            onClicked: listViewPage.onDelegateClicked(index, model.titleText)
+            onClicked: model.hasChildren ? listViewPage.onDelegateClicked(index, model.titleText) : "";
             onItemRemoved: listViewPage.remove(index)
         }
     }

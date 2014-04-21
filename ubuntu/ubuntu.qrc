@@ -30,5 +30,9 @@
         <file>qml/cantata/SubListViewPage.qml</file>
         <file>qml/cantata/components/ControlButtonsRow.qml</file>
         <file>icons/toolbar/chevron@27.png</file>
+        <file>qml/cantata/SettingsCategories.qml</file>
+        <file>qml/cantata/HostSettingsContent.qml</file>
+        <file>qml/cantata/UiSettingsContent.qml</file>
+        <file>qml/cantata/PlaybackSettingsContent.qml</file>
     </qresource>
 </RCC>

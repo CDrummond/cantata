@@ -756,17 +756,17 @@ if (ENABLE_UBUNTU)
     add_custom_target(components_QmlFiles ALL SOURCES 
         ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/main.qml
         ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/AboutPage.qml
-        ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/CurrentlyPlayingPage.qml
-        ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/SettingsPage.qml
-        ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/SettingsCategories.qml
-        ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/HostSettingsContent.qml
-        ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/HostSettingsPage.qml
-        ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/UiSettingsContent.qml
-        ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/UiSettingsPage.qml
-        ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/PlaybackSettingsContent.qml
-        ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/PlaybackSettingsPage.qml
         ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/ListViewPage.qml
         ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/SubListViewPage.qml
+        ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/CurrentlyPlayingPage.qml
+        ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/settings/SettingsPage.qml
+        ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/settings/SettingsCategories.qml
+        ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/settings/HostSettingsContent.qml
+        ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/settings/HostSettingsPage.qml
+        ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/settings/UiSettingsContent.qml
+        ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/settings/UiSettingsPage.qml
+        ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/settings/PlaybackSettingsContent.qml
+        ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/settings/PlaybackSettingsPage.qml
         ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/components/ControlButtonsRow.qml
         ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/components/ListItemDelegate.qml
         ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/components/PlayQueueListItemDelegate.qml

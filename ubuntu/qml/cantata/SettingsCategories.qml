@@ -29,38 +29,46 @@ import QtQuick 2.0
 import Ubuntu.Components 0.1
 import Ubuntu.Components.ListItems 0.1 as ListItem
 
-Page {
-    id: playbackSettingsPage
+Flickable {
+    contentHeight: column.height
+    clip: true
 
-    visible: false
-    anchors {
-        fill: parent
-        topMargin: root.header.height + units.gu(2)
-    }
-    title: i18n.tr("Playback Settings")
+    property bool push: true
+    property int selectedIndex: 0
 
-    property color textFieldColor: "#c2c2b8" //#f3f3e7 * 0.8 (#f3f3e7: label color)
+    Column {
+        id: column
+        width: parent.width
+        height: childrenRect.height
 
-    actions: [
-        Action {
-            id: backAction
-            text: i18n.tr("Back")
-            onTriggered: pageStack.pop()
+        ListItem.Standard {
+            id: connectionSettingsLabel
+            text: i18n.tr("Connection")
+            progression: true
+            onClicked: {
+                selectedIndex = 0
+                if (push) pageStack.push(hostSettingsPage)
+            }
         }
-    ]
 
-    tools: ToolbarItems {
-        opened: true
-        locked: root.width > units.gu(60) && opened //"&& opened": prevents the bar from being hidden and locked at the same time
-        pageStack: pageStack
-    }
+        ListItem.Standard {
+            id: uiSettingsLabel
+            text: i18n.tr("UI")
+            progression: true
+            onClicked:  {
+                selectedIndex = 1
+                if (push) pageStack.push(uiSettingsPage)
+            }
+        }
 
-    PlaybackSettingsContent {
-        anchors {
-            top: parent.top
-            topMargin: units.gu(2)
-            horizontalCenter: parent.horizontalCenter
+        ListItem.Standard {
+            id: playbackSettingsLabel
+            text: i18n.tr("Playback")
+            progression: true
+            onClicked:  {
+                selectedIndex = 2
+                if (push) pageStack.push(playbackSettingsPage)
+            }
         }
     }
 }
-

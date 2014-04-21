@@ -2,6 +2,7 @@
 ** Cantata
 **
 ** Copyright (c) 2014 Niklas Wenzel <nikwen.developer@gmail.com>
+** Copyright (c) 2014 Craig Drummond <craig.p.drummond@gmail.com>
 **
 ** $QT_BEGIN_LICENSE:GPL$
 ** This program is free software; you can redistribute it and/or modify

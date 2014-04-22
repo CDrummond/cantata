@@ -33,6 +33,7 @@
 #include "plurals.h"
 #include "icons.h"
 #include "gtkstyle.h"
+#include "flickcharm.h"
 #include <QStyledItemDelegate>
 #include <QApplication>
 #include <QFontMetrics>
@@ -436,7 +437,8 @@ private:
 
 GroupedView::GroupedView(QWidget *parent, bool isPlayQueue)
     : TreeView(parent, isPlayQueue)
-    , startClosed(true)
+    , allowClose(!FlickCharm::self()->enabled())
+    , startClosed(allowClose)
     , autoExpand(true)
     , filterActive(false)
     , isMultiLevel(false)
@@ -506,7 +508,7 @@ void GroupedView::setFilterActive(bool f)
 
 void GroupedView::setStartClosed(bool sc)
 {
-    if (sc==startClosed) {
+    if (!allowClose || sc==startClosed) {
         return;
     }
     controlledAlbums.clear();
@@ -582,6 +584,10 @@ void GroupedView::updateCollectionRows()
 
 void GroupedView::toggle(const QModelIndex &idx)
 {
+    if (!allowClose) {
+        return;
+    }
+
     quint16 indexKey=idx.data(GroupedView::Role_Key).toUInt();
 
     if (indexKey==currentAlbum && autoExpand) {
@@ -763,7 +769,7 @@ void GroupedView::itemClicked(const QModelIndex &idx)
         header.setHeight(header.height()/2);
         header.moveTo(viewport()->mapToGlobal(QPoint(header.x(), header.y())));
         icon.moveTo(viewport()->mapToGlobal(QPoint(icon.x(), icon.y())));
-        if (icon.contains(QCursor::pos())) {
+        if (allowClose && icon.contains(QCursor::pos())) {
             toggle(idx);
         } else if (header.contains(QCursor::pos())) {
             QModelIndexList list;
@@ -809,7 +815,7 @@ void GroupedView::itemClicked(const QModelIndex &idx)
 
 void GroupedView::expand(const QModelIndex &idx, bool singleOnly)
 {
-    if (idx.isValid()) {
+    if (allowClose && idx.isValid()) {
         if (idx.data(GroupedView::Role_IsCollection).toBool()) {
             setExpanded(idx, true);
             if (!singleOnly) {
@@ -830,7 +836,7 @@ void GroupedView::expand(const QModelIndex &idx, bool singleOnly)
 
 void GroupedView::collapse(const QModelIndex &idx, bool singleOnly)
 {
-    if (idx.isValid()) {
+    if (allowClose && idx.isValid()) {
         if (idx.data(GroupedView::Role_IsCollection).toBool()) {
             setExpanded(idx, false);
             if (!singleOnly) {

@@ -38,6 +38,7 @@ public:
 
     FlickCharm(QObject *parent = 0);
     ~FlickCharm();
+    bool enabled() const { return 0!=d; }
     void activateOn(QWidget *widget);
     void deactivateFrom(QWidget *widget);
     bool eventFilter(QObject *object, QEvent *event);

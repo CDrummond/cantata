@@ -23,6 +23,7 @@
 
 #include "flickcharm.h"
 #include "globalstatic.h"
+#include "settings.h"
 #include <QAbstractScrollArea>
 #include <QApplication>
 #include <QBasicTimer>
@@ -58,7 +59,7 @@ public:
 
 FlickCharm::FlickCharm(QObject *parent): QObject(parent)
 {
-    d = new FlickCharmPrivate;
+    d = Settings::self()->touchFriendly() ? new FlickCharmPrivate : 0;
 }
 
 FlickCharm::~FlickCharm()
@@ -68,6 +69,10 @@ FlickCharm::~FlickCharm()
 
 void FlickCharm::activateOn(QWidget *widget)
 {
+    if (!d) {
+        return;
+    }
+
     QAbstractScrollArea *scrollArea = dynamic_cast<QAbstractScrollArea*>(widget);
     if (scrollArea) {
         scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -108,6 +113,10 @@ void FlickCharm::activateOn(QWidget *widget)
 
 void FlickCharm::deactivateFrom(QWidget *widget)
 {
+    if (!d) {
+        return;
+    }
+
     QAbstractScrollArea *scrollArea = dynamic_cast<QAbstractScrollArea*>(widget);
     if (scrollArea) {
         QWidget *viewport = scrollArea->viewport();
@@ -177,7 +186,7 @@ static QPoint deaccelerate(const QPoint &speed, int a = 1, int max = 64)
 
 bool FlickCharm::eventFilter(QObject *object, QEvent *event)
 {
-    if (!object->isWidgetType())
+    if (!d || !object->isWidgetType())
         return false;
 
     QEvent::Type type = event->type();
@@ -282,6 +291,10 @@ bool FlickCharm::eventFilter(QObject *object, QEvent *event)
 
 void FlickCharm::timerEvent(QTimerEvent *event)
 {
+    if (!d) {
+        return;
+    }
+
     int count = 0;
     QHashIterator<QWidget*, FlickData*> item(d->flickData);
     while (item.hasNext()) {

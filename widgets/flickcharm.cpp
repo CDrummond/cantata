@@ -81,7 +81,7 @@ FlickCharm::~FlickCharm()
 
 void FlickCharm::activateOn(QWidget *widget)
 {
-    if (!d) {
+    if (!enabled()) {
         return;
     }
 
@@ -125,7 +125,7 @@ void FlickCharm::activateOn(QWidget *widget)
 
 void FlickCharm::deactivateFrom(QWidget *widget)
 {
-    if (!d) {
+    if (!enabled()) {
         return;
     }
 
@@ -211,7 +211,7 @@ void FlickCharm::startDrag()
 
 bool FlickCharm::eventFilter(QObject *object, QEvent *event)
 {
-    if (!d || !object->isWidgetType())
+    if (!enabled() || !object->isWidgetType())
         return false;
 
     QEvent::Type type = event->type();
@@ -343,7 +343,7 @@ bool FlickCharm::eventFilter(QObject *object, QEvent *event)
 
 void FlickCharm::timerEvent(QTimerEvent *event)
 {
-    if (!d) {
+    if (!enabled()) {
         return;
     }
 

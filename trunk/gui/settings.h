@@ -130,7 +130,7 @@ public:
     int httpAllocatedPort();
     QString httpInterface();
     bool alwaysUseHttp();
-    bool playQueueGrouped();
+    int playQueueView();
     bool playQueueAutoExpand();
     bool playQueueStartClosed();
     bool playQueueScroll();
@@ -252,7 +252,7 @@ public:
     void saveStopFadeDuration(int v);
     void saveHttpAllocatedPort(int v);
     void saveHttpInterface(const QString &v);
-    void savePlayQueueGrouped(bool v);
+    void savePlayQueueView(int v);
     void savePlayQueueAutoExpand(bool v);
     void savePlayQueueStartClosed(bool v);
     void savePlayQueueScroll(bool v);

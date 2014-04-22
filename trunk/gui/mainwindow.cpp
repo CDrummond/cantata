@@ -697,8 +697,7 @@ MainWindow::MainWindow(QWidget *parent)
     playQueue->addAction(editPlayQueueTagsAction);
     #endif
     playQueue->addAction(playQueueModel.removeDuplicatesAct());
-    playQueue->tree()->installEventFilter(new DeleteKeyEventHandler(playQueue->tree(), removeFromPlayQueueAction));
-    playQueue->list()->installEventFilter(new DeleteKeyEventHandler(playQueue->list(), removeFromPlayQueueAction));
+    playQueue->addDeletKeyEventFilter(removeFromPlayQueueAction);
     playQueue->readConfig();
     playlistsPage->setStartClosed(Settings::self()->playListsStartClosed());
 
@@ -1415,11 +1414,11 @@ void MainWindow::updateSettings()
 
     bool wasAutoExpand=playQueue->isAutoExpand();
     bool wasStartClosed=playQueue->isStartClosed();
+    bool wasGrouped=playQueue->isGrouped();
     playQueue->readConfig();
 
-    if (Settings::self()->playQueueGrouped()!=playQueue->isGrouped() ||
+    if (wasGrouped!=playQueue->isGrouped() ||
         (playQueue->isGrouped() && (wasAutoExpand!=playQueue->isAutoExpand() || wasStartClosed!=playQueue->isStartClosed())) ) {
-        playQueue->setGrouped(Settings::self()->playQueueGrouped());
         QModelIndex idx=playQueueProxyModel.mapFromSource(playQueueModel.index(playQueueModel.currentSongRow(), 0));
         playQueue->updateRows(idx.row(), current.key, autoScrollPlayQueue && playQueueProxyModel.isEmpty() && MPDState_Playing==MPDStatus::self()->state());
     }

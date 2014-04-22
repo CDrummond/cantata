@@ -44,6 +44,7 @@
 #include <QAction>
 #include <QTimer>
 #include <QKeyEvent>
+#include <QProxyStyle>
 
 static int listDecorationSize=22;
 static int treeDecorationSize=16;
@@ -559,6 +560,33 @@ QString ItemView::modeStr(Mode m)
 static const char *constPageProp="page";
 static Action *backAction=0;
 
+// ALL this just becasue styles do not elide the text of toolbuttons!!!!! :-(
+class BackButtonProxyStyle : public QProxyStyle
+{
+public:
+    BackButtonProxyStyle()
+        : QProxyStyle()
+    {
+        setBaseStyle(qApp->style());
+    }
+    
+    void drawComplexControl(ComplexControl control, const QStyleOptionComplex *option, QPainter *painter, const QWidget *widget) const
+    {
+        if (CC_ToolButton==control) {
+            if (const QStyleOptionToolButton *toolbutton = qstyleoption_cast<const QStyleOptionToolButton *>(option)) {
+                QStyleOptionToolButton copy=*toolbutton;
+                int iconWidth = copy.iconSize.isValid() ? copy.iconSize.width() : baseStyle()->pixelMetric(PM_ToolBarIconSize, option, widget);
+                int frameWidth=baseStyle()->pixelMetric(PM_DefaultFrameWidth, option, widget);
+                QFontMetrics fm(painter->fontMetrics());
+                copy.text=fm.elidedText(toolbutton->text, Qt::ElideRight, toolbutton->rect.width()-(iconWidth+8+(2*frameWidth)), QPalette::WindowText);
+                baseStyle()->drawComplexControl(control, &copy, painter, widget);
+                return;
+            }
+        }
+        baseStyle()->drawComplexControl(control, option, painter, widget);
+    }
+};
+
 ItemView::ItemView(QWidget *p)
     : QWidget(p)
     , searchTimer(0)
@@ -578,6 +606,15 @@ ItemView::ItemView(QWidget *p)
         backAction->setShortcut(Qt::AltModifier+(Qt::LeftToRight==layoutDirection() ? Qt::Key_Left : Qt::Key_Right));
     }
     backButton->setDefaultAction(backAction);
+    backButton->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+    Icon::init(backButton);
+    backButton->setAutoRaise(true);
+    #ifdef Q_OS_MAC
+    backButton->setStyleSheet("QToolButton {border: 0}");
+    #endif
+    backButton->setFocusPolicy(Qt::NoFocus);
+    backButton->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    backButton->setStyle(new BackButtonProxyStyle());
     Action::updateToolTip(backAction);
     listView->addAction(backAction);
     listView->addDefaultAction(backAction);
@@ -585,8 +622,6 @@ ItemView::ItemView(QWidget *p)
     sep->setSeparator(true);
     listView->addAction(sep);
     Icon::init(backButton);
-    title->installEventFilter(this);
-    title->setAttribute(Qt::WA_Hover, true);
     treeView->setPageDefaults();
     // Some styles, eg Cleanlooks/Plastique require that we explicitly set mouse tracking on the treeview.
     treeView->setAttribute(Qt::WA_MouseTracking);
@@ -819,13 +854,12 @@ void ItemView::setLevel(int l, bool haveChildren)
     }
 
     backButton->setVisible(currentLevel>0);
-    title->setVisible(currentLevel>0);
 
     if (currentLevel>0) {
         if (prev>currentLevel) {
-            title->setText(prevText[currentLevel]);
+            backButton->setText(prevText[currentLevel]);
         } else {
-            prevText.insert(prev, title->text());
+            prevText.insert(prev, backButton->text());
         }
     }
 }
@@ -1132,34 +1166,6 @@ void ItemView::showEvent(QShowEvent *ev)
     backAction->setEnabled(0!=currentLevel);
 }
 
-bool ItemView::eventFilter(QObject *o, QEvent *e)
-{
-    if (o==title) {
-        static const char * constPressesProperty="pressed";
-        switch (e->type()) {
-        case QEvent::MouseButtonPress:
-            if (Qt::NoModifier==static_cast<QMouseEvent *>(e)->modifiers() && Qt::LeftButton==static_cast<QMouseEvent *>(e)->button()) {
-                title->setProperty(constPressesProperty, true);
-            }
-            break;
-        case QEvent::MouseButtonRelease:
-            if (title->property(constPressesProperty).toBool()) {
-                backActivated();
-            }
-            title->setProperty(constPressesProperty, false);
-            break;
-        case QEvent::HoverEnter:
-            title->setStyleSheet(QLatin1String("QLabel{color:palette(highlight);}"));
-            break;
-        case QEvent::HoverLeave:
-            title->setStyleSheet(QString());
-        default:
-            break;
-        }
-    }
-    return QWidget::eventFilter(o, e);
-}
-
 void ItemView::showSpinner(bool v)
 {
     if (v) {
@@ -1267,9 +1273,7 @@ void ItemView::activateItem(const QModelIndex &index, bool emitRootSet)
         if (text.isEmpty()) {
             text=index.data(Qt::DisplayRole).toString();
         }
-        // Add padding so that text is not right on border of label widget.
-        // This spacing makes the mouse-over background change look nicer.
-        title->setText(QLatin1String("  ")+text);
+        backButton->setText(text);
         listView->setRootIndex(index);
         itemModel->setRootIndex(index);
         if (emitRootSet) {

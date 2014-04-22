@@ -36,20 +36,17 @@
       </layout>
      </widget>
      <widget class="QWidget" name="page_2">
-      <layout class="QGridLayout" name="gridLayout">
+      <layout class="QVBoxLayout" name="gridLayout">
        <property name="margin">
         <number>0</number>
        </property>
        <property name="spacing">
         <number>0</number>
        </property>
-       <item row="0" column="0">
-        <widget class="ToolButton" name="backButton"/>
+       <item>
+        <widget class="QToolButton" name="backButton"/>
        </item>
-       <item row="0" column="1">
-        <widget class="SqueezedTextLabel" name="title"/>
-       </item>
-       <item row="1" column="0" colspan="2">
+       <item>
         <widget class="ListView" name="listView"/>
        </item>
       </layout>
@@ -63,11 +60,6 @@
    <class>PaddedSqueezedTextLabel</class>
    <extends>QLabel</extends>
    <header>squeezedtextlabel.h</header>
-  </customwidget>
-  <customwidget>
-   <class>ToolButton</class>
-   <extends>QToolButton</extends>
-   <header>toolbutton.h</header>
   </customwidget>
   <customwidget>
    <class>SearchWidget</class>

@@ -34,6 +34,7 @@ class FlickCharm: public QObject
     Q_OBJECT
 public:
     static FlickCharm *self();
+    static int dragArea();
 
     FlickCharm(QObject *parent = 0);
     ~FlickCharm();
@@ -43,6 +44,9 @@ public:
 
 protected:
     void timerEvent(QTimerEvent *event);
+
+private Q_SLOTS:
+    void startDrag();
 
 private:
     FlickCharmPrivate *d;

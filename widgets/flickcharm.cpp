@@ -24,9 +24,12 @@
 #include "flickcharm.h"
 #include "globalstatic.h"
 #include "settings.h"
+#include "support/utils.h"
 #include <QAbstractScrollArea>
+#include <QAbstractItemView>
 #include <QApplication>
 #include <QBasicTimer>
+#include <QTimer>
 #include <QEvent>
 #include <QHash>
 #include <QList>
@@ -38,6 +41,15 @@
 //#include <QDebug>
 
 GLOBAL_STATIC(FlickCharm, instance)
+
+int FlickCharm::dragArea()
+{
+    static int area=-1;
+    if (-1==area) {
+        area=Utils::isHighDpi() ? 64 : 32;
+    }
+    return area;
+}
 
 struct FlickData {
     typedef enum { Steady, Pressed, ManualScroll, AutoScroll, Stop } State;
@@ -184,6 +196,19 @@ static QPoint deaccelerate(const QPoint &speed, int a = 1, int max = 64)
     return QPoint(x, y);
 }
 
+class QAbstractItemViewHack : public QAbstractItemView
+{
+public:
+    void doDrag(Qt::DropActions supportedActions) { startDrag(supportedActions); }
+};
+
+static QAbstractItemViewHack *dragView=0;
+void FlickCharm::startDrag()
+{
+    dragView->doDrag(Qt::CopyAction);
+    dragView=0;
+}
+
 bool FlickCharm::eventFilter(QObject *object, QEvent *event)
 {
     if (!d || !object->isWidgetType())
@@ -210,6 +235,33 @@ bool FlickCharm::eventFilter(QObject *object, QEvent *event)
     case FlickData::Steady:
         if (mouseEvent->type() == QEvent::MouseButtonPress)
             if (mouseEvent->buttons() == Qt::LeftButton) {
+                // Drag?
+                if (qobject_cast<QAbstractItemView *>(data->widget)) {
+                    QAbstractItemView *view=static_cast<QAbstractItemView *>(data->widget);
+                    QModelIndex index=view->indexAt(mouseEvent->pos());
+                    if (index.isValid() && 0==index.column()) {
+                        QRect r=view->visualRect(index);
+                        if (Qt::RightToLeft==view->layoutDirection()) {
+                            r=QRect(r.x()+r.width()-(1+dragArea()), r.y(), qMin(dragArea(), r.width()), qMin(dragArea(), r.height()));
+                        } else {
+                            r=QRect(r.x(), r.y(), qMin(dragArea(), r.width()), qMin(dragArea(), r.height()));
+                        }
+                        if (r.contains(mouseEvent->pos())) {
+                            QMouseEvent *event1 = new QMouseEvent(QEvent::MouseButtonPress,
+                                                                  data->pressPos, Qt::LeftButton,
+                                                                  Qt::LeftButton, Qt::NoModifier);
+                            QMouseEvent *event2 = new QMouseEvent(*mouseEvent);
+
+                            data->ignored << event1;
+                            data->ignored << event2;
+                            QApplication::postEvent(object, event1);
+                            QApplication::postEvent(object, event2);
+                            dragView=((QAbstractItemViewHack *)view);
+                            QTimer::singleShot(0, this, SLOT(startDrag()));
+                            break;
+                        }
+                    }
+                }
                 consumed = true;
                 data->state = FlickData::Pressed;
                 data->pressPos = mouseEvent->pos();

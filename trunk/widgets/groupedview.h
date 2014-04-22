@@ -93,6 +93,7 @@ private Q_SLOTS:
     void itemClicked(const QModelIndex &index);
 
 private:
+    bool allowClose;
     bool startClosed;
     bool autoExpand;
     bool filterActive;

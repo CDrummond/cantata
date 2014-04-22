@@ -97,6 +97,7 @@
 60. Fix crash when chaging view mode whilst search is active.
 61. Add a 'touch friendly' setting - icons are made larger, and views are
     'flickable'
+62. Use a toolbutton for listview header and back action.
 
 1.3.4
 -----

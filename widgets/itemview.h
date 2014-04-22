@@ -106,8 +106,8 @@ public:
 
     enum Mode
     {
-        Mode_SimpleTree,
         Mode_BasicTree,
+        Mode_SimpleTree,
         Mode_DetailedTree,
 
         Mode_GroupedTree,

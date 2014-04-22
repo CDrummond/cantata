@@ -33,6 +33,7 @@
 #include "tableview.h"
 #include "groupedview.h"
 #include "song.h"
+#include "itemview.h"
 
 class QAbstractItemModel;
 class QAction;
@@ -82,13 +83,13 @@ public:
     PlayQueueView(QWidget *parent=0);
     virtual ~PlayQueueView();
 
-    // Returns true if background cover needs to be updated...
     void readConfig();
     void saveConfig();
     void initHeader() { treeView->initHeader(); }
     void saveHeader();
-    void setGrouped(bool g);
-    bool isGrouped() const { return currentWidget()==(QWidget *)groupedView; }
+    void setMode(ItemView::Mode m);
+    void addDeletKeyEventFilter(QAction *act);
+    bool isGrouped() const { return ItemView::Mode_GroupedTree==mode; }
     void setAutoExpand(bool ae);
     bool isAutoExpand() const;
     void setStartClosed(bool sc);
@@ -107,8 +108,6 @@ public:
     bool haveUnSelectedItems();
     void setCurrentIndex(const QModelIndex &idx) { view()->setCurrentIndex(idx); }
     void clearSelection();
-    QAbstractItemView * tree() const;
-    QAbstractItemView * list() const;
     QAbstractItemView * view() const;
     bool hasFocus() const;
     QModelIndexList selectedIndexes(bool sorted=true) const;
@@ -132,6 +131,7 @@ private:
     void drawBackdrop(QWidget *widget, const QSize &size);
 
 private:
+    ItemView::Mode mode;
     PlayQueueGroupedView *groupedView;
     PlayQueueTreeView *treeView;
     Spinner *spinner;

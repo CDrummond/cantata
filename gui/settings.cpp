@@ -681,9 +681,12 @@ bool Settings::alwaysUseHttp()
     #endif
 }
 
-bool Settings::playQueueGrouped()
+int Settings::playQueueView()
 {
-    return cfg.get("playQueueGrouped", true);
+    if (version()<CANTATA_MAKE_VERSION(1, 3, 53)) {
+        return cfg.get("playQueueGrouped", true) ? ItemView::Mode_GroupedTree : ItemView::Mode_Table;
+    }
+    return ItemView::toMode(cfg.get("playQueueView", ItemView::modeStr(ItemView::Mode_GroupedTree)));
 }
 
 bool Settings::playQueueAutoExpand()
@@ -1257,9 +1260,9 @@ void Settings::saveHttpInterface(const QString &v)
     cfg.set("httpInterface", v);
 }
 
-void Settings::savePlayQueueGrouped(bool v)
+void Settings::savePlayQueueView(int v)
 {
-    cfg.set("playQueueGrouped", v);
+    cfg.set("playQueueView", ItemView::modeStr((ItemView::Mode)v));
 }
 
 void Settings::savePlayQueueAutoExpand(bool v)

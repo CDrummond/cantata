@@ -67,20 +67,24 @@ static void addImageSizes(QComboBox *box)
     box->addItem(i18n("Extra Large"), MusicLibraryItemAlbum::CoverExtraLarge);
 }
 
-static void addViewTypes(QComboBox *box, bool iconMode=false, bool groupedTree=false, bool table=false)
+static QString viewTypeString(ItemView::Mode mode)
 {
-    box->addItem(i18n("Basic Tree (No Icons)"), ItemView::Mode_BasicTree);
-    box->addItem(i18n("Simple Tree"), ItemView::Mode_SimpleTree);
-    box->addItem(i18n("Detailed Tree"), ItemView::Mode_DetailedTree);
-    if (groupedTree) {
-        box->addItem(i18n("Grouped Albums"), ItemView::Mode_GroupedTree);
+    switch (mode) {
+    default:
+    case ItemView::Mode_BasicTree:    return i18n("Basic Tree (No Icons)");
+    case ItemView::Mode_SimpleTree:   return i18n("Simple Tree");
+    case ItemView::Mode_DetailedTree: return i18n("Detailed Tree");
+    case ItemView::Mode_GroupedTree:  return i18n("Grouped Albums");
+    case ItemView::Mode_List:         return i18n("List");
+    case ItemView::Mode_IconTop:      return i18n("Icon/List");
+    case ItemView::Mode_Table:        return i18n("Table");
     }
-    box->addItem(i18n("List"), ItemView::Mode_List);
-    if (iconMode) {
-        box->addItem(i18n("Icon/List"), ItemView::Mode_IconTop);
-    }
-    if (table) {
-        box->addItem(i18n("Table"), ItemView::Mode_Table);
+}
+
+static void addViewTypes(QComboBox *box, QList<ItemView::Mode> modes)
+{
+    foreach (ItemView::Mode m, modes) {
+        box->addItem(viewTypeString(m), m);
     }
 }
 
@@ -100,7 +104,6 @@ static inline int getValue(QComboBox *box)
     return box->itemData(box->currentIndex()).toInt();
 }
 
-static const int constPlayQueueGrouped=0;
 static const char * constValueProperty="value";
 
 InterfaceSettings::InterfaceSettings(QWidget *p)
@@ -119,13 +122,16 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
 
     setupUi(this);
     addImageSizes(libraryCoverSize);
-    addViewTypes(libraryView, true);
+    QList<ItemView::Mode> standardViews=QList<ItemView::Mode>() << ItemView::Mode_BasicTree << ItemView::Mode_SimpleTree
+                                                                << ItemView::Mode_DetailedTree << ItemView::Mode_List;
+    addViewTypes(libraryView, QList<ItemView::Mode>() << standardViews << ItemView::Mode_IconTop);
+    addViewTypes(albumsView, QList<ItemView::Mode>() << standardViews << ItemView::Mode_IconTop);
+    addViewTypes(folderView, standardViews);
+    addViewTypes(playlistsView, QList<ItemView::Mode>() << standardViews << ItemView::Mode_GroupedTree << ItemView::Mode_Table);
+    addViewTypes(searchView, QList<ItemView::Mode>() << ItemView::Mode_List << ItemView::Mode_Table);
+    addViewTypes(playQueueView, QList<ItemView::Mode>() << ItemView::Mode_GroupedTree << ItemView::Mode_Table);
+
     addImageSizes(albumsCoverSize);
-    addViewTypes(albumsView, true);
-    addViewTypes(folderView);
-    addViewTypes(playlistsView, false, true, true);
-    searchView->addItem(i18n("List"), ItemView::Mode_List);
-    searchView->addItem(i18n("Table"), ItemView::Mode_Table);
     addAlbumSorts(albumSort);
 
     addView(i18n("Play Queue"), QLatin1String("PlayQueuePage"));
@@ -137,21 +143,21 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     addView(i18n("Dynamic Playlists"), QLatin1String("DynamicPage"));
     #endif
     #ifdef ENABLE_STREAMS
-    addViewTypes(streamsView);
+    addViewTypes(streamsView, standardViews);
     addView(i18n("Streams (e.g. Radio Stations)"), QLatin1String("StreamsPage"));
     #else
     REMOVE(streamsView)
     REMOVE(streamsViewLabel)
     #endif
     #ifdef ENABLE_ONLINE_SERVICES
-    addViewTypes(onlineView);
+    addViewTypes(onlineView, standardViews);
     addView(i18n("Online Services - Jamendo, Maganatune, SoundCloud, and Podcasts"), QLatin1String("OnlineServicesPage"));
     #else
     REMOVE(onlineView)
     REMOVE(onlineViewLabel)
     #endif
     #ifdef ENABLE_DEVICES_SUPPORT
-    addViewTypes(devicesView);
+    addViewTypes(devicesView, standardViews);
     addView(i18n("Devices - UMS, MTP (e.g. Android), and AudioCDs"), QLatin1String("DevicesPage"));
     #else
     REMOVE(devicesView)
@@ -171,7 +177,7 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     connect(albumsView, SIGNAL(currentIndexChanged(int)), SLOT(albumsViewChanged()));
     connect(albumsCoverSize, SIGNAL(currentIndexChanged(int)), SLOT(albumsCoverSizeChanged()));
     connect(playlistsView, SIGNAL(currentIndexChanged(int)), SLOT(playlistsViewChanged()));
-    connect(playQueueGrouped, SIGNAL(currentIndexChanged(int)), SLOT(playQueueGroupedChanged()));
+    connect(playQueueView, SIGNAL(currentIndexChanged(int)), SLOT(playQueueViewChanged()));
     connect(systemTrayCheckBox, SIGNAL(toggled(bool)), minimiseOnClose, SLOT(setEnabled(bool)));
     connect(systemTrayCheckBox, SIGNAL(toggled(bool)), SLOT(enableStartupState()));
     connect(minimiseOnClose, SIGNAL(toggled(bool)), SLOT(enableStartupState()));
@@ -242,7 +248,7 @@ void InterfaceSettings::load()
     #endif
     selectEntry(searchView, Settings::self()->searchView());
 
-    playQueueGrouped->setCurrentIndex(Settings::self()->playQueueGrouped() ? 0 : 1);
+    selectEntry(playQueueView, Settings::self()->playQueueView());
     playQueueAutoExpand->setChecked(Settings::self()->playQueueAutoExpand());
     playQueueStartClosed->setChecked(Settings::self()->playQueueStartClosed());
     playQueueScroll->setChecked(Settings::self()->playQueueScroll());
@@ -259,7 +265,7 @@ void InterfaceSettings::load()
     albumsViewChanged();
     albumsCoverSizeChanged();
     playlistsViewChanged();
-    playQueueGroupedChanged();
+    playQueueViewChanged();
     forceSingleClick->setChecked(Settings::self()->forceSingleClick());
     touchFriendly->setChecked(Settings::self()->touchFriendly());
     systemTrayCheckBox->setChecked(Settings::self()->useSystemTray());
@@ -322,7 +328,7 @@ void InterfaceSettings::save()
     Settings::self()->saveDevicesView(getValue(devicesView));
     #endif
     Settings::self()->saveSearchView(getValue(searchView));
-    Settings::self()->savePlayQueueGrouped(constPlayQueueGrouped==playQueueGrouped->currentIndex());
+    Settings::self()->savePlayQueueView(getValue(playQueueView));
     Settings::self()->savePlayQueueAutoExpand(playQueueAutoExpand->isChecked());
     Settings::self()->savePlayQueueStartClosed(playQueueStartClosed->isChecked());
     Settings::self()->savePlayQueueScroll(playQueueScroll->isChecked());
@@ -504,15 +510,16 @@ void InterfaceSettings::albumsCoverSizeChanged()
     }
 }
 
-void InterfaceSettings::playQueueGroupedChanged()
+void InterfaceSettings::playQueueViewChanged()
 {
-    playQueueAutoExpand->setEnabled(constPlayQueueGrouped==playQueueGrouped->currentIndex());
-    playQueueStartClosed->setEnabled(constPlayQueueGrouped==playQueueGrouped->currentIndex());
+    bool grouped=ItemView::Mode_GroupedTree==getValue(playQueueView);
+    playQueueAutoExpand->setEnabled(grouped);
+    playQueueStartClosed->setEnabled(grouped);
 }
 
 void InterfaceSettings::playlistsViewChanged()
 {
-    bool grouped=getValue(playlistsView)==ItemView::Mode_GroupedTree;
+    bool grouped=ItemView::Mode_GroupedTree==getValue(playlistsView);
     playListsStartClosed->setEnabled(grouped);
 }
 

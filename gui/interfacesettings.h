@@ -53,7 +53,7 @@ private Q_SLOTS:
     void albumsViewChanged();
     void albumsCoverSizeChanged();
     void playlistsViewChanged();
-    void playQueueGroupedChanged();
+    void playQueueViewChanged();
     void forceSingleClickChanged();
     void touchFriendlyChanged();
     void enableStartupState();

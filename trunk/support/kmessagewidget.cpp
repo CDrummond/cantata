@@ -126,6 +126,7 @@ void KMsgWidgetPrivate::createLayout()
         button->setDefaultAction(action);
         button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
         buttons.append(button);
+        Icon::init(button, false);
     }
 
     // AutoRaise reduces visual clutter, but we don't want to turn it on if

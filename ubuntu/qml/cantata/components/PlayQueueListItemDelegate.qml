@@ -29,8 +29,6 @@ Empty {
     property alias timeText: timeLabel.text
     property alias iconSource: iconImage.source
 
-    signal buttonClicked()
-
     property bool currentTrack: false
     property bool iconShown: iconImage.source != ""
 
@@ -65,13 +63,6 @@ Empty {
         anchors {
             left: parent.left
             verticalCenter: parent.verticalCenter
-        }
-
-        MouseArea {
-            id: firstTarget
-            onClicked: buttonClicked()
-            anchors.fill: parent
-            preventStealing: true
         }
     }
    

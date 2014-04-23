@@ -20,30 +20,48 @@
  * the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA 02110-1301, USA.
  */
+#ifndef ROLES_H
+#define ROLES_H
 
-#ifndef TABLEVIEW_H
-#define TABLEVIEW_H
+#include <QAbstractItemModel>
 
-#include "treeview.h"
+namespace Cantata {
+    enum Roles
+    {
+        // ItemView...
+        Role_ImageSize = Qt::UserRole+100,
+        Role_MainText,
+        Role_BriefMainText,
+        Role_SubText,
+        Role_TitleText,
+        Role_Image,
+        Role_Capacity,
+        Role_CapacityText,
+        Role_Actions,
 
-class TableView : public TreeView
-{
-    Q_OBJECT
+        // GroupedView...
+        Role_Key,
+        Role_Id,
+        Role_Song,
+        Role_AlbumDuration,
+        Role_Status,
+        Role_CurrentStatus,
+        Role_SongCount,
 
-public:
-    TableView(const QString &cfgName, QWidget *parent=0, bool menuAlwaysAllowed=false);
-    virtual ~TableView() { }
-    void initHeader();
-    void saveHeader();
+        Role_IsCollection,
+        Role_CollectionId,
+        Role_DropAdjust,
 
-private Q_SLOTS:
-    void showMenu();
-    void toggleHeaderItem(bool visible);
-    void stretchToggled(bool e);
+        // PlayQueueView ...
+        Role_Decoration,
 
-protected:
-    QMenu *menu;
-    QString configName;
-};
+        // TableView...
+        Role_Width,
+        Role_Hideable,
+
+        // PlayQueueModel...
+        Role_Time
+    };
+}
 
 #endif

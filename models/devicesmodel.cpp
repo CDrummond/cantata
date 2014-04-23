@@ -29,7 +29,7 @@
 #include "devicesmodel.h"
 #include "playqueuemodel.h"
 #include "settings.h"
-#include "itemview.h"
+#include "roles.h"
 #include "mpdparseutils.h"
 #include "mpdconnection.h"
 #include "umsdevice.h"
@@ -132,7 +132,7 @@ QVariant DevicesModel::data(const QModelIndex &index, int role) const
             }
         }
         break;
-    case ItemView::Role_SubText:
+    case Cantata::Role_SubText:
         if (MusicLibraryItem::Type_Root==item->itemType()) {
             Device *dev=static_cast<Device *>(item);
             if (!dev->statusMessage().isEmpty()) {
@@ -147,17 +147,17 @@ QVariant DevicesModel::data(const QModelIndex &index, int role) const
             }
         }
         break;
-    case ItemView::Role_Capacity:
+    case Cantata::Role_Capacity:
         if (MusicLibraryItem::Type_Root==item->itemType()) {
             return static_cast<Device *>(item)->usedCapacity();
         }
         return QVariant();
-    case ItemView::Role_CapacityText:
+    case Cantata::Role_CapacityText:
         if (MusicLibraryItem::Type_Root==item->itemType()) {
             return static_cast<Device *>(item)->capacityString();
         }
         return QVariant();
-    case ItemView::Role_Actions:
+    case Cantata::Role_Actions:
         if (MusicLibraryItem::Type_Root==item->itemType()) {
             QVariant v;
             QList<Action *> actions;

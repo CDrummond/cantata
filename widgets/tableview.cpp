@@ -25,6 +25,7 @@
 #include "stretchheaderview.h"
 #include "settings.h"
 #include "localize.h"
+#include "roles.h"
 #include <QMenu>
 #include <QAction>
 
@@ -59,8 +60,8 @@ void TableView::initHeader()
         stretchToggled(true);
         hdr->setContextMenuPolicy(Qt::CustomContextMenu);
         for (int i=0; i<model()->columnCount(); ++i) {
-            hdr->SetColumnWidth(i, model()->headerData(i, Qt::Horizontal, Role_Width).toDouble());
-            if (model()->headerData(i, Qt::Horizontal, Role_Hideable).toBool()) {
+            hdr->SetColumnWidth(i, model()->headerData(i, Qt::Horizontal, Cantata::Role_Width).toDouble());
+            if (model()->headerData(i, Qt::Horizontal, Cantata::Role_Hideable).toBool()) {
                 hideable.append(i);
             }
         }

@@ -24,6 +24,7 @@
 #include "itemview.h"
 #include "groupedview.h"
 #include "tableview.h"
+#include "roles.h"
 #include "covers.h"
 #include "proxymodel.h"
 #include "actionitemdelegate.h"
@@ -133,7 +134,7 @@ public:
     QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
     {
         Q_UNUSED(option)
-        int imageSize = index.data(ItemView::Role_ImageSize).toInt();
+        int imageSize = index.data(Cantata::Role_ImageSize).toInt();
 
         if (imageSize<0) {
             imageSize=constImageSize;
@@ -145,8 +146,8 @@ public:
         } else {
             // TODO: Any poit to checking one-line here? All models return sub-text...
             //       Thisngs will be quicker if we dont call SubText here...
-            bool oneLine = false ; // index.data(ItemView::Role_SubText).toString().isEmpty();
-            bool showCapacity = !index.data(ItemView::Role_CapacityText).toString().isEmpty();
+            bool oneLine = false ; // index.data(Cantata::Role_SubText).toString().isEmpty();
+            bool showCapacity = !index.data(Cantata::Role_CapacityText).toString().isEmpty();
             int textHeight = QApplication::fontMetrics().height()*(oneLine ? 1 : 2);
 
             if (showCapacity) {
@@ -186,19 +187,19 @@ public:
             }
         }
 
-        QString capacityText=index.data(ItemView::Role_CapacityText).toString();
+        QString capacityText=index.data(Cantata::Role_CapacityText).toString();
         bool showCapacity = !capacityText.isEmpty();
-        QString text = iconMode ? index.data(ItemView::Role_BriefMainText).toString() : QString();
+        QString text = iconMode ? index.data(Cantata::Role_BriefMainText).toString() : QString();
         if (text.isEmpty()) {
-            text=index.data(ItemView::Role_MainText).toString();
+            text=index.data(Cantata::Role_MainText).toString();
         }
         if (text.isEmpty()) {
             text=index.data(Qt::DisplayRole).toString();
         }
         QRect r(option.rect);
         QRect r2(r);
-        QString childText = index.data(ItemView::Role_SubText).toString();
-        QVariant image = index.data(ItemView::Role_Image);
+        QString childText = index.data(Cantata::Role_SubText).toString();
+        QVariant image = index.data(Cantata::Role_Image);
         if (image.isNull()) {
             image = index.data(Qt::DecorationRole);
         }
@@ -316,7 +317,7 @@ public:
 
         if (showCapacity) {
             QStyleOptionProgressBar opt;
-            double capacity=index.data(ItemView::Role_Capacity).toDouble();
+            double capacity=index.data(Cantata::Role_Capacity).toDouble();
 
             if (capacity<0.0) {
                 capacity=0.0;
@@ -365,7 +366,7 @@ public:
 
     QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
     {
-        if (!simpleStyle || !index.data(ItemView::Role_CapacityText).toString().isEmpty()) {
+        if (!simpleStyle || !index.data(Cantata::Role_CapacityText).toString().isEmpty()) {
             return ListDelegate::sizeHint(option, index);
         }
 
@@ -380,7 +381,7 @@ public:
             return;
         }
 
-        if (!simpleStyle || !index.data(ItemView::Role_CapacityText).toString().isEmpty()) {
+        if (!simpleStyle || !index.data(Cantata::Role_CapacityText).toString().isEmpty()) {
             ListDelegate::paint(painter, option, index);
             return;
         }
@@ -404,7 +405,7 @@ public:
             r.adjust(4, 0, -4, 0);
             QPixmap pix=noIcons ? QPixmap() : index.data(Qt::DecorationRole).value<QIcon>().pixmap(treeDecorationSize, treeDecorationSize);
             if (gtk && pix.isNull()) {
-                QVariant image = index.data(ItemView::Role_Image);
+                QVariant image = index.data(Cantata::Role_Image);
                 if (!image.isNull()) {
                     pix = QVariant::Pixmap==image.type() ? image.value<QPixmap>() : noIcons ? QPixmap() : image.value<QIcon>().pixmap(listDecorationSize, listDecorationSize);
                 }
@@ -1262,7 +1263,7 @@ void ItemView::activateItem(const QModelIndex &index, bool emitRootSet)
             prevTopIndex=static_cast<QSortFilterProxyModel *>(listView->model())->mapToSource(prevTopIndex);
         }
         setLevel(currentLevel+1, index.child(0, 0).child(0, 0).isValid());
-        QString text=index.data(Role_TitleText).toString();
+        QString text=index.data(Cantata::Role_TitleText).toString();
         if (text.isEmpty()) {
             text=index.data(Qt::DisplayRole).toString();
         }

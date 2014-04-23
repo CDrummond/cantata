@@ -41,7 +41,7 @@
 #include "proxymodel.h"
 #include "song.h"
 #include "covers.h"
-#include "itemview.h"
+#include "roles.h"
 #include "mpdparseutils.h"
 #include "icons.h"
 #include "utils.h"
@@ -221,12 +221,12 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
         default:
             return ActionModel::data(index, role);
         #ifdef ENABLE_UBUNTU
-        case ItemView::Role_Image: {
+        case Cantata::Role_Image: {
             QString cover=al->cover();
             return cover.isEmpty() ? constDefaultCover : cover;
         }
         #else
-        case ItemView::Role_Image:
+        case Cantata::Role_Image:
         case Qt::DecorationRole: {
             int iSize=iconSize();
             if (iSize) {
@@ -264,12 +264,12 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
                 return f;
             }
             break;
-        case ItemView::Role_MainText:
+        case Cantata::Role_MainText:
             return al->albumDisplay();
-        case ItemView::Role_BriefMainText:
+        case Cantata::Role_BriefMainText:
             return al->album;
         #ifndef ENABLE_UBUNTU
-        case ItemView::Role_ImageSize:
+        case Cantata::Role_ImageSize:
             return iconSize();
         case Qt::SizeHintRole:
             if (!itemSize.isNull()) {
@@ -277,9 +277,9 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
             }
             break;
         #endif
-        case ItemView::Role_SubText:
+        case Cantata::Role_SubText:
             return al->artist;
-        case ItemView::Role_TitleText:
+        case Cantata::Role_TitleText:
             return i18nc("Album by Artist", "%1 by %2", al->album, al->artist);
         }
     } else {
@@ -289,7 +289,7 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
         default:
             return ActionModel::data(index, role);
         #ifdef ENABLE_UBUNTU
-        case ItemView::Role_Image:
+        case Cantata::Role_Image:
             return QString();
         #else
         case Qt::DecorationRole:
@@ -303,7 +303,7 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
                    Utils::formatTime(si->time, true)+QLatin1String("<br/>")+
                    QLatin1String("<small><i>")+si->filePath()+QLatin1String("</i></small>");
         }
-        case ItemView::Role_MainText:
+        case Cantata::Role_MainText:
         case Qt::DisplayRole:
             if (Song::Playlist==si->type) {
                 return si->isCueFile() ? i18n("Cue Sheet") : i18n("Playlist");
@@ -314,7 +314,7 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
             else {
                 return si->trackAndTitleStr(Song::isVariousArtists(si->parent->artist) && !Song::isVariousArtists(si->artist));
             }
-        case ItemView::Role_SubText:
+        case Cantata::Role_SubText:
             return Utils::formatTime(si->time, true);
         }
     }

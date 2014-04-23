@@ -23,7 +23,7 @@
 
 #include "actionmodel.h"
 #include "stdactions.h"
-#include "itemview.h"
+#include "roles.h"
 
 #ifdef ENABLE_UBUNTU
 static const int Role_HasChildren = Qt::UserRole+500;
@@ -38,7 +38,7 @@ QVariant ActionModel::data(const QModelIndex &index, int role) const
     }
     #else
     Q_UNUSED(index)
-    if (ItemView::Role_Actions==role) {
+    if (Cantata::Role_Actions==role) {
         v.setValue<QList<Action *> >(QList<Action *>() << StdActions::self()->replacePlayQueueAction << StdActions::self()->addToPlayQueueAction);
     }
     #endif
@@ -50,10 +50,10 @@ QVariant ActionModel::data(const QModelIndex &index, int role) const
 QHash<int, QByteArray> ActionModel::roleNames() const
 {
     QHash<int, QByteArray> roles;
-    roles[ItemView::Role_MainText] = "mainText";
-    roles[ItemView::Role_SubText] = "subText";
-    roles[ItemView::Role_TitleText] = "titleText";
-    roles[ItemView::Role_Image] = "image";
+    roles[Cantata::Role_MainText] = "mainText";
+    roles[Cantata::Role_SubText] = "subText";
+    roles[Cantata::Role_TitleText] = "titleText";
+    roles[Cantata::Role_Image] = "image";
     roles[Role_HasChildren] = "hasChildren";
     return roles;
 }

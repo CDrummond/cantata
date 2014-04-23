@@ -43,20 +43,6 @@ public:
         State_Stopped
     };
 
-    enum Roles {
-        Role_Key = Qt::UserRole+200,
-        Role_Id,
-        Role_Song,
-        Role_AlbumDuration,
-        Role_Status,
-        Role_CurrentStatus,
-        Role_SongCount,
-
-        Role_IsCollection,
-        Role_CollectionId,
-        Role_DropAdjust
-    };
-
     static void setup();
     static int coverSize();
     static int borderSize();

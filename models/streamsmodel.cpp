@@ -34,7 +34,7 @@
 #include "utils.h"
 #include "settings.h"
 #include "playqueuemodel.h"
-#include "itemview.h"
+#include "roles.h"
 #include "action.h"
 #include "stdactions.h"
 #include "actioncollection.h"
@@ -668,7 +668,7 @@ QVariant StreamsModel::data(const QModelIndex &index, int role) const
         return item->name;
     case Qt::ToolTipRole:
         return item->isCategory() ? item->name : (item->name+QLatin1String("<br><small><i>")+item->url+QLatin1String("</i></small>"));
-    case ItemView::Role_SubText:
+    case Cantata::Role_SubText:
         if (item->isCategory()) {
             const CategoryItem *cat=static_cast<const CategoryItem *>(item);
             switch (cat->state) {
@@ -681,7 +681,7 @@ QVariant StreamsModel::data(const QModelIndex &index, int role) const
             }
         }
         break;
-    case ItemView::Role_Actions: {
+    case Cantata::Role_Actions: {
         QList<Action *> actions;
         if (item->isCategory()){
             const CategoryItem *cat=static_cast<const CategoryItem *>(item);

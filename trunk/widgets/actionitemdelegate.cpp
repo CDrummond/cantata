@@ -63,15 +63,15 @@ QRect ActionItemDelegate::calcActionRect(bool rtl, ActionPos actionPos, const QR
     QRect rect=AP_HBottom==actionPos ? QRect(o.x(), o.y()+(o.height()/2), o.width(), o.height()/2) : o;
     return rtl
                 ? AP_VTop==actionPos
-                    ? QRect(rect.x()+constActionBorder+3,
-                            rect.y()+constActionBorder,
+                    ? QRect(rect.x()+5,
+                            rect.y()+2,
                             iconSize, iconSize)
                     : QRect(rect.x()+constActionBorder,
                             rect.y()+((rect.height()-iconSize)/2),
                             iconSize, iconSize)
                 : AP_VTop==actionPos
-                    ? QRect(rect.x()+rect.width()-(iconSize+constActionBorder+3),
-                            rect.y()+constActionBorder,
+                    ? QRect(rect.x()+rect.width()-(iconSize+5),
+                            rect.y()+2,
                             iconSize, iconSize)
                     : QRect(rect.x()+rect.width()-(iconSize+constActionBorder),
                             rect.y()+((rect.height()-iconSize)/2),
@@ -95,34 +95,6 @@ void ActionItemDelegate::adjustActionRect(bool rtl, ActionPos actionPos, QRect &
     }
 }
 
-static QPainterPath buildPath(const QRectF &r, double radius)
-{
-    QPainterPath path;
-    double diameter(radius*2);
-
-    path.moveTo(r.x()+r.width(), r.y()+r.height()-radius);
-    path.arcTo(r.x()+r.width()-diameter, r.y(), diameter, diameter, 0, 90);
-    path.arcTo(r.x(), r.y(), diameter, diameter, 90, 90);
-    path.arcTo(r.x(), r.y()+r.height()-diameter, diameter, diameter, 180, 90);
-    path.arcTo(r.x()+r.width()-diameter, r.y()+r.height()-diameter, diameter, diameter, 270, 90);
-    return path;
-}
-
-static void drawBgnd(QPainter *painter, const QRect &rx)
-{
-    QRectF r(rx.x()-0.5, rx.y()-0.5, rx.width()+1, rx.height()+1);
-    QPainterPath p(buildPath(r, 3.0));
-    QColor c(Qt::white);
-
-    painter->setRenderHint(QPainter::Antialiasing, true);
-    c.setAlphaF(0.75);
-    painter->fillPath(p, c);
-    c.setAlphaF(0.95);
-    painter->setPen(c);
-    painter->drawPath(p);
-    painter->setRenderHint(QPainter::Antialiasing, false);
-}
-
 ActionItemDelegate::ActionItemDelegate(QObject *p)
     : QStyledItemDelegate(p)
     , largeIcons(false)
@@ -134,33 +106,24 @@ void ActionItemDelegate::drawIcons(QPainter *painter, const QRect &r, bool mouse
 {
     int iconSize=largeIcons ? constLargeActionIconSize : constActionIconSize;
     double opacity=painter->opacity();
-    double actionOpacity=opacity;
     bool touch=Icon::touchFriendly();
-    if (!mouseOver) {
-        actionOpacity=opacity*(touch ? 0.4 : 0.2);
-        painter->setOpacity(actionOpacity);
+    bool adjustOpacity=!mouseOver && !(touch && AP_VTop==actionPos);
+    if (adjustOpacity) {
+        painter->setOpacity(opacity*0.25);
     }
-
     QRect actionRect=calcActionRect(rtl, actionPos, r);
     QList<Action *> actions=index.data(ItemView::Role_Actions).value<QList<Action *> >();
 
     foreach (const QPointer<Action> &a, actions) {
         QPixmap pix=a->icon().pixmap(QSize(iconSize, iconSize));
         if (!pix.isNull() && actionRect.width()>=pix.width()/* && r.x()>=0 && r.y()>=0*/) {
-            drawBgnd(painter, actionRect);
-            if (!mouseOver && touch) {
-                painter->setOpacity(opacity*0.75);
-            }
             painter->drawPixmap(actionRect.x()+(actionRect.width()-pix.width())/2,
                                 actionRect.y()+(actionRect.height()-pix.height())/2, pix);
-            if (!mouseOver && touch) {
-                painter->setOpacity(actionOpacity);
-            }
         }
         adjustActionRect(rtl, actionPos, actionRect, iconSize);
     }
 
-    if (!mouseOver) {
+    if (adjustOpacity) {
         painter->setOpacity(opacity);
     }
 }

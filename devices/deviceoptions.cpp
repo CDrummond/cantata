@@ -315,7 +315,7 @@ QString DeviceOptions::clean(const QString &str) const
         result = asciiPath(result);
     }
 
-    result.simplified();
+    result=result.simplified();
     if (replaceSpaces) {
         result.replace(QRegExp("\\s"), "_");
     }

@@ -181,7 +181,6 @@ public:
     void setSearchCategory(const QString &id);
     void setSearchResetLevel(int l) { searchResetLevel=l; }
     void setSearchIndex(const QModelIndex &idx) { searchIndex=idx; }
-    void hideBackAction();
     void showEvent(QShowEvent *ev);
     void goToTop();
 

@@ -46,6 +46,11 @@ class PlayQueueModel : public QAbstractItemModel
 
 public:
 
+    enum Roles
+    {
+        Role_Time=Qt::UserRole+500
+    };
+
     enum Columns
     {
         COL_TRACK,

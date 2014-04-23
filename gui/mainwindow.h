@@ -314,7 +314,6 @@ private:
     Action *outputsAction;
     QActionGroup *connectionsGroup;
     Action *stopAfterTrackAction;
-    Action *removeFromPlayQueueAction;
     Action *addPlayQueueToStoredPlaylistAction;
     Action *promptClearPlayQueueAction;
     Action *cropPlayQueueAction;

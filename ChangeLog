@@ -98,6 +98,7 @@
 61. Add a 'touch friendly' setting - icons are made larger, and views are
     'flickable'
 62. Use a toolbutton for listview header and back action.
+63. Add 'List' to playqueue view types.
 
 1.3.4
 -----

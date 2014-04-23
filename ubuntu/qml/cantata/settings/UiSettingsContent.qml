@@ -105,6 +105,8 @@ Flickable {
                 id: playQueueScrollLabel
                 text: i18n.tr("Scroll play queue to active track:")
                 fontSize: "medium"
+                verticalAlignment: Text.AlignVCenter
+                height: playQueueScroll.height
             }
 
             CheckBox {
@@ -117,6 +119,8 @@ Flickable {
                 id: coverFetchLabel
                 text: i18n.tr("Fetch missing covers from last.fm:")
                 fontSize: "medium"
+                verticalAlignment: Text.AlignVCenter
+                height: coverFetch.height
             }
 
             CheckBox {
@@ -130,6 +134,8 @@ Flickable {
                 id: artistYearLabel
                 text: i18n.tr("Sort albums in artists view by year:")
                 fontSize: "medium"
+                verticalAlignment: Text.AlignVCenter
+                height: artistYear.height
             }
 
             CheckBox {
@@ -143,6 +149,8 @@ Flickable {
                 id: albumsViewLabel
                 text: i18n.tr("Show albums view:")
                 fontSize: "medium"
+                verticalAlignment: Text.AlignVCenter
+                height: albumsView.height
             }
 
             CheckBox {
@@ -156,6 +164,8 @@ Flickable {
                 id: foldersViewLabel
                 text: i18n.tr("Show folders view:")
                 fontSize: "medium"
+                verticalAlignment: Text.AlignVCenter
+                height: foldersView.height
             }
 
             CheckBox {
@@ -169,6 +179,8 @@ Flickable {
                 id: playlistsViewLabel
                 text: i18n.tr("Show playlists view:")
                 fontSize: "medium"
+                verticalAlignment: Text.AlignVCenter
+                height: playlistsView.height
             }
 
             CheckBox {
@@ -178,6 +190,13 @@ Flickable {
                 KeyNavigation.backtab: foldersView
             }
         }
+
+        Item { //TODO: Find better solution
+            id: spacer
+            height: units.gu(1)
+            width: parent.width
+        }
+
         OptionSelector {
             id: albumSort
             text: i18n.tr("Sort albums in albums view by:")

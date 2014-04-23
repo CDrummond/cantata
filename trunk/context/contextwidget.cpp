@@ -80,7 +80,6 @@ const QLatin1String ContextWidget::constBackdropFileName("backdrop");
 //const QLatin1String ContextWidget::constHtbApiKey(0); // API key required
 const QLatin1String ContextWidget::constFanArtApiKey("ee86404cb429fa27ac32a1a3c117b006");
 const QLatin1String ContextWidget::constCacheDir("backdrops/");
-static const double constBgndOpacity=0.15;
 
 static QString cacheFileName(const QString &artist, bool createDir)
 {

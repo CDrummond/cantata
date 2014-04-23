@@ -134,8 +134,12 @@ Page {
         }
         clip: true
 
+        property bool hasProgression: false
+
         model: VisualDataModel {
             id: visualDataModel
+
+            onRootIndexChanged: subListView.hasProgression = false
 
             delegate: ListItemDelegate {
                 id: delegate
@@ -148,12 +152,19 @@ Page {
                 firstButtonImageSource: "../../icons/toolbar/media-playback-start-light.svg"
                 secondButtonImageSource: "../../icons/toolbar/add.svg"
                 progression: model.hasChildren
+                forceProgressionSpacing: subListView.hasProgression
 
                 onFirstImageButtonClicked: subListViewPage.add(index, true)
                 onSecondImageButtonClicked: subListViewPage.add(index, false)
 
                 onClicked: model.hasChildren ? subListViewPage.onDelegateClicked(index, model.titleText) : "";
                 onItemRemoved: subListViewPage.remove(index)
+
+                onProgressionChanged: {
+                    if (progression) {
+                        subListView.hasProgression = true
+                    }
+                }
             }
         }
     }

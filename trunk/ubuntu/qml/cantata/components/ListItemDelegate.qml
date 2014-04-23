@@ -30,6 +30,7 @@ Empty {
     property alias iconSource: iconImage.source
 
     property bool progression: false
+    property bool forceProgressionSpacing: false
 
     property alias firstButtonImageSource: firstImage.source
     property alias secondButtonImageSource: secondImage.source
@@ -64,7 +65,7 @@ Empty {
         id: middleVisuals
         anchors {
             left: iconShown?iconShape.right:parent.left
-            right: secondButtonShown?secondImage.left:(firstButtonShown?firstImage.left:(listItemDelegate.progression?progressionImage.right:parent.right))
+            right: secondButtonShown?secondImage.left:(firstButtonShown?firstImage.left:((listItemDelegate.progression || listItemDelegate.forceProgressionSpacing)?progressionImage.right:parent.right))
             leftMargin: units.gu(iconShown?1:2)
             rightMargin: units.gu(firstButtonShown?1:2)
             verticalCenter: parent.verticalCenter
@@ -124,8 +125,8 @@ Empty {
         visible: firstButtonShown
 
         anchors {
-            right: listItemDelegate.progression?progressionImage.right:parent.right
-            rightMargin: listItemDelegate.progression?units.gu(3.5):units.gu(2)
+            right: (listItemDelegate.progression || listItemDelegate.forceProgressionSpacing)?progressionImage.left:parent.right
+            rightMargin: (listItemDelegate.progression || listItemDelegate.forceProgressionSpacing)?units.gu(1.5):units.gu(2)
             verticalCenter: parent.verticalCenter
         }
 

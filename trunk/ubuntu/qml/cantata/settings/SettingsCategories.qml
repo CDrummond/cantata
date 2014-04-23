@@ -45,6 +45,7 @@ Flickable {
             id: connectionSettingsLabel
             text: i18n.tr("Connection")
             progression: true
+            selected: !root.isPhone && selectedIndex === 0
             onClicked: {
                 selectedIndex = 0
                 if (push) pageStack.push(hostSettingsPage)
@@ -55,6 +56,7 @@ Flickable {
             id: uiSettingsLabel
             text: i18n.tr("UI")
             progression: true
+            selected: !root.isPhone && selectedIndex === 1
             onClicked:  {
                 selectedIndex = 1
                 if (push) pageStack.push(uiSettingsPage)
@@ -65,6 +67,7 @@ Flickable {
             id: playbackSettingsLabel
             text: i18n.tr("Playback")
             progression: true
+            selected: !root.isPhone && selectedIndex === 2
             onClicked:  {
                 selectedIndex = 2
                 if (push) pageStack.push(playbackSettingsPage)

@@ -28,9 +28,6 @@
 #include "action.h"
 #include <QEvent>
 
-// Max number of items before we try to force a scrollbar in popup menu...
-static const int constPopupItemCount=32;
-
 static Action *action=0;
 
 GenreCombo::GenreCombo(QWidget *p)

@@ -341,7 +341,6 @@ set(CANTATA_UIS
     context/togglelist.ui context/othersettings.ui
     widgets/itemview.ui)
 
-
 if (ENABLE_UBUNTU)
     set(UBUNTU_SRCS ${CANTATA_CORE_SRCS} ubuntu/main.cpp ubuntu/backend/mpdbackend.cpp gui/plurals_qt.cpp)
     set(UBUNTU_MOC_HDRS ${CANTATA_CORE_MOC_HDRS} ubuntu/backend/mpdbackend.h)
@@ -569,10 +568,12 @@ elseif (ENABLE_UBUNTU)
     qt5_use_modules(cantata Network Core Qml Quick Gui)
 else (ENABLE_KDE)
     set(CANTATA_SRCS ${CANTATA_SRCS} gui/plurals_qt.cpp)
+    if (WIN32 OR APPLE)
+        set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} gui/application.h)
+    endif (WIN32 OR APPLE)
     if (WIN32)
         add_definitions(-DWIN32)
         add_subdirectory(windows)
-        set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} gui/application.h)
         if (NOT CANTATA_WINDOWS_INSTALLER_DEST)
             set(CANTATA_WINDOWS_INSTALLER_DEST z:\ )
         endif (NOT CANTATA_WINDOWS_INSTALLER_DEST)

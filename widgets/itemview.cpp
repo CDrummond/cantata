@@ -616,8 +616,6 @@ ItemView::ItemView(QWidget *p)
     backButton->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     backButton->setStyle(new BackButtonProxyStyle());
     Action::updateToolTip(backAction);
-    listView->addAction(backAction);
-    listView->addDefaultAction(backAction);
     QAction *sep=new QAction(this);
     sep->setSeparator(true);
     listView->addAction(sep);
@@ -1153,11 +1151,6 @@ void ItemView::setSearchCategories(const QList<QPair<QString, QString> > &catego
 void ItemView::setSearchCategory(const QString &id)
 {
     searchWidget->setCategory(id);
-}
-
-void ItemView::hideBackAction()
-{
-    listView->removeAction(backAction);
 }
 
 void ItemView::showEvent(QShowEvent *ev)

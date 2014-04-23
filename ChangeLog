@@ -99,6 +99,7 @@
     'flickable'
 62. Use a toolbutton for listview header and back action.
 63. Add 'List' to playqueue view types.
+64. Add 'Locate In Library' to search page.
 
 1.3.4
 -----

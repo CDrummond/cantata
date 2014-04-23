@@ -53,7 +53,7 @@ SearchPage::SearchPage(QWidget *p)
     setupUi(this);
     addToPlayQueue->setDefaultAction(StdActions::self()->addToPlayQueueAction);
     replacePlayQueue->setDefaultAction(StdActions::self()->replacePlayQueueAction);
-
+    locateAction=new Action(Icon("edit-find"), i18n("Locate In Library"), this);
     view->allowTableView(new SearchTableView(view));
     view->addAction(StdActions::self()->addToPlayQueueAction);
     view->addAction(StdActions::self()->addRandomToPlayQueueAction);
@@ -65,6 +65,7 @@ SearchPage::SearchPage(QWidget *p)
     view->addAction(StdActions::self()->copyToDeviceAction);
     #endif
     #endif // TAGLIB_FOUND
+    view->addAction(locateAction);
 
     connect(this, SIGNAL(add(const QStringList &, bool, quint8)), MPDConnection::self(), SLOT(add(const QStringList &, bool, quint8)));
     connect(this, SIGNAL(addSongsToPlaylist(const QString &, const QStringList &)), MPDConnection::self(), SLOT(addToPlaylist(const QString &, const QStringList &)));
@@ -75,6 +76,7 @@ SearchPage::SearchPage(QWidget *p)
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
     connect(view, SIGNAL(searchItems()), this, SLOT(searchItems()));
     connect(MPDConnection::self(), SIGNAL(stateChanged(bool)), this, SLOT(setSearchCategories()));
+    connect(locateAction, SIGNAL(triggered(bool)), SLOT(locateSongs()));
     proxy.setSourceModel(&model);
     view->setModel(&proxy);
     view->setMode(ItemView::Mode_List);
@@ -207,6 +209,7 @@ void SearchPage::controlActions()
     StdActions::self()->replacePlayQueueAction->setEnabled(enable);
     StdActions::self()->addToStoredPlaylistAction->setEnabled(enable);
     StdActions::self()->addRandomToPlayQueueAction->setEnabled(false);
+    locateAction->setEnabled(enable);
 }
 
 void SearchPage::setSearchCategories()
@@ -243,4 +246,13 @@ void SearchPage::setSearchCategories()
 void SearchPage::statsUpdated(int songs, quint32 time)
 {
     statsLabel->setText(0==songs ? i18n("No tracks found.") : Plurals::tracksWithDuration(songs, Utils::formatDuration(time)));
+}
+
+void SearchPage::locateSongs()
+{
+    QList<Song> songs=selectedSongs();
+
+    if (!songs.isEmpty()) {
+        emit locate(songs);
+    }
 }

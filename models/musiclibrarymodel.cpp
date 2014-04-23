@@ -34,7 +34,6 @@
 #include "settings.h"
 #include "config.h"
 #include "covers.h"
-#include "itemview.h"
 #include "mpdparseutils.h"
 #include "mpdconnection.h"
 #include "localize.h"

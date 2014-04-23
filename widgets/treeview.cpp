@@ -22,7 +22,7 @@
  */
 
 #include "treeview.h"
-#include "itemview.h"
+#include "roles.h"
 #include "icons.h"
 #include "config.h"
 #include "basicitemdelegate.h"
@@ -36,6 +36,8 @@
 #include <QMap>
 #include <QStyle>
 #include <QList>
+#include <QApplication>
+#include <QHeaderView>
 
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KGlobalSettings>
@@ -164,7 +166,7 @@ void TreeView::drag(Qt::DropActions supportedActions, QAbstractItemView *view, c
         QPixmap pix;
 
         if (1==items.count()) {
-            QVariant var=view->model()->data(items.first(), ItemView::Role_Image);
+            QVariant var=view->model()->data(items.first(), Cantata::Role_Image);
             QImage img=var.value<QImage>();
             if (img.isNull()) {
                 pix=var.value<QPixmap>();

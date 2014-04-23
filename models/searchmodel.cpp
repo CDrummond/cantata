@@ -23,8 +23,7 @@
 
 #include "searchmodel.h"
 #include "icons.h"
-#include "itemview.h"
-#include "tableview.h"
+#include "roles.h"
 #include "mpdconnection.h"
 #include "playqueuemodel.h"
 #include <QString>
@@ -104,9 +103,9 @@ QVariant SearchModel::headerData(int section, Qt::Orientation orientation, int r
             case COL_YEAR:
                 return int(Qt::AlignVCenter|Qt::AlignRight);
             }
-        case TableView::Role_Hideable:
+        case Cantata::Role_Hideable:
             return COL_YEAR==section || COL_DISC==section || COL_GENRE==section ? true : false;
-        case TableView::Role_Width:
+        case Cantata::Role_Width:
             switch (section) {
             case COL_DISC:   return 0.03;
             case COL_TITLE:  return 0.375;
@@ -204,9 +203,9 @@ QVariant SearchModel::data(const QModelIndex &index, int role) const
         }
         return text;
     }
-    case ItemView::Role_MainText:
+    case Cantata::Role_MainText:
         return song->title.isEmpty() ? song->file : song->trackAndTitleStr();
-    case ItemView::Role_SubText:
+    case Cantata::Role_SubText:
         return song->artist+QLatin1String(" - ")+song->displayAlbum();
     default:
         return ActionModel::data(index, role);

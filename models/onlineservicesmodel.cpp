@@ -39,7 +39,7 @@
 #include "soundcloudservice.h"
 #include "podcastservice.h"
 #include "playqueuemodel.h"
-#include "itemview.h"
+#include "roles.h"
 #include "mpdparseutils.h"
 #include "localize.h"
 #include "plurals.h"
@@ -130,7 +130,7 @@ QVariant OnlineServicesModel::data(const QModelIndex &index, int role) const
             return MusicModel::data(index, role).toString()+"<br/>"+i18n("Last Search:%1", static_cast<OnlineService *>(item)->currentSearchString());
         }
         break;
-    case ItemView::Role_SubText:
+    case Cantata::Role_SubText:
         switch(item->itemType()) {
         case MusicLibraryItem::Type_Root: {
             OnlineService *srv=static_cast<OnlineService *>(item);
@@ -168,7 +168,7 @@ QVariant OnlineServicesModel::data(const QModelIndex &index, int role) const
             break;
         }
         break;
-    case ItemView::Role_Actions: {
+    case Cantata::Role_Actions: {
         QList<Action *> actions;
         if (MusicLibraryItem::Type_Root==item->itemType()) {
             OnlineService *srv=static_cast<OnlineService *>(item);

@@ -27,8 +27,6 @@
 
 #include "localize.h"
 #include "playqueuemodel.h"
-#include "groupedview.h"
-#include "playqueueview.h"
 #include "mpdconnection.h"
 #include "mpdparseutils.h"
 #include "mpdstats.h"
@@ -43,9 +41,8 @@
 #include "action.h"
 #include "actioncollection.h"
 #include "covers.h"
-#ifdef ENABLE_UBUNTU
-#include "itemview.h"
-#endif
+#include "groupedview.h"
+#include "roles.h"
 #ifdef ENABLE_DEVICES_SUPPORT
 #include "devicesmodel.h"
 #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
@@ -275,9 +272,9 @@ QVariant PlayQueueModel::headerData(int section, Qt::Orientation orientation, in
             case COL_PRIO:
                 return int(Qt::AlignVCenter|Qt::AlignRight);
             }
-        case TableView::Role_Hideable:
+        case Cantata::Role_Hideable:
             return COL_YEAR==section || COL_DISC==section || COL_GENRE==section || COL_PRIO==section? true : false;
-        case TableView::Role_Width:
+        case Cantata::Role_Width:
             switch (section) {
             case COL_TRACK:  return 0.075;
             case COL_DISC:   return 0.03;
@@ -325,10 +322,10 @@ static const QString constDefaultCover=QLatin1String("qrc:/album.svg");
 QHash<int, QByteArray> PlayQueueModel::roleNames() const
 {
     QHash<int, QByteArray> roles;
-    roles[ItemView::Role_MainText] = "mainText";
-    roles[ItemView::Role_SubText] = "subText";
-    roles[ItemView::Role_Image] = "image";
-    roles[Role_Time] = "time";
+    roles[Cantata::Role_MainText] = "mainText";
+    roles[Cantata::Role_SubText] = "subText";
+    roles[Cantata::Role_Image] = "image";
+    roles[Cantata::Role_Time] = "time";
     return roles;
 }
 #endif
@@ -349,20 +346,20 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
 //     }
 
     switch (role) {
-    case ItemView::Role_MainText: {
+    case Cantata::Role_MainText: {
         const Song &s=songs.at(index.row());
         return s.title.isEmpty() ? s.file : s.trackAndTitleStr();
     }
-    case ItemView::Role_SubText: {
+    case Cantata::Role_SubText: {
         const Song &s=songs.at(index.row());
         return s.artist+QLatin1String(" - ")+s.displayAlbum();
     }
-    case Role_Time: {
+    case Cantata::Role_Time: {
         const Song &s=songs.at(index.row());
         return s.time>0 ? Utils::formatTime(s.time) : QLatin1String("");
     }
     #ifdef ENABLE_UBUNTU
-    case ItemView::Role_Image: {
+    case Cantata::Role_Image: {
         Song s=songs.at(index.row());
         QMap<quint16, QString>::ConstIterator it=covers.find(s.key);
         if (it!=covers.constEnd()) {
@@ -377,20 +374,20 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
         return fileName;
     }
     #endif
-    case GroupedView::Role_IsCollection:
+    case Cantata::Role_IsCollection:
         return false;
-    case GroupedView::Role_CollectionId:
+    case Cantata::Role_CollectionId:
         return 0;
-    case GroupedView::Role_Key:
+    case Cantata::Role_Key:
         return songs.at(index.row()).key;
-    case GroupedView::Role_Id:
+    case Cantata::Role_Id:
         return songs.at(index.row()).id;
-    case GroupedView::Role_Song: {
+    case Cantata::Role_Song: {
         QVariant var;
         var.setValue<Song>(songs.at(index.row()));
         return var;
     }
-    case GroupedView::Role_AlbumDuration: {
+    case Cantata::Role_AlbumDuration: {
         const Song &first = songs.at(index.row());
         quint32 d=first.time;
         for (int i=index.row()+1; i<songs.count(); ++i) {
@@ -411,7 +408,7 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
         }
         return d;
     }
-    case GroupedView::Role_SongCount: {
+    case Cantata::Role_SongCount: {
         const Song &first = songs.at(index.row());
         quint32 count=1;
         for (int i=index.row()+1; i<songs.count(); ++i) {
@@ -432,7 +429,7 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
         }
         return count;
     }
-    case GroupedView::Role_CurrentStatus: {
+    case Cantata::Role_CurrentStatus: {
         quint16 key=songs.at(index.row()).key;
         for (int i=index.row()+1; i<songs.count(); ++i) {
             const Song &s=songs.at(i);
@@ -452,7 +449,7 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
         }
         return QVariant();
     }
-    case GroupedView::Role_Status: {
+    case Cantata::Role_Status: {
         qint32 id=songs.at(index.row()).id;
         if (id==currentSongId) {
             switch (mpdState) {
@@ -556,7 +553,7 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
             return int(Qt::AlignVCenter|Qt::AlignRight);
         }
     #ifndef ENABLE_UBUNTU
-    case PlayQueueView::Role_Decoration: {
+    case Cantata::Role_Decoration: {
         qint32 id=songs.at(index.row()).id;
         if (id==currentSongId) {
             switch (mpdState) {
@@ -581,7 +578,7 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
 #ifndef ENABLE_UBUNTU
 bool PlayQueueModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
-    if (GroupedView::Role_DropAdjust==role) {
+    if (Cantata::Role_DropAdjust==role) {
         dropAdjust=value.toUInt();
         return true;
     } else {

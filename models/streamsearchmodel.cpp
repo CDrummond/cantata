@@ -23,7 +23,7 @@
 
 #include "streamsearchmodel.h"
 #include "icons.h"
-#include "itemview.h"
+#include "roles.h"
 #include "localize.h"
 #include "plurals.h"
 #include "playqueuemodel.h"
@@ -112,7 +112,7 @@ QVariant StreamSearchModel::data(const QModelIndex &index, int role) const
         return item->name;
     case Qt::ToolTipRole:
         return item->isCategory() ? item->name : (item->name+QLatin1String("<br><small><i>")+item->url+QLatin1String("</i></small>"));
-    case ItemView::Role_SubText:
+    case Cantata::Role_SubText:
         if (item->isCategory()) {
             const StreamsModel::CategoryItem *cat=static_cast<const StreamsModel::CategoryItem *>(item);
             switch (cat->state) {
@@ -127,7 +127,7 @@ QVariant StreamSearchModel::data(const QModelIndex &index, int role) const
             return item->subText.isEmpty() ? QLatin1String("-") : item->subText;
         }
         break;
-    case ItemView::Role_Actions:
+    case Cantata::Role_Actions:
         if (item->isCategory()){
             if (static_cast<const StreamsModel::CategoryItem *>(item)->canBookmark) {
                 QVariant v;

@@ -37,6 +37,7 @@
 #include "gtkstyle.h"
 #include "actioncollection.h"
 #include "action.h"
+#include "roles.h"
 #include <QFile>
 #include <QPainter>
 #include <QApplication>
@@ -72,7 +73,7 @@ public:
         if (!index.isValid()) {
             return;
         }
-        int state=index.data(GroupedView::Role_Status).toInt();
+        int state=index.data(Cantata::Role_Status).toInt();
         bool mouseOver=option.state&QStyle::State_MouseOver;
         bool gtk=mouseOver && GtkStyle::isActive();
         bool selected=option.state&QStyle::State_Selected;
@@ -96,11 +97,11 @@ public:
             }
         }
 
-        Song song=index.data(GroupedView::Role_Song).value<Song>();
-        QString text = index.data(ItemView::Role_MainText).toString();
+        Song song=index.data(Cantata::Role_Song).value<Song>();
+        QString text = index.data(Cantata::Role_MainText).toString();
         QRect r(option.rect);
-        QString childText = index.data(ItemView::Role_SubText).toString();
-        QString duration = index.data(PlayQueueModel::Role_Time).toString();
+        QString childText = index.data(Cantata::Role_SubText).toString();
+        QString duration = index.data(Cantata::Role_Time).toString();
         int coverSize = GroupedView::coverSize();
         int borderSize = GroupedView::borderSize();
         bool stream=song.isStandardStream();
@@ -202,7 +203,7 @@ void PlayQueueListView::coverLoaded(const Song &song, int size)
         if (!index.isValid()) {
             continue;
         }
-        quint16 key=index.data(GroupedView::Role_Key).toUInt();
+        quint16 key=index.data(Cantata::Role_Key).toUInt();
 
         if (key==lastKey) {
             rowTo=i;
@@ -211,7 +212,7 @@ void PlayQueueListView::coverLoaded(const Song &song, int size)
                 dataChanged(model()->index(rowFrom, 0), model()->index(rowTo, 0));
                 rowTo=-1;
             }
-            Song song=index.data(GroupedView::Role_Song).value<Song>();
+            Song song=index.data(Cantata::Role_Song).value<Song>();
             if (song.albumArtist()==albumArtist && song.album==album) {
                 rowFrom=rowTo=i;
             } else {
@@ -238,7 +239,7 @@ public:
 
         QStyleOptionViewItemV4 v4((QStyleOptionViewItemV4 &)option);
         if (QStyleOptionViewItemV4::Beginning==v4.viewItemPosition) {
-            v4.icon=index.data(PlayQueueView::Role_Decoration).value<QIcon>();
+            v4.icon=index.data(Cantata::Role_Decoration).value<QIcon>();
             if (!v4.icon.isNull()) {
                 v4.features |= QStyleOptionViewItemV2::HasDecoration;
                 v4.decorationSize=v4.icon.actualSize(option.decorationSize, QIcon::Normal, QIcon::Off);
@@ -562,7 +563,7 @@ QList<Song> PlayQueueView::selectedSongs() const
     QList<Song> songs;
 
     foreach (const QModelIndex &idx, selected) {
-        Song song=idx.data(GroupedView::Role_Song).value<Song>();
+        Song song=idx.data(Cantata::Role_Song).value<Song>();
         if (!song.file.isEmpty() && !song.file.contains(":/") && !song.file.startsWith('/')) {
             songs.append(song);
         }

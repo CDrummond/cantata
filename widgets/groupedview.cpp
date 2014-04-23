@@ -34,6 +34,7 @@
 #include "icons.h"
 #include "gtkstyle.h"
 #include "flickcharm.h"
+#include "roles.h"
 #include <QStyledItemDelegate>
 #include <QApplication>
 #include <QFontMetrics>
@@ -146,15 +147,15 @@ enum Type {
 static Type getType(const QModelIndex &index)
 {
     QModelIndex prev=index.row()>0 ? index.sibling(index.row()-1, 0) : QModelIndex();
-    quint16 thisKey=index.data(GroupedView::Role_Key).toUInt();
-    quint16 prevKey=prev.isValid() ? prev.data(GroupedView::Role_Key).toUInt() : Song::constNullKey;
+    quint16 thisKey=index.data(Cantata::Role_Key).toUInt();
+    quint16 prevKey=prev.isValid() ? prev.data(Cantata::Role_Key).toUInt() : Song::constNullKey;
 
     return thisKey==prevKey ? AlbumTrack : AlbumHeader;
 }
 
 static bool isAlbumHeader(const QModelIndex &index)
 {
-    return !index.data(GroupedView::Role_IsCollection).toBool() && AlbumHeader==getType(index);
+    return !index.data(Cantata::Role_IsCollection).toBool() && AlbumHeader==getType(index);
 }
 
 static QString streamText(const Song &song, const QString &trackTitle, bool useName=true)
@@ -204,7 +205,7 @@ public:
     QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
     {
         if (0==index.column()) {
-            return sizeHint(getType(index), index.data(GroupedView::Role_IsCollection).toBool());
+            return sizeHint(getType(index), index.data(Cantata::Role_IsCollection).toBool());
         }
         return QStyledItemDelegate::sizeHint(option, index);
     }
@@ -257,10 +258,10 @@ public:
         }
 
         Type type=getType(index);
-        bool isCollection=index.data(GroupedView::Role_IsCollection).toBool();
-        Song song=index.data(GroupedView::Role_Song).value<Song>();
-        int state=index.data(GroupedView::Role_Status).toInt();
-        quint32 collection=index.data(GroupedView::Role_CollectionId).toUInt();
+        bool isCollection=index.data(Cantata::Role_IsCollection).toBool();
+        Song song=index.data(Cantata::Role_Song).value<Song>();
+        int state=index.data(Cantata::Role_Status).toInt();
+        quint32 collection=index.data(Cantata::Role_CollectionId).toUInt();
         bool selected=option.state&QStyle::State_Selected;
         bool mouseOver=underMouse && option.state&QStyle::State_MouseOver;
         bool gtk=mouseOver && GtkStyle::isActive();
@@ -284,7 +285,7 @@ public:
             }
             painter->restore();
             if (!state && !view->isExpanded(song.key, collection) && view->isCurrentAlbum(song.key)) {
-                QVariant cs=index.data(GroupedView::Role_CurrentStatus);
+                QVariant cs=index.data(Cantata::Role_CurrentStatus);
                 if (cs.isValid()) {
                     state=cs.toInt();
                 }
@@ -319,7 +320,7 @@ public:
         } else if (AlbumHeader==type) {
             if (stream) {
                 QModelIndex next=index.sibling(index.row()+1, 0);
-                quint16 nextKey=next.isValid() ? next.data(GroupedView::Role_Key).toUInt() : Song::constNullKey;
+                quint16 nextKey=next.isValid() ? next.data(Cantata::Role_Key).toUInt() : Song::constNullKey;
                 if (nextKey!=song.key && !song.name.isEmpty()) {
                     title=song.name;
                     track=streamText(song, trackTitle, false);
@@ -402,7 +403,7 @@ public:
                 painter->drawPixmap(r.x()-2, r.y()+((r.height()-pix.height())/2), pix.width(), pix.height(), pix);
                 r.adjust(constCoverSize+constBorder, 0, 0, 0);
             }
-            int td=index.data(GroupedView::Role_AlbumDuration).toUInt();
+            int td=index.data(Cantata::Role_AlbumDuration).toUInt();
             QString totalDuration=td>0 ? Utils::formatTime(td) : QString();
             QRect duratioRect(r.x(), r.y(), r.width(), textHeight);
             int totalDurationWidth=fm.width(totalDuration)+8;
@@ -425,7 +426,7 @@ public:
 
             if (isCollection || !view->isExpanded(song.key, collection)) {
                 showTrackDuration=false;
-                track=Plurals::tracks(index.data(GroupedView::Role_SongCount).toUInt());
+                track=Plurals::tracks(index.data(Cantata::Role_SongCount).toUInt());
             }
         } else if (rtl) {
             r.adjust(0, 0, -(constBorder*4), 0);
@@ -572,11 +573,11 @@ void GroupedView::updateRows(const QModelIndex &parent)
 
     qint32 count=model()->rowCount(parent);
     quint16 lastKey=Song::constNullKey;
-    quint32 collection=parent.data(GroupedView::Role_CollectionId).toUInt();
+    quint32 collection=parent.data(Cantata::Role_CollectionId).toUInt();
     QSet<quint16> keys;
 
     for (qint32 i=0; i<count; ++i) {
-        quint16 key=model()->index(i, 0, parent).data(GroupedView::Role_Key).toUInt();
+        quint16 key=model()->index(i, 0, parent).data(Cantata::Role_Key).toUInt();
         keys.insert(key);
         bool hide=key==lastKey &&
                         !(key==currentAlbum && autoExpand) &&
@@ -609,13 +610,13 @@ void GroupedView::toggle(const QModelIndex &idx)
         return;
     }
 
-    quint16 indexKey=idx.data(GroupedView::Role_Key).toUInt();
+    quint16 indexKey=idx.data(Cantata::Role_Key).toUInt();
 
     if (indexKey==currentAlbum && autoExpand) {
         return;
     }
 
-    quint32 collection=idx.data(GroupedView::Role_CollectionId).toUInt();
+    quint32 collection=idx.data(Cantata::Role_CollectionId).toUInt();
     bool toBeHidden=false;
     if (controlledAlbums[collection].contains(indexKey)) {
         controlledAlbums[collection].remove(indexKey);
@@ -630,7 +631,7 @@ void GroupedView::toggle(const QModelIndex &idx)
         quint32 count=model()->rowCount(idx.parent());
         for (quint32 i=0; i<count; ++i) {
             QModelIndex index=model()->index(i, 0, parent);
-            quint16 key=index.data(GroupedView::Role_Key).toUInt();
+            quint16 key=index.data(Cantata::Role_Key).toUInt();
             if (indexKey==key) {
                 if (isAlbumHeader(index)) {
                     dataChanged(index, index);
@@ -655,16 +656,16 @@ QModelIndexList GroupedView::selectedIndexes(bool sorted) const
             indexSet.insert(idx);
             sel.append(idx);
         }
-        if (!idx.data(GroupedView::Role_IsCollection).toBool()) {
-            quint16 key=idx.data(GroupedView::Role_Key).toUInt();
-            quint32 collection=idx.data(GroupedView::Role_CollectionId).toUInt();
+        if (!idx.data(Cantata::Role_IsCollection).toBool()) {
+            quint16 key=idx.data(Cantata::Role_Key).toUInt();
+            quint32 collection=idx.data(Cantata::Role_CollectionId).toUInt();
             if (!isExpanded(key, collection)) {
                 quint32 rowCount=model()->rowCount(idx.parent());
                 for (quint32 i=idx.row()+1; i<rowCount; ++i) {
                     QModelIndex next=idx.sibling(i, 0);
                     if (next.isValid()) {
-                        quint16 nextKey=next.data(GroupedView::Role_Key).toUInt();
-                        quint32 nextCollection=idx.data(GroupedView::Role_CollectionId).toUInt();
+                        quint16 nextKey=next.data(Cantata::Role_Key).toUInt();
+                        quint32 nextCollection=idx.data(Cantata::Role_CollectionId).toUInt();
 
                         if (nextCollection==collection && nextKey==key) {
                             if (!indexSet.contains(next)) {
@@ -700,15 +701,15 @@ void GroupedView::dropEvent(QDropEvent *event)
         if (idx.isValid() && isAlbumHeader(idx)) {
             QRect rect(visualRect(idx));
             if (event->pos().y()>(rect.y()+(rect.height()/2))) {
-                quint16 key=idx.data(GroupedView::Role_Key).toUInt();
-                quint32 collection=idx.data(GroupedView::Role_CollectionId).toUInt();
+                quint16 key=idx.data(Cantata::Role_Key).toUInt();
+                quint32 collection=idx.data(Cantata::Role_CollectionId).toUInt();
                 if (!isExpanded(key, collection)) {
                     parent=idx.parent();
                     quint32 rowCount=model()->rowCount(parent);
                     for (quint32 i=idx.row()+1; i<rowCount; ++i) {
                         QModelIndex next=idx.sibling(i, 0);
                         if (next.isValid()) {
-                            quint16 nextKey=next.data(GroupedView::Role_Key).toUInt();
+                            quint16 nextKey=next.data(Cantata::Role_Key).toUInt();
                             if (nextKey==key) {
                                 dropRowAdjust++;
                             } else {
@@ -718,14 +719,14 @@ void GroupedView::dropEvent(QDropEvent *event)
                             break;
                         }
                     }
-                    model()->setData(parent, dropRowAdjust, Role_DropAdjust);
+                    model()->setData(parent, dropRowAdjust, Cantata::Role_DropAdjust);
                 }
             }
         }
     }
 
     TreeView::dropEvent(event);
-    model()->setData(parent, 0, Role_DropAdjust);
+    model()->setData(parent, 0, Cantata::Role_DropAdjust);
 }
 
 void GroupedView::coverLoaded(const Song &song, int size)
@@ -751,10 +752,10 @@ void GroupedView::coverLoaded(const Song &song, int size)
                 if (!child.isValid()) {
                     continue;
                 }
-                quint16 key=child.data(GroupedView::Role_Key).toUInt();
+                quint16 key=child.data(Cantata::Role_Key).toUInt();
 
                 if (key!=lastKey && !isRowHidden(c, index)) {
-                    Song song=child.data(GroupedView::Role_Song).value<Song>();
+                    Song song=child.data(Cantata::Role_Song).value<Song>();
                     if (song.albumArtist()==albumArtist && song.album==album) {
                         dataChanged(child, child);
                     }
@@ -762,10 +763,10 @@ void GroupedView::coverLoaded(const Song &song, int size)
                 lastKey=key;
             }
         } else {
-            quint16 key=index.data(GroupedView::Role_Key).toUInt();
+            quint16 key=index.data(Cantata::Role_Key).toUInt();
 
             if (key!=lastKey && !isRowHidden(i, QModelIndex())) {
-                Song song=index.data(GroupedView::Role_Song).value<Song>();
+                Song song=index.data(Cantata::Role_Song).value<Song>();
                 if (song.albumArtist()==albumArtist && song.album==album) {
                     dataChanged(index, index);
                 }
@@ -794,13 +795,13 @@ void GroupedView::itemClicked(const QModelIndex &idx)
             toggle(idx);
         } else if (header.contains(QCursor::pos())) {
             QModelIndexList list;
-            unsigned int key=idx.data(GroupedView::Role_Key).toUInt();
+            unsigned int key=idx.data(Cantata::Role_Key).toUInt();
             QModelIndex i=idx.sibling(idx.row()+1, 0);
 //            QModelIndexList sel=selectedIndexes();
             QItemSelectionModel *selModel=selectionModel();
             QModelIndexList unsel;
 
-            while (i.isValid() && i.data(GroupedView::Role_Key).toUInt()==key) {
+            while (i.isValid() && i.data(Cantata::Role_Key).toUInt()==key) {
                 #if 0 // The following does not seem to work from the grouped playlist view - the 2nd row never get selected!
                 if (!sel.contains(i)) {
                     unsel.append(i);
@@ -837,7 +838,7 @@ void GroupedView::itemClicked(const QModelIndex &idx)
 void GroupedView::expand(const QModelIndex &idx, bool singleOnly)
 {
     if (allowClose && idx.isValid()) {
-        if (idx.data(GroupedView::Role_IsCollection).toBool()) {
+        if (idx.data(Cantata::Role_IsCollection).toBool()) {
             setExpanded(idx, true);
             if (!singleOnly) {
                 quint32 count=model()->rowCount(idx);
@@ -846,8 +847,8 @@ void GroupedView::expand(const QModelIndex &idx, bool singleOnly)
                 }
             }
         } else if (AlbumHeader==getType(idx)) {
-            quint16 indexKey=idx.data(GroupedView::Role_Key).toUInt();
-            quint32 collection=idx.data(GroupedView::Role_CollectionId).toUInt();
+            quint16 indexKey=idx.data(Cantata::Role_Key).toUInt();
+            quint32 collection=idx.data(Cantata::Role_CollectionId).toUInt();
             if (!isExpanded(indexKey, collection)) {
                 toggle(idx);
             }
@@ -858,7 +859,7 @@ void GroupedView::expand(const QModelIndex &idx, bool singleOnly)
 void GroupedView::collapse(const QModelIndex &idx, bool singleOnly)
 {
     if (allowClose && idx.isValid()) {
-        if (idx.data(GroupedView::Role_IsCollection).toBool()) {
+        if (idx.data(Cantata::Role_IsCollection).toBool()) {
             setExpanded(idx, false);
             if (!singleOnly) {
                 quint32 count=model()->rowCount(idx);

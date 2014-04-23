@@ -26,7 +26,7 @@
 #include "utils.h"
 #include "mpdconnection.h"
 #include "icons.h"
-#include "itemview.h"
+#include "roles.h"
 #include "networkaccessmanager.h"
 #include "settings.h"
 #include "localize.h"
@@ -245,10 +245,10 @@ QVariant Dynamic::data(const QModelIndex &index, int role) const
         return entryList.at(index.row()).name;
     case Qt::DecorationRole:
         return IS_ACTIVE(entryList.at(index.row()).name) ? QIcon::fromTheme("media-playback-start") : Icons::self()->dynamicRuleIcon;
-    case ItemView::Role_SubText: {
+    case Cantata::Role_SubText: {
         return Plurals::rules(entryList.at(index.row()).rules.count());
     }
-    case ItemView::Role_Actions: {
+    case Cantata::Role_Actions: {
         QVariant v;
         v.setValue<QList<Action *> >(QList<Action *>() << (IS_ACTIVE(entryList.at(index.row()).name) ? stopAction : startAction));
         return v;

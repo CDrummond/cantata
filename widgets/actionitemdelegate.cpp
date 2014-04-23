@@ -22,17 +22,18 @@
  */
 
 #include "actionitemdelegate.h"
-#include "itemview.h"
+#include "roles.h"
 #include "icon.h"
 #include "config.h"
-#include "groupedview.h"
 #include "actionmodel.h"
+#include "groupedview.h"
 #include <QPainter>
 #include <QPixmap>
 #include <QListView>
 #include <QHelpEvent>
 #include <QToolTip>
 #include <QPointer>
+#include <QApplication>
 
 int ActionItemDelegate::constBorder = 1;
 int ActionItemDelegate::constActionBorder = 4;
@@ -112,7 +113,7 @@ void ActionItemDelegate::drawIcons(QPainter *painter, const QRect &r, bool mouse
         painter->setOpacity(opacity*0.25);
     }
     QRect actionRect=calcActionRect(rtl, actionPos, r);
-    QList<Action *> actions=index.data(ItemView::Role_Actions).value<QList<Action *> >();
+    QList<Action *> actions=index.data(Cantata::Role_Actions).value<QList<Action *> >();
 
     foreach (const QPointer<Action> &a, actions) {
         QPixmap pix=a->icon().pixmap(QSize(iconSize, iconSize));
@@ -142,7 +143,7 @@ bool ActionItemDelegate::helpEvent(QHelpEvent *e, QAbstractItemView *view, const
 
 QAction * ActionItemDelegate::getAction(const QModelIndex &index) const
 {
-    QList<Action *> actions=index.data(ItemView::Role_Actions).value<QList<Action *> >();
+    QList<Action *> actions=index.data(Cantata::Role_Actions).value<QList<Action *> >();
     if (actions.isEmpty()) {
         return 0;
     }
@@ -154,7 +155,7 @@ QAction * ActionItemDelegate::getAction(const QModelIndex &index) const
     ActionPos actionPos=gv ? AP_HBottom : (lv && QListView::ListMode!=lv->viewMode() && index.child(0, 0).isValid() ? AP_VTop : AP_HMiddle);
     QRect rect = view->visualRect(index);
     rect.moveTo(view->viewport()->mapToGlobal(QPoint(rect.x(), rect.y())));
-    bool showCapacity = !index.data(ItemView::Role_CapacityText).toString().isEmpty();
+    bool showCapacity = !index.data(Cantata::Role_CapacityText).toString().isEmpty();
     if (gv || lv || showCapacity) {
         if (AP_VTop==actionPos) {
             rect.adjust(ActionItemDelegate::constBorder, ActionItemDelegate::constBorder, -ActionItemDelegate::constBorder, -ActionItemDelegate::constBorder);

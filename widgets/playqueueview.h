@@ -92,10 +92,6 @@ public:
         BI_Custom
     };
 
-    enum Role {
-        Role_Decoration = Qt::UserRole+300
-    };
-
     PlayQueueView(QWidget *parent=0);
     virtual ~PlayQueueView();
 

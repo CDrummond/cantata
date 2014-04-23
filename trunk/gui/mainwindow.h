@@ -245,6 +245,7 @@ public Q_SLOTS:
     void showSearchTab() { showTab(PAGE_SEARCH); }
     void toggleSplitterAutoHide();
     void toggleMonoIcons();
+    void locateTracks(const QList<Song> &songs);
     void locateTrack();
     void locateArtist(const QString &artist);
     void locateAlbum(const QString &artist, const QString &album);

@@ -57,6 +57,7 @@ Q_SIGNALS:
     void addSongsToPlaylist(const QString &name, const QStringList &files);
 
     void addToDevice(const QString &from, const QString &to, const QList<Song> &songs);
+    void locate(const QList<Song> &songs);
 
 public Q_SLOTS:
     void searchItems();
@@ -64,6 +65,7 @@ public Q_SLOTS:
     void controlActions();
     void setSearchCategories();
     void statsUpdated(int songs, quint32 time);
+    void locateSongs();
 
 private:
     enum State
@@ -75,6 +77,7 @@ private:
     int state;
     SearchModel model;
     SearchProxyModel proxy;
+    Action *locateAction;
 };
 
 #endif

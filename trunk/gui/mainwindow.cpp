@@ -421,6 +421,7 @@ MainWindow::MainWindow(QWidget *parent)
     addAction(searchTabAction = ActionCollection::get()->createAction("showsearchtab", i18n("Search"), Icons::self()->searchTabIcon));
     searchTabAction->setShortcut(Qt::ControlModifier+Qt::ShiftModifier+nextKey(sidebarPageShortcutKey));
     connect(searchTabAction, SIGNAL(triggered(bool)), this, SLOT(showSearchTab()));
+    connect(searchPage, SIGNAL(locate(QList<Song>)), this, SLOT(locateTracks(QList<Song>)));
     tabWidget->addTab(searchPage, TAB_ACTION(searchTabAction), !hiddenPages.contains(searchPage->metaObject()->className()));
     tabWidget->addTab(contextPage, Icons::self()->infoSidebarIcon, i18n("Info"), songInfoAction->text(),
                       !hiddenPages.contains(contextPage->metaObject()->className()));
@@ -2173,10 +2174,17 @@ void MainWindow::toggleMonoIcons()
     }
 }
 
+void MainWindow::locateTracks(const QList<Song> &songs)
+{
+    if (!songs.isEmpty() && tabWidget->isEnabled(PAGE_LIBRARY)) {
+        showLibraryTab();
+        libraryPage->showSongs(songs);
+    }
+}
+
 void MainWindow::locateTrack()
 {
-    showLibraryTab();
-    libraryPage->showSongs(playQueue->selectedSongs());
+    locateTracks(playQueue->selectedSongs());
 }
 
 void MainWindow::locateArtist(const QString &artist)

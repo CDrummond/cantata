@@ -619,7 +619,6 @@ ItemView::ItemView(QWidget *p)
     QAction *sep=new QAction(this);
     sep->setSeparator(true);
     listView->addAction(sep);
-    Icon::init(backButton);
     treeView->setPageDefaults();
     // Some styles, eg Cleanlooks/Plastique require that we explicitly set mouse tracking on the treeview.
     treeView->setAttribute(Qt::WA_MouseTracking);
@@ -855,6 +854,7 @@ void ItemView::setLevel(int l, bool haveChildren)
 
     if (currentLevel>0) {
         if (prev>currentLevel) {
+            currentText=prevText[currentLevel];
             backButton->setText(prevText[currentLevel]);
         } else {
             prevText.insert(prev, backButton->text());
@@ -1157,6 +1157,10 @@ void ItemView::showEvent(QShowEvent *ev)
 {
     QWidget::showEvent(ev);
     backAction->setEnabled(0!=currentLevel);
+    if (0!=currentLevel) {
+        // For some reason this gets overridden with the action text!
+        backButton->setText(currentText);
+    }
 }
 
 void ItemView::showSpinner(bool v)
@@ -1266,6 +1270,7 @@ void ItemView::activateItem(const QModelIndex &index, bool emitRootSet)
         if (text.isEmpty()) {
             text=index.data(Qt::DisplayRole).toString();
         }
+        currentText=text;
         backButton->setText(text);
         listView->setRootIndex(index);
         itemModel->setRootIndex(index);

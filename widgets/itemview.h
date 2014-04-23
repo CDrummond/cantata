@@ -225,6 +225,7 @@ private:
     ProxyModel *itemModel;
     int currentLevel;
     Mode mode;
+    QString currentText;
     QMap<int, QString> prevText;
     QModelIndex prevTopIndex;
     QSize iconGridSize;

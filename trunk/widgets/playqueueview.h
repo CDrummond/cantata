@@ -31,18 +31,34 @@
 #include <QImage>
 #include <QPropertyAnimation>
 #include "tableview.h"
+#include "listview.h"
 #include "groupedview.h"
 #include "song.h"
 #include "itemview.h"
 
 class QAbstractItemModel;
 class QAction;
+class Action;
 class QItemSelectionModel;
 class QModelIndex;
 class QMenu;
 class Spinner;
 class PlayQueueView;
 class MessageOverlay;
+
+class PlayQueueListView : public ListView
+{
+    Q_OBJECT
+public:
+    PlayQueueListView(PlayQueueView *p);
+    virtual ~PlayQueueListView() { }
+    void paintEvent(QPaintEvent *e);
+    void setModel(QAbstractItemModel *model);
+public Q_SLOTS:
+    void coverLoaded(const Song &song, int size);
+private:
+    PlayQueueView *view;
+};
 
 class PlayQueueTreeView : public TableView
 {
@@ -85,10 +101,8 @@ public:
 
     void readConfig();
     void saveConfig();
-    void initHeader() { treeView->initHeader(); }
     void saveHeader();
     void setMode(ItemView::Mode m);
-    void addDeletKeyEventFilter(QAction *act);
     bool isGrouped() const { return ItemView::Mode_GroupedTree==mode; }
     void setAutoExpand(bool ae);
     bool isAutoExpand() const;
@@ -103,7 +117,6 @@ public:
     void setFocus();
     bool hasFocus();
     QAbstractItemModel * model() { return view()->model(); }
-    void setContextMenuPolicy(Qt::ContextMenuPolicy policy);
     bool haveSelectedItems();
     bool haveUnSelectedItems();
     void setCurrentIndex(const QModelIndex &idx) { view()->setCurrentIndex(idx); }
@@ -115,6 +128,7 @@ public:
     float fade() { return fadeValue; }
     void setFade(float value);
     void updatePalette();
+    Action * removeFromAct() { return removeFromAction; }
 
 public Q_SLOTS:
     void showSpinner();
@@ -131,7 +145,9 @@ private:
     void drawBackdrop(QWidget *widget, const QSize &size);
 
 private:
+    Action *removeFromAction;
     ItemView::Mode mode;
+    PlayQueueListView *listView;
     PlayQueueGroupedView *groupedView;
     PlayQueueTreeView *treeView;
     Spinner *spinner;
@@ -147,6 +163,7 @@ private:
     int backgroundOpacity;
     int backgroundBlur;
     QString customBackgroundFile;
+    friend class PlayQueueListView;
     friend class PlayQueueGroupedView;
     friend class PlayQueueTreeView;
 };

@@ -256,7 +256,6 @@ MainWindow::MainWindow(QWidget *parent)
     outputsAction = ActionCollection::get()->createAction("outputs", i18n("Outputs"), Icons::self()->speakerIcon);
     stopAfterTrackAction = ActionCollection::get()->createAction("stopaftertrack", i18n("Stop After Track"), Icons::self()->toolbarStopIcon);
     addPlayQueueToStoredPlaylistAction = ActionCollection::get()->createAction("addpqtostoredplaylist", i18n("Add To Stored Playlist"), Icons::self()->playlistIcon);
-    removeFromPlayQueueAction = ActionCollection::get()->createAction("removefromplaylist", i18n("Remove From Play Queue"), "list-remove");
     cropPlayQueueAction = ActionCollection::get()->createAction("cropplaylist", i18n("Crop"));
     addStreamToPlayQueueAction = ActionCollection::get()->createAction("addstreamtoplayqueue", i18n("Add Stream URL"), Icons::self()->addRadioStreamIcon);
     promptClearPlayQueueAction = ActionCollection::get()->createAction("clearplaylist", i18n("Clear"), Icons::self()->clearListIcon);
@@ -677,7 +676,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     playQueueProxyModel.setSourceModel(&playQueueModel);
     playQueue->setModel(&playQueueProxyModel);
-    playQueue->addAction(removeFromPlayQueueAction);
+    playQueue->addAction(playQueue->removeFromAct());
     playQueue->addAction(promptClearPlayQueueAction);
     playQueue->addAction(StdActions::self()->savePlayQueueAction);
     playQueue->addAction(addStreamToPlayQueueAction);
@@ -697,7 +696,6 @@ MainWindow::MainWindow(QWidget *parent)
     playQueue->addAction(editPlayQueueTagsAction);
     #endif
     playQueue->addAction(playQueueModel.removeDuplicatesAct());
-    playQueue->addDeletKeyEventFilter(removeFromPlayQueueAction);
     playQueue->readConfig();
     playlistsPage->setStartClosed(Settings::self()->playListsStartClosed());
 
@@ -779,7 +777,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(StdActions::self()->addToPlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(addToPlayQueue()));
     connect(StdActions::self()->addRandomToPlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(addRandomToPlayQueue()));
     connect(StdActions::self()->replacePlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(replacePlayQueue()));
-    connect(removeFromPlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(removeFromPlayQueue()));
+    connect(playQueue->removeFromAct(), SIGNAL(triggered(bool)), this, SLOT(removeFromPlayQueue()));
     connect(promptClearPlayQueueAction, SIGNAL(triggered(bool)), playQueueSearchWidget, SLOT(clear()));
     connect(promptClearPlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(promptClearPlayQueue()));
     connect(cropPlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(cropPlayQueue()));
@@ -810,7 +808,6 @@ MainWindow::MainWindow(QWidget *parent)
     #endif
     playQueueItemsSelected(false);
     playQueue->setFocus();
-    playQueue->initHeader();
 
     MPDConnection::self()->start();
     connectToMpd();
@@ -1012,7 +1009,7 @@ void MainWindow::playQueueItemsSelected(bool s)
     int rc=playQueue->model()->rowCount();
     bool haveItems=rc>0;
     bool singleSelection=1==playQueue->selectedIndexes(false).count(); // Dont need sorted selection here...
-    removeFromPlayQueueAction->setEnabled(s && haveItems);
+    playQueue->removeFromAct()->setEnabled(s && haveItems);
     setPriorityAction->setEnabled(s && haveItems);
     locateTrackAction->setEnabled(singleSelection);
     cropPlayQueueAction->setEnabled(playQueue->haveUnSelectedItems() && haveItems);

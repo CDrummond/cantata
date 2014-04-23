@@ -33,6 +33,10 @@
 #include "spinner.h"
 #include "messageoverlay.h"
 #include "basicitemdelegate.h"
+#include "icons.h"
+#include "gtkstyle.h"
+#include "actioncollection.h"
+#include "action.h"
 #include <QFile>
 #include <QPainter>
 #include <QApplication>
@@ -40,6 +44,186 @@
 
 // Exported by QtGui
 void qt_blurImage(QPainter *p, QImage &blurImage, qreal radius, bool quality, bool alphaOnly, int transposed = 0);
+
+class PlayQueueListViewItemDelegate : public BasicItemDelegate
+{
+public:
+    PlayQueueListViewItemDelegate(QObject *p) : BasicItemDelegate(p) { }
+    virtual ~PlayQueueListViewItemDelegate() { }
+
+    QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
+    {
+        if (0==index.column()) {            
+            int imageSize = GroupedView::coverSize();
+            int bordeSize = GroupedView::borderSize();
+            int textHeight = QApplication::fontMetrics().height()*2;
+            return QSize(qMax(64, imageSize) + (bordeSize * 2), qMax(textHeight, imageSize) + (bordeSize*2));
+        }
+        return QStyledItemDelegate::sizeHint(option, index);
+    }
+
+    static inline double subTextAlpha(bool selected)
+    {
+        return selected ? 0.7 : 0.6;
+    }
+
+    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
+    {
+        if (!index.isValid()) {
+            return;
+        }
+        int state=index.data(GroupedView::Role_Status).toInt();
+        bool mouseOver=option.state&QStyle::State_MouseOver;
+        bool gtk=mouseOver && GtkStyle::isActive();
+        bool selected=option.state&QStyle::State_Selected;
+        bool active=option.state&QStyle::State_Active;
+        bool drawBgnd=true;
+        QStyleOptionViewItemV4 opt(option);
+        opt.showDecorationSelected=true;
+
+        if (!underMouse) {
+            if (mouseOver && !selected) {
+                drawBgnd=false;
+            }
+            mouseOver=false;
+        }
+
+        if (drawBgnd) {
+            if (mouseOver && gtk) {
+                GtkStyle::drawSelection(opt, painter, selected ? 0.75 : 0.25);
+            } else {
+                QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &opt, painter, 0L);
+            }
+        }
+
+        Song song=index.data(GroupedView::Role_Song).value<Song>();
+        QString text = index.data(ItemView::Role_MainText).toString();
+        QRect r(option.rect);
+        QString childText = index.data(ItemView::Role_SubText).toString();
+        QString duration = index.data(PlayQueueModel::Role_Time).toString();
+        int coverSize = GroupedView::coverSize();
+        int borderSize = GroupedView::borderSize();
+        bool stream=song.isStandardStream();
+        QPixmap *cover= stream ? 0 : Covers::self()->get(song, coverSize);
+        QPixmap pix=cover ? *cover : (stream && !song.isCdda() ? Icons::self()->streamIcon : Icons::self()->albumIcon).pixmap(coverSize, coverSize);
+        bool rtl = Qt::RightToLeft==QApplication::layoutDirection();
+
+        painter->save();
+        painter->setClipRect(r);
+
+        QFont textFont(index.data(Qt::FontRole).value<QFont>());
+        QFontMetrics textMetrics(textFont);
+        int textHeight=textMetrics.height();
+        int adjust=qMax(pix.width(), pix.height());
+
+        r.adjust(borderSize, 0, -borderSize, 0);
+
+        if (rtl) {
+            painter->drawPixmap(r.x()+r.width()-pix.width(), r.y()+((r.height()-pix.height())/2), pix.width(), pix.height(), pix);
+            r.adjust(3, 0, -(3+adjust), 0);
+        } else {
+            painter->drawPixmap(r.x(), r.y()+((r.height()-pix.height())/2), pix.width(), pix.height(), pix);
+            r.adjust(adjust+3, 0, -3, 0);
+        }
+
+        QRect textRect;
+        QColor color(option.palette.color(active ? QPalette::Active : QPalette::Inactive, selected ? QPalette::HighlightedText : QPalette::Text));
+        QTextOption textOpt(Qt::AlignVCenter);
+        textOpt.setWrapMode(QTextOption::NoWrap);
+
+        QFont childFont(Utils::smallFont(QApplication::font()));
+        QFontMetrics childMetrics(childFont);
+        QRect childRect;
+
+        int childHeight=childMetrics.height();
+        int totalHeight=textHeight+childHeight;
+        int durationWidth=duration.isEmpty() ? 0 : childMetrics.width(duration)+8;
+        textRect=QRect(r.x(), r.y()+((r.height()-totalHeight)/2), r.width(), textHeight);
+        childRect=QRect(r.x(), r.y()+textHeight+((r.height()-totalHeight)/2), r.width()-durationWidth, textHeight);
+
+        text = textMetrics.elidedText(text, Qt::ElideRight, textRect.width(), QPalette::WindowText);
+        painter->setPen(color);
+        painter->setFont(textFont);
+        painter->drawText(textRect, text, textOpt);
+
+        childText = childMetrics.elidedText(childText, Qt::ElideRight, childRect.width(), QPalette::WindowText);
+        color.setAlphaF(subTextAlpha(selected));
+        painter->setPen(color);
+        painter->setFont(childFont);
+        painter->drawText(childRect, childText, textOpt);
+        if (!duration.isEmpty()) {
+            painter->drawText(QRect(childRect.x(), childRect.y(), r.width(), childRect.height()), duration, QTextOption(Qt::AlignVCenter|Qt::AlignRight));
+        }
+
+        GroupedView::drawPlayState(painter, option, textRect, state);
+        BasicItemDelegate::drawLine(painter, option.rect, color);
+
+        painter->restore();
+    }
+};
+
+PlayQueueListView::PlayQueueListView(PlayQueueView *parent)
+    : ListView(parent)
+    , view(parent)
+{
+    setItemDelegate(new PlayQueueListViewItemDelegate(this));
+}
+
+void PlayQueueListView::paintEvent(QPaintEvent *e)
+{
+    view->drawBackdrop(viewport(), size());
+    ListView::paintEvent(e);
+}
+
+void PlayQueueListView::setModel(QAbstractItemModel *model)
+{
+    ListView::setModel(model);
+    if (model) {
+        connect(Covers::self(), SIGNAL(loaded(Song,int)), this, SLOT(coverLoaded(Song,int)));
+    } else {
+        disconnect(Covers::self(), SIGNAL(loaded(Song,int)), this, SLOT(coverLoaded(Song,int)));
+    }
+}
+
+void PlayQueueListView::coverLoaded(const Song &song, int size)
+{
+    if (!isVisible() || size!=GroupedView::coverSize() || song.isArtistImageRequest()) {
+        return;
+    }
+    quint32 count=model()->rowCount();
+    quint16 lastKey=Song::constNullKey;
+    QString albumArtist=song.albumArtist();
+    QString album=song.album;
+    int rowFrom=-1;
+    int rowTo=-1;
+
+    for (quint32 i=0; i<count; ++i) {
+        QModelIndex index=model()->index(i, 0);
+        if (!index.isValid()) {
+            continue;
+        }
+        quint16 key=index.data(GroupedView::Role_Key).toUInt();
+
+        if (key==lastKey) {
+            rowTo=i;
+        } else {
+            if (-1!=rowTo && -1!=rowFrom) {
+                dataChanged(model()->index(rowFrom, 0), model()->index(rowTo, 0));
+                rowTo=-1;
+            }
+            Song song=index.data(GroupedView::Role_Song).value<Song>();
+            if (song.albumArtist()==albumArtist && song.album==album) {
+                rowFrom=rowTo=i;
+            } else {
+                rowFrom=rowTo=-1;
+            }
+            lastKey=key;
+        }
+    }
+    if (-1!=rowTo && -1!=rowFrom) {
+        dataChanged(model()->index(rowFrom, 0), model()->index(rowTo, 0));
+    }
+}
 
 class PlayQueueTreeViewItemDelegate : public BasicItemDelegate
 {
@@ -100,30 +284,21 @@ void PlayQueueGroupedView::paintEvent(QPaintEvent *e)
 
 PlayQueueView::PlayQueueView(QWidget *parent)
     : QStackedWidget(parent)
+    , mode(ItemView::Mode_Count)
+    , listView(0)
+    , groupedView(0)
+    , treeView(0)
     , spinner(0)
     , msgOverlay(0)
     , backgroundImageType(BI_None)
     , backgroundOpacity(15)
     , backgroundBlur(0)
 {
-    groupedView=new PlayQueueGroupedView(this);
-    groupedView->setIndentation(0);
-    groupedView->setItemsExpandable(false);
-    groupedView->setExpandsOnDoubleClick(false);
-    treeView=new PlayQueueTreeView(this);
-    addWidget(groupedView);
-    addWidget(treeView);
-    mode=ItemView::Mode_List;
     setMode(ItemView::Mode_GroupedTree);
-    connect(groupedView, SIGNAL(itemsSelected(bool)), SIGNAL(itemsSelected(bool)));
-    connect(treeView, SIGNAL(itemsSelected(bool)), SIGNAL(itemsSelected(bool)));
-    connect(groupedView, SIGNAL(doubleClicked(const QModelIndex &)), SIGNAL(doubleClicked(const QModelIndex &)));
-    connect(treeView, SIGNAL(doubleClicked(const QModelIndex &)), SIGNAL(doubleClicked(const QModelIndex &)));
-    setContextMenuPolicy(Qt::ActionsContextMenu);
-
     animator.setPropertyName("fade");
     animator.setTargetObject(this);
     connect(CurrentCover::self(), SIGNAL(coverImage(QImage)), this, SLOT(setImage(QImage)));
+    removeFromAction = ActionCollection::get()->createAction("removefromplaylist", i18n("Remove From Play Queue"), "list-remove");
 }
 
 PlayQueueView::~PlayQueueView()
@@ -184,7 +359,7 @@ void PlayQueueView::saveConfig()
 
 void PlayQueueView::setMode(ItemView::Mode m)
 {
-    if (m==mode || (ItemView::Mode_GroupedTree!=m && ItemView::Mode_Table!=m)) {
+    if (m==mode || (ItemView::Mode_GroupedTree!=m && ItemView::Mode_Table!=m && ItemView::Mode_List!=m)) {
         return;
     }
 
@@ -192,10 +367,61 @@ void PlayQueueView::setMode(ItemView::Mode m)
         treeView->saveHeader();
     }
 
-    QAbstractItemModel *model=view()->model();
-    view()->setModel(0);
+    switch (m) {
+    case ItemView::Mode_List:
+        if (!listView) {
+            listView=new PlayQueueListView(this);
+            listView->setContextMenuPolicy(Qt::ActionsContextMenu);
+            listView->installEventFilter(new DeleteKeyEventHandler(listView, removeFromAction));
+            addWidget(listView);
+            connect(listView, SIGNAL(itemsSelected(bool)), SIGNAL(itemsSelected(bool)));
+            connect(listView, SIGNAL(doubleClicked(const QModelIndex &)), SIGNAL(doubleClicked(const QModelIndex &)));
+            updatePalette();
+        }
+    case ItemView::Mode_GroupedTree:
+        if (!groupedView) {
+            groupedView=new PlayQueueGroupedView(this);
+            groupedView->setIndentation(0);
+            groupedView->setItemsExpandable(false);
+            groupedView->setExpandsOnDoubleClick(false);
+            groupedView->setContextMenuPolicy(Qt::ActionsContextMenu);
+            groupedView->installEventFilter(new DeleteKeyEventHandler(groupedView, removeFromAction));
+            addWidget(groupedView);
+            connect(groupedView, SIGNAL(itemsSelected(bool)), SIGNAL(itemsSelected(bool)));
+            connect(groupedView, SIGNAL(doubleClicked(const QModelIndex &)), SIGNAL(doubleClicked(const QModelIndex &)));
+            updatePalette();
+        }
+        break;
+    case ItemView::Mode_Table:
+        if (!treeView) {
+            treeView=new PlayQueueTreeView(this);
+            treeView->setContextMenuPolicy(Qt::ActionsContextMenu);
+            treeView->installEventFilter(new DeleteKeyEventHandler(treeView, removeFromAction));
+            treeView->initHeader();
+            addWidget(treeView);
+            connect(treeView, SIGNAL(itemsSelected(bool)), SIGNAL(itemsSelected(bool)));
+            connect(treeView, SIGNAL(doubleClicked(const QModelIndex &)), SIGNAL(doubleClicked(const QModelIndex &)));
+            updatePalette();
+        }
+    default:
+        break;
+    }
+
+    QAbstractItemModel *model=0;
+    QList<QAction *> actions;
+    if (ItemView::Mode_Count!=mode) {
+        QAbstractItemView *v=view();
+        model=v->model();
+        v->setModel(0);
+        actions=v->actions();
+    }
+
     mode=m;
-    view()->setModel(model);
+    QAbstractItemView *v=view();
+    v->setModel(model);
+    if (!actions.isEmpty() && v->actions().isEmpty()) {
+        v->addActions(actions);
+    }
 
     if (ItemView::Mode_Table==mode) {
         treeView->initHeader();
@@ -211,12 +437,6 @@ void PlayQueueView::setMode(ItemView::Mode m)
     if (msgOverlay) {
         msgOverlay->setWidget(view());
     }
-}
-
-void PlayQueueView::addDeletKeyEventFilter(QAction *act)
-{
-    groupedView->installEventFilter(new DeleteKeyEventHandler(groupedView, act));
-    treeView->installEventFilter(new DeleteKeyEventHandler(treeView, act));
 }
 
 void PlayQueueView::setAutoExpand(bool ae)
@@ -265,8 +485,7 @@ QModelIndex PlayQueueView::indexAt(const QPoint &point)
 
 void PlayQueueView::addAction(QAction *a)
 {
-    groupedView->addAction(a);
-    treeView->addAction(a);
+    view()->addAction(a);
 }
 
 void PlayQueueView::setFocus()
@@ -279,16 +498,11 @@ bool PlayQueueView::hasFocus()
     return currentWidget()->hasFocus();
 }
 
-void PlayQueueView::setContextMenuPolicy(Qt::ContextMenuPolicy policy)
-{
-    groupedView->setContextMenuPolicy(policy);
-    treeView->setContextMenuPolicy(policy);
-}
-
 bool PlayQueueView::haveSelectedItems()
 {
     switch (mode) {
     default:
+    case ItemView::Mode_List:        return listView->haveSelectedItems();
     case ItemView::Mode_GroupedTree: return groupedView->haveSelectedItems();
     case ItemView::Mode_Table:       return treeView->haveSelectedItems();
     }
@@ -298,6 +512,7 @@ bool PlayQueueView::haveUnSelectedItems()
 {
     switch (mode) {
     default:
+    case ItemView::Mode_List:        return listView->haveUnSelectedItems();
     case ItemView::Mode_GroupedTree: return groupedView->haveUnSelectedItems();
     case ItemView::Mode_Table:       return treeView->haveUnSelectedItems();
     }
@@ -305,6 +520,9 @@ bool PlayQueueView::haveUnSelectedItems()
 
 void PlayQueueView::clearSelection()
 {
+    if (listView->selectionModel()) {
+        listView->selectionModel()->clear();
+    }
     if (groupedView->selectionModel()) {
         groupedView->selectionModel()->clear();
     }
@@ -317,6 +535,7 @@ QAbstractItemView * PlayQueueView::view() const
 {
     switch (mode) {
     default:
+    case ItemView::Mode_List:        return (QAbstractItemView *)listView;
     case ItemView::Mode_GroupedTree: return (QAbstractItemView *)groupedView;
     case ItemView::Mode_Table:       return (QAbstractItemView *)treeView;
     }
@@ -331,6 +550,7 @@ QModelIndexList PlayQueueView::selectedIndexes(bool sorted) const
 {
     switch (mode) {
     default:
+    case ItemView::Mode_List:        return listView->selectedIndexes(sorted);
     case ItemView::Mode_GroupedTree: return groupedView->selectedIndexes(sorted);
     case ItemView::Mode_Table:       return treeView->selectedIndexes(sorted);
     }
@@ -385,11 +605,18 @@ void PlayQueueView::updatePalette()
     if (BI_None!=backgroundImageType) {
         pal.setColor(QPalette::Base, Qt::transparent);
     }
-
-    groupedView->setPalette(pal);
-    groupedView->viewport()->setPalette(pal);
-    treeView->setPalette(pal);
-    treeView->viewport()->setPalette(pal);
+    if (listView) {
+        listView->setPalette(pal);
+        listView->viewport()->setPalette(pal);
+    }
+    if (groupedView) {
+        groupedView->setPalette(pal);
+        groupedView->viewport()->setPalette(pal);
+    }
+    if (treeView) {
+        treeView->setPalette(pal);
+        treeView->viewport()->setPalette(pal);
+    }
 }
 
 void PlayQueueView::setImage(const QImage &img)

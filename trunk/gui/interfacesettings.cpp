@@ -129,7 +129,7 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     addViewTypes(folderView, standardViews);
     addViewTypes(playlistsView, QList<ItemView::Mode>() << standardViews << ItemView::Mode_GroupedTree << ItemView::Mode_Table);
     addViewTypes(searchView, QList<ItemView::Mode>() << ItemView::Mode_List << ItemView::Mode_Table);
-    addViewTypes(playQueueView, QList<ItemView::Mode>() << ItemView::Mode_GroupedTree << ItemView::Mode_Table);
+    addViewTypes(playQueueView, QList<ItemView::Mode>() << ItemView::Mode_List << ItemView::Mode_GroupedTree << ItemView::Mode_Table);
 
     addImageSizes(albumsCoverSize);
     addAlbumSorts(albumSort);

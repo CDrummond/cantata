@@ -279,10 +279,6 @@ public:
             }
         }
 
-//        if (!mouseOver) {
-//            drawIcons(painter, AP_VTop==actionPos ? r2 : r, false, rtl, actionPos, index);
-//        }
-
         QRect textRect;
         QColor color(option.palette.color(active ? QPalette::Active : QPalette::Inactive, selected ? QPalette::HighlightedText : QPalette::Text));
         QTextOption textOpt(AP_VTop==actionPos ? Qt::AlignHCenter|Qt::AlignVCenter : Qt::AlignVCenter);
@@ -342,7 +338,7 @@ public:
         }
 
         if ((drawBgnd && mouseOver) || Icon::touchFriendly()) {
-            drawIcons(painter, AP_VTop==actionPos ? r2 : r, mouseOver || (selected && Icon::touchFriendly()), rtl, actionPos, index);
+            drawIcons(painter, AP_VTop==actionPos ? option.rect : r, mouseOver, rtl, actionPos, index);
         }
         if (!iconMode) {
             BasicItemDelegate::drawLine(painter, option.rect, color);

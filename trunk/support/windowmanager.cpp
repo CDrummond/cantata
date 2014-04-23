@@ -596,6 +596,8 @@ void WindowManager::startDrag(QWidget *widget, const QPoint& position)
         NETRootInfo rootInfo(QX11Info::display(), NET::WMMoveResize);
         rootInfo.moveResizeRequest(widget->window()->winId(), position.x(), position.y(), NET::Move);
         #endif // !ENABLE_KDE_SUPPORT
+        #else
+        Q_UNUSED(position)
         #endif
     }
 

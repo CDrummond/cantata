@@ -38,7 +38,7 @@
 #include "dirviewitemfile.h"
 #include "playqueuemodel.h"
 #include "musiclibrarymodel.h"
-#include "itemview.h"
+#include "roles.h"
 #include "settings.h"
 #include "mpdconnection.h"
 #include "icon.h"
@@ -178,7 +178,7 @@ QVariant DirViewModel::data(const QModelIndex &index, int role) const
 
     switch (role) {
     #ifdef ENABLE_UBUNTU
-    case ItemView::Role_Image:
+    case Cantata::Role_Image:
         return DirViewItem::Type_Dir==item->type() ? constFolderIcon : QString();
     #else
     case Qt::DecorationRole: {
@@ -191,7 +191,7 @@ QVariant DirViewModel::data(const QModelIndex &index, int role) const
     }
     #endif
     #ifdef ENABLE_UBUNTU
-    case ItemView::Role_TitleText:
+    case Cantata::Role_TitleText:
         switch (item->type()) {
         case DirViewItem::Type_Dir:
             return static_cast<DirViewItemDir *>(item)->fullName();
@@ -200,14 +200,14 @@ QVariant DirViewModel::data(const QModelIndex &index, int role) const
             return item->data();
         }
     #endif
-    case ItemView::Role_MainText:
+    case Cantata::Role_MainText:
     case Qt::DisplayRole:
         return item->data();
     case Qt::ToolTipRole:
         return 0==item->childCount()
             ? item->data()
             : item->data()+"\n"+Plurals::entries(item->childCount());
-    case ItemView::Role_SubText:
+    case Cantata::Role_SubText:
         switch (item->type()) {
         case DirViewItem::Type_Dir:
             return Plurals::entries(item->childCount());

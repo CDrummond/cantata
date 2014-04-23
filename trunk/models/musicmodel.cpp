@@ -31,7 +31,7 @@
 #include "onlineservice.h"
 #endif
 #include "musicmodel.h"
-#include "itemview.h"
+#include "roles.h"
 #include "localize.h"
 #include "plurals.h"
 #include "icons.h"
@@ -128,11 +128,11 @@ QVariant MusicModel::data(const QModelIndex &index, int role) const
         default: return QVariant();
         }
     #endif
-    case ItemView::Role_BriefMainText:
+    case Cantata::Role_BriefMainText:
         if (MusicLibraryItem::Type_Album==item->itemType()) {
             return item->data();
         }
-    case ItemView::Role_MainText:
+    case Cantata::Role_MainText:
     case Qt::DisplayRole:
         if (MusicLibraryItem::Type_Song==item->itemType()) {
             MusicLibraryItemSong *song = static_cast<MusicLibraryItemSong *>(item);
@@ -174,9 +174,9 @@ QVariant MusicModel::data(const QModelIndex &index, int role) const
         return parentData(item)+
                 (0==item->childCount()
                     ? item->displayData(true)
-                    : (item->displayData(true)+"<br/>"+data(index, ItemView::Role_SubText).toString()));
+                    : (item->displayData(true)+"<br/>"+data(index, Cantata::Role_SubText).toString()));
     #ifndef ENABLE_UBUNTU
-    case ItemView::Role_ImageSize: {
+    case Cantata::Role_ImageSize: {
         const MusicLibraryItemRoot *r=root(item);
         if (MusicLibraryItem::Type_Song!=item->itemType() && !MusicLibraryItemAlbum::itemSize().isNull()) { // icon/list style view...
             return MusicLibraryItemAlbum::iconSize(r->useLargeImages());
@@ -186,7 +186,7 @@ QVariant MusicModel::data(const QModelIndex &index, int role) const
         break;
     }
     #endif
-    case ItemView::Role_SubText:
+    case Cantata::Role_SubText:
         switch (item->itemType()) {
         case MusicLibraryItem::Type_Root: {
             MusicLibraryItemRoot *collection=static_cast<MusicLibraryItemRoot *>(item);
@@ -207,7 +207,7 @@ QVariant MusicModel::data(const QModelIndex &index, int role) const
                                                Utils::formatTime(static_cast<MusicLibraryItemAlbum *>(item)->totalTime()));
         default: return QVariant();
         }
-    case ItemView::Role_Image: {
+    case Cantata::Role_Image: {
         QVariant v;
         switch (item->itemType()) {
         case MusicLibraryItem::Type_Album:
@@ -240,7 +240,7 @@ QVariant MusicModel::data(const QModelIndex &index, int role) const
         }
         return v;
     }
-    case ItemView::Role_TitleText:
+    case Cantata::Role_TitleText:
         if (MusicLibraryItem::Type_Album==item->itemType()) {
             return i18nc("Album by Artist", "%1 by %2", item->data(), item->parentItem()->data());
         }

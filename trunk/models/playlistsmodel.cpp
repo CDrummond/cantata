@@ -32,10 +32,9 @@
 #include "playlistsmodel.h"
 #include "playlistsproxymodel.h"
 #include "playqueuemodel.h"
-#include "itemview.h"
-#include "plurals.h"
 #include "groupedview.h"
-#include "tableview.h"
+#include "roles.h"
+#include "plurals.h"
 #include "localize.h"
 #include "utils.h"
 #include "globalstatic.h"
@@ -214,9 +213,9 @@ QVariant PlaylistsModel::headerData(int section, Qt::Orientation orientation, in
             case COL_YEAR:
                 return int(Qt::AlignVCenter|Qt::AlignRight);
             }
-        case TableView::Role_Hideable:
+        case Cantata::Role_Hideable:
             return COL_YEAR==section || COL_GENRE==section ? true : false;
-        case TableView::Role_Width:
+        case Cantata::Role_Width:
             switch (section) {
             case COL_TITLE:  return 0.4;
             case COL_ARTIST: return 0.15;
@@ -261,30 +260,30 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
 
         switch(role) {
         #ifdef ENABLE_UBUNTU
-        case ItemView::Role_Image:
+        case Cantata::Role_Image:
             return QString();
         #endif
-        case GroupedView::Role_IsCollection:
+        case Cantata::Role_IsCollection:
             return true;
-        case GroupedView::Role_CollectionId:
+        case Cantata::Role_CollectionId:
             return pl->key;
-        case GroupedView::Role_Key:
+        case Cantata::Role_Key:
             return 0;
-        case GroupedView::Role_Song: {
+        case Cantata::Role_Song: {
             QVariant var;
             var.setValue<Song>(Song());
             return var;
         }
-        case GroupedView::Role_AlbumDuration:
+        case Cantata::Role_AlbumDuration:
             return pl->totalTime();
-        case GroupedView::Role_SongCount:
+        case Cantata::Role_SongCount:
             if (!pl->loaded) {
                 pl->loaded=true;
                 emit playlistInfo(pl->name);
             }
             return pl->songs.count();
-        case GroupedView::Role_CurrentStatus:
-        case GroupedView::Role_Status:
+        case Cantata::Role_CurrentStatus:
+        case Cantata::Role_Status:
             return (int)GroupedView::State_Default;
         case Qt::FontRole:
             if (multiCol) {
@@ -293,8 +292,8 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
                 return font;
             }
             return QVariant();
-        case ItemView::Role_TitleText:
-        case ItemView::Role_MainText:
+        case Cantata::Role_TitleText:
+        case Cantata::Role_MainText:
         case Qt::DisplayRole:
             if (multiCol) {
                 switch (index.column()) {
@@ -329,7 +328,7 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
         case Qt::DecorationRole:
             return multiCol ? QVariant() : (pl->isSmartPlaylist ? Icons::self()->dynamicRuleIcon : Icons::self()->playlistIcon);
         #endif
-        case ItemView::Role_SubText:
+        case Cantata::Role_SubText:
             if (!pl->loaded) {
                 pl->loaded=true;
                 emit playlistInfo(pl->name);
@@ -346,21 +345,21 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
 
         switch (role) {
         #ifdef ENABLE_UBUNTU
-        case ItemView::Role_Image:
+        case Cantata::Role_Image:
             return QString();
         #endif
-        case GroupedView::Role_IsCollection:
+        case Cantata::Role_IsCollection:
             return false;
-        case GroupedView::Role_CollectionId:
+        case Cantata::Role_CollectionId:
             return s->parent->key;
-        case GroupedView::Role_Key:
+        case Cantata::Role_Key:
             return s->key;
-        case GroupedView::Role_Song: {
+        case Cantata::Role_Song: {
             QVariant var;
             var.setValue<Song>(*s);
             return var;
         }
-        case GroupedView::Role_AlbumDuration: {
+        case Cantata::Role_AlbumDuration: {
             quint32 d=s->time;
             for (int i=index.row()+1; i<s->parent->songs.count(); ++i) {
                 const SongItem *song = s->parent->songs.at(i);
@@ -380,7 +379,7 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
             }
             return d;
         }
-        case GroupedView::Role_SongCount:{
+        case Cantata::Role_SongCount:{
             quint32 count=1;
             for (int i=index.row()+1; i<s->parent->songs.count(); ++i) {
                 const SongItem *song = s->parent->songs.at(i);
@@ -400,8 +399,8 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
             }
             return count;
         }
-        case GroupedView::Role_CurrentStatus:
-        case GroupedView::Role_Status:
+        case Cantata::Role_CurrentStatus:
+        case Cantata::Role_Status:
             return (int)GroupedView::State_Default;
         case Qt::DisplayRole:
             if (multiCol) {
@@ -441,9 +440,9 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
         case Qt::DecorationRole:
             return multiCol ? QVariant() : (s->title.isEmpty() ? Icons::self()->streamIcon : Icons::self()->audioFileIcon);
         #endif
-        case ItemView::Role_MainText:
+        case Cantata::Role_MainText:
             return s->title.isEmpty() ? s->file : s->title;
-        case ItemView::Role_SubText:
+        case Cantata::Role_SubText:
             return s->artist+QLatin1String(" - ")+s->displayAlbum();
         default:
             return ActionModel::data(index, role);
@@ -456,7 +455,7 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
 #ifndef ENABLE_UBUNTU
 bool PlaylistsModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
-    if (GroupedView::Role_DropAdjust==role) {
+    if (Cantata::Role_DropAdjust==role) {
         dropAdjust=value.toUInt();
         return true;
     } else {

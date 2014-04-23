@@ -301,6 +301,7 @@ void DeviceOptions::save(const QString &group, bool isMpd, bool saveTrans, bool 
         cfg.set(constTransIfDiffKey, transcoderWhenDifferent);
     }
     #else
+    Q_UNUSED(isMpd)
     Q_UNUSED(saveTrans)
     #endif
 }

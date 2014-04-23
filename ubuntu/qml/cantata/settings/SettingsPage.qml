@@ -73,7 +73,7 @@ Page {
         layouts: [
             ConditionalLayout {
                 name: "phone"
-                when: layouts.width <= units.gu(80)
+                when: root.isPhone
 
                 SettingsCategories {
                     id: phoneCategories
@@ -83,7 +83,7 @@ Page {
             },
             ConditionalLayout {
                 name: "tablet"
-                when: layouts.width > units.gu(80)
+                when: !root.isPhone
 
                 Item {
                     anchors.fill: parent

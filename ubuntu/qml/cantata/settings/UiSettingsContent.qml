@@ -53,7 +53,7 @@ Flickable {
         }
     }
 
-    Column {
+    Column { //TODO: Find better solution for spacing
         id: column
         spacing: units.gu(1)
         height: childrenRect.height
@@ -86,7 +86,7 @@ Flickable {
             dbDocument.contents = contents
         }
 
-        Item { //TODO: Find better solution
+        Item {
             id: topSpacer
             height: units.gu(2)
             width: parent.width
@@ -191,7 +191,7 @@ Flickable {
             }
         }
 
-        Item { //TODO: Find better solution
+        Item {
             id: spacer
             height: units.gu(1)
             width: parent.width
@@ -211,7 +211,7 @@ Flickable {
             KeyNavigation.backtab: foldersView
         }
 
-        Item { //TODO: Find better solution
+        Item {
             id: bottomSpacer
             height: units.gu(2)
             width: parent.width

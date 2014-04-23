@@ -58,6 +58,10 @@ public:
     };
 
     static void setup();
+    static int coverSize();
+    static int borderSize();
+    static int iconSize();
+    static void drawPlayState(QPainter *painter, const QStyleOptionViewItem &option, const QRect &r, int state);
 
     GroupedView(QWidget *parent=0, bool isPlayQueue=false);
     virtual ~GroupedView();

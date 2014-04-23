@@ -319,7 +319,6 @@ static QString basicPath(const Song &song)
 }
 
 #ifdef ENABLE_UBUNTU
-static const int Role_Time=Qt::UserRole+500;
 static const QString constDefaultCover=QLatin1String("qrc:/album.svg");
 
 //Expose role names, so that they can be accessed via QML
@@ -350,7 +349,6 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
 //     }
 
     switch (role) {
-    #ifdef ENABLE_UBUNTU
     case ItemView::Role_MainText: {
         const Song &s=songs.at(index.row());
         return s.title.isEmpty() ? s.file : s.trackAndTitleStr();
@@ -359,6 +357,11 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
         const Song &s=songs.at(index.row());
         return s.artist+QLatin1String(" - ")+s.displayAlbum();
     }
+    case Role_Time: {
+        const Song &s=songs.at(index.row());
+        return s.time>0 ? Utils::formatTime(s.time) : QLatin1String("");
+    }
+    #ifdef ENABLE_UBUNTU
     case ItemView::Role_Image: {
         Song s=songs.at(index.row());
         QMap<quint16, QString>::ConstIterator it=covers.find(s.key);
@@ -372,10 +375,6 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
             return constDefaultCover;
         }
         return fileName;
-    }
-    case Role_Time: {
-        const Song &s=songs.at(index.row());
-        return Utils::formatTime(s.time);
     }
     #endif
     case GroupedView::Role_IsCollection:

@@ -62,6 +62,82 @@ void GroupedView::setup()
     }
 }
 
+int GroupedView::coverSize()
+{
+    return constCoverSize;
+}
+
+int GroupedView::borderSize()
+{
+    return constBorder;
+}
+
+int GroupedView::iconSize()
+{
+    return constIconSize;
+}
+
+void GroupedView::drawPlayState(QPainter *painter, const QStyleOptionViewItem &option, const QRect &r, int state)
+{
+    if (state) {
+        int size=constIconSize-7;
+        int hSize=size/2;
+        QRect ir(r.x()-(size+6), r.y()+(((r.height()-size)/2.0)+0.5), size, size);
+        QColor inside(option.palette.color(QPalette::Text));
+        QColor border=inside.red()>100 && inside.blue()>100 && inside.green()>100 ? Qt::black : Qt::white;
+        if (Qt::RightToLeft==QApplication::layoutDirection()) {
+            ir.adjust(r.width()-size, 0, r.width()-size, 0);
+        }
+        switch (state) {
+        case GroupedView::State_Stopped:
+            painter->fillRect(ir, border);
+            painter->fillRect(ir.adjusted(1, 1, -1, -1), inside);
+            break;
+        case GroupedView::State_StopAfter: {
+            ir.adjust(2, 0, -2, 0);
+            QPoint p1[5]={ QPoint(ir.x()-2, ir.y()-1), QPoint(ir.x(), ir.y()-1), QPoint(ir.x()+(size-hSize), ir.y()+hSize), QPoint(ir.x(), ir.y()+(ir.height())), QPoint(ir.x()-2, ir.y()+(ir.height())) };
+            QPoint p2[5]={ QPoint(ir.x()-1, ir.y()), QPoint(ir.x(), ir.y()), QPoint(ir.x()+(size-hSize)-1, ir.y()+hSize), QPoint(ir.x(), ir.y()+ir.height()-1), QPoint(ir.x()-1, ir.y()+ir.height()-1) };
+            QPoint p3[3]={ QPoint(ir.x(), ir.y()+1), QPoint(ir.x()+(size-hSize)-2, ir.y()+hSize), QPoint(ir.x(), ir.y()+ir.height()-2) };
+            painter->save();
+            painter->setPen(border);
+            painter->drawPolygon(p1, 5);
+            painter->drawPolygon(p3, 3);
+            painter->setPen(inside);
+            painter->drawPolygon(p2, 5);
+            painter->restore();
+            break;
+        }
+        case GroupedView::State_StopAfterTrack:
+            painter->setPen(border);
+            painter->drawRect(ir.adjusted(0, 0, -1, -1));
+            painter->drawRect(ir.adjusted(2, 2, -3, -3));
+            painter->setPen(inside);
+            painter->drawRect(ir.adjusted(1, 1, -2, -2));
+            break;
+        case GroupedView::State_Paused: {
+            int blockSize=hSize-1;
+            painter->fillRect(ir, border);
+            painter->fillRect(ir.x()+1, ir.y()+1, blockSize, size-2, inside);
+            painter->fillRect(ir.x()+size-blockSize-1, ir.y()+1, blockSize, size-2, inside);
+            break;
+        }
+        case GroupedView::State_Playing: {
+            ir.adjust(2, 0, -2, 0);
+            QPoint p1[5]={ QPoint(ir.x()-2, ir.y()-1), QPoint(ir.x(), ir.y()-1), QPoint(ir.x()+(size-hSize), ir.y()+hSize), QPoint(ir.x(), ir.y()+(ir.height()-1)), QPoint(ir.x()-2, ir.y()+(ir.height()-1)) };
+            QPoint p2[5]={ QPoint(ir.x()-2, ir.y()-1), QPoint(ir.x(), ir.y()-1), QPoint(ir.x()+(size-hSize), ir.y()+hSize), QPoint(ir.x(), ir.y()+ir.height()), QPoint(ir.x()-2, ir.y()+ir.height()) };
+            painter->save();
+            painter->setBrush(border);
+            painter->setPen(border);
+            painter->drawPolygon(p1, 5);
+            painter->setBrush(inside);
+            painter->drawPolygon(p2, 5);
+            painter->restore();
+            break;
+        }
+        }
+    }
+}
+
 enum Type {
     AlbumHeader,
     AlbumTrack
@@ -357,64 +433,9 @@ public:
             r.adjust(constCoverSize+constBorder, 0, 0, 0);
         }
 
-        if (state) {
-            int size=constIconSize-7;
-            int hSize=size/2;
-            QRect ir(r.x()-(size+6), r.y()+(((r.height()-size)/2.0)+0.5), size, size);
-            QColor inside(option.palette.color(QPalette::Text));
-            QColor border=inside.red()>100 && inside.blue()>100 && inside.green()>100 ? Qt::black : Qt::white;
-            if (rtl) {
-                ir.adjust(r.width()-size, 0, r.width()-size, 0);
-            }
-            switch (state) {
-            case GroupedView::State_Stopped:
-                painter->fillRect(ir, border);
-                painter->fillRect(ir.adjusted(1, 1, -1, -1), inside);
-                break;
-            case GroupedView::State_StopAfter: {
-                ir.adjust(2, 0, -2, 0);
-                QPoint p1[5]={ QPoint(ir.x()-2, ir.y()-1), QPoint(ir.x(), ir.y()-1), QPoint(ir.x()+(size-hSize), ir.y()+hSize), QPoint(ir.x(), ir.y()+(ir.height())), QPoint(ir.x()-2, ir.y()+(ir.height())) };
-                QPoint p2[5]={ QPoint(ir.x()-1, ir.y()), QPoint(ir.x(), ir.y()), QPoint(ir.x()+(size-hSize)-1, ir.y()+hSize), QPoint(ir.x(), ir.y()+ir.height()-1), QPoint(ir.x()-1, ir.y()+ir.height()-1) };
-                QPoint p3[3]={ QPoint(ir.x(), ir.y()+1), QPoint(ir.x()+(size-hSize)-2, ir.y()+hSize), QPoint(ir.x(), ir.y()+ir.height()-2) };
-                painter->save();
-                painter->setPen(border);
-                painter->drawPolygon(p1, 5);
-                painter->drawPolygon(p3, 3);
-                painter->setPen(inside);
-                painter->drawPolygon(p2, 5);
-                painter->restore();
-                break;
-            }
-            case GroupedView::State_StopAfterTrack:
-                painter->setPen(border);
-                painter->drawRect(ir.adjusted(0, 0, -1, -1));
-                painter->drawRect(ir.adjusted(2, 2, -3, -3));
-                painter->setPen(inside);
-                painter->drawRect(ir.adjusted(1, 1, -2, -2));
-                break;
-            case GroupedView::State_Paused: {
-                int blockSize=hSize-1;
-                painter->fillRect(ir, border);
-                painter->fillRect(ir.x()+1, ir.y()+1, blockSize, size-2, inside);
-                painter->fillRect(ir.x()+size-blockSize-1, ir.y()+1, blockSize, size-2, inside);
-                break;
-            }
-            case GroupedView::State_Playing: {
-                ir.adjust(2, 0, -2, 0);
-                QPoint p1[5]={ QPoint(ir.x()-2, ir.y()-1), QPoint(ir.x(), ir.y()-1), QPoint(ir.x()+(size-hSize), ir.y()+hSize), QPoint(ir.x(), ir.y()+(ir.height()-1)), QPoint(ir.x()-2, ir.y()+(ir.height()-1)) };
-                QPoint p2[5]={ QPoint(ir.x()-2, ir.y()-1), QPoint(ir.x(), ir.y()-1), QPoint(ir.x()+(size-hSize), ir.y()+hSize), QPoint(ir.x(), ir.y()+ir.height()), QPoint(ir.x()-2, ir.y()+ir.height()) };
-                painter->save();
-                painter->setBrush(border);
-                painter->setPen(border);
-                painter->drawPolygon(p1, 5);
-                painter->setBrush(inside);
-                painter->drawPolygon(p2, 5);
-                painter->restore();
-                break;
-            }
-            }
-            painter->setPen(col);
-        }
+        GroupedView::drawPlayState(painter, option, r, state);
+        painter->setPen(col);
+
         int durationWidth=showTrackDuration ? fm.width(duration)+8 : 0;
         QRect duratioRect(r.x(), r.y(), r.width(), textHeight);
         QRect textRect(r.x(), r.y(), r.width()-durationWidth, textHeight);

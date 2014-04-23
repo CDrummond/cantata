@@ -507,7 +507,7 @@ static QString getBundle(const QString &path)
     bundle += QLatin1String(".app/Contents/MacOS/") + bundle.section(QLatin1Char('/'), -1);
     info.setFile( bundle );
     FILE *file;
-    if (file = fopen(info.absoluteFilePath().toUtf8().constData(), "r")) {
+    if ((file = fopen(info.absoluteFilePath().toUtf8().constData(), "r"))) {
         fclose(file);
         struct stat _stat;
         if ((stat(info.absoluteFilePath().toUtf8().constData(), &_stat)) < 0) {
@@ -537,7 +537,7 @@ static QString checkExecutable( const QString& path )
     QFileInfo orig = info;
     #if defined(Q_OS_DARWIN) || defined(Q_OS_MAC)
     FILE *file;
-    if (file = fopen(orig.absoluteFilePath().toUtf8().constData(), "r")) {
+    if ((file = fopen(orig.absoluteFilePath().toUtf8().constData(), "r"))) {
         fclose(file);
         struct stat _stat;
         if ((stat(orig.absoluteFilePath().toUtf8().constData(), &_stat)) < 0) {

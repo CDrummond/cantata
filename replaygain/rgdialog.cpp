@@ -73,15 +73,6 @@ static inline void setResizeMode(QHeaderView *hdr, int idx, QHeaderView::ResizeM
     #endif
 }
 
-static inline void setResizeMode(QHeaderView *hdr, QHeaderView::ResizeMode mode)
-{
-    #if QT_VERSION < 0x050000
-    hdr->setResizeMode(mode);
-    #else
-    hdr->setSectionResizeMode(mode);
-    #endif
-}
-
 RgDialog::RgDialog(QWidget *parent)
     : SongDialog(parent, "RgDialog", QSize(800, 400))
     , state(State_Idle)

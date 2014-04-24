@@ -145,6 +145,9 @@ Application::Application(int &argc, char **argv)
     #if defined Q_OS_WIN2
     connect(this, SIGNAL(reconnect()), MPDConnection::self(), SLOT(reconnect()));
     #endif
+    #ifdef Q_OS_MAC
+    QCoreApplication::setAttribute(Qt::AA_DontShowIconsInMenus, true);
+    #endif
 }
 
 static void setupIconTheme()

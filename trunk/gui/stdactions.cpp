@@ -33,11 +33,13 @@
 #include "icons.h"
 #include "globalstatic.h"
 #include <QMenu>
+#include <QCoreApplication>
 
 GLOBAL_STATIC(StdActions, instance)
 
 StdActions::StdActions()
 {
+    bool menuIcons=!QCoreApplication::testAttribute(Qt::AA_DontShowIconsInMenus);
     prevTrackAction = ActionCollection::get()->createAction("prevtrack", i18n("Previous Track"), Icons::self()->toolbarPrevIcon);
     nextTrackAction = ActionCollection::get()->createAction("nexttrack", i18n("Next Track"), Icons::self()->toolbarNextIcon);
     playPauseTrackAction = ActionCollection::get()->createAction("playpausetrack", i18n("Play/Pause"), Icons::self()->toolbarPlayIcon);
@@ -72,7 +74,7 @@ StdActions::StdActions()
     #endif
     setCoverAction = ActionCollection::get()->createAction("setcover", i18n("Set Image"));
     removeAction = ActionCollection::get()->createAction("removeitems", i18n("Remove"), "list-remove");
-    searchAction = ActionCollection::get()->createAction("search", i18n("Find"), "edit-find");
+    searchAction = ActionCollection::get()->createAction("search", i18n("Find"), menuIcons ? "edit-find" : "");
     searchAction->setShortcut(Qt::ControlModifier+Qt::Key_F);
 
     addToStoredPlaylistAction->setMenu(PlaylistsModel::self()->menu());

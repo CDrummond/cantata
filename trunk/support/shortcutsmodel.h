@@ -91,6 +91,7 @@ private:
 
     QList<Item *> _categoryItems;
     int _changedCount;
+    bool _showIcons;
 };
 
 #endif // SHORTCUTSMODEL_H

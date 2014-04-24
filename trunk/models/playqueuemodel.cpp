@@ -203,11 +203,12 @@ PlayQueueModel::PlayQueueModel(QObject *parent)
     connect(Covers::self(), SIGNAL(cover(const Song &, const QImage &, const QString &)), this, 
             SLOT(setCover(const Song &, const QImage &, const QString &)));
     #else
+    bool menuIcons=!QCoreApplication::testAttribute(Qt::AA_DontShowIconsInMenus);
     removeDuplicatesAction=new Action(i18n("Remove Duplicates"), this);
     removeDuplicatesAction->setEnabled(false);
-    undoAction=ActionCollection::get()->createAction("playqueue-undo", i18n("Undo"), "edit-undo");
+    undoAction=ActionCollection::get()->createAction("playqueue-undo", i18n("Undo"), menuIcons ? "edit-undo" : "");
     undoAction->setShortcut(Qt::ControlModifier+Qt::Key_Z);
-    redoAction=ActionCollection::get()->createAction("playqueue-redo", i18n("Redo"), "edit-redo");
+    redoAction=ActionCollection::get()->createAction("playqueue-redo", i18n("Redo"), menuIcons ? "edit-redo" : "");
     redoAction->setShortcut(Qt::ControlModifier+Qt::ShiftModifier+Qt::Key_Z);
     connect(undoAction, SIGNAL(triggered(bool)), this, SLOT(undo()));
     connect(redoAction, SIGNAL(triggered(bool)), this, SLOT(redo()));

@@ -566,7 +566,6 @@ FancyTabWidget::FancyTabWidget(QWidget *parent, bool allowContextMenu)
     mainLayout->addWidget(sideWidget);
     mainLayout->addLayout(topLayout);
     setLayout(mainLayout);
-    setStyle(Side|Large);
 }
 
 void FancyTabWidget::addTab(QWidget *tab, const QIcon &icon, const QString &label, const QString &tt, bool enabled)
@@ -684,7 +683,7 @@ void FancyTabWidget::contextMenuEvent(QContextMenuEvent *e)
 
 void FancyTabWidget::setStyle(int s)
 {
-    if(s==styleSetting && tabBar) {
+    if (s==styleSetting && tabBar) {
         return;
     }
     // Remove previous tab bar

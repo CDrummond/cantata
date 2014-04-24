@@ -60,7 +60,7 @@
 #include <QUrlQuery>
 #endif
 #if defined Q_OS_WIN
-#include <QDesktopServices>
+#include <QCoreApplication>
 #endif
 #include <stdio.h>
 #include <time.h>

@@ -25,14 +25,13 @@
 #include "ultimatelyricsprovider.h"
 #include "settings.h"
 #include "globalstatic.h"
-#include <QCoreApplication>
 #include <QDir>
 #include <QFile>
 #include <QFileInfoList>
 #include <QXmlStreamReader>
 #include <QSet>
 #if defined Q_OS_WIN
-#include <QDesktopServices>
+#include <QCoreApplication>
 #endif
 
 GLOBAL_STATIC(UltimateLyrics, instance)

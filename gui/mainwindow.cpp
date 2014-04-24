@@ -232,15 +232,17 @@ MainWindow::MainWindow(QWidget *parent)
     setWindowIcon(Icons::self()->appIcon);
 
     prefAction=ActionCollection::get()->createAction("configure", Utils::KDE==Utils::currentDe() ? i18n("Configure Cantata...") : i18n("Preferences"), Icons::self()->configureIcon);
-    #ifdef Q_OS_MAC
-    prefAction->setMenuRole(QAction::PreferencesRole);
-    #endif
     connect(prefAction, SIGNAL(triggered(bool)),this, SLOT(showPreferencesDialog()));
     quitAction = ActionCollection::get()->createAction("quit", i18n("Quit"), "application-exit");
     connect(quitAction, SIGNAL(triggered(bool)), this, SLOT(quit()));
     quitAction->setShortcut(QKeySequence::Quit);
     Action *aboutAction=ActionCollection::get()->createAction("about", i18nc("Qt-only", "About Cantata..."), Icons::self()->appIcon);
     connect(aboutAction, SIGNAL(triggered(bool)),this, SLOT(showAboutDialog()));
+    #ifdef Q_OS_MAC
+    prefAction->setMenuRole(QAction::PreferencesRole);
+    quitAction->setMenuRole(QAction::QuitRole);
+    aboutAction->setMenuRole(QAction::AboutRole);
+    #endif
     #endif // ENABLE_KDE_SUPPORT
     restoreAction = ActionCollection::get()->createAction("showwindow", i18n("Show Window"));
     connect(restoreAction, SIGNAL(triggered(bool)), this, SLOT(restoreWindow()));

@@ -65,7 +65,7 @@ void Application::initObjects()
 
     Utils::initRand();
     Song::initTranslations();
-    Icon::setTouchFriendly(Settings::self()->touchFriendly());
+    Utils::setTouchFriendly(Settings::self()->touchFriendly());
 }
 
 #ifdef ENABLE_KDE_SUPPORT

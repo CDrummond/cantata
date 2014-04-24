@@ -25,7 +25,6 @@
 #include "song.h"
 #include "settings.h"
 #include "mpdconnection.h"
-#include "icon.h"
 #include <QLabel>
 #include <QHBoxLayout>
 #include <QProxyStyle>
@@ -193,7 +192,7 @@ PosSlider::PosSlider(QWidget *p)
     setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
     setFocusPolicy(Qt::NoFocus);
     setStyle(new ProxyStyle());
-    int h=fontMetrics().height()*(Icon::touchFriendly() ? 0.75 : 0.5);
+    int h=fontMetrics().height()*0.5;
     setMinimumHeight(h);
     setMaximumHeight(h);
     updateStyleSheet();

@@ -851,3 +851,14 @@ Utils::Desktop Utils::currentDe()
     #endif
     return Other;
 }
+
+static bool isTouchFriendly=false;
+void Utils::setTouchFriendly(bool t)
+{
+    isTouchFriendly=t;
+}
+
+bool Utils::touchFriendly()
+{
+    return isTouchFriendly;
+}

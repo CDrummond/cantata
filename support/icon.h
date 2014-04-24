@@ -49,8 +49,6 @@ public:
     #endif
     Icon() { }
 
-    static void setTouchFriendly(bool tf);
-    static bool touchFriendly();
     static int stdSize(int s);
     static int dlgIconSize();
     static void init(QToolButton *btn, bool setFlat=true);

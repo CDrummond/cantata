@@ -148,27 +148,16 @@ static QPixmap createMenuIconPixmap(int size, QColor col, double opacity=1.0)
         lineWidth=3;
         space=3;
         borderX=2;
-    } else if (Icon::touchFriendly()) {
-        if (32==size) {
-            lineWidth=3;
-            space=3;
-            borderX=6;
-        } else if (48==size) {
-            lineWidth=5;
-            space=5;
-            borderX=10;
-        }
-    } else {
-        if (32==size) {
-            lineWidth=5;
-            space=5;
-            borderX=3;
-        } else if (48==size) {
-            lineWidth=8;
-            space=6;
-            borderX=4;
-        }
+    } else if (32==size) {
+        lineWidth=5;
+        space=5;
+        borderX=3;
+    } else if (48==size) {
+        lineWidth=8;
+        space=6;
+        borderX=4;
     }
+
     int borderY=((size-((3*lineWidth)+(2*space)))/2.0)+0.5;
 
     p.setOpacity(opacity);

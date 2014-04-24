@@ -338,7 +338,7 @@ public:
             QApplication::style()->drawControl(QStyle::CE_ProgressBar, &opt, painter, 0L);
         }
 
-        if ((drawBgnd && mouseOver) || Icon::touchFriendly()) {
+        if ((drawBgnd && mouseOver) || Utils::touchFriendly()) {
             drawIcons(painter, AP_VTop==actionPos ? option.rect : r, mouseOver, rtl, actionPos, index);
         }
         if (!iconMode) {
@@ -451,8 +451,8 @@ public:
             }
         }
 
-        if (mouseOver || Icon::touchFriendly()) {
-            drawIcons(painter, option.rect, mouseOver || (selected && Icon::touchFriendly()), rtl, AP_HMiddle, index);
+        if (mouseOver || Utils::touchFriendly()) {
+            drawIcons(painter, option.rect, mouseOver || (selected && Utils::touchFriendly()), rtl, AP_HMiddle, index);
         }
         BasicItemDelegate::drawLine(painter, option.rect, option.palette.color(active ? QPalette::Active : QPalette::Inactive,
                                                                                selected ? QPalette::HighlightedText : QPalette::Text));

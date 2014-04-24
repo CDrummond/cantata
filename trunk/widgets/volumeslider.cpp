@@ -30,7 +30,6 @@
 #include "stdactions.h"
 #include "utils.h"
 #include "settings.h"
-#include "icon.h"
 #include <QStyle>
 #include <QPainter>
 #include <QPainterPath>
@@ -65,7 +64,7 @@ public:
 
 
 static int widthStep=4;
-static int heightStep=2;
+static int constHeightStep=2;
 
 static QColor clampColor(const QColor &col)
 {
@@ -89,14 +88,13 @@ VolumeSlider::VolumeSlider(QWidget *p)
     , muteAction(0)
     , menu(0)
 {
-    widthStep=Icon::touchFriendly() ? 5 : 4;
-    heightStep=Icon::touchFriendly() ? 3 : 2;
+    widthStep=Utils::touchFriendly() ? 5 : 4;
     setRange(0, 100);
     setPageStep(Settings::self()->volumeStep());
     lineWidth=Utils::isHighDpi() ? 2 : 1;
 
     int w=lineWidth*widthStep*19;
-    int h=lineWidth*heightStep*10;
+    int h=lineWidth*constHeightStep*10;
     setFixedHeight(h+1);
     setFixedWidth(w);
     setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
@@ -193,7 +191,7 @@ void VolumeSlider::paintEvent(QPaintEvent *)
     }
     p.setPen(textCol);
     QFont f(font());
-    f.setPixelSize((height()/2.0) * (Icon::touchFriendly() ? 0.8 : 1.0));
+    f.setPixelSize((height()/2.0) * (Utils::touchFriendly() ? 0.8 : 1.0));
     p.setFont(f);
 
     if (muted) {
@@ -319,7 +317,7 @@ QPixmap VolumeSlider::generatePixmap(bool filled)
     QPainter p(&pix);
     p.setPen(textCol);
     for (int i=0; i<10; ++i) {
-        int barHeight=(lineWidth*heightStep)*(i+1);
+        int barHeight=(lineWidth*constHeightStep)*(i+1);
         QRect r(reverse ? pix.width()-(widthStep+(i*lineWidth*widthStep*2))
                         : i*lineWidth*widthStep*2,
                 pix.height()-(barHeight+1), (lineWidth*widthStep)-1, barHeight);

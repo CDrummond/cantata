@@ -25,10 +25,13 @@
 #include "icon.h"
 #include "gtkstyle.h"
 #include "config.h"
+#include "utils.h"
 #include <QMenu>
 #include <QStylePainter>
 #include <QStyleOptionToolButton>
 #include <QApplication>
+
+const double ToolButton::constTouchScaleFactor=1.334;
 
 ToolButton::ToolButton(QWidget *parent)
     : QToolButton(parent)
@@ -39,7 +42,6 @@ ToolButton::ToolButton(QWidget *parent)
     #endif
 {
     Icon::init(this);
-    setAutoRaise(true);
     #ifdef Q_OS_MAC
     setStyleSheet("QToolButton {border: 0}");
     #endif
@@ -75,25 +77,25 @@ void ToolButton::paintEvent(QPaintEvent *e)
 
 QSize ToolButton::sizeHint() const
 {
-    if (!hideMenuIndicator) {
-        return QToolButton::sizeHint();
-    }
-
     if (sh.isValid()) {
         return sh;
     }
 
     ensurePolished();
 
+    QSize plainSize;
+    QSize menuSize;
     if (menu()) {
         QStyleOptionToolButton opt;
         initStyleOption(&opt);
         opt.features=QStyleOptionToolButton::None;
-        sh = style()->sizeFromContents(QStyle::CT_ToolButton, &opt, opt.iconSize, this).expandedTo(QApplication::globalStrut());
+        plainSize = style()->sizeFromContents(QStyle::CT_ToolButton, &opt, opt.iconSize, this).expandedTo(QApplication::globalStrut());
+        menuSize = QToolButton::sizeHint();
     } else {
-        sh=QToolButton::sizeHint();
+        plainSize = menuSize = QToolButton::sizeHint();
     }
-    sh=QSize(qMax(sh.width(), sh.height()), qMax(sh.width(), sh.height()));
+    int sz=qMax(plainSize.width(), plainSize.height());
+    sh=QSize(Utils::touchFriendly() ? sz*constTouchScaleFactor : (hideMenuIndicator ? sz : menuSize.width()), sz);
     return sh;
 }
 

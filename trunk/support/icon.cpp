@@ -25,24 +25,12 @@
 #include <QApplication>
 #include <QToolButton>
 
-static bool isTouchFriendly=false;
-
-void Icon::setTouchFriendly(bool tf)
-{
-    isTouchFriendly=tf;
-}
-
-bool Icon::touchFriendly()
-{
-    return isTouchFriendly;
-}
-
 int Icon::stdSize(int v)
 {
     if (v<19) {
-        return isTouchFriendly ? 22 : 16;
+        return 16;
     } else if (v<=28) {
-        return isTouchFriendly ? 32 : 22;
+        return 22;
     } else if (v<=40) {
         return 32;
     } else if (v<=56) {
@@ -73,7 +61,7 @@ void Icon::init(QToolButton *btn, bool setFlat)
         if (size>18) {
             size=stdSize(size*1.25);
         } else {
-            size=isTouchFriendly ? 22 : 16;
+            size=16;
         }
     }
     btn->setIconSize(QSize(size, size));

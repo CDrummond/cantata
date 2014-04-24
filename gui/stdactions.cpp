@@ -39,7 +39,11 @@ GLOBAL_STATIC(StdActions, instance)
 
 StdActions::StdActions()
 {
+    #ifdef ENABLE_KDE_SUPPORT
+    bool menuIcons=true;
+    #else
     bool menuIcons=!QCoreApplication::testAttribute(Qt::AA_DontShowIconsInMenus);
+    #endif
     prevTrackAction = ActionCollection::get()->createAction("prevtrack", i18n("Previous Track"), Icons::self()->toolbarPrevIcon);
     nextTrackAction = ActionCollection::get()->createAction("nexttrack", i18n("Next Track"), Icons::self()->toolbarNextIcon);
     playPauseTrackAction = ActionCollection::get()->createAction("playpausetrack", i18n("Play/Pause"), Icons::self()->toolbarPlayIcon);

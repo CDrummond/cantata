@@ -203,7 +203,13 @@ PlayQueueModel::PlayQueueModel(QObject *parent)
     connect(Covers::self(), SIGNAL(cover(const Song &, const QImage &, const QString &)), this, 
             SLOT(setCover(const Song &, const QImage &, const QString &)));
     #else
+
+    #ifdef ENABLE_KDE_SUPPORT
+    bool menuIcons=true;
+    #else
     bool menuIcons=!QCoreApplication::testAttribute(Qt::AA_DontShowIconsInMenus);
+    #endif
+
     removeDuplicatesAction=new Action(i18n("Remove Duplicates"), this);
     removeDuplicatesAction->setEnabled(false);
     undoAction=ActionCollection::get()->createAction("playqueue-undo", i18n("Undo"), menuIcons ? "edit-undo" : "");

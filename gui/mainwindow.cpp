@@ -176,7 +176,11 @@ MainWindow::MainWindow(QWidget *parent)
     QPoint p=pos();
     ActionCollection::setMainWidget(this);
     trayItem=new TrayItem(this);
+    #ifdef ENABLE_KDE_SUPPORT
+    bool menuIcons=true;
+    #else
     bool menuIcons=!QCoreApplication::testAttribute(Qt::AA_DontShowIconsInMenus);
+    #endif
     #ifdef QT_QTDBUS_FOUND
     new CantataAdaptor(this);
     QDBusConnection::sessionBus().registerObject("/cantata", this);

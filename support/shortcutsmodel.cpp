@@ -22,11 +22,13 @@
 #include "action.h"
 #include "actioncollection.h"
 #include "utils.h"
+#include <QCoreApplication>
 
 ShortcutsModel::ShortcutsModel(const QHash<QString, ActionCollection *> &actionCollections, QObject *parent)
   : QAbstractItemModel(parent),
   _changedCount(0)
 {
+  _showIcons=!QCoreApplication::testAttribute(Qt::AA_DontShowIconsInMenus);
   for(int r = 0; r < actionCollections.values().count(); r++) {
     ActionCollection *coll = actionCollections.values().at(r);
     Item *item = new Item();
@@ -148,7 +150,7 @@ QVariant ShortcutsModel::data(const QModelIndex &index, int role) const {
     }
 
   case Qt::DecorationRole:
-    if(index.column() == 0)
+    if(index.column() == 0 && _showIcons)
       return action->icon();
     return QVariant();
 

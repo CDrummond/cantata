@@ -101,6 +101,10 @@
 63. Add 'List' to playqueue view types.
 64. Add 'Locate In Library' to search page.
 65. Remove 'Go Back' from lsitview context menu.
+66. Hide icons in short=cut dialog, and in actions used in menus, if
+    Qt::AA_DontShowIconsInMenus is set. This seems to be the only way to force
+    Unity to not show icons in menus of Qt apps. (There appears to be a bug in
+    libdbusmenu-qt https://bugs.launchpad.net/libdbusmenu-qt/+bug/1287337)
 
 1.3.4
 -----

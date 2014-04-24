@@ -36,12 +36,14 @@ int SizeWidget::standardHeight()
         combo.move(65535, 65535);
         combo.update(QSet<QString>());
         combo.ensurePolished();
+        combo.setAttribute(Qt::WA_DontShowOnScreen);
         combo.setVisible(true);
         ToolButton tb(0);
         tb.move(65535, 65535);
         tb.setToolButtonStyle(Qt::ToolButtonIconOnly);
         tb.setIcon(Icons::self()->albumIcon);
         tb.ensurePolished();
+        tb.setAttribute(Qt::WA_DontShowOnScreen);
         tb.setVisible(true);
         int sh=qMax(tb.sizeHint().height(), combo.sizeHint().height());
         int s=qMax(tb.size().height(), combo.size().height());

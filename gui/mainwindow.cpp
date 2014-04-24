@@ -176,7 +176,7 @@ MainWindow::MainWindow(QWidget *parent)
     QPoint p=pos();
     ActionCollection::setMainWidget(this);
     trayItem=new TrayItem(this);
-
+    bool menuIcons=!QCoreApplication::testAttribute(Qt::AA_DontShowIconsInMenus);
     #ifdef QT_QTDBUS_FOUND
     new CantataAdaptor(this);
     QDBusConnection::sessionBus().registerObject("/cantata", this);
@@ -231,12 +231,13 @@ MainWindow::MainWindow(QWidget *parent)
     #else
     setWindowIcon(Icons::self()->appIcon);
 
-    prefAction=ActionCollection::get()->createAction("configure", Utils::KDE==Utils::currentDe() ? i18n("Configure Cantata...") : i18n("Preferences"), Icons::self()->configureIcon);
+    prefAction=ActionCollection::get()->createAction("configure", Utils::KDE==Utils::currentDe() ? i18n("Configure Cantata...") : i18n("Preferences"),
+                                                     menuIcons ? Icons::self()->configureIcon : Icon());
     connect(prefAction, SIGNAL(triggered(bool)),this, SLOT(showPreferencesDialog()));
-    quitAction = ActionCollection::get()->createAction("quit", i18n("Quit"), "application-exit");
+    quitAction = ActionCollection::get()->createAction("quit", i18n("Quit"), menuIcons ? "application-exit" : "");
     connect(quitAction, SIGNAL(triggered(bool)), this, SLOT(quit()));
     quitAction->setShortcut(QKeySequence::Quit);
-    Action *aboutAction=ActionCollection::get()->createAction("about", i18nc("Qt-only", "About Cantata..."), Icons::self()->appIcon);
+    Action *aboutAction=ActionCollection::get()->createAction("about", i18nc("Qt-only", "About Cantata..."), menuIcons ? Icons::self()->appIcon : Icon());
     connect(aboutAction, SIGNAL(triggered(bool)),this, SLOT(showAboutDialog()));
     #ifdef Q_OS_MAC
     prefAction->setMenuRole(QAction::PreferencesRole);
@@ -247,24 +248,24 @@ MainWindow::MainWindow(QWidget *parent)
     restoreAction = ActionCollection::get()->createAction("showwindow", i18n("Show Window"));
     connect(restoreAction, SIGNAL(triggered(bool)), this, SLOT(restoreWindow()));
 
-    serverInfoAction=ActionCollection::get()->createAction("mpdinfo", i18n("Server information..."), "network-server");
+    serverInfoAction=ActionCollection::get()->createAction("mpdinfo", i18n("Server information..."), menuIcons ? "network-server" : "");
     connect(serverInfoAction, SIGNAL(triggered(bool)),this, SLOT(showServerInfo()));
     serverInfoAction->setEnabled(Settings::self()->firstRun());
-    refreshDbAction = ActionCollection::get()->createAction("refresh", i18n("Refresh Database"), "view-refresh");
+    refreshDbAction = ActionCollection::get()->createAction("refresh", i18n("Refresh Database"), menuIcons ? "view-refresh" : "");
     doDbRefreshAction = new Action(refreshDbAction->icon(), i18n("Refresh"), this);
     refreshDbAction->setEnabled(false);
     connectAction = ActionCollection::get()->createAction("connect", i18n("Connect"), Icons::self()->connectIcon);
-    connectionsAction = ActionCollection::get()->createAction("connections", i18n("Collection"), "network-server");
-    outputsAction = ActionCollection::get()->createAction("outputs", i18n("Outputs"), Icons::self()->speakerIcon);
+    connectionsAction = ActionCollection::get()->createAction("connections", i18n("Collection"), menuIcons ? "network-server" : "");
+    outputsAction = ActionCollection::get()->createAction("outputs", i18n("Outputs"), menuIcons ? Icons::self()->speakerIcon : Icon());
     stopAfterTrackAction = ActionCollection::get()->createAction("stopaftertrack", i18n("Stop After Track"), Icons::self()->toolbarStopIcon);
     addPlayQueueToStoredPlaylistAction = ActionCollection::get()->createAction("addpqtostoredplaylist", i18n("Add To Stored Playlist"), Icons::self()->playlistIcon);
     cropPlayQueueAction = ActionCollection::get()->createAction("cropplaylist", i18n("Crop"));
-    addStreamToPlayQueueAction = ActionCollection::get()->createAction("addstreamtoplayqueue", i18n("Add Stream URL"), Icons::self()->addRadioStreamIcon);
+    addStreamToPlayQueueAction = ActionCollection::get()->createAction("addstreamtoplayqueue", i18n("Add Stream URL"), menuIcons ? Icons::self()->addRadioStreamIcon : Icon());
     promptClearPlayQueueAction = ActionCollection::get()->createAction("clearplaylist", i18n("Clear"), Icons::self()->clearListIcon);
     songInfoAction = ActionCollection::get()->createAction("showsonginfo", i18n("Show Current Song Information"), Icons::self()->infoIcon);
     songInfoAction->setShortcut(Qt::Key_F12);
     songInfoAction->setCheckable(true);
-    fullScreenAction = ActionCollection::get()->createAction("fullScreen", i18n("Full Screen"), "view-fullscreen");
+    fullScreenAction = ActionCollection::get()->createAction("fullScreen", i18n("Full Screen"), menuIcons ? "view-fullscreen" : "");
     fullScreenAction->setShortcut(Qt::Key_F11);
     randomPlayQueueAction = ActionCollection::get()->createAction("randomplaylist", i18n("Random"), Icons::self()->shuffleIcon);
     repeatPlayQueueAction = ActionCollection::get()->createAction("repeatplaylist", i18n("Repeat"), Icons::self()->repeatIcon);
@@ -549,7 +550,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     if (menuCfg&Settings::MC_Button) {
         QMenu *mainMenu=new QMenu(this);
-        mainMenu->addAction(songInfoAction);
+//        mainMenu->addAction(songInfoAction);
         mainMenu->addAction(fullScreenAction);
         mainMenu->addAction(connectionsAction);
         mainMenu->addAction(outputsAction);
@@ -619,17 +620,18 @@ MainWindow::MainWindow(QWidget *parent)
             menu=new QMenu(i18n("&View"), this);
             if (showMenuAction) {
                 addMenuAction(menu, showMenuAction);
+                menu->addSeparator();
             }
-            addMenuAction(menu, songInfoAction);
-            menu->addSeparator();
+//            addMenuAction(menu, songInfoAction);
+//            menu->addSeparator();
             addMenuAction(menu, fullScreenAction);
             menuBar()->addMenu(menu);
         }
         #endif
         menu=new QMenu(i18n("&Queue"), this);
-        addMenuAction(menu, promptClearPlayQueueAction);
-        addMenuAction(menu, StdActions::self()->savePlayQueueAction);
-        menu->addSeparator();
+//        addMenuAction(menu, promptClearPlayQueueAction);
+//        addMenuAction(menu, StdActions::self()->savePlayQueueAction);
+//        menu->addSeparator();
         addMenuAction(menu, addStreamToPlayQueueAction);
         menu->addSeparator();
         addMenuAction(menu, playQueueModel.shuffleAct());

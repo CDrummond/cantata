@@ -24,7 +24,7 @@
 
 #include "autohidingsplitter.h"
 #include "gtkstyle.h"
-#include "icon.h"
+#include "utils.h"
 #include <QSplitterHandle>
 #include <QTimer>
 #include <QChildEvent>
@@ -39,7 +39,7 @@ static int splitterSize(const QWidget *w)
     static int size=-1;
 
     if (-1==size || !w || !w->isVisible()) {
-        if (Icon::touchFriendly()) {
+        if (Utils::touchFriendly()) {
             size=4;
         } else if (qApp->style()->styleHint(QStyle::SH_ScrollView_FrameOnlyAroundContents)) {
             int spacing=qApp->style()->pixelMetric(QStyle::PM_ScrollView_ScrollBarSpacing);
@@ -115,7 +115,7 @@ AutohidingSplitter::AutohidingSplitter(QWidget *parent)
     autohideAnimation->setEasingCurve(QEasingCurve::Linear);
     //connect(this, SIGNAL(splitterMoved(int, int)), this, SLOT(updateAfterSplitterMoved(int, int)));
     setMinimumWidth(32);
-    setHandleWidth(Icon::touchFriendly() ? 4 : 1);
+    setHandleWidth(Utils::touchFriendly() ? 4 : 1);
 }
 
 AutohidingSplitter::~AutohidingSplitter()

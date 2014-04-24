@@ -30,6 +30,7 @@ class QMenu;
 class ToolButton : public QToolButton
 {
 public:
+    static const double constTouchScaleFactor;
     explicit ToolButton(QWidget *parent = 0);
     QSize sizeHint() const;
     void setMenu(QMenu *m);

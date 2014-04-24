@@ -24,6 +24,7 @@
 #include "actionitemdelegate.h"
 #include "roles.h"
 #include "icon.h"
+#include "utils.h"
 #include "config.h"
 #include "actionmodel.h"
 #include "groupedview.h"
@@ -50,8 +51,8 @@ void ActionItemDelegate::setup()
         constBorder=constActionIconSize>22 ? 2 : 1;
         constActionBorder=constActionIconSize>32 ? 6 : 4;
     } else {
-        constActionBorder=Icon::touchFriendly() ? 6 : 4;
-        constActionIconSize=Icon::touchFriendly() ? 22 : 16;
+        constActionBorder=Utils::touchFriendly() ? 6 : 4;
+        constActionIconSize=Utils::touchFriendly() ? 22 : 16;
         constLargeActionIconSize=22;
         constBorder=1;
     }
@@ -107,7 +108,7 @@ void ActionItemDelegate::drawIcons(QPainter *painter, const QRect &r, bool mouse
 {
     int iconSize=largeIcons ? constLargeActionIconSize : constActionIconSize;
     double opacity=painter->opacity();
-    bool touch=Icon::touchFriendly();
+    bool touch=Utils::touchFriendly();
     bool adjustOpacity=!mouseOver && !(touch && AP_VTop==actionPos);
     if (adjustOpacity) {
         painter->setOpacity(opacity*0.25);

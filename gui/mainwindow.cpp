@@ -475,7 +475,8 @@ MainWindow::MainWindow(QWidget *parent)
     #endif
     stopTrackButton->setHideMenuIndicator(true);
     int playbackButtonSize=28==playbackIconSize ? 34 : controlButtonSize;
-    int buttonPad=Icon::touchFriendly() ? 4 : 0;
+    int controlButtonWidth=Utils::touchFriendly() ? controlButtonSize*ToolButton::constTouchScaleFactor : controlButtonSize;
+    int playbackButtonWidth=Utils::touchFriendly() ? playbackButtonSize*ToolButton::constTouchScaleFactor : playbackButtonSize;
     foreach (QToolButton *b, controlBtns) {
         b->setAutoRaise(true);
         b->setToolButtonStyle(Qt::ToolButtonIconOnly);
@@ -484,13 +485,13 @@ MainWindow::MainWindow(QWidget *parent)
             b->setFixedHeight(controlButtonSize);
         } else
         #endif
-        b->setFixedSize(QSize(controlButtonSize+buttonPad, controlButtonSize+buttonPad));
+        b->setFixedSize(QSize(controlButtonWidth, controlButtonSize));
         b->setIconSize(QSize(controlIconSize, controlIconSize));
     }
     foreach (QToolButton *b, playbackBtns) {
         b->setAutoRaise(true);
         b->setToolButtonStyle(Qt::ToolButtonIconOnly);
-        b->setFixedSize(QSize(playbackButtonSize+buttonPad, playbackButtonSize+buttonPad));
+        b->setFixedSize(QSize(playbackButtonWidth, playbackButtonSize));
         b->setIconSize(QSize(playbackIconSize, playbackIconSize));
     }
 

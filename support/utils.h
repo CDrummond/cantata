@@ -115,6 +115,8 @@ namespace Utils
         Other
     };
     extern Desktop currentDe();
+    extern void setTouchFriendly(bool t);
+    extern bool touchFriendly();
 }
 
 #endif

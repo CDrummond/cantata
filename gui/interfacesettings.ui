@@ -757,7 +757,7 @@ within the folder of the current track, or within its parent folder. If no image
             <string>Make interface more touch friendly</string>
            </property>
            <property name="toolTip">
-            <string>If set to be touch friendly, Cantata will increase icon sizes and make views 'flickable'</string>
+            <string>If set to be touch friendly, Cantata will increase the width of various buttons and make views 'flickable'</string>
            </property>
           </widget>
          </item>

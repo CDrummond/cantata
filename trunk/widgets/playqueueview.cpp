@@ -295,11 +295,11 @@ PlayQueueView::PlayQueueView(QWidget *parent)
     , backgroundOpacity(15)
     , backgroundBlur(0)
 {
+    removeFromAction = ActionCollection::get()->createAction("removefromplaylist", i18n("Remove From Play Queue"), "list-remove");
     setMode(ItemView::Mode_GroupedTree);
     animator.setPropertyName("fade");
     animator.setTargetObject(this);
     connect(CurrentCover::self(), SIGNAL(coverImage(QImage)), this, SLOT(setImage(QImage)));
-    removeFromAction = ActionCollection::get()->createAction("removefromplaylist", i18n("Remove From Play Queue"), "list-remove");
 }
 
 PlayQueueView::~PlayQueueView()

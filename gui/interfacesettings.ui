@@ -11,7 +11,16 @@
    </rect>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
-   <property name="margin">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
     <number>0</number>
    </property>
    <item>
@@ -522,7 +531,16 @@ within the folder of the current track, or within its parent folder. If no image
           </item>
           <item row="3" column="1" colspan="2">
            <layout class="QHBoxLayout" name="playQueueBackgroundBlurLayout">
-            <property name="margin">
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
              <number>0</number>
             </property>
             <item>
@@ -571,7 +589,16 @@ within the folder of the current track, or within its parent folder. If no image
           </item>
           <item row="4" column="1" colspan="2">
            <layout class="QHBoxLayout" name="playQueueBackgroundOpacityLayout">
-            <property name="margin">
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
              <number>0</number>
             </property>
             <item>
@@ -705,21 +732,21 @@ within the folder of the current track, or within its parent folder. If no image
          </property>
          <item row="0" column="0" colspan="2">
           <widget class="QCheckBox" name="groupSingle">
-           <property name="text">
-            <string>Group single track albums</string>
-           </property>
            <property name="toolTip">
             <string>Place albums with only one track under 'Various Artists/Single Tracks'</string>
+           </property>
+           <property name="text">
+            <string>Group single track albums</string>
            </property>
           </widget>
          </item>
          <item row="1" column="0" colspan="2">
           <widget class="QCheckBox" name="useComposer">
-           <property name="text">
-            <string>Group albums by composer</string>
-           </property>
            <property name="toolTip">
             <string>Use the 'Composer' tag, and not 'Artist' or 'Album Artist', to group albums.</string>
+           </property>
+           <property name="text">
+            <string>Group albums by composer</string>
            </property>
           </widget>
          </item>
@@ -753,11 +780,12 @@ within the folder of the current track, or within its parent folder. If no image
          </item>
          <item row="6" column="0" colspan="2">
           <widget class="QCheckBox" name="touchFriendly">
+           <property name="toolTip">
+            <string>&lt;p&gt;This will change Cantata's interface as detailed:
+&lt;ul&gt;&lt;li&gt;Playback, and control, buttons will be 33% wider&lt;/li&gt;&lt;li&gt;Views will be 'flickable'&lt;/li&gt;&lt;li&gt;To drag items, you will need to 'touch' the top-left corner&lt;/li&gt;&lt;li&gt;Scrollbars will be hidden&lt;/li&gt;&lt;li&gt;Actions (e.g. 'Add To Play Queue') will always be visible (not just when item is under mouse)&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;</string>
+           </property>
            <property name="text">
             <string>Make interface more touch friendly</string>
-           </property>
-           <property name="toolTip">
-            <string>If set to be touch friendly, Cantata will increase the width of various buttons and make views 'flickable'</string>
            </property>
           </widget>
          </item>
@@ -859,7 +887,7 @@ within the folder of the current track, or within its parent folder. If no image
        <item>
         <widget class="StateLabel" name="touchFriendlyNoteLabel">
          <property name="text">
-         <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; Changing the 'touch friendly' setting will require a re-start of Cantata.&lt;/i&gt;</string>
+          <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; Changing the 'touch friendly' setting will require a re-start of Cantata.&lt;/i&gt;</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>

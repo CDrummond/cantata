@@ -86,7 +86,7 @@ void FlickCharm::activateOn(QWidget *widget)
     }
 
     QAbstractScrollArea *scrollArea = dynamic_cast<QAbstractScrollArea*>(widget);
-    if (scrollArea) {
+    if (scrollArea && !d->flickData.contains(scrollArea)) {
         scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
         scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
@@ -135,7 +135,7 @@ void FlickCharm::deactivateFrom(QWidget *widget)
     }
 
     QAbstractScrollArea *scrollArea = dynamic_cast<QAbstractScrollArea*>(widget);
-    if (scrollArea) {
+    if (scrollArea && d->flickData.contains(scrollArea)) {
         QWidget *viewport = scrollArea->viewport();
 
         viewport->removeEventFilter(this);

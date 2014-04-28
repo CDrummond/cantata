@@ -29,6 +29,7 @@
 #include <QDesktopWidget>
 #include <QApplication>
 #include "gtkstyle.h"
+#include "flickcharm.h"
 
 // Max number of items before we try to force a scrollbar in popup menu...
 static int maxPopupItemCount=-1;
@@ -73,6 +74,7 @@ void ComboBox::showPopup()
         }
     }
     QComboBox::showPopup();
+    FlickCharm::self()->activateOn(view());
 
     if (GtkStyle::isActive() && parentWidget() && view()->parentWidget() && count()>maxPopupItemCount) {
         // Also, if the size of the popup is more than required for 32 items, then

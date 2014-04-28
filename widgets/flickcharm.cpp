@@ -248,7 +248,7 @@ bool FlickCharm::eventFilter(QObject *object, QEvent *event)
                         }
                         if (r.contains(mouseEvent->pos())) {
                             QMouseEvent *event1 = new QMouseEvent(QEvent::MouseButtonPress,
-                                                                  data->pressPos, Qt::LeftButton,
+                                                                  mouseEvent->pos(), Qt::LeftButton,
                                                                   Qt::LeftButton, Qt::NoModifier);
                             QMouseEvent *event2 = new QMouseEvent(*mouseEvent);
 

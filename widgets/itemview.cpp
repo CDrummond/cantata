@@ -371,7 +371,13 @@ public:
         }
 
         QSize sz(QStyledItemDelegate::sizeHint(option, index));
-
+        if (Utils::touchFriendly()) {
+            int minH=option.fontMetrics.height()*2;
+            if (sz.height()<minH) {
+                sz.setHeight(minH);
+                return sz;
+            }
+        }
         return QSize(sz.width(), sz.height()+2);
     }
 

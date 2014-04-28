@@ -239,26 +239,29 @@ bool FlickCharm::eventFilter(QObject *object, QEvent *event)
                 if (qobject_cast<QAbstractItemView *>(data->widget)) {
                     QAbstractItemView *view=static_cast<QAbstractItemView *>(data->widget);
                     QModelIndex index=view->indexAt(mouseEvent->pos());
-                    if (index.isValid() && 0==index.column()) {
-                        QRect r=view->visualRect(index);
-                        if (Qt::RightToLeft==view->layoutDirection()) {
-                            r=QRect(r.x()+r.width()-(1+dragArea()), r.y(), qMin(dragArea(), r.width()), qMin(dragArea(), r.height()));
-                        } else {
-                            r=QRect(r.x(), r.y(), qMin(dragArea(), r.width()), qMin(dragArea(), r.height()));
-                        }
-                        if (r.contains(mouseEvent->pos())) {
-                            QMouseEvent *event1 = new QMouseEvent(QEvent::MouseButtonPress,
-                                                                  mouseEvent->pos(), Qt::LeftButton,
-                                                                  Qt::LeftButton, Qt::NoModifier);
-                            QMouseEvent *event2 = new QMouseEvent(*mouseEvent);
+                    if (index.isValid() && 0==index.column() && index.model()) {
+                        int flags=index.model()->flags(index);
+                        if (flags&Qt::ItemIsDragEnabled && !(flags&Qt::ItemIsUserCheckable)) {
+                            QRect r=view->visualRect(index);
+                            if (Qt::RightToLeft==view->layoutDirection()) {
+                                r=QRect(r.x()+r.width()-(1+dragArea()), r.y(), qMin(dragArea(), r.width()), qMin(dragArea(), r.height()));
+                            } else {
+                                r=QRect(r.x(), r.y(), qMin(dragArea(), r.width()), qMin(dragArea(), r.height()));
+                            }
+                            if (r.contains(mouseEvent->pos())) {
+                                QMouseEvent *event1 = new QMouseEvent(QEvent::MouseButtonPress,
+                                                                      mouseEvent->pos(), Qt::LeftButton,
+                                                                      Qt::LeftButton, Qt::NoModifier);
+                                QMouseEvent *event2 = new QMouseEvent(*mouseEvent);
 
-                            data->ignored << event1;
-                            data->ignored << event2;
-                            QApplication::postEvent(object, event1);
-                            QApplication::postEvent(object, event2);
-                            dragView=((QAbstractItemViewHack *)view);
-                            QTimer::singleShot(0, this, SLOT(startDrag()));
-                            break;
+                                data->ignored << event1;
+                                data->ignored << event2;
+                                QApplication::postEvent(object, event1);
+                                QApplication::postEvent(object, event2);
+                                dragView=((QAbstractItemViewHack *)view);
+                                QTimer::singleShot(0, this, SLOT(startDrag()));
+                                break;
+                            }
                         }
                     }
                 }

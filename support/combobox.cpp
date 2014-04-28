@@ -23,9 +23,11 @@
 
 #include "combobox.h"
 #include "lineedit.h"
+#include "utils.h"
 #include <QAbstractItemView>
 #include <QStyle>
 #include <QStyleOption>
+#include <QStyledItemDelegate>
 #include <QDesktopWidget>
 #include <QApplication>
 #include "gtkstyle.h"
@@ -33,6 +35,22 @@
 
 // Max number of items before we try to force a scrollbar in popup menu...
 static int maxPopupItemCount=-1;
+
+class ComboItemDelegate : public QStyledItemDelegate
+{
+public:
+    ComboItemDelegate(QObject *p) : QStyledItemDelegate(p) { }
+    virtual ~ComboItemDelegate() { }
+    QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
+    {
+        QSize sz=QStyledItemDelegate::sizeHint(option, index);
+        int minH=option.fontMetrics.height()*2;
+        if (sz.height()<minH) {
+            sz.setHeight(minH);
+        }
+        return sz;
+    }
+};
 
 ComboBox::ComboBox(QWidget *p)
     #ifdef ENABLE_KDE_SUPPORT
@@ -48,6 +66,9 @@ ComboBox::ComboBox(QWidget *p)
         } else {
             maxPopupItemCount=32;
         }
+    }
+    if (Utils::touchFriendly()) {
+        setItemDelegate(new ComboItemDelegate(this));
     }
 }
 

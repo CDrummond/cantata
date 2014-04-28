@@ -23,6 +23,7 @@
 
 #include "basicitemdelegate.h"
 #include "gtkstyle.h"
+#include "utils.h"
 #include <QPainter>
 #include <QStyle>
 #include <QStyledItemDelegate>
@@ -70,6 +71,18 @@ BasicItemDelegate::BasicItemDelegate(QObject *p)
 
 BasicItemDelegate::~BasicItemDelegate()
 {
+}
+
+QSize BasicItemDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
+{
+    QSize sz=QStyledItemDelegate::sizeHint(option, index);
+    if (Utils::touchFriendly()) {
+        int minH=option.fontMetrics.height()*2;
+        if (sz.height()<minH) {
+            sz.setHeight(minH);
+        }
+    }
+    return sz;
 }
 
 void BasicItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const

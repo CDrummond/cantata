@@ -21,6 +21,7 @@
     works on these.
 16. Add support for comments. These are read directly from the song file when
     the tag-editor is used, and they are NOT saved in Cantata's cache file.
+    Comments are only read in MPD is configured to support the COMMENT field.
 17. Install Cantata's list of lyrics providers to INSTALL/share/cantata/lyrics
 18. Read lyrics providers from each .xml file in ~/.local/share/cantata/lyrics,
     and INSTALL/share/cantata/lyrics
@@ -28,7 +29,7 @@
     menu button is used, and menubar hidden. For Mac and Unity, menubar is
     used, and menu button is hidden. For KDE Plasma, by default the menu button
     is used, and the menu bar hidden - but a menu entry is provided to toggle.
-    This setting may be overridden - see README for details.
+    This setting can be overridden - see README for details.
 20. Most songs will be less than 1 hr long, so by default we only need to
     reserve space for -MM:SS at each side of position slider. If song duration
     is longer than 1hr, then this is increased to -H:MM:SS
@@ -45,7 +46,7 @@
     for display. Size of cache can be controlled by config item, see README for
     details.
 28. Only save albumartist tag in XML cache file if library supports this tag.
-29. Use MPD status to determine when to show, and hide, "Updating..." message.
+29. Use MPD status to determine when to show, and hide, 'Updating...' message.
 30. Ignore mouse-events on message-overlay if cancel button is hidden.
 31. Update copy of QJson to 0.8.1
 32. Speed up building list of songs - by only checking if file has already
@@ -91,12 +92,12 @@
     Queensrÿche and Queensryche should match.
 57. Add 'Sort By' to playqueue context model - allowing to re-sort tracks by
     artist, album artist, album, genre, or year.
-58. When sorting albums view, also ignore "The " at start of artist names, as
+58. When sorting albums view, also ignore 'The ' at start of artist names, as
     per artists view.
 59. Add more sort options to albums view.
-60. Fix crash when chaging view mode whilst search is active.
-61. Add a 'touch friendly' setting - icons are made larger, and views are
-    'flickable'
+60. Fix crash when changing view mode whilst search is active.
+61. Add a 'touch friendly' setting - toolbuttons are made wider, view actions
+    always visible (semi-transparent in list/tree), and views are 'flickable'
 62. Use a toolbutton for listview header and back action.
 63. Add 'List' to playqueue view types.
 64. Add 'Locate In Library' to search page.

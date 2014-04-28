@@ -100,6 +100,11 @@ void FlickCharm::activateOn(QWidget *widget)
         d->flickData[viewport]->widget = widget;
         d->flickData[viewport]->state = FlickData::Steady;
 
+        QAbstractItemView *view = dynamic_cast<QAbstractItemView*>(widget);
+        if (view) {
+            view->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
+            view->setHorizontalScrollMode(QAbstractItemView::ScrollPerPixel);
+        }
         return;
     }
 

@@ -27,6 +27,7 @@
 #include "settings.h"
 #include "basicitemdelegate.h"
 #include "flickcharm.h"
+#include "utils.h"
 
 ToggleList::ToggleList(QWidget *p)
     : QWidget(p)
@@ -54,6 +55,9 @@ ToggleList::ToggleList(QWidget *p)
     selected->setItemDelegate(new BasicItemDelegate(selected));
     FlickCharm::self()->activateOn(available);
     FlickCharm::self()->activateOn(selected);
+    QSize sz=Utils::touchFriendly() ? removeButton->sizeHint() : QSize(0, 0);
+    spacerA->changeSize(sz.width(), sz.height());
+    spacerB->changeSize(sz.width(), sz.height());
 }
 
 void ToggleList::moveUp()

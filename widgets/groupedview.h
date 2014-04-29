@@ -60,7 +60,7 @@ public:
     void setStartClosed(bool sc);
     bool isStartClosed() const { return startClosed; }
     void setMultiLevel(bool ml) { isMultiLevel=ml; }
-    void updateRows(qint32 row, quint16 curAlbum, bool scroll, const QModelIndex &parent=QModelIndex());
+    void updateRows(qint32 row, quint16 curAlbum, bool scroll, const QModelIndex &parent=QModelIndex(), bool forceScroll=false);
     void updateCollectionRows();
     bool isCurrentAlbum(quint16 key) const { return key==currentAlbum; }
     bool isExpanded(quint16 key, quint32 collection) const { return filterActive ||

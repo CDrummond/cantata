@@ -314,6 +314,9 @@
            <widget class="SpacerWidget" name="midSpacer" native="true"/>
           </item>
           <item>
+           <widget class="ToolButton" name="centerPlayQueueButton"/>
+          </item>
+          <item>
            <widget class="ToolButton" name="savePlayQueueButton"/>
           </item>
           <item>

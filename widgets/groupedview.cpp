@@ -540,7 +540,7 @@ void GroupedView::setStartClosed(bool sc)
     }
 }
 
-void GroupedView::updateRows(qint32 row, quint16 curAlbum, bool scroll, const QModelIndex &parent)
+void GroupedView::updateRows(qint32 row, quint16 curAlbum, bool scroll, const QModelIndex &parent, bool forceScroll)
 {
     currentAlbum=curAlbum;
 
@@ -560,7 +560,7 @@ void GroupedView::updateRows(qint32 row, quint16 curAlbum, bool scroll, const QM
     }
 
     updateRows(parent);
-    if (MPDState_Playing==MPDStatus::self()->state() && scroll) {
+    if (scroll && (MPDState_Playing==MPDStatus::self()->state() || forceScroll)) {
         scrollTo(model()->index(row, 0, parent), QAbstractItemView::PositionAtCenter);
     }
 }

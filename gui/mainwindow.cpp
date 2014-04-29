@@ -266,6 +266,7 @@ MainWindow::MainWindow(QWidget *parent)
     cropPlayQueueAction = ActionCollection::get()->createAction("cropplaylist", i18n("Crop"));
     addStreamToPlayQueueAction = ActionCollection::get()->createAction("addstreamtoplayqueue", i18n("Add Stream URL"), menuIcons ? Icons::self()->addRadioStreamIcon : Icon());
     promptClearPlayQueueAction = ActionCollection::get()->createAction("clearplaylist", i18n("Clear"), Icons::self()->clearListIcon);
+    centerPlayQueueAction = ActionCollection::get()->createAction("centerplaylist", i18n("Center On Current Track"), Qt::RightToLeft==layoutDirection() ? "go-previous" : "go-next");
     songInfoAction = ActionCollection::get()->createAction("showsonginfo", i18n("Show Current Song Information"), Icons::self()->infoIcon);
     songInfoAction->setShortcut(Qt::Key_F12);
     songInfoAction->setCheckable(true);
@@ -328,10 +329,12 @@ MainWindow::MainWindow(QWidget *parent)
     stopTrackButton->setPopupMode(QToolButton::DelayedPopup);
 
     promptClearPlayQueueAction->setEnabled(false);
+    centerPlayQueueAction->setEnabled(false);
     StdActions::self()->savePlayQueueAction->setEnabled(false);
     addStreamToPlayQueueAction->setEnabled(false);
     clearPlayQueueButton->setDefaultAction(promptClearPlayQueueAction);
     savePlayQueueButton->setDefaultAction(StdActions::self()->savePlayQueueAction);
+    centerPlayQueueButton->setDefaultAction(centerPlayQueueAction);
     randomButton->setDefaultAction(randomPlayQueueAction);
     repeatButton->setDefaultAction(repeatPlayQueueAction);
     singleButton->setDefaultAction(singlePlayQueueAction);
@@ -790,6 +793,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(playQueue->removeFromAct(), SIGNAL(triggered(bool)), this, SLOT(removeFromPlayQueue()));
     connect(promptClearPlayQueueAction, SIGNAL(triggered(bool)), playQueueSearchWidget, SLOT(clear()));
     connect(promptClearPlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(promptClearPlayQueue()));
+    connect(centerPlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(centerPlayQueue()));
     connect(cropPlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(cropPlayQueue()));
     connect(songInfoAction, SIGNAL(triggered(bool)), this, SLOT(showSongInfo()));
     connect(fullScreenAction, SIGNAL(triggered(bool)), this, SLOT(fullScreen()));
@@ -1633,6 +1637,7 @@ void MainWindow::updatePlayQueue(const QList<Song> &songs)
     StdActions::self()->prevTrackAction->setEnabled(StdActions::self()->stopPlaybackAction->isEnabled() && songs.count()>1);
     StdActions::self()->savePlayQueueAction->setEnabled(!songs.isEmpty());
     promptClearPlayQueueAction->setEnabled(!songs.isEmpty());
+    centerPlayQueueAction->setEnabled(songs.count()>1);
 
     int topRow=-1;
     QModelIndex topIndex=playQueueModel.lastCommandWasUnodOrRedo() ? playQueue->indexAt(QPoint(0, 0)) : QModelIndex();
@@ -1874,6 +1879,18 @@ void MainWindow::clearPlayQueue()
         #endif
     } else {
         playQueueModel.removeAll();
+    }
+}
+
+void MainWindow::centerPlayQueue()
+{
+    QModelIndex idx=playQueueProxyModel.mapFromSource(playQueueModel.index(playQueueModel.currentSongRow(), 0));
+    if (idx.isValid()) {
+        if (playQueue->isGrouped()) {
+            playQueue->updateRows(idx.row(), current.key, true, true);
+        } else {
+            playQueue->scrollTo(idx, QAbstractItemView::PositionAtCenter);
+        }
     }
 }
 
@@ -2486,7 +2503,6 @@ void MainWindow::controlPlaylistActions()
     StdActions::self()->addToStoredPlaylistAction->setVisible(enable);
     StdActions::self()->savePlayQueueAction->setVisible(enable);
     savePlayQueueButton->setVisible(enable);
-    midSpacer->setVisible(enable);
     addPlayQueueToStoredPlaylistAction->setVisible(enable);
 }
 

@@ -513,6 +513,7 @@ MPDConnection::Response MPDConnection::sendCommand(const QByteArray &command, bo
     }
 
     if (QAbstractSocket::ConnectedState!=sock.state()) {
+        DBUG << (void *)(&sock) << "Socket (state:" << sock.state() << ") need to reconnect";
         sock.close();
         if (Success!=connectToMPD(sock)) {
             // Failed to connect, so close *both* sockets!

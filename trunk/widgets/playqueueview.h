@@ -105,7 +105,7 @@ public:
     void setStartClosed(bool sc);
     bool isStartClosed() const;
     void setFilterActive(bool f);
-    void updateRows(qint32 row, quint16 curAlbum, bool scroll);
+    void updateRows(qint32 row, quint16 curAlbum, bool scroll, bool forceScroll=false);
     void scrollTo(const QModelIndex &index, QAbstractItemView::ScrollHint hint);
     QModelIndex indexAt(const QPoint &point);
     void setModel(QAbstractItemModel *m) { view()->setModel(m); }

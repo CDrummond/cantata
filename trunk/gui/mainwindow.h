@@ -199,6 +199,7 @@ public Q_SLOTS:
     void playQueueItemActivated(const QModelIndex &);
     void promptClearPlayQueue();
     void clearPlayQueue();
+    void centerPlayQueue();
     void removeFromPlayQueue() { playQueueModel.remove(playQueueProxyModel.mapToSourceRows(playQueue->selectedIndexes())); }
     void replacePlayQueue() { addToPlayQueue(true); }
     void addToPlayQueue() { addToPlayQueue(false); }
@@ -317,6 +318,7 @@ private:
     Action *stopAfterTrackAction;
     Action *addPlayQueueToStoredPlaylistAction;
     Action *promptClearPlayQueueAction;
+    Action *centerPlayQueueAction;
     Action *cropPlayQueueAction;
     Action *addStreamToPlayQueueAction;
     Action *randomPlayQueueAction;

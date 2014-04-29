@@ -467,10 +467,10 @@ void PlayQueueView::setFilterActive(bool f)
     }
 }
 
-void PlayQueueView::updateRows(qint32 row, quint16 curAlbum, bool scroll)
+void PlayQueueView::updateRows(qint32 row, quint16 curAlbum, bool scroll, bool forceScroll)
 {
     if (ItemView::Mode_GroupedTree==mode) {
-        groupedView->updateRows(row, curAlbum, scroll);
+        groupedView->updateRows(row, curAlbum, scroll, QModelIndex(), forceScroll);
     }
 }
 

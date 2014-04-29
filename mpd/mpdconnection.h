@@ -30,6 +30,7 @@
 #include <QTcpSocket>
 #include <QLocalSocket>
 #include <QHostAddress>
+#include <QNetworkProxy>
 #include <QDateTime>
 #include <QStringList>
 #include <QSet>
@@ -114,11 +115,16 @@ public:
                         ? (QAbstractSocket::SocketState)local->state()
                         : QAbstractSocket::UnconnectedState;
     }
-
+    QNetworkProxy::ProxyType proxyType() const { return tcp ? tcp->proxy().type() : QNetworkProxy::NoProxy; }
     bool isLocal() const { return 0!=local; }
     QString address() const { return tcp ? tcp->peerAddress().toString() : QString(); }
     QString errorString() const { return tcp ? tcp->errorString() : local ? local->errorString() : QLatin1String("No socket object?"); }
-
+    QAbstractSocket::SocketError error() const {
+        return tcp ? tcp->error()
+                   : local
+                        ? (QAbstractSocket::SocketError)local->error()
+                        : QAbstractSocket::UnknownSocketError;
+    }
 Q_SIGNALS:
     void stateChanged(QAbstractSocket::SocketState state);
     void readyRead();
@@ -331,9 +337,12 @@ private:
     {
         Success,
         Failed,
+        ProxyError,
         IncorrectPassword
     };
 
+    static ConnectionReturn convertSocketCode(MpdSocket &socket);
+    QString errorString(ConnectionReturn status) const;
     ConnectionReturn connectToMPD();
     void disconnectFromMPD();
     ConnectionReturn connectToMPD(MpdSocket &socket, bool enableIdle=false);

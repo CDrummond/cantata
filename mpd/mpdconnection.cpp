@@ -320,13 +320,45 @@ MPDConnection::ConnectionReturn MPDConnection::connectToMPD(MpdSocket &socket, b
             }
             return Success;
         } else {
-            DBUG << (void *)(&socket) << "Couldn't connect - " << socket.errorString();
-            return Failed;
+            DBUG << (void *)(&socket) << "Couldn't connect - " << socket.errorString() << socket.error();
+            return convertSocketCode(socket);
         }
     }
 
 //     DBUG << "Already connected" << (enableIdle ? "(idle)" : "(std)");
     return Success;
+}
+
+MPDConnection::ConnectionReturn MPDConnection::convertSocketCode(MpdSocket &socket)
+{
+    switch (socket.error()) {
+    case QAbstractSocket::ProxyAuthenticationRequiredError:
+    case QAbstractSocket::ProxyConnectionRefusedError:
+    case QAbstractSocket::ProxyConnectionClosedError:
+    case QAbstractSocket::ProxyConnectionTimeoutError:
+    case QAbstractSocket::ProxyNotFoundError:
+    case QAbstractSocket::ProxyProtocolError:
+        return MPDConnection::ProxyError;
+    default:
+        if (QNetworkProxy::DefaultProxy!=socket.proxyType() && QNetworkProxy::NoProxy!=socket.proxyType()) {
+            return MPDConnection::ProxyError;
+        }
+        if (socket.errorString().contains(QLatin1String("proxy"), Qt::CaseInsensitive)) {
+            return MPDConnection::ProxyError;
+        }
+        return MPDConnection::Failed;
+    }
+}
+
+QString MPDConnection::errorString(ConnectionReturn status) const
+{
+    switch (status) {
+    default:
+    case Success:           return QString();
+    case Failed:            return i18n("Connection to %1 failed", details.description());
+    case ProxyError:        return i18n("Connection to %1 failed - please check your proxy settings", details.description());
+    case IncorrectPassword: return i18n("Connection to %1 failed - incorrect password", details.description());
+    }
 }
 
 MPDConnection::ConnectionReturn MPDConnection::connectToMPD()
@@ -385,8 +417,8 @@ void MPDConnection::reconnect()
     }
 
     time_t now=time(NULL);
-
-    switch (connectToMPD()) {
+    ConnectionReturn status=connectToMPD();
+    switch (status) {
     case Success:
         getStatus();
         getStats();
@@ -413,13 +445,13 @@ void MPDConnection::reconnect()
             reconnectTimer->start(500);
         } else {
             emit stateChanged(false);
-            emit error(i18n("Connection to %1 failed", details.description()), true);
+            emit error(errorString(Failed), true);
             reconnectStart=0;
         }
         break;
-    case IncorrectPassword:
+    default:
         emit stateChanged(false);
-        emit error(i18n("Connection to %1 failed - incorrect password", details.description()), true);
+        emit error(errorString(status), true);
         reconnectStart=0;
         break;
     }
@@ -458,7 +490,8 @@ void MPDConnection::setDetails(const MPDConnectionDetails &d)
             isUpdatingDb=false;
             emit updatingDatabase(); // Stop any spinners...
         }
-        switch (connectToMPD()) {
+        ConnectionReturn status=connectToMPD();
+        switch (status) {
         case Success:
             getStatus();
             getStats();
@@ -466,14 +499,8 @@ void MPDConnection::setDetails(const MPDConnectionDetails &d)
             getTagTypes();
             emit stateChanged(true);
             break;
-        case Failed:
-            emit stateChanged(false);
-            emit error(i18n("Connection to %1 failed", details.description()), true);
-            break;
-        case IncorrectPassword:
-            emit stateChanged(false);
-            emit error(i18n("Connection to %1 failed - incorrect password", details.description()), true);
-            break;
+        default:
+            emit error(errorString(status), true);
         }
     } else if (diffName) {
          emit stateChanged(true);
@@ -515,11 +542,12 @@ MPDConnection::Response MPDConnection::sendCommand(const QByteArray &command, bo
     if (QAbstractSocket::ConnectedState!=sock.state()) {
         DBUG << (void *)(&sock) << "Socket (state:" << sock.state() << ") need to reconnect";
         sock.close();
-        if (Success!=connectToMPD(sock)) {
+        ConnectionReturn status=connectToMPD(sock);
+        if (Success!=status) {
             // Failed to connect, so close *both* sockets!
             disconnectFromMPD();
             emit stateChanged(false);
-            emit error(i18n("Connection to %1 failed", details.description()), true);
+            emit error(errorString(status), true);
             return Response(false);
         }
     }
@@ -1163,11 +1191,12 @@ void MPDConnection::onSocketStateChanged(QAbstractSocket::SocketState socketStat
             idleSocket.disconnectFromHost();
         }
         idleSocket.close();
-        if (wasConnected && Success!=connectToMPD(idleSocket, true)) {
+        ConnectionReturn status=Success;
+        if (wasConnected && Success!=(status=connectToMPD(idleSocket, true))) {
             // Failed to connect idle socket - so close *both*
             disconnectFromMPD();
             emit stateChanged(false);
-            emit error(i18n("Connection to %1 failed", details.description()), true);
+            emit error(errorString(status), true);
         }
         if (QAbstractSocket::ConnectedState==idleSocket.state()) {
             connect(&idleSocket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(onSocketStateChanged(QAbstractSocket::SocketState)));
@@ -1190,11 +1219,12 @@ void MPDConnection::parseIdleReturn(const QByteArray &data)
     } else {
         DBUG << "idle failed? reconnect";
         idleSocket.close();
-        if (Success!=connectToMPD(idleSocket, true)) {
+        ConnectionReturn status=connectToMPD(idleSocket, true);
+        if (Success!=status) {
             // Failed to connect idle socket - so close *both*
             disconnectFromMPD();
             emit stateChanged(false);
-            emit error(i18n("Connection to %1 failed", details.description()), true);
+            emit error(errorString(status), true);
         }
         return;
     }

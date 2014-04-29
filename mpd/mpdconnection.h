@@ -117,6 +117,7 @@ public:
 
     bool isLocal() const { return 0!=local; }
     QString address() const { return tcp ? tcp->peerAddress().toString() : QString(); }
+    QString errorString() const { return tcp ? tcp->errorString() : local ? local->errorString() : QLatin1String("No socket object?"); }
 
 Q_SIGNALS:
     void stateChanged(QAbstractSocket::SocketState state);

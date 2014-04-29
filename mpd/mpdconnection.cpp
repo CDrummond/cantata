@@ -107,7 +107,7 @@ static QByteArray readFromSocket(MpdSocket &socket)
             if (socket.waitForReadyRead()) {
                 break;
             }
-            DBUG << (void *)(&socket) << "Wait for read failed";
+            DBUG << (void *)(&socket) << "Wait for read failed - " << socket.errorString();
             if (++attempt>=constMaxReadAttempts) {
                 DBUG << "ERROR: Timedout waiting for response";
                 socket.close();
@@ -320,7 +320,7 @@ MPDConnection::ConnectionReturn MPDConnection::connectToMPD(MpdSocket &socket, b
             }
             return Success;
         } else {
-            DBUG << (void *)(&socket) << "Couldn't connect";
+            DBUG << (void *)(&socket) << "Couldn't connect - " << socket.errorString();
             return Failed;
         }
     }

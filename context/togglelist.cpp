@@ -26,6 +26,7 @@
 #include "icon.h"
 #include "settings.h"
 #include "basicitemdelegate.h"
+#include "flickcharm.h"
 
 ToggleList::ToggleList(QWidget *p)
     : QWidget(p)
@@ -51,6 +52,8 @@ ToggleList::ToggleList(QWidget *p)
     available->setItemDelegate(new BasicItemDelegate(available));
     selected->setAlternatingRowColors(false);
     selected->setItemDelegate(new BasicItemDelegate(selected));
+    FlickCharm::self()->activateOn(available);
+    FlickCharm::self()->activateOn(selected);
 }
 
 void ToggleList::moveUp()

@@ -339,7 +339,7 @@ public:
         }
 
         if ((drawBgnd && mouseOver) || Utils::touchFriendly()) {
-            drawIcons(painter, AP_VTop==actionPos ? option.rect : r, mouseOver, rtl, actionPos, index);
+            drawIcons(painter, AP_VTop==actionPos ? option.rect : r, mouseOver || (selected && Utils::touchFriendly()), rtl, actionPos, index);
         }
         if (!iconMode) {
             BasicItemDelegate::drawLine(painter, option.rect, color);

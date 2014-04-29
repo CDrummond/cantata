@@ -446,8 +446,8 @@ public:
             painter->drawText(duratioRect, duration, QTextOption(Qt::AlignVCenter|Qt::AlignRight));
         }
 
-        if (mouseOver) {
-            drawIcons(painter, option.rect, true, rtl, AlbumHeader==type || isCollection ? AP_HBottom : AP_HMiddle, index);
+        if (mouseOver || Utils::touchFriendly()) {
+            drawIcons(painter, option.rect, mouseOver || (selected && Utils::touchFriendly()), rtl, AlbumHeader==type || isCollection ? AP_HBottom : AP_HMiddle, index);
         }
         BasicItemDelegate::drawLine(painter, option.rect, col);
         painter->restore();

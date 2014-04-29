@@ -583,6 +583,8 @@ else (ENABLE_KDE)
         else (MINGW)
             set(CANTATA_SRCS ${CANTATA_SRCS} windows/cantataico.rc)
         endif (MINGW)
+    elseif (APPLE)
+        add_definitions(-D__APPLE__)
     endif (WIN32)
 
     set(CANTATA_RCS ${CANTATA_RCS} cantata_qt.qrc)

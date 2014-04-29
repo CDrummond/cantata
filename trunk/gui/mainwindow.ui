@@ -323,6 +323,9 @@
            <widget class="ToolButton" name="clearPlayQueueButton"/>
           </item>
           <item>
+           <widget class="SizeWidget" name="sizeWidget"/>
+          </item>
+          <item>
            <widget class="SizeGrip" name="sizeGrip" native="true"/>
           </item>
          </layout>
@@ -398,6 +401,11 @@
    <class>SpacerWidget</class>
    <extends>QWidget</extends>
    <header>spacerwidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>SizeWidget</class>
+   <extends>QWidget</extends>
+   <header>sizewidget.h</header>
   </customwidget>
   <customwidget>
    <class>SizeGrip</class>

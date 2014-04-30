@@ -228,13 +228,7 @@ QStringList FolderPage::selectedFiles(bool allowPlaylists) const
     if (selected.isEmpty()) {
         return QStringList();
     }
-
-    QModelIndexList mapped;
-    foreach (const QModelIndex &idx, selected) {
-        mapped.append(proxy.mapToSource(idx));
-    }
-
-    return DirViewModel::self()->filenames(mapped, allowPlaylists);
+    return DirViewModel::self()->filenames(proxy.mapToSource(selected, Settings::self()->filteredOnly()), allowPlaylists);
 }
 
 void FolderPage::addSelectionToPlaylist(const QString &name, bool replace, quint8 priorty, bool randomAlbums)

@@ -22,10 +22,14 @@
  */
 
 #include "proxymodel.h"
+#ifndef ENABLE_UBUNTU
+#include "settings.h"
+#endif
 #include <QMap>
 #include <QString>
 #include <QLatin1String>
 #include <QChar>
+#include <QMimeData>
 
 bool ProxyModel::matchesFilter(const Song &s) const
 {
@@ -160,4 +164,56 @@ QList<int> ProxyModel::mapToSourceRows(const QModelIndexList &list) const
         rows.append(mapToSource(idx).row());
     }
     return rows;
+}
+
+QModelIndexList ProxyModel::mapToSource(const QModelIndexList &list, bool leavesOnly) const
+{
+    QModelIndexList mapped;
+    if (leavesOnly) {
+        QModelIndexList l=leaves(list);
+        foreach (const QModelIndex &idx, l) {
+            mapped.append(mapToSource(idx));
+        }
+    } else {
+        foreach (const QModelIndex &idx, list) {
+            mapped.append(mapToSource(idx));
+        }
+    }
+    return mapped;
+}
+
+#ifndef ENABLE_UBUNTU
+QMimeData * ProxyModel::mimeData(const QModelIndexList &indexes) const
+{
+    QModelIndexList nodes=Settings::self()->filteredOnly() ? leaves(indexes) : indexes;
+    QModelIndexList sourceIndexes;
+    foreach (const QModelIndex &idx, nodes) {
+        sourceIndexes << mapToSource(idx);
+    }
+    return sourceModel()->mimeData(sourceIndexes);
+}
+#endif
+
+QModelIndexList ProxyModel::leaves(const QModelIndexList &list) const
+{
+    QModelIndexList l;
+
+    foreach (const QModelIndex &idx, list) {
+        l+=leaves(idx);
+    }
+    return l;
+}
+
+QModelIndexList ProxyModel::leaves(const QModelIndex &idx) const
+{
+    QModelIndexList list;
+    int rc=rowCount(idx);
+    if (rc>0) {
+        for (int i=0; i<rc; ++i) {
+            list+=leaves(index(i, 0, idx));
+        }
+    } else {
+        list+=idx;
+    }
+    return list;
 }

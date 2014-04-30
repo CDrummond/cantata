@@ -1282,10 +1282,13 @@ static QString fixSingleGenre(const QString &g)
         if (genre==QLatin1String("R&B") || genre==QLatin1String("R B") || genre==QLatin1String("Rnb") || genre==QLatin1String("RnB")) {
             return QLatin1String("R&B");
         }
-        if (genre==QLatin1String("Classic") || genre==QLatin1String("Classical")) {
+        if (genre==QLatin1String("Classic") || genre==QLatin1String("Classical") || genre==QLatin1String("Classical Music")) {
             return QLatin1String("Classical");
         }
-        if (genre==QLatin1String("Christian") || genre.startsWith(QLatin1String("Christian "))) {
+        if (genre==QLatin1String("College") || genre.startsWith("College ", Qt::CaseInsensitive)) {
+            return QLatin1String("College");
+        }
+        if (genre==QLatin1String("Christian") || genre.startsWith(QLatin1String("Christian "), Qt::CaseInsensitive)) {
             return QLatin1String("Christian");
         }
         if (genre==QLatin1String("Rock") || genre.startsWith(QLatin1String("Rock "))) {
@@ -1294,7 +1297,7 @@ static QString fixSingleGenre(const QString &g)
         if (genre==QLatin1String("Easy") || genre==QLatin1String("Easy Listening")) {
             return QLatin1String("Easy Listening");
         }
-        if (genre==QLatin1String("Hit") || genre==QLatin1String("Hits") || genre==QLatin1String("Easy listening")) {
+        if (genre==QLatin1String("Hit") || genre==QLatin1String("Hits")) {
             return QLatin1String("Hits");
         }
         if (genre==QLatin1String("Hip") || genre==QLatin1String("Hiphop") || genre==QLatin1String("Hip Hop") || genre==QLatin1String("Hop Hip")) {
@@ -1313,7 +1316,7 @@ static QString fixSingleGenre(const QString &g)
                                         << QLatin1String("Student") << QLatin1String("Urban");
 
         foreach (const QString &s, small) {
-            if (genre==s || genre.startsWith(s+" ") || genre.endsWith(" "+s)) {
+            if (genre==s || genre.startsWith(s+" ", Qt::CaseInsensitive) || genre.endsWith(" "+s, Qt::CaseInsensitive)) {
                 return s;
             }
         }

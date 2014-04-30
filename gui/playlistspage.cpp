@@ -32,6 +32,7 @@
 #include "actioncollection.h"
 #include "mpdconnection.h"
 #include "tableview.h"
+#include "settings.h"
 #include <QMenu>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KGlobalSettings>
@@ -339,7 +340,7 @@ void PlaylistsPage::addItemsToPlayList(const QModelIndexList &indexes, const QSt
 
     // If we only have 1 item selected, see if it is a playlist. If so, we might be able to
     // just ask MPD to load it...
-    if (name.isEmpty() && 1==indexes.count() && 0==priorty) {
+    if (name.isEmpty() && 1==indexes.count() && 0==priorty && (!proxy.enabled() || !Settings::self()->filteredOnly())) {
         QModelIndex idx=proxy.mapToSource(*(indexes.begin()));
         PlaylistsModel::Item *item=static_cast<PlaylistsModel::Item *>(idx.internalPointer());
 
@@ -349,11 +350,9 @@ void PlaylistsPage::addItemsToPlayList(const QModelIndexList &indexes, const QSt
         }
     }
 
-    QModelIndexList mapped;
-    bool checkNames=!name.isEmpty();
-    foreach (const QModelIndex &idx, indexes) {
-        QModelIndex m=proxy.mapToSource(idx);
-        if (checkNames) {
+    if (!name.isEmpty()) {
+        foreach (const QModelIndex &idx, indexes) {
+            QModelIndex m=proxy.mapToSource(idx);
             PlaylistsModel::Item *item=static_cast<PlaylistsModel::Item *>(m.internalPointer());
             if ( (item->isPlaylist() && static_cast<PlaylistsModel::PlaylistItem *>(item)->name==name) ||
                  (!item->isPlaylist() && static_cast<PlaylistsModel::SongItem *>(item)->parent->name==name) ) {
@@ -361,10 +360,9 @@ void PlaylistsPage::addItemsToPlayList(const QModelIndexList &indexes, const QSt
                 return;
             }
         }
-        mapped.append(m);
     }
 
-    QStringList files=PlaylistsModel::self()->filenames(mapped);
+    QStringList files=PlaylistsModel::self()->filenames(proxy.mapToSource(indexes, Settings::self()->filteredOnly()));
     if (!files.isEmpty()) {
         if (name.isEmpty()) {
             emit add(files, replace, priorty);
@@ -385,12 +383,7 @@ QList<Song> PlaylistsPage::selectedSongs(bool allowPlaylists) const
         return QList<Song>();
     }
 
-    QModelIndexList mapped;
-    foreach (const QModelIndex &idx, selected) {
-        mapped.append(proxy.mapToSource(idx));
-    }
-
-    return PlaylistsModel::self()->songs(mapped);
+    return PlaylistsModel::self()->songs(proxy.mapToSource(selected, Settings::self()->filteredOnly()));
 }
 
 void PlaylistsPage::addSelectionToDevice(const QString &udi)

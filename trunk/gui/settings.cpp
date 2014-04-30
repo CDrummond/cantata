@@ -936,6 +936,11 @@ bool Settings::touchFriendly()
     return cfg.get("touchFriendly", false);
 }
 
+bool Settings::filteredOnly()
+{
+    return cfg.get("filteredOnly", false);
+}
+
 void Settings::removeConnectionDetails(const QString &v)
 {
     if (v==currentConnection()) {
@@ -1450,6 +1455,11 @@ void Settings::saveShowMenubar(bool v)
 void Settings::saveTouchFriendly(bool v)
 {
     cfg.set("touchFriendly", v);
+}
+
+void Settings::saveFilteredOnly(bool v)
+{
+    cfg.set("filteredOnly", v);
 }
 
 void Settings::save(bool force)

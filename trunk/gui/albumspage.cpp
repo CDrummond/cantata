@@ -124,29 +124,45 @@ QStringList AlbumsPage::selectedFiles(bool allowPlaylists, bool randomAlbums) co
         return QStringList();
     }
 
-    QModelIndexList mapped;
-    foreach (const QModelIndex &idx, selected) {
-        mapped.append(proxy.mapToSource(idx));
-    }
-
+    QModelIndexList mapped=proxy.mapToSource(selected, Settings::self()->filteredOnly());
     if (randomAlbums) {
-        QModelIndexList albumIndexes;
-        foreach (const QModelIndex &idx, mapped) {
-            if (static_cast<AlbumsModel::Item *>(idx.internalPointer())->isAlbum()) {
-                albumIndexes.append(idx);
+        if (Settings::self()->filteredOnly()) {
+            QMap<quint32, QModelIndexList> albums;
+            foreach (const QModelIndex &idx, mapped) {
+                if (idx.parent().isValid()) {
+                    albums[idx.parent().row()].append(idx);
+                }
             }
-        }
-
-        if (albumIndexes.isEmpty()) {
-            return QStringList();
-        }
-
-        if (1==albumIndexes.count()) {
-            mapped=albumIndexes;
+            QList<quint32> keys=albums.keys();
+            if (keys.isEmpty()) {
+                return QStringList();
+            } else if (1==keys.count()) {
+                mapped=albums.begin().value();
+            } else {
+                mapped.clear();
+                while (!keys.isEmpty()) {
+                    mapped.append(albums[keys.takeAt(Utils::random(keys.count()))]);
+                }
+            }
         } else {
-            mapped.clear();
-            while (!albumIndexes.isEmpty()) {
-                mapped.append(albumIndexes.takeAt(Utils::random(albumIndexes.count())));
+            QModelIndexList albumIndexes;
+            foreach (const QModelIndex &idx, mapped) {
+                if (static_cast<AlbumsModel::Item *>(idx.internalPointer())->isAlbum()) {
+                    albumIndexes.append(idx);
+                }
+            }
+
+            if (albumIndexes.isEmpty()) {
+                return QStringList();
+            }
+
+            if (1==albumIndexes.count()) {
+                mapped=albumIndexes;
+            } else {
+                mapped.clear();
+                while (!albumIndexes.isEmpty()) {
+                    mapped.append(albumIndexes.takeAt(Utils::random(albumIndexes.count())));
+                }
             }
         }
     }

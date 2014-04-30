@@ -178,13 +178,7 @@ QStringList OnlineServicesPage::selectedFiles() const
     if (selected.isEmpty()) {
         return QStringList();
     }
-
-    QModelIndexList mapped;
-    foreach (const QModelIndex &idx, selected) {
-        mapped.append(proxy.mapToSource(idx));
-    }
-
-    return OnlineServicesModel::self()->filenames(mapped);
+    return OnlineServicesModel::self()->filenames(proxy.mapToSource(selected, Settings::self()->filteredOnly()));
 }
 
 QList<Song> OnlineServicesPage::selectedSongs(bool allowPlaylists) const
@@ -194,21 +188,7 @@ QList<Song> OnlineServicesPage::selectedSongs(bool allowPlaylists) const
     if (selected.isEmpty()) {
         return QList<Song>();
     }
-
-    QModelIndexList mapped;
-    foreach (const QModelIndex &idx, selected) {
-        QModelIndex index = proxy.mapToSource(idx);
-        mapped.append(index);
-        MusicLibraryItem *item=static_cast<MusicLibraryItem *>(index.internalPointer());
-
-        if (item && MusicLibraryItem::Type_Root!=item->itemType()) {
-            while(item->parentItem()) {
-                item=item->parentItem();
-            }
-        }
-    }
-
-    return OnlineServicesModel::self()->songs(mapped);
+    return OnlineServicesModel::self()->songs(proxy.mapToSource(selected, Settings::self()->filteredOnly()));
 }
 
 void OnlineServicesPage::addSelectionToPlaylist(const QString &name, bool replace, quint8 priorty, bool randomAlbums)

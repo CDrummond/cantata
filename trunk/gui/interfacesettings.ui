@@ -751,34 +751,44 @@ within the folder of the current track, or within its parent folder. If no image
           </widget>
          </item>
          <item row="2" column="0" colspan="2">
+          <widget class="QCheckBox" name="filteredOnly">
+           <property name="toolTip">
+            <string>&lt;p&gt;When addig artists, or albums to the playqueue, or editing tags, etc, then only use songs that pass the current Genre or string filter.&lt;/p&gt;&lt;p&gt;e.g. If you have an album with 10 songs, but only 5 have the genre set to 'Metal', then only these 5 would be added if the view's Genre filter was set to 'Metal'.</string>
+           </property>
+           <property name="text">
+            <string>Only act on songs that pass filtering</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0" colspan="2">
           <widget class="QCheckBox" name="fetchCovers">
            <property name="text">
             <string>Fetch missing covers from Last.fm</string>
            </property>
           </widget>
          </item>
-         <item row="3" column="0" colspan="2">
+         <item row="4" column="0" colspan="2">
           <widget class="QCheckBox" name="cacheScaledCovers">
            <property name="text">
             <string>Cache scaled covers</string>
            </property>
           </widget>
          </item>
-         <item row="4" column="0" colspan="2">
+         <item row="5" column="0" colspan="2">
           <widget class="QCheckBox" name="showDeleteAction">
            <property name="text">
             <string>Show delete action in context menus</string>
            </property>
           </widget>
          </item>
-         <item row="5" column="0" colspan="2">
+         <item row="6" column="0" colspan="2">
           <widget class="QCheckBox" name="forceSingleClick">
            <property name="text">
             <string>Enforce single-click activation of items</string>
            </property>
           </widget>
          </item>
-         <item row="6" column="0" colspan="2">
+         <item row="7" column="0" colspan="2">
           <widget class="QCheckBox" name="touchFriendly">
            <property name="toolTip">
             <string>&lt;p&gt;This will change Cantata's interface as detailed:
@@ -789,7 +799,7 @@ within the folder of the current track, or within its parent folder. If no image
            </property>
           </widget>
          </item>
-         <item row="7" column="0">
+         <item row="8" column="0">
           <widget class="BuddyLabel" name="langLabel">
            <property name="text">
             <string>Language:</string>
@@ -799,7 +809,7 @@ within the folder of the current track, or within its parent folder. If no image
            </property>
           </widget>
          </item>
-         <item row="7" column="1">
+         <item row="8" column="1">
           <widget class="QComboBox" name="lang"/>
          </item>
         </layout>

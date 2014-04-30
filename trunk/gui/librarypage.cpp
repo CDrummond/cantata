@@ -140,44 +140,60 @@ QStringList LibraryPage::selectedFiles(bool allowPlaylists, bool randomAlbums) c
         return QStringList();
     }
 
-    QModelIndexList mapped;
-    foreach (const QModelIndex &idx, selected) {
-        mapped.append(proxy.mapToSource(idx));
-    }
-
+    QModelIndexList mapped=proxy.mapToSource(selected, Settings::self()->filteredOnly());
     if (randomAlbums) {
-        QModelIndexList albumIndexes;
-        QSet<QString> albumNames;
-        foreach (const QModelIndex &idx, mapped) {
-            MusicLibraryItem *item=static_cast<MusicLibraryItem *>(idx.internalPointer());
-            if (MusicLibraryItem::Type_Album==item->itemType()) {
-                QString name=nameKey(item->parentItem()->data(), item->data());
-                if (!albumNames.contains(name)) {
-                    albumNames.insert(name);
-                    albumIndexes.append(idx);
+        if (Settings::self()->filteredOnly()) {
+            QMap<quint32, QModelIndexList> albums;
+            foreach (const QModelIndex &idx, mapped) {
+                if (idx.parent().isValid() && idx.parent().parent().isValid()) {
+                    albums[(idx.parent().parent().row()<<16)+idx.parent().row()].append(idx);
                 }
-            } else if (MusicLibraryItem::Type_Artist==item->itemType()) {
-                for (int row=0; row<static_cast<MusicLibraryItemContainer *>(item)->childCount(); ++row) {
-                MusicLibraryItem *album=static_cast<MusicLibraryItemContainer *>(item)->childItem(row);
-                    QString name=nameKey(item->data(), album->data());
+            }
+            QList<quint32> keys=albums.keys();
+            if (keys.isEmpty()) {
+                return QStringList();
+            } else if (1==keys.count()) {
+                mapped=albums.begin().value();
+            } else {
+                mapped.clear();
+                while (!keys.isEmpty()) {
+                    mapped.append(albums[keys.takeAt(Utils::random(keys.count()))]);
+                }
+            }
+        } else {
+            QModelIndexList albumIndexes;
+            QSet<QString> albumNames;
+            foreach (const QModelIndex &idx, mapped) {
+                MusicLibraryItem *item=static_cast<MusicLibraryItem *>(idx.internalPointer());
+                if (MusicLibraryItem::Type_Album==item->itemType()) {
+                    QString name=nameKey(item->parentItem()->data(), item->data());
                     if (!albumNames.contains(name)) {
                         albumNames.insert(name);
-                        albumIndexes.append(MusicLibraryModel::self()->index(row, 0, idx));
+                        albumIndexes.append(idx);
+                    }
+                } else if (MusicLibraryItem::Type_Artist==item->itemType()) {
+                    for (int row=0; row<static_cast<MusicLibraryItemContainer *>(item)->childCount(); ++row) {
+                        MusicLibraryItem *album=static_cast<MusicLibraryItemContainer *>(item)->childItem(row);
+                        QString name=nameKey(item->data(), album->data());
+                        if (!albumNames.contains(name)) {
+                            albumNames.insert(name);
+                            albumIndexes.append(MusicLibraryModel::self()->index(row, 0, idx));
+                        }
                     }
                 }
             }
-        }
 
-        if (albumIndexes.isEmpty()) {
-            return QStringList();
-        }
+            if (albumIndexes.isEmpty()) {
+                return QStringList();
+            }
 
-        if (1==albumIndexes.count()) {
-            mapped=albumIndexes;
-        } else {
-            mapped.clear();
-            while (!albumIndexes.isEmpty()) {
-                mapped.append(albumIndexes.takeAt(Utils::random(albumIndexes.count())));
+            if (1==albumIndexes.count()) {
+                mapped=albumIndexes;
+            } else {
+                mapped.clear();
+                while (!albumIndexes.isEmpty()) {
+                    mapped.append(albumIndexes.takeAt(Utils::random(albumIndexes.count())));
+                }
             }
         }
     }
@@ -191,13 +207,7 @@ QList<Song> LibraryPage::selectedSongs(bool allowPlaylists) const
     if (selected.isEmpty()) {
         return QList<Song>();
     }
-
-    QModelIndexList mapped;
-    foreach (const QModelIndex &idx, selected) {
-        mapped.append(proxy.mapToSource(idx));
-    }
-
-    return MusicLibraryModel::self()->songs(mapped, allowPlaylists);
+    return MusicLibraryModel::self()->songs(proxy.mapToSource(selected, Settings::self()->filteredOnly()), allowPlaylists);
 }
 
 Song LibraryPage::coverRequest() const

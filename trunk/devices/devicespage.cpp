@@ -209,13 +209,8 @@ QList<Song> DevicesPage::selectedSongs(bool allowPlaylists) const
     }
 
     // Ensure all songs are from UMS/Remote devices...
-    QString udi;
-    QModelIndexList mapped;
     foreach (const QModelIndex &idx, selected) {
-        QModelIndex index = proxy.mapToSource(idx);
-        mapped.append(index);
-        MusicLibraryItem *item=static_cast<MusicLibraryItem *>(index.internalPointer());
-
+        MusicLibraryItem *item=static_cast<MusicLibraryItem *>(proxy.mapToSource(idx).internalPointer());
         if (item && MusicLibraryItem::Type_Root!=item->itemType()) {
             while(item->parentItem()) {
                 item=item->parentItem();
@@ -230,7 +225,7 @@ QList<Song> DevicesPage::selectedSongs(bool allowPlaylists) const
         }
     }
 
-    return DevicesModel::self()->songs(mapped);
+    return DevicesModel::self()->songs(proxy.mapToSource(selected, Settings::self()->filteredOnly()));
 }
 
 void DevicesPage::addSelectionToPlaylist(const QString &name, bool replace, quint8 priorty, bool randomAlbums)

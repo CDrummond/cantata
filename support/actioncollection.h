@@ -41,6 +41,9 @@ public:
     Action * createAction(const QString &name, const QString &text, const QIcon &icon, const QString &whatsThis=QString());
 
     void updateToolTips();
+
+Q_SIGNALS:
+    void tooltipUpdated(QAction *);
 };
 
 #else
@@ -115,6 +118,7 @@ Q_SIGNALS:
     void inserted(QAction *action);
     void actionHovered(QAction *action);
     void actionTriggered(QAction *action);
+    void tooltipUpdated(QAction *);
 
 protected Q_SLOTS:
     virtual void connectNotify(const char *signal);

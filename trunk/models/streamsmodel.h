@@ -267,6 +267,7 @@ public:
 private Q_SLOTS:
     void jobFinished();
     void persistFavourites();
+    void tooltipUpdated(QAction *act);
 
 private:
     bool loadCache(CategoryItem *cat);
@@ -289,6 +290,7 @@ private:
     Action *addToFavouritesAction;
     Action *configureAction;
     Action *reloadAction;
+    Action *searchAction;
     QList<Item *> hiddenCategories;
 };
 

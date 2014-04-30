@@ -81,7 +81,11 @@ Action * ActionCollection::createAction(const QString &name, const QString &text
 void ActionCollection::updateToolTips()
 {
     foreach (QAction *act, actions()) {
+        QString prev=act->toolTip();
         Action::updateToolTip(act);
+        if (prev!=act->toolTip()) {
+            emit tooltipUpdated(act);
+        }
     }
 }
 

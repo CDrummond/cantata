@@ -579,6 +579,18 @@ StreamsModel::StreamsModel(QObject *parent)
     configureAction = ActionCollection::get()->createAction("configurestreams", i18n("Configure Streams"), Icons::self()->configureIcon);
     reloadAction = ActionCollection::get()->createAction("reloadstreams", i18n("Reload"), Icon("view-refresh"));
 
+    // For Mac/Unity we try to hide icons from menubar menus. However, search is used in the menubar AND in the streams view. We
+    // need the icon on the streams view. Therefore, if the StdAction has no icon -  we create a new one and forward all signals...
+    if (StdActions::self()->searchAction->icon().isNull()) {
+        searchAction = new Action(Icon("edit-find"), StdActions::self()->searchAction->text(), this);
+        searchAction->setToolTip(StdActions::self()->searchAction->toolTip());
+        connect(searchAction, SIGNAL(triggered(bool)), StdActions::self()->searchAction, SIGNAL(triggered(bool)));
+        connect(searchAction, SIGNAL(triggered()), StdActions::self()->searchAction, SIGNAL(triggered()));
+        connect(ActionCollection::get(), SIGNAL(tooltipUpdated(QAction *)), SLOT(tooltipUpdated(QAction *)));
+    } else {
+        searchAction = StdActions::self()->searchAction;
+    }
+
     QSet<QString> hidden=Settings::self()->hiddenStreamCategories().toSet();
     foreach (Item *c, root->children) {
         if (c!=favourites) {
@@ -692,7 +704,7 @@ QVariant StreamsModel::data(const QModelIndex &index, int role) const
                 actions << reloadAction;
             }
             if (tuneIn==item || shoutCast==item || (cat->isTopLevel() && !cat->children.isEmpty())) {
-                actions << StdActions::self()->searchAction;
+                actions << searchAction;
             }
             if (cat->canBookmark) {
                 actions << addBookmarkAction;
@@ -1242,6 +1254,14 @@ void StreamsModel::persistFavourites()
             emit error(i18n("Failed to save stream list. Please check %1 is writable.", fileName));
             reloadFavourites();
         }
+    }
+}
+
+// Required due to icon missing for StdActions::searchAction for Mac/Unity... See note in constructor above.
+void StreamsModel::tooltipUpdated(QAction *act)
+{
+    if (act!=searchAction && act==StdActions::self()->searchAction) {
+        searchAction->setToolTip(StdActions::self()->searchAction->toolTip());
     }
 }
 

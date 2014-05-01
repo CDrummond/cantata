@@ -22,29 +22,29 @@
  */
 
 #include "sizegrip.h"
-#include "sizewidget.h"
-#include <QIcon>
+#include "toolbutton.h"
+#include "icons.h"
+#include <QBoxLayout>
+#include <QSizeGrip>
 
-// Some styles, such as MacOSX, do not have a size-grip.
-// However, we still want the same space taken up on the toolbar - so that 'clear playqueue'
-// is not right in the bottom-right corner.
-//
-// Also, we want the size-grip to have the same height as a toolbutton - so that it is aligned
-// to the bottom of the main window.
-//
-// This class attempts to rectify these issues...
 SizeGrip::SizeGrip(QWidget *parent)
-    : QSizeGrip(parent)
+    : QWidget(parent)
 {
-    setFixedHeight(SizeWidget::standardHeight());
+    QBoxLayout *l=new QBoxLayout(QBoxLayout::TopToBottom, this);
+    l->addItem(new QSpacerItem(1, 0, QSizePolicy::Maximum, QSizePolicy::Preferred));
+    QSizeGrip *grip=new QSizeGrip(this);
+    l->addWidget(grip);
+    l->setMargin(0);
+    l->setSpacing(0);
+    l->setAlignment(Qt::AlignBottom);
+    ToolButton tb;
+    tb.move(65535, 65535);
+    tb.setToolButtonStyle(Qt::ToolButtonIconOnly);
+    tb.setIcon(Icons::self()->albumIcon);
+    tb.ensurePolished();
+    tb.setAttribute(Qt::WA_DontShowOnScreen);
+    tb.setVisible(true);
+    setMinimumWidth(qMax(grip->sizeHint().width(), tb.sizeHint().width()));
+    setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
 }
 
-QSize SizeGrip::sizeHint() const
-{
-    if (!sh.isValid()) {
-        int itemHeight=SizeWidget::standardHeight();
-        sh=QSizeGrip::sizeHint();
-        sh=QSize(sh.width()>2 ? sh.width() : itemHeight, itemHeight);
-    }
-    return sh;
-}

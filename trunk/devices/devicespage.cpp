@@ -225,7 +225,7 @@ QList<Song> DevicesPage::selectedSongs(bool allowPlaylists) const
         }
     }
 
-    return DevicesModel::self()->songs(proxy.mapToSource(selected, Settings::self()->filteredOnly()));
+    return DevicesModel::self()->songs(proxy.mapToSource(selected, proxy.enabled() && Settings::self()->filteredOnly()));
 }
 
 void DevicesPage::addSelectionToPlaylist(const QString &name, bool replace, quint8 priorty, bool randomAlbums)

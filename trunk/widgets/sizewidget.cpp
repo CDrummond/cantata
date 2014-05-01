@@ -29,7 +29,12 @@
 SizeWidget::SizeWidget(QWidget *parent)
     : ComboBox(parent)
 {
+    #ifdef Q_OS_MAC
+    // For some reason, using 0 pixles on Mac causes genre combo to overlap
+    setFixedWidth(12);
+    #else
     setFixedWidth(0);
+    #endif
 }
 
 void SizeWidget::paintEvent(QPaintEvent *e)

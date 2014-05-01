@@ -24,17 +24,12 @@
 #ifndef SIZEGRIP_H
 #define SIZEGRIP_H
 
-#include <QSizeGrip>
+#include <QWidget>
 
-class SizeGrip : public QSizeGrip
+class SizeGrip : public QWidget
 {
 public:
     explicit SizeGrip(QWidget *parent = 0);
-    QSize sizeHint() const;
-    QSize minimumSizeHint() const { return sizeHint(); }
-
-private:
-    mutable QSize sh;
 };
 
 #endif

@@ -36,7 +36,6 @@
 #include "wikipediaengine.h"
 #include "localize.h"
 #include "backdropcreator.h"
-#include "sizewidget.h"
 #include "gtkstyle.h"
 #include "qjson/parser.h"
 #include "playqueueview.h"
@@ -118,7 +117,6 @@ ViewSelector::ViewSelector(QWidget *p)
     : QWidget(p)
 {
     group=new QButtonGroup(this);
-    setFixedHeight(SizeWidget::standardHeight()+1); // So that faded line is at same position as bottom of views...
 }
 
 void ViewSelector::addItem(const QString &label, const QVariant &data)
@@ -198,41 +196,9 @@ void ViewSelector::wheelEvent(QWheelEvent *ev)
     }
 }
 
-static void drawFadedLine(QPainter *p, const QRect &r, const QColor &col)
-{
-    QPoint start(r.x(), r.y());
-    QPoint end(r.x()+r.width()-1, r.y()+r.height()-1);
-    QLinearGradient grad(start, end);
-    QColor c(col);
-    c.setAlphaF(0.45);
-    QColor fade(c);
-    const int fadeSize=Utils::isHighDpi() ? 64 : 32;
-    double fadePos=1.0-((r.width()-(fadeSize*2))/(r.width()*1.0));
-
-    fade.setAlphaF(0.0);
-    if(fadePos>=0 && fadePos<=1.0) {
-        grad.setColorAt(0, fade);
-        grad.setColorAt(fadePos, c);
-    } else {
-        grad.setColorAt(0, c);
-    }
-    if(fadePos>=0 && fadePos<=1.0) {
-        grad.setColorAt(1.0-fadePos, c);
-        grad.setColorAt(1, fade);
-    } else {
-        grad.setColorAt(1, c);
-    }
-    p->setPen(QPen(QBrush(grad), 1));
-    p->drawLine(start, end);
-}
-
 void ViewSelector::paintEvent(QPaintEvent *ev)
 {
     Q_UNUSED(ev)
-    QPainter p(this);
-    QRect r=rect();
-    r.setHeight(1);
-    drawFadedLine(&p, r, palette().text().color());
 }
 
 ThinSplitter::ThinSplitter(QWidget *parent)

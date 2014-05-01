@@ -25,12 +25,13 @@
 #define SIZEWIDGET_H
 
 #include <QWidget>
+#include "combobox.h"
 
-class SizeWidget : public QWidget
+class SizeWidget : public ComboBox
 {
 public:
-    static int standardHeight();
     explicit SizeWidget(QWidget *parent = 0);
+    void paintEvent(QPaintEvent *e);
 };
 
 #endif

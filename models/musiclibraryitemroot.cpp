@@ -232,7 +232,7 @@ void MusicLibraryItemRoot::updateSongFile(const Song &from, const Song &to)
     }
 }
 
-static quint32 constVersion=8;
+static quint32 constVersion=9;
 static QLatin1String constTopTag("CantataLibrary");
 
 void MusicLibraryItemRoot::toXML(const QString &filename, const QDateTime &date, bool dateUnreliable, MusicLibraryProgressMonitor *prog) const
@@ -576,10 +576,13 @@ quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime 
                     if (online) {
                         song.type=Song::OnlineSvrTrack;
                     }
-                    albumItem->append(new MusicLibraryItemSong(song, albumItem));
-                    albumItem->addGenre(song.genre);
-                    artistItem->addGenre(song.genre);
-                    addGenre(song.genre);
+
+                    MusicLibraryItemSong *songItem=new MusicLibraryItemSong(song, albumItem);
+                    const QSet<QString> &songGenres=songItem->allGenres();
+                    albumItem->append(songItem);
+                    albumItem->addGenres(songGenres);
+                    artistItem->addGenres(songGenres);
+                    addGenres(songGenres);
 
                     if (prog && !prog->wasStopped() && total>0) {
                         count++;
@@ -627,10 +630,12 @@ void MusicLibraryItemRoot::add(const QSet<Song> &songs)
             albumItem = artistItem->album(s);
         }
 
-        albumItem->append(new MusicLibraryItemSong(s, albumItem));
-        albumItem->addGenre(s.genre);
-        artistItem->addGenre(s.genre);
-        addGenre(s.genre);
+        MusicLibraryItemSong *songItem=new MusicLibraryItemSong(s, albumItem);
+        const QSet<QString> &songGenres=songItem->allGenres();
+        albumItem->append(songItem);
+        albumItem->addGenres(songGenres);
+        artistItem->addGenres(songGenres);
+        addGenres(songGenres);
     }
 }
 
@@ -658,10 +663,12 @@ void MusicLibraryItemRoot::toggleGrouping()
             albumItem = artistItem->album(currentSong);
         }
 
-        albumItem->append(new MusicLibraryItemSong(currentSong, albumItem));
-        albumItem->addGenre(currentSong.genre);
-        artistItem->addGenre(currentSong.genre);
-        addGenre(currentSong.genre);
+        MusicLibraryItemSong *song=new MusicLibraryItemSong(currentSong, albumItem);
+        const QSet<QString> &songGenres=song->allGenres();
+        albumItem->append(song);
+        albumItem->addGenres(songGenres);
+        artistItem->addGenres(songGenres);
+        addGenres(songGenres);
     }
 
     // Library rebuilt, now apply any grouping...

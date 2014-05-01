@@ -100,6 +100,8 @@ struct Song
     void fillEmptyFields();
     void setKey(int location);
     virtual void clear();
+    void addGenre(const QString &g);
+    QStringList genres() const;
     QString entryName() const;
     QString artistOrComposer() const;
     QString albumName() const;

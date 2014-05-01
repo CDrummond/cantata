@@ -43,7 +43,7 @@ public:
     virtual ~MusicLibraryItemSong() { }
 
     const QString & file() const { return m_song.file; }
-    void setSong(const Song &s) { m_song=s; }
+    void setSong(const Song &s) { m_song=s; m_genres.clear(); }
     void setFile(const QString &f) { m_song.file=f; }
     quint16 track() const { return m_song.track; }
     void setTrack(quint16 t) { m_song.track=t; }
@@ -53,12 +53,16 @@ public:
     const QString & genre() const { return m_song.genre; }
     const Song & song() const { return m_song; }
     Type itemType() const { return Type_Song; }
-    bool hasGenre(const QString &genre) const { return m_song.genre==genre; }
-    QSet<QString> allGenres() const { return QSet<QString>()<<m_song.genre; }
+    bool hasGenre(const QString &genre) const { initGenres(); return m_genres.contains(genre); }
+    const QSet<QString> & allGenres() const { initGenres(); return m_genres; }
     void setPodcastImage(const QString &img) { m_song.setPodcastImage(img); }
+
+private:
+    void initGenres() const;
 
 protected:
     Song m_song;
+    mutable QSet<QString> m_genres;
 };
 
 #endif

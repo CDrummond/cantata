@@ -282,6 +282,10 @@ void JamendoMusicLoader::parseSong(MusicLibraryItemArtist *artist, MusicLibraryI
     s.artist=album->parentItem()->data();
     s.album=album->data();
 
+    if (0!=genre) {
+        s.genre=id3Genre(genre);
+    }
+
     while (!xml.atEnd()) {
         if (wasStopped()) {
             return;
@@ -296,7 +300,10 @@ void JamendoMusicLoader::parseSong(MusicLibraryItemArtist *artist, MusicLibraryI
             } else if (QLatin1String("duration")==name) {
                 s.time=xml.readElementText().toFloat();
             } else if (QLatin1String("id3genre")==name) {
-                genre=xml.readElementText().toInt();
+                int g=xml.readElementText().toInt();
+                if (0!=g && genre!=g) {
+                    s.addGenre(id3Genre(g));
+                }
             } else if (QLatin1String("id")==name) {
                 s.file=xml.readElementText().trimmed();
             }
@@ -306,14 +313,14 @@ void JamendoMusicLoader::parseSong(MusicLibraryItemArtist *artist, MusicLibraryI
     }
 
     if (!s.title.isEmpty()) {
-        s.genre=id3Genre(genre);
         s.fillEmptyFields();
         s.track=album->childItems().count()+1;
         MusicLibraryItemSong *song=new MusicLibraryItemSong(s, album);
+        const QSet<QString> &songGenres=song->allGenres();
         album->append(song);
-        album->addGenre(s.genre);
-        artist->addGenre(s.genre);
-        library->addGenre(s.genre);
+        album->addGenres(songGenres);
+        artist->addGenres(songGenres);
+        library->addGenres(songGenres);
     }
 }
 

@@ -282,6 +282,42 @@ static void readID3v2Tags(TagLib::ID3v2::Tag *tag, Song *song, ReplayGain *rg, Q
         if (!disc.isEmpty()) {
             song->disc=splitDiscNumber(tString2QString(disc.front()->toString())).first;
         }
+
+        const TagLib::ID3v2::FrameList &tcon = tag->frameListMap()["TCON"];
+        if (!tcon.isEmpty()) {
+            TagLib::ID3v2::FrameList::ConstIterator it = tcon.begin();
+            TagLib::ID3v2::FrameList::ConstIterator end = tcon.end();
+            QSet<QString> genres;
+
+            for (; it!=end; ++it) {
+                TagLib::ID3v2::TextIdentificationFrame *f = static_cast<TagLib::ID3v2::TextIdentificationFrame *>(*it);
+                TagLib::StringList fields = f->fieldList();
+                TagLib::StringList::ConstIterator fIt = fields.begin();
+                TagLib::StringList::ConstIterator fEnd = fields.end();
+
+                for (; fIt!=fEnd; ++fIt) {
+                    if ((*fIt).isEmpty()) {
+                        continue;
+                    }
+
+                    bool ok;
+                    int number = (*fIt).toInt(&ok);
+                    QString genre;
+                    if (ok && number >= 0 && number <= 255) {
+                        genre = tString2QString(TagLib::ID3v1::genre(number));
+                    } else {
+                        genre = tString2QString(*fIt);
+                    }
+                    if (!genres.contains(genre)) {
+                        genres.insert(genre);
+                        if (!song->genre.isEmpty()) {
+                            song->genre+=QLatin1Char(';');
+                        }
+                        song->genre+=genre;
+                    }
+                }
+            }
+        }
     }
 
     if (rg) {
@@ -396,6 +432,20 @@ static bool writeID3v2Tags(TagLib::ID3v2::Tag *tag, const Song &from, const Song
         if (from.disc!=to.disc&& updateID3v2Tag(tag, "TPOS", 0==to.disc ? QString() : QString::number(to.disc))) {
             changed=true;
         }
+        if (from.genre!=to.genre) {
+            QStringList genres=to.genres();
+            if (genres.count()<2) {
+                tag->setGenre(qString2TString(genres.isEmpty() ? QString() : genres.first().trimmed()));
+            } else {
+                tag->removeFrames("TCON");
+                foreach (const QString &genre, genres) {
+                    TagLib::ID3v2::TextIdentificationFrame *frame = new TagLib::ID3v2::TextIdentificationFrame("TCON");
+                    tag->addFrame(frame);
+                    frame->setText(qString2TString(genre.trimmed()));
+                }
+            }
+            changed=true;
+        }
     }
 
     if (!rg.null) {
@@ -448,6 +498,14 @@ static void readAPETags(TagLib::APE::Tag *tag, Song *song, ReplayGain *rg)
         if (map.contains("Disc")) {
             song->disc=splitDiscNumber(tString2QString(map["Disc"].toString())).first;
         }
+        if (map.contains("GENRE")) {
+            TagLib::StringList genres=map["GENRE"].values();
+            TagLib::StringList::ConstIterator it=genres.begin();
+            TagLib::StringList::ConstIterator end=genres.end();
+            for (; it!=end; ++it) {
+                song->addGenre(tString2QString(*it));
+            }
+        }
     }
 
     if (rg) {
@@ -496,6 +554,18 @@ static bool writeAPETags(TagLib::APE::Tag *tag, const Song &from, const Song &to
         if (from.disc!=to.disc && updateAPETag(tag, "Disc", 0==to.disc ? QString() : QString::number(to.disc))) {
             changed=true;
         }
+        if (from.genre!=to.genre) {
+            QStringList genres=to.genres();
+            if (genres.count()<2) {
+                tag->setGenre(qString2TString(genres.isEmpty() ? QString() : genres.first().trimmed()));
+            } else {
+                tag->removeItem("GENRE");
+                foreach (const QString &genre, genres) {
+                    tag->addValue("GENRE", qString2TString(genre.trimmed()), false);
+                }
+            }
+            changed=true;
+        }
     }
 
     if (!rg.null) {
@@ -518,7 +588,6 @@ static TagLib::String readVorbisTag(TagLib::Ogg::XiphComment *tag, const char *f
 {
     if (tag->contains(field)) {
         const TagLib::StringList &list = tag->fieldListMap()[field];
-
         if (!list.isEmpty()) {
             return list.front();
         }
@@ -541,6 +610,16 @@ static void readVorbisCommentTags(TagLib::Ogg::XiphComment *tag, Song *song, Rep
         str=readVorbisTag(tag, "DISCNUMBER");
         if (str.isEmpty()) {
             song->disc=splitDiscNumber(tString2QString(str)).first;
+        }
+        if (tag->contains("GENRE")) {
+            const TagLib::StringList &genres = tag->fieldListMap()["GENRE"];
+            if (!genres.isEmpty()) {
+                TagLib::StringList::ConstIterator it=genres.begin();
+                TagLib::StringList::ConstIterator end=genres.end();
+                for (; it!=end; ++it) {
+                    song->addGenre(tString2QString(*it));
+                }
+            }
         }
     }
 
@@ -612,6 +691,18 @@ static bool writeVorbisCommentTags(TagLib::Ogg::XiphComment *tag, const Song &fr
         if (from.disc!=to.disc && updateVorbisCommentTag(tag, "DISCNUMBER", 0==to.disc ? QString() : QString::number(to.disc))) {
             changed=true;
         }
+        if (from.genre!=to.genre) {
+            QStringList genres=to.genres();
+            if (genres.count()<2) {
+                tag->setGenre(qString2TString(genres.isEmpty() ? QString() : genres.first().trimmed()));
+            } else {
+                tag->removeField("GENRE");
+                foreach (const QString &genre, genres) {
+                    tag->addField("GENRE", qString2TString(genre.trimmed()), false);
+                }
+            }
+            changed=true;
+        }
     }
 
     if (!rg.null) {
@@ -653,6 +744,14 @@ static void readMP4Tags(TagLib::MP4::Tag *tag, Song *song, ReplayGain *rg, QImag
         }
         if (map.contains("disk")) {
             song->disc=map["disk"].toIntPair().first;
+        }
+        if (map.contains("\251gen")) {
+            TagLib::StringList genres=map["\251gen"].toStringList();
+            TagLib::StringList::ConstIterator it=genres.begin();
+            TagLib::StringList::ConstIterator end=genres.end();
+            for (; it!=end; ++it) {
+                song->addGenre(tString2QString(*it));
+            }
         }
     }
     if (rg) {
@@ -711,6 +810,19 @@ static bool writeMP4Tags(TagLib::MP4::Tag *tag, const Song &from, const Song &to
         if (from.disc!=to.disc && updateMP4Tag(tag, "disk", 0==to.disc ? QString() : QString::number(to.disc))) {
             changed=true;
         }
+        if (from.genre!=to.genre) {
+            QStringList genres=to.genres();
+            if (genres.count()<2) {
+                tag->setGenre(qString2TString(genres.isEmpty() ? QString() : genres.first().trimmed()));
+            } else {
+                TagLib::StringList tagGenres;
+                foreach (const QString &genre, genres) {
+                    tagGenres.append(qString2TString(genre.trimmed()));
+                }
+                tag->itemListMap()["\251gen"]=tagGenres;
+            }
+            changed=true;
+        }
     }
 
     if (!rg.null) {
@@ -756,8 +868,16 @@ static void readASFTags(TagLib::ASF::Tag *tag, Song *song, ReplayGain *rg)
         if (map.contains("WM/Composer") && !map["WM/Composer"].isEmpty()) {
             song->composer=tString2QString(map["WM/Composer"].front().toString());
         }
-        if (map.contains("WM/PartOfSet")) {
+        if (map.contains("WM/PartOfSet") && !map["WM/PartOfSet"].isEmpty()) {
             song->albumartist=map["WM/PartOfSet"].front().toUInt();
+        }
+        if (map.contains("WM/Genre") && !map["WM/Genre"].isEmpty()) {
+            const TagLib::ASF::AttributeList &genres=map["WM/Genre"];
+            TagLib::ASF::AttributeList::ConstIterator it=genres.begin();
+            TagLib::ASF::AttributeList::ConstIterator end=genres.end();
+            for (; it!=end; ++it) {
+                song->addGenre(tString2QString((*it).toString()));
+            }
         }
     }
 }
@@ -793,6 +913,18 @@ static bool writeASFTags(TagLib::ASF::Tag *tag, const Song &from, const Song &to
         if (from.disc!=to.disc && updateASFTag(tag, "WM/PartOfSet", 0==to.disc ? QString() : QString::number(to.disc))) {
             changed=true;
         }
+        if (from.genre!=to.genre) {
+            QStringList genres=to.genres();
+            if (genres.count()<2) {
+                tag->setGenre(qString2TString(genres.isEmpty() ? QString() : genres.first().trimmed()));
+            } else {
+                tag->removeItem("WM/Genre");
+                foreach (const QString &genre, genres) {
+                    tag->addAttribute("WM/Genre", qString2TString(genre.trimmed()));
+                }
+            }
+            changed=true;
+        }
     }
     return changed;
 }
@@ -805,7 +937,7 @@ static void readTags(const TagLib::FileRef fileref, Song *song, ReplayGain *rg, 
         song->title=tString2QString(tag->title());
         song->artist=tString2QString(tag->artist());
         song->album=tString2QString(tag->album());
-        song->genre=tString2QString(tag->genre());
+//        song->genre=tString2QString(tag->genre());
         song->track=tag->track();
         song->year=tag->year();
     }
@@ -890,6 +1022,9 @@ static void readTags(const TagLib::FileRef fileref, Song *song, ReplayGain *rg, 
 //             readID3v1Tags(fileref, song, rg);
         }
     }
+    if (song->genre.isEmpty()) {
+        song->genre=tString2QString(tag->genre());
+    }
 }
 
 static bool writeTags(const TagLib::FileRef fileref, const Song &from, const Song &to, const RgTags &rg, const QByteArray &img, bool saveComment)
@@ -909,10 +1044,10 @@ static bool writeTags(const TagLib::FileRef fileref, const Song &from, const Son
             tag->setAlbum(qString2TString(to.album));
             changed=true;
         }
-        if (from.genre!=to.genre) {
-            tag->setGenre(qString2TString(to.genre));
-            changed=true;
-        }
+//        if (from.genre!=to.genre) {
+//            tag->setGenre(qString2TString(to.genre));
+//            changed=true;
+//        }
         if (from.track!=to.track) {
             tag->setTrack(to.track);
             changed=true;

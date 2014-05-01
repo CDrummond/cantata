@@ -385,6 +385,24 @@ void Song::clear()
     type = Standard;
 }
 
+const QLatin1Char constGenreSep(';');
+
+void Song::addGenre(const QString &g)
+{
+    if (g.isEmpty()) {
+        return;
+    }
+    if (!genre.isEmpty()) {
+        genre+=constGenreSep;
+    }
+    genre+=g.trimmed();
+}
+
+QStringList Song::genres() const
+{
+    return genre.split(constGenreSep, QString::SkipEmptyParts);
+}
+
 QString Song::entryName() const
 {
     if (title.isEmpty()) {

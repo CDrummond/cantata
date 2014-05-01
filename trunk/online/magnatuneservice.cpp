@@ -79,7 +79,10 @@ void MagnatuneMusicLoader::parseSong(QXmlStreamReader &xml)
             } else if (QLatin1String("year")==name) {
                 s.year=value.toInt();
             } else  if (QLatin1String("magnatunegenres")==name) {
-                s.genre=value.section(',', 0, 0);
+                QStringList genres=value.split(',', QString::SkipEmptyParts);
+                foreach (const QString &g, genres) {
+                    s.addGenre(g);
+                }
             } else if (QLatin1String("seconds")==name) {
                  s.time=value.toInt();
 //            } else if (QLatin1String("cover_small")==name) {
@@ -101,10 +104,11 @@ void MagnatuneMusicLoader::parseSong(QXmlStreamReader &xml)
         MusicLibraryItemArtist *artist = library->artist(s);
         MusicLibraryItemAlbum *album = artist->album(s);
         MusicLibraryItemSong *song=new MusicLibraryItemSong(s, album);
+        const QSet<QString> &songGenres=song->allGenres();
         album->append(song);
-        album->addGenre(s.genre);
-        artist->addGenre(s.genre);
-        library->addGenre(s.genre);
+        album->addGenres(songGenres);
+        artist->addGenres(songGenres);
+        library->addGenres(songGenres);
 //        if (!artistImg.isEmpty() && artist->imageUrl().isEmpty()) {
 //            artist->setImageUrl(artistImg);
 //        }

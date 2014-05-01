@@ -165,6 +165,54 @@
   </layout>
   </item>
   <item>
+   <spacer name="verticalSpacer_3x">
+    <property name="orientation">
+     <enum>Qt::Vertical</enum>
+    </property>
+    <property name="sizeType">
+     <enum>QSizePolicy::Fixed</enum>
+    </property>
+    <property name="sizeHint" stdset="0">
+     <size>
+      <width>20</width>
+      <height>4</height>
+     </size>
+    </property>
+   </spacer>
+  </item>
+  <item>
+   <widget class="QLabel" name="label_7x">
+    <property name="text">
+     <string>&lt;i&gt;&lt;b&gt;NOTE&lt;/b&gt; Multiple genres should be separated via a semicolon (e.g. 'Rock;Hard Rock')&lt;/i&gt;</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+    </property>
+    <property name="wordWrap">
+     <bool>true</bool>
+    </property>
+    <property name="textInteractionFlags">
+     <set>Qt::NoTextInteraction</set>
+    </property>
+   </widget>
+  </item>
+  <item>
+   <spacer name="mopidyNoteSpacer">
+    <property name="orientation">
+     <enum>Qt::Vertical</enum>
+    </property>
+    <property name="sizeType">
+     <enum>QSizePolicy::MinimumExpanding</enum>
+    </property>
+    <property name="sizeHint" stdset="0">
+     <size>
+      <width>20</width>
+      <height>0</height>
+     </size>
+    </property>
+   </spacer>
+  </item>
+  <item>
    <widget class="UrlLabel" name="mopidyNote">
     <property name="text" stdset="0">
      <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; Connected to a Mopidy server (manual update required).&lt;/i&gt;</string>

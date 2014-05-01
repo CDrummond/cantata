@@ -283,7 +283,7 @@ Song MPDParseUtils::parseSong(const QList<QByteArray> &lines, Location location)
                 song.year = value.toUInt();
             }
         } else if (line.startsWith(constGenreKey)) {
-            song.genre = QString::fromUtf8(line.mid(constGenreKey.length()));
+            song.addGenre(QString::fromUtf8(line.mid(constGenreKey.length())));
         }  else if (line.startsWith(constNameKey)) {
             song.name = QString::fromUtf8(line.mid(constNameKey.length()));
         } else if (line.startsWith(constPlaylistKey)) {
@@ -606,12 +606,12 @@ void MPDParseUtils::parseLibraryItems(const QByteArray &data, const QString &mpd
                                 albumItem = artistItem->album(s);
                             }
                             DBUG << "Create new track from cue" << s.file << s.title << s.artist << s.albumartist << s.album;
-                            songItem = new MusicLibraryItemSong(s, albumItem);
+                            songItem=new MusicLibraryItemSong(s, albumItem);
+                            const QSet<QString> &songGenres=songItem->allGenres();
                             albumItem->append(songItem);
-                            updatedAlbums.insert(albumItem);
-                            albumItem->addGenre(s.genre);
-                            artistItem->addGenre(s.genre);
-                            rootItem->addGenre(s.genre);
+                            albumItem->addGenres(songGenres);
+                            artistItem->addGenres(songGenres);
+                            rootItem->addGenres(songGenres);
                         }
 
                         // For each album that was updated/created, remove any source files referenced in cue file...
@@ -658,12 +658,13 @@ void MPDParseUtils::parseLibraryItems(const QByteArray &data, const QString &mpd
             }
             if (!albumItem || currentSong.year!=albumItem->year() || albumItem->parentItem()!=artistItem || currentSong.albumName()!=albumItem->data()) {
                 albumItem = artistItem->album(currentSong);
-            }
-            songItem = new MusicLibraryItemSong(currentSong, albumItem);
+            }           
+            songItem=new MusicLibraryItemSong(currentSong, albumItem);
+            const QSet<QString> &songGenres=songItem->allGenres();
             albumItem->append(songItem);
-            albumItem->addGenre(currentSong.genre);
-            artistItem->addGenre(currentSong.genre);
-            rootItem->addGenre(currentSong.genre);
+            albumItem->addGenres(songGenres);
+            artistItem->addGenres(songGenres);
+            rootItem->addGenres(songGenres);
         }/* else if (childDirs) {
         }*/
     }

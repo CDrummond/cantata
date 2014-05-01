@@ -68,6 +68,14 @@ static bool setString(QString &str, const QString &v, bool skipEmpty) {
     return false;
 }
 
+static QString trim(QString str) {
+    str=str.trimmed();
+    str=str.simplified();
+    str=str.replace(QLatin1String(" ;"), QLatin1String(";"));
+    str=str.replace(QLatin1String("; "), QLatin1String(";"));
+    return str;
+}
+
 static int iCount=0;
 
 int TagEditor::instanceCount()
@@ -345,7 +353,7 @@ void TagEditor::fillSong(Song &s, bool isAll, bool skipEmpty) const
     if (!isAll || 0!=disc->value()) {
         s.disc=disc->value();
     }
-    setString(s.genre, genre->text().trimmed(), skipEmpty && (!haveAll || all.genre.isEmpty()));
+    setString(s.genre, trim(genre->text()), skipEmpty && (!haveAll || all.genre.isEmpty()));
     if (!isAll || 0!=year->value()) {
         s.year=year->value();
     }

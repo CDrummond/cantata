@@ -140,9 +140,10 @@ QStringList LibraryPage::selectedFiles(bool allowPlaylists, bool randomAlbums) c
         return QStringList();
     }
 
-    QModelIndexList mapped=proxy.mapToSource(selected, Settings::self()->filteredOnly());
+    bool filteredOnly=proxy.enabled() && Settings::self()->filteredOnly();
+    QModelIndexList mapped=proxy.mapToSource(selected, filteredOnly);
     if (randomAlbums) {
-        if (Settings::self()->filteredOnly()) {
+        if (filteredOnly) {
             QMap<quint32, QModelIndexList> albums;
             foreach (const QModelIndex &idx, mapped) {
                 if (idx.parent().isValid() && idx.parent().parent().isValid()) {
@@ -207,7 +208,7 @@ QList<Song> LibraryPage::selectedSongs(bool allowPlaylists) const
     if (selected.isEmpty()) {
         return QList<Song>();
     }
-    return MusicLibraryModel::self()->songs(proxy.mapToSource(selected, Settings::self()->filteredOnly()), allowPlaylists);
+    return MusicLibraryModel::self()->songs(proxy.mapToSource(selected, proxy.enabled() && Settings::self()->filteredOnly()), allowPlaylists);
 }
 
 Song LibraryPage::coverRequest() const

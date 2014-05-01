@@ -427,10 +427,11 @@ void MtpConnection::updateLibrary(const DeviceOptions &opts)
             albumItem = artistItem->album(s);
         }
         MusicLibraryItemSong *songItem = new MusicLibraryItemSong(s, albumItem);
+        const QSet<QString> &songGenres=songItem->allGenres();
         albumItem->append(songItem);
-        albumItem->addGenre(s.genre);
-        artistItem->addGenre(s.genre);
-        library->addGenre(s.genre);
+        albumItem->addGenres(songGenres);
+        artistItem->addGenres(songGenres);
+        library->addGenres(songGenres);
 
         #ifdef MTP_FAKE_ALBUMARTIST_SUPPORT
         // Store AlbumName->Artists/Songs mapping

@@ -189,10 +189,11 @@ void MusicScanner::scanFolder(MusicLibraryItemRoot *library, const QString &topL
                     albumItem = artistItem->album(song);
                 }
                 MusicLibraryItemSong *songItem = new MusicLibraryItemSong(song, albumItem);
+                const QSet<QString> &songGenres=songItem->allGenres();
                 albumItem->append(songItem);
-                albumItem->addGenre(song.genre);
-                artistItem->addGenre(song.genre);
-                library->addGenre(song.genre);
+                albumItem->addGenres(songGenres);
+                artistItem->addGenres(songGenres);
+                library->addGenres(songGenres);
             }
         }
     }

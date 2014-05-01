@@ -923,13 +923,13 @@ QMimeData *MusicLibraryModel::mimeData(const QModelIndexList &indexes) const
     QMimeData *mimeData = new QMimeData();
     QStringList files=filenames(indexes, true);
     PlayQueueModel::encode(*mimeData, PlayQueueModel::constFileNameMimeType, files);
-    if (!MPDConnection::self()->getDetails().dir.isEmpty()) {
-        QStringList paths;
-        foreach (const QString &f, files) {
-            paths << MPDConnection::self()->getDetails().dir+f;
-        }
-        PlayQueueModel::encode(*mimeData, PlayQueueModel::constUriMimeType, paths);
-    }
+//    if (!MPDConnection::self()->getDetails().dir.isEmpty()) {
+//        QStringList paths;
+//        foreach (const QString &f, files) {
+//            paths << MPDConnection::self()->getDetails().dir+f;
+//        }
+//        PlayQueueModel::encode(*mimeData, PlayQueueModel::constUriMimeType, paths);
+//    }
     return mimeData;
 }
 #endif

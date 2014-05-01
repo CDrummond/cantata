@@ -334,8 +334,17 @@ void PodcastService::unSubscribe(MusicLibraryItem *item)
 {
     int row=m_childItems.indexOf(item);
     if (row>=0) {
+        MusicLibraryItemPodcast *pod=static_cast<MusicLibraryItemPodcast *>(item);
+        if (!downloadJobs.isEmpty()) {
+            foreach (MusicLibraryItem *e, pod->childItems()) {
+                cancelDownload(QUrl(static_cast<MusicLibraryItemPodcastEpisode *>(e)->file()));
+                if (downloadJobs.isEmpty()) {
+                    break;
+                }
+            }
+        }
         beginRemoveRows(index(), row, row);
-        static_cast<MusicLibraryItemPodcast *>(item)->removeFiles();
+        pod->removeFiles();
         delete m_childItems.takeAt(row);
         resetRows();
         endRemoveRows();

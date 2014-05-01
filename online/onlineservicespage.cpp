@@ -178,7 +178,7 @@ QStringList OnlineServicesPage::selectedFiles() const
     if (selected.isEmpty()) {
         return QStringList();
     }
-    return OnlineServicesModel::self()->filenames(proxy.mapToSource(selected, Settings::self()->filteredOnly()));
+    return OnlineServicesModel::self()->filenames(proxy.mapToSource(selected, proxy.enabled() && Settings::self()->filteredOnly()));
 }
 
 QList<Song> OnlineServicesPage::selectedSongs(bool allowPlaylists) const
@@ -188,7 +188,7 @@ QList<Song> OnlineServicesPage::selectedSongs(bool allowPlaylists) const
     if (selected.isEmpty()) {
         return QList<Song>();
     }
-    return OnlineServicesModel::self()->songs(proxy.mapToSource(selected, Settings::self()->filteredOnly()));
+    return OnlineServicesModel::self()->songs(proxy.mapToSource(selected, proxy.enabled() && Settings::self()->filteredOnly()));
 }
 
 void OnlineServicesPage::addSelectionToPlaylist(const QString &name, bool replace, quint8 priorty, bool randomAlbums)

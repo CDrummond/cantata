@@ -109,6 +109,7 @@ private:
 
 private Q_SLOTS:
     void imageDownloaded();
+    void tooltipUpdated(QAction *act);
 
 Q_SIGNALS:
     void error(const QString &text);
@@ -126,6 +127,7 @@ private:
     Action *subscribeAction;
     Action *unSubscribeAction;
     Action *refreshSubscriptionAction;
+    Action *searchAction;
     QSet<QString> busyServices;
     PodcastService *podcast;
     QList<OnlineService *> hiddenServices;

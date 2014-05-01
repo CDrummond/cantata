@@ -51,6 +51,9 @@
 #include "networkaccessmanager.h"
 #include "settings.h"
 #include "globalstatic.h"
+#ifdef ENABLE_STREAMS
+#include "streamsmodel.h"
+#endif
 #include <QStringList>
 #include <QMimeData>
 #include <QFile>
@@ -75,6 +78,21 @@ OnlineServicesModel::OnlineServicesModel(QObject *parent)
     subscribeAction = ActionCollection::get()->createAction("subscribeonlineservice", i18n("Add Subscription"), "list-add");
     unSubscribeAction = ActionCollection::get()->createAction("unsubscribeonlineservice", i18n("Remove Subscription"), "list-remove");
     refreshSubscriptionAction = ActionCollection::get()->createAction("refreshsubscription", i18n("Refresh Subscription"), "view-refresh");
+    #ifdef ENABLE_STREAMS
+    searchAction = StreamsModel::self()->searchAct();
+    #else
+    // For Mac/Unity we try to hide icons from menubar menus. However, search is used in the menubar AND in the streams view. We
+    // need the icon on the streams view. Therefore, if the StdAction has no icon -  we create a new one and forward all signals...
+    if (StdActions::self()->searchAction->icon().isNull()) {
+        searchAction = new Action(Icon("edit-find"), StdActions::self()->searchAction->text(), this);
+        searchAction->setToolTip(StdActions::self()->searchAction->toolTip());
+        connect(searchAction, SIGNAL(triggered(bool)), StdActions::self()->searchAction, SIGNAL(triggered(bool)));
+        connect(searchAction, SIGNAL(triggered()), StdActions::self()->searchAction, SIGNAL(triggered()));
+        connect(ActionCollection::get(), SIGNAL(tooltipUpdated(QAction *)), SLOT(tooltipUpdated(QAction *)));
+    } else {
+        searchAction = StdActions::self()->searchAction;
+    }
+    #endif
     load();
     #if defined ENABLE_MODEL_TEST
     new ModelTest(this, this);
@@ -181,7 +199,7 @@ QVariant OnlineServicesModel::data(const QModelIndex &index, int role) const
                 actions << refreshSubscriptionAction;
             }
             if (srv->isSearchBased() || srv->isLoaded()) {
-                actions << StdActions::self()->searchAction;
+                actions << searchAction;
             }
             if (srv->canSubscribe()) {
                 actions << subscribeAction;
@@ -603,6 +621,18 @@ void OnlineServicesModel::imageDownloaded()
             Covers::self()->emitCoverUpdated(song, img, fileName);
         }
     }
+}
+
+// Required due to icon missing for StdActions::searchAction for Mac/Unity... See note in constructor above.
+void OnlineServicesModel::tooltipUpdated(QAction *act)
+{
+    #ifdef ENABLE_STREAMS
+    Q_UNUSED(act)
+    #else
+    if (act!=searchAction && act==StdActions::self()->searchAction) {
+        searchAction->setToolTip(StdActions::self()->searchAction->toolTip());
+    }
+    #endif
 }
 
 void OnlineServicesModel::save()

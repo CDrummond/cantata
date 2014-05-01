@@ -236,6 +236,7 @@ public:
     Action *addToFavouritesAct() { return addToFavouritesAction; }
     Action *configureAct() { return configureAction; }
     Action *reloadAct() { return reloadAction; }
+    Action *searchAct() { return searchAction; }
 
     void save();
     QList<Category> getCategories() const;

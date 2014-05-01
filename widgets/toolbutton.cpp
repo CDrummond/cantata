@@ -30,8 +30,25 @@
 #include <QStylePainter>
 #include <QStyleOptionToolButton>
 #include <QApplication>
+#include <QPainter>
+#include <QPainterPath>
 
 const double ToolButton::constTouchScaleFactor=1.334;
+
+#ifdef Q_OS_MAC
+static QPainterPath buildPath(const QRectF &r, double radius)
+{
+    QPainterPath path;
+    double diameter(radius*2);
+
+    path.moveTo(r.x()+r.width(), r.y()+r.height()-radius);
+    path.arcTo(r.x()+r.width()-diameter, r.y(), diameter, diameter, 0, 90);
+    path.arcTo(r.x(), r.y(), diameter, diameter, 90, 90);
+    path.arcTo(r.x(), r.y()+r.height()-diameter, diameter, diameter, 180, 90);
+    path.arcTo(r.x()+r.width()-diameter, r.y()+r.height()-diameter, diameter, diameter, 270, 90);
+    return path;
+}
+#endif
 
 ToolButton::ToolButton(QWidget *parent)
     : QToolButton(parent)
@@ -50,6 +67,19 @@ ToolButton::ToolButton(QWidget *parent)
 
 void ToolButton::paintEvent(QPaintEvent *e)
 {
+    #ifdef Q_OS_MAC
+    if (isDown() || isChecked()) {
+        QPainter p(this);
+        QColor col(palette().color(QPalette::WindowText));
+        QRect r(rect());
+        QPainterPath path=buildPath(QRectF(r.x()+1.5, r.y()+0.5, r.width()-2, r.height()-1), 2.5);
+        p.setRenderHint(QPainter::Antialiasing, true);
+        p.setPen(col);
+        p.drawPath(path);
+        col.setAlphaF(0.1);
+        p.fillPath(path, col);
+    }
+    #endif
     #if QT_VERSION > 0x050000
     // Hack to work-around Qt5 sometimes leaving toolbutton in 'raised' state.
     QStylePainter p(this);

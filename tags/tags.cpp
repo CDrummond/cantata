@@ -790,7 +790,7 @@ static bool updateMP4Tag(TagLib::MP4::Tag *tag, const char *tagName, const QStri
             return true;
         }
     } else {
-        map.insert("aART", TagLib::StringList(qString2TString(value)));
+        map.insert(tagName, TagLib::StringList(qString2TString(value)));
         return true;
     }
     return false;

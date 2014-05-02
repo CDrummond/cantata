@@ -23,6 +23,7 @@
 
 #include "gtkstyle.h"
 #include "config.h"
+#include "utils.h"
 #include <QPainter>
 #include <QStyleOptionViewItemV4>
 #include <QApplication>
@@ -290,7 +291,7 @@ void GtkStyle::applyTheme(QWidget *widget)
             }
         }
         if (!gtkProxyStyle) {
-            gtkProxyStyle=new GtkProxyStyle(sbType, touchStyleSpin, css, modViewFrame);
+            gtkProxyStyle=new GtkProxyStyle(sbType, touchStyleSpin, css, modViewFrame && !Utils::touchFriendly());
             qApp->setStyle(gtkProxyStyle);
             QCoreApplication::setAttribute(Qt::AA_DontShowIconsInMenus);
         }

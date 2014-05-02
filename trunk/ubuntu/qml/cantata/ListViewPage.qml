@@ -116,6 +116,8 @@ Page {
         }
         clip: true
 
+        property bool hasProgression: false
+
         delegate: ListItemDelegate {
             id: delegate
             text: model.mainText
@@ -125,6 +127,7 @@ Page {
             removable: listViewPage.editable
 
             progression: model.hasChildren;
+            forceProgressionSpacing: listView.hasProgression
 
             firstButtonImageSource: "../../icons/toolbar/media-playback-start-light.svg"
             secondButtonImageSource: "../../icons/toolbar/add.svg"
@@ -134,6 +137,12 @@ Page {
 
             onClicked: model.hasChildren ? listViewPage.onDelegateClicked(index, model.titleText) : "";
             onItemRemoved: listViewPage.remove(index)
+
+            onProgressionChanged: {
+                if (progression) {
+                    listView.hasProgression = true
+                }
+            }
         }
     }
 

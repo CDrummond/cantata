@@ -35,9 +35,10 @@ Page {
 
     visible: false
     anchors.fill: parent
-    title: i18n.tr("Settings")
+    title: qsTr(i18n.tr("Settings %1")).arg((layouts.currentLayout === "tablet" && tabletCategories !== undefined && tabletCategories.selectedIndex === 0) ? backend.isConnected?i18n.tr("(Connected)"):i18n.tr("(Not Connected)") : "")
 
     property HostSettingsPage hostSettings: hostSettingsPage
+    property SettingsCategories tabletCategories
 
     actions: [
         Action {
@@ -112,6 +113,10 @@ Page {
                             top: parent.top
                             left: parent.left
                             bottom: parent.bottom
+                        }
+
+                        Component.onCompleted: {
+                            settingsPage.tabletCategories = this
                         }
                     }
 

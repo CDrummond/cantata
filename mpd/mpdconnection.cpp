@@ -27,6 +27,7 @@
 #include "mpdconnection.h"
 #include "mpdparseutils.h"
 #include "musiclibraryitemroot.h"
+#include "streamsmodel.h"
 #ifndef ENABLE_UBUNTU
 #include "mpduser.h"
 #endif
@@ -223,6 +224,8 @@ MPDConnection::MPDConnection()
     qRegisterMetaType<MPDStatsValues>("MPDStatsValues");
     qRegisterMetaType<MPDStatusValues>("MPDStatusValues");
     qRegisterMetaType<MPDConnectionDetails>("MPDConnectionDetails");
+    qRegisterMetaType<Stream>("Stream");
+    qRegisterMetaType<QList<Stream> >("QList<Stream>");
     #ifdef QT_QTDBUS_FOUND
     connect(PowerManagement::self(), SIGNAL(resuming()), this, SLOT(reconnect()));
     #endif
@@ -1480,6 +1483,67 @@ void MPDConnection::search(const QString &field, const QString &value, int id)
         qSort(songs);
     }
     emit searchResponse(id, songs);
+}
+
+void MPDConnection::listStreams()
+{
+    Response response=sendCommand("listplaylistinfo "+encodeName(StreamsModel::constPlayListName));
+    if (response.ok) {
+        QList<Song> songs=MPDParseUtils::parseSongs(response.data, MPDParseUtils::Loc_Streams);
+        QList<Stream> streams;
+        foreach (const Song &song, songs) {
+            streams.append(Stream(song.file, song.name));
+        }
+
+        emit streamList(streams);
+    }
+}
+
+void MPDConnection::saveStream(const QString &url, const QString &name)
+{
+    if (sendCommand("playlistadd "+encodeName(StreamsModel::constPlayListName)+" "+encodeName(MPDParseUtils::addStreamName(url, name))).ok) {
+        emit savedStream(url, name);
+    }
+}
+
+void MPDConnection::removeStreams(const QList<quint32> &positions)
+{
+    if (positions.isEmpty()) {
+        return;
+    }
+
+    QByteArray encodedName=encodeName(StreamsModel::constPlayListName);
+    QList<quint32> sorted=positions;
+    QList<quint32> removed;
+
+    qSort(sorted);
+
+    for (int i=sorted.count()-1; i>=0; --i) {
+        quint32 idx=sorted.at(i);
+        QByteArray data = "playlistdelete ";
+        data += encodedName;
+        data += " ";
+        data += quote(idx);
+        if (sendCommand(data).ok) {
+            removed.prepend(idx);
+        } else {
+            break;
+        }
+    }
+
+    if (removed.count()) {
+        emit removedStreams(removed);
+    }
+}
+
+void MPDConnection::editStream(const QString &url, const QString &name, quint32 position)
+{
+    QByteArray encodedName=encodeName(StreamsModel::constPlayListName);
+    if (sendCommand("playlistdelete "+encodedName+" "+quote(position)).ok &&
+        sendCommand("playlistadd "+encodedName+" "+encodeName(MPDParseUtils::addStreamName(url, name))).ok) {
+//        emit editedStream(url, name, position);
+        listStreams();
+    }
 }
 
 void MPDConnection::moveInPlaylist(const QString &name, const QList<quint32> &items, quint32 pos, quint32 size)

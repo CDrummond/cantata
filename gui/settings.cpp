@@ -1052,11 +1052,6 @@ void Settings::saveStoreLyricsInMpdDir(bool v)
     cfg.set("storeLyricsInMpdDir", v);
 }
 
-void Settings::saveStoreStreamsInMpdDir(bool v)
-{
-    cfg.set("storeStreamsInMpdDir", v);
-}
-
 void Settings::saveStoreBackdropsInMpdDir(bool v)
 {
     cfg.set("storeBackdropsInMpdDir", v);

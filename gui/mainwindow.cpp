@@ -402,7 +402,6 @@ MainWindow::MainWindow(QWidget *parent)
     addAction(streamsTabAction = ActionCollection::get()->createAction("showstreamstab", i18n("Streams"), Icons::self()->streamsIcon));
     streamsTabAction->setShortcut(Qt::ControlModifier+Qt::ShiftModifier+nextKey(sidebarPageShortcutKey));
     tabWidget->addTab(streamsPage, TAB_ACTION(streamsTabAction), !hiddenPages.contains(streamsPage->metaObject()->className()));
-    streamsPage->setEnabled(!hiddenPages.contains(streamsPage->metaObject()->className()));
     connect(streamsTabAction, SIGNAL(triggered(bool)), this, SLOT(showStreamsTab()));
     connect(streamsPage, SIGNAL(add(const QStringList &, bool, quint8)), &playQueueModel, SLOT(addItems(const QStringList &, bool, quint8)));
     connect(streamsPage, SIGNAL(error(QString)), this, SLOT(showError(QString)));
@@ -886,7 +885,6 @@ MainWindow::~MainWindow()
     playlistsPage->saveConfig();
     context->saveConfig();
     #ifdef ENABLE_STREAMS
-    streamsPage->save();
     StreamsModel::self()->save();
     #endif
     searchPage->saveConfig();
@@ -1140,9 +1138,6 @@ void MainWindow::showPreferencesDialog(const QString &page)
     PreferencesDialog *pref=new PreferencesDialog(this);
     controlConnectionsMenu(false);
     connect(pref, SIGNAL(settingsSaved()), this, SLOT(updateSettings()));
-    #ifdef ENABLE_STREAMS
-    connect(pref, SIGNAL(reloadStreams()), streamsPage, SLOT(refresh()));
-    #endif
     connect(pref, SIGNAL(destroyed()), SLOT(controlConnectionsMenu()));
     connect(this, SIGNAL(showPreferencesPage(QString)), pref, SLOT(showPage(QString)));
     pref->show();
@@ -1948,6 +1943,10 @@ void MainWindow::addToNewStoredPlaylist()
     for(;;) {
         QString name = InputDialog::getText(i18n("Playlist Name"), i18n("Enter a name for the playlist:"), QString(), 0, this);
 
+        if (name==StreamsModel::constPlayListName) {
+            MessageBox::error(this, i18n("<b>%1</b> is used to store favorite streams, please choose another name.", name));
+            continue;
+        }
         if (PlaylistsModel::self()->exists(name)) {
             switch(MessageBox::warningYesNoCancel(this, i18n("A playlist named <b>%1</b> already exists!<br/>Add to that playlist?", name),
                                                   i18n("Existing Playlist"))) {
@@ -2135,7 +2134,6 @@ void MainWindow::tabToggled(int index)
         break;
     #ifdef ENABLE_STREAMS
     case PAGE_STREAMS:
-        streamsPage->setEnabled(!streamsPage->isEnabled());
         break;
     #endif
     #ifdef ENABLE_ONLINE_SERVICES

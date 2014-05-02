@@ -68,6 +68,7 @@
 #include "modeltest.h"
 #endif
 
+#include <QDebug>
 GLOBAL_STATIC(StreamsModel, instance)
 
 const QString StreamsModel::constSubDir=QLatin1String("streams");
@@ -106,33 +107,7 @@ static QString constShoutCastApiKey=QLatin1String("fa1669MuiRPorUBw");
 static QString constShoutCastHost=QLatin1String("api.shoutcast.com");
 static QString constShoutCastUrl=QLatin1String("http://")+constShoutCastHost+QLatin1String("/genre/primary?f=xml&k=")+constShoutCastApiKey;
 
-static const QLatin1String constFavouritesFileName=QLatin1String("streams.xml.gz");
 static const QLatin1String constBookmarksDir=QLatin1String("bookmarks");
-
-QString StreamsModel::favouritesDir()
-{
-    return Settings::self()->storeStreamsInMpdDir() ? MPDConnection::self()->getDetails().dir : Utils::dataDir(QString(), false);
-}
-
-static QString getInternalFile(bool createDir=false)
-{
-    if (Settings::self()->storeStreamsInMpdDir()) {
-        return MPDConnection::self()->getDetails().dir+constFavouritesFileName;
-    }
-    return Utils::dataDir(QString(), createDir)+constFavouritesFileName;
-}
-
-// Move files from previous ~/.config/cantata to ~/.local/share/cantata
-static void moveToNewLocation()
-{
-    #if !defined Q_OS_WIN && !defined Q_OS_MAC // Not required for windows - as already stored in data location!
-    if (Settings::self()->version()<CANTATA_MAKE_VERSION(1, 51, 0)) {
-        Utils::moveFile(Utils::configDir(QString())+constFavouritesFileName, Utils::dataDir(QString(), true)+constFavouritesFileName);
-        Utils::moveDir(Utils::configDir(constBookmarksDir), Utils::dataDir(constBookmarksDir, true));
-        Utils::moveDir(Utils::configDir(StreamsModel::constSubDir), Utils::dataDir(StreamsModel::constSubDir, true));
-    }
-    #endif
-}
 
 static QIcon getIcon(const QString &name)
 {
@@ -406,9 +381,9 @@ bool StreamsModel::CategoryItem::saveXml(QIODevice *dev, bool format) const
 
     foreach (const Item *i, children) {
         if (i->isCategory()) {
-            saveCategory(doc, static_cast<const CategoryItem *>(i));
+            ::saveCategory(doc, static_cast<const CategoryItem *>(i));
         } else {
-            saveStream(doc, i);
+            ::saveStream(doc, i);
         }
     }
     doc.writeEndElement();
@@ -416,7 +391,7 @@ bool StreamsModel::CategoryItem::saveXml(QIODevice *dev, bool format) const
     return true;
 }
 
-QList<StreamsModel::Item *> StreamsModel::CategoryItem::loadXml(const QString &fileName, bool importing)
+QList<StreamsModel::Item *> StreamsModel::CategoryItem::loadXml(const QString &fileName)
 {
     QFile file(fileName);
     if (!file.open(QIODevice::ReadOnly)) {
@@ -435,13 +410,11 @@ QList<StreamsModel::Item *> StreamsModel::CategoryItem::loadXml(const QString &f
         }
     }
 
-    return loadXml(isCompressed ? (QIODevice *)&compressor : (QIODevice *)&file, importing);
+    return loadXml(isCompressed ? (QIODevice *)&compressor : (QIODevice *)&file);
 }
 
-QList<StreamsModel::Item *> StreamsModel::CategoryItem::loadXml(QIODevice *dev, bool importing)
+QList<StreamsModel::Item *> StreamsModel::CategoryItem::loadXml(QIODevice *dev)
 {
-    Q_UNUSED(importing)
-
     QList<Item *> newItems;
     QXmlStreamReader doc(dev);
     CategoryItem *currentCat=this;
@@ -479,18 +452,16 @@ QList<StreamsModel::Item *> StreamsModel::CategoryItem::loadXml(QIODevice *dev, 
     return newItems;
 }
 
-QList<StreamsModel::Item *> StreamsModel::FavouritesCategoryItem::loadXml(QIODevice *dev, bool importing)
+QList<StreamsModel::Item *> StreamsModel::FavouritesCategoryItem::loadXml(QIODevice *dev)
 {
     QList<Item *> newItems;
     QXmlStreamReader doc(dev);
     QSet<QString> existingUrls;
     QSet<QString> existingNames;
 
-    if (importing) {
-        foreach (Item *i, children) {
-            existingUrls.insert(i->url);
-            existingNames.insert(i->name);
-        }
+    foreach (Item *i, children) {
+        existingUrls.insert(i->url);
+        existingNames.insert(i->name);
     }
 
     while (!doc.atEnd()) {
@@ -501,12 +472,10 @@ QList<StreamsModel::Item *> StreamsModel::FavouritesCategoryItem::loadXml(QIODev
             QString origName=name;
             QString url=doc.attributes().value("url").toString();
 
-            if (!name.isEmpty() && !name.isEmpty() && (!importing || !existingUrls.contains(url))) {
+            if (!url.isEmpty() && !name.isEmpty() && !existingUrls.contains(url)) {
                 int i=1;
-                if (importing) {
-                    for (; i<100 && existingNames.contains(name); ++i) {
-                        name=origName+QLatin1String(" (")+QString::number(i)+QLatin1Char(')');
-                    }
+                for (; i<100 && existingNames.contains(name); ++i) {
+                    name=origName+QLatin1String(" (")+QString::number(i)+QLatin1Char(')');
                 }
 
                 if (i<100) {
@@ -549,12 +518,7 @@ StreamsModel::StreamsModel(QObject *parent)
     : ActionModel(parent)
     , root(new CategoryItem(QString(), "root"))
     , listenLive(0)
-    , favouritesIsWriteable(true)
-    , favouritesModified(false)
-    , favouritesSaveTimer(0)
 {
-    moveToNewLocation();
-
     tuneIn=new CategoryItem(constRadioTimeUrl+QLatin1String("?locale=")+QLocale::system().name(), i18n("TuneIn"), root, getIcon("tunein"), QString(), "tunein");
     tuneIn->supportsBookmarks=true;
     root->children.append(tuneIn);
@@ -604,6 +568,16 @@ StreamsModel::StreamsModel(QObject *parent)
     #if defined ENABLE_MODEL_TEST
     new ModelTest(this, this);
     #endif
+
+    connect(MPDConnection::self(), SIGNAL(playlistsRetrieved(QList<Playlist>)), SLOT(storedPlaylists(QList<Playlist>)));
+    connect(MPDConnection::self(), SIGNAL(savedStream(QString,QString)), SLOT(savedFavouriteStream(QString,QString)));
+    connect(MPDConnection::self(), SIGNAL(removedStreams(QList<quint32>)), SLOT(removedFavouriteStreams(QList<quint32>)));
+//    connect(MPDConnection::self(), SIGNAL(editedStream(QString,QString,quint32)), SLOT(editedFavouriteStream(QString,QString,quint32)));
+    connect(MPDConnection::self(), SIGNAL(streamList(QList<Stream>)), SLOT(favouriteStreams(QList<Stream>)));
+    connect(this, SIGNAL(listFavouriteStreams()), MPDConnection::self(), SLOT(listStreams()));
+    connect(this, SIGNAL(saveFavouriteStream(QString,QString)), MPDConnection::self(), SLOT(saveStream(QString,QString)));
+    connect(this, SIGNAL(removeFavouriteStreams(QList<quint32>)), MPDConnection::self(), SLOT(removeStreams(QList<quint32>)));
+    connect(this, SIGNAL(editFavouriteStream(QString,QString,quint32)), MPDConnection::self(), SLOT(editStream(QString,QString,quint32)));
 }
 
 StreamsModel::~StreamsModel()
@@ -674,9 +648,6 @@ QVariant StreamsModel::data(const QModelIndex &index, int role) const
             return Icons::self()->radioStreamIcon;
         }
     case Qt::DisplayRole:
-        if (item==favourites && !favouritesIsWriteable) {
-            return i18n("%1 (Read-Only)", item->name);
-        }
         return item->name;
     case Qt::ToolTipRole:
         return item->isCategory() ? item->name : (item->name+QLatin1String("<br><small><i>")+item->url+QLatin1String("</i></small>"));
@@ -711,7 +682,7 @@ QVariant StreamsModel::data(const QModelIndex &index, int role) const
             }
         } else {
             actions << StdActions::self()->replacePlayQueueAction;
-            if (favouritesIsWriteable && item->parent!=favourites) {
+            if (item->parent!=favourites) {
                 actions << addToFavouritesAction;
             }
         }
@@ -749,7 +720,8 @@ bool StreamsModel::canFetchMore(const QModelIndex &index) const
 {
     if (index.isValid()) {
         Item *item = toItem(index);
-        return item->isCategory() && CategoryItem::Initial==static_cast<CategoryItem *>(item)->state && !item->url.isEmpty();
+        return item->isCategory() && CategoryItem::Initial==static_cast<CategoryItem *>(item)->state && !item->url.isEmpty() &&
+               !static_cast<CategoryItem *>(item)->isFavourites();
     } else {
         return false;
     }
@@ -764,11 +736,8 @@ void StreamsModel::fetchMore(const QModelIndex &index)
     Item *item = toItem(index);
     if (item->isCategory() && !item->url.isEmpty()) {
         CategoryItem *cat=static_cast<CategoryItem *>(item);
-        if (item->url==constFavouritesUrl && !getInternalFile().startsWith(QLatin1String("http://"))) {
-            cat->state=CategoryItem::Fetching;
-            emit dataChanged(index, index);
-            loadFavourites(getInternalFile(false), index);
-            cat->state=CategoryItem::Fetched;
+        if (cat->isFavourites()) {
+            ; //
         } else if (cat==listenLive) {
             if (listenLive->children.isEmpty()) {
                 cat->state=CategoryItem::Fetching;
@@ -816,70 +785,31 @@ void StreamsModel::reload(const QModelIndex &index)
     fetchMore(index);
 }
 
-void StreamsModel::saveFavourites(bool force)
-{
-    if (force) {
-        if (favouritesSaveTimer) {
-            favouritesSaveTimer->stop();
-        }
-        persistFavourites();
-    } else if (!QFile::exists(getInternalFile(false)) || !QFileInfo(getInternalFile(false)).isWritable()) {
-        if (favouritesSaveTimer) {
-            favouritesSaveTimer->stop();
-        }
-        persistFavourites(); // Call persist now so as to log errors immediately
-    } else {
-        if (!favouritesSaveTimer) {
-            favouritesSaveTimer=new QTimer(this);
-            connect(favouritesSaveTimer, SIGNAL(timeout()), this, SLOT(persistFavourites()));
-        }
-        favouritesSaveTimer->start(10*1000);
-    }
-}
-
 bool StreamsModel::exportFavourites(const QString &fileName)
 {
     return favourites->saveXml(fileName, true);
 }
 
-void StreamsModel::reloadFavourites()
+void StreamsModel::importIntoFavourites(const QString &fileName)
 {
-    if (favourites->lastFileName.isEmpty() || favourites->lastFileName!=getInternalFile() || favourites->lastFileName.startsWith("http://")) {
-        reload(favouritesIndex());
-    }
-}
-
-bool StreamsModel::checkFavouritesWritable()
-{
-    bool wasWriteable=favouritesIsWriteable;
-    QString dirName=favouritesDir();
-    bool isHttp=dirName.startsWith("http:/");
-    favouritesIsWriteable=!isHttp && QFileInfo(dirName).isWritable();
-    if (favouritesIsWriteable) {
-        QString fileName=getInternalFile(false);
-        if (QFile::exists(fileName) && !QFileInfo(fileName).isWritable()) {
-            favouritesIsWriteable=false;
+    QList<Item *> newItems=favourites->CategoryItem::loadXml(fileName);
+    if (!newItems.isEmpty()) {
+        foreach (Item *i, newItems) {
+            emit saveFavouriteStream(i->url, i->name);
         }
+        qDeleteAll(newItems);
     }
-    if (favouritesIsWriteable!=wasWriteable) {
-        QModelIndex index=favouritesIndex();
-        emit dataChanged(index, index);
-    }
-    return favouritesIsWriteable;
 }
 
-void StreamsModel::removeFromFavourites(const QModelIndex &index)
+void StreamsModel::removeFromFavourites(const QModelIndexList &indexes)
 {
-    Item *item=static_cast<Item *>(index.internalPointer());
-    int pos=favourites->children.indexOf(item);
+    QList<quint32> rows;
+    foreach (const QModelIndex &idx, indexes) {
+        rows.append(idx.row());
+    }
 
-    if (-1!=pos) {
-        QModelIndex index=favouritesIndex();
-        beginRemoveRows(index, pos, pos);
-        delete favourites->children.takeAt(pos);
-        endRemoveRows();
-        favouritesModified=true;
-        saveFavourites();
+    if (!rows.isEmpty()) {
+        emit removeFavouriteStreams(rows);
     }
 }
 
@@ -901,12 +831,7 @@ bool StreamsModel::addToFavourites(const QString &url, const QString &name)
     }
 
     if (i<100) {
-        QModelIndex index=favouritesIndex();
-        beginInsertRows(index, favourites->children.count(), favourites->children.count());
-        favourites->children.append(new Item(url, n, favourites));
-        endInsertRows();
-        favouritesModified=true;
-        saveFavourites();
+        emit saveFavouriteStream(url, name);
         return true;
     }
     return false;
@@ -932,17 +857,9 @@ bool StreamsModel::nameExistsInFavourites(const QString &n)
     return false;
 }
 
-void StreamsModel::updateFavouriteStream(Item *item)
+void StreamsModel::updateFavouriteStream(const QString &url, const QString &name, const QModelIndex &idx)
 {
-    int pos=favourites->children.indexOf(item);
-
-    if (-1==pos) {
-        return;
-    }
-    QModelIndex index=createIndex(favourites->children.indexOf(item), 0, (void *)item);
-    favouritesModified=true;
-    saveFavourites();
-    emit dataChanged(index, index);
+    emit editFavouriteStream(url, name, idx.row());
 }
 
 bool StreamsModel::addBookmark(const QString &url, const QString &name, CategoryItem *bookmarkParentCat)
@@ -1171,8 +1088,6 @@ void StreamsModel::jobFinished()
         if (job->ok()) {
             QList<Item *> newItems;
             if (cat==favourites) {
-                newItems=favourites->loadXml(job->actualJob());
-                favourites->lastFileName=QString();
             } else if (QLatin1String("http")==job->url().scheme()) {
                 QString url=job->origUrl().toString();
                 if (constRadioTimeHost==job->origUrl().host()) {
@@ -1243,25 +1158,170 @@ void StreamsModel::jobFinished()
     }
 }
 
-void StreamsModel::persistFavourites()
-{
-    if (favouritesModified) {
-        QString fileName=getInternalFile(true);
-        favouritesModified=false;
-        if (favourites->saveXml(fileName)) {
-            Utils::setFilePerms(fileName);
-        } else {
-            emit error(i18n("Failed to save stream list. Please check %1 is writable.", fileName));
-            reloadFavourites();
-        }
-    }
-}
-
 // Required due to icon missing for StdActions::searchAction for Mac/Unity... See note in constructor above.
 void StreamsModel::tooltipUpdated(QAction *act)
 {
     if (act!=searchAction && act==StdActions::self()->searchAction) {
         searchAction->setToolTip(StdActions::self()->searchAction->toolTip());
+    }
+}
+
+void StreamsModel::storedPlaylists(const QList<Playlist> &list)
+{
+    QDateTime favouritesDateTime;
+    foreach (const Playlist &p, list) {
+        if (p.name==constPlayListName) {
+            favouritesDateTime=p.lastModified;
+            break;
+        }
+    }
+
+    if (favouritesDateTime.isNull()) {
+        favourites->state=CategoryItem::Fetched;
+        if (!favourites->children.isEmpty()) {
+            beginRemoveRows(favouritesIndex(), 0, favourites->children.count()-1);
+            qDeleteAll(favourites->children);
+            favourites->children.clear();
+            endRemoveRows();
+        }
+        importOldFavourites();
+    } else if (favourites->lastModified.isNull() || favourites->lastModified<favouritesDateTime) {
+        if (favourites->lastModified.isNull()) {
+            favourites->state=CategoryItem::Fetching;
+        }
+        emit listFavouriteStreams();
+    }
+    favourites->lastModified=favouritesDateTime;
+}
+
+void StreamsModel::savedFavouriteStream(const QString &url, const QString &name)
+{
+    if (favouritesNameForUrl(url).isEmpty()) {
+        beginInsertRows(favouritesIndex(), favourites->children.count(), favourites->children.count());
+        favourites->children.append(new Item(url, name, favourites));
+        endInsertRows();
+        emit addedToFavourites(name);
+    } else {
+        emit listFavouriteStreams();
+    }
+}
+
+void StreamsModel::removedFavouriteStreams(const QList<quint32> &removed)
+{
+    if (removed.isEmpty()) {
+        return;
+    }
+
+    quint32 adjust=0;
+    QModelIndex parent=favouritesIndex();
+    QList<quint32>::ConstIterator it=removed.constBegin();
+    QList<quint32>::ConstIterator end=removed.constEnd();
+    while(it!=end) {
+        quint32 rowBegin=*it;
+        quint32 rowEnd=*it;
+        QList<quint32>::ConstIterator next=it+1;
+        while(next!=end) {
+            if (*next!=(rowEnd+1)) {
+                break;
+            } else {
+                it=next;
+                rowEnd=*next;
+                next++;
+            }
+        }
+        beginRemoveRows(parent, rowBegin-adjust, rowEnd-adjust);
+        for (quint32 i=rowBegin; i<=rowEnd; ++i) {
+            delete favourites->children.takeAt(rowBegin-adjust);
+        }
+        adjust+=(rowEnd-rowBegin)+1;
+        endRemoveRows();
+        it++;
+    }
+    emit dataChanged(parent, parent);
+}
+
+//void StreamsModel::editedFavouriteStream(const QString &url, const QString &name, quint32 position)
+//{
+//    if (position<favourites->children.count()) {
+//        Item *stream=favourites->children.at(posiiton);
+//        stream->url=url;
+//        stream->name=name;
+//        QModelIndex index=createIndex(position, 0, (void *)item);
+//        emit dataChanged(index, index);
+//    }
+//}
+
+static StreamsModel::Item * getStream(StreamsModel::FavouritesCategoryItem *fav, const Stream &stream, int offset)
+{
+    int i=0;
+    foreach (StreamsModel::Item *s, fav->children) {
+        if (++i<offset) {
+            continue;
+        }
+        if (s->name==stream.name && s->url==stream.url) {
+            return s;
+        }
+    }
+
+    return 0;
+}
+
+void StreamsModel::favouriteStreams(const QList<Stream> &streams)
+{
+    QModelIndex idx=favouritesIndex();
+    if (favourites->children.isEmpty()) {
+        if (streams.isEmpty()) {
+            if (CategoryItem::Fetched!=favourites->state) {
+                favourites->state=CategoryItem::Fetched;
+                emit dataChanged(idx, idx);
+            }
+            return;
+        }
+        beginInsertRows(idx, 0, streams.count()-1);
+        foreach (const Stream &s, streams) {
+            favourites->children.append(new Item(s.url, s.name, favourites));
+        }
+        endInsertRows();
+    } else if (streams.isEmpty()) {
+        beginRemoveRows(idx, 0, favourites->children.count()-1);
+        qDeleteAll(favourites->children);
+        favourites->children.clear();
+        endRemoveRows();
+    } else {
+        for (qint32 i=0; i<streams.count(); ++i) {
+            Stream s=streams.at(i);
+            Item *si=i<favourites->children.count() ? favourites->children.at(i) : 0;
+            if (!si || si->name!=s.name || si->url!=s.url) {
+                si=i<favourites->children.count() ? getStream(favourites, s, i) : 0;
+                if (!si) {
+                    beginInsertRows(idx, i, i);
+                    favourites->children.insert(i, new Item(s.url, s.name, favourites));
+                    endInsertRows();
+                } else {
+                    int existing=favourites->children.indexOf(si);
+                    beginMoveRows(idx, existing, existing, idx, i>existing ? i+1 : i);
+                    Item *si=favourites->children.takeAt(existing);
+                    favourites->children.insert(i, si);
+                    endMoveRows();
+                }
+            }
+        }
+        if (favourites->children.count()>streams.count()) {
+            int toRemove=favourites->children.count()-streams.count();
+            beginRemoveRows(idx, favourites->children.count()-toRemove, favourites->children.count()-1);
+            for (int i=0; i<toRemove; ++i) {
+                delete favourites->children.takeLast();
+            }
+            endRemoveRows();
+        }
+    }
+
+    importOldFavourites();
+
+    if (CategoryItem::Fetched!=favourites->state) {
+        favourites->state=CategoryItem::Fetched;
+        emit dataChanged(idx, idx);
+        emit favouritesLoaded();
     }
 }
 
@@ -1865,20 +1925,21 @@ StreamsModel::Item * StreamsModel::parseSomaFmEntry(QXmlStreamReader &doc, Categ
     return name.isEmpty() || url.isEmpty() ? 0 : new Item(url, name, parent);
 }
 
-bool StreamsModel::loadFavourites(const QString &fileName, const QModelIndex &index, bool importing)
+void StreamsModel::importOldFavourites()
 {
-    QList<Item *> newItems=favourites->CategoryItem::loadXml(fileName, importing);
-    if (!importing) {
-        favourites->lastFileName=fileName;
-    }
+    if (!favourites->importedOld && Settings::self()->version()<CANTATA_MAKE_VERSION(1,3,54)) {
+        QString prevFile=Settings::self()->storeStreamsInMpdDir()
+                            ? MPDConnection::self()->getDetails().dir : Utils::dataDir(QString(), false);
 
-    if (!newItems.isEmpty()) {
-        beginInsertRows(index, favourites->children.count(), (favourites->children.count()+newItems.count())-1);
-        favourites->children+=newItems;
-        endInsertRows();
-        return true;
+        if (!prevFile.isEmpty()) {
+            prevFile+="streams.xml.gz";
+        }
+        if (!prevFile.isEmpty() && QFile::exists(prevFile)) {
+            importIntoFavourites(prevFile);
+//            QFile::remove(prevFile);
+        }
+        favourites->importedOld=true;
     }
-    return false;
 }
 
 void StreamsModel::buildListenLive(const QModelIndex &index)
@@ -2011,6 +2072,7 @@ QModelIndex StreamsModel::categoryIndex(const CategoryItem *cat) const
 #endif // ENABLE_STREAMS
 
 const QString StreamsModel::constPrefix=QLatin1String("cantata-stream-");
+const QString StreamsModel::constPlayListName=QLatin1String("[Radio Streams]");
 
 //bool StreamsModel::validProtocol(const QString &file)
 //{

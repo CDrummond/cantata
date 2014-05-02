@@ -39,6 +39,7 @@
 #include "song.h"
 #include "output.h"
 #include "playlist.h"
+#include "stream.h"
 #include "config.h"
 #include <time.h>
 
@@ -288,6 +289,11 @@ public Q_SLOTS:
 
     void search(const QString &field, const QString &value, int id);
 
+    void listStreams();
+    void saveStream(const QString &url, const QString &name);
+    void removeStreams(const QList<quint32> &positions);
+    void editStream(const QString &url, const QString &name, quint32 position);
+
 Q_SIGNALS:
     void stateChanged(bool connected);
     void passwordError();
@@ -327,6 +333,11 @@ Q_SIGNALS:
     void cantataStreams(const QStringList &files);
     void cantataStreams(const QList<Song> &songs, bool isUpdate);
     void removedIds(const QSet<qint32> &ids);
+
+    void savedStream(const QString &url, const QString &name);
+    void removedStreams(const QList<quint32> &removed);
+    void editedStream(const QString &url, const QString &name, quint32 position);
+    void streamList(const QList<Stream> &streams);
 
 private Q_SLOTS:
     void idleDataReady();

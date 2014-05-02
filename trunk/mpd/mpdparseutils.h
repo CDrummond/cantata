@@ -54,7 +54,8 @@ namespace MPDParseUtils
     enum Location {
         Loc_Library,
         Loc_Playlists,
-        Loc_PlayQueue
+        Loc_PlayQueue,
+        Loc_Streams
     };
 
     extern QList<Playlist> parsePlaylists(const QByteArray &data);

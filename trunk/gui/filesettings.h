@@ -28,20 +28,12 @@
 
 class FileSettings : public QWidget, private Ui::FileSettings
 {
-    Q_OBJECT
-
 public:
     FileSettings(QWidget *p);
     virtual ~FileSettings() { }
 
     void load();
     void save();
-
-Q_SIGNALS:
-    void reloadStreams();
-
-private Q_SLOTS:
-    void streamLocationChanged();
 };
 
 #endif

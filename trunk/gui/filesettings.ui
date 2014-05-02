@@ -45,13 +45,6 @@
     </widget>
    </item>
    <item>
-    <widget class="QCheckBox" name="storeStreamsInMpdDir">
-     <property name="text">
-      <string>Save list of favorite streams in music folder</string>
-     </property>
-    </widget>
-   </item>
-   <item>
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -76,7 +69,7 @@
       </sizepolicy>
      </property>
      <property name="text">
-      <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; If you elect to have Cantata store covers, lyrics, or backdrops, within the music folder, and you do not have write access to this folder, then Cantata will revert to saving the files in your personal cache folder. However, for streams, if you do not have write access, then you will only be able to view (and play) the streams stored in the music folder, and not add (or edit) any streams. If you elect not to store streams within the music folder, then these will be saved in your local config folder - and will only be accessible to yourself.&lt;/i&gt;</string>
+      <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; If you elect to have Cantata store covers, lyrics, or backdrops, within the music folder, and you do not have write access to this folder, then Cantata will revert to saving the files in your personal cache folder.&lt;/i&gt;</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -124,7 +117,7 @@
       <enum>Qt::Vertical</enum>
      </property>
      <property name="sizeType">
-      <enum>QSizePolicy::Fixed</enum>
+      <enum>QSizePolicy::Expanding</enum>
      </property>
      <property name="sizeHint" stdset="0">
       <size>
@@ -134,37 +127,8 @@
      </property>
     </spacer>
    </item>
-   <item>
-    <widget class="StateLabel" name="streamLocationNote">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="text">
-      <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; If you change the location where streams are stored (i.e. you toggle the 'Save list of favorite streams in music folder' option), then Cantata will only display streams that are stored in the relevant location. Therefore, before changing this setting, it is recommended that you export your existing streams. You can then re-import these to the new location (after you have toggled the setting).&lt;/i&gt;</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-     </property>
-     <property name="wordWrap">
-      <bool>true</bool>
-     </property>
-     <property name="textInteractionFlags">
-      <set>Qt::NoTextInteraction</set>
-     </property>
-    </widget>
-   </item>
   </layout>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>StateLabel</class>
-   <extends>QLabel</extends>
-   <header>statelabel.h</header>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections/>
 </ui>

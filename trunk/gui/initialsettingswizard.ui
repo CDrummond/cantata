@@ -700,7 +700,7 @@
     <item>
      <widget class="QLabel" name="label_5f">
       <property name="text">
-       <string>&lt;p&gt;Cantata will download missing covers, and lyrics, from the internet. Cantata also allows you to save a list of internet streams (e.g. Radio Stations) that you wish to be able to play.&lt;/p&gt;&lt;p&gt;For each of these, please confirm whether you wish Cantata to store the relevant files within the music folder, or within your personal cache/config folders.&lt;/p&gt;</string>
+       <string>&lt;p&gt;Cantata will download missing covers, and lyrics, from the internet.&lt;/p&gt;&lt;p&gt;For each of these, please confirm whether you wish Cantata to store the relevant files within the music folder, or within your personal cache/config folders.&lt;/p&gt;</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -747,13 +747,6 @@
      <widget class="QCheckBox" name="storeBackdropsInMpdDir">
       <property name="text">
        <string>Save downloaded backdrops in music folder</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QCheckBox" name="storeStreamsInMpdDir">
-      <property name="text">
-       <string>Save list of favorite streams in music folder</string>
       </property>
      </widget>
     </item>

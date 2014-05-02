@@ -72,7 +72,6 @@ InitialSettingsWizard::InitialSettingsWizard(QWidget *p)
     groupWarningIcon->setPixmap(Icon("dialog-warning").pixmap(iconSize, iconSize));
     storeCoversInMpdDir->setChecked(Settings::self()->storeCoversInMpdDir());
     storeLyricsInMpdDir->setChecked(Settings::self()->storeLyricsInMpdDir());
-    storeStreamsInMpdDir->setChecked(Settings::self()->storeStreamsInMpdDir());
     storeBackdropsInMpdDir->setChecked(Settings::self()->storeBackdropsInMpdDir());
     #ifdef ENABLE_KDE_SUPPORT
     introPage->setBackground(Icon("cantata"));
@@ -176,13 +175,11 @@ void InitialSettingsWizard::pageChanged(int p)
         if (dir->text().trimmed().startsWith(QLatin1String("http:/"))) {
             storeCoversInMpdDir->setChecked(false);
             storeLyricsInMpdDir->setChecked(false);
-            storeStreamsInMpdDir->setChecked(false);
             storeBackdropsInMpdDir->setChecked(false);
             httpNote->setVisible(true);
         } else {
             storeCoversInMpdDir->setChecked(Settings::self()->storeCoversInMpdDir());
             storeLyricsInMpdDir->setChecked(Settings::self()->storeLyricsInMpdDir());
-            storeStreamsInMpdDir->setChecked(Settings::self()->storeStreamsInMpdDir());
             storeBackdropsInMpdDir->setChecked(Settings::self()->storeBackdropsInMpdDir());
             httpNote->setVisible(false);
         }
@@ -218,7 +215,6 @@ void InitialSettingsWizard::accept()
     Settings::self()->saveConnectionDetails(getDetails());
     Settings::self()->saveStoreCoversInMpdDir(storeCoversInMpdDir->isChecked());
     Settings::self()->saveStoreLyricsInMpdDir(storeLyricsInMpdDir->isChecked());
-    Settings::self()->saveStoreStreamsInMpdDir(storeStreamsInMpdDir->isChecked());
 
     if (basic->isChecked()) {
         Settings::self()->saveCurrentConnection(MPDUser::constName);

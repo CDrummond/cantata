@@ -205,7 +205,6 @@ public:
     void saveShowPopups(bool v);
     void saveStoreCoversInMpdDir(bool v);
     void saveStoreLyricsInMpdDir(bool v);
-    void saveStoreStreamsInMpdDir(bool v);
     void saveStoreBackdropsInMpdDir(bool v);
     #ifndef ENABLE_UBUNTU
     void saveLibraryView(int v);

@@ -28,6 +28,8 @@
 #include "config.h"
 
 #ifdef ENABLE_STREAMS
+#include "stream.h"
+#include "playlist.h"
 #include <QIcon>
 #include <QList>
 #include <QMap>
@@ -38,7 +40,6 @@ class NetworkJob;
 class QNetworkRequest;
 class QXmlStreamReader;
 class QIODevice;
-class QTimer;
 
 class StreamsModel : public ActionModel
 {
@@ -46,13 +47,12 @@ class StreamsModel : public ActionModel
 
 public:
     struct CategoryItem;
-    struct Item
+
+    struct Item : public Stream
     {
-        Item(const QString &u, const QString &n=QString(), CategoryItem *p=0, const QString &sub=QString()) : url(u), name(n), subText(sub), parent(p) { }
+        Item(const QString &u, const QString &n=QString(), CategoryItem *p=0, const QString &sub=QString()) : Stream(u, n), subText(sub), parent(p) { }
         virtual ~Item() { }
         QString modifiedName() const;
-        QString url;
-        QString name;
         QString subText;
         CategoryItem *parent;
         virtual bool isCategory() const { return false; }
@@ -91,8 +91,8 @@ public:
         virtual QList<Item *> loadCache();
         bool saveXml(const QString &fileName, bool format=false) const;
         bool saveXml(QIODevice *dev, bool format=false) const;
-        QList<Item *> loadXml(const QString &fileName, bool importing=false);
-        virtual QList<Item *> loadXml(QIODevice *dev, bool importing=false);
+        QList<Item *> loadXml(const QString &fileName);
+        virtual QList<Item *> loadXml(QIODevice *dev);
         virtual void addHeaders(QNetworkRequest &) { }
 
         State state;
@@ -111,11 +111,12 @@ public:
     struct FavouritesCategoryItem : public CategoryItem
     {
         FavouritesCategoryItem(const QString &u, const QString &n, CategoryItem *p, const QIcon &i)
-            : CategoryItem(u, n, p, i) { }
-        QList<Item *> loadXml(QIODevice *dev, bool importing=false);
+            : CategoryItem(u, n, p, i), importedOld(false) { }
+        QList<Item *> loadXml(QIODevice *dev);
         bool isFavourites() const { return true; }
         bool canReload() const { return false; }
-        QString lastFileName;
+        QDateTime lastModified;
+        bool importedOld;
     };
 
     struct IceCastCategoryItem : public CategoryItem
@@ -175,6 +176,7 @@ public:
     };
 
     static const QString constPrefix;
+    static const QString constPlayListName;
     static const QString constSubDir;
     static const QString constCacheExt;
 
@@ -205,18 +207,14 @@ public:
     void fetchMore(const QModelIndex &index);
     void reload(const QModelIndex &index);
 
-    void saveFavourites(bool force=false);
     bool exportFavourites(const QString &fileName);
-    bool importIntoFavourites(const QString &fileName) { return loadFavourites(fileName, favouritesIndex(), true); }
+    void importIntoFavourites(const QString &fileName);
     bool haveFavourites() const { return !favourites->children.isEmpty(); }
-    bool isFavoritesWritable() { return favouritesIsWriteable; }
-    bool checkFavouritesWritable();
-    void reloadFavourites();
-    void removeFromFavourites(const QModelIndex &index);
+    void removeFromFavourites(const QModelIndexList &indexes);
     bool addToFavourites(const QString &url, const QString &name);
     QString favouritesNameForUrl(const QString &u);
     bool nameExistsInFavourites(const QString &n);
-    void updateFavouriteStream(Item *item);
+    void updateFavouriteStream(const QString &url, const QString &name, const QModelIndex &idx);
     
     bool addBookmark(const QString &url, const QString &name, CategoryItem *bookmarkParentCat);
     void removeBookmark(const QModelIndex &index);
@@ -252,6 +250,14 @@ Q_SIGNALS:
     void error(const QString &msg);
     void categoriesChanged();
 
+    // Streams stored on MPD...
+    void listFavouriteStreams();
+    void saveFavouriteStream(const QString &url, const QString &name);
+    void removeFavouriteStreams(const QList<quint32> &positions);
+    void editFavouriteStream(const QString &url, const QString &name, quint32 position);
+    void favouritesLoaded();
+    void addedToFavourites(const QString &name);
+
 public:
     static QList<Item *> parseRadioTimeResponse(QIODevice *dev, CategoryItem *cat, bool parseSubText=false);
     static QList<Item *> parseIceCastResponse(QIODevice *dev, CategoryItem *cat);
@@ -267,13 +273,19 @@ public:
 
 private Q_SLOTS:
     void jobFinished();
-    void persistFavourites();
     void tooltipUpdated(QAction *act);
+
+    // Responses from MPD...
+    void storedPlaylists(const QList<Playlist> &list);
+    void savedFavouriteStream(const QString &url, const QString &name);
+    void removedFavouriteStreams(const QList<quint32> &removed);
+//    void editedFavouriteStream(const QString &url, const QString &name, quint32 position);
+    void favouriteStreams(const QList<Stream> &streams);
 
 private:
     bool loadCache(CategoryItem *cat);
     Item * toItem(const QModelIndex &index) const { return index.isValid() ? static_cast<Item*>(index.internalPointer()) : root; }
-    bool loadFavourites(const QString &fileName, const QModelIndex &index, bool importing=false);
+    void importOldFavourites();
     void buildListenLive(const QModelIndex &index);
     void buildXml();
 
@@ -284,9 +296,6 @@ private:
     CategoryItem *tuneIn;
     CategoryItem *shoutCast;
     CategoryItem *listenLive;
-    bool favouritesIsWriteable;
-    bool favouritesModified;
-    QTimer *favouritesSaveTimer;
     Action *addBookmarkAction;
     Action *addToFavouritesAction;
     Action *configureAction;
@@ -299,6 +308,7 @@ private:
 namespace StreamsModel
 {
     extern const QString constPrefix;
+    extern const QString constPlayListName;
     extern QString modifyUrl(const QString &u,  bool addPrefix=true, const QString &name=QString());
     extern bool validProtocol(const QString &file);
 }

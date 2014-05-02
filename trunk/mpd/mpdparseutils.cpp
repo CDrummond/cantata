@@ -302,6 +302,8 @@ Song MPDParseUtils::parseSong(const QList<QByteArray> &lines, Location location)
     if (Loc_Library==location) {
         song.guessTags();
         song.fillEmptyFields();
+    } else if (Loc_Streams==location) {
+        song.name=getAndRemoveStreamName(song.file);
     } else {
         QString origFile=song.file;
 

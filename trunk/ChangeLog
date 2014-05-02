@@ -111,6 +111,7 @@
 68. Add button under playqueue to re-center playqueue on current song.
 69. Add option to only act on songs that pass current string or genre filter.
 70. Multiple genre support.
+71. Store favourite streams as '[Radio Streams]' MPD playlist.
 
 1.3.4
 -----

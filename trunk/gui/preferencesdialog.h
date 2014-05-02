@@ -73,7 +73,6 @@ private Q_SLOTS:
 
 Q_SIGNALS:
     void settingsSaved();
-    void reloadStreams();
 
 private:
     PageWidget *pageWidget;

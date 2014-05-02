@@ -21,26 +21,34 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include "filesettings.h"
-#include "settings.h"
+#ifndef STREAM_H
+#define STREAM_H
 
-FileSettings::FileSettings(QWidget *p)
-    : QWidget(p)
-{
-    setupUi(this);
-}
+#include <QString>
 
-void FileSettings::load()
+struct Stream
 {
-    storeCoversInMpdDir->setChecked(Settings::self()->storeCoversInMpdDir());
-    storeLyricsInMpdDir->setChecked(Settings::self()->storeLyricsInMpdDir());
-    storeBackdropsInMpdDir->setChecked(Settings::self()->storeBackdropsInMpdDir());
-}
+    Stream() { }
+    Stream(const QString &u, const QString &n) : url(u), name(n) { }
+    Stream(const Stream &o) { *this=o; }
 
-void FileSettings::save()
-{
-    Settings::self()->saveStoreCoversInMpdDir(storeCoversInMpdDir->isChecked());
-    Settings::self()->saveStoreLyricsInMpdDir(storeLyricsInMpdDir->isChecked());
-    Settings::self()->saveStoreBackdropsInMpdDir(storeBackdropsInMpdDir->isChecked());
-}
+    bool operator==(const Stream &o) const
+    {
+        return url==o.url;
+    }
+
+    Stream & operator=(const Stream &o)
+    {
+        url=o.url;
+        name=o.name;
+        return *this;
+    }
+
+    virtual ~Stream() { }
+
+    QString url;
+    QString name;
+};
+
+#endif
 

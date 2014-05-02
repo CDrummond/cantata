@@ -128,7 +128,6 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
     setCaption(i18n("Configure"));
     setMainWidget(pageWidget);
     setAttribute(Qt::WA_DeleteOnClose);
-    connect(files, SIGNAL(reloadStreams()), SIGNAL(reloadStreams()));
     int h=sizeHint().height();
     setMinimumHeight(h);
     setMinimumWidth(h*1.1);

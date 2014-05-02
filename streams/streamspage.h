@@ -42,9 +42,6 @@ public:
     StreamsPage(QWidget *p);
     virtual ~StreamsPage();
 
-    void setEnabled(bool e);
-    bool isEnabled() const { return enabled; }
-    void save();
     void addSelectionToPlaylist(const QString &name=QString(), bool replace=false, quint8 priorty=0, bool randomAlbums=false);
     void setView(int v) { view->setMode((ItemView::Mode)v); searchView->setMode((ItemView::Mode)v); }
     void focusSearch() { view->focusSearch(); searchView->focusSearch(); }
@@ -59,9 +56,6 @@ Q_SIGNALS:
     void showPreferencesPage(const QString &page);
 
 public Q_SLOTS:
-    void mpdDirChanged();
-    void checkWritable();
-    void refresh();
     void removeItems();
     void controlActions();
 
@@ -80,13 +74,14 @@ private Q_SLOTS:
     void itemDoubleClicked(const QModelIndex &index);
     void updateDiStatus();
     void showPreferencesPage();
+    void expandFavourites();
+    void addedToFavourites(const QString &name);
 
 private:
     void addItemsToPlayQueue(const QModelIndexList &indexes, bool replace, quint8 priorty=0);
     StreamsModel::CategoryItem *getSearchCategory();
 
 private:
-    bool enabled;
     bool searching;
     Action *importAction;
     Action *exportAction;

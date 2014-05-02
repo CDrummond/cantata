@@ -521,13 +521,13 @@ bool PlayQueueView::haveUnSelectedItems()
 
 void PlayQueueView::clearSelection()
 {
-    if (listView->selectionModel()) {
+    if (listView && listView->selectionModel()) {
         listView->selectionModel()->clear();
     }
-    if (groupedView->selectionModel()) {
+    if (groupedView && groupedView->selectionModel()) {
         groupedView->selectionModel()->clear();
     }
-    if (treeView->selectionModel()) {
+    if (treeView && treeView->selectionModel()) {
         treeView->selectionModel()->clear();
     }
 }

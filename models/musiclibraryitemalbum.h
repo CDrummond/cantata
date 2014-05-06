@@ -63,7 +63,7 @@ public:
 
     static bool lessThan(const MusicLibraryItem *a, const MusicLibraryItem *b);
 
-    MusicLibraryItemAlbum(const QString &data, QString original, quint32 year, MusicLibraryItemContainer *parent);
+    MusicLibraryItemAlbum(const QString &data, const QString &original, const QString &mbId, quint32 year, MusicLibraryItemContainer *parent);
     virtual ~MusicLibraryItemAlbum();
 
     QString displayData(bool full=false) const;
@@ -94,6 +94,7 @@ public:
     bool containsArtist(const QString &a);
     // Return orignal album name. If we are grouping by composer, then album will appear as "Album (Artist)"
     const QString & originalName() const { return m_originalName; }
+    const QString & id() const { return m_id; }
     #ifdef ENABLE_UBUNTU
     void setCover(const QString &c) { m_coverName="file://"+c; m_coverRequested=false; }
     const QString & coverName() { return m_coverName; }
@@ -111,6 +112,7 @@ private:
     quint32 m_totalTime;
     quint32 m_numTracks;
     QString m_originalName;
+    QString m_id;
     mutable bool m_coverRequested;
     mutable Song m_coverSong;
     #ifdef ENABLE_UBUNTU

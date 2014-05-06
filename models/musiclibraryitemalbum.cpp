@@ -154,7 +154,7 @@ bool MusicLibraryItemAlbum::lessThan(const MusicLibraryItem *a, const MusicLibra
     return aa->year()<ab->year();
 }
 
-MusicLibraryItemAlbum::MusicLibraryItemAlbum(const QString &data, QString original, quint32 year, MusicLibraryItemContainer *parent)
+MusicLibraryItemAlbum::MusicLibraryItemAlbum(const QString &data, const QString &original, const QString &mbId, quint32 year, MusicLibraryItemContainer *parent)
     : MusicLibraryItemContainer(data, parent)
     , m_year(year)
     , m_yearOfTrack(0xFFFF)
@@ -162,6 +162,7 @@ MusicLibraryItemAlbum::MusicLibraryItemAlbum(const QString &data, QString origin
     , m_totalTime(0)
     , m_numTracks(0)
     , m_originalName(original!=data ? original : QString())
+    , m_id(mbId)
     , m_coverRequested(false)
     , m_type(Song::Standard)
 {

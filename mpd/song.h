@@ -60,7 +60,7 @@ struct Song
     QString title;
     QString genre;
     QString name;
-    QString albumId;
+    QString mbAlbumId;
 //     quint32 pos;
     quint8 disc;
     mutable quint8 priority;
@@ -106,7 +106,7 @@ struct Song
     QString entryName() const;
     QString artistOrComposer() const;
     QString albumName() const;
-    QString albumNameAndId() const { return albumName()+QLatin1Char(':')+albumId; }
+    QString albumId() const { return mbAlbumId.isEmpty() ? album : mbAlbumId; }
     QString artistSong() const;
     const QString & albumArtist() const { return albumartist.isEmpty() ? artist : albumartist; }
     QString displayTitle() const { return !albumartist.isEmpty() && albumartist!=artist ? artistSong() : title; }
@@ -124,7 +124,7 @@ struct Song
     bool isNonMPD() const { return isStream() || OnlineSvrTrack==type || Cdda==type || (!file.isEmpty() && file.startsWith(Utils::constDirSep)); }
     bool isCantataStream() const { return CantataStream==type; }
     bool isCdda() const { return Cdda==type; }
-    QString albumKey() const { return albumArtist()+QLatin1Char(':')+album+QLatin1Char(':')+QString::number(disc)+QLatin1Char(':')+albumId; }
+    QString albumKey() const { return albumArtist()+QLatin1Char(':')+(mbAlbumId.isEmpty() ? album : mbAlbumId)+QLatin1Char(':')+QString::number(disc); }
     bool isCueFile() const { return Playlist==type && file.endsWith(QLatin1String(".cue"), Qt::CaseInsensitive); }
     QString basicArtist() const;
     QString filePath() const { return decodePath(file); }

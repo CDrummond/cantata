@@ -101,6 +101,7 @@ public:
     #endif
     
 private:
+    Song coverSong() const;
     void setYear(const MusicLibraryItemSong *song);
     bool largeImages() const;
     void updateStats();

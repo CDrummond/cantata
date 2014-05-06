@@ -302,9 +302,10 @@ public:
         QString duration=song.time>0 ? Utils::formatTime(song.time) : QString();
         bool stream=!isCollection && song.isStandardStream();
         bool isEmpty=song.title.isEmpty() && song.artist.isEmpty() && !song.file.isEmpty();
+        bool diffArtist=!isEmpty && !song.albumartist.isEmpty() && song.albumartist != song.artist;
         QString trackTitle=isEmpty
                         ? song.file
-                        : !song.albumartist.isEmpty() && song.albumartist != song.artist
+                        : diffArtist
                             ? song.artistSong()
                             : song.title;
         QFont f(QApplication::font());
@@ -333,7 +334,7 @@ public:
                 track=trackTitle;
             } else if (song.album.isEmpty()) {
                 title=song.artistOrComposer();
-                track=song.trackAndTitleStr(song.isVariousArtists());
+                track=song.trackAndTitleStr(song.isVariousArtists() || diffArtist);
             } else {
                 if (song.isFromOnlineService()) {
                     title=Song::displayAlbum(song.album, Song::albumYear(song));
@@ -345,13 +346,13 @@ public:
                         title=title.replace(") (", ", ");
                     }
                 }
-                track=song.trackAndTitleStr(song.isVariousArtists());
+                track=song.trackAndTitleStr(song.isVariousArtists() || diffArtist);
             }
         } else {
             if (stream) {
                 track=streamText(song, trackTitle);
             } else {
-                track=song.trackAndTitleStr(song.isVariousArtists());
+                track=song.trackAndTitleStr(song.isVariousArtists() || diffArtist);
             }
         }
 

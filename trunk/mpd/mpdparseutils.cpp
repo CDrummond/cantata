@@ -74,6 +74,7 @@ static const QByteArray constDateKey("Date: ");
 static const QByteArray constGenreKey("Genre: ");
 static const QByteArray constNameKey("Name: ");
 static const QByteArray constPriorityKey("Prio: ");
+static const QByteArray constAlbumId("MUSICBRAINZ_ALBUMID: ");
 static const QByteArray constFileKey("file: ");
 static const QByteArray constPlaylistKey("playlist: ");
 static const QByteArray constDirectoryKey("directory: ");
@@ -292,6 +293,8 @@ Song MPDParseUtils::parseSong(const QList<QByteArray> &lines, Location location)
             song.type=Song::Playlist;
         } else if (Loc_PlayQueue==location && line.startsWith(constPriorityKey)) {
             song.priority = line.mid(constPriorityKey.length()).toUInt();
+        } else if (line.startsWith(constAlbumId)) {
+            song.albumId = line.mid(constAlbumId.length());
         }
     }
 
@@ -658,7 +661,8 @@ void MPDParseUtils::parseLibraryItems(const QByteArray &data, const QString &mpd
             if (!artistItem || currentSong.artistOrComposer()!=artistItem->data()) {
                 artistItem = rootItem->artist(currentSong);
             }
-            if (!albumItem || currentSong.year!=albumItem->year() || albumItem->parentItem()!=artistItem || currentSong.albumName()!=albumItem->data()) {
+            if (!albumItem || currentSong.year!=albumItem->year() || albumItem->parentItem()!=artistItem ||
+                currentSong.albumName()!=albumItem->data() || currentSong.albumId!=albumItem->id()) {
                 albumItem = artistItem->album(currentSong);
             }           
             songItem=new MusicLibraryItemSong(currentSong, albumItem);

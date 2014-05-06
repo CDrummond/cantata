@@ -426,7 +426,8 @@ QString Song::albumName() const
 
 QString Song::artistSong() const
 {
-    return artist+QLatin1String(" - ")+title;
+    //return artist+QLatin1String(" - ")+title;
+    return title+QLatin1String(" - ")+artist;
 }
 
 QString Song::trackAndTitleStr(bool addArtist) const

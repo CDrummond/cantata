@@ -202,25 +202,22 @@ const QString & MusicLibraryItemAlbum::cover() const
 QPixmap *MusicLibraryItemAlbum::saveToCache(const QImage &img) const
 {
     int size=MusicLibraryItemAlbum::iconSize(largeImages());
-    return Covers::self()->saveScaledCover(img.scaled(size, size, Qt::KeepAspectRatio, Qt::SmoothTransformation), parentItem()->data(), data(), size);
+    return Covers::self()->saveScaledCover(img.scaled(size, size, Qt::KeepAspectRatio, Qt::SmoothTransformation), coverSong(), size);
 }
 
 const QPixmap & MusicLibraryItemAlbum::cover() const
 {
     int iSize=iconSize(largeImages());
     if (Song::SingleTracks!=m_type && parentItem() && iSize && childCount()) {
-        MusicLibraryItemSong *firstSong=static_cast<MusicLibraryItemSong*>(childItem(0));
-        Song song;
-        song.artist=firstSong->song().artist;
-        song.albumartist=Song::useComposer() && !firstSong->song().composer.isEmpty() ? firstSong->song().albumArtist() : parentItem()->data();
-        song.album=Song::useComposer() ? firstSong->song().album : m_itemData;
+        Song song=coverSong();
 
-        QPixmap *pix=Covers::self()->getScaledCover(song.albumArtist(), song.album, iSize);
+        QPixmap *pix=Covers::self()->getScaledCover(song, iSize);
         if (pix) {
             return *pix;
         }
 
         if (!m_coverRequested) {
+            MusicLibraryItemSong *firstSong=static_cast<MusicLibraryItemSong*>(childItem(0));
             song.year=m_year;
             song.file=firstSong->file();
             song.type=m_type;
@@ -426,6 +423,17 @@ bool MusicLibraryItemAlbum::containsArtist(const QString &a)
     }
 
     return m_artists.contains(a);
+}
+
+Song MusicLibraryItemAlbum::coverSong() const
+{
+    MusicLibraryItemSong *firstSong=static_cast<MusicLibraryItemSong*>(childItem(0));
+    Song song;
+    song.artist=firstSong->song().artist;
+    song.albumartist=Song::useComposer() && !firstSong->song().composer.isEmpty() ? firstSong->song().albumArtist() : parentItem()->data();
+    song.album=Song::useComposer() ? firstSong->song().album : m_itemData;
+    song.mbAlbumId=firstSong->song().mbAlbumId;
+    return song;
 }
 
 void MusicLibraryItemAlbum::setYear(const MusicLibraryItemSong *song)

@@ -172,24 +172,14 @@ static QImage loadImage(const QString &fileName)
     return img;
 }
 
-static inline QString albumKey(const QString &artist, const QString &album)
-{
-    return "{"+artist+"}{"+album+"}";
-}
-
 static inline QString albumKey(const Song &s)
 {
-    return albumKey(s.albumArtist(), s.album);
-}
-
-static inline QString artistKey(const QString &artist)
-{
-    return "{"+artist+"}";
+    return "{"+s.albumArtist()+"}{"+s.albumId()+"}";
 }
 
 static inline QString artistKey(const Song &s)
 {
-    return artistKey(s.albumArtist());
+    return "{"+s.albumArtist()+"}";
 }
 
 static inline QString cacheKey(const Song &song, int size)
@@ -197,23 +187,18 @@ static inline QString cacheKey(const Song &song, int size)
     return (song.isArtistImageRequest() ? artistKey(song) : albumKey(song))+QString::number(size);
 }
 
-static inline QString cacheKey(const QString &artist, const QString &album, int size)
-{
-    return (album.isEmpty() ? artistKey(artist) : albumKey(artist, album))+QString::number(size);
-}
-
 static const QLatin1String constScaledFormat(".png");
 static bool cacheScaledCovers=true;
 
-static QString getScaledCoverName(const QString &artist, const QString &album, int size, bool createDir)
+static QString getScaledCoverName(const Song &song, int size, bool createDir)
 {
-    if (album.isEmpty()) {
+    if (song.isArtistImageRequest()) {
         QString dir=Utils::cacheDir(Covers::constScaledCoverDir+QString::number(size)+QLatin1Char('/'), createDir);
-        return dir.isEmpty() ? QString() : (dir+Covers::encodeName(artist)+constScaledFormat);
+        return dir.isEmpty() ? QString() : (dir+Covers::encodeName(song.albumArtist())+constScaledFormat);
     }
 
-    QString dir=Utils::cacheDir(Covers::constScaledCoverDir+QString::number(size)+QLatin1Char('/')+Covers::encodeName(artist), createDir);
-    return dir.isEmpty() ? QString() : (dir+Covers::encodeName(album)+constScaledFormat);
+    QString dir=Utils::cacheDir(Covers::constScaledCoverDir+QString::number(size)+QLatin1Char('/')+Covers::encodeName(song.albumArtist()), createDir);
+    return dir.isEmpty() ? QString() : (dir+Covers::encodeName(song.albumId())+constScaledFormat);
 }
 
 static void clearScaledCache(const Song &song)
@@ -255,14 +240,14 @@ static void clearScaledCache(const Song &song)
     }
 }
 
-static QImage loadScaledCover(const QString &artist, const QString &album, int size)
+static QImage loadScaledCover(const Song &song, int size)
 {
-    QString fileName=getScaledCoverName(artist, album, size, false);
+    QString fileName=getScaledCoverName(song, size, false);
     if (!fileName.isEmpty()) {
         if (QFile::exists(fileName)) {
             QImage img(fileName, "PNG");
             if (!img.isNull() && (img.width()==size || img.height()==size)) {
-                DBUG_CLASS("Covers") << artist << album << size << "scaled cover found" << fileName;
+                DBUG_CLASS("Covers") << song.albumArtist() << song.albumId() << size << "scaled cover found" << fileName;
                 return img;
             }
         } else { // Remove any previous JPG scaled cover...
@@ -899,8 +884,8 @@ void CoverLoader::load()
     }
     QList<LoadedCover> covers;
     foreach (const LoadedCover &s, toDo) {
-        DBUG << s.song.artist << s.song.album << s.song.size;
-        covers.append(LoadedCover(s.song, loadScaledCover(s.song.albumArtist(), s.song.album, s.song.size)));
+        DBUG << s.song.artist << s.song.albumId() << s.song.size;
+        covers.append(LoadedCover(s.song, loadScaledCover(s.song, s.song.size)));
     }
     if (!covers.isEmpty()) {
         DBUG << "loaded" << covers.count();
@@ -966,16 +951,16 @@ void Covers::stop()
 
 static inline Song setSizeRequest(Song s, int size) { s.setSpecificSizeRequest(size); return s; }
 
-QPixmap * Covers::getScaledCover(const QString &artist, const QString &album, int size)
+QPixmap * Covers::getScaledCover(const Song &song, int size)
 {
     if (size<4) {
         return 0;
     }
-//    DBUG_CLASS("Covers") << artist << album << size;
-    QString key=cacheKey(artist, album, size);
+//    DBUG_CLASS("Covers") << song.albumArtist() << song.album << song.mbAlbumId << size;
+    QString key=cacheKey(song, size);
     QPixmap *pix(cache.object(key));
     if (!pix && cacheScaledCovers) {
-        QImage img=loadScaledCover(artist, album, size);
+        QImage img=loadScaledCover(song, size);
         if (!img.isNull()) {
             pix=new QPixmap(QPixmap::fromImage(img));
         }
@@ -991,19 +976,19 @@ QPixmap * Covers::getScaledCover(const QString &artist, const QString &album, in
     return pix && pix->width()>1 ? pix : 0;
 }
 
-QPixmap * Covers::saveScaledCover(const QImage &img, const QString &artist, const QString &album, int size)
+QPixmap * Covers::saveScaledCover(const QImage &img, const Song &song, int size)
 {
     if (size<4) {
         return 0;
     }
 
     if (cacheScaledCovers) {
-        QString fileName=getScaledCoverName(artist, album, size, true);
+        QString fileName=getScaledCoverName(song, size, true);
         bool status=img.save(fileName, "PNG");
-        DBUG_CLASS("Covers") << artist << album << size << fileName << status;
+        DBUG_CLASS("Covers") << song.albumArtist() << song.album << song.mbAlbumId << size << fileName << status;
     }
     QPixmap *pix=new QPixmap(QPixmap::fromImage(img));
-    cache.insert(cacheKey(artist, album, size), pix, pix->width()*pix->height()*(pix->depth()/8));
+    cache.insert(cacheKey(song, size), pix, pix->width()*pix->height()*(pix->depth()/8));
     cacheSizes.insert(size);
     return pix;
 }
@@ -1056,7 +1041,7 @@ void Covers::updateCache(const Song &song, const QImage &img, bool dummyEntriesO
         if (pix && (!dummyEntriesOnly || pix->width()<2)) {
             cache.remove(key);
             if (!img.isNull()) {
-                if (saveScaledCover(scale(song, img, s), song.albumArtist(), song.album, s)) {
+                if (saveScaledCover(scale(song, img, s), song, s)) {
                     emit loaded(song, s);
                 }
             }
@@ -1411,7 +1396,7 @@ void Covers::loaded(const QList<LoadedCover> &covers)
 {
     foreach (const LoadedCover &cvr, covers) {
         if (!cvr.img.isNull()) {
-            cache.insert(cacheKey(cvr.song.albumArtist(), cvr.song.album, cvr.song.size), new QPixmap(QPixmap::fromImage(cvr.img)));
+            cache.insert(cacheKey(cvr.song, cvr.song.size), new QPixmap(QPixmap::fromImage(cvr.img)));
             cacheSizes.insert(cvr.song.size);
             emit loaded(cvr.song, cvr.song.size);
         } else { // Failed to load a scaled cover, try locating non-scaled cover...
@@ -1457,12 +1442,12 @@ void Covers::gotAlbumCover(const Song &song, const QImage &img, const QString &f
     }
     if (emitResult) {
         if (song.isSpecificSizeRequest()) {
-            if (!img.isNull() && saveScaledCover(scale(song, img, song.size), song.albumArtist(), song.album, song.size)) {
-                DBUG << "loaded cover" << song.file << song.artist << song.albumartist << song.album << img.width() << img.height() << fileName << song.size;
+            if (!img.isNull() && saveScaledCover(scale(song, img, song.size), song, song.size)) {
+                DBUG << "loaded cover" << song.file << song.artist << song.albumartist << song.album << song.mbAlbumId << img.width() << img.height() << fileName << song.size;
                 emit loaded(song, song.size);
             }
         } else {
-            DBUG << "emit cover" << song.file << song.artist << song.albumartist << song.album << img.width() << img.height() << fileName;
+            DBUG << "emit cover" << song.file << song.artist << song.albumartist << song.album << song.mbAlbumId << img.width() << img.height() << fileName;
             emit cover(song, img, fileName.startsWith(constCoverInTagPrefix) ? QString() : fileName);
         }
     }
@@ -1479,7 +1464,7 @@ void Covers::gotArtistImage(const Song &song, const QImage &img, const QString &
     }
     if (emitResult) {
         if (song.isSpecificSizeRequest()) {
-            if (!img.isNull() && saveScaledCover(scale(song, img, song.size), song.albumArtist(), QString(), song.size)) {
+            if (!img.isNull() && saveScaledCover(scale(song, img, song.size), song, song.size)) {
                 DBUG << "loaded artistImage" << song.file << song.artist << song.albumartist << song.album << img.width() << img.height() << fileName << song.size;
                 emit loaded(song, song.size);
             }

@@ -275,7 +275,7 @@ static const QString constGenreAttribute=QLatin1String("genre");
 static const QString constYearAttribute=QLatin1String("year");
 static const QString constTimeAttribute=QLatin1String("time");
 static const QString constDiscAttribute=QLatin1String("disc");
-static const QString constIdAttribute=QLatin1String("id");
+static const QString constMbIdAttribute=QLatin1String("mbid");
 static const QString constFileAttribute=QLatin1String("file");
 static const QString constPlaylistAttribute=QLatin1String("playlist");
 static const QString constGuessedAttribute=QLatin1String("guessed");
@@ -353,7 +353,7 @@ void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, const QDateTime &date
                 writer.writeAttribute(constImageAttribute, album->imageUrl());
             }
             if (!album->id().isEmpty()) {
-                writer.writeAttribute(constIdAttribute, album->id());
+                writer.writeAttribute(constMbIdAttribute, album->id());
             }
             QString artistName=artist->actualArtist().isEmpty() ? artist->data() : artist->actualArtist();
 
@@ -495,7 +495,7 @@ quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime 
                 song.album=attributes.value(constNameAttribute).toString();
                 song.year=attributes.value(constYearAttribute).toString().toUInt();
                 song.genre=attributes.value(constGenreAttribute).toString();
-                song.albumId=attributes.value(constIdAttribute).toString();
+                song.mbAlbumId=attributes.value(constMbIdAttribute).toString();
                 if (!song.file.isEmpty()) {
                     song.file.append("dummy.mp3");
                 }

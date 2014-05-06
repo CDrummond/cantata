@@ -173,7 +173,7 @@ const QPixmap & MusicLibraryItemArtist::cover() const
 
 MusicLibraryItemAlbum * MusicLibraryItemArtist::album(const Song &s, bool create)
 {
-    QHash<QString, int>::ConstIterator it=m_indexes.find(s.albumNameAndId());
+    QHash<QString, int>::ConstIterator it=m_indexes.find(s.albumId());
 
     if (m_indexes.end()==it) {
         return create ? createAlbum(s) : 0;
@@ -186,8 +186,8 @@ MusicLibraryItemAlbum * MusicLibraryItemArtist::createAlbum(const Song &s)
     // If grouping via composer - then album name *might* need to include artist name (if this is different to composer)
     // So, when creating an album entry we need to use the "Album (Artist)" value for display/sort, and still store just
     // "Album" (for saving to cache, tag editing, etc.)
-    QString albumId=s.albumNameAndId();
-    MusicLibraryItemAlbum *item=new MusicLibraryItemAlbum(s.albumName(), s.album, s.albumId, s.year, this);
+    QString albumId=s.albumId();
+    MusicLibraryItemAlbum *item=new MusicLibraryItemAlbum(s.albumName(), s.album, s.mbAlbumId, s.year, this);
     m_indexes.insert(albumId, m_childItems.count());
     m_childItems.append(item);
     return item;

@@ -112,6 +112,8 @@
 69. Add option to only act on songs that pass current string or genre filter.
 70. Multiple genre support.
 71. Store favourite streams as '[Radio Streams]' MPD playlist.
+72. For tracks for mutliple-artist albums, show as 'title - artist' and not
+    'artist - title'
 
 1.3.4
 -----

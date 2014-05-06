@@ -305,7 +305,7 @@ public:
         QString trackTitle=isEmpty
                         ? song.file
                         : !song.albumartist.isEmpty() && song.albumartist != song.artist
-                            ? song.title + " - " + song.artist
+                            ? song.artistSong()
                             : song.title;
         QFont f(QApplication::font());
         if (stream) {

@@ -178,6 +178,7 @@ Song & Song::operator=(const Song &s)
     year = s.year;
     genre = s.genre;
     name = s.name;
+    albumId = s.albumId;
     size = s.size;
     key = s.key;
     type = s.type;
@@ -216,6 +217,10 @@ int Song::compareTo(const Song &o) const
             return compare;
         }
         compare=album.localeAwareCompare(o.album);
+        if (0!=compare) {
+            return compare;
+        }
+        albumId.compare(o.albumId);
         if (0!=compare) {
             return compare;
         }
@@ -579,7 +584,7 @@ void Song::setIsFromOnlineService(const QString &service)
 QDataStream & operator<<(QDataStream &stream, const Song &song)
 {
     stream << song.id << song.file << song.album << song.artist << song.albumartist << song.composer << song.title
-           << song.genre << song.name << song.disc << song.priority << song.time << song.track << (quint16)song.year
+           << song.genre << song.name << song.albumId << song.disc << song.priority << song.time << song.track << (quint16)song.year
            << (quint16)song.type << (bool)song.guessed << song.size;
     return stream;
 }
@@ -590,7 +595,7 @@ QDataStream & operator>>(QDataStream &stream, Song &song)
     quint16 year;
     bool guessed;
     stream >> song.id >> song.file >> song.album >> song.artist >> song.albumartist >> song.composer >> song.title
-           >> song.genre >> song.name >> song.disc >> song.priority >> song.time >> song.track >> year
+           >> song.genre >> song.name >> song.albumId >> song.disc >> song.priority >> song.time >> song.track >> year
            >> type >> guessed >> song.size;
     song.type=(Song::Type)type;
     song.year=year;

@@ -1185,7 +1185,10 @@ void StreamsModel::storedPlaylists(const QList<Playlist> &list)
             endRemoveRows();
         }
         importOldFavourites();
-    } else if (favourites->lastModified.isNull() || favourites->lastModified<favouritesDateTime) {
+    } else if (favourites->lastModified.isNull() || favourites->lastModified<favouritesDateTime ||
+               // If station is edited externally (e.g. MPDroid) then we get 2 updates for the playlist - but times are
+               // the same. So, if favouritres update is less thn 3msecs ago then its probably due to this...
+               qAbs(QDateTime::currentDateTime().currentMSecsSinceEpoch()-favourites->lastModified.currentMSecsSinceEpoch())<3) {
         if (favourites->lastModified.isNull()) {
             favourites->state=CategoryItem::Fetching;
         }

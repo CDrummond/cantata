@@ -294,7 +294,7 @@ Song MPDParseUtils::parseSong(const QList<QByteArray> &lines, Location location)
         } else if (Loc_PlayQueue==location && line.startsWith(constPriorityKey)) {
             song.priority = line.mid(constPriorityKey.length()).toUInt();
         } else if (line.startsWith(constAlbumId)) {
-            song.albumId = line.mid(constAlbumId.length());
+            song.mbAlbumId = line.mid(constAlbumId.length());
         }
     }
 
@@ -662,7 +662,7 @@ void MPDParseUtils::parseLibraryItems(const QByteArray &data, const QString &mpd
                 artistItem = rootItem->artist(currentSong);
             }
             if (!albumItem || currentSong.year!=albumItem->year() || albumItem->parentItem()!=artistItem ||
-                currentSong.albumName()!=albumItem->data() || currentSong.albumId!=albumItem->id()) {
+                currentSong.albumName()!=albumItem->data() || currentSong.mbAlbumId!=albumItem->id()) {
                 albumItem = artistItem->album(currentSong);
             }           
             songItem=new MusicLibraryItemSong(currentSong, albumItem);

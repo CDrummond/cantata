@@ -47,13 +47,15 @@
 static int constCoverSize=32;
 static int constIconSize=16;
 static int constBorder=1;
+static double sizeAdjust=1.25;
 
 void GroupedView::setup()
 {
     int height=QApplication::fontMetrics().height();
+    sizeAdjust=Utils::touchFriendly() ? 1.5 : 1.0;
 
     if (height>17) {
-        constCoverSize=((int)((height*2)/4))*4;
+        constCoverSize=(((int)((height*2)/4))*4)*sizeAdjust;
         constIconSize=Icon::stdSize(((int)(height/4))*4);
         constBorder=constCoverSize>48 ? 2 : 1;
     } else {
@@ -61,6 +63,7 @@ void GroupedView::setup()
         constIconSize=16;
         constBorder=1;
     }
+    constCoverSize*=sizeAdjust;
 }
 
 int GroupedView::coverSize()
@@ -194,7 +197,7 @@ public:
 
     QSize sizeHint(Type type, bool isCollection) const
     {
-        int textHeight = QApplication::fontMetrics().height();
+        int textHeight = QApplication::fontMetrics().height()*sizeAdjust;
 
         if (isCollection || AlbumHeader==type) {
             return QSize(64, qMax(constCoverSize, (qMax(constIconSize, textHeight)*2)+constBorder)+(2*constBorder));
@@ -313,7 +316,7 @@ public:
             f.setItalic(true);
         }
         QFontMetrics fm(f);
-        int textHeight=fm.height();
+        int textHeight=fm.height()*sizeAdjust;
 
 
         if (isCollection) {

@@ -94,6 +94,7 @@ public:
         QList<Item *> loadXml(const QString &fileName);
         virtual QList<Item *> loadXml(QIODevice *dev);
         virtual void addHeaders(QNetworkRequest &) { }
+        virtual NetworkJob * fetchSecondardyUrl() { return 0; }
 
         State state;
         bool isAll : 1;
@@ -133,6 +134,15 @@ public:
                               const QString &cn=QString(), const QString &bn=QString())
             : CategoryItem(u, n, p, i, cn, bn) { }
         void addHeaders(QNetworkRequest &req);
+        NetworkJob * fetchSecondardyUrl();
+    };
+
+    struct DirbleCategoryItem : public CategoryItem
+    {
+        DirbleCategoryItem(const QString &u, const QString &n=QString(), CategoryItem *p=0, const QIcon &i=QIcon(),
+                              const QString &cn=QString(), const QString &bn=QString())
+            : CategoryItem(u, n, p, i, cn, bn) { }
+        NetworkJob * fetchSecondardyUrl();
     };
 
     struct ListenLiveCategoryItem : public CategoryItem
@@ -183,6 +193,9 @@ public:
     static const QString constShoutCastApiKey;
     static const QString constShoutCastHost;
 
+    static const QString constDirbleApiKey;
+    static const QString constDirbleHost;
+
     static const QString constCompressedXmlFile;
     static const QString constXmlFile;
     static const QString constPngIcon;
@@ -224,6 +237,7 @@ public:
     const QIcon & favouritesIcon() const { return favourites->icon; }
     bool isTuneIn(const CategoryItem *cat) const { return tuneIn==cat; }
     bool isShoutCast(const CategoryItem *cat) const { return shoutCast==cat; }
+    bool isDirble(const CategoryItem *cat) const { return dirble==cat; }
     CategoryItem * tuneInCat() const { return tuneIn; }
 
     QStringList filenames(const QModelIndexList &indexes, bool addPrefix) const;
@@ -265,9 +279,11 @@ public:
     static QList<Item *> parseDigitallyImportedResponse(QIODevice *dev, CategoryItem *cat);
     static QList<Item *> parseListenLiveResponse(QIODevice *dev, CategoryItem *cat);
     static QList<Item *> parseShoutCastSearchResponse(QIODevice *dev, CategoryItem *cat);
-    QList<Item *> parseShoutCastResponse(QIODevice *dev, CategoryItem *cat, const QString &origUrl);
+    QList<Item *> parseShoutCastResponse(QIODevice *dev, CategoryItem *cat);
     static QList<Item *> parseShoutCastLinks(QXmlStreamReader &doc, CategoryItem *cat);
     static QList<Item *> parseShoutCastStations(QXmlStreamReader &doc, CategoryItem *cat);
+    QList<Item *> parseDirbleResponse(QIODevice *dev, CategoryItem *cat, const QString &origUrl);
+    static QList<Item *> parseDirbleStations(QIODevice *dev, CategoryItem *cat);
     static Item * parseRadioTimeEntry(QXmlStreamReader &doc, CategoryItem *parent, bool parseSubText=false);
     static Item * parseSomaFmEntry(QXmlStreamReader &doc, CategoryItem *parent);
 
@@ -295,6 +311,7 @@ private:
     FavouritesCategoryItem *favourites;
     CategoryItem *tuneIn;
     CategoryItem *shoutCast;
+    CategoryItem *dirble;
     CategoryItem *listenLive;
     Action *addBookmarkAction;
     Action *addToFavouritesAction;

@@ -77,6 +77,9 @@ const QString StreamsModel::constCacheExt=QLatin1String(".xml.gz");
 const QString StreamsModel::constShoutCastApiKey=QLatin1String("fa1669MuiRPorUBw");
 const QString StreamsModel::constShoutCastHost=QLatin1String("api.shoutcast.com");
 
+const QString StreamsModel::constDirbleApiKey=QLatin1String("1035d2834bdc7195b8929ad7f70a8410f02c633e");
+const QString StreamsModel::constDirbleHost=QLatin1String("api.dirble.com");
+
 const QString StreamsModel::constCompressedXmlFile=QLatin1String("streams.xml.gz");
 const QString StreamsModel::constXmlFile=QLatin1String("streams.xml");
 const QString StreamsModel::constPngIcon=QLatin1String("icon.png");
@@ -103,9 +106,9 @@ static const QString constDiChannelListHost=QLatin1String("api.v2.audioaddict.co
 static const QString constDiChannelListUrl=QLatin1String("http://")+constDiChannelListHost+("/v1/%1/mobile/batch_update?asset_group_key=mobile_icons&stream_set_key=");
 static const QString constDiStdUrl=QLatin1String("http://%1/public3/%2.pls");
 
-static QString constShoutCastApiKey=QLatin1String("fa1669MuiRPorUBw");
-static QString constShoutCastHost=QLatin1String("api.shoutcast.com");
-static QString constShoutCastUrl=QLatin1String("http://")+constShoutCastHost+QLatin1String("/genre/primary?f=xml&k=")+constShoutCastApiKey;
+static QString constShoutCastUrl=QLatin1String("http://")+StreamsModel::constShoutCastHost+QLatin1String("/genre/primary?f=xml&k=")+StreamsModel::constShoutCastApiKey;
+
+static QString constDirbleUrl=QLatin1String("http://")+StreamsModel::constDirbleHost+QLatin1String("/v1/primaryCategories/apikey/")+StreamsModel::constDirbleApiKey;
 
 static const QLatin1String constBookmarksDir=QLatin1String("bookmarks");
 
@@ -500,6 +503,46 @@ void StreamsModel::ShoutCastCategoryItem::addHeaders(QNetworkRequest &req)
     req.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
 }
 
+NetworkJob * StreamsModel::ShoutCastCategoryItem::fetchSecondardyUrl()
+{
+    if (url!=constShoutCastUrl) {
+        // Get stations...
+        QUrl url(QLatin1String("http://")+constShoutCastHost+QLatin1String("/legacy/genresearch"));
+        #if QT_VERSION < 0x050000
+        QUrl &query=url;
+        #else
+        QUrlQuery query;
+        #endif
+        query.addQueryItem("k", constShoutCastApiKey);
+        query.addQueryItem("genre", name);
+        #if QT_VERSION >= 0x050000
+        url.setQuery(query);
+        #endif
+
+        QNetworkRequest req(url);
+        addHeaders(req);
+        NetworkJob *job=NetworkAccessManager::self()->get(req);
+        job->setProperty(constOrigUrlProperty, url.toString());
+        return job;
+    }
+    return 0;
+}
+
+NetworkJob * StreamsModel::DirbleCategoryItem::fetchSecondardyUrl()
+{
+    if (url!=constDirbleUrl) {
+        // Get stations...
+        QString catId=url.split("/", QString::SkipEmptyParts).last();
+        QUrl url(QLatin1String("http://")+constDirbleHost+QLatin1String("/v1/stations/apikey/")+constDirbleApiKey+QLatin1String("/id/")+catId);
+        QNetworkRequest req(url);
+        addHeaders(req);
+        NetworkJob *job=NetworkAccessManager::self()->get(req);
+        job->setProperty(constOrigUrlProperty, url.toString());
+        return job;
+    }
+    return 0;
+}
+
 void StreamsModel::DiCategoryItem::addHeaders(QNetworkRequest &req)
 {
     DigitallyImported::self()->addAuthHeader(req);
@@ -526,6 +569,9 @@ StreamsModel::StreamsModel(QObject *parent)
     shoutCast=new ShoutCastCategoryItem(constShoutCastUrl, i18n("ShoutCast"), root, getIcon("shoutcast"));
     shoutCast->configName="shoutcast";
     root->children.append(shoutCast);
+    dirble=new DirbleCategoryItem(constDirbleUrl, i18n("Dirble"), root, getIcon("dirble"));
+    dirble->configName="dirble";
+    root->children.append(dirble);
     root->children.append(new CategoryItem(constSomaFMUrl, i18n("SomaFM"), root, getIcon("somafm"), "somafm", QString(), true));
     root->children.append(new CategoryItem(constRadioGFMUrl, i18n("Radio GFM"), root, getIcon("radiogfm"), "radiogfm", QString(), false));
     root->children.append(new DiCategoryItem(constDigitallyImportedUrl, i18n("Digitally Imported"), root, getIcon("digitallyimported"), "di"));
@@ -674,7 +720,7 @@ QVariant StreamsModel::data(const QModelIndex &index, int role) const
             if (cat->canReload()) {
                 actions << reloadAction;
             }
-            if (tuneIn==item || shoutCast==item || (cat->isTopLevel() && !cat->children.isEmpty())) {
+            if (tuneIn==item || shoutCast==item || dirble==item || (cat->isTopLevel() && !cat->children.isEmpty())) {
                 actions << searchAction;
             }
             if (cat->canBookmark) {
@@ -736,16 +782,14 @@ void StreamsModel::fetchMore(const QModelIndex &index)
     Item *item = toItem(index);
     if (item->isCategory() && !item->url.isEmpty()) {
         CategoryItem *cat=static_cast<CategoryItem *>(item);
-        if (cat->isFavourites()) {
-            ; //
-        } else if (cat==listenLive) {
+        if (cat==listenLive) {
             if (listenLive->children.isEmpty()) {
                 cat->state=CategoryItem::Fetching;
                 emit dataChanged(index, index);
                 buildListenLive(index);
                 cat->state=CategoryItem::Fetched;
             }
-        } else if (!loadCache(cat)) {
+        } else if (!cat->isFavourites() && !loadCache(cat)) {
             QNetworkRequest req;
             if (constDiUrls.contains(cat->url)) {
                 req=QNetworkRequest(constDiChannelListUrl.arg(cat->url.split(".").at(1)));
@@ -753,7 +797,6 @@ void StreamsModel::fetchMore(const QModelIndex &index)
                 req=QNetworkRequest(cat->url);
             }
             cat->addHeaders(req);
-
             NetworkJob *job=NetworkAccessManager::self()->get(req);
             job->setProperty(constOrigUrlProperty, cat->url);
             if (jobs.isEmpty()) {
@@ -762,6 +805,12 @@ void StreamsModel::fetchMore(const QModelIndex &index)
             jobs.insert(job, cat);
             connect(job, SIGNAL(finished()), SLOT(jobFinished()));
             cat->state=CategoryItem::Fetching;
+
+            job=cat->fetchSecondardyUrl();
+            if (job) {
+                jobs.insert(job, cat);
+                connect(job, SIGNAL(finished()), SLOT(jobFinished()));
+            }
         }
         emit dataChanged(index, index);
     }
@@ -1075,20 +1124,31 @@ void StreamsModel::jobFinished()
     }
 
     job->deleteLater();
-
     if (jobs.contains(job)) {
         CategoryItem *cat=jobs[job];
         if (!cat) {
             return;
         }
-        cat->state=CategoryItem::Fetched;
         jobs.remove(job);
+
+        // ShoutCast and Dirble have two jobs when listing a category - child categories and station list.
+        // So, only set as fetched if both are finished.
+        bool haveOtherJob=false;
+        foreach (CategoryItem *c, jobs.values()) {
+            if (c==cat) {
+                haveOtherJob=true;
+                break;
+            }
+        }
+
+        if (!haveOtherJob) {
+            cat->state=CategoryItem::Fetched;
+        }
 
         QModelIndex index=createIndex(cat->parent->children.indexOf(cat), 0, (void *)cat);
         if (job->ok()) {
             QList<Item *> newItems;
-            if (cat==favourites) {
-            } else if (QLatin1String("http")==job->url().scheme()) {
+            if (cat!=favourites && QLatin1String("http")==job->url().scheme()) {
                 QString url=job->origUrl().toString();
                 if (constRadioTimeHost==job->origUrl().host()) {
                     newItems=parseRadioTimeResponse(job->actualJob(), cat);
@@ -1099,7 +1159,9 @@ void StreamsModel::jobFinished()
                 } else if (constDiChannelListHost==job->origUrl().host()) {
                     newItems=parseDigitallyImportedResponse(job->actualJob(), cat);
                 } else if (constShoutCastHost==job->origUrl().host()) {
-                    newItems=parseShoutCastResponse(job->actualJob(), cat, job->property(constOrigUrlProperty).toString());
+                    newItems=parseShoutCastResponse(job->actualJob(), cat);
+                } else if (constDirbleHost==job->origUrl().host()) {
+                    newItems=parseDirbleResponse(job->actualJob(), cat, job->property(constOrigUrlProperty).toString());
                 } else {
                     newItems=parseListenLiveResponse(job->actualJob(), cat);
                 }
@@ -1783,46 +1845,19 @@ QList<StreamsModel::Item *> StreamsModel::parseShoutCastSearchResponse(QIODevice
     return newItems;
 }
 
-QList<StreamsModel::Item *> StreamsModel::parseShoutCastResponse(QIODevice *dev, CategoryItem *cat, const QString &origUrl)
+QList<StreamsModel::Item *> StreamsModel::parseShoutCastResponse(QIODevice *dev, CategoryItem *cat)
 {
-    bool isRoot=origUrl==constShoutCastUrl;
-    bool wasLinks=false;
     QList<Item *> newItems;
     QXmlStreamReader doc(dev);
     while (!doc.atEnd()) {
         doc.readNext();
         if (doc.isStartElement() && QLatin1String("genrelist")==doc.name()) {
-            wasLinks=true;
             newItems+=parseShoutCastLinks(doc, cat);
         } else if (doc.isStartElement() && QLatin1String("stationlist")==doc.name()) {
             newItems+=parseShoutCastStations(doc, cat);
         }
     }
 
-    if (!isRoot && wasLinks) {
-        // Get stations...
-        QUrl url(QLatin1String("http://")+constShoutCastHost+QLatin1String("/legacy/genresearch"));
-        #if QT_VERSION < 0x050000
-        QUrl &query=url;
-        #else
-        QUrlQuery query;
-        #endif
-        query.addQueryItem("k", constShoutCastApiKey);
-        query.addQueryItem("genre", cat->name);
-        #if QT_VERSION >= 0x050000
-        url.setQuery(query);
-        #endif
-
-        QNetworkRequest req(url);
-        cat->addHeaders(req);
-        NetworkJob *job=NetworkAccessManager::self()->get(req);
-        job->setProperty(constOrigUrlProperty, url.toString());
-        if (jobs.isEmpty()) {
-            emit loading();
-        }
-        jobs.insert(job, cat);
-        connect(job, SIGNAL(finished()), SLOT(jobFinished()));
-    }
     return newItems;
 }
 
@@ -1857,6 +1892,48 @@ QList<StreamsModel::Item *> StreamsModel::parseShoutCastStations(QXmlStreamReade
         }
     }
 
+    return newItems;
+}
+
+QList<StreamsModel::Item *> StreamsModel::parseDirbleResponse(QIODevice *dev, CategoryItem *cat, const QString &origUrl)
+{
+    if (origUrl.contains("/v1/stations/apikey/")) {
+        return parseDirbleStations(dev, cat);
+    }
+    QList<Item *> newItems;
+    QJson::Parser parser;
+    #ifdef Q_OS_WIN
+    QVariantList data = parser.parse(dev->readAll()).toList();
+    #else
+    QVariantList data = parser.parse(dev).toList();
+    #endif
+
+    // Get categories...
+    if (!data.isEmpty()) {
+        foreach (const QVariant &d, data) {
+            QVariantMap map = d.toMap();
+            newItems.append(new DirbleCategoryItem(QLatin1String("http://")+constDirbleHost+QLatin1String("/v1/childCategories/apikey/")+constDirbleApiKey+
+                                                   QLatin1String("/primaryid/")+map["id"].toString(), map["name"].toString(), cat));
+        }
+    }
+    return newItems;
+}
+
+QList<StreamsModel::Item *> StreamsModel::parseDirbleStations(QIODevice *dev, CategoryItem *cat)
+{
+    QList<Item *> newItems;
+    QJson::Parser parser;
+    #ifdef Q_OS_WIN
+    QVariantList data = parser.parse(dev->readAll()).toList();
+    #else
+    QVariantList data = parser.parse(dev).toList();
+    #endif
+
+    foreach (const QVariant &d, data) {
+        QVariantMap map = d.toMap();
+        map["country"];
+        newItems.append(new Item(map["streamurl"].toString(), map["name"].toString(), cat, map["bitrate"].toString()));
+    }
     return newItems;
 }
 

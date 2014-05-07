@@ -492,7 +492,9 @@ void StreamsPage::controlSearch(bool on)
                                                     ? StreamSearchModel::TuneIn
                                                     : StreamsModel::self()->isShoutCast(cat)
                                                         ? StreamSearchModel::ShoutCast
-                                                        : StreamSearchModel::Filter;
+                                                        : StreamsModel::self()->isDirble(cat)
+                                                          ? StreamSearchModel::Dirble
+                                                          : StreamSearchModel::Filter;
 
             if (StreamSearchModel::Filter==searchCat) {
                 proxy=&streamsProxy;

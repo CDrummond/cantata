@@ -40,7 +40,8 @@
 #endif
 
 static QString constRadioTimeSearchUrl=QLatin1String("http://opml.radiotime.com/Search.ashx");
-static QString constShoutCastSearchUrl=QLatin1String("http://api.shoutcast.com/legacy/genrelist");
+static QString constShoutCastSearchUrl=QLatin1String("http://")+StreamsModel::constShoutCastHost+QLatin1String("/legacy/genrelist");
+static QString constDirbleSearchUrl=QLatin1String("http://")+StreamsModel::constDirbleHost+QLatin1String("/v1/search/apikey/")+StreamsModel::constDirbleApiKey+QLatin1String("/search/");
 
 StreamSearchModel::StreamSearchModel(QObject *parent)
     : ActionModel(parent)
@@ -265,7 +266,15 @@ void StreamSearchModel::search(const QString &searchTerm, bool stationsOnly)
     clear();
     currentSearch=searchTerm;
 
-    if (Filter==category) {
+    QUrl searchUrl;
+    #if QT_VERSION < 0x050000
+    QUrl &query=searchUrl;
+    #else
+    QUrlQuery query;
+    #endif
+
+    switch (category) {
+    case Filter:
         unmatchedStrings=0;
         filterStrings=searchTerm.split(" ", QString::SkipEmptyParts);
         if (!filterStrings.isEmpty()) {
@@ -278,16 +287,8 @@ void StreamSearchModel::search(const QString &searchTerm, bool stationsOnly)
         }
         emit loaded();
         return;
-    }
-
-    QUrl searchUrl(TuneIn==category ? constRadioTimeSearchUrl : constShoutCastSearchUrl);
-    #if QT_VERSION < 0x050000
-    QUrl &query=searchUrl;
-    #else
-    QUrlQuery query;
-    #endif
-
-    if (TuneIn==category) {
+    case TuneIn: {
+        searchUrl=QUrl(constRadioTimeSearchUrl);
         if (stationsOnly) {
             query.addQueryItem("types", "station");
         }
@@ -296,7 +297,10 @@ void StreamSearchModel::search(const QString &searchTerm, bool stationsOnly)
         if (!locale.isEmpty()) {
             query.addQueryItem("locale", locale);
         }
-    } else {
+        break;
+    }
+    case ShoutCast: {
+        searchUrl=QUrl(constShoutCastSearchUrl);
         QString search=searchTerm;
         int limit=getParam("limit", search);
         int bitrate=getParam("br", search);
@@ -309,7 +313,13 @@ void StreamSearchModel::search(const QString &searchTerm, bool stationsOnly)
         if (bitrate>=32 && bitrate<=512) {
             query.addQueryItem("br", QString::number(bitrate));
         }
+        break;
     }
+    case Dirble:
+        searchUrl=QUrl(constDirbleSearchUrl+searchTerm);
+        break;
+    }
+
     #if QT_VERSION >= 0x050000
     searchUrl.setQuery(query);
     #endif
@@ -358,9 +368,14 @@ void StreamSearchModel::jobFinished()
 
         QModelIndex index=cat==root ? QModelIndex() : createIndex(cat->parent->children.indexOf(cat), 0, (void *)cat);
         if (job->ok()) {
-            QList<StreamsModel::Item *> newItems=TuneIn==category
-                                                    ? StreamsModel::parseRadioTimeResponse(job->actualJob(), cat, true)
-                                                    : StreamsModel::parseShoutCastSearchResponse(job->actualJob(), cat);
+            QList<StreamsModel::Item *> newItems;
+
+            switch(category) {
+            case TuneIn:    newItems=StreamsModel::parseRadioTimeResponse(job->actualJob(), cat, true); break;
+            case ShoutCast: newItems=StreamsModel::parseShoutCastSearchResponse(job->actualJob(), cat); break;
+            case Dirble:    newItems=StreamsModel::parseDirbleStations(job->actualJob(), cat); break;
+            default : break;
+            }
             if (!newItems.isEmpty()) {
                 beginInsertRows(index, cat->children.count(), (cat->children.count()+newItems.count())-1);
                 cat->children+=newItems;

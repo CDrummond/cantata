@@ -95,6 +95,7 @@ public:
     // Return orignal album name. If we are grouping by composer, then album will appear as "Album (Artist)"
     const QString & originalName() const { return m_originalName; }
     const QString & id() const { return m_id; }
+    const QString & albumId() const { return m_id.isEmpty() ? m_id : m_originalName; }
     #ifdef ENABLE_UBUNTU
     void setCover(const QString &c) { m_coverName="file://"+c; m_coverRequested=false; }
     const QString & coverName() { return m_coverName; }

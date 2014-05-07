@@ -661,8 +661,7 @@ void MPDParseUtils::parseLibraryItems(const QByteArray &data, const QString &mpd
             if (!artistItem || currentSong.artistOrComposer()!=artistItem->data()) {
                 artistItem = rootItem->artist(currentSong);
             }
-            if (!albumItem || currentSong.year!=albumItem->year() || albumItem->parentItem()!=artistItem ||
-                currentSong.albumName()!=albumItem->data() || currentSong.mbAlbumId!=albumItem->id()) {
+            if (!albumItem || currentSong.year!=albumItem->year() || albumItem->parentItem()!=artistItem || currentSong.albumId()!=albumItem->albumId()) {
                 albumItem = artistItem->album(currentSong);
             }           
             songItem=new MusicLibraryItemSong(currentSong, albumItem);

@@ -45,16 +45,9 @@
 <file alias="gpodder">online/icons/gpodder.svg</file>
 <file alias="podcast_directories.xml">online/podcast_directories.xml</file>
 
-<file alias="digitallyimported">streams/icons/digitallyimported.png</file>
 <file alias="favourites">streams/icons/favourites.svg</file>
 <file alias="icecast">streams/icons/icecast.svg</file>
-<file alias="jazzradio">streams/icons/jazzradio.png</file>
-<file alias="listenlive">streams/icons/listenlive.svg</file>
-<file alias="rockradio">streams/icons/rockradio.svg</file>
 <file alias="shoutcast">streams/icons/shoutcast.svg</file>
-<file alias="skyfm">streams/icons/skyfm.png</file>
-<file alias="somafm">streams/icons/somafm.png</file>
-<file alias="radiogfm">streams/icons/radiogfm.png</file>
 <file alias="tunein">streams/icons/tunein.svg</file>
 <file alias="dirble">streams/icons/dirble.svg</file>
 

@@ -414,12 +414,12 @@ void AlbumsModel::update(const MusicLibraryItemRoot *root)
         const QString &artist=artistItem->data();
         for (int j = 0; j < artistItem->childCount(); j++) {
             MusicLibraryItemAlbum *albumItem = static_cast<MusicLibraryItemAlbum*>(artistItem->childItem(j));
-            const QString &album=albumItem->data();
+            const QString &albumId=albumItem->albumId();
             bool found=false;
             it=items.begin();
             end=items.end();
             for (; it!=end; ++it) {
-                if ((*it)->year==albumItem->year() && (*it)->artist==artist && (*it)->album==album) {
+                if ((*it)->year==albumItem->year() && (*it)->artist==artist && (*it)->albumId()==albumId) {
                     if (!resettingModel) {
                         QModelIndex albumIndex=index(items.indexOf(*it), 0, QModelIndex());
                         bool hadSongs=!(*it)->songs.isEmpty();
@@ -454,7 +454,7 @@ void AlbumsModel::update(const MusicLibraryItemRoot *root)
 
             if (!found) {
                 changesMade=true;
-                AlbumItem *a=new AlbumItem(artist, album, albumItem->year());
+                AlbumItem *a=new AlbumItem(artist, albumItem->data(), albumId, albumItem->year());
                 a->setSongs(albumItem);
                 a->genres=albumItem->genres();
                 a->updated=true;
@@ -500,10 +500,10 @@ void AlbumsModel::setCover(const Song &song, const QImage &img, const QString &f
     QList<AlbumItem *>::Iterator it=items.begin();
     QList<AlbumItem *>::Iterator end=items.end();
     QString artist=MusicLibraryItemRoot::artistName(song);
-    QString album=song.albumName();
+    const QString &albumId=song.albumId();
 
     for (int row=0; it!=end; ++it, ++row) {
-        if ((*it)->artist==artist && (*it)->album==album) {
+        if ((*it)->artist==artist && (*it)->albumId()==albumId) {
             if ((*it)->coverRequested) {
                 (*it)->coverFile="file://"+file;
                 (*it)->coverRequested=false;
@@ -529,11 +529,11 @@ void AlbumsModel::coverLoaded(const Song &song, int s)
     if (s==iconSize() && !song.isArtistImageRequest()) {
         QList<AlbumItem *>::Iterator it=items.begin();
         QList<AlbumItem *>::Iterator end=items.end();
-        QString albumArtist=song.albumArtist();
-        QString album=song.album;
+        const QString &albumArtist=song.albumArtist();
+        const QString &albumId=song.albumId();
 
         for (int row=0; it!=end; ++it, ++row) {
-            if ((*it)->artist==albumArtist && (*it)->album==album) {
+            if ((*it)->artist==albumArtist && (*it)->albumId()==albumId) {
                 QModelIndex idx=index(row, 0, QModelIndex());
                 emit dataChanged(idx, idx);
             }
@@ -606,9 +606,10 @@ void AlbumsModel::setAlbumSort(int s)
     }
 }
 
-AlbumsModel::AlbumItem::AlbumItem(const QString &ar, const QString &al, quint16 y)
+AlbumsModel::AlbumItem::AlbumItem(const QString &ar, const QString &al, const QString &i, quint16 y)
     : artist(ar)
     , album(al)
+    , id(i)
     , year(y)
     , updated(false)
     , numTracks(0)
@@ -715,6 +716,7 @@ QString AlbumsModel::AlbumItem::cover()
         coverSong.file=firstSong->file;
         coverSong.type=type;
         coverSong.composer=firstSong->composer;
+        coverSong.mbAlbumId=firstSong->mbAlbumId;
         coverRequested=true;
         coverFile=Covers::self()->requestImage(coverSong).fileName;
         if (!coverFile.isEmpty()) {
@@ -739,6 +741,7 @@ QPixmap * AlbumsModel::AlbumItem::cover()
             coverSong.file=firstSong->file;
             coverSong.type=type;
             coverSong.composer=firstSong->composer;
+            coverSong.mbAlbumId=firstSong->mbAlbumId;
         }
         return Covers::self()->get(coverSong, iconSize());
     }

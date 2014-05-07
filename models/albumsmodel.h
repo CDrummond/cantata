@@ -84,7 +84,7 @@ public:
 
     struct AlbumItem : public Item
     {
-        AlbumItem(const QString &ar, const QString &al, quint16 y);
+        AlbumItem(const QString &ar, const QString &al, const QString &i, quint16 y);
         virtual ~AlbumItem();
         bool operator<(const AlbumItem &o) const;
         bool isAlbum() { return true; }
@@ -102,9 +102,11 @@ public:
         const SongItem *getCueFile() const;
         QString albumDisplay() const { return Song::displayAlbum(album, year); }
         const QString & sortArtist() const { return nonTheArtist.isEmpty() ? artist : nonTheArtist; }
+        const QString & albumId() const { return id.isEmpty() ? album : id; }
         QString artist;
         QString nonTheArtist;
         QString album;
+        QString id;
         quint16 year;
         QList<SongItem *> songs;
         QSet<QString> genres;

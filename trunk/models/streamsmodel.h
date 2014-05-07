@@ -79,6 +79,9 @@ public:
         virtual bool canConfigure() const { return false; }
         virtual bool isFavourites() const { return false; }
         virtual bool isBuiltIn() const { return true; }
+        virtual bool isDi() const { return false; }
+        virtual bool isSoma() const { return false; }
+        virtual bool isListenLive() const { return false; }
         virtual void removeCache();
         bool isTopLevel() const { return parent && 0==parent->parent; }
         virtual bool canReload() const { return !cacheName.isEmpty() || isTopLevel() || !url.isEmpty(); }
@@ -147,12 +150,10 @@ public:
 
     struct ListenLiveCategoryItem : public CategoryItem
     {
-        ListenLiveCategoryItem(const QString &n, CategoryItem *p, bool r=true, const QIcon &i=QIcon())
-            : CategoryItem(QLatin1String("-"), n, p, i), reloadable(r) { }
-        void removeCache();
-        bool canReload() const { return reloadable; }
-    private:
-        bool reloadable;
+        ListenLiveCategoryItem(const QString &u, const QString &n, CategoryItem *p, const QIcon &i, const QString &cn)
+            : CategoryItem(u, n, p, i, cn) { }
+        bool isListenLive() const { return true; }
+        bool isBuiltIn() const { return false; }
     };
 
     struct DiCategoryItem : public CategoryItem
@@ -161,6 +162,16 @@ public:
             : CategoryItem(u, n, p, i, cn, QString(), true) { }
         bool canConfigure() const { return true; }
         void addHeaders(QNetworkRequest &req);
+        bool isDi() const { return true; }
+        bool isBuiltIn() const { return false; }
+    };
+
+    struct SomaCategoryItem : public CategoryItem
+    {
+        SomaCategoryItem(const QString &u, const QString &n, CategoryItem *p, const QIcon &i, const QString &cn, bool mod)
+            : CategoryItem(u, n, p, i, cn, QString(), mod) { }
+        bool isSoma() const { return true; }
+        bool isBuiltIn() const { return false; }
     };
 
     struct XmlCategoryItem : public CategoryItem
@@ -170,7 +181,7 @@ public:
         QList<Item *> loadCache();
         bool canReload() const { return false; }
         void removeCache() { }
-        bool isBuiltIn() const;
+        bool isBuiltIn() const { return false; }
     };
 
     struct Category
@@ -198,8 +209,10 @@ public:
 
     static const QString constCompressedXmlFile;
     static const QString constXmlFile;
+    static const QString constSettingsFile;
     static const QString constPngIcon;
     static const QString constSvgIcon;
+    static const QStringList constInstallFiles;
 
     static StreamsModel * self();
     static QString favouritesDir();
@@ -253,8 +266,8 @@ public:
     void save();
     QList<Category> getCategories() const;
     void setHiddenCategories(const QSet<QString> &cats);
-    CategoryItem * addXmlCategory(const QString &name, const QIcon &icon, const QString &xmlFileName, bool replace);
-    void removeXmlCategory(const QString &key);
+    CategoryItem * addInstalledProvider(const QString &name, const QIcon &icon, const QString &streamsFileName, bool replace);
+    void removeInstalledProvider(const QString &key);
 
     QModelIndex categoryIndex(const CategoryItem *cat) const;
 
@@ -302,8 +315,7 @@ private:
     bool loadCache(CategoryItem *cat);
     Item * toItem(const QModelIndex &index) const { return index.isValid() ? static_cast<Item*>(index.internalPointer()) : root; }
     void importOldFavourites();
-    void buildListenLive(const QModelIndex &index);
-    void buildXml();
+    void loadInstalledProviders();
 
 private:
     QMap<NetworkJob *, CategoryItem *> jobs;
@@ -312,7 +324,6 @@ private:
     CategoryItem *tuneIn;
     CategoryItem *shoutCast;
     CategoryItem *dirble;
-    CategoryItem *listenLive;
     Action *addBookmarkAction;
     Action *addToFavouritesAction;
     Action *configureAction;

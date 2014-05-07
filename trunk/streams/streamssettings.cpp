@@ -154,14 +154,19 @@ void StreamsSettings::install()
     }
 
     QMap<QString, QByteArray> files=tar.extract(QStringList() << StreamsModel::constXmlFile << StreamsModel::constCompressedXmlFile
+                                                              << StreamsModel::constSettingsFile
                                                               << StreamsModel::constPngIcon << StreamsModel::constSvgIcon
                                                               << ".png" << ".svg");
-    QString streamsName=files.contains(StreamsModel::constCompressedXmlFile) ? StreamsModel::constCompressedXmlFile : StreamsModel::constXmlFile;
+    QString streamsName=files.contains(StreamsModel::constCompressedXmlFile)
+                            ? StreamsModel::constCompressedXmlFile
+                            : files.contains(StreamsModel::constXmlFile)
+                                ? StreamsModel::constXmlFile
+                                : StreamsModel::constSettingsFile;
     QString iconName=files.contains(StreamsModel::constSvgIcon) ? StreamsModel::constSvgIcon : StreamsModel::constPngIcon;
-    QByteArray xml=files[streamsName];
+    QByteArray streamFile=files[streamsName];
     QByteArray icon=files[iconName];
 
-    if (xml.isEmpty() || icon.isEmpty()) {
+    if (streamFile.isEmpty()) {
         MessageBox::error(this, i18n("Invalid file format!"));
         return;
     }
@@ -178,14 +183,16 @@ void StreamsSettings::install()
         MessageBox::error(this, i18n("Failed to save stream list!"));
         return;
     }
-    streamsFile.write(xml);
+    streamsFile.write(streamFile);
 
-    QFile iconFile(dir+Utils::constDirSep+iconName);
-    if (iconFile.open(QIODevice::WriteOnly)) {
-        iconFile.write(icon);
-    }
     QIcon icn;
-    icn.addFile(dir+Utils::constDirSep+iconName);
+    if (!icon.isEmpty()) {
+        QFile iconFile(dir+Utils::constDirSep+iconName);
+        if (iconFile.open(QIODevice::WriteOnly)) {
+            iconFile.write(icon);
+        }
+        icn.addFile(dir+Utils::constDirSep+iconName);
+    }
 
     // Write all other png and svg files...
     QMap<QString, QByteArray>::ConstIterator it=files.constBegin();
@@ -199,7 +206,7 @@ void StreamsSettings::install()
         }
     }
 
-    StreamsModel::CategoryItem *cat=StreamsModel::self()->addXmlCategory(name, icn, dir+Utils::constDirSep+streamsName, true);
+    StreamsModel::CategoryItem *cat=StreamsModel::self()->addInstalledProvider(name, icn, dir+Utils::constDirSep+streamsName, true);
     if (existing) {
         delete existing;
     }
@@ -225,12 +232,13 @@ void StreamsSettings::remove()
     }
 
     QString dir=Utils::dataDir(StreamsModel::constSubDir);
-    if (!dir.isEmpty() && !removeDir(dir+item->text(), QStringList() << "*.xml" << "*.xml.gz" << "*.png" << "*.svg")) {
+    if (!dir.isEmpty() && !removeDir(dir+item->text(), QStringList() << StreamsModel::constXmlFile << StreamsModel::constCompressedXmlFile
+                                                                     << StreamsModel::constSettingsFile << "*.png" << "*.svg")) {
         MessageBox::error(this, i18n("Failed to remove streams folder!"));
         return;
     }
 
-    StreamsModel::self()->removeXmlCategory(item->data(KeyRole).toString());
+    StreamsModel::self()->removeInstalledProvider(item->data(KeyRole).toString());
     delete item;
 }
 

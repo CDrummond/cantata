@@ -42,6 +42,7 @@ public:
     enum Category {
         TuneIn,
         ShoutCast,
+        Dirble,
         Filter
     };
 

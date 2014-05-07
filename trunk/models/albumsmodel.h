@@ -103,6 +103,7 @@ public:
         QString albumDisplay() const { return Song::displayAlbum(album, year); }
         const QString & sortArtist() const { return nonTheArtist.isEmpty() ? artist : nonTheArtist; }
         const QString & albumId() const { return id.isEmpty() ? album : id; }
+        const Song & coverSong();
         QString artist;
         QString nonTheArtist;
         QString album;
@@ -114,7 +115,7 @@ public:
         Song::Type type;
         quint32 numTracks;
         quint32 time;
-        Song coverSong;
+        Song cSong;
         bool isNew;
         #ifdef ENABLE_UBUNTU
         QString coverFile;

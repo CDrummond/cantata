@@ -707,18 +707,8 @@ void AlbumsModel::AlbumItem::updateStats()
 QString AlbumsModel::AlbumItem::cover()
 {
     if (Song::SingleTracks!=type && songs.count() && coverFile.isEmpty() && !coverRequested) {
-        SongItem *firstSong=songs.first();
-        coverSong.artist=firstSong->artist;
-        coverSong.albumartist=Song::useComposer() && !firstSong->composer.isEmpty()
-                ? firstSong->albumArtist() : artist;
-        coverSong.album=album;
-        coverSong.year=year;
-        coverSong.file=firstSong->file;
-        coverSong.type=type;
-        coverSong.composer=firstSong->composer;
-        coverSong.mbAlbumId=firstSong->mbAlbumId;
         coverRequested=true;
-        coverFile=Covers::self()->requestImage(coverSong).fileName;
+        coverFile=Covers::self()->requestImage(coverSong()).fileName;
         if (!coverFile.isEmpty()) {
             coverRequested=false;
             coverFile="file://"+coverFile;
@@ -731,24 +721,28 @@ QString AlbumsModel::AlbumItem::cover()
 QPixmap * AlbumsModel::AlbumItem::cover()
 {
     if (Song::SingleTracks!=type && songs.count()) {
-        if (coverSong.isEmpty()) {
-            SongItem *firstSong=songs.first();
-            coverSong.artist=firstSong->artist;
-            coverSong.albumartist=Song::useComposer() && !firstSong->composer.isEmpty()
-                    ? firstSong->albumArtist() : artist;
-            coverSong.album=album;
-            coverSong.year=year;
-            coverSong.file=firstSong->file;
-            coverSong.type=type;
-            coverSong.composer=firstSong->composer;
-            coverSong.mbAlbumId=firstSong->mbAlbumId;
-        }
-        return Covers::self()->get(coverSong, iconSize());
+        return Covers::self()->get(coverSong(), iconSize());
     }
-
     return 0;
 }
 #endif
+
+const Song & AlbumsModel::AlbumItem::coverSong()
+{
+    if (cSong.isEmpty() && songs.count()) {
+        SongItem *firstSong=songs.first();
+        cSong.artist=firstSong->artist;
+        cSong.albumartist=Song::useComposer() && !firstSong->composer.isEmpty()
+                ? firstSong->albumArtist() : artist;
+        cSong.album=album;
+        cSong.year=year;
+        cSong.file=firstSong->file;
+        cSong.type=type;
+        cSong.composer=firstSong->composer;
+        cSong.mbAlbumId=firstSong->mbAlbumId;
+    }
+    return cSong;
+}
 
 const AlbumsModel::SongItem *AlbumsModel::AlbumItem::getCueFile() const
 {

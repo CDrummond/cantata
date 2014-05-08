@@ -1797,29 +1797,17 @@ void StreamsModel::importOldFavourites()
 
 void StreamsModel::loadInstalledProviders()
 {
-    #ifdef Q_OS_WIN
-    QStringList dirs=QStringList() << Utils::dataDir(StreamsModel::constSubDir)
-                                   << QCoreApplication::applicationDirPath()+"/streams/";
-    #else
-    QStringList dirs=QStringList() << Utils::dataDir(StreamsModel::constSubDir)
-                                   << INSTALL_PREFIX "/share/cantata/streams/";
-    #endif
     QSet<QString> added;
+    QString dir=Utils::dataDir(StreamsModel::constSubDir);
+    QStringList subDirs=QDir(dir).entryList(QStringList() << "*", QDir::Dirs|QDir::Readable|QDir::NoDot|QDir::NoDotDot);
     QStringList streamFiles=QStringList() << constCompressedXmlFile << constXmlFile << constSettingsFile;
-    foreach (const QString &dir, dirs) {
-        if (dir.isEmpty()) {
-            continue;
-        }
-        QDir d(dir);
-        QStringList subDirs=d.entryList(QStringList() << "*", QDir::Dirs|QDir::Readable|QDir::NoDot|QDir::NoDotDot);
-        foreach (const QString &sub, subDirs) {
-            if (!added.contains(sub)) {
-                foreach (const QString &streamFile, streamFiles) {
-                    if (QFile::exists(dir+sub+Utils::constDirSep+streamFile)) {
-                        addInstalledProvider(sub, getExternalIcon(dir+sub), dir+sub+Utils::constDirSep+streamFile, false);
-                        added.insert(sub);
-                        break;
-                    }
+    foreach (const QString &sub, subDirs) {
+        if (!added.contains(sub)) {
+            foreach (const QString &streamFile, streamFiles) {
+                if (QFile::exists(dir+sub+Utils::constDirSep+streamFile)) {
+                    addInstalledProvider(sub, getExternalIcon(dir+sub), dir+sub+Utils::constDirSep+streamFile, false);
+                    added.insert(sub);
+                    break;
                 }
             }
         }

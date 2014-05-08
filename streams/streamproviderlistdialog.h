@@ -21,39 +21,48 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef STREAMS_SETTINGS_H
-#define STREAMS_SETTINGS_H
+#ifndef STREAM_PROVIDER_LIST_DIALOG_H
+#define STREAM_PROVIDER_LIST_DIALOG_H
 
-#include "ui_streamssettings.h"
+#include "support/dialog.h"
+#include <QSet>
 
-class QListWidgetItem;
-class StreamProviderListDialog;
+class NetworkJob;
+class QTreeWidget;
+class QTreeWidgetItem;
+class QProgressBar;
+class SqueezedTextLabel;
+class StreamsSettings;
+class Spinner;
 
-class StreamsSettings : public QWidget, private Ui::StreamsSettings
+class StreamProviderListDialog : public Dialog
 {
     Q_OBJECT
 
 public:
-    StreamsSettings(QWidget *p);
-    virtual ~StreamsSettings() { }
-
-    void load();
-    void save();
+    StreamProviderListDialog(StreamsSettings *parent);
+    virtual ~StreamProviderListDialog();
+    void show(const QSet<QString> &installed);
 
 private Q_SLOTS:
-    void currentCategoryChanged(int row);
-    void installFromFile();
-    void installFromWeb();
-    void remove();
-    void configure();
+    void jobFinished();
+    void itemChanged(QTreeWidgetItem *itm, int col);
 
 private:
-    bool install(const QString &fileName, const QString &name, bool showErrors=true);
-    QListWidgetItem * get(const QString &name);
+    void slotButtonClicked(int button);
+    void updateView(bool unCheck=false);
+    void doNext();
+    void setState(bool downloading);
 
 private:
-    friend class StreamProviderListDialog;
-    StreamProviderListDialog *providerDialog;
+    StreamsSettings *p;
+    NetworkJob *job;
+    Spinner *spinner;
+    QTreeWidget *tree;
+    QProgressBar *progress;
+    SqueezedTextLabel *statusText;
+    QSet<QString> installedProviders;
+    QSet<QTreeWidgetItem *> checkedItems;
 };
 
 #endif

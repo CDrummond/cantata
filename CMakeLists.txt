@@ -356,9 +356,10 @@ endif (ENABLE_DYNAMIC)
 
 if (ENABLE_STREAMS)
     set(CANTATA_SRCS ${CANTATA_SRCS} streams/streamspage.cpp streams/digitallyimportedsettings.cpp streams/streamssettings.cpp
-        streams/streamdialog.cpp streams/tar.cpp models/streamsproxymodel.cpp models/streamsearchmodel.cpp models/digitallyimported.cpp)
-    set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} streams/streamspage.h streams/digitallyimportedsettings.h
-        streams/streamssettings.h streams/streamdialog.h models/streamsmodel.h models/digitallyimported.h models/streamsearchmodel.h)
+        streams/streamdialog.cpp streams/tar.cpp models/streamsproxymodel.cpp models/streamsearchmodel.cpp models/digitallyimported.cpp
+        streams/streamproviderlistdialog.cpp)
+    set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} streams/streamspage.h streams/digitallyimportedsettings.h streams/streamssettings.h
+        streams/streamdialog.h models/streamsmodel.h models/digitallyimported.h models/streamsearchmodel.h streams/streamproviderlistdialog.h)
     set(CANTATA_UIS ${CANTATA_UIS} streams/streamspage.ui streams/digitallyimportedsettings.ui streams/streamssettings.ui)
 endif (ENABLE_STREAMS)
 

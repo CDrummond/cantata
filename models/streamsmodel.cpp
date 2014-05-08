@@ -82,7 +82,7 @@ const QString StreamsModel::constDirbleHost=QLatin1String("api.dirble.com");
 
 const QString StreamsModel::constCompressedXmlFile=QLatin1String("streams.xml.gz");
 const QString StreamsModel::constXmlFile=QLatin1String("streams.xml");
-const QString StreamsModel::constSettingsFile=QLatin1String("settings");
+const QString StreamsModel::constSettingsFile=QLatin1String("settings.json");
 const QString StreamsModel::constPngIcon=QLatin1String("icon.png");
 const QString StreamsModel::constSvgIcon=QLatin1String("icon.svg");
 
@@ -1831,21 +1831,11 @@ StreamsModel::CategoryItem * StreamsModel::addInstalledProvider(const QString &n
     CategoryItem *cat=0;
     if (streamsFileName.endsWith(constSettingsFile)) {
         QFile s(streamsFileName);
-        if (s.open(QIODevice::ReadOnly|QIODevice::Text)) {
-            QTextStream in(&s);
-            QString type;
-            QString url;
-            bool modName=false;
-            while (!in.atEnd()) {
-                QString line = in.readLine();
-                if (line.startsWith("type=")) {
-                    type=line.section('=', 1, 1);
-                } else if (line.startsWith("url=")) {
-                    url=line.section('=', 1, 1);
-                } else if (line.startsWith("modName=")) {
-                    modName=line.section('=', 1, 1)=="true";
-                }
-            }
+        if (s.open(QIODevice::ReadOnly)) {
+            QVariantMap map=QJson::Parser().parse(&file).toMap();
+            QString type=map["type"].toString();
+            QString url=map["url"].toString();
+
             if (!url.isEmpty() && !type.isEmpty()) {
                 QStringList toRemove=QStringList() << " " << "." << "/" << "\\" << "(" << ")";
                 QString cacheName=name;
@@ -1856,7 +1846,7 @@ StreamsModel::CategoryItem * StreamsModel::addInstalledProvider(const QString &n
                 if (type=="di") {
                     cat=new DiCategoryItem(url, name, root, icon, cacheName);
                 } else if (type=="soma") {
-                    cat=new SomaCategoryItem(url, name, root, icon, cacheName, modName);
+                    cat=new SomaCategoryItem(url, name, root, icon, cacheName, map["modName"].toBool());
                 } else if (type=="listenlive") {
                     cat=new ListenLiveCategoryItem(url, name, root, icon, cacheName);
                 }

@@ -1830,8 +1830,8 @@ StreamsModel::CategoryItem * StreamsModel::addInstalledProvider(const QString &n
 {
     CategoryItem *cat=0;
     if (streamsFileName.endsWith(constSettingsFile)) {
-        QFile s(streamsFileName);
-        if (s.open(QIODevice::ReadOnly)) {
+        QFile file(streamsFileName);
+        if (file.open(QIODevice::ReadOnly)) {
             QVariantMap map=QJson::Parser().parse(&file).toMap();
             QString type=map["type"].toString();
             QString url=map["url"].toString();

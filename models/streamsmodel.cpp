@@ -77,7 +77,7 @@ const QString StreamsModel::constCacheExt=QLatin1String(".xml.gz");
 const QString StreamsModel::constShoutCastApiKey=QLatin1String("fa1669MuiRPorUBw");
 const QString StreamsModel::constShoutCastHost=QLatin1String("api.shoutcast.com");
 
-const QString StreamsModel::constDirbleApiKey=QLatin1String("b6909ed70f32338fe171e4df174c1eb6e388ca98");  // TODO!!!!
+const QString StreamsModel::constDirbleApiKey=QLatin1String("1035d2834bdc7195b8929ad7f70a8410f02c633e");
 const QString StreamsModel::constDirbleHost=QLatin1String("api.dirble.com");
 
 const QString StreamsModel::constCompressedXmlFile=QLatin1String("streams.xml.gz");

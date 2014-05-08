@@ -324,8 +324,8 @@ set(CANTATA_SRCS ${CANTATA_CORE_SRCS}
     context/lastfmengine.cpp context/metaengine.cpp context/backdropcreator.cpp)
 set(CANTATA_MOC_HDRS ${CANTATA_CORE_MOC_HDRS}
     gui/settings.h gui/initialsettingswizard.h gui/mainwindow.h gui/folderpage.h gui/librarypage.h gui/albumspage.h gui/playlistspage.h
-    gui/playbacksettings.h gui/serversettings.h gui/preferencesdialog.h gui/filesettings.h gui/interfacesettings.h gui/cachesettings.h
-    gui/trayitem.h gui/coverdialog.h gui/searchpage.h
+    gui/playbacksettings.h gui/serversettings.h gui/preferencesdialog.h gui/interfacesettings.h gui/cachesettings.h gui/trayitem.h
+    gui/coverdialog.h gui/searchpage.h
     widgets/treeview.h widgets/listview.h widgets/itemview.h widgets/autohidingsplitter.h widgets/timeslider.h widgets/actionlabel.h
     widgets/playqueueview.h widgets/groupedview.h widgets/actionitemdelegate.h widgets/volumeslider.h widgets/genrecombo.h
     widgets/searchwidget.h widgets/messageoverlay.h widgets/servicestatuslabel.h widgets/stretchheaderview.h widgets/tableview.h

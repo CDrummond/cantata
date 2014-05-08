@@ -49,7 +49,7 @@ static QString encode(const QImage &img)
     QBuffer buffer(&bytes);
     buffer.open(QIODevice::WriteOnly);
     img.save(&buffer, "PNG");
-    return QString("<img src=\"data:image/png;base64,%1\"><br><br>").arg(QString(buffer.data().toBase64()));
+    return QString("<tr><td align=\"center\"><img src=\"data:image/png;base64,%1\"/></td></tr>").arg(QString(buffer.data().toBase64()));
 }
 
 void View::initHeaderTags()
@@ -107,7 +107,7 @@ void View::clear()
 
 void View::setHeader(const QString &str)
 {
-    header->setText("<"+headerTag+">"+str+"</"+headerTag+">");
+    header->setText("<"+headerTag+" align=\"center\">"+str+"</"+headerTag+">");
 }
 
 void View::setPicSize(const QSize &sz)
@@ -123,7 +123,7 @@ QSize View::picSize() const
 QString View::createPicTag(const QImage &img, const QString &file)
 {
     if (!file.isEmpty() && QFile::exists(file)) {
-        return QString("<img src=\"%1\"><br>").arg(file);
+        return QString("<tr><td align=\"center\"><img src=\"%1\"/></td></tr>").arg(file);
     }
     if (img.isNull()) {
         return QString();

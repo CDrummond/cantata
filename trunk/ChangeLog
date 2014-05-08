@@ -119,6 +119,7 @@
 74. Also use musicbrainz_albumid, if present, to group albums. This can be used
     to group multiple releases of the same album.
 75. Search for streams via dirble.
+76. Center images and headers in context view.
 
 1.3.4
 -----

@@ -149,7 +149,8 @@ bool MusicLibraryItemAlbum::lessThan(const MusicLibraryItem *a, const MusicLibra
     }
 
     if (!MusicLibraryItemAlbum::sortByDate() || aa->year()==ab->year()) {
-        return aa->data().localeAwareCompare(ab->data())<0;
+        int compare=aa->data().localeAwareCompare(ab->data());
+        return compare==0 ? aa->id().compare(ab->id())<0 : compare<0;
     }
     return aa->year()<ab->year();
 }

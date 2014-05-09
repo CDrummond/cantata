@@ -1022,7 +1022,7 @@ static void readTags(const TagLib::FileRef fileref, Song *song, ReplayGain *rg, 
 //             readID3v1Tags(fileref, song, rg);
         }
     }
-    if (song->genre.isEmpty()) {
+    if (song && song->genre.isEmpty()) {
         song->genre=tString2QString(tag->genre());
     }
 }

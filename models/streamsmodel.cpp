@@ -1872,6 +1872,7 @@ void StreamsModel::removeInstalledProvider(const QString &key)
         if (key==static_cast<CategoryItem *>(i)->configName) {
             int row=root->children.indexOf(i);
             if (row>=0) {
+                static_cast<CategoryItem *>(i)->removeCache();
                 beginRemoveRows(QModelIndex(), row, row);
                 delete root->children.takeAt(row);
                 endRemoveRows();

@@ -28,6 +28,7 @@
 #include "messagebox.h"
 #include "squeezedtextlabel.h"
 #include "spinner.h"
+#include "messageoverlay.h"
 #include "flickcharm.h"
 #include <QLabel>
 #include <QXmlStreamReader>
@@ -38,12 +39,15 @@
 #include <QTemporaryFile>
 #include <QDir>
 #include <QMap>
+#include <QTimer>
 
 static const QLatin1String constProverListUrl("https://drive.google.com/uc?export=download&id=0Bzghs6gQWi60dHBPajNjbjExZzQ");
 
 StreamProviderListDialog::StreamProviderListDialog(StreamsSettings *parent)
     : Dialog(parent, "StreamProviderListDialog")
     , p(parent)
+    , spinner(0)
+    , msgOverlay(0)
 {
     QWidget *wid=new QWidget(this);
     QBoxLayout *l=new QBoxLayout(QBoxLayout::TopToBottom, wid);
@@ -65,8 +69,6 @@ StreamProviderListDialog::StreamProviderListDialog(StreamsSettings *parent)
     setButtons(User1|Close);
     enableButton(User1, false);
     setCaption(i18n("Install/Update Stream Providers"));
-    spinner=new Spinner(this);
-    spinner->setWidget(tree);
 }
 
 StreamProviderListDialog::~StreamProviderListDialog()
@@ -86,11 +88,25 @@ void StreamProviderListDialog::show(const QSet<QString> &installed)
     updateView(true);
 
     if (!tree->topLevelItemCount()) {
-        job=NetworkAccessManager::self()->get(QUrl(constProverListUrl));
-        connect(job, SIGNAL(finished()), this, SLOT(jobFinished()));
-        spinner->start();
+        QTimer::singleShot(0, this, SLOT(getProviderList()));
     }
     exec();
+}
+
+void StreamProviderListDialog::getProviderList()
+{
+    if (!spinner) {
+        spinner=new Spinner(this);
+        spinner->setWidget(tree);
+    }
+    if (!msgOverlay) {
+        msgOverlay=new MessageOverlay(this);
+        msgOverlay->setWidget(tree);
+    }
+    job=NetworkAccessManager::self()->get(QUrl(constProverListUrl));
+    connect(job, SIGNAL(finished()), this, SLOT(jobFinished()));
+    spinner->start();
+    msgOverlay->setText(i18n("Downloading list..."), -1, false);
 }
 
 enum Categories {
@@ -163,7 +179,12 @@ void StreamProviderListDialog::jobFinished()
             MessageBox::error(this, i18n("Failed to download list of stream providers!"));
             slotButtonClicked(Close);
         }
-        spinner->stop();
+        if (spinner) {
+            spinner->stop();
+        }
+        if (msgOverlay) {
+            msgOverlay->setText(QString());
+        }
     } else {
         QTreeWidgetItem *item=*(checkedItems.begin());
         if (j->ok()) {

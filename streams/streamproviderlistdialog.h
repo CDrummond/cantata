@@ -34,6 +34,7 @@ class QProgressBar;
 class SqueezedTextLabel;
 class StreamsSettings;
 class Spinner;
+class MessageOverlay;
 
 class StreamProviderListDialog : public Dialog
 {
@@ -45,6 +46,7 @@ public:
     void show(const QSet<QString> &installed);
 
 private Q_SLOTS:
+    void getProviderList();
     void jobFinished();
     void itemChanged(QTreeWidgetItem *itm, int col);
 
@@ -58,6 +60,7 @@ private:
     StreamsSettings *p;
     NetworkJob *job;
     Spinner *spinner;
+    MessageOverlay *msgOverlay;
     QTreeWidget *tree;
     QProgressBar *progress;
     SqueezedTextLabel *statusText;

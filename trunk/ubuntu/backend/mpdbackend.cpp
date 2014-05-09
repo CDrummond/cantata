@@ -274,26 +274,30 @@ void MPDBackend::playlistsUpdated() {
     emit onPlaylistsModelChanged();
 }
 
-void MPDBackend::add(const QString &modelName, const QVariant &rows, bool replace) {
+QString MPDBackend::add(const QString &modelName, const QVariant &rows, bool replace) { //TODO: SubListViewPage!!!
     if (QVariant::Int==rows.type() && "playlists"==modelName) {
         loadPlaylist(rows.toInt(), replace);
-        return;
+        return QString(); //no replace for playlists
     }
 
+    QString returnText;
     ProxyModel *proxy=0;
     ActionModel *model=0;
     if ("artists"==modelName) {
         proxy=&artistsProxyModel;
         model=MusicLibraryModel::self();
+        if (!replace) returnText = "Added artist";
     } else if ("albums"==modelName) {
         proxy=&albumsProxyModel;
         model=AlbumsModel::self();
+        if (!replace) returnText = "Added album";
     } else if ("playlists"==modelName) {
         proxy=&playlistsProxyModel;
-        model=PlaylistsModel::self();
+        model=PlaylistsModel::self(); //no replace for playlists
     } else if ("folders"==modelName) {
         proxy=&foldersProxyModel;
         model=DirViewModel::self();
+        if (!replace) returnText = "Added folder";
     }
 
     if (model) {
@@ -310,7 +314,7 @@ void MPDBackend::add(const QString &modelName, const QVariant &rows, bool replac
             foreach (int r, rowList) {
                 idx=proxy->index(r, 0, idx);
                 if (!idx.isValid()) {
-                    return;
+                    return QString();
                 }
             }
             QStringList fileNames = model->filenames(QModelIndexList() << proxy->mapToSource(idx), false);
@@ -319,6 +323,8 @@ void MPDBackend::add(const QString &modelName, const QVariant &rows, bool replac
             }
         }
     }
+
+    return returnText;
 }
 
 void MPDBackend::remove(const QString &modelName, const QVariant &rows) {

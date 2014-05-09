@@ -39,7 +39,7 @@
 #include <QDir>
 #include <QMap>
 
-static const QLatin1String constProverListUrl("http://127.0.0.1/list.xml"); // TODO: Real URL!!!
+static const QLatin1String constProverListUrl("https://drive.google.com/uc?export=download&id=0Bzghs6gQWi60dHBPajNjbjExZzQ");
 
 StreamProviderListDialog::StreamProviderListDialog(StreamsSettings *parent)
     : Dialog(parent, "StreamProviderListDialog")
@@ -106,7 +106,7 @@ static QString catName(int cat) {
     default:
     case Cat_General:           return i18n("General");
     case Cat_DigitallyImported: return i18n("Digitally Imported");
-    case Cat_ListenLive:        return i18n("Local and National Radio");
+    case Cat_ListenLive:        return i18n("Local and National Radio (ListenLive)");
     }
 }
 
@@ -170,7 +170,9 @@ void StreamProviderListDialog::jobFinished()
             statusText->setText(i18n("Installing/updating %1", item->text(0)));
             QTemporaryFile temp(QDir::tempPath()+"/cantata_XXXXXX.streams");
             temp.setAutoRemove(true);
+            temp.open();
             temp.write(j->readAll());
+            temp.close();
             if (!p->install(temp.fileName(), item->text(0), false)) {
                 MessageBox::error(this, i18n("Failed to install <b>%1</b>", item->text(0)));
                 setState(false);
@@ -215,7 +217,7 @@ void StreamProviderListDialog::slotButtonClicked(int button)
         install.sort();
         QString message="<p>";
         if (!install.isEmpty()) {
-            message+=i18n("Install the following providers?")+"</p><ul>";
+            message+=i18n("Install the following?")+"</p><ul>";
             foreach (const QString &n, install) {
                 message+="<li>"+n+"</li>";
             }
@@ -225,7 +227,7 @@ void StreamProviderListDialog::slotButtonClicked(int button)
             }
         }
         if (!update.isEmpty()) {
-            message+=i18n("Update the following providers?")+"</p><ul>";
+            message+=i18n("Update the following?")+"</p><ul>";
             foreach (const QString &n, update) {
                 message+="<li>"+n+"</li>";
             }
@@ -239,7 +241,7 @@ void StreamProviderListDialog::slotButtonClicked(int button)
         break;
     }
     case Cancel:
-        if (MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Abort installation/update ?"))) {
+        if (MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Abort installation/update?"), i18n("Abort"))) {
             if (job) {
                 disconnect(job, SIGNAL(finished()), this, SLOT(jobFinished()));
                 job->cancelAndDelete();

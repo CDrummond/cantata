@@ -217,6 +217,7 @@ bool StreamsSettings::install(const QString &fileName, const QString &name, bool
         return false;
     }
     streamsFile.write(streamFile);
+    streamsFile.close();
 
     QIcon icn;
     if (!icon.isEmpty()) {
@@ -240,6 +241,12 @@ bool StreamsSettings::install(const QString &fileName, const QString &name, bool
     }
 
     StreamsModel::CategoryItem *cat=StreamsModel::self()->addInstalledProvider(name, icn, dir+Utils::constDirSep+streamsName, true);
+    if (!cat) {
+        if (showErrors) {
+            MessageBox::error(this, i18n("Invalid file format!"));
+        }
+        return false;
+    }
     QListWidgetItem *existing=get(name);
     if (existing) {
         delete existing;

@@ -286,18 +286,24 @@ QString MPDBackend::add(const QString &modelName, const QVariant &rows, bool rep
     if ("artists"==modelName) {
         proxy=&artistsProxyModel;
         model=MusicLibraryModel::self();
-        if (!replace) returnText = "Added artist";
+        if (!replace) {
+            returnText = i18n("Added artist");
+        }
     } else if ("albums"==modelName) {
         proxy=&albumsProxyModel;
         model=AlbumsModel::self();
-        if (!replace) returnText = "Added album";
+        if (!replace) {
+            returnText = i18n("Added album");
+        }
     } else if ("playlists"==modelName) {
         proxy=&playlistsProxyModel;
         model=PlaylistsModel::self(); //no replace for playlists
     } else if ("folders"==modelName) {
         proxy=&foldersProxyModel;
         model=DirViewModel::self();
-        if (!replace) returnText = "Added folder";
+        if (!replace) {
+            returnText = i18n("Added folder");
+        }
     }
 
     if (model) {

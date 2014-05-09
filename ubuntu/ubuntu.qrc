@@ -34,5 +34,6 @@
         <file>qml/cantata/settings/SettingsPage.qml</file>
         <file>qml/cantata/settings/UiSettingsContent.qml</file>
         <file>qml/cantata/settings/UiSettingsPage.qml</file>
+        <file>qml/cantata/components/Notification.qml</file>
     </qresource>
 </RCC>

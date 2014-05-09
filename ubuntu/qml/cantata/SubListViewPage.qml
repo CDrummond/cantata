@@ -52,9 +52,11 @@ Page {
     }
     
     function add(index, replace) {
-        backend.add(modelName, hierarchy(index), replace)
+        var notifyText = backend.add(modelName, hierarchy(index), replace)
         if (replace) {
             pageStack.push(currentlyPlayingPage)
+        } else if (notifyText !== undefined && notifyText !== "") {
+            notification.show(i18n.tr(notifyText))
         }
     }
 

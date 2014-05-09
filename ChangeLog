@@ -120,6 +120,8 @@
     to group multiple releases of the same album.
 75. Search for streams via dirble.
 76. Center images and headers in context view.
+77. Dont package stream providers with Cantata - add a dialog to download from
+    Google Drive.
 
 1.3.4
 -----

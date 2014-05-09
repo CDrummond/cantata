@@ -47,7 +47,7 @@ Page {
         if (replace) {
             pageStack.push(currentlyPlayingPage)
         } else if (notifyText !== undefined && notifyText !== "") {
-            notification.show(i18n.tr(notifyText))
+            notification.show(notifyText)
         }
     }
 

@@ -43,9 +43,11 @@ Page {
     property alias emptyViewText: emptyLabel.text
 
     function add(index, replace) {
-        backend.add(modelName, index, replace)
+        var notifyText = backend.add(modelName, index, replace)
         if (replace) {
             pageStack.push(currentlyPlayingPage)
+        } else if (notifyText !== undefined && notifyText !== "") {
+            notification.show(i18n.tr(notifyText))
         }
     }
 

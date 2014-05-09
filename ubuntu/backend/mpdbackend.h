@@ -83,7 +83,7 @@ public:
     Q_INVOKABLE void previousSong();
     Q_INVOKABLE void clearPlayQueue() { emit clear(); }
     Q_INVOKABLE bool getIsConnected() { return MPDConnection::self()->isConnected(); }
-    Q_INVOKABLE void add(const QString &modelName, const QVariant &rows, bool replace);
+    Q_INVOKABLE QString add(const QString &modelName, const QVariant &rows, bool replace);
     Q_INVOKABLE void remove(const QString &modelName, const QVariant &rows);
     Q_INVOKABLE void loadPlaylist(int index, bool replace);
     Q_INVOKABLE void removeFromPlayQueue(int index);

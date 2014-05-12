@@ -125,6 +125,7 @@
 78. Fix 'duplicate' albums being created if flac (or other) + cue file is used,
     and the music file does not contain metadata.
 79. Fix setting of cover for albums with cule file.
+80. Fix loading individual songs from cue file.
 
 1.3.4
 -----

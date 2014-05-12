@@ -160,6 +160,7 @@ QString Utils::convertDirFromDisplay(const QString &dir)
 
 QString Utils::getDir(const QString &file)
 {
+    bool isCueFile=file.contains("/cue:///") && file.contains("?pos=");
     QString d(file);
     int slashPos(d.lastIndexOf(constDirSep));
 
@@ -167,6 +168,9 @@ QString Utils::getDir(const QString &file)
         d.remove(slashPos+1, d.length());
     }
 
+    if (isCueFile) {
+        d.remove("cue:///");
+    }
     return fixPath(d);
 }
 

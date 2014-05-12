@@ -602,6 +602,7 @@ void MPDParseUtils::parseLibraryItems(const QByteArray &data, const QString &mpd
 
                     if (canUseCueFileTracks) {
                         QSet<MusicLibraryItemAlbum *> updatedAlbums;
+                        updatedAlbums.insert(albumItem);
                         foreach (Song s, fixedCueSongs) {
                             s.fillEmptyFields();
                             if (!artistItem || s.albumArtist()!=artistItem->data()) {
@@ -617,6 +618,7 @@ void MPDParseUtils::parseLibraryItems(const QByteArray &data, const QString &mpd
                             albumItem->addGenres(songGenres);
                             artistItem->addGenres(songGenres);
                             rootItem->addGenres(songGenres);
+                            updatedAlbums.insert(albumItem);
                         }
 
                         // For each album that was updated/created, remove any source files referenced in cue file...
@@ -647,7 +649,7 @@ void MPDParseUtils::parseLibraryItems(const QByteArray &data, const QString &mpd
                     currentSong.albumartist=currentSong.artist=artistItem->data();
                     currentSong.album=albumItem->data();
                     currentSong.time=albumItem->totalTime();
-                    DBUG << "Adding playlist file to" << albumItem->parentItem()->data() << albumItem->data();
+                    DBUG << "Adding playlist file to" << albumItem->parentItem()->data() << albumItem->data() << (void *)albumItem;
                     songItem = new MusicLibraryItemSong(currentSong, albumItem);
                     albumItem->append(songItem);
                 }
@@ -660,9 +662,11 @@ void MPDParseUtils::parseLibraryItems(const QByteArray &data, const QString &mpd
             currentSong.fillEmptyFields();
             if (!artistItem || currentSong.artistOrComposer()!=artistItem->data()) {
                 artistItem = rootItem->artist(currentSong);
+                DBUG << "New artist item for " << currentSong.file << artistItem->data() << (void *)artistItem;
             }
             if (!albumItem || currentSong.year!=albumItem->year() || albumItem->parentItem()!=artistItem || currentSong.albumId()!=albumItem->albumId()) {
                 albumItem = artistItem->album(currentSong);
+                DBUG << "New album item for " << currentSong.file << artistItem->data() << albumItem->data() << (void *)albumItem;
             }           
             songItem=new MusicLibraryItemSong(currentSong, albumItem);
             const QSet<QString> &songGenres=songItem->allGenres();

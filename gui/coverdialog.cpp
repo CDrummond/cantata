@@ -175,7 +175,7 @@ class LocalCover : public CoverItem
 {
 public:
     LocalCover(const QString &u, const QImage &i, QListWidget *parent)
-        : CoverItem(u, QString(), i, Utils::getFile(u), parent, img.width(), img.height(), QFileInfo(u).size())
+        : CoverItem(u, QString(), i, Utils::getFile(u), parent, i.width(), i.height(), QFileInfo(u).size())
         , img(i) { }
     bool isLocal() const { return true; }
     const QImage & image() const { return img; }

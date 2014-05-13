@@ -24,7 +24,7 @@
 #ifndef ULTIMATELYRICSPROVIDER_H
 #define ULTIMATELYRICSPROVIDER_H
 
-#include "song.h"
+#include "mpd/song.h"
 #include <QObject>
 #include <QPair>
 #include <QStringList>

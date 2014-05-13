@@ -22,32 +22,32 @@
  */
 
 #include "actiondialog.h"
-#include "devicesmodel.h"
+#include "models/devicesmodel.h"
 #include "device.h"
-#include "utils.h"
+#include "support/utils.h"
 #include "devicepropertiesdialog.h"
 #include "devicepropertieswidget.h"
-#include "settings.h"
-#include "musiclibrarymodel.h"
-#include "musiclibraryproxymodel.h"
-#include "dirviewmodel.h"
-#include "albumsmodel.h"
-#include "mpdparseutils.h"
-#include "mpdconnection.h"
+#include "gui/settings.h"
+#include "models/musiclibrarymodel.h"
+#include "models/musiclibraryproxymodel.h"
+#include "models/dirviewmodel.h"
+#include "models/albumsmodel.h"
+#include "mpd/mpdparseutils.h"
+#include "mpd/mpdconnection.h"
 #include "encoders.h"
-#include "localize.h"
-#include "messagebox.h"
+#include "support/localize.h"
+#include "support/messagebox.h"
 #include "filejob.h"
 #include "freespaceinfo.h"
-#include "icons.h"
+#include "widgets/icons.h"
 #include "config.h"
-#include "tags.h"
-#include "treeview.h"
+#include "tags/tags.h"
+#include "widgets/treeview.h"
 #ifdef ENABLE_ONLINE_SERVICES
-#include "onlineservicesmodel.h"
+#include "models/onlineservicesmodel.h"
 #endif
 #ifdef ENABLE_REPLAYGAIN_SUPPORT
-#include "rgdialog.h"
+#include "replaygain/rgdialog.h"
 #endif
 #include <QFile>
 #include <QDebug>

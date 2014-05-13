@@ -24,7 +24,7 @@
 #ifndef GENRECOMBO_H
 #define GENRECOMBO_H
 
-#include "combobox.h"
+#include "support/combobox.h"
 #include <QSet>
 
 class GenreCombo : public ComboBox

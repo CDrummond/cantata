@@ -24,8 +24,8 @@
 #ifndef _SYNC_DIALOG_H_
 #define _SYNC_DIALOG_H_
 
-#include "dialog.h"
-#include "song.h"
+#include "support/dialog.h"
+#include "mpd/song.h"
 
 class Device;
 class SyncCollectionWidget;

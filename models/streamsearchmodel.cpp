@@ -22,13 +22,13 @@
  */
 
 #include "streamsearchmodel.h"
-#include "icons.h"
+#include "widgets/icons.h"
 #include "roles.h"
-#include "localize.h"
-#include "plurals.h"
+#include "support/localize.h"
+#include "gui/plurals.h"
 #include "playqueuemodel.h"
-#include "networkaccessmanager.h"
-#include "stdactions.h"
+#include "network/networkaccessmanager.h"
+#include "gui/stdactions.h"
 #include <QString>
 #include <QVariant>
 #include <QXmlStreamReader>

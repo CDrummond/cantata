@@ -24,7 +24,7 @@
 #include "messageoverlay.h"
 #include "toolbutton.h"
 #include "icons.h"
-#include "localize.h"
+#include "support/localize.h"
 #include <QPainter>
 #include <QPaintEvent>
 #include <QTimer>

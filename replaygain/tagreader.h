@@ -25,8 +25,8 @@
 #define _TAGREADER_H_
 
 #include "jobcontroller.h"
-#include "song.h"
-#include "tags.h"
+#include "mpd/song.h"
+#include "tags/tags.h"
 
 class TagReader : public StandardJob
 {

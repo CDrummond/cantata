@@ -24,11 +24,11 @@
 #define DEVICES_MODEL_H
 
 #include <QSet>
-#include "song.h"
+#include "mpd/song.h"
 #include "config.h"
-#include "remotefsdevice.h"
+#include "devices/remotefsdevice.h"
 #include "multimusicmodel.h"
-#include "cdalbum.h"
+#include "devices/cdalbum.h"
 #include "musiclibraryproxymodel.h"
 
 class QMimeData;

@@ -23,10 +23,10 @@
 
 #include "devicepropertieswidget.h"
 #include "filenameschemedialog.h"
-#include "covers.h"
-#include "localize.h"
-#include "icons.h"
-#include "utils.h"
+#include "gui/covers.h"
+#include "support/localize.h"
+#include "widgets/icons.h"
+#include "support/utils.h"
 #include <QValidator>
 #include <QTabWidget>
 

@@ -25,9 +25,9 @@
 #define _RGDIALOG_H_
 
 #include <QFont>
-#include "songdialog.h"
+#include "widgets/songdialog.h"
 #include "albumscanner.h"
-#include "tags.h"
+#include "tags/tags.h"
 #include "config.h"
 
 class QComboBox;

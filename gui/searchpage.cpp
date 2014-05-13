@@ -22,14 +22,14 @@
  */
 
 #include "searchpage.h"
-#include "mpdconnection.h"
-#include "localize.h"
+#include "mpd/mpdconnection.h"
+#include "support/localize.h"
 #include "settings.h"
 #include "stdactions.h"
-#include "utils.h"
-#include "icon.h"
+#include "support/utils.h"
+#include "support/icon.h"
 #include "plurals.h"
-#include "tableview.h"
+#include "widgets/tableview.h"
 
 class SearchTableView : public TableView
 {

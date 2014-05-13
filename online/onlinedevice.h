@@ -24,8 +24,8 @@
 #ifndef ONLINE_DEVICE_H
 #define ONLINE_DEVICE_H
 
-#include "device.h"
-#include "song.h"
+#include "devices/device.h"
+#include "mpd/song.h"
 
 class NetworkJob;
 class OnlineDevice : public Device

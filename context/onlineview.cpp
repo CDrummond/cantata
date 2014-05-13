@@ -22,8 +22,8 @@
  */
 
 #include "onlineview.h"
-#include "onlineservicesmodel.h"
-#include "localize.h"
+#include "models/onlineservicesmodel.h"
+#include "support/localize.h"
 
 OnlineView::OnlineView(QWidget *p)
     : View(p)

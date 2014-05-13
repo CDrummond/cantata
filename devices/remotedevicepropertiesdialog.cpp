@@ -24,10 +24,10 @@
 #include "remotedevicepropertiesdialog.h"
 #include "devicepropertieswidget.h"
 #include "remotedevicepropertieswidget.h"
-#include "devicesmodel.h"
-#include "localize.h"
-#include "messagebox.h"
-#include "icon.h"
+#include "models/devicesmodel.h"
+#include "support/localize.h"
+#include "support/messagebox.h"
+#include "support/icon.h"
 #include <QTabWidget>
 #include <QStyle>
 #include <QIcon>

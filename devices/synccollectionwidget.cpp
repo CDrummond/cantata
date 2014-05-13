@@ -22,14 +22,14 @@
  */
 
 #include "synccollectionwidget.h"
-#include "treeview.h"
-#include "musiclibraryproxymodel.h"
-#include "musiclibraryitemartist.h"
-#include "musiclibraryitemalbum.h"
-#include "musiclibraryitemsong.h"
-#include "icon.h"
-#include "localize.h"
-#include "actioncollection.h"
+#include "widgets/treeview.h"
+#include "models/musiclibraryproxymodel.h"
+#include "models/musiclibraryitemartist.h"
+#include "models/musiclibraryitemalbum.h"
+#include "models/musiclibraryitemsong.h"
+#include "support/icon.h"
+#include "support/localize.h"
+#include "support/actioncollection.h"
 #include <QTimer>
 #include <QAction>
 

@@ -179,17 +179,17 @@
   <customwidget>
    <class>BuddyLabel</class>
    <extends>QLabel</extends>
-   <header>buddylabel.h</header>
+   <header>support/buddylabel.h</header>
   </customwidget>
   <customwidget>
    <class>CompletionCombo</class>
    <extends>QComboBox</extends>
-   <header>completioncombo.h</header>
+   <header>widgets/completioncombo.h</header>
   </customwidget>
   <customwidget>
    <class>EmnptySpinBox</class>
    <extends>QSpinBox</extends>
-   <header>emptyspinbox.h</header>
+   <header>widgets/emptyspinbox.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>

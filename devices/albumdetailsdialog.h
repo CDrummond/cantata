@@ -25,9 +25,9 @@
 #define ALBUMDETAILSDIALOG_H
 
 #include "ui_albumdetails.h"
-#include "dialog.h"
-#include "song.h"
-#include "covers.h"
+#include "support/dialog.h"
+#include "mpd/song.h"
+#include "gui/covers.h"
 
 class AudioCdDevice;
 class QTreeWidgetItem;

@@ -83,7 +83,7 @@
   <customwidget>
    <class>BuddyLabel</class>
    <extends>QLabel</extends>
-   <header>buddylabel.h</header>
+   <header>support/buddylabel.h</header>
   </customwidget>
  </customwidgets>
  <tabstops/>

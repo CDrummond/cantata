@@ -25,8 +25,8 @@
 #define _SYNCCOLLECTIONWIDGET_H_
 
 #include "ui_synccollectionwidget.h"
-#include "song.h"
-#include "musiclibrarymodel.h"
+#include "mpd/song.h"
+#include "models/musiclibrarymodel.h"
 #include <QSet>
 
 class QTimer;

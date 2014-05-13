@@ -25,7 +25,7 @@
 #define PLAYLISTSPAGE_H
 
 #include "ui_playlistspage.h"
-#include "playlistsproxymodel.h"
+#include "models/playlistsproxymodel.h"
 #include "page.h"
 
 class Action;

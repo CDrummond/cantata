@@ -1,4 +1,4 @@
-include_directories(${QTINCLUDES} ${TAGLIB_INCLUDES} ${CMAKE_SOURCE_DIR}/tags)
+include_directories(${QTINCLUDES} ${TAGLIB_INCLUDES})
 set(CANTATA_TAGS_SRCS main.cpp taghelper.cpp tags.cpp filetyperesolver.cpp ../mpd/song.cpp)
 set(CANTATA_TAGS_MOC_HDRS taghelper.h)
 

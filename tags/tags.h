@@ -24,8 +24,8 @@
 #ifndef TAGS_H
 #define TAGS_H
 
-#include "song.h"
-#include "utils.h"
+#include "mpd/song.h"
+#include "support/utils.h"
 #include "config.h"
 #include <QImage>
 #include <QMetaType>

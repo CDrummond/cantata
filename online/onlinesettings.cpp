@@ -22,12 +22,12 @@
  */
 
 #include "onlinesettings.h"
-#include "onlineservicesmodel.h"
+#include "models/onlineservicesmodel.h"
 #include "onlineservice.h"
-#include "basicitemdelegate.h"
-#include "icon.h"
-#include "localize.h"
-#include "flickcharm.h"
+#include "widgets/basicitemdelegate.h"
+#include "support/icon.h"
+#include "support/localize.h"
+#include "support/flickcharm.h"
 #include <QListWidget>
 
 enum Roles {

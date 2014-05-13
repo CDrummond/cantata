@@ -27,7 +27,7 @@
 #define DIRVIEWITEMFILE_H
 
 #include "dirviewitem.h"
-#include "mpdconnection.h"
+#include "mpd/mpdconnection.h"
 
 class DirViewItemFile : public DirViewItem
 {

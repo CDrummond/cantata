@@ -27,7 +27,7 @@
 #include <QObject>
 #include <QByteArray>
 #include <QSet>
-#include "song.h"
+#include "mpd/song.h"
 #include "config.h"
 
 class HttpSocket;

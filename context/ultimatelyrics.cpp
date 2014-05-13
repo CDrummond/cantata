@@ -23,8 +23,8 @@
 
 #include "ultimatelyrics.h"
 #include "ultimatelyricsprovider.h"
-#include "settings.h"
-#include "globalstatic.h"
+#include "gui/settings.h"
+#include "support/globalstatic.h"
 #include <QDir>
 #include <QFile>
 #include <QFileInfoList>

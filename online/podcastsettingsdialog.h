@@ -24,7 +24,7 @@
 #ifndef PODCAST_SETTINGS_DIALOG_H
 #define PODCAST_SETTINGS_DIALOG_H
 
-#include "dialog.h"
+#include "support/dialog.h"
 
 class QComboBox;
 class QCheckBox;

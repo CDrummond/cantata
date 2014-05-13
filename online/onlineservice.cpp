@@ -22,15 +22,15 @@
  */
 
 #include "onlineservice.h"
-#include "onlineservicesmodel.h"
-#include "musiclibrarymodel.h"
-#include "utils.h"
-#include "networkaccessmanager.h"
-#include "mpdparseutils.h"
-#include "covers.h"
+#include "models/onlineservicesmodel.h"
+#include "models/musiclibrarymodel.h"
+#include "support/utils.h"
+#include "network/networkaccessmanager.h"
+#include "mpd/mpdparseutils.h"
+#include "gui/covers.h"
 #include "qtiocompressor/qtiocompressor.h"
-#include "thread.h"
-#include "settings.h"
+#include "support/thread.h"
+#include "gui/settings.h"
 #include <QFile>
 #include <QXmlStreamReader>
 

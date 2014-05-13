@@ -24,9 +24,9 @@
 #define ONLINE_SERVICES_MODEL_H
 
 #include <QSet>
-#include "song.h"
+#include "mpd/song.h"
 #include "config.h"
-#include "covers.h"
+#include "gui/covers.h"
 #include "multimusicmodel.h"
 #include "musiclibraryproxymodel.h"
 

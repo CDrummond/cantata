@@ -30,7 +30,7 @@
 class KMenu;
 #else
 #include <QSystemTrayIcon>
-#include "icon.h"
+#include "support/icon.h"
 class QMenu;
 #endif
 #include "config.h"

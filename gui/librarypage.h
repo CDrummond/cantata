@@ -25,7 +25,7 @@
 #define LIBRARYPAGE_H
 
 #include "ui_librarypage.h"
-#include "musiclibraryproxymodel.h"
+#include "models/musiclibraryproxymodel.h"
 #include "page.h"
 
 class Action;

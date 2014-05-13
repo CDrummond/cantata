@@ -22,16 +22,16 @@
  */
 
 #include "albumspage.h"
-#include "mpdconnection.h"
+#include "mpd/mpdconnection.h"
 #include "covers.h"
-#include "musiclibrarymodel.h"
-#include "musiclibraryitemsong.h"
-#include "albumsmodel.h"
-#include "localize.h"
-#include "messagebox.h"
+#include "models/musiclibrarymodel.h"
+#include "models/musiclibraryitemsong.h"
+#include "models/albumsmodel.h"
+#include "support/localize.h"
+#include "support/messagebox.h"
 #include "settings.h"
 #include "stdactions.h"
-#include "utils.h"
+#include "support/utils.h"
 
 AlbumsPage::AlbumsPage(QWidget *p)
     : QWidget(p)

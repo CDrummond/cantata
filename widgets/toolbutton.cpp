@@ -22,10 +22,10 @@
  */
 
 #include "toolbutton.h"
-#include "icon.h"
-#include "gtkstyle.h"
+#include "support/icon.h"
+#include "support/gtkstyle.h"
 #include "config.h"
-#include "utils.h"
+#include "support/utils.h"
 #include <QMenu>
 #include <QStylePainter>
 #include <QStyleOptionToolButton>

@@ -25,8 +25,8 @@
 #define COVER_DIALOG_H
 
 #include "config.h"
-#include "dialog.h"
-#include "song.h"
+#include "support/dialog.h"
+#include "mpd/song.h"
 #include "ui_coverdialog.h"
 #include "covers.h"
 #include <QSet>

@@ -22,7 +22,6 @@
  */
 
 #include "musiclibraryitemsong.h"
-#include "song.h"
 
 void MusicLibraryItemSong::initGenres() const
 {

@@ -26,13 +26,13 @@
 #include <QValidator>
 #include <QUrl>
 #include "streamdialog.h"
-#include "mainwindow.h"
-#include "settings.h"
-#include "streamsmodel.h"
-#include "localize.h"
-#include "icons.h"
-#include "mpdconnection.h"
-#include "buddylabel.h"
+#include "gui/mainwindow.h"
+#include "gui/settings.h"
+#include "models/streamsmodel.h"
+#include "support/localize.h"
+#include "widgets/icons.h"
+#include "mpd/mpdconnection.h"
+#include "support/buddylabel.h"
 #include "config.h"
     
 class NameValidator : public QValidator

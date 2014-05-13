@@ -25,8 +25,8 @@
 #define FOLDERPAGE_H
 
 #include "ui_folderpage.h"
-#include "dirviewmodel.h"
-#include "dirviewproxymodel.h"
+#include "models/dirviewmodel.h"
+#include "models/dirviewproxymodel.h"
 #include "page.h"
 
 class Action;

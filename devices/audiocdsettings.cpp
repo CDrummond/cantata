@@ -22,8 +22,8 @@
  */
 
 #include "audiocdsettings.h"
-#include "settings.h"
-#include "localize.h"
+#include "gui/settings.h"
+#include "support/localize.h"
 
 #define REMOVE(w) \
     w->setVisible(false); \

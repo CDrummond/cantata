@@ -22,15 +22,15 @@
  */
  
 #include "view.h"
-#include "spinner.h"
-#include "networkaccessmanager.h"
-#include "settings.h"
-#include "textbrowser.h"
-#include "gtkstyle.h"
-#include "actioncollection.h"
-#include "action.h"
-#include "icons.h"
-#include "localize.h"
+#include "support/spinner.h"
+#include "network/networkaccessmanager.h"
+#include "gui/settings.h"
+#include "widgets/textbrowser.h"
+#include "support/gtkstyle.h"
+#include "support/actioncollection.h"
+#include "support/action.h"
+#include "widgets/icons.h"
+#include "support/localize.h"
 #include <QLabel>
 #include <QScrollBar>
 #include <QImage>

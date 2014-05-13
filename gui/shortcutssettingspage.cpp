@@ -23,16 +23,16 @@
 
 #include "shortcutssettingspage.h"
 #include "mediakeys.h"
-#include "toolbutton.h"
-#include "actioncollection.h"
-#include "shortcutssettingswidget.h"
-#include "basicitemdelegate.h"
-#include "localize.h"
+#include "widgets/toolbutton.h"
+#include "support/actioncollection.h"
+#include "support/shortcutssettingswidget.h"
+#include "widgets/basicitemdelegate.h"
+#include "support/localize.h"
 #include "settings.h"
-#include "icons.h"
-#include "buddylabel.h"
-#include "utils.h"
-#include "flickcharm.h"
+#include "widgets/icons.h"
+#include "support/buddylabel.h"
+#include "support/utils.h"
+#include "support/flickcharm.h"
 #include <QBoxLayout>
 #include <QComboBox>
 #include <QGroupBox>

@@ -24,7 +24,7 @@
 #include "tags.h"
 #include "config.h"
 #include "filetyperesolver.h"
-#include "utils.h"
+#include "support/utils.h"
 #include <algorithm>
 #include <cctype>
 #include <cmath>

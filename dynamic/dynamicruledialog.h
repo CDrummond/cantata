@@ -25,7 +25,7 @@
 #define DYNAMIC_RULE_DIALOG_H
 
 #include "config.h"
-#include "dialog.h"
+#include "support/dialog.h"
 #include "ui_dynamicrule.h"
 #include "dynamic.h"
 

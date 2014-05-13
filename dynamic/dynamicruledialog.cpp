@@ -22,8 +22,8 @@
  */
 
 #include "dynamicruledialog.h"
-#include "musiclibrarymodel.h"
-#include "localize.h"
+#include "models/musiclibrarymodel.h"
+#include "support/localize.h"
 
 static const int constMinDate=1800;
 static const int constMaxDate=2100;

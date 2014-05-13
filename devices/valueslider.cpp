@@ -21,7 +21,7 @@
  ****************************************************************************************/
 
 #include "valueslider.h"
-#include "localize.h"
+#include "support/localize.h"
 #include <QGridLayout>
 
 ValueSlider::ValueSlider(QWidget *parent)

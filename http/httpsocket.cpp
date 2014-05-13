@@ -24,10 +24,10 @@
 #include "config.h"
 #include "httpsocket.h"
 #include "httpserver.h"
-#include "settings.h"
+#include "gui/settings.h"
 #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
-#include "cdparanoia.h"
-#include "extractjob.h"
+#include "devices/cdparanoia.h"
+#include "devices/extractjob.h"
 #endif
 #include <QTcpSocket>
 #include <QNetworkInterface>

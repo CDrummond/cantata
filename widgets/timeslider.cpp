@@ -22,9 +22,9 @@
  */
 
 #include "timeslider.h"
-#include "song.h"
-#include "settings.h"
-#include "mpdconnection.h"
+#include "mpd/song.h"
+#include "gui/settings.h"
+#include "mpd/mpdconnection.h"
 #include <QLabel>
 #include <QHBoxLayout>
 #include <QProxyStyle>

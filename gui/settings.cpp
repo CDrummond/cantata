@@ -22,14 +22,13 @@
  */
 
 #include "settings.h"
-#include "musiclibraryitemalbum.h"
-#include "fancytabwidget.h"
-#include "albumsmodel.h"
-#include "itemview.h"
-#include "mpdparseutils.h"
-#include "utils.h"
-#include "mediakeys.h"
-#include "globalstatic.h"
+#include "models/musiclibraryitemalbum.h"
+#include "support/fancytabwidget.h"
+#include "models/albumsmodel.h"
+#include "widgets/itemview.h"
+#include "mpd/mpdparseutils.h"
+#include "support/utils.h"
+#include "support/globalstatic.h"
 #if defined ENABLE_KDE_SUPPORT && defined ENABLE_KWALLET
 #include <kwallet.h>
 #endif

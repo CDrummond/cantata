@@ -111,19 +111,19 @@
   <customwidget>
    <class>KeySequenceWidget</class>
    <extends>QWidget</extends>
-   <header>keysequencewidget.h</header>
+   <header>support/keysequencewidget.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>LineEdit</class>
    <extends>QLineEdit</extends>
-   <header>lineedit.h</header>
+   <header>support/lineedit.h</header>
    <container>0</container>
   </customwidget>
   <customwidget>
    <class>BuddyLabel</class>
    <extends>QLabel</extends>
-   <header>buddylabel.h</header>
+   <header>support/buddylabel.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>

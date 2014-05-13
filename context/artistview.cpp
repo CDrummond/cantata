@@ -22,16 +22,16 @@
  */
 
 #include "artistview.h"
-#include "localize.h"
-#include "covers.h"
-#include "utils.h"
-#include "musiclibrarymodel.h"
-#include "networkaccessmanager.h"
+#include "support/localize.h"
+#include "gui/covers.h"
+#include "support/utils.h"
+#include "models/musiclibrarymodel.h"
+#include "network/networkaccessmanager.h"
 #include "qtiocompressor/qtiocompressor.h"
-#include "textbrowser.h"
+#include "widgets/textbrowser.h"
 #include "contextengine.h"
-#include "actioncollection.h"
-#include "musiclibrarymodel.h"
+#include "support/actioncollection.h"
+#include "models/musiclibrarymodel.h"
 #include <QApplication>
 #include <QTextStream>
 #include <QLayout>

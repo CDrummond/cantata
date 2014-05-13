@@ -22,22 +22,22 @@
  */
 
 #include "playqueueview.h"
-#include "playqueuemodel.h"
-#include "covers.h"
-#include "currentcover.h"
+#include "models/playqueuemodel.h"
+#include "gui/covers.h"
+#include "gui/currentcover.h"
 #include "groupedview.h"
 #include "treeview.h"
-#include "settings.h"
-#include "mpdstatus.h"
-#include "localize.h"
-#include "spinner.h"
+#include "gui/settings.h"
+#include "mpd/mpdstatus.h"
+#include "support/localize.h"
+#include "support/spinner.h"
 #include "messageoverlay.h"
 #include "basicitemdelegate.h"
 #include "icons.h"
-#include "gtkstyle.h"
-#include "actioncollection.h"
-#include "action.h"
-#include "roles.h"
+#include "support/gtkstyle.h"
+#include "support/actioncollection.h"
+#include "support/action.h"
+#include "models/roles.h"
 #include <QFile>
 #include <QPainter>
 #include <QApplication>

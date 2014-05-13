@@ -22,8 +22,8 @@
  */
 
 #include "basicitemdelegate.h"
-#include "gtkstyle.h"
-#include "utils.h"
+#include "support/gtkstyle.h"
+#include "support/utils.h"
 #include <QPainter>
 #include <QStyle>
 #include <QStyledItemDelegate>

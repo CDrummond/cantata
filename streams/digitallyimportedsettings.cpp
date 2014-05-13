@@ -22,10 +22,10 @@
  */
 
 #include "digitallyimportedsettings.h"
-#include "digitallyimported.h"
-#include "localize.h"
-#include "buddylabel.h"
-#include "lineedit.h"
+#include "models/digitallyimported.h"
+#include "support/localize.h"
+#include "support/buddylabel.h"
+#include "support/lineedit.h"
 #include <QPushButton>
 #include <QComboBox>
 

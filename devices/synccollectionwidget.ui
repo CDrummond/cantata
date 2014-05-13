@@ -41,17 +41,17 @@
   <customwidget>
    <class>SqueezedTextLabel</class>
    <extends>QLabel</extends>
-   <header>squeezedtextlabel.h</header>
+   <header>support/squeezedtextlabel.h</header>
   </customwidget>
   <customwidget>
    <class>LineEdit</class>
    <extends>QLineEdit</extends>
-   <header>lineedit.h</header>
+   <header>support/lineedit.h</header>
   </customwidget>
   <customwidget>
    <class>TreeView</class>
    <extends>QTreeView</extends>
-   <header>treeview.h</header>
+   <header>widgets/treeview.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

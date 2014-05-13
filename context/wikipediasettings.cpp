@@ -23,15 +23,15 @@
 
 #include "wikipediasettings.h"
 #include "wikipediaengine.h"
-#include "networkaccessmanager.h"
-#include "localize.h"
-#include "icon.h"
-#include "spinner.h"
-#include "settings.h"
+#include "network/networkaccessmanager.h"
+#include "support/localize.h"
+#include "support/icon.h"
+#include "support/spinner.h"
+#include "gui/settings.h"
 #include "qtiocompressor/qtiocompressor.h"
-#include "utils.h"
-#include "action.h"
-#include "thread.h"
+#include "support/utils.h"
+#include "support/action.h"
+#include "support/thread.h"
 #if QT_VERSION >= 0x050000
 #include <QUrlQuery>
 #endif

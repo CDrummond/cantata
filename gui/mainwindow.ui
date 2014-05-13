@@ -345,80 +345,80 @@
   <customwidget>
    <class>SqueezedTextLabel</class>
    <extends>QLabel</extends>
-   <header>squeezedtextlabel.h</header>
+   <header>support/squeezedtextlabel.h</header>
   </customwidget>
   <customwidget>
    <class>SongLabel</class>
    <extends>QLabel</extends>
-   <header>songlabel.h</header>
+   <header>widgets/songlabel.h</header>
   </customwidget>
   <customwidget>
    <class>PlayQueueView</class>
    <extends>QTreeView</extends>
-   <header>playqueueview.h</header>
+   <header>widgets/playqueueview.h</header>
   </customwidget>
   <customwidget>
    <class>TimeSlider</class>
    <extends>QSlider</extends>
-   <header>timeslider.h</header>
+   <header>widgets/timeslider.h</header>
   </customwidget>
   <customwidget>
    <class>FancyTabWidget</class>
    <extends>QTabWidget</extends>
-   <header>fancytabwidget.h</header>
+   <header>support/fancytabwidget.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>MessageWidget</class>
    <extends>QFrame</extends>
-   <header>messagewidget.h</header>
+   <header>support/messagewidget.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>AutohidingSplitter</class>
    <extends>QSplitter</extends>
-   <header>autohidingsplitter.h</header>
+   <header>widgets/autohidingsplitter.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>MenuButton</class>
    <extends>QToolButton</extends>
-   <header>menubutton.h</header>
+   <header>widgets/menubutton.h</header>
   </customwidget>
   <customwidget>
    <class>ToolButton</class>
    <extends>QToolButton</extends>
-   <header>toolbutton.h</header>
+   <header>widgets/toolbutton.h</header>
   </customwidget>
   <customwidget>
    <class>ContextWidget</class>
    <extends>QWidget</extends>
-   <header>contextwidget.h</header>
+   <header>context/contextwidget.h</header>
   </customwidget>
   <customwidget>
    <class>SearchWidget</class>
    <extends>QLineEdit</extends>
-   <header>searchwidget.h</header>
+   <header>widgets/searchwidget.h</header>
   </customwidget>
   <customwidget>
    <class>SpacerWidget</class>
    <extends>QWidget</extends>
-   <header>spacerwidget.h</header>
+   <header>widgets/spacerwidget.h</header>
   </customwidget>
   <customwidget>
    <class>SizeWidget</class>
    <extends>QWidget</extends>
-   <header>sizewidget.h</header>
+   <header>widgets/sizewidget.h</header>
   </customwidget>
   <customwidget>
    <class>SizeGrip</class>
    <extends>QWidget</extends>
-   <header>sizegrip.h</header>
+   <header>widgets/sizegrip.h</header>
   </customwidget>
   <customwidget>
    <class>VolumeSlider</class>
    <extends>QSlider</extends>
-   <header>volumeslider.h</header>
+   <header>widgets/volumeslider.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

@@ -27,7 +27,7 @@
 #include <QByteArray>
 #include "playqueueproxymodel.h"
 #include "playqueuemodel.h"
-#include "song.h"
+#include "mpd/song.h"
 
 PlayQueueProxyModel::PlayQueueProxyModel(QObject *parent)
     : ProxyModel(parent)

@@ -352,22 +352,22 @@
   <customwidget>
    <class>CapacityBar</class>
    <extends>QProgressBar</extends>
-   <header>capacitybar.h</header>
+   <header>support/capacitybar.h</header>
   </customwidget>
   <customwidget>
    <class>ActionLabel</class>
    <extends>QLabel</extends>
-   <header>actionlabel.h</header>
+   <header>widgets/actionlabel.h</header>
   </customwidget>
   <customwidget>
    <class>UrlLabel</class>
    <extends>QLabel</extends>
-   <header>urllabel.h</header>
+   <header>support/urllabel.h</header>
   </customwidget>
   <customwidget>
    <class>SplitLabelWidget</class>
    <extends>QLabel</extends>
-   <header>splitlabelwidget.h</header>
+   <header>devices/splitlabelwidget.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>

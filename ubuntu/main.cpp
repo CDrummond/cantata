@@ -29,21 +29,21 @@
 #include <QStandardPaths>
 #include <QDir>
 
-#include "mpdconnection.h"
-#include "song.h"
-#include "mpdparseutils.h"
-#include "settings.h"
-#include "thread.h"
+#include "mpd/mpdconnection.h"
+#include "mpd/song.h"
+#include "mpd/mpdparseutils.h"
+#include "gui/settings.h"
+#include "support/thread.h"
 #include "ubuntu/backend/mpdbackend.h"
-#include "utils.h"
-#include "musiclibrarymodel.h"
-#include "albumsmodel.h"
-#include "playlistsmodel.h"
-#include "currentcover.h"
+#include "support/utils.h"
+#include "models/musiclibrarymodel.h"
+#include "models/albumsmodel.h"
+#include "models/playlistsmodel.h"
+#include "gui/currentcover.h"
 #include "config.h"
 
 // To enable debug...
-#include "covers.h"
+#include "gui/covers.h"
 //#include "wikipediaengine.h"
 //#include "lastfmengine.h"
 //#include "metaengine.h"
@@ -54,7 +54,7 @@
 //#include "streamfetcher.h"
 //#include "httpserver.h"
 //#include "songdialog.h"
-#include "networkaccessmanager.h"
+#include "network/networkaccessmanager.h"
 //#include "ultimatelyricsprovider.h"
 //#ifdef ENABLE_EXTERNAL_TAGS
 //#include "taghelperiface.h"

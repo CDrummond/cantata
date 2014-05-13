@@ -28,9 +28,9 @@
 #include <QStringList>
 #include <QVariantMap>
 #include <QApplication>
-#include "song.h"
-#include "mpdstatus.h"
-#include "stdactions.h"
+#include "mpd/song.h"
+#include "mpd/mpdstatus.h"
+#include "gui/stdactions.h"
 
 class QDBusObjectPath;
 

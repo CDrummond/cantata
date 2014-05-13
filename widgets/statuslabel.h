@@ -25,7 +25,7 @@
 #define STATUSLABEL_H
 
 #include <QFrame>
-#include "squeezedtextlabel.h"
+#include "support/squeezedtextlabel.h"
 
 class QLabel;
 

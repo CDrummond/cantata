@@ -26,8 +26,8 @@
 
 #include "ui_searchpage.h"
 #include "page.h"
-#include "searchmodel.h"
-#include "searchproxymodel.h"
+#include "models/searchmodel.h"
+#include "models/searchproxymodel.h"
 
 class Action;
 

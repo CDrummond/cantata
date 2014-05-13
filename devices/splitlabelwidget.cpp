@@ -22,7 +22,7 @@
  */
 
 #include "splitlabelwidget.h"
-#include "squeezedtextlabel.h"
+#include "support/squeezedtextlabel.h"
 #include <QFormLayout>
 #include <QBoxLayout>
 

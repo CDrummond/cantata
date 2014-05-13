@@ -23,8 +23,8 @@
  */
 
 #include "autohidingsplitter.h"
-#include "gtkstyle.h"
-#include "utils.h"
+#include "support/gtkstyle.h"
+#include "support/utils.h"
 #include <QSplitterHandle>
 #include <QTimer>
 #include <QChildEvent>

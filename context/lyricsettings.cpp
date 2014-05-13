@@ -24,9 +24,9 @@
 #include "lyricsettings.h"
 #include "ultimatelyricsprovider.h"
 #include "ultimatelyrics.h"
-#include "localize.h"
+#include "support/localize.h"
 #include "config.h"
-#include "settings.h"
+#include "gui/settings.h"
 
 LyricSettings::LyricSettings(QWidget *p)
     : ToggleList(p)

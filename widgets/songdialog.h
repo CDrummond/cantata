@@ -24,8 +24,8 @@
 #ifndef SONG_DIALOG_H
 #define SONG_DIALOG_H
 
-#include "dialog.h"
-#include "song.h"
+#include "support/dialog.h"
+#include "mpd/song.h"
 
 class SongDialog : public Dialog
 {

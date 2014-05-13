@@ -23,15 +23,15 @@
 
 #include "albumview.h"
 #include "artistview.h"
-#include "localize.h"
-#include "covers.h"
-#include "networkaccessmanager.h"
-#include "utils.h"
+#include "support/localize.h"
+#include "gui/covers.h"
+#include "network/networkaccessmanager.h"
+#include "support/utils.h"
 #include "qtiocompressor/qtiocompressor.h"
-#include "musiclibrarymodel.h"
+#include "models/musiclibrarymodel.h"
 #include "contextengine.h"
-#include "textbrowser.h"
-#include "actioncollection.h"
+#include "widgets/textbrowser.h"
+#include "support/actioncollection.h"
 #include <QScrollBar>
 #include <QFile>
 #include <QUrl>

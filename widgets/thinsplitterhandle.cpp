@@ -22,7 +22,7 @@
  */
  
 #include "thinsplitterhandle.h"
-#include "utils.h"
+#include "support/utils.h"
 #include <QResizeEvent>
 #include <QPainter>
 

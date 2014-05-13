@@ -25,28 +25,28 @@
  * along with QtMPC.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "localize.h"
+#include "support/localize.h"
 #include "playqueuemodel.h"
-#include "mpdconnection.h"
-#include "mpdparseutils.h"
-#include "mpdstats.h"
-#include "mpdstatus.h"
-#include "streamfetcher.h"
+#include "mpd/mpdconnection.h"
+#include "mpd/mpdparseutils.h"
+#include "mpd/mpdstats.h"
+#include "mpd/mpdstatus.h"
+#include "streams/streamfetcher.h"
 #include "streamsmodel.h"
-#include "httpserver.h"
-#include "settings.h"
-#include "icon.h"
-#include "utils.h"
+#include "http/httpserver.h"
+#include "gui/settings.h"
+#include "support/icon.h"
+#include "support/utils.h"
 #include "config.h"
-#include "action.h"
-#include "actioncollection.h"
-#include "covers.h"
-#include "groupedview.h"
+#include "support/action.h"
+#include "support/actioncollection.h"
+#include "gui/covers.h"
+#include "widgets/groupedview.h"
 #include "roles.h"
 #ifdef ENABLE_DEVICES_SUPPORT
 #include "devicesmodel.h"
 #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
-#include "audiocddevice.h"
+#include "devices/audiocddevice.h"
 #endif
 #endif
 #include <QPalette>

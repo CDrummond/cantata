@@ -32,7 +32,7 @@ extern "C" {
 #include <QString>
 #include <QList>
 #include <QByteArray>
-#include "ebur128.h"
+#include "ebur128/ebur128.h"
 #include "ffmpeginput.h"
 
 static QMutex mutex;

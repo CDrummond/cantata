@@ -24,10 +24,10 @@
 #include "dynamicrulesdialog.h"
 #include "dynamicruledialog.h"
 #include "dynamic.h"
-#include "messagebox.h"
-#include "localize.h"
-#include "icons.h"
-#include "basicitemdelegate.h"
+#include "support/messagebox.h"
+#include "support/localize.h"
+#include "widgets/icons.h"
+#include "widgets/basicitemdelegate.h"
 #include <QIcon>
 #include <QStandardItem>
 #include <QStandardItemModel>

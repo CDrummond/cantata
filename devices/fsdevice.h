@@ -25,11 +25,11 @@
 #define FSDEVICE_H
 
 #include "device.h"
-#include "song.h"
-#include "utils.h"
+#include "mpd/song.h"
+#include "support/utils.h"
 #include "freespaceinfo.h"
-#include "musiclibraryitemroot.h"
-#include "httpserver.h"
+#include "models/musiclibraryitemroot.h"
+#include "http/httpserver.h"
 #include <QStringList>
 
 class Thread;

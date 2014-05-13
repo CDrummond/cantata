@@ -22,7 +22,7 @@
  */
 
 #include "statuslabel.h"
-#include "icon.h"
+#include "support/icon.h"
 #include <QLabel>
 #include <QHBoxLayout>
 #include <QApplication>

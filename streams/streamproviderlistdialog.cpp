@@ -23,13 +23,14 @@
 
 #include "streamproviderlistdialog.h"
 #include "streamssettings.h"
-#include "networkaccessmanager.h"
-#include "basicitemdelegate.h"
-#include "messagebox.h"
-#include "squeezedtextlabel.h"
-#include "spinner.h"
-#include "messageoverlay.h"
-#include "flickcharm.h"
+#include "network/networkaccessmanager.h"
+#include "widgets/basicitemdelegate.h"
+#include "support/messagebox.h"
+#include "support/squeezedtextlabel.h"
+#include "support/spinner.h"
+#include "widgets/actionitemdelegate.h"
+#include "widgets/messageoverlay.h"
+#include "support/flickcharm.h"
 #include <QLabel>
 #include <QXmlStreamReader>
 #include <QTreeWidget>

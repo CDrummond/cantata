@@ -23,13 +23,13 @@
 
 #include "serversettings.h"
 #include "settings.h"
-#include "localize.h"
-#include "inputdialog.h"
-#include "messagebox.h"
-#include "icons.h"
-#include "musiclibrarymodel.h"
-#include "mpduser.h"
-#include "utils.h"
+#include "support/localize.h"
+#include "support/inputdialog.h"
+#include "support/messagebox.h"
+#include "widgets/icons.h"
+#include "models/musiclibrarymodel.h"
+#include "mpd/mpduser.h"
+#include "support/utils.h"
 #include <QDir>
 #include <QComboBox>
 #include <QPushButton>

@@ -28,14 +28,14 @@
 #include "musiclibraryitemroot.h"
 #ifdef ENABLE_ONLINE_SERVICES
 #include "musiclibraryitempodcast.h"
-#include "onlineservice.h"
+#include "online/onlineservice.h"
 #endif
 #include "musicmodel.h"
 #include "roles.h"
-#include "localize.h"
-#include "plurals.h"
-#include "icons.h"
-#include "covers.h"
+#include "support/localize.h"
+#include "gui/plurals.h"
+#include "widgets/icons.h"
+#include "gui/covers.h"
 #include <QStringList>
 
 MusicModel::MusicModel(QObject *parent)

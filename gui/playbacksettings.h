@@ -25,7 +25,7 @@
 #define PLAYBACKSETTINGS_H
 
 #include "ui_playbacksettings.h"
-#include "output.h"
+#include "mpd/output.h"
 #include <QList>
 #include <QSet>
 

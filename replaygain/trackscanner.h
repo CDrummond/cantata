@@ -25,7 +25,7 @@
 #define _SCANNER_H_
 
 #include "jobcontroller.h"
-#include "ebur128.h"
+#include "ebur128/ebur128.h"
 
 class Input;
 

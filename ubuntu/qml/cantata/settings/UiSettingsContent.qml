@@ -63,26 +63,45 @@ Flickable {
             fillWithU1dbData()
         }
 
+        function arrayContains(container, element) {
+            for (var i = 0; i < container.length; i++) {
+                if (container[i] === element) {
+                    return true
+                }
+            }
+            return false
+        }
+
         function fillWithU1dbData() {
-            // TODO: albumSort and hiddenViews
+            // TODO: albumSort
             var contents = dbDocument.contents
-            if (typeof contents != "undefined") {
+            if (contents !== undefined) {
                 artistYear.checked = contents["artistYear"]
                 coverFetch.checked = contents["coverFetch"]
                 playQueueScroll.checked = contents["playQueueScroll"]
+                albumsView.checked = !arrayContains(contents["hiddenViews"], "albums")
+                foldersView.checked = !arrayContains(contents["hiddenViews"], "folders")
+                playlistsView.checked = !arrayContains(contents["hiddenViews"], "playlists")
             } else {
                 artistYear.checked = true
                 coverFetch.checked = true
                 playQueueScroll.checked = true
+                albumsView.checked = true
+                foldersView.checked = true
+                playlistsView.checked = true
             }
         }
 
         function saveDataToU1db() {
             var contents = {};
-            contents["artistYear"] = artistYear.isChecked
-            contents["coverFetch"] = coverFetch.isChecked
-            contents["playQueueScroll"] = playQueueScroll.isChecked
-            // TODO: albumSort and hiddenViews
+            contents["artistYear"] = artistYear.checked
+            contents["coverFetch"] = coverFetch.checked
+            contents["playQueueScroll"] = playQueueScroll.checked
+            contents["hiddenViews"] = []
+            if (!albumsView.checked) contents["hiddenViews"].push("albums")
+            if (!foldersView.checked) contents["hiddenViews"].push("folders")
+            if (!playlistsView.checked) contents["hiddenViews"].push("playlists")
+            // TODO: albumSort
             dbDocument.contents = contents
         }
 
@@ -100,6 +119,22 @@ Flickable {
             height: childrenRect.height
             //width: aboutTabLayout.width*0.25
             //height: iconTabletItem.height*0.75
+
+            Component.onCompleted: {
+                for (var i = 0; i < children.length; i++) {
+                    if (children[i].checked !== undefined) { //Is CheckBox
+                        children[i].onCheckedChanged.connect(column.saveDataToU1db)
+                    }
+                }
+            }
+
+            Component.onDestruction: {
+                for (var i = 0; i < children.length; i++) {
+                    if (children[i].checked !== undefined) { //Is CheckBox
+                        children[i].onCheckedChanged.disconnect(column.saveDataToU1db) //Needed when created dynamically
+                    }
+                }
+            }
 
             Label {
                 id: playQueueScrollLabel

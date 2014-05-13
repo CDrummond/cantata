@@ -23,8 +23,7 @@
 
 #include "flickcharm.h"
 #include "globalstatic.h"
-#include "settings.h"
-#include "support/utils.h"
+#include "utils.h"
 #include <QAbstractScrollArea>
 #include <QAbstractItemView>
 #include <QApplication>
@@ -71,7 +70,7 @@ public:
 
 FlickCharm::FlickCharm(QObject *parent): QObject(parent)
 {
-    d = Settings::self()->touchFriendly() ? new FlickCharmPrivate : 0;
+    d = Utils::touchFriendly() ? new FlickCharmPrivate : 0;
 }
 
 FlickCharm::~FlickCharm()

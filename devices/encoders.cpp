@@ -23,8 +23,8 @@
  ****************************************************************************************/
 
 #include "encoders.h"
-#include "utils.h"
-#include "localize.h"
+#include "support/utils.h"
+#include "support/localize.h"
 #include <QRegExp>
 #include <QProcess>
 

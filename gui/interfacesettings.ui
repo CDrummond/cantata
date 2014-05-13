@@ -933,17 +933,17 @@ within the folder of the current track, or within its parent folder. If no image
   <customwidget>
    <class>BuddyLabel</class>
    <extends>QLabel</extends>
-   <header>buddylabel.h</header>
+   <header>support/buddylabel.h</header>
   </customwidget>
   <customwidget>
    <class>StateLabel</class>
    <extends>QLabel</extends>
-   <header>statelabel.h</header>
+   <header>widgets/statelabel.h</header>
   </customwidget>
   <customwidget>
    <class>PathRequester</class>
    <extends>QLineEdit</extends>
-   <header>pathrequester.h</header>
+   <header>support/pathrequester.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

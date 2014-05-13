@@ -22,8 +22,8 @@
  */
 
 #include "httpserversettings.h"
-#include "settings.h"
-#include "localize.h"
+#include "gui/settings.h"
+#include "support/localize.h"
 #include "httpserver.h"
 #include <QComboBox>
 #include <QNetworkInterface>

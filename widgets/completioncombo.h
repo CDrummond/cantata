@@ -67,8 +67,8 @@
 //     }
 // };
 // #else
-#include "combobox.h"
-#include "lineedit.h"
+#include "support/combobox.h"
+#include "support/lineedit.h"
 #include <QAbstractItemView>
 
 class CompletionCombo : public ComboBox

@@ -24,8 +24,8 @@
 #ifndef MAGNATUNE_SETTINGS_DIALOG_H
 #define MAGNATUNE_SETTINGS_DIALOG_H
 
-#include "dialog.h"
-#include "lineedit.h"
+#include "support/dialog.h"
+#include "support/lineedit.h"
 #include <QComboBox>
 
 class BuddyLabel;

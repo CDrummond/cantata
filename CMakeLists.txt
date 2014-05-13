@@ -268,11 +268,7 @@ endif (NOT ENABLE_QT5 AND NOT WIN32 AND NOT APPLE)
 
 find_package(ZLIB REQUIRED)
 
-include_directories(${CMAKE_SOURCE_DIR}/gui ${CMAKE_SOURCE_DIR}/mpd ${CMAKE_SOURCE_DIR}/models ${CMAKE_SOURCE_DIR}/widgets
-                    ${CMAKE_SOURCE_DIR}/network ${CMAKE_SOURCE_DIR}/dbus ${CMAKE_SOURCE_DIR}/http
-                    ${CMAKE_SOURCE_DIR}/devices ${CMAKE_SOURCE_DIR}/dynamic ${CMAKE_SOURCE_DIR}/support ${CMAKE_SOURCE_DIR}/streams
-                    ${CMAKE_SOURCE_DIR}/tags ${CMAKE_SOURCE_DIR}/online ${CMAKE_SOURCE_DIR}/context ${CMAKE_BINARY_DIR}/support
-                    ${CMAKE_SOURCE_DIR}/3rdparty ${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR})
+include_directories(${CMAKE_SOURCE_DIR}/3rdparty ${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
 
 # QJSon and MusicBrainz require exceptions to be enabled!
 if (CMAKE_COMPILER_IS_GNUCXX)
@@ -460,7 +456,6 @@ if (TAGLIB_FOUND)
     set(CANTATA_UIS ${CANTATA_UIS} tags/tageditor.ui tags/trackorganiser.ui devices/filenameschemedialog.ui)
 
     if (FFMPEG_FOUND OR MPG123_FOUND)
-        include_directories(${CMAKE_SOURCE_DIR}/replaygain)
         set(CANTATA_SRCS ${CANTATA_SRCS} replaygain/albumscanner.cpp replaygain/rgdialog.cpp replaygain/tagreader.cpp replaygain/jobcontroller.cpp)
         set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} replaygain/albumscanner.h replaygain/rgdialog.h replaygain/tagreader.h replaygain/jobcontroller.h)
         set(ENABLE_REPLAYGAIN_SUPPORT 1)
@@ -606,7 +601,6 @@ else (ENABLE_KDE)
     if (WIN32 OR (NOT APPLE AND NOT ENABLE_QT5))
         add_definitions(-DQXT_STATIC)
         add_subdirectory(3rdparty/qxt)
-        include_directories(${CMAKE_SOURCE_DIR}/3rdparty/qxt)
         set(CANTATA_SRCS ${CANTATA_SRCS} gui/qxtmediakeys.cpp)
     endif (WIN32 OR (NOT APPLE AND NOT ENABLE_QT5))
 

@@ -22,12 +22,12 @@
  */
 
 #include "filejob.h"
-#include "utils.h"
+#include "support/utils.h"
 #include "device.h"
-#include "songview.h"
-#include "covers.h"
-#include "thread.h"
-#include "globalstatic.h"
+#include "context/songview.h"
+#include "gui/covers.h"
+#include "support/thread.h"
+#include "support/globalstatic.h"
 #include <QFile>
 #include <QTimer>
 #include <QTemporaryFile>

@@ -26,7 +26,7 @@
 
 #include <QObject>
 #include <QImage>
-#include "song.h"
+#include "mpd/song.h"
 
 class QPixmap;
 

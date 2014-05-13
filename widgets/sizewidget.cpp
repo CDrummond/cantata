@@ -22,7 +22,6 @@
  */
 
 #include "sizewidget.h"
-#include "combobox.h"
 #include "toolbutton.h"
 #include "icons.h"
 

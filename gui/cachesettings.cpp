@@ -22,27 +22,27 @@
 */
 
 #include "cachesettings.h"
-#include "localize.h"
-#include "artistview.h"
-#include "albumview.h"
-#include "songview.h"
-#include "contextwidget.h"
-#include "wikipediasettings.h"
+#include "support/localize.h"
+#include "context/artistview.h"
+#include "context/albumview.h"
+#include "context/songview.h"
+#include "context/contextwidget.h"
+#include "context/wikipediasettings.h"
 #include "covers.h"
-#include "musiclibrarymodel.h"
-#include "utils.h"
-#include "messagebox.h"
+#include "models/musiclibrarymodel.h"
+#include "support/utils.h"
+#include "support/messagebox.h"
 #include "config.h"
-#include "thread.h"
+#include "support/thread.h"
 #include "settings.h"
-#include "basicitemdelegate.h"
+#include "widgets/basicitemdelegate.h"
 #ifdef ENABLE_STREAMS
-#include "streamsmodel.h"
+#include "models/streamsmodel.h"
 #endif
 #ifdef ENABLE_ONLINE_SERVICES
-#include "podcastsearchdialog.h"
+#include "online//podcastsearchdialog.h"
 #endif
-#include "squeezedtextlabel.h"
+#include "support/squeezedtextlabel.h"
 #include <QLabel>
 #include <QPushButton>
 #include <QStyle>

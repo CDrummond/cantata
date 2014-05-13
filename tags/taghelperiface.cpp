@@ -24,8 +24,8 @@
 #include "taghelperiface.h"
 #include "tags.h"
 #include "config.h"
-#include "globalstatic.h"
-#include "thread.h"
+#include "support/globalstatic.h"
+#include "support/thread.h"
 #include <QMutexLocker>
 #include <QProcess>
 #include <QDataStream>

@@ -26,7 +26,7 @@
 
 #include <QAbstractItemModel>
 #include <QMetaType>
-#include "action.h"
+#include "support/action.h"
 #include "config.h"
 
 class ActionModel : public QAbstractItemModel

@@ -32,7 +32,7 @@
 #include <QMap>
 #include "musiclibraryitemroot.h"
 #include "musiclibraryitemalbum.h"
-#include "song.h"
+#include "mpd/song.h"
 #include "musicmodel.h"
 
 class QMimeData;

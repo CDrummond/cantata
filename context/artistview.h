@@ -25,7 +25,7 @@
 #define ARTIST_VIEW_H
 
 #include "view.h"
-#include "song.h"
+#include "mpd/song.h"
 #include <QMap>
 
 class ComboBox;

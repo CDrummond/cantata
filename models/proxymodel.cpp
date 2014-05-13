@@ -23,7 +23,7 @@
 
 #include "proxymodel.h"
 #ifndef ENABLE_UBUNTU
-#include "settings.h"
+#include "gui/settings.h"
 #endif
 #include <QMap>
 #include <QString>

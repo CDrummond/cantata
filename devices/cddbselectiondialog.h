@@ -24,7 +24,7 @@
 #ifndef CDDBSELECTIONDIALOG_H
 #define CDDBSELECTIONDIALOG_H
 
-#include "dialog.h"
+#include "support/dialog.h"
 #include "cdalbum.h"
 #include <QList>
 

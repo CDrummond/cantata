@@ -24,7 +24,7 @@
 #ifndef ICONS_H
 #define ICONS_H
 
-#include "icon.h"
+#include "support/icon.h"
 #include "config.h"
 
 class QColor;

@@ -29,28 +29,28 @@
 #include <QStringList>
 #include <QUrl>
 #include <QFile>
-#include "dirviewitemroot.h"
-#include "dirviewitemdir.h"
-#include "dirviewitemfile.h"
-#include "musiclibraryitemartist.h"
-#include "musiclibraryitemalbum.h"
-#include "musiclibraryitemsong.h"
-#include "musiclibraryitemroot.h"
+#include "models/dirviewitemroot.h"
+#include "models/dirviewitemdir.h"
+#include "models/dirviewitemfile.h"
+#include "models/musiclibraryitemartist.h"
+#include "models/musiclibraryitemalbum.h"
+#include "models/musiclibraryitemsong.h"
+#include "models/musiclibraryitemroot.h"
 #include "mpdparseutils.h"
 #include "mpdstatus.h"
 #include "mpdstats.h"
 #include "playlist.h"
 #include "song.h"
 #include "output.h"
-#include "covers.h"
+#include "gui/covers.h"
 #ifdef ENABLE_HTTP_SERVER
-#include "httpserver.h"
+#include "http/httpserver.h"
 #endif
-#include "utils.h"
+#include "support/utils.h"
 #include "cuefile.h"
 #include "mpdconnection.h"
 #ifdef ENABLE_ONLINE_SERVICES
-#include "onlineservice.h"
+#include "online/onlineservice.h"
 #endif
 
 #include <QDebug>

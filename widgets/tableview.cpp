@@ -23,9 +23,9 @@
 
 #include "tableview.h"
 #include "stretchheaderview.h"
-#include "settings.h"
-#include "localize.h"
-#include "roles.h"
+#include "gui/settings.h"
+#include "support/localize.h"
+#include "models/roles.h"
 #include <QMenu>
 #include <QAction>
 

@@ -24,7 +24,7 @@
 */
 
 #include "musicbrainz.h"
-#include "networkproxyfactory.h"
+#include "network/networkproxyfactory.h"
 #include <QNetworkProxy>
 #include <QCryptographicHash>
 #include <cstdio>
@@ -43,8 +43,8 @@
 #include <QList>
 #include <QRegExp>
 #include "config.h"
-#include "thread.h"
-#include "localize.h"
+#include "support/thread.h"
+#include "support/localize.h"
 #include <fcntl.h>
 #include <unistd.h>
 #include <sys/ioctl.h>

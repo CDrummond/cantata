@@ -22,9 +22,9 @@
  */
 
 #include "searchwidget.h"
-#include "icon.h"
+#include "support/icon.h"
 #include "toolbutton.h"
-#include "localize.h"
+#include "support/localize.h"
 #include <QGridLayout>
 #include <QKeyEvent>
 #include <QKeySequence>

@@ -25,9 +25,9 @@
 #define STREAMDIALOG_H
 
 #include <QSet>
-#include "combobox.h"
-#include "dialog.h"
-#include "lineedit.h"
+#include "support/combobox.h"
+#include "support/dialog.h"
+#include "support/lineedit.h"
 
 class QLabel;
 class BuddyLabel;

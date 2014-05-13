@@ -24,10 +24,10 @@
 #ifndef SEARRCHWIDGET_H
 #define SEARRCHWIDGET_H
 
-#include "lineedit.h"
+#include "support/lineedit.h"
 #include "toolbutton.h"
-#include "squeezedtextlabel.h"
-#include "combobox.h"
+#include "support/squeezedtextlabel.h"
+#include "support/combobox.h"
 #include <QSet>
 #include <QList>
 #include <QPair>

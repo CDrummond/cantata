@@ -22,7 +22,7 @@
  */
 
 #include "powermanagement.h"
-#include "globalstatic.h"
+#include "support/globalstatic.h"
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/Solid/PowerManagement>
 #include <kdeversion.h>
@@ -31,8 +31,8 @@
 #include "policyagentinterface.h"
 #include "upowerinterface.h"
 #endif
-#include "localize.h"
-#include "mpdstatus.h"
+#include "support/localize.h"
+#include "mpd/mpdstatus.h"
 
 GLOBAL_STATIC(PowerManagement, instance)
 

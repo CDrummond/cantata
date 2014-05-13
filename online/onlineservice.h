@@ -24,9 +24,9 @@
 #ifndef ONLINE_SERVICE_H
 #define ONLINE_SERVICE_H
 
-#include "musiclibraryitemroot.h"
-#include "song.h"
-#include "localize.h"
+#include "models/musiclibraryitemroot.h"
+#include "mpd/song.h"
+#include "support/localize.h"
 #include <QObject>
 #include <QUrl>
 #include <QModelIndex>

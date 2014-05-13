@@ -27,7 +27,7 @@
 #include <QList>
 #include <QSet>
 #include <QStringList>
-#include "song.h"
+#include "mpd/song.h"
 #include "musiclibraryitemalbum.h"
 #include "actionmodel.h"
 

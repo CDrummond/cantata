@@ -30,7 +30,7 @@
 #include <QList>
 #include <QVariant>
 #include "musiclibraryitem.h"
-#include "song.h"
+#include "mpd/song.h"
 
 class MusicLibraryItemAlbum;
 

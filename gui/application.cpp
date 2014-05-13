@@ -27,8 +27,8 @@
 #include <KDE/KCmdLineArgs>
 #include <KDE/KStartupInfo>
 #include "initialsettingswizard.h"
-#include "thread.h"
-#include "song.h"
+#include "support/thread.h"
+#include "mpd/song.h"
 #else
 #include <QIcon>
 #ifdef Q_OS_WIN
@@ -39,19 +39,19 @@
 #include <QDir>
 #endif
 #endif
-#include "icon.h"
-#include "icons.h"
-#include "utils.h"
+#include "support/icon.h"
+#include "widgets/icons.h"
+#include "support/utils.h"
 #include "config.h"
 #include "mainwindow.h"
-#include "mpdconnection.h"
-#include "mpdstats.h"
-#include "mpdstatus.h"
-#include "thread.h"
+#include "mpd/mpdconnection.h"
+#include "mpd/mpdstats.h"
+#include "mpd/mpdstatus.h"
+#include "support/thread.h"
 #ifdef ENABLE_EXTERNAL_TAGS
-#include "taghelperiface.h"
+#include "tags/taghelperiface.h"
 #endif
-#include "gtkstyle.h"
+#include "support/gtkstyle.h"
 
 void Application::initObjects()
 {

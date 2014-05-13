@@ -22,11 +22,11 @@
  */
 
 #include "actionitemdelegate.h"
-#include "roles.h"
-#include "icon.h"
-#include "utils.h"
+#include "models/roles.h"
+#include "support/icon.h"
+#include "support/utils.h"
 #include "config.h"
-#include "actionmodel.h"
+#include "models/actionmodel.h"
 #include "groupedview.h"
 #include <QPainter>
 #include <QPixmap>

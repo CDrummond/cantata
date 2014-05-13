@@ -25,7 +25,7 @@
 #include "wikipediasettings.h"
 #include "lyricsettings.h"
 #include "othersettings.h"
-#include "localize.h"
+#include "support/localize.h"
 
 ContextSettings::ContextSettings(QWidget *p)
     : QTabWidget(p)

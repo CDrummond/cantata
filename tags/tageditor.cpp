@@ -23,19 +23,19 @@
 
 #include "tageditor.h"
 #include "tags.h"
-#include "tagspinbox.h"
-#include "musiclibrarymodel.h"
-#include "mpdconnection.h"
-#include "settings.h"
-#include "messagebox.h"
-#include "inputdialog.h"
-#include "localize.h"
+#include "widgets/tagspinbox.h"
+#include "models/musiclibrarymodel.h"
+#include "mpd/mpdconnection.h"
+#include "gui/settings.h"
+#include "support/messagebox.h"
+#include "support/inputdialog.h"
+#include "support/localize.h"
 #include "trackorganiser.h"
-#include "cuefile.h"
-#include "utils.h"
+#include "mpd/cuefile.h"
+#include "support/utils.h"
 #ifdef ENABLE_DEVICES_SUPPORT
-#include "devicesmodel.h"
-#include "device.h"
+#include "models/devicesmodel.h"
+#include "devices/device.h"
 #endif
 #include <QMenu>
 #include <QCloseEvent>

@@ -30,8 +30,8 @@
 #include <QIcon>
 #include <QAbstractItemModel>
 #include <QList>
-#include "playlist.h"
-#include "song.h"
+#include "mpd/playlist.h"
+#include "mpd/song.h"
 #include "actionmodel.h"
 
 class QMenu;

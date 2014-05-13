@@ -26,8 +26,8 @@
 #include "treeview.h"
 #include "config.h"
 #include "icons.h"
-#include "utils.h"
-#include "flickcharm.h"
+#include "support/utils.h"
+#include "support/flickcharm.h"
 #include <QMimeData>
 #include <QDrag>
 #include <QMouseEvent>

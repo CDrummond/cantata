@@ -24,8 +24,8 @@
 #ifndef ACTION_DIALOG_H
 #define ACTION_DIALOG_H
 
-#include "dialog.h"
-#include "song.h"
+#include "support/dialog.h"
+#include "mpd/song.h"
 #include "device.h"
 #include "config.h"
 #include "ui_actiondialog.h"

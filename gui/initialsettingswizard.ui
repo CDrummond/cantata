@@ -957,29 +957,29 @@
   <customwidget>
    <class>BuddyLabel</class>
    <extends>QLabel</extends>
-   <header>buddylabel.h</header>
+   <header>support/buddylabel.h</header>
   </customwidget>
   <customwidget>
    <class>LineEdit</class>
    <extends>QLineEdit</extends>
-   <header>lineedit.h</header>
+   <header>support/lineedit.h</header>
   </customwidget>
   <customwidget>
    <class>WizardPage</class>
    <extends>QWizardPage</extends>
-   <header>wizardpage.h</header>
+   <header>widgets/wizardpage.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>PathRequester</class>
    <extends>QLineEdit</extends>
-   <header>pathrequester.h</header>
+   <header>support/pathrequester.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>StateLabel</class>
    <extends>QLabel</extends>
-   <header>statelabel.h</header>
+   <header>widgets/statelabel.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

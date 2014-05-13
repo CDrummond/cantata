@@ -22,11 +22,11 @@
  */
 
 #include "digitallyimported.h"
-#include "configuration.h"
-#include "networkaccessmanager.h"
+#include "support/configuration.h"
+#include "network/networkaccessmanager.h"
 #include "qjson/parser.h"
-#include "localize.h"
-#include "globalstatic.h"
+#include "support/localize.h"
+#include "support/globalstatic.h"
 #include <QNetworkRequest>
 #include <QTime>
 #include <QTimer>

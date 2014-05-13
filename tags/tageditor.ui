@@ -228,32 +228,32 @@
   <customwidget>
    <class>LineEdit</class>
    <extends>QLineEdit</extends>
-   <header>lineedit.h</header>
+   <header>support/lineedit.h</header>
   </customwidget>
   <customwidget>
    <class>CompletionCombo</class>
    <extends>QComboBox</extends>
-   <header>completioncombo.h</header>
+   <header>widgets/completioncombo.h</header>
   </customwidget>
   <customwidget>
    <class>ComboBox</class>
    <extends>QComboBox</extends>
-   <header>combobox.h</header>
+   <header>support/combobox.h</header>
   </customwidget>
   <customwidget>
    <class>TagSpinBox</class>
    <extends>QSpinBox</extends>
-   <header>tagspinbox.h</header>
+   <header>widgets/tagspinbox.h</header>
   </customwidget>
   <customwidget>
    <class>StateLabel</class>
    <extends>QLabel</extends>
-   <header>statelabel.h</header>
+   <header>widgets/statelabel.h</header>
   </customwidget>
   <customwidget>
    <class>UrlLabel</class>
    <extends>QLabel</extends>
-   <header>urllabel.h</header>
+   <header>support/urllabel.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>

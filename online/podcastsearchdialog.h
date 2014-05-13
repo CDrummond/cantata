@@ -24,8 +24,8 @@
 #ifndef PODCAST_SEARCH_DIALOG_H
 #define PODCAST_SEARCH_DIALOG_H
 
-#include "dialog.h"
-#include "icon.h"
+#include "support/dialog.h"
+#include "support/icon.h"
 #include <QList>
 #include <QUrl>
 

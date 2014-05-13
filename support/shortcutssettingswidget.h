@@ -22,7 +22,7 @@
 #define SHORTCUTSSETTINGSWIDGET_H
 
 #include <QSortFilterProxyModel>
-#include "ui_shortcutssettingswidget.h"
+#include "support/ui_shortcutssettingswidget.h"
 
 class ActionCollection;
 class ShortcutsModel;

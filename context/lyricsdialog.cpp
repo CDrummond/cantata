@@ -23,9 +23,9 @@
 
 #include <QFormLayout>
 #include <QLabel>
-#include "icon.h"
+#include "support/icon.h"
 #include "lyricsdialog.h"
-#include "localize.h"
+#include "support/localize.h"
 
 LyricsDialog::LyricsDialog(const Song &s, QWidget *parent)
     : Dialog(parent)

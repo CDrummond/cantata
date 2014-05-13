@@ -22,7 +22,7 @@
  */
 
 #include "tagspinbox.h"
-#include "localize.h"
+#include "support/localize.h"
 #include <QPainter>
 #include <QLineEdit>
 

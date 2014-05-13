@@ -22,9 +22,9 @@
  */
 
 #include "deviceoptions.h"
-#include "song.h"
-#include "localize.h"
-#include "configuration.h"
+#include "mpd/song.h"
+#include "support/localize.h"
+#include "support/configuration.h"
 #include <QDir>
 #include <QUrl>
 #include <unistd.h>

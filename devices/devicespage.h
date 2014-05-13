@@ -26,12 +26,12 @@
 
 #include "ui_devicespage.h"
 #include "device.h"
-#include "page.h"
+#include "gui/page.h"
 #ifdef ENABLE_REMOTE_DEVICES
 #include "remotefsdevice.h"
 #endif
 #include "cdalbum.h"
-#include "musiclibraryproxymodel.h"
+#include "models/musiclibraryproxymodel.h"
 
 class Action;
 

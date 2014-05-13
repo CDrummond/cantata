@@ -67,27 +67,27 @@
   <customwidget>
    <class>ItemView</class>
    <extends>QTreeView</extends>
-   <header>itemview.h</header>
+   <header>widgets/itemview.h</header>
   </customwidget>
   <customwidget>
    <class>MenuButton</class>
    <extends>QToolButton</extends>
-   <header>menubutton.h</header>
+   <header>widgets/menubutton.h</header>
   </customwidget>
   <customwidget>
    <class>ToolButton</class>
    <extends>QToolButton</extends>
-   <header>toolbutton.h</header>
+   <header>widgets/toolbutton.h</header>
   </customwidget>
   <customwidget>
    <class>SizeWidget</class>
    <extends>QWidget</extends>
-   <header>sizewidget.h</header>
+   <header>widgets/sizewidget.h</header>
   </customwidget>
   <customwidget>
    <class>ServiceStatusLabel</class>
    <extends>QLabel</extends>
-   <header>servicestatuslabel.h</header>
+   <header>widgets/servicestatuslabel.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

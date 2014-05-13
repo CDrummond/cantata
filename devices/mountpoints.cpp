@@ -22,7 +22,7 @@
  */
 
 #include "mountpoints.h"
-#include "globalstatic.h"
+#include "support/globalstatic.h"
 #include <QSocketNotifier>
 #include <QFile>
 #include <QStringList>

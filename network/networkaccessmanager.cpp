@@ -23,9 +23,9 @@
 
 #include "networkaccessmanager.h"
 #include "networkproxyfactory.h"
-#include "settings.h"
+#include "gui/settings.h"
 #include "config.h"
-#include "globalstatic.h"
+#include "support/globalstatic.h"
 #include <QTimerEvent>
 #include <QTimer>
 

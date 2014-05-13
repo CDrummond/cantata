@@ -22,7 +22,7 @@
  */
 
 #include "actionmodel.h"
-#include "stdactions.h"
+#include "gui/stdactions.h"
 #include "roles.h"
 
 #ifdef ENABLE_UBUNTU

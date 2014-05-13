@@ -27,11 +27,8 @@
 #include <cmath>
 #include "config.h"
 #include "song.h"
-#include "musiclibraryitemalbum.h"
-#include "localize.h"
-#ifndef CANTATA_NO_SONG_TIME_FUNCTION
-#include "utils.h"
-#endif
+#include "models/musiclibraryitemalbum.h"
+#include "support/localize.h"
 #include <QMap>
 #include <QStringList>
 #include <QSet>

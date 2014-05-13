@@ -22,16 +22,16 @@
  */
 
 #include "streamssettings.h"
-#include "streamsmodel.h"
+#include "models/streamsmodel.h"
 #include "streamproviderlistdialog.h"
-#include "basicitemdelegate.h"
-#include "icon.h"
-#include "localize.h"
+#include "widgets/basicitemdelegate.h"
+#include "support/icon.h"
+#include "support/localize.h"
 #include "tar.h"
-#include "messagebox.h"
-#include "utils.h"
+#include "support/messagebox.h"
+#include "support/utils.h"
 #include "digitallyimportedsettings.h"
-#include "flickcharm.h"
+#include "support/flickcharm.h"
 #include <QListWidget>
 #include <QMenu>
 #include <QFileInfo>

@@ -22,7 +22,7 @@
  */
 
 #include "qxtmediakeys.h"
-#include "qxtglobalshortcut.h"
+#include "qxt/qxtglobalshortcut.h"
 
 QxtMediaKeys::QxtMediaKeys(QObject *p)
     : MultiMediaKeysInterface(p)

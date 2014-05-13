@@ -28,10 +28,9 @@
 #include "musiclibraryitemartist.h"
 #include "musiclibraryitemalbum.h"
 #include "musiclibraryitemsong.h"
-#include "mpdparseutils.h"
-#include "mpdconnection.h"
-#include "song.h"
-#include "localize.h"
+#include "mpd/mpdparseutils.h"
+#include "mpd/mpdconnection.h"
+#include "support/localize.h"
 #include "qtiocompressor/qtiocompressor.h"
 #include "musicmodel.h"
 #include <QXmlStreamReader>

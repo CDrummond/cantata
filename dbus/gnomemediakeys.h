@@ -24,7 +24,7 @@
 #ifndef GNOME_MEDIA_KEYS_H
 #define GNOME_MEDIA_KEYS_H
 
-#include "multimediakeysinterface.h"
+#include "gui/multimediakeysinterface.h"
 
 class OrgGnomeSettingsDaemonInterface;
 class OrgGnomeSettingsDaemonMediaKeysInterface;

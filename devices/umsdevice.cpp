@@ -22,11 +22,11 @@
  */
 
 #include "umsdevice.h"
-#include "utils.h"
+#include "support/utils.h"
 #include "devicepropertiesdialog.h"
 #include "devicepropertieswidget.h"
 #include "actiondialog.h"
-#include "localize.h"
+#include "support/localize.h"
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>

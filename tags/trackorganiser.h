@@ -25,10 +25,10 @@
 #define TRACKORGANISER_H
 
 #include "ui_trackorganiser.h"
-#include "songdialog.h"
+#include "widgets/songdialog.h"
 #include "config.h"
 #ifdef ENABLE_DEVICES_SUPPORT
-#include "device.h"
+#include "devices/device.h"
 #else
 #include "deviceoptions.h"
 #endif

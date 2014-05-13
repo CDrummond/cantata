@@ -22,12 +22,12 @@
  */
 
 #include "folderpage.h"
-#include "mpdconnection.h"
-#include "musiclibrarymodel.h"
+#include "mpd/mpdconnection.h"
+#include "models/musiclibrarymodel.h"
 #include "settings.h"
-#include "localize.h"
-#include "messagebox.h"
-#include "actioncollection.h"
+#include "support/localize.h"
+#include "support/messagebox.h"
+#include "support/actioncollection.h"
 #include "stdactions.h"
 #ifndef Q_OS_WIN
 #include <QProcess>

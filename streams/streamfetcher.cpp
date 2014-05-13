@@ -22,11 +22,11 @@
  */
 
 #include "streamfetcher.h"
-#include "networkaccessmanager.h"
-#include "mpdconnection.h"
-#include "mpdparseutils.h"
-#include "streamsmodel.h"
-#include "localize.h"
+#include "network/networkaccessmanager.h"
+#include "mpd/mpdconnection.h"
+#include "mpd/mpdparseutils.h"
+#include "models/streamsmodel.h"
+#include "support/localize.h"
 #include <QRegExp>
 #include <QUrl>
 #include <QXmlStreamReader>

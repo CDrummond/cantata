@@ -22,8 +22,8 @@
  */
 
 #include "songlabel.h"
-#include "localize.h"
-#include "song.h"
+#include "support/localize.h"
+#include "mpd/song.h"
 #include <QFontMetrics>
 
 QFontMetrics bm(QFont f)

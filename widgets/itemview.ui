@@ -59,22 +59,22 @@
   <customwidget>
    <class>PaddedSqueezedTextLabel</class>
    <extends>QLabel</extends>
-   <header>squeezedtextlabel.h</header>
+   <header>support/squeezedtextlabel.h</header>
   </customwidget>
   <customwidget>
    <class>SearchWidget</class>
    <extends>QLineEdit</extends>
-   <header>searchwidget.h</header>
+   <header>widgets/searchwidget.h</header>
   </customwidget>
   <customwidget>
    <class>TreeView</class>
    <extends>QTreeView</extends>
-   <header>treeview.h</header>
+   <header>widgets/treeview.h</header>
   </customwidget>
   <customwidget>
    <class>ListView</class>
    <extends>QListView</extends>
-   <header>listview.h</header>
+   <header>widgets/listview.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

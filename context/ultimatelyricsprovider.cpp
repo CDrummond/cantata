@@ -22,8 +22,8 @@
 */
 
 #include "ultimatelyricsprovider.h"
-#include "networkaccessmanager.h"
-#include "localize.h"
+#include "network/networkaccessmanager.h"
+#include "support/localize.h"
 #include <QTextCodec>
 #include <QXmlStreamReader>
 #include <QUrl>

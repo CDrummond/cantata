@@ -24,8 +24,9 @@
 #ifndef DIGITALLYIMPORTED_SETTINGS_H
 #define DIGITALLYIMPORTED_SETTINGS_H
 
-#include "dialog.h"
+#include "support/dialog.h"
 #include "ui_digitallyimportedsettings.h"
+
 class LineEdit;
 class QComboBox;
 class QPushButton;

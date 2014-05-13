@@ -25,7 +25,7 @@
 #define STDACTIONS_H
 
 #include "config.h"
-#include "action.h"
+#include "support/action.h"
 
 class StdActions
 {

@@ -22,8 +22,8 @@
  */
 
 #include "wizardpage.h"
-#include "icon.h"
-#include "utils.h"
+#include "support/icon.h"
+#include "support/utils.h"
 #include <QPainter>
 #include <QStyle>
 

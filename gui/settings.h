@@ -24,9 +24,9 @@
 #ifndef SETTINGS_H
 #define SETTINGS_H
 
-#include "configuration.h"
+#include "support/configuration.h"
 #include "config.h"
-#include "mpdconnection.h"
+#include "mpd/mpdconnection.h"
 #if defined ENABLE_KDE_SUPPORT && defined ENABLE_KWALLET
 namespace KWallet {
 class Wallet;

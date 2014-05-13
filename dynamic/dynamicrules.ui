@@ -116,22 +116,22 @@
   <customwidget>
    <class>UrlLabel</class>
    <extends>QLabel</extends>
-   <header>urllabel.h</header>
+   <header>support/urllabel.h</header>
   </customwidget>
   <customwidget>
    <class>LineEdit</class>
    <extends>QWidget</extends>
-   <header>lineedit.h</header>
+   <header>support/lineedit.h</header>
   </customwidget>
   <customwidget>
    <class>ListView</class>
    <extends>QListView</extends>
-   <header>listview.h</header>
+   <header>widgets/listview.h</header>
   </customwidget>
   <customwidget>
    <class>MessageWidget</class>
    <extends>QFrame</extends>
-   <header>messagewidget.h</header>
+   <header>support/messagewidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

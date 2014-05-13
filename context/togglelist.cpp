@@ -22,12 +22,12 @@
  */
 
 #include "togglelist.h"
-#include "localize.h"
-#include "icon.h"
-#include "settings.h"
-#include "basicitemdelegate.h"
-#include "flickcharm.h"
-#include "utils.h"
+#include "support/localize.h"
+#include "support/icon.h"
+#include "gui/settings.h"
+#include "widgets/basicitemdelegate.h"
+#include "support/flickcharm.h"
+#include "support/utils.h"
 
 ToggleList::ToggleList(QWidget *p)
     : QWidget(p)

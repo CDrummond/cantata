@@ -25,7 +25,7 @@
 #define PODCAST_SERVICE_H
 
 #include "onlineservice.h"
-#include "networkaccessmanager.h"
+#include "network/networkaccessmanager.h"
 #include <QLatin1String>
 #include <QList>
 #include <QDateTime>

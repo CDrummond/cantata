@@ -24,8 +24,8 @@
 #ifndef DEVICE_H
 #define DEVICE_H
 
-#include "musiclibraryitemroot.h"
-#include "song.h"
+#include "models/musiclibraryitemroot.h"
+#include "mpd/song.h"
 #ifdef ENABLE_DEVICES_SUPPORT
 #include "deviceoptions.h"
 #ifdef ENABLE_KDE_SUPPORT

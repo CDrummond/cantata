@@ -24,7 +24,7 @@
 #ifndef REMOTEDEVICEPROPERTIESDIALOG_H
 #define REMOTEDEVICEPROPERTIESDIALOG_H
 
-#include "dialog.h"
+#include "support/dialog.h"
 #include "remotefsdevice.h"
 
 class QTabWidget;

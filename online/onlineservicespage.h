@@ -26,8 +26,8 @@
 
 #include "ui_onlineservicespage.h"
 #include "onlineservice.h"
-#include "musiclibraryproxymodel.h"
-#include "page.h"
+#include "models/musiclibraryproxymodel.h"
+#include "gui/page.h"
 
 class Action;
 class QAction;

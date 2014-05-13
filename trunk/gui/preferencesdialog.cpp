@@ -24,32 +24,32 @@
 #include "preferencesdialog.h"
 #include "mainwindow.h"
 #include "settings.h"
-#include "icons.h"
+#include "widgets/icons.h"
 #include "interfacesettings.h"
 #ifdef ENABLE_STREAMS
-#include "streamssettings.h"
+#include "streams/streamssettings.h"
 #endif
 #ifdef ENABLE_ONLINE_SERVICES
-#include "onlinesettings.h"
+#include "online/onlinesettings.h"
 #endif
 #include "serversettings.h"
 #include "playbacksettings.h"
 #include "filesettings.h"
 #ifdef ENABLE_HTTP_SERVER
-#include "httpserversettings.h"
+#include "http/httpserversettings.h"
 #endif
-#include "contextsettings.h"
+#include "context/contextsettings.h"
 #include "cachesettings.h"
-#include "localize.h"
-#include "mpdconnection.h"
+#include "support/localize.h"
+#include "mpd/mpdconnection.h"
 #ifdef ENABLE_PROXY_CONFIG
-#include "proxysettings.h"
+#include "network/proxysettings.h"
 #endif
 #ifndef ENABLE_KDE_SUPPORT
 #include "shortcutssettingspage.h"
 #endif
 #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
-#include "audiocdsettings.h"
+#include "devices/audiocdsettings.h"
 #endif
 #ifndef ENABLE_KDE_SUPPORT
 #include "shortcutssettingspage.h"

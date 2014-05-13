@@ -22,9 +22,9 @@
  */
 
 #include "filenameschemedialog.h"
-#include "song.h"
-#include "localize.h"
-#include "messagebox.h"
+#include "mpd/song.h"
+#include "support/localize.h"
+#include "support/messagebox.h"
 
 static const char * constVariableProperty="cantata-var";
 FilenameSchemeDialog::FilenameSchemeDialog(QWidget *parent)

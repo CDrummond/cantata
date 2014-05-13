@@ -22,9 +22,9 @@
  */
 
 #include "wikipediaengine.h"
-#include "networkaccessmanager.h"
-#include "localize.h"
-#include "settings.h"
+#include "network/networkaccessmanager.h"
+#include "support/localize.h"
+#include "gui/settings.h"
 #include "config.h"
 #if QT_VERSION >= 0x050000
 #include <QUrlQuery>

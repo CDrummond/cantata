@@ -22,9 +22,9 @@
  */
 
 #include "backdropcreator.h"
-#include "covers.h"
-#include "thread.h"
-#include "utils.h"
+#include "gui/covers.h"
+#include "support/thread.h"
+#include "support/utils.h"
 #include <QApplication>
 #include <QPainter>
 

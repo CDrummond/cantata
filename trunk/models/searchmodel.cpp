@@ -22,9 +22,9 @@
  */
 
 #include "searchmodel.h"
-#include "icons.h"
+#include "widgets/icons.h"
 #include "roles.h"
-#include "mpdconnection.h"
+#include "mpd/mpdconnection.h"
 #include "playqueuemodel.h"
 #include <QString>
 #include <QVariant>

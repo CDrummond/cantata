@@ -23,10 +23,10 @@
 
 #include "mpduser.h"
 #include "config.h"
-#include "utils.h"
-#include "localize.h"
-#include "settings.h"
-#include "globalstatic.h"
+#include "support/utils.h"
+#include "support/localize.h"
+#include "gui/settings.h"
+#include "support/globalstatic.h"
 #include <QTextStream>
 #include <QProcess>
 #include <QDir>

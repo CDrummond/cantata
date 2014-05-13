@@ -32,7 +32,7 @@
 #include <QSet>
 #include <QMetaType>
 #include "config.h"
-#include "utils.h"
+#include "support/utils.h"
 
 struct Song
 {

@@ -39,9 +39,9 @@ class KToggleAction;
 #include <QToolButton>
 #include <QStringList>
 #include "ui_mainwindow.h"
-#include "playqueuemodel.h"
-#include "playqueueproxymodel.h"
-#include "song.h"
+#include "models/playqueuemodel.h"
+#include "models/playqueueproxymodel.h"
+#include "mpd/song.h"
 #include "config.h"
 
 class Action;

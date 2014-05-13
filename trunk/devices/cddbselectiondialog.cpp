@@ -22,7 +22,7 @@
  */
 
 #include "cddbselectiondialog.h"
-#include "localize.h"
+#include "support/localize.h"
 #include <QVBoxLayout>
 #include <QLabel>
 #include <QComboBox>

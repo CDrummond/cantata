@@ -204,12 +204,12 @@
   <customwidget>
    <class>UrlLabel</class>
    <extends>QLabel</extends>
-   <header>urllabel.h</header>
+   <header>support/urllabel.h</header>
   </customwidget>
   <customwidget>
    <class>LineEdit</class>
    <extends>QLineEdit</extends>
-   <header>lineedit.h</header>
+   <header>support/lineedit.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

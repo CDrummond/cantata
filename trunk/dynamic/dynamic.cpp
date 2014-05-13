@@ -23,16 +23,16 @@
 
 #include "dynamic.h"
 #include "config.h"
-#include "utils.h"
-#include "mpdconnection.h"
-#include "icons.h"
-#include "roles.h"
-#include "networkaccessmanager.h"
-#include "settings.h"
-#include "localize.h"
-#include "plurals.h"
-#include "actioncollection.h"
-#include "globalstatic.h"
+#include "support/utils.h"
+#include "mpd/mpdconnection.h"
+#include "widgets/icons.h"
+#include "models/roles.h"
+#include "network/networkaccessmanager.h"
+#include "gui/settings.h"
+#include "support/localize.h"
+#include "gui/plurals.h"
+#include "support/actioncollection.h"
+#include "support/globalstatic.h"
 #include <QDir>
 #include <QFile>
 #include <QTextStream>

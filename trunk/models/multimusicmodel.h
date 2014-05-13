@@ -24,7 +24,7 @@
 #define MULTI_MUSIC_MODEL_H
 
 #include "musicmodel.h"
-#include "song.h"
+#include "mpd/song.h"
 #include <QList>
 #include <QObject>
 

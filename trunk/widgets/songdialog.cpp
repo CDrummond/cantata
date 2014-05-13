@@ -22,8 +22,8 @@
  */
 
 #include "songdialog.h"
-#include "messagebox.h"
-#include "localize.h"
+#include "support/messagebox.h"
+#include "support/localize.h"
 #include <QFile>
 
 #include <QDebug>

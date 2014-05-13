@@ -308,17 +308,17 @@
   <customwidget>
    <class>BuddyLabel</class>
    <extends>QLabel</extends>
-   <header>buddylabel.h</header>
+   <header>support/buddylabel.h</header>
   </customwidget>
   <customwidget>
    <class>LineEdit</class>
    <extends>QLineEdit</extends>
-   <header>lineedit.h</header>
+   <header>support/lineedit.h</header>
   </customwidget>
   <customwidget>
    <class>CompletionCombo</class>
    <extends>QComboBox</extends>
-   <header>completioncombo.h</header>
+   <header>widgets/completioncombo.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

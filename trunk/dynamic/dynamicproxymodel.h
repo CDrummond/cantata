@@ -24,7 +24,7 @@
 #ifndef DYNAMICPROXYMODEL_H
 #define DYNAMICPROXYMODEL_H
 
-#include "proxymodel.h"
+#include "models/proxymodel.h"
 
 class DynamicProxyModel : public ProxyModel
 {

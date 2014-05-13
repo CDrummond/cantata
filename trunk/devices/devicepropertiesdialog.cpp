@@ -23,7 +23,7 @@
 
 #include "devicepropertiesdialog.h"
 #include "devicepropertieswidget.h"
-#include "localize.h"
+#include "support/localize.h"
 
 DevicePropertiesDialog::DevicePropertiesDialog(QWidget *parent)
     : Dialog(parent)

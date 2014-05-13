@@ -254,12 +254,12 @@
   <customwidget>
    <class>BuddyLabel</class>
    <extends>QLabel</extends>
-   <header>buddylabel.h</header>
+   <header>support/buddylabel.h</header>
   </customwidget>
   <customwidget>
    <class>UrlLabel</class>
    <extends>QWidget</extends>
-   <header>urllabel.h</header>
+   <header>support/urllabel.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

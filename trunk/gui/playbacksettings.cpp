@@ -23,11 +23,11 @@
 
 #include "playbacksettings.h"
 #include "settings.h"
-#include "localize.h"
-#include "mpdconnection.h"
-#include "icon.h"
-#include "basicitemdelegate.h"
-#include "messagebox.h"
+#include "support/localize.h"
+#include "mpd/mpdconnection.h"
+#include "support/icon.h"
+#include "widgets/basicitemdelegate.h"
+#include "support/messagebox.h"
 #include <QListWidget>
 
 #define REMOVE(w) \

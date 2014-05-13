@@ -28,15 +28,14 @@
 #include "musiclibraryitemartist.h"
 #include "musiclibraryitemalbum.h"
 #include "musiclibraryitemsong.h"
-#include "song.h"
-#include "covers.h"
-#include "icons.h"
+#include "gui/covers.h"
+#include "widgets/icons.h"
 #ifdef ENABLE_DEVICES_SUPPORT
-#include "device.h"
-#include "utils.h"
+#include "devices/device.h"
+#include "support/utils.h"
 #endif
 #ifdef ENABLE_ONLINE_SERVICES
-#include "onlineservice.h"
+#include "online/onlineservice.h"
 #include "onlineservicesmodel.h"
 #endif
 #include <QPixmap>

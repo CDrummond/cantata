@@ -24,9 +24,9 @@
 #ifndef LYRICSDIALOG_H
 #define LYRICSDIALOG_H
 
-#include "dialog.h"
-#include "lineedit.h"
-#include "song.h"
+#include "support/dialog.h"
+#include "support/lineedit.h"
+#include "mpd/song.h"
 
 class LyricsDialog : public Dialog
 {

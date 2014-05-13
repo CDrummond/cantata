@@ -23,9 +23,9 @@
 
 #include "genrecombo.h"
 #include "toolbutton.h"
-#include "localize.h"
-#include "actioncollection.h"
-#include "action.h"
+#include "support/localize.h"
+#include "support/actioncollection.h"
+#include "support/action.h"
 #include <QEvent>
 
 static Action *action=0;

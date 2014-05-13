@@ -25,8 +25,8 @@
 #define AUDIOCDDEVICE_H
 
 #include "device.h"
-#include "covers.h"
-#include "httpserver.h"
+#include "gui/covers.h"
+#include "http/httpserver.h"
 #ifdef ENABLE_KDE_SUPPORT
 #include <solid/opticaldrive.h>
 #else

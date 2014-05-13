@@ -35,8 +35,8 @@
 #include <QModelIndex>
 #include <QImage>
 #include "musiclibraryitem.h"
-#include "song.h"
-#include "icon.h"
+#include "mpd/song.h"
+#include "support/icon.h"
 
 class QDateTime;
 class QXmlStreamReader;

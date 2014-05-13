@@ -22,25 +22,25 @@
  */
 
 #include "trackorganiser.h"
-#include "filenameschemedialog.h"
+#include "devices/filenameschemedialog.h"
 #ifdef ENABLE_DEVICES_SUPPORT
-#include "devicesmodel.h"
+#include "models/devicesmodel.h"
 #endif
-#include "device.h"
-#include "musiclibrarymodel.h"
-#include "dirviewmodel.h"
-#include "settings.h"
-#include "mpdconnection.h"
-#include "utils.h"
-#include "songview.h"
-#include "localize.h"
-#include "messagebox.h"
-#include "icons.h"
-#include "basicitemdelegate.h"
-#include "cuefile.h"
-#include "covers.h"
-#include "contextwidget.h"
-#include "flickcharm.h"
+#include "devices/device.h"
+#include "models/musiclibrarymodel.h"
+#include "models/dirviewmodel.h"
+#include "gui/settings.h"
+#include "mpd/mpdconnection.h"
+#include "support/utils.h"
+#include "context/songview.h"
+#include "support/localize.h"
+#include "support/messagebox.h"
+#include "widgets/icons.h"
+#include "widgets/basicitemdelegate.h"
+#include "mpd/cuefile.h"
+#include "gui/covers.h"
+#include "context/contextwidget.h"
+#include "support/flickcharm.h"
 #include <QTimer>
 #include <QFile>
 #include <QDir>

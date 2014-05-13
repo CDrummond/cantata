@@ -24,7 +24,7 @@
 #ifndef DEVICEPROPERTIESDIALOG_H
 #define DEVICEPROPERTIESDIALOG_H
 
-#include "dialog.h"
+#include "support/dialog.h"
 #include "device.h"
 
 class FilenameSchemeDialog;

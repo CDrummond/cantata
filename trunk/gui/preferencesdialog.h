@@ -25,8 +25,8 @@
 #define PREFERENCES_DIALOG_H
 
 #include "config.h"
-#include "dialog.h"
-#include "pagewidget.h"
+#include "support/dialog.h"
+#include "support/pagewidget.h"
 
 #ifndef ENABLE_KDE_SUPPORT
 class ProxySettings;
@@ -51,6 +51,9 @@ class CacheSettings;
 class AudioCdSettings;
 #endif
 class QStringList;
+#ifdef ENABLE_PROXY_CONFIG
+class ProxySettings;
+#endif
 
 class PreferencesDialog : public Dialog
 {

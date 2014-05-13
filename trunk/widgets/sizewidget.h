@@ -25,7 +25,7 @@
 #define SIZEWIDGET_H
 
 #include <QWidget>
-#include "combobox.h"
+#include "support/combobox.h"
 
 class SizeWidget : public ComboBox
 {

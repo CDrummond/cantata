@@ -25,7 +25,7 @@
 #define TAG_EDITOR_H
 
 #include "config.h"
-#include "songdialog.h"
+#include "widgets/songdialog.h"
 #include "ui_tageditor.h"
 #include <QSet>
 #include <QList>

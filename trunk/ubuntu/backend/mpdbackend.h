@@ -29,17 +29,17 @@
 #include <QString>
 #include <QTimer>
 
-#include "mpdconnection.h"
-#include "albumsmodel.h"
-#include "musiclibrarymodel.h"
-#include "playlistsmodel.h"
-#include "playqueuemodel.h"
-#include "playqueueproxymodel.h"
-#include "musiclibraryproxymodel.h"
-#include "albumsproxymodel.h"
-#include "playlistsproxymodel.h"
-#include "dirviewmodel.h"
-#include "dirviewproxymodel.h"
+#include "mpd/mpdconnection.h"
+#include "models/albumsmodel.h"
+#include "models/musiclibrarymodel.h"
+#include "models/playlistsmodel.h"
+#include "models/playqueuemodel.h"
+#include "models/playqueueproxymodel.h"
+#include "models/musiclibraryproxymodel.h"
+#include "models/albumsproxymodel.h"
+#include "models/playlistsproxymodel.h"
+#include "models/dirviewmodel.h"
+#include "models/dirviewproxymodel.h"
 
 class MPDBackend : public QObject
 {

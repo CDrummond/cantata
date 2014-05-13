@@ -23,11 +23,11 @@
  */
 
 #include "mpdbackend.h"
-#include "mpdconnection.h"
-#include "currentcover.h"
-#include "covers.h"
-#include "localize.h"
-#include "plurals.h"
+#include "mpd/mpdconnection.h"
+#include "gui/currentcover.h"
+#include "gui/covers.h"
+#include "support/localize.h"
+#include "gui/plurals.h"
 #include <QString>
 #include <QModelIndex>
 

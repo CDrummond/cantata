@@ -24,14 +24,14 @@
 #include "dynamicpage.h"
 #include "dynamic.h"
 #include "dynamicrulesdialog.h"
-#include "localize.h"
-#include "icons.h"
-#include "action.h"
-#include "actioncollection.h"
-#include "mpdconnection.h"
-#include "statuslabel.h"
-#include "messagebox.h"
-#include "stdactions.h"
+#include "support/localize.h"
+#include "widgets/icons.h"
+#include "support/action.h"
+#include "support/actioncollection.h"
+#include "mpd/mpdconnection.h"
+#include "widgets/statuslabel.h"
+#include "support/messagebox.h"
+#include "gui/stdactions.h"
 
 DynamicPage::DynamicPage(QWidget *p)
     : QWidget(p)

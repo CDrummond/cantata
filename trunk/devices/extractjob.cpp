@@ -22,12 +22,12 @@
 
 #include "extractjob.h"
 #include "device.h"
-#include "utils.h"
-#include "tags.h"
+#include "support/utils.h"
+#include "tags/tags.h"
 #include "cdparanoia.h"
-#include "covers.h"
-#include "mpdconnection.h"
-#include "settings.h"
+#include "gui/covers.h"
+#include "mpd/mpdconnection.h"
+#include "gui/settings.h"
 #include <QStringList>
 #include <QProcess>
 #include <QFile>

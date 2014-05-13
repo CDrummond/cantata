@@ -23,8 +23,8 @@
 
 #include "icons.h"
 #include "config.h"
-#include "settings.h"
-#include "globalstatic.h"
+#include "gui/settings.h"
+#include "support/globalstatic.h"
 #include <QApplication>
 #include <QPixmap>
 #include <QFont>
@@ -34,7 +34,7 @@
 #include <QFile>
 #include <math.h>
 #if !defined Q_OS_WIN && !defined Q_OS_MAC && !defined ENABLE_UBUNTU
-#include "gtkstyle.h"
+#include "support/gtkstyle.h"
 #endif
 
 GLOBAL_STATIC(Icons, instance)

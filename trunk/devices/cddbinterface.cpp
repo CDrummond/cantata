@@ -22,10 +22,10 @@
  */
 
 #include "cddbinterface.h"
-#include "settings.h"
-#include "networkproxyfactory.h"
-#include "localize.h"
-#include "thread.h"
+#include "gui/settings.h"
+#include "network/networkproxyfactory.h"
+#include "support/localize.h"
+#include "support/thread.h"
 #include <QNetworkProxy>
 #include <QSet>
 #include <cddb/cddb.h>

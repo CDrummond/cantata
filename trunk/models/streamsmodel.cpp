@@ -22,28 +22,28 @@
  */
 
 #include "streamsmodel.h"
-#include "mpdconnection.h"
-#include "mpdparseutils.h"
+#include "mpd/mpdconnection.h"
+#include "mpd/mpdparseutils.h"
 #include <QUrl>
 
 #ifdef ENABLE_STREAMS
-#include "icons.h"
-#include "networkaccessmanager.h"
-#include "localize.h"
-#include "plurals.h"
-#include "utils.h"
-#include "settings.h"
+#include "widgets/icons.h"
+#include "network/networkaccessmanager.h"
+#include "support/localize.h"
+#include "gui/plurals.h"
+#include "support/utils.h"
+#include "gui/settings.h"
 #include "playqueuemodel.h"
 #include "roles.h"
-#include "action.h"
-#include "stdactions.h"
-#include "actioncollection.h"
+#include "support/action.h"
+#include "gui/stdactions.h"
+#include "support/actioncollection.h"
 #include "digitallyimported.h"
 #include "qjson/parser.h"
 #include "qtiocompressor/qtiocompressor.h"
-#include "utils.h"
+#include "support/utils.h"
 #include "config.h"
-#include "globalstatic.h"
+#include "support/globalstatic.h"
 #include <QModelIndex>
 #include <QString>
 #include <QSet>

@@ -22,12 +22,12 @@
  */
 
 #include "initialsettingswizard.h"
-#include "messagebox.h"
+#include "support/messagebox.h"
 #include "settings.h"
-#include "utils.h"
-#include "icon.h"
-#include "icons.h"
-#include "mpduser.h"
+#include "support/utils.h"
+#include "support/icon.h"
+#include "widgets/icons.h"
+#include "mpd/mpduser.h"
 #include <QDir>
 #if QT_VERSION > 0x050000
 #include <QStandardPaths>

@@ -23,14 +23,14 @@
 
 #include "remotedevicepropertieswidget.h"
 #include "filenameschemedialog.h"
-#include "covers.h"
-#include "localize.h"
+#include "gui/covers.h"
+#include "support/localize.h"
 #include <QTabWidget>
 #include <QIcon>
 #if QT_VERSION >= 0x050000
 #include <QUrlQuery>
 #endif
-#include "lineedit.h"
+#include "support/lineedit.h"
 #include "config.h"
 
 enum Type {

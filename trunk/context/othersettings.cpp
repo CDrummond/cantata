@@ -22,10 +22,10 @@
  */
 
 #include "othersettings.h"
-#include "settings.h"
-#include "pathrequester.h"
-#include "playqueueview.h"
-#include "localize.h"
+#include "gui/settings.h"
+#include "support/pathrequester.h"
+#include "widgets/playqueueview.h"
+#include "support/localize.h"
 
 static const char *constValueProperty="value";
 

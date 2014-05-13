@@ -22,16 +22,15 @@
  */
 
 #include "playlistspage.h"
-#include "playlistsmodel.h"
-#include "mpdconnection.h"
-#include "messagebox.h"
-#include "inputdialog.h"
-#include "localize.h"
-#include "icons.h"
+#include "models/playlistsmodel.h"
+#include "mpd/mpdconnection.h"
+#include "support/messagebox.h"
+#include "support/inputdialog.h"
+#include "support/localize.h"
+#include "widgets/icons.h"
 #include "stdactions.h"
-#include "actioncollection.h"
-#include "mpdconnection.h"
-#include "tableview.h"
+#include "support/actioncollection.h"
+#include "widgets/tableview.h"
 #include "settings.h"
 #include <QMenu>
 #ifdef ENABLE_KDE_SUPPORT

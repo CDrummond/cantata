@@ -26,23 +26,23 @@
 
 #include "mpdconnection.h"
 #include "mpdparseutils.h"
-#include "musiclibraryitemroot.h"
-#include "streamsmodel.h"
+#include "models/musiclibraryitemroot.h"
+#include "models/streamsmodel.h"
 #ifndef ENABLE_UBUNTU
 #include "mpduser.h"
 #endif
-#include "localize.h"
-#include "utils.h"
-#include "globalstatic.h"
+#include "support/localize.h"
+#include "support/utils.h"
+#include "support/globalstatic.h"
 #include <QApplication>
 #include <QStringList>
 #include <QTimer>
 #include <QDir>
-#include "thread.h"
-#include "settings.h"
+#include "support/thread.h"
+#include "gui/settings.h"
 #include "cuefile.h"
 #ifdef QT_QTDBUS_FOUND
-#include "powermanagement.h"
+#include "dbus/powermanagement.h"
 #endif
 #include <QDebug>
 static bool debugEnabled=false;

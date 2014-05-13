@@ -22,10 +22,10 @@
  */
 
 #include "soundcloudservice.h"
-#include "networkaccessmanager.h"
+#include "network/networkaccessmanager.h"
 #include "qjson/parser.h"
-#include "onlineservicesmodel.h"
-#include "musiclibraryitemsong.h"
+#include "models/onlineservicesmodel.h"
+#include "models/musiclibraryitemsong.h"
 #include "config.h"
 #include <QCoreApplication>
 #include <QUrl>

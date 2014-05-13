@@ -24,12 +24,12 @@
 #include "syncdialog.h"
 #include "synccollectionwidget.h"
 #include "actiondialog.h"
-#include "song.h"
-#include "musiclibrarymodel.h"
-#include "devicesmodel.h"
-#include "localize.h"
-#include "messagebox.h"
-#include "icons.h"
+#include "mpd/song.h"
+#include "models/musiclibrarymodel.h"
+#include "models/devicesmodel.h"
+#include "support/localize.h"
+#include "support/messagebox.h"
+#include "widgets/icons.h"
 #include <QSplitter>
 
 struct SyncSong : public Song

@@ -23,15 +23,15 @@
 
 #include "config.h"
 #include "device.h"
-#include "covers.h"
-#include "utils.h"
-#include "mpdconnection.h"
+#include "gui/covers.h"
+#include "support/utils.h"
+#include "mpd/mpdconnection.h"
 #include <QBuffer>
 #include <QDir>
 #include <QTemporaryFile>
 #include <QTimer>
 #ifdef ENABLE_DEVICES_SUPPORT
-#include "devicesmodel.h"
+#include "models/devicesmodel.h"
 #include "umsdevice.h"
 #ifdef MTP_FOUND
 #include "mtpdevice.h"
@@ -40,13 +40,13 @@
 #include "audiocddevice.h"
 #endif // defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
 #include "encoders.h"
-#include "tags.h"
-#include "song.h"
-#include "mpdparseutils.h"
-#include "musiclibraryitemartist.h"
-#include "musiclibraryitemalbum.h"
-#include "musiclibraryitemsong.h"
-#include "localize.h"
+#include "tags/tags.h"
+#include "mpd/song.h"
+#include "mpd/mpdparseutils.h"
+#include "models/musiclibraryitemartist.h"
+#include "models/musiclibraryitemalbum.h"
+#include "models/musiclibraryitemsong.h"
+#include "support/localize.h"
 #ifdef ENABLE_KDE_SUPPORT
 #include <solid/portablemediaplayer.h>
 #include <solid/storageaccess.h>

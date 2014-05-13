@@ -24,11 +24,11 @@
 #include "httpserver.h"
 #include "httpsocket.h"
 #ifdef TAGLIB_FOUND
-#include "tags.h"
+#include "tags/tags.h"
 #endif
-#include "settings.h"
-#include "thread.h"
-#include "globalstatic.h"
+#include "gui/settings.h"
+#include "support/thread.h"
+#include "support/globalstatic.h"
 #include <QFile>
 #include <QUrl>
 #include <QTimer>

@@ -22,14 +22,14 @@
  */
 
 #include "volumeslider.h"
-#include "localize.h"
-#include "mpdconnection.h"
-#include "mpdstatus.h"
-#include "action.h"
-#include "actioncollection.h"
-#include "stdactions.h"
-#include "utils.h"
-#include "settings.h"
+#include "support/localize.h"
+#include "mpd/mpdconnection.h"
+#include "mpd/mpdstatus.h"
+#include "support/action.h"
+#include "support/actioncollection.h"
+#include "gui/stdactions.h"
+#include "support/utils.h"
+#include "gui/settings.h"
 #include <QStyle>
 #include <QPainter>
 #include <QPainterPath>

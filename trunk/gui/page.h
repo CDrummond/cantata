@@ -24,7 +24,7 @@
 #ifndef PAGE_H
 #define PAGE_H
 
-#include "song.h"
+#include "mpd/song.h"
 
 class Page
 {

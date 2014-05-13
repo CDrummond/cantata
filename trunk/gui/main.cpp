@@ -34,34 +34,34 @@
 #include <QFile>
 #include <QSettings>
 #endif
-#include "utils.h"
+#include "support/utils.h"
 #include "config.h"
 #include "settings.h"
 #include "initialsettingswizard.h"
 #include "mainwindow.h"
-#include "song.h"
-#include "thread.h"
+#include "mpd/song.h"
+#include "support/thread.h"
 
 // To enable debug...
-#include "mpdconnection.h"
-#include "mpdparseutils.h"
+#include "mpd/mpdconnection.h"
+#include "mpd/mpdparseutils.h"
 #include "covers.h"
-#include "wikipediaengine.h"
-#include "lastfmengine.h"
-#include "metaengine.h"
-#include "backdropcreator.h"
+#include "context/wikipediaengine.h"
+#include "context/lastfmengine.h"
+#include "context/metaengine.h"
+#include "context/backdropcreator.h"
 #ifdef ENABLE_DYNAMIC
-#include "dynamic.h"
+#include "dynamic/dynamic.h"
 #endif
-#include "streamfetcher.h"
-#include "httpserver.h"
-#include "songdialog.h"
-#include "networkaccessmanager.h"
-#include "ultimatelyricsprovider.h"
+#include "streams/streamfetcher.h"
+#include "http/httpserver.h"
+#include "widgets/songdialog.h"
+#include "network/networkaccessmanager.h"
+#include "context/ultimatelyricsprovider.h"
 #ifdef ENABLE_EXTERNAL_TAGS
-#include "taghelperiface.h"
+#include "tags/taghelperiface.h"
 #endif
-#include "contextwidget.h"
+#include "context/contextwidget.h"
 
 #include <QMutex>
 #include <QMutexLocker>

@@ -32,7 +32,7 @@
 #include <QPixmap>
 #include <QMutex>
 #include <QCache>
-#include "song.h"
+#include "mpd/song.h"
 #include "config.h"
 
 class QString;

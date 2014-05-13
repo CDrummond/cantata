@@ -22,7 +22,7 @@
  */
 
 #include "freespaceinfo.h"
-#include "utils.h"
+#include "support/utils.h"
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KDiskFreeSpaceInfo>
 #elif defined(Q_OS_UNIX)

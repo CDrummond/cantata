@@ -47,7 +47,7 @@
   <customwidget>
    <class>LineEdit</class>
    <extends>QLineEdit</extends>
-   <header>lineedit.h</header>
+   <header>support/lineedit.h</header>
   </customwidget>
   </customwidgets>
  <resources/>

@@ -24,7 +24,7 @@
 #ifndef TAG_HELPER_IFACE_H
 #define TAG_HELPER_IFACE_H
 
-#include "song.h"
+#include "mpd/song.h"
 #include <QImage>
 #include <QString>
 #include <QMutex>

@@ -23,8 +23,8 @@
 
 #include "cuefile.h"
 #include "mpdconnection.h"
-#include "utils.h"
-#include "settings.h"
+#include "support/utils.h"
+#include "gui/settings.h"
 #include <QBuffer>
 #include <QDateTime>
 #include <QFile>

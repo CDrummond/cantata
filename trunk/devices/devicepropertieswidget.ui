@@ -243,23 +243,23 @@
   <customwidget>
    <class>LineEdit</class>
    <extends>QLineEdit</extends>
-   <header>lineedit.h</header>
+   <header>support/lineedit.h</header>
   </customwidget>
   <customwidget>
    <class>BuddyLabel</class>
    <extends>QLabel</extends>
-   <header>buddylabel.h</header>
+   <header>support/buddylabel.h</header>
   </customwidget>
   <customwidget>
    <class>PathRequester</class>
    <extends>QLineEdit</extends>
-   <header>pathrequester.h</header>
+   <header>support/pathrequester.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>ValueSlider</class>
    <extends>QSlider</extends>
-   <header>valueslider.h</header>
+   <header>devices/valueslider.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>

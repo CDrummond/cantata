@@ -22,7 +22,6 @@
  */
 
 #include "tagreader.h"
-#include "tags.h"
 
 void TagReader::setDetails(const QList<Song> &s, const QString &dir)
 {

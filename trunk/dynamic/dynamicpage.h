@@ -26,7 +26,7 @@
 
 #include "ui_dynamicpage.h"
 #include "dynamicproxymodel.h"
-#include "page.h"
+#include "gui/page.h"
 
 class Action;
 

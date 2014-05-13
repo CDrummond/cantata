@@ -22,8 +22,8 @@
  */
 
 #include "jobcontroller.h"
-#include "thread.h"
-#include "globalstatic.h"
+#include "support/thread.h"
+#include "support/globalstatic.h"
 
 Job::Job()
     : abortRequested(false)

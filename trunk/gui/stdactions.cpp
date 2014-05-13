@@ -22,16 +22,16 @@
  */
 
 #include "stdactions.h"
-#include "localize.h"
-#include "action.h"
-#include "actioncollection.h"
-#include "playlistsmodel.h"
+#include "support/localize.h"
+#include "support/action.h"
+#include "support/actioncollection.h"
+#include "models/playlistsmodel.h"
 #ifdef ENABLE_DEVICES_SUPPORT
-#include "devicesmodel.h"
+#include "models/devicesmodel.h"
 #endif
-#include "icon.h"
-#include "icons.h"
-#include "globalstatic.h"
+#include "support/icon.h"
+#include "widgets/icons.h"
+#include "support/globalstatic.h"
 #include <QMenu>
 #include <QCoreApplication>
 

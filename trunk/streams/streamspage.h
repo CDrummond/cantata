@@ -25,10 +25,10 @@
 #define STREAMSPAGE_H
 
 #include "ui_streamspage.h"
-#include "streamsproxymodel.h"
-#include "streamsearchmodel.h"
-#include "streamsmodel.h"
-#include "page.h"
+#include "models/streamsproxymodel.h"
+#include "models/streamsearchmodel.h"
+#include "models/streamsmodel.h"
+#include "gui/page.h"
 
 class Action;
 class QAction;

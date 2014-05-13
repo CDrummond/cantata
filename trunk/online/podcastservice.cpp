@@ -23,15 +23,14 @@
 
 #include "podcastservice.h"
 #include "podcastsettingsdialog.h"
-#include "networkaccessmanager.h"
-#include "onlineservicesmodel.h"
-#include "musiclibraryitempodcast.h"
-#include "musiclibraryitemsong.h"
-#include "utils.h"
-#include "settings.h"
-#include "mpdconnection.h"
+#include "models/onlineservicesmodel.h"
+#include "models/musiclibraryitempodcast.h"
+#include "models/musiclibraryitemsong.h"
+#include "support/utils.h"
+#include "gui/settings.h"
+#include "mpd/mpdconnection.h"
 #include "config.h"
-#include "httpserver.h"
+#include "http/httpserver.h"
 #include <QCoreApplication>
 #include <QDir>
 #include <QUrl>

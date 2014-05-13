@@ -22,9 +22,9 @@
  */
 
 #include "menubutton.h"
-#include "icon.h"
+#include "support/icon.h"
 #include "icons.h"
-#include "localize.h"
+#include "support/localize.h"
 #include <QAction>
 #include <QMenu>
 #include <QEvent>

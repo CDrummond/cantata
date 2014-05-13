@@ -22,23 +22,23 @@
  */
 
 #include "covers.h"
-#include "song.h"
-#include "utils.h"
-#include "mpdconnection.h"
-#include "networkaccessmanager.h"
+#include "mpd/song.h"
+#include "support/utils.h"
+#include "mpd/mpdconnection.h"
+#include "network/networkaccessmanager.h"
 #include "settings.h"
 #include "config.h"
-#include "deviceoptions.h"
-#include "thread.h"
+#include "devices/deviceoptions.h"
+#include "support/thread.h"
 #ifdef ENABLE_ONLINE_SERVICES
-#include "soundcloudservice.h"
-#include "podcastservice.h"
-#include "onlineservicesmodel.h"
+#include "online/soundcloudservice.h"
+#include "online/podcastservice.h"
+#include "models/onlineservicesmodel.h"
 #endif
 #ifdef TAGLIB_FOUND
-#include "tags.h"
+#include "tags/tags.h"
 #endif
-#include "globalstatic.h"
+#include "support/globalstatic.h"
 #include <QFile>
 #include <QDir>
 #include <QUrl>

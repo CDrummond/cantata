@@ -26,7 +26,7 @@
 
 #include "ui_devicepropertieswidget.h"
 #include "device.h"
-#include "utils.h"
+#include "support/utils.h"
 
 class FilenameSchemeDialog;
 class DevicePropertiesWidget : public QWidget, Ui::DevicePropertiesWidget

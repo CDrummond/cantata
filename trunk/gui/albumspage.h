@@ -25,7 +25,7 @@
 #define ALBUMSPAGE_H
 
 #include "ui_albumspage.h"
-#include "albumsproxymodel.h"
+#include "models/albumsproxymodel.h"
 #include "page.h"
 
 class Action;

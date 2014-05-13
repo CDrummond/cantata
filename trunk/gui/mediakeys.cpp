@@ -23,7 +23,7 @@
 
 #include "mediakeys.h"
 #ifdef QT_QTDBUS_FOUND
-#include "gnomemediakeys.h"
+#include "dbus/gnomemediakeys.h"
 #endif
 #ifdef CANTATA_USE_QXT_MEDIAKEYS
 #include "qxtmediakeys.h"
@@ -31,7 +31,7 @@
 #include "multimediakeysinterface.h"
 #include "stdactions.h"
 #include "settings.h"
-#include "globalstatic.h"
+#include "support/globalstatic.h"
 
 GLOBAL_STATIC(MediaKeys, instance)
 

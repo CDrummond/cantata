@@ -21,20 +21,20 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include "covers.h"
+#include "gui/covers.h"
 #include "groupedview.h"
-#include "mpdstatus.h"
-#include "song.h"
+#include "mpd/mpdstatus.h"
+#include "mpd/song.h"
 #include "actionitemdelegate.h"
 #include "basicitemdelegate.h"
 #include "itemview.h"
 #include "config.h"
-#include "localize.h"
-#include "plurals.h"
-#include "icons.h"
-#include "gtkstyle.h"
-#include "flickcharm.h"
-#include "roles.h"
+#include "support/localize.h"
+#include "gui/plurals.h"
+#include "widgets/icons.h"
+#include "support/gtkstyle.h"
+#include "support/flickcharm.h"
+#include "models/roles.h"
 #include <QStyledItemDelegate>
 #include <QApplication>
 #include <QFontMetrics>

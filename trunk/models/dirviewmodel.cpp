@@ -31,22 +31,22 @@
 #include <QFile>
 #include <QXmlStreamReader>
 #include <QXmlStreamWriter>
-#include "localize.h"
-#include "plurals.h"
+#include "support/localize.h"
+#include "gui/plurals.h"
 #include "dirviewmodel.h"
 #include "dirviewitem.h"
 #include "dirviewitemfile.h"
 #include "playqueuemodel.h"
 #include "musiclibrarymodel.h"
 #include "roles.h"
-#include "settings.h"
-#include "mpdconnection.h"
-#include "icon.h"
-#include "icons.h"
+#include "gui/settings.h"
+#include "mpd/mpdconnection.h"
+#include "support/icon.h"
+#include "widgets/icons.h"
 #include "config.h"
-#include "utils.h"
+#include "support/utils.h"
 #include "qtiocompressor/qtiocompressor.h"
-#include "globalstatic.h"
+#include "support/globalstatic.h"
 #if defined ENABLE_MODEL_TEST
 #include "modeltest.h"
 #endif

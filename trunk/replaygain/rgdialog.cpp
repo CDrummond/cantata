@@ -23,20 +23,20 @@
 
 #include "rgdialog.h"
 #ifdef ENABLE_DEVICES_SUPPORT
-#include "device.h"
-#include "devicesmodel.h"
+#include "devices/device.h"
+#include "models/devicesmodel.h"
 #endif
-#include "settings.h"
-#include "tags.h"
+#include "gui/settings.h"
+#include "tags/tags.h"
 #include "tagreader.h"
-#include "utils.h"
-#include "localize.h"
-#include "messagebox.h"
+#include "support/utils.h"
+#include "support/localize.h"
+#include "support/messagebox.h"
 #include "jobcontroller.h"
-#include "basicitemdelegate.h"
-#include "action.h"
-#include "cuefile.h"
-#include "flickcharm.h"
+#include "widgets/basicitemdelegate.h"
+#include "support/action.h"
+#include "mpd/cuefile.h"
+#include "support/flickcharm.h"
 #include <QComboBox>
 #include <QTreeWidget>
 #include <QLabel>

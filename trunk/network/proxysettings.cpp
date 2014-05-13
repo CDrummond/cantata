@@ -23,7 +23,7 @@
 
 #include "proxysettings.h"
 #include "networkproxyfactory.h"
-#include "localize.h"
+#include "support/localize.h"
 #include <QSettings>
 
 ProxySettings::ProxySettings(QWidget *parent)

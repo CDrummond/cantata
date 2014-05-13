@@ -22,12 +22,12 @@
  */
 
 #include "treeview.h"
-#include "roles.h"
+#include "models/roles.h"
 #include "icons.h"
 #include "config.h"
 #include "basicitemdelegate.h"
-#include "utils.h"
-#include "flickcharm.h"
+#include "support/utils.h"
+#include "support/flickcharm.h"
 #include <QMouseEvent>
 #include <QPaintEvent>
 #include <QPainter>

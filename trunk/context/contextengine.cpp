@@ -24,7 +24,7 @@
 #include "contextengine.h"
 #include "metaengine.h"
 #include "wikipediaengine.h"
-#include "networkaccessmanager.h"
+#include "network/networkaccessmanager.h"
 
 ContextEngine * ContextEngine::create(QObject *parent)
 {

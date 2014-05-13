@@ -26,7 +26,7 @@
 
 #include <QObject>
 #include <QSet>
-#include "song.h"
+#include "mpd/song.h"
 #include "deviceoptions.h"
 
 class QTemporaryFile;

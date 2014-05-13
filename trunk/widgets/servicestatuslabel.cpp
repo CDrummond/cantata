@@ -22,7 +22,7 @@
  */
 
 #include "servicestatuslabel.h"
-#include "localize.h"
+#include "support/localize.h"
 #include <QPalette>
 #include <QStyle>
 #include <QApplication>

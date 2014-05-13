@@ -22,18 +22,18 @@
  */
 
 #include "librarypage.h"
-#include "mpdconnection.h"
-#include "mpdstats.h"
+#include "mpd/mpdconnection.h"
+#include "mpd/mpdstats.h"
 #include "covers.h"
-#include "musiclibrarymodel.h"
-#include "musiclibraryitemartist.h"
-#include "musiclibraryitemalbum.h"
-#include "musiclibraryitemsong.h"
-#include "localize.h"
-#include "messagebox.h"
+#include "models/musiclibrarymodel.h"
+#include "models/musiclibraryitemartist.h"
+#include "models/musiclibraryitemalbum.h"
+#include "models/musiclibraryitemsong.h"
+#include "support/localize.h"
+#include "support/messagebox.h"
 #include "settings.h"
 #include "stdactions.h"
-#include "utils.h"
+#include "support/utils.h"
 
 LibraryPage::LibraryPage(QWidget *p)
     : QWidget(p)

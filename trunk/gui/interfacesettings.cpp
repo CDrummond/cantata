@@ -23,15 +23,15 @@
 
 #include "interfacesettings.h"
 #include "settings.h"
-#include "itemview.h"
-#include "localize.h"
-#include "musiclibraryitemalbum.h"
-#include "albumsmodel.h"
-#include "fancytabwidget.h"
-#include "basicitemdelegate.h"
-#include "playqueueview.h"
-#include "pathrequester.h"
-#include "flickcharm.h"
+#include "widgets/itemview.h"
+#include "support/localize.h"
+#include "models/musiclibraryitemalbum.h"
+#include "models/albumsmodel.h"
+#include "support/fancytabwidget.h"
+#include "widgets/basicitemdelegate.h"
+#include "widgets/playqueueview.h"
+#include "support/pathrequester.h"
+#include "support/flickcharm.h"
 #include <QComboBox>
 #ifndef ENABLE_KDE_SUPPORT
 #include <QDir>

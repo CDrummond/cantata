@@ -22,11 +22,11 @@
  */
 
 #include "podcastsettingsdialog.h"
-#include "buddylabel.h"
-#include "pathrequester.h"
-#include "settings.h"
-#include "localize.h"
-#include "utils.h"
+#include "support/buddylabel.h"
+#include "support/pathrequester.h"
+#include "gui/settings.h"
+#include "support/localize.h"
+#include "support/utils.h"
 #include <QComboBox>
 #include <QCheckBox>
 #include <QFormLayout>

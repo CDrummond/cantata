@@ -22,12 +22,12 @@
  */
 
 #include "mpris.h"
-#include "mpdconnection.h"
+#include "mpd/mpdconnection.h"
 #include "playeradaptor.h"
 #include "rootadaptor.h"
 #include "config.h"
-#include "currentcover.h"
-#include "mainwindow.h"
+#include "gui/currentcover.h"
+#include "gui/mainwindow.h"
 
 static inline qlonglong convertTime(int t)
 {

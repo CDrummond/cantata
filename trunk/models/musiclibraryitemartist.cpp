@@ -29,17 +29,16 @@
 #include "musiclibraryitemalbum.h"
 #include "musiclibraryitemsong.h"
 #include "musiclibrarymodel.h"
-#include "song.h"
-#include "mpdparseutils.h"
-#include "localize.h"
-#include "covers.h"
-#include "icons.h"
+#include "mpd/mpdparseutils.h"
+#include "support/localize.h"
+#include "gui/covers.h"
+#include "widgets/icons.h"
 #ifdef ENABLE_DEVICES_SUPPORT
-#include "device.h"
-#include "utils.h"
+#include "devices/device.h"
+#include "support/utils.h"
 #endif
 #ifdef ENABLE_ONLINE_SERVICES
-#include "onlineservice.h"
+#include "online/onlineservice.h"
 #include "onlineservicesmodel.h"
 #endif
 

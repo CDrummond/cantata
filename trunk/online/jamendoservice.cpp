@@ -23,11 +23,11 @@
 
 #include "jamendoservice.h"
 #include "jamendosettingsdialog.h"
-#include "musiclibraryitemartist.h"
-#include "musiclibraryitemalbum.h"
-#include "musiclibraryitemsong.h"
-#include "song.h"
-#include "configuration.h"
+#include "models/musiclibraryitemartist.h"
+#include "models/musiclibraryitemalbum.h"
+#include "models/musiclibraryitemsong.h"
+#include "mpd/song.h"
+#include "support/configuration.h"
 #include "config.h"
 #include <QXmlStreamReader>
 

@@ -22,18 +22,18 @@
  */
 
 #include "albumdetailsdialog.h"
-#include "localize.h"
+#include "support/localize.h"
 #include "audiocddevice.h"
-#include "musiclibrarymodel.h"
-#include "musiclibraryitemsong.h"
-#include "messagebox.h"
-#include "inputdialog.h"
-#include "devicesmodel.h"
+#include "models/musiclibrarymodel.h"
+#include "models/musiclibraryitemsong.h"
+#include "support/messagebox.h"
+#include "support/inputdialog.h"
+#include "models/devicesmodel.h"
 #include "cdalbum.h"
-#include "icons.h"
-#include "coverdialog.h"
-#include "basicitemdelegate.h"
-#include "lineedit.h"
+#include "widgets/icons.h"
+#include "gui/coverdialog.h"
+#include "widgets/basicitemdelegate.h"
+#include "support/lineedit.h"
 #include <QMenu>
 #include <QStyledItemDelegate>
 #include <QMouseEvent>

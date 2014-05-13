@@ -29,7 +29,7 @@
 #include <QMap>
 #include <QString>
 #include <QStringList>
-#include "actionmodel.h"
+#include "models/actionmodel.h"
 
 class QTimer;
 class NetworkJob;

@@ -23,16 +23,16 @@
 
 #include "trayitem.h"
 #ifdef QT_QTDBUS_FOUND
-#include "notify.h"
+#include "dbus/notify.h"
 #endif
-#include "localize.h"
+#include "support/localize.h"
 #include "mainwindow.h"
 #include "settings.h"
-#include "action.h"
-#include "icons.h"
-#include "song.h"
+#include "support/action.h"
+#include "widgets/icons.h"
+#include "mpd/song.h"
 #include "stdactions.h"
-#include "utils.h"
+#include "support/utils.h"
 #include "currentcover.h"
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KMenu>

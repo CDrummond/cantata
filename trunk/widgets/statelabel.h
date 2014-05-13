@@ -24,7 +24,7 @@
 #ifndef STATELABEL_H
 #define STATELABEL_H
 
-#include "buddylabel.h"
+#include "support/buddylabel.h"
 
 class StateLabel : public BuddyLabel
 {

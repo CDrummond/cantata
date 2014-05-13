@@ -24,9 +24,9 @@
 #include "currentcover.h"
 #include "covers.h"
 #include "config.h"
-#include "icons.h"
-#include "utils.h"
-#include "globalstatic.h"
+#include "widgets/icons.h"
+#include "support/utils.h"
+#include "support/globalstatic.h"
 #include <QFile>
 #include <QCoreApplication>
 

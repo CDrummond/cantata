@@ -28,16 +28,16 @@
 #ifdef MUSICBRAINZ5_FOUND
 #include "musicbrainz.h"
 #endif
-#include "localize.h"
-#include "plurals.h"
-#include "musiclibraryitemsong.h"
-#include "musiclibrarymodel.h"
-#include "dirviewmodel.h"
-#include "utils.h"
+#include "support/localize.h"
+#include "gui/plurals.h"
+#include "models/musiclibraryitemsong.h"
+#include "models/musiclibrarymodel.h"
+#include "models/dirviewmodel.h"
+#include "support/utils.h"
 #include "extractjob.h"
-#include "mpdconnection.h"
-#include "covers.h"
-#include "settings.h"
+#include "mpd/mpdconnection.h"
+#include "gui/covers.h"
+#include "gui/settings.h"
 #include <QDir>
 #include <QUrl>
 #if QT_VERSION >= 0x050000

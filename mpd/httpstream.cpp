@@ -71,7 +71,7 @@ void HttpStream::streamUrl(const QString &url)
         #if QT_VERSION < 0x050000
         player=new Phonon::MediaObject(this);
         Phonon::createPath(player, new Phonon::AudioOutput(Phonon::MusicCategory, this));
-        player->setCurrentSource(url);
+        player->setCurrentSource(QUrl(url));
         #else
         player=new QMediaPlayer(this);
         player->setMedia(QUrl(url));

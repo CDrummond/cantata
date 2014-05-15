@@ -792,7 +792,7 @@ within the folder of the current track, or within its parent folder. If no image
           <widget class="QCheckBox" name="touchFriendly">
            <property name="toolTip">
             <string>&lt;p&gt;This will change Cantata's interface as detailed:
-&lt;ul&gt;&lt;li&gt;Playback, and control, buttons will be 33% wider&lt;/li&gt;&lt;li&gt;Views will be 'flickable'&lt;/li&gt;&lt;li&gt;To drag items, you will need to 'touch' the top-left corner&lt;/li&gt;&lt;li&gt;Scrollbars will be hidden&lt;/li&gt;&lt;li&gt;Actions (e.g. 'Add To Play Queue') will always be visible (not just when item is under mouse)&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;</string>
+&lt;ul&gt;&lt;li&gt;Playback, and control, buttons will be 33% wider&lt;/li&gt;&lt;li&gt;Views will be 'flickable'&lt;/li&gt;&lt;li&gt;To drag items, you will need to 'touch' the top-left corner&lt;/li&gt;&lt;li&gt;Scrollbars will be hidden&lt;/li&gt;&lt;li&gt;Actions (e.g. 'Add To Play Queue') will always be visible (not just when item is under mouse)&lt;/li&gt;&lt;li&gt;Spin buttons with have + and - buttons at the side of the text field&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;</string>
            </property>
            <property name="text">
             <string>Make interface more touch friendly</string>

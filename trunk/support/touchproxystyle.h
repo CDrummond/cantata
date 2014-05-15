@@ -21,44 +21,26 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef GTKPROXYSTYLE_H
-#define GTKPROXYSTYLE_H
+#ifndef TOUCHPROXYSTYLE_H
+#define TOUCHPROXYSTYLE_H
 
-#include <QMap>
-#include "config.h"
-#include "touchproxystyle.h"
+#include "proxystyle.h"
 
-class ShortcutHandler;
-
-class GtkProxyStyle : public TouchProxyStyle
+class TouchProxyStyle : public ProxyStyle
 {
 public:
-    enum ScrollbarType {
-        SB_Standard,
-        SB_Thin
-    };
-
-    GtkProxyStyle(ScrollbarType sb, bool styleSpin, const QMap<QString, QString> &c, bool modView);
-    ~GtkProxyStyle();
+    TouchProxyStyle(bool touchSpin=true);
+    ~TouchProxyStyle();
     QSize sizeFromContents(ContentsType type, const QStyleOption *option,  const QSize &size, const QWidget *widget) const;
-    int styleHint(StyleHint hint, const QStyleOption *option, const QWidget *widget, QStyleHintReturn *returnData) const;
-    int pixelMetric(PixelMetric metric, const QStyleOption *option, const QWidget *widget) const;
     QRect subControlRect(ComplexControl control, const QStyleOptionComplex *option, SubControl subControl, const QWidget *widget) const;
     void drawComplexControl(ComplexControl control, const QStyleOptionComplex *option, QPainter *painter, const QWidget *widget) const;
-    void drawPrimitive(PrimitiveElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget) const;
-
-    void polish(QWidget *widget);
-    void polish(QPalette &pal);
-    void polish(QApplication *app);
-    void unpolish(QWidget *widget);
-    void unpolish(QApplication *app);
+    void polish(QWidget *widget) { ProxyStyle::polish(widget); }
+    void polish(QPalette &pal) { ProxyStyle::polish(pal); }
+    void polish(QApplication *app) { ProxyStyle::polish(app); }
 
 private:
-    ShortcutHandler *shortcutHander;
-    ScrollbarType sbarType;
-    int sbarPlainViewWidth;
-    bool modViewFrame;
-    QMap<QString, QString> css;
+    bool touchStyleSpin;
+    double spinButtonRatio;
 };
 
 #endif

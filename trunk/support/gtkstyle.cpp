@@ -32,9 +32,7 @@
 #include <QTextStream>
 #include <QFile>
 #include <qglobal.h>
-#ifndef ENABLE_KDE_SUPPORT
-#include "proxystyle.h"
-#endif
+#include "touchproxystyle.h"
 #if !defined Q_OS_WIN && !defined QT_NO_STYLE_GTK
 #include "gtkproxystyle.h"
 #include "windowmanager.h"
@@ -226,12 +224,9 @@ extern void GtkStyle::setIconTheme(const QString &n)
 }
 
 #if !defined Q_OS_WIN && !defined QT_NO_STYLE_GTK
-static GtkProxyStyle *gtkProxyStyle=0;
 static WindowManager *wm=0;
 #endif
-#ifndef ENABLE_KDE_SUPPORT
-static ProxyStyle *plainProxyStyle=0;
-#endif
+static QProxyStyle *proxyStyle=0;
 static bool symbolicIcons=false;
 static QColor symbolicIconColor(0, 0, 0);
 
@@ -239,14 +234,8 @@ const char * GtkStyle::constHideFrameProp="hide-frame";
 
 void GtkStyle::applyTheme(QWidget *widget)
 {
-    #if defined Q_OS_WIN || defined QT_NO_STYLE_GTK
+    #if defined Q_OS_WIN || defined Q_OS_MAC || defined QT_NO_STYLE_GTK
     Q_UNUSED(widget)
-    #ifndef ENABLE_KDE_SUPPORT
-    if (!plainProxyStyle) {
-        plainProxyStyle=new ProxyStyle();
-        qApp->setStyle(plainProxyStyle);
-    }
-    #endif
     #else
     if (widget && isActive()) {
         QString theme=GtkStyle::themeName().toLower();
@@ -290,20 +279,24 @@ void GtkStyle::applyTheme(QWidget *widget)
                 }
             }
         }
-        if (!gtkProxyStyle) {
-            gtkProxyStyle=new GtkProxyStyle(sbType, touchStyleSpin, css, modViewFrame && !Utils::touchFriendly());
-            qApp->setStyle(gtkProxyStyle);
+        if (!proxyStyle) {
+            proxyStyle=new GtkProxyStyle(sbType, touchStyleSpin || Utils::touchFriendly(), css, modViewFrame && !Utils::touchFriendly());
             QCoreApplication::setAttribute(Qt::AA_DontShowIconsInMenus);
         }
     }
+    #endif
 
+    if (!proxyStyle && Utils::touchFriendly()) {
+        proxyStyle=new TouchProxyStyle;
+    }
     #ifndef ENABLE_KDE_SUPPORT
-    if (!gtkProxyStyle && !plainProxyStyle) {
-        plainProxyStyle=new ProxyStyle();
-        qApp->setStyle(plainProxyStyle);
+    if (!proxyStyle) {
+        proxyStyle=new ProxyStyle();
     }
     #endif
-    #endif
+    if (proxyStyle) {
+        qApp->setStyle(proxyStyle);
+    }
 }
 
 void GtkStyle::registerWidget(QWidget *widget)

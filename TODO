@@ -8,15 +8,10 @@
     need to be supplied with installer.
   - Port to Qt5. With Qt5.2 use QWinThumbnailToolButton 
 
-- MacOS port
-  - Initial work imported into 1.2.0, however no builds were ever released. No
-    idea if this still compiles or not!
- 
 - Streams
   - If radio stream is a playlist, Cantata currently only uses the 1st entry.
     Perhaps Cantata should loop over all entries until we find one that plays?
   - last.fm streams?
-  - Move service json/xml response parsing into perl helper scripts?
 
 - Online services
   - GPodder support?
@@ -54,20 +49,17 @@
 - PlayQueue
   - Move code out of MainWindow class.
 
-- Cue files
-  - How to (reliably) determine duration of last track?
-
 - General
   - Ratings (use KRatingWidget?)
     - Not sure, would need support in cantata-dynamic
     - MPD's 'stickers' could be used, but there is no way to query tag+value
       you can only query for tracks that have tag. So, could query for all
       tracks with tag=rating, but not tag=rating and value=4
-  - mpdscribble management
+  - Last.fm scrobbling?
+    - Cantata is probably not the best place for this to be
   - mixramp tag calculation
   - mixramp MPD settings
     - Does MPD need to be restarted to change settings?
-  - Create a base 'Page' class?
 
 - Bugs
   - Jamendo search sometimes causes crash (not seen for a while)

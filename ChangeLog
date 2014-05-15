@@ -21,13 +21,13 @@
     works on these.
 16. Add support for comments. These are read directly from the song file when
     the tag-editor is used, and they are NOT saved in Cantata's cache file.
-    Comments are only read in MPD is configured to support the COMMENT field.
+    Comments are only read if MPD is configured to support the COMMENT field.
 17. Install Cantata's list of lyrics providers to INSTALL/share/cantata/lyrics
 18. Read lyrics providers from each .xml file in ~/.local/share/cantata/lyrics,
     and INSTALL/share/cantata/lyrics
-19. Attempt to respect menubar usage of current desktop. For Windows and Gnome,
-    menu button is used, and menubar hidden. For Mac and Unity, menubar is
-    used, and menu button is hidden. For KDE Plasma, by default the menu button
+19. Attempt to respect menubar usage of current desktop. For Windows and Gnome;
+    menu button is used, and menubar hidden. For Mac and Unity; menubar is
+    used, and menu button is hidden. For KDE Plasma; by default the menu button
     is used, and the menu bar hidden - but a menu entry is provided to toggle.
     This setting can be overridden - see README for details.
 20. Most songs will be less than 1 hr long, so by default we only need to
@@ -63,69 +63,65 @@
 40. When current song is from an online-service (Jamendo, Magnatune, etc) then
     only show cover and tite in context view. No attempt is made to get artist,
     album, or song information - as these are likely to fail anyway.
-41. Jamendo radio streams.
-42. Install listenlive.xml to Cantata folder, as opposed to embedding in app.
-43. Use an external-helper app to read/write tags - to isolate Cantata from
+41. Use an external-helper app to read/write tags - to isolate Cantata from
     TagLib crashes.
-44. Add -DUSE_OLD_DBUS_TYPEDEF=ON to CMake options. This can be used to force
+42. Add -DUSE_OLD_DBUS_TYPEDEF=ON to CMake options. This can be used to force
     usage of OLD dbus XML files.
-45. If Cantata detects that an album, or artist, has new songs after updating
+43. If Cantata detects that an album, or artist, has new songs after updating
     MPD's DB, then the artist and album are drawn with bold text.
-46. When searching for album covers, do not look for $songFile.png/jpg
-47. Hide track change popup setting if running under Linux and
+44. When searching for album covers, do not look for $songFile.png/jpg
+45. Hide track change popup setting if running under Linux and
     org.freedesktop.Notifications DBus service is not registered.
-48. Remove 'home' button from listviews - only ever max 2 levels deep (Artists,
+46. Remove 'home' button from listviews - only ever max 2 levels deep (Artists,
     Albums, Tracks), so no real need for button.
-49. When mouse-over listview title, use highlight colour for text (and not whole
-    background). This is more consistent with time-slider's time remaining
-    label.
-50. Make shortcut for 'Go Back' action changeable.
-51. Don't attempt to find Amarok or Clementine covers.
-52. Don't hard-code artist name fixes, read from $install/tags/fixes.xml
-53. Remove grouping of multiple-artist albums under 'Various Artists'
-54. Change default sidebar shortcuts from 'Alt+' to 'Ctrl+Shift+' so as to
+47. Make shortcut for 'Go Back' action changeable.
+48. Don't attempt to find Amarok or Clementine covers.
+49. Don't hard-code artist name fixes, read from $install/tags/fixes.xml
+50. Remove grouping of multiple-artist albums under 'Various Artists'
+51. Change default sidebar shortcuts from 'Alt+' to 'Ctrl+Shift+' so as to
     avoid clashes with menubar.
-55. If compiled with MPD HTTP playback support, when MPD stream is paused then
+52. If compiled with MPD HTTP playback support, when MPD stream is paused then
     stop the Phonon/QMediaObject from playing. See README for config option
     on this.
-56. When searching, search both with and without diaeresis, etc. e.g. both
+53. When searching, search both with and without diaeresis, etc. e.g. both
     Queensrÿche and Queensryche should match.
-57. Add 'Sort By' to playqueue context model - allowing to re-sort tracks by
+54. Add 'Sort By' to playqueue context menu - allowing to re-sort tracks by
     artist, album artist, album, genre, or year.
-58. When sorting albums view, also ignore 'The ' at start of artist names, as
+55. When sorting albums view, also ignore 'The ' at start of artist names, as
     per artists view.
-59. Add more sort options to albums view.
-60. Fix crash when changing view mode whilst search is active.
-61. Add a 'touch friendly' setting - toolbuttons are made wider, view actions
+56. Add more sort options to albums view.
+57. Fix crash when changing view mode whilst search is active.
+58. Add a 'touch friendly' setting - toolbuttons are made wider, view actions
     always visible (semi-transparent in list/tree), and views are 'flickable'
-62. Use a toolbutton for listview header and back action.
-63. Add 'List' to playqueue view types.
-64. Add 'Locate In Library' to search page.
-65. Remove 'Go Back' from lsitview context menu.
-66. Hide icons in short=cut dialog, and in actions used in menus, if
+59. Use a toolbutton for listview header and back action.
+60. Add 'List' to playqueue view types.
+61. Add 'Locate In Library' to search page.
+62. Remove 'Go Back' from lsitview context menu.
+63. Hide icons in shortcut dialog, and in actions used in menus, if
     Qt::AA_DontShowIconsInMenus is set. This seems to be the only way to force
     Unity to not show icons in menus of Qt apps. (There appears to be a bug in
     libdbusmenu-qt https://bugs.launchpad.net/libdbusmenu-qt/+bug/1287337)
     (Qt-only builds)
-67. If connection to MPD faiils, attempt to ascertain if its a proxy error.
-68. Add button under playqueue to re-center playqueue on current song.
-69. Add option to only act on songs that pass current string or genre filter.
-70. Multiple genre support.
-71. Store favourite streams as '[Radio Streams]' MPD playlist.
-72. For tracks for mutliple-artist albums, show as 'title - artist' and not
+64. If connection to MPD faiils, attempt to ascertain if its a proxy error.
+65. Add button under playqueue to re-center playqueue on current song.
+66. Add option to only act on songs that pass current string or genre filter.
+67. Multiple genre support.
+68. Store favourite streams as '[Radio Streams]' MPD playlist.
+69. For tracks for mutliple-artist albums, show as 'title - artist' and not
     'artist - title'
-73. In playqueue, if song's artist is different to album artist, then show song
+70. In playqueue, if song's artist is different to album artist, then show song
     as 'title - artist'
-74. Also use musicbrainz_albumid, if present, to group albums. This can be used
-    to group multiple releases of the same album.
-75. Search for streams via dirble.
-76. Center images and headers in context view.
-77. Dont package stream providers with Cantata - add a dialog to download from
+71. Also use musicbrainz_albumid, if present, to group albums. This can be used
+    to group multiple releases of the same album. MPD must be configured to use
+    this tag in order for this to function.
+72. Search for streams via dirble.
+73. Center images and headers in context view.
+74. Dont package stream providers with Cantata - add a dialog to download from
     Google Drive.
-78. Fix 'duplicate' albums being created if flac (or other) + cue file is used,
+75. Fix 'duplicate' albums being created if flac (or other) + cue file is used,
     and the music file does not contain metadata.
-79. Fix setting of cover for albums with cule file.
-80. Fix loading individual songs from cue file.
+76. Fix setting of cover for albums with cule file.
+77. Fix loading individual songs from cue file.
 
 1.3.4
 -----

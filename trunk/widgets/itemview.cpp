@@ -115,7 +115,7 @@ static const int constDevImageSize=32;
 
 static inline double subTextAlpha(bool selected)
 {
-    return selected ? 0.7 : 0.6;
+    return selected ? 0.7 : 0.5;
 }
 
 class ListDelegate : public ActionItemDelegate

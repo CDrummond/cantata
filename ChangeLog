@@ -122,6 +122,8 @@
     and the music file does not contain metadata.
 76. Fix setting of cover for albums with cule file.
 77. Fix loading individual songs from cue file.
+78. Build as a Qt-only app by default. Pass -DENABLE_KDE=ON to create KDE
+    build.
 
 1.3.4
 -----

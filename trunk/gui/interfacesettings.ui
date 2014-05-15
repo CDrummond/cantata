@@ -753,7 +753,7 @@ within the folder of the current track, or within its parent folder. If no image
          <item row="2" column="0" colspan="2">
           <widget class="QCheckBox" name="filteredOnly">
            <property name="toolTip">
-            <string>&lt;p&gt;When addig artists, or albums to the playqueue, or editing tags, etc, then only use songs that pass the current Genre or string filter.&lt;/p&gt;&lt;p&gt;e.g. If you have an album with 10 songs, but only 5 have the genre set to 'Metal', then only these 5 would be added if the view's Genre filter was set to 'Metal'.</string>
+            <string>&lt;p&gt;When adding artists, or albums to the playqueue, or editing tags, etc, then only use songs that pass the current Genre or string filter.&lt;/p&gt;&lt;p&gt;e.g. If you have an album with 10 songs, but only 5 have the genre set to 'Metal', then only these 5 would be added if the view's Genre filter was set to 'Metal'.</string>
            </property>
            <property name="text">
             <string>Only act on songs that pass filtering</string>

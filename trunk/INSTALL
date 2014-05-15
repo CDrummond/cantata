@@ -1,38 +1,32 @@
 Build & Installation
 ====================
 
-KDE4
-----
-
+Qt4
+---
 1. mkdir build
 2. cd build
 3. cmake ..
 4. make
 5. sudo make install
 
-
-Qt4
+Qt5
 ---
-
 1. mkdir build
 2. cd build
-3. cmake .. -DENABLE_KDE=OFF
+3. cmake .. -DENABLE_QT5=ON
 4. make
 5. sudo make install
 
-
-Qt5
----
-
+KDE4
+----
 1. mkdir build
 2. cd build
-3. cmake .. -DENABLE_KDE=OFF -DENABLE_QT5=ON
+3. cmake .. -DENABLE_KDE=ON
 4. make
 5. sudo make install
 
 Ubuntu
 ------
-
 1. mkdir build
 2. cd build
 3. cmake .. -DENABLE_UBUNTU=ON

@@ -208,11 +208,9 @@ MainWindow::MainWindow(QWidget *parent)
     topToolBar->addWidget(toolbar);
     topToolBar->setMovable(false);
     topToolBar->setContextMenuPolicy(Qt::PreventContextMenu);
-    #ifndef Q_OS_MAC
-    GtkStyle::applyTheme(topToolBar);
-    #endif // Q_OS_MAC
     topToolBar->ensurePolished();
     #endif // Q_OS_WIN
+    GtkStyle::applyTheme(topToolBar); // Despite its name, it *might* also apply touch style to spinboxes...
 
     Icons::self()->initToolbarIcons(toolbar->palette().color(QPalette::Foreground));
     Icons::self()->initSidebarIcons();

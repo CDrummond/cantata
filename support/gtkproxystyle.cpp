@@ -41,7 +41,6 @@ static const char * constOnCombo="on-combo";
 #ifndef ENABLE_KDE_SUPPORT
 static const char * constAccelProp="catata-accel";
 #endif
-static const double constSpinButtonRatio=1.25;
 
 static bool isOnCombo(const QWidget *w)
 {
@@ -61,25 +60,6 @@ static QPainterPath buildPath(const QRectF &r, double radius)
     return path;
 }
 
-static void drawSpinButton(QPainter *painter, const QRect &r, const QColor &col, bool isPlus)
-{
-    int length=r.height()*0.5;
-    int lineWidth=length<24 ? 2 : 4;
-    if (length<(lineWidth*2)) {
-        length=lineWidth*2;
-    } else if (length%2) {
-        length++;
-    } 
-
-    painter->save();
-    painter->setRenderHint(QPainter::Antialiasing, false);
-    painter->fillRect(r.x()+((r.width()-length)/2), r.y()+((r.height()-lineWidth)/2), length, lineWidth, col);
-    if (isPlus) {
-        painter->fillRect(r.x()+((r.width()-lineWidth)/2), r.y()+((r.height()-length)/2), lineWidth, length, col);
-    }
-    painter->restore();
-}
-
 static inline void addEventFilter(QObject *object, QObject *filter)
 {
     object->removeEventFilter(filter);
@@ -87,9 +67,8 @@ static inline void addEventFilter(QObject *object, QObject *filter)
 }
 
 GtkProxyStyle::GtkProxyStyle(ScrollbarType sb, bool styleSpin, const QMap<QString, QString> &c, bool modView)
-    : QProxyStyle()
+    : TouchProxyStyle(styleSpin)
     , sbarType(sb)
-    , touchStyleSpin(styleSpin)
     , modViewFrame(modView)
     , css(c)
 {
@@ -115,7 +94,7 @@ GtkProxyStyle::~GtkProxyStyle()
 
 QSize GtkProxyStyle::sizeFromContents(ContentsType type, const QStyleOption *option,  const QSize &size, const QWidget *widget) const
 {
-    QSize sz=baseStyle()->sizeFromContents(type, option, size, widget);
+    QSize sz=TouchProxyStyle::sizeFromContents(type, option, size, widget);
 
     if (SB_Standard!=sbarType && CT_ScrollBar==type) {
         if (const QStyleOptionSlider *sb = qstyleoption_cast<const QStyleOptionSlider *>(option)) {
@@ -126,38 +105,6 @@ QSize GtkProxyStyle::sizeFromContents(ContentsType type, const QStyleOption *opt
                 sz = QSize(sliderMin, extent);
             } else {
                 sz = QSize(extent, sliderMin);
-            }
-        }
-    } else if (touchStyleSpin && CT_SpinBox==type) {
-        if (const QStyleOptionSpinBox *spinBox = qstyleoption_cast<const QStyleOptionSpinBox *>(option)) {
-            if (QAbstractSpinBox::NoButtons!=spinBox->buttonSymbols) {
-                #if QT_VERSION < 0x050200
-                sz += QSize(0, 1);
-                #endif
-                #if QT_VERSION >= 0x050000
-                // Qt5 does not seem to be taking special value, or suffix, into account when calculatng width...
-                if (widget && qobject_cast<const QSpinBox *>(widget)) {
-                    const QSpinBox *spin=static_cast<const QSpinBox *>(widget);
-                    QString special=spin->specialValueText();
-                    int minWidth=0;
-                    if (!special.isEmpty()) {
-                        minWidth=option->fontMetrics.width(special+QLatin1String(" "));
-                    }
-
-                    QString suffix=spin->suffix()+QLatin1String(" ");
-                    minWidth=qMax(option->fontMetrics.width(QString::number(spin->minimum())+suffix), minWidth);
-                    minWidth=qMax(option->fontMetrics.width(QString::number(spin->maximum())+suffix), minWidth);
-
-                    if (minWidth>0) {
-                        int frameWidth=baseStyle()->pixelMetric(QStyle::PM_DefaultFrameWidth, option, 0);
-                        int buttonWidth=(sz.height()-(frameWidth*2))*constSpinButtonRatio;
-                        minWidth=((minWidth+(buttonWidth+frameWidth)*2)*1.05)+0.5;
-                        if (sz.width()<minWidth) {
-                            sz.setWidth(minWidth);
-                        }
-                    }
-                }
-                #endif
             }
         }
     }
@@ -253,34 +200,8 @@ QRect GtkProxyStyle::subControlRect(ComplexControl control, const QStyleOptionCo
             }
             return visualRect(sb->direction/*Qt::LeftToRight*/, sb->rect, ret);
         }
-    } else if (touchStyleSpin && CC_SpinBox==control) {
-        if (const QStyleOptionSpinBox *spinBox = qstyleoption_cast<const QStyleOptionSpinBox *>(option)) {
-            if (QAbstractSpinBox::NoButtons!=spinBox->buttonSymbols) {
-                int border=2;
-                int internalHeight=spinBox->rect.height()-(border*2);
-                int internalWidth=internalHeight*constSpinButtonRatio;
-                switch (subControl) {
-                case SC_SpinBoxUp:
-                    return Qt::LeftToRight==spinBox->direction
-                                ? QRect(spinBox->rect.width()-(internalWidth+border), border, internalWidth, internalHeight)
-                                : QRect(border, border, internalWidth, internalHeight);
-                case SC_SpinBoxDown:
-                    return Qt::LeftToRight==spinBox->direction
-                                ? QRect(spinBox->rect.width()-((internalWidth*2)+border), border, internalWidth, internalHeight)
-                                : QRect(internalWidth+border, border, internalWidth, internalHeight);
-                case SC_SpinBoxEditField:
-                    return Qt::LeftToRight==spinBox->direction
-                            ? QRect(border, border, spinBox->rect.width()-((internalWidth*2)+border), internalHeight)
-                            : QRect(((internalWidth*2)+border), border, spinBox->rect.width()-((internalWidth*2)+border), internalHeight);
-                case SC_SpinBoxFrame:
-                    return spinBox->rect;
-                default:
-                    break;
-                }
-            }
-        }
     }
-    return baseStyle()->subControlRect(control, option, subControl, widget);
+    return TouchProxyStyle::subControlRect(control, option, subControl, widget);
 }
 
 void GtkProxyStyle::drawComplexControl(ComplexControl control, const QStyleOptionComplex *option, QPainter *painter, const QWidget *widget) const
@@ -324,63 +245,8 @@ void GtkProxyStyle::drawComplexControl(ComplexControl control, const QStyleOptio
             painter->restore();
             return;
         }
-    } else if (touchStyleSpin && CC_SpinBox==control) {
-        if (const QStyleOptionSpinBox *spinBox = qstyleoption_cast<const QStyleOptionSpinBox *>(option)) {
-            if (QAbstractSpinBox::NoButtons!=spinBox->buttonSymbols) {
-                // Use PE_FrameLineEdit to draw border, as QGtkStyle corrupts focus settings
-                // if its asked to draw a QSpinBox with no buttons that has focus.
-                QStyleOptionFrameV2 opt;
-                opt.state=spinBox->state;
-                opt.state|=State_Sunken;
-                opt.rect=spinBox->rect;
-                opt.palette=spinBox->palette;
-                opt.lineWidth=baseStyle()->pixelMetric(QStyle::PM_DefaultFrameWidth, option, 0);
-                opt.midLineWidth=0;
-                opt.fontMetrics=spinBox->fontMetrics;
-                opt.direction=spinBox->direction;
-                opt.type=QStyleOption::SO_Default;
-                opt.version=1;
-                baseStyle()->drawPrimitive(PE_FrameLineEdit, &opt, painter, 0);
-
-                QRect plusRect=subControlRect(CC_SpinBox, spinBox, SC_SpinBoxUp, widget);
-                QRect minusRect=subControlRect(CC_SpinBox, spinBox, SC_SpinBoxDown, widget);
-                QColor separatorColor(spinBox->palette.foreground().color());
-                separatorColor.setAlphaF(0.15);
-                painter->setPen(separatorColor);
-                if (Qt::LeftToRight==spinBox->direction) {
-                    painter->drawLine(plusRect.topLeft(), plusRect.bottomLeft());
-                    painter->drawLine(minusRect.topLeft(), minusRect.bottomLeft());
-                } else {
-                    painter->drawLine(plusRect.topRight(), plusRect.bottomRight());
-                    painter->drawLine(minusRect.topRight(), minusRect.bottomRight());
-                }
-
-                if (option->state&State_Sunken) {
-                    QRect fillRect;
-
-                    if (spinBox->activeSubControls&SC_SpinBoxUp) {
-                        fillRect=plusRect;
-                    } else if (spinBox->activeSubControls&SC_SpinBoxDown) {
-                        fillRect=minusRect;
-                    }
-                    if (!fillRect.isEmpty()) {
-                        QColor col=spinBox->palette.highlight().color();
-                        col.setAlphaF(0.1);
-                        painter->fillRect(fillRect.adjusted(1, 1, -1, -1), col);
-                    }
-                }
-
-                drawSpinButton(painter, plusRect,
-                               spinBox->palette.color(spinBox->state&State_Enabled && (spinBox->stepEnabled&QAbstractSpinBox::StepUpEnabled)
-                                ? QPalette::Current : QPalette::Disabled, QPalette::Text), true);
-                drawSpinButton(painter, minusRect,
-                               spinBox->palette.color(spinBox->state&State_Enabled && (spinBox->stepEnabled&QAbstractSpinBox::StepDownEnabled)
-                                ? QPalette::Current : QPalette::Disabled, QPalette::Text), false);
-                return;
-            }
-        }
     }
-    baseStyle()->drawComplexControl(control, option, painter, widget);
+    TouchProxyStyle::drawComplexControl(control, option, painter, widget);
 }
 
 void GtkProxyStyle::drawPrimitive(PrimitiveElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget) const
@@ -445,7 +311,7 @@ void GtkProxyStyle::polish(QWidget *widget)
             widget->setStyleSheet(it.value());
         }
     }
-    baseStyle()->polish(widget);
+    TouchProxyStyle::polish(widget);
 }
 
 void GtkProxyStyle::polish(QPalette &pal)

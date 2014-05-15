@@ -31,7 +31,13 @@ class ProxyStyle : public QProxyStyle
 public:
     ProxyStyle() { }
 
+    void polish(QPalette &pal) { QProxyStyle::polish(pal); }
+    void polish(QApplication *app) { QProxyStyle::polish(app); }
+    #ifdef ENABLE_KDE_SUPPORT
+    void polish(QWidget *widget) { QProxyStyle::polish(widget); }
+    #else
     void polish(QWidget *widget);
+    #endif
 };
 
 #endif

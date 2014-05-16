@@ -76,22 +76,21 @@ Page {
     ]
 
     tools: ToolbarItems {
-        opened: true
-        locked: (root.width > units.gu(60) && opened) || (actionsPopover != null && actionsPopover.visible) //"&& opened": prevents the bar from being hidden and locked at the same time
         pageStack: pageStack
+
         ToolbarButton {
-            iconSource: Qt.resolvedUrl("../../icons/toolbar/clear.svg")
             action: Action {
+                iconSource: Qt.resolvedUrl("../../icons/toolbar/clear.svg")
                 text: i18n.tr("Clear")
                 onTriggered: PopupUtils.open(dialog)
             }
         }
         ToolbarButton {
             id: actionActionToolbarButton
-            iconSource: Qt.resolvedUrl("../../icons/toolbar/navigation-menu.svg")
             action: Action {
+                iconSource: Qt.resolvedUrl("../../icons/toolbar/navigation-menu.svg")
                 text: i18n.tr("Actions")
-                onTriggered: actionsPopover = PopupUtils.open(actionsPopoverComponent, actionActionToolbarButton)
+                onTriggered: actionsPopover = PopupUtils.open(actionsPopoverComponent, actionActionToolbarButton) //TODO: fix anchor
             }
             visible: isPhone
         }

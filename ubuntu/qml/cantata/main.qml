@@ -42,6 +42,8 @@ MainView {
 
     backgroundColor: "#395996"
 
+    useDeprecatedToolbar: false //displays the new header
+
     property bool isPhone: width < units.gu(60)
 
     PageStack {

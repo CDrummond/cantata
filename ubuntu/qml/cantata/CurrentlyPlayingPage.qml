@@ -80,7 +80,7 @@ Page {
 
         ToolbarButton {
             action: Action {
-                iconName: "clear"
+                iconSource: Qt.resolvedUrl("../../icons/toolbar/clear.svg")
                 text: i18n.tr("Clear")
                 onTriggered: PopupUtils.open(dialog)
             }
@@ -88,7 +88,7 @@ Page {
         ToolbarButton {
             id: actionActionToolbarButton
             action: Action {
-                iconName: "navigation-menu"
+                iconSource: Qt.resolvedUrl("../../icons/toolbar/navigation-menu.svg")
                 text: i18n.tr("Actions")
                 onTriggered: actionsPopover = PopupUtils.open(actionsPopoverComponent, actionActionToolbarButton) //TODO: fix anchor
             }

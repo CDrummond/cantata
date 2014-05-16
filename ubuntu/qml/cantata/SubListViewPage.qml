@@ -50,13 +50,13 @@ Page {
         newRows[rows.length] = index
         return newRows
     }
-    
-    function add(index, replace) {
-        var notifyText = backend.add(modelName, hierarchy(index), replace)
+
+    function add(index, replace, mainText) {
+        backend.add(modelName, index, replace)
         if (replace) {
             pageStack.push(currentlyPlayingPage)
-        } else if (notifyText !== undefined && notifyText !== "") {
-            notification.show(notifyText)
+        } else if (mainText !== undefined && mainText !== "") {
+            notification.show(qsTr(i18n.tr("Added \"%1\"")).arg(mainText))
         }
     }
 
@@ -156,8 +156,8 @@ Page {
                 progression: model.hasChildren
                 forceProgressionSpacing: subListView.hasProgression
 
-                onFirstImageButtonClicked: subListViewPage.add(index, true)
-                onSecondImageButtonClicked: subListViewPage.add(index, false)
+                onFirstImageButtonClicked: subListViewPage.add(index, true, model.mainText)
+                onSecondImageButtonClicked: subListViewPage.add(index, false, model.mainText)
 
                 onClicked: model.hasChildren ? subListViewPage.onDelegateClicked(index, model.titleText) : "";
                 onItemRemoved: subListViewPage.remove(index)

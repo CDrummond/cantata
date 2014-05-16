@@ -42,12 +42,12 @@ Page {
     property alias emptyViewVisible: emptyLabel.visible
     property alias emptyViewText: emptyLabel.text
 
-    function add(index, replace) {
-        var notifyText = backend.add(modelName, index, replace)
+    function add(index, replace, mainText) {
+        backend.add(modelName, index, replace)
         if (replace) {
             pageStack.push(currentlyPlayingPage)
-        } else if (notifyText !== undefined && notifyText !== "") {
-            notification.show(notifyText)
+        } else if (mainText !== undefined && mainText !== "") {
+            notification.show(qsTr(i18n.tr("Added \"%1\"")).arg(mainText))
         }
     }
 
@@ -134,8 +134,8 @@ Page {
             firstButtonImageSource: "../../icons/toolbar/media-playback-start-light.svg"
             secondButtonImageSource: "../../icons/toolbar/add.svg"
 
-            onFirstImageButtonClicked: listViewPage.add(index, true)
-            onSecondImageButtonClicked: listViewPage.add(index, false)
+            onFirstImageButtonClicked: listViewPage.add(index, true, model.mainText)
+            onSecondImageButtonClicked: listViewPage.add(index, false, model.mainText)
 
             onClicked: model.hasChildren ? listViewPage.onDelegateClicked(index, model.titleText) : "";
             onItemRemoved: listViewPage.remove(index)

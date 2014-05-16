@@ -84,7 +84,7 @@ Page {
     tools: ToolbarItems {
         ToolbarButton {
             action: Action {
-                iconName: "media-playback-start"
+                iconSource: Qt.resolvedUrl("../../icons/toolbar/media-playback-start.svg")
                 text: i18n.tr("Playing")
                 onTriggered: pageStack.push(currentlyPlayingPage)
             }
@@ -92,7 +92,7 @@ Page {
 
         ToolbarButton {
             action: Action {
-                iconName: "settings"
+                iconSource: Qt.resolvedUrl("../../icons/toolbar/settings.svg")
                 text: i18n.tr("Settings")
                 onTriggered: pageStack.push(settingsPage)
             }
@@ -100,7 +100,7 @@ Page {
 
         ToolbarButton {
             action: Action {
-                iconName: "help"
+                iconSource: Qt.resolvedUrl("../../icons/toolbar/help.svg")
                 text: i18n.tr("About")
                 onTriggered: pageStack.push(aboutPage)
             }

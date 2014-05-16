@@ -34,12 +34,6 @@ Page {
     title: i18n.tr("About")
     visible: false
 
-    tools: ToolbarItems {
-        pageStack: root.pageStack
-        opened: true
-        locked: root.width > units.gu(60) && opened //"&& opened": prevents the bar from being hidden and locked at the same time
-    }
-
     Layouts {
         id: aboutTabLayout
         anchors.fill: parent

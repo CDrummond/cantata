@@ -65,6 +65,7 @@ Flickable {
 
         ListItem.Standard {
             id: playbackSettingsLabel
+            enabled: false
             text: i18n.tr("Playback")
             progression: true
             selected: !root.isPhone && selectedIndex === 2

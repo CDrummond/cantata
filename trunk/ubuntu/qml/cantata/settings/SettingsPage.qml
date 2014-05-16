@@ -48,19 +48,6 @@ Page {
         }
     ]
 
-    tools: ToolbarItems {
-        opened: true
-        locked: root.width > units.gu(60) && opened //"&& opened": prevents the bar from being hidden and locked at the same time
-
-        Component.onCompleted: {
-            back.triggered.connect(test)
-        }
-
-        function test() {
-            console.log("asdf")
-        }
-    }
-
     Layouts {
         id: layouts
         anchors {

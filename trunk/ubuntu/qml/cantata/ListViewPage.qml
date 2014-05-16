@@ -82,28 +82,25 @@ Page {
     ]
 
     tools: ToolbarItems {
-        opened: true
-        locked: root.width > units.gu(60) && opened //"&& opened": prevents the bar from being hidden and locked at the same time
-
         ToolbarButton {
-            iconSource: Qt.resolvedUrl("../../icons/toolbar/media-playback-start.svg")
             action: Action {
+                iconSource: Qt.resolvedUrl("../../icons/toolbar/media-playback-start.svg")
                 text: i18n.tr("Playing")
                 onTriggered: pageStack.push(currentlyPlayingPage)
             }
         }
 
         ToolbarButton {
-            iconSource: Qt.resolvedUrl("../../icons/toolbar/settings.svg")
             action: Action {
+                iconSource: Qt.resolvedUrl("../../icons/toolbar/settings.svg")
                 text: i18n.tr("Settings")
                 onTriggered: pageStack.push(settingsPage)
             }
         }
 
         ToolbarButton {
-            iconSource: Qt.resolvedUrl("../../icons/toolbar/help.svg")
             action: Action {
+                iconSource: Qt.resolvedUrl("../../icons/toolbar/help.svg")
                 text: i18n.tr("About")
                 onTriggered: pageStack.push(aboutPage)
             }

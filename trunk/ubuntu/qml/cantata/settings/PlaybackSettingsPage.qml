@@ -49,12 +49,6 @@ Page {
         }
     ]
 
-    tools: ToolbarItems {
-        opened: true
-        locked: root.width > units.gu(60) && opened //"&& opened": prevents the bar from being hidden and locked at the same time
-        pageStack: pageStack
-    }
-
     PlaybackSettingsContent {
         anchors {
             top: parent.top

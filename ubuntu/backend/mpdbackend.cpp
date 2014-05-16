@@ -274,10 +274,10 @@ void MPDBackend::playlistsUpdated() {
     emit onPlaylistsModelChanged();
 }
 
-void MPDBackend::add(const QString &modelName, const QVariant &rows, bool replace) { //TODO: SubListViewPage!!!
+void MPDBackend::add(const QString &modelName, const QVariant &rows, bool replace) {
     if (QVariant::Int==rows.type() && "playlists"==modelName) {
         loadPlaylist(rows.toInt(), replace);
-        return; //no replace for playlists
+        return;
     }
 
     ProxyModel *proxy=0;

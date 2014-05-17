@@ -48,6 +48,7 @@
 #include "librarypage.h"
 #include "albumspage.h"
 #include "folderpage.h"
+#include "scrobbling/scrobbler.h"
 #ifdef ENABLE_STREAMS
 #include "streams/streamspage.h"
 #include "streams/streamdialog.h"
@@ -834,6 +835,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(tabWidget, SIGNAL(currentChanged(int)), this, SLOT(currentTabChanged(int)));
     connect(tabWidget, SIGNAL(tabToggled(int)), this, SLOT(tabToggled(int)));
     connect(tabWidget, SIGNAL(configRequested()), this, SLOT(showSidebarPreferencesPage()));
+    connect(lastFmStatusLabel, SIGNAL(clicked()), this, SLOT(showScrobblingPreferencesPage()));
 
     readSettings();
     updateConnectionsMenu();
@@ -919,6 +921,7 @@ MainWindow::~MainWindow()
     Tags::stop();
     #endif
     ThreadCleaner::self()->stopAll();
+    Scrobbler::self()->stop();
 }
 
 void MainWindow::addMenuAction(QMenu *menu, QAction *action)

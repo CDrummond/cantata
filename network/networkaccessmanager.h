@@ -106,6 +106,7 @@ public:
 
     NetworkJob * get(const QNetworkRequest &req, int timeout=0);
     NetworkJob * get(const QUrl &url, int timeout=0) { return get(QNetworkRequest(url), timeout); }
+    QNetworkReply * postFormData(const QUrl &url, const QByteArray &data);
 
     void setEnabled(bool e) { enabled=e; }
     bool isEnabled() const { return enabled; }

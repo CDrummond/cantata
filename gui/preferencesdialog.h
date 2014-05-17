@@ -54,6 +54,7 @@ class QStringList;
 #ifdef ENABLE_PROXY_CONFIG
 class ProxySettings;
 #endif
+class ScrobblingSettings;
 
 class PreferencesDialog : public Dialog
 {
@@ -103,6 +104,7 @@ private:
     #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
     AudioCdSettings *audiocd;
     #endif
+    ScrobblingSettings *scrobbling;
     QMap<QString, PageWidgetItem *> pages;
 };
 

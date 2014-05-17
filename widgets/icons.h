@@ -95,6 +95,7 @@ public:
     #ifdef ENABLE_DEVICES_SUPPORT
     Icon devicesIcon;
     #endif
+    Icon lastFmIcon;
 
     Icon toolbarMenuIcon;
     Icon toolbarPrevIcon;

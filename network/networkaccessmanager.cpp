@@ -220,6 +220,15 @@ NetworkJob * NetworkAccessManager::get(const QNetworkRequest &req, int timeout)
     return reply;
 }
 
+QNetworkReply * NetworkAccessManager::postFormData(const QUrl &url, const QByteArray &data)
+{
+    QNetworkRequest req(url);
+    if (!data.isEmpty()) {
+        req.setRawHeader("Content-Type", "application/x-www-form-urlencoded");
+    }
+    return BASE_NETWORK_ACCESS_MANAGER::post(req, data);
+}
+
 void NetworkAccessManager::replyFinished()
 {
     NetworkJob *job = static_cast<NetworkJob*>(sender());

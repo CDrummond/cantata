@@ -107,19 +107,26 @@ void DigitallyImportedSettings::show()
 void DigitallyImportedSettings::login()
 {
     if (DigitallyImported::self()->loggedIn()) {
-        loginStatusLabel->setText(i18n("Logged out"));
+        loginStatusLabel->setText(i18n("Not Authenticated"));
         DigitallyImported::self()->logout();
     } else {
-        loginStatusLabel->setText(i18n("Logging in..."));
+        loginStatusLabel->setText(i18n("Authenticating..."));
+        messageWidget->close();
         DigitallyImported::self()->setUser(user->text().trimmed());
         DigitallyImported::self()->setPass(pass->text().trimmed());
         DigitallyImported::self()->login();
     }
 }
 
-void DigitallyImportedSettings::loginStatus(bool, const QString &msg)
+void DigitallyImportedSettings::loginStatus(bool status, const QString &msg)
 {
-    loginStatusLabel->setText(msg);
+    loginStatusLabel->setText(status ? i18n("Authenticated") : i18n("Not Authenticated"));
+    if (status) {
+        messageWidget->close();
+    } else {
+        messageWidget->setError(msg, true);
+        adjustSize();
+    }
     setState();
 }
 

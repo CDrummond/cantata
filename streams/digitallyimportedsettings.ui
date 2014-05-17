@@ -98,19 +98,6 @@
       <item row="3" column="1">
        <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
-         <widget class="QPushButton" name="loginButton">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>Login</string>
-          </property>
-         </widget>
-        </item>
-        <item>
          <widget class="QLabel" name="loginStatusLabel">
           <property name="sizePolicy">
            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
@@ -120,6 +107,19 @@
           </property>
           <property name="text">
            <string>TextLabel</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="loginButton">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Login</string>
           </property>
          </widget>
         </item>
@@ -139,6 +139,16 @@
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0" colspan="2">
+       <widget class="MessageWidget" name="messageWidget">
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
         </property>
        </widget>
       </item>
@@ -196,6 +206,12 @@
    <class>BuddyLabel</class>
    <extends>QLabel</extends>
    <header>support/buddylabel.h</header>
+  </customwidget>
+  <customwidget>
+   <class>MessageWidget</class>
+   <extends>QFrame</extends>
+   <header>support/messagewidget.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>

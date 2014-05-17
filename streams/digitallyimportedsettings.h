@@ -43,7 +43,7 @@ public:
 
 private Q_SLOTS:
     void login();
-    void loginStatus(bool, const QString &msg);
+    void loginStatus(bool status, const QString &msg);
 
 private:
     void setState();

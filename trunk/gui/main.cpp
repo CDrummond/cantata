@@ -62,6 +62,7 @@
 #include "tags/taghelperiface.h"
 #endif
 #include "context/contextwidget.h"
+#include "scrobbling/scrobbler.h"
 
 #include <QMutex>
 #include <QMutexLocker>
@@ -132,25 +133,26 @@ static void loadTranslation(const QString &prefix, const QString &path, const QS
 #endif
 
 enum Debug {
-    Dbg_Mpd               = 0x0001,
-    Dbg_MpdParse          = 0x0002,
-    Dbg_Covers            = 0x0004,
-    Dbg_Context_Wikipedia = 0x0008,
-    Dbg_Context_LastFm    = 0x0010,
-    Dbg_Context_Meta      = 0x0020,
-    Dbg_Context_Widget    = 0x0040,
-    Dbg_Context_Backdrop  = 0x0080,
-    Dbg_Dynamic           = 0x0100,
-    Dbg_StreamFetching    = 0x0200,
-    Dbg_HttpServer        = 0x0400,
-    Dbg_SongDialogs       = 0x0800,
-    Dbg_NetworkAccess     = 0x1000,
-    Dbg_Context_Lyrics    = 0x2000,
-    Dbg_Threads           = 0x4000,
-    Dbg_Tags              = 0x8000,
+    Dbg_Mpd               = 0x00000001,
+    Dbg_MpdParse          = 0x00000002,
+    Dbg_Covers            = 0x00000004,
+    Dbg_Context_Wikipedia = 0x00000008,
+    Dbg_Context_LastFm    = 0x00000010,
+    Dbg_Context_Meta      = 0x00000020,
+    Dbg_Context_Widget    = 0x00000040,
+    Dbg_Context_Backdrop  = 0x00000080,
+    Dbg_Dynamic           = 0x00000100,
+    Dbg_StreamFetching    = 0x00000200,
+    Dbg_HttpServer        = 0x00000400,
+    Dbg_SongDialogs       = 0x00000800,
+    Dbg_NetworkAccess     = 0x00001000,
+    Dbg_Context_Lyrics    = 0x00002000,
+    Dbg_Threads           = 0x00004000,
+    Dbg_Tags              = 0x00008000,
+    Dbg_Scrobbling        = 0x00010000,
 
     // NOTE: MUST UPDATE Dbg_All IF ADD NEW ITEMS!!!
-    Dbg_All               = 0xFFFF
+    Dbg_All               = 0x0001FFFF
 };
 
 static void installDebugMessageHandler()
@@ -214,6 +216,9 @@ static void installDebugMessageHandler()
             TagHelperIface::enableDebug();
         }
         #endif
+        if (dbg&Dbg_Scrobbling) {
+            Scrobbler::enableDebug();
+        }
         if (dbg&Dbg_All && logToFile) {
             #if QT_VERSION < 0x050000
             qInstallMsgHandler(cantataQtMsgHandler);

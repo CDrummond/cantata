@@ -52,6 +52,7 @@
 #include "tags/taghelperiface.h"
 #endif
 #include "support/gtkstyle.h"
+#include "scrobbling/scrobbler.h"
 
 void Application::initObjects()
 {
@@ -62,6 +63,7 @@ void Application::initObjects()
     #ifdef ENABLE_EXTERNAL_TAGS
     TagHelperIface::self();
     #endif
+    Scrobbler::self();
 
     Utils::initRand();
     Song::initTranslations();

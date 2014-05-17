@@ -54,6 +54,7 @@
 #ifndef ENABLE_KDE_SUPPORT
 #include "shortcutssettingspage.h"
 #endif
+#include "scrobbling/scrobblingsettings.h"
 
 static int iCount=0;
 
@@ -75,11 +76,13 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
     interface = new InterfaceSettings(0);
     context = new ContextSettings(0);
     cache = new CacheSettings(0);
+    scrobbling = new ScrobblingSettings(0);
     server->load();
     playback->load();
     files->load();
     interface->load();
     context->load();
+    scrobbling->load();
     pages.insert(QLatin1String("collection"), pageWidget->addPage(server, i18n("Collection"), Icons::self()->libraryIcon, i18n("Collection Settings")));
     pageWidget->addPage(playback, i18n("Playback"), Icon("media-playback-start"), i18n("Playback Settings"));
     pageWidget->addPage(files, i18n("Files"), Icons::self()->filesIcon, i18n("File Settings"));
@@ -95,6 +98,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
     online->load();
     #endif
     pageWidget->addPage(context, i18n("Context"), Icons::self()->contextIcon, i18n("Context View Settings"));
+    pages.insert(QLatin1String("scrobbling"), pageWidget->addPage(scrobbling, i18n("Scrobbling"), Icons::self()->lastFmIcon, i18n("Scrobbling Settings")));
     #ifdef ENABLE_HTTP_SERVER
     http = new HttpServerSettings(0);
     if (http->haveMultipleInterfaces()) {
@@ -178,6 +182,7 @@ void PreferencesDialog::writeSettings()
     audiocd->save();
     #endif
     context->save();
+    scrobbling->save();
     Settings::self()->save();
     emit settingsSaved();
 }

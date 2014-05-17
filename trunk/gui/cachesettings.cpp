@@ -43,6 +43,7 @@
 #include "online//podcastsearchdialog.h"
 #endif
 #include "support/squeezedtextlabel.h"
+#include "scrobbling/scrobbler.h"
 #include <QLabel>
 #include <QPushButton>
 #include <QStyle>
@@ -276,6 +277,7 @@ CacheSettings::CacheSettings(QWidget *parent)
     new CacheItem(i18n("Podcast Directories"), Utils::cacheDir(PodcastSearchDialog::constCacheDir, false), QStringList() << "*"+PodcastSearchDialog::constExt, tree);
     #endif
     new CacheItem(i18n("Wikipedia Languages"), Utils::cacheDir(WikipediaSettings::constSubDir, false), QStringList() << "*.xml.gz", tree);
+    new CacheItem(i18n("Scrobble Tracks"), Utils::cacheDir(Scrobbler::constCacheDir, false), QStringList() << "*.xml.gz", tree);
 
     for (int i=0; i<tree->topLevelItemCount(); ++i) {
         connect(static_cast<CacheItem *>(tree->topLevelItem(i)), SIGNAL(updated()), this, SLOT(updateSpace()));

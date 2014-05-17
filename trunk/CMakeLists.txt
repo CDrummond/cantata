@@ -317,7 +317,8 @@ set(CANTATA_SRCS ${CANTATA_CORE_SRCS}
     context/lyricsettings.cpp context/ultimatelyricsprovider.cpp context/ultimatelyrics.cpp context/lyricsdialog.cpp
     context/contextwidget.cpp context/view.cpp context/artistview.cpp context/albumview.cpp context/songview.cpp context/contextengine.cpp
     context/wikipediaengine.cpp context/wikipediasettings.cpp context/othersettings.cpp context/contextsettings.cpp context/togglelist.cpp
-    context/lastfmengine.cpp context/metaengine.cpp context/backdropcreator.cpp)
+    context/lastfmengine.cpp context/metaengine.cpp context/backdropcreator.cpp
+    scrobbling/scrobbler.cpp scrobbling/pausabletimer.cpp scrobbling/scrobblingsettings.cpp scrobbling/scrobblingstatuslabel.cpp)
 set(CANTATA_MOC_HDRS ${CANTATA_CORE_MOC_HDRS}
     gui/settings.h gui/initialsettingswizard.h gui/mainwindow.h gui/folderpage.h gui/librarypage.h gui/albumspage.h gui/playlistspage.h
     gui/playbacksettings.h gui/serversettings.h gui/preferencesdialog.h gui/interfacesettings.h gui/cachesettings.h gui/trayitem.h
@@ -328,12 +329,13 @@ set(CANTATA_MOC_HDRS ${CANTATA_CORE_MOC_HDRS}
     context/togglelist.h context/ultimatelyrics.h context/ultimatelyricsprovider.h context/lyricsdialog.h
     context/contextwidget.h context/artistview.h context/albumview.h context/songview.h context/view.h context/contextengine.h
     context/wikipediaengine.h context/wikipediasettings.h context/othersettings.h context/lastfmengine.h context/metaengine.h
-    context/backdropcreator.h)
+    context/backdropcreator.h
+    scrobbling/scrobbler.h scrobbling/scrobblingsettings.h scrobbling/scrobblingstatuslabel.h)
 set(CANTATA_UIS
     gui/initialsettingswizard.ui gui/mainwindow.ui gui/folderpage.ui gui/librarypage.ui gui/albumspage.ui gui/playlistspage.ui
     gui/filesettings.ui gui/interfacesettings.ui gui/playbacksettings.ui gui/serversettings.ui gui/coverdialog.ui gui/searchpage.ui
     context/togglelist.ui context/othersettings.ui
-    widgets/itemview.ui)
+    widgets/itemview.ui scrobbling/scrobblingsettings.ui)
 
 if (ENABLE_UBUNTU)
     set(UBUNTU_SRCS ${CANTATA_CORE_SRCS} ubuntu/main.cpp ubuntu/backend/mpdbackend.cpp gui/plurals_qt.cpp)

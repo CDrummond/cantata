@@ -870,6 +870,7 @@ The following debug values may be used:
     Context lyrics            8192
     Threads                  16384
     External Tags            32768
+    Scrobbling               65536
 
 These values may be combined to enable multiple output. e.g. to enable MPD and
 covers logging:
@@ -927,6 +928,7 @@ Cantata contains code/icons from:
                          (Ubuntu about page)
     ubuntu-ui-extras   - https://github.com/iBeliever/ubuntu-ui-extras (Ubuntu 
                          notification code)
+    QMPDClient         - Last.fm scrobbling
 
 
 16. Windows

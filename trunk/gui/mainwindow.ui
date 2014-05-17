@@ -277,6 +277,9 @@
            </spacer>
           </item>
           <item>
+           <widget class="ScrobblingStatusLabel" name="lastFmStatusLabel"/>
+          </item>
+          <item>
            <widget class="ToolButton" name="repeatButton">
             <property name="checkable">
              <bool>true</bool>
@@ -419,6 +422,11 @@
    <class>VolumeSlider</class>
    <extends>QSlider</extends>
    <header>widgets/volumeslider.h</header>
+  </customwidget>
+  <customwidget>
+   <class>ScrobblingStatusLabel</class>
+   <extends>QLabel</extends>
+   <header>scrobbling/scrobblingstatuslabel.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

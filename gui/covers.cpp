@@ -76,7 +76,7 @@ bool Covers::debugEnabled()
     return debugIsEnabled;
 }
 
-const QLatin1String Covers::constLastFmApiKey("11172d35eb8cc2fd33250a9e45a2d486");
+const QLatin1String Covers::constLastFmApiKey("5a854b839b10f8d46e630e8287c2299b");
 const QLatin1String Covers::constCoverDir("covers/");
 const QLatin1String Covers::constScaledCoverDir("covers-scaled/");
 const QLatin1String Covers::constCddaCoverDir("cdda/");

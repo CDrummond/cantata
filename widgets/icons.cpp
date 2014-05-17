@@ -430,6 +430,7 @@ Icons::Icons()
     #ifndef ENABLE_UBUNTU
     appIcon.addFile(":cantata.svg");
     #endif
+    lastFmIcon.addFile(":lastfm.svg");
 
     shortcutsIcon=Icon("preferences-desktop-keyboard");
     #if !defined Q_OS_WIN && !defined Q_OS_MAC && !defined ENABLE_UBUNTU

@@ -52,7 +52,7 @@ Page {
     }
 
     function add(index, replace, mainText) {
-        backend.add(modelName, index, replace)
+        backend.add(modelName, hierarchy(index), replace)
         if (replace) {
             pageStack.push(currentlyPlayingPage)
         } else if (mainText !== undefined && mainText !== "") {

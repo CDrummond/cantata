@@ -269,12 +269,12 @@ void Scrobbler::setEnabled(bool e)
 
 void Scrobbler::setSong(const Song &s)
 {
-    if (!isEnabled() || s.isStandardStream()) {
+    if (!isEnabled() || s.isStandardStream() || s.time<30) {
         return;
     }
 
     nowPlayingTimer->setInterval(5000);
-    scrobbleTimer->setInterval(s.time < 480 ? 500 : 240000);
+    scrobbleTimer->setInterval(qMin(s.time/2, 240)*1000); // Scrobble at 1/2 way point or 4 mins - whichever comes first!
     if (currentSong.artist != s.artist || currentSong.title!=s.title || currentSong.album!=s.album) {
         currentSong=s;
         if (MPDState_Playing==MPDStatus::self()->state() && s.time>30) {

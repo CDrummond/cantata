@@ -21,32 +21,16 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef SCROBBLING_STATUS_LABEL_H
-#define SCROBBLING_STATUS_LABEL_H
+#ifndef SCROBBLING_STATUS_H
+#define SCROBBLING_STATUS_H
 
-#include <QLabel>
+#include "widgets/toolbutton.h"
 
-class ScrobblingStatusLabel : public QLabel
+class ScrobblingStatus : public ToolButton
 {
-    Q_OBJECT
-
 public:
-    ScrobblingStatusLabel(QWidget *p);
-    virtual ~ScrobblingStatusLabel() { }
-
-Q_SIGNALS:
-    void clicked();
-
-private Q_SLOTS:
-    void setStatus(bool on);
-
-private:
-    void mousePressEvent(QMouseEvent *ev);
-    void mouseReleaseEvent(QMouseEvent *ev);
-
-private:
-    int imageSize;
-    bool pressed;
+    ScrobblingStatus(QWidget *p);
+    virtual ~ScrobblingStatus() { }
 };
 
 #endif

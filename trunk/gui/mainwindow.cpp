@@ -835,7 +835,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(tabWidget, SIGNAL(currentChanged(int)), this, SLOT(currentTabChanged(int)));
     connect(tabWidget, SIGNAL(tabToggled(int)), this, SLOT(tabToggled(int)));
     connect(tabWidget, SIGNAL(configRequested()), this, SLOT(showSidebarPreferencesPage()));
-    connect(lastFmStatusLabel, SIGNAL(clicked()), this, SLOT(showScrobblingPreferencesPage()));
 
     readSettings();
     updateConnectionsMenu();

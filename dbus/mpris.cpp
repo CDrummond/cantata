@@ -27,7 +27,6 @@
 #include "rootadaptor.h"
 #include "config.h"
 #include "gui/currentcover.h"
-#include "gui/mainwindow.h"
 
 static inline qlonglong convertTime(int t)
 {

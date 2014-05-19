@@ -26,7 +26,6 @@
 #include <QValidator>
 #include <QUrl>
 #include "streamdialog.h"
-#include "gui/mainwindow.h"
 #include "gui/settings.h"
 #include "models/streamsmodel.h"
 #include "support/localize.h"

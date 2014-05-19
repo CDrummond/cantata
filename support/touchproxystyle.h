@@ -34,7 +34,7 @@ public:
     QSize sizeFromContents(ContentsType type, const QStyleOption *option,  const QSize &size, const QWidget *widget) const;
     QRect subControlRect(ComplexControl control, const QStyleOptionComplex *option, SubControl subControl, const QWidget *widget) const;
     void drawComplexControl(ComplexControl control, const QStyleOptionComplex *option, QPainter *painter, const QWidget *widget) const;
-    void polish(QWidget *widget) { ProxyStyle::polish(widget); }
+    void polish(QWidget *widget);
     void polish(QPalette &pal) { ProxyStyle::polish(pal); }
     void polish(QApplication *app) { ProxyStyle::polish(app); }
 

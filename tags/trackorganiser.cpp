@@ -40,7 +40,6 @@
 #include "mpd/cuefile.h"
 #include "gui/covers.h"
 #include "context/contextwidget.h"
-#include "support/flickcharm.h"
 #include <QTimer>
 #include <QFile>
 #include <QDir>
@@ -85,7 +84,6 @@ TrackOrganiser::TrackOrganiser(QWidget *parent)
     files->addAction(removeAct);
     connect(files, SIGNAL(itemSelectionChanged()), SLOT(controlRemoveAct()));
     connect(removeAct, SIGNAL(triggered(bool)), SLOT(removeItems()));
-    FlickCharm::self()->activateOn(files);
 }
 
 TrackOrganiser::~TrackOrganiser()

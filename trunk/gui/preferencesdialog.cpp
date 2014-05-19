@@ -22,7 +22,6 @@
  */
 
 #include "preferencesdialog.h"
-#include "mainwindow.h"
 #include "settings.h"
 #include "widgets/icons.h"
 #include "interfacesettings.h"

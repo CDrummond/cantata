@@ -39,16 +39,15 @@
 #include <QUrlQuery>
 #endif
 
-static QString constRadioTimeSearchUrl=QLatin1String("http://opml.radiotime.com/Search.ashx");
-static QString constShoutCastSearchUrl=QLatin1String("http://")+StreamsModel::constShoutCastHost+QLatin1String("/legacy/genrelist");
-static QString constDirbleSearchUrl=QLatin1String("http://")+StreamsModel::constDirbleHost+QLatin1String("/v1/search/apikey/")+StreamsModel::constDirbleApiKey+QLatin1String("/search/");
-
 StreamSearchModel::StreamSearchModel(QObject *parent)
     : ActionModel(parent)
     , category(TuneIn)
     , root(new StreamsModel::CategoryItem(QString(), "root"))
     , filterRoot(0)
     , unmatchedStrings(0)
+    , radioTimeSearchUrl("http://opml.radiotime.com/Search.ashx")
+    , shoutCastSearchUrl(QLatin1String("http://")+StreamsModel::constShoutCastHost+QLatin1String("/legacy/genrelist"))
+    , dirbleSearchUrl(QLatin1String("http://")+StreamsModel::constDirbleHost+QLatin1String("/v1/search/apikey/")+StreamsModel::constDirbleApiKey+QLatin1String("/search/"))
 {
 }
 
@@ -288,7 +287,7 @@ void StreamSearchModel::search(const QString &searchTerm, bool stationsOnly)
         emit loaded();
         return;
     case TuneIn: {
-        searchUrl=QUrl(constRadioTimeSearchUrl);
+        searchUrl=QUrl(radioTimeSearchUrl);
         if (stationsOnly) {
             query.addQueryItem("types", "station");
         }
@@ -300,7 +299,7 @@ void StreamSearchModel::search(const QString &searchTerm, bool stationsOnly)
         break;
     }
     case ShoutCast: {
-        searchUrl=QUrl(constShoutCastSearchUrl);
+        searchUrl=QUrl(shoutCastSearchUrl);
         QString search=searchTerm;
         int limit=getParam("limit", search);
         int bitrate=getParam("br", search);
@@ -316,7 +315,7 @@ void StreamSearchModel::search(const QString &searchTerm, bool stationsOnly)
         break;
     }
     case Dirble:
-        searchUrl=QUrl(constDirbleSearchUrl+searchTerm);
+        searchUrl=QUrl(dirbleSearchUrl+searchTerm);
         break;
     }
 

@@ -94,6 +94,10 @@ private:
     StreamsModel::CategoryItem *filterRoot;
     QStringList filterStrings;
     uint unmatchedStrings;
+
+    QString radioTimeSearchUrl;
+    QString shoutCastSearchUrl;
+    QString dirbleSearchUrl;
 };
 
 #endif

@@ -143,10 +143,10 @@ void TouchProxyStyle::drawComplexControl(ComplexControl control, const QStyleOpt
             if (QAbstractSpinBox::NoButtons!=spinBox->buttonSymbols) {
                 QStyleOptionFrame opt;
                 opt.state=spinBox->state;
-                opt.state|=State_Sunken|State_Enabled;
+                opt.state|=State_Sunken;
                 opt.rect=spinBox->rect;
                 opt.palette=spinBox->palette;
-                opt.lineWidth=baseStyle()->pixelMetric(QStyle::PM_DefaultFrameWidth, option, 0);
+                opt.lineWidth=baseStyle()->pixelMetric(QStyle::PM_DefaultFrameWidth, option, widget);
                 opt.midLineWidth=0;
                 opt.fontMetrics=spinBox->fontMetrics;
                 opt.direction=spinBox->direction;

@@ -211,12 +211,10 @@ void Scrobbler::setActive()
         cancelJobs();
     }
 
-    if (haveLoginDetails()) {
-        if (!isAuthenticated()) {
-            authenticate();
-        } else if (!songQueue.isEmpty()) {
-            scrobbleQueued();
-        }
+    if (!isAuthenticated()) {
+        authenticate();
+    } else if (!songQueue.isEmpty()) {
+        scrobbleQueued();
     }
 }
 
@@ -225,7 +223,7 @@ void Scrobbler::loadSettings()
     Configuration cfg(constSettingsGroup);
 
     userName=cfg.get("userName", userName);
-    password=cfg.get("password", password);
+//    password=cfg.get("password", password);
     sessionKey=cfg.get("sessionKey", sessionKey);
     scrobblingEnabled=cfg.get("enabled", scrobblingEnabled);
     DBUG << userName << sessionKey << scrobblingEnabled;
@@ -244,7 +242,7 @@ void Scrobbler::setDetails(const QString &u, const QString &p)
         password=p;
         sessionKey=QString();
         cfg.set("userName", userName);
-        cfg.set("password", password);
+//        cfg.set("password", password);
         setActive();
         if (!isEnabled()) {
             emit authenticated(false);
@@ -422,6 +420,10 @@ void Scrobbler::authenticate()
         return;
     }
 
+    if (!haveLoginDetails()) {
+        DBUG << "no login details";
+        return;
+    }
     QUrl url(constUrl);
     QMap<QString, QString> params;
     params["method"] = "auth.getMobileSession";
@@ -499,7 +501,7 @@ void Scrobbler::handle(const QString &status)
         authenticate();
         failedCount=0;
     } else if(status.startsWith(constFailed)) {
-        QStringList dat = status.split(" ");
+//        QStringList dat = status.split(" ");
 //        if (dat.size()>1) {
 //            emit error(i18n("%1 error: %1", scrobbler, dat.join(" ")));
 //        }

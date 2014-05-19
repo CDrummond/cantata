@@ -139,29 +139,18 @@ void TouchProxyStyle::drawComplexControl(ComplexControl control, const QStyleOpt
     if (touchStyleSpin && CC_SpinBox==control) {
         if (const QStyleOptionSpinBox *spinBox = qstyleoption_cast<const QStyleOptionSpinBox *>(option)) {
             if (QAbstractSpinBox::NoButtons!=spinBox->buttonSymbols) {
-                if (GtkStyle::isActive()) {
-                    // Use PE_FrameLineEdit to draw border, as QGtkStyle corrupts focus settings
-                    // if its asked to draw a QSpinBox with no buttons that has focus.
-                    QStyleOptionFrameV2 opt;
-                    opt.state=spinBox->state;
-                    opt.state|=State_Sunken|State_Enabled;
-                    opt.rect=spinBox->rect;
-                    opt.palette=spinBox->palette;
-                    opt.lineWidth=baseStyle()->pixelMetric(QStyle::PM_DefaultFrameWidth, option, 0);
-                    opt.midLineWidth=0;
-                    opt.fontMetrics=spinBox->fontMetrics;
-                    opt.direction=spinBox->direction;
-                    opt.type=QStyleOption::SO_Default;
-                    opt.version=1;
-                    baseStyle()->drawPrimitive(PE_FrameLineEdit, &opt, painter, 0);
-                } else {
-                    QStyleOptionSpinBox sb=*spinBox;
-                    sb.buttonSymbols=QAbstractSpinBox::NoButtons;
-                    baseStyle()->drawComplexControl(control, &sb, painter, widget);
-                    // Oxygen seems to draw the up/down indicators no matter what!
-                    // ...so, just draw over these!
-                    painter->fillRect(spinBox->rect.adjusted(5, 5, -5, -5), option->palette.base());
-                }
+                QStyleOptionFrame opt;
+                opt.state=spinBox->state;
+                opt.state|=State_Sunken|State_Enabled;
+                opt.rect=spinBox->rect;
+                opt.palette=spinBox->palette;
+                opt.lineWidth=baseStyle()->pixelMetric(QStyle::PM_DefaultFrameWidth, option, 0);
+                opt.midLineWidth=0;
+                opt.fontMetrics=spinBox->fontMetrics;
+                opt.direction=spinBox->direction;
+                opt.type=QStyleOption::SO_Frame;
+                opt.version=1;
+                baseStyle()->drawPrimitive(PE_PanelLineEdit, &opt, painter, 0);
 
                 QRect plusRect=subControlRect(CC_SpinBox, spinBox, SC_SpinBoxUp, widget);
                 QRect minusRect=subControlRect(CC_SpinBox, spinBox, SC_SpinBoxDown, widget);

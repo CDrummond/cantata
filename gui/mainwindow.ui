@@ -277,7 +277,7 @@
            </spacer>
           </item>
           <item>
-           <widget class="ScrobblingStatusLabel" name="lastFmStatusLabel"/>
+           <widget class="ScrobblingStatus" name="scrobblingStatus"/>
           </item>
           <item>
            <widget class="ToolButton" name="repeatButton">
@@ -424,9 +424,9 @@
    <header>widgets/volumeslider.h</header>
   </customwidget>
   <customwidget>
-   <class>ScrobblingStatusLabel</class>
-   <extends>QLabel</extends>
-   <header>scrobbling/scrobblingstatuslabel.h</header>
+   <class>ScrobblingStatus</class>
+   <extends>QToolButton</extends>
+   <header>scrobbling/scrobblingstatus.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

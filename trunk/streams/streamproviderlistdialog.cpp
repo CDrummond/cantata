@@ -30,7 +30,6 @@
 #include "support/spinner.h"
 #include "widgets/actionitemdelegate.h"
 #include "widgets/messageoverlay.h"
-#include "support/flickcharm.h"
 #include <QLabel>
 #include <QXmlStreamReader>
 #include <QTreeWidget>
@@ -57,7 +56,6 @@ StreamProviderListDialog::StreamProviderListDialog(StreamsSettings *parent)
     tree->header()->setVisible(false);
     tree->header()->setStretchLastSection(true);
     tree->setSelectionMode(QAbstractItemView::ExtendedSelection);
-    FlickCharm::self()->activateOn(tree);
     statusText=new SqueezedTextLabel(wid);
     progress=new QProgressBar(wid);
     l->addWidget(new QLabel(i18n("Check the providers you wish to install/update."), wid));

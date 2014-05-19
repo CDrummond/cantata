@@ -31,7 +31,6 @@
 #include "widgets/basicitemdelegate.h"
 #include "widgets/playqueueview.h"
 #include "support/pathrequester.h"
-#include "support/flickcharm.h"
 #include <QComboBox>
 #ifndef ENABLE_KDE_SUPPORT
 #include <QDir>
@@ -221,7 +220,6 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     if (!enableNotifications) {
         REMOVE(systemTrayPopup)
     }
-    FlickCharm::self()->activateOn(views);
 }
 
 void InterfaceSettings::load()

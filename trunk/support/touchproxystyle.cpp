@@ -24,9 +24,11 @@
 #include "touchproxystyle.h"
 #include "utils.h"
 #include "gtkstyle.h"
+#include "flickcharm.h"
 #include <QSpinBox>
 #include <QPainter>
 #include <QStyleOptionSpinBox>
+#include <QAbstractScrollArea>
 
 static void drawSpinButton(QPainter *painter, const QRect &r, const QColor &col, bool isPlus)
 {
@@ -191,4 +193,12 @@ void TouchProxyStyle::drawComplexControl(ComplexControl control, const QStyleOpt
         }
     }
     baseStyle()->drawComplexControl(control, option, painter, widget);
+}
+
+void TouchProxyStyle::polish(QWidget *widget)
+{
+    if (Utils::touchFriendly() && qobject_cast<QAbstractScrollArea *>(widget)) {
+        FlickCharm::self()->activateOn(widget);
+    }
+    ProxyStyle::polish(widget);
 }

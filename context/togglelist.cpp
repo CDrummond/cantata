@@ -26,7 +26,6 @@
 #include "support/icon.h"
 #include "gui/settings.h"
 #include "widgets/basicitemdelegate.h"
-#include "support/flickcharm.h"
 #include "support/utils.h"
 
 ToggleList::ToggleList(QWidget *p)
@@ -53,8 +52,6 @@ ToggleList::ToggleList(QWidget *p)
     available->setItemDelegate(new BasicItemDelegate(available));
     selected->setAlternatingRowColors(false);
     selected->setItemDelegate(new BasicItemDelegate(selected));
-    FlickCharm::self()->activateOn(available);
-    FlickCharm::self()->activateOn(selected);
     QSize sz=Utils::touchFriendly() ? removeButton->sizeHint() : QSize(0, 0);
     spacerA->changeSize(sz.width(), sz.height());
     spacerB->changeSize(sz.width(), sz.height());

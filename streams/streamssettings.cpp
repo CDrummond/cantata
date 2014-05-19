@@ -31,7 +31,6 @@
 #include "support/messagebox.h"
 #include "support/utils.h"
 #include "digitallyimportedsettings.h"
-#include "support/flickcharm.h"
 #include <QListWidget>
 #include <QMenu>
 #include <QFileInfo>
@@ -69,7 +68,6 @@ StreamsSettings::StreamsSettings(QWidget *p)
     setupUi(this);
     categories->setItemDelegate(new BasicItemDelegate(categories));
     categories->setSortingEnabled(true);
-    FlickCharm::self()->activateOn(categories);
     int iSize=Icon::stdSize(QApplication::fontMetrics().height()*1.25);
     QMenu *installMenu=new QMenu(this);
     QAction *installFromFileAct=installMenu->addAction(i18n("From File..."));

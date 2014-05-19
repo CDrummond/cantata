@@ -36,7 +36,6 @@
 #include "widgets/basicitemdelegate.h"
 #include "support/action.h"
 #include "mpd/cuefile.h"
-#include "support/flickcharm.h"
 #include <QComboBox>
 #include <QTreeWidget>
 #include <QLabel>
@@ -142,7 +141,6 @@ RgDialog::RgDialog(QWidget *parent)
     italic=font();
     italic.setItalic(true);
     JobController::self()->setMaxActive(1);
-    FlickCharm::self()->activateOn(view);
 }
 
 RgDialog::~RgDialog()

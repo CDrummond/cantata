@@ -33,7 +33,7 @@
 #include "gui/plurals.h"
 #include "widgets/icons.h"
 #include "support/gtkstyle.h"
-#include "support/flickcharm.h"
+#include "support/utils.h"
 #include "models/roles.h"
 #include <QStyledItemDelegate>
 #include <QApplication>
@@ -463,7 +463,7 @@ private:
 
 GroupedView::GroupedView(QWidget *parent, bool isPlayQueue)
     : TreeView(parent, isPlayQueue)
-    , allowClose(!FlickCharm::self()->enabled())
+    , allowClose(!Utils::touchFriendly())
     , startClosed(allowClose)
     , autoExpand(true)
     , filterActive(false)

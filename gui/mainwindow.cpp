@@ -48,7 +48,6 @@
 #include "librarypage.h"
 #include "albumspage.h"
 #include "folderpage.h"
-#include "scrobbling/scrobbler.h"
 #ifdef ENABLE_STREAMS
 #include "streams/streamspage.h"
 #include "streams/streamdialog.h"
@@ -920,7 +919,6 @@ MainWindow::~MainWindow()
     Tags::stop();
     #endif
     ThreadCleaner::self()->stopAll();
-    Scrobbler::self()->stop();
 }
 
 void MainWindow::addMenuAction(QMenu *menu, QAction *action)

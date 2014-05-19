@@ -195,7 +195,9 @@ MainWindow::MainWindow(QWidget *parent)
     MPDParseUtils::setGroupSingle(Settings::self()->groupSingle());
     Song::setUseComposer(Settings::self()->useComposer());
 
-    #ifndef Q_OS_WIN
+    #ifdef Q_OS_WIN
+    GtkStyle::applyTheme(this); // Despite its name, it *might* also apply touch style to spinboxes...
+    #else
     #if defined Q_OS_MAC && QT_VERSION>=0x050000
     QMacNativeToolBar *topToolBar = new QMacNativeToolBar(this);
     topToolBar->showInWindowForWidget(this);
@@ -209,8 +211,8 @@ MainWindow::MainWindow(QWidget *parent)
     topToolBar->setMovable(false);
     topToolBar->setContextMenuPolicy(Qt::PreventContextMenu);
     topToolBar->ensurePolished();
-    #endif // Q_OS_WIN
     GtkStyle::applyTheme(topToolBar); // Despite its name, it *might* also apply touch style to spinboxes...
+    #endif // Q_OS_WIN
 
     Icons::self()->initToolbarIcons(toolbar->palette().color(QPalette::Foreground));
     Icons::self()->initSidebarIcons();

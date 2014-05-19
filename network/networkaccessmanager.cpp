@@ -220,13 +220,29 @@ NetworkJob * NetworkAccessManager::get(const QNetworkRequest &req, int timeout)
     return reply;
 }
 
+struct FakeNetworkReply : public QNetworkReply
+{
+    FakeNetworkReply() : QNetworkReply(0)
+    {
+        setError(QNetworkReply::ConnectionRefusedError, QString());
+        QTimer::singleShot(0, this, SIGNAL(finished()));
+    }
+    void abort() { }
+    qint64 readData(char *, qint64) { return 0; }
+    qint64 writeData(const char *, qint64) { return 0; }
+};
+
 QNetworkReply * NetworkAccessManager::postFormData(const QUrl &url, const QByteArray &data)
 {
-    QNetworkRequest req(url);
-    if (!data.isEmpty()) {
-        req.setRawHeader("Content-Type", "application/x-www-form-urlencoded");
+    if (enabled) {
+        QNetworkRequest req(url);
+        if (!data.isEmpty()) {
+            req.setRawHeader("Content-Type", "application/x-www-form-urlencoded");
+        }
+        return BASE_NETWORK_ACCESS_MANAGER::post(req, data);
+    } else {
+        return new FakeNetworkReply();
     }
-    return BASE_NETWORK_ACCESS_MANAGER::post(req, data);
 }
 
 void NetworkAccessManager::replyFinished()

@@ -46,6 +46,9 @@ public:
     struct Track {
         Track() : track(0), length(0), timestamp(0) { }
         Track(const Song &s);
+        bool operator==(const Track &o) const { return track==o.track && title==o.title && artist==o.artist &&
+                                                albumartist==o.albumartist && album==o.album; }
+        bool operator!=(const Track &o) const { return !(*this==o); }
         QString title;
         QString artist;
         QString albumartist;
@@ -64,13 +67,12 @@ public:
     ~Scrobbler();
 
     void stop();
-    bool isEnabled() const { return scrobblingEnabled && haveLoginDetails(); }
+    bool isEnabled() const { return scrobblingEnabled; }
     bool haveLoginDetails() const { return !userName.isEmpty() && !password.isEmpty(); }
     void setDetails(const QString &u, const QString &p);
     const QString & user() const { return userName; }
     const QString & pass() const { return password; }
     bool isAuthenticated() const { return !sessionKey.isEmpty(); }
-    bool isScrobblingEnabled() const { return scrobblingEnabled; }
 
 Q_SIGNALS:
     void error(const QString &msg);
@@ -96,7 +98,7 @@ private:
     void loadSettings();
     void handle(const QString &status);
     bool ensureAuthenticated();
-    void scrobbleNowPlaying(const Track &s);
+    void scrobbleNowPlaying();
     void loadCache();
     void saveCache();
     void cancelJobs();
@@ -118,6 +120,8 @@ private:
     QTimer * hardFailTimer;
     bool nowPlayingIsPending;
     bool lastScrobbleFailed;
+    bool nowPlayingSent;
+    bool scrobbledCurrent;
     int failedCount;
 
     QNetworkReply *authJob;

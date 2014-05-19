@@ -35,6 +35,6 @@ ScrobblingStatus::ScrobblingStatus(QWidget *p)
     connect(Scrobbler::self(), SIGNAL(enabled(bool)), SLOT(setChecked(bool)));
     connect(this, SIGNAL(toggled(bool)), Scrobbler::self(), SLOT(setEnabled(bool)));
     setVisible(Scrobbler::self()->isAuthenticated());
-    setChecked(Scrobbler::self()->isScrobblingEnabled());
+    setChecked(Scrobbler::self()->isEnabled());
     setToolTip(i18n("Scrobbling"));
 }

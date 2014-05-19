@@ -173,7 +173,6 @@ public Q_SLOTS:
     void mpdConnectionStateChanged(bool connected);
     void playQueueItemsSelected(bool s);
     void showSidebarPreferencesPage() { showPreferencesDialog("interface:sidebar"); }
-    void showScrobblingPreferencesPage() { showPreferencesDialog("scrobbling"); }
     void showPreferencesDialog(const QString &page=QString());
     void quit();
     void updateSettings();

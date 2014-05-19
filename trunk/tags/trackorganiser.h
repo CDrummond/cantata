@@ -30,7 +30,7 @@
 #ifdef ENABLE_DEVICES_SUPPORT
 #include "devices/device.h"
 #else
-#include "deviceoptions.h"
+#include "devices/deviceoptions.h"
 #endif
 
 class FilenameSchemeDialog;

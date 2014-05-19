@@ -48,7 +48,7 @@ void ScrobblingSettings::load()
     showStatus(Scrobbler::self()->isAuthenticated());
     user->setText(Scrobbler::self()->user().trimmed());
     pass->setText(Scrobbler::self()->pass().trimmed());
-    enableScrobbling->setChecked(Scrobbler::self()->isScrobblingEnabled());
+    enableScrobbling->setChecked(Scrobbler::self()->isEnabled());
     controlLoginButton();
 }
 

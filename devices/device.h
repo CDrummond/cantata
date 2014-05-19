@@ -26,6 +26,7 @@
 
 #include "models/musiclibraryitemroot.h"
 #include "mpd/song.h"
+#include "config.h"
 #ifdef ENABLE_DEVICES_SUPPORT
 #include "deviceoptions.h"
 #ifdef ENABLE_KDE_SUPPORT

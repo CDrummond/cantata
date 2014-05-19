@@ -86,7 +86,7 @@ enum LastFmErrors
     RateLimitExceeded = 29
 };
 
-static QString lastFmError(int code, const QString &msg)
+static QString errorString(int code, const QString &msg)
 {
     switch (code) {
     case InvalidService: return i18n("Invalid service");
@@ -162,6 +162,8 @@ Scrobbler::Scrobbler()
     , scrobbler("Last.fm")
     , nowPlayingIsPending(false)
     , lastScrobbleFailed(false)
+    , nowPlayingSent(false)
+    , scrobbledCurrent(false)
     , failedCount(0)
     , authJob(0)
     , scrobbleJob(0)
@@ -187,6 +189,7 @@ Scrobbler::Scrobbler()
 
 Scrobbler::~Scrobbler()
 {
+    DBUG;
     stop();
 }
 
@@ -228,7 +231,7 @@ void Scrobbler::loadSettings()
     scrobblingEnabled=cfg.get("enabled", scrobblingEnabled);
     DBUG << userName << sessionKey << scrobblingEnabled;
     emit authenticated(isAuthenticated());
-    emit enabled(isScrobblingEnabled());
+    emit enabled(isEnabled());
     setActive();
 }
 
@@ -267,13 +270,30 @@ void Scrobbler::setEnabled(bool e)
 
 void Scrobbler::setSong(const Song &s)
 {
+    DBUG << isEnabled() << s.isStandardStream() << s.time << s.file;
     if (!isEnabled() || s.isStandardStream() || s.time<30) {
         return;
     }
 
-    nowPlayingTimer->setInterval(5000);
-    scrobbleTimer->setInterval(qMin(s.time/2, 240)*1000); // Scrobble at 1/2 way point or 4 mins - whichever comes first!
     if (currentSong.artist != s.artist || currentSong.title!=s.title || currentSong.album!=s.album) {
+        nowPlayingSent=scrobbledCurrent=false;
+        int elapsed=MPDStatus::self()->timeElapsed()*1000;
+        int nowPlayingTimemout=5000;
+        if (elapsed>4000) {
+            nowPlayingTimemout=10;
+        } else {
+            nowPlayingTimemout-=elapsed;
+        }
+        nowPlayingTimer->setInterval(nowPlayingTimemout);
+        int timeout=qMin(s.time/2, 240)*1000; // Scrobble at 1/2 way point or 4 mins - whichever comes first!
+        DBUG << "timeout" << timeout << elapsed << nowPlayingTimemout;
+        if (timeout>elapsed) {
+            timeout-=elapsed;
+        } else {
+            timeout=100;
+        }
+        scrobbleTimer->setInterval(timeout);
+
         currentSong=s;
         if (MPDState_Playing==MPDStatus::self()->state() && s.time>30) {
             mpdStateUpdated();
@@ -285,37 +305,38 @@ void Scrobbler::sendNowPlaying()
 {
     nowPlayingIsPending = true;
     if (ensureAuthenticated()) {
-        scrobbleNowPlaying(currentSong);
+        scrobbleNowPlaying();
         nowPlayingIsPending = false;
     }
 }
 
-void Scrobbler::scrobbleNowPlaying(const Track &s)
+void Scrobbler::scrobbleNowPlaying()
 {
-    if (s.title.isEmpty() || s.artist.isEmpty()) {
+    if (currentSong.title.isEmpty() || currentSong.artist.isEmpty() || nowPlayingSent) {
         return;
     }
     QMap<QString, QString> params;
     params["method"] = "track.updateNowPlaying";
-    params["track"] = s.title;
-    if (!s.album.isEmpty()) {
-        params["album"] = s.album;
+    params["track"] = currentSong.title;
+    if (!currentSong.album.isEmpty()) {
+        params["album"] = currentSong.album;
     }
-    params["artist"] = s.artist;
-    if (!s.albumartist.isEmpty() && s.albumartist!=s.artist) {
-        params["albumArtist"] = s.albumartist;
+    params["artist"] = currentSong.artist;
+    if (!currentSong.albumartist.isEmpty() && currentSong.albumartist!=currentSong.artist) {
+        params["albumArtist"] = currentSong.albumartist;
     }
-    if (s.track) {
-        params["trackNumber"] = QString::number(s.track);
+    if (currentSong.track) {
+        params["trackNumber"] = QString::number(currentSong.track);
     }
-    if (s.length) {
-        params["duration"] = QString::number(s.length);
+    if (currentSong.length) {
+        params["duration"] = QString::number(currentSong.length);
     }
     params["sk"] = sessionKey;
     sign(params);
-    DBUG << s.title << s.artist;
+    DBUG << currentSong.title << currentSong.artist;
     QNetworkReply *job=NetworkAccessManager::self()->postFormData(QUrl(constUrl), format(params));
     connect(job, SIGNAL(finished()), this, SLOT(nowPlayingResp()));
+    nowPlayingSent=true;
 }
 
 void Scrobbler::nowPlayingResp()
@@ -330,7 +351,12 @@ void Scrobbler::nowPlayingResp()
 
 void Scrobbler::scrobbleCurrent()
 {
-    songQueue.enqueue(currentSong);
+    if (!scrobbledCurrent) {
+        if (songQueue.isEmpty() || songQueue.last()!=currentSong) {
+            songQueue.enqueue(currentSong);
+        }
+        scrobbledCurrent=true;
+    }
     scrobbleQueued();
 }
 
@@ -350,7 +376,7 @@ void Scrobbler::scrobbleQueued()
         QMap<QString, QString> params;
         params["method"] = "track.scrobble";
         int batchSize=qMin(constMaxBatchSize, songQueue.size());
-        DBUG << "trying scrobble " << batchSize << " songs";
+        DBUG << "queued:" << songQueue.size() << "batchSize:" << batchSize;
         for (int i=0; i<batchSize; ++i) {
             Track s=songQueue.takeAt(0);
 
@@ -389,17 +415,21 @@ void Scrobbler::scrobbleFinished()
     if (job==scrobbleJob) {
         DBUG << job->errorString();
         scrobbleJob=0;
-        QStringList data = QString(job->readAll()).split("\n");
-        DBUG << data;
-        if (data.isEmpty()) {
-            return;
+        QStringList data = QString(job->readAll()).split("\n", QString::SkipEmptyParts);
+        bool ok=!data.isEmpty();
+        DBUG << data << ok << songQueue.size() << lastScrobbledSongs.size();
+
+        if (ok && constOk!=data[0]) {
+            handle(data[0]);
+            ok=false;
         }
-        if (constOk==data[0]) {
+
+        if (ok) {
             lastScrobbledSongs.clear();
         } else {
+            DBUG << "Move last scrobbled into queued";
             songQueue << lastScrobbledSongs;
             lastScrobbledSongs.clear();
-            handle(data[0]);
         }
     }
 }
@@ -476,7 +506,7 @@ void Scrobbler::authResp()
                 break;
             } else if (QLatin1String("error")==element) {
                 int code=reader.attributes().value(QLatin1String("code")).toString().toInt();
-                emit error(lastFmError(code, reader.readElementText()));
+                emit error(i18n("%1 error: %2", scrobbler, errorString(code, reader.readElementText())));
                 break;
             }
         }
@@ -488,7 +518,7 @@ void Scrobbler::authResp()
     cfg.set("sessionKey", sessionKey);
 
     if (nowPlayingIsPending && isAuthenticated()) {
-        scrobbleNowPlaying(currentSong);
+        scrobbleNowPlaying();
         nowPlayingIsPending = false;
     }
 }
@@ -503,7 +533,7 @@ void Scrobbler::handle(const QString &status)
     } else if(status.startsWith(constFailed)) {
 //        QStringList dat = status.split(" ");
 //        if (dat.size()>1) {
-//            emit error(i18n("%1 error: %1", scrobbler, dat.join(" ")));
+//            emit error(i18n("%1 error: %2", scrobbler, dat.join(" ")));
 //        }
         if (++failedCount > 2 && !hardFailTimer->isActive()) {
             sessionKey.clear();
@@ -525,10 +555,10 @@ void Scrobbler::loadCache()
     QtIOCompressor compressor(&file);
     compressor.setStreamFormat(QtIOCompressor::GzipFormat);
     if (compressor.open(QIODevice::ReadOnly)) {
-        QXmlStreamReader reader(&file);
-        while(!reader.atEnd()) {
+        QXmlStreamReader reader(&compressor);
+        while (!reader.atEnd()) {
             reader.readNext();
-            if (reader.isStartElement() && QLatin1String("track")==reader.name().toString()) {
+            if (reader.isStartElement() && QLatin1String("track")==reader.name()) {
                 Track t;
                 t.artist = reader.attributes().value(QLatin1String("artist")).toString();
                 t.album = reader.attributes().value(QLatin1String("album")).toString();
@@ -541,6 +571,7 @@ void Scrobbler::loadCache()
             }
         }
     }
+    DBUG << fileName << songQueue.size();
 }
 
 void Scrobbler::saveCache()
@@ -593,9 +624,15 @@ void Scrobbler::mpdStateUpdated()
             nowPlayingTimer->pause();
             break;
         case MPDState_Playing:
-            currentSong.timestamp = time(NULL);
-            scrobbleTimer->start();
-            nowPlayingTimer->start();
+            if (0==currentSong.timestamp) {
+                currentSong.timestamp = time(NULL)-MPDStatus::self()->timeElapsed();
+            }
+            if (!scrobbledCurrent) {
+                scrobbleTimer->start();
+            }
+            if (!nowPlayingSent) {
+                nowPlayingTimer->start();
+            }
             break;
         default:
             scrobbleTimer->stop();

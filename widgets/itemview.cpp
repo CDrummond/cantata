@@ -1014,8 +1014,10 @@ void ItemView::showIndex(const QModelIndex &idx, bool scrollTo)
 
 void ItemView::focusSearch()
 {
-    performedSearch=false;
-    searchWidget->activate();
+    if (isEnabled()) {
+        performedSearch=false;
+        searchWidget->activate();
+    }
 }
 
 void ItemView::focusView()

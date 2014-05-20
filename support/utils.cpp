@@ -667,7 +667,7 @@ static QString userDir(const QString &mainDir, const QString &sub, bool create)
 
 QString Utils::configDir(const QString &sub, bool create)
 {
-    #if defined Q_OS_WIN
+    #if defined Q_OS_WIN || defined Q_OS_MAC
     return userDir(QDesktopServices::storageLocation(QDesktopServices::DataLocation)+constDirSep, sub, create);
     #else
     QString env = qgetenv("XDG_CONFIG_HOME");
@@ -677,7 +677,7 @@ QString Utils::configDir(const QString &sub, bool create)
 
 QString Utils::dataDir(const QString &sub, bool create)
 {
-    #if defined Q_OS_WIN
+    #if defined Q_OS_WIN || defined Q_OS_MAC
     return userDir(QDesktopServices::storageLocation(QDesktopServices::DataLocation)+constDirSep, sub, create);
     #else
     QString env = qgetenv("XDG_DATA_HOME");
@@ -687,11 +687,31 @@ QString Utils::dataDir(const QString &sub, bool create)
 
 QString Utils::cacheDir(const QString &sub, bool create)
 {
-    #if defined Q_OS_WIN
+    #if defined Q_OS_WIN || defined Q_OS_MAC
     return userDir(QDesktopServices::storageLocation(QDesktopServices::CacheLocation)+constDirSep, sub, create);
     #else
     QString env = qgetenv("XDG_CACHE_HOME");
     return userDir((env.isEmpty() ? QDir::homePath() + "/.cache" : env) + constDirSep+FOLDER_NAME+constDirSep, sub, create);
+    #endif
+}
+
+QString Utils::systemDir(const QString &sub)
+{
+    #if defined Q_OS_WIN || defined Q_OS_MAC
+    return dirSyntax(QCoreApplication::applicationDirPath())+(sub.isEmpty() ? QString() : (sub+constDirSep));
+    #else
+    return QString(INSTALL_PREFIX "/share/")+QCoreApplication::applicationName()+constDirSep+(sub.isEmpty() ? QString() : (sub+constDirSep));
+    #endif
+}
+
+QString Utils::helper(const QString &app)
+{
+    #if defined Q_OS_WIN
+    return systemDir(QLatin1String("helpers"))+app+QLatin1String(".exe");
+    #elif defined Q_OS_MAC
+    return systemDir(QLatin1String("helpers"))+app);
+    #else
+    return QString(INSTALL_PREFIX "/lib/")+QCoreApplication::applicationName()+constDirSep+app;
     #endif
 }
 

@@ -76,7 +76,7 @@
     Albums, Tracks), so no real need for button.
 47. Make shortcut for 'Go Back' action changeable.
 48. Don't attempt to find Amarok or Clementine covers.
-49. Don't hard-code artist name fixes, read from $install/tags/fixes.xml
+49. Don't hard-code artist name fixes, read from $install/tag-fixes.xml
 50. Remove grouping of multiple-artist albums under 'Various Artists'
 51. Change default sidebar shortcuts from 'Alt+' to 'Ctrl+Shift+' so as to
     avoid clashes with menubar.
@@ -125,6 +125,7 @@
 78. Build as a Qt-only app by default. Pass -DENABLE_KDE=ON to create KDE
     build.
 79. Scrobbling support.
+80. Install podcast directries file to $install rather than embedding.
 
 1.3.4
 -----

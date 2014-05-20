@@ -37,6 +37,7 @@
 #include "widgets/textbrowser.h"
 #include "support/messagewidget.h"
 #include "rssparser.h"
+#include "config.h"
 #include <QLabel>
 #include <QPushButton>
 #include <QTreeWidget>
@@ -51,6 +52,7 @@
 #include <QCache>
 #include <QImage>
 #include <QBuffer>
+#include <QCoreApplication>
 #if QT_VERSION >= 0x050000
 #include <QUrlQuery>
 #endif
@@ -613,7 +615,8 @@ PodcastSearchDialog::PodcastSearchDialog(QWidget *parent)
     pageWidget->addPage(gpodder, i18n("Search %1", gpodder->name()), gpodder->icon(), i18n("Search for podcasts on %1", gpodder->name()));
     pages << gpodder;
 
-    QFile file(":podcast_directories.xml");
+    QFile file(CANTATA_SYS_CONFIG_DIR+QLatin1String("/podcast_directories.xml"));
+
     if (file.open(QIODevice::ReadOnly)) {
         QXmlStreamReader reader(&file);
         while (!reader.atEnd()) {

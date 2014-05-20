@@ -323,11 +323,7 @@ QString Covers::fixArtist(const QString &artist)
     static bool initialised=false;
     if (!initialised) {
         initialised=true;
-        #ifdef Q_OS_WIN
-        QFile f(QCoreApplication::applicationDirPath()+"/streams/listenlive.xml");
-        #else
-        QFile f(INSTALL_PREFIX "/share/cantata/tags/fixes.xml");
-        #endif
+        QFile f(CANTATA_SYS_CONFIG_DIR+QLatin1String("/tag-fixes.xml"));
 
         if (f.open(QIODevice::ReadOnly)) {
             QXmlStreamReader doc(&f);

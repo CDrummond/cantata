@@ -274,11 +274,9 @@ bool TagHelperIface::startHelper()
         }
         DBUG << "Start process";
         proc=new QProcess(this);
-        #ifdef Q_OS_WIN
-        proc->start(qApp->applicationDirPath()+"/helpers/cantata-tags.exe", QStringList() << server->fullServerName() << QString::number(currentPid));
-        #else
-        proc->start(INSTALL_PREFIX"/lib/cantata/cantata-tags", QStringList() << server->fullServerName() << QString::number(currentPid));
-        #endif
+
+        proc->start(Utils::helper(QLatin1String("cantata-tags")), QStringList() << server->fullServerName() << QString::number(currentPid));
+
         connect(proc, SIGNAL(finished(int)), this, SLOT(helperClosed()));
         if (proc->waitForStarted(constMaxWait)) {
             DBUG << "Process started, on pid" << proc->pid() << "- wait for helper to connect";

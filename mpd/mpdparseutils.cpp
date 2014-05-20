@@ -751,28 +751,22 @@ QList<Output> MPDParseUtils::parseOuputs(const QByteArray &data)
     return outputs;
 }
 
-static const QString constHashReplacement=QLatin1String("${hash}");
 
 QString MPDParseUtils::addStreamName(const QString &url, const QString &name)
 {
-    if (name.isEmpty()) {
-        return url;
-    }
-
-    QUrl u(url);
-    QString n(name);
-    while (n.contains("#")) {
-        n=n.replace("#", constHashReplacement);
-    }
-    if (u.path().isEmpty()) {
-        return url+"/#"+n;
-    }
-    return url+"#"+n;
+    return name.isEmpty()
+            ? url
+            : (url+(QUrl(url).path().isEmpty() ? "/#" : "#")+name);
 }
+
+// Previous versions replaced '#' in a stream's name with ${hash}.
+// This no longer occurs, but we need to do the replacement here,
+// just in case the stream name was saved this way.
+static const QString constHashReplacement=QLatin1String("${hash}");
 
 QString MPDParseUtils::getStreamName(const QString &url)
 {
-    int idx=url.lastIndexOf('#');
+    int idx=url.indexOf('#');
     QString name=-1==idx ? QString() : url.mid(idx+1);
     while (name.contains(constHashReplacement)) {
         name.replace(constHashReplacement, "#");
@@ -782,7 +776,7 @@ QString MPDParseUtils::getStreamName(const QString &url)
 
 QString MPDParseUtils::getAndRemoveStreamName(QString &url)
 {
-    int idx=url.lastIndexOf('#');
+    int idx=url.indexOf('#');
     if (-1==idx) {
         return QString();
     }

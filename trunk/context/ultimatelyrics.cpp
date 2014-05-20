@@ -30,9 +30,6 @@
 #include <QFileInfoList>
 #include <QXmlStreamReader>
 #include <QSet>
-#if defined Q_OS_WIN
-#include <QCoreApplication>
-#endif
 
 GLOBAL_STATIC(UltimateLyrics, instance)
 
@@ -153,11 +150,7 @@ void UltimateLyrics::load()
         return;
     }
 
-    #ifdef Q_OS_WIN
-    QStringList dirs=QStringList() << Utils::dataDir("lyrics") << QCoreApplication::applicationDirPath()+"/lyrics/";
-    #else
-    QStringList dirs=QStringList() << Utils::dataDir("lyrics") << INSTALL_PREFIX "/share/cantata/lyrics/";
-    #endif
+    QStringList dirs=QStringList() << Utils::dataDir("lyrics") << CANTATA_SYS_LYRICS_DIR;
 
     QSet<QString> providerNames;
     foreach (const QString &d, dirs) {

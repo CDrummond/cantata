@@ -44,11 +44,7 @@ SoundCloudService::SoundCloudService(MusicModel *m)
     , job(0)
 {
     if (iconFile.isEmpty()) {
-        #ifdef Q_OS_WIN
-        iconFile=QCoreApplication::applicationDirPath()+"/icons/soundcloud.png";
-        #else
-        iconFile=QString(INSTALL_PREFIX"/share/")+QCoreApplication::applicationName()+"/icons/soundcloud.png";
-        #endif
+        iconFile=QString(CANTATA_SYS_ICONS_DIR+"soundcloud.png");
     }
     setUseArtistImages(false);
     setUseAlbumImages(false);

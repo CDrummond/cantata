@@ -1,6 +1,5 @@
 <!DOCTYPE RCC><RCC version="1.0">
 <qresource>
-<file alias="weblinks.xml">context/weblinks.xml</file>
 <file alias="lastfm.svg">scrobbling/lastfm.svg</file>
 
 <file alias="repeat16.png">icons/view-media-repeat16.png</file>
@@ -44,7 +43,6 @@
 <file alias="npr">online/icons/npr.svg</file>
 <file alias="itunes">online/icons/itunes.svg</file>
 <file alias="gpodder">online/icons/gpodder.svg</file>
-<file alias="podcast_directories.xml">online/podcast_directories.xml</file>
 
 <file alias="favourites">streams/icons/favourites.svg</file>
 <file alias="icecast">streams/icons/icecast.svg</file>

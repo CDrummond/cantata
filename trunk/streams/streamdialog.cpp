@@ -23,7 +23,6 @@
 
 #include <QFormLayout>
 #include <QIcon>
-#include <QValidator>
 #include <QUrl>
 #include <QApplication>
 #include "streamdialog.h"
@@ -34,18 +33,6 @@
 #include "mpd/mpdconnection.h"
 #include "support/buddylabel.h"
 #include "config.h"
-    
-class NameValidator : public QValidator
-{
-    public:
-
-    NameValidator(QObject *parent) : QValidator(parent) { }
-
-    State validate(QString &input, int &) const
-    {
-        return input.contains("#") ? Invalid : Acceptable;
-    }
-};
 
 StreamDialog::StreamDialog(QWidget *parent, bool addToPlayQueue)
     : Dialog(parent)
@@ -61,8 +48,6 @@ StreamDialog::StreamDialog(QWidget *parent, bool addToPlayQueue)
         saveCombo=new QComboBox(wid);
     }
     nameEntry = new LineEdit(wid);
-
-    nameEntry->setValidator(new NameValidator(this));
     statusText = new QLabel(this);
 
     urlEntry->setMinimumWidth(300);

@@ -29,9 +29,11 @@
 #define SCROBBLER_H
 
 #include <QString>
+#include <QStringList>
 #include <QQueue>
 #include <QObject>
 #include <QUrl>
+#include <QMap>
 #include <time.h>
 
 class QTimer;
@@ -66,12 +68,14 @@ public:
     Scrobbler();
     ~Scrobbler();
 
+    QStringList availableScrobblers() { loadScrobblers(); return scrobblers.keys(); }
     void stop();
     bool isEnabled() const { return scrobblingEnabled; }
     bool haveLoginDetails() const { return !userName.isEmpty() && !password.isEmpty(); }
-    void setDetails(const QString &u, const QString &p);
+    void setDetails(const QString &s, const QString &u, const QString &p);
     const QString & user() const { return userName; }
     const QString & pass() const { return password; }
+    const QString & activeScrobbler() const { return scrobbler; }
     bool isAuthenticated() const { return !sessionKey.isEmpty(); }
 
 Q_SIGNALS:
@@ -102,15 +106,17 @@ private:
     void loadCache();
     void saveCache();
     void cancelJobs();
+    void reset();
+    void loadScrobblers();
+    QUrl scrobblerUrl() const;
 
 private:
     bool scrobblingEnabled;
+    QMap<QString, QUrl> scrobblers;
     QString scrobbler;
     QString userName;
     QString password;
     QString sessionKey;
-    QString nowPlayingUrl;
-    QString scrobbleUrl;
     QQueue<Track> songQueue;
     QQueue<Track> lastScrobbledSongs;
     Track currentSong;

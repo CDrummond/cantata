@@ -41,6 +41,14 @@ ScrobblingSettings::ScrobblingSettings(QWidget *parent)
     connect(enableScrobbling, SIGNAL(toggled(bool)), Scrobbler::self(), SLOT(setEnabled(bool)));
     connect(Scrobbler::self(), SIGNAL(enabled(bool)), enableScrobbling, SLOT(setChecked(bool)));
     loginButton->setEnabled(false);
+
+    QStringList scrobblers=Scrobbler::self()->availableScrobblers();
+    scrobblers.sort();
+    foreach (const QString &s, scrobblers) {
+        scrobbler->addItem(s);
+    }
+    scrobbler->setVisible(scrobbler->count()>1);
+    scrobblerLabel->setVisible(scrobbler->count()>1);
 }
 
 void ScrobblingSettings::load()
@@ -48,6 +56,13 @@ void ScrobblingSettings::load()
     showStatus(Scrobbler::self()->isAuthenticated());
     user->setText(Scrobbler::self()->user().trimmed());
     pass->setText(Scrobbler::self()->pass().trimmed());
+    QString s=Scrobbler::self()->activeScrobbler();
+    for (int i=0; i<scrobbler->count(); ++i) {
+        if (scrobbler->itemText(i)==s) {
+            scrobbler->setCurrentIndex(i);
+            break;
+        }
+    }
     enableScrobbling->setChecked(Scrobbler::self()->isEnabled());
     controlLoginButton();
 }
@@ -56,7 +71,7 @@ void ScrobblingSettings::save()
 {
     messageWidget->close();
     loginStatusLabel->setText(i18n("Authenticating..."));
-    Scrobbler::self()->setDetails(user->text().trimmed(), pass->text().trimmed());
+    Scrobbler::self()->setDetails(scrobbler->currentText(), user->text().trimmed(), pass->text().trimmed());
 }
 
 void ScrobblingSettings::showStatus(bool status)

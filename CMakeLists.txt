@@ -643,11 +643,11 @@ endif (X11_FOUND)
 
 if (WIN32)
     install(FILES context/ultimate_providers.xml DESTINATION ${CMAKE_INSTALL_PREFIX}/lyrics/)
-    install(FILES context/weblinks.xml online/podcast_directories.xml DESTINATION ${CMAKE_INSTALL_PREFIX}/config/)
+    install(FILES context/weblinks.xml online/podcast_directories.xml scrobbling/scrobblers.xml DESTINATION ${CMAKE_INSTALL_PREFIX}/config/)
     install(FILES tags/fixes.xml DESTINATION ${CMAKE_INSTALL_PREFIX}/config/  RENAME tag-fixes.xml)
 elseif (NOT ENABLE_UBUNTU)
     install(FILES context/ultimate_providers.xml DESTINATION ${CMAKE_INSTALL_PREFIX}/share/${CMAKE_PROJECT_NAME}/lyrics)
-    install(FILES context/weblinks.xml online/podcast_directories.xml DESTINATION ${CMAKE_INSTALL_PREFIX}/share/${CMAKE_PROJECT_NAME}/config/)
+    install(FILES context/weblinks.xml online/podcast_directories.xml scrobbling/scrobblers.xml DESTINATION ${CMAKE_INSTALL_PREFIX}/share/${CMAKE_PROJECT_NAME}/config/)
     install(FILES tags/fixes.xml DESTINATION ${CMAKE_INSTALL_PREFIX}/share/${CMAKE_PROJECT_NAME}/config/ RENAME tag-fixes.xml)
 endif (WIN32)
 

@@ -65,12 +65,16 @@ public:
     static const QLatin1String constCacheDir;
     static const QLatin1String constCacheFile;
 
+    static bool viaMpd(const QString &sc) { return !sc.startsWith("http"); }
+
     Scrobbler();
     ~Scrobbler();
 
-    QStringList availableScrobblers() { loadScrobblers(); return scrobblers.keys(); }
+    QMap<QString, QString> availableScrobblers() { loadScrobblers(); return scrobblers; }
     void stop();
     bool isEnabled() const { return scrobblingEnabled; }
+    bool isLoveEnabled() const { return loveIsEnabled; }
+    bool lovedTrack() const { return lovePending || loveSent; }
     bool haveLoginDetails() const { return !userName.isEmpty() && !password.isEmpty(); }
     void setDetails(const QString &s, const QString &u, const QString &p);
     const QString & user() const { return userName; }
@@ -82,16 +86,24 @@ Q_SIGNALS:
     void error(const QString &msg);
     void authenticated(bool a);
     void enabled(bool e);
+    void loveEnabled(bool e);
+    void songChanged(bool valid);
+    void scrobblerChanged();
+
+    // send love via client message...
+    void clientMessage(const QString &client, const QString &msg);
 
 public Q_SLOTS:
+    void love();
     void setEnabled(bool e);
+    void setLoveEnabled(bool e);
 
 private Q_SLOTS:
     void setSong(const Song &s);
     void scrobbleCurrent();
     void scrobbleQueued();
-    void sendNowPlaying();
-    void nowPlayingResp();
+    void scrobbleNowPlaying();
+    void handleResp();
     void authenticate();
     void authResp();
     void scrobbleFinished();
@@ -102,17 +114,17 @@ private:
     void loadSettings();
     void handle(const QString &status);
     bool ensureAuthenticated();
-    void scrobbleNowPlaying();
     void loadCache();
     void saveCache();
     void cancelJobs();
     void reset();
     void loadScrobblers();
-    QUrl scrobblerUrl() const;
+    QString scrobblerUrl() const;
 
 private:
     bool scrobblingEnabled;
-    QMap<QString, QUrl> scrobblers;
+    bool loveIsEnabled;
+    QMap<QString, QString> scrobblers;
     QString scrobbler;
     QString userName;
     QString password;
@@ -125,9 +137,12 @@ private:
     PausableTimer * nowPlayingTimer;
     QTimer * hardFailTimer;
     bool nowPlayingIsPending;
+    bool lovePending;
     bool lastScrobbleFailed;
     bool nowPlayingSent;
+    bool loveSent;
     bool scrobbledCurrent;
+    bool scrobbleViaMpd;
     int failedCount;
 
     QNetworkReply *authJob;

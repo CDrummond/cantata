@@ -21,31 +21,21 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef SCROBBLING_SETTINGS_H
-#define SCROBBLING_SETTINGS_H
+#ifndef SCROBBLING_LOVE_H
+#define SCROBBLING_LOVE_H
 
-#include "ui_scrobblingsettings.h"
+#include "widgets/toolbutton.h"
 
-class LineEdit;
-class QPushButton;
-class QLabel;
-
-class ScrobblingSettings : public QWidget, public Ui::ScrobblingSettings
+class ScrobblingLove : public ToolButton
 {
     Q_OBJECT
-
 public:
-    ScrobblingSettings(QWidget *parent);
-
-    void load();
-
-public Q_SLOTS:
-    void save();
+    ScrobblingLove(QWidget *p);
+    virtual ~ScrobblingLove() { }
 
 private Q_SLOTS:
-    void showStatus(bool status);
-    void showError(const QString &msg);
-    void controlLoginButton();
+    void sendLove();
+    void songChanged(bool valid);
     void scrobblerChanged();
 };
 

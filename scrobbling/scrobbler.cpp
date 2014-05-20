@@ -158,11 +158,15 @@ Scrobbler::Track::Track(const Song &s)
 Scrobbler::Scrobbler()
     : QObject(0)
     , scrobblingEnabled(false)
+    , loveIsEnabled(false)
     , scrobbler("Last.fm")
     , nowPlayingIsPending(false)
+    , lovePending(false)
     , lastScrobbleFailed(false)
     , nowPlayingSent(false)
+    , loveSent(false)
     , scrobbledCurrent(false)
+    , scrobbleViaMpd(false)
     , failedCount(0)
     , authJob(0)
     , scrobbleJob(0)
@@ -181,9 +185,10 @@ Scrobbler::Scrobbler()
     retryTimer->setInterval(10000);
     connect(scrobbleTimer, SIGNAL(timeout()), this, SLOT(scrobbleCurrent()));
     connect(retryTimer, SIGNAL(timeout()), this, SLOT(scrobbleQueued()));
-    connect(nowPlayingTimer, SIGNAL(timeout()), this, SLOT(sendNowPlaying()));
+    connect(nowPlayingTimer, SIGNAL(timeout()), this, SLOT(scrobbleNowPlaying()));
     connect(hardFailTimer, SIGNAL(timeout()), this, SLOT(authenticate()));
     loadSettings();
+    connect(this, SIGNAL(clientMessage(QString, QString)), MPDConnection::self(), SLOT(sendClientMessage(QString, QString)));
 }
 
 Scrobbler::~Scrobbler()
@@ -202,12 +207,16 @@ void Scrobbler::setActive()
 {
     if (isEnabled()) {
         loadCache();
+    } else {
+        reset();
+    }
+
+    if (isEnabled() || scrobbleViaMpd) {
         connect(MPDStatus::self(), SIGNAL(updated()), this, SLOT(mpdStateUpdated()));
         connect(MPDConnection::self(), SIGNAL(currentSongUpdated(Song)), this, SLOT(setSong(Song)));
     } else {
         disconnect(MPDStatus::self(), SIGNAL(updated()), this, SLOT(mpdStateUpdated()));
         disconnect(MPDConnection::self(), SIGNAL(currentSongUpdated(Song)), this, SLOT(setSong(Song)));
-        reset();
     }
 
     if (!isAuthenticated()) {
@@ -225,10 +234,13 @@ void Scrobbler::loadSettings()
 //    password=cfg.get("password", password);
     sessionKey=cfg.get("sessionKey", sessionKey);
     scrobblingEnabled=cfg.get("enabled", scrobblingEnabled);
+    loveIsEnabled=cfg.get("loveEnabled", loveIsEnabled);
     scrobbler=cfg.get("scrobbler", scrobbler);
+    scrobbleViaMpd=viaMpd(scrobblerUrl());
     DBUG << scrobbler << userName << sessionKey << scrobblingEnabled;
     emit authenticated(isAuthenticated());
     emit enabled(isEnabled());
+    emit loveEnabled(loveIsEnabled);
     setActive();
 }
 
@@ -245,17 +257,54 @@ void Scrobbler::setDetails(const QString &s, const QString &u, const QString &p)
         reset();
         cfg.set("scrobbler", scrobbler);
         cfg.set("userName", userName);
+        cfg.set("sessionKey", sessionKey);
+        scrobbleViaMpd=viaMpd(scrobblerUrl());
 //        cfg.set("password", password);
         setActive();
         if (!isEnabled()) {
             emit authenticated(false);
         }
+        emit scrobblerChanged();
     } else if (!isAuthenticated() && haveLoginDetails()) {
         authenticate();
-    } else {
+    } else if (!scrobbleViaMpd) {
         DBUG << "details NOT changed";
         emit authenticated(isAuthenticated());
     }
+}
+
+void Scrobbler::love()
+{
+    lovePending=false;
+    if (!loveIsEnabled) {
+        return;
+    }
+
+    if (currentSong.title.isEmpty() || currentSong.artist.isEmpty() || loveSent) {
+        return;
+    }
+
+    if (scrobbleViaMpd) {
+        emit clientMessage(scrobblerUrl(), QLatin1String("love"));
+        loveSent=true;
+        return;
+    }
+
+    if (!ensureAuthenticated()) {
+        lovePending=true;
+        return;
+    }
+
+    QMap<QString, QString> params;
+    params["method"] = "track.love";
+    params["track"] = currentSong.title;
+    params["artist"] = currentSong.artist;
+    params["sk"] = sessionKey;
+    sign(params);
+    DBUG << currentSong.title << currentSong.artist;
+    QNetworkReply *job=NetworkAccessManager::self()->postFormData(QUrl(scrobblerUrl()), format(params));
+    connect(job, SIGNAL(finished()), this, SLOT(handleResp()));
+    loveSent=true;
 }
 
 void Scrobbler::setEnabled(bool e)
@@ -268,15 +317,31 @@ void Scrobbler::setEnabled(bool e)
     }
 }
 
+void Scrobbler::setLoveEnabled(bool e)
+{
+    if (e!=loveIsEnabled) {
+        loveIsEnabled=e;
+        Configuration(constSettingsGroup).set("loveEnabled", loveIsEnabled);
+        setActive();
+        emit loveEnabled(e);
+    }
+}
+
 void Scrobbler::setSong(const Song &s)
 {
     DBUG << isEnabled() << s.isStandardStream() << s.time << s.file;
-    if (!isEnabled() || s.isStandardStream() || s.time<30) {
+    if (!scrobbleViaMpd && !isEnabled()) {
         return;
     }
 
     if (currentSong.artist != s.artist || currentSong.title!=s.title || currentSong.album!=s.album) {
-        nowPlayingSent=scrobbledCurrent=false;
+        nowPlayingSent=scrobbledCurrent=loveSent=lovePending=nowPlayingIsPending=false;
+        currentSong=s;
+        emit songChanged(!s.isStandardStream() && !s.isEmpty());
+        if (scrobbleViaMpd || !isEnabled() || s.isStandardStream() || s.time<30) {
+            return;
+        }
+
         int elapsed=MPDStatus::self()->timeElapsed()*1000;
         int nowPlayingTimemout=5000;
         if (elapsed>4000) {
@@ -294,25 +359,20 @@ void Scrobbler::setSong(const Song &s)
         }
         scrobbleTimer->setInterval(timeout);
 
-        currentSong=s;
         if (MPDState_Playing==MPDStatus::self()->state() && s.time>30) {
             mpdStateUpdated();
         }
     }
 }
 
-void Scrobbler::sendNowPlaying()
-{
-    nowPlayingIsPending = true;
-    if (ensureAuthenticated()) {
-        scrobbleNowPlaying();
-        nowPlayingIsPending = false;
-    }
-}
-
 void Scrobbler::scrobbleNowPlaying()
 {
-    if (currentSong.title.isEmpty() || currentSong.artist.isEmpty() || nowPlayingSent) {
+    nowPlayingIsPending=false;
+    if (!ensureAuthenticated()) {
+        nowPlayingIsPending=true;
+        return;
+    }
+    if (currentSong.title.isEmpty() || currentSong.artist.isEmpty() || nowPlayingSent || scrobbleViaMpd) {
         return;
     }
     QMap<QString, QString> params;
@@ -334,12 +394,12 @@ void Scrobbler::scrobbleNowPlaying()
     params["sk"] = sessionKey;
     sign(params);
     DBUG << currentSong.title << currentSong.artist;
-    QNetworkReply *job=NetworkAccessManager::self()->postFormData(scrobblerUrl(), format(params));
-    connect(job, SIGNAL(finished()), this, SLOT(nowPlayingResp()));
+    QNetworkReply *job=NetworkAccessManager::self()->postFormData(QUrl(scrobblerUrl()), format(params));
+    connect(job, SIGNAL(finished()), this, SLOT(handleResp()));
     nowPlayingSent=true;
 }
 
-void Scrobbler::nowPlayingResp()
+void Scrobbler::handleResp()
 {
     QNetworkReply *job=qobject_cast<QNetworkReply *>(sender());
     if (!job) {
@@ -362,7 +422,7 @@ void Scrobbler::scrobbleCurrent()
 
 void Scrobbler::scrobbleQueued()
 {
-    if (!scrobblingEnabled) {
+    if (!scrobblingEnabled || scrobbleViaMpd) {
         return;
     }
     if (!ensureAuthenticated() || scrobbleJob) {
@@ -445,7 +505,7 @@ bool Scrobbler::ensureAuthenticated()
 
 void Scrobbler::authenticate()
 {
-    if (hardFailTimer->isActive() || authJob) {
+    if (hardFailTimer->isActive() || authJob || scrobbleViaMpd) {
         DBUG << "authentication delayed";
         return;
     }
@@ -517,9 +577,13 @@ void Scrobbler::authResp()
     Configuration cfg(constSettingsGroup);
     cfg.set("sessionKey", sessionKey);
 
-    if (nowPlayingIsPending && isAuthenticated()) {
-        scrobbleNowPlaying();
-        nowPlayingIsPending = false;
+    if (isAuthenticated()) {
+        if (nowPlayingIsPending) {
+            scrobbleNowPlaying();
+        }
+        if (lovePending) {
+            love();
+        }
     }
 }
 
@@ -617,7 +681,7 @@ void Scrobbler::saveCache()
 
 void Scrobbler::mpdStateUpdated()
 {
-    if (isEnabled()) {
+    if (isEnabled() && !scrobbleViaMpd) {
         switch (MPDStatus::self()->state()) {
         case MPDState_Paused:
             scrobbleTimer->pause();
@@ -680,7 +744,7 @@ void Scrobbler::loadScrobblers()
                     QString name=doc.attributes().value("name").toString();
                     QString url=doc.attributes().value("url").toString();
                     if (!name.isEmpty() && !url.isEmpty()) {
-                        scrobblers.insert(name, QUrl(url));
+                        scrobblers.insert(name, url);
                     }
                 }
             }
@@ -688,7 +752,7 @@ void Scrobbler::loadScrobblers()
     }
 }
 
-QUrl Scrobbler::scrobblerUrl() const
+QString Scrobbler::scrobblerUrl() const
 {
     if (scrobblers.isEmpty()) {
         return QString();

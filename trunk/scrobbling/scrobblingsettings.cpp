@@ -39,16 +39,34 @@ ScrobblingSettings::ScrobblingSettings(QWidget *parent)
     connect(user, SIGNAL(textChanged(QString)), SLOT(controlLoginButton()));
     connect(pass, SIGNAL(textChanged(QString)), SLOT(controlLoginButton()));
     connect(enableScrobbling, SIGNAL(toggled(bool)), Scrobbler::self(), SLOT(setEnabled(bool)));
+    connect(showLove, SIGNAL(toggled(bool)), Scrobbler::self(), SLOT(setLoveEnabled(bool)));
     connect(Scrobbler::self(), SIGNAL(enabled(bool)), enableScrobbling, SLOT(setChecked(bool)));
+    connect(scrobbler, SIGNAL(currentIndexChanged(int)), this, SLOT(scrobblerChanged()));
     loginButton->setEnabled(false);
 
-    QStringList scrobblers=Scrobbler::self()->availableScrobblers();
-    scrobblers.sort();
-    foreach (const QString &s, scrobblers) {
-        scrobbler->addItem(s);
+    QMap<QString, QString> scrobblers=Scrobbler::self()->availableScrobblers();
+    QStringList keys=scrobblers.keys();
+    keys.sort();
+    QString firstMpdClient;
+    foreach (const QString &k, keys) {
+        bool viaMpd=Scrobbler::viaMpd(scrobblers[k]);
+        if (viaMpd) {
+            scrobbler->addItem(i18nc("scrobbler name (via MPD)", "%1 (via MPD)", k), k);
+        } else {
+            scrobbler->addItem(k);
+        }
+        if (viaMpd && firstMpdClient.isEmpty()) {
+            firstMpdClient=k;
+        }
     }
     scrobbler->setVisible(scrobbler->count()>1);
     scrobblerLabel->setVisible(scrobbler->count()>1);
+    noteLabel->setVisible(!firstMpdClient.isEmpty());
+    if (!firstMpdClient.isEmpty()) {
+        noteLabel->setText(i18n("<i><b>NOTE:</b> If you use a scrobbler which is marked as '(via MPD)' (such as %1), "
+                                "then you will need to have this already started and running. "
+                                "Cantata can only 'Love' tracks via this, and cannot enable/disable scrobbling.</i>", firstMpdClient));
+    }
 }
 
 void ScrobblingSettings::load()
@@ -58,20 +76,36 @@ void ScrobblingSettings::load()
     pass->setText(Scrobbler::self()->pass().trimmed());
     QString s=Scrobbler::self()->activeScrobbler();
     for (int i=0; i<scrobbler->count(); ++i) {
-        if (scrobbler->itemText(i)==s) {
+        if (scrobbler->itemText(i)==s || scrobbler->itemData(i).toString()==s) {
             scrobbler->setCurrentIndex(i);
             break;
         }
     }
     enableScrobbling->setChecked(Scrobbler::self()->isEnabled());
+    showLove->setChecked(Scrobbler::self()->isLoveEnabled());
     controlLoginButton();
+    scrobblerChanged();
 }
 
 void ScrobblingSettings::save()
 {
+    bool isLogin=sender()==loginButton;
     messageWidget->close();
-    loginStatusLabel->setText(i18n("Authenticating..."));
-    Scrobbler::self()->setDetails(scrobbler->currentText(), user->text().trimmed(), pass->text().trimmed());
+    QString u=user->text().trimmed();
+    QString p=pass->text().trimmed();
+
+    QString sc=scrobbler->itemData(scrobbler->currentIndex()).toString();
+    if (sc.isEmpty()) {
+        loginStatusLabel->setText(i18n("Authenticating..."));
+        sc=scrobbler->currentText();
+    }
+
+    // We dont save password, so this /might/ be empty! Therefore, dont disconnect just
+    // becuase user clicked OK/Apply...
+    if (isLogin || sc!=Scrobbler::self()->activeScrobbler() || u!=Scrobbler::self()->user() ||
+        (!Scrobbler::self()->pass().isEmpty() && p!=Scrobbler::self()->pass())) {
+        Scrobbler::self()->setDetails(sc, u, pass->text().trimmed());
+    }
 }
 
 void ScrobblingSettings::showStatus(bool status)
@@ -90,5 +124,21 @@ void ScrobblingSettings::showError(const QString &msg)
 
 void ScrobblingSettings::controlLoginButton()
 {
-    loginButton->setEnabled(!user->text().trimmed().isEmpty() && !pass->text().trimmed().isEmpty());
+    loginButton->setEnabled(user->isEnabled() && !user->text().trimmed().isEmpty() && !pass->text().trimmed().isEmpty());
+}
+
+void ScrobblingSettings::scrobblerChanged()
+{
+    bool viaMpd=!scrobbler->itemData(scrobbler->currentIndex()).toString().isEmpty();
+    user->setEnabled(!viaMpd);
+    userLabel->setEnabled(!viaMpd);
+    pass->setEnabled(!viaMpd);
+    passLabel->setEnabled(!viaMpd);
+    loginStatusLabel->setEnabled(!viaMpd);
+    statusLabel->setEnabled(!viaMpd);
+    enableScrobbling->setEnabled(!viaMpd);
+    if (viaMpd) {
+        enableScrobbling->setChecked(false);
+    }
+    controlLoginButton();
 }

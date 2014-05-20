@@ -385,11 +385,7 @@ Icons::Icons()
     streamCategoryIcon=Icon(QLatin1String("oxygen")==Icon::currentTheme().toLower() ? "inode-directory" : "folder-music");
     #endif
 
-    #ifdef Q_OS_WIN
-    QString iconFile=QCoreApplication::applicationDirPath()+"/icons/stream.png";
-    #else
-    QString iconFile=QString(INSTALL_PREFIX"/share/")+QCoreApplication::applicationName()+"/icons/stream.png";
-    #endif
+    QString iconFile=QString(CANTATA_SYS_ICONS_DIR+"stream.png");
     if (QFile::exists(iconFile)) {
         streamIcon.addFile(iconFile);
     }

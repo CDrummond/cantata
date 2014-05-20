@@ -110,11 +110,7 @@ PodcastService::PodcastService(MusicModel *m)
     QMetaObject::invokeMethod(this, "loadAll", Qt::QueuedConnection);
     connect(MPDConnection::self(), SIGNAL(currentSongUpdated(const Song &)), this, SLOT(currentMpdSong(const Song &)));
     if (iconFile.isEmpty()) {
-        #ifdef Q_OS_WIN
-        iconFile=QCoreApplication::applicationDirPath()+"/icons/podcasts.png";
-        #else
-        iconFile=QString(INSTALL_PREFIX"/share/")+QCoreApplication::applicationName()+"/icons/podcasts.png";
-        #endif
+        iconFile=QString(CANTATA_SYS_ICONS_DIR+"podcasts.png");
     }
 }
 

@@ -28,7 +28,6 @@
 #include "support/utils.h"
 #include "support/globalstatic.h"
 #include <QFile>
-#include <QCoreApplication>
 
 #ifndef Q_OS_WIN
 static void themes(const QString &theme, QStringList &iconThemes)
@@ -133,7 +132,7 @@ const QImage & CurrentCover::stdImage(bool stream)
     QImage &img=stream ? noStreamCover : noCover;
 
     #ifdef ENABLE_UBUNTU
-    // TODO: Jsut return qrc file Touch...
+    // TODO: Just return qrc file Touch...
     #else
     if (img.isNull()) {
         int iconSize=Utils::isHighDpi() ? 256 : 128;
@@ -141,11 +140,7 @@ const QImage & CurrentCover::stdImage(bool stream)
 
         QString &file=stream ? noStreamCoverFileName : noCoverFileName;
         if (stream && file.isEmpty()) {
-            #ifdef Q_OS_WIN
-            QString iconFile=QCoreApplication::applicationDirPath()+"/icons/stream.png";
-            #else
-            QString iconFile=QString(INSTALL_PREFIX"/share/")+QCoreApplication::applicationName()+"/icons/stream.png";
-            #endif
+            QString iconFile=QString(CANTATA_SYS_ICONS_DIR+"stream.png");
             if (QFile::exists(iconFile)) {
                 file=iconFile;
             }
@@ -184,13 +179,7 @@ void CurrentCover::update(const Song &s)
                 img=cImg.img;
                 emit coverFile(cImg.fileName);
                 if (current.isFromOnlineService()) {
-                    if (coverFileName.startsWith(
-                        #ifdef Q_OS_WIN
-                        QCoreApplication::applicationDirPath()+"/icons/"
-                        #else
-                        QString(INSTALL_PREFIX"/share/")+QCoreApplication::applicationName()+"/icons/"
-                        #endif
-                                )) {
+                    if (coverFileName.startsWith(CANTATA_SYS_ICONS_DIR)) {
                         emit coverImage(QImage());
                     } else {
                         emit coverImage(cImg.img);

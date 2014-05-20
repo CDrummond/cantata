@@ -97,6 +97,8 @@ namespace Utils
     extern QString configDir(const QString &sub=QString(), bool create=false);
     extern QString dataDir(const QString &sub=QString(), bool create=false);
     extern QString cacheDir(const QString &sub=QString(), bool create=true);
+    extern QString systemDir(const QString &sub);
+    extern QString helper(const QString &app);
     extern bool moveFile(const QString &from, const QString &to);
     extern void moveDir(const QString &from, const QString &to);
     extern void clearOldCache(const QString &sub, int maxAge);

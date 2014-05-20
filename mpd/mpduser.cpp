@@ -35,9 +35,6 @@
 #include <QSet>
 #include <QCoreApplication>
 #include <signal.h>
-#if defined Q_OS_WIN
-#include <QDesktopServices>
-#endif
 
 const QString MPDUser::constName=QLatin1String("-");
 
@@ -247,11 +244,8 @@ void MPDUser::init(bool create)
 
         if (create && !QFile::exists(cfgName)) {
             // Conf file does not exist, so we need to create one...
-            #ifdef Q_OS_WIN
-            QFile cfgTemplate(QCoreApplication::applicationDirPath()+"/mpd/"+constConfigFile+".template");
-            #else
-            QFile cfgTemplate(INSTALL_PREFIX"/share/cantata/mpd/"+constConfigFile+".template");
-            #endif
+            QFile cfgTemplate(CANTATA_SYS_MPD_DIR+constConfigFile+".template");
+
             if (cfgTemplate.open(QIODevice::ReadOnly|QIODevice::Text)) {
                 QFile cfgFile(cfgName);
                 if (cfgFile.open(QIODevice::WriteOnly|QIODevice::Text)) {

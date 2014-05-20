@@ -303,14 +303,9 @@ int main(int argc, char *argv[])
     }
     loadTranslation("qt", QLibraryInfo::location(QLibraryInfo::TranslationsPath), lang);
     #ifdef Q_OS_WIN
-    loadTranslation("qt", app.applicationDirPath()+QLatin1String("/translations"), lang);
-    loadTranslation("qt", QDir::currentPath()+QLatin1String("/translations"), lang);
+    loadTranslation("qt", CANTATA_SYS_TRANS_DIR, lang);
     #endif
-    loadTranslation("cantata", app.applicationDirPath()+QLatin1String("/translations"), lang);
-    loadTranslation("cantata", QDir::currentPath()+QLatin1String("/translations"), lang);
-    #ifndef Q_OS_WIN
-    loadTranslation("cantata", INSTALL_PREFIX"/share/cantata/translations/", lang);
-    #endif
+    loadTranslation("cantata", CANTATA_SYS_TRANS_DIR, lang);
 
     Application::initObjects();
 

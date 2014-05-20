@@ -1,6 +1,9 @@
 #ifndef _CONFIG_H
 #define _CONFIG_H
 
+#include <QCoreApplication>
+#include "support/utils.h"
+
 #define CANTATA_MAKE_VERSION(a, b, c) (((a) << 16) | ((b) << 8) | (c))
 /*
   NOTE: If CANTATA_REV_URL, or CANTATA_URL, are changed, then cantata-dynamac,
@@ -50,5 +53,10 @@
 #endif
 #define CANTATA_URL "cantata.googlecode.com"
 
-#endif
+#define CANTATA_SYS_CONFIG_DIR Utils::systemDir(QLatin1String("config/"))
+#define CANTATA_SYS_LYRICS_DIR Utils::systemDir(QLatin1String("lyrics/"))
+#define CANTATA_SYS_ICONS_DIR  Utils::systemDir(QLatin1String("icons/"))
+#define CANTATA_SYS_MPD_DIR    Utils::systemDir(QLatin1String("mpd/"))
+#define CANTATA_SYS_TRANS_DIR  Utils::systemDir(QLatin1String("translations/"))
 
+#endif

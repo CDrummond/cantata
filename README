@@ -1,5 +1,5 @@
 Table of Contents
------------------
+=================
 
  1. Introduction
  2. Dependencies
@@ -493,22 +493,36 @@ add the CUE File to the album's track listing.
 9. Streams
 ==========
 
-Cantata contains a list of in-built stream categories, or providers. To import
-new stream categories into Cantata, files need to be GZip compressed tarballs
-of the following format.
+As of 1.4.0, Cantata only comes with TuneIn, ShoutCast, IceCast and Dirble
+stream providers. To install new providers, you can either use Cantata's
+download dialog (to install for Cantata's Google Drive), or install from file.
+To import new stream categories into Cantata, these files need to be GZip
+compressed tarballs of the following format.
 
   Filename: CATEGORY_NAME.streams  (e.g. German Radio.streams)
 
-  Contents: Either streams.xml or streams.xml.gz, & either icon.png or icon.svg
-            streams.xml.gz should be gzipped.
+  Contents: Either streams.xml, streams.xml.gz, OR settings.json, AND
+            Either icon.png OR icon.svg
+
+            streams.xml.gz should be GZip compressed.
             icon.svg should be a non-compressed SVG file.
 
             Icons for sub-categories (first level only) - these should be named
             the same as the category (with / replaced by _) -
             e.g. 'Hard_Soft Rock.svg' for 'Hard/Soft Rock')
 
-streams.xml.gz is the same format as Cantata's "Favourites" streams file, and
-the same as stream cache files. The format is as follows:
+settings.json is really only intended to be used by Cantata for providers
+stored in its Google Drive. This JSON file has the following syntax:
+
+  { "type": "streamType", "url": "Stream listing URL" }
+  
+  "streamType" can be either di, soma, or listenlive. Cantata contains code to
+  download from "Stream listing URL" and parse the response based upon
+  "streamType"
+
+In general, for externally provided stream lists, it is more convenient to just
+list all a providers streams within stream.xml.gz. This has the following
+format:
 
   <?xml version="1.0" encoding="UTF-8"?>
   <streams version="1.0" addCategoryName="true">
@@ -532,8 +546,8 @@ streams.xml.gz with:
     <stream name="Blues" url="http://127.0.0.1/blues.ogg"/>
   </streams>
 
-streams.xml.gz & icon.svg need to be placed into a gzip'ed tarball named
-Wicked Radio.streams
+streams.xml.gz & icon.svg need to be placed into a GZip compressed tarball
+named "Wicked Radio.streams"
 
 With the above example, Cantata would list the following in the streams view:
 
@@ -555,6 +569,38 @@ To create .streams file:
     2. cd into temp folder
     3. tar cfz NAME.tar.gz *
     4. mv NAME.tar.gz NAME.streams
+
+
+Google Drive
+------------
+
+The streams page on Cantata's settings dialog, will allow you to install new
+providers from Cantata's Google Drive page. To do this, the dialog first
+downloads the list of providers, this is obtained from the following URL:
+
+https://drive.google.com/uc?export=download&id=0Bzghs6gQWi60dHBPajNjbjExZzQ
+
+This file is acutally named "list.xml" - for some reason Google Drive's
+download links never specify the actual name! The contents of this file will be
+something like:
+
+<providers>
+ <category type="0">
+  <provider name="1.fm" url="https://drive.google.com/uc?export=download&amp;id=0Bzghs6gQWi60RHRSa3dqeUtkNTA"/>
+  ...
+
+If you want to manually download a provider, use the listed URL to download the
+.streams file. e.g. for the above ("&amp;" is replaceed with "&"):
+
+    wget "https://drive.google.com/uc?export=download&id=0Bzghs6gQWi60RHRSa3dqeUtkNTA" -O 1.fm.streams
+
+Extract the contents with:
+
+    tar zxvf 1.fm.streams
+
+If you wish to distribute a new stream provider via Cantata's Google Drive,
+please send me an email with the .streams file. My address is in the AUTHORS
+file.
 
 
 10. MultiMedia Keys

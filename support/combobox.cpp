@@ -25,110 +25,12 @@
 #include "lineedit.h"
 #include "utils.h"
 #include <QAbstractItemView>
-#include <QStyle>
-#include <QStyleOption>
-#include <QStyledItemDelegate>
 #include <QDesktopWidget>
 #include <QApplication>
-#include <QPainter>
 #include "gtkstyle.h"
 
 // Max number of items before we try to force a scrollbar in popup menu...
 static int maxPopupItemCount=-1;
-
-class ComboItemDelegate : public QStyledItemDelegate
-{
-public:
-    ComboItemDelegate(ComboBox *p) : QStyledItemDelegate(p), mCombo(p) { }
-    virtual ~ComboItemDelegate() { }
-    QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
-    {
-        QSize sz=QStyledItemDelegate::sizeHint(option, index);
-        int minH=option.fontMetrics.height()*2;
-        if (sz.height()<minH) {
-            sz.setHeight(minH);
-        }
-        return sz;
-    }
-    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
-    {
-        if (GtkStyle::isActive()) {
-            QStyleOptionMenuItem opt = getStyleOption(option, index);
-            painter->fillRect(option.rect, opt.palette.background());
-            mCombo->style()->drawControl(QStyle::CE_MenuItem, &opt, painter, mCombo);
-        } else {
-            QStyledItemDelegate::paint(painter, option, index);
-        }
-    }
-
-    static bool isSeparator(const QModelIndex &index)
-    {
-        return index.data(Qt::AccessibleDescriptionRole).toString() == QLatin1String("separator");
-    }
-
-    QStyleOptionMenuItem getStyleOption(const QStyleOptionViewItem &option, const QModelIndex &index) const
-    {
-        QStyleOptionMenuItem menuOption;
-
-        QPalette resolvedpalette = option.palette.resolve(QApplication::palette("QMenu"));
-        QVariant value = index.data(Qt::ForegroundRole);
-        if (value.canConvert<QBrush>()) {
-            resolvedpalette.setBrush(QPalette::WindowText, qvariant_cast<QBrush>(value));
-            resolvedpalette.setBrush(QPalette::ButtonText, qvariant_cast<QBrush>(value));
-            resolvedpalette.setBrush(QPalette::Text, qvariant_cast<QBrush>(value));
-        }
-        menuOption.palette = resolvedpalette;
-        menuOption.state = QStyle::State_None;
-        if (mCombo->window()->isActiveWindow()) {
-            menuOption.state = QStyle::State_Active;
-        }
-        if ((option.state & QStyle::State_Enabled) && (index.model()->flags(index) & Qt::ItemIsEnabled)) {
-            menuOption.state |= QStyle::State_Enabled;
-        } else {
-            menuOption.palette.setCurrentColorGroup(QPalette::Disabled);
-        }
-        if (option.state & QStyle::State_Selected) {
-            menuOption.state |= QStyle::State_Selected;
-        }
-        menuOption.checkType = QStyleOptionMenuItem::NonExclusive;
-        menuOption.checked = mCombo->currentIndex() == index.row();
-        if (isSeparator(index)) {
-            menuOption.menuItemType = QStyleOptionMenuItem::Separator;
-        } else {
-            menuOption.menuItemType = QStyleOptionMenuItem::Normal;
-        }
-
-        QVariant variant = index.model()->data(index, Qt::DecorationRole);
-        switch (variant.type()) {
-        case QVariant::Icon:
-            menuOption.icon = qvariant_cast<QIcon>(variant);
-            break;
-        case QVariant::Color: {
-            static QPixmap pixmap(option.decorationSize);
-            pixmap.fill(qvariant_cast<QColor>(variant));
-            menuOption.icon = pixmap;
-            break;
-        }
-        default:
-            menuOption.icon = qvariant_cast<QPixmap>(variant);
-            break;
-        }
-        if (index.data(Qt::BackgroundRole).canConvert<QBrush>()) {
-            menuOption.palette.setBrush(QPalette::All, QPalette::Background,
-                                        qvariant_cast<QBrush>(index.data(Qt::BackgroundRole)));
-        }
-        menuOption.text = index.model()->data(index, Qt::DisplayRole).toString()
-                               .replace(QLatin1Char('&'), QLatin1String("&&"));
-        menuOption.tabWidth = 0;
-        menuOption.maxIconWidth =  option.decorationSize.width() + 4;
-        menuOption.menuRect = option.rect;
-        menuOption.rect = option.rect;
-        menuOption.font = mCombo->font();
-        menuOption.fontMetrics = QFontMetrics(menuOption.font);
-        return menuOption;
-    }
-    ComboBox *mCombo;
-};
 
 ComboBox::ComboBox(QWidget *p)
     #ifdef ENABLE_KDE_SUPPORT
@@ -144,9 +46,6 @@ ComboBox::ComboBox(QWidget *p)
         } else {
             maxPopupItemCount=32;
         }
-    }
-    if (Utils::touchFriendly()) {
-        setItemDelegate(new ComboItemDelegate(this));
     }
 }
 

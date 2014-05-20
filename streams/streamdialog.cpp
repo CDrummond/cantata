@@ -25,6 +25,7 @@
 #include <QIcon>
 #include <QValidator>
 #include <QUrl>
+#include <QApplication>
 #include "streamdialog.h"
 #include "gui/settings.h"
 #include "models/streamsmodel.h"

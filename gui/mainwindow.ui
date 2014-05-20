@@ -277,6 +277,9 @@
            </spacer>
           </item>
           <item>
+           <widget class="ScrobblingLove" name="loveTrack"/>
+          </item>
+          <item>
            <widget class="ScrobblingStatus" name="scrobblingStatus"/>
           </item>
           <item>
@@ -427,6 +430,11 @@
    <class>ScrobblingStatus</class>
    <extends>QToolButton</extends>
    <header>scrobbling/scrobblingstatus.h</header>
+  </customwidget>
+  <customwidget>
+   <class>ScrobblingLove</class>
+   <extends>QToolButton</extends>
+   <header>scrobbling/scrobblinglove.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

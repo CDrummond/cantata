@@ -28,9 +28,13 @@
 
 class ScrobblingStatus : public ToolButton
 {
+    Q_OBJECT
 public:
     ScrobblingStatus(QWidget *p);
     virtual ~ScrobblingStatus() { }
+
+private Q_SLOTS:
+    void scrobblerChanged();
 };
 
 #endif

@@ -1546,6 +1546,11 @@ void MPDConnection::editStream(const QString &url, const QString &name, quint32 
     }
 }
 
+void MPDConnection::sendClientMessage(const QString &client, const QString &msg)
+{
+    sendCommand("sendmessage "+client.toUtf8()+" "+msg.toUtf8());
+}
+
 void MPDConnection::moveInPlaylist(const QString &name, const QList<quint32> &items, quint32 pos, quint32 size)
 {
     if (doMoveInPlaylist(name, items, pos, size)) {

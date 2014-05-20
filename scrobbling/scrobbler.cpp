@@ -61,7 +61,6 @@ static const QLatin1String constBadSession("BADSESSION");
 static const QLatin1String constFailed("FAILED");
 static const QLatin1String constSettingsGroup("Scrobbling");
 static const QString constSecretKey=QLatin1String("0753a75ccded9b17b872744d4bb60b35");
-static const QString constUrl=QLatin1String("http://ws.audioscrobbler.com/2.0/");
 static const int constMaxBatchSize=50;
 
 GLOBAL_STATIC(Scrobbler, instance)
@@ -208,10 +207,7 @@ void Scrobbler::setActive()
     } else {
         disconnect(MPDStatus::self(), SIGNAL(updated()), this, SLOT(mpdStateUpdated()));
         disconnect(MPDConnection::self(), SIGNAL(currentSongUpdated(Song)), this, SLOT(setSong(Song)));
-        songQueue.clear();
-        lastScrobbledSongs.clear();
-        saveCache();
-        cancelJobs();
+        reset();
     }
 
     if (!isAuthenticated()) {
@@ -229,21 +225,25 @@ void Scrobbler::loadSettings()
 //    password=cfg.get("password", password);
     sessionKey=cfg.get("sessionKey", sessionKey);
     scrobblingEnabled=cfg.get("enabled", scrobblingEnabled);
-    DBUG << userName << sessionKey << scrobblingEnabled;
+    scrobbler=cfg.get("scrobbler", scrobbler);
+    DBUG << scrobbler << userName << sessionKey << scrobblingEnabled;
     emit authenticated(isAuthenticated());
     emit enabled(isEnabled());
     setActive();
 }
 
-void Scrobbler::setDetails(const QString &u, const QString &p)
+void Scrobbler::setDetails(const QString &s, const QString &u, const QString &p)
 {
-    if (u!=userName || p!=password) {
+    if (u!=scrobbler || u!=userName || p!=password) {
         DBUG << "details changed";
         Configuration cfg(constSettingsGroup);
 
+        scrobbler=s;
         userName=u;
         password=p;
         sessionKey=QString();
+        reset();
+        cfg.set("scrobbler", scrobbler);
         cfg.set("userName", userName);
 //        cfg.set("password", password);
         setActive();
@@ -334,7 +334,7 @@ void Scrobbler::scrobbleNowPlaying()
     params["sk"] = sessionKey;
     sign(params);
     DBUG << currentSong.title << currentSong.artist;
-    QNetworkReply *job=NetworkAccessManager::self()->postFormData(QUrl(constUrl), format(params));
+    QNetworkReply *job=NetworkAccessManager::self()->postFormData(scrobblerUrl(), format(params));
     connect(job, SIGNAL(finished()), this, SLOT(nowPlayingResp()));
     nowPlayingSent=true;
 }
@@ -399,7 +399,7 @@ void Scrobbler::scrobbleQueued()
         }
         params["sk"] = sessionKey;
         sign(params);
-        scrobbleJob=NetworkAccessManager::self()->postFormData(QUrl(constUrl), format(params));
+        scrobbleJob=NetworkAccessManager::self()->postFormData(scrobblerUrl(), format(params));
         connect(scrobbleJob, SIGNAL(finished()), this, SLOT(scrobbleFinished()));
     }
 }
@@ -454,7 +454,7 @@ void Scrobbler::authenticate()
         DBUG << "no login details";
         return;
     }
-    QUrl url(constUrl);
+    QUrl url=scrobblerUrl();
     QMap<QString, QString> params;
     params["method"] = "auth.getMobileSession";
     params["username"] = userName;
@@ -658,4 +658,44 @@ void Scrobbler::cancelJobs()
         authJob->deleteLater();
         scrobbleJob=0;
     }
+}
+
+void Scrobbler::reset()
+{
+    songQueue.clear();
+    lastScrobbledSongs.clear();
+    saveCache();
+    cancelJobs();
+}
+
+void Scrobbler::loadScrobblers()
+{
+    if (scrobblers.isEmpty()) {
+        QFile f(CANTATA_SYS_CONFIG_DIR+"scrobblers.xml");
+        if (f.open(QIODevice::ReadOnly)) {
+            QXmlStreamReader doc(&f);
+            while (!doc.atEnd()) {
+                doc.readNext();
+                if (doc.isStartElement() && QLatin1String("scrobbler")==doc.name()) {
+                    QString name=doc.attributes().value("name").toString();
+                    QString url=doc.attributes().value("url").toString();
+                    if (!name.isEmpty() && !url.isEmpty()) {
+                        scrobblers.insert(name, QUrl(url));
+                    }
+                }
+            }
+        }
+    }
+}
+
+QUrl Scrobbler::scrobblerUrl() const
+{
+    if (scrobblers.isEmpty()) {
+        return QString();
+    }
+
+    if (!scrobblers.contains(scrobbler)) {
+        return scrobblers.constBegin().value();
+    }
+    return scrobblers[scrobbler];
 }

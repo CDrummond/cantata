@@ -1198,7 +1198,7 @@ static bool albumArtistSort(const Song &s1, const Song &s2)
 
 static bool albumSort(const Song &s1, const Song &s2)
 {
-    int c=s1.album.localeAwareCompare(s2.album);
+    int c=s1.albumId().localeAwareCompare(s2.albumId());
     return c<0 || (c==0 && s1<s2);
 }
 

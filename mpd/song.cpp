@@ -212,6 +212,10 @@ int Song::compareTo(const Song &o) const
         if (0!=compare) {
             return compare;
         }
+        compare=mbAlbumId.compare(o.mbAlbumId);
+        if (0!=compare) {
+            return compare;
+        }
         compare=album.localeAwareCompare(o.album);
         if (0!=compare) {
             return compare;
@@ -224,10 +228,6 @@ int Song::compareTo(const Song &o) const
         }
         if (year!=o.year) {
             return year<o.year ? -1 : 1;
-        }
-        compare=mbAlbumId.compare(o.mbAlbumId);
-        if (0!=compare) {
-            return compare;
         }
         compare=title.localeAwareCompare(o.title);
         if (0!=compare) {

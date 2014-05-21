@@ -112,19 +112,22 @@ QSize ToolButton::sizeHint() const
 
     ensurePolished();
 
-    QSize plainSize;
+    QStyleOptionToolButton opt;
     QSize menuSize;
-    if (menu()) {
-        QStyleOptionToolButton opt;
-        initStyleOption(&opt);
-        opt.features=QStyleOptionToolButton::None;
-        plainSize = style()->sizeFromContents(QStyle::CT_ToolButton, &opt, opt.iconSize, this).expandedTo(QApplication::globalStrut());
-        menuSize = QToolButton::sizeHint();
-    } else {
-        plainSize = menuSize = QToolButton::sizeHint();
+    bool haveMenu=menu();
+
+    initStyleOption(&opt);
+    if (haveMenu) {
+        menuSize = style()->sizeFromContents(QStyle::CT_ToolButton, &opt, opt.iconSize, this).expandedTo(QApplication::globalStrut());
     }
+    opt.features=QStyleOptionToolButton::None;
+    QSize plainSize = style()->sizeFromContents(QStyle::CT_ToolButton, &opt, opt.iconSize, this).expandedTo(QApplication::globalStrut());
+    if (!haveMenu) {
+        menuSize = plainSize;
+    }
+
     int sz=qMax(Utils::touchFriendly() ? (int)(plainSize.width()/TouchProxyStyle::constScaleFactor) : plainSize.width(), plainSize.height());
-    sh=QSize(Utils::touchFriendly() ? sz*TouchProxyStyle::constScaleFactor : (hideMenuIndicator ? sz : menuSize.width()), sz);
+    sh=QSize(Utils::touchFriendly() ? sz*TouchProxyStyle::constScaleFactor : (hideMenuIndicator || !haveMenu ? sz : menuSize.width()), sz);
     return sh;
 }
 

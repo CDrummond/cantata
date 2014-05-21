@@ -29,7 +29,6 @@
 ScrobblingLove::ScrobblingLove(QWidget *p)
     : ToolButton(p)
 {
-    setCheckable(true);
     Icon icon;
     icon.addFile(":favourites");
     setIcon(icon);

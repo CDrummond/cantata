@@ -189,6 +189,7 @@ Scrobbler::Scrobbler()
     connect(hardFailTimer, SIGNAL(timeout()), this, SLOT(authenticate()));
     loadSettings();
     connect(this, SIGNAL(clientMessage(QString,QString,QString)), MPDConnection::self(), SLOT(sendClientMessage(QString,QString,QString)));
+    connect(MPDConnection::self(), SIGNAL(clientMessageFailed(QString,QString)), SLOT(clientMessageFailed(QString,QString)));
 }
 
 Scrobbler::~Scrobbler()
@@ -703,6 +704,15 @@ void Scrobbler::mpdStateUpdated()
             nowPlayingTimer->stop();
             nowPlayingTimer->setInterval(5000);
         }
+    }
+}
+
+void Scrobbler::clientMessageFailed(const QString &client, const QString &msg)
+{
+    if (loveSent && client==scrobblerUrl() && msg==QLatin1String("love")) {
+        // 'love' failed, so re-enable...
+        loveSent=lovePending=false;
+        emit songChanged(true);
     }
 }
 

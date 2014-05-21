@@ -1458,26 +1458,31 @@ void MainWindow::changeConnection()
 void MainWindow::showServerInfo()
 {
     QStringList handlers=MPDConnection::self()->urlHandlers().toList();
+    QStringList tags=MPDConnection::self()->tags().toList();
     qSort(handlers);
+    qSort(tags);
     long version=MPDConnection::self()->version();
     MessageBox::information(this, QLatin1String("<p><table>")+
                                   i18n("<tr><td colspan=\"2\"><b>Server</b></td></tr>"
-                                       "<tr><td align=\"right\">Protocol&nbsp;version:&nbsp;</td><td>%1.%2.%3</td></tr>"
+                                       "<tr><td align=\"right\">Protocol:&nbsp;</td><td>%1.%2.%3</td></tr>"
                                        "<tr><td align=\"right\">Uptime:&nbsp;</td><td>%4</td></tr>"
-                                       "<tr><td align=\"right\">Time&nbsp;playing:&nbsp;</td><td>%5</td></tr>",
+                                       "<tr><td align=\"right\">Playing:&nbsp;</td><td>%5</td></tr>"
+                                       "<tr><td align=\"right\">Handlers:&nbsp;</td><td>%6</td></tr>"
+                                       "<tr><td align=\"right\">Tags:&nbsp;</td><td>%7</td></tr>",
                                        (version>>16)&0xFF, (version>>8)&0xFF, version&0xFF,
                                        Utils::formatDuration(MPDStats::self()->uptime()),
-                                       Utils::formatDuration(MPDStats::self()->playtime()))+
+                                       Utils::formatDuration(MPDStats::self()->playtime()),
+                                       handlers.join(", "), tags.join(", "))+
                                   QLatin1String("<tr/>")+
                                   i18n("<tr><td colspan=\"2\"><b>Database</b></td></tr>"
                                        "<tr><td align=\"right\">Artists:&nbsp;</td><td>%1</td></tr>"
                                        "<tr><td align=\"right\">Albums:&nbsp;</td><td>%2</td></tr>"
                                        "<tr><td align=\"right\">Songs:&nbsp;</td><td>%3</td></tr>"
-                                       "<tr><td align=\"right\">URL&nbsp;handlers:&nbsp;</td><td>%4</td></tr>"
-                                       "<tr><td align=\"right\">Total&nbsp;duration:&nbsp;</td><td>%5</td></tr>"
-                                       "<tr><td align=\"right\">Last&nbsp;update:&nbsp;</td><td>%6</td></tr></table></p>",
-                                       MPDStats::self()->artists(), MPDStats::self()->albums(), MPDStats::self()->songs(), handlers.join(", "),
-                                       Utils::formatDuration(MPDStats::self()->dbPlaytime()), MPDStats::self()->dbUpdate().toString(Qt::SystemLocaleShortDate)),
+                                       "<tr><td align=\"right\">Duration:&nbsp;</td><td>%4</td></tr>"
+                                       "<tr><td align=\"right\">Updated:&nbsp;</td><td>%5</td></tr>",
+                                       MPDStats::self()->artists(), MPDStats::self()->albums(), MPDStats::self()->songs(),
+                                       Utils::formatDuration(MPDStats::self()->dbPlaytime()), MPDStats::self()->dbUpdate().toString(Qt::SystemLocaleShortDate))+
+                                  QLatin1String("</table></p>"),
                             i18n("Server Information"));
 }
 

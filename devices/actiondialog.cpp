@@ -120,7 +120,7 @@ ActionDialog::ActionDialog(QWidget *parent)
     configureDestButton->setIcon(Icons::self()->configureIcon);
     connect(configureSourceButton, SIGNAL(clicked()), SLOT(configureSource()));
     connect(configureDestButton, SIGNAL(clicked()), SLOT(configureDest()));
-    connect(this, SIGNAL(update(QSet<QString>)), MPDConnection::self(), SLOT(update(QSet<QString>)));
+    connect(this, SIGNAL(update()), MPDConnection::self(), SLOT(update()));
     connect(songCount, SIGNAL(leftClickedUrl()), SLOT(showSongs()));
     #ifdef QT_QTDBUS_FOUND
     unityMessage=QDBusMessage::createSignal("/Cantata", "com.canonical.Unity.LauncherEntry", "Update");
@@ -663,11 +663,6 @@ void ActionDialog::actionStatus(int status, bool copiedCover)
                     albumsWithoutRgTags.insert(currentSong.album);
                 }
                 #endif
-                if (Copy==mode && destUdi.isEmpty()) {
-                    modifiedMpdDirs.insert(Utils::getDir(destFile.mid(MPDConnection::self()->getDetails().dir.length())));
-                } else if (Remove==mode && sourceUdi.isEmpty()) {
-                    modifiedMpdDirs.insert(Utils::getDir(currentSong.file.mid(MPDConnection::self()->getDetails().dir.length())));
-                }
             }
             if (copiedCover) {
                 copiedCovers.insert(Utils::getDir(destFile));
@@ -860,7 +855,7 @@ bool ActionDialog::refreshLibrary()
              (Remove==mode && sourceUdi.isEmpty()) ) {
             MusicLibraryModel::self()->checkForNewSongs();
             AlbumsModel::self()->update(MusicLibraryModel::self()->root());
-            emit update(modifiedMpdDirs);
+            emit update();
         } else if ( (Copy==mode && sourceUdi.isEmpty()) ||
                     (Remove==mode && !sourceUdi.isEmpty()) ) {
             Device *dev=DevicesModel::self()->device(sourceUdi.isEmpty() ? destUdi : sourceUdi);

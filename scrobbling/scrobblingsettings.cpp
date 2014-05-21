@@ -38,8 +38,8 @@ ScrobblingSettings::ScrobblingSettings(QWidget *parent)
     connect(Scrobbler::self(), SIGNAL(error(QString)), SLOT(showError(QString)));
     connect(user, SIGNAL(textChanged(QString)), SLOT(controlLoginButton()));
     connect(pass, SIGNAL(textChanged(QString)), SLOT(controlLoginButton()));
-    connect(enableScrobbling, SIGNAL(toggled(bool)), Scrobbler::self(), SLOT(setEnabled(bool)));
-    connect(showLove, SIGNAL(toggled(bool)), Scrobbler::self(), SLOT(setLoveEnabled(bool)));
+//    connect(enableScrobbling, SIGNAL(toggled(bool)), Scrobbler::self(), SLOT(setEnabled(bool)));
+//    connect(showLove, SIGNAL(toggled(bool)), Scrobbler::self(), SLOT(setLoveEnabled(bool)));
     connect(Scrobbler::self(), SIGNAL(enabled(bool)), enableScrobbling, SLOT(setChecked(bool)));
     connect(scrobbler, SIGNAL(currentIndexChanged(int)), this, SLOT(scrobblerChanged()));
     loginButton->setEnabled(false);
@@ -100,8 +100,11 @@ void ScrobblingSettings::save()
         sc=scrobbler->currentText();
     }
 
+    Scrobbler::self()->setEnabled(enableScrobbling->isChecked());
+    Scrobbler::self()->setLoveEnabled(showLove->isChecked());
+
     // We dont save password, so this /might/ be empty! Therefore, dont disconnect just
-    // becuase user clicked OK/Apply...
+    // because user clicked OK/Apply...
     if (isLogin || sc!=Scrobbler::self()->activeScrobbler() || u!=Scrobbler::self()->user() ||
         (!Scrobbler::self()->pass().isEmpty() && p!=Scrobbler::self()->pass())) {
         Scrobbler::self()->setDetails(sc, u, pass->text().trimmed());

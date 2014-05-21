@@ -42,6 +42,7 @@
 #include "mpd/mpdparseutils.h"
 #include "settings.h"
 #include "support/utils.h"
+#include "support/touchproxystyle.h"
 #include "models/musiclibrarymodel.h"
 #include "models/musiclibraryitemartist.h"
 #include "models/musiclibraryitemalbum.h"
@@ -481,8 +482,8 @@ MainWindow::MainWindow(QWidget *parent)
     #endif
     stopTrackButton->setHideMenuIndicator(true);
     int playbackButtonSize=28==playbackIconSize ? 34 : controlButtonSize;
-    int controlButtonWidth=Utils::touchFriendly() ? controlButtonSize*ToolButton::constTouchScaleFactor : controlButtonSize;
-    int playbackButtonWidth=Utils::touchFriendly() ? playbackButtonSize*ToolButton::constTouchScaleFactor : playbackButtonSize;
+    int controlButtonWidth=Utils::touchFriendly() ? controlButtonSize*TouchProxyStyle::constScaleFactor : controlButtonSize;
+    int playbackButtonWidth=Utils::touchFriendly() ? playbackButtonSize*TouchProxyStyle::constScaleFactor : playbackButtonSize;
     foreach (QToolButton *b, controlBtns) {
         b->setAutoRaise(true);
         b->setToolButtonStyle(Qt::ToolButtonIconOnly);

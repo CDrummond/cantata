@@ -247,8 +247,6 @@ void TouchProxyStyle::drawComplexControl(ComplexControl control, const QStyleOpt
                 opt.midLineWidth=0;
                 opt.fontMetrics=spinBox->fontMetrics;
                 opt.direction=spinBox->direction;
-                opt.type=QStyleOption::SO_Frame;
-                opt.version=1;
                 baseStyle()->drawPrimitive(PE_PanelLineEdit, &opt, painter, 0);
 
                 QRect plusRect=subControlRect(CC_SpinBox, spinBox, SC_SpinBoxUp, widget);

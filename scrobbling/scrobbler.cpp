@@ -188,7 +188,7 @@ Scrobbler::Scrobbler()
     connect(nowPlayingTimer, SIGNAL(timeout()), this, SLOT(scrobbleNowPlaying()));
     connect(hardFailTimer, SIGNAL(timeout()), this, SLOT(authenticate()));
     loadSettings();
-    connect(this, SIGNAL(clientMessage(QString, QString)), MPDConnection::self(), SLOT(sendClientMessage(QString, QString)));
+    connect(this, SIGNAL(clientMessage(QString,QString,QString)), MPDConnection::self(), SLOT(sendClientMessage(QString,QString,QString)));
 }
 
 Scrobbler::~Scrobbler()
@@ -285,7 +285,7 @@ void Scrobbler::love()
     }
 
     if (scrobbleViaMpd) {
-        emit clientMessage(scrobblerUrl(), QLatin1String("love"));
+        emit clientMessage(scrobblerUrl(), QLatin1String("love"), scrobbler);
         loveSent=true;
         return;
     }
@@ -514,7 +514,7 @@ void Scrobbler::authenticate()
         DBUG << "no login details";
         return;
     }
-    QUrl url=scrobblerUrl();
+    QUrl url(scrobblerUrl());
     QMap<QString, QString> params;
     params["method"] = "auth.getMobileSession";
     params["username"] = userName;
@@ -752,8 +752,9 @@ void Scrobbler::loadScrobblers()
     }
 }
 
-QString Scrobbler::scrobblerUrl() const
+QString Scrobbler::scrobblerUrl()
 {
+    loadScrobblers();
     if (scrobblers.isEmpty()) {
         return QString();
     }

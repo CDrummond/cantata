@@ -1546,9 +1546,11 @@ void MPDConnection::editStream(const QString &url, const QString &name, quint32 
     }
 }
 
-void MPDConnection::sendClientMessage(const QString &client, const QString &msg)
+void MPDConnection::sendClientMessage(const QString &client, const QString &msg, const QString &clientName)
 {
-    sendCommand("sendmessage "+client.toUtf8()+" "+msg.toUtf8());
+    if (!sendCommand("sendmessage "+client.toUtf8()+" "+msg.toUtf8(), false).ok) {
+        emit error(i18n("Failed to send '%1' to %2. Please check %2 is registered with MPD.", msg, clientName.isEmpty() ? client : clientName));
+    }
 }
 
 void MPDConnection::moveInPlaylist(const QString &name, const QList<quint32> &items, quint32 pos, quint32 size)

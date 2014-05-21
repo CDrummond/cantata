@@ -24,6 +24,7 @@
 #include "toolbutton.h"
 #include "support/icon.h"
 #include "support/gtkstyle.h"
+#include "support/touchproxystyle.h"
 #include "config.h"
 #include "support/utils.h"
 #include <QMenu>
@@ -32,8 +33,6 @@
 #include <QApplication>
 #include <QPainter>
 #include <QPainterPath>
-
-const double ToolButton::constTouchScaleFactor=1.334;
 
 #ifdef Q_OS_MAC
 static QPainterPath buildPath(const QRectF &r, double radius)
@@ -124,8 +123,8 @@ QSize ToolButton::sizeHint() const
     } else {
         plainSize = menuSize = QToolButton::sizeHint();
     }
-    int sz=qMax(plainSize.width(), plainSize.height());
-    sh=QSize(Utils::touchFriendly() ? sz*constTouchScaleFactor : (hideMenuIndicator ? sz : menuSize.width()), sz);
+    int sz=qMax(Utils::touchFriendly() ? (int)(plainSize.width()/TouchProxyStyle::constScaleFactor) : plainSize.width(), plainSize.height());
+    sh=QSize(Utils::touchFriendly() ? sz*TouchProxyStyle::constScaleFactor : (hideMenuIndicator ? sz : menuSize.width()), sz);
     return sh;
 }
 

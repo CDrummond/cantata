@@ -29,6 +29,8 @@
 class TouchProxyStyle : public ProxyStyle
 {
 public:
+    static double constScaleFactor;
+
     TouchProxyStyle(bool touchSpin=true);
     ~TouchProxyStyle();
     QSize sizeFromContents(ContentsType type, const QStyleOption *option,  const QSize &size, const QWidget *widget) const;

@@ -33,6 +33,8 @@
 #include <QStyledItemDelegate>
 #include <QApplication>
 
+double TouchProxyStyle::constScaleFactor=1.4;
+
 static void drawSpinButton(QPainter *painter, const QRect &r, const QColor &col, bool isPlus)
 {
     int length=r.height()*0.5;
@@ -196,6 +198,8 @@ QSize TouchProxyStyle::sizeFromContents(ContentsType type, const QStyleOption *o
                 }
             }
         }
+    } else if (CT_ToolButton==type && Utils::touchFriendly()) {
+        sz.setWidth(sz.width()*constScaleFactor);
     }
     return sz;
 }

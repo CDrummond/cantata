@@ -294,7 +294,7 @@ public Q_SLOTS:
     void removeStreams(const QList<quint32> &positions);
     void editStream(const QString &url, const QString &name, quint32 position);
 
-    void sendClientMessage(const QString &client, const QString &msg);
+    void sendClientMessage(const QString &client, const QString &msg, const QString &clientName);
 
 Q_SIGNALS:
     void stateChanged(bool connected);

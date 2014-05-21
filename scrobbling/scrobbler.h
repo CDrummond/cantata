@@ -91,7 +91,7 @@ Q_SIGNALS:
     void scrobblerChanged();
 
     // send love via client message...
-    void clientMessage(const QString &client, const QString &msg);
+    void clientMessage(const QString &client, const QString &msg, const QString &clientName);
 
 public Q_SLOTS:
     void love();
@@ -119,7 +119,7 @@ private:
     void cancelJobs();
     void reset();
     void loadScrobblers();
-    QString scrobblerUrl() const;
+    QString scrobblerUrl();
 
 private:
     bool scrobblingEnabled;

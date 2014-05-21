@@ -1550,6 +1550,7 @@ void MPDConnection::sendClientMessage(const QString &client, const QString &msg,
 {
     if (!sendCommand("sendmessage "+client.toUtf8()+" "+msg.toUtf8(), false).ok) {
         emit error(i18n("Failed to send '%1' to %2. Please check %2 is registered with MPD.", msg, clientName.isEmpty() ? client : clientName));
+        emit clientMessageFailed(client, msg);
     }
 }
 

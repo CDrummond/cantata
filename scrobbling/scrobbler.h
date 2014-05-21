@@ -108,6 +108,7 @@ private Q_SLOTS:
     void authResp();
     void scrobbleFinished();
     void mpdStateUpdated();
+    void clientMessageFailed(const QString &client, const QString &msg);
 
 private:
     void setActive();

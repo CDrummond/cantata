@@ -341,6 +341,8 @@ Q_SIGNALS:
     void editedStream(const QString &url, const QString &name, quint32 position);
     void streamList(const QList<Stream> &streams);
 
+    void clientMessageFailed(const QString &client, const QString &msg);
+
 private Q_SLOTS:
     void idleDataReady();
     void onSocketStateChanged(QAbstractSocket::SocketState socketState);

@@ -37,13 +37,11 @@ DynamicPage::DynamicPage(QWidget *p)
     : QWidget(p)
 {
     setupUi(this);
-    refreshAction = ActionCollection::get()->createAction("refreshdynamic", i18n("Refresh Dynamic Rules"), "view-refresh");
     addAction = ActionCollection::get()->createAction("adddynamic", i18n("Add Dynamic Rules"), "document-new");
     editAction = ActionCollection::get()->createAction("editdynamic", i18n("Edit Dynamic Rules"), Icons::self()->editIcon);
     removeAction = ActionCollection::get()->createAction("removedynamic", i18n("Remove Dynamic Rules"), "list-remove");
     toggleAction = new Action(this);
 
-    refreshBtn->setDefaultAction(refreshAction);
     addBtn->setDefaultAction(addAction);
     editBtn->setDefaultAction(editAction);
     removeBtn->setDefaultAction(removeAction);
@@ -57,8 +55,7 @@ DynamicPage::DynamicPage(QWidget *p)
     connect(view, SIGNAL(itemsSelected(bool)), this, SLOT(controlActions()));
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(toggle()));
     connect(view, SIGNAL(searchItems()), this, SLOT(searchItems()));
-    connect(MPDConnection::self(), SIGNAL(dynamicUrl(const QString &)), this, SLOT(dynamicUrlChanged(const QString &)));
-    connect(refreshAction, SIGNAL(triggered()), Dynamic::self(), SLOT(refreshList()));
+    connect(MPDConnection::self(), SIGNAL(dynamicSupport(bool)), this, SLOT(remoteDynamicSupport(bool)));
     connect(addAction, SIGNAL(triggered()), SLOT(add()));
     connect(editAction, SIGNAL(triggered()), SLOT(edit()));
     connect(removeAction, SIGNAL(triggered()), SLOT(remove()));
@@ -66,19 +63,15 @@ DynamicPage::DynamicPage(QWidget *p)
     connect(Dynamic::self()->stopAct(), SIGNAL(triggered()), SLOT(stop()));
     connect(toggleAction, SIGNAL(triggered()), SLOT(toggle()));
     connect(Dynamic::self(), SIGNAL(running(bool)), SLOT(running(bool)));
-    connect(Dynamic::self(), SIGNAL(remoteRunning(bool)), SLOT(remoteRunning(bool)));
     connect(Dynamic::self(), SIGNAL(loadingList()), view, SLOT(showSpinner()));
     connect(Dynamic::self(), SIGNAL(loadedList()), view, SLOT(hideSpinner()));
 
     #ifdef Q_OS_WIN
-    infoLabel->setType(StatusLabel::Error);
+    remoteRunningLabel->setType(StatusLabel::Error);
     enableWidgets(false);
     #else
-    infoLabel->setVisible(false);
-    refreshBtn->setVisible(false);
-    #endif
-    remoteRunningLabel->setType(StatusLabel::Error);
     remoteRunningLabel->setVisible(false);
+    #endif
     Dynamic::self()->stopAct()->setEnabled(false);
     proxy.setSourceModel(Dynamic::self());
     view->setModel(&proxy);
@@ -109,18 +102,13 @@ void DynamicPage::controlActions()
     removeAction->setEnabled(selected.count());
 }
 
-void DynamicPage::dynamicUrlChanged(const QString &url)
+void DynamicPage::remoteDynamicSupport(bool s)
 {
     #ifdef Q_OS_WIN
-    infoLabel->setVisible(url.isEmpty());
-    enableWidgets(!url.isEmpty());
-    #else
-    refreshBtn->setVisible(!url.isEmpty());
-    if (url.isEmpty()) {
-        enableWidgets(true);
-    }
+    remoteRunningLabel->setVisible(!s);
+    enableWidgets(s);
     #endif
-    remoteRunningLabel->setVisible(false);
+    view->setBackgroundImage(s ? Icon("applications-internet") : Icon());
 }
 
 void DynamicPage::add()
@@ -190,12 +178,6 @@ void DynamicPage::toggle()
 void DynamicPage::running(bool status)
 {
     Dynamic::self()->stopAct()->setEnabled(status);
-}
-
-void DynamicPage::remoteRunning(bool status)
-{
-    remoteRunningLabel->setVisible(!status);
-    enableWidgets(status);
 }
 
 void DynamicPage::enableWidgets(bool enable)

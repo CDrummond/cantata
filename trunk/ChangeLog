@@ -126,6 +126,8 @@
     build.
 79. Scrobbling support.
 80. Install podcast directries file to $install rather than embedding.
+81. cantata-dynamic perl script now uses MPD's client-to-client messages for
+    control. Therefore, MPD>=0.17 is required.
 
 1.3.4
 -----

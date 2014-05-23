@@ -40,7 +40,6 @@
 #include <QTimer>
 #include <QIcon>
 #include <QUrl>
-#include <QUdpSocket>
 #include <QNetworkProxy>
 #if QT_VERSION >= 0x050000
 #include <QUrlQuery>
@@ -64,50 +63,62 @@ static const QString constExtension=QLatin1String(".rules");
 static const QString constActiveRules=QLatin1String("rules");
 static const QString constLockFile=QLatin1String("lock");
 
-static const QString constIdCmd=QLatin1String("id");
+static const QString constPingCmd=QLatin1String("ping");
 static const QString constListCmd=QLatin1String("list");
 static const QString constStatusCmd=QLatin1String("status");
 static const QString constSaveCmd=QLatin1String("save");
 static const QString constDeleteCmd=QLatin1String("delete");
 static const QString constSetActiveCmd=QLatin1String("setActive");
 static const QString constControlCmd=QLatin1String("control");
-static const QString constStatusTime=QLatin1String("statusTime");
-static const QString constStatusTimeResp=QLatin1String("TIME:");
-static const QString constStatusStateResp=QLatin1String("STATE:");
-static const QString constStatusRuleResp=QLatin1String("RULES:");
-static const QString constUpdateRequiredResp=QLatin1String("UPDATE_REQUIRED");
 
-//Dynamic::Command Dynamic::toCommand(const QString &cmd)
-//{
-//    if (constIdCmd==cmd) {
-//        return Id;
-//    }
-//    if (constListCmd==cmd) {
-//        return List;
-//    }
-//    if (constStatusCmd==cmd) {
-//        return Status;
-//    }
-//    if (constSaveCmd==cmd) {
-//        return Save;
-//    }
-//    if (constDeleteCmd==cmd) {
-//        return Del;
-//    }
-//    if (constSetActiveCmd==cmd) {
-//        return SetActive;
-//    }
-//    if (constControlCmd==cmd) {
-//        return Control;
-//    }
-//    return Unknown;
-//}
+static QString remoteError(const QStringList &status)
+{
+    if (!status.isEmpty()) {
+        switch (status.at(0).toInt()) {
+        case 1:  return i18n("Empty filename");
+        case 2:  return i18n("Invalid filename - %1", status.length()<2 ? QString() : status.at(2));
+        case 3:  return i18n("Failed to save %1", status.length()<2 ? QString() : status.at(2));
+        case 4:  return i18n("Failed to delete %1", status.length()<2 ? QString() : status.at(2));
+        case 5:  return i18n("Invalid command - %1", status.length()<2 ? QString() : status.at(2));
+        case 6:  return i18n("Could not remove active rules link");
+        case 7:  return i18n("Active rules is not a link");
+        case 8:  return i18n("Could not create active rules link");
+        case 9:  return i18n("Rules file, %1, does not exist", status.length()<2 ? QString() : status.at(2));
+        case 10: return i18n("Incorrect arguments supplied");
+        case 11: return i18n("Unknown method called");
+        }
+    }
+    return i18n("Unknown error");
+}
+
+Dynamic::Command Dynamic::toCommand(const QString &cmd)
+{
+    if (constListCmd==cmd) {
+        return List;
+    }
+    if (constStatusCmd==cmd) {
+        return Status;
+    }
+    if (constSaveCmd==cmd) {
+        return Save;
+    }
+    if (constDeleteCmd==cmd) {
+        return Del;
+    }
+    if (constSetActiveCmd==cmd) {
+        return SetActive;
+    }
+    if (constControlCmd==cmd) {
+        return Control;
+    }
+    return Unknown;
+}
 
 QString Dynamic::toString(Command cmd)
 {
     switch (cmd) {
     case Unknown:   return QString();
-    case Id:        return constIdCmd;
+    case Ping:      return constPingCmd;
     case List:      return constListCmd;
     case Status:    return constStatusCmd;
     case Save:      return constSaveCmd;
@@ -133,8 +144,8 @@ const QString Dynamic::constDateKey=QLatin1String("Date");
 const QString Dynamic::constExactKey=QLatin1String("Exact");
 const QString Dynamic::constExcludeKey=QLatin1String("Exclude");
 
-static const char * constMulticastMsgHeader="{CANTATA/";
-const QString constStatusMsg(QLatin1String("STATUS:"));
+const QString constOk=QLatin1String("0");
+const QString constFilename=QLatin1String("FILENAME:");
 
 // Move files from previous ~/.config/cantata to ~/.local/share/cantata
 static void moveToNewLocation()
@@ -146,54 +157,20 @@ static void moveToNewLocation()
     #endif
 }
 
-MulticastReceiver::MulticastReceiver(QObject *parent, const QString &i, const QString &group, quint16 port)
-    : QObject(parent)
-    , id(i)
-{
-    socket = new QUdpSocket(this);
-    socket->setProxy(QNetworkProxy(QNetworkProxy::NoProxy));
-    #if QT_VERSION < 0x050000
-    socket->bind(QHostAddress::Any, port, QUdpSocket::ShareAddress);
-    #else
-    socket->bind(QHostAddress::AnyIPv4, port, QAbstractSocket::ShareAddress);
-    #endif
-    socket->joinMulticastGroup(QHostAddress(group));
-    connect(socket, SIGNAL(readyRead()), this, SLOT(processMessages()));
-}
-
-void MulticastReceiver::processMessages()
-{
-    static int headerLen=strlen(constMulticastMsgHeader);
-
-    while (socket->hasPendingDatagrams()) {
-        QByteArray datagram;
-        datagram.resize(socket->pendingDatagramSize());
-        socket->readDatagram(datagram.data(), datagram.size());
-        if (datagram.length()>headerLen && datagram.startsWith(constMulticastMsgHeader)) {
-            QString header(constMulticastMsgHeader+id+"}");
-            QString message=QString::fromUtf8(&(datagram.constData()[header.length()]));
-            DBUG << message;
-            if (message.startsWith(constStatusMsg)) {
-                emit status(message.mid(constStatusMsg.length()));
-            }
-        }
-    }
-}
-
 Dynamic::Dynamic()
     : localTimer(0)
     , remoteTimer(0)
     , remotePollingEnabled(false)
-    , statusTime(1)
+    , statusTime(0)
     , currentJob(0)
     , currentCommand(Unknown)
-    , receiver(0)
 {
     moveToNewLocation();
     loadLocal();
     connect(this, SIGNAL(clear()), MPDConnection::self(), SLOT(clear()));
-    connect(MPDConnection::self(), SIGNAL(dynamicUrl(const QString &)), this, SLOT(dynamicUrlChanged(const QString &)));
-//    connect(MPDConnection::self(), SIGNAL(statusUpdated(const MPDStatusValues &)), this, SLOT(updateRemoteStatus()));
+    connect(MPDConnection::self(), SIGNAL(dynamicSupport(bool)), this, SLOT(remoteDynamicSupported(bool)));
+    connect(this, SIGNAL(remoteMessage(QStringList)), MPDConnection::self(), SLOT(sendDynamicMessage(QStringList)));
+    connect(MPDConnection::self(), SIGNAL(dynamicResponse(QStringList)), this, SLOT(remoteResponse(QStringList)));
     QTimer::singleShot(500, this, SLOT(checkHelper()));
     startAction = ActionCollection::get()->createAction("startdynamic", i18n("Start Dynamic Playlist"), "media-playback-start");
     stopAction = ActionCollection::get()->createAction("stopdynamic", i18n("Stop Dynamic Mode"), "process-stop");
@@ -298,30 +275,11 @@ bool Dynamic::save(const Entry &e)
     }
 
     if (isRemote()) {
-        if (currentCommand!=Status && (currentCommand!=Unknown || !currentArgs.isEmpty())) {
-            return false;
+        if (sendCommand(Save, QStringList() << e.name << string)) {
+            currentSave=e;
+            return true;
         }
-
-        #if QT_VERSION < 0x050000
-        QUrl url(dynamicUrl+"/"+constSaveCmd);
-        url.addQueryItem("name", e.name);
-        url.addQueryItem(constStatusTime, QString::number(statusTime));
-        #else
-        QUrl url(dynamicUrl+"/"+constSaveCmd);
-        QUrlQuery query;
-        query.addQueryItem("name", e.name);
-        query.addQueryItem(constStatusTime, QString::number(statusTime));
-        url.setQuery(query);
-        #endif
-
-        QNetworkRequest req(url);
-        req.setHeader(QNetworkRequest::ContentTypeHeader, "text/plain");
-        currentJob=new NetworkJob(NetworkAccessManager::self()->post(req, string.toUtf8()));
-        connect(currentJob, SIGNAL(finished()), this, SLOT(remoteJobFinished()));
-        currentCommand=Save;
-        currentArgs.clear();
-        currentSave=e;
-        return true;
+        return false;
     }
 
     QFile f(Utils::dataDir(constDir, true)+e.name+constExtension);
@@ -352,7 +310,9 @@ void Dynamic::updateEntry(const Entry &e)
 void Dynamic::del(const QString &name)
 {
     if (isRemote()) {
-        sendCommand(Del, QStringList() << name);
+        if (sendCommand(Del, QStringList() << name)) {
+            currentDelete=name;
+        }
         return;
     }
 
@@ -377,7 +337,7 @@ void Dynamic::del(const QString &name)
 void Dynamic::start(const QString &name)
 {
     if (isRemote()) {
-        sendCommand(SetActive, QStringList() << "name" << name << "start" << "1");
+        sendCommand(SetActive, QStringList() << name << "1");
         return;
     }
 
@@ -436,9 +396,9 @@ void Dynamic::stop(bool sendClear)
 {
     if (isRemote()) {
         if (sendClear) {
-            sendCommand(Control, QStringList() << "state" << "stop" << "clear" << "1");
+            sendCommand(Control, QStringList() << "stop" << "1");
         } else {
-            sendCommand(Control, QStringList() << "state" << "stop");
+            sendCommand(Control, QStringList() << "stop");
         }
         return;
     }
@@ -512,7 +472,7 @@ void Dynamic::enableRemotePolling(bool e)
         if (remotePollingEnabled) {
             checkIfRemoteIsRunning();
         }
-        remoteTimer->start(remotePollingEnabled ? 2000 : 30000);
+        remoteTimer->start(remotePollingEnabled ? 5000 : 30000);
     }
 }
 
@@ -620,51 +580,44 @@ void Dynamic::loadLocal()
     endResetModel();
 }
 
-void Dynamic::loadRemote()
+void Dynamic::parseRemote(const QStringList &response)
 {
-    beginResetModel();
-    entryList.clear();
-    currentEntry=QString();
-    endResetModel();
-    sendCommand(Id);
-}
-
-void Dynamic::parseRemote(const QString &response)
-{
+    DBUG << response;
     beginResetModel();
     entryList.clear();
     currentEntry=QString();
     QStringList keys=QStringList() << constArtistKey << constSimilarArtistsKey << constAlbumArtistKey << constDateKey << constExactKey
                                    << constAlbumKey << constTitleKey << constGenreKey << constExcludeKey;
-    QStringList list=response.split("\n");
     Entry e;
     Rule r;
 
-    foreach (const QString &s, list) {
-        QString str=s.trimmed();
-        if (str.isEmpty() || str.startsWith('#')) {
-            continue;
-        }
-        if (str.startsWith(QLatin1String("FILENAME:"))) {
-            if (!e.name.isEmpty()) {
-                entryList.append(e);
+    foreach (const QString &part, response) {
+        QStringList lines=part.split('\n', QString::SkipEmptyParts);
+        foreach (const QString &s, lines) {
+            QString str=s.trimmed();
+            if (str.isEmpty() || str.startsWith('#')) {
+                continue;
             }
-            e.name=str.mid(9, str.length()-15); // Remove extension...
-            e.rules.clear();
-            r.clear();
-        } else if (str==constRuleKey) {
-            if (!r.isEmpty()) {
-                e.rules.append(r);
+            if (str.startsWith(constFilename)) {
+                if (!e.name.isEmpty()) {
+                    if (!r.isEmpty()) {
+                        e.rules.append(r);
+                    }
+                    entryList.append(e);
+                }
+                e.name=str.mid(9, str.length()-15); // Remove extension...
+                e.rules.clear();
                 r.clear();
-            }
-        } else if (str.startsWith(constStatusTimeResp)) {
-            statusTime=str.mid(constStatusTimeResp.length()).toInt();
-        } else if (str.startsWith(constUpdateRequiredResp)) {
-            continue;
-        } else {
-            foreach (const QString &k, keys) {
-                if (str.startsWith(k+':')) {
-                    r.insert(k, str.mid(k.length()+1));
+            } else if (str==constRuleKey) {
+                if (!r.isEmpty()) {
+                    e.rules.append(r);
+                    r.clear();
+                }
+            } else {
+                foreach (const QString &k, keys) {
+                    if (str.startsWith(k+':')) {
+                        r.insert(k, str.mid(k.length()+1));
+                    }
                 }
             }
         }
@@ -679,25 +632,26 @@ void Dynamic::parseRemote(const QString &response)
     endResetModel();
 }
 
-void Dynamic::parseStatus(const QString &response)
+void Dynamic::parseStatus(QStringList response)
 {
-    QStringList list=response.split("\n");
-    QString state;
-    QString prevEntry=currentEntry;
-    int st=-1;
-    foreach (const QString &str, list) {
-        if (str.startsWith(constStatusStateResp)) {
-            state=str.mid(constStatusStateResp.length());
-        } else if (str.startsWith(constStatusRuleResp)) {
-            currentEntry=str.mid(constStatusRuleResp.length());
-        } else if (str.startsWith(constStatusTimeResp)) {
-            st=str.mid(constStatusTimeResp.length()).toInt();
-        }
+    DBUG << response;
+    if (response.isEmpty()) {
+        return;
     }
+    QString state=response.takeAt(0);
+    QString prevEntry=currentEntry;
+    int st=statusTime;
 
+    if (!response.isEmpty()) {
+        st=response.takeAt(0).toInt();
+    }
+    if (!response.isEmpty()) {
+        currentEntry=response.takeAt(0);
+    }
     bool stateChanged=lastState!=state;
     bool noSongs=QLatin1String("NO_SONGS")==state;
     bool terminated=false;
+    DBUG << "lastState" << lastState << "state" << state << "statusTime(before)" << statusTime << "statusTime(now)" << st;
 
     if (stateChanged) {
         lastState=state;
@@ -707,17 +661,18 @@ void Dynamic::parseStatus(const QString &response)
             if (sendError) {
                 emit error(QLatin1String("NO_SONGS"));
             }
+            //sendCommand(Control, QStringList() << "stop");
         } else if (QLatin1String("HAVE_SONGS")==state || QLatin1String("STARTING")==state) {
             emit running(true);
         } else if (QLatin1String("IDLE")==state) {
             currentEntry.clear();
             emit running(false);
         } else if (QLatin1String("TERMINATED")==state) {
+            terminated=true;
             currentEntry.clear();
             emit running(false);
             emit error(i18n("Dynamizer has been terminated."));
             pollRemoteHelper();
-            terminated=true;
             currentEntry=QString();
         }
     }
@@ -742,137 +697,36 @@ void Dynamic::parseStatus(const QString &response)
     }
 
     if (st>statusTime && !terminated) {
-        if (Unknown==currentCommand && currentArgs.isEmpty()) {
-            statusTime=st;
-            sendCommand(List, QStringList() << "withDetails" << "1");
-        }
+        statusTime=st;
+        sendCommand(List, QStringList() << "1");
     }
 }
 
-void Dynamic::parseId(const QString &response)
+bool Dynamic::sendCommand(Command cmd, const QStringList &args)
 {
-    QStringList list=response.split("\n");
-    QString id;
-    quint16 port=0;
-    QString group;
-
-    foreach (const QString &param, list) {
-        if (param.startsWith(QLatin1String("ID:"))) {
-            id=param.mid(3);
-        } else if (param.startsWith(QLatin1String("GROUP:"))) {
-            group=param.mid(6);
-        } else if (param.startsWith(QLatin1String("PORT:"))) {
-            port=param.mid(5).toUInt();
-        }
+    DBUG << toString(cmd) << args;
+    if (Ping==cmd) {
+        emit remoteMessage(QStringList() << toString(cmd));
+        return true;
     }
 
-    if (!id.isEmpty() && !group.isEmpty() && 0!=port) {
-        startReceiver(id, group, port);
-    }
-}
-
-void Dynamic::checkResponse(const QString &response)
-{
-    QStringList list=response.split("\n");
-    bool updateReq=false;
-    foreach (const QString &str, list) {
-        if (constUpdateRequiredResp==str) {
-            updateReq=true;
-        } else if (str.startsWith(constStatusTimeResp)) {
-            statusTime=str.mid(constStatusTimeResp.length()).toInt();
-        }
-    }
-
-    if (updateReq) {
-        sendCommand(List, QStringList() << "withDetails" << "1");
-    }
-}
-
-void Dynamic::sendCommand(Command cmd, const QStringList &args)
-{
     if (Status==currentCommand) {
         if (cmd==Status) {
-            return;
+            return true;
         }
         currentCommand=Unknown;
-        currentArgs.clear();
-        if (currentJob) {
-            disconnect(currentJob, SIGNAL(finished()), this, SLOT(remoteJobFinished()));
-        }
     }
-    if (Unknown!=currentCommand) {
-        if (Status!=cmd) {
-            QString cmdStr=i18n("Uknown");
-            switch(cmd) {
-            case List:      cmdStr=i18n("Loading list of rules"); break;
-            case Save:      cmdStr=i18n("Saving rule"); break;
-            case Del:       cmdStr=i18n("Deleting rule"); break;
-            case SetActive: cmdStr=i18n("Setting active rule"); break;
-            case Control:   cmdStr=i18n("Stopping dynamizer"); break;
-            case Id:        cmdStr=i18n("Requesting ID details"); break;
-            default: break;
-            }
-            emit error(i18n("Awaiting response for previous command. (%1)", cmdStr));
-        }
-        return;
+    if (Status!=cmd && (Save==currentCommand || Del==currentCommand)) {
+        emit error(i18n("Awaiting response for previous command. (%1)", Save==cmd ? i18n("Saving rule") : i18n("Deleting rule")));
+        return false;
     }
-
     currentCommand=cmd;
-    currentArgs=args;
 
-    DBUG << toString(cmd) << args;
-    if (Del==cmd) {
-        if (!args.isEmpty()) {
-            #if QT_VERSION < 0x050000
-            QUrl url(dynamicUrl+"/"+args.at(0));
-            url.addQueryItem(constStatusTime, QString::number(statusTime));
-            #else
-            QUrl url(dynamicUrl+"/"+args.at(0));
-            QUrlQuery query;
-            query.addQueryItem(constStatusTime, QString::number(statusTime));
-            url.setQuery(query);
-            #endif
-        
-            currentJob=new NetworkJob(NetworkAccessManager::self()->deleteResource(QNetworkRequest(url)));
-        } else {
-            currentCommand=Unknown;
-            currentArgs.clear();
-        }
-    } else {
-        QUrl url(dynamicUrl+"/"+toString(currentCommand));
-        #if QT_VERSION < 0x050000
-        QUrl &query=url;
-        #else
-        QUrlQuery query;
-        #endif
-        if (!args.isEmpty() && 0==args.size()%2) {
-            for (int i=0; i<args.size(); i+=2) {
-                query.addQueryItem(args.at(i), args.at(i+1));
-            }
-        }
-        query.addQueryItem(constStatusTime, QString::number(statusTime));
-        #if QT_VERSION >= 0x050000
-        url.setQuery(query);
-        #endif
-        if (SetActive==cmd || Control==cmd) {
-            QNetworkRequest req(url);
-            req.setHeader(QNetworkRequest::ContentTypeHeader, "text/plain");
-            currentJob=new NetworkJob(NetworkAccessManager::self()->post(req, QByteArray()));
-        } else {
-            currentJob=NetworkAccessManager::self()->get(url);
-        }
-    }
+    emit remoteMessage(QStringList() << toString(cmd) << args);
     if (List==cmd) {
         emit loadingList();
     }
-    connect(currentJob, SIGNAL(finished()), this, SLOT(remoteJobFinished()));
-}
-
-void Dynamic::refreshList()
-{
-    if (isRemote()) {
-        sendCommand(List, QStringList() << "withDetails" << "1");
-    }
+    return true;
 }
 
 void Dynamic::checkHelper()
@@ -926,15 +780,14 @@ void Dynamic::pollRemoteHelper()
     entryList.clear();
     currentEntry=QString();
     endResetModel();
-    remoteTimer->start(remotePollingEnabled ? 2000 : 30000);
-    emit remoteRunning(false);
+    remoteTimer->start(remotePollingEnabled ? 5000 : 30000);
 }
 
 void Dynamic::checkIfRemoteIsRunning()
 {
-    if (isRemote() && entryList.isEmpty()) {
+    if (isRemote()) {
         if (remotePollingEnabled) {
-            sendCommand(Id);
+            sendCommand(Ping);
         }
     } else if (remoteTimer) {
         remoteTimer->stop();
@@ -948,144 +801,96 @@ void Dynamic::updateRemoteStatus()
     }
 }
 
-void Dynamic::remoteJobFinished()
+void Dynamic::remoteResponse(QStringList msg)
 {
-    NetworkJob *reply=qobject_cast<NetworkJob *>(sender());
-    if (!reply || reply!=currentJob) {
+    DBUG << msg;
+    if (msg.isEmpty()) {
         return;
     }
 
-    currentJob=0;
-    reply->deleteLater();
+    QString cmd=msg.takeAt(0);
+    Command msgCmd=toCommand(cmd);
 
-    int httpResponse=reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-    bool cmdOk=reply->ok() && (200==httpResponse || 201==httpResponse);
-    DBUG << toString(currentCommand) << currentArgs << cmdOk;
-    QString response;
-    if (cmdOk) {
-        reply->open(QIODevice::ReadOnly | QIODevice::Text);
-        response=QString::fromUtf8(reply->readAll());
-        reply->close();
-    } else {
-        response=0==httpResponse ? i18n("Dynamizer is not active") : QString::number(httpResponse);
-    }
-
-    switch (currentCommand) {
+    switch (msgCmd) {
     case List:
-        if (cmdOk) {
-            parseRemote(response);
-        } else {
-            emit error(i18n("Failed to retrieve list of dynamic rules. (%1)", response));
-        }
+        parseRemote(msg);
         emit loadedList();
         break;
     case Status:
-        if (cmdOk) {
-            parseStatus(response);
-        } else {
-            emit running(false);
-        }
+        parseStatus(msg);
         break;
     case Save:
-        if (cmdOk) {
+        if (!msg.isEmpty() && msg.at(0)==constOk) {
             updateEntry(currentSave);
-            currentSave.name=QString();
-            currentSave.rules.clear();
+            emit saved(true);
+        } else {
+            emit error(i18n("Failed to save %1 (%2)", currentSave.name, remoteError(msg)));
+            emit saved(false);
         }
-        checkResponse(response);
-        emit saved(cmdOk);
+        currentSave.name=QString();
+        currentSave.rules.clear();
         break;
     case Del:
-        if (cmdOk) {
-            QString name=currentArgs.isEmpty() ? QString() : currentArgs.at(0);
-            QList<Dynamic::Entry>::Iterator it=find(name);
+        if (!msg.isEmpty() && msg.at(0)==constOk) {
+            QList<Dynamic::Entry>::Iterator it=find(currentDelete);
             if (it!=entryList.end()) {
                 beginRemoveRows(QModelIndex(), it-entryList.begin(), it-entryList.begin());
                 entryList.erase(it);
                 endRemoveRows();
+            } else {
+                emit error(i18n("Failed to delete rules file (%1)", remoteError(msg)));
             }
-            checkResponse(response);
         } else {
-            emit error(i18n("Failed to delete rules file. (%1)", response));
+            emit error(i18n("Failed to delete rules file (%1)", remoteError(msg)));
+            emit saved(false);
         }
+        currentDelete.clear();
         break;
     case Control:
-        if (cmdOk) {
-            checkResponse(response);
-        } else {
-            emit error(i18n("Failed to control dynamizer state. (%1)", response));
+        if (msg.isEmpty() || msg.at(0)!=constOk) {
+            emit error(i18n("Failed to control dynamizer (%1)", remoteError(msg)));
         }
-        lastState.clear();
         break;
     case SetActive:
-        if (cmdOk) {
-            checkResponse(response);
+        if (!msg.isEmpty() && msg.at(0)==constOk) {
             QTimer::singleShot(1000, this, SLOT(updateRemoteStatus()));
         } else {
-            emit error(i18n("Failed to set the current dynamic rules. (%1)", response));
+            emit error(i18n("Failed to set active rules (%1)", remoteError(msg)));
         }
-        lastState.clear();
         break;
-    case Id:
-        if (cmdOk) {
-            parseId(response);
-            currentCommand=Unknown;
-            currentArgs.clear();
-            sendCommand(List, QStringList() << "withDetails" << "1");
-            emit remoteRunning(true);
-            return;
-        }
     default:
         break;
     }
 
-    Command prevCommand=currentCommand;
-    currentCommand=Unknown;
-    currentArgs.clear();
+    if (msgCmd==currentCommand) {
+        currentCommand=Unknown;
+    }
+}
 
-    if (cmdOk) {
+void Dynamic::remoteDynamicSupported(bool s)
+{
+    if (usingRemote==s) {
+        return;
+    }
+    // Stop any local dynamizer before switching to remote...
+    if (!isRemote()) {
+        stop();
+    }
+    usingRemote=s;
+    if (s) {
+        if (localTimer) {
+            localTimer->stop();
+        }
+        pollRemoteHelper();
+        sendCommand(List);
+        sendCommand(Status);
+    } else {
         if (remoteTimer) {
             remoteTimer->stop();
         }
-        if (Status!=prevCommand) {
-            sendCommand(Status);
-        }
-    } else if (0==httpResponse) {
-        pollRemoteHelper();
+        loadLocal();
+        #ifndef Q_OS_WIN
+        emit error(i18n("Communication with the remote dynamizer has been lost, reverting to local mode."));
+        #endif
     }
-}
-
-void Dynamic::dynamicUrlChanged(const QString &url)
-{
-    if (url!=dynamicUrl) {
-        dynamicUrl=url;
-        stopReceiver();
-        if (isRemote()) {
-            if (localTimer) {
-                localTimer->stop();
-            }
-            loadRemote();
-        } else {
-            if (remoteTimer) {
-                remoteTimer->stop();
-            }
-            loadLocal();
-        }
-    }
-}
-
-void Dynamic::stopReceiver()
-{
-    if (receiver) {
-        disconnect(receiver, SIGNAL(status(QString)), this, SLOT(parseStatus(QString)));
-        receiver->deleteLater();
-        receiver=0;
-    }
-}
-
-void Dynamic::startReceiver(const QString &id, const QString &group, quint16 port)
-{
-    stopReceiver();
-    receiver=new MulticastReceiver(this, id, group, port);
-    connect(receiver, SIGNAL(status(QString)), this, SLOT(parseStatus(QString)));
 }

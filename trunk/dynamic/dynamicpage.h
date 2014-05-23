@@ -45,7 +45,7 @@ public Q_SLOTS:
     void controlActions();
 
 private Q_SLOTS:
-    void dynamicUrlChanged(const QString &url);
+    void remoteDynamicSupport(bool s);
     void add();
     void edit();
     void remove();
@@ -53,7 +53,6 @@ private Q_SLOTS:
     void stop();
     void toggle();
     void running(bool status);
-    void remoteRunning(bool status);
 
 private:
     void enableWidgets(bool enable);
@@ -62,7 +61,6 @@ private:
 
 private:
     DynamicProxyModel proxy;
-    Action *refreshAction;
     Action *addAction;
     Action *editAction;
     Action *removeAction;

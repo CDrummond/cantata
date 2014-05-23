@@ -29,6 +29,7 @@
 
 #include <QString>
 #include <QSet>
+#include "config.h"
 
 struct Song;
 struct Playlist;
@@ -66,6 +67,10 @@ namespace MPDParseUtils
     extern QList<Song> parseSongs(const QByteArray &data, Location location);
     extern QList<IdPos> parseChanges(const QByteArray &data);
     extern QStringList parseList(const QByteArray &data, const QByteArray &key);
+    #ifdef ENABLE_DYNAMIC
+    typedef QMap<QByteArray, QStringList> MessageMap;
+    extern MessageMap parseMessages(const QByteArray &data);
+    #endif
     extern bool groupSingle();
     extern void setGroupSingle(bool g);
     extern void parseLibraryItems(const QByteArray &data, const QString &mpdDir, long mpdVersion,

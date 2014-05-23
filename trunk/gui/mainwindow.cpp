@@ -900,7 +900,7 @@ MainWindow::~MainWindow()
     Settings::self()->save(true);
     disconnect(MPDConnection::self(), 0, 0, 0);
     #ifdef ENABLE_DYNAMIC
-    if (Settings::self()->stopDynamizerOnExit()) {
+    if (Settings::self()->stopOnExit()) {
         Dynamic::self()->stop();
     }
     #endif

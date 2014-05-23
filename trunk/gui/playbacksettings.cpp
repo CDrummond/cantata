@@ -71,7 +71,6 @@ void PlaybackSettings::load()
 {
     stopOnExit->setChecked(Settings::self()->stopOnExit());
     stopFadeDuration->setValue(Settings::self()->stopFadeDuration());
-    stopDynamizerOnExit->setChecked(Settings::self()->stopDynamizerOnExit());
     #ifndef Q_OS_WIN
     inhibitSuspend->setChecked(Settings::self()->inhibitSuspend());
     #endif
@@ -87,7 +86,6 @@ void PlaybackSettings::save()
 {
     Settings::self()->saveStopOnExit(stopOnExit->isChecked());
     Settings::self()->saveStopFadeDuration(stopFadeDuration->value());
-    Settings::self()->saveStopDynamizerOnExit(stopDynamizerOnExit->isChecked());
     #ifndef Q_OS_WIN
     Settings::self()->saveInhibitSuspend(inhibitSuspend->isChecked());
     #endif

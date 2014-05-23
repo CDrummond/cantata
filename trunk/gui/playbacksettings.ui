@@ -60,20 +60,13 @@
        </widget>
       </item>
       <item row="2" column="0" colspan="2">
-       <widget class="QCheckBox" name="stopDynamizerOnExit">
-        <property name="text">
-         <string>Stop dynamizer on exit</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0" colspan="2">
        <widget class="QCheckBox" name="inhibitSuspend">
         <property name="text">
          <string>Inhibit suspend whilst playing</string>
         </property>
        </widget>
       </item>
-      <item row="4" column="0">
+      <item row="3" column="0">
        <spacer name="verticalSpacer_8">
         <property name="orientation">
          <enum>Qt::Vertical</enum>
@@ -89,7 +82,7 @@
         </property>
        </spacer>
       </item>
-      <item row="5" column="0" colspan="2">
+      <item row="4" column="0" colspan="2">
        <widget class="QLabel" name="noteLabel">
         <property name="text">
          <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; If you press and hold the stop button, then a menu will be shown allowing you to choose whether to stop playback now, or after the current track.&lt;/i&gt;</string>

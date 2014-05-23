@@ -420,8 +420,8 @@ Icons::Icons()
     libraryIcon=Icon::create("lib", constStdSizes);
     radioStreamIcon=Icon::create("radio", constStdSizes);
     addRadioStreamIcon=Icon::create("addradio", constStdSizes);
-    variousArtistsIcon=Icon::create("va", QList<int>() << 16 << 22 << 32 << 48 << 64 << 128);
-    artistIcon=Icon::create("artist", QList<int>() << 16 << 22 << 32 << 48 << 64 << 128);
+    variousArtistsIcon=Icon::create("va", QList<int>() << 16 << 22 << 32 << 48 << 64 << 128, true);
+    artistIcon=Icon::create("artist", QList<int>() << 16 << 22 << 32 << 48 << 64 << 128, true);
     #ifndef ENABLE_KDE_SUPPORT
     #ifndef ENABLE_UBUNTU
     appIcon.addFile(":cantata.svg");

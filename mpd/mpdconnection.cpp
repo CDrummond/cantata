@@ -871,6 +871,10 @@ void MPDConnection::playListChanges()
                     if (idp.pos!=0) {
                         for (quint32 i=0; i<idp.pos; ++i) {
                             Song s;
+                            if (i>=(unsigned int)playQueueIds.count()) { // Just for safety...
+                                playListInfo();
+                                return;
+                            }
                             s.id=playQueueIds.at(i);
                             songs.append(s);
                             ids.append(s.id);

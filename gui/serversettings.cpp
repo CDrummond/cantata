@@ -97,25 +97,9 @@ ServerSettings::ServerSettings(QWidget *p)
     addButton->setAutoRaise(true);
     removeButton->setAutoRaise(true);
 
-    dynamizerPort->setSpecialValueText(i18n("Not used"));
-    dynamizerPort->setRange(0, 65535);
     #if defined Q_OS_WIN
     hostLabel->setText(i18n("Host:"));
     socketNoteLabel->setVisible(false);
-    dynamizerNoteLabel->setText(i18nc("Qt-only, windows",
-                                      "<i><b>NOTE:</b> 'Dynamizer port' is only relevant if "
-                                      "you wish to make use of 'dynamic playlists'. In order to function, the <code>"
-                                      "cantata-dynamic</code> application <b>must</b> already have been installed, "
-                                      "and started, on the relevant host - Cantata itself cannot control the "
-                                      "starting/stopping of this service.</i>"));
-    #else
-    dynamizerNoteLabel->setText(i18n("<i><b>NOTE:</b> 'Dynamizer port' is only relevant if you wish to use a "
-                                     "system-wide, or non-local, instance of the Cantata dynamizer. "
-                                     "For this to function, the <code>"
-                                     "cantata-dynamic</code> application <b>must</b> already have been installed, "
-                                     "and started, on the relevant host - Cantata itself cannot control the "
-                                     "starting/stopping of this service. If this is not set, then Cantata will "
-                                     "use a per-user instance of the dynamizer to facilitate dynamic playlists.</i>"));
     #endif
     basicCoverName->setToolTip(coverName->toolTip());
     basicCoverNameLabel->setToolTip(coverName->toolTip());
@@ -127,11 +111,6 @@ ServerSettings::ServerSettings(QWidget *p)
     REMOVE(streamUrlLabel)
     REMOVE(streamUrl)
     REMOVE(streamUrlNoteLabel)
-    #endif
-    #ifndef ENABLE_DYNAMIC
-    REMOVE(dynamizerPort)
-    REMOVE(dynamizerPortLabel)
-    REMOVE(dynamizerNoteLabel)
     #endif
 }
 
@@ -185,7 +164,7 @@ void ServerSettings::save()
                 existingInConfig.removeAt(i);
                 found=true;
                 if (c.details.hostname!=e.hostname || c.details.port!=e.port || c.details.password!=e.password ||
-                    c.details.dir!=e.dir || c.details.dynamizerPort!=e.dynamizerPort || c.details.coverName!=e.coverName
+                    c.details.dir!=e.dir || c.details.coverName!=e.coverName
                     #ifdef ENABLE_HTTP_STREAM_PLAYBACK
                     || c.details.streamUrl!=e.streamUrl
                     #endif
@@ -267,7 +246,6 @@ void ServerSettings::add()
         details.port=6600;
         details.hostname=QLatin1String("localhost");
         details.dir=QLatin1String("/var/lib/mpd/music/");
-        details.dynamizerPort=0;
         combo->addItem(details.name);
     } else {
         details=MPDUser::self()->details(true);
@@ -356,9 +334,6 @@ void ServerSettings::setDetails(const MPDConnectionDetails &details)
         port->setValue(details.port);
         password->setText(details.password);
         dir->setText(Utils::convertDirForDisplay(details.dir));
-        if (dynamizerPort) {
-            dynamizerPort->setValue(details.dynamizerPort);
-        }
         coverName->setText(details.coverName);
         #ifdef ENABLE_HTTP_STREAM_PLAYBACK
         streamUrl->setText(details.streamUrl);
@@ -379,7 +354,6 @@ MPDConnectionDetails ServerSettings::getDetails() const
         details.port=port->value();
         details.password=password->text();
         details.dir=Utils::convertDirFromDisplay(dir->text());
-        details.dynamizerPort=dynamizerPort ? dynamizerPort->value() : 0;
         details.coverName=coverName->text().trimmed();
         #ifdef ENABLE_HTTP_STREAM_PLAYBACK
         details.streamUrl=streamUrl->text().trimmed();

@@ -159,7 +159,6 @@ struct MPDConnectionDetails {
     quint16 port;
     QString password;
     QString dir;
-    quint16 dynamizerPort;
     bool dirReadable;
     QString coverName;
     #ifdef ENABLE_HTTP_STREAM_PLAYBACK
@@ -294,7 +293,8 @@ public Q_SLOTS:
     void removeStreams(const QList<quint32> &positions);
     void editStream(const QString &url, const QString &name, quint32 position);
 
-    void sendClientMessage(const QString &client, const QString &msg, const QString &clientName);
+    void sendClientMessage(const QString &channel, const QString &msg, const QString &clientName);
+    void sendDynamicMessage(const QStringList &msg);
 
 Q_SIGNALS:
     void stateChanged(bool connected);
@@ -325,7 +325,6 @@ Q_SIGNALS:
     void dirChanged();
     void prioritySet(const QList<qint32> &ids, quint8 priority);
 
-    void dynamicUrl(const QString &url);
     void stopAfterCurrentChanged(bool afterCurrent);
     void streamUrl(const QString &url);
 
@@ -342,6 +341,8 @@ Q_SIGNALS:
     void streamList(const QList<Stream> &streams);
 
     void clientMessageFailed(const QString &client, const QString &msg);
+    void dynamicSupport(bool e);
+    void dynamicResponse(const QStringList &resp);
 
 private Q_SLOTS:
     void idleDataReady();
@@ -367,6 +368,12 @@ private:
     bool doMoveInPlaylist(const QString &name, const QList<quint32> &items, quint32 pos, quint32 size);
     void toggleStopAfterCurrent(bool afterCurrent);
     bool listDirInfo(const QString &dir, MusicLibraryItemRoot *root);
+    #ifdef ENABLE_DYNAMIC
+    bool checkRemoteDynamicSupport();
+    bool subscribe(const QByteArray &channel);
+    void setupRemoteDynamic();
+    void readRemoteDynamicMessages();
+    #endif
 
 private:
     Thread *thread;
@@ -379,6 +386,9 @@ private:
     // Cant use 1, as we could write a command just as an idle event is ready to read
     MpdSocket sock;
     MpdSocket idleSocket;
+    #ifdef ENABLE_DYNAMIC
+    QByteArray dynamicId;
+    #endif
 
     // The three items are used so that we can do quick playqueue updates...
     QList<qint32> playQueueIds;

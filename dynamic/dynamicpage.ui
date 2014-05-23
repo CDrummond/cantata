@@ -21,13 +21,6 @@
     <widget class="ItemView" name="view"/>
    </item>
    <item>
-    <widget class="StatusLabel" name="infoLabel">
-     <property name="text">
-      <string>No dynamizer port defined in server settings.</string>
-     </property>
-    </widget>
-   </item>
-   <item>
     <widget class="StatusLabel" name="remoteRunningLabel">
      <property name="text">
       <string>Remote dynamizer is not running.</string>
@@ -43,9 +36,6 @@
       <property name="spacing">
        <number>0</number>
       </property>
-      <item>
-       <widget class="ToolButton" name="refreshBtn"/>
-      </item>
        <item>
        <spacer name="horizontalSpacer">
         <property name="orientation">

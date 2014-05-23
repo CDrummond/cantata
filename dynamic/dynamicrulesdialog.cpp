@@ -253,7 +253,7 @@ void DynamicRulesDialog::edit()
     }
     if (!dlg) {
         dlg=new DynamicRuleDialog(this);
-        connect(dlg, SIGNAL(addRule(Dynamic::Rule&)), SLOT(addRule(Dynamic::Rule&)));
+        connect(dlg, SIGNAL(addRule(const Dynamic::Rule&)), SLOT(addRule(const Dynamic::Rule&)));
     }
     QModelIndex index=proxy->mapToSource(items.at(0));
     QStandardItem *item=model->itemFromIndex(index);

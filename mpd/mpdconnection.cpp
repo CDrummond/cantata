@@ -38,6 +38,7 @@
 #include <QStringList>
 #include <QTimer>
 #include <QDir>
+#include <QHostInfo>
 #include "support/thread.h"
 #include "gui/settings.h"
 #include "cuefile.h"
@@ -70,6 +71,13 @@ static const QByteArray constIdlePlayerValue("player");
 static const QByteArray constIdleMixerValue("mixer");
 static const QByteArray constIdleOptionsValue("options");
 static const QByteArray constIdleOutputValue("output");
+//static const QByteArray constIdleStickerValue("sticker");
+static const QByteArray constIdleSubscriptionValue("subscription");
+static const QByteArray constIdleMessageValue("message");
+#ifdef ENABLE_DYNAMIC
+static const QByteArray constDynamicIn("cantata-dynamic-in");
+static const QByteArray constDynamicOut("cantata-dynamic-out");
+#endif
 
 static inline int socketTimeout(int dataSize)
 {
@@ -164,7 +172,6 @@ QString MPDConnection::Response::getError(const QByteArray &command)
 
 MPDConnectionDetails::MPDConnectionDetails()
     : port(6600)
-    , dynamizerPort(0)
     , dirReadable(false)
 {
 }
@@ -305,7 +312,7 @@ MPDConnection::ConnectionReturn MPDConnection::connectToMPD(MpdSocket &socket, b
 
             if (!details.password.isEmpty()) {
                 DBUG << (void *)(&socket) << "setting password...";
-                socket.write("password "+details.password.toUtf8()+"\n");
+                socket.write("password "+details.password.toUtf8()+'\n');
                 socket.waitForBytesWritten(constSocketCommsTimeout);
                 if (!readReply(socket).ok) {
                     DBUG << (void *)(&socket) << "password rejected";
@@ -315,6 +322,10 @@ MPDConnection::ConnectionReturn MPDConnection::connectToMPD(MpdSocket &socket, b
             }
 
             if (enableIdle) {
+                #ifdef ENABLE_DYNAMIC
+                dynamicId.clear();
+                setupRemoteDynamic();
+                #endif
                 connect(&socket, SIGNAL(readyRead()), this, SLOT(idleDataReady()), Qt::QueuedConnection);
                 connect(&socket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(onSocketStateChanged(QAbstractSocket::SocketState)), Qt::QueuedConnection);
                 DBUG << (void *)(&socket) << "Enabling idle";
@@ -471,7 +482,6 @@ void MPDConnection::setDetails(const MPDConnectionDetails &d)
     bool changedDir=det.dir!=details.dir;
     bool diffName=det.name!=details.name;
     bool diffDetails=det!=details;
-    bool diffDynamicPort=det.dynamizerPort!=details.dynamizerPort;
     #ifdef ENABLE_HTTP_STREAM_PLAYBACK
     bool diffStreamUrl=det.streamUrl!=details.streamUrl;
     #endif
@@ -507,13 +517,6 @@ void MPDConnection::setDetails(const MPDConnectionDetails &d)
         }
     } else if (diffName) {
          emit stateChanged(true);
-    }
-    if (diffDynamicPort) {
-        if (details.dynamizerPort<=0) {
-            dynamicUrl(QString());
-        } else {
-            emit dynamicUrl("http://"+(details.isLocal() ? "127.0.0.1" : details.hostname)+":"+QString::number(details.dynamizerPort));
-        }
     }
     #ifdef ENABLE_HTTP_STREAM_PLAYBACK
     if (diffStreamUrl) {
@@ -556,7 +559,7 @@ MPDConnection::Response MPDConnection::sendCommand(const QByteArray &command, bo
     }
 
     Response response;
-    if (-1==sock.write(command+"\n")) {
+    if (-1==sock.write(command+'\n')) {
         DBUG << "Failed to write";
         // If we fail to write, dont wait for bytes to be written!!
         response=Response(false);
@@ -680,7 +683,7 @@ void MPDConnection::add(const QStringList &origList, quint32 pos, quint32 size, 
                 cStreamFiles.append(fileName);
             }
             if (CueFile::isCue(fileName)) {
-                send += "load "+CueFile::getLoadLine(fileName)+"\n";
+                send += "load "+CueFile::getLoadLine(fileName)+'\n';
             } else {
                 if (isPlaylist(fileName)) {
                     send+="load ";
@@ -689,14 +692,14 @@ void MPDConnection::add(const QStringList &origList, quint32 pos, quint32 size, 
                     //                addedFile=true;
                     send += "add ";
                 }
-                send += encodeName(fileName)+"\n";
+                send += encodeName(fileName)+'\n';
             }
             if (!havePlaylist) {
                 if (0!=size) {
-                    send += "move "+quote(curSize)+" "+quote(curPos)+"\n";
+                    send += "move "+quote(curSize)+" "+quote(curPos)+'\n';
                 }
                 if (usePrio && !havePlaylist) {
-                    send += "prio "+quote(singlePrio || i>=priority.count() ? singlePrio : priority.at(i))+" "+quote(curPos)+" "+quote(curPos)+"\n";
+                    send += "prio "+quote(singlePrio || i>=priority.count() ? singlePrio : priority.at(i))+" "+quote(curPos)+" "+quote(curPos)+'\n';
                 }
             }
             curSize++;
@@ -735,8 +738,8 @@ void MPDConnection::addAndPlay(const QString &file)
     if (response.ok) {
         MPDStatusValues sv=MPDParseUtils::parseStatus(response.data);
         QByteArray send = "command_list_begin\n";
-        send+="add "+encodeName(file)+"\n";
-        send+="play "+quote(sv.playlistLength)+"\n";
+        send+="add "+encodeName(file)+'\n';
+        send+="play "+quote(sv.playlistLength)+'\n';
         send+="command_list_end";
         sendCommand(send);
     }
@@ -757,7 +760,7 @@ void MPDConnection::removeSongs(const QList<qint32> &items)
     toggleStopAfterCurrent(false);
     QByteArray send = "command_list_begin\n";
     foreach (qint32 i, items) {
-        send += "deleteid "+quote(i)+"\n";
+        send += "deleteid "+quote(i)+'\n';
     }
 
     send += "command_list_end";
@@ -792,7 +795,7 @@ void MPDConnection::move(const QList<quint32> &items, quint32 pos, quint32 size)
         send += quote(moveItems.at(i));
         send += " ";
         send += quote(size - 1);
-        send += "\n";
+        send += '\n';
     }
     //now move all of them to the destination position
     for (int i = moveItems.size() - 1; i >= 0; i--) {
@@ -800,7 +803,7 @@ void MPDConnection::move(const QList<quint32> &items, quint32 pos, quint32 size)
         send += quote(size - 1 - i);
         send += " ";
         send += quote(pos - posOffset);
-        send += "\n";
+        send += '\n';
     }
 
     send += "command_list_end";
@@ -1215,11 +1218,7 @@ void MPDConnection::parseIdleReturn(const QByteArray &data)
     DBUG << "parseIdleReturn:" << data;
 
     Response response(data.endsWith(constOkNlValue), data);
-    if (response.ok) {
-        DBUG << (void *)(&idleSocket) << "write idle";
-        idleSocket.write("idle\n");
-        idleSocket.waitForBytesWritten();
-    } else {
+    if (!response.ok) {
         DBUG << "idle failed? reconnect";
         idleSocket.close();
         ConnectionReturn status=connectToMPD(idleSocket, true);
@@ -1262,8 +1261,21 @@ void MPDConnection::parseIdleReturn(const QByteArray &data)
             } else if (constIdleOutputValue==value) {
                 outputs();
             }
+            #ifdef ENABLE_DYNAMIC
+            else if (constIdleSubscriptionValue==value) {
+                //if (dynamicId.isEmpty()) {
+                    setupRemoteDynamic();
+                //}
+            } else if (constIdleMessageValue==value) {
+                readRemoteDynamicMessages();
+            }
+            #endif
         }
     }
+
+    DBUG << (void *)(&idleSocket) << "write idle";
+    idleSocket.write("idle\n");
+    idleSocket.waitForBytesWritten();
 }
 
 void MPDConnection::outputs()
@@ -1410,7 +1422,7 @@ void MPDConnection::addToPlaylist(const QString &name, const QStringList &songs,
     QByteArray encodedName=encodeName(name);
     QByteArray send = "command_list_begin\n";
     foreach (const QString &s, songs) {
-        send += "playlistadd "+encodedName+" "+encodeName(s)+"\n";
+        send += "playlistadd "+encodedName+" "+encodeName(s)+'\n';
     }
     send += "command_list_end";
 
@@ -1464,7 +1476,7 @@ void MPDConnection::setPriority(const QList<qint32> &ids, quint8 priority)
         QByteArray send = "command_list_begin\n";
 
         foreach (quint32 id, ids) {
-            send += "prioid "+quote(priority)+" "+quote(id)+"\n";
+            send += "prioid "+quote(priority)+" "+quote(id)+'\n';
         }
 
         send += "command_list_end";
@@ -1546,12 +1558,47 @@ void MPDConnection::editStream(const QString &url, const QString &name, quint32 
     }
 }
 
-void MPDConnection::sendClientMessage(const QString &client, const QString &msg, const QString &clientName)
+void MPDConnection::sendClientMessage(const QString &channel, const QString &msg, const QString &clientName)
 {
-    if (!sendCommand("sendmessage "+client.toUtf8()+" "+msg.toUtf8(), false).ok) {
-        emit error(i18n("Failed to send '%1' to %2. Please check %2 is registered with MPD.", msg, clientName.isEmpty() ? client : clientName));
-        emit clientMessageFailed(client, msg);
+    if (!sendCommand("sendmessage "+channel.toUtf8()+" "+msg.toUtf8(), false).ok) {
+        emit error(i18n("Failed to send '%1' to %2. Please check %2 is registered with MPD.", msg, clientName.isEmpty() ? channel : clientName));
+        emit clientMessageFailed(channel, msg);
     }
+}
+
+void MPDConnection::sendDynamicMessage(const QStringList &msg)
+{
+    #ifdef ENABLE_DYNAMIC
+    // Check whether cantata-dynamic is still alive, by seeing if its channel is still open...
+    if (1==msg.count() && QLatin1String("ping")==msg.at(0)) {
+        Response response=sendCommand("channels");
+        if (!response.ok || !MPDParseUtils::parseList(response.data, QByteArray("channel: ")).toSet().contains(constDynamicIn)) {
+            emit dynamicSupport(false);
+        }
+        return;
+    }
+
+    QByteArray data;
+    foreach (QString part, msg) {
+        if (data.isEmpty()) {
+            data+='\"'+part.toUtf8()+':'+dynamicId;
+        } else {
+            part=part.replace('\"', "{q}");
+            part=part.replace("{", "{ob}");
+            part=part.replace("}", "{cb}");
+            part=part.replace("\n", "{n}");
+            part=part.replace(":", "{c}");
+            data+=':'+part.toUtf8();
+        }
+    }
+
+    data+='\"';
+    if (!sendCommand("sendmessage "+constDynamicIn+" "+data).ok) {
+        emit dynamicSupport(false);
+    }
+    #else
+    Q_UNUSED(msg)
+    #endif
 }
 
 void MPDConnection::moveInPlaylist(const QString &name, const QList<quint32> &items, quint32 pos, quint32 size)
@@ -1584,7 +1631,7 @@ bool MPDConnection::doMoveInPlaylist(const QString &name, const QList<quint32> &
         send += quote(moveItems.at(i));
         send += " ";
         send += quote(size - 1);
-        send += "\n";
+        send += '\n';
     }
     //now move all of them to the destination position
     for (int i = moveItems.size() - 1; i >= 0; i--) {
@@ -1592,7 +1639,7 @@ bool MPDConnection::doMoveInPlaylist(const QString &name, const QList<quint32> &
         send += quote(size - 1 - i);
         send += " ";
         send += quote(pos - posOffset);
-        send += "\n";
+        send += '\n';
     }
 
     send += "command_list_end";
@@ -1632,6 +1679,93 @@ bool MPDConnection::listDirInfo(const QString &dir, MusicLibraryItemRoot *root)
         return false;
     }
 }
+
+#ifdef ENABLE_DYNAMIC
+bool MPDConnection::checkRemoteDynamicSupport()
+{
+    if (ver>=MPD_MAKE_VERSION(0,17,0)) {
+        Response response;
+        if (-1!=idleSocket.write("channels\n")) {
+            idleSocket.waitForBytesWritten(socketTimeout(9));
+            response=readReply(idleSocket);
+            if (response.ok) {
+                return MPDParseUtils::parseList(response.data, QByteArray("channel: ")).toSet().contains(constDynamicIn);
+            }
+        }
+    }
+    return false;
+}
+
+bool MPDConnection::subscribe(const QByteArray &channel)
+{
+    if (-1!=idleSocket.write("subscribe \""+channel+"\"\n")) {
+        idleSocket.waitForBytesWritten(socketTimeout(128));
+        Response response=readReply(idleSocket);
+        if (response.ok || response.data.startsWith("ACK [56@0]")) { // ACK => already subscribed...
+            DBUG << "Created subscription to " << channel;
+            return true;
+        } else {
+            DBUG << "Failed to subscribe to " << channel;
+        }
+    } else {
+        DBUG << "Failed to create subscribe to " << channel;
+    }
+    return false;
+}
+
+void MPDConnection::setupRemoteDynamic()
+{
+    if (checkRemoteDynamicSupport()) {
+        DBUG << "cantata-dynamic is running";
+        if (subscribe(constDynamicOut)) {
+            if (dynamicId.isEmpty()) {
+                dynamicId=QHostInfo::localHostName().toLatin1()+'.'+QHostInfo::localDomainName().toLatin1()+'-'+QByteArray::number(QCoreApplication::applicationPid());
+                if (!subscribe(constDynamicOut+'-'+dynamicId)) {
+                    dynamicId.clear();
+                }
+            }
+        }
+    } else {
+        DBUG << "remote dynamic is not supported";
+    }
+    emit dynamicSupport(!dynamicId.isEmpty());
+}
+
+void MPDConnection::readRemoteDynamicMessages()
+{
+    if (-1!=idleSocket.write("readmessages\n")) {
+        idleSocket.waitForBytesWritten(socketTimeout(22));
+        Response response=readReply(idleSocket);
+        if (response.ok) {
+            MPDParseUtils::MessageMap messages=MPDParseUtils::parseMessages(response.data);
+            if (!messages.isEmpty()) {
+                QList<QByteArray> channels=QList<QByteArray>() << constDynamicOut << constDynamicOut+'-'+dynamicId;
+                foreach (const QByteArray &channel, channels) {
+                    if (messages.contains(channel)) {
+                        foreach (const QString &m, messages[channel]) {
+                            if (!m.isEmpty()) {
+                                DBUG << "Recieved message " << m;
+                                QStringList parts=m.split(':', QString::SkipEmptyParts);
+                                QStringList message;
+                                foreach (QString part, parts) {
+                                    part=part.replace("{c}", ":");
+                                    part=part.replace("{n}", "\n");
+                                    part=part.replace("{cb}", "}");
+                                    part=part.replace("{ob}", "{");
+                                    part=part.replace("{q}", "\"");
+                                    message.append(part);
+                                }
+                                emit dynamicResponse(message);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+#endif
 
 MpdSocket::MpdSocket(QObject *parent)
     : QObject(parent)

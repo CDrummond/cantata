@@ -2,19 +2,19 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Cantata 1.2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-05-23 13:59+0100\n"
+"POT-Creation-Date: 2014-05-23 14:10+0100\n"
 "PO-Revision-Date: 2012-10-24 20:00+0900\n"
 "Last-Translator: Minho Park <parkmino@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: ko\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: ko\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: context/albumview.cpp:63
@@ -91,13 +91,20 @@ msgstr "last.fm에서 더 읽기"
 
 #: context/lyricsdialog.cpp:39
 msgid ""
-"If Cantata has failed to find lyrics, or has found the wrong ones, use this dialog to enter new search details. For example, the current song may actually be a cover-version - if so, then searching for lyrics by the original artist might help.\n"
+"If Cantata has failed to find lyrics, or has found the wrong ones, use this "
+"dialog to enter new search details. For example, the current song may "
+"actually be a cover-version - if so, then searching for lyrics by the "
+"original artist might help.\n"
 "\n"
-"If this search does find new lyrics, these will still be associated with the original song title and artist as displayed in Cantata."
+"If this search does find new lyrics, these will still be associated with the "
+"original song title and artist as displayed in Cantata."
 msgstr ""
-"가사를 찾지 못하거나 잘못된 가사를 찾으면, 이 대화상자를 이용해서 새로운 검색을 입력하시기 바랍니다. 예로 지금 곡이 리메이크라면 원곡의 가사를 찾는 것이 도움이 될 수 있습니다.\n"
+"가사를 찾지 못하거나 잘못된 가사를 찾으면, 이 대화상자를 이용해서 새로운 검색"
+"을 입력하시기 바랍니다. 예로 지금 곡이 리메이크라면 원곡의 가사를 찾는 것이 "
+"도움이 될 수 있습니다.\n"
 "\n"
-"만약 이 검색이 새로운 가사를 찾는다면, 원곡 이름이나 연주자와 여전히 연관이 있을 수 있습니다."
+"만약 이 검색이 새로운 가사를 찾는다면, 원곡 이름이나 연주자와 여전히 연관이 "
+"있을 수 있습니다."
 
 #. i18n: file: devices/albumdetails.ui:63
 #. i18n: ectx: property (text), widget (BuddyLabel, label_2)
@@ -112,7 +119,7 @@ msgstr ""
 #. i18n: file: tags/tageditor.ui:38
 #. i18n: ectx: property (text), widget (StateLabel, titleLabel)
 #: context/lyricsdialog.cpp:61 gui/searchpage.cpp:234 po/rc.cpp:107
-#: po/rc.cpp:392 po/rc.cpp:983 rc.cpp:107 rc.cpp:392 rc.cpp:983
+#: po/rc.cpp:392 po/rc.cpp:980 rc.cpp:107 rc.cpp:392 rc.cpp:980
 msgid "Title:"
 msgstr "제목:"
 
@@ -129,8 +136,8 @@ msgstr "제목:"
 #. i18n: file: tags/tageditor.ui:51
 #. i18n: ectx: property (text), widget (StateLabel, artistLabel)
 #: context/lyricsdialog.cpp:63 devices/actiondialog.cpp:817
-#: gui/searchpage.cpp:227 po/rc.cpp:101 po/rc.cpp:377 po/rc.cpp:986 rc.cpp:101
-#: rc.cpp:377 rc.cpp:986
+#: gui/searchpage.cpp:227 po/rc.cpp:101 po/rc.cpp:377 po/rc.cpp:983 rc.cpp:101
+#: rc.cpp:377 rc.cpp:983
 msgid "Artist:"
 msgstr "연주자:"
 
@@ -291,8 +298,8 @@ msgstr "음반|평점|사운드트랙"
 
 #: context/wikipediasettings.cpp:114
 msgid ""
-"Choose the wikipedia languages you want to use when searching for artist and"
-" album information."
+"Choose the wikipedia languages you want to use when searching for artist and "
+"album information."
 msgstr "연주자와 음반정보를 찾을 때 사용할 언어를 선택합니다."
 
 #: context/wikipediasettings.cpp:115 models/streamsmodel.cpp:552
@@ -321,11 +328,15 @@ msgstr "<i>(다를 때)</i>"
 msgid ""
 "Cantata has detected that you are connected to a Mopidy server.\n"
 "\n"
-"Currently it is not possible for Cantata to force Mopidy to refresh its local music listing. Therefore, you will need to stop Cantata, manually refresh Mopidy's database, and restart Cantata for any changes to be active."
+"Currently it is not possible for Cantata to force Mopidy to refresh its "
+"local music listing. Therefore, you will need to stop Cantata, manually "
+"refresh Mopidy's database, and restart Cantata for any changes to be active."
 msgstr ""
 "Mopidy 서버에 연결된 것으로 보입니다.\n"
 "\n"
-"현재로는 칸타타에서 Mopidy 서버의 데이터베이스를 업데이트하는 것이 불가능합니다. 따라서, 칸타타를 중지하고 수동으로 데이터베이스를 읽은 다음에 다시 실행하시기 바랍니다."
+"현재로는 칸타타에서 Mopidy 서버의 데이터베이스를 업데이트하는 것이 불가능합니"
+"다. 따라서, 칸타타를 중지하고 수동으로 데이터베이스를 읽은 다음에 다시 실행하"
+"시기 바랍니다."
 
 #: devices/actiondialog.cpp:225 devices/synccollectionwidget.cpp:274
 msgid "Artists:%1, Albums:%2, Songs:%3"
@@ -349,7 +360,8 @@ msgstr "오디오 CD"
 msgid ""
 "There is insufficient space left on the destination device.\n"
 "The selected songs consume %1, but there is only %2 left.\n"
-"The songs will need to be transcoded to a smaller filesize in order to be successfully copied."
+"The songs will need to be transcoded to a smaller filesize in order to be "
+"successfully copied."
 msgstr ""
 "대상 장치에 여유 공간이 부족합니다.\n"
 "선택된 곡에 필요한 공간은 %1이지만, 남은 공간은 %2입니다.\n"
@@ -544,13 +556,13 @@ msgstr "다시 시도"
 #. i18n: file: tags/tageditor.ui:90
 #. i18n: ectx: property (text), widget (StateLabel, albumLabel)
 #: devices/actiondialog.cpp:818 gui/searchpage.cpp:233 po/rc.cpp:389
-#: po/rc.cpp:995 rc.cpp:389 rc.cpp:995
+#: po/rc.cpp:992 rc.cpp:389 rc.cpp:992
 msgid "Album:"
 msgstr "음반:"
 
 #. i18n: file: tags/tageditor.ui:25
 #. i18n: ectx: property (text), widget (StateLabel, trackNameLabel)
-#: devices/actiondialog.cpp:819 po/rc.cpp:980 rc.cpp:980
+#: devices/actiondialog.cpp:819 po/rc.cpp:977 rc.cpp:977
 msgid "Track:"
 msgstr "곡:"
 
@@ -615,9 +627,11 @@ msgstr "\"여러 연주자\" 해결을 적용할까요?"
 
 #: devices/albumdetailsdialog.cpp:234 tags/tageditor.cpp:454
 msgid ""
-"<i>This will set 'Album artist' and 'Artist' to \"Various Artists\", and set"
-" 'Title' to \"TrackArtist - TrackTitle\"</i>"
-msgstr "<i>'음반연주자'와 '연주자'를 \"여러 연주자\"로 설정하고, '제목'을 \"곡 연주자 - 곡 제목\"으로 바꿉니다.</i>"
+"<i>This will set 'Album artist' and 'Artist' to \"Various Artists\", and set "
+"'Title' to \"TrackArtist - TrackTitle\"</i>"
+msgstr ""
+"<i>'음반연주자'와 '연주자'를 \"여러 연주자\"로 설정하고, '제목'을 \"곡 연주"
+"자 - 곡 제목\"으로 바꿉니다.</i>"
 
 #: devices/albumdetailsdialog.cpp:253 tags/tageditor.cpp:494
 msgid "Revert \"Various Artists\" workaround"
@@ -626,14 +640,15 @@ msgstr "\"여러 연주자\" 해결을 되돌림"
 #: devices/albumdetailsdialog.cpp:255 tags/tageditor.cpp:496
 msgid ""
 "<i>Where the 'Album artist' is the same as 'Artist' and the 'Title' is of "
-"the format \"TrackArtist - TrackTitle\", 'Artist' will be taken from 'Title'"
-" and 'Title' itself will be set to just the title. e.g. <br/><br/>If 'Title'"
-" is \"Wibble - Wobble\", then 'Artist' will be set to \"Wibble\" and 'Title'"
-" will be set to \"Wobble\"</i>"
+"the format \"TrackArtist - TrackTitle\", 'Artist' will be taken from 'Title' "
+"and 'Title' itself will be set to just the title. e.g. <br/><br/>If 'Title' "
+"is \"Wibble - Wobble\", then 'Artist' will be set to \"Wibble\" and 'Title' "
+"will be set to \"Wobble\"</i>"
 msgstr ""
-"<i>'음반연주자'가 \"곡 연주자 - 곡 제목\" 형태의 '연주자'와 '제목'이 같다면, '연주자'는 '제목'으로부터 나오고 '제목' "
-"자체는 제목으로 설정됩니다. 예로 <br/><br/>'제목'이 \"유재하 - 내 마음에 비친 내 모습\"이고 '연주자'가 \"유재하\"로"
-" 설정되면, '제목'은 \"내 마음에 비친 내 모습\"이 됩니다.</i>"
+"<i>'음반연주자'가 \"곡 연주자 - 곡 제목\" 형태의 '연주자'와 '제목'이 같다면, "
+"'연주자'는 '제목'으로부터 나오고 '제목' 자체는 제목으로 설정됩니다. 예로 <br/"
+"><br/>'제목'이 \"유재하 - 내 마음에 비친 내 모습\"이고 '연주자'가 \"유재하"
+"\"로 설정되면, '제목'은 \"내 마음에 비친 내 모습\"이 됩니다.</i>"
 
 #: devices/albumdetailsdialog.cpp:261 tags/tageditor.cpp:502
 msgid "Revert"
@@ -641,8 +656,7 @@ msgstr "되돌림"
 
 #: devices/albumdetailsdialog.cpp:277 tags/tageditor.cpp:580
 msgid ""
-"Capitalize the first letter of 'Title', 'Artist', 'Album artist', and "
-"'Album'"
+"Capitalize the first letter of 'Title', 'Artist', 'Album artist', and 'Album'"
 msgstr "'제목', '연주자', '음반연주자', '음반'의 첫 글자를 대문자로 만듬"
 
 #: devices/albumdetailsdialog.cpp:295 tags/tageditor.cpp:612
@@ -687,8 +701,7 @@ msgid "CDDB error: %1"
 msgstr "CDDB 오류: %1"
 
 #: devices/cddbselectiondialog.cpp:38
-msgid ""
-"Multiple matches were found. Please choose the relevant one from below:"
+msgid "Multiple matches were found. Please choose the relevant one from below:"
 msgstr "여러 자료가 있으니, 아래에서 하나를 고르시기 바랍니다:"
 
 #. i18n: file: devices/albumdetails.ui:163
@@ -766,29 +779,33 @@ msgstr "100 화소"
 msgid ""
 "<p>When copying tracks to a device, and the 'Album Artist' is set to "
 "'Various Artists', then Cantata will set the 'Artist' tag of all tracks to "
-"'Various Artists' and the track 'Title' tag to 'TrackArtist - "
-"TrackTitle'.<hr/> When copying from a device, Cantata will check if 'Album "
-"Artist' and 'Artist' are both set to 'Various Artists'. If so, it will "
-"attempt to extract the real artist from the 'Title' tag, and remove the "
-"artist name from the 'Title' tag.</p>"
+"'Various Artists' and the track 'Title' tag to 'TrackArtist - TrackTitle'."
+"<hr/> When copying from a device, Cantata will check if 'Album Artist' and "
+"'Artist' are both set to 'Various Artists'. If so, it will attempt to "
+"extract the real artist from the 'Title' tag, and remove the artist name "
+"from the 'Title' tag.</p>"
 msgstr ""
-"<p>곡을 장치로 복사하고 '음반연주자'가 '여러 연주자'일 때, 칸타타는 모든 곡의 '연주자' 태그를 '여러 연주자'로 설정하고 "
-"'이름' 태그를 '곡 연주자 - 곡 제목'으로 설정합니다.<hr/> 장치로부터 복사할 때, '음반연주자'와 '연주자'가 모두 '여러 "
-"연주자'로 설정되어 있으면 '제목' 태그로부터 실제 연주자를 추출하고 '제목' 태그에서 연주자 이름을 지웁니다.</p>"
+"<p>곡을 장치로 복사하고 '음반연주자'가 '여러 연주자'일 때, 칸타타는 모든 곡"
+"의 '연주자' 태그를 '여러 연주자'로 설정하고 '이름' 태그를 '곡 연주자 - 곡 제"
+"목'으로 설정합니다.<hr/> 장치로부터 복사할 때, '음반연주자'와 '연주자'가 모"
+"두 '여러 연주자'로 설정되어 있으면 '제목' 태그로부터 실제 연주자를 추출하고 "
+"'제목' 태그에서 연주자 이름을 지웁니다.</p>"
 
 #: devices/devicepropertieswidget.cpp:98
 msgid ""
 "<p>If you enable this, then Cantata will create a cache of the device's "
 "music library. This will help to speed up subsequent library scans (as the "
-"cache file will be used instead of having to read the tags of each "
-"file.)<hr/><b>NOTE:</b> If you use another application to update the "
-"device's library, then this cache will become out-of-date. To rectify this, "
-"simply click on the 'refresh' icon in the device list. This will cause the "
-"cache file to be removed, and the contents of the device re-scanned.</p>"
+"cache file will be used instead of having to read the tags of each file.)<hr/"
+"><b>NOTE:</b> If you use another application to update the device's library, "
+"then this cache will become out-of-date. To rectify this, simply click on "
+"the 'refresh' icon in the device list. This will cause the cache file to be "
+"removed, and the contents of the device re-scanned.</p>"
 msgstr ""
-"<p>이 설정을 사용하면 장치의 음악라이브러리에 캐시를 만듭니다. 모든 파일의 라이브러리를 읽는 대신에 캐시 파일을 이용하므로 라이브러리"
-" 검색을 빠르게 하는 데에 도움이 됩니다.<hr/><b>참고:</b> 만약 장치의 라이브러리를 업데이트하는 데에 다른 응용 프로그램을 "
-"사용하면, 이 캐시는 쓸모 없어질 수 있습니다. 이를 해결하려면, 장치 리스트의 새로 읽기 단추를 눌러 캐시 파일을 지우고 장치를 다시 "
+"<p>이 설정을 사용하면 장치의 음악라이브러리에 캐시를 만듭니다. 모든 파일의 라"
+"이브러리를 읽는 대신에 캐시 파일을 이용하므로 라이브러리 검색을 빠르게 하는 "
+"데에 도움이 됩니다.<hr/><b>참고:</b> 만약 장치의 라이브러리를 업데이트하는 데"
+"에 다른 응용 프로그램을 사용하면, 이 캐시는 쓸모 없어질 수 있습니다. 이를 해"
+"결하려면, 장치 리스트의 새로 읽기 단추를 눌러 캐시 파일을 지우고 장치를 다시 "
 "읽습니다.</p>"
 
 #: devices/devicepropertieswidget.cpp:219
@@ -847,8 +864,8 @@ msgid ""
 "songs are scanned <i>(quick)</i></li><li>Full - All songs are rescanned "
 "<i>(slow)</i></li></ul></p>"
 msgstr ""
-"<p>어떻게 새로 읽을까요?<ul><li>부분 - 새 음악만 읽기 <i>(빠름)</i></li><li>전체 - 모든 음악 다시 읽기 "
-"<i>(느림)</i></li></ul></p>"
+"<p>어떻게 새로 읽을까요?<ul><li>부분 - 새 음악만 읽기 <i>(빠름)</i></li><li>"
+"전체 - 모든 음악 다시 읽기 <i>(느림)</i></li></ul></p>"
 
 #: devices/devicespage.cpp:449
 msgid "Partial"
@@ -898,38 +915,42 @@ msgctxt ""
 msgid ""
 "<a href=http://en.wikipedia.org/wiki/Advanced_Audio_Coding>Advanced Audio "
 "Coding</a> (AAC) is a patented lossy codec for digital audio.<br>AAC "
-"generally achieves better sound quality than MP3 at similar bit rates. It is"
-" a reasonable choice for the iPod and some other portable music players."
+"generally achieves better sound quality than MP3 at similar bit rates. It is "
+"a reasonable choice for the iPod and some other portable music players."
 msgstr ""
-"<a "
-"href=http://ko.wikipedia.org/wiki/%EA%B3%A0%EA%B8%89_%EC%98%A4%EB%94%94%EC%98%A4_%EB%B6%80%ED%98%B8%ED%99%94</a>"
-" (AAC)는 디지털 오디오를 위한 특허 받은 손실 코덱입니다.<br>AAC는 일반적으로 비슷한 비트레이트에서 MP3보다 나은 음질을 "
-"들려줍니다. iPod나 다른 휴대용 음악 연주기에서는 좋은 선택입니다."
+"<a href=http://ko.wikipedia.org/wiki/%EA%B3%A0%EA%B8%89_%EC%98%A4%EB%94%94%EC"
+"%98%A4_%EB%B6%80%ED%98%B8%ED%99%94</a> (AAC)는 디지털 오디오를 위한 특허 받"
+"은 손실 코덱입니다.<br>AAC는 일반적으로 비슷한 비트레이트에서 MP3보다 나은 음"
+"질을 들려줍니다. iPod나 다른 휴대용 음악 연주기에서는 좋은 선택입니다."
 
 #: devices/encoders.cpp:83
 msgid ""
 "The bitrate is a measure of the quantity of data used to represent a second "
 "of the audio track.<br>The <b>AAC</b> encoder used by Cantata supports a <a "
-"href=http://en.wikipedia.org/wiki/Variable_bitrate#Advantages_and_disadvantages_of_VBR>variable"
-" bitrate (VBR)</a> setting, which means that the bitrate value fluctuates "
-"along the track based on the complexity of the audio content. More complex "
-"intervals of data are encoded with a higher bitrate than less complex ones; "
-"this approach yields overall better quality and a smaller file than having a"
-" constant bitrate throughout the track.<br>For this reason, the bitrate "
-"measure in this slider is just an estimate of the <a "
-"href=http://www.ffmpeg.org/faq.html#SEC21>average bitrate</a> of the encoded"
-" track.<br><b>150kb/s</b> is a good choice for music listening on a portable"
-" player.<br/>Anything below <b>120kb/s</b> might be unsatisfactory for music"
-" and anything above <b>200kb/s</b> is probably overkill."
+"href=http://en.wikipedia.org/wiki/"
+"Variable_bitrate#Advantages_and_disadvantages_of_VBR>variable bitrate (VBR)</"
+"a> setting, which means that the bitrate value fluctuates along the track "
+"based on the complexity of the audio content. More complex intervals of data "
+"are encoded with a higher bitrate than less complex ones; this approach "
+"yields overall better quality and a smaller file than having a constant "
+"bitrate throughout the track.<br>For this reason, the bitrate measure in "
+"this slider is just an estimate of the <a href=http://www.ffmpeg.org/faq."
+"html#SEC21>average bitrate</a> of the encoded track.<br><b>150kb/s</b> is a "
+"good choice for music listening on a portable player.<br/>Anything below "
+"<b>120kb/s</b> might be unsatisfactory for music and anything above <b>200kb/"
+"s</b> is probably overkill."
 msgstr ""
-"비트레이트는 오디오 트랙의 초당 데이터를 나타내는 양을 수치화한 것입니다.<br> 칸타타에 쓰인 <b>AAC</b> 인코더는 <a "
-"href=http://ko.wikipedia.org/wiki/%EA%B0%80%EB%B3%80_%EB%B9%84%ED%8A%B8%EB%A0%88%EC%9D%B4%ED%8A%B8>가변"
-" 비트레이트(VBR)</a> 설정을 지원하는데, 이는 오디오 정보의 복잡성에 따라 트랙의 비트레이트가 가변적임을 의미합니다. 복잡한 "
-"데이터는 단순한 것보다 높은 비트레이트로 인코딩이 되며, 이 방식은 트랙에서 전반적으로 높은 품질과 작은 파일을 만듭니다. <br>이런 "
-"이유로 이 슬라이더에서 측정된 비트레이트는 인코딩된 트랙의 <a "
-"href=http://www.ffmpeg.org/faq.html#SEC21>평균 비트레이트</a> 예측값일 뿐입니다. "
-"<br><b>150kb/s</b>는 휴대용 연주기의 음악감상에 좋은 선택입니다. <br/><b>120kb/s 이하</b>는 음악이 "
-"만족스럽지 않을 수 있습니다. <b>200kb/s</b>는 너무 높을 수 있습니다."
+"비트레이트는 오디오 트랙의 초당 데이터를 나타내는 양을 수치화한 것입니다."
+"<br> 칸타타에 쓰인 <b>AAC</b> 인코더는 <a href=http://ko.wikipedia.org/wiki/"
+"%EA%B0%80%EB%B3%80_%EB%B9%84%ED%8A%B8%EB%A0%88%EC%9D%B4%ED%8A%B8>가변 비트레"
+"이트(VBR)</a> 설정을 지원하는데, 이는 오디오 정보의 복잡성에 따라 트랙의 비트"
+"레이트가 가변적임을 의미합니다. 복잡한 데이터는 단순한 것보다 높은 비트레이트"
+"로 인코딩이 되며, 이 방식은 트랙에서 전반적으로 높은 품질과 작은 파일을 만듭"
+"니다. <br>이런 이유로 이 슬라이더에서 측정된 비트레이트는 인코딩된 트랙의 <a "
+"href=http://www.ffmpeg.org/faq.html#SEC21>평균 비트레이트</a> 예측값일 뿐입니"
+"다. <br><b>150kb/s</b>는 휴대용 연주기의 음악감상에 좋은 선택입니다. <br/"
+"><b>120kb/s 이하</b>는 음악이 만족스럽지 않을 수 있습니다. <b>200kb/s</b>는 "
+"너무 높을 수 있습니다."
 
 #: devices/encoders.cpp:101 devices/encoders.cpp:141
 msgid "Expected average bitrate for variable bitrate encoding"
@@ -952,35 +973,38 @@ msgctxt ""
 msgid ""
 "<a href=http://en.wikipedia.org/wiki/MP3>MPEG Audio Layer 3</a> (MP3) is a "
 "patented digital audio codec using a form of lossy data compression.<br>In "
-"spite of its shortcomings, it is a common format for consumer audio storage,"
-" and is widely supported on portable music players."
+"spite of its shortcomings, it is a common format for consumer audio storage, "
+"and is widely supported on portable music players."
 msgstr ""
-"<a href=http://ko.wikipedia.org/wiki/MP3>MPEG Audio Layer 3</a> (MP3) 는 손실 "
-"데이터 압축을 이용하여 특허 받은 디지털 오디오 코덱입니다.<br>이러한 단점에도 불구하고, 소비자 오디오의 범용 저장 포맷으로 휴대용 "
-"음악 연주기에 널리 쓰입니다."
+"<a href=http://ko.wikipedia.org/wiki/MP3>MPEG Audio Layer 3</a> (MP3) 는 손"
+"실 데이터 압축을 이용하여 특허 받은 디지털 오디오 코덱입니다.<br>이러한 단점"
+"에도 불구하고, 소비자 오디오의 범용 저장 포맷으로 휴대용 음악 연주기에 널리 "
+"쓰입니다."
 
 #: devices/encoders.cpp:124
 msgid ""
 "The bitrate is a measure of the quantity of data used to represent a second "
 "of the audio track.<br>The <b>MP3</b> encoder used by Cantata supports a <a "
 "href=http://en.wikipedia.org/wiki/MP3#VBR>variable bitrate (VBR)</a> "
-"setting, which means that the bitrate value fluctuates along the track based"
-" on the complexity of the audio content. More complex intervals of data are "
+"setting, which means that the bitrate value fluctuates along the track based "
+"on the complexity of the audio content. More complex intervals of data are "
 "encoded with a higher bitrate than less complex ones; this approach yields "
 "overall better quality and a smaller file than having a constant bitrate "
-"throughout the track.<br>For this reason, the bitrate measure in this slider"
-" is just an estimate of the average bitrate of the encoded "
-"track.<br><b>160kb/s</b> is a good choice for music listening on a portable "
-"player.<br/>Anything below <b>120kb/s</b> might be unsatisfactory for music "
-"and anything above <b>205kb/s</b> is probably overkill."
+"throughout the track.<br>For this reason, the bitrate measure in this slider "
+"is just an estimate of the average bitrate of the encoded track.<br><b>160kb/"
+"s</b> is a good choice for music listening on a portable player.<br/"
+">Anything below <b>120kb/s</b> might be unsatisfactory for music and "
+"anything above <b>205kb/s</b> is probably overkill."
 msgstr ""
-"비트레이트는 오디오 트랙의 초당 데이터를 나타내는 양을 수치화한 것입니다.<br>칸타타에 쓰인 <b>MP3</b> 인코더는 <a "
-"href=http://en.wikipedia.org/wiki/MP3#VBR>가변 비트레이트 (VBR)</a> 설정을 지원하는데, 이는 "
-"오디오 정보의 복잡성에 따라 트랙의 비트레이트가 가변적임을 의미합니다. 복잡한 데이터는 단순한 것보다 높은 비트레이트로 인코딩이 되며, "
-"이 방식은 트랙에서 전반적으로 높은 품질과 작은 파일을 만듭니다. <br>이런 이유로 이 슬라이더에서 측정된 비트레이트는 인코딩된 트랙의"
-" 평균 비트레이트일 뿐입니다.<br><b>160kb/s</b>은 휴대용 재생기에서 음악 듣기에 좋은 "
-"선택입니다.<br/><b>120kb/s 이하</b>는 음악이 불만족스러울 수 있습니다.<b>205kb/s 이상</b>은 너무 높을 수 "
-"있습니다."
+"비트레이트는 오디오 트랙의 초당 데이터를 나타내는 양을 수치화한 것입니다.<br>"
+"칸타타에 쓰인 <b>MP3</b> 인코더는 <a href=http://en.wikipedia.org/wiki/"
+"MP3#VBR>가변 비트레이트 (VBR)</a> 설정을 지원하는데, 이는 오디오 정보의 복잡"
+"성에 따라 트랙의 비트레이트가 가변적임을 의미합니다. 복잡한 데이터는 단순한 "
+"것보다 높은 비트레이트로 인코딩이 되며, 이 방식은 트랙에서 전반적으로 높은 품"
+"질과 작은 파일을 만듭니다. <br>이런 이유로 이 슬라이더에서 측정된 비트레이트"
+"는 인코딩된 트랙의 평균 비트레이트일 뿐입니다.<br><b>160kb/s</b>은 휴대용 재"
+"생기에서 음악 듣기에 좋은 선택입니다.<br/><b>120kb/s 이하</b>는 음악이 불만족"
+"스러울 수 있습니다.<b>205kb/s 이상</b>은 너무 높을 수 있습니다."
 
 #: devices/encoders.cpp:156 online/magnatuneservice.cpp:185
 msgid "Ogg Vorbis"
@@ -992,13 +1016,14 @@ msgctxt ""
 "exists."
 msgid ""
 "<a href=http://en.wikipedia.org/wiki/Vorbis>Ogg Vorbis</a> is an open and "
-"royalty-free audio codec for lossy audio compression.<br>It produces smaller"
-" files than MP3 at equivalent or higher quality. Ogg Vorbis is an all-around"
-" excellent choice, especially for portable music players that support it."
+"royalty-free audio codec for lossy audio compression.<br>It produces smaller "
+"files than MP3 at equivalent or higher quality. Ogg Vorbis is an all-around "
+"excellent choice, especially for portable music players that support it."
 msgstr ""
-"<a href=http://ko.wikipedia.org/wiki/Vorbis>Ogg Vorbis</a>는 손실 데이터 압축을 이용하여 "
-"특허 받은 디지털 오디오 코덱입니다.<br>동일하거나 더 높은 품질에서 MP3보다 더 작은 파일을 만듭니다. Ogg Vorbis는 "
-"전반적으로, 특히 지원하는 휴대용 음악 연주기에는 아주 좋은 선택입니다."
+"<a href=http://ko.wikipedia.org/wiki/Vorbis>Ogg Vorbis</a>는 손실 데이터 압축"
+"을 이용하여 특허 받은 디지털 오디오 코덱입니다.<br>동일하거나 더 높은 품질에"
+"서 MP3보다 더 작은 파일을 만듭니다. Ogg Vorbis는 전반적으로, 특히 지원하는 휴"
+"대용 음악 연주기에는 아주 좋은 선택입니다."
 
 #: devices/encoders.cpp:164
 msgid ""
@@ -1008,23 +1033,27 @@ msgid ""
 "bitrate (VBR)</a> setting, which means that the bitrate value fluctuates "
 "along the track based on the complexity of the audio content. More complex "
 "intervals of data are encoded with a higher bitrate than less complex ones; "
-"this approach yields overall better quality and a smaller file than having a"
-" constant bitrate throughout the track.<br>The Vorbis encoder uses a quality"
-" rating between -1 and 10 to define a certain expected audio quality level. "
+"this approach yields overall better quality and a smaller file than having a "
+"constant bitrate throughout the track.<br>The Vorbis encoder uses a quality "
+"rating between -1 and 10 to define a certain expected audio quality level. "
 "The bitrate measure in this slider is just a rough estimate (provided by "
 "Vorbis) of the average bitrate of the encoded track given a quality value. "
-"In fact, with newer and more efficient Vorbis versions the actual bitrate is"
-" even lower.<br><b>5</b> is a good choice for music listening on a portable "
+"In fact, with newer and more efficient Vorbis versions the actual bitrate is "
+"even lower.<br><b>5</b> is a good choice for music listening on a portable "
 "player.<br/>Anything below <b>3</b> might be unsatisfactory for music and "
 "anything above <b>8</b> is probably overkill."
 msgstr ""
-"비트레이트는 오디오 트랙의 초당 데이터를 나타내는 양을 수치화한 것입니다.<br>Cantata에 쓰인 <b>Vorbis</b> 인코더는 "
-"<a href=http://ko.wikipedia.org/wiki/Vorbis>가변 비트레이트 (VBR)</a> 설정을 지원하는데, 이는"
-" 오디오 정보의 복잡성에 따라 트랙의 비트레이트가 가변적임을 의미합니다. 복잡한 데이터는 단순한 것보다 높은 비트레이트로 인코딩이 되며,"
-" 이 방식은 트랙에서 전반적으로 높은 품질과 작은 파일을 만듭니다. <br>Vorbis 인코더는 -1부터 10까지의 품질 범위를 "
-"가집니다.이 슬라이더에 쓰인 비트레이트는 Vorbis에서 제공된 개략적인 추측에 불과합니다.실은 새롭고 더 효율적인 Vorbis 버전의 "
-"실제 비트레이트는 더 낮습니다.<br><b>5</b>는 휴대용 연주기에서의 음악감상에 좋은 선택입니다.<br/><b>3이하</b>는 "
-"음악이 불만족스러울 수 있습니다.<b>8이상</b>은 너무 높을 수 있습니다."
+"비트레이트는 오디오 트랙의 초당 데이터를 나타내는 양을 수치화한 것입니다."
+"<br>Cantata에 쓰인 <b>Vorbis</b> 인코더는 <a href=http://ko.wikipedia.org/"
+"wiki/Vorbis>가변 비트레이트 (VBR)</a> 설정을 지원하는데, 이는 오디오 정보의 "
+"복잡성에 따라 트랙의 비트레이트가 가변적임을 의미합니다. 복잡한 데이터는 단순"
+"한 것보다 높은 비트레이트로 인코딩이 되며, 이 방식은 트랙에서 전반적으로 높"
+"은 품질과 작은 파일을 만듭니다. <br>Vorbis 인코더는 -1부터 10까지의 품질 범위"
+"를 가집니다.이 슬라이더에 쓰인 비트레이트는 Vorbis에서 제공된 개략적인 추측"
+"에 불과합니다.실은 새롭고 더 효율적인 Vorbis 버전의 실제 비트레이트는 더 낮습"
+"니다.<br><b>5</b>는 휴대용 연주기에서의 음악감상에 좋은 선택입니다.<br/><b>3"
+"이하</b>는 음악이 불만족스러울 수 있습니다.<b>8이상</b>은 너무 높을 수 있습니"
+"다."
 
 #: devices/encoders.cpp:184
 msgid "Quality rating"
@@ -1042,32 +1071,35 @@ msgid ""
 "<a href=http://en.wikipedia.org/wiki/Opus_(audio_format)>Opus</a> is a "
 "patent-free digital audio codec using a form of lossy data compression."
 msgstr ""
-"<a "
-"href=http://ko.wikipedia.org/wiki/%EC%98%A4%ED%91%B8%EC%8A%A4_%28%EC%98%A4%EB%94%94%EC%98%A4_%ED%8F%AC%EB%A7%B7%29>Opus</a>는"
-" 손실 데이터 압축을 이용하는 사용료가 없는 오디오 코덱입니다."
+"<a href=http://ko.wikipedia.org/wiki/%EC%98%A4%ED%91%B8%EC%8A%A4_%28%EC"
+"%98%A4%EB%94%94%EC%98%A4_%ED%8F%AC%EB%A7%B7%29>Opus</a>는 손실 데이터 압축을 "
+"이용하는 사용료가 없는 오디오 코덱입니다."
 
 #: devices/encoders.cpp:206
 msgid ""
 "The bitrate is a measure of the quantity of data used to represent a second "
-"of the audio track.<br>The <b>Opus</b> encoder used by Cantata supports a <a"
-" href=http://en.wikipedia.org/wiki/Variable_bitrate>variable bitrate "
-"(VBR)</a> setting, which means that the bitrate value fluctuates along the "
-"track based on the complexity of the audio content. More complex intervals "
-"of data are encoded with a higher bitrate than less complex ones; this "
-"approach yields overall better quality and a smaller file than having a "
-"constant bitrate throughout the track.<br>For this reason, the bitrate "
-"measure in this slider is just an estimate of the average bitrate of the "
-"encoded track.<br><b>128kb/s</b> is a good choice for music listening on a "
-"portable player.<br/>Anything below <b>100kb/s</b> might be unsatisfactory "
-"for music and anything above <b>256kb/s</b> is probably overkill."
+"of the audio track.<br>The <b>Opus</b> encoder used by Cantata supports a <a "
+"href=http://en.wikipedia.org/wiki/Variable_bitrate>variable bitrate (VBR)</"
+"a> setting, which means that the bitrate value fluctuates along the track "
+"based on the complexity of the audio content. More complex intervals of data "
+"are encoded with a higher bitrate than less complex ones; this approach "
+"yields overall better quality and a smaller file than having a constant "
+"bitrate throughout the track.<br>For this reason, the bitrate measure in "
+"this slider is just an estimate of the average bitrate of the encoded track."
+"<br><b>128kb/s</b> is a good choice for music listening on a portable player."
+"<br/>Anything below <b>100kb/s</b> might be unsatisfactory for music and "
+"anything above <b>256kb/s</b> is probably overkill."
 msgstr ""
-"비트레이트는 오디오 트랙의 초당 데이터를 나타내는 양을 수치화한 것입니다.<br>칸타타에 쓰인 <b>오푸스</b> 인코더는 <a "
-"href=http:http://ko.wikipedia.org/wiki/%EA%B0%80%EB%B3%80_%EB%B9%84%ED%8A%B8%EB%A0%88%EC%9D%B4%ED%8A%B8>가변"
-" 비트레이트</a> 설정을 지원하는데, 이는 오디오 정보의 복잡성에 따라 트랙의 비트레이트가 가변적임을 의미합니다. 복잡한 데이터는 "
-"단순한 것보다 높은 비트레이트로 인코딩이 되며, 이 방식은 트랙에서 전반적으로 높은 품질과 작은 파일을 만듭니다. <br>이런 이유로 이"
-" 슬라이더에서 측정된 비트레이트는 인코딩된 트랙의 평균 비트레이트일 뿐입니다.<br><b>128kb/s</b>은 휴대용 재생기에서 음악 "
-"듣기에 좋은 선택입니다.<br/><b>100kb/s 이하</b>는 음악이 불만족스러울 수 있습니다.<b>256kb/s 이상</b>은 너무"
-" 높을 수 있습니다."
+"비트레이트는 오디오 트랙의 초당 데이터를 나타내는 양을 수치화한 것입니다.<br>"
+"칸타타에 쓰인 <b>오푸스</b> 인코더는 <a href=http:http://ko.wikipedia.org/"
+"wiki/%EA%B0%80%EB%B3%80_%EB%B9%84%ED%8A%B8%EB%A0%88%EC%9D%B4%ED%8A%B8>가변 비"
+"트레이트</a> 설정을 지원하는데, 이는 오디오 정보의 복잡성에 따라 트랙의 비트"
+"레이트가 가변적임을 의미합니다. 복잡한 데이터는 단순한 것보다 높은 비트레이트"
+"로 인코딩이 되며, 이 방식은 트랙에서 전반적으로 높은 품질과 작은 파일을 만듭"
+"니다. <br>이런 이유로 이 슬라이더에서 측정된 비트레이트는 인코딩된 트랙의 평"
+"균 비트레이트일 뿐입니다.<br><b>128kb/s</b>은 휴대용 재생기에서 음악 듣기에 "
+"좋은 선택입니다.<br/><b>100kb/s 이하</b>는 음악이 불만족스러울 수 있습니다."
+"<b>256kb/s 이상</b>은 너무 높을 수 있습니다."
 
 #: devices/encoders.cpp:223 devices/encoders.cpp:320
 msgid "Bitrate"
@@ -1083,14 +1115,13 @@ msgctxt ""
 "exists."
 msgid ""
 "<a href=http://en.wikipedia.org/wiki/Apple_Lossless>Apple Lossless</a> "
-"(ALAC) is an audio codec for lossless compression of digital "
-"music.<br>Recommended only for Apple music players and players that do not "
-"support FLAC."
+"(ALAC) is an audio codec for lossless compression of digital music."
+"<br>Recommended only for Apple music players and players that do not support "
+"FLAC."
 msgstr ""
-"<a "
-"href=http://ko.wikipedia.org/wiki/%EC%95%A0%ED%94%8C_%EB%AC%B4%EC%86%90%EC%8B%A4>애플"
-" 무손실</a> (ALAC)은 디지털 음악의 무손실 압축을 위한 오디오 코덱입니다.<br>애플 제품이나 FLAC을 지원하지 않는 "
-"연주기에서만 추천합니다."
+"<a href=http://ko.wikipedia.org/wiki/%EC%95%A0%ED%94%8C_%EB%AC%B4%EC%86%90%EC"
+"%8B%A4>애플 무손실</a> (ALAC)은 디지털 음악의 무손실 압축을 위한 오디오 코덱"
+"입니다.<br>애플 제품이나 FLAC을 지원하지 않는 연주기에서만 추천합니다."
 
 #: devices/encoders.cpp:260 online/magnatuneservice.cpp:186
 msgid "FLAC"
@@ -1101,35 +1132,36 @@ msgctxt ""
 "Feel free to redirect the english Wikipedia link to a local version, if it "
 "exists."
 msgid ""
-"<a href=http://en.wikipedia.org/wiki/Free_Lossless_Audio_Codec>Free Lossless"
-" Audio Codec</a> (FLAC) is an open and royalty-free codec for lossless "
+"<a href=http://en.wikipedia.org/wiki/Free_Lossless_Audio_Codec>Free Lossless "
+"Audio Codec</a> (FLAC) is an open and royalty-free codec for lossless "
 "compression of digital music.<br>If you wish to store your music without "
 "compromising on audio quality, FLAC is an excellent choice."
 msgstr ""
 "<a href=http://ko.wikipedia.org/wiki/FLAC>Free Lossless Audio Codec</a> "
-"(FLAC)은 무손실 디지털 음악을 위해서 공개된, 사용료가 없는 코덱입니다.<br>오디오 품질을 손상시키지 않고 음악을 저장하려면, "
-"FLAC은 훌륭한 선택입니다."
+"(FLAC)은 무손실 디지털 음악을 위해서 공개된, 사용료가 없는 코덱입니다.<br>오"
+"디오 품질을 손상시키지 않고 음악을 저장하려면, FLAC은 훌륭한 선택입니다."
 
 #: devices/encoders.cpp:267
 msgid ""
-"The <a "
-"href=http://flac.sourceforge.net/documentation_tools_flac.html>compression "
-"level</a> is an integer value between 0 and 8 that represents the tradeoff "
-"between file size and compression speed while encoding with "
-"<b>FLAC</b>.<br/> Setting the compression level to <b>0</b> yields the "
-"shortest compression time but generates a comparably big file.<br/>On the "
-"other hand, a compression level of <b>8</b> makes compression quite slow but"
-" produces the smallest file.<br/>Note that since FLAC is by definition a "
-"lossless codec, the audio quality of the output is exactly the same "
-"regardless of the compression level.<br/>Also, levels above <b>5</b> "
+"The <a href=http://flac.sourceforge.net/documentation_tools_flac."
+"html>compression level</a> is an integer value between 0 and 8 that "
+"represents the tradeoff between file size and compression speed while "
+"encoding with <b>FLAC</b>.<br/> Setting the compression level to <b>0</b> "
+"yields the shortest compression time but generates a comparably big file.<br/"
+">On the other hand, a compression level of <b>8</b> makes compression quite "
+"slow but produces the smallest file.<br/>Note that since FLAC is by "
+"definition a lossless codec, the audio quality of the output is exactly the "
+"same regardless of the compression level.<br/>Also, levels above <b>5</b> "
 "dramatically increase compression time but create an only slightly smaller "
 "file, and are not recommended."
 msgstr ""
-"<a href=http://flac.sourceforge.net/documentation_tools_flac.html> 압축률</a>은 "
-"<b>FLAC</b>으로의 인코딩과정에서, 압축 속도와 파일 크기의 균형을 나타내는 0에서 8까지의 정수값입니다.<br/> 압축률을 "
-"<b>0</b>으로 하면 압축 시간은 가장 짧지만 상대적으로 큰 파일 크기가 커지며<br/>반면에, 압축률을 <b>8</b>로 하면, "
-"압축은 오래 걸리지만 가장 작은 파일을 만듭니다.<br/>FLAC은 무손실 코덱이므로 압축률에 상관없이 음악 출력품질은 "
-"동일합니다.<br/>또한, <b>5</b>이상의 값은 압축 시간을 늘이지만 파일 크기는 약간만 작아지므로 추천하지 않습니다."
+"<a href=http://flac.sourceforge.net/documentation_tools_flac.html> 압축률</a>"
+"은 <b>FLAC</b>으로의 인코딩과정에서, 압축 속도와 파일 크기의 균형을 나타내는 "
+"0에서 8까지의 정수값입니다.<br/> 압축률을 <b>0</b>으로 하면 압축 시간은 가장 "
+"짧지만 상대적으로 큰 파일 크기가 커지며<br/>반면에, 압축률을 <b>8</b>로 하"
+"면, 압축은 오래 걸리지만 가장 작은 파일을 만듭니다.<br/>FLAC은 무손실 코덱이"
+"므로 압축률에 상관없이 음악 출력품질은 동일합니다.<br/>또한, <b>5</b>이상의 "
+"값은 압축 시간을 늘이지만 파일 크기는 약간만 작아지므로 추천하지 않습니다."
 
 #: devices/encoders.cpp:282
 msgid "Compression level"
@@ -1153,30 +1185,32 @@ msgid ""
 "audio compression.<br>Recommended only for portable music players that do "
 "not support Ogg Vorbis."
 msgstr ""
-"<a "
-"href=http://ko.wikipedia.org/wiki/%EC%9C%88%EB%8F%84_%EB%AF%B8%EB%94%94%EC%96%B4_%EC%98%A4%EB%94%94%EC%98%A4>Windows"
-" Media Audio</a> (WMA)는 손실 압축을 위해 마이크로소프트에 의해 개발된 독점 코덱입니다.<br>Ogg Vorbis를 "
-"지원하지 않는 휴대용 음악 연주기에만 추천됩니다."
+"<a href=http://ko.wikipedia.org/wiki/%EC%9C%88%EB%8F%84_%EB%AF%B8%EB%94%94%EC"
+"%96%B4_%EC%98%A4%EB%94%94%EC%98%A4>Windows Media Audio</a> (WMA)는 손실 압축"
+"을 위해 마이크로소프트에 의해 개발된 독점 코덱입니다.<br>Ogg Vorbis를 지원하"
+"지 않는 휴대용 음악 연주기에만 추천됩니다."
 
 #: devices/encoders.cpp:306
 msgid ""
 "The bitrate is a measure of the quantity of data used to represent a second "
 "of the audio track.<br>Due to the limitations of the proprietary <b>WMA</b> "
 "format and the difficulty of reverse-engineering a proprietary encoder, the "
-"WMA encoder used by Cantata sets a <a "
-"href=http://en.wikipedia.org/wiki/Windows_Media_Audio#Windows_Media_Audio>constant"
-" bitrate (CBR)</a> setting.<br>For this reason, the bitrate measure in this "
-"slider is a pretty accurate estimate of the bitrate of the encoded "
-"track.<br><b>136kb/s</b> is a good choice for music listening on a portable "
-"player.<br/>Anything below <b>112kb/s</b> might be unsatisfactory for music "
-"and anything above <b>182kb/s</b> is probably overkill."
+"WMA encoder used by Cantata sets a <a href=http://en.wikipedia.org/wiki/"
+"Windows_Media_Audio#Windows_Media_Audio>constant bitrate (CBR)</a> setting."
+"<br>For this reason, the bitrate measure in this slider is a pretty accurate "
+"estimate of the bitrate of the encoded track.<br><b>136kb/s</b> is a good "
+"choice for music listening on a portable player.<br/>Anything below <b>112kb/"
+"s</b> might be unsatisfactory for music and anything above <b>182kb/s</b> is "
+"probably overkill."
 msgstr ""
-"비트레이트는 오디오 트랙의 초당 데이터를 나타내는 양을 수치화한 것입니다.<br><b>WMA</b> 독점 포맷의 한계로 역설계가 어려워,"
-" 칸타타에 쓰인 WMA 인코더는 <a "
-"href=http://en.wikipedia.org/wiki/Windows_Media_Audio#Windows_Media_Audio>고정"
-" 비트레이트 (CBR)</a> 설정입니다.<br>따라서 이 슬라이더의 비트레이트 측정값은 인코딩된 트랙의 상당히 정확한 "
-"예측치입니다.<br><b>136kb/s</b>는 휴대용 음악 연주기에서 좋은 선택입니다.<br/><b>112kb/s 이하</b>는 음악이"
-" 불만족스러울 수 있습니다.<b>182kb/s 이상</b>은 너무 높을 수 있습니다."
+"비트레이트는 오디오 트랙의 초당 데이터를 나타내는 양을 수치화한 것입니다."
+"<br><b>WMA</b> 독점 포맷의 한계로 역설계가 어려워, 칸타타에 쓰인 WMA 인코더"
+"는 <a href=http://en.wikipedia.org/wiki/"
+"Windows_Media_Audio#Windows_Media_Audio>고정 비트레이트 (CBR)</a> 설정입니다."
+"<br>따라서 이 슬라이더의 비트레이트 측정값은 인코딩된 트랙의 상당히 정확한 예"
+"측치입니다.<br><b>136kb/s</b>는 휴대용 음악 연주기에서 좋은 선택입니다.<br/"
+"><b>112kb/s 이하</b>는 음악이 불만족스러울 수 있습니다.<b>182kb/s 이상</b>은 "
+"너무 높을 수 있습니다."
 
 #: devices/filenameschemedialog.cpp:34
 msgid "Filename Scheme"
@@ -1214,14 +1248,16 @@ msgstr "Ballad"
 
 #: devices/filenameschemedialog.cpp:121
 msgid ""
-"<p>The following variables will be replaced with their corresponding meaning"
-" for each track name.</p>"
+"<p>The following variables will be replaced with their corresponding meaning "
+"for each track name.</p>"
 msgstr "<p>아래 변수는 각 곡명의 해당되는 의미에 따라 바뀝니다.</p>"
 
 #: devices/filenameschemedialog.cpp:123
 msgid ""
-"<tr><th><em>Variable</em></th><th><em>Button</em></th><th><em>Description</em></th></tr>"
-msgstr "<tr><th><em>변수</em></th><th><em>단추</em></th><th><em>설명</em></th></tr>"
+"<tr><th><em>Variable</em></th><th><em>Button</em></th><th><em>Description</"
+"em></th></tr>"
+msgstr ""
+"<tr><th><em>변수</em></th><th><em>단추</em></th><th><em>설명</em></th></tr>"
 
 #: devices/fsdevice.cpp:676 gui/albumspage.cpp:298 gui/folderpage.cpp:300
 #: gui/librarypage.cpp:421
@@ -1338,9 +1374,11 @@ msgstr "칸타타가 명령어라인에서 실행되면 비밀번호 입력이 �
 
 #: devices/remotefsdevice.cpp:340
 msgid ""
-"No suitable ssh-askpass application installed! This is required for entering"
-" passwords."
-msgstr "적당한 ssh-askpass 응용프로그램이 설치되지 않았습니다! 이는 패스워드 입력에 필요합니다."
+"No suitable ssh-askpass application installed! This is required for entering "
+"passwords."
+msgstr ""
+"적당한 ssh-askpass 응용프로그램이 설치되지 않았습니다! 이는 패스워드 입력에 "
+"필요합니다."
 
 #: devices/remotefsdevice.cpp:347
 msgid "Mount point (\"%1\") is not empty!"
@@ -1564,7 +1602,8 @@ msgstr "<i><b>오류</b>: '시작 연도'는 '마지막 연도'보다 작아야 
 msgid ""
 "<i><b>ERROR:</b> Date range is too large (can only be a maximum of %1 "
 "years)</i>"
-msgstr "<i><b>오류:</b> 날짜 범위가 너무 큽니다 (최대 %1년 이내여야 합니다)</i>"
+msgstr ""
+"<i><b>오류:</b> 날짜 범위가 너무 큽니다 (최대 %1년 이내여야 합니다)</i>"
 
 #: dynamic/dynamicrulesdialog.cpp:68
 msgid "SimilarArtists"
@@ -1630,22 +1669,24 @@ msgid ""
 "of <i>Include</i> rules will be used to build a set of songs that can be "
 "used. The list of <i>Exclude</i> rules will be used to build a set of songs "
 "that cannot be used. If there are no <i>Include</i> rules, Cantata will "
-"assume that all songs (bar those from <i>Exclude</i>) can be used. <br/>e.g."
-" to have Cantata look for 'Rock songs by Wibble OR songs by Various "
-"Artists', you would need the following: <ul><li>Include AlbumArtist=Wibble "
-"Genre=Rock</li><li>Include AlbumArtist=Various Artists</li></ul> To have "
-"Cantata look for 'Songs by Wibble but not from album Abc', you would need "
-"the following: <ul><li>Include AlbumArtist=Wibble</li><li>Exclude "
-"Album=Abc</li></ul>After the set of usable songs has been created, Cantata "
-"will randomly select songs to keep the play queue filled with 10 "
-"entries.</p>"
+"assume that all songs (bar those from <i>Exclude</i>) can be used. <br/>e.g. "
+"to have Cantata look for 'Rock songs by Wibble OR songs by Various Artists', "
+"you would need the following: <ul><li>Include AlbumArtist=Wibble Genre=Rock</"
+"li><li>Include AlbumArtist=Various Artists</li></ul> To have Cantata look "
+"for 'Songs by Wibble but not from album Abc', you would need the following: "
+"<ul><li>Include AlbumArtist=Wibble</li><li>Exclude Album=Abc</li></ul>After "
+"the set of usable songs has been created, Cantata will randomly select songs "
+"to keep the play queue filled with 10 entries.</p>"
 msgstr ""
-"<p>칸타타는 등록된 모든 규정을 이용하여 라이브러리를 조회합니다. <i>포함</i>된 규정 항목은 사용될 곡들을 선별하는 데에 "
-"사용됩니다. <i>제외</i>된 규정 항목은 사용되지 않을 곡들을 선별하는 데에 사용됩니다. <i>포함</i>된 규정이 없으면, "
-"전곡(<i>제외</i>된 규정을 제외하고)을 사용할 수 있다고 가정합니다. <br/>예로 '유재하의 Ballad 및 여러 연주자의 곡'을"
-" 선택하려면 다음과 같이 하면 됩니다: <ul><li>포함 음반연주자=유재하 장르=Ballad</li><li>포함 음반연주자=여러 "
-"연주자</li></ul> '유재하의 모든 곡 중에 미련 음반을 제외'하려면: <ul><li>포함 음반연주자=유재하</li><li>제외 "
-"음반=미련</li></ul>사용할 곡들이 만들어지면 칸타타는 무작위로 곡들을 선택하여 연주순서에 10개 항목을 유지합니다.</p>"
+"<p>칸타타는 등록된 모든 규정을 이용하여 라이브러리를 조회합니다. <i>포함</i>"
+"된 규정 항목은 사용될 곡들을 선별하는 데에 사용됩니다. <i>제외</i>된 규정 항"
+"목은 사용되지 않을 곡들을 선별하는 데에 사용됩니다. <i>포함</i>된 규정이 없으"
+"면, 전곡(<i>제외</i>된 규정을 제외하고)을 사용할 수 있다고 가정합니다. <br/>"
+"예로 '유재하의 Ballad 및 여러 연주자의 곡'을 선택하려면 다음과 같이 하면 됩니"
+"다: <ul><li>포함 음반연주자=유재하 장르=Ballad</li><li>포함 음반연주자=여러 "
+"연주자</li></ul> '유재하의 모든 곡 중에 미련 음반을 제외'하려면: <ul><li>포"
+"함 음반연주자=유재하</li><li>제외 음반=미련</li></ul>사용할 곡들이 만들어지"
+"면 칸타타는 무작위로 곡들을 선택하여 연주순서에 10개 항목을 유지합니다.</p>"
 
 #: dynamic/dynamicrulesdialog.cpp:311
 msgid "Failed to save %1"
@@ -1690,11 +1731,10 @@ msgstr "전체사용공간: %1"
 #: gui/cachesettings.cpp:251
 msgid ""
 "Cantata caches a local copy of the music listing to speed up loading of the "
-"library. Cantata might also have cached covers, lyrics, or artist images, if"
-" these have been downloaded and could not be saved into the music folder "
+"library. Cantata might also have cached covers, lyrics, or artist images, if "
+"these have been downloaded and could not be saved into the music folder "
 "(because Cantata cannot access it, or you have configured Cantata to not "
-"save these items there). Below is a summary of Cantata's current cache "
-"usage."
+"save these items there). Below is a summary of Cantata's current cache usage."
 msgstr ""
 
 #: gui/cachesettings.cpp:264
@@ -1790,15 +1830,18 @@ msgstr "이미지 (%1 x %2 %3%)"
 
 #: gui/coverdialog.cpp:436
 msgid ""
-"<p>An image already exists for this artist, and the file is not "
-"writeable.<p></p><i>%1</i></p>"
-msgstr "<p>이 연주자의 이미지가 이미 존재하므로 파일 쓰기가 되지 않습니다.<p></p><i>%1</i></p>"
+"<p>An image already exists for this artist, and the file is not writeable."
+"<p></p><i>%1</i></p>"
+msgstr ""
+"<p>이 연주자의 이미지가 이미 존재하므로 파일 쓰기가 되지 않습니다.<p></p><i>"
+"%1</i></p>"
 
 #: gui/coverdialog.cpp:437
 msgid ""
-"<p>A cover already exists for this album, and the file is not "
-"writeable.<p></p><i>%1</i></p>"
-msgstr "<p>이 음반의 표지가 이미 있는데, 쓰기가 되지 않습니다.<p></p><i>%1</i></p>"
+"<p>A cover already exists for this album, and the file is not writeable.<p></"
+"p><i>%1</i></p>"
+msgstr ""
+"<p>이 음반의 표지가 이미 있는데, 쓰기가 되지 않습니다.<p></p><i>%1</i></p>"
 
 #: gui/coverdialog.cpp:442
 msgid "'%1' Artist Image"
@@ -1845,8 +1888,8 @@ msgstr "보이기"
 #. i18n: ectx: property (text), widget (QPushButton, removeBtn)
 #. i18n: file: streams/streamssettings.ui:73
 #. i18n: ectx: property (text), widget (QPushButton, removeButton)
-#: gui/coverdialog.cpp:885 gui/stdactions.cpp:80 po/rc.cpp:362 po/rc.cpp:959
-#: rc.cpp:362 rc.cpp:959
+#: gui/coverdialog.cpp:885 gui/stdactions.cpp:80 po/rc.cpp:362 po/rc.cpp:956
+#: rc.cpp:362 rc.cpp:956
 msgid "Remove"
 msgstr "지우기"
 
@@ -1917,31 +1960,27 @@ msgstr ""
 #. i18n: file: context/othersettings.ui:32
 #. i18n: ectx: property (text), widget (QRadioButton, contextBackdrop_none)
 #. i18n: file: gui/interfacesettings.ui:494
-#. i18n: ectx: property (text), widget (QRadioButton,
-#. playQueueBackground_none)
+#. i18n: ectx: property (text), widget (QRadioButton, playQueueBackground_none)
 #. i18n: file: gui/playbacksettings.ui:51
-#. i18n: ectx: property (specialValueText), widget (QSpinBox,
-#. stopFadeDuration)
-#. i18n: file: gui/playbacksettings.ui:151
+#. i18n: ectx: property (specialValueText), widget (QSpinBox, stopFadeDuration)
+#. i18n: file: gui/playbacksettings.ui:144
 #. i18n: ectx: property (specialValueText), widget (QSpinBox, crossfading)
 #. i18n: file: support/shortcutssettingswidget.ui:78
 #. i18n: ectx: property (text), widget (QLabel, defaultShortcut)
 #. i18n: file: context/othersettings.ui:32
 #. i18n: ectx: property (text), widget (QRadioButton, contextBackdrop_none)
 #. i18n: file: gui/interfacesettings.ui:494
-#. i18n: ectx: property (text), widget (QRadioButton,
-#. playQueueBackground_none)
+#. i18n: ectx: property (text), widget (QRadioButton, playQueueBackground_none)
 #. i18n: file: gui/playbacksettings.ui:51
-#. i18n: ectx: property (specialValueText), widget (QSpinBox,
-#. stopFadeDuration)
-#. i18n: file: gui/playbacksettings.ui:151
+#. i18n: ectx: property (specialValueText), widget (QSpinBox, stopFadeDuration)
+#. i18n: file: gui/playbacksettings.ui:144
 #. i18n: ectx: property (specialValueText), widget (QSpinBox, crossfading)
 #. i18n: file: support/shortcutssettingswidget.ui:78
 #. i18n: ectx: property (text), widget (QLabel, defaultShortcut)
 #: gui/interfacesettings.cpp:63 gui/playbacksettings.cpp:46
 #: online/magnatuneservice.cpp:163 po/rc.cpp:6 po/rc.cpp:657 po/rc.cpp:768
-#: po/rc.cpp:795 po/rc.cpp:974 rc.cpp:6 rc.cpp:657 rc.cpp:768 rc.cpp:795
-#: rc.cpp:974
+#: po/rc.cpp:792 po/rc.cpp:971 rc.cpp:6 rc.cpp:657 rc.cpp:768 rc.cpp:792
+#: rc.cpp:971
 msgid "None"
 msgstr "없음"
 
@@ -2257,7 +2296,9 @@ msgstr "단일"
 msgid ""
 "When 'Single' is activated, playback is stopped after current song, or song "
 "is repeated if 'Repeat' is enabled."
-msgstr "'단일'이 선택되면, 지금 곡 다음에 연주를 멈춥니다. '반복'이 선택되면, 곡은 반복됩니다."
+msgstr ""
+"'단일'이 선택되면, 지금 곡 다음에 연주를 멈춥니다. '반복'이 선택되면, 곡은 반"
+"복됩니다."
 
 #: gui/mainwindow.cpp:279
 msgid "Consume"
@@ -2371,12 +2412,12 @@ msgstr "칸타타에 대하여"
 msgctxt "Qt-only"
 msgid ""
 "<b>Cantata %1</b><br/><br/>MPD client.<br/><br/>&copy; 2011-2014 Craig "
-"Drummond<br/>Released under the <a "
-"href=\"http://www.gnu.org/licenses/gpl.html\">GPLv3</a>"
+"Drummond<br/>Released under the <a href=\"http://www.gnu.org/licenses/gpl."
+"html\">GPLv3</a>"
 msgstr ""
 "<b>칸타타 %1</b><br/><br/>MPD 클라이언트.<br/><br/>&copy; 2011-2014 Craig "
-"Drummond<br/><a href=\"http://www.gnu.org/licenses/gpl.html\">GPLv3</a>에 따라 "
-"배포"
+"Drummond<br/><a href=\"http://www.gnu.org/licenses/gpl.html\">GPLv3</a>에 따"
+"라 배포"
 
 #: gui/mainwindow.cpp:1104
 msgid ""
@@ -2389,25 +2430,26 @@ msgstr ""
 #: gui/mainwindow.cpp:1105
 msgctxt "Qt-only"
 msgid ""
-"Context view backdrops courtesy of <a "
-"href=\"http://www.fanart.tv\">FanArt.tv</a>"
+"Context view backdrops courtesy of <a href=\"http://www.fanart.tv\">FanArt."
+"tv</a>"
 msgstr "찾아보기 배경 도움은 <a href=\"http://www.fanart.tv\">FanArt.tv</a>"
 
 #: gui/mainwindow.cpp:1106
 msgctxt "Qt-only"
 msgid ""
-"Context view metadata courtesy of <a "
-"href=\"http://www.wikipedia.org\">Wikipedia</a> and <a "
-"href=\"http://www.last.fm\">Last.fm</a>"
+"Context view metadata courtesy of <a href=\"http://www.wikipedia.org"
+"\">Wikipedia</a> and <a href=\"http://www.last.fm\">Last.fm</a>"
 msgstr ""
-"찾아보기 자료 도움은 <a href=\"http://www.wikipedia.org\">위키피디아</a> 와 <a "
-"href=\"http://www.last.fm\">Last.fm</a>"
+"찾아보기 자료 도움은 <a href=\"http://www.wikipedia.org\">위키피디아</a> 와 "
+"<a href=\"http://www.last.fm\">Last.fm</a>"
 
 #: gui/mainwindow.cpp:1107
 msgid ""
-"Please consider uploading your own music fan-art to <a "
-"href=\"http://www.fanart.tv\">FanArt.tv</a>"
-msgstr "나만의 음악 팬아트를 올려주실 곳은 <a href=\"http://www.fanart.tv\">FanArt.tv</a>"
+"Please consider uploading your own music fan-art to <a href=\"http://www."
+"fanart.tv\">FanArt.tv</a>"
+msgstr ""
+"나만의 음악 팬아트를 올려주실 곳은 <a href=\"http://www.fanart.tv\">FanArt."
+"tv</a>"
 
 #: gui/mainwindow.cpp:1154
 msgid ""
@@ -2425,22 +2467,20 @@ msgstr "내려받기를 그만두고 취소"
 
 #: gui/mainwindow.cpp:1466
 msgid ""
-"<tr><td colspan=\"2\"><b>Server</b></td></tr><tr><td "
-"align=\"right\">Protocol:&nbsp;</td><td>%1.%2.%3</td></tr><tr><td "
-"align=\"right\">Uptime:&nbsp;</td><td>%4</td></tr><tr><td "
-"align=\"right\">Playing:&nbsp;</td><td>%5</td></tr><tr><td "
-"align=\"right\">Handlers:&nbsp;</td><td>%6</td></tr><tr><td "
-"align=\"right\">Tags:&nbsp;</td><td>%7</td></tr>"
+"<tr><td colspan=\"2\"><b>Server</b></td></tr><tr><td align=\"right"
+"\">Protocol:&nbsp;</td><td>%1.%2.%3</td></tr><tr><td align=\"right\">Uptime:"
+"&nbsp;</td><td>%4</td></tr><tr><td align=\"right\">Playing:&nbsp;</td><td>"
+"%5</td></tr><tr><td align=\"right\">Handlers:&nbsp;</td><td>%6</td></"
+"tr><tr><td align=\"right\">Tags:&nbsp;</td><td>%7</td></tr>"
 msgstr ""
 
 #: gui/mainwindow.cpp:1477
 msgid ""
-"<tr><td colspan=\"2\"><b>Database</b></td></tr><tr><td "
-"align=\"right\">Artists:&nbsp;</td><td>%1</td></tr><tr><td "
-"align=\"right\">Albums:&nbsp;</td><td>%2</td></tr><tr><td "
-"align=\"right\">Songs:&nbsp;</td><td>%3</td></tr><tr><td "
-"align=\"right\">Duration:&nbsp;</td><td>%4</td></tr><tr><td "
-"align=\"right\">Updated:&nbsp;</td><td>%5</td></tr>"
+"<tr><td colspan=\"2\"><b>Database</b></td></tr><tr><td align=\"right"
+"\">Artists:&nbsp;</td><td>%1</td></tr><tr><td align=\"right\">Albums:&nbsp;</"
+"td><td>%2</td></tr><tr><td align=\"right\">Songs:&nbsp;</td><td>%3</td></"
+"tr><tr><td align=\"right\">Duration:&nbsp;</td><td>%4</td></tr><tr><td align="
+"\"right\">Updated:&nbsp;</td><td>%5</td></tr>"
 msgstr ""
 
 #: gui/mainwindow.cpp:1486
@@ -2519,38 +2559,43 @@ msgstr "곡"
 msgid "Auto"
 msgstr "자동"
 
-#: gui/playbacksettings.cpp:161
+#: gui/playbacksettings.cpp:159
 msgid ""
 "<i>Connected to %1<br/>The entries below apply to the currently connected "
 "MPD collection.</i>"
-msgstr "<i><b>%1에 연결</b><br/>아래 목록들은 지금 연결된 MPD 음원에 적용됩니다.</i>"
+msgstr ""
+"<i><b>%1에 연결</b><br/>아래 목록들은 지금 연결된 MPD 음원에 적용됩니다.</i>"
 
-#. i18n: file: gui/playbacksettings.ui:117
+#. i18n: file: gui/playbacksettings.ui:110
 #. i18n: ectx: property (text), widget (QLabel, messageLabel)
-#: gui/playbacksettings.cpp:164 po/rc.cpp:786 rc.cpp:786
+#: gui/playbacksettings.cpp:162 po/rc.cpp:783 rc.cpp:783
 msgid ""
 "<i>Not Connected!<br/>The entries below cannot be modified, as Cantata is "
 "not connected to MPD.</i>"
-msgstr "<i><b>연결 안 됨!</b><br/>칸타타가 MPD에 연결되지 않았으므로 아래 목록은 수정되지 않습니다.</i>"
+msgstr ""
+"<i><b>연결 안 됨!</b><br/>칸타타가 MPD에 연결되지 않았으므로 아래 목록은 수정"
+"되지 않습니다.</i>"
 
-#: gui/playbacksettings.cpp:171
+#: gui/playbacksettings.cpp:169
 msgid ""
 "<p>Replay Gain is a proposed standard published in 2001 to normalize the "
 "perceived loudness of computer audio formats such as MP3 and Ogg Vorbis. It "
 "works on a track/album basis, and is now supported in a growing number of "
-"players.</p><p>The following ReplayGain settings may be "
-"used:<ul><li><i>None</i> - No ReplayGain is applied.</li><li><i>Track</i> - "
-"Volume will be adjusted using the track's ReplayGain "
-"tags.</li><li><i>Album</i> - Volume will be adjusted using the albums's "
-"ReplayGain tags.</li><li><i>Auto</i> - Volume will be adjusted using the "
-"track's ReplayGain tags if random play is activated, otherwise the album's "
-"tags will be used.</li></ul></p>"
+"players.</p><p>The following ReplayGain settings may be used:"
+"<ul><li><i>None</i> - No ReplayGain is applied.</li><li><i>Track</i> - "
+"Volume will be adjusted using the track's ReplayGain tags.</li><li><i>Album</"
+"i> - Volume will be adjusted using the albums's ReplayGain tags.</"
+"li><li><i>Auto</i> - Volume will be adjusted using the track's ReplayGain "
+"tags if random play is activated, otherwise the album's tags will be used.</"
+"li></ul></p>"
 msgstr ""
-"<p>리플레이게인은 MP3나 Ogg Vorbis 같은 오디오 포맷의 소리 크기를 맞추기 위하여 2001년에 제안된 표준입니다. 곡이나 "
-"음반 단위로 작동하며 이제는 점점 더 많은 연주기가 지원합니다.</p><p>아래 설정이 사용될 수 있습니다:<ul><li><i>안 "
-"함</i> - 리플레이게인을 적용 안 함.</li><li><i>곡</i> - 곡의 리플레이게인 태그를 이용하여 음량을 "
-"조정함.</li><li><i>음반</i> - 음반의 리플레이게인 태그를 이용하여 음량을 조정함.</li><li><i>자동</i> - "
-"무작위연주는 곡의 리플레이게인 태그를, 그 밖은 음반의 태그를 이용하여 음량을 조정함.</li></ul></p>"
+"<p>리플레이게인은 MP3나 Ogg Vorbis 같은 오디오 포맷의 소리 크기를 맞추기 위하"
+"여 2001년에 제안된 표준입니다. 곡이나 음반 단위로 작동하며 이제는 점점 더 많"
+"은 연주기가 지원합니다.</p><p>아래 설정이 사용될 수 있습니다:<ul><li><i>안 함"
+"</i> - 리플레이게인을 적용 안 함.</li><li><i>곡</i> - 곡의 리플레이게인 태그"
+"를 이용하여 음량을 조정함.</li><li><i>음반</i> - 음반의 리플레이게인 태그를 "
+"이용하여 음량을 조정함.</li><li><i>자동</i> - 무작위연주는 곡의 리플레이게인 "
+"태그를, 그 밖은 음반의 태그를 이용하여 음량을 조정함.</li></ul></p>"
 
 #: gui/playlistspage.cpp:59 tags/tageditor.cpp:903 tags/trackorganiser.cpp:75
 msgid "Rename"
@@ -2768,8 +2813,8 @@ msgstr "설정"
 #. i18n: ectx: property (text), widget (BuddyLabel, composerLabel)
 #. i18n: file: tags/tageditor.ui:77
 #. i18n: ectx: property (text), widget (StateLabel, composerLabel)
-#: gui/searchpage.cpp:230 po/rc.cpp:104 po/rc.cpp:386 po/rc.cpp:992 rc.cpp:104
-#: rc.cpp:386 rc.cpp:992
+#: gui/searchpage.cpp:230 po/rc.cpp:104 po/rc.cpp:386 po/rc.cpp:989 rc.cpp:104
+#: rc.cpp:386 rc.cpp:989
 msgid "Composer:"
 msgstr "작곡가:"
 
@@ -2781,7 +2826,7 @@ msgstr "작곡가:"
 #. i18n: ectx: property (text), widget (BuddyLabel, label_3)
 #. i18n: file: tags/tageditor.ui:129
 #. i18n: ectx: property (text), widget (StateLabel, genreLabel)
-#: gui/searchpage.cpp:235 po/rc.cpp:110 po/rc.cpp:1004 rc.cpp:110 rc.cpp:1004
+#: gui/searchpage.cpp:235 po/rc.cpp:110 po/rc.cpp:1001 rc.cpp:110 rc.cpp:1001
 msgid "Genre:"
 msgstr "장르:"
 
@@ -2793,7 +2838,7 @@ msgstr "장르:"
 #. i18n: ectx: property (text), widget (BuddyLabel, commentLabel)
 #. i18n: file: tags/tageditor.ui:155
 #. i18n: ectx: property (text), widget (StateLabel, commentLabel)
-#: gui/searchpage.cpp:237 po/rc.cpp:410 po/rc.cpp:1010 rc.cpp:410 rc.cpp:1010
+#: gui/searchpage.cpp:237 po/rc.cpp:410 po/rc.cpp:1007 rc.cpp:410 rc.cpp:1007
 msgid "Comment:"
 msgstr ""
 
@@ -2813,7 +2858,8 @@ msgstr "곡을 찾지 못함."
 msgid ""
 "<i> This folder will also be used to locate music files for transferring to "
 "(and from) devices.</i>"
-msgstr "<i> 이 폴더는 장치로(부터) 전송하는 음악파일을 찾는데에도 사용됩니다.</i>"
+msgstr ""
+"<i> 이 폴더는 장치로(부터) 전송하는 음악파일을 찾는데에도 사용됩니다.</i>"
 
 #. i18n: file: devices/remotedevicepropertieswidget.ui:78
 #. i18n: ectx: property (text), widget (BuddyLabel, hostLabel_2)
@@ -2827,20 +2873,21 @@ msgstr "<i> 이 폴더는 장치로(부터) 전송하는 음악파일을 찾는�
 #. i18n: ectx: property (text), widget (BuddyLabel, hostLabel)
 #. i18n: file: network/proxysettings.ui:63
 #. i18n: ectx: property (text), widget (BuddyLabel, proxyHostLabel)
-#: gui/serversettings.cpp:101 po/rc.cpp:287 po/rc.cpp:326 po/rc.cpp:875
-#: rc.cpp:287 rc.cpp:326 rc.cpp:875
+#: gui/serversettings.cpp:101 po/rc.cpp:287 po/rc.cpp:326 po/rc.cpp:872
+#: rc.cpp:287 rc.cpp:326 rc.cpp:872
 msgid "Host:"
 msgstr "호스트:"
 
 #: gui/serversettings.cpp:233
 msgid ""
 "Which type of collection do you wish to connect to?<br/><ul><li>Standard - "
-"music collection may be shared, is on another machine, or is already "
-"setup</li><li>Basic - music collection is not shared with others, and "
-"Cantata will configure and control the MPD instance</li></ul>"
+"music collection may be shared, is on another machine, or is already setup</"
+"li><li>Basic - music collection is not shared with others, and Cantata will "
+"configure and control the MPD instance</li></ul>"
 msgstr ""
-"어떤 형식의 음원에 연결할까요?<br/><ul><li>표준 - 다른 컴퓨터에 연결되거나 이미 설정되어, 음원을 공유할 수 "
-"있음</li><li>기본 - 음원이 공유되지 않고 MPD만 설정하고 관리함</li></ul>"
+"어떤 형식의 음원에 연결할까요?<br/><ul><li>표준 - 다른 컴퓨터에 연결되거나 이"
+"미 설정되어, 음원을 공유할 수 있음</li><li>기본 - 음원이 공유되지 않고 MPD만 "
+"설정하고 관리함</li></ul>"
 
 #: gui/serversettings.cpp:236
 msgid "Add Collection"
@@ -3088,7 +3135,7 @@ msgstr "한 곡들"
 
 #. i18n: file: online/onlinesettings.ui:47
 #. i18n: ectx: property (text), widget (QPushButton, configureButton)
-#: models/onlineservicesmodel.cpp:76 po/rc.cpp:890 rc.cpp:890
+#: models/onlineservicesmodel.cpp:76 po/rc.cpp:887 rc.cpp:887
 msgid "Configure Service"
 msgstr "서비스설정"
 
@@ -3389,8 +3436,8 @@ msgstr "Magnatune 설정"
 #. i18n: ectx: property (text), widget (BuddyLabel, userLabel)
 #. i18n: file: streams/digitallyimportedsettings.ui:48
 #. i18n: ectx: property (text), widget (BuddyLabel, label_2)
-#: online/magnatunesettingsdialog.cpp:43 po/rc.cpp:881 po/rc.cpp:896
-#: po/rc.cpp:923 rc.cpp:881 rc.cpp:896 rc.cpp:923
+#: online/magnatunesettingsdialog.cpp:43 po/rc.cpp:878 po/rc.cpp:893
+#: po/rc.cpp:920 rc.cpp:878 rc.cpp:893 rc.cpp:920
 msgid "Username:"
 msgstr "사용자:"
 
@@ -3423,9 +3470,9 @@ msgstr "사용자:"
 #. i18n: file: streams/digitallyimportedsettings.ui:61
 #. i18n: ectx: property (text), widget (BuddyLabel, label_3)
 #: online/magnatunesettingsdialog.cpp:44 po/rc.cpp:299 po/rc.cpp:317
-#: po/rc.cpp:488 po/rc.cpp:819 po/rc.cpp:884 po/rc.cpp:899 po/rc.cpp:926
-#: rc.cpp:299 rc.cpp:317 rc.cpp:488 rc.cpp:819 rc.cpp:884 rc.cpp:899
-#: rc.cpp:926
+#: po/rc.cpp:488 po/rc.cpp:816 po/rc.cpp:881 po/rc.cpp:896 po/rc.cpp:923
+#: rc.cpp:299 rc.cpp:317 rc.cpp:488 rc.cpp:816 rc.cpp:881 rc.cpp:896
+#: rc.cpp:923
 msgid "Password:"
 msgstr "비밀번호:"
 
@@ -3521,8 +3568,7 @@ msgstr "아래 팟캐스트 에피소드에서 내려받은 한 파일을 지울
 
 #: online/onlineservicespage.cpp:696
 msgid ""
-"Do you wish to the delete downloaded files of the following podcast "
-"episodes?"
+"Do you wish to the delete downloaded files of the following podcast episodes?"
 msgstr "아래 팟캐스트 에피소드에서 내려받은 여러 파일을 지울까요?"
 
 #: online/onlineservicespage.cpp:699
@@ -3598,7 +3644,9 @@ msgstr "팟캐스트 분석 안 됨."
 msgid ""
 "Cantata only supports audio podcasts! The URL entered contains only video "
 "podcasts."
-msgstr "오디오 팟캐스트만 지원합니다! 입력한 URL은 비디오 팟캐스트만 포함하고 있습니다."
+msgstr ""
+"오디오 팟캐스트만 지원합니다! 입력한 URL은 비디오 팟캐스트만 포함하고 있습니"
+"다."
 
 #: online/podcastsearchdialog.cpp:589
 msgid "Subscribe"
@@ -3729,13 +3777,11 @@ msgstr "연주자이미지"
 #. i18n: file: context/othersettings.ui:46
 #. i18n: ectx: property (text), widget (QRadioButton, contextBackdrop_custom)
 #. i18n: file: gui/interfacesettings.ui:508
-#. i18n: ectx: property (text), widget (QRadioButton,
-#. playQueueBackground_custom)
+#. i18n: ectx: property (text), widget (QRadioButton, playQueueBackground_custom)
 #. i18n: file: context/othersettings.ui:46
 #. i18n: ectx: property (text), widget (QRadioButton, contextBackdrop_custom)
 #. i18n: file: gui/interfacesettings.ui:508
-#. i18n: ectx: property (text), widget (QRadioButton,
-#. playQueueBackground_custom)
+#. i18n: ectx: property (text), widget (QRadioButton, playQueueBackground_custom)
 #: po/rc.cpp:12 po/rc.cpp:663 rc.cpp:12 rc.cpp:663
 msgid "Custom image:"
 msgstr "사용자 이미지:"
@@ -3779,13 +3825,11 @@ msgstr "불투명:"
 #. i18n: file: context/othersettings.ui:152
 #. i18n: ectx: property (text), widget (QLabel, contextBackdropOpacityLabel)
 #. i18n: file: gui/interfacesettings.ui:632
-#. i18n: ectx: property (text), widget (QLabel,
-#. playQueueBackgroundOpacityLabel)
+#. i18n: ectx: property (text), widget (QLabel, playQueueBackgroundOpacityLabel)
 #. i18n: file: context/othersettings.ui:152
 #. i18n: ectx: property (text), widget (QLabel, contextBackdropOpacityLabel)
 #. i18n: file: gui/interfacesettings.ui:632
-#. i18n: ectx: property (text), widget (QLabel,
-#. playQueueBackgroundOpacityLabel)
+#. i18n: ectx: property (text), widget (QLabel, playQueueBackgroundOpacityLabel)
 #: po/rc.cpp:25 po/rc.cpp:676 rc.cpp:25 rc.cpp:676
 #, no-c-format
 msgid "40%"
@@ -3798,8 +3842,7 @@ msgid "Automatically switch to view after:"
 msgstr ""
 
 #. i18n: file: context/othersettings.ui:177
-#. i18n: ectx: property (specialValueText), widget (QSpinBox,
-#. contextSwitchTime)
+#. i18n: ectx: property (specialValueText), widget (QSpinBox, contextSwitchTime)
 #: po/rc.cpp:31 rc.cpp:31
 msgid "Do not auto-switch"
 msgstr ""
@@ -3854,16 +3897,17 @@ msgstr "위키피디아 기본 본문만 보기"
 #: po/rc.cpp:53 rc.cpp:53
 #, no-c-format
 msgid ""
-"<i><b>NOTE:</b> Cantata does not show the full wikipedia pages (with images,"
-" links, etc), instead it shows a trimmed down version. This trimming is not "
+"<i><b>NOTE:</b> Cantata does not show the full wikipedia pages (with images, "
+"links, etc), instead it shows a trimmed down version. This trimming is not "
 "always 100% accurate, hence by default Cantata will only show the basic "
 "introduction to each article. If you elect to show the full article, then "
 "there may be parsing errors. You will also need to remove any currently "
 "cached articles (using the 'Cache' page).</i>"
 msgstr ""
-"<i><b>참고:</b> 칸타타는 위키피디아의 이미지나 링크가 포함된 전체 페이지가 아니라, 이를 단순화해서 보여줍니다. 이 단순화는 "
-"항상 100% 정확하지는 않아서, 기본 본문을 보여주게 됩니다. 전체 본문에서는 오류가 있을 수 있습니다. 또한 '캐시' 설정을 이용하여"
-" 저장된 기본 본문을 지워야 합니다.</i>"
+"<i><b>참고:</b> 칸타타는 위키피디아의 이미지나 링크가 포함된 전체 페이지가 아"
+"니라, 이를 단순화해서 보여줍니다. 이 단순화는 항상 100% 정확하지는 않아서, 기"
+"본 본문을 보여주게 됩니다. 전체 본문에서는 오류가 있을 수 있습니다. 또한 '캐"
+"시' 설정을 이용하여 저장된 기본 본문을 지워야 합니다.</i>"
 
 #. i18n: file: context/togglelist.ui:17
 #. i18n: ectx: property (text), widget (QLabel, label_2)
@@ -3899,8 +3943,8 @@ msgstr "복사해오기:"
 #. i18n: ectx: property (text), widget (QLabel, loginStatusLabel)
 #. i18n: file: streams/digitallyimportedsettings.ui:109
 #. i18n: ectx: property (text), widget (QLabel, loginStatusLabel)
-#: po/rc.cpp:65 po/rc.cpp:77 po/rc.cpp:905 po/rc.cpp:935 rc.cpp:65 rc.cpp:77
-#: rc.cpp:905 rc.cpp:935
+#: po/rc.cpp:65 po/rc.cpp:77 po/rc.cpp:902 po/rc.cpp:932 rc.cpp:65 rc.cpp:77
+#: rc.cpp:902 rc.cpp:932
 msgid "TextLabel"
 msgstr "문자표"
 
@@ -3952,8 +3996,8 @@ msgstr "복사하기:"
 #. i18n: ectx: property (text), widget (UrlLabel, mopidyNote)
 #. i18n: file: tags/trackorganiser.ui:130
 #. i18n: ectx: property (text), widget (UrlLabel, mopidyNote)
-#: po/rc.cpp:95 po/rc.cpp:1016 po/rc.cpp:1043 rc.cpp:95 rc.cpp:1016
-#: rc.cpp:1043
+#: po/rc.cpp:95 po/rc.cpp:1013 po/rc.cpp:1040 rc.cpp:95 rc.cpp:1013
+#: rc.cpp:1040
 msgid ""
 "<i><b>NOTE:</b> Connected to a Mopidy server (manual update required).</i>"
 msgstr "<i><b>참고:</b> Mopidy 서버에 연결됨 (수동 업데이트 필요).</i>"
@@ -3972,7 +4016,7 @@ msgstr "음반 상세정보"
 #. i18n: ectx: property (text), widget (BuddyLabel, label_4)
 #. i18n: file: tags/tageditor.ui:142
 #. i18n: ectx: property (text), widget (StateLabel, yearLabel)
-#: po/rc.cpp:113 po/rc.cpp:1007 rc.cpp:113 rc.cpp:1007
+#: po/rc.cpp:113 po/rc.cpp:1004 rc.cpp:113 rc.cpp:1004
 msgid "Year:"
 msgstr "연도:"
 
@@ -4040,9 +4084,11 @@ msgstr "읽기오류 건너뛰지 않음"
 #. i18n: ectx: property (text), widget (QLabel, remoteDeviceNote)
 #: po/rc.cpp:158 rc.cpp:158
 msgid ""
-"<i><b>NOTE:</b> These settings are only valid, and editable, when the device"
-" is connected.</i>"
-msgstr "<i><b>참고:</b> 이 설정은 장치가 연결되었을 때에만 유효하고 수정할 수 있습니다.</i>"
+"<i><b>NOTE:</b> These settings are only valid, and editable, when the device "
+"is connected.</i>"
+msgstr ""
+"<i><b>참고:</b> 이 설정은 장치가 연결되었을 때에만 유효하고 수정할 수 있습니"
+"다.</i>"
 
 #. i18n: file: devices/devicepropertieswidget.ui:38
 #. i18n: ectx: property (text), widget (BuddyLabel, nameLabel)
@@ -4056,8 +4102,8 @@ msgstr "<i><b>참고:</b> 이 설정은 장치가 연결되었을 때에만 유�
 #. i18n: ectx: property (text), widget (BuddyLabel, nameLabel)
 #. i18n: file: gui/serversettings.ui:63
 #. i18n: ectx: property (text), widget (QLabel, label_2)
-#: po/rc.cpp:161 po/rc.cpp:281 po/rc.cpp:810 streams/streamdialog.cpp:54
-#: rc.cpp:161 rc.cpp:281 rc.cpp:810
+#: po/rc.cpp:161 po/rc.cpp:281 po/rc.cpp:807 streams/streamdialog.cpp:54
+#: rc.cpp:161 rc.cpp:281 rc.cpp:807
 msgid "Name:"
 msgstr "이름:"
 
@@ -4081,8 +4127,8 @@ msgstr "이름:"
 #. i18n: ectx: property (text), widget (BuddyLabel, dirLabel)
 #. i18n: file: gui/serversettings.ui:315
 #. i18n: ectx: property (text), widget (BuddyLabel, dirLabel_2)
-#: po/rc.cpp:164 po/rc.cpp:491 po/rc.cpp:509 po/rc.cpp:822 po/rc.cpp:844
-#: rc.cpp:164 rc.cpp:491 rc.cpp:509 rc.cpp:822 rc.cpp:844
+#: po/rc.cpp:164 po/rc.cpp:491 po/rc.cpp:509 po/rc.cpp:819 po/rc.cpp:841
+#: rc.cpp:164 rc.cpp:491 rc.cpp:509 rc.cpp:819 rc.cpp:841
 msgid "Music folder:"
 msgstr "음악 폴더:"
 
@@ -4130,7 +4176,7 @@ msgstr "캐시 사용"
 #. i18n: ectx: property (title), widget (QGroupBox, filenamesGroupBox)
 #. i18n: file: tags/trackorganiser.ui:25
 #. i18n: ectx: property (title), widget (QGroupBox, optionsBox)
-#: po/rc.cpp:185 po/rc.cpp:1019 rc.cpp:185 rc.cpp:1019
+#: po/rc.cpp:185 po/rc.cpp:1016 rc.cpp:185 rc.cpp:1016
 msgid "Filenames"
 msgstr "파일이름"
 
@@ -4142,7 +4188,7 @@ msgstr "파일이름"
 #. i18n: ectx: property (text), widget (BuddyLabel, label_6)
 #. i18n: file: tags/trackorganiser.ui:61
 #. i18n: ectx: property (text), widget (BuddyLabel, label_6)
-#: po/rc.cpp:188 po/rc.cpp:1022 rc.cpp:188 rc.cpp:1022
+#: po/rc.cpp:188 po/rc.cpp:1019 rc.cpp:188 rc.cpp:1019
 msgid "Filename scheme:"
 msgstr "파일이름 구성:"
 
@@ -4154,7 +4200,7 @@ msgstr "파일이름 구성:"
 #. i18n: ectx: property (text), widget (QCheckBox, vfatSafe)
 #. i18n: file: tags/trackorganiser.ui:71
 #. i18n: ectx: property (text), widget (QCheckBox, vfatSafe)
-#: po/rc.cpp:191 po/rc.cpp:1025 rc.cpp:191 rc.cpp:1025
+#: po/rc.cpp:191 po/rc.cpp:1022 rc.cpp:191 rc.cpp:1022
 msgid "VFAT safe"
 msgstr "안전한 VFAT"
 
@@ -4166,7 +4212,7 @@ msgstr "안전한 VFAT"
 #. i18n: ectx: property (text), widget (QCheckBox, asciiOnly)
 #. i18n: file: tags/trackorganiser.ui:78
 #. i18n: ectx: property (text), widget (QCheckBox, asciiOnly)
-#: po/rc.cpp:194 po/rc.cpp:1028 rc.cpp:194 rc.cpp:1028
+#: po/rc.cpp:194 po/rc.cpp:1025 rc.cpp:194 rc.cpp:1025
 msgid "Use only ASCII characters"
 msgstr "ASCII 문자만 표시"
 
@@ -4178,7 +4224,7 @@ msgstr "ASCII 문자만 표시"
 #. i18n: ectx: property (text), widget (QCheckBox, replaceSpaces)
 #. i18n: file: tags/trackorganiser.ui:85
 #. i18n: ectx: property (text), widget (QCheckBox, replaceSpaces)
-#: po/rc.cpp:197 po/rc.cpp:1031 rc.cpp:197 rc.cpp:1031
+#: po/rc.cpp:197 po/rc.cpp:1028 rc.cpp:197 rc.cpp:1028
 msgid "Replace spaces with underscores"
 msgstr "빈칸을 밑줄로 바꿈"
 
@@ -4190,7 +4236,7 @@ msgstr "빈칸을 밑줄로 바꿈"
 #. i18n: ectx: property (text), widget (QCheckBox, ignoreThe)
 #. i18n: file: tags/trackorganiser.ui:92
 #. i18n: ectx: property (text), widget (QCheckBox, ignoreThe)
-#: po/rc.cpp:200 po/rc.cpp:1034 rc.cpp:200 rc.cpp:1034
+#: po/rc.cpp:200 po/rc.cpp:1031 rc.cpp:200 rc.cpp:1031
 msgid "Ignore 'The' in artist names"
 msgstr "연주자 이름에 'The' 무시"
 
@@ -4223,10 +4269,11 @@ msgstr "파일이름 구성에 대하여"
 #: po/rc.cpp:215 rc.cpp:215
 msgid ""
 "The artist of the album. For most albums, this will be the same as the "
-"<i>Track Artist.</i> For compilations, this will often be <i>Various "
-"Artists.</i>"
+"<i>Track Artist.</i> For compilations, this will often be <i>Various Artists."
+"</i>"
 msgstr ""
-"음반의 연주자. 대부분의 경우, <i>곡의 연주자</i>와 동일합니다. 편집음반의 경우, 대게 <i>여러 연주자</i>입니다."
+"음반의 연주자. 대부분의 경우, <i>곡의 연주자</i>와 동일합니다. 편집음반의 경"
+"우, 대게 <i>여러 연주자</i>입니다."
 
 #. i18n: file: devices/filenameschemedialog.ui:89
 #. i18n: ectx: property (toolTip), widget (QPushButton, albumTitle)
@@ -4274,8 +4321,8 @@ msgstr "곡 제목"
 #. i18n: ectx: property (toolTip), widget (QPushButton, trackArtistAndTitle)
 #: po/rc.cpp:245 rc.cpp:245
 msgid ""
-"The track title (with <i>Track Artist</i>, if different to <i>Album "
-"Artist</i>)."
+"The track title (with <i>Track Artist</i>, if different to <i>Album Artist</"
+"i>)."
 msgstr "곡명 (만약 <i>음반연주자</i>와 다르다면, <i>곡 연주자</i>와 함께)."
 
 #. i18n: file: devices/filenameschemedialog.ui:144
@@ -4328,7 +4375,9 @@ msgstr "음반 장르."
 msgid ""
 "<i><b>NOTE:</b> These settings are only editable when the device is not "
 "connected.</i>"
-msgstr "<i><b>참고:</b> 이 설정은 장치가 연결되지 않았을 때에만 수정할 수 있습니다.</i>"
+msgstr ""
+"<i><b>참고:</b> 이 설정은 장치가 연결되지 않았을 때에만 수정할 수 있습니다.</"
+"i>"
 
 #. i18n: file: devices/remotedevicepropertieswidget.ui:35
 #. i18n: ectx: property (text), widget (BuddyLabel, typeLabel)
@@ -4342,7 +4391,7 @@ msgstr "<i><b>참고:</b> 이 설정은 장치가 연결되지 않았을 때에�
 #. i18n: ectx: property (text), widget (BuddyLabel, label_9)
 #. i18n: file: network/proxysettings.ui:39
 #. i18n: ectx: property (text), widget (BuddyLabel, proxyTypeLabel)
-#: po/rc.cpp:278 po/rc.cpp:368 po/rc.cpp:866 rc.cpp:278 rc.cpp:368 rc.cpp:866
+#: po/rc.cpp:278 po/rc.cpp:368 po/rc.cpp:863 rc.cpp:278 rc.cpp:368 rc.cpp:863
 msgid "Type:"
 msgstr "형태:"
 
@@ -4378,8 +4427,8 @@ msgstr "선택"
 #. i18n: ectx: property (text), widget (BuddyLabel, portLabel)
 #. i18n: file: network/proxysettings.ui:76
 #. i18n: ectx: property (text), widget (BuddyLabel, proxyPortLabel)
-#: po/rc.cpp:290 po/rc.cpp:329 po/rc.cpp:485 po/rc.cpp:816 po/rc.cpp:878
-#: rc.cpp:290 rc.cpp:329 rc.cpp:485 rc.cpp:816 rc.cpp:878
+#: po/rc.cpp:290 po/rc.cpp:329 po/rc.cpp:485 po/rc.cpp:813 po/rc.cpp:875
+#: rc.cpp:290 rc.cpp:329 rc.cpp:485 rc.cpp:813 rc.cpp:875
 msgid "Port:"
 msgstr "포트:"
 
@@ -4437,8 +4486,9 @@ msgid ""
 "<b>unencrypted</b> in Cantata's config file. To have Cantata prompt for the "
 "password before accessing the share, set the password to '-'</i>"
 msgstr ""
-"<i><b>참고:</b> 여기에 비밀번호를 입력하면, 설정 파일에 <b>비 암호화</b>되어 저장됩니다. 공유에 접근하기 전에 비밀번호를"
-" 입력하려면, 비밀번호를 '-'로 설정합니다.</i>"
+"<i><b>참고:</b> 여기에 비밀번호를 입력하면, 설정 파일에 <b>비 암호화</b>되어 "
+"저장됩니다. 공유에 접근하기 전에 비밀번호를 입력하려면, 비밀번호를 '-'로 설정"
+"합니다.</i>"
 
 #. i18n: file: devices/remotedevicepropertieswidget.ui:198
 #. i18n: ectx: property (text), widget (BuddyLabel, hostLabel_2x)
@@ -4469,11 +4519,11 @@ msgstr "기타 선택:"
 #: po/rc.cpp:341 rc.cpp:341
 msgid ""
 "<i><b>NOTE:</b> Due to the way sshfs works, a suitable ssh-askpass "
-"application (ksshaskpass, ssh-askpass-gnome, etc.) will be required to enter"
-" the password.</i>"
+"application (ksshaskpass, ssh-askpass-gnome, etc.) will be required to enter "
+"the password.</i>"
 msgstr ""
-"<i><b>참고:</b> sshfs의 작동 원리에 따라, 적당한 ssh-askpass 응용프로그램(ksshaskpass, ssh-"
-"askpass-gnome, 등.)이 비밀번호 입력을 위해 필요합니다.</i>"
+"<i><b>참고:</b> sshfs의 작동 원리에 따라, 적당한 ssh-askpass 응용프로그램"
+"(ksshaskpass, ssh-askpass-gnome, 등.)이 비밀번호 입력을 위해 필요합니다.</i>"
 
 #. i18n: file: devices/remotedevicepropertieswidget.ui:428
 #. i18n: ectx: property (text), widget (QLabel, infoLabel)
@@ -4484,8 +4534,9 @@ msgid ""
 "attached via USB, Cantata will automatically display the device when it is "
 "attached.</i>"
 msgstr ""
-"<i><b>참고:</b> 이 대화상자는 원격장치를 삼바(Samba)등으로 추가하거나 로컬 마운트된 폴더에 연결할 때만 사용됩니다. "
-"일반적인 미디어 연주기나 USB 장치는 연결되면 자동으로 표시됩니다.</i>"
+"<i><b>참고:</b> 이 대화상자는 원격장치를 삼바(Samba)등으로 추가하거나 로컬 마"
+"운트된 폴더에 연결할 때만 사용됩니다. 일반적인 미디어 연주기나 USB 장치는 연"
+"결되면 자동으로 표시됩니다.</i>"
 
 #. i18n: file: dynamic/dynamicpage.ui:26
 #. i18n: ectx: property (text), widget (StatusLabel, remoteRunningLabel)
@@ -4579,8 +4630,8 @@ msgid ""
 "<i><b>NOTE</b> For genre, end string with an asterisk to match various "
 "genres. e.g 'rock*' matches 'Hard Rock' and 'Rock and Roll'. </i>"
 msgstr ""
-"<i><b>참고</b> 장르에서 별표(*)로 끝나는 문자열은 다양한 장르를 포함합니다. 예) 'rock*'은 'Hard Rock'과 "
-"'Rock and Roll'을 포함. </i>"
+"<i><b>참고</b> 장르에서 별표(*)로 끝나는 문자열은 다양한 장르를 포함합니다. "
+"예) 'rock*'은 'Hard Rock'과 'Rock and Roll'을 포함. </i>"
 
 #. i18n: file: gui/coverdialog.ui:30
 #. i18n: ectx: property (toolTip), widget (QToolButton, addFileButton)
@@ -4629,20 +4680,21 @@ msgstr "음악 폴더에 내려받은 배경 저장"
 #: po/rc.cpp:440 rc.cpp:440
 msgid ""
 "<i><b>NOTE:</b> If you elect to have Cantata store covers, lyrics, or "
-"backdrops, within the music folder, and you do not have write access to this"
-" folder, then Cantata will revert to saving the files in your personal cache"
-" folder.</i>"
+"backdrops, within the music folder, and you do not have write access to this "
+"folder, then Cantata will revert to saving the files in your personal cache "
+"folder.</i>"
 msgstr ""
 
 #. i18n: file: gui/filesettings.ui:104
 #. i18n: ectx: property (text), widget (QLabel, persNote_2)
 #: po/rc.cpp:443 rc.cpp:443
 msgid ""
-"<i><b>NOTE:</b> Cantata can only save backdrops and artist images within the"
-" music folder hierarchy if this is 2 levels deep. (i.e. "
-"'Artist/Album/Tracks')</i>"
+"<i><b>NOTE:</b> Cantata can only save backdrops and artist images within the "
+"music folder hierarchy if this is 2 levels deep. (i.e. 'Artist/Album/"
+"Tracks')</i>"
 msgstr ""
-"<i><b>참고:</b> 두 단계 이상이면 배경이나 음반 이미지를 음악 폴더에 저장합니다. (즉, '연주자/음반/곡')</i>"
+"<i><b>참고:</b> 두 단계 이상이면 배경이나 음반 이미지를 음악 폴더에 저장합니"
+"다. (즉, '연주자/음반/곡')</i>"
 
 #. i18n: file: gui/initialsettingswizard.ui:14
 #. i18n: ectx: property (windowTitle), widget (QWizard, InitialSettingsWizard)
@@ -4660,20 +4712,21 @@ msgstr "칸타타로 맞이합니다"
 #. i18n: ectx: property (text), widget (QLabel, label_2)
 #: po/rc.cpp:452 rc.cpp:452
 msgid ""
-"<html><head/><body><p>Cantata is a feature-rich and user friendly client for"
-" Music Player Daemon (MPD). MPD is a background application that can be used"
-" to play music.</p><p>For more information on MPD itself, please refer to "
-"the MPD website <a href=\"http://www.musicpd.org\"><span style=\" text-"
-"decoration: underline; "
-"color:#0000ff;\">http://www.musicpd.org</span></a></p><p>This 'wizard' will "
-"guide you through the basic settings required for Cantata to function "
-"correctly.</p></body></html>"
+"<html><head/><body><p>Cantata is a feature-rich and user friendly client for "
+"Music Player Daemon (MPD). MPD is a background application that can be used "
+"to play music.</p><p>For more information on MPD itself, please refer to the "
+"MPD website <a href=\"http://www.musicpd.org\"><span style=\" text-"
+"decoration: underline; color:#0000ff;\">http://www.musicpd.org</span></a></"
+"p><p>This 'wizard' will guide you through the basic settings required for "
+"Cantata to function correctly.</p></body></html>"
 msgstr ""
-"<html><head/><body><p>칸타타는 기능이 다양하고 사용하기가 편리한 Music Player Daemon (MPD) "
-"클라이언트 입니다. MPD는 음악 연주에 사용되는 백그라운드 어플입니다.</p><p>MPD에 대한 더 많은 정보는, 다음 웹사이트를 참조"
-" 바랍니다. <a href=\"http://www.musicpd.org\"><span style=\" text-decoration: "
-"underline; color:#0000ff;\">http://www.musicpd.org</span></a></p><p>이 '마법사'는"
-" 칸타타가 제대로 동작하기 위한 사용자의 기본 설정을 돕습니다.</p></body></html>"
+"<html><head/><body><p>칸타타는 기능이 다양하고 사용하기가 편리한 Music "
+"Player Daemon (MPD) 클라이언트 입니다. MPD는 음악 연주에 사용되는 백그라운드 "
+"어플입니다.</p><p>MPD에 대한 더 많은 정보는, 다음 웹사이트를 참조 바랍니다. "
+"<a href=\"http://www.musicpd.org\"><span style=\" text-decoration: "
+"underline; color:#0000ff;\">http://www.musicpd.org</span></a></p><p>이 '마법"
+"사'는 칸타타가 제대로 동작하기 위한 사용자의 기본 설정을 돕습니다.</p></"
+"body></html>"
 
 #. i18n: file: gui/initialsettingswizard.ui:108
 #. i18n: ectx: property (text), widget (QLabel, label_7)
@@ -4685,15 +4738,16 @@ msgstr "<html><head/><body><p>칸타타로 맞이합니다</p></body></html>"
 #. i18n: ectx: property (text), widget (QLabel, label_8)
 #: po/rc.cpp:458 rc.cpp:458
 msgid ""
-"<html><head/><body><p>Cantata is a feature-rich and user friendly client for"
-" Music Player Daemon (MPD). MPD is a background application that can be used"
-" to play music. MPD may be started either system-wide, or on a per-user "
-"basis. Please select how you would like to have Cantata initially connect to"
-" (or startup) MPD:</p></body></html>"
+"<html><head/><body><p>Cantata is a feature-rich and user friendly client for "
+"Music Player Daemon (MPD). MPD is a background application that can be used "
+"to play music. MPD may be started either system-wide, or on a per-user "
+"basis. Please select how you would like to have Cantata initially connect to "
+"(or startup) MPD:</p></body></html>"
 msgstr ""
-"<html><head/><body><p>칸타타는 기능이 다양하고 사용하기가 편리한 Music Player Daemon (MPD) "
-"클라이언트 입니다. MPD는 음악 연주에 사용되는 백그라운드 어플입니다. MPD는 시스템이나 사용자 기반에서 시작할 수 있습니다. "
-"칸타타가 처음에 어떻게 MPD에 연결되고 시작할 지를 선택합니다:</p></body></html>"
+"<html><head/><body><p>칸타타는 기능이 다양하고 사용하기가 편리한 Music "
+"Player Daemon (MPD) 클라이언트 입니다. MPD는 음악 연주에 사용되는 백그라운드 "
+"어플입니다. MPD는 시스템이나 사용자 기반에서 시작할 수 있습니다. 칸타타가 처"
+"음에 어떻게 MPD에 연결되고 시작할 지를 선택합니다:</p></body></html>"
 
 #. i18n: file: gui/initialsettingswizard.ui:175
 #. i18n: ectx: property (text), widget (QRadioButton, advanced)
@@ -4705,14 +4759,15 @@ msgstr "표준 다수 사용자/서버 설정"
 #. i18n: ectx: property (text), widget (BuddyLabel, label_10)
 #: po/rc.cpp:464 rc.cpp:464
 msgid ""
-"<i>Select this option if your music collection is shared between users, your"
-" MPD instance is running on another machine, or you already have a personal "
+"<i>Select this option if your music collection is shared between users, your "
+"MPD instance is running on another machine, or you already have a personal "
 "MPD setup. If you select this option then Cantata itself cannot control the "
 "starting and stopping of the MPD server. You will therfore need to ensure "
 "that MPD is already configured and running.</i>"
 msgstr ""
-"<i>음원을 다른 사용자와 공유하고 MPD가 다른 컴퓨터에서 실행되거나 이미 개인 설정이 되어 있다면, 이것을 선택합니다. MPD가 이미"
-" 설정이 되고 가동 중인 것을 확인해야 합니다.</i>"
+"<i>음원을 다른 사용자와 공유하고 MPD가 다른 컴퓨터에서 실행되거나 이미 개인 "
+"설정이 되어 있다면, 이것을 선택합니다. MPD가 이미 설정이 되고 가동 중인 것을 "
+"확인해야 합니다.</i>"
 
 #. i18n: file: gui/initialsettingswizard.ui:220
 #. i18n: ectx: property (text), widget (QRadioButton, basic)
@@ -4726,7 +4781,9 @@ msgstr "기본 단일 사용자 설정"
 msgid ""
 "<i>Select this option if your music collection is not shared with others, "
 "and you wish Cantata to configure and control the MPD instance.</i>"
-msgstr "<i>음원을 다른 사용자와 공유하지 않고 칸타타가 MPD를 설정하고 관리하려면, 이것을 선택합니다.</i>"
+msgstr ""
+"<i>음원을 다른 사용자와 공유하지 않고 칸타타가 MPD를 설정하고 관리하려면, 이"
+"것을 선택합니다.</i>"
 
 #. i18n: file: gui/initialsettingswizard.ui:268
 #. i18n: ectx: property (text), widget (QLabel, label_11)
@@ -4734,15 +4791,15 @@ msgstr "<i>음원을 다른 사용자와 공유하지 않고 칸타타가 MPD를
 msgid ""
 "<html><head/><body><p>For more information on MPD itself, please refer to "
 "the MPD website <a href=\"http://www.musicpd.org\"><span style=\" text-"
-"decoration: underline; "
-"color:#0000ff;\">http://www.musicpd.org</span></a></p><p>This 'wizard' will "
-"guide you through the basic settings required for Cantata to function "
-"correctly.</p></body></html>"
+"decoration: underline; color:#0000ff;\">http://www.musicpd.org</span></a></"
+"p><p>This 'wizard' will guide you through the basic settings required for "
+"Cantata to function correctly.</p></body></html>"
 msgstr ""
-"<html><head/><body><p>MPD에 대한 더 많은 정보는, 다음 사이트를 참조 바랍니다. <a "
-"href=\"http://www.musicpd.org\"><span style=\" text-decoration: underline; "
-"color:#0000ff;\">http://www.musicpd.org</span></a></p><p>이 '마법사'는 칸타타가 제대로 "
-"동작하기 위한 사용자의 기본 설정을 돕습니다.</p></body></html>"
+"<html><head/><body><p>MPD에 대한 더 많은 정보는, 다음 사이트를 참조 바랍니"
+"다. <a href=\"http://www.musicpd.org\"><span style=\" text-decoration: "
+"underline; color:#0000ff;\">http://www.musicpd.org</span></a></p><p>이 '마법"
+"사'는 칸타타가 제대로 동작하기 위한 사용자의 기본 설정을 돕습니다.</p></"
+"body></html>"
 
 #. i18n: file: gui/initialsettingswizard.ui:330
 #. i18n: ectx: property (text), widget (QLabel, label_3)
@@ -4757,7 +4814,8 @@ msgid ""
 "The settings below are the basic settings required by Cantata. Please enter "
 "the relevant details, and use the 'Connect' button to test the connection."
 msgstr ""
-"아래 설정은 칸타타에서 기본적으로 필요한 정보입니다. 관련 상세정보를 입력해 주시고, 연결해 보려면 '연결' 단추를 누릅니다."
+"아래 설정은 칸타타에서 기본적으로 필요한 정보입니다. 관련 상세정보를 입력해 "
+"주시고, 연결해 보려면 '연결' 단추를 누릅니다."
 
 #. i18n: file: gui/initialsettingswizard.ui:384
 #. i18n: ectx: property (text), widget (BuddyLabel, hostLabel)
@@ -4767,7 +4825,7 @@ msgstr ""
 #. i18n: ectx: property (text), widget (BuddyLabel, hostLabel)
 #. i18n: file: gui/serversettings.ui:76
 #. i18n: ectx: property (text), widget (BuddyLabel, hostLabel)
-#: po/rc.cpp:482 po/rc.cpp:813 rc.cpp:482 rc.cpp:813
+#: po/rc.cpp:482 po/rc.cpp:810 rc.cpp:482 rc.cpp:810
 msgid "Host (or local socket):"
 msgstr "호스트 (또는 로컬소켓):"
 
@@ -4776,11 +4834,11 @@ msgstr "호스트 (또는 로컬소켓):"
 #: po/rc.cpp:497 rc.cpp:497
 msgid ""
 "<i><b>NOTE:</b> The 'Music folder' setting is used to lookup cover-art, "
-"lyrics, etc. If you're MPD instance is on a remote host, you may set this to"
-" a HTTP URL.</i>"
+"lyrics, etc. If you're MPD instance is on a remote host, you may set this to "
+"a HTTP URL.</i>"
 msgstr ""
-"<i><b>참고:</b> '음악 폴더' 설정은 음반표지나 가사 등을 찾기 위해 사용됩니다. 만약 MPD가 원격 호스트에 있다면 HTTP "
-"URL로 설정할 수 있습니다.</i>"
+"<i><b>참고:</b> '음악 폴더' 설정은 음반표지나 가사 등을 찾기 위해 사용됩니"
+"다. 만약 MPD가 원격 호스트에 있다면 HTTP URL로 설정할 수 있습니다.</i>"
 
 #. i18n: file: gui/initialsettingswizard.ui:535
 #. i18n: ectx: property (text), widget (QLabel, socketNoteLabel)
@@ -4790,11 +4848,13 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QLabel, socketNoteLabel)
 #. i18n: file: gui/serversettings.ui:219
 #. i18n: ectx: property (text), widget (QLabel, socketNoteLabel)
-#: po/rc.cpp:500 po/rc.cpp:838 rc.cpp:500 rc.cpp:838
+#: po/rc.cpp:500 po/rc.cpp:835 rc.cpp:500 rc.cpp:835
 msgid ""
 "<i><b>NOTE:</b> When using a local socket the full absolute path to the "
 "socket needs to be set. (Port number is not required.)</i>"
-msgstr "<i><b>참고:</b> 로컬소켓을 사용할 때는 절대경로로 설정되어야 합니다 (포트번호는 필요 없음).</i>"
+msgstr ""
+"<i><b>참고:</b> 로컬소켓을 사용할 때는 절대경로로 설정되어야 합니다 (포트번호"
+"는 필요 없음).</i>"
 
 #. i18n: file: gui/initialsettingswizard.ui:571
 #. i18n: ectx: property (text), widget (QLabel, label_13)
@@ -4818,48 +4878,52 @@ msgstr "음반표지, 가사와 스트림"
 #. i18n: ectx: property (text), widget (QLabel, label_5f)
 #: po/rc.cpp:515 rc.cpp:515
 msgid ""
-"<p>Cantata will download missing covers, and lyrics, from the "
-"internet.</p><p>For each of these, please confirm whether you wish Cantata "
-"to store the relevant files within the music folder, or within your personal"
-" cache/config folders.</p>"
+"<p>Cantata will download missing covers, and lyrics, from the internet.</"
+"p><p>For each of these, please confirm whether you wish Cantata to store the "
+"relevant files within the music folder, or within your personal cache/config "
+"folders.</p>"
 msgstr ""
 
 #. i18n: file: gui/initialsettingswizard.ui:772
 #. i18n: ectx: property (text), widget (QLabel, persNote)
 #: po/rc.cpp:527 rc.cpp:527
 msgid ""
-"<i><b>NOTE:</b> If you elect to have Cantata store covers, or lyrics, within"
-" the music folder, and you do not have write access to this folder, then "
+"<i><b>NOTE:</b> If you elect to have Cantata store covers, or lyrics, within "
+"the music folder, and you do not have write access to this folder, then "
 "Cantata will revert to saving the files in your personal cache folder. "
-"However, for streams, if you do not have write access, then you will only be"
-" able to view (and play) the streams stored in the music folder, and not add"
-" (or edit) any streams. If you elect not to store streams within the music "
-"folder, then these will be saved in your local config folder - and will only"
-" be accessible to yourself.</i>"
+"However, for streams, if you do not have write access, then you will only be "
+"able to view (and play) the streams stored in the music folder, and not add "
+"(or edit) any streams. If you elect not to store streams within the music "
+"folder, then these will be saved in your local config folder - and will only "
+"be accessible to yourself.</i>"
 msgstr ""
-"<i><b>참고:</b> 칸타타에서 쓰기 권한이 없는 음악 폴더에 음반 표지를 저장하면, 개인 캐시 폴더에 대신 저장하게 됩니다. 하지만"
-" 스트림은 쓰기 권한이 없다면, 음악 폴더에 저장된 스트림을 보고 연주할 수만 있으며 추가하거나 수정할 수는 없습니다. 스트림을 음악 "
-"폴더에 저장하지 않으면, 로컬 설정 폴더에 저장되며 해당 사용자만 접근할 수 있습니다.</i>"
+"<i><b>참고:</b> 칸타타에서 쓰기 권한이 없는 음악 폴더에 음반 표지를 저장하"
+"면, 개인 캐시 폴더에 대신 저장하게 됩니다. 하지만 스트림은 쓰기 권한이 없다"
+"면, 음악 폴더에 저장된 스트림을 보고 연주할 수만 있으며 추가하거나 수정할 수"
+"는 없습니다. 스트림을 음악 폴더에 저장하지 않으면, 로컬 설정 폴더에 저장되며 "
+"해당 사용자만 접근할 수 있습니다.</i>"
 
 #. i18n: file: gui/initialsettingswizard.ui:801
 #. i18n: ectx: property (text), widget (QLabel, persNote_2)
 #: po/rc.cpp:530 rc.cpp:530
 msgid ""
-"<i><b>NOTE:</b> Cantata can only save backdrops and artist images within the"
-" music folder hierarchy if this is 2 levels deep. i.e. "
-"'Artist/Album/Tracks'.</i>"
-msgstr "<i><b>참고:</b> 두 단계 이상이면 배경이나 음반 이미지를 음악 폴더에 저장합니다. 즉, '연주자/음반/곡'</i>"
+"<i><b>NOTE:</b> Cantata can only save backdrops and artist images within the "
+"music folder hierarchy if this is 2 levels deep. i.e. 'Artist/Album/Tracks'."
+"</i>"
+msgstr ""
+"<i><b>참고:</b> 두 단계 이상이면 배경이나 음반 이미지를 음악 폴더에 저장합니"
+"다. 즉, '연주자/음반/곡'</i>"
 
 #. i18n: file: gui/initialsettingswizard.ui:830
 #. i18n: ectx: property (text), widget (StateLabel, httpNote)
 #: po/rc.cpp:533 rc.cpp:533
 msgid ""
 "<i><b>NOTE:</b> The 'Music folder' is set to a HTTP address, and Cantata "
-"currently cannot upload files to external HTTP servers. Therefore, the above"
-" settings should be left un-checked.</i>"
+"currently cannot upload files to external HTTP servers. Therefore, the above "
+"settings should be left un-checked.</i>"
 msgstr ""
-"<i><b>참고:</b> '음악 폴더'가 HTTP 주소로 지정되어, 외부 HTTP 서버에 파일을 올릴 수 없습니다. 따라서 위의 설정은 "
-"사용하지 않아야 합니다.</i>"
+"<i><b>참고:</b> '음악 폴더'가 HTTP 주소로 지정되어, 외부 HTTP 서버에 파일을 "
+"올릴 수 없습니다. 따라서 위의 설정은 사용하지 않아야 합니다.</i>"
 
 #. i18n: file: gui/initialsettingswizard.ui:866
 #. i18n: ectx: property (text), widget (QLabel, label_6)
@@ -4880,14 +4944,15 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QLabel, groupWarningLabel)
 #: po/rc.cpp:542 rc.cpp:542
 msgid ""
-"<b>Warning:</b> You are not currently a member of the 'users' group. Cantata"
-" will function better (saving of album covers, lyrics, etc. with the correct"
-" permissions) if you (or your administrator) add yourself to this group. If "
+"<b>Warning:</b> You are not currently a member of the 'users' group. Cantata "
+"will function better (saving of album covers, lyrics, etc. with the correct "
+"permissions) if you (or your administrator) add yourself to this group. If "
 "you do add yourself you will need to logout and back in for this to take "
 "effect."
 msgstr ""
-"<b>경고:</b> 지금 '사용자' 그룹에 포함되어 있지 않습니다. 이 그룹의 사용자라면 음반표지 및 가사를 저장하는 등의 기능을 더 잘"
-" 수행합니다. 만약 본인이나 관리자가 사용자를 이 그룹에 추가하였다면 다시 로그인을 해야 합니다."
+"<b>경고:</b> 지금 '사용자' 그룹에 포함되어 있지 않습니다. 이 그룹의 사용자라"
+"면 음반표지 및 가사를 저장하는 등의 기능을 더 잘 수행합니다. 만약 본인이나 관"
+"리자가 사용자를 이 그룹에 추가하였다면 다시 로그인을 해야 합니다."
 
 #. i18n: file: gui/interfacesettings.ui:36
 #. i18n: ectx: attribute (title), widget (QWidget, sidebarTab)
@@ -4915,8 +4980,8 @@ msgid ""
 "views. If you enable the option above, then it will be merged into the "
 "sidebar as per other views.</i>"
 msgstr ""
-"<i><b>참고:</b> 기본적으로 연주순서는 다른 보기의 옆에 보입니다. 위를 선택한 경우에는, 다른 보기처럼 옆막대에 "
-"합쳐집니다.</i>"
+"<i><b>참고:</b> 기본적으로 연주순서는 다른 보기의 옆에 보입니다. 위를 선택한 "
+"경우에는, 다른 보기처럼 옆막대에 합쳐집니다.</i>"
 
 #. i18n: file: gui/interfacesettings.ui:109
 #. i18n: ectx: property (text), widget (StateLabel, sbInfoLabel)
@@ -4924,11 +4989,11 @@ msgstr ""
 msgid ""
 "<i><b>NOTE:</b> By default, the 'Info' (current song information) view is "
 "accessible by pressing its icon in the main toolbar. If you enable the "
-"option above, then it will be merged into the sidebar as per other "
-"views.</i>"
+"option above, then it will be merged into the sidebar as per other views.</i>"
 msgstr ""
-"<i><b>참고:</b> 기본적으로 '정보'(지금 곡 정보) 보기는 주 메뉴의 아이콘을 누르면 사용할 수 있습니다. 위를 선택한 "
-"경우에는, 다른 보기처럼 옆막대에 합쳐집니다.</i>"
+"<i><b>참고:</b> 기본적으로 '정보'(지금 곡 정보) 보기는 주 메뉴의 아이콘을 누"
+"르면 사용할 수 있습니다. 위를 선택한 경우에는, 다른 보기처럼 옆막대에 합쳐집"
+"니다.</i>"
 
 #. i18n: file: gui/interfacesettings.ui:150
 #. i18n: ectx: property (text), widget (BuddyLabel, sbPositionLabel)
@@ -4982,10 +5047,13 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QLabel, label_8)
 #: po/rc.cpp:593 rc.cpp:593
 msgid ""
-"<i><b>NOTE:</b> When looking for artist images, Cantata will look for either artist.jpg, artist.png, 'Artist'.jpg, or 'Artist'.png,\n"
-"within the folder of the current track, or within its parent folder. If no image is found, Cantata will attempt to download one.</i>"
+"<i><b>NOTE:</b> When looking for artist images, Cantata will look for either "
+"artist.jpg, artist.png, 'Artist'.jpg, or 'Artist'.png,\n"
+"within the folder of the current track, or within its parent folder. If no "
+"image is found, Cantata will attempt to download one.</i>"
 msgstr ""
-"<i><b>참고:</b> 연주자이미지를 찾을 때, 지금 곡이 있는 폴더나 상위 폴더의 artist.jpg, artist.png, '연주자'.jpg 또는 '연주자'.png\n"
+"<i><b>참고:</b> 연주자이미지를 찾을 때, 지금 곡이 있는 폴더나 상위 폴더의 "
+"artist.jpg, artist.png, '연주자'.jpg 또는 '연주자'.png\n"
 "를 찾습니다.만약 이미지를 찾지 못하면 내려받기를 시도합니다.<i>"
 
 #. i18n: file: gui/interfacesettings.ui:316
@@ -5061,8 +5129,7 @@ msgid "Prompt before clearing"
 msgstr "지우기 전에 물어보기"
 
 #. i18n: file: gui/interfacesettings.ui:501
-#. i18n: ectx: property (text), widget (QRadioButton,
-#. playQueueBackground_cover)
+#. i18n: ectx: property (text), widget (QRadioButton, playQueueBackground_cover)
 #: po/rc.cpp:660 rc.cpp:660
 msgid "Current album cover"
 msgstr "현재 음반표지"
@@ -5151,10 +5218,10 @@ msgstr "작곡가 음반 묶기"
 #: po/rc.cpp:718 rc.cpp:718
 msgid ""
 "<p>When adding artists, or albums to the playqueue, or editing tags, etc, "
-"then only use songs that pass the current Genre or string filter.</p><p>e.g."
-" If you have an album with 10 songs, but only 5 have the genre set to "
-"'Metal', then only these 5 would be added if the view's Genre filter was set"
-" to 'Metal'."
+"then only use songs that pass the current Genre or string filter.</p><p>e.g. "
+"If you have an album with 10 songs, but only 5 have the genre set to "
+"'Metal', then only these 5 would be added if the view's Genre filter was set "
+"to 'Metal'."
 msgstr ""
 
 #. i18n: file: gui/interfacesettings.ui:759
@@ -5193,7 +5260,12 @@ msgstr "한 번 클릭 사용"
 #, no-c-format
 msgid ""
 "<p>This will change Cantata's interface as detailed:\n"
-"<ul><li>Playback, and control, buttons will be 33% wider</li><li>Views will be 'flickable'</li><li>To drag items, you will need to 'touch' the top-left corner</li><li>Scrollbars will be hidden</li><li>Actions (e.g. 'Add To Play Queue') will always be visible (not just when item is under mouse)</li><li>Spin buttons with have + and - buttons at the side of the text field</li></ul></p>"
+"<ul><li>Playback, and control, buttons will be 33% wider</li><li>Views will "
+"be 'flickable'</li><li>To drag items, you will need to 'touch' the top-left "
+"corner</li><li>Scrollbars will be hidden</li><li>Actions (e.g. 'Add To Play "
+"Queue') will always be visible (not just when item is under mouse)</"
+"li><li>Spin buttons with have + and - buttons at the side of the text field</"
+"li></ul></p>"
 msgstr ""
 
 #. i18n: file: gui/interfacesettings.ui:798
@@ -5214,7 +5286,8 @@ msgstr "언어:"
 msgid ""
 "<i><b>NOTE:</b> Changing the 'Enforce single-click activation of items' "
 "setting will require a re-start of Cantata.</i>"
-msgstr "<i><b>참고:</b> '한 번 클릭 사용' 설정을 바꾸면 다시 시작해야 합니다.</i>"
+msgstr ""
+"<i><b>참고:</b> '한 번 클릭 사용' 설정을 바꾸면 다시 시작해야 합니다.</i>"
 
 #. i18n: file: gui/interfacesettings.ui:868
 #. i18n: ectx: property (text), widget (StateLabel, langNoteLabel)
@@ -5251,66 +5324,61 @@ msgid "Stop playback on exit"
 msgstr "빠져나가면 연주 정지"
 
 #. i18n: file: gui/playbacksettings.ui:65
-#. i18n: ectx: property (text), widget (QCheckBox, stopDynamizerOnExit)
-#: po/rc.cpp:774 rc.cpp:774
-msgid "Stop dynamizer on exit"
-msgstr "빠져나가면 활동 정지"
-
-#. i18n: file: gui/playbacksettings.ui:72
 #. i18n: ectx: property (text), widget (QCheckBox, inhibitSuspend)
-#: po/rc.cpp:777 rc.cpp:777
+#: po/rc.cpp:774 rc.cpp:774
 msgid "Inhibit suspend whilst playing"
 msgstr "연주 중에 절전기능 사용 않기"
 
-#. i18n: file: gui/playbacksettings.ui:95
+#. i18n: file: gui/playbacksettings.ui:88
 #. i18n: ectx: property (text), widget (QLabel, noteLabel)
-#: po/rc.cpp:780 rc.cpp:780
+#: po/rc.cpp:777 rc.cpp:777
 msgid ""
 "<i><b>NOTE:</b> If you press and hold the stop button, then a menu will be "
 "shown allowing you to choose whether to stop playback now, or after the "
 "current track.</i>"
 msgstr ""
-"<i><b>참고:</b> 정지 단추를 누르고 있으면, 바로 정지할지 지금 곡 다음에 정지할지를 선택하는 메뉴가 보입니다.</i>"
+"<i><b>참고:</b> 정지 단추를 누르고 있으면, 바로 정지할지 지금 곡 다음에 정지"
+"할지를 선택하는 메뉴가 보입니다.</i>"
 
-#. i18n: file: gui/playbacksettings.ui:111
+#. i18n: file: gui/playbacksettings.ui:104
 #. i18n: ectx: property (title), widget (QGroupBox, outputBox)
-#: po/rc.cpp:783 rc.cpp:783
+#: po/rc.cpp:780 rc.cpp:780
 msgid "Output"
 msgstr "출력"
 
-#. i18n: file: gui/playbacksettings.ui:135
+#. i18n: file: gui/playbacksettings.ui:128
 #. i18n: ectx: property (text), widget (BuddyLabel, crossfadingLabel)
-#: po/rc.cpp:789 rc.cpp:789
+#: po/rc.cpp:786 rc.cpp:786
 msgid "Crossfade between tracks:"
 msgstr "곡 사이 크로스페이드:"
 
-#. i18n: file: gui/playbacksettings.ui:145
+#. i18n: file: gui/playbacksettings.ui:138
 #. i18n: ectx: property (suffix), widget (QSpinBox, crossfading)
-#: po/rc.cpp:792 rc.cpp:792
+#: po/rc.cpp:789 rc.cpp:789
 msgid " s"
 msgstr " 초"
 
-#. i18n: file: gui/playbacksettings.ui:158
+#. i18n: file: gui/playbacksettings.ui:151
 #. i18n: ectx: property (text), widget (BuddyLabel, replayGainLabel)
-#: po/rc.cpp:798 rc.cpp:798
+#: po/rc.cpp:795 rc.cpp:795
 msgid "Replay gain:"
 msgstr "리플레이게인:"
 
-#. i18n: file: gui/playbacksettings.ui:201
+#. i18n: file: gui/playbacksettings.ui:194
 #. i18n: ectx: property (text), widget (UrlLabel, aboutReplayGain)
-#: po/rc.cpp:801 rc.cpp:801
+#: po/rc.cpp:798 rc.cpp:798
 msgid "About replay gain"
 msgstr "리플레이게인에 대하여"
 
-#. i18n: file: gui/playbacksettings.ui:210
+#. i18n: file: gui/playbacksettings.ui:203
 #. i18n: ectx: property (text), widget (QLabel, outputsViewLabel)
-#: po/rc.cpp:804 rc.cpp:804
+#: po/rc.cpp:801 rc.cpp:801
 msgid "Use the checkboxes below to control the active outputs."
 msgstr "출력을 선택하려면 아래 항목을 켭니다."
 
 #. i18n: file: gui/serversettings.ui:35
 #. i18n: ectx: property (text), widget (QLabel, label)
-#: po/rc.cpp:807 rc.cpp:807
+#: po/rc.cpp:804 rc.cpp:804
 msgid "Collection:"
 msgstr "음원:"
 
@@ -5322,32 +5390,33 @@ msgstr "음원:"
 #. i18n: ectx: property (text), widget (BuddyLabel, coverNameLabel)
 #. i18n: file: gui/serversettings.ui:328
 #. i18n: ectx: property (text), widget (BuddyLabel, basicCoverNameLabel)
-#: po/rc.cpp:825 po/rc.cpp:847 rc.cpp:825 rc.cpp:847
+#: po/rc.cpp:822 po/rc.cpp:844 rc.cpp:822 rc.cpp:844
 msgid "Cover filename:"
 msgstr "표지 파일이름:"
 
 #. i18n: file: gui/serversettings.ui:152
 #. i18n: ectx: property (toolTip), widget (LineEdit, coverName)
-#: po/rc.cpp:829 rc.cpp:829
+#: po/rc.cpp:826 rc.cpp:826
 #, no-c-format
 msgid ""
 "<p>Filename (without extension) to save downloaded covers as.<br/>If left "
-"blank 'cover' will be used.<br/><br/><i>%artist% will be replaced with album"
-" artist of the current song, and %album% will be replaced with the album "
-"name.</i></p>"
+"blank 'cover' will be used.<br/><br/><i>%artist% will be replaced with album "
+"artist of the current song, and %album% will be replaced with the album name."
+"</i></p>"
 msgstr ""
-"<p>내려받은 표지를 저장할 확장자없는 파일이름.<br/>비어있으면 'cover'가 사용됩니다.<br/><br/><i>%artist%은 "
-"지금 곡의 음반연주자로, %album%은 음반명으로 바뀝니다.</i></p>"
+"<p>내려받은 표지를 저장할 확장자없는 파일이름.<br/>비어있으면 'cover'가 사용"
+"됩니다.<br/><br/><i>%artist%은 지금 곡의 음반연주자로, %album%은 음반명으로 "
+"바뀝니다.</i></p>"
 
 #. i18n: file: gui/serversettings.ui:159
 #. i18n: ectx: property (text), widget (BuddyLabel, streamUrlLabel)
-#: po/rc.cpp:832 rc.cpp:832
+#: po/rc.cpp:829 rc.cpp:829
 msgid "HTTP stream URL:"
 msgstr "HTTP 스트림 URL:"
 
 #. i18n: file: gui/serversettings.ui:190
 #. i18n: ectx: property (text), widget (QLabel, musicFolderNoteLabel)
-#: po/rc.cpp:835 rc.cpp:835
+#: po/rc.cpp:832 rc.cpp:832
 msgid ""
 "<i><b>NOTE:</b> The 'Music folder' setting is used to lookup cover-art "
 "(either the value specified above, or <code>cover.jpg / cover.png</code> if "
@@ -5355,84 +5424,93 @@ msgid ""
 "folders), then Cantata will save any downloaded covers into the respective "
 "album folder.</i>"
 msgstr ""
-"<i><b>참고:</b> '음악 폴더' 설정은 표지그림을 찾기 위해 사용됩니다 (위에서 설정된 값 또는 설정되지 않았다면 "
-"<code>cover.jpg/cover.png</code>). 이 폴더에 쓰기 권한이 있다면 내려받은 표지를 각각의 음반 폴더에 "
-"저장합니다.</i>"
+"<i><b>참고:</b> '음악 폴더' 설정은 표지그림을 찾기 위해 사용됩니다 (위에서 설"
+"정된 값 또는 설정되지 않았다면 <code>cover.jpg/cover.png</code>). 이 폴더에 "
+"쓰기 권한이 있다면 내려받은 표지를 각각의 음반 폴더에 저장합니다.</i>"
 
 #. i18n: file: gui/serversettings.ui:264
 #. i18n: ectx: property (text), widget (QLabel, streamUrlNoteLabel)
-#: po/rc.cpp:841 rc.cpp:841
+#: po/rc.cpp:838 rc.cpp:838
 msgid ""
 "<i><b>NOTE:</b> 'HTTP Stream URL' is only of use if you have MPD configured "
 "to output to a HTTP stream, and you wish Cantata to be able to play that "
 "stream.</i>"
 msgstr ""
-"<i><b>참고:</b> 'HTTP 스트림 URL'은 MPD가 HTTP 스트림으로 출력하도록 설정되어있고, 칸타타로 그 스트림을 연주할 "
-"때에만 의미가 있습니다.</i>"
+"<i><b>참고:</b> 'HTTP 스트림 URL'은 MPD가 HTTP 스트림으로 출력하도록 설정되어"
+"있고, 칸타타로 그 스트림을 연주할 때에만 의미가 있습니다.</i>"
 
 #. i18n: file: gui/serversettings.ui:343
 #. i18n: ectx: property (text), widget (StateLabel, basicMusicFolderNoteLabel)
-#: po/rc.cpp:850 rc.cpp:850
+#: po/rc.cpp:847 rc.cpp:847
 msgid ""
-"<i><b>NOTE:</b> If you change the 'Music folder' setting, then you will need"
-" to manually update the music database. This can be performed by pressing "
-"the 'Refresh Database' button in the 'Artists' or 'Albums' views.</i>"
+"<i><b>NOTE:</b> If you change the 'Music folder' setting, then you will need "
+"to manually update the music database. This can be performed by pressing the "
+"'Refresh Database' button in the 'Artists' or 'Albums' views.</i>"
 msgstr ""
-"<i><b>참고:</b> '음악폴더' 설정을 바꾸면, 음악데이터베이스를 직접 업데이트해야 합니다. 이는 '연주자'나 '음반' 보기의 "
-"'데이터베이스 새로 읽기' 단추를 누르면 됩니다.</i>"
+"<i><b>참고:</b> '음악폴더' 설정을 바꾸면, 음악데이터베이스를 직접 업데이트해"
+"야 합니다. 이는 '연주자'나 '음반' 보기의 '데이터베이스 새로 읽기' 단추를 누르"
+"면 됩니다.</i>"
 
 #. i18n: file: gui/serversettings.ui:372
 #. i18n: ectx: property (text), widget (QLabel, musicFolderNoteLabel_2)
-#: po/rc.cpp:853 rc.cpp:853
+#: po/rc.cpp:850 rc.cpp:850
 msgid ""
-"<i><b>NOTE:</b> If no setting is specified for 'Cover filename, then Cantata"
-" will use a default of <code>cover</code> </i>"
+"<i><b>NOTE:</b> If no setting is specified for 'Cover filename, then Cantata "
+"will use a default of <code>cover</code> </i>"
 msgstr ""
-"<i><b>참고:</b> '표지 파일이름'에 설정이 되어 있지 않으면 기본 <code>cover<code>를 사용합니다 </i>"
+"<i><b>참고:</b> '표지 파일이름'에 설정이 되어 있지 않으면 기본 "
+"<code>cover<code>를 사용합니다 </i>"
 
 #. i18n: file: http/httpserversettings.ui:25
 #. i18n: ectx: property (text), widget (BuddyLabel, label_5)
-#: po/rc.cpp:856 rc.cpp:856
+#: po/rc.cpp:853 rc.cpp:853
 msgid "Network interface:"
 msgstr "네트워크 연결:"
 
 #. i18n: file: http/httpserversettings.ui:57
 #. i18n: ectx: property (text), widget (QLabel, label_4)
-#: po/rc.cpp:859 rc.cpp:859
+#: po/rc.cpp:856 rc.cpp:856
 msgid ""
-"<i><b>NOTE:</b> MPD usually only plays songs that are stored within its folders. Cantata contains a minimal HTTP server that can be used to serve other files to MPD. This, however, will only work whilst Cantata is running.<br/><br/>\n"
-"<b>NOTE:</b> If you choose 'Local loopback' for 'Network interface', then MPD <b>must</b> also be on this computer.</i>"
+"<i><b>NOTE:</b> MPD usually only plays songs that are stored within its "
+"folders. Cantata contains a minimal HTTP server that can be used to serve "
+"other files to MPD. This, however, will only work whilst Cantata is running."
+"<br/><br/>\n"
+"<b>NOTE:</b> If you choose 'Local loopback' for 'Network interface', then "
+"MPD <b>must</b> also be on this computer.</i>"
 msgstr ""
-"<i><b>참고:</b> MPD는 주로 음악 폴더에 저장된 음악만 연주합니다. 칸타타는 파일을 MPD로 서비스하는 최소한의 HTTP 서버 역할을 합니다. 다만, 칸타타가 실행되는 한에서만 작동합니다.<br/><br/>\n"
-"<b>참고:</b> 만약 '네트워크 연결'에 '로컬 루프백'을 선택한다면, MPD가 이 컴퓨터에 <b>반드시</b> 있어야 합니다.</i>"
+"<i><b>참고:</b> MPD는 주로 음악 폴더에 저장된 음악만 연주합니다. 칸타타는 파"
+"일을 MPD로 서비스하는 최소한의 HTTP 서버 역할을 합니다. 다만, 칸타타가 실행되"
+"는 한에서만 작동합니다.<br/><br/>\n"
+"<b>참고:</b> 만약 '네트워크 연결'에 '로컬 루프백'을 선택한다면, MPD가 이 컴퓨"
+"터에 <b>반드시</b> 있어야 합니다.</i>"
 
 #. i18n: file: network/proxysettings.ui:26
 #. i18n: ectx: property (text), widget (BuddyLabel, modeLabel)
-#: po/rc.cpp:863 rc.cpp:863
+#: po/rc.cpp:860 rc.cpp:860
 msgid "Mode:"
 msgstr "모드:"
 
 #. i18n: file: network/proxysettings.ui:50
 #. i18n: ectx: property (text), item, widget (QComboBox, proxyType)
-#: po/rc.cpp:869 rc.cpp:869
+#: po/rc.cpp:866 rc.cpp:866
 msgid "HTTP Proxy"
 msgstr "HTTP 프락시"
 
 #. i18n: file: network/proxysettings.ui:55
 #. i18n: ectx: property (text), item, widget (QComboBox, proxyType)
-#: po/rc.cpp:872 rc.cpp:872
+#: po/rc.cpp:869 rc.cpp:869
 msgid "SOCKS Proxy"
 msgstr "SOCKS 프락시"
 
 #. i18n: file: online/onlinesettings.ui:12
 #. i18n: ectx: property (text), widget (QLabel, label)
-#: po/rc.cpp:887 rc.cpp:887
+#: po/rc.cpp:884 rc.cpp:884
 msgid "Use the checkboxes below to configure the list of active services."
 msgstr "서비스를 선택하려면 아래 항목을 사용합니다."
 
 #. i18n: file: scrobbling/scrobblingsettings.ui:29
 #. i18n: ectx: property (text), widget (BuddyLabel, scrobblerLabel)
-#: po/rc.cpp:893 rc.cpp:893
+#: po/rc.cpp:890 rc.cpp:890
 msgid "Scrobble using:"
 msgstr ""
 
@@ -5444,7 +5522,7 @@ msgstr ""
 #. i18n: ectx: property (text), widget (BuddyLabel, statusLabel)
 #. i18n: file: streams/digitallyimportedsettings.ui:91
 #. i18n: ectx: property (text), widget (BuddyLabel, label_5)
-#: po/rc.cpp:902 po/rc.cpp:932 rc.cpp:902 rc.cpp:932
+#: po/rc.cpp:899 po/rc.cpp:929 rc.cpp:899 rc.cpp:929
 msgid "Status:"
 msgstr "상태:"
 
@@ -5456,56 +5534,57 @@ msgstr "상태:"
 #. i18n: ectx: property (text), widget (QPushButton, loginButton)
 #. i18n: file: streams/digitallyimportedsettings.ui:122
 #. i18n: ectx: property (text), widget (QPushButton, loginButton)
-#: po/rc.cpp:908 po/rc.cpp:938 streams/digitallyimportedsettings.cpp:138
-#: streams/digitallyimportedsettings.cpp:144 rc.cpp:908 rc.cpp:938
+#: po/rc.cpp:905 po/rc.cpp:935 streams/digitallyimportedsettings.cpp:138
+#: streams/digitallyimportedsettings.cpp:144 rc.cpp:905 rc.cpp:935
 msgid "Login"
 msgstr "로그인"
 
 #. i18n: file: scrobbling/scrobblingsettings.ui:122
 #. i18n: ectx: property (text), widget (QCheckBox, enableScrobbling)
-#: po/rc.cpp:911 rc.cpp:911
+#: po/rc.cpp:908 rc.cpp:908
 msgid "Scrobble tracks"
 msgstr ""
 
 #. i18n: file: scrobbling/scrobblingsettings.ui:129
 #. i18n: ectx: property (text), widget (QCheckBox, showLove)
-#: po/rc.cpp:914 rc.cpp:914
+#: po/rc.cpp:911 rc.cpp:911
 msgid "Show 'Love' button"
 msgstr ""
 
 #. i18n: file: streams/digitallyimportedsettings.ui:29
 #. i18n: ectx: property (text), widget (QLabel, label)
-#: po/rc.cpp:917 rc.cpp:917
+#: po/rc.cpp:914 rc.cpp:914
 msgid ""
 "You can listen for free without an account, but Premium members can listen "
-"to higher quality streams without advertisements. Visit <a "
-"href=\"http://www.di.fm/premium/\">http://www.di.fm/premium/</a> to upgrade "
-"to a premium account."
+"to higher quality streams without advertisements. Visit <a href=\"http://www."
+"di.fm/premium/\">http://www.di.fm/premium/</a> to upgrade to a premium "
+"account."
 msgstr ""
-"계정이 없이 무료로 사용할 수 있으나, 프리미엄 회원은 광고 없이 고품질 스트림을 들을 수 있습니다. 프리미엄 계정으로 업그레이드하려면 "
-"<a href=\"http://www.di.fm/premium/\">http://www.di.fm/premium/</a> 을 방문하셔요."
+"계정이 없이 무료로 사용할 수 있으나, 프리미엄 회원은 광고 없이 고품질 스트림"
+"을 들을 수 있습니다. 프리미엄 계정으로 업그레이드하려면 <a href=\"http://www."
+"di.fm/premium/\">http://www.di.fm/premium/</a> 을 방문하셔요."
 
 #. i18n: file: streams/digitallyimportedsettings.ui:42
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox)
-#: po/rc.cpp:920 rc.cpp:920
+#: po/rc.cpp:917 rc.cpp:917
 msgid "Premium Account"
 msgstr "프리미엄 계정"
 
 #. i18n: file: streams/digitallyimportedsettings.ui:78
 #. i18n: ectx: property (text), widget (BuddyLabel, label_4)
-#: po/rc.cpp:929 rc.cpp:929
+#: po/rc.cpp:926 rc.cpp:926
 msgid "Stream type:"
 msgstr "스트림 형식:"
 
 #. i18n: file: streams/digitallyimportedsettings.ui:131
 #. i18n: ectx: property (text), widget (QLabel, expiryLabel)
-#: po/rc.cpp:941 rc.cpp:941
+#: po/rc.cpp:938 rc.cpp:938
 msgid "Session expiry:"
 msgstr "세션 만료:"
 
 #. i18n: file: streams/digitallyimportedsettings.ui:161
 #. i18n: ectx: property (text), widget (QLabel, noteLabel)
-#: po/rc.cpp:944 rc.cpp:944
+#: po/rc.cpp:941 rc.cpp:941
 msgid ""
 "<i><b>NOTE:</b> These settings apply to Digitally Imported, JazzRadio.com, "
 "RockRadio.com, and Sky.fm</i>"
@@ -5515,84 +5594,88 @@ msgstr ""
 
 #. i18n: file: streams/digitallyimportedsettings.ui:174
 #. i18n: ectx: property (text), widget (QLabel, note2Label)
-#: po/rc.cpp:947 rc.cpp:947
+#: po/rc.cpp:944 rc.cpp:944
 msgid ""
 "<i><b>NOTE:</b> If you enter account details, then a 'DI' status item will "
-"appear under the list of streams. This will indicate if you are logged in or"
-" not</i>"
-msgstr "<i><b>참고:</b> 계정을 입력하면, 스트림 항목 아래에 로그인 여부를 나타내는 'DI' 상황이 표시됩니다.</i>"
+"appear under the list of streams. This will indicate if you are logged in or "
+"not</i>"
+msgstr ""
+"<i><b>참고:</b> 계정을 입력하면, 스트림 항목 아래에 로그인 여부를 나타내는 "
+"'DI' 상황이 표시됩니다.</i>"
 
 #. i18n: file: streams/streamssettings.ui:12
 #. i18n: ectx: property (text), widget (QLabel, label)
-#: po/rc.cpp:950 rc.cpp:950
+#: po/rc.cpp:947 rc.cpp:947
 msgid "Use the checkboxes below to configure the list of active providers."
 msgstr "서비스제공자를 선택하려면 아래 항목을 사용합니다."
 
 #. i18n: file: streams/streamssettings.ui:47
 #. i18n: ectx: property (text), widget (QPushButton, configureButton)
-#: po/rc.cpp:953 rc.cpp:953
+#: po/rc.cpp:950 rc.cpp:950
 msgid "Configure Provider"
 msgstr "서비스제공자 설정"
 
 #. i18n: file: streams/streamssettings.ui:60
 #. i18n: ectx: property (text), widget (QPushButton, installButton)
-#: po/rc.cpp:956 rc.cpp:956
+#: po/rc.cpp:953 rc.cpp:953
 msgid "Install"
 msgstr "설치"
 
 #. i18n: file: streams/streamssettings.ui:80
 #. i18n: ectx: property (text), widget (QLabel, note)
-#: po/rc.cpp:962 rc.cpp:962
+#: po/rc.cpp:959 rc.cpp:959
 msgid ""
-"<i><b>NOTE:</b> Built-in categories are shown in italic, and these cannot be"
-" removed.</i>"
-msgstr "<i><b>참고:</b> 기본 설치된 카테고리는 기울어져 보이는데, 이는 삭제할 수 없습니다.</i>"
+"<i><b>NOTE:</b> Built-in categories are shown in italic, and these cannot be "
+"removed.</i>"
+msgstr ""
+"<i><b>참고:</b> 기본 설치된 카테고리는 기울어져 보이는데, 이는 삭제할 수 없습"
+"니다.</i>"
 
 #. i18n: file: support/shortcutssettingswidget.ui:22
 #. i18n: ectx: property (text), widget (BuddyLabel, label_2)
-#: po/rc.cpp:965 rc.cpp:965
+#: po/rc.cpp:962 rc.cpp:962
 msgid "Search:"
 msgstr "찾기:"
 
 #. i18n: file: support/shortcutssettingswidget.ui:65
 #. i18n: ectx: property (title), widget (QGroupBox, actionBox)
-#: po/rc.cpp:968 rc.cpp:968
+#: po/rc.cpp:965 rc.cpp:965
 msgid "Shortcut for Selected Action"
 msgstr "선택된 기능 단축키"
 
 #. i18n: file: support/shortcutssettingswidget.ui:71
 #. i18n: ectx: property (text), widget (QRadioButton, useDefault)
-#: po/rc.cpp:971 rc.cpp:971
+#: po/rc.cpp:968 rc.cpp:968
 msgid "Default:"
 msgstr "기본:"
 
 #. i18n: file: support/shortcutssettingswidget.ui:85
 #. i18n: ectx: property (text), widget (QRadioButton, useCustom)
-#: po/rc.cpp:977 rc.cpp:977
+#: po/rc.cpp:974 rc.cpp:974
 msgid "Custom:"
 msgstr "개인:"
 
 #. i18n: file: tags/tageditor.ui:64
 #. i18n: ectx: property (text), widget (StateLabel, albumArtistLabel)
-#: po/rc.cpp:989 rc.cpp:989
+#: po/rc.cpp:986 rc.cpp:986
 msgid "Album artist:"
 msgstr "음반연주자:"
 
 #. i18n: file: tags/tageditor.ui:103
 #. i18n: ectx: property (text), widget (StateLabel, trackLabel)
-#: po/rc.cpp:998 rc.cpp:998
+#: po/rc.cpp:995 rc.cpp:995
 msgid "Track number:"
 msgstr "곡 번호:"
 
 #. i18n: file: tags/tageditor.ui:116
 #. i18n: ectx: property (text), widget (StateLabel, discLabel)
-#: po/rc.cpp:1001 rc.cpp:1001
+#: po/rc.cpp:998 rc.cpp:998
 msgid "Disc number:"
 msgstr "디스크 번호:"
 
 #. i18n: file: tags/tageditor.ui:186
 #. i18n: ectx: property (text), widget (QLabel, label_7x)
-#: po/rc.cpp:1013 rc.cpp:1013
+#: po/rc.cpp:1010 rc.cpp:1010
 msgid ""
 "<i><b>NOTE</b> Multiple genres should be separated via a semicolon (e.g. "
 "'Rock;Hard Rock')</i>"
@@ -5600,22 +5683,22 @@ msgstr ""
 
 #. i18n: file: tags/trackorganiser.ui:115
 #. i18n: ectx: property (text), widget (QTreeWidget, files)
-#: po/rc.cpp:1037 rc.cpp:1037
+#: po/rc.cpp:1034 rc.cpp:1034
 msgid "Original Name"
 msgstr "원래 이름"
 
 #. i18n: file: tags/trackorganiser.ui:120
 #. i18n: ectx: property (text), widget (QTreeWidget, files)
-#: po/rc.cpp:1040 rc.cpp:1040
+#: po/rc.cpp:1037 rc.cpp:1037
 msgid "New Name"
 msgstr "새 이름"
 
-#: po/rc.cpp:1044 rc.cpp:1044
+#: po/rc.cpp:1041 rc.cpp:1041
 msgctxt "NAME OF TRANSLATORS"
 msgid "Your names"
 msgstr "이름"
 
-#: po/rc.cpp:1045 rc.cpp:1045
+#: po/rc.cpp:1042 rc.cpp:1042
 msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
 msgstr "이메일"
@@ -5672,7 +5755,9 @@ msgstr "기존 태그 읽기를 취소할까요?"
 msgid ""
 "Scan <b>all</b> tracks?<br><br><i>NOTE: All tracks have existing ReplyGain "
 "tags.</i>"
-msgstr "<b>전</b>곡을 검색할까요?<br><br><i>참고: 전곡은 기존 리플레이게인을 가지고 있습니다.</i>"
+msgstr ""
+"<b>전</b>곡을 검색할까요?<br><br><i>참고: 전곡은 기존 리플레이게인을 가지고 "
+"있습니다.</i>"
 
 #: replaygain/rgdialog.cpp:263
 msgid "Do you wish to scan all tracks, or only tracks without existing tags?"
@@ -5804,8 +5889,8 @@ msgstr ""
 #: scrobbling/scrobblingsettings.cpp:66
 msgid ""
 "<i><b>NOTE:</b> If you use a scrobbler which is marked as '(via MPD)' (such "
-"as %1), then you will need to have this already started and running. Cantata"
-" can only 'Love' tracks via this, and cannot enable/disable scrobbling.</i>"
+"as %1), then you will need to have this already started and running. Cantata "
+"can only 'Love' tracks via this, and cannot enable/disable scrobbling.</i>"
 msgstr ""
 
 #: scrobbling/scrobblingsettings.cpp:99
@@ -6218,9 +6303,11 @@ msgstr "\"여러 연주자\" 해결을 <b>전</b>곡에 되돌릴까요?"
 
 #: tags/tageditor.cpp:543
 msgid ""
-"Set 'Album Artist' from 'Artist' (if 'Album Artist' is empty) for <b>all</b>"
-" tracks?"
-msgstr "만약 음반연주자가 비어있다면, '연주자'에서 '음반연주자'를 설정하는 것을 <b>전</b>곡에 적용할까요?"
+"Set 'Album Artist' from 'Artist' (if 'Album Artist' is empty) for <b>all</b> "
+"tracks?"
+msgstr ""
+"만약 음반연주자가 비어있다면, '연주자'에서 '음반연주자'를 설정하는 것을 <b>전"
+"</b>곡에 적용할까요?"
 
 #: tags/tageditor.cpp:544
 msgid "Set 'Album Artist' from 'Artist' (if 'Album Artist' is empty)?"
@@ -6234,7 +6321,9 @@ msgstr "연주자에서 음반연주자"
 msgid ""
 "Capitalize the first letter of 'Title', 'Artist', 'Album artist', and "
 "'Album' of <b>all</b> tracks?"
-msgstr "<b>전</b>곡의 '제목', '연주자', '음반연주자', '음반'의 첫 글자를 대문자로 할까요?"
+msgstr ""
+"<b>전</b>곡의 '제목', '연주자', '음반연주자', '음반'의 첫 글자를 대문자로 할"
+"까요?"
 
 #: tags/tageditor.cpp:611
 msgid "Adjust the value of each track number by:"
@@ -6319,17 +6408,19 @@ msgstr "%1로 로그인 <b>안</b>됨"
 
 #: widgets/songdialog.cpp:49
 msgid ""
-"<p>Cannot access song files!<br/><br/>Please check Cantata's \"Music "
-"folder\" setting, and MPD's \"music_directory\" setting.</p>"
+"<p>Cannot access song files!<br/><br/>Please check Cantata's \"Music folder"
+"\" setting, and MPD's \"music_directory\" setting.</p>"
 msgstr ""
-"<p>음악 파일에 접근할 수 없음!<br/><br/>칸타타의 \"Music folder\"와 MPD의 \"music_directory\""
-" 설정을 확인하셔요.</p>"
+"<p>음악 파일에 접근할 수 없음!<br/><br/>칸타타의 \"Music folder\"와 MPD의 "
+"\"music_directory\" 설정을 확인하셔요.</p>"
 
 #: widgets/songdialog.cpp:52
 msgid ""
 "<p>Cannot access song files!<br/><br/>Please check that the device is still "
 "attached.</p>"
-msgstr "<p>음악 파일에 접근할 수 없음!<br/><br/>장치가 아직 연결되어 있는지 확인하셔요.</p>"
+msgstr ""
+"<p>음악 파일에 접근할 수 없음!<br/><br/>장치가 아직 연결되어 있는지 확인하셔"
+"요.</p>"
 
 #: widgets/tableview.cpp:88
 msgid "Stretch Columns To Fit Window"
@@ -6460,6 +6551,9 @@ msgctxt "Plural (N!=1)"
 msgid "%1 Episodes"
 msgstr "%1 에피소드"
 
+#~ msgid "Stop dynamizer on exit"
+#~ msgstr "빠져나가면 활동 정지"
+
 #~ msgid "Loading list of rules"
 #~ msgstr "규정 리스트를 읽음"
 
@@ -6485,13 +6579,14 @@ msgstr "%1 에피소드"
 #~ "Cantata caches a local copy of the MPD listing to speed up loading of the "
 #~ "music library. Cantata might also have cached covers, lyrics, or artist "
 #~ "images, if these have been downloaded and could not be saved into the MPD "
-#~ "folder (because Cantata cannot access it, or you have configured Cantata to "
-#~ "not save these items there). Below is a summary of Cantata's current cache "
-#~ "usage."
+#~ "folder (because Cantata cannot access it, or you have configured Cantata "
+#~ "to not save these items there). Below is a summary of Cantata's current "
+#~ "cache usage."
 #~ msgstr ""
-#~ "칸타타가 음악라이브러리를 빨리 읽기 위해서, MPD 목록의 로컬 복사본을 캐시에 저장합니다. 또한 음반표지나 가사, 연주자 이미지도 "
-#~ "캐시에 저장할 수 있는데, 이는 내려받았으나 MPD 폴더에 저장되지 못한 경우입니다 (접근할 수 없거나, 저장하지 않도록 "
-#~ "설정해서입니다). 아래는 캐시를 사용한 내역입니다."
+#~ "칸타타가 음악라이브러리를 빨리 읽기 위해서, MPD 목록의 로컬 복사본을 캐시"
+#~ "에 저장합니다. 또한 음반표지나 가사, 연주자 이미지도 캐시에 저장할 수 있는"
+#~ "데, 이는 내려받았으나 MPD 폴더에 저장되지 못한 경우입니다 (접근할 수 없거"
+#~ "나, 저장하지 않도록 설정해서입니다). 아래는 캐시를 사용한 내역입니다."
 
 #~ msgid "Play queue"
 #~ msgstr "연주순서"
@@ -6512,32 +6607,32 @@ msgstr "%1 에피소드"
 #~ msgstr "파일(&F)"
 
 #~ msgid ""
-#~ "<tr><td colspan=\"2\"><b>Server</b></td></tr><tr><td "
-#~ "align=\"right\">Protocol&nbsp;version:&nbsp;</td><td>%1.%2.%3</td></tr><tr><td"
-#~ " align=\"right\">Uptime:&nbsp;</td><td>%4</td></tr><tr><td "
-#~ "align=\"right\">Time&nbsp;playing:&nbsp;</td><td>%5</td></tr>"
+#~ "<tr><td colspan=\"2\"><b>Server</b></td></tr><tr><td align=\"right"
+#~ "\">Protocol&nbsp;version:&nbsp;</td><td>%1.%2.%3</td></tr><tr><td align="
+#~ "\"right\">Uptime:&nbsp;</td><td>%4</td></tr><tr><td align=\"right"
+#~ "\">Time&nbsp;playing:&nbsp;</td><td>%5</td></tr>"
 #~ msgstr ""
-#~ "<tr><td colspan=\"2\"><b>서버</b></td></tr><tr><td "
-#~ "align=\"right\">프로토콜&nbsp;버전:&nbsp;</td><td>%1.%2.%3</td></tr><tr><td "
-#~ "align=\"right\">가동시간:&nbsp;</td><td>%4</td></tr><tr><td "
-#~ "align=\"right\">연주시간:&nbsp;</td><td>%5</td></tr>"
+#~ "<tr><td colspan=\"2\"><b>서버</b></td></tr><tr><td align=\"right\">프로토"
+#~ "콜&nbsp;버전:&nbsp;</td><td>%1.%2.%3</td></tr><tr><td align=\"right\">가동"
+#~ "시간:&nbsp;</td><td>%4</td></tr><tr><td align=\"right\">연주시간:&nbsp;</"
+#~ "td><td>%5</td></tr>"
 
 #~ msgid ""
-#~ "<tr><td colspan=\"2\"><b>Database</b></td></tr><tr><td "
-#~ "align=\"right\">Artists:&nbsp;</td><td>%1</td></tr><tr><td "
-#~ "align=\"right\">Albums:&nbsp;</td><td>%2</td></tr><tr><td "
-#~ "align=\"right\">Songs:&nbsp;</td><td>%3</td></tr><tr><td "
-#~ "align=\"right\">URL&nbsp;handlers:&nbsp;</td><td>%4</td></tr><tr><td "
-#~ "align=\"right\">Total&nbsp;duration:&nbsp;</td><td>%5</td></tr><tr><td "
-#~ "align=\"right\">Last&nbsp;update:&nbsp;</td><td>%6</td></tr></table></p>"
+#~ "<tr><td colspan=\"2\"><b>Database</b></td></tr><tr><td align=\"right"
+#~ "\">Artists:&nbsp;</td><td>%1</td></tr><tr><td align=\"right\">Albums:"
+#~ "&nbsp;</td><td>%2</td></tr><tr><td align=\"right\">Songs:&nbsp;</td><td>"
+#~ "%3</td></tr><tr><td align=\"right\">URL&nbsp;handlers:&nbsp;</td><td>%4</"
+#~ "td></tr><tr><td align=\"right\">Total&nbsp;duration:&nbsp;</td><td>%5</"
+#~ "td></tr><tr><td align=\"right\">Last&nbsp;update:&nbsp;</td><td>%6</td></"
+#~ "tr></table></p>"
 #~ msgstr ""
-#~ "<tr><td colspan=\"2\"><b>데이터베이스</b></td></tr><tr><td "
-#~ "align=\"right\">연주자:&nbsp;</td><td>%1</td></tr><tr><td "
-#~ "align=\"right\">음반:&nbsp;</td><td>%2</td></tr><tr><td "
-#~ "align=\"right\">곡:&nbsp;</td><td>%3</td></tr><tr><td "
-#~ "align=\"right\">URL&nbsp;사용:&nbsp;</td><td>%4</td></tr><tr><td "
-#~ "align=\"right\">총&nbsp;지속시간:&nbsp;</td><td>%5</td></tr><tr><td "
-#~ "align=\"right\">최근&nbsp;업데이트:&nbsp;</td><td>%6</td></tr></table></p>"
+#~ "<tr><td colspan=\"2\"><b>데이터베이스</b></td></tr><tr><td align=\"right"
+#~ "\">연주자:&nbsp;</td><td>%1</td></tr><tr><td align=\"right\">음반:&nbsp;</"
+#~ "td><td>%2</td></tr><tr><td align=\"right\">곡:&nbsp;</td><td>%3</td></"
+#~ "tr><tr><td align=\"right\">URL&nbsp;사용:&nbsp;</td><td>%4</td></"
+#~ "tr><tr><td align=\"right\">총&nbsp;지속시간:&nbsp;</td><td>%5</td></"
+#~ "tr><tr><td align=\"right\">최근&nbsp;업데이트:&nbsp;</td><td>%6</td></"
+#~ "tr></table></p>"
 
 #~ msgctxt "track :: Cantata (connection)"
 #~ msgid "%1 :: Cantata (%2)"
@@ -6568,28 +6663,31 @@ msgstr "%1 에피소드"
 
 #~ msgctxt "Qt-only, windows"
 #~ msgid ""
-#~ "<i><b>NOTE:</b> 'Dynamizer port' is only relevant if you wish to make use of"
-#~ " 'dynamic playlists'. In order to function, the <code>cantata-dynamic</code>"
-#~ " application <b>must</b> already have been installed, and started, on the "
-#~ "relevant host - Cantata itself cannot control the starting/stopping of this "
-#~ "service.</i>"
+#~ "<i><b>NOTE:</b> 'Dynamizer port' is only relevant if you wish to make use "
+#~ "of 'dynamic playlists'. In order to function, the <code>cantata-dynamic</"
+#~ "code> application <b>must</b> already have been installed, and started, "
+#~ "on the relevant host - Cantata itself cannot control the starting/"
+#~ "stopping of this service.</i>"
 #~ msgstr ""
-#~ "<i><b>참고:</b> '활동 포트'는 '동적 연주목록'을 사용할 때만 유용합니다. 동작하기 위해서는 <code>칸타타-"
-#~ "동적</code> 응용프로그램이 <b>반드시</b> 설치되고 호스트에서 실행되어야 합니다. 칸타타 자체로는 이 서비스를 시작하거나 정지할"
-#~ " 수 없습니다.</i>"
+#~ "<i><b>참고:</b> '활동 포트'는 '동적 연주목록'을 사용할 때만 유용합니다. 동"
+#~ "작하기 위해서는 <code>칸타타-동적</code> 응용프로그램이 <b>반드시</b> 설치"
+#~ "되고 호스트에서 실행되어야 합니다. 칸타타 자체로는 이 서비스를 시작하거나 "
+#~ "정지할 수 없습니다.</i>"
 
 #~ msgid ""
 #~ "<i><b>NOTE:</b> 'Dynamizer port' is only relevant if you wish to use a "
 #~ "system-wide, or non-local, instance of the Cantata dynamizer. For this to "
-#~ "function, the <code>cantata-dynamic</code> application <b>must</b> already "
-#~ "have been installed, and started, on the relevant host - Cantata itself "
-#~ "cannot control the starting/stopping of this service. If this is not set, "
-#~ "then Cantata will use a per-user instance of the dynamizer to facilitate "
-#~ "dynamic playlists.</i>"
+#~ "function, the <code>cantata-dynamic</code> application <b>must</b> "
+#~ "already have been installed, and started, on the relevant host - Cantata "
+#~ "itself cannot control the starting/stopping of this service. If this is "
+#~ "not set, then Cantata will use a per-user instance of the dynamizer to "
+#~ "facilitate dynamic playlists.</i>"
 #~ msgstr ""
-#~ "<i><b>참고:</b> '활동 포트'는 시스템 전반 또는 로컬에서가 아닌 칸타타 활동을 사용하고자 할 때에만 유용합니다. 동작하기 "
-#~ "위해서는 <code>칸타타-동적</code> 응용프로그램이 <b>반드시</b> 설치되고 호스트에서 실행되어야 합니다. 칸타타 자체로는 이"
-#~ " 서비스를 시작하거나 정지할 수 없습니다. 만약 설정되어있지 않으면, 칸타타는 사용자 기반의 동적 연주목록을 운용합니다.</i>"
+#~ "<i><b>참고:</b> '활동 포트'는 시스템 전반 또는 로컬에서가 아닌 칸타타 활동"
+#~ "을 사용하고자 할 때에만 유용합니다. 동작하기 위해서는 <code>칸타타-동적</"
+#~ "code> 응용프로그램이 <b>반드시</b> 설치되고 호스트에서 실행되어야 합니다. "
+#~ "칸타타 자체로는 이 서비스를 시작하거나 정지할 수 없습니다. 만약 설정되어있"
+#~ "지 않으면, 칸타타는 사용자 기반의 동적 연주목록을 운용합니다.</i>"
 
 #~ msgid "Back"
 #~ msgstr "돌아가기"
@@ -6640,47 +6738,54 @@ msgstr "%1 에피소드"
 
 #~ msgid ""
 #~ "<i><b>NOTE:</b> If you elect to have Cantata store covers, lyrics, or "
-#~ "backdrops, within the music folder, and you do not have write access to this"
-#~ " folder, then Cantata will revert to saving the files in your personal cache"
-#~ " folder. However, for streams, if you do not have write access, then you "
-#~ "will only be able to view (and play) the streams stored in the music folder,"
-#~ " and not add (or edit) any streams. If you elect not to store streams within"
-#~ " the music folder, then these will be saved in your local config folder - "
-#~ "and will only be accessible to yourself.</i>"
+#~ "backdrops, within the music folder, and you do not have write access to "
+#~ "this folder, then Cantata will revert to saving the files in your "
+#~ "personal cache folder. However, for streams, if you do not have write "
+#~ "access, then you will only be able to view (and play) the streams stored "
+#~ "in the music folder, and not add (or edit) any streams. If you elect not "
+#~ "to store streams within the music folder, then these will be saved in "
+#~ "your local config folder - and will only be accessible to yourself.</i>"
 #~ msgstr ""
-#~ "<i><b>참고:</b> 칸타타에서 쓰기 권한이 없는 음악 폴더에 음반 표지, 가사 또는 배경을 저장하면, 개인 캐시 폴더에 대신 "
-#~ "저장하게 됩니다. 하지만 스트림은 쓰기 권한이 없다면, 음악 폴더에 저장된 스트림을 보고 연주할 수만 있으며 추가하거나 수정할 수는 "
-#~ "없습니다. 스트림을 음악 폴더에 저장하지 않으면, 로컬 설정 폴더에 저장되며 해당 사용자만 접근할 수 있습니다.</i>"
+#~ "<i><b>참고:</b> 칸타타에서 쓰기 권한이 없는 음악 폴더에 음반 표지, 가사 또"
+#~ "는 배경을 저장하면, 개인 캐시 폴더에 대신 저장하게 됩니다. 하지만 스트림"
+#~ "은 쓰기 권한이 없다면, 음악 폴더에 저장된 스트림을 보고 연주할 수만 있으"
+#~ "며 추가하거나 수정할 수는 없습니다. 스트림을 음악 폴더에 저장하지 않으면, "
+#~ "로컬 설정 폴더에 저장되며 해당 사용자만 접근할 수 있습니다.</i>"
 
 #~ msgid ""
 #~ "<i><b>NOTE:</b> If you change the location where streams are stored (i.e. "
-#~ "you toggle the 'Save list of favorite streams in music folder' option), then"
-#~ " Cantata will only display streams that are stored in the relevant location."
-#~ " Therefore, before changing this setting, it is recommended that you export "
-#~ "your existing streams. You can then re-import these to the new location "
-#~ "(after you have toggled the setting).</i>"
+#~ "you toggle the 'Save list of favorite streams in music folder' option), "
+#~ "then Cantata will only display streams that are stored in the relevant "
+#~ "location. Therefore, before changing this setting, it is recommended that "
+#~ "you export your existing streams. You can then re-import these to the new "
+#~ "location (after you have toggled the setting).</i>"
 #~ msgstr ""
-#~ "<i><b>참고:</b> 스트림을 저장할 위치를 바꾸면 (즉, '음악 폴더에 즐겨찾기 스트림 항목 저장' 설정), 해당 폴더에 저장된 "
-#~ "스트림만 보여줍니다. 따라서 이 설정을 바꾸기 전에, 현재 스트림을 내보내기를 권장합니다. 설정을 바꾼 다음 스트림을 새로운 위치로 "
-#~ "가져올 수 있습니다.</i>"
+#~ "<i><b>참고:</b> 스트림을 저장할 위치를 바꾸면 (즉, '음악 폴더에 즐겨찾기 "
+#~ "스트림 항목 저장' 설정), 해당 폴더에 저장된 스트림만 보여줍니다. 따라서 "
+#~ "이 설정을 바꾸기 전에, 현재 스트림을 내보내기를 권장합니다. 설정을 바꾼 다"
+#~ "음 스트림을 새로운 위치로 가져올 수 있습니다.</i>"
 
 #~ msgid ""
 #~ "<p>Cantata will download missing covers, and lyrics, from the internet. "
 #~ "Cantata also allows you to save a list of internet streams (e.g. Radio "
-#~ "Stations) that you wish to be able to play.</p><p>For each of these, please "
-#~ "confirm whether you wish Cantata to store the relevant files within the "
-#~ "music folder, or within your personal cache/config folders.</p>"
+#~ "Stations) that you wish to be able to play.</p><p>For each of these, "
+#~ "please confirm whether you wish Cantata to store the relevant files "
+#~ "within the music folder, or within your personal cache/config folders.</p>"
 #~ msgstr ""
-#~ "<p>칸타타는 인터넷으로부터 없는 음반표지와 가사를 내려받습니다. 또한, 인터넷 라디오등 스트림 항목을 저장할 수도 "
-#~ "있습니다.</p><p>이를 위해서, 관련 파일을 음악 폴더나 개인 캐시/설정 폴더에 저장할지를 확인해 주시기 바랍니다.</p>"
+#~ "<p>칸타타는 인터넷으로부터 없는 음반표지와 가사를 내려받습니다. 또한, 인터"
+#~ "넷 라디오등 스트림 항목을 저장할 수도 있습니다.</p><p>이를 위해서, 관련 파"
+#~ "일을 음악 폴더나 개인 캐시/설정 폴더에 저장할지를 확인해 주시기 바랍니다."
+#~ "</p>"
 
 #~ msgid ""
-#~ "Cantata is now configured! If you wish to further configure Cantata (to add "
-#~ "extra MPD hosts, etc) then Canta's configuration dialog may be accessed from"
-#~ " the menu triggered by the button in the top-right of Cantata's main window."
+#~ "Cantata is now configured! If you wish to further configure Cantata (to "
+#~ "add extra MPD hosts, etc) then Canta's configuration dialog may be "
+#~ "accessed from the menu triggered by the button in the top-right of "
+#~ "Cantata's main window."
 #~ msgstr ""
-#~ "이제 칸타타가 설정되었습니다! MPD 서버를 추가하는 등의 설정을 더 하려면, 칸타타 메인화면의 오른쪽 위에 있는 단추를 선택하면 설정 "
-#~ "대화상자가 나옵니다."
+#~ "이제 칸타타가 설정되었습니다! MPD 서버를 추가하는 등의 설정을 더 하려면, "
+#~ "칸타타 메인화면의 오른쪽 위에 있는 단추를 선택하면 설정 대화상자가 나옵니"
+#~ "다."
 
 #~ msgid "Show album year"
 #~ msgstr "앨범연도 보기"
@@ -6727,13 +6832,13 @@ msgstr "%1 에피소드"
 #~ msgstr "<tr><td align=\"right\">작곡가:</td><td>%1</td></tr>"
 
 #~ msgid ""
-#~ "<tr><td align=\"right\"><b>Artist:</b></td><td>%1</td></tr><tr><td "
-#~ "align=\"right\"><b>Album:</b></td><td>%2</td></tr><tr><td "
-#~ "align=\"right\"><b>Year:</b></td><td>%3</td></tr>"
+#~ "<tr><td align=\"right\"><b>Artist:</b></td><td>%1</td></tr><tr><td align="
+#~ "\"right\"><b>Album:</b></td><td>%2</td></tr><tr><td align=\"right"
+#~ "\"><b>Year:</b></td><td>%3</td></tr>"
 #~ msgstr ""
-#~ "<tr><td align=\"right\"><b>연주자:</b></td><td>%1</td></tr><tr><td "
-#~ "align=\"right\"><b>음반:</b></td><td>%2</td></tr><tr><td "
-#~ "align=\"right\"><b>연도:</b></td><td>%3</td></tr>"
+#~ "<tr><td align=\"right\"><b>연주자:</b></td><td>%1</td></tr><tr><td align="
+#~ "\"right\"><b>음반:</b></td><td>%2</td></tr><tr><td align=\"right\"><b>연"
+#~ "도:</b></td><td>%3</td></tr>"
 
 #~ msgctxt "album (albumYear)"
 #~ msgid "%1 (%2)"
@@ -6756,28 +6861,30 @@ msgstr "%1 에피소드"
 #~ msgstr "<b>오류</b><br/>"
 
 #~ msgid ""
-#~ "<tr><td align=\"right\">Artist:</td><td>%1</td></tr><tr><td "
-#~ "align=\"right\">Album:</td><td>%2</td></tr><tr><td "
-#~ "align=\"right\">Track:</td><td>%3</td></tr>"
+#~ "<tr><td align=\"right\">Artist:</td><td>%1</td></tr><tr><td align=\"right"
+#~ "\">Album:</td><td>%2</td></tr><tr><td align=\"right\">Track:</td><td>%3</"
+#~ "td></tr>"
 #~ msgstr ""
-#~ "<tr><td align=\"right\">연주자:</td><td>%1</td></tr><tr><td "
-#~ "align=\"right\">음반:</td><td>%2</td></tr><tr><td "
-#~ "align=\"right\">곡:</td><td>%3</td></tr>"
+#~ "<tr><td align=\"right\">연주자:</td><td>%1</td></tr><tr><td align=\"right"
+#~ "\">음반:</td><td>%2</td></tr><tr><td align=\"right\">곡:</td><td>%3</td></"
+#~ "tr>"
 
 #~ msgid ""
-#~ "<tr><td align=\"right\">Source file:</td><td>%1</td></tr><tr><td "
-#~ "align=\"right\">Destination file:</td><td>%2</td></tr>"
+#~ "<tr><td align=\"right\">Source file:</td><td>%1</td></tr><tr><td align="
+#~ "\"right\">Destination file:</td><td>%2</td></tr>"
 #~ msgstr ""
-#~ "<tr><td align=\"right\">원본 파일:</td><td>%1</td></tr><tr><td "
-#~ "align=\"right\">대상 파일:</td><td>%2</td></tr>"
+#~ "<tr><td align=\"right\">원본 파일:</td><td>%1</td></tr><tr><td align="
+#~ "\"right\">대상 파일:</td><td>%2</td></tr>"
 
 #~ msgid "<tr><td align=\"right\">File:</td><td>%1</td></tr>"
 #~ msgstr "<tr><td align=\"right\">파일:</td><td>%1</td></tr>"
 
 #~ msgid ""
-#~ "<tr><i><td align=\"right\"><i>Time "
-#~ "remaining:</i></td><td><i>%5</i></td></i></tr>"
-#~ msgstr "<tr><i><td align=\"right\"><i>남은 시간:</i></td><td><i>%5</i></td></i></tr>"
+#~ "<tr><i><td align=\"right\"><i>Time remaining:</i></td><td><i>%5</i></td></"
+#~ "i></tr>"
+#~ msgstr ""
+#~ "<tr><i><td align=\"right\"><i>남은 시간:</i></td><td><i>%5</i></td></i></"
+#~ "tr>"
 
 #~ msgid "<tr><td>%album%</td><td>%1</td><td>The name of the album.</td></tr>"
 #~ msgstr "<tr><td>%album%</td><td>%1</td><td>음반의 이름.</td></tr>"
@@ -6793,7 +6900,8 @@ msgstr "%1 에피소드"
 #~ msgstr "<tr><td>%track%</td><td>%1</td><td>곡 번호.</td></tr>"
 
 #~ msgid ""
-#~ "<tr><td>%year%</td><td>%1</td><td>The year of the album's release.</td></tr>"
+#~ "<tr><td>%year%</td><td>%1</td><td>The year of the album's release.</td></"
+#~ "tr>"
 #~ msgstr "<tr><td>%year%</td><td>%1</td><td>음반발매연도.</td></tr>"
 
 #~ msgid "<tr><td>%genre%</td><td>%1</td><td>The genre of the album.</td></tr>"
@@ -6880,12 +6988,16 @@ msgstr "%1 에피소드"
 #~ msgid ""
 #~ "The following is a list of online providers, to hide a provider simply un-"
 #~ "check its entry in this list."
-#~ msgstr "아래는 온라인서비스제공자로, 해당 카테고리를 숨기려면 아래 항목에서 선택하지 않습니다."
+#~ msgstr ""
+#~ "아래는 온라인서비스제공자로, 해당 카테고리를 숨기려면 아래 항목에서 선택하"
+#~ "지 않습니다."
 
 #~ msgid ""
 #~ "The following is a list of the top-level stream categories, to hide a "
 #~ "category simply un-check its entry in this list."
-#~ msgstr "아래는 상위 스트림 카테고리로, 해당 카테고리를 숨기려면 아래 항목에서 선택하지 않습니다."
+#~ msgstr ""
+#~ "아래는 상위 스트림 카테고리로, 해당 카테고리를 숨기려면 아래 항목에서 선택"
+#~ "하지 않습니다."
 
 #~ msgid "Icons Only"
 #~ msgstr "아이콘만"
@@ -6919,35 +7031,37 @@ msgstr "%1 에피소드"
 #~ msgstr "곡을 내려받을 수 없음 - 너무 많은 재전송.<br/><br/<hr/>%1"
 
 #~ msgid ""
-#~ "<p>The following variables will be replaced with their corresponding meaning"
-#~ " for each track name.</p><p><table "
-#~ "border=\"1\"><tr><th><em>Button</em></th><th><em>Variable</em></th><th><em>Description</em></th></tr><tr><td>%albumartist%</td><td>%1</td><td>The"
-#~ " artist of the album. For most albums, this will be the same as the <i>Track"
-#~ " Artist.</i> For compilations, this will often be <i>Various Artists.</i> "
-#~ "</td></tr><tr><td>%album%</td><td>%2</td><td>The name of the "
+#~ "<p>The following variables will be replaced with their corresponding "
+#~ "meaning for each track name.</p><p><table border="
+#~ "\"1\"><tr><th><em>Button</em></th><th><em>Variable</em></"
+#~ "th><th><em>Description</em></th></tr><tr><td>%albumartist%</td><td>%1</"
+#~ "td><td>The artist of the album. For most albums, this will be the same as "
+#~ "the <i>Track Artist.</i> For compilations, this will often be <i>Various "
+#~ "Artists.</i> </td></tr><tr><td>%album%</td><td>%2</td><td>The name of the "
 #~ "album.</td></tr><tr><td>%artist%</td><td>%3</td><td>The artist of each "
-#~ "track.</td></tr><tr><td>%title%</td><td>%4</td><td>The track title (without "
-#~ "<i>Track "
-#~ "Artist</i>).</td></tr><tr><td>%artistandtitle%</td><td>%5</td><td>The track "
-#~ "title (with <i>Track Artist</i>, if different to <i>Album "
-#~ "Artist</i>).</td></tr><tr><td>%track%</td><td>%6</td><td>The track "
-#~ "number.</td></tr><tr><td>%discnumber%</td><td>%7</td><td>The album number of"
-#~ " a multi-album album. Often compilations consist of several "
-#~ "albums.</td></tr><tr><td>%year%</td><td>%8</td><td>The year of the album's "
-#~ "release.</td></tr><tr><td>%genre%</td><td>%9</td><td>The genre of the "
-#~ "album.</td></tr></table></p>"
+#~ "track.</td></tr><tr><td>%title%</td><td>%4</td><td>The track title "
+#~ "(without <i>Track Artist</i>).</td></tr><tr><td>%artistandtitle%</td><td>"
+#~ "%5</td><td>The track title (with <i>Track Artist</i>, if different to "
+#~ "<i>Album Artist</i>).</td></tr><tr><td>%track%</td><td>%6</td><td>The "
+#~ "track number.</td></tr><tr><td>%discnumber%</td><td>%7</td><td>The album "
+#~ "number of a multi-album album. Often compilations consist of several "
+#~ "albums.</td></tr><tr><td>%year%</td><td>%8</td><td>The year of the "
+#~ "album's release.</td></tr><tr><td>%genre%</td><td>%9</td><td>The genre of "
+#~ "the album.</td></tr></table></p>"
 #~ msgstr ""
-#~ "<p>다음 변수는 의미에 따라 각 곡 이름이 됩니다.</p><p><table "
-#~ "border=\"1\"><tr><th><em>단추</em></th><th><em>변수</em></th><th><em>설명</em></th></tr><tr><td>%albumartist%</td><td>%1</td><td>음반연주자."
-#~ " 대부분의 음반은 <i>곡 연주자</i>와 같습니다. 컴필레이션은 많은 경우에 <i>여러 연주자</i>입니다. "
-#~ "</td></tr><tr><td>%album%</td><td>%2</td><td>음반명.</td></tr><tr><td>%artist%</td><td>%3</td><td>각각의"
-#~ " 곡 연주자.</td></tr><tr><td>%title%</td><td>%4</td><td>곡명 (<i>곡 "
-#~ "연주자</i>없이).</td></tr><tr><td>%artistandtitle%</td><td>%5</td><td>곡명 (<i>곡 "
-#~ "연주자</i>포함, <i>음반연주자</i>와 "
-#~ "다르다면).</td></tr><tr><td>%track%</td><td>%6</td><td>곡 "
-#~ "번호.</td></tr><tr><td>%discnumber%</td><td>%7</td><td>여러 음반의 장수. 컴필레이션은 종종 "
-#~ "서너장의 음반으로 되어 있습니다.</td></tr><tr><td>%year%</td><td>%8</td><td>음반 발매 "
-#~ "연도.</td></tr><tr><td>%genre%</td><td>%9</td><td>음반 장르.</td></tr></table></p>"
+#~ "<p>다음 변수는 의미에 따라 각 곡 이름이 됩니다.</p><p><table border="
+#~ "\"1\"><tr><th><em>단추</em></th><th><em>변수</em></th><th><em>설명</em></"
+#~ "th></tr><tr><td>%albumartist%</td><td>%1</td><td>음반연주자. 대부분의 음반"
+#~ "은 <i>곡 연주자</i>와 같습니다. 컴필레이션은 많은 경우에 <i>여러 연주자</"
+#~ "i>입니다. </td></tr><tr><td>%album%</td><td>%2</td><td>음반명.</td></"
+#~ "tr><tr><td>%artist%</td><td>%3</td><td>각각의 곡 연주자.</td></tr><tr><td>"
+#~ "%title%</td><td>%4</td><td>곡명 (<i>곡 연주자</i>없이).</td></tr><tr><td>"
+#~ "%artistandtitle%</td><td>%5</td><td>곡명 (<i>곡 연주자</i>포함, <i>음반연"
+#~ "주자</i>와 다르다면).</td></tr><tr><td>%track%</td><td>%6</td><td>곡 번호."
+#~ "</td></tr><tr><td>%discnumber%</td><td>%7</td><td>여러 음반의 장수. 컴필레"
+#~ "이션은 종종 서너장의 음반으로 되어 있습니다.</td></tr><tr><td>%year%</"
+#~ "td><td>%8</td><td>음반 발매 연도.</td></tr><tr><td>%genre%</td><td>%9</"
+#~ "td><td>음반 장르.</td></tr></table></p>"
 
 #~ msgid "Configure Online Service"
 #~ msgstr "온라인서비스설정"
@@ -6982,32 +7096,29 @@ msgstr "%1 에피소드"
 #~ msgid "Stop Immediately"
 #~ msgstr "바로 정지"
 
-#~ msgid "When 'Play Stream' is activated, the enabled stream is played locally."
+#~ msgid ""
+#~ "When 'Play Stream' is activated, the enabled stream is played locally."
 #~ msgstr "'스트림 연주'가 선택되면, 로컬에서 스트림이 연주됩니다."
 
 #~ msgid ""
-#~ "<p><table><tr><td colspan=\"2\"><b>Server</b></td></tr><tr><td "
-#~ "align=\"right\">Version:</td><td>%1.%2.%3</td></tr><tr><td "
-#~ "align=\"right\">Uptime:</td><td>%4</td></tr><tr><td align=\"right\">Time "
-#~ "playing:</td><td>%5</td></tr><tr/><tr><td "
-#~ "colspan=\"2\"><b>Database</b></td></tr><tr><td "
-#~ "align=\"right\">Artists:</td><td>%6</td></tr><tr><td "
-#~ "align=\"right\">Albums:</td><td>%7</td></tr><tr><td "
-#~ "align=\"right\">Songs:</td><td>%8</td></tr><tr><td align=\"right\">URL "
-#~ "handlers:</td><td>%9</td></tr><tr><td align=\"right\">Total "
-#~ "duration:</td><td>%10</td></tr><tr><td align=\"right\">Last "
-#~ "update:</td><td>%11</td></tr></table></p>"
+#~ "<p><table><tr><td colspan=\"2\"><b>Server</b></td></tr><tr><td align="
+#~ "\"right\">Version:</td><td>%1.%2.%3</td></tr><tr><td align=\"right"
+#~ "\">Uptime:</td><td>%4</td></tr><tr><td align=\"right\">Time playing:</"
+#~ "td><td>%5</td></tr><tr/><tr><td colspan=\"2\"><b>Database</b></td></"
+#~ "tr><tr><td align=\"right\">Artists:</td><td>%6</td></tr><tr><td align="
+#~ "\"right\">Albums:</td><td>%7</td></tr><tr><td align=\"right\">Songs:</"
+#~ "td><td>%8</td></tr><tr><td align=\"right\">URL handlers:</td><td>%9</td></"
+#~ "tr><tr><td align=\"right\">Total duration:</td><td>%10</td></tr><tr><td "
+#~ "align=\"right\">Last update:</td><td>%11</td></tr></table></p>"
 #~ msgstr ""
-#~ "<p><table><tr><td colspan=\"2\"><b>서버</b></td></tr><tr><td "
-#~ "align=\"right\">버전:</td><td>%1.%2.%3</td></tr><tr><td "
-#~ "align=\"right\">가동시간:</td><td>%4</td></tr><tr><td "
-#~ "align=\"right\">연주시간:</td><td>%5</td></tr><tr/><tr><td "
-#~ "colspan=\"2\"><b>데이터베이스</b></td></tr><tr><td "
-#~ "align=\"right\">연주자:</td><td>%6</td></tr><tr><td "
-#~ "align=\"right\">음반:</td><td>%7</td></tr><tr><td "
-#~ "align=\"right\">곡:</td><td>%8</td></tr><tr><td align=\"right\">URL "
-#~ "사용:</td><td>%9</td></tr><tr><td align=\"right\">총 "
-#~ "지속시간:</td><td>%10</td></tr><tr><td align=\"right\">최근 "
+#~ "<p><table><tr><td colspan=\"2\"><b>서버</b></td></tr><tr><td align=\"right"
+#~ "\">버전:</td><td>%1.%2.%3</td></tr><tr><td align=\"right\">가동시간:</"
+#~ "td><td>%4</td></tr><tr><td align=\"right\">연주시간:</td><td>%5</td></"
+#~ "tr><tr/><tr><td colspan=\"2\"><b>데이터베이스</b></td></tr><tr><td align="
+#~ "\"right\">연주자:</td><td>%6</td></tr><tr><td align=\"right\">음반:</"
+#~ "td><td>%7</td></tr><tr><td align=\"right\">곡:</td><td>%8</td></"
+#~ "tr><tr><td align=\"right\">URL 사용:</td><td>%9</td></tr><tr><td align="
+#~ "\"right\">총 지속시간:</td><td>%10</td></tr><tr><td align=\"right\">최근 "
 #~ "업데이트:</td><td>%11</td></tr></table></p>"
 
 #~ msgid "Stop immediately (or after fadout)"
@@ -7084,17 +7195,23 @@ msgstr "%1 에피소드"
 
 #~ msgid ""
 #~ "<i>\n"
-#~ "<b>NOTE:</b> To enable playback of Audio CDs, you <b>must</b> enable Cantata's HTTP server.\n"
+#~ "<b>NOTE:</b> To enable playback of Audio CDs, you <b>must</b> enable "
+#~ "Cantata's HTTP server.\n"
 #~ "<br/>\n"
 #~ "<br/>\n"
-#~ "<b>NOTE:</b> Some MPD installations cannot playback raw CD Audio via HTTP streams. To work around this, you can elect to have Cantata convert the CD Audio to MP3 on-the-fly when MPD reads the HTTP stream.\n"
+#~ "<b>NOTE:</b> Some MPD installations cannot playback raw CD Audio via HTTP "
+#~ "streams. To work around this, you can elect to have Cantata convert the "
+#~ "CD Audio to MP3 on-the-fly when MPD reads the HTTP stream.\n"
 #~ "</i>"
 #~ msgstr ""
 #~ "<i>\n"
-#~ "<b>참고:</b> 오디오 CD를 연주하려면, <b>반드시</b> 칸타타의 HTTP 서버를 이용해야 합니다.\n"
+#~ "<b>참고:</b> 오디오 CD를 연주하려면, <b>반드시</b> 칸타타의 HTTP 서버를 이"
+#~ "용해야 합니다.\n"
 #~ "<br/>\n"
 #~ "<br/>\n"
-#~ "<b>참고:</b> 어떤 MPD 설정은 HTTP 스트림으로 오디오 CD를 원래대로 연주할 수 없습니다. 이를 해결하려면, MPD가 HTTP 스트림을 읽을 때 오디오 CD를 MP3로 변환해야 합니다.\n"
+#~ "<b>참고:</b> 어떤 MPD 설정은 HTTP 스트림으로 오디오 CD를 원래대로 연주할 "
+#~ "수 없습니다. 이를 해결하려면, MPD가 HTTP 스트림을 읽을 때 오디오 CD를 MP3"
+#~ "로 변환해야 합니다.\n"
 #~ "</i>"
 
 #~ msgid "Default stop action:"
@@ -7113,11 +7230,32 @@ msgstr "%1 에피소드"
 #~ msgstr "서버 항상 사용:"
 
 #~ msgid ""
-#~ "<i><b>NOTE:</b> MPD usually only plays songs that are stored within its folders. If you have connected via a local socket, then MPD can also play files located on your filesystem. If you are using a non local socket (e.g. you have entered a hostname or IP address in the 'Host' field of the 'Connection' settings page), then Cantata contains a minimal HTTP server that can be used to serve files to MPD. This, however, will only work whilst Cantata is running.  If you enable 'Always use server', then Cantata will always pass server URLs to MPD for files, even when you have  connected via a local socket.<br/><br/>\n"
-#~ "<b>NOTE:</b> 'Address/interface' may contain either the IP address, or interface (e.g. eth0), that you wish to listen for connections on. If you leave this blank, then Cantata will choose the IP address of the first active interface.<br/><br/><b>NOTE:</b> Leave port set to 'Dynamic' to have Cantata choose a random port number.</i>"
+#~ "<i><b>NOTE:</b> MPD usually only plays songs that are stored within its "
+#~ "folders. If you have connected via a local socket, then MPD can also play "
+#~ "files located on your filesystem. If you are using a non local socket (e."
+#~ "g. you have entered a hostname or IP address in the 'Host' field of the "
+#~ "'Connection' settings page), then Cantata contains a minimal HTTP server "
+#~ "that can be used to serve files to MPD. This, however, will only work "
+#~ "whilst Cantata is running.  If you enable 'Always use server', then "
+#~ "Cantata will always pass server URLs to MPD for files, even when you "
+#~ "have  connected via a local socket.<br/><br/>\n"
+#~ "<b>NOTE:</b> 'Address/interface' may contain either the IP address, or "
+#~ "interface (e.g. eth0), that you wish to listen for connections on. If you "
+#~ "leave this blank, then Cantata will choose the IP address of the first "
+#~ "active interface.<br/><br/><b>NOTE:</b> Leave port set to 'Dynamic' to "
+#~ "have Cantata choose a random port number.</i>"
 #~ msgstr ""
-#~ "<i><b>참고:</b> MPD는 주로 음악 폴더에 저장된 음악만 연주합니다.로컬소켓에 연결되면 파일시스템의 파일을 연주할 수 있습니다. 로컬소켓을 사용하지 않는다면 (예로 '서버' 설정페이지의 '호스트' 입력란에 호스트 이름이나 IP주소를 입력했다면) 칸타타는 파일을 MPD로 서비스하는 최소한의 HTTP 서버 역할을 합니다. 다만, 칸타타가 실행되는 한에서만 작동합니다. '항상 서버 사용'을 선택하면 칸타타는 로컬소켓에 연결되었더라도 항상 서버 URL을 MPD 파일로 전달합니다.<br/><br/>\n"
-#~ "<b>참고:</b>'주소/인터페이스'는 연결을 원하는 IP주소나 eth0등 인터페이스를 포함할 수 있습니다. 로컬 루프백 주소 (127.0.0.1)을 쓰려면 비워두시기 바랍니다.<br/><br/><b>참고:</b> 포트를 '동적'으로 두면 칸타타가 포트 번호를 임의로 선택합니다.</i>"
+#~ "<i><b>참고:</b> MPD는 주로 음악 폴더에 저장된 음악만 연주합니다.로컬소켓"
+#~ "에 연결되면 파일시스템의 파일을 연주할 수 있습니다. 로컬소켓을 사용하지 않"
+#~ "는다면 (예로 '서버' 설정페이지의 '호스트' 입력란에 호스트 이름이나 IP주소"
+#~ "를 입력했다면) 칸타타는 파일을 MPD로 서비스하는 최소한의 HTTP 서버 역할을 "
+#~ "합니다. 다만, 칸타타가 실행되는 한에서만 작동합니다. '항상 서버 사용'을 선"
+#~ "택하면 칸타타는 로컬소켓에 연결되었더라도 항상 서버 URL을 MPD 파일로 전달"
+#~ "합니다.<br/><br/>\n"
+#~ "<b>참고:</b>'주소/인터페이스'는 연결을 원하는 IP주소나 eth0등 인터페이스"
+#~ "를 포함할 수 있습니다. 로컬 루프백 주소 (127.0.0.1)을 쓰려면 비워두시기 바"
+#~ "랍니다.<br/><br/><b>참고:</b> 포트를 '동적'으로 두면 칸타타가 포트 번호를 "
+#~ "임의로 선택합니다.</i>"
 
 #~ msgid "Move Up"
 #~ msgstr "위로 이동"
@@ -7147,9 +7285,11 @@ msgstr "%1 에피소드"
 #~ msgstr "카테고리 수정"
 
 #~ msgid ""
-#~ "<i><b>NOTE:</b> Use '|' to split mutliple genres - e.g. "
-#~ "'Current|Classic'</i>"
-#~ msgstr "<i><b>참고:</b> 다양한 장르로 나누려면 '|'를 사용합니다 - 예) 'Current|Classic'</i>"
+#~ "<i><b>NOTE:</b> Use '|' to split mutliple genres - e.g. 'Current|"
+#~ "Classic'</i>"
+#~ msgstr ""
+#~ "<i><b>참고:</b> 다양한 장르로 나누려면 '|'를 사용합니다 - 예) 'Current|"
+#~ "Classic'</i>"
 
 #~ msgid "Category:"
 #~ msgstr "카테고리:"
@@ -7277,13 +7417,14 @@ msgstr "%1 에피소드"
 #~ msgstr "마법사"
 
 #~ msgid ""
-#~ "<i><b>NOTE:</b> The 'Music folder' setting is used to lookup cover-art. If "
-#~ "you also have write permissions to this folder (and it's sub-folders), then "
-#~ "Cantata will save any downloaded covers into the respective album "
+#~ "<i><b>NOTE:</b> The 'Music folder' setting is used to lookup cover-art. "
+#~ "If you also have write permissions to this folder (and it's sub-folders), "
+#~ "then Cantata will save any downloaded covers into the respective album "
 #~ "folder.</i>"
 #~ msgstr ""
-#~ "<i><b>참고:</b> '음악 폴더' 설정은 표지그림을 찾기 위해 사용됩니다. 만약 이 폴더와 하부 폴더에 쓰기 권한이 있다면 내려받은"
-#~ " 표지를 각각의 음반 폴더에 저장합니다.</i>"
+#~ "<i><b>참고:</b> '음악 폴더' 설정은 표지그림을 찾기 위해 사용됩니다. 만약 "
+#~ "이 폴더와 하부 폴더에 쓰기 권한이 있다면 내려받은 표지를 각각의 음반 폴더"
+#~ "에 저장합니다.</i>"
 
 #~ msgid "(00:00)"
 #~ msgstr "(00:00)"

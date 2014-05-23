@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-05-23 13:59+0100\n"
+"POT-Creation-Date: 2014-05-23 14:10+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -114,7 +114,7 @@ msgstr ""
 #. i18n: file: tags/tageditor.ui:38
 #. i18n: ectx: property (text), widget (StateLabel, titleLabel)
 #: context/lyricsdialog.cpp:61 gui/searchpage.cpp:234 po/rc.cpp:107
-#: po/rc.cpp:392 po/rc.cpp:983 rc.cpp:107 rc.cpp:392 rc.cpp:983
+#: po/rc.cpp:392 po/rc.cpp:980 rc.cpp:107 rc.cpp:392 rc.cpp:980
 msgid "Title:"
 msgstr ""
 
@@ -131,8 +131,8 @@ msgstr ""
 #. i18n: file: tags/tageditor.ui:51
 #. i18n: ectx: property (text), widget (StateLabel, artistLabel)
 #: context/lyricsdialog.cpp:63 devices/actiondialog.cpp:817
-#: gui/searchpage.cpp:227 po/rc.cpp:101 po/rc.cpp:377 po/rc.cpp:986 rc.cpp:101
-#: rc.cpp:377 rc.cpp:986
+#: gui/searchpage.cpp:227 po/rc.cpp:101 po/rc.cpp:377 po/rc.cpp:983 rc.cpp:101
+#: rc.cpp:377 rc.cpp:983
 msgid "Artist:"
 msgstr ""
 
@@ -541,13 +541,13 @@ msgstr ""
 #. i18n: file: tags/tageditor.ui:90
 #. i18n: ectx: property (text), widget (StateLabel, albumLabel)
 #: devices/actiondialog.cpp:818 gui/searchpage.cpp:233 po/rc.cpp:389
-#: po/rc.cpp:995 rc.cpp:389 rc.cpp:995
+#: po/rc.cpp:992 rc.cpp:389 rc.cpp:992
 msgid "Album:"
 msgstr ""
 
 #. i18n: file: tags/tageditor.ui:25
 #. i18n: ectx: property (text), widget (StateLabel, trackNameLabel)
-#: devices/actiondialog.cpp:819 po/rc.cpp:980 rc.cpp:980
+#: devices/actiondialog.cpp:819 po/rc.cpp:977 rc.cpp:977
 msgid "Track:"
 msgstr ""
 
@@ -1743,8 +1743,8 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QPushButton, removeBtn)
 #. i18n: file: streams/streamssettings.ui:73
 #. i18n: ectx: property (text), widget (QPushButton, removeButton)
-#: gui/coverdialog.cpp:885 gui/stdactions.cpp:80 po/rc.cpp:362 po/rc.cpp:959
-#: rc.cpp:362 rc.cpp:959
+#: gui/coverdialog.cpp:885 gui/stdactions.cpp:80 po/rc.cpp:362 po/rc.cpp:956
+#: rc.cpp:362 rc.cpp:956
 msgid "Remove"
 msgstr ""
 
@@ -1812,7 +1812,7 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QRadioButton, playQueueBackground_none)
 #. i18n: file: gui/playbacksettings.ui:51
 #. i18n: ectx: property (specialValueText), widget (QSpinBox, stopFadeDuration)
-#. i18n: file: gui/playbacksettings.ui:151
+#. i18n: file: gui/playbacksettings.ui:144
 #. i18n: ectx: property (specialValueText), widget (QSpinBox, crossfading)
 #. i18n: file: support/shortcutssettingswidget.ui:78
 #. i18n: ectx: property (text), widget (QLabel, defaultShortcut)
@@ -1822,14 +1822,14 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QRadioButton, playQueueBackground_none)
 #. i18n: file: gui/playbacksettings.ui:51
 #. i18n: ectx: property (specialValueText), widget (QSpinBox, stopFadeDuration)
-#. i18n: file: gui/playbacksettings.ui:151
+#. i18n: file: gui/playbacksettings.ui:144
 #. i18n: ectx: property (specialValueText), widget (QSpinBox, crossfading)
 #. i18n: file: support/shortcutssettingswidget.ui:78
 #. i18n: ectx: property (text), widget (QLabel, defaultShortcut)
 #: gui/interfacesettings.cpp:63 gui/playbacksettings.cpp:46
 #: online/magnatuneservice.cpp:163 po/rc.cpp:6 po/rc.cpp:657 po/rc.cpp:768
-#: po/rc.cpp:795 po/rc.cpp:974 rc.cpp:6 rc.cpp:657 rc.cpp:768 rc.cpp:795
-#: rc.cpp:974
+#: po/rc.cpp:792 po/rc.cpp:971 rc.cpp:6 rc.cpp:657 rc.cpp:768 rc.cpp:792
+#: rc.cpp:971
 msgid "None"
 msgstr ""
 
@@ -2394,21 +2394,21 @@ msgstr ""
 msgid "Auto"
 msgstr ""
 
-#: gui/playbacksettings.cpp:161
+#: gui/playbacksettings.cpp:159
 msgid ""
 "<i>Connected to %1<br/>The entries below apply to the currently connected "
 "MPD collection.</i>"
 msgstr ""
 
-#. i18n: file: gui/playbacksettings.ui:117
+#. i18n: file: gui/playbacksettings.ui:110
 #. i18n: ectx: property (text), widget (QLabel, messageLabel)
-#: gui/playbacksettings.cpp:164 po/rc.cpp:786 rc.cpp:786
+#: gui/playbacksettings.cpp:162 po/rc.cpp:783 rc.cpp:783
 msgid ""
 "<i>Not Connected!<br/>The entries below cannot be modified, as Cantata is "
 "not connected to MPD.</i>"
 msgstr ""
 
-#: gui/playbacksettings.cpp:171
+#: gui/playbacksettings.cpp:169
 msgid ""
 "<p>Replay Gain is a proposed standard published in 2001 to normalize the "
 "perceived loudness of computer audio formats such as MP3 and Ogg Vorbis. It "
@@ -2636,8 +2636,8 @@ msgstr ""
 #. i18n: ectx: property (text), widget (BuddyLabel, composerLabel)
 #. i18n: file: tags/tageditor.ui:77
 #. i18n: ectx: property (text), widget (StateLabel, composerLabel)
-#: gui/searchpage.cpp:230 po/rc.cpp:104 po/rc.cpp:386 po/rc.cpp:992 rc.cpp:104
-#: rc.cpp:386 rc.cpp:992
+#: gui/searchpage.cpp:230 po/rc.cpp:104 po/rc.cpp:386 po/rc.cpp:989 rc.cpp:104
+#: rc.cpp:386 rc.cpp:989
 msgid "Composer:"
 msgstr ""
 
@@ -2649,7 +2649,7 @@ msgstr ""
 #. i18n: ectx: property (text), widget (BuddyLabel, label_3)
 #. i18n: file: tags/tageditor.ui:129
 #. i18n: ectx: property (text), widget (StateLabel, genreLabel)
-#: gui/searchpage.cpp:235 po/rc.cpp:110 po/rc.cpp:1004 rc.cpp:110 rc.cpp:1004
+#: gui/searchpage.cpp:235 po/rc.cpp:110 po/rc.cpp:1001 rc.cpp:110 rc.cpp:1001
 msgid "Genre:"
 msgstr ""
 
@@ -2661,7 +2661,7 @@ msgstr ""
 #. i18n: ectx: property (text), widget (BuddyLabel, commentLabel)
 #. i18n: file: tags/tageditor.ui:155
 #. i18n: ectx: property (text), widget (StateLabel, commentLabel)
-#: gui/searchpage.cpp:237 po/rc.cpp:410 po/rc.cpp:1010 rc.cpp:410 rc.cpp:1010
+#: gui/searchpage.cpp:237 po/rc.cpp:410 po/rc.cpp:1007 rc.cpp:410 rc.cpp:1007
 msgid "Comment:"
 msgstr ""
 
@@ -2695,8 +2695,8 @@ msgstr ""
 #. i18n: ectx: property (text), widget (BuddyLabel, hostLabel)
 #. i18n: file: network/proxysettings.ui:63
 #. i18n: ectx: property (text), widget (BuddyLabel, proxyHostLabel)
-#: gui/serversettings.cpp:101 po/rc.cpp:287 po/rc.cpp:326 po/rc.cpp:875
-#: rc.cpp:287 rc.cpp:326 rc.cpp:875
+#: gui/serversettings.cpp:101 po/rc.cpp:287 po/rc.cpp:326 po/rc.cpp:872
+#: rc.cpp:287 rc.cpp:326 rc.cpp:872
 msgid "Host:"
 msgstr ""
 
@@ -2954,7 +2954,7 @@ msgstr ""
 
 #. i18n: file: online/onlinesettings.ui:47
 #. i18n: ectx: property (text), widget (QPushButton, configureButton)
-#: models/onlineservicesmodel.cpp:76 po/rc.cpp:890 rc.cpp:890
+#: models/onlineservicesmodel.cpp:76 po/rc.cpp:887 rc.cpp:887
 msgid "Configure Service"
 msgstr ""
 
@@ -3252,8 +3252,8 @@ msgstr ""
 #. i18n: ectx: property (text), widget (BuddyLabel, userLabel)
 #. i18n: file: streams/digitallyimportedsettings.ui:48
 #. i18n: ectx: property (text), widget (BuddyLabel, label_2)
-#: online/magnatunesettingsdialog.cpp:43 po/rc.cpp:881 po/rc.cpp:896
-#: po/rc.cpp:923 rc.cpp:881 rc.cpp:896 rc.cpp:923
+#: online/magnatunesettingsdialog.cpp:43 po/rc.cpp:878 po/rc.cpp:893
+#: po/rc.cpp:920 rc.cpp:878 rc.cpp:893 rc.cpp:920
 msgid "Username:"
 msgstr ""
 
@@ -3286,9 +3286,9 @@ msgstr ""
 #. i18n: file: streams/digitallyimportedsettings.ui:61
 #. i18n: ectx: property (text), widget (BuddyLabel, label_3)
 #: online/magnatunesettingsdialog.cpp:44 po/rc.cpp:299 po/rc.cpp:317
-#: po/rc.cpp:488 po/rc.cpp:819 po/rc.cpp:884 po/rc.cpp:899 po/rc.cpp:926
-#: rc.cpp:299 rc.cpp:317 rc.cpp:488 rc.cpp:819 rc.cpp:884 rc.cpp:899
-#: rc.cpp:926
+#: po/rc.cpp:488 po/rc.cpp:816 po/rc.cpp:881 po/rc.cpp:896 po/rc.cpp:923
+#: rc.cpp:299 rc.cpp:317 rc.cpp:488 rc.cpp:816 rc.cpp:881 rc.cpp:896
+#: rc.cpp:923
 msgid "Password:"
 msgstr ""
 
@@ -3753,8 +3753,8 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QLabel, loginStatusLabel)
 #. i18n: file: streams/digitallyimportedsettings.ui:109
 #. i18n: ectx: property (text), widget (QLabel, loginStatusLabel)
-#: po/rc.cpp:65 po/rc.cpp:77 po/rc.cpp:905 po/rc.cpp:935 rc.cpp:65 rc.cpp:77
-#: rc.cpp:905 rc.cpp:935
+#: po/rc.cpp:65 po/rc.cpp:77 po/rc.cpp:902 po/rc.cpp:932 rc.cpp:65 rc.cpp:77
+#: rc.cpp:902 rc.cpp:932
 msgid "TextLabel"
 msgstr ""
 
@@ -3806,8 +3806,8 @@ msgstr ""
 #. i18n: ectx: property (text), widget (UrlLabel, mopidyNote)
 #. i18n: file: tags/trackorganiser.ui:130
 #. i18n: ectx: property (text), widget (UrlLabel, mopidyNote)
-#: po/rc.cpp:95 po/rc.cpp:1016 po/rc.cpp:1043 rc.cpp:95 rc.cpp:1016
-#: rc.cpp:1043
+#: po/rc.cpp:95 po/rc.cpp:1013 po/rc.cpp:1040 rc.cpp:95 rc.cpp:1013
+#: rc.cpp:1040
 msgid ""
 "<i><b>NOTE:</b> Connected to a Mopidy server (manual update required).</i>"
 msgstr ""
@@ -3826,7 +3826,7 @@ msgstr ""
 #. i18n: ectx: property (text), widget (BuddyLabel, label_4)
 #. i18n: file: tags/tageditor.ui:142
 #. i18n: ectx: property (text), widget (StateLabel, yearLabel)
-#: po/rc.cpp:113 po/rc.cpp:1007 rc.cpp:113 rc.cpp:1007
+#: po/rc.cpp:113 po/rc.cpp:1004 rc.cpp:113 rc.cpp:1004
 msgid "Year:"
 msgstr ""
 
@@ -3910,8 +3910,8 @@ msgstr ""
 #. i18n: ectx: property (text), widget (BuddyLabel, nameLabel)
 #. i18n: file: gui/serversettings.ui:63
 #. i18n: ectx: property (text), widget (QLabel, label_2)
-#: po/rc.cpp:161 po/rc.cpp:281 po/rc.cpp:810 streams/streamdialog.cpp:54
-#: rc.cpp:161 rc.cpp:281 rc.cpp:810
+#: po/rc.cpp:161 po/rc.cpp:281 po/rc.cpp:807 streams/streamdialog.cpp:54
+#: rc.cpp:161 rc.cpp:281 rc.cpp:807
 msgid "Name:"
 msgstr ""
 
@@ -3935,8 +3935,8 @@ msgstr ""
 #. i18n: ectx: property (text), widget (BuddyLabel, dirLabel)
 #. i18n: file: gui/serversettings.ui:315
 #. i18n: ectx: property (text), widget (BuddyLabel, dirLabel_2)
-#: po/rc.cpp:164 po/rc.cpp:491 po/rc.cpp:509 po/rc.cpp:822 po/rc.cpp:844
-#: rc.cpp:164 rc.cpp:491 rc.cpp:509 rc.cpp:822 rc.cpp:844
+#: po/rc.cpp:164 po/rc.cpp:491 po/rc.cpp:509 po/rc.cpp:819 po/rc.cpp:841
+#: rc.cpp:164 rc.cpp:491 rc.cpp:509 rc.cpp:819 rc.cpp:841
 msgid "Music folder:"
 msgstr ""
 
@@ -3984,7 +3984,7 @@ msgstr ""
 #. i18n: ectx: property (title), widget (QGroupBox, filenamesGroupBox)
 #. i18n: file: tags/trackorganiser.ui:25
 #. i18n: ectx: property (title), widget (QGroupBox, optionsBox)
-#: po/rc.cpp:185 po/rc.cpp:1019 rc.cpp:185 rc.cpp:1019
+#: po/rc.cpp:185 po/rc.cpp:1016 rc.cpp:185 rc.cpp:1016
 msgid "Filenames"
 msgstr ""
 
@@ -3996,7 +3996,7 @@ msgstr ""
 #. i18n: ectx: property (text), widget (BuddyLabel, label_6)
 #. i18n: file: tags/trackorganiser.ui:61
 #. i18n: ectx: property (text), widget (BuddyLabel, label_6)
-#: po/rc.cpp:188 po/rc.cpp:1022 rc.cpp:188 rc.cpp:1022
+#: po/rc.cpp:188 po/rc.cpp:1019 rc.cpp:188 rc.cpp:1019
 msgid "Filename scheme:"
 msgstr ""
 
@@ -4008,7 +4008,7 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QCheckBox, vfatSafe)
 #. i18n: file: tags/trackorganiser.ui:71
 #. i18n: ectx: property (text), widget (QCheckBox, vfatSafe)
-#: po/rc.cpp:191 po/rc.cpp:1025 rc.cpp:191 rc.cpp:1025
+#: po/rc.cpp:191 po/rc.cpp:1022 rc.cpp:191 rc.cpp:1022
 msgid "VFAT safe"
 msgstr ""
 
@@ -4020,7 +4020,7 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QCheckBox, asciiOnly)
 #. i18n: file: tags/trackorganiser.ui:78
 #. i18n: ectx: property (text), widget (QCheckBox, asciiOnly)
-#: po/rc.cpp:194 po/rc.cpp:1028 rc.cpp:194 rc.cpp:1028
+#: po/rc.cpp:194 po/rc.cpp:1025 rc.cpp:194 rc.cpp:1025
 msgid "Use only ASCII characters"
 msgstr ""
 
@@ -4032,7 +4032,7 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QCheckBox, replaceSpaces)
 #. i18n: file: tags/trackorganiser.ui:85
 #. i18n: ectx: property (text), widget (QCheckBox, replaceSpaces)
-#: po/rc.cpp:197 po/rc.cpp:1031 rc.cpp:197 rc.cpp:1031
+#: po/rc.cpp:197 po/rc.cpp:1028 rc.cpp:197 rc.cpp:1028
 msgid "Replace spaces with underscores"
 msgstr ""
 
@@ -4044,7 +4044,7 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QCheckBox, ignoreThe)
 #. i18n: file: tags/trackorganiser.ui:92
 #. i18n: ectx: property (text), widget (QCheckBox, ignoreThe)
-#: po/rc.cpp:200 po/rc.cpp:1034 rc.cpp:200 rc.cpp:1034
+#: po/rc.cpp:200 po/rc.cpp:1031 rc.cpp:200 rc.cpp:1031
 msgid "Ignore 'The' in artist names"
 msgstr ""
 
@@ -4195,7 +4195,7 @@ msgstr ""
 #. i18n: ectx: property (text), widget (BuddyLabel, label_9)
 #. i18n: file: network/proxysettings.ui:39
 #. i18n: ectx: property (text), widget (BuddyLabel, proxyTypeLabel)
-#: po/rc.cpp:278 po/rc.cpp:368 po/rc.cpp:866 rc.cpp:278 rc.cpp:368 rc.cpp:866
+#: po/rc.cpp:278 po/rc.cpp:368 po/rc.cpp:863 rc.cpp:278 rc.cpp:368 rc.cpp:863
 msgid "Type:"
 msgstr ""
 
@@ -4231,8 +4231,8 @@ msgstr ""
 #. i18n: ectx: property (text), widget (BuddyLabel, portLabel)
 #. i18n: file: network/proxysettings.ui:76
 #. i18n: ectx: property (text), widget (BuddyLabel, proxyPortLabel)
-#: po/rc.cpp:290 po/rc.cpp:329 po/rc.cpp:485 po/rc.cpp:816 po/rc.cpp:878
-#: rc.cpp:290 rc.cpp:329 rc.cpp:485 rc.cpp:816 rc.cpp:878
+#: po/rc.cpp:290 po/rc.cpp:329 po/rc.cpp:485 po/rc.cpp:813 po/rc.cpp:875
+#: rc.cpp:290 rc.cpp:329 rc.cpp:485 rc.cpp:813 rc.cpp:875
 msgid "Port:"
 msgstr ""
 
@@ -4594,7 +4594,7 @@ msgstr ""
 #. i18n: ectx: property (text), widget (BuddyLabel, hostLabel)
 #. i18n: file: gui/serversettings.ui:76
 #. i18n: ectx: property (text), widget (BuddyLabel, hostLabel)
-#: po/rc.cpp:482 po/rc.cpp:813 rc.cpp:482 rc.cpp:813
+#: po/rc.cpp:482 po/rc.cpp:810 rc.cpp:482 rc.cpp:810
 msgid "Host (or local socket):"
 msgstr ""
 
@@ -4615,7 +4615,7 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QLabel, socketNoteLabel)
 #. i18n: file: gui/serversettings.ui:219
 #. i18n: ectx: property (text), widget (QLabel, socketNoteLabel)
-#: po/rc.cpp:500 po/rc.cpp:838 rc.cpp:500 rc.cpp:838
+#: po/rc.cpp:500 po/rc.cpp:835 rc.cpp:500 rc.cpp:835
 msgid ""
 "<i><b>NOTE:</b> When using a local socket the full absolute path to the "
 "socket needs to be set. (Port number is not required.)</i>"
@@ -5068,65 +5068,59 @@ msgid "Stop playback on exit"
 msgstr ""
 
 #. i18n: file: gui/playbacksettings.ui:65
-#. i18n: ectx: property (text), widget (QCheckBox, stopDynamizerOnExit)
-#: po/rc.cpp:774 rc.cpp:774
-msgid "Stop dynamizer on exit"
-msgstr ""
-
-#. i18n: file: gui/playbacksettings.ui:72
 #. i18n: ectx: property (text), widget (QCheckBox, inhibitSuspend)
-#: po/rc.cpp:777 rc.cpp:777
+#: po/rc.cpp:774 rc.cpp:774
 msgid "Inhibit suspend whilst playing"
 msgstr ""
 
-#. i18n: file: gui/playbacksettings.ui:95
+#. i18n: file: gui/playbacksettings.ui:88
 #. i18n: ectx: property (text), widget (QLabel, noteLabel)
-#: po/rc.cpp:780 rc.cpp:780
+#: po/rc.cpp:777 rc.cpp:777
 msgid ""
 "<i><b>NOTE:</b> If you press and hold the stop button, then a menu will be "
 "shown allowing you to choose whether to stop playback now, or after the "
 "current track.</i>"
 msgstr ""
 
-#. i18n: file: gui/playbacksettings.ui:111
+#. i18n: file: gui/playbacksettings.ui:104
 #. i18n: ectx: property (title), widget (QGroupBox, outputBox)
-#: po/rc.cpp:783 rc.cpp:783
+#: po/rc.cpp:780 rc.cpp:780
 msgid "Output"
 msgstr ""
 
-#. i18n: file: gui/playbacksettings.ui:135
+#. i18n: file: gui/playbacksettings.ui:128
 #. i18n: ectx: property (text), widget (BuddyLabel, crossfadingLabel)
-#: po/rc.cpp:789 rc.cpp:789
+#: po/rc.cpp:786 rc.cpp:786
 msgid "Crossfade between tracks:"
 msgstr ""
 
-#. i18n: file: gui/playbacksettings.ui:145
+#. i18n: file: gui/playbacksettings.ui:138
 #. i18n: ectx: property (suffix), widget (QSpinBox, crossfading)
-#: po/rc.cpp:792 rc.cpp:792
+#: po/rc.cpp:789 rc.cpp:789
 msgid " s"
 msgstr ""
 
-#. i18n: file: gui/playbacksettings.ui:158
+#. i18n: file: gui/playbacksettings.ui:151
 #. i18n: ectx: property (text), widget (BuddyLabel, replayGainLabel)
-#: po/rc.cpp:798 rc.cpp:798
+#: po/rc.cpp:795 rc.cpp:795
 msgid "Replay gain:"
 msgstr ""
 
-#. i18n: file: gui/playbacksettings.ui:201
+#. i18n: file: gui/playbacksettings.ui:194
 #. i18n: ectx: property (text), widget (UrlLabel, aboutReplayGain)
-#: po/rc.cpp:801 rc.cpp:801
+#: po/rc.cpp:798 rc.cpp:798
 msgid "About replay gain"
 msgstr ""
 
-#. i18n: file: gui/playbacksettings.ui:210
+#. i18n: file: gui/playbacksettings.ui:203
 #. i18n: ectx: property (text), widget (QLabel, outputsViewLabel)
-#: po/rc.cpp:804 rc.cpp:804
+#: po/rc.cpp:801 rc.cpp:801
 msgid "Use the checkboxes below to control the active outputs."
 msgstr ""
 
 #. i18n: file: gui/serversettings.ui:35
 #. i18n: ectx: property (text), widget (QLabel, label)
-#: po/rc.cpp:807 rc.cpp:807
+#: po/rc.cpp:804 rc.cpp:804
 msgid "Collection:"
 msgstr ""
 
@@ -5138,13 +5132,13 @@ msgstr ""
 #. i18n: ectx: property (text), widget (BuddyLabel, coverNameLabel)
 #. i18n: file: gui/serversettings.ui:328
 #. i18n: ectx: property (text), widget (BuddyLabel, basicCoverNameLabel)
-#: po/rc.cpp:825 po/rc.cpp:847 rc.cpp:825 rc.cpp:847
+#: po/rc.cpp:822 po/rc.cpp:844 rc.cpp:822 rc.cpp:844
 msgid "Cover filename:"
 msgstr ""
 
 #. i18n: file: gui/serversettings.ui:152
 #. i18n: ectx: property (toolTip), widget (LineEdit, coverName)
-#: po/rc.cpp:829 rc.cpp:829
+#: po/rc.cpp:826 rc.cpp:826
 #, no-c-format
 msgid ""
 "<p>Filename (without extension) to save downloaded covers as.<br/>If left "
@@ -5155,13 +5149,13 @@ msgstr ""
 
 #. i18n: file: gui/serversettings.ui:159
 #. i18n: ectx: property (text), widget (BuddyLabel, streamUrlLabel)
-#: po/rc.cpp:832 rc.cpp:832
+#: po/rc.cpp:829 rc.cpp:829
 msgid "HTTP stream URL:"
 msgstr ""
 
 #. i18n: file: gui/serversettings.ui:190
 #. i18n: ectx: property (text), widget (QLabel, musicFolderNoteLabel)
-#: po/rc.cpp:835 rc.cpp:835
+#: po/rc.cpp:832 rc.cpp:832
 msgid ""
 "<i><b>NOTE:</b> The 'Music folder' setting is used to lookup cover-art "
 "(either the value specified above, or <code>cover.jpg / cover.png</code> if "
@@ -5172,7 +5166,7 @@ msgstr ""
 
 #. i18n: file: gui/serversettings.ui:264
 #. i18n: ectx: property (text), widget (QLabel, streamUrlNoteLabel)
-#: po/rc.cpp:841 rc.cpp:841
+#: po/rc.cpp:838 rc.cpp:838
 msgid ""
 "<i><b>NOTE:</b> 'HTTP Stream URL' is only of use if you have MPD configured "
 "to output to a HTTP stream, and you wish Cantata to be able to play that "
@@ -5181,7 +5175,7 @@ msgstr ""
 
 #. i18n: file: gui/serversettings.ui:343
 #. i18n: ectx: property (text), widget (StateLabel, basicMusicFolderNoteLabel)
-#: po/rc.cpp:850 rc.cpp:850
+#: po/rc.cpp:847 rc.cpp:847
 msgid ""
 "<i><b>NOTE:</b> If you change the 'Music folder' setting, then you will need "
 "to manually update the music database. This can be performed by pressing the "
@@ -5190,7 +5184,7 @@ msgstr ""
 
 #. i18n: file: gui/serversettings.ui:372
 #. i18n: ectx: property (text), widget (QLabel, musicFolderNoteLabel_2)
-#: po/rc.cpp:853 rc.cpp:853
+#: po/rc.cpp:850 rc.cpp:850
 msgid ""
 "<i><b>NOTE:</b> If no setting is specified for 'Cover filename, then Cantata "
 "will use a default of <code>cover</code> </i>"
@@ -5198,13 +5192,13 @@ msgstr ""
 
 #. i18n: file: http/httpserversettings.ui:25
 #. i18n: ectx: property (text), widget (BuddyLabel, label_5)
-#: po/rc.cpp:856 rc.cpp:856
+#: po/rc.cpp:853 rc.cpp:853
 msgid "Network interface:"
 msgstr ""
 
 #. i18n: file: http/httpserversettings.ui:57
 #. i18n: ectx: property (text), widget (QLabel, label_4)
-#: po/rc.cpp:859 rc.cpp:859
+#: po/rc.cpp:856 rc.cpp:856
 msgid ""
 "<i><b>NOTE:</b> MPD usually only plays songs that are stored within its "
 "folders. Cantata contains a minimal HTTP server that can be used to serve "
@@ -5216,31 +5210,31 @@ msgstr ""
 
 #. i18n: file: network/proxysettings.ui:26
 #. i18n: ectx: property (text), widget (BuddyLabel, modeLabel)
-#: po/rc.cpp:863 rc.cpp:863
+#: po/rc.cpp:860 rc.cpp:860
 msgid "Mode:"
 msgstr ""
 
 #. i18n: file: network/proxysettings.ui:50
 #. i18n: ectx: property (text), item, widget (QComboBox, proxyType)
-#: po/rc.cpp:869 rc.cpp:869
+#: po/rc.cpp:866 rc.cpp:866
 msgid "HTTP Proxy"
 msgstr ""
 
 #. i18n: file: network/proxysettings.ui:55
 #. i18n: ectx: property (text), item, widget (QComboBox, proxyType)
-#: po/rc.cpp:872 rc.cpp:872
+#: po/rc.cpp:869 rc.cpp:869
 msgid "SOCKS Proxy"
 msgstr ""
 
 #. i18n: file: online/onlinesettings.ui:12
 #. i18n: ectx: property (text), widget (QLabel, label)
-#: po/rc.cpp:887 rc.cpp:887
+#: po/rc.cpp:884 rc.cpp:884
 msgid "Use the checkboxes below to configure the list of active services."
 msgstr ""
 
 #. i18n: file: scrobbling/scrobblingsettings.ui:29
 #. i18n: ectx: property (text), widget (BuddyLabel, scrobblerLabel)
-#: po/rc.cpp:893 rc.cpp:893
+#: po/rc.cpp:890 rc.cpp:890
 msgid "Scrobble using:"
 msgstr ""
 
@@ -5252,7 +5246,7 @@ msgstr ""
 #. i18n: ectx: property (text), widget (BuddyLabel, statusLabel)
 #. i18n: file: streams/digitallyimportedsettings.ui:91
 #. i18n: ectx: property (text), widget (BuddyLabel, label_5)
-#: po/rc.cpp:902 po/rc.cpp:932 rc.cpp:902 rc.cpp:932
+#: po/rc.cpp:899 po/rc.cpp:929 rc.cpp:899 rc.cpp:929
 msgid "Status:"
 msgstr ""
 
@@ -5264,26 +5258,26 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QPushButton, loginButton)
 #. i18n: file: streams/digitallyimportedsettings.ui:122
 #. i18n: ectx: property (text), widget (QPushButton, loginButton)
-#: po/rc.cpp:908 po/rc.cpp:938 streams/digitallyimportedsettings.cpp:138
-#: streams/digitallyimportedsettings.cpp:144 rc.cpp:908 rc.cpp:938
+#: po/rc.cpp:905 po/rc.cpp:935 streams/digitallyimportedsettings.cpp:138
+#: streams/digitallyimportedsettings.cpp:144 rc.cpp:905 rc.cpp:935
 msgid "Login"
 msgstr ""
 
 #. i18n: file: scrobbling/scrobblingsettings.ui:122
 #. i18n: ectx: property (text), widget (QCheckBox, enableScrobbling)
-#: po/rc.cpp:911 rc.cpp:911
+#: po/rc.cpp:908 rc.cpp:908
 msgid "Scrobble tracks"
 msgstr ""
 
 #. i18n: file: scrobbling/scrobblingsettings.ui:129
 #. i18n: ectx: property (text), widget (QCheckBox, showLove)
-#: po/rc.cpp:914 rc.cpp:914
+#: po/rc.cpp:911 rc.cpp:911
 msgid "Show 'Love' button"
 msgstr ""
 
 #. i18n: file: streams/digitallyimportedsettings.ui:29
 #. i18n: ectx: property (text), widget (QLabel, label)
-#: po/rc.cpp:917 rc.cpp:917
+#: po/rc.cpp:914 rc.cpp:914
 msgid ""
 "You can listen for free without an account, but Premium members can listen "
 "to higher quality streams without advertisements. Visit <a href=\"http://www."
@@ -5293,25 +5287,25 @@ msgstr ""
 
 #. i18n: file: streams/digitallyimportedsettings.ui:42
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox)
-#: po/rc.cpp:920 rc.cpp:920
+#: po/rc.cpp:917 rc.cpp:917
 msgid "Premium Account"
 msgstr ""
 
 #. i18n: file: streams/digitallyimportedsettings.ui:78
 #. i18n: ectx: property (text), widget (BuddyLabel, label_4)
-#: po/rc.cpp:929 rc.cpp:929
+#: po/rc.cpp:926 rc.cpp:926
 msgid "Stream type:"
 msgstr ""
 
 #. i18n: file: streams/digitallyimportedsettings.ui:131
 #. i18n: ectx: property (text), widget (QLabel, expiryLabel)
-#: po/rc.cpp:941 rc.cpp:941
+#: po/rc.cpp:938 rc.cpp:938
 msgid "Session expiry:"
 msgstr ""
 
 #. i18n: file: streams/digitallyimportedsettings.ui:161
 #. i18n: ectx: property (text), widget (QLabel, noteLabel)
-#: po/rc.cpp:944 rc.cpp:944
+#: po/rc.cpp:941 rc.cpp:941
 msgid ""
 "<i><b>NOTE:</b> These settings apply to Digitally Imported, JazzRadio.com, "
 "RockRadio.com, and Sky.fm</i>"
@@ -5319,7 +5313,7 @@ msgstr ""
 
 #. i18n: file: streams/digitallyimportedsettings.ui:174
 #. i18n: ectx: property (text), widget (QLabel, note2Label)
-#: po/rc.cpp:947 rc.cpp:947
+#: po/rc.cpp:944 rc.cpp:944
 msgid ""
 "<i><b>NOTE:</b> If you enter account details, then a 'DI' status item will "
 "appear under the list of streams. This will indicate if you are logged in or "
@@ -5328,25 +5322,25 @@ msgstr ""
 
 #. i18n: file: streams/streamssettings.ui:12
 #. i18n: ectx: property (text), widget (QLabel, label)
-#: po/rc.cpp:950 rc.cpp:950
+#: po/rc.cpp:947 rc.cpp:947
 msgid "Use the checkboxes below to configure the list of active providers."
 msgstr ""
 
 #. i18n: file: streams/streamssettings.ui:47
 #. i18n: ectx: property (text), widget (QPushButton, configureButton)
-#: po/rc.cpp:953 rc.cpp:953
+#: po/rc.cpp:950 rc.cpp:950
 msgid "Configure Provider"
 msgstr ""
 
 #. i18n: file: streams/streamssettings.ui:60
 #. i18n: ectx: property (text), widget (QPushButton, installButton)
-#: po/rc.cpp:956 rc.cpp:956
+#: po/rc.cpp:953 rc.cpp:953
 msgid "Install"
 msgstr ""
 
 #. i18n: file: streams/streamssettings.ui:80
 #. i18n: ectx: property (text), widget (QLabel, note)
-#: po/rc.cpp:962 rc.cpp:962
+#: po/rc.cpp:959 rc.cpp:959
 msgid ""
 "<i><b>NOTE:</b> Built-in categories are shown in italic, and these cannot be "
 "removed.</i>"
@@ -5354,49 +5348,49 @@ msgstr ""
 
 #. i18n: file: support/shortcutssettingswidget.ui:22
 #. i18n: ectx: property (text), widget (BuddyLabel, label_2)
-#: po/rc.cpp:965 rc.cpp:965
+#: po/rc.cpp:962 rc.cpp:962
 msgid "Search:"
 msgstr ""
 
 #. i18n: file: support/shortcutssettingswidget.ui:65
 #. i18n: ectx: property (title), widget (QGroupBox, actionBox)
-#: po/rc.cpp:968 rc.cpp:968
+#: po/rc.cpp:965 rc.cpp:965
 msgid "Shortcut for Selected Action"
 msgstr ""
 
 #. i18n: file: support/shortcutssettingswidget.ui:71
 #. i18n: ectx: property (text), widget (QRadioButton, useDefault)
-#: po/rc.cpp:971 rc.cpp:971
+#: po/rc.cpp:968 rc.cpp:968
 msgid "Default:"
 msgstr ""
 
 #. i18n: file: support/shortcutssettingswidget.ui:85
 #. i18n: ectx: property (text), widget (QRadioButton, useCustom)
-#: po/rc.cpp:977 rc.cpp:977
+#: po/rc.cpp:974 rc.cpp:974
 msgid "Custom:"
 msgstr ""
 
 #. i18n: file: tags/tageditor.ui:64
 #. i18n: ectx: property (text), widget (StateLabel, albumArtistLabel)
-#: po/rc.cpp:989 rc.cpp:989
+#: po/rc.cpp:986 rc.cpp:986
 msgid "Album artist:"
 msgstr ""
 
 #. i18n: file: tags/tageditor.ui:103
 #. i18n: ectx: property (text), widget (StateLabel, trackLabel)
-#: po/rc.cpp:998 rc.cpp:998
+#: po/rc.cpp:995 rc.cpp:995
 msgid "Track number:"
 msgstr ""
 
 #. i18n: file: tags/tageditor.ui:116
 #. i18n: ectx: property (text), widget (StateLabel, discLabel)
-#: po/rc.cpp:1001 rc.cpp:1001
+#: po/rc.cpp:998 rc.cpp:998
 msgid "Disc number:"
 msgstr ""
 
 #. i18n: file: tags/tageditor.ui:186
 #. i18n: ectx: property (text), widget (QLabel, label_7x)
-#: po/rc.cpp:1013 rc.cpp:1013
+#: po/rc.cpp:1010 rc.cpp:1010
 msgid ""
 "<i><b>NOTE</b> Multiple genres should be separated via a semicolon (e.g. "
 "'Rock;Hard Rock')</i>"
@@ -5404,22 +5398,22 @@ msgstr ""
 
 #. i18n: file: tags/trackorganiser.ui:115
 #. i18n: ectx: property (text), widget (QTreeWidget, files)
-#: po/rc.cpp:1037 rc.cpp:1037
+#: po/rc.cpp:1034 rc.cpp:1034
 msgid "Original Name"
 msgstr ""
 
 #. i18n: file: tags/trackorganiser.ui:120
 #. i18n: ectx: property (text), widget (QTreeWidget, files)
-#: po/rc.cpp:1040 rc.cpp:1040
+#: po/rc.cpp:1037 rc.cpp:1037
 msgid "New Name"
 msgstr ""
 
-#: po/rc.cpp:1044 rc.cpp:1044
+#: po/rc.cpp:1041 rc.cpp:1041
 msgctxt "NAME OF TRANSLATORS"
 msgid "Your names"
 msgstr ""
 
-#: po/rc.cpp:1045 rc.cpp:1045
+#: po/rc.cpp:1042 rc.cpp:1042
 msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
 msgstr ""

@@ -77,7 +77,6 @@ public:
     bool minimiseOnClose();
     bool showPopups();
     bool stopOnExit();
-    bool stopDynamizerOnExit();
     bool storeCoversInMpdDir();
     bool storeLyricsInMpdDir();
     bool storeStreamsInMpdDir();
@@ -195,7 +194,6 @@ public:
     void saveCurrentConnection(const QString &v);
     void saveShowFullScreen(bool v);
     void saveStopOnExit(bool v);
-    void saveStopDynamizerOnExit(bool v);
     void saveHeaderState(const QString &key, const QByteArray &v);
     void saveSplitterState(const QByteArray &v);
     void saveSplitterAutoHide(bool v);

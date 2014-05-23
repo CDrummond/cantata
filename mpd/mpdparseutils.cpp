@@ -110,6 +110,10 @@ static const QByteArray constStatusBitrateKey("bitrate: ");
 static const QByteArray constStatusAudioKey("audio: ");
 static const QByteArray constStatusUpdatingDbKey("updating_db: ");
 static const QByteArray constStatusErrorKey("error: ");
+#ifdef ENABLE_DYNAMIC
+static const QByteArray constChannel("channel: ");
+static const QByteArray constMessage("message: ");
+#endif
 
 static const QByteArray constOkValue("OK");
 static const QByteArray constSetValue("1");
@@ -455,6 +459,28 @@ QStringList MPDParseUtils::parseList(const QByteArray &data, const QByteArray &k
     return items;
 }
 
+#ifdef ENABLE_DYNAMIC
+MPDParseUtils::MessageMap MPDParseUtils::parseMessages(const QByteArray &data)
+{
+    MPDParseUtils::MessageMap messages;
+    QList<QByteArray> lines = data.split('\n');
+    QByteArray channel;
+
+    foreach (const QByteArray &line, lines) {
+        // Skip the "OK" line, this is NOT a valid item!!!
+        if (constOkValue==line) {
+            continue;
+        }
+        if (line.startsWith(constChannel)) {
+            channel=line.mid(constChannel.length());
+        } else if (line.startsWith(constMessage)) {
+            messages[channel].append(QString::fromUtf8(line.mid(constMessage.length())));
+        }
+    }
+    return messages;
+}
+
+#endif
 static bool groupSingleTracks=false;
 
 bool MPDParseUtils::groupSingle()

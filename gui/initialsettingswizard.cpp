@@ -129,7 +129,6 @@ MPDConnectionDetails InitialSettingsWizard::getDetails()
     det.password=password->text();
     det.dir=dir->text().trimmed();
     det.setDirReadable();
-    det.dynamizerPort=0;
     return det;
 }
 

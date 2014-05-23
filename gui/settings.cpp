@@ -185,7 +185,6 @@ MPDConnectionDetails Settings::connectionDetails(const QString &name)
         #else
         details.dir=Utils::fixPath(cfg.get("mpdDir", mpdDefaults.dir));
         #endif
-        details.dynamizerPort=0;
     } else {
         QString n=MPDConnectionDetails::configGroupName(name);
         details.name=name;
@@ -214,7 +213,6 @@ MPDConnectionDetails Settings::connectionDetails(const QString &name)
             } else
             #endif // ENABLE_KWALLET
             details.password=cfg.get("passwd", name.isEmpty() ? mpdDefaults.passwd : QString());
-            details.dynamizerPort=cfg.get("dynamizerPort", 0);
             details.coverName=cfg.get("coverName", QString());
             #ifdef ENABLE_HTTP_STREAM_PLAYBACK
             details.streamUrl=cfg.get("streamUrl", QString());
@@ -225,7 +223,6 @@ MPDConnectionDetails Settings::connectionDetails(const QString &name)
             details.port=mpdDefaults.port;
             details.dir=mpdDefaults.dir;
             details.password=mpdDefaults.passwd;
-            details.dynamizerPort=0;
             details.coverName=QString();
             #ifdef ENABLE_HTTP_STREAM_PLAYBACK
             details.streamUrl=QString();
@@ -978,7 +975,6 @@ void Settings::saveConnectionDetails(const MPDConnectionDetails &v)
     } else
     #endif // ENABLE_KWALLET
     cfg.set("passwd", v.password);
-    cfg.set("dynamizerPort", (int)v.dynamizerPort);
     cfg.set("coverName", v.coverName);
     #ifdef ENABLE_HTTP_STREAM_PLAYBACK
     cfg.set("streamUrl", v.streamUrl);

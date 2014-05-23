@@ -33,24 +33,6 @@
 
 class QTimer;
 class NetworkJob;
-class QUdpSocket;
-
-class MulticastReceiver : public QObject
-{
-    Q_OBJECT
-public:
-    MulticastReceiver(QObject *parent, const QString &i, const QString &group, quint16 port);
-
-Q_SIGNALS:
-    void status(const QString &st);
-
-private Q_SLOTS:
-    void processMessages();
-
-private:
-    QUdpSocket *socket;
-    QString id;
-};
 
 class Dynamic : public ActionModel
 {
@@ -59,7 +41,7 @@ class Dynamic : public ActionModel
 public:
     enum Command {
         Unknown,
-        Id,
+        Ping,
         List,
         Status,
         Save,
@@ -68,7 +50,7 @@ public:
         Control
     };
 
-//    static Command toCommand(const QString &cmd);
+    static Command toCommand(const QString &cmd);
     static QString toString(Command cmd);
     static void enableDebug();
 
@@ -96,9 +78,9 @@ public:
     static const QString constExcludeKey;
 
     Dynamic();
-    virtual ~Dynamic() { stopReceiver(); }
+    virtual ~Dynamic() { }
 
-    bool isRemote() const { return !dynamicUrl.isEmpty(); }
+    bool isRemote() const { return usingRemote; }
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     int columnCount(const QModelIndex&) const { return 1; }
@@ -125,42 +107,34 @@ public:
 
 Q_SIGNALS:
     void running(bool status);
-    void remoteRunning(bool status);
     void error(const QString &str);
 
     // These are for communicating with MPD object (which is in its own thread, so need to talk via signal/slots)
     void clear();
+    void remoteMessage(const QStringList &args);
 
     // These are as the result of asynchronous HTTP calls
     void saved(bool s);
     void loadingList();
     void loadedList();
 
-public Q_SLOTS:
-    void refreshList();
-
 private Q_SLOTS:
     void checkHelper();
     void checkIfRemoteIsRunning();
     void updateRemoteStatus();
-    void remoteJobFinished();
-    void dynamicUrlChanged(const QString &url);
-    void parseStatus(const QString &response);
+    void remoteResponse(QStringList msg);
+    void remoteDynamicSupported(bool s);
+    void parseStatus(QStringList response);
 
 private:
     void pollRemoteHelper();
     int getPid() const;
     bool controlApp(bool isStart);
     QList<Entry>::Iterator find(const QString &e);
-    void sendCommand(Command cmd, const QStringList &args=QStringList());
+    bool sendCommand(Command cmd, const QStringList &args=QStringList());
     void loadLocal();
-    void loadRemote();
-    void parseRemote(const QString &response);
-    void parseId(const QString &response);
-    void checkResponse(const QString &response);
+    void parseRemote(const QStringList &response);
     void updateEntry(const Entry &e);
-    void stopReceiver();
-    void startReceiver(const QString &id, const QString &group, quint16 port);
 
 private:
     QTimer *localTimer;
@@ -170,6 +144,7 @@ private:
     Action *stopAction;
 
     // For remote dynamic servers...
+    bool usingRemote;
     QTimer *remoteTimer;
     bool remotePollingEnabled;
     int statusTime;
@@ -177,9 +152,8 @@ private:
     QString dynamicUrl;
     NetworkJob *currentJob;
     Command currentCommand;
-    QStringList currentArgs;
+    QString currentDelete;
     Entry currentSave;
-    MulticastReceiver *receiver;
 };
 
 #endif

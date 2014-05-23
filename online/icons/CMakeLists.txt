@@ -1,5 +1,5 @@
 if (WIN32)
-    install(FILES podcasts.png soundcloud.png DESTINATION ${CMAKE_INSTALL_PREFIX}/icons/)
+    install(FILES bbc.svg cbc.svg npr.svg podcasts.png soundcloud.png DESTINATION ${CMAKE_INSTALL_PREFIX}/icons/)
 else (WIN32)
-    install(FILES podcasts.png soundcloud.png DESTINATION ${CMAKE_INSTALL_PREFIX}/share/${CMAKE_PROJECT_NAME}/icons/)
+    install(FILES bbc.svg cbc.svg npr.svg podcasts.png soundcloud.png DESTINATION ${CMAKE_INSTALL_PREFIX}/share/${CMAKE_PROJECT_NAME}/icons/)
 endif (WIN32)

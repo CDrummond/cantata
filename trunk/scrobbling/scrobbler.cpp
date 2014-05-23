@@ -745,16 +745,23 @@ void Scrobbler::reset()
 void Scrobbler::loadScrobblers()
 {
     if (scrobblers.isEmpty()) {
-        QFile f(CANTATA_SYS_CONFIG_DIR+"scrobblers.xml");
-        if (f.open(QIODevice::ReadOnly)) {
-            QXmlStreamReader doc(&f);
-            while (!doc.atEnd()) {
-                doc.readNext();
-                if (doc.isStartElement() && QLatin1String("scrobbler")==doc.name()) {
-                    QString name=doc.attributes().value("name").toString();
-                    QString url=doc.attributes().value("url").toString();
-                    if (!name.isEmpty() && !url.isEmpty()) {
-                        scrobblers.insert(name, url);
+        QStringList dirs=QStringList() << Utils::dataDir() << CANTATA_SYS_CONFIG_DIR;
+        foreach (const QString &dir, dirs) {
+            if (dir.isEmpty()) {
+                continue;
+            }
+
+            QFile f(dir+"scrobblers.xml");
+            if (f.open(QIODevice::ReadOnly)) {
+                QXmlStreamReader doc(&f);
+                while (!doc.atEnd()) {
+                    doc.readNext();
+                    if (doc.isStartElement() && QLatin1String("scrobbler")==doc.name()) {
+                        QString name=doc.attributes().value("name").toString();
+                        QString url=doc.attributes().value("url").toString();
+                        if (!name.isEmpty() && !url.isEmpty() && !scrobblers.contains(name)) {
+                            scrobblers.insert(name, url);
+                        }
                     }
                 }
             }

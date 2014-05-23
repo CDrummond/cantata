@@ -323,17 +323,23 @@ QString Covers::fixArtist(const QString &artist)
     static bool initialised=false;
     if (!initialised) {
         initialised=true;
-        QFile f(CANTATA_SYS_CONFIG_DIR+QLatin1String("/tag-fixes.xml"));
+        QStringList dirs=QStringList() << Utils::dataDir() << CANTATA_SYS_CONFIG_DIR;
+        foreach (const QString &dir, dirs) {
+            if (dir.isEmpty()) {
+                continue;
+            }
 
-        if (f.open(QIODevice::ReadOnly)) {
-            QXmlStreamReader doc(&f);
-            while (!doc.atEnd()) {
-                doc.readNext();
-                if (doc.isStartElement() && QLatin1String("artist")==doc.name()) {
-                    QString from=doc.attributes().value("from").toString();
-                    QString to=doc.attributes().value("to").toString();
-                    if (!from.isEmpty() && !to.isEmpty() && from!=to) {
-                        artistMap.insert(from, to);
+            QFile f(dir+QLatin1String("/tag-fixes.xml"));
+            if (f.open(QIODevice::ReadOnly)) {
+                QXmlStreamReader doc(&f);
+                while (!doc.atEnd()) {
+                    doc.readNext();
+                    if (doc.isStartElement() && QLatin1String("artist")==doc.name()) {
+                        QString from=doc.attributes().value("from").toString();
+                        QString to=doc.attributes().value("to").toString();
+                        if (!from.isEmpty() && !to.isEmpty() && from!=to && !artistMap.contains(from)) {
+                            artistMap.insert(from, to);
+                        }
                     }
                 }
             }

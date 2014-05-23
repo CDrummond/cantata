@@ -698,9 +698,9 @@ QString Utils::cacheDir(const QString &sub, bool create)
 QString Utils::systemDir(const QString &sub)
 {
     #if defined Q_OS_WIN || defined Q_OS_MAC
-    return dirSyntax(QCoreApplication::applicationDirPath())+(sub.isEmpty() ? QString() : (sub+constDirSep));
+    return fixPath(QCoreApplication::applicationDirPath())+(sub.isEmpty() ? QString() : (sub+constDirSep));
     #else
-    return QString(INSTALL_PREFIX "/share/")+QCoreApplication::applicationName()+constDirSep+(sub.isEmpty() ? QString() : (sub+constDirSep));
+    return fixPath(QString(INSTALL_PREFIX "/share/")+QCoreApplication::applicationName()+constDirSep+(sub.isEmpty() ? QString() : sub));
     #endif
 }
 

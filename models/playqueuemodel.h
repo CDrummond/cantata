@@ -74,7 +74,9 @@ public:
     static const QLatin1String constUriMimeType;
 
     static void encode(QMimeData &mimeData, const QString &mime, const QStringList &values);
+    static void encode(QMimeData &mimeData, const QString &mime, const QList<quint32> &values);
     static QStringList decode(const QMimeData &mimeData, const QString &mime);
+    static QList<quint32> decodeInts(const QMimeData &mimeData, const QString &mime);
     static QString headerText(int col);
     #endif
 

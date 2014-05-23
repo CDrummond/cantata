@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cantata 1.2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-05-23 14:10+0100\n"
+"POT-Creation-Date: 2014-05-23 14:59+0100\n"
 "PO-Revision-Date: 2012-10-24 20:00+0900\n"
 "Last-Translator: Minho Park <parkmino@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3604,43 +3604,43 @@ msgstr "%1의 팟캐스트를 가져올 수 없음"
 msgid "There was a problem parsing the response from %1"
 msgstr "%1의 응답을 분석할 수 없습니다"
 
-#: online/podcastsearchdialog.cpp:450
+#: online/podcastsearchdialog.cpp:446
 msgid "Failed to download directory listing"
 msgstr "디렉터리 항목을 내려받을 수 없음"
 
-#: online/podcastsearchdialog.cpp:458
+#: online/podcastsearchdialog.cpp:454
 msgid "Failed to parse directory listing"
 msgstr "디렉터리 항목을 분석할 수 없음"
 
-#: online/podcastsearchdialog.cpp:508
+#: online/podcastsearchdialog.cpp:504
 msgid "URL"
 msgstr "URL"
 
-#: online/podcastsearchdialog.cpp:517
+#: online/podcastsearchdialog.cpp:513
 msgid "Enter podcast URL..."
 msgstr "팟캐스트 URL 입력..."
 
-#: online/podcastsearchdialog.cpp:518
+#: online/podcastsearchdialog.cpp:514
 msgid "Load"
 msgstr "읽음"
 
-#: online/podcastsearchdialog.cpp:525
+#: online/podcastsearchdialog.cpp:521
 msgid "Enter podcast URL below, and press 'Load'"
 msgstr "아래 팟캐스트 URL을 입력하고 '읽음'을 누름"
 
-#: online/podcastsearchdialog.cpp:552
+#: online/podcastsearchdialog.cpp:548
 msgid "Invalid URL!"
 msgstr "잘못된 URL!"
 
-#: online/podcastsearchdialog.cpp:562
+#: online/podcastsearchdialog.cpp:558
 msgid "Failed to fetch podcast!"
 msgstr "팟캐스트를 가져올 수 없음!"
 
-#: online/podcastsearchdialog.cpp:567
+#: online/podcastsearchdialog.cpp:563
 msgid "Failed to parse podcast."
 msgstr "팟캐스트 분석 안 됨."
 
-#: online/podcastsearchdialog.cpp:571
+#: online/podcastsearchdialog.cpp:567
 msgid ""
 "Cantata only supports audio podcasts! The URL entered contains only video "
 "podcasts."
@@ -3648,43 +3648,43 @@ msgstr ""
 "오디오 팟캐스트만 지원합니다! 입력한 URL은 비디오 팟캐스트만 포함하고 있습니"
 "다."
 
-#: online/podcastsearchdialog.cpp:589
+#: online/podcastsearchdialog.cpp:585
 msgid "Subscribe"
 msgstr "구독"
 
-#: online/podcastsearchdialog.cpp:607
+#: online/podcastsearchdialog.cpp:603
 msgid "Enter URL"
 msgstr "URL 입력"
 
-#: online/podcastsearchdialog.cpp:607
+#: online/podcastsearchdialog.cpp:603
 msgid "Manual podcast URL"
 msgstr "수동 팟캐스트 URL"
 
-#: online/podcastsearchdialog.cpp:611 online/podcastsearchdialog.cpp:615
+#: online/podcastsearchdialog.cpp:607 online/podcastsearchdialog.cpp:611
 msgid "Search %1"
 msgstr "%1 찾기"
 
-#: online/podcastsearchdialog.cpp:611 online/podcastsearchdialog.cpp:615
+#: online/podcastsearchdialog.cpp:607 online/podcastsearchdialog.cpp:611
 msgid "Search for podcasts on %1"
 msgstr "%1에서 팟캐스트를 찾기"
 
-#: online/podcastsearchdialog.cpp:629
-msgid "Browse %1"
-msgstr "%1 둘러보기"
-
-#: online/podcastsearchdialog.cpp:629
-msgid "Browse %1 podcasts"
-msgstr "%1 팟캐스트 둘러보기"
-
-#: online/podcastsearchdialog.cpp:640
+#: online/podcastsearchdialog.cpp:623
 msgid "Add Podcast Subscription"
 msgstr "팟캐스트 구독 추가"
 
-#: online/podcastsearchdialog.cpp:696
+#: online/podcastsearchdialog.cpp:698
+msgid "Browse %1"
+msgstr "%1 둘러보기"
+
+#: online/podcastsearchdialog.cpp:698
+msgid "Browse %1 podcasts"
+msgstr "%1 팟캐스트 둘러보기"
+
+#: online/podcastsearchdialog.cpp:714
 msgid "Subscription added"
 msgstr "구독 추가됨"
 
-#: online/podcastsearchdialog.cpp:698
+#: online/podcastsearchdialog.cpp:716
 msgid "You are already subscribed to this podcast!"
 msgstr "이미 이 팟캐스트를 구독하고 있습니다!"
 
@@ -6108,7 +6108,7 @@ msgid "Search %1:"
 msgstr "%1 찾기:"
 
 #: streams/streamspage.cpp:626
-msgid "Added to '%1'' favorites"
+msgid "Added '%1'' to favorites"
 msgstr ""
 
 #: streams/streamssettings.cpp:73

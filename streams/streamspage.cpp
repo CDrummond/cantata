@@ -623,5 +623,6 @@ void StreamsPage::expandFavourites()
 
 void StreamsPage::addedToFavourites(const QString &name)
 {
-    itemView()->showMessage(i18n("Added to '%1'' favorites", name), constMsgDisplayTime);
+    itemView()->showMessage(i18n("Added '%1'' to favorites", name), constMsgDisplayTime);
 }
+

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-05-23 14:10+0100\n"
+"POT-Creation-Date: 2014-05-23 14:59+0100\n"
 "PO-Revision-Date: 2014-04-14 19:32+0200\n"
 "Last-Translator: Markus Slopianka <kamikazow@web.de>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
@@ -3668,85 +3668,85 @@ msgstr "Fehler beim Herunterladen des Podcasts von %1"
 msgid "There was a problem parsing the response from %1"
 msgstr ""
 
-#: online/podcastsearchdialog.cpp:450
+#: online/podcastsearchdialog.cpp:446
 msgid "Failed to download directory listing"
 msgstr ""
 
-#: online/podcastsearchdialog.cpp:458
+#: online/podcastsearchdialog.cpp:454
 msgid "Failed to parse directory listing"
 msgstr ""
 
-#: online/podcastsearchdialog.cpp:508
+#: online/podcastsearchdialog.cpp:504
 msgid "URL"
 msgstr "URL"
 
-#: online/podcastsearchdialog.cpp:517
+#: online/podcastsearchdialog.cpp:513
 msgid "Enter podcast URL..."
 msgstr ""
 
-#: online/podcastsearchdialog.cpp:518
+#: online/podcastsearchdialog.cpp:514
 msgid "Load"
 msgstr ""
 
-#: online/podcastsearchdialog.cpp:525
+#: online/podcastsearchdialog.cpp:521
 msgid "Enter podcast URL below, and press 'Load'"
 msgstr ""
 
-#: online/podcastsearchdialog.cpp:552
+#: online/podcastsearchdialog.cpp:548
 msgid "Invalid URL!"
 msgstr ""
 
-#: online/podcastsearchdialog.cpp:562
+#: online/podcastsearchdialog.cpp:558
 msgid "Failed to fetch podcast!"
 msgstr ""
 
-#: online/podcastsearchdialog.cpp:567
+#: online/podcastsearchdialog.cpp:563
 msgid "Failed to parse podcast."
 msgstr ""
 
-#: online/podcastsearchdialog.cpp:571
+#: online/podcastsearchdialog.cpp:567
 msgid ""
 "Cantata only supports audio podcasts! The URL entered contains only video "
 "podcasts."
 msgstr ""
 
-#: online/podcastsearchdialog.cpp:589
+#: online/podcastsearchdialog.cpp:585
 msgid "Subscribe"
 msgstr ""
 
-#: online/podcastsearchdialog.cpp:607
+#: online/podcastsearchdialog.cpp:603
 msgid "Enter URL"
 msgstr ""
 
-#: online/podcastsearchdialog.cpp:607
+#: online/podcastsearchdialog.cpp:603
 msgid "Manual podcast URL"
 msgstr ""
 
-#: online/podcastsearchdialog.cpp:611 online/podcastsearchdialog.cpp:615
+#: online/podcastsearchdialog.cpp:607 online/podcastsearchdialog.cpp:611
 msgid "Search %1"
 msgstr "Suche %1"
 
-#: online/podcastsearchdialog.cpp:611 online/podcastsearchdialog.cpp:615
+#: online/podcastsearchdialog.cpp:607 online/podcastsearchdialog.cpp:611
 msgid "Search for podcasts on %1"
 msgstr ""
 
-#: online/podcastsearchdialog.cpp:629
-msgid "Browse %1"
-msgstr ""
-
-#: online/podcastsearchdialog.cpp:629
-msgid "Browse %1 podcasts"
-msgstr ""
-
-#: online/podcastsearchdialog.cpp:640
+#: online/podcastsearchdialog.cpp:623
 msgid "Add Podcast Subscription"
 msgstr ""
 
-#: online/podcastsearchdialog.cpp:696
-msgid "Subscription added"
+#: online/podcastsearchdialog.cpp:698
+msgid "Browse %1"
 msgstr ""
 
 #: online/podcastsearchdialog.cpp:698
+msgid "Browse %1 podcasts"
+msgstr ""
+
+#: online/podcastsearchdialog.cpp:714
+msgid "Subscription added"
+msgstr ""
+
+#: online/podcastsearchdialog.cpp:716
 msgid "You are already subscribed to this podcast!"
 msgstr ""
 
@@ -6160,7 +6160,7 @@ msgid "Search %1:"
 msgstr "Suche %1:"
 
 #: streams/streamspage.cpp:626
-msgid "Added to '%1'' favorites"
+msgid "Added '%1'' to favorites"
 msgstr ""
 
 #: streams/streamssettings.cpp:73

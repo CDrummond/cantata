@@ -237,6 +237,9 @@ QList<Song> SearchModel::songs(const QModelIndexList &indexes, bool allowPlaylis
     QList<Song> list;
     QSet<QString> files;
     foreach(QModelIndex index, indexes) {
+        if (!index.isValid() || 0!=index.column()) {
+            continue;
+        }
         Song *song=static_cast<Song *>(index.internalPointer());
         if ((allowPlaylists || Song::Playlist!=song->type) && !files.contains(song->file)) {
             list << *song;

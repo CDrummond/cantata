@@ -130,6 +130,7 @@
     control. Therefore, MPD>=0.17 is required.
 82. Remove 'Stop dynamizer on exit' option. Stop dynamzer if 'Stop playback on
     exit' is enabled.
+83. Read podcast_directories.xml from install folder and ~/.local/share/cantata
 
 1.3.4
 -----

@@ -405,11 +405,7 @@ OpmlBrowsePage::OpmlBrowsePage(QWidget *p, const QString &n, const QString &i, c
     tree->addAction(act);
     connect(act, SIGNAL(triggered(bool)), this, SLOT(reload()));
     tree->setContextMenuPolicy(Qt::ActionsContextMenu);
-    if (i.isEmpty()) {
-        icn=Icon("folder");
-    } else {
-        icn.addFile(":"+i);
-    }
+    icn.addFile(i.isEmpty() || !QFile::exists(i) ? ":podcasts" : i);
 }
 
 void OpmlBrowsePage::showEvent(QShowEvent *e)
@@ -615,22 +611,9 @@ PodcastSearchDialog::PodcastSearchDialog(QWidget *parent)
     pageWidget->addPage(gpodder, i18n("Search %1", gpodder->name()), gpodder->icon(), i18n("Search for podcasts on %1", gpodder->name()));
     pages << gpodder;
 
-    QFile file(CANTATA_SYS_CONFIG_DIR+QLatin1String("/podcast_directories.xml"));
-
-    if (file.open(QIODevice::ReadOnly)) {
-        QXmlStreamReader reader(&file);
-        while (!reader.atEnd()) {
-            reader.readNext();
-            if (reader.isStartElement() && QLatin1String("directory")==reader.name()) {
-                OpmlBrowsePage *page=new OpmlBrowsePage(pageWidget,
-                                                        reader.attributes().value(QLatin1String("name")).toString(),
-                                                        reader.attributes().value(QLatin1String("icon")).toString(),
-                                                        QUrl(reader.attributes().value(QLatin1String("url")).toString()));
-                pageWidget->addPage(page, i18n("Browse %1", page->name()), page->icon(), i18n("Browse %1 podcasts", page->name()));
-                pages << page;
-            }
-        }
-    }
+    QSet<QString> loaded;
+    pages << loadDirectories(Utils::dataDir(), false, loaded);
+    pages << loadDirectories(CANTATA_SYS_CONFIG_DIR, true, loaded);
 
     foreach (PodcastPage *p, pages) {
         connect(p, SIGNAL(rssSelected(QUrl)), SLOT(rssSelected(QUrl)));
@@ -685,6 +668,41 @@ void PodcastSearchDialog::pageChanged()
     PageWidgetItem *pwi=pageWidget->currentPage();
     PodcastPage *page=pwi ? qobject_cast<PodcastPage *>(pwi->widget()) : 0;
     rssSelected(page ? page->currentRss() : QUrl());
+}
+
+QList<PodcastPage *> PodcastSearchDialog::loadDirectories(const QString &dir, bool isSystem, QSet<QString> &loaded)
+{
+    QList<PodcastPage *> pages;
+
+    if (dir.isEmpty()) {
+        return pages;
+    }
+
+    QFile file(dir+QLatin1String("/podcast_directories.xml"));
+
+    if (file.open(QIODevice::ReadOnly)) {
+        QXmlStreamReader reader(&file);
+        while (!reader.atEnd()) {
+            reader.readNext();
+            if (reader.isStartElement() && QLatin1String("directory")==reader.name()) {
+                QString url=reader.attributes().value(QLatin1String("url")).toString();
+                if (!loaded.contains(url)) {
+                    QString icon=reader.attributes().value(QLatin1String("icon")).toString();
+                    if (!icon.isEmpty()) {
+                        icon=dir+(isSystem ? "../icons/" : "")+icon;
+                    }
+                    OpmlBrowsePage *page=new OpmlBrowsePage(pageWidget,
+                                                            reader.attributes().value(QLatin1String("name")).toString(),
+                                                            icon,
+                                                            QUrl(url));
+                    pageWidget->addPage(page, i18n("Browse %1", page->name()), page->icon(), i18n("Browse %1 podcasts", page->name()));
+                    pages << page;
+                    loaded.insert(url);
+                }
+            }
+        }
+    }
+    return pages;
 }
 
 void PodcastSearchDialog::slotButtonClicked(int button)

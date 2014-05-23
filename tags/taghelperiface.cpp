@@ -32,12 +32,6 @@
 #include <QApplication>
 #include <QLocalSocket>
 #include <QLocalServer>
-#ifdef Q_OS_WIN
-#include <windows.h>
-#else
-#include <sys/types.h>
-#include <unistd.h>
-#endif
 
 #include <QDebug>
 static bool debugEnabled=false;
@@ -256,11 +250,7 @@ bool TagHelperIface::startHelper()
     DBUG << (void *)proc;
     if (!helperIsRunning()) {
         stopHelper();
-        #ifdef Q_OS_WIN
-        int currentPid=GetCurrentProcessId();
-        #else
-        int currentPid=getpid();
-        #endif
+        qint64 currentPid=QCoreApplication::applicationPid();
         DBUG << "Create server";
         server=new QLocalServer(this);
 

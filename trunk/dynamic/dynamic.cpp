@@ -75,17 +75,17 @@ static QString remoteError(const QStringList &status)
 {
     if (!status.isEmpty()) {
         switch (status.at(0).toInt()) {
-        case 1:  return i18n("Empty filename");
-        case 2:  return i18n("Invalid filename - %1", status.length()<2 ? QString() : status.at(2));
-        case 3:  return i18n("Failed to save %1", status.length()<2 ? QString() : status.at(2));
-        case 4:  return i18n("Failed to delete %1", status.length()<2 ? QString() : status.at(2));
-        case 5:  return i18n("Invalid command - %1", status.length()<2 ? QString() : status.at(2));
-        case 6:  return i18n("Could not remove active rules link");
-        case 7:  return i18n("Active rules is not a link");
-        case 8:  return i18n("Could not create active rules link");
-        case 9:  return i18n("Rules file, %1, does not exist", status.length()<2 ? QString() : status.at(2));
-        case 10: return i18n("Incorrect arguments supplied");
-        case 11: return i18n("Unknown method called");
+        case 1:  return i18n("Empty filename.");
+        case 2:  return i18n("Invalid filename. (%1)", status.length()<2 ? QString() : status.at(2));
+        case 3:  return i18n("Failed to save %1.", status.length()<2 ? QString() : status.at(2));
+        case 4:  return i18n("Failed to delete rules file. (%1)", status.length()<2 ? QString() : status.at(2));
+        case 5:  return i18n("Invalid command. (%1)", status.length()<2 ? QString() : status.at(2));
+        case 6:  return i18n("Could not remove active rules link.");
+        case 7:  return i18n("Active rules is not a link.");
+        case 8:  return i18n("Could not create active rules link.");
+        case 9:  return i18n("Rules file, %1, does not exist.", status.length()<2 ? QString() : status.at(2));
+        case 10: return i18n("Incorrect arguments supplied.");
+        case 11: return i18n("Unknown method called.");
         }
     }
     return i18n("Unknown error");
@@ -824,7 +824,7 @@ void Dynamic::remoteResponse(QStringList msg)
             updateEntry(currentSave);
             emit saved(true);
         } else {
-            emit error(i18n("Failed to save %1 (%2)", currentSave.name, remoteError(msg)));
+            emit error(i18n("Failed to save %1. (%2)", currentSave.name, remoteError(msg)));
             emit saved(false);
         }
         currentSave.name=QString();
@@ -838,24 +838,24 @@ void Dynamic::remoteResponse(QStringList msg)
                 entryList.erase(it);
                 endRemoveRows();
             } else {
-                emit error(i18n("Failed to delete rules file (%1)", remoteError(msg)));
+                emit error(i18n("Failed to delete rules file. (%1)", remoteError(msg)));
             }
         } else {
-            emit error(i18n("Failed to delete rules file (%1)", remoteError(msg)));
+            emit error(i18n("Failed to delete rules file. (%1)", remoteError(msg)));
             emit saved(false);
         }
         currentDelete.clear();
         break;
     case Control:
         if (msg.isEmpty() || msg.at(0)!=constOk) {
-            emit error(i18n("Failed to control dynamizer (%1)", remoteError(msg)));
+            emit error(i18n("Failed to control dynamizer state. (%1)", remoteError(msg)));
         }
         break;
     case SetActive:
         if (!msg.isEmpty() && msg.at(0)==constOk) {
             QTimer::singleShot(1000, this, SLOT(updateRemoteStatus()));
         } else {
-            emit error(i18n("Failed to set active rules (%1)", remoteError(msg)));
+            emit error(i18n("Failed to set the current dynamic rules. (%1)", remoteError(msg)));
         }
         break;
     default:

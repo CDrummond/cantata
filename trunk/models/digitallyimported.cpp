@@ -50,7 +50,6 @@ DigitallyImported::DigitallyImported()
 
 DigitallyImported::~DigitallyImported()
 {
-    save();
 }
 
 void DigitallyImported::login()

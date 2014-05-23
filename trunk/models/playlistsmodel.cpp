@@ -539,9 +539,13 @@ QMimeData * PlaylistsModel::mimeData(const QModelIndexList &indexes) const
     QMimeData *mimeData = new QMimeData();
     QStringList filenames;
     QStringList playlists;
-    QStringList positions;
+    QList<quint32> positions;
     QSet<Item *> selectedPlaylists;
     foreach(QModelIndex index, indexes) {
+        if (!index.isValid() || 0!=index.column()) {
+            continue;
+        }
+
         Item *item=static_cast<Item *>(index.internalPointer());
 
         if (item->isPlaylist()) {
@@ -550,13 +554,13 @@ QMimeData * PlaylistsModel::mimeData(const QModelIndexList &indexes) const
             foreach (const SongItem *s, static_cast<PlaylistItem*>(item)->songs) {
                 filenames << s->file;
                 playlists << static_cast<PlaylistItem*>(item)->name;
-                positions << QString::number(pos++);
+                positions << pos++;
             }
             mimeData->setProperty(constPlaylistProp, true);
         } else if (!selectedPlaylists.contains(static_cast<SongItem*>(item)->parent)) {
             filenames << static_cast<SongItem*>(item)->file;
             playlists << static_cast<SongItem*>(item)->parent->name;
-            positions << QString::number(static_cast<SongItem*>(item)->parent->songs.indexOf(static_cast<SongItem*>(item)));
+            positions << static_cast<SongItem*>(item)->parent->songs.indexOf(static_cast<SongItem*>(item));
         }
     }
 
@@ -628,27 +632,8 @@ bool PlaylistsModel::dropMimeData(const QMimeData *data, Qt::DropAction action, 
                 }
             }
             if (fromThis) {
-//                 if (!item->isPlaylist()) {
-                    QStringList list=PlayQueueModel::decode(*data, constPositionsMimeType);
-                    QList<quint32> pos;
-
-                    foreach (const QString &s, list) {
-                        pos.append(s.toUInt());
-                    }
-//                     qSort(pos);
-//                     int offset=0;
-//                     foreach (int p, pos) {
-//                         int dest=parent.row();
-//                         int source=p;
-//
-//                         if (dest>source) {
-//                             source-=offset++;
-//                         }
-                        emit moveInPlaylist(pl->name, pos, row < 0 ? pl->songs.size() : row, pl->songs.size());
-//                         emit moveInPlaylist(pl->name, source, dest);
-//                     }
-                    return true;
-//                 }
+                emit moveInPlaylist(pl->name, PlayQueueModel::decodeInts(*data, constPositionsMimeType), row < 0 ? pl->songs.size() : row, pl->songs.size());
+                return true;
             } else {
                 emit addToPlaylist(pl->name, filenames,
                                    row < 0 || (origRow<0 && item->isPlaylist()) ? 0 : row,

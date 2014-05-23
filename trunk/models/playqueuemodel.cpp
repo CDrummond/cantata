@@ -125,6 +125,16 @@ void PlayQueueModel::encode(QMimeData &mimeData, const QString &mime, const QStr
     mimeData.setData(mime, encodedData);
 }
 
+void PlayQueueModel::encode(QMimeData &mimeData, const QString &mime, const QList<quint32> &values)
+{
+    QByteArray encodedData;
+    QDataStream stream(&encodedData, QIODevice::WriteOnly);
+    foreach (quint32 v, values) {
+        stream << v;
+    }
+    mimeData.setData(mime, encodedData);
+}
+
 QStringList PlayQueueModel::decode(const QMimeData &mimeData, const QString &mime)
 {
     QByteArray encodedData=mimeData.data(mime);
@@ -133,6 +143,20 @@ QStringList PlayQueueModel::decode(const QMimeData &mimeData, const QString &mim
 
     while (!stream.atEnd()) {
         rv.append(stream.readLine().remove('\n'));
+    }
+    return rv;
+}
+
+QList<quint32> PlayQueueModel::decodeInts(const QMimeData &mimeData, const QString &mime)
+{
+    QByteArray encodedData=mimeData.data(mime);
+    QDataStream stream(&encodedData, QIODevice::ReadOnly);
+    QList<quint32> rv;
+
+    while (!stream.atEnd()) {
+        quint32 v;
+        stream >> v;
+        rv.append(v);
     }
     return rv;
 }
@@ -625,28 +649,18 @@ QStringList PlayQueueModel::mimeTypes() const
 QMimeData *PlayQueueModel::mimeData(const QModelIndexList &indexes) const
 {
     QMimeData *mimeData = new QMimeData();
-    QStringList positions;
+    QList<quint32> positions;
     QStringList filenames;
-    /*
-     * Loop over all our indexes. However we have rows*columns indexes
-     * We pack per row so ingore the columns
-     */
-    QList<int> rows;
-    foreach(QModelIndex index, indexes) {
-        if (index.isValid()) {
-            if (rows.contains(index.row())) {
-                continue;
-            }
 
-            positions.append(QString::number(index.row())); // getPosByRow(index.row())));
-            rows.append(index.row());
-            filenames.append(songs.at(index.row()).file);
+    foreach(QModelIndex index, indexes) {
+        if (index.isValid() && 0==index.column()) {
+            positions.append(index.row());
+            filenames.append(static_cast<Song *>(index.internalPointer())->file);
         }
     }
 
     encode(*mimeData, constMoveMimeType, positions);
     encode(*mimeData, constFileNameMimeType, filenames);
-
     return mimeData;
 }
 
@@ -669,19 +683,11 @@ bool PlayQueueModel::dropMimeData(const QMimeData *data,
     }
 
     row+=dropAdjust;
-    if (data->hasFormat(constMoveMimeType)) {
-        //Act on internal moves
-        QStringList positions=decode(*data, constMoveMimeType);
-        QList<quint32> items;
-
-        foreach (const QString &s, positions) {
-            items.append(s.toUInt());
-        }
-
+    if (data->hasFormat(constMoveMimeType)) { //Act on internal moves
         if (row < 0) {
-            emit move(items, songs.size(), songs.size());
+            emit move(decodeInts(*data, constMoveMimeType), songs.size(), songs.size());
         } else {
-            emit move(items, row, songs.size());
+            emit move(decodeInts(*data, constMoveMimeType), row, songs.size());
         }
         return true;
     } else if (data->hasFormat(constFileNameMimeType)) {

@@ -218,7 +218,6 @@ void InitialSettingsWizard::accept()
     if (basic->isChecked()) {
         Settings::self()->saveCurrentConnection(MPDUser::constName);
         Settings::self()->saveStopOnExit(true);
-        Settings::self()->saveStopDynamizerOnExit(true);
         emit setDetails(MPDUser::self()->details());
     } else {
         MPDUser::self()->cleanup();

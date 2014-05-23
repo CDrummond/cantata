@@ -1,16 +1,16 @@
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Cantata 0.9.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-05-23 13:59+0100\n"
+"POT-Creation-Date: 2014-05-23 14:10+0100\n"
 "PO-Revision-Date: 2012-12-20 15:00+0800\n"
 "Last-Translator: AI Corleone <xuejingedison@sina.com>\n"
 "Language-Team: AI Corleone <xuejingedison@sina.com>\n"
+"Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: zh_CN\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Language: zh_CN\n"
 "X-Source-Language: C\n"
@@ -89,9 +89,13 @@ msgstr ""
 
 #: context/lyricsdialog.cpp:39
 msgid ""
-"If Cantata has failed to find lyrics, or has found the wrong ones, use this dialog to enter new search details. For example, the current song may actually be a cover-version - if so, then searching for lyrics by the original artist might help.\n"
+"If Cantata has failed to find lyrics, or has found the wrong ones, use this "
+"dialog to enter new search details. For example, the current song may "
+"actually be a cover-version - if so, then searching for lyrics by the "
+"original artist might help.\n"
 "\n"
-"If this search does find new lyrics, these will still be associated with the original song title and artist as displayed in Cantata."
+"If this search does find new lyrics, these will still be associated with the "
+"original song title and artist as displayed in Cantata."
 msgstr ""
 
 #. i18n: file: devices/albumdetails.ui:63
@@ -107,7 +111,7 @@ msgstr ""
 #. i18n: file: tags/tageditor.ui:38
 #. i18n: ectx: property (text), widget (StateLabel, titleLabel)
 #: context/lyricsdialog.cpp:61 gui/searchpage.cpp:234 po/rc.cpp:107
-#: po/rc.cpp:392 po/rc.cpp:983 rc.cpp:107 rc.cpp:392 rc.cpp:983
+#: po/rc.cpp:392 po/rc.cpp:980 rc.cpp:107 rc.cpp:392 rc.cpp:980
 msgid "Title:"
 msgstr "标题:"
 
@@ -124,8 +128,8 @@ msgstr "标题:"
 #. i18n: file: tags/tageditor.ui:51
 #. i18n: ectx: property (text), widget (StateLabel, artistLabel)
 #: context/lyricsdialog.cpp:63 devices/actiondialog.cpp:817
-#: gui/searchpage.cpp:227 po/rc.cpp:101 po/rc.cpp:377 po/rc.cpp:986 rc.cpp:101
-#: rc.cpp:377 rc.cpp:986
+#: gui/searchpage.cpp:227 po/rc.cpp:101 po/rc.cpp:377 po/rc.cpp:983 rc.cpp:101
+#: rc.cpp:377 rc.cpp:983
 msgid "Artist:"
 msgstr "艺术家:"
 
@@ -286,8 +290,8 @@ msgstr ""
 
 #: context/wikipediasettings.cpp:114
 msgid ""
-"Choose the wikipedia languages you want to use when searching for artist and"
-" album information."
+"Choose the wikipedia languages you want to use when searching for artist and "
+"album information."
 msgstr ""
 
 #: context/wikipediasettings.cpp:115 models/streamsmodel.cpp:552
@@ -316,7 +320,9 @@ msgstr "<i>(当不同的时候)</i>"
 msgid ""
 "Cantata has detected that you are connected to a Mopidy server.\n"
 "\n"
-"Currently it is not possible for Cantata to force Mopidy to refresh its local music listing. Therefore, you will need to stop Cantata, manually refresh Mopidy's database, and restart Cantata for any changes to be active."
+"Currently it is not possible for Cantata to force Mopidy to refresh its "
+"local music listing. Therefore, you will need to stop Cantata, manually "
+"refresh Mopidy's database, and restart Cantata for any changes to be active."
 msgstr ""
 
 #: devices/actiondialog.cpp:225 devices/synccollectionwidget.cpp:274
@@ -341,7 +347,8 @@ msgstr "音乐 CD"
 msgid ""
 "There is insufficient space left on the destination device.\n"
 "The selected songs consume %1, but there is only %2 left.\n"
-"The songs will need to be transcoded to a smaller filesize in order to be successfully copied."
+"The songs will need to be transcoded to a smaller filesize in order to be "
+"successfully copied."
 msgstr ""
 "设备剩余空间不足.\n"
 "歌曲需要 %1 但是设备中仅有 %2.\n"
@@ -536,13 +543,13 @@ msgstr "重试"
 #. i18n: file: tags/tageditor.ui:90
 #. i18n: ectx: property (text), widget (StateLabel, albumLabel)
 #: devices/actiondialog.cpp:818 gui/searchpage.cpp:233 po/rc.cpp:389
-#: po/rc.cpp:995 rc.cpp:389 rc.cpp:995
+#: po/rc.cpp:992 rc.cpp:389 rc.cpp:992
 msgid "Album:"
 msgstr "专辑:"
 
 #. i18n: file: tags/tageditor.ui:25
 #. i18n: ectx: property (text), widget (StateLabel, trackNameLabel)
-#: devices/actiondialog.cpp:819 po/rc.cpp:980 rc.cpp:980
+#: devices/actiondialog.cpp:819 po/rc.cpp:977 rc.cpp:977
 msgid "Track:"
 msgstr "音轨:"
 
@@ -607,9 +614,11 @@ msgstr "确定使用\"多个艺术家\" 环境？"
 
 #: devices/albumdetailsdialog.cpp:234 tags/tageditor.cpp:454
 msgid ""
-"<i>This will set 'Album artist' and 'Artist' to \"Various Artists\", and set"
-" 'Title' to \"TrackArtist - TrackTitle\"</i>"
-msgstr "<i>'专辑艺人' 和 '艺术家'将被设置成 '多个艺术家'，'标题'将被设置为'音轨艺人 - 音轨标题'。</i>"
+"<i>This will set 'Album artist' and 'Artist' to \"Various Artists\", and set "
+"'Title' to \"TrackArtist - TrackTitle\"</i>"
+msgstr ""
+"<i>'专辑艺人' 和 '艺术家'将被设置成 '多个艺术家'，'标题'将被设置为'音轨艺人 "
+"- 音轨标题'。</i>"
 
 #: devices/albumdetailsdialog.cpp:253 tags/tageditor.cpp:494
 msgid "Revert \"Various Artists\" workaround"
@@ -618,10 +627,10 @@ msgstr "恢复 \"多个艺术家\" 环境"
 #: devices/albumdetailsdialog.cpp:255 tags/tageditor.cpp:496
 msgid ""
 "<i>Where the 'Album artist' is the same as 'Artist' and the 'Title' is of "
-"the format \"TrackArtist - TrackTitle\", 'Artist' will be taken from 'Title'"
-" and 'Title' itself will be set to just the title. e.g. <br/><br/>If 'Title'"
-" is \"Wibble - Wobble\", then 'Artist' will be set to \"Wibble\" and 'Title'"
-" will be set to \"Wobble\"</i>"
+"the format \"TrackArtist - TrackTitle\", 'Artist' will be taken from 'Title' "
+"and 'Title' itself will be set to just the title. e.g. <br/><br/>If 'Title' "
+"is \"Wibble - Wobble\", then 'Artist' will be set to \"Wibble\" and 'Title' "
+"will be set to \"Wobble\"</i>"
 msgstr ""
 
 #: devices/albumdetailsdialog.cpp:261 tags/tageditor.cpp:502
@@ -630,8 +639,7 @@ msgstr ""
 
 #: devices/albumdetailsdialog.cpp:277 tags/tageditor.cpp:580
 msgid ""
-"Capitalize the first letter of 'Title', 'Artist', 'Album artist', and "
-"'Album'"
+"Capitalize the first letter of 'Title', 'Artist', 'Album artist', and 'Album'"
 msgstr "'标题', '艺术家', '专辑艺术家', '专辑' 的首字母大写。"
 
 #: devices/albumdetailsdialog.cpp:295 tags/tageditor.cpp:612
@@ -676,8 +684,7 @@ msgid "CDDB error: %1"
 msgstr "CDDB 错误: %1"
 
 #: devices/cddbselectiondialog.cpp:38
-msgid ""
-"Multiple matches were found. Please choose the relevant one from below:"
+msgid "Multiple matches were found. Please choose the relevant one from below:"
 msgstr "发现多个匹配项目，请在下面选择合适的:"
 
 #. i18n: file: devices/albumdetails.ui:163
@@ -755,22 +762,22 @@ msgstr "100 像素"
 msgid ""
 "<p>When copying tracks to a device, and the 'Album Artist' is set to "
 "'Various Artists', then Cantata will set the 'Artist' tag of all tracks to "
-"'Various Artists' and the track 'Title' tag to 'TrackArtist - "
-"TrackTitle'.<hr/> When copying from a device, Cantata will check if 'Album "
-"Artist' and 'Artist' are both set to 'Various Artists'. If so, it will "
-"attempt to extract the real artist from the 'Title' tag, and remove the "
-"artist name from the 'Title' tag.</p>"
+"'Various Artists' and the track 'Title' tag to 'TrackArtist - TrackTitle'."
+"<hr/> When copying from a device, Cantata will check if 'Album Artist' and "
+"'Artist' are both set to 'Various Artists'. If so, it will attempt to "
+"extract the real artist from the 'Title' tag, and remove the artist name "
+"from the 'Title' tag.</p>"
 msgstr ""
 
 #: devices/devicepropertieswidget.cpp:98
 msgid ""
 "<p>If you enable this, then Cantata will create a cache of the device's "
 "music library. This will help to speed up subsequent library scans (as the "
-"cache file will be used instead of having to read the tags of each "
-"file.)<hr/><b>NOTE:</b> If you use another application to update the "
-"device's library, then this cache will become out-of-date. To rectify this, "
-"simply click on the 'refresh' icon in the device list. This will cause the "
-"cache file to be removed, and the contents of the device re-scanned.</p>"
+"cache file will be used instead of having to read the tags of each file.)<hr/"
+"><b>NOTE:</b> If you use another application to update the device's library, "
+"then this cache will become out-of-date. To rectify this, simply click on "
+"the 'refresh' icon in the device list. This will cause the cache file to be "
+"removed, and the contents of the device re-scanned.</p>"
 msgstr ""
 
 #: devices/devicepropertieswidget.cpp:219
@@ -829,8 +836,8 @@ msgid ""
 "songs are scanned <i>(quick)</i></li><li>Full - All songs are rescanned "
 "<i>(slow)</i></li></ul></p>"
 msgstr ""
-"<p>你希望选择刷新哪一类?<ul><li>部分 - 仅扫描新增歌曲<i>(较快)</i></li><li>全部 - "
-"扫描所有的歌曲<i>(较慢)</i></li></ul></p>"
+"<p>你希望选择刷新哪一类?<ul><li>部分 - 仅扫描新增歌曲<i>(较快)</i></li><li>全"
+"部 - 扫描所有的歌曲<i>(较慢)</i></li></ul></p>"
 
 #: devices/devicespage.cpp:449
 msgid "Partial"
@@ -878,28 +885,29 @@ msgctxt ""
 msgid ""
 "<a href=http://en.wikipedia.org/wiki/Advanced_Audio_Coding>Advanced Audio "
 "Coding</a> (AAC) is a patented lossy codec for digital audio.<br>AAC "
-"generally achieves better sound quality than MP3 at similar bit rates. It is"
-" a reasonable choice for the iPod and some other portable music players."
+"generally achieves better sound quality than MP3 at similar bit rates. It is "
+"a reasonable choice for the iPod and some other portable music players."
 msgstr ""
 "<a href=http://en.wikipedia.org/wiki/Advanced_Audio_Coding>高级音频编码 AAC "
-"</a>是一种有专利授权的无损压缩数字音频格式.<br> 它的音质比同比特率的 MP3 更好.它是 iPod "
-"或者其他移动播放设备上的一个较好选择.限于非商业合同使用"
+"</a>是一种有专利授权的无损压缩数字音频格式.<br> 它的音质比同比特率的 MP3 更"
+"好.它是 iPod 或者其他移动播放设备上的一个较好选择.限于非商业合同使用"
 
 #: devices/encoders.cpp:83
 msgid ""
 "The bitrate is a measure of the quantity of data used to represent a second "
 "of the audio track.<br>The <b>AAC</b> encoder used by Cantata supports a <a "
-"href=http://en.wikipedia.org/wiki/Variable_bitrate#Advantages_and_disadvantages_of_VBR>variable"
-" bitrate (VBR)</a> setting, which means that the bitrate value fluctuates "
-"along the track based on the complexity of the audio content. More complex "
-"intervals of data are encoded with a higher bitrate than less complex ones; "
-"this approach yields overall better quality and a smaller file than having a"
-" constant bitrate throughout the track.<br>For this reason, the bitrate "
-"measure in this slider is just an estimate of the <a "
-"href=http://www.ffmpeg.org/faq.html#SEC21>average bitrate</a> of the encoded"
-" track.<br><b>150kb/s</b> is a good choice for music listening on a portable"
-" player.<br/>Anything below <b>120kb/s</b> might be unsatisfactory for music"
-" and anything above <b>200kb/s</b> is probably overkill."
+"href=http://en.wikipedia.org/wiki/"
+"Variable_bitrate#Advantages_and_disadvantages_of_VBR>variable bitrate (VBR)</"
+"a> setting, which means that the bitrate value fluctuates along the track "
+"based on the complexity of the audio content. More complex intervals of data "
+"are encoded with a higher bitrate than less complex ones; this approach "
+"yields overall better quality and a smaller file than having a constant "
+"bitrate throughout the track.<br>For this reason, the bitrate measure in "
+"this slider is just an estimate of the <a href=http://www.ffmpeg.org/faq."
+"html#SEC21>average bitrate</a> of the encoded track.<br><b>150kb/s</b> is a "
+"good choice for music listening on a portable player.<br/>Anything below "
+"<b>120kb/s</b> might be unsatisfactory for music and anything above <b>200kb/"
+"s</b> is probably overkill."
 msgstr ""
 
 #: devices/encoders.cpp:101 devices/encoders.cpp:141
@@ -923,26 +931,27 @@ msgctxt ""
 msgid ""
 "<a href=http://en.wikipedia.org/wiki/MP3>MPEG Audio Layer 3</a> (MP3) is a "
 "patented digital audio codec using a form of lossy data compression.<br>In "
-"spite of its shortcomings, it is a common format for consumer audio storage,"
-" and is widely supported on portable music players."
+"spite of its shortcomings, it is a common format for consumer audio storage, "
+"and is widely supported on portable music players."
 msgstr ""
-"<a href=http://zh.wikipedia.org/wiki/MP3>MPEG Audio Layer 3</a> (MP3) "
-"是一种有损压缩的专利音频编码格式.<br>尽管有缺陷，但它仍然市易奏常见的音频存储格式，几乎所有的移动播放设备都支持 MP3."
+"<a href=http://zh.wikipedia.org/wiki/MP3>MPEG Audio Layer 3</a> (MP3) 是一种"
+"有损压缩的专利音频编码格式.<br>尽管有缺陷，但它仍然市易奏常见的音频存储格式，"
+"几乎所有的移动播放设备都支持 MP3."
 
 #: devices/encoders.cpp:124
 msgid ""
 "The bitrate is a measure of the quantity of data used to represent a second "
 "of the audio track.<br>The <b>MP3</b> encoder used by Cantata supports a <a "
 "href=http://en.wikipedia.org/wiki/MP3#VBR>variable bitrate (VBR)</a> "
-"setting, which means that the bitrate value fluctuates along the track based"
-" on the complexity of the audio content. More complex intervals of data are "
+"setting, which means that the bitrate value fluctuates along the track based "
+"on the complexity of the audio content. More complex intervals of data are "
 "encoded with a higher bitrate than less complex ones; this approach yields "
 "overall better quality and a smaller file than having a constant bitrate "
-"throughout the track.<br>For this reason, the bitrate measure in this slider"
-" is just an estimate of the average bitrate of the encoded "
-"track.<br><b>160kb/s</b> is a good choice for music listening on a portable "
-"player.<br/>Anything below <b>120kb/s</b> might be unsatisfactory for music "
-"and anything above <b>205kb/s</b> is probably overkill."
+"throughout the track.<br>For this reason, the bitrate measure in this slider "
+"is just an estimate of the average bitrate of the encoded track.<br><b>160kb/"
+"s</b> is a good choice for music listening on a portable player.<br/"
+">Anything below <b>120kb/s</b> might be unsatisfactory for music and "
+"anything above <b>205kb/s</b> is probably overkill."
 msgstr ""
 
 #: devices/encoders.cpp:156 online/magnatuneservice.cpp:185
@@ -955,12 +964,13 @@ msgctxt ""
 "exists."
 msgid ""
 "<a href=http://en.wikipedia.org/wiki/Vorbis>Ogg Vorbis</a> is an open and "
-"royalty-free audio codec for lossy audio compression.<br>It produces smaller"
-" files than MP3 at equivalent or higher quality. Ogg Vorbis is an all-around"
-" excellent choice, especially for portable music players that support it."
+"royalty-free audio codec for lossy audio compression.<br>It produces smaller "
+"files than MP3 at equivalent or higher quality. Ogg Vorbis is an all-around "
+"excellent choice, especially for portable music players that support it."
 msgstr ""
 "<a href=http://zh.wikipedia.org/wiki/Vorbis>Ogg Vorbis</a>是一种开放的自由的 "
-"无损压缩音频编码格式.<br>它的文件比同比特率的 MP3 更小. Ogg Vorbis是一种很不错的选择,特别是对支持它的播放器来说."
+"无损压缩音频编码格式.<br>它的文件比同比特率的 MP3 更小. Ogg Vorbis是一种很不"
+"错的选择,特别是对支持它的播放器来说."
 
 #: devices/encoders.cpp:164
 msgid ""
@@ -970,13 +980,13 @@ msgid ""
 "bitrate (VBR)</a> setting, which means that the bitrate value fluctuates "
 "along the track based on the complexity of the audio content. More complex "
 "intervals of data are encoded with a higher bitrate than less complex ones; "
-"this approach yields overall better quality and a smaller file than having a"
-" constant bitrate throughout the track.<br>The Vorbis encoder uses a quality"
-" rating between -1 and 10 to define a certain expected audio quality level. "
+"this approach yields overall better quality and a smaller file than having a "
+"constant bitrate throughout the track.<br>The Vorbis encoder uses a quality "
+"rating between -1 and 10 to define a certain expected audio quality level. "
 "The bitrate measure in this slider is just a rough estimate (provided by "
 "Vorbis) of the average bitrate of the encoded track given a quality value. "
-"In fact, with newer and more efficient Vorbis versions the actual bitrate is"
-" even lower.<br><b>5</b> is a good choice for music listening on a portable "
+"In fact, with newer and more efficient Vorbis versions the actual bitrate is "
+"even lower.<br><b>5</b> is a good choice for music listening on a portable "
 "player.<br/>Anything below <b>3</b> might be unsatisfactory for music and "
 "anything above <b>8</b> is probably overkill."
 msgstr ""
@@ -1001,17 +1011,17 @@ msgstr ""
 #: devices/encoders.cpp:206
 msgid ""
 "The bitrate is a measure of the quantity of data used to represent a second "
-"of the audio track.<br>The <b>Opus</b> encoder used by Cantata supports a <a"
-" href=http://en.wikipedia.org/wiki/Variable_bitrate>variable bitrate "
-"(VBR)</a> setting, which means that the bitrate value fluctuates along the "
-"track based on the complexity of the audio content. More complex intervals "
-"of data are encoded with a higher bitrate than less complex ones; this "
-"approach yields overall better quality and a smaller file than having a "
-"constant bitrate throughout the track.<br>For this reason, the bitrate "
-"measure in this slider is just an estimate of the average bitrate of the "
-"encoded track.<br><b>128kb/s</b> is a good choice for music listening on a "
-"portable player.<br/>Anything below <b>100kb/s</b> might be unsatisfactory "
-"for music and anything above <b>256kb/s</b> is probably overkill."
+"of the audio track.<br>The <b>Opus</b> encoder used by Cantata supports a <a "
+"href=http://en.wikipedia.org/wiki/Variable_bitrate>variable bitrate (VBR)</"
+"a> setting, which means that the bitrate value fluctuates along the track "
+"based on the complexity of the audio content. More complex intervals of data "
+"are encoded with a higher bitrate than less complex ones; this approach "
+"yields overall better quality and a smaller file than having a constant "
+"bitrate throughout the track.<br>For this reason, the bitrate measure in "
+"this slider is just an estimate of the average bitrate of the encoded track."
+"<br><b>128kb/s</b> is a good choice for music listening on a portable player."
+"<br/>Anything below <b>100kb/s</b> might be unsatisfactory for music and "
+"anything above <b>256kb/s</b> is probably overkill."
 msgstr ""
 
 #: devices/encoders.cpp:223 devices/encoders.cpp:320
@@ -1028,13 +1038,13 @@ msgctxt ""
 "exists."
 msgid ""
 "<a href=http://en.wikipedia.org/wiki/Apple_Lossless>Apple Lossless</a> "
-"(ALAC) is an audio codec for lossless compression of digital "
-"music.<br>Recommended only for Apple music players and players that do not "
-"support FLAC."
+"(ALAC) is an audio codec for lossless compression of digital music."
+"<br>Recommended only for Apple music players and players that do not support "
+"FLAC."
 msgstr ""
-"<a "
-"href=http://ko.wikipedia.org/wiki/%EC%95%A0%ED%94%8C_%EB%AC%B4%EC%86%90%EC%8B%A4>苹果无损格式"
-" 苹果无损格式</a> (ALAC) 是一种无损压缩的数字音乐格式.<br>推荐在苹果播放器或者其他不支持 FLAC 的播放器上使用."
+"<a href=http://ko.wikipedia.org/wiki/%EC%95%A0%ED%94%8C_%EB%AC%B4%EC%86%90%EC"
+"%8B%A4>苹果无损格式 苹果无损格式</a> (ALAC) 是一种无损压缩的数字音乐格式.<br>"
+"推荐在苹果播放器或者其他不支持 FLAC 的播放器上使用."
 
 #: devices/encoders.cpp:260 online/magnatuneservice.cpp:186
 msgid "FLAC"
@@ -1045,26 +1055,26 @@ msgctxt ""
 "Feel free to redirect the english Wikipedia link to a local version, if it "
 "exists."
 msgid ""
-"<a href=http://en.wikipedia.org/wiki/Free_Lossless_Audio_Codec>Free Lossless"
-" Audio Codec</a> (FLAC) is an open and royalty-free codec for lossless "
+"<a href=http://en.wikipedia.org/wiki/Free_Lossless_Audio_Codec>Free Lossless "
+"Audio Codec</a> (FLAC) is an open and royalty-free codec for lossless "
 "compression of digital music.<br>If you wish to store your music without "
 "compromising on audio quality, FLAC is an excellent choice."
 msgstr ""
 "<a href=http://ko.wikipedia.org/wiki/FLAC>Free Lossless Audio Codec</a> "
-"(FLAC) 是一种开放的自由的无损压缩数字音乐格式.<br>如果想要确保音乐品质, FLAC 是最好的选择."
+"(FLAC) 是一种开放的自由的无损压缩数字音乐格式.<br>如果想要确保音乐品质, FLAC "
+"是最好的选择."
 
 #: devices/encoders.cpp:267
 msgid ""
-"The <a "
-"href=http://flac.sourceforge.net/documentation_tools_flac.html>compression "
-"level</a> is an integer value between 0 and 8 that represents the tradeoff "
-"between file size and compression speed while encoding with "
-"<b>FLAC</b>.<br/> Setting the compression level to <b>0</b> yields the "
-"shortest compression time but generates a comparably big file.<br/>On the "
-"other hand, a compression level of <b>8</b> makes compression quite slow but"
-" produces the smallest file.<br/>Note that since FLAC is by definition a "
-"lossless codec, the audio quality of the output is exactly the same "
-"regardless of the compression level.<br/>Also, levels above <b>5</b> "
+"The <a href=http://flac.sourceforge.net/documentation_tools_flac."
+"html>compression level</a> is an integer value between 0 and 8 that "
+"represents the tradeoff between file size and compression speed while "
+"encoding with <b>FLAC</b>.<br/> Setting the compression level to <b>0</b> "
+"yields the shortest compression time but generates a comparably big file.<br/"
+">On the other hand, a compression level of <b>8</b> makes compression quite "
+"slow but produces the smallest file.<br/>Note that since FLAC is by "
+"definition a lossless codec, the audio quality of the output is exactly the "
+"same regardless of the compression level.<br/>Also, levels above <b>5</b> "
 "dramatically increase compression time but create an only slightly smaller "
 "file, and are not recommended."
 msgstr ""
@@ -1091,22 +1101,22 @@ msgid ""
 "audio compression.<br>Recommended only for portable music players that do "
 "not support Ogg Vorbis."
 msgstr ""
-"<a "
-"href=http://ko.wikipedia.org/wiki/%EC%9C%88%EB%8F%84_%EB%AF%B8%EB%94%94%EC%96%B4_%EC%98%A4%EB%94%94%EC%98%A4>Windows"
-" Media Audio</a> (WMA)是一种微软开发的有损压缩音频编码格式.<br>推荐用在不支持 Ogg Vorbis的设备上"
+"<a href=http://ko.wikipedia.org/wiki/%EC%9C%88%EB%8F%84_%EB%AF%B8%EB%94%94%EC"
+"%96%B4_%EC%98%A4%EB%94%94%EC%98%A4>Windows Media Audio</a> (WMA)是一种微软开"
+"发的有损压缩音频编码格式.<br>推荐用在不支持 Ogg Vorbis的设备上"
 
 #: devices/encoders.cpp:306
 msgid ""
 "The bitrate is a measure of the quantity of data used to represent a second "
 "of the audio track.<br>Due to the limitations of the proprietary <b>WMA</b> "
 "format and the difficulty of reverse-engineering a proprietary encoder, the "
-"WMA encoder used by Cantata sets a <a "
-"href=http://en.wikipedia.org/wiki/Windows_Media_Audio#Windows_Media_Audio>constant"
-" bitrate (CBR)</a> setting.<br>For this reason, the bitrate measure in this "
-"slider is a pretty accurate estimate of the bitrate of the encoded "
-"track.<br><b>136kb/s</b> is a good choice for music listening on a portable "
-"player.<br/>Anything below <b>112kb/s</b> might be unsatisfactory for music "
-"and anything above <b>182kb/s</b> is probably overkill."
+"WMA encoder used by Cantata sets a <a href=http://en.wikipedia.org/wiki/"
+"Windows_Media_Audio#Windows_Media_Audio>constant bitrate (CBR)</a> setting."
+"<br>For this reason, the bitrate measure in this slider is a pretty accurate "
+"estimate of the bitrate of the encoded track.<br><b>136kb/s</b> is a good "
+"choice for music listening on a portable player.<br/>Anything below <b>112kb/"
+"s</b> might be unsatisfactory for music and anything above <b>182kb/s</b> is "
+"probably overkill."
 msgstr ""
 
 #: devices/filenameschemedialog.cpp:34
@@ -1145,13 +1155,14 @@ msgstr "舞曲"
 
 #: devices/filenameschemedialog.cpp:121
 msgid ""
-"<p>The following variables will be replaced with their corresponding meaning"
-" for each track name.</p>"
+"<p>The following variables will be replaced with their corresponding meaning "
+"for each track name.</p>"
 msgstr ""
 
 #: devices/filenameschemedialog.cpp:123
 msgid ""
-"<tr><th><em>Variable</em></th><th><em>Button</em></th><th><em>Description</em></th></tr>"
+"<tr><th><em>Variable</em></th><th><em>Button</em></th><th><em>Description</"
+"em></th></tr>"
 msgstr ""
 
 #: devices/fsdevice.cpp:676 gui/albumspage.cpp:298 gui/folderpage.cpp:300
@@ -1269,8 +1280,8 @@ msgstr "Cantata 从命令行启动时无法使用密码."
 
 #: devices/remotefsdevice.cpp:340
 msgid ""
-"No suitable ssh-askpass application installed! This is required for entering"
-" passwords."
+"No suitable ssh-askpass application installed! This is required for entering "
+"passwords."
 msgstr "匹配的 ssh-askpass 程序未安装! 输入密码必须安装它."
 
 #: devices/remotefsdevice.cpp:347
@@ -1559,15 +1570,14 @@ msgid ""
 "of <i>Include</i> rules will be used to build a set of songs that can be "
 "used. The list of <i>Exclude</i> rules will be used to build a set of songs "
 "that cannot be used. If there are no <i>Include</i> rules, Cantata will "
-"assume that all songs (bar those from <i>Exclude</i>) can be used. <br/>e.g."
-" to have Cantata look for 'Rock songs by Wibble OR songs by Various "
-"Artists', you would need the following: <ul><li>Include AlbumArtist=Wibble "
-"Genre=Rock</li><li>Include AlbumArtist=Various Artists</li></ul> To have "
-"Cantata look for 'Songs by Wibble but not from album Abc', you would need "
-"the following: <ul><li>Include AlbumArtist=Wibble</li><li>Exclude "
-"Album=Abc</li></ul>After the set of usable songs has been created, Cantata "
-"will randomly select songs to keep the play queue filled with 10 "
-"entries.</p>"
+"assume that all songs (bar those from <i>Exclude</i>) can be used. <br/>e.g. "
+"to have Cantata look for 'Rock songs by Wibble OR songs by Various Artists', "
+"you would need the following: <ul><li>Include AlbumArtist=Wibble Genre=Rock</"
+"li><li>Include AlbumArtist=Various Artists</li></ul> To have Cantata look "
+"for 'Songs by Wibble but not from album Abc', you would need the following: "
+"<ul><li>Include AlbumArtist=Wibble</li><li>Exclude Album=Abc</li></ul>After "
+"the set of usable songs has been created, Cantata will randomly select songs "
+"to keep the play queue filled with 10 entries.</p>"
 msgstr ""
 
 #: dynamic/dynamicrulesdialog.cpp:311
@@ -1613,11 +1623,10 @@ msgstr ""
 #: gui/cachesettings.cpp:251
 msgid ""
 "Cantata caches a local copy of the music listing to speed up loading of the "
-"library. Cantata might also have cached covers, lyrics, or artist images, if"
-" these have been downloaded and could not be saved into the music folder "
+"library. Cantata might also have cached covers, lyrics, or artist images, if "
+"these have been downloaded and could not be saved into the music folder "
 "(because Cantata cannot access it, or you have configured Cantata to not "
-"save these items there). Below is a summary of Cantata's current cache "
-"usage."
+"save these items there). Below is a summary of Cantata's current cache usage."
 msgstr ""
 
 #: gui/cachesettings.cpp:264
@@ -1711,14 +1720,14 @@ msgstr "图片 (%1 x %2 %3%)"
 
 #: gui/coverdialog.cpp:436
 msgid ""
-"<p>An image already exists for this artist, and the file is not "
-"writeable.<p></p><i>%1</i></p>"
+"<p>An image already exists for this artist, and the file is not writeable."
+"<p></p><i>%1</i></p>"
 msgstr ""
 
 #: gui/coverdialog.cpp:437
 msgid ""
-"<p>A cover already exists for this album, and the file is not "
-"writeable.<p></p><i>%1</i></p>"
+"<p>A cover already exists for this album, and the file is not writeable.<p></"
+"p><i>%1</i></p>"
 msgstr "<p>这个专辑已存在封面, 且文件无法写入.<p></p><i>%1</i></p>"
 
 #: gui/coverdialog.cpp:442
@@ -1766,8 +1775,8 @@ msgstr "显示"
 #. i18n: ectx: property (text), widget (QPushButton, removeBtn)
 #. i18n: file: streams/streamssettings.ui:73
 #. i18n: ectx: property (text), widget (QPushButton, removeButton)
-#: gui/coverdialog.cpp:885 gui/stdactions.cpp:80 po/rc.cpp:362 po/rc.cpp:959
-#: rc.cpp:362 rc.cpp:959
+#: gui/coverdialog.cpp:885 gui/stdactions.cpp:80 po/rc.cpp:362 po/rc.cpp:956
+#: rc.cpp:362 rc.cpp:956
 msgid "Remove"
 msgstr "删除"
 
@@ -1838,31 +1847,27 @@ msgstr ""
 #. i18n: file: context/othersettings.ui:32
 #. i18n: ectx: property (text), widget (QRadioButton, contextBackdrop_none)
 #. i18n: file: gui/interfacesettings.ui:494
-#. i18n: ectx: property (text), widget (QRadioButton,
-#. playQueueBackground_none)
+#. i18n: ectx: property (text), widget (QRadioButton, playQueueBackground_none)
 #. i18n: file: gui/playbacksettings.ui:51
-#. i18n: ectx: property (specialValueText), widget (QSpinBox,
-#. stopFadeDuration)
-#. i18n: file: gui/playbacksettings.ui:151
+#. i18n: ectx: property (specialValueText), widget (QSpinBox, stopFadeDuration)
+#. i18n: file: gui/playbacksettings.ui:144
 #. i18n: ectx: property (specialValueText), widget (QSpinBox, crossfading)
 #. i18n: file: support/shortcutssettingswidget.ui:78
 #. i18n: ectx: property (text), widget (QLabel, defaultShortcut)
 #. i18n: file: context/othersettings.ui:32
 #. i18n: ectx: property (text), widget (QRadioButton, contextBackdrop_none)
 #. i18n: file: gui/interfacesettings.ui:494
-#. i18n: ectx: property (text), widget (QRadioButton,
-#. playQueueBackground_none)
+#. i18n: ectx: property (text), widget (QRadioButton, playQueueBackground_none)
 #. i18n: file: gui/playbacksettings.ui:51
-#. i18n: ectx: property (specialValueText), widget (QSpinBox,
-#. stopFadeDuration)
-#. i18n: file: gui/playbacksettings.ui:151
+#. i18n: ectx: property (specialValueText), widget (QSpinBox, stopFadeDuration)
+#. i18n: file: gui/playbacksettings.ui:144
 #. i18n: ectx: property (specialValueText), widget (QSpinBox, crossfading)
 #. i18n: file: support/shortcutssettingswidget.ui:78
 #. i18n: ectx: property (text), widget (QLabel, defaultShortcut)
 #: gui/interfacesettings.cpp:63 gui/playbacksettings.cpp:46
 #: online/magnatuneservice.cpp:163 po/rc.cpp:6 po/rc.cpp:657 po/rc.cpp:768
-#: po/rc.cpp:795 po/rc.cpp:974 rc.cpp:6 rc.cpp:657 rc.cpp:768 rc.cpp:795
-#: rc.cpp:974
+#: po/rc.cpp:792 po/rc.cpp:971 rc.cpp:6 rc.cpp:657 rc.cpp:768 rc.cpp:792
+#: rc.cpp:971
 msgid "None"
 msgstr "无"
 
@@ -2178,7 +2183,8 @@ msgstr "单曲"
 msgid ""
 "When 'Single' is activated, playback is stopped after current song, or song "
 "is repeated if 'Repeat' is enabled."
-msgstr "'单曲'启用时, 将在当前歌曲完成后停止播放. 或者 '重复'启用时, 将反复播放."
+msgstr ""
+"'单曲'启用时, 将在当前歌曲完成后停止播放. 或者 '重复'启用时, 将反复播放."
 
 #: gui/mainwindow.cpp:279
 msgid "Consume"
@@ -2292,8 +2298,8 @@ msgstr "关于 Cantata"
 msgctxt "Qt-only"
 msgid ""
 "<b>Cantata %1</b><br/><br/>MPD client.<br/><br/>&copy; 2011-2014 Craig "
-"Drummond<br/>Released under the <a "
-"href=\"http://www.gnu.org/licenses/gpl.html\">GPLv3</a>"
+"Drummond<br/>Released under the <a href=\"http://www.gnu.org/licenses/gpl."
+"html\">GPLv3</a>"
 msgstr ""
 
 #: gui/mainwindow.cpp:1104
@@ -2305,22 +2311,21 @@ msgstr ""
 #: gui/mainwindow.cpp:1105
 msgctxt "Qt-only"
 msgid ""
-"Context view backdrops courtesy of <a "
-"href=\"http://www.fanart.tv\">FanArt.tv</a>"
+"Context view backdrops courtesy of <a href=\"http://www.fanart.tv\">FanArt."
+"tv</a>"
 msgstr ""
 
 #: gui/mainwindow.cpp:1106
 msgctxt "Qt-only"
 msgid ""
-"Context view metadata courtesy of <a "
-"href=\"http://www.wikipedia.org\">Wikipedia</a> and <a "
-"href=\"http://www.last.fm\">Last.fm</a>"
+"Context view metadata courtesy of <a href=\"http://www.wikipedia.org"
+"\">Wikipedia</a> and <a href=\"http://www.last.fm\">Last.fm</a>"
 msgstr ""
 
 #: gui/mainwindow.cpp:1107
 msgid ""
-"Please consider uploading your own music fan-art to <a "
-"href=\"http://www.fanart.tv\">FanArt.tv</a>"
+"Please consider uploading your own music fan-art to <a href=\"http://www."
+"fanart.tv\">FanArt.tv</a>"
 msgstr ""
 
 #: gui/mainwindow.cpp:1154
@@ -2336,22 +2341,20 @@ msgstr ""
 
 #: gui/mainwindow.cpp:1466
 msgid ""
-"<tr><td colspan=\"2\"><b>Server</b></td></tr><tr><td "
-"align=\"right\">Protocol:&nbsp;</td><td>%1.%2.%3</td></tr><tr><td "
-"align=\"right\">Uptime:&nbsp;</td><td>%4</td></tr><tr><td "
-"align=\"right\">Playing:&nbsp;</td><td>%5</td></tr><tr><td "
-"align=\"right\">Handlers:&nbsp;</td><td>%6</td></tr><tr><td "
-"align=\"right\">Tags:&nbsp;</td><td>%7</td></tr>"
+"<tr><td colspan=\"2\"><b>Server</b></td></tr><tr><td align=\"right"
+"\">Protocol:&nbsp;</td><td>%1.%2.%3</td></tr><tr><td align=\"right\">Uptime:"
+"&nbsp;</td><td>%4</td></tr><tr><td align=\"right\">Playing:&nbsp;</td><td>"
+"%5</td></tr><tr><td align=\"right\">Handlers:&nbsp;</td><td>%6</td></"
+"tr><tr><td align=\"right\">Tags:&nbsp;</td><td>%7</td></tr>"
 msgstr ""
 
 #: gui/mainwindow.cpp:1477
 msgid ""
-"<tr><td colspan=\"2\"><b>Database</b></td></tr><tr><td "
-"align=\"right\">Artists:&nbsp;</td><td>%1</td></tr><tr><td "
-"align=\"right\">Albums:&nbsp;</td><td>%2</td></tr><tr><td "
-"align=\"right\">Songs:&nbsp;</td><td>%3</td></tr><tr><td "
-"align=\"right\">Duration:&nbsp;</td><td>%4</td></tr><tr><td "
-"align=\"right\">Updated:&nbsp;</td><td>%5</td></tr>"
+"<tr><td colspan=\"2\"><b>Database</b></td></tr><tr><td align=\"right"
+"\">Artists:&nbsp;</td><td>%1</td></tr><tr><td align=\"right\">Albums:&nbsp;</"
+"td><td>%2</td></tr><tr><td align=\"right\">Songs:&nbsp;</td><td>%3</td></"
+"tr><tr><td align=\"right\">Duration:&nbsp;</td><td>%4</td></tr><tr><td align="
+"\"right\">Updated:&nbsp;</td><td>%5</td></tr>"
 msgstr ""
 
 #: gui/mainwindow.cpp:1486
@@ -2430,32 +2433,32 @@ msgstr "音轨"
 msgid "Auto"
 msgstr ""
 
-#: gui/playbacksettings.cpp:161
+#: gui/playbacksettings.cpp:159
 msgid ""
 "<i>Connected to %1<br/>The entries below apply to the currently connected "
 "MPD collection.</i>"
 msgstr ""
 
-#. i18n: file: gui/playbacksettings.ui:117
+#. i18n: file: gui/playbacksettings.ui:110
 #. i18n: ectx: property (text), widget (QLabel, messageLabel)
-#: gui/playbacksettings.cpp:164 po/rc.cpp:786 rc.cpp:786
+#: gui/playbacksettings.cpp:162 po/rc.cpp:783 rc.cpp:783
 msgid ""
 "<i>Not Connected!<br/>The entries below cannot be modified, as Cantata is "
 "not connected to MPD.</i>"
 msgstr ""
 
-#: gui/playbacksettings.cpp:171
+#: gui/playbacksettings.cpp:169
 msgid ""
 "<p>Replay Gain is a proposed standard published in 2001 to normalize the "
 "perceived loudness of computer audio formats such as MP3 and Ogg Vorbis. It "
 "works on a track/album basis, and is now supported in a growing number of "
-"players.</p><p>The following ReplayGain settings may be "
-"used:<ul><li><i>None</i> - No ReplayGain is applied.</li><li><i>Track</i> - "
-"Volume will be adjusted using the track's ReplayGain "
-"tags.</li><li><i>Album</i> - Volume will be adjusted using the albums's "
-"ReplayGain tags.</li><li><i>Auto</i> - Volume will be adjusted using the "
-"track's ReplayGain tags if random play is activated, otherwise the album's "
-"tags will be used.</li></ul></p>"
+"players.</p><p>The following ReplayGain settings may be used:"
+"<ul><li><i>None</i> - No ReplayGain is applied.</li><li><i>Track</i> - "
+"Volume will be adjusted using the track's ReplayGain tags.</li><li><i>Album</"
+"i> - Volume will be adjusted using the albums's ReplayGain tags.</"
+"li><li><i>Auto</i> - Volume will be adjusted using the track's ReplayGain "
+"tags if random play is activated, otherwise the album's tags will be used.</"
+"li></ul></p>"
 msgstr ""
 
 #: gui/playlistspage.cpp:59 tags/tageditor.cpp:903 tags/trackorganiser.cpp:75
@@ -2665,8 +2668,8 @@ msgstr "设置"
 #. i18n: ectx: property (text), widget (BuddyLabel, composerLabel)
 #. i18n: file: tags/tageditor.ui:77
 #. i18n: ectx: property (text), widget (StateLabel, composerLabel)
-#: gui/searchpage.cpp:230 po/rc.cpp:104 po/rc.cpp:386 po/rc.cpp:992 rc.cpp:104
-#: rc.cpp:386 rc.cpp:992
+#: gui/searchpage.cpp:230 po/rc.cpp:104 po/rc.cpp:386 po/rc.cpp:989 rc.cpp:104
+#: rc.cpp:386 rc.cpp:989
 msgid "Composer:"
 msgstr ""
 
@@ -2678,7 +2681,7 @@ msgstr ""
 #. i18n: ectx: property (text), widget (BuddyLabel, label_3)
 #. i18n: file: tags/tageditor.ui:129
 #. i18n: ectx: property (text), widget (StateLabel, genreLabel)
-#: gui/searchpage.cpp:235 po/rc.cpp:110 po/rc.cpp:1004 rc.cpp:110 rc.cpp:1004
+#: gui/searchpage.cpp:235 po/rc.cpp:110 po/rc.cpp:1001 rc.cpp:110 rc.cpp:1001
 msgid "Genre:"
 msgstr "流派:"
 
@@ -2690,7 +2693,7 @@ msgstr "流派:"
 #. i18n: ectx: property (text), widget (BuddyLabel, commentLabel)
 #. i18n: file: tags/tageditor.ui:155
 #. i18n: ectx: property (text), widget (StateLabel, commentLabel)
-#: gui/searchpage.cpp:237 po/rc.cpp:410 po/rc.cpp:1010 rc.cpp:410 rc.cpp:1010
+#: gui/searchpage.cpp:237 po/rc.cpp:410 po/rc.cpp:1007 rc.cpp:410 rc.cpp:1007
 msgid "Comment:"
 msgstr ""
 
@@ -2724,17 +2727,17 @@ msgstr "<i> 文件夹将被用于和设备传送音乐.</i>"
 #. i18n: ectx: property (text), widget (BuddyLabel, hostLabel)
 #. i18n: file: network/proxysettings.ui:63
 #. i18n: ectx: property (text), widget (BuddyLabel, proxyHostLabel)
-#: gui/serversettings.cpp:101 po/rc.cpp:287 po/rc.cpp:326 po/rc.cpp:875
-#: rc.cpp:287 rc.cpp:326 rc.cpp:875
+#: gui/serversettings.cpp:101 po/rc.cpp:287 po/rc.cpp:326 po/rc.cpp:872
+#: rc.cpp:287 rc.cpp:326 rc.cpp:872
 msgid "Host:"
 msgstr "主机名:"
 
 #: gui/serversettings.cpp:233
 msgid ""
 "Which type of collection do you wish to connect to?<br/><ul><li>Standard - "
-"music collection may be shared, is on another machine, or is already "
-"setup</li><li>Basic - music collection is not shared with others, and "
-"Cantata will configure and control the MPD instance</li></ul>"
+"music collection may be shared, is on another machine, or is already setup</"
+"li><li>Basic - music collection is not shared with others, and Cantata will "
+"configure and control the MPD instance</li></ul>"
 msgstr ""
 
 #: gui/serversettings.cpp:236
@@ -2983,7 +2986,7 @@ msgstr "单个音轨"
 
 #. i18n: file: online/onlinesettings.ui:47
 #. i18n: ectx: property (text), widget (QPushButton, configureButton)
-#: models/onlineservicesmodel.cpp:76 po/rc.cpp:890 rc.cpp:890
+#: models/onlineservicesmodel.cpp:76 po/rc.cpp:887 rc.cpp:887
 msgid "Configure Service"
 msgstr ""
 
@@ -3284,8 +3287,8 @@ msgstr "Magnatune 设置"
 #. i18n: ectx: property (text), widget (BuddyLabel, userLabel)
 #. i18n: file: streams/digitallyimportedsettings.ui:48
 #. i18n: ectx: property (text), widget (BuddyLabel, label_2)
-#: online/magnatunesettingsdialog.cpp:43 po/rc.cpp:881 po/rc.cpp:896
-#: po/rc.cpp:923 rc.cpp:881 rc.cpp:896 rc.cpp:923
+#: online/magnatunesettingsdialog.cpp:43 po/rc.cpp:878 po/rc.cpp:893
+#: po/rc.cpp:920 rc.cpp:878 rc.cpp:893 rc.cpp:920
 msgid "Username:"
 msgstr "用户名:"
 
@@ -3318,9 +3321,9 @@ msgstr "用户名:"
 #. i18n: file: streams/digitallyimportedsettings.ui:61
 #. i18n: ectx: property (text), widget (BuddyLabel, label_3)
 #: online/magnatunesettingsdialog.cpp:44 po/rc.cpp:299 po/rc.cpp:317
-#: po/rc.cpp:488 po/rc.cpp:819 po/rc.cpp:884 po/rc.cpp:899 po/rc.cpp:926
-#: rc.cpp:299 rc.cpp:317 rc.cpp:488 rc.cpp:819 rc.cpp:884 rc.cpp:899
-#: rc.cpp:926
+#: po/rc.cpp:488 po/rc.cpp:816 po/rc.cpp:881 po/rc.cpp:896 po/rc.cpp:923
+#: rc.cpp:299 rc.cpp:317 rc.cpp:488 rc.cpp:816 rc.cpp:881 rc.cpp:896
+#: rc.cpp:923
 msgid "Password:"
 msgstr "密码:"
 
@@ -3416,8 +3419,7 @@ msgstr ""
 
 #: online/onlineservicespage.cpp:696
 msgid ""
-"Do you wish to the delete downloaded files of the following podcast "
-"episodes?"
+"Do you wish to the delete downloaded files of the following podcast episodes?"
 msgstr ""
 
 #: online/onlineservicespage.cpp:699
@@ -3624,13 +3626,11 @@ msgstr ""
 #. i18n: file: context/othersettings.ui:46
 #. i18n: ectx: property (text), widget (QRadioButton, contextBackdrop_custom)
 #. i18n: file: gui/interfacesettings.ui:508
-#. i18n: ectx: property (text), widget (QRadioButton,
-#. playQueueBackground_custom)
+#. i18n: ectx: property (text), widget (QRadioButton, playQueueBackground_custom)
 #. i18n: file: context/othersettings.ui:46
 #. i18n: ectx: property (text), widget (QRadioButton, contextBackdrop_custom)
 #. i18n: file: gui/interfacesettings.ui:508
-#. i18n: ectx: property (text), widget (QRadioButton,
-#. playQueueBackground_custom)
+#. i18n: ectx: property (text), widget (QRadioButton, playQueueBackground_custom)
 #: po/rc.cpp:12 po/rc.cpp:663 rc.cpp:12 rc.cpp:663
 msgid "Custom image:"
 msgstr ""
@@ -3674,13 +3674,11 @@ msgstr ""
 #. i18n: file: context/othersettings.ui:152
 #. i18n: ectx: property (text), widget (QLabel, contextBackdropOpacityLabel)
 #. i18n: file: gui/interfacesettings.ui:632
-#. i18n: ectx: property (text), widget (QLabel,
-#. playQueueBackgroundOpacityLabel)
+#. i18n: ectx: property (text), widget (QLabel, playQueueBackgroundOpacityLabel)
 #. i18n: file: context/othersettings.ui:152
 #. i18n: ectx: property (text), widget (QLabel, contextBackdropOpacityLabel)
 #. i18n: file: gui/interfacesettings.ui:632
-#. i18n: ectx: property (text), widget (QLabel,
-#. playQueueBackgroundOpacityLabel)
+#. i18n: ectx: property (text), widget (QLabel, playQueueBackgroundOpacityLabel)
 #: po/rc.cpp:25 po/rc.cpp:676 rc.cpp:25 rc.cpp:676
 #, no-c-format
 msgid "40%"
@@ -3693,8 +3691,7 @@ msgid "Automatically switch to view after:"
 msgstr ""
 
 #. i18n: file: context/othersettings.ui:177
-#. i18n: ectx: property (specialValueText), widget (QSpinBox,
-#. contextSwitchTime)
+#. i18n: ectx: property (specialValueText), widget (QSpinBox, contextSwitchTime)
 #: po/rc.cpp:31 rc.cpp:31
 msgid "Do not auto-switch"
 msgstr ""
@@ -3749,8 +3746,8 @@ msgstr ""
 #: po/rc.cpp:53 rc.cpp:53
 #, no-c-format
 msgid ""
-"<i><b>NOTE:</b> Cantata does not show the full wikipedia pages (with images,"
-" links, etc), instead it shows a trimmed down version. This trimming is not "
+"<i><b>NOTE:</b> Cantata does not show the full wikipedia pages (with images, "
+"links, etc), instead it shows a trimmed down version. This trimming is not "
 "always 100% accurate, hence by default Cantata will only show the basic "
 "introduction to each article. If you elect to show the full article, then "
 "there may be parsing errors. You will also need to remove any currently "
@@ -3791,8 +3788,8 @@ msgstr "从复制歌曲:"
 #. i18n: ectx: property (text), widget (QLabel, loginStatusLabel)
 #. i18n: file: streams/digitallyimportedsettings.ui:109
 #. i18n: ectx: property (text), widget (QLabel, loginStatusLabel)
-#: po/rc.cpp:65 po/rc.cpp:77 po/rc.cpp:905 po/rc.cpp:935 rc.cpp:65 rc.cpp:77
-#: rc.cpp:905 rc.cpp:935
+#: po/rc.cpp:65 po/rc.cpp:77 po/rc.cpp:902 po/rc.cpp:932 rc.cpp:65 rc.cpp:77
+#: rc.cpp:902 rc.cpp:932
 msgid "TextLabel"
 msgstr "文本标签"
 
@@ -3844,8 +3841,8 @@ msgstr ""
 #. i18n: ectx: property (text), widget (UrlLabel, mopidyNote)
 #. i18n: file: tags/trackorganiser.ui:130
 #. i18n: ectx: property (text), widget (UrlLabel, mopidyNote)
-#: po/rc.cpp:95 po/rc.cpp:1016 po/rc.cpp:1043 rc.cpp:95 rc.cpp:1016
-#: rc.cpp:1043
+#: po/rc.cpp:95 po/rc.cpp:1013 po/rc.cpp:1040 rc.cpp:95 rc.cpp:1013
+#: rc.cpp:1040
 msgid ""
 "<i><b>NOTE:</b> Connected to a Mopidy server (manual update required).</i>"
 msgstr ""
@@ -3864,7 +3861,7 @@ msgstr "专辑详情"
 #. i18n: ectx: property (text), widget (BuddyLabel, label_4)
 #. i18n: file: tags/tageditor.ui:142
 #. i18n: ectx: property (text), widget (StateLabel, yearLabel)
-#: po/rc.cpp:113 po/rc.cpp:1007 rc.cpp:113 rc.cpp:1007
+#: po/rc.cpp:113 po/rc.cpp:1004 rc.cpp:113 rc.cpp:1004
 msgid "Year:"
 msgstr "年份:"
 
@@ -3932,8 +3929,8 @@ msgstr "从不跳过读取错误"
 #. i18n: ectx: property (text), widget (QLabel, remoteDeviceNote)
 #: po/rc.cpp:158 rc.cpp:158
 msgid ""
-"<i><b>NOTE:</b> These settings are only valid, and editable, when the device"
-" is connected.</i>"
+"<i><b>NOTE:</b> These settings are only valid, and editable, when the device "
+"is connected.</i>"
 msgstr ""
 
 #. i18n: file: devices/devicepropertieswidget.ui:38
@@ -3948,8 +3945,8 @@ msgstr ""
 #. i18n: ectx: property (text), widget (BuddyLabel, nameLabel)
 #. i18n: file: gui/serversettings.ui:63
 #. i18n: ectx: property (text), widget (QLabel, label_2)
-#: po/rc.cpp:161 po/rc.cpp:281 po/rc.cpp:810 streams/streamdialog.cpp:54
-#: rc.cpp:161 rc.cpp:281 rc.cpp:810
+#: po/rc.cpp:161 po/rc.cpp:281 po/rc.cpp:807 streams/streamdialog.cpp:54
+#: rc.cpp:161 rc.cpp:281 rc.cpp:807
 msgid "Name:"
 msgstr "名称:"
 
@@ -3973,8 +3970,8 @@ msgstr "名称:"
 #. i18n: ectx: property (text), widget (BuddyLabel, dirLabel)
 #. i18n: file: gui/serversettings.ui:315
 #. i18n: ectx: property (text), widget (BuddyLabel, dirLabel_2)
-#: po/rc.cpp:164 po/rc.cpp:491 po/rc.cpp:509 po/rc.cpp:822 po/rc.cpp:844
-#: rc.cpp:164 rc.cpp:491 rc.cpp:509 rc.cpp:822 rc.cpp:844
+#: po/rc.cpp:164 po/rc.cpp:491 po/rc.cpp:509 po/rc.cpp:819 po/rc.cpp:841
+#: rc.cpp:164 rc.cpp:491 rc.cpp:509 rc.cpp:819 rc.cpp:841
 msgid "Music folder:"
 msgstr "音乐文件夹:"
 
@@ -4022,7 +4019,7 @@ msgstr ""
 #. i18n: ectx: property (title), widget (QGroupBox, filenamesGroupBox)
 #. i18n: file: tags/trackorganiser.ui:25
 #. i18n: ectx: property (title), widget (QGroupBox, optionsBox)
-#: po/rc.cpp:185 po/rc.cpp:1019 rc.cpp:185 rc.cpp:1019
+#: po/rc.cpp:185 po/rc.cpp:1016 rc.cpp:185 rc.cpp:1016
 msgid "Filenames"
 msgstr "文件名"
 
@@ -4034,7 +4031,7 @@ msgstr "文件名"
 #. i18n: ectx: property (text), widget (BuddyLabel, label_6)
 #. i18n: file: tags/trackorganiser.ui:61
 #. i18n: ectx: property (text), widget (BuddyLabel, label_6)
-#: po/rc.cpp:188 po/rc.cpp:1022 rc.cpp:188 rc.cpp:1022
+#: po/rc.cpp:188 po/rc.cpp:1019 rc.cpp:188 rc.cpp:1019
 msgid "Filename scheme:"
 msgstr "文件名框架"
 
@@ -4046,7 +4043,7 @@ msgstr "文件名框架"
 #. i18n: ectx: property (text), widget (QCheckBox, vfatSafe)
 #. i18n: file: tags/trackorganiser.ui:71
 #. i18n: ectx: property (text), widget (QCheckBox, vfatSafe)
-#: po/rc.cpp:191 po/rc.cpp:1025 rc.cpp:191 rc.cpp:1025
+#: po/rc.cpp:191 po/rc.cpp:1022 rc.cpp:191 rc.cpp:1022
 msgid "VFAT safe"
 msgstr ""
 
@@ -4058,7 +4055,7 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QCheckBox, asciiOnly)
 #. i18n: file: tags/trackorganiser.ui:78
 #. i18n: ectx: property (text), widget (QCheckBox, asciiOnly)
-#: po/rc.cpp:194 po/rc.cpp:1028 rc.cpp:194 rc.cpp:1028
+#: po/rc.cpp:194 po/rc.cpp:1025 rc.cpp:194 rc.cpp:1025
 msgid "Use only ASCII characters"
 msgstr ""
 
@@ -4070,7 +4067,7 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QCheckBox, replaceSpaces)
 #. i18n: file: tags/trackorganiser.ui:85
 #. i18n: ectx: property (text), widget (QCheckBox, replaceSpaces)
-#: po/rc.cpp:197 po/rc.cpp:1031 rc.cpp:197 rc.cpp:1031
+#: po/rc.cpp:197 po/rc.cpp:1028 rc.cpp:197 rc.cpp:1028
 msgid "Replace spaces with underscores"
 msgstr ""
 
@@ -4082,7 +4079,7 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QCheckBox, ignoreThe)
 #. i18n: file: tags/trackorganiser.ui:92
 #. i18n: ectx: property (text), widget (QCheckBox, ignoreThe)
-#: po/rc.cpp:200 po/rc.cpp:1034 rc.cpp:200 rc.cpp:1034
+#: po/rc.cpp:200 po/rc.cpp:1031 rc.cpp:200 rc.cpp:1031
 msgid "Ignore 'The' in artist names"
 msgstr ""
 
@@ -4115,8 +4112,8 @@ msgstr "关于文件名框架"
 #: po/rc.cpp:215 rc.cpp:215
 msgid ""
 "The artist of the album. For most albums, this will be the same as the "
-"<i>Track Artist.</i> For compilations, this will often be <i>Various "
-"Artists.</i>"
+"<i>Track Artist.</i> For compilations, this will often be <i>Various Artists."
+"</i>"
 msgstr ""
 
 #. i18n: file: devices/filenameschemedialog.ui:89
@@ -4165,8 +4162,8 @@ msgstr "音轨标题"
 #. i18n: ectx: property (toolTip), widget (QPushButton, trackArtistAndTitle)
 #: po/rc.cpp:245 rc.cpp:245
 msgid ""
-"The track title (with <i>Track Artist</i>, if different to <i>Album "
-"Artist</i>)."
+"The track title (with <i>Track Artist</i>, if different to <i>Album Artist</"
+"i>)."
 msgstr ""
 
 #. i18n: file: devices/filenameschemedialog.ui:144
@@ -4233,7 +4230,7 @@ msgstr ""
 #. i18n: ectx: property (text), widget (BuddyLabel, label_9)
 #. i18n: file: network/proxysettings.ui:39
 #. i18n: ectx: property (text), widget (BuddyLabel, proxyTypeLabel)
-#: po/rc.cpp:278 po/rc.cpp:368 po/rc.cpp:866 rc.cpp:278 rc.cpp:368 rc.cpp:866
+#: po/rc.cpp:278 po/rc.cpp:368 po/rc.cpp:863 rc.cpp:278 rc.cpp:368 rc.cpp:863
 msgid "Type:"
 msgstr "类型:"
 
@@ -4269,8 +4266,8 @@ msgstr "选项"
 #. i18n: ectx: property (text), widget (BuddyLabel, portLabel)
 #. i18n: file: network/proxysettings.ui:76
 #. i18n: ectx: property (text), widget (BuddyLabel, proxyPortLabel)
-#: po/rc.cpp:290 po/rc.cpp:329 po/rc.cpp:485 po/rc.cpp:816 po/rc.cpp:878
-#: rc.cpp:290 rc.cpp:329 rc.cpp:485 rc.cpp:816 rc.cpp:878
+#: po/rc.cpp:290 po/rc.cpp:329 po/rc.cpp:485 po/rc.cpp:813 po/rc.cpp:875
+#: rc.cpp:290 rc.cpp:329 rc.cpp:485 rc.cpp:813 rc.cpp:875
 msgid "Port:"
 msgstr "端口:"
 
@@ -4358,8 +4355,8 @@ msgstr "额外选项:"
 #: po/rc.cpp:341 rc.cpp:341
 msgid ""
 "<i><b>NOTE:</b> Due to the way sshfs works, a suitable ssh-askpass "
-"application (ksshaskpass, ssh-askpass-gnome, etc.) will be required to enter"
-" the password.</i>"
+"application (ksshaskpass, ssh-askpass-gnome, etc.) will be required to enter "
+"the password.</i>"
 msgstr ""
 
 #. i18n: file: devices/remotedevicepropertieswidget.ui:428
@@ -4512,18 +4509,18 @@ msgstr ""
 #: po/rc.cpp:440 rc.cpp:440
 msgid ""
 "<i><b>NOTE:</b> If you elect to have Cantata store covers, lyrics, or "
-"backdrops, within the music folder, and you do not have write access to this"
-" folder, then Cantata will revert to saving the files in your personal cache"
-" folder.</i>"
+"backdrops, within the music folder, and you do not have write access to this "
+"folder, then Cantata will revert to saving the files in your personal cache "
+"folder.</i>"
 msgstr ""
 
 #. i18n: file: gui/filesettings.ui:104
 #. i18n: ectx: property (text), widget (QLabel, persNote_2)
 #: po/rc.cpp:443 rc.cpp:443
 msgid ""
-"<i><b>NOTE:</b> Cantata can only save backdrops and artist images within the"
-" music folder hierarchy if this is 2 levels deep. (i.e. "
-"'Artist/Album/Tracks')</i>"
+"<i><b>NOTE:</b> Cantata can only save backdrops and artist images within the "
+"music folder hierarchy if this is 2 levels deep. (i.e. 'Artist/Album/"
+"Tracks')</i>"
 msgstr ""
 
 #. i18n: file: gui/initialsettingswizard.ui:14
@@ -4542,14 +4539,13 @@ msgstr "欢迎来到 Cantata"
 #. i18n: ectx: property (text), widget (QLabel, label_2)
 #: po/rc.cpp:452 rc.cpp:452
 msgid ""
-"<html><head/><body><p>Cantata is a feature-rich and user friendly client for"
-" Music Player Daemon (MPD). MPD is a background application that can be used"
-" to play music.</p><p>For more information on MPD itself, please refer to "
-"the MPD website <a href=\"http://www.musicpd.org\"><span style=\" text-"
-"decoration: underline; "
-"color:#0000ff;\">http://www.musicpd.org</span></a></p><p>This 'wizard' will "
-"guide you through the basic settings required for Cantata to function "
-"correctly.</p></body></html>"
+"<html><head/><body><p>Cantata is a feature-rich and user friendly client for "
+"Music Player Daemon (MPD). MPD is a background application that can be used "
+"to play music.</p><p>For more information on MPD itself, please refer to the "
+"MPD website <a href=\"http://www.musicpd.org\"><span style=\" text-"
+"decoration: underline; color:#0000ff;\">http://www.musicpd.org</span></a></"
+"p><p>This 'wizard' will guide you through the basic settings required for "
+"Cantata to function correctly.</p></body></html>"
 msgstr ""
 
 #. i18n: file: gui/initialsettingswizard.ui:108
@@ -4562,11 +4558,11 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QLabel, label_8)
 #: po/rc.cpp:458 rc.cpp:458
 msgid ""
-"<html><head/><body><p>Cantata is a feature-rich and user friendly client for"
-" Music Player Daemon (MPD). MPD is a background application that can be used"
-" to play music. MPD may be started either system-wide, or on a per-user "
-"basis. Please select how you would like to have Cantata initially connect to"
-" (or startup) MPD:</p></body></html>"
+"<html><head/><body><p>Cantata is a feature-rich and user friendly client for "
+"Music Player Daemon (MPD). MPD is a background application that can be used "
+"to play music. MPD may be started either system-wide, or on a per-user "
+"basis. Please select how you would like to have Cantata initially connect to "
+"(or startup) MPD:</p></body></html>"
 msgstr ""
 
 #. i18n: file: gui/initialsettingswizard.ui:175
@@ -4579,8 +4575,8 @@ msgstr ""
 #. i18n: ectx: property (text), widget (BuddyLabel, label_10)
 #: po/rc.cpp:464 rc.cpp:464
 msgid ""
-"<i>Select this option if your music collection is shared between users, your"
-" MPD instance is running on another machine, or you already have a personal "
+"<i>Select this option if your music collection is shared between users, your "
+"MPD instance is running on another machine, or you already have a personal "
 "MPD setup. If you select this option then Cantata itself cannot control the "
 "starting and stopping of the MPD server. You will therfore need to ensure "
 "that MPD is already configured and running.</i>"
@@ -4606,10 +4602,9 @@ msgstr ""
 msgid ""
 "<html><head/><body><p>For more information on MPD itself, please refer to "
 "the MPD website <a href=\"http://www.musicpd.org\"><span style=\" text-"
-"decoration: underline; "
-"color:#0000ff;\">http://www.musicpd.org</span></a></p><p>This 'wizard' will "
-"guide you through the basic settings required for Cantata to function "
-"correctly.</p></body></html>"
+"decoration: underline; color:#0000ff;\">http://www.musicpd.org</span></a></"
+"p><p>This 'wizard' will guide you through the basic settings required for "
+"Cantata to function correctly.</p></body></html>"
 msgstr ""
 
 #. i18n: file: gui/initialsettingswizard.ui:330
@@ -4634,7 +4629,7 @@ msgstr ""
 #. i18n: ectx: property (text), widget (BuddyLabel, hostLabel)
 #. i18n: file: gui/serversettings.ui:76
 #. i18n: ectx: property (text), widget (BuddyLabel, hostLabel)
-#: po/rc.cpp:482 po/rc.cpp:813 rc.cpp:482 rc.cpp:813
+#: po/rc.cpp:482 po/rc.cpp:810 rc.cpp:482 rc.cpp:810
 msgid "Host (or local socket):"
 msgstr "主机名 (或本地 Socket):"
 
@@ -4643,8 +4638,8 @@ msgstr "主机名 (或本地 Socket):"
 #: po/rc.cpp:497 rc.cpp:497
 msgid ""
 "<i><b>NOTE:</b> The 'Music folder' setting is used to lookup cover-art, "
-"lyrics, etc. If you're MPD instance is on a remote host, you may set this to"
-" a HTTP URL.</i>"
+"lyrics, etc. If you're MPD instance is on a remote host, you may set this to "
+"a HTTP URL.</i>"
 msgstr ""
 
 #. i18n: file: gui/initialsettingswizard.ui:535
@@ -4655,11 +4650,12 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QLabel, socketNoteLabel)
 #. i18n: file: gui/serversettings.ui:219
 #. i18n: ectx: property (text), widget (QLabel, socketNoteLabel)
-#: po/rc.cpp:500 po/rc.cpp:838 rc.cpp:500 rc.cpp:838
+#: po/rc.cpp:500 po/rc.cpp:835 rc.cpp:500 rc.cpp:835
 msgid ""
 "<i><b>NOTE:</b> When using a local socket the full absolute path to the "
 "socket needs to be set. (Port number is not required.)</i>"
-msgstr "<i><b>注意:</b> 使用本地 Socket 时请输入完整路径。 (端口号可以省略).</i>"
+msgstr ""
+"<i><b>注意:</b> 使用本地 Socket 时请输入完整路径。 (端口号可以省略).</i>"
 
 #. i18n: file: gui/initialsettingswizard.ui:571
 #. i18n: ectx: property (text), widget (QLabel, label_13)
@@ -4683,33 +4679,33 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QLabel, label_5f)
 #: po/rc.cpp:515 rc.cpp:515
 msgid ""
-"<p>Cantata will download missing covers, and lyrics, from the "
-"internet.</p><p>For each of these, please confirm whether you wish Cantata "
-"to store the relevant files within the music folder, or within your personal"
-" cache/config folders.</p>"
+"<p>Cantata will download missing covers, and lyrics, from the internet.</"
+"p><p>For each of these, please confirm whether you wish Cantata to store the "
+"relevant files within the music folder, or within your personal cache/config "
+"folders.</p>"
 msgstr ""
 
 #. i18n: file: gui/initialsettingswizard.ui:772
 #. i18n: ectx: property (text), widget (QLabel, persNote)
 #: po/rc.cpp:527 rc.cpp:527
 msgid ""
-"<i><b>NOTE:</b> If you elect to have Cantata store covers, or lyrics, within"
-" the music folder, and you do not have write access to this folder, then "
+"<i><b>NOTE:</b> If you elect to have Cantata store covers, or lyrics, within "
+"the music folder, and you do not have write access to this folder, then "
 "Cantata will revert to saving the files in your personal cache folder. "
-"However, for streams, if you do not have write access, then you will only be"
-" able to view (and play) the streams stored in the music folder, and not add"
-" (or edit) any streams. If you elect not to store streams within the music "
-"folder, then these will be saved in your local config folder - and will only"
-" be accessible to yourself.</i>"
+"However, for streams, if you do not have write access, then you will only be "
+"able to view (and play) the streams stored in the music folder, and not add "
+"(or edit) any streams. If you elect not to store streams within the music "
+"folder, then these will be saved in your local config folder - and will only "
+"be accessible to yourself.</i>"
 msgstr ""
 
 #. i18n: file: gui/initialsettingswizard.ui:801
 #. i18n: ectx: property (text), widget (QLabel, persNote_2)
 #: po/rc.cpp:530 rc.cpp:530
 msgid ""
-"<i><b>NOTE:</b> Cantata can only save backdrops and artist images within the"
-" music folder hierarchy if this is 2 levels deep. i.e. "
-"'Artist/Album/Tracks'.</i>"
+"<i><b>NOTE:</b> Cantata can only save backdrops and artist images within the "
+"music folder hierarchy if this is 2 levels deep. i.e. 'Artist/Album/Tracks'."
+"</i>"
 msgstr ""
 
 #. i18n: file: gui/initialsettingswizard.ui:830
@@ -4717,8 +4713,8 @@ msgstr ""
 #: po/rc.cpp:533 rc.cpp:533
 msgid ""
 "<i><b>NOTE:</b> The 'Music folder' is set to a HTTP address, and Cantata "
-"currently cannot upload files to external HTTP servers. Therefore, the above"
-" settings should be left un-checked.</i>"
+"currently cannot upload files to external HTTP servers. Therefore, the above "
+"settings should be left un-checked.</i>"
 msgstr ""
 
 #. i18n: file: gui/initialsettingswizard.ui:866
@@ -4740,9 +4736,9 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QLabel, groupWarningLabel)
 #: po/rc.cpp:542 rc.cpp:542
 msgid ""
-"<b>Warning:</b> You are not currently a member of the 'users' group. Cantata"
-" will function better (saving of album covers, lyrics, etc. with the correct"
-" permissions) if you (or your administrator) add yourself to this group. If "
+"<b>Warning:</b> You are not currently a member of the 'users' group. Cantata "
+"will function better (saving of album covers, lyrics, etc. with the correct "
+"permissions) if you (or your administrator) add yourself to this group. If "
 "you do add yourself you will need to logout and back in for this to take "
 "effect."
 msgstr ""
@@ -4780,8 +4776,7 @@ msgstr ""
 msgid ""
 "<i><b>NOTE:</b> By default, the 'Info' (current song information) view is "
 "accessible by pressing its icon in the main toolbar. If you enable the "
-"option above, then it will be merged into the sidebar as per other "
-"views.</i>"
+"option above, then it will be merged into the sidebar as per other views.</i>"
 msgstr ""
 
 #. i18n: file: gui/interfacesettings.ui:150
@@ -4836,8 +4831,10 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QLabel, label_8)
 #: po/rc.cpp:593 rc.cpp:593
 msgid ""
-"<i><b>NOTE:</b> When looking for artist images, Cantata will look for either artist.jpg, artist.png, 'Artist'.jpg, or 'Artist'.png,\n"
-"within the folder of the current track, or within its parent folder. If no image is found, Cantata will attempt to download one.</i>"
+"<i><b>NOTE:</b> When looking for artist images, Cantata will look for either "
+"artist.jpg, artist.png, 'Artist'.jpg, or 'Artist'.png,\n"
+"within the folder of the current track, or within its parent folder. If no "
+"image is found, Cantata will attempt to download one.</i>"
 msgstr ""
 
 #. i18n: file: gui/interfacesettings.ui:316
@@ -4913,8 +4910,7 @@ msgid "Prompt before clearing"
 msgstr ""
 
 #. i18n: file: gui/interfacesettings.ui:501
-#. i18n: ectx: property (text), widget (QRadioButton,
-#. playQueueBackground_cover)
+#. i18n: ectx: property (text), widget (QRadioButton, playQueueBackground_cover)
 #: po/rc.cpp:660 rc.cpp:660
 msgid "Current album cover"
 msgstr ""
@@ -5003,10 +4999,10 @@ msgstr ""
 #: po/rc.cpp:718 rc.cpp:718
 msgid ""
 "<p>When adding artists, or albums to the playqueue, or editing tags, etc, "
-"then only use songs that pass the current Genre or string filter.</p><p>e.g."
-" If you have an album with 10 songs, but only 5 have the genre set to "
-"'Metal', then only these 5 would be added if the view's Genre filter was set"
-" to 'Metal'."
+"then only use songs that pass the current Genre or string filter.</p><p>e.g. "
+"If you have an album with 10 songs, but only 5 have the genre set to "
+"'Metal', then only these 5 would be added if the view's Genre filter was set "
+"to 'Metal'."
 msgstr ""
 
 #. i18n: file: gui/interfacesettings.ui:759
@@ -5045,7 +5041,12 @@ msgstr ""
 #, no-c-format
 msgid ""
 "<p>This will change Cantata's interface as detailed:\n"
-"<ul><li>Playback, and control, buttons will be 33% wider</li><li>Views will be 'flickable'</li><li>To drag items, you will need to 'touch' the top-left corner</li><li>Scrollbars will be hidden</li><li>Actions (e.g. 'Add To Play Queue') will always be visible (not just when item is under mouse)</li><li>Spin buttons with have + and - buttons at the side of the text field</li></ul></p>"
+"<ul><li>Playback, and control, buttons will be 33% wider</li><li>Views will "
+"be 'flickable'</li><li>To drag items, you will need to 'touch' the top-left "
+"corner</li><li>Scrollbars will be hidden</li><li>Actions (e.g. 'Add To Play "
+"Queue') will always be visible (not just when item is under mouse)</"
+"li><li>Spin buttons with have + and - buttons at the side of the text field</"
+"li></ul></p>"
 msgstr ""
 
 #. i18n: file: gui/interfacesettings.ui:798
@@ -5066,7 +5067,8 @@ msgstr ""
 msgid ""
 "<i><b>NOTE:</b> Changing the 'Enforce single-click activation of items' "
 "setting will require a re-start of Cantata.</i>"
-msgstr "<i><b>注意:</b> 启用\"强制使用单击激活项目\"后必须重新启动 Cantata。</i>"
+msgstr ""
+"<i><b>注意:</b> 启用\"强制使用单击激活项目\"后必须重新启动 Cantata。</i>"
 
 #. i18n: file: gui/interfacesettings.ui:868
 #. i18n: ectx: property (text), widget (StateLabel, langNoteLabel)
@@ -5103,65 +5105,59 @@ msgid "Stop playback on exit"
 msgstr "退出时停止回放"
 
 #. i18n: file: gui/playbacksettings.ui:65
-#. i18n: ectx: property (text), widget (QCheckBox, stopDynamizerOnExit)
-#: po/rc.cpp:774 rc.cpp:774
-msgid "Stop dynamizer on exit"
-msgstr "退出时关闭动态"
-
-#. i18n: file: gui/playbacksettings.ui:72
 #. i18n: ectx: property (text), widget (QCheckBox, inhibitSuspend)
-#: po/rc.cpp:777 rc.cpp:777
+#: po/rc.cpp:774 rc.cpp:774
 msgid "Inhibit suspend whilst playing"
 msgstr ""
 
-#. i18n: file: gui/playbacksettings.ui:95
+#. i18n: file: gui/playbacksettings.ui:88
 #. i18n: ectx: property (text), widget (QLabel, noteLabel)
-#: po/rc.cpp:780 rc.cpp:780
+#: po/rc.cpp:777 rc.cpp:777
 msgid ""
 "<i><b>NOTE:</b> If you press and hold the stop button, then a menu will be "
 "shown allowing you to choose whether to stop playback now, or after the "
 "current track.</i>"
 msgstr ""
 
-#. i18n: file: gui/playbacksettings.ui:111
+#. i18n: file: gui/playbacksettings.ui:104
 #. i18n: ectx: property (title), widget (QGroupBox, outputBox)
-#: po/rc.cpp:783 rc.cpp:783
+#: po/rc.cpp:780 rc.cpp:780
 msgid "Output"
 msgstr "输出"
 
-#. i18n: file: gui/playbacksettings.ui:135
+#. i18n: file: gui/playbacksettings.ui:128
 #. i18n: ectx: property (text), widget (BuddyLabel, crossfadingLabel)
-#: po/rc.cpp:789 rc.cpp:789
+#: po/rc.cpp:786 rc.cpp:786
 msgid "Crossfade between tracks:"
 msgstr ""
 
-#. i18n: file: gui/playbacksettings.ui:145
+#. i18n: file: gui/playbacksettings.ui:138
 #. i18n: ectx: property (suffix), widget (QSpinBox, crossfading)
-#: po/rc.cpp:792 rc.cpp:792
+#: po/rc.cpp:789 rc.cpp:789
 msgid " s"
 msgstr ""
 
-#. i18n: file: gui/playbacksettings.ui:158
+#. i18n: file: gui/playbacksettings.ui:151
 #. i18n: ectx: property (text), widget (BuddyLabel, replayGainLabel)
-#: po/rc.cpp:798 rc.cpp:798
+#: po/rc.cpp:795 rc.cpp:795
 msgid "Replay gain:"
 msgstr "播放增益:"
 
-#. i18n: file: gui/playbacksettings.ui:201
+#. i18n: file: gui/playbacksettings.ui:194
 #. i18n: ectx: property (text), widget (UrlLabel, aboutReplayGain)
-#: po/rc.cpp:801 rc.cpp:801
+#: po/rc.cpp:798 rc.cpp:798
 msgid "About replay gain"
 msgstr ""
 
-#. i18n: file: gui/playbacksettings.ui:210
+#. i18n: file: gui/playbacksettings.ui:203
 #. i18n: ectx: property (text), widget (QLabel, outputsViewLabel)
-#: po/rc.cpp:804 rc.cpp:804
+#: po/rc.cpp:801 rc.cpp:801
 msgid "Use the checkboxes below to control the active outputs."
 msgstr ""
 
 #. i18n: file: gui/serversettings.ui:35
 #. i18n: ectx: property (text), widget (QLabel, label)
-#: po/rc.cpp:807 rc.cpp:807
+#: po/rc.cpp:804 rc.cpp:804
 msgid "Collection:"
 msgstr ""
 
@@ -5173,30 +5169,30 @@ msgstr ""
 #. i18n: ectx: property (text), widget (BuddyLabel, coverNameLabel)
 #. i18n: file: gui/serversettings.ui:328
 #. i18n: ectx: property (text), widget (BuddyLabel, basicCoverNameLabel)
-#: po/rc.cpp:825 po/rc.cpp:847 rc.cpp:825 rc.cpp:847
+#: po/rc.cpp:822 po/rc.cpp:844 rc.cpp:822 rc.cpp:844
 msgid "Cover filename:"
 msgstr "封面名称:"
 
 #. i18n: file: gui/serversettings.ui:152
 #. i18n: ectx: property (toolTip), widget (LineEdit, coverName)
-#: po/rc.cpp:829 rc.cpp:829
+#: po/rc.cpp:826 rc.cpp:826
 #, no-c-format
 msgid ""
 "<p>Filename (without extension) to save downloaded covers as.<br/>If left "
-"blank 'cover' will be used.<br/><br/><i>%artist% will be replaced with album"
-" artist of the current song, and %album% will be replaced with the album "
-"name.</i></p>"
+"blank 'cover' will be used.<br/><br/><i>%artist% will be replaced with album "
+"artist of the current song, and %album% will be replaced with the album name."
+"</i></p>"
 msgstr ""
 
 #. i18n: file: gui/serversettings.ui:159
 #. i18n: ectx: property (text), widget (BuddyLabel, streamUrlLabel)
-#: po/rc.cpp:832 rc.cpp:832
+#: po/rc.cpp:829 rc.cpp:829
 msgid "HTTP stream URL:"
 msgstr ""
 
 #. i18n: file: gui/serversettings.ui:190
 #. i18n: ectx: property (text), widget (QLabel, musicFolderNoteLabel)
-#: po/rc.cpp:835 rc.cpp:835
+#: po/rc.cpp:832 rc.cpp:832
 msgid ""
 "<i><b>NOTE:</b> The 'Music folder' setting is used to lookup cover-art "
 "(either the value specified above, or <code>cover.jpg / cover.png</code> if "
@@ -5205,12 +5201,12 @@ msgid ""
 "album folder.</i>"
 msgstr ""
 "<i><b>注意:</b> '音乐文件夹' 将被用来查找专辑封面 (如果未指定值，默认使用 "
-"<code>cover.jpg/cover.png</code>). 如果有文件夹及子文件的写入权限，Cantata "
-"将自动下载专辑封面到专辑文件夹</i>"
+"<code>cover.jpg/cover.png</code>). 如果有文件夹及子文件的写入权限，Cantata 将"
+"自动下载专辑封面到专辑文件夹</i>"
 
 #. i18n: file: gui/serversettings.ui:264
 #. i18n: ectx: property (text), widget (QLabel, streamUrlNoteLabel)
-#: po/rc.cpp:841 rc.cpp:841
+#: po/rc.cpp:838 rc.cpp:838
 msgid ""
 "<i><b>NOTE:</b> 'HTTP Stream URL' is only of use if you have MPD configured "
 "to output to a HTTP stream, and you wish Cantata to be able to play that "
@@ -5219,62 +5215,66 @@ msgstr ""
 
 #. i18n: file: gui/serversettings.ui:343
 #. i18n: ectx: property (text), widget (StateLabel, basicMusicFolderNoteLabel)
-#: po/rc.cpp:850 rc.cpp:850
+#: po/rc.cpp:847 rc.cpp:847
 msgid ""
-"<i><b>NOTE:</b> If you change the 'Music folder' setting, then you will need"
-" to manually update the music database. This can be performed by pressing "
-"the 'Refresh Database' button in the 'Artists' or 'Albums' views.</i>"
+"<i><b>NOTE:</b> If you change the 'Music folder' setting, then you will need "
+"to manually update the music database. This can be performed by pressing the "
+"'Refresh Database' button in the 'Artists' or 'Albums' views.</i>"
 msgstr ""
 
 #. i18n: file: gui/serversettings.ui:372
 #. i18n: ectx: property (text), widget (QLabel, musicFolderNoteLabel_2)
-#: po/rc.cpp:853 rc.cpp:853
+#: po/rc.cpp:850 rc.cpp:850
 msgid ""
-"<i><b>NOTE:</b> If no setting is specified for 'Cover filename, then Cantata"
-" will use a default of <code>cover</code> </i>"
+"<i><b>NOTE:</b> If no setting is specified for 'Cover filename, then Cantata "
+"will use a default of <code>cover</code> </i>"
 msgstr ""
 
 #. i18n: file: http/httpserversettings.ui:25
 #. i18n: ectx: property (text), widget (BuddyLabel, label_5)
-#: po/rc.cpp:856 rc.cpp:856
+#: po/rc.cpp:853 rc.cpp:853
 msgid "Network interface:"
 msgstr ""
 
 #. i18n: file: http/httpserversettings.ui:57
 #. i18n: ectx: property (text), widget (QLabel, label_4)
-#: po/rc.cpp:859 rc.cpp:859
+#: po/rc.cpp:856 rc.cpp:856
 msgid ""
-"<i><b>NOTE:</b> MPD usually only plays songs that are stored within its folders. Cantata contains a minimal HTTP server that can be used to serve other files to MPD. This, however, will only work whilst Cantata is running.<br/><br/>\n"
-"<b>NOTE:</b> If you choose 'Local loopback' for 'Network interface', then MPD <b>must</b> also be on this computer.</i>"
+"<i><b>NOTE:</b> MPD usually only plays songs that are stored within its "
+"folders. Cantata contains a minimal HTTP server that can be used to serve "
+"other files to MPD. This, however, will only work whilst Cantata is running."
+"<br/><br/>\n"
+"<b>NOTE:</b> If you choose 'Local loopback' for 'Network interface', then "
+"MPD <b>must</b> also be on this computer.</i>"
 msgstr ""
 
 #. i18n: file: network/proxysettings.ui:26
 #. i18n: ectx: property (text), widget (BuddyLabel, modeLabel)
-#: po/rc.cpp:863 rc.cpp:863
+#: po/rc.cpp:860 rc.cpp:860
 msgid "Mode:"
 msgstr ""
 
 #. i18n: file: network/proxysettings.ui:50
 #. i18n: ectx: property (text), item, widget (QComboBox, proxyType)
-#: po/rc.cpp:869 rc.cpp:869
+#: po/rc.cpp:866 rc.cpp:866
 msgid "HTTP Proxy"
 msgstr "HTTP 代理"
 
 #. i18n: file: network/proxysettings.ui:55
 #. i18n: ectx: property (text), item, widget (QComboBox, proxyType)
-#: po/rc.cpp:872 rc.cpp:872
+#: po/rc.cpp:869 rc.cpp:869
 msgid "SOCKS Proxy"
 msgstr "SOCKS 代理"
 
 #. i18n: file: online/onlinesettings.ui:12
 #. i18n: ectx: property (text), widget (QLabel, label)
-#: po/rc.cpp:887 rc.cpp:887
+#: po/rc.cpp:884 rc.cpp:884
 msgid "Use the checkboxes below to configure the list of active services."
 msgstr ""
 
 #. i18n: file: scrobbling/scrobblingsettings.ui:29
 #. i18n: ectx: property (text), widget (BuddyLabel, scrobblerLabel)
-#: po/rc.cpp:893 rc.cpp:893
+#: po/rc.cpp:890 rc.cpp:890
 msgid "Scrobble using:"
 msgstr ""
 
@@ -5286,7 +5286,7 @@ msgstr ""
 #. i18n: ectx: property (text), widget (BuddyLabel, statusLabel)
 #. i18n: file: streams/digitallyimportedsettings.ui:91
 #. i18n: ectx: property (text), widget (BuddyLabel, label_5)
-#: po/rc.cpp:902 po/rc.cpp:932 rc.cpp:902 rc.cpp:932
+#: po/rc.cpp:899 po/rc.cpp:929 rc.cpp:899 rc.cpp:929
 msgid "Status:"
 msgstr ""
 
@@ -5298,54 +5298,54 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QPushButton, loginButton)
 #. i18n: file: streams/digitallyimportedsettings.ui:122
 #. i18n: ectx: property (text), widget (QPushButton, loginButton)
-#: po/rc.cpp:908 po/rc.cpp:938 streams/digitallyimportedsettings.cpp:138
-#: streams/digitallyimportedsettings.cpp:144 rc.cpp:908 rc.cpp:938
+#: po/rc.cpp:905 po/rc.cpp:935 streams/digitallyimportedsettings.cpp:138
+#: streams/digitallyimportedsettings.cpp:144 rc.cpp:905 rc.cpp:935
 msgid "Login"
 msgstr ""
 
 #. i18n: file: scrobbling/scrobblingsettings.ui:122
 #. i18n: ectx: property (text), widget (QCheckBox, enableScrobbling)
-#: po/rc.cpp:911 rc.cpp:911
+#: po/rc.cpp:908 rc.cpp:908
 msgid "Scrobble tracks"
 msgstr ""
 
 #. i18n: file: scrobbling/scrobblingsettings.ui:129
 #. i18n: ectx: property (text), widget (QCheckBox, showLove)
-#: po/rc.cpp:914 rc.cpp:914
+#: po/rc.cpp:911 rc.cpp:911
 msgid "Show 'Love' button"
 msgstr ""
 
 #. i18n: file: streams/digitallyimportedsettings.ui:29
 #. i18n: ectx: property (text), widget (QLabel, label)
-#: po/rc.cpp:917 rc.cpp:917
+#: po/rc.cpp:914 rc.cpp:914
 msgid ""
 "You can listen for free without an account, but Premium members can listen "
-"to higher quality streams without advertisements. Visit <a "
-"href=\"http://www.di.fm/premium/\">http://www.di.fm/premium/</a> to upgrade "
-"to a premium account."
+"to higher quality streams without advertisements. Visit <a href=\"http://www."
+"di.fm/premium/\">http://www.di.fm/premium/</a> to upgrade to a premium "
+"account."
 msgstr ""
 
 #. i18n: file: streams/digitallyimportedsettings.ui:42
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox)
-#: po/rc.cpp:920 rc.cpp:920
+#: po/rc.cpp:917 rc.cpp:917
 msgid "Premium Account"
 msgstr ""
 
 #. i18n: file: streams/digitallyimportedsettings.ui:78
 #. i18n: ectx: property (text), widget (BuddyLabel, label_4)
-#: po/rc.cpp:929 rc.cpp:929
+#: po/rc.cpp:926 rc.cpp:926
 msgid "Stream type:"
 msgstr ""
 
 #. i18n: file: streams/digitallyimportedsettings.ui:131
 #. i18n: ectx: property (text), widget (QLabel, expiryLabel)
-#: po/rc.cpp:941 rc.cpp:941
+#: po/rc.cpp:938 rc.cpp:938
 msgid "Session expiry:"
 msgstr ""
 
 #. i18n: file: streams/digitallyimportedsettings.ui:161
 #. i18n: ectx: property (text), widget (QLabel, noteLabel)
-#: po/rc.cpp:944 rc.cpp:944
+#: po/rc.cpp:941 rc.cpp:941
 msgid ""
 "<i><b>NOTE:</b> These settings apply to Digitally Imported, JazzRadio.com, "
 "RockRadio.com, and Sky.fm</i>"
@@ -5353,84 +5353,84 @@ msgstr ""
 
 #. i18n: file: streams/digitallyimportedsettings.ui:174
 #. i18n: ectx: property (text), widget (QLabel, note2Label)
-#: po/rc.cpp:947 rc.cpp:947
+#: po/rc.cpp:944 rc.cpp:944
 msgid ""
 "<i><b>NOTE:</b> If you enter account details, then a 'DI' status item will "
-"appear under the list of streams. This will indicate if you are logged in or"
-" not</i>"
+"appear under the list of streams. This will indicate if you are logged in or "
+"not</i>"
 msgstr ""
 
 #. i18n: file: streams/streamssettings.ui:12
 #. i18n: ectx: property (text), widget (QLabel, label)
-#: po/rc.cpp:950 rc.cpp:950
+#: po/rc.cpp:947 rc.cpp:947
 msgid "Use the checkboxes below to configure the list of active providers."
 msgstr ""
 
 #. i18n: file: streams/streamssettings.ui:47
 #. i18n: ectx: property (text), widget (QPushButton, configureButton)
-#: po/rc.cpp:953 rc.cpp:953
+#: po/rc.cpp:950 rc.cpp:950
 msgid "Configure Provider"
 msgstr ""
 
 #. i18n: file: streams/streamssettings.ui:60
 #. i18n: ectx: property (text), widget (QPushButton, installButton)
-#: po/rc.cpp:956 rc.cpp:956
+#: po/rc.cpp:953 rc.cpp:953
 msgid "Install"
 msgstr ""
 
 #. i18n: file: streams/streamssettings.ui:80
 #. i18n: ectx: property (text), widget (QLabel, note)
-#: po/rc.cpp:962 rc.cpp:962
+#: po/rc.cpp:959 rc.cpp:959
 msgid ""
-"<i><b>NOTE:</b> Built-in categories are shown in italic, and these cannot be"
-" removed.</i>"
+"<i><b>NOTE:</b> Built-in categories are shown in italic, and these cannot be "
+"removed.</i>"
 msgstr ""
 
 #. i18n: file: support/shortcutssettingswidget.ui:22
 #. i18n: ectx: property (text), widget (BuddyLabel, label_2)
-#: po/rc.cpp:965 rc.cpp:965
+#: po/rc.cpp:962 rc.cpp:962
 msgid "Search:"
 msgstr "搜索:"
 
 #. i18n: file: support/shortcutssettingswidget.ui:65
 #. i18n: ectx: property (title), widget (QGroupBox, actionBox)
-#: po/rc.cpp:968 rc.cpp:968
+#: po/rc.cpp:965 rc.cpp:965
 msgid "Shortcut for Selected Action"
 msgstr "选定动作的快捷键"
 
 #. i18n: file: support/shortcutssettingswidget.ui:71
 #. i18n: ectx: property (text), widget (QRadioButton, useDefault)
-#: po/rc.cpp:971 rc.cpp:971
+#: po/rc.cpp:968 rc.cpp:968
 msgid "Default:"
 msgstr "默认:"
 
 #. i18n: file: support/shortcutssettingswidget.ui:85
 #. i18n: ectx: property (text), widget (QRadioButton, useCustom)
-#: po/rc.cpp:977 rc.cpp:977
+#: po/rc.cpp:974 rc.cpp:974
 msgid "Custom:"
 msgstr "自定义:"
 
 #. i18n: file: tags/tageditor.ui:64
 #. i18n: ectx: property (text), widget (StateLabel, albumArtistLabel)
-#: po/rc.cpp:989 rc.cpp:989
+#: po/rc.cpp:986 rc.cpp:986
 msgid "Album artist:"
 msgstr "专辑艺术家:"
 
 #. i18n: file: tags/tageditor.ui:103
 #. i18n: ectx: property (text), widget (StateLabel, trackLabel)
-#: po/rc.cpp:998 rc.cpp:998
+#: po/rc.cpp:995 rc.cpp:995
 msgid "Track number:"
 msgstr "音轨号:"
 
 #. i18n: file: tags/tageditor.ui:116
 #. i18n: ectx: property (text), widget (StateLabel, discLabel)
-#: po/rc.cpp:1001 rc.cpp:1001
+#: po/rc.cpp:998 rc.cpp:998
 msgid "Disc number:"
 msgstr "碟片序号:"
 
 #. i18n: file: tags/tageditor.ui:186
 #. i18n: ectx: property (text), widget (QLabel, label_7x)
-#: po/rc.cpp:1013 rc.cpp:1013
+#: po/rc.cpp:1010 rc.cpp:1010
 msgid ""
 "<i><b>NOTE</b> Multiple genres should be separated via a semicolon (e.g. "
 "'Rock;Hard Rock')</i>"
@@ -5438,22 +5438,22 @@ msgstr ""
 
 #. i18n: file: tags/trackorganiser.ui:115
 #. i18n: ectx: property (text), widget (QTreeWidget, files)
-#: po/rc.cpp:1037 rc.cpp:1037
+#: po/rc.cpp:1034 rc.cpp:1034
 msgid "Original Name"
 msgstr "原始名称"
 
 #. i18n: file: tags/trackorganiser.ui:120
 #. i18n: ectx: property (text), widget (QTreeWidget, files)
-#: po/rc.cpp:1040 rc.cpp:1040
+#: po/rc.cpp:1037 rc.cpp:1037
 msgid "New Name"
 msgstr "新名称"
 
-#: po/rc.cpp:1044 rc.cpp:1044
+#: po/rc.cpp:1041 rc.cpp:1041
 msgctxt "NAME OF TRANSLATORS"
 msgid "Your names"
 msgstr "姓名"
 
-#: po/rc.cpp:1045 rc.cpp:1045
+#: po/rc.cpp:1042 rc.cpp:1042
 msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
 msgstr "你的 E-mail"
@@ -5642,8 +5642,8 @@ msgstr ""
 #: scrobbling/scrobblingsettings.cpp:66
 msgid ""
 "<i><b>NOTE:</b> If you use a scrobbler which is marked as '(via MPD)' (such "
-"as %1), then you will need to have this already started and running. Cantata"
-" can only 'Love' tracks via this, and cannot enable/disable scrobbling.</i>"
+"as %1), then you will need to have this already started and running. Cantata "
+"can only 'Love' tracks via this, and cannot enable/disable scrobbling.</i>"
 msgstr ""
 
 #: scrobbling/scrobblingsettings.cpp:99
@@ -6055,9 +6055,10 @@ msgstr "确定恢复 \"多个艺术家\" 环境到 <b>所有</b>音轨?"
 
 #: tags/tageditor.cpp:543
 msgid ""
-"Set 'Album Artist' from 'Artist' (if 'Album Artist' is empty) for <b>all</b>"
-" tracks?"
-msgstr "获取\"专辑艺人\"标签并应用到\"艺术家（如果为空）\" 环境到 <b>所有</b> 音轨?"
+"Set 'Album Artist' from 'Artist' (if 'Album Artist' is empty) for <b>all</b> "
+"tracks?"
+msgstr ""
+"获取\"专辑艺人\"标签并应用到\"艺术家（如果为空）\" 环境到 <b>所有</b> 音轨?"
 
 #: tags/tageditor.cpp:544
 msgid "Set 'Album Artist' from 'Artist' (if 'Album Artist' is empty)?"
@@ -6156,8 +6157,8 @@ msgstr ""
 
 #: widgets/songdialog.cpp:49
 msgid ""
-"<p>Cannot access song files!<br/><br/>Please check Cantata's \"Music "
-"folder\" setting, and MPD's \"music_directory\" setting.</p>"
+"<p>Cannot access song files!<br/><br/>Please check Cantata's \"Music folder"
+"\" setting, and MPD's \"music_directory\" setting.</p>"
 msgstr ""
 
 #: widgets/songdialog.cpp:52
@@ -6295,6 +6296,9 @@ msgctxt "Plural (N!=1)"
 msgid "%1 Episodes"
 msgstr ""
 
+#~ msgid "Stop dynamizer on exit"
+#~ msgstr "退出时关闭动态"
+
 #~ msgid "Loading list of rules"
 #~ msgstr "加载规则列表"
 
@@ -6303,9 +6307,6 @@ msgstr ""
 
 #~ msgid "Stopping dynamizer"
 #~ msgstr "正在停止动态"
-
-#~ msgid "Requesting ID details"
-#~ msgstr ""
 
 #~ msgid "Dynamizer is not active"
 #~ msgstr "动态未启用"
@@ -6316,40 +6317,14 @@ msgstr ""
 #~ msgid "Refresh Dynamic Rules"
 #~ msgstr "刷新动态配置"
 
-#~ msgid "Play queue"
-#~ msgstr ""
-
 #~ msgid "Copy Track Info"
 #~ msgstr "复制音轨信息"
-
-#~ msgid "Shuffle Tracks"
-#~ msgstr ""
-
-#~ msgid "Shuffle Albums"
-#~ msgstr ""
 
 #~ msgid "Expanded Interface"
 #~ msgstr "展开界面"
 
 #~ msgid "&File"
 #~ msgstr "文件(&F)"
-
-#~ msgid ""
-#~ "<tr><td colspan=\"2\"><b>Server</b></td></tr><tr><td "
-#~ "align=\"right\">Protocol&nbsp;version:&nbsp;</td><td>%1.%2.%3</td></tr><tr><td"
-#~ " align=\"right\">Uptime:&nbsp;</td><td>%4</td></tr><tr><td "
-#~ "align=\"right\">Time&nbsp;playing:&nbsp;</td><td>%5</td></tr>"
-#~ msgstr ""
-
-#~ msgid ""
-#~ "<tr><td colspan=\"2\"><b>Database</b></td></tr><tr><td "
-#~ "align=\"right\">Artists:&nbsp;</td><td>%1</td></tr><tr><td "
-#~ "align=\"right\">Albums:&nbsp;</td><td>%2</td></tr><tr><td "
-#~ "align=\"right\">Songs:&nbsp;</td><td>%3</td></tr><tr><td "
-#~ "align=\"right\">URL&nbsp;handlers:&nbsp;</td><td>%4</td></tr><tr><td "
-#~ "align=\"right\">Total&nbsp;duration:&nbsp;</td><td>%5</td></tr><tr><td "
-#~ "align=\"right\">Last&nbsp;update:&nbsp;</td><td>%6</td></tr></table></p>"
-#~ msgstr ""
 
 #~ msgctxt "track :: Cantata (connection)"
 #~ msgid "%1 :: Cantata (%2)"
@@ -6375,27 +6350,22 @@ msgstr ""
 #~ msgid "%1 - %2"
 #~ msgstr "%1 - %2"
 
-#~ msgid "Not used"
-#~ msgstr ""
-
 #~ msgid ""
 #~ "<i><b>NOTE:</b> 'Dynamizer port' is only relevant if you wish to use a "
 #~ "system-wide, or non-local, instance of the Cantata dynamizer. For this to "
-#~ "function, the <code>cantata-dynamic</code> application <b>must</b> already "
-#~ "have been installed, and started, on the relevant host - Cantata itself "
-#~ "cannot control the starting/stopping of this service. If this is not set, "
-#~ "then Cantata will use a per-user instance of the dynamizer to facilitate "
-#~ "dynamic playlists.</i>"
+#~ "function, the <code>cantata-dynamic</code> application <b>must</b> "
+#~ "already have been installed, and started, on the relevant host - Cantata "
+#~ "itself cannot control the starting/stopping of this service. If this is "
+#~ "not set, then Cantata will use a per-user instance of the dynamizer to "
+#~ "facilitate dynamic playlists.</i>"
 #~ msgstr ""
-#~ "<i><b>注意:</b> '动态端口'仅在系统级别和非本地使用的时候可用 <code>cantata-动态</code> 程序 <b>必须</b> "
-#~ "已经安装并且启动于远程主机 - Cantata无法自动启动和停止相关的服务。如果未作设定，Cantata将使用单用户模式来随机播放列表。</i>"
+#~ "<i><b>注意:</b> '动态端口'仅在系统级别和非本地使用的时候可用 "
+#~ "<code>cantata-动态</code> 程序 <b>必须</b> 已经安装并且启动于远程主机 - "
+#~ "Cantata无法自动启动和停止相关的服务。如果未作设定，Cantata将使用单用户模式"
+#~ "来随机播放列表。</i>"
 
 #~ msgid "Back"
 #~ msgstr "后退"
-
-#~ msgctxt "Song on Album (track duration)"
-#~ msgid "%1 on %2 (%3)"
-#~ msgstr ""
 
 #~ msgctxt "Song by Artist on Album (track duration)"
 #~ msgid "%1 by %2 on %3 (%4)"
@@ -6410,9 +6380,6 @@ msgstr ""
 #~ msgid "Save downloaded covers in music folder"
 #~ msgstr "保存下载的封面到音乐文件夹"
 
-#~ msgid "Show album year"
-#~ msgstr ""
-
 #~ msgid "Album/Artist"
 #~ msgstr "专辑/艺术家"
 
@@ -6422,42 +6389,21 @@ msgstr ""
 #~ msgid "Artist/Year/Album"
 #~ msgstr "艺术家/年份/专辑"
 
-#~ msgid "Group multiple artist albums under 'Various Artists'"
-#~ msgstr ""
-
 #~ msgid "Dynamizer port:"
 #~ msgstr "动态端口"
-
-#~ msgctxt "filename (Timeout)"
-#~ msgid "%1 (Timeout)"
-#~ msgstr ""
 
 #~ msgid ""
 #~ "Failed to import <b>%1</b>!<br/>Please check this is of the correct type."
 #~ msgstr "无法导入 <b>%1</b>!<br/>请检查格式是否正确。"
 
-#~ msgid "Failed top open %1"
-#~ msgstr ""
-
-#~ msgid "<tr><td align=\"right\"><b>Composer:</b></td><td>%1</td></tr>"
-#~ msgstr ""
-
 #~ msgid ""
-#~ "<tr><td align=\"right\"><b>Artist:</b></td><td>%1</td></tr><tr><td "
-#~ "align=\"right\"><b>Album:</b></td><td>%2</td></tr><tr><td "
-#~ "align=\"right\"><b>Year:</b></td><td>%3</td></tr>"
+#~ "<tr><td align=\"right\"><b>Artist:</b></td><td>%1</td></tr><tr><td align="
+#~ "\"right\"><b>Album:</b></td><td>%2</td></tr><tr><td align=\"right"
+#~ "\"><b>Year:</b></td><td>%3</td></tr>"
 #~ msgstr ""
-#~ "<tr><td align=\"right\"><b>艺术家:</b></td><td>%1</td></tr><tr><td "
-#~ "align=\"right\"><b>专辑:</b></td><td>%2</td></tr><tr><td "
-#~ "align=\"right\"><b>年:</b></td><td>%3</td></tr>"
-
-#~ msgctxt "album (albumYear)"
-#~ msgid "%1 (%2)"
-#~ msgstr ""
-
-#~ msgctxt "artist - album (albumYear)"
-#~ msgid "%1 - %2 (%3)"
-#~ msgstr ""
+#~ "<tr><td align=\"right\"><b>艺术家:</b></td><td>%1</td></tr><tr><td align="
+#~ "\"right\"><b>专辑:</b></td><td>%2</td></tr><tr><td align=\"right\"><b>年:"
+#~ "</b></td><td>%3</td></tr>"
 
 #~ msgid "Transcoding failed.<br/><br/<hr/>%1"
 #~ msgstr "转码失败.<br/><br/<hr/>%1"
@@ -6469,28 +6415,30 @@ msgstr ""
 #~ msgstr "<b>错误</b><br/>"
 
 #~ msgid ""
-#~ "<tr><td align=\"right\">Artist:</td><td>%1</td></tr><tr><td "
-#~ "align=\"right\">Album:</td><td>%2</td></tr><tr><td "
-#~ "align=\"right\">Track:</td><td>%3</td></tr>"
+#~ "<tr><td align=\"right\">Artist:</td><td>%1</td></tr><tr><td align=\"right"
+#~ "\">Album:</td><td>%2</td></tr><tr><td align=\"right\">Track:</td><td>%3</"
+#~ "td></tr>"
 #~ msgstr ""
-#~ "<table><tr><td align=\"right\">艺术家:</td><td>%1</td></tr><tr><td "
-#~ "align=\"right\">专辑:</td><td>%2</td></tr><tr><td "
-#~ "align=\"right\">音轨:</td><td>%3</td></tr></table>"
+#~ "<table><tr><td align=\"right\">艺术家:</td><td>%1</td></tr><tr><td align="
+#~ "\"right\">专辑:</td><td>%2</td></tr><tr><td align=\"right\">音轨:</td><td>"
+#~ "%3</td></tr></table>"
 
 #~ msgid ""
-#~ "<tr><td align=\"right\">Source file:</td><td>%1</td></tr><tr><td "
-#~ "align=\"right\">Destination file:</td><td>%2</td></tr>"
+#~ "<tr><td align=\"right\">Source file:</td><td>%1</td></tr><tr><td align="
+#~ "\"right\">Destination file:</td><td>%2</td></tr>"
 #~ msgstr ""
-#~ "<tr><td align=\"right\">源文件:</td><td>%1</td></tr><tr><td "
-#~ "align=\"right\">目标文件:</td><td>%2</td></tr>"
+#~ "<tr><td align=\"right\">源文件:</td><td>%1</td></tr><tr><td align=\"right"
+#~ "\">目标文件:</td><td>%2</td></tr>"
 
 #~ msgid "<tr><td align=\"right\">File:</td><td>%1</td></tr>"
 #~ msgstr "<tr><td align=\"right\">文件:</td><td>%1</td></tr>"
 
 #~ msgid ""
-#~ "<tr><i><td align=\"right\"><i>Time "
-#~ "remaining:</i></td><td><i>%5</i></td></i></tr>"
-#~ msgstr "<tr><i><td align=\"right\"><i>剩余时间:</i></td><td><i>%5</i></td></i></tr>"
+#~ "<tr><i><td align=\"right\"><i>Time remaining:</i></td><td><i>%5</i></td></"
+#~ "i></tr>"
+#~ msgstr ""
+#~ "<tr><i><td align=\"right\"><i>剩余时间:</i></td><td><i>%5</i></td></i></"
+#~ "tr>"
 
 #~ msgctxt ""
 #~ "Google\n"
@@ -6505,9 +6453,6 @@ msgstr ""
 #~ msgid "Grouped by 'Album Artist'"
 #~ msgstr "'专辑艺术家'分组"
 
-#~ msgid "Search Play Queue"
-#~ msgstr ""
-
 #~ msgid "Do not fadeout"
 #~ msgstr "不淡出"
 
@@ -6518,14 +6463,8 @@ msgstr ""
 #~ msgid "#"
 #~ msgstr "#"
 
-#~ msgid "Search For Podcasts"
-#~ msgstr ""
-
 #~ msgid "Automatically lookup"
 #~ msgstr "自动查找"
-
-#~ msgid "Use current album cover as background:"
-#~ msgstr ""
 
 #~ msgid "Multiple artist albums:"
 #~ msgstr "多个艺术家专辑:"
@@ -6535,9 +6474,6 @@ msgstr ""
 
 #~ msgid " seconds"
 #~ msgstr " 秒"
-
-#~ msgid "Devices:"
-#~ msgstr ""
 
 #~ msgid "Icons Only"
 #~ msgstr "仅图标"
@@ -6579,12 +6515,6 @@ msgstr ""
 #~ msgid "Support media keys under GNOME/Unity:"
 #~ msgstr "GNOME/Unity 快捷键支持:"
 
-#~ msgid "Stopping Playback"
-#~ msgstr ""
-
-#~ msgid "Search TuneIn:"
-#~ msgstr ""
-
 #~ msgid "Other Actions"
 #~ msgstr "其他动作"
 
@@ -6597,7 +6527,8 @@ msgstr ""
 #~ msgid "Stop Immediately"
 #~ msgstr "立即停止"
 
-#~ msgid "When 'Play Stream' is activated, the enabled stream is played locally."
+#~ msgid ""
+#~ "When 'Play Stream' is activated, the enabled stream is played locally."
 #~ msgstr "启用'播放流媒体'时，播放的流媒体将下载到本地."
 
 #~ msgid "Stop immediately (or after fadout)"

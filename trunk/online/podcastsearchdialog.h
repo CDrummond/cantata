@@ -176,6 +176,7 @@ private Q_SLOTS:
     void pageChanged();
 
 private:
+    QList<PodcastPage *> loadDirectories(const QString &dir, bool isSystem, QSet<QString> &loaded);
     void slotButtonClicked(int button);
 
 private:

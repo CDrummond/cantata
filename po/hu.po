@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-05-23 14:10+0100\n"
+"POT-Creation-Date: 2014-05-23 14:59+0100\n"
 "PO-Revision-Date: 2014-02-19 09:41+0100\n"
 "Last-Translator: Török Árpád <torar@freemail.hu>\n"
 "Language-Team: Hungarian <kde-l10n-hu@kde.org>\n"
@@ -3664,43 +3664,43 @@ msgstr "Nem sikerült podcast-ot letölteni erről %1"
 msgid "There was a problem parsing the response from %1"
 msgstr "A(z) %1 válaszának elemzésével probléma adódott."
 
-#: online/podcastsearchdialog.cpp:450
+#: online/podcastsearchdialog.cpp:446
 msgid "Failed to download directory listing"
 msgstr "A könyvtárlistát nem sikerült letölteni"
 
-#: online/podcastsearchdialog.cpp:458
+#: online/podcastsearchdialog.cpp:454
 msgid "Failed to parse directory listing"
 msgstr "Könyvtárlista elemzése sikertelen"
 
-#: online/podcastsearchdialog.cpp:508
+#: online/podcastsearchdialog.cpp:504
 msgid "URL"
 msgstr "URL"
 
-#: online/podcastsearchdialog.cpp:517
+#: online/podcastsearchdialog.cpp:513
 msgid "Enter podcast URL..."
 msgstr "Írd be a podcast URL-jét..."
 
-#: online/podcastsearchdialog.cpp:518
+#: online/podcastsearchdialog.cpp:514
 msgid "Load"
 msgstr "Betölt"
 
-#: online/podcastsearchdialog.cpp:525
+#: online/podcastsearchdialog.cpp:521
 msgid "Enter podcast URL below, and press 'Load'"
 msgstr "Írd be a podcast URL-jét és 'Betölt' gombot nyomd le."
 
-#: online/podcastsearchdialog.cpp:552
+#: online/podcastsearchdialog.cpp:548
 msgid "Invalid URL!"
 msgstr "Érvénytelen URL!"
 
-#: online/podcastsearchdialog.cpp:562
+#: online/podcastsearchdialog.cpp:558
 msgid "Failed to fetch podcast!"
 msgstr "Nem sikerült podcast-ot letölteni"
 
-#: online/podcastsearchdialog.cpp:567
+#: online/podcastsearchdialog.cpp:563
 msgid "Failed to parse podcast."
 msgstr "A podcast elemzése sikertelen"
 
-#: online/podcastsearchdialog.cpp:571
+#: online/podcastsearchdialog.cpp:567
 msgid ""
 "Cantata only supports audio podcasts! The URL entered contains only video "
 "podcasts."
@@ -3708,43 +3708,43 @@ msgstr ""
 "A Cantata csak audio podcast-ok lejátszását támogatja! Az URL csak videó "
 "podcast-okat tartalmaz."
 
-#: online/podcastsearchdialog.cpp:589
+#: online/podcastsearchdialog.cpp:585
 msgid "Subscribe"
 msgstr "Feliratkozás"
 
-#: online/podcastsearchdialog.cpp:607
+#: online/podcastsearchdialog.cpp:603
 msgid "Enter URL"
 msgstr "Írd be a URL-t:"
 
-#: online/podcastsearchdialog.cpp:607
+#: online/podcastsearchdialog.cpp:603
 msgid "Manual podcast URL"
 msgstr "Podcast kézi URL"
 
-#: online/podcastsearchdialog.cpp:611 online/podcastsearchdialog.cpp:615
+#: online/podcastsearchdialog.cpp:607 online/podcastsearchdialog.cpp:611
 msgid "Search %1"
 msgstr "Keresés %1"
 
-#: online/podcastsearchdialog.cpp:611 online/podcastsearchdialog.cpp:615
+#: online/podcastsearchdialog.cpp:607 online/podcastsearchdialog.cpp:611
 msgid "Search for podcasts on %1"
 msgstr "Podcast keresése itt: %1"
 
-#: online/podcastsearchdialog.cpp:629
-msgid "Browse %1"
-msgstr "Böngészés %1"
-
-#: online/podcastsearchdialog.cpp:629
-msgid "Browse %1 podcasts"
-msgstr "A(z) %1 podcast-ok böngészése"
-
-#: online/podcastsearchdialog.cpp:640
+#: online/podcastsearchdialog.cpp:623
 msgid "Add Podcast Subscription"
 msgstr "Podcast leírásának hozzáadása"
 
-#: online/podcastsearchdialog.cpp:696
+#: online/podcastsearchdialog.cpp:698
+msgid "Browse %1"
+msgstr "Böngészés %1"
+
+#: online/podcastsearchdialog.cpp:698
+msgid "Browse %1 podcasts"
+msgstr "A(z) %1 podcast-ok böngészése"
+
+#: online/podcastsearchdialog.cpp:714
 msgid "Subscription added"
 msgstr "Előfizetés hozzáadva"
 
-#: online/podcastsearchdialog.cpp:698
+#: online/podcastsearchdialog.cpp:716
 msgid "You are already subscribed to this podcast!"
 msgstr "Már feliratkoztál erre a podcsat-ra!"
 
@@ -6212,7 +6212,7 @@ msgid "Search %1:"
 msgstr "Keresés %1:"
 
 #: streams/streamspage.cpp:626
-msgid "Added to '%1'' favorites"
+msgid "Added '%1'' to favorites"
 msgstr ""
 
 #: streams/streamssettings.cpp:73

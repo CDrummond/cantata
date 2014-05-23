@@ -59,7 +59,7 @@ public:
     static Icon getMediaIcon(const QString &name);
     static QString currentTheme() { return QIcon::themeName(); }
     #endif
-    static Icon create(const QString &name, const QList<int> &sizes);
+    static Icon create(const QString &name, const QList<int> &sizes, bool andSvg=false);
 };
 
 #endif

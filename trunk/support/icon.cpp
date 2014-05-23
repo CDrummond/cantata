@@ -90,11 +90,14 @@ Icon Icon::getMediaIcon(const QString &name)
 }
 #endif
 
-Icon Icon::create(const QString &name, const QList<int> &sizes)
+Icon Icon::create(const QString &name, const QList<int> &sizes, bool andSvg)
 {
     Icon icon;
     foreach (int s, sizes) {
-        icon.addFile(QChar(':')+name+QString::number(s), QSize(s, s));
+        icon.addFile(QLatin1Char(':')+name+QString::number(s), QSize(s, s));
+    }
+    if (andSvg) {
+        icon.addFile(QLatin1Char(':')+name+QLatin1String(".svg"));
     }
     return icon;
 }

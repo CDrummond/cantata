@@ -51,70 +51,64 @@ MainView {
         anchors.fill: parent
 
         Component.onCompleted: {
-            push(tabsPage)
+            push(tabs)
             push(hostSettingsPage)
         }
 
-        Page {
-            id: tabsPage
-            visible: false
+        Tabs {
+            id: tabs
             anchors.fill: parent
 
-            Tabs {
-                id: tabs
-                anchors.fill: parent
+            Tab {
+                id: artistTab
+                title: i18n.tr("Artists")
 
-                Tab {
-                    id: artistTab
-                    title: i18n.tr("Artists")
-
-                    page: ListViewPage {
-                        id: artistPage
-                        model: artistsProxyModel
-                        modelName: "artists"
-                        emptyViewVisible: !backend.artistsFound
-                        emptyViewText: i18n.tr("No artists found")
-                    }
+                page: ListViewPage {
+                    id: artistPage
+                    model: artistsProxyModel
+                    modelName: "artists"
+                    emptyViewVisible: !backend.artistsFound
+                    emptyViewText: i18n.tr("No artists found")
                 }
+            }
 
-                Tab {
-                    id: albumsTab
-                    title: i18n.tr("Albums")
+            Tab {
+                id: albumsTab
+                title: i18n.tr("Albums")
 
-                    page: ListViewPage {
-                        id: albumPage
-                        model: albumsProxyModel
-                        modelName: "albums"
-                        emptyViewVisible: !backend.albumsFound
-                        emptyViewText: i18n.tr("No albums found")
-                    }
+                page: ListViewPage {
+                    id: albumPage
+                    model: albumsProxyModel
+                    modelName: "albums"
+                    emptyViewVisible: !backend.albumsFound
+                    emptyViewText: i18n.tr("No albums found")
                 }
+            }
 
-                Tab {
-                    id: foldersTab
-                    title: i18n.tr("Folders")
+            Tab {
+                id: foldersTab
+                title: i18n.tr("Folders")
 
-                    page: ListViewPage {
-                        id: foldersPage
-                        model: foldersProxyModel
-                        modelName: "folders"
-                        emptyViewVisible: !backend.foldersFound
-                        emptyViewText: i18n.tr("No folders found")
-                    }
+                page: ListViewPage {
+                    id: foldersPage
+                    model: foldersProxyModel
+                    modelName: "folders"
+                    emptyViewVisible: !backend.foldersFound
+                    emptyViewText: i18n.tr("No folders found")
                 }
+            }
 
-                Tab {
-                    id: playlistsTab
-                    title: i18n.tr("Playlists")
+            Tab {
+                id: playlistsTab
+                title: i18n.tr("Playlists")
 
-                    page: ListViewPage {
-                        id: playlistsPage
-                        model: playlistsProxyModel
-                        modelName: "playlists"
-                        editable: true
-                        emptyViewVisible: !backend.playlistsFound
-                        emptyViewText: i18n.tr("No playlists found")
-                    }
+                page: ListViewPage {
+                    id: playlistsPage
+                    model: playlistsProxyModel
+                    modelName: "playlists"
+                    editable: true
+                    emptyViewVisible: !backend.playlistsFound
+                    emptyViewText: i18n.tr("No playlists found")
                 }
             }
         }

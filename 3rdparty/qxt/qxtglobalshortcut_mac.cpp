@@ -43,7 +43,11 @@ OSStatus qxt_mac_handle_hot_key(EventHandlerCallRef nextHandler, EventRef event,
     return noErr;
 }
 
+#if QT_VERSION<0x050000
 bool QxtGlobalShortcutPrivate::eventFilter(void* message)
+#else
+bool QxtGlobalShortcutPrivate::nativeEventFilter(const QByteArray &, void *message, long *result)
+#endif
 //bool QxtGlobalShortcutPrivate::macEventFilter(EventHandlerCallRef caller, EventRef event)
 {
     EventRef event = (EventRef) message;

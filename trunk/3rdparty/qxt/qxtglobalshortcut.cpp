@@ -24,24 +24,41 @@
  ****************************************************************************/
 #include "qxtglobalshortcut.h"
 #include "qxtglobalshortcut_p.h"
+#if QT_VERSION<0x050000
 #include <QAbstractEventDispatcher>
+#else
+#include <QAbstractNativeEventFilter>
+#include <QCoreApplication>
+#endif
 #include <QtDebug>
 
 bool QxtGlobalShortcutPrivate::error = false;
 int QxtGlobalShortcutPrivate::ref = 0;
+#if QT_VERSION<0x050000
 QAbstractEventDispatcher::EventFilter QxtGlobalShortcutPrivate::prevEventFilter = 0;
+#endif
 QHash<QPair<quint32, quint32>, QxtGlobalShortcut*> QxtGlobalShortcutPrivate::shortcuts;
 
 QxtGlobalShortcutPrivate::QxtGlobalShortcutPrivate() : enabled(true), key(Qt::Key(0)), mods(Qt::NoModifier)
 {
-    if (!ref++)
+    if (!ref++) {
+        #if QT_VERSION<0x050000
         prevEventFilter = QAbstractEventDispatcher::instance()->setEventFilter(eventFilter);
+        #else
+        QCoreApplication::instance()->installNativeEventFilter(this);
+        #endif
+    }
 }
 
 QxtGlobalShortcutPrivate::~QxtGlobalShortcutPrivate()
 {
-    if (!--ref)
+    if (!--ref) {
+        #if QT_VERSION<0x050000
         QAbstractEventDispatcher::instance()->setEventFilter(prevEventFilter);
+        #else
+        QCoreApplication::instance()->removeNativeEventFilter(this);
+        #endif
+    }
 }
 
 bool QxtGlobalShortcutPrivate::setShortcut(const QKeySequence& shortcut)

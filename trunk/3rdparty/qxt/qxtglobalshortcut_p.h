@@ -26,7 +26,12 @@
 #define QXTGLOBALSHORTCUT_P_H
 
 #include "qxtglobalshortcut.h"
+#if QT_VERSION<0x050000
 #include <QAbstractEventDispatcher>
+#else
+#include <QAbstractNativeEventFilter>
+#include <QCoreApplication>
+#endif
 #include <QKeySequence>
 #include <QHash>
 
@@ -46,8 +51,12 @@ public:
 
     static bool error;
     static int ref;
+    #if QT_VERSION<0x050000
     static QAbstractEventDispatcher::EventFilter prevEventFilter;
     static bool eventFilter(void* message);
+    #else
+    bool nativeEventFilter(const QByteArray &, void *message, long *result)
+    #endif
 
 private:
     static quint32 nativeKeycode(Qt::Key keycode);

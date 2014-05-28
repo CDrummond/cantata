@@ -50,6 +50,9 @@ static inline void setup()
     if (!init) {
         init=true;
         usingGtkStyle=QApplication::style()->inherits("QGtkStyle");
+        if (usingGtkStyle) {
+            QCoreApplication::setAttribute(Qt::AA_DontShowIconsInMenus);
+        }
     }
     #endif
 }
@@ -281,7 +284,6 @@ void GtkStyle::applyTheme(QWidget *widget)
         }
         if (!proxyStyle) {
             proxyStyle=new GtkProxyStyle(sbType, touchStyleSpin || Utils::touchFriendly(), css, modViewFrame && !Utils::touchFriendly());
-            QCoreApplication::setAttribute(Qt::AA_DontShowIconsInMenus);
         }
     }
     #endif

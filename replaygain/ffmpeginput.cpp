@@ -48,9 +48,6 @@ struct FfmpegInput::Handle {
         : formatContext(0)
         , codecContext(0)
         , codec(0)
-        #if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(53, 35, 0)
-        , frame(0)
-        #endif
         , audioStream(0)
         , currentBytes(0) {
         av_init_packet(&packet);
@@ -60,19 +57,11 @@ struct FfmpegInput::Handle {
         if (audioBuffer) {
             av_free(audioBuffer);
         }
-        #if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(53, 35, 0)
-        if (frame) {
-            av_free(frame);
-        }
-        #endif
     }
     AVFormatContext *formatContext;
     AVCodecContext *codecContext;
     AVCodec *codec;
     AVPacket packet;
-    #if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(53, 35, 0)
-    AVFrame *frame;
-    #endif
     int audioStream;
     int16_t *audioBuffer;
     float buffer[BUFFER_SIZE / 2 + 1];
@@ -317,15 +306,15 @@ size_t FfmpegInput::readFrames()
 #if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(53, 35, 0)
 static int decodeAudio(FfmpegInput::Handle *handle, int *frame_size_ptr)
 {
+    #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(55, 39, 101)
+    AVFrame *frame = avcodec_alloc_frame();
+    #else
+    AVFrame *frame = av_frame_alloc();
+    #endif
     int ret, got_frame = 0;
 
-    if (!handle->frame) {
-        handle->frame = avcodec_alloc_frame();
-        if (!handle->frame) {
-            return AVERROR(ENOMEM);
-        }
-    } else {
-        avcodec_get_frame_defaults(handle->frame);
+    if (!frame) {
+         return AVERROR(ENOMEM);
     }
 
     #if LIBAVFORMAT_VERSION_INT < AV_VERSION_INT(55, 0, 0)
@@ -335,23 +324,23 @@ static int decodeAudio(FfmpegInput::Handle *handle, int *frame_size_ptr)
     }
     #endif
 
-    ret = avcodec_decode_audio4(handle->codecContext, handle->frame, &got_frame, &handle->packet);
+    ret = avcodec_decode_audio4(handle->codecContext, frame, &got_frame, &handle->packet);
 
     if (ret >= 0 && got_frame) {
         int ch, plane_size;
         int planar = av_sample_fmt_is_planar(handle->codecContext->sample_fmt);
         int data_size = av_samples_get_buffer_size(&plane_size, handle->codecContext->channels,
-                                                   handle->frame->nb_samples, handle->codecContext->sample_fmt, 1);
+                                                   frame->nb_samples, handle->codecContext->sample_fmt, 1);
         if (*frame_size_ptr < data_size) {
             return AVERROR(EINVAL);
         }
 
-        memcpy(handle->audioBuffer, handle->frame->extended_data[0], plane_size);
+        memcpy(handle->audioBuffer, frame->extended_data[0], plane_size);
 
         if (planar && handle->codecContext->channels > 1) {
             uint8_t *out = ((uint8_t *)(handle->audioBuffer)) + plane_size;
             for (ch = 1; ch < handle->codecContext->channels; ch++) {
-                memcpy(out, handle->frame->extended_data[ch], plane_size);
+                memcpy(out, frame->extended_data[ch], plane_size);
                 out += plane_size;
             }
         }
@@ -359,6 +348,11 @@ static int decodeAudio(FfmpegInput::Handle *handle, int *frame_size_ptr)
     } else {
         *frame_size_ptr = 0;
     }
+    #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(55, 39, 101)
+    avcodec_free_frame(&frame);
+    #else
+    av_frame_free(&frame);
+    #endif
     return ret;
 }
 #endif

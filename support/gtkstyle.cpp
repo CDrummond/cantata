@@ -205,6 +205,9 @@ QString GtkStyle::iconTheme()
         if (!read) {
             read=true;
             iconThemeSetting=readDconfSetting(QLatin1String("icon-theme"));
+            if (iconThemeSetting.isEmpty() && Utils::Unity==Utils::currentDe()) {
+                iconThemeSetting=QLatin1String("ubuntu-mono-dark");
+            }
         }
     }
     return iconThemeSetting;

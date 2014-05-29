@@ -110,10 +110,10 @@ void GtkStyle::drawSelection(const QStyleOptionViewItemV4 &opt, QPainter *painte
 // Destroying the QProcess seems to block, causing the app to appear to hang before starting.
 // So, create QProcess on the heap - and only wait 1.5s for response. Connect finished to deleteLater
 // so that the object is destroyed.
-static QString runProc(const QString &cmd, const QStringList &args)
+static QString readDconfSetting(const QString &setting)
 {
     QProcess *process=new QProcess();
-    process->start(cmd, args);
+    process->start(QLatin1String("dconf"), QStringList() << QLatin1String("read") << QLatin1String("/org/gnome/desktop/interface/")+setting);
     QObject::connect(process, SIGNAL(finished(int)), process, SLOT(deleteLater()));
 
     if (process->waitForFinished(1500)) {
@@ -148,7 +148,7 @@ QString GtkStyle::themeName()
         read=true;
 
         if (themeNameSetting.isEmpty()) {
-            themeNameSetting=runProc("dconf",  QStringList() << "read" << "/org/gnome/desktop/interface/gtk-theme");
+            themeNameSetting=readDconfSetting(QLatin1String("gtk-theme"));
             if (!themeNameSetting.isEmpty()) {
                 return themeNameSetting;
             }
@@ -204,7 +204,7 @@ QString GtkStyle::iconTheme()
 
         if (!read) {
             read=true;
-            iconThemeSetting=runProc("dconf",  QStringList() << "read" << "/org/gnome/desktop/interface/icon-theme");
+            iconThemeSetting=readDconfSetting(QLatin1String("icon-theme"));
         }
     }
     return iconThemeSetting;

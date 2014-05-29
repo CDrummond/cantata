@@ -583,7 +583,7 @@ extern int Solidwrap (yyscan_t yyscanner );
 #endif
 #endif
 
-    static void yyunput (int c,char *buf_ptr  ,yyscan_t yyscanner);
+    /*static void yyunput (int c,char *buf_ptr  ,yyscan_t yyscanner); UNUSED */
     
 #ifndef yytext_ptr
 static void yy_flex_strncpy (char *,yyconst char *,int ,yyscan_t yyscanner);
@@ -595,11 +595,13 @@ static int yy_flex_strlen (yyconst char * ,yyscan_t yyscanner);
 
 #ifndef YY_NO_INPUT
 
+#if 0
 #ifdef __cplusplus
 static int yyinput (yyscan_t yyscanner );
 #else
 static int input (yyscan_t yyscanner );
 #endif
+#endif /* UNUSED */
 
 #endif
 
@@ -1212,7 +1214,7 @@ static int yy_get_next_buffer (yyscan_t yyscanner)
 
 	return yy_is_jam ? 0 : yy_current_state;
 }
-
+#if 0 /* UNUSED */
     static void yyunput (int c, register char * yy_bp , yyscan_t yyscanner)
 {
 	register char *yy_cp;
@@ -1325,6 +1327,7 @@ static int yy_get_next_buffer (yyscan_t yyscanner)
 	return c;
 }
 #endif	/* ifndef YY_NO_INPUT */
+#endif /* UNUSED */
 
 /** Immediately switch to a different input stream.
  * @param input_file A readable stream.
@@ -1690,6 +1693,7 @@ YY_BUFFER_STATE Solid_scan_bytes  (yyconst char * yybytes, int  _yybytes_len , y
 
 static void yy_fatal_error (yyconst char* msg , yyscan_t yyscanner)
 {
+	(void)yyscanner; /* UNUSED */
     	(void) fprintf( stderr, "%s\n", msg );
 	exit( YY_EXIT_FAILURE );
 }
@@ -2022,11 +2026,13 @@ static int yy_flex_strlen (yyconst char * s , yyscan_t yyscanner)
 
 void *Solidalloc (yy_size_t  size , yyscan_t yyscanner)
 {
+	(void)yyscanner; /* UNUSED */
 	return (void *) malloc( size );
 }
 
 void *Solidrealloc  (void * ptr, yy_size_t  size , yyscan_t yyscanner)
 {
+	(void)yyscanner; /* UNUSED */
 	/* The cast to (char *) in the following accommodates both
 	 * implementations that use char* generic pointers, and those
 	 * that use void* generic pointers.  It works with the latter
@@ -2039,6 +2045,7 @@ void *Solidrealloc  (void * ptr, yy_size_t  size , yyscan_t yyscanner)
 
 void Solidfree (void * ptr , yyscan_t yyscanner)
 {
+	(void)yyscanner; /* UNUSED */
 	free( (char *) ptr );	/* see Solidrealloc() for (char *) cast */
 }
 

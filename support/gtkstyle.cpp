@@ -185,6 +185,9 @@ QString GtkStyle::themeName()
                 themeNameSetting = QGtkStyle::getGConfString(QLatin1String("/desktop/gnome/interface/gtk_theme"));
             }
             #endif
+            if (themeNameSetting.isEmpty() && Utils::Unity==Utils::currentDe()) {
+                themeNameSetting=QLatin1String("Ambiance");
+            }
         }
     }
     return themeNameSetting;

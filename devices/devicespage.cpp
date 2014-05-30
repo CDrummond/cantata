@@ -126,10 +126,12 @@ DevicesPage::DevicesPage(QWidget *p)
     view->setModel(&proxy);
     view->setRootIsDecorated(false);
     view->setSearchResetLevel(1);
+    view->load(metaObject()->className());
 }
 
 DevicesPage::~DevicesPage()
 {
+    view->save(metaObject()->className());
 }
 
 void DevicesPage::showEvent(QShowEvent *e)

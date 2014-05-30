@@ -134,6 +134,8 @@
     folder and ~/.local/share/cantata
 84. Update replaygain ffmpeg input code to handle API changes in libavcodec.
 85. Fix transcoding tracks to MTP devices.
+86. Restore search field visibility for; PlayQueue, Artists, Albums, Folders,
+    Playlists, Dynamic, and Devices views.
 
 1.3.4
 -----

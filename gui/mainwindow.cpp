@@ -457,7 +457,11 @@ MainWindow::MainWindow(QWidget *parent)
     consumePlayQueueAction->setCheckable(true);
 
     songInfoButton->setDefaultAction(songInfoAction);
-    playQueueSearchWidget->setVisible(false);
+    if (Configuration(playQueuePage->metaObject()->className()).get(ItemView::constSearchActiveKey, false)) {
+        playQueueSearchWidget->activate();
+    } else {
+        playQueueSearchWidget->setVisible(false);
+    }
     QList<QToolButton *> playbackBtns=QList<QToolButton *>() << prevTrackButton << stopTrackButton << playPauseTrackButton << nextTrackButton;
     QList<QToolButton *> controlBtns=QList<QToolButton *>() << menuButton << songInfoButton;
     int playbackIconSize=28;
@@ -922,6 +926,7 @@ MainWindow::~MainWindow()
     Tags::stop();
     #endif
     ThreadCleaner::self()->stopAll();
+    Configuration(playQueuePage->metaObject()->className()).set(ItemView::constSearchActiveKey, playQueueSearchWidget->isActive());
 }
 
 void MainWindow::addMenuAction(QMenu *menu, QAction *action)

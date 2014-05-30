@@ -80,10 +80,12 @@ LibraryPage::LibraryPage(QWidget *p)
     connect(view, SIGNAL(rootIndexSet(QModelIndex)), this, SLOT(updateGenres(QModelIndex)));
     proxy.setSourceModel(MusicLibraryModel::self());
     view->setModel(&proxy);
+    view->load(metaObject()->className());
 }
 
 LibraryPage::~LibraryPage()
 {
+    view->save(metaObject()->className());
 }
 
 void LibraryPage::setView(int v)

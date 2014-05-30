@@ -104,12 +104,14 @@ public:
 
     static Mode toMode(const QString &str);
     static QString modeStr(Mode m);
-
     static void setup();
+    static const QLatin1String constSearchActiveKey;
 
     ItemView(QWidget *p=0);
     virtual ~ItemView();
 
+    void load(const QString &group);
+    void save(const QString &group);
     void allowGroupedView();
     void allowTableView(TableView *v);
     void addAction(QAction *act);

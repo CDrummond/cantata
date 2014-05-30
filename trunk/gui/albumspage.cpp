@@ -78,10 +78,12 @@ AlbumsPage::AlbumsPage(QWidget *p)
     connect(MPDConnection::self(), SIGNAL(updatedLibrary()), this, SLOT(hideSpinner()));
     connect(MPDConnection::self(), SIGNAL(updatingDatabase()), this, SLOT(showSpinner()));
     connect(MPDConnection::self(), SIGNAL(updatedDatabase()), this, SLOT(hideSpinner()));
+    view->load(metaObject()->className());
 }
 
 AlbumsPage::~AlbumsPage()
 {
+    view->save(metaObject()->className());
 }
 
 void AlbumsPage::setView(int v)

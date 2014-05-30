@@ -83,10 +83,12 @@ FolderPage::FolderPage(QWidget *p)
     connect(MPDConnection::self(), SIGNAL(updatedFileList()), this, SLOT(hideSpinner()));
     connect(MPDConnection::self(), SIGNAL(updatingDatabase()), this, SLOT(showSpinner()));
     connect(MPDConnection::self(), SIGNAL(updatedDatabase()), this, SLOT(hideSpinner()));
+    view->load(metaObject()->className());
 }
 
 FolderPage::~FolderPage()
 {
+    view->save(metaObject()->className());
 }
 
 void FolderPage::setEnabled(bool e)

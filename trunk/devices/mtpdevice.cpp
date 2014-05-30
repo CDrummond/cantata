@@ -1457,7 +1457,7 @@ void MtpDevice::addSong(const Song &s, bool overwrite, bool copyCover)
 
         if (!opts.transcoderWhenDifferent || encoder.isDifferent(s.file)) {
             deleteTemp();
-            tempFile=new QTemporaryFile(QDir::tempPath()+"/cantata_XXXXXX"+encoder.extension);
+            tempFile=new QTemporaryFile(QDir::tempPath()+"/cantata_XXXXXX."+encoder.extension);
             tempFile->setAutoRemove(false);
 
             if (!tempFile->open()) {

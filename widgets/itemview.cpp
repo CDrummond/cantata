@@ -38,6 +38,7 @@
 #include "messageoverlay.h"
 #include "support/action.h"
 #include "support/actioncollection.h"
+#include "support/configuration.h"
 #include <QToolButton>
 #include <QStyle>
 #include <QStyleOptionViewItem>
@@ -590,6 +591,8 @@ public:
     }
 };
 
+const QLatin1String ItemView::constSearchActiveKey("searchActive");
+
 ItemView::ItemView(QWidget *p)
     : QWidget(p)
     , searchTimer(0)
@@ -653,6 +656,18 @@ ItemView::ItemView(QWidget *p)
 
 ItemView::~ItemView()
 {
+}
+
+void ItemView::load(const QString &group)
+{
+    if (Configuration(group).get(ItemView::constSearchActiveKey, false)) {
+        focusSearch();
+    }
+}
+
+void ItemView::save(const QString &group)
+{
+    Configuration(group).set(ItemView::constSearchActiveKey, searchWidget->isActive());
 }
 
 void ItemView::allowGroupedView()

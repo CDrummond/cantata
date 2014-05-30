@@ -78,10 +78,12 @@ DynamicPage::DynamicPage(QWidget *p)
     view->setDeleteAction(removeAction);
     view->setMode(ItemView::Mode_List);
     controlActions();
+    view->load(metaObject()->className());
 }
 
 DynamicPage::~DynamicPage()
 {
+    view->save(metaObject()->className());
 }
 
 void DynamicPage::searchItems()

@@ -106,10 +106,12 @@ PlaylistsPage::PlaylistsPage(QWidget *p)
     menu->addAction(StdActions::self()->removeAction);
     menu->addAction(renamePlaylistAction);
     menuButton->setMenu(menu);
+    view->load(metaObject()->className());
 }
 
 PlaylistsPage::~PlaylistsPage()
 {
+    view->save(metaObject()->className());
 }
 
 void PlaylistsPage::saveConfig()

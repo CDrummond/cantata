@@ -178,7 +178,7 @@ QtSingleApplication::QtSingleApplication(const QString &appId, int &argc, char *
     sysInit(appId);
 }
 
-
+#if QT_VERSION < 0x050000
 /*!
     Creates a QtSingleApplication object. The application identifier
     will be QCoreApplication::applicationFilePath(). \a argc, \a
@@ -189,7 +189,7 @@ QtSingleApplication::QtSingleApplication(int &argc, char **argv, Type type)
 {
     sysInit();
 }
-
+#endif
 
 #if defined (Q_OS_LINUX) || defined (Q_OS_SOLARIS) || defined (Q_OS_FREEBSD) || defined (Q_OS_OPENBSD) || defined (Q_OS_IRIX)
 /*!

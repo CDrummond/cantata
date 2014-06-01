@@ -35,7 +35,11 @@
 #include <QKeySequence>
 #include <QHash>
 
+#if QT_VERSION>=0x050000
+class QxtGlobalShortcutPrivate : public QAbstractNativeEventFilter, public QxtPrivate<QxtGlobalShortcut>
+#else
 class QxtGlobalShortcutPrivate : public QxtPrivate<QxtGlobalShortcut>
+#endif
 {
 public:
     QXT_DECLARE_PUBLIC(QxtGlobalShortcut)
@@ -55,7 +59,7 @@ public:
     static QAbstractEventDispatcher::EventFilter prevEventFilter;
     static bool eventFilter(void* message);
     #else
-    bool nativeEventFilter(const QByteArray &, void *message, long *result)
+    bool nativeEventFilter(const QByteArray &, void *message, long *result);
     #endif
 
 private:

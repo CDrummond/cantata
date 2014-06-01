@@ -44,7 +44,7 @@
 #endif
 #include <QFileInfo>
 #if defined TAGLIB_FOUND && !defined ENABLE_EXTERNAL_TAGS
-#include "tags.h"
+#include "tags/tags.h"
 #endif
 #include <QDebug>
 #define DBUG if (HttpServer::debugEnabled()) qWarning() << "HttpSocket" << __FUNCTION__

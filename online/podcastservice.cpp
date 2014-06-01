@@ -49,16 +49,6 @@ static const char * constRssUrlProperty="rss-url";
 static const char * constDestProperty="dest";
 static const QLatin1String constPartialExt(".partial");
 
-// Move files from previous ~/.config/cantata to ~/.local/share/cantata
-static void moveToNewLocation()
-{
-    #if !defined Q_OS_WIN && !defined Q_OS_MAC // Not required for windows - as already stored in data location!
-    if (Settings::self()->version()<CANTATA_MAKE_VERSION(1, 51, 0)) {
-        Utils::moveDir(Utils::configDir(MusicLibraryItemPodcast::constDir), Utils::dataDir(MusicLibraryItemPodcast::constDir, true));
-    }
-    #endif
-}
-
 QUrl PodcastService::fixUrl(const QString &url)
 {
     QString trimmed(url.trimmed());
@@ -102,8 +92,6 @@ PodcastService::PodcastService(MusicModel *m)
     : OnlineService(m, i18n("Podcasts"))
     , rssUpdateTimer(0)
 {
-    moveToNewLocation();
-
     loaded=true;
     setUseArtistImages(false);
     setUseAlbumImages(false);

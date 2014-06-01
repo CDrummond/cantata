@@ -48,27 +48,6 @@ static QString localeFile()
     return Utils::cacheDir(WikipediaSettings::constSubDir, true)+constFileName;
 }
 
-// Move files from previous ~/.config/cantata or ~/.local/share/cantata to ~/.cache/cantata/wikipedia
-static void moveToNewLocation()
-{
-    #if !defined Q_OS_WIN && !defined Q_OS_MAC // Not required for windows - as already stored in data location!
-    QString oldLocation1=Utils::configDir(QString())+constOldFileName;
-    QString oldLocation2=Utils::dataDir(QString())+constOldFileName;
-    QString newLocation=localeFile();
-    bool moved=false;
-    if (oldLocation2!=constOldFileName && QFile::exists(oldLocation2) && Utils::moveFile(oldLocation2, newLocation)) {
-        moved=true;
-    }
-    if (oldLocation1!=constOldFileName && QFile::exists(oldLocation1)) {
-        if (moved) {
-            QFile::remove(oldLocation1);
-        } else {
-            Utils::moveFile(oldLocation1, newLocation);
-        }
-    }
-    #endif
-}
-
 WikipediaLoader::WikipediaLoader()
     : QObject(0)
 {
@@ -130,7 +109,6 @@ void WikipediaSettings::showEvent(QShowEvent *e)
     if (Initial==state) {
         state=Loading;
         QByteArray data;
-        moveToNewLocation();
         QString fileName=localeFile();
         if (QFile::exists(fileName)) {
             QFile f(fileName);

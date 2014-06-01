@@ -147,16 +147,6 @@ const QString Dynamic::constExcludeKey=QLatin1String("Exclude");
 const QString constOk=QLatin1String("0");
 const QString constFilename=QLatin1String("FILENAME:");
 
-// Move files from previous ~/.config/cantata to ~/.local/share/cantata
-static void moveToNewLocation()
-{
-    #if !defined Q_OS_WIN && !defined Q_OS_MAC // Not required for windows - as already stored in data location!
-    if (Settings::self()->version()<CANTATA_MAKE_VERSION(1, 51, 0)) {
-        Utils::moveDir(Utils::configDir(constDir), Utils::dataDir(constDir, true));
-    }
-    #endif
-}
-
 Dynamic::Dynamic()
     : localTimer(0)
     , remoteTimer(0)
@@ -165,7 +155,6 @@ Dynamic::Dynamic()
     , currentJob(0)
     , currentCommand(Unknown)
 {
-    moveToNewLocation();
     loadLocal();
     connect(this, SIGNAL(clear()), MPDConnection::self(), SLOT(clear()));
     connect(MPDConnection::self(), SIGNAL(dynamicSupport(bool)), this, SLOT(remoteDynamicSupported(bool)));

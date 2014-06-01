@@ -9,8 +9,12 @@ set(QXT-MOC-HEADERS
   qxtglobalshortcut.h
 )
 
-find_package(X11)
-include_directories(${X11_INCLUDE_DIR})
+if (NOT WIN32 AND NOT APPLE)
+  find_package(X11)
+  include_directories(${X11_INCLUDE_DIR})
+endif (NOT WIN32 AND NOT APPLE)
+
+include_directories( ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR} ${QTINCLUDES} )
 
 if(WIN32)
   set(QXT-SOURCES ${QXT-SOURCES} qxtglobalshortcut_win.cpp)

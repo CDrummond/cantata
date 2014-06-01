@@ -44,7 +44,7 @@ static QString id3Genre(int id)
     return 0==id ? QString() : codec->toUnicode(TagLib::ID3v1::genre(id).toCString(true)).trimmed();
 }
 #else
-#include "tags.h"
+#include "tags/tags.h"
 using namespace Tags;
 #endif
 

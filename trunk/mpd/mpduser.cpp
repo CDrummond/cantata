@@ -52,8 +52,27 @@ QString MPDUser::translatedName()
 
 GLOBAL_STATIC(MPDUser, instance)
 
+#if !defined Q_OS_WIN && !defined Q_OS_MAC && !defined ENABLE_UBUNTU
+static void moveConfig()
+{
+    QString oldName=QDir::homePath()+"/.config/cantata/"+constDir+"/"+constConfigFile;
+
+    if (QFile::exists(oldName)) {
+        QString newName=Utils::dataDir(constDir, true)+constConfigFile;
+        if (QFile::exists(newName)) {
+            QFile::remove(oldName);
+        } else {
+            QFile::rename(oldName, newName);
+        }
+    }
+}
+#endif
+
 MPDUser::MPDUser()
 {
+    #if !defined Q_OS_WIN && !defined Q_OS_MAC && !defined ENABLE_UBUNTU
+    moveConfig();
+    #endif
     // For now, per-user MPD support is disabled for windows builds
     // - as I'm unsure how/if MPD works in windows!!!
     // - If enable, also need to fix isRunning!!
@@ -120,7 +139,7 @@ void MPDUser::setMusicFolder(const QString &folder)
     }
     init(true);
 
-    QFile cfgFile(Utils::configDir(constDir, true)+constConfigFile);
+    QFile cfgFile(Utils::dataDir(constDir, true)+constConfigFile);
     QStringList lines;
     if (cfgFile.open(QIODevice::ReadOnly|QIODevice::Text)) {
         while (!cfgFile.atEnd()) {
@@ -175,7 +194,7 @@ static void removeDir(const QString &d)
 
 void MPDUser::cleanup()
 {
-    QString cfgFileName(Utils::configDir(constDir, false)+constConfigFile);
+    QString cfgFileName(Utils::dataDir(constDir, false)+constConfigFile);
     QFile cfgFile(cfgFileName);
     QSet<QString> files;
     QSet<QString> dirs;
@@ -224,7 +243,6 @@ void MPDUser::cleanup()
         foreach (const QString &d, dirs) {
             removeDir(d);
         }
-        removeDir(Utils::configDir(constDir, false));
         removeDir(Utils::dataDir(constDir, false));
         removeDir(Utils::cacheDir(constDir, false));
     }
@@ -238,7 +256,7 @@ void MPDUser::init(bool create)
         det.dirReadable=false;
 
         // Read music folder and socket from MPD conf file...
-        QString cfgDir=Utils::configDir(constDir, create);
+        QString cfgDir=Utils::dataDir(constDir, create);
         QString cfgName(cfgDir+constConfigFile);
         QString playlists;
 
@@ -323,7 +341,7 @@ int MPDUser::getPid()
 
 bool MPDUser::controlMpd(bool stop)
 {
-    QString confFile=Utils::configDir(constDir, true)+constConfigFile;
+    QString confFile=Utils::dataDir(constDir, true)+constConfigFile;
     if (!QFile::exists(confFile)) {
         return false;
     }

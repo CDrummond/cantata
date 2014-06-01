@@ -144,9 +144,14 @@ Application::Application(int &argc, char **argv)
     : QtSingleApplication(argc, argv)
 {
     connect(this, SIGNAL(messageReceived(const QString &)), SLOT(message(const QString &)));
-    #if defined Q_OS_WIN2
+
+    #if defined Q_OS_WIN
     connect(this, SIGNAL(reconnect()), MPDConnection::self(), SLOT(reconnect()));
-    #endif
+    #if QT_VERSION >= 0x050000
+    installNativeEventFilter(this);
+    #endif // QT_VERSION >= 0x050000
+    #endif // Q_OS_WIN
+
     #ifdef Q_OS_MAC
     QCoreApplication::setAttribute(Qt::AA_DontShowIconsInMenus, true);
     #endif
@@ -178,6 +183,16 @@ static void setupIconTheme()
 }
 
 #if defined Q_OS_WIN
+#if QT_VERSION >= 0x050000
+bool Application::nativeEventFilter(const QByteArray &, void *message, long *result)
+{
+    MSG *msg = static_cast<MSG *>(message);
+    if (msg && WM_POWERBROADCAST==msg->message && PBT_APMRESUMEAUTOMATIC==msg->wParam) {
+        emit reconnect();
+    }
+    return false;
+}
+#else // QT_VERSION >= 0x050000
 bool Application::winEventFilter(MSG *msg, long *result)
 {
     if (msg && WM_POWERBROADCAST==msg->message && PBT_APMRESUMEAUTOMATIC==msg->wParam) {
@@ -185,7 +200,8 @@ bool Application::winEventFilter(MSG *msg, long *result)
     }
     return QCoreApplication::winEventFilter(msg, result);
 }
-#endif
+#endif // QT_VERSION >= 0x050000
+#endif // Q_OS_WIN
 
 bool Application::start()
 {

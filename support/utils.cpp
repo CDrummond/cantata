@@ -34,37 +34,23 @@
 #include <QTime>
 #include <QWidget>
 #include <QStyle>
+#if QT_VERSION >= 0x050000
+#include <QStandardPaths>
+#else
+#include <QDesktopServices>
+#endif
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KStandardDirs>
 #endif
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#ifdef Q_OS_WIN
-#include <QDesktopServices>
-#endif
 #ifndef Q_OS_WIN
 #include <grp.h>
 #include <pwd.h>
 #endif
 #include <sys/types.h>
 #include <utime.h>
-
-#ifdef ENABLE_UBUNTU
-
-// For Cantata touch, use rev-url for cache/config/data folders
-#ifdef CANTATA_REV_URL
-    #define FOLDER_NAME CANTATA_REV_URL
-#else
-    // TODO: **really** should be using this. But for some reason its blank????
-    #define QCoreApplication::organizationName()
-#endif
-
-#else
-
-#define FOLDER_NAME QCoreApplication::applicationName()
-
-#endif
 
 const QLatin1Char Utils::constDirSep('/');
 const QLatin1String Utils::constDirSepStr("/");
@@ -322,7 +308,7 @@ void Utils::msleep(int msecs)
 #include <sys/stat.h>
 
 // kde_file.h
-#ifndef Q_WS_WIN
+#ifndef Q_OS_WIN
 #if (defined _LFS64_LARGEFILE) && (defined _LARGEFILE64_SOURCE) && (!defined _GNU_SOURCE) && (!defined __sun)
 #define KDE_stat                ::stat64
 #define KDE_lstat               ::lstat64
@@ -334,7 +320,7 @@ void Utils::msleep(int msecs)
 #define KDE_struct_stat         struct stat
 #define KDE_mkdir               ::mkdir
 #endif
-#endif // Q_WS_WIN
+#endif // Q_OS_WIN
 
 // kstandarddirs.h
 bool Utils::makeDir(const QString &dir, int mode)
@@ -344,7 +330,7 @@ bool Utils::makeDir(const QString &dir, int mode)
         return false;
     }
 
-    #ifdef Q_WS_WIN
+    #ifdef Q_OS_WIN
     Q_UNUSED(mode)
     return QDir().mkpath(dir);
     #else
@@ -502,7 +488,7 @@ static QStringList systemPaths(const QString &pstr)
     return exePaths;
 }
 
-#ifdef Q_WS_MAC
+#ifdef Q_OS_MAC
 static QString getBundle(const QString &path)
 {
     //kDebug(180) << "getBundle(" << path << ", " << ignore << ") called";
@@ -530,7 +516,7 @@ static QString getBundle(const QString &path)
 
 static QString checkExecutable( const QString& path )
 {
-    #ifdef Q_WS_MAC
+    #ifdef Q_OS_MAC
     QString bundle = getBundle( path );
     if ( !bundle.isEmpty() ) {
         //kDebug(180) << "findExe(): returning " << bundle;
@@ -665,33 +651,59 @@ static QString userDir(const QString &mainDir, const QString &sub, bool create)
     return d.exists() || (create && d.mkpath(dir)) ? dir : QString();
 }
 
-QString Utils::configDir(const QString &sub, bool create)
-{
-    #if defined Q_OS_WIN || defined Q_OS_MAC
-    return userDir(QDesktopServices::storageLocation(QDesktopServices::DataLocation)+constDirSep, sub, create);
-    #else
-    QString env = qgetenv("XDG_CONFIG_HOME");
-    return userDir((env.isEmpty() ? QDir::homePath() + "/.config" : env) + constDirSep+FOLDER_NAME+constDirSep, sub, create);
-    #endif
-}
-
 QString Utils::dataDir(const QString &sub, bool create)
 {
-    #if defined Q_OS_WIN || defined Q_OS_MAC
-    return userDir(QDesktopServices::storageLocation(QDesktopServices::DataLocation)+constDirSep, sub, create);
+    #if defined Q_OS_WIN || defined Q_OS_MAC || defined ENABLE_UBUNTU
+
+    #if QT_VERSION >= 0x050000
+    return userDir(QStandardPaths::writableLocation(QStandardPaths::DataLocation)+constDirSep, sub, create);
     #else
-    QString env = qgetenv("XDG_DATA_HOME");
-    return userDir((env.isEmpty() ? QDir::homePath() + "/.local/share" : env) + constDirSep+FOLDER_NAME+constDirSep, sub, create);
+    return userDir(QDesktopServices::storageLocation(QDesktopServices::DataLocation)+constDirSep, sub, create);
+    #endif
+
+    #else
+
+    static QString location;
+    if (location.isEmpty()) {
+        #if QT_VERSION >= 0x050000
+        location=QStandardPaths::writableLocation(QStandardPaths::DataLocation);
+        location=location.replace(QCoreApplication::applicationName()+Utils::constDirSep+QCoreApplication::applicationName(),
+                                  QCoreApplication::applicationName());
+        #else
+        location=QDesktopServices::storageLocation(QDesktopServices::DataLocation);
+        location=location.replace(QLatin1String("data")+Utils::constDirSep+QCoreApplication::applicationName()+Utils::constDirSep+QCoreApplication::applicationName(),
+                                  QCoreApplication::applicationName());
+        #endif
+    }
+    return userDir(location+constDirSep, sub, create);
+
     #endif
 }
 
 QString Utils::cacheDir(const QString &sub, bool create)
 {
-    #if defined Q_OS_WIN || defined Q_OS_MAC
-    return userDir(QDesktopServices::storageLocation(QDesktopServices::CacheLocation)+constDirSep, sub, create);
+    #if defined Q_OS_WIN || defined Q_OS_MAC || defined ENABLE_UBUNTU
+
+    #if QT_VERSION >= 0x050000
+    return userDir(QStandardPaths::writableLocation(QStandardPaths::CacheLocation)+constDirSep, sub, create);
     #else
-    QString env = qgetenv("XDG_CACHE_HOME");
-    return userDir((env.isEmpty() ? QDir::homePath() + "/.cache" : env) + constDirSep+FOLDER_NAME+constDirSep, sub, create);
+    return userDir(QDesktopServices::storageLocation(QDesktopServices::CacheLocation)+constDirSep, sub, create);
+    #endif
+
+    #else
+
+    static QString location;
+    if (location.isEmpty()) {
+        #if QT_VERSION >= 0x050000
+        location=QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
+        #else
+        location=QDesktopServices::storageLocation(QDesktopServices::CacheLocation);
+        #endif
+        location=location.replace(QCoreApplication::applicationName()+Utils::constDirSep+QCoreApplication::applicationName(),
+                                  QCoreApplication::applicationName());
+    }
+    return userDir(location+constDirSep, sub, create);
+
     #endif
 }
 

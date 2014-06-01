@@ -94,7 +94,6 @@ namespace Utils
     extern QString formatTime(const quint32 seconds, bool zeroIsUnknown=false);
 
     extern QString cleanPath(const QString &p);
-    extern QString configDir(const QString &sub=QString(), bool create=false);
     extern QString dataDir(const QString &sub=QString(), bool create=false);
     extern QString cacheDir(const QString &sub=QString(), bool create=true);
     extern QString systemDir(const QString &sub);

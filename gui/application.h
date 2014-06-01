@@ -51,7 +51,11 @@ private:
 };
 #elif defined Q_OS_WIN || defined WIN32 || defined Q_OS_MAC || defined __APPLE__   // moc does not seem to see Q_OS_WIN/Q_OS_MAC,, but will see WIN32/__APPLE__ :-(
 #include "qtsingleapplication/qtsingleapplication.h"
-class Application : public QtSingleApplication
+#ifdef (defined Q_OS_WIN || defined WIN32) && QT_VERSION >= 0x050000
+class Application : public QtSingleApplication, public QAbstractNativeEventFilter
+#else
+class Application : public QtSingleApplication    
+#endif
 {
     Q_OBJECT
 
@@ -61,7 +65,11 @@ public:
     virtual ~Application() { }
 
     #if defined Q_OS_WIN || defined WIN32
+    #if QT_VERSION >= 0x050000
+    bool nativeEventFilter(const QByteArray &, void *message, long *result);
+    #else
     bool winEventFilter(MSG *msg, long *result);
+    #endif
     #endif
     bool start();
     void loadFiles();

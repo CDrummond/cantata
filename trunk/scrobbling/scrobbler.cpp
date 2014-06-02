@@ -190,6 +190,7 @@ Scrobbler::Scrobbler()
     loadSettings();
     connect(this, SIGNAL(clientMessage(QString,QString,QString)), MPDConnection::self(), SLOT(sendClientMessage(QString,QString,QString)));
     connect(MPDConnection::self(), SIGNAL(clientMessageFailed(QString,QString)), SLOT(clientMessageFailed(QString,QString)));
+    connect(MPDConnection::self(), SIGNAL(statusUpdated(MPDStatusValues)), this, SLOT(mpdStatusUpdated(MPDStatusValues)));
 }
 
 Scrobbler::~Scrobbler()
@@ -704,6 +705,14 @@ void Scrobbler::mpdStateUpdated()
             nowPlayingTimer->stop();
             nowPlayingTimer->setInterval(5000);
         }
+    }
+}
+
+void Scrobbler::mpdStatusUpdated(const MPDStatusValues &vals)
+{
+    if (!vals.playlistLength) {
+        currentSong.clear();
+        emit songChanged(false);
     }
 }
 

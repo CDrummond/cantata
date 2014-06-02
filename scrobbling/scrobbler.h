@@ -40,6 +40,7 @@ class QTimer;
 class QNetworkReply;
 class PausableTimer;
 class Song;
+struct MPDStatusValues;
 
 class Scrobbler : public QObject
 {
@@ -51,6 +52,7 @@ public:
         bool operator==(const Track &o) const { return track==o.track && title==o.title && artist==o.artist &&
                                                 albumartist==o.albumartist && album==o.album; }
         bool operator!=(const Track &o) const { return !(*this==o); }
+        void clear() { title=artist=albumartist=album=QString(); track=length=0; timestamp=0; }
         QString title;
         QString artist;
         QString albumartist;
@@ -108,6 +110,7 @@ private Q_SLOTS:
     void authResp();
     void scrobbleFinished();
     void mpdStateUpdated();
+    void mpdStatusUpdated(const MPDStatusValues &vals);
     void clientMessageFailed(const QString &client, const QString &msg);
 
 private:

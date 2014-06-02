@@ -971,6 +971,12 @@ void MPDConnection::playListInfo()
         }
         emit cantataStreams(cStreams, false);
         emit playlistUpdated(songs);
+        Response status=sendCommand("status");
+        if (status.ok) {
+            MPDStatusValues sv=MPDParseUtils::parseStatus(status.data);
+            lastUpdatePlayQueueVersion=lastStatusPlayQueueVersion=sv.playlist;
+            emit statusUpdated(sv);;
+        }
     }
 }
 

@@ -76,11 +76,11 @@ msgstr "Перенастроить отступ"
 
 #: context/contextwidget.cpp:370
 msgid "&Artist"
-msgstr ""
+msgstr "&Артист"
 
 #: context/contextwidget.cpp:371
 msgid "Al&bum"
-msgstr ""
+msgstr "&Альбом"
 
 #: context/contextwidget.cpp:372
 msgid "&Lyrics"
@@ -153,7 +153,7 @@ msgstr "Сайты для поиска текстов песен"
 
 #: context/onlineview.cpp:31
 msgid "Song Information"
-msgstr ""
+msgstr "Информация о песне"
 
 #: context/othersettings.cpp:45 gui/coverdialog.cpp:862
 #: gui/interfacesettings.cpp:209
@@ -258,7 +258,7 @@ msgstr "Удалить файл со словами песни?"
 
 #: context/songview.cpp:223
 msgid "Delete File"
-msgstr ""
+msgstr "Удалить файл"
 
 #: context/songview.cpp:543
 msgid "Fetching lyrics via %1"
@@ -455,15 +455,15 @@ msgstr "Рассчитать"
 
 #: devices/actiondialog.cpp:677
 msgid "The destination filename already exists!"
-msgstr ""
+msgstr "Имя конечного файла уже существует!"
 
 #: devices/actiondialog.cpp:680
 msgid "Song already exists!"
-msgstr ""
+msgstr "Песня уже существует!"
 
 #: devices/actiondialog.cpp:683
 msgid "Song does not exist!"
-msgstr ""
+msgstr "Песня не существует!"
 
 #: devices/actiondialog.cpp:686
 msgid ""
@@ -473,27 +473,27 @@ msgstr ""
 
 #: devices/actiondialog.cpp:689
 msgid "Source file no longer exists?"
-msgstr ""
+msgstr "Исходного файла больше не существует?"
 
 #: devices/actiondialog.cpp:692
 msgid "Failed to copy."
-msgstr ""
+msgstr "Не удается скопировать."
 
 #: devices/actiondialog.cpp:692
 msgid "Failed to delete."
-msgstr ""
+msgstr "Не удается удалить."
 
 #: devices/actiondialog.cpp:695
 msgid "Not connected to device."
-msgstr ""
+msgstr "Не подключен к устройству."
 
 #: devices/actiondialog.cpp:698
 msgid "Selected codec is not available."
-msgstr ""
+msgstr "Выбранный кодек не доступен."
 
 #: devices/actiondialog.cpp:701
 msgid "Transcoding failed."
-msgstr ""
+msgstr "Ошибка транскодирования."
 
 #: devices/actiondialog.cpp:704
 msgid ""
@@ -503,27 +503,27 @@ msgstr ""
 
 #: devices/actiondialog.cpp:707
 msgid "Failed to read source file."
-msgstr ""
+msgstr "Не удается прочитать исходный файл."
 
 #: devices/actiondialog.cpp:710
 msgid "Failed to write to destination file."
-msgstr ""
+msgstr "Не удается записать файл назначения."
 
 #: devices/actiondialog.cpp:713
 msgid "No space left on device."
-msgstr ""
+msgstr "Нет места на устройстве."
 
 #: devices/actiondialog.cpp:716
 msgid "Failed to update metadata."
-msgstr ""
+msgstr "Не удалось обновить метаданные."
 
 #: devices/actiondialog.cpp:719
 msgid "Failed to download track."
-msgstr ""
+msgstr "Не удалось загрузить трек."
 
 #: devices/actiondialog.cpp:722
 msgid "Failed to lock device."
-msgstr ""
+msgstr "Не удалось заблокировать устройство."
 
 #: devices/actiondialog.cpp:751
 msgid "Local Music Library Properties"
@@ -572,15 +572,15 @@ msgstr "Трек:"
 
 #: devices/actiondialog.cpp:823
 msgid "Source file:"
-msgstr ""
+msgstr "Исходный файл:"
 
 #: devices/actiondialog.cpp:824
 msgid "Destination file:"
-msgstr ""
+msgstr "Конечный файл:"
 
 #: devices/actiondialog.cpp:826 gui/searchpage.cpp:240
 msgid "File:"
-msgstr ""
+msgstr "Файл:"
 
 #: devices/actiondialog.cpp:832 gui/cachesettings.cpp:180
 #: gui/cachesettings.cpp:236
@@ -594,7 +594,7 @@ msgstr "%1 (примерно)"
 
 #: devices/actiondialog.cpp:841
 msgid "Time remaining:"
-msgstr ""
+msgstr "Оставшееся время:"
 
 #: devices/actiondialog.cpp:865 devices/fsdevice.cpp:763
 #: online/onlineservice.cpp:137 online/onlineservice.cpp:163
@@ -1506,15 +1506,15 @@ msgstr " (рекомендуется)"
 
 #: dynamic/dynamic.cpp:78
 msgid "Empty filename."
-msgstr ""
+msgstr "Пустое имя файла."
 
 #: dynamic/dynamic.cpp:79
 msgid "Invalid filename. (%1)"
-msgstr ""
+msgstr "Недопустимое имя файла. (%1)"
 
 #: dynamic/dynamic.cpp:80
 msgid "Failed to save %1."
-msgstr ""
+msgstr "Не удалось сохранить %1"
 
 #: dynamic/dynamic.cpp:81 dynamic/dynamic.cpp:841 dynamic/dynamic.cpp:844
 msgid "Failed to delete rules file. (%1)"
@@ -1522,7 +1522,7 @@ msgstr "Сбой удаления файла правил (%1)"
 
 #: dynamic/dynamic.cpp:82
 msgid "Invalid command. (%1)"
-msgstr ""
+msgstr "Недопустимая команда. (%1)"
 
 #: dynamic/dynamic.cpp:83
 msgid "Could not remove active rules link."
@@ -1542,7 +1542,7 @@ msgstr ""
 
 #: dynamic/dynamic.cpp:87
 msgid "Incorrect arguments supplied."
-msgstr ""
+msgstr "Неверные аргументы."
 
 #: dynamic/dynamic.cpp:88
 msgid "Unknown method called."
@@ -1989,27 +1989,27 @@ msgstr "Сбой подключения"
 
 #: gui/interfacesettings.cpp:53
 msgid "Album, Artist, Year"
-msgstr ""
+msgstr "Альбом, Артист, Год"
 
 #: gui/interfacesettings.cpp:54
 msgid "Album, Year, Artist"
-msgstr ""
+msgstr "Альбом, Год, Артист"
 
 #: gui/interfacesettings.cpp:55
 msgid "Artist, Album, Year"
-msgstr ""
+msgstr "Артист, Альбом, Год"
 
 #: gui/interfacesettings.cpp:56
 msgid "Artist, Year, Album"
-msgstr ""
+msgstr "Артист, Год, Альбом"
 
 #: gui/interfacesettings.cpp:57
 msgid "Year, Album, Artist"
-msgstr ""
+msgstr "Год, Альбом, Артист"
 
 #: gui/interfacesettings.cpp:58
 msgid "Year, Artist, Album"
-msgstr ""
+msgstr "Год, Артист, Альбом"
 
 #. i18n: file: context/othersettings.ui:32
 #. i18n: ectx: property (text), widget (QRadioButton, contextBackdrop_none)
@@ -2056,7 +2056,7 @@ msgstr "Очень большой"
 
 #: gui/interfacesettings.cpp:74
 msgid "Basic Tree (No Icons)"
-msgstr ""
+msgstr "Основные дерево (Без иконок)"
 
 #: gui/interfacesettings.cpp:75
 msgid "Simple Tree"
@@ -2110,7 +2110,7 @@ msgstr "Плейлисты"
 
 #: gui/interfacesettings.cpp:143
 msgid "Dynamic Playlists"
-msgstr ""
+msgstr "Динамический Плейлист"
 
 #: gui/interfacesettings.cpp:147
 msgid "Streams (e.g. Radio Stations)"
@@ -2118,15 +2118,15 @@ msgstr ""
 
 #: gui/interfacesettings.cpp:154
 msgid "Online Services - Jamendo, Maganatune, SoundCloud, and Podcasts"
-msgstr ""
+msgstr "Онлайн сервисы - Jamendo, Maganatune, SoundCloud и Подкаст"
 
 #: gui/interfacesettings.cpp:161
 msgid "Devices - UMS, MTP (e.g. Android), and AudioCDs"
-msgstr ""
+msgstr "Устройства - UMS, MTP (например Android) и AudioCDs"
 
 #: gui/interfacesettings.cpp:167
 msgid "Search (via MPD)"
-msgstr ""
+msgstr "Поиск (через MPD)"
 
 #: gui/interfacesettings.cpp:168
 msgid "Info - Current song information (artist, album, and lyrics)"
@@ -2160,23 +2160,23 @@ msgstr "Стиль:"
 
 #: gui/interfacesettings.cpp:196
 msgid "Tab-bar"
-msgstr ""
+msgstr "Панель вкладок"
 
 #: gui/interfacesettings.cpp:197
 msgid "Left"
-msgstr ""
+msgstr "Слева"
 
 #: gui/interfacesettings.cpp:197
 msgid "Right"
-msgstr ""
+msgstr "Справа"
 
 #: gui/interfacesettings.cpp:198
 msgid "Top"
-msgstr ""
+msgstr "Сверху"
 
 #: gui/interfacesettings.cpp:199
 msgid "Bottom"
-msgstr ""
+msgstr "Снизу"
 
 #: gui/interfacesettings.cpp:439
 msgid "System default"
@@ -2267,7 +2267,7 @@ msgstr "Настроить Cantata..."
 
 #: gui/mainwindow.cpp:239
 msgid "Preferences"
-msgstr ""
+msgstr "Настройки"
 
 #: gui/mainwindow.cpp:242
 msgid "Quit"
@@ -2326,7 +2326,7 @@ msgstr "Очистить"
 
 #: gui/mainwindow.cpp:270
 msgid "Center On Current Track"
-msgstr ""
+msgstr "Центр по текущей дорожке"
 
 #: gui/mainwindow.cpp:271
 msgid "Show Current Song Information"
@@ -2422,23 +2422,23 @@ msgstr "Инфо"
 
 #: gui/mainwindow.cpp:551
 msgid "Show Menubar"
-msgstr ""
+msgstr "Показать меню"
 
 #: gui/mainwindow.cpp:601
 msgid "&Music"
-msgstr ""
+msgstr "&Музыка"
 
 #: gui/mainwindow.cpp:612
 msgid "&Edit"
-msgstr ""
+msgstr "&Редактировать"
 
 #: gui/mainwindow.cpp:628
 msgid "&View"
-msgstr ""
+msgstr "&Вид"
 
 #: gui/mainwindow.cpp:639
 msgid "&Queue"
-msgstr ""
+msgstr "&Очередь"
 
 #: gui/mainwindow.cpp:652
 msgid "&Settings"
@@ -2459,7 +2459,7 @@ msgstr "Подключение к %1"
 
 #: gui/mainwindow.cpp:1082
 msgid "Refresh MPD Database?"
-msgstr ""
+msgstr "Обновить базу данных MPD?"
 
 #: gui/mainwindow.cpp:1101
 msgctxt "Qt-only"
@@ -2557,7 +2557,7 @@ msgstr "MPD выдал следующую ошибку: %1"
 
 #: gui/mainwindow.cpp:1828
 msgid "Playback stopped"
-msgstr ""
+msgstr "Воспроизведение остановлено"
 
 #: gui/mainwindow.cpp:1869
 msgid "Remove all songs from play queue?"
@@ -2594,15 +2594,15 @@ msgstr "Существующие плейлисты"
 
 #: gui/mainwindow.cpp:2010
 msgid "Stream URL"
-msgstr ""
+msgstr "URL-адрес потока"
 
 #: gui/mainwindow.cpp:2010
 msgid "Enter URL of stream:"
-msgstr ""
+msgstr "Введите URL-адрес потока:"
 
 #: gui/mainwindow.cpp:2013
 msgid "Invalid, or unsupported, URL!"
-msgstr ""
+msgstr "Недопустимый или неподдерживаемый, URL-адрес!"
 
 #: gui/mainwindow.cpp:2302
 msgid "Can only edit tags of songs within MPD's music collection."
@@ -2667,7 +2667,7 @@ msgstr "Переименовывать"
 
 #: gui/playlistspage.cpp:60 models/playqueuemodel.cpp:213
 msgid "Remove Duplicates"
-msgstr ""
+msgstr "Удаление дубликатов"
 
 #: gui/playlistspage.cpp:223
 msgid ""
@@ -2926,7 +2926,7 @@ msgstr ""
 
 #: gui/searchpage.cpp:239
 msgid "Date:"
-msgstr ""
+msgstr "Дата:"
 
 #: gui/searchpage.cpp:241
 msgid "Any:"
@@ -2934,7 +2934,7 @@ msgstr ""
 
 #: gui/searchpage.cpp:247
 msgid "No tracks found."
-msgstr ""
+msgstr "Треки не найдены."
 
 #: gui/serversettings.cpp:87
 msgid ""
@@ -3127,7 +3127,7 @@ msgstr "Указать изображение"
 
 #: gui/stdactions.cpp:81
 msgid "Find"
-msgstr ""
+msgstr "Поиск"
 
 #: gui/trayitem.cpp:232
 msgid "Now playing"
@@ -3271,7 +3271,7 @@ msgstr "Новый плейлист..."
 
 #: models/playlistsmodel.cpp:338
 msgid "Smart Playlist"
-msgstr ""
+msgstr "Смарт-плейлист"
 
 #: models/playqueuemodel.cpp:147
 msgid "Length"
@@ -3290,19 +3290,19 @@ msgstr "Год"
 
 #: models/playqueuemodel.cpp:215
 msgid "Undo"
-msgstr ""
+msgstr "Отменить"
 
 #: models/playqueuemodel.cpp:217
 msgid "Redo"
-msgstr ""
+msgstr "Повторить"
 
 #: models/playqueuemodel.cpp:223
 msgid "Shuffle"
-msgstr ""
+msgstr "Перемешать"
 
 #: models/playqueuemodel.cpp:232
 msgid "Sort By"
-msgstr ""
+msgstr "Сортировать по"
 
 #. i18n: file: devices/filenameschemedialog.ui:82
 #. i18n: ectx: property (text), widget (QPushButton, albumArtist)
@@ -3336,7 +3336,7 @@ msgstr "ShoutCast"
 
 #: models/streamsmodel.cpp:543
 msgid "Dirble"
-msgstr ""
+msgstr "Dirble"
 
 #: models/streamsmodel.cpp:546
 msgid "Favorites"
@@ -3704,7 +3704,7 @@ msgstr "Не удалось проанализировать содержимо�
 
 #: online/podcastsearchdialog.cpp:504
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
 #: online/podcastsearchdialog.cpp:513
 msgid "Enter podcast URL..."

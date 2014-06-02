@@ -660,8 +660,8 @@ playlist, load the 'MyPlaylist' playlist, and start this on the mpd at
 =======================================
 
 In addition to the above, the helper script may be installed on the system
-containing MPD, and run in 'server' mode. Thsi requires MPD>=0.17, as
-communciations are via MPD's client-to-client messages.
+containing MPD, and run in 'server' mode. This requires MPD>=0.17, as
+communcations are via MPD's client-to-client messages.
 
 When run in this mode, it is intended that the script be run system-wide and
 started when the system (or MPD) is started. e.g. The script should be started
@@ -679,11 +679,13 @@ To stop the dynamizer:
 
     e.g.:  /usr/share/cantata/scripts/cantata-dynamic stopserver
 
-Cantata's 'Connection' settings page contains an entry to configure the port
-which the dynamic script is listening on. If Cantata is configured in this
-manner, then it will attempt to talk to the helper via its HTTP API, and will
-not start/stop a per-user instance of the script. If the config is left blank,
-then cantata will assume the script is to be run in local mode.
+When MPD informs Cantata that the 'cantata-dynamic-in' channel has been
+created, Cantata will automatically switch itself to server mode. The list of
+rules is then loaded from the server, and Cantata will change the backdrop of
+the dynamic page to indicate that the rules are comming from the server.
+
+Server mode is currently the only way for dynamic playlists to be used under
+Windows.
 
 
 Configuration

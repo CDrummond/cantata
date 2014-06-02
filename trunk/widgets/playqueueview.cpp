@@ -648,7 +648,9 @@ void PlayQueueView::setImage(const QImage &img)
 
     curentBackground=QPixmap();
     animator.stop();
-    if (isVisible()) {
+    if (BI_Custom==backgroundImageType || !isVisible()) {
+        setFade(1.0);
+    } else {
         fadeValue=0.0;
         animator.setDuration(250);
         animator.setEndValue(1.0);

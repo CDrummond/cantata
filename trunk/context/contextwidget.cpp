@@ -244,7 +244,7 @@ ContextWidget::ContextWidget(QWidget *parent)
     , useFanArt(0!=constFanArtApiKey.latin1())
     , albumCoverBackdrop(false)
     , oldIsAlbumCoverBackdrop(false)
-    , fadeValue(0)
+    , fadeValue(1.0)
     , isWide(false)
     , stack(0)
     #ifdef ENABLE_ONLINE_SERVICES
@@ -438,7 +438,7 @@ void ContextWidget::readConfig()
         break;
    case PlayQueueView::BI_Custom:
         if (origType!=backdropType || backdropOpacity!=origOpacity || backdropBlur!=origBlur || origCustomBackdropFile!=customBackdropFile) {            
-            updateImage(QImage(customBackdropFile), true);
+            updateImage(QImage(customBackdropFile), false);
             artistsCreatedBackdropsFor.clear();
         }
         break;
@@ -593,10 +593,15 @@ void ContextWidget::updateImage(QImage img, bool created)
     albumCoverBackdrop=created;
     resizeBackdrop();
 
-    fadeValue=0.0;
-    animator.setDuration(250);
-    animator.setEndValue(1.0);
-    animator.start();
+    animator.stop();
+    if (PlayQueueView::BI_Custom==backdropType || !isVisible()) {
+        setFade(1.0);
+    } else {
+        fadeValue=0.0;
+        animator.setDuration(250);
+        animator.setEndValue(1.0);
+        animator.start();
+    }
 }
 
 void ContextWidget::search()

@@ -136,6 +136,7 @@
 85. Fix transcoding tracks to MTP devices.
 86. Restore search field visibility for; PlayQueue, Artists, Albums, Folders,
     Playlists, Dynamic, and Devices views.
+87. Fix custom background image not appearing when Cantata started.
 
 1.3.4
 -----

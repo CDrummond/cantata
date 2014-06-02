@@ -292,6 +292,7 @@ PlayQueueView::PlayQueueView(QWidget *parent)
     , spinner(0)
     , msgOverlay(0)
     , backgroundImageType(BI_None)
+    , fadeValue(1.0)
     , backgroundOpacity(15)
     , backgroundBlur(0)
 {

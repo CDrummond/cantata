@@ -21,30 +21,35 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include "application.h"
-#include "settings.h"
-#include "support/utils.h"
-#include "mpd/mpdstats.h"
-#include "mpd/mpdstatus.h"
-#include "support/thread.h"
-#ifdef ENABLE_EXTERNAL_TAGS
-#include "tags/taghelperiface.h"
-#endif
-#include "scrobbling/scrobbler.h"
+#include "application_win.h"
+#include <QIcon>
+#include <windows.h>
 
-void Application::initObjects()
+Application::Application(int &argc, char **argv)
+    : SingleApplication(argc, argv)
 {
-    // Ensure these objects are created in the GUI thread...
-    ThreadCleaner::self();
-    MPDStatus::self();
-    MPDStats::self();
-    #ifdef ENABLE_EXTERNAL_TAGS
-    TagHelperIface::self();
+    #if QT_VERSION >= 0x050000
+    installNativeEventFilter(this);
     #endif
-    Scrobbler::self();
-
-    Utils::initRand();
-    Song::initTranslations();
-    Utils::setTouchFriendly(Settings::self()->touchFriendly());
+    QIcon::setThemeName(QLatin1String("oxygen"));
 }
+
+#if QT_VERSION >= 0x050000
+bool Application::nativeEventFilter(const QByteArray &, void *message, long *result)
+{
+    MSG *msg = static_cast<MSG *>(message);
+    if (msg && WM_POWERBROADCAST==msg->message && PBT_APMRESUMEAUTOMATIC==msg->wParam) {
+        emit reconnect();
+    }
+    return false;
+}
+#else
+bool Application::winEventFilter(MSG *msg, long *result)
+{
+    if (msg && WM_POWERBROADCAST==msg->message && PBT_APMRESUMEAUTOMATIC==msg->wParam) {
+        emit reconnect();
+    }
+    return QCoreApplication::winEventFilter(msg, result);
+}
+#endif
 

@@ -113,7 +113,7 @@ void AlbumView::update(const Song &song, bool force)
         setHeader(song.name);
         needToUpdate=false;
         detailsReceived=All;
-        pic=createPicTag(QImage(), INSTALL_PREFIX"/share/"+QCoreApplication::applicationName()+"/icons/stream.png");
+        pic=createPicTag(QImage(), CANTATA_SYS_ICONS_DIR+QLatin1String("stream.png"));
         updateDetails();
         return;
     }

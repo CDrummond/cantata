@@ -51,7 +51,8 @@ private:
 };
 #elif defined Q_OS_WIN || defined WIN32 || defined Q_OS_MAC || defined __APPLE__   // moc does not seem to see Q_OS_WIN/Q_OS_MAC,, but will see WIN32/__APPLE__ :-(
 #include "qtsingleapplication/qtsingleapplication.h"
-#ifdef (defined Q_OS_WIN || defined WIN32) && QT_VERSION >= 0x050000
+#if (defined Q_OS_WIN || defined WIN32) && QT_VERSION >= 0x050000
+#include <QAbstractNativeEventFilter>
 class Application : public QtSingleApplication, public QAbstractNativeEventFilter
 #else
 class Application : public QtSingleApplication    

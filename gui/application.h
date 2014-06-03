@@ -26,77 +26,15 @@
 
 #include "config.h"
 #include <qglobal.h>
+
 #ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KUniqueApplication>
-class MainWindow;
-class Application : public KUniqueApplication
-{
-    Q_OBJECT
-
-public:
-    static void initObjects();
-    #ifdef Q_WS_X11
-    Application(Display *display, Qt::HANDLE visual, Qt::HANDLE colormap);
-    #endif
-    Application();
-    ~Application();
-
-    int newInstance();
-
-private Q_SLOTS:
-    void mwDestroyed(QObject *obj);
-
-private:
-    MainWindow *w;
-};
-#elif defined Q_OS_WIN || defined WIN32 || defined Q_OS_MAC || defined __APPLE__   // moc does not seem to see Q_OS_WIN/Q_OS_MAC,, but will see WIN32/__APPLE__ :-(
-#include "qtsingleapplication/qtsingleapplication.h"
-#if (defined Q_OS_WIN || defined WIN32) && QT_VERSION >= 0x050000
-#include <QAbstractNativeEventFilter>
-class Application : public QtSingleApplication, public QAbstractNativeEventFilter
+    #include "application_kde.h"
+#elif defined Q_OS_WIN
+    #include "application_win.h"
+#elif defined Q_OS_MAC
+    #include "application_mac.h"
 #else
-class Application : public QtSingleApplication    
-#endif
-{
-    Q_OBJECT
-
-public:
-    static void initObjects();
-    Application(int &argc, char **argv);
-    virtual ~Application() { }
-
-    #if defined Q_OS_WIN || defined WIN32
-    #if QT_VERSION >= 0x050000
-    bool nativeEventFilter(const QByteArray &, void *message, long *result);
-    #else
-    bool winEventFilter(MSG *msg, long *result);
-    #endif
-    #endif
-    bool start();
-    void loadFiles();
-
-private:
-    void load(const QStringList &files);
-
-private Q_SLOTS:
-    void message(const QString &m);
-
-Q_SIGNALS:
-    void reconnect();
-};
-#else
-#include <QApplication>
-class Application : public QApplication
-{
-public:
-    static void initObjects();
-    Application(int &argc, char **argv);
-    virtual ~Application() { }
-
-    bool start();
-    void loadFiles();
-    void setupIconTheme();
-};
+    #include "application_qt.h"
 #endif
 
 #endif

@@ -21,30 +21,13 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include "application.h"
-#include "settings.h"
-#include "support/utils.h"
-#include "mpd/mpdstats.h"
-#include "mpd/mpdstatus.h"
-#include "support/thread.h"
-#ifdef ENABLE_EXTERNAL_TAGS
-#include "tags/taghelperiface.h"
-#endif
-#include "scrobbling/scrobbler.h"
+#include "application_mac.h"
+#include <QIcon>
 
-void Application::initObjects()
+Application::Application(int &argc, char **argv)
+    : SingleApplication(argc, argv)
 {
-    // Ensure these objects are created in the GUI thread...
-    ThreadCleaner::self();
-    MPDStatus::self();
-    MPDStats::self();
-    #ifdef ENABLE_EXTERNAL_TAGS
-    TagHelperIface::self();
-    #endif
-    Scrobbler::self();
-
-    Utils::initRand();
-    Song::initTranslations();
-    Utils::setTouchFriendly(Settings::self()->touchFriendly());
+    QCoreApplication::setAttribute(Qt::AA_DontShowIconsInMenus, true);
+    QIcon::setThemeName(QLatin1String("oxygen"));
 }
 

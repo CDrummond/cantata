@@ -21,30 +21,30 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include "application.h"
-#include "settings.h"
-#include "support/utils.h"
-#include "mpd/mpdstats.h"
-#include "mpd/mpdstatus.h"
-#include "support/thread.h"
-#ifdef ENABLE_EXTERNAL_TAGS
-#include "tags/taghelperiface.h"
-#endif
-#include "scrobbling/scrobbler.h"
+#ifndef SINGLE_APPLICATION_H
+#define SINGLE_APPLICATION_H
 
-void Application::initObjects()
+#include "qtsingleapplication/qtsingleapplication.h"
+
+class SingleApplication : public QtSingleApplication    
 {
-    // Ensure these objects are created in the GUI thread...
-    ThreadCleaner::self();
-    MPDStatus::self();
-    MPDStats::self();
-    #ifdef ENABLE_EXTERNAL_TAGS
-    TagHelperIface::self();
-    #endif
-    Scrobbler::self();
+    Q_OBJECT
 
-    Utils::initRand();
-    Song::initTranslations();
-    Utils::setTouchFriendly(Settings::self()->touchFriendly());
-}
+public:
+    SingleApplication(int &argc, char **argv);
+    virtual ~SingleApplication() { }
 
+    bool start();
+    void loadFiles();
+
+private:
+    void load(const QStringList &files);
+
+private Q_SLOTS:
+    void message(const QString &m);
+
+Q_SIGNALS:
+    void reconnect();
+};
+
+#endif

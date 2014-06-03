@@ -21,30 +21,19 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include "application.h"
-#include "settings.h"
-#include "support/utils.h"
-#include "mpd/mpdstats.h"
-#include "mpd/mpdstatus.h"
-#include "support/thread.h"
-#ifdef ENABLE_EXTERNAL_TAGS
-#include "tags/taghelperiface.h"
-#endif
-#include "scrobbling/scrobbler.h"
+#ifndef APPLICATION_QT_H
+#define APPLICATION_QT_H
 
-void Application::initObjects()
+#include <QApplication>
+class Application : public QApplication
 {
-    // Ensure these objects are created in the GUI thread...
-    ThreadCleaner::self();
-    MPDStatus::self();
-    MPDStats::self();
-    #ifdef ENABLE_EXTERNAL_TAGS
-    TagHelperIface::self();
-    #endif
-    Scrobbler::self();
+public:
+    static void initObjects();
+    Application(int &argc, char **argv);
+    virtual ~Application() { }
 
-    Utils::initRand();
-    Song::initTranslations();
-    Utils::setTouchFriendly(Settings::self()->touchFriendly());
-}
+    bool start();
+    void loadFiles();
+};
 
+#endif

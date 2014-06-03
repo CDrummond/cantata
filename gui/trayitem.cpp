@@ -98,8 +98,7 @@ void TrayItem::setup()
     }
 
     #if !defined Q_OS_WIN32 && !defined Q_OS_MAC
-    QString iconFile=QLatin1String(INSTALL_PREFIX"/share/")+QCoreApplication::applicationName()+QLatin1String("/icons/")+QIcon::themeName()+
-                     QLatin1String("/systray.svg");
+    QString iconFile=CANTATA_SYS_ICONS_DIR+QIcon::themeName()+QLatin1String("/systray.svg");
     #endif
 
     #ifdef ENABLE_KDE_SUPPORT

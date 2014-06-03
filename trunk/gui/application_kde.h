@@ -21,30 +21,31 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include "application.h"
-#include "settings.h"
-#include "support/utils.h"
-#include "mpd/mpdstats.h"
-#include "mpd/mpdstatus.h"
-#include "support/thread.h"
-#ifdef ENABLE_EXTERNAL_TAGS
-#include "tags/taghelperiface.h"
-#endif
-#include "scrobbling/scrobbler.h"
+#ifndef APPLICATION_KDE_H
+#define APPLICATION_KDE_H
 
-void Application::initObjects()
+#include <qglobal.h>
+#include <KDE/KUniqueApplication>
+class MainWindow;
+class Application : public KUniqueApplication
 {
-    // Ensure these objects are created in the GUI thread...
-    ThreadCleaner::self();
-    MPDStatus::self();
-    MPDStats::self();
-    #ifdef ENABLE_EXTERNAL_TAGS
-    TagHelperIface::self();
+    Q_OBJECT
+
+public:
+    static void initObjects();
+    #ifdef Q_WS_X11
+    Application(Display *display, Qt::HANDLE visual, Qt::HANDLE colormap);
     #endif
-    Scrobbler::self();
+    Application();
+    ~Application();
 
-    Utils::initRand();
-    Song::initTranslations();
-    Utils::setTouchFriendly(Settings::self()->touchFriendly());
-}
+    int newInstance();
 
+private Q_SLOTS:
+    void mwDestroyed(QObject *obj);
+
+private:
+    MainWindow *w;
+};
+
+#endif

@@ -253,7 +253,7 @@ void GtkStyle::applyTheme(QWidget *widget)
         bool modViewFrame=false;
         QMap<QString, QString> css;
         if (!theme.isEmpty()) {
-            QFile cssFile(QLatin1String(INSTALL_PREFIX"/share/")+QCoreApplication::applicationName()+QLatin1String("/themes/")+theme+QLatin1String(".css"));
+            QFile cssFile(Utils::systemDir(QLatin1String("themes"))+theme+QLatin1String(".css"));
             if (cssFile.open(QFile::ReadOnly|QFile::Text)) {
                 const QString symKey=QLatin1String("symbolic-icons:#");
 

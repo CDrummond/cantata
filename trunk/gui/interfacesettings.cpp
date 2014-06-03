@@ -417,7 +417,7 @@ void InterfaceSettings::showEvent(QShowEvent *e)
         transCodes+=translationCodes(qApp->applicationDirPath()+QLatin1String("/translations"));
         transCodes+=translationCodes(QDir::currentPath()+QLatin1String("/translations"));
         #ifndef Q_OS_WIN
-        transCodes+=translationCodes(INSTALL_PREFIX"/share/cantata/translations/");
+        transCodes+=translationCodes(CANTATA_SYS_TRANS_DIR);
         #endif
 
         foreach (const QString &code, transCodes) {

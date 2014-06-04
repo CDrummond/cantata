@@ -96,7 +96,7 @@ DynamicRuleDialog::DynamicRuleDialog(QWidget *parent)
     adjustSize();
     int h=height();
     int w=width();
-    int minW=500*(Utils::isHighDpi() ? 2 : 1);
+    int minW=Utils::scaleForDpi(500);
     setMinimumWidth(minW);
     setMinimumHeight(h);
     if (w<minW) {

@@ -66,7 +66,7 @@ void Spinner::setWidget(QWidget *widget)
 Spinner::Spinner(QObject *p, bool inMiddle)
     : QWidget(0)
     , timer(0)
-    , space(Utils::isHighDpi() ? 8 : 4)
+    , space(Utils::scaleForDpi(4))
     , value(0)
     , active(false)
     , central(inMiddle)
@@ -114,7 +114,7 @@ void Spinner::paintEvent(QPaintEvent *event)
 {
     static const int constParts=8;
 
-    int lineWidth(Utils::isHighDpi() ? 4 : 2);
+    int lineWidth(Utils::scaleForDpi(2));
     QPainter p(this);
     QRectF rectangle(1.5, 1.5, size().width()-3, size().height()-3);
     QColor col(palette().color(QPalette::Text));

@@ -45,7 +45,7 @@ int FlickCharm::dragArea()
 {
     static int area=-1;
     if (-1==area) {
-        area=Utils::isHighDpi() ? 64 : 32;
+        area=Utils::scaleForDpi(32);
     }
     return area;
 }

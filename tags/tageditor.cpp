@@ -313,7 +313,7 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
     connect(trackName, SIGNAL(activated(int)), SLOT(setIndex(int)));
     connect(this, SIGNAL(update()), MPDConnection::self(), SLOT(update()));
     adjustSize();
-    int w=600*(Utils::isHighDpi() ? 2 : 1);
+    int w=Utils::scaleForDpi(600);
     if (width()<w) {
         resize(w, height());
     }

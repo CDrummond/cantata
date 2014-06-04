@@ -172,7 +172,7 @@ void TreeView::drag(Qt::DropActions supportedActions, QAbstractItemView *view, c
                 pix=QPixmap::fromImage(img);
             }
         }
-        int pixSize=Utils::isHighDpi() ? 64 : 32;
+        int pixSize=Icon::stdSize(Utils::scaleForDpi(32));
         if (pix.isNull()) {
             drag->setPixmap(Icons::self()->audioFileIcon.pixmap(pixSize, pixSize));
         } else {

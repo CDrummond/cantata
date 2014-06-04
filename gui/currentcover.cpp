@@ -135,7 +135,7 @@ const QImage & CurrentCover::stdImage(bool stream)
     // TODO: Just return qrc file Touch...
     #else
     if (img.isNull()) {
-        int iconSize=Utils::isHighDpi() ? 256 : 128;
+        int iconSize=Icon::stdSize(Utils::scaleForDpi(128));
         img = (stream ? Icons::self()->streamIcon : Icons::self()->albumIcon).pixmap(iconSize, iconSize).toImage();
 
         QString &file=stream ? noStreamCoverFileName : noCoverFileName;

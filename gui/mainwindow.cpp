@@ -2534,7 +2534,7 @@ void MainWindow::calcMinHeight()
     if (tabWidget->style()&FancyTabWidget::Side && tabWidget->style()&FancyTabWidget::Large) {
         minH=toolbar->height()+(tabWidget->visibleCount()*tabWidget->tabSize().height());
     } else {
-        minH=Utils::isHighDpi() ? 512 : 256;
+        minH=Utils::scaleForDpi(256);
     }
     setMinimumHeight(minH);
     if (height()<minH) {

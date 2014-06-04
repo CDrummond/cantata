@@ -56,7 +56,7 @@
 
 static inline int sidebarSpacing(bool withText)
 {
-    int sp=Utils::isHighDpi() ? 24 : 12;
+    int sp=Utils::scaleForDpi(12);
     if (!withText) {
         sp*=1.25;
     }
@@ -72,20 +72,8 @@ static int largeIconSize=32;
 static int smallIconSize=16;
 void FancyTabWidget::setup()
 {
-    if (Utils::isHighDpi()) {
-        largeIconSize=Icon::stdSize(40);
-        smallIconSize=16;
-        if (largeIconSize>32) {
-            if (largeIconSize<56) {
-                smallIconSize=22;
-            } else {
-                smallIconSize=32;
-            }
-        }
-    } else {
-        largeIconSize=32;
-        smallIconSize=Utils::touchFriendly() ? 22 : 16;
-    }
+    largeIconSize=Icon::stdSize(Utils::scaleForDpi(32));
+    smallIconSize=Icon::stdSize(Utils::scaleForDpi(Utils::touchFriendly() ? 22 : 16));
 }
 
 int FancyTabWidget::iconSize(bool large)

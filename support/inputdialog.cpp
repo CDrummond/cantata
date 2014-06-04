@@ -60,11 +60,11 @@ void InputDialog::init(bool intInput, const QString &caption, const QString &lab
     if (intInput) {
         spin=new QSpinBox(wid);
         spin->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Preferred);
-        setMinimumWidth(Utils::isHighDpi() ? 600 : 300);
+        setMinimumWidth(Utils::scaleForDpi(300));
     } else {
         edit=new LineEdit(wid);
         edit->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Preferred);
-        setMinimumWidth(Utils::isHighDpi() ? 700 : 350);
+        setMinimumWidth(Utils::scaleForDpi(350));
     }
     layout->addWidget(new QLabel(label, wid));
     layout->addWidget(intInput ? static_cast<QWidget *>(spin) : static_cast<QWidget *>(edit));

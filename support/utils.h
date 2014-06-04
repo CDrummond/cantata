@@ -108,6 +108,7 @@ namespace Utils
     extern QFont smallFont(QFont f);
     extern int layoutSpacing(QWidget *w);
     extern bool isHighDpi();
+    extern int scaleForDpi(int v);
 
     enum Desktop {
         KDE,

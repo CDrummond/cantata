@@ -849,7 +849,7 @@ int Utils::layoutSpacing(QWidget *w)
 {
     int spacing=(w ? w->style() : qApp->style())->layoutSpacing(QSizePolicy::DefaultType, QSizePolicy::DefaultType, Qt::Vertical);
     if (spacing<0) {
-        spacing=isHighDpi() ? 8 : 4;
+        spacing=scaleForDpi(4);
     }
     return spacing;
 }
@@ -861,6 +861,11 @@ bool Utils::isHighDpi()
         fontHeight=QApplication::fontMetrics().height();
     }
     return fontHeight>22;
+}
+
+int Utils::scaleForDpi(int v)
+{
+    return isHighDpi() ? v*2 : v;
 }
 
 Utils::Desktop Utils::currentDe()

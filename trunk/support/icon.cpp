@@ -22,6 +22,7 @@
  */
 
 #include "icon.h"
+#include "utils.h"
 #include <QApplication>
 #include <QToolButton>
 
@@ -37,9 +38,16 @@ int Icon::stdSize(int v)
         return 48;
     } else if (v<=90) {
         return 64;
-    } else {
-        return 128;
     }
+
+    if (Utils::isHighDpi()) {
+        if (v<=160) {
+            return 128;
+        } else {
+            return 256;
+        }
+    }
+    return 128;
 }
 
 int Icon::dlgIconSize()

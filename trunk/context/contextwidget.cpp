@@ -288,11 +288,8 @@ ContextWidget::ContextWidget(QWidget *parent)
         minBackdropSize.setWidth(((int)(minBackdropSize.width()/32))*32);
         minBackdropSize.setHeight(((int)(minBackdropSize.height()/32))*32);
         maxBackdropSize=QSize(geo.width()*1.25, geo.height()*1.25);
-    } else if (Utils::isHighDpi()) {
-        minBackdropSize=QSize(1024*3, 768*3);
-        maxBackdropSize=QSize(minBackdropSize.width()*2, minBackdropSize.height()*2);
     } else {
-        minBackdropSize=QSize(1024, 768);
+        minBackdropSize=QSize(Utils::scaleForDpi(1024*3), Utils::scaleForDpi(768*3);
         maxBackdropSize=QSize(minBackdropSize.width()*2, minBackdropSize.height()*2);
     }
     #endif

@@ -64,11 +64,42 @@ void ItemView::setup()
     }
 }
 
-ViewEventHandler::ViewEventHandler(ActionItemDelegate *d, QAbstractItemView *v)
+KeyEventHandler::KeyEventHandler(QAbstractItemView *v, QAction *a)
     : QObject(v)
-    , delegate(d)
     , view(v)
+    , deleteAct(a)
     , interceptBackspace(qobject_cast<ListView *>(view))
+{
+}
+
+bool KeyEventHandler::eventFilter(QObject *obj, QEvent *event)
+{
+    if (view->hasFocus()) {
+        if (QEvent::KeyRelease==event->type()) {
+            QKeyEvent *keyEvent=static_cast<QKeyEvent *>(event);
+            if (Qt::NoModifier==keyEvent->modifiers()) {
+                if (Qt::Key_Delete==keyEvent->key()) {
+                    if (deleteAct) {
+                        deleteAct->trigger();
+                    }
+                } else if (!keyEvent->text().isEmpty()) {
+                    emit keyPressed(keyEvent->text());
+                }
+            }
+            return true;
+        } else if (QEvent::KeyPress==event->type()) {
+            QKeyEvent *keyEvent=static_cast<QKeyEvent *>(event);
+            if (interceptBackspace && Qt::Key_Backspace==keyEvent->key() && Qt::NoModifier==keyEvent->modifiers()) {
+                emit escPressed();
+            }
+        }
+    }
+    return QObject::eventFilter(obj, event);
+}
+
+ViewEventHandler::ViewEventHandler(ActionItemDelegate *d, QAbstractItemView *v)
+    : KeyEventHandler(v, 0)
+    , delegate(d)
 {
 }
 
@@ -87,28 +118,7 @@ bool ViewEventHandler::eventFilter(QObject *obj, QEvent *event)
         }
     }
 
-    if (interceptBackspace && view->hasFocus()) {
-        if (QEvent::KeyPress==event->type()) {
-            QKeyEvent *keyEvent=static_cast<QKeyEvent *>(event);
-            if (Qt::Key_Backspace==keyEvent->key() && Qt::NoModifier==keyEvent->modifiers()) {
-                emit escPressed();
-            }
-        }
-    }
-
-    return QObject::eventFilter(obj, event);
-}
-
-bool DeleteKeyEventHandler::eventFilter(QObject *obj, QEvent *event)
-{
-    if (view->hasFocus() && QEvent::KeyRelease==event->type()) {
-        QKeyEvent *keyEvent=static_cast<QKeyEvent *>(event);
-        if (Qt::NoModifier==keyEvent->modifiers() && Qt::Key_Delete==keyEvent->key()) {
-            act->trigger();
-        }
-        return true;
-    }
-    return QObject::eventFilter(obj, event);
+    return KeyEventHandler::eventFilter(obj, event);
 }
 
 static const int constImageSize=22;
@@ -636,8 +646,9 @@ ItemView::ItemView(QWidget *p)
     listView->setProperty(GtkStyle::constHideFrameProp, true);
     treeView->setProperty(GtkStyle::constHideFrameProp, true);
     ViewEventHandler *listViewEventHandler=new ViewEventHandler(ld, listView);
-    listView->installEventFilter(listViewEventHandler);
-    treeView->installEventFilter(new ViewEventHandler(td, treeView));
+    ViewEventHandler *treeViewEventHandler=new ViewEventHandler(td, treeView);
+    listView->installFilter(listViewEventHandler);
+    treeView->installFilter(treeViewEventHandler);
     connect(searchWidget, SIGNAL(returnPressed()), this, SLOT(delaySearchItems()));
     connect(searchWidget, SIGNAL(textChanged(const QString)), this, SLOT(delaySearchItems()));
     connect(searchWidget, SIGNAL(active(bool)), this, SLOT(searchActive(bool)));
@@ -651,6 +662,8 @@ ItemView::ItemView(QWidget *p)
     connect(listView, SIGNAL(clicked(const QModelIndex &)),  this, SLOT(itemClicked(const QModelIndex &)));
     connect(backAction, SIGNAL(triggered(bool)), this, SLOT(backActivated()));
     connect(listViewEventHandler, SIGNAL(escPressed()), this, SLOT(backActivated()));
+    connect(listViewEventHandler, SIGNAL(keyPressed(QString)), this, SLOT(focusSearch(QString)));
+    connect(treeViewEventHandler, SIGNAL(keyPressed(QString)), this, SLOT(focusSearch(QString)));
     searchWidget->setVisible(false);
 }
 
@@ -678,13 +691,15 @@ void ItemView::allowGroupedView()
         groupedView->setProperty(constPageProp, stackedWidget->count()-1);
         // Some styles, eg Cleanlooks/Plastique require that we explicitly set mouse tracking on the treeview.
         groupedView->setAttribute(Qt::WA_MouseTracking, true);
-        groupedView->installEventFilter(new ViewEventHandler(qobject_cast<ActionItemDelegate *>(groupedView->itemDelegate()), groupedView));
+        ViewEventHandler *viewHandler=new ViewEventHandler(qobject_cast<ActionItemDelegate *>(groupedView->itemDelegate()), groupedView);
+        groupedView->installFilter(viewHandler);
         groupedView->setAutoExpand(false);
         groupedView->setMultiLevel(true);
         connect(groupedView, SIGNAL(itemsSelected(bool)), this, SIGNAL(itemsSelected(bool)));
         connect(groupedView, SIGNAL(itemActivated(const QModelIndex &)), this, SLOT(itemActivated(const QModelIndex &)));
         connect(groupedView, SIGNAL(doubleClicked(const QModelIndex &)), this, SIGNAL(doubleClicked(const QModelIndex &)));
         connect(groupedView, SIGNAL(clicked(const QModelIndex &)), this, SLOT(itemClicked(const QModelIndex &)));
+        connect(viewHandler, SIGNAL(keyPressed(QString)), this, SLOT(focusSearch(QString)));
         groupedView->setProperty(GtkStyle::constHideFrameProp, true);
     }
 }
@@ -696,12 +711,13 @@ void ItemView::allowTableView(TableView *v)
         tableView->setParent(stackedWidget);
         stackedWidget->addWidget(tableView);
         tableView->setProperty(constPageProp, stackedWidget->count()-1);
-        // Some styles, eg Cleanlooks/Plastique require that we explicitly set mouse tracking on the treeview.
-//        tableView->installEventFilter(new ViewEventHandler(0, tableView));
+        ViewEventHandler *viewHandler=new ViewEventHandler(0, tableView);
+        tableView->installFilter(viewHandler);
         connect(tableView, SIGNAL(itemsSelected(bool)), this, SIGNAL(itemsSelected(bool)));
         connect(tableView, SIGNAL(itemActivated(const QModelIndex &)), this, SLOT(itemActivated(const QModelIndex &)));
         connect(tableView, SIGNAL(doubleClicked(const QModelIndex &)), this, SIGNAL(doubleClicked(const QModelIndex &)));
         connect(tableView, SIGNAL(clicked(const QModelIndex &)), this, SLOT(itemClicked(const QModelIndex &)));
+        connect(viewHandler, SIGNAL(keyPressed(QString)), this, SLOT(focusSearch(QString)));
         tableView->setProperty(GtkStyle::constHideFrameProp, true);
     }
 }
@@ -976,13 +992,29 @@ void ItemView::update()
 
 void ItemView::setDeleteAction(QAction *act)
 {
-    listView->installEventFilter(new DeleteKeyEventHandler(listView, act));
-    treeView->installEventFilter(new DeleteKeyEventHandler(treeView, act));
+    if (!listView->filter() || !qobject_cast<KeyEventHandler *>(listView->filter())) {
+        listView->installFilter(new KeyEventHandler(listView, act));
+    } else {
+        static_cast<KeyEventHandler *>(listView->filter())->setDeleteAction(act);
+    }
+    if (!treeView->filter() || !qobject_cast<KeyEventHandler *>(treeView->filter())) {
+        treeView->installEventFilter(new KeyEventHandler(treeView, act));
+    } else {
+        static_cast<KeyEventHandler *>(treeView->filter())->setDeleteAction(act);
+    }
     if (groupedView) {
-        groupedView->installEventFilter(new DeleteKeyEventHandler(groupedView, act));
+        if (!groupedView->filter() || !qobject_cast<KeyEventHandler *>(groupedView->filter())) {
+            groupedView->installEventFilter(new KeyEventHandler(groupedView, act));
+        } else {
+            static_cast<KeyEventHandler *>(groupedView->filter())->setDeleteAction(act);
+        }
     }
     if (tableView) {
-        tableView->installEventFilter(new DeleteKeyEventHandler(tableView, act));
+        if (!tableView->filter() || !qobject_cast<KeyEventHandler *>(tableView->filter())) {
+            tableView->installEventFilter(new KeyEventHandler(tableView, act));
+        } else {
+            static_cast<KeyEventHandler *>(tableView->filter())->setDeleteAction(act);
+        }
     }
 }
 
@@ -1027,11 +1059,11 @@ void ItemView::showIndex(const QModelIndex &idx, bool scrollTo)
     }
 }
 
-void ItemView::focusSearch()
+void ItemView::focusSearch(const QString &text)
 {
     if (isEnabled()) {
         performedSearch=false;
-        searchWidget->activate();
+        searchWidget->activate(searchWidget->text().isEmpty() ? text : QString());
     }
 }
 

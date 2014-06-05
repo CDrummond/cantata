@@ -811,6 +811,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(context, SIGNAL(playSong(QString)), &playQueueModel, SLOT(playSong(QString)));
     connect(locateTrackAction, SIGNAL(triggered(bool)), this, SLOT(locateTrack()));
     connect(StdActions::self()->searchAction, SIGNAL(triggered(bool)), SLOT(showSearch()));
+    connect(playQueue, SIGNAL(focusSearch(QString)), playQueueSearchWidget, SLOT(activate(QString)));
     connect(expandAllAction, SIGNAL(triggered(bool)), this, SLOT(expandAll()));
     connect(collapseAllAction, SIGNAL(triggered(bool)), this, SLOT(collapseAll()));
     connect(addStreamToPlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(addStreamToPlayQueue()));

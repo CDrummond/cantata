@@ -64,6 +64,8 @@ public:
     void setBackgroundImage(const QIcon &icon);
     void paintEvent(QPaintEvent *e);
     void setForceSingleColumn(bool f) { forceSingleColumn=f; }
+    void installFilter(QObject *f) { eventFilter=f; installEventFilter(f); }
+    QObject * filter() const { return eventFilter; }
 
 private Q_SLOTS:
     void correctSelection();
@@ -75,6 +77,7 @@ Q_SIGNALS:
     void itemActivated(const QModelIndex &index); // Only emitted if view is set to single-click
 
 private:
+    QObject *eventFilter;
     bool forceSingleColumn;
     bool alwaysAllowMenu;
     QPixmap bgnd;

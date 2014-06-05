@@ -136,6 +136,7 @@ Q_SIGNALS:
     void itemsSelected(bool);
     void doubleClicked(const QModelIndex &);
     void cancelStreamFetch();
+    void focusSearch(const QString &text);
 
 private:
     void drawBackdrop(QWidget *widget, const QSize &size);

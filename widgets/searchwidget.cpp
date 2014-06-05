@@ -157,11 +157,15 @@ void SearchWidget::toggle()
     }
 }
 
-void SearchWidget::activate()
+void SearchWidget::activate(const QString &text)
 {
     bool wasActive=widgetIsActive;
     widgetIsActive=true;
-    edit->selectAll();
+    if (!text.isEmpty()) {
+        edit->setText(text);
+    } else {
+        edit->selectAll();
+    }
     show();
     setFocus();
     if (wasActive!=widgetIsActive) {

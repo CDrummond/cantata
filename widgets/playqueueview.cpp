@@ -374,10 +374,12 @@ void PlayQueueView::setMode(ItemView::Mode m)
         if (!listView) {
             listView=new PlayQueueListView(this);
             listView->setContextMenuPolicy(Qt::ActionsContextMenu);
-            listView->installEventFilter(new DeleteKeyEventHandler(listView, removeFromAction));
+            KeyEventHandler *eventFilter=new KeyEventHandler(listView, removeFromAction);
+            listView->installFilter(eventFilter);
             addWidget(listView);
             connect(listView, SIGNAL(itemsSelected(bool)), SIGNAL(itemsSelected(bool)));
             connect(listView, SIGNAL(doubleClicked(const QModelIndex &)), SIGNAL(doubleClicked(const QModelIndex &)));
+            connect(eventFilter, SIGNAL(keyPressed(QString)), SIGNAL(focusSearch(QString)));
             updatePalette();
         }
     case ItemView::Mode_GroupedTree:
@@ -387,10 +389,12 @@ void PlayQueueView::setMode(ItemView::Mode m)
             groupedView->setItemsExpandable(false);
             groupedView->setExpandsOnDoubleClick(false);
             groupedView->setContextMenuPolicy(Qt::ActionsContextMenu);
-            groupedView->installEventFilter(new DeleteKeyEventHandler(groupedView, removeFromAction));
+            KeyEventHandler *eventFilter=new KeyEventHandler(groupedView, removeFromAction);
+            groupedView->installFilter(eventFilter);
             addWidget(groupedView);
             connect(groupedView, SIGNAL(itemsSelected(bool)), SIGNAL(itemsSelected(bool)));
             connect(groupedView, SIGNAL(doubleClicked(const QModelIndex &)), SIGNAL(doubleClicked(const QModelIndex &)));
+            connect(eventFilter, SIGNAL(keyPressed(QString)), SIGNAL(focusSearch(QString)));
             updatePalette();
         }
         break;
@@ -398,11 +402,13 @@ void PlayQueueView::setMode(ItemView::Mode m)
         if (!treeView) {
             treeView=new PlayQueueTreeView(this);
             treeView->setContextMenuPolicy(Qt::ActionsContextMenu);
-            treeView->installEventFilter(new DeleteKeyEventHandler(treeView, removeFromAction));
+            KeyEventHandler *eventFilter=new KeyEventHandler(treeView, removeFromAction);
+            treeView->installFilter(eventFilter);
             treeView->initHeader();
             addWidget(treeView);
             connect(treeView, SIGNAL(itemsSelected(bool)), SIGNAL(itemsSelected(bool)));
             connect(treeView, SIGNAL(doubleClicked(const QModelIndex &)), SIGNAL(doubleClicked(const QModelIndex &)));
+            connect(eventFilter, SIGNAL(keyPressed(QString)), SIGNAL(focusSearch(QString)));
             updatePalette();
         }
     default:

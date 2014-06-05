@@ -40,45 +40,31 @@ class MessageOverlay;
 class Icon;
 class TableView;
 
-class ViewEventHandler : public QObject
+class KeyEventHandler : public QObject
 {
     Q_OBJECT
 public:
-    ViewEventHandler(ActionItemDelegate *d, QAbstractItemView *v);
-
+    KeyEventHandler(QAbstractItemView *v, QAction *a=0);
+    void setDeleteAction(QAction *a) { deleteAct=a; }
 Q_SIGNALS:
     void escPressed();
-
+    void keyPressed(const QString &text);
 protected:
     bool eventFilter(QObject *obj, QEvent *event);
-
 protected:
-    ActionItemDelegate *delegate;
     QAbstractItemView *view;
+    QAction *deleteAct;
     bool interceptBackspace;
 };
 
-class ListViewEventHandler : public ViewEventHandler
+class ViewEventHandler : public KeyEventHandler
 {
 public:
-    ListViewEventHandler(ActionItemDelegate *d, QAbstractItemView *v, QAction *a);
-
-protected:
-    bool eventFilter(QObject *obj, QEvent *event);
-
-private:
-    QAction *act;
-};
-
-class DeleteKeyEventHandler : public QObject
-{
-public:
-    DeleteKeyEventHandler(QAbstractItemView *v, QAction *a) : QObject(v), view(v), act(a) { }
+    ViewEventHandler(ActionItemDelegate *d, QAbstractItemView *v);
 protected:
     bool eventFilter(QObject *obj, QEvent *event);
 private:
-    QAbstractItemView *view;
-    QAction *act;
+    ActionItemDelegate *delegate;
 };
 
 class ItemView : public QWidget, public Ui::ItemView
@@ -161,7 +147,7 @@ private:
     bool usingListView() const { return mode>=Mode_List; }
 
 public Q_SLOTS:
-    void focusSearch();
+    void focusSearch(const QString &text=QString());
     void focusView();
     void showSpinner(bool v=true);
     void hideSpinner();

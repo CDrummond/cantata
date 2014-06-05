@@ -50,6 +50,8 @@ public:
     void addDefaultAction(QAction *act);
     void setBackgroundImage(const QIcon &icon);
     void paintEvent(QPaintEvent *e);
+    void installFilter(QObject *f) { eventFilter=f; installEventFilter(f); }
+    QObject * filter() const { return eventFilter; }
 
 private Q_SLOTS:
     void correctSelection();
@@ -59,6 +61,7 @@ Q_SIGNALS:
     bool itemsSelected(bool);
 
 private:
+    QObject *eventFilter;
     QMenu *menu;
     QPixmap bgnd;
 };

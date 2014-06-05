@@ -60,7 +60,7 @@ Q_SIGNALS:
 public Q_SLOTS:
     void toggle();
     void clear() { edit->clear(); }
-    void activate();
+    void activate(const QString &text=QString());
     void show() { setVisible(true); }
     void close();
 

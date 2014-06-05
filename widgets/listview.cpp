@@ -36,6 +36,7 @@
 
 ListView::ListView(QWidget *parent)
     : QListView(parent)
+    , eventFilter(0)
     , menu(0)
 {
     setDragEnabled(true);

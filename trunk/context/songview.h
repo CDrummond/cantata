@@ -32,6 +32,7 @@ class QImage;
 class Action;
 class NetworkJob;
 class QTimer;
+class ContextEngine;
 
 class SongView : public View
 {
@@ -43,9 +44,16 @@ class SongView : public View
         Mode_Edit
     };
 
+    enum Pages {
+        Page_Lyrics,
+        Page_Information
+    };
+
 public:
     static const QLatin1String constLyricsDir;
     static const QLatin1String constExtension;
+    static const QLatin1String constCacheDir;
+    static const QLatin1String constInfoExt;
 
     SongView(QWidget *p);
     ~SongView();
@@ -66,13 +74,21 @@ public Q_SLOTS:
     void cancel();
     void del();
     void showContextMenu(const QPoint &pos);
+    void showInfoContextMenu(const QPoint &pos);
 
 private Q_SLOTS:
     void toggleScroll();
     void songPosition();
     void scroll();
+    void curentViewChanged();
+    void refreshInfo();
+    void infoSearchResponse(const QString &resp, const QString &lang);
+    void abortInfoSearch();
 
 private:
+    void loadInfo();
+    void searchForInfo();
+    void hideSpinner();
     void abort();
     QString mpdFileName() const;
     QString cacheFileName() const;
@@ -100,13 +116,18 @@ private:
     Action *searchAction;
     Action *editAction;
     Action *saveAction;
-    Action *cancelAction;
+    Action *cancelEditAction;
     Action *delAction;
     Mode mode;
     QString lyricsFile;
     QString preEdit;
     NetworkJob *job;
     UltimateLyricsProvider *currentProv;
+
+    bool infoNeedsUpdating;
+    Action *refreshInfoAction;
+    Action *cancelInfoJobAction;
+    ContextEngine *engine;
 };
 
 #endif

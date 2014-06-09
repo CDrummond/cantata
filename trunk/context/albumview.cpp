@@ -68,7 +68,7 @@ AlbumView::AlbumView(QWidget *p)
     connect(text, SIGNAL(anchorClicked(QUrl)), SLOT(playSong(QUrl)));
     text->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(text, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showContextMenu(QPoint)));
-    setStandardHeader(i18n("Album Information"));
+    setStandardHeader(i18n("Album"));
     int imageSize=fontMetrics().height()*18;
     setPicSize(QSize(imageSize, imageSize));
     clear();

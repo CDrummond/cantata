@@ -50,8 +50,7 @@ private Q_SLOTS:
     void parseResponse();
     
 private:
-    QString parseArtistResponse(const QByteArray &data);
-    QString parseAlbumResponse(const QByteArray &data);
+    QString parseResponse(const QByteArray &data, const QString &firstTag, const QString &secondTag);
 };
 
 #endif

@@ -74,13 +74,24 @@ void LastFmEngine::search(const QStringList &query, Mode mode)
     QUrlQuery urlQuery;
     #endif
 
-    urlQuery.addQueryItem("method", Artist==mode ? "artist.getInfo" : "album.getInfo");
+    switch (mode) {
+    case Artist:
+        urlQuery.addQueryItem("method", "artist.getInfo");
+        break;
+    case Album:
+        urlQuery.addQueryItem("method", "album.getInfo");
+        urlQuery.addQueryItem("album", fixedQuery.at(1));
+        break;
+    case Track:
+        urlQuery.addQueryItem("method", "track.getInfo");
+        urlQuery.addQueryItem("track", fixedQuery.at(1));
+        break;
+    }
+
     urlQuery.addQueryItem("api_key", Covers::constLastFmApiKey);
     urlQuery.addQueryItem("autocorrect", "1");
     urlQuery.addQueryItem("artist", Covers::fixArtist(fixedQuery.at(0)));
-    if (Album==mode) {
-        urlQuery.addQueryItem("album", fixedQuery.at(1));
-    }
+
     #if QT_VERSION >= 0x050000
     url.setQuery(urlQuery);
     #endif
@@ -115,7 +126,20 @@ void LastFmEngine::parseResponse()
     }
 
     Mode mode=(Mode)reply->property(constModeProperty).toInt();
-    QString text=Artist==mode ? parseArtistResponse(data) : parseAlbumResponse(data);
+    QString text;
+
+    switch (mode) {
+    case Artist:
+        text=parseResponse(data, QLatin1String("artist"), QLatin1String("bio"));
+        break;
+    case Album:
+        text=parseResponse(data, QLatin1String("album"), QLatin1String("wiki"));
+        break;
+    case Track:
+        text=parseResponse(data, QLatin1String("track"), QLatin1String("wiki"));
+        break;
+    }
+
     if (!text.isEmpty()) {
         static const QRegExp constLicense("User-contributed text is available.*");
         text.remove(constLicense);
@@ -141,37 +165,14 @@ void LastFmEngine::parseResponse()
     emit searchResult(text, text.isEmpty() ? QString() : constLang);
 }
 
-QString LastFmEngine::parseArtistResponse(const QByteArray &data)
+QString LastFmEngine::parseResponse(const QByteArray &data, const QString &firstTag, const QString &secondTag)
 {
+    DBUG << __FUNCTION__ << data;
     QXmlStreamReader xml(data);
     while (xml.readNextStartElement()) {
-        if (QLatin1String("artist")==xml.name()) {
+        if (firstTag==xml.name()) {
             while (xml.readNextStartElement()) {
-                if (QLatin1String("bio")==xml.name()) {
-                    while (xml.readNextStartElement()) {
-                        if (QLatin1String("content")==xml.name()) {
-                            return xml.readElementText().trimmed();
-                        } else {
-                            xml.skipCurrentElement();
-                        }
-                    }
-                } else {
-                    xml.skipCurrentElement();
-                }
-            }
-        }
-    }
-
-    return QString();
-}
-
-QString LastFmEngine::parseAlbumResponse(const QByteArray &data)
-{
-    QXmlStreamReader xml(data);
-    while (xml.readNextStartElement()) {
-        if (QLatin1String("album")==xml.name()) {
-            while (xml.readNextStartElement()) {
-                if (QLatin1String("wiki")==xml.name()) {
+                if (secondTag==xml.name()) {
                     while (xml.readNextStartElement()) {
                         if (QLatin1String("content")==xml.name()) {
                             return xml.readElementText().trimmed();

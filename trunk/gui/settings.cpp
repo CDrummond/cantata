@@ -569,6 +569,11 @@ bool Settings::contextAutoScroll()
     return cfg.get("contextAutoScroll", false);
 }
 
+int Settings::contextTrackView()
+{
+    return cfg.get("contextTrackView", 0);
+}
+
 QString Settings::page()
 {
     return cfg.get("page", QString());
@@ -1182,6 +1187,11 @@ void Settings::saveContextSwitchTime(int v)
 void Settings::saveContextAutoScroll(bool v)
 {
     cfg.set("contextAutoScroll", v);
+}
+
+void Settings::saveContextTrackView(int v)
+{
+    cfg.set("contextTrackView", v);
 }
 
 void Settings::savePage(const QString &v)

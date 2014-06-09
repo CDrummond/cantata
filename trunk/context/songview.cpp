@@ -25,7 +25,9 @@
 #include "lyricsdialog.h"
 #include "ultimatelyricsprovider.h"
 #include "ultimatelyrics.h"
+#include "contextengine.h"
 #include "gui/settings.h"
+#include "gui/covers.h"
 #include "support/squeezedtextlabel.h"
 #include "support/utils.h"
 #include "support/messagebox.h"
@@ -41,6 +43,7 @@
 #include "widgets/textbrowser.h"
 #include "gui/stdactions.h"
 #include "mpd/mpdstatus.h"
+#include "qtiocompressor/qtiocompressor.h"
 #include <QFile>
 #include <QDir>
 #include <QFileInfo>
@@ -54,17 +57,35 @@
 
 const QLatin1String SongView::constLyricsDir("lyrics/");
 const QLatin1String SongView::constExtension(".lyrics");
+const QLatin1String SongView::constCacheDir("tracks/");
+const QLatin1String SongView::constInfoExt(".html.gz");
 
-static QString cacheFile(QString artist, QString title, bool createDir=false)
+static QString infoCacheFileName(const Song &song, const QString &lang, bool createDir)
 {
+    QString artist=song.artist;
+    QString title=song.title;
     title.replace("/", "_");
     artist.replace("/", "_");
-    QString dir=Utils::cacheDir(SongView::constLyricsDir+artist+Utils::constDirSep, createDir);
+    QString dir=Utils::cacheDir(SongView::constCacheDir+Covers::encodeName(artist)+Utils::constDirSep, createDir);
 
     if (dir.isEmpty()) {
         return QString();
     }
-    return dir+title+SongView::constExtension;
+    return dir+Covers::encodeName(title)+"."+lang+SongView::constInfoExt;
+}
+
+static QString lyricsCacheFileName(const Song &song, bool createDir=false)
+{
+    QString artist=song.artist;
+    QString title=song.title;
+    title.replace("/", "_");
+    artist.replace("/", "_");
+    QString dir=Utils::cacheDir(SongView::constLyricsDir+Covers::encodeName(artist)+Utils::constDirSep, createDir);
+
+    if (dir.isEmpty()) {
+        return QString();
+    }
+    return dir+Covers::encodeName(title)+SongView::constExtension;
 }
 
 static inline QString mpdFilePath(const QString &songFile)
@@ -83,7 +104,7 @@ static inline QString fixNewLines(const QString &o)
 }
 
 SongView::SongView(QWidget *p)
-    : View(p)
+    : View(p, QStringList() << i18n("Lyrics:") << i18n("Information:"))
     , scrollTimer(0)
     , songPos(0)
     , currentProvider(-1)
@@ -91,12 +112,13 @@ SongView::SongView(QWidget *p)
     , mode(Mode_Display)
     , job(0)
     , currentProv(0)
+    , infoNeedsUpdating(true)
 {
     scrollAction = ActionCollection::get()->createAction("scrolllyrics", i18n("Scroll Lyrics"), "go-down");
     refreshAction = ActionCollection::get()->createAction("refreshlyrics", i18n("Refresh Lyrics"), "view-refresh");
     editAction = ActionCollection::get()->createAction("editlyrics", i18n("Edit Lyrics"), Icons::self()->editIcon);
     saveAction = ActionCollection::get()->createAction("savelyrics", i18n("Save Lyrics"), "document-save");
-    cancelAction = ActionCollection::get()->createAction("canceleditlyrics", i18n("Cancel Editing Lyrics"), Icons::self()->cancelIcon);
+    cancelEditAction = ActionCollection::get()->createAction("canceleditlyrics", i18n("Cancel Editing Lyrics"), Icons::self()->cancelIcon);
     delAction = ActionCollection::get()->createAction("dellyrics", i18n("Delete Lyrics File"), "edit-delete");
 
     scrollAction->setCheckable(true);
@@ -105,16 +127,28 @@ SongView::SongView(QWidget *p)
     connect(refreshAction, SIGNAL(triggered()), SLOT(update()));
     connect(editAction, SIGNAL(triggered()), SLOT(edit()));
     connect(saveAction, SIGNAL(triggered()), SLOT(save()));
-    connect(cancelAction, SIGNAL(triggered()), SLOT(cancel()));
+    connect(cancelEditAction, SIGNAL(triggered()), SLOT(cancel()));
     connect(delAction, SIGNAL(triggered()), SLOT(del()));
     connect(UltimateLyrics::self(), SIGNAL(lyricsReady(int, QString)), SLOT(lyricsReady(int, QString)));
 
+    engine=ContextEngine::create(this);
+    refreshInfoAction = ActionCollection::get()->createAction("refreshtrack", i18n("Refresh Track Information"), "view-refresh");
+    cancelInfoJobAction=new Action(Icons::self()->cancelIcon, i18n("Cancel"), this);
+    cancelInfoJobAction->setEnabled(false);
+    connect(refreshInfoAction, SIGNAL(triggered()), SLOT(refreshInfo()));
+    connect(cancelInfoJobAction, SIGNAL(triggered()), SLOT(abortInfoSearch()));
+    connect(engine, SIGNAL(searchResult(QString,QString)), this, SLOT(infoSearchResponse(QString,QString)));
+
     text->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(text, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showContextMenu(QPoint)));
+    texts.at(Page_Information)->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(texts.at(Page_Information), SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showInfoContextMenu(QPoint)));
+    connect(this, SIGNAL(viewChanged()), this, SLOT(curentViewChanged()));
     setMode(Mode_Blank);
-    setStandardHeader(i18n("Lyrics"));
+    setStandardHeader(i18n("Track"));
     clear();
     toggleScroll();
+    setCurrentView(Settings::self()->contextTrackView());
 }
 
 SongView::~SongView()
@@ -146,6 +180,7 @@ void SongView::update()
 void SongView::saveConfig()
 {
     Settings::self()->saveContextAutoScroll(scrollAction->isChecked());
+    Settings::self()->saveContextTrackView(currentView());
 }
 
 void SongView::search()
@@ -253,7 +288,7 @@ void SongView::showContextMenu(const QPoint &pos)
    case Mode_Edit:
        menu->addSeparator();
        menu->addAction(saveAction);
-       menu->addAction(cancelAction);
+       menu->addAction(cancelEditAction);
        break;
    }
 
@@ -264,6 +299,19 @@ void SongView::showContextMenu(const QPoint &pos)
 
    menu->exec(text->mapToGlobal(pos));
    delete menu;
+}
+
+void SongView::showInfoContextMenu(const QPoint &pos)
+{
+    QMenu *menu = texts.at(Page_Information)->createStandardContextMenu();
+    menu->addSeparator();
+    if (cancelInfoJobAction->isEnabled()) {
+        menu->addAction(cancelInfoJobAction);
+    } else {
+        menu->addAction(refreshInfoAction);
+    }
+    menu->exec(texts.at(Page_Information)->mapToGlobal(pos));
+    delete menu;
 }
 
 void SongView::toggleScroll()
@@ -329,6 +377,90 @@ void SongView::scroll()
     }
 }
 
+void SongView::curentViewChanged()
+{
+    if (infoNeedsUpdating) {
+        loadInfo();
+    }
+}
+
+void SongView::loadInfo()
+{
+    infoNeedsUpdating=false;
+    foreach (const QString &lang, engine->getLangs()) {
+        QString prefix=engine->getPrefix(lang);
+        QString cachedFile=infoCacheFileName(currentSong, prefix, false);
+        if (QFile::exists(cachedFile)) {
+            QFile f(cachedFile);
+            QtIOCompressor compressor(&f);
+            compressor.setStreamFormat(QtIOCompressor::GzipFormat);
+            if (compressor.open(QIODevice::ReadOnly)) {
+                QByteArray data=compressor.readAll();
+
+                if (!data.isEmpty()) {
+                    infoSearchResponse(QString::fromUtf8(data), QString());
+                    Utils::touchFile(cachedFile);
+                    return;
+                }
+            }
+        }
+    }
+    searchForInfo();
+}
+
+void SongView::refreshInfo()
+{
+    if (currentSong.isEmpty()) {
+        return;
+    }
+    foreach (const QString &lang, engine->getLangs()) {
+        QFile::remove(infoCacheFileName(currentSong, engine->getPrefix(lang), false));
+    }
+    searchForInfo();
+}
+
+void SongView::searchForInfo()
+{
+    cancelInfoJobAction->setEnabled(true);
+    engine->search(QStringList() << currentSong.artist << currentSong.title, ContextEngine::Track);
+    showSpinner(false);
+}
+
+void SongView::infoSearchResponse(const QString &resp, const QString &lang)
+{
+    cancelInfoJobAction->setEnabled(false);
+    hideSpinner();
+
+    if (!resp.isEmpty()) {
+        QString str=engine->translateLinks(resp);
+        if (!lang.isEmpty()) {
+            QFile f(infoCacheFileName(currentSong, lang, true));
+            QtIOCompressor compressor(&f);
+            compressor.setStreamFormat(QtIOCompressor::GzipFormat);
+            if (compressor.open(QIODevice::WriteOnly)) {
+                compressor.write(resp.toUtf8().constData());
+            }
+        }
+        setHtml(str, Page_Information);
+    }
+}
+
+void SongView::abortInfoSearch()
+{
+    if (cancelInfoJobAction->isEnabled()) {
+        cancelInfoJobAction->setEnabled(false);
+        engine->cancel();
+        hideSpinner();
+    }
+}
+
+void SongView::hideSpinner()
+{
+    if (!cancelInfoJobAction->isEnabled() && !cancelJobAction->isEnabled()) {
+        View::hideSpinner();
+    }
+}
+
 void SongView::abort()
 {
     if (job) {
@@ -344,9 +476,10 @@ void SongView::abort()
         // Set lyrics file anyway - so that editing is enabled!
         lyricsFile=Settings::self()->storeLyricsInMpdDir() && !currentSong.isNonMPD()
                 ? mpdFilePath(currentSong)
-                : cacheFile(currentSong.artist, currentSong.title);
+                : lyricsCacheFileName(currentSong);
         setMode(Mode_Display);
     }
+    cancelJobAction->setEnabled(false);
     hideSpinner();
 }
 
@@ -358,6 +491,7 @@ void SongView::update(const Song &s, bool force)
 
     if (s.isEmpty() || s.title.isEmpty() || s.artist.isEmpty()) {
         currentSong=s;
+        infoNeedsUpdating=false;
         clear();
         abort();
         return;
@@ -389,6 +523,12 @@ void SongView::update(const Song &s, bool force)
         }
 
         setHeader(song.title);
+        if (Page_Information==currentView()) {
+            loadInfo();
+        } else {
+            infoNeedsUpdating=true;
+        }
+
         // Only reset the provider if the refresh was an automatic one or if the song has
         // changed. Otherwise we'll keep the provider so the user can cycle through the lyrics
         // offered by the various providers.
@@ -438,7 +578,7 @@ void SongView::update(const Song &s, bool force)
         }
 
         // Check for cached file...
-        QString file=cacheFile(song.artist, song.title);
+        QString file=lyricsCacheFileName(song);
 
         /*if (force && QFile::exists(file)) {
             // Delete the cached lyrics file when the user is force-fully re-fetching the lyrics.
@@ -469,6 +609,7 @@ void SongView::downloadFinished()
                     QString lyrics=str.readAll();
                     if (!lyrics.isEmpty()) {
                         text->setText(fixNewLines(lyrics));
+                        cancelJobAction->setEnabled(false);
                         hideSpinner();
                         return;
                     }
@@ -490,6 +631,7 @@ void SongView::lyricsReady(int id, QString lyrics)
     if (lyrics.isEmpty()) {
         getLyrics();
     } else {
+        cancelJobAction->setEnabled(false);
         hideSpinner();
         QString before=text->toHtml();
         text->setText(fixNewLines(lyrics));
@@ -504,7 +646,7 @@ void SongView::lyricsReady(int id, QString lyrics)
             lyricsFile=QString();
             if (! ( Settings::self()->storeLyricsInMpdDir() && !currentSong.isNonMPD() &&
                     saveFile(mpdFilePath(currentSong))) ) {
-                saveFile(cacheFile(currentSong.artist, currentSong.title, true));
+                saveFile(lyricsCacheFileName(currentSong, true));
             }
             setMode(Mode_Display);
         }
@@ -533,7 +675,7 @@ QString SongView::mpdFileName() const
 
 QString SongView::cacheFileName() const
 {
-    return currentSong.artist.isEmpty() || currentSong.title.isEmpty() ? QString() : cacheFile(currentSong.artist, currentSong.title);
+    return currentSong.artist.isEmpty() || currentSong.title.isEmpty() ? QString() : lyricsCacheFileName(currentSong);
 }
 
 void SongView::getLyrics()
@@ -549,7 +691,7 @@ void SongView::getLyrics()
         // Set lyrics file anyway - so that editing is enabled!
         lyricsFile=Settings::self()->storeLyricsInMpdDir() && !currentSong.isNonMPD()
                 ? mpdFilePath(currentSong)
-                : cacheFile(currentSong.artist, currentSong.title);
+                : lyricsCacheFileName(currentSong);
         setMode(Mode_Display);
     }
 }
@@ -557,6 +699,7 @@ void SongView::getLyrics()
 void SongView::setMode(Mode m)
 {
     if (Mode_Display==m) {
+        cancelJobAction->setEnabled(false);
         hideSpinner();
     }
     if (mode==m) {
@@ -565,7 +708,7 @@ void SongView::setMode(Mode m)
     mode=m;
     bool editable=Mode_Display==m && !lyricsFile.isEmpty() && (!QFile::exists(lyricsFile) || QFileInfo(lyricsFile).isWritable());
     saveAction->setEnabled(Mode_Edit==m);
-    cancelAction->setEnabled(Mode_Edit==m);
+    cancelEditAction->setEnabled(Mode_Edit==m);
     editAction->setEnabled(editable);
     delAction->setEnabled(editable && !MPDConnection::self()->getDetails().dir.isEmpty() && QFile::exists(mpdFilePath(currentSong)));
     setEditable(Mode_Edit==m);
@@ -587,6 +730,7 @@ bool SongView::setLyricsFromFile(const QString &filePath)
         QTextStream inputStream(&f);
 
         text->setText(fixNewLines(inputStream.readAll()));
+        cancelJobAction->setEnabled(false);
         hideSpinner();
         f.close();
 

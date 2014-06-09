@@ -311,9 +311,7 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
             if (Song::SingleTracks==si->parent->type) {
                 return si->artistSong();
             }
-            else {
-                return si->trackAndTitleStr(Song::isVariousArtists(si->parent->artist) && !Song::isVariousArtists(si->artist));
-            }
+            return si->trackAndTitleStr();
         case Cantata::Role_SubText:
             return Utils::formatTime(si->time, true);
         }

@@ -110,9 +110,10 @@ struct Song
     QString artistSong() const;
     const QString & albumArtist() const { return albumartist.isEmpty() ? artist : albumartist; }
     QString displayTitle() const { return !albumartist.isEmpty() && albumartist!=artist ? artistSong() : title; }
-    QString trackAndTitleStr(bool addArtist=false) const;
+    QString trackAndTitleStr(bool showArtistIfDifferent=true) const;
     static bool isVariousArtists(const QString &str);
     bool isVariousArtists() const { return isVariousArtists(albumArtist()); }
+    bool diffArtist() const;
     bool isUnknown() const;
     bool fixVariousArtists();
     bool revertVariousArtists();

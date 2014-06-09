@@ -167,7 +167,7 @@ QVariant SearchModel::data(const QModelIndex &index, int role) const
         if (multiCol) {
             switch (index.column()) {
             case COL_TITLE:
-                return song->title.isEmpty() ? Utils::getFile(song->file) : song->trackAndTitleStr(Song::isVariousArtists(song->albumArtist()));;
+                return song->title.isEmpty() ? Utils::getFile(song->file) : song->trackAndTitleStr(false);
             case COL_ARTIST:
                 return song->artist.isEmpty() ? Song::unknown() : song->artist;
             case COL_ALBUM:

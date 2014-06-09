@@ -127,8 +127,7 @@ QVariant DevicesModel::data(const QModelIndex &index, int role) const
         if (MusicLibraryItem::Type_Song==item->itemType()) {
             MusicLibraryItemSong *song = static_cast<MusicLibraryItemSong *>(item);
             if (MusicLibraryItem::Type_Root==song->parentItem()->itemType()) {
-                Device *dev=static_cast<Device *>(song->parentItem());
-                return song->song().trackAndTitleStr(Device::AudioCd!=dev->devType() || !song->song().albumartist.startsWith(dev->data()));
+                return song->song().trackAndTitleStr();
             }
         }
         break;

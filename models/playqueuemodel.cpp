@@ -379,7 +379,7 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
     switch (role) {
     case Cantata::Role_MainText: {
         const Song &s=songs.at(index.row());
-        return s.title.isEmpty() ? s.file : s.trackAndTitleStr();
+        return s.title.isEmpty() ? s.file : s.trackAndTitleStr(false);
     }
     case Cantata::Role_SubText: {
         const Song &s=songs.at(index.row());
@@ -562,7 +562,7 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
         } else {
             return s.albumArtist()+QLatin1String("<br/>")+
                    s.displayAlbum()+QLatin1String("<br/>")+
-                   s.trackAndTitleStr(Song::isVariousArtists(s.albumArtist()))+QLatin1String("<br/>")+
+                   s.trackAndTitleStr()+QLatin1String("<br/>")+
                    Utils::formatTime(s.time)+QLatin1String("<br/>")+
                    (s.priority>0 ? i18n("<b>(Priority: %1)</b>", s.priority)+QLatin1String("<br/>") : QString())+
                    QLatin1String("<small><i>")+basicPath(s)+QLatin1String("</i></small>");

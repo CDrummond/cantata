@@ -816,7 +816,7 @@ ActionDialog::StringPairList ActionDialog::formatSong(const Song &s, bool showFi
     StringPairList str;
     str.append(StringPair(i18n("Artist:"), s.albumArtist()));
     str.append(StringPair(i18n("Album:"), s.album));
-    str.append(StringPair(i18n("Track:"), s.trackAndTitleStr(Song::isVariousArtists(s.albumArtist()) && !Song::isVariousArtists(s.artist))));
+    str.append(StringPair(i18n("Track:"), s.trackAndTitleStr()));
 
     if (showFiles) {
         if (Copy==mode) {

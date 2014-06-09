@@ -431,7 +431,7 @@ QString Song::artistSong() const
     return title+QLatin1String(" - ")+artist;
 }
 
-QString Song::trackAndTitleStr(bool addArtist) const
+QString Song::trackAndTitleStr(bool showArtistIfDifferent) const
 {
 //    if (isFromOnlineService()) {
 //        return (disc>0 && disc!=constOnlineDiscId ? (QString::number(disc)+QLatin1Char('.')) : QString())+
@@ -440,12 +440,17 @@ QString Song::trackAndTitleStr(bool addArtist) const
 //    }
     return //(disc>0 ? (QString::number(disc)+QLatin1Char('.')) : QString())+
            (track>0 ? (track>9 ? QString::number(track) : (QLatin1Char('0')+QString::number(track))) : QString())+
-           QLatin1Char(' ')+(addArtist ? artistSong() : title);
+           QLatin1Char(' ')+(showArtistIfDifferent && diffArtist() ? artistSong() : title);
 }
 
 bool Song::isVariousArtists(const QString &str)
 {
     return QLatin1String("Various Artists")==str || variousArtistsStr==str;
+}
+
+bool Song::diffArtist() const
+{
+    return isVariousArtists() || (!albumartist.isEmpty() && !artist.isEmpty() && albumartist!=artist);
 }
 
 bool Song::fixVariousArtists()

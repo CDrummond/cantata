@@ -150,8 +150,7 @@ QVariant MusicModel::data(const QModelIndex &index, int role) const
                 return item->data();
             }
             #endif
-            return song->song().trackAndTitleStr(static_cast<MusicLibraryItemArtist *>(song->parentItem()->parentItem())->isVarious() &&
-                                                 !Song::isVariousArtists(song->song().artist));
+            return song->song().trackAndTitleStr();
         }
         return item->displayData();
     case Qt::ToolTipRole:

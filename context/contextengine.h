@@ -36,7 +36,8 @@ class ContextEngine : public QObject
 public:
     enum Mode {
         Artist,
-        Album
+        Album,
+        Track
     };
     
     static ContextEngine * create(QObject *parent);

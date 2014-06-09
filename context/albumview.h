@@ -57,12 +57,12 @@ private Q_SLOTS:
     void showContextMenu(const QPoint &pos);
     void refresh();
     void clearCache();
+    void searchResponse(const QString &resp, const QString &lang);
 
 private:
     void clearDetails();
     void getTrackListing();
     void getDetails();
-    void searchResponse(const QString &resp, const QString &lang);
     void updateDetails(bool preservePos=false);
     void abort();
 

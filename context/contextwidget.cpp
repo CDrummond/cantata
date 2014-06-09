@@ -366,7 +366,7 @@ void ContextWidget::setWide(bool w)
             viewSelector=new ViewSelector(standardContext);
             viewSelector->addItem(i18n("&Artist"), "artist");
             viewSelector->addItem(i18n("Al&bum"), "album");
-            viewSelector->addItem(i18n("&Lyrics"), "song");
+            viewSelector->addItem(i18n("&Track"), "song");
             viewSelector->setPalette(palette());
             connect(viewSelector, SIGNAL(activated(int)), stack, SLOT(setCurrentIndex(int)));
         }

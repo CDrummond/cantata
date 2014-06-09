@@ -268,6 +268,7 @@ CacheSettings::CacheSettings(QWidget *parent)
     new CacheItem(i18n("Artist Information"), Utils::cacheDir(ArtistView::constCacheDir, false), QStringList() << "*"+ArtistView::constInfoExt
                   << "*"+ArtistView::constSimilarInfoExt << "*.json.gz" << "*.jpg" << "*.png", tree);
     new CacheItem(i18n("Album Information"), Utils::cacheDir(AlbumView::constCacheDir, false), QStringList() << "*"+AlbumView::constInfoExt << "*.jpg" << "*.png", tree);
+    new CacheItem(i18n("Track Information"), Utils::cacheDir(SongView::constCacheDir, false), QStringList() << "*"+AlbumView::constInfoExt, tree);
     #ifdef ENABLE_STREAMS
     new CacheItem(i18n("Stream Listings"), Utils::cacheDir(StreamsModel::constSubDir, false), QStringList() << "*"+StreamsModel::constCacheExt, tree);
     #endif

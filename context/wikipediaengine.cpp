@@ -25,6 +25,7 @@
 #include "network/networkaccessmanager.h"
 #include "support/localize.h"
 #include "gui/settings.h"
+#include "gui/covers.h"
 #include "config.h"
 #if QT_VERSION >= 0x050000
 #include <QUrlQuery>
@@ -306,6 +307,10 @@ QString WikipediaEngine::translateLinks(QString text) const
 void WikipediaEngine::search(const QStringList &query, Mode mode)
 {
     titles.clear();
+//    if (Track==mode) {
+//        emit searchResult(QString(), QString());
+//        return;
+//    }
     requestTitles(fixQuery(query), mode, getPrefix(preferredLangs.first()));
 }
 
@@ -389,6 +394,7 @@ void WikipediaEngine::parseTitles()
         return;
     }
 
+    DBUG << titles;
     getPage(query, mode, hostLang);
 }
 
@@ -413,20 +419,21 @@ void WikipediaEngine::getPage(const QStringList &query, Mode mode, const QString
         simplifiedTitles.append(t.simplified());
     }
 
-    while(!queryCopy.isEmpty()) {
-        QString q=queryCopy.join(" ");
-        QString q2=q;
-        q2.remove("."); // A.S.A.P. -> ASAP
-        queries.append(q);
-        if (q2!=q) {
-            queries.append(q2);
-        }
+    QMap<QString, QString> replacements;
+    replacements.insert(QLatin1String("."), QString()); // A.S.A.P. -> ASAP
+    replacements.insert(QLatin1String("-"), QLatin1String("/")); // AC-DC -> AC/DC
+    QMap<QString, QString>::ConstIterator repEnd=replacements.constEnd();
 
-        q2=q;
-        q2.replace("-", "/"); // AC-DC -> AC/DC
+    while (!queryCopy.isEmpty()) {
+        QString q=queryCopy.join(" ");
         queries.append(q);
-        if (q2!=q) {
-            queries.append(q2);
+
+        for (QMap<QString, QString>::ConstIterator rep=replacements.constBegin(); rep!=repEnd; ++rep) {
+            QString q2=q;
+            q2.replace(rep.key(), rep.value());
+            if (q2!=q) {
+                queries.append(q2);
+            }
         }
 
         queryCopy.takeFirst();
@@ -445,6 +452,10 @@ void WikipediaEngine::getPage(const QStringList &query, Mode mode, const QString
         patterns=i18nc("Search pattern for an album, separated by |", "album|score|soundtrack").split("|", QString::SkipEmptyParts);
         englishPatterns=QString(QLatin1String("album|score|soundtrack")).split("|");
         break;
+    case Track:
+//        patterns=i18nc("Search pattern for a song, separated by |", "song|track").split("|", QString::SkipEmptyParts);
+//        englishPatterns=QString(QLatin1String("song|track")).split("|");
+        break;
     }
 
     foreach (const QString &eng, englishPatterns) {
@@ -456,18 +467,19 @@ void WikipediaEngine::getPage(const QStringList &query, Mode mode, const QString
     DBUG <<  "Titles" << titles;
 
     int index=-1;
-    if (mode==Album && 2==query.count()) {
-        DBUG <<  "Check album";
+    if ((mode==Album || mode==Track) && 2==query.count()) {
+        DBUG <<  "Check track/album";
         foreach (const QString &pattern, patterns) {
             QString q=query.at(1)+" ("+query.at(0)+" "+pattern+")";
             DBUG <<  "Try" << q;
             index=indexOf(simplifiedTitles, q);
             if (-1!=index) {
-                DBUG <<  "Matched with '$album ($artist pattern)" << index << q;
+                DBUG <<  "Matched with '$album/$track ($artist pattern)" << index << q;
                 break;
             }
         }
     }
+
     if (-1==index) {
         foreach (const QString &q, queries) {
             DBUG <<  "Query" << q;
@@ -539,9 +551,10 @@ void WikipediaEngine::parsePage()
     QUrl url=reply->url();
     QString hostLang=getLang(url);
 
+    QStringList query=reply->property(constQueryProperty).toStringList();
+    Mode mode=(Mode)reply->property(constModeProperty).toInt();
     if (answer.contains(QLatin1String("{{disambiguation}}")) || answer.contains(QLatin1String("{{disambig}}"))) { // i18n???
-        getPage(reply->property(constQueryProperty).toStringList(), (Mode)reply->property(constModeProperty).toInt(),
-                hostLang);
+        getPage(query, mode, hostLang);
         return;
     }
 
@@ -553,5 +566,11 @@ void WikipediaEngine::parsePage()
     if (introOnly && resp.isEmpty()) {
         resp=wikiToHtml(answer, false, reply->url());
     }
-    emit searchResult(resp, hostLang);
+
+    // For track results, ensure response contains artist name!
+    if (Track==mode && !resp.contains(query.at(0), Qt::CaseInsensitive) && !resp.contains(Covers::fixArtist(query.at(0)), Qt::CaseInsensitive)) {
+        getPage(query, mode, hostLang);
+    } else {
+        emit searchResult(resp, hostLang);
+    }
 }

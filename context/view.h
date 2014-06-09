@@ -26,21 +26,47 @@
 
 #include <QWidget>
 #include <QSize>
+#include <QLabel>
 #include "mpd/song.h"
 
 class QImage;
-class QLabel;
 class Spinner;
 class QNetworkReply;
 class QLayoutItem;
 class TextBrowser;
 class Action;
+class QStackedWidget;
+class QMenu;
+
+class ViewTextSelector : public QLabel
+{
+    Q_OBJECT
+public:
+    ViewTextSelector(QWidget *p);
+    void addItem(const QString &t);
+    bool event(QEvent *e);
+    int currentIndex() const { return current; }
+    void setCurrentIndex(int v);
+
+Q_SIGNALS:
+    void activated(int);
+
+private Q_SLOTS:
+    void itemSelected();
+
+private:
+    int current;
+    QStringList items;
+    QMenu *menu;
+};
 
 class View : public QWidget
 {
     Q_OBJECT
 public:
-    View(QWidget *p);
+    static QString subTag;
+
+    View(QWidget *p, const QStringList &views=QStringList());
     virtual ~View();
 
     static QString subHeader(const QString &str) { return "<"+subTag+">"+str+"</"+subTag+">"; }
@@ -53,30 +79,36 @@ public:
     QSize picSize() const;
     QString createPicTag(const QImage &img, const QString &file);
     void showEvent(QShowEvent *e);
-    void showSpinner();
-    void hideSpinner();
-    void setEditable(bool e);
+    void showSpinner(bool enableCancel=true);
+    void hideSpinner(bool disableCancel=true);
+    void setEditable(bool e, int index=0);
     void setPal(const QPalette &pal, const QColor &linkColor, const QColor &prevLinkColor);
     void addEventFilter(QObject *obj);
     void setZoom(int z);
     int getZoom();
     virtual void update(const Song &s, bool force)=0;
-    void setHtml(const QString &h);
+    void setHtml(const QString &h, int index=0);
+    int currentView() const { return selector ? selector->currentIndex() : -1; }
+    void setCurrentView(int v) { selector->setCurrentIndex(v); }
+
+Q_SIGNALS:
+    void viewChanged();
 
 protected Q_SLOTS:
-    virtual void searchResponse(const QString &r, const QString &l);
     virtual void abort();
 
 protected:
-    static QString subTag;
     Song currentSong;
     QString stdHeader;
     QLabel *header;
-    TextBrowser *text;
     bool needToUpdate;
     Spinner *spinner;
     Action *cancelJobAction;
+
+    ViewTextSelector *selector;
+    QStackedWidget *stack;
+    TextBrowser *text; // short-cut to first text item...
+    QList<TextBrowser *> texts;
 };
 
 #endif
-

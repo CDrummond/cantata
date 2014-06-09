@@ -141,6 +141,8 @@
 88. Open search-widget as soon as user starts typing in view.
 89. If artist is different to album-artist, then show track title as
     "title - artist"
+90. Show track info in context-view as well as artist and album info. Track
+    info is stacked behind lyrics.
 
 1.3.4
 -----

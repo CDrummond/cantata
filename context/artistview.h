@@ -68,10 +68,10 @@ private Q_SLOTS:
     void handleSimilarReply();
     void show(const QUrl &url);
     void clearCache();
+    void searchResponse(const QString &resp, const QString &lang);
 
 private:
     void loadBio();
-    void searchResponse(const QString &resp, const QString &lang);
     void loadSimilar();
     void requestSimilar();
     QStringList parseSimilarResponse(const QByteArray &resp);

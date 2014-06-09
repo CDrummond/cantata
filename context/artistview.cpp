@@ -90,7 +90,7 @@ ArtistView::ArtistView(QWidget *parent)
     connect(text, SIGNAL(anchorClicked(QUrl)), SLOT(show(QUrl)));
     text->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(text, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showContextMenu(QPoint)));
-    setStandardHeader(i18n("Artist Information"));
+    setStandardHeader(i18n("Artist"));
    
     int imageHeight=fontMetrics().height()*14;
     int imageWidth=imageHeight*1.5;

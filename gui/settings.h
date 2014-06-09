@@ -111,6 +111,7 @@ public:
     bool contextAlwaysCollapsed();
     int contextSwitchTime();
     bool contextAutoScroll();
+    int contextTrackView();
     QString page();
     QStringList hiddenPages();
     #if !defined ENABLE_KDE_SUPPORT && !defined ENABLE_UBUNTU
@@ -234,6 +235,7 @@ public:
     void saveContextAlwaysCollapsed(bool v);
     void saveContextSwitchTime(int v);
     void saveContextAutoScroll(bool v);
+    void saveContextTrackView(int v);
     void savePage(const QString &v);
     void saveHiddenPages(const QStringList &v);
     #if !defined ENABLE_KDE_SUPPORT && !defined ENABLE_UBUNTU

@@ -38,7 +38,7 @@ FolderPage::FolderPage(QWidget *p)
     setupUi(this);
     addToPlayQueue->setDefaultAction(StdActions::self()->addToPlayQueueAction);
     replacePlayQueue->setDefaultAction(StdActions::self()->replacePlayQueueAction);
-    #if !defined Q_OS_WIN && !defined Q_OS_MAC
+    #if !defined Q_OS_MAC
     browseAction = ActionCollection::get()->createAction("openfilemanager", i18n("Open In File Manager"), "system-file-manager");
     #endif
 
@@ -56,7 +56,7 @@ FolderPage::FolderPage(QWidget *p)
     view->addAction(StdActions::self()->replaygainAction);
     #endif // TAGLIB_FOUND
     #endif
-    #if !defined Q_OS_WIN && !defined Q_OS_MAC
+    #if !defined Q_OS_MAC
     view->addAction(browseAction);
     #endif
     #ifdef ENABLE_DEVICES_SUPPORT
@@ -74,7 +74,7 @@ FolderPage::FolderPage(QWidget *p)
     connect(view, SIGNAL(searchItems()), this, SLOT(searchItems()));
     connect(view, SIGNAL(itemsSelected(bool)), this, SLOT(controlActions()));
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
-    #if !defined Q_OS_WIN && !defined Q_OS_MAC
+    #if !defined Q_OS_MAC
     connect(browseAction, SIGNAL(triggered(bool)), this, SLOT(openFileManager()));
     #endif
     connect(MPDConnection::self(), SIGNAL(updatingFileList()), this, SLOT(showSpinner()));
@@ -164,7 +164,7 @@ void FolderPage::controlActions()
     #endif
     #endif // TAGLIB_FOUND
 
-    #if !defined Q_OS_WIN && !defined Q_OS_MAC
+    #if !defined Q_OS_MAC
     browseAction->setEnabled(false);
     if (1==selected.count() && MPDConnection::self()->getDetails().dirReadable) {
         DirViewItem *item = static_cast<DirViewItem *>(proxy.mapToSource(selected.at(0)).internalPointer());
@@ -188,7 +188,7 @@ void FolderPage::itemDoubleClicked(const QModelIndex &)
 
 void FolderPage::openFileManager()
 {
-    #if !defined Q_OS_WIN && !defined Q_OS_MAC
+    #if !defined Q_OS_MAC
     const QModelIndexList selected = view->selectedIndexes(false); // Dont need sorted selection here...
     if (1!=selected.size()) {
         return;

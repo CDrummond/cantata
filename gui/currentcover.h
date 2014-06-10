@@ -56,7 +56,7 @@ private Q_SLOTS:
 
 private:
     const QImage & stdImage(bool stream);
-    #ifndef Q_OS_WIN
+    #if !defined Q_OS_WIN && !defined Q_OS_MAC
     void initIconThemes();
     QString findIcon(const QStringList &names);
     #endif
@@ -72,7 +72,7 @@ private:
     QImage noCover;
     QString noStreamCoverFileName;
     QString noCoverFileName;
-    #ifndef Q_OS_WIN
+    #if !defined Q_OS_WIN && !defined Q_OS_MAC
     QStringList iconThemes;
     #endif
 };

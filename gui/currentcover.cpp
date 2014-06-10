@@ -29,7 +29,7 @@
 #include "support/globalstatic.h"
 #include <QFile>
 
-#ifndef Q_OS_WIN
+#if !defined Q_OS_WIN && !defined Q_OS_MAC
 static void themes(const QString &theme, QStringList &iconThemes)
 {
     if (iconThemes.contains(theme)) {
@@ -145,7 +145,7 @@ const QImage & CurrentCover::stdImage(bool stream)
                 file=iconFile;
             }
         }
-        #ifndef Q_OS_WIN
+        #if !defined Q_OS_WIN && !defined Q_OS_MAC
         if (file.isEmpty()) {
             file=findIcon(stream ? QStringList() << "applications-internet" : QStringList() << "media-optical" << "media-optical-audio");
         }
@@ -217,5 +217,3 @@ void CurrentCover::coverRetrieved(const Song &s, const QImage &img, const QStrin
         }
     }
 }
-
-

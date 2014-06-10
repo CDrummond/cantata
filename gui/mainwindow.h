@@ -66,9 +66,9 @@ class DevicesPage;
 #endif
 class SearchPage;
 class QAbstractItemView;
-#ifndef Q_OS_WIN
+#ifdef QT_QTDBUS_FOUND
 class Mpris;
-#endif // !defined Q_OS_WIN
+#endif
 class QTimer;
 class QPropertyAnimation;
 class QActionGroup;

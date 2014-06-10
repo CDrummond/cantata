@@ -125,11 +125,9 @@ static QString save(const QString &mimeType, const QString &extension, const QSt
 
         QFile f(filePrefix+mimeType);
         if (f.open(QIODevice::WriteOnly) && raw.size()==f.write(raw)) {
-            #ifndef Q_OS_WIN
             if (!MPDConnection::self()->getDetails().dir.isEmpty() && filePrefix.startsWith(MPDConnection::self()->getDetails().dir)) {
                 Utils::setFilePerms(filePrefix+mimeType);
             }
-            #endif
             return filePrefix+mimeType;
         }
     }
@@ -140,11 +138,9 @@ static QString save(const QString &mimeType, const QString &extension, const QSt
         }
 
         if (img.save(filePrefix+extension)) {
-            #ifndef Q_OS_WIN
             if (!MPDConnection::self()->getDetails().dir.isEmpty() && filePrefix.startsWith(MPDConnection::self()->getDetails().dir)) {
                 Utils::setFilePerms(filePrefix+mimeType);
             }
-            #endif
             return filePrefix+extension;
         }
     }

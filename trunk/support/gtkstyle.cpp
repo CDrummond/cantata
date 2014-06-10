@@ -33,7 +33,12 @@
 #include <QFile>
 #include <qglobal.h>
 #include "touchproxystyle.h"
-#if !defined Q_OS_WIN && !defined QT_NO_STYLE_GTK
+
+#if defined Q_OS_WIN || defined Q_OS_MAC || defined QT_NO_STYLE_GTK
+#define NO_GTK_SUPPORT
+#endif
+
+#ifndef NO_GTK_SUPPORT
 #include "gtkproxystyle.h"
 #include "windowmanager.h"
 #if QT_VERSION < 0x050000
@@ -43,9 +48,9 @@
 
 static bool usingGtkStyle=false;
 
-static inline void setup()
+bool GtkStyle::isActive()
 {
-    #if !defined Q_OS_WIN && !defined QT_NO_STYLE_GTK
+    #ifndef NO_GTK_SUPPORT
     static bool init=false;
     if (!init) {
         init=true;
@@ -55,11 +60,6 @@ static inline void setup()
         }
     }
     #endif
-}
-
-bool GtkStyle::isActive()
-{
-    setup();
     return usingGtkStyle;
 }
 
@@ -105,7 +105,7 @@ void GtkStyle::drawSelection(const QStyleOptionViewItemV4 &opt, QPainter *painte
     painter->setOpacity(opacityB4);
 }
 
-#if !defined Q_OS_WIN && !defined QT_NO_STYLE_GTK
+#ifndef NO_GTK_SUPPORT
 // For some reason, dconf does not seem to terminate correctly when run under some desktops (e.g. KDE)
 // Destroying the QProcess seems to block, causing the app to appear to hang before starting.
 // So, create QProcess on the heap - and only wait 1.5s for response. Connect finished to deleteLater
@@ -127,7 +127,7 @@ static QString readDconfSetting(const QString &setting)
 }
 #endif
 
-#if !defined Q_OS_WIN && !defined QT_NO_STYLE_GTK
+#ifndef NO_GTK_SUPPORT
 static QString iconThemeSetting;
 static QString themeNameSetting;
 #endif
@@ -135,7 +135,7 @@ static QString themeNameSetting;
 // Copied from musique
 QString GtkStyle::themeName()
 {
-    #if defined Q_OS_WIN || defined QT_NO_STYLE_GTK
+    #ifdef NO_GTK_SUPPORT
     return QString();
     #else
 
@@ -196,7 +196,7 @@ QString GtkStyle::themeName()
 
 QString GtkStyle::iconTheme()
 {
-    #if defined Q_OS_WIN || defined QT_NO_STYLE_GTK
+    #ifdef NO_GTK_SUPPORT
     return QString();
     #else
     if (iconThemeSetting.isEmpty()) {
@@ -216,7 +216,7 @@ QString GtkStyle::iconTheme()
 
 extern void GtkStyle::setThemeName(const QString &n)
 {
-    #if defined Q_OS_WIN || defined QT_NO_STYLE_GTK
+    #ifdef NO_GTK_SUPPORT
     Q_UNUSED(n)
     #else
     themeNameSetting=n;
@@ -225,14 +225,14 @@ extern void GtkStyle::setThemeName(const QString &n)
 
 extern void GtkStyle::setIconTheme(const QString &n)
 {
-    #if defined Q_OS_WIN || defined QT_NO_STYLE_GTK
+    #ifdef NO_GTK_SUPPORT
     Q_UNUSED(n)
     #else
     iconThemeSetting=n;
     #endif
 }
 
-#if !defined Q_OS_WIN && !defined QT_NO_STYLE_GTK
+#ifndef NO_GTK_SUPPORT
 static WindowManager *wm=0;
 #endif
 static QProxyStyle *proxyStyle=0;
@@ -243,7 +243,7 @@ const char * GtkStyle::constHideFrameProp="hide-frame";
 
 void GtkStyle::applyTheme(QWidget *widget)
 {
-    #if defined Q_OS_WIN || defined Q_OS_MAC || defined QT_NO_STYLE_GTK
+    #ifdef NO_GTK_SUPPORT
     Q_UNUSED(widget)
     #else
     if (widget && isActive()) {
@@ -309,7 +309,7 @@ void GtkStyle::applyTheme(QWidget *widget)
 
 void GtkStyle::registerWidget(QWidget *widget)
 {
-    #if defined Q_OS_WIN || defined QT_NO_STYLE_GTK
+    #ifdef NO_GTK_SUPPORT
     Q_UNUSED(widget)
     #else
     if (widget && wm) {

@@ -18,11 +18,11 @@ if (NOT ENABLE_UBUNTU)
 
     set(SUPPORT_MOC_HDRS fancytabwidget.h messagewidget.h inputdialog.h pagewidget.h  action.h actioncollection.h flickcharm.h)
 
-    if (NOT WIN32)
+    if (NOT WIN32 AND NOT APPLE)
         set(SUPPORT_SRCS ${SUPPORT_SRCS} windowmanager.cpp gtkproxystyle.cpp combobox.cpp shortcuthandler.cpp)
         set(SUPPORT_MOC_HDRS ${SUPPORT_MOC_HDRS} windowmanager.h shortcuthandler.h)
         add_subdirectory(themes)
-    endif (NOT WIN32)
+    endif (NOT WIN32 AND NOT APPLE)
 
     if (ENABLE_KDE_SUPPORT)
         include_directories(${KDE4_INCLUDES})

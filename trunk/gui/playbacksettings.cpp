@@ -60,7 +60,7 @@ PlaybackSettings::PlaybackSettings(QWidget *p)
     messageIcon->setMinimumSize(iconSize, iconSize);
     messageIcon->setMaximumSize(iconSize, iconSize);
     mpdConnectionStateChanged(MPDConnection::self()->isConnected());
-    #ifdef Q_OS_WIN
+    #if defined Q_OS_WIN || defined Q_OS_MAC
     REMOVE(inhibitSuspend)
     #endif
     outputsView->setVisible(outputsView->count()>1);
@@ -71,7 +71,7 @@ void PlaybackSettings::load()
 {
     stopOnExit->setChecked(Settings::self()->stopOnExit());
     stopFadeDuration->setValue(Settings::self()->stopFadeDuration());
-    #ifndef Q_OS_WIN
+    #if !defined Q_OS_WIN && !defined Q_OS_MAC
     inhibitSuspend->setChecked(Settings::self()->inhibitSuspend());
     #endif
 
@@ -86,7 +86,7 @@ void PlaybackSettings::save()
 {
     Settings::self()->saveStopOnExit(stopOnExit->isChecked());
     Settings::self()->saveStopFadeDuration(stopFadeDuration->value());
-    #ifndef Q_OS_WIN
+    #if !defined Q_OS_WIN && !defined Q_OS_MAC
     Settings::self()->saveInhibitSuspend(inhibitSuspend->isChecked());
     #endif
 

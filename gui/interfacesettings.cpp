@@ -115,7 +115,7 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     #ifdef QT_QTDBUS_FOUND
     // We have dbus, check that org.freedesktop.Notifications exists
     bool enableNotifications=QDBusConnection::sessionBus().interface()->isServiceRegistered("org.freedesktop.Notifications");
-    #elif !defined Q_OS_WIN32 && !defined Q_OS_MAC
+    #elif !defined Q_OS_WIN && !defined Q_OS_MAC
     // Not mac, or windows, and no dbus => no notifications!
     bool enableNotifications=false;
     #endif

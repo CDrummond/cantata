@@ -39,9 +39,6 @@ void BackdropCreator::enableDebug()
 BackdropCreator::BackdropCreator()
     : QObject(0)
 {
-    #ifdef Q_OS_WIN32
-    srand((unsigned int)time(0));
-    #endif
     connect(Covers::self(), SIGNAL(cover(const Song &, const QImage &, const QString &)), SLOT(coverRetrieved(const Song &, const QImage &, const QString &)));
     imageSize=QApplication::fontMetrics().height()*12;
     thread=new Thread(metaObject()->className());

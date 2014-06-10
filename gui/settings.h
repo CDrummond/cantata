@@ -162,7 +162,7 @@ public:
     bool showTimeRemaining();
     QStringList hiddenStreamCategories();
     QStringList hiddenOnlineProviders();
-    #ifndef Q_OS_WIN32
+    #ifndef Q_OS_WIN
     bool inhibitSuspend();
     #endif
     int rssUpdate();
@@ -283,7 +283,7 @@ public:
     void saveShowTimeRemaining(bool v);
     void saveHiddenStreamCategories(const QStringList &v);
     void saveHiddenOnlineProviders(const QStringList &v);
-    #ifndef Q_OS_WIN32
+    #ifndef Q_OS_WIN
     void saveInhibitSuspend(bool v);
     #endif
     void saveRssUpdate(int v);

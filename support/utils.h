@@ -37,7 +37,7 @@
 #include <KDE/KStandardDirs>
 #endif
 #include <stdlib.h>
-#ifdef Q_OS_WIN32
+#ifdef Q_OS_WIN
 #include <time.h>
 #endif
 #include <sys/time.h>

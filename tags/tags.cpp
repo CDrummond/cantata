@@ -169,7 +169,7 @@ static TagLib::FileRef getFileRef(const QString &path)
 {
     ensureFileTypeResolvers();
 
-    #ifdef Q_OS_WIN32
+    #ifdef Q_OS_WIN
     return TagLib::FileRef(reinterpret_cast<const wchar_t*>(path.constData()), true, TagLib::AudioProperties::Fast);
     #else
     return TagLib::FileRef(QFile::encodeName(path).constData(), true, TagLib::AudioProperties::Fast);
@@ -1278,7 +1278,7 @@ Update embedImage(const QString &fileName, const QByteArray &cover)
 QString oggMimeType(const QString &fileName)
 {
     LOCK_MUTEX
-    #ifdef Q_OS_WIN32
+    #ifdef Q_OS_WIN
     const wchar_t*encodedName=reinterpret_cast<const wchar_t*>(fileName.constData());
     #else
     const char *encodedName=QFile::encodeName(fileName).constData();

@@ -822,7 +822,7 @@ void Utils::touchFile(const QString &fileName)
 
 bool Utils::isDirReadable(const QString &dir)
 {
-    #ifdef Q_OS_WIN32
+    #ifdef Q_OS_WIN
     if (dir.isEmpty()) {
         return false;
     } else {
@@ -842,7 +842,7 @@ bool Utils::isDirReadable(const QString &dir)
 double Utils::smallFontFactor(const QFont &f)
 {
     double sz=f.pointSizeF();
-    #if defined Q_OS_WIN32
+    #if defined Q_OS_WIN
     if (sz<8.5) {
         return 1.0;
     }
@@ -895,7 +895,7 @@ int Utils::scaleForDpi(int v)
 
 Utils::Desktop Utils::currentDe()
 {
-    #if !defined Q_OS_WIN32 && !defined Q_OS_MAC
+    #if !defined Q_OS_WIN && !defined Q_OS_MAC
     static int de=-1;
     if (-1==de) {
         de=Other;

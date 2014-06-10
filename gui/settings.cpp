@@ -180,7 +180,7 @@ MPDConnectionDetails Settings::connectionDetails(const QString &name)
         details.password=cfg.get("connectionPasswd", name.isEmpty() ? mpdDefaults.passwd : QString());
         #endif
         details.port=cfg.get("connectionPort", name.isEmpty() ? mpdDefaults.port : 6600);
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
         details.dir=Utils::fixPath(QDir::fromNativeSeparators(cfg.get("mpdDir", mpdDefaults.dir)));
         #else
         details.dir=Utils::fixPath(cfg.get("mpdDir", mpdDefaults.dir));
@@ -196,7 +196,7 @@ MPDConnectionDetails Settings::connectionDetails(const QString &name)
             cfg.beginGroup(n);
             details.hostname=cfg.get("host", name.isEmpty() ? mpdDefaults.host : QString());
             details.port=cfg.get("port", name.isEmpty() ? mpdDefaults.port : 6600);
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
             details.dir=Utils::fixPath(QDir::fromNativeSeparators(cfg.get("dir", name.isEmpty() ? mpdDefaults.dir : "/var/lib/mpd/music")));
             #else
             details.dir=Utils::fixPath(cfg.get("dir", name.isEmpty() ? mpdDefaults.dir : "/var/lib/mpd/music"));
@@ -810,7 +810,7 @@ QStringList Settings::hiddenOnlineProviders()
     return cfg.get("hiddenOnlineProviders", QStringList());
 }
 
-#ifndef Q_OS_WIN32
+#ifndef Q_OS_WIN
 bool Settings::inhibitSuspend()
 {
     return cfg.get("inhibitSuspend", false);
@@ -1383,7 +1383,7 @@ void Settings::saveHiddenOnlineProviders(const QStringList &v)
     cfg.set("hiddenOnlineProviders", v);
 }
 
-#ifndef Q_OS_WIN32
+#ifndef Q_OS_WIN
 void Settings::saveInhibitSuspend(bool v)
 {
     cfg.set("inhibitSuspend", v);

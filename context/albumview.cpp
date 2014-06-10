@@ -35,7 +35,6 @@
 #include <QScrollBar>
 #include <QFile>
 #include <QUrl>
-#include <QProcess>
 #include <QMenu>
 #include <QTimer>
 #include <QCoreApplication>
@@ -160,11 +159,7 @@ void AlbumView::playSong(const QUrl &url)
     if (QLatin1String("cantata")==url.scheme()) {
         emit playSong(url.path().mid(1)); // Remove leading /
     } else {
-        #ifdef Q_OS_WIN
-        QProcess::startDetached(QLatin1String("cmd"), QStringList() << QLatin1String("/c") << QLatin1String("start") << url.toString());
-        #else
-        QProcess::startDetached(QLatin1String("xdg-open"), QStringList() << url.toString());
-        #endif
+        Utils::openBrowser(url);
     }
 }
 

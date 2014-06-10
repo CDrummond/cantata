@@ -84,6 +84,7 @@ private Q_SLOTS:
     void refreshInfo();
     void infoSearchResponse(const QString &resp, const QString &lang);
     void abortInfoSearch();
+    void showMoreInfo(const QUrl &url);
 
 private:
     void loadInfo();

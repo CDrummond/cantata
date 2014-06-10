@@ -74,6 +74,8 @@ static TextBrowser * createView(QWidget *parent)
     text->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     text->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
     text->setFrameShape(QFrame::NoFrame);
+    text->setReadOnly(true);
+    text->viewport()->setAutoFillBackground(false);
     return text;
 }
 
@@ -194,7 +196,6 @@ View::View(QWidget *parent, const QStringList &views)
         layout->addWidget(stack);
     }
     layout->addItem(new QSpacerItem(1, fontMetrics().height()/4, QSizePolicy::Fixed, QSizePolicy::Fixed));
-    setEditable(false);
     if (headerTag.isEmpty()) {
         initHeaderTags();
     }

@@ -138,6 +138,9 @@ SongView::SongView(QWidget *p)
     connect(refreshInfoAction, SIGNAL(triggered()), SLOT(refreshInfo()));
     connect(cancelInfoJobAction, SIGNAL(triggered()), SLOT(abortInfoSearch()));
     connect(engine, SIGNAL(searchResult(QString,QString)), this, SLOT(infoSearchResponse(QString,QString)));
+    foreach (TextBrowser *t, texts) {
+        connect(t, SIGNAL(anchorClicked(QUrl)), SLOT(showMoreInfo(QUrl)));
+    }
 
     text->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(text, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showContextMenu(QPoint)));
@@ -452,6 +455,11 @@ void SongView::abortInfoSearch()
         engine->cancel();
         hideSpinner();
     }
+}
+
+void SongView::showMoreInfo(const QUrl &url)
+{
+    Utils::openBrowser(url);
 }
 
 void SongView::hideSpinner()

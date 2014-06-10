@@ -84,7 +84,7 @@ private:
 
 private:
     bool loaded;
-    #ifndef Q_OS_WIN
+    #if !defined Q_OS_WIN && !defined Q_OS_MAC
     Action *browseAction;
     #endif
     DirViewProxyModel proxy;

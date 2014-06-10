@@ -44,6 +44,7 @@
 
 class QString;
 class QWidget;
+class QUrl;
 
 namespace Utils
 {
@@ -98,6 +99,8 @@ namespace Utils
     extern QString cacheDir(const QString &sub=QString(), bool create=true);
     extern QString systemDir(const QString &sub);
     extern QString helper(const QString &app);
+    extern void openBrowser(const QUrl &url);
+    extern void openFileManager(const QString &dir);
     extern bool moveFile(const QString &from, const QString &to);
     extern void moveDir(const QString &from, const QString &to);
     extern void clearOldCache(const QString &sub, int maxAge);

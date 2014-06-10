@@ -143,6 +143,7 @@
     "title - artist"
 90. Show track info in context-view as well as artist and album info. Track
     info is stacked behind lyrics.
+91. Add option to re-load lyric from disk.
 
 1.3.4
 -----

@@ -162,21 +162,28 @@ SongView::~SongView()
 void SongView::update()
 {
     QString mpdName=mpdFileName();
-    bool mpdExists=!mpdName.isEmpty() && QFile::exists(mpdName);
-    if (Mode_Edit==mode && MessageBox::No==MessageBox::warningYesNo(this, i18n("Abort editing of lyrics?"), i18n("Abort Editing"),
-                                                                    GuiItem(i18n("Abort")), StdGuiItem::cont())) {
-        return;
-    } else if (mpdExists && MessageBox::No==MessageBox::warningYesNo(this, i18n("Delete saved copy of lyrics, and re-download?"), i18n("Re-download"),
-                                                                     GuiItem(i18n("Re-download")), StdGuiItem::cancel())) {
-        return;
-    }
-    if (mpdExists) {
-        QFile::remove(mpdName);
-    }
     QString cacheName=cacheFileName();
-    if (!cacheName.isEmpty() && QFile::exists(cacheName)) {
-        QFile::remove(cacheName);
+    bool mpdExists=!mpdName.isEmpty() && QFile::exists(mpdName);
+    bool cacheExists=!cacheName.isEmpty() && QFile::exists(cacheName);
+
+    if (mpdExists || cacheExists) {
+        switch (MessageBox::warningYesNoCancel(this, i18n("Reload lyrics?\n\nReload from disk, or delete disk copy and download?"), i18n("Reload"),
+                                               GuiItem(i18n("Reload From Disk")), GuiItem(i18n("Download")))) {
+        case MessageBox::Yes:
+            break;
+        case MessageBox::No:
+            if (mpdExists) {
+                QFile::remove(mpdName);
+            }
+            if (cacheExists && QFile::exists(cacheName)) {
+                QFile::remove(cacheName);
+            }
+            break;
+        default:
+            return;
+        }
     }
+
     update(currentSong, true);
 }
 
@@ -719,6 +726,7 @@ void SongView::setMode(Mode m)
     cancelEditAction->setEnabled(Mode_Edit==m);
     editAction->setEnabled(editable);
     delAction->setEnabled(editable && !MPDConnection::self()->getDetails().dir.isEmpty() && QFile::exists(mpdFilePath(currentSong)));
+    refreshAction->setEnabled(editable);
     setEditable(Mode_Edit==m);
     if (scrollAction->isChecked()) {
         if (Mode_Display==mode) {

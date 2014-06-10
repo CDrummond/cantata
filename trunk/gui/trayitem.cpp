@@ -97,7 +97,7 @@ void TrayItem::setup()
         return;
     }
 
-    #if !defined Q_OS_WIN32 && !defined Q_OS_MAC
+    #if !defined Q_OS_WIN && !defined Q_OS_MAC
     QString iconFile=CANTATA_SYS_ICONS_DIR+QIcon::themeName()+QLatin1String("/systray.svg");
     #endif
 
@@ -141,7 +141,7 @@ void TrayItem::setup()
     trayItemMenu->addAction(mw->quitAction);
     trayItem->setContextMenu(trayItemMenu);
     Icon icon;
-    #if !defined Q_OS_WIN32 && !defined Q_OS_MAC
+    #if !defined Q_OS_WIN && !defined Q_OS_MAC
     if (QFile::exists(iconFile)) {
         icon.addFile(iconFile);
     }

@@ -89,7 +89,7 @@ ViewTextSelector::ViewTextSelector(QWidget *p)
 
 void ViewTextSelector::addItem(const QString &t)
 {
-    menu->addAction(t.endsWith(":") ? t.left(t.count()-1) : t, this, SLOT(itemSelected()))->setData(items.count());
+    menu->addAction(t, this, SLOT(itemSelected()))->setData(items.count());
     if (text().isEmpty()) {
         setText("<b>"+t+"</b>");
         current=items.count();

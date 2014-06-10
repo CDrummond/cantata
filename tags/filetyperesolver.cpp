@@ -158,11 +158,6 @@ TagLib::File *Meta::Tag::FileTypeResolver::createFile(TagLib::FileName fileName,
     }
     #endif
 
-// #ifndef Q_OS_WIN
-//      if (!result)
-//          qDebug() << "kmimetype filetype guessing failed for" << fileName;
-// #endif
-
     if (result && !result->isValid()) {
         delete result;
         result = 0;

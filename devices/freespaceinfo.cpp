@@ -75,7 +75,7 @@ void FreeSpaceInfo::update()
         totalSize=quint64(fs_info.f_blocks) * quint64(fs_info.f_bsize);
         usedSpace=totalSize-(quint64(fs_info.f_bavail) * quint64(fs_info.f_bsize));
     }
-    #elif defined(Q_OS_WIN32)
+    #elif defined(Q_OS_WIN)
     _ULARGE_INTEGER totalRet;
     _ULARGE_INTEGER freeRet;
     if (0!=GetDiskFreeSpaceEx(QDir::toNativeSeparators(location).toLocal8Bit().constData(), &freeRet, &totalRet, NULL)) {

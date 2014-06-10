@@ -190,6 +190,7 @@ const QString & MusicLibraryItemAlbum::cover() const
         song.file=firstSong->file();
         song.type=m_type;
         song.composer=firstSong->song().composer;
+        song.mbAlbumId=firstSong->song().mbAlbumId;
         m_coverName=Covers::self()->requestImage(song).fileName;
         if (!m_coverName.isEmpty()) {
             m_coverRequested=false;
@@ -222,6 +223,7 @@ const QPixmap & MusicLibraryItemAlbum::cover() const
             song.file=firstSong->file();
             song.type=m_type;
             song.composer=firstSong->song().composer;
+            song.mbAlbumId=firstSong->song().mbAlbumId;
             Covers::Image img;
             MusicLibraryItemRoot *root=parentItem() && parentItem()->parentItem() && MusicLibraryItem::Type_Root==parentItem()->parentItem()->itemType()
                     ? static_cast<MusicLibraryItemRoot *>(parentItem()->parentItem()) : 0;

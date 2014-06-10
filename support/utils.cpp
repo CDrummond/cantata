@@ -27,7 +27,6 @@
 #include <QFile>
 #include <QFileInfo>
 #include <QDir>
-#include <QUrl>
 #include <QProcess>
 #include <QSet>
 #include <QThread>
@@ -726,29 +725,6 @@ QString Utils::helper(const QString &app)
     return systemDir(QLatin1String("helpers"))+app);
     #else
     return QString(INSTALL_PREFIX "/lib/")+QCoreApplication::applicationName()+constDirSep+app;
-    #endif
-}
-
-void Utils::openBrowser(const QUrl &url)
-{
-    #if defined Q_OS_WIN
-    QProcess::startDetached(QLatin1String("cmd"), QStringList() << QLatin1String("/c") << QLatin1String("start") << url.toString());
-    #elif defined Q_OS_MAC
-    Q_UNUSED(url) // TODO!!!
-    #else
-    QProcess::startDetached(QLatin1String("xdg-open"), QStringList() << url.toString());
-    #endif
-}
-
-void Utils::openFileManager(const QString &dir)
-{
-
-    #if defined Q_OS_WIN
-    QProcess::startDetached(QLatin1String("cmd"), QStringList() << QLatin1String("/c") << QLatin1String("start") << dir);
-    #elif defined Q_OS_MAC
-    Q_UNUSED(dir) // TODO!!!
-    #else
-    QProcess::startDetached(QLatin1String("xdg-open"), QStringList() << dir);
     #endif
 }
 

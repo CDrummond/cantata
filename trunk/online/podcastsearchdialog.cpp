@@ -48,7 +48,6 @@
 #include <QFile>
 #include <QXmlStreamReader>
 #include <QCryptographicHash>
-#include <QProcess>
 #include <QCache>
 #include <QImage>
 #include <QBuffer>
@@ -314,7 +313,7 @@ void PodcastPage::jobFinished()
 
 void PodcastPage::openLink(const QUrl &url)
 {
-    QProcess::startDetached(QLatin1String("xdg-open"), QStringList() << url.toString());
+    Utils::openBrowser(url);
 }
 
 PodcastSearchPage::PodcastSearchPage(QWidget *p, const QString &n, const QString &i, const QUrl &qu, const QString &qk, const QStringList &other)

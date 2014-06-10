@@ -28,10 +28,8 @@
 #include "support/localize.h"
 #include "support/messagebox.h"
 #include "support/actioncollection.h"
+#include "support/utils.h"
 #include "stdactions.h"
-#ifndef Q_OS_WIN
-#include <QProcess>
-#endif
 
 FolderPage::FolderPage(QWidget *p)
     : QWidget(p)
@@ -40,7 +38,7 @@ FolderPage::FolderPage(QWidget *p)
     setupUi(this);
     addToPlayQueue->setDefaultAction(StdActions::self()->addToPlayQueueAction);
     replacePlayQueue->setDefaultAction(StdActions::self()->replacePlayQueueAction);
-    #ifndef Q_OS_WIN
+    #if !defined Q_OS_WIN && !defined Q_OS_MAC
     browseAction = ActionCollection::get()->createAction("openfilemanager", i18n("Open In File Manager"), "system-file-manager");
     #endif
 
@@ -58,7 +56,7 @@ FolderPage::FolderPage(QWidget *p)
     view->addAction(StdActions::self()->replaygainAction);
     #endif // TAGLIB_FOUND
     #endif
-    #ifndef Q_OS_WIN
+    #if !defined Q_OS_WIN && !defined Q_OS_MAC
     view->addAction(browseAction);
     #endif
     #ifdef ENABLE_DEVICES_SUPPORT
@@ -76,7 +74,7 @@ FolderPage::FolderPage(QWidget *p)
     connect(view, SIGNAL(searchItems()), this, SLOT(searchItems()));
     connect(view, SIGNAL(itemsSelected(bool)), this, SLOT(controlActions()));
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
-    #ifndef Q_OS_WIN
+    #if !defined Q_OS_WIN && !defined Q_OS_MAC
     connect(browseAction, SIGNAL(triggered(bool)), this, SLOT(openFileManager()));
     #endif
     connect(MPDConnection::self(), SIGNAL(updatingFileList()), this, SLOT(showSpinner()));
@@ -166,7 +164,7 @@ void FolderPage::controlActions()
     #endif
     #endif // TAGLIB_FOUND
 
-    #ifndef Q_OS_WIN
+    #if !defined Q_OS_WIN && !defined Q_OS_MAC
     browseAction->setEnabled(false);
     if (1==selected.count() && MPDConnection::self()->getDetails().dirReadable) {
         DirViewItem *item = static_cast<DirViewItem *>(proxy.mapToSource(selected.at(0)).internalPointer());
@@ -190,7 +188,7 @@ void FolderPage::itemDoubleClicked(const QModelIndex &)
 
 void FolderPage::openFileManager()
 {
-    #ifndef Q_OS_WIN
+    #if !defined Q_OS_WIN && !defined Q_OS_MAC
     const QModelIndexList selected = view->selectedIndexes(false); // Dont need sorted selection here...
     if (1!=selected.size()) {
         return;
@@ -199,7 +197,7 @@ void FolderPage::openFileManager()
 
     DirViewItem *item = static_cast<DirViewItem *>(proxy.mapToSource(selected.at(0)).internalPointer());
     if (DirViewItem::Type_Dir==item->type()) {
-        QProcess::startDetached(QLatin1String("xdg-open"), QStringList() << MPDConnection::self()->getDetails().dir+item->fullName());
+        Utils::openFileManager(MPDConnection::self()->getDetails().dir+item->fullName());
     }
     #endif
 }

@@ -38,7 +38,6 @@
 #if QT_VERSION >= 0x050000
 #include <QUrlQuery>
 #endif
-#include <QProcess>
 #include <QXmlStreamReader>
 #include <QPixmap>
 #include <QFile>
@@ -477,11 +476,7 @@ void ArtistView::show(const QUrl &url)
             }
         }
     } else {
-        #ifdef Q_OS_WIN
-        QProcess::startDetached(QLatin1String("cmd"), QStringList() << QLatin1String("/c") << QLatin1String("start") << url.toString());
-        #else
-        QProcess::startDetached(QLatin1String("xdg-open"), QStringList() << url.toString());
-        #endif
+        Utils::openBrowser(url);
     }
 }
 

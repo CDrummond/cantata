@@ -26,6 +26,7 @@
 
 #include <QWidget>
 #include "view.h"
+#include "config.h"
 
 class UltimateLyricsProvider;
 class QImage;
@@ -36,7 +37,7 @@ class ContextEngine;
 
 class SongView : public View
 {
-  Q_OBJECT
+    Q_OBJECT
 
     enum Mode {
         Mode_Blank,

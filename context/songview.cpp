@@ -105,7 +105,7 @@ static inline QString fixNewLines(const QString &o)
 }
 
 SongView::SongView(QWidget *p)
-    : View(p, QStringList() << i18n("Lyrics:") << i18n("Information:"))
+    : View(p, QStringList() << i18n("Lyrics") << i18n("Information"))
     , scrollTimer(0)
     , songPos(0)
     , currentProvider(-1)

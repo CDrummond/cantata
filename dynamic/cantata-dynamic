@@ -1027,7 +1027,7 @@ sub deleteRules() {
     if ($name eq $active) {
         &control("stop");
     }
-    &sendMessage($req, "0:${origName}}", $clientId);
+    &sendMessage($req, "0:${origName}", $clientId);
     &sendStatus();
     return;
 }

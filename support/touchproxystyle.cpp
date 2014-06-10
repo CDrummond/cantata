@@ -199,7 +199,11 @@ QSize TouchProxyStyle::sizeFromContents(ContentsType type, const QStyleOption *o
             }
         }
     } else if (CT_ToolButton==type && Utils::touchFriendly()) {
-        sz.setWidth(sz.width()*constScaleFactor);
+        if (const QStyleOptionToolButton *tb = qstyleoption_cast<const QStyleOptionToolButton *>(option)) {
+            if (tb->text.isEmpty()) {
+                sz.setWidth(sz.width()*constScaleFactor);
+            }
+        }
     }
     return sz;
 }

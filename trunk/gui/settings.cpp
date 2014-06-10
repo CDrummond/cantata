@@ -514,7 +514,7 @@ bool Settings::wikipediaIntroOnly()
 int Settings::contextBackdrop()
 {
     if (version()<CANTATA_MAKE_VERSION(1, 0, 53)) {
-        return cfg.get("contextBackdrop", true) ? 1 : 1;
+        return cfg.get("contextBackdrop", true) ? 1 : 0;
     }
     return  cfg.get("contextBackdrop", 1);
 }

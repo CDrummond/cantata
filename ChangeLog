@@ -144,6 +144,7 @@
 90. Show track info in context-view as well as artist and album info. Track
     info is stacked behind lyrics.
 91. Add option to re-load lyric from disk.
+92. Add "Open In File Manager" to folders page for windows builds.
 
 1.3.4
 -----

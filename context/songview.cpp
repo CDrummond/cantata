@@ -51,6 +51,7 @@
 #include <QTextStream>
 #include <QTimer>
 #include <QScrollBar>
+#include <QDesktopServices>
 #if QT_VERSION >= 0x050000
 #include <QUrlQuery>
 #endif
@@ -466,7 +467,7 @@ void SongView::abortInfoSearch()
 
 void SongView::showMoreInfo(const QUrl &url)
 {
-    Utils::openBrowser(url);
+    QDesktopServices::openUrl(url);
 }
 
 void SongView::hideSpinner()

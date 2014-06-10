@@ -30,6 +30,8 @@
 #include "support/actioncollection.h"
 #include "support/utils.h"
 #include "stdactions.h"
+#include <QDesktopServices>
+#include <QUrl>
 
 FolderPage::FolderPage(QWidget *p)
     : QWidget(p)
@@ -38,9 +40,7 @@ FolderPage::FolderPage(QWidget *p)
     setupUi(this);
     addToPlayQueue->setDefaultAction(StdActions::self()->addToPlayQueueAction);
     replacePlayQueue->setDefaultAction(StdActions::self()->replacePlayQueueAction);
-    #if !defined Q_OS_MAC
     browseAction = ActionCollection::get()->createAction("openfilemanager", i18n("Open In File Manager"), "system-file-manager");
-    #endif
 
     view->addAction(StdActions::self()->addToPlayQueueAction);
     view->addAction(StdActions::self()->replacePlayQueueAction);
@@ -56,9 +56,7 @@ FolderPage::FolderPage(QWidget *p)
     view->addAction(StdActions::self()->replaygainAction);
     #endif // TAGLIB_FOUND
     #endif
-    #if !defined Q_OS_MAC
     view->addAction(browseAction);
-    #endif
     #ifdef ENABLE_DEVICES_SUPPORT
     QAction *sep=new QAction(this);
     sep->setSeparator(true);
@@ -74,9 +72,7 @@ FolderPage::FolderPage(QWidget *p)
     connect(view, SIGNAL(searchItems()), this, SLOT(searchItems()));
     connect(view, SIGNAL(itemsSelected(bool)), this, SLOT(controlActions()));
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
-    #if !defined Q_OS_MAC
     connect(browseAction, SIGNAL(triggered(bool)), this, SLOT(openFileManager()));
-    #endif
     connect(MPDConnection::self(), SIGNAL(updatingFileList()), this, SLOT(showSpinner()));
     connect(MPDConnection::self(), SIGNAL(updatedFileList()), this, SLOT(hideSpinner()));
     connect(MPDConnection::self(), SIGNAL(updatingDatabase()), this, SLOT(showSpinner()));
@@ -164,13 +160,11 @@ void FolderPage::controlActions()
     #endif
     #endif // TAGLIB_FOUND
 
-    #if !defined Q_OS_MAC
     browseAction->setEnabled(false);
     if (1==selected.count() && MPDConnection::self()->getDetails().dirReadable) {
         DirViewItem *item = static_cast<DirViewItem *>(proxy.mapToSource(selected.at(0)).internalPointer());
         browseAction->setEnabled(DirViewItem::Type_Dir==item->type());
     }
-    #endif
 }
 
 void FolderPage::itemDoubleClicked(const QModelIndex &)
@@ -188,18 +182,15 @@ void FolderPage::itemDoubleClicked(const QModelIndex &)
 
 void FolderPage::openFileManager()
 {
-    #if !defined Q_OS_MAC
     const QModelIndexList selected = view->selectedIndexes(false); // Dont need sorted selection here...
     if (1!=selected.size()) {
         return;
     }
 
-
     DirViewItem *item = static_cast<DirViewItem *>(proxy.mapToSource(selected.at(0)).internalPointer());
     if (DirViewItem::Type_Dir==item->type()) {
-        Utils::openFileManager(MPDConnection::self()->getDetails().dir+item->fullName());
+        QDesktopServices::openUrl(QUrl::fromLocalFile(MPDConnection::self()->getDetails().dir+item->fullName()));
     }
-    #endif
 }
 
 QList<Song> FolderPage::selectedSongs(EmptySongMod esMod, bool allowPlaylists) const

@@ -38,6 +38,7 @@
 #include <QMenu>
 #include <QTimer>
 #include <QCoreApplication>
+#include <QDesktopServices>
 #include <QDebug>
 
 const QLatin1String AlbumView::constCacheDir("albums/");
@@ -159,7 +160,7 @@ void AlbumView::playSong(const QUrl &url)
     if (QLatin1String("cantata")==url.scheme()) {
         emit playSong(url.path().mid(1)); // Remove leading /
     } else {
-        Utils::openBrowser(url);
+        QDesktopServices::openUrl(url);
     }
 }
 

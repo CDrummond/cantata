@@ -43,6 +43,7 @@
 #include <QFile>
 #include <QMenu>
 #include <QTimer>
+#include <QDesktopServices>
 
 static const char *constNameKey="name";
 
@@ -476,7 +477,7 @@ void ArtistView::show(const QUrl &url)
             }
         }
     } else {
-        Utils::openBrowser(url);
+        QDesktopServices::openUrl(url);
     }
 }
 

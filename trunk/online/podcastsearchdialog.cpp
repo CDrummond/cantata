@@ -52,6 +52,7 @@
 #include <QImage>
 #include <QBuffer>
 #include <QCoreApplication>
+#include <QDesktopServices>
 #if QT_VERSION >= 0x050000
 #include <QUrlQuery>
 #endif
@@ -313,7 +314,7 @@ void PodcastPage::jobFinished()
 
 void PodcastPage::openLink(const QUrl &url)
 {
-    Utils::openBrowser(url);
+    QDesktopServices::openUrl(url);
 }
 
 PodcastSearchPage::PodcastSearchPage(QWidget *p, const QString &n, const QString &i, const QUrl &qu, const QString &qk, const QStringList &other)

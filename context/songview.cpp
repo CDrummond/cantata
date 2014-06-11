@@ -189,7 +189,7 @@ void SongView::update()
             if (mpdExists) {
                 QFile::remove(mpdName);
             }
-            if (cacheExists && QFile::exists(cacheName)) {
+            if (cacheExists) {
                 QFile::remove(cacheName);
             }
             break;

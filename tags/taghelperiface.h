@@ -29,6 +29,7 @@
 #include <QString>
 #include <QMutex>
 #include <QSemaphore>
+#include <QMap>
 
 class QLocalServer;
 class QLocalSocket;
@@ -66,6 +67,7 @@ public:
     int updateReplaygain(const QString &fileName, const Tags::ReplayGain &rg);
     int embedImage(const QString &fileName, const QByteArray &cover);
     QString oggMimeType(const QString &fileName);
+    QMap<QString, QString> readAll(const QString &fileName);
 
 private:
     bool helperIsRunning();

@@ -214,7 +214,8 @@ void SearchPage::controlActions()
 void SearchPage::setSearchCategories()
 {
     int newState=(MPDConnection::self()->composerTagSupported() ? State_ComposerSupported : 0)|
-                 (MPDConnection::self()->commentTagSupported() ? State_CommmentSupported : 0);
+                 (MPDConnection::self()->commentTagSupported() ? State_CommmentSupported : 0)|
+                 (MPDConnection::self()->performerTagSupported() ? State_PerformerSupported : 0);;
 
     if (state==newState) {
         // No changes to be made!
@@ -229,7 +230,9 @@ void SearchPage::setSearchCategories()
     if (state&State_ComposerSupported) {
         categories << QPair<QString, QString>(i18n("Composer:"), QLatin1String("composer"));
     }
-
+    if (state&State_PerformerSupported) {
+        categories << QPair<QString, QString>(i18n("Performer:"), QLatin1String("performer"));
+    }
     categories << QPair<QString, QString>(i18n("Album:"), QLatin1String("album"))
                << QPair<QString, QString>(i18n("Title:"), QLatin1String("title"))
                << QPair<QString, QString>(i18n("Genre:"), QLatin1String("genre"));

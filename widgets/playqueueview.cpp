@@ -167,6 +167,7 @@ PlayQueueListView::PlayQueueListView(PlayQueueView *parent)
     : ListView(parent)
     , view(parent)
 {
+    setDragDropMode(QAbstractItemView::DragDrop);
     setItemDelegate(new PlayQueueListViewItemDelegate(this));
 }
 

@@ -71,7 +71,8 @@ private:
     enum State
     {
         State_ComposerSupported=0x01,
-        State_CommmentSupported=0x02
+        State_CommmentSupported=0x02,
+        State_PerformerSupported=0x04
     };
 
     int state;

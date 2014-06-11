@@ -206,6 +206,7 @@ public:
     const QSet<QString> & tags() const { return tagTypes; }
     bool composerTagSupported() const { return tagTypes.contains(QLatin1String("Composer")); }
     bool commentTagSupported() const { return tagTypes.contains(QLatin1String("Comment")); }
+    bool performerTagSupported() const { return tagTypes.contains(QLatin1String("Performer")); }
 
     long version() const { return ver; }
     static bool isPlaylist(const QString &file);

@@ -36,6 +36,7 @@
 #include <QString>
 #include <QStringList>
 #include <QTextCodec>
+#include <taglib/tpropertymap.h>
 #include <taglib/fileref.h>
 #include <taglib/aifffile.h>
 #ifdef TAGLIB_ASF_FOUND
@@ -1306,6 +1307,30 @@ QString oggMimeType(const QString &fileName)
     }
     #endif
     return QLatin1String("audio/ogg");
+}
+
+QMap<QString, QString> readAll(const QString &fileName)
+{
+    QMap<QString, QString> allTags;
+    TagLib::FileRef fileref = getFileRef(fileName);
+    if (fileref.isNull()) {
+        return allTags;
+    }
+
+    TagLib::PropertyMap properties=fileref.file()->properties();
+    TagLib::PropertyMap::ConstIterator it = properties.begin();
+    TagLib::PropertyMap::ConstIterator end = properties.end();
+    for (; it!=end; ++it) {
+        allTags.insert(tString2QString(it->first.upper()), tString2QString(it->second.toString(", ")));
+    }
+
+    if (fileref.audioProperties()) {
+        TagLib::AudioProperties *properties = fileref.audioProperties();
+        allTags.insert(QLatin1String("X-AUDIO:BITRATE"), QString("%1 kb/s").arg(properties->bitrate()));
+        allTags.insert(QLatin1String("X-AUDIO:SAMPLERATE"), QString("%1 Hz").arg(properties->sampleRate()));
+        allTags.insert(QLatin1String("X-AUDIO:CHANNELS"), QString::number(properties->channels()));
+    }
+    return allTags;
 }
 
 QString id3Genre(int id)

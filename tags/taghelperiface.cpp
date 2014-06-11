@@ -230,6 +230,21 @@ QString TagHelperIface::oggMimeType(const QString &fileName)
     return resp;
 }
 
+QMap<QString, QString> TagHelperIface::readAll(const QString &fileName)
+{
+    DBUG << fileName;
+    QMap<QString, QString> resp;
+    QByteArray message;
+    QDataStream outStream(&message, QIODevice::WriteOnly);
+    outStream << QString(__FUNCTION__) << fileName;
+    Reply reply=sendMessage(message);
+    if (reply.status) {
+        QDataStream inStream(reply.data);
+        inStream >> resp;
+    }
+    return resp;
+}
+
 TagHelperIface::Reply TagHelperIface::sendMessage(const QByteArray &msg)
 {
     QMutexLocker locker(&mutex);

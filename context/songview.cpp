@@ -89,14 +89,14 @@ static QString lyricsCacheFileName(const Song &song, bool createDir=false)
     return dir+Covers::encodeName(title)+SongView::constExtension;
 }
 
-static inline QString mpdFilePath(const QString &songFile)
+static inline QString mpdLyricsFilePath(const QString &songFile)
 {
     return Utils::changeExtension(MPDConnection::self()->getDetails().dir+songFile, SongView::constExtension);
 }
 
-static inline QString mpdFilePath(const Song &song)
+static inline QString mpdLyricsFilePath(const Song &song)
 {
-    return mpdFilePath(song.filePath());
+    return mpdLyricsFilePath(song.filePath());
 }
 
 static inline QString fixNewLines(const QString &o)
@@ -104,8 +104,24 @@ static inline QString fixNewLines(const QString &o)
     return QString(o).replace(QLatin1String("\n\n\n"), QLatin1String("\n\n")).replace("\n", "<br/>");
 }
 
+static QString actualFile(const Song &song)
+{
+    QString songFile=song.filePath();
+
+    if (song.isCantataStream()) {
+        #if QT_VERSION < 0x050000
+        QUrl u(songFile);
+        #else
+        QUrl qu(songFile);
+        QUrlQuery u(qu);
+        #endif
+        songFile=u.hasQueryItem("file") ? u.queryItemValue("file") : QString();
+    }
+    return songFile;
+}
+
 SongView::SongView(QWidget *p)
-    : View(p, QStringList() << i18n("Lyrics") << i18n("Information"))
+    : View(p, QStringList() << i18n("Lyrics") << i18n("Information") << i18n("Tags"))
     , scrollTimer(0)
     , songPos(0)
     , currentProvider(-1)
@@ -114,6 +130,7 @@ SongView::SongView(QWidget *p)
     , job(0)
     , currentProv(0)
     , infoNeedsUpdating(true)
+    , tagsNeedsUpdating(true)
 {
     scrollAction = ActionCollection::get()->createAction("scrolllyrics", i18n("Scroll Lyrics"), "go-down");
     refreshAction = ActionCollection::get()->createAction("refreshlyrics", i18n("Refresh Lyrics"), "view-refresh");
@@ -390,13 +407,18 @@ void SongView::scroll()
 
 void SongView::curentViewChanged()
 {
-    if (infoNeedsUpdating) {
-        loadInfo();
+    switch (currentView()) {
+    case Page_Information: loadInfo(); break;
+    case Page_Tags:        loadTags(); break;
+    default:                           break;
     }
 }
 
 void SongView::loadInfo()
 {
+    if (!infoNeedsUpdating) {
+        return;
+    }
     infoNeedsUpdating=false;
     foreach (const QString &lang, engine->getLangs()) {
         QString prefix=engine->getPrefix(lang);
@@ -417,6 +439,114 @@ void SongView::loadInfo()
         }
     }
     searchForInfo();
+}
+
+static QString addEntry(const QString &key, const QString &value)
+{
+    return value.isEmpty() ? QString() : QString("<tr><td>%1:&nbsp;</td><td>%2</td></tr>").arg(key).arg(value);
+}
+
+void SongView::loadTags()
+{
+    if (!tagsNeedsUpdating) {
+        return;
+    }
+    tagsNeedsUpdating=false;
+
+    QString tagInfo;
+    #ifdef TAGLIB_FOUND
+    if (!currentSong.isStandardStream() && !MPDConnection::self()->getDetails().dir.startsWith(QLatin1String("http:/"))) {
+        QString songFile=actualFile(currentSong);
+        if (!songFile.isEmpty()) {
+            static QMap<QString, QString> tagMap;
+            static QMap<QString, QString> tagTimeMap;
+            static const QString constTitle=QLatin1String("TITLE");
+            static const QString constPerformer=QLatin1String("PERFORMER:");
+            static const QString constAudio=QLatin1String("X-AUDIO:");
+
+            if (tagMap.isEmpty()) {
+                tagMap.insert(QLatin1String("ALBUM"), i18n("Album"));
+                tagMap.insert(QLatin1String("ARTIST"), i18n("Artist"));
+                tagMap.insert(QLatin1String("ALBUMARTIST"), i18n("Album artist"));
+                tagMap.insert(QLatin1String("SUBTITLE"), i18n("Subtitle"));
+                tagMap.insert(QLatin1String("TRACKNUMBER"), i18n("Track number"));
+                tagMap.insert(QLatin1String("DISCNUMBER"), i18n("Disc number"));
+                tagMap.insert(QLatin1String("DATE"), i18n("Date"));
+                tagMap.insert(QLatin1String("ORIGINALDATE"), i18n("Original date"));
+                tagMap.insert(QLatin1String("GENRE"), i18n("Genre"));
+                tagMap.insert(QLatin1String("COMMENT"), i18n("Comment"));
+                tagMap.insert(QLatin1String("TITLESORT"), i18n("Title sort"));
+                tagMap.insert(QLatin1String("ALBUMSORT"), i18n("Album sort"));
+                tagMap.insert(QLatin1String("ARTISTSORT"), i18n("Artist sort"));
+                tagMap.insert(QLatin1String("ALBUMARTISTSORT"), i18n("Album artist sort"));
+                tagMap.insert(QLatin1String("COMPOSER"), i18n("Composer"));
+                tagMap.insert(QLatin1String("LYRICIST"), i18n("Lyricist"));
+                tagMap.insert(QLatin1String("CONDUCTOR"), i18n("Conductor"));
+                tagMap.insert(QLatin1String("REMIXER"), i18n("Remixer"));
+                tagMap.insert(QLatin1String("COPYRIGHT"), i18n("Copyright"));
+                tagMap.insert(QLatin1String("ENCODEDBY"), i18n("Encoded by"));
+                tagMap.insert(QLatin1String("MOOD"), i18n("Mood"));
+                tagMap.insert(QLatin1String("MEDIA"), i18n("Media"));
+                tagMap.insert(QLatin1String("LABEL"), i18n("Label"));
+                tagMap.insert(QLatin1String("CATALOGNUMBER"), i18n("Catalogue number"));
+                tagMap.insert(QLatin1String("ENCODING"), i18n("Encoder"));
+                tagMap.insert(QLatin1String("REPLAYGAIN_ALBUM_GAIN"), i18n("ReplayGain album gain"));
+                tagMap.insert(QLatin1String("REPLAYGAIN_ALBUM_PEAK"), i18n("ReplayGain album peak"));
+                tagMap.insert(QLatin1String("REPLAYGAIN_TRACK_GAIN"), i18n("ReplayGain track gain"));
+                tagMap.insert(QLatin1String("REPLAYGAIN_TRACK_PEAK"), i18n("ReplayGain track peak"));
+                tagMap.insert(constAudio+QLatin1String("BITRATE"), i18n("Bitrate"));
+                tagMap.insert(constAudio+QLatin1String("SAMPLERATE"), i18n("Sample rate"));
+                tagMap.insert(constAudio+QLatin1String("CHANNELS"), i18n("Channels"));
+
+                tagTimeMap.insert(QLatin1String("TAGGING TIME"), i18n("Tagging time"));
+            }
+
+            QMap<QString, QString> allTags=Tags::readAll(MPDConnection::self()->getDetails().dir+actualFile(currentSong));
+
+            if (!allTags.isEmpty()) {
+                QMap<QString, QString>::ConstIterator it=allTags.constBegin();
+                QMap<QString, QString>::ConstIterator end=allTags.constEnd();
+                bool addedAudioSep=false;
+
+                for (; it!=end; ++it) {
+                    if (it.key()==constTitle) {
+                        continue;
+                    }
+                    if (tagInfo.isEmpty()) {
+                        tagInfo=QLatin1String("<table>");
+                    } else if (!addedAudioSep && it.key().startsWith(constAudio)) {
+                        addedAudioSep=true;
+                        tagInfo+=QLatin1String("<tr/>");
+                    }
+                    if (tagMap.contains(it.key())) {
+                        tagInfo+=addEntry(tagMap[it.key()], it.value());
+                    } else if (tagTimeMap.contains(it.key())) {
+                        tagInfo+=addEntry(tagTimeMap[it.key()], QString(it.value()).replace("T", " "));
+                    } else if (it.key().startsWith(constPerformer)) {
+                        tagInfo+=addEntry(i18n("Performer (%1)", Song::capitalize(it.key().mid(constPerformer.length()))), it.value());
+                    } else {
+                        tagInfo+=addEntry(Song::capitalize(it.key()), it.value());
+                    }
+                }
+            }
+        }
+    }
+    #endif
+
+    if (tagInfo.isEmpty()) {
+        tagInfo=QLatin1String("<table>");
+        tagInfo+=addEntry(i18n("Artist"), currentSong.artist);
+        tagInfo+=addEntry(i18n("Album artist"), currentSong.albumartist);
+        tagInfo+=addEntry(i18n("Composer"), currentSong.composer);
+        //tagInfo+=addEntry(i18n("Performer"), currentSong.performer);
+        tagInfo+=addEntry(i18n("Album"), currentSong.album);
+        tagInfo+=addEntry(i18n("Disc number"), 0==currentSong.disc ? QString() : QString::number(currentSong.disc));
+        tagInfo+=addEntry(i18n("Track number"), 0==currentSong.track ? QString() : QString::number(currentSong.track));
+        tagInfo+=addEntry(i18n("Genre"), currentSong.genres().join(", "));
+        tagInfo+=addEntry(i18n("Year"), 0==currentSong.track ? QString() : QString::number(currentSong.year));
+    }
+    tagInfo+=QLatin1String("</table>");
+    setHtml(tagInfo, Page_Tags);
 }
 
 void SongView::refreshInfo()
@@ -491,7 +621,7 @@ void SongView::abort()
         text->setText(QString());
         // Set lyrics file anyway - so that editing is enabled!
         lyricsFile=Settings::self()->storeLyricsInMpdDir() && !currentSong.isNonMPD()
-                ? mpdFilePath(currentSong)
+                ? mpdLyricsFilePath(currentSong)
                 : lyricsCacheFileName(currentSong);
         setMode(Mode_Display);
     }
@@ -507,7 +637,7 @@ void SongView::update(const Song &s, bool force)
 
     if (s.isEmpty() || s.title.isEmpty() || s.artist.isEmpty()) {
         currentSong=s;
-        infoNeedsUpdating=false;
+        infoNeedsUpdating=tagsNeedsUpdating=false;
         clear();
         abort();
         return;
@@ -538,12 +668,9 @@ void SongView::update(const Song &s, bool force)
             return;
         }
 
+        infoNeedsUpdating=tagsNeedsUpdating=true;
         setHeader(song.title);
-        if (Page_Information==currentView()) {
-            loadInfo();
-        } else {
-            infoNeedsUpdating=true;
-        }
+        curentViewChanged();
 
         // Only reset the provider if the refresh was an automatic one or if the song has
         // changed. Otherwise we'll keep the provider so the user can cycle through the lyrics
@@ -553,19 +680,8 @@ void SongView::update(const Song &s, bool force)
         }
 
         if (!MPDConnection::self()->getDetails().dir.isEmpty() && !song.file.isEmpty() && !song.isNonMPD()) {
-            QString songFile=song.filePath();
-
-            if (song.isCantataStream()) {
-                #if QT_VERSION < 0x050000
-                QUrl u(songFile);
-                #else
-                QUrl qu(songFile);
-                QUrlQuery u(qu);
-                #endif
-                songFile=u.hasQueryItem("file") ? u.queryItemValue("file") : QString();
-            }
-
-            QString mpdLyrics=mpdFilePath(songFile);
+            QString songFile=actualFile(song);
+            QString mpdLyrics=mpdLyricsFilePath(songFile);
 
             if (MPDConnection::self()->getDetails().dir.startsWith(QLatin1String("http:/"))) {
                 QUrl url(mpdLyrics);
@@ -661,7 +777,7 @@ void SongView::lyricsReady(int id, QString lyrics)
             text->setText(fixNewLines(plain));
             lyricsFile=QString();
             if (! ( Settings::self()->storeLyricsInMpdDir() && !currentSong.isNonMPD() &&
-                    saveFile(mpdFilePath(currentSong))) ) {
+                    saveFile(mpdLyricsFilePath(currentSong))) ) {
                 saveFile(lyricsCacheFileName(currentSong, true));
             }
             setMode(Mode_Display);
@@ -686,7 +802,7 @@ bool SongView::saveFile(const QString &fileName)
 QString SongView::mpdFileName() const
 {
     return currentSong.file.isEmpty() || MPDConnection::self()->getDetails().dir.isEmpty() || currentSong.isNonMPD()
-            ? QString() : mpdFilePath(currentSong);
+            ? QString() : mpdLyricsFilePath(currentSong);
 }
 
 QString SongView::cacheFileName() const
@@ -706,7 +822,7 @@ void SongView::getLyrics()
         currentProvider=-1;
         // Set lyrics file anyway - so that editing is enabled!
         lyricsFile=Settings::self()->storeLyricsInMpdDir() && !currentSong.isNonMPD()
-                ? mpdFilePath(currentSong)
+                ? mpdLyricsFilePath(currentSong)
                 : lyricsCacheFileName(currentSong);
         setMode(Mode_Display);
     }
@@ -726,7 +842,7 @@ void SongView::setMode(Mode m)
     saveAction->setEnabled(Mode_Edit==m);
     cancelEditAction->setEnabled(Mode_Edit==m);
     editAction->setEnabled(editable);
-    delAction->setEnabled(editable && !MPDConnection::self()->getDetails().dir.isEmpty() && QFile::exists(mpdFilePath(currentSong)));
+    delAction->setEnabled(editable && !MPDConnection::self()->getDetails().dir.isEmpty() && QFile::exists(mpdLyricsFilePath(currentSong)));
     refreshAction->setEnabled(editable);
     setEditable(Mode_Edit==m);
     if (scrollAction->isChecked()) {

@@ -166,8 +166,8 @@ QByteArray HttpServer::encodeUrl(const Song &s)
     if (!s.albumartist.isEmpty()) {
         query.addQueryItem("albumartist", s.albumartist);
     }
-    if (!s.composer.isEmpty()) {
-        query.addQueryItem("composer", s.composer);
+    if (!s.composer().isEmpty()) {
+        query.addQueryItem("composer", s.composer());
     }
     if (!s.title.isEmpty()) {
         query.addQueryItem("title", s.title);
@@ -255,7 +255,7 @@ Song HttpServer::decodeUrl(const QUrl &url) const
             s.albumartist=q.queryItemValue("albumartist");
         }
         if (q.hasQueryItem("composer")) {
-            s.composer=q.queryItemValue("composer");
+            s.setComposer(q.queryItemValue("composer"));
         }
         if (q.hasQueryItem("title")) {
             s.title=q.queryItemValue("title");

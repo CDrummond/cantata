@@ -97,7 +97,7 @@ public:
     virtual ~MusicLibraryItemPodcastEpisode() { }
 
     const QString & published();
-    const QString & localPath() { return m_song.podcastLocalPath(); }
+    QString localPath() { return m_song.podcastLocalPath(); }
     void setLocalPath(const QString &l) { m_song.setPodcastLocalPath(l); }
     void setDownloadProgress(int prog) { downloadProg=prog; }
     int downloadProgress() const { return downloadProg; }

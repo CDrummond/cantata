@@ -66,6 +66,8 @@ static const QByteArray constAlbumKey("Album: ");
 static const QByteArray constArtistKey("Artist: ");
 static const QByteArray constAlbumArtistKey("AlbumArtist: ");
 static const QByteArray constComposerKey("Composer: ");
+static const QByteArray constPerformerKey("Performer: ");
+static const QByteArray constCommentKey("Comment: ");
 static const QByteArray constTitleKey("Title: ");
 static const QByteArray constTrackKey("Track: ");
 static const QByteArray constIdKey("Id: ");
@@ -271,7 +273,7 @@ Song MPDParseUtils::parseSong(const QList<QByteArray> &lines, Location location)
         } else if (line.startsWith(constAlbumArtistKey)) {
             song.albumartist = QString::fromUtf8(line.mid(constAlbumArtistKey.length()));
         } else if (line.startsWith(constComposerKey)) {
-            song.composer = QString::fromUtf8(line.mid(constComposerKey.length()));
+            song.extra[Song::Composer] = QString::fromUtf8(line.mid(constComposerKey.length()));
         } else if (line.startsWith(constTitleKey)) {
             song.title =QString::fromUtf8(line.mid(constTitleKey.length()));
         } else if (line.startsWith(constTrackKey)) {
@@ -295,10 +297,16 @@ Song MPDParseUtils::parseSong(const QList<QByteArray> &lines, Location location)
             song.file = QString::fromUtf8(line.mid(constPlaylistKey.length()));
             song.title=Utils::getFile(song.file);
             song.type=Song::Playlist;
-        } else if (Loc_PlayQueue==location && line.startsWith(constPriorityKey)) {
-            song.priority = line.mid(constPriorityKey.length()).toUInt();
-        } else if (line.startsWith(constAlbumId)) {
+        }  else if (line.startsWith(constAlbumId)) {
             song.mbAlbumId = line.mid(constAlbumId.length());
+        } else if (Loc_PlayQueue==location) {
+            if (line.startsWith(constPriorityKey)) {
+                song.priority = line.mid(constPriorityKey.length()).toUInt();
+            } else if (line.startsWith(constPerformerKey)) {
+                song.extra[Song::Performer] = QString::fromUtf8(line.mid(constPerformerKey.length()));
+            } else if (line.startsWith(constCommentKey)) {
+                song.extra[Song::Comment] = QString::fromUtf8(line.mid(constCommentKey.length()));
+            }
         }
     }
 
@@ -577,9 +585,9 @@ void MPDParseUtils::parseLibraryItems(const QByteArray &data, const QString &mpd
                                     s.artist=albumSong.artist;
                                     DBUG << "Get artist from album" << albumSong.artist;
                                 }
-                                if (s.composer.isEmpty() && !albumSong.composer.isEmpty()) {
-                                    s.composer=albumSong.composer;
-                                    DBUG << "Get composer from album" << albumSong.composer;
+                                if (s.composer().isEmpty() && !albumSong.composer().isEmpty()) {
+                                    s.setComposer(albumSong.composer());
+                                    DBUG << "Get composer from album" << albumSong.composer();
                                 }
                                 if (s.album.isEmpty() && !albumSong.album.isEmpty()) {
                                     s.album=albumSong.album;

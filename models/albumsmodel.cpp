@@ -766,13 +766,13 @@ const Song & AlbumsModel::AlbumItem::coverSong()
     if (cSong.isEmpty() && songs.count()) {
         SongItem *firstSong=songs.first();
         cSong.artist=firstSong->artist;
-        cSong.albumartist=Song::useComposer() && !firstSong->composer.isEmpty()
+        cSong.albumartist=Song::useComposer() && !firstSong->composer().isEmpty()
                 ? firstSong->albumArtist() : artist;
         cSong.album=album;
         cSong.year=year;
         cSong.file=firstSong->file;
         cSong.type=type;
-        cSong.composer=firstSong->composer;
+        cSong.setComposer(firstSong->composer());
         cSong.mbAlbumId=firstSong->mbAlbumId;
     }
     return cSong;

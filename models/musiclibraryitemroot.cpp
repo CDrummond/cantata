@@ -189,7 +189,7 @@ void MusicLibraryItemRoot::getDetails(QSet<QString> &artists, QSet<QString> &alb
             const Song &s=static_cast<const MusicLibraryItemSong *>(child)->song();
             artists.insert(s.artist);
             albumArtists.insert(s.albumArtist());
-            composers.insert(s.composer);
+            composers.insert(s.composer());
             albums.insert(s.album);
             if (!s.genre.isEmpty()) {
                 genres.insert(s.genre);
@@ -200,7 +200,7 @@ void MusicLibraryItemRoot::getDetails(QSet<QString> &artists, QSet<QString> &alb
                     const Song &s=static_cast<const MusicLibraryItemSong *>(song)->song();
                     artists.insert(s.artist);
                     albumArtists.insert(s.albumArtist());
-                    composers.insert(s.composer);
+                    composers.insert(s.composer());
                     albums.insert(s.album);
                     if (!s.genre.isEmpty()) {
                         genres.insert(s.genre);
@@ -379,8 +379,8 @@ void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, const QDateTime &date
                 if (supportsAlbumArtist && track->song().albumartist!=artistName) {
                     writer.writeAttribute(constAlbumArtistAttribute, track->song().albumartist);
                 }
-                if (!track->song().composer.isEmpty()) {
-                    writer.writeAttribute(constComposerAttribute, track->song().composer);
+                if (!track->song().composer().isEmpty()) {
+                    writer.writeAttribute(constComposerAttribute, track->song().composer());
                 }
                 if (!track->song().genre.isEmpty() && track->song().genre!=albumGenre && track->song().genre!=Song::unknown()) {
                     writer.writeAttribute(constGenreAttribute, track->song().genre);
@@ -487,7 +487,7 @@ quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime 
                     song.artist=song.albumartist=attributes.value(constNameAttribute).toString();
                 } else {
                     song.artist=song.albumartist=actual;
-                    song.composer=attributes.value(constNameAttribute).toString();
+                    song.setComposer(attributes.value(constNameAttribute).toString());
                 }
                 artistItem = createArtist(song);
             } else if (constAlbumElement==element) {
@@ -547,7 +547,10 @@ quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime 
                             song.albumartist=artistItem->actualArtist();
                         }
                     }
-                    song.composer=attributes.value(constComposerAttribute).toString();
+                    QString composer=attributes.value(constComposerAttribute).toString();
+                    if (!composer.isEmpty()) {
+                        song.setComposer(composer);
+                    }
 
                     // Fix cache error - where MusicLibraryItemSong::data() was saved as name instead of song.name!!!!
                     if (!song.albumartist.isEmpty() && !song.artist.isEmpty() && song.albumartist!=song.artist &&
@@ -598,7 +601,7 @@ quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime 
                     }
                 }
                 song.time=song.track=0;
-                song.composer=QString();
+                song.clearExtra();
             }
         }
     }

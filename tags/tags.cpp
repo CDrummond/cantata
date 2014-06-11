@@ -275,7 +275,7 @@ static void readID3v2Tags(TagLib::ID3v2::Tag *tag, Song *song, ReplayGain *rg, Q
         const TagLib::ID3v2::FrameList &composer = tag->frameListMap()["TCOM"];
 
         if (!composer.isEmpty()) {
-            song->composer=tString2QString(composer.front()->toString());
+            song->setComposer(tString2QString(composer.front()->toString()));
         }
 
         const TagLib::ID3v2::FrameList &disc = tag->frameListMap()["TPOS"];
@@ -427,7 +427,7 @@ static bool writeID3v2Tags(TagLib::ID3v2::Tag *tag, const Song &from, const Song
         if (from.albumartist!=to.albumartist && updateID3v2Tag(tag, "TPE2", to.albumartist)) {
             changed=true;
         }
-        if (from.composer!=to.composer && updateID3v2Tag(tag, "TCOM", to.composer)) {
+        if (from.composer()!=to.composer() && updateID3v2Tag(tag, "TCOM", to.composer())) {
             changed=true;
         }
         if (from.disc!=to.disc&& updateID3v2Tag(tag, "TPOS", 0==to.disc ? QString() : QString::number(to.disc))) {
@@ -494,7 +494,7 @@ static void readAPETags(TagLib::APE::Tag *tag, Song *song, ReplayGain *rg)
             song->albumartist=tString2QString(map["Album Artist"].toString());
         }
         if (map.contains("Composer")) {
-            song->composer=tString2QString(map["Composer"].toString());
+            song->setComposer(tString2QString(map["Composer"].toString()));
         }
         if (map.contains("Disc")) {
             song->disc=splitDiscNumber(tString2QString(map["Disc"].toString())).first;
@@ -549,7 +549,7 @@ static bool writeAPETags(TagLib::APE::Tag *tag, const Song &from, const Song &to
         if (from.albumartist!=to.albumartist && updateAPETag(tag, "Album Artist", to.albumartist)) {
             changed=true;
         }
-        if (from.composer!=to.composer && updateAPETag(tag, "Composer", to.composer)) {
+        if (from.composer()!=to.composer() && updateAPETag(tag, "Composer", to.composer())) {
             changed=true;
         }
         if (from.disc!=to.disc && updateAPETag(tag, "Disc", 0==to.disc ? QString() : QString::number(to.disc))) {
@@ -606,7 +606,7 @@ static void readVorbisCommentTags(TagLib::Ogg::XiphComment *tag, Song *song, Rep
         }
         str=readVorbisTag(tag, "COMPOSER");
         if (str.isEmpty()) {
-            song->composer=tString2QString(str);
+            song->setComposer(tString2QString(str));
         }
         str=readVorbisTag(tag, "DISCNUMBER");
         if (str.isEmpty()) {
@@ -686,7 +686,7 @@ static bool writeVorbisCommentTags(TagLib::Ogg::XiphComment *tag, const Song &fr
         if (from.albumartist!=to.albumartist && updateVorbisCommentTag(tag, "ALBUMARTIST", to.albumartist)) {
             changed=true;
         }
-        if (from.composer!=to.composer && updateVorbisCommentTag(tag, "COMPOSER", to.composer)) {
+        if (from.composer()!=to.composer() && updateVorbisCommentTag(tag, "COMPOSER", to.composer())) {
             changed=true;
         }
         if (from.disc!=to.disc && updateVorbisCommentTag(tag, "DISCNUMBER", 0==to.disc ? QString() : QString::number(to.disc))) {
@@ -741,7 +741,7 @@ static void readMP4Tags(TagLib::MP4::Tag *tag, Song *song, ReplayGain *rg, QImag
             song->albumartist=tString2QString(map["aART"].toStringList().front());
         }
         if (map.contains("\xA9wrt") && !map["\xA9wrt"].toStringList().isEmpty()) {
-            song->composer=tString2QString(map["\xA9wrt"].toStringList().front());
+            song->setComposer(tString2QString(map["\xA9wrt"].toStringList().front()));
         }
         if (map.contains("disk")) {
             song->disc=map["disk"].toIntPair().first;
@@ -805,7 +805,7 @@ static bool writeMP4Tags(TagLib::MP4::Tag *tag, const Song &from, const Song &to
         if (from.albumartist!=to.albumartist && updateMP4Tag(tag, "aART", to.albumartist)) {
             changed=true;
         }
-        if (from.composer!=to.composer && updateMP4Tag(tag, "\xA9wrt", to.composer)) {
+        if (from.composer()!=to.composer() && updateMP4Tag(tag, "\xA9wrt", to.composer())) {
             changed=true;
         }
         if (from.disc!=to.disc && updateMP4Tag(tag, "disk", 0==to.disc ? QString() : QString::number(to.disc))) {
@@ -867,7 +867,7 @@ static void readASFTags(TagLib::ASF::Tag *tag, Song *song, ReplayGain *rg)
             song->albumartist=tString2QString(map["WM/AlbumTitle"].front().toString());
         }
         if (map.contains("WM/Composer") && !map["WM/Composer"].isEmpty()) {
-            song->composer=tString2QString(map["WM/Composer"].front().toString());
+            song->setComposer(tString2QString(map["WM/Composer"].front().toString()));
         }
         if (map.contains("WM/PartOfSet") && !map["WM/PartOfSet"].isEmpty()) {
             song->albumartist=map["WM/PartOfSet"].front().toUInt();
@@ -908,7 +908,7 @@ static bool writeASFTags(TagLib::ASF::Tag *tag, const Song &from, const Song &to
         if (from.albumartist!=to.albumartist && updateASFTag(tag, "WM/AlbumTitle", to.albumartist)) {
             changed=true;
         }
-        if (from.composer!=to.composer && updateASFTag(tag, "WM/Composer", to.composer)) {
+        if (from.composer()!=to.composer() && updateASFTag(tag, "WM/Composer", to.composer())) {
             changed=true;
         }
         if (from.disc!=to.disc && updateASFTag(tag, "WM/PartOfSet", 0==to.disc ? QString() : QString::number(to.disc))) {

@@ -69,6 +69,7 @@ KeyEventHandler::KeyEventHandler(QAbstractItemView *v, QAction *a)
     , view(v)
     , deleteAct(a)
     , interceptBackspace(qobject_cast<ListView *>(view))
+    , pressedKey(-1)
 {
 }
 
@@ -82,8 +83,10 @@ bool KeyEventHandler::eventFilter(QObject *obj, QEvent *event)
                     if (deleteAct) {
                         deleteAct->trigger();
                     }
-                } else if (!keyEvent->text().isEmpty()) {
+                } else if (pressedKey==keyEvent->key() && !keyEvent->text().isEmpty()) {
                     emit keyPressed(keyEvent->text());
+                } else {
+                    pressedKey=-1;
                 }
             }
             return true;
@@ -91,6 +94,8 @@ bool KeyEventHandler::eventFilter(QObject *obj, QEvent *event)
             QKeyEvent *keyEvent=static_cast<QKeyEvent *>(event);
             if (interceptBackspace && Qt::Key_Backspace==keyEvent->key() && Qt::NoModifier==keyEvent->modifiers()) {
                 emit escPressed();
+            } else {
+                pressedKey=keyEvent->key();
             }
         }
     }

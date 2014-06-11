@@ -55,6 +55,7 @@ protected:
     QAbstractItemView *view;
     QAction *deleteAct;
     bool interceptBackspace;
+    int pressedKey;
 };
 
 class ViewEventHandler : public KeyEventHandler

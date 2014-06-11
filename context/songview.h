@@ -41,8 +41,7 @@ class SongView : public View
 
     enum Mode {
         Mode_Blank,
-        Mode_Display,
-        Mode_Edit
+        Mode_Display
     };
 
     enum Pages {
@@ -72,8 +71,6 @@ public Q_SLOTS:
     void update();
     void search();
     void edit();
-    void save();
-    void cancel();
     void del();
     void showContextMenu(const QPoint &pos);
     void showInfoContextMenu(const QPoint &pos);

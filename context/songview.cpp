@@ -135,8 +135,6 @@ SongView::SongView(QWidget *p)
     scrollAction = ActionCollection::get()->createAction("scrolllyrics", i18n("Scroll Lyrics"), "go-down");
     refreshAction = ActionCollection::get()->createAction("refreshlyrics", i18n("Refresh Lyrics"), "view-refresh");
     editAction = ActionCollection::get()->createAction("editlyrics", i18n("Edit Lyrics"), Icons::self()->editIcon);
-    saveAction = ActionCollection::get()->createAction("savelyrics", i18n("Save Lyrics"), "document-save");
-    cancelEditAction = ActionCollection::get()->createAction("canceleditlyrics", i18n("Cancel Editing Lyrics"), Icons::self()->cancelIcon);
     delAction = ActionCollection::get()->createAction("dellyrics", i18n("Delete Lyrics File"), "edit-delete");
 
     scrollAction->setCheckable(true);
@@ -144,8 +142,6 @@ SongView::SongView(QWidget *p)
     connect(scrollAction, SIGNAL(toggled(bool)), SLOT(toggleScroll()));
     connect(refreshAction, SIGNAL(triggered()), SLOT(update()));
     connect(editAction, SIGNAL(triggered()), SLOT(edit()));
-    connect(saveAction, SIGNAL(triggered()), SLOT(save()));
-    connect(cancelEditAction, SIGNAL(triggered()), SLOT(cancel()));
     connect(delAction, SIGNAL(triggered()), SLOT(del()));
     connect(UltimateLyrics::self(), SIGNAL(lyricsReady(int, QString)), SLOT(lyricsReady(int, QString)));
 
@@ -213,12 +209,7 @@ void SongView::saveConfig()
 
 void SongView::search()
 {
-    if (Mode_Edit==mode && MessageBox::No==MessageBox::warningYesNo(this, i18n("Abort editing of lyrics?"), i18n("Abort Editing"),
-                                                                    GuiItem(i18n("Abort")), StdGuiItem::cont())) {
-        return;
-    }
     setMode(Mode_Display);
-
     Song song=currentSong;
     LyricsDialog dlg(currentSong, this);
     if (QDialog::Accepted==dlg.exec()) {
@@ -241,44 +232,7 @@ void SongView::search()
 
 void SongView::edit()
 {
-    preEdit=text->toPlainText();
-    setMode(Mode_Edit);
-}
-
-void SongView::save()
-{
-    if (preEdit!=text->toPlainText()) {
-        if (MessageBox::No==MessageBox::warningYesNo(this, i18n("Save updated lyrics?"), i18n("Save"),
-                                                     StdGuiItem::save(), StdGuiItem::discard())) {
-            return;
-        }
-
-        QString mpdName=mpdFileName();
-        QString cacheName=cacheFileName();
-        if (!mpdName.isEmpty() && saveFile(mpdName)) {
-            if (QFile::exists(cacheName)) {
-                QFile::remove(cacheName);
-            }
-            Utils::setFilePerms(mpdName);
-        } else if (cacheName.isEmpty() || !saveFile(cacheName)) {
-            MessageBox::error(this, i18n("Failed to save lyrics."));
-            return;
-        }
-    }
-
-    setMode(Mode_Display);
-}
-
-void SongView::cancel()
-{
-    if (preEdit!=text->toPlainText()) {
-        if (MessageBox::No==MessageBox::warningYesNo(this, i18n("Abort editing of lyrics?"), i18n("Abort Editing"),
-                                                     GuiItem(i18n("Abort")), StdGuiItem::cont())) {
-            return;
-        }
-    }
-    text->setText(preEdit);
-    setMode(Mode_Display);
+    QDesktopServices::openUrl(QUrl::fromLocalFile(lyricsFile));
 }
 
 void SongView::del()
@@ -313,14 +267,9 @@ void SongView::showContextMenu(const QPoint &pos)
        menu->addAction(editAction);
        menu->addAction(delAction);
        break;
-   case Mode_Edit:
-       menu->addSeparator();
-       menu->addAction(saveAction);
-       menu->addAction(cancelEditAction);
-       break;
    }
 
-   if (Mode_Edit!=mode && cancelJobAction->isEnabled()) {
+   if (cancelJobAction->isEnabled()) {
        menu->addSeparator();
        menu->addAction(cancelJobAction);
    }
@@ -631,10 +580,6 @@ void SongView::abort()
 
 void SongView::update(const Song &s, bool force)
 {
-    if (Mode_Edit==mode && !force) {
-        return;
-    }
-
     if (s.isEmpty() || s.title.isEmpty() || s.artist.isEmpty()) {
         currentSong=s;
         infoNeedsUpdating=tagsNeedsUpdating=false;
@@ -838,13 +783,9 @@ void SongView::setMode(Mode m)
         return;
     }
     mode=m;
-    bool editable=Mode_Display==m && !lyricsFile.isEmpty() && (!QFile::exists(lyricsFile) || QFileInfo(lyricsFile).isWritable());
-    saveAction->setEnabled(Mode_Edit==m);
-    cancelEditAction->setEnabled(Mode_Edit==m);
-    editAction->setEnabled(editable);
-    delAction->setEnabled(editable && !MPDConnection::self()->getDetails().dir.isEmpty() && QFile::exists(mpdLyricsFilePath(currentSong)));
-    refreshAction->setEnabled(editable);
-    setEditable(Mode_Edit==m);
+    bool fileExists=Mode_Display==m && !lyricsFile.isEmpty() && QFileInfo(lyricsFile).isWritable();
+    delAction->setEnabled(fileExists);
+    refreshAction->setEnabled(fileExists);
     if (scrollAction->isChecked()) {
         if (Mode_Display==mode) {
             scroll();

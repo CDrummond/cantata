@@ -382,7 +382,10 @@ void MtpConnection::updateLibrary(const DeviceOptions &opts)
         s.album=QString::fromUtf8(track->album);
         s.artist=QString::fromUtf8(track->artist);
         s.albumartist=s.artist; // TODO: ALBUMARTIST: Read from 'track' when libMTP supports album artist!
-        s.composer=QString::fromUtf8(track->composer);
+        QString composer=QString::fromUtf8(track->composer);
+        if (!composer.isEmpty()) {
+            s.setComposer(composer);
+        }
         s.year=QString::fromUtf8(track->date).mid(0, 4).toUInt();
         s.title=QString::fromUtf8(track->title);
         s.genre=QString::fromUtf8(track->genre);
@@ -962,7 +965,7 @@ void MtpConnection::putSong(const Song &s, bool fixVa, const DeviceOptions &opts
         if (status!=Device::SongExists) {
             meta->title=createString(song.title);
             meta->artist=createString(song.artist);
-            meta->composer=createString(song.composer);
+            meta->composer=createString(song.composer());
             meta->genre=createString(song.genre);
             meta->album=createString(song.album);
             meta->date=createString(QString().sprintf("%4d0101T0000.0", song.year));

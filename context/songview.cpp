@@ -484,15 +484,16 @@ void SongView::loadTags()
 
     if (tagInfo.isEmpty()) {
         tagInfo=QLatin1String("<table>");
-        tagInfo+=addEntry(i18n("Artist"), currentSong.artist);
         tagInfo+=addEntry(i18n("Album artist"), currentSong.albumartist);
-        tagInfo+=addEntry(i18n("Composer"), currentSong.composer);
-        //tagInfo+=addEntry(i18n("Performer"), currentSong.performer);
+        tagInfo+=addEntry(i18n("Artist"), currentSong.artist);
+        tagInfo+=addEntry(i18n("Composer"), currentSong.composer());
+        tagInfo+=addEntry(i18n("Performer"), currentSong.performer());
         tagInfo+=addEntry(i18n("Album"), currentSong.album);
         tagInfo+=addEntry(i18n("Disc number"), 0==currentSong.disc ? QString() : QString::number(currentSong.disc));
         tagInfo+=addEntry(i18n("Track number"), 0==currentSong.track ? QString() : QString::number(currentSong.track));
         tagInfo+=addEntry(i18n("Genre"), currentSong.genres().join(", "));
         tagInfo+=addEntry(i18n("Year"), 0==currentSong.track ? QString() : QString::number(currentSong.year));
+        tagInfo+=addEntry(i18n("Comment"), currentSong.comment());
     }
     tagInfo+=QLatin1String("</table>");
     setHtml(tagInfo, Page_Tags);

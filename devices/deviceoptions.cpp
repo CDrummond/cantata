@@ -363,7 +363,7 @@ QString DeviceOptions::createFilename(const Song &s) const
     Song copy=clean(s);
 
     path.replace(constAlbumArtist, copy.albumArtist());
-    path.replace(constComposer, copy.composer);
+    path.replace(constComposer, copy.composer());
     path.replace(constAlbumTitle, copy.album);
     path.replace(constTrackArtist, copy.artist);
     path.replace(constTrackTitle, copy.title);

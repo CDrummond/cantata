@@ -401,6 +401,15 @@ struct MapEntry {
     QString str;
 };
 
+static QString clean(QString v)
+{
+    if (v.length()>1) {
+        v.replace("_", " ");
+        v=v[0]+v.toLower().mid(1);
+    }
+    return v;
+}
+
 void SongView::loadTags()
 {
     if (!tagsNeedsUpdating) {
@@ -448,10 +457,6 @@ void SongView::loadTags()
                 tagMap.insert(QLatin1String("ENCODING"), MapEntry(pos++, i18n("Encoder")));
                 tagMap.insert(QLatin1String("MOOD"), MapEntry(pos++, i18n("Mood")));
                 tagMap.insert(QLatin1String("MEDIA"), MapEntry(pos++, i18n("Media")));
-                tagMap.insert(QLatin1String("REPLAYGAIN_ALBUM_GAIN"), MapEntry(pos++, i18n("ReplayGain album gain")));
-                tagMap.insert(QLatin1String("REPLAYGAIN_ALBUM_PEAK"), MapEntry(pos++, i18n("ReplayGain album peak")));
-                tagMap.insert(QLatin1String("REPLAYGAIN_TRACK_GAIN"), MapEntry(pos++, i18n("ReplayGain track gain")));
-                tagMap.insert(QLatin1String("REPLAYGAIN_TRACK_PEAK"), MapEntry(pos++, i18n("ReplayGain track peak")));
                 tagMap.insert(constAudio+QLatin1String("BITRATE"), MapEntry(pos++, i18n("Bitrate")));
                 tagMap.insert(constAudio+QLatin1String("SAMPLERATE"), MapEntry(pos++, i18n("Sample rate")));
                 tagMap.insert(constAudio+QLatin1String("CHANNELS"), MapEntry(pos++, i18n("Channels")));
@@ -478,9 +483,9 @@ void SongView::loadTags()
                     } else if (tagTimeMap.contains(it.key())) {
                         tags.insert(tagTimeMap[it.key()].val, createRow(tagTimeMap[it.key()].str, QString(it.value()).replace("T", " ")));
                     } else if (it.key().startsWith(constPerformer)) {
-                        tags.insert(3, createRow(i18n("Performer (%1)", Song::capitalize(it.key().mid(constPerformer.length()))), it.value()));
+                        tags.insert(3, createRow(i18n("Performer (%1)", clean(it.key().mid(constPerformer.length()))), it.value()));
                     } else {
-                        tags.insert(tagMap.count()+tagTimeMap.count(), createRow(Song::capitalize(it.key()), it.value()));
+                        tags.insert(tagMap.count()+tagTimeMap.count(), createRow(clean(it.key()), it.value()));
                     }
                 }
             }

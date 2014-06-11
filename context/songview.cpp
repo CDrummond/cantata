@@ -390,10 +390,16 @@ void SongView::loadInfo()
     searchForInfo();
 }
 
-static QString addEntry(const QString &key, const QString &value)
+static QString createRow(const QString &key, const QString &value)
 {
     return value.isEmpty() ? QString() : QString("<tr><td>%1:&nbsp;</td><td>%2</td></tr>").arg(key).arg(value);
 }
+
+struct MapEntry {
+    MapEntry(int v=0, const QString &s=QString()) : val(v), str(s) { }
+    int val;
+    QString str;
+};
 
 void SongView::loadTags()
 {
@@ -402,52 +408,55 @@ void SongView::loadTags()
     }
     tagsNeedsUpdating=false;
 
-    QString tagInfo;
+    QMultiMap<int, QString> tags;
+    QMultiMap<int, QString> audioProperties;
     #ifdef TAGLIB_FOUND
     if (!currentSong.isStandardStream() && !MPDConnection::self()->getDetails().dir.startsWith(QLatin1String("http:/"))) {
         QString songFile=actualFile(currentSong);
         if (!songFile.isEmpty()) {
-            static QMap<QString, QString> tagMap;
-            static QMap<QString, QString> tagTimeMap;
+            static QMap<QString, MapEntry> tagMap;
+            static QMap<QString, MapEntry> tagTimeMap;
             static const QString constTitle=QLatin1String("TITLE");
             static const QString constPerformer=QLatin1String("PERFORMER:");
             static const QString constAudio=QLatin1String("X-AUDIO:");
 
             if (tagMap.isEmpty()) {
-                tagMap.insert(QLatin1String("ALBUM"), i18n("Album"));
-                tagMap.insert(QLatin1String("ARTIST"), i18n("Artist"));
-                tagMap.insert(QLatin1String("ALBUMARTIST"), i18n("Album artist"));
-                tagMap.insert(QLatin1String("SUBTITLE"), i18n("Subtitle"));
-                tagMap.insert(QLatin1String("TRACKNUMBER"), i18n("Track number"));
-                tagMap.insert(QLatin1String("DISCNUMBER"), i18n("Disc number"));
-                tagMap.insert(QLatin1String("DATE"), i18n("Date"));
-                tagMap.insert(QLatin1String("ORIGINALDATE"), i18n("Original date"));
-                tagMap.insert(QLatin1String("GENRE"), i18n("Genre"));
-                tagMap.insert(QLatin1String("COMMENT"), i18n("Comment"));
-                tagMap.insert(QLatin1String("TITLESORT"), i18n("Title sort"));
-                tagMap.insert(QLatin1String("ALBUMSORT"), i18n("Album sort"));
-                tagMap.insert(QLatin1String("ARTISTSORT"), i18n("Artist sort"));
-                tagMap.insert(QLatin1String("ALBUMARTISTSORT"), i18n("Album artist sort"));
-                tagMap.insert(QLatin1String("COMPOSER"), i18n("Composer"));
-                tagMap.insert(QLatin1String("LYRICIST"), i18n("Lyricist"));
-                tagMap.insert(QLatin1String("CONDUCTOR"), i18n("Conductor"));
-                tagMap.insert(QLatin1String("REMIXER"), i18n("Remixer"));
-                tagMap.insert(QLatin1String("COPYRIGHT"), i18n("Copyright"));
-                tagMap.insert(QLatin1String("ENCODEDBY"), i18n("Encoded by"));
-                tagMap.insert(QLatin1String("MOOD"), i18n("Mood"));
-                tagMap.insert(QLatin1String("MEDIA"), i18n("Media"));
-                tagMap.insert(QLatin1String("LABEL"), i18n("Label"));
-                tagMap.insert(QLatin1String("CATALOGNUMBER"), i18n("Catalogue number"));
-                tagMap.insert(QLatin1String("ENCODING"), i18n("Encoder"));
-                tagMap.insert(QLatin1String("REPLAYGAIN_ALBUM_GAIN"), i18n("ReplayGain album gain"));
-                tagMap.insert(QLatin1String("REPLAYGAIN_ALBUM_PEAK"), i18n("ReplayGain album peak"));
-                tagMap.insert(QLatin1String("REPLAYGAIN_TRACK_GAIN"), i18n("ReplayGain track gain"));
-                tagMap.insert(QLatin1String("REPLAYGAIN_TRACK_PEAK"), i18n("ReplayGain track peak"));
-                tagMap.insert(constAudio+QLatin1String("BITRATE"), i18n("Bitrate"));
-                tagMap.insert(constAudio+QLatin1String("SAMPLERATE"), i18n("Sample rate"));
-                tagMap.insert(constAudio+QLatin1String("CHANNELS"), i18n("Channels"));
+                int pos=0;
+                tagMap.insert(QLatin1String("ALBUMARTIST"), MapEntry(pos++, i18n("Album artist")));
+                tagMap.insert(QLatin1String("ARTIST"), MapEntry(pos++, i18n("Artist")));
+                tagMap.insert(QLatin1String("COMPOSER"), MapEntry(pos++, i18n("Composer")));
+                pos++;// For performer...
+                tagMap.insert(QLatin1String("LYRICIST"), MapEntry(pos++, i18n("Lyricist")));
+                tagMap.insert(QLatin1String("CONDUCTOR"), MapEntry(pos++, i18n("Conductor")));
+                tagMap.insert(QLatin1String("REMIXER"), MapEntry(pos++, i18n("Remixer")));
+                tagMap.insert(QLatin1String("ALBUM"), MapEntry(pos++, i18n("Album")));
+                tagMap.insert(QLatin1String("SUBTITLE"), MapEntry(pos++, i18n("Subtitle")));
+                tagMap.insert(QLatin1String("TRACKNUMBER"), MapEntry(pos++, i18n("Track number")));
+                tagMap.insert(QLatin1String("DISCNUMBER"), MapEntry(pos++, i18n("Disc number")));
+                tagMap.insert(QLatin1String("GENRE"), MapEntry(pos++, i18n("Genre")));
+                tagMap.insert(QLatin1String("DATE"), MapEntry(pos++, i18n("Date")));
+                tagMap.insert(QLatin1String("ORIGINALDATE"), MapEntry(pos++, i18n("Original date")));
+                tagMap.insert(QLatin1String("COMMENT"), MapEntry(pos++, i18n("Comment")));
+                tagMap.insert(QLatin1String("COPYRIGHT"), MapEntry(pos++, i18n("Copyright")));
+                tagMap.insert(QLatin1String("LABEL"), MapEntry(pos++, i18n("Label")));
+                tagMap.insert(QLatin1String("CATALOGNUMBER"), MapEntry(pos++, i18n("Catalogue number")));
+                tagMap.insert(QLatin1String("TITLESORT"), MapEntry(pos++, i18n("Title sort")));
+                tagMap.insert(QLatin1String("ARTISTSORT"), MapEntry(pos++, i18n("Artist sort")));
+                tagMap.insert(QLatin1String("ALBUMARTISTSORT"), MapEntry(pos++, i18n("Album artist sort")));
+                tagMap.insert(QLatin1String("ALBUMSORT"), MapEntry(pos++, i18n("Album sort")));
+                tagMap.insert(QLatin1String("ENCODEDBY"), MapEntry(pos++, i18n("Encoded by")));
+                tagMap.insert(QLatin1String("ENCODING"), MapEntry(pos++, i18n("Encoder")));
+                tagMap.insert(QLatin1String("MOOD"), MapEntry(pos++, i18n("Mood")));
+                tagMap.insert(QLatin1String("MEDIA"), MapEntry(pos++, i18n("Media")));
+                tagMap.insert(QLatin1String("REPLAYGAIN_ALBUM_GAIN"), MapEntry(pos++, i18n("ReplayGain album gain")));
+                tagMap.insert(QLatin1String("REPLAYGAIN_ALBUM_PEAK"), MapEntry(pos++, i18n("ReplayGain album peak")));
+                tagMap.insert(QLatin1String("REPLAYGAIN_TRACK_GAIN"), MapEntry(pos++, i18n("ReplayGain track gain")));
+                tagMap.insert(QLatin1String("REPLAYGAIN_TRACK_PEAK"), MapEntry(pos++, i18n("ReplayGain track peak")));
+                tagMap.insert(constAudio+QLatin1String("BITRATE"), MapEntry(pos++, i18n("Bitrate")));
+                tagMap.insert(constAudio+QLatin1String("SAMPLERATE"), MapEntry(pos++, i18n("Sample rate")));
+                tagMap.insert(constAudio+QLatin1String("CHANNELS"), MapEntry(pos++, i18n("Channels")));
 
-                tagTimeMap.insert(QLatin1String("TAGGING TIME"), i18n("Tagging time"));
+                tagTimeMap.insert(QLatin1String("TAGGING TIME"), MapEntry(pos++, i18n("Tagging time")));
             }
 
             QMap<QString, QString> allTags=Tags::readAll(MPDConnection::self()->getDetails().dir+actualFile(currentSong));
@@ -455,26 +464,23 @@ void SongView::loadTags()
             if (!allTags.isEmpty()) {
                 QMap<QString, QString>::ConstIterator it=allTags.constBegin();
                 QMap<QString, QString>::ConstIterator end=allTags.constEnd();
-                bool addedAudioSep=false;
 
                 for (; it!=end; ++it) {
                     if (it.key()==constTitle) {
                         continue;
                     }
-                    if (tagInfo.isEmpty()) {
-                        tagInfo=QLatin1String("<table>");
-                    } else if (!addedAudioSep && it.key().startsWith(constAudio)) {
-                        addedAudioSep=true;
-                        tagInfo+=QLatin1String("<tr/>");
-                    }
                     if (tagMap.contains(it.key())) {
-                        tagInfo+=addEntry(tagMap[it.key()], it.value());
+                        if (it.key().startsWith(constAudio)) {
+                            audioProperties.insert(tagMap[it.key()].val, createRow(tagMap[it.key()].str, it.value()));
+                        } else {
+                            tags.insert(tagMap[it.key()].val, createRow(tagMap[it.key()].str, it.value()));
+                        }
                     } else if (tagTimeMap.contains(it.key())) {
-                        tagInfo+=addEntry(tagTimeMap[it.key()], QString(it.value()).replace("T", " "));
+                        tags.insert(tagTimeMap[it.key()].val, createRow(tagTimeMap[it.key()].str, QString(it.value()).replace("T", " ")));
                     } else if (it.key().startsWith(constPerformer)) {
-                        tagInfo+=addEntry(i18n("Performer (%1)", Song::capitalize(it.key().mid(constPerformer.length()))), it.value());
+                        tags.insert(3, createRow(i18n("Performer (%1)", Song::capitalize(it.key().mid(constPerformer.length()))), it.value()));
                     } else {
-                        tagInfo+=addEntry(Song::capitalize(it.key()), it.value());
+                        tags.insert(tagMap.count()+tagTimeMap.count(), createRow(Song::capitalize(it.key()), it.value()));
                     }
                 }
             }
@@ -482,20 +488,50 @@ void SongView::loadTags()
     }
     #endif
 
-    if (tagInfo.isEmpty()) {
-        tagInfo=QLatin1String("<table>");
-        tagInfo+=addEntry(i18n("Album artist"), currentSong.albumartist);
-        tagInfo+=addEntry(i18n("Artist"), currentSong.artist);
-        tagInfo+=addEntry(i18n("Composer"), currentSong.composer());
-        tagInfo+=addEntry(i18n("Performer"), currentSong.performer());
-        tagInfo+=addEntry(i18n("Album"), currentSong.album);
-        tagInfo+=addEntry(i18n("Disc number"), 0==currentSong.disc ? QString() : QString::number(currentSong.disc));
-        tagInfo+=addEntry(i18n("Track number"), 0==currentSong.track ? QString() : QString::number(currentSong.track));
-        tagInfo+=addEntry(i18n("Genre"), currentSong.genres().join(", "));
-        tagInfo+=addEntry(i18n("Year"), 0==currentSong.track ? QString() : QString::number(currentSong.year));
-        tagInfo+=addEntry(i18n("Comment"), currentSong.comment());
+    if (tags.isEmpty()) {
+        int pos=0;
+        tags.insert(pos++, createRow(i18n("Album artist"), currentSong.albumartist));
+        tags.insert(pos++, createRow(i18n("Artist"), currentSong.artist));
+        tags.insert(pos++, createRow(i18n("Composer"), currentSong.composer()));
+        tags.insert(pos++, createRow(i18n("Performer"), currentSong.performer()));
+        tags.insert(pos++, createRow(i18n("Album"), currentSong.album));
+        tags.insert(pos++, createRow(i18n("Disc number"), 0==currentSong.disc ? QString() : QString::number(currentSong.disc)));
+        tags.insert(pos++, createRow(i18n("Track number"), 0==currentSong.track ? QString() : QString::number(currentSong.track)));
+        tags.insert(pos++, createRow(i18n("Genre"), currentSong.genres().join(", ")));
+        tags.insert(pos++, createRow(i18n("Year"), 0==currentSong.track ? QString() : QString::number(currentSong.year)));
+        tags.insert(pos++, createRow(i18n("Comment"), currentSong.comment()));
     }
-    tagInfo+=QLatin1String("</table>");
+
+    QString tagInfo;
+    if (!tags.isEmpty()) {
+        tagInfo=QLatin1String("<table>");
+        QMultiMap<int, QString>::ConstIterator it=tags.constBegin();
+        QMultiMap<int, QString>::ConstIterator end=tags.constEnd();
+        for (; it!=end; ++it) {
+            if (!it.value().isEmpty()) {
+                tagInfo+=it.value();
+            }
+        }
+    }
+
+    if (!audioProperties.isEmpty()) {
+        if (tagInfo.isEmpty()) {
+            tagInfo=QLatin1String("<table>");
+        } else {
+            tagInfo+=QLatin1String("<tr/>");
+        }
+        QMultiMap<int, QString>::ConstIterator it=audioProperties.constBegin();
+        QMultiMap<int, QString>::ConstIterator end=audioProperties.constEnd();
+        for (; it!=end; ++it) {
+            if (!it.value().isEmpty()) {
+                tagInfo+=it.value();
+            }
+        }
+    }
+    if (!tagInfo.isEmpty()) {
+        tagInfo+=QLatin1String("</table>");
+    }
+
     setHtml(tagInfo, Page_Tags);
 }
 

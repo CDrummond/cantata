@@ -26,7 +26,9 @@
 
 #include "mpd/song.h"
 #include "support/utils.h"
+#include "support/localize.h"
 #include "config.h"
+#include <QMap>
 #include <QImage>
 #include <QMetaType>
 
@@ -77,6 +79,7 @@ namespace Tags
     inline Update updateReplaygain(const QString &fileName, const ReplayGain &rg) { return (Update)TagHelperIface::self()->updateReplaygain(fileName, rg); }
     inline Update embedImage(const QString &fileName, const QByteArray &cover) { return (Update)TagHelperIface::self()->embedImage(fileName, cover); }
     inline QString oggMimeType(const QString &fileName) { return TagHelperIface::self()->oggMimeType(fileName); }
+    inline QMap<QString, QString> readAll(const QString &fileName) { return TagHelperIface::self()->readAll(fileName); }
     #else
     inline void init() { }
     inline void stop() { }
@@ -90,6 +93,7 @@ namespace Tags
     extern Update updateReplaygain(const QString &fileName, const ReplayGain &rg);
     extern Update embedImage(const QString &fileName, const QByteArray &cover);
     extern QString oggMimeType(const QString &fileName);
+    extern QMap<QString, QString> readAll(const QString &fileName);
     #endif
     extern QString id3Genre(int id);
 }

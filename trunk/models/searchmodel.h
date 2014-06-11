@@ -43,6 +43,8 @@ public:
         COL_LENGTH,
         COL_YEAR,
         COL_GENRE,
+        COL_COMPOSER,
+        COL_PERFORMER,
 
         COL_COUNT
     };

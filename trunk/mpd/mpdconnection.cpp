@@ -1501,7 +1501,7 @@ void MPDConnection::search(const QString &field, const QString &value, int id)
     QList<Song> songs;
     Response response=sendCommand("search "+field.toLatin1()+" "+encodeName(value));
     if (response.ok) {
-        songs=MPDParseUtils::parseSongs(response.data, MPDParseUtils::Loc_Library);
+        songs=MPDParseUtils::parseSongs(response.data, MPDParseUtils::Loc_Search);
         qSort(songs);
     }
     emit searchResponse(id, songs);

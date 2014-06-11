@@ -30,6 +30,7 @@
 
 #include <QString>
 #include <QSet>
+#include <QMap>
 #include <QMetaType>
 #include "config.h"
 #include "support/utils.h"
@@ -40,6 +41,18 @@ struct Song
 
     static bool useComposer();
     static void setUseComposer(bool u);
+
+    enum ExtraTags {
+        Composer,
+        Performer,
+        Comment,
+
+        // These are not real tags - but fields used elsewhere in the code...
+        PodcastPublishedDate,
+        PodcastLocalPath,
+        PodcastImage,
+        OnlineServiceName
+    };
 
     enum Type {
         Standard        = 0,
@@ -56,7 +69,6 @@ struct Song
     QString album;
     QString artist;
     QString albumartist;
-    QString composer;
     QString title;
     QString genre;
     QString name;
@@ -70,6 +82,7 @@ struct Song
     mutable Type type : 3;
     mutable bool guessed : 1;
     qint32 size;
+    QMap<int, QString> extra;
 
     // Only used in PlayQueue/PlayLists...
     quint16 key;
@@ -111,6 +124,15 @@ struct Song
     const QString & albumArtist() const { return albumartist.isEmpty() ? artist : albumartist; }
     QString displayTitle() const { return !albumartist.isEmpty() && albumartist!=artist ? artistSong() : title; }
     QString trackAndTitleStr(bool showArtistIfDifferent=true) const;
+
+    QString extraField(int f) const { return extra.contains(f) ? extra[f] : QString(); }
+    QString composer() const { return extraField(Composer); }
+    void setComposer(const QString &v) { extra[Composer]=v; }
+    QString performer() const { return extraField(Performer); }
+    QString comment() const { return extraField(Comment); }
+    void setComment(const QString &v) { extra[Comment]=v; }
+    void clearExtra() { extra.clear(); }
+
     static bool isVariousArtists(const QString &str);
     bool isVariousArtists() const { return isVariousArtists(albumArtist()); }
     bool diffArtist() const;
@@ -154,24 +176,20 @@ struct Song
     }
     bool isSpecificSizeRequest() const { return size>4 && size<1024 && track==size && id==size && 0xFFFF==time; }
 
-    // TagEditor...
-    const QString comment() const { return name; }
-    void setComment(const QString &v) { name=v; }
-
     // podcast functions...
     bool hasBeenPlayed() const { return 0!=id; }
     void setPlayed(bool p) { id=p ? 1 : 0; }
-    void setPodcastImage(const QString &i) { genre=i; }
-    const QString & podcastImage() const { return genre; }
-    void setPodcastPublishedDate(const QString &pd) { composer=pd; }
-    const QString & podcastPublishedDate() const { return composer; }
-    const QString & podcastLocalPath() const { return name; }
-    void setPodcastLocalPath(const QString &l) { name=l; }
+    void setPodcastImage(const QString &i) { extra[PodcastLocalPath]=i; }
+    QString podcastImage() const { return extraField(PodcastLocalPath); }
+    void setPodcastPublishedDate(const QString &pd) { extra[PodcastPublishedDate]=pd; }
+    QString podcastPublishedDate() const { return extraField(PodcastPublishedDate); }
+    QString podcastLocalPath() const { return extraField(PodcastLocalPath); }
+    void setPodcastLocalPath(const QString &l) { extra[PodcastLocalPath]=l; }
 
     // podcast/soundcloud functions...
-    void setIsFromOnlineService(const QString &service);
-    bool isFromOnlineService() const;
-    const QString & onlineService() const { return album; }
+    void setIsFromOnlineService(const QString &service) { extra[OnlineServiceName]=service; }
+    bool isFromOnlineService() const { return extra.contains(OnlineServiceName); }
+    QString onlineService() const { return extraField(OnlineServiceName); }
 };
 
 Q_DECLARE_METATYPE(Song)

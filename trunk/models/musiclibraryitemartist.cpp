@@ -147,7 +147,7 @@ const QPixmap & MusicLibraryItemArtist::cover() const
 
         if (firstSong) {
             m_coverSong.file=firstSong->file();
-            if (Song::useComposer() && !firstSong->song().composer.isEmpty()) {
+            if (Song::useComposer() && !firstSong->song().composer().isEmpty()) {
                 m_coverSong.albumartist=firstSong->song().albumArtist();
             }
         }

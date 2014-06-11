@@ -57,7 +57,8 @@ static bool equalTags(const Song &a, const Song &b, bool compareCommon, bool com
 {
     return (compareCommon || a.track==b.track) && a.year==b.year && a.disc==b.disc &&
            a.artist==b.artist && a.genre==b.genre && a.album==b.album &&
-           a.albumartist==b.albumartist && (!composerSupport || a.composer==b.composer) && (!commentSupport || a.comment()==b.comment()) && (compareCommon || a.title==b.title);
+           a.albumartist==b.albumartist && (!composerSupport || a.composer()==b.composer()) &&
+           (!commentSupport || a.comment()==b.comment()) && (compareCommon || a.title==b.title);
 }
 
 static bool setString(QString &str, const QString &v, bool skipEmpty) {
@@ -243,7 +244,7 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
             songAlbums.insert(s.album);
             songGenres.insert(s.genre);
             if (composerSupport) {
-                songComposers.insert(s.composer);
+                songComposers.insert(s.composer());
             }
             if (commentSupport) {
                 songComments.insert(s.comment());
@@ -261,7 +262,9 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
         all.title.clear();
         all.track=0;
         all.artist=1==songArtists.count() ? *(songArtists.begin()) : QString();
-        all.composer=1==songComposers.count() ? *(songComposers.begin()) : QString();
+        if (1==songComposers.count()) {
+            all.setComposer(*(songComposers.begin()));
+        }
         all.setComment(1==songComments.count() ? *(songComments.begin()) : QString());
         all.albumartist=1==songAlbumArtists.count() ? *(songAlbumArtists.begin()) : QString();
         all.album=1==songAlbums.count() ? *(songAlbums.begin()) : QString();
@@ -339,11 +342,14 @@ void TagEditor::fillSong(Song &s, bool isAll, bool skipEmpty) const
     setString(s.album, album->text().trimmed(), skipEmpty && (!haveAll || all.album.isEmpty()));
     setString(s.albumartist, albumArtist->text().trimmed(), skipEmpty && (!haveAll || all.albumartist.isEmpty()));
     if (composerSupport) {
-        setString(s.composer, composer->text().trimmed(), skipEmpty && (!haveAll || all.composer.isEmpty()));
+        QString str;
+        if (setString(str, composer->text().trimmed(), skipEmpty && (!haveAll || all.composer().isEmpty()))) {
+            s.setComposer(str);
+        }
     }
     if (commentSupport) {
         QString str;
-        if (setString(str, comment->text().trimmed(), skipEmpty && (!haveAll || all.composer.isEmpty()))) {
+        if (setString(str, comment->text().trimmed(), skipEmpty && (!haveAll || all.comment().isEmpty()))) {
             s.setComment(str);
         }
     }
@@ -367,7 +373,7 @@ void TagEditor::setVariousHint()
         album->setPlaceholderText(all.album.isEmpty() && haveAlbums ? TagSpinBox::variousStr() : QString());
         albumArtist->setPlaceholderText(all.albumartist.isEmpty() && haveAlbumArtists ? TagSpinBox::variousStr() : QString());
         if (composerSupport) {
-            composer->setPlaceholderText(all.composer.isEmpty() && haveComposers ? TagSpinBox::variousStr() : QString());
+            composer->setPlaceholderText(all.composer().isEmpty() && haveComposers ? TagSpinBox::variousStr() : QString());
         }
         if (commentSupport) {
             comment->setPlaceholderText(all.comment().isEmpty() && haveComments ? TagSpinBox::variousStr() : QString());
@@ -395,7 +401,7 @@ void TagEditor::setLabelStates()
     titleLabel->setOn(!isAll && o.title!=e.title);
     artistLabel->setOn(o.artist!=e.artist);
     if (composerSupport) {
-        composerLabel->setOn(o.composer!=e.composer);
+        composerLabel->setOn(o.composer()!=e.composer());
     }
     if (commentSupport) {
         commentLabel->setOn(o.comment()!=e.comment());
@@ -713,8 +719,8 @@ void TagEditor::updateEdited(bool isFromAll)
         if (all.albumartist.isEmpty() && s.albumartist.isEmpty() && !o.albumartist.isEmpty()) {
             s.albumartist=o.albumartist;
         }
-        if (composerSupport && all.composer.isEmpty() && s.composer.isEmpty() && !o.composer.isEmpty()) {
-            s.composer=o.composer;
+        if (composerSupport && all.composer().isEmpty() && s.composer().isEmpty() && !o.composer().isEmpty()) {
+            s.setComposer(o.composer());
         }
         if (commentSupport && all.comment().isEmpty() && s.comment().isEmpty() && !o.comment().isEmpty()) {
             s.setComment(o.comment());
@@ -748,7 +754,7 @@ void TagEditor::setSong(const Song &s)
     artist->setText(s.artist);
     albumArtist->setText(s.albumartist);
     if (composerSupport) {
-        composer->setText(s.composer);
+        composer->setText(s.composer());
     }
     if (commentSupport) {
         comment->setText(s.comment());

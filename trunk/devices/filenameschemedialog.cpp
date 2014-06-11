@@ -61,7 +61,7 @@ FilenameSchemeDialog::FilenameSchemeDialog(QWidget *parent)
     genre->setProperty(constVariableProperty, DeviceOptions::constGenre);
     exampleSong.albumartist=i18nc("Example album artist", "Various Artists");
     exampleSong.artist=i18nc("Example artist", "Wibble");
-    exampleSong.composer=i18nc("Example composer", "Vivaldi");
+    exampleSong.setComposer(i18nc("Example composer", "Vivaldi"));
     exampleSong.album=i18nc("Example album", "Now 5001");
     exampleSong.title=i18nc("Example song name", "Wobble");
     exampleSong.genre=i18nc("Example genre", "Dance");

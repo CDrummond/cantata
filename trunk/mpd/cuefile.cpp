@@ -155,7 +155,11 @@ static bool updateSong(const CueEntry &entry, const QString &nextIndex, Song &so
     song.genre=entry.genre;
     song.year=entry.date.toInt();
     song.time=(end-beginning)/constMsecPerSec;
-    song.composer=entry.composer.isEmpty() ? entry.albumComposer : entry.composer;
+    if (!entry.composer.isEmpty()) {
+        song.setComposer(entry.composer);
+    } else if (!entry.albumComposer.isEmpty()) {
+        song.setComposer(entry.albumComposer);
+    }
     return true;
 }
 
@@ -176,7 +180,11 @@ static bool updateLastSong(const CueEntry &entry, Song &song)
     song.albumartist=entry.albumArtist;
     song.genre=entry.genre;
     song.year=entry.date.toInt();
-    song.composer=entry.composer.isEmpty() ? entry.albumComposer : entry.composer;
+    if (!entry.composer.isEmpty()) {
+        song.setComposer(entry.composer);
+    } else if (!entry.albumComposer.isEmpty()) {
+        song.setComposer(entry.albumComposer);
+    }
     return true;
 }
 

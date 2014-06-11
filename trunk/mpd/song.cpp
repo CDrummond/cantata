@@ -166,7 +166,6 @@ Song & Song::operator=(const Song &s)
     album = s.album;
     artist = s.artist;
     albumartist = s.albumartist;
-    composer = s.composer;
     title = s.title;
     track = s.track;
 //     pos = s.pos;
@@ -180,6 +179,7 @@ Song & Song::operator=(const Song &s)
     key = s.key;
     type = s.type;
     guessed = s.guessed;
+    extra = s.extra;
     return *this;
 }
 
@@ -415,12 +415,12 @@ QString Song::entryName() const
 
 QString Song::artistOrComposer() const
 {
-    return useComposerIfSet && !composer.isEmpty() ? composer : albumArtist();
+    return useComposerIfSet && extra.contains(Composer) ? extra[Composer] : albumArtist();
 }
 
 QString Song::albumName() const
 {
-    return useComposerIfSet && !composer.isEmpty() && composer!=albumArtist()
+    return useComposerIfSet && extra.contains(Composer) && extra[Composer]!=albumArtist()
             ? album+QLatin1String(" (")+albumArtist()+QLatin1Char(')')
             : album;
 }
@@ -569,24 +569,12 @@ QString Song::describe(bool withMarkup) const
 //                    : i18nc("track - artist", "%1 - %2", title, artist);
 //}
 
-bool Song::isFromOnlineService() const
-{
-    return constOnlineDiscId==disc && (isCantataStream() || file.startsWith("http://")) && albumartist==album;
-}
-
-void Song::setIsFromOnlineService(const QString &service)
-{
-    disc=constOnlineDiscId;
-    album=service;
-    albumartist=service;
-}
-
 #ifdef ENABLE_EXTERNAL_TAGS
 QDataStream & operator<<(QDataStream &stream, const Song &song)
 {
-    stream << song.id << song.file << song.album << song.artist << song.albumartist << song.composer << song.title
+    stream << song.id << song.file << song.album << song.artist << song.albumartist << song.title
            << song.genre << song.name << song.mbAlbumId << song.disc << song.priority << song.time << song.track << (quint16)song.year
-           << (quint16)song.type << (bool)song.guessed << song.size;
+           << (quint16)song.type << (bool)song.guessed << song.size << song.extra;
     return stream;
 }
 
@@ -595,9 +583,9 @@ QDataStream & operator>>(QDataStream &stream, Song &song)
     quint16 type;
     quint16 year;
     bool guessed;
-    stream >> song.id >> song.file >> song.album >> song.artist >> song.albumartist >> song.composer >> song.title
+    stream >> song.id >> song.file >> song.album >> song.artist >> song.albumartist >> song.title
            >> song.genre >> song.name >> song.mbAlbumId >> song.disc >> song.priority >> song.time >> song.track >> year
-           >> type >> guessed >> song.size;
+           >> type >> guessed >> song.size >> song.extra;
     song.type=(Song::Type)type;
     song.year=year;
     song.guessed=guessed;

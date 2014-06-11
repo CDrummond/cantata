@@ -322,7 +322,9 @@ Song AlbumDetailsDialog::toSong(QTreeWidgetItem *i, const CdAlbum &album)
     s.year=album.year;
     s.disc=album.disc;
     s.artist=singleArtist->isChecked() ? s.albumartist : i->text(COL_ARTIST);
-    s.composer=album.composer;
+    if (!album.composer.isEmpty()) {
+        s.setComposer(album.composer);
+    }
     s.title=i->text(COL_TITLE);
     s.track=i->text(COL_TRACK).toInt();
     s.id=i->data(0, Role_Id).toInt();

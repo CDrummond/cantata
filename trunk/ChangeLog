@@ -146,6 +146,7 @@
 91. Add option to re-load lyric from disk.
 92. Add "Open In File Manager" to folders page for windows and mac builds.
 93. Use external editor to edit lyrics.
+94. Allow searching on performer tag.
 
 1.3.4
 -----

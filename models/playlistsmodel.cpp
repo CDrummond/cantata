@@ -56,13 +56,15 @@
 QString PlaylistsModel::headerText(int col)
 {
     switch (col) {
-    case COL_TITLE:  return PlayQueueModel::headerText(PlayQueueModel::COL_TITLE);
-    case COL_ARTIST: return PlayQueueModel::headerText(PlayQueueModel::COL_ARTIST);
-    case COL_ALBUM:  return PlayQueueModel::headerText(PlayQueueModel::COL_ALBUM);
-    case COL_LENGTH: return PlayQueueModel::headerText(PlayQueueModel::COL_LENGTH);
-    case COL_YEAR:   return PlayQueueModel::headerText(PlayQueueModel::COL_YEAR);
-    case COL_GENRE:  return PlayQueueModel::headerText(PlayQueueModel::COL_GENRE);
-    default:         return QString();
+    case COL_TITLE:     return PlayQueueModel::headerText(PlayQueueModel::COL_TITLE);
+    case COL_ARTIST:    return PlayQueueModel::headerText(PlayQueueModel::COL_ARTIST);
+    case COL_ALBUM:     return PlayQueueModel::headerText(PlayQueueModel::COL_ALBUM);
+    case COL_LENGTH:    return PlayQueueModel::headerText(PlayQueueModel::COL_LENGTH);
+    case COL_YEAR:      return PlayQueueModel::headerText(PlayQueueModel::COL_YEAR);
+    case COL_GENRE:     return PlayQueueModel::headerText(PlayQueueModel::COL_GENRE);
+    case COL_COMPOSER:  return PlayQueueModel::headerText(PlayQueueModel::COL_COMPOSER);
+    case COL_PERFORMER: return PlayQueueModel::headerText(PlayQueueModel::COL_PERFORMER);
+    default:            return QString();
     }
 }
 #endif
@@ -208,6 +210,8 @@ QVariant PlaylistsModel::headerData(int section, Qt::Orientation orientation, in
             case COL_ARTIST:
             case COL_ALBUM:
             case COL_GENRE:
+            case COL_COMPOSER:
+            case COL_PERFORMER:
             default:
                 return int(Qt::AlignVCenter|Qt::AlignLeft);
             case COL_LENGTH:
@@ -215,15 +219,17 @@ QVariant PlaylistsModel::headerData(int section, Qt::Orientation orientation, in
                 return int(Qt::AlignVCenter|Qt::AlignRight);
             }
         case Cantata::Role_Hideable:
-            return COL_YEAR==section || COL_GENRE==section ? true : false;
+            return COL_YEAR==section || COL_GENRE==section || COL_COMPOSER==section || COL_PERFORMER==section ? true : false;
         case Cantata::Role_Width:
             switch (section) {
-            case COL_TITLE:  return 0.4;
-            case COL_ARTIST: return 0.15;
-            case COL_ALBUM:  return 0.15;
-            case COL_YEAR:   return 0.05;
-            case COL_GENRE:  return 0.125;
-            case COL_LENGTH: return 0.125;
+            case COL_TITLE:     return 0.4;
+            case COL_ARTIST:    return 0.15;
+            case COL_ALBUM:     return 0.15;
+            case COL_YEAR:      return 0.05;
+            case COL_GENRE:     return 0.125;
+            case COL_LENGTH:    return 0.125;
+            case COL_COMPOSER:  return 0.15;
+            case COL_PERFORMER: return 0.15;
             }
         default:
             break;
@@ -246,6 +252,8 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
         case COL_ARTIST:
         case COL_ALBUM:
         case COL_GENRE:
+        case COL_COMPOSER:
+        case COL_PERFORMER:
         default:
             return int(Qt::AlignVCenter|Qt::AlignLeft);
         case COL_LENGTH:
@@ -421,6 +429,10 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
                     return s->year;
                 case COL_GENRE:
                     return s->genre;
+                case COL_COMPOSER:
+                    return s->composer();
+                case COL_PERFORMER:
+                    return s->performer();
                 default:
                     break;
                 }

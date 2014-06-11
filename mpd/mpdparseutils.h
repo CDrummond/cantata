@@ -56,7 +56,8 @@ namespace MPDParseUtils
         Loc_Library,
         Loc_Playlists,
         Loc_PlayQueue,
-        Loc_Streams
+        Loc_Streams,
+        Loc_Search
     };
 
     extern QList<Playlist> parsePlaylists(const QByteArray &data);

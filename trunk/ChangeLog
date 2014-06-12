@@ -148,6 +148,7 @@
 93. Use external editor to edit lyrics.
 94. Allow searching on performer tag.
 95. Remove ID3v1 when saving ID3 tags.
+96. 25% larger items in playqueue. Incrases covers from 32px to 40px
 
 1.3.4
 -----

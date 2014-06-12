@@ -66,6 +66,7 @@ namespace Tags
         Update_BadFile
     };
 
+    void enableDebug();
     #if defined ENABLE_EXTERNAL_TAGS && !defined CANTATA_TAG_SERVER
     inline void init() { TagHelperIface::self(); }
     inline void stop() { TagHelperIface::self()->stop(); }

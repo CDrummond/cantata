@@ -38,15 +38,14 @@
 #include <unistd.h>
 #endif
 #include <stdlib.h>
-//#include <QFile>
-//#include <QTextStream>
+#include <QDebug>
+static bool debugEnabled=false;
+#define DBUG if (debugEnabled) qWarning() << metaObject()->className() << __FUNCTION__
 
-//static void log(const QString &str)
-//{
-//    QFile f("/tmp/xxx");
-//    f.open(QIODevice::WriteOnly|QIODevice::Append|QIODevice::Text);
-//    QTextStream(&f) << str << endl;
-//}
+void TagHelper::enableDebug()
+{
+    debugEnabled=true;
+}
 
 static QString socketName;
 
@@ -80,7 +79,7 @@ TagHelper::~TagHelper()
 
 void TagHelper::dataReady()
 {
-//    log("Data ready - "+QString::number(dataSize));
+    DBUG << dataSize;
     while (socket->bytesAvailable()) {
         if (0==dataSize) {
             QDataStream stream(socket);
@@ -92,7 +91,7 @@ void TagHelper::dataReady()
         }
 
         data+=socket->read(dataSize-data.length());
-//        log("READ - "+QString::number(data.length())+"/"+QString::number(dataSize));
+        DBUG << data.length() << "/" << dataSize;
         if (data.length() == dataSize) {
             process();
         }
@@ -123,7 +122,7 @@ void TagHelper::process()
 
     inStream >> request >> fileName;
 
-//    log("REQ:"+request);
+    DBUG << "REQ" << request << fileName;
     if (QLatin1String("read")==request) {
         outStream << Tags::read(fileName);
     } else if (QLatin1String("readImage")==request) {
@@ -161,7 +160,7 @@ void TagHelper::process()
         qApp->exit();
     }
 
-//    log("RESP:"+QString::number(response.size()));
+    DBUG << "RESP" << response.size();
     QDataStream writeStream(socket);
     writeStream << qint32(response.length());
     if (!response.isEmpty()) {

@@ -34,6 +34,8 @@ class TagHelper : public QObject
     Q_OBJECT
 
 public:
+    static void enableDebug();
+
     TagHelper(const QString &sockName, int parent);
     ~TagHelper();
 

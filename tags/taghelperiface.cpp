@@ -280,7 +280,12 @@ bool TagHelperIface::startHelper()
         DBUG << "Start process";
         proc=new QProcess(this);
 
-        proc->start(Utils::helper(QLatin1String("cantata-tags")), QStringList() << server->fullServerName() << QString::number(currentPid));
+        if (debugEnabled) {
+            proc->start(Utils::helper(QLatin1String("cantata-tags")), QStringList() << server->fullServerName() << QString::number(currentPid)
+                                                                                    << Utils::cacheDir()+"/cantata-tags.log");
+        } else {
+            proc->start(Utils::helper(QLatin1String("cantata-tags")), QStringList() << server->fullServerName() << QString::number(currentPid));
+        }
 
         connect(proc, SIGNAL(finished(int)), this, SLOT(helperClosed()));
         if (proc->waitForStarted(constMaxWait)) {

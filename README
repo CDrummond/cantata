@@ -805,6 +805,9 @@ As of Cantata 1.2.0, all logging output is saved to a file. On Linux systems
 this will be ~/.cache/cantata/cantata.log For Windows this will be
 C:\Users\USERNAME\AppData\Local\mpd\cantata\cache\cantata.log
 
+When using the external helper to read/write tags, then there might also be
+additional logging in cantata-tags.log (in the same location as cantata.log)
+
 To disable logging to file, and log to the terminal instead, use a negative
 number. e.g. CANTATA_DEBUG=-4
 

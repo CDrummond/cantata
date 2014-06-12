@@ -36,6 +36,7 @@
 #include <QString>
 #include <QStringList>
 #include <QTextCodec>
+#include <QDebug>
 #include <taglib/tpropertymap.h>
 #include <taglib/fileref.h>
 #include <taglib/aifffile.h>
@@ -91,6 +92,14 @@ static QMutex mutex;
 
 namespace Tags
 {
+
+static bool debugEnabled=false;
+#define DBUG if (debugEnabled) qWarning() << "Tags" << __FUNCTION__
+
+void enableDebug()
+{
+    debugEnabled=true;
+}
 
 static QString tString2QString(const TagLib::String &str)
 {
@@ -433,15 +442,19 @@ static bool writeID3v2Tags(TagLib::ID3v2::Tag *tag, const Song &from, const Song
         if (from.disc!=to.disc&& updateID3v2Tag(tag, "TPOS", 0==to.disc ? QString() : QString::number(to.disc))) {
             changed=true;
         }
+        DBUG << "genres" << from.genre << to.genre;
         if (from.genre!=to.genre) {
             QStringList genres=to.genres();
+            DBUG << "num genres:" << genres.count();
             if (genres.count()<2) {
+                DBUG << "set genre" << (genres.isEmpty() ? QString() : genres.first().trimmed());
                 tag->setGenre(qString2TString(genres.isEmpty() ? QString() : genres.first().trimmed()));
             } else {
                 tag->removeFrames("TCON");
                 foreach (const QString &genre, genres) {
                     TagLib::ID3v2::TextIdentificationFrame *frame = new TagLib::ID3v2::TextIdentificationFrame("TCON");
                     tag->addFrame(frame);
+                    DBUG << "add genre" << genre.trimmed();
                     frame->setText(qString2TString(genre.trimmed()));
                 }
             }

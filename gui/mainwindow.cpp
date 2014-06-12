@@ -1385,7 +1385,6 @@ void MainWindow::updateSettings()
 
     if (diffLibArtistImages) {
         MusicLibraryItemArtist::clearDefaultCover();
-        libraryPage->setView(libraryPage->viewMode());
     }
     if (diffLibCovers) {
         MusicLibraryItemAlbum::setCoverSize((MusicLibraryItemAlbum::CoverSize)Settings::self()->libraryCoverSize());
@@ -1393,10 +1392,12 @@ void MainWindow::updateSettings()
     if (diffLibYear) {
         MusicLibraryItemAlbum::setSortByDate(Settings::self()->libraryYear());
     }
+    if (diffLibArtistImages || diffLibCovers) {
+        libraryPage->setView(libraryPage->viewMode());
+    }
     if (diffAlCovers) {
         AlbumsModel::setCoverSize((MusicLibraryItemAlbum::CoverSize)Settings::self()->albumsCoverSize());
     }
-
     if (diffAlCovers || diffGrouping) {
         albumsPage->setView(albumsPage->viewMode());
         albumsPage->clear();

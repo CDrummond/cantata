@@ -722,7 +722,7 @@ QString Utils::helper(const QString &app)
     #if defined Q_OS_WIN
     return systemDir(QLatin1String("helpers"))+app+QLatin1String(".exe");
     #elif defined Q_OS_MAC
-    return systemDir(QLatin1String("helpers"))+app);
+    return systemDir(QLatin1String("helpers"))+app;
     #else
     return QString(INSTALL_PREFIX "/lib/")+QCoreApplication::applicationName()+constDirSep+app;
     #endif

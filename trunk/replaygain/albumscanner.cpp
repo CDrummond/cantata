@@ -25,11 +25,9 @@
 #include "config.h"
 #include <QProcess>
 #include <QApplication>
-#include <locale.h>
 
 AlbumScanner::AlbumScanner(const QMap<int, QString> &files)
     : proc(0)
-    , oldLocale(setlocale(LC_NUMERIC, "C"))
 {
     QMap<int, QString>::ConstIterator it=files.constBegin();
     QMap<int, QString>::ConstIterator end=files.constEnd();
@@ -42,7 +40,6 @@ AlbumScanner::AlbumScanner(const QMap<int, QString> &files)
 
 AlbumScanner::~AlbumScanner()
 {
-    setlocale(LC_NUMERIC, oldLocale);
     stop();
 }
 

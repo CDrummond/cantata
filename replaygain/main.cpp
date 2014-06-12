@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
 
     QStringList fileNames;
     for (int i=0; i<argc-1; ++i) {
-        fileNames.append(QFile::decodeName(argv[i+1]));
+        fileNames.append(QString::fromUtf8(argv[i+1]));
     }
 
     QCoreApplication app(argc, argv);

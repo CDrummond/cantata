@@ -59,7 +59,6 @@ private:
     QMap<int, Values> tracks;
     QMap<int, int> trackIndexMap;
     QStringList fileNames;
-    const char *oldLocale;
 };
 
 #endif

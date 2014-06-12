@@ -25,7 +25,12 @@
 #include "jobcontroller.h"
 #include <QCoreApplication>
 #include <stdio.h>
-#include <locale.h>
+
+// Work-around possible locale issues by forcing usage of '.' as separator
+static QString formatDouble(double d)
+{
+    return QString::number(d, 'f', 10).replace(",", ".");
+}
 
 ReplayGain::ReplayGain(const QStringList &fileNames)
     : QObject(0)
@@ -35,7 +40,6 @@ ReplayGain::ReplayGain(const QStringList &fileNames)
 {
     TrackScanner::init();
     JobController::self()->setMaxActive(8);
-    setlocale(LC_NUMERIC, "C");
 }
 
 ReplayGain::~ReplayGain()
@@ -107,7 +111,8 @@ void ReplayGain::showResults()
         TrackScanner *s=scanners[i];
         const Track &t=tracks[i];
         if (t.success) {
-            printf("TRACK: %d %f %f\n", i, TrackScanner::reference(s->results().loudness), s->results().peakValue());
+            printf("TRACK: %d %s %s\n", i, formatDouble(TrackScanner::reference(s->results().loudness)).toLatin1().constData(),
+                                           formatDouble(s->results().peakValue()).toLatin1().constData());
             okScanners.append(s);
         } else {
             printf("TRACK: %d FAILED\n", i);
@@ -118,7 +123,8 @@ void ReplayGain::showResults()
         printf("ALBUM: FAILED\n");
     } else {
         TrackScanner::Data album=TrackScanner::global(okScanners);
-        printf("ALBUM: %f %f\n", TrackScanner::reference(album.loudness), album.peak);
+        printf("ALBUM: %s %s\n", formatDouble(TrackScanner::reference(album.loudness)).toLatin1().constData(),
+                                 formatDouble(album.peak).toLatin1().constData());
     }
     fflush(stdout);
 

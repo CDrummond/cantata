@@ -52,10 +52,10 @@ static double sizeAdjust=1.25;
 void GroupedView::setup()
 {
     int height=QApplication::fontMetrics().height();
-    sizeAdjust=Utils::touchFriendly() ? 1.5 : 1.0;
+    sizeAdjust=Utils::touchFriendly() ? 1.5 : 1.25;
 
     if (height>17) {
-        constCoverSize=(((int)((height*2)/4))*4)*sizeAdjust;
+        constCoverSize=(((int)((height*2)/4))*4);
         constIconSize=Icon::stdSize(((int)(height/4))*4);
         constBorder=constCoverSize>48 ? 2 : 1;
     } else {

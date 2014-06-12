@@ -147,6 +147,7 @@
 92. Add "Open In File Manager" to folders page for windows and mac builds.
 93. Use external editor to edit lyrics.
 94. Allow searching on performer tag.
+95. Remove ID3v1 when saving ID3 tags.
 
 1.3.4
 -----

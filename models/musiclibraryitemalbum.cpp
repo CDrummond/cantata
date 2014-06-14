@@ -184,12 +184,12 @@ const QString & MusicLibraryItemAlbum::cover() const
         MusicLibraryItemSong *firstSong=static_cast<MusicLibraryItemSong*>(childItem(0));
         Song song;
         song.artist=firstSong->song().artist;
-        song.albumartist=Song::useComposer() && !firstSong->song().composer.isEmpty() ? firstSong->song().albumArtist() : parentItem()->data();
+        song.albumartist=Song::useComposer() && !firstSong->song().composer().isEmpty() ? firstSong->song().albumArtist() : parentItem()->data();
         song.album=Song::useComposer() ? firstSong->song().album : m_itemData;
         song.year=m_year;
         song.file=firstSong->file();
         song.type=m_type;
-        song.composer=firstSong->song().composer;
+        song.setComposer(firstSong->song().composer());
         song.mbAlbumId=firstSong->song().mbAlbumId;
         m_coverName=Covers::self()->requestImage(song).fileName;
         if (!m_coverName.isEmpty()) {

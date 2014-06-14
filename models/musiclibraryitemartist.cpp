@@ -106,7 +106,7 @@ const QString & MusicLibraryItemArtist::cover() const
 
         if (firstSong) {
             coverSong.file=firstSong->file();
-            if (Song::useComposer() && !firstSong->song().composer.isEmpty()) {
+            if (Song::useComposer() && !firstSong->song().composer().isEmpty()) {
                 coverSong.albumartist=firstSong->song().albumArtist();
             }
         }

@@ -146,7 +146,7 @@ void TrayItem::setup()
         icon.addFile(iconFile);
     }
     #endif
-    trayItem->setIcon(icon.isNull() ? Icons::self()->appIcon : icon);
+    trayItem->setIcon(icon.isNull() || icon.pixmap(16, 16).isNull() ? Icons::self()->appIcon : icon);
     trayItem->setToolTip(i18n("Cantata"));
     trayItem->show();
     connect(trayItem, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(trayItemClicked(QSystemTrayIcon::ActivationReason)));

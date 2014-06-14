@@ -1,161 +1,165 @@
 1.4.0
 -----
- 1. Allow setting of custom device name for UMS and MTP devices.
- 2. Allow to use table-view for search results.
- 3. Add option to auto-switch to context view X seconds after playback starts,
-    and switch back X seconds after stopped.
- 4. Add option to auto-scroll lyrics - accessed via context-menu in lyrics view.
- 5. Use smaller font for sidebar.
- 6. Remove corner cover widget.
- 7. Remove collapsing of interface.
- 8. Move position slider in-between controls.
- 9. If volume control is disabled (as MPD returns negative volume), then don't
-    hide it but make it semi-transparent instead.
-10. Use system libebur128 if found.
-11. Use single line to show current song details.
-12. Don't show song details in titlebar - this only duplicates info that is
-    already clearly visible in the main window.
-13. Remove space between toolbar and views, and reduce spacing elsewhere.
-14. Use a thin splitter between playqueue and views.
-15. Set 'no interaction' flag on more labels, so that Oxygen's window drag code
-    works on these.
-16. Add support for comments. These are read directly from the song file when
-    the tag-editor is used, and they are NOT saved in Cantata's cache file.
-    Comments are only read if MPD is configured to support the COMMENT field.
-17. Install Cantata's list of lyrics providers to INSTALL/share/cantata/lyrics
-18. Read lyrics providers from each .xml file in ~/.local/share/cantata/lyrics,
-    and INSTALL/share/cantata/lyrics
-19. Attempt to respect menubar usage of current desktop. For Windows and Gnome;
-    menu button is used, and menubar hidden. For Mac and Unity; menubar is
-    used, and menu button is hidden. For KDE Plasma; by default the menu button
-    is used, and the menu bar hidden - but a menu entry is provided to toggle.
-    This setting can be overridden - see README for details.
-20. Most songs will be less than 1 hr long, so by default we only need to
-    reserve space for -MM:SS at each side of position slider. If song duration
-    is longer than 1hr, then this is increased to -H:MM:SS
-21. Show number of tracks under playqueue, even if total time is 0.
-22. Enable song notifications in Linux builds without QtDBus.
-23. Speed-up MPD response parsing, by only converting strings to UTF-8 when
-    required.
-24. In Albums view, always show album name as main text and artist as sub-text
-    regardless of chosen sort.
-25. When context view is collapsed, draw background over selector buttons.
-26. Be consistent with displaying years of albums - year is shown in brackets
-    after album name.
-27. Reduce memory usage, by storing album covers in a cache - and using this
-    for display. Size of cache can be controlled by config item, see README for
-    details.
-28. Only save albumartist tag in XML cache file if library supports this tag.
-29. Use MPD status to determine when to show, and hide, 'Updating...' message.
-30. Ignore mouse-events on message-overlay if cancel button is hidden.
-31. Update copy of QJson to 0.8.1
-32. Speed up building list of songs - by only checking if file has already
-    been added, not song.
-33. After scanning replay gain, show original tag values in tooltips if
-    different to those calculated.
-34. Don't use italic text for grouped view headers.
-35. Save scaled covers as PNG files.
-36. Use Q_GLOBAL_STATIC for Qt4.8, and Qt>=5.1 Qt-only builds.
-37. Show music folder location in device properties dialog when called from
-    copy/delete dialog - just dont allow setting to be changed.
-38. Remove artist image support for online-services.
-39. Update context-view when artist, or album, image is updated.
-40. When current song is from an online-service (Jamendo, Magnatune, etc) then
-    only show cover and tite in context view. No attempt is made to get artist,
-    album, or song information - as these are likely to fail anyway.
-41. Use an external-helper app to read/write tags - to isolate Cantata from
-    TagLib crashes.
-42. Add -DUSE_OLD_DBUS_TYPEDEF=ON to CMake options. This can be used to force
-    usage of OLD dbus XML files.
-43. If Cantata detects that an album, or artist, has new songs after updating
-    MPD's DB, then the artist and album are drawn with bold text.
-44. When searching for album covers, do not look for $songFile.png/jpg
-45. Hide track change popup setting if running under Linux and
-    org.freedesktop.Notifications DBus service is not registered.
-46. Remove 'home' button from listviews - only ever max 2 levels deep (Artists,
-    Albums, Tracks), so no real need for button.
-47. Make shortcut for 'Go Back' action changeable.
-48. Don't attempt to find Amarok or Clementine covers.
-49. Don't hard-code artist name fixes, read from $install/tag-fixes.xml
-50. Remove grouping of multiple-artist albums under 'Various Artists'
-51. Change default sidebar shortcuts from 'Alt+' to 'Ctrl+Shift+' so as to
-    avoid clashes with menubar.
-52. If compiled with MPD HTTP playback support, when MPD stream is paused then
-    stop the Phonon/QMediaObject from playing. See README for config option
-    on this.
-53. When searching, search both with and without diaeresis, etc. e.g. both
-    Queensrÿche and Queensryche should match.
-54. Add 'Sort By' to playqueue context menu - allowing to re-sort tracks by
-    artist, album artist, album, genre, or year.
-55. When sorting albums view, also ignore 'The ' at start of artist names, as
-    per artists view.
-56. Add more sort options to albums view.
-57. Fix crash when changing view mode whilst search is active.
-58. Add a 'touch friendly' setting - toolbuttons are made wider, view actions
-    always visible (semi-transparent in list/tree), and views are 'flickable'
-59. Use a toolbutton for listview header and back action.
-60. Add 'List' to playqueue view types.
-61. Add 'Locate In Library' to search page.
-62. Remove 'Go Back' from lsitview context menu.
-63. Hide icons in shortcut dialog, and in actions used in menus, if
-    Qt::AA_DontShowIconsInMenus is set. This seems to be the only way to force
-    Unity to not show icons in menus of Qt apps. (There appears to be a bug in
-    libdbusmenu-qt https://bugs.launchpad.net/libdbusmenu-qt/+bug/1287337)
-    (Qt-only builds)
-64. If connection to MPD faiils, attempt to ascertain if its a proxy error.
-65. Add button under playqueue to re-center playqueue on current song.
-66. Add option to only act on songs that pass current string or genre filter.
-67. Multiple genre support.
-68. Store favourite streams as '[Radio Streams]' MPD playlist.
-69. For tracks for mutliple-artist albums, show as 'title - artist' and not
-    'artist - title'
-70. In playqueue, if song's artist is different to album artist, then show song
-    as 'title - artist'
-71. Also use musicbrainz_albumid, if present, to group albums. This can be used
-    to group multiple releases of the same album. MPD must be configured to use
-    this tag in order for this to function.
-72. Search for streams via dirble.
-73. Center images and headers in context view.
-74. Dont package stream providers with Cantata - add a dialog to download from
-    Google Drive.
-75. Fix 'duplicate' albums being created if flac (or other) + cue file is used,
-    and the music file does not contain metadata.
-76. Fix setting of cover for albums with cule file.
-77. Fix loading individual songs from cue file.
-78. Build as a Qt-only app by default. Pass -DENABLE_KDE=ON to create KDE
-    build.
-79. Scrobbling support.
-80. Install podcast directries file to $install rather than embedding.
-81. cantata-dynamic perl script now uses MPD's client-to-client messages for
-    control. Therefore, MPD>=0.17 is required.
-82. Remove 'Stop dynamizer on exit' option. Stop dynamzer if 'Stop playback on
-    exit' is enabled.
-83. Read podcast_directories.xml, tag-fixes.xml, and scrobblers.xml from install
-    folder and ~/.local/share/cantata
-84. Update replaygain ffmpeg input code to handle API changes in libavcodec.
-85. Fix transcoding tracks to MTP devices.
-86. Restore search field visibility for; PlayQueue, Artists, Albums, Folders,
-    Playlists, Dynamic, and Devices views.
-87. Fix custom background images (play queue and context)  not appearing when
-    Cantata started.
-88. Open search-widget as soon as user starts typing in view.
-89. If artist is different to album-artist, then show track title as
-    "title - artist"
-90. In context-view rename Lyrics pane to Track. This is now a stack of lyrcs,
-    information, and tags. Tags contains all tags as read by taglib.
-91. Add option to re-load lyric from disk.
-92. Add "Open In File Manager" to folders page for windows and mac builds.
-93. Use external editor to edit lyrics.
-94. Allow searching on performer tag.
-95. Remove ID3v1 when saving ID3 tags.
-96. 25% larger items in playqueue. Incrases covers from 32px to 40px
-97. Fix replay-gain scanner if file name, or path, contains non-latin1
-    characters.
-98. Instal Ubuntu mono sys-tray icons to
-    $prefix/share/icons/ubuntu-mono-dark/apps/22/cantata-panel.svg and
-    $prefix/share/icons/ubuntu-mono-light/apps/22/cantata-panel.svg.
-    But only if compiled for Ubuntu, or -DINSTALL_UBUNTU_ICONS=ON is passed to
-    cmake.
+  1. Allow setting of custom device name for UMS and MTP devices.
+  2. Allow to use table-view for search results.
+  3. Add option to auto-switch to context view X seconds after playback starts,
+     and switch back X seconds after stopped.
+  4. Add option to auto-scroll lyrics - accessed via context-menu in lyrics
+     view.
+  5. Use smaller font for sidebar.
+  6. Remove corner cover widget.
+  7. Remove collapsing of interface.
+  8. Move position slider in-between controls.
+  9. If volume control is disabled (as MPD returns negative volume), then don't
+     hide it but make it semi-transparent instead.
+ 10. Use system libebur128 if found.
+ 11. Use single line to show current song details.
+ 12. Don't show song details in titlebar - this only duplicates info that is
+     already clearly visible in the main window.
+ 13. Remove space between toolbar and views, and reduce spacing elsewhere.
+ 14. Use a thin splitter between playqueue and views.
+ 15. Set 'no interaction' flag on more labels, so that Oxygen's window drag code
+     works on these.
+ 16. Add support for comments. These are read directly from the song file when
+     the tag-editor is used, and they are NOT saved in Cantata's cache file.
+     Comments are only read if MPD is configured to support the COMMENT field.
+ 17. Install Cantata's list of lyrics providers to INSTALL/share/cantata/lyrics
+ 18. Read lyrics providers from each .xml file in ~/.local/share/cantata/lyrics,
+     and INSTALL/share/cantata/lyrics
+ 19. Attempt to respect menubar usage of current desktop. For Windows and Gnome;
+     menu button is used, and menubar hidden. For Mac and Unity; menubar is
+     used, and menu button is hidden. For KDE Plasma; by default the menu button
+     is used, and the menu bar hidden - but a menu entry is provided to toggle.
+     This setting can be overridden - see README for details.
+ 20. Most songs will be less than 1 hr long, so by default we only need to
+     reserve space for -MM:SS at each side of position slider. If song duration
+     is longer than 1hr, then this is increased to -H:MM:SS
+ 21. Show number of tracks under playqueue, even if total time is 0.
+ 22. Enable song notifications in Linux builds without QtDBus.
+ 23. Speed-up MPD response parsing, by only converting strings to UTF-8 when
+     required.
+ 24. In Albums view, always show album name as main text and artist as sub-text
+     regardless of chosen sort.
+ 25. When context view is collapsed, draw background over selector buttons.
+ 26. Be consistent with displaying years of albums - year is shown in brackets
+     after album name.
+ 27. Reduce memory usage, by storing album covers in a cache - and using this
+     for display. Size of cache can be controlled by config item, see README for
+     details.
+ 28. Only save albumartist tag in XML cache file if library supports this tag.
+ 29. Use MPD status to determine when to show, and hide, 'Updating...' message.
+ 30. Ignore mouse-events on message-overlay if cancel button is hidden.
+ 31. Update copy of QJson to 0.8.1
+ 32. Speed up building list of songs - by only checking if file has already
+     been added, not song.
+ 33. After scanning replay gain, show original tag values in tooltips if
+     different to those calculated.
+ 34. Don't use italic text for grouped view headers.
+ 35. Save scaled covers as PNG files.
+ 36. Use Q_GLOBAL_STATIC for Qt4.8, and Qt>=5.1 Qt-only builds.
+ 37. Show music folder location in device properties dialog when called from
+     copy/delete dialog - just dont allow setting to be changed.
+ 38. Remove artist image support for online-services.
+ 39. Update context-view when artist, or album, image is updated.
+ 40. When current song is from an online-service (Jamendo, Magnatune, etc) then
+     only show cover and tite in context view. No attempt is made to get artist,
+     album, or song information - as these are likely to fail anyway.
+ 41. Use an external-helper app to read/write tags - to isolate Cantata from
+     TagLib crashes.
+ 42. Add -DUSE_OLD_DBUS_TYPEDEF=ON to CMake options. This can be used to force
+     usage of OLD dbus XML files.
+ 43. If Cantata detects that an album, or artist, has new songs after updating
+     MPD's DB, then the artist and album are drawn with bold text.
+ 44. When searching for album covers, do not look for $songFile.png/jpg
+ 45. Hide track change popup setting if running under Linux and
+     org.freedesktop.Notifications DBus service is not registered.
+ 46. Remove 'home' button from listviews - only ever max 2 levels deep (Artists,
+     Albums, Tracks), so no real need for button.
+ 47. Make shortcut for 'Go Back' action changeable.
+ 48. Don't attempt to find Amarok or Clementine covers.
+ 49. Don't hard-code artist name fixes, read from $install/tag-fixes.xml
+ 50. Remove grouping of multiple-artist albums under 'Various Artists'
+ 51. Change default sidebar shortcuts from 'Alt+' to 'Ctrl+Shift+' so as to
+     avoid clashes with menubar.
+ 52. If compiled with MPD HTTP playback support, when MPD stream is paused then
+     stop the Phonon/QMediaObject from playing. See README for config option
+     on this.
+ 53. When searching, search both with and without diaeresis, etc. e.g. both
+     Queensrÿche and Queensryche should match.
+ 54. Add 'Sort By' to playqueue context menu - allowing to re-sort tracks by
+     artist, album artist, album, genre, or year.
+ 55. When sorting albums view, also ignore 'The ' at start of artist names, as
+     per artists view.
+ 56. Add more sort options to albums view.
+ 57. Fix crash when changing view mode whilst search is active.
+ 58. Add a 'touch friendly' setting - toolbuttons are made wider, view actions
+     always visible (semi-transparent in list/tree), and views are 'flickable'
+ 59. Use a toolbutton for listview header and back action.
+ 60. Add 'List' to playqueue view types.
+ 61. Add 'Locate In Library' to search page.
+ 62. Remove 'Go Back' from lsitview context menu.
+ 63. Hide icons in shortcut dialog, and in actions used in menus, if
+     Qt::AA_DontShowIconsInMenus is set. This seems to be the only way to force
+     Unity to not show icons in menus of Qt apps. (There appears to be a bug in
+     libdbusmenu-qt https://bugs.launchpad.net/libdbusmenu-qt/+bug/1287337)
+     (Qt-only builds)
+ 64. If connection to MPD faiils, attempt to ascertain if its a proxy error.
+ 65. Add button under playqueue to re-center playqueue on current song.
+ 66. Add option to only act on songs that pass current string or genre filter.
+ 67. Multiple genre support.
+ 68. Store favourite streams as '[Radio Streams]' MPD playlist.
+ 69. For tracks for mutliple-artist albums, show as 'title - artist' and not
+     'artist - title'
+ 70. In playqueue, if song's artist is different to album artist, then show song
+     as 'title - artist'
+ 71. Also use musicbrainz_albumid, if present, to group albums. This can be used
+     to group multiple releases of the same album. MPD must be configured to use
+     this tag in order for this to function.
+ 72. Search for streams via dirble.
+ 73. Center images and headers in context view.
+ 74. Dont package stream providers with Cantata - add a dialog to download from
+     Google Drive.
+ 75. Fix 'duplicate' albums being created if flac (or other) + cue file is used,
+     and the music file does not contain metadata.
+ 76. Fix setting of cover for albums with cule file.
+ 77. Fix loading individual songs from cue file.
+ 78. Build as a Qt-only app by default. Pass -DENABLE_KDE=ON to create KDE
+     build.
+ 79. Scrobbling support.
+ 80. Install podcast directries file to $install rather than embedding.
+ 81. cantata-dynamic perl script now uses MPD's client-to-client messages for
+     control. Therefore, MPD>=0.17 is required.
+ 82. Remove 'Stop dynamizer on exit' option. Stop dynamzer if 'Stop playback on
+     exit' is enabled.
+ 83. Read podcast_directories.xml, tag-fixes.xml, and scrobblers.xml from
+     install folder and ~/.local/share/cantata
+ 84. Update replaygain ffmpeg input code to handle API changes in libavcodec.
+ 85. Fix transcoding tracks to MTP devices.
+ 86. Restore search field visibility for; PlayQueue, Artists, Albums, Folders,
+     Playlists, Dynamic, and Devices views.
+ 87. Fix custom background images (play queue and context)  not appearing when
+     Cantata started.
+ 88. Open search-widget as soon as user starts typing in view.
+ 89. If artist is different to album-artist, then show track title as
+     "title - artist"
+ 90. In context-view rename Lyrics pane to Track. This is now a stack of lyrcs,
+     information, and tags. Tags contains all tags as read by taglib.
+ 91. Add option to re-load lyric from disk.
+ 92. Add "Open In File Manager" to folders page for windows and mac builds.
+ 93. Use external editor to edit lyrics.
+ 94. Allow searching on performer tag.
+ 95. Remove ID3v1 when saving ID3 tags.
+ 96. 25% larger items in playqueue. Incrases covers from 32px to 40px
+ 97. Fix replay-gain scanner if file name, or path, contains non-latin1
+     characters.
+ 98. Instal Ubuntu mono sys-tray icons to
+     $prefix/share/icons/ubuntu-mono-dark/apps/22/cantata-panel.svg and
+     $prefix/share/icons/ubuntu-mono-light/apps/22/cantata-panel.svg.
+     But only if compiled for Ubuntu, or -DINSTALL_UBUNTU_ICONS=ON is passed to
+     cmake.
+ 99. Hide system-tray option in Qt builds if system tray is not available.
+100. In non Dbus Qt builds, if notificaitons is checked ensure that sys tray is
+     also checkedd. Conversly if sys tray is unchecked, uncheck notifications.
 
 1.3.4
 -----

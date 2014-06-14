@@ -42,6 +42,9 @@
 #include <QDBusConnection>
 #include <QDBusConnectionInterface>
 #endif
+#ifndef ENABLE_KDE_SUPPORT
+#include <QSystemTrayIcon>
+#endif
 
 #define REMOVE(w) \
     w->setVisible(false); \
@@ -115,9 +118,17 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     #ifdef QT_QTDBUS_FOUND
     // We have dbus, check that org.freedesktop.Notifications exists
     bool enableNotifications=QDBusConnection::sessionBus().interface()->isServiceRegistered("org.freedesktop.Notifications");
-    #elif !defined Q_OS_WIN && !defined Q_OS_MAC
-    // Not mac, or windows, and no dbus => no notifications!
-    bool enableNotifications=false;
+    #else
+    bool enableNotifications=true;
+    #endif
+    bool enableTrayItem=true;
+    #ifndef ENABLE_KDE_SUPPORT
+    if (!QSystemTrayIcon::isSystemTrayAvailable()) {
+        enableTrayItem=false;
+        #ifndef QT_QTDBUS_FOUND
+        enableNotifications=false;
+        #endif
+    }
     #endif
 
     setupUi(this);
@@ -220,6 +231,16 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     if (!enableNotifications) {
         REMOVE(systemTrayPopup)
     }
+    if (!enableTrayItem) {
+        REMOVE(systemTrayCheckBox)
+    }
+
+    #if defined Q_OS_WIN || defined Q_OS_MAC || !defined QT_QTDBUS_FOUND
+    if (systemTrayPopup && systemTrayCheckBox) {
+        connect(systemTrayCheckBox, SIGNAL(toggled(bool)), SLOT(systemTrayCheckBoxToggled()));
+        connect(systemTrayPopup, SIGNAL(toggled(bool)), SLOT(systemTrayPopupToggled()));
+    }
+    #endif
 }
 
 void InterfaceSettings::load()
@@ -269,7 +290,9 @@ void InterfaceSettings::load()
     playQueueViewChanged();
     forceSingleClick->setChecked(Settings::self()->forceSingleClick());
     touchFriendly->setChecked(Settings::self()->touchFriendly());
-    systemTrayCheckBox->setChecked(Settings::self()->useSystemTray());
+    if (systemTrayCheckBox) {
+        systemTrayCheckBox->setChecked(Settings::self()->useSystemTray());
+    }
     if (systemTrayPopup) {
         systemTrayPopup->setChecked(Settings::self()->showPopups());
     }
@@ -349,10 +372,8 @@ void InterfaceSettings::save()
     Settings::self()->savePlayQueueConfirmClear(playQueueConfirmClear->isChecked());
     Settings::self()->saveForceSingleClick(forceSingleClick->isChecked());
     Settings::self()->saveTouchFriendly(touchFriendly->isChecked());
-    Settings::self()->saveUseSystemTray(systemTrayCheckBox->isChecked());
-    if (systemTrayPopup) {
-        Settings::self()->saveShowPopups(systemTrayPopup->isChecked());
-    }
+    Settings::self()->saveUseSystemTray(systemTrayCheckBox && systemTrayCheckBox->isChecked());
+    Settings::self()->saveShowPopups(systemTrayPopup && systemTrayPopup->isChecked());
     Settings::self()->saveMinimiseOnClose(minimiseOnClose->isChecked());
     if (startupStateShow->isChecked()) {
         Settings::self()->saveStartupState(Settings::SS_ShowMainWindow);
@@ -589,4 +610,18 @@ void InterfaceSettings::enablePlayQueueBackgroundOptions()
     playQueueBackgroundOpacityLabel->setEnabled(playQueueBackgroundOpacity->isEnabled());
     playQueueBackgroundBlur->setEnabled(playQueueBackgroundOpacity->isEnabled());
     playQueueBackgroundBlurLabel->setEnabled(playQueueBackgroundOpacity->isEnabled());
+}
+
+void InterfaceSettings::systemTrayCheckBoxToggled()
+{
+    if (systemTrayCheckBox && systemTrayPopup && !systemTrayCheckBox->isChecked()) {
+        systemTrayPopup->setChecked(false);
+    }
+}
+
+void InterfaceSettings::systemTrayPopupToggled()
+{
+    if (systemTrayCheckBox && systemTrayPopup && systemTrayPopup->isChecked()) {
+        systemTrayCheckBox->setChecked(true);
+    }
 }

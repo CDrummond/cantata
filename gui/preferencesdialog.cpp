@@ -127,7 +127,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
     pageWidget->addPage(shortcuts, i18nc("Qt-only", "Shortcuts"), Icons::self()->shortcutsIcon, i18nc("Qt-only", "Keyboard Shortcut Settings"));
     shortcuts->load();
     #endif
-    pageWidget->addPage(cache, i18n("Cache"), Icon("folder"), i18n("Cached Items"));
+    pageWidget->addPage(cache, i18n("Cache"), Icons::self()->folderIcon, i18n("Cached Items"));
     setCaption(i18n("Configure"));
     setMainWidget(pageWidget);
     setAttribute(Qt::WA_DeleteOnClose);

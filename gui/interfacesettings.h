@@ -63,6 +63,8 @@ private Q_SLOTS:
     void setPlayQueueBackgroundOpacityLabel();
     void setPlayQueueBackgroundBlurLabel();
     void enablePlayQueueBackgroundOptions();
+    void systemTrayCheckBoxToggled();
+    void systemTrayPopupToggled();
 
 private:
     #ifndef ENABLE_KDE_SUPPORT

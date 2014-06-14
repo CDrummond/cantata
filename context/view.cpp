@@ -87,11 +87,17 @@ ViewTextSelector::ViewTextSelector(QWidget *p)
     menu=new QMenu(this);
 }
 
+static QString viewText(const QString &s)
+{
+    // 0x25BE is unicode for small down arrow...
+    return QLatin1String("<b>")+s+QLatin1String("  ")+QChar(0x25BE)+QLatin1String("</b>");
+}
+
 void ViewTextSelector::addItem(const QString &t)
 {
     menu->addAction(t, this, SLOT(itemSelected()))->setData(items.count());
     if (text().isEmpty()) {
-        setText("<b>"+t+"</b>");
+        setText(viewText(t));
         current=items.count();
     }
     items.append(t);
@@ -152,7 +158,7 @@ void ViewTextSelector::setCurrentIndex(int v)
         return;
     }
     current=v;
-    setText("<b>"+items.at(current)+"</b>");
+    setText(viewText(items.at(current)));
     emit activated(current);
 }
 

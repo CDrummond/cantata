@@ -194,6 +194,12 @@ set(OXYGEN_ICONS
 22x22/actions/bookmarks.png
 64x64/places/bookmarks.png
 64x64/actions/bookmark-new.png
+32x32/actions/go-up.png
+22x22/actions/go-up.png
+16x16/actions/go-up.png
+32x32/actions/go-down.png
+22x22/actions/go-down.png
+16x16/actions/go-down.png
 )
 
 foreach(ICON ${OXYGEN_ICONS})

@@ -422,12 +422,11 @@ Icons::Icons()
     addRadioStreamIcon=Icon::create("addradio", constStdSizes);
     variousArtistsIcon=Icon::create("va", QList<int>() << 16 << 22 << 32 << 48 << 64 << 128, true);
     artistIcon=Icon::create("artist", QList<int>() << 16 << 22 << 32 << 48 << 64 << 128, true);
+    lastFmIcon.addFile(":lastfm.svg");
     #ifndef ENABLE_KDE_SUPPORT
     #ifndef ENABLE_UBUNTU
     appIcon.addFile(":cantata.svg");
     #endif
-    lastFmIcon.addFile(":lastfm.svg");
-
     shortcutsIcon=Icon("preferences-desktop-keyboard");
     #if !defined Q_OS_WIN && !defined Q_OS_MAC && !defined ENABLE_UBUNTU
     if (shortcutsIcon.isNull()) {

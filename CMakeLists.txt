@@ -594,7 +594,6 @@ else (ENABLE_KDE)
         add_definitions(-D__APPLE__)
     endif (WIN32)
 
-    set(CANTATA_RCS ${CANTATA_RCS} cantata_qt.qrc)
     set(CANTATA_SRCS ${CANTATA_SRCS} gui/shortcutssettingspage.cpp gui/mediakeys.cpp)
     set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} gui/shortcutssettingspage.h gui/multimediakeysinterface.h)
 

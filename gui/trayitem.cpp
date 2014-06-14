@@ -97,15 +97,11 @@ void TrayItem::setup()
         return;
     }
 
-    #if !defined Q_OS_WIN && !defined Q_OS_MAC
-    QString iconFile=CANTATA_SYS_ICONS_DIR+QIcon::themeName()+QLatin1String("/systray.svg");
-    #endif
-
     #ifdef ENABLE_KDE_SUPPORT
     trayItem = new KStatusNotifierItem(this);
     trayItem->setCategory(KStatusNotifierItem::ApplicationStatus);
     trayItem->setTitle(i18n("Cantata"));
-    trayItem->setIconByName(!iconFile.isEmpty() && QFile::exists(iconFile) ? iconFile : QLatin1String("cantata"));
+    trayItem->setIconByName(QIcon::hasThemeIcon("cantata-panel") ? QLatin1String("cantata-panel") : QLatin1String("cantata"));
     trayItem->setToolTip("cantata", i18n("Cantata"), QString());
 
     trayItemMenu = new KMenu(0);
@@ -140,13 +136,7 @@ void TrayItem::setup()
     trayItemMenu->addSeparator();
     trayItemMenu->addAction(mw->quitAction);
     trayItem->setContextMenu(trayItemMenu);
-    Icon icon;
-    #if !defined Q_OS_WIN && !defined Q_OS_MAC
-    if (QFile::exists(iconFile)) {
-        icon.addFile(iconFile);
-    }
-    #endif
-    trayItem->setIcon(icon.isNull() || icon.pixmap(16, 16).isNull() ? Icons::self()->appIcon : icon);
+    trayItem->setIcon(QIcon::hasThemeIcon("cantata-panel") ? Icon("cantata-panel") : Icons::self()->appIcon);
     trayItem->setToolTip(i18n("Cantata"));
     trayItem->show();
     connect(trayItem, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(trayItemClicked(QSystemTrayIcon::ActivationReason)));

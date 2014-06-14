@@ -425,11 +425,7 @@ Icons::Icons()
     lastFmIcon.addFile(":lastfm.svg");
     #ifndef ENABLE_KDE_SUPPORT
     #ifndef ENABLE_UBUNTU
-    #if defined Q_OS_WIN || defined Q_OS_MAC
-    appIcon.addFile(CANTATA_SYS_ICONS_DIR+"cantata.svg");
-    #else // defined Q_OS_WIN || defined Q_OS_MAC
     appIcon=Icon("cantata");
-    #endif // defined Q_OS_WIN || defined Q_OS_MAC
     #endif // ENABLE_UBUNTU
     shortcutsIcon=Icon("preferences-desktop-keyboard");
     #if !defined Q_OS_WIN && !defined Q_OS_MAC && !defined ENABLE_UBUNTU

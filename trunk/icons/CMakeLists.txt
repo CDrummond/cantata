@@ -1,7 +1,9 @@
 #if (ENABLE_KDE_SUPPORT)
 #    kde4_install_icons( ${DATA_INSTALL_DIR}/cantata/icons)
 #else (ENABLE_KDE_SUPPORT)
-    if (UNIX AND NOT APPLE)
+    if (WIN32 OR APPLE)
+        install(FILES cantata.svg DESTINATION ${CMAKE_INSTALL_PREFIX}/icons)
+    else (WIN32 OR APPLE)
         macro (update_iconcache)
             # Update mtime of hicolor icon theme dir.
             # We don't always have touch command (e.g. on Windows), so instead create
@@ -27,6 +29,6 @@
         install(FILES trayicon-mono-light.svg DESTINATION ${CMAKE_INSTALL_PREFIX}/share/${CMAKE_PROJECT_NAME}/icons/ubuntu-mono-dark RENAME systray.svg)
 
         update_iconcache()
-    endif (UNIX AND NOT APPLE)
+    endif (WIN32 OR APPLE)
 #endif (ENABLE_KDE_SUPPORT)
 

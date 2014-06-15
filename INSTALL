@@ -60,8 +60,12 @@ The following options may be passed to CMake:
         directory" then try calling CMake with this option set to true.
 
     -DENABLE_HTTP_STREAM_PLAYBACK=ON
-        Enable support for playing back MPD HTTP streams via Phonon (Qt4) or
-        QtMultiMedia (Qt5).
+        Enable support for playing back MPD HTTP streams via Phonon (Qt4),
+        QtMultiMedia (Qt5), or lib VLC (see below)
+        Default: OFF
+
+    -ENABLE_LIBVLC=ON
+        Enabled usage of libVLC for MPD HTTP stream playback.
         Default: OFF
 
     -DENABLE_HTTPS_SUPPORT=ON

@@ -160,6 +160,7 @@
  99. Hide system-tray option in Qt builds if system tray is not available.
 100. In non Dbus Qt builds, if notificaitons is checked ensure that sys tray is
      also checkedd. Conversly if sys tray is unchecked, uncheck notifications.
+101. Add option to use libVLC for MPD HTTP stream playback.
 
 1.3.4
 -----

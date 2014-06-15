@@ -26,7 +26,9 @@
 
 #include <QObject>
 
-#if QT_VERSION < 0x050000
+#if LIBVLC_FOUND
+#include <vlc/vlc.h>
+#elif QT_VERSION < 0x050000
 #include <phonon/mediaobject.h>
 #else
 #include <QtMultimedia/QMediaPlayer>
@@ -51,7 +53,12 @@ private:
     bool enabled;
     bool stopOnPause;
     int state;
-    #if QT_VERSION < 0x050000
+
+    #if LIBVLC_FOUND
+    libvlc_instance_t *instance;
+    libvlc_media_player_t *player;
+    libvlc_media_t *media;
+    #elif QT_VERSION < 0x050000
     Phonon::MediaObject *player;
     #else
     QMediaPlayer *player;

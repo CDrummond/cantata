@@ -53,7 +53,11 @@ void HttpStream::setEnabled(bool e)
         disconnect(MPDConnection::self(), SIGNAL(streamUrl(QString)), this, SLOT(streamUrl(QString)));
         disconnect(MPDStatus::self(), SIGNAL(updated()), this, SLOT(updateStatus()));
         if (player) {
+            #if LIBVLC_FOUND
+            libvlc_media_player_stop(player);
+            #else
             player->stop();
+            #endif
         }
     }
 }
@@ -62,28 +66,48 @@ void HttpStream::streamUrl(const QString &url)
 {
     MPDStatus * const status = MPDStatus::self();
     static const char *constUrlProperty="url";
+    #if LIBVLC_FOUND
+    if (player) {
+        libvlc_media_player_stop(player);
+        libvlc_media_player_release(player);
+        libvlc_release(instance);
+        player=0;
+    }
+    #else
     if (player && player->property(constUrlProperty).toString()!=url) {
         player->stop();
         player->deleteLater();
         player=0;
     }
+    #endif
     if (!url.isEmpty() && !player) {
-        #if QT_VERSION < 0x050000
+        #if LIBVLC_FOUND
+        instance = libvlc_new(0, NULL);
+        QByteArray byteArrayUrl = url.toUtf8();
+        media = libvlc_media_new_location(instance, byteArrayUrl.constData());
+        player = libvlc_media_player_new_from_media(media);
+        libvlc_media_release(media);
+        #elif QT_VERSION < 0x050000
         player=new Phonon::MediaObject(this);
         Phonon::createPath(player, new Phonon::AudioOutput(Phonon::MusicCategory, this));
         player->setCurrentSource(QUrl(url));
+        player->setProperty(constUrlProperty, url);
         #else
         player=new QMediaPlayer(this);
         player->setMedia(QUrl(url));
-        #endif
         player->setProperty(constUrlProperty, url);
+        #endif
     }
 
     if (player) {
         state=status->state();
         switch (status->state()) {
         case MPDState_Playing:
-            #if QT_VERSION < 0x050000
+            #if LIBVLC_FOUND
+            if(libvlc_media_player_get_state(player)!=libvlc_Playing){
+                libvlc_media_player_play(player);
+            }
+            #elif QT_VERSION < 0x050000
             if (Phonon::PlayingState!=player->state()) {
                 player->play();
             }
@@ -95,11 +119,19 @@ void HttpStream::streamUrl(const QString &url)
             break;
         case MPDState_Inactive:
         case MPDState_Stopped:
+            #if LIBVLC_FOUND
+            libvlc_media_player_stop(player);
+            #else
             player->stop();
+            #endif
             break;
         case MPDState_Paused:
             if (stopOnPause) {
+                #if LIBVLC_FOUND
+                libvlc_media_player_stop(player);
+                #else
                 player->stop();
+                #endif
             }
         default:
             break;
@@ -123,7 +155,11 @@ void HttpStream::updateStatus()
     state=status->state();
     switch (status->state()) {
     case MPDState_Playing:
-        #if QT_VERSION < 0x050000
+        #if LIBVLC_FOUND
+        if (libvlc_Playing!=libvlc_media_player_get_state(player)) {
+            libvlc_media_player_play(player);
+        }
+        #elif QT_VERSION < 0x050000
         if (Phonon::PlayingState!=player->state()) {
             player->play();
         }
@@ -135,13 +171,22 @@ void HttpStream::updateStatus()
         break;
     case MPDState_Inactive:
     case MPDState_Stopped:
+        #if LIBVLC_FOUND
+        libvlc_media_player_stop(player);
+        #else
         player->stop();
+        #endif
         break;
     case MPDState_Paused:
         if (stopOnPause) {
+            #if LIBVLC_FOUND
+            libvlc_media_player_stop(player);
+            #else
             player->stop();
+            #endif
         }
     default:
         break;
     }
 }
+

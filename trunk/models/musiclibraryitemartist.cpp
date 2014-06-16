@@ -186,7 +186,7 @@ MusicLibraryItemAlbum * MusicLibraryItemArtist::createAlbum(const Song &s)
     // So, when creating an album entry we need to use the "Album (Artist)" value for display/sort, and still store just
     // "Album" (for saving to cache, tag editing, etc.)
     QString albumId=s.albumId();
-    MusicLibraryItemAlbum *item=new MusicLibraryItemAlbum(s.albumName(), s.album, s.mbAlbumId, s.year, this);
+    MusicLibraryItemAlbum *item=new MusicLibraryItemAlbum(s.albumName(), s.album, s.mbAlbumId(), s.year, this);
     m_indexes.insert(albumId, m_childItems.count());
     m_childItems.append(item);
     return item;

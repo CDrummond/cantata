@@ -494,7 +494,10 @@ quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime 
                 song.album=attributes.value(constNameAttribute).toString();
                 song.year=attributes.value(constYearAttribute).toString().toUInt();
                 song.genre=attributes.value(constGenreAttribute).toString();
-                song.mbAlbumId=attributes.value(constMbIdAttribute).toString();
+                QString mb=attributes.value(constMbIdAttribute).toString();
+                if (!mb.isEmpty()) {
+                    song.setMbAlbumId(mb);
+                }
                 if (!song.file.isEmpty()) {
                     song.file.append("dummy.mp3");
                 }

@@ -30,7 +30,7 @@
 
 #include <QString>
 #include <QSet>
-#include <QMap>
+#include <QHash>
 #include <QMetaType>
 #include "config.h"
 #include "support/utils.h"
@@ -46,6 +46,7 @@ struct Song
         Composer,
         Performer,
         Comment,
+        MusicBrainzAlbumId,
 
         // These are not real tags - but fields used elsewhere in the code...
         PodcastPublishedDate,
@@ -72,7 +73,6 @@ struct Song
     QString title;
     QString genre;
     QString name;
-    QString mbAlbumId;
 //     quint32 pos;
     quint8 disc;
     mutable quint8 priority;
@@ -82,7 +82,7 @@ struct Song
     mutable Type type : 3;
     mutable bool guessed : 1;
     qint32 size;
-    QMap<int, QString> extra;
+    QHash<int, QString> extra;
 
     // Only used in PlayQueue/PlayLists...
     quint16 key;
@@ -119,18 +119,21 @@ struct Song
     QString entryName() const;
     QString artistOrComposer() const;
     QString albumName() const;
-    QString albumId() const { return mbAlbumId.isEmpty() ? album : mbAlbumId; }
+    QString albumId() const;
     QString artistSong() const;
     const QString & albumArtist() const { return albumartist.isEmpty() ? artist : albumartist; }
     QString displayTitle() const { return !albumartist.isEmpty() && albumartist!=artist ? artistSong() : title; }
     QString trackAndTitleStr(bool showArtistIfDifferent=true) const;
 
-    QString extraField(int f) const { return extra.contains(f) ? extra[f] : QString(); }
+    QString extraField(int f) const { return extra[f]; }
+    void setExtraField(int f, const QString &v);
+    QString mbAlbumId() const { return extraField(MusicBrainzAlbumId); }
+    void setMbAlbumId(const QString &v) { setExtraField(MusicBrainzAlbumId, v); }
     QString composer() const { return extraField(Composer); }
-    void setComposer(const QString &v) { extra[Composer]=v; }
+    void setComposer(const QString &v) { setExtraField(Composer, v); }
     QString performer() const { return extraField(Performer); }
     QString comment() const { return extraField(Comment); }
-    void setComment(const QString &v) { extra[Comment]=v; }
+    void setComment(const QString &v) { setExtraField(Comment, v); }
     void clearExtra() { extra.clear(); }
 
     static bool isVariousArtists(const QString &str);
@@ -179,15 +182,15 @@ struct Song
     // podcast functions...
     bool hasBeenPlayed() const { return 0!=id; }
     void setPlayed(bool p) { id=p ? 1 : 0; }
-    void setPodcastImage(const QString &i) { extra[PodcastLocalPath]=i; }
+    void setPodcastImage(const QString &i) { setExtraField(PodcastLocalPath, i); }
     QString podcastImage() const { return extraField(PodcastLocalPath); }
-    void setPodcastPublishedDate(const QString &pd) { extra[PodcastPublishedDate]=pd; }
+    void setPodcastPublishedDate(const QString &pd) { setExtraField(PodcastPublishedDate, pd); }
     QString podcastPublishedDate() const { return extraField(PodcastPublishedDate); }
     QString podcastLocalPath() const { return extraField(PodcastLocalPath); }
-    void setPodcastLocalPath(const QString &l) { extra[PodcastLocalPath]=l; }
+    void setPodcastLocalPath(const QString &l) { setExtraField(PodcastLocalPath, l); }
 
     // podcast/soundcloud functions...
-    void setIsFromOnlineService(const QString &service) { extra[OnlineServiceName]=service; }
+    void setIsFromOnlineService(const QString &service) { setExtraField(OnlineServiceName, service); }
     bool isFromOnlineService() const { return extra.contains(OnlineServiceName); }
     QString onlineService() const { return extraField(OnlineServiceName); }
 };

@@ -26,6 +26,6 @@
 void MusicLibraryItemSong::initGenres() const
 {
     if (m_genres.isEmpty() && !m_song.genre.isEmpty()) {
-        m_genres=m_song.genre.split(QLatin1String(";"), QString::SkipEmptyParts).toSet();
+        m_genres=m_song.genre.split(Song::constGenreSep, QString::SkipEmptyParts).toSet();
     }
 }

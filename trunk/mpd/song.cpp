@@ -383,7 +383,7 @@ void Song::clear()
     type = Standard;
 }
 
-const QLatin1Char constGenreSep(';');
+const QLatin1Char Song::constGenreSep(';');
 
 void Song::addGenre(const QString &g)
 {

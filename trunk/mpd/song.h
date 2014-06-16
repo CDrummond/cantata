@@ -38,6 +38,7 @@
 struct Song
 {
     static const quint16 constNullKey;
+    static const QLatin1Char constGenreSep;
 
     static bool useComposer();
     static void setUseComposer(bool u);

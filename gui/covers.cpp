@@ -983,7 +983,7 @@ QPixmap * Covers::saveScaledCover(const QImage &img, const Song &song, int size)
     if (cacheScaledCovers) {
         QString fileName=getScaledCoverName(song, size, true);
         bool status=img.save(fileName, "PNG");
-        DBUG_CLASS("Covers") << song.albumArtist() << song.album << song.mbAlbumId << size << fileName << status;
+        DBUG_CLASS("Covers") << song.albumArtist() << song.album << song.mbAlbumId() << size << fileName << status;
     }
     QPixmap *pix=new QPixmap(QPixmap::fromImage(img));
     cache.insert(cacheKey(song, size), pix, pix->width()*pix->height()*(pix->depth()/8));
@@ -1441,11 +1441,11 @@ void Covers::gotAlbumCover(const Song &song, const QImage &img, const QString &f
     if (emitResult) {
         if (song.isSpecificSizeRequest()) {
             if (!img.isNull() && saveScaledCover(scale(song, img, song.size), song, song.size)) {
-                DBUG << "loaded cover" << song.file << song.artist << song.albumartist << song.album << song.mbAlbumId << img.width() << img.height() << fileName << song.size;
+                DBUG << "loaded cover" << song.file << song.artist << song.albumartist << song.album << song.mbAlbumId() << img.width() << img.height() << fileName << song.size;
                 emit loaded(song, song.size);
             }
         } else {
-            DBUG << "emit cover" << song.file << song.artist << song.albumartist << song.album << song.mbAlbumId << img.width() << img.height() << fileName;
+            DBUG << "emit cover" << song.file << song.artist << song.albumartist << song.album << song.mbAlbumId() << img.width() << img.height() << fileName;
             emit cover(song, img, fileName.startsWith(constCoverInTagPrefix) ? QString() : fileName);
         }
     }

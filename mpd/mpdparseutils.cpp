@@ -298,7 +298,7 @@ Song MPDParseUtils::parseSong(const QList<QByteArray> &lines, Location location)
             song.title=Utils::getFile(song.file);
             song.type=Song::Playlist;
         }  else if (line.startsWith(constAlbumId)) {
-            song.mbAlbumId = line.mid(constAlbumId.length());
+            song.setMbAlbumId(line.mid(constAlbumId.length()));
         } else if ((Loc_Search==location || Loc_Playlists==location || Loc_PlayQueue==location)  &&
                    line.startsWith(constPerformerKey)) {
             song.extra[Song::Performer] = QString::fromUtf8(line.mid(constPerformerKey.length()));

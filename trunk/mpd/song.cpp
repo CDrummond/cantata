@@ -413,14 +413,25 @@ QString Song::entryName() const
 
 QString Song::artistOrComposer() const
 {
-    return useComposerIfSet && extra.contains(Composer) ? extra[Composer] : albumArtist();
+    if (useComposerIfSet){
+        QString c=composer();
+        if (!c.isEmpty()) {
+            return c;
+        }
+    }
+
+    return albumArtist();
 }
 
 QString Song::albumName() const
 {
-    return useComposerIfSet && extra.contains(Composer) && extra[Composer]!=albumArtist()
-            ? album+QLatin1String(" (")+albumArtist()+QLatin1Char(')')
-            : album;
+    if (useComposerIfSet) {
+        QString c=composer();
+        if (!c.isEmpty() && c!=albumArtist()) {
+            return album+QLatin1String(" (")+albumArtist()+QLatin1Char(')');
+        }
+    }
+    return album;
 }
 
 QString Song::albumId() const

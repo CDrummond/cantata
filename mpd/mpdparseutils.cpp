@@ -273,7 +273,7 @@ Song MPDParseUtils::parseSong(const QList<QByteArray> &lines, Location location)
         } else if (line.startsWith(constAlbumArtistKey)) {
             song.albumartist = QString::fromUtf8(line.mid(constAlbumArtistKey.length()));
         } else if (line.startsWith(constComposerKey)) {
-            song.extra[Song::Composer] = QString::fromUtf8(line.mid(constComposerKey.length()));
+            song.setComposer(QString::fromUtf8(line.mid(constComposerKey.length())));
         } else if (line.startsWith(constTitleKey)) {
             song.title =QString::fromUtf8(line.mid(constTitleKey.length()));
         } else if (line.startsWith(constTrackKey)) {
@@ -301,12 +301,12 @@ Song MPDParseUtils::parseSong(const QList<QByteArray> &lines, Location location)
             song.setMbAlbumId(line.mid(constAlbumId.length()));
         } else if ((Loc_Search==location || Loc_Playlists==location || Loc_PlayQueue==location)  &&
                    line.startsWith(constPerformerKey)) {
-            song.extra[Song::Performer] = QString::fromUtf8(line.mid(constPerformerKey.length()));
+            song.setPerformer(QString::fromUtf8(line.mid(constPerformerKey.length())));
         } else if (Loc_PlayQueue==location) {
             if (line.startsWith(constPriorityKey)) {
                 song.priority = line.mid(constPriorityKey.length()).toUInt();
             } else if (line.startsWith(constCommentKey)) {
-                song.extra[Song::Comment] = QString::fromUtf8(line.mid(constCommentKey.length()));
+                song.setComment(QString::fromUtf8(line.mid(constCommentKey.length())));
             }
         }
     }

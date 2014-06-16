@@ -135,6 +135,7 @@ struct Song
     QString composer() const { return extraField(Composer); }
     void setComposer(const QString &v) { setExtraField(Composer, v); }
     QString performer() const { return extraField(Performer); }
+    void setPerformer(const QString &v) { setExtraField(Performer, v); }
     QString comment() const { return extraField(Comment); }
     void setComment(const QString &v) { setExtraField(Comment, v); }
     void clearExtra() { extra.clear(); }

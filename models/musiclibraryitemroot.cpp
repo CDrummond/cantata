@@ -499,10 +499,7 @@ quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime 
                 song.album=attributes.value(constNameAttribute).toString();
                 song.year=attributes.value(constYearAttribute).toString().toUInt();
                 song.genre=attributes.value(constGenreAttribute).toString();
-                QString mb=attributes.value(constMbIdAttribute).toString();
-                if (!mb.isEmpty()) {
-                    song.setMbAlbumId(mb);
-                }
+                song.setMbAlbumId(attributes.value(constMbIdAttribute).toString());
                 if (!song.file.isEmpty()) {
                     song.file.append("dummy.mp3");
                 }
@@ -601,7 +598,7 @@ quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime 
                     }
                 }
                 song.time=song.track=0;
-                song.clearExtra();
+                song.setComposer(QString());
             }
         }
     }

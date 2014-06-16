@@ -65,7 +65,9 @@ The following options may be passed to CMake:
         Default: OFF
 
     -ENABLE_LIBVLC=ON
-        Enabled usage of libVLC for MPD HTTP stream playback.
+        Enabled usage of libVLC for MPD HTTP stream playback. Bug report 493
+        (https://code.google.com/p/cantata/issues/detail?id=493) contains
+        more information.
         Default: OFF
 
     -DENABLE_HTTPS_SUPPORT=ON

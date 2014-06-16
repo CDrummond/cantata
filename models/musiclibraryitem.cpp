@@ -23,9 +23,8 @@
 
 #include "musiclibraryitem.h"
 
-MusicLibraryItem::MusicLibraryItem(const QString &data, MusicLibraryItemContainer *parent)
+MusicLibraryItem::MusicLibraryItem(MusicLibraryItemContainer *parent)
         : m_parentItem(parent)
-        , m_itemData(data)
         , m_checkState(Qt::Unchecked)
         , m_row(0)
 {

@@ -106,11 +106,12 @@ void AlbumView::refresh()
 
 void AlbumView::update(const Song &song, bool force)
 {
-    if (song.isStandardStream() && song.album.isEmpty() && !song.name.isEmpty() && song.name!=currentSong.name) {
+    QString streamName=song.isStandardStream() && song.album.isEmpty() ? song.name() : QString();
+    if (!streamName.isEmpty() && streamName!=currentSong.name()) {
         abort();
         currentSong=song;
         clearDetails();
-        setHeader(song.name);
+        setHeader(streamName);
         needToUpdate=false;
         detailsReceived=All;
         pic=createPicTag(QImage(), CANTATA_SYS_ICONS_DIR+QLatin1String("stream.png"));

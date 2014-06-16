@@ -172,7 +172,6 @@ Song & Song::operator=(const Song &s)
     priority = s.priority;
     year = s.year;
     genre = s.genre;
-    name = s.name;
     size = s.size;
     key = s.key;
     type = s.type;
@@ -231,7 +230,7 @@ int Song::compareTo(const Song &o) const
         if (0!=compare) {
             return compare;
         }
-        compare=name.compare(o.name);
+        compare=name().compare(o.name());
         if (0!=compare) {
             return compare;
         }
@@ -248,7 +247,7 @@ int Song::compareTo(const Song &o) const
 
 bool Song::isEmpty() const
 {
-    return (artist.isEmpty() && album.isEmpty() && title.isEmpty() && name.isEmpty()) || file.isEmpty();
+    return (artist.isEmpty() && album.isEmpty() && title.isEmpty() && name().isEmpty()) || file.isEmpty();
 }
 
 void Song::guessTags()
@@ -379,8 +378,8 @@ void Song::clear()
     disc = 0;
     year = 0;
     genre.clear();
-    name.clear();
     size = 0;
+    extra.clear();
     type = Standard;
 }
 
@@ -567,7 +566,7 @@ QString Song::basicArtist() const
 
 QString Song::describe(bool withMarkup) const
 {
-    QString albumText=album.isEmpty() ? name : displayAlbum(album, Song::albumYear(*this));
+    QString albumText=album.isEmpty() ? name() : displayAlbum(album, Song::albumYear(*this));
 
     return withMarkup
             ? title.isEmpty()
@@ -597,7 +596,7 @@ QString Song::describe(bool withMarkup) const
 QDataStream & operator<<(QDataStream &stream, const Song &song)
 {
     stream << song.id << song.file << song.album << song.artist << song.albumartist << song.title
-           << song.genre << song.name << song.disc << song.priority << song.time << song.track << (quint16)song.year
+           << song.genre << song.disc << song.priority << song.time << song.track << (quint16)song.year
            << (quint16)song.type << (bool)song.guessed << song.size << song.extra;
     return stream;
 }
@@ -608,7 +607,7 @@ QDataStream & operator>>(QDataStream &stream, Song &song)
     quint16 year;
     bool guessed;
     stream >> song.id >> song.file >> song.album >> song.artist >> song.albumartist >> song.title
-           >> song.genre >> song.name >> song.disc >> song.priority >> song.time >> song.track >> year
+           >> song.genre >> song.disc >> song.priority >> song.time >> song.track >> year
            >> type >> guessed >> song.size >> song.extra;
     song.type=(Song::Type)type;
     song.year=year;

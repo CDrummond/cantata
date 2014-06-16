@@ -1514,7 +1514,7 @@ void MPDConnection::listStreams()
         QList<Song> songs=MPDParseUtils::parseSongs(response.data, MPDParseUtils::Loc_Streams);
         QList<Stream> streams;
         foreach (const Song &song, songs) {
-            streams.append(Stream(song.file, song.name));
+            streams.append(Stream(song.file, song.name()));
         }
 
         emit streamList(streams);

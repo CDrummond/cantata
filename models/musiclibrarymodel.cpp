@@ -709,7 +709,7 @@ void MusicLibraryModel::coverLoaded(const Song &song, int size)
         #endif
         //song.isCdda() || (song.isArtistImageRequest() && !rootItem->useArtistImages()) ||
         song.isCdda() || !song.isArtistImageRequest() || !rootItem->useArtistImages() ||
-        song.file.startsWith("http://") || song.name.startsWith("http://")) {
+        song.file.startsWith("http://") || song.name().startsWith("http://")) {
         return;
     }
     //if (song.isArtistImageRequest()) {
@@ -750,7 +750,7 @@ void MusicLibraryModel::setCover(const Song &song, const QImage &img, const QStr
     #else
     Q_UNUSED(file)
     if (!rootItem->useAlbumImages() || img.isNull() || MusicLibraryItemAlbum::CoverNone==MusicLibraryItemAlbum::currentCoverSize() ||
-        song.isCdda() || song.file.startsWith("http:/") || song.name.startsWith("http:/")) {
+        song.isCdda() || song.file.startsWith("http:/") || song.name().startsWith("http:/")) {
         return;
     }
 

@@ -164,19 +164,21 @@ static bool isAlbumHeader(const QModelIndex &index)
 static QString streamText(const Song &song, const QString &trackTitle, bool useName=true)
 {
     if (song.album.isEmpty() && song.albumArtist().isEmpty()) {
-        return song.title.isEmpty() && song.name.isEmpty()
+        QString songName=song.name();
+        return song.title.isEmpty() && songName.isEmpty()
                 ? song.file
-                : !useName || song.name.isEmpty()
+                : !useName || songName.isEmpty()
                   ? song.title
                   : song.title.isEmpty()
-                    ? song.name
-                    : (song.title + " - " + song.name);
+                    ? songName
+                    : (song.title + " - " + songName);
     } else if (!song.title.isEmpty() && !song.artist.isEmpty()) {
-        return song.artist + " - " + (!useName || song.name.isEmpty()
+        QString name=song.name();
+        return song.artist + " - " + (!useName || name.isEmpty()
                                         ? song.title
                                         : song.title.isEmpty()
-                                            ? song.name
-                                            : (song.title + " - " + song.name));
+                                            ? name
+                                            : (song.title + " - " + name));
     } else {
         return trackTitle;
     }
@@ -324,8 +326,8 @@ public:
             if (stream) {
                 QModelIndex next=index.sibling(index.row()+1, 0);
                 quint16 nextKey=next.isValid() ? next.data(Cantata::Role_Key).toUInt() : Song::constNullKey;
-                if (nextKey!=song.key && !song.name.isEmpty()) {
-                    title=song.name;
+                if (nextKey!=song.key && !song.name().isEmpty()) {
+                    title=song.name();
                     track=streamText(song, trackTitle, false);
                 } else {
                     title=song.isCdda() ? i18n("Audio CD") : i18n("Streams");

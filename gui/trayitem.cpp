@@ -187,7 +187,7 @@ void TrayItem::songChanged(const Song &song, bool isPlaying)
 {
     if (Settings::self()->showPopups() || trayItem) {
         bool useable=song.isStandardStream()
-                        ? !song.title.isEmpty() && !song.name.isEmpty()
+                        ? !song.title.isEmpty() && !song.name().isEmpty()
                         : !song.title.isEmpty() && !song.artist.isEmpty() && !song.album.isEmpty();
         if (useable) {
             QString text=song.describe(false);

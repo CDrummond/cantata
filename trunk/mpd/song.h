@@ -67,14 +67,13 @@ struct Song
         OnlineSvrTrack  = 6
     };
 
-    qint32 id;
     QString file;
     QString album;
     QString artist;
     QString albumartist;
     QString title;
     QString genre;
-//     quint32 pos;
+    QHash<int, QString> extra;
     quint8 disc;
     mutable quint8 priority;
     quint16 time;
@@ -82,8 +81,8 @@ struct Song
     quint16 year : 12;
     mutable Type type : 3;
     mutable bool guessed : 1;
+    qint32 id;
     qint32 size;
-    QHash<int, QString> extra;
 
     // Only used in PlayQueue/PlayLists...
     quint16 key;

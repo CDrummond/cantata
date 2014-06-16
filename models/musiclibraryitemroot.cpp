@@ -297,6 +297,7 @@ void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, const QDateTime &date
 
     quint64 total=0;
     quint64 count=0;
+    int percent=0;
     writer.writeStartDocument();
 
     //Start with the document
@@ -399,7 +400,11 @@ void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, const QDateTime &date
                 }
                 if (prog && !prog->wasStopped() && total>0) {
                     count++;
-                    prog->writeProgress((count*100.0)/(total*1.0));
+                    int pc=((count*20.0)/(total*1.0))+0.5;
+                    if (pc!=percent) {
+                        prog->readProgress(pc*5);
+                        percent=pc;
+                    }
                 }
             }
             writer.writeEndElement();
@@ -555,12 +560,6 @@ quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime 
                         song.setComposer(composer);
                     }
 
-                    // Fix cache error - where MusicLibraryItemSong::data() was saved as name instead of song.name!!!!
-                    if (!song.albumartist.isEmpty() && !song.artist.isEmpty() && song.albumartist!=song.artist &&
-                        song.title.startsWith(song.artist+QLatin1String(" - "))) {
-                        song.title=song.title.mid(song.artist.length()+3);
-                    }
-
                     QString str=attributes.value(constTrackAttribute).toString();
                     song.track=str.isEmpty() ? 0 : str.toUInt();
                     str=attributes.value(constDiscAttribute).toString();
@@ -571,8 +570,6 @@ quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime 
                     if (!str.isEmpty()) {
                         song.year=str.toUInt();
                     }
-    //                 str=attributes.value("id").toString();
-    //                 song.id=str.isEmpty() ? 0 : str.toUInt();
 
                     if (albumItem->isSingleTracks()) {
                         str=attributes.value(constAlbumAttribute).toString();
@@ -596,9 +593,9 @@ quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime 
 
                     if (prog && !prog->wasStopped() && total>0) {
                         count++;
-                        int pc=((count*100.0)/(total*1.0))+0.5;
+                        int pc=((count*20.0)/(total*1.0))+0.5;
                         if (pc!=percent) {
-                            prog->readProgress(pc);
+                            prog->readProgress(pc*5);
                             percent=pc;
                         }
                     }

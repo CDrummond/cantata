@@ -210,11 +210,11 @@ int Song::compareTo(const Song &o) const
         if (0!=compare) {
             return compare;
         }
-        compare=mbAlbumId().compare(o.mbAlbumId());
+        compare=album.localeAwareCompare(o.album);
         if (0!=compare) {
             return compare;
         }
-        compare=album.localeAwareCompare(o.album);
+        compare=mbAlbumId().compare(o.mbAlbumId());
         if (0!=compare) {
             return compare;
         }

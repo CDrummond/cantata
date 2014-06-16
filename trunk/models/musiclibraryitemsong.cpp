@@ -23,9 +23,45 @@
 
 #include "musiclibraryitemsong.h"
 
+MusicLibraryItemSong::~MusicLibraryItemSong()
+{
+    if (m_genres>(void *)1) {
+        delete m_genres;
+        m_genres=0;
+    }
+}
+
+void MusicLibraryItemSong::setSong(const Song &s)
+{
+    m_song=s;
+    if (m_genres>(void *)1) {
+        delete m_genres;
+        m_genres=0;
+    }
+}
+
+bool MusicLibraryItemSong::hasGenre(const QString &genre) const
+{
+    initGenres();
+    return (void *)1==m_genres ? m_song.genre==genre : allGenres().contains(genre);
+}
+
+QSet<QString> MusicLibraryItemSong::allGenres() const
+{
+    initGenres();
+    return (void *)1==m_genres ? (QSet<QString>() << m_song.genre) : *m_genres;
+}
+
 void MusicLibraryItemSong::initGenres() const
 {
-    if (m_genres.isEmpty() && !m_song.genre.isEmpty()) {
-        m_genres=m_song.genre.split(Song::constGenreSep, QString::SkipEmptyParts).toSet();
+    // Reduce memory usage by only storing genres in a set if required...
+    if (0==m_genres) {
+        QSet<QString> g=m_song.genre.split(QLatin1Char(';'), QString::SkipEmptyParts).toSet();
+        if (g.count()<2) {
+            m_genres=(QSet<QString> *)1;
+        } else {
+            m_genres=new QSet<QString>();
+            *m_genres=g;
+        }
     }
 }

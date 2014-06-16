@@ -38,12 +38,12 @@ class MusicLibraryItemSong : public MusicLibraryItem
 {
 public:
     MusicLibraryItemSong(const Song &s, MusicLibraryItemContainer *parent)
-        : MusicLibraryItem(s.displayTitle(), parent), m_song(s) { }
+        : MusicLibraryItem(s.displayTitle(), parent), m_song(s), m_genres(0) { }
 
-    virtual ~MusicLibraryItemSong() { }
+    virtual ~MusicLibraryItemSong();
 
     const QString & file() const { return m_song.file; }
-    void setSong(const Song &s) { m_song=s; m_genres.clear(); }
+    void setSong(const Song &s);
     void setFile(const QString &f) { m_song.file=f; }
     quint16 track() const { return m_song.track; }
     void setTrack(quint16 t) { m_song.track=t; }
@@ -53,8 +53,8 @@ public:
     const QString & genre() const { return m_song.genre; }
     const Song & song() const { return m_song; }
     Type itemType() const { return Type_Song; }
-    bool hasGenre(const QString &genre) const { initGenres(); return m_genres.contains(genre); }
-    const QSet<QString> & allGenres() const { initGenres(); return m_genres; }
+    bool hasGenre(const QString &genre) const;
+    QSet<QString> allGenres() const;
     void setPodcastImage(const QString &img) { m_song.setPodcastImage(img); }
 
 private:
@@ -62,7 +62,7 @@ private:
 
 protected:
     Song m_song;
-    mutable QSet<QString> m_genres;
+    mutable QSet<QString> *m_genres;
 };
 
 #endif

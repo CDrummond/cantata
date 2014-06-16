@@ -61,7 +61,7 @@ public:
     void setCheckState(Qt::CheckState s) { m_checkState=s; }
 
     virtual bool hasGenre(const QString &genre) const=0;
-    virtual const QSet<QString> & allGenres() const=0;
+    virtual QSet<QString> allGenres() const=0;
     virtual Type itemType() const=0;
 
 protected:
@@ -87,7 +87,7 @@ public:
     void addGenres(const QSet<QString> &genres) { m_genres+=genres; }
     bool hasGenre(const QString &genre) const { return m_genres.contains(genre); }
     const QSet<QString> & genres() const { return m_genres; }
-    const QSet<QString> & allGenres() const { return genres(); }
+    QSet<QString> allGenres() const { return genres(); }
     void updateGenres();
     void resetRows();
     void clear();

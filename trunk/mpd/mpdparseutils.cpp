@@ -648,7 +648,7 @@ void MPDParseUtils::parseLibraryItems(const QByteArray &data, const QString &mpd
                             }
                             DBUG << "Create new track from cue" << s.file << s.title << s.artist << s.albumartist << s.album;
                             songItem=new MusicLibraryItemSong(s, albumItem);
-                            const QSet<QString> &songGenres=songItem->allGenres();
+                            QSet<QString> songGenres=songItem->allGenres();
                             albumItem->append(songItem);
                             albumItem->addGenres(songGenres);
                             artistItem->addGenres(songGenres);
@@ -704,7 +704,7 @@ void MPDParseUtils::parseLibraryItems(const QByteArray &data, const QString &mpd
                 DBUG << "New album item for " << currentSong.file << artistItem->data() << albumItem->data() << (void *)albumItem;
             }           
             songItem=new MusicLibraryItemSong(currentSong, albumItem);
-            const QSet<QString> &songGenres=songItem->allGenres();
+            QSet<QString> songGenres=songItem->allGenres();
             albumItem->append(songItem);
             albumItem->addGenres(songGenres);
             artistItem->addGenres(songGenres);

@@ -534,7 +534,13 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
         case COL_ARTIST:
             return song.artist.isEmpty() ? Song::unknown() : song.artist;
         case COL_ALBUM:
-            return song.album.isEmpty() && !song.name.isEmpty() && song.isStream() ? song.name : song.album;
+            if (song.isStream() && song.album.isEmpty()) {
+                QString n=song.name();
+                if (!n.isEmpty()) {
+                    return n;
+                }
+            }
+            return song.album;
         case COL_TRACK:
             if (song.track <= 0) {
                 return QVariant();
@@ -978,7 +984,7 @@ void PlayQueueModel::update(const QList<Song> &songList)
                 currentKeys.insert(s.key);
                 #endif
                 songs.replace(i, s);
-                if (s.name!=curentSongAtPos.name || s.title!=curentSongAtPos.title || s.artist!=curentSongAtPos.artist) {
+                if (s.title!=curentSongAtPos.title || s.artist!=curentSongAtPos.artist || s.name()!=curentSongAtPos.name()) {
                     emit dataChanged(index(i, 0), index(i, columnCount(QModelIndex())-1));
                 }
             }
@@ -1459,7 +1465,7 @@ void PlayQueueModel::updateDetails(const QList<Song> &updated)
             updatedSong.id=current.id;
             updatedSong.setKey(MPDParseUtils::Loc_PlayQueue);
 
-            if (updatedSong.name!=current.name || updatedSong.title!=current.title || updatedSong.artist!=current.artist) {
+            if (updatedSong.title!=current.title || updatedSong.artist!=current.artist || updatedSong.name()!=current.name()) {
                 songs.replace(i, updatedSong);
                 updatedRows.append(i);
                 if (currentSongId==current.id) {

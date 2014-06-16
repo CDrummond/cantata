@@ -179,7 +179,13 @@ QVariant SearchModel::data(const QModelIndex &index, int role) const
             case COL_ARTIST:
                 return song->artist.isEmpty() ? Song::unknown() : song->artist;
             case COL_ALBUM:
-                return song->album.isEmpty() && !song->name.isEmpty() && song->isStream() ? song->name : song->album;
+                if (song->isStream() && song->album.isEmpty()) {
+                    QString n=song->name();
+                    if (!n.isEmpty()) {
+                        return n;
+                    }
+                }
+                return song->album;
             case COL_LENGTH:
                 return Utils::formatTime(song->time);
             case COL_DISC:

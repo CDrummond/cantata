@@ -292,7 +292,7 @@ Song MPDParseUtils::parseSong(const QList<QByteArray> &lines, Location location)
         } else if (line.startsWith(constGenreKey)) {
             song.addGenre(QString::fromUtf8(line.mid(constGenreKey.length())));
         }  else if (line.startsWith(constNameKey)) {
-            song.name = QString::fromUtf8(line.mid(constNameKey.length()));
+            song.setName(QString::fromUtf8(line.mid(constNameKey.length())));
         } else if (line.startsWith(constPlaylistKey)) {
             song.file = QString::fromUtf8(line.mid(constPlaylistKey.length()));
             song.title=Utils::getFile(song.file);
@@ -319,7 +319,7 @@ Song MPDParseUtils::parseSong(const QList<QByteArray> &lines, Location location)
         song.guessTags();
         song.fillEmptyFields();
     } else if (Loc_Streams==location) {
-        song.name=getAndRemoveStreamName(song.file);
+        song.setName(getAndRemoveStreamName(song.file));
     } else {
         QString origFile=song.file;
 
@@ -362,9 +362,9 @@ Song MPDParseUtils::parseSong(const QList<QByteArray> &lines, Location location)
                     {
                         QString name=getAndRemoveStreamName(song.file);
                         if (!name.isEmpty()) {
-                            song.name=name;
+                            song.setName(name);
                         }
-                        if (song.title.isEmpty() && song.name.isEmpty()) {
+                        if (song.title.isEmpty() && song.name().isEmpty()) {
                             song.title=Utils::getFile(QUrl(song.file).path());
                         }
                     }
@@ -555,8 +555,8 @@ void MPDParseUtils::parseLibraryItems(const QByteArray &data, const QString &mpd
 
                     bool canUseThisCueFile=true;
                     foreach (const Song &s, cueSongs) {
-                        if (!QFile::exists(mpdDir+s.name)) {
-                            DBUG << QString(mpdDir+s.name) << "is referenced in cue file, but does not exist in MPD folder";
+                        if (!QFile::exists(mpdDir+s.name())) {
+                            DBUG << QString(mpdDir+s.name()) << "is referenced in cue file, but does not exist in MPD folder";
                             canUseThisCueFile=false;
                             break;
                         }
@@ -580,8 +580,8 @@ void MPDParseUtils::parseLibraryItems(const QByteArray &data, const QString &mpd
                             quint32 usedAlbumTime=0;
                             foreach (const Song &orig, cueSongs) {
                                 Song s=orig;
-                                Song albumSong=origFiles[s.name];
-                                s.name=QString(); // CueFile has placed source file name here!
+                                Song albumSong=origFiles[s.name()];
+                                s.setName(QString()); // CueFile has placed source file name here!
                                 if (s.artist.isEmpty() && !albumSong.artist.isEmpty()) {
                                     s.artist=albumSong.artist;
                                     DBUG << "Get artist from album" << albumSong.artist;
@@ -623,7 +623,7 @@ void MPDParseUtils::parseLibraryItems(const QByteArray &data, const QString &mpd
                         // all tracks have meta data - otherwise just fallback to listing file + cue
                         foreach (const Song &orig, cueSongs) {
                             Song s=orig;
-                            s.name=QString(); // CueFile has placed source file name here!
+                            s.setName(QString()); // CueFile has placed source file name here!
                             if (s.artist.isEmpty() || s.album.isEmpty()) {
                                 break;
                             }

@@ -123,15 +123,18 @@ void Mpris::updateCurrentSong(const Song &song)
 QVariantMap Mpris::Metadata() const {
     QVariantMap metadataMap;
     if (!currentSong.title.isEmpty() && !currentSong.artist.isEmpty() &&
-            (!currentSong.album.isEmpty() || (currentSong.isStream() && !currentSong.name.isEmpty()))) {
+            (!currentSong.album.isEmpty() || (currentSong.isStream() && !currentSong.name().isEmpty()))) {
         metadataMap.insert("mpris:trackid", QVariant::fromValue<QDBusObjectPath>(QDBusObjectPath(mprisPath.arg(currentSong.id))));
         if (currentSong.time>0) {
             metadataMap.insert("mpris:length", convertTime(currentSong.time));
         }
         if (!currentSong.album.isEmpty()) {
             metadataMap.insert("xesam:album", currentSong.album);
-        } else if (!currentSong.name.isEmpty()) {
-            metadataMap.insert("xesam:album", currentSong.name);
+        } else {
+            QString name=currentSong.name();
+            if (!name.isEmpty()) {
+                metadataMap.insert("xesam:album", name);
+            }
         }
         if (!currentSong.albumartist.isEmpty() && currentSong.albumartist!=currentSong.artist) {
             metadataMap.insert("xesam:albumArtist", QStringList() << currentSong.albumartist);

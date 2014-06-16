@@ -143,17 +143,16 @@ void Song::setUseComposer(bool u)
 const quint16 Song::constNullKey(0xFFFF);
 
 Song::Song()
-    : id(-1)
-//       , pos(0)
-      , disc(0)
-      , priority(0)
-      , time(0)
-      , track(0)
-      , year(0)
-      , type(Standard)
-      , guessed(false)
-      , size(0)
-      , key(constNullKey)
+    : disc(0)
+    , priority(0)
+    , time(0)
+    , track(0)
+    , year(0)
+    , type(Standard)
+    , guessed(false)
+    , id(-1)
+    , size(0)
+    , key(constNullKey)
 {
 }
 

@@ -38,10 +38,11 @@ class MusicLibraryItemSong : public MusicLibraryItem
 {
 public:
     MusicLibraryItemSong(const Song &s, MusicLibraryItemContainer *parent)
-        : MusicLibraryItem(s.displayTitle(), parent), m_song(s), m_genres(0) { }
+        : MusicLibraryItem(parent), m_song(s), m_genres(0) { }
 
     virtual ~MusicLibraryItemSong();
 
+    QString data() const { return m_song.displayTitle(); }
     const QString & file() const { return m_song.file; }
     void setSong(const Song &s);
     void setFile(const QString &f) { m_song.file=f; }

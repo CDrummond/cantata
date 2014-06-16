@@ -1666,7 +1666,7 @@ void MainWindow::updatePlayQueue(const QList<Song> &songs)
     } else if (current.isStandardStream()) {
         // Check to see if it has been updated...
         Song pqSong=playQueueModel.getSongByRow(playQueueModel.currentSongRow());
-        if (pqSong.artist!=current.artist || pqSong.album!=current.album || pqSong.name!=current.name || pqSong.title!=current.title || pqSong.year!=current.year) {
+        if (pqSong.artist!=current.artist || pqSong.album!=current.album || pqSong.title!=current.title || pqSong.year!=current.year || pqSong.name()!=current.name() ) {
             updateCurrentSong(pqSong);
         }
     }

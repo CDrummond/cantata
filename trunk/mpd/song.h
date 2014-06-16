@@ -47,6 +47,7 @@ struct Song
         Performer,
         Comment,
         MusicBrainzAlbumId,
+        Name,
 
         // These are not real tags - but fields used elsewhere in the code...
         PodcastPublishedDate,
@@ -72,7 +73,6 @@ struct Song
     QString albumartist;
     QString title;
     QString genre;
-    QString name;
 //     quint32 pos;
     quint8 disc;
     mutable quint8 priority;
@@ -127,6 +127,8 @@ struct Song
 
     QString extraField(int f) const { return extra[f]; }
     void setExtraField(int f, const QString &v);
+    QString name() const { return extraField(Name); }
+    void setName(const QString &v) { setExtraField(Name, v); }
     QString mbAlbumId() const { return extraField(MusicBrainzAlbumId); }
     void setMbAlbumId(const QString &v) { setExtraField(MusicBrainzAlbumId, v); }
     QString composer() const { return extraField(Composer); }

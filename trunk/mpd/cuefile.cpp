@@ -380,9 +380,10 @@ bool CueFile::parse(const QString &fileName, const QString &dir, QList<Song> &so
         Song song;
         song.file=constCueProtocol+fileName+"?pos="+QString::number(i);
         song.track=entry.trackNo;
-        song.name=fileDir+entry.file; // HACK!!!
-        if (!files.contains(song.name)) {
-            files.insert(song.name);
+        QString songFile=fileDir+entry.file;
+        song.setName(songFile); // HACK!!!
+        if (!files.contains(songFile)) {
+            files.insert(songFile);
         }
         // the last TRACK for every FILE gets it's 'end' marker from the media file's
         // length

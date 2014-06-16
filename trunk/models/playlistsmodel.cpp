@@ -419,7 +419,13 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
                 case COL_ARTIST:
                     return s->artist.isEmpty() ? Song::unknown() : s->artist;
                 case COL_ALBUM:
-                    return s->album.isEmpty() && !s->name.isEmpty() && s->isStream() ? s->name : s->album;
+                    if (s->isStream() && s->album.isEmpty()) {
+                        QString n=s->name();
+                        if (!n.isEmpty()) {
+                            return n;
+                        }
+                    }
+                    return s->album;
                 case COL_LENGTH:
                     return Utils::formatTime(s->time);
                 case COL_YEAR:

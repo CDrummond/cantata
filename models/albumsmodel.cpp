@@ -773,7 +773,7 @@ const Song & AlbumsModel::AlbumItem::coverSong()
         cSong.file=firstSong->file;
         cSong.type=type;
         cSong.setComposer(firstSong->composer());
-        cSong.mbAlbumId=firstSong->mbAlbumId;
+        cSong.setMbAlbumId(firstSong->mbAlbumId());
     }
     return cSong;
 }

@@ -29,7 +29,6 @@
 #include "song.h"
 #include "models/musiclibraryitemalbum.h"
 #include "support/localize.h"
-#include <QMap>
 #include <QStringList>
 #include <QSet>
 #include <QChar>
@@ -63,7 +62,7 @@ void Song::initTranslations()
 // When displaying albums, we use the 1st track's year as the year of the album.
 // The map below stores the mapping from artist+album to year.
 // This way the grouped view can find this quickly...
-static QMap<QString, quint16> albumYears;
+static QHash<QString, quint16> albumYears;
 
 void Song::storeAlbumYear(const Song &s)
 {
@@ -72,7 +71,7 @@ void Song::storeAlbumYear(const Song &s)
 
 int Song::albumYear(const Song &s)
 {
-    QMap<QString, quint16>::ConstIterator it=albumYears.find(s.albumKey());
+    QHash<QString, quint16>::ConstIterator it=albumYears.find(s.albumKey());
     return it==albumYears.end() ? s.year : it.value();
 }
 
@@ -174,7 +173,6 @@ Song & Song::operator=(const Song &s)
     year = s.year;
     genre = s.genre;
     name = s.name;
-    mbAlbumId = s.mbAlbumId;
     size = s.size;
     key = s.key;
     type = s.type;
@@ -212,7 +210,7 @@ int Song::compareTo(const Song &o) const
         if (0!=compare) {
             return compare;
         }
-        compare=mbAlbumId.compare(o.mbAlbumId);
+        compare=mbAlbumId().compare(o.mbAlbumId());
         if (0!=compare) {
             return compare;
         }
@@ -329,10 +327,10 @@ struct KeyStore
 {
     KeyStore() : currentKey(0) { }
     quint16 currentKey;
-    QMap<QString, quint16> keys;
+    QHash<QString, quint16> keys;
 };
 
-static QMap<int, KeyStore> storeMap;
+static QHash<int, KeyStore> storeMap;
 
 void Song::clearKeyStore(int location)
 {
@@ -353,7 +351,7 @@ void Song::setKey(int location)
 
     KeyStore &store=storeMap[location];
     QString songKey(albumKey());
-    QMap<QString, quint16>::ConstIterator it=store.keys.find(songKey);
+    QHash<QString, quint16>::ConstIterator it=store.keys.find(songKey);
     if (it!=store.keys.end()) {
         key=it.value();
     } else {
@@ -425,6 +423,12 @@ QString Song::albumName() const
             : album;
 }
 
+QString Song::albumId() const
+{
+    QString mb=mbAlbumId();
+    return mb.isEmpty() ? album : mb;
+}
+
 QString Song::artistSong() const
 {
     //return artist+QLatin1String(" - ")+title;
@@ -441,6 +445,15 @@ QString Song::trackAndTitleStr(bool showArtistIfDifferent) const
     return //(disc>0 ? (QString::number(disc)+QLatin1Char('.')) : QString())+
            (track>0 ? (track>9 ? QString::number(track) : (QLatin1Char('0')+QString::number(track))) : QString())+
            QLatin1Char(' ')+(showArtistIfDifferent && diffArtist() ? artistSong() : title);
+}
+
+void Song::setExtraField(int f, const QString &v)
+{
+    if (v.isEmpty()) {
+        extra.remove(f);
+    } else {
+        extra[f]=v;
+    }
 }
 
 bool Song::isVariousArtists(const QString &str)
@@ -573,7 +586,7 @@ QString Song::describe(bool withMarkup) const
 QDataStream & operator<<(QDataStream &stream, const Song &song)
 {
     stream << song.id << song.file << song.album << song.artist << song.albumartist << song.title
-           << song.genre << song.name << song.mbAlbumId << song.disc << song.priority << song.time << song.track << (quint16)song.year
+           << song.genre << song.name << song.disc << song.priority << song.time << song.track << (quint16)song.year
            << (quint16)song.type << (bool)song.guessed << song.size << song.extra;
     return stream;
 }
@@ -584,7 +597,7 @@ QDataStream & operator>>(QDataStream &stream, Song &song)
     quint16 year;
     bool guessed;
     stream >> song.id >> song.file >> song.album >> song.artist >> song.albumartist >> song.title
-           >> song.genre >> song.name >> song.mbAlbumId >> song.disc >> song.priority >> song.time >> song.track >> year
+           >> song.genre >> song.name >> song.disc >> song.priority >> song.time >> song.track >> year
            >> type >> guessed >> song.size >> song.extra;
     song.type=(Song::Type)type;
     song.year=year;

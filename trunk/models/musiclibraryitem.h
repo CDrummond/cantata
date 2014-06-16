@@ -44,7 +44,7 @@ public:
         Type_Podcast
     };
 
-    MusicLibraryItem(const QString &data, MusicLibraryItemContainer *parent);
+    MusicLibraryItem(MusicLibraryItemContainer *parent);
     virtual ~MusicLibraryItem() { }
 
     MusicLibraryItemContainer * parentItem() const { return m_parentItem; }
@@ -53,9 +53,8 @@ public:
     int row() const;
     void setRow(int r) const { m_row=r+1; }
     int columnCount() const { return 1; }
-    const QString & data() const { return m_itemData; }
-    virtual QString displayData(bool full=false) const { Q_UNUSED(full) return m_itemData; }
-    void setData(const QString &d) { m_itemData=d; }
+    virtual QString data() const = 0;
+    virtual QString displayData(bool full=false) const { Q_UNUSED(full) return data(); }
     void setParent(MusicLibraryItemContainer *p);
     Qt::CheckState checkState() const { return m_checkState; }
     void setCheckState(Qt::CheckState s) { m_checkState=s; }
@@ -67,7 +66,6 @@ public:
 protected:
     friend class MusicLibraryItemContainer;
     MusicLibraryItemContainer *m_parentItem;
-    QString m_itemData;
     Qt::CheckState m_checkState;
     mutable quint32 m_row;
 };
@@ -75,13 +73,15 @@ protected:
 class MusicLibraryItemContainer : public MusicLibraryItem
 {
 public:
-    MusicLibraryItemContainer(const QString &data, MusicLibraryItemContainer *parent) : MusicLibraryItem(data, parent), m_isNew(false), m_rowsSet(false) { }
+    MusicLibraryItemContainer(const QString &data, MusicLibraryItemContainer *parent) : MusicLibraryItem(parent), m_itemData(data), m_isNew(false), m_rowsSet(false) { }
     virtual ~MusicLibraryItemContainer() { clear(); }
 
     virtual void append(MusicLibraryItem *i) { m_childItems.append(i); }
     virtual MusicLibraryItem * childItem(int row) const { return m_childItems.value(row); }
     MusicLibraryItem * childItem(const QString &name) const;
 
+    QString data() const { return m_itemData; }
+    void setData(const QString &d) { m_itemData=d; }
     int childCount() const { return m_childItems.count(); }
     const QList<MusicLibraryItem *> & childItems() const { return m_childItems; }
     void addGenres(const QSet<QString> &genres) { m_genres+=genres; }
@@ -97,6 +97,7 @@ public:
 
 protected:
     friend class MusicLibraryItem;
+    QString m_itemData;
     QList<MusicLibraryItem *> m_childItems;
     QSet<QString> m_genres;
     bool m_isNew:1;

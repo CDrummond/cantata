@@ -33,18 +33,27 @@ static int isIfaceType(const QNetworkInterface &iface, const QString &prefix)
     return iface.name().length()>prefix.length() && iface.name().startsWith(prefix) && iface.name()[prefix.length()].isDigit();
 }
 
+static QString details(const QNetworkInterface &iface)
+{
+    QString d=iface.humanReadableName();
+    if (!iface.addressEntries().isEmpty()) {
+        d+=QLatin1String(" - ")+iface.addressEntries().first().ip().toString();
+    }
+    return d;
+}
+
 static QString displayName(const QNetworkInterface &iface)
 {
     if (iface.name()=="lo") {
-        return i18n("Local loopback (%1)", iface.name());
+        return i18n("Local loopback (%1)", details(iface));
     }
     if (isIfaceType(iface, "eth")) {
-        return i18n("Wired (%1)", iface.name());
+        return i18n("Wired (%1)", details(iface));
     }
     if (isIfaceType(iface, "wlan")) {
-        return i18n("Wireless (%1)", iface.name());
+        return i18n("Wireless (%1)", details(iface));
     }
-    return iface.name();
+    return details(iface);
 }
 
 static void initInterfaces(QComboBox *combo)

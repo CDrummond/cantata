@@ -161,6 +161,7 @@
 100. In non Dbus Qt builds, if notificaitons is checked ensure that sys tray is
      also checkedd. Conversly if sys tray is unchecked, uncheck notifications.
 101. Add option to use libVLC for MPD HTTP stream playback.
+102. Also show first IP address of interface in HTTP server settings page.
 
 1.3.4
 -----

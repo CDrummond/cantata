@@ -341,6 +341,24 @@ QString Song::displayAlbum(const QString &albumName, quint16 albumYear)
     return albumYear>0 ? albumName+QLatin1String(" (")+QString::number(albumYear)+QLatin1Char(')') : albumName;
 }
 
+QString Song::combineGenres(const QSet<QString> &genres)
+{
+    if (1==genres.size()) {
+        return *(genres.begin());
+    }
+
+    QStringList list=genres.toList();
+    qSort(list);
+    QString g;
+    foreach (const QString &e, list) {
+        if (!g.isEmpty()) {
+            g+=constGenreSep;
+        }
+        g+=e;
+    }
+    return g;
+}
+
 void Song::setKey(int location)
 {
     if (isStandardStream()) {

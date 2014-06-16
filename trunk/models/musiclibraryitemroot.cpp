@@ -339,7 +339,7 @@ void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, const QDateTime &date
                 return;
             }
             const MusicLibraryItemAlbum *album = static_cast<const MusicLibraryItemAlbum *>(al);
-            QString albumGenre=!album->childItems().isEmpty() ? static_cast<const MusicLibraryItemSong *>(album->childItems().at(0))->song().genre : QString();
+            QString albumGenre=Song::combineGenres(album->genres());
             writer.writeStartElement(constAlbumElement);
             writer.writeAttribute(constNameAttribute, album->originalName().isEmpty() ? album->data() : album->originalName());
             writer.writeAttribute(constYearAttribute, QString::number(album->year()));
@@ -383,7 +383,8 @@ void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, const QDateTime &date
                 if (!track->song().composer().isEmpty()) {
                     writer.writeAttribute(constComposerAttribute, track->song().composer());
                 }
-                if (!track->song().genre.isEmpty() && track->song().genre!=albumGenre && track->song().genre!=Song::unknown()) {
+                QString trackGenre=track->multipleGenres() ? Song::combineGenres(track->allGenres()) : track->genre();
+                if (!trackGenre.isEmpty() && trackGenre!=albumGenre && trackGenre!=Song::unknown()) {
                     writer.writeAttribute(constGenreAttribute, track->song().genre);
                 }
                 if (album->isSingleTracks()) {

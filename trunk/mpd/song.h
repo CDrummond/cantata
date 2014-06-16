@@ -100,6 +100,7 @@ struct Song
     static QString encodePath(const QString &file);
     static void clearKeyStore(int location);
     static QString displayAlbum(const QString &albumName, quint16 albumYear);
+    static QString combineGenres(const QSet<QString> &genres);
 
     Song();
     Song(const Song &o) { *this=o; }

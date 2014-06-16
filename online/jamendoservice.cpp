@@ -316,7 +316,7 @@ void JamendoMusicLoader::parseSong(MusicLibraryItemArtist *artist, MusicLibraryI
         s.fillEmptyFields();
         s.track=album->childItems().count()+1;
         MusicLibraryItemSong *song=new MusicLibraryItemSong(s, album);
-        const QSet<QString> &songGenres=song->allGenres();
+        QSet<QString> songGenres=song->allGenres();
         album->append(song);
         album->addGenres(songGenres);
         artist->addGenres(songGenres);

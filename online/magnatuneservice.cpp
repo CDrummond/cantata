@@ -104,7 +104,7 @@ void MagnatuneMusicLoader::parseSong(QXmlStreamReader &xml)
         MusicLibraryItemArtist *artist = library->artist(s);
         MusicLibraryItemAlbum *album = artist->album(s);
         MusicLibraryItemSong *song=new MusicLibraryItemSong(s, album);
-        const QSet<QString> &songGenres=song->allGenres();
+        QSet<QString> songGenres=song->allGenres();
         album->append(song);
         album->addGenres(songGenres);
         artist->addGenres(songGenres);

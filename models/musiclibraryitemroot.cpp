@@ -582,7 +582,7 @@ quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime 
                     }
 
                     MusicLibraryItemSong *songItem=new MusicLibraryItemSong(song, albumItem);
-                    const QSet<QString> &songGenres=songItem->allGenres();
+                    QSet<QString> songGenres=songItem->allGenres();
                     albumItem->append(songItem);
                     albumItem->addGenres(songGenres);
                     artistItem->addGenres(songGenres);
@@ -635,7 +635,7 @@ void MusicLibraryItemRoot::add(const QSet<Song> &songs)
         }
 
         MusicLibraryItemSong *songItem=new MusicLibraryItemSong(s, albumItem);
-        const QSet<QString> &songGenres=songItem->allGenres();
+        QSet<QString> songGenres=songItem->allGenres();
         albumItem->append(songItem);
         albumItem->addGenres(songGenres);
         artistItem->addGenres(songGenres);
@@ -668,7 +668,7 @@ void MusicLibraryItemRoot::toggleGrouping()
         }
 
         MusicLibraryItemSong *song=new MusicLibraryItemSong(currentSong, albumItem);
-        const QSet<QString> &songGenres=song->allGenres();
+        QSet<QString> songGenres=song->allGenres();
         albumItem->append(song);
         albumItem->addGenres(songGenres);
         artistItem->addGenres(songGenres);

@@ -136,15 +136,15 @@
  84. Update replaygain ffmpeg input code to handle API changes in libavcodec.
  85. Fix transcoding tracks to MTP devices.
  86. Restore search field visibility for; PlayQueue, Artists, Albums, Folders,
-     Playlists, Dynamic, and Devices views.
+     Playlists, Dynamic, and Devices views when started.
  87. Fix custom background images (play queue and context)  not appearing when
      Cantata started.
  88. Open search-widget as soon as user starts typing in view.
  89. If artist is different to album-artist, then show track title as
      "title - artist"
- 90. In context-view rename Lyrics pane to Track. This is now a stack of lyrcs,
+ 90. In context-view rename Lyrics pane to Track. This is now a stack of lyrics,
      information, and tags. Tags contains all tags as read by taglib.
- 91. Add option to re-load lyric from disk.
+ 91. Add option to re-load lyrics from disk.
  92. Add "Open In File Manager" to folders page for windows and mac builds.
  93. Use external editor to edit lyrics.
  94. Allow searching on performer tag.
@@ -160,7 +160,8 @@
  99. Hide system-tray option in Qt builds if system tray is not available.
 100. In non Dbus Qt builds, if notificaitons is checked ensure that sys tray is
      also checkedd. Conversly if sys tray is unchecked, uncheck notifications.
-101. Add option to use libVLC for MPD HTTP stream playback.
+101. Add option to use libVLC for MPD HTTP stream playback - see INSTAL file
+     for details.
 102. Also show first IP address of interface in HTTP server settings page.
 103. Fix progress update when saving Jameno, etc, listing XML.
 

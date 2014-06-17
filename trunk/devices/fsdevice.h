@@ -31,6 +31,7 @@
 #include "models/musiclibraryitemroot.h"
 #include "http/httpserver.h"
 #include <QStringList>
+#include <QElapsedTimer>
 
 class Thread;
 
@@ -77,8 +78,7 @@ private:
     Thread *thread;
     bool stopRequested;
     int count;
-    int lastUpdate;
-    int lastCacheProg;
+    QElapsedTimer timer;
 };
 
 class FsDevice : public Device

@@ -849,6 +849,7 @@ MainWindow::MainWindow(QWidget *parent)
     #ifdef QT_QTDBUS_FOUND
     mpris=new Mpris(this);
     connect(mpris, SIGNAL(showMainWindow()), this, SLOT(restoreWindow()));
+    CurrentCover::self()->setEnabled(true);
     #endif
     ActionCollection::get()->readSettings();
 
@@ -1302,7 +1303,9 @@ void MainWindow::controlDynamicButton()
 
 void MainWindow::readSettings()
 {
+    #ifndef QT_QTDBUS_FOUND
     CurrentCover::self()->setEnabled(Settings::self()->showPopups() || 0!=Settings::self()->playQueueBackground());
+    #endif
     checkMpdDir();
     Covers::self()->readConfig();
     HttpServer::self()->readConfig();

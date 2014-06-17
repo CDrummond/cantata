@@ -115,12 +115,10 @@ GLOBAL_STATIC(CurrentCover, instance)
 
 CurrentCover::CurrentCover()
     : QObject(0)
-    , enabled(true)
+    , enabled(false)
     , empty(true)
     , valid(false)
 {
-    connect(Covers::self(), SIGNAL(cover(const Song &, const QImage &, const QString &)), SLOT(coverRetrieved(const Song &, const QImage &, const QString &)));
-    connect(Covers::self(), SIGNAL(coverUpdated(const Song &, const QImage &, const QString &)), SLOT(coverRetrieved(const Song &, const QImage &, const QString &)));
 }
 
 CurrentCover::~CurrentCover()
@@ -157,8 +155,17 @@ const QImage & CurrentCover::stdImage(bool stream)
 
 void CurrentCover::setEnabled(bool e)
 {
+    if (enabled==e) {
+        return;
+    }
+
     enabled=e;
-    if (!enabled) {
+    if (enabled) {
+        connect(Covers::self(), SIGNAL(cover(const Song &, const QImage &, const QString &)), this, SLOT(coverRetrieved(const Song &, const QImage &, const QString &)));
+        connect(Covers::self(), SIGNAL(coverUpdated(const Song &, const QImage &, const QString &)), this, SLOT(coverRetrieved(const Song &, const QImage &, const QString &)));
+    } else {
+        disconnect(Covers::self(), SIGNAL(cover(const Song &, const QImage &, const QString &)), this, SLOT(coverRetrieved(const Song &, const QImage &, const QString &)));
+        disconnect(Covers::self(), SIGNAL(coverUpdated(const Song &, const QImage &, const QString &)), this, SLOT(coverRetrieved(const Song &, const QImage &, const QString &)));
         current=Song();
     }
 }

@@ -526,7 +526,7 @@ void MusicLibraryModel::setArtistImage(const Song &song, const QImage &img, cons
 {
     #ifdef ENABLE_UBUNTU
     if (!rootItem->useArtistImages() || img.isNull() || file.isEmpty() ||
-        song.file.startsWith("http://") || song.name.startsWith("http://")) {
+        song.file.startsWith("http://") || song.name().startsWith("http://")) {
         return;
     }
 
@@ -734,7 +734,7 @@ void MusicLibraryModel::setCover(const Song &song, const QImage &img, const QStr
 {
     #ifdef ENABLE_UBUNTU
     if (!rootItem->useAlbumImages() || img.isNull() || file.isEmpty() ||
-        song.isCdda() || song.file.startsWith("http:/") || song.name.startsWith("http:/")) {
+        song.isCdda() || song.file.startsWith("http:/") || song.name().startsWith("http:/")) {
         return;
     }
 

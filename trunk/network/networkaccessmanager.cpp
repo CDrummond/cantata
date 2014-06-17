@@ -234,6 +234,7 @@ struct FakeNetworkReply : public QNetworkReply
 
 QNetworkReply * NetworkAccessManager::postFormData(const QUrl &url, const QByteArray &data)
 {
+    DBUG << url.toString() << enabled;
     if (enabled) {
         QNetworkRequest req(url);
         if (!data.isEmpty()) {

@@ -403,16 +403,17 @@ void MPDBackend::updateCurrentSong(const Song &song)
 //        }
 //    }
 
+    QString name=current.name();
     if (current.isStream() && !current.isCantataStream() && !current.isCdda()) {
-        mainText=current.name.isEmpty() ? Song::unknown() : current.name;
-        if (current.artist.isEmpty() && current.title.isEmpty() && !current.name.isEmpty()) {
+        mainText=name.isEmpty() ? Song::unknown() : name;
+        if (current.artist.isEmpty() && current.title.isEmpty() && !name.isEmpty()) {
             subText=i18n("(Stream)");
         } else {
             subText=current.artist.isEmpty() ? current.title : (current.artist+QLatin1String(" - ")+current.title);
         }
     } else {
-        if (current.title.isEmpty() && current.artist.isEmpty() && (!current.name.isEmpty() || !current.file.isEmpty())) {
-            mainText=current.name.isEmpty() ? current.file : current.name;
+        if (current.title.isEmpty() && current.artist.isEmpty() && (!name.isEmpty() || !current.file.isEmpty())) {
+            mainText=name.isEmpty() ? current.file : name;
         } else {
             mainText=current.title;
         }
@@ -617,7 +618,7 @@ void MPDBackend::updatePlayQueue(const QList<Song> &songs)
     } else if (current.isStandardStream()) {
         // Check to see if it has been updated...
         Song pqSong=playQueueModel.getSongByRow(playQueueModel.currentSongRow());
-        if (pqSong.artist!=current.artist || pqSong.album!=current.album || pqSong.name!=current.name || pqSong.title!=current.title || pqSong.year!=current.year) {
+        if (pqSong.artist!=current.artist || pqSong.album!=current.album || pqSong.name()!=current.name() || pqSong.title!=current.title || pqSong.year!=current.year) {
             updateCurrentSong(pqSong);
         }
     }

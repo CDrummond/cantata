@@ -162,6 +162,7 @@
      also checkedd. Conversly if sys tray is unchecked, uncheck notifications.
 101. Add option to use libVLC for MPD HTTP stream playback.
 102. Also show first IP address of interface in HTTP server settings page.
+103. Fix progress update when saving Jameno, etc, listing XML.
 
 1.3.4
 -----

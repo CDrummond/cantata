@@ -55,6 +55,7 @@ OnlineMusicLoader::OnlineMusicLoader(const QUrl &src)
 
 void OnlineMusicLoader::start()
 {
+    stopRequested=false;
     emit load();
 }
 
@@ -135,7 +136,7 @@ void OnlineMusicLoader::downloadFinished()
             if (parse(reader)) {
                 fixLibrary();
                 emit status(i18n("Saving cache"), 0);
-                library->toXML(cache, QDateTime(), this);
+                library->toXML(cache, QDateTime(), false, this);
                 emit loaded();
             } else {
                 emit error(i18n("Failed to parse"));

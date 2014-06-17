@@ -403,7 +403,7 @@ void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, const QDateTime &date
                     count++;
                     int pc=((count*20.0)/(total*1.0))+0.5;
                     if (pc!=percent) {
-                        prog->readProgress(pc*5);
+                        prog->writeProgress(pc*5);
                         percent=pc;
                     }
                 }

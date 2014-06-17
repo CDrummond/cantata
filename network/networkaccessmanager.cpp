@@ -232,11 +232,10 @@ struct FakeNetworkReply : public QNetworkReply
     qint64 writeData(const char *, qint64) { return 0; }
 };
 
-QNetworkReply * NetworkAccessManager::postFormData(const QUrl &url, const QByteArray &data)
+QNetworkReply * NetworkAccessManager::postFormData(QNetworkRequest req, const QByteArray &data)
 {
-    DBUG << url.toString() << enabled;
+    DBUG << req.url().toString() << enabled << data.length();
     if (enabled) {
-        QNetworkRequest req(url);
         if (!data.isEmpty()) {
             req.setRawHeader("Content-Type", "application/x-www-form-urlencoded");
         }

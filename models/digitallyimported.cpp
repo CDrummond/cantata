@@ -60,8 +60,7 @@ void DigitallyImported::login()
     }
     QNetworkRequest req(constAuthUrl);
     addAuthHeader(req);
-    req.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
-    job=NetworkAccessManager::self()->post(req, "username="+QUrl::toPercentEncoding(userName)+"&password="+QUrl::toPercentEncoding(password));
+    job=NetworkAccessManager::self()->postFormData(req, "username="+QUrl::toPercentEncoding(userName)+"&password="+QUrl::toPercentEncoding(password));
     connect(job, SIGNAL(finished()), SLOT(loginResponse()));
 }
 

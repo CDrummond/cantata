@@ -36,6 +36,7 @@
 #include <QXmlStreamReader>
 #include <QXmlStreamWriter>
 #include <QFile>
+#include <QElapsedTimer>
 #ifdef TIME_XML_FILE_LOADING
 #include <QDebug>
 #include <QElapsedTimer>
@@ -298,6 +299,11 @@ void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, const QDateTime &date
     quint64 total=0;
     quint64 count=0;
     int percent=0;
+    QElapsedTimer timer;
+    if (prog) {
+        prog->writeProgress(0.0);
+        timer.start();
+    }
     writer.writeStartDocument();
 
     //Start with the document
@@ -323,9 +329,7 @@ void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, const QDateTime &date
     }
 
     writer.writeAttribute(constnumTracksAttribute, QString::number(total));
-    if (prog) {
-        prog->writeProgress(0.0);
-    }
+
     //Loop over all artist, albums and tracks.
     foreach (const MusicLibraryItem *a, childItems()) {
         const MusicLibraryItemArtist *artist = static_cast<const MusicLibraryItemArtist *>(a);
@@ -401,9 +405,10 @@ void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, const QDateTime &date
                 }
                 if (prog && !prog->wasStopped() && total>0) {
                     count++;
-                    int pc=((count*20.0)/(total*1.0))+0.5;
-                    if (pc!=percent) {
-                        prog->writeProgress(pc*5);
+                    int pc=((count*100.0)/(total*1.0))+0.5;
+                    if (pc!=percent && timer.elapsed()>=250) {
+                        prog->writeProgress(pc);
+                        timer.restart();
                         percent=pc;
                     }
                 }
@@ -442,7 +447,7 @@ quint32 MusicLibraryItemRoot::fromXML(const QString &filename, const QDateTime &
     #endif
     return rv;
 }
-
+#include <QDebug>
 quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime &date, bool *dateUnreliable, const QString &baseFolder, MusicLibraryProgressMonitor *prog)
 {
     if (isFlat) {
@@ -459,9 +464,11 @@ quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime 
     bool gm=false;
     int percent=0;
     bool online=isOnlineService();
+    QElapsedTimer timer;
 
     if (prog) {
         prog->readProgress(0.0);
+        timer.start();
     }
 
     while (!reader.atEnd() && (!prog || !prog->wasStopped())) {
@@ -591,9 +598,10 @@ quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime 
 
                     if (prog && !prog->wasStopped() && total>0) {
                         count++;
-                        int pc=((count*20.0)/(total*1.0))+0.5;
-                        if (pc!=percent) {
-                            prog->readProgress(pc*5);
+                        int pc=((count*100.0)/(total*1.0))+0.5;
+                        if (pc!=percent && timer.elapsed()>=250) {
+                            prog->readProgress(pc);
+                            timer.restart();
                             percent=pc;
                         }
                     }

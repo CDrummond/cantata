@@ -117,6 +117,7 @@ struct Song
     virtual void clear();
     void addGenre(const QString &g);
     QStringList genres() const;
+    void orderGenres();
     QString entryName() const;
     QString artistOrComposer() const;
     QString albumName() const;

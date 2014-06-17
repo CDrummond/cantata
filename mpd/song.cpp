@@ -418,6 +418,15 @@ QStringList Song::genres() const
     return genre.split(constGenreSep, QString::SkipEmptyParts);
 }
 
+void Song::orderGenres()
+{
+    QStringList g=genres();
+    if (g.count()>1) {
+        qSort(g);
+        genre=g.join(QString()+constGenreSep);
+    }
+}
+
 QString Song::entryName() const
 {
     if (title.isEmpty()) {

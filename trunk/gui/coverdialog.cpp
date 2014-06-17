@@ -432,9 +432,10 @@ void CoverDialog::show(const Song &s, const Covers::Image &current)
 
     if (!img.fileName.isEmpty() && !QFileInfo(img.fileName).isWritable()) {
         MessageBox::error(parentWidget(),
-                          isArtist
-                            ? i18n("<p>An image already exists for this artist, and the file is not writeable.<p></p><i>%1</i></p>", img.fileName)
-                            : i18n("<p>A cover already exists for this album, and the file is not writeable.<p></p><i>%1</i></p>", img.fileName));
+                          (isArtist
+                            ? i18n("An image already exists for this artist, and the file is not writeable.")
+                            : i18n("A cover already exists for this album, and the file is not writeable."))+
+                          QString("<br/><br/><a href=\"%1\">%1</a>").arg(img.fileName));
         deleteLater();
         return;
     }

@@ -356,6 +356,9 @@ void SongView::scroll()
 
 void SongView::curentViewChanged()
 {
+    if (!isVisible()) {
+        return;
+    }
     switch (currentView()) {
     case Page_Information: loadInfo(); break;
     case Page_Tags:        loadTags(); break;

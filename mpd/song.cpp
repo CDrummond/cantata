@@ -594,17 +594,18 @@ QString Song::describe(bool withMarkup) const
 {
     QString albumText=album.isEmpty() ? name() : displayAlbum(album, Song::albumYear(*this));
 
-    return withMarkup
-            ? title.isEmpty()
-                ? QLatin1String("<b>")+albumText+QLatin1String("</b>")
-                : artist.isEmpty()
+    if (title.isEmpty()) {
+        return withMarkup ? albumText : (QLatin1String("<b>")+albumText+QLatin1String("</b>"));
+    }
+    QString descr=artist.isEmpty()
                     ? i18nc("Song on Album", "<b>%1</b> on <b>%2</b>", title, albumText)
-                    : i18nc("Song by Artist on Album", "<b>%1</b> by <b>%2</b> on <b>%3</b>", title, artist, albumText)
-            : title.isEmpty()
-                ? albumText
-                : artist.isEmpty()
-                    ? i18nc("Song on Album", "%1 on %2", title, albumText)
-                    : i18nc("Song by Artist on Album", "%1 by %2 on %3", title, artist, albumText);
+                    : i18nc("Song by Artist on Album", "<b>%1</b> by <b>%2</b> on <b>%3</b>", title, artist, albumText);
+
+    if (!withMarkup) {
+        descr=descr.replace("<b>", "");
+        descr=descr.replace("</b>", "");
+    }
+    return descr;
 }
 
 //QString Song::basicDescription() const

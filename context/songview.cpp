@@ -129,6 +129,7 @@ SongView::SongView(QWidget *p)
     , mode(Mode_Display)
     , job(0)
     , currentProv(0)
+    , lyricsNeedsUpdating(true)
     , infoNeedsUpdating(true)
     , tagsNeedsUpdating(true)
 {
@@ -360,10 +361,66 @@ void SongView::curentViewChanged()
         return;
     }
     switch (currentView()) {
-    case Page_Information: loadInfo(); break;
-    case Page_Tags:        loadTags(); break;
-    default:                           break;
+    case Page_Lyrics:      loadLyrics(); break;
+    case Page_Information: loadInfo();   break;
+    case Page_Tags:        loadTags();   break;
+    default:                             break;
     }
+}
+
+void SongView::loadLyrics()
+{
+    if (!lyricsNeedsUpdating) {
+        return;
+    }
+    lyricsNeedsUpdating=false;
+
+    if (!MPDConnection::self()->getDetails().dir.isEmpty() && !currentSong.file.isEmpty() && !currentSong.isNonMPD()) {
+        QString songFile=actualFile(currentSong);
+        QString mpdLyrics=mpdLyricsFilePath(songFile);
+
+        if (MPDConnection::self()->getDetails().dir.startsWith(QLatin1String("http:/"))) {
+            QUrl url(mpdLyrics);
+            job=NetworkAccessManager::self()->get(url);
+            job->setProperty("file", currentSong.file);
+            connect(job, SIGNAL(finished()), this, SLOT(downloadFinished()));
+            return;
+        } else {
+            #ifdef TAGLIB_FOUND
+            QString tagLyrics=Tags::readLyrics(MPDConnection::self()->getDetails().dir+songFile);
+
+            if (!tagLyrics.isEmpty()) {
+                text->setText(fixNewLines(tagLyrics));
+                setMode(Mode_Display);
+//                    controls->setVisible(false);
+                return;
+            }
+            #endif
+            // Stop here if we found lyrics in the cache dir.
+            if (setLyricsFromFile(mpdLyrics)) {
+                lyricsFile=mpdLyrics;
+                setMode(Mode_Display);
+                return;
+            }
+        }
+    }
+
+    // Check for cached file...
+    QString file=lyricsCacheFileName(currentSong);
+
+    /*if (force && QFile::exists(file)) {
+        // Delete the cached lyrics file when the user is force-fully re-fetching the lyrics.
+        // Afterwards we'll simply do getLyrics() to get the new ones.
+        QFile::remove(file);
+    } else */if (setLyricsFromFile(file)) {
+       // We just wanted a normal update without explicit re-fetching. We can return
+       // here because we got cached lyrics and we don't want an explicit re-fetch.
+       lyricsFile=file;
+       setMode(Mode_Display);
+       return;
+    }
+
+    getLyrics();
 }
 
 void SongView::loadInfo()
@@ -627,7 +684,7 @@ void SongView::update(const Song &s, bool force)
 {
     if (s.isEmpty() || s.title.isEmpty() || s.artist.isEmpty()) {
         currentSong=s;
-        infoNeedsUpdating=tagsNeedsUpdating=false;
+        infoNeedsUpdating=tagsNeedsUpdating=lyricsNeedsUpdating=false;
         clear();
         abort();
         return;
@@ -658,10 +715,6 @@ void SongView::update(const Song &s, bool force)
             return;
         }
 
-        infoNeedsUpdating=tagsNeedsUpdating=true;
-        setHeader(song.title);
-        curentViewChanged();
-
         // Only reset the provider if the refresh was an automatic one or if the song has
         // changed. Otherwise we'll keep the provider so the user can cycle through the lyrics
         // offered by the various providers.
@@ -669,52 +722,9 @@ void SongView::update(const Song &s, bool force)
             currentProvider=-1;
         }
 
-        if (!MPDConnection::self()->getDetails().dir.isEmpty() && !song.file.isEmpty() && !song.isNonMPD()) {
-            QString songFile=actualFile(song);
-            QString mpdLyrics=mpdLyricsFilePath(songFile);
-
-            if (MPDConnection::self()->getDetails().dir.startsWith(QLatin1String("http:/"))) {
-                QUrl url(mpdLyrics);
-                job=NetworkAccessManager::self()->get(url);
-                job->setProperty("file", song.file);
-                connect(job, SIGNAL(finished()), this, SLOT(downloadFinished()));
-                return;
-            } else {
-                #ifdef TAGLIB_FOUND
-                QString tagLyrics=Tags::readLyrics(MPDConnection::self()->getDetails().dir+songFile);
-
-                if (!tagLyrics.isEmpty()) {
-                    text->setText(fixNewLines(tagLyrics));
-                    setMode(Mode_Display);
-//                    controls->setVisible(false);
-                    return;
-                }
-                #endif
-                // Stop here if we found lyrics in the cache dir.
-                if (setLyricsFromFile(mpdLyrics)) {
-                    lyricsFile=mpdLyrics;
-                    setMode(Mode_Display);
-                    return;
-                }
-            }
-        }
-
-        // Check for cached file...
-        QString file=lyricsCacheFileName(song);
-
-        /*if (force && QFile::exists(file)) {
-            // Delete the cached lyrics file when the user is force-fully re-fetching the lyrics.
-            // Afterwards we'll simply do getLyrics() to get the new ones.
-            QFile::remove(file);
-        } else */if (setLyricsFromFile(file)) {
-           // We just wanted a normal update without explicit re-fetching. We can return
-           // here because we got cached lyrics and we don't want an explicit re-fetch.
-           lyricsFile=file;
-           setMode(Mode_Display);
-           return;
-        }
-
-        getLyrics();
+        infoNeedsUpdating=tagsNeedsUpdating=lyricsNeedsUpdating=true;
+        setHeader(song.title);
+        curentViewChanged();
     }
 }
 

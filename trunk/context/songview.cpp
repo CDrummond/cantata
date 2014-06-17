@@ -622,9 +622,9 @@ void SongView::infoSearchResponse(const QString &resp, const QString &lang)
 {
     cancelInfoJobAction->setEnabled(false);
     hideSpinner();
-
+    QString str;
     if (!resp.isEmpty()) {
-        QString str=engine->translateLinks(resp);
+        str=engine->translateLinks(resp);
         if (!lang.isEmpty()) {
             QFile f(infoCacheFileName(currentSong, lang, true));
             QtIOCompressor compressor(&f);
@@ -633,8 +633,8 @@ void SongView::infoSearchResponse(const QString &resp, const QString &lang)
                 compressor.write(resp.toUtf8().constData());
             }
         }
-        setHtml(str, Page_Information);
     }
+    setHtml(str, Page_Information);
 }
 
 void SongView::abortInfoSearch()

@@ -154,6 +154,9 @@ void UltimateLyrics::load()
 
     QSet<QString> providerNames;
     foreach (const QString &d, dirs) {
+        if (d.isEmpty()) {
+            continue;
+        }
         QFileInfoList files=QDir(d).entryInfoList(QStringList() << QLatin1String("*.xml"), QDir::NoDotAndDotDot|QDir::Files);
         foreach (const QFileInfo &f, files) {
             QFile file(f.absoluteFilePath());

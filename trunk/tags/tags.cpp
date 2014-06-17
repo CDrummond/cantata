@@ -443,13 +443,13 @@ static bool writeID3v2Tags(TagLib::ID3v2::Tag *tag, const Song &from, const Song
         }
         DBUG << "genres" << from.genre << to.genre;
         if (from.genre!=to.genre) {
+            tag->removeFrames("TCON");
             QStringList genres=to.genres();
             DBUG << "num genres:" << genres.count();
             if (genres.count()<2) {
                 DBUG << "set genre" << (genres.isEmpty() ? QString() : genres.first().trimmed());
                 tag->setGenre(qString2TString(genres.isEmpty() ? QString() : genres.first().trimmed()));
             } else {
-                tag->removeFrames("TCON");
                 foreach (const QString &genre, genres) {
                     TagLib::ID3v2::TextIdentificationFrame *frame = new TagLib::ID3v2::TextIdentificationFrame("TCON");
                     tag->addFrame(frame);
@@ -568,11 +568,11 @@ static bool writeAPETags(TagLib::APE::Tag *tag, const Song &from, const Song &to
             changed=true;
         }
         if (from.genre!=to.genre) {
+            tag->removeItem("GENRE");
             QStringList genres=to.genres();
             if (genres.count()<2) {
                 tag->setGenre(qString2TString(genres.isEmpty() ? QString() : genres.first().trimmed()));
             } else {
-                tag->removeItem("GENRE");
                 foreach (const QString &genre, genres) {
                     tag->addValue("GENRE", qString2TString(genre.trimmed()), false);
                 }
@@ -705,11 +705,11 @@ static bool writeVorbisCommentTags(TagLib::Ogg::XiphComment *tag, const Song &fr
             changed=true;
         }
         if (from.genre!=to.genre) {
+            tag->removeField("GENRE");
             QStringList genres=to.genres();
             if (genres.count()<2) {
                 tag->setGenre(qString2TString(genres.isEmpty() ? QString() : genres.first().trimmed()));
             } else {
-                tag->removeField("GENRE");
                 foreach (const QString &genre, genres) {
                     tag->addField("GENRE", qString2TString(genre.trimmed()), false);
                 }
@@ -927,11 +927,11 @@ static bool writeASFTags(TagLib::ASF::Tag *tag, const Song &from, const Song &to
             changed=true;
         }
         if (from.genre!=to.genre) {
+            tag->removeItem("WM/Genre");
             QStringList genres=to.genres();
             if (genres.count()<2) {
                 tag->setGenre(qString2TString(genres.isEmpty() ? QString() : genres.first().trimmed()));
             } else {
-                tag->removeItem("WM/Genre");
                 foreach (const QString &genre, genres) {
                     tag->addAttribute("WM/Genre", qString2TString(genre.trimmed()));
                 }

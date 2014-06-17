@@ -45,7 +45,6 @@
 #include <QFileInfo>
 #include <QTextStream>
 #include <QTimer>
-#include <time.h>
 
 const QLatin1String FsDevice::constCantataCacheFile("/.cache");
 const QLatin1String FsDevice::constCantataSettingsFile("/.cantata");
@@ -66,8 +65,6 @@ MusicScanner::MusicScanner()
     : QObject(0)
     , stopRequested(false)
     , count(0)
-    , lastUpdate(0)
-    , lastCacheProg(-1)
 {
     thread=new Thread(metaObject()->className());
     moveToThread(thread);
@@ -81,7 +78,6 @@ MusicScanner::~MusicScanner()
 
 void MusicScanner::scan(const QString &folder, const QString &cacheFile, bool readCache, const QSet<FileOnlySong> &existingSongs)
 {
-    lastCacheProg=-1;
     if (!cacheFile.isEmpty() && readCache) {
         MusicLibraryItemRoot *lib=new MusicLibraryItemRoot;
         MusicLibraryModel::convertCache(cacheFile);
@@ -103,10 +99,10 @@ void MusicScanner::scan(const QString &folder, const QString &cacheFile, bool re
         return;
     }
     count=0;
-    lastUpdate=0;
     MusicLibraryItemRoot *library = new MusicLibraryItemRoot;
     QString topLevel=Utils::fixPath(QDir(folder).absolutePath());
     QSet<FileOnlySong> existing=existingSongs;
+    timer.start();
     scanFolder(library, topLevel, topLevel, existing, 0);
 
     if (!stopRequested) {
@@ -123,7 +119,6 @@ void MusicScanner::scan(const QString &folder, const QString &cacheFile, bool re
 
 void MusicScanner::saveCache(const QString &cache, MusicLibraryItemRoot *lib)
 {
-    lastCacheProg=-1;
     writeProgress(0.0);
     lib->toXML(cache, QDateTime(), false, this);
     emit cacheSaved();
@@ -174,9 +169,8 @@ void MusicScanner::scanFolder(MusicLibraryItemRoot *library, const QString &topL
                     continue;
                 }
                 count++;
-                int t=time(NULL);
-                if ((t-lastUpdate)>=2 || 0==(count%5)) {
-                    lastUpdate=t;
+                if (timer.elapsed()>=1500 || 0==(count%5)) {
+                    timer.restart();
                     emit songCount(count);
                 }
 
@@ -201,22 +195,12 @@ void MusicScanner::scanFolder(MusicLibraryItemRoot *library, const QString &topL
 
 void MusicScanner::readProgress(double pc)
 {
-    int prog=(int)pc;
-
-    if (prog!=lastCacheProg) {
-        lastCacheProg=prog;
-        emit readingCache(lastCacheProg);
-    }
+    emit readingCache(pc);
 }
 
 void MusicScanner::writeProgress(double pc)
 {
-    int prog=(int)pc;
-
-    if (prog!=lastCacheProg) {
-        lastCacheProg=prog;
-        emit savingCache(lastCacheProg);
-    }
+    emit savingCache(pc);
 }
 
 bool FsDevice::readOpts(const QString &fileName, DeviceOptions &opts, bool readAll)

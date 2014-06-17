@@ -86,6 +86,7 @@ private Q_SLOTS:
     void showMoreInfo(const QUrl &url);
 
 private:
+    void loadLyrics();
     void loadInfo();
     void loadTags();
     void searchForInfo();
@@ -125,6 +126,7 @@ private:
     NetworkJob *job;
     UltimateLyricsProvider *currentProv;
 
+    bool lyricsNeedsUpdating;
     bool infoNeedsUpdating;
     bool tagsNeedsUpdating;
     Action *refreshInfoAction;

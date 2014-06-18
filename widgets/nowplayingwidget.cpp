@@ -180,12 +180,16 @@ void PosSlider::updateStyleSheet()
     QColor textColor=lbl.palette().color(QPalette::Active, QPalette::Text);
     int alpha=textColor.value()<32 ? 96 : 64;
 
-    inactiveStyleSheet=boderFormat.arg(lineWidth).arg(textColor.red()).arg(textColor.green()).arg(textColor.blue()).arg(alpha/2)
-                       .arg(textColor.red()).arg(textColor.green()).arg(textColor.blue()).arg(alpha/8).arg(lineWidth*2);
-    activeStyleSheet=boderFormat.arg(lineWidth).arg(textColor.red()).arg(textColor.green()).arg(textColor.blue()).arg(alpha)
-                     .arg(textColor.red()).arg(textColor.green()).arg(textColor.blue()).arg(alpha/4).arg(lineWidth*2);
-    activeStyleSheet+=fillFormat.arg(lineWidth).arg(lineWidth).arg(lineWidth*2);
-    setStyleSheet(isActive ? activeStyleSheet : inactiveStyleSheet);
+    setStyleSheet(boderFormat.arg(lineWidth).arg(textColor.red()).arg(textColor.green()).arg(textColor.blue()).arg(alpha)
+                             .arg(textColor.red()).arg(textColor.green()).arg(textColor.blue()).arg(alpha/4).arg(lineWidth*2)+
+                  fillFormat.arg(lineWidth).arg(lineWidth).arg(lineWidth*2));
+}
+
+void PosSlider::paintEvent(QPaintEvent *e)
+{
+    if (isActive) {
+        QSlider::paintEvent(e);
+    }
 }
 
 void PosSlider::mouseMoveEvent(QMouseEvent *e)
@@ -247,10 +251,7 @@ void PosSlider::setRange(int min, int max)
         setToolTip(QString());
     }
 
-    if (active!=isActive) {
-        isActive=active;
-        setStyleSheet(isActive ? activeStyleSheet : inactiveStyleSheet);
-    }
+    isActive=active;
 }
 
 NowPlayingWidget::NowPlayingWidget(QWidget *p)
@@ -270,14 +271,12 @@ NowPlayingWidget::NowPlayingWidget(QWidget *p)
     slider->setOrientation(Qt::Horizontal);
     QGridLayout *layout=new QGridLayout(this);
     int space=Utils::layoutSpacing(this);
-    layout->setMargin(0);
-    layout->addWidget(track, 0, 1, 1, 2);
-    layout->addWidget(artist, 1, 1);
-    layout->addWidget(time, 1, 2);
-    layout->addItem(new QSpacerItem(space, 0, QSizePolicy::Fixed, QSizePolicy::Fixed), 2, 0);
-    layout->addWidget(slider, 2, 1, 1, 2);
-    layout->addItem(new QSpacerItem(space, 0, QSizePolicy::Fixed, QSizePolicy::Fixed), 2, 3);
-    layout->addItem(new QSpacerItem(0, space, QSizePolicy::Fixed, QSizePolicy::Fixed), 3, 0);
+    layout->setMargin(space);
+    layout->setSpacing(space/2);
+    layout->addWidget(track, 0, 0, 1, 2);
+    layout->addWidget(artist, 1, 0);
+    layout->addWidget(time, 1, 1);
+    layout->addWidget(slider, 3, 0, 1, 2);
     connect(slider, SIGNAL(sliderPressed()), this, SLOT(pressed()));
     connect(slider, SIGNAL(sliderReleased()), this, SLOT(released()));
     connect(slider, SIGNAL(positionSet()), this, SIGNAL(sliderReleased()));
@@ -287,12 +286,16 @@ NowPlayingWidget::NowPlayingWidget(QWidget *p)
     }
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     clearTimes();
+    update(Song());
 }
 
 void NowPlayingWidget::update(const Song &song)
 {
     QString name=song.name();
-    if (song.isStream() && !song.isCantataStream() && !song.isCdda()) {
+    if (song.isEmpty()) {
+        track->setText(" ");
+        artist->setText(" ");
+    } else if (song.isStream() && !song.isCantataStream() && !song.isCdda()) {
         track->setText(name.isEmpty() ? Song::unknown() : name);
         if (song.artist.isEmpty() && song.title.isEmpty() && !name.isEmpty()) {
             artist->setText(i18n("(Stream)"));

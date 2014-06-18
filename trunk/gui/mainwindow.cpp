@@ -215,6 +215,9 @@ MainWindow::MainWindow(QWidget *parent)
     GtkStyle::applyTheme(topToolBar); // Despite its name, it *might* also apply touch style to spinboxes...
     #endif // Q_OS_WIN
 
+    toolbar->ensurePolished();
+    toolbar->adjustSize();
+    coverWidget->setSize(toolbar->height());
     Icons::self()->initToolbarIcons(toolbar->palette().color(QPalette::Foreground));
     Icons::self()->initSidebarIcons();
 
@@ -843,14 +846,14 @@ MainWindow::MainWindow(QWidget *parent)
     connect(tabWidget, SIGNAL(tabToggled(int)), this, SLOT(tabToggled(int)));
     connect(tabWidget, SIGNAL(configRequested()), this, SLOT(showSidebarPreferencesPage()));
 
-    readSettings();
-    updateConnectionsMenu();
-    fadeStop=Settings::self()->stopFadeDuration()>Settings::MinFade;
     #ifdef QT_QTDBUS_FOUND
     mpris=new Mpris(this);
     connect(mpris, SIGNAL(showMainWindow()), this, SLOT(restoreWindow()));
     CurrentCover::self()->setEnabled(true);
     #endif
+    readSettings();
+    updateConnectionsMenu();
+    fadeStop=Settings::self()->stopFadeDuration()>Settings::MinFade;
     ActionCollection::get()->readSettings();
 
     if (testAttribute(Qt::WA_TranslucentBackground)) {
@@ -1304,7 +1307,7 @@ void MainWindow::controlDynamicButton()
 void MainWindow::readSettings()
 {
     #ifndef QT_QTDBUS_FOUND
-    CurrentCover::self()->setEnabled(Settings::self()->showPopups() || 0!=Settings::self()->playQueueBackground());
+    CurrentCover::self()->setEnabled(Settings::self()->showPopups() || 0!=Settings::self()->playQueueBackground() || Settings::self()->showCoverWidget());
     #endif
     checkMpdDir();
     Covers::self()->readConfig();
@@ -1343,9 +1346,12 @@ void MainWindow::readSettings()
     context->readConfig();
     tabWidget->setHiddenPages(Settings::self()->hiddenPages());
     tabWidget->setStyle(Settings::self()->sidebar());
+    coverWidget->setEnabled(Settings::self()->showCoverWidget());
+    stopTrackButton->setVisible(Settings::self()->showStopButton());
     calcMinHeight();
     toggleMonoIcons();
     toggleSplitterAutoHide();
+    adjustToolbarSpacers();
     if (contextSwitchTime!=Settings::self()->contextSwitchTime()) {
         contextSwitchTime=Settings::self()->contextSwitchTime();
         if (0==contextSwitchTime && contextTimer) {
@@ -2549,11 +2555,16 @@ void MainWindow::calcMinHeight()
 
 void MainWindow::adjustToolbarSpacers()
 {
-    int menuWidth=menuButton && menuButton->isVisible() ? (GtkStyle::isActive() ? menuButton->width() : menuButton->sizeHint().width()) : 0;
-    int edgeWidth=qMax(prevTrackButton->width()*4, menuWidth+(songInfoAction->isCheckable() ? songInfoButton->width() : 0)+
-                                                   volumeSliderSpacer->sizeHint().width()+volumeSlider->width());
+    int leftSize=prevTrackButton->width()*(Settings::self()->showStopButton() ? 4 : 3)+
+                 (coverWidget->isEnabled() ? coverWidget->width() : 0);
+    int rightSize=(menuButton && (!showMenuAction || !showMenuAction->isChecked()) ? (GtkStyle::isActive() ? menuButton->width() : menuButton->sizeHint().width()) : 0)+
+                  (songInfoAction->isCheckable() ? songInfoButton->width() : 0)+
+                  volumeSliderSpacer->sizeHint().width()+volumeSlider->width();
+    int edgeWidth=qMax(leftSize, rightSize);
     toolbarSpacerA->setFixedSize(edgeWidth, 0);
     toolbarSpacerB->setFixedSize(edgeWidth, 0);
+    leftSpacer->setFixedSize(edgeWidth-leftSize, 0);
+    rightSpacer->setFixedSize(edgeWidth-rightSize, 0);
 }
 
 void MainWindow::toggleContext()

@@ -937,6 +937,16 @@ bool Settings::filteredOnly()
     return cfg.get("filteredOnly", false);
 }
 
+bool Settings::showCoverWidget()
+{
+    return cfg.get("showCoverWidget", true);
+}
+
+bool Settings::showStopButton()
+{
+    return cfg.get("showStopButton", false);
+}
+
 void Settings::removeConnectionDetails(const QString &v)
 {
     if (v==currentConnection()) {
@@ -1450,6 +1460,16 @@ void Settings::saveTouchFriendly(bool v)
 void Settings::saveFilteredOnly(bool v)
 {
     cfg.set("filteredOnly", v);
+}
+
+void Settings::saveShowCoverWidget(bool v)
+{
+    return cfg.set("showCoverWidget", v);
+}
+
+void Settings::saveShowStopButton(bool v)
+{
+    return cfg.set("showStopButton", v);
 }
 
 void Settings::save(bool force)

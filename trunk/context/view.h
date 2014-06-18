@@ -69,6 +69,7 @@ public:
     View(QWidget *p, const QStringList &views=QStringList());
     virtual ~View();
 
+    static QString encode(const QImage &img);
     static QString subHeader(const QString &str) { return "<"+subTag+">"+str+"</"+subTag+">"; }
     static void initHeaderTags();
 

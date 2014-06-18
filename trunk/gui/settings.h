@@ -189,6 +189,8 @@ public:
     int menu();
     bool touchFriendly();
     bool filteredOnly();
+    bool showCoverWidget();
+    bool showStopButton();
 
     void removeConnectionDetails(const QString &v);
     void saveConnectionDetails(const MPDConnectionDetails &v);
@@ -300,6 +302,8 @@ public:
     void saveShowMenubar(bool v);
     void saveTouchFriendly(bool v);
     void saveFilteredOnly(bool v);
+    void saveShowCoverWidget(bool v);
+    void saveShowStopButton(bool v);
     void save(bool force=false);
     #if defined ENABLE_KDE_SUPPORT && defined ENABLE_KWALLET
     bool openWallet();

@@ -43,6 +43,7 @@ public:
 
     void showEvent(QShowEvent *e);
     void updateStyleSheet();
+    void paintEvent(QPaintEvent *e);
     void mouseMoveEvent(QMouseEvent *e);
     void wheelEvent(QWheelEvent *ev);
     void setRange(int min, int max);
@@ -53,8 +54,6 @@ Q_SIGNALS:
 private:
     bool isActive;
     bool shown;
-    QString activeStyleSheet;
-    QString inactiveStyleSheet;
 };
 
 class NowPlayingWidget : public QWidget

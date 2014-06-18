@@ -39,7 +39,7 @@
        <widget class="ToolButton" name="nextTrackButton"/>
       </item>
       <item>
-       <spacer name="volumeSliderSpacer">
+       <spacer name="coverWidgetSpacer">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
@@ -215,6 +215,13 @@
            </spacer>
           </item>
           <item>
+           <widget class="UrlLabel" name="fullScreenLabel">
+            <property name="text">
+             <string>Exit Full Screen</string>
+            </property>
+           </widget>
+          </item>
+          <item>
            <widget class="ScrobblingLove" name="loveTrack"/>
           </item>
           <item>
@@ -373,6 +380,11 @@
    <class>ScrobblingLove</class>
    <extends>QToolButton</extends>
    <header>scrobbling/scrobblinglove.h</header>
+  </customwidget>
+  <customwidget>
+   <class>UrlLabel</class>
+   <extends>QLabel</extends>
+   <header>support/urllabel.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

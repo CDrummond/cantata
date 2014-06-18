@@ -460,6 +460,8 @@ MainWindow::MainWindow(QWidget *parent)
     consumePlayQueueAction->setCheckable(true);
 
     songInfoButton->setDefaultAction(songInfoAction);
+    fullScreenLabel->setVisible(false);
+    connect(fullScreenLabel, SIGNAL(leftClickedUrl()), fullScreenAction, SIGNAL(triggered()));
     if (Configuration(playQueuePage->metaObject()->className()).get(ItemView::constSearchActiveKey, false)) {
         playQueueSearchWidget->activate();
     } else {
@@ -2115,17 +2117,16 @@ void MainWindow::showSongInfo()
 void MainWindow::fullScreen()
 {
     if (expandInterfaceAction->isChecked()) {
+        fullScreenLabel->setVisible(!isFullScreen());
+        expandInterfaceAction->setEnabled(isFullScreen());
         if (isFullScreen()) {
             showNormal();
-            expandInterfaceAction->setEnabled(true);
         } else {
             showFullScreen();
-            expandInterfaceAction->setEnabled(false);
         }
     } else {
         fullScreenAction->setChecked(false);
     }
-
 }
 
 void MainWindow::sidebarModeChanged()

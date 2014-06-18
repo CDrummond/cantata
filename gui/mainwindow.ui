@@ -39,7 +39,7 @@
        <widget class="ToolButton" name="nextTrackButton"/>
       </item>
       <item>
-       <spacer name="volumeSliderSpacerA">
+       <spacer name="volumeSliderSpacer">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>

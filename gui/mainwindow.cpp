@@ -264,6 +264,8 @@ MainWindow::MainWindow(QWidget *parent)
     addStreamToPlayQueueAction = ActionCollection::get()->createAction("addstreamtoplayqueue", i18n("Add Stream URL"), menuIcons ? Icons::self()->addRadioStreamIcon : Icon());
     promptClearPlayQueueAction = ActionCollection::get()->createAction("clearplaylist", i18n("Clear"), Icons::self()->clearListIcon);
     centerPlayQueueAction = ActionCollection::get()->createAction("centerplaylist", i18n("Center On Current Track"), Qt::RightToLeft==layoutDirection() ? "go-previous" : "go-next");
+    expandInterfaceAction = ActionCollection::get()->createAction("expandinterface", i18n("Expanded Interface"), "view-media-playlist");
+    expandInterfaceAction->setCheckable(true);
     songInfoAction = ActionCollection::get()->createAction("showsonginfo", i18n("Show Current Song Information"), Icons::self()->infoIcon);
     songInfoAction->setShortcut(Qt::Key_F12);
     songInfoAction->setCheckable(true);
@@ -446,7 +448,11 @@ MainWindow::MainWindow(QWidget *parent)
     }
     initSizes();
 
-    fullScreenAction->setCheckable(true);
+    expandInterfaceAction->setChecked(Settings::self()->showPlaylist());
+    fullScreenAction->setEnabled(expandInterfaceAction->isChecked());
+    if (fullScreenAction->isEnabled()) {
+        fullScreenAction->setChecked(Settings::self()->showFullScreen());
+    }
     randomPlayQueueAction->setCheckable(true);
     repeatPlayQueueAction->setCheckable(true);
     singlePlayQueueAction->setCheckable(true);
@@ -520,6 +526,8 @@ MainWindow::MainWindow(QWidget *parent)
     MusicLibraryItemAlbum::setCoverSize((MusicLibraryItemAlbum::CoverSize)Settings::self()->libraryCoverSize());
     MusicLibraryItemAlbum::setSortByDate(Settings::self()->libraryYear());
     AlbumsModel::setCoverSize((MusicLibraryItemAlbum::CoverSize)Settings::self()->albumsCoverSize());
+    expandedSize=Settings::self()->mainWindowSize();
+    collapsedSize=Settings::self()->mainWindowCollapsedSize();
 
     #ifdef ENABLE_KDE_SUPPORT
     setupGUI(KXmlGuiWindow::Keys);
@@ -534,6 +542,19 @@ MainWindow::MainWindow(QWidget *parent)
         if (!sz.isEmpty() && sz.width()>0) {
             resize(sz);
         }
+
+        if (expandInterfaceAction->isChecked()) {
+            if (!expandedSize.isEmpty() && expandedSize.width()>0) {
+                resize(expandedSize);
+                expandOrCollapse(false);
+            }
+        } else {
+            if (!collapsedSize.isEmpty() && collapsedSize.width()>0) {
+                resize(collapsedSize);
+                expandOrCollapse(false);
+            }
+        }
+
         if (!playQueueInSidebar) {
             QByteArray state=Settings::self()->splitterState();
             if (!state.isEmpty()) {
@@ -561,6 +582,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     if (menuCfg&Settings::MC_Button) {
         QMenu *mainMenu=new QMenu(this);
+        mainMenu->addAction(expandInterfaceAction);
 //        mainMenu->addAction(songInfoAction);
         mainMenu->addAction(fullScreenAction);
         mainMenu->addAction(connectionsAction);
@@ -634,6 +656,7 @@ MainWindow::MainWindow(QWidget *parent)
             }
 //            addMenuAction(menu, songInfoAction);
 //            menu->addSeparator();
+            addMenuAction(menu, expandInterfaceAction);
             addMenuAction(menu, fullScreenAction);
             menuBar()->addMenu(menu);
         }
@@ -655,6 +678,7 @@ MainWindow::MainWindow(QWidget *parent)
             if (showMenuAction) {
                 addMenuAction(menu, showMenuAction);
             }
+            addMenuAction(menu, expandInterfaceAction);
             addMenuAction(menu, fullScreenAction);
             addMenuAction(menu, songInfoAction);
             menu->addSeparator();
@@ -798,6 +822,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(centerPlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(centerPlayQueue()));
     connect(cropPlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(cropPlayQueue()));
     connect(songInfoAction, SIGNAL(triggered(bool)), this, SLOT(showSongInfo()));
+    connect(expandInterfaceAction, SIGNAL(triggered(bool)), this, SLOT(expandOrCollapse()));
     connect(fullScreenAction, SIGNAL(triggered(bool)), this, SLOT(fullScreen()));
     #ifdef TAGLIB_FOUND
     connect(StdActions::self()->editTagsAction, SIGNAL(triggered(bool)), this, SLOT(editTags()));
@@ -839,7 +864,9 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(tabWidget, SIGNAL(currentChanged(int)), this, SLOT(currentTabChanged(int)));
     connect(tabWidget, SIGNAL(tabToggled(int)), this, SLOT(tabToggled(int)));
+    connect(tabWidget, SIGNAL(styleChanged(int)), this, SLOT(sidebarModeChanged()));
     connect(tabWidget, SIGNAL(configRequested()), this, SLOT(showSidebarPreferencesPage()));
+    connect(messageWidget, SIGNAL(visible(bool)), this, SLOT(messageWidgetVisibility(bool)));
 
     #ifdef QT_QTDBUS_FOUND
     mpris=new Mpris(this);
@@ -866,7 +893,6 @@ MainWindow::MainWindow(QWidget *parent)
     MediaKeys::self()->load();
     #endif
     updateActionToolTips();
-    calcMinHeight();
 }
 
 MainWindow::~MainWindow()
@@ -877,13 +903,17 @@ MainWindow::~MainWindow()
     bool hadCantataStreams=playQueueModel.removeCantataStreams();
     Settings::self()->saveShowFullScreen(fullScreenAction->isChecked());
     if (!fullScreenAction->isChecked()) {
-        Settings::self()->saveMainWindowSize(size());
+        Settings::self()->saveMainWindowSize(expandInterfaceAction->isChecked() ? size() : expandedSize);
+        Settings::self()->saveMainWindowCollapsedSize(expandInterfaceAction->isChecked() ? collapsedSize : size());
+        Settings::self()->saveShowPlaylist(expandInterfaceAction->isChecked());
     }
     #ifdef ENABLE_HTTP_STREAM_PLAYBACK
     Settings::self()->savePlayStream(streamPlayAction->isVisible() && streamPlayAction->isChecked());
     #endif
-    if (!fullScreenAction->isChecked() &&!tabWidget->isEnabled(PAGE_PLAYQUEUE)) {
-        Settings::self()->saveSplitterState(splitter->saveState());
+    if (!fullScreenAction->isChecked()) {
+        if (!tabWidget->isEnabled(PAGE_PLAYQUEUE)) {
+            Settings::self()->saveSplitterState(splitter->saveState());
+        }
     }
     Settings::self()->savePage(tabWidget->currentWidget()->metaObject()->className());
     playQueue->saveConfig();
@@ -956,6 +986,9 @@ void MainWindow::showError(const QString &message, bool showActions)
     } else {
         messageWidget->removeAllActions();
     }
+    if (!message.isEmpty()) {
+        expand();
+    }
     QApplication::alert(this);
 }
 
@@ -963,6 +996,20 @@ void MainWindow::showInformation(const QString &message)
 {
     messageWidget->setInformation(message);
     messageWidget->removeAllActions();
+    if (!message.isEmpty()) {
+        expand();
+    }
+}
+
+void MainWindow::messageWidgetVisibility(bool v)
+{
+    Q_UNUSED(v)
+    if (!expandInterfaceAction->isChecked()) {
+        int prevWidth=width();
+        int compactHeight=calcCompactHeight();
+        setFixedHeight(compactHeight);
+        resize(prevWidth, compactHeight);
+    }
 }
 
 void MainWindow::mpdConnectionStateChanged(bool connected)
@@ -1085,6 +1132,7 @@ void MainWindow::refreshDbPromp()
         messageWidget->setActions(QList<QAction*>() << doDbRefreshAction << cancelAction);
     }
     messageWidget->setWarning(i18n("Refresh MPD Database?"), false);
+    expand();
 }
 
 #ifdef ENABLE_KDE_SUPPORT
@@ -1113,6 +1161,14 @@ void MainWindow::showAboutDialog()
                        QLatin1String("</small></i>"));
 }
 #endif
+
+void MainWindow::expand()
+{
+    if (!expandInterfaceAction->isChecked()) {
+        expandInterfaceAction->setChecked(true);
+        expandOrCollapse();
+    }
+}
 
 bool MainWindow::canShowDialog()
 {
@@ -1877,6 +1933,7 @@ void MainWindow::promptClearPlayQueue()
             messageWidget->setActions(QList<QAction*>() << clearPlayQueueAction << cancelAction);
         }
         messageWidget->setWarning(i18n("Remove all songs from play queue?"), false);
+        expand();
     } else {
         clearPlayQueue();
     }
@@ -2068,10 +2125,24 @@ void MainWindow::showSongInfo()
 
 void MainWindow::fullScreen()
 {
-    if (isFullScreen()) {
-        showNormal();
+    if (expandInterfaceAction->isChecked()) {
+        if (isFullScreen()) {
+            showNormal();
+            expandInterfaceAction->setEnabled(true);
+        } else {
+            showFullScreen();
+            expandInterfaceAction->setEnabled(false);
+        }
     } else {
-        showFullScreen();
+        fullScreenAction->setChecked(false);
+    }
+
+}
+
+void MainWindow::sidebarModeChanged()
+{
+    if (expandInterfaceAction->isChecked()) {
+        setMinimumHeight(calcMinHeight());
     }
 }
 
@@ -2165,6 +2236,7 @@ void MainWindow::tabToggled(int index)
     default:
         break;
     }
+    sidebarModeChanged();
 }
 
 void MainWindow::toggleSplitterAutoHide()
@@ -2532,7 +2604,7 @@ void MainWindow::startContextTimer()
     contextTimer->start(contextSwitchTime);
 }
 
-void MainWindow::calcMinHeight()
+int MainWindow::calcMinHeight()
 {
     int minH=0;
     if (tabWidget->style()&FancyTabWidget::Side && tabWidget->style()&FancyTabWidget::Large) {
@@ -2540,10 +2612,71 @@ void MainWindow::calcMinHeight()
     } else {
         minH=Utils::scaleForDpi(256);
     }
-    setMinimumHeight(minH);
-    if (height()<minH) {
-        resize(width(), minH);
+    return minH;
+}
+
+int MainWindow::calcCompactHeight()
+{
+    return toolbar->height()+(messageWidget->isActive() ? (messageWidget->sizeHint().height()+Utils::layoutSpacing(this)) : 0);
+}
+
+void MainWindow::expandOrCollapse(bool saveCurrentSize)
+{
+    if (!expandInterfaceAction->isChecked() && (isFullScreen() || isMaximized() || messageWidget->isVisible())) {
+        expandInterfaceAction->setChecked(true);
+        return;
     }
+
+    static bool lastMax=false;
+
+    bool showing=expandInterfaceAction->isChecked();
+    QPoint p(isVisible() ? pos() : QPoint());
+    int compactHeight=0;
+
+    if (!showing) {
+        setMinimumHeight(0);
+        lastMax=isMaximized();
+        if (saveCurrentSize) {
+            expandedSize=size();
+        }
+        compactHeight=calcCompactHeight();
+    } else {
+        if (saveCurrentSize) {
+            collapsedSize=size();
+        }
+        setMinimumHeight(calcMinHeight());
+        setMaximumHeight(QWIDGETSIZE_MAX);
+    }
+    int prevWidth=size().width();
+    stack->setVisible(showing);
+    if (!showing) {
+        setWindowState(windowState()&~Qt::WindowMaximized);
+    }
+    QApplication::processEvents();
+    adjustSize();
+
+    if (showing) {
+        bool adjustWidth=size().width()!=expandedSize.width();
+        bool adjustHeight=size().height()!=expandedSize.height();
+        if (adjustWidth || adjustHeight) {
+            resize(adjustWidth ? expandedSize.width() : size().width(), adjustHeight ? expandedSize.height() : size().height());
+        }
+        if (lastMax) {
+            showMaximized();
+        }
+    } else {
+        // Width also sometimes expands, so make sure this is no larger than it was before...
+        collapsedSize=QSize(collapsedSize.isValid() ? collapsedSize.width() : (size().width()>prevWidth ? prevWidth : size().width()), compactHeight);
+        resize(collapsedSize);
+        setFixedHeight(size().height());
+    }
+    if (!p.isNull()) {
+        move(p);
+    }
+
+    fullScreenAction->setEnabled(showing);
+    songInfoButton->setVisible(songInfoAction->isCheckable() && showing);
+    songInfoAction->setEnabled(showing);
 }
 
 void MainWindow::toggleContext()

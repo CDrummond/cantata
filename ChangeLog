@@ -7,11 +7,10 @@
   4. Add option to auto-scroll lyrics - accessed via context-menu in lyrics
      view.
   5. Use smaller font for sidebar.
-  6. Make corner cover widget more stylized and smaller.
-  7. Remove collapsing of interface.
-  8. Move position slider in-between controls.
-  9. If volume control is disabled (as MPD returns negative volume), then don't
-     hide it but make it semi-transparent instead.
+  6. Make cover-widget more stylized and smaller.
+  7. Move cover-widget next to song details.
+  8. Slighly larger play/pause button.
+  9. Move position slider in-between controls.
  10. Use system libebur128 if found.
  11. Use smaller font for second line of current song details.
  12. Don't show song details in titlebar - this only duplicates info that is
@@ -166,8 +165,6 @@
 103. Fix progress update when saving Jameno, etc, listing XML.
 104. Add option to hide corner cover.
 105. Add option to hide stop button.
-106. Slighly larger play/pause button.
-107. Move cover-widget next to song details.
 
 1.3.4
 -----

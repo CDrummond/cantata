@@ -170,7 +170,6 @@ public Q_SLOTS:
     void showAboutDialog();
     #endif
     void setMpdVolume(int v);
-    void messageWidgetVisibility(bool v);
     void mpdConnectionStateChanged(bool connected);
     void playQueueItemsSelected(bool s);
     void showSidebarPreferencesPage() { showPreferencesDialog("interface:sidebar"); }
@@ -293,7 +292,6 @@ private:
     void controlPlaylistActions();
     void startContextTimer();
     int calcMinHeight();
-    int calcCompactHeight();
 
 private Q_SLOTS:
     void toggleContext();

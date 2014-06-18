@@ -21,12 +21,15 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include "timeslider.h"
+#include "nowplayingwidget.h"
 #include "mpd/song.h"
 #include "gui/settings.h"
 #include "mpd/mpdconnection.h"
+#include "support/squeezedtextlabel.h"
+#include "support/utils.h"
+#include "support/localize.h"
 #include <QLabel>
-#include <QHBoxLayout>
+#include <QGridLayout>
 #include <QProxyStyle>
 #include <QTimer>
 #include <QApplication>
@@ -61,10 +64,10 @@ public:
     TimeLabel(QWidget *p, QSlider *s)
         : QLabel(p)
         , slider(s)
-        , largeTime(false)
         , visible(true)
     {
-        setFixedWidth(fontMetrics().width(QLatin1String("-")+constEmptyTime));
+        setAttribute(Qt::WA_Hover, true);
+        setAlignment((Qt::RightToLeft==layoutDirection() ? Qt::AlignLeft : Qt::AlignRight)|Qt::AlignVCenter);
     }
 
     void setRange(int min, int max)
@@ -73,11 +76,6 @@ public:
         if (e!=visible) {
             visible=e;
             QLabel::setEnabled(e);
-        }
-        bool large=e && max>=(60*60);
-        if (largeTime!=large) {
-            setFixedWidth(fontMetrics().width(QLatin1String("-")+(large ? QLatin1String("0:") : QString())+constEmptyTime));
-            largeTime=large;
         }
     }
 
@@ -91,50 +89,13 @@ public:
     void updateTime()
     {
         if (visible) {
-            updateTimeDisplay();
+            int value=showRemaining ? slider->maximum()-slider->value() : slider->maximum();
+            QString prefix=showRemaining && value ? QLatin1String("-") : QString();
+            setText(QString("%1 / %2").arg(Utils::formatTime(slider->value()), prefix+Utils::formatTime(value)));
         } else {
-            setText(largeTime ? QLatin1String("0:") : QString()+constEmptyTime);
+            setText(constEmptyTime);
         }
     }
-
-private:
-    virtual void updateTimeDisplay()=0;
-
-protected:
-    QSlider *slider;
-    bool largeTime;
-    bool visible;
-};
-
-class TimeTakenLabel : public TimeLabel
-{
-public:
-    TimeTakenLabel(QWidget *p, QSlider *s)
-        : TimeLabel(p, s)
-    {
-        setAlignment((Qt::RightToLeft==layoutDirection() ? Qt::AlignLeft : Qt::AlignRight)|Qt::AlignVCenter);
-    }
-    virtual ~TimeTakenLabel() { }
-
-    virtual void updateTimeDisplay()
-    {
-        setText(Utils::formatTime(slider->value()));
-    }
-};
-
-class RemainingTimeLabel : public TimeLabel
-{
-public:
-    RemainingTimeLabel(QWidget *p, QSlider *s)
-        : TimeLabel(p, s)
-        , pressed(false)
-        , showRemaining(Settings::self()->showTimeRemaining())
-    {
-        setAttribute(Qt::WA_Hover, true);
-        setAlignment((Qt::RightToLeft==layoutDirection() ? Qt::AlignRight : Qt::AlignLeft)|Qt::AlignVCenter);
-    }
-
-    virtual ~RemainingTimeLabel() { }
 
     void saveConfig()
     {
@@ -171,14 +132,9 @@ public:
         return QLabel::event(e);
     }
 
-    void updateTimeDisplay()
-    {
-        int value=showRemaining ? slider->maximum()-slider->value() : slider->maximum();
-        QString prefix=showRemaining && value ? QLatin1String("-") : QString();
-        setText(prefix+Utils::formatTime(value));
-    }
-
-private:
+protected:
+    QSlider *slider;
+    bool visible;
     bool pressed;
     bool showRemaining;
 };
@@ -297,21 +253,33 @@ void PosSlider::setRange(int min, int max)
     }
 }
 
-TimeSlider::TimeSlider(QWidget *p)
+NowPlayingWidget::NowPlayingWidget(QWidget *p)
     : QWidget(p)
     , timer(0)
     , lastVal(0)
     , pollCount(0)
     , pollMpd(Settings::self()->mpdPoll())
 {
+    track=new SqueezedTextLabel(this);
+    artist=new SqueezedTextLabel(this);
     slider=new PosSlider(this);
-    timeTaken=new TimeTakenLabel(this, slider);
-    timeLeft=new RemainingTimeLabel(this, slider);
-    QBoxLayout *layout=new QBoxLayout(QBoxLayout::LeftToRight, this);
+    time=new TimeLabel(this, slider);
+    QFont f=track->font();
+    QFont small=Utils::smallFont(f);
+    f.setBold(true);
+    track->setFont(f);
+    artist->setFont(small);
+    time->setFont(small);
+    slider->setOrientation(Qt::Horizontal);
+    QGridLayout *layout=new QGridLayout(this);
+    int space=Utils::layoutSpacing(this);
     layout->setMargin(0);
-    layout->addWidget(timeTaken);
-    layout->addWidget(slider);
-    layout->addWidget(timeLeft);
+    layout->addWidget(track, 0, 1, 1, 2);
+    layout->addWidget(artist, 1, 1);
+    layout->addWidget(time, 1, 2);
+    layout->addItem(new QSpacerItem(space, 0, QSizePolicy::Fixed, QSizePolicy::Fixed), 2, 0);
+    layout->addWidget(slider, 2, 1, 1, 2);
+    layout->addItem(new QSpacerItem(space, 0, QSizePolicy::Fixed, QSizePolicy::Fixed), 2, 3);
     connect(slider, SIGNAL(sliderPressed()), this, SLOT(pressed()));
     connect(slider, SIGNAL(sliderReleased()), this, SLOT(released()));
     connect(slider, SIGNAL(positionSet()), this, SIGNAL(sliderReleased()));
@@ -319,11 +287,37 @@ TimeSlider::TimeSlider(QWidget *p)
     if (pollMpd>0) {
         connect(this, SIGNAL(mpdPoll()), MPDConnection::self(), SLOT(getStatus()));
     }
-    setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
+    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     clearTimes();
 }
 
-void TimeSlider::startTimer()
+void NowPlayingWidget::update(const Song &song)
+{
+    QString name=song.name();
+    if (song.isStream() && !song.isCantataStream() && !song.isCdda()) {
+        track->setText(name.isEmpty() ? Song::unknown() : name);
+        if (song.artist.isEmpty() && song.title.isEmpty() && !name.isEmpty()) {
+            artist->setText(i18n("(Stream)"));
+        } else {
+            artist->setText(song.artist.isEmpty() ? song.title : song.artistSong());
+        }
+    } else {
+        if (song.title.isEmpty() && song.artist.isEmpty() && (!name.isEmpty() || !song.file.isEmpty())) {
+            track->setText(name.isEmpty() ? song.file : name);
+        } else {
+            track->setText(song.title);
+        }
+        if (song.album.isEmpty() && song.artist.isEmpty()) {
+            artist->setText(track->fullText().isEmpty() ? QString() : Song::unknown());
+        } else if (song.album.isEmpty()) {
+            artist->setText(song.artist);
+        } else {
+            artist->setText(song.artist+QLatin1String(" - ")+song.displayAlbum());
+        }
+    }
+}
+
+void NowPlayingWidget::startTimer()
 {
     if (!timer) {
         timer=new QTimer(this);
@@ -336,7 +330,7 @@ void TimeSlider::startTimer()
     pollCount=0;
 }
 
-void TimeSlider::stopTimer()
+void NowPlayingWidget::stopTimer()
 {
     if (timer) {
         timer->stop();
@@ -344,7 +338,7 @@ void TimeSlider::stopTimer()
     pollCount=0;
 }
 
-void TimeSlider::setValue(int v)
+void NowPlayingWidget::setValue(int v)
 {
     startTime.restart();
     lastVal=v;
@@ -352,49 +346,40 @@ void TimeSlider::setValue(int v)
     updateTimes();
 }
 
-void TimeSlider::setRange(int min, int max)
+void NowPlayingWidget::setRange(int min, int max)
 {
     slider->setRange(min, max);
-    timeTaken->setRange(min, max);
-    timeLeft->setRange(min, max);
+    time->setRange(min, max);
     updateTimes();
 }
 
-void TimeSlider::clearTimes()
+void NowPlayingWidget::clearTimes()
 {
     stopTimer();
     lastVal=0;
     slider->setRange(0, 0);
-    timeTaken->setRange(0, 0);
-    timeLeft->setRange(0, 0);
-    timeTaken->updateTime();
-    timeLeft->updateTime();
+    time->setRange(0, 0);
+    time->updateTime();
 }
 
-void TimeSlider::setOrientation(Qt::Orientation o)
-{
-    slider->setOrientation(o);
-}
-
-int TimeSlider::value() const
+int NowPlayingWidget::value() const
 {
     return slider->value();
 }
 
-void TimeSlider::saveConfig()
+void NowPlayingWidget::saveConfig()
 {
-    timeLeft->saveConfig();
+    time->saveConfig();
 }
 
-void TimeSlider::updateTimes()
+void NowPlayingWidget::updateTimes()
 {
     if (slider->value()<172800 && slider->value() != slider->maximum()) {
-        timeTaken->updateTime();
-        timeLeft->updateTime();
+        time->updateTime();
     }
 }
 
-void TimeSlider::updatePos()
+void NowPlayingWidget::updatePos()
 {
     int elapsed=(startTime.elapsed()/1000.0)+0.5;
     slider->setValue(lastVal+elapsed);
@@ -407,14 +392,14 @@ void TimeSlider::updatePos()
     }
 }
 
-void TimeSlider::pressed()
+void NowPlayingWidget::pressed()
 {
     if (timer) {
         timer->stop();
     }
 }
 
-void TimeSlider::released()
+void NowPlayingWidget::released()
 {
     if (timer) {
         timer->start();

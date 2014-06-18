@@ -315,12 +315,12 @@ set(CANTATA_SRCS ${CANTATA_CORE_SRCS}
     gui/folderpage.cpp gui/playlistspage.cpp gui/trayitem.cpp gui/cachesettings.cpp gui/coverdialog.cpp gui/searchpage.cpp gui/stdactions.cpp
     mpd/mpduser.cpp
     devices/deviceoptions.cpp
-    widgets/treeview.cpp widgets/listview.cpp widgets/itemview.cpp widgets/autohidingsplitter.cpp widgets/timeslider.cpp
+    widgets/treeview.cpp widgets/listview.cpp widgets/itemview.cpp widgets/autohidingsplitter.cpp widgets/nowplayingwidget.cpp
     widgets/actionlabel.cpp widgets/playqueueview.cpp widgets/groupedview.cpp widgets/actionitemdelegate.cpp widgets/textbrowser.cpp
     widgets/volumeslider.cpp widgets/genrecombo.cpp widgets/menubutton.cpp widgets/icons.cpp widgets/toolbutton.cpp widgets/wizardpage.cpp
     widgets/statuslabel.cpp widgets/searchwidget.cpp widgets/messageoverlay.cpp widgets/basicitemdelegate.cpp widgets/sizegrip.cpp
     widgets/sizewidget.cpp widgets/servicestatuslabel.cpp widgets/spacerwidget.cpp widgets/songdialog.cpp widgets/stretchheaderview.cpp
-    widgets/tableview.cpp widgets/songlabel.cpp widgets/thinsplitterhandle.cpp widgets/coverwidget.cpp
+    widgets/tableview.cpp widgets/thinsplitterhandle.cpp widgets/coverwidget.cpp
     context/lyricsettings.cpp context/ultimatelyricsprovider.cpp context/ultimatelyrics.cpp context/lyricsdialog.cpp
     context/contextwidget.cpp context/view.cpp context/artistview.cpp context/albumview.cpp context/songview.cpp context/contextengine.cpp
     context/wikipediaengine.cpp context/wikipediasettings.cpp context/othersettings.cpp context/contextsettings.cpp context/togglelist.cpp
@@ -331,7 +331,7 @@ set(CANTATA_MOC_HDRS ${CANTATA_CORE_MOC_HDRS}
     gui/settings.h gui/initialsettingswizard.h gui/mainwindow.h gui/folderpage.h gui/librarypage.h gui/albumspage.h gui/playlistspage.h
     gui/playbacksettings.h gui/serversettings.h gui/preferencesdialog.h gui/interfacesettings.h gui/cachesettings.h gui/trayitem.h
     gui/coverdialog.h gui/searchpage.h
-    widgets/treeview.h widgets/listview.h widgets/itemview.h widgets/autohidingsplitter.h widgets/timeslider.h widgets/actionlabel.h
+    widgets/treeview.h widgets/listview.h widgets/itemview.h widgets/autohidingsplitter.h widgets/nowplayingwidget.h widgets/actionlabel.h
     widgets/playqueueview.h widgets/groupedview.h widgets/actionitemdelegate.h widgets/volumeslider.h widgets/genrecombo.h
     widgets/searchwidget.h widgets/messageoverlay.h widgets/servicestatuslabel.h widgets/stretchheaderview.h widgets/tableview.h
     widgets/coverwidget.h

@@ -48,7 +48,7 @@
 static QString headerTag;
 QString View::subTag;
 
-static QString encode(const QImage &img)
+QString View::encode(const QImage &img)
 {
     QByteArray bytes;
     QBuffer buffer(&bytes);

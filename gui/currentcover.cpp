@@ -161,6 +161,7 @@ void CurrentCover::setEnabled(bool e)
 
     enabled=e;
     if (enabled) {
+        img=stdImage(false);
         connect(Covers::self(), SIGNAL(cover(const Song &, const QImage &, const QString &)), this, SLOT(coverRetrieved(const Song &, const QImage &, const QString &)));
         connect(Covers::self(), SIGNAL(coverUpdated(const Song &, const QImage &, const QString &)), this, SLOT(coverRetrieved(const Song &, const QImage &, const QString &)));
     } else {

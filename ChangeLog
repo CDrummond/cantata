@@ -7,7 +7,7 @@
   4. Add option to auto-scroll lyrics - accessed via context-menu in lyrics
      view.
   5. Use smaller font for sidebar.
-  6. Remove corner cover widget.
+  6. Make corner cover widget more stylized and smaller.
   7. Remove collapsing of interface.
   8. Move position slider in-between controls.
   9. If volume control is disabled (as MPD returns negative volume), then don't
@@ -164,6 +164,8 @@
      for details.
 102. Also show first IP address of interface in HTTP server settings page.
 103. Fix progress update when saving Jameno, etc, listing XML.
+104. Add option to hide corner cover.
+105. Add option to hide stop button.
 
 1.3.4
 -----

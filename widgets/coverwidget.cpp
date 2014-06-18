@@ -46,8 +46,7 @@ CoverWidget::~CoverWidget()
 
 void CoverWidget::setSize(int min)
 {
-    int h=min*1.05;
-    setFixedSize(h+4, h);
+    setFixedSize(min, min);
 }
 
 void CoverWidget::setEnabled(bool e)
@@ -108,7 +107,7 @@ void CoverWidget::paintEvent(QPaintEvent *)
         return;
     }
     QPainter p(this);
-    p.drawPixmap(Qt::RightToLeft==layoutDirection() ? width()-(pix->width()+constBorder) : constBorder, constBorder, *pix);
+    p.drawPixmap((width()-pix->width())/2, (height()-pix->height())/2, *pix);
 }
 
 static QPainterPath buildPath(const QRectF &r, double radius)
@@ -126,19 +125,22 @@ static QPainterPath buildPath(const QRectF &r, double radius)
 
 void CoverWidget::coverImage(const QImage &)
 {
+    QImage img=CurrentCover::self()->image();
+    if (img.isNull()) {
+        return;
+    }
     int size=height()-(2*constBorder);
-    if (pix && pix->height()!=size) {
+    img=img.scaled(size, size, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    if (pix && pix->size()!=img.size()) {
         delete pix;
         pix=0;
     }
     if (!pix) {
-        pix=new QPixmap(height(), height());
+        pix=new QPixmap(img.size());
     }
     pix->fill(Qt::transparent);
-    QImage img=CurrentCover::self()->image().scaled(size, size, Qt::KeepAspectRatio, Qt::SmoothTransformation);
     QPainter painter(pix);
     painter.setRenderHint(QPainter::Antialiasing);
-    painter.setBrushOrigin(QPoint(constBorder, constBorder));
     QPainterPath path=buildPath(QRectF(0.5, 0.5, img.width()-1, img.height()-1), img.width()>128 ? 6.0 : 4.0);
     QLinearGradient grad(0, 0, 0, height());
     grad.setColorAt(0, QColor(0, 0, 0, 128));

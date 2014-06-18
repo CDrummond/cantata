@@ -13,7 +13,7 @@
   9. If volume control is disabled (as MPD returns negative volume), then don't
      hide it but make it semi-transparent instead.
  10. Use system libebur128 if found.
- 11. Use single line to show current song details.
+ 11. Use smaller font for second line of current song details.
  12. Don't show song details in titlebar - this only duplicates info that is
      already clearly visible in the main window.
  13. Remove space between toolbar and views, and reduce spacing elsewhere.
@@ -166,6 +166,8 @@
 103. Fix progress update when saving Jameno, etc, listing XML.
 104. Add option to hide corner cover.
 105. Add option to hide stop button.
+106. Slighly larger play/pause button.
+107. Move cover-widget next to song details.
 
 1.3.4
 -----

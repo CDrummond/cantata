@@ -81,7 +81,6 @@
 #include "models/streamsmodel.h"
 #include "playlistspage.h"
 #include "support/fancytabwidget.h"
-#include "widgets/timeslider.h"
 #ifdef QT_QTDBUS_FOUND
 #include "dbus/mpris.h"
 #include "cantataadaptor.h"
@@ -220,12 +219,6 @@ MainWindow::MainWindow(QWidget *parent)
     coverWidget->setSize(toolbar->height());
     Icons::self()->initToolbarIcons(toolbar->palette().color(QPalette::Foreground));
     Icons::self()->initSidebarIcons();
-
-    int spacing=Utils::layoutSpacing(this);
-    if (toolbarFixedSpacerFixedA->minimumSize().width()!=spacing) {
-        toolbarFixedSpacerFixedA->changeSize(spacing, 2, QSizePolicy::Fixed, QSizePolicy::Fixed);
-        toolbarFixedSpacerFixedB->changeSize(spacing, 2, QSizePolicy::Fixed, QSizePolicy::Fixed);
-    }
 
     #ifdef ENABLE_KDE_SUPPORT
     prefAction=static_cast<Action *>(KStandardAction::preferences(this, SLOT(showPreferencesDialog()), ActionCollection::get()));
@@ -468,15 +461,18 @@ MainWindow::MainWindow(QWidget *parent)
     QList<QToolButton *> playbackBtns=QList<QToolButton *>() << prevTrackButton << stopTrackButton << playPauseTrackButton << nextTrackButton;
     QList<QToolButton *> controlBtns=QList<QToolButton *>() << menuButton << songInfoButton;
     int playbackIconSize=28;
+    int playPauseIconSize=32;
     int controlIconSize=22;
     int controlButtonSize=32;
 
     if (repeatButton->iconSize().height()>=32) {
         controlIconSize=playbackIconSize=48;
         controlButtonSize=54;
+        playPauseIconSize=64;
     } else if (repeatButton->iconSize().height()>=22) {
         controlIconSize=playbackIconSize=32;
         controlButtonSize=36;
+        playPauseIconSize=48;
     } else if (QLatin1String("oxygen")!=Icon::currentTheme().toLower() || (GtkStyle::isActive() && GtkStyle::useSymbolicIcons())) {
         // Oxygen does not have 24x24 icons, and media players seem to use scaled 28x28 icons...
         // But, if the theme does have media icons at 24x24 use these - as they will be sharper...
@@ -509,12 +505,12 @@ MainWindow::MainWindow(QWidget *parent)
         b->setIconSize(QSize(playbackIconSize, playbackIconSize));
     }
 
+    playPauseTrackButton->setIconSize(QSize(playPauseIconSize, playPauseIconSize));
+    playPauseTrackButton->setFixedSize(QSize((playPauseIconSize+6)*(Utils::touchFriendly() ? TouchProxyStyle::constScaleFactor : 1.0), playPauseIconSize+6));
+
     if (fullScreenAction->isEnabled()) {
         fullScreenAction->setChecked(Settings::self()->showFullScreen());
     }
-
-    ensurePolished();
-    adjustToolbarSpacers();
 
     randomPlayQueueAction->setChecked(false);
     repeatPlayQueueAction->setChecked(false);
@@ -601,7 +597,6 @@ MainWindow::MainWindow(QWidget *parent)
     } else {
         menuButton->deleteLater();
         menuButton=0;
-        adjustToolbarSpacers();
     }
 
     if (menuCfg&Settings::MC_Bar) {
@@ -780,7 +775,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(StdActions::self()->stopAfterCurrentTrackAction, SIGNAL(triggered(bool)), this, SLOT(stopAfterCurrentTrack()));
     connect(stopAfterTrackAction, SIGNAL(triggered(bool)), this, SLOT(stopAfterTrack()));
     connect(this, SIGNAL(setVolume(int)), MPDConnection::self(), SLOT(setVolume(int)));
-    connect(positionSlider, SIGNAL(sliderReleased()), this, SLOT(setPosition()));
+    connect(nowPlaying, SIGNAL(sliderReleased()), this, SLOT(setPosition()));
     connect(randomPlayQueueAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(setRandom(bool)));
     connect(repeatPlayQueueAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(setRepeat(bool)));
     connect(singlePlayQueueAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(setSingle(bool)));
@@ -898,7 +893,7 @@ MainWindow::~MainWindow()
     StreamsModel::self()->save();
     #endif
     searchPage->saveConfig();
-    positionSlider->saveConfig();
+    nowPlaying->saveConfig();
     #ifdef ENABLE_ONLINE_SERVICES
     OnlineServicesModel::self()->save();
     #endif
@@ -1351,7 +1346,6 @@ void MainWindow::readSettings()
     calcMinHeight();
     toggleMonoIcons();
     toggleSplitterAutoHide();
-    adjustToolbarSpacers();
     if (contextSwitchTime!=Settings::self()->contextSwitchTime()) {
         contextSwitchTime=Settings::self()->contextSwitchTime();
         if (0==contextSwitchTime && contextTimer) {
@@ -1600,7 +1594,7 @@ void MainWindow::playPauseTrack()
 
 void MainWindow::setPosition()
 {
-    emit setSeekId(MPDStatus::self()->songId(), positionSlider->value());
+    emit setSeekId(MPDStatus::self()->songId(), nowPlaying->value());
 }
 
 void MainWindow::searchPlayQueue()
@@ -1723,8 +1717,8 @@ void MainWindow::updateCurrentSong(const Song &song)
     if (current.time<5 && MPDStatus::self()->songId()==current.id && MPDStatus::self()->timeTotal()>5) {
         current.time=MPDStatus::self()->timeTotal();
     }
-    positionSlider->setEnabled(-1!=current.id && !current.isCdda() && (!currentIsStream() || current.time>5));
-    trackLabel->update(current);
+    nowPlaying->setEnabled(-1!=current.id && !current.isCdda() && (!currentIsStream() || current.time>5));
+    nowPlaying->update(current);
     bool isPlaying=MPDState_Playing==MPDStatus::self()->state();
     playQueueModel.updateCurrentSong(current.id);
     QModelIndex idx=playQueueProxyModel.mapFromSource(playQueueModel.index(playQueueModel.currentSongRow(), 0));
@@ -1772,16 +1766,16 @@ void MainWindow::updateStatus(MPDStatus * const status)
     }
 
     if (MPDState_Stopped==status->state() || MPDState_Inactive==status->state()) {
-        positionSlider->clearTimes();
+        nowPlaying->clearTimes();
         playQueueModel.clearStopAfterTrack();
         if (statusTimer) {
             statusTimer->stop();
             statusTimer->setProperty("count", 0);
         }
     } else {
-        positionSlider->setRange(0, 0==status->timeTotal() && 0!=current.time && (current.isCdda() || current.isCantataStream())
+        nowPlaying->setRange(0, 0==status->timeTotal() && 0!=current.time && (current.isCdda() || current.isCantataStream())
                                     ? current.time : status->timeTotal());
-        positionSlider->setValue(status->timeElapsed());
+        nowPlaying->setValue(status->timeElapsed());
         if (0==status->timeTotal() && 0==status->timeElapsed()) {
             if (!statusTimer) {
                 statusTimer=new QTimer(this);
@@ -1797,8 +1791,8 @@ void MainWindow::updateStatus(MPDStatus * const status)
                 statusTimer->setProperty("count", statusTimer->property("count").toInt()+1);
                 statusTimer->start(250);
             }
-        } else if (!positionSlider->isEnabled()) {
-            positionSlider->setEnabled(-1!=current.id && !current.isCdda() && (!currentIsStream() || status->timeTotal()>5));
+        } else if (!nowPlaying->isEnabled()) {
+            nowPlaying->setEnabled(-1!=current.id && !current.isCdda() && (!currentIsStream() || status->timeTotal()>5));
         }
     }
 
@@ -1810,9 +1804,9 @@ void MainWindow::updateStatus(MPDStatus * const status)
 
     if (status->timeElapsed()<172800 && (!currentIsStream() || (status->timeTotal()>0 && status->timeElapsed()<=status->timeTotal()))) {
         if (status->state() == MPDState_Stopped || status->state() == MPDState_Inactive) {
-            positionSlider->setRange(0, 0);
+            nowPlaying->setRange(0, 0);
         } else {
-            positionSlider->setValue(status->timeElapsed());
+            nowPlaying->setValue(status->timeElapsed());
         }
     }
 
@@ -1826,7 +1820,7 @@ void MainWindow::updateStatus(MPDStatus * const status)
             StdActions::self()->nextTrackAction->setEnabled(status->playlistLength()>1);
             StdActions::self()->prevTrackAction->setEnabled(status->playlistLength()>1);
         }
-        positionSlider->startTimer();
+        nowPlaying->startTimer();
         break;
     case MPDState_Inactive:
     case MPDState_Stopped:
@@ -1837,12 +1831,12 @@ void MainWindow::updateStatus(MPDStatus * const status)
         StdActions::self()->prevTrackAction->setEnabled(false);
         if (!StdActions::self()->playPauseTrackAction->isEnabled()) {
             current=Song();
-            trackLabel->update(current);
+            nowPlaying->update(current);
             CurrentCover::self()->update(current);
         }
         current.id=0;
         trayItem->setToolTip("cantata", i18n("Cantata"), QLatin1String("<i>")+i18n("Playback stopped")+QLatin1String("</i>"));
-        positionSlider->stopTimer();
+        nowPlaying->stopTimer();
         break;
     case MPDState_Paused:
         StdActions::self()->playPauseTrackAction->setIcon(Icons::self()->toolbarPlayIcon);
@@ -1850,7 +1844,7 @@ void MainWindow::updateStatus(MPDStatus * const status)
         enableStopActions(0!=status->playlistLength());
         StdActions::self()->nextTrackAction->setEnabled(status->playlistLength()>1);
         StdActions::self()->prevTrackAction->setEnabled(status->playlistLength()>1);
-        positionSlider->stopTimer();
+        nowPlaying->stopTimer();
     default:
         break;
     }
@@ -2140,7 +2134,6 @@ void MainWindow::tabToggled(int index)
             songInfoButton->setVisible(true);
             songInfoAction->setCheckable(true);
         }
-        adjustToolbarSpacers();
         break;
     case PAGE_LIBRARY:
         locateTrackAction->setVisible(tabWidget->isEnabled(index));
@@ -2553,20 +2546,6 @@ void MainWindow::calcMinHeight()
     }
 }
 
-void MainWindow::adjustToolbarSpacers()
-{
-    int leftSize=prevTrackButton->width()*(Settings::self()->showStopButton() ? 4 : 3)+
-                 (coverWidget->isEnabled() ? coverWidget->width() : 0);
-    int rightSize=(menuButton && (!showMenuAction || !showMenuAction->isChecked()) ? (GtkStyle::isActive() ? menuButton->width() : menuButton->sizeHint().width()) : 0)+
-                  (songInfoAction->isCheckable() ? songInfoButton->width() : 0)+
-                  volumeSliderSpacer->sizeHint().width()+volumeSlider->width();
-    int edgeWidth=qMax(leftSize, rightSize);
-    toolbarSpacerA->setFixedSize(edgeWidth, 0);
-    toolbarSpacerB->setFixedSize(edgeWidth, 0);
-    leftSpacer->setFixedSize(edgeWidth-leftSize, 0);
-    rightSpacer->setFixedSize(edgeWidth-rightSize, 0);
-}
-
 void MainWindow::toggleContext()
 {
     if ( songInfoButton->isVisible()) {
@@ -2588,7 +2567,6 @@ void MainWindow::toggleMenubar()
     if (showMenuAction && menuButton) {
         menuButton->setVisible(!showMenuAction->isChecked());
         menuBar()->setVisible(showMenuAction->isChecked());
-        adjustToolbarSpacers();
     }
 }
 

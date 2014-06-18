@@ -289,7 +289,6 @@ private:
     void controlPlaylistActions();
     void startContextTimer();
     void calcMinHeight();
-    void adjustToolbarSpacers();
 
 private Q_SLOTS:
     void toggleContext();

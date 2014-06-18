@@ -21,16 +21,18 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef TIMESLIDER_H
-#define TIMESLIDER_H
+#ifndef NOWPLAYING_WIDGET_H
+#define NOWPLAYING_WIDGET_H
 
 #include <QWidget>
 #include <QTime>
 #include <QSlider>
 
 class QTimer;
-class RemainingTimeLabel;
-class TimeTakenLabel;
+class QLabel;
+class SqueezedTextLabel;
+class TimeLabel;
+struct Song;
 
 class PosSlider : public QSlider
 {
@@ -55,18 +57,18 @@ private:
     QString inactiveStyleSheet;
 };
 
-class TimeSlider : public QWidget
+class NowPlayingWidget : public QWidget
 {
     Q_OBJECT
 public:
-    TimeSlider(QWidget *p);
-    virtual ~TimeSlider() { }
+    NowPlayingWidget(QWidget *p);
+    virtual ~NowPlayingWidget() { }
+    void update(const Song &song);
     void startTimer();
     void stopTimer();
     void setValue(int v);
     void setRange(int min, int max);
     void clearTimes();
-    void setOrientation(Qt::Orientation o);
     int value() const;
     void saveConfig();
     void setEnabled(bool e) { slider->setEnabled(e); }
@@ -84,8 +86,9 @@ private Q_SLOTS:
     void released();
 
 private:
-    RemainingTimeLabel *timeLeft;
-    TimeTakenLabel *timeTaken;
+    SqueezedTextLabel *track;
+    SqueezedTextLabel *artist;
+    TimeLabel *time;
     PosSlider *slider;
     QTimer *timer;
     QTime startTime;

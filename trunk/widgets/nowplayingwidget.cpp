@@ -280,6 +280,7 @@ NowPlayingWidget::NowPlayingWidget(QWidget *p)
     layout->addItem(new QSpacerItem(space, 0, QSizePolicy::Fixed, QSizePolicy::Fixed), 2, 0);
     layout->addWidget(slider, 2, 1, 1, 2);
     layout->addItem(new QSpacerItem(space, 0, QSizePolicy::Fixed, QSizePolicy::Fixed), 2, 3);
+    layout->addItem(new QSpacerItem(0, space, QSizePolicy::Fixed, QSizePolicy::Fixed), 3, 0);
     connect(slider, SIGNAL(sliderPressed()), this, SLOT(pressed()));
     connect(slider, SIGNAL(sliderReleased()), this, SLOT(released()));
     connect(slider, SIGNAL(positionSet()), this, SIGNAL(sliderReleased()));

@@ -281,6 +281,11 @@ QString Settings::iconTheme()
 }
 #endif
 
+bool Settings::showPlaylist()
+{
+    return cfg.get("showPlaylist", true);
+}
+
 bool Settings::showFullScreen()
 {
     return cfg.get("showFullScreen", false);
@@ -307,6 +312,11 @@ bool Settings::splitterAutoHide()
 QSize Settings::mainWindowSize()
 {
     return cfg.get("mainWindowSize", QSize());
+}
+
+QSize Settings::mainWindowCollapsedSize()
+{
+    return cfg.get("mainWindowCollapsedSize", QSize());
 }
 
 bool Settings::useSystemTray()
@@ -1002,6 +1012,11 @@ void Settings::saveShowFullScreen(bool v)
     cfg.set("showFullScreen", v);
 }
 
+void Settings::saveShowPlaylist(bool v)
+{
+    cfg.set("showPlaylist", v);
+}
+
 void Settings::saveHeaderState(const QString &key, const QByteArray &v)
 {
     cfg.set(key+"HeaderState", v);
@@ -1020,6 +1035,11 @@ void Settings::saveSplitterAutoHide(bool v)
 void Settings::saveMainWindowSize(const QSize &v)
 {
     cfg.set("mainWindowSize", v);
+}
+
+void Settings::saveMainWindowCollapsedSize(const QSize &v)
+{
+    cfg.set("mainWindowCollapsedSize", v);
 }
 
 void Settings::saveUseSystemTray(bool v)

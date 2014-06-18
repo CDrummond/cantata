@@ -186,21 +186,21 @@ void VolumeSlider::paintEvent(QPaintEvent *)
     }
     #endif
 
-    if (muted) {
-        p.setOpacity(1.0);
-    }
-    p.setPen(textCol);
-    QFont f(font());
-    f.setPixelSize((height()/2.0) * (Utils::touchFriendly() ? 0.8 : 1.0));
-    p.setFont(f);
+//    if (muted) {
+//        p.setOpacity(1.0);
+//    }
+//    p.setPen(textCol);
+//    QFont f(font());
+//    f.setPixelSize((height()/2.0) * (Utils::touchFriendly() ? 0.8 : 1.0));
+//    p.setFont(f);
 
-    if (muted) {
-        QFontMetrics fm(p.fontMetrics());
-        QString text(fm.elidedText(i18n("Muted"), Qt::ElideRight, width(), QPalette::WindowText));
-        p.drawText(rect(), Qt::AlignLeft, text);
-    } else {
-        p.drawText(rect(), Qt::AlignLeft, QString("%1%").arg(value()));
-    }
+//    if (muted) {
+//        QFontMetrics fm(p.fontMetrics());
+//        QString text(fm.elidedText(i18n("Muted"), Qt::ElideRight, width(), QPalette::WindowText));
+//        p.drawText(rect(), Qt::AlignLeft, text);
+//    } else {
+//        p.drawText(rect(), Qt::AlignLeft, QString("%1%").arg(value()));
+//    }
 }
 
 void VolumeSlider::mousePressEvent(QMouseEvent *ev)

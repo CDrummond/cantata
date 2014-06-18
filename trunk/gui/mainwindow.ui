@@ -61,6 +61,22 @@
        <widget class="NowPlayingWidget" name="nowPlaying"/>
       </item>
       <item>
+       <spacer name="volumeSliderSpacera">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Fixed</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>4</width>
+          <height>4</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
        <widget class="VolumeSlider" name="volumeSlider"/>
       </item>
       <item>

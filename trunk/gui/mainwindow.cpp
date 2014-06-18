@@ -212,6 +212,7 @@ MainWindow::MainWindow(QWidget *parent)
     topToolBar->setContextMenuPolicy(Qt::PreventContextMenu);
     topToolBar->ensurePolished();
     GtkStyle::applyTheme(topToolBar); // Despite its name, it *might* also apply touch style to spinboxes...
+    toolbar=topToolBar;
     #endif // Q_OS_WIN
 
     toolbar->ensurePolished();
@@ -866,7 +867,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(tabWidget, SIGNAL(tabToggled(int)), this, SLOT(tabToggled(int)));
     connect(tabWidget, SIGNAL(styleChanged(int)), this, SLOT(sidebarModeChanged()));
     connect(tabWidget, SIGNAL(configRequested()), this, SLOT(showSidebarPreferencesPage()));
-    connect(messageWidget, SIGNAL(visible(bool)), this, SLOT(messageWidgetVisibility(bool)));
 
     #ifdef QT_QTDBUS_FOUND
     mpris=new Mpris(this);
@@ -998,17 +998,6 @@ void MainWindow::showInformation(const QString &message)
     messageWidget->removeAllActions();
     if (!message.isEmpty()) {
         expand();
-    }
-}
-
-void MainWindow::messageWidgetVisibility(bool v)
-{
-    Q_UNUSED(v)
-    if (!expandInterfaceAction->isChecked()) {
-        int prevWidth=width();
-        int compactHeight=calcCompactHeight();
-        setFixedHeight(compactHeight);
-        resize(prevWidth, compactHeight);
     }
 }
 
@@ -2606,18 +2595,11 @@ void MainWindow::startContextTimer()
 
 int MainWindow::calcMinHeight()
 {
-    int minH=0;
     if (tabWidget->style()&FancyTabWidget::Side && tabWidget->style()&FancyTabWidget::Large) {
-        minH=toolbar->height()+(tabWidget->visibleCount()*tabWidget->tabSize().height());
+        return toolbar->height()+(tabWidget->visibleCount()*tabWidget->tabSize().height());
     } else {
-        minH=Utils::scaleForDpi(256);
+        return Utils::scaleForDpi(256);
     }
-    return minH;
-}
-
-int MainWindow::calcCompactHeight()
-{
-    return toolbar->height()+(messageWidget->isActive() ? (messageWidget->sizeHint().height()+Utils::layoutSpacing(this)) : 0);
 }
 
 void MainWindow::expandOrCollapse(bool saveCurrentSize)
@@ -2631,7 +2613,6 @@ void MainWindow::expandOrCollapse(bool saveCurrentSize)
 
     bool showing=expandInterfaceAction->isChecked();
     QPoint p(isVisible() ? pos() : QPoint());
-    int compactHeight=0;
 
     if (!showing) {
         setMinimumHeight(0);
@@ -2639,7 +2620,6 @@ void MainWindow::expandOrCollapse(bool saveCurrentSize)
         if (saveCurrentSize) {
             expandedSize=size();
         }
-        compactHeight=calcCompactHeight();
     } else {
         if (saveCurrentSize) {
             collapsedSize=size();
@@ -2666,7 +2646,7 @@ void MainWindow::expandOrCollapse(bool saveCurrentSize)
         }
     } else {
         // Width also sometimes expands, so make sure this is no larger than it was before...
-        collapsedSize=QSize(collapsedSize.isValid() ? collapsedSize.width() : (size().width()>prevWidth ? prevWidth : size().width()), compactHeight);
+        collapsedSize=QSize(collapsedSize.isValid() ? collapsedSize.width() : (size().width()>prevWidth ? prevWidth : size().width()), toolbar->height());
         resize(collapsedSize);
         setFixedHeight(size().height());
     }

@@ -27,6 +27,7 @@
 #include "mpd/song.h"
 #include "context/view.h"
 #include "support/localize.h"
+#include "support/gtkstyle.h"
 #include <QPainter>
 #include <QLinearGradient>
 #include <QPen>
@@ -154,9 +155,15 @@ void CoverWidget::coverImage(const QImage &)
 //    painter.drawPath(glassPath);
 //    painter.setClipping(false);
     QColor col=palette().foreground().color();
+    bool gradientBorder=col.red()>=196 && col.blue()>=196 && col.green()>=196;
+    if (!gradientBorder && GtkStyle::isActive()) {
+        QColor gtkCol=GtkStyle::symbolicColor();
+        gradientBorder=gtkCol.red()>=196 && gtkCol.blue()>=196 && gtkCol.green()>=196;
+    }
 
     col.setAlpha(128);
-    if (col.red()>=196 && col.blue()>=196 && col.green()>=196) {
+
+    if (gradientBorder) {
         QLinearGradient grad(0, 0, 0, height());
         grad.setColorAt(0, QColor(0, 0, 0, 128));
         grad.setColorAt(1, col);

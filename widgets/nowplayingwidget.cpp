@@ -74,12 +74,8 @@ public:
     void setRange(int min, int max)
     {
         QLabel::setEnabled(min!=max);
-    }
-
-    void paintEvent(QPaintEvent *e)
-    {
-        if (isEnabled()) {
-            QLabel::paintEvent(e);
+        if (!isEnabled()) {
+            setText(QLatin1String(" "));
         }
     }
 
@@ -90,7 +86,7 @@ public:
             QString prefix=showRemaining && value ? QLatin1String("-") : QString();
             setText(QString("%1 / %2").arg(Utils::formatTime(slider->value()), prefix+Utils::formatTime(value)));
         } else {
-            setText(constEmptyTime);
+            setText(QLatin1String(" "));
         }
     }
 

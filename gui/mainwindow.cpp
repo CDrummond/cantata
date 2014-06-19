@@ -2600,6 +2600,14 @@ int MainWindow::calcMinHeight()
     }
 }
 
+int MainWindow::calcCollpasedSize()
+{
+    if (showMenuAction && menuButton && showMenuAction->isChecked()) {
+        return toolbar->height()+menuBar()->height();
+    }
+    return toolbar->height();
+}
+
 void MainWindow::expandOrCollapse(bool saveCurrentSize)
 {
     if (!expandInterfaceAction->isChecked() && (isFullScreen() || isMaximized() || messageWidget->isVisible())) {
@@ -2644,7 +2652,7 @@ void MainWindow::expandOrCollapse(bool saveCurrentSize)
         }
     } else {
         // Width also sometimes expands, so make sure this is no larger than it was before...
-        collapsedSize=QSize(collapsedSize.isValid() ? collapsedSize.width() : (size().width()>prevWidth ? prevWidth : size().width()), toolbar->height());
+        collapsedSize=QSize(collapsedSize.isValid() ? collapsedSize.width() : (size().width()>prevWidth ? prevWidth : size().width()), calcCollpasedSize());
         resize(collapsedSize);
         setFixedHeight(size().height());
     }
@@ -2678,6 +2686,11 @@ void MainWindow::toggleMenubar()
     if (showMenuAction && menuButton) {
         menuButton->setVisible(!showMenuAction->isChecked());
         menuBar()->setVisible(showMenuAction->isChecked());
+        if (!expandInterfaceAction->isChecked()) {
+            collapsedSize=QSize(size().width(), calcCollpasedSize());
+            resize(collapsedSize);
+            setFixedHeight(collapsedSize.height());
+        }
     }
 }
 

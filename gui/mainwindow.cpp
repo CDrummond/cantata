@@ -265,7 +265,7 @@ MainWindow::MainWindow(QWidget *parent)
     addStreamToPlayQueueAction = ActionCollection::get()->createAction("addstreamtoplayqueue", i18n("Add Stream URL"), menuIcons ? Icons::self()->addRadioStreamIcon : Icon());
     promptClearPlayQueueAction = ActionCollection::get()->createAction("clearplaylist", i18n("Clear"), Icons::self()->clearListIcon);
     centerPlayQueueAction = ActionCollection::get()->createAction("centerplaylist", i18n("Center On Current Track"), Qt::RightToLeft==layoutDirection() ? "go-previous" : "go-next");
-    expandInterfaceAction = ActionCollection::get()->createAction("expandinterface", i18n("Expanded Interface"), "view-media-playlist");
+    expandInterfaceAction = ActionCollection::get()->createAction("expandinterface", i18n("Expanded Interface"), menuIcons ? "view-media-playlist" : "");
     expandInterfaceAction->setCheckable(true);
     songInfoAction = ActionCollection::get()->createAction("showsonginfo", i18n("Show Current Song Information"), Icons::self()->infoIcon);
     songInfoAction->setShortcut(Qt::Key_F12);

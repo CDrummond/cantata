@@ -1387,7 +1387,7 @@ void MainWindow::readSettings()
     tabWidget->setStyle(Settings::self()->sidebar());
     coverWidget->setEnabled(Settings::self()->showCoverWidget());
     stopTrackButton->setVisible(Settings::self()->showStopButton());
-    calcMinHeight();
+    setCollapsedSize();
     toggleMonoIcons();
     toggleSplitterAutoHide();
     if (contextSwitchTime!=Settings::self()->contextSwitchTime()) {
@@ -2600,12 +2600,24 @@ int MainWindow::calcMinHeight()
     }
 }
 
-int MainWindow::calcCollpasedSize()
+int MainWindow::calcCollapsedSize()
 {
     if (showMenuAction && menuButton && showMenuAction->isChecked()) {
         return toolbar->height()+menuBar()->height();
     }
     return toolbar->height();
+}
+
+void MainWindow::setCollapsedSize()
+{
+    if (!expandInterfaceAction->isChecked()) {
+        int w=width();
+        QApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
+        adjustSize();
+        collapsedSize=QSize(w, calcCollapsedSize());
+        resize(collapsedSize);
+        setFixedHeight(collapsedSize.height());
+    }
 }
 
 void MainWindow::expandOrCollapse(bool saveCurrentSize)
@@ -2638,7 +2650,7 @@ void MainWindow::expandOrCollapse(bool saveCurrentSize)
     if (!showing) {
         setWindowState(windowState()&~Qt::WindowMaximized);
     }
-    QApplication::processEvents();
+    QApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
     adjustSize();
 
     if (showing) {
@@ -2652,7 +2664,7 @@ void MainWindow::expandOrCollapse(bool saveCurrentSize)
         }
     } else {
         // Width also sometimes expands, so make sure this is no larger than it was before...
-        collapsedSize=QSize(collapsedSize.isValid() ? collapsedSize.width() : (size().width()>prevWidth ? prevWidth : size().width()), calcCollpasedSize());
+        collapsedSize=QSize(collapsedSize.isValid() ? collapsedSize.width() : (size().width()>prevWidth ? prevWidth : size().width()), calcCollapsedSize());
         resize(collapsedSize);
         setFixedHeight(size().height());
     }
@@ -2686,11 +2698,7 @@ void MainWindow::toggleMenubar()
     if (showMenuAction && menuButton) {
         menuButton->setVisible(!showMenuAction->isChecked());
         menuBar()->setVisible(showMenuAction->isChecked());
-        if (!expandInterfaceAction->isChecked()) {
-            collapsedSize=QSize(size().width(), calcCollpasedSize());
-            resize(collapsedSize);
-            setFixedHeight(collapsedSize.height());
-        }
+        setCollapsedSize();
     }
 }
 

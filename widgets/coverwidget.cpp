@@ -142,9 +142,6 @@ void CoverWidget::coverImage(const QImage &)
     QPainter painter(pix);
     painter.setRenderHint(QPainter::Antialiasing);
     QPainterPath path=buildPath(QRectF(0.5, 0.5, img.width()-1, img.height()-1), img.width()>128 ? 6.0 : 4.0);
-    QLinearGradient grad(0, 0, 0, height());
-    grad.setColorAt(0, QColor(0, 0, 0, 128));
-    grad.setColorAt(1, QColor(196, 196, 196, 128));
     painter.fillPath(path, img);
 
     QPainterPath glassPath;
@@ -156,7 +153,16 @@ void CoverWidget::coverImage(const QImage &)
     painter.setBrush(QColor(255, 255, 255, 64));
     painter.drawPath(glassPath);
     painter.setClipping(false);
+    QColor col=palette().foreground().color();
 
-    painter.strokePath(path, QPen(grad, 1));
+    col.setAlpha(128);
+    if (col.red()>=196 && col.blue()>=196 && col.green()>=196) {
+        QLinearGradient grad(0, 0, 0, height());
+        grad.setColorAt(0, QColor(0, 0, 0, 128));
+        grad.setColorAt(1, col);
+        painter.strokePath(path, QPen(grad, 1));
+    } else {
+        painter.strokePath(path, QPen(col, 1));
+    }
     repaint();
 }

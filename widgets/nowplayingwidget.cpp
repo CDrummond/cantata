@@ -258,8 +258,11 @@ NowPlayingWidget::NowPlayingWidget(QWidget *p)
     slider=new PosSlider(this);
     time=new TimeLabel(this, slider);
     QFont f=track->font();
+    QFont small=Utils::smallFont(f);
     f.setBold(true);
     track->setFont(f);
+    artist->setFont(small);
+    time->setFont(small);
     slider->setOrientation(Qt::Horizontal);
     QGridLayout *layout=new QGridLayout(this);
     int space=Utils::layoutSpacing(this);

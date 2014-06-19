@@ -998,9 +998,6 @@ void MainWindow::showInformation(const QString &message)
 {
     messageWidget->setInformation(message);
     messageWidget->removeAllActions();
-    if (!message.isEmpty()) {
-        expand();
-    }
 }
 
 void MainWindow::mpdConnectionStateChanged(bool connected)

@@ -76,13 +76,15 @@ int Application::newInstance() {
         }
     }
 
-    KCmdLineArgs *args(KCmdLineArgs::parsedArgs());
-    QStringList urls;
-    for (int i = 0; i < args->count(); ++i) {
-        urls.append(args->arg(i));
-    }
-    if (!urls.isEmpty()) {
-        w->load(urls);
+    KCmdLineArgs *args=KCmdLineArgs::parsedArgs();
+    if (args && args->count()>0) {
+        QStringList urls;
+        for (int i = 0; i < args->count(); ++i) {
+            urls.append(args->arg(i));
+        }
+        if (!urls.isEmpty()) {
+            w->load(urls);
+        }
     }
     KStartupInfo::appStarted(startupId());
     in=false;

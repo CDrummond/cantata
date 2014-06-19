@@ -144,15 +144,15 @@ void CoverWidget::coverImage(const QImage &)
     QPainterPath path=buildPath(QRectF(0.5, 0.5, img.width()-1, img.height()-1), img.width()>128 ? 6.0 : 4.0);
     painter.fillPath(path, img);
 
-    QPainterPath glassPath;
-    glassPath.moveTo(pix->rect().topLeft());
-    glassPath.lineTo(pix->rect().topRight());
-    glassPath.quadTo(pix->rect().center()/2, pix->rect().bottomLeft());
-    painter.setClipPath(path);
-    painter.setPen(Qt::NoPen);
-    painter.setBrush(QColor(255, 255, 255, 64));
-    painter.drawPath(glassPath);
-    painter.setClipping(false);
+//    QPainterPath glassPath;
+//    glassPath.moveTo(pix->rect().topLeft());
+//    glassPath.lineTo(pix->rect().topRight());
+//    glassPath.quadTo(pix->rect().center()/2, pix->rect().bottomLeft());
+//    painter.setClipPath(path);
+//    painter.setPen(Qt::NoPen);
+//    painter.setBrush(QColor(255, 255, 255, 64));
+//    painter.drawPath(glassPath);
+//    painter.setClipping(false);
     QColor col=palette().foreground().color();
 
     col.setAlpha(128);

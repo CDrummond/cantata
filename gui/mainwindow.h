@@ -292,7 +292,8 @@ private:
     void controlPlaylistActions();
     void startContextTimer();
     int calcMinHeight();
-    int calcCollpasedSize();
+    int calcCollapsedSize();
+    void setCollapsedSize();
 
 private Q_SLOTS:
     void toggleContext();

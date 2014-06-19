@@ -1034,12 +1034,16 @@ void Settings::saveSplitterAutoHide(bool v)
 
 void Settings::saveMainWindowSize(const QSize &v)
 {
-    cfg.set("mainWindowSize", v);
+    if (v.width()>16 && v.height()>16) {
+        cfg.set("mainWindowSize", v);
+    }
 }
 
 void Settings::saveMainWindowCollapsedSize(const QSize &v)
 {
-    cfg.set("mainWindowCollapsedSize", v);
+    if (v.width()>16 && v.height()>16) {
+        cfg.set("mainWindowCollapsedSize", v);
+    }
 }
 
 void Settings::saveUseSystemTray(bool v)

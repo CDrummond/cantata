@@ -370,9 +370,12 @@ public:
         QRect r(option.rect.adjusted(constBorder+4, constBorder, -(constBorder+4), -constBorder));
 
         if (state && GroupedView::State_StopAfterTrack!=state) {
-            QRectF border(option.rect.x()+1.5, option.rect.y()+1.5, option.rect.width()-3, option.rect.height()-3);
-            if (!title.isEmpty()) {
-                border.adjust(0, textHeight+constBorder, 0, 0);
+            QRectF border;
+            if (title.isEmpty()) {
+                border=QRectF(option.rect.x()+1.5, option.rect.y()+1.5, option.rect.width()-3, option.rect.height()-3);
+            } else {
+                int adjust=(option.rect.height()/2)-1;
+                border=QRectF(option.rect.x()+1.5, option.rect.y()+adjust+1.5, option.rect.width()-3, (option.rect.height()-adjust)-3);
             }
             QLinearGradient g(border.topLeft(), border.bottomLeft());
             QColor gradCol(QApplication::palette().color(QPalette::Highlight));

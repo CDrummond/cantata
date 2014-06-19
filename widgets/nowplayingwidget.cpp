@@ -64,7 +64,8 @@ public:
     TimeLabel(QWidget *p, QSlider *s)
         : QLabel(p)
         , slider(s)
-        , visible(true)
+        , pressed(false)
+        , showRemaining(Settings::self()->showTimeRemaining())
     {
         setAttribute(Qt::WA_Hover, true);
         setAlignment((Qt::RightToLeft==layoutDirection() ? Qt::AlignLeft : Qt::AlignRight)|Qt::AlignVCenter);
@@ -72,11 +73,7 @@ public:
 
     void setRange(int min, int max)
     {
-        bool e=min!=max;
-        if (e!=visible) {
-            visible=e;
-            QLabel::setEnabled(e);
-        }
+        QLabel::setEnabled(min!=max);
     }
 
     void paintEvent(QPaintEvent *e)
@@ -88,7 +85,7 @@ public:
 
     void updateTime()
     {
-        if (visible) {
+        if (isEnabled()) {
             int value=showRemaining ? slider->maximum()-slider->value() : slider->maximum();
             QString prefix=showRemaining && value ? QLatin1String("-") : QString();
             setText(QString("%1 / %2").arg(Utils::formatTime(slider->value()), prefix+Utils::formatTime(value)));
@@ -106,24 +103,24 @@ public:
     {
         switch (e->type()) {
         case QEvent::MouseButtonPress:
-            if (visible && Qt::NoModifier==static_cast<QMouseEvent *>(e)->modifiers() && Qt::LeftButton==static_cast<QMouseEvent *>(e)->button()) {
+            if (isEnabled() && Qt::NoModifier==static_cast<QMouseEvent *>(e)->modifiers() && Qt::LeftButton==static_cast<QMouseEvent *>(e)->button()) {
                 pressed=true;
             }
             break;
         case QEvent::MouseButtonRelease:
-            if (visible && pressed) {
+            if (isEnabled() && pressed) {
                 showRemaining=!showRemaining;
                 updateTime();
             }
             pressed=false;
             break;
         case QEvent::HoverEnter:
-            if (visible) {
+            if (isEnabled()) {
                 setStyleSheet(QLatin1String("QLabel{color:palette(highlight);}"));
             }
             break;
         case QEvent::HoverLeave:
-            if (visible) {
+            if (isEnabled()) {
                 setStyleSheet(QString());
             }
         default:
@@ -134,7 +131,6 @@ public:
 
 protected:
     QSlider *slider;
-    bool visible;
     bool pressed;
     bool showRemaining;
 };

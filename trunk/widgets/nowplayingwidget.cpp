@@ -69,6 +69,8 @@ public:
     {
         setAttribute(Qt::WA_Hover, true);
         setAlignment((Qt::RightToLeft==layoutDirection() ? Qt::AlignLeft : Qt::AlignRight)|Qt::AlignVCenter);
+        // For some reason setting this here does not work!
+        // setStyleSheet(QLatin1String("QLabel:hover {color:palette(highlight);}"));
     }
 
     void setRange(int min, int max)

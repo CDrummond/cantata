@@ -105,7 +105,7 @@ The following options may be passed to CMake:
 
     -DENABLE_KDE=OFF
         Link against KDE libraries, use KDE dialogs, etc.
-        Default: ON
+        Default: OFF
 
     -DENABLE_QT5=ON
         Build against Qt5, not Qt4

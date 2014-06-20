@@ -56,8 +56,6 @@ public:
     }
 };
 
-static const QLatin1String constEmptyTime("00:00");
-
 class TimeLabel : public QLabel
 {
 public:

@@ -818,26 +818,13 @@ bool Utils::isDirReadable(const QString &dir)
 double Utils::smallFontFactor(const QFont &f)
 {
     double sz=f.pointSizeF();
-    #if defined Q_OS_WIN
-    if (sz<8.5) {
+    if (sz<=8.5) {
         return 1.0;
     }
-    if (sz<9.0) {
+    if (sz<=9.0) {
         return 0.9;
     }
     return 0.85;
-    #else
-    if (sz<7.0) {
-        return 1.0;
-    }
-    if (sz<8.5) {
-        return 0.9;
-    }
-    if (sz<9.0) {
-        return 0.85;
-    }
-    return 0.8;
-    #endif
 }
 
 QFont Utils::smallFont(QFont f)

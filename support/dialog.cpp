@@ -93,8 +93,8 @@ GuiItem cont() { return GuiItem(i18n("&Continue"), "arrow-right"); }
 GuiItem del() { return GuiItem(i18n("&Delete"), "edit-delete"); }
 GuiItem stop() { return GuiItem(i18n("&Stop"), "process-stop"); }
 GuiItem remove() { return   GuiItem(i18n("&Remove"), "list-remove"); }
-GuiItem back(bool useRtl) { return GuiItem(i18n("&Previous"), useRtl && Qt::RightToLeft==QApplication::layoutDirection() ? "go-next" : "go-previous"); }
-GuiItem forward(bool useRtl) { return GuiItem(i18n("&Next"), useRtl && Qt::RightToLeft==QApplication::layoutDirection() ? "go-previous" : "go-next"); }
+GuiItem back(bool useRtl) { return GuiItem(i18n("&Previous"), useRtl && QApplication::isRightToLeft() ? "go-next" : "go-previous"); }
+GuiItem forward(bool useRtl) { return GuiItem(i18n("&Next"), useRtl && QApplication::isRightToLeft() ? "go-previous" : "go-next"); }
 
 QSet<QString> standardNames()
 {

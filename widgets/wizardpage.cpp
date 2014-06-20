@@ -47,6 +47,6 @@ void WizardPage::paintEvent(QPaintEvent *e)
     QPainter painter(this);
 
     painter.setOpacity(0.2);
-    painter.drawPixmap(Qt::RightToLeft == layoutDirection() ? r.left() + spacing : r.right() - (pix.width() + spacing),
+    painter.drawPixmap(isRightToLeft() ? r.left() + spacing : r.right() - (pix.width() + spacing),
                        r.bottom() - (pix.height() + spacing), pix);
 }

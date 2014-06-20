@@ -40,7 +40,7 @@ ToggleList::ToggleList(QWidget *p)
     connect(selected, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)), SLOT(selectedChanged(QListWidgetItem*)));
     upButton->setIcon(Icon("go-up"));
     downButton->setIcon(Icon("go-down"));
-    bool rtl=Qt::RightToLeft==layoutDirection();
+    bool rtl=isRightToLeft();
     addButton->setIcon(Icon(rtl ? "go-previous" : "go-next"));
     removeButton->setIcon(Icon(rtl ? "go-next" : "go-previous"));
 

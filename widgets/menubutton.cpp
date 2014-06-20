@@ -64,7 +64,7 @@ bool MenuButton::eventFilter(QObject *o, QEvent *e)
     if (QEvent::Show==e->type() && qobject_cast<QMenu *>(o)) {
         QMenu *mnu=static_cast<QMenu *>(o);
         QPoint p=parentWidget()->mapToGlobal(pos());
-        int newPos=Qt::RightToLeft==layoutDirection()
+        int newPos=isRightToLeft()
                     ? p.x()
                     : ((p.x()+width())-mnu->width());
 

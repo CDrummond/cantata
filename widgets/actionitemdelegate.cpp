@@ -150,7 +150,7 @@ QAction * ActionItemDelegate::getAction(const QModelIndex &index) const
     }
 
     QAbstractItemView *view=(QAbstractItemView *)parent();
-    bool rtl = Qt::RightToLeft==QApplication::layoutDirection();
+    bool rtl = QApplication::isRightToLeft();
     QListView *lv=qobject_cast<QListView *>(view);
     GroupedView *gv=lv ? 0 : qobject_cast<GroupedView *>(view);
     ActionPos actionPos=gv ? AP_HBottom : (lv && QListView::ListMode!=lv->viewMode() && index.child(0, 0).isValid() ? AP_VTop : AP_HMiddle);

@@ -133,7 +133,6 @@ protected:
 
 PosSlider::PosSlider(QWidget *p)
     : QSlider(p)
-    , isActive(false)
     , shown(false)
 {
     setPageStep(0);
@@ -164,9 +163,11 @@ void PosSlider::updateStyleSheet()
                                       "background: solid rgba(%6, %7, %8, %9); "
                                       "border-radius: %10px } ");
     QString fillFormat=QLatin1String("QSlider::")+QLatin1String(Qt::RightToLeft==layoutDirection() ? "add" : "sub")+
-            QLatin1String("-page:horizontal {border: %1px solid palette(highlight); "
-                          "background: solid palette(highlight); "
-                          "border-radius: %2px; margin: %3px;}");
+                       QLatin1String("-page:horizontal {border: %1px solid palette(highlight); "
+                                     "background: solid palette(highlight); "
+                                     "border-radius: %2px; margin: %3px;}")+
+                       QLatin1String("QSlider::")+QLatin1String(Qt::RightToLeft==layoutDirection() ? "add" : "sub")+
+                       QLatin1String("-page:horizontal:disabled {border: 0px; background: solid rgba(0, 0, 0, 0)}");
     QLabel lbl(parentWidget());
     lbl.ensurePolished();
     QColor textColor=lbl.palette().color(QPalette::Active, QPalette::Text);
@@ -175,13 +176,6 @@ void PosSlider::updateStyleSheet()
     setStyleSheet(boderFormat.arg(lineWidth).arg(textColor.red()).arg(textColor.green()).arg(textColor.blue()).arg(alpha)
                              .arg(textColor.red()).arg(textColor.green()).arg(textColor.blue()).arg(alpha/4).arg(lineWidth*2)+
                   fillFormat.arg(lineWidth).arg(lineWidth).arg(lineWidth*2));
-}
-
-void PosSlider::paintEvent(QPaintEvent *e)
-{
-    if (isActive) {
-        QSlider::paintEvent(e);
-    }
 }
 
 void PosSlider::mouseMoveEvent(QMouseEvent *e)
@@ -197,7 +191,7 @@ void PosSlider::mouseMoveEvent(QMouseEvent *e)
 
 void PosSlider::wheelEvent(QWheelEvent *ev)
 {
-    if (!isActive) {
+    if (!isEnabled()) {
         return;
     }
 
@@ -243,7 +237,7 @@ void PosSlider::setRange(int min, int max)
         setToolTip(QString());
     }
 
-    isActive=active;
+    setEnabled(active);
 }
 
 NowPlayingWidget::NowPlayingWidget(QWidget *p)

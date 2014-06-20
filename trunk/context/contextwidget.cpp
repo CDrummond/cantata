@@ -102,7 +102,7 @@ public:
         }
         QFontMetrics fm(f);
         if (fm.width(txt)>rect().width()) {
-            txt=fm.elidedText(txt, Qt::RightToLeft==layoutDirection() ? Qt::ElideLeft : Qt::ElideRight, rect().width());
+            txt=fm.elidedText(txt, isRightToLeft() ? Qt::ElideLeft : Qt::ElideRight, rect().width());
         }
 
         painter.setFont(f);

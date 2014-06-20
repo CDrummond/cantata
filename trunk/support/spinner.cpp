@@ -32,7 +32,7 @@ Spinner::Spinner(QObject *p, bool inMiddle)
     , active(false)
 {
     setSequence(KPixmapSequence("process-working", KIconLoader::SizeSmallMedium));
-    setAlignment(inMiddle ? Qt::AlignCenter : (Qt::AlignTop | (Qt::RightToLeft==QApplication::layoutDirection() ? Qt::AlignLeft : Qt::AlignRight)));
+    setAlignment(inMiddle ? Qt::AlignCenter : (Qt::AlignTop | (QApplication::isRightToLeft() ? Qt::AlignLeft : Qt::AlignRight)));
 }
 
 void Spinner::start()
@@ -148,7 +148,7 @@ void Spinner::setPosition()
     QPoint current=pos();
     QPoint desired=central
                     ? QPoint((parentWidget()->size().width()-size().width())/2, (parentWidget()->size().height()-size().height())/2)
-                    : Qt::RightToLeft==QApplication::layoutDirection()
+                    : QApplication::isRightToLeft()
                         ? QPoint(hSpace, space)
                         : QPoint(parentWidget()->size().width()-(size().width()+hSpace), space);
 

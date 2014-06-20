@@ -247,7 +247,7 @@ bool FlickCharm::eventFilter(QObject *object, QEvent *event)
                         int flags=index.model()->flags(index);
                         if (flags&Qt::ItemIsDragEnabled && !(flags&Qt::ItemIsUserCheckable)) {
                             QRect r=view->visualRect(index);
-                            if (Qt::RightToLeft==view->layoutDirection()) {
+                            if (view->isRightToLeft()) {
                                 r=QRect(r.x()+r.width()-(1+dragArea()), r.y(), qMin(dragArea(), r.width()), qMin(dragArea(), r.height()));
                             } else {
                                 r=QRect(r.x(), r.y(), qMin(dragArea(), r.width()), qMin(dragArea(), r.height()));

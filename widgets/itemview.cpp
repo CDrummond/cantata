@@ -228,7 +228,7 @@ public:
                             : image.value<QIcon>().pixmap(listDecorationSize, listDecorationSize);
         bool oneLine = childText.isEmpty();
         ActionPos actionPos = iconMode ? AP_VTop : AP_HMiddle;
-        bool rtl = Qt::RightToLeft==QApplication::layoutDirection();
+        bool rtl = QApplication::isRightToLeft();
 
         if (childText==QLatin1String("-")) {
             childText.clear();
@@ -410,7 +410,7 @@ public:
 
         QStringList text=index.data(Qt::DisplayRole).toString().split("\n");
         bool gtk=GtkStyle::isActive();
-        bool rtl = Qt::RightToLeft==QApplication::layoutDirection();
+        bool rtl = QApplication::isRightToLeft();
         bool selected=option.state&QStyle::State_Selected;
         bool active=option.state&QStyle::State_Active;
         bool mouseOver=underMouse && option.state&QStyle::State_MouseOver;
@@ -534,7 +534,7 @@ public:
                 BasicItemDelegate::drawLine(painter, option.rect, col, true, true);
             }
             if (drawActions && underMouse && option.state&QStyle::State_MouseOver) {
-                drawIcons(painter, option.rect, true, Qt::RightToLeft==QApplication::layoutDirection(), AP_HMiddle, index);
+                drawIcons(painter, option.rect, true, QApplication::isRightToLeft(), AP_HMiddle, index);
             }
         } else {
             BasicItemDelegate::drawLine(painter, option.rect, col, false, false);

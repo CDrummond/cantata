@@ -28,8 +28,7 @@
 SqueezedTextLabel::SqueezedTextLabel(QWidget *p)
         : KSqueezedTextLabel(p)
 {
-    bool rtl=Qt::RightToLeft==layoutDirection();
-    setTextElideMode(rtl ? Qt::ElideLeft : Qt::ElideRight);
+    setTextElideMode(isRightToLeft() ? Qt::ElideLeft : Qt::ElideRight);
     setAlignment((rtl ? Qt::AlignRight : Qt::AlignLeft) | Qt::AlignVCenter);
 }
 
@@ -38,16 +37,14 @@ SqueezedTextLabel::SqueezedTextLabel(QWidget *p)
 SqueezedTextLabel::SqueezedTextLabel(QWidget *p)
     : QLabel(p)
 {
-    bool rtl=Qt::RightToLeft==layoutDirection();
-
-    setTextElideMode(rtl ? Qt::ElideLeft : Qt::ElideRight);
+    setTextElideMode(isRightToLeft() ? Qt::ElideLeft : Qt::ElideRight);
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
 }
 
 void SqueezedTextLabel::setTextElideMode(Qt::TextElideMode mode)
 {
     elideMode=mode;
-    setAlignment((elideMode&Qt::ElideLeft ? Qt::AlignRight : Qt::AlignLeft) | Qt::AlignVCenter);
+    setAlignment((Qt::ElideLeft==elideMode ? Qt::AlignRight : Qt::AlignLeft) | Qt::AlignVCenter);
 }
 
 void SqueezedTextLabel::elideText()

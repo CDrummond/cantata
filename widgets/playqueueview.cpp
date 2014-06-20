@@ -107,7 +107,7 @@ public:
         bool stream=song.isStandardStream();
         QPixmap *cover= stream ? 0 : Covers::self()->get(song, coverSize);
         QPixmap pix=cover ? *cover : (stream && !song.isCdda() ? Icons::self()->streamIcon : Icons::self()->albumIcon).pixmap(coverSize, coverSize);
-        bool rtl = Qt::RightToLeft==QApplication::layoutDirection();
+        bool rtl = QApplication::isRightToLeft();
 
         painter->save();
         painter->setClipRect(r);

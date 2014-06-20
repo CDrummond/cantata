@@ -66,7 +66,7 @@ public:
         , showRemaining(Settings::self()->showTimeRemaining())
     {
         setAttribute(Qt::WA_Hover, true);
-        setAlignment((Qt::RightToLeft==layoutDirection() ? Qt::AlignLeft : Qt::AlignRight)|Qt::AlignVCenter);
+        setAlignment((isRightToLeft() ? Qt::AlignLeft : Qt::AlignRight)|Qt::AlignVCenter);
         // For some reason setting this here does not work!
         // setStyleSheet(QLatin1String("QLabel:hover {color:palette(highlight);}"));
     }
@@ -84,7 +84,11 @@ public:
         if (isEnabled()) {
             int value=showRemaining ? slider->maximum()-slider->value() : slider->maximum();
             QString prefix=showRemaining && value ? QLatin1String("-") : QString();
-            setText(QString("%1 / %2").arg(Utils::formatTime(slider->value()), prefix+Utils::formatTime(value)));
+            if (isRightToLeft()) {
+                setText(QString("%1 / %2").arg(prefix+Utils::formatTime(value), Utils::formatTime(slider->value())));
+            } else {
+                setText(QString("%1 / %2").arg(Utils::formatTime(slider->value()), prefix+Utils::formatTime(value)));
+            }
         } else {
             setText(QLatin1String(" "));
         }
@@ -162,11 +166,11 @@ void PosSlider::updateStyleSheet()
     QString boderFormat=QLatin1String("QSlider::groove:horizontal { border: %1px solid rgba(%2, %3, %4, %5); "
                                       "background: solid rgba(%6, %7, %8, %9); "
                                       "border-radius: %10px } ");
-    QString fillFormat=QLatin1String("QSlider::")+QLatin1String(Qt::RightToLeft==layoutDirection() ? "add" : "sub")+
+    QString fillFormat=QLatin1String("QSlider::")+QLatin1String(isRightToLeft() ? "add" : "sub")+
                        QLatin1String("-page:horizontal {border: %1px solid palette(highlight); "
                                      "background: solid palette(highlight); "
                                      "border-radius: %2px; margin: %3px;}")+
-                       QLatin1String("QSlider::")+QLatin1String(Qt::RightToLeft==layoutDirection() ? "add" : "sub")+
+                       QLatin1String("QSlider::")+QLatin1String(isRightToLeft() ? "add" : "sub")+
                        QLatin1String("-page:horizontal:disabled {border: 0px; background: solid rgba(0, 0, 0, 0)}");
     QLabel lbl(parentWidget());
     lbl.ensurePolished();

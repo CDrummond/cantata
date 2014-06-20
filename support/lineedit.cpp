@@ -63,7 +63,7 @@ LineEdit::LineEdit(QWidget *parent)
 {
     clearButton = new QToolButton(this);
     int iconSize=Icon::stdSize(fontMetrics().height());
-    QPixmap pixmap(Icon(Qt::RightToLeft==layoutDirection() ? "edit-clear-locationbar-ltr" : "edit-clear-locationbar-rtl").pixmap(iconSize, iconSize));
+    QPixmap pixmap(Icon(isRightToLeft() ? "edit-clear-locationbar-ltr" : "edit-clear-locationbar-rtl").pixmap(iconSize, iconSize));
     if (pixmap.isNull()) {
         pixmap=(Icon("edit-clear").pixmap(iconSize, iconSize));
     }
@@ -92,7 +92,7 @@ void LineEdit::resizeEvent(QResizeEvent *e)
 {
     QSize sz = clearButton->sizeHint();
     int frameWidth = style()->pixelMetric(QStyle::PM_DefaultFrameWidth);
-    if (Qt::RightToLeft==layoutDirection()) {
+    if (isRightToLeft()) {
         clearButton->move(rect().left() + frameWidth, (rect().bottom() + 1 - sz.height()) / 2);
     } else {
         clearButton->move(rect().right() - frameWidth - sz.width(), (rect().bottom() + 1 - sz.height()) / 2);

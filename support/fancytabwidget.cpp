@@ -650,7 +650,7 @@ void FancyTabWidget::contextMenuEvent(QContextMenuEvent *e)
             }
             break;
         default:
-            if (Qt::RightToLeft==QApplication::layoutDirection()) {
+            if (QApplication::isRightToLeft()) {
                 if (e->pos().x()<=sideWidget->pos().x()) {
                     return;
                 }
@@ -684,7 +684,7 @@ void FancyTabWidget::setStyle(int s)
         switch (s&Position_Mask) {
         default:
         case Side:
-            makeTabBar(Qt::RightToLeft==QApplication::layoutDirection() ? QTabBar::RoundedEast : QTabBar::RoundedWest, !(s&IconOnly), true, Small==(s&Style_Mask));
+            makeTabBar(QApplication::isRightToLeft() ? QTabBar::RoundedEast : QTabBar::RoundedWest, !(s&IconOnly), true, Small==(s&Style_Mask));
             break;
         case Top:
             makeTabBar(QTabBar::RoundedNorth, !(s&IconOnly), true, Small==(s&Style_Mask)); break;

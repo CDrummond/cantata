@@ -144,10 +144,10 @@ void VolumeSlider::showEvent(QShowEvent *ev)
     }
     QSlider::showEvent(ev);
 }
-#include <QDebug>
+
 void VolumeSlider::paintEvent(QPaintEvent *)
 {
-    bool reverse=Qt::RightToLeft==layoutDirection();
+    bool reverse=isRightToLeft();
     QPainter p(this);
     bool muted=MPDConnection::self()->isMuted();
     if (muted || !isEnabled()) {
@@ -193,7 +193,12 @@ void VolumeSlider::paintEvent(QPaintEvent *)
         f.setPixelSize(qMax(height()/2.5, 8.0));
         p.setFont(f);
         QRect r=rect();
-        r.setWidth(widthStep*lineWidth*7);
+        bool rtl=isRightToLeft();
+        if (rtl) {
+            r.setX(widthStep*lineWidth*12);
+        } else {
+            r.setWidth(widthStep*lineWidth*7);
+        }
         p.drawText(r, Qt::AlignRight, QString("%1%").arg(value()));
     }
 }
@@ -307,7 +312,7 @@ void VolumeSlider::generatePixmaps()
 
 QPixmap VolumeSlider::generatePixmap(bool filled)
 {
-    bool reverse=Qt::RightToLeft==layoutDirection();
+    bool reverse=isRightToLeft();
     QPixmap pix(size());
     pix.fill(Qt::transparent);
     QPainter p(&pix);

@@ -551,7 +551,7 @@ void Icons::initToolbarIcons(const QColor &toolbarText)
     QColor stdColor=calcIconColor();
     #if !defined Q_OS_WIN && !defined Q_OS_MAC && !defined ENABLE_UBUNTU
     if (GtkStyle::useSymbolicIcons()) {
-        bool rtl=Qt::RightToLeft==QApplication::layoutDirection();
+        bool rtl=QApplication::isRightToLeft();
         QColor col=GtkStyle::symbolicColor();
         toolbarPrevIcon=loadMediaIcon(QLatin1String(rtl ? "prev-rtl" : "prev"), col, col);
         toolbarPlayIcon=loadMediaIcon(QLatin1String(rtl ? "play-rtl" : "play"), col, col);

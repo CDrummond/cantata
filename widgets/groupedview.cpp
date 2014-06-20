@@ -89,7 +89,7 @@ void GroupedView::drawPlayState(QPainter *painter, const QStyleOptionViewItem &o
         QRect ir(r.x()-(size+6), r.y()+(((r.height()-size)/2.0)+0.5), size, size);
         QColor inside(option.palette.color(QPalette::Text));
         QColor border=inside.red()>100 && inside.blue()>100 && inside.green()>100 ? Qt::black : Qt::white;
-        if (Qt::RightToLeft==QApplication::layoutDirection()) {
+        if (QApplication::isRightToLeft()) {
             ir.adjust(r.width()-size, 0, r.width()-size, 0);
         }
         switch (state) {
@@ -225,7 +225,7 @@ public:
         QColor fade(c);
         const int fadeSize=64;
         double fadePos=1.0-((r.width()-fadeSize)/(r.width()*1.0));
-        bool rtl=Qt::RightToLeft==QApplication::layoutDirection();
+        bool rtl=QApplication::isRightToLeft();
 
         fade.setAlphaF(0.0);
         grad.setColorAt(0, rtl ? fade : c);
@@ -270,7 +270,7 @@ public:
         bool selected=option.state&QStyle::State_Selected;
         bool mouseOver=underMouse && option.state&QStyle::State_MouseOver;
         bool gtk=mouseOver && GtkStyle::isActive();
-        bool rtl=Qt::RightToLeft==QApplication::layoutDirection();
+        bool rtl=QApplication::isRightToLeft();
 
         if (!isCollection && AlbumHeader==type) {
             if (mouseOver && gtk) {
@@ -405,7 +405,7 @@ public:
             }
 
             if (rtl) {
-                painter->drawPixmap(r.x()+r.width()-(pix.width()+constBorder), r.y()+((r.height()-pix.height())/2), pix.width(), pix.height(), pix);
+                painter->drawPixmap(r.x()+r.width()-(pix.width()-constBorder), r.y()+((r.height()-pix.height())/2), pix.width(), pix.height(), pix);
                 r.adjust(0, 0, -(constCoverSize+constBorder), 0);
             } else {
                 painter->drawPixmap(r.x()-2, r.y()+((r.height()-pix.height())/2), pix.width(), pix.height(), pix);

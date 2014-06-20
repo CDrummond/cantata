@@ -85,6 +85,7 @@ ViewTextSelector::ViewTextSelector(QWidget *p)
 {
     setAttribute(Qt::WA_Hover, true);
     menu=new QMenu(this);
+    setStyleSheet(QLatin1String("QLabel:hover {color:palette(highlight);}"));
 }
 
 static QString viewText(const QString &s)
@@ -118,12 +119,6 @@ bool ViewTextSelector::event(QEvent *e)
         if (Qt::NoModifier==static_cast<QMouseEvent *>(e)->modifiers() && Qt::LeftButton==static_cast<QMouseEvent *>(e)->button()) {
             menu->exec(mapToGlobal(static_cast<QMouseEvent *>(e)->pos()));
         }
-    case QEvent::HoverLeave:
-        setStyleSheet(QString());
-        break;
-    case QEvent::HoverEnter:
-        setStyleSheet(QLatin1String("QLabel{color:palette(highlight);}"));
-        break;
     case QEvent::Wheel: {
         int numDegrees = static_cast<QWheelEvent *>(e)->delta() / 8;
         int numSteps = numDegrees / 15;

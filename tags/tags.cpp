@@ -497,7 +497,7 @@ static bool writeID3v2Tags(TagLib::ID3v2::Tag *tag, const Song &from, const Song
     return changed;
 }
 
-static void readAPETags(TagLib::APE::Tag *tag, Song *song, ReplayGain *rg)
+static void readAPETags(TagLib::APE::Tag *tag, Song *song, ReplayGain *rg, QImage *img)
 {
     const TagLib::APE::ItemListMap &map = tag->itemListMap();
 
@@ -533,6 +533,21 @@ static void readAPETags(TagLib::APE::Tag *tag, Song *song, ReplayGain *rg)
         }
         if (map.contains("replaygain_album_peak")) {
             rg->albumPeak=parseRgString(map["replaygain_album_peak"].toString());
+        }
+    }
+
+    if (img) {
+        if (map.contains("COVER ART (FRONT)")) {
+            const TagLib::ByteVector nullStringTerminator(1, 0);
+
+            TagLib::ByteVector item = map["COVER ART (FRONT)"].value();
+            int pos = item.find(nullStringTerminator);   // Skip the filename
+
+            if (++pos > 0) {
+                const TagLib::ByteVector &bytes=item.mid(pos);
+                QByteArray data(bytes.data(), bytes.size());
+                img->loadFromData(data);
+            }
         }
     }
 }
@@ -645,9 +660,30 @@ static void readVorbisCommentTags(TagLib::Ogg::XiphComment *tag, Song *song, Rep
 
     if (img) {
         TagLib::Ogg::FieldListMap map = tag->fieldListMap();
-        // Ogg lacks a definitive standard for embedding cover art, but it seems
-        // b64 encoding a field called COVERART is the general convention
-        if (map.contains("COVERART")) {
+        #if (TAGLIB_MAJOR_VERSION > 1) || (TAGLIB_MAJOR_VERSION == 1 && TAGLIB_MINOR_VERSION >= 7)
+        // METADATA_BLOCK_PICTURE is the Ogg standard way of encoding a covers.
+        // https://wiki.xiph.org/index.php/VorbisComment#Cover_art
+        if (map.contains("METADATA_BLOCK_PICTURE")) {
+            TagLib::StringList block=map["METADATA_BLOCK_PICTURE"];
+            if (!block.isEmpty()) {
+                TagLib::StringList::ConstIterator i = block.begin();
+                TagLib::StringList::ConstIterator end = block.end();
+
+                for (; i != end; ++i ) {
+                    QByteArray data(QByteArray::fromBase64(i->to8Bit().c_str()));
+                    TagLib::ByteVector bytes(data.data(), data.size());
+                    TagLib::FLAC::Picture pic;
+
+                    if (pic.parse(bytes)) {
+                        img->loadFromData(QByteArray(pic.data().data(), pic.data().size()));
+                    }
+                }
+            }
+        }
+        #endif
+
+        // COVERART is an older (now deprecated) way of storing covers...
+        if (img->isNull() && map.contains("COVERART")) {
             QByteArray data=map["COVERART"].toString().toCString();
             img->loadFromData(QByteArray::fromBase64(data));
             if (img->isNull()) {
@@ -959,7 +995,7 @@ static void readTags(const TagLib::FileRef fileref, Song *song, ReplayGain *rg, 
         if (file->ID3v2Tag() && !file->ID3v2Tag()->isEmpty()) {
             readID3v2Tags(file->ID3v2Tag(), song, rg, img, lyrics);
         } else if (file->APETag()) {
-            readAPETags(file->APETag(), song, rg);
+            readAPETags(file->APETag(), song, rg, img);
 //         } else if (file->ID3v1Tag()) {
 //             readID3v1Tags(fileref, song, rg);
         }
@@ -1003,7 +1039,7 @@ static void readTags(const TagLib::FileRef fileref, Song *song, ReplayGain *rg, 
     #endif
     } else if (TagLib::MPC::File *file = dynamic_cast< TagLib::MPC::File * >(fileref.file())) {
         if (file->APETag()) {
-            readAPETags(file->APETag(), song, rg);
+            readAPETags(file->APETag(), song, rg, img);
 //         } else if (file->ID3v1Tag()) {
 //             readID3v1Tags(fileref, song, rg);
         }
@@ -1030,7 +1066,7 @@ static void readTags(const TagLib::FileRef fileref, Song *song, ReplayGain *rg, 
         }
     } else if (TagLib::WavPack::File *file = dynamic_cast< TagLib::WavPack::File * >(fileref.file())) {
         if (file->APETag()) {
-            readAPETags(file->APETag(), song, rg);
+            readAPETags(file->APETag(), song, rg, img);
 //         } else if (file->ID3v1Tag()) {
 //             readID3v1Tags(fileref, song, rg);
         }

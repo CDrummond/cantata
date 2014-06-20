@@ -166,6 +166,8 @@
 104. Add option to hide corner cover.
 105. Add option to hide stop button.
 106. Add a Url label to exit full screen.
+107. Use METADATA_BLOCK_PICTURE to extract covers from Vorbis comments, and
+     "COVER ART (FRONT)" for APE tags.
 
 1.3.4
 -----

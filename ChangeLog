@@ -9,7 +9,7 @@
   5. Use smaller font for sidebar.
   6. Make cover-widget more stylized and smaller.
   7. Move cover-widget next to song details.
-  8. Slighly larger play/pause button.
+  8. Slightly larger play/pause button.
   9. Move position slider in-between controls.
  10. Use system libebur128 if found.
  11. Use smaller font for second line of current song details.
@@ -57,11 +57,11 @@
  35. Save scaled covers as PNG files.
  36. Use Q_GLOBAL_STATIC for Qt4.8, and Qt>=5.1 Qt-only builds.
  37. Show music folder location in device properties dialog when called from
-     copy/delete dialog - just dont allow setting to be changed.
+     copy/delete dialog - just don't allow setting to be changed.
  38. Remove artist image support for online-services.
  39. Update context-view when artist, or album, image is updated.
  40. When current song is from an online-service (Jamendo, Magnatune, etc) then
-     only show cover and tite in context view. No attempt is made to get artist,
+     only show cover and title in context view. No attempt is made to get artist,
      album, or song information - as these are likely to fail anyway.
  41. Use an external-helper app to read/write tags - to isolate Cantata from
      TagLib crashes.
@@ -92,11 +92,11 @@
  56. Add more sort options to albums view.
  57. Fix crash when changing view mode whilst search is active.
  58. Add a 'touch friendly' setting - toolbuttons are made wider, view actions
-     always visible (semi-transparent in list/tree), and views are 'flickable'
+     always visible (semi-transparent in list/tree), and views are 'flick-able'
  59. Use a toolbutton for listview header and back action.
  60. Add 'List' to playqueue view types.
  61. Add 'Locate In Library' to search page.
- 62. Remove 'Go Back' from lsitview context menu.
+ 62. Remove 'Go Back' from listview context menu.
  63. Hide icons in shortcut dialog, and in actions used in menus, if
      Qt::AA_DontShowIconsInMenus is set. This seems to be the only way to force
      Unity to not show icons in menus of Qt apps. (There appears to be a bug in
@@ -116,7 +116,7 @@
      this tag in order for this to function.
  72. Search for streams via dirble.
  73. Center images and headers in context view.
- 74. Dont package stream providers with Cantata - add a dialog to download from
+ 74. Don't package stream providers with Cantata - add a dialog to download from
      Google Drive.
  75. Fix 'duplicate' albums being created if flac (or other) + cue file is used,
      and the music file does not contain metadata.
@@ -125,7 +125,7 @@
  78. Build as a Qt-only app by default. Pass -DENABLE_KDE=ON to create KDE
      build.
  79. Scrobbling support.
- 80. Install podcast directries file to $install rather than embedding.
+ 80. Install podcast directories file to $install rather than embedding.
  81. cantata-dynamic perl script now uses MPD's client-to-client messages for
      control. Therefore, MPD>=0.17 is required.
  82. Remove 'Stop dynamizer on exit' option. Stop dynamzer if 'Stop playback on
@@ -151,18 +151,18 @@
  96. 25% larger items in playqueue. Incrases covers from 32px to 40px
  97. Fix replay-gain scanner if file name, or path, contains non-latin1
      characters.
- 98. Instal Ubuntu mono sys-tray icons to
+ 98. Install Ubuntu mono sys-tray icons to
      $prefix/share/icons/ubuntu-mono-dark/apps/22/cantata-panel.svg and
      $prefix/share/icons/ubuntu-mono-light/apps/22/cantata-panel.svg.
      But only if compiled for Ubuntu, or -DINSTALL_UBUNTU_ICONS=ON is passed to
      cmake.
  99. Hide system-tray option in Qt builds if system tray is not available.
-100. In non Dbus Qt builds, if notificaitons is checked ensure that sys tray is
+100. In non Dbus Qt builds, if notifications is checked ensure that sys tray is
      also checkedd. Conversly if sys tray is unchecked, uncheck notifications.
 101. Add option to use libVLC for MPD HTTP stream playback - see INSTAL file
      for details.
 102. Also show first IP address of interface in HTTP server settings page.
-103. Fix progress update when saving Jameno, etc, listing XML.
+103. Fix progress update when saving Jamendo, etc, listing XML.
 104. Add option to hide corner cover.
 105. Add option to hide stop button.
 106. Add a Url label to exit full screen.
@@ -346,7 +346,7 @@
 38. Call QApplication::alert() when showing errors - this causes taskbar entry
     to be marked.
 39. Read lyrics from LYRICS tag for FLAC, Opus, Vorbis, and Speex files.
-40. Be consistent with other players, and dont show disc number in list.
+40. Be consistent with other players, and don't show disc number in list.
 41. As per Amarok, split albums into discs in grouped playqueue view.
 42. Fix some Mopidy 0.18 issues; cover and lyrics retrieval, folders view
     loading.

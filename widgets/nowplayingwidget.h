@@ -43,7 +43,6 @@ public:
 
     void showEvent(QShowEvent *e);
     void updateStyleSheet();
-    void paintEvent(QPaintEvent *e);
     void mouseMoveEvent(QMouseEvent *e);
     void wheelEvent(QWheelEvent *ev);
     void setRange(int min, int max);
@@ -52,7 +51,6 @@ Q_SIGNALS:
     void positionSet();
 
 private:
-    bool isActive;
     bool shown;
 };
 

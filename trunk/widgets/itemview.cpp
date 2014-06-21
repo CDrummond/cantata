@@ -94,7 +94,8 @@ bool KeyEventHandler::eventFilter(QObject *obj, QEvent *event)
             QKeyEvent *keyEvent=static_cast<QKeyEvent *>(event);
             if (interceptBackspace && Qt::Key_Backspace==keyEvent->key() && Qt::NoModifier==keyEvent->modifiers()) {
                 emit escPressed();
-            } else {
+            } else if (Qt::Key_Tab!=keyEvent->key() && Qt::Key_Enter!=keyEvent->key() && Qt::Key_Return!=keyEvent->key() &&
+                       Qt::Key_Escape!=keyEvent->key() && Qt::Key_Backspace!=keyEvent->key()) {
                 pressedKey=keyEvent->key();
             }
         }

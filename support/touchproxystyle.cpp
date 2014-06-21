@@ -27,6 +27,7 @@
 #include "flickcharm.h"
 #include <QSpinBox>
 #include <QComboBox>
+#include <QScrollBar>
 #include <QPainter>
 #include <QStyleOptionSpinBox>
 #include <QAbstractScrollArea>
@@ -34,6 +35,26 @@
 #include <QApplication>
 
 double TouchProxyStyle::constScaleFactor=1.4;
+
+static const char * constOnCombo="on-combo";
+
+static bool isOnCombo(const QWidget *w)
+{
+    return w && (qobject_cast<const QComboBox *>(w) || isOnCombo(w->parentWidget()));
+}
+
+static QPainterPath buildPath(const QRectF &r, double radius)
+{
+    QPainterPath path;
+    double diameter(radius*2);
+
+    path.moveTo(r.x()+r.width(), r.y()+r.height()-radius);
+    path.arcTo(r.x()+r.width()-diameter, r.y(), diameter, diameter, 0, 90);
+    path.arcTo(r.x(), r.y(), diameter, diameter, 90, 90);
+    path.arcTo(r.x(), r.y()+r.height()-diameter, diameter, diameter, 180, 90);
+    path.arcTo(r.x()+r.width()-diameter, r.y()+r.height()-diameter, diameter, diameter, 270, 90);
+    return path;
+}
 
 static void drawSpinButton(QPainter *painter, const QRect &r, const QColor &col, bool isPlus)
 {
@@ -148,11 +169,21 @@ public:
     QComboBox *combo;
 };
 
-TouchProxyStyle::TouchProxyStyle(bool touchSpin)
+TouchProxyStyle::TouchProxyStyle(bool touchSpin, bool gtkOverlayStyleScrollbar)
     : ProxyStyle()
     , touchStyleSpin(touchSpin)
+    , sbarPlainViewWidth(-1)
 {
     spinButtonRatio=touchSpin && Utils::touchFriendly() ? 1.5 : 1.25;
+    if (Utils::touchFriendly()) {
+        sbarType=SB_Thin;
+        sbarPlainViewWidth=Utils::isHighDpi() ? 4 : 2;
+    } else if(gtkOverlayStyleScrollbar) {
+        sbarType=SB_Gtk;
+        sbarPlainViewWidth=QApplication::fontMetrics().height()/1.75;
+    } else {
+        sbarType=SB_Standard;
+    }
 }
 
 TouchProxyStyle::~TouchProxyStyle()
@@ -162,6 +193,19 @@ TouchProxyStyle::~TouchProxyStyle()
 QSize TouchProxyStyle::sizeFromContents(ContentsType type, const QStyleOption *option,  const QSize &size, const QWidget *widget) const
 {
     QSize sz=baseStyle()->sizeFromContents(type, option, size, widget);
+
+    if (SB_Standard!=sbarType && CT_ScrollBar==type) {
+        if (const QStyleOptionSlider *sb = qstyleoption_cast<const QStyleOptionSlider *>(option)) {
+            int extent(pixelMetric(PM_ScrollBarExtent, option, widget)),
+                sliderMin(pixelMetric(PM_ScrollBarSliderMin, option, widget));
+
+            if (sb->orientation == Qt::Horizontal) {
+                sz = QSize(sliderMin, extent);
+            } else {
+                sz = QSize(extent, sliderMin);
+            }
+        }
+    }
 
     if (touchStyleSpin && CT_SpinBox==type) {
         if (const QStyleOptionSpinBox *spinBox = qstyleoption_cast<const QStyleOptionSpinBox *>(option)) {
@@ -208,8 +252,88 @@ QSize TouchProxyStyle::sizeFromContents(ContentsType type, const QStyleOption *o
     return sz;
 }
 
+int TouchProxyStyle::styleHint(StyleHint hint, const QStyleOption *option, const QWidget *widget, QStyleHintReturn *returnData) const
+{
+    if (SH_ScrollView_FrameOnlyAroundContents==hint && SB_Standard!=sbarType) {
+        return false;
+    }
+
+    return baseStyle()->styleHint(hint, option, widget, returnData);
+}
+
+int TouchProxyStyle::pixelMetric(PixelMetric metric, const QStyleOption *option, const QWidget *widget) const
+{
+    if (SB_Standard!=sbarType && PM_ScrollBarExtent==metric) {
+        return sbarPlainViewWidth;
+    }
+    return baseStyle()->pixelMetric(metric, option, widget);
+}
+
 QRect TouchProxyStyle::subControlRect(ComplexControl control, const QStyleOptionComplex *option, SubControl subControl, const QWidget *widget) const
 {
+    if (SB_Standard!=sbarType && CC_ScrollBar==control) {
+        if (const QStyleOptionSlider *sb = qstyleoption_cast<const QStyleOptionSlider *>(option))  {
+            QRect ret;
+            bool  horizontal(Qt::Horizontal==sb->orientation);
+            int   sbextent(pixelMetric(PM_ScrollBarExtent, sb, widget)),
+                  sliderMaxLength(horizontal ? sb->rect.width() : sb->rect.height()),
+                  sliderMinLength(pixelMetric(PM_ScrollBarSliderMin, sb, widget)),
+                  sliderLength;
+
+            if (sb->maximum != sb->minimum) {
+                uint valueRange = sb->maximum - sb->minimum;
+                sliderLength = (sb->pageStep * sliderMaxLength) / (valueRange + sb->pageStep);
+
+                if (sliderLength < sliderMinLength) {
+                    sliderLength = sliderMinLength;
+                }
+                if (sliderLength > sliderMaxLength) {
+                    sliderLength = sliderMaxLength;
+                }
+            } else {
+                sliderLength = sliderMaxLength;
+            }
+
+            int sliderstart(sliderPositionFromValue(sb->minimum, sb->maximum, sb->sliderPosition, sliderMaxLength - sliderLength, sb->upsideDown));
+
+            // Subcontrols
+            switch(subControl)
+            {
+            case SC_ScrollBarSubLine:
+            case SC_ScrollBarAddLine:
+                return QRect();
+            case SC_ScrollBarSubPage:
+                if (horizontal) {
+                    ret.setRect(0, 0, sliderstart, sbextent);
+                } else {
+                    ret.setRect(0, 0, sbextent, sliderstart);
+                }
+                break;
+            case SC_ScrollBarAddPage:
+                if (horizontal) {
+                    ret.setRect(sliderstart + sliderLength, 0, sliderMaxLength - sliderstart - sliderLength, sbextent);
+                } else {
+                    ret.setRect(0, sliderstart + sliderLength, sbextent, sliderMaxLength - sliderstart - sliderLength);
+                }
+                break;
+            case SC_ScrollBarGroove:
+                ret=QRect(0, 0, sb->rect.width(), sb->rect.height());
+                break;
+            case SC_ScrollBarSlider:
+                if (horizontal) {
+                    ret=QRect(sliderstart, 0, sliderLength, sbextent);
+                } else {
+                    ret=QRect(0, sliderstart, sbextent, sliderLength);
+                }
+                break;
+            default:
+                ret = baseStyle()->subControlRect(control, option, subControl, widget);
+                break;
+            }
+            return visualRect(sb->direction/*Qt::LeftToRight*/, sb->rect, ret);
+        }
+    }
+
     if (touchStyleSpin && CC_SpinBox==control) {
         if (const QStyleOptionSpinBox *spinBox = qstyleoption_cast<const QStyleOptionSpinBox *>(option)) {
             if (QAbstractSpinBox::NoButtons!=spinBox->buttonSymbols) {
@@ -243,6 +367,47 @@ QRect TouchProxyStyle::subControlRect(ComplexControl control, const QStyleOption
 
 void TouchProxyStyle::drawComplexControl(ComplexControl control, const QStyleOptionComplex *option, QPainter *painter, const QWidget *widget) const
 {
+    if (SB_Standard!=sbarType && CC_ScrollBar==control) {
+        if (const QStyleOptionSlider *sb = qstyleoption_cast<const QStyleOptionSlider *>(option)) {
+            QRect r=option->rect;
+            QRect slider=subControlRect(control, option, SC_ScrollBarSlider, widget);
+            painter->save();
+            if (widget && widget->property(constOnCombo).toBool()) {
+                painter->fillRect(r, QApplication::palette().color(QPalette::Background)); // option->palette.background());
+            } else if (!widget || widget->testAttribute(Qt::WA_OpaquePaintEvent)) {
+                if (option->palette.base().color()==Qt::transparent) {
+                    painter->fillRect(r, QApplication::palette().color(QPalette::Base));
+                } else {
+                    painter->fillRect(r, option->palette.base());
+                }
+            }
+
+            if (slider.isValid()) {
+                bool inactive=!(sb->activeSubControls&SC_ScrollBarSlider && (option->state&State_MouseOver || option->state&State_Sunken));
+                int adjust=SB_Thin==sbarType ? 0 : inactive ? 3 : 1;
+                painter->setRenderHint(QPainter::Antialiasing, true);
+                if (Qt::Horizontal==sb->orientation) {
+                    slider.adjust(1, adjust, -1, -adjust);
+                } else {
+                    slider.adjust(adjust, 1, -adjust, -1);
+                }
+                int dimension=(Qt::Horizontal==sb->orientation ? slider.height() : slider.width());
+                QPainterPath path=buildPath(QRectF(slider.x()+0.5, slider.y()+0.5, slider.width()-1, slider.height()-1),
+                                            dimension>6 ? (dimension/4.0) : (dimension/8.0));
+                QColor col(option->palette.highlight().color());
+                if (!(option->state&State_Active)) {
+                    col=col.darker(115);
+                }
+                painter->fillPath(path, col);
+                painter->setPen(col);
+                painter->drawPath(path);
+            }
+
+            painter->restore();
+            return;
+        }
+    }
+
     if (touchStyleSpin && CC_SpinBox==control) {
         if (const QStyleOptionSpinBox *spinBox = qstyleoption_cast<const QStyleOptionSpinBox *>(option)) {
             if (QAbstractSpinBox::NoButtons!=spinBox->buttonSymbols) {
@@ -298,8 +463,35 @@ void TouchProxyStyle::drawComplexControl(ComplexControl control, const QStyleOpt
     baseStyle()->drawComplexControl(control, option, painter, widget);
 }
 
+void TouchProxyStyle::drawPrimitive(PrimitiveElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget) const
+{
+    if (PE_PanelScrollAreaCorner==element && SB_Thin==sbarType && option) {
+        painter->fillRect(option->rect, option->palette.brush(QPalette::Base));
+    } else {
+        baseStyle()->drawPrimitive(element, option, painter, widget);
+    }
+}
+
 void TouchProxyStyle::polish(QWidget *widget)
 {
+    if (SB_Standard!=sbarType) {
+        if (qobject_cast<QScrollBar *>(widget)) {
+            if (isOnCombo(widget)) {
+                widget->setProperty(constOnCombo, true);
+            }
+        } else if (qobject_cast<QAbstractScrollArea *>(widget) && widget->inherits("QComboBoxListView")) {
+            QAbstractScrollArea *sa=static_cast<QAbstractScrollArea *>(widget);
+            QWidget *sb=sa->horizontalScrollBar();
+            if (sb) {
+                sb->setProperty(constOnCombo, true);
+            }
+            sb=sa->verticalScrollBar();
+            if (sb) {
+                sb->setProperty(constOnCombo, true);
+            }
+        }
+    }
+
     if (Utils::touchFriendly()) {
         if (qobject_cast<QAbstractScrollArea *>(widget)) {
             FlickCharm::self()->activateOn(widget);

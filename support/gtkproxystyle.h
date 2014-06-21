@@ -33,18 +33,9 @@ class ShortcutHandler;
 class GtkProxyStyle : public TouchProxyStyle
 {
 public:
-    enum ScrollbarType {
-        SB_Standard,
-        SB_Thin
-    };
-
-    GtkProxyStyle(ScrollbarType sb, bool styleSpin, const QMap<QString, QString> &c, bool modView);
+    GtkProxyStyle(bool thinSb, bool styleSpin, const QMap<QString, QString> &c, bool modView);
     ~GtkProxyStyle();
-    QSize sizeFromContents(ContentsType type, const QStyleOption *option,  const QSize &size, const QWidget *widget) const;
     int styleHint(StyleHint hint, const QStyleOption *option, const QWidget *widget, QStyleHintReturn *returnData) const;
-    int pixelMetric(PixelMetric metric, const QStyleOption *option, const QWidget *widget) const;
-    QRect subControlRect(ComplexControl control, const QStyleOptionComplex *option, SubControl subControl, const QWidget *widget) const;
-    void drawComplexControl(ComplexControl control, const QStyleOptionComplex *option, QPainter *painter, const QWidget *widget) const;
     void drawPrimitive(PrimitiveElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget) const;
 
     void polish(QWidget *widget);
@@ -55,8 +46,6 @@ public:
 
 private:
     ShortcutHandler *shortcutHander;
-    ScrollbarType sbarType;
-    int sbarPlainViewWidth;
     bool modViewFrame;
     QMap<QString, QString> css;
 };

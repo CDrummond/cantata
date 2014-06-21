@@ -248,7 +248,7 @@ void GtkStyle::applyTheme(QWidget *widget)
     #else
     if (widget && isActive()) {
         QString theme=GtkStyle::themeName().toLower();
-        GtkProxyStyle::ScrollbarType sbType=GtkProxyStyle::SB_Standard;
+        bool thinSbar=false;
         bool touchStyleSpin=false;
         bool modViewFrame=false;
         QMap<QString, QString> css;
@@ -269,7 +269,7 @@ void GtkStyle::applyTheme(QWidget *widget)
                             wm->registerWidgetAndChildren(widget);
                         }
                         if (line.contains("scrollbar:overlay") || line.contains("scrollbar:thin")) {
-                            sbType=GtkProxyStyle::SB_Thin;
+                            thinSbar=true;
                         }
                         touchStyleSpin=line.contains("spinbox:touch");
                         modViewFrame=line.contains("modview:true");
@@ -289,7 +289,7 @@ void GtkStyle::applyTheme(QWidget *widget)
             }
         }
         if (!proxyStyle) {
-            proxyStyle=new GtkProxyStyle(sbType, touchStyleSpin || Utils::touchFriendly(), css, modViewFrame && !Utils::touchFriendly());
+            proxyStyle=new GtkProxyStyle(thinSbar, touchStyleSpin || Utils::touchFriendly(), css, modViewFrame && !Utils::touchFriendly());
         }
     }
     #endif

@@ -72,10 +72,10 @@ void ComboBox::showPopup()
         }
     }
     QComboBox::showPopup();
-    if (Utils::touchFriendly()) {
-        view()->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-        view()->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    }
+//    if (Utils::touchFriendly()) {
+//        view()->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+//        view()->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+//    }
 
     if (GtkStyle::isActive() && parentWidget() && view()->parentWidget() && count()>maxPopupItemCount) {
         // Also, if the size of the popup is more than required for 32 items, then

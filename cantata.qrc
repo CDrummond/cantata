@@ -47,12 +47,12 @@
 <file alias="tunein">streams/icons/tunein.svg</file>
 <file alias="dirble">streams/icons/dirble.svg</file>
 
-<file alias="va16.png">icons/hi16-action-cantata-view-media-artist-various.png</file>
-<file alias="va22.png">icons/hi22-action-cantata-view-media-artist-various.png</file>
-<file alias="va32.png">icons/hi32-action-cantata-view-media-artist-various.png</file>
-<file alias="va48.png">icons/hi48-action-cantata-view-media-artist-various.png</file>
-<file alias="va64.png">icons/hi64-action-cantata-view-media-artist-various.png</file>
-<file alias="va128.png">icons/hi128-action-cantata-view-media-artist-various.png</file>
+<file alias="va16.png">icons/view-media-artist-various16.png</file>
+<file alias="va22.png">icons/view-media-artist-various22.png</file>
+<file alias="va32.png">icons/view-media-artist-various32.png</file>
+<file alias="va48.png">icons/view-media-artist-various48.png</file>
+<file alias="va64.png">icons/view-media-artist-various64.png</file>
+<file alias="va128.png">icons/view-media-artist-various128.png</file>
 <file alias="va.svg">icons/view-media-artist-various.svg</file>
 <file alias="artist16.png">icons/view-media-artist16.png</file>
 <file alias="artist22.png">icons/view-media-artist22.png</file>
@@ -61,18 +61,18 @@
 <file alias="artist64.png">icons/view-media-artist64.png</file>
 <file alias="artist128.png">icons/view-media-artist128.png</file>
 <file alias="artist.svg">icons/view-media-artist.svg</file>
-<file alias="lib16.png">icons/hi16-action-cantata-view-media-library.png</file>
-<file alias="lib22.png">icons/hi22-action-cantata-view-media-library.png</file>
-<file alias="lib32.png">icons/hi32-action-cantata-view-media-library.png</file>
-<file alias="lib48.png">icons/hi48-action-cantata-view-media-library.png</file>
-<file alias="radio16.png">icons/hi16-action-cantata-view-radiostream.png</file>
-<file alias="radio22.png">icons/hi22-action-cantata-view-radiostream.png</file>
-<file alias="radio32.png">icons/hi32-action-cantata-view-radiostream.png</file>
-<file alias="radio48.png">icons/hi48-action-cantata-view-radiostream.png</file>
-<file alias="addradio16.png">icons/hi16-action-cantata-radiostream-add.png</file>
-<file alias="addradio22.png">icons/hi22-action-cantata-radiostream-add.png</file>
-<file alias="addradio32.png">icons/hi32-action-cantata-radiostream-add.png</file>
-<file alias="addradio48.png">icons/hi48-action-cantata-radiostream-add.png</file>
+<file alias="lib16.png">icons/view-media-library16.png</file>
+<file alias="lib22.png">icons/view-media-library22.png</file>
+<file alias="lib32.png">icons/view-media-library32.png</file>
+<file alias="lib48.png">icons/view-media-library48.png</file>
+<file alias="radio16.png">icons/view-radiostream16.png</file>
+<file alias="radio22.png">icons/view-radiostream22.png</file>
+<file alias="radio32.png">icons/view-radiostream32.png</file>
+<file alias="radio48.png">icons/view-radiostream48.png</file>
+<file alias="addradio16.png">icons/radiostream-add16.png</file>
+<file alias="addradio22.png">icons/radiostream-add22.png</file>
+<file alias="addradio32.png">icons/radiostream-add32.png</file>
+<file alias="addradio48.png">icons/radiostream-add48.png</file>
 
 </qresource>
 </RCC>

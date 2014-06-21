@@ -30,9 +30,8 @@
 #include <QApplication>
 #include <QAbstractItemView>
 
-void BasicItemDelegate::drawLine(QPainter *p, const QRect &r, const QColor &color, bool fadeStart, bool fadeEnd)
+void BasicItemDelegate::drawLine(QPainter *p, const QRect &r, const QColor &color, bool fadeStart, bool fadeEnd, double alpha)
 {
-    static const double constAlpha=0.1;
     QColor col(color);
     QLinearGradient grad(r.bottomLeft(), r.bottomRight());
 
@@ -42,16 +41,16 @@ void BasicItemDelegate::drawLine(QPainter *p, const QRect &r, const QColor &colo
             fadeSize=r.width()/3.0;
         }
         double fadePos=fadeSize/r.width();
-        col.setAlphaF(fadeStart ? 0.0 : constAlpha);
+        col.setAlphaF(fadeStart ? 0.0 : alpha);
         grad.setColorAt(0, col);
-        col.setAlphaF(constAlpha);
+        col.setAlphaF(alpha);
         grad.setColorAt(fadePos, col);
         grad.setColorAt(1.0-fadePos, col);
-        col.setAlphaF(fadeEnd ? 0.0 : constAlpha);
+        col.setAlphaF(fadeEnd ? 0.0 : alpha);
         grad.setColorAt(1, col);
         p->setPen(QPen(grad, 1));
     } else {
-        col.setAlphaF(constAlpha);
+        col.setAlphaF(alpha);
         p->setPen(QPen(col, 1));
     }
     p->drawLine(r.bottomLeft(), r.bottomRight());

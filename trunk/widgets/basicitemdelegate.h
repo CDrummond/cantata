@@ -29,7 +29,7 @@
 class BasicItemDelegate : public QStyledItemDelegate
 {
 public:
-    static void drawLine(QPainter *p, const QRect &r, const QColor &color, bool fadeStart=true, bool fadeEnd=true);
+    static void drawLine(QPainter *p, const QRect &r, const QColor &color, bool fadeStart=true, bool fadeEnd=true, double alpha=0.1);
     BasicItemDelegate(QObject *p);
     virtual ~BasicItemDelegate();
     QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const;

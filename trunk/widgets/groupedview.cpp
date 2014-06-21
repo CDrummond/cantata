@@ -215,34 +215,6 @@ public:
         return QStyledItemDelegate::sizeHint(option, index);
     }
 
-    static void drawFadedLine(QPainter *p, const QRect &r, const QColor &col)
-    {
-        QPoint start(r.x(), r.y());
-        QPoint end(r.x()+r.width()-1, r.y());
-        QLinearGradient grad(start, end);
-        QColor c(col);
-        c.setAlphaF(0.45);
-        QColor fade(c);
-        const int fadeSize=64;
-        double fadePos=1.0-((r.width()-fadeSize)/(r.width()*1.0));
-        bool rtl=QApplication::isRightToLeft();
-
-        fade.setAlphaF(0.0);
-        grad.setColorAt(0, rtl ? fade : c);
-        if(fadePos>=0 && fadePos<=1.0) {
-            if (rtl) {
-                grad.setColorAt(fadePos, c);
-            } else {
-                grad.setColorAt(1.0-fadePos, c);
-            }
-        }
-        grad.setColorAt(1, rtl ? c : fade);
-        p->save();
-        p->setPen(QPen(QBrush(grad), 1));
-        p->drawLine(start, end);
-        p->restore();
-    }
-
     static QPainterPath buildPath(const QRectF &r, double radius)
     {
         QPainterPath path;
@@ -370,12 +342,9 @@ public:
         QRect r(option.rect.adjusted(constBorder+4, constBorder, -(constBorder+4), -constBorder));
 
         if (state && GroupedView::State_StopAfterTrack!=state) {
-            QRectF border;
-            if (title.isEmpty()) {
-                border=QRectF(option.rect.x()+1.5, option.rect.y()+1.5, option.rect.width()-3, option.rect.height()-3);
-            } else {
-                int adjust=(option.rect.height()/2)-1;
-                border=QRectF(option.rect.x()+1.5, option.rect.y()+adjust+1.5, option.rect.width()-3, (option.rect.height()-adjust)-3);
+            QRectF border(option.rect.x()+1.5, option.rect.y()+1.5, option.rect.width()-3, option.rect.height()-3);
+            if (!title.isEmpty()) {
+                border.adjust(0, textHeight+constBorder, 0, 0);
             }
             QLinearGradient g(border.topLeft(), border.bottomLeft());
             QColor gradCol(QApplication::palette().color(QPalette::Highlight));
@@ -424,7 +393,7 @@ public:
             if (!totalDuration.isEmpty()) {
                 painter->drawText(duratioRect, totalDuration, QTextOption(Qt::AlignVCenter|Qt::AlignRight));
             }
-            drawFadedLine(painter, r.adjusted(0, (r.height()/2)-1, 0, 0), col);
+            BasicItemDelegate::drawLine(painter, r.adjusted(0, 0, 0, -r.height()/2), col, rtl, !rtl, 0.45);
             r.adjust(0, textHeight+constBorder, 0, 0);
             r=QRect(r.x(), r.y()+r.height()-(textHeight+1), r.width(), textHeight);
             painter->setFont(f);

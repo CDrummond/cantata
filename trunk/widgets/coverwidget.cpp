@@ -31,11 +31,14 @@
 #include <QPainter>
 #include <QLinearGradient>
 #include <QPen>
+#include <QMouseEvent>
+#include <QApplication>
 
 static const int constBorder=1;
 
 CoverWidget::CoverWidget(QWidget *parent)
     : QLabel(parent)
+    , pressed(false)
     , pix(0)
 {
     setStyleSheet(QString("QLabel {border: %1px solid transparent} QToolTip {background-color:#111111; color: #DDDDDD}").arg(constBorder));
@@ -96,6 +99,17 @@ bool CoverWidget::event(QEvent *event)
         setToolTip(toolTip);
         break;
     }
+    case QEvent::MouseButtonPress:
+        if (Qt::LeftButton==static_cast<QMouseEvent *>(event)->button() && Qt::NoModifier==static_cast<QMouseEvent *>(event)->modifiers()) {
+            pressed=true;
+        }
+        break;
+    case QEvent::MouseButtonRelease:
+        if (pressed && Qt::LeftButton==static_cast<QMouseEvent *>(event)->button() && !QApplication::overrideCursor()) {
+            emit clicked();
+        }
+        pressed=false;
+        break;
     default:
         break;
     }

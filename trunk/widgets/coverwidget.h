@@ -41,10 +41,14 @@ public:
     bool event(QEvent *event);
     void paintEvent(QPaintEvent *);
 
+Q_SIGNALS:
+    void clicked();
+
 private Q_SLOTS:
     void coverImage(const QImage &img);
 
 private:
+    bool pressed;
     QPixmap *pix;
 };
 

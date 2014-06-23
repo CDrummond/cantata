@@ -700,6 +700,7 @@ following parameters (shown here with the default values):
     mpdHost=localhost
     mpdPort=6600
     mpdPassword=
+    httpPort=0
 
 'pidFile' When started, the script will store its PID within the file
 configured here. This is then used to detect if the script is running, etc.
@@ -713,6 +714,9 @@ the user the script is run as should have read/write permissions to this file.
 
 'mpdHost', 'mpdPort', and 'mpdPassword' are the connection details of the MPD
 server.
+
+'httpPort' if this is set to non-zero, then the script will server up a *very*
+simple HTTP control page - allowing playlists to be started and stopped.
 
 
 Installation

@@ -28,6 +28,8 @@ use File::Basename;
 use Cwd 'abs_path';
 use Socket;
 use IO::Socket;
+use threads;
+use threads::shared;
 use URI::Escape;
 use Encode;
 use Socket qw(:all);
@@ -40,13 +42,14 @@ $testMode=0;
 $PLAY_QUEUE_DESIRED_LENGTH=10;
 $PLAY_QUEUE_CURRENT_POS=5;
 
-my $mpdHost ="localhost";
-my $mpdPort ="6600";
-my $mpdPasswd ="";
-my $readChannel = "cantata-dynamic-in";
+my $mpdHost : shared = "localhost";
+my $mpdPort : shared = "6600";
+my $mpdPasswd : shared ="";
+my $readChannel : shared = "cantata-dynamic-in";
 my $writeChannel = "cantata-dynamic-out";
-my $sock;
+my $sock; # This is NOT shared between HTTP thread and standard thread...
 my $currentStatusTime = time;
+my $httpPort : shared = 0;
 
 # Read MPDs host, port, and password details from env - if set
 sub readConnectionDetails() {
@@ -89,6 +92,7 @@ sub readReply() {
 
 # Connect to MPD
 sub connectToMpd() {
+    if ($testMode==1) { print "Connecting to MPD ${mpdHost}:${mpdPort}\n"; }
     my $connDetails="";
     if ($mpdHost=~ m/^(\/)/) {
         $sock = new IO::Socket::UNIX(Peer => $mpdHost, Type => 0);
@@ -100,6 +104,7 @@ sub connectToMpd() {
     if ($sock && $sock->connected()) {
         if (&readReply($sock)) {
             if ($mpdPasswd) {
+                if ($testMode==1) { print "Send password\n"; }
                 $sock->send("password ${mpdPasswd} \n");
                 if (! &readReply($sock)) {
                     print "ERROR: Invalid password\n";
@@ -517,6 +522,9 @@ sub sendMessage() {
         }
     } else {
         my $clientId=shift;
+        if ($clientId eq "http") {
+            return;
+        }
         if ($clientId ne '') {
             &sendCommand("sendmessage ${writeChannel}-${clientId} \"${method}:${argument}\"");
         } else {
@@ -899,6 +907,8 @@ sub loadConfig() {
                         $mpdPasswd=$val;
                     } elsif ($key=~ m/^(pidFile)/) {
                         $pidFile=$val;
+                    } elsif ($key=~ m/^(httpPort)/) {
+                        $httpPort=$val;
                     }
                 }
             }
@@ -952,8 +962,12 @@ sub listAllRules() {
         }
     }
     closedir(D);
-    my $response=&encodeString(join('', @result));
-    &sendMessage($req, $response, $clientId);
+    if ($req eq "http") {
+        return @result;
+    } else {
+        my $response=&encodeString(join('', @result));
+        &sendMessage($req, $response, $clientId);
+    }
 }
 
 sub determineActiveRules() {
@@ -1154,11 +1168,172 @@ sub handleClientMessage() {
     }
 }
 
+#
+# HTTP interface...
+#
+
+sub sendCommandViaMpd() {
+    my $command = shift;
+    my $param = shift;
+    print "PAram:${param}\n";
+    $param = &encodeString($param);
+    print "Encoded:${param}\n";
+    &sendCommand("sendmessage ${readChannel} \"${command}:http:${param}:1\"");
+    sleep(1);
+}
+
+sub buildControlPage() {
+    my $body="<html><head><title>Dynamic Playlists</title></head><body><h2>Dynamic Playlists</h2>"
+             . "<p><i>Click on a playlist name to load</i></p>";
+
+    my @rules=&listAllRules("http", 0, 0);
+    my $active=&determineActiveRules("http");
+    $body = $body . "<p><ul>";
+    my $num=1;
+
+    foreach my $rule (@rules) {
+        $rule =~ s/FILENAME://;
+        $rule =~ s/.rules//;
+        $rule =~ s/\n//;
+        if ($rule=~ m/^(TIME:)/) {
+        } else {
+            $body = $body . "<li>";
+            if ($rule eq $active) {
+                $body = $body . "<b>";
+            }
+            $body = $body . "<form name=\"ruleForm". ${num} ."\" method=\"post\" action=\"/setActive?name=" . $rule . "&start=1\">"
+                            . "<a href=\"javascript: loadRule" .${num} ."()\">" .$rule ."</a></form>"
+                            . "<script type=\"text/javascript\">function loadRule" .${num} ."() {  document.ruleForm". ${num} .".submit(); }</script>";
+            if ($rule eq $active) {
+                $body = $body . "</b>";
+            }
+            $body = $body ."</li>";
+            $num=$num+1;
+        }
+    }
+    $body = $body . "</ul></p>";
+    $body = $body . "<br/><p><form method=post enctype=\"text/plain\" action=\"/stop\">"
+                  . "<input type=\"submit\" name=\"submit\" value=\"Stop Dynamizer\"></form></p>";
+    $body = $body . "</body></html>";
+    return $body;
+}
+
+sub writeToClient() {
+    my $client=shift;
+    my $message=shift;
+    my $addCrlf=shift;
+    if ($client->connected()) {
+        if (1==$addCrlf) {
+            print $client $message, Socket::CRLF;
+        } else {
+            print $client $message;
+        }
+    }
+}
+
+sub httpServer() {
+    my $server = new IO::Socket::INET(Proto => 'tcp', LocalPort => $httpPort, Listen => SOMAXCONN, Reuse => 1);
+    $server or die "ERROR: Unable to create HTTP socket (${httpPort}): $!";
+
+    print "Starting HTTP server on ${httpPort}\n";
+    while (my $client = $server->accept()) {
+        $client->autoflush(1);
+        my %request = ();
+        my %data;
+        local $/ = Socket::CRLF;
+        while (<$client>) {
+            chomp; # Main http request
+            if (/\s*(\w+)\s*([^\s]+)\s*HTTP\/(\d.\d)/) {
+                $request{METHOD} = uc $1;
+                $request{URL} = $2;
+                $request{HTTP_VERSION} = $3;
+            } # Standard headers
+            elsif (/:/) {
+                (my $type, my $val) = split /:/, $_, 2;
+                $type =~ s/^\s+//;
+                foreach ($type, $val) {
+                    s/^\s+//;
+                    s/\s+$//;
+                }
+                $request{lc $type} = $val;
+            } # POST data
+            elsif (/^$/) {
+                read($client, $request{CONTENT}, $request{'content-length'})
+                    if defined $request{'content-length'};
+                last;
+            }
+        }
+        local $response="";
+        local $responseType="text/plain";
+        $queryItems{statusTime}=0;
+
+        if ($request{URL} =~ /(.*)\?(.*)/) {
+            $request{URL} = $1;
+            $request{QUERY} = $2;
+            my @args=split("&", $request{QUERY});
+            for my $arg (@args) {
+                (my $type, my $val) = split /=/, $arg, 2;
+                $queryItems{$type}=$val;
+            }
+        }
+#             print "${request{METHOD}} URL:${request{URL}} QUERY:${request{QUERY}}\n";
+        if ($request{METHOD} eq 'GET') {
+            if ($request{URL} eq '/') {
+                $responseType="text/html";
+                $response = &buildControlPage();
+            } else {
+                $response="ERROR: Invalid URL";
+            }
+        } elsif ($request{METHOD} eq 'POST') {
+            if ($request{URL} eq '/setActive') {
+                my @args=split("&", $request{QUERY});
+                &sendCommandViaMpd("setActive", uri_unescape($queryItems{name}));
+                $response = &buildControlPage();
+            } elsif ($request{URL} eq '/stop') {
+                &sendCommandViaMpd("control", "stop");
+                $response = &buildControlPage();
+            }
+        } else {
+            $responseType="text/html";
+            $response = &buildControlPage();
+        }
+
+        if ($response eq "") {
+            &writeToClient($client, "HTTP/1.0 404 Not Found", 1);
+            &writeToClient($client, Socket::CRLF, 0);
+            &writeToClient($client, "<html><body>404 Not Found</body></html>", 0);
+        } elsif ($response =~ m/^ERROR/) {
+            &writeToClient($client, "HTTP/1.0 404 Not Found", 1);
+            &writeToClient($client, Socket::CRLF);
+            &writeToClient($client, "<html><body>${response}</body></html>", 0);
+        } elsif ($request{METHOD} eq 'POST') {
+            &writeToClient($client, "HTTP/1.0 201 Created", 1);
+            # Reload start page :-)
+            $response =  "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\">"
+                        . "<html><head><meta http-equiv=\"REFRESH\" content=\"0;url=http://" . $request{host} . "\"></head></body></html>";
+            &writeToClient($client, "Content-type: text/html", 1);
+            &writeToClient($client, Socket::CRLF);
+            &writeToClient($client, $response, 1);
+        } else {
+            &writeToClient($client, "HTTP/1.0 200 OK", 1);
+            &writeToClient($client, "Content-type: ${responseType}", 1);
+            &writeToClient($client, Socket::CRLF);
+            &writeToClient($client, $response);
+        }
+        close $client;
+    }
+}
+
 sub serverMode() {
     &loadConfig(shift);
-    &daemonize($pidFile);
+    if ($testMode != 1) {
+        &daemonize($pidFile);
+    }
     $isServerMode=1;
     $dynamicIsActive=0;
+    if ($httpPort>0) {
+        threads->create(\&httpServer);
+    }   
     &populatePlayQueue;
 }
 
@@ -1184,10 +1359,7 @@ if ($ARGV[0] eq "start") {
     &populatePlayQueue();
 } elsif ($ARGV[0] eq "testserver") {
     $testMode=1;
-    $isServerMode=1;
-    $dynamicIsActive=0;
-    &loadConfig($ARGV[1]);
-    &populatePlayQueue();
+    &serverMode($ARGV[1]);
 } else {
     print "Cantata MPD Dynamizer script\n";
     print "\n";

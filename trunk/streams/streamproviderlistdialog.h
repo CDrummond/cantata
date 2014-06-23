@@ -25,7 +25,9 @@
 #define STREAM_PROVIDER_LIST_DIALOG_H
 
 #include "support/dialog.h"
+#include "support/icon.h"
 #include <QSet>
+#include <QHash>
 
 class NetworkJob;
 class QTreeWidget;
@@ -35,6 +37,7 @@ class SqueezedTextLabel;
 class StreamsSettings;
 class Spinner;
 class MessageOverlay;
+class QIODevice;
 
 class StreamProviderListDialog : public Dialog
 {
@@ -51,12 +54,16 @@ private Q_SLOTS:
     void itemChanged(QTreeWidgetItem *itm, int col);
 
 private:
+    void readProviders(QIODevice *dev);
     void slotButtonClicked(int button);
     void updateView(bool unCheck=false);
     void doNext();
     void setState(bool downloading);
 
 private:
+    Icon def;
+    Icon installed;
+    Icon updateable;
     StreamsSettings *p;
     NetworkJob *job;
     Spinner *spinner;
@@ -64,7 +71,7 @@ private:
     QTreeWidget *tree;
     QProgressBar *progress;
     SqueezedTextLabel *statusText;
-    QSet<QString> installedProviders;
+    QHash<QString, QString> installedProviders;
     QSet<QTreeWidgetItem *> checkedItems;
 };
 

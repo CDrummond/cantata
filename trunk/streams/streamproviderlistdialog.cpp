@@ -28,24 +28,87 @@
 #include "support/messagebox.h"
 #include "support/squeezedtextlabel.h"
 #include "support/spinner.h"
+#include "support/icon.h"
 #include "widgets/actionitemdelegate.h"
 #include "widgets/messageoverlay.h"
+#include "models/streamsmodel.h"
 #include <QLabel>
 #include <QXmlStreamReader>
 #include <QTreeWidget>
 #include <QHeaderView>
 #include <QBoxLayout>
 #include <QProgressBar>
+#include <QToolButton>
+#include <QStylePainter>
 #include <QTemporaryFile>
 #include <QDir>
 #include <QMap>
 #include <QTimer>
+#include <QCryptographicHash>
+
+//#define TEST_PROVIDERS
 
 static const QLatin1String constProverListUrl("https://drive.google.com/uc?export=download&id=0Bzghs6gQWi60dHBPajNjbjExZzQ");
 
+static QString fileMd5(const QString &fileName)
+{
+    QFile f(fileName);
+    if (f.open(QIODevice::ReadOnly)) {
+        return QString::fromLatin1(QCryptographicHash::hash(f.readAll(), QCryptographicHash::Md5).toHex());
+    }
+    return QString();
+}
+
+static QString getMd5(const QString &p)
+{
+    QString dir=Utils::dataDir(StreamsModel::constSubDir, false);
+    if (dir.isEmpty()) {
+        return QString();
+    }
+    dir+=Utils::constDirSep+p+Utils::constDirSep;
+    if (QFile::exists(dir+StreamsModel::constSettingsFile)) {
+        return fileMd5(dir+StreamsModel::constSettingsFile);
+    }
+    if (QFile::exists(dir+StreamsModel::constCompressedXmlFile)) {
+        return fileMd5(dir+StreamsModel::constCompressedXmlFile);
+    }
+    return QString();
+}
+
+class IconLabel : public QToolButton
+{
+public:
+    IconLabel(const Icon &icon, const QString &text, QWidget *p)
+        : QToolButton(p)
+    {
+        setIcon(icon);
+        setText(text);
+        setAutoRaise(true);
+        setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+        QFont f(font());
+        f.setItalic(true);
+        setFont(f);
+        setStyleSheet("QToolButton {border: 0}");
+        setFocusPolicy(Qt::NoFocus);
+    }
+
+    void paintEvent(QPaintEvent *)
+    {
+        QStylePainter p(this);
+        QStyleOptionToolButton opt;
+        initStyleOption(&opt);
+        opt.state&=~(QStyle::State_MouseOver|QStyle::State_Sunken|QStyle::State_On);
+        opt.state|=QStyle::State_Raised;
+        p.drawComplexControl(QStyle::CC_ToolButton, opt);
+    }
+};
+
 StreamProviderListDialog::StreamProviderListDialog(StreamsSettings *parent)
     : Dialog(parent, "StreamProviderListDialog")
+    , installed("dialog-ok")
+    , updateable("down")
     , p(parent)
+    , job(0)
     , spinner(0)
     , msgOverlay(0)
 {
@@ -60,6 +123,8 @@ StreamProviderListDialog::StreamProviderListDialog(StreamsSettings *parent)
     progress=new QProgressBar(wid);
     l->addWidget(new QLabel(i18n("Check the providers you wish to install/update."), wid));
     l->addWidget(tree);
+    l->addWidget(new IconLabel(installed, i18n("Installed"), this));
+    l->addWidget(new IconLabel(updateable, i18n("Update available"), this));
     l->addWidget(statusText);
     l->addWidget(progress);
     l->setMargin(0);
@@ -81,7 +146,11 @@ StreamProviderListDialog::~StreamProviderListDialog()
 
 void StreamProviderListDialog::show(const QSet<QString> &installed)
 {
-    installedProviders=installed;
+    installedProviders.clear();
+    foreach (const QString &inst, installed) {
+        installedProviders.insert(inst, getMd5(inst));
+    }
+
     checkedItems.clear();
     setState(false);
     updateView(true);
@@ -102,10 +171,17 @@ void StreamProviderListDialog::getProviderList()
         msgOverlay=new MessageOverlay(this);
         msgOverlay->setWidget(tree);
     }
+    #ifdef TEST_PROVIDERS
+    QFile f("list.xml");
+    if (f.open(QIODevice::ReadOnly)) {
+        readProviders(&f);
+    }
+    #else
     job=NetworkAccessManager::self()->get(QUrl(constProverListUrl));
     connect(job, SIGNAL(finished()), this, SLOT(jobFinished()));
     spinner->start();
     msgOverlay->setText(i18n("Downloading list..."), -1, false);
+    #endif
 }
 
 enum Categories {
@@ -114,6 +190,11 @@ enum Categories {
     Cat_ListenLive        = 2,
 
     Cat_Total
+};
+
+enum Roles {
+    Role_Url = Qt::UserRole,
+    Role_Md5
 };
 
 static QString catName(int cat) {
@@ -137,43 +218,9 @@ void StreamProviderListDialog::jobFinished()
     }
     job=0;
 
-    QMap<int, QTreeWidgetItem *> categories;
-
     if (0==tree->topLevelItemCount()) {
         if (j->ok()) {
-            QXmlStreamReader doc(j->readAll());
-            int currentCat=-1;
-            while (!doc.atEnd()) {
-                doc.readNext();
-
-                if (doc.isStartElement()) {
-                    if (QLatin1String("category")==doc.name()) {
-                        currentCat=doc.attributes().value("type").toString().toInt();
-                    } else if (QLatin1String("provider")==doc.name()) {
-                        QString name=doc.attributes().value("name").toString();
-                        QString url=doc.attributes().value("url").toString();
-                        if (!name.isEmpty() && !url.isEmpty() && currentCat>=0 && currentCat<Cat_Total) {
-                            QTreeWidgetItem *cat=0;
-                            if (!categories.contains(currentCat)) {
-                                cat=new QTreeWidgetItem(tree, QStringList() << catName(currentCat));
-                                cat->setFlags(Qt::ItemIsEnabled);
-                                QFont f=tree->font();
-                                f.setBold(true);
-                                cat->setFont(0, f);
-                                categories.insert(currentCat, cat);
-                            } else {
-                                cat=categories[currentCat];
-                            }
-                            QTreeWidgetItem *prov=new QTreeWidgetItem(cat, QStringList() << name);
-                            prov->setData(0, Qt::UserRole, url);
-                            prov->setFlags(Qt::ItemIsEnabled|Qt::ItemIsSelectable|Qt::ItemIsUserCheckable);
-                            prov->setCheckState(0, Qt::Unchecked);
-                            cat->setExpanded(true);
-                        }
-                    }
-                }
-            }
-            updateView();
+            readProviders(j->actualJob());
         } else {
             MessageBox::error(this, i18n("Failed to download list of stream providers!"));
             slotButtonClicked(Close);
@@ -220,6 +267,45 @@ void StreamProviderListDialog::itemChanged(QTreeWidgetItem *itm, int col)
     enableButton(User1, !checkedItems.isEmpty());
 }
 
+void StreamProviderListDialog::readProviders(QIODevice *dev)
+{
+    QMap<int, QTreeWidgetItem *> categories;
+    QXmlStreamReader doc(dev);
+    int currentCat=-1;
+    while (!doc.atEnd()) {
+        doc.readNext();
+
+        if (doc.isStartElement()) {
+            if (QLatin1String("category")==doc.name()) {
+                currentCat=doc.attributes().value("type").toString().toInt();
+            } else if (QLatin1String("provider")==doc.name()) {
+                QString name=doc.attributes().value("name").toString();
+                QString url=doc.attributes().value("url").toString();
+                if (!name.isEmpty() && !url.isEmpty() && currentCat>=0 && currentCat<Cat_Total) {
+                    QTreeWidgetItem *cat=0;
+                    if (!categories.contains(currentCat)) {
+                        cat=new QTreeWidgetItem(tree, QStringList() << catName(currentCat));
+                        cat->setFlags(Qt::ItemIsEnabled);
+                        QFont f=tree->font();
+                        f.setBold(true);
+                        cat->setFont(0, f);
+                        categories.insert(currentCat, cat);
+                    } else {
+                        cat=categories[currentCat];
+                    }
+                    QTreeWidgetItem *prov=new QTreeWidgetItem(cat, QStringList() << name);
+                    prov->setData(0, Role_Url, url);
+                    prov->setData(0, Role_Md5, doc.attributes().value("md5").toString());
+                    prov->setFlags(Qt::ItemIsEnabled|Qt::ItemIsSelectable|Qt::ItemIsUserCheckable);
+                    prov->setCheckState(0, Qt::Unchecked);
+                    cat->setExpanded(true);
+                }
+            }
+        }
+    }
+    updateView();
+}
+
 void StreamProviderListDialog::slotButtonClicked(int button)
 {
     switch (button) {
@@ -227,7 +313,7 @@ void StreamProviderListDialog::slotButtonClicked(int button)
         QStringList update;
         QStringList install;
         foreach (const QTreeWidgetItem *i, checkedItems) {
-            if (installedProviders.contains(i->text(0))) {
+            if (installedProviders.keys().contains(i->text(0))) {
                 update.append(i->text(0));
             } else {
                 install.append(i->text(0));
@@ -284,15 +370,19 @@ void StreamProviderListDialog::slotButtonClicked(int button)
 
 void StreamProviderListDialog::updateView(bool unCheck)
 {
-    QFont plain=tree->font();
-    QFont italic=plain;
-    italic.setItalic(true);
+    QHash<QString, QString>::ConstIterator end=installedProviders.end();
 
     for (int tl=0; tl<tree->topLevelItemCount(); ++tl) {
         QTreeWidgetItem *tli=tree->topLevelItem(tl);
         for (int c=0; c<tli->childCount(); ++c) {
             QTreeWidgetItem *ci=tli->child(c);
-            ci->setFont(0, installedProviders.contains(ci->text(0)) ? italic : plain);
+            QHash<QString, QString>::ConstIterator inst=installedProviders.find(ci->text(0));
+            if (inst!=end) {
+                ci->setData(0, Qt::DecorationRole, inst.value()==ci->data(0, Role_Md5).toString()
+                                ? installed : updateable);
+            } else {
+                ci->setData(0, Qt::DecorationRole, def);
+            }
             if (unCheck) {
                 ci->setCheckState(0, Qt::Unchecked);
             }
@@ -307,7 +397,7 @@ void StreamProviderListDialog::doNext()
     } else {
         QTreeWidgetItem *item=*(checkedItems.begin());
         statusText->setText(i18n("Downloading %1", item->text(0)));
-        job=NetworkAccessManager::self()->get(QUrl(item->data(0, Qt::UserRole).toString()));
+        job=NetworkAccessManager::self()->get(QUrl(item->data(0, Role_Url).toString()));
         connect(job, SIGNAL(finished()), this, SLOT(jobFinished()));
     }
 }

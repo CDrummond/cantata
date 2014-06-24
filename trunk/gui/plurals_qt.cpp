@@ -69,3 +69,8 @@ QString Plurals::episodes(int count)
 {
     return 1==count ? QObject::tr("1 Episode", "Singular") : QObject::tr("%1 Episodes", "Plural (N!=1)").arg(count);
 }
+
+QString Plurals::updates(int count)
+{
+    return 1==count ? QObject::tr("1 Update available", "Singular") : QObject::tr("%1 Updates available", "Plural (N!=1)").arg(count);
+}

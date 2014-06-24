@@ -32,6 +32,7 @@
 #include "widgets/actionitemdelegate.h"
 #include "widgets/messageoverlay.h"
 #include "models/streamsmodel.h"
+#include "gui/plurals.h"
 #include <QLabel>
 #include <QXmlStreamReader>
 #include <QTreeWidget>
@@ -130,8 +131,9 @@ StreamProviderListDialog::StreamProviderListDialog(StreamsSettings *parent)
     l->setMargin(0);
     connect(tree, SIGNAL(itemChanged(QTreeWidgetItem*,int)), SLOT(itemChanged(QTreeWidgetItem*,int)));
     setMainWidget(wid);
-    setButtons(User1|Close);
+    setButtons(User1|User2|Close);
     enableButton(User1, false);
+    enableButton(User2, false);
     setCaption(i18n("Install/Update Stream Providers"));
 }
 
@@ -151,6 +153,7 @@ void StreamProviderListDialog::show(const QSet<QString> &installed)
         installedProviders.insert(inst, getMd5(inst));
     }
 
+    processItems.clear();
     checkedItems.clear();
     setState(false);
     updateView(true);
@@ -194,7 +197,8 @@ enum Categories {
 
 enum Roles {
     Role_Url = Qt::UserRole,
-    Role_Md5
+    Role_Md5,
+    Role_Updateable
 };
 
 static QString catName(int cat) {
@@ -232,7 +236,7 @@ void StreamProviderListDialog::jobFinished()
             msgOverlay->setText(QString());
         }
     } else {
-        QTreeWidgetItem *item=*(checkedItems.begin());
+        QTreeWidgetItem *item=*(processItems.begin());
         if (j->ok()) {
             statusText->setText(i18n("Installing/updating %1", item->text(0)));
             QTemporaryFile temp(QDir::tempPath()+"/cantata_XXXXXX.streams");
@@ -245,7 +249,7 @@ void StreamProviderListDialog::jobFinished()
                 setState(false);
             } else {
                 item->setCheckState(0, Qt::Unchecked);
-                checkedItems.remove(item);
+                processItems.removeAll(item);
                 progress->setValue(progress->value()+1);
                 doNext();
             }
@@ -296,6 +300,7 @@ void StreamProviderListDialog::readProviders(QIODevice *dev)
                     QTreeWidgetItem *prov=new QTreeWidgetItem(cat, QStringList() << name);
                     prov->setData(0, Role_Url, url);
                     prov->setData(0, Role_Md5, doc.attributes().value("md5").toString());
+                    prov->setData(0, Role_Updateable, false);
                     prov->setFlags(Qt::ItemIsEnabled|Qt::ItemIsSelectable|Qt::ItemIsUserCheckable);
                     prov->setCheckState(0, Qt::Unchecked);
                     cat->setExpanded(true);
@@ -309,18 +314,33 @@ void StreamProviderListDialog::readProviders(QIODevice *dev)
 void StreamProviderListDialog::slotButtonClicked(int button)
 {
     switch (button) {
+    case User2:
     case User1: {
         QStringList update;
         QStringList install;
-        foreach (const QTreeWidgetItem *i, checkedItems) {
-            if (installedProviders.keys().contains(i->text(0))) {
-                update.append(i->text(0));
-            } else {
-                install.append(i->text(0));
+        processItems.clear();
+        if (User2==button) {
+            processItems.clear();
+            for (int tl=0; tl<tree->topLevelItemCount(); ++tl) {
+                QTreeWidgetItem *tli=tree->topLevelItem(tl);
+                for (int c=0; c<tli->childCount(); ++c) {
+                    QTreeWidgetItem *ci=tli->child(c);
+                    if (ci->data(0, Role_Updateable).toBool()) {
+                        update.append(ci->text(0));
+                        processItems.append(ci);
+                    }
+                }
+            }
+        } else {
+            foreach (QTreeWidgetItem *i, checkedItems) {
+                if (installedProviders.keys().contains(i->text(0))) {
+                    update.append(i->text(0));
+                } else {
+                    install.append(i->text(0));
+                }
+                processItems.append(i);
             }
         }
-        update.sort();
-        install.sort();
         QString message="<p>";
         if (!install.isEmpty()) {
             message+=i18n("Install the following?")+"</p><ul>";
@@ -340,7 +360,7 @@ void StreamProviderListDialog::slotButtonClicked(int button)
             message+="</ul>";
         }
 
-        if (MessageBox::Yes==MessageBox::questionYesNo(this, message, i18n("Install/Update"))) {
+        if (!message.isEmpty() && MessageBox::Yes==MessageBox::questionYesNo(this, message, i18n("Install/Update"))) {
             setState(true);
             doNext();
         }
@@ -371,31 +391,40 @@ void StreamProviderListDialog::slotButtonClicked(int button)
 void StreamProviderListDialog::updateView(bool unCheck)
 {
     QHash<QString, QString>::ConstIterator end=installedProviders.end();
+    int numUpdates=0;
 
     for (int tl=0; tl<tree->topLevelItemCount(); ++tl) {
         QTreeWidgetItem *tli=tree->topLevelItem(tl);
         for (int c=0; c<tli->childCount(); ++c) {
+            bool update=false;
             QTreeWidgetItem *ci=tli->child(c);
             QHash<QString, QString>::ConstIterator inst=installedProviders.find(ci->text(0));
             if (inst!=end) {
-                ci->setData(0, Qt::DecorationRole, inst.value()==ci->data(0, Role_Md5).toString()
-                                ? installed : updateable);
+                update=inst.value()!=ci->data(0, Role_Md5).toString();
+                ci->setData(0, Qt::DecorationRole, update ? updateable : installed);
+                if (update) {
+                    numUpdates++;
+                }
             } else {
                 ci->setData(0, Qt::DecorationRole, def);
             }
             if (unCheck) {
                 ci->setCheckState(0, Qt::Unchecked);
             }
+            ci->setData(0, Role_Updateable, update);
         }
     }
+
+    updateText=0==numUpdates ? QString() : Plurals::updates(numUpdates);
+    setState(false);
 }
 
 void StreamProviderListDialog::doNext()
 {
-    if (checkedItems.isEmpty()) {
+    if (processItems.isEmpty()) {
         accept();
     } else {
-        QTreeWidgetItem *item=*(checkedItems.begin());
+        QTreeWidgetItem *item=*(processItems.begin());
         statusText->setText(i18n("Downloading %1", item->text(0)));
         job=NetworkAccessManager::self()->get(QUrl(item->data(0, Role_Url).toString()));
         connect(job, SIGNAL(finished()), this, SLOT(jobFinished()));
@@ -406,14 +435,21 @@ void StreamProviderListDialog::setState(bool downloading)
 {
     tree->setEnabled(!downloading);
     progress->setVisible(downloading);
-    statusText->setVisible(downloading);
+    statusText->setVisible(downloading || !updateText.isEmpty());
     if (downloading) {
         setButtons(Cancel);
-        progress->setRange(0, checkedItems.count());
+        progress->setRange(0, processItems.count());
         progress->setValue(0);
     } else {
-        setButtons(User1|Close);
+        if (!updateText.isEmpty()) {
+            setButtons(User1|User2|Close);
+            setButtonText(User2, i18n("Update all updateable providers"));
+            enableButton(User2, !updateText.isEmpty());
+        } else {
+            setButtons(User1|Close);
+        }
         setButtonText(User1, i18n("Install/Update"));
         enableButton(User1, !checkedItems.isEmpty());
+        statusText->setText(updateText);
     }
 }

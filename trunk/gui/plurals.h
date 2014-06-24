@@ -24,6 +24,8 @@
 #ifndef PLURALS_H
 #define PLURALS_H
 
+#include <QString>
+
 namespace Plurals
 {
     extern QString tracks(int count);
@@ -35,6 +37,7 @@ namespace Plurals
     extern QString rules(int count);
     extern QString podcasts(int count);
     extern QString episodes(int count);
+    extern QString updates(int count);
 }
 
 #endif

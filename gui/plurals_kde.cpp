@@ -68,3 +68,8 @@ QString Plurals::episodes(int count)
 {
     return i18np("1 Episode", "%1 Episodes", count);
 }
+
+QString Plurals::updates(int count)
+{
+    return i18np("1 Update available", "%1 Updates available", count);
+}

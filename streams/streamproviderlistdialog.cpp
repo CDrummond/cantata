@@ -115,6 +115,9 @@ StreamProviderListDialog::StreamProviderListDialog(StreamsSettings *parent)
 {
     QWidget *wid=new QWidget(this);
     QBoxLayout *l=new QBoxLayout(QBoxLayout::TopToBottom, wid);
+    QWidget *legends=new QWidget(wid);
+    QBoxLayout *legendsLayout=new QBoxLayout(QBoxLayout::LeftToRight, legends);
+    legendsLayout->setMargin(0);
     tree=new QTreeWidget(wid);
     tree->setItemDelegate(new BasicItemDelegate(this));
     tree->header()->setVisible(false);
@@ -122,10 +125,14 @@ StreamProviderListDialog::StreamProviderListDialog(StreamsSettings *parent)
     tree->setSelectionMode(QAbstractItemView::ExtendedSelection);
     statusText=new SqueezedTextLabel(wid);
     progress=new QProgressBar(wid);
+    legendsLayout->addWidget(new IconLabel(installed, i18n("Installed"), legends));
+    legendsLayout->addItem(new QSpacerItem(l->spacing(), 0, QSizePolicy::Fixed, QSizePolicy::Fixed));
+    legendsLayout->addWidget(new IconLabel(updateable, i18n("Update available"), legends));
+    legendsLayout->addItem(new QSpacerItem(0, 0, QSizePolicy::MinimumExpanding, QSizePolicy::Fixed));
     l->addWidget(new QLabel(i18n("Check the providers you wish to install/update."), wid));
     l->addWidget(tree);
-    l->addWidget(new IconLabel(installed, i18n("Installed"), this));
-    l->addWidget(new IconLabel(updateable, i18n("Update available"), this));
+    l->addWidget(legends);
+    l->addItem(new QSpacerItem(0, l->spacing(), QSizePolicy::Fixed, QSizePolicy::Fixed));
     l->addWidget(statusText);
     l->addWidget(progress);
     l->setMargin(0);
@@ -134,6 +141,7 @@ StreamProviderListDialog::StreamProviderListDialog(StreamsSettings *parent)
     setButtons(User1|User2|Close);
     enableButton(User1, false);
     enableButton(User2, false);
+    setDefaultButton(Close);
     setCaption(i18n("Install/Update Stream Providers"));
 }
 
@@ -441,15 +449,12 @@ void StreamProviderListDialog::setState(bool downloading)
         progress->setRange(0, processItems.count());
         progress->setValue(0);
     } else {
-        if (!updateText.isEmpty()) {
-            setButtons(User1|User2|Close);
-            setButtonText(User2, i18n("Update all updateable providers"));
-            enableButton(User2, !updateText.isEmpty());
-        } else {
-            setButtons(User1|Close);
-        }
+        setButtons(User1|User2|Close);
         setButtonText(User1, i18n("Install/Update"));
         enableButton(User1, !checkedItems.isEmpty());
+        setButtonText(User2, i18n("Update all updateable providers"));
+        enableButton(User2, !updateText.isEmpty());
+        setDefaultButton(Close);
         statusText->setText(updateText);
     }
 }

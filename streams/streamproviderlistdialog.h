@@ -70,8 +70,10 @@ private:
     MessageOverlay *msgOverlay;
     QTreeWidget *tree;
     QProgressBar *progress;
+    QString updateText;
     SqueezedTextLabel *statusText;
     QHash<QString, QString> installedProviders;
+    QList<QTreeWidgetItem *> processItems;
     QSet<QTreeWidgetItem *> checkedItems;
 };
 

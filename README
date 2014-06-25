@@ -358,7 +358,7 @@ maxCoverUpdatePerIteration=<Integer>
 
 coverCacheSize=<Integer>
     Cantata stores scaled versions of covers in a cache in memory, to reduce
-    memory usage and/or disk acicess. This setting controls the maximum size
+    memory usage and/or disk access. This setting controls the maximum size
     (in megabytes) that Cantata will use for this cache. The default is 10
     (Values 1..512 are acceptable)
 
@@ -442,7 +442,7 @@ stopHttpStreamOnPause=<Boolean>
     output silence over the stream. If this option is set to true, then
     Cantata will disconnect from MPD's HTTP stream. (NOTE: This will mean that
     there will be a delay when un-pausing). If set to false, Cantata will
-    continue toi play the 'silence' (NOTE: This will use more bandwidth).
+    continue to play the 'silence' (NOTE: This will use more bandwidth).
     Default is true.
 
 e.g.
@@ -661,7 +661,7 @@ playlist, load the 'MyPlaylist' playlist, and start this on the mpd at
 
 In addition to the above, the helper script may be installed on the system
 containing MPD, and run in 'server' mode. This requires MPD>=0.17, as
-communcations are via MPD's client-to-client messages.
+communications are via MPD's client-to-client messages.
 
 When run in this mode, it is intended that the script be run system-wide and
 started when the system (or MPD) is started. e.g. The script should be started
@@ -787,13 +787,13 @@ The following debug values may be used:
     Context widget              64
     Context backdrop           128
     Dynamic                    256
-    Stream Fetching            512
-    Http Server               1024
-    Song Dialog file checks   2048 (Tag Editor, Track Organiser, etc)
-    Network Access            4096
+    Stream fetching            512
+    Http server               1024
+    Song dialog file checks   2048 (Tag Editor, Track Organiser, etc)
+    Network access            4096
     Context lyrics            8192
     Threads                  16384
-    External Tags            32768
+    External tags            32768
     Scrobbling               65536
 
 These values may be combined to enable multiple output. e.g. to enable MPD and

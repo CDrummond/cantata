@@ -25,6 +25,7 @@
 #include "config.h"
 #include "gui/settings.h"
 #include "support/globalstatic.h"
+#include "support/utils.cpp"
 #include <QApplication>
 #include <QPixmap>
 #include <QFont>
@@ -121,19 +122,6 @@ static QPixmap createConsumeIconPixmap(int size, const QColor &col, double opaci
 }
 
 #ifndef USE_SYSTEM_MENU_ICON
-static QPainterPath buildPath(const QRectF &r, double radius)
-{
-    QPainterPath path;
-    double diameter(radius*2);
-
-    path.moveTo(r.x()+r.width(), r.y()+r.height()-radius);
-    path.arcTo(r.x()+r.width()-diameter, r.y(), diameter, diameter, 0, 90);
-    path.arcTo(r.x(), r.y(), diameter, diameter, 90, 90);
-    path.arcTo(r.x(), r.y()+r.height()-diameter, diameter, diameter, 180, 90);
-    path.arcTo(r.x()+r.width()-diameter, r.y()+r.height()-diameter, diameter, diameter, 270, 90);
-    return path;
-}
-
 static QPixmap createMenuIconPixmap(int size, QColor col, double opacity=1.0)
 {
     static const int constShadeFactor=75;
@@ -176,7 +164,7 @@ static QPixmap createMenuIconPixmap(int size, QColor col, double opacity=1.0)
         grad.setColorAt(0, col);
         col.setAlphaF(light ? 1.0 : 0.5);
         grad.setColorAt(1, col);
-        p.fillPath(buildPath(rect, lineWidth/2.0), grad);
+        p.fillPath(Utils::buildPath(rect, lineWidth/2.0), grad);
     }
     p.end();
     return pix;

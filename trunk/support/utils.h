@@ -31,6 +31,7 @@
 #include <QLatin1Char>
 #include <QDir>
 #include <QFont>
+#include <QPainterPath>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KGlobal>
 #include <KDE/KLocale>
@@ -45,6 +46,7 @@
 class QString;
 class QWidget;
 class QUrl;
+class QRectF;
 
 namespace Utils
 {
@@ -120,6 +122,7 @@ namespace Utils
     extern Desktop currentDe();
     extern void setTouchFriendly(bool t);
     extern bool touchFriendly();
+    extern QPainterPath buildPath(const QRectF &r, double radius);
 }
 
 #endif

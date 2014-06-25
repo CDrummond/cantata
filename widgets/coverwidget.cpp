@@ -36,12 +36,26 @@
 
 static const int constBorder=1;
 
+static QPainterPath buildPath(const QRectF &r, double radius)
+{
+    QPainterPath path;
+    double diameter(radius*2);
+
+    path.moveTo(r.x()+r.width(), r.y()+r.height()-radius);
+    path.arcTo(r.x()+r.width()-diameter, r.y(), diameter, diameter, 0, 90);
+    path.arcTo(r.x(), r.y(), diameter, diameter, 90, 90);
+    path.arcTo(r.x(), r.y()+r.height()-diameter, diameter, diameter, 180, 90);
+    path.arcTo(r.x()+r.width()-diameter, r.y()+r.height()-diameter, diameter, diameter, 270, 90);
+    return path;
+}
+
 CoverWidget::CoverWidget(QWidget *parent)
     : QLabel(parent)
     , pressed(false)
     , pix(0)
 {
     setStyleSheet(QString("QLabel {border: %1px solid transparent} QToolTip {background-color:#111111; color: #DDDDDD}").arg(constBorder));
+    setAttribute(Qt::WA_Hover, true);
 }
 
 CoverWidget::~CoverWidget()
@@ -122,20 +136,20 @@ void CoverWidget::paintEvent(QPaintEvent *)
         return;
     }
     QPainter p(this);
-    p.drawPixmap((width()-pix->width())/2, (height()-pix->height())/2, *pix);
-}
-
-static QPainterPath buildPath(const QRectF &r, double radius)
-{
-    QPainterPath path;
-    double diameter(radius*2);
-
-    path.moveTo(r.x()+r.width(), r.y()+r.height()-radius);
-    path.arcTo(r.x()+r.width()-diameter, r.y(), diameter, diameter, 0, 90);
-    path.arcTo(r.x(), r.y(), diameter, diameter, 90, 90);
-    path.arcTo(r.x(), r.y()+r.height()-diameter, diameter, diameter, 180, 90);
-    path.arcTo(r.x()+r.width()-diameter, r.y()+r.height()-diameter, diameter, diameter, 270, 90);
-    return path;
+    QRect r((width()-pix->width())/2, (height()-pix->height())/2, pix->width(), pix->height());
+    p.drawPixmap(r.x(), r.y(), *pix);
+    if (underMouse()) {
+        QRectF rf(r.x()+0.5, r.y()+0.5, r.width()-1, r.height()-1);
+        QColor col(palette().color(QPalette::Highlight));
+        double radius=pix->width()>128 ? 6.0 : 4.0;
+        p.setRenderHint(QPainter::Antialiasing);
+        col.setAlphaF(0.75);
+        p.setPen(col);
+        p.drawPath(buildPath(rf, radius));
+        col.setAlphaF(0.35);
+        p.setPen(col);
+        p.drawPath(buildPath(rf.adjusted(-1, -1, 1, 1), radius+2));
+    }
 }
 
 void CoverWidget::coverImage(const QImage &)

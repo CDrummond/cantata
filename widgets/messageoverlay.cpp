@@ -25,6 +25,7 @@
 #include "toolbutton.h"
 #include "icons.h"
 #include "support/localize.h"
+#include "support/utils.h"
 #include <QPainter>
 #include <QPaintEvent>
 #include <QTimer>
@@ -80,19 +81,6 @@ void MessageOverlay::setText(const QString &txt, int timeout, bool allowCancel)
     }
 }
 
-static QPainterPath buildPath(const QRectF &r, double radius)
-{
-    QPainterPath path;
-    double diameter(radius*2);
-
-    path.moveTo(r.x()+r.width(), r.y()+r.height()-radius);
-    path.arcTo(r.x()+r.width()-diameter, r.y(), diameter, diameter, 0, 90);
-    path.arcTo(r.x(), r.y(), diameter, diameter, 90, 90);
-    path.arcTo(r.x(), r.y()+r.height()-diameter, diameter, diameter, 180, 90);
-    path.arcTo(r.x()+r.width()-diameter, r.y()+r.height()-diameter, diameter, diameter, 270, 90);
-    return path;
-}
-
 void MessageOverlay::paintEvent(QPaintEvent *)
 {
     QPainter p(this);
@@ -100,7 +88,7 @@ void MessageOverlay::paintEvent(QPaintEvent *)
     QRectF rf(r.x()+0.5, r.y()+0.5, r.width()-1, r.height()-1);
     QColor borderCol=palette().color(QPalette::Highlight).darker(120);
     QColor col=palette().color(QPalette::Window);
-    QPainterPath path=buildPath(rf, r.height()/4.0);
+    QPainterPath path=Utils::buildPath(rf, r.height()/4.0);
     col.setAlphaF(0.8);
     p.setRenderHint(QPainter::Antialiasing, true);
     p.fillPath(path, col);

@@ -43,19 +43,6 @@ static bool isOnCombo(const QWidget *w)
     return w && (qobject_cast<const QComboBox *>(w) || isOnCombo(w->parentWidget()));
 }
 
-static QPainterPath buildPath(const QRectF &r, double radius)
-{
-    QPainterPath path;
-    double diameter(radius*2);
-
-    path.moveTo(r.x()+r.width(), r.y()+r.height()-radius);
-    path.arcTo(r.x()+r.width()-diameter, r.y(), diameter, diameter, 0, 90);
-    path.arcTo(r.x(), r.y(), diameter, diameter, 90, 90);
-    path.arcTo(r.x(), r.y()+r.height()-diameter, diameter, diameter, 180, 90);
-    path.arcTo(r.x()+r.width()-diameter, r.y()+r.height()-diameter, diameter, diameter, 270, 90);
-    return path;
-}
-
 static void drawSpinButton(QPainter *painter, const QRect &r, const QColor &col, bool isPlus)
 {
     int length=r.height()*0.5;
@@ -392,8 +379,8 @@ void TouchProxyStyle::drawComplexControl(ComplexControl control, const QStyleOpt
                     slider.adjust(adjust, 1, -adjust, -1);
                 }
                 int dimension=(Qt::Horizontal==sb->orientation ? slider.height() : slider.width());
-                QPainterPath path=buildPath(QRectF(slider.x()+0.5, slider.y()+0.5, slider.width()-1, slider.height()-1),
-                                            dimension>6 ? (dimension/4.0) : (dimension/8.0));
+                QPainterPath path=Utils::buildPath(QRectF(slider.x()+0.5, slider.y()+0.5, slider.width()-1, slider.height()-1),
+                                                   dimension>6 ? (dimension/4.0) : (dimension/8.0));
                 QColor col(option->palette.highlight().color());
                 if (!(option->state&State_Active)) {
                     col=col.darker(115);

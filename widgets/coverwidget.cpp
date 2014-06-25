@@ -28,26 +28,14 @@
 #include "context/view.h"
 #include "support/localize.h"
 #include "support/gtkstyle.h"
-#include <QPainter>
+#include "support/utils.h"
 #include <QLinearGradient>
 #include <QPen>
 #include <QMouseEvent>
 #include <QApplication>
+#include <QPainter>
 
 static const int constBorder=1;
-
-static QPainterPath buildPath(const QRectF &r, double radius)
-{
-    QPainterPath path;
-    double diameter(radius*2);
-
-    path.moveTo(r.x()+r.width(), r.y()+r.height()-radius);
-    path.arcTo(r.x()+r.width()-diameter, r.y(), diameter, diameter, 0, 90);
-    path.arcTo(r.x(), r.y(), diameter, diameter, 90, 90);
-    path.arcTo(r.x(), r.y()+r.height()-diameter, diameter, diameter, 180, 90);
-    path.arcTo(r.x()+r.width()-diameter, r.y()+r.height()-diameter, diameter, diameter, 270, 90);
-    return path;
-}
 
 CoverWidget::CoverWidget(QWidget *parent)
     : QLabel(parent)
@@ -145,10 +133,10 @@ void CoverWidget::paintEvent(QPaintEvent *)
         p.setRenderHint(QPainter::Antialiasing);
         col.setAlphaF(0.75);
         p.setPen(col);
-        p.drawPath(buildPath(rf, radius));
+        p.drawPath(Utils::buildPath(rf, radius));
         col.setAlphaF(0.35);
         p.setPen(col);
-        p.drawPath(buildPath(rf.adjusted(-1, -1, 1, 1), radius+2));
+        p.drawPath(Utils::buildPath(rf.adjusted(-1, -1, 1, 1), radius+2));
     }
 }
 
@@ -170,7 +158,7 @@ void CoverWidget::coverImage(const QImage &)
     pix->fill(Qt::transparent);
     QPainter painter(pix);
     painter.setRenderHint(QPainter::Antialiasing);
-    QPainterPath path=buildPath(QRectF(0.5, 0.5, img.width()-1, img.height()-1), img.width()>128 ? 6.0 : 4.0);
+    QPainterPath path=Utils::buildPath(QRectF(0.5, 0.5, img.width()-1, img.height()-1), img.width()>128 ? 6.0 : 4.0);
     painter.fillPath(path, img);
 
 //    QPainterPath glassPath;

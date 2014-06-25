@@ -215,19 +215,6 @@ public:
         return QStyledItemDelegate::sizeHint(option, index);
     }
 
-    static QPainterPath buildPath(const QRectF &r, double radius)
-    {
-        QPainterPath path;
-        double diameter(radius*2);
-
-        path.moveTo(r.x()+r.width(), r.y()+r.height()-radius);
-        path.arcTo(r.x()+r.width()-diameter, r.y(), diameter, diameter, 0, 90);
-        path.arcTo(r.x(), r.y(), diameter, diameter, 90, 90);
-        path.arcTo(r.x(), r.y()+r.height()-diameter, diameter, diameter, 180, 90);
-        path.arcTo(r.x()+r.width()-diameter, r.y()+r.height()-diameter, diameter, diameter, 270, 90);
-        return path;
-    }
-
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
     {
         if (!index.isValid()) {
@@ -352,11 +339,11 @@ public:
             g.setColorAt(0, gradCol.dark(165));
             g.setColorAt(1, gradCol.light(165));
             painter->setRenderHint(QPainter::Antialiasing, true);
-            painter->fillPath(buildPath(border, 3), g);
+            painter->fillPath(Utils::buildPath(border, 3), g);
             painter->setPen(QPen(gradCol, 1));
-            painter->drawPath(buildPath(border.adjusted(-1, -1, 1, 1), 3.5));
+            painter->drawPath(Utils::buildPath(border.adjusted(-1, -1, 1, 1), 3.5));
             painter->setPen(QPen(QApplication::palette().color(QPalette::HighlightedText), 1));
-            painter->drawPath(buildPath(border, 3));
+            painter->drawPath(Utils::buildPath(border, 3));
             painter->setRenderHint(QPainter::Antialiasing, false);
         }
 

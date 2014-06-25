@@ -29,7 +29,7 @@ SqueezedTextLabel::SqueezedTextLabel(QWidget *p)
         : KSqueezedTextLabel(p)
 {
     setTextElideMode(isRightToLeft() ? Qt::ElideLeft : Qt::ElideRight);
-    setAlignment((rtl ? Qt::AlignRight : Qt::AlignLeft) | Qt::AlignVCenter);
+    setAlignment((isRightToLeft() ? Qt::AlignRight : Qt::AlignLeft) | Qt::AlignVCenter);
 }
 
 #else

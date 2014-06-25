@@ -206,7 +206,8 @@ enum Categories {
 enum Roles {
     Role_Url = Qt::UserRole,
     Role_Md5,
-    Role_Updateable
+    Role_Updateable,
+    Role_Category
 };
 
 static QString catName(int cat) {
@@ -309,6 +310,7 @@ void StreamProviderListDialog::readProviders(QIODevice *dev)
                     prov->setData(0, Role_Url, url);
                     prov->setData(0, Role_Md5, doc.attributes().value("md5").toString());
                     prov->setData(0, Role_Updateable, false);
+                    prov->setData(0, Role_Category, currentCat);
                     prov->setFlags(Qt::ItemIsEnabled|Qt::ItemIsSelectable|Qt::ItemIsUserCheckable);
                     prov->setCheckState(0, Qt::Unchecked);
                     cat->setExpanded(true);
@@ -317,6 +319,14 @@ void StreamProviderListDialog::readProviders(QIODevice *dev)
         }
     }
     updateView();
+}
+
+static QString nameString(QTreeWidgetItem *i)
+{
+    if (Cat_ListenLive==i->data(0, Role_Category).toInt()) {
+        return i->text(0)+QLatin1String(" <i>(")+i18n("ListenLive")+QLatin1String(")</i>");
+    }
+    return i->text(0);
 }
 
 void StreamProviderListDialog::slotButtonClicked(int button)
@@ -334,7 +344,7 @@ void StreamProviderListDialog::slotButtonClicked(int button)
                 for (int c=0; c<tli->childCount(); ++c) {
                     QTreeWidgetItem *ci=tli->child(c);
                     if (ci->data(0, Role_Updateable).toBool()) {
-                        update.append(ci->text(0));
+                        update.append(nameString(ci));
                         processItems.append(ci);
                     }
                 }
@@ -342,9 +352,9 @@ void StreamProviderListDialog::slotButtonClicked(int button)
         } else {
             foreach (QTreeWidgetItem *i, checkedItems) {
                 if (installedProviders.keys().contains(i->text(0))) {
-                    update.append(i->text(0));
+                    update.append(nameString(i));
                 } else {
-                    install.append(i->text(0));
+                    install.append(nameString(i));
                 }
                 processItems.append(i);
             }

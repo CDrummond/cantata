@@ -222,8 +222,9 @@ bool StreamsSettings::install(const QString &fileName, const QString &name, bool
         QFile iconFile(dir+Utils::constDirSep+iconName);
         if (iconFile.open(QIODevice::WriteOnly)) {
             iconFile.write(icon);
+            iconFile.close();
+            icn.addFile(dir+Utils::constDirSep+iconName);
         }
-        icn.addFile(dir+Utils::constDirSep+iconName);
     }
 
     // Write all other png and svg files...

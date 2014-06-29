@@ -63,10 +63,40 @@ Page {
                 name: "phone"
                 when: layouts.width <= units.gu(80)
 
-                SettingsCategories {
-                    id: phoneCategories
-                    push: true
+                Rectangle {
                     anchors.fill: parent
+                    color: "transparent"
+
+                    SettingsCategories {
+                        id: phoneCategories
+                        push: true
+                        anchors.fill: parent
+                    }
+
+                    UbuntuShape {
+                        id: notReadyShape
+                        height: notReadyLabel.height + 2 * notReadyLabel.anchors.margins
+                        anchors {
+                            left: parent.left
+                            right: parent.right
+                            bottom: parent.bottom
+                            margins: units.gu(1)
+                        }
+
+                        color: "#88CCCCCC"
+
+                        Label {
+                            id: notReadyLabel
+                            text: i18n.tr("Not all functionality on this page has been implemented yet, partly due to constraints of the Ubuntu SDK.")
+                            wrapMode: Text.Wrap
+                            anchors {
+                                top: parent.top
+                                right: parent.right
+                                left: parent.left
+                                margins: units.gu(1)
+                            }
+                        }
+                    }
                 }
             },
             ConditionalLayout {
@@ -104,6 +134,31 @@ Page {
 
                         Component.onCompleted: {
                             settingsPage.tabletCategories = this
+                        }
+                    }
+
+                    UbuntuShape {
+                        id: notReadyShape2
+                        height: notReadyLabel2.height + 2 * notReadyLabel2.anchors.margins
+                        anchors {
+                            left: parent.left
+                            right: tabletCategories.right
+                            bottom: parent.bottom
+                            margins: units.gu(1)
+                        }
+
+                        color: "#88CCCCCC"
+
+                        Label {
+                            id: notReadyLabel2
+                            text: i18n.tr("Not all functionality on this page has been implemented yet, partly due to constraints of the Ubuntu SDK.")
+                            wrapMode: Text.Wrap
+                            anchors {
+                                top: parent.top
+                                right: parent.right
+                                left: parent.left
+                                margins: units.gu(1)
+                            }
                         }
                     }
 

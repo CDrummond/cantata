@@ -83,7 +83,7 @@ Flickable {
                 foldersView.checked = !arrayContains(contents["hiddenViews"], "folders")
                 playlistsView.checked = !arrayContains(contents["hiddenViews"], "playlists")
             } else {
-                artistYear.checked = true
+                artistYear.checked = false
                 coverFetch.checked = true
                 playQueueScroll.checked = true
                 albumsView.checked = true
@@ -107,6 +107,34 @@ Flickable {
 
         Item {
             id: topSpacer
+            height: units.gu(2)
+            width: parent.width
+        }
+
+        UbuntuShape {
+            id: notReadyShape
+            width: parent.width
+            height: isPhone?notReadyLabel.height + 2 * notReadyLabel.anchors.margins:0
+
+            color: "#88CCCCCC"
+
+            visible: isPhone
+
+            Label {
+                id: notReadyLabel
+                text: i18n.tr("Not all functionality on this page has been implemented yet, partly due to constraints of the Ubuntu SDK.")
+                wrapMode: Text.Wrap
+                anchors {
+                    top: parent.top
+                    right: parent.right
+                    left: parent.left
+                    margins: units.gu(1)
+                }
+            }
+        }
+
+        Item {
+            id: notReadySpacer
             height: units.gu(2)
             width: parent.width
         }
@@ -178,6 +206,7 @@ Flickable {
                 KeyNavigation.priority: KeyNavigation.BeforeItem
                 KeyNavigation.tab: albumsView
                 KeyNavigation.backtab: coverFetch
+                enabled: false
             }
 
             Label {
@@ -193,6 +222,7 @@ Flickable {
                 KeyNavigation.priority: KeyNavigation.BeforeItem
                 KeyNavigation.tab: foldersView
                 KeyNavigation.backtab: coverFetch
+                enabled: false
             }
 
             Label {
@@ -208,6 +238,7 @@ Flickable {
                 KeyNavigation.priority: KeyNavigation.BeforeItem
                 KeyNavigation.tab: albumSort
                 KeyNavigation.backtab: playlistsView
+                enabled: false
             }
 
             Label {
@@ -223,6 +254,7 @@ Flickable {
                 KeyNavigation.priority: KeyNavigation.BeforeItem
                 KeyNavigation.tab: albumSort
                 KeyNavigation.backtab: foldersView
+                enabled: false
             }
         }
 
@@ -241,9 +273,11 @@ Flickable {
                 i18n.tr("Artist, Year, Album"),
                 i18n.tr("Year, Album, Artist"),
                 i18n.tr("Year, Artist, Album") ]
-            selectedIndex: 2
+            width: parent.width
+            selectedIndex: 0
             KeyNavigation.priority: KeyNavigation.BeforeItem
             KeyNavigation.backtab: foldersView
+            enabled: false
         }
 
         Item {

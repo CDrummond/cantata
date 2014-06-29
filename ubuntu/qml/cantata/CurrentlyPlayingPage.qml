@@ -404,6 +404,15 @@ Page {
             bottom: parent.bottom
         }
 
+        Connections {
+            target: backend
+            onCurrentSongPlayqueuePositionChanged: {
+                if (true) { //TODO: Get value from settings
+                    playqueueListView.positionViewAtIndex(backend.getCurrentSongPlayqueuePosition(), ListView.Contain)
+                }
+            }
+        }
+
         delegate: PlayQueueListItemDelegate {
             id: delegate
             text: model.mainText

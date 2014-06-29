@@ -80,7 +80,7 @@ Page {
                             left: parent.left
                             right: parent.right
                             bottom: parent.bottom
-                            margins: units.gu(1)
+                            margins: units.gu(2)
                         }
 
                         color: "#88CCCCCC"

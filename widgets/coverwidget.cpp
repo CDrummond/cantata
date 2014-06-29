@@ -91,8 +91,9 @@ bool CoverWidget::event(QEvent *event)
                       "<tr><td align=\"right\"><b>Year:</b></td><td>%3</td></tr>", current.albumArtist(), current.album, QString::number(current.year));
         toolTip+="</table>";
         if (!img.isNull()) {
-            if (img.size().width()>Covers::constMaxSize.width() || img.size().height()>Covers::constMaxSize.height() ||
-                CurrentCover::self()->fileName().isEmpty() || !QFile::exists(CurrentCover::self()->fileName())) {
+            if (img.size().width()>Covers::constMaxSize.width() || img.size().height()>Covers::constMaxSize.height()) {
+                toolTip+=QString("<br/>%1").arg(View::encode(img.scaled(Covers::constMaxSize, Qt::KeepAspectRatio, Qt::SmoothTransformation)));
+            } else if (CurrentCover::self()->fileName().isEmpty() || !QFile::exists(CurrentCover::self()->fileName())) {
                 toolTip+=QString("<br/>%1").arg(View::encode(img));
             } else {
                 toolTip+=QString("<br/><img src=\"%1\"/>").arg(CurrentCover::self()->fileName());

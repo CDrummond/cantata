@@ -111,7 +111,6 @@ Page {
         id: listView
         anchors {
             fill: parent
-            bottomMargin: isPhone?0:(-units.gu(2))
         }
         clip: true
 

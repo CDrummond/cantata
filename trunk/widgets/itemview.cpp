@@ -247,7 +247,7 @@ public:
         }
 
         if (AP_VTop==actionPos) {
-            r.adjust(constBorder, constBorder, -constBorder, -constBorder);
+            r.adjust(constBorder, constBorder*4, -constBorder, -constBorder);
             r2=r;
         } else {
             r.adjust(constBorder, 0, -constBorder, 0);
@@ -316,7 +316,8 @@ public:
             int childHeight=childMetrics.height();
             int totalHeight=textHeight+childHeight;
             textRect=QRect(r.x(), r.y()+((r.height()-totalHeight)/2), r.width(), textHeight);
-            childRect=QRect(r.x(), r.y()+textHeight+((r.height()-totalHeight)/2), r.width(), textHeight);
+            childRect=QRect(r.x(), r.y()+textHeight+((r.height()-totalHeight)/2), r.width(),
+                            (iconMode ? textHeight-(2*constBorder) : textHeight));
 
             text = textMetrics.elidedText(text, Qt::ElideRight, textRect.width(), QPalette::WindowText);
             painter->setPen(color);

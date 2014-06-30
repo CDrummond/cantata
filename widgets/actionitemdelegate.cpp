@@ -65,15 +65,15 @@ QRect ActionItemDelegate::calcActionRect(bool rtl, ActionPos actionPos, const QR
     QRect rect=AP_HBottom==actionPos ? QRect(o.x(), o.y()+(o.height()/2), o.width(), o.height()/2) : o;
     return rtl
                 ? AP_VTop==actionPos
-                    ? QRect(rect.x()+5,
-                            rect.y()+2,
+                    ? QRect(rect.x()+(constBorder*4),
+                            rect.y()+(constBorder*4),
                             iconSize, iconSize)
                     : QRect(rect.x()+constActionBorder,
                             rect.y()+((rect.height()-iconSize)/2),
                             iconSize, iconSize)
                 : AP_VTop==actionPos
-                    ? QRect(rect.x()+rect.width()-(iconSize+5),
-                            rect.y()+2,
+                    ? QRect(rect.x()+rect.width()-(iconSize+(constBorder*4)),
+                            rect.y()+(constBorder*4),
                             iconSize, iconSize)
                     : QRect(rect.x()+rect.width()-(iconSize+constActionBorder),
                             rect.y()+((rect.height()-iconSize)/2),

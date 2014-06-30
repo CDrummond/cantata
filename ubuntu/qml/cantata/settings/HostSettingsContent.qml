@@ -36,30 +36,13 @@ Column {
 
     property color textFieldColor: "#c2c2b8" //#f3f3e7 * 0.8 (#f3f3e7: label color)
 
-    U1db.Database {
-        id: connectionDatabase
-        path: appDir + "/u1db"
-    }
-    U1db.Document {
-        id: connectionDocument
-        database: connectionDatabase
-        docId: 'connections'
-        create: true
-        defaults: {
-            "host": "",
-            "port": "",
-            "password": "",
-            "musicfolder": ""
-        }
-    }
-
     Component.onCompleted: {
         fillWithU1dbData()
         tryToConnect()
     }
 
     function fillWithU1dbData() {
-        var contents = connectionDocument.contents
+        var contents = settingsBackend.getConnectionContents()
         if (typeof contents != "undefined") {
             hostTextField.text = contents["host"]
             portTextField.text = contents["port"]
@@ -74,7 +57,7 @@ Column {
         contents["port"] = portTextField.text
         contents["password"] = passwordTextField.text
         contents["musicfolder"] = musicfolderTextField.text
-        connectionDocument.contents = contents
+        settingsBackend.setConnectionContents(contents)
     }
 
     Label {

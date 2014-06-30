@@ -192,8 +192,8 @@ public Q_SLOTS:
     void realSearchPlayQueue();
     void playQueueSearchActivated(bool a);
     void updatePlayQueue(const QList<Song> &songs);
-    void updateCurrentSong(const Song &song);
-    void scrollPlayQueue();
+    void updateCurrentSong(const Song &song, bool wasEmpty=false);
+    void scrollPlayQueue(bool wasEmpty=false);
     void updateStats();
     void updateStatus();
     void playQueueItemActivated(const QModelIndex &);

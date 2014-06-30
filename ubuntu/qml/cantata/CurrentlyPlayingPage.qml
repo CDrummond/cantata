@@ -90,7 +90,7 @@ Page {
             action: Action {
                 iconSource: Qt.resolvedUrl("../../icons/toolbar/navigation-menu.svg")
                 text: i18n.tr("Actions")
-                onTriggered: actionsPopover = PopupUtils.open(actionsPopoverComponent, actionActionToolbarButton) //TODO: fix anchor
+                onTriggered: actionsPopover = PopupUtils.open(actionsPopoverComponent, actionActionToolbarButton) //TODO: Fix anchor
             }
             visible: isPhone
         }
@@ -407,7 +407,8 @@ Page {
         Connections {
             target: backend
             onCurrentSongPlayqueuePositionChanged: {
-                if (true) { //TODO: Get value from settings
+                var uiContents = settingsBackend.getUiContents()
+                if (uiContents !== undefined && uiContents["playQueueScroll"]) {
                     playqueueListView.positionViewAtIndex(backend.getCurrentSongPlayqueuePosition(), ListView.Contain)
                 }
             }

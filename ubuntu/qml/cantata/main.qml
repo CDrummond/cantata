@@ -29,6 +29,7 @@ import QtQuick 2.0
 import Ubuntu.Components 0.1
 import Ubuntu.Components.ListItems 0.1 as ListItem
 import 'qrc:/qml/cantata/'
+import 'qrc:/qml/cantata/backend'
 import 'qrc:/qml/cantata/components'
 import 'qrc:/qml/cantata/settings'
  
@@ -140,5 +141,9 @@ MainView {
 
     Notification {
         id: notification
+    }
+
+    SettingsBackend {
+        id: settingsBackend
     }
 }

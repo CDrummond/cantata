@@ -800,6 +800,7 @@ if (ENABLE_UBUNTU)
         ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/components/PlayQueueListItemDelegate.qml
         ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/components/LabelVisual.qml
         ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/components/Notification.qml
+        ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/backend/SettingsBackend.qml
     )
 
     #

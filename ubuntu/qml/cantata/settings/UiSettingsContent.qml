@@ -29,29 +29,10 @@ import Ubuntu.Components 0.1
 import Ubuntu.Components.ListItems 0.1 as ListItem
 import U1db 1.0 as U1db
 
-// TODO: Save settings??? How/when??
 Flickable {
     clip: true
 
     contentHeight: column.height
-
-    U1db.Database {
-        id: db
-        path: appDir + "/u1db"
-    }
-    U1db.Document {
-        id: dbDocument
-        database: db
-        docId: 'ui'
-        create: true
-        defaults: {
-            "artistYear": true,
-            "albumSort": "album-artist",
-            "coverFetch": true,
-            "playQueueScroll": true,
-            "hiddenViews": ["folders"]
-        }
-    }
 
     Column { //TODO: Find better solution for spacing
         id: column
@@ -74,7 +55,7 @@ Flickable {
 
         function fillWithU1dbData() {
             // TODO: albumSort
-            var contents = dbDocument.contents
+            var contents = settingsBackend.getUiContents()
             if (contents !== undefined) {
                 artistYear.checked = contents["artistYear"]
                 coverFetch.checked = contents["coverFetch"]
@@ -102,7 +83,7 @@ Flickable {
             if (!foldersView.checked) contents["hiddenViews"].push("folders")
             if (!playlistsView.checked) contents["hiddenViews"].push("playlists")
             // TODO: albumSort
-            dbDocument.contents = contents
+            settingsBackend.setUiContents(contents)
         }
 
         Item {

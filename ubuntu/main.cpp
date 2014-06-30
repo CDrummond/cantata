@@ -188,7 +188,8 @@ int main(int argc, char *argv[])
     MPDStats::self();
     MPDConnection::self();
 
-    MusicLibraryModel::self()->setUseArtistImages(true); // TODO: Configurable?
+    MusicLibraryModel::self()->setUseArtistImages(true);
+    MusicLibraryModel::self()->setUseAlbumImages(true);
 
     MPDBackend backend;
 

@@ -898,6 +898,7 @@ void PlayQueueModel::setState(MPDState st)
 // Update playqueue with contents returned from MPD.
 void PlayQueueModel::update(const QList<Song> &songList)
 {
+    currentSongRowNum=-1;
     if (songList.isEmpty()) {
         Song::clearKeyStore(MPDParseUtils::Loc_PlayQueue);
         #ifdef ENABLE_UBUNTU
@@ -989,6 +990,9 @@ void PlayQueueModel::update(const QList<Song> &songList)
                 }
             }
 
+            if (s.id==currentSongId) {
+                currentSongRowNum=i;
+            }
             time += s.time;
         }
 

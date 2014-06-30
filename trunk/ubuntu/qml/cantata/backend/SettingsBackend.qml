@@ -43,11 +43,11 @@ Item {
         docId: 'ui'
         create: true
         defaults: {
-            "artistYear": true,
-            "albumSort": "album-artist",
-            "coverFetch": true,
             "playQueueScroll": true,
-            "hiddenViews": ["folders"]
+            "coverFetch": true,
+            "artistYear": true,
+            "hiddenViews": ["folders"],
+            "albumSort": "album-artist"
         }
 
         onContentsChanged: {

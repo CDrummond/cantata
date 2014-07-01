@@ -358,7 +358,6 @@ void TouchProxyStyle::drawComplexControl(ComplexControl control, const QStyleOpt
         if (const QStyleOptionSlider *sb = qstyleoption_cast<const QStyleOptionSlider *>(option)) {
             QRect r=option->rect;
             QRect slider=subControlRect(control, option, SC_ScrollBarSlider, widget);
-            painter->save();
             if (widget && widget->property(constOnCombo).toBool()) {
                 painter->fillRect(r, QApplication::palette().color(QPalette::Background)); // option->palette.background());
             } else if (!widget || widget->testAttribute(Qt::WA_OpaquePaintEvent)) {
@@ -371,26 +370,30 @@ void TouchProxyStyle::drawComplexControl(ComplexControl control, const QStyleOpt
 
             if (slider.isValid()) {
                 bool inactive=!(sb->activeSubControls&SC_ScrollBarSlider && (option->state&State_MouseOver || option->state&State_Sunken));
-                int adjust=SB_Thin==sbarType ? 0 : inactive ? 3 : 1;
-                painter->setRenderHint(QPainter::Antialiasing, true);
-                if (Qt::Horizontal==sb->orientation) {
-                    slider.adjust(1, adjust, -1, -adjust);
-                } else {
-                    slider.adjust(adjust, 1, -adjust, -1);
-                }
-                int dimension=(Qt::Horizontal==sb->orientation ? slider.height() : slider.width());
-                QPainterPath path=Utils::buildPath(QRectF(slider.x()+0.5, slider.y()+0.5, slider.width()-1, slider.height()-1),
-                                                   dimension>6 ? (dimension/4.0) : (dimension/8.0));
                 QColor col(option->palette.highlight().color());
                 if (!(option->state&State_Active)) {
                     col=col.darker(115);
                 }
-                painter->fillPath(path, col);
-                painter->setPen(col);
-                painter->drawPath(path);
+                if (SB_Gtk==sbarType) {
+                    int adjust=inactive ? 3 : 1;
+                    if (Qt::Horizontal==sb->orientation) {
+                        slider.adjust(1, adjust, -1, -adjust);
+                    } else {
+                        slider.adjust(adjust, 1, -adjust, -1);
+                    }
+                    int dimension=(Qt::Horizontal==sb->orientation ? slider.height() : slider.width());
+                    QPainterPath path=Utils::buildPath(QRectF(slider.x()+0.5, slider.y()+0.5, slider.width()-1, slider.height()-1),
+                                                   dimension>6 ? (dimension/4.0) : (dimension/8.0));
+                    painter->save();
+                    painter->setRenderHint(QPainter::Antialiasing, true);
+                    painter->fillPath(path, col);
+                    painter->setPen(col);
+                    painter->drawPath(path);
+                    painter->restore();
+                } else {
+                    painter->fillRect(slider, col);
+                }
             }
-
-            painter->restore();
             return;
         }
     }

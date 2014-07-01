@@ -198,6 +198,7 @@ void ServerSettings::save()
         MPDUser::self()->setDetails(current.details);
     }
     Settings::self()->saveCurrentConnection(current.details.name);
+    MusicLibraryModel::cleanCache();
 }
 
 void ServerSettings::cancel()

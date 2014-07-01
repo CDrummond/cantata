@@ -39,6 +39,8 @@ class DirViewModel : public ActionModel
     Q_OBJECT
 
 public:
+    static const QLatin1String constCacheName;
+
     static DirViewModel * self();
 
     DirViewModel(QObject *parent = 0);

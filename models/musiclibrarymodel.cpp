@@ -31,6 +31,7 @@
 #include "musiclibrarymodel.h"
 #include "albumsmodel.h"
 #include "playqueuemodel.h"
+#include "dirviewmodel.h"
 #include "gui/settings.h"
 #include "config.h"
 #include "gui/covers.h"
@@ -97,26 +98,30 @@ void MusicLibraryModel::convertCache(const QString &compressedName)
     }
 }
 
-//void MusicLibraryModel::cleanCache()
-//{
-//    QSet<QString> existing;
-//    QList<MPDConnectionDetails> connections=Settings::self()->allConnections();
-//    foreach (const MPDConnectionDetails &conn, connections) {
-//        QString withPort=cacheFileName(conn);
-//        QString withoutPort=cacheFileName(conn, false);
-//        if (withPort!=withoutPort) {
-//            existing.insert(withoutPort);
-//        }
-//        existing.insert(withPort);
-//    }
-//    QDir dir(Utils::cacheDir(constLibraryCache));
-//    QFileInfoList files=dir.entryInfoList(QStringList() << "*"+constLibraryExt << "*"+constLibraryCompressedExt, QDir::Files);
-//    foreach (const QFileInfo &file, files) {
-//        if (!existing.contains(file.fileName())) {
-//            QFile::remove(file.absoluteFilePath());
-//        }
-//    }
-//}
+void MusicLibraryModel::cleanCache()
+{
+    QSet<QString> existing;
+    QList<MPDConnectionDetails> connections=Settings::self()->allConnections();
+    QString dirPath=Utils::cacheDir(MusicLibraryModel::constLibraryCache, false);
+    if (dirPath.isEmpty()) {
+        return;
+    }
+
+    foreach (const MPDConnectionDetails &conn, connections) {
+        QString fileName=cacheFileName(conn).mid(dirPath.length());
+        existing.insert(fileName);
+        // Dir view cache file...
+        fileName=fileName.left(fileName.length()-QString(constLibraryCompressedExt).length());
+        fileName+=DirViewModel::constCacheName+(constLibraryCompressedExt);
+        existing.insert(fileName);
+    }
+    QFileInfoList files=QDir(dirPath).entryInfoList(QStringList() << "*"+constLibraryExt << "*"+constLibraryCompressedExt, QDir::Files);
+    foreach (const QFileInfo &file, files) {
+        if (!existing.contains(file.fileName())) {
+            QFile::remove(file.absoluteFilePath());
+        }
+    }
+}
 
 MusicLibraryModel::MusicLibraryModel(QObject *parent, bool isMpdModel, bool isCheckable)
     : MusicModel(parent)

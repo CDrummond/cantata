@@ -51,13 +51,13 @@
 #include "modeltest.h"
 #endif
 
-static const QLatin1String constCacheName("-folder-listing");
+const QLatin1String DirViewModel::constCacheName("-folder-listing");
 
 static QString cacheFileName()
 {
     MPDConnectionDetails details=MPDConnection::self()->getDetails();
     QString fileName=(!details.isLocal() ? details.hostname+'_'+QString::number(details.port) : details.hostname)
-                     +constCacheName+MusicLibraryModel::constLibraryCompressedExt;
+                     +DirViewModel::constCacheName+MusicLibraryModel::constLibraryCompressedExt;
     fileName.replace('/', '_');
     fileName.replace('~', '_');
     return Utils::cacheDir(MusicLibraryModel::constLibraryCache)+fileName;

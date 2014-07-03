@@ -141,7 +141,7 @@ void CoverWidget::paintEvent(QPaintEvent *)
     }
 }
 
-void CoverWidget::coverImage(const QImage &)
+void CoverWidget::coverImage(const QImage &i)
 {
     QImage img=CurrentCover::self()->image();
     if (img.isNull()) {
@@ -178,11 +178,12 @@ void CoverWidget::coverImage(const QImage &)
         gradientBorder=gtkCol.red()>=196 && gtkCol.blue()>=196 && gtkCol.green()>=196;
     }
 
-    col.setAlpha(128);
+    int alpha=i.isNull() && !gradientBorder? 96 : 128;
+    col.setAlpha(alpha);
 
     if (gradientBorder) {
         QLinearGradient grad(0, 0, 0, height());
-        grad.setColorAt(0, QColor(0, 0, 0, 128));
+        grad.setColorAt(0, QColor(0, 0, 0, alpha));
         grad.setColorAt(1, col);
         painter.strokePath(path, QPen(grad, 1));
     } else {

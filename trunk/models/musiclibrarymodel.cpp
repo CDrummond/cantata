@@ -32,7 +32,6 @@
 #include "albumsmodel.h"
 #include "playqueuemodel.h"
 #include "dirviewmodel.h"
-#include "gui/settings.h"
 #include "config.h"
 #include "gui/covers.h"
 #include "mpd/mpdparseutils.h"
@@ -43,6 +42,9 @@
 #include "gui/stdactions.h"
 #include "qtiocompressor/qtiocompressor.h"
 #include "support/globalstatic.h"
+#ifndef ENABLE_UBUNTU
+#include "gui/settings.h"
+#endif
 #include <QCommonStyle>
 #include <QFile>
 #include <QTimer>
@@ -100,6 +102,9 @@ void MusicLibraryModel::convertCache(const QString &compressedName)
 
 void MusicLibraryModel::cleanCache()
 {
+    #ifdef ENABLE_UBUNTU
+    // TODO???
+    #else
     QSet<QString> existing;
     QList<MPDConnectionDetails> connections=Settings::self()->allConnections();
     QString dirPath=Utils::cacheDir(MusicLibraryModel::constLibraryCache, false);
@@ -121,6 +126,7 @@ void MusicLibraryModel::cleanCache()
             QFile::remove(file.absoluteFilePath());
         }
     }
+    #endif
 }
 
 MusicLibraryModel::MusicLibraryModel(QObject *parent, bool isMpdModel, bool isCheckable)

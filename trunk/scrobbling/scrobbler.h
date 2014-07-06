@@ -39,7 +39,7 @@
 class QTimer;
 class QNetworkReply;
 class PausableTimer;
-class Song;
+struct Song;
 struct MPDStatusValues;
 
 class Scrobbler : public QObject

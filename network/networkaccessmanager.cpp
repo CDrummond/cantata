@@ -28,6 +28,7 @@
 #include "support/globalstatic.h"
 #include <QTimerEvent>
 #include <QTimer>
+#include <QSslSocket>
 
 #include <QDebug>
 static bool debugEnabled=false;
@@ -195,10 +196,9 @@ NetworkJob * NetworkAccessManager::get(const QNetworkRequest &req, int timeout)
         return new NetworkJob(this, req.url());
     }
 
-    #ifndef ENABLE_HTTPS_SUPPORT
     // Windows builds do not support HTTPS - unless QtNetwork is recompiled...
     NetworkJob *reply=0;
-    if (QLatin1String("https")==req.url().scheme()) {
+    if (QLatin1String("https")==req.url().scheme() && !QSslSocket::supportsSsl()) {
         QUrl httpUrl=req.url();
         httpUrl.setScheme(QLatin1String("http"));
         QNetworkRequest httpReq=req;
@@ -208,9 +208,6 @@ NetworkJob * NetworkAccessManager::get(const QNetworkRequest &req, int timeout)
     } else {
         reply = new NetworkJob(BASE_NETWORK_ACCESS_MANAGER::get(req));
     }
-    #else
-    NetworkJob *reply = new NetworkJob(BASE_NETWORK_ACCESS_MANAGER::get(req));
-    #endif
 
     if (0!=timeout) {
         connect(reply, SIGNAL(destroyed()), SLOT(replyFinished()));

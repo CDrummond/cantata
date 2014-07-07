@@ -44,6 +44,7 @@
 #include <QFile>
 #include <QDir>
 #include <QXmlStreamReader>
+#include <QSslSocket>
 
 #include <QDebug>
 static bool debugIsEnabled=false;
@@ -520,12 +521,12 @@ void Scrobbler::authenticate()
     QMap<QString, QString> params;
     params["method"] = "auth.getMobileSession";
     params["username"] = userName;
-    #ifdef ENABLE_HTTPS_SUPPORT
-    params["password"] = password;
-    url.setScheme("https"); // Use HTTPS to authenticate
-    #else
-    params["authToken"]=md5(userName+md5(password));
-    #endif
+    if (QSslSocket::supportsSsl()) {
+        params["password"] = password;
+        url.setScheme("https"); // Use HTTPS to authenticate
+    } else {
+        params["authToken"]=md5(userName+md5(password));
+    }
     sign(params);
 
     authJob=NetworkAccessManager::self()->postFormData(url, format(params));

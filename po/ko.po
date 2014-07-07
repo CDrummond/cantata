@@ -93,7 +93,7 @@ msgstr "음반(&b)"
 
 #: context/contextwidget.cpp:369
 msgid "&Track"
-msgstr ""
+msgstr "곡(&T)"
 
 #: context/lastfmengine.cpp:63
 msgid "Read more on last.fm"
@@ -214,7 +214,7 @@ msgstr "가사파일 지우기"
 
 #: context/songview.cpp:150
 msgid "Refresh Track Information"
-msgstr ""
+msgstr "곡 정보 다시 읽기"
 
 #: context/songview.cpp:151 context/view.cpp:205 gui/mainwindow.cpp:296
 #: widgets/messageoverlay.cpp:45
@@ -234,6 +234,9 @@ msgid ""
 "\n"
 "Reload from disk, or delete disk copy and download?"
 msgstr ""
+"가사를 다시 읽을까요?\n"
+"\n"
+"디스크에서 다시 읽거나, 아니면 디스크 복사본을 지우고 내려받을까요?"
 
 #: context/songview.cpp:185 context/wikipediasettings.cpp:94
 #: models/streamsmodel.cpp:552 online/podcastsearchdialog.cpp:404
@@ -242,11 +245,11 @@ msgstr "다시 읽기"
 
 #: context/songview.cpp:186
 msgid "Reload From Disk"
-msgstr ""
+msgstr "디스크에서 다시 읽기"
 
 #: context/songview.cpp:186
 msgid "Download"
-msgstr ""
+msgstr "내려받기"
 
 #: context/songview.cpp:218
 msgid "Current playing song has changed, still perform search?"
@@ -270,7 +273,7 @@ msgstr "파일 삭제"
 
 #: context/songview.cpp:494 context/songview.cpp:558
 msgid "Album artist"
-msgstr ""
+msgstr "음반 연주자"
 
 #. i18n: file: devices/filenameschemedialog.ui:102
 #. i18n: ectx: property (text), widget (QPushButton, composer)
@@ -282,27 +285,27 @@ msgstr "작곡가"
 
 #: context/songview.cpp:498
 msgid "Lyricist"
-msgstr ""
+msgstr "작사가"
 
 #: context/songview.cpp:499
 msgid "Conductor"
-msgstr ""
+msgstr "지휘자"
 
 #: context/songview.cpp:500
 msgid "Remixer"
-msgstr ""
+msgstr "리믹서"
 
 #: context/songview.cpp:502
 msgid "Subtitle"
-msgstr ""
+msgstr "부제"
 
 #: context/songview.cpp:503 context/songview.cpp:564
 msgid "Track number"
-msgstr ""
+msgstr "곡 번호"
 
 #: context/songview.cpp:504 context/songview.cpp:563
 msgid "Disc number"
-msgstr ""
+msgstr "음반 번호"
 
 #. i18n: file: devices/filenameschemedialog.ui:184
 #. i18n: ectx: property (text), widget (QPushButton, genre)
@@ -325,7 +328,7 @@ msgstr "날짜"
 
 #: context/songview.cpp:507
 msgid "Original date"
-msgstr ""
+msgstr "원본 날짜"
 
 #: context/songview.cpp:508 context/songview.cpp:567
 #: dynamic/dynamicrulesdialog.cpp:74
@@ -334,35 +337,35 @@ msgstr "설명"
 
 #: context/songview.cpp:509
 msgid "Copyright"
-msgstr ""
+msgstr "저작권"
 
 #: context/songview.cpp:510
 msgid "Label"
-msgstr ""
+msgstr "음반사"
 
 #: context/songview.cpp:511
 msgid "Catalogue number"
-msgstr ""
+msgstr "목록 번호"
 
 #: context/songview.cpp:512
 msgid "Title sort"
-msgstr ""
+msgstr "제목 정렬"
 
 #: context/songview.cpp:513
 msgid "Artist sort"
-msgstr ""
+msgstr "연주자 정렬"
 
 #: context/songview.cpp:514
 msgid "Album artist sort"
-msgstr ""
+msgstr "음반 연주자 정렬"
 
 #: context/songview.cpp:515
 msgid "Album sort"
-msgstr ""
+msgstr "음반 정렬"
 
 #: context/songview.cpp:516
 msgid "Encoded by"
-msgstr ""
+msgstr "인코딩"
 
 #: context/songview.cpp:517 devices/devicepropertieswidget.cpp:226
 msgid "Encoder"
@@ -370,11 +373,11 @@ msgstr "인코더"
 
 #: context/songview.cpp:518
 msgid "Mood"
-msgstr ""
+msgstr "분위기"
 
 #: context/songview.cpp:519
 msgid "Media"
-msgstr ""
+msgstr "매체"
 
 #: context/songview.cpp:520 devices/encoders.cpp:223 devices/encoders.cpp:320
 msgid "Bitrate"
@@ -382,23 +385,23 @@ msgstr "비트레이트"
 
 #: context/songview.cpp:521
 msgid "Sample rate"
-msgstr ""
+msgstr "샘플레이트"
 
 #: context/songview.cpp:522
 msgid "Channels"
-msgstr ""
+msgstr "채널"
 
 #: context/songview.cpp:524
 msgid "Tagging time"
-msgstr ""
+msgstr "태그 시간"
 
 #: context/songview.cpp:546
 msgid "Performer (%1)"
-msgstr ""
+msgstr "공연가 (%1)"
 
 #: context/songview.cpp:561 models/playqueuemodel.cpp:177
 msgid "Performer"
-msgstr ""
+msgstr "공연가"
 
 #. i18n: file: devices/filenameschemedialog.ui:174
 #. i18n: ectx: property (text), widget (QPushButton, year)
@@ -1853,7 +1856,7 @@ msgstr "음반정보"
 
 #: gui/cachesettings.cpp:271
 msgid "Track Information"
-msgstr ""
+msgstr "곡 정보"
 
 #: gui/cachesettings.cpp:273
 msgid "Stream Listings"
@@ -1936,11 +1939,11 @@ msgstr "이미지 (%1 x %2 %3%)"
 
 #: gui/coverdialog.cpp:436
 msgid "An image already exists for this artist, and the file is not writeable."
-msgstr ""
+msgstr "이 연주자의 이미지가 이미 있으므로, 파일 쓰기가 되지 않습니다."
 
 #: gui/coverdialog.cpp:437
 msgid "A cover already exists for this album, and the file is not writeable."
-msgstr ""
+msgstr "이 음반의 표지가 이미 있으므로, 파일 쓰기가 되지 않습니다."
 
 #: gui/coverdialog.cpp:443
 msgid "'%1' Artist Image"
@@ -2802,7 +2805,8 @@ msgstr[1] "%1 에피소드"
 #: gui/plurals_kde.cpp:74
 msgid "1 Update available"
 msgid_plural "%1 Updates available"
-msgstr[0] ""
+msgstr[0] "한 업데이트 있음"
+msgstr[1] "%1 업데이트 있음"
 
 #: gui/preferencesdialog.cpp:85
 msgid "Collection Settings"
@@ -2933,7 +2937,7 @@ msgstr "작곡가:"
 
 #: gui/searchpage.cpp:234
 msgid "Performer:"
-msgstr ""
+msgstr "공연가:"
 
 #. i18n: file: devices/albumdetails.ui:76
 #. i18n: ectx: property (text), widget (BuddyLabel, label_3)
@@ -4745,7 +4749,7 @@ msgstr "음악 폴더에 내려받은 음반 표지와 연주자 이미지 저�
 #. i18n: ectx: property (text), widget (QCheckBox, storeLyricsInMpdDir)
 #: po/rc.cpp:428 po/rc.cpp:515 rc.cpp:428 rc.cpp:515
 msgid "Save downloaded lyrics in music folder"
-msgstr "음악 폴더에 내려받은 가사저장"
+msgstr "음악 폴더에 내려받은 가사 저장"
 
 #. i18n: file: gui/filesettings.ui:43
 #. i18n: ectx: property (text), widget (QCheckBox, storeBackdropsInMpdDir)
@@ -5362,6 +5366,12 @@ msgid ""
 "mouse)</li><li>Spin buttons with have + and - buttons at the side of the "
 "text field</li></ul></p>"
 msgstr ""
+"<p>칸타타의 인터페이스를 아래와 같이 바꿉니다:\n"
+"<ul><li>연주와 컨트롤버튼은 33% 더 넓어집니다</li><li>보기는 '깜빡'거립니다"
+"</li><li>드래그하려면, 상단-좌측 모서리를 '터치'해야 합니다</li><li>스크롤바"
+"는 조금 넓어집니다</li><li>동작(예. '연주순서 추가')는 항상 보입니다 (마우스"
+"아래에 항목이 있지 않아도)</li><li>회전 단추가 문자영역 옆에 +와 -를 가집니"
+"다</li></ul></p>"
 
 #. i18n: file: gui/interfacesettings.ui:798
 #. i18n: ectx: property (text), widget (QCheckBox, touchFriendly)
@@ -5373,13 +5383,13 @@ msgstr "인터페이스를 터치 친화적으로 만들기"
 #. i18n: ectx: property (text), widget (QCheckBox, showStopButton)
 #: po/rc.cpp:738 rc.cpp:738
 msgid "Show stop button in toolbar"
-msgstr ""
+msgstr "툴바에 정지 단추 보이기"
 
 #. i18n: file: gui/interfacesettings.ui:812
 #. i18n: ectx: property (text), widget (QCheckBox, showCoverWidget)
 #: po/rc.cpp:741 rc.cpp:741
 msgid "Show cover of current track in toolbar"
-msgstr ""
+msgstr "툴바에 지금 곡 표지 보이기"
 
 #. i18n: file: gui/interfacesettings.ui:819
 #. i18n: ectx: property (text), widget (BuddyLabel, langLabel)
@@ -5422,7 +5432,7 @@ msgstr "[동적]"
 #. i18n: ectx: property (text), widget (UrlLabel, fullScreenLabel)
 #: po/rc.cpp:759 rc.cpp:759
 msgid "Exit Full Screen"
-msgstr ""
+msgstr "전체화면 나가기"
 
 #. i18n: file: gui/playbacksettings.ui:38
 #. i18n: ectx: property (text), widget (BuddyLabel, label_6b)
@@ -6087,11 +6097,11 @@ msgstr "%1 가져옴"
 
 #: streams/streamproviderlistdialog.cpp:128
 msgid "Installed"
-msgstr ""
+msgstr "설치됨"
 
 #: streams/streamproviderlistdialog.cpp:130
 msgid "Update available"
-msgstr ""
+msgstr "업데이트 있음"
 
 #: streams/streamproviderlistdialog.cpp:132
 msgid "Check the providers you wish to install/update."
@@ -6131,7 +6141,7 @@ msgstr "<b>%1</b> 내려받기 실패함"
 
 #: streams/streamproviderlistdialog.cpp:327
 msgid "ListenLive"
-msgstr ""
+msgstr "ListenLive"
 
 #: streams/streamproviderlistdialog.cpp:364
 msgid "Install the following?"
@@ -6156,7 +6166,7 @@ msgstr "%1 내려받는 중"
 
 #: streams/streamproviderlistdialog.cpp:465
 msgid "Update all updateable providers"
-msgstr ""
+msgstr "모두 업데이트"
 
 #: streams/streamspage.cpp:58
 msgid "Import Streams Into Favorites"
@@ -6504,7 +6514,7 @@ msgstr "(스트림)"
 
 #: widgets/coverwidget.cpp:87
 msgid "<tr><td align=\"right\"><b>Composer:</b></td><td>%1</td></tr>"
-msgstr "<tr><td align=\"right\">작곡가:</td><td>%1</td></tr>"
+msgstr "<tr><td align=\"right\"><b>작곡가:</b></td><td>%1</td></tr>"
 
 #: widgets/coverwidget.cpp:89
 msgid ""
@@ -6696,13 +6706,13 @@ msgstr "%1 에피소드"
 #: ../gui/plurals_qt.cpp:75
 msgctxt "Singular"
 msgid "1 Update available"
-msgstr ""
+msgstr "한 업데이트 있음"
 
 #: ../gui/plurals_qt.cpp:75
 #, qt-format
 msgctxt "Plural (N!=1)"
 msgid "%1 Updates available"
-msgstr ""
+msgstr "%1 업데이트 있음"
 
 #~ msgid "TextLabel"
 #~ msgstr "문자표"
@@ -6711,7 +6721,7 @@ msgstr ""
 #~ msgstr "가사(&L)"
 
 #~ msgid "Save Lyrics"
-#~ msgstr "가사저장"
+#~ msgstr "가사 저장"
 
 #~ msgid "Cancel Editing Lyrics"
 #~ msgstr "가사수정 취소"

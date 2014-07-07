@@ -22,12 +22,21 @@
  */
 
 #include "application_mac.h"
+#include "support/utils.h"
 #include <QIcon>
 
 Application::Application(int &argc, char **argv)
     : SingleApplication(argc, argv)
 {
     QCoreApplication::setAttribute(Qt::AA_DontShowIconsInMenus, true);
+
+    // Setup icon path...
+    QStringList paths=QIcon::themeSearchPaths();
+    QString path=Utils::systemDir("icons");
+    if (!paths.contains(path)) {
+        QIcon::setThemeSearchPaths(QStringList() << path << paths);
+    }
+
     QIcon::setThemeName(QLatin1String("oxygen"));
 }
 

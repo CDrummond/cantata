@@ -683,7 +683,7 @@ else (ENABLE_KDE)
 endif (ENABLE_KDE)
 
 if (WIN32)
-    install(FILES tags/tag-fixes.xml context/lyrics_providers.xml context/weblinks.xml online/podcast_directories.xml scrobbling/scrobblers.xml
+    install(FILES tags/tag_fixes.xml context/lyrics_providers.xml context/weblinks.xml online/podcast_directories.xml scrobbling/scrobblers.xml
             DESTINATION ${CMAKE_INSTALL_PREFIX}/config/)
 elseif (APPLE)
     install(FILES tags/tag_fixes.xml context/lyrics_providers.xml context/weblinks.xml online/podcast_directories.xml scrobbling/scrobblers.xml

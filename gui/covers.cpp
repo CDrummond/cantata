@@ -325,7 +325,7 @@ QString Covers::fixArtist(const QString &artist)
                 continue;
             }
 
-            QFile f(dir+QLatin1String("/tag-fixes.xml"));
+            QFile f(dir+QLatin1String("/tag_fixes.xml"));
             if (f.open(QIODevice::ReadOnly)) {
                 QXmlStreamReader doc(&f);
                 while (!doc.atEnd()) {

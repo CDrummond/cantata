@@ -665,17 +665,14 @@ if (X11_FOUND)
 endif (X11_FOUND)
 
 if (WIN32)
-    install(FILES context/ultimate_providers.xml DESTINATION ${CMAKE_INSTALL_PREFIX}/lyrics/)
-    install(FILES context/weblinks.xml online/podcast_directories.xml scrobbling/scrobblers.xml DESTINATION ${CMAKE_INSTALL_PREFIX}/config/)
-    install(FILES tags/fixes.xml DESTINATION ${CMAKE_INSTALL_PREFIX}/config/ RENAME tag-fixes.xml)
+    install(FILES tags/tag-fixes.xml context/lyrics_providers.xml context/weblinks.xml online/podcast_directories.xml scrobbling/scrobblers.xml
+            DESTINATION ${CMAKE_INSTALL_PREFIX}/config/)
 elseif (APPLE)
-    install(FILES context/ultimate_providers.xml DESTINATION ${MACOSX_BUNDLE_RESOURCES}/lyrics/)
-    install(FILES context/weblinks.xml online/podcast_directories.xml scrobbling/scrobblers.xml DESTINATION ${MACOSX_BUNDLE_RESOURCES}/config/)
-    install(FILES tags/fixes.xml DESTINATION ${MACOSX_BUNDLE_RESOURCES}/config/ RENAME tag-fixes.xml)
+    install(FILES tags/tag_fixes.xml context/lyrics_providers.xml context/weblinks.xml online/podcast_directories.xml scrobbling/scrobblers.xml
+            DESTINATION ${MACOSX_BUNDLE_RESOURCES}/config/)
 elseif (NOT ENABLE_UBUNTU)
-    install(FILES context/ultimate_providers.xml DESTINATION ${CMAKE_INSTALL_PREFIX}/share/${CMAKE_PROJECT_NAME}/lyrics)
-    install(FILES context/weblinks.xml online/podcast_directories.xml scrobbling/scrobblers.xml DESTINATION ${CMAKE_INSTALL_PREFIX}/share/${CMAKE_PROJECT_NAME}/config/)
-    install(FILES tags/fixes.xml DESTINATION ${CMAKE_INSTALL_PREFIX}/share/${CMAKE_PROJECT_NAME}/config/ RENAME tag-fixes.xml)
+    install(FILES tags/tag_fixes.xml context/lyrics_providers.xml context/weblinks.xml online/podcast_directories.xml scrobbling/scrobblers.xml
+            DESTINATION ${CMAKE_INSTALL_PREFIX}/share/${CMAKE_PROJECT_NAME}/config/)
 endif (WIN32)
 
 if (ENABLE_HTTP_STREAM_PLAYBACK)

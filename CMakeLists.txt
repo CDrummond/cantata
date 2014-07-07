@@ -43,20 +43,20 @@ option(ENABLE_HTTP_SERVER "Enable internal HTTP server to play non-MPD files" ON
 option(ENABLE_DYNAMIC "Enable support for dynamic playlists" ON)
 option(ENABLE_STREAMS "Enable support for streams tab (to save favourite streams, and search for others)" ON)
 option(ENABLE_ONLINE_SERVICES "Enable support for online services (Jamendo, Magnatune, SoundCloud, and Podcasts)" ON)
-
 if (WIN32 OR APPLE)
     set(USE_SYSTEM_MENU_ICON OFF)
+    option(ENABLE_DEVICES_SUPPORT "Enable suport for external devices" OFF)
 else (WIN32 OR APPLE)
-    option(ENABLE_CDPARANOIA "Enable CDParanoia libraries (required for AudioCD support)" ON)
-    option(ENABLE_CDDB "Enable CDDB libraries (either this or MusicBrianz required for AudioCD support)" ON)
-    option(ENABLE_MUSICBRAINZ "Enable MusicBrianz libraries (either this or CDDB required for AudioCD support)" ON)
-    option(ENABLE_UDISKS2 "Build UDisks2 backend, and NOT UDisks, for Qt builds" OFF)
-    option(ENABLE_DEVICES_SUPPORT "Enable suport for external devices" ON)
-    option(ENABLE_REMOTE_DEVICES "Enable support for remote (sshfs, samba) devices (EXPERIMENTAL)" OFF)
-    option(ENABLE_MTP "Enable MTP library (required to support MTP devices)" ON)
-    option(ENABLE_UNCACHED_MTP "Open MTP devices in un-cached mode (faster)" ON)
     option(USE_SYSTEM_MENU_ICON "Use system menu icon" ON)
+    option(ENABLE_DEVICES_SUPPORT "Enable suport for external devices" ON)
 endif (WIN32 OR APPLE)
+option(ENABLE_CDPARANOIA "Enable CDParanoia libraries (required for AudioCD support)" ON)
+option(ENABLE_CDDB "Enable CDDB libraries (either this or MusicBrianz required for AudioCD support)" ON)
+option(ENABLE_MUSICBRAINZ "Enable MusicBrianz libraries (either this or CDDB required for AudioCD support)" ON)
+option(ENABLE_UDISKS2 "Build UDisks2 backend, and NOT UDisks, for Qt builds" OFF)
+option(ENABLE_REMOTE_DEVICES "Enable support for remote (sshfs, samba) devices (EXPERIMENTAL)" OFF)
+option(ENABLE_MTP "Enable MTP library (required to support MTP devices)" ON)
+option(ENABLE_UNCACHED_MTP "Open MTP devices in un-cached mode (faster)" ON)
 
 if (WIN32)
     set(CANTATA_ICON_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX}/icons/oxygen)
@@ -135,6 +135,7 @@ if (NOT ENABLE_QT5 AND NOT APPLE AND NOT WIN32)
     find_package(X11)
     if (X11_FOUND)
         include_directories(${X11_INCLUDE_DIR})
+        set(CANTATA_LIBS ${CANTATA_LIBS} ${X11_LIBRARIES})
     endif (X11_FOUND)
 endif (NOT ENABLE_QT5 AND NOT APPLE AND NOT WIN32)
 
@@ -145,7 +146,7 @@ if (ENABLE_TAGLIB)
 endif (ENABLE_TAGLIB)
 
 if (TAGLIB_FOUND)
-    if (NOT WIN32 AND NOT APPLE AND ENABLE_DEVICES_SUPPORT AND ENABLE_CDPARANOIA)
+    if (ENABLE_DEVICES_SUPPORT AND ENABLE_CDPARANOIA)
         find_package(Cdparanoia)
         macro_log_feature(CDPARANOIA_FOUND "libcdda_paranoia" "CD ripping." "http://www.xiph.org/paranoia")
         if (CDPARANOIA_FOUND)
@@ -158,7 +159,7 @@ if (TAGLIB_FOUND)
                 macro_log_feature(MUSICBRAINZ5_FOUND "libmusicbrainz5" "CD info retrieval via MusicBrainz." "http://musicbrainz.org/doc/libmusicbrainz")
             endif (ENABLE_MUSICBRAINZ)
         endif (CDPARANOIA_FOUND)
-    endif (NOT WIN32 AND NOT APPLE AND ENABLE_DEVICES_SUPPORT AND ENABLE_CDPARANOIA)
+    endif (ENABLE_DEVICES_SUPPORT AND ENABLE_CDPARANOIA)
 
     set(ENABLE_TAGEDITOR_SUPPORT 1)
     set(ENABLE_TRACKORGANIZER_SUPPORT 1)
@@ -262,19 +263,23 @@ if (ENABLE_HTTP_STREAM_PLAYBACK)
     if (ENABLE_LIBVLC)
         find_package(LIBVLC REQUIRED)
         macro_log_feature(Qt5Multimedia "libVLC" "MPD HTTP stream playback." "http://videolan.org")
-        set(QTLIBS ${QTLIBS} ${LIBVLC_LIBRARY})
-        set(QTINCLUDES ${QTINCLUDES} ${LIBVLC_INCLUDE_DIR})
         add_definitions(-DLIBVLC_FOUND)
+        include_directories(${LIBVLC_INCLUDE_DIR})
+        set(CANTATA_LIBS ${CANTATA_LIBS} ${LIBVLC_LIBRARY})
     elseif (ENABLE_QT5)
         find_package(Qt5Multimedia REQUIRED)
         macro_log_feature(Qt5Multimedia "Qt5Multimedia" "MPD HTTP stream playback." "http://qtproject.org")
-        set(QTLIBS ${QTLIBS} ${Qt5Multimedia_LIBRARIES})
-        set(QTINCLUDES ${QTINCLUDES} ${Qt5Multimedia_INCLUDES})
+        include_directories(${Qt5Multimedia_INCLUDES})
         add_definitions(${Qt5Multimedia_DEFINITIONS})
+        set(CANTATA_LIBS ${CANTATA_LIBS} ${Qt5Multimedia_LIBRARIES})
     else (ENABLE_LIBVLC)
         find_package(Phonon REQUIRED)
         macro_log_feature(PHONON_FOUND "Phonon" "MPD HTTP stream playback." "http://phonon.kde.org")
+        include_directories(${PHONON_INCLUDES})
+        set(CANTATA_LIBS ${CANTATA_LIBS} ${PHONON_LIBS})
     endif (ENABLE_LIBVLC)
+    set(CANTATA_SRCS ${CANTATA_SRCS} mpd/httpstream.cpp)
+    set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} mpd/httpstream.h)
 endif (ENABLE_HTTP_STREAM_PLAYBACK)
 
 if (ENABLE_KDE)
@@ -289,8 +294,6 @@ endif (NOT ENABLE_QT5 AND NOT WIN32 AND NOT APPLE)
 
 find_package(ZLIB REQUIRED)
 
-include_directories(${CMAKE_SOURCE_DIR}/3rdparty ${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
-
 # QJSon and MusicBrainz require exceptions to be enabled!
 if (CMAKE_COMPILER_IS_GNUCXX)
    add_definitions("-fexceptions -UQT_NO_EXCEPTIONS")
@@ -302,7 +305,10 @@ if (MSVC)
    add_definitions(-EHsc)
 endif (MSVC)
 
-set(CANTATA_CORE_SRCS
+configure_file(config.h.cmake ${CMAKE_BINARY_DIR}/config.h)
+include_directories(${CMAKE_SOURCE_DIR}/3rdparty ${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR} ${QTINCLUDES} ${ZLIB_INCLUDE_DIRS})
+
+set(CANTATA_CORE_SRCS ${CANTATA_CORE_SRCS}
     gui/covers.cpp gui/currentcover.cpp
     models/musiclibraryitemroot.cpp models/musiclibraryitemartist.cpp models/musiclibraryitemalbum.cpp models/musiclibrarymodel.cpp
     models/musiclibraryproxymodel.cpp models/playlistsmodel.cpp models/playlistsproxymodel.cpp models/playqueuemodel.cpp
@@ -314,7 +320,7 @@ set(CANTATA_CORE_SRCS
     network/networkaccessmanager.cpp network/networkproxyfactory.cpp
     streams/streamfetcher.cpp
     http/httpserver.cpp)
-set(CANTATA_CORE_MOC_HDRS
+set(CANTATA_CORE_MOC_HDRS ${ANTATA_CORE_MOC_HDRS}
     gui/covers.h gui/currentcover.h
     models/musiclibrarymodel.h models/musiclibraryproxymodel.h models/playlistsmodel.h models/playlistsproxymodel.h models/playqueuemodel.h
     models/playqueueproxymodel.h models/dirviewmodel.h models/dirviewproxymodel.h models/albumsmodel.h models/actionmodel.h
@@ -323,7 +329,7 @@ set(CANTATA_CORE_MOC_HDRS
     network/networkaccessmanager.h
     streams/streamfetcher.h)
 
-set(CANTATA_SRCS ${CANTATA_CORE_SRCS}
+set(CANTATA_SRCS ${CANTATA_CORE_SRCS} ${CANTATA_SRCS}
     gui/settings.cpp gui/application.cpp gui/initialsettingswizard.cpp gui/mainwindow.cpp gui/preferencesdialog.cpp
     gui/filesettings.cpp gui/interfacesettings.cpp gui/playbacksettings.cpp gui/serversettings.cpp gui/librarypage.cpp gui/albumspage.cpp
     gui/folderpage.cpp gui/playlistspage.cpp gui/trayitem.cpp gui/cachesettings.cpp gui/coverdialog.cpp gui/searchpage.cpp gui/stdactions.cpp
@@ -341,7 +347,7 @@ set(CANTATA_SRCS ${CANTATA_CORE_SRCS}
     context/lastfmengine.cpp context/metaengine.cpp context/backdropcreator.cpp
     scrobbling/scrobbler.cpp scrobbling/pausabletimer.cpp scrobbling/scrobblingsettings.cpp scrobbling/scrobblingstatus.cpp
     scrobbling/scrobblinglove.cpp)
-set(CANTATA_MOC_HDRS ${CANTATA_CORE_MOC_HDRS}
+set(CANTATA_MOC_HDRS ${CANTATA_CORE_MOC_HDRS} ${CANTATA_MOC_HDRS}
     gui/settings.h gui/initialsettingswizard.h gui/mainwindow.h gui/folderpage.h gui/librarypage.h gui/albumspage.h gui/playlistspage.h
     gui/playbacksettings.h gui/serversettings.h gui/preferencesdialog.h gui/interfacesettings.h gui/cachesettings.h gui/trayitem.h
     gui/coverdialog.h gui/searchpage.h
@@ -354,7 +360,7 @@ set(CANTATA_MOC_HDRS ${CANTATA_CORE_MOC_HDRS}
     context/wikipediaengine.h context/wikipediasettings.h context/othersettings.h context/lastfmengine.h context/metaengine.h
     context/backdropcreator.h
     scrobbling/scrobbler.h scrobbling/scrobblingsettings.h scrobbling/scrobblingstatus.h scrobbling/scrobblinglove.h)
-set(CANTATA_UIS
+set(CANTATA_UIS ${CANTATA_UIS}
     gui/initialsettingswizard.ui gui/mainwindow.ui gui/folderpage.ui gui/librarypage.ui gui/albumspage.ui gui/playlistspage.ui
     gui/filesettings.ui gui/interfacesettings.ui gui/playbacksettings.ui gui/serversettings.ui gui/coverdialog.ui gui/searchpage.ui
     context/togglelist.ui context/othersettings.ui
@@ -365,6 +371,8 @@ if (ENABLE_UBUNTU)
     set(UBUNTU_MOC_HDRS ${CANTATA_CORE_MOC_HDRS} ubuntu/backend/mpdbackend.h)
 else (ENABLE_UBUNTU)
     set(CANTATA_SRCS ${CANTATA_SRCS} gui/main.cpp)
+    set(CANTATA_LIBS ${CANTATA_LIBS} support)
+    add_subdirectory(icons)
 endif (ENABLE_UBUNTU)
 
 if (ENABLE_DYNAMIC)
@@ -373,6 +381,14 @@ if (ENABLE_DYNAMIC)
     set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} dynamic/dynamic.h dynamic/dynamicpage.h dynamic/dynamicruledialog.h
         dynamic/dynamicrulesdialog.h)
     set(CANTATA_UIS ${CANTATA_UIS} dynamic/dynamicpage.ui dynamic/dynamicrule.ui dynamic/dynamicrules.ui)
+
+    if (WIN32)
+        # Not installed for windows - script uses sym-links...
+    elseif (APPLE)
+        install(PROGRAMS dynamic/cantata-dynamic DESTINATION ${MACOSX_BUNDLE_RESOURCES}/scripts/)
+    else (WIN32)
+        install(PROGRAMS dynamic/cantata-dynamic DESTINATION ${CMAKE_INSTALL_PREFIX}/share/${CMAKE_PROJECT_NAME}/scripts)
+    endif (WIN32)
 endif (ENABLE_DYNAMIC)
 
 if (ENABLE_STREAMS)
@@ -382,6 +398,7 @@ if (ENABLE_STREAMS)
     set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} streams/streamspage.h streams/digitallyimportedsettings.h streams/streamssettings.h
         streams/streamdialog.h models/streamsmodel.h models/digitallyimported.h models/streamsearchmodel.h streams/streamproviderlistdialog.h)
     set(CANTATA_UIS ${CANTATA_UIS} streams/streamspage.ui streams/digitallyimportedsettings.ui streams/streamssettings.ui)
+    add_subdirectory(streams/icons)
 endif (ENABLE_STREAMS)
 
 if (ENABLE_ONLINE_SERVICES)
@@ -395,6 +412,7 @@ if (ENABLE_ONLINE_SERVICES)
         online/soundcloudservice.h online/podcastservice.h online/podcastsearchdialog.h online/podcastsettingsdialog.h
         online/onlinesettings.h models/onlineservicesmodel.h)
     set(CANTATA_UIS ${CANTATA_UIS} online/onlineservicespage.ui online/onlinesettings.ui)
+    add_subdirectory(online/icons)
 endif (ENABLE_ONLINE_SERVICES)
 
 if (ENABLE_HTTP_SERVER)
@@ -402,11 +420,6 @@ if (ENABLE_HTTP_SERVER)
     set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} http/httpserver.h http/httpsocket.h)
     set(CANTATA_UIS ${CANTATA_UIS} http/httpserversettings.ui)
 endif (ENABLE_HTTP_SERVER)
-
-if (ENABLE_HTTP_STREAM_PLAYBACK)
-    set(CANTATA_SRCS ${CANTATA_SRCS} mpd/httpstream.cpp)
-    set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} mpd/httpstream.h)
-endif (ENABLE_HTTP_STREAM_PLAYBACK)
 
 if (ENABLE_MODEL_TEST AND NOT ENABLE_KDE AND NOT ENABLE_QT5)
     set(QTLIBS ${QTLIBS} ${QT_QTTEST_LIBRARY})
@@ -462,11 +475,6 @@ if (NOT WIN32 AND NOT APPLE)
     set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} devices/mountpoints.h)
 endif (NOT WIN32 AND NOT APPLE)
 
-if (WIN32 OR APPLE OR NOT TAGLIB_FOUND)
-    set(ENABLE_DEVICES_SUPPORT OFF)
-    set(ENABLE_REMOTE_DEVICES OFF)
-endif (WIN32 OR APPLE OR NOT TAGLIB_FOUND)
-
 set(CANTATA_RCS cantata.qrc)
 if (NOT WIN32 AND NOT APPLE)
     set(CANTATA_RCS ${CANTATA_RCS} cantata_media.qrc)
@@ -479,6 +487,20 @@ if (TAGLIB_FOUND)
     set(CANTATA_SRCS ${CANTATA_SRCS}  tags/tageditor.cpp tags/trackorganiser.cpp devices/filenameschemedialog.cpp widgets/tagspinbox.cpp)
     set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} tags/tageditor.h tags/trackorganiser.h devices/filenameschemedialog.h devices/device.h)
     set(CANTATA_UIS ${CANTATA_UIS} tags/tageditor.ui tags/trackorganiser.ui devices/filenameschemedialog.ui)
+
+    # Cantata still links to taglib, even if external tag reader/writer is used, because JamendoService uses taglib for ID3 genres.
+    set(CANTATA_LIBS ${CANTATA_LIBS} ${TAGLIB_LIBRARIES})
+    include_directories(${TAGLIB_INCLUDES})
+    if (NOT ENABLE_EXTERNAL_TAGS AND TAGLIB-EXTRAS_FOUND)     
+        set(CANTATA_LIBS ${CANTATA_LIBS} ${TAGLIB-EXTRAS_LIBRARIES})
+        include_directories(${TAGLIB-EXTRAS_INCLUDES})
+    endif (NOT ENABLE_EXTERNAL_TAGS AND TAGLIB-EXTRAS_FOUND)
+    if (NOT ENABLE_KDE AND ENABLE_DEVICES_SUPPORT)
+        set(CANTATA_LIBS ${CANTATA_LIBS} solidlite)
+        if (ENABLE_REMOTE_DEVICES AND NOT WIN32 AND NOT APPLE)
+            set(CANTATA_LIBS ${CANTATA_LIBS} avahi)
+        endif (ENABLE_REMOTE_DEVICES AND NOT WIN32 AND NOT APPLE)
+    endif (NOT ENABLE_KDE AND ENABLE_DEVICES_SUPPORT)
 
     if (FFMPEG_FOUND OR MPG123_FOUND)
         set(CANTATA_SRCS ${CANTATA_SRCS} replaygain/albumscanner.cpp replaygain/rgdialog.cpp replaygain/tagreader.cpp replaygain/jobcontroller.cpp)
@@ -494,30 +516,40 @@ if (TAGLIB_FOUND)
         set(CANTATA_SRCS ${CANTATA_SRCS} tags/tags.cpp tags/filetyperesolver.cpp)
     endif (ENABLE_EXTERNAL_TAGS)
 
-    if (WIN32 OR APPLE OR NOT ENABLE_DEVICES_SUPPORT)
-        set(CANTATA_SRCS ${CANTATA_SRCS} devices/device.cpp)
-    else (WIN32 OR APPLE)
+    if (ENABLE_DEVICES_SUPPORT)
         if (NOT ENABLE_KDE)
             add_subdirectory(3rdparty/solid-lite)
         endif (NOT ENABLE_KDE)
         if (MTP_FOUND)
             set(CANTATA_SRCS ${CANTATA_SRCS} devices/mtpdevice.cpp)
             set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} devices/mtpdevice.h)
+            include_directories(${MTP_INCLUDE_DIR})
+            set(CANTATA_LIBS ${CANTATA_LIBS} ${MTP_LIBRARIES})
         endif (MTP_FOUND)
         if (CDDB_FOUND OR MUSICBRAINZ5_FOUND)
             if (CDDB_FOUND)
                 set(CANTATA_SRCS ${CANTATA_SRCS} devices/cddbinterface.cpp)
                 set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} devices/cddbinterface.h)
+                include_directories(${CDDB_INCLUDE_DIR})
+                set(CANTATA_LIBS ${CANTATA_LIBS} ${CDDB_LIBS})
             endif (CDDB_FOUND)
             if (MUSICBRAINZ5_FOUND)
                 set(CANTATA_SRCS ${CANTATA_SRCS} devices/musicbrainz.cpp)
                 set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} devices/musicbrainz.h)
+                include_directories(${MUSICBRAINZ5_INCLUDE_DIRS})
+                set(CANTATA_LIBS ${CANTATA_LIBS} ${MUSICBRAINZ5_LIBRARIES})
             endif (MUSICBRAINZ5_FOUND)
             set(CANTATA_SRCS ${CANTATA_SRCS} devices/audiocddevice.cpp devices/cddbselectiondialog.cpp
                  devices/cdparanoia.cpp devices/audiocdsettings.cpp devices/extractjob.cpp devices/albumdetailsdialog.cpp)
             set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} devices/audiocddevice.h devices/extractjob.h
                  devices/albumdetailsdialog.h devices/cddbselectiondialog.h)
             set(CANTATA_UIS ${CANTATA_UIS} devices/albumdetails.ui devices/audiocdsettings.ui)
+            # If CDDB/MusicBrainz5 found - then CDParanoia must have been!
+            set(CANTATA_LIBS ${CANTATA_LIBS} ${CDPARANOIA_LIBRARIES})
+            include_directories(${CDPARANOIA_INCLUDE_DIR})
+            if (ENABLE_KDE)
+                install(FILES cantata-play-audiocd.desktop DESTINATION ${DATA_INSTALL_DIR}/solid/actions)
+            endif (ENABLE_KDE)
         endif (CDDB_FOUND OR MUSICBRAINZ5_FOUND)
 
         set(CANTATA_SRCS ${CANTATA_SRCS} devices/devicespage.cpp devices/filejob.cpp
@@ -548,7 +580,12 @@ if (TAGLIB_FOUND)
             add_subdirectory(devices/mounter)
             add_subdirectory(devices/avahi)
         endif (ENABLE_REMOTE_DEVICES)
-    endif (WIN32 OR APPLE OR NOT ENABLE_DEVICES_SUPPORT)
+    else (ENABLE_DEVICES_SUPPORT)
+        set(CANTATA_SRCS ${CANTATA_SRCS} devices/device.cpp)
+    endif (ENABLE_DEVICES_SUPPORT)
+else (TAGLIB_FOUND)
+    set(ENABLE_DEVICES_SUPPORT OFF)
+    set(ENABLE_REMOTE_DEVICES OFF)
 endif (TAGLIB_FOUND)
 
 if (ENABLE_PROXY_CONFIG)
@@ -556,15 +593,6 @@ if (ENABLE_PROXY_CONFIG)
     set(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} network/proxysettings.h)
     set(CANTATA_UIS ${CANTATA_UIS} network/proxysettings.ui)
 endif (ENABLE_PROXY_CONFIG)
-
-add_subdirectory(po)
-add_subdirectory(support)
-if (ENABLE_STREAMS)
-    add_subdirectory(streams/icons)
-endif (ENABLE_STREAMS)
-if (ENABLE_ONLINE_SERVICES)
-    add_subdirectory(online/icons)
-endif (ENABLE_ONLINE_SERVICES)
 
 if (ENABLE_KDE)
     include_directories(${KDE4_INCLUDES})
@@ -660,10 +688,6 @@ else (ENABLE_KDE)
     endif (WIN32 OR (NOT APPLE AND NOT ENABLE_QT5))
 endif (ENABLE_KDE)
 
-if (X11_FOUND)
-    target_link_libraries(cantata ${X11_LIBRARIES})
-endif (X11_FOUND)
-
 if (WIN32)
     install(FILES tags/tag-fixes.xml context/lyrics_providers.xml context/weblinks.xml online/podcast_directories.xml scrobbling/scrobblers.xml
             DESTINATION ${CMAKE_INSTALL_PREFIX}/config/)
@@ -673,94 +697,23 @@ elseif (APPLE)
 elseif (NOT ENABLE_UBUNTU)
     install(FILES tags/tag_fixes.xml context/lyrics_providers.xml context/weblinks.xml online/podcast_directories.xml scrobbling/scrobblers.xml
             DESTINATION ${CMAKE_INSTALL_PREFIX}/share/${CMAKE_PROJECT_NAME}/config/)
-endif (WIN32)
-
-if (ENABLE_HTTP_STREAM_PLAYBACK)
-    if (ENABLE_LIBVLC)
-        target_link_libraries(cantata ${LIBVLC_LIBRARY})
-        include_directories(${LIBVLC_INCLUDE_DIR})
-        add_definitions(-DLIBVLC_FOUND)
-    elseif (ENABLE_QT5)
-        target_link_libraries(cantata ${Qt5Multimedia_LIBRARIES})
-        include_directories(${Qt5Multimedia_INCLUDES})
-        add_definitions(${Qt5Multimedia_DEFINITIONS})
-    else (ENABLE_LIBVLC)
-        target_link_libraries(cantata ${PHONON_LIBS})
-        include_directories(${PHONON_INCLUDES})
-    endif (ENABLE_LIBVLC)
-endif (ENABLE_HTTP_STREAM_PLAYBACK)
-
-if (ENABLE_DYNAMIC)
-    if (WIN32)
-        # Not installed for windows - script uses sym-links...
-    elseif (APPLE)
-        install(PROGRAMS dynamic/cantata-dynamic DESTINATION ${MACOSX_BUNDLE_RESOURCES}/scripts/)
-    else (WIN32)
-        install(PROGRAMS dynamic/cantata-dynamic DESTINATION ${CMAKE_INSTALL_PREFIX}/share/${CMAKE_PROJECT_NAME}/scripts)
-    endif (WIN32)
-endif (ENABLE_DYNAMIC)
-
-if (NOT ENABLE_UBUNTU AND NOT WIN32 AND NOT APPLE)
     install(FILES mpd/mpd.conf.template DESTINATION ${CMAKE_INSTALL_PREFIX}/share/${CMAKE_PROJECT_NAME}/mpd)
-endif (NOT ENABLE_UBUNTU AND NOT WIN32 AND NOT APPLE)
-
-if (MTP_FOUND)
-    target_link_libraries(cantata ${MTP_LIBRARIES})
-    include_directories(${MTP_INCLUDE_DIR})
-endif (MTP_FOUND)
-
-if (CDPARANOIA_FOUND AND (CDDB_FOUND OR MUSICBRAINZ5_FOUND))
-    target_link_libraries(cantata ${CDPARANOIA_LIBRARIES})
-    include_directories(${CDPARANOIA_INCLUDE_DIR})
-    if (CDDB_FOUND)
-        target_link_libraries(cantata ${CDDB_LIBS})
-        include_directories(${CDDB_INCLUDE_DIR})
-    endif (CDDB_FOUND)
-    if (MUSICBRAINZ5_FOUND)
-        target_link_libraries(cantata ${MUSICBRAINZ5_LIBRARIES})
-        include_directories(${MUSICBRAINZ5_INCLUDE_DIRS})
-    endif (MUSICBRAINZ5_FOUND)
-    if (ENABLE_KDE)
-        install(FILES cantata-play-audiocd.desktop DESTINATION ${DATA_INSTALL_DIR}/solid/actions)
-    endif (ENABLE_KDE)
-endif (CDPARANOIA_FOUND AND (CDDB_FOUND OR MUSICBRAINZ5_FOUND))
+endif (WIN32)
 
 if (QJSON_FOUND)
     message("-- Using system libqjson")
     include_directories(${QJSON_INCLUDE_DIR})
-    target_link_libraries(cantata ${QJSON_LIBRARIES})
+    set(CANTATA_LIBS ${CANTATA_LIBS} ${QJSON_LIBRARIES})
 else (QJSON_FOUND)
     message("-- Using supplied libqjson")
     add_subdirectory(3rdparty/qjson)
-    target_link_libraries(cantata qjson)
+    set(CANTATA_LIBS ${CANTATA_LIBS} qjson)
 endif (QJSON_FOUND)
 
+add_subdirectory(po)
+add_subdirectory(support)
 add_subdirectory(3rdparty/qtiocompressor)
-
-if (ENABLE_UBUNTU)
-    target_link_libraries(cantata support-core qtiocompressor ${QTLIBS} ${ZLIB_LIBRARIES})
-else (ENABLE_UBUNTU)
-    add_subdirectory(icons)
-    target_link_libraries(cantata support support-core qtiocompressor ${QTLIBS} ${ZLIB_LIBRARIES})
-endif (ENABLE_UBUNTU)
-include_directories(${QTINCLUDES} ${ZLIB_INCLUDE_DIRS})
-
-if (TAGLIB_FOUND)
-    # Cantata still links to taglib, even if external tag reader/writer is used,
-    # because JamendoService uses taglib for ID3 genres.
-    target_link_libraries(cantata ${TAGLIB_LIBRARIES})
-    include_directories(${TAGLIB_INCLUDES})
-    if (NOT ENABLE_EXTERNAL_TAGS AND TAGLIB-EXTRAS_FOUND)     
-        target_link_libraries(cantata ${TAGLIB-EXTRAS_LIBRARIES})
-        include_directories(${TAGLIB-EXTRAS_INCLUDES})
-    endif (NOT ENABLE_EXTERNAL_TAGS AND TAGLIB-EXTRAS_FOUND)
-    if (NOT ENABLE_KDE AND ENABLE_DEVICES_SUPPORT AND NOT WIN32 AND NOT APPLE)
-        target_link_libraries(cantata solidlite)
-    endif (NOT ENABLE_KDE AND ENABLE_DEVICES_SUPPORT AND NOT WIN32 AND NOT APPLE)
-    if (ENABLE_REMOTE_DEVICES AND NOT WIN32 AND NOT APPLE)
-        target_link_libraries(cantata avahi)
-    endif (ENABLE_REMOTE_DEVICES AND NOT WIN32 AND NOT APPLE)
-endif (TAGLIB_FOUND)
+target_link_libraries(cantata support-core qtiocompressor ${CANTATA_LIBS} ${QTLIBS} ${ZLIB_LIBRARIES})
 
 # enable warnings
 add_definitions(-DQT_NO_DEBUG_OUTPUT)
@@ -771,8 +724,6 @@ if (UNIX AND NOT APPLE)
     endif (NOT ENABLE_UBUNTU)
     target_link_libraries(cantata -lpthread)
 endif (UNIX AND NOT APPLE)
-
-configure_file(config.h.cmake ${CMAKE_BINARY_DIR}/config.h)
 
 if (ENABLE_KDE)
     message("-- Building KDE version")
@@ -788,28 +739,17 @@ macro_display_feature_log()
 
 if (ENABLE_UBUNTU)
     add_custom_target(components_QmlFiles ALL SOURCES 
-        ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/main.qml
-        ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/AboutPage.qml
-        ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/ListViewPage.qml
-        ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/SubListViewPage.qml
-        ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/CurrentlyPlayingPage.qml
-        ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/settings/SettingsPage.qml
-        ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/settings/SettingsCategories.qml
-        ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/settings/HostSettingsContent.qml
-        ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/settings/HostSettingsPage.qml
-        ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/settings/UiSettingsContent.qml
-        ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/settings/UiSettingsPage.qml
-        ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/settings/PlaybackSettingsContent.qml
-        ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/settings/PlaybackSettingsPage.qml
-        ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/components/ControlButtonsRow.qml
-        ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/components/ListItemDelegate.qml
-        ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/components/PlayQueueListItemDelegate.qml
-        ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/components/LabelVisual.qml
-        ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/components/Notification.qml
-        ${CMAKE_SOURCE_DIR}/ubuntu/qml/cantata/backend/SettingsBackend.qml
+        ubuntu/qml/cantata/main.qml ubuntu/qml/cantata/AboutPage.qml ubuntu/qml/cantata/ListViewPage.qml
+        ubuntu/qml/cantata/SubListViewPage.qml ubuntu/qml/cantata/CurrentlyPlayingPage.qml
+        ubuntu/qml/cantata/settings/SettingsPage.qml ubuntu/qml/cantata/settings/SettingsCategories.qml
+        ubuntu/qml/cantata/settings/HostSettingsContent.qml ubuntu/qml/cantata/settings/HostSettingsPage.qml
+        ubuntu/qml/cantata/settings/UiSettingsContent.qml ubuntu/qml/cantata/settings/UiSettingsPage.qml
+        ubuntu/qml/cantata/settings/PlaybackSettingsContent.qml ubuntu/qml/cantata/settings/PlaybackSettingsPage.qml
+        ubuntu/qml/cantata/components/ControlButtonsRow.qml ubuntu/qml/cantata/components/ListItemDelegate.qml
+        ubuntu/qml/cantata/components/PlayQueueListItemDelegate.qml ubuntu/qml/cantata/components/LabelVisual.qml
+        ubuntu/qml/cantata/components/Notification.qml ubuntu/qml/cantata/backend/SettingsBackend.qml
     )
 
-    #
     # click package...
     set(UBUNTU_CLICK_FOLDER ${CMAKE_BINARY_DIR}/click/)
     file(MAKE_DIRECTORY ${UBUNTU_CLICK_FOLDER})
@@ -871,4 +811,3 @@ else (ENABLE_UBUNTU)
         message("")
     endif (ENABLE_MODEL_TEST AND NOT ENABLE_KDE AND NOT ENABLE_QT5)
 endif (ENABLE_UBUNTU)
-

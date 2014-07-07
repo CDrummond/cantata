@@ -710,8 +710,10 @@ QString Utils::cacheDir(const QString &sub, bool create)
 
 QString Utils::systemDir(const QString &sub)
 {
-    #if defined Q_OS_WIN || defined Q_OS_MAC
+    #if defined Q_OS_WIN
     return fixPath(QCoreApplication::applicationDirPath())+(sub.isEmpty() ? QString() : (sub+constDirSep));
+    #elif defined Q_OS_MAC
+    return fixPath(QCoreApplication::applicationDirPath())+QLatin1String("Contents/Resources/")+(sub.isEmpty() ? QString() : (sub+constDirSep));
     #else
     return fixPath(QString(INSTALL_PREFIX "/share/")+QCoreApplication::applicationName()+constDirSep+(sub.isEmpty() ? QString() : sub));
     #endif

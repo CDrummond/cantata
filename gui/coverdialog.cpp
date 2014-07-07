@@ -67,8 +67,9 @@
 #include <QXmlStreamReader>
 #include <QDomDocument>
 #include <QDomElement>
-#include <QDebug>
+#include <QSslSocket>
 
+#include <QDebug>
 #define DBUG if (Covers::debugEnabled()) qWarning() << "CoverDialog" << __FUNCTION__
 
 static int iCount=0;
@@ -775,7 +776,9 @@ void CoverDialog::sendDiscoGsQuery(const QString &fixedQuery, int page)
 
 void CoverDialog::sendSpotifyQuery(const QString &fixedQuery)
 {
-    #ifdef ENABLE_HTTPS_SUPPORT
+    if (!QSslSocket::supportsSsl()) {
+        return;
+    }
     QUrl url;
     #if QT_VERSION < 0x050000
     QUrl &query=url;
@@ -790,9 +793,6 @@ void CoverDialog::sendSpotifyQuery(const QString &fixedQuery)
     url.setQuery(query);
     #endif
     sendQueryRequest(url);
-    #else
-    Q_UNUSED(fixedQuery)
-    #endif
 }
 
 void CoverDialog::sendITunesQuery(const QString &fixedQuery)

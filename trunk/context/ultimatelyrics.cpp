@@ -150,14 +150,14 @@ void UltimateLyrics::load()
         return;
     }
 
-    QStringList dirs=QStringList() << Utils::dataDir("lyrics") << CANTATA_SYS_LYRICS_DIR;
+    QStringList dirs=QStringList() << Utils::dataDir() << CANTATA_SYS_CONFIG_DIR;
 
     QSet<QString> providerNames;
     foreach (const QString &d, dirs) {
         if (d.isEmpty()) {
             continue;
         }
-        QFileInfoList files=QDir(d).entryInfoList(QStringList() << QLatin1String("*.xml"), QDir::NoDotAndDotDot|QDir::Files);
+        QFileInfoList files=QDir(d).entryInfoList(QStringList() << QLatin1String("lyrics_*.xml"), QDir::NoDotAndDotDot|QDir::Files);
         foreach (const QFileInfo &f, files) {
             QFile file(f.absoluteFilePath());
             if (file.open(QIODevice::ReadOnly)) {

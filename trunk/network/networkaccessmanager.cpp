@@ -203,6 +203,7 @@ NetworkJob * NetworkAccessManager::get(const QNetworkRequest &req, int timeout)
         httpUrl.setScheme(QLatin1String("http"));
         QNetworkRequest httpReq=req;
         httpReq.setUrl(httpUrl);
+        DBUG << "no ssl, use" << httpUrl.toString();
         reply = new NetworkJob(BASE_NETWORK_ACCESS_MANAGER::get(httpReq));
         reply->setOrigUrl(req.url());
     } else {

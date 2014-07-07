@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-07-03 19:59+0100\n"
-"PO-Revision-Date: 2014-02-07 16:49+0100\n"
-"Last-Translator: Pavel\n"
+"PO-Revision-Date: 2014-07-07 19:05+0200\n"
+"Last-Translator: Pavel <pavelfric@seznam.cz>\n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
@@ -93,7 +93,7 @@ msgstr "&Album"
 
 #: context/contextwidget.cpp:369
 msgid "&Track"
-msgstr ""
+msgstr "&Skladba"
 
 #: context/lastfmengine.cpp:63
 msgid "Read more on last.fm"
@@ -162,7 +162,7 @@ msgstr "Vyberte stránky, které chcete použít při hledání textů písní."
 
 #: context/onlineview.cpp:31
 msgid "Song Information"
-msgstr ""
+msgstr "Informace o písni"
 
 #: context/othersettings.cpp:45 gui/coverdialog.cpp:863
 #: gui/interfacesettings.cpp:220
@@ -199,7 +199,7 @@ msgstr "Značky"
 
 #: context/songview.cpp:136
 msgid "Scroll Lyrics"
-msgstr ""
+msgstr "Projíždět text písně"
 
 #: context/songview.cpp:137
 msgid "Refresh Lyrics"
@@ -215,7 +215,7 @@ msgstr "Smazat soubor se slovy písně"
 
 #: context/songview.cpp:150
 msgid "Refresh Track Information"
-msgstr ""
+msgstr "Obnovit informace o skladbě"
 
 #: context/songview.cpp:151 context/view.cpp:205 gui/mainwindow.cpp:296
 #: widgets/messageoverlay.cpp:45
@@ -235,6 +235,9 @@ msgid ""
 "\n"
 "Reload from disk, or delete disk copy and download?"
 msgstr ""
+"Nahrát text písně znovu?\n"
+"\n"
+"Nahrát znovu z disku, nebo smazat kopii na disku a stáhnout?"
 
 #: context/songview.cpp:185 context/wikipediasettings.cpp:94
 #: models/streamsmodel.cpp:552 online/podcastsearchdialog.cpp:404
@@ -243,11 +246,11 @@ msgstr "Nahrát znovu"
 
 #: context/songview.cpp:186
 msgid "Reload From Disk"
-msgstr ""
+msgstr "Nahrát znovu z disku"
 
 #: context/songview.cpp:186
 msgid "Download"
-msgstr ""
+msgstr "Stáhnout"
 
 #: context/songview.cpp:218
 msgid "Current playing song has changed, still perform search?"
@@ -271,7 +274,7 @@ msgstr "Smazat soubor"
 
 #: context/songview.cpp:494 context/songview.cpp:558
 msgid "Album artist"
-msgstr ""
+msgstr "Umělec alba"
 
 #. i18n: file: devices/filenameschemedialog.ui:102
 #. i18n: ectx: property (text), widget (QPushButton, composer)
@@ -283,27 +286,27 @@ msgstr "Skladatel"
 
 #: context/songview.cpp:498
 msgid "Lyricist"
-msgstr ""
+msgstr "Textař"
 
 #: context/songview.cpp:499
 msgid "Conductor"
-msgstr ""
+msgstr "Dirigent"
 
 #: context/songview.cpp:500
 msgid "Remixer"
-msgstr ""
+msgstr "Autor předělávky"
 
 #: context/songview.cpp:502
 msgid "Subtitle"
-msgstr ""
+msgstr "Podnázev"
 
 #: context/songview.cpp:503 context/songview.cpp:564
 msgid "Track number"
-msgstr ""
+msgstr "Číslo skladby"
 
 #: context/songview.cpp:504 context/songview.cpp:563
 msgid "Disc number"
-msgstr ""
+msgstr "Číslo disku"
 
 #. i18n: file: devices/filenameschemedialog.ui:184
 #. i18n: ectx: property (text), widget (QPushButton, genre)
@@ -326,44 +329,44 @@ msgstr "Datum"
 
 #: context/songview.cpp:507
 msgid "Original date"
-msgstr ""
+msgstr "Původní datum"
 
 #: context/songview.cpp:508 context/songview.cpp:567
 #: dynamic/dynamicrulesdialog.cpp:74
 msgid "Comment"
-msgstr ""
+msgstr "Poznámka"
 
 #: context/songview.cpp:509
 msgid "Copyright"
-msgstr ""
+msgstr "Autorské právo"
 
 #: context/songview.cpp:510
 msgid "Label"
-msgstr ""
+msgstr "Štítek"
 
 #: context/songview.cpp:511
 msgid "Catalogue number"
-msgstr ""
+msgstr "Katalogové číslo"
 
 #: context/songview.cpp:512
 msgid "Title sort"
-msgstr ""
+msgstr "Třídění podle názvu"
 
 #: context/songview.cpp:513
 msgid "Artist sort"
-msgstr ""
+msgstr "Třídění podle umělce"
 
 #: context/songview.cpp:514
 msgid "Album artist sort"
-msgstr ""
+msgstr "Třídění podle alba a umělce"
 
 #: context/songview.cpp:515
 msgid "Album sort"
-msgstr ""
+msgstr "Třídění podle alba"
 
 #: context/songview.cpp:516
 msgid "Encoded by"
-msgstr ""
+msgstr "Zákodováno"
 
 #: context/songview.cpp:517 devices/devicepropertieswidget.cpp:226
 msgid "Encoder"
@@ -371,11 +374,11 @@ msgstr "Kodér"
 
 #: context/songview.cpp:518
 msgid "Mood"
-msgstr ""
+msgstr "Nálada"
 
 #: context/songview.cpp:519
 msgid "Media"
-msgstr ""
+msgstr "Média"
 
 #: context/songview.cpp:520 devices/encoders.cpp:223 devices/encoders.cpp:320
 msgid "Bitrate"
@@ -383,23 +386,23 @@ msgstr "Datový tok"
 
 #: context/songview.cpp:521
 msgid "Sample rate"
-msgstr ""
+msgstr "Vzorkovací kmitočet"
 
 #: context/songview.cpp:522
 msgid "Channels"
-msgstr ""
+msgstr "Kanály"
 
 #: context/songview.cpp:524
 msgid "Tagging time"
-msgstr ""
+msgstr "Čas značkování"
 
 #: context/songview.cpp:546
 msgid "Performer (%1)"
-msgstr ""
+msgstr "Účinkující (%1)"
 
 #: context/songview.cpp:561 models/playqueuemodel.cpp:177
 msgid "Performer"
-msgstr ""
+msgstr "Účinkující"
 
 #. i18n: file: devices/filenameschemedialog.ui:174
 #. i18n: ectx: property (text), widget (QPushButton, year)
@@ -1624,15 +1627,15 @@ msgstr " (doporučeno)"
 
 #: dynamic/dynamic.cpp:78
 msgid "Empty filename."
-msgstr ""
+msgstr "Prázdný název souboru."
 
 #: dynamic/dynamic.cpp:79
 msgid "Invalid filename. (%1)"
-msgstr ""
+msgstr "Neplatný název souboru. (%1)"
 
 #: dynamic/dynamic.cpp:80
 msgid "Failed to save %1."
-msgstr ""
+msgstr "Nepodařilo se uložit %1."
 
 #: dynamic/dynamic.cpp:81 dynamic/dynamic.cpp:830 dynamic/dynamic.cpp:833
 msgid "Failed to delete rules file. (%1)"
@@ -1640,31 +1643,31 @@ msgstr "Nepodařilo se smazat soubor s pravidly. (%1)"
 
 #: dynamic/dynamic.cpp:82
 msgid "Invalid command. (%1)"
-msgstr ""
+msgstr "Neplatný příkaz. (%1)"
 
 #: dynamic/dynamic.cpp:83
 msgid "Could not remove active rules link."
-msgstr ""
+msgstr "Nepodařilo se odstranit odkaz na činná pravidla."
 
 #: dynamic/dynamic.cpp:84
 msgid "Active rules is not a link."
-msgstr ""
+msgstr "Činná pravidla není odkaz."
 
 #: dynamic/dynamic.cpp:85
 msgid "Could not create active rules link."
-msgstr ""
+msgstr "Nepodařilo se vytvořit odkaz na činná pravidla."
 
 #: dynamic/dynamic.cpp:86
 msgid "Rules file, %1, does not exist."
-msgstr ""
+msgstr "Soubor s pravidly, %1, neexistuje."
 
 #: dynamic/dynamic.cpp:87
 msgid "Incorrect arguments supplied."
-msgstr ""
+msgstr "Poskytnuty nesprávné argumenty."
 
 #: dynamic/dynamic.cpp:88
 msgid "Unknown method called."
-msgstr ""
+msgstr "Zavolána neznámá metoda."
 
 #: dynamic/dynamic.cpp:91 models/digitallyimported.cpp:155
 #: models/digitallyimported.cpp:181 scrobbling/scrobbler.cpp:104
@@ -1717,7 +1720,7 @@ msgstr "Očekává se odpověď na předchozí příkaz. (%1)"
 
 #: dynamic/dynamic.cpp:816
 msgid "Failed to save %1. (%2)"
-msgstr ""
+msgstr "Nepodařilo se uložit %1. (%2)"
 
 #: dynamic/dynamic.cpp:840
 msgid "Failed to control dynamizer state. (%1)"
@@ -1732,6 +1735,7 @@ msgid ""
 "Communication with the remote dynamizer has been lost, reverting to local "
 "mode."
 msgstr ""
+"Spojení se vzdáleným dynamizátorem byl ztracen. Návrat do místního režimu."
 
 #: dynamic/dynamicpage.cpp:40
 msgid "Add Dynamic Rules"
@@ -1876,6 +1880,17 @@ msgid ""
 "(because Cantata cannot access it, or you have configured Cantata to not "
 "save these items there). Below is a summary of Cantata's current cache usage."
 msgstr ""
+"Cantata ukládá do vyrovnávací paměti místní kopii přehledu hudby pro "
+"urychlení "
+"nahrávání sbírky. Cantata může do vyrovnávací paměti uložit i obaly, texty "
+"písní nebo "
+"obrázky umělců, pokud byly tyto staženy a nepodařilo se je uložit do složky s "
+"hudbou "
+"(protože k ní Cantata nemohla přistupovat, nebo jste Cantatu nastavil tak, "
+"aby do "
+"nich tyto položky neukládala). Níže je shrnutí nynějšího využívání ukládání "
+"do "
+"vyrovnávací paměti Cantatou."
 
 #: gui/cachesettings.cpp:264
 msgid "Covers"
@@ -1899,7 +1914,7 @@ msgstr "Informace o albu"
 
 #: gui/cachesettings.cpp:271
 msgid "Track Information"
-msgstr ""
+msgstr "Informace o skladbě"
 
 #: gui/cachesettings.cpp:273
 msgid "Stream Listings"
@@ -1919,7 +1934,7 @@ msgstr "Adresáře se záznamy (podcasty)"
 
 #: gui/cachesettings.cpp:281
 msgid "Scrobble Tracks"
-msgstr ""
+msgstr "Odesílat informace o skladbách"
 
 #: gui/cachesettings.cpp:288
 msgid "Delete All"
@@ -1983,10 +1998,12 @@ msgstr "Obrázek (%1 x %2 %3%)"
 #: gui/coverdialog.cpp:436
 msgid "An image already exists for this artist, and the file is not writeable."
 msgstr ""
+"Pro tohoto umělce již existuje jeden obrázek. Soubor však není zapisovatelný."
 
 #: gui/coverdialog.cpp:437
 msgid "A cover already exists for this album, and the file is not writeable."
 msgstr ""
+"Pro toto album již existuje jeden obrázek. Soubor však není zapisovatelný."
 
 #: gui/coverdialog.cpp:443
 msgid "'%1' Artist Image"
@@ -2080,27 +2097,27 @@ msgstr "Spojení se nezdařilo"
 
 #: gui/interfacesettings.cpp:56
 msgid "Album, Artist, Year"
-msgstr ""
+msgstr "Album, umělec, rok"
 
 #: gui/interfacesettings.cpp:57
 msgid "Album, Year, Artist"
-msgstr ""
+msgstr "Album, rok, umělec"
 
 #: gui/interfacesettings.cpp:58
 msgid "Artist, Album, Year"
-msgstr ""
+msgstr "Umělec, album, rok"
 
 #: gui/interfacesettings.cpp:59
 msgid "Artist, Year, Album"
-msgstr ""
+msgstr "Umělec, rok, album"
 
 #: gui/interfacesettings.cpp:60
 msgid "Year, Album, Artist"
-msgstr ""
+msgstr "Rok, album, umělec"
 
 #: gui/interfacesettings.cpp:61
 msgid "Year, Artist, Album"
-msgstr ""
+msgstr "Rok, umělec, album"
 
 #. i18n: file: context/othersettings.ui:32
 #. i18n: ectx: property (text), widget (QRadioButton, contextBackdrop_none)
@@ -2359,7 +2376,7 @@ msgstr "Nastavit Cantatu..."
 
 #: gui/mainwindow.cpp:236
 msgid "Preferences"
-msgstr ""
+msgstr "Nastavení"
 
 #: gui/mainwindow.cpp:239
 msgid "Quit"
@@ -2418,7 +2435,7 @@ msgstr "Vyprázdnit"
 
 #: gui/mainwindow.cpp:267
 msgid "Center On Current Track"
-msgstr ""
+msgstr "Zaměřit na nynější skladbu"
 
 #: gui/mainwindow.cpp:268
 msgid "Expanded Interface"
@@ -2494,7 +2511,7 @@ msgstr "Odstranit všechny písně"
 
 #: gui/mainwindow.cpp:301
 msgid "Clear 'New' State Of Artists and Albums"
-msgstr ""
+msgstr "Smazat stav umělců a alb Nový"
 
 #: gui/mainwindow.cpp:391
 msgid "Dynamic"
@@ -2519,11 +2536,11 @@ msgstr "Informace"
 
 #: gui/mainwindow.cpp:578
 msgid "Show Menubar"
-msgstr ""
+msgstr "Ukázat pruh s nabídkou"
 
 #: gui/mainwindow.cpp:628
 msgid "&Music"
-msgstr ""
+msgstr "&Hudba"
 
 #: gui/mainwindow.cpp:639
 msgid "&Edit"
@@ -2531,11 +2548,11 @@ msgstr "Úp&ravy"
 
 #: gui/mainwindow.cpp:655
 msgid "&View"
-msgstr ""
+msgstr "&Pohled"
 
 #: gui/mainwindow.cpp:667
 msgid "&Queue"
-msgstr ""
+msgstr "Řa&da"
 
 #: gui/mainwindow.cpp:680
 msgid "&Settings"
@@ -2631,6 +2648,12 @@ msgid ""
 "%5</td></tr><tr><td align=\"right\">Handlers:&nbsp;</td><td>%6</td></"
 "tr><tr><td align=\"right\">Tags:&nbsp;</td><td>%7</td></tr>"
 msgstr ""
+"<tr><td colspan=\"2\"><b>Server</b></td></tr><tr><td align=\"right"
+"\">Protokol:&nbsp;</td><td>%1.%2.%3</td></tr><tr><td align=\"right\">Doba "
+"provozu:"
+"&nbsp;</td><td>%4</td></tr><tr><td align=\"right\">Přehrává se:&nbsp;</td><td>"
+"%5</td></tr><tr><td align=\"right\">Ovladače:&nbsp;</td><td>%6</td></"
+"tr><tr><td align=\"right\">Značky:&nbsp;</td><td>%7</td></tr>"
 
 #: gui/mainwindow.cpp:1532
 msgid ""
@@ -2640,6 +2663,12 @@ msgid ""
 "tr><tr><td align=\"right\">Duration:&nbsp;</td><td>%4</td></tr><tr><td align="
 "\"right\">Updated:&nbsp;</td><td>%5</td></tr>"
 msgstr ""
+"<tr><td colspan=\"2\"><b>Databáze</b></td></tr><tr><td align=\"right"
+"\">Umělci:&nbsp;</td><td>%1</td></tr><tr><td align=\"right\">Alba:&nbsp;</"
+"td><td>%2</td></tr><tr><td align=\"right\">Písně:&nbsp;</td><td>%3</td></"
+"tr><tr><td align=\"right\">Doba trvání:&nbsp;</td><td>%4</td></tr><tr><td "
+"align="
+"\"right\">Obnoveno:&nbsp;</td><td>%5</td></tr>"
 
 #: gui/mainwindow.cpp:1541
 msgid "Server Information"
@@ -2655,7 +2684,7 @@ msgstr "MPD nahlásilo následující chybu: %1"
 
 #: gui/mainwindow.cpp:1883
 msgid "Playback stopped"
-msgstr ""
+msgstr "Přehrávání zastaveno"
 
 #: gui/mainwindow.cpp:1924
 msgid "Remove all songs from play queue?"
@@ -2681,6 +2710,8 @@ msgstr "Zadejte název pro seznam skladeb:"
 msgid ""
 "<b>%1</b> is used to store favorite streams, please choose another name."
 msgstr ""
+"<b>%1</b> se používá na ukládání oblíbených proudů. Vyberte, prosím, jiný "
+"název."
 
 #: gui/mainwindow.cpp:2013
 msgid "A playlist named <b>%1</b> already exists!<br/>Add to that playlist?"
@@ -2825,9 +2856,9 @@ msgstr[2] "%1 umělců"
 #: gui/plurals_kde.cpp:49
 msgid "1 Stream"
 msgid_plural "%1 Streams"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "Jeden proud"
+msgstr[1] "%1 proudy"
+msgstr[2] "%1 proudů"
 
 #: gui/plurals_kde.cpp:54
 msgid "1 Entry"
@@ -2839,7 +2870,7 @@ msgstr[2] "%1 položek"
 #: gui/plurals_kde.cpp:59
 msgid "1 Rule"
 msgid_plural "%1 Rules"
-msgstr[0] "1 pravidlo"
+msgstr[0] "Jedno pravidlo"
 msgstr[1] "%1 pravidla"
 msgstr[2] "%1 pravidel"
 
@@ -2860,9 +2891,9 @@ msgstr[2] "%1 dílů"
 #: gui/plurals_kde.cpp:74
 msgid "1 Update available"
 msgid_plural "%1 Updates available"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "Jedna aktualizace dostupná"
+msgstr[1] "%1 aktualizace dostupné"
+msgstr[2] "%1 aktualizací dostupných"
 
 #: gui/preferencesdialog.cpp:85
 msgid "Collection Settings"
@@ -2912,11 +2943,11 @@ msgstr "Nastavení pohledu na souvislosti"
 
 #: gui/preferencesdialog.cpp:100
 msgid "Scrobbling"
-msgstr ""
+msgstr "Odesílání informací o skladbách"
 
 #: gui/preferencesdialog.cpp:100
 msgid "Scrobbling Settings"
-msgstr ""
+msgstr "Nastavení odesílání informací o skladbách"
 
 #: gui/preferencesdialog.cpp:109
 msgid "HTTP Server"
@@ -2993,7 +3024,7 @@ msgstr "Skladatel:"
 
 #: gui/searchpage.cpp:234
 msgid "Performer:"
-msgstr ""
+msgstr "Účinkující:"
 
 #. i18n: file: devices/albumdetails.ui:76
 #. i18n: ectx: property (text), widget (BuddyLabel, label_3)
@@ -3017,7 +3048,7 @@ msgstr "Žánr:"
 #. i18n: ectx: property (text), widget (StateLabel, commentLabel)
 #: gui/searchpage.cpp:240 po/rc.cpp:404 po/rc.cpp:1004 rc.cpp:404 rc.cpp:1004
 msgid "Comment:"
-msgstr ""
+msgstr "Poznámka:"
 
 #: gui/searchpage.cpp:242
 msgid "Date:"
@@ -3386,11 +3417,11 @@ msgstr "Znovu"
 
 #: models/playqueuemodel.cpp:249
 msgid "Shuffle"
-msgstr ""
+msgstr "Zamíchat"
 
 #: models/playqueuemodel.cpp:258
 msgid "Sort By"
-msgstr ""
+msgstr "Třídit podle"
 
 #. i18n: file: devices/filenameschemedialog.ui:82
 #. i18n: ectx: property (text), widget (QPushButton, albumArtist)
@@ -3424,7 +3455,7 @@ msgstr "ShoutCast"
 
 #: models/streamsmodel.cpp:543
 msgid "Dirble"
-msgstr ""
+msgstr "Dirble"
 
 #: models/streamsmodel.cpp:546
 msgid "Favorites"
@@ -3462,7 +3493,7 @@ msgstr "Nepodařilo se připojit k %1"
 
 #: mpd/mpdconnection.cpp:373
 msgid "Connection to %1 failed - please check your proxy settings"
-msgstr ""
+msgstr "Nepodařilo se připojit k %1 - Prověřte, prosím, nastavení vaší proxy"
 
 #: mpd/mpdconnection.cpp:374
 msgid "Connection to %1 failed - incorrect password"
@@ -3507,6 +3538,7 @@ msgstr "Nelze přidat seznam skladeb do jiného seznamu skladeb!"
 #: mpd/mpdconnection.cpp:1574
 msgid "Failed to send '%1' to %2. Please check %2 is registered with MPD."
 msgstr ""
+"Nepodařilo se poslat '%1' %2. Ověřte, prosím, že %2 je zaregistrováno u MPD."
 
 #: mpd/mpduser.cpp:50
 msgid "Personal"
@@ -3537,12 +3569,12 @@ msgstr ""
 #: mpd/song.cpp:601
 msgctxt "Song on Album"
 msgid "<b>%1</b> on <b>%2</b>"
-msgstr ""
+msgstr "<b>%1</b> na <b>%2</b>"
 
 #: mpd/song.cpp:602
 msgctxt "Song by Artist on Album"
 msgid "<b>%1</b> by <b>%2</b> on <b>%3</b>"
-msgstr ""
+msgstr "<b>%1</b> od <b>%2</b> na <b>%3</b>"
 
 #: network/proxysettings.cpp:33
 msgid "No proxy"
@@ -4011,13 +4043,13 @@ msgstr "40 %"
 #. i18n: ectx: property (text), widget (BuddyLabel, contextSwitchTimeLabel)
 #: po/rc.cpp:28 rc.cpp:28
 msgid "Automatically switch to view after:"
-msgstr ""
+msgstr "Automaticky přepnout do pohledu po:"
 
 #. i18n: file: context/othersettings.ui:177
 #. i18n: ectx: property (specialValueText), widget (QSpinBox, contextSwitchTime)
 #: po/rc.cpp:31 rc.cpp:31
 msgid "Do not auto-switch"
-msgstr ""
+msgstr "Nepřepínat automaticky"
 
 #. i18n: file: context/othersettings.ui:180
 #. i18n: ectx: property (suffix), widget (QSpinBox, contextSwitchTime)
@@ -4043,6 +4075,7 @@ msgstr "Tmavé pozadí"
 msgid ""
 "Darken background, and use white text, regardless of current color palette."
 msgstr ""
+"Ztmavit pozadí a použít bílý text, bez ohledu na nynější barevnou paletu."
 
 #. i18n: file: context/othersettings.ui:203
 #. i18n: ectx: property (text), widget (QCheckBox, contextAlwaysCollapsed)
@@ -4057,6 +4090,8 @@ msgid ""
 "Only show 'Artist', 'Album', or 'Lyrics' even if sufficient width to show "
 "all three."
 msgstr ""
+"Ukázat jen umělce, album nebo text písně, i když je dost místa na ukázání "
+"všech tří."
 
 #. i18n: file: context/othersettings.ui:213
 #. i18n: ectx: property (text), widget (QCheckBox, wikipediaIntroOnly)
@@ -4813,7 +4848,7 @@ msgstr "Přidat místní soubor"
 #. i18n: ectx: property (text), widget (QCheckBox, storeCoversInMpdDir)
 #: po/rc.cpp:425 po/rc.cpp:512 rc.cpp:425 rc.cpp:512
 msgid "Save downloaded covers, and artist images, in music folder"
-msgstr ""
+msgstr "Uložit stažené obaly a obrázky umělců ve složce s hudbou"
 
 #. i18n: file: gui/filesettings.ui:36
 #. i18n: ectx: property (text), widget (QCheckBox, storeLyricsInMpdDir)
@@ -4848,6 +4883,11 @@ msgid ""
 "folder, then Cantata will revert to saving the files in your personal cache "
 "folder.</i>"
 msgstr ""
+"<i><b>POZNÁMKA:</b> Pokud se rozhodnete, že má Cantata ukládat obaly, "
+"texty písní nebo obrázky pozadí do složky s hudbou, a nemáte přístupová práva "
+"pro zápis do této složky, Cantata se vrátí k zapisování souborů do vaší "
+"osobní "
+"složky pro ukládání vyrovnávací paměti.</i>"
 
 #. i18n: file: gui/filesettings.ui:104
 #. i18n: ectx: property (text), widget (QLabel, persNote_2)
@@ -5052,6 +5092,10 @@ msgid ""
 "relevant files within the music folder, or within your personal cache/config "
 "folders.</p>"
 msgstr ""
+"<p>Cantata stáhne chybějící obaly a texty písní z internetu.</"
+"p><p>U každého, prosím, potvrďte, zda chcete, aby Cantata soubory "
+"ukládala ve složce s hudbou, nebo ve vašich osobních "
+"složkách s vyrovnávací pamětí/pro ukládání nastavení.</p>"
 
 #. i18n: file: gui/initialsettingswizard.ui:772
 #. i18n: ectx: property (text), widget (QLabel, persNote)
@@ -5113,6 +5157,10 @@ msgid ""
 "used to customise Cantata's appearance, as well as to add extra MPD hosts, "
 "etc."
 msgstr ""
+"Cantata je nyní nastavena!<br/><br/>Dialog pro nastavení Cantaty může být "
+"použit k přizpůsobení vzhledu Cantaty, a rovněž pro přidání dalších serverů "
+"MPD, "
+"a tak dále."
 
 #. i18n: file: gui/initialsettingswizard.ui:930
 #. i18n: ectx: property (text), widget (QLabel, groupWarningLabel)
@@ -5219,7 +5267,7 @@ msgstr "Ukázat obrázky umělců"
 #. i18n: ectx: property (text), widget (QCheckBox, libraryYear)
 #: po/rc.cpp:584 rc.cpp:584
 msgid "Sort albums by year"
-msgstr ""
+msgstr "Třídit alba podle roku"
 
 #. i18n: file: gui/interfacesettings.ui:264
 #. i18n: ectx: property (text), widget (QLabel, label_8)
@@ -5281,13 +5329,13 @@ msgstr "Styl pohledu s internetem:"
 #. i18n: ectx: property (text), widget (BuddyLabel, devicesViewLabel)
 #: po/rc.cpp:624 rc.cpp:624
 msgid "Devices view style:"
-msgstr "Styl pohled se zařízeními:"
+msgstr "Styl pohledu se zařízeními:"
 
 #. i18n: file: gui/interfacesettings.ui:421
 #. i18n: ectx: property (text), widget (QLabel, label_5)
 #: po/rc.cpp:627 rc.cpp:627
 msgid "Search view style:"
-msgstr ""
+msgstr "Styl pohledu s hledáním:"
 
 #. i18n: file: gui/interfacesettings.ui:461
 #. i18n: ectx: property (text), widget (QCheckBox, playQueueAutoExpand)
@@ -5372,6 +5420,7 @@ msgstr "Obecné"
 #: po/rc.cpp:700 rc.cpp:700
 msgid "Place albums with only one track under 'Various Artists/Single Tracks'"
 msgstr ""
+"Umístit alba obsahující jen jednu skladbu do Různí umělci/Jednotlivé skladby"
 
 #. i18n: file: gui/interfacesettings.ui:739
 #. i18n: ectx: property (text), widget (QCheckBox, groupSingle)
@@ -5385,6 +5434,7 @@ msgstr "Seskupit alba s jednotlivými skladbami"
 msgid ""
 "Use the 'Composer' tag, and not 'Artist' or 'Album Artist', to group albums."
 msgstr ""
+"Použít pro seskupení alb značku Skladatel a ne Umělec nebo Umělec alba."
 
 #. i18n: file: gui/interfacesettings.ui:749
 #. i18n: ectx: property (text), widget (QCheckBox, useComposer)
@@ -5402,12 +5452,20 @@ msgid ""
 "'Metal', then only these 5 would be added if the view's Genre filter was set "
 "to 'Metal'."
 msgstr ""
+"<p>Při přidávání umělců nebo alb do řady skladeb k přehrání, nebo při "
+"upravování značek aj., "
+"používejte pouze písně, které projdou nynějším filtrem pro žánr nebo "
+"řetězec.</p><p>Např. "
+"Pokud máte album s 10 písněmi, ale jen 5 má žánr nastavený na "
+"'Metal', potom jen těchto 5 bude přidáno, pokud byl filtr pro zobrazení žánru "
+"nastaven "
+"na 'Metal'."
 
 #. i18n: file: gui/interfacesettings.ui:759
 #. i18n: ectx: property (text), widget (QCheckBox, filteredOnly)
 #: po/rc.cpp:715 rc.cpp:715
 msgid "Only act on songs that pass filtering"
-msgstr ""
+msgstr "Působit jen na písně, které projdou filtrováním"
 
 #. i18n: file: gui/interfacesettings.ui:766
 #. i18n: ectx: property (text), widget (QCheckBox, fetchCovers)
@@ -5446,24 +5504,33 @@ msgid ""
 "mouse)</li><li>Spin buttons with have + and - buttons at the side of the "
 "text field</li></ul></p>"
 msgstr ""
+"<p>Toto změní rozhraní Cantaty, jak je to popsáno dále:\n"
+"<ul><li>Tlačítka pro přehrávání a ovládání budou o 33 % širší</li><li>Pohledy "
+"budou odstrčitelné.</li><li>Pro táhnutí položek budete potřebovat najet do "
+"horního levého rohu</li><li>Posuvníky budou široké jen několik pixelů</li><li>"
+"Činnosti (např. "
+"Přidat do řady skladeb k přehrání) budou vždy viditelné (ne jen tehdy, když "
+"je položka pod "
+"myší)</li><li>Otočná tlačítka budou mít tlačítka + a - na straně "
+"textového pole.</li></ul></p>"
 
 #. i18n: file: gui/interfacesettings.ui:798
 #. i18n: ectx: property (text), widget (QCheckBox, touchFriendly)
 #: po/rc.cpp:735 rc.cpp:735
 msgid "Make interface more touch friendly"
-msgstr ""
+msgstr "Udělat rozhraní dotekově přátelštější"
 
 #. i18n: file: gui/interfacesettings.ui:805
 #. i18n: ectx: property (text), widget (QCheckBox, showStopButton)
 #: po/rc.cpp:738 rc.cpp:738
 msgid "Show stop button in toolbar"
-msgstr ""
+msgstr "Ukázat tlačítko pro zastavení v nástrojovém pruhu"
 
 #. i18n: file: gui/interfacesettings.ui:812
 #. i18n: ectx: property (text), widget (QCheckBox, showCoverWidget)
 #: po/rc.cpp:741 rc.cpp:741
 msgid "Show cover of current track in toolbar"
-msgstr ""
+msgstr "Ukázat obal nynější skladby v nástrojovém pruhu"
 
 #. i18n: file: gui/interfacesettings.ui:819
 #. i18n: ectx: property (text), widget (BuddyLabel, langLabel)
@@ -5498,6 +5565,9 @@ msgid ""
 "<i><b>NOTE:</b> Changing the 'touch friendly' setting will require a re-"
 "start of Cantata.</i>"
 msgstr ""
+"<i><b>POZNÁMKA:</b> Změna nastavení rozhraní na dotykově přátelské vyžaduje "
+"opětovné spuštění "
+"Cantaty.</i>"
 
 #. i18n: file: gui/mainwindow.ui:197
 #. i18n: ectx: property (text), widget (QLabel, dynamicLabel)
@@ -5509,7 +5579,7 @@ msgstr "[Dynamický]"
 #. i18n: ectx: property (text), widget (UrlLabel, fullScreenLabel)
 #: po/rc.cpp:759 rc.cpp:759
 msgid "Exit Full Screen"
-msgstr ""
+msgstr "Opustit režim zobrazení na celou obrazovku"
 
 #. i18n: file: gui/playbacksettings.ui:38
 #. i18n: ectx: property (text), widget (BuddyLabel, label_6b)
@@ -5717,7 +5787,7 @@ msgstr "Použijte zaškrtávací okénka níže k nastavení seznamu činných s
 #. i18n: ectx: property (text), widget (BuddyLabel, scrobblerLabel)
 #: po/rc.cpp:893 rc.cpp:893
 msgid "Scrobble using:"
-msgstr ""
+msgstr "Odesílat informace o skladbách pomocí:"
 
 #. i18n: file: scrobbling/scrobblingsettings.ui:72
 #. i18n: ectx: property (text), widget (BuddyLabel, statusLabel)
@@ -5748,13 +5818,13 @@ msgstr "Přihlášení"
 #. i18n: ectx: property (text), widget (QCheckBox, enableScrobbling)
 #: po/rc.cpp:908 rc.cpp:908
 msgid "Scrobble tracks"
-msgstr ""
+msgstr "Odesílat informace o skladbách"
 
 #. i18n: file: scrobbling/scrobblingsettings.ui:129
 #. i18n: ectx: property (text), widget (QCheckBox, showLove)
 #: po/rc.cpp:911 rc.cpp:911
 msgid "Show 'Love' button"
-msgstr ""
+msgstr "Ukázat tlačítko pro ukázání náklonnosti k písničce"
 
 #. i18n: file: streams/digitallyimportedsettings.ui:29
 #. i18n: ectx: property (text), widget (QLabel, label)
@@ -5888,6 +5958,8 @@ msgid ""
 "<i><b>NOTE</b> Multiple genres should be separated via a semicolon (e.g. "
 "'Rock;Hard Rock')</i>"
 msgstr ""
+"<i><b>POZNÁMKA:</b> Více žánrů se musí oddělit středníkem (např. "
+"'Rock;Hard Rock')</i>"
 
 #. i18n: file: tags/trackorganiser.ui:115
 #. i18n: ectx: property (text), widget (QTreeWidget, files)
@@ -6022,11 +6094,11 @@ msgstr "Nepodařilo se"
 
 #: replaygain/rgdialog.cpp:506 replaygain/rgdialog.cpp:516
 msgid "Original: %1 dB"
-msgstr ""
+msgstr "Původní: %1 dB"
 
 #: replaygain/rgdialog.cpp:511 replaygain/rgdialog.cpp:521
 msgid "Original: %1"
-msgstr ""
+msgstr "Původní: %1"
 
 #: replaygain/rgdialog.cpp:628 tags/trackorganiser.cpp:465
 msgid "Remove the selected tracks from the list?"
@@ -6038,68 +6110,70 @@ msgstr "Odstranit skladby"
 
 #: scrobbling/scrobbler.cpp:91
 msgid "Invalid service"
-msgstr ""
+msgstr "Neplatná služba"
 
 #: scrobbling/scrobbler.cpp:92
 msgid "Invalid method"
-msgstr ""
+msgstr "Neplatná metoda"
 
 #: scrobbling/scrobbler.cpp:93
 msgid "Authentication failed"
-msgstr ""
+msgstr "Ověření se nezdařilo"
 
 #: scrobbling/scrobbler.cpp:94
 msgid "Invalid format"
-msgstr ""
+msgstr "Neplatný formát"
 
 #: scrobbling/scrobbler.cpp:95
 msgid "Invalid parameters"
-msgstr ""
+msgstr "Neplatné parametry"
 
 #: scrobbling/scrobbler.cpp:96
 msgid "Invalid resource specified"
-msgstr ""
+msgstr "Zadán neplatný zdroj"
 
 #: scrobbling/scrobbler.cpp:97
 msgid "Operation failed"
-msgstr ""
+msgstr "Operace se nezdařila"
 
 #: scrobbling/scrobbler.cpp:98
 msgid "Invalid session key"
-msgstr ""
+msgstr "Neplatný klíč sezení"
 
 #: scrobbling/scrobbler.cpp:99
 msgid "Invalid API key"
-msgstr ""
+msgstr "Neplatný klíč API"
 
 #: scrobbling/scrobbler.cpp:100
 msgid "Service offline"
-msgstr ""
+msgstr "Služba není dostupná"
 
 #: scrobbling/scrobbler.cpp:101
 msgid "Last.fm is currently busy, please try again in a few minutes"
 msgstr ""
+"Služba Last.fm je nyní zaneprázdněna. Zkuste to, prosím, znovu za několik "
+"minut"
 
 #: scrobbling/scrobbler.cpp:102
 msgid "Rate-limit exceeded"
-msgstr ""
+msgstr "Překročeno omezení na počet hodnocení"
 
 #: scrobbling/scrobbler.cpp:571
 msgid "%1 error: %2"
-msgstr ""
+msgstr "%1 chyba: %2"
 
 #: scrobbling/scrobblinglove.cpp:59
 msgid "%1: Loved Current Track"
-msgstr ""
+msgstr "%1: Nynější skladba byla zařazena mezi oblíbené"
 
 #: scrobbling/scrobblinglove.cpp:60
 msgid "%1: Love Current Track"
-msgstr ""
+msgstr "%1: Zařadit nynější skladbu mezi oblíbené"
 
 #: scrobbling/scrobblingsettings.cpp:54
 msgctxt "scrobbler name (via MPD)"
 msgid "%1 (via MPD)"
-msgstr ""
+msgstr "%1 (přes MPD)"
 
 #: scrobbling/scrobblingsettings.cpp:66
 msgid ""
@@ -6107,26 +6181,32 @@ msgid ""
 "as %1), then you will need to have this already started and running. Cantata "
 "can only 'Love' tracks via this, and cannot enable/disable scrobbling.</i>"
 msgstr ""
+"<i><b>POZNÁMKA:</b> Pokud použijete odesílání údajů o skladbách (scrobbler), "
+"což je označeno jako '(přes MPD)' (například %1), potom musíte mít tuto "
+"službu "
+"již spuštěnu a běžící. Cantata umí skladby Zařadit mezi oblíbené jen pomocí "
+"této služby, "
+"a neumí odesílání údajů o skladbách zakázat/povolit</i>"
 
 #: scrobbling/scrobblingsettings.cpp:99
 #: streams/digitallyimportedsettings.cpp:113
 msgid "Authenticating..."
-msgstr ""
+msgstr "Ověřuje se pravost..."
 
 #: scrobbling/scrobblingsettings.cpp:116
 #: streams/digitallyimportedsettings.cpp:123
 msgid "Authenticated"
-msgstr ""
+msgstr "Pravost ověřena"
 
 #: scrobbling/scrobblingsettings.cpp:116
 #: streams/digitallyimportedsettings.cpp:110
 #: streams/digitallyimportedsettings.cpp:123
 msgid "Not Authenticated"
-msgstr ""
+msgstr "Pravost neověřena"
 
 #: scrobbling/scrobblingstatus.cpp:44
 msgid "%1: Scrobble Tracks"
-msgstr ""
+msgstr "%1: Odesílat informace o skladbách"
 
 #: streams/digitallyimportedsettings.cpp:36
 msgid "Digitally Imported Settings"
@@ -6178,23 +6258,23 @@ msgstr "Natahuje se %1"
 
 #: streams/streamproviderlistdialog.cpp:128
 msgid "Installed"
-msgstr ""
+msgstr "Nainstalováno"
 
 #: streams/streamproviderlistdialog.cpp:130
 msgid "Update available"
-msgstr ""
+msgstr "Aktualizace dostupná"
 
 #: streams/streamproviderlistdialog.cpp:132
 msgid "Check the providers you wish to install/update."
-msgstr ""
+msgstr "Prověřit poskytovatele, které si přejete nainstalovat/aktualizovat."
 
 #: streams/streamproviderlistdialog.cpp:145
 msgid "Install/Update Stream Providers"
-msgstr ""
+msgstr "Nainstalovat/Aktualizovat poskytovatele proudů"
 
 #: streams/streamproviderlistdialog.cpp:194
 msgid "Downloading list..."
-msgstr ""
+msgstr "Stahuje se seznam..."
 
 #: streams/streamproviderlistdialog.cpp:217
 msgid "Digitally Imported"
@@ -6202,52 +6282,52 @@ msgstr "Digitally Imported"
 
 #: streams/streamproviderlistdialog.cpp:218
 msgid "Local and National Radio (ListenLive)"
-msgstr ""
+msgstr "Místní a národní rádio (Poslouchat živě)"
 
 #: streams/streamproviderlistdialog.cpp:238
 msgid "Failed to download list of stream providers!"
-msgstr ""
+msgstr "Nepodařilo se stáhnout seznam poskytovatelů proudů!"
 
 #: streams/streamproviderlistdialog.cpp:250
 msgid "Installing/updating %1"
-msgstr ""
+msgstr "Instaluje se/Aktualizuje se %1"
 
 #: streams/streamproviderlistdialog.cpp:257
 msgid "Failed to install <b>%1</b>"
-msgstr ""
+msgstr "Nepodařilo se nainstalovat <b>%1</b>"
 
 #: streams/streamproviderlistdialog.cpp:266
 msgid "Failed to download <b>%1</b>"
-msgstr ""
+msgstr "Nepodařilo se stáhnout <b>%1</b>"
 
 #: streams/streamproviderlistdialog.cpp:327
 msgid "ListenLive"
-msgstr ""
+msgstr "Poslouchat živě"
 
 #: streams/streamproviderlistdialog.cpp:364
 msgid "Install the following?"
-msgstr ""
+msgstr "Nainstalovat následující?"
 
 #: streams/streamproviderlistdialog.cpp:374
 msgid "Update the following?"
-msgstr ""
+msgstr "Aktualizovat následující?"
 
 #: streams/streamproviderlistdialog.cpp:381
 #: streams/streamproviderlistdialog.cpp:463
 msgid "Install/Update"
-msgstr ""
+msgstr "Instalovat/Aktualizovat"
 
 #: streams/streamproviderlistdialog.cpp:388
 msgid "Abort installation/update?"
-msgstr ""
+msgstr "Zrušit instalaci/aktualizaci?"
 
 #: streams/streamproviderlistdialog.cpp:446
 msgid "Downloading %1"
-msgstr ""
+msgstr "Stahuje se %1"
 
 #: streams/streamproviderlistdialog.cpp:465
 msgid "Update all updateable providers"
-msgstr ""
+msgstr "Aktualizovat všechny aktualizovatelné poskytovatele"
 
 #: streams/streamspage.cpp:58
 msgid "Import Streams Into Favorites"
@@ -6288,7 +6368,7 @@ msgstr "Vyvést proudy"
 
 #: streams/streamspage.cpp:225
 msgid "XML Streams (*.xml.gz)"
-msgstr ""
+msgstr "Proudy XML (*.xml.gz)"
 
 #: streams/streamspage.cpp:237
 msgid "Failed to create <b>%1</b>!"
@@ -6340,15 +6420,15 @@ msgstr "Hledání %1:"
 
 #: streams/streamspage.cpp:626
 msgid "Added '%1'' to favorites"
-msgstr ""
+msgstr "Přidáno \"%1'' do oblíbených"
 
 #: streams/streamssettings.cpp:73
 msgid "From File..."
-msgstr ""
+msgstr "Ze souboru..."
 
 #: streams/streamssettings.cpp:74
 msgid "Download..."
-msgstr ""
+msgstr "Stáhnout..."
 
 #: streams/streamssettings.cpp:133
 msgid "*.streams|Cantata Streams"
@@ -6368,7 +6448,7 @@ msgstr "Skupina pojmenovaná <b>%1</b> již existuje!<br/>Přepsat?"
 
 #: streams/streamssettings.cpp:176
 msgid "Failed top open package file"
-msgstr ""
+msgstr "Nepodařilo se otevřít soubor balíčku"
 
 #: streams/streamssettings.cpp:196 streams/streamssettings.cpp:245
 msgid "Invalid file format!"
@@ -6791,13 +6871,13 @@ msgstr "Díly: %1"
 #: ../gui/plurals_qt.cpp:75
 msgctxt "Singular"
 msgid "1 Update available"
-msgstr ""
+msgstr "Jedna aktualizace dostupná"
 
 #: ../gui/plurals_qt.cpp:75
 #, qt-format
 msgctxt "Plural (N!=1)"
 msgid "%1 Updates available"
-msgstr ""
+msgstr "%1 aktualizací dostupných"
 
 #~ msgid "TextLabel"
 #~ msgstr "TextovýŠtítek"

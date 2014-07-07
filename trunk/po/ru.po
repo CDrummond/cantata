@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-07-03 19:59+0100\n"
-"PO-Revision-Date: 2013-11-20 22:05+0400\n"
-"Last-Translator: Julia Dronova <juliette.tux@gmail.com>\n"
+"PO-Revision-Date: 2014-07-06 19:55+0300\n"
+"Last-Translator: sema1011 <sema19689@gmail.com>\n"
 "Language-Team: Russian <kde-russian@lists.kde.ru>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=n==1 ? 3 : n%10==1 && n%100!=11 ? 0 : n"
 "%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Lokalize 1.5\n"
+"X-Generator: Poedit 1.5.5\n"
 
 #: context/albumview.cpp:63
 msgid "Refresh Album Information"
@@ -92,7 +92,7 @@ msgstr "&Альбом"
 
 #: context/contextwidget.cpp:369
 msgid "&Track"
-msgstr ""
+msgstr "&Трек"
 
 #: context/lastfmengine.cpp:63
 msgid "Read more on last.fm"
@@ -176,7 +176,7 @@ msgstr ""
 #: context/othersettings.cpp:104 gui/interfacesettings.cpp:603
 msgctxt "value%"
 msgid "%1%"
-msgstr ""
+msgstr "%1%"
 
 #: context/othersettings.cpp:109 gui/interfacesettings.cpp:608
 #, c-format
@@ -198,7 +198,7 @@ msgstr "Теги"
 
 #: context/songview.cpp:136
 msgid "Scroll Lyrics"
-msgstr ""
+msgstr "Прокрутка слов песни"
 
 #: context/songview.cpp:137
 msgid "Refresh Lyrics"
@@ -214,7 +214,7 @@ msgstr "Удалить файл со словами песни"
 
 #: context/songview.cpp:150
 msgid "Refresh Track Information"
-msgstr ""
+msgstr "Обновление информации о треках"
 
 #: context/songview.cpp:151 context/view.cpp:205 gui/mainwindow.cpp:296
 #: widgets/messageoverlay.cpp:45
@@ -242,11 +242,11 @@ msgstr "Обновить"
 
 #: context/songview.cpp:186
 msgid "Reload From Disk"
-msgstr ""
+msgstr "Загрузить с диска"
 
 #: context/songview.cpp:186
 msgid "Download"
-msgstr ""
+msgstr "Скачать"
 
 #: context/songview.cpp:218
 msgid "Current playing song has changed, still perform search?"
@@ -270,7 +270,7 @@ msgstr "Удалить файл"
 
 #: context/songview.cpp:494 context/songview.cpp:558
 msgid "Album artist"
-msgstr ""
+msgstr "Исполнитель альбома"
 
 #. i18n: file: devices/filenameschemedialog.ui:102
 #. i18n: ectx: property (text), widget (QPushButton, composer)
@@ -282,27 +282,27 @@ msgstr "Автор музыки"
 
 #: context/songview.cpp:498
 msgid "Lyricist"
-msgstr ""
+msgstr "Поэт-песенник"
 
 #: context/songview.cpp:499
 msgid "Conductor"
-msgstr ""
+msgstr "Дирижер"
 
 #: context/songview.cpp:500
 msgid "Remixer"
-msgstr ""
+msgstr "Ремиксер"
 
 #: context/songview.cpp:502
 msgid "Subtitle"
-msgstr ""
+msgstr "Субтитры"
 
 #: context/songview.cpp:503 context/songview.cpp:564
 msgid "Track number"
-msgstr ""
+msgstr "Номер трека"
 
 #: context/songview.cpp:504 context/songview.cpp:563
 msgid "Disc number"
-msgstr ""
+msgstr "Номер диска"
 
 #. i18n: file: devices/filenameschemedialog.ui:184
 #. i18n: ectx: property (text), widget (QPushButton, genre)
@@ -325,40 +325,40 @@ msgstr "Дата"
 
 #: context/songview.cpp:507
 msgid "Original date"
-msgstr ""
+msgstr "Исходная дата"
 
 #: context/songview.cpp:508 context/songview.cpp:567
 #: dynamic/dynamicrulesdialog.cpp:74
 msgid "Comment"
-msgstr ""
+msgstr "Комментарий"
 
 #: context/songview.cpp:509
 msgid "Copyright"
-msgstr ""
+msgstr "Copyright"
 
 #: context/songview.cpp:510
 msgid "Label"
-msgstr ""
+msgstr "Лейбл"
 
 #: context/songview.cpp:511
 msgid "Catalogue number"
-msgstr ""
+msgstr "Номер по каталогу"
 
 #: context/songview.cpp:512
 msgid "Title sort"
-msgstr ""
+msgstr "Сортировать название"
 
 #: context/songview.cpp:513
 msgid "Artist sort"
-msgstr ""
+msgstr "Сортировать артист"
 
 #: context/songview.cpp:514
 msgid "Album artist sort"
-msgstr ""
+msgstr "Сортировать исполнитель альбома"
 
 #: context/songview.cpp:515
 msgid "Album sort"
-msgstr ""
+msgstr "Сортировать альбом"
 
 #: context/songview.cpp:516
 msgid "Encoded by"
@@ -370,11 +370,11 @@ msgstr "Кодировщик"
 
 #: context/songview.cpp:518
 msgid "Mood"
-msgstr ""
+msgstr "Настроение"
 
 #: context/songview.cpp:519
 msgid "Media"
-msgstr ""
+msgstr "Медиа"
 
 #: context/songview.cpp:520 devices/encoders.cpp:223 devices/encoders.cpp:320
 msgid "Bitrate"
@@ -382,23 +382,23 @@ msgstr "Битрейт"
 
 #: context/songview.cpp:521
 msgid "Sample rate"
-msgstr ""
+msgstr "Частота дискретизации"
 
 #: context/songview.cpp:522
 msgid "Channels"
-msgstr ""
+msgstr "Каналы"
 
 #: context/songview.cpp:524
 msgid "Tagging time"
-msgstr ""
+msgstr "Пометка времени"
 
 #: context/songview.cpp:546
 msgid "Performer (%1)"
-msgstr ""
+msgstr "Исполнитель (%1)"
 
 #: context/songview.cpp:561 models/playqueuemodel.cpp:177
 msgid "Performer"
-msgstr ""
+msgstr "Исполнитель"
 
 #. i18n: file: devices/filenameschemedialog.ui:174
 #. i18n: ectx: property (text), widget (QPushButton, year)
@@ -608,6 +608,7 @@ msgid ""
 "Failed to create destination folder!<br/>Please check you have sufficient "
 "permissions."
 msgstr ""
+"Не удалось создать папку!<br/>Пожалуйста, проверьте достаточно ли у вас прав."
 
 #: devices/actiondialog.cpp:689
 msgid "Source file no longer exists?"
@@ -1222,7 +1223,7 @@ msgstr "Рейтинг по качеству"
 
 #: devices/encoders.cpp:201
 msgid "Opus"
-msgstr ""
+msgstr "Opus"
 
 #: devices/encoders.cpp:204
 msgctxt ""
@@ -1232,6 +1233,9 @@ msgid ""
 "<a href=http://en.wikipedia.org/wiki/Opus_(audio_format)>Opus</a> is a "
 "patent-free digital audio codec using a form of lossy data compression."
 msgstr ""
+"<a href=http://en.wikipedia.org/wiki/Opus_(audio_format)>Opus</a> является "
+"патентно-бесплатным цифровым аудио кодеком, используемым форму сжатия с "
+"потерями данных."
 
 #: devices/encoders.cpp:206
 msgid ""
@@ -1428,6 +1432,8 @@ msgid ""
 "<tr><th><em>Variable</em></th><th><em>Button</em></th><th><em>Description</"
 "em></th></tr>"
 msgstr ""
+"<tr><th><em>Переменная</em></th><th><em>Кнопка</em></th><th><em>Описание</"
+"em></th></tr>"
 
 #: devices/fsdevice.cpp:660 gui/albumspage.cpp:300 gui/folderpage.cpp:291
 #: gui/librarypage.cpp:423
@@ -1668,7 +1674,7 @@ msgstr "Неверные аргументы."
 
 #: dynamic/dynamic.cpp:88
 msgid "Unknown method called."
-msgstr ""
+msgstr "Неизвестный называемый метод."
 
 #: dynamic/dynamic.cpp:91 models/digitallyimported.cpp:155
 #: models/digitallyimported.cpp:181 scrobbling/scrobbler.cpp:104
@@ -1719,7 +1725,7 @@ msgstr "Ожидание ответа на предыдущую команду (
 
 #: dynamic/dynamic.cpp:816
 msgid "Failed to save %1. (%2)"
-msgstr ""
+msgstr "Не удалось сохранить %1. (%2)"
 
 #: dynamic/dynamic.cpp:840
 msgid "Failed to control dynamizer state. (%1)"
@@ -1886,7 +1892,7 @@ msgstr "Обложки"
 
 #: gui/cachesettings.cpp:265
 msgid "Scaled Covers"
-msgstr ""
+msgstr "Масштабированные обложки"
 
 #: gui/cachesettings.cpp:266
 msgid "Backdrops"
@@ -1902,11 +1908,11 @@ msgstr "Сведения об альбоме"
 
 #: gui/cachesettings.cpp:271
 msgid "Track Information"
-msgstr ""
+msgstr "Сведения об треке"
 
 #: gui/cachesettings.cpp:273
 msgid "Stream Listings"
-msgstr ""
+msgstr "Каталог потоков"
 
 #: gui/cachesettings.cpp:276
 msgid "Jamendo"
@@ -1962,11 +1968,11 @@ msgstr ""
 
 #: gui/coverdialog.cpp:162
 msgid "Current Cover"
-msgstr ""
+msgstr "Текущая обложка"
 
 #: gui/coverdialog.cpp:211 gui/coverdialog.cpp:406
 msgid "CoverArt Archive"
-msgstr ""
+msgstr "CoverArt Archive"
 
 #: gui/coverdialog.cpp:242
 msgid "Image"
@@ -1984,14 +1990,16 @@ msgstr "Изображение (%1 x %2 %3%)"
 #: gui/coverdialog.cpp:436
 msgid "An image already exists for this artist, and the file is not writeable."
 msgstr ""
+"Для этого артиста изображение уже существует, и файл не доступен для записи."
 
 #: gui/coverdialog.cpp:437
 msgid "A cover already exists for this album, and the file is not writeable."
 msgstr ""
+"Для этого альбома обложка уже существует, и файл не доступен для записи."
 
 #: gui/coverdialog.cpp:443
 msgid "'%1' Artist Image"
-msgstr ""
+msgstr "'%1' Изображение исполнителя"
 
 #: gui/coverdialog.cpp:445
 msgctxt "'Artist - Album' Album Cover"
@@ -2206,7 +2214,7 @@ msgstr "Динамический Плейлист"
 
 #: gui/interfacesettings.cpp:158
 msgid "Streams (e.g. Radio Stations)"
-msgstr ""
+msgstr "Потоки (например радиостанции)"
 
 #: gui/interfacesettings.cpp:165
 msgid "Online Services - Jamendo, Maganatune, SoundCloud, and Podcasts"
@@ -2222,7 +2230,7 @@ msgstr "Поиск (через MPD)"
 
 #: gui/interfacesettings.cpp:179
 msgid "Info - Current song information (artist, album, and lyrics)"
-msgstr ""
+msgstr "Информация - текущая информация о песне (исполнитель, альбом и текст)"
 
 #. i18n: file: gui/interfacesettings.ui:137
 #. i18n: ectx: property (text), widget (BuddyLabel, sbStyleLabel)
@@ -2272,7 +2280,7 @@ msgstr "Снизу"
 
 #: gui/interfacesettings.cpp:464
 msgid "System default"
-msgstr ""
+msgstr "Системный"
 
 #: gui/main.cpp:237 gui/mainwindow.cpp:1883 gui/trayitem.cpp:103
 #: gui/trayitem.cpp:105 gui/trayitem.cpp:140 gui/trayitem.cpp:200
@@ -2287,7 +2295,7 @@ msgstr "Клиент KDE для MPD"
 
 #: gui/main.cpp:240
 msgid "&copy; 2011-2014 Craig Drummond"
-msgstr ""
+msgstr "&copy; 2011-2014 Craig Drummond"
 
 #: gui/main.cpp:244
 msgid "Craig Drummond"
@@ -2493,7 +2501,7 @@ msgstr "Удалить все песни"
 
 #: gui/mainwindow.cpp:301
 msgid "Clear 'New' State Of Artists and Albums"
-msgstr ""
+msgstr "Очистить состояние «New» для Исполнителей и Альбомов"
 
 #: gui/mainwindow.cpp:391
 msgid "Dynamic"
@@ -2629,6 +2637,11 @@ msgid ""
 "%5</td></tr><tr><td align=\"right\">Handlers:&nbsp;</td><td>%6</td></"
 "tr><tr><td align=\"right\">Tags:&nbsp;</td><td>%7</td></tr>"
 msgstr ""
+"<tr><td colspan=\"2\"><b>Сервер</b></td></tr><tr><td align=\"right"
+"\">Протокол:&nbsp;</td><td>%1.%2.%3</td></tr><tr><td align=\"right\">Аптайм:"
+"&nbsp;</td><td>%4</td></tr><tr><td align=\"right\">Играя:&nbsp;</td><td>%5</"
+"td></tr><tr><td align=\"right\">Обработчики:&nbsp;</td><td>%6</td></"
+"tr><tr><td align=\"right\">Тэги:&nbsp;</td><td>%7</td></tr>"
 
 #: gui/mainwindow.cpp:1532
 msgid ""
@@ -2638,6 +2651,11 @@ msgid ""
 "tr><tr><td align=\"right\">Duration:&nbsp;</td><td>%4</td></tr><tr><td align="
 "\"right\">Updated:&nbsp;</td><td>%5</td></tr>"
 msgstr ""
+"<tr><td colspan=\"2\"><b>База данных</b></td></tr><tr><td align=\"right"
+"\">Артисты:&nbsp;</td><td>%1</td></tr><tr><td align=\"right\">Альбомы:&nbsp;"
+"</td><td>%2</td></tr><tr><td align=\"right\">Песни:&nbsp;</td><td>%3</td></"
+"tr><tr><td align=\"right\">Продолжительность:&nbsp;</td><td>%4</td></"
+"tr><tr><td align=\"right\">Обновление:&nbsp;</td><td>%5</td></tr>"
 
 #: gui/mainwindow.cpp:1541
 msgid "Server Information"
@@ -2679,6 +2697,7 @@ msgstr "Введите имя плейлиста:"
 msgid ""
 "<b>%1</b> is used to store favorite streams, please choose another name."
 msgstr ""
+"<b>%1</b> используется для хранения любимых потоков, выберите другое имя."
 
 #: gui/mainwindow.cpp:2013
 msgid "A playlist named <b>%1</b> already exists!<br/>Add to that playlist?"
@@ -2702,7 +2721,7 @@ msgstr "Недопустимый или неподдерживаемый, URL-а
 
 #: gui/mainwindow.cpp:2371
 msgid "Can only edit tags of songs within MPD's music collection."
-msgstr ""
+msgstr "Можно редактировать теги песен только в музыкальной коллекции MPD."
 
 #: gui/playbacksettings.cpp:49
 msgid "Auto"
@@ -2788,7 +2807,7 @@ msgstr "Новое имя плейлиста:"
 
 #: gui/playlistspage.cpp:361
 msgid "Cannot add songs from '%1' to '%2'"
-msgstr ""
+msgstr "Не может добавить песни из '%1' в '%2'"
 
 #: gui/plurals_kde.cpp:29
 msgid "1 Track"
@@ -2918,11 +2937,11 @@ msgstr "Настройки внешнего вида контекста"
 
 #: gui/preferencesdialog.cpp:100
 msgid "Scrobbling"
-msgstr ""
+msgstr "Скробблинг"
 
 #: gui/preferencesdialog.cpp:100
 msgid "Scrobbling Settings"
-msgstr ""
+msgstr "Параметры скробблинга"
 
 #: gui/preferencesdialog.cpp:109
 msgid "HTTP Server"
@@ -2999,7 +3018,7 @@ msgstr "Автор музыки:"
 
 #: gui/searchpage.cpp:234
 msgid "Performer:"
-msgstr ""
+msgstr "Исполнитель:"
 
 #. i18n: file: devices/albumdetails.ui:76
 #. i18n: ectx: property (text), widget (BuddyLabel, label_3)
@@ -3023,7 +3042,7 @@ msgstr "Жанр:"
 #. i18n: ectx: property (text), widget (StateLabel, commentLabel)
 #: gui/searchpage.cpp:240 po/rc.cpp:404 po/rc.cpp:1004 rc.cpp:404 rc.cpp:1004
 msgid "Comment:"
-msgstr ""
+msgstr "Комментарий:"
 
 #: gui/searchpage.cpp:242
 msgid "Date:"
@@ -3031,7 +3050,7 @@ msgstr "Дата:"
 
 #: gui/searchpage.cpp:244
 msgid "Any:"
-msgstr ""
+msgstr "Любые:"
 
 #: gui/searchpage.cpp:250
 msgid "No tracks found."
@@ -3796,7 +3815,7 @@ msgstr "URL"
 
 #: online/podcastsearchdialog.cpp:513
 msgid "Enter podcast URL..."
-msgstr ""
+msgstr "Введите URL-адрес подкаста..."
 
 #: online/podcastsearchdialog.cpp:514
 msgid "Load"
@@ -3812,17 +3831,19 @@ msgstr "Недопустимый URL."
 
 #: online/podcastsearchdialog.cpp:558
 msgid "Failed to fetch podcast!"
-msgstr ""
+msgstr "Не удалось загрузить подкаст!"
 
 #: online/podcastsearchdialog.cpp:563
 msgid "Failed to parse podcast."
-msgstr ""
+msgstr "Не удалось проанализировать подкаст."
 
 #: online/podcastsearchdialog.cpp:567
 msgid ""
 "Cantata only supports audio podcasts! The URL entered contains only video "
 "podcasts."
 msgstr ""
+"Cantata поддерживает только аудио-подкасты! URL-адрес содержит только видео "
+"подкасты."
 
 #: online/podcastsearchdialog.cpp:585
 msgid "Subscribe"
@@ -3830,11 +3851,11 @@ msgstr "Подписаться"
 
 #: online/podcastsearchdialog.cpp:603
 msgid "Enter URL"
-msgstr ""
+msgstr "Введите URL-адрес"
 
 #: online/podcastsearchdialog.cpp:603
 msgid "Manual podcast URL"
-msgstr ""
+msgstr "Ручной URL-адрес подкаста "
 
 #: online/podcastsearchdialog.cpp:607 online/podcastsearchdialog.cpp:611
 msgid "Search %1"
@@ -3846,7 +3867,7 @@ msgstr "Поиск подкастов на %1"
 
 #: online/podcastsearchdialog.cpp:623
 msgid "Add Podcast Subscription"
-msgstr ""
+msgstr "Добавить подкаст подписку"
 
 #: online/podcastsearchdialog.cpp:698
 msgid "Browse %1"
@@ -3944,13 +3965,13 @@ msgstr "Каждую неделю"
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox)
 #: po/rc.cpp:3 po/rc.cpp:648 rc.cpp:3 rc.cpp:648
 msgid "Background Image"
-msgstr ""
+msgstr "Фоновое изображение"
 
 #. i18n: file: context/othersettings.ui:39
 #. i18n: ectx: property (text), widget (QRadioButton, contextBackdrop_artist)
 #: po/rc.cpp:9 rc.cpp:9
 msgid "Artist image"
-msgstr ""
+msgstr "Изображение исполнителя"
 
 #. i18n: file: context/othersettings.ui:46
 #. i18n: ectx: property (text), widget (QRadioButton, contextBackdrop_custom)
@@ -3962,7 +3983,7 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QRadioButton, playQueueBackground_custom)
 #: po/rc.cpp:12 po/rc.cpp:657 rc.cpp:12 rc.cpp:657
 msgid "Custom image:"
-msgstr ""
+msgstr "Пользовательское изображение:"
 
 #. i18n: file: context/othersettings.ui:66
 #. i18n: ectx: property (text), widget (QLabel, label_4b)
@@ -3974,7 +3995,7 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QLabel, label_4b)
 #: po/rc.cpp:15 po/rc.cpp:660 rc.cpp:15 rc.cpp:660
 msgid "Blur:"
-msgstr ""
+msgstr "Размытие:"
 
 #. i18n: file: context/othersettings.ui:103
 #. i18n: ectx: property (text), widget (QLabel, contextBackdropBlurLabel)
@@ -3986,7 +4007,7 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QLabel, playQueueBackgroundBlurLabel)
 #: po/rc.cpp:18 po/rc.cpp:663 rc.cpp:18 rc.cpp:663
 msgid "10px"
-msgstr ""
+msgstr "10px"
 
 #. i18n: file: context/othersettings.ui:115
 #. i18n: ectx: property (text), widget (QLabel, label_4)
@@ -3998,7 +4019,7 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QLabel, label_4)
 #: po/rc.cpp:21 po/rc.cpp:666 rc.cpp:21 rc.cpp:666
 msgid "Opacity:"
-msgstr ""
+msgstr "Непрозрачность:"
 
 #. i18n: file: context/othersettings.ui:152
 #. i18n: ectx: property (text), widget (QLabel, contextBackdropOpacityLabel)
@@ -4011,7 +4032,7 @@ msgstr ""
 #: po/rc.cpp:25 po/rc.cpp:670 rc.cpp:25 rc.cpp:670
 #, no-c-format
 msgid "40%"
-msgstr ""
+msgstr "40%"
 
 #. i18n: file: context/othersettings.ui:167
 #. i18n: ectx: property (text), widget (BuddyLabel, contextSwitchTimeLabel)
@@ -4049,12 +4070,14 @@ msgstr "Тёмный фон"
 msgid ""
 "Darken background, and use white text, regardless of current color palette."
 msgstr ""
+"Затемнить фон и использовать белый текст, независимо от текущей цветовой "
+"палитры."
 
 #. i18n: file: context/othersettings.ui:203
 #. i18n: ectx: property (text), widget (QCheckBox, contextAlwaysCollapsed)
 #: po/rc.cpp:43 rc.cpp:43
 msgid "Always collapse into a single pane"
-msgstr ""
+msgstr "Всегда сворачиваться в одну область"
 
 #. i18n: file: context/othersettings.ui:206
 #. i18n: ectx: property (toolTip), widget (QCheckBox, contextAlwaysCollapsed)
@@ -4136,7 +4159,7 @@ msgstr "Целевой формат:"
 #. i18n: ectx: property (text), widget (QCheckBox, overwrite)
 #: po/rc.cpp:83 rc.cpp:83
 msgid "Overwrite songs"
-msgstr ""
+msgstr "Перезаписать песни"
 
 #. i18n: file: devices/actiondialog.ui:188
 #. i18n: ectx: property (text), widget (QLabel, songCountLabel)
@@ -4190,7 +4213,7 @@ msgstr "Диск:"
 #. i18n: ectx: property (text), widget (QCheckBox, singleArtist)
 #: po/rc.cpp:113 rc.cpp:113
 msgid "Single artist"
-msgstr ""
+msgstr "Один артист"
 
 #. i18n: file: devices/audiocdsettings.ui:29
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox)
@@ -4220,7 +4243,7 @@ msgstr "Порт CDDB:"
 #. i18n: ectx: property (text), widget (QCheckBox, cdAuto)
 #: po/rc.cpp:140 rc.cpp:140
 msgid "Lookup information as soon as CD is inserted"
-msgstr ""
+msgstr "Поиск информации, как только будет вставлен CD"
 
 #. i18n: file: devices/audiocdsettings.ui:94
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox_2)
@@ -4320,13 +4343,13 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QCheckBox, autoScan)
 #: po/rc.cpp:173 rc.cpp:173
 msgid "Automatically scan music when attached"
-msgstr ""
+msgstr "Автоматически сканировать музыку при подключении"
 
 #. i18n: file: devices/devicepropertieswidget.ui:122
 #. i18n: ectx: property (text), widget (QCheckBox, useCache)
 #: po/rc.cpp:176 rc.cpp:176
 msgid "Use cache"
-msgstr ""
+msgstr "Использование кэша"
 
 #. i18n: file: devices/devicepropertieswidget.ui:131
 #. i18n: ectx: property (title), widget (QGroupBox, filenamesGroupBox)
@@ -4362,7 +4385,7 @@ msgstr "Схема имени файла:"
 #. i18n: ectx: property (text), widget (QCheckBox, vfatSafe)
 #: po/rc.cpp:185 po/rc.cpp:1019 rc.cpp:185 rc.cpp:1019
 msgid "VFAT safe"
-msgstr ""
+msgstr "безопасный VFAT "
 
 #. i18n: file: devices/devicepropertieswidget.ui:184
 #. i18n: ectx: property (text), widget (QCheckBox, asciiOnly)
@@ -4374,7 +4397,7 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QCheckBox, asciiOnly)
 #: po/rc.cpp:188 po/rc.cpp:1022 rc.cpp:188 rc.cpp:1022
 msgid "Use only ASCII characters"
-msgstr ""
+msgstr "Использовать только символы ASCII"
 
 #. i18n: file: devices/devicepropertieswidget.ui:191
 #. i18n: ectx: property (text), widget (QCheckBox, replaceSpaces)
@@ -4386,7 +4409,7 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QCheckBox, replaceSpaces)
 #: po/rc.cpp:191 po/rc.cpp:1025 rc.cpp:191 rc.cpp:1025
 msgid "Replace spaces with underscores"
-msgstr ""
+msgstr "Заменить пробелы на подчеркивания"
 
 #. i18n: file: devices/devicepropertieswidget.ui:198
 #. i18n: ectx: property (text), widget (QCheckBox, ignoreThe)
@@ -4398,7 +4421,7 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QCheckBox, ignoreThe)
 #: po/rc.cpp:194 po/rc.cpp:1028 rc.cpp:194 rc.cpp:1028
 msgid "Ignore 'The' in artist names"
-msgstr ""
+msgstr "Игнорировать 'The' в именах исполнителей"
 
 #. i18n: file: devices/devicepropertieswidget.ui:208
 #. i18n: ectx: property (title), widget (QGroupBox, transcoderFrame)
@@ -4410,7 +4433,7 @@ msgstr "Перекодирование"
 #. i18n: ectx: property (text), widget (QCheckBox, transcoderWhenDifferent)
 #: po/rc.cpp:200 rc.cpp:200
 msgid "Only transcode if source file is of a different format"
-msgstr ""
+msgstr "Перекодировать только если исходный файл имеет другой формат"
 
 #. i18n: file: devices/filenameschemedialog.ui:38
 #. i18n: ectx: property (text), widget (QLabel, label_album_example)
@@ -4437,7 +4460,7 @@ msgstr ""
 #. i18n: ectx: property (toolTip), widget (QPushButton, albumTitle)
 #: po/rc.cpp:215 rc.cpp:215
 msgid "The name of the album."
-msgstr ""
+msgstr "Имя альбома."
 
 #. i18n: file: devices/filenameschemedialog.ui:92
 #. i18n: ectx: property (text), widget (QPushButton, albumTitle)
@@ -4449,13 +4472,13 @@ msgstr "Название альбома"
 #. i18n: ectx: property (toolTip), widget (QPushButton, composer)
 #: po/rc.cpp:221 rc.cpp:221
 msgid "The composer."
-msgstr ""
+msgstr "Композитор."
 
 #. i18n: file: devices/filenameschemedialog.ui:109
 #. i18n: ectx: property (toolTip), widget (QPushButton, trackArtist)
 #: po/rc.cpp:227 rc.cpp:227
 msgid "The artist of each track."
-msgstr ""
+msgstr "Артист каждого трека."
 
 #. i18n: file: devices/filenameschemedialog.ui:112
 #. i18n: ectx: property (text), widget (QPushButton, trackArtist)
@@ -4493,7 +4516,7 @@ msgstr "Название трека (+Исполнитель)"
 #. i18n: ectx: property (toolTip), widget (QPushButton, trackNo)
 #: po/rc.cpp:245 rc.cpp:245
 msgid "The track number."
-msgstr ""
+msgstr "Номер трека."
 
 #. i18n: file: devices/filenameschemedialog.ui:154
 #. i18n: ectx: property (text), widget (QPushButton, trackNo)
@@ -4519,13 +4542,13 @@ msgstr "CD №"
 #. i18n: ectx: property (toolTip), widget (QPushButton, year)
 #: po/rc.cpp:257 rc.cpp:257
 msgid "The year of the album's release."
-msgstr ""
+msgstr "Год альбома выпуска."
 
 #. i18n: file: devices/filenameschemedialog.ui:181
 #. i18n: ectx: property (toolTip), widget (QPushButton, genre)
 #: po/rc.cpp:263 rc.cpp:263
 msgid "The genre of the album."
-msgstr ""
+msgstr "Жанр альбома."
 
 #. i18n: file: devices/remotedevicepropertieswidget.ui:17
 #. i18n: ectx: property (text), widget (QLabel, connectionNote)
@@ -4801,7 +4824,7 @@ msgstr ""
 #. i18n: ectx: property (toolTip), widget (QToolButton, addFileButton)
 #: po/rc.cpp:419 rc.cpp:419
 msgid "Add a local file"
-msgstr ""
+msgstr "Добавить локальный файл"
 
 #. i18n: file: gui/filesettings.ui:29
 #. i18n: ectx: property (text), widget (QCheckBox, storeCoversInMpdDir)
@@ -4814,6 +4837,7 @@ msgstr ""
 #: po/rc.cpp:425 po/rc.cpp:512 rc.cpp:425 rc.cpp:512
 msgid "Save downloaded covers, and artist images, in music folder"
 msgstr ""
+"Сохранять скачанные обложки и изображения исполнителей, в папку с музыкой"
 
 #. i18n: file: gui/filesettings.ui:36
 #. i18n: ectx: property (text), widget (QCheckBox, storeLyricsInMpdDir)
@@ -5105,6 +5129,9 @@ msgid ""
 "used to customise Cantata's appearance, as well as to add extra MPD hosts, "
 "etc."
 msgstr ""
+"Cantata теперь настроен! <br/><br/>Диалоговое окно конфигурации может быть "
+"использовано для настройки внешнего вида Cantata, а также для добавления "
+"дополнительных хостов MPD и т.д."
 
 #. i18n: file: gui/initialsettingswizard.ui:930
 #. i18n: ectx: property (text), widget (QLabel, groupWarningLabel)
@@ -5127,19 +5154,20 @@ msgstr ""
 #. i18n: ectx: attribute (title), widget (QWidget, sidebarTab)
 #: po/rc.cpp:539 rc.cpp:539
 msgid "Sidebar"
-msgstr ""
+msgstr "Боковая панель"
 
 #. i18n: file: gui/interfacesettings.ui:42
 #. i18n: ectx: property (title), widget (QGroupBox, viewsGroup)
 #: po/rc.cpp:542 rc.cpp:542
 msgid "Views"
-msgstr ""
+msgstr "Вид"
 
 #. i18n: file: gui/interfacesettings.ui:48
 #. i18n: ectx: property (text), widget (QLabel, label_2)
 #: po/rc.cpp:545 rc.cpp:545
 msgid "Use the checkboxes below to configure the list of active views."
 msgstr ""
+"Используйте флажки ниже, чтобы настроить список активных представлений."
 
 #. i18n: file: gui/interfacesettings.ui:77
 #. i18n: ectx: property (text), widget (StateLabel, sbPlayQueueLabel)
@@ -5163,25 +5191,25 @@ msgstr ""
 #. i18n: ectx: property (text), widget (BuddyLabel, sbPositionLabel)
 #: po/rc.cpp:560 rc.cpp:560
 msgid "Position:"
-msgstr ""
+msgstr "Позиция:"
 
 #. i18n: file: gui/interfacesettings.ui:163
 #. i18n: ectx: property (text), widget (QCheckBox, sbIconsOnly)
 #: po/rc.cpp:563 rc.cpp:563
 msgid "Only show icons, no text"
-msgstr ""
+msgstr "Показывать только значки"
 
 #. i18n: file: gui/interfacesettings.ui:170
 #. i18n: ectx: property (text), widget (QCheckBox, sbMonoIcons)
 #: po/rc.cpp:566 rc.cpp:566
 msgid "Use monochrome icons"
-msgstr ""
+msgstr "Использовать монохромные значки"
 
 #. i18n: file: gui/interfacesettings.ui:177
 #. i18n: ectx: property (text), widget (QCheckBox, sbAutoHide)
 #: po/rc.cpp:569 rc.cpp:569
 msgid "Auto-hide"
-msgstr ""
+msgstr "Автоматически скрывать"
 
 #. i18n: file: gui/interfacesettings.ui:212
 #. i18n: ectx: property (text), widget (BuddyLabel, label_5b)
@@ -5199,13 +5227,13 @@ msgstr "Обложки:"
 #. i18n: ectx: property (text), widget (QCheckBox, libraryArtistImage)
 #: po/rc.cpp:581 rc.cpp:581
 msgid "Show artist images"
-msgstr ""
+msgstr "Показать изображения артиста"
 
 #. i18n: file: gui/interfacesettings.ui:232
 #. i18n: ectx: property (text), widget (QCheckBox, libraryYear)
 #: po/rc.cpp:584 rc.cpp:584
 msgid "Sort albums by year"
-msgstr ""
+msgstr "Сортировать альбомы по годам"
 
 #. i18n: file: gui/interfacesettings.ui:264
 #. i18n: ectx: property (text), widget (QLabel, label_8)
@@ -5216,6 +5244,10 @@ msgid ""
 "within the folder of the current track, or within its parent folder. If no "
 "image is found, Cantata will attempt to download one.</i>"
 msgstr ""
+"<i><b>ПРИМЕЧАНИЕ:..</b> При поиске фотографий исполнителей, Cantata будет "
+"искать или artist.jpg, artist.png, 'Artist'.jpg, или 'Artist'.png, \n"
+" в папке текущего трека или в пределах своей родительской папки. Если "
+"изображение не найдено, Cantata попытается загрузить его.</i>"
 
 #. i18n: file: gui/interfacesettings.ui:316
 #. i18n: ectx: property (text), widget (BuddyLabel, label_5x)
@@ -5233,7 +5265,7 @@ msgstr "Сортировать альбомы:"
 #. i18n: ectx: property (text), widget (QCheckBox, playQueueStartClosed)
 #: po/rc.cpp:609 po/rc.cpp:636 rc.cpp:609 rc.cpp:636
 msgid "Initially collapse albums"
-msgstr ""
+msgstr "Изначально альбомы свернуты"
 
 #. i18n: file: gui/interfacesettings.ui:360
 #. i18n: ectx: attribute (title), widget (QWidget, tab_3)
@@ -5269,31 +5301,31 @@ msgstr "Тип просмотра устройств:"
 #. i18n: ectx: property (text), widget (QLabel, label_5)
 #: po/rc.cpp:627 rc.cpp:627
 msgid "Search view style:"
-msgstr ""
+msgstr "Поиск стиля просмотра:"
 
 #. i18n: file: gui/interfacesettings.ui:461
 #. i18n: ectx: property (text), widget (QCheckBox, playQueueAutoExpand)
 #: po/rc.cpp:639 rc.cpp:639
 msgid "Automatically expand current album"
-msgstr ""
+msgstr "Автоматически раскрывать текущий альбом"
 
 #. i18n: file: gui/interfacesettings.ui:468
 #. i18n: ectx: property (text), widget (QCheckBox, playQueueScroll)
 #: po/rc.cpp:642 rc.cpp:642
 msgid "Scroll to current track"
-msgstr ""
+msgstr "Прокручивать список до текущего трека"
 
 #. i18n: file: gui/interfacesettings.ui:475
 #. i18n: ectx: property (text), widget (QCheckBox, playQueueConfirmClear)
 #: po/rc.cpp:645 rc.cpp:645
 msgid "Prompt before clearing"
-msgstr ""
+msgstr "Запрос перед удалением"
 
 #. i18n: file: gui/interfacesettings.ui:501
 #. i18n: ectx: property (text), widget (QRadioButton, playQueueBackground_cover)
 #: po/rc.cpp:654 rc.cpp:654
 msgid "Current album cover"
-msgstr ""
+msgstr "Текущая обложка альбома"
 
 #. i18n: file: gui/interfacesettings.ui:648
 #. i18n: ectx: attribute (title), widget (QWidget, tab_7)
@@ -5305,43 +5337,43 @@ msgstr "Внешнее"
 #. i18n: ectx: property (text), widget (QCheckBox, systemTrayPopup)
 #: po/rc.cpp:676 rc.cpp:676
 msgid "Show popup messages when changing tracks"
-msgstr ""
+msgstr "Показать всплывающие сообщения при смене дорожек"
 
 #. i18n: file: gui/interfacesettings.ui:664
 #. i18n: ectx: property (text), widget (QCheckBox, systemTrayCheckBox)
 #: po/rc.cpp:679 rc.cpp:679
 msgid "Show icon in notification area"
-msgstr ""
+msgstr "Показывать значок в области уведомлений"
 
 #. i18n: file: gui/interfacesettings.ui:674
 #. i18n: ectx: property (text), widget (QCheckBox, minimiseOnClose)
 #: po/rc.cpp:682 rc.cpp:682
 msgid "Minimize to notification area when closed"
-msgstr ""
+msgstr "Минимизировать в область уведомлений при закрытии"
 
 #. i18n: file: gui/interfacesettings.ui:681
 #. i18n: ectx: property (title), widget (QGroupBox, startupState)
 #: po/rc.cpp:685 rc.cpp:685
 msgid "On Start-up"
-msgstr ""
+msgstr "При запуске"
 
 #. i18n: file: gui/interfacesettings.ui:687
 #. i18n: ectx: property (text), widget (QRadioButton, startupStateShow)
 #: po/rc.cpp:688 rc.cpp:688
 msgid "Show main window"
-msgstr ""
+msgstr "Показать главное окно"
 
 #. i18n: file: gui/interfacesettings.ui:694
 #. i18n: ectx: property (text), widget (QRadioButton, startupStateHide)
 #: po/rc.cpp:691 rc.cpp:691
 msgid "Hide main window"
-msgstr ""
+msgstr "Скрыть главное окно"
 
 #. i18n: file: gui/interfacesettings.ui:701
 #. i18n: ectx: property (text), widget (QRadioButton, startupStateRestore)
 #: po/rc.cpp:694 rc.cpp:694
 msgid "Restore previous state"
-msgstr ""
+msgstr "Восстановить прежнее состояние"
 
 #. i18n: file: gui/interfacesettings.ui:725
 #. i18n: ectx: attribute (title), widget (QWidget, tab_4)
@@ -5354,6 +5386,8 @@ msgstr "Общее"
 #: po/rc.cpp:700 rc.cpp:700
 msgid "Place albums with only one track under 'Various Artists/Single Tracks'"
 msgstr ""
+"Разместить альбомы только с одной дорожкой в разделе 'Несколько исполнители/"
+"Отдельные треки'"
 
 #. i18n: file: gui/interfacesettings.ui:739
 #. i18n: ectx: property (text), widget (QCheckBox, groupSingle)
@@ -5372,7 +5406,7 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QCheckBox, useComposer)
 #: po/rc.cpp:709 rc.cpp:709
 msgid "Group albums by composer"
-msgstr ""
+msgstr "Группировать альбомы по композитору"
 
 #. i18n: file: gui/interfacesettings.ui:756
 #. i18n: ectx: property (toolTip), widget (QCheckBox, filteredOnly)
@@ -5389,31 +5423,31 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QCheckBox, filteredOnly)
 #: po/rc.cpp:715 rc.cpp:715
 msgid "Only act on songs that pass filtering"
-msgstr ""
+msgstr "Действовать только на песнях, которые проходят фильтрацию"
 
 #. i18n: file: gui/interfacesettings.ui:766
 #. i18n: ectx: property (text), widget (QCheckBox, fetchCovers)
 #: po/rc.cpp:718 rc.cpp:718
 msgid "Fetch missing covers from Last.fm"
-msgstr ""
+msgstr "Получить недостающие обложки из Last.fm"
 
 #. i18n: file: gui/interfacesettings.ui:773
 #. i18n: ectx: property (text), widget (QCheckBox, cacheScaledCovers)
 #: po/rc.cpp:721 rc.cpp:721
 msgid "Cache scaled covers"
-msgstr ""
+msgstr "Кэш масштабированных обложек"
 
 #. i18n: file: gui/interfacesettings.ui:780
 #. i18n: ectx: property (text), widget (QCheckBox, showDeleteAction)
 #: po/rc.cpp:724 rc.cpp:724
 msgid "Show delete action in context menus"
-msgstr ""
+msgstr "Показать действие удаления в контекстных меню"
 
 #. i18n: file: gui/interfacesettings.ui:787
 #. i18n: ectx: property (text), widget (QCheckBox, forceSingleClick)
 #: po/rc.cpp:727 rc.cpp:727
 msgid "Enforce single-click activation of items"
-msgstr ""
+msgstr "Включать одним щелчком"
 
 #. i18n: file: gui/interfacesettings.ui:795
 #. i18n: ectx: property (toolTip), widget (QCheckBox, touchFriendly)
@@ -5433,25 +5467,25 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QCheckBox, touchFriendly)
 #: po/rc.cpp:735 rc.cpp:735
 msgid "Make interface more touch friendly"
-msgstr ""
+msgstr "Сделать интерфейс более дружественным"
 
 #. i18n: file: gui/interfacesettings.ui:805
 #. i18n: ectx: property (text), widget (QCheckBox, showStopButton)
 #: po/rc.cpp:738 rc.cpp:738
 msgid "Show stop button in toolbar"
-msgstr ""
+msgstr "Показать кнопку остановки в панели инструментов"
 
 #. i18n: file: gui/interfacesettings.ui:812
 #. i18n: ectx: property (text), widget (QCheckBox, showCoverWidget)
 #: po/rc.cpp:741 rc.cpp:741
 msgid "Show cover of current track in toolbar"
-msgstr ""
+msgstr "Показывать обложку текущего трека в панели инструментов"
 
 #. i18n: file: gui/interfacesettings.ui:819
 #. i18n: ectx: property (text), widget (BuddyLabel, langLabel)
 #: po/rc.cpp:744 rc.cpp:744
 msgid "Language:"
-msgstr ""
+msgstr "Язык:"
 
 #. i18n: file: gui/interfacesettings.ui:850
 #. i18n: ectx: property (text), widget (StateLabel, singleClickLabel)
@@ -5470,6 +5504,8 @@ msgid ""
 "<i><b>NOTE:</b> Changing the language setting will require a re-start of "
 "Cantata.</i>"
 msgstr ""
+"<i><b>Примечание:</b> При изменении языка потребуется перезапустить Cantata."
+"</i>"
 
 #. i18n: file: gui/interfacesettings.ui:914
 #. i18n: ectx: property (text), widget (StateLabel, touchFriendlyNoteLabel)
@@ -5478,6 +5514,8 @@ msgid ""
 "<i><b>NOTE:</b> Changing the 'touch friendly' setting will require a re-"
 "start of Cantata.</i>"
 msgstr ""
+"<i><b>Примечание:</b> Изменение параметра «дружественный интерфейс» требует "
+"перезапуска Cantata.</i>"
 
 #. i18n: file: gui/mainwindow.ui:197
 #. i18n: ectx: property (text), widget (QLabel, dynamicLabel)
@@ -5489,7 +5527,7 @@ msgstr "[Динамический]"
 #. i18n: ectx: property (text), widget (UrlLabel, fullScreenLabel)
 #: po/rc.cpp:759 rc.cpp:759
 msgid "Exit Full Screen"
-msgstr ""
+msgstr "Выход из полноэкранного режима"
 
 #. i18n: file: gui/playbacksettings.ui:38
 #. i18n: ectx: property (text), widget (BuddyLabel, label_6b)
@@ -5531,13 +5569,13 @@ msgstr "Вывод"
 #. i18n: ectx: property (text), widget (BuddyLabel, crossfadingLabel)
 #: po/rc.cpp:789 rc.cpp:789
 msgid "Crossfade between tracks:"
-msgstr ""
+msgstr "Затухания между треками:"
 
 #. i18n: file: gui/playbacksettings.ui:138
 #. i18n: ectx: property (suffix), widget (QSpinBox, crossfading)
 #: po/rc.cpp:792 rc.cpp:792
 msgid " s"
-msgstr ""
+msgstr " s"
 
 #. i18n: file: gui/playbacksettings.ui:151
 #. i18n: ectx: property (text), widget (BuddyLabel, replayGainLabel)
@@ -5555,7 +5593,7 @@ msgstr "Информация о replay gain"
 #. i18n: ectx: property (text), widget (QLabel, outputsViewLabel)
 #: po/rc.cpp:804 rc.cpp:804
 msgid "Use the checkboxes below to control the active outputs."
-msgstr ""
+msgstr "Используйте флажки ниже, чтобы контролировать активные выходы."
 
 #. i18n: file: gui/serversettings.ui:35
 #. i18n: ectx: property (text), widget (QLabel, label)
@@ -5692,13 +5730,13 @@ msgstr "SOCKS прокси"
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: po/rc.cpp:887 rc.cpp:887
 msgid "Use the checkboxes below to configure the list of active services."
-msgstr ""
+msgstr "Используйте флажки ниже, чтобы настроить список активных служб."
 
 #. i18n: file: scrobbling/scrobblingsettings.ui:29
 #. i18n: ectx: property (text), widget (BuddyLabel, scrobblerLabel)
 #: po/rc.cpp:893 rc.cpp:893
 msgid "Scrobble using:"
-msgstr ""
+msgstr "Скробблить с помощью:"
 
 #. i18n: file: scrobbling/scrobblingsettings.ui:72
 #. i18n: ectx: property (text), widget (BuddyLabel, statusLabel)
@@ -5729,13 +5767,13 @@ msgstr "Логин"
 #. i18n: ectx: property (text), widget (QCheckBox, enableScrobbling)
 #: po/rc.cpp:908 rc.cpp:908
 msgid "Scrobble tracks"
-msgstr ""
+msgstr "Скробблить треки"
 
 #. i18n: file: scrobbling/scrobblingsettings.ui:129
 #. i18n: ectx: property (text), widget (QCheckBox, showLove)
 #: po/rc.cpp:911 rc.cpp:911
 msgid "Show 'Love' button"
-msgstr ""
+msgstr "Показывать кнопку \"Love\""
 
 #. i18n: file: streams/digitallyimportedsettings.ui:29
 #. i18n: ectx: property (text), widget (QLabel, label)
@@ -5795,7 +5833,7 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: po/rc.cpp:944 rc.cpp:944
 msgid "Use the checkboxes below to configure the list of active providers."
-msgstr ""
+msgstr "Используйте флажки ниже для настройки списка активных поставщиков."
 
 #. i18n: file: streams/streamssettings.ui:47
 #. i18n: ectx: property (text), widget (QPushButton, configureButton)
@@ -5868,6 +5906,8 @@ msgid ""
 "<i><b>NOTE</b> Multiple genres should be separated via a semicolon (e.g. "
 "'Rock;Hard Rock')</i>"
 msgstr ""
+"<i><b>К сведению</b> несколько жанров должны быть разделены через точку с "
+"запятой (например 'Rock;Hard Rock')</i>"
 
 #. i18n: file: tags/trackorganiser.ui:115
 #. i18n: ectx: property (text), widget (QTreeWidget, files)
@@ -6001,11 +6041,11 @@ msgstr "Произошла ошибка"
 
 #: replaygain/rgdialog.cpp:506 replaygain/rgdialog.cpp:516
 msgid "Original: %1 dB"
-msgstr ""
+msgstr "Оригинал: %1 дБ"
 
 #: replaygain/rgdialog.cpp:511 replaygain/rgdialog.cpp:521
 msgid "Original: %1"
-msgstr ""
+msgstr "Оригинал: %1"
 
 #: replaygain/rgdialog.cpp:628 tags/trackorganiser.cpp:465
 msgid "Remove the selected tracks from the list?"
@@ -6017,55 +6057,56 @@ msgstr "Удалить треки"
 
 #: scrobbling/scrobbler.cpp:91
 msgid "Invalid service"
-msgstr ""
+msgstr "Недопустимая служба"
 
 #: scrobbling/scrobbler.cpp:92
 msgid "Invalid method"
-msgstr ""
+msgstr "Недопустимый метод"
 
 #: scrobbling/scrobbler.cpp:93
 msgid "Authentication failed"
-msgstr ""
+msgstr "Ошибка аутентификации"
 
 #: scrobbling/scrobbler.cpp:94
 msgid "Invalid format"
-msgstr ""
+msgstr "Недопустимый формат"
 
 #: scrobbling/scrobbler.cpp:95
 msgid "Invalid parameters"
-msgstr ""
+msgstr "Недопустимые параметры"
 
 #: scrobbling/scrobbler.cpp:96
 msgid "Invalid resource specified"
-msgstr ""
+msgstr "Недопустимый ресурс"
 
 #: scrobbling/scrobbler.cpp:97
 msgid "Operation failed"
-msgstr ""
+msgstr "Ошибка операции"
 
 #: scrobbling/scrobbler.cpp:98
 msgid "Invalid session key"
-msgstr ""
+msgstr "Недействительный ключ сеанса"
 
 #: scrobbling/scrobbler.cpp:99
 msgid "Invalid API key"
-msgstr ""
+msgstr "Недопустимый ключ API"
 
 #: scrobbling/scrobbler.cpp:100
 msgid "Service offline"
-msgstr ""
+msgstr "Сервис недоступен"
 
 #: scrobbling/scrobbler.cpp:101
 msgid "Last.fm is currently busy, please try again in a few minutes"
 msgstr ""
+"Last.fm в настоящее время занят, повторите попытку через несколько минут"
 
 #: scrobbling/scrobbler.cpp:102
 msgid "Rate-limit exceeded"
-msgstr ""
+msgstr "Превышено ограничение скорости"
 
 #: scrobbling/scrobbler.cpp:571
 msgid "%1 error: %2"
-msgstr ""
+msgstr "%1 ошибка: %2"
 
 #: scrobbling/scrobblinglove.cpp:59
 msgid "%1: Loved Current Track"
@@ -6078,7 +6119,7 @@ msgstr ""
 #: scrobbling/scrobblingsettings.cpp:54
 msgctxt "scrobbler name (via MPD)"
 msgid "%1 (via MPD)"
-msgstr ""
+msgstr "%1 (через MPD)"
 
 #: scrobbling/scrobblingsettings.cpp:66
 msgid ""
@@ -6090,18 +6131,18 @@ msgstr ""
 #: scrobbling/scrobblingsettings.cpp:99
 #: streams/digitallyimportedsettings.cpp:113
 msgid "Authenticating..."
-msgstr ""
+msgstr "Вход..."
 
 #: scrobbling/scrobblingsettings.cpp:116
 #: streams/digitallyimportedsettings.cpp:123
 msgid "Authenticated"
-msgstr ""
+msgstr "Вход выполнен"
 
 #: scrobbling/scrobblingsettings.cpp:116
 #: streams/digitallyimportedsettings.cpp:110
 #: streams/digitallyimportedsettings.cpp:123
 msgid "Not Authenticated"
-msgstr ""
+msgstr "Вход не выполнен"
 
 #: scrobbling/scrobblingstatus.cpp:44
 msgid "%1: Scrobble Tracks"
@@ -6157,11 +6198,11 @@ msgstr "Загрузка %1"
 
 #: streams/streamproviderlistdialog.cpp:128
 msgid "Installed"
-msgstr ""
+msgstr "Установлен"
 
 #: streams/streamproviderlistdialog.cpp:130
 msgid "Update available"
-msgstr ""
+msgstr "Доступно обновление"
 
 #: streams/streamproviderlistdialog.cpp:132
 msgid "Check the providers you wish to install/update."
@@ -6173,7 +6214,7 @@ msgstr ""
 
 #: streams/streamproviderlistdialog.cpp:194
 msgid "Downloading list..."
-msgstr ""
+msgstr "Загрузка списка..."
 
 #: streams/streamproviderlistdialog.cpp:217
 msgid "Digitally Imported"
@@ -6201,24 +6242,24 @@ msgstr ""
 
 #: streams/streamproviderlistdialog.cpp:327
 msgid "ListenLive"
-msgstr ""
+msgstr "ListenLive"
 
 #: streams/streamproviderlistdialog.cpp:364
 msgid "Install the following?"
-msgstr ""
+msgstr "Установить следующие?"
 
 #: streams/streamproviderlistdialog.cpp:374
 msgid "Update the following?"
-msgstr ""
+msgstr "Обновить следующие?"
 
 #: streams/streamproviderlistdialog.cpp:381
 #: streams/streamproviderlistdialog.cpp:463
 msgid "Install/Update"
-msgstr ""
+msgstr "Установка/Обновление"
 
 #: streams/streamproviderlistdialog.cpp:388
 msgid "Abort installation/update?"
-msgstr ""
+msgstr "Прервать установку/обновление?"
 
 #: streams/streamproviderlistdialog.cpp:446
 msgid "Downloading %1"
@@ -6226,7 +6267,7 @@ msgstr ""
 
 #: streams/streamproviderlistdialog.cpp:465
 msgid "Update all updateable providers"
-msgstr ""
+msgstr "Обновление всех обновляемых поставщиков"
 
 #: streams/streamspage.cpp:58
 msgid "Import Streams Into Favorites"
@@ -6319,11 +6360,11 @@ msgstr "Поиск %1:"
 
 #: streams/streamspage.cpp:626
 msgid "Added '%1'' to favorites"
-msgstr ""
+msgstr "Добавлено '%1' в избранное"
 
 #: streams/streamssettings.cpp:73
 msgid "From File..."
-msgstr ""
+msgstr "Из файла..."
 
 #: streams/streamssettings.cpp:74
 msgid "Download..."
@@ -6594,7 +6635,7 @@ msgstr ""
 
 #: widgets/genrecombo.cpp:41
 msgid "Filter On Genre"
-msgstr ""
+msgstr "Фильтр по жанру"
 
 #: widgets/genrecombo.cpp:63
 msgid "All Genres"
@@ -6646,7 +6687,7 @@ msgstr ""
 
 #: widgets/tableview.cpp:88
 msgid "Stretch Columns To Fit Window"
-msgstr ""
+msgstr "Растянуть столбцы по размеру окна"
 
 #: widgets/tagspinbox.cpp:38
 msgid "(Various)"

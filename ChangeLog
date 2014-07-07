@@ -22,9 +22,9 @@
  16. Add support for comments. These are read directly from the song file when
      the tag-editor is used, and they are NOT saved in Cantata's cache file.
      Comments are only read if MPD is configured to support the COMMENT field.
- 17. Install Cantata's list of lyrics providers to INSTALL/share/cantata/lyrics
- 18. Read lyrics providers from each .xml file in ~/.local/share/cantata/lyrics,
-     and INSTALL/share/cantata/lyrics
+ 17. Install Cantata's list of lyrics providers to INSTALL/share/cantata/config
+ 18. Read lyrics providers from each lyrics_*.xml file in
+     ~/.local/share/cantata/config, and INSTALL/share/cantata/config
  19. Attempt to respect menubar usage of current desktop. For Windows and Gnome;
      menu button is used, and menubar hidden. For Mac and Unity; menubar is
      used, and menu button is hidden. For KDE Plasma; by default the menu button
@@ -76,7 +76,7 @@
      Albums, Tracks), so no real need for button.
  47. Make shortcut for 'Go Back' action changeable.
  48. Don't attempt to find Amarok or Clementine covers.
- 49. Don't hard-code artist name fixes, read from $install/tag-fixes.xml
+ 49. Don't hard-code artist name fixes, read from $install/tag_fixes.xml
  50. Remove grouping of multiple-artist albums under 'Various Artists'
  51. Change default sidebar shortcuts from 'Alt+' to 'Ctrl+Shift+' so as to
      avoid clashes with menubar.

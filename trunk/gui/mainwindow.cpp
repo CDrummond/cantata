@@ -168,10 +168,6 @@ MainWindow::MainWindow(QWidget *parent)
     , contextSwitchTime(0)
     , connectedState(CS_Init)
     , stopAfterCurrent(false)
-    , volumeFade(0)
-    , origVolume(0)
-    , lastVolume(0)
-    , stopState(StopState_None)
 {
     QPoint p=pos();
     ActionCollection::setMainWidget(this);
@@ -878,7 +874,6 @@ MainWindow::MainWindow(QWidget *parent)
     #endif
     readSettings();
     updateConnectionsMenu();
-    fadeStop=Settings::self()->stopFadeDuration()>Settings::MinFade;
     ActionCollection::get()->readSettings();
 
     if (testAttribute(Qt::WA_TranslucentBackground)) {
@@ -941,13 +936,11 @@ MainWindow::~MainWindow()
         Dynamic::self()->stop();
     }
     #endif
-    if (Settings::self()->stopOnExit() || (fadeWhenStop() && StopState_Stopping==stopState)) {
+    if (Settings::self()->stopOnExit()) {
         emit stop();
-        // Allow time for stop to be sent...
-        Utils::sleep();
+        Utils::sleep(); // Allow time for stop to be sent...
     } else if (hadCantataStreams) {
-        // Allow time for removal of cantata streams...
-        Utils::sleep();
+        Utils::sleep(); // Allow time for removal of cantata streams...
     }
     #ifdef ENABLE_DEVICES_SUPPORT
     DevicesModel::self()->stop();
@@ -1399,6 +1392,7 @@ void MainWindow::readSettings()
             contextTimer=0;
         }
     }
+    MPDConnection::self()->setVolumeFadeDuration(Settings::self()->stopFadeDuration());
 }
 
 static inline bool diffCoverSize(int a, int b)
@@ -1408,12 +1402,6 @@ static inline bool diffCoverSize(int a, int b)
 
 void MainWindow::updateSettings()
 {
-    int stopFadeDuration=Settings::self()->stopFadeDuration();
-    fadeStop=stopFadeDuration>Settings::MinFade;
-    if (volumeFade) {
-        volumeFade->setDuration(stopFadeDuration);
-    }
-
     connectToMpd();
     Settings::self()->save();
     bool diffLibCovers=((int)MusicLibraryItemAlbum::currentCoverSize())!=Settings::self()->libraryCoverSize() ||
@@ -1549,13 +1537,10 @@ void MainWindow::enableStopActions(bool enable)
 
 void MainWindow::stopPlayback()
 {
-    if (!fadeWhenStop() || MPDState_Paused==MPDStatus::self()->state() || 0==volume) {
-        emit stop();
-    }
+    emit stop();
     enableStopActions(false);
     StdActions::self()->nextTrackAction->setEnabled(false);
     StdActions::self()->prevTrackAction->setEnabled(false);
-    startVolumeFade();
 }
 
 void MainWindow::stopAfterCurrentTrack()
@@ -1573,48 +1558,6 @@ void MainWindow::stopAfterTrack()
     }
 }
 
-void MainWindow::startVolumeFade()
-{
-    if (!fadeWhenStop()) {
-        return;
-    }
-
-    stopState=StopState_Stopping;
-    volumeSlider->setFadingStop(true);
-    if (!volumeFade) {
-        volumeFade = new QPropertyAnimation(this, "volume");
-        volumeFade->setDuration(Settings::self()->stopFadeDuration());
-    }
-    origVolume=lastVolume=volumeSlider->value();
-    volumeFade->setStartValue(origVolume);
-    volumeFade->setEndValue(-1);
-    volumeFade->start();
-}
-
-void MainWindow::stopVolumeFade()
-{
-    if (StopState_None!=stopState) {
-        stopState=StopState_None;
-        volumeFade->stop();
-        setMpdVolume(-1);
-    }
-}
-
-void MainWindow::setMpdVolume(int v)
-{
-    if (-1==v) {
-        volumeSlider->setFadingStop(false);
-        emit setVolume(volumeSlider->value());
-        if (StopState_Stopping==stopState) {
-            emit stop();
-        }
-        stopState=StopState_None;
-    } else if (lastVolume!=v) {
-        emit setVolume(v);
-        lastVolume=v;
-    }
-}
-
 void MainWindow::playPauseTrack()
 {
     switch (MPDStatus::self()->state()) {
@@ -1622,12 +1565,10 @@ void MainWindow::playPauseTrack()
         emit pause(true);
         break;
     case MPDState_Paused:
-        stopVolumeFade();
         emit pause(false);
         break;
     default:
         if (playQueueModel.rowCount()>0) {
-            stopVolumeFade();
             if (-1!=playQueueModel.currentSong() && -1!=playQueueModel.currentSongRow()) {
                 emit startPlayingSongId(playQueueModel.currentSong());
             } else {
@@ -1730,12 +1671,6 @@ void MainWindow::updateWindowTitle()
 
 void MainWindow::updateCurrentSong(const Song &song, bool wasEmpty)
 {
-    if (fadeWhenStop() && StopState_None!=stopState) {
-        if (StopState_Stopping==stopState) {
-            emit stop();
-        }
-    }
-
     current=song;
     if (current.isCdda()) {
         emit getStatus();
@@ -1860,11 +1795,9 @@ void MainWindow::updateStatus(MPDStatus * const status)
     case MPDState_Playing:
         StdActions::self()->playPauseTrackAction->setIcon(Icons::self()->toolbarPauseIcon);
         StdActions::self()->playPauseTrackAction->setEnabled(0!=status->playlistLength());
-        if (StopState_Stopping!=stopState) {
-            enableStopActions(true);
-            StdActions::self()->nextTrackAction->setEnabled(status->playlistLength()>1);
-            StdActions::self()->prevTrackAction->setEnabled(status->playlistLength()>1);
-        }
+        enableStopActions(true);
+        StdActions::self()->nextTrackAction->setEnabled(status->playlistLength()>1);
+        StdActions::self()->prevTrackAction->setEnabled(status->playlistLength()>1);
         nowPlaying->startTimer();
         break;
     case MPDState_Inactive:

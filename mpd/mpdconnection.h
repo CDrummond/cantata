@@ -48,6 +48,7 @@ class DirViewItemRoot;
 class MusicLibraryItemRoot;
 class QTimer;
 class Thread;
+class QPropertyAnimation;
 
 class MpdSocket : public QObject
 {
@@ -171,6 +172,7 @@ struct MPDConnectionDetails {
 class MPDConnection : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(int volume READ getVolume WRITE setVolume)
 
 public:
     enum AddAction
@@ -213,6 +215,7 @@ public:
     int unmuteVolume() { return unmuteVol; }
     bool isMuted() { return -1!=unmuteVol; }
     bool isMopdidy() const { return mopidy; }
+    void setVolumeFadeDuration(int f) { fadeDuration=f; }
 
 public Q_SLOTS:
     void reconnect();
@@ -296,6 +299,7 @@ public Q_SLOTS:
 
     void sendClientMessage(const QString &channel, const QString &msg, const QString &clientName);
     void sendDynamicMessage(const QStringList &msg);
+    int getVolume();
 
 Q_SIGNALS:
     void stateChanged(bool connected);
@@ -375,6 +379,10 @@ private:
     void setupRemoteDynamic();
     void readRemoteDynamicMessages();
     #endif
+    bool fadingVolume();
+    bool startVolumeFade();
+    void stopVolumeFade();
+    void emitStatusUpdated(MPDStatusValues &v);
 
 private:
     Thread *thread;
@@ -413,6 +421,10 @@ private:
     int unmuteVol;
     bool mopidy;
     bool isUpdatingDb;
+
+    QPropertyAnimation *volumeFade;
+    int fadeDuration;
+    int restoreVolume;
 };
 
 #endif

@@ -39,6 +39,7 @@
 #include <QTimer>
 #include <QDir>
 #include <QHostInfo>
+#include <QPropertyAnimation>
 #include "support/thread.h"
 #include "gui/settings.h"
 #include "cuefile.h"
@@ -215,6 +216,9 @@ MPDConnection::MPDConnection()
     , unmuteVol(-1)
     , mopidy(false)
     , isUpdatingDb(false)
+    , volumeFade(0)
+    , fadeDuration(0)
+    , restoreVolume(-1)
 {
     qRegisterMetaType<Song>("Song");
     qRegisterMetaType<Output>("Output");
@@ -244,6 +248,10 @@ MPDConnection::MPDConnection()
 
 MPDConnection::~MPDConnection()
 {
+    if (State_Connected==state && fadingVolume()) {
+        sendCommand("stop");
+        stopVolumeFade();
+    }
 //     disconnect(&sock, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(onSocketStateChanged(QAbstractSocket::SocketState)));
     disconnect(&idleSocket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(onSocketStateChanged(QAbstractSocket::SocketState)));
     disconnect(&idleSocket, SIGNAL(readyRead()), this, SLOT(idleDataReady()));
@@ -489,6 +497,10 @@ void MPDConnection::setDetails(const MPDConnectionDetails &d)
     details=det;
     if (diffDetails || State_Connected!=state) {
         DBUG << "setDetails" << details.hostname << details.port << (details.password.isEmpty() ? false : true);
+        if (State_Connected==state && fadingVolume()) {
+            sendCommand("stop");
+            stopVolumeFade();
+        }
         disconnectFromMPD();
         DBUG << "call connectToMPD";
         unmuteVol=-1;
@@ -853,7 +865,7 @@ void MPDConnection::playListChanges()
     if (response.ok && status.ok) {
         MPDStatusValues sv=MPDParseUtils::parseStatus(status.data);
         lastUpdatePlayQueueVersion=lastStatusPlayQueueVersion=sv.playlist;
-        emit statusUpdated(sv);
+        emitStatusUpdated(sv);
         QList<MPDParseUtils::IdPos> changes=MPDParseUtils::parseChanges(response.data);
         if (!changes.isEmpty()) {
             bool first=true;
@@ -940,6 +952,9 @@ void MPDConnection::playListChanges()
                 emit removedIds(removed);
             }
             emit playlistUpdated(songs);
+            if (songs.isEmpty()) {
+                stopVolumeFade();
+            }
             return;
         }
     }
@@ -971,11 +986,14 @@ void MPDConnection::playListInfo()
         }
         emit cantataStreams(cStreams, false);
         emit playlistUpdated(songs);
+        if (songs.isEmpty()) {
+            stopVolumeFade();
+        }
         Response status=sendCommand("status");
         if (status.ok) {
             MPDStatusValues sv=MPDParseUtils::parseStatus(status.data);
             lastUpdatePlayQueueVersion=lastStatusPlayQueueVersion=sv.playlist;
-            emit statusUpdated(sv);;
+            emitStatusUpdated(sv);
         }
     }
 }
@@ -1007,6 +1025,7 @@ void MPDConnection::getReplayGain()
 void MPDConnection::goToNext()
 {
     toggleStopAfterCurrent(false);
+    stopVolumeFade();
     sendCommand("next");
 }
 
@@ -1018,12 +1037,14 @@ static inline QByteArray value(bool b)
 void MPDConnection::setPause(bool toggle)
 {
     toggleStopAfterCurrent(false);
+    stopVolumeFade();
     sendCommand("pause "+value(toggle));
 }
 
 void MPDConnection::play()
 {
     toggleStopAfterCurrent(false);
+    stopVolumeFade();
     sendCommand("play");
 }
 
@@ -1036,12 +1057,14 @@ void MPDConnection::play()
 void MPDConnection::startPlayingSongId(qint32 songId)
 {
     toggleStopAfterCurrent(false);
+    stopVolumeFade();
     sendCommand("playid "+quote(songId));
 }
 
 void MPDConnection::goToPrevious()
 {
     toggleStopAfterCurrent(false);
+    stopVolumeFade();
     sendCommand("previous");
 }
 
@@ -1091,7 +1114,15 @@ void MPDConnection::setSeekId(qint32 songId, quint32 time)
 
 void MPDConnection::setVolume(int vol) //Range accepted by MPD: 0-100
 {
-    if (vol>=0) {
+    if (-1==vol) {
+        if (volumeFade) {
+            sendCommand("stop");
+        }
+        if (restoreVolume>=0) {
+            sendCommand("setvol "+quote(restoreVolume), false);
+        }
+        restoreVolume=-1;
+    } else if (vol>=0) {
         unmuteVol=-1;
         sendCommand("setvol "+quote(vol), false);
     }
@@ -1118,7 +1149,9 @@ void MPDConnection::stopPlaying(bool afterCurrent)
 {
     toggleStopAfterCurrent(afterCurrent);
     if (!stopAfterCurrent) {
-        sendCommand("stop");
+        if (!startVolumeFade()) {
+            sendCommand("stop");
+        }
     }
 }
 
@@ -1145,6 +1178,9 @@ void MPDConnection::getStatus()
     if (response.ok) {
         MPDStatusValues sv=MPDParseUtils::parseStatus(response.data);
         lastStatusPlayQueueVersion=sv.playlist;
+        if (currentSongId!=sv.songId) {
+            stopVolumeFade();
+        }
         if (stopAfterCurrent && (currentSongId!=sv.songId || (songPos>0 && sv.timeElapsed<(qint32)songPos))) {
             if (sendCommand("stop").ok) {
                 sv.state=MPDState_Stopped;
@@ -1159,7 +1195,7 @@ void MPDConnection::getStatus()
             isUpdatingDb=false;
             emit updatedDatabase();
         }
-        emit statusUpdated(sv);
+        emitStatusUpdated(sv);
     }
 }
 
@@ -1776,6 +1812,63 @@ void MPDConnection::readRemoteDynamicMessages()
 }
 
 #endif
+
+int MPDConnection::getVolume()
+{
+    Response response=sendCommand("status");
+    if (response.ok) {
+        MPDStatusValues sv=MPDParseUtils::parseStatus(response.data);
+        return sv.volume;
+    }
+    return -1;
+}
+
+bool MPDConnection::fadingVolume()
+{
+    return volumeFade && QPropertyAnimation::Running==volumeFade->state();
+}
+
+bool MPDConnection::startVolumeFade()
+{
+    if (fadeDuration<1) {
+        return false;
+    }
+
+    Response response=sendCommand("status");
+    restoreVolume=getVolume();
+    if (restoreVolume<5) {
+        return false;
+    }
+
+    if (!volumeFade) {
+        volumeFade = new QPropertyAnimation(this, "volume");
+        volumeFade->setDuration(fadeDuration);
+    }
+
+    if (QPropertyAnimation::Running!=volumeFade->state()) {
+        volumeFade->setStartValue(restoreVolume);
+        volumeFade->setEndValue(-1);
+        volumeFade->start();
+    }
+    return true;
+}
+
+void MPDConnection::stopVolumeFade()
+{
+    if (fadingVolume()) {
+        volumeFade->stop();
+        setVolume(restoreVolume);
+        restoreVolume=-1;
+    }
+}
+
+void MPDConnection::emitStatusUpdated(MPDStatusValues &v)
+{
+    if (restoreVolume>=0) {
+        v.volume=restoreVolume;
+    }
+    emit statusUpdated(v);
+}
 
 MpdSocket::MpdSocket(QObject *parent)
     : QObject(parent)

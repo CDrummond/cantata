@@ -122,8 +122,6 @@ public:
         PAGE_CONTEXT
     };
 
-    Q_PROPERTY(int volume READ mpdVolume WRITE setMpdVolume)
-
     MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
@@ -169,7 +167,6 @@ public Q_SLOTS:
     #else
     void showAboutDialog();
     #endif
-    void setMpdVolume(int v);
     void mpdConnectionStateChanged(bool connected);
     void playQueueItemsSelected(bool s);
     void showSidebarPreferencesPage() { showPreferencesDialog("interface:sidebar"); }
@@ -282,10 +279,7 @@ private:
     #endif
     bool currentIsStream() const { return playQueueModel.rowCount() && -1!=current.id && current.isStream(); }
     void updateWindowTitle();
-    void startVolumeFade(/*bool stop*/);
-    void stopVolumeFade();
     void showTab(int page) { tabWidget->setCurrentIndex(page); }
-    bool fadeWhenStop() const { return fadeStop && volumeSlider->isEnabled(); }
     void updateNextTrack(int nextTrackId);
     void updateActionToolTips();
     void setPlaylistsEnabled(bool e);
@@ -396,13 +390,7 @@ private:
     QTimer *contextTimer;
     int contextSwitchTime;
     enum { CS_Init, CS_Connected, CS_Disconnected } connectedState;
-    bool fadeStop;
     bool stopAfterCurrent;
-    QPropertyAnimation *volumeFade;
-    int volume;
-    int origVolume;
-    int lastVolume;
-    enum { StopState_None, StopState_Stopping } stopState;
     friend class TrayItem;
 };
 

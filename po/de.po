@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-07-03 19:59+0100\n"
-"PO-Revision-Date: 2014-04-14 19:32+0200\n"
+"PO-Revision-Date: 2014-07-09 13:26+0200\n"
 "Last-Translator: Markus Slopianka <kamikazow@web.de>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de\n"
@@ -1222,7 +1222,7 @@ msgstr "Qualitätsbewertung"
 
 #: devices/encoders.cpp:201
 msgid "Opus"
-msgstr ""
+msgstr "Opus"
 
 #: devices/encoders.cpp:204
 msgctxt ""
@@ -2807,8 +2807,8 @@ msgstr[1] "%1 Künstler"
 #: gui/plurals_kde.cpp:49
 msgid "1 Stream"
 msgid_plural "%1 Streams"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Ein Stream"
+msgstr[1] "%1 Streams"
 
 #: gui/plurals_kde.cpp:54
 msgid "1 Entry"

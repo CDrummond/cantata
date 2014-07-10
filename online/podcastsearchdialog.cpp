@@ -28,7 +28,6 @@
 #include "opmlparser.h"
 #include "widgets/icons.h"
 #include "support/spinner.h"
-#include "qjson/parser.h"
 #include "widgets/basicitemdelegate.h"
 #include "models/onlineservicesmodel.h"
 #include "podcastservice.h"
@@ -55,6 +54,9 @@
 #include <QDesktopServices>
 #if QT_VERSION >= 0x050000
 #include <QUrlQuery>
+#include <QJsonDocument>
+#else
+#include "qjson/parser.h"
 #endif
 
 static int iCount=0;
@@ -383,8 +385,11 @@ void PodcastSearchPage::parseResonse(QIODevice *dev)
         emit error(i18n("Failed to fetch podcasts from %1", name()));
         return;
     }
-    QJson::Parser parser;
-    QVariant data = parser.parse(dev);
+    #if QT_VERSION >= 0x050000
+    QVariant data=QJsonDocument::fromJson(dev->readAll()).toVariant();
+    #else
+    QVariant data = QJson::Parser().parse(dev->readAll());
+    #endif
     if (data.isNull()) {
         emit error(i18n("There was a problem parsing the response from %1", name()));
         return;

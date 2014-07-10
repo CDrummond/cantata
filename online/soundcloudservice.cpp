@@ -23,7 +23,6 @@
 
 #include "soundcloudservice.h"
 #include "network/networkaccessmanager.h"
-#include "qjson/parser.h"
 #include "models/onlineservicesmodel.h"
 #include "models/musiclibraryitemsong.h"
 #include "config.h"
@@ -31,6 +30,9 @@
 #include <QUrl>
 #if QT_VERSION >= 0x050000
 #include <QUrlQuery>
+#include <QJsonDocument>
+#else
+#include "qjson/parser.h"
 #endif
 
 const QLatin1String SoundCloudService::constName("SoundCloud");
@@ -115,11 +117,10 @@ void SoundCloudService::jobFinished()
     j->deleteLater();
 
     if (j->ok()) {
-        QJson::Parser parser;
-        #ifdef Q_OS_WIN
-        QVariant result = parser.parse(j->readAll());
+        #if QT_VERSION >= 0x050000
+        QVariant result=QJsonDocument::fromJson(j->readAll()).toVariant();
         #else
-        QVariant result = parser.parse(j->actualJob());
+        QVariant result = QJson::Parser().parse(j->readAll());
         #endif
         if (result.isValid()) {
             QVariantList list = result.toList();

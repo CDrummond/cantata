@@ -39,7 +39,6 @@
 #include "gui/stdactions.h"
 #include "support/actioncollection.h"
 #include "digitallyimported.h"
-#include "qjson/parser.h"
 #include "qtiocompressor/qtiocompressor.h"
 #include "support/utils.h"
 #include "config.h"
@@ -58,6 +57,9 @@
 #include <QFileSystemWatcher>
 #if QT_VERSION >= 0x050000
 #include <QUrlQuery>
+#include <QJsonDocument>
+#else
+#include "qjson/parser.h"
 #endif
 #if defined Q_OS_WIN
 #include <QCoreApplication>
@@ -1439,11 +1441,10 @@ QList<StreamsModel::Item *> StreamsModel::parseSomaFmResponse(QIODevice *dev, Ca
 QList<StreamsModel::Item *> StreamsModel::parseDigitallyImportedResponse(QIODevice *dev, CategoryItem *cat)
 {
     QList<Item *> newItems;
-    QJson::Parser parser;
-    #ifdef Q_OS_WIN
-    QVariantMap data = parser.parse(dev->readAll()).toMap();
+    #if QT_VERSION >= 0x050000
+    QVariantMap data=QJsonDocument::fromJson(dev->readAll()).toVariant().toMap();
     #else
-    QVariantMap data = parser.parse(dev).toMap();
+    QVariantMap data = QJson::Parser().parse(dev->readAll()).toMap();
     #endif
     QString listenHost=QLatin1String("listen.")+QUrl(cat->url).host().remove("www.");
 
@@ -1675,11 +1676,10 @@ QList<StreamsModel::Item *> StreamsModel::parseDirbleResponse(QIODevice *dev, Ca
         return parseDirbleStations(dev, cat);
     }
     QList<Item *> newItems;
-    QJson::Parser parser;
-    #ifdef Q_OS_WIN
-    QVariantList data = parser.parse(dev->readAll()).toList();
+    #if QT_VERSION >= 0x050000
+    QVariantList data=QJsonDocument::fromJson(dev->readAll()).toVariant().toList();
     #else
-    QVariantList data = parser.parse(dev).toList();
+    QVariantList data = QJson::Parser().parse(dev->readAll()).toList();
     #endif
 
     // Get categories...
@@ -1696,11 +1696,10 @@ QList<StreamsModel::Item *> StreamsModel::parseDirbleResponse(QIODevice *dev, Ca
 QList<StreamsModel::Item *> StreamsModel::parseDirbleStations(QIODevice *dev, CategoryItem *cat)
 {
     QList<Item *> newItems;
-    QJson::Parser parser;
-    #ifdef Q_OS_WIN
-    QVariantList data = parser.parse(dev->readAll()).toList();
+    #if QT_VERSION >= 0x050000
+    QVariantList data=QJsonDocument::fromJson(dev->readAll()).toVariant().toList();
     #else
-    QVariantList data = parser.parse(dev).toList();
+    QVariantList data = QJson::Parser().parse(dev->readAll()).toList();
     #endif
 
     foreach (const QVariant &d, data) {
@@ -1820,8 +1819,11 @@ StreamsModel::CategoryItem * StreamsModel::addInstalledProvider(const QString &n
     if (streamsFileName.endsWith(constSettingsFile)) {
         QFile file(streamsFileName);
         if (file.open(QIODevice::ReadOnly)) {
-            QByteArray contents=file.readAll();
-            QVariantMap map=QJson::Parser().parse(contents).toMap();
+            #if QT_VERSION >= 0x050000
+            QVariantMap map=QJsonDocument::fromJson(file.readAll()).toVariant().toMap();
+            #else
+            QVariantMap map = QJson::Parser().parse(file.readAll()).toMap();
+            #endif
             QString type=map["type"].toString();
             QString url=map["url"].toString();
 

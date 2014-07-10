@@ -483,6 +483,51 @@ QString Song::trackAndTitleStr(bool showArtistIfDifferent) const
            QLatin1Char(' ')+(showArtistIfDifferent && diffArtist() ? artistSong() : title);
 }
 
+#ifndef CANTATA_NO_UI_FUNCTIONS
+static void addField(const QString &name, const QString &val, QString &tt)
+{
+    if (!val.isEmpty()) {
+        tt+=QString("<tr><td align=\"right\"><b>%1:&nbsp;&nbsp;</b></td><td>%2</td></tr>").arg(name).arg(val);
+    }
+}
+#endif
+
+QString Song::toolTip() const
+{
+    #ifdef CANTATA_NO_UI_FUNCTIONS
+    return QString();
+    #else
+    QString toolTip=QLatin1String("<table>");
+    addField(i18n("Title"), title, toolTip);
+    addField(i18n("Artist"), artist, toolTip);
+    if (albumartist!=artist) {
+        addField(i18n("Album artist"), albumartist, toolTip);
+    }
+    addField(i18n("Composer"), composer(), toolTip);
+    addField(i18n("Performer"), performer(), toolTip);
+    addField(i18n("Album"), album, toolTip);
+    if (track>0) {
+        addField(i18n("Track number"), QString::number(track), toolTip);
+    }
+    if (disc>0) {
+        addField(i18n("Disc number"), QString::number(disc), toolTip);
+    }
+    addField(i18n("Genre"), genre, toolTip);
+    if (year>0) {
+        addField(i18n("Year"), QString::number(year), toolTip);
+    }
+    if (time>0) {
+        addField(i18n("Length"), Utils::formatTime(time, true), toolTip);
+    }
+    toolTip+=QLatin1String("</table>");
+
+    if (isNonMPD()) {
+        return toolTip;
+    }
+    return toolTip+QLatin1String("<br/><br/><small><i>")+filePath()+QLatin1String("</i></small>");
+    #endif
+}
+
 void Song::setExtraField(int f, const QString &v)
 {
     if (v.isEmpty()) {

@@ -33,7 +33,6 @@
 #include "widgets/messageoverlay.h"
 #include "support/icon.h"
 #include "widgets/icons.h"
-#include "qjson/parser.h"
 #include "config.h"
 #include <QVBoxLayout>
 #include <QLabel>
@@ -61,6 +60,9 @@
 #if QT_VERSION >= 0x050000
 #include <QUrlQuery>
 #include <QMimeData>
+#include <QJsonDocument>
+#else
+#include "qjson/parser.h"
 #endif
 #include <QTemporaryFile>
 #include <QDir>
@@ -1125,9 +1127,15 @@ void CoverDialog::parseGoogleQueryResponse(const QByteArray &resp)
 
 void CoverDialog::parseDiscogsQueryResponse(const QByteArray &resp)
 {
-    QJson::Parser parser;
+    #if QT_VERSION >= 0x050000
+    QJsonParseError jsonParseError;
+    QVariantMap parsed=QJsonDocument::fromJson(resp, &jsonParseError).toVariant().toMap();
+    bool ok=QJsonParseError::NoError==jsonParseError.error;
+    #else
     bool ok=false;
-    QVariantMap parsed=parser.parse(resp, &ok).toMap();
+    QVariantMap parsed=QJson::Parser().parse(resp, &ok).toMap();
+    #endif
+
     if (ok && parsed.contains("resp")) {
         QVariantMap response=parsed["resp"].toMap();
         if (response.contains("search")) {
@@ -1184,9 +1192,15 @@ void CoverDialog::parseDiscogsQueryResponse(const QByteArray &resp)
 
 void CoverDialog::parseCoverArtArchiveQueryResponse(const QByteArray &resp)
 {
-    QJson::Parser parser;
+    #if QT_VERSION >= 0x050000
+    QJsonParseError jsonParseError;
+    QVariantMap parsed=QJsonDocument::fromJson(resp, &jsonParseError).toVariant().toMap();
+    bool ok=QJsonParseError::NoError==jsonParseError.error;
+    #else
     bool ok=false;
-    QVariantMap parsed=parser.parse(resp, &ok).toMap();
+    QVariantMap parsed=QJson::Parser().parse(resp, &ok).toMap();
+    #endif
+
     if (ok && parsed.contains("images")) {
         QVariantList images=parsed["images"].toList();
         foreach (const QVariant &i, images) {
@@ -1208,9 +1222,15 @@ void CoverDialog::parseCoverArtArchiveQueryResponse(const QByteArray &resp)
 
 void CoverDialog::parseSpotifyQueryResponse(const QByteArray &resp)
 {
-    QJson::Parser parser;
+    #if QT_VERSION >= 0x050000
+    QJsonParseError jsonParseError;
+    QVariantMap parsed=QJsonDocument::fromJson(resp, &jsonParseError).toVariant().toMap();
+    bool ok=QJsonParseError::NoError==jsonParseError.error;
+    #else
     bool ok=false;
-    QVariantMap parsed=parser.parse(resp, &ok).toMap();
+    QVariantMap parsed=QJson::Parser().parse(resp, &ok).toMap();
+    #endif
+
     if (ok) {
         if (parsed.contains("info")) { // Initial query response...
             const QString key=QLatin1String(isArtist ? "artists" : "albums");
@@ -1238,9 +1258,15 @@ void CoverDialog::parseSpotifyQueryResponse(const QByteArray &resp)
 
 void CoverDialog::parseITunesQueryResponse(const QByteArray &resp)
 {
-    QJson::Parser parser;
+    #if QT_VERSION >= 0x050000
+    QJsonParseError jsonParseError;
+    QVariantMap parsed=QJsonDocument::fromJson(resp, &jsonParseError).toVariant().toMap();
+    bool ok=QJsonParseError::NoError==jsonParseError.error;
+    #else
     bool ok=false;
-    QVariantMap parsed=parser.parse(resp, &ok).toMap();
+    QVariantMap parsed=QJson::Parser().parse(resp, &ok).toMap();
+    #endif
+
     if (ok && parsed.contains("results")) {
         QVariantList results=parsed["results"].toList();
         foreach (const QVariant &res, results) {
@@ -1256,9 +1282,15 @@ void CoverDialog::parseITunesQueryResponse(const QByteArray &resp)
 void CoverDialog::parseDeezerQueryResponse(const QByteArray &resp)
 {
     const QString key=QLatin1String(isArtist ? "picture" : "cover");
-    QJson::Parser parser;
+    #if QT_VERSION >= 0x050000
+    QJsonParseError jsonParseError;
+    QVariantMap parsed=QJsonDocument::fromJson(resp, &jsonParseError).toVariant().toMap();
+    bool ok=QJsonParseError::NoError==jsonParseError.error;
+    #else
     bool ok=false;
-    QVariantMap parsed=parser.parse(resp, &ok).toMap();
+    QVariantMap parsed=QJson::Parser().parse(resp, &ok).toMap();
+    #endif
+
     if (ok && parsed.contains("data")) {
         QVariantList results=parsed["data"].toList();
         foreach (const QVariant &res, results) {

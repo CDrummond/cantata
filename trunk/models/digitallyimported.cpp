@@ -24,10 +24,14 @@
 #include "digitallyimported.h"
 #include "support/configuration.h"
 #include "network/networkaccessmanager.h"
-#include "qjson/parser.h"
 #include "support/localize.h"
 #include "support/globalstatic.h"
 #include <QNetworkRequest>
+#if QT_VERSION >= 0x050000
+#include <QJsonDocument>
+#else
+#include "qjson/parser.h"
+#endif
 #include <QTime>
 #include <QTimer>
 
@@ -157,11 +161,10 @@ void DigitallyImported::loginResponse()
         return;
     }
 
-    QJson::Parser parser;
-    #ifdef Q_OS_WIN
-    QVariantMap data = parser.parse(reply->readAll()).toMap();
+    #if QT_VERSION >= 0x050000
+    QVariantMap data=QJsonDocument::fromJson(reply->readAll()).toVariant().toMap();
     #else
-    QVariantMap data = parser.parse(reply).toMap();
+    QVariantMap data = QJson::Parser().parse(reply->readAll()).toMap();
     #endif
 
     if (!data.contains("subscriptions")) {

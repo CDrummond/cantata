@@ -38,8 +38,7 @@
 const QLatin1String SoundCloudService::constName("SoundCloud");
 QString SoundCloudService::iconFile;
 static const QString constApiKey=QLatin1String("0cb23dce473528973ce74815bd36a334");
-static const QString constHost=QLatin1String("api.soundcloud.com");
-static const QString constUrl=QLatin1String("https://")+constHost+QLatin1Char('/');
+static const QString constUrl=QLatin1String("https://api.soundcloud.com/tracks");
 
 SoundCloudService::SoundCloudService(MusicModel *m)
     : OnlineService(m, constName)
@@ -83,7 +82,6 @@ void SoundCloudService::setSearch(const QString &searchTerm)
     #else
     QUrlQuery query;
     #endif
-    searchUrl.setPath("tracks");
     query.addQueryItem("client_id", constApiKey);
     query.addQueryItem("q", searchTerm);
     #if QT_VERSION >= 0x050000

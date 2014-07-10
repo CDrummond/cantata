@@ -1876,9 +1876,12 @@ void MPDConnection::emitStatusUpdated(MPDStatusValues &v)
 
 void MPDConnection::clearError()
 {
-    if (isConnected() && -1!=sock.write("clearerror\n")) {
-        sock.waitForBytesWritten(500);
-        readReply(sock);
+    if (isConnected()) {
+        DBUG << __FUNCTION__;
+        if (-1!=sock.write("clearerror\n")) {
+            sock.waitForBytesWritten(500);
+            readReply(sock);
+        }
     }
 }
 

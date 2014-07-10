@@ -491,8 +491,8 @@ void SongView::loadTags()
 
             if (tagMap.isEmpty()) {
                 int pos=0;
-                tagMap.insert(QLatin1String("ALBUMARTIST"), MapEntry(pos++, i18n("Album artist")));
                 tagMap.insert(QLatin1String("ARTIST"), MapEntry(pos++, i18n("Artist")));
+                tagMap.insert(QLatin1String("ALBUMARTIST"), MapEntry(pos++, i18n("Album artist")));
                 tagMap.insert(QLatin1String("COMPOSER"), MapEntry(pos++, i18n("Composer")));
                 pos++;// For performer...
                 tagMap.insert(QLatin1String("LYRICIST"), MapEntry(pos++, i18n("Lyricist")));
@@ -555,13 +555,13 @@ void SongView::loadTags()
 
     if (tags.isEmpty()) {
         int pos=0;
-        tags.insert(pos++, createRow(i18n("Album artist"), currentSong.albumartist));
         tags.insert(pos++, createRow(i18n("Artist"), currentSong.artist));
+        tags.insert(pos++, createRow(i18n("Album artist"), currentSong.albumartist));
         tags.insert(pos++, createRow(i18n("Composer"), currentSong.composer()));
         tags.insert(pos++, createRow(i18n("Performer"), currentSong.performer()));
         tags.insert(pos++, createRow(i18n("Album"), currentSong.album));
-        tags.insert(pos++, createRow(i18n("Disc number"), 0==currentSong.disc ? QString() : QString::number(currentSong.disc)));
         tags.insert(pos++, createRow(i18n("Track number"), 0==currentSong.track ? QString() : QString::number(currentSong.track)));
+        tags.insert(pos++, createRow(i18n("Disc number"), 0==currentSong.disc ? QString() : QString::number(currentSong.disc)));
         tags.insert(pos++, createRow(i18n("Genre"), currentSong.genres().join(", ")));
         tags.insert(pos++, createRow(i18n("Year"), 0==currentSong.track ? QString() : QString::number(currentSong.year)));
         tags.insert(pos++, createRow(i18n("Comment"), currentSong.comment()));

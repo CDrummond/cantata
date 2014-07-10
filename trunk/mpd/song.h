@@ -126,6 +126,7 @@ struct Song
     const QString & albumArtist() const { return albumartist.isEmpty() ? artist : albumartist; }
     QString displayTitle() const { return !albumartist.isEmpty() && albumartist!=artist ? artistSong() : title; }
     QString trackAndTitleStr(bool showArtistIfDifferent=true) const;
+    QString toolTip() const;
 
     QString extraField(int f) const { return extra[f]; }
     void setExtraField(int f, const QString &v);

@@ -443,18 +443,9 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
                     break;
                 }
             }
-        case Qt::ToolTipRole: {
-            QString text=s->entryName();
-
-            if (Qt::ToolTipRole==role) {
-                text=text.replace("\n", "<br/>");
-                if (!s->title.isEmpty()) {
-                    text+=QLatin1String("<br/>")+Utils::formatTime(s->time);
-                    text+=QLatin1String("<br/><small><i>")+s->file+QLatin1String("</i></small>");
-                }
-            }
-            return text;
-        }
+            return s->entryName();
+        case Qt::ToolTipRole:
+            return s->toolTip();
         #ifndef ENABLE_UBUNTU
         case Qt::DecorationRole:
             return multiCol ? QVariant() : (s->title.isEmpty() ? Icons::self()->streamIcon : Icons::self()->audioFileIcon);

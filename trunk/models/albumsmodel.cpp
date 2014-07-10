@@ -295,14 +295,8 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
         case Qt::DecorationRole:
             return Song::Playlist==si->type ? Icons::self()->playlistIcon : Icons::self()->audioFileIcon;
         #endif
-        case Qt::ToolTipRole: {
-            quint32 year=si->parent->songs.count() ? si->parent->songs.at(0)->year : 0;
-            return si->parent->artist+QLatin1String("<br/>")+
-                   si->parent->album+(year>0 ? (QLatin1String(" (")+QString::number(year)+QChar(')')) : QString())+QLatin1String("<br/>")+
-                   data(index, Qt::DisplayRole).toString()+QLatin1String("<br/>")+
-                   Utils::formatTime(si->time, true)+QLatin1String("<br/>")+
-                   QLatin1String("<small><i>")+si->filePath()+QLatin1String("</i></small>");
-        }
+        case Qt::ToolTipRole:
+            return si->toolTip();
         case Cantata::Role_MainText:
         case Qt::DisplayRole:
             if (Song::Playlist==si->type) {

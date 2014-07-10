@@ -90,13 +90,6 @@ static QString parentData(const MusicLibraryItem *i)
     return data;
 }
 
-static void addField(const QString &name, const QString &val, QString &tt)
-{
-    if (!val.isEmpty()) {
-        tt+=QString("<tr><td align=\"right\"><b>%1:&nbsp;&nbsp;</b></td><td>%2</td></tr>").arg(name).arg(val);
-    }
-}
-
 QVariant MusicModel::data(const QModelIndex &index, int role) const
 {
     if (!index.isValid()) {
@@ -172,41 +165,7 @@ QVariant MusicModel::data(const QModelIndex &index, int role) const
                        QLatin1String("<br/><small><i>")+static_cast<MusicLibraryItemPodcastEpisode *>(item)->published()+QLatin1String("</i></small>");
             }
             #endif
-            const Song &song=static_cast<MusicLibraryItemSong *>(item)->song();
-            QString toolTip=QLatin1String("<table>");
-            addField(i18n("Title"), song.title, toolTip);
-            addField(i18n("Artist"), song.artist, toolTip);
-            if (song.albumartist!=song.artist) {
-                addField(i18n("Album artist"), song.albumartist, toolTip);
-            }
-            addField(i18n("Composer"), song.composer(), toolTip);
-            addField(i18n("Album"), song.album, toolTip);
-            if (song.track>0) {
-                addField(i18n("Track number"), QString::number(song.track), toolTip);
-            }
-            if (song.disc>0) {
-                addField(i18n("Disc number"), QString::number(song.disc), toolTip);
-            }
-            addField(i18n("Genre"), song.genre, toolTip);
-            if (song.year>0) {
-                addField(i18n("Year"), QString::number(song.year), toolTip);
-            }
-            if (song.time>0) {
-                addField(i18n("Length"), Utils::formatTime(song.time, true), toolTip);
-            }
-            toolTip+=QLatin1String("</table>");
-
-            #ifdef ENABLE_ONLINE_SERVICES
-            if (dynamic_cast<const OnlineService *>(root(item))) {
-                return toolTip;
-            }
-            #endif
-            #ifdef ENABLE_DEVICES_SUPPORT
-            if (dynamic_cast<const Device *>(root(item))) {
-                return toolTip;
-            }
-            #endif
-            return toolTip+QLatin1String("<br/><br/><small><i>")+song.file+QLatin1String("</i></small>");
+            return static_cast<MusicLibraryItemSong *>(item)->song().toolTip();
         }
 
         return parentData(item)+

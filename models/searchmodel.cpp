@@ -209,18 +209,9 @@ QVariant SearchModel::data(const QModelIndex &index, int role) const
             }
             break;
         }
-    case Qt::ToolTipRole: {
-        QString text=song->entryName();
-
-        if (Qt::ToolTipRole==role) {
-            text=text.replace("\n", "<br/>");
-            if (!song->title.isEmpty()) {
-                text+=QLatin1String("<br/>")+Utils::formatTime(song->time);
-                text+=QLatin1String("<br/><small><i>")+song->file+QLatin1String("</i></small>");
-            }
-        }
-        return text;
-    }
+        return song->entryName();
+    case Qt::ToolTipRole:
+        return song->toolTip();
     case Cantata::Role_MainText:
         return song->title.isEmpty() ? song->file : song->trackAndTitleStr();
     case Cantata::Role_SubText:

@@ -576,12 +576,7 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
         if (s.album.isEmpty() && s.isStream()) {
             return basicPath(s);
         } else {
-            return s.albumArtist()+QLatin1String("<br/>")+
-                   s.displayAlbum()+QLatin1String("<br/>")+
-                   s.trackAndTitleStr()+QLatin1String("<br/>")+
-                   Utils::formatTime(s.time)+QLatin1String("<br/>")+
-                   (s.priority>0 ? i18n("<b>(Priority: %1)</b>", s.priority)+QLatin1String("<br/>") : QString())+
-                   QLatin1String("<small><i>")+basicPath(s)+QLatin1String("</i></small>");
+            return s.toolTip();
         }
     }
     case Qt::TextAlignmentRole:

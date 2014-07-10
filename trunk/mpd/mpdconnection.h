@@ -383,6 +383,7 @@ private:
     bool startVolumeFade();
     void stopVolumeFade();
     void emitStatusUpdated(MPDStatusValues &v);
+    void clearError();
 
 private:
     Thread *thread;

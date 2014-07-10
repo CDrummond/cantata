@@ -37,7 +37,6 @@
 #include "support/localize.h"
 #include "backdropcreator.h"
 #include "support/gtkstyle.h"
-#include "qjson/parser.h"
 #include "widgets/playqueueview.h"
 #include "widgets/treeview.h"
 #include "widgets/thinsplitterhandle.h"
@@ -47,6 +46,9 @@
 #include <QStylePainter>
 #if QT_VERSION >= 0x050000
 #include <QUrlQuery>
+#include <QJsonDocument>
+#else
+#include "qjson/parser.h"
 #endif
 #include <QXmlStreamReader>
 #include <QFile>
@@ -892,13 +894,15 @@ void ContextWidget::fanArtResponse()
     QString url;
 
     if (reply->ok()) {
-        QJson::Parser parser;
-        bool ok=false;
-        #ifdef Q_OS_WIN
-        QVariantMap parsed=parser.parse(reply->readAll(), &ok).toMap();
+        #if QT_VERSION >= 0x050000
+        QJsonParseError jsonParseError;
+        QVariantMap parsed=QJsonDocument::fromJson(reply->readAll(), &jsonParseError).toVariant().toMap();
+        bool ok=QJsonParseError::NoError==jsonParseError.error;
         #else
-        QVariantMap parsed=parser.parse(reply->actualJob(), &ok).toMap();
+        bool ok=false;
+        QVariantMap parsed = QJson::Parser().parse(reply->readAll(), &ok).toMap();
         #endif
+
         if (ok && !parsed.isEmpty()) {
             QVariantMap artist=parsed[parsed.keys().first()].toMap();
             if (artist.contains("artistbackground")) {
@@ -972,13 +976,15 @@ void ContextWidget::discoGsResponse()
     QString url;
 
     if (reply->ok()) {
-        QJson::Parser parser;
-        bool ok=false;
-        #ifdef Q_OS_WIN
-        QVariantMap parsed=parser.parse(reply->readAll(), &ok).toMap();
+        #if QT_VERSION >= 0x050000
+        QJsonParseError jsonParseError;
+        QVariantMap parsed=QJsonDocument::fromJson(reply->readAll(), &jsonParseError).toVariant().toMap();
+        bool ok=QJsonParseError::NoError==jsonParseError.error;
         #else
-        QVariantMap parsed=parser.parse(reply->actualJob(), &ok).toMap();
+        bool ok=false;
+        QVariantMap parsed = QJson::Parser().parse(reply->readAll(), &ok).toMap();
         #endif
+
         if (ok && parsed.contains("resp")) {
             QVariantMap response=parsed["resp"].toMap();
             if (response.contains("search")) {

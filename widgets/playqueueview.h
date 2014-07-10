@@ -46,20 +46,6 @@ class Spinner;
 class PlayQueueView;
 class MessageOverlay;
 
-class PlayQueueListView : public ListView
-{
-    Q_OBJECT
-public:
-    PlayQueueListView(PlayQueueView *p);
-    virtual ~PlayQueueListView() { }
-    void paintEvent(QPaintEvent *e);
-    void setModel(QAbstractItemModel *model);
-public Q_SLOTS:
-    void coverLoaded(const Song &song, int size);
-private:
-    PlayQueueView *view;
-};
-
 class PlayQueueTreeView : public TableView
 {
 public:
@@ -144,7 +130,6 @@ private:
 private:
     Action *removeFromAction;
     ItemView::Mode mode;
-    PlayQueueListView *listView;
     PlayQueueGroupedView *groupedView;
     PlayQueueTreeView *treeView;
     Spinner *spinner;
@@ -160,7 +145,6 @@ private:
     int backgroundOpacity;
     int backgroundBlur;
     QString customBackgroundFile;
-    friend class PlayQueueListView;
     friend class PlayQueueGroupedView;
     friend class PlayQueueTreeView;
 };

@@ -94,86 +94,85 @@
  58. Add a 'touch friendly' setting - toolbuttons are made wider, view actions
      always visible (semi-transparent in list/tree), and views are 'flick-able'
  59. Use a toolbutton for listview header and back action.
- 60. Add 'List' to playqueue view types.
- 61. Add 'Locate In Library' to search page.
- 62. Remove 'Go Back' from listview context menu.
- 63. Hide icons in shortcut dialog, and in actions used in menus, if
+ 60. Add 'Locate In Library' to search page.
+ 61. Remove 'Go Back' from listview context menu.
+ 62. Hide icons in shortcut dialog, and in actions used in menus, if
      Qt::AA_DontShowIconsInMenus is set. This seems to be the only way to force
      Unity to not show icons in menus of Qt apps. (There appears to be a bug in
      libdbusmenu-qt https://bugs.launchpad.net/libdbusmenu-qt/+bug/1287337)
      (Qt-only builds)
- 64. If connection to MPD faiils, attempt to ascertain if its a proxy error.
- 65. Add button under playqueue to re-center playqueue on current song.
- 66. Add option to only act on songs that pass current string or genre filter.
- 67. Multiple genre support.
- 68. Store favourite streams as '[Radio Streams]' MPD playlist.
- 69. For tracks for mutliple-artist albums, show as 'title - artist' and not
+ 63. If connection to MPD faiils, attempt to ascertain if its a proxy error.
+ 64. Add button under playqueue to re-center playqueue on current song.
+ 65. Add option to only act on songs that pass current string or genre filter.
+ 66. Multiple genre support.
+ 67. Store favourite streams as '[Radio Streams]' MPD playlist.
+ 68. For tracks for mutliple-artist albums, show as 'title - artist' and not
      'artist - title'
- 70. In playqueue, if song's artist is different to album artist, then show song
+ 69. In playqueue, if song's artist is different to album artist, then show song
      as 'title - artist'
- 71. Also use musicbrainz_albumid, if present, to group albums. This can be used
+ 70. Also use musicbrainz_albumid, if present, to group albums. This can be used
      to group multiple releases of the same album. MPD must be configured to use
      this tag in order for this to function.
- 72. Search for streams via dirble.
- 73. Center images and headers in context view.
- 74. Don't package stream providers with Cantata - add a dialog to download from
+ 71. Search for streams via dirble.
+ 72. Center images and headers in context view.
+ 73. Don't package stream providers with Cantata - add a dialog to download from
      Google Drive.
- 75. Fix 'duplicate' albums being created if flac (or other) + cue file is used,
+ 74. Fix 'duplicate' albums being created if flac (or other) + cue file is used,
      and the music file does not contain metadata.
- 76. Fix setting of cover for albums with cule file.
- 77. Fix loading individual songs from cue file.
- 78. Build as a Qt-only app by default. Pass -DENABLE_KDE=ON to create KDE
+ 75. Fix setting of cover for albums with cule file.
+ 76. Fix loading individual songs from cue file.
+ 77. Build as a Qt-only app by default. Pass -DENABLE_KDE=ON to create KDE
      build.
- 79. Scrobbling support.
- 80. Install podcast directories file to $install rather than embedding.
- 81. cantata-dynamic perl script now uses MPD's client-to-client messages for
+ 78. Scrobbling support.
+ 79. Install podcast directories file to $install rather than embedding.
+ 80. cantata-dynamic perl script now uses MPD's client-to-client messages for
      control. Therefore, MPD>=0.17 is required.
- 82. Remove 'Stop dynamizer on exit' option. Stop dynamzer if 'Stop playback on
+ 81. Remove 'Stop dynamizer on exit' option. Stop dynamzer if 'Stop playback on
      exit' is enabled.
- 83. Read podcast_directories.xml, tag-fixes.xml, and scrobblers.xml from
+ 82. Read podcast_directories.xml, tag-fixes.xml, and scrobblers.xml from
      install folder and ~/.local/share/cantata
- 84. Update replaygain ffmpeg input code to handle API changes in libavcodec.
- 85. Fix transcoding tracks to MTP devices.
- 86. Restore search field visibility for; PlayQueue, Artists, Albums, Folders,
+ 83. Update replaygain ffmpeg input code to handle API changes in libavcodec.
+ 84. Fix transcoding tracks to MTP devices.
+ 85. Restore search field visibility for; PlayQueue, Artists, Albums, Folders,
      Playlists, Dynamic, and Devices views when started.
- 87. Fix custom background images (play queue and context)  not appearing when
+ 86. Fix custom background images (play queue and context)  not appearing when
      Cantata started.
- 88. Open search-widget as soon as user starts typing in view.
- 89. If artist is different to album-artist, then show track title as
+ 87. Open search-widget as soon as user starts typing in view.
+ 88. If artist is different to album-artist, then show track title as
      "title - artist"
- 90. In context-view rename Lyrics pane to Track. This is now a stack of lyrics,
+ 89. In context-view rename Lyrics pane to Track. This is now a stack of lyrics,
      information, and tags. Tags contains all tags as read by taglib.
- 91. Add option to re-load lyrics from disk.
- 92. Add "Open In File Manager" to folders page for windows and mac builds.
- 93. Use external editor to edit lyrics.
- 94. Allow searching on performer tag.
- 95. Remove ID3v1 when saving ID3 tags.
- 96. 25% larger items in playqueue. Incrases covers from 32px to 40px
- 97. Fix replay-gain scanner if file name, or path, contains non-latin1
+ 90. Add option to re-load lyrics from disk.
+ 91. Add "Open In File Manager" to folders page for windows and mac builds.
+ 92. Use external editor to edit lyrics.
+ 93. Allow searching on performer tag.
+ 94. Remove ID3v1 when saving ID3 tags.
+ 95. 25% larger items in playqueue. Incrases covers from 32px to 40px
+ 96. Fix replay-gain scanner if file name, or path, contains non-latin1
      characters.
- 98. Install Ubuntu mono sys-tray icons to
+ 97. Install Ubuntu mono sys-tray icons to
      $prefix/share/icons/ubuntu-mono-dark/apps/22/cantata-panel.svg and
      $prefix/share/icons/ubuntu-mono-light/apps/22/cantata-panel.svg.
      But only if compiled for Ubuntu, or -DINSTALL_UBUNTU_ICONS=ON is passed to
      cmake.
- 99. Hide system-tray option in Qt builds if system tray is not available.
-100. In non Dbus Qt builds, if notifications is checked ensure that sys tray is
+ 98. Hide system-tray option in Qt builds if system tray is not available.
+ 99. In non Dbus Qt builds, if notifications is checked ensure that sys tray is
      also checkedd. Conversly if sys tray is unchecked, uncheck notifications.
-101. Add option to use libVLC for MPD HTTP stream playback - see INSTAL file
+100. Add option to use libVLC for MPD HTTP stream playback - see INSTAL file
      for details.
-102. Also show first IP address of interface in HTTP server settings page.
-103. Fix progress update when saving Jamendo, etc, listing XML.
-104. Add option to hide corner cover.
-105. Add option to hide stop button.
-106. Add a Url label to exit full screen.
-107. Use METADATA_BLOCK_PICTURE to extract covers from Vorbis comments, and
+101. Also show first IP address of interface in HTTP server settings page.
+102. Fix progress update when saving Jamendo, etc, listing XML.
+103. Add option to hide corner cover.
+104. Add option to hide stop button.
+105. Add a Url label to exit full screen.
+106. Use METADATA_BLOCK_PICTURE to extract covers from Vorbis comments, and
      "COVER ART (FRONT)" for APE tags.
-108. Remove old library cache files when server settings changed.
-109. Use QSslSocket to determine if Qt is linked to OpenSSL
-110. Use Qt5's own json parser fopr Qt5 builds.
-111. Fix Qt5 soundcloud searches.
-112. Clear MPD errors after display.
-113. More information in song tooltips - use table-style display.
+107. Remove old library cache files when server settings changed.
+108. Use QSslSocket to determine if Qt is linked to OpenSSL
+109. Use Qt5's own json parser fopr Qt5 builds.
+110. Fix Qt5 soundcloud searches.
+111. Clear MPD errors after display.
+112. More information in song tooltips - use table-style display.
 
 1.3.4
 -----

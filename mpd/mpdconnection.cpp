@@ -592,6 +592,7 @@ MPDConnection::Response MPDConnection::sendCommand(const QByteArray &command, bo
             // when dynamizer is running. However, simply reconnecting seems to resolve the issue.
             return sendCommand(command, emitErrors, false);
         }
+        clearError();
         if (emitErrors) {
             bool emitError=true;
             // Mopidy returns "incorrect arguments" for commands it does not support. The docs state that crossfade and replaygain mode
@@ -1868,6 +1869,17 @@ void MPDConnection::emitStatusUpdated(MPDStatusValues &v)
         v.volume=restoreVolume;
     }
     emit statusUpdated(v);
+    if (!v.error.isEmpty()) {
+        clearError();
+    }
+}
+
+void MPDConnection::clearError()
+{
+    if (isConnected() && -1!=sock.write("clearerror\n")) {
+        sock.waitForBytesWritten(500);
+        readReply(sock);
+    }
 }
 
 MpdSocket::MpdSocket(QObject *parent)

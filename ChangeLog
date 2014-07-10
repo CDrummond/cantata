@@ -171,6 +171,7 @@
 108. Remove old library cache files when server settings changed.
 109. Use QSslSocket to determine if Qt is linked to OpenSSL
 110. Use Qt5's own json parser fopr Qt5 builds.
+111. Fix Qt5 soundcloud searches.
 
 1.3.4
 -----

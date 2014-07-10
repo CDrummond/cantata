@@ -83,7 +83,7 @@ bool CoverWidget::event(QEvent *event)
         QString toolTip=QLatin1String("<table>");
         const QImage &img=CurrentCover::self()->image();
 
-        if (Song::useComposer() && !current.composer().isEmpty() && current.composer()!=current.albumArtist()) {
+        if (!current.composer().isEmpty()) {
             toolTip+=i18n("<tr><td align=\"right\"><b>Composer:</b></td><td>%1</td></tr>", current.composer());
         }
         toolTip+=i18n("<tr><td align=\"right\"><b>Artist:</b></td><td>%1</td></tr>"

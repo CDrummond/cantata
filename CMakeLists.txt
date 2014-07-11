@@ -205,6 +205,7 @@ if (TAGLIB_FOUND)
         macro_log_feature(MTP_FOUND "libmtp" "MTP Device Support." "http://libmtp.sourceforge.net")
     endif (ENABLE_MTP AND ENABLE_DEVICES_SUPPORT AND NOT WIN32 AND NOT APPLE)
 else (TAGLIB_FOUND)
+   set(ENABLE_DEVICES_SUPPORT OFF)
    set(ENABLE_EXTERNAL_TAGS OFF)
 endif (TAGLIB_FOUND)
 

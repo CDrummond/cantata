@@ -161,14 +161,14 @@
      for details.
 100. Also show first IP address of interface in HTTP server settings page.
 101. Fix progress update when saving Jamendo, etc, listing XML.
-102. Add option to hide corner cover.
+102. Add option to hide cover-widget.
 103. Add option to hide stop button.
 104. Add a Url label to exit full screen.
 105. Use METADATA_BLOCK_PICTURE to extract covers from Vorbis comments, and
      "COVER ART (FRONT)" for APE tags.
 106. Remove old library cache files when server settings changed.
 107. Use QSslSocket to determine if Qt is linked to OpenSSL
-108. Use Qt5's own json parser fopr Qt5 builds.
+108. Use Qt5's own json parser for Qt5 builds.
 109. Fix Qt5 soundcloud searches.
 110. Clear MPD errors after display.
 111. More information in song tooltips - use table-style display.

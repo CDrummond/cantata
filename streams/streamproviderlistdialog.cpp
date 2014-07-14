@@ -107,7 +107,7 @@ public:
 StreamProviderListDialog::StreamProviderListDialog(StreamsSettings *parent)
     : Dialog(parent, "StreamProviderListDialog")
     , installed("dialog-ok")
-    , updateable("down")
+    , updateable("go-down")
     , p(parent)
     , job(0)
     , spinner(0)

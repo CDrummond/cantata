@@ -84,7 +84,7 @@ bool KeyEventHandler::eventFilter(QObject *obj, QEvent *event)
         } else if (QEvent::KeyPress==event->type()) {
             QKeyEvent *keyEvent=static_cast<QKeyEvent *>(event);
             if (interceptBackspace && Qt::Key_Backspace==keyEvent->key() && Qt::NoModifier==keyEvent->modifiers()) {
-                emit escPressed();
+                emit backspacePressed();
             }
         }
     }
@@ -656,7 +656,7 @@ ItemView::ItemView(QWidget *p)
     connect(listView, SIGNAL(doubleClicked(const QModelIndex &)), this, SIGNAL(doubleClicked(const QModelIndex &)));
     connect(listView, SIGNAL(clicked(const QModelIndex &)),  this, SLOT(itemClicked(const QModelIndex &)));
     connect(backAction, SIGNAL(triggered(bool)), this, SLOT(backActivated()));
-    connect(listViewEventHandler, SIGNAL(escPressed()), this, SLOT(backActivated()));
+    connect(listViewEventHandler, SIGNAL(backspacePressed()), this, SLOT(backActivated()));
     searchWidget->setVisible(false);
 }
 

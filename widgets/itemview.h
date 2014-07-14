@@ -47,7 +47,7 @@ public:
     KeyEventHandler(QAbstractItemView *v, QAction *a=0);
     void setDeleteAction(QAction *a) { deleteAct=a; }
 Q_SIGNALS:
-    void escPressed();
+    void backspacePressed();
 protected:
     bool eventFilter(QObject *obj, QEvent *event);
 protected:

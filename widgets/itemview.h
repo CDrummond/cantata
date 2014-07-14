@@ -48,14 +48,12 @@ public:
     void setDeleteAction(QAction *a) { deleteAct=a; }
 Q_SIGNALS:
     void escPressed();
-    void keyPressed(const QString &text);
 protected:
     bool eventFilter(QObject *obj, QEvent *event);
 protected:
     QAbstractItemView *view;
     QAction *deleteAct;
     bool interceptBackspace;
-    int pressedKey;
 };
 
 class ViewEventHandler : public KeyEventHandler

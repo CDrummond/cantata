@@ -196,12 +196,10 @@ void PlayQueueView::setMode(ItemView::Mode m)
             groupedView->setItemsExpandable(false);
             groupedView->setExpandsOnDoubleClick(false);
             groupedView->setContextMenuPolicy(Qt::ActionsContextMenu);
-            KeyEventHandler *eventFilter=new KeyEventHandler(groupedView, removeFromAction);
-            groupedView->installFilter(eventFilter);
+            groupedView->installFilter(new KeyEventHandler(groupedView, removeFromAction));
             addWidget(groupedView);
             connect(groupedView, SIGNAL(itemsSelected(bool)), SIGNAL(itemsSelected(bool)));
             connect(groupedView, SIGNAL(doubleClicked(const QModelIndex &)), SIGNAL(doubleClicked(const QModelIndex &)));
-            connect(eventFilter, SIGNAL(keyPressed(QString)), SIGNAL(focusSearch(QString)));
             updatePalette();
         }
         break;
@@ -209,13 +207,11 @@ void PlayQueueView::setMode(ItemView::Mode m)
         if (!treeView) {
             treeView=new PlayQueueTreeView(this);
             treeView->setContextMenuPolicy(Qt::ActionsContextMenu);
-            KeyEventHandler *eventFilter=new KeyEventHandler(treeView, removeFromAction);
-            treeView->installFilter(eventFilter);
+            treeView->installFilter(new KeyEventHandler(treeView, removeFromAction));
             treeView->initHeader();
             addWidget(treeView);
             connect(treeView, SIGNAL(itemsSelected(bool)), SIGNAL(itemsSelected(bool)));
             connect(treeView, SIGNAL(doubleClicked(const QModelIndex &)), SIGNAL(doubleClicked(const QModelIndex &)));
-            connect(eventFilter, SIGNAL(keyPressed(QString)), SIGNAL(focusSearch(QString)));
             updatePalette();
         }
     default:

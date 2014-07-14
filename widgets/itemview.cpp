@@ -69,7 +69,6 @@ KeyEventHandler::KeyEventHandler(QAbstractItemView *v, QAction *a)
     , view(v)
     , deleteAct(a)
     , interceptBackspace(qobject_cast<ListView *>(view))
-    , pressedKey(-1)
 {
 }
 
@@ -78,25 +77,14 @@ bool KeyEventHandler::eventFilter(QObject *obj, QEvent *event)
     if (view->hasFocus()) {
         if (QEvent::KeyRelease==event->type()) {
             QKeyEvent *keyEvent=static_cast<QKeyEvent *>(event);
-            if (Qt::NoModifier==keyEvent->modifiers()) {
-                if (Qt::Key_Delete==keyEvent->key()) {
-                    if (deleteAct) {
-                        deleteAct->trigger();
-                    }
-                } else if (pressedKey==keyEvent->key() && !keyEvent->text().isEmpty()) {
-                    emit keyPressed(keyEvent->text());
-                } else {
-                    pressedKey=-1;
-                }
+            if (deleteAct && Qt::Key_Delete==keyEvent->key() && Qt::NoModifier==keyEvent->modifiers()) {
+                deleteAct->trigger();
+                return true;
             }
-            return true;
         } else if (QEvent::KeyPress==event->type()) {
             QKeyEvent *keyEvent=static_cast<QKeyEvent *>(event);
             if (interceptBackspace && Qt::Key_Backspace==keyEvent->key() && Qt::NoModifier==keyEvent->modifiers()) {
                 emit escPressed();
-            } else if (Qt::Key_Tab!=keyEvent->key() && Qt::Key_Enter!=keyEvent->key() && Qt::Key_Return!=keyEvent->key() &&
-                       Qt::Key_Escape!=keyEvent->key() && Qt::Key_Backspace!=keyEvent->key()) {
-                pressedKey=keyEvent->key();
             }
         }
     }
@@ -669,8 +657,6 @@ ItemView::ItemView(QWidget *p)
     connect(listView, SIGNAL(clicked(const QModelIndex &)),  this, SLOT(itemClicked(const QModelIndex &)));
     connect(backAction, SIGNAL(triggered(bool)), this, SLOT(backActivated()));
     connect(listViewEventHandler, SIGNAL(escPressed()), this, SLOT(backActivated()));
-    connect(listViewEventHandler, SIGNAL(keyPressed(QString)), this, SLOT(focusSearch(QString)));
-    connect(treeViewEventHandler, SIGNAL(keyPressed(QString)), this, SLOT(focusSearch(QString)));
     searchWidget->setVisible(false);
 }
 
@@ -706,7 +692,6 @@ void ItemView::allowGroupedView()
         connect(groupedView, SIGNAL(itemActivated(const QModelIndex &)), this, SLOT(itemActivated(const QModelIndex &)));
         connect(groupedView, SIGNAL(doubleClicked(const QModelIndex &)), this, SIGNAL(doubleClicked(const QModelIndex &)));
         connect(groupedView, SIGNAL(clicked(const QModelIndex &)), this, SLOT(itemClicked(const QModelIndex &)));
-        connect(viewHandler, SIGNAL(keyPressed(QString)), this, SLOT(focusSearch(QString)));
         groupedView->setProperty(GtkStyle::constHideFrameProp, true);
     }
 }
@@ -724,7 +709,6 @@ void ItemView::allowTableView(TableView *v)
         connect(tableView, SIGNAL(itemActivated(const QModelIndex &)), this, SLOT(itemActivated(const QModelIndex &)));
         connect(tableView, SIGNAL(doubleClicked(const QModelIndex &)), this, SIGNAL(doubleClicked(const QModelIndex &)));
         connect(tableView, SIGNAL(clicked(const QModelIndex &)), this, SLOT(itemClicked(const QModelIndex &)));
-        connect(viewHandler, SIGNAL(keyPressed(QString)), this, SLOT(focusSearch(QString)));
         tableView->setProperty(GtkStyle::constHideFrameProp, true);
     }
 }

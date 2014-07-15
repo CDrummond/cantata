@@ -42,7 +42,7 @@ FileThread::FileThread()
 
 FileThread::~FileThread()
 {
-    stop();
+    // stop();
 }
 
 void FileThread::addJob(FileJob *job)

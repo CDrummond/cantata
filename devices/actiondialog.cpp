@@ -861,9 +861,9 @@ bool ActionDialog::refreshLibrary()
             Device *dev=DevicesModel::self()->device(sourceUdi.isEmpty() ? destUdi : sourceUdi);
 
             if (dev) {
+                connect(dev, SIGNAL(cacheSaved()), this, SLOT(cacheSaved()));
                 dev->saveCache();
                 progressLabel->setText(i18n("Saving cache"));
-                connect(dev, SIGNAL(cacheSaved()), this, SLOT(cacheSaved()));
                 setButtons(Close);
                 return true;
             }

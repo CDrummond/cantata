@@ -710,6 +710,7 @@ void FsDevice::saveCache()
 {
     if (opts.useCache) {
         state=SavingCache;
+        initScaner();
         emit saveCache(cacheFileName(), this);
     }
 }

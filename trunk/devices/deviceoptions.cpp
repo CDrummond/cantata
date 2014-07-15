@@ -359,6 +359,9 @@ QString DeviceOptions::createFilename(const Song &s) const
     foreach (const QString &i, ignore) {
         path.replace(i, QLatin1String(""));
     }
+    if (replaceSpaces) {
+        path.replace(QRegExp("\\s"), "_");
+    }
 
     Song copy=clean(s);
 

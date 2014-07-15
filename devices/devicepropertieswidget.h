@@ -49,7 +49,7 @@ public:
 
         Prop_Encoder     = 0x0200,
 
-        Prop_All         = 0x02FF
+        Prop_All         = 0x03FF
     };
     DevicePropertiesWidget(QWidget *parent);
     virtual ~DevicePropertiesWidget() { }

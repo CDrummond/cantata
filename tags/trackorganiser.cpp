@@ -144,9 +144,10 @@ void TrackOrganiser::show(const QList<Song> &songs, const QString &udi, bool for
 
     connect(configFilename, SIGNAL(clicked()), SLOT(configureFilenameScheme()));
     connect(filenameScheme, SIGNAL(textChanged(const QString &)), this, SLOT(updateView()));
-    connect(vfatSafe, SIGNAL(stateChanged(int)), this, SLOT(updateView()));
-    connect(asciiOnly, SIGNAL(stateChanged(int)), this, SLOT(updateView()));
-    connect(ignoreThe, SIGNAL(stateChanged(int)), this, SLOT(updateView()));
+    connect(vfatSafe, SIGNAL(toggled(bool)), this, SLOT(updateView()));
+    connect(asciiOnly, SIGNAL(toggled(bool)), this, SLOT(updateView()));
+    connect(ignoreThe, SIGNAL(toggled(bool)), this, SLOT(updateView()));
+    connect(replaceSpaces, SIGNAL(toggled(bool)), this, SLOT(updateView()));
 
     if (!songsOk(origSongs, musicFolder, udi.isEmpty())) {
         return;

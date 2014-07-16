@@ -944,6 +944,9 @@ MainWindow::~MainWindow()
     }
     #ifdef ENABLE_DEVICES_SUPPORT
     DevicesModel::self()->stop();
+    #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
+    Covers::self()->cleanCdda();
+    #endif
     #endif
     #ifndef ENABLE_KDE_SUPPORT
     MediaKeys::self()->stop();

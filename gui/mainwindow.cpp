@@ -1422,9 +1422,6 @@ void MainWindow::updateSettings()
 
     readSettings();
 
-    if (diffLibArtistImages) {
-        MusicLibraryItemArtist::clearDefaultCover();
-    }
     if (diffLibCovers) {
         MusicLibraryItemAlbum::setCoverSize((MusicLibraryItemAlbum::CoverSize)Settings::self()->libraryCoverSize());
     }

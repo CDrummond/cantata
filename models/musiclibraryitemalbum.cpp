@@ -45,8 +45,6 @@
 static MusicLibraryItemAlbum::CoverSize coverSize=MusicLibraryItemAlbum::CoverNone;
 #ifdef ENABLE_UBUNTU
 static const QString constDefaultCover=QLatin1String("qrc:/album.svg");
-#else
-static QPixmap *theDefaultIcon=0;
 #endif
 static bool dateSort=false;
 
@@ -117,14 +115,7 @@ MusicLibraryItemAlbum::CoverSize MusicLibraryItemAlbum::currentCoverSize()
 
 void MusicLibraryItemAlbum::setCoverSize(MusicLibraryItemAlbum::CoverSize size)
 {
-    if (size!=coverSize) {
-        if (theDefaultIcon) {
-            delete theDefaultIcon;
-            theDefaultIcon=0;
-        }
-        MusicLibraryItemArtist::clearDefaultCover();
-        coverSize=size;
-    }
+    coverSize=size;
 }
 #endif
 
@@ -181,93 +172,21 @@ QString MusicLibraryItemAlbum::displayData(bool full) const
 const QString & MusicLibraryItemAlbum::cover() const
 {
     if (Song::SingleTracks!=m_type && m_coverName.isEmpty() && !m_coverRequested && childCount()) {
-        MusicLibraryItemSong *firstSong=static_cast<MusicLibraryItemSong*>(childItem(0));
-        Song song;
-        song.artist=firstSong->song().artist;
-        song.albumartist=Song::useComposer() && !firstSong->song().composer().isEmpty() ? firstSong->song().albumArtist() : parentItem()->data();
-        song.album=Song::useComposer() ? firstSong->song().album : m_itemData;
-        song.year=m_year;
-        song.file=firstSong->file();
-        song.type=m_type;
-        song.setComposer(firstSong->song().composer());
-        song.setMbAlbumId(firstSong->song().mbAlbumId());
-        m_coverName=Covers::self()->requestImage(song).fileName;
+        m_coverName=Covers::self()->requestImage(coverSong()).fileName;
         if (!m_coverName.isEmpty()) {
             m_coverRequested=false;
         }
     }
-
     return m_coverName.isEmpty() ? constDefaultCover : m_coverName;
 }
 #else
-QPixmap *MusicLibraryItemAlbum::saveToCache(const QImage &img) const
-{
-    int size=MusicLibraryItemAlbum::iconSize(largeImages());
-    return Covers::self()->saveScaledCover(img.scaled(size, size, Qt::KeepAspectRatio, Qt::SmoothTransformation), coverSong(), size);
-}
-
-const QPixmap & MusicLibraryItemAlbum::cover() const
+QPixmap * MusicLibraryItemAlbum::cover() const
 {
     int iSize=iconSize(largeImages());
-    if (Song::SingleTracks!=m_type && parentItem() && iSize && childCount()) {
-        Song song=coverSong();
-
-        QPixmap *pix=Covers::self()->getScaledCover(song, iSize);
-        if (pix) {
-            return *pix;
-        }
-
-        if (!m_coverRequested) {
-            MusicLibraryItemSong *firstSong=static_cast<MusicLibraryItemSong*>(childItem(0));
-            song.year=m_year;
-            song.file=firstSong->file();
-            song.type=m_type;
-            song.setComposer(firstSong->song().composer());
-            song.setMbAlbumId(firstSong->song().mbAlbumId());
-            Covers::Image img;
-            MusicLibraryItemRoot *root=parentItem() && parentItem()->parentItem() && MusicLibraryItem::Type_Root==parentItem()->parentItem()->itemType()
-                    ? static_cast<MusicLibraryItemRoot *>(parentItem()->parentItem()) : 0;
-            m_coverRequested=true;
-            if (root && !root->useAlbumImages()) {
-                // Not showing album images in this model, so dont request any!
-            }
-            #ifdef ENABLE_DEVICES_SUPPORT
-            else if (root && root->isDevice()) {
-                song.id=firstSong->song().id;
-                static_cast<Device *>(parentItem()->parentItem())->requestCover(song);
-            }
-            #endif
-            #ifdef ENABLE_ONLINE_SERVICES
-            else if (root && root->isOnlineService()) {
-                img.img=OnlineServicesModel::self()->requestImage(static_cast<OnlineService *>(root)->id(), parentItem()->data(), data(), m_imageUrl);
-            }
-            #endif
-            else {
-                img=Covers::self()->requestImage(song);
-            }
-
-            if (!img.img.isNull()) {
-                pix=saveToCache(img.img);
-                if (pix) {
-                    return *pix;
-                }
-            }
-        }
+    if (Song::SingleTracks!=m_type && iSize && childCount()) {
+        return Covers::self()->get(coverSong(), iSize, true);
     }
-
-    int cSize=iSize;
-    if (0==cSize) {
-        cSize=22;
-    }
-
-    if (!theDefaultIcon || theDefaultIcon->width()!=cSize) {
-        if (theDefaultIcon) {
-            delete theDefaultIcon;
-        }
-        theDefaultIcon = new QPixmap(Icons::self()->albumIcon.pixmap(cSize, cSize)
-                                     .scaled(QSize(cSize, cSize), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
-    }
-    return *theDefaultIcon;
+    return 0;
 }
 #endif
 
@@ -429,12 +348,35 @@ bool MusicLibraryItemAlbum::containsArtist(const QString &a)
 
 Song MusicLibraryItemAlbum::coverSong() const
 {
-    MusicLibraryItemSong *firstSong=static_cast<MusicLibraryItemSong*>(childItem(0));
     Song song;
-    song.artist=firstSong->song().artist;
-    song.albumartist=Song::useComposer() && !firstSong->song().composer().isEmpty() ? firstSong->song().albumArtist() : parentItem()->data();
-    song.album=Song::useComposer() ? firstSong->song().album : m_itemData;
-    song.setMbAlbumId(firstSong->song().mbAlbumId());
+    if (childCount()) {
+        MusicLibraryItemSong *firstSong=static_cast<MusicLibraryItemSong*>(childItem(0));
+        song.artist=firstSong->song().artist;
+        song.albumartist=Song::useComposer() && !firstSong->song().composer().isEmpty() ? firstSong->song().albumArtist() : parentItem()->data();
+        song.album=Song::useComposer() ? firstSong->song().album : m_itemData;
+        song.setMbAlbumId(firstSong->song().mbAlbumId());
+        song.setComposer(firstSong->song().composer());
+        song.year=m_year;
+        song.file=firstSong->file();
+        song.type=m_type;
+        #if defined ENABLE_ONLINE_SERVICES || defined ENABLE_DEVICES_SUPPORT
+        MusicLibraryItemRoot *root=parentItem() && parentItem()->parentItem() && MusicLibraryItem::Type_Root==parentItem()->parentItem()->itemType()
+                                                ? static_cast<MusicLibraryItemRoot *>(parentItem()->parentItem()) : 0;
+        if (root) {
+            #ifdef ENABLE_ONLINE_SERVICES
+            if (root->isOnlineService()) {
+                song.setIsFromOnlineService(static_cast<OnlineService *>(root)->id());
+                song.setExtraField(Song::OnlineImageUrl, m_imageUrl);
+            }
+            #endif
+            #ifdef ENABLE_ONLINE_SERVICES
+            if (root->isDevice()) {
+                song.setIsFromDevice(static_cast<Device *>(root)->id());
+            }
+            #endif
+        }
+        #endif
+    }
     return song;
 }
 

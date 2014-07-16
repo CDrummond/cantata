@@ -56,24 +56,7 @@ bool MusicLibraryItemArtist::lessThan(const MusicLibraryItem *a, const MusicLibr
 #ifdef ENABLE_UBUNTU
 static const QString constDefaultCover=QLatin1String("qrc:/artist.svg");
 static const QString constDefaultVariousCover=QLatin1String("qrc:/variousartists.svg");
-#else
-static QPixmap *theDefaultIcon=0;
-static QPixmap *theVariousArtistsIcon=0;
 #endif
-
-void MusicLibraryItemArtist::clearDefaultCover()
-{
-    #ifndef ENABLE_UBUNTU
-    if (theDefaultIcon) {
-        delete theDefaultIcon;
-        theDefaultIcon=0;
-    }
-    if (theVariousArtistsIcon) {
-        delete theVariousArtistsIcon;
-        theVariousArtistsIcon=0;
-    }
-    #endif
-}
 
 MusicLibraryItemArtist::MusicLibraryItemArtist(const QString &data, const QString &artistName, MusicLibraryItemContainer *parent)
     : MusicLibraryItemContainer(data, parent)
@@ -98,21 +81,8 @@ const QString & MusicLibraryItemArtist::cover() const
     }
     
     if (m_coverName.isEmpty() && !m_coverRequested && childCount()) {
-        Song coverSong;
-        coverSong.albumartist=coverSong.title=m_itemData; // If title is empty, then Song::isUnknown() will be true!!!
-
-        MusicLibraryItemAlbum *firstAlbum=static_cast<MusicLibraryItemAlbum *>(childItem(0));
-        MusicLibraryItemSong *firstSong=firstAlbum ? static_cast<MusicLibraryItemSong *>(firstAlbum->childItem(0)) : 0;
-
-        if (firstSong) {
-            coverSong.file=firstSong->file();
-            if (Song::useComposer() && !firstSong->song().composer().isEmpty()) {
-                coverSong.albumartist=firstSong->song().albumArtist();
-            }
-        }
-        coverSong.setArtistImageRequest();
         m_coverRequested=true;
-        m_coverName=Covers::self()->requestImage(coverSong).fileName;
+        m_coverName=Covers::self()->requestImage(coverSong()).fileName;
         if (!m_coverName.isEmpty()) {
             m_coverRequested=false;
         }
@@ -121,52 +91,9 @@ const QString & MusicLibraryItemArtist::cover() const
     return m_coverName.isEmpty() ? constDefaultCover : m_coverName;
 }
 #else
-const QPixmap & MusicLibraryItemArtist::cover() const
+QPixmap * MusicLibraryItemArtist::cover() const
 {
-    int iSize=MusicLibraryItemAlbum::iconSize(largeImages());
-    int cSize=iSize;
-    if (0==cSize) {
-        cSize=22;
-    }
-    if (m_various) {
-        if (!theVariousArtistsIcon || theVariousArtistsIcon->width()!=cSize) {
-            if (theVariousArtistsIcon) {
-                delete theVariousArtistsIcon;
-            }
-            theVariousArtistsIcon = new QPixmap(Icons::self()->variousArtistsIcon.pixmap(cSize, cSize)
-                                         .scaled(QSize(cSize, cSize), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
-        }
-        return *theVariousArtistsIcon;
-    }
-
-    if (m_coverSong.isEmpty()) {
-        m_coverSong.albumartist=m_coverSong.title=m_itemData; // If title is empty, then Song::isUnknown() will be true!!!
-
-        MusicLibraryItemAlbum *firstAlbum=static_cast<MusicLibraryItemAlbum *>(childItem(0));
-        MusicLibraryItemSong *firstSong=firstAlbum ? static_cast<MusicLibraryItemSong *>(firstAlbum->childItem(0)) : 0;
-
-        if (firstSong) {
-            m_coverSong.file=firstSong->file();
-            if (Song::useComposer() && !firstSong->song().composer().isEmpty()) {
-                m_coverSong.albumartist=firstSong->song().albumArtist();
-            }
-        }
-        m_coverSong.setArtistImageRequest();
-    }
-
-    QPixmap *pix=Covers::self()->get(m_coverSong, iSize);
-    if (pix) {
-        return *pix;
-    }
-
-    if (!theDefaultIcon || theDefaultIcon->width()!=cSize) {
-        if (theDefaultIcon) {
-            delete theDefaultIcon;
-        }
-        theDefaultIcon = new QPixmap(Icons::self()->artistIcon.pixmap(cSize, cSize)
-                                     .scaled(QSize(cSize, cSize), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
-    }
-    return *theDefaultIcon;
+    return Covers::self()->get(coverSong(), MusicLibraryItemAlbum::iconSize(largeImages()));
 }
 #endif
 
@@ -266,4 +193,24 @@ bool MusicLibraryItemArtist::largeImages() const
 {
     return m_parentItem && Type_Root==m_parentItem->itemType() &&
            static_cast<MusicLibraryItemRoot *>(m_parentItem)->useLargeImages();
+}
+
+Song MusicLibraryItemArtist::coverSong() const
+{
+    Song song;
+    song.albumartist=song.title=m_itemData; // If title is empty, then Song::isUnknown() will be true!!!
+
+    if (childCount()) {
+        MusicLibraryItemAlbum *firstAlbum=static_cast<MusicLibraryItemAlbum *>(childItem(0));
+        MusicLibraryItemSong *firstSong=firstAlbum ? static_cast<MusicLibraryItemSong *>(firstAlbum->childItem(0)) : 0;
+
+        if (firstSong) {
+            song.file=firstSong->file();
+            if (Song::useComposer() && !firstSong->song().composer().isEmpty()) {
+                song.albumartist=firstSong->song().albumArtist();
+            }
+        }
+    }
+    song.setArtistImageRequest();
+    return song;
 }

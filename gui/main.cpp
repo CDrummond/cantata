@@ -53,6 +53,9 @@
 #ifdef ENABLE_DYNAMIC
 #include "dynamic/dynamic.h"
 #endif
+#ifdef ENABLE_DEVICES_SUPPORT
+#include "models/devicesmodel.h"
+#endif
 #include "streams/streamfetcher.h"
 #include "http/httpserver.h"
 #include "widgets/songdialog.h"
@@ -150,9 +153,10 @@ enum Debug {
     Dbg_Threads           = 0x00004000,
     Dbg_Tags              = 0x00008000,
     Dbg_Scrobbling        = 0x00010000,
+    Dbg_Devices           = 0x00020000,
 
     // NOTE: MUST UPDATE Dbg_All IF ADD NEW ITEMS!!!
-    Dbg_All               = 0x0001FFFF
+    Dbg_All               = 0x0003FFFF
 };
 
 static void installDebugMessageHandler()
@@ -224,6 +228,11 @@ static void installDebugMessageHandler()
         if (dbg&Dbg_Scrobbling) {
             Scrobbler::enableDebug();
         }
+        #ifdef ENABLE_DEVICES_SUPPORT
+        if (dbg&Dbg_Devices) {
+            DevicesModel::enableDebug();
+        }
+        #endif
         if (dbg&Dbg_All && logToFile) {
             #if QT_VERSION < 0x050000
             qInstallMsgHandler(cantataQtMsgHandler);

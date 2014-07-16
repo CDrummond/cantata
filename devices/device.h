@@ -26,6 +26,7 @@
 
 #include "models/musiclibraryitemroot.h"
 #include "mpd/song.h"
+#include "gui/covers.h"
 #include "config.h"
 #ifdef ENABLE_DEVICES_SUPPORT
 #include "deviceoptions.h"
@@ -155,7 +156,7 @@ public:
     virtual void copySongTo(const Song &s, const QString &musicPath, bool overwrite, bool copyCover)=0;
     virtual void removeSong(const Song &s)=0;
     virtual void cleanDirs(const QSet<QString> &dirs)=0;
-    virtual void requestCover(const Song &) { }
+    virtual Covers::Image requestCover(const Song &) { return Covers::Image(); }
     virtual double usedCapacity()=0;
     virtual QString capacityString()=0;
     virtual qint64 freeSpace()=0;

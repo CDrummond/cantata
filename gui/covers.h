@@ -87,6 +87,7 @@ private:
 private Q_SLOTS:
     void lastFmCallFinished();
     void jobFinished();
+    void onlineJobFinished();
 
 private:
     void failed(const Job &job);
@@ -221,7 +222,7 @@ public:
     QPixmap * saveScaledCover(const QImage &img, const Song &song, int size);
     // Get cover image of specified size. If this is not found 0 will be returned, and the cover
     // will be downloaded.
-    QPixmap * get(const Song &song, int size);
+    QPixmap * get(const Song &song, int size, bool urgent=false);
     // Get QImage and filename associated with Song request. If this is not found, then the cover
     // will NOT be downloaded. 'emitResult' controls whether 'cover()/artistImage()' is emitted if
     // a cover is found.
@@ -230,7 +231,7 @@ public:
     // will be downloaded. If more than 5 covers have been requested in an event-loop iteration, then
     // the cover requests are placed on a queue.
     Image requestImage(const Song &song, bool urgent=false);
-    void emitCoverUpdated(const Song &song, const QImage &img, const QString &file);
+    void updateCover(const Song &song, const QImage &img, const QString &file);
 
     #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
     void cleanCdda();

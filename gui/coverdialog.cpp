@@ -1398,7 +1398,7 @@ bool CoverDialog::saveCover(const QString &src, const QImage &img)
         if (!existingBackup.isEmpty() && QFile::exists(existingBackup)) {
             QFile::remove(existingBackup);
         }
-        Covers::self()->emitCoverUpdated(song, img, destName);
+        Covers::self()->updateCover(song, img, destName);
         return true;
     } else {
         if (existing && !existingBackup.isEmpty()) {

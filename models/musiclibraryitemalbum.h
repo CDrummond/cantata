@@ -70,8 +70,7 @@ public:
     #ifdef ENABLE_UBUNTU
     const QString & cover() const;
     #else
-    QPixmap * saveToCache(const QImage &img) const;
-    const QPixmap & cover() const;
+    QPixmap * cover() const;
     #endif
     quint32 year() const { return m_year; }
     quint32 totalTime();

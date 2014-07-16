@@ -54,7 +54,10 @@ struct Song
         PodcastPublishedDate,
         PodcastLocalPath,
         PodcastImage,
-        OnlineServiceName
+        OnlineServiceName,
+        OnlineImageUrl,
+        OnlineImageCacheName,
+        DeviceId
     };
 
     enum Type {
@@ -199,6 +202,11 @@ struct Song
     void setIsFromOnlineService(const QString &service) { setExtraField(OnlineServiceName, service); }
     bool isFromOnlineService() const { return extra.contains(OnlineServiceName); }
     QString onlineService() const { return extraField(OnlineServiceName); }
+
+    // device functions...
+    void setIsFromDevice(const QString &id) { setExtraField(DeviceId, id); }
+    bool isFromDevice() const { return extra.contains(DeviceId); }
+    QString deviceId() const { return extraField(DeviceId); }
 };
 
 Q_DECLARE_METATYPE(Song)

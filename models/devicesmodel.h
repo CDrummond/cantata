@@ -42,6 +42,7 @@ class DevicesModel : public MultiMusicModel
 public:
     static DevicesModel * self();
 
+    static void enableDebug();
     static QString fixDevicePath(const QString &path);
 
     DevicesModel(QObject *parent = 0);

@@ -714,6 +714,11 @@ QList<Song> MusicLibraryModel::getArtistAlbumsFirstTracks(const Song &song) cons
 // Currently ONLY artist images are always loaded from non UI thread.
 void MusicLibraryModel::coverLoaded(const Song &song, int size)
 {
+    #ifdef ENABLE_ONLINE_SERVICES
+    if (song.isFromOnlineService()) {
+        return;
+    }
+    #endif
     if (
         #ifndef ENABLE_UBUNTU
         MusicLibraryItemAlbum::CoverNone==MusicLibraryItemAlbum::currentCoverSize() || size!=MusicLibraryItemAlbum::iconSize(rootItem->useLargeImages()) ||
@@ -743,6 +748,12 @@ void MusicLibraryModel::coverLoaded(const Song &song, int size)
 
 void MusicLibraryModel::setCover(const Song &song, const QImage &img, const QString &file)
 {
+    #ifdef ENABLE_ONLINE_SERVICES
+    if (song.isFromOnlineService()) {
+        return;
+    }
+    #endif
+
     #ifdef ENABLE_UBUNTU
     if (!rootItem->useAlbumImages() || img.isNull() || file.isEmpty() ||
         song.isCdda() || song.file.startsWith("http:/") || song.name().startsWith("http:/")) {
@@ -768,7 +779,7 @@ void MusicLibraryModel::setCover(const Song &song, const QImage &img, const QStr
     MusicLibraryItemArtist *artistItem = rootItem->artist(song, false);
     if (artistItem) {
         MusicLibraryItemAlbum *albumItem = artistItem->album(song, false);
-        if (albumItem && albumItem->saveToCache(img)) {
+        if (albumItem) {
             QModelIndex idx=index(albumItem->row(), 0, index(artistItem->row(), 0, QModelIndex()));
             emit dataChanged(idx, idx);
         }

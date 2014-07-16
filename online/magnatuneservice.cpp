@@ -153,6 +153,7 @@ Song MagnatuneService::fixPath(const Song &orig, bool) const
     //        s.genre=downloadTypeStr(download);
     //    }
     }
+    s.setIsFromOnlineService(constName);
     return encode(s);
 }
 

@@ -100,7 +100,8 @@ QVariant MusicModel::data(const QModelIndex &index, int role) const
 
     switch (role) {
     #ifndef ENABLE_UBUNTU
-    case Qt::DecorationRole:
+    case Qt::DecorationRole: {
+        QPixmap *pix=0;
         switch (item->itemType()) {
         case MusicLibraryItem::Type_Root: {
             QImage img=static_cast<MusicLibraryItemRoot *>(item)->image();
@@ -115,21 +116,24 @@ QVariant MusicModel::data(const QModelIndex &index, int role) const
         }
         #ifdef ENABLE_ONLINE_SERVICES
         case MusicLibraryItem::Type_Podcast:
-            if (MusicLibraryItemAlbum::CoverNone==MusicLibraryItemAlbum::currentCoverSize()) {
-                return Icons::self()->podcastIcon;
-            } else {
-                return static_cast<MusicLibraryItemPodcast *>(item)->cover();
-            }
+            pix=static_cast<MusicLibraryItemPodcast *>(item)->cover();
+            break;
         #endif
         case MusicLibraryItem::Type_Album:
             if (MusicLibraryItemAlbum::CoverNone==MusicLibraryItemAlbum::currentCoverSize() || !root(item)->useAlbumImages()) {
                 return Icons::self()->albumIcon;
             } else {
-                return static_cast<MusicLibraryItemAlbum *>(item)->cover();
+                pix=static_cast<MusicLibraryItemAlbum *>(item)->cover();
             }
+            break;
         case MusicLibraryItem::Type_Song: return Song::Playlist==static_cast<MusicLibraryItemSong *>(item)->song().type ? Icons::self()->playlistIcon : Icons::self()->audioFileIcon;
         default: return QVariant();
         }
+        if (pix) {
+            return *pix;
+        }
+        return QVariant();
+    }
     #endif
     case Cantata::Role_BriefMainText:
         if (MusicLibraryItem::Type_Album==item->itemType()) {
@@ -205,20 +209,14 @@ QVariant MusicModel::data(const QModelIndex &index, int role) const
         default: return QVariant();
         }
     case Cantata::Role_Image: {
-        QVariant v;
+        QPixmap *pix=0;
         switch (item->itemType()) {
         case MusicLibraryItem::Type_Album:
-            #ifndef ENABLE_UBUNTU
-            if (MusicLibraryItemAlbum::CoverNone==MusicLibraryItemAlbum::currentCoverSize()) {
-                return Icons::self()->albumIcon;
-            } else
-            #endif
-            {
-                return static_cast<MusicLibraryItemAlbum *>(item)->cover();
-            }
+            pix=static_cast<MusicLibraryItemAlbum *>(item)->cover();
+            break;
         case MusicLibraryItem::Type_Artist:
             if (static_cast<MusicLibraryItemRoot *>(item->parentItem())->useArtistImages()) {
-                return static_cast<MusicLibraryItemArtist *>(item)->cover();
+                pix=static_cast<MusicLibraryItemArtist *>(item)->cover();
             }
             break;
         #ifdef ENABLE_ONLINE_SERVICES
@@ -226,8 +224,9 @@ QVariant MusicModel::data(const QModelIndex &index, int role) const
             if (MusicLibraryItemAlbum::CoverNone==MusicLibraryItemAlbum::currentCoverSize()) {
                 return Icons::self()->podcastIcon;
             } else {
-                return static_cast<MusicLibraryItemPodcast *>(item)->cover();
+                pix=static_cast<MusicLibraryItemPodcast *>(item)->cover();
             }
+            break;
         #endif
         default:
             #ifdef ENABLE_UBUNTU
@@ -235,7 +234,10 @@ QVariant MusicModel::data(const QModelIndex &index, int role) const
             #endif
             break;
         }
-        return v;
+        if (pix) {
+            return *pix;
+        }
+        return QVariant();
     }
     case Cantata::Role_TitleText:
         if (MusicLibraryItem::Type_Album==item->itemType()) {

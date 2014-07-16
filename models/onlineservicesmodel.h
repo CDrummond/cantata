@@ -86,12 +86,7 @@ public:
     void deleteDownloadedPodcasts(MusicLibraryItemPodcast *pod, const QList<MusicLibraryItemPodcastEpisode *> &episodes);
     bool isDownloading() const;
     void cancelAll();
-    void resetModel();
     bool isHidden(OnlineService *srv) { return hiddenServices.contains(srv); }
-
-    Covers::Image readImage(const Song &song);
-    QImage requestImage(const QString &id, const QString &artist, const QString &album, const QString &url,
-                        const QString cacheName=QString(), int maxSize=-1);
 
     void save();
     QList<Provider> getProviders() const;
@@ -108,8 +103,8 @@ private:
     void setBusy(const QString &id, bool b);
 
 private Q_SLOTS:
-    void imageDownloaded();
     void tooltipUpdated(QAction *act);
+    void coverLoaded(const Song &song, int size);
 
 Q_SIGNALS:
     void error(const QString &text);

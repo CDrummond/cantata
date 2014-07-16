@@ -507,8 +507,9 @@ void FsDevice::cleanDirs(const QSet<QString> &dirs)
     job->start();
 }
 
-void FsDevice::requestCover(const Song &s)
+Covers::Image FsDevice::requestCover(const Song &s)
 {
+    Covers::Image i;
     QString songFile=audioFolder+s.file;
     QString dirName=Utils::getDir(songFile);
 
@@ -516,7 +517,7 @@ void FsDevice::requestCover(const Song &s)
         QImage img(dirName+opts.coverName);
         if (!img.isNull()) {
             emit cover(s, img);
-            return;
+            return Covers::Image(img, dirName+opts.coverName);
         }
     }
 
@@ -526,9 +527,10 @@ void FsDevice::requestCover(const Song &s)
 
         if (!img.isNull()) {
             emit cover(s, img);
-            return;
+            return Covers::Image(img, dirName+fileName);
         }
     }
+    return Covers::Image();
 }
 
 void FsDevice::percent(int pc)

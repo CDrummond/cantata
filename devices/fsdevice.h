@@ -123,7 +123,7 @@ public:
     void copySongTo(const Song &s, const QString &musicPath, bool overwrite, bool copyCover);
     void removeSong(const Song &s);
     void cleanDirs(const QSet<QString> &dirs);
-    void requestCover(const Song &s);
+    Covers::Image requestCover(const Song &s);
     QString cacheFileName() const;
     virtual void setAudioFolder() const { }
     void saveCache();

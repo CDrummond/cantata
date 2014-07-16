@@ -55,11 +55,10 @@ public:
     void remove(MusicLibraryItemAlbum *album);
     void updateIndexes();
     Type itemType() const { return Type_Artist; }
-    static void clearDefaultCover();
     #ifdef ENABLE_UBUNTU
     const QString & cover() const;
     #else
-    const QPixmap & cover() const;
+    QPixmap * cover() const;
     #endif
     // 'data' could be 'Composer' if we are set to use that, but need to save real artist...
     const QString & actualArtist() const { return m_actualArtist; }
@@ -70,13 +69,12 @@ public:
  
 private:
     bool largeImages() const;
+    Song coverSong() const;
 
 private:
     #ifdef ENABLE_UBUNTU
     mutable QString m_coverName;
     mutable bool m_coverRequested;
-    #else
-    mutable Song m_coverSong;
     #endif
     bool m_various;
     QString m_nonTheArtist;

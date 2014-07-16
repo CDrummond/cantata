@@ -58,7 +58,6 @@
 #include <QMimeData>
 #include <QFile>
 #include <QDir>
-#include <QDebug>
 #if defined ENABLE_MODEL_TEST
 #include "modeltest.h"
 #endif
@@ -263,6 +262,12 @@ void OnlineServicesModel::setEnabled(bool e)
         return;
     }
 
+    if (e) {
+        connect(Covers::self(), SIGNAL(loaded(Song,int)), this, SLOT(coverLoaded(Song,int)));
+    } else {
+        disconnect(Covers::self(), SIGNAL(loaded(Song,int)), this, SLOT(coverLoaded(Song,int)));
+    }
+
     enabled=e;
     if (!enabled) {
         stop();
@@ -442,187 +447,6 @@ void OnlineServicesModel::cancelAll()
     podcast->cancelAllJobs();
 }
 
-void OnlineServicesModel::resetModel()
-{
-    OnlineService *srv=service(PodcastService::constName);
-    if (srv) {
-        foreach (MusicLibraryItem *p, srv->childItems()) {
-            if (MusicLibraryItem::Type_Podcast==p->itemType()) {
-                MusicLibraryItemPodcast *pc=static_cast<MusicLibraryItemPodcast *>(p);
-                pc->clearImage();
-            }
-        }
-    }
-    ActionModel::resetModel();
-}
-
-static const char * constExtensions[]={".jpg", ".png", 0};
-static const char * constIdProperty="id";
-static const char * constArtistProperty="artist";
-static const char * constAlbumProperty="album";
-static const char * constCacheProperty="cacheName";
-static const char * constMaxSizeProperty="maxSize";
-
-#define DBUG if (Covers::debugEnabled()) qWarning() << "OnlineServicesModel" << __FUNCTION__
-
-static Covers::Image readCache(const QString &id, const QString &artist, const QString &album)
-{
-    DBUG << id << artist << album;
-    Covers::Image i;
-    QString baseName=Utils::cacheDir(id.toLower(), false)+Covers::encodeName(album.isEmpty() ? artist : (artist+" - "+album));
-    for (int e=0; constExtensions[e]; ++e) {
-        QString fileName=baseName+constExtensions[e];
-        if (QFile::exists(fileName)) {
-            QImage img(fileName);
-
-            if (!img.isNull()) {
-                DBUG << "Read from cache" << fileName;
-                i.img=img;
-                i.fileName=fileName;
-                break;
-            }
-        }
-    }
-    return i;
-}
-
-Covers::Image OnlineServicesModel::readImage(const Song &song)
-{
-    DBUG << song.file << song.albumArtist() << song.album;
-    QUrl u(song.file);
-    Covers::Image img;
-    QString id;
-    if (u.host().contains(JamendoService::constName, Qt::CaseInsensitive)) {
-        id=JamendoService::constName;
-    } else if (u.host().contains(MagnatuneService::constName, Qt::CaseInsensitive)) {
-        id=MagnatuneService::constName;
-    }
-
-    if (!id.isEmpty()) {
-        img=readCache(id, song.albumArtist(), song.album);
-    }
-
-    return img;
-}
-
-QImage OnlineServicesModel::requestImage(const QString &id, const QString &artist, const QString &album, const QString &url,
-                                         const QString cacheName, int maxSize)
-{
-    DBUG << id << artist << album << url << cacheName << maxSize;
-    if (cacheName.isEmpty()) {
-        Covers::Image i=readCache(id, artist, album);
-        if (!i.img.isNull()) {
-            return i.img;
-        }
-    } else if (QFile::exists(cacheName)) {
-        QImage img(cacheName);
-        if (!img.isNull()) {
-            DBUG << "Used cache filename";
-            return img;
-        }
-    }
-
-    QString imageUrl=url;
-    // Jamendo image URL is just the album ID!
-    if (!imageUrl.isEmpty() && !imageUrl.startsWith("http:/") && imageUrl.length()<15 && id==JamendoService::constName) {
-        imageUrl=JamendoService::imageUrl(imageUrl);
-        DBUG << "Built jamendo url" << imageUrl;
-    }
-
-    if (!imageUrl.isEmpty()) {
-        DBUG << "Download url";
-        // Need to download image...
-        NetworkJob *j=NetworkAccessManager::self()->get(QUrl(imageUrl));
-        j->setProperty(constIdProperty, id);
-        j->setProperty(constArtistProperty, artist);
-        j->setProperty(constAlbumProperty, album);
-        j->setProperty(constCacheProperty, cacheName);
-        j->setProperty(constMaxSizeProperty, maxSize);
-
-        connect(j, SIGNAL(finished()), this, SLOT(imageDownloaded()));
-    }
-
-    return QImage();
-}
-
-void OnlineServicesModel::imageDownloaded()
-{
-    NetworkJob *j=qobject_cast<NetworkJob *>(sender());
-
-    if (!j) {
-        return;
-    }
-
-    j->deleteLater();
-    QByteArray data=QNetworkReply::NoError==j->error() ? j->readAll() : QByteArray();
-    if (data.isEmpty()) {
-        DBUG << j->url().toString() << "empty!";
-        return;
-    }
-
-    QString url=j->url().toString();
-    QImage img=QImage::fromData(data, Covers::imageFormat(data));
-    if (img.isNull()) {
-        DBUG << url << "null image";
-        return;
-    }
-
-    bool png=Covers::isPng(data);
-    QString id=j->property(constIdProperty).toString();
-    Song song;
-    song.albumartist=song.artist=j->property(constArtistProperty).toString();
-    song.album=j->property(constAlbumProperty).toString();
-    DBUG << "Got image" << id << song.artist << song.album << png;
-    OnlineService *srv=service(id);
-    if (id==PodcastService::constName) {
-        MusicLibraryItem *podcast=srv->childItem(song.artist);
-        if (podcast && static_cast<MusicLibraryItemPodcast *>(podcast)->setCover(img)) {
-            QModelIndex idx=index(podcast->row(), 0, index(row(srv), 0, QModelIndex()));
-            emit dataChanged(idx, idx);
-
-        }
-    } else if (!song.album.isEmpty() && srv->useAlbumImages() && !srv->isPodcasts() && srv->id()==id) {
-        MusicLibraryItemArtist *artistItem = srv->artist(song, false);
-        if (artistItem) {
-            MusicLibraryItemAlbum *albumItem = artistItem->album(song, false);
-            if (albumItem && albumItem->saveToCache(img)) {
-                QModelIndex idx=index(albumItem->row(), 0, index(artistItem->row(), 0, index(row(srv), 0, QModelIndex())));
-                emit dataChanged(idx, idx);
-            }
-        }
-    }
-
-    int maxSize=j->property(constMaxSizeProperty).toInt();
-    QString cacheName=j->property(constCacheProperty).toString();
-    QString fileName=(cacheName.isEmpty()
-                        ? Utils::cacheDir(id.toLower(), true)+Covers::encodeName(song.album.isEmpty() ? song.artist : (song.artist+" - "+song.album))+(png ? ".png" : ".jpg")
-                        : cacheName);
-
-    if (!img.isNull() && (maxSize>0 || !cacheName.isEmpty())) {
-        if (maxSize>32 && (img.width()>maxSize || img.height()>maxSize)) {
-            img=img.scaled(maxSize, maxSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
-        }
-        DBUG << "Saved scaled image to" << fileName << maxSize;
-        img.save(fileName);
-        if (!song.album.isEmpty()) {
-            song.track=1;
-            //song.setKey();
-            Covers::self()->emitCoverUpdated(song, img, fileName);
-        }
-        return;
-    }
-    QFile f(fileName);
-    if (f.open(QIODevice::WriteOnly)) {
-        DBUG << "Saved image to" << fileName;
-        f.write(data);
-        if (!song.album.isEmpty()) {
-            song.track=1;
-            //song.setKey();
-            Covers::self()->emitCoverUpdated(song, img, fileName);
-        }
-    }
-}
-
 // Required due to icon missing for StdActions::searchAction for Mac/Unity... See note in constructor above.
 void OnlineServicesModel::tooltipUpdated(QAction *act)
 {
@@ -633,6 +457,36 @@ void OnlineServicesModel::tooltipUpdated(QAction *act)
         searchAction->setToolTip(StdActions::self()->searchAction->toolTip());
     }
     #endif
+}
+
+void OnlineServicesModel::coverLoaded(const Song &song, int size)
+{
+    Q_UNUSED(size)
+    if (song.isArtistImageRequest() || !song.isFromOnlineService()) {
+        return;
+    }
+
+    QString id=song.onlineService();
+    OnlineService *srv=service(id);
+
+    if (srv) {
+        if (PodcastService::constName==id) {
+            MusicLibraryItemPodcast *pod = static_cast<PodcastService *>(srv)->getPodcast(QUrl(song.file));
+            if (pod) {
+                QModelIndex idx=index(pod->row(), 0, index(srv->row(), 0, QModelIndex()));
+                emit dataChanged(idx, idx);
+            }
+        } else {
+            MusicLibraryItemArtist *artistItem = srv->artist(song, false);
+            if (artistItem) {
+                MusicLibraryItemAlbum *albumItem = artistItem->album(song, false);
+                if (albumItem) {
+                    QModelIndex idx=index(albumItem->row(), 0, index(artistItem->row(), 0, QModelIndex()));
+                    emit dataChanged(idx, idx);
+                }
+            }
+        }
+    }
 }
 
 void OnlineServicesModel::save()

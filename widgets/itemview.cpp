@@ -297,7 +297,7 @@ public:
             painter->setFont(textFont);
             painter->drawText(textRect, text, textOpt);
         } else {
-            QFont childFont(Utils::smallFont(QApplication::font()));
+            QFont childFont(Utils::smallFont(textFont));
             QFontMetrics childMetrics(childFont);
             QRect childRect;
 
@@ -305,7 +305,7 @@ public:
             int totalHeight=textHeight+childHeight;
             textRect=QRect(r.x(), r.y()+((r.height()-totalHeight)/2), r.width(), textHeight);
             childRect=QRect(r.x(), r.y()+textHeight+((r.height()-totalHeight)/2), r.width(),
-                            (iconMode ? textHeight-(2*constBorder) : textHeight));
+                            (iconMode ? childHeight-(2*constBorder) : childHeight));
 
             text = textMetrics.elidedText(text, Qt::ElideRight, textRect.width(), QPalette::WindowText);
             painter->setPen(color);

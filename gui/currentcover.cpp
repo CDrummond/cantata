@@ -27,6 +27,9 @@
 #include "widgets/icons.h"
 #include "support/utils.h"
 #include "support/globalstatic.h"
+#ifdef ENABLE_ONLINE_SERVICES
+#include "online/onlineservice.h"
+#endif
 #include <QFile>
 
 #if !defined Q_OS_WIN && !defined Q_OS_MAC
@@ -176,10 +179,14 @@ void CurrentCover::update(const Song &s)
     if (!enabled) {
         return;
     }
-
-    if (s.albumArtist()!=current.albumArtist() || s.album!=current.album || s.isStream()!=current.isStream()) {
+    if (s.albumArtist()!=current.albumArtist() || s.album!=current.album || s.isStream()!=current.isStream() ||
+        s.onlineService()!=current.onlineService()) {
         current=s;
-        if (!s.albumArtist().isEmpty() && !s.album.isEmpty() && !current.isStandardStream()) {
+        if ((!s.albumArtist().isEmpty() && !s.album.isEmpty() && !current.isStandardStream())
+            #ifdef ENABLE_ONLINE_SERVICES
+            || OnlineService::showLogoAsCover(s)
+            #endif
+            ) {
             Covers::Image cImg=Covers::self()->requestImage(s, true);
             valid=!cImg.img.isNull();
             if (valid) {

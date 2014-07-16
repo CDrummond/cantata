@@ -31,6 +31,8 @@
 #include "qtiocompressor/qtiocompressor.h"
 #include "support/thread.h"
 #include "gui/settings.h"
+#include "podcastservice.h"
+#include "soundcloudservice.h"
 #include <QFile>
 #include <QXmlStreamReader>
 
@@ -222,6 +224,12 @@ bool OnlineService::decode(Song &song)
         }
     }
     return false;
+}
+
+bool OnlineService::showLogoAsCover(const Song &song)
+{
+    return song.isFromOnlineService() && (PodcastService::constName==song.onlineService() ||
+                                          SoundCloudService::constName==song.onlineService());
 }
 
 OnlineService::OnlineService(MusicModel *m, const QString &name)

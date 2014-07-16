@@ -231,6 +231,7 @@ Song MusicLibraryItemPodcast::coverSong() const
     Song song;
     if (childCount()) {
         song.artist=PodcastService::constName;
+        song.album=data();
         song.title=data();
         song.type=Song::OnlineSvrTrack;
         song.setIsFromOnlineService(PodcastService::constName);

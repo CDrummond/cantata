@@ -159,7 +159,12 @@ static void installDebugMessageHandler()
 {
     QString debug=qgetenv("CANTATA_DEBUG");
     if (!debug.isEmpty()) {
-        int dbg=debug.toInt();
+        int dbg=0;
+        if (debug.contains(QLatin1String("0x"))) {
+            dbg=debug.startsWith(QLatin1Char('-')) ? (debug.mid(1).toInt(0, 16)*-1) : debug.toInt(0, 16);
+        } else {
+            dbg=debug.toInt();
+        }
         bool logToFile=dbg>0;
         if (dbg<0) {
             dbg*=-1;

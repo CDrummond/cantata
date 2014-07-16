@@ -191,7 +191,6 @@ Song OnlineService::encode(const Song &song)
                 QString::number(song.year)+constDeliminator+
                 QString::number(song.track)+constDeliminator+
                 QString::number(song.disc)+constDeliminator+
-                QString::number(song.type)+constDeliminator+
                 encoded.onlineService();
     return encoded;
 }
@@ -206,7 +205,7 @@ bool OnlineService::decode(Song &song)
 
     if (pos>0) {
         QStringList parts=song.file.mid(pos+constUrlGuard.length()).split(constDeliminator);
-        if (parts.length()>=11) {
+        if (parts.length()>=10) {
             song.artist=parts.at(0);
             song.albumartist=parts.at(1);
             song.album=parts.at(2);
@@ -216,8 +215,8 @@ bool OnlineService::decode(Song &song)
             song.year=parts.at(6).toUInt();
             song.track=parts.at(7).toUInt();
             song.disc=parts.at(8).toUInt();
-            song.type=(Song::Type)parts.at(9).toUInt();
-            song.setIsFromOnlineService(parts.at(10));
+            song.type=Song::OnlineSvrTrack;
+            song.setIsFromOnlineService(parts.at(9));
             song.file=song.file.left(pos);
             return true;
         }

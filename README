@@ -778,23 +778,23 @@ Therefore, its probably better to start Cantata from the commandline.
 
 The following debug values may be used:
 
-    MPD communications           1
-    MPD Parsing                  2
-    Covers                       4
-    Wikipedia context info       8
-    Last.fm context info        16
-    Combined context info       32
-    Context widget              64
-    Context backdrop           128
-    Dynamic                    256
-    Stream fetching            512
-    Http server               1024
-    Song dialog file checks   2048 (Tag Editor, Track Organiser, etc)
-    Network access            4096
-    Context lyrics            8192
-    Threads                  16384
-    External tags            32768
-    Scrobbling               65536
+    MPD communications             1   0x00000001
+    MPD Parsing                    2   0x00000002
+    Covers                         4   0x00000004
+    Wikipedia context info         8   0x00000008
+    Last.fm context info          16   0x00000010
+    Combined context info         32   0x00000020
+    Context widget                64   0x00000040
+    Context backdrop             128   0x00000080
+    Dynamic                      256   0x00000100
+    Stream fetching              512   0x00000200
+    Http server                 1024   0x00000400
+    Song dialog file checks     2048   0x00000800 (Tag Editor, etc)
+    Network access              4096   0x00001000
+    Context lyrics              8192   0x00002000
+    Threads                    16384   0x00004000
+    External tags              32768   0x00008000
+    Scrobbling                 65536   0x00010000
 
 These values may be combined to enable multiple output. e.g. to enable MPD and
 covers logging:

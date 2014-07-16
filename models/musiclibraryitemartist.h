@@ -57,8 +57,6 @@ public:
     Type itemType() const { return Type_Artist; }
     #ifdef ENABLE_UBUNTU
     const QString & cover() const;
-    #else
-    QPixmap * cover() const;
     #endif
     // 'data' could be 'Composer' if we are set to use that, but need to save real artist...
     const QString & actualArtist() const { return m_actualArtist; }
@@ -66,9 +64,6 @@ public:
     void setCover(const QString &c) { m_coverName="file://"+c; m_coverRequested=false; }
     const QString & coverName() { return m_coverName; }
     #endif
- 
-private:
-    bool largeImages() const;
     Song coverSong() const;
 
 private:

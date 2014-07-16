@@ -40,14 +40,6 @@ class AlbumsModel : public ActionModel
     Q_OBJECT
 
 public:
-    #ifndef ENABLE_UBUNTU
-    static MusicLibraryItemAlbum::CoverSize currentCoverSize();
-    static void setCoverSize(MusicLibraryItemAlbum::CoverSize size);
-    static int iconSize();
-    static void setItemSize(const QSize &sz);
-    static void setIconMode(bool u);
-    #endif
-
     enum Sort
     {
         Sort_AlbumArtist,
@@ -95,8 +87,6 @@ public:
         void updateStats();
         #ifdef ENABLE_UBUNTU
         QString cover();
-        #else
-        QPixmap *cover();
         #endif
         bool isSingleTracks() const { return Song::SingleTracks==type; }
         const SongItem *getCueFile() const;

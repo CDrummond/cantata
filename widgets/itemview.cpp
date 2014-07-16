@@ -50,6 +50,18 @@
 
 static int listDecorationSize=22;
 static int treeDecorationSize=16;
+static int listCoverSize=22;
+static int gridCoverSize=22;
+
+static inline int adjust(int v)
+{
+    if (v>48) {
+        static const int constStep=4;
+        return (((int)(v/constStep))*constStep)+((v%constStep) ? constStep : 0);
+    } else {
+        return Icon::stdSize(v);
+    }
+}
 
 void ItemView::setup()
 {
@@ -62,6 +74,8 @@ void ItemView::setup()
         listDecorationSize=22;
         treeDecorationSize=16;
     }
+    listCoverSize=qMax(32, adjust(2*height));
+    gridCoverSize=qMax(128, adjust(7*height));;
 }
 
 KeyEventHandler::KeyEventHandler(QAbstractItemView *v, QAction *a)
@@ -115,7 +129,6 @@ bool ViewEventHandler::eventFilter(QObject *obj, QEvent *event)
     return KeyEventHandler::eventFilter(obj, event);
 }
 
-static const int constImageSize=22;
 static const int constDevImageSize=32;
 
 static inline double subTextAlpha(bool selected)
@@ -139,13 +152,12 @@ public:
     QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
     {
         Q_UNUSED(option)
-        int imageSize = index.data(Cantata::Role_ImageSize).toInt();
+        bool iconMode = view && QListView::IconMode==view->viewMode();
+        bool gridView = view && QListView::IconMode==view->viewMode();
+        bool showImage = index.data(iconMode ? Cantata::Role_Image : Cantata::Role_ListImage).toBool();
+        int imageSize = showImage ? (gridView ? gridCoverSize : listCoverSize) : 0;
 
-        if (imageSize<0) {
-            imageSize=constImageSize;
-        }
-
-        if (view && QListView::IconMode==view->viewMode()) {
+        if (iconMode) {
             // Use same calculation as in LibraryPage/AlbumsPage...
             return QSize(imageSize+8, imageSize+(QApplication::fontMetrics().height()*2.5));
         } else {
@@ -204,17 +216,23 @@ public:
         QRect r(option.rect);
         QRect r2(r);
         QString childText = index.data(Cantata::Role_SubText).toString();
-        QVariant image = index.data(Cantata::Role_Image);
-        if (image.isNull()) {
-            image = index.data(Qt::DecorationRole);
+        bool showCover = index.data(iconMode ? Cantata::Role_Image : Cantata::Role_ListImage).toBool();
+        QPixmap pix;
+
+        if (showCover) {
+            Song cSong=index.data(Cantata::Role_CoverSong).value<Song>();
+            if (!cSong.isEmpty()) {
+                QPixmap *cp=Covers::self()->get(cSong, iconMode ? gridCoverSize : listCoverSize);
+                if (cp) {
+                    pix=*cp;
+                }
+            }
         }
 
-        QPixmap pix = QVariant::Pixmap==image.type()
-                        ? image.value<QPixmap>()
-                        : QVariant::Image==image.type()
-                            ? QPixmap::fromImage(image.value<QImage>().scaled(listDecorationSize, listDecorationSize,
-                                                                              Qt::KeepAspectRatio, Qt::SmoothTransformation))
-                            : image.value<QIcon>().pixmap(listDecorationSize, listDecorationSize);
+        if (!pix) {
+            pix=index.data(Qt::DecorationRole).value<QIcon>().pixmap(listDecorationSize, listDecorationSize);
+        }
+
         bool oneLine = childText.isEmpty();
         ActionPos actionPos = iconMode ? AP_VTop : AP_HMiddle;
         bool rtl = QApplication::isRightToLeft();
@@ -377,14 +395,14 @@ public:
         }
 
         QSize sz(QStyledItemDelegate::sizeHint(option, index));
-        if (Utils::touchFriendly()) {
-            int minH=option.fontMetrics.height()*2;
-            if (sz.height()<minH) {
-                sz.setHeight(minH);
-                return sz;
-            }
+
+        if (index.data(Cantata::Role_ListImage).toBool()) {
+            sz.setHeight(qMax(sz.height(), listCoverSize));
         }
-        return QSize(sz.width(), sz.height()+2);
+        if (Utils::touchFriendly()) {
+            sz.setHeight(qMax(sz.height(), option.fontMetrics.height()*2));
+        }
+        return QSize(sz.width(), sz.height()+(constBorder *2));
     }
 
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
@@ -415,21 +433,34 @@ public:
             }
             QRect r(option.rect);
             r.adjust(4, 0, -4, 0);
-            QPixmap pix=noIcons ? QPixmap() : index.data(Qt::DecorationRole).value<QIcon>().pixmap(treeDecorationSize, treeDecorationSize);
-            if (gtk && pix.isNull()) {
-                QVariant image = index.data(Cantata::Role_Image);
-                if (!image.isNull()) {
-                    pix = QVariant::Pixmap==image.type() ? image.value<QPixmap>() : noIcons ? QPixmap() : image.value<QIcon>().pixmap(listDecorationSize, listDecorationSize);
+
+            if (!noIcons) {
+                QPixmap pix;
+
+                bool showCover = index.data(Cantata::Role_ListImage).toBool();
+                if (showCover) {
+                    Song cSong=index.data(Cantata::Role_CoverSong).value<Song>();
+                    if (!cSong.isEmpty()) {
+                        QPixmap *cp=Covers::self()->get(cSong, listCoverSize);
+                        if (cp) {
+                            pix=*cp;
+                        }
+                    }
                 }
-            }
-            if (!pix.isNull()) {
-                int adjust=qMax(pix.width(), pix.height());
-                if (rtl) {
-                    painter->drawPixmap(r.x()+r.width()-pix.width(), r.y()+((r.height()-pix.height())/2), pix.width(), pix.height(), pix);
-                    r.adjust(3, 0, -(3+adjust), 0);
-                } else {
-                    painter->drawPixmap(r.x(), r.y()+((r.height()-pix.height())/2), pix.width(), pix.height(), pix);
-                    r.adjust(adjust+3, 0, -3, 0);
+
+                if (pix.isNull()) {
+                    pix=index.data(Qt::DecorationRole).value<QIcon>().pixmap(treeDecorationSize, treeDecorationSize);
+                }
+
+                if (!pix.isNull()) {
+                    int adjust=qMax(pix.width(), pix.height());
+                    if (rtl) {
+                        painter->drawPixmap(r.x()+r.width()-pix.width(), r.y()+((r.height()-pix.height())/2), pix.width(), pix.height(), pix);
+                        r.adjust(3, 0, -(3+adjust), 0);
+                    } else {
+                        painter->drawPixmap(r.x(), r.y()+((r.height()-pix.height())/2), pix.width(), pix.height(), pix);
+                        r.adjust(adjust+3, 0, -3, 0);
+                    }
                 }
             }
 

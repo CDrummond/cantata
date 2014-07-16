@@ -42,82 +42,10 @@
 #include <QApplication>
 #include <QFontMetrics>
 
-static MusicLibraryItemAlbum::CoverSize coverSize=MusicLibraryItemAlbum::CoverNone;
 #ifdef ENABLE_UBUNTU
 static const QString constDefaultCover=QLatin1String("qrc:/album.svg");
 #endif
 static bool dateSort=false;
-
-#ifndef ENABLE_UBUNTU
-static QSize iconItemSize;
-
-static inline int adjust(int v)
-{
-    if (v>48) {
-        static const int constStep=4;
-        return (((int)(v/constStep))*constStep)+((v%constStep) ? constStep : 0);
-    } else {
-        return Icon::stdSize(v);
-    }
-}
-
-static int fontHeight=16;
-
-void MusicLibraryItemAlbum::setup()
-{
-    fontHeight=QApplication::fontMetrics().height();
-}
-
-int MusicLibraryItemAlbum::iconSize(MusicLibraryItemAlbum::CoverSize sz, bool iconMode)
-{
-    if (CoverNone==sz) {
-        return 0;
-    }
-
-    if (iconMode) {
-        switch (sz) {
-        case CoverSmall:      return qMax(76, adjust((4.75*fontHeight)+0.5));
-        default:
-        case CoverMedium:     return qMax(100, adjust((6.25*fontHeight)+0.5));
-        case CoverLarge:      return qMax(128, adjust(8*fontHeight));
-        case CoverExtraLarge: return qMax(160, adjust(10*fontHeight));
-        }
-    } else {
-        switch (sz) {
-        case CoverSmall:      return qMax(22, adjust((1.375*fontHeight)+0.5));
-        default:
-        case CoverMedium:     return qMax(32, adjust(2*fontHeight));
-        case CoverLarge:      return qMax(48, adjust(3*fontHeight));
-        case CoverExtraLarge: return qMax(64, adjust(4*fontHeight));
-        }
-    }
-}
-
-int MusicLibraryItemAlbum::iconSize(bool iconMode)
-{
-    return MusicLibraryItemAlbum::iconSize(coverSize, iconMode);
-}
-
-void MusicLibraryItemAlbum::setItemSize(const QSize &sz)
-{
-    iconItemSize=sz;
-}
-
-QSize MusicLibraryItemAlbum::itemSize()
-{
-    return iconItemSize;
-}
-
-MusicLibraryItemAlbum::CoverSize MusicLibraryItemAlbum::currentCoverSize()
-{
-    return coverSize;
-}
-
-void MusicLibraryItemAlbum::setCoverSize(MusicLibraryItemAlbum::CoverSize size)
-{
-    coverSize=size;
-}
-#endif
 
 void MusicLibraryItemAlbum::setSortByDate(bool sd)
 {
@@ -178,15 +106,6 @@ const QString & MusicLibraryItemAlbum::cover() const
         }
     }
     return m_coverName.isEmpty() ? constDefaultCover : m_coverName;
-}
-#else
-QPixmap * MusicLibraryItemAlbum::cover() const
-{
-    int iSize=iconSize(largeImages());
-    if (Song::SingleTracks!=m_type && iSize && childCount()) {
-        return Covers::self()->get(coverSong(), iSize, true);
-    }
-    return 0;
 }
 #endif
 
@@ -390,10 +309,4 @@ void MusicLibraryItemAlbum::setYear(const MusicLibraryItemSong *song)
         m_yearOfDisc=song->disc();
         Song::storeAlbumYear(song->song());
     }
-}
-
-bool MusicLibraryItemAlbum::largeImages() const
-{
-    return m_parentItem && m_parentItem->parentItem() && Type_Root==m_parentItem->parentItem()->itemType() &&
-           static_cast<MusicLibraryItemRoot *>(m_parentItem->parentItem())->useLargeImages();
 }

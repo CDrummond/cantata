@@ -29,12 +29,13 @@ namespace Cantata {
     enum Roles
     {
         // ItemView...
-        Role_ImageSize = Qt::UserRole+100,
-        Role_MainText,
+        Role_MainText = Qt::UserRole+100,
         Role_BriefMainText,
         Role_SubText,
         Role_TitleText,
         Role_Image,
+        Role_ListImage, // Should image been shown in list/tree view?
+        Role_CoverSong,
         Role_Capacity,
         Role_CapacityText,
         Role_Actions,

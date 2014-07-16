@@ -33,7 +33,7 @@
 #include <QTimer>
 #include <QAction>
 
-SyncCollectionWidget::SyncCollectionWidget(QWidget *parent, const QString &title, const QString &action, bool showCovers)
+SyncCollectionWidget::SyncCollectionWidget(QWidget *parent, const QString &title, const QString &action)
     : QWidget(parent)
     , performedSearch(false)
     , searchTimer(0)
@@ -45,7 +45,6 @@ SyncCollectionWidget::SyncCollectionWidget(QWidget *parent, const QString &title
 
     model=new MusicLibraryModel(this, false, true);
     proxy=new MusicLibraryProxyModel(this);
-    model->setUseAlbumImages(showCovers);
     proxy->setSourceModel(model);
     tree->setModel(proxy);
     tree->setPageDefaults();

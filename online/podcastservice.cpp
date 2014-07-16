@@ -93,8 +93,6 @@ PodcastService::PodcastService(MusicModel *m)
     , rssUpdateTimer(0)
 {
     loaded=true;
-    setUseArtistImages(false);
-    setUseAlbumImages(false);
     QMetaObject::invokeMethod(this, "loadAll", Qt::QueuedConnection);
     connect(MPDConnection::self(), SIGNAL(currentSongUpdated(const Song &)), this, SLOT(currentMpdSong(const Song &)));
     if (iconFile.isEmpty()) {

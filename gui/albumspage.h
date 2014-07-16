@@ -48,7 +48,7 @@ public:
     void addSelectionToDevice(const QString &udi);
     void deleteSongs();
     #endif
-    void setView(int v);
+    void setView(int v) { view->setMode((ItemView::Mode)v); }
     ItemView::Mode viewMode() const { return view->viewMode(); }
     void focusSearch() { view->focusSearch(); }
     void goTop() { view->goToTop(); }

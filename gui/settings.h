@@ -91,9 +91,6 @@ public:
     int streamsView();
     int onlineView();
     #endif
-    bool libraryArtistImage();
-    int libraryCoverSize();
-    int albumsCoverSize();
     int albumSort();
     int sidebar();
     bool libraryYear();
@@ -219,9 +216,6 @@ public:
     void saveStreamsView(int v);
     void saveOnlineView(int v);
     #endif
-    void saveLibraryArtistImage(bool v);
-    void saveLibraryCoverSize(int v);
-    void saveAlbumsCoverSize(int v);
     void saveAlbumSort(int v);
     void saveSidebar(int v);
     void saveLibraryYear(bool v);

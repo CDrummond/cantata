@@ -85,8 +85,6 @@ public:
         MusicLibraryModel *model=new MusicLibraryModel(this, false);
         MusicLibraryProxyModel *proxy=new MusicLibraryProxyModel(this);
         proxy->setSourceModel(model);
-        model->setUseAlbumImages(false);
-        model->setUseArtistImages(false);
         model->setSupportsAlbumArtistTag(true);
         TreeView *view=new TreeView(this);
         view->setPageDefaults();

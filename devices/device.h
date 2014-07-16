@@ -118,9 +118,6 @@ public:
         , jobAbortRequested(false)
         , transcoding(false) {
         m_model=m;
-        setUseArtistImages(false);
-        setUseAlbumImages(true);
-        setLargeImages(false);
         icn=Icon(solidDev.isValid() ? solidDev.icon() : QLatin1String("inode-directory"));
     }
     Device(MusicModel *m, const QString &name, const QString &id)
@@ -132,8 +129,6 @@ public:
         , jobAbortRequested(false)
         , transcoding(false) {
         m_model=m;
-        setUseArtistImages(false);
-        setUseAlbumImages(true);
         icn=Icon(solidDev.isValid() ? solidDev.icon() : QLatin1String("inode-directory"));
     }
     #endif

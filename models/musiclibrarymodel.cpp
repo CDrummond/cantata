@@ -348,9 +348,6 @@ void MusicLibraryModel::clear()
     databaseTime = QDateTime();
     rootItem = new MusicLibraryItemRoot;
     rootItem->setModel(this);
-    rootItem->setLargeImages(oldRoot->useLargeImages());
-    rootItem->setUseAlbumImages(oldRoot->useAlbumImages());
-    rootItem->setUseArtistImages(oldRoot->useArtistImages());
     delete oldRoot;
     endResetModel();
 
@@ -465,8 +462,6 @@ void MusicLibraryModel::updateMusicLibrary(MusicLibraryItemRoot *newroot, QDateT
         return;
     }
 
-    newroot->setUseAlbumImages(rootItem->useAlbumImages());
-    newroot->setUseArtistImages(rootItem->useArtistImages());
     bool updatedSongs=false;
     bool needToSave=!databaseTime.isValid() || (validCacheDate(dbUpdate) && dbUpdate>databaseTime);
     bool incremental=rootItem->childCount() && newroot->childCount();
@@ -487,9 +482,6 @@ void MusicLibraryModel::updateMusicLibrary(MusicLibraryItemRoot *newroot, QDateT
         beginResetModel();
         rootItem = newroot;
         rootItem->setModel(this);
-        rootItem->setLargeImages(oldRoot->useLargeImages());
-        rootItem->setUseAlbumImages(oldRoot->useAlbumImages());
-        rootItem->setUseArtistImages(oldRoot->useArtistImages());
         delete oldRoot;
         endResetModel();
         updatedSongs=true;
@@ -714,77 +706,61 @@ QList<Song> MusicLibraryModel::getArtistAlbumsFirstTracks(const Song &song) cons
 // Currently ONLY artist images are always loaded from non UI thread.
 void MusicLibraryModel::coverLoaded(const Song &song, int size)
 {
+    Q_UNUSED(size)
     #ifdef ENABLE_ONLINE_SERVICES
     if (song.isFromOnlineService()) {
         return;
     }
     #endif
-    if (
-        #ifndef ENABLE_UBUNTU
-        MusicLibraryItemAlbum::CoverNone==MusicLibraryItemAlbum::currentCoverSize() || size!=MusicLibraryItemAlbum::iconSize(rootItem->useLargeImages()) ||
-        #endif
-        //song.isCdda() || (song.isArtistImageRequest() && !rootItem->useArtistImages()) ||
-        song.isCdda() || !song.isArtistImageRequest() || !rootItem->useArtistImages() ||
-        song.file.startsWith("http://") || song.name().startsWith("http://")) {
+    if (song.isCdda() || song.file.startsWith("http://") || song.name().startsWith("http://")) {
         return;
     }
-    //if (song.isArtistImageRequest()) {
+    if (song.isArtistImageRequest()) {
         MusicLibraryItemArtist *artistItem = rootItem->artist(song, false);
         if (artistItem) {
             QModelIndex idx=index(artistItem->row(), 0, QModelIndex());
             emit dataChanged(idx, idx);
         }
-//    } else {
-//        MusicLibraryItemArtist *artistItem = rootItem->artist(song, false);
-//        if (artistItem) {
-//            MusicLibraryItemAlbum *albumItem = artistItem->album(song, false);
-//            if (albumItem) {
-//                QModelIndex idx=index(albumItem->row(), 0, index(artistItem->row(), 0, QModelIndex()));
-//                emit dataChanged(idx, idx);
-//            }
-//        }
-//    }
+    } else {
+        MusicLibraryItemArtist *artistItem = rootItem->artist(song, false);
+        if (artistItem) {
+            MusicLibraryItemAlbum *albumItem = artistItem->album(song, false);
+            if (albumItem) {
+                QModelIndex idx=index(albumItem->row(), 0, index(artistItem->row(), 0, QModelIndex()));
+                emit dataChanged(idx, idx);
+            }
+        }
+    }
 }
 
 void MusicLibraryModel::setCover(const Song &song, const QImage &img, const QString &file)
 {
+    if (img.isNull() || file.isEmpty() ||
+        song.isCdda() || song.file.startsWith("http:/") || song.name().startsWith("http:/")) {
+        return;
+    }
     #ifdef ENABLE_ONLINE_SERVICES
     if (song.isFromOnlineService()) {
         return;
     }
     #endif
 
-    #ifdef ENABLE_UBUNTU
-    if (!rootItem->useAlbumImages() || img.isNull() || file.isEmpty() ||
-        song.isCdda() || song.file.startsWith("http:/") || song.name().startsWith("http:/")) {
-        return;
-    }
-
     MusicLibraryItemArtist *artistItem = rootItem->artist(song, false);
     if (artistItem) {
         MusicLibraryItemAlbum *albumItem = artistItem->album(song, false);
+        #ifdef ENABLE_UBUNTU
         if (albumItem && albumItem->coverName().isEmpty()) {
             albumItem->setCover(file);
             QModelIndex idx=index(albumItem->row(), 0, index(artistItem->row(), 0, QModelIndex()));
             emit dataChanged(idx, idx);
         }
-    }
-    #else
-    Q_UNUSED(file)
-    if (!rootItem->useAlbumImages() || img.isNull() || MusicLibraryItemAlbum::CoverNone==MusicLibraryItemAlbum::currentCoverSize() ||
-        song.isCdda() || song.file.startsWith("http:/") || song.name().startsWith("http:/")) {
-        return;
-    }
-
-    MusicLibraryItemArtist *artistItem = rootItem->artist(song, false);
-    if (artistItem) {
-        MusicLibraryItemAlbum *albumItem = artistItem->album(song, false);
+        #else
         if (albumItem) {
             QModelIndex idx=index(albumItem->row(), 0, index(artistItem->row(), 0, QModelIndex()));
             emit dataChanged(idx, idx);
         }
+        #endif
     }
-    #endif
 }
 
 /**
